@@ -1,63 +1,53 @@
-Return-Path: <linux-wireless+bounces-23301-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23302-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066FEAC0A10
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 12:47:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A19AC0A1C
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 12:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36F279E54D7
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 10:46:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B191BA24C77
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 10:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908881F09B3;
-	Thu, 22 May 2025 10:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7894C2673BD;
+	Thu, 22 May 2025 10:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="U21b/ZmY"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="ozXMHnmE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A621EF387
-	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 10:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AD133DB
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 10:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747910833; cv=none; b=JQR3GRNd+spc9IFICSASIYTUlcMpQMOmsSpOJ90PP1Zp8F86/0vRHMWLG/XCfPn9f/R7rr4CBPkieYBGSYi0duJ2pvtd+0JJ4aNTshUY9T+xEOvbVoTuq9W2YvO4+s1FPRPUV04RVsWM8kBj+iiMZWRLJwpnVt66RbLFn0LHpg8=
+	t=1747911010; cv=none; b=AVY2edko2FDJFD3ut0oU7KxVM9SnpzVmNUP4l1Ie4kXGQHG3PItiX9VCkptLq31gBBUt7COgnlJqNUNNAVwwEmqgbqX4wwotW2V+/oaS/548lw1or6PxSQtJIhH6MG6dM7y1VX1o0zMakBKWxiEaQI/cHDVUNIcknJKpkkzQHqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747910833; c=relaxed/simple;
-	bh=jju+ESNIpxjstyHulF5LE3le2WgHgFlpun9BFHugu/Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=b/VuU06EIejCIzeBzSpzCTvptYtOhmioZjG19SV7OZ6MAt/a2ATslba4bTECkaWt64FBh8WK0/1K7pSG4sPe/Z7ABzSrXFDailon0ilMhChCd0YnZatJMwVGUsApsyOTxDX2/Vw8HXTK7Ydy/+LPagQMLEPn4tVCN48k/j0eO48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=U21b/ZmY; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54M7sgq0000862;
-	Thu, 22 May 2025 10:47:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	66JRZYMR9SkL5k8nHHxRPlTtkxwBwCYENksJW9jxiwA=; b=U21b/ZmYLTmY33/q
-	H0ZbrmQjWfEStSCRfKtevWNw60Tw+1sOTQg8K1Xco+JhEpM3Dyt/aaGPtsSqMkcj
-	jGWEIIziENRKyGSW15AOu51K/7rAuN7wi+k52Hr0ws7Rh8AkLQqcY863t5da4s5C
-	nFHQX3kwSL2IQtI7hdJNMvpm/slVQvvJPCFim4RGzWpMZqE/3OdGPG4KcfLvKCdH
-	z/YVthwQE0B3149gg3mdDLWt4WWMMM3dpOZC5Xx9j7H3dfJrY3zO7RyaKGBs+Qgt
-	210kpwWKibzT4T0vd966hIHyddTpzbQYypBA4L2xJm2Iqqu2iWelAXIcjWJwYw37
-	rfb+6A==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf6wy61-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 May 2025 10:47:07 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54MAl6Vq020565
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 May 2025 10:47:06 GMT
-Received: from [10.152.201.120] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 22 May
- 2025 03:47:05 -0700
-Message-ID: <0a36d45b-a2f4-4fd9-a1f9-39e91bee82c5@quicinc.com>
-Date: Thu, 22 May 2025 16:17:02 +0530
+	s=arc-20240116; t=1747911010; c=relaxed/simple;
+	bh=yzDyjKrYMc/grtsX6be49F8jpsbjU0zAz5u4QZABrO4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JMbVBDDNzEva0b73tiGoTYK/XK1lvNsopg3atBY1V2RcXsclMajEDT4mugsHFDtmEx4vvaLbmIe0BmL40v2tH0I06sSrvEHzVHDUEQiTDoMKpTIhoAoM0Wvgh4oTnPivfY3s7qO4K6KcAqay08DeEmg/+gdPVELI+9N9KMq/qrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=ozXMHnmE; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=SzfHc04qb3ZiBK7rSUe8RZ+rtYxRyixjojLdqc8M/j4=; b=ozXMHnmEwFFf7jMMorWeqNjQg3
+	hIyB41jW1XedXMOLIP42rFVfUoerYG/rK13OSoCVUrxKLuRM8eEO7hiwQHwnMu9thI96+M8rOX8mR
+	RXqAR7Y789R7nIstbiGX+zm1NHbeYOyU7Qb2+Fx5/3hAIcJu1+o+0GAmRmcvzyKRU87I=;
+Received: from p5b206e31.dip0.t-ipconnect.de ([91.32.110.49] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1uI3Uq-0085SC-0o;
+	Thu, 22 May 2025 12:49:56 +0200
+Message-ID: <5a659f60-896e-4f2f-89c0-141e530c44d5@nbd.name>
+Date: Thu, 22 May 2025 12:49:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,108 +55,79 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v9 03/10] wifi: cfg80211: extend to embed
- link level statistics in NL message
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20250522085601.2741458-1-quic_sarishar@quicinc.com>
- <20250522085601.2741458-4-quic_sarishar@quicinc.com>
- <9be5a453-730f-4ed9-b9fc-1e703f38f9f0@quicinc.com>
- <c8a6f706bc0aec46f7619ba3eb373f13d0c94969.camel@sipsolutions.net>
- <472f06ef-104c-44f9-be8f-5b077c958f43@quicinc.com>
- <5ead0c2ac031ecf225011ac4bceba755387fc918.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 2/2] wifi: mt76: mt7925: add RNR scan support for 6GHz
+To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, lorenzo@kernel.org
+Cc: deren.wu@mediatek.com, Sean.Wang@mediatek.com, Leon.Yen@mediatek.com,
+ Michael.Lo@mediatek.com, allan.wang@mediatek.com,
+ Eric-SY.Chang@mediatek.com, km.lin@mediatek.com, Quan.Zhou@mediatek.com,
+ Ryder.Lee@mediatek.com, Shayne.Chen@mediatek.com,
+ linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+References: <20250321013829.3598-1-mingyen.hsieh@mediatek.com>
+ <20250321013829.3598-2-mingyen.hsieh@mediatek.com>
 Content-Language: en-US
-From: Sarika Sharma <quic_sarishar@quicinc.com>
-In-Reply-To: <5ead0c2ac031ecf225011ac4bceba755387fc918.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <20250321013829.3598-2-mingyen.hsieh@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: hDCJaFMcwaZi56qVH-RyDMCL3eeXHUdV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDEwOCBTYWx0ZWRfXxQSvSmS/AcfK
- ZuwvaMVADK65gBL3oV6cMPbU3RKD50fJFCUUqTMz3AII+GLyzt290nQTU+vjf71o/wcCp4iYexc
- pbcrbA0fcWm/Y/AwWg1C2/0mpuo+apsVoSZBkJQL1AFB7CFZPjNwxL2qpKpKTqcHOYPvJdC6/op
- 2CmKTeUJgQGgM2IJpsk0zVtlcFu1cXbuaXvZ1yoKBbNnjCKOvpf6kmrX7FEli3lTaEuLjQDyvuN
- M/ag4hDbwp6t7jBKY0kNDVTTI4zqalmPBm+HbZ26zXJxwg4goFxoRcrtUWNy7Hgue7UfVNrk4fH
- gcyCXxXb07I4HNxz12MrmWMkqYFR+StWd1IaiamWsXm1pV5NGNTHbJbuhyUzuvPy1eqjI0mmsyN
- 22GSsHRB/KQLFQs7HQteA7eFlOkwAGcvLkeusz1Cjqf3aVtyeAz9y4iV7qabz6ODj+fr59r6
-X-Authority-Analysis: v=2.4 cv=fZOty1QF c=1 sm=1 tr=0 ts=682f00ab cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10
- a=OH1kPfueQ7qu1kQgljkA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: hDCJaFMcwaZi56qVH-RyDMCL3eeXHUdV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-22_05,2025-05-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0 adultscore=0 spamscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 priorityscore=1501 impostorscore=0 mlxlogscore=999
- lowpriorityscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505160000 definitions=main-2505220108
 
-On 5/22/2025 3:31 PM, Johannes Berg wrote:
-> On Thu, 2025-05-22 at 15:27 +0530, Sarika Sharma wrote:
->>>
->>> Probably not, though maybe we do want the link addresses in the station
->>> delete message to userspace?
->>
->> Then may be reporting station data will work here?( already happening)
->> As overall station is getting removed, not just any of links.
->>
->> If really a use case then can allocate memory for link_sinfo as well
->> during the station delete?
+On 21.03.25 02:38, Mingyen Hsieh wrote:
+> From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 > 
-> I don't know if it's needed, we can always add it later if so?
+> Enhance the mt7925 to include RNR scan support. It adds
+> the necessary RNR information to the scan command.
 > 
-> And maybe we'll rework the allocation anyway so it's on-demand.
+> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+> ---
+> v2:
+>    - use '= {}' to replace the '= {0}' for short_ssid array.
+>    - align with the open paranthesis for crc32_le.
+>    - use ether_addr_copy() to replace the memcpy of bssid.
+> ---
+>   .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 36 ++++++++++++++++---
+>   .../net/wireless/mediatek/mt76/mt7925/mcu.h   | 17 +++++----
+>   2 files changed, 41 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> index 243adace8799..22686faca1af 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> @@ -3078,7 +3079,11 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+>   	for (i = 0; i < sreq->n_ssids; i++) {
+>   		if (!sreq->ssids[i].ssid_len)
+>   			continue;
+> +		if (i > MT7925_RNR_SCAN_MAX_BSSIDS)
+> +			break;
+>   
+> +		short_ssid[i] = ~crc32_le(~0, sreq->ssids[i].ssid,
+> +					  sreq->ssids[i].ssid_len);
 
-Sure.
+I had to remove this variable due to a unused-but-set warning. I'm not 
+sure if the contents of it should have been stored somewhere in the MCU 
+message, or if this was something that ended up not being necessary.
+Please review and send a follow-up fix if needed.
 
-> 
->>
->>> But the warning was just an inconsistency issue - why should users set
->>> the valid bits for a link but then not have any link data? That seems
->>> wrong?
->>
->> It's not exactly incorrect, since there's a scenario where memory isn't
->> allocated for link_station (such as during station deletion).
->> Perhaps we could add a comment to clarify this behavior?
->>
->> Then either way, if really link_sinfo required to be reported(for link
->> address), then need to allocate memory during station delete for links.
->>
->> or if need to add WARN_ON_ONCE(), can reset valid_links during station
->> delete?
-> 
-> I guess I disagree and still think it is incorrect, it means something
-> (mac80211?) set up the valid links bitmap but wasn't able to fill in the
-> data. Why would that make sense?
-
-True it shouldn't, I agree.
-May be then I can set up the valid links bitmap from mac80211, only if 
-memory is getting allocated from cfg80211 for link_sinfo?
-
-> 
-> OK, maybe there's a conceptual difference here. I'm reading the
-> "valid_links" as "for this specific statistics structure, these are the
-> valid links".
-> 
-> If you read it as "for this station, these are the valid links" then it
-> makes some sense to have the valid links filled, but no statistics.
-> 
-> But I'd argue that latter interpretation doesn't make much sense since
-> to userspace they look exactly the same. If we had say the link address
-> outside and then the link address would be there even in the absence of
-> statistics, it'd make more sense, but that's not how it works?
-
-Yes, currently the link address is part of the link_sinfo structure.
-When you say "outside," are you referring to placing it directly in the 
-sinfo structure?
-
-> 
-> johannes
-
+- Felix
 
