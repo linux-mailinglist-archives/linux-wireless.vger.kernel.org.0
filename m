@@ -1,65 +1,90 @@
-Return-Path: <linux-wireless+bounces-23330-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23331-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6DFAAC15CB
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 23:08:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1351FAC15DD
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 23:23:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4552D7AF3A6
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 21:07:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3008F1C01B4F
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 21:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B22125229B;
-	Thu, 22 May 2025 21:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A502550BE;
+	Thu, 22 May 2025 21:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hnV+HYUg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qvqmsq7h"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5283286358;
-	Thu, 22 May 2025 21:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE7C1E9B34;
+	Thu, 22 May 2025 21:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747948105; cv=none; b=VBq/y1kaUAsBM9e/crgTXBIyvXmKKCFGpFSwo7d/yQoh2l0wbX/8fu//wHJqC2Exsp5IlDWK5qHskYzAhsFJSBWyd7MBxkZaNoHyCqA0e1akVUozA197m28FaHppkUvdeYYdQFnKzO9cYO+lu140EYwpyr1QnO3yTpYGWqYhGOM=
+	t=1747949020; cv=none; b=RTKOWNM453e4/4bT4mgx+fzBz4r0zGb67okcpyivxV3B3I895DCkrqDQELIDCFtfv4RpB1jdIu3PN20JZhlVlFxnUElOFNfmLHxdB3n1Bqv2WhGMOtsoWu5YUBrThWj+4gChpTyTlGrz8c200tOOpYsmieUPsjvlGp9FhTSZKLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747948105; c=relaxed/simple;
-	bh=dSi/1pkhbJ3GV7RkiiZY0nDlR/HvDT/4rNZxxMFXfM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h8r6bb/ziBnBkAm5za1USIqBfY4/c31mgE6eYy0jRWrreat+uK1EZgXIRp9eeRqILB6g2Ig8Kj52N3lTR6J+oQ2mv1Q0XdD8ezeaeyFe4uKvsYwcKz1qawj81ts8naudTVhmqd6Xyhb5DUHVISFkqoDhhHljmG25tKDg1JWadwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hnV+HYUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F62C4CEED;
-	Thu, 22 May 2025 21:08:24 +0000 (UTC)
+	s=arc-20240116; t=1747949020; c=relaxed/simple;
+	bh=Q911GI7e2I/hCrWAtN0VscaUqHPKdFrh62TunIJEvaA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Fq3cyvL6LK+lVvM592hupn+oYkhMnbsJP5pr3oswhA5MZVM8AuAujz9kh0p6a7YgCW0JUyP4k7U0f7+xtErDok/uaJcEWdeSFPXNL1YCPnSDfufOZlXQOWePjIOIowBCOczA4/Pv4nicj2YikDCmGKYAabLK3t15TEOJGlJawy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qvqmsq7h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD673C4CEEB;
+	Thu, 22 May 2025 21:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747948105;
-	bh=dSi/1pkhbJ3GV7RkiiZY0nDlR/HvDT/4rNZxxMFXfM0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hnV+HYUg3owAYVYhn373cJUwPIlZnu//ZPGcWMeqvz02SvvhAr6PPHnhBbpYPkfAP
-	 AxK+XJGfB/l9hBTd3IpUEz3hUrxdl+LRfqSOP3wJ5MpEms4lFgDjAebGa75j+zouUM
-	 2KD1kljInamf6NGFTnjeN551S8IfYlwnftJNYUFZK1gJEwS4TDJ/CPXihEUT7DOVd8
-	 SI6sHghIJ//NDPhOWm+DYeicbqIzVVFIy6odCFoAoLI/oBvadqPb0U5iMfLOXL82OF
-	 BB1tUHZcVZFgNrKfhe71dLNOqoHlzNnGlcOeqwIs90FGV82CaTv+LXxBU7Jt4AYp/a
-	 3Iy/KdDG5hU9Q==
-Date: Thu, 22 May 2025 14:08:24 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [GIT PULL] wireless-next-2025-05-22
-Message-ID: <20250522140824.3f62347b@kernel.org>
-In-Reply-To: <20250522165501.189958-50-johannes@sipsolutions.net>
-References: <20250522165501.189958-50-johannes@sipsolutions.net>
+	s=k20201202; t=1747949019;
+	bh=Q911GI7e2I/hCrWAtN0VscaUqHPKdFrh62TunIJEvaA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Qvqmsq7hB9xolyAKQiq8Kw6k0kMPEEK7LPuZ7Dn4k7tDpJS0ETzOoA1/UqckUfBVV
+	 ZrUaAcpFP6ylileseLBgGIVg7ZPOQjMu2vKNNf4X3rYD91DuZwLLDLEpIb/PQrnwPS
+	 XXQPB150B1ofXzd6orXtWpjbhI6E0y14fOSukxe/gwGtTRLYvxfzcdNjES05gaOGm0
+	 MDNYFN3y1ZTspKO4EFxt7KPC5DWVDF/yDb77BBDjW5aGiwGVVdK7mYNEnInkTAAPkj
+	 H4hLMFvizXjduZMkKapA/yI20K4yyv+yKH98Qe8HlMX7h00HiyziOrIpm3rRgg5DzG
+	 h3jiacp4f84BA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7117F3805D89;
+	Thu, 22 May 2025 21:24:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [GIT PULL] wireless-next-2025-05-22
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174794905526.3022126.3894753331387625970.git-patchwork-notify@kernel.org>
+Date: Thu, 22 May 2025 21:24:15 +0000
+References: <20250522165501.189958-50-johannes@sipsolutions.net>
+In-Reply-To: <20250522165501.189958-50-johannes@sipsolutions.net>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
-On Thu, 22 May 2025 18:54:35 +0200 Johannes Berg wrote:
-> Johannes Berg (121):
+Hello:
 
-Damn :)
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 22 May 2025 18:54:35 +0200 you wrote:
+> Hi,
+> 
+> Final, but also big, pull request for 6.16 (we hope :-) ).
+> Somehow I got thinking we'd still have into next week ...
+> 
+> Please pull and let us know if there's any problem.
+> 
+> [...]
+
+Here is the summary with links:
+  - [GIT,PULL] wireless-next-2025-05-22
+    https://git.kernel.org/netdev/net-next/c/ea15e046263b
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
