@@ -1,73 +1,93 @@
-Return-Path: <linux-wireless+bounces-23255-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23260-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1549CABFFF7
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 00:46:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 346BEAC01BE
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 03:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6270A4E5607
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 May 2025 22:46:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDC3616653F
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 01:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE9623BF91;
-	Wed, 21 May 2025 22:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1D92CCA5;
+	Thu, 22 May 2025 01:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="o3M+Sjyr"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CB3Weyw+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1E9239E85
-	for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 22:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBD414A82
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 01:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747867561; cv=none; b=YNQGoLeTsEUX0an1dYT8uFrTBxczoxLPoB0nXP+MEP3YMcemaxVf4zoi5GMSuKPLe4yeLz/R7AB090SrXrBTbY6MmwXLrUJGFBQUGwr05KQ5BnedSLyVE+PtNo01ZVjrjprsc5LC4z0vYHmQdBsqIfqP+bb+ATVkdkkKWV4Kg3A=
+	t=1747877710; cv=none; b=QLWvBxzCrIgDsNBqpzIu71J0Za7tWoYfcS2Oyi13en1qiH1TUhEO+f0GIHyhplkBjMK6jpncKqTiM2HK5mEyLWx6rfMI6VKihxJI7pp4jZDoisVPCPZguLJ/0xF2r8VQHz4t54q0LrJrimUXKt6w8aNFA7XiGp+DUJJ6/aGLCcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747867561; c=relaxed/simple;
-	bh=WkoD1wqfpiPds2ZNAwn7TY38LnC6cJOAuobqk3tWbSk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aAO1mDb/PrwqKRHoeS0PAxgJAvDLPWPPBkzRX0hwJbFzcXtKdtWHDE83rjGbjR1bnM7lhkAU4SwoT87sOuciveNqdywUe6+9XTB2oWM/j0Tza/ZRKKRZFeByh7ib8Aibzc4y0ACg7Oaz/QhmWmPObPjc4oKuVzaH/P8Tub0rBcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=o3M+Sjyr; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1747877710; c=relaxed/simple;
+	bh=cMCnnc7X/yklxiDU9hwwsSkevTU+xRlusst0496/U3c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i1dqmV/OqomCeYMj0X0vAxDxZ5GjWay9afdFcutkidT/uHCxSGc28Eyr0iicHbb6S5N+Qd0GDlE+2Jj0nolaX2nJT3E3WI4X4ApxApYVBWhH5WWfkJAJbpp3I1HIckXtrIRVnoO3OLYbW+5BdEZKq8KOodRFOHlpOr0FyePROmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CB3Weyw+; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54LJHZNq001758;
-	Wed, 21 May 2025 22:45:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	wh8AVrVaz3Wne8xUCnRodQGPYbrNE8Rm9/NepU3KoQA=; b=o3M+SjyriKBrU+dH
-	+Uwb/f5RzskxDlOAgOvwNH7O5p766ueJYE/nAazyAuVI1fbDT1gkgvOM4VOLQAPP
-	zg9tDUD5Mz80GzBzSnheYbeedz7RgpaN14Qr6Gz/+1yrP4wWTh2quGduIAXBFDZR
-	QpWsQh2DxVOvXqoLRm64iurJNhvpq+YIAwpAxEA9Fp46SrXsFefc82nza6qgdk5P
-	pUjalFWnwLLxaSHJj2EoJhFDAf99q9N5KNKW/UCNY8A2CwQXqL9KmggTLRK1OC+S
-	ueHigeV9ydoGGD1W6zmEdydGv5JSaQRhjAxtJokUtrlUwn8mbpJyokm+Ie4GZV5v
-	tie1qQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf6vbsg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 May 2025 22:45:56 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54LMjtcB022245
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 May 2025 22:45:55 GMT
-Received: from ath12k-linux2.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 21 May 2025 15:45:54 -0700
-From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Pradeep Kumar Chitrapu
-	<quic_pradeepc@quicinc.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: [PATCH ath-next V14 9/9] wifi: ath12k: add extended NSS bandwidth support for 160 MHz
-Date: Wed, 21 May 2025 15:45:39 -0700
-Message-ID: <20250521224539.355985-10-quic_pradeepc@quicinc.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250521224539.355985-1-quic_pradeepc@quicinc.com>
-References: <20250521224539.355985-1-quic_pradeepc@quicinc.com>
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54LIZCUj000836
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 01:35:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=HPUGdKm+6wjWn2dW0R+KWWtLOsj1VrZbuMm
+	juk7/Syc=; b=CB3Weyw+sfP0cfKIOVfUqmpzc/ZTtNMuemRT6UZvoDlbzr32mPa
+	4hGOXCLAXS/fs721n19jgwFt3fjQW356eddsJrv/y4C6OPL0WX7gWUV0XwDcZ/6k
+	jkmn/OlecZ/37kf8RioM+8m2q6rNX6iA6wrGc4ZkTDZ3gF6vktcPdFg46gkgZQke
+	6qm7eX74b/04Mf2aUlY95msGMdlu/14pcVQPfsQ2+Q11okR48x4bAFu9bx6kHiug
+	jJp+vZoCePMCcAvcdkVJ/05hSF8FP22YEGTsTJXM8ygOi703owddk8FiVbzi6ftq
+	UDi8jB/+QOZb3nDSl0O42e6APTkholRsi0g==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf6vm83-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 01:35:06 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-30e6980471cso5968116a91.1
+        for <linux-wireless@vger.kernel.org>; Wed, 21 May 2025 18:35:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747877705; x=1748482505;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HPUGdKm+6wjWn2dW0R+KWWtLOsj1VrZbuMmjuk7/Syc=;
+        b=xR5pZwJ3b1XvP9YYekVwZiaTCSK30S/qRGfnKF0BXHBPOBLchob9NyktlPvOF0kAdJ
+         rb7at9qoJpYDsQXD8eqTxn1U2lQRBOVTaPDGkKdXaouduyxoXkBO8LFwaOqMSb1+rj8Z
+         mc3Q3BhVkBVMlB/Y0PczrufVYCpGgGyp52+KIkO2zogNSGmJQLeXAq1SpZXAXdoJwQcN
+         TZwq+/pTKYaHlK0JrzjtevbLRoSKRQkGPYfrHIxm2O0LGPKbVa/YaxFtJLYd0W5RPNzE
+         N3GgcD/CaiLbJx+rTZOsxwNH+FMOLrci5UGPbnFWBHw2fhTWL0G7hT8qsVTFQI8VEHb5
+         fw9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVevoLsgiyPRMPwIVsSzL1jBnphn42pCb3OkdtQjcgHJXT0WtJGXPJah0Jxf+GHwJ2iPIDDl99VMVIeiuVjzw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2F1wxaojLuKlB0wL6mhvXhJEdGN9PD97vsbTghop2cyBG4AVi
+	GKbDedBkilB0VfZ1wffxec12O3tpZtBeRnu4y/EX8tdhXS4auHb4Rzh+nzU8fRzVU8qlQpnaZ/Z
+	kx5tdeywK1y/O4qFvXhDrB2OwMtTiVql2Hy4PEzLln40R+vMTY1Hf/lh/VuFNINGLSZwv0w==
+X-Gm-Gg: ASbGnctjmMMw8QN2y8JfV1Ql8aQYV8Jd6lV73T+0IgxIInLXRuXqjfFTt8fV8QMrg3j
+	lNzBlAQTixI4PQ9JkMLYKJoVWlgwF0r7XCdMnBosOBiemX4VhezhMss1JfNL9mamt/5N0ww7gf+
+	kSLyyycjwY/l02GNBPVAWjIX9SXO2mz7xxMl24QD5MCPDgmzuHJs6fyn5Tol3d4TmhF4j4VJHF9
+	KCHX9sSt14sGNAawans60CxMt+jslArRgYMcHMj0N+J1uAUkdHWFuZ4gJua/bI1VyZJZox88W4Z
+	kLwSFYKNeJ1dygaIRB94sTFutcymZad2DYuIdkJXFZeflyrwJewJsjsgbcfxtNIyzH79L+Y=
+X-Received: by 2002:a17:90b:5750:b0:30e:3737:7c71 with SMTP id 98e67ed59e1d1-30e7d57e4e6mr33408568a91.20.1747877705472;
+        Wed, 21 May 2025 18:35:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF3oA7UpKoPxzuimQInRPDM0fZl6JIUILi/4VKjHEG11sIfyclQQp1d2zav0ocl3qvvA5YdVg==
+X-Received: by 2002:a17:90b:5750:b0:30e:3737:7c71 with SMTP id 98e67ed59e1d1-30e7d57e4e6mr33408543a91.20.1747877705134;
+        Wed, 21 May 2025 18:35:05 -0700 (PDT)
+Received: from Z2-SFF-G9-MQ.ap.qualcomm.com (i-global052.qualcomm.com. [199.106.103.52])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30f365d45b2sm4341488a91.26.2025.05.21.18.34.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 May 2025 18:35:04 -0700 (PDT)
+From: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+To: jjohnson@kernel.org, johannes@sipsolutions.net, robh@kernel.org,
+        krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+Subject: [PATCH ath-next 0/2] wifi: ath11k: support usercase-specific firmware overrides
+Date: Thu, 22 May 2025 09:34:42 +0800
+Message-Id: <20250522013444.1301330-1-miaoqing.pan@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,127 +95,46 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 3XlPaBNySyE2wx5TC6p1DVWVXzadsV9U
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIxMDIyNiBTYWx0ZWRfX4g8vKznbpwuH
- ZKoHe/eZESaXJ/nU0MF27s2mZH9kbhxkG1nYDBAxgIAR6HSB4Ir8V8BP9wvETNPaaV4xpgjbT6m
- sDGIplm3HpwbpmQYiBtQIsOrs/s1B2t7uVdhqW02FHlFu/UIBLwZc7J8sLJcsYdxHYcx7MQ3nEe
- tDoPrPTEwHw7n1CnzcfVsEUAuxuJ5iFaxBATgZF+LuAhijNvhyaoEWRUO2KUcBJaFHq/QbCYfpY
- JBXWUNl+mlZxfQe4pogCpRmvEOONRvpKgZLFdEAxf2Fx0Z7OhaIV84gi99TYTjfe1aihjorJ/cp
- cv78Jzcd3Pe3GwTFD0ZOqI30oSiaUyJS3E9XIjfDGLAVMK6FeM+KOYgnqo95ImgBH8HRshrA4LJ
- qTKv2kKP1y4zPtpf7lmI2mcl7emiLGQx+t0d7Z8upCbYseoNAGHUkFJ45HF940Za9ZkEYTRq
-X-Authority-Analysis: v=2.4 cv=fZOty1QF c=1 sm=1 tr=0 ts=682e57a4 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=Opr4SxZhII4Vei-TI5AA:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: 3XlPaBNySyE2wx5TC6p1DVWVXzadsV9U
+X-Proofpoint-GUID: L155pyCsoYtD9rhVtjoexrIVqlAspfi5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDAxMyBTYWx0ZWRfX5NYYnQ+E0ORu
+ URV5YYmny8AwJGiWhhuwgSUQxu6c0XTVKnsLwiUPm1rmnn4SsOiGaY4CMeX70+103Voq9lt4th7
+ xOTBeDxaUzMLXd8elaqbMz/ZM/+j/lsEjmB8LED7RgTaiQJfy2Oqte3+1R53NyrYOjzgNVAbnHp
+ 2W1KFMaiZ2wKmHCIyBI4KDD0RkZ4LLJQxtH7KjetNbDYGLNnX0UQJedlJSOk6DiIR49bYbyPA9k
+ 9JLWLs9pEOE/7Mm4CSjhDa+JJAIkM1sh6vDYrS47Y4cWQaD9DTL0wAzTxmTS9MXS2nMnAISk5ui
+ +5zixjbS9LiYLLXeV80hk+6KvTLYAXcSpD4FTevfzbJMFTodV+9nSmE97yyFlCGHrCMKzaLcJLu
+ lJoiY+Ps/qHsyKBoQSFOP2n8G2WMSWcycEZBuoEEQ73MN30l5CDChLYB3Cu8SgGvOIqG3YUZ
+X-Authority-Analysis: v=2.4 cv=fZOty1QF c=1 sm=1 tr=0 ts=682e7f4a cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=b9+bayejhc3NMeqCNyeLQQ==:17
+ a=dt9VzEwgFbYA:10 a=EUspDBNiAAAA:8 a=5mkN5bLxXfCjVL2fFVgA:9
+ a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-ORIG-GUID: L155pyCsoYtD9rhVtjoexrIVqlAspfi5
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-21_07,2025-05-20_03,2025-03-28_01
+ definitions=2025-05-22_01,2025-05-20_03,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0 adultscore=0 spamscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 priorityscore=1501 impostorscore=0 mlxlogscore=999
+ clxscore=1011 mlxscore=0 adultscore=0 spamscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 priorityscore=1501 impostorscore=0 mlxlogscore=991
  lowpriorityscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a
  authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505160000 definitions=main-2505210226
+ engine=8.19.0-2505160000 definitions=main-2505220013
 
-Currently rx and tx MCS map for 160 MHz under HE capabilities
-are not updating properly, when 160 MHz is configured with NSS
-lesser than max NSS support. Fix this by utilizing
-nss_ratio_enabled and nss_ratio_info fields sent by firmware
-in service ready event.
+Introduce 'firmware-name' property to allow end-users and/or integrators to
+decide which usecase-specific firmware to run on the WCN6855.
 
-However, if firmware advertises EXT NSS BW support in VHT caps
-as 1(1x2) and when nss_ratio_info indicates 1:1, reset the EXT
-NSS BW Support in VHT caps to 0 which indicates 1x1. This is
-to avoid incorrectly choosing 1:2 NSS ratio when using the
-default VHT caps advertised by firmware.
+Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Miaoqing Pan (2):
+  dt-bindings: net: wireless: ath11k-pci: describe firmware-name
+    property
+  wifi: ath11k: support usercase-specific firmware overrides
 
-Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 33 ++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 6 deletions(-)
+ .../bindings/net/wireless/qcom,ath11k-pci.yaml      |  6 ++++++
+ drivers/net/wireless/ath/ath11k/core.h              | 13 +++++++++++--
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 036ba5b3d682..26472ed265ec 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -2644,8 +2644,10 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 	arg->peer_nss = min(link_sta->rx_nss, max_nss);
- 
- 	if (arg->peer_phymode == MODE_11AX_HE160) {
--		tx_nss = ath12k_get_nss_160mhz(ar, max_nss);
-+		tx_nss = ath12k_get_nss_160mhz(ar, ar->num_tx_chains);
- 		rx_nss = min(arg->peer_nss, tx_nss);
-+
-+		arg->peer_nss = min(link_sta->rx_nss, ar->num_rx_chains);
- 		arg->peer_bw_rxnss_override = ATH12K_BW_NSS_MAP_ENABLE;
- 
- 		if (!rx_nss) {
-@@ -7118,6 +7120,12 @@ ath12k_create_vht_cap(struct ath12k *ar, u32 rate_cap_tx_chainmask,
- 	vht_cap.vht_mcs.rx_mcs_map = cpu_to_le16(rxmcs_map);
- 	vht_cap.vht_mcs.tx_mcs_map = cpu_to_le16(txmcs_map);
- 
-+	/* Check if the HW supports 1:1 NSS ratio and reset
-+	 * EXT NSS BW Support field to 0 to indicate 1:1 ratio
-+	 */
-+	if (ar->pdev->cap.nss_ratio_info == WMI_NSS_RATIO_1_NSS)
-+		vht_cap.cap &= ~IEEE80211_VHT_CAP_EXT_NSS_BW_MASK;
-+
- 	return vht_cap;
- }
- 
-@@ -7300,11 +7308,12 @@ static void ath12k_mac_set_hemcsmap(struct ath12k *ar,
- 				    struct ieee80211_sta_he_cap *he_cap)
- {
- 	struct ieee80211_he_mcs_nss_supp *mcs_nss = &he_cap->he_mcs_nss_supp;
--	u16 txmcs_map, rxmcs_map;
-+	u8 maxtxnss_160 = ath12k_get_nss_160mhz(ar, ar->num_tx_chains);
-+	u8 maxrxnss_160 = ath12k_get_nss_160mhz(ar, ar->num_rx_chains);
-+	u16 txmcs_map_160 = 0, rxmcs_map_160 = 0;
-+	u16 txmcs_map = 0, rxmcs_map = 0;
- 	u32 i;
- 
--	rxmcs_map = 0;
--	txmcs_map = 0;
- 	for (i = 0; i < 8; i++) {
- 		if (i < ar->num_tx_chains &&
- 		    (ar->cfg_tx_chainmask >> cap->tx_chain_mask_shift) & BIT(i))
-@@ -7317,12 +7326,24 @@ static void ath12k_mac_set_hemcsmap(struct ath12k *ar,
- 			rxmcs_map |= IEEE80211_HE_MCS_SUPPORT_0_11 << (i * 2);
- 		else
- 			rxmcs_map |= IEEE80211_HE_MCS_NOT_SUPPORTED << (i * 2);
-+
-+		if (i < maxtxnss_160 &&
-+		    (ar->cfg_tx_chainmask >> cap->tx_chain_mask_shift) & BIT(i))
-+			txmcs_map_160 |= IEEE80211_HE_MCS_SUPPORT_0_11 << (i * 2);
-+		else
-+			txmcs_map_160 |= IEEE80211_HE_MCS_NOT_SUPPORTED << (i * 2);
-+
-+		if (i < maxrxnss_160 &&
-+		    (ar->cfg_tx_chainmask >> cap->tx_chain_mask_shift) & BIT(i))
-+			rxmcs_map_160 |= IEEE80211_HE_MCS_SUPPORT_0_11 << (i * 2);
-+		else
-+			rxmcs_map_160 |= IEEE80211_HE_MCS_NOT_SUPPORTED << (i * 2);
- 	}
- 
- 	mcs_nss->rx_mcs_80 = cpu_to_le16(rxmcs_map & 0xffff);
- 	mcs_nss->tx_mcs_80 = cpu_to_le16(txmcs_map & 0xffff);
--	mcs_nss->rx_mcs_160 = cpu_to_le16(rxmcs_map & 0xffff);
--	mcs_nss->tx_mcs_160 = cpu_to_le16(txmcs_map & 0xffff);
-+	mcs_nss->rx_mcs_160 = cpu_to_le16(rxmcs_map_160 & 0xffff);
-+	mcs_nss->tx_mcs_160 = cpu_to_le16(txmcs_map_160 & 0xffff);
- }
- 
- static void ath12k_mac_copy_he_cap(struct ath12k *ar,
+
+base-commit: db5a2f8ef8d4be926d29ed62182d003110c1a6ca
 -- 
-2.43.0
+2.34.1
 
 
