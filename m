@@ -1,145 +1,145 @@
-Return-Path: <linux-wireless+bounces-23273-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23274-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91227AC0463
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 08:09:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF36AC0733
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 10:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45CB94A7A34
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 06:09:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5C6F9E627C
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 08:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F53221299;
-	Thu, 22 May 2025 06:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D10F223714;
+	Thu, 22 May 2025 08:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0F2qUBd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D/J1XnUb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD8B221291;
-	Thu, 22 May 2025 06:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567D51B0412
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 08:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747894176; cv=none; b=DqXj8yFErhDBzGL81uTl627tVicacHb+oM5DffjcFLfcZ6crnInZZX0grciGt52qdXSdLtzMcbdBbJn9y7pHUPyBYS4xLsX2T9wY8+87wR3kKSoTGzCrisMTBXoApD5Nn/+klyynzoXDHU+Fxtbk0LUh8YMv0YcjjUVTMUaQRE8=
+	t=1747902896; cv=none; b=dLQrAnvbEtLtgCPOFGmypUsXSpREv6z0/sglZCQ/y7o8c1rZK9UQJmuw6rzfkEjj8q/GMF+fWf/iyQ0wKJQjkucXUZQKFsum8N0kExh8yaGnr+PHsER5kNfx6K6nXGxSnBGTibyf62fEdPJqWPhboyckzxh740AZUOXlIRGbC4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747894176; c=relaxed/simple;
-	bh=+tzwSkX1NHHPWQdz3cMIEKKutHSwiCsbVJI0XD2yf9I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UatNQwZAJiI4JCL6HnOAXSHF64ljfyEHCL/jszC+d9T5b1AvWaTNcV17eKy7b5PoztFkvdBEkqdQjcAj1Ubj1NmW/Y2fAYjocl4X22yin1/udjja3B3OpJ6dwY5QdHdIqFj2Nt7kebq87n3ui9anKIZLONwg7dgZAqImDrGsYqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0F2qUBd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460DEC4CEE4;
-	Thu, 22 May 2025 06:09:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747894175;
-	bh=+tzwSkX1NHHPWQdz3cMIEKKutHSwiCsbVJI0XD2yf9I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Y0F2qUBdIT+T9VxIo5p84zjGaBdIWAQqzItB969kZMd5JJrYT/qN4nGFFv6uOuN0o
-	 vIKcHI9CPjciwj+vB5HQqgjX4IEPmfBZiiky/Y482qA1Og42J3JxCPc4BKwcJz5CYA
-	 /P+RPE0YOj4teV3Cr3gr4hYRDZ8m4WacFcr1h1cCMWTFH2jHGUZiWkCPCoTmh1ERBV
-	 xLkepfUL24NNqdewpPpvfcnqUrN5O4pwYIVNSXmWCJLn0hD0N2boQ0sZclwNQ39YRM
-	 MbnhSOISRHLKLgzHu9a2XJeRG5p3RELpLvYBSOMdIXcw5rewmPxKxmzuY1Xz7sYOkv
-	 QcrXGuQDiZazw==
-Message-ID: <7a8b8290-5ee4-447e-83e8-7be2e812a628@kernel.org>
-Date: Thu, 22 May 2025 08:09:31 +0200
+	s=arc-20240116; t=1747902896; c=relaxed/simple;
+	bh=UAR/DjT7nqs4XRth/rm2CG08CFNDXmdmHDGn+ONEAMM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=OuIGi0g/WP7rmQ7+277/xeyPFm7KUGHruPYsoqzEEHQvJHEzt0hgkNSyWkMs4VatIFvIVSIjTduA4RiH83yvYniy/wam5Lh2FoacofBJI8HPLOC2L3fYOLdE+GvJIYveQ1VEEmbG3G7QjZWgSvcY6inXxC9hSRX88xgJEyd35ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D/J1XnUb; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43d0618746bso62740855e9.2
+        for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 01:34:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747902892; x=1748507692; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b1fTB/swNzWWmYp5oJCHFgWQwcocMbpiQpoHyf5EFUE=;
+        b=D/J1XnUb4U+70hjzQUj9a5t4z7VtdZ87lLmz79FpHhX4akxIad5FiHOkUbenh1hztq
+         eqHEG2ihOyIsTfahArmPkZWuAIx9fpsHcph91gMCDy98XgirgoxPwpwWaHh/cKVl4r/o
+         ZbwNHPgDZIXlJtzqiXVkIiZUH5BKTtkJn+UtzP/fAGE4R+uEdBPWDazPKh22/CMm+UM4
+         /9hh6N+AiRnV7KGFFyr2/hs685t+rFQE4ALVSkFH51faAMUF665yXGJunuQPMD0jCG6K
+         g5KRhL33vo46nEcR7Eh4X0oc9u8UMow0pDAtlLD89dgQumrLVgs8t1MSoJynNA9SACTh
+         BrvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747902892; x=1748507692;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=b1fTB/swNzWWmYp5oJCHFgWQwcocMbpiQpoHyf5EFUE=;
+        b=nBIEYTrwyEddqqOMNcKrVTlnzNWudAu/+ed4pyuFJpOJKG0ZV+z/9180109F2jKI2C
+         /67YsVoqKirqFpqKmJicGHKvSkgvCoKih4WRKYFOb1Yuhqd3b1LgGQ1S3rgOLn0lWUdK
+         /ogYBiIj1BVJdb2EYJX23RwJUXFrc1lJFSIZH8Omk/6eudvuRLte9TOend51iR7RzTob
+         5w9jVIv9VTH9ggK/TF91ENFYt7CP0KFxll+cTsYCEtEI6/qQhhLiyEQ//XUD1tC+q8sk
+         5WS9sFzK0oeBRuHuaknrIdOfT+8OvN/NNR4kDOYQ60TSvoNTXXEnh1ozfNosxrrd+05N
+         tYfA==
+X-Gm-Message-State: AOJu0Yz8YlAafezo73CWKyd9s/Ob6diKo2trg/bGwm5GK/e2a76QJH3M
+	OYJAxP0+fP/hPfUqLFAK8HReiIqNXd/Bn5JxA7y08KhFAtlrFPqnFAO5POa5Tg==
+X-Gm-Gg: ASbGncs9IpQP1UR4aDn5DzeOlDin0bAmTogg31oJeF2CpM+Uq7WvXUyIQMNZqID+J/l
+	SOgqA/5yKgCDtixNnBNXD53EjNQVlbELWtSNM/rcC/zrVUB37P/MSibbq5nXYVTcn/VoFxh1/Ud
+	fCc5VN65FNmiuSVs62LI+c81e/wUg6icHa9mvKxPnj5iX22EKYY95uZ3J8QtoD9oHbGSR5/f262
+	j/NqncNiHSW7nj+b0J9PHzJcmjYhqiG+q9BfV6axJawTJD/CvEyPCJJ/9HFvat2Uep7StckuUoW
+	wUCO38+tGssjqq13po66LPfY3s5ozae+E4O5i7aKJwC5DmpYq0cJvkbQVhHS1DXViiJmnQ==
+X-Google-Smtp-Source: AGHT+IExEwr2NroN2VTAq+V2IZUILYxrbMXqDlsfBtFCfMOb+ACjpmRjVcpe7vA5cSdNaULw15JVXQ==
+X-Received: by 2002:a05:6000:250d:b0:3a3:76cd:3e83 with SMTP id ffacd0b85a97d-3a376cd3fd3mr11183064f8f.23.1747902892399;
+        Thu, 22 May 2025 01:34:52 -0700 (PDT)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f78aea59sm99321675e9.25.2025.05.22.01.34.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 May 2025 01:34:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] wifi: ath9k: ahb: replace id_table with of
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linux-wireless@vger.kernel.org, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, "open list:MIPS" <linux-mips@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20250521021557.666611-1-rosenp@gmail.com>
- <20250521021557.666611-4-rosenp@gmail.com>
- <5de13266-d6d4-4497-8913-e442080702ed@kernel.org>
- <CAKxU2N9LJcX2AbCipk9nzHQhx=AKT2gUV8-Bk91BLzrUwfkGYw@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <CAKxU2N9LJcX2AbCipk9nzHQhx=AKT2gUV8-Bk91BLzrUwfkGYw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Thu, 22 May 2025 10:34:51 +0200
+Message-Id: <DA2JV34RZGAQ.24P9Y3C865UHN@gmail.com>
+Cc: <linux-wireless@vger.kernel.org>, "P Praneesh"
+ <quic_ppranees@quicinc.com>, "Jeff Johnson" <quic_jjohnson@quicinc.com>
+Subject: Re: [PATCH V13 8/9] wifi: ath12k: add support for 160 MHz bandwidth
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Pradeep Kumar Chitrapu" <quic_pradeepc@quicinc.com>,
+ <ath12k@lists.infradead.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250418174818.3336510-1-quic_pradeepc@quicinc.com>
+ <20250418174818.3336510-9-quic_pradeepc@quicinc.com>
+ <DA08F3TG062A.151WKWWF5OPL0@gmail.com>
+ <c21146ef-3cf6-4d8e-a32d-8479e4d96f3b@quicinc.com>
+In-Reply-To: <c21146ef-3cf6-4d8e-a32d-8479e4d96f3b@quicinc.com>
 
-On 21/05/2025 22:43, Rosen Penev wrote:
->>> -     if (!dev_get_platdata(&pdev->dev)) {
->>> -             dev_err(&pdev->dev, "no platform data specified\n");
->>> -             return -EINVAL;
->>> -     }
->>> -
->>>       mem = devm_platform_ioremap_resource(pdev, 0);
->>>       if (IS_ERR(mem)) {
->>>               dev_err(&pdev->dev, "ioremap failed\n");
->>> @@ -118,7 +97,9 @@ static int ath_ahb_probe(struct platform_device *pdev)
->>>               goto err_free_hw;
->>>       }
->>>
->>> -     ret = ath9k_init_device(id->driver_data, sc, &ath_ahb_bus_ops);
->>> +     match = of_match_device(ath9k_of_match_table, &pdev->dev);
->>
->> There is a wrapper for getting data, use it.
-> I assume you mean of_device_get_match_data. Will do.
->>
->>> +     dev_id = (uintptr_t)match->data;
->>
->> And dev_id is enum? Then you want kernel_ulong_t.
-> The entries specified in data are macros in the form of 0xYYYY. This
-> is why I used u16. The ath9k_init_device takes an int here.
+On Wed May 21, 2025 at 11:38 PM CEST, Pradeep Kumar Chitrapu wrote:
+[...]
+> Thanks Nicolas,
+>
+> I believe IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ mean only=20
+> 80PLUS80 not both 160 and 80PLUS80 and STA must set=20
+> IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ flags for indicating 160 MHz=20
+> support. Please correct me if my understanding is correct. However I=20
+> agree that we must allow STA to connect irrespective of which flag STA=20
+> sets as long as bandwidth is 160MHz. I see ath10k and ath11k also allows=
+=20
+> this by setting default phymode of MODE_11AC_VHT160 for BW=20
+> =3D=3DIEEE80211_STA_RX_BW_160 case.
+> I will make this change in next revision.
+> Thanks
+> Pradeep
 
-You did not use u16, but uintptr_t. My comment was about the cast.
+Hello Pradeep,
 
+Well this is quite unclear for me maybe Johannes or someone more aware of t=
+he
+evolutions of the standard could shime in.
 
-Best regards,
-Krzysztof
+From what I've gathered:
+  - the naming IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ implies bo=
+th
+    which points it was the case when added
+  - and the original 802.11ac-2013 Table 8-183v states:
+	Set to 0 if the STA does not support either 160 or 80+80 MHz.
+	Set to 1 if the STA supports 160 MHz.
+	Set to 2 if the STA supports 160 MHz and 80+80 MHz.
+	The value 3 is reserved.
+
+Things get complicated after:
+ - later versions like 802.11-2020 have deprecated value 2 in favor of the =
+new
+   Extendeed NSS BW feature
+ - Table 9-272 still implies both 160 & 80+80
+ - Table 11-23 & Table 11-24 implies only 80+80 but both talk about the
+   'VHT Operation' Channel Width field and not the 'VHT Capabilities' Suppo=
+rted
+   Channel Width. And thoses had different values even in the first AC amen=
+dment
+
+So it feels like when no Extended NSS BW Support is used (first gen AC devi=
+ces),
+IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ really means both 160 & 8=
+0+80
 
