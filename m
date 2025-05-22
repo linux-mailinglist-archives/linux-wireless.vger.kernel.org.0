@@ -1,153 +1,202 @@
-Return-Path: <linux-wireless+bounces-23310-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23311-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC844AC0C61
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 15:12:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 120CEAC0C88
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 15:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D3F4189B3A5
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 13:12:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 161279E39BC
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 13:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AAE28C2A2;
-	Thu, 22 May 2025 13:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4130B286D65;
+	Thu, 22 May 2025 13:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ycq9YWdx"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Axp2lyKP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E918828C038
-	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 13:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBE52F85B
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 13:17:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747919528; cv=none; b=gm26T1VijrMV3pLW0thcHb+xsqNFO0QCZyHAXwpxJm57puK4ZFbXmxnNmD8Jmm4C/v9y9h2eJe+xIarFbEv1PfRy0WcXmZEIodLwieRAxMIB/r9V3XLT8VEi/Tf+SmW2Yn/AUdw6uS8m2bkYg/I2+sVEY2EhfOKTk8/abgXdj+I=
+	t=1747919831; cv=none; b=oL6HcbV+dAo4EmNpDolu1Ir/b3TRyOoi77lF8V7hRpmnCLl5RkLNusFq6kJmPSHYZ+FQ84lKGnW8HQqhuZU9GaWcX9oxAg7qxUvSVIWFuIwlV6qB9wKa2f/DJLcQtAD4aPFOnICV2TtYwYiK5PDqYU6oz/bu5l0CLh3vo/PSRpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747919528; c=relaxed/simple;
-	bh=VwD68oPdZR7QMQCqJ6VWvr3muJ2LNlzFhJmXibbXOuE=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=hyxbQd4gPRSreUrv8q/yTUc4NxO3h6xiNOHhoRS2qjcT01IikGVmnWfn/dcc6i9+T1oG1BTi3pnY0IINzPsX6B78O3SaJgWJYjpPk/zaVuPucca2auHDl83Q7ClINj/ClVgf31sp53+o1aJIuDdq2qR7+UWsfkFY2mRQdBjXQ/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ycq9YWdx; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7c546334bdeso704803585a.2
-        for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 06:12:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747919525; x=1748524325; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vVd3U96Y4i9Vlcsd5gesH7KRFcK58OXYVflQsNrla/c=;
-        b=Ycq9YWdxpOKxxk0SxqS4VwJ7S6KlAP01OgpLJKe2MSknqqRLl8j6eNmyh6d9dBP1sK
-         9xhsE6B5E9/bsIxiyaU8f91iv6DwjhpgF5L+CklhfTvgbEwHvu6kG1q5yjj/N9l7gL4Y
-         x5Xi6WurPLgyAapCCweRVVkjMw/QxRg1pUGRW5QbMLenuhoGIHJSxysqFCSMu5xmA22v
-         njlELzZkbGLLmRlmrvcGsjK3OOztjIbJMOETI9WxYk3/04IO4+5uSN0Vxu53YI5tDhR6
-         cYX3tgim18mfC2AUoAPNkOssuFW79LALhEufAOnYhECet/wCBCZstHrnzRQUnd8bsU4u
-         2wRw==
+	s=arc-20240116; t=1747919831; c=relaxed/simple;
+	bh=RSwQl3JZI0zqWFzhajklchAACege2EEFN70e8Yj/Z1A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kV9+uxAj0E6YADz9dzanFaqfeG+4mmQyu72/HjEssdJVduFtVWZ4JbidViz3HnrMgkqxRjh2Vzbm7KpN/UP5Esz7M3S1oLT13uEU+CZQEkp/s3SEQb/MtHRrMcVgnrSk+0iqxD60NGOjZmsk3Ld+rZgyDxXmBk7onGMGXMhsVJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Axp2lyKP; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54M7hBir031739
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 13:17:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=Xv+dLfIlgEKxHBEJuwgEq4mtTaTF543E1/R
+	XKGoWHO0=; b=Axp2lyKPZ5EvyB8wQzk3I8YCAa+nZul6ZeV3xCrRg8bR2OB2vJ4
+	NbferIpAlpYLBKIhRC3XqumnWf4fZC5XrhvI00G2Zy00scnuLFNWJOYNO6QDYE/U
+	bp5FwtufukFXS50eaIPn71HC0yhT5v1+GkIAR4SC7k4InqtYVLBtZXU+HIokINuv
+	1CmyJUJlf1xVK2rWU9NS/cqneZcrw5iswuTLgLjXrhrm6JvziiQPXvXrsb76V0HO
+	lO66hEwZjQ/iCEe/J+ytDcWJv1x2GjPuOKrcuoWjwIOn74L7a1GPSBaGNSiChQE+
+	yg0lALTLM27ukK5mGTJJlAf9RE6cFVcsxTw==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46s8c251ev-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 13:17:08 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7c543ab40d3so1187268085a.2
+        for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 06:17:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747919525; x=1748524325;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vVd3U96Y4i9Vlcsd5gesH7KRFcK58OXYVflQsNrla/c=;
-        b=h0mH3QTnZTkP12kSmNKQeSpP/ELfrL8JXEwxr4gV9IaWsORLnTPMiwwBTMnzv9rKc0
-         bOxuckmQMG2YVkYdKbV1WHmmcMIslaRZ1Q9wgKE06TW5NuDIfn7QprgF0IfQIAEBxlFg
-         pZefZ8nuTliAmj2q0xRKolM3Qtp78HnAFDu/ie4uFU5wpTo2mqgKlptCVDdk/XAVD/xA
-         djzHDsFvzC/UzEsBKFVH59y4ys+WmvMC8cOfFORPFfo17fXlRJOdFsd25lpskPlU7vqC
-         YuaG/cCIQ6u/cN8Op+sCCeiIHiFR4gllUqJbK8DlUsn06QnQ2z+qUqasj8m/XlxVkM0t
-         4DRg==
-X-Forwarded-Encrypted: i=1; AJvYcCWm4RSMt8JgJ20iRB5JD60MPKL1WxS+ueC6dJNn1kbjoEIEP4LPajRpwVb86ysNYxmf8Kh4AvbGkCOMyiP3jQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy20+qj9oHgECSkwJwz/2l2Mfr07jtYQru2cNKTO+MYKXBzOJtJ
-	bzlG8nyW7myuKzblptFtEljsbWv8ltvlELVr01ItQ21aOazVARBfhlbWg5Y098HiGISSoLsDHqi
-	CGzbckofWXkgJHTETD0oBEDvX8DBV2ccYXquV3bOGTg==
-X-Gm-Gg: ASbGncv7ZcBYHz4YLk4+jrCH7G4+7y0Bw+/bGzmGQtQFQXt88zofkR6OHoGQas1Ya9u
-	WDamF4g5xpw4h6hGQJ+27yA+sr9KDATiFdvVuWTt48SUQaSEHCDJGfHycUzyEulpZfrMofewCnU
-	Du+D7/xKbmSDEFV0sf3cQVb8O5WbZVzHUQuLb12iYzo8HzT+tfom+mabu0nDHVWgrQFw==
-X-Google-Smtp-Source: AGHT+IFer49uV/0MlFOwzViAxidhmUTCovTOCELPmnDhegazhsSbbMo1dxe+RgiFPEHTV1iqxE1ZvAzIrmUV7Y4BUPA=
-X-Received: by 2002:a05:620a:4405:b0:7ca:f3d0:e7c8 with SMTP id
- af79cd13be357-7cd47fed6f9mr3472211685a.52.1747919524812; Thu, 22 May 2025
- 06:12:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1747919827; x=1748524627;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xv+dLfIlgEKxHBEJuwgEq4mtTaTF543E1/RXKGoWHO0=;
+        b=VOk5rwPgGqhxPt108kKWjGQK6XPBaPjIl+pl0/EEr39etAqEwMKiDbWvck/TTy4X7N
+         NNsgjqXiFrQeNPZ88Wn/zJrvBTYFpkWDqqPrDxjqOGNP3URXLnyZ2nkymH/zRkob0RNQ
+         WKp3CzHK25olpEj77+xDS7/asIIxmhDhSzAA0awrkwjQesOR1pmZjKFswNnSl9VuNQkE
+         3wYbnSFiyzQZvocdSc39bwMOucrFsldHSlgE/k76NoXwOW8gQBol7LUktgow5vk4a0de
+         fzapIUISVaMl4E9/lAtC3m2cvoql3f03GoCnEroigz4Kt2qDUQ6RfF8rgKBUmNHZrnTu
+         KPtg==
+X-Gm-Message-State: AOJu0Yyss8gkxGn5hfPLFADgAmwd83QmjImyqCAXVfgM1LdO8STc608M
+	J+bQpzNiKMM3PNT9ylCXjjdEiJJ20Fx2Kcb8lnKlAoLahrWSOZ+qtM+36Jw5kAHVNuGBmanfxmU
+	AkVm0146sXHuWZ7Q42UlUJlqHNWJ/U/m+crgDclbTgHBu0hmYmxgtizmGFNnt7d6T4RvYdQ==
+X-Gm-Gg: ASbGnctGsN79dpYMXGQ1S7JO0NsoutG99G2FbTCnSQ5/KUQYStFiWWMJNaKEhAEMtx/
+	+PmvEL74hirsR7404apfH1xjrQoJ2VHns/7xFId8pk3lrueXqNWbHl7YIHSjgkU9/B167+ndhOT
+	4cUm8LrxyG3GfG0x7G+34AUAlHJaXjG1dAIh1BNd3pLRVbNHq4zedbZIJKkpNbFbSmsglKXhhEo
+	EQ8UnBAxaL25bJfZssMJ9H8Ir+TgrsJq+K9XgcjWj4GYOC9ORXTHNmepzJSuCXTmBc2TlHiAbYc
+	/o6BkpwVfrlRCQQAREOWESkZhyfzgH5CGMOK2PeLm8/jCdk=
+X-Received: by 2002:a05:620a:4493:b0:7c7:6667:ade5 with SMTP id af79cd13be357-7cd46733233mr3097575885a.27.1747919827516;
+        Thu, 22 May 2025 06:17:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF50oZ4KZSZvY1ONbiRasISJNNHhay39+Eu0obi2aFnFlLHSm2lwNV6tT9/2rbZj8GX6Bi7IQ==
+X-Received: by 2002:a05:620a:4493:b0:7c7:6667:ade5 with SMTP id af79cd13be357-7cd46733233mr3097573385a.27.1747919827126;
+        Thu, 22 May 2025 06:17:07 -0700 (PDT)
+Received: from QCOM-eG0v1AUPpu.qualcomm.com ([2a01:e0a:82c:5f0:e5bc:5c94:e4b3:3c4e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca8d005sm23677256f8f.90.2025.05.22.06.17.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 May 2025 06:17:06 -0700 (PDT)
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+To: jjohnson@kernel.org
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        Loic Poulain <loic.poulain@oss.qualcomm.com>
+Subject: [PATCH ath-next] wifi: ath10k: Avoid vdev delete timeout when firmware is already down
+Date: Thu, 22 May 2025 15:17:04 +0200
+Message-Id: <20250522131704.612206-1-loic.poulain@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 22 May 2025 18:41:52 +0530
-X-Gm-Features: AX0GCFsHvByQyFYjjj2yI43kVVdpVcQ_KO3AH4tPajR5bk66xedIzcAuV4seOEA
-Message-ID: <CA+G9fYssasMnOE36xLH5m7ky4fKxbzN7kX5mEE7icnuu+0hGuQ@mail.gmail.com>
-Subject: arm64 gcc-8 defconfig call to '__field_overflow' declared with
- attribute error value doesn't fit into mask
-To: open list <linux-kernel@vger.kernel.org>, 
-	Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-wireless@vger.kernel.org, 
-	Netdev <netdev@vger.kernel.org>, lkft-triage@lists.linaro.org, 
-	Linux Regressions <regressions@lists.linux.dev>
-Cc: Arnd Bergmann <arnd@arndb.de>, Ard Biesheuvel <ardb@kernel.org>, 
-	Anders Roxell <anders.roxell@linaro.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Johannes Berg <johannes.berg@intel.com>, 
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDEzNCBTYWx0ZWRfX5dVj4qkw1sJQ
+ rtez+wLuxWvey/3FZjEl0/v5Ikc4/lcYKm8oGCc6LH5byRyhEGxp8ujF26YKWE0nMyOL9JlfQO5
+ trk2VBLPJhdNsjU8LjcGUYOumTuHQ4gCKmIy7F+SYZhbOH4f/mC5+Gz77gsjcDkabxMat8sWLuh
+ jLbAiFFAXgzpTH+zDdcklEsfAczFS+Utk6cFVwflKwC8cZH6nUI5qmPEB8IDbMAmwmEZHfKXx8g
+ /e64efx6vFtNJeqK6aYw6br36SKFj3+7aC0Wf11br9stLvNXoGa7VoKOLOKUBhs1lPN9vBFBx4c
+ ZU3i3FErPOkeTMFibdaZ46k2yxBdlgvV5TzcrXBQQcgkc9NBo96mJf29m+wYKERCVR0vZdDiWUC
+ EJdpiF+j3GGH3NLF2mApq1eXcNDBQMqFBK/VBuso2VB5cs9XXzF46Qo4zcNLOomFTBFpmlId
+X-Authority-Analysis: v=2.4 cv=RIuzH5i+ c=1 sm=1 tr=0 ts=682f23d4 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=dt9VzEwgFbYA:10
+ a=EUspDBNiAAAA:8 a=IzHPsgMo9mJ7Fn_I8X0A:9 a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-ORIG-GUID: fW1oHkodlj6p9Hp4Pg5U3fYBB5Dn277u
+X-Proofpoint-GUID: fW1oHkodlj6p9Hp4Pg5U3fYBB5Dn277u
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-22_06,2025-05-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0 suspectscore=0 malwarescore=0 bulkscore=0
+ mlxlogscore=770 spamscore=0 lowpriorityscore=0 mlxscore=0 priorityscore=1501
+ adultscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
+ definitions=main-2505220134
 
-Regressions on arm64 defconfig build failed with gcc-8 on the Linux next
-tag next-20250512 and next-20250522.
+In some scenarios, the firmware may be stopped before the interface is
+removed, either due to a crash or because the remoteproc (e.g., MPSS)
+is shut down early during system reboot or shutdown.
 
-First seen on the next-20250512
- Good: next-20250509
- Bad:  next-20250512
+This leads to a delay during interface teardown, as the driver waits for
+a vdev delete response that never arrives, eventually timing out.
 
-Regressions found on arm64:
- - build/gcc-8-defconfig
+Example (SNOC):
+$ echo stop > /sys/class/remoteproc/remoteproc0/state
+[ 71.64] remoteproc remoteproc0: stopped remote processor modem
+$ reboot
+[ 74.84] ath10k_snoc c800000.wifi: failed to transmit packet, dropping: -108
+[ 74.84] ath10k_snoc c800000.wifi: failed to submit frame: -108
+[...]
+[ 82.39] ath10k_snoc c800000.wifi: Timeout in receiving vdev delete response
 
-Regression Analysis:
- - New regression? Yes
- - Reproducible? Yes
+To avoid this, skip waiting for the vdev delete response if the firmware is
+already marked as unreachable (`ATH10K_FLAG_CRASH_FLUSH`), similar to how
+`ath10k_mac_wait_tx_complete()` and `ath10k_vdev_setup_sync()` handle this case.
 
-Build regression: arm64 gcc-8 defconfig call to '__field_overflow'
-declared with attribute error value doesn't fit into mask
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath10k/mac.c | 32 ++++++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index c61b95a928da..1df2617a82c0 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -1022,6 +1022,26 @@ static inline int ath10k_vdev_setup_sync(struct ath10k *ar)
+ 	return ar->last_wmi_vdev_start_status;
+ }
+ 
++static inline int ath10k_vdev_delete_sync(struct ath10k *ar)
++{
++	unsigned long time_left;
++
++	lockdep_assert_held(&ar->conf_mutex);
++
++	if (!test_bit(WMI_SERVICE_SYNC_DELETE_CMDS, ar->wmi.svc_map))
++		return 0;
++
++	if (test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags))
++		return -ESHUTDOWN;
++
++	time_left = wait_for_completion_timeout(&ar->vdev_delete_done,
++						ATH10K_VDEV_DELETE_TIMEOUT_HZ);
++	if (time_left == 0)
++		return -ETIMEDOUT;
++
++	return 0;
++}
++
+ static int ath10k_monitor_vdev_start(struct ath10k *ar, int vdev_id)
+ {
+ 	struct cfg80211_chan_def *chandef = NULL;
+@@ -5900,7 +5920,6 @@ static void ath10k_remove_interface(struct ieee80211_hw *hw,
+ 	struct ath10k *ar = hw->priv;
+ 	struct ath10k_vif *arvif = (void *)vif->drv_priv;
+ 	struct ath10k_peer *peer;
+-	unsigned long time_left;
+ 	int ret;
+ 	int i;
+ 
+@@ -5940,13 +5959,10 @@ static void ath10k_remove_interface(struct ieee80211_hw *hw,
+ 		ath10k_warn(ar, "failed to delete WMI vdev %i: %d\n",
+ 			    arvif->vdev_id, ret);
+ 
+-	if (test_bit(WMI_SERVICE_SYNC_DELETE_CMDS, ar->wmi.svc_map)) {
+-		time_left = wait_for_completion_timeout(&ar->vdev_delete_done,
+-							ATH10K_VDEV_DELETE_TIMEOUT_HZ);
+-		if (time_left == 0) {
+-			ath10k_warn(ar, "Timeout in receiving vdev delete response\n");
+-			goto out;
+-		}
++	ret = ath10k_vdev_delete_sync(ar);
++	if (ret) {
++		ath10k_warn(ar, "Error in receiving vdev delete response: %d\n", ret);
++		goto out;
+ 	}
+ 
+ 	/* Some firmware revisions don't notify host about self-peer removal
+-- 
+2.34.1
 
-## Build log
------
-In file included from arch/arm64/include/asm/sysreg.h:1107,
-                 from arch/arm64/include/asm/cputype.h:248,
-                 from arch/arm64/include/asm/cache.h:43,
-                 from include/vdso/cache.h:5,
-                 from include/linux/cache.h:6,
-                 from include/linux/time.h:5,
-                 from include/linux/skbuff.h:15,
-                 from include/linux/if_ether.h:19,
-                 from include/linux/ieee80211.h:19,
-                 from drivers/net/wireless/intel/iwlwifi/iwl-trans.h:10,
-                 from drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c:6:
-In function 'u32_encode_bits',
-    inlined from 'iwl_pcie_ctxt_info_init' at
-drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c:208:3:
-include/linux/bitfield.h:195:3: error: call to '__field_overflow'
-declared with attribute error: value doesn't fit into mask
-   __field_overflow();     \
-   ^~~~~~~~~~~~~~~~~~
-include/linux/bitfield.h:215:2: note: in expansion of macro '____MAKE_OP'
-  ____MAKE_OP(u##size,u##size,,)
-  ^~~~~~~~~~~
-include/linux/bitfield.h:218:1: note: in expansion of macro '__MAKE_OP'
- __MAKE_OP(32)
- ^~~~~~~~~
-
-## Source
-* Kernel version: 6.15.0-rc7
-* Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
-* Git sha: 460178e842c7a1e48a06df684c66eb5fd630bcf7
-* Git describe: next-20250522
-
-## Build
-* Build log: https://qa-reports.linaro.org/api/testruns/28517069/log_file/
-* Build history:
-https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20250522/testrun/28517069/suite/build/test/gcc-8-defconfig/history/
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2xRo9LbWebbQqL9EYIT8oB7qmNj/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2xRo9LbWebbQqL9EYIT8oB7qmNj/config
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
