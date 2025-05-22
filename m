@@ -1,255 +1,383 @@
-Return-Path: <linux-wireless+bounces-23304-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23305-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9D2AC0A5C
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 13:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E93AC0A70
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 13:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA5C3189D2DF
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 11:13:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FEA5189CA31
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 11:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4A1289369;
-	Thu, 22 May 2025 11:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5885A28A1C0;
+	Thu, 22 May 2025 11:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="I56XybIu";
-	dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="uK0BO5mK"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VW3VviFj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B897289812
-	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 11:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=60.244.123.138
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747912353; cv=fail; b=qbYko5IdEYzyWcf5GBfw9xh8QNPGv2T01JAuj6GGF+lR49H3lcwSSuXlQTWyW26JCnmSVf+CgAemg2DtS8tAi+I1cAC5KkbzkevE+R+b9liMOq5JVP2enLtux82rILWvb/xL3Datr4vf2AtTywuOObRj9VhCo7/3/Ib9z2Cpw3I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747912353; c=relaxed/simple;
-	bh=8ShZ4n/L8nzxlHjEk1tlNr0Kb0RTYi/YyjxuPt64gNY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YRs71hVDXTwJJMPhEq3H0qkZPX1L0Zl0V0eg4iyd7U+W2C54Y3MnWkn/RNO6LsH2ot6ZZzQ61PiOgiWhHWteCT+rdTSqadncuUVdldLXroIqgIN7cE5w/MC4lw8CP6QWRfGup8QIYv58seTD2nKjanp05jw4BdWtPDXZwX6rcBs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=I56XybIu; dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b=uK0BO5mK; arc=fail smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 9fe3da0836fd11f0813e4fe1310efc19-20250522
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=8ShZ4n/L8nzxlHjEk1tlNr0Kb0RTYi/YyjxuPt64gNY=;
-	b=I56XybIuU+alW4PtwEQIbZxVdlXtluVJHfj3uO2Q3Ww67eJ1rJ1HqDds5poG9kuajBjlclgPnjSVh7icpfMmkHT0tQAMwjj2Epf86wECf4JPR43BZUVdCxnXZgpprfcw6rXl2y+aR1bCIUlYCHoNbxlfKafLWoPzdFDlXuz+gFs=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.1,REQID:ccac490b-04d4-4983-9d74-fd7bee5994e4,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:0ef645f,CLOUDID:5b7b9c47-ee4f-4716-aedb-66601021a588,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111,TC:nil,Conte
-	nt:0|50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,
-	OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 9fe3da0836fd11f0813e4fe1310efc19-20250522
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1501414576; Thu, 22 May 2025 19:12:18 +0800
-Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Thu, 22 May 2025 19:12:16 +0800
-Received: from SEYPR02CU001.outbound.protection.outlook.com (172.21.101.237)
- by mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Thu, 22 May 2025 19:12:16 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B5yrnEyRAO16S4RxbkrEVBVGfnDOo4cuQhtN476xIzpGtGM4fHTrzEJ6+eJnjJZX8pLlhCx6ntVa7O6fDnE6bHSSSqNLg3fM++CSzdiWA0mNcuyw6CcJZtcOOR8XnBY7DrSuLeboJOCAx5o52Pj8NeM+ccbOAyMFZYypMNQ6y/HKMnGcsnCooxAmDpu3hoxFBFaDRJdvLFkuiv5eCjrYA5KoRP7icWMxoX7+wDs68n3juh7GViZaqdap3WYGq+m0RGi8Ssv3lQQTLh9fszIDxHpKBWmnM7UApa07k698Mc0Gm+QqotyYX5zM3LHdtWX90F/ByQdCZPBNPRAgBipZZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8ShZ4n/L8nzxlHjEk1tlNr0Kb0RTYi/YyjxuPt64gNY=;
- b=hfuTi5U5Zeh79ki0EdUV7ZI17wTgosyTuJy37PUM9wJ9K0l6zAIqiM5W5XLKygzKdIo8rabw6NIS4ArPwUDzCNagVZmJlM6qd/VWcHHobi5QS2EIhfPZkixD0p7OzzO5hZ5r5lZJy9CPXjV4jyuN/3DV3l5IiJ2JbdXkSCarTHXgI2ZnPTLnlmjTHE0cgciG/mj48ogk+C8XQ/d6c2P9Db0qvu6iMYq5gmU5VSrDCWaxHzr5rs4BOASOcXFuWMXmRPii4P2wnXeDqO/YY4V9j9Et0iw7J435xKxPDNH6GL42LnCvBsEU2KyLZZIoCBT2UUPSwVXThR5DE1Kk0zsWkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
- dkim=pass header.d=mediatek.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8ShZ4n/L8nzxlHjEk1tlNr0Kb0RTYi/YyjxuPt64gNY=;
- b=uK0BO5mKi/Ckj7R3hYBKxXsrbx9OAgizE5V793uq3LMeRQckhUaX6UozqgcgpvVBqJf8VcPk7Ura8DkFGwRqF/WbbWk1T+wZ+zyoKzWdcUKKj+avC6rff08kmjpCu/QKS4+4trazRGQdM1LPfJX2tebIRTOLL862NANV0O/YAjw=
-Received: from SI2PR03MB5322.apcprd03.prod.outlook.com (2603:1096:4:ef::8) by
- TY0PR03MB8223.apcprd03.prod.outlook.com (2603:1096:405:15::10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8769.21; Thu, 22 May 2025 11:12:14 +0000
-Received: from SI2PR03MB5322.apcprd03.prod.outlook.com
- ([fe80::4f8e:6e62:b8a5:5741]) by SI2PR03MB5322.apcprd03.prod.outlook.com
- ([fe80::4f8e:6e62:b8a5:5741%6]) with mapi id 15.20.8769.019; Thu, 22 May 2025
- 11:12:14 +0000
-From: =?utf-8?B?TWluZ3llbiBIc2llaCAo6Kyd5piO6Ku6KQ==?=
-	<Mingyen.Hsieh@mediatek.com>
-To: "nbd@nbd.name" <nbd@nbd.name>, "lorenzo@kernel.org" <lorenzo@kernel.org>
-CC: =?utf-8?B?QWxsYW4gV2FuZyAo546L5a625YGJKQ==?= <Allan.Wang@mediatek.com>,
-	=?utf-8?B?RXJpYy1TWSBDaGFuZyAo5by15pu45rqQKQ==?=
-	<Eric-SY.Chang@mediatek.com>, =?utf-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?=
-	<Deren.Wu@mediatek.com>, Ryder Lee <Ryder.Lee@mediatek.com>,
-	=?utf-8?B?UXVhbiBaaG91ICjlkajlhagp?= <Quan.Zhou@mediatek.com>,
-	=?utf-8?B?TWljaGFlbCBMbyAo576F55Kn56ugKQ==?= <Michael.Lo@mediatek.com>,
-	=?utf-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= <Shayne.Chen@mediatek.com>,
-	"Sean Wang" <Sean.Wang@mediatek.com>,
-	=?utf-8?B?TGVvbiBZZW4gKOmhj+iJr+WEkik=?= <Leon.Yen@mediatek.com>,
-	=?utf-8?B?S00gTGluICjmnpfmmIbmsJEp?= <km.lin@mediatek.com>,
-	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] wifi: mt76: mt7925: add RNR scan support for 6GHz
-Thread-Topic: [PATCH v2 2/2] wifi: mt76: mt7925: add RNR scan support for 6GHz
-Thread-Index: AQHbmgH3qUaZxpkpfkqF8B68qU1ENbPe2n2AgAAGO4A=
-Date: Thu, 22 May 2025 11:12:14 +0000
-Message-ID: <2727d1a0598247fb379347165979c160a79b9965.camel@mediatek.com>
-References: <20250321013829.3598-1-mingyen.hsieh@mediatek.com>
-	 <20250321013829.3598-2-mingyen.hsieh@mediatek.com>
-	 <5a659f60-896e-4f2f-89c0-141e530c44d5@nbd.name>
-In-Reply-To: <5a659f60-896e-4f2f-89c0-141e530c44d5@nbd.name>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mediatek.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SI2PR03MB5322:EE_|TY0PR03MB8223:EE_
-x-ms-office365-filtering-correlation-id: 1a92a4d7-2ded-43ba-a5d5-08dd9921819d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?TW1CdzBvNU9nWkwwSWRaYUprem5RRkFvWmFMMnpjOEVtcDN4VjRCaUZmQjBH?=
- =?utf-8?B?UmJiYnVVSjVybXJvTlRtRHpvVHdTaGMvUW13SDg1aFN1TTJ2RmVHdXRUTURC?=
- =?utf-8?B?bXlHUG9mTmhhYlpDNmdUMHp6TWkreVVPbzA4dnVpUVJYS1NwdHNjakJSOEF3?=
- =?utf-8?B?ZnVSRUlBYTZ3T05saVFua3NFMGhMVDg1aEVyaDRYdXpaMkc5K0N2azUvSHg1?=
- =?utf-8?B?MW5tbnh5WUVKNFZUSllGVU5tYjlkdTlMQW5mOVA3akpEMjZwT3ZJLzEwWEY5?=
- =?utf-8?B?WGRPN2pyVTFqZ3pRSHRvZVBTY2dVYUxrc3dESEtsc0F4eTc0a09GaEk0bTk4?=
- =?utf-8?B?QlBUYnJDZUwxSnBjdlRpMkdNQ1hjR3UvZHJIVlVUSWdCbmRNUlRZNHhqSGl4?=
- =?utf-8?B?Y2xhWWppWkhpTS8rNHNzR1RlZmJZbXh4NDdHMUJvZC9WV3drRnlTZk14a0xD?=
- =?utf-8?B?azQ2cTNxeU1lQlJJNUVNdFQ5VUIvN3pmSHFFUTdUZXRJdzEzVjBVMXdjdkpN?=
- =?utf-8?B?U0wrY0h2K0pYeGpBZmgzc0o3Q3NCc1ozRzRERlFBa0ExaHhBeGl6Y0JBMXp3?=
- =?utf-8?B?aGlFYUdLQzV1U0l6UXNCV2JEUHBMYkxxRnI1emFsdUVkRDNQbCsxNnhhWWZS?=
- =?utf-8?B?MW9tZlJ5a3hrNEo5d0UvcWx0R3dqQVErYWhrVlJ5N25sNGNpdDJMczQ1akM2?=
- =?utf-8?B?YitKVVl6VlJPOVpURk1GcFU3RjRYdCtCcVEzc1lXWGs3dGFEck1wWU90WmlS?=
- =?utf-8?B?U1RRdHFOTlB5VkljQW9Dc3p2TWRDTVA4c3MwWG52UFY4dmhtZkgwTEUvdDk3?=
- =?utf-8?B?REZ3dTdNa3VTTE1rZDRZelRUSnBVVGhzcktCbVNqNTNQeHFtUHg2eHBPSnIz?=
- =?utf-8?B?aTlmd1ZPVWYzaEZJVVRRRFFwTDNwY2ZsMzJiWFo5d3NlTk9aWUZkMDltZ2x1?=
- =?utf-8?B?WmF2TVlPc2Z6SDhldkZrbXhMNVdBOW5FTkJKM2tCTlJUZktYc050dlQyK0dx?=
- =?utf-8?B?bjRINGNOS2ZGZ2lTUUl5eWFsWjBuYlh6ZEJoQ3lXMTdFQk80NXVrYTdLU2F3?=
- =?utf-8?B?UzdLamNqRW53QzJnR2x3T0FDb3gvcG5Pa2ZCWXNNeGJQU3Vud2FHOVFrbk0z?=
- =?utf-8?B?cnFKRlpaNDMxenJkM3FtdWVCWEl5bzdEckFaSkJzOWJVS1g4dXBXOHJTY2Nq?=
- =?utf-8?B?Rk1kQU81WndramV2a2NibWt5ajUveE9vWkV4NEExWG9wRjhkN1prQU1mUGJJ?=
- =?utf-8?B?bGxvRW5lcy83RnRoMUQ3UHlETkpMNm1ZQWFsekZPcjlPMWIzNEZuT3VNdzNG?=
- =?utf-8?B?ejJvbDZlekJZV0FBcDFvQzJ6R09TUmk2WHo3cHI3RXZNQ3drb2VzTVBPRXgy?=
- =?utf-8?B?Q01GWnFFcVdsZWlxZFZySG5nZDNja1dRNWRHNUdmNWpXUmFSOVVoZXpqS3V0?=
- =?utf-8?B?WE01MjA1d2JJR2g4SlBkSWUwUEs3dDVnK1ZGc0o5NHRsUUZPdHZvVldmeDVN?=
- =?utf-8?B?WGY3MDNsYTVrM2lXUXZYWmJJWG4ydzlGNms0Q0duSXloT2luRkJKOWFac3k4?=
- =?utf-8?B?Qk5uNy9qR1BKajgxNzBYWWhuNVhzNWFhR1ZYUStFNEhheG51K2xIcDdhV3li?=
- =?utf-8?B?RGpxNHVVY3IvZHZVc2NSOXluVmwvTXNFRFh1eFFtNEJLNXNTUGdiZmtLUjd0?=
- =?utf-8?B?T3M0eThUbyt0SmtLNGFqZTZpb0ZjZE1rMDlZeVlmdGp0dDNaTTVoMXRmdkVN?=
- =?utf-8?B?YXMzRVR3UVpzZTB4cm9YMkNxR0owT1RBZXRpWEtzdVdiWW9pajNMUmVsOFJK?=
- =?utf-8?B?QjdlbTNIdVlhcXhJUmVwREhXUytud0ZJMEVySUI3bG1FRkkrYW5DbWRmR1BS?=
- =?utf-8?B?UFhrd0ZKY1NRZkFOSG02eUh4bVBHbHN1OTFobE5pdXRYK3N1SDZXTWFUcStP?=
- =?utf-8?B?cmJ4MG1yaEhZTkhpN2R3TlRWUVhiWVVRWExiQmE5YVZ6NGNsV1BzVCtQb0JB?=
- =?utf-8?Q?lqWZfKxyFBPDGcSEH0PWtPLCg4sXLs=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR03MB5322.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WG53aU1OUWZmSWxKa1NVSUJJeEgrcUZKaktLbGdMTzM4N3BVTjBMN3NXWkRH?=
- =?utf-8?B?YWZpR2dmb3FUa1kzTkkxVDhBTnRsZk9VcmNpMlBOczhvbjJFZGxGaFBFMTJF?=
- =?utf-8?B?MmZETm1ZSks4aUtaNWN6Z1cwNW1wSktGTDNWNUxXd0pjM3BxUnRZVXBSM0t0?=
- =?utf-8?B?eS81OG9vMVhkbjRxZHhXc3l5WHJmVWxwWmQzYm9NQUhwaUZGQWtHbFo2eE5i?=
- =?utf-8?B?R1Arb2k1Q21pL3JsZ3pCc08vZkZjelpsWVd5emJhY1JIaVdLYzFncGgrRFZJ?=
- =?utf-8?B?T29YWUlGVHp5TVVuRThNSGUvdEtrb0djNmthQmZLVWEwdlN6cS9VU1g1bXFG?=
- =?utf-8?B?ZXZ1N1FNR2xscWg1b0lLK1pDVTRCS1RTOXVvamVlcWJVek9iT05rYzVuVWUx?=
- =?utf-8?B?cXY2TitVTWJQZ3pDZzhMUlRrQWttbzN4MDBLNDU3N0puNXdaSGpKMDhYcUlW?=
- =?utf-8?B?VVJDUlNFalE3b3MySmY2OXlhKzdyWU1ZSDVyRUN2V2FnUnNNRTJLQVBCMXFz?=
- =?utf-8?B?czVDdWdNT085NVNoNE8vVmlvN3ViZlU1TlhEZEpWYnhzcWxsYUlTSS9acW9n?=
- =?utf-8?B?cjF4VWJZNVJhQUhiTzJaY291VzIrNXlTUE00bytsbW4xZHZxU3Vwc3B6WXlW?=
- =?utf-8?B?RFRXS2pJbWtuaVZMMVUzNitHb2ZTZDBGdlhhbldocnpOa05CNDFaMkVyNm8v?=
- =?utf-8?B?TzlvWi9UTkhzbFZzL3docGwyUVZIR2p4amttdWlhMFlDNkNHUVc1VHlMNlpi?=
- =?utf-8?B?b0s1cEJKaVRTazJVMlRHczZjanpBTzdhaXllZ05aZTJ1OEFlWG1kUVNSWjFs?=
- =?utf-8?B?RmUxNStIcmVyNjg1TzlWR1FHaHpjZ2dHblpHYm9FTWtpTWhreGs1WUJaMHVm?=
- =?utf-8?B?UkFzRnIvbFQ2M2ZJSzVCcitQRDFBWGZjbXVQS3MyTUZ4ZG40djBobTc3WklQ?=
- =?utf-8?B?UC9CRXN4OXo3MjY2c1RqVGNWM0xma3lLUE9TQi91ZmFvWHlrZzdVVVBOeWhP?=
- =?utf-8?B?eGdPWUR2TTlJNEhPOXRxQnhkRWxuWU1ENm5QcWFFaFdhN29RZEpveUZKWmZM?=
- =?utf-8?B?WjVCaXpaYnhveEFKVG5GYXd0QlMzOUE1L2RoWkRWeXVrZlB6N3NPZWw4bDVp?=
- =?utf-8?B?VG5wei9xL0JqY1dyb2xGYmw5OGl2em1UOWsveXh3MnFreVJjN2ExZmo4bk9U?=
- =?utf-8?B?Q1NwWkliY0RpY3lLcFlCYVl3MHN6b2IwTFJXVmFhcmZTY3dBRVhqeVJEZ2Zu?=
- =?utf-8?B?d2lYOWhQaE1zWnZrZ1BBcHpnQ1pWaHMzY0RYT1hnbE9qOWJzN2s0OFZRUXh0?=
- =?utf-8?B?SnpoKzB1SHlybXhWMGhIbDViTDFTUDRrMWo2dTdQQWNqUkw0UW9aN09LcDBO?=
- =?utf-8?B?aUNERFBsa2l3ZElLSkU0SEo5UGw5VmRiWWlhR3F1bEFGTGt1UDIzMjE5VHpp?=
- =?utf-8?B?Z1hkNXgvRFN2NERTait1cGUrOXR0YURNR2k5K21VV1g4d3lvMWx5R3dESmtu?=
- =?utf-8?B?Nk5ubDlsZk1RUVNLQjIxVWNxY29Bd3F5T3RhMFlESFRLSm5XaDY1eXFQdU5k?=
- =?utf-8?B?REMwOU9mRVh2bHIrQjNBZVpGR2VRWmwvdXNhN0pNMVhIcGh1b0NlVXRQL3ZG?=
- =?utf-8?B?cGhSQTR1VTZST1l3TktCc0xMY1FweDFwVHY2OVZqZFFqSlBqSjdNeFlmbFds?=
- =?utf-8?B?NzZIa2xQejl4L1JKSWN5MldRMXVBZksyRjZvK0c4Ri9YSWN3clU5dFpGRzJG?=
- =?utf-8?B?SDBlMGIrSHlCbHFSeDlaZGRlWkxBOFlKcWI5b1VQejhyNkhmaW5vMVk5dTdF?=
- =?utf-8?B?QmlSUGZNM3UwYVBlV2ZJTU8vVENrOHAyaTduUmRlalVrRGJ6eGlFRndQSEk3?=
- =?utf-8?B?VkZPU0tZejNnQjVOMjhwUHVLeTFzcE54ZWlBY0hmZ1hZWFdwMmxzMWNVN1da?=
- =?utf-8?B?WmVtdlpNQTdWRzFXTFUvRC80Q3VNZE00WDFjTDNqbndOWDJ1eFdmOEVicXdO?=
- =?utf-8?B?Y2s2RVFQOElGT2R3eWtrN1kzVWFzeVMwWjdPMnlEdW1aaGUyWjRoTzZYaG9I?=
- =?utf-8?B?SlRETjNRNFNEckUwUHppenFzWisrcnB6UlEydVVMdnNkdythWUN0bWcyQno0?=
- =?utf-8?B?THVESEJ2blp5emFRMjNkWXBkZzFyc0JQR2Q3Nno4VjVHL2hUT0ltU1pxcUdu?=
- =?utf-8?B?Umc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B2FEAD65B085134ABBC603E47FE17791@apcprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5B1221FD0
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 11:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747912538; cv=none; b=Wjgdg57an7IzEyN1Lu5ry6kmnZ92ByoUnEdkjKK+NABHp5Wvibdx1D1njz1DPJRHoSW9N5showXJsDyMTMKQ3FO2DjHIJEUH0oMz6zop8REGKvvwc3Y4thq26rkxK26H29jdzz+qG9tryeRpIiGIcJ7gstSZs31jzMWcls4d8DY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747912538; c=relaxed/simple;
+	bh=InQYtKIN6R+A3rJhHvjZ7o+5l/UzFCp3xOCDKx7EwSw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OkirWkZGOLVrXKwTqzGOCTtx2Gm/+0vE1s5Zu77uPM3aNxueh4vFwoDokzJ42VlzXmxOYN3QvEYOU1+7IJv+U5EURm2eiE/0FRKDYDb9Nkt2QGOYnXToZEWUfWwJ4EDnVAzkERI8/5RDN6O4LHt8hk+CoS71BlwwqPp14Lqa6q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VW3VviFj; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54M7fPw1020937
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 11:15:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=NJCFlSiH8F8LqMmytsnGm/5ALtT/yHy3+u+
+	M4Cupnx0=; b=VW3VviFj5LT2tRDiA3DOulgDljopoqkdQvv/pq2V1X9bL/4LHpb
+	tD2saHjmk7KxP5pytHmKkdLTCkFWXzWDiuhFB/XeXTlYTumf9Awe5Ds71Z9dJgsf
+	w/kMKURs+i5u0h/yiU0kXNUv2fyasuxaHU1vNcL9I5OKuvoFPUByuaBJkF4p5zf5
+	JTTCYuSqii8TQQ7fRF3KuLx6Fq8/VSyCR/drccZUoM88BKd9umUqXF5TGzk4S7KR
+	bwoTv3DQXxzqaPCjHnClkBJSI33IsEzmiRsp90zuCJY+mR/5oqX8oS2vwBs/3mWR
+	iIP8cI2TV+XnIaIcFREdZ8b7WxygL4LtN0w==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf068vn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 11:15:35 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-742c620e236so4407462b3a.1
+        for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 04:15:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747912534; x=1748517334;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NJCFlSiH8F8LqMmytsnGm/5ALtT/yHy3+u+M4Cupnx0=;
+        b=tGEUOvoOBdawoFWVSQlFy9XQ4h7/Mhypvw8w3jVDRzzhPg2wZG4r7Yp4FKjAF7/5Di
+         aWmRgJilji8ZGaH5qOrOo3KkaUxTDhjWaeYKvXTjMKcif59jMcDD5PGB+ss6y6iMzjmf
+         YkB/kQFwr6gMHmtMFz3eHNNW+qsGlZ1CGi4n/Iuu1E+pPDMVvi4Hik6jTp3psmASbNnv
+         etxrafC3Z0sgRJ5IqjqtNFJ0EuygKI1qC8mvkCkW4Phg4g3CMCgM8ft1zNzQ+M5JBCVN
+         xal8nE3Jn3oSV7m6asAjGhQYkof5f8y2CBlMK5coujYY1viJy9DpTmnSnaWZGgeYBMtR
+         bMvg==
+X-Gm-Message-State: AOJu0YztLzzGcZx2qyhorrij4BjOWJdgkWtPsLRCAM1Jw1+oX+FM5aEz
+	3ChO9vCIRuPnGFtncRiajPFueqNMbpgS8cTzNgx4gSCuuRJXKMJTxLWn8khOUnjzGwSGnUEy8Mn
+	RGN5Afo6A6GC3ykh22Wi5zQbEkNgJTaLdky5Vg09iqo1+MzoHrdzSOcf61r1Qa2TsNRtS4A==
+X-Gm-Gg: ASbGncsm1GkVRhn0+fRYLLWnayj3cXqOUKGDY2CyPIUFW2GAzKiRqd/hhl87d7EPiPd
+	TgVJyPWegUslQz2idAw8xl2wvDaEk3xXvoPSqEPo6f+iN6hfm7PmsgbCSadZVyR7dvaHukLzOsL
+	jY8snT4AEhqhxCm3YsK2ASmpxMsAmjX56GqSOqKEFcsDm2u9iYy5gJqGl3Ep1+bwJtd2b0A9bBG
+	qMtCzGyEQd340kQqVhh645ZwjNemk/NG+ifobE02+axxqKYnCadbLzYU9bEDW5wRRqLzIcVhONT
+	Saxe14DvPVENsOjdkxtwHfB4BYfdyCoywFitck2a+PoLsn33QEWiPEw3y7cysGhB5DLoLlfvulw
+	K2qQgWnftqlgjJrEU8ipZK9aaT1JS8NU6MViFJQ+z
+X-Received: by 2002:a05:6a00:c8d:b0:740:aa31:fe66 with SMTP id d2e1a72fcca58-742a97768f0mr35397613b3a.4.1747912534394;
+        Thu, 22 May 2025 04:15:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEVJNJ6rlBMI5U7xExXSQ3PMuR6QUheJrn3jKGXadAATGkYVQv4wC5vcPWub2ECGXreQumayg==
+X-Received: by 2002:a05:6a00:c8d:b0:740:aa31:fe66 with SMTP id d2e1a72fcca58-742a97768f0mr35397573b3a.4.1747912533903;
+        Thu, 22 May 2025 04:15:33 -0700 (PDT)
+Received: from hu-ramess-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a9829a4dsm11470289b3a.107.2025.05.22.04.15.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 May 2025 04:15:33 -0700 (PDT)
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Subject: [PATCH ath-next v3] wifi: ath12k: combine channel list for split-phy devices in single-wiphy
+Date: Thu, 22 May 2025 16:45:14 +0530
+Message-Id: <20250522111514.3735107-1-rameshkumar.sundaram@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR03MB5322.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a92a4d7-2ded-43ba-a5d5-08dd9921819d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 May 2025 11:12:14.3410
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: n5XDus09S4QlEJPCrp9TP1mPO4MZTJ4iog6phKGFW9AGcZbGdfpITyqnGh8XJcgCHtcSe8OdenaikoHennYwwGiGIEyH8WMl3Bp5mFPfCvg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR03MB8223
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: Pws6c24zjpxrugGgJOQ9SRqHOrcHw8VH
+X-Proofpoint-ORIG-GUID: Pws6c24zjpxrugGgJOQ9SRqHOrcHw8VH
+X-Authority-Analysis: v=2.4 cv=ZP3XmW7b c=1 sm=1 tr=0 ts=682f0757 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=M2JtdFxej-CA3OLZbwkA:9
+ a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDExMyBTYWx0ZWRfX9fwzgE9GYxBh
+ eCj48aipf337dbE/JbtyV2EoL1X7gWiD3O8IvH9Q6+oFJQ/TNDLyu3IWXomp5d7irAGzZ4vkgNk
+ HbnP2YvhdICUYxHcnNL54OYYHI955wG0O4MMaxNpzvax5NywifxKTgfyJMVvFuVtDK4vq3pcpKR
+ fGfwOTB4Awq/NNrUiRRChbTocLM+wuPocq3J6c69q5WWWwhPzQdWsn+zZ/KfPRivBHhj2uc+bkM
+ MWh5y6Av0woDxmQEUcwv4pgGaMYOA6my8TKGTxWM5wmEq+HDDeRtgyL2qAt4imvm0by1Uh4hcIJ
+ zjxrYVtgzGcbd6m2o8za/4m4WX7O5bTO9SrQ9F1D0v/5PzpeU7H0lF/XSto0P3XFhVNN60l94Zb
+ LZmxZJjNKNLWf5YVrAzzFK7OnIjoT+zcVT2ykBBX0lLN8PdMtQlznfq5PEtHmPXIF6r1J1Yx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-22_06,2025-05-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 adultscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0
+ impostorscore=0 phishscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0
+ clxscore=1015 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
+ definitions=main-2505220113
 
-T24gVGh1LCAyMDI1LTA1LTIyIGF0IDEyOjQ5ICswMjAwLCBGZWxpeCBGaWV0a2F1IHdyb3RlOg0K
-PiANCj4gRXh0ZXJuYWwgZW1haWwgOiBQbGVhc2UgZG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4g
-YXR0YWNobWVudHMgdW50aWwNCj4geW91IGhhdmUgdmVyaWZpZWQgdGhlIHNlbmRlciBvciB0aGUg
-Y29udGVudC4NCj4gDQo+IA0KPiBPbiAyMS4wMy4yNSAwMjozOCwgTWluZ3llbiBIc2llaCB3cm90
-ZToNCj4gPiBGcm9tOiBNaW5nIFllbiBIc2llaCA8bWluZ3llbi5oc2llaEBtZWRpYXRlay5jb20+
-DQo+ID4gDQo+ID4gRW5oYW5jZSB0aGUgbXQ3OTI1IHRvIGluY2x1ZGUgUk5SIHNjYW4gc3VwcG9y
-dC4gSXQgYWRkcw0KPiA+IHRoZSBuZWNlc3NhcnkgUk5SIGluZm9ybWF0aW9uIHRvIHRoZSBzY2Fu
-IGNvbW1hbmQuDQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogTWluZyBZZW4gSHNpZWggPG1pbmd5
-ZW4uaHNpZWhAbWVkaWF0ZWsuY29tPg0KPiA+IC0tLQ0KPiA+IHYyOg0KPiA+IMKgwqAgLSB1c2Ug
-Jz0ge30nIHRvIHJlcGxhY2UgdGhlICc9IHswfScgZm9yIHNob3J0X3NzaWQgYXJyYXkuDQo+ID4g
-wqDCoCAtIGFsaWduIHdpdGggdGhlIG9wZW4gcGFyYW50aGVzaXMgZm9yIGNyYzMyX2xlLg0KPiA+
-IMKgwqAgLSB1c2UgZXRoZXJfYWRkcl9jb3B5KCkgdG8gcmVwbGFjZSB0aGUgbWVtY3B5IG9mIGJz
-c2lkLg0KPiA+IC0tLQ0KPiA+IMKgIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5
-MjUvbWN1LmPCoMKgIHwgMzYNCj4gPiArKysrKysrKysrKysrKysrLS0tDQo+ID4gwqAgLi4uL25l
-dC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkyNS9tY3UuaMKgwqAgfCAxNyArKysrKy0tLS0N
-Cj4gPiDCoCAyIGZpbGVzIGNoYW5nZWQsIDQxIGluc2VydGlvbnMoKyksIDEyIGRlbGV0aW9ucygt
-KQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
-dDc2L210NzkyNS9tY3UuYw0KPiA+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
-Ni9tdDc5MjUvbWN1LmMNCj4gPiBpbmRleCAyNDNhZGFjZTg3OTkuLjIyNjg2ZmFjYTFhZiAxMDA2
-NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkyNS9t
-Y3UuYw0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTI1
-L21jdS5jDQo+ID4gQEAgLTMwNzgsNyArMzA3OSwxMSBAQCBpbnQgbXQ3OTI1X21jdV9od19zY2Fu
-KHN0cnVjdCBtdDc2X3BoeSAqcGh5LA0KPiA+IHN0cnVjdCBpZWVlODAyMTFfdmlmICp2aWYsDQo+
-ID4gwqDCoMKgwqDCoCBmb3IgKGkgPSAwOyBpIDwgc3JlcS0+bl9zc2lkczsgaSsrKSB7DQo+ID4g
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKCFzcmVxLT5zc2lkc1tpXS5zc2lkX2xlbikN
-Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29udGludWU7
-DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoaSA+IE1UNzkyNV9STlJfU0NBTl9N
-QVhfQlNTSURTKQ0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IGJyZWFrOw0KPiA+IA0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc2hvcnRfc3NpZFtp
-XSA9IH5jcmMzMl9sZSh+MCwgc3JlcS0+c3NpZHNbaV0uc3NpZCwNCj4gPiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoCBzcmVxLT5zc2lkc1tpXS5zc2lkX2xlbik7DQo+IA0KPiBJIGhhZCB0byByZW1vdmUg
-dGhpcyB2YXJpYWJsZSBkdWUgdG8gYSB1bnVzZWQtYnV0LXNldCB3YXJuaW5nLiBJJ20NCj4gbm90
-DQo+IHN1cmUgaWYgdGhlIGNvbnRlbnRzIG9mIGl0IHNob3VsZCBoYXZlIGJlZW4gc3RvcmVkIHNv
-bWV3aGVyZSBpbiB0aGUNCj4gTUNVDQo+IG1lc3NhZ2UsIG9yIGlmIHRoaXMgd2FzIHNvbWV0aGlu
-ZyB0aGF0IGVuZGVkIHVwIG5vdCBiZWluZyBuZWNlc3NhcnkuDQo+IFBsZWFzZSByZXZpZXcgYW5k
-IHNlbmQgYSBmb2xsb3ctdXAgZml4IGlmIG5lZWRlZC4NCj4gDQo+IC0gRmVsaXgNCg0KSGkgRmVs
-aXgsDQoNClRoaXMgdmFyaWFibGUgaXMgY3VycmVudGx5IG5vdCBiZWluZyB1c2VkLiBJIGFwb2xv
-Z2l6ZSBmb3IgbXkgb3ZlcnNpZ2h0DQp0aGF0IGNhdXNlZCB0aGlzIHdhcm5pbmcuIFNob3VsZCBp
-IHN1Ym1pdCBhIHYzIHRvIHJlbW92ZSBpdCwgb3Igd2lsbA0KeW91IGhlbHAgcmVtb3ZlIGl0Pw0K
-DQpZZW4uDQo=
+When two split-phy devices that support overlapping frequency ranges within
+the same band are grouped into an ath12k hardware (HW) setup, they share a
+common wiphy instance. Consequently, the channel list (wiphy->bands[])
+becomes unified across all associated radios (ar).
+
+For reference, the devices are:
+2.4 GHz + 5 GHz Low Band
+5 GHz High Band + 6 GHz
+
+The first radio probed within the 5 GHz range (say 5 GHz Low Band) updates
+its sband reference (&ar->mac.sbands[NL80211_BAND_5GHZ]) within
+wiphy->bands[]. However, when the second 5 GHz radio (5 GHz High Band) is
+probed, it replaces the existing wiphy->bands[] entry with its own sub-band
+reference. As a result, wiphy->bands[] always reflects the channel list
+from the most recently probed radio in that band, restricting supported
+channels to those within its specific range for upper-layer.
+
+Fix this by updating the wiphy->bands[] to just enable the channels of
+current radio when there exist a radio which already has set it.
+This will make sure wiphy->bands[] holds reference of first radio which
+got probed in 5 GHz band and subsequent radio just updates the channel list
+in the same address space.
+
+Since same sband memory space is shared between radios of a band, while
+determining the allowed frequency range of radio, its frequency limits
+(ar->freq_range.start_freq, end_freq) should be used.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+---
+v3:
+ - Rebased on ToT as the patch that fixed the frequencey
+   range - https://lore.kernel.org/linux-wireless/20250520-fix_freq_range_update-v1-1-e061fd147b87@oss.qualcomm.com/
+   is merged.
+v2:
+ - Fixed frequency conversion from KHZ to MHZ in freq_to_idx()
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 93 +++++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath12k/reg.c | 13 ++++
+ drivers/net/wireless/ath/ath12k/wmi.c |  9 ++-
+ 3 files changed, 109 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 88b59f3ff87a..ca08cb81e6c3 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4149,8 +4149,9 @@ ath12k_mac_select_scan_device(struct ieee80211_hw *hw,
+ 		band = NL80211_BAND_6GHZ;
+ 
+ 	for_each_ar(ah, ar, i) {
+-		/* TODO 5 GHz low high split changes */
+-		if (ar->mac.sbands[band].channels)
++		if (ar->mac.sbands[band].channels &&
++		    center_freq >= KHZ_TO_MHZ(ar->freq_range.start_freq) &&
++		    center_freq <= KHZ_TO_MHZ(ar->freq_range.end_freq))
+ 			return ar;
+ 	}
+ 
+@@ -11411,6 +11412,32 @@ static u32 ath12k_get_phy_id(struct ath12k *ar, u32 band)
+ 	return 0;
+ }
+ 
++static int ath12k_mac_update_band(struct ath12k *ar,
++				  struct ieee80211_supported_band *orig_band,
++				  struct ieee80211_supported_band *new_band)
++{
++	int i;
++
++	if (!orig_band || !new_band)
++		return -EINVAL;
++
++	if (orig_band->band != new_band->band)
++		return -EINVAL;
++
++	for (i = 0; i < new_band->n_channels; i++) {
++		if (new_band->channels[i].flags & IEEE80211_CHAN_DISABLED)
++			continue;
++		/* An enabled channel in new_band should not be already enabled
++		 * in the orig_band
++		 */
++		if (WARN_ON(!(orig_band->channels[i].flags &
++			      IEEE80211_CHAN_DISABLED)))
++			return -EINVAL;
++		orig_band->channels[i].flags &= ~IEEE80211_CHAN_DISABLED;
++	}
++	return 0;
++}
++
+ static int ath12k_mac_setup_channels_rates(struct ath12k *ar,
+ 					   u32 supported_bands,
+ 					   struct ieee80211_supported_band *bands[])
+@@ -11421,6 +11448,7 @@ static int ath12k_mac_setup_channels_rates(struct ath12k *ar,
+ 	u32 phy_id, freq_low, freq_high;
+ 	struct ath12k_hw *ah = ar->ah;
+ 	void *channels;
++	int ret;
+ 
+ 	BUILD_BUG_ON((ARRAY_SIZE(ath12k_2ghz_channels) +
+ 		      ARRAY_SIZE(ath12k_5ghz_channels) +
+@@ -11442,7 +11470,6 @@ static int ath12k_mac_setup_channels_rates(struct ath12k *ar,
+ 		band->channels = channels;
+ 		band->n_bitrates = ath12k_g_rates_size;
+ 		band->bitrates = ath12k_g_rates;
+-		bands[NL80211_BAND_2GHZ] = band;
+ 
+ 		if (ab->hw_params->single_pdev_only) {
+ 			phy_id = ath12k_get_phy_id(ar, WMI_HOST_WLAN_2GHZ_CAP);
+@@ -11459,6 +11486,22 @@ static int ath12k_mac_setup_channels_rates(struct ath12k *ar,
+ 					  reg_cap->high_2ghz_chan);
+ 
+ 		ath12k_mac_update_freq_range(ar, freq_low, freq_high);
++
++		if (!bands[NL80211_BAND_2GHZ]) {
++			bands[NL80211_BAND_2GHZ] = band;
++		} else {
++			/* Split mac in same band under same wiphy */
++			ret = ath12k_mac_update_band(ar, bands[NL80211_BAND_2GHZ], band);
++			if (ret) {
++				kfree(channels);
++				band->channels = NULL;
++				return ret;
++			}
++			ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac pdev %u identified as 2 GHz split mac with start freq %d end freq %d",
++				   ar->pdev->pdev_id,
++				   KHZ_TO_MHZ(ar->freq_range.start_freq),
++				   KHZ_TO_MHZ(ar->freq_range.end_freq));
++		}
+ 	}
+ 
+ 	if (supported_bands & WMI_HOST_WLAN_5GHZ_CAP) {
+@@ -11477,7 +11520,6 @@ static int ath12k_mac_setup_channels_rates(struct ath12k *ar,
+ 			band->channels = channels;
+ 			band->n_bitrates = ath12k_a_rates_size;
+ 			band->bitrates = ath12k_a_rates;
+-			bands[NL80211_BAND_6GHZ] = band;
+ 
+ 			freq_low = max(reg_cap->low_5ghz_chan,
+ 				       ab->reg_freq_6ghz.start_freq);
+@@ -11490,6 +11532,26 @@ static int ath12k_mac_setup_channels_rates(struct ath12k *ar,
+ 
+ 			ath12k_mac_update_freq_range(ar, freq_low, freq_high);
+ 			ah->use_6ghz_regd = true;
++
++			if (!bands[NL80211_BAND_6GHZ]) {
++				bands[NL80211_BAND_6GHZ] = band;
++			} else {
++				/* Split mac in same band under same wiphy */
++				ret = ath12k_mac_update_band(ar,
++							     bands[NL80211_BAND_6GHZ],
++							     band);
++				if (ret) {
++					kfree(ar->mac.sbands[NL80211_BAND_2GHZ].channels);
++					ar->mac.sbands[NL80211_BAND_2GHZ].channels = NULL;
++					kfree(channels);
++					band->channels = NULL;
++					return ret;
++				}
++				ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac pdev %u identified as 6 GHz split mac with start freq %d end freq %d",
++					   ar->pdev->pdev_id,
++					   KHZ_TO_MHZ(ar->freq_range.start_freq),
++					   KHZ_TO_MHZ(ar->freq_range.end_freq));
++			}
+ 		}
+ 
+ 		if (reg_cap->low_5ghz_chan < ATH12K_MIN_6GHZ_FREQ) {
+@@ -11508,7 +11570,6 @@ static int ath12k_mac_setup_channels_rates(struct ath12k *ar,
+ 			band->channels = channels;
+ 			band->n_bitrates = ath12k_a_rates_size;
+ 			band->bitrates = ath12k_a_rates;
+-			bands[NL80211_BAND_5GHZ] = band;
+ 
+ 			if (ab->hw_params->single_pdev_only) {
+ 				phy_id = ath12k_get_phy_id(ar, WMI_HOST_WLAN_5GHZ_CAP);
+@@ -11525,6 +11586,28 @@ static int ath12k_mac_setup_channels_rates(struct ath12k *ar,
+ 						  reg_cap->high_5ghz_chan);
+ 
+ 			ath12k_mac_update_freq_range(ar, freq_low, freq_high);
++
++			if (!bands[NL80211_BAND_5GHZ]) {
++				bands[NL80211_BAND_5GHZ] = band;
++			} else {
++				/* Split mac in same band under same wiphy */
++				ret = ath12k_mac_update_band(ar,
++							     bands[NL80211_BAND_5GHZ],
++							     band);
++				if (ret) {
++					kfree(ar->mac.sbands[NL80211_BAND_2GHZ].channels);
++					ar->mac.sbands[NL80211_BAND_2GHZ].channels = NULL;
++					kfree(ar->mac.sbands[NL80211_BAND_6GHZ].channels);
++					ar->mac.sbands[NL80211_BAND_2GHZ].channels = NULL;
++					kfree(channels);
++					band->channels = NULL;
++					return ret;
++				}
++				ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac pdev %u identified as 5 GHz split mac with start freq %d end freq %d",
++					   ar->pdev->pdev_id,
++					   KHZ_TO_MHZ(ar->freq_range.start_freq),
++					   KHZ_TO_MHZ(ar->freq_range.end_freq));
++			}
+ 		}
+ 	}
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wireless/ath/ath12k/reg.c
+index 2598b39d5d7e..67a235318596 100644
+--- a/drivers/net/wireless/ath/ath12k/reg.c
++++ b/drivers/net/wireless/ath/ath12k/reg.c
+@@ -176,6 +176,12 @@ int ath12k_reg_update_chan_list(struct ath12k *ar, bool wait)
+ 			if (bands[band]->channels[i].flags &
+ 			    IEEE80211_CHAN_DISABLED)
+ 				continue;
++			/* Skip Channels that are not in current radio's range */
++			if (bands[band]->channels[i].center_freq <
++			    KHZ_TO_MHZ(ar->freq_range.start_freq) ||
++			    bands[band]->channels[i].center_freq >
++			    KHZ_TO_MHZ(ar->freq_range.end_freq))
++				continue;
+ 
+ 			num_channels++;
+ 		}
+@@ -204,6 +210,13 @@ int ath12k_reg_update_chan_list(struct ath12k *ar, bool wait)
+ 			if (channel->flags & IEEE80211_CHAN_DISABLED)
+ 				continue;
+ 
++			/* Skip Channels that are not in current radio's range */
++			if (bands[band]->channels[i].center_freq <
++			    KHZ_TO_MHZ(ar->freq_range.start_freq) ||
++			    bands[band]->channels[i].center_freq >
++			    KHZ_TO_MHZ(ar->freq_range.end_freq))
++				continue;
++
+ 			/* TODO: Set to true/false based on some condition? */
+ 			ch->allow_ht = true;
+ 			ch->allow_vht = true;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 60e2444fe08c..4b214b2710c1 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -5911,9 +5911,16 @@ static int freq_to_idx(struct ath12k *ar, int freq)
+ 		if (!sband)
+ 			continue;
+ 
+-		for (ch = 0; ch < sband->n_channels; ch++, idx++)
++		for (ch = 0; ch < sband->n_channels; ch++, idx++) {
++			if (sband->channels[ch].center_freq <
++			    KHZ_TO_MHZ(ar->freq_range.start_freq) ||
++			    sband->channels[ch].center_freq >
++			    KHZ_TO_MHZ(ar->freq_range.end_freq))
++				continue;
++
+ 			if (sband->channels[ch].center_freq == freq)
+ 				goto exit;
++		}
+ 	}
+ 
+ exit:
+
+base-commit: db5a2f8ef8d4be926d29ed62182d003110c1a6ca
+-- 
+2.34.1
+
 
