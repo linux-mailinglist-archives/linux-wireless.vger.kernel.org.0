@@ -1,370 +1,334 @@
-Return-Path: <linux-wireless+bounces-23327-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23329-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32365AC153A
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 22:04:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BEFAC15C1
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 22:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 226A67AF60C
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 20:03:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C0CE9E2822
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 20:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B06C148827;
-	Thu, 22 May 2025 20:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A5C24A073;
+	Thu, 22 May 2025 20:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="H76vvczQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
+Received: from sonic301-21.consmr.mail.sg3.yahoo.com (sonic301-21.consmr.mail.sg3.yahoo.com [106.10.242.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F69190696
-	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 20:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C8524A07D
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 20:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.242.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747944270; cv=none; b=KbYtOYLMaLnL7jbTdlVk5+NdktiiIZ+VQ4GNiLZ6Ev0OaZSwQLBJKBkz1YDpDs5qAu7qy4zadGSvNoGI7sOW5j4cGo18BszooEhoYa4/r0k/gYJQBFme0i8nEKMCYkvGvkPi9hYDIy3GVNn7L4NKpMybncJv7vYBYqbD7sfx8WI=
+	t=1747947442; cv=none; b=JxZZkrmutX29XFqvFOrXfcgeJls3qrLwoI2vBUYACMuIsRqCY1z69MdPNQrbMCwmL20FJfixua+rmKIrTzWmOAPyntoQGsJCJflBoHPLUUh/QaRkxFb08wnqj5VLw7PPdQ2UsIkHwT+oN3svVfJC9hGOq3htGBx8F9FbU38+zSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747944270; c=relaxed/simple;
-	bh=rV/Ro3iX2RMOfud0KrwZX3Hq/ENtf1zv5sHaVE5jOpg=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=dfjZB5UK2miB8UvJzju2t4VOMeDVSVcBcj2cgZ90MdjmU3jsg4dNDt0bSqHl+6ls9cnGJwrXFrCynLa4n5LXKt/QV299LdQvfy5+Y89T8YRmhAyzLnMRqE1Wi8SGQsXJZTVLRSN3T9TlYLexFhhh85jInmvyOhBKreZiFka+nrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-86a5def8869so526809839f.0
-        for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 13:04:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747944267; x=1748549067;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DQqYmnl7Dt0jcW9L7a+1hbupO+yf8/+C2SKc2pOJE8U=;
-        b=a7NCuIo4G7prsKOMyufcvsY6mekmuy3szWEXZO+XNtI3nNAi5zkAKLNZws6/rjV7Fk
-         Ml6jNYysj/0Ejt5Kyb3BY6wipoT5Wl6iRaQlAR+EaP5FLTN6M2bAI+T92bRKyjPXScEV
-         jGwIKRZGFKIVeSqnT0rRTI5Nh1/jmJT3nLp5FvLe8X911K8mo2VXcP5PAwKRLfnlxXie
-         aW3mHPpTTbDugHnByOUnaTMpOIVBGASJdS1wq05qf+p5FiqoI1buoRyREE6fDp9LayZH
-         2LEfFjubS5oNHbCN/ZEk93IvnfW7ojztx5gzuypW6ZQ5+VUu5PPYn7V3na7Ii0yqrjg0
-         YC1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV+bXweXE/CwPjtxNDknPzTLW4txaSz56cDlEaB5VyC24t4UoahtlnDZ2qCB/xCQ4Zr1WwcrBpEqj/NOPY4uw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YykKBOjRUugk4LNEAYRIW4x386hVDTia3joidEMZFeW814qLVM2
-	OGAXG9DRepvBOHOilNz6TxJwgzZklQFN1KjVzCWhjHsQRt+Ck/E45Vk+fbebpJX3pHsp4vDA5BN
-	vWWEN2lFpE1kv/K1pfr3xGF7AmU4SRbyLhsCw/rmg/xZ/wrShcfH1WqId0K4=
-X-Google-Smtp-Source: AGHT+IFvfHO2VnvfTIWLKtUbqi1ak+FnQOb/++fOtMXym9IHzFF71Q/LkmcVFyuTagT5zuzyTn2a2VWdPnm/+TfQ1V3sgrPCidyI
+	s=arc-20240116; t=1747947442; c=relaxed/simple;
+	bh=cNOSCFWOLKZP7eE3yFPfHSdWwgFg8Eei/ZR02aRi4Ew=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=OrHp65mqsk46lspixylNdtHiRo/Tvp4CcNPtiWNvjkTChLgjUQv+nCqfgBbUfeeYSds1Kk3BDkU67zoA9z+WL376pNIhRpkC6/Ru3/h+ve+P8NvKbHZQUNBfa/mleobgGWSJpFBeCHHNk2q6OSK+PO9oX8lRqP5DGXBQ4W5pRgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=H76vvczQ; arc=none smtp.client-ip=106.10.242.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747947431; bh=WkXBQ/6jm4t5+g2iqIwRa73oLwIgViQhZB+CGikZxY8=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=H76vvczQyUCTCty/5wjMwyLjjC4EL/a5Bl7esJLZtbfF+w1VuANN4NLpeufEeao4nOkBWU9DUqt7FvRsSOKVyBfjZ82L8av+FyN95XuRKun+Koyv/DS0MpIFqWkLI+ItbSPExjQVE36ZoprDqFUzN4Y7sqkAu5siOH5oJpJr7mOVEdVxbbOk2qsiMTw1ifGvfd3OhAU0YaqbJIUCkPvMJwCwaaM9Ys+5wUdJmnMMKH8BChtBhI8j1jF0EBrbR0vAEXBXtwPLBAdK0al6wp8I2eeLGy4VrQuPPQ7yElddf8t0l3W5MDazEc0B46PLwsglx7GvTOSLyeGAfc5iPOJUDg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747947431; bh=PWY612N53H1qByP/PTIYplw9/L2la2VwiUTlxRNTSqE=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=J2KwWg4H2jOkOo5YanZ5dLnfYkghFdR/v93nZKMaeruq0uoIfNNGazfMQX6VTRUD/jVke8XE9jRlvI8XMd0EWXGTvJqPfNQeoCuXwpNgaJTaBm9ubSeUa2wvwb3JZ+dP6x0DShHQFKMqGbsE8ytE2n2l0s6mBB3YLAJzcMguV+froIDjvTDDmid5VJr0L4bwsiwQvFQDHjFGnVWvM5DdpCPc0/YA9T8SynyPQza6rwUKRpfn+XFc8F5vJ2l85eVQgjNVUEb/yC9lFlLPT+m2IFEJrBIu4NuYd3DqjELftKMlTkecmehxXc4Vl/8L8KtaM463aCjafD8TLnpXfA+icA==
+X-YMail-OSG: btq1b6EVM1nhBzHyV8zfTEvlt4sRgw1RSCKMTe1xPp.Hrv3hFPED9EI5cOSN9i.
+ innCM27yI9xh5zeHMCnSA7HoEi82aiGJGbqodOoGAwpl.LjZDMVb_Jv9vrrdwhu3Ni0eQtwX.bNt
+ ilGHOcS8ek6pGbGOJoc89B8UubOcIiuDvLsCIYUlULg0cJWummxxcNAXLoBxOTOlVB0yTyuqZzM5
+ oNBSafmnwPh39gePZSVkf_s_fx9hO49iz8z8zWvfHT6bINi1mvWPFsMaa79ykTE5CZuG.azEcmIF
+ ZpD2QtILZyi9wPLWOyGMK9tH0ntWAMnAI_Qc_rSjlLfxDz9qCFVsZFdB1VWsl2z34CWkQVe..VpR
+ clWwhcVbOeiOsoJYBnFUVpWsiQ2vmJSEXLO1BRodGgg3RAKepSQE9UQ8M5Bsz.HdZR56X2bHGzuh
+ BrlxHqa5X0plDFUsae.Y.AvHYxQ_VCkIpz4dQYdU96526sE6vdNOdltMf9s0iCdOvy6wdC9bpJgq
+ w2onwqFCqOuHNPXqUCsgM970kfS7QCee3faMmjXr.P6LY15mWV7vvTu9sVtf7p.Gu8U3j3N50nhL
+ qQJHWWjDovDVtFbtX3B4mG7WpYsTCuZExo6U3EUgSwredW.eUNgjn3_gt8ESkTpBDFjDdXMBwx04
+ rMNDaL8lGM.ajGSIsih4DGnIRJQM30hYIlofdmHFZ8hFYSdH17x8VFxujE90E2L02w5dsGJ6DRtD
+ MiZDWqCzb02bnFfT3xFjjkJJo31lHTHfK2ikvxGfZeh332nHdq2iO3F_BRUje6O0ro1Fg5VfNpdx
+ m7B.kOwohQHK.9ZY7D2_3Qpa3jOG1xy1X3xxj2SYG6XwVBqoyWdmrhF9nlD40QamhWDzjc3UwQwO
+ mmj79UGAjwcAyoltRNBMQKA_830AcBjxOa7AVIY65HVNUAcSx0fjmkjmN7oNNioOXJAiqggBHKKi
+ bWlkihK0uFnVpz0Ibi6N8h6YUpjAKM0cwFmIKcq3L0_hPlZbD0HnxQe.V74DuAYrfYLMxBoQCUjz
+ NUaqfF1i7cq62rnbDn.osQdie4rU2sOnZZNtjgn9z3CDritc6AcnfeNRotXC0N8FmNqI.vObo8x9
+ 3ZTpz41_hPTYymwGBRY6m22iRGMMOSaAYMD91onr2EBP_VcmmAc440F09j_lzobgZ7T0Q0WQFSSQ
+ NyF97e.899_14Rsb3qm_iYcDkMBu1xTaeWPyqrlnEjX5gP54bPVSJ3YJvPkB9mwyuQKeSXVwiFwI
+ njrd40gjEc.X6yNjHG7ntsWyaWrU7DVzYhAMRn28__UbUg9X18SwBD.Tcm4oTzSmk4vlLjBNO_kx
+ WEQO3okPRsrUmiLV.jiF3zT.6UDw8f.xCYY47bqXNgzM_N7pYALgNnDa_QRfaThrztzd..E24JNW
+ pVH_HHUJVnIECxVYwndA5mo2ltuigr0NSzpqv7P.tUkJI_M1Hc1mffRyDUhWpUYAUJEgKZ050QlK
+ M3NHvY9hx6kKSOZMGUbUz7aQXDM5g68paSk3mZSMeONGFGlgVjWquuuEGa1qTjtw2CmuJYdRwCgC
+ 447GHBSfQYUSBsIciD1biEvE_PYVGvp6W2gpgeFDNuG4LP4GowU8rSO9kd5npFNCFafrscBX0egP
+ o7sGVxOVjaHoNUum39WctZqRfrBHhQoXhv7eMwGZllLjgKB1iBQFKD6rl8kH6ysjH5yAx3YckM7f
+ DEn9QDDpucbS5eugIOJFrD_FanBlbKDu4y9uIngTsmaXXHcNcLyNUoWefhU_XEX_xVTwGnhUDYjW
+ B3YR3T1X28BvnL33_TQho3u8gItb2RKGW80NmCi8vE_KQKnJ64ycO.iUMRmIj4LeFZUGX53LEwrO
+ fdbKi1qe_yPL2DWROP6hRfmp5oOf5e1UhweKuIl27ii7Hzq5ngJsPNdeY.cWuKBpto1rz7p_Qzl7
+ oBbqcrMTB2.Z1Yp.dxVJlVSM1yhOZkb0e7k3hfy2vAPBpGHPJj5zEb_ZWyJCDzCaLX_r6UW4R15Z
+ TiclmTbxrjdnykUmRSQZKUNEVHcLZtMowdfTfMwb_5eVK3XyD0OZBY065bLIvogMYgznJzRREMXX
+ u_yIGwnbOfxBlrrnDPabLp92jAwo44wYoVrx6apHgxW2HWDatBpRRles__r0swpg075jsJtyqRaQ
+ c6r_m3Vx9eFyw_lH.AxVTkLZi8ap3wyoyNyCaYycsLWcW0wd9bowPDOCJ5.u5OFvV43g6Ac60job
+ 93OA6fBMwwPQ1DNuOeXK3syyRwJ6303Yn0e8PEha9KAvh374tEH3FqR6X7QuLekyoQo9TY72UOKy
+ vC6j.9vEvbnyFMyN3mWQf07CrzQmEDv15GGLLS7Rb4cES8Q--
+X-Sonic-MF: <sumanth.gavini@yahoo.com>
+X-Sonic-ID: e8fdb12f-1175-4b73-923a-68eb1ca40875
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.sg3.yahoo.com with HTTP; Thu, 22 May 2025 20:57:11 +0000
+Received: by hermes--production-gq1-74d64bb7d7-lwch7 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 54d4537dbd31a689292303adb7330d0f;
+          Thu, 22 May 2025 20:57:06 +0000 (UTC)
+From: Sumanth Gavini <sumanth.gavini@yahoo.com>
+To: viro@zeniv.linux.org.uk,
+	mingo@kernel.org,
+	tglx@linutronix.de,
+	kvalo@kernel.org,
+	algonell@gmail.com,
+	jeff.johnson@oss.qualcomm.com
+Cc: Sumanth Gavini <sumanth.gavini@yahoo.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: ath6kl: Fix spellings
+Date: Thu, 22 May 2025 13:56:53 -0700
+Message-ID: <20250522205701.393612-1-sumanth.gavini@yahoo.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:3f0c:b0:869:fc1b:2194 with SMTP id
- ca18e2360f4ac-86a24be4576mr3972513239f.6.1747944267341; Thu, 22 May 2025
- 13:04:27 -0700 (PDT)
-Date: Thu, 22 May 2025 13:04:27 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <682f834b.a70a0220.1765ec.0144.GAE@google.com>
-Subject: [syzbot] [wireless?] KASAN: slab-out-of-bounds Read in mac80211_hwsim_new_radio
-From: syzbot <syzbot+314853b9e8b9b3624502@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+References: <20250522205701.393612-1-sumanth.gavini.ref@yahoo.com>
 
-Hello,
+Fix misspelling reported by codespell.
 
-syzbot found the following issue on:
-
-HEAD commit:    5723cc3450bc Merge tag 'dmaengine-fix-6.15' of git://git.k..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=13db41f4580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7b197212d89c3c28
-dashboard link: https://syzkaller.appspot.com/bug?extid=314853b9e8b9b3624502
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/e9dbf7fa47fa/disk-5723cc34.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/da7091265dff/vmlinux-5723cc34.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/364a1ac0c828/bzImage-5723cc34.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+314853b9e8b9b3624502@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: slab-out-of-bounds in __rhashtable_insert_fast include/linux/rhashtable.h:741 [inline]
-BUG: KASAN: slab-out-of-bounds in rhashtable_insert_fast include/linux/rhashtable.h:834 [inline]
-BUG: KASAN: slab-out-of-bounds in mac80211_hwsim_new_radio+0x4b81/0x54d0 drivers/net/wireless/virtual/mac80211_hwsim.c:5591
-Read of size 8 at addr ffff88807c02b0b0 by task syz-executor/10418
-
-CPU: 0 UID: 0 PID: 10418 Comm: syz-executor Not tainted 6.15.0-rc6-syzkaller-00346-g5723cc3450bc #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- __rhashtable_insert_fast include/linux/rhashtable.h:741 [inline]
- rhashtable_insert_fast include/linux/rhashtable.h:834 [inline]
- mac80211_hwsim_new_radio+0x4b81/0x54d0 drivers/net/wireless/virtual/mac80211_hwsim.c:5591
- hwsim_new_radio_nl+0xb51/0x12c0 drivers/net/wireless/virtual/mac80211_hwsim.c:6243
- genl_family_rcv_msg_doit+0x209/0x2f0 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x55c/0x800 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x16d/0x440 net/netlink/af_netlink.c:2534
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
- netlink_unicast+0x53d/0x7f0 net/netlink/af_netlink.c:1339
- netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- __sys_sendto+0x498/0x510 net/socket.c:2180
- __do_sys_sendto net/socket.c:2187 [inline]
- __se_sys_sendto net/socket.c:2183 [inline]
- __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2183
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f42501907fc
-Code: 2a 5f 02 00 44 8b 4c 24 2c 4c 8b 44 24 20 89 c5 44 8b 54 24 28 48 8b 54 24 18 b8 2c 00 00 00 48 8b 74 24 10 8b 7c 24 08 0f 05 <48> 3d 00 f0 ff ff 77 34 89 ef 48 89 44 24 08 e8 70 5f 02 00 48 8b
-RSP: 002b:00007ffc18488b90 EFLAGS: 00000293 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f4250ee4620 RCX: 00007f42501907fc
-RDX: 0000000000000024 RSI: 00007f4250ee4670 RDI: 0000000000000003
-RBP: 0000000000000000 R08: 00007ffc18488be4 R09: 000000000000000c
-R10: 0000000000000000 R11: 0000000000000293 R12: 0000000000000003
-R13: 0000000000000000 R14: 00007f4250ee4670 R15: 0000000000000000
- </TASK>
-
-Allocated by task 36:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4327 [inline]
- __kmalloc_node_track_caller_noprof+0x221/0x510 mm/slub.c:4346
- kmalloc_reserve+0xef/0x2c0 net/core/skbuff.c:599
- __alloc_skb+0x166/0x380 net/core/skbuff.c:668
- alloc_skb include/linux/skbuff.h:1340 [inline]
- nsim_dev_trap_skb_build drivers/net/netdevsim/dev.c:748 [inline]
- nsim_dev_trap_report drivers/net/netdevsim/dev.c:805 [inline]
- nsim_dev_trap_report_work+0x2b1/0xcf0 drivers/net/netdevsim/dev.c:851
- process_one_work+0x9cf/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c5/0x780 kernel/kthread.c:464
- ret_from_fork+0x48/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Freed by task 36:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:247 [inline]
- __kasan_slab_free+0x51/0x70 mm/kasan/common.c:264
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2380 [inline]
- slab_free mm/slub.c:4642 [inline]
- kfree+0x2b6/0x4d0 mm/slub.c:4841
- skb_kfree_head net/core/skbuff.c:1058 [inline]
- skb_free_head+0x108/0x1d0 net/core/skbuff.c:1070
- skb_release_data+0x7a5/0x960 net/core/skbuff.c:1097
- skb_release_all net/core/skbuff.c:1162 [inline]
- __kfree_skb net/core/skbuff.c:1176 [inline]
- consume_skb net/core/skbuff.c:1408 [inline]
- consume_skb+0xbf/0x100 net/core/skbuff.c:1402
- nsim_dev_trap_report drivers/net/netdevsim/dev.c:821 [inline]
- nsim_dev_trap_report_work+0x8bd/0xcf0 drivers/net/netdevsim/dev.c:851
- process_one_work+0x9cf/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c5/0x780 kernel/kthread.c:464
- ret_from_fork+0x48/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-The buggy address belongs to the object at ffff88807c02a000
- which belongs to the cache kmalloc-4k of size 4096
-The buggy address is located 176 bytes to the right of
- allocated 4096-byte region [ffff88807c02a000, ffff88807c02b000)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x7c028
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 00fff00000000040 ffff88801b442140 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
-head: 00fff00000000040 ffff88801b442140 dead000000000122 0000000000000000
-head: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
-head: 00fff00000000003 ffffea0001f00a01 00000000ffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2820(GFP_ATOMIC|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 36, tgid 36 (kworker/u8:2), ts 742363181667, free_ts 742221384347
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x181/0x1b0 mm/page_alloc.c:1714
- prep_new_page mm/page_alloc.c:1722 [inline]
- get_page_from_freelist+0x135c/0x3920 mm/page_alloc.c:3684
- __alloc_frozen_pages_noprof+0x263/0x23a0 mm/page_alloc.c:4966
- alloc_pages_mpol+0x1fb/0x550 mm/mempolicy.c:2301
- alloc_slab_page mm/slub.c:2450 [inline]
- allocate_slab mm/slub.c:2618 [inline]
- new_slab+0x244/0x340 mm/slub.c:2672
- ___slab_alloc+0xd9c/0x1940 mm/slub.c:3858
- __slab_alloc.constprop.0+0x56/0xb0 mm/slub.c:3948
- __slab_alloc_node mm/slub.c:4023 [inline]
- slab_alloc_node mm/slub.c:4184 [inline]
- __do_kmalloc_node mm/slub.c:4326 [inline]
- __kmalloc_node_track_caller_noprof+0x2ee/0x510 mm/slub.c:4346
- kmalloc_reserve+0xef/0x2c0 net/core/skbuff.c:599
- __alloc_skb+0x166/0x380 net/core/skbuff.c:668
- alloc_skb include/linux/skbuff.h:1340 [inline]
- nsim_dev_trap_skb_build drivers/net/netdevsim/dev.c:748 [inline]
- nsim_dev_trap_report drivers/net/netdevsim/dev.c:805 [inline]
- nsim_dev_trap_report_work+0x2b1/0xcf0 drivers/net/netdevsim/dev.c:851
- process_one_work+0x9cf/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c5/0x780 kernel/kthread.c:464
- ret_from_fork+0x48/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-page last free pid 10539 tgid 10539 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- free_pages_prepare mm/page_alloc.c:1258 [inline]
- __free_frozen_pages+0x69d/0xff0 mm/page_alloc.c:2721
- qlink_free mm/kasan/quarantine.c:163 [inline]
- qlist_free_all+0x4e/0x120 mm/kasan/quarantine.c:179
- kasan_quarantine_reduce+0x195/0x1e0 mm/kasan/quarantine.c:286
- __kasan_slab_alloc+0x69/0x90 mm/kasan/common.c:329
- kasan_slab_alloc include/linux/kasan.h:250 [inline]
- slab_post_alloc_hook mm/slub.c:4147 [inline]
- slab_alloc_node mm/slub.c:4196 [inline]
- __do_kmalloc_node mm/slub.c:4326 [inline]
- __kmalloc_node_track_caller_noprof+0x1d3/0x510 mm/slub.c:4346
- __kmemdup_nul mm/util.c:63 [inline]
- kstrdup+0x53/0x100 mm/util.c:83
- kstrdup_const+0x63/0x80 mm/util.c:103
- kvasprintf_const+0x10f/0x1a0 lib/kasprintf.c:48
- kobject_set_name_vargs+0x5a/0x140 lib/kobject.c:274
- dev_set_name+0xc7/0x100 drivers/base/core.c:3495
- netdev_register_kobject+0xc5/0x3a0 net/core/net-sysfs.c:2323
- register_netdevice+0x13dc/0x2270 net/core/dev.c:10999
- nsim_init_netdevsim drivers/net/netdevsim/netdev.c:960 [inline]
- nsim_create+0xc70/0x10a0 drivers/net/netdevsim/netdev.c:1028
- __nsim_dev_port_add+0x42b/0x7d0 drivers/net/netdevsim/dev.c:1393
- nsim_dev_port_add_all drivers/net/netdevsim/dev.c:1449 [inline]
- nsim_drv_probe+0xdca/0x1490 drivers/net/netdevsim/dev.c:1607
- call_driver_probe drivers/base/dd.c:579 [inline]
- really_probe+0x241/0xa90 drivers/base/dd.c:657
-
-Memory state around the buggy address:
- ffff88807c02af80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88807c02b000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff88807c02b080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                                     ^
- ffff88807c02b100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88807c02b180: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 0 UID: 0 PID: 10418 Comm: syz-executor Tainted: G    B               6.15.0-rc6-syzkaller-00346-g5723cc3450bc #0 PREEMPT(full) 
-Tainted: [B]=BAD_PAGE
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-RIP: 0010:__rhashtable_insert_fast include/linux/rhashtable.h:741 [inline]
-RIP: 0010:rhashtable_insert_fast include/linux/rhashtable.h:834 [inline]
-RIP: 0010:mac80211_hwsim_new_radio+0x3740/0x54d0 drivers/net/wireless/virtual/mac80211_hwsim.c:5591
-Code: 8b 6c 24 48 48 89 5c 24 70 48 8b 1c 24 4c 89 74 24 68 eb 3e e8 a1 6e c1 fa 4c 89 e0 48 b9 00 00 00 00 00 fc ff df 48 c1 e8 03 <80> 3c 08 00 0f 85 2f 14 00 00 4d 8b 24 24 31 ff 45 89 e6 41 83 e6
-RSP: 0018:ffffc900042df518 EFLAGS: 00010056
-RAX: 0000000000000000 RBX: ffff88802547f000 RCX: dffffc0000000000
-RDX: ffff88802a7d1e00 RSI: ffffffff86f9d69f RDI: 0000000000000005
-RBP: 0000000000000011 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 6e696c6261736944 R12: 0000000000000000
-R13: 000000000000000c R14: 0000000000000000 R15: ffff888066738e40
-FS:  0000555572ad4500(0000) GS:ffff8881249e0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ff7a5f3d200 CR3: 000000003b5b7000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- hwsim_new_radio_nl+0xb51/0x12c0 drivers/net/wireless/virtual/mac80211_hwsim.c:6243
- genl_family_rcv_msg_doit+0x209/0x2f0 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x55c/0x800 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x16d/0x440 net/netlink/af_netlink.c:2534
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
- netlink_unicast+0x53d/0x7f0 net/netlink/af_netlink.c:1339
- netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- __sys_sendto+0x498/0x510 net/socket.c:2180
- __do_sys_sendto net/socket.c:2187 [inline]
- __se_sys_sendto net/socket.c:2183 [inline]
- __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2183
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f42501907fc
-Code: 2a 5f 02 00 44 8b 4c 24 2c 4c 8b 44 24 20 89 c5 44 8b 54 24 28 48 8b 54 24 18 b8 2c 00 00 00 48 8b 74 24 10 8b 7c 24 08 0f 05 <48> 3d 00 f0 ff ff 77 34 89 ef 48 89 44 24 08 e8 70 5f 02 00 48 8b
-RSP: 002b:00007ffc18488b90 EFLAGS: 00000293 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f4250ee4620 RCX: 00007f42501907fc
-RDX: 0000000000000024 RSI: 00007f4250ee4670 RDI: 0000000000000003
-RBP: 0000000000000000 R08: 00007ffc18488be4 R09: 000000000000000c
-R10: 0000000000000000 R11: 0000000000000293 R12: 0000000000000003
-R13: 0000000000000000 R14: 00007f4250ee4670 R15: 0000000000000000
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__rhashtable_insert_fast include/linux/rhashtable.h:741 [inline]
-RIP: 0010:rhashtable_insert_fast include/linux/rhashtable.h:834 [inline]
-RIP: 0010:mac80211_hwsim_new_radio+0x3740/0x54d0 drivers/net/wireless/virtual/mac80211_hwsim.c:5591
-Code: 8b 6c 24 48 48 89 5c 24 70 48 8b 1c 24 4c 89 74 24 68 eb 3e e8 a1 6e c1 fa 4c 89 e0 48 b9 00 00 00 00 00 fc ff df 48 c1 e8 03 <80> 3c 08 00 0f 85 2f 14 00 00 4d 8b 24 24 31 ff 45 89 e6 41 83 e6
-RSP: 0018:ffffc900042df518 EFLAGS: 00010056
-RAX: 0000000000000000 RBX: ffff88802547f000 RCX: dffffc0000000000
-RDX: ffff88802a7d1e00 RSI: ffffffff86f9d69f RDI: 0000000000000005
-RBP: 0000000000000011 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 6e696c6261736944 R12: 0000000000000000
-R13: 000000000000000c R14: 0000000000000000 R15: ffff888066738e40
-FS:  0000555572ad4500(0000) GS:ffff8881249e0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ff7a5f3d200 CR3: 000000003b5b7000 CR4: 0000000000350ef0
-----------------
-Code disassembly (best guess):
-   0:	8b 6c 24 48          	mov    0x48(%rsp),%ebp
-   4:	48 89 5c 24 70       	mov    %rbx,0x70(%rsp)
-   9:	48 8b 1c 24          	mov    (%rsp),%rbx
-   d:	4c 89 74 24 68       	mov    %r14,0x68(%rsp)
-  12:	eb 3e                	jmp    0x52
-  14:	e8 a1 6e c1 fa       	call   0xfac16eba
-  19:	4c 89 e0             	mov    %r12,%rax
-  1c:	48 b9 00 00 00 00 00 	movabs $0xdffffc0000000000,%rcx
-  23:	fc ff df
-  26:	48 c1 e8 03          	shr    $0x3,%rax
-* 2a:	80 3c 08 00          	cmpb   $0x0,(%rax,%rcx,1) <-- trapping instruction
-  2e:	0f 85 2f 14 00 00    	jne    0x1463
-  34:	4d 8b 24 24          	mov    (%r12),%r12
-  38:	31 ff                	xor    %edi,%edi
-  3a:	45 89 e6             	mov    %r12d,%r14d
-  3d:	41                   	rex.B
-  3e:	83                   	.byte 0x83
-  3f:	e6                   	.byte 0xe6
-
-
+Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/ath/ath6kl/core.c     |  2 +-
+ drivers/net/wireless/ath/ath6kl/hif.c      |  2 +-
+ drivers/net/wireless/ath/ath6kl/htc.h      |  6 +++---
+ drivers/net/wireless/ath/ath6kl/htc_mbox.c |  2 +-
+ drivers/net/wireless/ath/ath6kl/htc_pipe.c |  2 +-
+ drivers/net/wireless/ath/ath6kl/init.c     |  4 ++--
+ drivers/net/wireless/ath/ath6kl/main.c     |  2 +-
+ drivers/net/wireless/ath/ath6kl/sdio.c     |  2 +-
+ drivers/net/wireless/ath/ath6kl/usb.c      |  6 +++---
+ drivers/net/wireless/ath/ath6kl/wmi.c      |  2 +-
+ drivers/net/wireless/ath/ath6kl/wmi.h      | 10 +++++-----
+ 11 files changed, 20 insertions(+), 20 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/wireless/ath/ath6kl/core.c b/drivers/net/wireless/ath/ath6kl/core.c
+index 4f0a7a185fc9..830350bda531 100644
+--- a/drivers/net/wireless/ath/ath6kl/core.c
++++ b/drivers/net/wireless/ath/ath6kl/core.c
+@@ -91,7 +91,7 @@ int ath6kl_core_init(struct ath6kl *ar, enum ath6kl_htc_type htc_type)
+ 
+ 	/*
+ 	 * Turn on power to get hardware (target) version and leave power
+-	 * on delibrately as we will boot the hardware anyway within few
++	 * on deliberately as we will boot the hardware anyway within few
+ 	 * seconds.
+ 	 */
+ 	ret = ath6kl_hif_power_on(ar);
+diff --git a/drivers/net/wireless/ath/ath6kl/hif.c b/drivers/net/wireless/ath/ath6kl/hif.c
+index d1942537ea10..c693783bb9de 100644
+--- a/drivers/net/wireless/ath/ath6kl/hif.c
++++ b/drivers/net/wireless/ath/ath6kl/hif.c
+@@ -513,7 +513,7 @@ static int proc_pending_irqs(struct ath6kl_device *dev, bool *done)
+ out:
+ 	/*
+ 	 * An optimization to bypass reading the IRQ status registers
+-	 * unecessarily which can re-wake the target, if upper layers
++	 * unnecessarily which can re-wake the target, if upper layers
+ 	 * determine that we are in a low-throughput mode, we can rely on
+ 	 * taking another interrupt rather than re-checking the status
+ 	 * registers which can re-wake the target.
+diff --git a/drivers/net/wireless/ath/ath6kl/htc.h b/drivers/net/wireless/ath/ath6kl/htc.h
+index d3534a29c4f0..d61be202677c 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc.h
++++ b/drivers/net/wireless/ath/ath6kl/htc.h
+@@ -485,7 +485,7 @@ struct htc_endpoint_stats {
+ 	/* count of credits received via another endpoint */
+ 	u32 cred_from_ep0;
+ 
+-	/* count of consummed credits */
++	/* count of consumed credits */
+ 	u32 cred_cosumd;
+ 
+ 	/* count of credits returned */
+@@ -596,7 +596,7 @@ struct htc_target {
+ 	/* protects free_ctrl_txbuf and free_ctrl_rxbuf */
+ 	spinlock_t htc_lock;
+ 
+-	/* FIXME: does this protext rx_bufq and endpoint structures or what? */
++	/* FIXME: does this protect rx_bufq and endpoint structures or what? */
+ 	spinlock_t rx_lock;
+ 
+ 	/* protects endpoint->txq */
+@@ -624,7 +624,7 @@ struct htc_target {
+ 
+ 	int chk_irq_status_cnt;
+ 
+-	/* counts the number of Tx without bundling continously per AC */
++	/* counts the number of Tx without bundling continuously per AC */
+ 	u32 ac_tx_count[WMM_NUM_AC];
+ 
+ 	struct {
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_mbox.c b/drivers/net/wireless/ath/ath6kl/htc_mbox.c
+index f8a94d764be6..122e07ef3965 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_mbox.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_mbox.c
+@@ -938,7 +938,7 @@ static void ath6kl_htc_tx_from_queue(struct htc_target *target,
+ 
+ 		/*
+ 		 * if an AC has bundling disabled and no tx bundling
+-		 * has occured continously for a certain number of TX,
++		 * has occurred continuously for a certain number of TX,
+ 		 * enable tx bundling for this AC
+ 		 */
+ 		if (!bundle_sent) {
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+index 2f2edfe43761..7b823be9d846 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+@@ -718,7 +718,7 @@ static struct htc_packet *htc_lookup_tx_packet(struct htc_target *target,
+ 	spin_lock_bh(&target->tx_lock);
+ 
+ 	/*
+-	 * interate from the front of tx lookup queue
++	 * iterate from the front of tx lookup queue
+ 	 * this lookup should be fast since lower layers completes in-order and
+ 	 * so the completed packet should be at the head of the list generally
+ 	 */
+diff --git a/drivers/net/wireless/ath/ath6kl/init.c b/drivers/net/wireless/ath/ath6kl/init.c
+index 9b100ee2ebc3..782209dcb782 100644
+--- a/drivers/net/wireless/ath/ath6kl/init.c
++++ b/drivers/net/wireless/ath/ath6kl/init.c
+@@ -207,7 +207,7 @@ static const struct ath6kl_hw hw_list[] = {
+ 
+ /*
+  * This configuration item sets the value of disconnect timeout
+- * Firmware delays sending the disconnec event to the host for this
++ * Firmware delays sending the disconnect event to the host for this
+  * timeout after is gets disconnected from the current AP.
+  * If the firmware successly roams within the disconnect timeout
+  * it sends a new connect event
+@@ -221,7 +221,7 @@ struct sk_buff *ath6kl_buf_alloc(int size)
+ 	struct sk_buff *skb;
+ 	u16 reserved;
+ 
+-	/* Add chacheline space at front and back of buffer */
++	/* Add cacheline space at front and back of buffer */
+ 	reserved = roundup((2 * L1_CACHE_BYTES) + ATH6KL_DATA_OFFSET +
+ 		   sizeof(struct htc_packet) + ATH6KL_HTC_ALIGN_BYTES, 4);
+ 	skb = dev_alloc_skb(size + reserved);
+diff --git a/drivers/net/wireless/ath/ath6kl/main.c b/drivers/net/wireless/ath/ath6kl/main.c
+index 867089a3c096..4edda694b1bd 100644
+--- a/drivers/net/wireless/ath/ath6kl/main.c
++++ b/drivers/net/wireless/ath/ath6kl/main.c
+@@ -583,7 +583,7 @@ static int ath6kl_commit_ch_switch(struct ath6kl_vif *vif, u16 channel)
+ 	switch (vif->nw_type) {
+ 	case AP_NETWORK:
+ 		/*
+-		 * reconfigure any saved RSN IE capabilites in the beacon /
++		 * reconfigure any saved RSN IE capabilities in the beacon /
+ 		 * probe response to stay in sync with the supplicant.
+ 		 */
+ 		if (vif->rsn_capab &&
+diff --git a/drivers/net/wireless/ath/ath6kl/sdio.c b/drivers/net/wireless/ath/ath6kl/sdio.c
+index 9ab091044706..83de40bc4445 100644
+--- a/drivers/net/wireless/ath/ath6kl/sdio.c
++++ b/drivers/net/wireless/ath/ath6kl/sdio.c
+@@ -486,7 +486,7 @@ static void ath6kl_sdio_irq_handler(struct sdio_func *func)
+ 	ar_sdio = sdio_get_drvdata(func);
+ 	atomic_set(&ar_sdio->irq_handling, 1);
+ 	/*
+-	 * Release the host during interrups so we can pick it back up when
++	 * Release the host during interrupts so we can pick it back up when
+ 	 * we process commands.
+ 	 */
+ 	sdio_release_host(ar_sdio->func);
+diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
+index 5220809841a6..38bb501fc553 100644
+--- a/drivers/net/wireless/ath/ath6kl/usb.c
++++ b/drivers/net/wireless/ath/ath6kl/usb.c
+@@ -93,7 +93,7 @@ struct ath6kl_urb_context {
+ #define ATH6KL_USB_EP_ADDR_APP_DATA_MP_OUT      0x03
+ #define ATH6KL_USB_EP_ADDR_APP_DATA_HP_OUT      0x04
+ 
+-/* diagnostic command defnitions */
++/* diagnostic command definitions */
+ #define ATH6KL_USB_CONTROL_REQ_SEND_BMI_CMD        1
+ #define ATH6KL_USB_CONTROL_REQ_RECV_BMI_RESP       2
+ #define ATH6KL_USB_CONTROL_REQ_DIAG_CMD            3
+@@ -882,7 +882,7 @@ static int ath6kl_usb_submit_ctrl_out(struct ath6kl_usb *ar_usb,
+ 			return -ENOMEM;
+ 	}
+ 
+-	/* note: if successful returns number of bytes transfered */
++	/* note: if successful returns number of bytes transferred */
+ 	ret = usb_control_msg(ar_usb->udev,
+ 			      usb_sndctrlpipe(ar_usb->udev, 0),
+ 			      req,
+@@ -914,7 +914,7 @@ static int ath6kl_usb_submit_ctrl_in(struct ath6kl_usb *ar_usb,
+ 			return -ENOMEM;
+ 	}
+ 
+-	/* note: if successful returns number of bytes transfered */
++	/* note: if successful returns number of bytes transferred */
+ 	ret = usb_control_msg(ar_usb->udev,
+ 				 usb_rcvctrlpipe(ar_usb->udev, 0),
+ 				 req,
+diff --git a/drivers/net/wireless/ath/ath6kl/wmi.c b/drivers/net/wireless/ath/ath6kl/wmi.c
+index 3787b9fb0075..1ecf6a2171df 100644
+--- a/drivers/net/wireless/ath/ath6kl/wmi.c
++++ b/drivers/net/wireless/ath/ath6kl/wmi.c
+@@ -2601,7 +2601,7 @@ int ath6kl_wmi_create_pstream_cmd(struct wmi *wmi, u8 if_idx,
+ 	}
+ 
+ 	/*
+-	 * Indicate activty change to driver layer only if this is the
++	 * Indicate activity change to driver layer only if this is the
+ 	 * first TSID to get created in this AC explicitly or an implicit
+ 	 * fat pipe is getting created.
+ 	 */
+diff --git a/drivers/net/wireless/ath/ath6kl/wmi.h b/drivers/net/wireless/ath/ath6kl/wmi.h
+index 68384159870b..3080d82e25cc 100644
+--- a/drivers/net/wireless/ath/ath6kl/wmi.h
++++ b/drivers/net/wireless/ath/ath6kl/wmi.h
+@@ -655,7 +655,7 @@ enum wmi_mgmt_frame_type {
+ 
+ enum wmi_ie_field_type {
+ 	WMI_RSN_IE_CAPB	= 0x1,
+-	WMI_IE_FULL	= 0xFF,  /* indicats full IE */
++	WMI_IE_FULL	= 0xFF,  /* indicates full IE */
+ };
+ 
+ /* WMI_CONNECT_CMDID  */
+@@ -1178,10 +1178,10 @@ struct wmi_create_pstream_cmd {
+ 	__le32 sba;
+ 	__le32 medium_time;
+ 
+-	/* in octects */
++	/* in octets */
+ 	__le16 nominal_msdu;
+ 
+-	/* in octects */
++	/* in octets */
+ 	__le16 max_msdu;
+ 
+ 	u8 traffic_class;
+@@ -1742,7 +1742,7 @@ struct wmi_scan_complete_event {
+ 
+ /*
+  * Special frame receive Event.
+- * Mechanism used to inform host of the receiption of the special frames.
++ * Mechanism used to inform host of the reception of the special frames.
+  * Consists of special frame info header followed by special frame body.
+  * The 802.11 header is not included.
+  */
+@@ -1860,7 +1860,7 @@ struct wmi_target_stats {
+ /*
+  * WMI_RSSI_THRESHOLD_EVENTID.
+  * Indicate the RSSI events to host. Events are indicated when we breach a
+- * thresold value.
++ * threshold value.
+  */
+ enum wmi_rssi_threshold_val {
+ 	WMI_RSSI_THRESHOLD1_ABOVE = 0,
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
