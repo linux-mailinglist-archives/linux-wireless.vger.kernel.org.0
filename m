@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-23286-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23287-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F8CAC07F6
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 10:58:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656C0AC07F5
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 10:58:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3DFC7B841A
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 08:57:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D385A1BC51DC
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 May 2025 08:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D3728A1D2;
-	Thu, 22 May 2025 08:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A7F28A1F4;
+	Thu, 22 May 2025 08:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NcqW0PLb"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="f5huxoNX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FC828983A
-	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 08:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403AC286893
+	for <linux-wireless@vger.kernel.org>; Thu, 22 May 2025 08:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747904200; cv=none; b=rX9SBTwTTkH+YU3OsHxzUh+jCe1t5AXLRl2fH4resOUUOYFzB7x+5CXOZuCB25IiK76UVCPzvOA1AqFdMpipy0wq0MDg9r8VcnCRyh6/uyiCl7XXAbVf+zGLgxER9xIvxoXGyLV2sBlzfKkMdn36eGLf2mT8gwwiplUwJ0eY8+U=
+	t=1747904201; cv=none; b=Z47kiMsB0DuNAypib4HSGQavkI8psXf4n9S0SA9/r6rphm7otAQLoxF+gEXWwtBzbpnod0gvfpr7Jo8aQ3KbCrxO4gi0TUvamc0TZWFeX/exLNKVSiftxsUw5ej0VY+K8RO/OZgGI0YunoFemSzCHOPKtGG8ma2p9rKy5YyyWAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747904200; c=relaxed/simple;
-	bh=G0zMzcruV93DIPkS813RzPm6k6qaN5g4xMZOd6aun4Y=;
+	s=arc-20240116; t=1747904201; c=relaxed/simple;
+	bh=fq/yozysxrskP+CC++xGvhuduFQ3x8ZgtG38C4JV5X0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iRgZPZ0L1N79bEia7EWKvuoirf3ziwwe7SfVNQaXz5gO/cyflIXbJo2UgTh4JbUrCnkKH28guZh0LO7K+anb2g6vlhJCjLFhpeZWwkhE4dOPYKzdXsxYG1ngP9bV9BmBU6pX+mK5BQf8a+K4py+Tb33dbPwCl28A/SoO9+0VyPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NcqW0PLb; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=LOIydKRmaN994s/EU/iHcglO5ZgGN9mRmuvP/lS7LMuHPQHvQQiHkh019uoIg9QuISk2aHhUHh254ASAVcfzyOo311HFBBdRHJ7c0htiAD6MBQ0mJC4fExSxqpCYw2oJSPcG++CGHuu01IlCP8nQgldx8CUku1de+HbQfVyXuiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=f5huxoNX; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54M7uxIc027654;
-	Thu, 22 May 2025 08:56:34 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54M8c7Yw013895;
+	Thu, 22 May 2025 08:56:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	RULZC8rUYEBzZBCr3h/0gBY3v63CARaF+fA6k+x+HHE=; b=NcqW0PLbysFN2igC
-	r90hgLyIR3kfnJAznt/FmECxhkNhIX71kBQ/l2iWbmh86hKUSKascvZcuP6hqZ/w
-	p9hJRnckYhB1lO2VsOE+Wzi45mP/2rieM+2pUisEMFDR/70zkPB8nLq2PlsoKYzE
-	MlkMrg0TQT00pmNdizAXP6Q2YtYlrN9oktZ8uarF9xgVonyCU4mYY7qRlaK0Foag
-	OlbVO8opTOgQmDvn2gHAFbGyvrPYZHSlnJz9hWqS3MeQhm56alg3oT/7THM2TH6g
-	oTuhSlYbqD2zMzj+ZYrmKKRuOeBKMY1fhpoVkr2HLSM1Lr7w40kkhFEQHD/ho2x2
-	V/hnmA==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf9dn3e-1
+	C2MJ58Zknjcg7u3bMS4kdk2thy9DJM7Dph5x2iQ/JLA=; b=f5huxoNXBsgfsIUH
+	/l6yLaMIbSEIx4sMI7889o1QX8/XfqFlrm9S9Ye6PXM8c7/HYwcDi/FLl8QZhe8J
+	JBrTWLsD2P3WPx8YbYOPOt9H7jsBesOQGVP0MqO5+8elf1RT/7YMkBkNtb6Yqy3g
+	zvQ1eodEPit8MzahoArjZZsNj31/YLPb+6gSODgTjg5S/FRc/GlICXlD3QuG4XL6
+	KRaMOi4BppUHvsci8vP3eNjT05n7q7coa7ub2Bpnzm5LDbTipnNy6/64HGd8N7vX
+	BEK/d6sdwnO+nA6iPefS6kPLFruq/N39/A2/qd4GLg1Jbnksznthl7rikN2NMr5y
+	ty0oug==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf9dn3h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 May 2025 08:56:33 +0000 (GMT)
+	Thu, 22 May 2025 08:56:35 +0000 (GMT)
 Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54M8uWA9008692
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54M8uYQg030078
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 May 2025 08:56:32 GMT
+	Thu, 22 May 2025 08:56:34 GMT
 Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
  nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 22 May 2025 01:56:31 -0700
+ 15.2.1544.9; Thu, 22 May 2025 01:56:32 -0700
 From: Sarika Sharma <quic_sarishar@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>,
         Sarika Sharma
 	<quic_sarishar@quicinc.com>
-Subject: [PATCH wireless-next v9 04/10] wifi: cfg80211: add statistics for providing overview for MLO station
-Date: Thu, 22 May 2025 14:25:55 +0530
-Message-ID: <20250522085601.2741458-5-quic_sarishar@quicinc.com>
+Subject: [PATCH wireless-next v9 05/10] wifi: cfg80211: allocate memory for link_station info structure
+Date: Thu, 22 May 2025 14:25:56 +0530
+Message-ID: <20250522085601.2741458-6-quic_sarishar@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250522085601.2741458-1-quic_sarishar@quicinc.com>
 References: <20250522085601.2741458-1-quic_sarishar@quicinc.com>
@@ -79,19 +79,19 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nasanex01c.na.qualcomm.com (10.45.79.139)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: RZ7tdkKw8dNRsFkKI50Lk8jKOcWdd-v0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDA4OSBTYWx0ZWRfXza3MaG2rijyh
- KlluYDZYn4ihQihSE1SRtcsFnAu66mESwq+GT3QKmiJFIJBsx7Qhox7SNZKCjj5ygsPGBPIlbaB
- mqQhc7Fo+B7DXkCIDP8noR3LsgBI9ksCmB+9J7c+cQVzcEY4LZqqYkPy7yZdH+7x4KCKzO0Ht4z
- PHDc/j0It4rIxjBNSS+x1MW+co3i/gPn1UUvz8LNcEFKRPgSiOQmJs2DkpnmiZeHeP9NxrC+rBd
- 8NNJGD9TmszWhNxCKVyGW0iOfhXISmzKh4nGmPXDiq8MgYMYWZnh8aZQvxtPsmWPtLPcuxzW/OJ
- KJ4lYXIq2qRz5Njxvef+eokSfwWPPrs0mt7IsLVcAlCy7bn2Sj3jU9sLih7Oi1JH8dXxDzLcNiK
- VYPtGv5HOLPThGwHCj2+JdSbhCK/IWSVWYvDZD0DELVIf42I/EdOMLfPhVZqS1Axib8tgu5A
-X-Authority-Analysis: v=2.4 cv=GawXnRXL c=1 sm=1 tr=0 ts=682ee6c1 cx=c_pps
+X-Proofpoint-ORIG-GUID: 6rUdZLYILnKnaYDfQsdGh9lsNCqQm7XA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDA4OSBTYWx0ZWRfX5ZKyPJrvkF4r
+ rXybcyaU9cikqBFKi4nM0x3HUATY0lo8MitqZSPRYpV1GShp814ok5JIYCAowvlWlTFjSs/VR5d
+ Cn5YOyoQELWwecQThZNrSoYn7elS+HrITbCdB47o5K+s9xMzDAk41bL+Uv+QPZjJXpVbLdgNCFA
+ HZ86C3ahZsRELGwzsJEc0BpKV0j6xdfZQKVe4djMg6u0AaGyZ4HbV6UFvfn1qoHNAaTeqVSGnF0
+ s23RkRjVaH7XCIufeofBJ9Uo2hMbw2dNo86hWUNDazfkYh/EaQvY+MbBCplHsWATa0UtKEgvM5S
+ MhW6HYUQ9KfrRtlwZ+2PPgZF4GXjNcI7hTqvoKt0i5raobgVJq7epWuFVjUW0C9+Rp0VZo/pBZT
+ DRi92sQJNdvw5Ws3TTVhszumUluVwE3pA834tCRi+C/f4QQfrS2G0Diu311xwdYwB36xU997
+X-Authority-Analysis: v=2.4 cv=GawXnRXL c=1 sm=1 tr=0 ts=682ee6c3 cx=c_pps
  a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=_UDe_yRPNXFXODxl5TUA:9
+ a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=aSMRPBMcyynYYuKUxwgA:9
  a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: RZ7tdkKw8dNRsFkKI50Lk8jKOcWdd-v0
+X-Proofpoint-GUID: 6rUdZLYILnKnaYDfQsdGh9lsNCqQm7XA
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-22_04,2025-05-22_01,2025-03-28_01
@@ -102,258 +102,107 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
  engine=8.19.0-2505160000 definitions=main-2505220089
 
-Currently statistics are handled at link level for multi-link
-operation(MLO). There is no provision to check accumulated statistics
-for a multi-link(ML) station. Other statistics, such as signal, rates,
-are also managed at the link level only.
+Currently, station_info structure is passed to fill station statistics
+from mac80211/drivers. After NL message send to user space for requested
+station statistics, memory for station statistics is freed in cfg80211.
+Therefore, memory allocation/free for link station statistics should
+also happen in cfg80211 only.
 
-Statistics such as packets, bytes, signal, rates, etc are useful to
-provide overall overview for the ML stations.
-
-Statistics such as packets, bytes are accumulated statistics at MLO level.
-However, MLO statistics for rates and signal can not be accumulated since
-it won't make much sense. Hence, handle other statistics such as signal,
-rates, etc bit differently at MLO level.
-
-The signal could be the best of all links-
-e.g. if Link 1 has a signal strength of -70 dBm and Link 2 has -65 dBm,
-the signal for MLO will be -65 dBm.
-
-The rate could be determined based on the most recently updated link-
-e.g. if link 1 has a rate of 300 Mbps and link 2 has a rate of 450 Mbps,
-the MLO rate can be calculated based on the inactivity of each link.
-If the inactive time for link 1 is 20 seconds and for link 2 is 10 seconds,
-the MLO rate will be the most recently updated rate, which is link 2's
-rate of 450 Mbps.
-
-The inactive time, dtim_period and beacon_interval can be taken as the
-least value of field from link level.
-
-Similarly, other MLO level applicable fields are handled and the fields
-which don't make much sense at MLO level, a subsequent change will handle
-to embed NL message.
-
-Hence, add accumulated and other statistics for MLO station if valid links
-are present to represent comprehensive overview for the ML stations.
+Hence, allocate the memory for link_station structure for all
+possible links and free in cfg80211_sinfo_release_content().
 
 Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
 ---
- net/wireless/nl80211.c | 188 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 188 insertions(+)
+ include/net/cfg80211.h |  7 +++++++
+ net/wireless/nl80211.c | 27 ++++++++++++++++++++++++---
+ 2 files changed, 31 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 676f028a44ce..16429d3707d7 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -7176,6 +7176,188 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
- 	return -EMSGSIZE;
- }
- 
-+static void cfg80211_sta_set_mld_sinfo(struct station_info *sinfo)
-+{
-+	struct link_station_info *link_sinfo;
-+	int link_id, init = 0;
-+	u32 link_inactive_time;
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index e2a41cdca4a3..b29d1322d5fc 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -8577,6 +8577,13 @@ int cfg80211_sinfo_alloc_tid_stats(struct station_info *sinfo, gfp_t gfp);
+ static inline void cfg80211_sinfo_release_content(struct station_info *sinfo)
+ {
+ 	kfree(sinfo->pertid);
 +
-+	sinfo->signal = -99;
-+
-+	for_each_valid_link(sinfo, link_id) {
-+		link_sinfo = sinfo->links[link_id];
-+		if (!link_sinfo)
-+			continue;
-+
-+		if ((link_sinfo->filled &
-+		     BIT_ULL(NL80211_STA_INFO_TX_PACKETS))) {
-+			sinfo->tx_packets += link_sinfo->tx_packets;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_PACKETS);
-+		}
-+
-+		if ((link_sinfo->filled &
-+		     BIT_ULL(NL80211_STA_INFO_RX_PACKETS))) {
-+			sinfo->rx_packets += link_sinfo->rx_packets;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_PACKETS);
-+		}
-+
-+		if (link_sinfo->filled &
-+		    (BIT_ULL(NL80211_STA_INFO_TX_BYTES) |
-+		     BIT_ULL(NL80211_STA_INFO_TX_BYTES64))) {
-+			sinfo->tx_bytes += link_sinfo->tx_bytes;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BYTES);
-+		}
-+
-+		if (link_sinfo->filled &
-+		    (BIT_ULL(NL80211_STA_INFO_RX_BYTES) |
-+		     BIT_ULL(NL80211_STA_INFO_TX_BYTES64))) {
-+			sinfo->rx_bytes += link_sinfo->rx_bytes;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_BYTES);
-+		}
-+
-+		if (link_sinfo->filled &
-+		    BIT_ULL(NL80211_STA_INFO_TX_RETRIES)) {
-+			sinfo->tx_retries += link_sinfo->tx_retries;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
-+		}
-+
-+		if (link_sinfo->filled & BIT_ULL(NL80211_STA_INFO_TX_FAILED)) {
-+			sinfo->tx_failed += link_sinfo->tx_failed;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
-+		}
-+
-+		if (link_sinfo->filled &
-+		    BIT_ULL(NL80211_STA_INFO_RX_DROP_MISC)) {
-+			sinfo->rx_dropped_misc += link_sinfo->rx_dropped_misc;
-+			sinfo->filled |=
-+				BIT_ULL(NL80211_STA_INFO_RX_DROP_MISC);
-+		}
-+
-+		if (link_sinfo->filled &
-+		    BIT_ULL(NL80211_STA_INFO_BEACON_LOSS)) {
-+			sinfo->beacon_loss_count +=
-+				link_sinfo->beacon_loss_count;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_BEACON_LOSS);
-+		}
-+
-+		if (link_sinfo->filled &
-+		    BIT_ULL(NL80211_STA_INFO_EXPECTED_THROUGHPUT)) {
-+			sinfo->expected_throughput +=
-+				link_sinfo->expected_throughput;
-+			sinfo->filled |=
-+				BIT_ULL(NL80211_STA_INFO_EXPECTED_THROUGHPUT);
-+		}
-+
-+		if (link_sinfo->filled & BIT_ULL(NL80211_STA_INFO_RX_MPDUS)) {
-+			sinfo->rx_mpdu_count += link_sinfo->rx_mpdu_count;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_MPDUS);
-+		}
-+
-+		if (link_sinfo->filled &
-+		    BIT_ULL(NL80211_STA_INFO_FCS_ERROR_COUNT)) {
-+			sinfo->fcs_err_count += link_sinfo->fcs_err_count;
-+			sinfo->filled |=
-+				BIT_ULL(NL80211_STA_INFO_FCS_ERROR_COUNT);
-+		}
-+
-+		if (link_sinfo->filled &
-+		    BIT_ULL(NL80211_STA_INFO_BEACON_RX)) {
-+			sinfo->rx_beacon += link_sinfo->rx_beacon;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_BEACON_RX);
-+		}
-+
-+		/* Update MLO signal, signal_avg as best among links */
-+		if ((link_sinfo->filled & BIT_ULL(NL80211_STA_INFO_SIGNAL)) &&
-+		    link_sinfo->signal > sinfo->signal) {
-+			sinfo->signal = link_sinfo->signal;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
-+		}
-+
-+		if ((link_sinfo->filled &
-+			BIT_ULL(NL80211_STA_INFO_SIGNAL_AVG)) &&
-+		    link_sinfo->signal_avg > sinfo->signal_avg) {
-+			sinfo->signal_avg = link_sinfo->signal_avg;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL_AVG);
-+		}
-+
-+		/* Update MLO inactive_time, bss_param based on least
-+		 * value for corresponding field of link.
-+		 */
-+		if ((link_sinfo->filled &
-+		     BIT_ULL(NL80211_STA_INFO_INACTIVE_TIME)) &&
-+		    (!init ||
-+		     link_inactive_time > link_sinfo->inactive_time)) {
-+			link_inactive_time = link_sinfo->inactive_time;
-+			sinfo->inactive_time = link_sinfo->inactive_time;
-+			sinfo->filled |= NL80211_STA_INFO_INACTIVE_TIME;
-+		}
-+
-+		if (link_sinfo->filled & BIT_ULL(NL80211_STA_INFO_BSS_PARAM) &&
-+		    (!init ||
-+		     sinfo->bss_param.dtim_period >
-+		      link_sinfo->bss_param.dtim_period)) {
-+			sinfo->bss_param.dtim_period =
-+				link_sinfo->bss_param.dtim_period;
-+			sinfo->filled |= NL80211_STA_BSS_PARAM_DTIM_PERIOD;
-+			sinfo->bss_param.beacon_interval =
-+				link_sinfo->bss_param.beacon_interval;
-+			sinfo->filled |= NL80211_STA_BSS_PARAM_BEACON_INTERVAL;
-+		}
-+
-+		/* Update MLO rates as per last updated link rate */
-+		if ((link_sinfo->filled &
-+		     BIT_ULL(NL80211_STA_INFO_TX_BITRATE)) &&
-+		    (!init ||
-+		     link_inactive_time > link_sinfo->inactive_time)) {
-+			sinfo->txrate = link_sinfo->txrate;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
-+		}
-+		if ((link_sinfo->filled &
-+		     BIT_ULL(NL80211_STA_INFO_RX_BITRATE)) &&
-+		    (!init ||
-+		     link_inactive_time > link_sinfo->inactive_time)) {
-+			sinfo->rxrate = link_sinfo->rxrate;
-+			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_BITRATE);
-+		}
-+
-+		if (link_sinfo->filled &
-+		    BIT_ULL(NL80211_STA_INFO_TX_DURATION) &&
-+		    (!init ||
-+		     link_inactive_time > link_sinfo->inactive_time)) {
-+			sinfo->tx_duration += link_sinfo->tx_duration;
-+			sinfo->filled |=
-+				BIT_ULL(NL80211_STA_INFO_TX_DURATION);
-+		}
-+		if (link_sinfo->filled &
-+		    BIT_ULL(NL80211_STA_INFO_RX_DURATION) &&
-+		    (!init ||
-+		     link_inactive_time > link_sinfo->inactive_time)) {
-+			sinfo->rx_duration += link_sinfo->rx_duration;
-+			sinfo->filled |=
-+				BIT_ULL(NL80211_STA_INFO_RX_DURATION);
-+		}
-+		init++;
-+
-+		/* pertid stats accumulate for rx/tx fields */
-+		if (sinfo->pertid) {
-+			sinfo->pertid->rx_msdu +=
-+				link_sinfo->pertid->rx_msdu;
-+			sinfo->pertid->tx_msdu +=
-+				link_sinfo->pertid->tx_msdu;
-+			sinfo->pertid->tx_msdu_retries +=
-+				link_sinfo->pertid->tx_msdu_retries;
-+			sinfo->pertid->tx_msdu_failed +=
-+				link_sinfo->pertid->tx_msdu_failed;
-+
-+			sinfo->pertid->filled |=
-+				BIT(NL80211_TID_STATS_RX_MSDU) |
-+				BIT(NL80211_TID_STATS_TX_MSDU) |
-+				BIT(NL80211_TID_STATS_TX_MSDU_RETRIES) |
-+				BIT(NL80211_TID_STATS_TX_MSDU_FAILED);
++	for (int link_id = 0; link_id < ARRAY_SIZE(sinfo->links); link_id++) {
++		if (sinfo->links[link_id]) {
++			kfree(sinfo->links[link_id]->pertid);
++			kfree(sinfo->links[link_id]);
 +		}
 +	}
-+}
-+
- static int nl80211_dump_station(struct sk_buff *skb,
- 				struct netlink_callback *cb)
- {
-@@ -7211,6 +7393,9 @@ static int nl80211_dump_station(struct sk_buff *skb,
- 		if (err)
- 			goto out_err;
+ }
  
-+		if (sinfo.valid_links)
-+			cfg80211_sta_set_mld_sinfo(&sinfo);
-+
- 		if (nl80211_send_station(skb, NL80211_CMD_NEW_STATION,
- 				NETLINK_CB(cb->skb).portid,
- 				cb->nlh->nlmsg_seq, NLM_F_MULTI,
-@@ -7259,6 +7444,9 @@ static int nl80211_get_station(struct sk_buff *skb, struct genl_info *info)
- 		return -ENOMEM;
- 	}
+ /**
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 16429d3707d7..71d3b6107983 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -7366,7 +7366,7 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ 	struct wireless_dev *wdev;
+ 	u8 mac_addr[ETH_ALEN];
+ 	int sta_idx = cb->args[2];
+-	int err;
++	int err, i;
  
-+	if (sinfo.valid_links)
-+		cfg80211_sta_set_mld_sinfo(&sinfo);
+ 	err = nl80211_prepare_wdev_dump(cb, &rdev, &wdev, NULL);
+ 	if (err)
+@@ -7386,6 +7386,16 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ 
+ 	while (1) {
+ 		memset(&sinfo, 0, sizeof(sinfo));
 +
- 	if (nl80211_send_station(msg, NL80211_CMD_NEW_STATION,
- 				 info->snd_portid, info->snd_seq, 0,
- 				 rdev, dev, mac_addr, &sinfo) < 0) {
++		for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
++			sinfo.links[i] =
++				kzalloc(sizeof(*sinfo.links[0]), GFP_KERNEL);
++			if (!sinfo.links[i]) {
++				err = -ENOMEM;
++				goto out_err;
++			}
++		}
++
+ 		err = rdev_dump_station(rdev, wdev->netdev, sta_idx,
+ 					mac_addr, &sinfo);
+ 		if (err == -ENOENT)
+@@ -7410,6 +7420,7 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ 	cb->args[2] = sta_idx;
+ 	err = skb->len;
+  out_err:
++	cfg80211_sinfo_release_content(&sinfo);
+ 	wiphy_unlock(&rdev->wiphy);
+ 
+ 	return err;
+@@ -7422,7 +7433,7 @@ static int nl80211_get_station(struct sk_buff *skb, struct genl_info *info)
+ 	struct station_info sinfo;
+ 	struct sk_buff *msg;
+ 	u8 *mac_addr = NULL;
+-	int err;
++	int err, i;
+ 
+ 	memset(&sinfo, 0, sizeof(sinfo));
+ 
+@@ -7434,9 +7445,19 @@ static int nl80211_get_station(struct sk_buff *skb, struct genl_info *info)
+ 	if (!rdev->ops->get_station)
+ 		return -EOPNOTSUPP;
+ 
++	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
++		sinfo.links[i] = kzalloc(sizeof(*sinfo.links[0]), GFP_KERNEL);
++		if (!sinfo.links[i]) {
++			cfg80211_sinfo_release_content(&sinfo);
++			return -ENOMEM;
++		}
++	}
++
+ 	err = rdev_get_station(rdev, dev, mac_addr, &sinfo);
+-	if (err)
++	if (err) {
++		cfg80211_sinfo_release_content(&sinfo);
+ 		return err;
++	}
+ 
+ 	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+ 	if (!msg) {
 -- 
 2.34.1
 
