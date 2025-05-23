@@ -1,77 +1,77 @@
-Return-Path: <linux-wireless+bounces-23346-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23347-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB33AC1D09
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 08:32:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B19AC1D0C
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 08:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC597A25BE6
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 06:32:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84921A41534
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 06:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6263723236D;
-	Fri, 23 May 2025 06:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2222472AF;
+	Fri, 23 May 2025 06:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GPFEwNre"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMFVoQV2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD1122ACE3;
-	Fri, 23 May 2025 06:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B3F22F778;
+	Fri, 23 May 2025 06:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747981938; cv=none; b=jFju2gU85CCz1ur7ALZ7muR11Ml2HU4TqMUW6hooG9hAvDxp0y3brGLutSk4m1MszVjfG+HEu+D0QT6IPo9Ig957hDsDnCwXXExrkdI9YzyzpzczmTWhGnECU6hEWo+FgsrKN2l1DZJsWMz2ede2LY1A5Ctw8dlGTYaTO2xCLhw=
+	t=1747981939; cv=none; b=ejP8OdYoj/RKzgzWt1LPPw0gB6Y0WfTWALDq6PyPRCiDLiRY8iiOHjNQ2tZRJuOfnUKNEpDec0lJmTSipXQUfktpChTvIn2XdzFkEkHLXHiZ88vzZ1KL0gpG3PdT2w0YDc1LOm11LnBSv2oF97/xwDRAJSnYFoVJhq0ukXbz+xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747981938; c=relaxed/simple;
-	bh=i1i4lUjLydGHtHXlqa45gZX8A0N+/uuprgC+Wqn1VGM=;
+	s=arc-20240116; t=1747981939; c=relaxed/simple;
+	bh=cdjfEk0TxVg9oDhf1oyxHAvAaDRa1kSzXZ9FYjisPRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dXISV5uNVWg8ujOaYKnNN7rKqGztyTAXesWohOOkQJfNthoV+vQnJeX0QCU9v3k8fd8XZ/iwjXMm8V1qs03QFYX8Ugx/X28ScPx1+PP1rw4D3DGE/GbaMq7aSSHWVyawbQLI5nID9EnKm/QPS7DlECvZ04pK3Czg+EUpcMn7kAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GPFEwNre; arc=none smtp.client-ip=209.85.210.173
+	 MIME-Version; b=WHAdNldW9fImx9JXTrLOE2evAWd8tZ1oTYPLrrrl7WiXf7ROS7vltS6ZYP0+x/cnoB0CjsROHuX6K0U4UCLcZuxEDEXOb7RYkbigeZ5t+m00e2tPub4nJttiAD+mAIS+L7zMiu5coUhTrOjPFxMeyqpfXWy7W1D2zTziv2/6oKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMFVoQV2; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-742c7a52e97so4938263b3a.3;
-        Thu, 22 May 2025 23:32:16 -0700 (PDT)
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7426c44e014so8472997b3a.3;
+        Thu, 22 May 2025 23:32:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747981936; x=1748586736; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747981937; x=1748586737; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OZuJJhxcK7J+kxQGDdvcFFY2SCEPwvXY99+Aq8BxE7o=;
-        b=GPFEwNrepqh3lnGNFetcs8cdwiN/J/Z7s0mphxNKlgzCu1P2SFZv5izzp/PBvD7vIc
-         tvT8GxbBsRCkMWeWw/GCAMwFaiYpq34I2Y8EnntEG6J9DujMCvToWXGHGHCN2IF0hSCK
-         EmHQkgVgA439l8z9R8XrhAW756tukaBsD5KkzhafvAkCDDiYWGW6BceodauVHx0B2PNb
-         QlQKlbK6xBoXsgYQPXSK7ntXEIP9kZ3v1Hs69QCrRgFRtZ1Rordf1C2rREhc3TrbUg4N
-         mK0k5AFq0WAfz1xzBiQ2TXinfXdwMbKcnVJ28XfYXFIoDLpIgTwLZXLggi+hHU+ZcSg5
-         ZN3g==
+        bh=yGHFb7gUP10OAfy6owXqCDHPUOcpBBdWnzOXMHQ1MBU=;
+        b=GMFVoQV2Z47Pf7uH2EhQbnk2QUQuYBsAU4l56IfjA4H4dsPMIdtNSCVc/cBSecrVlZ
+         oohLQZq9/5kBCMkbpmGHtM2LS+gzHR6pmCBpBRK4JP7PLdpPpMCizaXHy6EmIago/q+X
+         jeq/nLOzGkMOHYGzWELNjWDHPTHBwKLoT8ub5VJLt2hOl7D+5ZxIdfWJdZeZMqTtWv96
+         D3jvveRYA6h0fYU5N2Nfq0CEkZYAoG4PQgzR7gV6zr1EuDEMoXXhkmvqkT1cXLOULu8v
+         ceyBLkWHlEuR48XX4JM5rigrnWtSAkBrM+5DH8xylrilQlyGCQwtyg8yII3C+6mTlwW+
+         86Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747981936; x=1748586736;
+        d=1e100.net; s=20230601; t=1747981937; x=1748586737;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OZuJJhxcK7J+kxQGDdvcFFY2SCEPwvXY99+Aq8BxE7o=;
-        b=GAT9DLIqoOHwO2mNaQjImYaeZevydT7YleS5RsraOH3MkXiATffWKTNWmRi3lF3o0l
-         1ePbT21W1k0AQBk/ulaV+XkF1gKw+9uP2evnTSII+Cq9gA49V+CPcmCzLzUo2Qbk9GxM
-         wvPP/0+kXIBcDVGemxbMyayV+ROCPGpDguEpPLHIC5e4uoZgHb5NS3zdfEpnbrvwwpiq
-         9N37UM03ZEcNBUTD4Ox+dfpjDObosgNC8H094fylkEy21RGt+gNTHLBNsER2AD/HBox1
-         XVNG0x8eSjXCv4NN1XkdGe5khpL4TZ114sBBuLyPyn2+n5CltseW//ZSmZ8XvMAqEkxz
-         /8EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUtujFNqqzhHH3TNny1EIurY/qKvFDisUvdQsCSxqZXffiLaXsJvpFrVKpubFuFOYpEa7jwtjL5fhdBJBYv@vger.kernel.org, AJvYcCV4fmQqHKsWTCrr5GoMfYYt9X2XFab8Ep45+2tMVTjmXn+VhhteUWaLcuSnzZzBUZVb99tcr+fhBKNA@vger.kernel.org, AJvYcCVauunm5Ztwrv+14TLiezt6fPBzIVC/bKrXB+nl3DeSirY85jHa6317yzRp/SaHs8y4Y3emO+sjApyTuQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8cT6I2iqf8zhy0xSPN4RS8VETwvdOuJa6/3toI9AIhQ4Mla7a
-	de/cXJlunONoHR/y4nhqqxHR18Ljs1q8jA/Gyk7lk8vraCzriCqJqj2I+oqFzQ==
-X-Gm-Gg: ASbGncv/Gt6JgnNgLuTvTrwD+cHKuvj2qinHuk03P8AFmTzxBHbWvA5NpDOw5ZfqVD/
-	xmEAhP0HA36/lDDvxQ+sG8WHr3f6TwtwJES0mXOmXS5L4AwZeOzag64lIfN0AOYJFrgZms0nMbl
-	pIVjVjvTaMyemLXQ6iMMCxpf9nXZwUy/xAVmT61gKGA1lsbNrKHcHJJpBB5qWiB0wlbRexjSnic
-	y32B+TV2VqtjCD0hkV6yjTH8BgllRtNJCZBhOQ7WM/uk8M/f0GvAy+4JMihwv7X3sdW2Zlu9Ylu
-	HcX3cePirCQKkDqd8bCTzAhZnXU=
-X-Google-Smtp-Source: AGHT+IGB+VZX+R0fcyCXGYDjFfrjU0brwg3dtbtfYrgAm98FBMWMzMBYuesmehV/eqY14W47kHE7Og==
-X-Received: by 2002:a05:6a00:6f27:b0:740:6630:633f with SMTP id d2e1a72fcca58-742accc555bmr40187255b3a.8.1747981935676;
-        Thu, 22 May 2025 23:32:15 -0700 (PDT)
+        bh=yGHFb7gUP10OAfy6owXqCDHPUOcpBBdWnzOXMHQ1MBU=;
+        b=ewwpSFBohSDjUhjAFFBVmy1MQKCJj1AKqiSfHDaVtR1o2Ct1pyN24bF0U+7mksRrVm
+         rgG/Ze/pOXRbiHPDDucGkvWeWvglKkT7aktyCoJhfii0UxONVOCC8nifpYnCzU4+thO4
+         0zOwJbVVqtCFGoqwkH42uEYpvVJWxM35AN3BZPOarnXjKLIfjPmFlr5UGMEi4A7FnJ/O
+         6kB8VaZLgu2y4m7XWl+MpcPEopx3lIAw2jG2HRoasBx2oVSLdcKfGFSVGm/n51DvzTgn
+         hJeXhLUl+8OOV4move6q7X1f0okt9MwEUo1jpq+W7tpndblZ7HCPTxbU9dhJ/5XAe175
+         vPFA==
+X-Forwarded-Encrypted: i=1; AJvYcCULSj46GnGxXLUjDtOJ2SQBv925of0Ezur1Ej14REx7ZoARzEOBYJsG0A09vLMedWMT89AcOSubrJ8gJA==@vger.kernel.org, AJvYcCXrNDUodo849Ydcc7JwPECSOvHUNwJUeq0XemjDNJULBdfnD4ggnYgbFncZQPwnfNAXs9DlWGRcADX7@vger.kernel.org, AJvYcCXwhBA2OJR4ktButsrcapPI64mlAanX3ctfeCoBBPgIiiLNPDzLO44wgWo6g4R7PycE/1/uPIpEvOqlwk9P@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWDM9isXDV1K5MqBJPvU3wdX5Q90LJ6Ux06Vlz4pT6DEM9/KYe
+	i7wRnC1+ExJglCTHVDYUjtWIB+CYjtKtOzQ9HzgYObtJEIO6leq2rxm3uodJ2Q==
+X-Gm-Gg: ASbGncsXWEQlmQFeVoiBMjVStgBZz16s60mIqQf0yG0TtcOG++9Db5iBTEHNv5INik8
+	8sc7cFf4fB5yirPDz6VHOu3PhfX/wrPnXGVgP4xJcrZVwh7lYjl6pwgiGPmXrEWr4v1IWYeyGLs
+	zPY0t5ZrugrVT8y3tM9aiy1bifMcOpMtckr6TLOZTxUDaCe9t9x3rDZ+5w8FMAC0/vmkmtj5rW8
+	zkQJXbv8d662R3EhxSL0IyaRIQZ4ZSbMHY7Qw0fAocoeueiNu805NBUKbdn6abrANyAQoxT3FsC
+	G5y52yLDWcK0dutYKiHR/xxuYbU=
+X-Google-Smtp-Source: AGHT+IG5Sx9XBjRPeqB1iftumrW6VmMG9AF6ESWyPnS+9QbMUtTRF1HDO1GfXmslGPT+1Yfz3gokXg==
+X-Received: by 2002:a05:6a00:2da5:b0:740:41e4:e761 with SMTP id d2e1a72fcca58-742a98c144emr36376544b3a.22.1747981937151;
+        Thu, 22 May 2025 23:32:17 -0700 (PDT)
 Received: from ryzen.lan ([2601:644:8200:dab8::a86])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a97398f8sm12177783b3a.78.2025.05.22.23.32.14
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a97398f8sm12177783b3a.78.2025.05.22.23.32.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 May 2025 23:32:15 -0700 (PDT)
+        Thu, 22 May 2025 23:32:16 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
@@ -84,9 +84,9 @@ Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
 	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	linux-kernel@vger.kernel.org (open list),
 	linux-mips@vger.kernel.org (open list:MIPS)
-Subject: [PATCHv3 4/5] wifi: ath9k: ahb: replace id_table with of
-Date: Thu, 22 May 2025 23:32:06 -0700
-Message-ID: <20250523063207.10040-5-rosenp@gmail.com>
+Subject: [PATCHv3 5/5] mips: dts: qca: add wmac support
+Date: Thu, 22 May 2025 23:32:07 -0700
+Message-ID: <20250523063207.10040-6-rosenp@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250523063207.10040-1-rosenp@gmail.com>
 References: <20250523063207.10040-1-rosenp@gmail.com>
@@ -98,113 +98,133 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since 2b0996c7646 , all of this platform code became no-op with no OF
-replacement. Not only that, there are no users of AHB here. Add an OF
-match table that mostly mirrors the original platform device id table.
-Use a qca prefix as is done for the only other property: qca,no-eeprom.
-Also used qca prefix for ar9530 as the latter seems to be a mistake.
-
-Use qcom, prefix as done with the other ath wireless drivers.
+Now that OF ahb support was added to the ath9k driver, we can use it to
+enable and use the SoC wireless found in these chipsets.
 
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- drivers/net/wireless/ath/ath9k/ahb.c | 47 ++++++++--------------------
- 1 file changed, 13 insertions(+), 34 deletions(-)
+ arch/mips/boot/dts/qca/ar9132.dtsi                       | 9 +++++++++
+ arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts         | 4 ++++
+ arch/mips/boot/dts/qca/ar9331.dtsi                       | 9 +++++++++
+ arch/mips/boot/dts/qca/ar9331_dpt_module.dts             | 4 ++++
+ arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts           | 4 ++++
+ arch/mips/boot/dts/qca/ar9331_omega.dts                  | 4 ++++
+ .../mips/boot/dts/qca/ar9331_openembed_som9331_board.dts | 4 ++++
+ arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts              | 4 ++++
+ 8 files changed, 42 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
-index 1ffec827ed87..c5e36f9e7390 100644
---- a/drivers/net/wireless/ath/ath9k/ahb.c
-+++ b/drivers/net/wireless/ath/ath9k/ahb.c
-@@ -19,35 +19,18 @@
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/nl80211.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
+diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
+index aa148d51ab68..47bddd36cd94 100644
+--- a/arch/mips/boot/dts/qca/ar9132.dtsi
++++ b/arch/mips/boot/dts/qca/ar9132.dtsi
+@@ -155,6 +155,15 @@ spi: spi@1f000000 {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 		};
++
++		wifi: wifi@180c0000 {
++			compatible = "qcom,ar9130-wifi";
++			reg = <0x180c0000 0x230000>;
++
++			interrupts = <2>;
++
++			status = "disabled";
++		};
+ 	};
  
- #include "ath9k.h"
- 
--static const struct platform_device_id ath9k_platform_id_table[] = {
--	{
--		.name = "ath9k",
--		.driver_data = AR5416_AR9100_DEVID,
--	},
--	{
--		.name = "ar933x_wmac",
--		.driver_data = AR9300_DEVID_AR9330,
--	},
--	{
--		.name = "ar934x_wmac",
--		.driver_data = AR9300_DEVID_AR9340,
--	},
--	{
--		.name = "qca955x_wmac",
--		.driver_data = AR9300_DEVID_QCA955X,
--	},
--	{
--		.name = "qca953x_wmac",
--		.driver_data = AR9300_DEVID_AR953X,
--	},
--	{
--		.name = "qca956x_wmac",
--		.driver_data = AR9300_DEVID_QCA956X,
--	},
-+static const struct of_device_id ath9k_of_match_table[] = {
-+	{ .compatible = "qcom,ar9130-wifi", .data = (void *)AR5416_AR9100_DEVID },
-+	{ .compatible = "qcom,ar9330-wifi", .data = (void *)AR9300_DEVID_AR9330 },
-+	{ .compatible = "qcom,ar9340-wifi", .data = (void *)AR9300_DEVID_AR9340 },
-+	{ .compatible = "qcom,qca9530-wifi", .data = (void *)AR9300_DEVID_AR953X },
-+	{ .compatible = "qcom,qca9550-wifi", .data = (void *)AR9300_DEVID_QCA955X },
-+	{ .compatible = "qcom,qca9560-wifi", .data = (void *)AR9300_DEVID_QCA956X },
- 	{},
+ 	usb_phy: usb-phy {
+diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+index f894fe17816b..a7901bb040ce 100644
+--- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
++++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+@@ -108,3 +108,7 @@ partition@2 {
+ 		};
+ 	};
  };
++
++&wifi {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
+index 768ac0f869b1..9a2590f490bb 100644
+--- a/arch/mips/boot/dts/qca/ar9331.dtsi
++++ b/arch/mips/boot/dts/qca/ar9331.dtsi
+@@ -285,6 +285,15 @@ spi: spi@1f000000 {
  
-@@ -72,20 +55,15 @@ static const struct ath_bus_ops ath_ahb_bus_ops  = {
+ 			status = "disabled";
+ 		};
++
++		wifi: wifi@18100000 {
++			compatible = "qcom,ar9330-wifi";
++			reg = <0x18100000 0x20000>;
++
++			interrupts = <2>;
++
++			status = "disabled";
++		};
+ 	};
  
- static int ath_ahb_probe(struct platform_device *pdev)
- {
--	const struct platform_device_id *id = platform_get_device_id(pdev);
- 	struct ieee80211_hw *hw;
- 	struct ath_softc *sc;
- 	struct ath_hw *ah;
- 	void __iomem *mem;
- 	char hw_name[64];
-+	u16 dev_id;
- 	int irq;
- 	int ret;
- 
--	if (!dev_get_platdata(&pdev->dev)) {
--		dev_err(&pdev->dev, "no platform data specified\n");
--		return -EINVAL;
--	}
--
- 	mem = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(mem)) {
- 		dev_err(&pdev->dev, "ioremap failed\n");
-@@ -118,7 +96,8 @@ static int ath_ahb_probe(struct platform_device *pdev)
- 		goto err_free_hw;
- 	}
- 
--	ret = ath9k_init_device(id->driver_data, sc, &ath_ahb_bus_ops);
-+	dev_id = (u16)(kernel_ulong_t)of_device_get_match_data(&pdev->dev);
-+	ret = ath9k_init_device(dev_id, sc, &ath_ahb_bus_ops);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to initialize device\n");
- 		goto err_irq;
-@@ -156,11 +135,11 @@ static struct platform_driver ath_ahb_driver = {
- 	.remove = ath_ahb_remove,
- 	.driver = {
- 		.name = "ath9k",
-+		.of_match_table = ath9k_of_match_table,
- 	},
--	.id_table = ath9k_platform_id_table,
+ 	usb_phy: usb-phy {
+diff --git a/arch/mips/boot/dts/qca/ar9331_dpt_module.dts b/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
+index c857cd22f7db..08e728b8ced8 100644
+--- a/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
++++ b/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
+@@ -97,3 +97,7 @@ &phy_port0 {
+ &phy_port4 {
+ 	status = "okay";
  };
- 
--MODULE_DEVICE_TABLE(platform, ath9k_platform_id_table);
-+MODULE_DEVICE_TABLE(of, ath9k_of_match_table);
- 
- int ath_ahb_init(void)
- {
++
++&wifi {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts b/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts
+index 7affa58d4fa6..37a74aabe4b4 100644
+--- a/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts
++++ b/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts
+@@ -98,3 +98,7 @@ spiflash: w25q128@0 {
+ 		reg = <0>;
+ 	};
+ };
++
++&wifi {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/qca/ar9331_omega.dts b/arch/mips/boot/dts/qca/ar9331_omega.dts
+index 8904aa917a6e..1450419024cb 100644
+--- a/arch/mips/boot/dts/qca/ar9331_omega.dts
++++ b/arch/mips/boot/dts/qca/ar9331_omega.dts
+@@ -74,3 +74,7 @@ spiflash: w25q128@0 {
+ 		reg = <0>;
+ 	};
+ };
++
++&wifi {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/qca/ar9331_openembed_som9331_board.dts b/arch/mips/boot/dts/qca/ar9331_openembed_som9331_board.dts
+index dc65ebd60bbc..5786a827c000 100644
+--- a/arch/mips/boot/dts/qca/ar9331_openembed_som9331_board.dts
++++ b/arch/mips/boot/dts/qca/ar9331_openembed_som9331_board.dts
+@@ -106,3 +106,7 @@ &phy_port2 {
+ &phy_port4 {
+ 	status = "okay";
+ };
++
++&wifi {
++	status = "okay";
++};
+diff --git a/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts b/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts
+index 10b9759228b7..a7108c803eb3 100644
+--- a/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts
++++ b/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts
+@@ -114,3 +114,7 @@ spiflash: s25sl032p@0 {
+ 		reg = <0>;
+ 	};
+ };
++
++&wifi {
++	status = "okay";
++};
 -- 
 2.49.0
 
