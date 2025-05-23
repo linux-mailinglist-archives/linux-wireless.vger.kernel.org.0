@@ -1,231 +1,137 @@
-Return-Path: <linux-wireless+bounces-23347-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23350-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B19AC1D0C
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 08:33:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0045AC1D39
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 08:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84921A41534
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 06:32:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19BE7A41495
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 06:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2222472AF;
-	Fri, 23 May 2025 06:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA6F1EF0A6;
+	Fri, 23 May 2025 06:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMFVoQV2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h3Ubjd/M"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B3F22F778;
-	Fri, 23 May 2025 06:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E932DCBE6;
+	Fri, 23 May 2025 06:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747981939; cv=none; b=ejP8OdYoj/RKzgzWt1LPPw0gB6Y0WfTWALDq6PyPRCiDLiRY8iiOHjNQ2tZRJuOfnUKNEpDec0lJmTSipXQUfktpChTvIn2XdzFkEkHLXHiZ88vzZ1KL0gpG3PdT2w0YDc1LOm11LnBSv2oF97/xwDRAJSnYFoVJhq0ukXbz+xQ=
+	t=1747982583; cv=none; b=oeSmR/V5velupbg9BCSbAKWXV9T2J6g0DKThL9+2Z3sCNpSPWYMOwX1XbJc8G01c7C6mNcv3vVdusK0+PkhSzkilKtS+bf3EFHFrRNzW5UoY8YJNNt+RZF136wI6TOju68ckWXOMFZbZ0ZH9eJ3uHClKMlKSQOiEydathpUiPj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747981939; c=relaxed/simple;
-	bh=cdjfEk0TxVg9oDhf1oyxHAvAaDRa1kSzXZ9FYjisPRg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHAdNldW9fImx9JXTrLOE2evAWd8tZ1oTYPLrrrl7WiXf7ROS7vltS6ZYP0+x/cnoB0CjsROHuX6K0U4UCLcZuxEDEXOb7RYkbigeZ5t+m00e2tPub4nJttiAD+mAIS+L7zMiu5coUhTrOjPFxMeyqpfXWy7W1D2zTziv2/6oKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMFVoQV2; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7426c44e014so8472997b3a.3;
-        Thu, 22 May 2025 23:32:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747981937; x=1748586737; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yGHFb7gUP10OAfy6owXqCDHPUOcpBBdWnzOXMHQ1MBU=;
-        b=GMFVoQV2Z47Pf7uH2EhQbnk2QUQuYBsAU4l56IfjA4H4dsPMIdtNSCVc/cBSecrVlZ
-         oohLQZq9/5kBCMkbpmGHtM2LS+gzHR6pmCBpBRK4JP7PLdpPpMCizaXHy6EmIago/q+X
-         jeq/nLOzGkMOHYGzWELNjWDHPTHBwKLoT8ub5VJLt2hOl7D+5ZxIdfWJdZeZMqTtWv96
-         D3jvveRYA6h0fYU5N2Nfq0CEkZYAoG4PQgzR7gV6zr1EuDEMoXXhkmvqkT1cXLOULu8v
-         ceyBLkWHlEuR48XX4JM5rigrnWtSAkBrM+5DH8xylrilQlyGCQwtyg8yII3C+6mTlwW+
-         86Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747981937; x=1748586737;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yGHFb7gUP10OAfy6owXqCDHPUOcpBBdWnzOXMHQ1MBU=;
-        b=ewwpSFBohSDjUhjAFFBVmy1MQKCJj1AKqiSfHDaVtR1o2Ct1pyN24bF0U+7mksRrVm
-         rgG/Ze/pOXRbiHPDDucGkvWeWvglKkT7aktyCoJhfii0UxONVOCC8nifpYnCzU4+thO4
-         0zOwJbVVqtCFGoqwkH42uEYpvVJWxM35AN3BZPOarnXjKLIfjPmFlr5UGMEi4A7FnJ/O
-         6kB8VaZLgu2y4m7XWl+MpcPEopx3lIAw2jG2HRoasBx2oVSLdcKfGFSVGm/n51DvzTgn
-         hJeXhLUl+8OOV4move6q7X1f0okt9MwEUo1jpq+W7tpndblZ7HCPTxbU9dhJ/5XAe175
-         vPFA==
-X-Forwarded-Encrypted: i=1; AJvYcCULSj46GnGxXLUjDtOJ2SQBv925of0Ezur1Ej14REx7ZoARzEOBYJsG0A09vLMedWMT89AcOSubrJ8gJA==@vger.kernel.org, AJvYcCXrNDUodo849Ydcc7JwPECSOvHUNwJUeq0XemjDNJULBdfnD4ggnYgbFncZQPwnfNAXs9DlWGRcADX7@vger.kernel.org, AJvYcCXwhBA2OJR4ktButsrcapPI64mlAanX3ctfeCoBBPgIiiLNPDzLO44wgWo6g4R7PycE/1/uPIpEvOqlwk9P@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWDM9isXDV1K5MqBJPvU3wdX5Q90LJ6Ux06Vlz4pT6DEM9/KYe
-	i7wRnC1+ExJglCTHVDYUjtWIB+CYjtKtOzQ9HzgYObtJEIO6leq2rxm3uodJ2Q==
-X-Gm-Gg: ASbGncsXWEQlmQFeVoiBMjVStgBZz16s60mIqQf0yG0TtcOG++9Db5iBTEHNv5INik8
-	8sc7cFf4fB5yirPDz6VHOu3PhfX/wrPnXGVgP4xJcrZVwh7lYjl6pwgiGPmXrEWr4v1IWYeyGLs
-	zPY0t5ZrugrVT8y3tM9aiy1bifMcOpMtckr6TLOZTxUDaCe9t9x3rDZ+5w8FMAC0/vmkmtj5rW8
-	zkQJXbv8d662R3EhxSL0IyaRIQZ4ZSbMHY7Qw0fAocoeueiNu805NBUKbdn6abrANyAQoxT3FsC
-	G5y52yLDWcK0dutYKiHR/xxuYbU=
-X-Google-Smtp-Source: AGHT+IG5Sx9XBjRPeqB1iftumrW6VmMG9AF6ESWyPnS+9QbMUtTRF1HDO1GfXmslGPT+1Yfz3gokXg==
-X-Received: by 2002:a05:6a00:2da5:b0:740:41e4:e761 with SMTP id d2e1a72fcca58-742a98c144emr36376544b3a.22.1747981937151;
-        Thu, 22 May 2025 23:32:17 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8200:dab8::a86])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a97398f8sm12177783b3a.78.2025.05.22.23.32.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 May 2025 23:32:16 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	nbd@ndb.name,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list),
-	linux-mips@vger.kernel.org (open list:MIPS)
-Subject: [PATCHv3 5/5] mips: dts: qca: add wmac support
-Date: Thu, 22 May 2025 23:32:07 -0700
-Message-ID: <20250523063207.10040-6-rosenp@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250523063207.10040-1-rosenp@gmail.com>
-References: <20250523063207.10040-1-rosenp@gmail.com>
+	s=arc-20240116; t=1747982583; c=relaxed/simple;
+	bh=NzjiJxC8jVl17UOebTa1jr+peldNBbgfvVc5tPO1QtU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t+luJARO46ZLqLHEekrX/W7v6RtknehW7S/OXOLyj7ie0HPoCv8JxiaOi8oiGSP4bALFCVG+sIpTqu/A3s6NfN92zCCc5fpoFkiLNXGOgIVZjWl9USGR7fN3g4O06s2BT/qnW7U90O3XZeozfxK882CQJdO8UF1W9e7ugZfaUO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h3Ubjd/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C775BC4CEE9;
+	Fri, 23 May 2025 06:42:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747982582;
+	bh=NzjiJxC8jVl17UOebTa1jr+peldNBbgfvVc5tPO1QtU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=h3Ubjd/MRn7yHtvjFmlSK+OcMe/SbkySxxcO0EfHrWkp5FK2usQtYPHGNIYEIf9Pq
+	 n9YO/krxi1L3b9CIWjpPmdyKgNXjlges1ykryzeadMUGbMOal19aEF0vTCuMxPVFOW
+	 XjnRr97k9sjQFpGAkGPB3bohUYqzM/kP2D4wa7gDip5bEedv99C7xRQog1jS8AIliy
+	 OIWFQvBCUmAfNYkiU7DjJLPKPZdyZSpp6WI+HJ11OriIwHztv/XzdWWZQb+EfRXI45
+	 /99jE2+tRUlPEw8nnoXJZL83apDBr5Z/2rQTVoFT/QHUya9Q64MEn1f/PELRZDmDoc
+	 R/5TS0hKIjhNQ==
+Message-ID: <574cd2c2-8201-4182-b372-da518a9b1972@kernel.org>
+Date: Fri, 23 May 2025 08:42:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv3 3/5] dt-bindings: net: wireless: ath9k: add WIFI
+ bindings
+To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
+Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+ nbd@ndb.name, Johannes Berg <johannes@sipsolutions.net>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>
+References: <20250523063207.10040-1-rosenp@gmail.com>
+ <20250523063207.10040-4-rosenp@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250523063207.10040-4-rosenp@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Now that OF ahb support was added to the ath9k driver, we can use it to
-enable and use the SoC wireless found in these chipsets.
+On 23/05/2025 08:32, Rosen Penev wrote:
+>    reg:
+>      maxItems: 1
+> @@ -88,3 +94,15 @@ examples:
+>          nvmem-cell-names = "mac-address", "calibration";
+>        };
+>      };
+> +  - |
+> +    ahb {
+> +      compatible = "simple-bus";
+> +      ranges;
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- arch/mips/boot/dts/qca/ar9132.dtsi                       | 9 +++++++++
- arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts         | 4 ++++
- arch/mips/boot/dts/qca/ar9331.dtsi                       | 9 +++++++++
- arch/mips/boot/dts/qca/ar9331_dpt_module.dts             | 4 ++++
- arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts           | 4 ++++
- arch/mips/boot/dts/qca/ar9331_omega.dts                  | 4 ++++
- .../mips/boot/dts/qca/ar9331_openembed_som9331_board.dts | 4 ++++
- arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts              | 4 ++++
- 8 files changed, 42 insertions(+)
+Not much improved... Code is now actually wrong. Remember to notice
+where the comments appear. We are using here mailing list style of
+communication.
 
-diff --git a/arch/mips/boot/dts/qca/ar9132.dtsi b/arch/mips/boot/dts/qca/ar9132.dtsi
-index aa148d51ab68..47bddd36cd94 100644
---- a/arch/mips/boot/dts/qca/ar9132.dtsi
-+++ b/arch/mips/boot/dts/qca/ar9132.dtsi
-@@ -155,6 +155,15 @@ spi: spi@1f000000 {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 		};
-+
-+		wifi: wifi@180c0000 {
-+			compatible = "qcom,ar9130-wifi";
-+			reg = <0x180c0000 0x230000>;
-+
-+			interrupts = <2>;
-+
-+			status = "disabled";
-+		};
- 	};
- 
- 	usb_phy: usb-phy {
-diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-index f894fe17816b..a7901bb040ce 100644
---- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-+++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
-@@ -108,3 +108,7 @@ partition@2 {
- 		};
- 	};
- };
-+
-+&wifi {
-+	status = "okay";
-+};
-diff --git a/arch/mips/boot/dts/qca/ar9331.dtsi b/arch/mips/boot/dts/qca/ar9331.dtsi
-index 768ac0f869b1..9a2590f490bb 100644
---- a/arch/mips/boot/dts/qca/ar9331.dtsi
-+++ b/arch/mips/boot/dts/qca/ar9331.dtsi
-@@ -285,6 +285,15 @@ spi: spi@1f000000 {
- 
- 			status = "disabled";
- 		};
-+
-+		wifi: wifi@18100000 {
-+			compatible = "qcom,ar9330-wifi";
-+			reg = <0x18100000 0x20000>;
-+
-+			interrupts = <2>;
-+
-+			status = "disabled";
-+		};
- 	};
- 
- 	usb_phy: usb-phy {
-diff --git a/arch/mips/boot/dts/qca/ar9331_dpt_module.dts b/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
-index c857cd22f7db..08e728b8ced8 100644
---- a/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
-+++ b/arch/mips/boot/dts/qca/ar9331_dpt_module.dts
-@@ -97,3 +97,7 @@ &phy_port0 {
- &phy_port4 {
- 	status = "okay";
- };
-+
-+&wifi {
-+	status = "okay";
-+};
-diff --git a/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts b/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts
-index 7affa58d4fa6..37a74aabe4b4 100644
---- a/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts
-+++ b/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts
-@@ -98,3 +98,7 @@ spiflash: w25q128@0 {
- 		reg = <0>;
- 	};
- };
-+
-+&wifi {
-+	status = "okay";
-+};
-diff --git a/arch/mips/boot/dts/qca/ar9331_omega.dts b/arch/mips/boot/dts/qca/ar9331_omega.dts
-index 8904aa917a6e..1450419024cb 100644
---- a/arch/mips/boot/dts/qca/ar9331_omega.dts
-+++ b/arch/mips/boot/dts/qca/ar9331_omega.dts
-@@ -74,3 +74,7 @@ spiflash: w25q128@0 {
- 		reg = <0>;
- 	};
- };
-+
-+&wifi {
-+	status = "okay";
-+};
-diff --git a/arch/mips/boot/dts/qca/ar9331_openembed_som9331_board.dts b/arch/mips/boot/dts/qca/ar9331_openembed_som9331_board.dts
-index dc65ebd60bbc..5786a827c000 100644
---- a/arch/mips/boot/dts/qca/ar9331_openembed_som9331_board.dts
-+++ b/arch/mips/boot/dts/qca/ar9331_openembed_som9331_board.dts
-@@ -106,3 +106,7 @@ &phy_port2 {
- &phy_port4 {
- 	status = "okay";
- };
-+
-+&wifi {
-+	status = "okay";
-+};
-diff --git a/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts b/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts
-index 10b9759228b7..a7108c803eb3 100644
---- a/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts
-+++ b/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts
-@@ -114,3 +114,7 @@ spiflash: s25sl032p@0 {
- 		reg = <0>;
- 	};
- };
-+
-+&wifi {
-+	status = "okay";
-+};
--- 
-2.49.0
+In any case: 1 patchset per 24h.
 
+
+
+Best regards,
+Krzysztof
 
