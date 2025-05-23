@@ -1,212 +1,251 @@
-Return-Path: <linux-wireless+bounces-23358-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23359-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BFE3AC2246
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 13:59:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F50AC224A
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 14:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8C701BC1F8A
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 11:59:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D974F3AA81F
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 11:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1D21EE02F;
-	Fri, 23 May 2025 11:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC382288D3;
+	Fri, 23 May 2025 11:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SGA0Y2ij"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Zo0Djvu3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6945D8F0
-	for <linux-wireless@vger.kernel.org>; Fri, 23 May 2025 11:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03755D8F0
+	for <linux-wireless@vger.kernel.org>; Fri, 23 May 2025 11:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748001542; cv=none; b=mQ6Y3X/IkmUkWyaAeuD1rDuuVLfRU+IJLJ8D+73bmlM99BwAKlKqkhY9S2iWqEluAP5OX15tVO7BeZMSpxAE+3cQcU/cLadjRujAj1r2wQuYGEMylM7xtrqACQojOLgGeI0yF9JA9uFftNJ5E/1IdMdJbTTzA7u5o/ytgd5VBh8=
+	t=1748001598; cv=none; b=OwnO5rbF7G6mfxUW7SSCRx6vUbipyB68/SlVxlwgU41wTXQEbZw/xnlE+U+PL2+8jj63GMH2nQi6hljVjc20SpNPyX7IqAuLMxjyB2sL6COLJSJy0QnfCjIVSaOc5WO7PSbgOPFXNU9XyWRwZgh0d8rAMJKaVhr62SqkPTbnk0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748001542; c=relaxed/simple;
-	bh=tg9Z2/C7Cvlvx0J305uqJ8kQlYGc9SuOKtHSzPFzmPc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=vDAW/dkT+e5H0F++wniVUYDiiaEXctJ54OKc9xMyw5DB/IreAo1OxJJQIP9/MuY3I5N/cw4Y7GJDX6hmUIq5i+LkkQRLQLOhc/heqJeXCfRGpzNcXOkTQGvuk/yyh1RkLFg5zY55FHIXpPKxKX1DuTTob6pbig5hwIZDIlaD/lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SGA0Y2ij; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54N7mrtD003269
-	for <linux-wireless@vger.kernel.org>; Fri, 23 May 2025 11:59:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:date:from:in-reply-to:message-id:references:subject:to; s=
-	qcppdkim1; bh=Qq51XT7YYtig8sR6o9TZUSlLWr6Yl9WicUlD2R+enF8=; b=SG
-	A0Y2ijrt4V15gz+NikM5qcaRxE3EeWHOSoRpnXfONZC7j/XNdalpGicZhzzc2xpa
-	WAmPDvRzJIwccrhdroqbUWIyuciERTYJmMvHia1MA2OhLq4BJsqYswYEbN1omfwz
-	eZzxX9hLgma1AOmyvUt8BGQ9yJOBsfwiQqOfaqDG/NvD5vKbPDnV0StL2AFKDQH6
-	9eineyr68Qu43vMqIx9n6lHA0XnJirrUvbXBIwOa+OlMYSCcefnvfQlWFAS6r67J
-	gkly6AtmJVkEV9V34iAI1ceNHw5fsK/+hQXmzh1PSZlGzswOtDvdgx2+S3dqFItB
-	MwoESFTlEj7E0DblUu4g==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf0a2ha-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 23 May 2025 11:59:00 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2321215e4c1so8966895ad.1
-        for <linux-wireless@vger.kernel.org>; Fri, 23 May 2025 04:59:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748001539; x=1748606339;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qq51XT7YYtig8sR6o9TZUSlLWr6Yl9WicUlD2R+enF8=;
-        b=YuVa3rxWD6hdMnkn+NGh+M0bok4mQTmh2BRRSx52Xrq5cAG+KF3PmkdqN9vpC007Is
-         6UyPkp9QQtjRDgn2A8upSV+N8j4w/j0GpWLz/xp5JkXLwlrvWUde3/qwzjxzAK94iQUJ
-         Xqxcyp0nTmlz2LjmxT+4MTnv7lc+D3t9nS3SgN8BpQWKsHOdQEbVBMEOOK7+SyJf6eGD
-         PPQhWsmw/D7OTYimRmfEYrypeDU1NPZgU44MdIHUj6AxcIp8MhCmEpkNNNREVN03DlF/
-         t93cvfp57HZGlNr3ngQpd5UieGVu8BJ66N/91SiZPOclLg4kr8Z8GzpNpDkydCmK7Ub0
-         3dYg==
-X-Gm-Message-State: AOJu0YzoWAgSHy/1nfWzjikK4HrcGDTf9+LIS0dsQ9HHe3CxcfYDrYRv
-	FtDIbdj9cr1toxJJfNwfMT6Sl8ZXBmW0yriFP/tNibVDfgjbS7XMCIwStrgtmjag2XAuFrV2OVQ
-	SfDtr8r6BZD9xiE+AwPFrzjvffHPATCPL5aO3N5yimEdsq8MbrEO0hIvfd8kzX+Ai915LHg==
-X-Gm-Gg: ASbGnctuqiEYzCu+NWFe53kYO9e+/ry1GOldiP2+Go8UOvJpsMZA3XLaWrztBYirwNU
-	n3fyzIOMgedJ0DOv6R4UfShGE5SJ6AlC8oPiEFH47Z5L44aPSJrnwRg19KIMVpdhY8gVAyrHb62
-	ad3RxhgGfLVR52vOKc/0uO+1ymwG1UrYx1DDnui9DMya7H0ErVVRlvPDPa+V9IxzO2L2KH/1MWA
-	C84OdDTBaQ+jn9tWTisa1YC5uEThaahtKlhpBiqZouvMdtzMZIPMJX2v7WvLtBbs/YKjvrnqrXs
-	3j16wHvBRxndDpgjuVehkZmhw9WeX3ahv+IhO0nPM4Yc9EA45L9kp1rIV8ERMN+WkmtOcquQGqn
-	gnbZhA+Pops45373TyOrI6knVUsW7eMvaavDaXh5htJfFxg==
-X-Received: by 2002:a17:902:da88:b0:215:a56f:1e50 with SMTP id d9443c01a7336-233f0671694mr50435885ad.8.1748001539235;
-        Fri, 23 May 2025 04:58:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHoGu0ITV+RzVbqTlbHTMQYU04CL82KgiCWrNEupxYn1CXXxlVYtS/NEpIWCA4mbtfJjScxjg==
-X-Received: by 2002:a17:902:da88:b0:215:a56f:1e50 with SMTP id d9443c01a7336-233f0671694mr50435575ad.8.1748001538812;
-        Fri, 23 May 2025 04:58:58 -0700 (PDT)
-Received: from che-siroccolnx03.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-233f9e17e3csm7210725ad.177.2025.05.23.04.58.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 May 2025 04:58:58 -0700 (PDT)
-From: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-        Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
-Subject: [PATCH wireless-next v3 2/2] wifi: mac80211: process group addressed Rx data and mgmt packets on intended interface
-Date: Fri, 23 May 2025 17:28:38 +0530
-Message-Id: <20250523115838.481402-3-maharaja.kennadyrajan@oss.qualcomm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250523115838.481402-1-maharaja.kennadyrajan@oss.qualcomm.com>
-References: <20250523115838.481402-1-maharaja.kennadyrajan@oss.qualcomm.com>
-X-Proofpoint-GUID: SF7gb7XGxQ8iPTPLU8vv8n7xeo3BmnvO
-X-Proofpoint-ORIG-GUID: SF7gb7XGxQ8iPTPLU8vv8n7xeo3BmnvO
-X-Authority-Analysis: v=2.4 cv=ZP3XmW7b c=1 sm=1 tr=0 ts=68306304 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=dt9VzEwgFbYA:10 a=EUspDBNiAAAA:8 a=Y7y7kotgnV_wd4PCqGcA:9
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIzMDEwNSBTYWx0ZWRfX8dN4VJRXrqwy
- fZ+b2FAJzTt0N27WYFDbcPWzG4Iaz+6zOyQy1bvwEtiD9h7uY7vGH4Xv/ZAUMjbib47FX0Z6CWf
- d3vjdTyheitlelucSASFy/UXgXwrOGVsMn0wUP73aHlUi4DQZ1/6CdQbYJWeFTMki/1TcXPSf30
- uEqd4lyiC8P7aPs85eRMas1JLE2mIvm91p67bG/pPMAjZTqRVp3Do0G2YJfvxZY8u6gqEIsBNvt
- Qpqap2+6MOAtI5LH/XhUTlJD3ErTGhIB9CJEI6j1TX4CVYtO/6qaXeXQ3snzLDoz6rIcWHTMckr
- PznMvTlTvLX0hCV4RHOuf6Q8iAeH23RGJmLLCI0at2+ee70e9bWQXj5e77XiQnXzS+zY0gortXJ
- uaYQLc6GpAfRZxJFjkWdgrxR+AQxn9d9GtM/txBWcZpcJsyKKz2gPI7oI+GttwJqAaWKdYBV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-23_03,2025-05-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0
- impostorscore=0 phishscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0
- clxscore=1015 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505230105
+	s=arc-20240116; t=1748001598; c=relaxed/simple;
+	bh=3gNJjPkWc2kRTTnLbGrvJloi3gzGTQgiA3rG1pEG+tU=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SZS7kFAVXLR7l8yj82HS5pjL8WniX82omd84V5/ft0Zk+N6eNiPvGpESQMusEvuZY2lxmOdNJg9hQs+J5ROgIs845LtX8TkwaR7bCJ8xHcPQUu4h+BW4+/gmz7Ois9gGBtqpKZ2GvvVWpb+xrQsugRDx8Jpc6Qp+jorUDrffLws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Zo0Djvu3; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=awHLW/0CnTpPGmLXXdEZLaf9bVff0wLAH0bYu6VdaX4=;
+	t=1748001596; x=1749211196; b=Zo0Djvu36lGzVc6seuX6wPHLifcO12rYjBKfRqldJw88wes
+	efa1L5VCR+b0ra1FbXo4+a8YmT7ijSXkvDtYrnljV3ljnELlJMZtDknxfeGTQjxn5wYEEzeFQkigg
+	mMLcxInvsf2loUxeTw/Gs5ZgdZDd3TPIw3vwiLCOiJvPnpBRgnQQJAlJCt1hBOmFZvD1yea2tRco2
+	ZBedbUhh2Hs+hB7viluK4YY8MjRenb+9jebCbFfwcJY6xcTitwi+6FgVtCFnoe0N4ZYXuuROPUWRT
+	aVeEPihtK4IXsdMN00cXQPlUkCPPaI3la+hpsdUck7Z8aGTvXUOc4c9pN8Es9K0g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uIR46-00000001XRv-0n23;
+	Fri, 23 May 2025 13:59:54 +0200
+Message-ID: <2e1fdb77f2ed5f381323f6a493c62ea1bdec19a7.camel@sipsolutions.net>
+Subject: Re: Association comeback delay behavior
+From: Johannes Berg <johannes@sipsolutions.net>
+To: James Prestwood <prestwoj@gmail.com>, linux-wireless@vger.kernel.org
+Date: Fri, 23 May 2025 13:59:53 +0200
+In-Reply-To: <ba82ab00-ecf7-44fe-95db-355795c3520e@gmail.com>
+References: <ba82ab00-ecf7-44fe-95db-355795c3520e@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-Currently, in multi-radio devices, group-addressed data and management
-frames received on one band are getting processed on an interface running
-on a different band. This occurs because these frames do not have the
-destination station information, unlike unicast Rx frame processing where
-the transmitting station is known.
+Hi James,
 
-There is no check to ensure that the sdata is running on the same band as
-the frames are received on before processing those frames.
+> 1. The kernel takes the delay in the association response frame and=20
+> waits, but has no sane bounds for how long the wait is. An AP could send=
+=20
+> 0xffffffff and the kernel will just block for that entire duration.
 
-Fix this by checking the operating frequency of the interface against the
-frequency of the packets received before forwarding them to the interface
-in multi-radio devices.
+For some value of "block", it's not really blocking in the (traditional)
+threading sense of the word :)
 
-The current behavior is retained as a fallback mechanism when the frequency
-is not reported by the drivers.
 
-Signed-off-by: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
----
- net/mac80211/rx.c | 48 +++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 40 insertions(+), 8 deletions(-)
+> 2. The first issue would appear to be guarded by the fact that=20
+> run_again() only reschedules if the new timeout is less than the current=
+=20
+> time remaining but only if there is an existing timer set.
+>=20
+> Looking at the code, the association timer gets set when we begin an=20
+> association so it _should_ be set when we hit this comeback delay case.=
+=20
+> But through testing I found that it is not. Hacking hostapd to use 10000=
+=20
+> TU's as the comeback delay I see this:
+>=20
+> [=C2=A0=C2=A0=C2=A0 4.338185] wlan1: associate with 02:00:00:00:00:00 (tr=
+y 1/3)
+> [=C2=A0=C2=A0=C2=A0 4.340023] wlan1: RX AssocResp from 02:00:00:00:00:00 =
+(capab=3D0x411=20
+> status=3D30 aid=3D0)
+> [=C2=A0=C2=A0=C2=A0 4.340409] wlan1: 02:00:00:00:00:00 rejected associati=
+on=20
+> temporarily; comeback duration 10000 TU (10240 ms)
+> [=C2=A0=C2=A0 14.654103] wlan1: associate with 02:00:00:00:00:00 (try 2/3=
+)
+> [=C2=A0=C2=A0 14.657405] wlan1: RX AssocResp from 02:00:00:00:00:00 (capa=
+b=3D0x411=20
+> status=3D30 aid=3D0)
+> [=C2=A0=C2=A0 14.658430] wlan1: 02:00:00:00:00:00 rejected association=
+=20
+> temporarily; comeback duration 10000 TU (10240 ms)
+> [=C2=A0=C2=A0 14.848706] wlan1: associate with 02:00:00:00:00:00 (try 3/3=
+)
+> [=C2=A0=C2=A0 14.851596] wlan1: RX AssocResp from 02:00:00:00:00:00 (capa=
+b=3D0x411=20
+> status=3D30 aid=3D0)
+> [=C2=A0=C2=A0 14.854269] wlan1: 02:00:00:00:00:00 rejected association=
+=20
+> temporarily; comeback duration 10000 TU (10240 ms)
+>=20
+> So the first association attempt waited the full 10 seconds, then after=
+=20
+> that the timer was presumably set, and we only waited the default 200ms=
+=20
+> (ASSOC_TIMEOUT).=C2=A0
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 09beb65d6108..59028c08dd52 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -5125,6 +5125,30 @@ static bool ieee80211_rx_for_interface(struct ieee80211_rx_data *rx,
- 	return ieee80211_prepare_and_rx_handle(rx, skb, consume);
- }
- 
-+static bool
-+ieee80211_rx_is_sdata_match(struct ieee80211_sub_if_data *sdata,
-+			    int freq)
-+{
-+	struct ieee80211_link_data *link;
-+	struct ieee80211_bss_conf *bss_conf;
-+	struct ieee80211_chanctx_conf *conf;
-+
-+	if (!freq)
-+		return true;
-+
-+	for_each_link_data(sdata, link) {
-+		bss_conf = link->conf;
-+		if (!bss_conf)
-+			continue;
-+		conf = rcu_dereference(bss_conf->chanctx_conf);
-+		if (conf && conf->def.chan &&
-+		    conf->def.chan->center_freq == freq)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- /*
-  * This is the actual Rx frames handler. as it belongs to Rx path it must
-  * be called with rcu_read_lock protection.
-@@ -5264,18 +5288,26 @@ static void __ieee80211_rx_handle_packet(struct ieee80211_hw *hw,
- 		 * the loop to avoid copying the SKB once too much
- 		 */
- 
--		if (!prev) {
--			prev = sdata;
--			continue;
--		}
-+		/* Process the group addressed management and data packets
-+		 * in the intended interface when the operating frequency
-+		 * matches with rx_status->freq in multi-radio devices.
-+		 * If rx_status->freq is not set by the driver, then
-+		 * follow the existing code flow.
-+		 */
- 
--		rx.sdata = prev;
--		ieee80211_rx_for_interface(&rx, skb, false);
-+		if (ieee80211_rx_is_sdata_match(sdata, status->freq)) {
-+			if (!prev) {
-+				prev = sdata;
-+				continue;
-+			}
- 
--		prev = sdata;
-+			rx.sdata = prev;
-+			ieee80211_rx_for_interface(&rx, skb, false);
-+			prev = sdata;
-+		}
- 	}
- 
--	if (prev) {
-+	if (prev && ieee80211_rx_is_sdata_match(prev, status->freq)) {
- 		rx.sdata = prev;
- 
- 		if (ieee80211_rx_for_interface(&rx, skb, true))
--- 
-2.17.1
+That's not exactly how it works, run_again() multiplexes different
+things onto the same timer by tracking the various sources. So the
+_timer_ might be expiring again, but the actual "assoc handling" part
+should only happen after 10000 TU.
 
+> So to me, this feels like either a bug
+
+Yes. I can't reproduce it though:
+
+[    4.300000] wlan0: authenticate with 02:00:00:00:00:00 (local address=3D=
+92:9c:4c:00:00:01)
+[    4.300000] wlan0: send auth to 02:00:00:00:00:00 (try 1/3)
+[    4.300000] wlan0: authenticated
+[    4.310000] wlan0: associate with 02:00:00:00:00:00 (try 1/3)
+[    4.310000] wlan0: RX AssocResp from 02:00:00:00:00:00 (capab=3D0x401 st=
+atus=3D30 aid=3D0)
+[    4.310000] wlan0: 02:00:00:00:00:00 rejected association temporarily; c=
+omeback duration 10000 TU (10240 ms)
+[   14.560000] wlan0: associate with 02:00:00:00:00:00 (try 2/3)
+[   14.560000] wlan0: RX AssocResp from 02:00:00:00:00:00 (capab=3D0x401 st=
+atus=3D30 aid=3D0)
+[   14.560000] wlan0: 02:00:00:00:00:00 rejected association temporarily; c=
+omeback duration 10000 TU (10240 ms)
+[   25.440000] wlan0: associate with 02:00:00:00:00:00 (try 3/3)
+[   25.440000] wlan0: RX AssocResp from 02:00:00:00:00:00 (capab=3D0x401 st=
+atus=3D30 aid=3D0)
+[   25.440000] wlan0: 02:00:00:00:00:00 rejected association temporarily; c=
+omeback duration 10000 TU (10240 ms)
+[   36.320000] wlan0: association with 02:00:00:00:00:00 timed out
+
+
+That last "timed out" should really come earlier though, oops. Let me
+fix that:
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index fa7cf3b8ad59..f4a5deedfaab 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -6383,7 +6383,8 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee8=
+0211_sub_if_data *sdata,
+=20
+ 	if (status_code =3D=3D WLAN_STATUS_ASSOC_REJECTED_TEMPORARILY &&
+ 	    elems->timeout_int &&
+-	    elems->timeout_int->type =3D=3D WLAN_TIMEOUT_ASSOC_COMEBACK) {
++	    elems->timeout_int->type =3D=3D WLAN_TIMEOUT_ASSOC_COMEBACK &&
++	    assoc_data->tries < IEEE80211_ASSOC_MAX_TRIES) {
+ 		u32 tu, ms;
+=20
+ 		cfg80211_assoc_comeback(sdata->dev, assoc_data->ap_addr,
+
+
+So now I see:
+
+[    4.300000] wlan0: authenticate with 02:00:00:00:00:00 (local address=3D=
+92:9c:4c:00:00:01)
+[    4.300000] wlan0: send auth to 02:00:00:00:00:00 (try 1/3)
+[    4.300000] wlan0: authenticated
+[    4.310000] wlan0: associate with 02:00:00:00:00:00 (try 1/3)
+[    4.310000] wlan0: RX AssocResp from 02:00:00:00:00:00 (capab=3D0x401 st=
+atus=3D30 aid=3D0)
+[    4.310000] wlan0: 02:00:00:00:00:00 rejected association temporarily; c=
+omeback duration 10000 TU (10240 ms)
+[   14.560000] wlan0: associate with 02:00:00:00:00:00 (try 2/3)
+[   14.560000] wlan0: RX AssocResp from 02:00:00:00:00:00 (capab=3D0x401 st=
+atus=3D30 aid=3D0)
+[   14.560000] wlan0: 02:00:00:00:00:00 rejected association temporarily; c=
+omeback duration 10000 TU (10240 ms)
+[   25.440000] wlan0: associate with 02:00:00:00:00:00 (try 3/3)
+[   25.440000] wlan0: RX AssocResp from 02:00:00:00:00:00 (capab=3D0x401 st=
+atus=3D30 aid=3D0)
+[   25.440000] wlan0: 02:00:00:00:00:00 denied association (code=3D30)
+
+>  =C2=A0- If the timer being unset is expected, the kernel should be limit=
+ing=20
+> this wait to something reasonable.
+
+Define "reasonable"? I mean, sure, if it says 0xffffffff we'll even
+overflow the calculation and end up trying way too early, and if it says
+0x100000 instead to avoid the overflow inside the calculation and in
+jiffies, we'll wait a very long time:
+
+[    4.300000] wlan0: authenticate with 02:00:00:00:00:00 (local address=3D=
+92:9c:4c:00:00:01)
+[    4.300000] wlan0: send auth to 02:00:00:00:00:00 (try 1/3)
+[    4.300000] wlan0: authenticated
+[    4.310000] wlan0: associate with 02:00:00:00:00:00 (try 1/3)
+[    4.310000] wlan0: RX AssocResp from 02:00:00:00:00:00 (capab=3D0x401 st=
+atus=3D30 aid=3D0)
+[    4.310000] wlan0: 02:00:00:00:00:00 rejected association temporarily; c=
+omeback duration 1048576 TU (1073741 ms)
+[ 1078.240000] wlan0: associate with 02:00:00:00:00:00 (try 2/3)
+[ 1078.240000] wlan0: deauthenticated from 02:00:00:00:00:00 while associat=
+ing (Reason: 6=3DCLASS2_FRAME_FROM_NONAUTH_STA)
+
+Long enough, in fact, that hostapd forgot the STA even existed ;-)
+
+
+> I also realize that CMD_ASSOC_COMEBACK was added and userspace gets=20
+> notified, but this feels excessive to handle in userspace when the=20
+> kernel could instead enforce a sane timeout all on its own without=20
+> requiring userspace disconnect/reconnect when the AP sends an absurd=20
+> timeout.
+
+Define "absurd". Bigger than around what I was demonstrating above
+doesn't actually work properly anyway due to the possible overflows, and
+sure, 15 minutes is long, but doesn't feel "absurd".
+
+I tend to think this is exactly right - the kernel will wait, but since
+it's not doing anything else that doesn't really matter. Maybe it'll
+work later (earlier tests above), maybe it won't (like when the AP
+forgot about the STA above), but it's not like the kernel is holding
+some important resource busy for all that time?
+
+And userspace gets notified and gets a choice, so of course it can give
+up on the association instead.
+
+And yeah I did "iw connect -w" and it'd be hard to actually work around
+it with that, but it could even make the assoc socket-owned and then
+it'd probably stop when you hit Ctrl-C, and anyway nobody really uses
+that.
+
+
+> My main concern here is a rouge AP scenario that can then DoS all your=
+=20
+> clients that try and connect to it.
+
+Oh, so you're just trying to sell us a missing implementation in iwd as
+a kernel security bug? :-)
+
+johannes
 
