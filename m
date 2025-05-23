@@ -1,68 +1,91 @@
-Return-Path: <linux-wireless+bounces-23343-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23344-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034F3AC1CF8
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 08:28:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8327AC1D02
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 08:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A97DC4E4C84
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 06:28:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 090741BA2587
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 06:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955002236EE;
-	Fri, 23 May 2025 06:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8D514A627;
+	Fri, 23 May 2025 06:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Jmq2koCv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mzV5Abgw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226BE22618F
-	for <linux-wireless@vger.kernel.org>; Fri, 23 May 2025 06:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58AF33F3;
+	Fri, 23 May 2025 06:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747981672; cv=none; b=EgUAti48QKbB0nd/FNRBeixiBKwQBFEyLjpn54ybgVu1sT1GygRWJ9YeD5C4ufMc0C0PrvaPhzWyaEEQl2HIXKVDVTScAJnXUNxwJpRjGOX3Iw3Wp95wso5yBprQ0vJS/PbZDRFbfgVI9jaD5wnqimjkNPtFxm4KzBYXPTChCZI=
+	t=1747981932; cv=none; b=fKBdAFstrk8uIKY/9bDWuNHJMUmUZHiL9FKTLIBOohVEFlOgLBtqvgDjvgvJ1no1fdaa+tLNGiP6SILD/AfalAokhlsQLanIQ82N+6C4JYdmwgQW4jUaYesa+aM8xUEmVzo0pauJIQc7J+/BV2N3ME0QPXUdXG7zomFRV6Nz210=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747981672; c=relaxed/simple;
-	bh=qXb8LLfcLHk0jFI80Da+QWafZkKz1EAkxl9TvBLKvD8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lyVO3HIbtZkt6I2Rt1ZnnrQxFxgKuK25DewP1IRzQz39J0TNWeukpMZ3fMW/U/A6+pe+8JMqjwhIBTMlHXrFhJsnBQ0Si/ECl4iwdhNOcsr3Qh8UG/WykzGAbyE4OOTwurVcsQWGiGa7X0+avcOJoSzANWf6G1nU8HIKEq5tg0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Jmq2koCv; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54N6RlyS61769362, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1747981667; bh=GMuEfBmNwFeZeE5vcElP6dmot7EcMsEg5k0yIAETXO0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=Jmq2koCvzDQA22v7zS/ibjYHRymKemVUu5UL02qn8CskJfkVBGmh9fD8SFzqYH6QT
-	 wbQd3NJ55177D4xd/Xb/GHFI56evoBKLQrr7N4f9+BxnHtSOKQk/7NX1byEwf7JNBw
-	 z6oNQviCaIm+8wUjerZm3yYsy5wmwC7E7B41GqJH0ICQyau6yn0eeSJkY9iMIer+SI
-	 J6xCo/LaXG4yWDpzmlqxavI78a3Qyhm/WyV/gVudWfzWvP7mC5gfgSW2de3NK8oHiX
-	 ybyw6F5UAx1zTjNmBRwDeVjmGAVuC4DIEgPgT4tELIwb29Yl2EU/XH9Reoj4APCegS
-	 02f8kxIVacsGg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54N6RlyS61769362
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 23 May 2025 14:27:47 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 23 May 2025 14:27:48 +0800
-Received: from [127.0.1.1] (10.22.225.244) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 May
- 2025 14:27:47 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <timlee@realtek.com>
-Subject: [PATCH rtw-next 2/2] wifi: rtw89: pci: add PCI Express error handling
-Date: Fri, 23 May 2025 14:27:11 +0800
-Message-ID: <20250523062711.27213-3-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250523062711.27213-1-pkshih@realtek.com>
-References: <20250523062711.27213-1-pkshih@realtek.com>
+	s=arc-20240116; t=1747981932; c=relaxed/simple;
+	bh=iczsGgbOp2ghmmrVs4dItJAR6r10cdIAcSuFTkkOvVw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mthyXw8RvVmlcqWman2ie1QlYLSnX5AyvfAqtETdy3WLWKe22Ji9ZozT7/uvPPogacZPaId8DkloUNGStUR+EoM5/0ec+vqP87jWj43Xcu7DePMzGFjr94sBH/i/kLxtLaZgIN8fal8aSzcYXC2zgWQECF+3k1qkSr2AgTsn28c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mzV5Abgw; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-742c3d06de3so6811712b3a.0;
+        Thu, 22 May 2025 23:32:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747981930; x=1748586730; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mJ3uQbc8/jUzObnwzagu5VXqL+U22usgEm91G+BMtpI=;
+        b=mzV5AbgwCkgT41VDo9Io/Rl/DVLoDpW9iu7uzncN4vjKLW0QXUyK8zVvFcr7UX9zjk
+         YIBvsXeGLSGJI53F6e0026QOr3oDf4duq/5hs1tNm9arkLTzn4UfmE4IZzuPnbIqNhSC
+         zNgZ0zhM0SPj/e4aKgdzV8eLKq3aWvk3OWZOTbzdCYDpIwwFNb1KP5aUqcI1BAp6VQzI
+         LfQiHD9arBFY6b0OJrWj1bLE9rW7DZToikvrE81vJKCFBg5jW7hVmTutaqs/KXYdng+n
+         PkWFKDYeZ5BThLWKdAxCyXRi0WLOJ/AjBVPB7JB+A0wuhMXl5UI9WXXOZA8zYloPIiXA
+         kvZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747981930; x=1748586730;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mJ3uQbc8/jUzObnwzagu5VXqL+U22usgEm91G+BMtpI=;
+        b=bSW69XWI6N4h944HAJKewFKliYoRkrziBSiDgAxVejBbWqNz1gzwULwPzOQzqJPCiw
+         zMVGCvHMYv+AQBRkqyw71GSrkDrEHlBtH31LmPITsvzCL53fo47kD3tKTAwmc3835FYV
+         uJuEoFX66iRR/iUGZGeXZAod24Uqh3eqt0vAU0nfz8ww24/D6S7h3wLCZEth3UyhyFQI
+         tD3pZmt4GHK5WYf5IYv1qnvpYdF+Wnd/U97S8HWdSeZrObMbGZGAlRHyVqHQeHEnTx70
+         ELn2qp9JZwXVNmaxOieMGj1UrVL16uq39fy3nrNPR135ZSrDkJ6GG+GoI/8kRSqg+TZu
+         SyTg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBmgofFWK7vmstSOImoGGArTlc9LMjEXstrMPa7XtlK2Rvjkldj4b7Xhh75aM9RWJbf/lOSk0nKUKoHg==@vger.kernel.org, AJvYcCVoVawzc6Gngs7/kvRial4qpQH9FZe5vcAHSX2o17joP6fV+vhla00Ieepa6Tqb8j3uCk09Gy03mKmEu+mY@vger.kernel.org, AJvYcCWFd/vU0MZ5QYEDvmZzVMzY4rCwQDhvc5H2RpbuFXy+cTTUamXGGeKkqiU4TfT4PLV+aJ4YoEQuFw3X@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDtcQeHeXcsOJ3FlEK+DK0VI8xAOV82QROiXzULZp5Ky1eXiTn
+	d4nxjdKCD1wxPgourALT2yWz1XnJ2EP2bP7UpHgi4444m5dfv0aq3vQdVM0zVA==
+X-Gm-Gg: ASbGnctIbCtOHM8vIdvA/9HGJIAghRoyCNOwPIGs87ac0QTQhD7tcHS2qJaZ8+yt5pW
+	e+pG0fugQ0xQlrs8Mw6mlW4zBycuz54gLk+fDb7vUxEkCe3btu+KPX+pWItm3yxGD2BG0xy10qE
+	K7folM2g3dzkNkQAyCWxo5yoVtftzyBzJl6iJBLpV+e8XWGap56ezTYAvtHY40fGuo5rMmyDOuw
+	1nZsrZlBrJD32TkYhE8qyzTc5I4AtXUlvfZpQg6AM1kfTV6MIbfZOsSh7vy0txlg/Ef2jcy8u7i
+	M2DZGptItVgAWUdWkFRRX5ziJO0=
+X-Google-Smtp-Source: AGHT+IEi3OOVNro5y9f22mFvO5EjQRMJ5a/Z/1C5GltShokVPZZyPEEcJSSFjjjMZgN0h5D6GTz2vw==
+X-Received: by 2002:a05:6a00:c86:b0:740:9e87:9625 with SMTP id d2e1a72fcca58-742acc8ff71mr39363528b3a.4.1747981929616;
+        Thu, 22 May 2025 23:32:09 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8200:dab8::a86])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a97398f8sm12177783b3a.78.2025.05.22.23.32.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 May 2025 23:32:09 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	nbd@ndb.name,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list),
+	linux-mips@vger.kernel.org (open list:MIPS)
+Subject: [PATCHv3 0/5] wifi: ath9k: add ahb OF support
+Date: Thu, 22 May 2025 23:32:02 -0700
+Message-ID: <20250523063207.10040-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,174 +93,33 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-From: Chin-Yen Lee <timlee@realtek.com>
+First two commits are small cleanups to make the changes of the third
+simpler. The fourth actually adds dts definitions to use ahb.
 
-Sometimes PCIe Advanced Error Reporting(AER), like bad TLP or
-Data link protocol error, happens due to unstable pci signal or
-no response from PCI host.
+v2: Add documentation, use kernel_ulong_t, and of_device_get_match_data
+v3: Use qcom prefix and wifi suffix as in other ath drivers.
 
-  pcieport 0000:00:1c.0: AER: Uncorrected (Non-Fatal) error message received from 0000:01:00.0
-  rtw89_8852be 0000:01:00.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Requester ID)
-  rtw89_8852be 0000:01:00.0:   device [10ec:b852] error status/mask=00004000/00400000
-  rtw89_8852be 0000:01:00.0:    [14] CmpltTO                (First)
-  rtw89_8852be 0000:01:00.0: SER catches error: 0x4000
-  pcieport 0000:00:1c.0: AER: device recovery successful
-  rtw89_8852be 0000:01:00.0: FW backtrace invalid key: 0xbb6c3214
-  ieee80211 phy0: Hardware restart was requested
+Rosen Penev (5):
+  wifi: ath9k: ahb: reorder declarations
+  wifi: ath9k: ahb: reorder includes
+  wifi: ath9k: ahb: replace id_table with of
+  dt-bindings: net: wireless: ath9k: add OF bindings
+  mips: dts: qca: add wmac support
 
-Setup callback function to call SER function to reset driver to recover
-from these states.
+ .../bindings/net/wireless/qca,ath9k.yaml      | 23 ++++++-
+ arch/mips/boot/dts/qca/ar9132.dtsi            |  9 +++
+ .../boot/dts/qca/ar9132_tl_wr1043nd_v1.dts    |  4 ++
+ arch/mips/boot/dts/qca/ar9331.dtsi            |  9 +++
+ arch/mips/boot/dts/qca/ar9331_dpt_module.dts  |  4 ++
+ .../mips/boot/dts/qca/ar9331_dragino_ms14.dts |  4 ++
+ arch/mips/boot/dts/qca/ar9331_omega.dts       |  4 ++
+ .../qca/ar9331_openembed_som9331_board.dts    |  4 ++
+ arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts   |  4 ++
+ drivers/net/wireless/ath/ath9k/ahb.c          | 60 +++++++------------
+ 10 files changed, 84 insertions(+), 41 deletions(-)
 
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/pci.c      | 37 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/pci.h      |  1 +
- .../net/wireless/realtek/rtw89/rtw8851be.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852ae.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852be.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852bte.c   |  1 +
- .../net/wireless/realtek/rtw89/rtw8852ce.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8922ae.c    |  1 +
- 8 files changed, 44 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 064f6a940107..204a3748d913 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -4353,6 +4353,43 @@ static int __maybe_unused rtw89_pci_resume(struct device *dev)
- SIMPLE_DEV_PM_OPS(rtw89_pm_ops, rtw89_pci_suspend, rtw89_pci_resume);
- EXPORT_SYMBOL(rtw89_pm_ops);
- 
-+static pci_ers_result_t rtw89_pci_io_error_detected(struct pci_dev *pdev,
-+						    pci_channel_state_t state)
-+{
-+	struct net_device *netdev = pci_get_drvdata(pdev);
-+
-+	netif_device_detach(netdev);
-+
-+	return PCI_ERS_RESULT_NEED_RESET;
-+}
-+
-+static pci_ers_result_t rtw89_pci_io_slot_reset(struct pci_dev *pdev)
-+{
-+	struct ieee80211_hw *hw = pci_get_drvdata(pdev);
-+	struct rtw89_dev *rtwdev = hw->priv;
-+
-+	rtw89_ser_notify(rtwdev, MAC_AX_ERR_ASSERTION);
-+
-+	return PCI_ERS_RESULT_RECOVERED;
-+}
-+
-+static void rtw89_pci_io_resume(struct pci_dev *pdev)
-+{
-+	struct net_device *netdev = pci_get_drvdata(pdev);
-+
-+	/* ack any pending wake events, disable PME */
-+	pci_enable_wake(pdev, PCI_D0, 0);
-+
-+	netif_device_attach(netdev);
-+}
-+
-+const struct pci_error_handlers rtw89_pci_err_handler = {
-+	.error_detected = rtw89_pci_io_error_detected,
-+	.slot_reset = rtw89_pci_io_slot_reset,
-+	.resume = rtw89_pci_io_resume,
-+};
-+EXPORT_SYMBOL(rtw89_pci_err_handler);
-+
- const struct rtw89_pci_gen_def rtw89_pci_gen_ax = {
- 	.isr_rdu = B_AX_RDU_INT,
- 	.isr_halt_c2h = B_AX_HALT_C2H_INT_EN,
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
-index 79fef5f90140..52f527069da6 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.h
-+++ b/drivers/net/wireless/realtek/rtw89/pci.h
-@@ -1622,6 +1622,7 @@ static inline bool rtw89_pci_ltr_is_err_reg_val(u32 val)
- 
- extern const struct dev_pm_ops rtw89_pm_ops;
- extern const struct dev_pm_ops rtw89_pm_ops_be;
-+extern const struct pci_error_handlers rtw89_pci_err_handler;
- extern const struct rtw89_pci_ch_dma_addr_set rtw89_pci_ch_dma_addr_set;
- extern const struct rtw89_pci_ch_dma_addr_set rtw89_pci_ch_dma_addr_set_v1;
- extern const struct rtw89_pci_ch_dma_addr_set rtw89_pci_ch_dma_addr_set_be;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851be.c b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
-index 5810af825242..598730831707 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851be.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
-@@ -89,6 +89,7 @@ static struct pci_driver rtw89_8851be_driver = {
- 	.probe		= rtw89_pci_probe,
- 	.remove		= rtw89_pci_remove,
- 	.driver.pm	= &rtw89_pm_ops,
-+	.err_handler    = &rtw89_pci_err_handler,
- };
- module_pci_driver(rtw89_8851be_driver);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
-index 2037713e3952..90ffaf9f4f6a 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
-@@ -91,6 +91,7 @@ static struct pci_driver rtw89_8852ae_driver = {
- 	.probe		= rtw89_pci_probe,
- 	.remove		= rtw89_pci_remove,
- 	.driver.pm	= &rtw89_pm_ops,
-+	.err_handler    = &rtw89_pci_err_handler,
- };
- module_pci_driver(rtw89_8852ae_driver);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852be.c b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
-index abdeafc14b0b..b0726f590ca2 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852be.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
-@@ -93,6 +93,7 @@ static struct pci_driver rtw89_8852be_driver = {
- 	.probe		= rtw89_pci_probe,
- 	.remove		= rtw89_pci_remove,
- 	.driver.pm	= &rtw89_pm_ops,
-+	.err_handler    = &rtw89_pci_err_handler,
- };
- module_pci_driver(rtw89_8852be_driver);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bte.c b/drivers/net/wireless/realtek/rtw89/rtw8852bte.c
-index b69fa17beb33..a584c75b801d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bte.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bte.c
-@@ -95,6 +95,7 @@ static struct pci_driver rtw89_8852bte_driver = {
- 	.probe		= rtw89_pci_probe,
- 	.remove		= rtw89_pci_remove,
- 	.driver.pm	= &rtw89_pm_ops,
-+	.err_handler    = &rtw89_pci_err_handler,
- };
- module_pci_driver(rtw89_8852bte_driver);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
-index 5d864fd5974e..db01d3966c27 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
-@@ -118,6 +118,7 @@ static struct pci_driver rtw89_8852ce_driver = {
- 	.probe		= rtw89_pci_probe,
- 	.remove		= rtw89_pci_remove,
- 	.driver.pm	= &rtw89_pm_ops,
-+	.err_handler    = &rtw89_pci_err_handler,
- };
- module_pci_driver(rtw89_8852ce_driver);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922ae.c b/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
-index 0ea8d5281c10..b730d79edd10 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
-@@ -106,6 +106,7 @@ static struct pci_driver rtw89_8922ae_driver = {
- 	.probe		= rtw89_pci_probe,
- 	.remove		= rtw89_pci_remove,
- 	.driver.pm	= &rtw89_pm_ops_be,
-+	.err_handler    = &rtw89_pci_err_handler,
- };
- module_pci_driver(rtw89_8922ae_driver);
- 
 -- 
-2.25.1
+2.49.0
 
 
