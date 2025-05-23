@@ -1,139 +1,103 @@
-Return-Path: <linux-wireless+bounces-23340-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23341-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364EAAC1CE9
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 08:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8663FAC1CF6
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 08:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59789A2186F
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 06:23:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14C7A24A4F
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 May 2025 06:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C655D223DE5;
-	Fri, 23 May 2025 06:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178EE224AED;
+	Fri, 23 May 2025 06:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BC4sgF7y"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="QukcEhBm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9239D634;
-	Fri, 23 May 2025 06:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE292DCBF9
+	for <linux-wireless@vger.kernel.org>; Fri, 23 May 2025 06:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747981445; cv=none; b=gCNdDTpUt7q6g2rRjHl1odZEylbkX44f9CuqvxijLVfnAE7CBgijqb0Kj/3txg047p4/SzdwKpq9d3b3D+dar4K+OFmd0HfJ3aJtwzScwOquohU5dli24O79j2zoF/uAE4al6xfzdxwHddd1dYPbuqDm2i0QW2JRp2x+k/NoGuI=
+	t=1747981669; cv=none; b=kYQ4j3xHPyOBK1QZvjcl5cGy9HPdhExEcUHZx+DgW8LUeLHSKJzZZZe6VxGGRJtuF6poXP5Gmfaiw9alJ3JwAWWa0XGfJxgwBSCrYukTAqTDvHTJV4cYmwnmBQzcoC8r1vbkX37usw7Nq3ETaaITMwtjo0fLaxYEZ1jqzVx2gD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747981445; c=relaxed/simple;
-	bh=PIYLxqCyjw+4aCqAW27AXRd6ZQCdzIB4GNC0BzN1GP0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dJPfsdvzGj6/2wXpN+YS54AkBn/qhYpiz696d5kam6Wt090bsnCvcxoFEHJKrAv6llwbAjVcHn6neUvFYnmHbStdxvP5t6WxRdkseohgXvLYNHF/gqZ98clkIcdRKzXIh3udB3otE/4ThHV2Tu/DS4fpE8Z0ZFGdt7ni4+G5TQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BC4sgF7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C5D6C4CEE9;
-	Fri, 23 May 2025 06:24:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747981445;
-	bh=PIYLxqCyjw+4aCqAW27AXRd6ZQCdzIB4GNC0BzN1GP0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BC4sgF7y+evOPoAhcLFKLfTQwBlnXPq9nnsmi3NuvoBWeuFfiX2UkLlX6Af/jWeaq
-	 fAFxkLZuZiPq9U7JiEAauYZYBdjUsx+3mbIWzWxV6Cji5f4dCdUY1GZJjwU/bfe5yz
-	 V9LnlDHC0xAhrkfnnV/IA33rapFy1/5tT/bzwOIw1JZFLyESlDhjNLURatUSU7FDxI
-	 RMrbpUngOG4R4DvNLWz2bkXk4/f6+K9lLEi5SLqT8n114ZnGev61d3cbTke7FmFDFE
-	 Eg4Si9pGlmJp51/wFJXNBNnbM8QSwPD/R8YWzOuKGmN+u/QnqMLR1MBo3BOdmgzata
-	 o2sg5CqnFjKZQ==
-Message-ID: <4b1960f2-95e4-41c3-9723-04d77c6c27d4@kernel.org>
-Date: Fri, 23 May 2025 08:24:00 +0200
+	s=arc-20240116; t=1747981669; c=relaxed/simple;
+	bh=Xeqwm9AL4Ua4y1NEg0rN3fFpdymt1TuJiA2VdKI0uwk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GKfEnghw8X62usKXFH5HEDVF0VtyDA9nvMEPTEZ3/t0DlNBvU3y67HZx/j+rowBJEXbtQe9q3+832SazbTqEbQUQZvP1U22iEv35zZchrKbQMkvVjRzkEJzrmVHxlOVK7O6FD+iopFmUToIDiFHPZ9bHgfJDiaPw8zMxM6P8vpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=QukcEhBm; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54N6RgIM21769104, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1747981662; bh=BZ/wRG9x0RwQxNx5XJWNtl7mlKyL3QM5Ots1ZMWo2/o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=QukcEhBmbnN+e8iGJr3EBfJzOJ/IZM7kCz4oqnqB8untQ0nT8sLvjQ0oygLDtFc2W
+	 m8Yc1TzZ7cqTehHmi1bqS06fuCHCPwi4fcifp8a+w/ZOZen4K+Bo/XkPzZKyq+OUHH
+	 SAomSvnEc+GZEv9Z7Kf6SIL/OmkPsOdIPPcL4ROfBIqz9qejQEVB8QZIwk0q2g3CkB
+	 1L6LXFkLFcToy7Ea3qNs2He9ojHoLVKh8dBV4Rj+mPAyLxi7vlm9Lfk3auXYr8TwRN
+	 nq9RvxgQiTMt6quKftOazEQM8W2aVQwUC4i66MeJ0fG/SzaJJOA+rFGq99Wl+9FNz8
+	 93+xdhp7G7o1A==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54N6RgIM21769104
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Fri, 23 May 2025 14:27:42 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 23 May 2025 14:27:42 +0800
+Received: from [127.0.1.1] (10.22.225.244) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 May
+ 2025 14:27:42 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <timlee@realtek.com>
+Subject: [PATCH rtw-next 0/2] wifi: rtw88/rtw89: pci: add PCIE error handling
+Date: Fri, 23 May 2025 14:27:09 +0800
+Message-ID: <20250523062711.27213-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 4/5] dt-bindings: net: wireless: ath9k: add OF bindings
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linux-wireless@vger.kernel.org, =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgens?=
- =?UTF-8?Q?en?= <toke@toke.dk>, Johannes Berg <johannes@sipsolutions.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>
-References: <20250522184516.13176-1-rosenp@gmail.com>
- <20250522184516.13176-5-rosenp@gmail.com>
- <871d18ab-a696-4141-bc3a-7b6e968fc649@kernel.org>
- <CAKxU2N8uZ+q1aE42+e65tVMr=ji0RTx5wZssFBnQN29OzsFXVA@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <CAKxU2N8uZ+q1aE42+e65tVMr=ji0RTx5wZssFBnQN29OzsFXVA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On 23/05/2025 02:04, Rosen Penev wrote:
-> On Thu, May 22, 2025 at 12:54 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>
->> On 22/05/2025 20:45, Rosen Penev wrote:
->>> Now that support was added to the driver, document it.
->>
->> That's not appropriate commit msg. Binding must be before the user (see
->> submitting patches in DT directory). Describe the hardware, what are you
->> adding here.
->>
->> Subject: OF bindings is redundant. It duplicates dt-bindings. Instead:
->> "Add Atheros AR9-foo-bar on AHB bus" or something similar
-> At this point I wonder if my approach is wrong. The other ath drivers
-> use a qcom, prefix and a -wifi suffix. Might make sense to do the same
-> here to avoid typing qca twice.
+The WiFi devices might encounter PCIE error in certain platforms. Sometimes
+it can still work, but sometimes it causes hardware or firmware error and
+become unavailable for users. Add handling to power on/off WiFi devices and
+restart firmware to cure silently to improve user experience.
 
+Chin-Yen Lee (2):
+  wifi: rtw88: pci: add PCI Express error handling
+  wifi: rtw89: pci: add PCI Express error handling
 
+ drivers/net/wireless/realtek/rtw88/main.c     |  1 +
+ drivers/net/wireless/realtek/rtw88/pci.c      | 37 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/pci.h      |  1 +
+ .../net/wireless/realtek/rtw88/rtw8723de.c    |  1 +
+ .../net/wireless/realtek/rtw88/rtw8821ce.c    |  1 +
+ .../net/wireless/realtek/rtw88/rtw8822be.c    |  1 +
+ .../net/wireless/realtek/rtw88/rtw8822ce.c    |  1 +
+ drivers/net/wireless/realtek/rtw89/pci.c      | 37 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/pci.h      |  1 +
+ .../net/wireless/realtek/rtw89/rtw8851be.c    |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852ae.c    |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852be.c    |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852bte.c   |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852ce.c    |  1 +
+ .../net/wireless/realtek/rtw89/rtw8922ae.c    |  1 +
+ 15 files changed, 87 insertions(+)
 
-Yes, probably this should be qcom.
+-- 
+2.25.1
 
-
-Best regards,
-Krzysztof
 
