@@ -1,79 +1,79 @@
-Return-Path: <linux-wireless+bounces-23395-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23396-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27BB0AC3744
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 00:03:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67637AC3745
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 00:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA9AB173957
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 May 2025 22:03:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4F7D18948DA
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 May 2025 22:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FE8A29;
-	Sun, 25 May 2025 22:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423C8A29;
+	Sun, 25 May 2025 22:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j3pnkt2T"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U5ngUn3J"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85660163
-	for <linux-wireless@vger.kernel.org>; Sun, 25 May 2025 22:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D471163
+	for <linux-wireless@vger.kernel.org>; Sun, 25 May 2025 22:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748210632; cv=none; b=oQ/f5Dgfa0iTHsouW5tDHDKZoLJBRZKeARkqzUHw/ITtu3BfyF7qukyH0DyzMi6HXVferNC+d8VXLm0qbr/pkc9GDarU06T9KYG5NFta9iBQ9xCsjo+WW2dVjBgNYlaKfgltXWzvKGI30wVFmbHBmxfWnkuo1NUYe+GUmILAY1g=
+	t=1748210699; cv=none; b=JeRCKwiN5PBmaeNJipJ0Otx+d5Dc3VlcX+RqmlNbiEty+gPY1WQFbN2WxP6D+dG1me+Yxqd7swumxUPwQQ/DPbIOh2/V1/UwBCcRsSIB7cu7b5v9sy9apAHLzQnoVxTVhW5QyoV3RthGRJjfhiotpM8ZYlam+BpLIkvwrq6u1DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748210632; c=relaxed/simple;
-	bh=feayTzJMdFb7qRb/HSQPneHNVWnDvpDRERguDJhHFIc=;
+	s=arc-20240116; t=1748210699; c=relaxed/simple;
+	bh=VxDSaSB1OwjxRua7Jz0PFRODu2D0OJFHTsILQVtRm9c=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=qGwoZlsGmbygZoTRCBpmhLMaGgAyLBEWF/+q+dx3Uxd+p4EY5e/9NsMBwhs23tl4tY2SW9XOZDwSTgwzRIGL+oETTTd7/n1Fr+Dr0BLuEBtC3sK5OolxTLAWHp+gkHgn1x4GDObfDRTBEFeH8350li/CaW7rkaWd5n7tmC4jm+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j3pnkt2T; arc=none smtp.client-ip=209.85.218.42
+	 In-Reply-To:Content-Type; b=c9JiJEPeTcI53OCYD1tj/+5+U57InS/4LJkkvbBp5I80iS/M8xwh26ecaBErVVR+5wuKbBbYyuwFudyLOvngi5pmW6evWjaWtfvwyjmI0kMokA30z6sNTBqQqWfbAi3PksGjlb+vIsXkN5lA3ORHmPtyYOuGOSoB0hvKueLZg68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U5ngUn3J; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ad5566ac13cso242413766b.1
-        for <linux-wireless@vger.kernel.org>; Sun, 25 May 2025 15:03:50 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-60497d07279so998302a12.3
+        for <linux-wireless@vger.kernel.org>; Sun, 25 May 2025 15:04:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748210629; x=1748815429; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748210695; x=1748815495; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cap2M4nKoAJlvpKKZ5W2jUOqYu775Ge4fPw0tUCSpig=;
-        b=j3pnkt2TwlVQLMN9HPdcum4mcIRfvshWP7KinLdD1eKma16CvPsQLDNggI9hUebrMV
-         fFN0EqFEm9ew5Sy4LXl8x3CrqP/I+Xv0low+Ki+NjA2+1fhPNe5NOeitTyrqPFTaCtr+
-         yT6oPux8O/8SQRIVaVTbYGRqXB8CMM9iBQmZs+I63VJ9cuh0S6UByAv40nrqH8OtUuIA
-         4E3aE2UpUQmhAbvfHsyC074ZtB5VaB/y7rCfQer0NETFSoAGvpQ5XLsCW4x8XT9JwKD5
-         HBKnfBErS3vF6Bd9G76rwkoYJOfcAiQu6rLiTvW9DS/gKGeHTmdfccD7jZvA+he2M5Zr
-         he0A==
+        bh=hrX30DS1shWkgfGJ4aIfFMLRg/47aQXaaJ6aTMR9qLE=;
+        b=U5ngUn3JE0tzptp2L2KFhdlZqgIhtRA4+eqP9j+cGjHSTSAxA8ojJgn61IGYhfboL9
+         mL2ybEvoxyEiuN0+QwRu43zTtUM/FtGsepi3NlgZQLcKH5n6P+Z4zzLzlrJiOZc9cZuP
+         TCI+ydmV6x6wWSoY1ITyk7PDUH8KCVvdyqzEbNXpqH3KXrLKD7SgrDt5YjfZ66eqyFrl
+         amejoNhOJwkHmGSBbmXgqzPRQPJyTHtFa5pXuS5sTXv6rx7+1Q3XtlttdJp+zBkANOEH
+         vUBafdf7cqXU7xap0aRb1VSyuL1mic0O5jRvqZ32uxdOSpGzTB1Bj4dzfDb7AU/BGMhg
+         t6ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748210629; x=1748815429;
+        d=1e100.net; s=20230601; t=1748210695; x=1748815495;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cap2M4nKoAJlvpKKZ5W2jUOqYu775Ge4fPw0tUCSpig=;
-        b=kFVrFTKTFzZ9eQUvmaGI3Dr/UiUg/R47tWK/pVcuHJUnosjuK7I2V8EPZ9ZhPxhrWf
-         M90Opi37o5TcIQ7qBDT8vX56yALiyeu2AddIXnhU0prnSGWu8yFNTNw/b5vcgRHaRaW0
-         7NqoxuCKqrRMx9MuAtv9fI/7lW7kwD6NHBR5cnQMD7SGXIhlhb4oNvo+fcUseXn+EJpt
-         yJfi7kRkwWCipYjMURA851BdmRjIuFi/2uw2PuHNLGNRm96I0Y+1cNke3phNC4j8X3+0
-         /KILdSw4arHcLnGYin/6CuOhBpe4u6/o+qIaTtdoaKQ8Me81e/20DJYWS1O6PFMv0nN8
-         GvMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeJM6XkVJC4fgfTMddzTG19aUhYmLxFbMQfgSlHlfMLh2pPey9+Di2dAe3pbm5prkAvm4NsR/OTWyY4ofQQA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7iJg95ODyzyKqx7tae0cqcnkmfyvSH+qfTqrWTNAy/R7zMYh2
-	/UPbqj3D0RlYdXweQXZj1ipAzjchaKsOyvDEl7RiAdNYWXj4X3+Zra6ivnfaDg==
-X-Gm-Gg: ASbGncv4i6S432XYx7fXoRlaDZoBUFqUCODPCo32OhCk0cjfPCptG6UlwvxnXU4HMXI
-	eZmbMF4uSD5VUZICSBInFtdP6lP0l9Qdlq0Cfxs0mFu9NASV7U9GTFyJPoI0wHzaLfmrN470z4Y
-	j18PQ1JQYPiwe6bldfkOtJmx6gNBuPAAiV6/oSB4k7VZzG7oCHaJlYeYWYyRpOpLb+dhEqs4MLz
-	U3kW5/iJZtf9U5gpz/RcuO9JXtkrNyQfeIApVN4C0K1WOXiALDM4LZEUGoR39d7mveuLAB04kaA
-	/fvPfGDlnmuwRxpnvTPosZZr8iJEgQ6vvgpYPwAFJtNruTva0pEQ1k4wCjI=
-X-Google-Smtp-Source: AGHT+IFdfawRr1AxiMSnBByqL9JELmz5mvPZ+ERsEYIAyXJNAVErjvG6cM1+h0sV3OObcv/tO0Dt3w==
-X-Received: by 2002:a17:907:3d09:b0:ace:5461:81dd with SMTP id a640c23a62f3a-ad85b00b904mr630477466b.3.1748210628801;
-        Sun, 25 May 2025 15:03:48 -0700 (PDT)
+        bh=hrX30DS1shWkgfGJ4aIfFMLRg/47aQXaaJ6aTMR9qLE=;
+        b=Z7Xo1knmlDJcSmZFp84C/GqfbcNR5gjLaCVrS9qm3L5m2TfzvCXuXtCHIu9zCbVfH+
+         3+Du1Cy9bxb1bYalZshlPGsCS8iTNYJcqit2hWKcSgmhSo4CepcyQnNpbTo6590eqCoF
+         WQZPkBTyyenJHFEe+DiREJFaRuqcvatsD4K4idtUKj6Zv4wQQtGFxVOu3Gj8gMX8GwlT
+         OHfQoTmtIZg+GotEl/ZZyQnEYHYMhbbIhzYeCIbOtwyCj9P8mDbeTGaYvjotzZNyctWO
+         JlOM7+JWiX6EzExrf1b7CxmUsFMKbkDxk2fOaUtjOedkLFAGE98LBxhUz8IP6DJzhpAf
+         yIpw==
+X-Forwarded-Encrypted: i=1; AJvYcCXGO6+RhcBEb8vx0n0D+QHWF0sjEtrzcp4WXH4uUmL0WBBe+pcdxGd0SSGMC4W1+LiYV5liXhrlNaG7XQ0qZw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4EZORbsvtG+YZ9rXV1vqwq01BdXnpYaMmy2Px8F5z/+8PSXbM
+	1V8o5yabNahP1+NF0OeErIPX+toIH5gh/LYME3+1aSxYkXWaib0f+plx
+X-Gm-Gg: ASbGnctpcOQ+QNCbM80J3yMXfvOgw6q0PQB45DkX08AWKUE9Zm4rh/3WY0dCcB7Abx6
+	Fw4ALVHcF1l7BoniYUMmfj5LE/hlSz53CWhJMnBMPBzp48ZMteeo6TvKKgY9e2d79CkfFUeDr7m
+	HZU1cLBqmbDwmL+yi2BrxSqxj4dgjlWbhZZlJ3HOmo3Hf0J8scJOnvNasz2H0Dsi22z70oBKNBo
+	r3tNJ6AknFOsQ0zRj/Fh/r+6Nymrf/NsPwkllVTuTjnlWgkq4+WZobKToOQ2YLZqC/R67/ZFtBm
+	uFphWyWuDu/Rf919r7ov4uFQaL0YyxalTjeYs4pymyh+BIXHtAPwZQKJM8nZfQK5MqbyZg==
+X-Google-Smtp-Source: AGHT+IFNYeldQaS8iHE5SaXwCDjfeE2cXGgx5bKnD1RNW9Z4hhlCS/YwPQ38YD3e10fKVxaHwjDTog==
+X-Received: by 2002:a17:907:8686:b0:ad5:b251:17f8 with SMTP id a640c23a62f3a-ad85b185a24mr622525866b.41.1748210695395;
+        Sun, 25 May 2025 15:04:55 -0700 (PDT)
 Received: from [192.168.0.50] ([79.119.240.16])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d4cadc5sm1567751966b.167.2025.05.25.15.03.47
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d06b532sm1568724166b.43.2025.05.25.15.04.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 25 May 2025 15:03:48 -0700 (PDT)
-Message-ID: <3b3e10af-6b09-4943-876e-fd06f48722a1@gmail.com>
-Date: Mon, 26 May 2025 01:03:47 +0300
+        Sun, 25 May 2025 15:04:55 -0700 (PDT)
+Message-ID: <83a7ade0-2c9a-4148-b998-db52e05587b8@gmail.com>
+Date: Mon, 26 May 2025 01:04:53 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,43 +82,156 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH rtw-next v1 00/13] wifi: rtw89: Add support for USB
- devices
+Subject: Re: [PATCH rtw-next v1 02/13] wifi: rtw89: Get dle_mem via
+ rtw89_hci_dle_mem()
 To: Ping-Ke Shih <pkshih@realtek.com>,
  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 References: <b146b670-d91c-41a7-96f0-c37945040aea@gmail.com>
- <d947c391577d46a4b110cb30cfa89ad0@realtek.com>
+ <594d5987-5e6d-405c-b482-d101b43cb65c@gmail.com>
+ <e587721eeb7244beaa1f07b88d9b4f59@realtek.com>
 Content-Language: en-US
-In-Reply-To: <d947c391577d46a4b110cb30cfa89ad0@realtek.com>
+In-Reply-To: <e587721eeb7244beaa1f07b88d9b4f59@realtek.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/05/2025 10:07, Ping-Ke Shih wrote:
-> Ping-Ke Shih wrote:
->> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>>
->>> Add support for USB devices, starting with just RTL8851BU.
+On 14/05/2025 03:56, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> Don't access dle_mem in get_dle_mem_cfg() directly. USB 2, USB 3, and
+>> SDIO will need different sets of values.
 >>
->> Thanks for your work!!
+>> Rename dle_mem in struct rtw89_chip_info to dle_mem_pcie and get it
+>> via rtw89_hci_dle_mem() and rtw89_pci_ops_dle_mem().
+>>
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> ---
+>>  drivers/net/wireless/realtek/rtw89/core.h      | 10 +++++++++-
+>>  drivers/net/wireless/realtek/rtw89/mac.c       |  2 +-
+>>  drivers/net/wireless/realtek/rtw89/pci.c       |  8 ++++++++
+>>  drivers/net/wireless/realtek/rtw89/rtw8851b.c  |  2 +-
+>>  drivers/net/wireless/realtek/rtw89/rtw8852a.c  |  2 +-
+>>  drivers/net/wireless/realtek/rtw89/rtw8852b.c  |  2 +-
+>>  drivers/net/wireless/realtek/rtw89/rtw8852bt.c |  2 +-
+>>  drivers/net/wireless/realtek/rtw89/rtw8852c.c  |  2 +-
+>>  drivers/net/wireless/realtek/rtw89/rtw8922a.c  |  2 +-
+>>  9 files changed, 24 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+>> index be1259cfa712..afcf0353a625 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/core.h
+>> +++ b/drivers/net/wireless/realtek/rtw89/core.h
+>> @@ -3579,6 +3579,8 @@ struct rtw89_hci_ops {
+>>         void (*disable_intr)(struct rtw89_dev *rtwdev);
+>>         void (*enable_intr)(struct rtw89_dev *rtwdev);
+>>         int (*rst_bdram)(struct rtw89_dev *rtwdev);
 > 
-> Have you also tested AP mode? If not, please add a patch to disable it
-> temporarily as a transition solution, like rtw88. 
+> an empty line
+> 
+>> +       const struct rtw89_dle_mem *(*dle_mem)(struct rtw89_dev *rtwdev,
+>> +                                              u8 qta_mode);
+>>  };
+>>
+>>  struct rtw89_hci_info {
+>> @@ -4271,7 +4273,7 @@ struct rtw89_chip_info {
+>>         bool dis_2g_40m_ul_ofdma;
+>>         u32 rsvd_ple_ofst;
+>>         const struct rtw89_hfc_param_ini *hfc_param_ini;
+>> -       const struct rtw89_dle_mem *dle_mem;
+>> +       const struct rtw89_dle_mem *dle_mem_pcie;
+> 
+> I reconsider if this can be an array with a new enum = {PCIE, USB2, USB3, SDIO}
+> stored in hal->hci_dle_mem_type. Then, consumers can just access it via
+> chip->dle_mem[hal->hci_dle_mem_type][quota]. But, I'm not sure if USB
+> subsystem can notify driver when USB speed is changed. 
+> 
+> This is a thought to simply the struct definition. 
 > 
 
-I tested it only for a few minutes with RTL8851BU and RTL8832BU.
-My phone can connect to both.
+The hard part is naming the new enum. It's basically rtw89_hci_type
+but more detailed.
 
+I don't expect the USB speed to change during the lifetime of struct
+rtw89_dev. When the device switches from USB 2 to USB 3 it disconnects
+and reappears as a new device:
+
+Apr 21 22:02:22 ideapad2 kernel: usb 1-4: new high-speed USB device number 17 using xhci_hcd
+Apr 21 22:02:22 ideapad2 kernel: usb 1-4: New USB device found, idVendor=0bda, idProduct=c832, bcdDevice= 0.00
+Apr 21 22:02:22 ideapad2 kernel: usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Apr 21 22:02:22 ideapad2 kernel: usb 1-4: Product: 802.11ax WLAN Adapter
+Apr 21 22:02:22 ideapad2 kernel: usb 1-4: Manufacturer: Realtek
+Apr 21 22:02:22 ideapad2 kernel: usb 1-4: SerialNumber: 00e04c000001
+Apr 21 22:02:24 ideapad2 kernel: eric-tx CALL alloc_txring !!!!
+Apr 21 22:02:24 ideapad2 kernel: usb 1-4: USB disconnect, device number 17
+Apr 21 22:02:24 ideapad2 kernel: rtl8852cu 1-4:1.0: Runtime PM usage count underflow!
+
+Apr 21 22:02:27 ideapad2 kernel: usb 2-4: new SuperSpeed USB device number 2 using xhci_hcd
+Apr 21 22:02:27 ideapad2 kernel: usb 2-4: New USB device found, idVendor=0bda, idProduct=c832, bcdDevice= 0.00
+Apr 21 22:02:28 ideapad2 kernel: usb 2-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Apr 21 22:02:28 ideapad2 kernel: usb 2-4: Product: 802.11ax WLAN Adapter
+Apr 21 22:02:28 ideapad2 kernel: usb 2-4: Manufacturer: Realtek
+Apr 21 22:02:28 ideapad2 kernel: usb 2-4: SerialNumber: 00e04c000001
+Apr 21 22:02:28 ideapad2 kernel: eric-tx CALL alloc_txring !!!!
+Apr 21 22:02:28 ideapad2 kernel: rtl8852cu 2-4:1.0 wlp3s0f3u4: renamed from wlan0
+
+>>         u8 wde_qempty_acq_grpnum;
+>>         u8 wde_qempty_mgq_grpsel;
+>>         u32 rf_base_addr[2];
+>> @@ -6146,6 +6148,12 @@ static inline void rtw89_hci_clear(struct rtw89_dev *rtwdev, struct pci_dev *pde
+>>                 rtwdev->hci.ops->clear(rtwdev, pdev);
+>>  }
 >>
->>> RTL8832BU/RTL8852BU can be supported easily later. RTL8832CU/RTL8852CU
->>> can be supported as well, but it keeps losing the connection.
->>>
->>> This is based on rtw88_usb and the official rtl8851bu driver
->>> v1.19.10-70-g84e35c28d.20231019 from here:
->>> https://github.com/fofajardo/rtl8851bu
->>>
->>> I didn't test with any PCI devices.
+>> +static inline const
+>> +struct rtw89_dle_mem *rtw89_hci_dle_mem(struct rtw89_dev *rtwdev, u8 qta_mode)
+>> +{
+>> +       return rtwdev->hci.ops->dle_mem(rtwdev, qta_mode);
+>> +}
+>> +
+>>  static inline
+>>  struct rtw89_tx_skb_data *RTW89_TX_SKB_CB(struct sk_buff *skb)
+>>  {
+>> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+>> index 592fbb6d2728..77d35db3e133 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/mac.c
+>> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
+>> @@ -1719,7 +1719,7 @@ static const struct rtw89_dle_mem *get_dle_mem_cfg(struct rtw89_dev *rtwdev,
+>>         struct rtw89_mac_info *mac = &rtwdev->mac;
+>>         const struct rtw89_dle_mem *cfg;
 >>
->> I tested RTL8851BE. It works as usual.
+>> -       cfg = &rtwdev->chip->dle_mem[mode];
+>> +       cfg = rtw89_hci_dle_mem(rtwdev, mode);
+>>         if (!cfg)
+>>                 return NULL;
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+>> index c2fe5a898dc7..1dec603012ba 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/pci.c
+>> +++ b/drivers/net/wireless/realtek/rtw89/pci.c
+>> @@ -4341,6 +4341,13 @@ static int __maybe_unused rtw89_pci_resume(struct device *dev)
+>>  SIMPLE_DEV_PM_OPS(rtw89_pm_ops, rtw89_pci_suspend, rtw89_pci_resume);
+>>  EXPORT_SYMBOL(rtw89_pm_ops);
+>>
+>> +static const
+>> +struct rtw89_dle_mem *rtw89_pci_ops_dle_mem(struct rtw89_dev *rtwdev,
+>> +                                           u8 qta_mode)
+>> +{
+>> +       return &rtwdev->chip->dle_mem_pcie[qta_mode];
+>> +}
+>> +
+>>  const struct rtw89_pci_gen_def rtw89_pci_gen_ax = {
+>>         .isr_rdu = B_AX_RDU_INT,
+>>         .isr_halt_c2h = B_AX_HALT_C2H_INT_EN,
+>> @@ -4413,6 +4420,7 @@ static const struct rtw89_hci_ops rtw89_pci_ops = {
+>>         .disable_intr   = rtw89_pci_disable_intr_lock,
+>>         .enable_intr    = rtw89_pci_enable_intr_lock,
+>>         .rst_bdram      = rtw89_pci_reset_bdram,
+> 
+> an empty line
+> 
+>> +       .dle_mem        = rtw89_pci_ops_dle_mem,
+>>  };
+>>
+> 
+> [...]
+> 
 > 
 
 
