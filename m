@@ -1,112 +1,106 @@
-Return-Path: <linux-wireless+bounces-23381-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23382-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5337CAC3538
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 May 2025 16:52:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9084BAC35BA
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 May 2025 18:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2105716C3F6
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 May 2025 14:52:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FA107A251A
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 May 2025 16:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DD81F09A1;
-	Sun, 25 May 2025 14:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="TjvKoOi6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868F21F4187;
+	Sun, 25 May 2025 16:43:41 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34751798F
-	for <linux-wireless@vger.kernel.org>; Sun, 25 May 2025 14:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142491DFE8;
+	Sun, 25 May 2025 16:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748184729; cv=none; b=De11kSiZTSUi4AQqt5McgzdOwyeQRClRVYx4gC0IXJunI3LGfRnKpBh5dc+Xq6ql/6B+hNDcp5wjIZDaS8XnpPuM2VY/CjIZjZ4BNKOoTpAHm1Gih1nM6J2JC/BlTuf/0quQcIwVBrBjniV9vqJSf5UHEoS+u6qGJU10IRd2Feo=
+	t=1748191421; cv=none; b=TUYPCuz9g2dGGBp2bK6MHe/l3godh+2O4URFy6Nn3isN8mIXVUJleJl1jgyGkzv0fmL+MEcoVsLxD5bont/NYr3pinbgdiCq4uwxLZTbSAmHwp2UjZRXEX5K388AbmydVNMlkPNyGFUZ76tLo0PVgArBVB1olD4kQbwLqZQSOAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748184729; c=relaxed/simple;
-	bh=Y8x/ns0vNBbtproy+Ajbgg8YW5b/gh7DUjgEMGDQLEo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d/Cx7FcweRDUchc+vhaSV/hMSIIH3m6aib1dHA2JicnXcyfGPnBdjTHlAlGVUBBW+BvhHYPgT1B8M+PLXoGwt6A3SCTimUjncpyver9YJU3WnloCleQwK+8WHGac8GEEB1+HBzT5Nfs5gLAV/3NDBRzdVVuttKkePqKFEAG8tYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=TjvKoOi6; arc=none smtp.client-ip=212.77.101.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 17448 invoked from network); 25 May 2025 16:45:24 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1748184324; bh=NNKevgor4yLaPnCDsqGOmTvb1Z4nfy6aCjVBQGo+NaI=;
-          h=From:To:Cc:Subject;
-          b=TjvKoOi6zbteFWKEljmja07sgbjJ+EwnuMb4wzy9MdYhl+98f8vzqZxDjfOHz96aD
-           6axIfIkI4EgiX3pJtz/YGXVKm+cnpvjm2peMFxz/tPPWUyiv10CrYhVNXPB7urCX4X
-           Zs8sQR3ik2CQ5ZDloi0woxbiWSketqneGR8/jtjjLf5P0Mk1JwOdBWB8KMwLvGuocn
-           hrTWYFfLvhJQdIqsKUWHAL4doWjkaBcDPh/hOszAm2sZWR6PjBiDmHrDWu50TW8gov
-           8TWn967pasw15o5+gPSnKwpaRPYqlU7x7dl84SEw6Nd/zt6tG07x3QRVbyOd/UfTcl
-           cj2/PsVHYmcxw==
-Received: from 89-64-9-114.dynamic.play.pl (HELO localhost) (stf_xl@wp.pl@[89.64.9.114])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <pchelkin@ispras.ru>; 25 May 2025 16:45:24 +0200
-Date: Sun, 25 May 2025 16:45:24 +0200
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Johannes Berg <johannes@sipsolutions.net>
-Cc: Alexei Safin <a.safin@rosa.ru>, lvc-project@linuxtesting.org,
-	netdev@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: [PATCH v2] wifi: iwlegacy: Check rate_idx range after addition
-Message-ID: <20250525144524.GA172583@wp.pl>
-References: <20250424185244.3562-1-a.safin@rosa.ru>
- <20250427063900.GA48509@wp.pl>
- <d57qkj2tj4bgfobgzbhcb4bceh327o35mgamy2yyfuvolg4ymo@7p7hbpyg5bxi>
- <20250517074040.GA96365@wp.pl>
- <hrpy3omokg5zvrqnchx4jvp26bvfgdrashkmrjonsyz5b64aaz@6d5kn7z7x73q>
+	s=arc-20240116; t=1748191421; c=relaxed/simple;
+	bh=iU9IKvc63Yue1+C3Fgy1cjqseIPIHRdzt6L4ToGMMYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ci40Wp1fKUdPGUcLXZZcM/GO6/FrtrTp7cmOidlxwtJlxm/t3Cu9c3mmV31U7LWZREbkQlO0tlv+GUaNTFhGHH+QhkST91vhg2oBBxp2yx13iTFwULM5sNq/wHv8ve83tiTSyKkzllyCFhn0Uc52pu7NEIIh+Vf9Iyw7SdJhiGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.199.70.239])
+	by APP-03 (Coremail) with SMTP id rQCowABHjy6uSDNotpJqAQ--.32733S2;
+	Mon, 26 May 2025 00:43:27 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: johannes@sipsolutions.net,
+	luciano.coelho@intel.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] mac80211: Add null pointer check for ieee80211_link_get_chanctx()
+Date: Mon, 26 May 2025 00:42:11 +0800
+Message-ID: <20250525164211.2039-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <hrpy3omokg5zvrqnchx4jvp26bvfgdrashkmrjonsyz5b64aaz@6d5kn7z7x73q>
-X-WP-MailID: f8fbcc1f44e5be2d49dd08e85c2d5fe5
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [0aMh]                               
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABHjy6uSDNotpJqAQ--.32733S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7XF45uw1Dtr4ktw48Kw43GFg_yoW8Jr4rpF
+	43KryjgFyUXw15X3W8G3ykuFy5uay2ka4FkF10y3ZxAanYgFsxWF4rCw43XF1rCF4DGa4S
+	vFsYvrs5Z34DCrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8JV
+	W8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUSNtxUUU
+	UU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYNA2gzMvQaKgABso
 
-Limit rate_idx to IL_LAST_OFDM_RATE for 5GHz band for thinkable case
-the index is incorrect.
+The function ieee80211_chsw_switch_vifs() calls the function
+ieee80211_link_get_chanctx(), but does not check its return value.
+The return value is a null pointer if the ieee80211_link_get_chanctx()
+fails. This will lead to a null pointer dereference in the following
+code "&old_ctx->conf". A proper implementation can be found in
+ieee80211_link_use_reserved_assign().
 
-Reported-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reported-by: Alexei Safin <a.safin@rosa.ru>
-Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Add a null pointer check and goto error handling path if the
+function fails.
+
+Fixes: 5d52ee811019 ("mac80211: allow reservation of a running chanctx")
+Cc: stable@vger.kernel.org # v3.16
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
-v1 -> v2: 
- - just add check one possible case the index could be incorrect,
-   instead of doing broader changes.
+ net/mac80211/chan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
- drivers/net/wireless/intel/iwlegacy/4965-mac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-index dc8c408902e6..4d2148147b94 100644
---- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-@@ -1575,8 +1575,11 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
- 	    || rate_idx > RATE_COUNT_LEGACY)
- 		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
- 	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
--	if (info->band == NL80211_BAND_5GHZ)
-+	if (info->band == NL80211_BAND_5GHZ) {
- 		rate_idx += IL_FIRST_OFDM_RATE;
-+		if (rate_idx > IL_LAST_OFDM_RATE)
-+			rate_idx = IL_LAST_OFDM_RATE;
-+	}
- 	/* Get PLCP rate for tx_cmd->rate_n_flags */
- 	rate_plcp = il_rates[rate_idx].plcp;
- 	/* Zero out flags for this packet */
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index a442cb667520..9e6235001e0a 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -1503,6 +1503,10 @@ static int ieee80211_chsw_switch_vifs(struct ieee80211_local *local,
+ 				continue;
+ 
+ 			old_ctx = ieee80211_link_get_chanctx(link);
++			if (WARN_ON(old_ctx)) {
++				err = -EINVAL;
++				goto out;
++			}
+ 			vif_chsw[i].vif = &link->sdata->vif;
+ 			vif_chsw[i].old_ctx = &old_ctx->conf;
+ 			vif_chsw[i].new_ctx = &ctx->conf;
 -- 
-2.25.4
+2.42.0.windows.2
 
 
