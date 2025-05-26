@@ -1,108 +1,84 @@
-Return-Path: <linux-wireless+bounces-23417-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23418-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F604AC3C83
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 11:19:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E411AC3CFC
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 11:35:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 244F81895607
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 09:19:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F902175F11
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 09:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D391DF98B;
-	Mon, 26 May 2025 09:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3810B1E5B7D;
+	Mon, 26 May 2025 09:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Fvg1+4DL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFEE19DF8B;
-	Mon, 26 May 2025 09:19:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A456B1DDC22;
+	Mon, 26 May 2025 09:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748251171; cv=none; b=m9+oKmI3mzyBl/22Ap5pDGt/3kceAKjGtyIPNYVz/lbuzt0AVASIxfqVwE2xf0lCGFQ8muv+BXgvBQWE3/F45Ch89wdODsdAF0ZkZ+7gZr35b4J7IV/8bHla7mcJHVOZx+Q6gQh9tA0oOIQHG5OUG+baviQPw+h4MopDOQM+ijA=
+	t=1748252120; cv=none; b=sfjjfJiqmteqK0qyNoR2khSX4ISz6Mmgsq5zlavfOQ+uICxt4nIDqAIZ70lawNVRktwycixYmZnTsmEf4kAbktlE5BrbH7ZT7NLXGJYv5Y6t0zUnRUuBbTN6ZXl5KXmGEw8Q8VLckcpZUDX/XLe45UfXJPe1BDu203bUzdqypxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748251171; c=relaxed/simple;
-	bh=dG4J7u6ZAFXFgS60iYbh4ZXwMw//VZ9CBuQVCx/Y0ng=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MnDboHuPsw5oImPt+7KgQcoBD6e7INyIzvXj9JZ3NizpXPtqkJpgPOX0ffIz7S/eRqQiZ2wnS8JWCGht4e0t/nGX3q4psTxC9iWqukTWdB/ClKOMoRxBnSC5/x79++aJeXV28zCacCsjF9oySOZTPtPmcuX94cwkaP6EILE9xXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-03 (Coremail) with SMTP id rQCowADHGFEZMjRocxodAA--.6994S2;
-	Mon, 26 May 2025 17:19:22 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: johannes@sipsolutions.net,
-	luciano.coelho@intel.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	s=arc-20240116; t=1748252120; c=relaxed/simple;
+	bh=ESs2Tkwvxa0/EdI9x4qaDjcXYmuoRc2B1eVIQNnSOSA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NOMeFQUywUFULzN9xcWgQEbBru4ueaoEhQG0+IHPG9EqJ+mNR4UCa14hb1x+EkTkWQmy1ZAoJ3kr0prB5xA1CVL8mASp9YO2iWUFWaTHU/VXlVZzWHWy8mVdLcYCY8ddXSAWJ947lUNHqWJEP+MGCW+NZi3b9mnFP/oyB5w6ooo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Fvg1+4DL; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=ESs2Tkwvxa0/EdI9x4qaDjcXYmuoRc2B1eVIQNnSOSA=;
+	t=1748252118; x=1749461718; b=Fvg1+4DL4ZdomdZv/drO9fAsMKkmbnJyVWY+q7je9hgDUrW
+	yoCpI8COYfOW5y/45r5cJsJXpyBjW0q12fN0y6AChapysTMC6IFNKNaK4v3cQz0UTFRRAVkT7zpWb
+	6lv2hWk/fLUirejtvfFWS+YmHa041eZ4O1YIJ/rabZx2DAfjuyXLzy9/JM0etzM7bps3+7r42EGDF
+	skdcsdsraTuwLBq2PQgL8/DJQUr7kzc76vyQb5LwuJG2wET+02aRJWf83h2rGEH+xCU7rzPYJx4/4
+	sLIsM3awLHZOLV5eAAjNDJqZNWcm3D2W44YON5/1+0jRKrhPjMcbKN7Z7ukHRLBw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uJUEk-0000000DcRc-3hXI;
+	Mon, 26 May 2025 11:35:15 +0200
+Message-ID: <2d5b450b8b7b9bfa5771e371a9addc3dce19891e.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] mac80211: Add null pointer check for
+ ieee80211_link_get_chanctx()
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Wentao Liang <vulab@iscas.ac.cn>, luciano.coelho@intel.com
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
-Subject: [PATCH v2] mac80211: Add null pointer check for ieee80211_link_get_chanctx()
-Date: Mon, 26 May 2025 17:19:03 +0800
-Message-ID: <20250526091903.587-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+Date: Mon, 26 May 2025 11:35:13 +0200
+In-Reply-To: <20250526091903.587-1-vulab@iscas.ac.cn>
+References: <20250526091903.587-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowADHGFEZMjRocxodAA--.6994S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7XF45uw1Dtr4ktw48Kw43GFg_yoW8JrWUpF
-	43KryjgFyUXw15Xa48G3y8uFy5ua12kw1FkFyvy3Z3Aa1vgFsxWF4rCr45XF1rCF4DGa4S
-	vF4vqrn0v34DArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjO6pDUUUU
-	U==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8OA2g0LsYQ5wAAsI
+X-malware-bazaar: not-scanned
 
-The function ieee80211_chsw_switch_vifs() calls the function
-ieee80211_link_get_chanctx(), but does not check its return value.
-The return value is a null pointer if the ieee80211_link_get_chanctx()
-fails. This will lead to a null pointer dereference in the following
-code "&old_ctx->conf". A proper implementation can be found in
-ieee80211_link_use_reserved_assign().
+On Mon, 2025-05-26 at 17:19 +0800, Wentao Liang wrote:
+> The function ieee80211_chsw_switch_vifs() calls the function
+> ieee80211_link_get_chanctx(), but does not check its return value.
+> The return value is a null pointer if the ieee80211_link_get_chanctx()
+> fails. This will lead to a null pointer dereference in the following
+> code "&old_ctx->conf". A proper implementation can be found in
+> ieee80211_link_use_reserved_assign().
+>=20
+> Add a null pointer check and goto error handling path if the
+> function fails.
 
-Add a null pointer check and goto error handling path if the
-function fails.
+How do you propose it can fail?
 
-Fixes: 5d52ee811019 ("mac80211: allow reservation of a running chanctx")
-Cc: stable@vger.kernel.org # v3.16
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
-v2: Fix code error.
-
- net/mac80211/chan.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index a442cb667520..c9b703c283e7 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -1503,6 +1503,10 @@ static int ieee80211_chsw_switch_vifs(struct ieee80211_local *local,
- 				continue;
- 
- 			old_ctx = ieee80211_link_get_chanctx(link);
-+			if (WARN_ON(!old_ctx)) {
-+				err = -EINVAL;
-+				goto out;
-+			}
- 			vif_chsw[i].vif = &link->sdata->vif;
- 			vif_chsw[i].old_ctx = &old_ctx->conf;
- 			vif_chsw[i].new_ctx = &ctx->conf;
--- 
-2.42.0.windows.2
-
+johannes
 
