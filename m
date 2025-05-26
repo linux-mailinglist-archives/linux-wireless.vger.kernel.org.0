@@ -1,63 +1,61 @@
-Return-Path: <linux-wireless+bounces-23426-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23427-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A058AC3EDC
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 13:48:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E78FAC3EF2
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 13:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 033DB177C29
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 11:48:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8AD516778B
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 11:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A814B1FBC94;
-	Mon, 26 May 2025 11:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B1C1F8EF6;
+	Mon, 26 May 2025 11:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XR4tx5/2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IgTJt3KJ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729B31F7580;
-	Mon, 26 May 2025 11:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBFC1C8601;
+	Mon, 26 May 2025 11:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748260104; cv=none; b=J2MUx9iExj774LZjP1PLfI3uuBLnS4SSQKaVufJb7DETqjN5yRBdYs0LYijPbJeMgIjhHT4e9pxe3ofRKgo9oXT1Asy2gubUs8zCiTLazQN7OBMcQJn/FO0uaKKbhBR4h2oj9/4lxBHI9gcf1eHJzcinnqWsTA/it7ttO2xVweY=
+	t=1748260336; cv=none; b=W4YRrb/QJ3WAfQt1XCg6XzMd+Kt9ifgab59MwuIfmtEonCF6cjc5KpD2MP979aZ/fzw8pfcrPNaYN+H/khGUdTAeJDSC6/VbP/Ce59LO3nbrSk4Vn/2hlL4H8ea6rauoXfCnSIIwhUYrWfQeMNP83JUfviK5BP5bSb2PCnYH4kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748260104; c=relaxed/simple;
-	bh=GjZfpYND9lP/NheppZ2lHvUCIf1VyizdpRiD68UpiOI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e228Wl/wyY+CLpRcAY50TYbo9sDKpeNADyE8FAoPUo71OscX1Cl1GfF8ZYRVEOAmxeYIjjKgE4k3TFbIqVh02uGDa9Chduofz/imHQbPpjH5zhyNqoSNWzJPPxdhPDgVTjlyS7ppCzT0GkSxAP9A7f5/HWYd6pbWspRN2zgFjCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XR4tx5/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16835C4CEFE;
-	Mon, 26 May 2025 11:48:24 +0000 (UTC)
+	s=arc-20240116; t=1748260336; c=relaxed/simple;
+	bh=6z7x8xoEqYgfeTyuv+MxW6E85QUdFqBt/3KadJRmPQo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tFg50jizlZJQDDC9evlnDfWhZPPiemwYVbHI140pVu0PUz1VJCUyu1e2OqOVuLiL6uUl6N9uDCefJeuTBsMPlhtw+b3pWZn1o5WlcfvnhbNybC+ndVzfcGFoZABsLL1LwG2brb58VdxqpLemjWGNsFR4gqothgPjP3C0ZMI8klI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IgTJt3KJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40141C4CEE7;
+	Mon, 26 May 2025 11:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748260104;
-	bh=GjZfpYND9lP/NheppZ2lHvUCIf1VyizdpRiD68UpiOI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XR4tx5/2x0yVOR3cjvylsRGD7k6Q8GxVxFExDUx+6osaICv6NL6PoaEEw9QeCmUqi
-	 31dOHd1Q2vN0P8Wz1NaGGeu3JxBpAqaEyeHMVu+ueQ/dJK+Qm1CkKDWpyC+ZL8gxQX
-	 HauUfCoxha2Q4FRxfrhwoS3gLN/I6ID65pibWoJK35I7hc8WKrrCkrM6FhF7/IzcTO
-	 tqHm7+11nM1hVb+M9Nf6Blj+Ce2OrTm2CepLIaoOi93hWKgjekKCLnC2ZtuYRpg2/u
-	 VE1ALIbicFD6M2IOK3hYeV496k+it1TbgK4Zw1sOFOqLKEi1mhMNJeuzWUydCsSkHZ
-	 t0TjOOsIp5NHQ==
+	s=k20201202; t=1748260336;
+	bh=6z7x8xoEqYgfeTyuv+MxW6E85QUdFqBt/3KadJRmPQo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IgTJt3KJcKq4yFa6XclWnQZrI/0oIx9+/pMynCoYToLZz4U/7o1JNR7iIKC8rgOz8
+	 bgAfdbyj3SgxHjjGRn2RlSiV+ULf1X58f26nrlZ+V5CE9N9OPmEi61adC5E8Kq4zFw
+	 diWY3H2Lcs/EkQK6jFj2nMKovePbkg/VQ9vKAT1cseFcZeWOIRd4o/FWzJc7KaULvz
+	 sMwIhcnuO0NLV5YeDz2XMCJipN/8adTk8szmX1bak4D5EbI4CJIVl02+0XHi4+IDNI
+	 OWCjCI4WyqmwlAav4/Zh6REHeiu+IgcZ1OxEG7X++K3VkJdY1EwUdLk9VUxOLKPsV7
+	 5/2sYMqxKSESg==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan+linaro@kernel.org>)
-	id 1uJWJd-000000000Yx-252S;
-	Mon, 26 May 2025 13:48:25 +0200
+	id 1uJWNN-000000000fE-3MDh;
+	Mon, 26 May 2025 13:52:17 +0200
 From: Johan Hovold <johan+linaro@kernel.org>
 To: Jeff Johnson <jjohnson@kernel.org>
 Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,
+	Remi Pommarel <repk@triplefau.lt>,
 	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 3/3] wifi: ath11k: use plain accesses for monitor descriptor
-Date: Mon, 26 May 2025 13:48:03 +0200
-Message-ID: <20250526114803.2122-4-johan+linaro@kernel.org>
+Subject: [PATCH 0/2] wifi: ath12k: fix dest ring-buffer corruption
+Date: Mon, 26 May 2025 13:51:35 +0200
+Message-ID: <20250526115137.2490-1-johan+linaro@kernel.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250526114803.2122-1-johan+linaro@kernel.org>
-References: <20250526114803.2122-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,76 +64,30 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The read memory barrier added by commit ab52e3e44fe9 ("wifi: ath11k: fix
-rx completion meta data corruption") is enough to guarantee ordering
-also for plain descriptor accesses so drop the unnecessary READ_ONCE().
+As a follow up to commit:
 
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/net/wireless/ath/ath11k/dp_rx.c | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+	b67d2cf14ea ("wifi: ath12k: fix ring-buffer corruption")
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index dfe2d889c20f..37deb78044c8 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2637,7 +2637,7 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
- 	struct ath11k *ar;
- 	struct hal_reo_dest_ring *desc;
- 	enum hal_reo_dest_ring_push_reason push_reason;
--	u32 cookie, info0, rx_msdu_info0, rx_mpdu_info0;
-+	u32 cookie;
- 	int i;
- 
- 	for (i = 0; i < MAX_RADIOS; i++)
-@@ -2657,7 +2657,7 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
- 	      (struct hal_reo_dest_ring *)ath11k_hal_srng_dst_get_next_entry(ab,
- 									     srng))) {
- 		cookie = FIELD_GET(BUFFER_ADDR_INFO1_SW_COOKIE,
--				   READ_ONCE(desc->buf_addr_info.info1));
-+				   desc->buf_addr_info.info1);
- 		buf_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID,
- 				   cookie);
- 		mac_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID, cookie);
-@@ -2686,9 +2686,8 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
- 
- 		num_buffs_reaped[mac_id]++;
- 
--		info0 = READ_ONCE(desc->info0);
- 		push_reason = FIELD_GET(HAL_REO_DEST_RING_INFO0_PUSH_REASON,
--					info0);
-+					desc->info0);
- 		if (unlikely(push_reason !=
- 			     HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION)) {
- 			dev_kfree_skb_any(msdu);
-@@ -2696,21 +2695,18 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
- 			continue;
- 		}
- 
--		rx_msdu_info0 = READ_ONCE(desc->rx_msdu_info.info0);
--		rx_mpdu_info0 = READ_ONCE(desc->rx_mpdu_info.info0);
--
--		rxcb->is_first_msdu = !!(rx_msdu_info0 &
-+		rxcb->is_first_msdu = !!(desc->rx_msdu_info.info0 &
- 					 RX_MSDU_DESC_INFO0_FIRST_MSDU_IN_MPDU);
--		rxcb->is_last_msdu = !!(rx_msdu_info0 &
-+		rxcb->is_last_msdu = !!(desc->rx_msdu_info.info0 &
- 					RX_MSDU_DESC_INFO0_LAST_MSDU_IN_MPDU);
--		rxcb->is_continuation = !!(rx_msdu_info0 &
-+		rxcb->is_continuation = !!(desc->rx_msdu_info.info0 &
- 					   RX_MSDU_DESC_INFO0_MSDU_CONTINUATION);
- 		rxcb->peer_id = FIELD_GET(RX_MPDU_DESC_META_DATA_PEER_ID,
--					  READ_ONCE(desc->rx_mpdu_info.meta_data));
-+					  desc->rx_mpdu_info.meta_data);
- 		rxcb->seq_no = FIELD_GET(RX_MPDU_DESC_INFO0_SEQ_NUM,
--					 rx_mpdu_info0);
-+					 desc->rx_mpdu_info.info0);
- 		rxcb->tid = FIELD_GET(HAL_REO_DEST_RING_INFO0_RX_QUEUE_NUM,
--				      info0);
-+				      desc->info0);
- 
- 		rxcb->mac_id = mac_id;
- 		__skb_queue_tail(&msdu_list[mac_id], msdu);
+add the remaining missing memory barriers to make sure that destination
+ring descriptors are read after the head pointers to avoid using stale
+data on weakly ordered architectures like aarch64.
+
+Also switch back to plain accesses for the descriptor fields which is
+sufficient after the memory barrier.
+
+Johan
+
+
+Johan Hovold (2):
+  wifi: ath12k: fix dest ring-buffer corruption
+  wifi: ath12k: use plain access for descriptor length
+
+ drivers/net/wireless/ath/ath12k/dp_mon.c |  3 +++
+ drivers/net/wireless/ath/ath12k/dp_rx.c  | 12 ++++++++++++
+ drivers/net/wireless/ath/ath12k/dp_tx.c  |  3 +++
+ drivers/net/wireless/ath/ath12k/hal.c    |  2 +-
+ 4 files changed, 19 insertions(+), 1 deletion(-)
+
 -- 
 2.49.0
 
