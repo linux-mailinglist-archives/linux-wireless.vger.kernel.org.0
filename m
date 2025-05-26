@@ -1,136 +1,137 @@
-Return-Path: <linux-wireless+bounces-23403-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23404-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF916AC3830
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 05:19:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEEAAC3848
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 05:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 503B318923EF
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 03:19:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C748C3B3DCE
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 03:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7D2846C;
-	Mon, 26 May 2025 03:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3AA335BA;
+	Mon, 26 May 2025 03:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="XQK9rFw1"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DbYNA2K6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29EC2DCBF0
-	for <linux-wireless@vger.kernel.org>; Mon, 26 May 2025 03:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42CF126C03
+	for <linux-wireless@vger.kernel.org>; Mon, 26 May 2025 03:47:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748229546; cv=none; b=bvpvjgPXP0QTp793YT+u70/fXvL3JhYBmwAQj9FhYidD6ujS/dPScdU/fWngNB0ec39ZpLG1v3J1CUjZpwprOID7mHimza1qu30p5twifaKicb0gUf/NZ4B3Y/rpMxsgZaBlbBB4504RXAIQEApASyUTdIL+5Ih0c8Mko6zlQyI=
+	t=1748231266; cv=none; b=dWuC7YejH7PjttIe1ZdB/On0TStIQ/F3Gl1zi7jE7/Lc52cpvm8GUuTwopvK8HDX3aIX6jNZVbgwDVz19aAGqot1J/rNzpvz3PfCLvdE8Xb9G8Ia4jlf834ceUYPOtqqhJW5Oc/n0AbiYUhFW4xt6EI2MTo9E0K3DNq0f9qJ5tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748229546; c=relaxed/simple;
-	bh=5DFwbes61Ns3FmqTW2MvJVG20c185LIIDfCQIy+R10U=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gRxEjLeflhDkTOg/HgCeP40JnqlWS71vukb4KaIn7lMa/3NNKY7uTqDDJyOUhcSrhfCH2znVeG1eka+R9MDOf9oCz3yS08smGz2gf6vA9SgoJLRkucMVsexTC/a720pryOCOYVt5tU4cr6PRUQAf4DTylkfvDWle1rvVxTK/obA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=XQK9rFw1; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54Q3IxGsA3050428, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1748229539; bh=5DFwbes61Ns3FmqTW2MvJVG20c185LIIDfCQIy+R10U=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=XQK9rFw19npjBTnz3AuTmlj67qzuYDPs8lq0kJQLaFHxTkYgQEP3A7729ve3u4W/V
-	 4gXUED0gisiCEqCgrF0vB1//gNXj9s/4jxlNNkXfewi2bFvJyPDEYTODvfUEuW15Nv
-	 xqL5HeQWhGF5au+6XDuFOBn5nzc7IkOCNj4T+j6qRsIf3HFITZSfv7cSBojVkOX5Te
-	 XmroXO28jxVd04OqtkNaQvczQ5VDdzCsKKE8MtcfohCBkV8UvweHl7dls4zsBQEpkl
-	 x32eQ0Z4m0Y89JPd1OEkYDFq2Aq2eqvKTMqK9KUC0ZsDsQ9gft0TuGv+P41OZiXZ6R
-	 /vlZ/DkFuYFYQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54Q3IxGsA3050428
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 May 2025 11:18:59 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+	s=arc-20240116; t=1748231266; c=relaxed/simple;
+	bh=8hYIwfY/+9BiW1uTi6sNIMPzNP9VE/Ucj3RutVg1zYA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SXrroJOyAZWkffpajcuhZKxZYxEVa41RfQTva6S2kD8OsehWHEODs4y+PZ+kh2VXzhgjc96NZ75HJCMG/bCuWp5OVbGs6PdN38Dc8CqMur3LpJo1yRvQtel5L6VHI//a17O9m1pPyrrrkEF0IwcJ9+RaLHUvRvAQDjOXcvAc9ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DbYNA2K6; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54PNo5Bc007771;
+	Mon, 26 May 2025 03:47:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=cKRV5GKyuP23Y3M9k0BT2s
+	vzLUAessr9qg1Tki7V058=; b=DbYNA2K6351IrXC8Mt7KDWNbOvCfaGKtZ920Uq
+	JLwMxC6S0rB15+Wc+6dFYf+cVhlDBjnRBWrzDDtCSDtxQMe2H7RO9RmXkbpCfRaB
+	hQbQI6VCBWVhzOV4jt3fKR0BtNzEVSwb8amv5IqJqPS+oY/FtBBDTRaY/o+6Madk
+	lbmVsbkaiQd5O4ndV/ZKzuoOcSFNPssV/YmVuX5G32qBIbpWmPQ/3FqOERiQ6X3P
+	3VD9D4bImkBsE/vB5pHUEj/uISC2d0Lepeq+DPQPdzadoW9avATeSw9YsxtgwWdi
+	yMwlPtrRawe5wvmHG9YwGBmNW3wWyBEJOQkAcByo0BL5anqA==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46u6b5jvje-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 May 2025 03:47:39 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54Q3ldRx016814
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 May 2025 03:47:39 GMT
+Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 26 May 2025 11:18:59 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 26 May 2025 11:18:59 +0800
-Received: from RTEXDAG02.realtek.com.tw ([fe80::1d65:b3df:d72:eb25]) by
- RTEXDAG02.realtek.com.tw ([fe80::1d65:b3df:d72:eb25%5]) with mapi id
- 15.01.2507.035; Mon, 26 May 2025 11:18:59 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next v1 11/13] wifi: rtw89: Add usb.{c,h}
-Thread-Topic: [PATCH rtw-next v1 11/13] wifi: rtw89: Add usb.{c,h}
-Thread-Index: AQHbvTayQpeWS10Yc0a60fye0aPa/7PQAaLAgBN/foCAANcUYA==
-Date: Mon, 26 May 2025 03:18:59 +0000
-Message-ID: <5d96c9b2693143f7914dca322e518435@realtek.com>
-References: <b146b670-d91c-41a7-96f0-c37945040aea@gmail.com>
- <9a3d63a2-2a8f-4f1d-a9cb-b79c255c1a51@gmail.com>
- <60b78caaf3c049a1a5595bb89d553777@realtek.com>
- <f9f205bb-9084-42c0-9942-533d2787fd13@gmail.com>
-In-Reply-To: <f9f205bb-9084-42c0-9942-533d2787fd13@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 15.2.1544.9; Sun, 25 May 2025 20:47:37 -0700
+From: Sarika Sharma <quic_sarishar@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Kathirvel
+	<quic_kathirve@quicinc.com>,
+        Sarika Sharma <quic_sarishar@quicinc.com>
+Subject: [PATCH ath-next] wifi: ath12k: Decrement TID on RX peer frag setup error handling
+Date: Mon, 26 May 2025 09:17:13 +0530
+Message-ID: <20250526034713.712592-1-quic_sarishar@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=ZcodNtVA c=1 sm=1 tr=0 ts=6833e45b cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=C3E12wa_uFYmd_9f3VUA:9
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI2MDAyOCBTYWx0ZWRfXyeyqLkUYgsKc
+ ufE+dTar19ok2HfyMLf5zvahcponN8GMkFp3tX9TyVnOIRxxpq05BI0z7m26p79vyooHWxBglCH
+ LWtbbC306UIKKo1BiC5Jg0UE2ghC3qr2PzF2hxXenbhx/S0vPmV2PAoZWsaXRlHa4BzSablvFEV
+ z4fYnRAMO2TkLr1QhbeCmnA49MLk4ir1YxJF5UHd1MABF8GT9kWpYknXQ1tYRmN+lb4lgXU4oBy
+ 9rZQEnreHcEVLBjjkdi5Ae2+Ss0wxLHwax/c1udcgFdroXj9ICowbzjggPnHXkk3cU1utcgK9a6
+ dnKIBeshsim0HqEJnLS5QMCmdIrr1Sz0l+isYYWc16S/mFhQQS8mB0GKLzQH/ybiCcO8OkyrvcG
+ R4nRs6vdf0079bOWmMxhCc4774Fa4eOcqoOesGj85ffyEVrBbWNNuuegYQu9LtFk0HtfxZ8K
+X-Proofpoint-GUID: V23L18Z-8ub8mD2g8DhyQZyfb0OvQqEF
+X-Proofpoint-ORIG-GUID: V23L18Z-8ub8mD2g8DhyQZyfb0OvQqEF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-26_02,2025-05-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 malwarescore=0 mlxlogscore=662 bulkscore=0 priorityscore=1501
+ spamscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0 phishscore=0
+ impostorscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
+ definitions=main-2505260028
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBPbiAx
-My8wNS8yMDI1IDA5OjEyLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4gQml0dGVyYmx1ZSBTbWl0
-aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiA+PiBBZGQgdmVyeSBiYXNpYyBV
-U0Igc3VwcG9ydC4gTm8gVFgvUlggYWdncmVnYXRpb24sIG5vIFRYIHF1ZXVlcywgbm8NCj4gPj4g
-c3dpdGNoaW5nIHRvIFVTQiAzIG1vZGUuDQo+ID4+DQo+ID4+IFJUTDg4NTFCVSBhbmQgUlRMODgz
-MkJVIHdvcmsuDQo+ID4+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0
-bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KPiA+PiAtLS0NCj4gPj4gIGRyaXZlcnMvbmV0L3dpcmVs
-ZXNzL3JlYWx0ZWsvcnR3ODkvdXNiLmMgfCAxMDMwICsrKysrKysrKysrKysrKysrKysrKysNCj4g
-Pj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvdXNiLmggfCAgIDYxICsrDQo+
-ID4+ICAyIGZpbGVzIGNoYW5nZWQsIDEwOTEgaW5zZXJ0aW9ucygrKQ0KPiA+PiAgY3JlYXRlIG1v
-ZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvdXNiLmMNCj4gPj4g
-IGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3Vz
-Yi5oDQo+ID4+DQo+ID4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
-L3J0dzg5L3VzYi5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS91c2IuYw0K
-PiA+PiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+PiBpbmRleCAwMDAwMDAwMDAwMDAuLjZlOGE1
-NDRiMzUyYw0KPiA+PiAtLS0gL2Rldi9udWxsDQo+ID4+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVs
-ZXNzL3JlYWx0ZWsvcnR3ODkvdXNiLmMNCj4gPj4gQEAgLTAsMCArMSwxMDMwIEBADQo+ID4+ICsv
-LyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMCBPUiBCU0QtMy1DbGF1c2UNCj4gPj4g
-Ky8qIENvcHlyaWdodChjKSAyMDI1ICBSZWFsdGVrIENvcnBvcmF0aW9uDQo+ID4+ICsgKi8NCj4g
-Pj4gKw0KPiA+PiArI2luY2x1ZGUgPGxpbnV4L3VzYi5oPg0KPiA+PiArI2luY2x1ZGUgImRlYnVn
-LmgiDQo+ID4+ICsjaW5jbHVkZSAibWFjLmgiDQo+ID4+ICsjaW5jbHVkZSAicmVnLmgiDQo+ID4+
-ICsjaW5jbHVkZSAidHhyeC5oIg0KPiA+PiArI2luY2x1ZGUgInVzYi5oIg0KPiA+PiArDQo+ID4+
-ICtzdGF0aWMgdm9pZCBydHc4OV91c2JfdmVuZG9ycmVxKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2Rl
-diwgdTMyIGFkZHIsDQo+ID4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdm9pZCAq
-ZGF0YSwgdTE2IGxlbiwgdTggcmVxdHlwZSkNCj4gPj4gK3sNCj4gPj4gKyAgICAgICBzdHJ1Y3Qg
-cnR3ODlfdXNiICpydHd1c2IgPSBydHc4OV9nZXRfdXNiX3ByaXYocnR3ZGV2KTsNCj4gPj4gKyAg
-ICAgICBzdHJ1Y3QgdXNiX2RldmljZSAqdWRldiA9IHJ0d3VzYi0+dWRldjsNCj4gPj4gKyAgICAg
-ICB1bnNpZ25lZCBpbnQgcGlwZTsNCj4gPj4gKyAgICAgICB1MTYgdmFsdWUsIGluZGV4Ow0KPiA+
-PiArICAgICAgIGludCBhdHRlbXB0LCByZXQ7DQo+ID4+ICsNCj4gPj4gKyAgICAgICB2YWx1ZSA9
-IGFkZHIgJiAweDAwMDBmZmZmOw0KPiA+PiArICAgICAgIGluZGV4ID0gKGFkZHIgJiAweDAwZmYw
-MDAwKSA+PiAxNjsNCj4gPg0KPiA+IHUxNl9nZXRfYml0cyhhZGRyLCBHRU5NQVNLKDIzLCAxNikp
-ID8NCj4gPg0KPiA+DQo+ID4+ICsNCj4gPj4gKyAgICAgICBtdXRleF9sb2NrKCZydHd1c2ItPnZl
-bmRvcl9yZXFfbXV0ZXgpOw0KPiA+DQo+ID4gcnR3ODkgdGFrZXMgd2lwaHlfbG9jayBmb3IgY29u
-dHJvbCBwYXRoLiBJcyB0aGVyZSBhbnkgY2FzZSBtb3JlIHRoYW4NCj4gPiBvbmUgdGhyZWFkcyBy
-dW4gYXQgdGhlIHNhbWUgdGltZT8NCj4gPg0KPiANCj4gTWF5YmUgbm90LiBJIGp1c3QgY29waWVk
-IHRoaXMgZnJvbSB0aGUgdmVuZG9yIGRyaXZlci4gSG93IGNhbiBJIGJlDQo+IHN1cmUgb25seSBv
-bmUgdGhyZWFkIHJ1bnM/DQoNCkZvciBydHc4OSwgY3VycmVudGx5IGFsbCBpZWVlODAyMTFfb3Bz
-IHRha2Ugd2lwaHlfbG9jayBleGNlcHQgdG8gVFggcmVsYXRlZA0Kb3BzLiBUaGUgd29ya3MgZm9y
-a2VkIGJ5IHJ0dzg5IHVzZSB3aXBoeSB3b3JrcyBiYXNpY2FsbHkuIFNvbWUgd29ya3Mgc3RpbGwg
-DQp1c2UgaWVlZTgwMjExIHdvcmtzIG9ubHkgaWYgdGhleSBvbmx5IHNldCBhIHNpbXBsZSBmbGFn
-cyBvciBzby4gDQoNCkhlcmUsIEkgd291bGQgbGlrZSB0byBhdm9pZCBhZGRpbmcgdW5uZWNlc3Nh
-cnkgbXV0ZXggYXQgZGV2ZWxvcG1lbnQgc3RhZ2UsDQpiZWNhdXNlIGl0IGlzIGhhcmQgdG8gcmVt
-b3ZlIGEgbXV0ZXggd2l0aCBzaW1wbGUgcmV2aWV3LiBZb3UgY2FuIHNlZSBvbmx5IA0Kb25lIGV4
-aXN0aW5nIG11dGV4IGlzICdzdHJ1Y3QgbXV0ZXggcmZfbXV0ZXgnLiBJIHdhbnQgdG8gcmVtb3Zl
-IGl0LCBidXQNCkknbSBzdGlsbCBhZnJhaWQgdGhhdCBJIG1pc3Mgc29tZXRoaW5nIGJ5IHJldmll
-dy4gDQoNCj4gDQo+IEkgYWRkZWQgdGhpcyBhYm92ZSB0aGUgbXV0ZXhfbG9jaygpIHRvZGF5Og0K
-PiANCj4gICAgICAgICBpZiAobXV0ZXhfaXNfbG9ja2VkKCZydHd1c2ItPnZlbmRvcl9yZXFfbXV0
-ZXgpKQ0KPiAgICAgICAgICAgICAgICAgcHJfZXJyKCJtdXRleCBhbHJlYWR5IGxvY2tlZCBlbHNl
-d2hlcmVcbiIpOw0KPiANCj4gU28gZmFyIGl0IGhhc24ndCBwcmludGVkIHRoZSBtZXNzYWdlLg0K
-DQpOb3Qgc3VyZSBpZiB0aGlzIGZ1bmN0aW9uIGRlcGVuZHMgb24gbG9jayBkZWJ1Z2dpbmcgb2Yg
-a2VybmVsIG9wdGlvbnMuDQoNCkJ5IHRoZSBleHBlcmltZW50cywgdGhpcyBtdXRleCBzZWVtcyB0
-byBiZSB1bm5lY2Vzc2FyeSwgcmlnaHQ/DQoNCg0K
+From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+
+Currently, TID is not decremented before peer cleanup, during error
+handling path of ath12k_dp_rx_peer_frag_setup(). This could lead to
+out-of-bounds access in peer->rx_tid[].
+
+Hence, add a decrement operation for TID, before peer cleanup to
+ensures proper cleanup and prevents out-of-bounds access issues when
+the RX peer frag setup fails.
+
+Found during code review. Compile tested only.
+
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/dp.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+index 6317c6d4c043..c6b10acb643e 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.c
++++ b/drivers/net/wireless/ath/ath12k/dp.c
+@@ -84,6 +84,7 @@ int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr)
+ 	ret = ath12k_dp_rx_peer_frag_setup(ar, addr, vdev_id);
+ 	if (ret) {
+ 		ath12k_warn(ab, "failed to setup rx defrag context\n");
++		tid--;
+ 		goto peer_clean;
+ 	}
+ 
+
+base-commit: 3d933084a072fd5fb5da54c06a017abc0412c86f
+-- 
+2.34.1
+
 
