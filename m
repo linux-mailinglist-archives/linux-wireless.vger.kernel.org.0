@@ -1,131 +1,130 @@
-Return-Path: <linux-wireless+bounces-23414-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23415-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FE0AC390F
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 07:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98AD8AC39E4
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 08:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07CAA3B3D32
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 05:23:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E8DC3A7776
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 06:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42CE1C5D46;
-	Mon, 26 May 2025 05:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF321C3C18;
+	Mon, 26 May 2025 06:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j+v30v2B"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="tAWqSAs+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C7F1C3F0C;
-	Mon, 26 May 2025 05:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2F91DD529
+	for <linux-wireless@vger.kernel.org>; Mon, 26 May 2025 06:29:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748237041; cv=none; b=G76aq4Y1FoNJMjCjFuiW+dCVmxBcm61X69zTculXVEpYNEPyZVGMZ7EalJ8rp5YqngvzjSOV09jVsfGhDzki53sdh8cGLnjsNS/yb4cjdVL1NEgcO/oxv3CUN8xG74Oko8jivFYBgsOWMLdaiwh6vsfkcNSXDSSMD6g8zMt1zUU=
+	t=1748240971; cv=none; b=pz97lXADLlZ+7Xlyz5xjmPzmGkh1SH9fKJGs9BHobqWV3q8HRp8gWq8YX4MHYC4eesS/nMyRXhfz4148cRWG65wCUoGXrO21OZJl80NHT4R8uFTJhbkGIsQcwoqwXDTUXhRIO4zby5Q5HJwzq7ucilZKzbQtpfrzXfrYFKSxJEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748237041; c=relaxed/simple;
-	bh=E07636Dcqur69wSdf5zupEcZRqJNfX4HvoH7Vm5PQz8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h9Li2PPSWpc9QZuauyH2WysZNlUYmdI4bfYccgAkCfAXrMVNrp4pjtHRaAaSAtQxPKMmcvhPy6GzSiA5S/3qZFp8wJuaunsv0CJUtWxpVR707mxXydv+tSYXQju1rHuFy7uOabKgYv/RUbcBxnIZLmTT1zmcSuCCvN6odyZk+lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j+v30v2B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C0FC4CEE7;
-	Mon, 26 May 2025 05:23:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748237041;
-	bh=E07636Dcqur69wSdf5zupEcZRqJNfX4HvoH7Vm5PQz8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=j+v30v2BggE06A4SRwJoid27xCWvhfbyCdHoWnTdle1ktHJx+0XbxQqlQvS5Vu4ut
-	 YhlBwB5psyayREvJ5H1eoVqnwTthj/T57fnLXsld1t3fLbte80EaK3Qsg84Id7hbAB
-	 XtzEM/8WTnqDpIZ4GeDfYNfr2mF31slu4YYElRejMBPeper+rI71WFvqv/QsxAuXdm
-	 g8+qvr+/hGaZ+AqxLLbcGLbODbzxb/868n+ne26p6XNtlY0MWJumNRcZpPQ0pnSk20
-	 PnEKf/+6nzMFOUS6xX2HfpAXvveX7a7Zp7+CVREdecJrTK18Ve6WTpH4nB+yyWuXkt
-	 6AX0tKE+RmemQ==
-Message-ID: <056cfe0f-192a-481b-ad72-6a34db38541c@kernel.org>
-Date: Mon, 26 May 2025 07:23:56 +0200
+	s=arc-20240116; t=1748240971; c=relaxed/simple;
+	bh=q2qQ3bBHXk9z7DPaQGQVRxTVpO7/h8xpzXndtL0DacY=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ivWstnASifuRjFP70aaNQ+ErJmfJ6JFf/6LjE4eaneEAu9YSr0a/yJ2ZwZKqhca1gZNZdTFjKf25kkt8E/z9kgZ0OWz+z7sC1TsEe0Vq9uGbGiMFpSKsNqRgbZbAmEq1jsE8yMtqYDXeH2ge0r3M+wjGCzSfPc0CDBMN7pL52OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=tAWqSAs+; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54Q6TNvZ43311244, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1748240963; bh=q2qQ3bBHXk9z7DPaQGQVRxTVpO7/h8xpzXndtL0DacY=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=tAWqSAs+WWEMx07LTWG+4VN7H4+uJCzoruLRhl0RL3jAV0tJ95bp3G8dTvBmiXrdW
+	 1Hk9bZ3eGDNm6ymTWoEulhy6DcB62Til37dKpGk8DOZE55k2YtCggOMiSz7IQjJMuf
+	 akc2hgASGBetXDxro1qqNp2ONfGNnwk/wU5SYPlOTEN6M0TMYyW00So4OxtyepgUCw
+	 jsOmHWGgXj0fbu0g2vnf0T0KigXW3w2D2x2i4+u6Gzutss9a31sKaItns2oAsx/AYi
+	 OV1f0gI60C1XDexvqVMW90+1i5XXtvqsBUk45JOkJYl2sl4a4Ujlx9Duw2Oil4IAGV
+	 9QDcJnHmb+lfw==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54Q6TNvZ43311244
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 26 May 2025 14:29:23 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 26 May 2025 14:29:23 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 26 May 2025 14:29:21 +0800
+Received: from RTEXDAG02.realtek.com.tw ([fe80::1d65:b3df:d72:eb25]) by
+ RTEXDAG02.realtek.com.tw ([fe80::1d65:b3df:d72:eb25%5]) with mapi id
+ 15.01.2507.035; Mon, 26 May 2025 14:29:21 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH rtw-next v1 05/13] wifi: rtw89: Add hfc_param_ini_usb
+Thread-Topic: [PATCH rtw-next v1 05/13] wifi: rtw89: Add hfc_param_ini_usb
+Thread-Index: AQHbvTZDNKnS9J5ShUCIArSJPri3ObPP7fyggBOQ6gCAAMQpYIAATPEg
+Date: Mon, 26 May 2025 06:29:21 +0000
+Message-ID: <14ed20822a1e4890a30965123825cb5f@realtek.com>
+References: <b146b670-d91c-41a7-96f0-c37945040aea@gmail.com>
+ <348b0c94-2db6-4ae9-819c-6fa7f9c3ac56@gmail.com>
+ <54b050dc237e46fcb96576e19451ae97@realtek.com>
+ <9c3980f3-c22e-4213-bab3-15d25bdc1b59@gmail.com>
+ <fc4c3f9b333a49e6bb078e7b1bd67e57@realtek.com>
+In-Reply-To: <fc4c3f9b333a49e6bb078e7b1bd67e57@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv4 4/5] wifi: ath9k: ahb: replace id_table with of
-To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
-Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- nbd@nbd.name, Johannes Berg <johannes@sipsolutions.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>
-References: <20250525214256.8637-1-rosenp@gmail.com>
- <20250525214256.8637-5-rosenp@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250525214256.8637-5-rosenp@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 25/05/2025 23:42, Rosen Penev wrote:
-> Since 2b0996c7646 , all of this platform code became no-op with no OF
-> replacement. Not only that, there are no users of AHB here. Add an OF
-> match table that mostly mirrors the original platform device id table.
-> Use a qca prefix as is done for the only other property: qca,no-eeprom.
-> Also used qca prefix for ar9530 as the latter seems to be a mistake.
-> 
-> This will be used to add ath9k support for the various ath79 devices
-> here.
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+UGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+IHdyb3RlOg0KPiBCaXR0ZXJibHVlIFNt
+aXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4gd3JvdGU6DQo+ID4gT24gMTMvMDUvMjAyNSAw
+NjoxMiwgUGluZy1LZSBTaGloIHdyb3RlOg0KPiA+ID4gQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgy
+MWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiA+ID4+IEFkZCBoZmNfcGFyYW1faW5pX3VzYiB0
+byBzdHJ1Y3QgcnR3ODlfY2hpcF9pbmZvLiBGb3Igbm93IGluaXRpYWxpc2UgaXQNCj4gPiA+PiBv
+bmx5IGZvciBSVEw4ODUxQi4NCj4gPiA+Pg0KPiA+ID4+IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJs
+dWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KPiA+ID4+IC0tLQ0KPiA+ID4NCj4g
+PiA+IFsuLi5dDQo+ID4gPg0KPiA+ID4NCj4gPiA+PiArDQo+ID4gPj4gK3N0YXRpYyBjb25zdCBz
+dHJ1Y3QgcnR3ODlfaGZjX3BhcmFtX2luaSBydHc4ODUxYl9oZmNfcGFyYW1faW5pX3VzYltdID0g
+ew0KPiA+ID4+ICsgICAgICAgW1JUVzg5X1FUQV9TQ0NdID0ge3J0dzg4NTFiX2hmY19jaGNmZ191
+c2IsICZydHc4ODUxYl9oZmNfcHViY2ZnX3VzYiwNCj4gPiA+PiArICAgICAgICAgICAgICAgICAg
+ICAgICAgICAmcnR3ODg1MWJfaGZjX3ByZWNjZmdfdXNiLCBSVFc4OV9IQ0lGQ19TVEZ9LA0KPiA+
+ID4NCj4gPiA+IFtSVFc4OV9RVEFfV09XXSBpcyBtaXNzaW5nLiBJJ20gbm90IHN1cmUgaWYgY3Vy
+cmVudCBjYW4gaGFuZGxlIHRoaXMgY29ycmVjdGx5Lg0KPiA+ID4gQ291bGQgeW91IHRyeSB0byBk
+byBXb1dMQU4gd2l0aCBVU0I/IEF0IGxlYXN0LCBpdCBzaG91bGRuJ3QgY3Jhc2guDQo+ID4gPg0K
+PiA+DQo+ID4gUlRXODlfUVRBX1dPVyBpcyBtaXNzaW5nIGJlY2F1c2UgSSBkaWRuJ3QgZmluZCBh
+biBlcXVpdmFsZW50IGluDQo+ID4gZW51bSBtYWNfYXhfcXRhX21vZGUgaW4gdGhlIHZlbmRvciBk
+cml2ZXIuDQo+IA0KPiBZZXMsIHZlbmRvciBkcml2ZXIgZG9lc24ndCBoYXZlIHRoYXQuIEFzIEkg
+a25vdywgaXQgZG9lcyBzb21lIG1vZGlmaWNhdGlvbnMNCj4gZnJvbSBvcmlnaW5hbCBub3JtYWwg
+b3BlcmF0aW9uIHF1b3RhLCBzdWNoIGFzIFJUVzg5X1FUQV9TQ0MsIGJlY2F1c2Ugd2Ugd2FudA0K
+PiBjb25zdGFudCBkZWZpbml0aW9uIGluIHVwc3RyZWFtIGRyaXZlci4gSSB3aWxsIGNoZWNrIGlu
+dGVybmFsbHkgYW5kIGdldCBiYWNrDQo+IHRvIHlvdSBob3cgaXQgc2hvdWxkIGJlIGZvciBVU0Ig
+ZGV2aWNlcy4NCg0KVGhlIG1haW4gZnVuY3Rpb24gdG8gZ2V0IFFUQV9XT1cgaXMgcmVkdV93b3ds
+YW5fcnhfcXRhKCkuIA0KDQpUYWtlIFJUTDg4NTFCRSBhcyBhbiBleGFtcGxlLCANCg0KQmFzZWQg
+b24gUlRXODlfUVRBX1NDQzoNCiAgY2ZnLT5wbGVfc2l6ZS0+cGdlX3NpemUgPT5ydHc4OV9tYWNf
+c2l6ZS5wbGVfc2l6ZTYNCiAgPT4ucGxlX3NpemU2ID0ge1JUVzg5X1BMRV9QR18xMjgsIDQ5Niwg
+MTYsfSwNCiAgcmR1X3BnX251bSA9IFBMRV9RVEFfUEcxMjhCXzEyS0IgPSA5Ng0KDQpRVEE2Og0K
+ICAucGxlX3F0MTggPSB7MTQ3LCAwLCAxNiwgMjAsIDE3LCAxMywgODksIDAsIDMyLCAxNCwgOCwg
+MCx9LCAvL21pbg0KICAucGxlX3F0NTggPSB7MTQ3LCAwLCAxNiwgMjAsIDE1NywgMTMsIDIyOSwg
+MCwgMTcyLCAxNCwgMjQsIDAsfSwgLy9tYXgNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIF5eXl4NCiAgcXRhX21pbiA9IDg5DQogIHF0YV9tYXggPSAyMjkNCg0KICBuZXdf
+cXRhID0gKHF0YV9tYXggLSBxdGFfbWluKSA8IHJkdV9wZ19udW0gPw0K4oCD4oCDICAgICAgICBx
+dGFfbWluIDogKHF0YV9tYXggLSByZHVfcGdfbnVtKTsNCuKAg+KAgyAgICAgID0gMjI5IC0gOTYg
+PSAxMzMNCg0KUVRBNzoNCg0KICAucGxlX3F0MTggPSB7MTQ3LCAwLCAxNiwgMjAsIDE3LCAxMywg
+ODksIDAsIDMyLCAxNCwgOCwgMCx9LCAvL21pbg0KICAucGxlX3F0NTggPSB7MTQ3LCAwLCAxNiwg
+MjAsIDE1NywgMTMsIDIyOSwgMCwgMTcyLCAxNCwgMjQsIDAsfSwgLy9tYXgNCiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeXl5eDQoNCiAgcXRhX21pbiA9IDAgDQog
+IHF0YV9tYXggPSAwDQoNCiAgbmV3X3F0YSA9IChxdGFfbWF4IC0gcXRhX21pbikgPCByZHVfcGdf
+bnVtID8NCiAgICAgIOKAg+KAgyAgcXRhX21pbiA6IChxdGFfbWF4IC0gcmR1X3BnX251bSk7DQri
+gIPigIMgICAgICAgID0gMA0KDQpGaW5hbGx5Og0KDQogIC5wbGVfcXRfNTFiX3dvdyA9IHsxNDcs
+IDAsIDE2LCAyMCwgMTU3LCAxMywgMTMzLCAwLCAxNzIsIDE0LCAyNCwgMCx9LA0KICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5eXl5eXg0KDQpBIHdheSBpcyB0
+byBpbmR1Y2UgdGhlIHF1b3RhIGJ5IGV5ZXMuIEFub3RoZXIgd2F5IGlzIHRvIGFkZCBkZWJ1ZyBt
+ZXNzYWdlDQppbiB2ZW5kb3IgZHJpdmVyIHRvIHNob3cgdGhlc2UgcXVvdGEgLS0gdGhpcyB3b3Vs
+ZCBiZSBtdWNoIHNpbXBsZXIuIA0KDQoNCg==
 
