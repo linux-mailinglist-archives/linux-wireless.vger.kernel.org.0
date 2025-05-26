@@ -1,137 +1,169 @@
-Return-Path: <linux-wireless+bounces-23404-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23405-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EEEAAC3848
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 05:47:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC27AC387F
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 06:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C748C3B3DCE
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 03:47:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40A5D3AFDD3
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 04:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3AA335BA;
-	Mon, 26 May 2025 03:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E340019F115;
+	Mon, 26 May 2025 04:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DbYNA2K6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LaCcE+lf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42CF126C03
-	for <linux-wireless@vger.kernel.org>; Mon, 26 May 2025 03:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA85923DE;
+	Mon, 26 May 2025 04:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748231266; cv=none; b=dWuC7YejH7PjttIe1ZdB/On0TStIQ/F3Gl1zi7jE7/Lc52cpvm8GUuTwopvK8HDX3aIX6jNZVbgwDVz19aAGqot1J/rNzpvz3PfCLvdE8Xb9G8Ia4jlf834ceUYPOtqqhJW5Oc/n0AbiYUhFW4xt6EI2MTo9E0K3DNq0f9qJ5tw=
+	t=1748233577; cv=none; b=ReTpPyi4kLiXYgllfrYMs6MacFdQoy20U6fd6JUY4m5CgMEmSgiEvxaAFIZywqpcdGFsHjx2tr+3BgKrTn85I2nQ0Rf92Qr43pDa0dvDCx/+bd+fm+2E9ov78bg9B/4Q36FHPRmKT0bfHDksRTB4/BDx7d+PKbdSgAyZhhx1d9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748231266; c=relaxed/simple;
-	bh=8hYIwfY/+9BiW1uTi6sNIMPzNP9VE/Ucj3RutVg1zYA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SXrroJOyAZWkffpajcuhZKxZYxEVa41RfQTva6S2kD8OsehWHEODs4y+PZ+kh2VXzhgjc96NZ75HJCMG/bCuWp5OVbGs6PdN38Dc8CqMur3LpJo1yRvQtel5L6VHI//a17O9m1pPyrrrkEF0IwcJ9+RaLHUvRvAQDjOXcvAc9ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DbYNA2K6; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54PNo5Bc007771;
-	Mon, 26 May 2025 03:47:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=cKRV5GKyuP23Y3M9k0BT2s
-	vzLUAessr9qg1Tki7V058=; b=DbYNA2K6351IrXC8Mt7KDWNbOvCfaGKtZ920Uq
-	JLwMxC6S0rB15+Wc+6dFYf+cVhlDBjnRBWrzDDtCSDtxQMe2H7RO9RmXkbpCfRaB
-	hQbQI6VCBWVhzOV4jt3fKR0BtNzEVSwb8amv5IqJqPS+oY/FtBBDTRaY/o+6Madk
-	lbmVsbkaiQd5O4ndV/ZKzuoOcSFNPssV/YmVuX5G32qBIbpWmPQ/3FqOERiQ6X3P
-	3VD9D4bImkBsE/vB5pHUEj/uISC2d0Lepeq+DPQPdzadoW9avATeSw9YsxtgwWdi
-	yMwlPtrRawe5wvmHG9YwGBmNW3wWyBEJOQkAcByo0BL5anqA==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46u6b5jvje-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 May 2025 03:47:39 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54Q3ldRx016814
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 May 2025 03:47:39 GMT
-Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
- nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sun, 25 May 2025 20:47:37 -0700
-From: Sarika Sharma <quic_sarishar@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Karthikeyan Kathirvel
-	<quic_kathirve@quicinc.com>,
-        Sarika Sharma <quic_sarishar@quicinc.com>
-Subject: [PATCH ath-next] wifi: ath12k: Decrement TID on RX peer frag setup error handling
-Date: Mon, 26 May 2025 09:17:13 +0530
-Message-ID: <20250526034713.712592-1-quic_sarishar@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1748233577; c=relaxed/simple;
+	bh=cmpo8NMat2noHb78cxRlS/B5COntYke7J+yrFf3kKeU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Td+DY6REknk8P/AGHTOyXXgNIivKVLSpl3fPg0YrsdwV2JPYCiqGHVziVDpcIbCreWqeIbE9b0yuvE/m69oSO9tC1LxLdah75CZV5AVkFxW74jSIdR5oJO5gqI12J6mlaWDjvTYBfR5AQqC9orQySHg04fFGgY2zXXCdLmuXbkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LaCcE+lf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B47C4CEE7;
+	Mon, 26 May 2025 04:26:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748233575;
+	bh=cmpo8NMat2noHb78cxRlS/B5COntYke7J+yrFf3kKeU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LaCcE+lfLb0/NhnstVIS1fkPkIBvDR1aDIV+xH39dxgQJDsOITTTxyAxREDzBiiTU
+	 qBht91i1vUdwJ1lnb+oxwFjJa17W3JTMkNCLFODCIOqKvKsropSvra+ZF0wCzU4FeZ
+	 fIrrKDNspgszjCSrwFWkH+zULgH1862wmSxir7pn1bRdtDnvPzQrAarNE4GPvBSO6E
+	 0iC9Nz+lShAKwJYF4zW76FNKm5hscl6eH5Pfe2jIWc6uFYhc95z9X1IsLAsuCzZg3B
+	 AElqxiDu+li8eGoAAmqwzhVbIg9VlpFGt2wIZnBpQP5hxnPJQ/9/l1ABvAMAF5D10t
+	 6lDOSO6JibO4w==
+Message-ID: <7145bfad-16d6-4445-bc19-261c5bdca8d9@kernel.org>
+Date: Mon, 26 May 2025 06:26:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=ZcodNtVA c=1 sm=1 tr=0 ts=6833e45b cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=C3E12wa_uFYmd_9f3VUA:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI2MDAyOCBTYWx0ZWRfXyeyqLkUYgsKc
- ufE+dTar19ok2HfyMLf5zvahcponN8GMkFp3tX9TyVnOIRxxpq05BI0z7m26p79vyooHWxBglCH
- LWtbbC306UIKKo1BiC5Jg0UE2ghC3qr2PzF2hxXenbhx/S0vPmV2PAoZWsaXRlHa4BzSablvFEV
- z4fYnRAMO2TkLr1QhbeCmnA49MLk4ir1YxJF5UHd1MABF8GT9kWpYknXQ1tYRmN+lb4lgXU4oBy
- 9rZQEnreHcEVLBjjkdi5Ae2+Ss0wxLHwax/c1udcgFdroXj9ICowbzjggPnHXkk3cU1utcgK9a6
- dnKIBeshsim0HqEJnLS5QMCmdIrr1Sz0l+isYYWc16S/mFhQQS8mB0GKLzQH/ybiCcO8OkyrvcG
- R4nRs6vdf0079bOWmMxhCc4774Fa4eOcqoOesGj85ffyEVrBbWNNuuegYQu9LtFk0HtfxZ8K
-X-Proofpoint-GUID: V23L18Z-8ub8mD2g8DhyQZyfb0OvQqEF
-X-Proofpoint-ORIG-GUID: V23L18Z-8ub8mD2g8DhyQZyfb0OvQqEF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-26_02,2025-05-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 malwarescore=0 mlxlogscore=662 bulkscore=0 priorityscore=1501
- spamscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0 phishscore=0
- impostorscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505260028
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv4 3/5] dt-bindings: net: wireless: ath9k: add WIFI
+ bindings
+To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
+Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+ nbd@nbd.name, Johannes Berg <johannes@sipsolutions.net>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>
+References: <20250525214256.8637-1-rosenp@gmail.com>
+ <20250525214256.8637-4-rosenp@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250525214256.8637-4-rosenp@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+On 25/05/2025 23:42, Rosen Penev wrote:
+> These are for the wireless chips that come built in with various
+> Atheros/QCA SoCs. dts wise, the difference between pcie and the wmac is
+> 
+> AHB > PCIE > WIFI
+> AHB > WIFI
+> 
+> These will be used to replace the platform_device code with OF in the
+> following patch.
 
-Currently, TID is not decremented before peer cleanup, during error
-handling path of ath12k_dp_rx_peer_frag_setup(). This could lead to
-out-of-bounds access in peer->rx_tid[].
+Drop the sentence. If we use auxiliary driver instead, should it
+invalidate this commit msg?
 
-Hence, add a decrement operation for TID, before peer cleanup to
-ensures proper cleanup and prevents out-of-bounds access issues when
-the RX peer frag setup fails.
+> 
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  .../bindings/net/wireless/qca,ath9k.yaml       | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> index 0e5412cff2bc..68d56e5b8680 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> @@ -12,7 +12,7 @@ maintainers:
+>  description: |
+>    This node provides properties for configuring the ath9k wireless device.
+>    The node is expected to be specified as a child node of the PCI controller
+> -  to which the wireless chip is connected.
+> +  or AHB bus to which the wireless chip is connected.
+>  
+>  allOf:
+>    - $ref: ieee80211.yaml#
+> @@ -35,6 +35,12 @@ properties:
+>        - pci168c,0034  # AR9462
+>        - pci168c,0036  # AR9565
+>        - pci168c,0037  # AR1111 and AR9485
+> +      - qcom,ar9130-wifi
+> +      - qcom,ar9330-wifi
+> +      - qcom,ar9340-wifi
 
-Found during code review. Compile tested only.
+I assume all these qr9xxx are capable of running Linux, thus you
+document here other side - having them as part of other SoC.
 
-Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/dp.c | 1 +
- 1 file changed, 1 insertion(+)
+> +      - qcom,qca9530-wifi
+> +      - qcom,qca9550-wifi
+> +      - qcom,qca9560-wifi
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index 6317c6d4c043..c6b10acb643e 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -84,6 +84,7 @@ int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr)
- 	ret = ath12k_dp_rx_peer_frag_setup(ar, addr, vdev_id);
- 	if (ret) {
- 		ath12k_warn(ab, "failed to setup rx defrag context\n");
-+		tid--;
- 		goto peer_clean;
- 	}
- 
+But what about these? As well? Do they have other interfaces? IOW,
+suffix "-wifi" is added ONLY if there is "qcom,qca9530" or
+"qcom,qca9530-foo" somewhere or possible.
 
-base-commit: 3d933084a072fd5fb5da54c06a017abc0412c86f
--- 
-2.34.1
 
+Best regards,
+Krzysztof
 
