@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-23408-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23409-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0E7AC3892
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 06:28:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E45C5AC38AC
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 06:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6148716B33E
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 04:28:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9D4D189376C
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 May 2025 04:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BDF1A23AD;
-	Mon, 26 May 2025 04:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADF9191F74;
+	Mon, 26 May 2025 04:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ho8oKgpR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IMJvEHGa"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD094258A;
-	Mon, 26 May 2025 04:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAA4111BF;
+	Mon, 26 May 2025 04:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748233682; cv=none; b=cBeVYdxtLaMnA3H9mxVQEcskgnd+2M49gCt5ac46rodU3pXug+GiPMorTD25NfmhJPkNVoIMHNGp3L5Yvc9KztBMG2J6H9AXBV2JrrTNYp2sNKXYdOQ567WcyiALz4l/LdVQNMYW4VS/yU/mC4NlXR2hr0qNC//0XF6jtdHM5l8=
+	t=1748233820; cv=none; b=NRBg1leLK3yFMgp4jxXD2EMibyhtQO9VlTBLKV0h5jmtgM0uRLZzNamtNaA2qPhfbbc23s4HFUrVNEOOe0QneWACBE4MSIbhcBYhZBbfDhIRWGA9JCzzcAyIfb/TGPtAbqwgNn/3XrbEcSV29nbAKY182jAOpwQcDXZvzjwsy5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748233682; c=relaxed/simple;
-	bh=Iv64JJ07ZTtZKTEoQhYMu0BuAfNb0ZcRZOshfAr8e1g=;
+	s=arc-20240116; t=1748233820; c=relaxed/simple;
+	bh=P18tVqjGnsSNB5iPrYnSOiQxnPKaRmMkux9SnOLis+Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mIUw2T7VAj7Qmy+HW3jvsR+BkbYnTvF7NtDc/FTPibj6NEvJOVyQHTaQp6A68fuZ6JiJvg1yJC3UmwzAGSD2UWBmnDMK5X3S+LVNTDMKdAkhEZdp0ulIiFlNsuc859SLnSJJlq1lPpoE7wdeRyJwxKgkaBXtvnYxxNkaBJgNwgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ho8oKgpR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA29C4CEE7;
-	Mon, 26 May 2025 04:27:58 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Rb7l7VPv2cLo0f04YqZiU9YfJ3i4yMEG1zjSQM8jt2pyV5KMg6zuV7q7gXDSo79gX3NrKLgeE66JZ8tzyR6RO9wGOeZLHNw5VIUTRQIizdFXHG+yC+Xo6vYRyIkP1t4Rh4wcApwP8x0nFWT6Hx78X/BcdFAN80tAAca0MsY2txE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IMJvEHGa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FBA2C4CEE7;
+	Mon, 26 May 2025 04:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748233681;
-	bh=Iv64JJ07ZTtZKTEoQhYMu0BuAfNb0ZcRZOshfAr8e1g=;
+	s=k20201202; t=1748233818;
+	bh=P18tVqjGnsSNB5iPrYnSOiQxnPKaRmMkux9SnOLis+Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ho8oKgpRhUdKgkvY6lvDby6DZG1OASL4mUn7PxnMzYrQH3ZmRiOlyq5UmhnrPJc8h
-	 n2GHEak7eEv0WtWq3Ux0gRooVh6JdDhWQvSp8pu8CKvC2NvhoTn3qpMpO9h/8PNUvF
-	 B4sRg8Jd8YcWFmMCzyjYDg1zq132Alitb/q5hulrr4P1dEQqaDPXrML5qCO7P7lnPA
-	 IkKAhnOcHSBuAm1XSxRmNIGOPB0utqmn+JtsfQ0IblFR5N7JZ6S8xqDerSFZ1hCtnr
-	 igRSKU/Ee/NkPe+y8Hqt4OgtWcylzYzLBHQSPI0v+d8z0rTDEMOgaAA0OL7fgsd7M3
-	 UHhAJUAn+eAsw==
-Message-ID: <a0b603ac-b144-41d3-aa95-bf5a345dac3b@kernel.org>
-Date: Mon, 26 May 2025 06:27:56 +0200
+	b=IMJvEHGacshGL1Ppb8/TSR+GOi8AVd8zJ4TWGqEH428ZfLn32OVi027R91FlFCY5h
+	 pzeXeYEadCFVa0IGijxRGKShFraqk10dyjiNIxGPnP7nDYHBBXTuuf7Hn3H9DqrE3w
+	 ZdgkSpSc5ITziZuunqVv8xtKXdDcA58Ou9LBC8seFoGqU+P26DYRz3Gf1znaIuGmD6
+	 E6oVnc69Y8z8E9LwmgbpRFk3hCHCC0RnsV35oYP4hcEhuoQRRhf6QxMQp+5BuMHrac
+	 zmkDiDCXPsU5lEas3tGDoT+0rQvxmqnxTFPXUuet9e8/gq75r+Yt2C+GDB23SL/F8B
+	 A7hVnU6akctEw==
+Message-ID: <297d936b-7ce2-4d9a-baff-e4b0503e6000@kernel.org>
+Date: Mon, 26 May 2025 06:30:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv4 2/5] wifi: ath9k: ahb: reorder includes
+Subject: Re: [PATCHv4 4/5] wifi: ath9k: ahb: replace id_table with of
 To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
 Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
  nbd@nbd.name, Johannes Berg <johannes@sipsolutions.net>,
@@ -61,7 +61,7 @@ Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
  <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
  "open list:MIPS" <linux-mips@vger.kernel.org>
 References: <20250525214256.8637-1-rosenp@gmail.com>
- <20250525214256.8637-3-rosenp@gmail.com>
+ <20250525214256.8637-5-rosenp@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -107,19 +107,50 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250525214256.8637-3-rosenp@gmail.com>
+In-Reply-To: <20250525214256.8637-5-rosenp@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 25/05/2025 23:42, Rosen Penev wrote:
-> Alphabetic includes are easier to look at and to make further changes to
-> them.
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
+> @@ -72,20 +55,15 @@ static const struct ath_bus_ops ath_ahb_bus_ops  = {
+>  
+>  static int ath_ahb_probe(struct platform_device *pdev)
+>  {
+> -	const struct platform_device_id *id = platform_get_device_id(pdev);
+>  	struct ieee80211_hw *hw;
+>  	struct ath_softc *sc;
+>  	struct ath_hw *ah;
+>  	void __iomem *mem;
+>  	char hw_name[64];
+> +	u16 dev_id;
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+I don't think these are u16 in the headers, but unsigned int.
 
+>  	int irq;
+>  	int ret;
+>  
+> -	if (!dev_get_platdata(&pdev->dev)) {
+> -		dev_err(&pdev->dev, "no platform data specified\n");
+> -		return -EINVAL;
+> -	}
+> -
+>  	mem = devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(mem)) {
+>  		dev_err(&pdev->dev, "ioremap failed\n");
+> @@ -118,7 +96,8 @@ static int ath_ahb_probe(struct platform_device *pdev)
+>  		goto err_free_hw;
+>  	}
+>  
+> -	ret = ath9k_init_device(id->driver_data, sc, &ath_ahb_bus_ops);
+> +	dev_id = (u16)(kernel_ulong_t)of_device_get_match_data(&pdev->dev);
+
+u16 cast looks not needed.
+
+
+> +	ret = ath9k_init_device(dev_id, sc, &ath_ahb_bus_ops);
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "failed to initialize device\n");
+>  		goto err_irq;
 Best regards,
 Krzysztof
 
