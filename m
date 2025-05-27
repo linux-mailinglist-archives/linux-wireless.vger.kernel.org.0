@@ -1,144 +1,133 @@
-Return-Path: <linux-wireless+bounces-23435-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23436-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134A9AC49BB
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 May 2025 09:58:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE606AC49DD
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 May 2025 10:04:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1CC5189904C
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 May 2025 07:58:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8879C171EA3
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 May 2025 08:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7CE248F42;
-	Tue, 27 May 2025 07:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="dBp0x28I"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA0723DEB6;
+	Tue, 27 May 2025 08:04:19 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCB81A0BD6;
-	Tue, 27 May 2025 07:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7181C6FFE;
+	Tue, 27 May 2025 08:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748332703; cv=none; b=AU93OrM2HEhpc6ie8CerI+2GrsXovuO9GomDk9Yu6dcTw4zPKFACOtPGFtrUF9YyXmM6a11gB9v0HK6g9cc8N+aS8JAd885vVR0XJvP4GQAOVf2NiyzJxufjZdRKDLjnmiIAycSLcWstsnvKaJX4HTevJeNTkJQGcRNdmwXKh+g=
+	t=1748333059; cv=none; b=nZMoEAGuEd0Ih7zUg2RzfLkGudQr1tWTiofnsLzREL5yMZU0dFF07d8F+zyVPJscyCkPIyzw/5H2y3iwpRZzjmavWMfyd1os9Qg3iHXAsPwGWZguoSlQE+Cvl/e+1kbiyaOv4j2sbq/9ViomOpHn2EXLQVT+LTwnnoIPkhtCGb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748332703; c=relaxed/simple;
-	bh=9SFvgeOwKrobD4cRTqiopVNcOl4N2zjHLcRSyk72nmw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=JVmsEhB4SHupxzqFo2yUwrxDTHDtA5a/WcFuVc9ll2jz6MNOi3Dd72zubiobx66zDjmH0O1DKMGHDCP/JTdZr0StCV9QOGPBnM7rAvHCmBLVtu83jO9U0qElHlR3qVpDGrGAjM9ix2TiW1OvHrSb3HGTovikjlr+iUAT4avwKQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=dBp0x28I; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54R7wE9611481514, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1748332694; bh=F3p54VaksFXXr0qjBndcI+PrSvsXrHVobFyMgUaaFIg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=dBp0x28I/UrGGDId/+nVBYwqKGd2VJW/WO5B04+lm8WP/6yhhKOuR0Uy5r5kzqdhH
-	 MhcWP+rdJ3oedmETjL5vmlsT/IyWC7V/0KARlHuWTGnW7RoEY+eYjE+y+8+O8E+9Ds
-	 eV0jyub97ppKhhFLYQtvpUzs6dkw+Puv0Q3zWQo+RUo+pfqX5fxAlnWGRkZ/Dob6bB
-	 JU6+idzrIBqCn5xYkOOMF3IubFCZHRpEXaWVrqJRnTQVeWskJgUwELtbHmrBTvnnwJ
-	 tUtpnFqAmynPHSelzNbZiymslkqz5+84RpaNyRpBKIqZPBbQAnl2b28l1iwoJuDHee
-	 HdCsn1HbhyEOw==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54R7wE9611481514
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 27 May 2025 15:58:14 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 27 May 2025 15:58:14 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 27 May 2025 15:58:13 +0800
-Received: from RTEXMBS03.realtek.com.tw ([fe80::dd06:104c:e04d:a488]) by
- RTEXMBS03.realtek.com.tw ([fe80::dd06:104c:e04d:a488%2]) with mapi id
- 15.01.2507.035; Tue, 27 May 2025 15:58:13 +0800
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-CC: Ping-Ke Shih <pkshih@realtek.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org"
-	<kernel-janitors@vger.kernel.org>
-Subject: RE: [PATCH next] wifi: rtw89: mcc: prevent shift wrapping in rtw89_core_mlsr_switch()
-Thread-Topic: [PATCH next] wifi: rtw89: mcc: prevent shift wrapping in
- rtw89_core_mlsr_switch()
-Thread-Index: AQHbzswfjeN9r26I10eoAov9FdTI97PmBnfw//+Mn4CAAIgNsA==
-Date: Tue, 27 May 2025 07:58:13 +0000
-Message-ID: <c70e23c6e9134f7e8b8791b5ece6baa3@realtek.com>
-References: <aDVUEHfa9q2zBD6i@stanley.mountain>
- <582b5bc4c4434934838ae28d77b7f73a@realtek.com>
- <aDVtu6dpKfWOyBn6@stanley.mountain>
-In-Reply-To: <aDVtu6dpKfWOyBn6@stanley.mountain>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1748333059; c=relaxed/simple;
+	bh=wMXqsnC04f3eA9JrWhsMw8ctnhdT+ZgnkM8z3aQak24=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pG0TyJpBss6D3IwNnciiS8BNion/m5NdeOYyql4ThYrPrRWmsABg3nSGCk//eLk5/NYpi30l0FL4cVXMAOr0e+cfxF40QTuVyuWI7Upm1X/KrhOKtIcnmoClVdN0UpDgi+3OpD+mjzf/EgZRZZr60u0P4SqjFhLfhVm0tBTN7EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 25e3e3383ad111f0b29709d653e92f7d-20250527
+X-CTIC-Tags:
+	HR_CC_AS_FROM, HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_DIGIT_LEN
+	HR_FROM_NAME, HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
+	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT
+	HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED
+	SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS
+	DKIM_NOPASS, DMARC_NOPASS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:430fe6b6-c717-4130-a8d5-b87a3da13ead,IP:0,U
+	RL:0,TC:0,Content:0,EDM:25,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:20
+X-CID-INFO: VERSION:1.1.45,REQID:430fe6b6-c717-4130-a8d5-b87a3da13ead,IP:0,URL
+	:0,TC:0,Content:0,EDM:25,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:20
+X-CID-META: VersionHash:6493067,CLOUDID:0a3e5fd3c7b86344b70babc19b985428,BulkI
+	D:2505271604021D5AQ85T,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102,TC:n
+	il,Content:0|50,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil
+	,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-UUID: 25e3e3383ad111f0b29709d653e92f7d-20250527
+X-User: xiaopei01@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <xiaopei01@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 2038246648; Tue, 27 May 2025 16:04:00 +0800
+From: Pei Xiao <xiaopei01@kylinos.cn>
+To: johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Pei Xiao <xiaopei01@kylinos.cn>
+Subject: [PATCH v2] wifi: iwlwifi: cfg:  Limit cb_size to valid range
+Date: Tue, 27 May 2025 16:03:55 +0800
+Message-Id: <7b373a4426070d50b5afb3269fd116c18ce3aea8.1748332709.git.xiaopei01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
->=20
-> On Tue, May 27, 2025 at 07:38:17AM +0000, Zong-Zhe Yang wrote:
-> > Dan Carpenter <dan.carpenter@linaro.org> wrote:
-> > >
-> > > The "link_id" value comes from the user via debugfs.  If it's larger
-> > > than BITS_PER_LONG then that would result in shift wrapping and
-> > > potentially an out of bounds access later.  Fortunately, only root ca=
-n write to debugfs files
-> so the security impact is minimal.
-> > >
-> >
-> > Thank you for catching this problem.
-> >
-> > >
-> > > [...]
-> > >
-> > > @@ -5239,6 +5239,9 @@ int rtw89_core_mlsr_switch(struct rtw89_dev
-> > > *rtwdev, struct rtw89_vif *rtwvif,
-> > >         if (unlikely(!ieee80211_vif_is_mld(vif)))
-> > >                 return -EOPNOTSUPP;
-> > >
-> > > +       if (unlikely(link_id >=3D BITS_PER_LONG))
-> > > +               return -EINVAL;
-> > > +
-> >
-> > Since I think this problem only comes from dbgfs path, would you like t=
-o just add a check in
-> debug.c ?
-> >
-> > For example,
-> > (based on 0 <=3D valid link id < IEEE80211_MLD_MAX_NUM_LINKS <
-> > BITS_PER_LONG)
-> >
-> > rtw89_debug_priv_mlo_mode_set(...)
-> > {
-> >         ...
-> >         switch (mlo_mode) {
-> >         case RTW89_MLO_MODE_MLSR:
-> >                if (argv >=3D IEEE80211_MLD_MAX_NUM_LINKS)
-> >                        return -EINVAL;
-> >                 ...
-> >
->=20
-> I'd prefer to add the check in one place instead of all the callers.
+on arm64 defconfig build failed with gcc-8:
 
-Understandable.
+drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c:208:3:
+include/linux/bitfield.h:195:3: error: call to '__field_overflow'
+declared with attribute error: value doesn't fit into mask
+   __field_overflow();     \
+   ^~~~~~~~~~~~~~~~~~
+include/linux/bitfield.h:215:2: note: in expansion of macro '____MAKE_OP'
+  ____MAKE_OP(u##size,u##size,,)
+  ^~~~~~~~~~~
+include/linux/bitfield.h:218:1: note: in expansion of macro '__MAKE_OP'
+ __MAKE_OP(32)
 
-> We could check IEEE80211_MLD_MAX_NUM_LINKS instead of bits per long if th=
-at's more
-> readable?
+Limit cb_size to valid range to fix it.
 
-Sound good to me.
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+---
+Changes in v2:
+use if(WARN_ON())
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+index cb36baac14da..4f2be0c1bd97 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+@@ -166,7 +166,7 @@ int iwl_pcie_ctxt_info_init(struct iwl_trans *trans,
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	struct iwl_context_info *ctxt_info;
+ 	struct iwl_context_info_rbd_cfg *rx_cfg;
+-	u32 control_flags = 0, rb_size;
++	u32 control_flags = 0, rb_size, cb_size;
+ 	dma_addr_t phys;
+ 	int ret;
+ 
+@@ -202,11 +202,12 @@ int iwl_pcie_ctxt_info_init(struct iwl_trans *trans,
+ 		rb_size = IWL_CTXT_INFO_RB_SIZE_4K;
+ 	}
+ 
+-	WARN_ON(RX_QUEUE_CB_SIZE(iwl_trans_get_num_rbds(trans)) > 12);
++	cb_size = RX_QUEUE_CB_SIZE(iwl_trans_get_num_rbds(trans));
++	if (WARN_ON(cb_size > 12))
++		cb_size = 12;
++
+ 	control_flags = IWL_CTXT_INFO_TFD_FORMAT_LONG;
+-	control_flags |=
+-		u32_encode_bits(RX_QUEUE_CB_SIZE(iwl_trans_get_num_rbds(trans)),
+-				IWL_CTXT_INFO_RB_CB_SIZE);
++	control_flags |= u32_encode_bits(cb_size, IWL_CTXT_INFO_RB_CB_SIZE);
+ 	control_flags |= u32_encode_bits(rb_size, IWL_CTXT_INFO_RB_SIZE);
+ 	ctxt_info->control.control_flags = cpu_to_le32(control_flags);
+ 
+-- 
+2.25.1
 
 
