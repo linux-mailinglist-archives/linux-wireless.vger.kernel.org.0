@@ -1,83 +1,58 @@
-Return-Path: <linux-wireless+bounces-23466-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23467-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0D2AC63DA
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 10:14:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C686EAC67AC
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 12:49:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B3A84E1E9B
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 08:14:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93FE3168AB9
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 10:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1726C2690F1;
-	Wed, 28 May 2025 08:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0012F217660;
+	Wed, 28 May 2025 10:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="G2+4A5Z9"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="IAKZU0ne"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BDB267B87
-	for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 08:11:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAD627A10D;
+	Wed, 28 May 2025 10:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748419870; cv=none; b=PhP4wETsq9ESMBy7vVZMSUcE/FIf2DYzEsHVpLQq8yN78uPk94GqljrEm6Jo0zujzA4kOMt1uudRWYk4tmbjvWBmVeIxNM2Bql8AFTGAJM/y6TjVLjKApw4i2A6ZqajTyOd3p9k0+nCzHrGuCi4ryPYFg6kU41kh/yuhp5ZiyUM=
+	t=1748429356; cv=none; b=mR9xIFoy1DhT/yG/mvthmQNMfRGj6Y3Qg7SqYT5gAwCSbadVzT5nAbDHooo/2/uXUQmhzxzsgbvKg4/N7/Xxh4De9h92MJONRv/WBtaI3sL4pOOnF6M+lHESGNTvdiXUBt7PeZufYopRBHaLaZrpQOjhvPNHtvicW1b1Ix9HliY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748419870; c=relaxed/simple;
-	bh=7QUgyPQ/T3YEWQ1/2Hr5qFcOiLCYY40HXCZ+In2rM/E=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=jnOfZEAi+r4YAWtGMZazL6T7GR5kNtd3qFOxKL9fuo4wGLfKDyn+f4RgjxcEBDGIwHNtFtTNKx5o+gFnaca1zDlQZ+uOyZd9lrEyOD28Qv9JyB0iG7WWnSD7ga9+JLk8e0DpGm0ZZGR3b2rNvahd2oaNcyFvojGG/f59hiZ+cDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=G2+4A5Z9; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43d2d952eb1so33315495e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 01:11:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748419866; x=1749024666; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IFycvXrQUkiOkbhte5Aosw13hGKT4ZnQNkWJE4xdYxY=;
-        b=G2+4A5Z9oJpo9pzmKLIPI0tQdP/74hpa1KMgJ3nqG57sn+FxSeS/S/YVDlB5rOE6VA
-         Aw5gXJWFK+sadwjkSgPRsJwPxXH8tDyL9ykFTqpCA3ngSBMqjjB/P1eDI3hN6UP4wsKP
-         oBjSV0J4XBdKvF4TXfplRX8qPQ56a76JDq6z/U+5XtkWq3De+lVh9w4ULo2VhztQEz7G
-         JOQJdVNZ68CJjWVTrimCg6oj96Tt8CiJshkaTYWGrBtp2HHE4YoufdVThTVFkCtENzvC
-         Pv+syOXnxz1+BiiVF4UTbP/kZLzYXttimjPijf7WidxR1+tZXlkDEBSg/Pj/WfWyjlJ9
-         Bf+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748419866; x=1749024666;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IFycvXrQUkiOkbhte5Aosw13hGKT4ZnQNkWJE4xdYxY=;
-        b=fvhDy3f/pln1DqhA3ttIVmA8FqIY/nxGpa4lrwgCsk779G2fZs/8y4dycE9ya6JCI2
-         weyD1Jvxa4vqPHugBXHeBPP2dOU3ix4875Lp1/70ZMFCDSawCMOfPEFhk5ynp+yWRUSJ
-         XyD7DDEx6xYcY0Wjb8pGZxq/sdhFhNMJroyAy7YNPYN8yHsuNDd83DikzmNpk1+/zTaA
-         H4WJC8BgOZzRQ48/T7Fb7Aqg/jffgGHs0z2oFMjen4udi13zBCqH/djPdpjN31QM6rSW
-         Q0nwfdVdCdCsuiG5J6BrWJq7n33tjZl7TOOP4mAcP92I3OeCaG3KpoE6xDcPxvwJbEdh
-         73mg==
-X-Forwarded-Encrypted: i=1; AJvYcCXGWVzbqLZQStbU2ZVpSp6k8W5+nxgPESej4c6bb5GaK1TUFQoY6j/vD0wUQiv+RyL5in/zss9vFIT3Yvcwuw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdxavD5dzc45BKEKTm7cEwJA/FcqAKFbLs00fg2JWvkYWnZFN6
-	+Z4KrnaghqulTl6Sr0Guq8CFKNlvgDbdUpjD47EYQXRn3Sm3eHhPkzdFA1iqc3ZXb08=
-X-Gm-Gg: ASbGncs5xgcbKv0p/gaITVGmGq202bt1LWfEZSR8FPuu+6eJqvmg5ComxhO9d5WT3cR
-	S0IZGNT8+Fod/IpK1Jlizfnr5A03yMnsf3tgazMpBiLSISADJ4lpTwyc9K1UcpnfzDnQ2WWc6dX
-	iWR3EaN/fB06HDTer1GsjndyWyx8gjCWSIBg8Fkg5i+q/zR6qQcnyiEqfUPuxwlbDNrReWnCfhW
-	ZYvl+gG+GhPow3dGDCHtGubqSK7hUy4cfTEFk4DabAOdPvtKRGOHyz+/e+DCnThY60WpE89tRxO
-	8PyzIacPf91b3PLGUiS3dUbzh+fdYtRDK7oK8hkn8MEMtz0B+PHKBpkf
-X-Google-Smtp-Source: AGHT+IHX4I0n+ZPz2LAonQ+C7wF0g3TSvB1a1pGhyeywpD5kz73HeVr28IbZeV7RGlLkbc8tETsEvQ==
-X-Received: by 2002:a05:600c:511f:b0:43d:5ec:b2f4 with SMTP id 5b1f17b1804b1-44c919e13d2mr163530375e9.10.1748419865922;
-        Wed, 28 May 2025 01:11:05 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-450787cc3c5sm9406215e9.31.2025.05.28.01.11.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 May 2025 01:11:05 -0700 (PDT)
-Date: Wed, 28 May 2025 11:11:02 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Zong-Zhe Yang <kevin_yang@realtek.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2 next] wifi: rtw89: mcc: prevent shift wrapping in
- rtw89_core_mlsr_switch()
-Message-ID: <aDbFFkX09K7FrL9h@stanley.mountain>
+	s=arc-20240116; t=1748429356; c=relaxed/simple;
+	bh=2wB4/cPoFm3OXX9771W7ufP4Q/ZEn3+bk/2YQsFoIG8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bWv6JLkiY9GjyK3XDtlMV6Bff3tVUjhfHXVSyd0jO8PMpLKiKzrIlisPpkr3jikAdPlJ4E13Hmh+49HIYzmkaloUVsZBHrGRlL7J/E7+qpulmYtyBLIS/WwVVYVng7Tn08vJlVXcnMAEYR4qhrPqkqxmGRTdQYsKUUQ/VbCEYTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=IAKZU0ne; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
+	by mail11.truemail.it (Postfix) with ESMTPA id 6CD142061D;
+	Wed, 28 May 2025 12:49:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1748429343;
+	bh=ctWIGAfV+2xqbTqtd5B9TbgiUUECcoY8bn9T9Tj3nxc=; h=From:To:Subject;
+	b=IAKZU0neYvPKCSVtv+bVLj/0A4wBhKSlf0gbnidjG6nAGwsZXj4XxshsuA022HFLV
+	 oGjm3zSB44FBcY7ux6XQFvF8q3PoLNIU3l5Ky+05bp0NXEACe1ZMm/jOHfyk4mZuyw
+	 3/XOxLu5syA6Dv7tlf3rUgFIOtSg2fNHYCuS33/nYz5CrvWth0nJ5zLNjHI3vOz49P
+	 qrU8yhWncRjWSu93E8z52quGVBPMmaCtafBM+dZoTGm4B6pyUxHPEbYGkKaZPrpm0p
+	 HOeKdeiOVQXoO70AuPQ+6745nZkUIPuXZ0T6OEl6GSfoDlmSIKhfWB2UGUJtYvnUE1
+	 cfML0jlDBYKDA==
+Date: Wed, 28 May 2025 12:48:59 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: rafael@beims.me
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Rafael Beims <rafael.beims@toradex.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: mwifiex: enable host mlme on sdio W8997 chipsets
+Message-ID: <20250528104859.GA38749@francesco-nb>
+References: <20250521101950.1220793-1-rafael@beims.me>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -86,40 +61,17 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <20250521101950.1220793-1-rafael@beims.me>
 
-The "link_id" value comes from the user via debugfs.  If it's larger
-than BITS_PER_LONG then that would result in shift wrapping and
-potentially an out of bounds access later.  In fact, we can limit it
-to IEEE80211_MLD_MAX_NUM_LINKS (15).
+On Wed, May 21, 2025 at 07:19:34AM -0300, rafael@beims.me wrote:
+> From: Rafael Beims <rafael.beims@toradex.com>
+> 
+> Enable the host mlme flag for W8997 chipsets so WPA3 can be used.
+> This feature depends on firmware support (V2 API key), which may not be
+> available in all available firmwares.
+> 
+> Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
 
-Fortunately, only root can write to debugfs files so the security
-impact is minimal.
-
-Fixes: 9dd85e739ce0 ("wifi: rtw89: debug: add mlo_mode dbgfs")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
-Use IEEE80211_MLD_MAX_NUM_LINKS as a limit instead of BITS_PER_LONG.
-It's stricter and also more informative.
-
- drivers/net/wireless/realtek/rtw89/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 49447668cbf3..3604a8e15df0 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -5239,7 +5239,8 @@ int rtw89_core_mlsr_switch(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
- 	if (unlikely(!ieee80211_vif_is_mld(vif)))
- 		return -EOPNOTSUPP;
- 
--	if (unlikely(!(usable_links & BIT(link_id)))) {
-+	if (unlikely(link_id >= IEEE80211_MLD_MAX_NUM_LINKS ||
-+		     !(usable_links & BIT(link_id)))) {
- 		rtw89_warn(rtwdev, "%s: link id %u is not usable\n", __func__,
- 			   link_id);
- 		return -ENOLINK;
--- 
-2.47.2
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
 
