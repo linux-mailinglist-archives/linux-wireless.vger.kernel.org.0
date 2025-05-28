@@ -1,142 +1,138 @@
-Return-Path: <linux-wireless+bounces-23475-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23476-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60813AC6EB9
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 19:05:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5D0AC6EC8
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 19:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCFE24E5163
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 17:05:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71EF21BC81ED
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 17:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37F028C2A9;
-	Wed, 28 May 2025 17:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B147F28DF29;
+	Wed, 28 May 2025 17:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="f34N6Uxn"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Uf9x7Seb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E70B28DF4F
-	for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 17:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A5B28DF45
+	for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 17:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748451908; cv=none; b=Q2PXWlC5BQcackrB83Mt18avOfrEg/7B2uY4COM31QKrp3x2b53uLD41EeCaL+dPq6QoYJW1MtGmL5lZrcln89AfJvILuiTSRiIumoPXzV/lUhGBYM0Qp1QYNQBGU0f7oAYjJzRnGMDnoLL9hcxIXrHBhbbZlvylmme99Xw0uhM=
+	t=1748452165; cv=none; b=fGdpcsoPyBmBiYAqOumBN9mdvmWrEYnxSGbHDpHSlf4mMP+uFNgZK8mHjDZuBSf4+b0zBnPLcahic5glvl61tp2jDw04Q7/rOkVDq56y6rTefMxgoMUHaqMVnpmXh/HwficTJnaD7rOo3WCa+cKcHzeFruTw986JwoiIqQh7s3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748451908; c=relaxed/simple;
-	bh=0DgzNtii2XWXPt+m9Xmjccp5sFgv9qhxyoaDSRtPwK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ix7XqdGMOEOg7Q4pcWDq7djthuqGqzjSu6+dk7n/Vo/K/CqdBkKLxXDbemJuti1p0VPxTvuOfWbpczCPmWLVgxdab1V45nK3V2gta11ht/mxvbHiJQD6MyUVeO0RU9CpGozTHobwy5GdXDzWtbzQoyjdpNhuW83PzyIbpkau57A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=f34N6Uxn; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-231c86bffc1so1463095ad.0
-        for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 10:05:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1748451906; x=1749056706; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VspX5rS9W9nV20VrA8EY7nkU4h0oSZ1JdThY0x0OkJY=;
-        b=f34N6UxnLsD614rWptT3JqFZpcYHDQNow1sWY7r2g7QlVZlpQ78ROrF/CQoPak+ht+
-         qoF2T9s4xoI4i2742f+ntk9MtLt8w3ga/qA39nST7AIUTSaZPz84GD5YmK1z5ESFMlar
-         yxvP0m24ZwRxS2QgZmT4wJ5F3OmajG0lCBdwU=
+	s=arc-20240116; t=1748452165; c=relaxed/simple;
+	bh=P5DH6TK68IfewbPbjBNyN3Igm8pnpjna5wIQ96fcUA4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ut1ZOFoENp57nqjj32q5zGl2h5NZ9mPwXHJSelrr5hJ3gQruMC8UpU9DO1/LHyQ4c60x2jeif9fXI3T4eqelWPGxtYm+bCy90r99yiZfuTN4qY/54VXIyrbfffOaCUDPnM/YLRCVXweWwwQWpqkm4DB9vTqIhWlex2vYSXWMzs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Uf9x7Seb; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54S6qBns021217
+	for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 17:09:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	P5DH6TK68IfewbPbjBNyN3Igm8pnpjna5wIQ96fcUA4=; b=Uf9x7Sebzfaig52F
+	HC4yO2gVuSF1ijiG90m7lBmIA440iNrJXYeTVD79Go2NsR+jfLV8PO/Mwy3jmpIw
+	j7YD4JlZiVPCfRESLTuA+vvJ5nev8BXObgKO11TFu9xjkuPx6bG0JtCPAL3686Sb
+	qGbhx2rRMbOuu/WBP1x3X2UqVCtQNIdW2NGT8qTAsM2klfUT7TBtW1mxJ2CHOBz6
+	o2EWw6Q8haso7YzYwNud/+PtJBCjTIH1IenffxUj3BpqBxBLdMyGYgsjMWG3OP78
+	3CtxOheYNbHYyGCe/wIpWm68q1vTpCQ+0ACcPyStR/pVMQJ8/6rIFbdLOXgditNt
+	wXkqiQ==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46vmgcye9s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 17:09:17 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-747adea6ddbso35099b3a.0
+        for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 10:09:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748451906; x=1749056706;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VspX5rS9W9nV20VrA8EY7nkU4h0oSZ1JdThY0x0OkJY=;
-        b=Odj5J31GuqWHVlZuWNWlGHGCQ+G29kRiMnTg/lHwKweAiHQhBXs/C+tQwTwhX+kW0d
-         ZIwwr9a5Fxp8R4nBazLuCgjh3+EYVVsIBW2WNXJVzrCnkflE20SZCphyMrdQeoEBWPcf
-         2cIN0VyxEznbaYDOoBq0s/Lvq+n3Iv7FMDG3Fx9HW61B62g91Pwaf1rSbtvudtwFH5ia
-         1wJJuW5fOiv4Zr0KzKQUwUZOySKFBk0tlHQKAIA4QmrUKOKNAmrHCGRU6zaRop7LobsS
-         2HrCp7jVsTSB1HROB6M5c/0fmmm5kpbo2B78v25rbWsirJIe8Wfl96gIfRzhuBMOOQ02
-         jXpA==
-X-Forwarded-Encrypted: i=1; AJvYcCXrulFHJvm6mnhBkyuuMeQGbmWt5yoCzu7AeDql+Vjc+0sYcPmDqaVLajxoGeOiML2oNYAgPm935EUMiy11LQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2h6XPn+O9ON2jKfK83v6bDyCGst7qTQsuI7OaHGyYCRjlQwi0
-	Kw41H5Pd5e0d0FC7mIWxE5z5jVXvrgAPy1+QoL0jk0St3BUmlXfysUgjySxckj0/LkXwMD5mC2W
-	tfG4=
-X-Gm-Gg: ASbGncuWKarDYDdX0u8DvwUr1u50NAcwbiqp1Gm4OTfBxQV9TsFI5K+Vzq3QtGzkGDg
-	S5yPhWyMSjC30oZZR7J52V8TfAagoepjZ6+gZ3g9vgpmuFbvFKte0MPz/cSbPAlR+g0OBPmqTaq
-	e3Tsebfq5W5lObBHVFwCSIrq42QVmMCb/jKAIgR8X77YyFnMdDsjLIfnSAtlM4V4ulaGKiCqO3E
-	Dw+H6FRS3EqCIH0u7w6O3fttVD+vImVkUtfFumvMSNsy6zo5sCppbKlcYWZAQ/5wI0iGgaHptn6
-	OvYGAKy2QYqlT7IEV1+LM54vNzER3D16kk8p0P2EYV+P2SydN/B8xB82AXKFm653spLZczDHR9H
-	7gEKi4lrhKlI1Dw==
-X-Google-Smtp-Source: AGHT+IFU5AHAAdBQ71v43Zug0Rlg+HfRRu/4sHj4AchmDH70sYT6JNthrG2CjwlrMpKf7NwFDUvrDw==
-X-Received: by 2002:a17:903:1a67:b0:234:d7b2:2ac2 with SMTP id d9443c01a7336-234d7b22c20mr48025905ad.22.1748451906196;
-        Wed, 28 May 2025 10:05:06 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:1fd6:4e0c:b80e:960a])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-234d2ff7ebdsm14268255ad.106.2025.05.28.10.05.04
+        d=1e100.net; s=20230601; t=1748452156; x=1749056956;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P5DH6TK68IfewbPbjBNyN3Igm8pnpjna5wIQ96fcUA4=;
+        b=IPSXxH8uk7lfJfEn97TLCCDEORoTN1tqpdSJCEJOgVUfUDI61HAP+ksVhYKnG4Dbx6
+         q6xc5MJw7yW086WgNlLbTiKYpFyTPDKkiezm2dYpYCcJ44/+MZ7pOr25276S7/xLFPIY
+         AsEM+nRd/v6Ck0AVzVAyswumnPXoo56tgH6f2+/uChyJ4EQw7O2n/nrVlN0j7NQVa2av
+         ngay1OryROJDZzzKstbeW7GFZXTAOsEu6YW93cf80agKDWHftLfww4QyulO/CUP6napY
+         /Nk6QQyB08TlPMUSSn+io0Uq/v7wsZtT2YvtJovvcy5VoQpIA4AnzdsPGlBM/6xycy6T
+         8FiQ==
+X-Gm-Message-State: AOJu0Yw3ERRKMdhMs3yO+f/HHJaRsedwY8EllqpXpE9T2f91/ZXyL56P
+	mPkhy/aQhFRaj5IChjfLstlLd6RS23h6bxH5knIjTTBRZrtjSmMzf9X5gXE5GV2peKAO0qsKbEs
+	NWOvjCaIjEjX0JVCPZ49Hy0NxwKb+M2jb8op1jcB/HrJj6h3BwzRXAHLxqvz/9UUMZT2QNQ==
+X-Gm-Gg: ASbGncuNkGaKxQDqake/Vsnfiy3i/CfZXDEH+mBeDoMW208PIYLXX+km2e9wvkIrISg
+	zxcGmycDTEOgVzJC63nk86jBIJAjBaqbLT4e+4C2gW+97KaHMkz9Gf+v0g7FCLnEmYsSghRaJlO
+	OycNa9yHARiQ5GC/LrYZ4/rEolxX3kiHUfl2mjMXd6CothAkAPDcxGkVvxJx6A0jHXTWQXzh/TP
+	/ZJIfObFG7HOR0+cMhQ3JU9mGwJq39cjYnGIK6sw4UzRiVJZOVF4f2rY1N5dRzlvjT0+G9e40Bw
+	OalyYhK/3UwSui7cP+bgDsk1VHCJEk0Ku05XqbMxsMABhluWNhazx5pmQqud0fRoK7w=
+X-Received: by 2002:a05:6a21:999c:b0:1f5:882e:60f with SMTP id adf61e73a8af0-21aad7b9894mr4036168637.17.1748452155784;
+        Wed, 28 May 2025 10:09:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHiaNI+cXJwqMbzrZLRcZ4vITBV+YprctMsQST3aGygOrHCcxmbfduJieT4q4isjK4eQNjCqg==
+X-Received: by 2002:a05:6a21:999c:b0:1f5:882e:60f with SMTP id adf61e73a8af0-21aad7b9894mr4036139637.17.1748452155410;
+        Wed, 28 May 2025 10:09:15 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2d987283c8sm1247807a12.4.2025.05.28.10.09.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 May 2025 10:05:05 -0700 (PDT)
-Date: Wed, 28 May 2025 10:05:03 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: rafael@beims.me, Rafael Beims <rafael.beims@toradex.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: mwifiex: enable host mlme on sdio W8997 chipsets
-Message-ID: <aDdCP_lvlyvk9J3n@google.com>
-References: <20250521101950.1220793-1-rafael@beims.me>
- <aC9dvv6Ki1T5RsHF@google.com>
- <20250523072604.GA14001@francesco-nb>
+        Wed, 28 May 2025 10:09:15 -0700 (PDT)
+Message-ID: <a3fd78c8-b156-42a3-89e7-f81af1ce4276@oss.qualcomm.com>
+Date: Wed, 28 May 2025 10:09:14 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250523072604.GA14001@francesco-nb>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next v11 0/3] wifi: cfg80211/mac80211: Set/get
+ wiphy parameters on per-radio basis
+To: Roopni Devanathan <quic_rdevanat@quicinc.com>, johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+References: <20250522053326.4139256-1-quic_rdevanat@quicinc.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250522053326.4139256-1-quic_rdevanat@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: JQUWdL-JZ33xzxgvMRYhuFtp-Vu77Z7h
+X-Proofpoint-GUID: JQUWdL-JZ33xzxgvMRYhuFtp-Vu77Z7h
+X-Authority-Analysis: v=2.4 cv=Ws4rMcfv c=1 sm=1 tr=0 ts=6837433d cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=UweE6LEfa64jyw4aDRUA:9
+ a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI4MDE0OSBTYWx0ZWRfX+54NVWKV2EV3
+ e8BCVYDpppzPAODjrY2hMCWn11PDgRt1pXLiv5liG4r0Bq2VkeoEx8J5BxsB1J6577fNDTegirz
+ D/J8gwV5WEkiLZC2OQYY1UIDcVH/Z6oHsFCzi70BQzQlyqoz8pO7L4HCPQ9fme/lQuHdqwe9Mqq
+ tJ3jQxPJ6pfRxZN36N7W2nGoAhlJIvxMbBNVu032QMhVIr0JP2bfDlQVpdEZ4UJ7Zmc+Mb6wBmQ
+ elHXpdtqTxKYcYo6mCr44xyi22tXjPiunwNCgjBU2HkrcqQAzAaKXy5bACgKOgrzpcdmglMAQzx
+ NOctLZhp7sLHdEWEzt6LwWrNZQvGvvkSJlllgs19D1mzsbg+wCQQpzwTznK+Ow+aGdL+i6tzMQe
+ FQwMUWA1EFCaNEM3sFiWs6MIzIl76/qdRC/7s1Mf6aZXZG0gZLM/kkzOdwYz9LDxViBghPFH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-28_08,2025-05-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015 impostorscore=0 spamscore=0 adultscore=0
+ phishscore=0 mlxlogscore=999 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505160000 definitions=main-2505280149
 
-Hi Francesco,
+On 5/21/2025 10:33 PM, Roopni Devanathan wrote:
+> Currently wiphy level configurations like RTS threshold, lacks radio
+> level get/set support and same value is applied to all radios of wiphy.
+> Add support to parse radio id attribute and use the same to apply the
 
-On Fri, May 23, 2025 at 09:26:04AM +0200, Francesco Dolcini wrote:
-> On Thu, May 22, 2025 at 10:24:14AM -0700, Brian Norris wrote:
-> > On Wed, May 21, 2025 at 07:19:34AM -0300, rafael@beims.me wrote:
-> > > From: Rafael Beims <rafael.beims@toradex.com>
-> > > 
-> > > Enable the host mlme flag for W8997 chipsets so WPA3 can be used.
-> > > This feature depends on firmware support (V2 API key), which may not be
-> > > available in all available firmwares.
-> > 
-> > Is it available in *any* W8997 firmware? Or particularly, is it
-> > available in the firmware in linux-firmware.git? Judging by its git
-> > history, the answer is "no", in which case this is definitely NAK'd.
-> 
-> mrvl/sdsd8997_combo_v4.bin, from linux-firmware GIT, 16.92.21.p137
-> version. From an off-list chat with Rafael he confirmed me that this is
-> what he used for testing.
+i know this is bike shedding, but IMO we should use consistent terminology and
+call this a radio index instead of a radio id. we already have usage of
+radio_idx in cfg80211 & mac80211 (and no usage of radio_id), and the proposed
+nl attribute is NL80211_ATTR_WIPHY_RADIO_INDEX.
 
-linux-firmware.git claims to hold W16.68.1.p197.1. Either WHENCE is
-wrong, or that sounds like a completely different branch. Are you sure
-about that?
+so i suggest a global s/radio id/radio index/ in all descriptions and a global
+s/radio_id/radio_idx/ in all code patches in this series.
 
-> > users on the old FW version. So, we'd need to teach the driver to know
-> > the difference between v1 and v2 API here, and choose accordingly.
-> 
-> This is already implemented. From mwifiex_ret_get_hw_spec()
-> 
-> ```
->         if (adapter->key_api_major_ver != KEY_API_VER_MAJOR_V2)
->                 adapter->host_mlme_enabled = false;
-> ```
-
-
-Huh, I forgot about that. I also assumed "v2 API" wasn't something
-available on most older chips, but I guess I might have been wrong.
-
-> To me the patch is ok.
-
-The firmware versions above don't match up to me. But if we confirm
-that:
-(a) this API is available in a linux-firmware.git firmware for this chip
-    and
-(b) someone includes a valid linux-firmware.git version that they tested
-    in the changelog
-
-then maybe this is OK. As it stands now though, no.
-
-Brian
+/jeff
 
