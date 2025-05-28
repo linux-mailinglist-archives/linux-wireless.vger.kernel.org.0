@@ -1,178 +1,214 @@
-Return-Path: <linux-wireless+bounces-23449-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23450-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5965AC6087
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 05:58:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AC6AC60C4
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 06:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AEE69E0D9C
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 03:57:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D4B81BA23FA
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 May 2025 04:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE3C1EF363;
-	Wed, 28 May 2025 03:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE00E1922F4;
+	Wed, 28 May 2025 04:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="oiJWnpzV"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="Nl6B++Vu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9431805E
+	for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 04:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748406048; cv=none; b=NDBLRsZcq/1gA5/sJvaInF7gTEcX8SqLzOvcJ58dwql68nnhExwVWZ2IodTtdetQIEGt5uMt/mu4JV5TPtjLdVq6tUh7yNU8aV7Z4opHZwlXeor7jpZ/hIAWYOyskABufKrfs2AypnE+NAkwcklr0U+CsyVXJOO8+4YEOVcvVeo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748406048; c=relaxed/simple;
+	bh=W58m0UjH9H/un1KSald9t5umxlIycG8QHnQIc81UfLI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BHogQF2oKqDGQ/5KF/0hwi9P2/nhhyqVn9EwFzx0EwQg42a05WRWzagCIYpGKuDhd3SanYJnoL/NjHSeT5TgmLdyjwuQIocExK1HhMCY+E50oKmb4RfUTjcYT4+SQbEqyg5Y7zJIc6Cxwavm+GcbGtcK9l6KLndnnKHL4DiJSZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=Nl6B++Vu; arc=none smtp.client-ip=67.231.154.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 35DE23038FB
+	for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 04:13:48 +0000 (UTC)
+Received: from engine.ppe-hosted.com (unknown [10.110.50.113])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id B0ED8600BB;
+	Wed, 28 May 2025 04:13:41 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 838038006C;
+	Wed, 28 May 2025 04:13:40 +0000 (UTC)
+Received: from caracara.lan (71-212-32-17.tukw.qwest.net [71.212.32.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D0B13AD38
-	for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 03:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748404608; cv=none; b=Zgi7+eaXSF/2P5kVMIvVRewvkLV69Ui0to4oho9UiPj+99jYD4ANIHBq1FFnNtkRaQKwSNww73ImzHFnQ44/34SjQiNIBkh7B9ImOcnGvIMV5n6qjM+TaePsuY/EBPTHIdhaTthJTEg/SkVLxDlssMkc31PpVXF9qpfmvszb0YA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748404608; c=relaxed/simple;
-	bh=O65+JDSVsTnlG5OMuzk34+iE83QDO7EeBWuwyqnMB/U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=uQ6J998OCP6r5PXhdm7e1E/YGr2zU0IDZE3G7Pg+kEZThrmH/MzMoUceA+4WWBpEWEbPkrY3yh7F0rDt0gNYvFGRm76d5zYoY5jyLLFgJ5pdogXR9c6ApuxcF9bEzse7Se220XJzwYdSycTEBiawmPQPQCG1lBYN3kUuWonD3lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=oiJWnpzV; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54RHU8V6030924
-	for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 03:56:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	1NXMw4K3pG7s8qHHWqVSO894JEEtKzSZne5LydC/3Og=; b=oiJWnpzVllOWbndc
-	pYXvOuMWyXzjV+sCgeUTLHvIJChXrF4soyLz7ZvfKRQD+pNSDzAOWN3kAWaABdy8
-	2jyycBLzYO2mp7nCnsVw1qIxW4uAnSUtldZFxpgf1+V+1jZk+BrPtaIqnzKu7Rvf
-	0zbOgmjWeshQu+ra8cpriYIdF7p27logg4EjC8KJcB5dFG/2zTlDWRNnxQF3eozo
-	dlv9jNEPUITDYa1jJSzYIikrnbO/ByMH/AFoq6AzF9YZ0UsdguHWk0Mt/HW21AKP
-	LTAcF6B5jAYBHPd8Ho7ofDnfTeRdK7ZQJsJnsawtGryL8clnjM85elucpM/xJF7D
-	72P3uw==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46whuf1a8a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 28 May 2025 03:56:45 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2344f94f9e5so20939975ad.2
-        for <linux-wireless@vger.kernel.org>; Tue, 27 May 2025 20:56:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748404604; x=1749009404;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1NXMw4K3pG7s8qHHWqVSO894JEEtKzSZne5LydC/3Og=;
-        b=tbBN6CEWeluFNsROjBmtnMkwv4ndD9DgNkweOfHWjs2/Mpd1ORQeKKMUcc2tlNS/ve
-         UfHeBqqh+5Dfl2lZxDm6qRU7CGHFYFXzGVae2lB87VEEqEbCLH/opo/9pntC35lWAGCe
-         M+n3NwAZVmUIOtnF08SmQjvlQsmimcDEEvexbRLaHzfOJ8LXhWfqNUtlWjFJAn3JPDax
-         kNoeJosNDRrZzQizWYgHvyhZZDCQgxp+/GMqnx/nRQoN7uvC+ywf8I7lbpnl9JRRrk2X
-         x+DWhOZ6jGH4MzquI2uu8GQCaxGiaMhJFPte114iatJNQcKUjvHlLuKNtiAuTJdYcRki
-         BeKw==
-X-Forwarded-Encrypted: i=1; AJvYcCXIS6ky5K2Alnr8wIlNPyf4r0MZeNxOQ35Pa02lVm1/rjH8wwOz2HVb+QXsn6MqGqDwug/A2OP4GW9VjCGJ/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGHdmEh4M3ExACVWRukf5gjMKD+PKTk/KSgYnJ0iVWfyYYmL1s
-	4Hrpf+iZdX5WnRTaGdumk+qRuzmdSwiXipsfIjIzhtRuhDQiA6CO7BiTNL4NeSyMAsLB3aEhMOX
-	Ky9KOE8pjciUe+RG6/B1UBVFqq8eUnZiUQ+j+b7tzen7ldNVTP6V2GIQdesJnhuyQEGb3qQ==
-X-Gm-Gg: ASbGnctbPRwfGYgkLPFyvYUeGgezwgHVdbyRWWx/K576jtFnKUDt48qnAEBtOKtNna5
-	0wg9HFmzWkFzAX5r5edAqSC9Ta2c74PXrfXA8IoAo5zvDTa2EFWHf7aLLdNvYdbC8yh+MwXoOOX
-	6wj6KOsRLmxs1paP98TWMP1PqVAjA8P58Sks6HPiEL9u3cz5aKdlPHRqF0PUkNDEZX+l8DSoNsa
-	e/QDmqVF4cCBWoNTgY6m3/+nXkRs6LBo+pr9XjpsZ34LQBv88AzdO4yy62mbs+14MLpBNhMTPAW
-	EjCfAkZ7BcrxKrWFIlYUpjgQwlosZKR9L3wfPMHoZj4NgsrfdsI=
-X-Received: by 2002:a17:903:486:b0:234:8c52:1f9b with SMTP id d9443c01a7336-2348c521ff1mr90946495ad.43.1748404604415;
-        Tue, 27 May 2025 20:56:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFAlpt4yWXgPfN+qKEkvRNgfwgcKlBaVKh4LQVITeEc7nsjvsN3LkpnfFaNGyXrz4Ta6JkgSg==
-X-Received: by 2002:a17:903:486:b0:234:8c52:1f9b with SMTP id d9443c01a7336-2348c521ff1mr90946255ad.43.1748404603926;
-        Tue, 27 May 2025 20:56:43 -0700 (PDT)
-Received: from [10.152.194.206] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-234d2fe1792sm2323865ad.56.2025.05.27.20.56.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 May 2025 20:56:43 -0700 (PDT)
-Message-ID: <8c0dfc10-f60f-47bd-a139-d60f2663c22b@oss.qualcomm.com>
-Date: Wed, 28 May 2025 09:26:41 +0530
+	by mail3.candelatech.com (Postfix) with ESMTPSA id DFE8913C2B0;
+	Tue, 27 May 2025 21:13:39 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com DFE8913C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1748405619;
+	bh=W58m0UjH9H/un1KSald9t5umxlIycG8QHnQIc81UfLI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Nl6B++VuLZThXu/SIChgwa1pnijKtEkmz7qd0xglHM7i/fWKn6nPzzL8UkSfvsD4/
+	 ZQZmei6DP0TnR5DyOpkaDqjgZpia+zhIq8mzUhv/RGzBzZ3am3VLlLC/Ik4epgJ2qE
+	 +2vcllwKlcm4Y7YacnHUUwHomd/U1ML426+2+6Tw=
+From: Alex Gavin <alex.gavin@candelatech.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	Alex Gavin <alex.gavin@candelatech.com>
+Subject: [PATCH] iw: scan: Add partial Multi-Link element printing
+Date: Tue, 27 May 2025 21:13:30 -0700
+Message-ID: <20250528041330.83464-1-alex.gavin@candelatech.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: CI results
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-References: <01da63d05c861af5a71eb18d117341b5f7c7628f.camel@sipsolutions.net>
-Content-Language: en-US
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-In-Reply-To: <01da63d05c861af5a71eb18d117341b5f7c7628f.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=OslPyz/t c=1 sm=1 tr=0 ts=6836897d cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=FG0n07EsnFDhZw2wZOYA:9
- a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-ORIG-GUID: a7HChkakczPB1hAZE9DnM_i-Tg7L4V3U
-X-Proofpoint-GUID: a7HChkakczPB1hAZE9DnM_i-Tg7L4V3U
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI4MDAzMyBTYWx0ZWRfXwASVfxdK2ByI
- frLaj8dDDj47gq5wDkNfr0eKCBJ1kW7yE2r+gkHcBa6VNeyvkfxEmTrgcoXyStObSgHqQ5zivO4
- lss+mUeYP7AxitkP04LufRjjeOGTMUWYaeCZcAT3DSLO3IP73376LGxeJE3aDthRtfRdH73p0kv
- lcJWcBUPioly68v24h52OV7oDgi8BAasDmE877NlUlOWK9mGIxACVZwa7cppMWdUrEgzpPolcNM
- Vm8L8lusAs+ot+QAHhkjRS3P0ojMLcNlXBJ9vKaL5bY5LBVKsygbD8PNCR8f6wLxvxRl4Zzab2g
- xJCim/NVn82AWT+ovb5k0fRr2HFkcvInMIxE9K97HG7UOntj2j3nIAB09/NjXyGdpYzoYb2iK2m
- 9kh7rjsmynqkGQCST5Fj0oz43onnOKWhLaLYfY8oRcg82YfQ0GmAUYBa/NtHEV0DEb+jw4rs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-28_02,2025-05-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
- bulkscore=0 priorityscore=1501 clxscore=1015 mlxscore=0 lowpriorityscore=0
- spamscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505280033
+Content-Transfer-Encoding: 8bit
+X-MDID: 1748405621-fU2G4E-dSEN8
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;at1;1748405621;fU2G4E-dSEN8;<alex.gavin@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-On 5/27/2025 2:25 PM, Johannes Berg wrote:
-> Hi,
-> 
-> So I'm probably preaching to the choir, because those who don't pay
-> attention won't read the list either, but still ...
-> 
-> Please everyone look at the patchwork dashboard:
-> https://patchwork.kernel.org/project/linux-wireless/list/
-> 
-> You can filter by yourself, e.g. for me:
-> 
-> https://patchwork.kernel.org/project/linux-wireless/list/?submitter=90
-> (but that list is empty now for me)
-> 
-> 
-> If you have _red_ items there reported by the CI bot, I'm most likely
-> simply not going to apply your patches. I _might_ if I care enough to
-> fix the issues. This also depends on the timing, if it's with a lot of
-> time left (like right), then there's plenty of time to resend.
-> 
-> If you have _yellow_ items there reported by the CI bot, I'm going to
-> read that and I might decide to fix small issues such as spelling
-> myself, but I really prefer not to, it makes things go smoother. Not all
-> the yellow items always make sense, especially checkpatch.
-> 
-> 
-> And I guess it needs to be said, but since these results are public, I
-> feel silly manually requesting that people change the (obvious) things
-> that were pointed out by the CI bot. I think I'll just start marking as
-> "changes requested" semi-automatically.
-> 
-> Ideally everyone would build an internal workflow that checks this
-> before, even the NIPA bot itself can be run pretty easily with the
-> docker container (we still do that internally before sending to the
-> list, even though we run the list instance now as well.) But I'll grant
-> that not everyone can set it up and have enough hardware to throw at it,
-> that's why the public version exists.
-> 
-> Please? :)
+Only print some basic items to start.
 
-Concur with your thoughts here. However, I just want to bring one point 
-related to _Dependencies_.
+Minimum and maximum length values are computed from the
+specification. Maximum only includes Common Info and
+does not consider Link Info.
 
-In case of Dependency (Depends-on tag) between series (even from the 
-same tree), the bots - kernel as well as the NIPA, currently does not 
-handle it gracefully and in such cases there could be legitimate build 
-failures reported since obviously the declarations are in parent series 
-which is not taken by the bots. So in such cases, _red_ items will be there.
+Signed-off-by: Alex Gavin <alex.gavin@candelatech.com>
+---
+ ieee80211.h |  1 +
+ iw.h        |  1 +
+ scan.c      |  8 ++++++++
+ util.c      | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 69 insertions(+)
 
-Do you have any suggestions on how we should go about handling 
-dependencies?
-
-
+diff --git a/ieee80211.h b/ieee80211.h
+index c31041e..2e6b68b 100644
+--- a/ieee80211.h
++++ b/ieee80211.h
+@@ -100,6 +100,7 @@ enum elem_id_ext {
+ 	EID_EXT_HE_CAPABILITY		= 35,
+ 	EID_EXT_HE_OPERATION		= 36,
+ 	EID_EXT_EHT_OPERATION		= 106,
++	EID_EXT_MULTI_LINK     		= 107,
+ 	EID_EXT_EHT_CAPABILITY		= 108,
+ };
+ 
+diff --git a/iw.h b/iw.h
+index a423431..145b058 100644
+--- a/iw.h
++++ b/iw.h
+@@ -247,6 +247,7 @@ void print_he_operation(const uint8_t *ie, int len);
+ void print_he_info(struct nlattr *nl_iftype);
+ void print_eht_capability(const uint8_t *ie, int len, const uint8_t *he_cap,
+ 			  bool from_ap);
++void print_multi_link(const uint8_t *ie, int len);
+ void print_eht_operation(const uint8_t *ie, int len);
+ void print_eht_info(struct nlattr *nl_iftype, int band);
+ void print_s1g_capability(const uint8_t *caps);
+diff --git a/scan.c b/scan.c
+index 263d2e3..c1255f7 100644
+--- a/scan.c
++++ b/scan.c
+@@ -2426,6 +2426,13 @@ static void print_eht_capa(const uint8_t type, uint8_t len,
+ 	print_eht_capability(data, len, ctx->he_cap, ctx->from_ap);
+ }
+ 
++static void _print_multi_link(const uint8_t type, uint8_t len, const uint8_t *data,
++			   const struct ie_context *ctx)
++{
++	printf("\n");
++	print_multi_link(data, len);
++}
++
+ static void print_eht_oper(const uint8_t type, uint8_t len, const uint8_t *data,
+ 			   const struct ie_context *ctx)
+ {
+@@ -2437,6 +2444,7 @@ static const struct ie_print ext_printers[] = {
+ 	[EID_EXT_HE_CAPABILITY] = { "HE capabilities", print_he_capa, 21, 54, BIT(PRINT_SCAN), },
+ 	[EID_EXT_HE_OPERATION] = { "HE Operation", print_he_oper, 6, 15, BIT(PRINT_SCAN), },
+ 	[EID_EXT_EHT_CAPABILITY] = { "EHT capabilities", print_eht_capa, 13, 30, BIT(PRINT_SCAN), },
++	[EID_EXT_MULTI_LINK] = { "Multi-Link", _print_multi_link, 5, 23, BIT(PRINT_SCAN), },
+ 	[EID_EXT_EHT_OPERATION] = { "EHT Operation", print_eht_oper, 5, 10, BIT(PRINT_SCAN), },
+ };
+ 
+diff --git a/util.c b/util.c
+index 3345d95..34acf48 100644
+--- a/util.c
++++ b/util.c
+@@ -1934,6 +1934,65 @@ void print_he_operation(const uint8_t *ie, int len)
+ 	}
+ }
+ 
++void print_multi_link(const uint8_t *ie, int len)
++{
++	uint16_t eml_capa = 0;
++	uint16_t mld_capa = 0;
++
++	uint16_t presence_bitmap = (ie[1] << 8) | ie[0];
++	bool link_id_info_present      = presence_bitmap & 0x0010;
++	bool bss_param_change_present  = presence_bitmap & 0x0020;
++	bool medium_sync_delay_present = presence_bitmap & 0x0040;
++	bool eml_capabilities_present  = presence_bitmap & 0x0080;
++	bool mld_capabilities_present  = presence_bitmap & 0x0100;
++
++	uint8_t common_info_len = ie[2] - 1;  // Account for length value includes byte storing length
++	uint8_t offset = 3;
++
++	char mld_mac[20];
++	mac_addr_n2a(mld_mac, (void*)ie+offset);
++	printf("\t\tMLD MAC: %s\n", mld_mac);
++	offset += 6;
++
++	// Link ID Info
++	if (offset < common_info_len && link_id_info_present) {
++		printf("\t\tLink ID: %d\n", ie[offset] & 0xF);
++		offset += 1;
++	}
++
++	// BSS Parameters Change Count
++	if (offset < common_info_len && bss_param_change_present)
++		offset += 1;
++
++	// Medium Synchronization Delay Information
++	if (offset < common_info_len && medium_sync_delay_present)
++		offset += 2;
++
++	// EML Capabilities
++	if (offset < common_info_len && eml_capabilities_present) {
++		eml_capa = (ie[offset+1] << 8) | ie[offset];
++		printf("\t\t\tEML Capabilities: 0x%04x\n", eml_capa);
++
++		if (eml_capa & 0x0001)
++			printf("\t\t\t\tEMLSR Support\n");
++		if (eml_capa & 0x0080)
++			printf("\t\t\t\tEMLMR Support\n");
++
++		offset += 2;
++	}
++
++	// MLD Capabilities and Operations
++	if (offset < common_info_len && mld_capabilities_present) {
++		mld_capa = (ie[offset+1] << 8) | ie[offset];
++		printf("\t\t\tMLD Capabilities and Operations: 0x%04x\n", mld_capa);
++
++		// This is zero-indexed (i.e. 0 means 1 simulataneous link, 1 means 2, etc)
++		printf("\t\t\t\tMaximum Number of Simulatenous Links: %d\n", mld_capa & 0xF);
++
++		offset += 2;
++	}
++}
++
+ void print_eht_operation(const uint8_t *ie, int len)
+ {
+ 	uint8_t oper_parameters = ie[0];
 -- 
-Aditya
+2.47.2
+
 
