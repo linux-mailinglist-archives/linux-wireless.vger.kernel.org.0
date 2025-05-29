@@ -1,96 +1,100 @@
-Return-Path: <linux-wireless+bounces-23496-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23497-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601D1AC7F5D
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 May 2025 15:59:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 034D4AC7FE1
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 May 2025 16:49:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ADCF1897283
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 May 2025 13:59:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CF757A8E25
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 May 2025 14:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D1E1C84C0;
-	Thu, 29 May 2025 13:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222E91DB551;
+	Thu, 29 May 2025 14:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=emily.moe header.i=@emily.moe header.b="H24xHhyk";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="G8NoJiR/"
+	dkim=pass (2048-bit key) header.d=emily.moe header.i=@emily.moe header.b="LxOVsix1";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="B9sOwg5J"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2121A314B
-	for <linux-wireless@vger.kernel.org>; Thu, 29 May 2025 13:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42C533E4
+	for <linux-wireless@vger.kernel.org>; Thu, 29 May 2025 14:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748527156; cv=none; b=Xl23obYMDYvuZIjezXY+tW36jrJivVXepv0yeVRKCPUhfDOMx36HPeXsVbux5SzT99fR2G82FIIQ1om2tMabT698bfMZ3IIV/jJaQ4tukB6D7kcpjAzLsJ2lAOvIYkFD5coFJVjqces+YIs0zBvYxW1lzkhYfI6KBjjTQsXw6hk=
+	t=1748530160; cv=none; b=M9VpYzKO6gv6bZDLyVZnY0hXO5OPWYubyrixAnFtXRCZOFD2ICIa6HdqTocjd94mD2jKcDPSR+KbOfqAyzX1rs96BPpYjstHXBRQ356jjqvPLtTaZ9eK62y/67atfy9JM0fwkJc/axp2qHpCjdcWgbgFiDMt03K6zQPL4BlkcDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748527156; c=relaxed/simple;
-	bh=SDXBJeZDufUUNi7JP+RVhYtDN7duFGRTyQoASfCkRFk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LHu4yYk1p12hg3UNNsXNDeKJ+NwWYdJ7531GKDLKxxUTJ1zQhRSXRhxFjz0tRK1/qZu7viwKZYL/7gM5KAyvJBW+NjuVQabUvUjsu5dtXJ7G+gE2MKrg2hOd+4eLw5dqKt9qj6ppmnMB0OIadrMEivgaYqgItghZLmzzt0r6Z/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=emily.moe; spf=pass smtp.mailfrom=emily.moe; dkim=pass (2048-bit key) header.d=emily.moe header.i=@emily.moe header.b=H24xHhyk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=G8NoJiR/; arc=none smtp.client-ip=202.12.124.152
+	s=arc-20240116; t=1748530160; c=relaxed/simple;
+	bh=Wp4vJGT0gG9WdCWfyMiNV23sf+IfXLWCXkbJEyVndco=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=snWveIKzHNNHmiaK0owXL8xcCAMEaUU6XI8TSOp+11ROJjHiNDk70Wtuw6TVsLLi9dm4PZVl06iLkj3WUng04vdqb7QKz2XddYm0FC0F8DSMVQrhzzZ+VVsYz4o6EpvLgfkBmYY6pwDLzK8OCM+uc2NkoDAk8QdVP5TZOpYU7HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=emily.moe; spf=pass smtp.mailfrom=emily.moe; dkim=pass (2048-bit key) header.d=emily.moe header.i=@emily.moe header.b=LxOVsix1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=B9sOwg5J; arc=none smtp.client-ip=202.12.124.145
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=emily.moe
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=emily.moe
 Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id ADBDB25400A2;
-	Thu, 29 May 2025 09:59:09 -0400 (EDT)
+	by mailfout.stl.internal (Postfix) with ESMTP id DD7461140122;
+	Thu, 29 May 2025 10:49:16 -0400 (EDT)
 Received: from phl-imap-16 ([10.202.2.88])
-  by phl-compute-02.internal (MEProxy); Thu, 29 May 2025 09:59:09 -0400
+  by phl-compute-02.internal (MEProxy); Thu, 29 May 2025 10:49:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=emily.moe; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm2; t=1748527149; x=1748613549; bh=Lx
-	tQC1MUVZHNaNGyRdqTime6CdwJkwSW3XxqC34BelE=; b=H24xHhykCa6vFG4Bze
-	siSe6RJnC2Qe2u4r6Icu5rJy+X3fyV3XQzAS8Za5ict0LQ3XvQOtZYXx5BBLOlUn
-	xz4FxJakTwmNJ/4/Elh2FQGpbtI4mlNBFXY6UgVD+IAO3tAnkfqXefo6yz1WOBQJ
-	YAbi7QXjs96tZm5umIKfVXl/q0q/ZNtscXmkH8Fy6TsLPTawO6DNONMIEHeBRTaE
-	EssE3o0HrqEUpbHr5g+71ZI5mWO9gFnjdoXQpqC4gLau435aTV/2QBj2I9ZzzMGT
-	to8fXfRuXH4UNnmi9CrdVMlAa9IlL1YeGNiH+i+aRdzmuCAoQFu4kHRiRnOBZZT8
-	j3Sw==
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1748530156;
+	 x=1748616556; bh=+5XrwQcXjTJzUM2MFfvkIx9eS2VzpJsm+RPNfXTZeFM=; b=
+	LxOVsix1UCiEECy1oFMxqGyX3OSUHipGIUqjcO9/MAyT6J574kF/78UhaAbSfM1v
+	WC6Fl9YHPQt6aX/uh3403vR+Sm3Zs2MhQnTBS6X5AENHAFcyq+pN6wTRwBLEVZ2L
+	6Hz9IK+dY1MAVD1/sBOi9ZMosP6jsZwipbW8n94ys4pBcJUlLKAwtnqNsaaBHT1K
+	JNc5TKSCmmaQ5YBZkQP3HgXFEYwSm8lkTyNttd2bPKZ55viFzWtH5++dZzNFX1Ao
+	7AKVWJOpLw32DIoWJ8Z0f89TW0rKkjb+rchDKqtWgWmPd+7goDPaEKmWiOLlX5sK
+	EX1SCIzCGxUft7iQXIElMQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1748527149; x=1748613549; bh=LxtQC1MUVZHNaNGyRdqTime6CdwJ
-	kwSW3XxqC34BelE=; b=G8NoJiR/ZG2DxbNmVRGyyFtpgCXC9aBhYNYHqxFT3w1p
-	4DkQEgR3SLKxGhEJq+S/PAd7c7bTLDEXgYBs7sXyPSmRAC4BagKQgO6n8agaCy6L
-	CFeTfxwnFXDPdz+IklB158LO8lKlLGCJeTJd+RYRvY8++wIpxAcSm4FMQXM1UvXQ
-	71KZP7heQiwra58ufg6JbswXchwC0udm2B2x0YAcOwm/rboH/QDegXS5sQzqzuP5
-	ED7JpLbL1GGb/VZe/HAMhK5X6BasbSopmgO/ZpJoryMsoTe7ECv2wVPVjcA50Q3l
-	ksBOynVudoMHLNt7jpRdjg0ed9dZa8/9/0EIriIHMA==
-X-ME-Sender: <xms:LWg4aCpe1gjks2PbcyIBbTlmZit-7FwOZWQpkWKd9JeaRlmsTTJ_PA>
-    <xme:LWg4aArwjd5QskGyKp6zayE1bubn3rYawYI0b2ay4H4Yi5pv850nDUy52rGK3sPSX
-    dAQ050lBd-zN_Gvwqs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvieefvdculddtuddrgeefvddrtd
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1748530156; x=
+	1748616556; bh=+5XrwQcXjTJzUM2MFfvkIx9eS2VzpJsm+RPNfXTZeFM=; b=B
+	9sOwg5J51+3tVqCol4NpQ+0BgLwr+FWbGqg8Gp0QvvgZkI4TSv5zrRe4UXeQnYVL
+	I8nVLj2fiKV4mjoOjF4laTti72fN6wTqiG1y2/GZFT+EhsrOCxzE5Rg8tQCrPXsH
+	lp4e+vzjbFaf+KTiJZdMAcwpwNgOhCO/j14tci6DYPsZWw8uzX1emNKnNywWHpAc
+	7vPdJXn3K91c5KoHv4d4h2lsPCDfaWAvl0AzPojKgQtF2u5RkTaLpGy2ARBaPuc8
+	vH6Im21bzE2EWQvn9ZNesxqC7RIXWjaGLfmLG1qpbE3yUdbMlgQS4zyug06igqP4
+	qEYA17A/D8qorsb+n3WsA==
+X-ME-Sender: <xms:7HM4aDwkDYu2wil-7KrYlHOXk83v8PnRqToAtcRVTZhkmRLQgLDo_g>
+    <xme:7HM4aLRxbLq78yNOVtX9iCb4W3TYkPTJTgam00JOYUsHos9Zpr40BxzVN23Ro4usL
+    k9on5W2u-zGWgo2ztM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvieegudculddtuddrgeefvddrtd
     dtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggft
     fghnshhusghstghrihgsvgdpuffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftd
-    dtnecunecujfgurhepoffhvfevufffkffogggtgfesthekredtredtjeenucfhrhhomhep
-    gfhmihhlhicuoehlihhnuhigsegvmhhilhihrdhmohgvqeenucggtffrrghtthgvrhhnpe
-    eifeejjeeigeejheffueelhfeifeeugfekfffgudelheevieevgfekhfekgeeitdenucff
-    ohhmrghinhepohhftghomhdrohhrghdruhhknecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomheplhhinhhugiesvghmihhlhidrmhhovgdpnhgspghr
-    tghpthhtohepfedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugiesvg
-    hmihhlhidrmhhovgdprhgtphhtthhopeifihhrvghlvghsshdqrhgvghgusgeslhhishht
-    shdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdifihhrvghlvg
-    hsshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:LWg4aHOIsDQQFrTYURhXWOFces_H10kH95RNctlF3NDOEJG-k-yXLQ>
-    <xmx:LWg4aB7XqNJR-deT-VszsW2z5GE9ZZ8Gdmb96GHVeVMHlFJZYrIPGA>
-    <xmx:LWg4aB5QFPOwD3TdEDvCms020hdreserrGZuWXlAHO_kQkU__0mPpA>
-    <xmx:LWg4aBitLyClOShc5A2ReAdOiYYUL-F0pB4sd_6TSPpRLxIM6uZXyw>
-    <xmx:LWg4aMPSIBJRcaEchgEeGl-5f0RkUMeYnclXPweGWPsXkdxLq-nyuIbJ>
+    dtnecunecujfgurhepoffhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhho
+    mhepgfhmihhlhicuoehlihhnuhigsegvmhhilhihrdhmohgvqeenucggtffrrghtthgvrh
+    hnpeejudduledvffeuteekveeffeetfeethfelieehjedviedthedvvdffgeeuieevvden
+    ucffohhmrghinhepohhftghomhdrohhrghdruhhknecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomheplhhinhhugiesvghmihhlhidrmhhovgdpnhgs
+    pghrtghpthhtohepfedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugi
+    esvghmihhlhidrmhhovgdprhgtphhtthhopeifihhrvghlvghsshdqrhgvghgusgeslhhi
+    shhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdifihhrvg
+    hlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:7HM4aNV5pK_6Z2T5-qe1zafaIWVBl3gVx4mc2KctKayqkjV-BajS6w>
+    <xmx:7HM4aNipvNmQI6Lbn1sH1M65BTybEl4kmEfsVzIcfijACKZy4J73lA>
+    <xmx:7HM4aFAlUFXaQ0ZwUBEmOrzJyoPwFMC6wxnr7St9mR4yRsZ_sq-IgA>
+    <xmx:7HM4aGJfTJtgyyMX3F5jds0o14IF02GRKZ3lO4_FfAIx1Wweb-MYXg>
+    <xmx:7HM4aKV5MjtxscjCu4X2s_RxL_EFaB0twb-lAqjyxn1q1H2udQfidUye>
 Feedback-ID: i3c8944dd:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 3AA972CC0083; Thu, 29 May 2025 09:59:09 -0400 (EDT)
+	id 55A3D2CC0081; Thu, 29 May 2025 10:49:16 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 From: Emily <linux@emily.moe>
 To: linux-wireless@vger.kernel.org
 Cc: wireless-regdb@lists.infradead.org,
 	Emily <linux@emily.moe>
-Subject: [PATCH] wireless-regdb: Permit 230 MHz bandwidth in 6 GHz band for GB
-Date: Thu, 29 May 2025 14:57:06 +0100
-Message-ID: <20250529135706.31269-1-linux@emily.moe>
+Subject: [PATCH v2] wireless-regdb: Permit 320 MHz bandwidth in 6 GHz band for GB
+Date: Thu, 29 May 2025 15:47:56 +0100
+Message-ID: <20250529144854.31931-1-linux@emily.moe>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250529135706.31269-1-linux@emily.moe>
+References: <20250529135706.31269-1-linux@emily.moe>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -124,6 +128,9 @@ bandwidth is restricted in any way.
 
 Signed-off-by: Emily <hello@emily.moe>
 ---
+Sorry for the list spam; I didn’t notice the typo in the commit
+subject line until it was pointed out to me out of band…
+
  db.txt | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
