@@ -1,151 +1,146 @@
-Return-Path: <linux-wireless+bounces-23495-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23496-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5FBAC7DC3
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 May 2025 14:33:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 601D1AC7F5D
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 May 2025 15:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF1ED7AD501
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 May 2025 12:32:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ADCF1897283
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 May 2025 13:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91142248A5;
-	Thu, 29 May 2025 12:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D1E1C84C0;
+	Thu, 29 May 2025 13:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=emily.moe header.i=@emily.moe header.b="H24xHhyk";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="G8NoJiR/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49C62222C1
-	for <linux-wireless@vger.kernel.org>; Thu, 29 May 2025 12:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2121A314B
+	for <linux-wireless@vger.kernel.org>; Thu, 29 May 2025 13:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748522008; cv=none; b=mgATcIE01dwYcjKbW8DqGJPpHT6e1PMljHN3ozbC6CeS2Zd6cg5k0F4SYZhRbrIUsIqyPuppuIgGfca2ZpyVWb8hZgYVdcfiPTgftcYKDPTRX0/AHxmRO+vKz6wtqkqRlkrEq/xYf/gkpbxg7pny5lrmwsM5iwZEhD/xjSh+brY=
+	t=1748527156; cv=none; b=Xl23obYMDYvuZIjezXY+tW36jrJivVXepv0yeVRKCPUhfDOMx36HPeXsVbux5SzT99fR2G82FIIQ1om2tMabT698bfMZ3IIV/jJaQ4tukB6D7kcpjAzLsJ2lAOvIYkFD5coFJVjqces+YIs0zBvYxW1lzkhYfI6KBjjTQsXw6hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748522008; c=relaxed/simple;
-	bh=kIkmKcaPV98XKhRwOTAvnQhINvi2n4gSAdVyCSaFabU=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FlG4+3SzyyogQTWQKGB01radbWsvVQ/j1tkGJ8A9+xpZH2pVU2Og7PnbXMl6jrmypZMaqFCqqCIvLqYFsfOPrT8UyClYFhjM/cMOsrg70s1f9e/7kRPYAtuEyfS6bOUxd+fxa+C/+OHnaXAHLBkJB9135vuoZn/K/7E3yDY43WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-85b4ee2e69bso73174939f.2
-        for <linux-wireless@vger.kernel.org>; Thu, 29 May 2025 05:33:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748522006; x=1749126806;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5bml+Lhlb/ESJB7OB397E+URQXQmoC/VYahWRyI1KaM=;
-        b=pc1v3zRVBVWfAXRI5aZ75EPlE7MMPvsnmiAeGGbd3h/GfFTj1eRS6HxN457J+50b2z
-         HZEiqzaDhQwmElwjvTlACYXJg7mzNsT5ZFNFSn63NGDWY/tiZfe4NWA4B8AFPalrjk48
-         TrCm4Ybk4lq96wfz/iX+wJoK8j+xb5xnonZiYIWpOAZCxDIyCni92eMkpue/LdRBo0R7
-         Eiga0JNf8I1tmb7CVCP2tAt6SPJ//qwRVJs+hauSNhi63mz+KLEx3xZtVpHqsC1uQp4o
-         MrchEpH+VTlsNXqsc+SqZM70JHLE92lOGdnZswDVELY6oFIclpj1NGkPCZ8AUZLyxH+J
-         lIAA==
-X-Forwarded-Encrypted: i=1; AJvYcCUs9gYmCUJkgJozUg1Pk/gctEbNBxeQyUgGH/cOaP4kS6CKw3JyzJ8fOHNmK29c6UAmQ8ou/rjevqjVa9UakA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXwPghOmWkxqw1eI0LwZtfJyD5IGnFqymqvvKQ9pTkx/5+5q0S
-	RcV5UK4QPBWt1Vs1/abCQGgPO9hH6ycX9+tM/bl4EEuW84TEtknJ24He25iXPBO0cxWXarlq9tv
-	Wqz/BPOiapGGom4Q/SZQzGT7ROA834gPq95lkjCrDdfKuHI0RlUHDGKIY+ww=
-X-Google-Smtp-Source: AGHT+IHxHOKcAfW53VhsEwfYQe28Edle9Xwc641YqhY2if7TdOjOHCstkntXRFjfL61vR74DgjPJZSP093ib53p+cgjjwt7thbwV
+	s=arc-20240116; t=1748527156; c=relaxed/simple;
+	bh=SDXBJeZDufUUNi7JP+RVhYtDN7duFGRTyQoASfCkRFk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LHu4yYk1p12hg3UNNsXNDeKJ+NwWYdJ7531GKDLKxxUTJ1zQhRSXRhxFjz0tRK1/qZu7viwKZYL/7gM5KAyvJBW+NjuVQabUvUjsu5dtXJ7G+gE2MKrg2hOd+4eLw5dqKt9qj6ppmnMB0OIadrMEivgaYqgItghZLmzzt0r6Z/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=emily.moe; spf=pass smtp.mailfrom=emily.moe; dkim=pass (2048-bit key) header.d=emily.moe header.i=@emily.moe header.b=H24xHhyk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=G8NoJiR/; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=emily.moe
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=emily.moe
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id ADBDB25400A2;
+	Thu, 29 May 2025 09:59:09 -0400 (EDT)
+Received: from phl-imap-16 ([10.202.2.88])
+  by phl-compute-02.internal (MEProxy); Thu, 29 May 2025 09:59:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=emily.moe; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm2; t=1748527149; x=1748613549; bh=Lx
+	tQC1MUVZHNaNGyRdqTime6CdwJkwSW3XxqC34BelE=; b=H24xHhykCa6vFG4Bze
+	siSe6RJnC2Qe2u4r6Icu5rJy+X3fyV3XQzAS8Za5ict0LQ3XvQOtZYXx5BBLOlUn
+	xz4FxJakTwmNJ/4/Elh2FQGpbtI4mlNBFXY6UgVD+IAO3tAnkfqXefo6yz1WOBQJ
+	YAbi7QXjs96tZm5umIKfVXl/q0q/ZNtscXmkH8Fy6TsLPTawO6DNONMIEHeBRTaE
+	EssE3o0HrqEUpbHr5g+71ZI5mWO9gFnjdoXQpqC4gLau435aTV/2QBj2I9ZzzMGT
+	to8fXfRuXH4UNnmi9CrdVMlAa9IlL1YeGNiH+i+aRdzmuCAoQFu4kHRiRnOBZZT8
+	j3Sw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1748527149; x=1748613549; bh=LxtQC1MUVZHNaNGyRdqTime6CdwJ
+	kwSW3XxqC34BelE=; b=G8NoJiR/ZG2DxbNmVRGyyFtpgCXC9aBhYNYHqxFT3w1p
+	4DkQEgR3SLKxGhEJq+S/PAd7c7bTLDEXgYBs7sXyPSmRAC4BagKQgO6n8agaCy6L
+	CFeTfxwnFXDPdz+IklB158LO8lKlLGCJeTJd+RYRvY8++wIpxAcSm4FMQXM1UvXQ
+	71KZP7heQiwra58ufg6JbswXchwC0udm2B2x0YAcOwm/rboH/QDegXS5sQzqzuP5
+	ED7JpLbL1GGb/VZe/HAMhK5X6BasbSopmgO/ZpJoryMsoTe7ECv2wVPVjcA50Q3l
+	ksBOynVudoMHLNt7jpRdjg0ed9dZa8/9/0EIriIHMA==
+X-ME-Sender: <xms:LWg4aCpe1gjks2PbcyIBbTlmZit-7FwOZWQpkWKd9JeaRlmsTTJ_PA>
+    <xme:LWg4aArwjd5QskGyKp6zayE1bubn3rYawYI0b2ay4H4Yi5pv850nDUy52rGK3sPSX
+    dAQ050lBd-zN_Gvwqs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvieefvdculddtuddrgeefvddrtd
+    dtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggft
+    fghnshhusghstghrihgsvgdpuffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftd
+    dtnecunecujfgurhepoffhvfevufffkffogggtgfesthekredtredtjeenucfhrhhomhep
+    gfhmihhlhicuoehlihhnuhigsegvmhhilhihrdhmohgvqeenucggtffrrghtthgvrhhnpe
+    eifeejjeeigeejheffueelhfeifeeugfekfffgudelheevieevgfekhfekgeeitdenucff
+    ohhmrghinhepohhftghomhdrohhrghdruhhknecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomheplhhinhhugiesvghmihhlhidrmhhovgdpnhgspghr
+    tghpthhtohepfedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugiesvg
+    hmihhlhidrmhhovgdprhgtphhtthhopeifihhrvghlvghsshdqrhgvghgusgeslhhishht
+    shdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdifihhrvghlvg
+    hsshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:LWg4aHOIsDQQFrTYURhXWOFces_H10kH95RNctlF3NDOEJG-k-yXLQ>
+    <xmx:LWg4aB7XqNJR-deT-VszsW2z5GE9ZZ8Gdmb96GHVeVMHlFJZYrIPGA>
+    <xmx:LWg4aB5QFPOwD3TdEDvCms020hdreserrGZuWXlAHO_kQkU__0mPpA>
+    <xmx:LWg4aBitLyClOShc5A2ReAdOiYYUL-F0pB4sd_6TSPpRLxIM6uZXyw>
+    <xmx:LWg4aMPSIBJRcaEchgEeGl-5f0RkUMeYnclXPweGWPsXkdxLq-nyuIbJ>
+Feedback-ID: i3c8944dd:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 3AA972CC0083; Thu, 29 May 2025 09:59:09 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+From: Emily <linux@emily.moe>
+To: linux-wireless@vger.kernel.org
+Cc: wireless-regdb@lists.infradead.org,
+	Emily <linux@emily.moe>
+Subject: [PATCH] wireless-regdb: Permit 230 MHz bandwidth in 6 GHz band for GB
+Date: Thu, 29 May 2025 14:57:06 +0100
+Message-ID: <20250529135706.31269-1-linux@emily.moe>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a5d:9f50:0:b0:86c:ee8b:c089 with SMTP id
- ca18e2360f4ac-86cee8bc1bbmr560370739f.3.1748522005946; Thu, 29 May 2025
- 05:33:25 -0700 (PDT)
-Date: Thu, 29 May 2025 05:33:25 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68385415.a70a0220.29d4a0.082e.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_tx_h_rate_ctrl
-From: syzbot <syzbot+0d516b33238bd97ee864@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello,
+From: Emily <hello@emily.moe>
 
-syzbot found the following issue on:
+Similarly to the changes in 6c7cbccaee121772a23fa0efdfefcdd8a2369985
+(“wireless-regdb: Permit 320 MHz bandwidth in 6 GHz band in
+ETSI/CEPT”), the Ofcom regulations for the 5925–6425 MHz band [1]
+have no explicit limits on bandwidth:
 
-HEAD commit:    5cdb2c77c4c3 Merge tag 'net-6.15-rc8' of git://git.kernel...
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=14784df4580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9fd1c9848687d742
-dashboard link: https://syzkaller.appspot.com/bug?extid=0d516b33238bd97ee864
-compiler:       Debian clang version 20.1.6 (++20250514063057+1e4d39e07757-1~exp1~20250514183223.118), Debian LLD 20.1.6
+> Maximum mean EIRP of 250mW for Low Power indoor and 25mW for Very
+> Low Power indoor and mobile outdoor.
+>
+> Maximum mean EIRP density of 12.6mW/MHz in any 1 MHz band.
+>
+> Techniques to access spectrum and mitigate interference that provide
+> at least equivalent performance to the techniques described in
+> designated standards specified in the Notices of publication (See
+> Section 6) for the 5150 – 5250 MHz band must be used.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+I cannot find any material online suggesting that the use of 320 MHz
+bandwidth is restricted in any way.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/d90a868e19ee/disk-5cdb2c77.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/3c5ff2a5a972/vmlinux-5cdb2c77.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/f6a0db04ca42/bzImage-5cdb2c77.xz
+[1] https://www.ofcom.org.uk/siteassets/resources/documents/spectrum/interface-requirements/ir-2030.pdf?v=335258
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+0d516b33238bd97ee864@syzkaller.appspotmail.com
-
-wlan1: Created IBSS using preconfigured BSSID 50:50:50:50:50:50
-wlan1: Creating new IBSS network, BSSID 50:50:50:50:50:50
-------------[ cut here ]------------
-wlan1: Dropped data frame as no usable bitrate found while scanning and associated. Target station: 08:02:11:00:00:00 on 5 GHz band
-WARNING: CPU: 1 PID: 1111 at net/mac80211/tx.c:756 ieee80211_tx_h_rate_ctrl+0xc87/0x1780 net/mac80211/tx.c:749
-Modules linked in:
-CPU: 1 UID: 0 PID: 1111 Comm: kworker/u8:6 Not tainted 6.15.0-rc7-syzkaller-00082-g5cdb2c77c4c3 #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Workqueue: events_unbound cfg80211_wiphy_work
-RIP: 0010:ieee80211_tx_h_rate_ctrl+0xc87/0x1780 net/mac80211/tx.c:749
-Code: 31 f6 83 e6 07 41 0f 95 c6 31 ff e8 03 26 ea f6 43 8d 0c 76 83 c1 02 48 c7 c7 60 8b 8c 8c 48 89 de 4c 89 fa e8 3a 7e ae f6 90 <0f> 0b 90 90 41 bf 01 00 00 00 e9 eb 02 00 00 e8 95 21 ea f6 e9 6a
-RSP: 0018:ffffc90003c9f460 EFLAGS: 00010246
-RAX: caae12da654acc00 RBX: ffff888078a69738 RCX: ffff888026951e00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000002
-RBP: ffffc90003c9f5d0 R08: 0000000000000003 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffffbfff1bba984 R12: dffffc0000000000
-R13: ffffc90003c9f788 R14: 0000000000000001 R15: ffff888059534d44
-FS:  0000000000000000(0000) GS:ffff8881261c2000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055557d9f3588 CR3: 0000000031484000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- invoke_tx_handlers_late+0xb6/0x1820 net/mac80211/tx.c:1850
- ieee80211_tx+0x2ac/0x420 net/mac80211/tx.c:1971
- __ieee80211_tx_skb_tid_band+0x50f/0x680 net/mac80211/tx.c:6107
- ieee80211_tx_skb_tid_band net/mac80211/ieee80211_i.h:2338 [inline]
- ieee80211_send_scan_probe_req net/mac80211/scan.c:655 [inline]
- ieee80211_scan_state_send_probe+0x59a/0xa10 net/mac80211/scan.c:683
- ieee80211_scan_work+0x5b1/0x1ce0 net/mac80211/scan.c:1143
- cfg80211_wiphy_work+0x2dc/0x460 net/wireless/core.c:435
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xadb/0x17a0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-
+Signed-off-by: Emily <hello@emily.moe>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ db.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/db.txt b/db.txt
+index e331d4f..c2ed384 100644
+--- a/db.txt
++++ b/db.txt
+@@ -722,7 +722,7 @@ country GB: DFS-ETSI
+ 	(5470 - 5730 @ 160), (500 mW), DFS, wmmrule=ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5850 @ 80), (200 mW), NO-OUTDOOR
+-	(5925 - 6425 @ 160), (250 mW), NO-OUTDOOR, wmmrule=ETSI
++	(5925 - 6425 @ 320), (250 mW), NO-OUTDOOR, wmmrule=ETSI
+ 	# 60 GHz band channels 1-6
+ 	(57000 - 71000 @ 2160), (40)
+ 
+-- 
+2.49.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
