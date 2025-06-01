@@ -1,156 +1,114 @@
-Return-Path: <linux-wireless+bounces-23523-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23524-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FA6AC9E9F
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Jun 2025 15:24:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F91ACA7EA
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jun 2025 03:23:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 248F11891D3A
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Jun 2025 13:24:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BA1E173C49
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Jun 2025 01:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB534317D;
-	Sun,  1 Jun 2025 13:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3481F19C540;
+	Sun,  1 Jun 2025 23:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="HzqhfffB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ixTtCn1s"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCD9E552
-	for <linux-wireless@vger.kernel.org>; Sun,  1 Jun 2025 13:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A9A19ADA2
+	for <linux-wireless@vger.kernel.org>; Sun,  1 Jun 2025 23:49:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748784265; cv=none; b=fJzBCU5vSlSxryz8zaLFroVQ9GUvY/LRp6Q8grkyRmIf6nBiZ1/0l6/P+Powl79/MsoSSxLUfPpx+mgvR4C8m350suCLKK3P45FIowhMvh/6Fw9UxFgrFxI5p784kPiyCy+V5HbcZbydeSEv27gvLxIJNTPEF4CWeDBUcdgYDcA=
+	t=1748821789; cv=none; b=mCqRbstmsJBBAyDLCPu2gDWcwVgmv90zLwNrHhjCH2gEuYjrnQMjF2hLdkJlexe2T0IUltvLyn4WppYVEgHeKuPduhJtXDdlhE3J9DMPLbRO2Ucn8HjALDnfHXrgxzw5xlFDMDgH4nva0t497wN6u+tTwZbVyRViBKcNf1GL+p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748784265; c=relaxed/simple;
-	bh=Efa8JbAU8wTJfYphhIcixUQvOkk1j7yQKwtzJAHr0Jg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KRyW1MX9aM2ukiLyAapoYKTbJrQkOodZ1fZevOi6dL+NLIUFtm0fOVh60ndDx5un1SfLTPbMbt2aIDnCJGlG+tUZ5fCs+tkxbaxnt21ZjnaL9ttUIC2GwGVbi48xUhGdNlBBbKtpA96cC0uHipJeqZlWRpkWkY/sFQ4Xloy/o9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=HzqhfffB; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 28C4F14C2D3;
-	Sun,  1 Jun 2025 15:24:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1748784245;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kw6rlWlte6OQhXk5hyB4d9Fe/CSfb590KM5qTfWcEiQ=;
-	b=HzqhfffBBz275qtubpomdxlFyjz9GQjwBLnM6lJXopgls01vQnkKmjRhw7UjJQuzvtouo8
-	1esOpf81e03IMPFHL/5nn0PI0lGMIDxRbmF6ajQVF6gIP0WLYyP+4N/W8eIKc3kaiP0ZVe
-	gXnCBo+2evYFa8js7oagBPcjgel4XDVbTMUHRF41WXifjVHYzF57NbF2EBSejztaJPQdPX
-	e8WiTHSo+wLS6QVvSFGVCzZq1PYLOmNWaQTO+sy5zH6aDovGEcpKiAKC6+dvdq73zcIPtu
-	I40kH9PP5dwCai+VwZnECV2Vr5L68fY2raJj+kC2MigOpWr/+I/q4jCXaxU7ow==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id b7801609;
-	Sun, 1 Jun 2025 13:24:03 +0000 (UTC)
-Date: Sun, 1 Jun 2025 22:23:48 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: rtw89: array-index-out-of-bounds in rtw89_pci_release_rpp()
-Message-ID: <aDxUZMSxOdLQ_-30@codewreck.org>
-References: <aDcgcjNp3fRT9PZf@codewreck.org>
- <931eb77003ff469a835848cd462dae35@realtek.com>
+	s=arc-20240116; t=1748821789; c=relaxed/simple;
+	bh=YEH6BY45a6FkmplK6gSE715Cm9b/dNet5Siq6Wv/7jE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=XMWIVpMmZyrqQmK6ezU4D0w+Q67KS/o96j1Oi/8fxPk+ptGJMGyvqGeFv5jcWep3bSkriM5mRX74MMtqbg5HhxyvwZ3fzZxLeUwsYN7hAPTvaR1mCrcWpQRRKNEFjUDNLgDbb8nfmPxIlDAB1ItisRFWSyVHKJrBZSNWzn3uaXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ixTtCn1s; arc=none smtp.client-ip=209.85.217.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-4e45ad4ed2dso1133016137.2
+        for <linux-wireless@vger.kernel.org>; Sun, 01 Jun 2025 16:49:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748821785; x=1749426585; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S2CgSy13ZScnq7dO2F3vOd+BoHdjpC/dfBE6NY2PG1I=;
+        b=ixTtCn1sMSbUazee3uzjH2Kh3rD1sEsShAOa0E2gdgY2botyX+jjZzhaTT0KFI97Qj
+         afyOjXDWDYTMfxhBLn8IOHDgmJ9Onlsvi7QnaipHuUg3kebmcKfKhYkdirLAlJ/Qshu2
+         8iDzO8IoflCPMRx8af31HCRAqgAmHKRKaj//Jn4367cX9GkNQiACY6XkvtenxNImyInf
+         +Jojvd8OU9VtNRPn1m8DmLBVggO27nZuQ7vM+U97n7m8/pPTG5bVKflrxwNzeaR+HuaB
+         HgmTx1u/LKBd97FPpa1vY0L0Y48f81Bjq2tJCeJiT+PhwW+NJtW8P7wAwX04ybnhTFa8
+         i2NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748821785; x=1749426585;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=S2CgSy13ZScnq7dO2F3vOd+BoHdjpC/dfBE6NY2PG1I=;
+        b=Px7lloZF0yWksMQH+jcvm5kSgFatnaoEAAYnRDybmL+SMnsQa2s5SdjOp4rfewfsx8
+         UQVGaEAur3fN4Flhp7EM4NlbVEO72YpM8dxpkbELGX6SnTgpldVIaThrGcjMvlQCpwPi
+         KCzm7FcINNlcQrVH6uH0IJJog3sfgisDVJxa5vk2s1hHQj72BBEOwX8MpNUcm3laIF7M
+         fV8UqsuCKGe8PovRnDdgkq8dn8L4Dllc0rA03oOIMKRz5K7dbCyqe6i6EMowoqTLnkT7
+         6jvnLtQYhHcSisGM/oqR+x1n2EQUyLzxtW3HWTrHsRBKZ3EHGvbWA8ap7YHzB4oeYkri
+         CjHg==
+X-Gm-Message-State: AOJu0YwNnFSNW32BdfnQk4vOgOLYHBKMZYeXZAdIpKCCQ3GLZvLSG1X5
+	3qGh5Ydk8yjPAPWLQ3XOSq4x0/B9baUFTxJwSf1SMt4gI8T/40PpEOrU6xU7OQ==
+X-Gm-Gg: ASbGnctnZ4Hrbuu9NmiEE43iN2agnRR2KAxHpF6gCyvNJ9CZu+EnLhCmdmcGg1A9CvN
+	uvSNUXA1Fxk/jx4M4WfCtZZTduKXJWBlOSpxf8eiQ8aGYb+Gpnc7rJZUfGDIbHVMAWuWz2ybdbJ
+	vmS/DILUOuYt0/xH4Vjg+BJqmi2ArFzKALP0ADyN4CZr/1mqycmkOh8ks/I/GOu/NEkprNbm+zy
+	yeuWBUda0Eu4CanPgT0qTVHGAjx0fE+uB0B7hyZp6K2ZDF1IUI/N7rGfAhNyW/sv+egzMw0sciH
+	cu5lgJHAqIPoIndix2Hpwo27Lc1H7AAyNX1zDahYMEVRy8MnwgDf2vArtWe6FlpBJxoGMUpnJQg
+	haK7OteemFf1ZLU4zeEgt/Kw0kr0=
+X-Google-Smtp-Source: AGHT+IFnCDtvyl/q2zkM4qGm1EDB/tPwvLvLdaGbTU8lTzF8UBazLVL9QZ1Y2QCNwAt7YHjsSTjt8g==
+X-Received: by 2002:a05:6102:3750:b0:4dd:b9bc:df71 with SMTP id ada2fe7eead31-4e6ecd66b88mr7559355137.10.1748821784718;
+        Sun, 01 Jun 2025 16:49:44 -0700 (PDT)
+Received: from [192.168.1.130] (177-1-191-98.user3p.v-tal.net.br. [177.1.191.98])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4e6fc6ca062sm3454575137.22.2025.06.01.16.49.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 01 Jun 2025 16:49:44 -0700 (PDT)
+Message-ID: <8bc290d6-5687-495d-b5d5-a8ca94cf2f7a@gmail.com>
+Date: Sun, 1 Jun 2025 20:49:42 -0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <931eb77003ff469a835848cd462dae35@realtek.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: linux-wireless@vger.kernel.org
+Cc: wireless-regdb@lists.infradead.org
+From: Marcos Alano <marcoshalano@gmail.com>
+Subject: wireless-regdb: Update regulatory rules for Brazil (BR) on 6GHz
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thanks for the quick reply
+Hi,
 
-Ping-Ke Shih wrote on Thu, May 29, 2025 at 01:32:44AM +0000:
-> My suggestions are:
-> 
-> (1) The latest firmware of RTL8852BTE is 0.29.122.0. Please try it.
+The rules for Brazil were based on this normative 
+https://informacoes.anatel.gov.br/legislacao/resolucoes/2017/936-resolucao-680, 
+as mentioned in the comments of the entry.
 
-I'm apparently already on that:
+This January came out a newer normative 
+https://informacoes.anatel.gov.br/legislacao/resolucoes/2025/2001-resolucao-772,
 
-rtw89_8852bte 0000:03:00.0: Firmware version 0.29.122.0 (5659197d), cmd version 0, type 5
+It allows 6GHz frequencies, so the line:
+(5925 - 7125 @ 320), (12), NO-OUTDOOR, NO-IR
+Should change for, at least:
+(5925 - 7125 @ 320), (12), NO-OUTDOOR
+The removal of NO-IR is important, since routers Wi-Fi 6E and 7 don't 
+work because of this outdated rule based on an outdated normative.
 
-> (2) To disable PCI ASPM is also worth to try:
-> 
->    /etc/modprobe.d/70-rtw89.conf 
->    options rtw89_pci disable_aspm_l1ss=y disable_aspm_l1=y disable_clkreq=y
->    options rtw89_core disable_ps_mode=y
-> 
->    After setup these options, you need to cold reboot your machine to
->    make sure ASPM isn't enabled. Also, please check the setting via
->    /sys/module/rtw89_pci/parameters/ after rebooting. 
-> 
-> (3) Another is to disable power save mode via
->    sudo iw wlan0 set power_save off
-> 
->    If this can work to you, you can add option to configuration file of
->    network manager to disable it. 
-
-Thank you.
-I'm not too interested in workarounds as I don't really need to use the
-card; if you want me to try a kernel fix for the kernel crash I'll be
-happy to re-enable the card a few weeks to check but there's little
-point in testing these in my opinion unless it would help you fix the
-firmware.
-
-
-> > The line in question would be this line:
-> > >        txwd = &wd_ring->pages[seq];
-> > (which matches as pages is an array of 512 rtw89_pci_tx_wd structs)
-> > 
-> > 
-> > Checking seq < RTW89_PCI_TXWD_NUM_MAX is trivial and I could send a
-> > patch, but if that data is really bogus I assume any local check could
-> > be fooled e.g. the data could be < 512 and still incorrect.
-> 
-> You're right. 
-
-Right, I also checked the earlier "Cannot map qsel to dma" message but
-it's also from the same value obtained from the card, so failing at that
-point is not enough (even if it can probably still be better than a hard
-crash...)
-
-
-I'm not sure the crash happens in the same call of
-rtw89_pci_interrupt_threadfn() but I think so given the end of the dump
-and the map qsel error are 8 nsec appart (if I read this netconsole
-format right)
-In that case perhaps it'd make sense from the call to mark the card as
-no longer running (and perhaps bail out) in case of error?
-
-Something like this:
-```
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index c2fe5a898dc7..793e4a4cf5a2 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -896,8 +896,12 @@ static irqreturn_t rtw89_pci_interrupt_threadfn(int irq, void *dev)
- 	if (unlikely(isrs.isrs[0] & gen_def->isr_rdu))
- 		rtw89_pci_isr_rxd_unavail(rtwdev, rtwpci);
- 
--	if (unlikely(isrs.halt_c2h_isrs & gen_def->isr_halt_c2h))
-+	if (unlikely(isrs.halt_c2h_isrs & gen_def->isr_halt_c2h)) {
- 		rtw89_ser_notify(rtwdev, rtw89_mac_get_err_status(rtwdev));
-+		// maybe?
-+		rtwpci->running = false;
-+		return IRQ_HANDLED;
-+	}
- 
- 	if (unlikely(isrs.halt_c2h_isrs & gen_def->isr_wdt_timeout))
- 		rtw89_ser_notify(rtwdev, MAC_AX_ERR_L2_ERR_WDT_TIMEOUT_INT);
-```
-
-Or is that flag also supposed to set itself?
-
-Anyway, as said above this is mostly curiosity for me, please deal with
-it as you see fit and let me know if you want me to test something.
+I'm no lawyer, so please if you see something different, like more 
+granular control in the allowed frequencies, please let us know.
 
 Thanks,
 -- 
-Dominique Martinet | Asmadeus
+Marcos Alano
+
 
