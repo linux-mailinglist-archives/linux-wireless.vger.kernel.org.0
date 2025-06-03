@@ -1,106 +1,114 @@
-Return-Path: <linux-wireless+bounces-23553-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23554-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AB4ACC4BE
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 12:56:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E56D6ACC5CA
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 13:51:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 572DD3A3E5E
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 10:56:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0DE43A2A6D
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 11:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DC722ACEE;
-	Tue,  3 Jun 2025 10:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9A922B8AA;
+	Tue,  3 Jun 2025 11:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="RFMd5vt3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhM3ICak"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4746D1D7E4A;
-	Tue,  3 Jun 2025 10:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAC51D7E4A;
+	Tue,  3 Jun 2025 11:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748948193; cv=none; b=n81Ac2+RyLz7whhUoQ9IeVyJzKc+DThpD41jPU3c+lAOXS47Uq5a3VCla/AIgwxRZM1U9ifgIt5uwZE1XjdtgflygnbFLnXNwJQaUveXOthltzxkWhjsg17vUDR86LsEoW+cu9DL3w//qh25H7ZFjGrKS86KnqisaZuelFq52g0=
+	t=1748951508; cv=none; b=TAxTbBpUCoMJRIXkEsMkLfHFM5DrO0OXqT6I1OHT8ZQBvcSGOvmR2b6Ayw8mmzsUy4OLJSZQlCWGkUwJJQLuYW+TWwtSyGFCJ+Vo4leY8ShMA0iM3Osp3sLmLmbjNwmKTtIbWFNZmlzYA6Ccx7CZEo7XQ1o/XakT5fs0YJUtt0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748948193; c=relaxed/simple;
-	bh=cN651B07DXiBx3FK23+ouljV2W7aOhhbi+ZIbNVs/sk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ULJTMtdLHM8KwHcQI99aVs9Gq6vCNRH4K0MqdXQ6/6FTlqB7jVRXvAzDEkLO+u5J3/6hLaUXYW+SkS1oUmTUXD1fgZXUuWp6OuhzujPC61fqarjHNYYwdhBJ7eB3u1Yfx3HKKgmrlZl4OhXDJwK7aURLeSpIbG5yOB/pTLTHUtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=RFMd5vt3; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=TQdZ74RkHcJ0nBbw7U/EMPDBs77v59i09mGTANKzU3Y=;
-	t=1748948192; x=1750157792; b=RFMd5vt3eW508U2V1rOQH6KrBAkCNJy2zf2lQlLVwuaaIrF
-	KCZyA1HdDKvq/3HxLTfz8DDsMibOEgJCSavJqEgh4F1byp+Qo8JGyzORNzJTgfi9goFqg/UauFztF
-	FPdqNgRhyDC6bUGYrtWVbepviGaLhL+j0EytFyLlhlrVGW6popvSNOo7CwFJsor7QWNtsH1hh7oNy
-	MEvd35uE4S3y/Ev6gXpuyVhLYdsszGktcGYRUUWJQxt6i1f7u4MDxSRKlezP3gJnM54dKPF5BliN3
-	ZqZC4ODT7QaN/j33KTOMtK9uFcHhw/CF7sp1MvIwYzCAsqT1+x5ydoIj3zQijEUg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uMPJj-0000000ABJ6-30mm;
-	Tue, 03 Jun 2025 12:56:28 +0200
-Message-ID: <e36c8a9149f85383b4f3e8793381842088853dbe.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v2 0/5] wifi: cfg80211: Add support to
- indicate changed AP BSS parameters to drivers
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>, Arend van Spriel
-	 <arend.vanspriel@broadcom.com>, Ajay Singh <ajay.kathat@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
-	wlan-kernel-dev-list@infineon.com
-Date: Tue, 03 Jun 2025 12:56:26 +0200
-In-Reply-To: <20250603103252.18039-1-gokulkumar.sivakumar@infineon.com>
-References: <20250603103252.18039-1-gokulkumar.sivakumar@infineon.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1748951508; c=relaxed/simple;
+	bh=+0+FjG1D5+BMAtWOeQZfZLKkO7QEDZvJWmT8YImYI40=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tOZWVpW2AFBhMFFO38ppAniqhgAQEaeTfE+WPTNaCelbC2RUOK+3/Wl8qe2AocTKGePEQ4anTt7zYXFZkVPVSnFlIsxFk+xpOosNuJsG8iraQDmrAqck3/3VtiXeo+naliYDZ5HDQS0b1jjQTgWJnC47R9GE75F1+tYJPzme95I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhM3ICak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146F3C4CEED;
+	Tue,  3 Jun 2025 11:51:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748951508;
+	bh=+0+FjG1D5+BMAtWOeQZfZLKkO7QEDZvJWmT8YImYI40=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MhM3ICakdOUq8YMMClJ+Aoem1yJe+icrKA7IEd+rPdVC3y6OyPe3x2Ua8ZLtD4y4F
+	 NLRhmQHZPKtJXpP+Ys1fw2FEzvFYC/qnqmXa3F5Ve73EnS5kn8dHALzsJVSigeF8Tg
+	 0A9mEsNgn8HKMQjFFyo975nKpA/cITqwIpEph2ZAq8FAGl9MYT33dMT7SsDQFlh+o1
+	 JCxCZH2XJ5KiWQuG/u20Ir+5XWwj5bnsqDwRM+eSe2mlHq8etUwOrW2E/j6pGILH3g
+	 Qqx04b+t/jqlgk8qSUcyWJ6QCYjZMN3/gZLVgJhP3HxgIP8zHg7qRW78WbPqCSP6SD
+	 HsxqrHG8G51PQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1uMQBE-00000000453-1hpd;
+	Tue, 03 Jun 2025 13:51:45 +0200
+Date: Tue, 3 Jun 2025 13:51:44 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] wifi: ath11k: fix dest ring-buffer corruption
+Message-ID: <aD7h0OOoGjVm8pDK@hovoldconsulting.com>
+References: <20250526114803.2122-1-johan+linaro@kernel.org>
+ <20250526114803.2122-2-johan+linaro@kernel.org>
+ <026b710f-b50f-4302-ad4f-36932c2558ff@quicinc.com>
+ <aD1axxSAJsbUfnHH@hovoldconsulting.com>
+ <5268c9ba-16cf-4d3a-87df-bbe0ddd3d584@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5268c9ba-16cf-4d3a-87df-bbe0ddd3d584@quicinc.com>
 
-On Tue, 2025-06-03 at 16:02 +0530, Gokul Sivakumar wrote:
-> In cfg80211, added provision for the drivers which registers the callback=
-=20
-> .change_bss() cfg80211_ops, to find which set of AP BSS params are change=
-d
-> by the userpsace in the SET_BSS operation. With this the drivers can deci=
-de
-> to reject the operation if any of the changed AP BSS param is not support=
-ed
-> for explicit configuration. This helps ensuring that the driver does not
-> partially handle the AP BSS params and avoid misleading the userspace tha=
-t
-> the SET_BSS operation is fully successful.
->=20
-> Also introduced the "changed" bitmask check in all the drivers that are
-> currently registering to .change_bss() cfg80211_ops. This would make the
-> condition for handling SET_BSS operation equally stirct across all driver=
-s.
->=20
+On Tue, Jun 03, 2025 at 06:52:37PM +0800, Baochen Qiang wrote:
+> On 6/2/2025 4:03 PM, Johan Hovold wrote:
 
-Oh, nice! I'll have to look at it in more detail later, but one thing I
-saw now is in patch 2 you have this:
+> > No, the barrier is needed between reading the head pointer and accessing
+> > descriptor fields, that's what matters.
+> > 
+> > You can still end up with reading stale descriptor data even when
+> > ath11k_hal_srng_dst_get_next_entry() returns non-NULL due to speculation
+> > (that's what happens on the X13s).
+> 
+> The fact is that a dma_rmb() does not even prevent speculation, no matter where it is
+> placed, right?
 
-> In AP mode, the "ap_isolate" value from the cfg80211 layer represents,
->  0 =3D allow low-level bridging of frames between associated stations
->  1 =3D restrict low-level bridging of frames to isolate associated statio=
-ns
-> -1 =3D do not change existing setting
+It prevents the speculated load from being used.
 
-Is that -1 still true? Seems like now it should just be that
-CFG80211_BSS_PARAM_CHANGED_AP_ISOLATE isn't set and then you don't touch
-it?
+> If so the whole point of dma_rmb() is to prevent from compiler reordering
+> or CPU reordering, but is it really possible?
+> 
+> The sequence is
+> 
+> 	1# reading HP
+> 		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+> 
+> 	2# validate HP
+> 		if (srng->u.dst_ring.tp == srng->u.dst_ring.cached_hp)
+> 			return NULL;
+> 
+> 	3# get desc
+> 		desc = srng->ring_base_vaddr + srng->u.dst_ring.tp;
+> 
+> 	4# accessing desc
+> 		ath11k_hal_desc_reo_parse_err(... desc, ...)
+> 
+> Clearly each step depends on the results of previous steps. In this case the compiler/CPU
+> is expected to be smart enough to not do any reordering, isn't it?
 
-johannes
+Steps 3 and 4 can be done speculatively before the load in step 1 is
+complete as long as the result is discarded if it turns out not to be
+needed.
+
+Johan
 
