@@ -1,172 +1,114 @@
-Return-Path: <linux-wireless+bounces-23538-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23539-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791CBACBE78
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 04:26:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B7AACBF8C
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 07:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035E21712CB
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 02:26:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BB3F188FF5B
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 05:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A765314901B;
-	Tue,  3 Jun 2025 02:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF5C1519BC;
+	Tue,  3 Jun 2025 05:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GQpxs7X0"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="FVJJIbgr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCAF2F32;
-	Tue,  3 Jun 2025 02:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0274A2C326F
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Jun 2025 05:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748917574; cv=none; b=A4qXOjkJ9WStUJpSUOn8ElbetENNIH0IQ4yUCDgG+spKqwJlHqBzLRHpxnqWdIhtPKEd5n1u1HsDBH9hCkDutAUT2hekUozacs4OfmhXMrNnduzn2OOCDYn6qroxqtHtvEd/TTpLXlJCRIhG2N88y5BOoRWbYMQxTUdLSXre+z4=
+	t=1748928415; cv=none; b=LrKODznpvPUDjXHtoQN7M+1CibA5wVzv9TVhSlD1J+pWIJ40g0+EMswYaagm5elLy1lov9bVqoDFkMB2pyLQ4Jq+pxcn+aWW+oio1b69rTodwo5BDFLOY7Rx1rVnj9z/oSvr5uwjDx5njOowvDAQadq2CPT1ST/IqlhgfUWpWTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748917574; c=relaxed/simple;
-	bh=Io0+bEqEUTccIkE7WKV5wh8RD2PGXRuYSPuBXx56ZWk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=iO60fJ7VrhCV6+2CAbu1oOtJU82PlfP938GTzlUpIHk4SORcMa/BcQf31E1MxwW0RWM3OBRV3gEumQHY4MK2b2d/H2VJEE/8NkUjjS/HoGBm/8ddFH44eRtAFAqHSerTonK2dxcPkOazKm0VID3MUlDSI89WaW6qYFOKpAPZ+Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GQpxs7X0; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 552HKV1s012543;
-	Tue, 3 Jun 2025 02:26:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=Vj1k61r/rKkCnbDgTyGOAr
-	yQPdF7b2vebfxYw9m7RGo=; b=GQpxs7X0h87cRA9GhtgdfgyLyzDOPywYM38P2r
-	FUf8WIJWekiqJmgRl3Yjv9pEWomA64TMl/yC2dYamijX0t8wyiptdzmv2LSTUEw6
-	32gkcfjBUfbgtLXEQxJeWBPy5Bc2Hf9wgpjB+pQy3q6BjdFT5TX5LcZ9W9qANUZG
-	LVek7nwAFj2NFZKkJ/bzN5QJAysVzPahZxXpCKIXsBQo9U8FMldOUDjLhCDc64pP
-	eQH5fpuYwn4xwYtamm8SzPAjYsF/X6e9o39YgUx4fJQm2kZQI4soHoQaVXxJMV7+
-	UZZSQVvlUQfU7PzkxxR4u6p1RR0riykKFqpMSmXNQTHCAQ2g==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 471g8ss29f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Jun 2025 02:26:06 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5532Q6Oo019045
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 3 Jun 2025 02:26:06 GMT
-Received: from [127.0.1.1] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 2 Jun 2025
- 19:26:04 -0700
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-Date: Tue, 3 Jun 2025 10:25:28 +0800
-Subject: [PATCH ath-next] wifi: ath11k: fix sleeping-in-atomic in
- ath11k_mac_op_set_bitrate_mask()
+	s=arc-20240116; t=1748928415; c=relaxed/simple;
+	bh=Io3VknBkl0VG5ofoSu5aNPLgmGMCy2yWbisn+kbcQuA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=slAKkU/IBC1XFYCjgVk+I+CHj1P1wdqxszF7VfUP1cy0xHDNB0C6+hN0uizHWaLVEeDS/yX0UpChEWqW2uem7WY8/vo+0FPWK2mMzdeh7vF9DQUMMa10c7kXunqv7W+0ssv7YEfvSuHT6yYwk8l+GdRX4ImRURNemPI2VZdYLg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=FVJJIbgr; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2347012f81fso64470295ad.2
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Jun 2025 22:26:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1748928413; x=1749533213; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Io3VknBkl0VG5ofoSu5aNPLgmGMCy2yWbisn+kbcQuA=;
+        b=FVJJIbgrVr9KKpvJ8S5Je8hwCaGSBWs9s5NZVNdHMu3atkcnpKpMDCTO5a0W0Mq8zX
+         8uvSFL5Fnq06UQFXcSKGyOvDPKs+vkIxhK3HzCLFqUvJKGoBR0qnURFoexd5DlE7isQ3
+         LSJA+Oo5Sb+vdC6oXMllz0kXHZ6/LRpjP06E0PAdDfkhTQoj0mgJgJMFZeLmkPLqoKUV
+         L5I5ODC+k9x7IcW918qMdJJE7K9FfJ1pmgHAqBM/xfZZ3SIKvM9C8kvWLw2pr+srsfyo
+         avgof0liy+X214Bqoy8jnug7mvQoZIqcmTTFyXrh95W5iR5uHdZoMGqKTljuHCU53J6Y
+         iGUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748928413; x=1749533213;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Io3VknBkl0VG5ofoSu5aNPLgmGMCy2yWbisn+kbcQuA=;
+        b=I8tM6sQ0SSw6Psw5EhjmoyNKmzo1nmjp4916XSQUlEuz4JdRw+xgQOc0SYvKMdCjAO
+         G6TLCP0ydyEIUHDoq16v1ffBvW+hCYs8QbxriXE5Qr0vLxwQ7j/USM4MSZA3iFtbJx0B
+         ll+nNNDYJ639eQblCMq5R1AtM8IfnjROIKCa4rg3nSqzjP2JLBRgjwsTngH4Z5RfdnYI
+         lWrihaqDz2bFfFZx8VzWrqDq7fGDOyN66rHlFMj7dIJW3Y1qmTzNLnJIIC9sHbRIxteF
+         bweLX/i3UacYFYFk+U3BZ9RHYIl4AK2Yc0Jp6SV6MZ83OEr67x+1Y+O0IK9xKBKdee9H
+         54Mg==
+X-Gm-Message-State: AOJu0YwcmNCjVPfj6OI1k8XrEWM9PW+REy4TClqstEEWY6bNRrPAaoCX
+	sXRoAvyo24yCJIL83W7iSC4DnU5pEhac+fjaIwAIljB9iZwSRdZXxgqUq0LcUCewXYk=
+X-Gm-Gg: ASbGncuE/IP4F1tJQdufYw74uNKbexPTo3PMtr3S7tCgw7al3VetHDZHf3QiEQVl+7b
+	8YHcOuwfdhdqOwYuazlyPSdYeCqUuogLetsOQN9iQEVQYvLac01EDN4SoJ/9AQmBtm8hiro6Il4
+	FBU2V01IrG6HKdMz0Guk8oOEh4iKHm4MZqnj4pYDMUoiaia1I/nE/bO/SgJcyLOetYTPI8GGYyx
+	/oz7RKHlz7ZqixPOGfnjRraUVZADeWjf+g7E1sHIbsEpcHkpyzhZ8+38WlWGCA7zamB7L0hn3dz
+	D24uWSenfp1yW2e1L85eVG08piCB2pXwqGMI2XUN3OTSN3AEWKgYPvSI/38KUu3fp0f3sO4g6gz
+	n6QiSQ5N/3uP5OkjHCxVJdWbOuDU=
+X-Google-Smtp-Source: AGHT+IGeRn6whNrELde2uf6yC86CvwoZF6+Qd1UiqfgZyLtuPUgE+fE1wCs6c/aoz45OK6lGo0+KzQ==
+X-Received: by 2002:a17:902:e94d:b0:235:5a9:9769 with SMTP id d9443c01a7336-235395a1182mr205343105ad.25.1748928413170;
+        Mon, 02 Jun 2025 22:26:53 -0700 (PDT)
+Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2eceb35e24sm5565234a12.35.2025.06.02.22.26.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Jun 2025 22:26:52 -0700 (PDT)
+Date: Tue, 3 Jun 2025 15:26:49 +1000
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Subject: Re: [PATCH wireless-next] wifi: mac80211: correctly parse S1G beacon
+ optional elements
+Message-ID: <p36ch2dri2jqarkvthxwyl27slbbedesr5caroc425an3azx72@kstyfawelp3b>
+References: <20250602053521.410650-1-lachlan.hodges@morsemicro.com>
+ <0ad998b5ecd0c1d6521441fd06a1bc7e1a93ddf0.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250603-ath11k-use-non-atomic-iterator-v1-1-d75762068d56@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIABddPmgC/5XNQQ6CMBAF0KuYrh3TFinUlfcwLmgZZGJotQWiM
- dzdCUvd6G5+Jv/9l8iYCLM4bF4i4UyZYuCgthvh+yZcEKjlLLTUpSwLCc3YK3WFKSOEGDjGgTz
- QiInPBK62lbRt6bt9LRi5JezosQ6cBHch4GMUZ/70lLnwXJdntf5/HZkVKDDWKYMNSpT6eJ/IU
- /A7H4cVn/V/oGZw3zrjnTSIpvwGi//AgsHCVbarKqtb9QEuy/IG+v6SIXoBAAA=
-X-Change-ID: 20250530-ath11k-use-non-atomic-iterator-b89709d5cf48
-To: Jeff Johnson <jjohnson@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Baochen Qiang <quic_bqiang@quicinc.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: yEYEXMIcVbDkkv04F8yM7rgx7GQ3DfxV
-X-Authority-Analysis: v=2.4 cv=EPcG00ZC c=1 sm=1 tr=0 ts=683e5d3f cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=COk6AnOGAAAA:8
- a=VvPa7mMQmCZPogn7yUkA:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: yEYEXMIcVbDkkv04F8yM7rgx7GQ3DfxV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjAzMDAyMCBTYWx0ZWRfXxap40OA2TFd1
- k/uf2ZEgQfIRk+yrWykL9UBgGAqF648o8eecLgWZUjYsPQ59Af4Kj9GY7NCnSzMSgHLoxW1BZVJ
- 64PEpYcR8RpvCt78HLllMZTVeOZf3Rrdg5Z5aslUjM+gpC3YH46PXAnROldCZYlQxUtgdEFSvVN
- E4ANr9AaZ888dHU+pZXwpjhf1B40ZNxNYbDDoCHT+dDfcUPsJ1C3d5/Cv09xaEDQZGQiagEKCUv
- vMLwj/0iMJV/xZZIdQJCq1rNJbh8tdmVu/Oco+9X9TS7PEMKk7fP1D8fHy1WeJeWpdbx5QSV347
- TTS2ZhgJBaHE5NXv8QqWvA3C3cNz3OfNRARTQVc5l7LHZc3B69YWrk9XMrDaMZPVvU9JQgUgTD2
- qs3okn5N7sDOH7dAMLadWYapCsyi3kBoFra7qfLMPbVOrdN4zq3HlUNhqKcFfuS++UO4rVOv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-02_08,2025-06-02_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 bulkscore=0 priorityscore=1501 phishscore=0
- impostorscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 mlxscore=0
- clxscore=1015 mlxlogscore=810 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506030020
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ad998b5ecd0c1d6521441fd06a1bc7e1a93ddf0.camel@sipsolutions.net>
 
-ath11k_mac_disable_peer_fixed_rate() is passed as the iterator to
-ieee80211_iterate_stations_atomic(). Note in this case the iterator is
-required to be atomic, however ath11k_mac_disable_peer_fixed_rate() does
-not follow it as it might sleep. Consequently below warning is seen:
+On Mon, Jun 02, 2025 at 10:27:53AM +0200, Johannes Berg wrote:
+> >
+> > Fixes: 9eaffe5078ca ("cfg80211: convert S1G beacon to scan results")
+>
+> Should it really be wireless-next rather than wireless with this? We're
+> still even in the merge window, so seems entirely appropriate to put it
+> into wireless instead, even if the bug is old, rather than wait months
+> for it to release?
+>
+> It also seems you should split this to cfg80211 and mac80211, if
+> possible, and have two different Fixes: lines? The cfg80211 part this
+> has might fix the above, but for the mac80211 part that doesn't seem
+> plausible?
+>
 
-BUG: sleeping function called from invalid context at wmi.c:304
-Call Trace:
- <TASK>
- dump_stack_lvl
- __might_resched.cold
- ath11k_wmi_cmd_send
- ath11k_wmi_set_peer_param
- ath11k_mac_disable_peer_fixed_rate
- ieee80211_iterate_stations_atomic
- ath11k_mac_op_set_bitrate_mask.cold
+Thanks for the quick reply! We don't think it's possible to split the
+patches without breaking the build between the two so have opted to
+keep it as a single patch. In addition I've included the two Fixes:
+lines that reference the original changes.
 
-Change to ieee80211_iterate_stations_mtx() to fix this issue.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/mac.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 08d7b136851fabb0a1c1032abcf9c01550e9f4f5..068805daf5fa4e0894be4ea4e8f2e9f756cfdcd3 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8740,9 +8740,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 				    arvif->vdev_id, ret);
- 			return ret;
- 		}
--		ieee80211_iterate_stations_atomic(ar->hw,
--						  ath11k_mac_disable_peer_fixed_rate,
--						  arvif);
-+		ieee80211_iterate_stations_mtx(ar->hw,
-+					       ath11k_mac_disable_peer_fixed_rate,
-+					       arvif);
- 	} else if (ath11k_mac_bitrate_mask_get_single_nss(ar, arvif, band, mask,
- 							  &single_nss)) {
- 		rate = WMI_FIXED_RATE_NONE;
-@@ -8809,9 +8809,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 		}
- 
- 		mutex_lock(&ar->conf_mutex);
--		ieee80211_iterate_stations_atomic(ar->hw,
--						  ath11k_mac_disable_peer_fixed_rate,
--						  arvif);
-+		ieee80211_iterate_stations_mtx(ar->hw,
-+					       ath11k_mac_disable_peer_fixed_rate,
-+					       arvif);
- 
- 		arvif->bitrate_mask = *mask;
- 		ieee80211_iterate_stations_atomic(ar->hw,
-
----
-base-commit: 3d933084a072fd5fb5da54c06a017abc0412c86f
-change-id: 20250530-ath11k-use-non-atomic-iterator-b89709d5cf48
-
-Best regards,
--- 
-Baochen Qiang <quic_bqiang@quicinc.com>
-
+lachlan
 
