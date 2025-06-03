@@ -1,158 +1,269 @@
-Return-Path: <linux-wireless+bounces-23574-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23575-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B06ACCC34
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 19:31:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2419FACCC56
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 19:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7380E176CB5
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 17:30:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A293A17B5
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Jun 2025 17:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF681BC099;
-	Tue,  3 Jun 2025 17:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D9521C54AF;
+	Tue,  3 Jun 2025 17:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OhVGPrXF"
+	dkim=pass (2048-bit key) header.d=riscv-rocks.de header.i=@riscv-rocks.de header.b="MmNL1mfx";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="JDOzg0Cg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from b224-17.smtp-out.eu-central-1.amazonses.com (b224-17.smtp-out.eu-central-1.amazonses.com [69.169.224.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939EF1DE2A0
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Jun 2025 17:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672A91361;
+	Tue,  3 Jun 2025 17:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=69.169.224.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748971800; cv=none; b=OFDubwUB7ChnVvVWnzriJMklUaQJS2y/W2wObvi45d/j3lg2YiR0Qj24m69NpFJ5EDVZZE4LwZyJgvmYRn7ubbUk39l+MHoFEX0g1wwwVUrxvn7coGtlpiNibvuUQ7MktIVC8pqU22ArNS4UB/8CSji6GpFfDyWB3pA6UtK/Ulc=
+	t=1748972583; cv=none; b=NyyrBW+56lOISfKXQS4JwtPtRxpFlI6k7eZLtxNVRZJFmocv2lF/LmGpHDzgOKOOHg09xL2+zgpuGeEC4Vjl1P+RwaISH0fJgh+rtN4IPv3BG5y/YYCTwuDhR7VzzZrH8jNsjYgFs/vBt5ZjVwtB5hBER8NOU+0KELMDdkc74iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748971800; c=relaxed/simple;
-	bh=a7nOKTcicySruXl6Hdl1fgKZyMw2yj6ZMDvc6FC8Qj0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RG7qTAL6H0ob43OMHgLqxqFGGIKuFnRTAIICwjc9986hSf8MsUq4ih8YawYTNkiL97evOlu5a5/+gTyell8tdTfvWJuZG7nnxxlq+hFIwmS2FzsfjQwM3eosDszzlPDQmIMbZClbOvlMsQeVAQdAq/fzxj0zhg2VLqn4Pbmnixc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OhVGPrXF; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5539JMGq027548;
-	Tue, 3 Jun 2025 17:29:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	n1z2J5gPNvfIEuXBjhOqq0dQvWOvwRWXevhftH4gu1c=; b=OhVGPrXFSX3XqqX+
-	pd3CVYlLiREitmKwwabJbxmgdD5acvMz9tl9S924UkU6zPagFEMHPPcREH/TL2C9
-	XW/1XrBYiCMwLx3H0la/Cy7mcZpq7XudGo2JD4PWd3P5uAfK00NYKq3PSfKgntVB
-	sOHfEhqOPOdb5pXFr7sqczXYIdPuQaBD46s40A+LlmqANS8y+qrsxVom5l4ipyqf
-	+wM6eEPifBV7ubf3a+wWDp7ya9XmylgNnifDZy7z8GAlmwLG3P4Q+YXO/HBa9erz
-	n8Lxj7fmoensB9AU4KOaqPqnPo6spBpiyA3+8mYLxx9y1ZRO+kiPuZu345y6V6E4
-	rifwhA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 471g8t3dgb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Jun 2025 17:29:53 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 553HTrvV023390
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 3 Jun 2025 17:29:53 GMT
-Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 3 Jun 2025 10:29:51 -0700
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Roopni Devanathan
-	<quic_rdevanat@quicinc.com>
-Subject: [PATCH wireless-next v12 4/4] wifi: mac80211: Set RTS threshold on per-radio basis
-Date: Tue, 3 Jun 2025 22:59:24 +0530
-Message-ID: <20250603172924.336883-5-quic_rdevanat@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250603172924.336883-1-quic_rdevanat@quicinc.com>
-References: <20250603172924.336883-1-quic_rdevanat@quicinc.com>
+	s=arc-20240116; t=1748972583; c=relaxed/simple;
+	bh=hKGYfvlJxweczRRYlxKKsLZLtXS51ZdVOGBkabKEgCM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=DP4YFpDVoiQbOJnSoJma0OWBANuamRoZE1LUvqE6Rdj8+0akvi9M67j21sc4gkDl2jo/zVzP/UX4qRzuY3jW874MRG7dHF6cTnUxPvwkMGfdo0xVXQHaQNR9c9oT1aWqM2DLZTMxW1cAMNXnC0E5ZR+pbzY8LevvjPFi6Endmb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=riscv-rocks.de; spf=pass smtp.mailfrom=mail.riscv-rocks.de; dkim=pass (2048-bit key) header.d=riscv-rocks.de header.i=@riscv-rocks.de header.b=MmNL1mfx; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=JDOzg0Cg; arc=none smtp.client-ip=69.169.224.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=riscv-rocks.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.riscv-rocks.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=2kaovp6zxy5nzp5wqunvdq5vkiqbeqln; d=riscv-rocks.de; t=1748972578;
+	h=Date:From:To:Cc:Subject:Message-ID:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=hKGYfvlJxweczRRYlxKKsLZLtXS51ZdVOGBkabKEgCM=;
+	b=MmNL1mfxlO/BQy8PH4lxAHXo+dEE+gpedV8xgENjh8q6aZhDPA7hX6EahW7+nA22
+	rG7djHsXatiuc2Ky8GH5KjPp23tl1idodklC+y/a3duejDMkwp4ORztA3X7Hfr5PJ3M
+	xruSPqrEdKwig/ntrTwhXZ83yKJ1BhIFlRWnwehxNZU11RRCiaXrZuuvY9CjlzfSDkm
+	cjoUeE3l8itRVdKulVGzjRZOZHY+gh3kYeHcDn7QKUpi9XM9sDaJj+ipi1UsAOcxaVZ
+	CmkjW34ityPMeV6c8/xIAlctRwGlMVqSi6Rt3+XD7+p5/MELpaaypY7Dglg5avHDe6G
+	aH3jxLnI6g==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=54ecsf3zk7z4mwxwwox7z7bg6e5gwjsz; d=amazonses.com; t=1748972578;
+	h=Date:From:To:Cc:Subject:Message-ID:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+	bh=hKGYfvlJxweczRRYlxKKsLZLtXS51ZdVOGBkabKEgCM=;
+	b=JDOzg0Cg+9zQea6+I7owsUeRwAd41/jcnqOI+7gCBgSMbXiZGDM22XOjPaHnZ7xG
+	bXBQ2+vmsYdqTwrC0TS7UDgu2p7ACOBVPPl8AEwA+2CuQt6ib8mAwWfU/knJkNLKpqi
+	RDOy/PlNPPU0PEnFE5Cjh7q7l4inPGFHMdh5ChOA=
+Date: Tue, 3 Jun 2025 17:42:58 +0000
+From: Damian Tometzki <damian@riscv-rocks.de>
+To: miriam.rachel.korenblit@intel.com
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [wireless] WARNING in iwl_mvm_sta_rx_agg+0x9d3/0xb70 [iwlmvm]
+Message-ID: <0107019736e3a599-79e58a4a-0dfa-4f43-aeaf-4a4208845b32-000000@eu-central-1.amazonses.com>
+Reply-To: Damian Tometzki <damian@riscv-rocks.de>
+Mail-Followup-To: miriam.rachel.korenblit@intel.com,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=eJQTjGp1 c=1 sm=1 tr=0 ts=683f3111 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=6IFa9wvqVegA:10 a=COk6AnOGAAAA:8 a=BOf_PJH6FHNS0jIfWvQA:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: FzwF43gDQmD6Li9wul6GUbzph0N0qPcq
-X-Proofpoint-GUID: FzwF43gDQmD6Li9wul6GUbzph0N0qPcq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjAzMDE1MyBTYWx0ZWRfX0vptKJgid3xe
- 5d9cG+6VEEo+KxVreL3SfaehTesEqnkm5ejPxUimGUOEytFHJLUIpLIoBeOtHcfbgzqoRNef9fI
- KJFV/L5ReqVdZiTDlnrUL5Ucdkj+IzgbykSLCGyWA1LIG6FvK0sl01nqnrEGsTpsQFt2bh/65lT
- UNri3YJK6daVNyDxQAJbele+jfy0+RMvHA2cMj+K4fFd8lQTjNu3AVeiJLSqd0VEGFzeYahmjzQ
- Hanhaw3cGx0GwAxXNB415GLaciTEMXgpKiqsC5owxsMm+MVAX1AnQxQh6/JtA6EhxdrtF+dXDoa
- St+HKV5O2Zobud5O00PQi8fbg3sWMTn7ev1pOY8hkI96J20gKX6C4TTulMzRM740sVbfb5T1hH2
- Bbo1xmeKJnEdyILNyF40v6L9n80mBSck+brm0Q2i6xmahL+SjKTWnaky1IP3HRSOvNX6Ezz3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-03_02,2025-06-02_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
- priorityscore=1501 bulkscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
- phishscore=0 mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506030153
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Mutt
+X-Operating-System: Linux Fedora release 42 (Adams) (Kernel
+ 6.14.9-300.fc42.x86_64)
+Organization: Linux hacker
+Feedback-ID: ::1.eu-central-1.yMcBPu/jK26Vj3HVmCFyFk75QMsS8V3QY5HbXP/Qrys=:AmazonSES
+X-SES-Outgoing: 2025.06.03-69.169.224.17
 
-Add support to get the radio for which RTS threshold needs to be changed
-from userspace. Pass on this radio index to underlying drivers as an
-additional argument.
+Hello together,
+in the current build tree from linus i get the followinng warning:=20
+On kernel 6.15.0+  (PREEMPT, tainted: G U W), I repeatedly get the followin=
+g warning in iwl_mvm_sta_rx_agg():
 
-A value of -1 indicates radio index is not mentioned and that the
-configuration applies to all radio(s) of the wiphy.
+WARNING: CPU: 4 PID: 4724 at drivers/net/wireless/intel/iwlwifi/mvm/sta.c:2=
+990 iwl_mvm_sta_rx_agg+0x9d3/0xb70 [iwlmvm]a
+Reproducibility:
+Happens intermittently during normal WiFi use (triggers after suspend).
 
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
----
- net/mac80211/cfg.c  | 8 ++++++++
- net/mac80211/util.c | 7 ++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+[   87.639112] ------------[ cut here ]------------
+[   87.639114] WARNING: CPU: 4 PID: 4724 at drivers/net/wireless/intel/iwlw=
+ifi/mvm/sta.c:2990 iwl_mvm_sta_rx_agg+0x9d3/0xb70 [iwlmvm]
+[   87.639151] Modules linked in: uinput rfcomm snd_seq_dummy snd_hrtimer n=
+f_conntrack_netlink veth xt_conntrack xt_MASQUERADE bridge stp llc xt_set x=
+t_addrtype nls_utf8 cifs cifs_arc4 nls_ucs2_utils cifs_md4 dns_resolver net=
+fs overlay xt_comment nft_compat nf_conntrack_netbios_ns nf_conntrack_broad=
+cast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reje=
+ct_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack =
+nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables sunrpc qrtr snd_soc_skl_hda_=
+dsp snd_soc_intel_sof_board_helpers snd_sof_probes snd_soc_intel_hda_dsp_co=
+mmon snd_hda_codec_realtek snd_hda_codec_generic snd_hda_scodec_component b=
+infmt_misc snd_soc_dmic snd_sof_pci_intel_tgl snd_sof_pci_intel_cnl snd_sof=
+_intel_hda_generic soundwire_intel snd_sof_intel_hda_sdw_bpt vfat snd_sof_i=
+ntel_hda_common fat snd_soc_hdac_hda snd_sof_intel_hda_mlink snd_sof_intel_=
+hda snd_hda_codec_hdmi soundwire_cadence snd_sof_pci snd_sof_xtensa_dsp snd=
+_sof snd_sof_utils snd_soc_acpi_intel_match
+[   87.639208]  snd_soc_acpi_intel_sdca_quirks soundwire_generic_allocation=
+ snd_soc_acpi crc8 soundwire_bus snd_soc_sdca snd_soc_avs snd_soc_hda_codec=
+ snd_hda_ext_core snd_soc_core snd_compress ac97_bus snd_pcm_dmaengine snd_=
+hda_intel iwlmvm snd_intel_dspcfg snd_intel_sdw_acpi uvcvideo snd_hda_codec=
+ intel_uncore_frequency uvc intel_uncore_frequency_common videobuf2_vmalloc=
+ intel_tcc_cooling videobuf2_memops x86_pkg_temp_thermal snd_hda_core video=
+buf2_v4l2 intel_powerclamp snd_hwdep mac80211 videobuf2_common coretemp rap=
+l snd_seq iTCO_wdt snd_seq_device intel_pmc_bxt videodev processor_thermal_=
+device_pci_legacy think_lmi iTCO_vendor_support spi_nor processor_thermal_d=
+evice intel_cstate mtd mei_pxp mei_hdcp intel_rapl_msr libarc4 intel_uncore=
+ pcspkr mc firmware_attributes_class processor_thermal_wt_hint snd_pcm wmi_=
+bmof iwlwifi platform_temperature_control processor_thermal_rfim i2c_i801 p=
+rocessor_thermal_rapl spi_intel_pci snd_ctl_led spi_intel cfg80211 intel_ra=
+pl_common snd_timer i2c_smbus mei_me thunderbolt mei
+[   87.639266]  thinkpad_acpi idma64 processor_thermal_wt_req processor_the=
+rmal_power_floor processor_thermal_mbox igen6_edac intel_soc_dts_iosf platf=
+orm_profile snd int3403_thermal soundcore int340x_thermal_zone soc_button_a=
+rray intel_pmc_core intel_hid pmt_telemetry sparse_keymap int3400_thermal a=
+cpi_thermal_rel pmt_class intel_pmc_ssram_telemetry acpi_pad acpi_tad joyde=
+v loop nfnetlink zram lz4hc_compress lz4_compress xe drm_ttm_helper drm_sub=
+alloc_helper gpu_sched drm_gpuvm drm_exec drm_gpusvm bnep btusb btrtl btint=
+el btbcm btmtk bluetooth rfkill i915 i2c_algo_bit hid_multitouch drm_buddy =
+nvme ttm nvme_core drm_display_helper polyval_clmulni ghash_clmulni_intel v=
+ideo sha512_ssse3 nvme_keyring sha1_ssse3 nvme_auth cec intel_vsec i2c_hid_=
+acpi i2c_hid ucsi_acpi typec_ucsi typec wmi pinctrl_tigerlake serio_raw fuse
+[   87.639324] CPU: 4 UID: 0 PID: 4724 Comm: kworker/u32:20 Tainted: G     =
+U  W           6.15.0 #422 PREEMPT(lazy)=20
+[   87.639328] Tainted: [U]=3DUSER, [W]=3DWARN
+[   87.639330] Hardware name: LENOVO 20XWCTO1WW/20XWCTO1WW, BIOS N32ET96W (=
+1.72 ) 03/04/2025
+[   87.639331] Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
+[   87.639391] RIP: 0010:iwl_mvm_sta_rx_agg+0x9d3/0xb70 [iwlmvm]
+[   87.639424] Code: e9 f3 fc ff ff 79 c4 31 db e9 54 fa ff ff 0f 89 e0 fc =
+ff ff e9 49 fa ff ff 0f 0b 41 b9 ea ff ff ff e9 f6 f9 ff ff 0f 0b eb f1 <0f=
+> 0b e9 e9 fe ff ff 48 8b 3f 48 c7 c6 34 96 dd c1 e8 f7 0e a1 ff
+[   87.639426] RSP: 0018:ffffcb03e11dfb80 EFLAGS: 00010286
+[   87.639429] RAX: ffff896a05ce0000 RBX: ffff896c6b2c0000 RCX: ffffffffc1d=
+c5940
+[   87.639431] RDX: 0000000000000005 RSI: 0000000000000000 RDI: ffff896a028=
+020c8
+[   87.639432] RBP: ffffcb03e11dfc40 R08: ffffffffc1dd0210 R09: 00000000000=
+00000
+[   87.639434] R10: 0000000000000005 R11: ffffcb03e11dfb30 R12: ffff896a0c9=
+daa90
+[   87.639436] R13: ffff896a0b89a008 R14: 0000000000000009 R15: 00000000000=
+00000
+[   87.639438] FS:  0000000000000000(0000) GS:ffff896daf6af000(0000) knlGS:=
+0000000000000000
+[   87.639440] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   87.639441] CR2: 00007f8e0980b460 CR3: 0000000129aa8006 CR4: 0000000000f=
+70ef0
+[   87.639443] PKRU: 55555554
+[   87.639445] Call Trace:
+[   87.639446]  <TASK>
+[   87.639450]  ? iwl_mvm_mac_ampdu_action+0xf9/0x270 [iwlmvm]
+[   87.639477]  iwl_mvm_mac_ampdu_action+0xf9/0x270 [iwlmvm]
+[   87.639504]  drv_ampdu_action+0xdc/0x1a0 [mac80211]
+[   87.639605]  __ieee80211_start_rx_ba_session+0x4c6/0x760 [mac80211]
+[   87.639719]  ieee80211_process_addba_request+0x9b/0xd0 [mac80211]
+[   87.639804]  ieee80211_iface_work+0x6f/0x1b0 [mac80211]
+[   87.639882]  cfg80211_wiphy_work+0x11e/0x190 [cfg80211]
+[   87.639944]  process_one_work+0x18f/0x350
+[   87.639950]  worker_thread+0x25a/0x3a0
+[   87.639954]  ? __pfx_worker_thread+0x10/0x10
+[   87.639958]  kthread+0xfc/0x240
+[   87.639961]  ? __pfx_kthread+0x10/0x10
+[   87.639964]  ? __pfx_kthread+0x10/0x10
+[   87.639967]  ret_from_fork+0x14f/0x180
+[   87.639971]  ? __pfx_kthread+0x10/0x10
+[   87.639973]  ret_from_fork_asm+0x1a/0x30
+[   87.639979]  </TASK>
+[   87.639980] ---[ end trace 0000000000000000 ]---
+[   87.640455] ------------[ cut here ]------------
+[   87.640456] WARNING: CPU: 4 PID: 4724 at drivers/net/wireless/intel/iwlw=
+ifi/mvm/sta.c:2990 iwl_mvm_sta_rx_agg+0x9d3/0xb70 [iwlmvm]
+[   87.640495] Modules linked in: uinput rfcomm snd_seq_dummy snd_hrtimer n=
+f_conntrack_netlink veth xt_conntrack xt_MASQUERADE bridge stp llc xt_set x=
+t_addrtype nls_utf8 cifs cifs_arc4 nls_ucs2_utils cifs_md4 dns_resolver net=
+fs overlay xt_comment nft_compat nf_conntrack_netbios_ns nf_conntrack_broad=
+cast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reje=
+ct_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack =
+nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables sunrpc qrtr snd_soc_skl_hda_=
+dsp snd_soc_intel_sof_board_helpers snd_sof_probes snd_soc_intel_hda_dsp_co=
+mmon snd_hda_codec_realtek snd_hda_codec_generic snd_hda_scodec_component b=
+infmt_misc snd_soc_dmic snd_sof_pci_intel_tgl snd_sof_pci_intel_cnl snd_sof=
+_intel_hda_generic soundwire_intel snd_sof_intel_hda_sdw_bpt vfat snd_sof_i=
+ntel_hda_common fat snd_soc_hdac_hda snd_sof_intel_hda_mlink snd_sof_intel_=
+hda snd_hda_codec_hdmi soundwire_cadence snd_sof_pci snd_sof_xtensa_dsp snd=
+_sof snd_sof_utils snd_soc_acpi_intel_match
+[   87.640552]  snd_soc_acpi_intel_sdca_quirks soundwire_generic_allocation=
+ snd_soc_acpi crc8 soundwire_bus snd_soc_sdca snd_soc_avs snd_soc_hda_codec=
+ snd_hda_ext_core snd_soc_core snd_compress ac97_bus snd_pcm_dmaengine snd_=
+hda_intel iwlmvm snd_intel_dspcfg snd_intel_sdw_acpi uvcvideo snd_hda_codec=
+ intel_uncore_frequency uvc intel_uncore_frequency_common videobuf2_vmalloc=
+ intel_tcc_cooling videobuf2_memops x86_pkg_temp_thermal snd_hda_core video=
+buf2_v4l2 intel_powerclamp snd_hwdep mac80211 videobuf2_common coretemp rap=
+l snd_seq iTCO_wdt snd_seq_device intel_pmc_bxt videodev processor_thermal_=
+device_pci_legacy think_lmi iTCO_vendor_support spi_nor processor_thermal_d=
+evice intel_cstate mtd mei_pxp mei_hdcp intel_rapl_msr libarc4 intel_uncore=
+ pcspkr mc firmware_attributes_class processor_thermal_wt_hint snd_pcm wmi_=
+bmof iwlwifi platform_temperature_control processor_thermal_rfim i2c_i801 p=
+rocessor_thermal_rapl spi_intel_pci snd_ctl_led spi_intel cfg80211 intel_ra=
+pl_common snd_timer i2c_smbus mei_me thunderbolt mei
+[   87.640611]  thinkpad_acpi idma64 processor_thermal_wt_req processor_the=
+rmal_power_floor processor_thermal_mbox igen6_edac intel_soc_dts_iosf platf=
+orm_profile snd int3403_thermal soundcore int340x_thermal_zone soc_button_a=
+rray intel_pmc_core intel_hid pmt_telemetry sparse_keymap int3400_thermal a=
+cpi_thermal_rel pmt_class intel_pmc_ssram_telemetry acpi_pad acpi_tad joyde=
+v loop nfnetlink zram lz4hc_compress lz4_compress xe drm_ttm_helper drm_sub=
+alloc_helper gpu_sched drm_gpuvm drm_exec drm_gpusvm bnep btusb btrtl btint=
+el btbcm btmtk bluetooth rfkill i915 i2c_algo_bit hid_multitouch drm_buddy =
+nvme ttm nvme_core drm_display_helper polyval_clmulni ghash_clmulni_intel v=
+ideo sha512_ssse3 nvme_keyring sha1_ssse3 nvme_auth cec intel_vsec i2c_hid_=
+acpi i2c_hid ucsi_acpi typec_ucsi typec wmi pinctrl_tigerlake serio_raw fuse
+[   87.640669] CPU: 4 UID: 0 PID: 4724 Comm: kworker/u32:20 Tainted: G     =
+U  W           6.15.0 #422 PREEMPT(lazy)=20
+[   87.640674] Tainted: [U]=3DUSER, [W]=3DWARN
+[   87.640675] Hardware name: LENOVO 20XWCTO1WW/20XWCTO1WW, BIOS N32ET96W (=
+1.72 ) 03/04/2025
+[   87.640677] Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
+[   87.640726] RIP: 0010:iwl_mvm_sta_rx_agg+0x9d3/0xb70 [iwlmvm]
+[   87.640757] Code: e9 f3 fc ff ff 79 c4 31 db e9 54 fa ff ff 0f 89 e0 fc =
+ff ff e9 49 fa ff ff 0f 0b 41 b9 ea ff ff ff e9 f6 f9 ff ff 0f 0b eb f1 <0f=
+> 0b e9 e9 fe ff ff 48 8b 3f 48 c7 c6 34 96 dd c1 e8 f7 0e a1 ff
+[   87.640760] RSP: 0018:ffffcb03e11dfb80 EFLAGS: 00010286
+[   87.640762] RAX: ffff896a052a0000 RBX: ffff896c69260000 RCX: ffffffffc1d=
+c5940
+[   87.640764] RDX: 0000000000000006 RSI: 0000000000000000 RDI: ffff896a028=
+020c8
+[   87.640766] RBP: ffffcb03e11dfc40 R08: ffffffffc1dd0210 R09: 00000000000=
+00000
+[   87.640767] R10: 0000000000000006 R11: ffffcb03e11dfb30 R12: ffff896a0c9=
+daa90
+[   87.640769] R13: ffff896a0b89a008 R14: 0000000000000009 R15: 00000000000=
+00000
+[   87.640771] FS:  0000000000000000(0000) GS:ffff896daf6af000(0000) knlGS:=
+0000000000000000
+[   87.640773] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   87.640775] CR2: 00007f8e0980b460 CR3: 0000000129aa8006 CR4: 0000000000f=
+70ef0
+[   87.640777] PKRU: 55555554
+[   87.640778] Call Trace:
+[   87.640780]  <TASK>
+[   87.640784]  ? iwl_mvm_mac_ampdu_action+0xf9/0x270 [iwlmvm]
+[   87.640820]  iwl_mvm_mac_ampdu_action+0xf9/0x270 [iwlmvm]
+[   87.640853]  drv_ampdu_action+0xdc/0x1a0 [mac80211]
+[   87.640928]  __ieee80211_start_rx_ba_session+0x4c6/0x760 [mac80211]
+[   87.641007]  ieee80211_process_addba_request+0x9b/0xd0 [mac80211]
+[   87.641103]  ieee80211_iface_work+0x6f/0x1b0 [mac80211]
+[   87.641182]  cfg80211_wiphy_work+0x11e/0x190 [cfg80211]
+[   87.641236]  process_one_work+0x18f/0x350
+[   87.641242]  worker_thread+0x25a/0x3a0
+[   87.641246]  ? __pfx_worker_thread+0x10/0x10
+[   87.641250]  kthread+0xfc/0x240
+[   87.641253]  ? __pfx_kthread+0x10/0x10
+[   87.641256]  ? __pfx_kthread+0x10/0x10
+[   87.641259]  ret_from_fork+0x14f/0x180
+[   87.641262]  ? __pfx_kthread+0x10/0x10
+[   87.641265]  ret_from_fork_asm+0x1a/0x30
+[   87.641271]  </TASK>
+[   87.641272] ---[ end trace 0000000000000000 ]---
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index c0645de95a53..59b5b2337886 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3060,6 +3060,14 @@ static int ieee80211_set_wiphy_params(struct wiphy *wiphy, int radio_idx,
- 	}
- 
- 	if (changed & WIPHY_PARAM_RTS_THRESHOLD) {
-+		u32 rts_threshold;
-+
-+		if (radio_idx >= wiphy->n_radio)
-+			rts_threshold = wiphy->rts_threshold;
-+		else
-+			rts_threshold =
-+				wiphy->radio_cfg[radio_idx].rts_threshold;
-+
- 		err = drv_set_rts_threshold(local, radio_idx,
- 					    wiphy->rts_threshold);
- 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 78cdce9d3993..272f2a4a0b02 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1829,7 +1829,12 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 	drv_set_frag_threshold(local, -1, hw->wiphy->frag_threshold);
- 
- 	/* setup RTS threshold */
--	drv_set_rts_threshold(local, -1, hw->wiphy->rts_threshold);
-+	if (hw->wiphy->n_radio > 0)
-+		for (i = 0; i < hw->wiphy->n_radio; i++)
-+			drv_set_rts_threshold(local, i,
-+					      hw->wiphy->radio_cfg[i].rts_threshold);
-+	else
-+		drv_set_rts_threshold(local, -1, hw->wiphy->rts_threshold);
- 
- 	/* reset coverage class */
- 	drv_set_coverage_class(local, -1, hw->wiphy->coverage_class);
--- 
-2.25.1
-
+--=20
+VG
+Damian Tometzki
 
