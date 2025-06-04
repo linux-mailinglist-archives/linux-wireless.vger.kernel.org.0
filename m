@@ -1,59 +1,60 @@
-Return-Path: <linux-wireless+bounces-23639-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23640-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068FAACD351
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:17:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B1FACD35E
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2FCC179FA4
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:16:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ACD717A0B2
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB1C18DB24;
-	Wed,  4 Jun 2025 01:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF39F262FD9;
+	Wed,  4 Jun 2025 01:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3BUgQAH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bKib4iFy"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5003F149C55;
-	Wed,  4 Jun 2025 01:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54BD27726;
+	Wed,  4 Jun 2025 01:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748998900; cv=none; b=vGiA5qtQcgqVQN6jQ2LlXyNNkrhdOkCdYCtbJFhZ9OJ4epS4CBdEQb3I2E3WUN6aDR2kuuN0eDSu8WOysnecvYh0Cvv96gagx/sm5ImYMnVjDam25pvRsiKmsCZcaW1FQN94k1hgoPGHomd3K2ZIVmeMNq9S+CrJQ3Bzb6neuuw=
+	t=1748998921; cv=none; b=tsaXHCrcH4mvdmc7mcSjjb6e2/irTOzDCXPNDfNUVCfzQEq07o0kKjbF7nUm8TQRED3qcCy4E0m1msN70l/AVKyTVgLGm97nVsfjlggccx9B9KbCPe5I4yCXdNIbh4kF63ON35xBQ6IVZR4aDQH/1PDufC+TZGl22valWDtCZxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748998900; c=relaxed/simple;
-	bh=n6itwyVu7IznTswjm6Mq1lvXS8BgtKOJkwcUj82VR9U=;
+	s=arc-20240116; t=1748998921; c=relaxed/simple;
+	bh=uydySe1HhrFHK7kwpcb8hJcweESGVhfG0Txr15Pw+io=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Xb3o1oFnKaleSO7jM1UzspWIKPFGIaEB4hhS2FrP0DRO9Kvnr+EfphW8NyUYPoCM9g3LNzSaIRsAo0lCKqhEUxdzhUFCO10hp0TBtYohX+/qrN6z3BDr8Wfy72TucIJjuMuMISty80RRxuHvcho7F6LKRdoSqr60Jpp1IJOFxyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3BUgQAH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289F9C4CEEF;
-	Wed,  4 Jun 2025 01:01:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n7RvUIbekqkniJ8npHnmFVa652WTS3NF1iPajHNiRLxXPJaqkdp8wZfnkGsHpSlKG5trOuhVNMEOpnuvG/D2O1vCGMzSikc/wJFaOmTbEflhcQzG2ujTU1gDOYUJsMLDduaM9V9EStGZux02qsX+iM61/i9+q+XRU1vz0nh8J2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bKib4iFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A42C4CEED;
+	Wed,  4 Jun 2025 01:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748998900;
-	bh=n6itwyVu7IznTswjm6Mq1lvXS8BgtKOJkwcUj82VR9U=;
+	s=k20201202; t=1748998921;
+	bh=uydySe1HhrFHK7kwpcb8hJcweESGVhfG0Txr15Pw+io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X3BUgQAHZLgVIM0gzv1Hok2miSrpxsQUYxGSRrLSCSnczsWENRAPNkSMWJvr2kM4i
-	 sLtROz1csa3wnzPV0Sc2ZStE83f4sXHlb5P1cfqQvSrfPJExDMfA/piFSZcXTWsDHt
-	 CwZVh5FhUy1kiuxCDF5M3xW08oErFzO1Y4nWmGPYrTlqKlsIW/qwPEnGk9Q6dSPXzO
-	 C6w/AoCk9qqFTfyTrs2MIEBjeN15xc2fP4rH+ypbdkcFjBxqLU6DJQqo3s6hSkvj1d
-	 lWVFnPZJczsHlavTXOnDiL1i4pG3OEQI7RmU65auwg2Zdp6GsQkfoJU14H5OizUJpr
-	 0XrN+PxvGdHkQ==
+	b=bKib4iFylB2G7J4MrWah+pMJMrwonVx4Jp1tR/jnsoBp6WO+8VSD3nJ8vYL1gaISP
+	 lioRLGkrKxs2Q+8365jai8JCYhqCJGdVXLgPpNsHIUs5GPP605T1Px8YEKL6rOfUDc
+	 rABa9irBLflxMIX8xue42QbmmDqT4f1CeYchTY94Qzf9e/JcuoABxLS6FF9ENqPWh2
+	 yIRrwJaibpAFD8lpZ15qiCrgzv9FwDQSk0s69fSGhiLbqyi0eSQ6F3J8GyK7XkO9yM
+	 l5YkRPMThZ5AH/sgQ4sq4eMw7OsFnQP1xuXGeQsIUQztT+C2s7WT2gHOuDjzsHMe6d
+	 VPanjAeqQOD3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
 	jjohnson@kernel.org,
 	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 77/93] wifi: ath12k: fix failed to set mhi state error during reboot with hardware grouping
-Date: Tue,  3 Jun 2025 20:59:03 -0400
-Message-Id: <20250604005919.4191884-77-sashal@kernel.org>
+	ath11k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 89/93] wifi: ath11k: determine PM policy based on machine model
+Date: Tue,  3 Jun 2025 20:59:15 -0400
+Message-Id: <20250604005919.4191884-89-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250604005919.4191884-1-sashal@kernel.org>
 References: <20250604005919.4191884-1-sashal@kernel.org>
@@ -66,105 +67,186 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.31
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit dce7aec6b1f74b0a46b901ab8de1f7bd0515f733 ]
+[ Upstream commit ce8669a27016354dfa8bf3c954255cb9f3583bae ]
 
-With hardware grouping, during reboot, whenever a device is removed, it
-powers down itself and all its partner devices in the same group. Now this
-is done by all devices and hence there is multiple power down for devices
-and hence the following error messages can be seen:
+To handle the Lenovo unexpected wakeup issue [1], previously we revert
+commit 166a490f59ac ("wifi: ath11k: support hibernation"). So currently
+WLAN target is put into WoWLAN mode during suspend. This is a temporary
+solution as it does not work on machines where WLAN power is cut off.
 
-ath12k_pci 0002:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0002:01:00.0: failed to set mhi state: POWER_OFF(3)
-ath12k_pci 0002:01:00.0: failed to set mhi state DEINIT(1) in current mhi state (0x0)
-ath12k_pci 0002:01:00.0: failed to set mhi state: DEINIT(1)
-ath12k_pci 0003:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0003:01:00.0: failed to set mhi state: POWER_OFF(3)
-ath12k_pci 0003:01:00.0: failed to set mhi state DEINIT(1) in current mhi state (0x0)
-ath12k_pci 0003:01:00.0: failed to set mhi state: DEINIT(1)
-ath12k_pci 0004:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0004:01:00.0: failed to set mhi state: POWER_OFF(3)
+The thought here is that we do WoWLAN suspend on Lenovo machines while
+do non-WoWLAN suspend (which is done in the reverted commit) on other
+machines. This requires us to identify Lenovo machines from others.
+For that purpose, read board vendor and product name from DMI interface,
+match it against all known affected machines. If there is a match, choose
+WoWLAN suspend mode, else choose non-WoWLAN mode. Save the mode in ab
+for later reference.
 
-To prevent this, check if the ATH12K_PCI_FLAG_INIT_DONE flag is already
-set before powering down. If it is set, it indicates that another partner
-device has already performed the power down, and this device can skip this
-step.
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
 
-Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250408-fix_reboot_issues_with_hw_grouping-v4-3-95e7bf048595@oss.qualcomm.com
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250328-ath11k-bring-hibernation-back-v3-1-23405ae23431@quicinc.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-Based on my analysis of the commit and the surrounding kernel code, here
-is my assessment: **YES** This commit should be backported to stable
-kernel trees. ## Detailed Analysis **The Bug Being Fixed:** The commit
-addresses a specific issue with hardware grouping in ath12k WiFi devices
-where multiple power-down operations during reboot cause MHI (Modem Host
-Interface) state transition errors. The error messages show failed
-attempts to set MHI state to POWER_OFF(3) and DEINIT(1) when the current
-state is already 0x0, indicating the device has already been powered
-down. **Code Changes Analysis:** The fix is extremely minimal and
-surgical - it adds only 3 lines of code: ```c if
-(!test_bit(ATH12K_PCI_FLAG_INIT_DONE, &ab_pci->flags)) return; ``` This
-check is added at the beginning of `ath12k_pci_power_down()` function at
-line 1491-1492. The logic is sound: 1. **ATH12K_PCI_FLAG_INIT_DONE**
-flag is set in `ath12k_pci_start()` (line 1170) when the device is
-properly initialized 2. **The flag is cleared** in
-`ath12k_pci_power_down()` (line 1500) after successful power down 3.
-**The new check** prevents redundant power-down operations by returning
-early if the flag is already cleared (meaning device was already powered
-down) **Why This Qualifies for Backporting:** 1. **Clear Bug Fix**: The
-commit directly addresses user-visible error messages during system
-reboot - a clear operational issue affecting stability. 2. **Minimal
-Risk**: The change is extremely contained (3 lines) and only affects the
-power-down path. It doesn't introduce new functionality or architectural
-changes. 3. **Hardware-Specific Issue**: This affects specific WiFi
-hardware (QCN9274, WCN7850) that users may have in stable kernel
-configurations. 4. **Similar Pattern**: Looking at the similar commits,
-commit #2 (ath11k IRQ affinity fix) and commit #4 (MHI PCI shutdown
-callback) were both marked as YES for backporting. They share similar
-characteristics: - Small, targeted fixes - Address shutdown/reboot
-issues - Minimal code changes - Clear problem resolution 5. **Race
-Condition Fix**: This addresses a race condition where multiple devices
-in a hardware group try to power down simultaneously, which is a classic
-stability issue suitable for stable trees. 6. **Low Regression Risk**:
-The change only adds an early return condition based on an existing flag
-that's already used throughout the codebase for the same purpose -
-tracking initialization state. **Supporting Evidence from Code:** - The
-`ATH12K_PCI_FLAG_INIT_DONE` flag is already used consistently throughout
-the driver to track device state - The MHI error handling code shows
-these are expected error paths that should be avoided (lines 529, 607 in
-mhi.c) - The commit includes proper testing on multiple hardware
-variants This is a textbook example of a stable-tree appropriate fix:
-small, targeted, fixes a clear user-impacting bug, with minimal
-regression risk.
+**YES** This commit should definitely be backported to stable kernel
+trees. Here's my detailed analysis: ## Bug Fix Nature This commit
+clearly fixes a specific user-visible bug affecting Lenovo laptops with
+WiFi suspend/wake functionality. The commit message explicitly
+references bugzilla.kernel.org issue #219196, indicating this addresses
+real user complaints about unexpected wakeup behavior. This aligns
+perfectly with the **YES** backport example (Similar Commit #1) which
+also reverted hibernation support due to Lenovo platform suspend issues.
+## Code Changes Analysis ### 1. DMI Quirk Table Addition ```c +static
+const struct dmi_system_id ath11k_pm_quirk_table[] = { + { +
+.driver_data = (void *)ATH11K_PM_WOW, + .matches = { +
+DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"), + DMI_MATCH(DMI_PRODUCT_NAME,
+"21J4"), + }, + }, ``` This is a standard, low-risk pattern used
+throughout the kernel for hardware-specific workarounds. It only affects
+machines that exactly match the DMI criteria. ### 2. PM Policy
+Infrastructure ```c +enum ath11k_pm_policy { + ATH11K_PM_DEFAULT, +
+ATH11K_PM_WOW, +}; ``` The commit adds a simple enum and uses existing
+WoWLAN suspend mechanisms rather than introducing new power management
+code. ### 3. Policy Selection Logic ```c + dmi_id =
+dmi_first_match(ath11k_pm_quirk_table); + if (dmi_id) + ab->pm_policy =
+(kernel_ulong_t)dmi_id->driver_data; + else + ab->pm_policy =
+ATH11K_PM_DEFAULT; ``` This is straightforward DMI matching that sets a
+policy flag without changing core functionality. ## Risk Assessment
+**Extremely Low Risk:** - **Scope**: Only affects specific Lenovo laptop
+models (21J4, 21K4, 21K6, 21K8, 21KA, 21F9) - **Fallback**: Non-matching
+machines continue using existing default behavior - **Tested Path**:
+WoWLAN suspend mode is already implemented and working - **No Core
+Changes**: Doesn't modify suspend/resume logic, just selects which path
+to use ## Comparison to Reference Commits This follows the same pattern
+as **Similar Commit #1** (marked YES), which also addressed Lenovo
+platform suspend issues by reverting hibernation support. Both commits:
+- Target specific hardware compatibility issues - Use conservative
+approaches (WoWLAN vs full hibernation) - Have minimal code footprint -
+Address real user bug reports Unlike the **NO** examples which add new
+features (WoWLAN support, new suspend capabilities), this commit uses
+existing infrastructure to fix hardware-specific incompatibilities. ##
+Stable Tree Criteria Alignment ✅ **Fixes important bugs** - Suspend/wake
+functionality on laptops ✅ **Small and contained** - Only DMI table and
+policy selection ✅ **Low regression risk** - Targeted to specific
+hardware ✅ **User-visible impact** - Improves power management behavior
+✅ **No architectural changes** - Uses existing WoWLAN mechanisms This is
+an ideal stable backport candidate that fixes real user issues with
+minimal risk.
 
- drivers/net/wireless/ath/ath12k/pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath11k/core.c | 55 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/core.h |  7 ++++
+ 2 files changed, 62 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 45d537066345a..34855e2d540ca 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1301,6 +1301,9 @@ void ath12k_pci_power_down(struct ath12k_base *ab, bool is_suspend)
- {
- 	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 7eba6ee054ffe..041d890b94261 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -811,6 +811,52 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 	},
+ };
  
-+	if (!test_bit(ATH12K_PCI_FLAG_INIT_DONE, &ab_pci->flags))
-+		return;
++static const struct dmi_system_id ath11k_pm_quirk_table[] = {
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21J4"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K8"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21KA"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21F9"),
++		},
++	},
++	{}
++};
 +
- 	/* restore aspm in case firmware bootup fails */
- 	ath12k_pci_aspm_restore(ab_pci);
+ static inline struct ath11k_pdev *ath11k_core_get_single_pdev(struct ath11k_base *ab)
+ {
+ 	WARN_ON(!ab->hw_params.single_pdev_only);
+@@ -2190,8 +2236,17 @@ EXPORT_SYMBOL(ath11k_core_pre_init);
  
+ int ath11k_core_init(struct ath11k_base *ab)
+ {
++	const struct dmi_system_id *dmi_id;
+ 	int ret;
+ 
++	dmi_id = dmi_first_match(ath11k_pm_quirk_table);
++	if (dmi_id)
++		ab->pm_policy = (kernel_ulong_t)dmi_id->driver_data;
++	else
++		ab->pm_policy = ATH11K_PM_DEFAULT;
++
++	ath11k_dbg(ab, ATH11K_DBG_BOOT, "pm policy %u\n", ab->pm_policy);
++
+ 	ret = ath11k_core_soc_create(ab);
+ 	if (ret) {
+ 		ath11k_err(ab, "failed to create soc core: %d\n", ret);
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 09c37e19a1680..c9d7e18a4e492 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -889,6 +889,11 @@ struct ath11k_msi_config {
+ 	u16 hw_rev;
+ };
+ 
++enum ath11k_pm_policy {
++	ATH11K_PM_DEFAULT,
++	ATH11K_PM_WOW,
++};
++
+ /* Master structure to hold the hw data which may be used in core module */
+ struct ath11k_base {
+ 	enum ath11k_hw_rev hw_rev;
+@@ -1051,6 +1056,8 @@ struct ath11k_base {
+ 	} testmode;
+ #endif
+ 
++	enum ath11k_pm_policy pm_policy;
++
+ 	/* must be last */
+ 	u8 drv_priv[] __aligned(sizeof(void *));
+ };
 -- 
 2.39.5
 
