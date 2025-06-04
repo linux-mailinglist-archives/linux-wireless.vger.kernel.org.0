@@ -1,56 +1,56 @@
-Return-Path: <linux-wireless+bounces-23587-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23588-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC086ACD158
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 02:55:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06AE2ACD17F
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 02:57:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9645D188E915
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 00:54:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A17BB177F44
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 00:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E4086328;
-	Wed,  4 Jun 2025 00:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81271DED70;
+	Wed,  4 Jun 2025 00:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W9a5dlqG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KTS/pBpV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8FF35971;
-	Wed,  4 Jun 2025 00:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB37F1DF271;
+	Wed,  4 Jun 2025 00:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748998321; cv=none; b=eS7OHngvJuKJTDmeViCICFZqLTcH526Nc+s3EIdA4fdgr7e8vbprZPah+wDOalCFptmaCUtiHf6cwFc6qnRokaDYDUJQHQxYRqf6BUSoUO9eCZS9iXWzZr8OKcX2UuL73i8fKdv0ZZ/3RWd+c6bFnZcgOSIrJOzLKmEa9OvL+NA=
+	t=1748998375; cv=none; b=JKT+zeN9Urd9t9k8mYDPHmsaVF/mqGoYZTA6GaI/z/4fDpAQ8xkUIOtVJPENb2/5u19B6IjWVxq+z4XQoNTCQJ48wOJjyHu3XaOUVFvBWwyheo/8rdrMf5qLolkoMGU0a/mRdbsCXyCs6wwCbVtRABY2xqRGQKjJU43H2PaIpJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748998321; c=relaxed/simple;
-	bh=w25Yqt7aVyriXcJPNvkZZDl03quAEru+mgbeXJTMLXg=;
+	s=arc-20240116; t=1748998375; c=relaxed/simple;
+	bh=aeXbskdEN6FTZKMfgECBMayTttfp/K77bjuf5/4uUTA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qGSLjLqh//vjl4KDEqLERaVAln0+LirVTdjLxUBWYjEa8cDWRr7DUZ5IqJ8uIFPecywI4jdtKgDXTmYyyRhC8dpcIt+2QcEVkyTySdmXbK+C8PjbsNaBS/CUMUFmSfSG5BB/BzoF4lb+Eadkzu5ybnn7ZKTeCGr5XzICkCNXkkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W9a5dlqG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC07C4CEF1;
-	Wed,  4 Jun 2025 00:51:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wrm43Ri42qUxJyCZQdLIMro6AIS4TiSojz9ewtCXkHr6AEvfDNTb5NgSTz0jBo7TFPD+JOtH0+gbRFM+P96h0UMpF+qAiVVg0bdqdoOtzMEfSolaUAB6n50H4L4lGVyuJ8N2vuMTB6w7y6JvOynw4AUQoCCpgWNvP5XGMT53oWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KTS/pBpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCB4C4CEF2;
+	Wed,  4 Jun 2025 00:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748998320;
-	bh=w25Yqt7aVyriXcJPNvkZZDl03quAEru+mgbeXJTMLXg=;
+	s=k20201202; t=1748998373;
+	bh=aeXbskdEN6FTZKMfgECBMayTttfp/K77bjuf5/4uUTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9a5dlqGee8qmXo6/S+KP1MJeLaou6Y8LjlXHpH78B2KklS+5eBVbbPJ1ES/v3ZMR
-	 FzoDeH7FI1dcG0f0tDGptFzaXRRxd1uh3aghH1Go0AbcV60G7x9GhssfvLDjbBXZOA
-	 Mqwqjtz4e2bZVgDFsqHStH1H75T+aKySCviwJxeuas5RPQDLeQ9KUkKdTp2ZgjLSpc
-	 EUodtBHxQeYwZztUoTSHVFy2SOmXzYuwnvRNICPdeusyS8OHBzwX4efci3Utznj0Uj
-	 wy0h+EAv+fOi686JMoWFTjEhEJRdeD5zvlz3ClWmaFvk3KkBOhephebCGxLht6Bvir
-	 iivknIvE0sxYQ==
+	b=KTS/pBpVf3MOPIUcaF3Uigljeypym8exqleGh2rFBzIz/XZzvgsmR6i/eeIwVhnaH
+	 rkA7zXBTh2a9oYre+tjZXxHWS9O1jmgKq0E9kvz/CfiY88cwIUuKZY2TPsBvwg8WTN
+	 jJIl65wjFhEJqsLfQoQO/djyr6mDLlStLt4lh1u7mF0e7XAcSLby1/fIMP7oFXE2HE
+	 OjB/pA9Zpj2TnAf6+P1XNkB5kRHYZ/exdZyXlTYWeIks1eDx/vWz1MSdSft40PLYUX
+	 MyTSH7yXgFq+u5HYEcYBK6aGm5vwcRrpG0mX0/rGR0rvIvZ6sBMKraApcrcz/3XcQl
+	 MZTgiszoYhv/g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Dian-Syuan Yang <dian_syuan0116@realtek.com>,
+Cc: Yuuki NAGAO <wf.yn386@gmail.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.15 034/118] wifi: rtw89: leave idle mode when setting WEP encryption for AP mode
-Date: Tue,  3 Jun 2025 20:49:25 -0400
-Message-Id: <20250604005049.4147522-34-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.15 056/118] wifi: rtw88: rtw8822bu VID/PID for BUFFALO WI-U2-866DM
+Date: Tue,  3 Jun 2025 20:49:47 -0400
+Message-Id: <20250604005049.4147522-56-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250604005049.4147522-1-sashal@kernel.org>
 References: <20250604005049.4147522-1-sashal@kernel.org>
@@ -66,100 +66,77 @@ X-stable-base: Linux 6.15
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+From: Yuuki NAGAO <wf.yn386@gmail.com>
 
-[ Upstream commit d105652b33245162867ac769bea336976e67efb8 ]
+[ Upstream commit b7f0cc647e52296a3d4dd727b6479dcd6d7e364e ]
 
-Due to mac80211 triggering the hardware to enter idle mode, it fails
-to install WEP key causing connected station can't ping successfully.
-Currently, it forces the hardware to leave idle mode before driver
-adding WEP keys.
+Add VID/PID 0411/03d1 for recently released
+BUFFALO WI-U2-866DM USB WiFi adapter.
 
-Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+Signed-off-by: Yuuki NAGAO <wf.yn386@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250507031203.8256-1-pkshih@realtek.com
+Link: https://patch.msgid.link/20250503003227.6673-1-wf.yn386@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-**YES** This commit should be backported to stable kernel trees. Here's
-my extensive analysis: ## Bug Fix Analysis **Real User-Affecting Bug**:
-The commit fixes a clear functional issue where WEP encryption key
-installation fails in AP mode when the rtw89 wireless device is in idle
-mode. This directly impacts users trying to establish WEP-encrypted
-connections to an AP, causing authentication failures and preventing
-network connectivity. **Specific Technical Problem**: When mac80211 puts
-the hardware into idle mode (IPS - Idle Power Save), the rtw89
-firmware/hardware enters a low-power state where key installation
-operations fail. This is particularly problematic for WEP encryption
-which appears to have specific hardware state requirements. ## Code
-Change Analysis **Minimal and Targeted**: The fix adds exactly two lines
-of code: ```c case WLAN_CIPHER_SUITE_WEP40:
-rtw89_leave_ips_by_hwflags(rtwdev); // NEW hw_key_type =
-RTW89_SEC_KEY_TYPE_WEP40; break; case WLAN_CIPHER_SUITE_WEP104:
-rtw89_leave_ips_by_hwflags(rtwdev); // NEW hw_key_type =
-RTW89_SEC_KEY_TYPE_WEP104; break; ``` **Uses Existing Infrastructure**:
-The fix leverages the existing `rtw89_leave_ips_by_hwflags()` function,
-which is a well-tested mechanism already used throughout the driver for
-similar power management scenarios. **WEP-Specific Requirement**:
-Notably, other cipher types (TKIP, CCMP, GCMP) don't require this call,
-indicating WEP has unique hardware state dependencies - likely due to
-its legacy implementation requiring specific firmware states. ## Risk
-Assessment **Very Low Risk**: - The `rtw89_leave_ips_by_hwflags()`
-function only acts when the hardware is actually in idle mode
-(`IEEE80211_CONF_IDLE` flag set) - It's a conditional safety mechanism
-that doesn't affect normal operation - Limited scope - only affects
-WEP40/WEP104 cipher types - Follows established patterns already present
-in the driver **No Architectural Changes**: This is purely a bug fix
-that ensures hardware is in the correct state before performing WEP key
-operations. ## Stable Tree Criteria Compliance **Meets All Stable
-Requirements**: 1. ✅ **Important bug fix**: Resolves WEP authentication
-failures in AP mode 2. ✅ **Small and contained**: Two identical function
-calls in a switch statement 3. ✅ **Obviously correct**: Uses existing,
-proven power management infrastructure 4. ✅ **Low regression risk**:
-Conservative fix affecting only legacy WEP encryption 5. ✅ **User-
-visible impact**: Fixes network connectivity issues ## Comparison with
-Historical Commits Looking at the similar commits provided, this follows
-the same pattern as other rtw88/rtw89 power management fixes that were
-marked as "NO" for backporting. However, those commits were primarily
-optimizations or behavior changes during scanning operations, not fixes
-for broken functionality. This commit differs because: - It fixes a
-**broken feature** (WEP key installation failure) - It's not an
-optimization or behavioral change - It has direct user-visible impact
-(connection failures) - It's a minimal, surgical fix for a specific
-failure mode ## Conclusion This is a textbook example of a commit
-suitable for stable backporting: it fixes a real bug affecting users,
-uses minimal and safe code changes, and follows established driver
-patterns. The fix ensures WEP encryption works properly in AP mode by
-guaranteeing the hardware is powered up during key installation
-operations.
+Based on my analysis of the commit and comparison with the similar
+commits provided, here is my assessment: **YES** This commit should be
+backported to stable kernel trees for the following reasons: ## Analysis
+**1. Hardware Support Addition**: This commit adds VID/PID 0411/03d1 for
+the Buffalo WI-U2-866DM USB WiFi adapter to the rtw8822bu driver. This
+is a straightforward device identification addition that enables
+hardware support for users who have this specific device. **2. Code
+Changes Analysis**: The change is minimal and extremely low-risk: -
+**Single line addition**: Only adds one USB device table entry at line
+80-81 in `/drivers/net/wireless/realtek/rtw88/rtw8822bu.c` - **No
+functional code changes**: No modifications to driver logic, algorithms,
+or behavior - **Standard pattern**: Uses the exact same pattern as all
+other device entries in the table - **Reuses existing hardware
+specification**: Points to the same `rtw8822b_hw_spec` used by other
+8822bu devices **3. Comparison with Similar Commits**: - **Similar
+Commit #1** (Status: YES): Removing incorrect VID/PID had `Cc:
+stable@vger.kernel.org` and was backported - **Similar Commit #3**
+(Status: YES): Adding missing VID/PIDs for 8811CU and 8821CU had `Cc:
+stable@vger.kernel.org` and was backported - **Similar Commit #5**
+(Status: YES): Adding Buffalo WLI-UC-G450 device had `Cc:
+stable@vger.kernel.org` and was backported **4. Buffalo Device
+Pattern**: The git history shows Buffalo devices with vendor ID 0x0411
+are commonly supported across multiple rtw88 drivers (rtw8812au.c,
+rtw8821au.c, and now rtw8822bu.c), indicating this is a legitimate and
+expected device addition. **5. User Impact**: Users with this specific
+Buffalo USB WiFi adapter will have working WiFi support instead of non-
+functional hardware. This fixes a user-visible issue where the device is
+not recognized. **6. Stable Tree Criteria Met**: - ✅ **Important
+bugfix**: Enables hardware support for affected users - ✅ **Small and
+contained**: Single line addition, no behavior changes - ✅ **Minimal
+regression risk**: Cannot break existing functionality - ✅ **Confined to
+subsystem**: Only affects USB device identification in rtw88 - ✅ **Clear
+benefit**: Enables WiFi functionality for specific hardware **7. Missing
+Stable Tag**: While the original commit lacks an explicit `Cc:
+stable@vger.kernel.org` tag, this appears to be an oversight given that
+similar commits in the same subsystem (commits 0af8cd2822f3 and
+b8a62478f3b1) included stable tags for nearly identical device addition
+changes. The change is essentially risk-free as it only extends hardware
+compatibility without affecting any existing code paths or device
+support.
 
- drivers/net/wireless/realtek/rtw89/cam.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/realtek/rtw88/rtw8822bu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index eca3d767ff603..bc6f799e291e8 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -6,6 +6,7 @@
- #include "debug.h"
- #include "fw.h"
- #include "mac.h"
-+#include "ps.h"
- 
- static struct sk_buff *
- rtw89_cam_get_sec_key_cmd(struct rtw89_dev *rtwdev,
-@@ -471,9 +472,11 @@ int rtw89_cam_sec_key_add(struct rtw89_dev *rtwdev,
- 
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_WEP40:
-+		rtw89_leave_ips_by_hwflags(rtwdev);
- 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP40;
- 		break;
- 	case WLAN_CIPHER_SUITE_WEP104:
-+		rtw89_leave_ips_by_hwflags(rtwdev);
- 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP104;
- 		break;
- 	case WLAN_CIPHER_SUITE_TKIP:
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+index 572d1f31832ee..ab50b3c405626 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+@@ -77,6 +77,8 @@ static const struct usb_device_id rtw_8822bu_id_table[] = {
+ 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* Mercusys MA30N */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3322, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* D-Link DWA-T185 rev. A1 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03d1, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* BUFFALO WI-U2-866DM */
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(usb, rtw_8822bu_id_table);
 -- 
 2.39.5
 
