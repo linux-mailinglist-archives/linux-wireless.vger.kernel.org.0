@@ -1,186 +1,129 @@
-Return-Path: <linux-wireless+bounces-23661-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23662-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C84EACD4BF
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:32:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F3BACD512
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:40:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5AB97A31A5
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:30:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1089D189F542
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAA51BD9C1;
-	Wed,  4 Jun 2025 01:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8BCB32C85;
+	Wed,  4 Jun 2025 01:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BwbMfnCW"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="FQgOfqo+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149A819E971;
-	Wed,  4 Jun 2025 01:07:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D96D2C324C;
+	Wed,  4 Jun 2025 01:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748999252; cv=none; b=By6Y9w6GfCNYoEVZkmskCE5eR/TI46/ZASne2rvnT122S/YbD2jJcvC3TVHynXABI5HDI4SHpXZoGV9ypUXjBNa01jOPgQlo3jVYmHLn6x2OG5QOc+0b+pEs+M4OEeluMUTvkpXoNf7P5V6QZqB3/NKoznxx+Px4M1TDchiBeC8=
+	t=1749000555; cv=none; b=YZluqrCcBZ/apfVCnNhFQInZdGnNr2MPcbSH0bzEmE0d2Mi18t4+2Hzp/m8R60VEokjcVFOGmy2CB6R74a1xBlm7Z6UlOe7vM7a7oWmiyEBN3cFg4iaxzvjYFXgO3f8UN6kGAcA6KhMsMxkaug2j0zqM10RLu4yeYEmJYfHtFR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748999252; c=relaxed/simple;
-	bh=fxcznyd0QJQJMN0xgYNlD/GPzoBClrtUUbQJOAK8u4I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NQcphsamzybhRfPWOWEUPhfNTbIzuoG1adCZ2Ehx1JNiqzllBS+LL2pmgJy75qjEA6oHF7ZyA1qeJXN0eNsxxuLcH2EnVUquINOqzNj1ftBI1JOJeJNO9+yZxGUAkxELKL+6axqYM749fB8idjc3/PUHW7/s/F2eQhNa5RwnDGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BwbMfnCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23E3C4CEF1;
-	Wed,  4 Jun 2025 01:07:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748999251;
-	bh=fxcznyd0QJQJMN0xgYNlD/GPzoBClrtUUbQJOAK8u4I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BwbMfnCWf8iTRKxM3zWSqmwg6/vgD3KtJfWkXP5iJS5JjTb1GiqBJSimo83mDWZJc
-	 knX4GxWim+Gp9mQrVaGmtccDuGTODKEjHrcM9nkXvDJNVn6QqSahRgE2B6qIxhI/BV
-	 9zYzeF8OGqE1gYgNsPxTX9FSPIXkjXm0sHZZ+YZit+fj1t4Ofu4ohaYljQPK832UYv
-	 pAMPNuF+rDjC67vQnibsCWS3vs8qWSdGl1mg9fOFdhJ7fe6+e8R8x/XFIYgDVl9R9o
-	 JvHldcPzyC61Cnq/jzPjx2G8Opd6yFPFLbHJkPX8irxJvVNefhmqDM0J0xqcFSiO9q
-	 M+snhGcaedupw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Benjamin Berg <benjamin@sipsolutions.net>,
-	Rouven Czerwinski <rouven@czerwinskis.de>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 15/20] wifi: mac80211: do not offer a mesh path if forwarding is disabled
-Date: Tue,  3 Jun 2025 21:07:01 -0400
-Message-Id: <20250604010706.7395-15-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250604010706.7395-1-sashal@kernel.org>
-References: <20250604010706.7395-1-sashal@kernel.org>
+	s=arc-20240116; t=1749000555; c=relaxed/simple;
+	bh=j/NPCh5DQa2xcsNxzb/p1lRa6fF6E/9eXtCMwsq21EA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=T+592GygiUTeWOK/TbLbBjqObfgj7RVuLk2gBhyTdOPX7rXDE0fU6h42VmWBFIbVI8cxff1r809TgKDIuJ4lkO56nru0sVDAvmOS3Ly8KRaLxObxKEBQ1rhkQdKIOt6QahX+gqeP2WSpd2TAQ5wMfiDK4X9sWhTxOrI7q+RT3EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=FQgOfqo+; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5541SokgE3213318, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1749000530; bh=xhH17oG3AWktkKzbVttv4czOarpFP+rI4ohwnxgM7dM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=FQgOfqo+HcEvKeOqEOI6TWbjq5x3oI8zgKHYeNXvruUaqXS+yPkMLF3Rv5GKCEvZY
+	 2SjzqQmh9+omsRelK5p4bvFkRM8c/DqohjkMvC7c+0NRNuuyJ+w7Csjv1sf/VizA5z
+	 gmS6U/A0QSJjvjMtJBSVMwozEoYSnJCBRtV7XxrZ/Yr8TMp1Q2qvnbK8U3J55zjntH
+	 BWa2dJg2Fryj/bjsi3IK8eVnOGh+w89Ik249LINkvm6Zi5RZg33jhj968yQqitfqgR
+	 DsbmPo5fxUCTG+Y6D3Pb4tfL90fo2d6SXcFc2vYagZgRS8BwWt+731tKb68epdorKD
+	 8I7jpM5iDzwuQ==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 5541SokgE3213318
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 4 Jun 2025 09:28:50 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 4 Jun 2025 09:28:50 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 4 Jun 2025 09:28:49 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Wed, 4 Jun 2025 09:28:49 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+CC: Zong-Zhe Yang <kevin_yang@realtek.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>
+Subject: RE: [PATCH rtw-next] wifi: rtw89: sar: drop assertion from rtw89_sar_set_src()
+Thread-Topic: [PATCH rtw-next] wifi: rtw89: sar: drop assertion from
+ rtw89_sar_set_src()
+Thread-Index: AQHb1Jv2hJXUsGxDxUiYdu3AFwIyO7PyNE+A
+Date: Wed, 4 Jun 2025 01:28:49 +0000
+Message-ID: <aa24adf30a1e4944acefa4effff46dfd@realtek.com>
+References: <20250603152642.185672-1-pchelkin@ispras.ru>
+In-Reply-To: <20250603152642.185672-1-pchelkin@ispras.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.293
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+> Urgh, this one wasn't caught as my system doesn't have any SAR available
+> from ACPI. But it would be falsely triggered, too. If I saw it earlier,
+> I'd better prepared this as a followup patch in a series though..
+>=20
 
-[ Upstream commit cf1b684a06170d253b47d6a5287821de976435bd ]
+Good catch.=20
 
-When processing a PREQ the code would always check whether we have a
-mesh path locally and reply accordingly. However, when forwarding is
-disabled then we should not reply with this information as we will not
-forward data packets down that path.
+There are two consumers. One is rtw89_apply_sar_acpi() which should not
+assert wiphy_lock, but the other rtw89_apply_sar_common() can be. As I know=
+,
+the assertion is added for the latter one initially.
 
-Move the check for dot11MeshForwarding up in the function and skip the
-mesh path lookup in that case. In the else block, set forward to false
-so that the rest of the function becomes a no-op and the
-dot11MeshForwarding check does not need to be duplicated.
+Another way is to assert the lock under condition of=20
+   test_bit(RTW89_FLAG_PROBE_DONE, rtwdev->flags)
 
-This explains an effect observed in the Freifunk community where mesh
-forwarding is disabled. In that case a mesh with three STAs and only bad
-links in between them, individual STAs would occionally have indirect
-mpath entries. This should not have happened.
 
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Reviewed-by: Rouven Czerwinski <rouven@czerwinskis.de>
-Link: https://patch.msgid.link/20250430191042.3287004-1-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-Based on my analysis of the commit and the code, here is my assessment:
-**YES** This commit should be backported to stable kernel trees. Here's
-my extensive analysis: ## 1. Bug Fix Analysis The commit fixes a clear
-logical bug in the mesh networking HWMP (Hybrid Wireless Mesh Protocol)
-path selection algorithm. When `dot11MeshForwarding` is disabled, the
-code was incorrectly: - Still performing mesh path lookups for PREQ
-(Path Request) messages - Potentially replying with mesh path
-information even though forwarding was disabled - Creating indirect mesh
-path entries when it shouldn't ## 2. Code Analysis Looking at the
-changes in `/net/mac80211/mesh_hwmp.c:619-676`: **Before the fix:** -
-Line 639: `} else {` - The final else branch handles the case where the
-target is neither local nor broadcast - Lines 640-656: This section
-performs mesh path lookup and potentially replies with path information
-**regardless** of forwarding status - Line 657: `} else {` - Only sets
-`forward = false` but after potentially harmful operations **After the
-fix:** - Line 639: `} else if (ifmsh->mshcfg.dot11MeshForwarding) {` -
-Now conditions the mesh path lookup on forwarding being enabled - Lines
-657-659: `} else { forward = false; }` - Clean fallback when forwarding
-is disabled ## 3. Impact Assessment This is a **contained, low-risk
-fix** that: - **Fixes incorrect behavior**: Prevents mesh nodes from
-providing routing information when they won't actually forward packets -
-**Prevents resource waste**: Avoids unnecessary mesh path lookups when
-forwarding is disabled - **Improves network correctness**: Fixes the
-inconsistency where nodes advertise paths they won't use - **Addresses
-real-world issue**: The commit message mentions this was observed in the
-Freifunk community ## 4. Comparison with Similar Commits This fix aligns
-perfectly with the **YES** backport examples: **Similar to Commit #1
-(mesh: Do not send PREQ if HWMP is disabled):** - Both prevent
-sending/processing mesh protocol messages when a feature is disabled -
-Both are small, surgical fixes to logical conditions - Both prevent
-waste of network resources **Similar to Commit #3 (fix mesh path
-discovery):** - Both fix incorrect mesh path handling logic - Both have
-small, focused changes - Both include explicit mention of fixing
-behavior observed in real deployments **Similar to Commit #4 (fix mesh
-forwarding):** - Both are mesh forwarding-related fixes - Both are
-minimal changes with clear intent - Both fix protocol correctness issues
-## 5. Stable Backport Criteria Check ✅ **Fixes important bug**: Yes -
-incorrect mesh protocol behavior ✅ **Small and contained**: Yes - only 4
-lines changed, well-isolated ✅ **No new features**: Correct - only fixes
-existing logic ✅ **No architectural changes**: Correct - just reorders
-existing conditions ✅ **Low regression risk**: Very low - change is
-localized and logical ✅ **Clear side effects**: None beyond the intended
-fix ## 6. Risk Assessment The change is **extremely low risk** because:
-- It only affects the specific case where `dot11MeshForwarding` is
-disabled - It makes the code behavior more consistent (when forwarding
-is off, don't provide path info) - The change is in line with the
-intended semantics of the forwarding flag - It's a pure logic fix
-without touching data structures or complex algorithms This commit
-represents exactly the type of fix that stable trees are meant to
-include: a small, well-understood bug fix that improves correctness
-without introducing regression risk.
-
- net/mac80211/mesh_hwmp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 295f98b4502e0..ae1c700dc82e8 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -620,7 +620,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 				mesh_path_add_gate(mpath);
- 		}
- 		rcu_read_unlock();
--	} else {
-+	} else if (ifmsh->mshcfg.dot11MeshForwarding) {
- 		rcu_read_lock();
- 		mpath = mesh_path_lookup(sdata, target_addr);
- 		if (mpath) {
-@@ -638,6 +638,8 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 			}
- 		}
- 		rcu_read_unlock();
-+	} else {
-+		forward = false;
- 	}
- 
- 	if (reply) {
-@@ -655,7 +657,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 		}
- 	}
- 
--	if (forward && ifmsh->mshcfg.dot11MeshForwarding) {
-+	if (forward) {
- 		u32 preq_id;
- 		u8 hopcount;
- 
--- 
-2.39.5
+>  drivers/net/wireless/realtek/rtw89/sar.c | 1 -
+>  1 file changed, 1 deletion(-)
+>=20
+> diff --git a/drivers/net/wireless/realtek/rtw89/sar.c b/drivers/net/wirel=
+ess/realtek/rtw89/sar.c
+> index 33a4b5c23fe7..3f57881b74e6 100644
+> --- a/drivers/net/wireless/realtek/rtw89/sar.c
+> +++ b/drivers/net/wireless/realtek/rtw89/sar.c
+> @@ -199,7 +199,6 @@ struct rtw89_sar_handler rtw89_sar_handlers[RTW89_SAR=
+_SOURCE_NR] =3D {
+>                 typeof(_dev) _d =3D (_dev);                              =
+ \
+>                 BUILD_BUG_ON(!rtw89_sar_handlers[_s].descr_sar_source); \
+>                 BUILD_BUG_ON(!rtw89_sar_handlers[_s].query_sar_config); \
+> -               lockdep_assert_wiphy(_d->hw->wiphy);                    \
+>                 _d->sar._cfg_name =3D *(_cfg_data);                      =
+ \
+>                 _d->sar.src =3D _s;                                      =
+ \
+>         } while (0)
+> --
+> 2.49.0
+>=20
 
 
