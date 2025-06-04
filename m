@@ -1,332 +1,185 @@
-Return-Path: <linux-wireless+bounces-23694-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23695-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C6DACDBBC
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 12:16:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9141DACDBF4
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 12:26:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9F953A246F
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 10:16:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89CEE18989F9
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 10:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB36456B81;
-	Wed,  4 Jun 2025 10:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB3528BA8B;
+	Wed,  4 Jun 2025 10:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QiVB3aDA"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GKlSmDUe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DC92AE84
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Jun 2025 10:16:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D04125179A
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Jun 2025 10:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749032196; cv=none; b=lfMdF5Ogcwo6Vins0hFv+27gXtZb3QWKIAJs2ORXUPw7C4Ghs1bKJFnSwl4eZjEZwYiXTod1n49cKKOrp1Q/Kr4iKl2i8e3Fr50Tujtufs3WV65TdKGIgMFW8zzGv1bj/gAC4HyIEeRMUIuRNomRCGNGfGqAPJGhz1ydptmGodk=
+	t=1749032767; cv=none; b=P+iWaELWBkNMTqdZVLS4e5XXkhLK4n0sFN7daKJSzwgwrSaANtjGa91lSf/qx9SrBkVvaHh3Kg6dJTYwRo9nE+WWNWRlH/fcJ638AzRDSrUPECDz5uaYN7pwOQnot15sjxEiQH5c/A0Lve5RiQhBp1K+xDBTNFvpsP0iVtXuqig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749032196; c=relaxed/simple;
-	bh=A/OJN5kUyOlE3EQxo2WwWTJcMLp4SUpQV5xaIHt0D6A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l5yFdo7EdZR1Zz413eB7PEuapjCR4Dp5gcbtmQQr1veYKfBmSap1rZVevqHvormHLZJ1MwGIJC0uFP8JkIjh8nAA5kDtUViv7IboRGba/Evw4Ap58BEMzaJYYzGNQ8hJf7rusS+UkVtDypr4PGM+W1765fZnWjxryM+cDBeYGjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QiVB3aDA; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5547gUWi000686
-	for <linux-wireless@vger.kernel.org>; Wed, 4 Jun 2025 10:16:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=zojVgYdtyymHQOWW+wijIZvxnRfclQDSOWD
-	AxN8iJ24=; b=QiVB3aDAl+rnWx8F3JhQzCzlqMIwinnHydLB6s9ophxX9GGooEi
-	mJBoDiCbCiCO7gVENQV4//FY3pAhdmp0IVRFnseejQgsF9NLJ1owXZjp+7rb605o
-	78sq9zh4N926XY8l77ciDogaJvSs6emHpmCOSQ6XWss/QnE8NU4l5Hsa3BTIVogg
-	0ovzFfC2dHp6F/QgT35SMAc3BUcPyiklkj5xHGk/iMunSAZ3S4kRQCbwORHz1PeJ
-	8GVBw6jmVI/6/GWT1wfGHWwGBTaNGKobP3sTju5WKeVi+bD7ickPYKITPipyl3C5
-	F/Ur9Gbmq1S5kx4m+x3CIUJWbJtlFs2TLnw==
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 471g8q5q9q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 04 Jun 2025 10:16:33 +0000 (GMT)
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b0e5f28841dso4088453a12.2
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Jun 2025 03:16:33 -0700 (PDT)
+	s=arc-20240116; t=1749032767; c=relaxed/simple;
+	bh=wgDJdZtOuRzzk5m032hZ5p7H/vYrbO9s+VBX/YQXq6M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H0V7SRMCp92hEvsCFL1PXZYYBE+C4DFuBrafmXByIF1gJLc8H58vLw4a9l7R9aWm/MXQ5w9OIlkhnrBuPRx2V6d7o9gUODuEEQz4WzqZAjM+7ch5Rx6lOsUrBRrgXZBHozd6J+uYDuJioyAObS03gKgat7IHX3TkpAP6uGaeWT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GKlSmDUe; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-747fc7506d4so1640688b3a.0
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Jun 2025 03:26:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1749032764; x=1749637564; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=hebA46kmAbzpBHa7BoBZwTkz2sVwPjWT7q4k6utX/To=;
+        b=GKlSmDUeMZDBxOAvHJVwr2P/G2CXIbaUWi5h6XHpsKZnqnH6ZQhGOTmbXHNANn3XXK
+         SEza0ryVhpFdwfINRvXZIckXsTTDZxM3eQ3BUKE4eQegmyitEnCdVspe2wTdKkRfL1oi
+         PlD6L3aG8pLQ0ew+NUmvUIu0yYjwQ8rmFiWjM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749032192; x=1749636992;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zojVgYdtyymHQOWW+wijIZvxnRfclQDSOWDAxN8iJ24=;
-        b=vG3OtObBHOQTTngT5KMKU8xrZcqhgUMk+OkoUgz0FlCYtsBkKQ1pvQJtxndCLRBQa7
-         YwQaTlgwcuDmNraI+x7OTOh+o+CwYPumKJxCDIhQMDGGuKf9yqCf2ROtytdECKuaV2Cj
-         C1JM46YoqujFX6gGINayY8pwxNKY9JWIMx4pjgdPd97nDf0QAbTuTdgrirjzRWBbfyv9
-         FOoLnN3fMROcIhcAVVCoERRdwo46/jii1GdVM1qDLS8tEPYYaUF+PDsuyjQXWGaWqIOm
-         eGQjUlzsmuahKD1ZYsotmHKIGi1zymnAAwViMFdJqPZxDmTUdp4yPhivKz/QFd6fFVCj
-         lG2w==
-X-Gm-Message-State: AOJu0YwivJz/JlVus0ffB136fFHCcYnLjj2mNwX5WRTanKh8lxZvH82t
-	M5xrdQ+ndSEQ2d0TBXiiI93AjB3v+ReebFhh/JwGuHX7P4IrtcRTZsXhX6N/vma99+wo/WMAh7m
-	+OeAwJm3L5LYAug5FKphIFi1KyXyR6mGB7bMU2giZMdYjXCXkTJc91MVTR3Nuc7wl3fkHVvO3uZ
-	HrrQ==
-X-Gm-Gg: ASbGncsGkCzuZNgVDAXtCI9KNRMvyDoGPmrZIbLiZ8gFE1aURm0rft885kjVV1BElV8
-	AGXkUptTUiPExnV40kH1O+3CKyUCj3SThS0I4gUidW4iszSW9iTGrKkm3WY9x2aREv61599++7e
-	/Y0Uj+Vq3FcG1tQVggKkMqvEcZLiHuE6Rgo52paepSptFwaWEJJGsTfc/R9Vhtk+jBW8eOTC4//
-	vm3pWJLCAtfGA+0WnRPUGxLyxljKPjexceqSAnLpVS1w/BCCu0h/Y0toMXUZ3IlcLXZed6qB4Y+
-	YTD8ODgCclI4kpOiVkLOKXfuXsrRCJr9gTO8eGPyi1ZLsGMAcmp4GN9n
-X-Received: by 2002:a05:6a00:398f:b0:740:a023:5d60 with SMTP id d2e1a72fcca58-7480b452f9amr3307473b3a.19.1749032191890;
-        Wed, 04 Jun 2025 03:16:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IELzsvg1zF4KZg7wEw2FDFrHoqH23ECWsCxPuNuTNOnyESjcGQ3U5AY2XEybLA/RLfXgikDOg==
-X-Received: by 2002:a05:6a00:398f:b0:740:a023:5d60 with SMTP id d2e1a72fcca58-7480b452f9amr3307439b3a.19.1749032191427;
-        Wed, 04 Jun 2025 03:16:31 -0700 (PDT)
-Received: from hu-kathirve-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2eceb96fa2sm8393528a12.51.2025.06.04.03.16.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Jun 2025 03:16:30 -0700 (PDT)
-From: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
-Subject: [PATCH ath-next v2] wifi: ath12k: allow beacon protection keys to be installed in hardware
-Date: Wed,  4 Jun 2025 15:46:20 +0530
-Message-Id: <20250604101620.2948103-1-karthikeyan.kathirvel@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1749032764; x=1749637564;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hebA46kmAbzpBHa7BoBZwTkz2sVwPjWT7q4k6utX/To=;
+        b=F1K+McVvoA6RUx5xotY/v4bJs2LAhuxdK52v+MLpRgulAlFSScTY3mOVO4Fa1XZx4S
+         7nDX1w02bVrV0uTaXOMS34Np9B3FVsI59bOLKWDkZqIrtAx0rMHapux9xLE6KQ1019Q5
+         iLFwQEWI0k9q+yM4oPE1hKijzD7Gd5EdmXvbAvPqFHPOSbs67i+Xu4IuKDcscWrgNWbZ
+         yJh3maWoWsrq3P8QclKTPGCZQvT452SlNHNxaI6Y3OIfeYTPhN5CF6ztD44a/bteFZnB
+         LQeoErRAV25+x3MtaBaVeVT7ecTydxE0zeZRH7oU84eYt5TXDwMZ2/4xe2qph1tZiTLd
+         mhQA==
+X-Gm-Message-State: AOJu0YzRisA4HoJ4yilL1gbVtDIdTyImtfOY41vS0geDGHX2asAeBW8/
+	FV6q6fAVHNmUXxhfyQZEEA1kD0nUDPilchHunQtTsx0oYp4Mkj90FqBJ0y8YbbcOrw==
+X-Gm-Gg: ASbGncuvR11u0xFIpkp4YK2Bow465uM7ghjfd4TZziSESnF+p5FHE8DixBW+uzY0ShI
+	nCBTKkWuEjSVWjGxikCqxlwBGLjdHkHeIfqG4bGaB3m2aeHn7kyVjVWRlTt34kocivBeaCTuhhX
+	VtbqXANB1pifkU+bP6fyBF7cNwS9y8fjLgD7Ldqomc0J6aI+oyD91Z6TZBlNYo+B38yVb5eacve
+	wZfnze3jTJqzUSdOe8sIL92NsAsFbsr3+JEEqC+YwV1iqqadL7xDLJcND6E341Pw6t3hhkkBFEz
+	4Ly5+ycT84UsTakNqMtT+GHu20EXoFyZtqZfRRV7Rwo4GKB6fuLYntw56VrWncmkE1LNAEL4MLd
+	pB6xmRHPzctpDk8MOcVsFr1HI
+X-Google-Smtp-Source: AGHT+IGrS+tOgY/IKJooK+wvdZcwa9trFxsMHaaj5JdIgpqu7MvgzRVVUemmSl334yGsSJjfQbvQHQ==
+X-Received: by 2002:a05:6a00:b81:b0:739:50c0:b3fe with SMTP id d2e1a72fcca58-7480b23acb1mr3791296b3a.8.1749032764222;
+        Wed, 04 Jun 2025 03:26:04 -0700 (PDT)
+Received: from [10.176.3.8] ([192.19.176.227])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2eceb9d1dfsm8437134a12.55.2025.06.04.03.26.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Jun 2025 03:26:03 -0700 (PDT)
+Message-ID: <1b15a15d-d02c-42af-a628-a8543ffdf528@broadcom.com>
+Date: Wed, 4 Jun 2025 12:25:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: xWaS4h2zBfTNxcrfAvmR2O8oN4VdW4jI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDA3NyBTYWx0ZWRfX8eDC0fGuBwwt
- TcPIcOieP7p1Izhr+RHhmeVqrDyqNYo/XRc3HfAcNovo8S0q89C30leekbwnxvJgWdPLzeKi7yk
- B01K1dXku8cDxnuxTprV2J98DpyfniD1Y5YxCl+Qg735cGoyj5hVP/pZDYWwHWi8n6TT6G4ycTL
- KJqIc2AzOQ3Ozhlh0Bn4mklrOsVQ1w+3AvJ6YqVNkRwGfjmlMFYO3Fv5gcmkQs0WpWQp48JLCfg
- nHTftmU7zTXjJf+nQ6YoZKkM+JefI0823Ab/KxSJxFKm9W8A/BZ03dgwVQqGeAY9HCZBc0d04Mm
- Qp2iBhnXut7i26CRFvB55ahamtemNPPG8hqeShWyllHaN6e3HDw7Vm2u5HG2tys2Adh37M7/XZz
- hUIhICwZgA/kTDKJRrirRMe182QrK2YkI9lcerKYA0oQFkhUXhEsJsnRKPfbEwmu4aQiQj9I
-X-Proofpoint-ORIG-GUID: xWaS4h2zBfTNxcrfAvmR2O8oN4VdW4jI
-X-Authority-Analysis: v=2.4 cv=PrmTbxM3 c=1 sm=1 tr=0 ts=68401d01 cx=c_pps
- a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=N4hopNKjJsku8qVRZDMA:9
- a=_Vgx9l1VpLgwpw_dHYaR:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-04_02,2025-06-03_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0 lowpriorityscore=0
- impostorscore=0 malwarescore=0 spamscore=0 clxscore=1015 adultscore=0
- suspectscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506040077
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next 4/4] wifi: brcmfmac: prevent disable
+ controller in apmode stop
+To: Ian Lin <ian.lin@infineon.com>, johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+ carter.chen@infineon.com, double.lo@infineon.com,
+ vinoth.sampath@infineon.com, gokulkumar.sivakumar@infineon.com
+References: <20250604091629.3943-1-ian.lin@infineon.com>
+ <20250604091629.3943-5-ian.lin@infineon.com>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <20250604091629.3943-5-ian.lin@infineon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Install beacon protection keys in hardware for AP modes only if hardware
-supports it, as indicated by the WMI service bit
-WMI_TLV_SERVICE_BEACON_PROTECTION_SUPPORT. Allow keyidx up to 7, since
-beacon protection uses keyidx 6 and 7.
+On 6/4/2025 11:16 AM, Ian Lin wrote:
+> From: Ian Lin <ian.lin-ee@infineon.com>
+> 
+> Wpa_supplicant will firstly call scan before start apmode.
+> In mbss case, controller will be disabled during stop apmode
+> so next time it reports fail in starting apmpde.
+> Fix by removing the disable operation.
 
-Control this feature by setting bit 0 of feature_enable_bitmap when sending
-the WMI_BCN_TMPL_CMDID command to firmware.
+The function brcmf_cfg80211_stop_ap() is a bit tricky. The flag 
+ifp->vif->mbss is set to true only when there are multiple AP interface 
+and only for subsequent AP interface. For the first AP interface being 
+created the flag is false.
 
-Check for the beacon protection enabled bit in both tx and non-tx profiles
-for MBSSID cases. If set in either profile, enable the beacon protection
-feature in firmware for transmitted vif.
+Now looking at the function I suspect there is an assumption that each 
+AP interface will be stopped. So for a subsequent AP interfaces is will 
+do a BRCMF_C_DOWN and for the first interface it will do other stuff 
+below the if statement follwed by BRCMF_C_UP.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Clearly you are solving another scenario here so could you elaborate on 
+that?
 
-Signed-off-by: Karthikeyan Kathirvel <karthikeyan.kathirvel@oss.qualcomm.com>
----
+Regards,
+Arend
 
-v2:
-- IGTK hardware offload is not working because a firmware bug that gets
-  triggered during IGTK key installation, which leads to corruption of
-  the GTK keys in firmware. So as of now relying on software crypto till
-  firmware fixes available in uptream
-
-- Made alignment fix
-
----
- drivers/net/wireless/ath/ath12k/core.h |  1 +
- drivers/net/wireless/ath/ath12k/mac.c  | 52 ++++++++++++++++++++------
- drivers/net/wireless/ath/ath12k/wmi.c  |  3 ++
- drivers/net/wireless/ath/ath12k/wmi.h  |  5 ++-
- 4 files changed, 48 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 941db6e49d6e..697bad921d82 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -316,6 +316,7 @@ struct ath12k_link_vif {
- 
- 	int bank_id;
- 	u8 vdev_id_check_en;
-+	bool beacon_prot;
- 
- 	struct wmi_wmm_params_all_arg wmm_params;
- 	struct list_head list;
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 88b59f3ff87a..58392484dbb5 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -1454,11 +1454,13 @@ static int ath12k_mac_remove_vendor_ie(struct sk_buff *skb, unsigned int oui,
- 	return 0;
- }
- 
--static void ath12k_mac_set_arvif_ies(struct ath12k_link_vif *arvif, struct sk_buff *bcn,
-+static void ath12k_mac_set_arvif_ies(struct ath12k_link_vif *arvif,
-+				     struct ath12k_link_vif *tx_arvif,
-+				     struct sk_buff *bcn,
- 				     u8 bssid_index, bool *nontx_profile_found)
- {
- 	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)bcn->data;
--	const struct element *elem, *nontx, *index, *nie;
-+	const struct element *elem, *nontx, *index, *nie, *ext_cap_ie;
- 	const u8 *start, *tail;
- 	u16 rem_len;
- 	u8 i;
-@@ -1476,6 +1478,11 @@ static void ath12k_mac_set_arvif_ies(struct ath12k_link_vif *arvif, struct sk_bu
- 				    start, rem_len))
- 		arvif->wpaie_present = true;
- 
-+	ext_cap_ie = cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY, start, rem_len);
-+	if (ext_cap_ie && ext_cap_ie->datalen >= 11 &&
-+	    (ext_cap_ie->data[10] & WLAN_EXT_CAPA11_BCN_PROTECT))
-+		tx_arvif->beacon_prot = true;
-+
- 	/* Return from here for the transmitted profile */
- 	if (!bssid_index)
- 		return;
-@@ -1518,6 +1525,19 @@ static void ath12k_mac_set_arvif_ies(struct ath12k_link_vif *arvif, struct sk_bu
- 
- 			if (index->data[0] == bssid_index) {
- 				*nontx_profile_found = true;
-+
-+				/* Check if nontx BSS has beacon protection enabled */
-+				if (!tx_arvif->beacon_prot) {
-+					ext_cap_ie =
-+					    cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY,
-+							       nontx->data,
-+							       nontx->datalen);
-+					if (ext_cap_ie && ext_cap_ie->datalen >= 11 &&
-+					    (ext_cap_ie->data[10] &
-+					     WLAN_EXT_CAPA11_BCN_PROTECT))
-+						tx_arvif->beacon_prot = true;
-+				}
-+
- 				if (cfg80211_find_ie(WLAN_EID_RSN,
- 						     nontx->data,
- 						     nontx->datalen)) {
-@@ -1566,11 +1586,11 @@ static int ath12k_mac_setup_bcn_tmpl_ema(struct ath12k_link_vif *arvif,
- 	}
- 
- 	if (tx_arvif == arvif)
--		ath12k_mac_set_arvif_ies(arvif, beacons->bcn[0].skb, 0, NULL);
-+		ath12k_mac_set_arvif_ies(arvif, tx_arvif, beacons->bcn[0].skb, 0, NULL);
- 
- 	for (i = 0; i < beacons->cnt; i++) {
- 		if (tx_arvif != arvif && !nontx_profile_found)
--			ath12k_mac_set_arvif_ies(arvif, beacons->bcn[i].skb,
-+			ath12k_mac_set_arvif_ies(arvif, tx_arvif, beacons->bcn[i].skb,
- 						 bssid_index,
- 						 &nontx_profile_found);
- 
-@@ -1639,9 +1659,9 @@ static int ath12k_mac_setup_bcn_tmpl(struct ath12k_link_vif *arvif)
- 	}
- 
- 	if (tx_arvif == arvif) {
--		ath12k_mac_set_arvif_ies(arvif, bcn, 0, NULL);
-+		ath12k_mac_set_arvif_ies(arvif, tx_arvif, bcn, 0, NULL);
- 	} else {
--		ath12k_mac_set_arvif_ies(arvif, bcn,
-+		ath12k_mac_set_arvif_ies(arvif, tx_arvif, bcn,
- 					 link_conf->bssid_index,
- 					 &nontx_profile_found);
- 		if (!nontx_profile_found)
-@@ -4766,6 +4786,16 @@ static int ath12k_install_key(struct ath12k_link_vif *arvif,
- 		arg.key_cipher = WMI_CIPHER_AES_GCM;
- 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV_MGMT;
- 		break;
-+	case WLAN_CIPHER_SUITE_AES_CMAC:
-+		arg.key_cipher = WMI_CIPHER_AES_CMAC;
-+		break;
-+	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
-+	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
-+		arg.key_cipher = WMI_CIPHER_AES_GMAC;
-+		break;
-+	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
-+		arg.key_cipher = WMI_CIPHER_AES_CMAC;
-+		break;
- 	default:
- 		ath12k_warn(ar->ab, "cipher %d is not supported\n", key->cipher);
- 		return -EOPNOTSUPP;
-@@ -4997,13 +5027,9 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 
- 	lockdep_assert_wiphy(hw->wiphy);
- 
--	/* BIP needs to be done in software */
--	if (key->cipher == WLAN_CIPHER_SUITE_AES_CMAC ||
--	    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
--	    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_256 ||
--	    key->cipher == WLAN_CIPHER_SUITE_BIP_CMAC_256) {
-+	/* IGTK needs to be done in host software */
-+	if (key->keyidx == 4 || key->keyidx == 5)
- 		return 1;
--	}
- 
- 	if (key->keyidx > WMI_MAX_KEY_INDEX)
- 		return -ENOSPC;
-@@ -12089,6 +12115,8 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
- 	}
- 
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_PUNCT);
-+	if (test_bit(WMI_TLV_SERVICE_BEACON_PROTECTION_SUPPORT, ab->wmi_ab.svc_map))
-+		wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_BEACON_PROTECTION);
- 
- 	ath12k_reg_init(hw);
- 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 60e2444fe08c..bd16d41d42ec 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -2008,6 +2008,9 @@ int ath12k_wmi_bcn_tmpl(struct ath12k_link_vif *arvif,
- 			u32p_replace_bits(&ema_params, 1, WMI_EMA_BEACON_LAST);
- 		cmd->ema_params = cpu_to_le32(ema_params);
- 	}
-+	cmd->feature_enable_bitmap =
-+		cpu_to_le32(u32_encode_bits(arvif->beacon_prot,
-+					    WMI_BEACON_PROTECTION_EN_BIT));
- 
- 	ptr = skb->data + sizeof(*cmd);
- 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index ac18f75e0449..cf42c1b402ea 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -2216,6 +2216,7 @@ enum wmi_tlv_service {
- 	WMI_TLV_SERVICE_PER_PEER_HTT_STATS_RESET = 213,
- 	WMI_TLV_SERVICE_FREQINFO_IN_METADATA = 219,
- 	WMI_TLV_SERVICE_EXT2_MSG = 220,
-+	WMI_TLV_SERVICE_BEACON_PROTECTION_SUPPORT = 244,
- 	WMI_TLV_SERVICE_MBSS_PARAM_IN_VDEV_START_SUPPORT = 253,
- 
- 	WMI_MAX_EXT_SERVICE = 256,
-@@ -3689,6 +3690,8 @@ struct ath12k_wmi_ftm_event {
- #define WMI_EMA_BEACON_FIRST    GENMASK(23, 16)
- #define WMI_EMA_BEACON_LAST     GENMASK(31, 24)
- 
-+#define WMI_BEACON_PROTECTION_EN_BIT	BIT(0)
-+
- struct ath12k_wmi_bcn_tmpl_ema_arg {
- 	u8 bcn_cnt;
- 	u8 bcn_index;
-@@ -4656,7 +4659,7 @@ enum wmi_ap_ps_peer_param {
- 
- #define DISABLE_SIFS_RESPONSE_TRIGGER 0
- 
--#define WMI_MAX_KEY_INDEX   3
-+#define WMI_MAX_KEY_INDEX   7
- #define WMI_MAX_KEY_LEN     32
- 
- enum wmi_key_type {
-
-base-commit: c3910de7bab78afbc106206aed5ec8e79458fbee
--- 
-2.34.1
+> Signed-off-by: Ian Lin <ian.lin-ee@infineon.com>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 5 -----
+>   1 file changed, 5 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> index e23cd6fc0f56..b4078e74f135 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> @@ -5392,11 +5392,6 @@ static int brcmf_cfg80211_stop_ap(struct wiphy *wiphy, struct net_device *ndev,
+>   			profile->use_fwauth = BIT(BRCMF_PROFILE_FWAUTH_NONE);
+>   		}
+>   
+> -		if (ifp->vif->mbss) {
+> -			err = brcmf_fil_cmd_int_set(ifp, BRCMF_C_DOWN, 1);
+> -			return err;
+> -		}
+> -
+>   		/* First BSS doesn't get a full reset */
+>   		if (ifp->bsscfgidx == 0)
+>   			brcmf_fil_iovar_int_set(ifp, "closednet", 0);
 
 
