@@ -1,56 +1,58 @@
-Return-Path: <linux-wireless+bounces-23632-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23633-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B52CACD2F7
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:12:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491B6ACD375
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF6FC3A2FC6
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:12:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF8871882E07
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB1E1F4281;
-	Wed,  4 Jun 2025 01:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377341F428C;
+	Wed,  4 Jun 2025 01:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SQNZZ3fk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pmDnbq1W"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A821F418F;
-	Wed,  4 Jun 2025 01:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7434207F;
+	Wed,  4 Jun 2025 01:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748998813; cv=none; b=JKLhkGa75fs5i+u83+hpVB3nysNGwPZXj/YiOF4LDNT5xgwHnfMh85k3ltykoD5Ojwsrqw77ckCwRT9Ht6WKkY9og71bxoQB/q8tbOTW2L9DfyLSNqip6SWjqCvzgBiBV2ZDtuIpxpsXjgwBRkny/dp2RARW4Kfg6cwe+FCHung=
+	t=1748998850; cv=none; b=rKNGQcF3uOyZ7/bOfkGJbswq4K5aHUwcv81iLd+S2swpgAkscZS9ha9PmkaMGgXzlVc3y1KWEyuF9gPTn7RBXERIICMgFN6M7PU17jBM5ygudCISNk3364T/qmTp5O7f/0/S29DXyNbzRKflKVKKFb2nWDsH6IH8Xan3rNH43Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748998813; c=relaxed/simple;
-	bh=VPizbeVo+AKNDOfXGGiiUq3pOFIHVCnuPIWO48yUAV8=;
+	s=arc-20240116; t=1748998850; c=relaxed/simple;
+	bh=zBp06c6aV6hKs6Pw6aSXuX9MKklLWgIbamhQx8Zgk4s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aCNE9n/dMWgbazD/5sG6oNjKLcpnvfjKCQwimayIggLzw+SZKk3tC6gwOzNj+nM/nnGhl/KLVVV3+mLz9qvcpaM4PpWvgo/d9JnfaK+QA1Fediaok2P6nA0HtUuVXxagmZ/gUSsIXQGEbnv+PM+Ui/FVnvaQj3n9LFJt+c0kTVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SQNZZ3fk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46024C4CEED;
-	Wed,  4 Jun 2025 01:00:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MmnwpcEV1awW5RW09br6YpxNJPS8fKWD6Ilht1M/oArim6L6+TvP4sB9jfbtWfA+f85wBet77cgx/BHJ7fS842N2+rgDYeUlbm59CoGAabibputQSS6iZ65fbJqexsKT31t/WTNQYD75gREcUATjYbLQ2glIkZQYXrXlkU+b3Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pmDnbq1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97646C4CEED;
+	Wed,  4 Jun 2025 01:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748998813;
-	bh=VPizbeVo+AKNDOfXGGiiUq3pOFIHVCnuPIWO48yUAV8=;
+	s=k20201202; t=1748998849;
+	bh=zBp06c6aV6hKs6Pw6aSXuX9MKklLWgIbamhQx8Zgk4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQNZZ3fkO20vQt6ro4cZjFD+30u9oY1UDYV7i12LxlJp0u4ZxdhvqdK9kQbH9Acyq
-	 TJIJWyQiJCpwGOzFQoPs5OJClsiwz9+9zsFHJTLeJg75rq4n0FHLUv2/qRbqBN3579
-	 4UVdLsadmM9iy56JcsaL+w8/eRI46JiLRi42NClsK5658f2HuPfGi173yD2Rd3GgK/
-	 S75cNM0LC1z/FdLSxYJAo19IOe/MM5pYhIiKosWrG3Q4uG6aUBA2tbV2DJaP64X1Af
-	 7l7GKffKkTl3b+0rmLsOwD51FWYdOSzwSRHu6UgiGqXkFiMmCfuh1xIS2LZG7NDErD
-	 tvPJmGnNW/HNg==
+	b=pmDnbq1WKiogzS2bi3rmj6PS3HVyyUgfsHEEIDvI4nK9pZfEdZrggg7A3r4MUzoeI
+	 DqtHY9mBPM0Qo/njoo8FkmRQn518eqJ4A/i/lStwHXPfVr4UepP+ssVhq1UqgXezgK
+	 4fdQect5dr6In1dB/GeWWB+lFt7SocRvvPHy+Tz1GtahyL2VbqLXbwvF+vZknapmeT
+	 37BBuXFLCVSPd7CaIkJISLQwmVYkesqr4AiZiUoGh+Dv395zW6K3SPrbXHbgwPLMX6
+	 bCFIOVvAnkryMusAhNLDLKYMf0kz6LXPE1FnQwBApRpEJmT2CVszCKdCuHds+KoHPh
+	 MSrfVfPyjIVjg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Dian-Syuan Yang <dian_syuan0116@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Benjamin Berg <benjamin@sipsolutions.net>,
+	Rouven Czerwinski <rouven@czerwinskis.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 27/93] wifi: rtw89: leave idle mode when setting WEP encryption for AP mode
-Date: Tue,  3 Jun 2025 20:58:13 -0400
-Message-Id: <20250604005919.4191884-27-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 48/93] wifi: mac80211: do not offer a mesh path if forwarding is disabled
+Date: Tue,  3 Jun 2025 20:58:34 -0400
+Message-Id: <20250604005919.4191884-48-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250604005919.4191884-1-sashal@kernel.org>
 References: <20250604005919.4191884-1-sashal@kernel.org>
@@ -66,100 +68,118 @@ X-stable-base: Linux 6.12.31
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-[ Upstream commit d105652b33245162867ac769bea336976e67efb8 ]
+[ Upstream commit cf1b684a06170d253b47d6a5287821de976435bd ]
 
-Due to mac80211 triggering the hardware to enter idle mode, it fails
-to install WEP key causing connected station can't ping successfully.
-Currently, it forces the hardware to leave idle mode before driver
-adding WEP keys.
+When processing a PREQ the code would always check whether we have a
+mesh path locally and reply accordingly. However, when forwarding is
+disabled then we should not reply with this information as we will not
+forward data packets down that path.
 
-Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250507031203.8256-1-pkshih@realtek.com
+Move the check for dot11MeshForwarding up in the function and skip the
+mesh path lookup in that case. In the else block, set forward to false
+so that the rest of the function becomes a no-op and the
+dot11MeshForwarding check does not need to be duplicated.
+
+This explains an effect observed in the Freifunk community where mesh
+forwarding is disabled. In that case a mesh with three STAs and only bad
+links in between them, individual STAs would occionally have indirect
+mpath entries. This should not have happened.
+
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Reviewed-by: Rouven Czerwinski <rouven@czerwinskis.de>
+Link: https://patch.msgid.link/20250430191042.3287004-1-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
+Based on my analysis of the commit and the code, here is my assessment:
 **YES** This commit should be backported to stable kernel trees. Here's
-my extensive analysis: ## Bug Fix Analysis **Real User-Affecting Bug**:
-The commit fixes a clear functional issue where WEP encryption key
-installation fails in AP mode when the rtw89 wireless device is in idle
-mode. This directly impacts users trying to establish WEP-encrypted
-connections to an AP, causing authentication failures and preventing
-network connectivity. **Specific Technical Problem**: When mac80211 puts
-the hardware into idle mode (IPS - Idle Power Save), the rtw89
-firmware/hardware enters a low-power state where key installation
-operations fail. This is particularly problematic for WEP encryption
-which appears to have specific hardware state requirements. ## Code
-Change Analysis **Minimal and Targeted**: The fix adds exactly two lines
-of code: ```c case WLAN_CIPHER_SUITE_WEP40:
-rtw89_leave_ips_by_hwflags(rtwdev); // NEW hw_key_type =
-RTW89_SEC_KEY_TYPE_WEP40; break; case WLAN_CIPHER_SUITE_WEP104:
-rtw89_leave_ips_by_hwflags(rtwdev); // NEW hw_key_type =
-RTW89_SEC_KEY_TYPE_WEP104; break; ``` **Uses Existing Infrastructure**:
-The fix leverages the existing `rtw89_leave_ips_by_hwflags()` function,
-which is a well-tested mechanism already used throughout the driver for
-similar power management scenarios. **WEP-Specific Requirement**:
-Notably, other cipher types (TKIP, CCMP, GCMP) don't require this call,
-indicating WEP has unique hardware state dependencies - likely due to
-its legacy implementation requiring specific firmware states. ## Risk
-Assessment **Very Low Risk**: - The `rtw89_leave_ips_by_hwflags()`
-function only acts when the hardware is actually in idle mode
-(`IEEE80211_CONF_IDLE` flag set) - It's a conditional safety mechanism
-that doesn't affect normal operation - Limited scope - only affects
-WEP40/WEP104 cipher types - Follows established patterns already present
-in the driver **No Architectural Changes**: This is purely a bug fix
-that ensures hardware is in the correct state before performing WEP key
-operations. ## Stable Tree Criteria Compliance **Meets All Stable
-Requirements**: 1. ✅ **Important bug fix**: Resolves WEP authentication
-failures in AP mode 2. ✅ **Small and contained**: Two identical function
-calls in a switch statement 3. ✅ **Obviously correct**: Uses existing,
-proven power management infrastructure 4. ✅ **Low regression risk**:
-Conservative fix affecting only legacy WEP encryption 5. ✅ **User-
-visible impact**: Fixes network connectivity issues ## Comparison with
-Historical Commits Looking at the similar commits provided, this follows
-the same pattern as other rtw88/rtw89 power management fixes that were
-marked as "NO" for backporting. However, those commits were primarily
-optimizations or behavior changes during scanning operations, not fixes
-for broken functionality. This commit differs because: - It fixes a
-**broken feature** (WEP key installation failure) - It's not an
-optimization or behavioral change - It has direct user-visible impact
-(connection failures) - It's a minimal, surgical fix for a specific
-failure mode ## Conclusion This is a textbook example of a commit
-suitable for stable backporting: it fixes a real bug affecting users,
-uses minimal and safe code changes, and follows established driver
-patterns. The fix ensures WEP encryption works properly in AP mode by
-guaranteeing the hardware is powered up during key installation
-operations.
+my extensive analysis: ## 1. Bug Fix Analysis The commit fixes a clear
+logical bug in the mesh networking HWMP (Hybrid Wireless Mesh Protocol)
+path selection algorithm. When `dot11MeshForwarding` is disabled, the
+code was incorrectly: - Still performing mesh path lookups for PREQ
+(Path Request) messages - Potentially replying with mesh path
+information even though forwarding was disabled - Creating indirect mesh
+path entries when it shouldn't ## 2. Code Analysis Looking at the
+changes in `/net/mac80211/mesh_hwmp.c:619-676`: **Before the fix:** -
+Line 639: `} else {` - The final else branch handles the case where the
+target is neither local nor broadcast - Lines 640-656: This section
+performs mesh path lookup and potentially replies with path information
+**regardless** of forwarding status - Line 657: `} else {` - Only sets
+`forward = false` but after potentially harmful operations **After the
+fix:** - Line 639: `} else if (ifmsh->mshcfg.dot11MeshForwarding) {` -
+Now conditions the mesh path lookup on forwarding being enabled - Lines
+657-659: `} else { forward = false; }` - Clean fallback when forwarding
+is disabled ## 3. Impact Assessment This is a **contained, low-risk
+fix** that: - **Fixes incorrect behavior**: Prevents mesh nodes from
+providing routing information when they won't actually forward packets -
+**Prevents resource waste**: Avoids unnecessary mesh path lookups when
+forwarding is disabled - **Improves network correctness**: Fixes the
+inconsistency where nodes advertise paths they won't use - **Addresses
+real-world issue**: The commit message mentions this was observed in the
+Freifunk community ## 4. Comparison with Similar Commits This fix aligns
+perfectly with the **YES** backport examples: **Similar to Commit #1
+(mesh: Do not send PREQ if HWMP is disabled):** - Both prevent
+sending/processing mesh protocol messages when a feature is disabled -
+Both are small, surgical fixes to logical conditions - Both prevent
+waste of network resources **Similar to Commit #3 (fix mesh path
+discovery):** - Both fix incorrect mesh path handling logic - Both have
+small, focused changes - Both include explicit mention of fixing
+behavior observed in real deployments **Similar to Commit #4 (fix mesh
+forwarding):** - Both are mesh forwarding-related fixes - Both are
+minimal changes with clear intent - Both fix protocol correctness issues
+## 5. Stable Backport Criteria Check ✅ **Fixes important bug**: Yes -
+incorrect mesh protocol behavior ✅ **Small and contained**: Yes - only 4
+lines changed, well-isolated ✅ **No new features**: Correct - only fixes
+existing logic ✅ **No architectural changes**: Correct - just reorders
+existing conditions ✅ **Low regression risk**: Very low - change is
+localized and logical ✅ **Clear side effects**: None beyond the intended
+fix ## 6. Risk Assessment The change is **extremely low risk** because:
+- It only affects the specific case where `dot11MeshForwarding` is
+disabled - It makes the code behavior more consistent (when forwarding
+is off, don't provide path info) - The change is in line with the
+intended semantics of the forwarding flag - It's a pure logic fix
+without touching data structures or complex algorithms This commit
+represents exactly the type of fix that stable trees are meant to
+include: a small, well-understood bug fix that improves correctness
+without introducing regression risk.
 
- drivers/net/wireless/realtek/rtw89/cam.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/mesh_hwmp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index 8d140b94cb440..0c8ea5e629e6a 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -6,6 +6,7 @@
- #include "debug.h"
- #include "fw.h"
- #include "mac.h"
-+#include "ps.h"
+diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
+index 2922a9fec950d..ba8aeb47bffd7 100644
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -636,7 +636,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 				mesh_path_add_gate(mpath);
+ 		}
+ 		rcu_read_unlock();
+-	} else {
++	} else if (ifmsh->mshcfg.dot11MeshForwarding) {
+ 		rcu_read_lock();
+ 		mpath = mesh_path_lookup(sdata, target_addr);
+ 		if (mpath) {
+@@ -654,6 +654,8 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 			}
+ 		}
+ 		rcu_read_unlock();
++	} else {
++		forward = false;
+ 	}
  
- static struct sk_buff *
- rtw89_cam_get_sec_key_cmd(struct rtw89_dev *rtwdev,
-@@ -447,9 +448,11 @@ int rtw89_cam_sec_key_add(struct rtw89_dev *rtwdev,
+ 	if (reply) {
+@@ -671,7 +673,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 		}
+ 	}
  
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_WEP40:
-+		rtw89_leave_ips_by_hwflags(rtwdev);
- 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP40;
- 		break;
- 	case WLAN_CIPHER_SUITE_WEP104:
-+		rtw89_leave_ips_by_hwflags(rtwdev);
- 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP104;
- 		break;
- 	case WLAN_CIPHER_SUITE_CCMP:
+-	if (forward && ifmsh->mshcfg.dot11MeshForwarding) {
++	if (forward) {
+ 		u32 preq_id;
+ 		u8 hopcount;
+ 
 -- 
 2.39.5
 
