@@ -1,172 +1,102 @@
-Return-Path: <linux-wireless+bounces-23664-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23665-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B7DACD5A8
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 04:34:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A365ACD657
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 05:13:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EE3E1894898
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 02:34:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8112F7A7CD1
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8A627713;
-	Wed,  4 Jun 2025 02:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2452236FB;
+	Wed,  4 Jun 2025 03:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lXailgKh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K6t3/dnx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3DA256D;
-	Wed,  4 Jun 2025 02:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC5221FF39
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Jun 2025 03:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749004453; cv=none; b=J3B6CtWsnu4Oyu4o84sEC9mm3vM8yhJmH7fUktoaI9xashKYNxsSCDMmgtxSZEXw7aJXgauAGBeotIMKFrqMXNNxu3nLt2itz+Rry/wCHCrfMheK5+thIucx8djrhjSPiyf6YLQH5KFBZy0UPKpOvurNM409Lm3cJbDjBts3H2c=
+	t=1749006820; cv=none; b=FKwZeEq9Ld7xl3Bm0iftHGuE1ilibMCRbdmqBjO5AzpOiAbT0yHc001ojtaqIkPgYxUzfFHweY/ezR+IUSJR9wGydviJPDQRcsmlIPQImoWHAGDFhPSVROMa2yG1wt3AXdacTx1QsQG3geD9f3kQASCdCLW+hBCBHoS9VtFDRss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749004453; c=relaxed/simple;
-	bh=zepWt2RZ4hWKu/KqmHyrs5XqMgYRVOEWvT4Om4rKGig=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=UQg+whlcILwlkJ+gPA4qCdK1UDR3UpnZiXHnfvNt0RJUe3KMnEn59d7FhLUVhI2AnfvaTDmzIs9sF385Gu5p8C+7tiN0eK2Dsa4FXCjgPvpIDWkMy4BlNTp+cc7j8RQw7eA1XlgbBkw5puYdWmxu9J4Tqg5CeZTlWka/SFkpdZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lXailgKh; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5540FTUB014030;
-	Wed, 4 Jun 2025 02:34:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	9SxqiXKxDMmI9Vmg3y5eU8Av30gwyPM61lvUKB9sEXg=; b=lXailgKhR21oxyPS
-	mLYjljcxeJG0PAqUFFDlIIMm6gMhy+O6+t7DyMckD0i4QMbDhBWYFUmwJnntuLz2
-	Abnohjq0wK5cxz8pkRaQ2XBCwWfCMJs6uBNyJzlGGkO+yMuVKuzknmN4EljV8tTM
-	Tmtj2Glp4F5R90FQIM6Z0uL5eXi3mhKKWbGX1zVSOOSZOzYf5BlmTppcKvJpqY6y
-	KuBQ15CfwcFALxwQGTXchhn7tF4P5rKqU5OQSvUI1+e0MqT10z5epuvJ/w5PDE3t
-	CnMMEQFMAJw4G9lpEjtIyqL6avQEyNwM+FDOGER9SpqqjbE+vT26XQ0sOL1h/eNe
-	9UgGPQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 472be80991-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Jun 2025 02:34:05 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5542Y5wb016558
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 4 Jun 2025 02:34:05 GMT
-Received: from [10.133.33.119] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 3 Jun 2025
- 19:34:02 -0700
-Message-ID: <01634993-80b1-496e-8453-e94b2efe658c@quicinc.com>
-Date: Wed, 4 Jun 2025 10:34:00 +0800
+	s=arc-20240116; t=1749006820; c=relaxed/simple;
+	bh=WwXp0OY1CbowbBAAJ60SO8A1fht18F01nuzM7LJmJps=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=f7BMaJlbVizNN25RrXCqMIHGiA4c46m3hEfaSnV20C020fiQWkDWR6st85Vx98rg6kp2A3gON8djS53PSICFIeMsR5MZ9r9Quw61WqTaODkvDBGm8dM2lsRf4BCJJw1qFl9c/9/B7ZBBVJI0eI56yVr6pU5MfnXdXiMlFHreqeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K6t3/dnx; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749006818; x=1780542818;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=WwXp0OY1CbowbBAAJ60SO8A1fht18F01nuzM7LJmJps=;
+  b=K6t3/dnxef9yk3ji2QNyPUwMBCxg8cHTYsgAMg7YRiioz+CICTjq5rdu
+   h15/CV0rBDAEGoP62UnHOf3OI7WTRQI9j3nWl5d8/Y81nXecdjogJ0WOg
+   z4GAfQ/y2MeGZKcJanXV2f7zrwv6gdX6FHQfHpNcWoRVcawmMYcm5cIRo
+   48WI3rjWmTsEeH9f//zUOEOuqYdzy9bRmG8XZzv0xD6C+Noz5N33NU/QY
+   +4u2ChOFGMEPUWhTgAg7NqdxrM/up12scUPnm5Dm4XWrbVxa7Db7gW+/l
+   6l/N6Rp1UAs4vukDVyVlxd6n7/5S1b6/W61EVHBv4FomBiTxXOgvrPRQM
+   g==;
+X-CSE-ConnectionGUID: KT2T9o0YTuClK2qR4T49nA==
+X-CSE-MsgGUID: CFnG8yEtSNS8no7EaOXp7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="68504615"
+X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; 
+   d="scan'208";a="68504615"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 20:13:37 -0700
+X-CSE-ConnectionGUID: HQX5D70USjuhEIxLQArnNA==
+X-CSE-MsgGUID: GteJywliSmefQtyVfmL70Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; 
+   d="scan'208";a="182227341"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 20:13:37 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH iwlwifi-fixes 0/4] wifi: iwlwifi: fixes - 2025-06-04
+Date: Wed,  4 Jun 2025 06:13:17 +0300
+Message-Id: <20250604031321.2277481-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] wifi: ath11k: fix dest ring-buffer corruption
-To: Johan Hovold <johan@kernel.org>, Baochen Qiang <quic_bqiang@quicinc.com>
-CC: Johan Hovold <johan+linaro@kernel.org>,
-        Jeff Johnson
-	<jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250526114803.2122-1-johan+linaro@kernel.org>
- <20250526114803.2122-2-johan+linaro@kernel.org>
- <026b710f-b50f-4302-ad4f-36932c2558ff@quicinc.com>
- <aD1axxSAJsbUfnHH@hovoldconsulting.com>
- <5268c9ba-16cf-4d3a-87df-bbe0ddd3d584@quicinc.com>
- <aD7h0OOoGjVm8pDK@hovoldconsulting.com>
-Content-Language: en-US
-From: Miaoqing Pan <quic_miaoqing@quicinc.com>
-In-Reply-To: <aD7h0OOoGjVm8pDK@hovoldconsulting.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=bNYWIO+Z c=1 sm=1 tr=0 ts=683fb09d cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8
- a=COk6AnOGAAAA:8 a=guktzepORQuorFk3vWcA:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: gEqu6_MnKceFmAMGtPABnQnjpc__fJH4
-X-Proofpoint-ORIG-GUID: gEqu6_MnKceFmAMGtPABnQnjpc__fJH4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDAxOSBTYWx0ZWRfX+xj2gKnC1S9y
- ChUclQ7Tpuv725l+xwWaToUL7KHX+DpDDQJX7Dg+oK+V1tp8eGRPxjAsmKePULgR2PaeISN1LEU
- Oj+5+vZBo28MfhM4tBLLIMViyxlVxxm6vpP1k6dUKA3K/eiNwvK/yLE+UD2lRP+HmYCt2NKHXUZ
- XlfDgsgmEAfYeTgJ+8LXR+Ep3RTWy0h0OnwjCYeMmTbOgBXL8kSgtVqArxvwPu+plCPfRwpF37m
- 1/B8AdHK+rUf0ohpFh3HLITfXmwzf+8LTgnnReHAIWAW6K5oGMU6T1b7UR7vgfAc3KbKCTMgjfI
- CntG/WkNzCCooK/UUX/YipK/96aSOxa8M/mwLQJ7iVdk+UMRileF/+oXyeUchHO/trmuJgAJW/2
- WS/zGC4lXGmyRVnSjUUnmYtvAWepnTqdvBBM17qubT2q7dvGI1zSxncRM+kElYCU7Gp8ypc/
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-04_01,2025-06-03_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- suspectscore=0 mlxscore=0 impostorscore=0 spamscore=0 clxscore=1011
- mlxlogscore=625 adultscore=0 bulkscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506040019
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
+Hi
 
+A few fixes from our internal tree.
 
-On 6/3/2025 7:51 PM, Johan Hovold wrote:
-> On Tue, Jun 03, 2025 at 06:52:37PM +0800, Baochen Qiang wrote:
->> On 6/2/2025 4:03 PM, Johan Hovold wrote:
-> 
->>> No, the barrier is needed between reading the head pointer and accessing
->>> descriptor fields, that's what matters.
->>>
->>> You can still end up with reading stale descriptor data even when
->>> ath11k_hal_srng_dst_get_next_entry() returns non-NULL due to speculation
->>> (that's what happens on the X13s).
->>
->> The fact is that a dma_rmb() does not even prevent speculation, no matter where it is
->> placed, right?
-> 
-> It prevents the speculated load from being used.
-> 
->> If so the whole point of dma_rmb() is to prevent from compiler reordering
->> or CPU reordering, but is it really possible?
->>
->> The sequence is
->>
->> 	1# reading HP
->> 		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
->>
->> 	2# validate HP
->> 		if (srng->u.dst_ring.tp == srng->u.dst_ring.cached_hp)
->> 			return NULL;
->>
->> 	3# get desc
->> 		desc = srng->ring_base_vaddr + srng->u.dst_ring.tp;
->>
->> 	4# accessing desc
->> 		ath11k_hal_desc_reo_parse_err(... desc, ...)
->>
->> Clearly each step depends on the results of previous steps. In this case the compiler/CPU
->> is expected to be smart enough to not do any reordering, isn't it?
-> 
-> Steps 3 and 4 can be done speculatively before the load in step 1 is
-> complete as long as the result is discarded if it turns out not to be
-> needed.
-> 
+Thanks,
+Miri
+---
 
-If the condition in step 2 is true and step 3 speculatively loads 
-descriptor from TP before step 1, could this cause issues?
+Ilan Peer (1):
+  wifi: iwlwifi: mld: Move regulatory domain initialization
 
-We previously had extensive discussions on this topic in the 
-https://lore.kernel.org/linux-wireless/ecfe850c-b263-4bee-b888-c34178e690fc@quicinc.com/ 
-thread. On my platform, dma_rmb() did not work as expected. The issue 
-only disappeared after disabling PCIe endpoint relaxed ordering in 
-firmware side. So it seems that HP was updated (Memory write) before 
-descriptor (Memory write), which led to the problem.
+Johannes Berg (1):
+  wifi: iwlwifi: pcie: fix non-MSIX handshake register
 
+Miri Korenblit (2):
+  wifi: iwlwifi: mvm: fix assert on suspend
+  wifi: iwlwifi: mld: avoid panic on init failure
 
+ drivers/net/wireless/intel/iwlwifi/mld/fw.c          | 8 ++++----
+ drivers/net/wireless/intel/iwlwifi/mld/mld.c         | 3 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c    | 4 ++--
+ drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c | 2 +-
+ 4 files changed, 9 insertions(+), 8 deletions(-)
 
-
+-- 
+2.34.1
 
 
