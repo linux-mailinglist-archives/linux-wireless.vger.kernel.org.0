@@ -1,133 +1,99 @@
-Return-Path: <linux-wireless+bounces-23669-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23670-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741D2ACD65D
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 05:14:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B20CACD6B6
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 05:51:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40290188AA00
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:14:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12CF93A7065
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6EB1F9406;
-	Wed,  4 Jun 2025 03:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC6E2609F5;
+	Wed,  4 Jun 2025 03:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JQPYEpse"
+	dkim=pass (2048-bit key) header.d=riscv-rocks.de header.i=@riscv-rocks.de header.b="gcCpgyMb";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="XP92K6TF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from b224-13.smtp-out.eu-central-1.amazonses.com (b224-13.smtp-out.eu-central-1.amazonses.com [69.169.224.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FEA238C04
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Jun 2025 03:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC46723815F;
+	Wed,  4 Jun 2025 03:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=69.169.224.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749006824; cv=none; b=mOvfNR32jvO4w85spj+1Ns/xJdUVPmGoABvJTcB7LBoo3rMA0pDbBnLE0+8HGnLGvloJhSGAvfJcvUKQB2DGeDtWu60dCA/VYS4wttTDMnHKgIWwiimKZgBFDOy4EvD2lzbY0FeCirxE2ZsiOs1ubf/2rqVAL1ZYMk5neywxndE=
+	t=1749009080; cv=none; b=JmFPnztu1FsUj+I6080i0KtqSGrb/v7togOsJZ3+qYCOZFP6aCt6koPinAa4sf+LrNETJAiv6zlplXE32TbR3AqkR1aIZBrmC1sJK82GhV7WkL4T3FXm53FyrCsUgxKXcrVmgCEoWH84uKSmZ6rgv6QEM2LrogeXzDB/dE4hCmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749006824; c=relaxed/simple;
-	bh=0iG1Arvo65NrBfE7+zxgNQGPBpXlzaOoDGtpO54okoE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rg10DhYNMypR6Aub7xAgETeBVM+XBz56cKVmd/TtRbQaOE0zFgw0Bi4LveX4Ln21l45ZKgOaVPYr0IGmicGs63caMBJd+V5SERDOrEkdyDWMUdI90PjzpFPi6JYHi5953XrFti18AzQe03XLcGnsGDU+8Md8qmkJyhRSlbi/dp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JQPYEpse; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749006823; x=1780542823;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=0iG1Arvo65NrBfE7+zxgNQGPBpXlzaOoDGtpO54okoE=;
-  b=JQPYEpseGpROnTgAsFzmLvUd80DCQOGnABnHkxymluWNHvcNn/a65jXZ
-   LK5wkX10RN3XVX9UtmUYEADRW5J9xPMaYp711gamot0M0eXe5QwY5x6SH
-   Q9NHdG7gpS1pccFa00mFxN1D+O1iX/BDBl3b35RIecRlf9TJKfLZRNsxr
-   euQlJ0BVIdLzNZeGkGYklYfPoeaJWW9PJ4h82m/8mMn4TjXx8XKoElWsa
-   sfQHOr6Gwx69CdI5/7+oZET6ON3AgCku7XMVPODRSOmQ2Z7dJoZYKFQOv
-   imA7N55RWk9e1aEmIzQeUwub8YK8A4oYvgP23xOmCRgzKGyGHQ4GqXdyA
-   w==;
-X-CSE-ConnectionGUID: 5eB5kWfZRl+WeDH2V2/uEg==
-X-CSE-MsgGUID: twxMEZMRTY+nt36EeEjl4Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="68504620"
-X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; 
-   d="scan'208";a="68504620"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 20:13:43 -0700
-X-CSE-ConnectionGUID: VLE1e4+uSRKClAo7PgjT3Q==
-X-CSE-MsgGUID: HtwzcWTESDy9OBLSssoBng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; 
-   d="scan'208";a="182227390"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 20:13:42 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Ilan Peer <ilan.peer@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-fixes 4/4] wifi: iwlwifi: mld: Move regulatory domain initialization
-Date: Wed,  4 Jun 2025 06:13:21 +0300
-Message-Id: <20250604061200.f138a7382093.I2fd8b3e99be13c2687da483e2cb1311ffb4fbfce@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250604031321.2277481-1-miriam.rachel.korenblit@intel.com>
-References: <20250604031321.2277481-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1749009080; c=relaxed/simple;
+	bh=FCX6M/oySfbIWkoHQUxk7gAuoPH1Ad0HOuqVLfG7edc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J+bsutiFNhuaIa9L48TGGtS40A9g7PpMpQd6CrmzrYgul4dNy/J/R5t1xfiHdCxD3jX6JdATu3JSEyD+PTig3Pd2pu5anUOd9r2Q3XNjA0WsH+FMETe+89WZxcwaXuNAR1H/i+enlsOkPpjg405/YvFiV240nH2djJDf2bzBRZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=riscv-rocks.de; spf=pass smtp.mailfrom=mail.riscv-rocks.de; dkim=pass (2048-bit key) header.d=riscv-rocks.de header.i=@riscv-rocks.de header.b=gcCpgyMb; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=XP92K6TF; arc=none smtp.client-ip=69.169.224.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=riscv-rocks.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.riscv-rocks.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=2kaovp6zxy5nzp5wqunvdq5vkiqbeqln; d=riscv-rocks.de; t=1749009073;
+	h=Date:From:To:Cc:Subject:Message-ID:Reply-To:References:MIME-Version:Content-Type:In-Reply-To;
+	bh=FCX6M/oySfbIWkoHQUxk7gAuoPH1Ad0HOuqVLfG7edc=;
+	b=gcCpgyMbVjBGaBiTGHnizUYLR5xQAZVHD6RfsJrXC8wz3qNnJNacPB/PMnNkXouU
+	1+lhEh27GiuFjTF45h1X4YXhDX5WT7yBNKjedwMKviy/JvK308pc8fDp6eDs/+t/IKV
+	BggoYCsMxi7u6WLsVu3X+hB8IvS+IorvqUuUHPhASikOCStz61lQwLycJiCzTpk261y
+	Ko2v3n0hNxZOJjwvibHMSthynDtyomeBlBOOGaph1kQYbcIQM8Sg1i1Blsp9Et9u8qQ
+	dNKhAFhpEFRAYMX/HbHclFIBzJEF2BmMUaBD2EmB+Rk0lVoB+FyBFoYmccH/H0WDH7U
+	F+DCxtwcUQ==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=54ecsf3zk7z4mwxwwox7z7bg6e5gwjsz; d=amazonses.com; t=1749009073;
+	h=Date:From:To:Cc:Subject:Message-ID:Reply-To:References:MIME-Version:Content-Type:In-Reply-To:Feedback-ID;
+	bh=FCX6M/oySfbIWkoHQUxk7gAuoPH1Ad0HOuqVLfG7edc=;
+	b=XP92K6TFLgeIB8HCydoRiZ8fRfL8bbUWW0TuhakF+b+CZMulA8YvXvNrGAQJyPQ0
+	wMgvO70vu33V+h6EB20mowd71ZS7fCb2A5pvP+SLUCYPwJL0yxVpd5Wtr3jZBpJsa39
+	7xM9CpFZgtTt32xLj+N/yhsdV4masEGQKdnv4m5I=
+Date: Wed, 4 Jun 2025 03:51:13 +0000
+From: Damian Tometzki <damian@riscv-rocks.de>
+To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [wireless] WARNING in iwl_mvm_sta_rx_agg+0x9d3/0xb70 [iwlmvm]
+Message-ID: <01070197391084ce-d98dad57-8c40-4b6a-bf8d-bcea74a8e019-000000@eu-central-1.amazonses.com>
+Reply-To: Damian Tometzki <damian@riscv-rocks.de>
+Mail-Followup-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <0107019736e3a599-79e58a4a-0dfa-4f43-aeaf-4a4208845b32-000000@eu-central-1.amazonses.com>
+ <DM3PPF63A6024A98E210FB9D166A3CD1316A36DA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+ <CAL=B37=-q=Veghr7bo2GGiy1eyKP_xF0g8SeK5Lu6uKTVZgxoQ@mail.gmail.com>
+ <DM3PPF63A6024A97BAB8D43C0FAEB7078BCA36DA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM3PPF63A6024A97BAB8D43C0FAEB7078BCA36DA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+User-Agent: Mutt
+X-Operating-System: Linux Fedora release 42 (Adams) (Kernel 6.15.0)
+Organization: Linux hacker
+Feedback-ID: ::1.eu-central-1.yMcBPu/jK26Vj3HVmCFyFk75QMsS8V3QY5HbXP/Qrys=:AmazonSES
+X-SES-Outgoing: 2025.06.04-69.169.224.13
 
-From: Ilan Peer <ilan.peer@intel.com>
+On Tue, 03. Jun 18:22, Korenblit, Miriam Rachel wrote:
+> > If you need a kernel trace, I can provide a trace-cmd log. Please confirm which
+> > events are relevant ?
+> > My idee ?
+> > sudo trace-cmd record -e mac80211 -e cfg80211
+> 
+> trace-cmd record  -T -e cfg80211 -e mac80211 -e iwlwifi_ucode  -e iwlwifi -e console -e iwlwifi_msg -e mac80211_msg 
+> 
+Hi together,
 
-The regulatory domain information was initialized every time the
-FW was loaded and the device was restarted. This was unnecessary
-and useless as at this stage the wiphy channels information was
-not setup yet so while the regulatory domain was set to the wiphy,
-the channel information was not updated.
+perfect, the patchset resolved my issue:
+https://lore.kernel.org/linux-wireless/20250604031321.2277481-1-miriam.rachel.korenblit@intel.com
 
-In case that a specific MCC was configured during FW initialization
-then following updates with this MCC are ignored, and thus the
-wiphy channels information is left with information not matching
-the regulatory domain.
-
-This commit moves the regulatory domain initialization to after the
-operational firmware is started, i.e., after the wiphy channels were
-configured and the regulatory information is needed.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mld/fw.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/fw.c b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
-index 73ed8d5cab43..9d2c087360e7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
-@@ -349,10 +349,6 @@ int iwl_mld_load_fw(struct iwl_mld *mld)
- 	if (ret)
- 		goto err;
- 
--	ret = iwl_mld_init_mcc(mld);
--	if (ret)
--		goto err;
--
- 	mld->fw_status.running = true;
- 
- 	return 0;
-@@ -546,6 +542,10 @@ int iwl_mld_start_fw(struct iwl_mld *mld)
- 	if (ret)
- 		goto error;
- 
-+	ret = iwl_mld_init_mcc(mld);
-+	if (ret)
-+		goto error;
-+
- 	return 0;
- 
- error:
+Many thanks
 -- 
-2.34.1
-
+VG
+Damian Tometzki
 
