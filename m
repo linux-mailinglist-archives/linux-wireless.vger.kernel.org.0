@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-23659-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23660-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6397FACD457
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:28:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57BC9ACD4EE
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8E9D3A712A
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:26:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA9B3189A31A
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C9E272E50;
-	Wed,  4 Jun 2025 01:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C992522B4;
+	Wed,  4 Jun 2025 01:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hYtJY0aa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzMlGFcL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A90E1DFDBB;
-	Wed,  4 Jun 2025 01:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35D717F7;
+	Wed,  4 Jun 2025 01:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748999159; cv=none; b=D72Ms8xdq7clpLVSnSCX3A7Hd9/zhapcB+1sAAUE+vL6nTA287VhEFutnC+QAcc2DMyisT6O3oWRz8y+0Atl0LEfWVqmRJPbcLTZxJI2mJwXoK18cL9CGXJccEaCcDyb9vVAYi1xWqa1BhuQ04r6irN7GGx1e7Fcc/LuyHGsJZc=
+	t=1748999215; cv=none; b=ezz4ueqyaG+5L4SDhTRbMWXdtvbcL/zizZC6JpVMQ7MrD1ZixL8T3UikGQAL9euOs1wMutR7w19lGB3712Cuo55WTjS8QXV+o5NZSjP/+GWNukrQUe1IaWFgo+D/lGJxKxln6uZGyQ59uYOZWrBG4VnHE7oiiXsKJ3joOIMP3sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748999159; c=relaxed/simple;
-	bh=en3sTuQOYeIUfK2bSVFMkCyoIKhLaNFCIKuYLo4W8xg=;
+	s=arc-20240116; t=1748999215; c=relaxed/simple;
+	bh=rgYGBowqX+L8NT38bxQ/G+iDf882HaNNMrx5C8EogUM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uLTEm7tQ3kTjX4uRjA1rthhPuSf5lzGupWFuWy4m9s1vQcgkPzQ23Q21QDlrv/7lOmn+OvHjhAUg5IL/0B/o8MJYYV/AgBhkVJJI00W0vWPufxTcCrel1976WfDZR35Mk8tkIvegfJrrQwKrFDr8uDOkbargrJM4H0F1fLp4IY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hYtJY0aa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC56C4CEF2;
-	Wed,  4 Jun 2025 01:05:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=trrt1rrBehcs09B3oPAPZgqnzA61nacArhnrjmA8ZS7Mdl7LPBbLNn5kFZL7Gx4TwLfKdbreItzqOU4b8Srv3qkoryM3IuWNG1clCJHlf1sQ82xBU/MeNRb2eXlOqTfAkjbyjrFmOoSJ1NP9jqhUtYNiOCKojuhTLAb5PRzCVcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzMlGFcL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8294BC4CEF1;
+	Wed,  4 Jun 2025 01:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748999159;
-	bh=en3sTuQOYeIUfK2bSVFMkCyoIKhLaNFCIKuYLo4W8xg=;
+	s=k20201202; t=1748999213;
+	bh=rgYGBowqX+L8NT38bxQ/G+iDf882HaNNMrx5C8EogUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hYtJY0aaTnjD/rjRA8oDhjH6ht7dcznXearhPoduAq1PiColTSP6z4D/IeY4OFDhV
-	 tWNl1/deIPCw36Nm5rqSagRsKplPAOnFJGqpCzNOTmTPAPzRvRlu2nzl10Ceohxqa3
-	 ePCSYA43h/ZTSNd59RADZfhP0a0Gh/45jHOr6/3/8aRF0rRVPqxHbZGYvvKUxGFPlr
-	 nM2mWDpeqQYA3rXo1JBAPITtMEijg8khD/5/Vr0WuK5XNTsMWxQxB2O6B3Fg1A+Oto
-	 niVFYXX57+ngypuwyTSoGs6aa0pCLIp7at4OLZy/E8EEmn0s7QUMtYZN2Nz5GvsJTP
-	 Nel3VxXt0iLtQ==
+	b=UzMlGFcLwucmyeqw5FgQ7KeuZBFqM2WHH+UaHeAxXitj7JYKHmLR4viX+t8JX2PZw
+	 F5soJEUS+/uXrKen4l1nd4wOyfeHLMZPtGvlzXEsoT3XGtYZaVtCh+DzpzcaI3FTxh
+	 IDevYLoxEh/HpjyINa2kBbXnJVB2FRNFw3MzyaWE3O5G9pzPQLottv36F/+a/MKmt1
+	 8ZnsnoDOULTTgBLKfx05eR1mP/y9RfIMhGlxQeb0NSKNnBzPenyjNGXEqSzFBSSbBu
+	 3flzo4obXrw7QkxUHS2SQaf7fLMQebHON3bYFH9IVhPg7CvsDMFMggvXCaOqkgH4PS
+	 JFdXd68ptN5JQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -50,12 +50,12 @@ Cc: Benjamin Berg <benjamin@sipsolutions.net>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 20/33] wifi: mac80211: do not offer a mesh path if forwarding is disabled
-Date: Tue,  3 Jun 2025 21:05:11 -0400
-Message-Id: <20250604010524.6091-20-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 19/27] wifi: mac80211: do not offer a mesh path if forwarding is disabled
+Date: Tue,  3 Jun 2025 21:06:12 -0400
+Message-Id: <20250604010620.6819-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250604010524.6091-1-sashal@kernel.org>
-References: <20250604010524.6091-1-sashal@kernel.org>
+In-Reply-To: <20250604010620.6819-1-sashal@kernel.org>
+References: <20250604010620.6819-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.184
+X-stable-base: Linux 5.10.237
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
@@ -150,7 +150,7 @@ without introducing regression risk.
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index e6b6a7508ff1b..8bf238afb5442 100644
+index 4848e3c2f0af9..a8e80cb6a5cec 100644
 --- a/net/mac80211/mesh_hwmp.c
 +++ b/net/mac80211/mesh_hwmp.c
 @@ -620,7 +620,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
