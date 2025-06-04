@@ -1,60 +1,61 @@
-Return-Path: <linux-wireless+bounces-23624-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23625-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6A1ACD2B1
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:09:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED37ACD2BC
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 775413A1571
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:09:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A681A178D1E
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC481C84CF;
-	Wed,  4 Jun 2025 00:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E893E3BB48;
+	Wed,  4 Jun 2025 00:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SlJvunPm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gD9AStEG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203FA3BB48;
-	Wed,  4 Jun 2025 00:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFB325A2C6;
+	Wed,  4 Jun 2025 00:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748998742; cv=none; b=c9G8vp+VRcZhzv9iSm/wbAMwXry7BB3tI2sqMS1yuYET15yqk3NCnOKj1S4v0OdvkFCwrvTk/ZqPX+JXoXcWVLP/PpBPwNHE0sAPnB4cNgywcLHYypMncNx8LsnTtaV1J6gCCC79rmMGCYz5l+efOTVG/3sTmwOF/jdgVWoE2q8=
+	t=1748998743; cv=none; b=tq9p6q1ID0UMhX6VsHSqduc3SRV5I/dh/avyZW1fla2+xrfWOvS/S/4mufuQXOkxfEclnFWU5tG86TjB4Mu/umNQqx+H5Y0wnNSM2EgudeJP/UeWzls4w0nDVikf+0diQy4MnhHgBTPLWuoXrqMHCz2FXbTbpbhj9KD3tiycP4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748998742; c=relaxed/simple;
-	bh=FPnx8c1mhPGLVT9xL2Jqt9zjtdG4j2CAiiO2YCW8jTQ=;
+	s=arc-20240116; t=1748998743; c=relaxed/simple;
+	bh=GGdZyVX0V+7vWW+Zdhvke55vJjkda8KHsemqE9wIkBc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KfH207eUlQmh0qeV28pm/PjeA9rEhORaUwhKUCtu1LDgAJjG2uMoFSkMeLv8JVZYWw0q0l4cIIkyoJiAPILWGdNH6oKu3LCdGGJnfJwIXSXxcrNSM2Yi2Ysx5BrFPqfh14tq/UYOpU++NKs4Or+4Cu1U3PITSTvvu68IMoVz93Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SlJvunPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E4BC4CEED;
-	Wed,  4 Jun 2025 00:59:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UVOq79ffdodmusY0ZMXGrFy/H9aPLKhw4qtGyPWDd6K+Z+WWVYj/jumnI9iuqMA8cMkN4ORMnY9322m1SDZ+n5AkS1rcbAigu7WgpEDsfUKX5KOuKqBGbCibixEtctv2mP9WBiwoY8j99yE+zUc6PKQS05AW+rL9BaUTL/ZG558=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gD9AStEG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D562C4CEEF;
+	Wed,  4 Jun 2025 00:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748998742;
-	bh=FPnx8c1mhPGLVT9xL2Jqt9zjtdG4j2CAiiO2YCW8jTQ=;
+	s=k20201202; t=1748998743;
+	bh=GGdZyVX0V+7vWW+Zdhvke55vJjkda8KHsemqE9wIkBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlJvunPm388fdnPo8O9V1JBLyDos4YWp9SeJtLUk8sEnRQ6lWKnBBa/noacKI97Mx
-	 KvlZ1aSkiAeEBAC3VS6RVxQNcKumtsEx0bK3/p0czbnidndDm3AnLIpsXez+Wz31xZ
-	 KQFuZiFf/02GsT8+RmC6fPvmLIMLwvtLKlvKc+CqKU8NQbtJa2SXd4ZJ6NhviJZTjj
-	 wsvz0BkIHcBAJrazJmVmS6biRkFpSJE/k/6iuNksklstDwEpmcHz7siQ5VAiSSI/HL
-	 hmbcc/FNwQec0wfr3tq9NnurkNJn95OOrnUCun6Hvaq/GMrEN2UMRbvfH5pE0t7RFh
-	 pjulOl2BJNx3w==
+	b=gD9AStEG0u8z2s2dd7AX6JHtph3Pq9LxVaE3TYPBp3ZeyQ6kRstrHD6aqIn+tnFnd
+	 C1PP234LFxl018e9abx8xP6KDlwR8mqmfuWZr64kXw5fVzQnZPVQUhfHi7MMCdGDTN
+	 WRER1mDg+l63d5oYyxt4pkMQl8fE0nLcfooOWD0+KmrwClz638+VouNEi3X0xwDlpJ
+	 +2U+Vfe6H6+cuqfH4l7ndcduz8zO1CgFvY0PMJ4b9Cm64U85BaERAv5n4ifSGFsvlw
+	 jICkPdV1884otDiDPmDT0L0skYVryKKorRwhulIznGmbm6MJzjul6B2pdJmA+9biJc
+	 AaQ1WNgaJiduQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Hari Chandrakanthan <quic_haric@quicinc.com>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
 	jjohnson@kernel.org,
 	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 104/108] wifi: ath11k: determine PM policy based on machine model
-Date: Tue,  3 Jun 2025 20:55:27 -0400
-Message-Id: <20250604005531.4178547-104-sashal@kernel.org>
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 105/108] wifi: ath12k: fix link valid field initialization in the monitor Rx
+Date: Tue,  3 Jun 2025 20:55:28 -0400
+Message-Id: <20250604005531.4178547-105-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250604005531.4178547-1-sashal@kernel.org>
 References: <20250604005531.4178547-1-sashal@kernel.org>
@@ -70,183 +71,91 @@ X-stable-base: Linux 6.14.9
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Hari Chandrakanthan <quic_haric@quicinc.com>
 
-[ Upstream commit ce8669a27016354dfa8bf3c954255cb9f3583bae ]
+[ Upstream commit 2826139f9295821fe2b049318a1cc057ec003131 ]
 
-To handle the Lenovo unexpected wakeup issue [1], previously we revert
-commit 166a490f59ac ("wifi: ath11k: support hibernation"). So currently
-WLAN target is put into WoWLAN mode during suspend. This is a temporary
-solution as it does not work on machines where WLAN power is cut off.
+Currently, the link_valid field is not initialized in the monitor Rx path.
+This can result in random values for the link_valid and link_id leads to
+undefined behaviour in mac80211. Therefore, initialize the link_valid
+field in the monitor Rx path.
 
-The thought here is that we do WoWLAN suspend on Lenovo machines while
-do non-WoWLAN suspend (which is done in the reverted commit) on other
-machines. This requires us to identify Lenovo machines from others.
-For that purpose, read board vendor and product name from DMI interface,
-match it against all known affected machines. If there is a match, choose
-WoWLAN suspend mode, else choose non-WoWLAN mode. Save the mode in ab
-for later reference.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250328-ath11k-bring-hibernation-back-v3-1-23405ae23431@quicinc.com
+Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+Tested-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Link: https://patch.msgid.link/20250324062518.2752822-2-quic_periyasa@quicinc.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-**YES** This commit should definitely be backported to stable kernel
-trees. Here's my detailed analysis: ## Bug Fix Nature This commit
-clearly fixes a specific user-visible bug affecting Lenovo laptops with
-WiFi suspend/wake functionality. The commit message explicitly
-references bugzilla.kernel.org issue #219196, indicating this addresses
-real user complaints about unexpected wakeup behavior. This aligns
-perfectly with the **YES** backport example (Similar Commit #1) which
-also reverted hibernation support due to Lenovo platform suspend issues.
-## Code Changes Analysis ### 1. DMI Quirk Table Addition ```c +static
-const struct dmi_system_id ath11k_pm_quirk_table[] = { + { +
-.driver_data = (void *)ATH11K_PM_WOW, + .matches = { +
-DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"), + DMI_MATCH(DMI_PRODUCT_NAME,
-"21J4"), + }, + }, ``` This is a standard, low-risk pattern used
-throughout the kernel for hardware-specific workarounds. It only affects
-machines that exactly match the DMI criteria. ### 2. PM Policy
-Infrastructure ```c +enum ath11k_pm_policy { + ATH11K_PM_DEFAULT, +
-ATH11K_PM_WOW, +}; ``` The commit adds a simple enum and uses existing
-WoWLAN suspend mechanisms rather than introducing new power management
-code. ### 3. Policy Selection Logic ```c + dmi_id =
-dmi_first_match(ath11k_pm_quirk_table); + if (dmi_id) + ab->pm_policy =
-(kernel_ulong_t)dmi_id->driver_data; + else + ab->pm_policy =
-ATH11K_PM_DEFAULT; ``` This is straightforward DMI matching that sets a
-policy flag without changing core functionality. ## Risk Assessment
-**Extremely Low Risk:** - **Scope**: Only affects specific Lenovo laptop
-models (21J4, 21K4, 21K6, 21K8, 21KA, 21F9) - **Fallback**: Non-matching
-machines continue using existing default behavior - **Tested Path**:
-WoWLAN suspend mode is already implemented and working - **No Core
-Changes**: Doesn't modify suspend/resume logic, just selects which path
-to use ## Comparison to Reference Commits This follows the same pattern
-as **Similar Commit #1** (marked YES), which also addressed Lenovo
-platform suspend issues by reverting hibernation support. Both commits:
-- Target specific hardware compatibility issues - Use conservative
-approaches (WoWLAN vs full hibernation) - Have minimal code footprint -
-Address real user bug reports Unlike the **NO** examples which add new
-features (WoWLAN support, new suspend capabilities), this commit uses
-existing infrastructure to fix hardware-specific incompatibilities. ##
-Stable Tree Criteria Alignment ✅ **Fixes important bugs** - Suspend/wake
-functionality on laptops ✅ **Small and contained** - Only DMI table and
-policy selection ✅ **Low regression risk** - Targeted to specific
-hardware ✅ **User-visible impact** - Improves power management behavior
-✅ **No architectural changes** - Uses existing WoWLAN mechanisms This is
-an ideal stable backport candidate that fixes real user issues with
-minimal risk.
+Based on my analysis of the commit and the code context, here is my
+assessment: **YES** This commit should be backported to stable kernel
+trees. Here's my extensive analysis: ## Technical Analysis **Code Change
+Impact:** The commit adds a single line `status->link_valid = 0;` at the
+beginning of the `ath12k_dp_mon_rx_deliver_msdu()` function in the
+monitor Rx path. This initializes the `link_valid` field in the
+`ieee80211_rx_status` structure before any subsequent processing. **Root
+Cause and Problem:** 1. **Uninitialized Memory Issue**: The
+`ieee80211_rx_status` structure contains the `link_valid` field (1 bit)
+and `link_id` field (4 bits) that were not being initialized in the
+monitor Rx path. 2. **Undefined Behavior**: Without initialization,
+these fields contain random stack memory values, which can cause
+unpredictable behavior in mac80211 when it processes received frames. 3.
+**MLO Context**: The `link_valid` and `link_id` fields are specifically
+used for Multi-Link Operation (MLO) in WiFi 7, where mac80211 needs to
+know which link a frame was received on. ## Why This Should Be
+Backported **1. Bug Fix Nature:** - This is clearly a bug fix that
+addresses undefined behavior caused by uninitialized fields - The commit
+message explicitly states this fixes "undefined behaviour in mac80211" -
+Similar to reference commit #2 (which was backported) that fixed
+uninitialized variables **2. User Impact:** - Uninitialized fields can
+cause mac80211 to make incorrect decisions about packet processing - May
+lead to packet drops, incorrect link handling, or other unpredictable
+wireless behavior - Monitor mode is commonly used by network analysis
+tools, making this user-facing **3. Risk Assessment:** - **Very Low
+Risk**: The change is minimal (single line initialization) - **No Side
+Effects**: Setting `link_valid = 0` is the correct default for monitor
+mode - **Safe Change**: Only affects the monitor Rx path, doesn't change
+core functionality **4. Code Pattern Consistency:** Looking at the
+regular Rx path in `dp_rx.c`, I can see the same pattern: ```c if
+(pubsta && pubsta->valid_links) { status->link_valid = 1;
+status->link_id = peer->link_id; } ``` The monitor path was missing the
+corresponding initialization, creating an inconsistency where: - Regular
+Rx path: Properly sets `link_valid = 1` when appropriate - Monitor Rx
+path: Left `link_valid` uninitialized (now fixed to `link_valid = 0`)
+**5. Containment:** - Change is confined to a single function in the
+monitor path - No architectural changes or new feature additions -
+Follows established kernel practices for field initialization **6.
+Stable Tree Criteria Match:** - ✅ Important bug fix (undefined behavior)
+- ✅ Minimal risk of regression - ✅ Small, contained change - ✅ No new
+features - ✅ Affects user-facing functionality (monitor mode) **7.
+Reference Precedent:** This follows the same pattern as the backported
+commit #2 which fixed uninitialized variables and commit #3 which fixed
+incorrect field usage, both of which were deemed suitable for
+backporting. The commit properly addresses a real bug that could affect
+users of monitor mode with ath12k WiFi 7 devices, with virtually no risk
+of introducing regressions.
 
- drivers/net/wireless/ath/ath11k/core.c | 55 ++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/core.h |  7 ++++
- 2 files changed, 62 insertions(+)
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 12dd37c2e9044..3f4ce04ffba68 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -907,6 +907,52 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 	},
- };
+diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+index 8737dc8fea354..05a9cd21b5dc3 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+@@ -1019,6 +1019,8 @@ static void ath12k_dp_mon_rx_deliver_msdu(struct ath12k *ar, struct napi_struct
+ 	bool is_mcbc = rxcb->is_mcbc;
+ 	bool is_eapol_tkip = rxcb->is_eapol;
  
-+static const struct dmi_system_id ath11k_pm_quirk_table[] = {
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21J4"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21K8"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21KA"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21F9"),
-+		},
-+	},
-+	{}
-+};
++	status->link_valid = 0;
 +
- static inline struct ath11k_pdev *ath11k_core_get_single_pdev(struct ath11k_base *ab)
- {
- 	WARN_ON(!ab->hw_params.single_pdev_only);
-@@ -2323,8 +2369,17 @@ EXPORT_SYMBOL(ath11k_core_pre_init);
- 
- int ath11k_core_init(struct ath11k_base *ab)
- {
-+	const struct dmi_system_id *dmi_id;
- 	int ret;
- 
-+	dmi_id = dmi_first_match(ath11k_pm_quirk_table);
-+	if (dmi_id)
-+		ab->pm_policy = (kernel_ulong_t)dmi_id->driver_data;
-+	else
-+		ab->pm_policy = ATH11K_PM_DEFAULT;
-+
-+	ath11k_dbg(ab, ATH11K_DBG_BOOT, "pm policy %u\n", ab->pm_policy);
-+
- 	ret = ath11k_core_soc_create(ab);
- 	if (ret) {
- 		ath11k_err(ab, "failed to create soc core: %d\n", ret);
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index c142b79ba543b..8c333dde2c639 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -890,6 +890,11 @@ struct ath11k_msi_config {
- 	u16 hw_rev;
- };
- 
-+enum ath11k_pm_policy {
-+	ATH11K_PM_DEFAULT,
-+	ATH11K_PM_WOW,
-+};
-+
- /* Master structure to hold the hw data which may be used in core module */
- struct ath11k_base {
- 	enum ath11k_hw_rev hw_rev;
-@@ -1052,6 +1057,8 @@ struct ath11k_base {
- 	} testmode;
- #endif
- 
-+	enum ath11k_pm_policy pm_policy;
-+
- 	/* must be last */
- 	u8 drv_priv[] __aligned(sizeof(void *));
- };
+ 	if ((status->encoding == RX_ENC_HE) && !(status->flag & RX_FLAG_RADIOTAP_HE) &&
+ 	    !(status->flag & RX_FLAG_SKIP_MONITOR)) {
+ 		he = skb_push(msdu, sizeof(known));
 -- 
 2.39.5
 
