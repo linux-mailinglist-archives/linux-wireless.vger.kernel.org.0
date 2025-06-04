@@ -1,58 +1,59 @@
-Return-Path: <linux-wireless+bounces-23637-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23638-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED828ACD32E
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:15:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E7DACD36E
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:18:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 993333A324A
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:15:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B4067A8FB5
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C201F791C;
-	Wed,  4 Jun 2025 01:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8D2433D9;
+	Wed,  4 Jun 2025 01:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9TNkS9W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R8w9xEew"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCCD1F6679;
-	Wed,  4 Jun 2025 01:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337F92620C9;
+	Wed,  4 Jun 2025 01:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748998881; cv=none; b=B0eJrj6EDiBVSPu1nV+QvpccJ8K20ccHJ7WoxP24aaDPqwSIy/dI1uVDrgCuVkp2cUYrsuHBGJzGlOhSrVzFDveM/hwY6wN+9atE9bHroQeCXhkLRVcfp03gOgXsrzdz8UoucApzXYRQQ2X9R+NL2K7SpFAuiYe10XOmvzq5upI=
+	t=1748998892; cv=none; b=nVDLsw76dmHhwnAA1MA+DMJ2tPOrIu/bY3VP6wZnuMNUfgFFuPa4ttJrc6L1KTRqkKq4i0bn0crbbAXznc8sq1DqT3nR/xHikR+i4Q37LMQmTpRNdQoPQx0O219SH1ByzKfdUA10ZonGoCzLyXHDkqCDX0kF0Z5Dp8nSNpHep/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748998881; c=relaxed/simple;
-	bh=7JPIK5rc+YxE/2Dex0qDvSBosjnMXq8Qn8AnamgsJG4=;
+	s=arc-20240116; t=1748998892; c=relaxed/simple;
+	bh=6dIKX7pi9s+rV1CG8MO/mvtQ0aEa8KrI3roiBtD+Rnk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GH2CIKly+wEDAjobVLjJJ8AXp6g+6noTTNk0m8jNEk93vWZDE5IK7tJfSBT93FOSowDS2c5mr4KtlX8uJkxodD0rDEJieQ0Pf8b7k+5+q4NIi4yBXpmooDzxKQ9tX+KzJVmEW121kM+nvEe1sdhQ/7TVSzHdHiQkKfBLlT3vk88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9TNkS9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B6EC4CEEF;
-	Wed,  4 Jun 2025 01:01:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jx82zNiG7oMrelaVvSxsA8qzmMbr2VZ3/Z+oUu2nwJVERedh6vqV3aT8IFZKm/ZXTEkl2ByHwZsMVKsdPY1bf7JN5QMbjfdqO248sEb8hTDM9wFHCctPypniTNRDvHZETieajTgY2vL3QiTgyBSS2BsdvX8zS5+seEmg2eslzQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8w9xEew; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E123C4CEED;
+	Wed,  4 Jun 2025 01:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748998880;
-	bh=7JPIK5rc+YxE/2Dex0qDvSBosjnMXq8Qn8AnamgsJG4=;
+	s=k20201202; t=1748998892;
+	bh=6dIKX7pi9s+rV1CG8MO/mvtQ0aEa8KrI3roiBtD+Rnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O9TNkS9WFjBPEM3bzqP+Pxua2GxkuV8O77laB+wA9b0rdKy8Ci87i4TDAcESdmlT8
-	 22Dn/hNG/8+2lKsPdv0HB85dv8qouOP3l+ta+WtbUgQW0JKKXQ5W6CLrWOzdzGcNR3
-	 0945MUr/rhZGansxYHlRanxgJf69qR9H2aoy6fp4XpbP4gyQ1H2bApwjMoStKyyH3a
-	 TmaxCRznDRBqANPbotMDDGDYX7umME4iXEwXV18+9wRosymTC8BmDh/TZmPBOisKU0
-	 W84EwTsWv8O8KD720XUtQGqrFVGr8nQyNwRKPGEBJV8db+NbLzZvGTllfhGTBTiP2y
-	 OwE+gor2V365w==
+	b=R8w9xEewhrug3iI1Rwod0rOJSPqP/LZx0qSfrAP4DdTzaUL54WdAXT7wfmhnAKyLF
+	 T8wSlkIzai8kONjOQPv93Ohz9EOlJVb9WIcifs6ew2eaBxWq67yFBjfBPnW1zzlC9h
+	 2M+eDnPcLHWO899ncaQMsNRwkirOe2amdBxsnRL2lzvscTiwWsHQJf0ehs+Iz38TQ8
+	 hEMLP8t0jHcCl616WRKXH0XhxWRAaIDUazfHpLH88nDb+3tiLIvIwh2M3ZphNWxx+S
+	 uohK6C6YoKd4xVmPgdSfXRyEJPoH49fF9H8jSdSJQEkBFZcJ6vEj72icgpTPuD10J7
+	 rCpk32bTX7Tdw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Dave Taht <dave.taht@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 66/93] Revert "mac80211: Dynamically set CoDel parameters per station"
-Date: Tue,  3 Jun 2025 20:58:52 -0400
-Message-Id: <20250604005919.4191884-66-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 72/93] wifi: ath12k: using msdu end descriptor to check for rx multicast packets
+Date: Tue,  3 Jun 2025 20:58:58 -0400
+Message-Id: <20250604005919.4191884-72-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250604005919.4191884-1-sashal@kernel.org>
 References: <20250604005919.4191884-1-sashal@kernel.org>
@@ -62,318 +63,104 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.31
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Toke Høiland-Jørgensen <toke@toke.dk>
+From: Sarika Sharma <quic_sarishar@quicinc.com>
 
-[ Upstream commit 4876376988081d636a4c4e5f03a5556386b49087 ]
+[ Upstream commit cb7433cc5cd4d07175dbc41f5a19966e9fae48be ]
 
-This reverts commit 484a54c2e597dbc4ace79c1687022282905afba0. The CoDel
-parameter change essentially disables CoDel on slow stations, with some
-questionable assumptions, as Dave pointed out in [0]. Quoting from
-there:
+Currently, the RX multicast broadcast packet check is performed using
+bit 15 from the info6 field of the MPDU start descriptor. This check
+can also be done using bit 9 from the info5 field of the MSDU end
+descriptor. However, in some scenarios multicast bit is not set when
+fetched from MPDU start descriptor.
+Therefore, checking the RX multicast broadcast packet from the MSDU
+end descriptor is more reliable as it is per MSDU.
 
-  But here are my pithy comments as to why this part of mac80211 is so
-  wrong...
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 
-   static void sta_update_codel_params(struct sta_info *sta, u32 thr)
-   {
-  -       if (thr && thr < STA_SLOW_THRESHOLD * sta->local->num_sta) {
-
-  1) sta->local->num_sta is the number of associated, rather than
-  active, stations. "Active" stations in the last 50ms or so, might have
-  been a better thing to use, but as most people have far more than that
-  associated, we end up with really lousy codel parameters, all the
-  time. Mistake numero uno!
-
-  2) The STA_SLOW_THRESHOLD was completely arbitrary in 2016.
-
-  -               sta->cparams.target = MS2TIME(50);
-
-  This, by itself, was probably not too bad. 30ms might have been
-  better, at the time, when we were battling powersave etc, but 20ms was
-  enough, really, to cover most scenarios, even where we had low rate
-  2Ghz multicast to cope with. Even then, codel has a hard time finding
-  any sane drop rate at all, with a target this high.
-
-  -               sta->cparams.interval = MS2TIME(300);
-
-  But this was horrible, a total mistake, that is leading to codel being
-  completely ineffective in almost any scenario on clients or APS.
-  100ms, even 80ms, here, would be vastly better than this insanity. I'm
-  seeing 5+seconds of delay accumulated in a bunch of otherwise happily
-  fq-ing APs....
-
-  100ms of observed jitter during a flow is enough. Certainly (in 2016)
-  there were interactions with powersave that I did not understand, and
-  still don't, but if you are transmitting in the first place, powersave
-  shouldn't be a problemmmm.....
-
-  -               sta->cparams.ecn = false;
-
-  At the time we were pretty nervous about ecn, I'm kind of sanguine
-  about it now, and reliably indicating ecn seems better than turning it
-  off for any reason.
-
-  [...]
-
-  In production, on p2p wireless, I've had 8ms and 80ms for target and
-  interval for years now, and it works great.
-
-I think Dave's arguments above are basically sound on the face of it,
-and various experimentation with tighter CoDel parameters in the OpenWrt
-community have show promising results[1]. So I don't think there's any
-reason to keep this parameter fiddling; hence this revert.
-
-[0] https://lore.kernel.org/linux-wireless/CAA93jw6NJ2cmLmMauz0xAgC2MGbBq6n0ZiZzAdkK0u4b+O2yXg@mail.gmail.com/
-[1] https://forum.openwrt.org/t/reducing-multiplexing-latencies-still-further-in-wifi/133605/130
-
-Suggested-By: Dave Taht <dave.taht@gmail.com>
-In-memory-of: Dave Taht <dave.taht@gmail.com>
-Signed-off-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Link: https://patch.msgid.link/20250403183930.197716-1-toke@toke.dk
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250411061523.859387-2-quic_sarishar@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-**YES** This commit should be backported to stable kernel trees. Here's
-my detailed analysis: ## Why This Should Be Backported ### 1. **Fixes
-Important Performance Bug** The commit message provides compelling
-evidence from Dave Taht (an expert in the field) that the original
-dynamic CoDel parameter implementation was fundamentally flawed and
-causing severe performance degradation: - **5+ seconds of accumulated
-delay** in production APs - **CoDel effectively disabled** by the 300ms
-interval parameter - **Poor throughput** due to overly lenient
-parameters ### 2. **Clear Technical Problems in Original
-Implementation** Looking at the code changes, the original
-implementation had several critical flaws: ```c // REMOVED: Problematic
-per-station CoDel parameters if (thr && thr < STA_SLOW_THRESHOLD
-capability_test capability_test.c f2fs_folio_analysis.md
-ipv4_multipath_analysis.md ipv6_route_allocation_rcu_analysis.md
-ixgbe_e610_set_phys_id_analysis.md linux lpfc_timeout_analysis.md
-mac80211_mlo_mbssid_analysis.md rtl_bb_delay_analysis.md
-rtw89_mlo_analysis.md tcp_multipath_load_balance_analysis.md
-test_unaligned_diff test_unaligned_diff.c type_size_check
-type_size_check.c veth_driver_analysis.md
-wifi_mlo_mbssid_tx_link_id_analysis.md sta->local->num_sta) {
-sta->cparams.target = MS2TIME(50); // Too lenient (50ms)
-sta->cparams.interval = MS2TIME(300); // Effectively disables CoDel
-sta->cparams.ecn = false; // Disables ECN unnecessarily } ``` The code
-shows the implementation used: - `sta->local->num_sta` (all associated
-stations, not active ones) - Arbitrary `STA_SLOW_THRESHOLD` of 6000 kbps
-- Destructively high 300ms interval that breaks CoDel's algorithm ### 3.
-**Reverts to Proven Configuration** The revert returns to the global
-CoDel parameters: ```c // RESTORED: Uses local->cparams consistently
-cparams = &local->cparams; // Instead of per-station parameters ``` This
-restores the proven 20ms target and 100ms interval that work well in
-practice. ### 4. **Original Author's Decision** Critically, this revert
-was done by **Toke Høiland-Jørgensen**, the same author who wrote the
-original code 8 years earlier. This shows: - Deep understanding of the
-issues - Professional acknowledgment of the design flaws - Community
-feedback integration (OpenWrt validation) ### 5. **Matches Historical
-Backport Patterns** Comparing to the similar commits: - **Similar Commit
-#3 (YES)**: Fixed station bandwidth settings affecting rate control -
-performance issue - **Similar Commits #1,#2,#4,#5 (NO)**: Were new
-features or minor documentation fixes This revert is most similar to
-Similar Commit #3 - it fixes a performance regression affecting real
-users. ### 6. **Low Risk, High Benefit** The changes are: - **Minimal
-scope**: Only affects mac80211 CoDel parameters - **Well-contained**:
-Removes complexity rather than adding it - **Proven alternative**:
-Returns to parameters that worked for years - **No architectural
-changes**: Pure revert of a feature ### 7. **Wide Impact on Wireless
-Performance** The bug affects: - All Linux systems using mac80211 (most
-Wi-Fi hardware) - Multi-station environments (APs, mesh networks) - Any
-deployment since Linux 4.13 (2017) ### 8. **Production Validation** The
-commit message references OpenWrt community testing with tighter
-parameters showing "promising results", and Dave Taht's production
-experience with 8ms/80ms parameters working "great" for years. ##
-Conclusion This is an exemplary stable tree candidate: it fixes an
-important performance regression affecting real users, has minimal risk,
-returns to a proven configuration, and was initiated by the original
-author after thorough analysis. The 8-year gap between introduction and
-revert shows this was a thorough, well-considered decision rather than a
-hasty change.
+## Analysis and Recommendation **YES** - This commit should be
+backported to stable kernel trees. ### Detailed Analysis: **1. Bug Fix
+Nature:** The commit fixes a real bug where multicast/broadcast packet
+detection is unreliable when using the MPDU start descriptor
+(`RX_MPDU_START_INFO6_MCAST_BCAST` from `info6` field). The commit
+message explicitly states "in some scenarios multicast bit is not set
+when fetched from MPDU start descriptor." **2. Code Changes Analysis:**
+The fix changes two functions in
+`drivers/net/wireless/ath/ath12k/hal.c`: -
+`ath12k_hw_qcn9274_rx_desc_is_da_mcbc()` -
+`ath12k_hw_qcn9274_compact_rx_desc_is_da_mcbc()` Both change from
+reading bit 15 of `mpdu_start.info6` to reading bit 9 of
+`msdu_end.info5`, which is described as "more reliable as it is per
+MSDU." **3. Impact Assessment:** - **User Impact**: Multicast/broadcast
+packet misclassification can cause serious networking issues including
+packet drops, incorrect routing, and potential security vulnerabilities
+- **Scope**: Limited to ath12k QCN9274 hardware (a specific WiFi
+chipset) - **Risk**: Very low risk - changes only the bit field being
+read, using well-defined hardware descriptor fields **4. Backport
+Suitability Criteria:** ✅ **Fixes important bug**: Incorrect
+multicast/broadcast detection affects real user traffic ✅ **Small and
+contained**: Only changes which bit field is read in two functions ✅
+**No architectural changes**: Simple hardware register access change ✅
+**Minimal regression risk**: Well-defined hardware fields with clear
+semantics ✅ **Critical subsystem**: Network packet classification is
+fundamental functionality ✅ **Clear side effects**: No complex side
+effects beyond fixing the core issue **5. Comparison with Historical
+Examples:** This is very similar to "Similar Commit #1" which was marked
+"YES" for backporting. Both commits: - Fix incorrect multicast/broadcast
+packet detection - Change which hardware descriptor field is used - Are
+small, contained fixes - Have minimal regression risk **6. Technical
+Justification:** The MSDU end descriptor is indeed more reliable for
+per-MSDU information as stated in the commit message. The MPDU start
+descriptor contains MPDU-level information which may not accurately
+reflect the multicast/broadcast status of individual MSDUs within an
+aggregated frame. **7. Testing and Validation:** The commit includes
+"Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1"
+showing it has been validated on the target hardware. This is a clear,
+well-justified bug fix that meets all criteria for stable tree
+backporting with minimal risk and clear benefit to users with affected
+hardware.
 
- include/net/mac80211.h     | 16 ----------------
- net/mac80211/debugfs_sta.c |  6 ------
- net/mac80211/rate.c        |  2 --
- net/mac80211/sta_info.c    | 28 ----------------------------
- net/mac80211/sta_info.h    | 11 -----------
- net/mac80211/tx.c          |  9 +--------
- 6 files changed, 1 insertion(+), 71 deletions(-)
+ drivers/net/wireless/ath/ath12k/hal.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index fee854892bec5..8e70941602064 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -5311,22 +5311,6 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
- 			    struct ieee80211_tx_rate *dest,
- 			    int max_rates);
+diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
+index ca04bfae8bdcc..9a37e1b25aa9d 100644
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -449,8 +449,8 @@ static u8 *ath12k_hw_qcn9274_rx_desc_mpdu_start_addr2(struct hal_rx_desc *desc)
  
--/**
-- * ieee80211_sta_set_expected_throughput - set the expected tpt for a station
-- *
-- * Call this function to notify mac80211 about a change in expected throughput
-- * to a station. A driver for a device that does rate control in firmware can
-- * call this function when the expected throughput estimate towards a station
-- * changes. The information is used to tune the CoDel AQM applied to traffic
-- * going towards that station (which can otherwise be too aggressive and cause
-- * slow stations to starve).
-- *
-- * @pubsta: the station to set throughput for.
-- * @thr: the current expected throughput in kbps.
-- */
--void ieee80211_sta_set_expected_throughput(struct ieee80211_sta *pubsta,
--					   u32 thr);
--
- /**
-  * ieee80211_tx_rate_update - transmit rate update callback
-  *
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 1e9389c49a57d..e6f937cfedcf6 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -152,12 +152,6 @@ static ssize_t sta_aqm_read(struct file *file, char __user *userbuf,
- 	spin_lock_bh(&local->fq.lock);
- 	rcu_read_lock();
- 
--	p += scnprintf(p,
--		       bufsz + buf - p,
--		       "target %uus interval %uus ecn %s\n",
--		       codel_time_to_us(sta->cparams.target),
--		       codel_time_to_us(sta->cparams.interval),
--		       sta->cparams.ecn ? "yes" : "no");
- 	p += scnprintf(p,
- 		       bufsz + buf - p,
- 		       "tid ac backlog-bytes backlog-packets new-flows drops marks overlimit collisions tx-bytes tx-packets flags\n");
-diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
-index 3dc9752188d58..1b045b62961f5 100644
---- a/net/mac80211/rate.c
-+++ b/net/mac80211/rate.c
-@@ -971,8 +971,6 @@ int rate_control_set_rates(struct ieee80211_hw *hw,
- 	if (sta->uploaded)
- 		drv_sta_rate_tbl_update(hw_to_local(hw), sta->sdata, pubsta);
- 
--	ieee80211_sta_set_expected_throughput(pubsta, sta_get_expected_throughput(sta));
--
- 	return 0;
- }
- EXPORT_SYMBOL(rate_control_set_rates);
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 49095f19a0f22..4eb45e08b97e7 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -18,7 +18,6 @@
- #include <linux/timer.h>
- #include <linux/rtnetlink.h>
- 
--#include <net/codel.h>
- #include <net/mac80211.h>
- #include "ieee80211_i.h"
- #include "driver-ops.h"
-@@ -683,12 +682,6 @@ __sta_info_alloc(struct ieee80211_sub_if_data *sdata,
- 		}
- 	}
- 
--	sta->cparams.ce_threshold = CODEL_DISABLED_THRESHOLD;
--	sta->cparams.target = MS2TIME(20);
--	sta->cparams.interval = MS2TIME(100);
--	sta->cparams.ecn = true;
--	sta->cparams.ce_threshold_selector = 0;
--	sta->cparams.ce_threshold_mask = 0;
- 
- 	sta_dbg(sdata, "Allocated STA %pM\n", sta->sta.addr);
- 
-@@ -2878,27 +2871,6 @@ unsigned long ieee80211_sta_last_active(struct sta_info *sta)
- 	return sta->deflink.status_stats.last_ack;
- }
- 
--static void sta_update_codel_params(struct sta_info *sta, u32 thr)
--{
--	if (thr && thr < STA_SLOW_THRESHOLD * sta->local->num_sta) {
--		sta->cparams.target = MS2TIME(50);
--		sta->cparams.interval = MS2TIME(300);
--		sta->cparams.ecn = false;
--	} else {
--		sta->cparams.target = MS2TIME(20);
--		sta->cparams.interval = MS2TIME(100);
--		sta->cparams.ecn = true;
--	}
--}
--
--void ieee80211_sta_set_expected_throughput(struct ieee80211_sta *pubsta,
--					   u32 thr)
--{
--	struct sta_info *sta = container_of(pubsta, struct sta_info, sta);
--
--	sta_update_codel_params(sta, thr);
--}
--
- int ieee80211_sta_allocate_link(struct sta_info *sta, unsigned int link_id)
+ static bool ath12k_hw_qcn9274_rx_desc_is_da_mcbc(struct hal_rx_desc *desc)
  {
- 	struct ieee80211_sub_if_data *sdata = sta->sdata;
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 9195d5a2de0a8..a9cfeeb13e53f 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -466,14 +466,6 @@ struct ieee80211_fragment_cache {
- 	unsigned int next;
- };
+-	return __le32_to_cpu(desc->u.qcn9274.mpdu_start.info6) &
+-	       RX_MPDU_START_INFO6_MCAST_BCAST;
++	return __le16_to_cpu(desc->u.qcn9274.msdu_end.info5) &
++	       RX_MSDU_END_INFO5_DA_IS_MCBC;
+ }
  
--/*
-- * The bandwidth threshold below which the per-station CoDel parameters will be
-- * scaled to be more lenient (to prevent starvation of slow stations). This
-- * value will be scaled by the number of active stations when it is being
-- * applied.
-- */
--#define STA_SLOW_THRESHOLD 6000 /* 6 Mbps */
--
- /**
-  * struct link_sta_info - Link STA information
-  * All link specific sta info are stored here for reference. This can be
-@@ -619,7 +611,6 @@ struct link_sta_info {
-  * @sta: station information we share with the driver
-  * @sta_state: duplicates information about station state (for debug)
-  * @rcu_head: RCU head used for freeing this station struct
-- * @cparams: CoDel parameters for this station.
-  * @reserved_tid: reserved TID (if any, otherwise IEEE80211_TID_UNRESERVED)
-  * @amsdu_mesh_control: track the mesh A-MSDU format used by the peer:
-  *
-@@ -710,8 +701,6 @@ struct sta_info {
- 	struct dentry *debugfs_dir;
- #endif
+ static void ath12k_hw_qcn9274_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
+@@ -908,8 +908,8 @@ static u8 *ath12k_hw_qcn9274_compact_rx_desc_mpdu_start_addr2(struct hal_rx_desc
  
--	struct codel_params cparams;
--
- 	u8 reserved_tid;
- 	s8 amsdu_mesh_control;
+ static bool ath12k_hw_qcn9274_compact_rx_desc_is_da_mcbc(struct hal_rx_desc *desc)
+ {
+-	return __le32_to_cpu(desc->u.qcn9274_compact.mpdu_start.info6) &
+-	       RX_MPDU_START_INFO6_MCAST_BCAST;
++	return __le16_to_cpu(desc->u.qcn9274_compact.msdu_end.info5) &
++	       RX_MSDU_END_INFO5_DA_IS_MCBC;
+ }
  
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index ef16ff149730a..00c309e7768e1 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1401,16 +1401,9 @@ static struct sk_buff *fq_tin_dequeue_func(struct fq *fq,
- 
- 	local = container_of(fq, struct ieee80211_local, fq);
- 	txqi = container_of(tin, struct txq_info, tin);
-+	cparams = &local->cparams;
- 	cstats = &txqi->cstats;
- 
--	if (txqi->txq.sta) {
--		struct sta_info *sta = container_of(txqi->txq.sta,
--						    struct sta_info, sta);
--		cparams = &sta->cparams;
--	} else {
--		cparams = &local->cparams;
--	}
--
- 	if (flow == &tin->default_flow)
- 		cvars = &txqi->def_cvars;
- 	else
+ static void ath12k_hw_qcn9274_compact_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
 -- 
 2.39.5
 
