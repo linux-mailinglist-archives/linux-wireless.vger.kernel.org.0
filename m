@@ -1,59 +1,56 @@
-Return-Path: <linux-wireless+bounces-23646-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23647-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A841ACD386
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:19:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3385DACD3EA
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90AFB3A3E26
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:18:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAFCC188B71E
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA81265CAA;
-	Wed,  4 Jun 2025 01:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96D9265CC5;
+	Wed,  4 Jun 2025 01:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cTtE54gM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KY51gxLa"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655DB203710;
-	Wed,  4 Jun 2025 01:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF66265CBE;
+	Wed,  4 Jun 2025 01:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748998969; cv=none; b=iN7qlSVQ2lt6N+6j/+Jlmo/MUwZdZCgz0xo4Gr1JcPgUrFaXgMF0Yy3Yhdc+WahEt2k0OJxDH6DK796LHtxtpa0TJUiQxQK+8KF3J8BseipxpnoxP5aPKZp3cMi+KfoKv6uQZyUCpRMPWOfqK53mhsVdoPQLuCJ+hWYfj8lnVIY=
+	t=1748998970; cv=none; b=tlDyxWkCXTD/Mix3K83wuPi1pp6ts4f69Vjsn3DPN30P112VBl+9kbOBaJM/hho6uGdtwnJBcj3wOIfNVsmrWdbJYg1WfIxe3QpSYswGwINBK78UznPjc1LVrr/F+Rvk2YLTytl0Bk788pt1hCdCka7MrC2i5Hk85G1skM4XtJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748998969; c=relaxed/simple;
-	bh=vFcEO3X8WOL8kki6aELZdr82vjfJ4FWx+ZhvFlVM8nY=;
+	s=arc-20240116; t=1748998970; c=relaxed/simple;
+	bh=XpBTO9Iuai9lsQRyiIPzIVDyVxvotp6po9asB3bbB6Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jWuNBVUjQY5hWYAb2HdSI5dpQp6FFbag2lcKHlKjnZBaM9HzvJ9IIsjVo7jH5h9WkWSgsCXc/SHVefdnPIvvUqcA6t/yY5ghSPW8CyjmkR+mZLNEViaNB41PMy02+KaGGVPCkUf6HH6c/g/miSHnB0sVhiHaOGyR5uvtAL5eCew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cTtE54gM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66FCC4CEF1;
-	Wed,  4 Jun 2025 01:02:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YmrvgZywMpfcBlbpUzoGyZVsUyzIyOTfzMT6U47X2BvvVTs9Ly5FQIaMyYSL6ZPdBYMH58KPb776dRlCmjSdEeI638GFIOAmD97L+dUfHdUnpgxC//cyuS9xNA1LKcVqMnGJwftvWY2P08sQ+c7PabRZmxPhhu4HMJojzmmXrLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KY51gxLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D2AC4CEEF;
+	Wed,  4 Jun 2025 01:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748998968;
-	bh=vFcEO3X8WOL8kki6aELZdr82vjfJ4FWx+ZhvFlVM8nY=;
+	s=k20201202; t=1748998970;
+	bh=XpBTO9Iuai9lsQRyiIPzIVDyVxvotp6po9asB3bbB6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTtE54gMGtoC1SRCPPWpIpfVhkIdMDT9h+12WoPE5WYgXN2Skc+hbHrcRjk28hEHX
-	 S4MI2t7IjwSNYC6RuvDNKFvdUB7oXuMfAwKGeWG+WgCgvoHc4vTnP17eemDbj2JqhB
-	 W6fqVfycSMR6jJ/pZbCUSj6JqheDHZGviadNjRKiatD7qLSTfKB8qEwEOLDYWd9XX9
-	 JWA7lHbJwr9jW1VmfhsxgEE7p9GurDaZsWpSh+CwvdxSAq1DZoYX3tF1m2PMlVQiY5
-	 vkr3jI6SvBNosdXWLs3x0YcztgiNSWsn3AS4t+fOrFzvkxgfpcpEWLCxRAkYSI5aSh
-	 RMcVF8BmkkCUg==
+	b=KY51gxLa+Pm+bCGcAbFTWJ+We88XvtQm36g11uGU98lokHGlivvb7QCTtsTEqwr1S
+	 eCr7DDko8AOAUFY8VXCdHReL5CkSXyZySN+4gbA7J0by5RIIeiDYew/b3XVldT6BNS
+	 WJiKzOD5C9vtVNwYkk9fe0dUHmpWvCuPTHxca/bVjw1DRepXL6jDS6hyL3q3/SwX1b
+	 SNJdG3xpTU/4Vb5DUZ/GbZCt1gXaLbm3+R2i1Hg2FBk3/mDlyLLY2zze5lxzanBKJP
+	 WBskSpDkIji1HUqduwrIsZ622pAiWTXVnpvTzD4NOw/kohTdZN2nMw6MZcwyC4kI17
+	 wdeSXCsTP2ULQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Dian-Syuan Yang <dian_syuan0116@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 18/62] wifi: ath11k: Fix QMI memory reuse logic
-Date: Tue,  3 Jun 2025 21:01:29 -0400
-Message-Id: <20250604010213.3462-18-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 19/62] wifi: rtw89: leave idle mode when setting WEP encryption for AP mode
+Date: Tue,  3 Jun 2025 21:01:30 -0400
+Message-Id: <20250604010213.3462-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250604010213.3462-1-sashal@kernel.org>
 References: <20250604010213.3462-1-sashal@kernel.org>
@@ -69,127 +66,100 @@ X-stable-base: Linux 6.6.92
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
 
-[ Upstream commit cd2e7bae92bd7e65063ab8d04721d2b711ba4cbe ]
+[ Upstream commit d105652b33245162867ac769bea336976e67efb8 ]
 
-Firmware requests 2 segments at first. The first segment is of 6799360
-whose allocation fails due to dma remapping not available. The success
-is returned to firmware. Then firmware asks for 22 smaller segments
-instead of 2 big ones. Those get allocated successfully. At suspend/
-hibernation time, these segments aren't freed as they will be reused
-by firmware after resuming.
+Due to mac80211 triggering the hardware to enter idle mode, it fails
+to install WEP key causing connected station can't ping successfully.
+Currently, it forces the hardware to leave idle mode before driver
+adding WEP keys.
 
-After resuming, the firmware asks for the 2 segments again with the
-first segment of 6799360 size. Since chunk->vaddr is not NULL, the
-type and size are compared with the previous type and size to know if
-it can be reused or not. Unfortunately, it is detected that it cannot
-be reused and this first smaller segment is freed. Then we continue to
-allocate 6799360 size memory which fails and ath11k_qmi_free_target_mem_chunk()
-is called which frees the second smaller segment as well. Later success
-is returned to firmware which asks for 22 smaller segments again. But
-as we had freed 2 segments already, we'll allocate the first 2 new
-smaller segments again and reuse the remaining 20. Hence 20 small
-segments are being reused instead of 22.
-
-Add skip logic when vaddr is set, but size/type don't match. Use the
-same skip and success logic as used when dma_alloc_coherent() fails.
-By skipping, the possibility of resume failure due to kernel failing to
-allocate memory for QMI can be avoided.
-
-	kernel: ath11k_pci 0000:03:00.0: failed to allocate dma memory for qmi (524288 B type 1)
-	ath11k_pci 0000:03:00.0: failed to allocate qmi target memory: -22
-
-Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
-
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250428080242.466901-1-usama.anjum@collabora.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250507031203.8256-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-Based on my analysis of this commit and the Linux kernel ath11k QMI
-code, here's my assessment: **YES** This commit should be backported to
-stable kernel trees. Here's my extensive analysis: ## Critical Bug Fix
-for Resume/Hibernation Failures ### Problem Description The commit fixes
-a critical logic flaw in QMI memory reuse during firmware reload
-scenarios, particularly affecting suspend/resume and hibernation cycles.
-The bug causes resume failures with errors like: ``` kernel: ath11k_pci
-0000:03:00.0: failed to allocate dma memory for qmi (524288 B type 1)
-ath11k_pci 0000:03:00.0: failed to allocate qmi target memory: -22 ```
-### Code Analysis of the Fix **The core issue (lines 1996-2003 in the
-diff):** ```c + if (ab->qmi.mem_seg_count <=
-ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) { + ath11k_dbg(ab, ATH11K_DBG_QMI, +
-"size/type mismatch (current %d %u) (prev %d %u), try later with small
-size\n", + chunk->size, chunk->type, + chunk->prev_size,
-chunk->prev_type); + ab->qmi.target_mem_delayed = true; + return 0; + }
-``` **Before the fix:** When firmware requests different memory segment
-sizes/types than previously allocated (common during resume), the driver
-would: 1. Free the existing memory chunks with `dma_free_coherent()` 2.
-Try to allocate the new larger size (often 6+ MB) 3. Fail due to memory
-fragmentation after hibernation 4. Free remaining chunks, causing loss
-of successfully allocated smaller segments **After the fix:** When
-size/type mismatch occurs and segment count ≤ 5
-(`ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT`), the driver: 1. Sets
-`target_mem_delayed = true` 2. Returns success immediately (skipping
-allocation) 3. Allows firmware to fall back to requesting smaller chunks
-4. Preserves existing memory allocations for reuse ### Why This
-Qualifies for Stable Backporting 1. **Fixes Important User-Affecting
-Bug**: Resume/hibernation failures directly impact user experience and
-system reliability 2. **Minimal and Contained Change**: The fix adds
-only 8 lines of code with a simple conditional check using existing
-mechanisms (`target_mem_delayed` flag and
-`ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT` constant) 3. **Low Regression
-Risk**: - Uses existing, well-tested delayed allocation mechanism - Only
-affects the specific error path for size/type mismatches - Maintains
-backward compatibility with all existing behavior 4. **Critical
-Subsystem**: WiFi connectivity is essential functionality, and resume
-failures can render systems unusable 5. **Clear Root Cause**: The commit
-message and code changes clearly identify and fix a specific logic error
-in memory management 6. **Follows Stable Rules**: - Important bugfix
-(resume failures) - Small and self-contained - No architectural changes
-- Confined to ath11k subsystem ### Validation Against Similar Commits
-Looking at the historical examples: - **Similar Commit #1 (YES)**: Also
-fixes QMI memory allocation warnings/failures, uses similar logic with
-`prev_size` fields - **Similar Commit #4 (YES)**: Implements the
-`target_mem_delayed` mechanism this fix builds upon This commit follows
-the same pattern as previously backported QMI memory fixes, addressing a
-critical failure scenario with minimal risk. ### Technical Validation
-The fix leverages the existing delayed allocation negotiation mechanism
-between driver and firmware, which has been proven stable since its
-introduction. By using `target_mem_delayed = true`, it allows firmware
-to adaptively request smaller, more allocation-friendly memory segments
-rather than failing outright. The `ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT =
-5` threshold ensures this optimization only applies to initial firmware
-memory requests (≤5 segments), not to scenarios where firmware has
-already adapted to smaller chunks (>5 segments). **Conclusion**: This is
-a well-contained, low-risk fix for a critical user-facing issue that
-should definitely be backported to stable kernels.
+**YES** This commit should be backported to stable kernel trees. Here's
+my extensive analysis: ## Bug Fix Analysis **Real User-Affecting Bug**:
+The commit fixes a clear functional issue where WEP encryption key
+installation fails in AP mode when the rtw89 wireless device is in idle
+mode. This directly impacts users trying to establish WEP-encrypted
+connections to an AP, causing authentication failures and preventing
+network connectivity. **Specific Technical Problem**: When mac80211 puts
+the hardware into idle mode (IPS - Idle Power Save), the rtw89
+firmware/hardware enters a low-power state where key installation
+operations fail. This is particularly problematic for WEP encryption
+which appears to have specific hardware state requirements. ## Code
+Change Analysis **Minimal and Targeted**: The fix adds exactly two lines
+of code: ```c case WLAN_CIPHER_SUITE_WEP40:
+rtw89_leave_ips_by_hwflags(rtwdev); // NEW hw_key_type =
+RTW89_SEC_KEY_TYPE_WEP40; break; case WLAN_CIPHER_SUITE_WEP104:
+rtw89_leave_ips_by_hwflags(rtwdev); // NEW hw_key_type =
+RTW89_SEC_KEY_TYPE_WEP104; break; ``` **Uses Existing Infrastructure**:
+The fix leverages the existing `rtw89_leave_ips_by_hwflags()` function,
+which is a well-tested mechanism already used throughout the driver for
+similar power management scenarios. **WEP-Specific Requirement**:
+Notably, other cipher types (TKIP, CCMP, GCMP) don't require this call,
+indicating WEP has unique hardware state dependencies - likely due to
+its legacy implementation requiring specific firmware states. ## Risk
+Assessment **Very Low Risk**: - The `rtw89_leave_ips_by_hwflags()`
+function only acts when the hardware is actually in idle mode
+(`IEEE80211_CONF_IDLE` flag set) - It's a conditional safety mechanism
+that doesn't affect normal operation - Limited scope - only affects
+WEP40/WEP104 cipher types - Follows established patterns already present
+in the driver **No Architectural Changes**: This is purely a bug fix
+that ensures hardware is in the correct state before performing WEP key
+operations. ## Stable Tree Criteria Compliance **Meets All Stable
+Requirements**: 1. ✅ **Important bug fix**: Resolves WEP authentication
+failures in AP mode 2. ✅ **Small and contained**: Two identical function
+calls in a switch statement 3. ✅ **Obviously correct**: Uses existing,
+proven power management infrastructure 4. ✅ **Low regression risk**:
+Conservative fix affecting only legacy WEP encryption 5. ✅ **User-
+visible impact**: Fixes network connectivity issues ## Comparison with
+Historical Commits Looking at the similar commits provided, this follows
+the same pattern as other rtw88/rtw89 power management fixes that were
+marked as "NO" for backporting. However, those commits were primarily
+optimizations or behavior changes during scanning operations, not fixes
+for broken functionality. This commit differs because: - It fixes a
+**broken feature** (WEP key installation failure) - It's not an
+optimization or behavioral change - It has direct user-visible impact
+(connection failures) - It's a minimal, surgical fix for a specific
+failure mode ## Conclusion This is a textbook example of a commit
+suitable for stable backporting: it fixes a real bug affecting users,
+uses minimal and safe code changes, and follows established driver
+patterns. The fix ensures WEP encryption works properly in AP mode by
+guaranteeing the hardware is powered up during key installation
+operations.
 
- drivers/net/wireless/ath/ath11k/qmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/wireless/realtek/rtw89/cam.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index fa46e645009cf..91e31f30d2c80 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1989,6 +1989,15 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
- 			    chunk->prev_size == chunk->size)
- 				continue;
+diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
+index f5301c2bbf133..9a0ffaddb8360 100644
+--- a/drivers/net/wireless/realtek/rtw89/cam.c
++++ b/drivers/net/wireless/realtek/rtw89/cam.c
+@@ -6,6 +6,7 @@
+ #include "debug.h"
+ #include "fw.h"
+ #include "mac.h"
++#include "ps.h"
  
-+			if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
-+				ath11k_dbg(ab, ATH11K_DBG_QMI,
-+					   "size/type mismatch (current %d %u) (prev %d %u), try later with small size\n",
-+					    chunk->size, chunk->type,
-+					    chunk->prev_size, chunk->prev_type);
-+				ab->qmi.target_mem_delayed = true;
-+				return 0;
-+			}
-+
- 			/* cannot reuse the existing chunk */
- 			dma_free_coherent(ab->dev, chunk->prev_size,
- 					  chunk->vaddr, chunk->paddr);
+ static struct sk_buff *
+ rtw89_cam_get_sec_key_cmd(struct rtw89_dev *rtwdev,
+@@ -333,9 +334,11 @@ int rtw89_cam_sec_key_add(struct rtw89_dev *rtwdev,
+ 
+ 	switch (key->cipher) {
+ 	case WLAN_CIPHER_SUITE_WEP40:
++		rtw89_leave_ips_by_hwflags(rtwdev);
+ 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP40;
+ 		break;
+ 	case WLAN_CIPHER_SUITE_WEP104:
++		rtw89_leave_ips_by_hwflags(rtwdev);
+ 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP104;
+ 		break;
+ 	case WLAN_CIPHER_SUITE_CCMP:
 -- 
 2.39.5
 
