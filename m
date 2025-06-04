@@ -1,77 +1,77 @@
-Return-Path: <linux-wireless+bounces-23691-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23692-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F51ACDB26
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 11:39:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248DBACDB77
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 11:55:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1BD93A51F3
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 09:38:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10AAA7A5A64
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 09:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA54A28D83E;
-	Wed,  4 Jun 2025 09:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB4228D85B;
+	Wed,  4 Jun 2025 09:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="cCCxYB/u"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="OHJ4H7vc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB1428D836
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Jun 2025 09:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CEA28C5A1
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Jun 2025 09:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749029925; cv=none; b=V7oh+ltxTQyI+O6Tl3Qf26YxBRC/glyxN1XMXJDBzyr2SHJ2SDLmVci1j1f0h/Am8zoGswjNDqCDAPWCM9dnYssvmI/69Nq88Y2ZlFyaJeQfML1+VoXf2hlwMD0l72+F1ox+M4JTOT4QJ947ibwAOObb6XXDypiufuLtyOVLS1g=
+	t=1749030900; cv=none; b=gltSSVIaZHOQoUeWx1nQn0Cw0BhsbgehCTOdqEG9SmnT01Q7NOewmqD5wZESFaWZxEVFS0uGXSW7FxpJ8Yc7fLoh++f5qpislOoufzTCwzkGVuj5QMf4aNuopQ4hjLzK1sO8NOUBm7LvCioF6eTFgYIAqBbVIxQE4prbVPH+uyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749029925; c=relaxed/simple;
-	bh=bTqY3mmXzyFFv9EYPhTXt1gNNUwtUBEVMYKoCDpcjTg=;
+	s=arc-20240116; t=1749030900; c=relaxed/simple;
+	bh=miTFNxdINta7zyIhNKTv1lrUPzISl4z0AuxlHlBztWI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HspJPHnDMeGTMr6+rnULlGXMyKVBo2USyDh9FYTEwXPI1uwQkZNBNQGFZ1AFFEXiMsWP4uitQ0JtGp7L8TCvST1cGgg7s6GAKSu81lxFqSGPLbWx81cfGtnI9iM6T70TsifOAOzMUHvSz8zoKm8F//JaeJTRF/h2MYg8Vj70/vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=cCCxYB/u; arc=none smtp.client-ip=209.85.210.172
+	 In-Reply-To:Content-Type; b=Ab4+9NlHQ4XGH4sCovLJ8CG7K5N+ayPzTcL0nmLcdhrztA1WPCpWhskvPTtW/8ZRitmmF6JqB2w8maN2BglMD5r3wBu8/QTQfZHhipSRursDNds3kgyRqYDL6M3BRTLg6f7ppZq/HLex3HyzoW8rW66CeQi/hlEidE4pqopxX64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=OHJ4H7vc; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-74264d1832eso7362435b3a.0
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Jun 2025 02:38:44 -0700 (PDT)
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso8113518b3a.2
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Jun 2025 02:54:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1749029924; x=1749634724; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1749030898; x=1749635698; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=R61rovpELAXLVRfgYuxMxG0BozH+MJff6pqZs/BVTDk=;
-        b=cCCxYB/uNMgdNIIRnydCQt0yLI6Dsy3MTqo5D3+Sd3j8rvlJLMzPZp+luRQuOnpqcG
-         lsbUEmxibL5O0fKoUUuleJWoakiwC2+ntP9EDPahJeSoniCotcdiPS1g9O9mBBpY7ect
-         nIqZxXgY4KU7F9LHagV8/b7qmBWcMJtb07pvs=
+        bh=VmiYvCf6fvZ2kv+WW1AEJh/PFIWU/Fzej214OLQXFGM=;
+        b=OHJ4H7vcI8zC474G15RtSezQH9LBsj2PGVeKMmxMx44CkM+nMgHjNJldjgiIptoz02
+         9wjvRv/0yesPXyOe34nn0GHPoOyQ/RZK4nAQMbHa8MOSQ2gBLBdfja58g1sFoUeBL3Ge
+         /Y0N6/DjXunmHsUk+cwEVnn5AU39stJa6QzHU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749029924; x=1749634724;
+        d=1e100.net; s=20230601; t=1749030898; x=1749635698;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=R61rovpELAXLVRfgYuxMxG0BozH+MJff6pqZs/BVTDk=;
-        b=lYTMbduiJ89CRlcKCqUGaTYylrboHhUi9eIei6+/yYC2ay0ffSqJ9j6HgnQwbSrIhW
-         ykIiczPpD4U9U5YCAgyJ8PVN7B4CaO0s6k97Mhhv/QnOuqU0rp/rxGIP7hEwqBCkW52H
-         Jqp+VwNHJGGrk2vcsfijXD8gcxmeE/gM5qkF5fvFOM+rpF4pXTRHKsjoa3vFT3pHLUsm
-         r/BL9D5lwpAo5dnuN01tuv5Gl2uGrgKZeVGZKIu/J4uLjFvYRPLCaAgNr4fBBt+Fa8RB
-         4Y71nQcBZYjsoG85zgEQifIBsppHN9e76l9mUfvNi1NGFt5LHYh2CJitOmMAwhgK3ePv
-         dbMg==
-X-Gm-Message-State: AOJu0YzoakhzadjwoYf00UJz/xwNLwS+LfNfIZCPjCTHlQQUmi6ZdnMb
-	gR58nyut4U0ITQeUmP9Mtyhf4L+sW5Q7zWvgtkYnqGYAqAYhVDrPdW1JIcss7SJ8/w==
-X-Gm-Gg: ASbGncuIfdD0jPTqFJGw+v2Msjzhz035+vGNaO63knV/DRWThisxGo/O+FdgBJ00Hgu
-	PPmCidm0zm0Wbxr+2r9COLm7Ium0JGqGH1SRZDpGQxPm/voGZ8F27c9uzfPWCuE9GB95WYu4agg
-	pwT8MXGCLgjPsma4qAsF4cjBHJQFnSIEgz/E8mViiEIDGgyxg+Fi3DQCA031RrqQFvOipgzpHUc
-	turQwgMkLUGxrVx9mbljo2xRUkY7DOYQOQeveG5eoGspLpbEaIPTuBqta8the/WMZYY8ER+7aQq
-	aj6UuWUKGpvz9qNzi3MPGoVenpD5F8xcyguJimXP8GOJoJFDKy6iWFSVspx85Ar6HbXcPX/mQSH
-	4irBsgH0y5FZAR3p6Hlx95hUK
-X-Google-Smtp-Source: AGHT+IEOoM1fMnixwVmmnzP7M0aPXxsStlj0wscerdIiUBfyKFMZyvnoKZ5z3eILaYW6oMAXEetXNQ==
-X-Received: by 2002:a05:6a00:39a4:b0:730:95a6:3761 with SMTP id d2e1a72fcca58-7480b1f26efmr3900127b3a.3.1749029923603;
-        Wed, 04 Jun 2025 02:38:43 -0700 (PDT)
+        bh=VmiYvCf6fvZ2kv+WW1AEJh/PFIWU/Fzej214OLQXFGM=;
+        b=ukS7kPUhs0wiAnuBTnaEX24jW0XS5GiKxYvtzl7QG+rF2ClfbZyI5BtLygEFKzb1Rx
+         iGDQbuGuURu3V4yXMHmEPsnhh9azAkjixPd7M5MxKxLsHT9seOuH3nr8VVdC1Z7F42Yf
+         5slZL1YPkDrPQGh3fhusP6PRK2y10PmWvUwvW7g6zbEoU8eb8MDkiX66wk0gWZ76KCop
+         oyTu7DttFbJapItJwJv6Gn81JfLzH8sNLmX++fXZJluS9U9VL+MgtMVpJnEp1fv4HNfJ
+         4Dx+WAP76IPwAYMUWn8XZ/ZGc+eOt1nALvKgjPW1yXVACIHmAPOSmw+9+DyvTiHbYd8V
+         uaHA==
+X-Gm-Message-State: AOJu0YxXMx+1jTNi3bcxJJzoNNhs09UnZz+wZqz0RMrsZZsT8Av0bZk1
+	HbSpmLI1RE+/ISXhTjK3gwY/aa/2viFrDwYZjpicT3xiOUqH2q1ye26L0Q51irhY2g==
+X-Gm-Gg: ASbGncvh+xEXXIMDCWi4p7dkg99BU6lBpd3lH0aocf2ujIhinmJnkyQ/pEadSsw8/7X
+	90ysdDd+LxmgltDEtriFyWCXgwH47c0zET980+xqK3/061YoRvc0l8V3YUXh8baTF8/Px1NGagk
+	70KvvJe9WBfsfGJGdVDMgCueB9bdgIiNpSIEWPa5Gk7j5q8Ep9hdizrYYKqg/z84DCMiyS2UIwW
+	KrLD2+jUrpQAoGF6TBmOJ0qtS93/yxOiibelaQtfSaqr1PCWZxMB8s8gMj3OdmYBnvrjPDdP3ke
+	fMGn/zVR+Vp4c2ARGC86B1bzx8Ep7wkrH7bYn8iTMkf/rtGQbK8pYU74bHwuGQUlkxFbNIBtnW2
+	GYajgzfQQ3L2hiQ==
+X-Google-Smtp-Source: AGHT+IFxr/oRZ9tIHAMChj9t8B3ahv4uHLP1BdXSx6YJaU5NxvFyTZT6b6RfsFkuRPWOxBqHBM+vag==
+X-Received: by 2002:a05:6a20:9190:b0:21a:c058:9b8e with SMTP id adf61e73a8af0-21d22bcd433mr3856024637.34.1749030898622;
+        Wed, 04 Jun 2025 02:54:58 -0700 (PDT)
 Received: from [10.176.3.8] ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-747affaf9e5sm10801847b3a.86.2025.06.04.02.38.41
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2eceb97068sm7292864a12.61.2025.06.04.02.54.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Jun 2025 02:38:43 -0700 (PDT)
-Message-ID: <c393c4cb-ac13-46c3-973f-e123f603bdd7@broadcom.com>
-Date: Wed, 4 Jun 2025 11:38:37 +0200
+        Wed, 04 Jun 2025 02:54:58 -0700 (PDT)
+Message-ID: <b6d38c35-e410-4ea6-94e0-b9f091976953@broadcom.com>
+Date: Wed, 4 Jun 2025 11:54:53 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,14 +79,14 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next 2/4] wifi: brcmfmac: revise SoftAP channel
- setting
+Subject: Re: [PATCH wireless-next 3/4] wifi: brcmfmac: Improve the delay
+ during scan
 To: Ian Lin <ian.lin@infineon.com>, johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
  carter.chen@infineon.com, double.lo@infineon.com,
  vinoth.sampath@infineon.com, gokulkumar.sivakumar@infineon.com
 References: <20250604091629.3943-1-ian.lin@infineon.com>
- <20250604091629.3943-3-ian.lin@infineon.com>
+ <20250604091629.3943-4-ian.lin@infineon.com>
 Content-Language: en-US
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
@@ -132,23 +132,30 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <20250604091629.3943-3-ian.lin@infineon.com>
+In-Reply-To: <20250604091629.3943-4-ian.lin@infineon.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 6/4/2025 11:16 AM, Ian Lin wrote:
-> From: Ting-Ying Li <tingying.li@cypress.com>
+> From: Kurt Lee <kurt.lee@cypress.com>
 > 
-> Fmac need to update "chanspec" iovar for each SoftAP creation
-> because firmware will update the chanspec to current bsscfg
-> for each bss. If it doesn't update then the wrong chanspec
-> will be shown on the result of 'wl -i [interface] status'
-> command. No need to handle channel resource reusing for mbss
-> mode by the host driver, it should be covered by firmware.
+> wpa_supplicant sends NL80211_CMD_GET_SURVEY command every time after
+> normal scan, which causes brcmfmac surveying each channel again.
+> Currently brcmfmac implments brcmf_cfg80211_dump_survey focusing on AP
+> mode, thus this change will return the request other than AP mode.
 
-Sorry, but the wl utility is irrelevant to upstream driver so that does 
-not count as argument for this change. What does iw show?
+I am not sure if the driver should make this kind of decision. If 
+wpa_supplicant wants to invoke a survey after a scan than we should 
+simply comply and give what wpa_supplicant what it requests for. If you 
+want to avoid the survey make it a configuration option in 
+wpa_supplicant.conf.
 
 Regards,
 Arend
+
+> Signed-off-by: Kurt Lee <kurt.lee@cypress.com>
+> Signed-off-by: Ian Lin <ian.lin@infineon.com>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 3 +++
+>   1 file changed, 3 insertions(+
 
