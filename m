@@ -1,57 +1,59 @@
-Return-Path: <linux-wireless+bounces-23606-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23607-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B350FACD21A
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:03:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1C0ACD244
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 03:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 467DB1690D4
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:02:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DF127ABF9D
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 01:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3A318DF6D;
-	Wed,  4 Jun 2025 00:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16187191F74;
+	Wed,  4 Jun 2025 00:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFffK53/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uKlTNvPb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE4F1DED66;
-	Wed,  4 Jun 2025 00:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00F728691;
+	Wed,  4 Jun 2025 00:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748998573; cv=none; b=B9Bk2RcMreg7AS7U5zfLVdC8JwjhTu4DcwLNcevAGii5FPhoENcY2/GwjdFILxLt6c0wz/XpQSO2XKC2ukIZT/qz0lss76kUu5wOMJHGyK/1ih7/A7zZJEtQPiLHJhVZ0JO7F0hMLUvVGX6Uue3YlTXIw+2HRrOHZruwgHR+eoc=
+	t=1748998590; cv=none; b=ccsUy6/RB6jDYR/PrdP2YOx8mDpCvDpXEUYGoILniipVVyTSgo1iLmkZ9C+CiKUx00bXAFRClv0Pm08muMD3YFmtYcJYUDn54UROezwYrHO1q8LTFAzHu7xm7/m9oMOW3GFdsAjcYlFgGvCkhO4qnGv6Favg4bD7BtozAdiHDXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748998573; c=relaxed/simple;
-	bh=OKbWIEsIA50cUd9gWyV0gbV0Znm7zjy7+nU+PaJvpxI=;
+	s=arc-20240116; t=1748998590; c=relaxed/simple;
+	bh=W3v5cX6W547oZ9Y+uiz3ywkZ3UWfXt+rFSKyqj9NNIk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ch2b40Syd0EQhIchzBuZeN26cKEccvC4HF7f3Oppi1p0gQeo5wI1Fo02QLn3u12B2B+QhORKYY8ZzsBE8O/Q5aEF+gZGxdR2OmI5x1BZI3aAkn9jBfncK0gGNd9yXwUvTec59hWBCAcs+dG96StKm562X/Z/kdYf/SU7rNW6vxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFffK53/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2BAC4CEED;
-	Wed,  4 Jun 2025 00:56:12 +0000 (UTC)
+	 MIME-Version; b=KNOhMISH/mdJLFIWLDCRqwyLOiykK1MbUcO8AQ7ixA+/lit6d3pBoYgFHG9LJs4L/uQsugCHAjMCWkpa5hW/HW4q7Mr4n4pHYccQMnKdNTvRsAgw/BNuiVqIMc5uY7dVOV07rcXxumvPE4e18b9pt2edCqL9hc+0XqxCgJP2iYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uKlTNvPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD389C4CEED;
+	Wed,  4 Jun 2025 00:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748998573;
-	bh=OKbWIEsIA50cUd9gWyV0gbV0Znm7zjy7+nU+PaJvpxI=;
+	s=k20201202; t=1748998589;
+	bh=W3v5cX6W547oZ9Y+uiz3ywkZ3UWfXt+rFSKyqj9NNIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dFffK53/dqCOELfp5/W4RlOujUH85G/nSGTCBMX2PSu42fP09QiAFV3hM7+7Pl2Jb
-	 Cr45AkdmSC5mlwNrbaScO8/IqAh5bI2XoxJ8Fo+4cn5XgBlO/kNfxwMgmFPzzEMioS
-	 EkuZq2HBH9cze8kqP0a2O00p/Apq0sYf22xNnE6St0Fv6e1sCQU4lGmZZTcThwv37f
-	 PyaaEdA8haPWtUToLfVdcZJfYDWvM1ggYhsTbljHDC9BtyRPIjm7em6kPEn8bk+GJk
-	 WiUYJl1dJ1GjUv/5jjFP1blEdfmHqFffeN3FrDn/AHD61nJAe8x7AankodgK2Og0gr
-	 Kr4JAONvYNbjg==
+	b=uKlTNvPbEnQysKcia1dK4UR1a1WdLhwGgWUOA0LsbSpseCl/9AXA7zlQn+bFLEIEm
+	 W1xrtnyoD00L8jquGRPo4mwpsKpW/hDIHa9Ct8uXZ+iDxK/8bN9iVh9V79ZzAzd8+o
+	 7HwJastF1oUOaxK5HzaDoqPdxSM1H+a7t38jrt7u5n9SU0RCbVLn8M+XQPCjgS7i57
+	 83P2w1DxzrAGvjb1iGH1ybBMDljrgBHCeBUtx913hDusbm0qLe91odWo358pbAM5p7
+	 aTvbQq3U4ZiSq1tfKSsgUWR5hIebnG2NoiB4icND7hCzDDJMKcWec6JJ+JehbV+7jo
+	 LdKECPp3HwpUA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Kang Yang <kang.yang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 018/108] wifi: mac80211: validate SCAN_FLAG_AP in scan request during MLO
-Date: Tue,  3 Jun 2025 20:54:01 -0400
-Message-Id: <20250604005531.4178547-18-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 027/108] wifi: ath12k: fix macro definition HAL_RX_MSDU_PKT_LENGTH_GET
+Date: Tue,  3 Jun 2025 20:54:10 -0400
+Message-Id: <20250604005531.4178547-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250604005531.4178547-1-sashal@kernel.org>
 References: <20250604005531.4178547-1-sashal@kernel.org>
@@ -64,84 +66,82 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.9
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+From: Kang Yang <kang.yang@oss.qualcomm.com>
 
-[ Upstream commit 78a7a126dc5b8e3c5a3d4da9f513e0236d2dc1a3 ]
+[ Upstream commit a69bbf89d751ba2d6da21d773c4e29c91c5e53c4 ]
 
-When an AP interface is already beaconing, a subsequent scan is not allowed
-unless the user space explicitly sets the flag NL80211_SCAN_FLAG_AP in the
-scan request. If this flag is not set, the scan request will be returned
-with the error code -EOPNOTSUPP. However, this restriction currently
-applies only to non-ML interfaces. For ML interfaces, scans are allowed
-without this flag being explicitly set by the user space which is wrong.
-This is because the beaconing check currently uses only the deflink, which
-does not get set during MLO.
+Currently, HAL_RX_MSDU_PKT_LENGTH_GET uses u32_get_bits to obtain the
+MSDU length from the MSDU description.
 
-Hence to fix this, during MLO, use the existing helper
-ieee80211_num_beaconing_links() to know if any of the link is beaconing.
+This is not right. Because all halphy descriptions are little endian.
 
-Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250516-bug_fix_mlo_scan-v2-1-12e59d9110ac@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+So use le32_get_bits for HAL_RX_MSDU_PKT_LENGTH_GET.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250421023444.1778-9-kang.yang@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-Based on my analysis, here is my decision: **YES** This commit should be
-backported to stable kernel trees for the following reasons: ## Security
-and Functional Bug Analysis 1. **Clear Security/Behavioral Bug**: This
-commit fixes a significant security validation bypass in MLO (Multi-Link
-Operation) mode. The bug allows AP interfaces in MLO mode to perform
-scans without the required `NL80211_SCAN_FLAG_AP` flag, which bypasses
-an important protection mechanism. 2. **Root Cause**: The issue stems
-from line 2927 in `net/mac80211/cfg.c` where the code was checking
-`sdata->deflink.u.ap.beacon` instead of using
-`ieee80211_num_beaconing_links(sdata)`. In MLO mode, `deflink` doesn't
-get properly set, so the beaconing check fails and scans are incorrectly
-allowed without proper authorization. 3. **Impact Scope**: - The bug
-affects all kernels with MLO support (since v6.0) where
-`ieee80211_num_beaconing_links()` is available (since v6.10) - MLO was
-introduced in kernel v6.0, but the helper function was only added in
-v6.10 - This means kernels v6.10+ with MLO support have this
-vulnerability ## Code Change Analysis The fix is minimal and surgical:
-```c // Before: if (sdata->deflink.u.ap.beacon && // After: if
-(ieee80211_num_beaconing_links(sdata) && ``` This change: - Replaces a
-deflink-specific check with a MLO-aware function - The
-`ieee80211_num_beaconing_links()` function properly iterates through all
-links in MLO mode and checks for beaconing on any link - In non-MLO
-mode, it still works correctly (after commit 68b44b05f4c8) - Is
-contained, with no side effects beyond fixing the intended issue ##
-Stable Tree Criteria Met 1. **Important Bug Fix**: ✅ Fixes security
-validation bypass 2. **Small and Contained**: ✅ Single line change 3.
-**No Architectural Changes**: ✅ Uses existing helper function 4.
-**Minimal Regression Risk**: ✅ The change makes the validation more
-strict, not less 5. **Clear Affects Users**: ✅ Any MLO AP deployment is
-affected ## Historical Context Looking at the similar commits provided,
-this follows the pattern of "Backport Status: YES" from commit #5, which
-was also a small fix for MLO address translation issues that could break
-functionality. ## Recommendation This should be backported to stable
-trees that have both: - MLO support (v6.0+) - The
-`ieee80211_num_beaconing_links()` helper function (v6.10+) The backport
-target should be **v6.10+** stable trees.
+**YES** This commit should be backported to stable kernel trees as it
+fixes a critical endianness bug that can cause data corruption and
+system crashes. ## Analysis ### Nature of the Bug This is a **critical
+endianness bug fix**, not a feature enhancement. The commit changes
+`HAL_RX_MSDU_PKT_LENGTH_GET` from using `u32_get_bits` to
+`le32_get_bits`. The issue is that the underlying data structure
+`rx_msdu_desc` has `info0` declared as `__le32` (little-endian), but the
+macro was treating it as native-endian. ### Critical Impact Areas **1.
+Memory Safety & Data Corruption:** - The macro extracts MSDU (MAC
+Service Data Unit) packet lengths from hardware descriptors - On big-
+endian systems, `u32_get_bits` vs `le32_get_bits` would extract
+completely wrong values - These incorrect lengths are used for buffer
+bounds checking and memory allocation operations - This could lead to
+buffer overflows, memory corruption, or kernel crashes **2. Cross-
+Architecture Compatibility:** - This bug would manifest on big-endian
+architectures (ARM BE, MIPS BE, PowerPC) - x86/x86_64 systems wouldn't
+notice the bug due to little-endian architecture - The ath12k driver
+supports multiple hardware variants that require correct endian handling
+**3. Hardware Descriptor Consistency:** - Analysis shows the ath12k
+driver predominantly uses `le32_get_bits` (287 instances vs 242
+`u32_get_bits`) - All hardware-specific MSDU length extraction
+consistently uses little-endian operations - The `struct rx_msdu_desc`
+explicitly marks `info0` as `__le32`, confirming hardware uses little-
+endian format ### Comparison with Similar Commits All the reference
+commits marked "NO" were either: - Feature additions (A-MSDU indication
+improvements) - Structural definition updates - Hardware descriptor
+format corrections This commit differs fundamentally - it's fixing
+actual data corruption that could cause crashes. ### Backporting
+Justification - **Fixes user-affecting bug**: System crashes and data
+corruption on big-endian systems - **Small and contained**: Single line
+change with clear, targeted fix - **No architectural changes**: Only
+corrects endianness handling - **Minimal regression risk**: Aligns code
+with actual hardware behavior - **Critical subsystem**: Network packet
+processing is core functionality This endianness bug represents exactly
+the type of critical, low-risk fix that stable trees are designed to
+address.
 
- net/mac80211/cfg.c | 2 +-
+ drivers/net/wireless/ath/ath12k/hal_desc.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index a7aeb37254bbf..caf93f0d53370 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2904,7 +2904,7 @@ static int ieee80211_scan(struct wiphy *wiphy,
- 		 * the frames sent while scanning on other channel will be
- 		 * lost)
- 		 */
--		if (sdata->deflink.u.ap.beacon &&
-+		if (ieee80211_num_beaconing_links(sdata) &&
- 		    (!(wiphy->features & NL80211_FEATURE_AP_SCAN) ||
- 		     !(req->flags & NL80211_SCAN_FLAG_AP)))
- 			return -EOPNOTSUPP;
+diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
+index a102d27e5785f..d155f95d21c39 100644
+--- a/drivers/net/wireless/ath/ath12k/hal_desc.h
++++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
+@@ -707,7 +707,7 @@ enum hal_rx_msdu_desc_reo_dest_ind {
+ #define RX_MSDU_DESC_INFO0_DECAP_FORMAT		GENMASK(30, 29)
+ 
+ #define HAL_RX_MSDU_PKT_LENGTH_GET(val)		\
+-	(u32_get_bits((val), RX_MSDU_DESC_INFO0_MSDU_LENGTH))
++	(le32_get_bits((val), RX_MSDU_DESC_INFO0_MSDU_LENGTH))
+ 
+ struct rx_msdu_desc {
+ 	__le32 info0;
 -- 
 2.39.5
 
