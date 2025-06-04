@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-23681-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23682-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB1AACDA5C
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 10:56:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44943ACDA5A
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 10:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 847E21895EB2
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 08:56:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0314A1741EF
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Jun 2025 08:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C91F28C2CB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC37228C5B5;
 	Wed,  4 Jun 2025 08:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="JPEaVgA5"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Kfwykae+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5A120E6E3
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Jun 2025 08:55:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A8828C027
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Jun 2025 08:55:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749027351; cv=none; b=L1+qXxqUKBn/MAEzIG1is+iGbqJiw7cw2pDjHDgXUC0t2mKWjqMhSxPIYRuaLQ0FclJOnMzKXZlcBbiKyhk2rta35ZQApoNYhh+K2+gb1iOJ/NimSzkYtLcYtzlS3Jqh0WjaSPCkDk74uiJ6hbT1jm91XR7CXxcvuPikuMtp0O4=
+	t=1749027351; cv=none; b=fsfvSgoFah3ARFzgpBaE1xkqsM2yR5bjPriTTdRjELQ2GjfJ30+5JmPCBMnzcqbN9Zbn4prmduzbN+1lBn2GGlmSZ5on2gUkMXIWLdwLrV2wD24gJkZIE3E5YAnDEmjz6W+n6qcODnPZAwZMhKrApctxo44AXGbX1bAJlbc13EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749027351; c=relaxed/simple;
-	bh=kobPPUEAAfS7+2sRgxlo8foABZXoKkSiwucOq66MWJ4=;
+	bh=JzdIFxN89UvVMLGBZu+Ng4fv3H84jeZ4S+fTBma0OJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6fT+YQwCE6yDB3QlRexcyDGYBvzSwKLkCZ12nbUeI7QYQwAuWCb7G/MnBVckRVJKZ75AdMoFk5mp/tgdxDzKWwZcCBDY6M5sQ8bHExnYZMrYW5OrEUpmxUByzkDxF4CMNBC7Bz30manMTMGi2bUqaWzjRmdtBeDdb8ikFsbB+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=JPEaVgA5; arc=none smtp.client-ip=209.85.128.44
+	 MIME-Version; b=m470Mb2BzE0Ih2SiXm1pZZKR7V75A71u16jag4VrJcRRreDV0OgdFEw34jbrJ4nQ5KwAfHHR+gx5zxB8uR1jAniZFCdolUNyJWjqjTbc1kPX11pPzaek6Ot/SvslnUUnS7Lqd18/t/fn7AB3t1s4aL6il01caeJH9ECsqXF0tjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Kfwykae+; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-450dd065828so34284655e9.2
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Jun 2025 01:55:48 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-450cfb79177so37167575e9.0
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Jun 2025 01:55:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1749027346; x=1749632146; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1749027348; x=1749632148; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=txWsZdY/j2eCvGNwWqWYzdxsjKCyeCghlNrrPm8TRYk=;
-        b=JPEaVgA5O3FTkLkknhoSpOZbT5rsOXIfh67HeH+gmuhPMxpXLzhdO7c/mEZel/G3zr
-         F6C/yACo3MJc2jeAds+IiFgfpYHJ/u7Rmgi7BaTyG2xqvc6ClOJm2mR/Ah1MA1ggoVdM
-         w9m25Kn7yky7wmggsJrunwbC6GtGAKqaUJ8hI=
+        bh=AUDlEPm6jmOZeCtkcr6viDVnpNEr9sSdhGNC+NOFhaw=;
+        b=Kfwykae+hEIWxRVWTHh0JvfDhCmmBBDHiwFhsJsO8TUEtLcToK7rTURr/yVfSfeQ8U
+         lQZzXcwU8yNoLLJcUEehkfcGn0BBUXlpw2Lv/ZZvqxr2G1l4cQx6D36RkDFBy267d2pB
+         YRulR4Sq1OjYXoYZC4eTsKNf8ZDevoIalTA0U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749027346; x=1749632146;
+        d=1e100.net; s=20230601; t=1749027348; x=1749632148;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=txWsZdY/j2eCvGNwWqWYzdxsjKCyeCghlNrrPm8TRYk=;
-        b=iIu4axizLobHHFb6f06CHU0HOMceEtoO9mIuYhukvE0qhMV4O6NZtzatuCe1WW/nbH
-         e7pRpMOpgaIqY8rIBuIULBXIQEWo+6eZvjsQDnpnnpA9lr+n1fxe1Dr5Ihu5M9lwvDeP
-         zzTgVaLz6/B7ZaMuazsGPhFhlW+32UqwWqR9Hv9oNzMgs16XsGh0jFMPKUQ1mEon6YiE
-         0arAf0wQgtjxpwKR5c+IekTpsf5/uxTCQ23kJFxoE0r3bl1vubStM6OajgC58ip/9sbJ
-         YRJ9T1eByOwVtjuQ5O2aqSTJpAay5gkyhLkfDhivdn/8W80tXojouUOWNLa+dM4o2zkN
-         rTaQ==
-X-Gm-Message-State: AOJu0YwB/R1gJa8tr8lPA+/G+PQXPuBHnnfeva4qFwujzWuwdt2avf2z
-	YE6clJwn/TI7sMcanyOo/nVymjkWIjbz69KUJqpJHNckmLoJqTdyEXbdnCgvyhMA4A==
-X-Gm-Gg: ASbGncsL5SfgC8JptZ9fNdf4+0U7vCYvIGHSMYXwQr9LuXK0a7rB4lLEYSBaDTF/VY4
-	58qXppcwAURPBCrhWepYEv1AMeQR5dDCWyC5dWYdiMBnc9OK0dubnG4hrT6s209G9kHnsqQ0Mvc
-	3AXxpg699kLEEXotETiG0CrfQMzeR5WN9ZzJnT4w4DstxXuWu03khaQLy5MD80EVXuHSPiCAI5G
-	KcT7PKTcyUhgjXd5KGd9Jzi/krrQCVyFuG3whyAI8nEcz6VxiB6jihMHJBfuazEZ/rfrLT5tgT3
-	BEguZxuEnH++YQKtErsC5PE5GlU5Z9GQ57fpebD3p/IW0ALXIjkmm0nQBEKRW/1WEsjV3V03Cb2
-	qiLfeO3clt8LbJRtCReJYUc8kj8gRf3s=
-X-Google-Smtp-Source: AGHT+IHBc9A7qhONZIeU8GfRbrUtUNGSHBHen2pxv3ub+R4FjzMp/AhQCa7Advc1++iHB0hsTptHkg==
-X-Received: by 2002:a05:6000:2409:b0:3a4:ed4c:422f with SMTP id ffacd0b85a97d-3a51d96e1d7mr1461784f8f.44.1749027346566;
-        Wed, 04 Jun 2025 01:55:46 -0700 (PDT)
+        bh=AUDlEPm6jmOZeCtkcr6viDVnpNEr9sSdhGNC+NOFhaw=;
+        b=q20Rz6oIEsZFFJr+0sk76JrS46qpgFvhYTM1Y2U201C+VmpmBzvHjHkhQcKhsiWvC1
+         PkiQT/Nz6A+AYhrZU+Rq5Rxveo4bRecJzfW+dvhLFrkPAzyap3Q6XJ0SUCaoRTEdNz+y
+         AnNtT3WYf5ImHC83u526MEGkFr5mdcKmvwlKbjZpkEmWUxyPIntltR2fvd+6WESMRmIf
+         kyYOInlYx70rx0q3Kcowvdf/B5H/9d5gTvCxebaG3HpJyep/ATxy6rQXbcOXlmjNszvX
+         OrVLVTLRsay9gU8Hnio8lhBeGerrjY3iqNjDTcYZ3CD9c6yFMnM7nDa7IO4bguMC0rK8
+         C8WA==
+X-Gm-Message-State: AOJu0Yz47GUDX4F4x4FrBKJPVr8DlNeGhyHNphQPU/DycC5Eww3NEq83
+	MybEiQqFYEPOQeeR0u+cbjdTn0u6ysfHLj6Z/13IZT7sNw9nQnsRSeY8Z5kQd0aagw==
+X-Gm-Gg: ASbGnctKmQZihx5n/z0FnuMsl6YJgl9RQI7KRG7h03cWSVxeY4LkoyQ1CoJCi961JJV
+	q6AWjnpaK6Zd016fecwt24GPO9OsoX007PWQBHjsyuqMsk+WXXdV0bMO2zWV6ap6buK4/X398Iv
+	qHleLvmFnCcaHNUni5gcYNvhCA5GTXFXQkFmTNTWbY98bo9FXmFBX1333U9mUZul4KVJfGTyQ9f
+	V2Anl4puLtNIJJ8YX+dkcNLvK5sruR1xDTjW0uKa3hQ2KHyTWmWXFxv9hCkMaOaCAf0R5BYV9c+
+	7v7wJEBiEXWTBoAak6gb07alBDcfdddkTI4h86mpUSdifABAltNf93tZnL0eFFilRBddq+k4I64
+	gEf8Q9nqF4vTZL2zQXOPP5LPEcyuBn+o=
+X-Google-Smtp-Source: AGHT+IH2g156Dv1HcyjfP8L3Z1zZ65dH5IBSkLZk7ROj/KpJG+dfb3wAzFI6qgpgKgT0wk42MARcVg==
+X-Received: by 2002:a05:600c:1e0d:b0:450:d4a6:799e with SMTP id 5b1f17b1804b1-451f0b105eemr11988725e9.20.1749027348207;
+        Wed, 04 Jun 2025 01:55:48 -0700 (PDT)
 Received: from bld-bun-02.bun.broadcom.net ([192.19.176.227])
         by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7fb09a3sm189165695e9.24.2025.06.04.01.55.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
@@ -74,9 +74,9 @@ To: Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org,
 	brcm80211@lists.linux.dev,
 	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [RFC 1/4] wifi: nl80211: allow drivers to support subset of NL80211_CMD_SET_BSS
-Date: Wed,  4 Jun 2025 10:55:35 +0200
-Message-ID: <20250604085539.2803896-2-arend.vanspriel@broadcom.com>
+Subject: [RFC 2/4] wifi: drivers; indicate support for attributes in NL80211_CMD_SET_BSS
+Date: Wed,  4 Jun 2025 10:55:36 +0200
+Message-ID: <20250604085539.2803896-3-arend.vanspriel@broadcom.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250604085539.2803896-1-arend.vanspriel@broadcom.com>
 References: <20250604085539.2803896-1-arend.vanspriel@broadcom.com>
@@ -88,141 +88,94 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The so-called fullmac devices rely on firmware functionality and/or API to
-change BSS parameters. Today there are limited drivers supporting the
-nl80211 primitive, but they only handle a subset of the bss parameters
-passed if any. The mac80211 driver does handle all parameters and stores
-their configured values.
+The command NL80211_CMD_SET_BSS has a number of individual attributes
+and the driver can advertise which of those it will handle when it is
+changed by user-space. For drivers providing an empty .change_bss()
+the callback has been removed.
 
 Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 ---
- include/net/cfg80211.h       | 30 ++++++++++++++++++++++++++++++
- include/uapi/linux/nl80211.h |  4 ++++
- net/wireless/nl80211.c       | 34 ++++++++++++++++++++++++++++++++++
- 3 files changed, 68 insertions(+)
+ drivers/net/wireless/ath/wil6210/cfg80211.c        | 1 +
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c | 7 -------
+ drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c  | 8 --------
+ net/mac80211/main.c                                | 1 +
+ 4 files changed, 2 insertions(+), 15 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index d1848dc8ec99..8f9338c1e976 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -2326,6 +2326,30 @@ struct mpath_info {
- 	int generation;
+diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
+index 5473c01cbe66..d1e8beebd148 100644
+--- a/drivers/net/wireless/ath/wil6210/cfg80211.c
++++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
+@@ -2707,6 +2707,7 @@ static void wil_wiphy_init(struct wiphy *wiphy)
+ 	wiphy->n_cipher_suites = ARRAY_SIZE(wil_cipher_suites);
+ 	wiphy->mgmt_stypes = wil_mgmt_stypes;
+ 	wiphy->features |= NL80211_FEATURE_SK_TX_STATUS;
++	wiphy->bss_param_support = WIPHY_BSS_PARAM_AP_ISOLATE;
+ 
+ 	wiphy->n_vendor_commands = ARRAY_SIZE(wil_nl80211_vendor_commands);
+ 	wiphy->vendor_commands = wil_nl80211_vendor_commands;
+diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+index e7aa0f991923..4d2ffb009d7e 100644
+--- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
++++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+@@ -794,12 +794,6 @@ static int get_station(struct wiphy *wiphy, struct net_device *dev,
+ 	return 0;
+ }
+ 
+-static int change_bss(struct wiphy *wiphy, struct net_device *dev,
+-		      struct bss_parameters *params)
+-{
+-	return 0;
+-}
+-
+ static int set_wiphy_params(struct wiphy *wiphy, u32 changed)
+ {
+ 	int ret = -EINVAL;
+@@ -1708,7 +1702,6 @@ static const struct cfg80211_ops wilc_cfg80211_ops = {
+ 	.change_station = change_station,
+ 	.get_station = get_station,
+ 	.dump_station = dump_station,
+-	.change_bss = change_bss,
+ 	.set_wiphy_params = set_wiphy_params,
+ 
+ 	.external_auth = external_auth,
+diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
+index 7fcc46a0bb48..21d3dbb2531d 100644
+--- a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
++++ b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
+@@ -2439,13 +2439,6 @@ static int	cfg80211_rtw_dump_station(struct wiphy *wiphy,
+ 	return ret;
+ }
+ 
+-static int	cfg80211_rtw_change_bss(struct wiphy *wiphy,
+-					struct net_device *ndev,
+-					struct bss_parameters *params)
+-{
+-	return 0;
+-}
+-
+ void rtw_cfg80211_rx_action(struct adapter *adapter, u8 *frame, uint frame_len, const char *msg)
+ {
+ 	s32 freq;
+@@ -2702,7 +2695,6 @@ static struct cfg80211_ops rtw_cfg80211_ops = {
+ 	.del_station = cfg80211_rtw_del_station,
+ 	.change_station = cfg80211_rtw_change_station,
+ 	.dump_station = cfg80211_rtw_dump_station,
+-	.change_bss = cfg80211_rtw_change_bss,
+ 
+ 	.mgmt_tx = cfg80211_rtw_mgmt_tx,
  };
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 6b6de43d9420..72bb443683a5 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -850,6 +850,7 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
+ 	if (emulate_chanctx || ops->remain_on_channel)
+ 		wiphy->flags |= WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL;
  
-+/**
-+ * enum wiphy_bss_param_flags - bit positions for supported bss parameters.
-+ *
-+ * @WIPHY_BSS_PARAM_CTS_PROT: support changing CTS protection.
-+ * @WIPHY_BSS_PARAM_SHORT_PREAMBLE: support changing short preamble usage.
-+ * @WIPHY_BSS_PARAM_SHORT_SLOT_TIME: support changing short slot time usage.
-+ * @WIPHY_BSS_PARAM_BASIC_RATES: support reconfiguring basic rates.
-+ * @WIPHY_BSS_PARAM_AP_ISOLATE: support changing AP isolation.
-+ * @WIPHY_BSS_PARAM_HT_OPMODE: support changing HT operating mode.
-+ * @WIPHY_BSS_PARAM_P2P_CTWINDOW: support reconfiguring ctwindow.
-+ * @WIPHY_BSS_PARAM_P2P_OPPPS: support changing P2P opportunistic power-save.
-+ */
-+enum wiphy_bss_param_flags {
-+	WIPHY_BSS_PARAM_CTS_PROT = BIT(0),
-+	WIPHY_BSS_PARAM_SHORT_PREAMBLE = BIT(1),
-+	WIPHY_BSS_PARAM_SHORT_SLOT_TIME = BIT(2),
-+	WIPHY_BSS_PARAM_BASIC_RATES = BIT(3),
-+	WIPHY_BSS_PARAM_AP_ISOLATE = BIT(4),
-+	WIPHY_BSS_PARAM_HT_OPMODE = BIT(5),
-+	WIPHY_BSS_PARAM_P2P_CTWINDOW = BIT(6),
-+	WIPHY_BSS_PARAM_P2P_OPPPS = BIT(7),
-+	WIPHY_BSS_PARAM_MASK = (WIPHY_BSS_PARAM_P2P_OPPPS << 1) - 1
-+};
-+
- /**
-  * struct bss_parameters - BSS parameters
-  *
-@@ -5638,6 +5662,11 @@ struct wiphy_radio {
-  *	and probe responses.  This value should be set if the driver
-  *	wishes to limit the number of csa counters. Default (0) means
-  *	infinite.
-+ * @bss_param_support: bitmask indicating which bss_parameters as defined in
-+ *	&struct bss_parameters the driver can actually handle in the
-+ *	.change_bss() callback. The bit positions are defined in &enum
-+ *	wiphy_bss_param_flags.
-+ *
-  * @bss_select_support: bitmask indicating the BSS selection criteria supported
-  *	by the driver in the .connect() callback. The bit position maps to the
-  *	attribute indices defined in &enum nl80211_bss_select_attr.
-@@ -5817,6 +5846,7 @@ struct wiphy {
- 
- 	u8 max_num_csa_counters;
- 
-+	u32 bss_param_support;
- 	u32 bss_select_support;
- 
- 	u8 nan_supported_bands;
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index e9ccf43fe3c6..b81dffad2f8f 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2899,6 +2899,9 @@ enum nl80211_commands {
-  *	APs Support". Drivers may set additional flags that they support
-  *	in the kernel or device.
-  *
-+ * @NL80211_ATTR_BSS_PARAM: nested attribute used with %NL80211_CMD_GET_WIPHY
-+ *	which indicates which BSS parameters can be modified.
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3455,6 +3458,7 @@ enum nl80211_attrs {
- 	NL80211_ATTR_EPCS,
- 
- 	NL80211_ATTR_ASSOC_MLD_EXT_CAPA_OPS,
-+	NL80211_ATTR_BSS_PARAM,
- 
- 	/* add attributes here, update the policy in nl80211.c */
- 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index fd5f79266471..bf3cd044de13 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -2996,6 +2996,40 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 			    rdev->wiphy.ext_features))
- 			goto nla_put_failure;
- 
-+		if (rdev->wiphy.bss_param_support) {
-+			struct nlattr *nested;
-+			u32 parsup = rdev->wiphy.bss_param_support;
-+
-+			nested = nla_nest_start(msg, NL80211_ATTR_BSS_PARAM);
-+			if (!nested)
-+				goto nla_put_failure;
-+
-+			if ((parsup & WIPHY_BSS_PARAM_CTS_PROT) &&
-+			    nla_put_flag(msg, NL80211_ATTR_BSS_CTS_PROT))
-+				goto nla_put_failure;
-+			if ((parsup & WIPHY_BSS_PARAM_SHORT_PREAMBLE) &&
-+			    nla_put_flag(msg, NL80211_ATTR_BSS_SHORT_PREAMBLE))
-+				goto nla_put_failure;
-+			if ((parsup & WIPHY_BSS_PARAM_SHORT_SLOT_TIME) &&
-+			    nla_put_flag(msg, NL80211_ATTR_BSS_SHORT_SLOT_TIME))
-+				goto nla_put_failure;
-+			if ((parsup & WIPHY_BSS_PARAM_BASIC_RATES) &&
-+			    nla_put_flag(msg, NL80211_ATTR_BSS_BASIC_RATES))
-+				goto nla_put_failure;
-+			if ((parsup & WIPHY_BSS_PARAM_AP_ISOLATE) &&
-+			    nla_put_flag(msg, NL80211_ATTR_AP_ISOLATE))
-+				goto nla_put_failure;
-+			if ((parsup & WIPHY_BSS_PARAM_HT_OPMODE) &&
-+			    nla_put_flag(msg, NL80211_ATTR_BSS_HT_OPMODE))
-+				goto nla_put_failure;
-+			if ((parsup & WIPHY_BSS_PARAM_P2P_CTWINDOW) &&
-+			    nla_put_flag(msg, NL80211_ATTR_P2P_CTWINDOW))
-+				goto nla_put_failure;
-+			if ((parsup & WIPHY_BSS_PARAM_P2P_OPPPS) &&
-+			    nla_put_flag(msg, NL80211_ATTR_P2P_OPPPS))
-+				goto nla_put_failure;
-+			nla_nest_end(msg, nested);
-+		}
- 		if (rdev->wiphy.bss_select_support) {
- 			struct nlattr *nested;
- 			u32 bss_select_support = rdev->wiphy.bss_select_support;
++	wiphy->bss_param_support = WIPHY_BSS_PARAM_MASK;
+ 	wiphy->features |= NL80211_FEATURE_SK_TX_STATUS |
+ 			   NL80211_FEATURE_SAE |
+ 			   NL80211_FEATURE_HT_IBSS |
 -- 
 2.43.5
 
