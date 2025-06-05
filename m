@@ -1,124 +1,154 @@
-Return-Path: <linux-wireless+bounces-23744-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23745-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FFEFACED27
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jun 2025 11:55:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 883DFACED37
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jun 2025 12:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D319A7A9FBC
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jun 2025 09:53:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D5FB3AC4E4
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jun 2025 10:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C970320B1E8;
-	Thu,  5 Jun 2025 09:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787BD20C029;
+	Thu,  5 Jun 2025 10:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="cOKR5TZh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CGEXQI/E"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B242C3242;
-	Thu,  5 Jun 2025 09:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492FC1FAC4D;
+	Thu,  5 Jun 2025 10:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749117292; cv=none; b=WmNPLX/O7Y7PFnSo+zFmo9fiH5215GfEmbhB0nywBpQWeINcEi4FmPGP9PIz28L75K0r476UNbBRRTtQAJIoQPzBgPndThGkYbIZ+WAtUelzMjp01WRnHD79oBtizQBDDoJSn9Fce0EXsCS/Bdgbqo8L3LHxWgqErqUVk+ref0A=
+	t=1749117622; cv=none; b=G95elTSBPRkwFw+H3gCZbxqcRJIk7TCR1oW4TtbvUhzsi7Jgi2SLKrHsWK/is0uhs0zPY112W5CH9Ef3Pugandqps2SGsJI9S5Adr7EnONKzEZF4XitR6EQrdUoSZna5cIyYxpjoMG17hMidFsBOfYnQdrj2+xuP+rgbHuMp2Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749117292; c=relaxed/simple;
-	bh=DmjHcnxxXghLWewLB4CIo5GegDNFRkuT/KyPu4lRXBc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fu40M7Fgwu3H0XtTkzttmhxD4brWUcqABOm7Pnh5feYYoIH6HdPSqhfKJ1iy+u4Bjhj41n+8FKP714Ii7XF+xUP4HM4HPtKmHqAnNSTj1NznlQAktmHbXbkThEP02IeXe6wn369o5Uy3xHr22o6s7mA1rpwt2BgOCL3zMYDCI0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=cOKR5TZh; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=iMlViXmimPkwbyhs6IdSuw5ZMK0qViLQ2UlSFgI+Uks=; t=1749117291; x=1750326891; 
-	b=cOKR5TZhpzKc9WbzxjTCH9o6GJEhRJ2aUECxYXuHFhSTOKIZOzRhGYtbPP3hKO0sL4TzmO3J4Pm
-	zzxfTJaG0RSkLl2hnExQuX/WN4Yht0ESWOnixgPdH2E6DzSUYnvoZXSZRunqWCkedSBjvvoYq6MvD
-	AQG0wVRyTNHwF/aUjc99Tx7fRDh7ycd/z2bfsvF5QLHF3l/oPKsYuLm4l/UQ007R5ZNHRNzj8tQmN
-	bavn1uwr3Q51DY/9BA4cD6xpZVgTbI6h/tVDuKsYeqGI2T2tpPtO7XtxEAXl/VDpxPN6R6TKqHL90
-	vn/CkAhJMPYwJUA6kU4R+XoeG6CRt3cbiX2A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uN7J8-00000001x4c-02uq;
-	Thu, 05 Jun 2025 11:54:46 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2025-06-05
-Date: Thu,  5 Jun 2025 11:53:56 +0200
-Message-ID: <20250605095443.17874-6-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1749117622; c=relaxed/simple;
+	bh=5Eav7+G7caZZygl7Od69GSqH2G5p51M5I4/DH9iNkvA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KLttqdmCDpweNrGJzaWA16yDDmVQ14bVvMJYAOBoh2ReAQgzxqij5trWz1FfnJrEKK08GnFi+byYTF2B1RtiEl3IFdgpMWPpd1NPv/Y+1p1gZW5osSblQJRb4csM9fNTxAEmSpzCBwrMwwxTaFtlMhwrNmU8f6wTjcM+qB5xwMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CGEXQI/E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCC6C4CEE7;
+	Thu,  5 Jun 2025 10:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749117621;
+	bh=5Eav7+G7caZZygl7Od69GSqH2G5p51M5I4/DH9iNkvA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CGEXQI/E3ikPG3TMnj3L1o7OQn1gBi8hj6JUx52U/3rlrwN+n7jsg9Iax58rAQVLP
+	 ocQsfyyl0m0VJO+rk+8C4lTmfaa0wMiAs7ZAqrxtbDfhudaGxOKVbAEIH9QqA/ha+5
+	 32ZOCTivQ9iI4ynr0DD6wdYByCfrovJyfu+6tgVWap84kn7sfGQvpIbRoF46CmI4QF
+	 TkDhNr/9Oh/+1LVvxWuIhucjz8Jsr5zZnd+ok+RfUgZox3qBanmRWV/MoTc3Pe/OOc
+	 O/EgOUs5EtI3HavqqB/5Io4BDPcNPZawPoXpJn6lP3IfJ2NHWbZ0OsoUD07k5Pmwy2
+	 vV0uNT6dzLp0w==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1uN7OU-000000000Zb-1mJ1;
+	Thu, 05 Jun 2025 12:00:19 +0200
+Date: Thu, 5 Jun 2025 12:00:18 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Miaoqing Pan <quic_miaoqing@quicinc.com>,
+	Remi Pommarel <repk@triplefau.lt>, linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] wifi: ath12k: fix dest ring-buffer corruption
+Message-ID: <aEFqsghEuJc3xxlU@hovoldconsulting.com>
+References: <20250604144509.28374-1-johan+linaro@kernel.org>
+ <20250604144509.28374-2-johan+linaro@kernel.org>
+ <6f3eb9fa-617e-4434-8fc4-33dd92c4bdd2@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6f3eb9fa-617e-4434-8fc4-33dd92c4bdd2@quicinc.com>
 
-Hi,
+On Thu, Jun 05, 2025 at 04:41:32PM +0800, Baochen Qiang wrote:
+> On 6/4/2025 10:45 PM, Johan Hovold wrote:
+> > Add the missing memory barrier to make sure that destination ring
+> > descriptors are read after the head pointers to avoid using stale data
+> > on weakly ordered architectures like aarch64.
+> > 
+> > The barrier is added to the ath12k_hal_srng_access_begin() helper for
+> > symmetry with follow-on fixes for source ring buffer corruption which
+> > will add barriers to ath12k_hal_srng_access_end().
+> > 
+> > Note that this may fix the empty descriptor issue recently worked around
+> > by commit 51ad34a47e9f ("wifi: ath12k: Add drop descriptor handling for
+> > monitor ring").
+> 
+> why? I would expect drunk cookies are valid in case of HAL_MON_DEST_INFO0_EMPTY_DESC,
+> rather than anything caused by reordering.
 
-So normally I wouldn't send fixes right now, but there
-have already been reports about those iwlwifi issues,
-so here we are.
+Based on a quick look it seemed like this could possibly fall in the
+same category as some of the other workarounds I've spotted while
+looking into these ordering issues (e.g. f9fff67d2d7c ("wifi: ath11k:
+Fix SKB corruption in REO destination ring")).
 
-If this somehow doesn't work out I can defer to after
--rc1 too though.
+If you say this one is clearly unrelated, I'll drop the comment.
 
-Please pull and let us know if there's any problem.
+> > @@ -343,9 +343,6 @@ static int ath12k_ce_completed_recv_next(struct ath12k_ce_pipe *pipe,
+> >  		goto err;
+> >  	}
+> >  
+> > -	/* Make sure descriptor is read after the head pointer. */
+> > -	dma_rmb();
+> > -
+> >  	*nbytes = ath12k_hal_ce_dst_status_get_length(desc);
+> >  
+> >  	*skb = pipe->dest_ring->skb[sw_index];
+> > diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
+> > index 91d5126ca149..9eea13ed5565 100644
+> > --- a/drivers/net/wireless/ath/ath12k/hal.c
+> > +++ b/drivers/net/wireless/ath/ath12k/hal.c
+> > @@ -2126,13 +2126,24 @@ void *ath12k_hal_srng_src_get_next_reaped(struct ath12k_base *ab,
+> >  
+> >  void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
+> >  {
+> > +	u32 hp;
+> > +
+> >  	lockdep_assert_held(&srng->lock);
+> >  
+> > -	if (srng->ring_dir == HAL_SRNG_DIR_SRC)
+> > +	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+> >  		srng->u.src_ring.cached_tp =
+> >  			*(volatile u32 *)srng->u.src_ring.tp_addr;
+> > -	else
+> > -		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+> > +	} else {
+> > +		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+> > +
+> > +		if (hp != srng->u.dst_ring.cached_hp) {
+> 
+> This consumes additional CPU cycles in hot path, which is a concern to me.
+> 
+> Based on that, I prefer the v1 implementation.
 
-Thanks,
-johannes
+The conditional avoids a memory barrier in case the ring is empty, so
+for all callers but ath12k_ce_completed_recv_next() it's an improvement
+over v1 in that sense.
 
+I could make the barrier unconditional, which will only add one barrier
+to ath12k_ce_completed_recv_next() in case the ring is empty compared to
+v1. Perhaps that's a good compromise if you worry about the extra
+comparison?
 
+I very much want to avoid having both explicit barriers in the caller
+and barriers in the hal end() helper. I think it should be either or.
+ 
+> > +			srng->u.dst_ring.cached_hp = hp;
+> > +			/* Make sure descriptor is read after the head
+> > +			 * pointer.
+> > +			 */
+> > +			dma_rmb();
+> > +		}
+> > +	}
 
-The following changes since commit 1b98f357dadd6ea613a435fbaef1a5dd7b35fd21:
-
-  Merge tag 'net-next-6.16' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next (2025-05-28 15:24:36 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-06-05
-
-for you to fetch changes up to 787fe16b435668205fba19aaa7387972b7575991:
-
-  Merge tag 'iwlwifi-fixes-2025-06-04' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next (2025-06-05 11:52:39 +0200)
-
-----------------------------------------------------------------
-Couple of quick fixes:
- - iwlwifi/iwlmld crash on certain error paths
- - iwlwifi/iwlmld regulatory data mixup
- - iwlwifi/iwlmld suspend/resume fix
- - iwlwifi MSI (without -X) fix
- - cfg80211/mac80211 S1G parsing fixes
-
-----------------------------------------------------------------
-Ilan Peer (1):
-      wifi: iwlwifi: mld: Move regulatory domain initialization
-
-Johannes Berg (2):
-      wifi: iwlwifi: pcie: fix non-MSIX handshake register
-      Merge tag 'iwlwifi-fixes-2025-06-04' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
-
-Lachlan Hodges (1):
-      wifi: cfg80211/mac80211: correctly parse S1G beacon optional elements
-
-Miri Korenblit (2):
-      wifi: iwlwifi: mvm: fix assert on suspend
-      wifi: iwlwifi: mld: avoid panic on init failure
-
- drivers/net/wireless/intel/iwlwifi/mld/fw.c        |  8 +--
- drivers/net/wireless/intel/iwlwifi/mld/mld.c       |  3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |  4 +-
- .../net/wireless/intel/iwlwifi/pcie/trans-gen2.c   |  2 +-
- include/linux/ieee80211.h                          | 79 +++++++++++++++++++---
- net/mac80211/mlme.c                                |  7 +-
- net/mac80211/scan.c                                | 11 ++-
- net/wireless/scan.c                                | 18 ++---
- 8 files changed, 92 insertions(+), 40 deletions(-)
+Johan
 
