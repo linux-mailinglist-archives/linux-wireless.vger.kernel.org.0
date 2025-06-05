@@ -1,82 +1,105 @@
-Return-Path: <linux-wireless+bounces-23762-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23763-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E460BACEE9E
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jun 2025 13:40:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7032DACEEA3
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jun 2025 13:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FF1318968FF
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jun 2025 11:41:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39A56177A8A
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Jun 2025 11:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E469E213237;
-	Thu,  5 Jun 2025 11:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A51211299;
+	Thu,  5 Jun 2025 11:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="mOnxlL1K"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="AtIYjVrp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F2C1C27;
-	Thu,  5 Jun 2025 11:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B7D218858
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Jun 2025 11:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749123646; cv=none; b=q2JCUMmkj76v8IDVzlUzXV2RL0TU8lZd7X3EHNAqWBMdp39HjO017m6CqsyM94V48BKLGGxWhpugFqKveEG0O500LBBhEq8b2JkhbmwwMAAnrr7uInd68GuW2NDU/lZ7ZIg/Tw48JmQsEnKh5R//x04uAg24b9CwFRPiDJz+TBI=
+	t=1749123752; cv=none; b=Bz7Rnb761sIUuUEK1SB2tA+z6fRTtCkfVbjVzaHP8sagTR9ZiuCKXQcWXqGtXe0g7N1u+qu4XjVt6kXkUypSFpD+w74opKs9iCPD6dFUpMgcpFoPEy4HBA+59eapp2xUv4KFBywa/vzX5B1/b3rAT3WZU5328JtIG1B8ZRyACag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749123646; c=relaxed/simple;
-	bh=zF82Ri64VnD1/TFKi9NEOhW9+yaqnsiRdJ8v0TrNTtQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=d7oaYbznaDubifhAMx05WpeIVo0j2v1GbvYTkl90oTUo4HFyYI+TubqVIme4KI0gvLCn9q/2QojdwjGXbGsgeSrTlY3Wdj1RAWj6eUI1GFcdayzU/iNFi2DjhIZy8bC96WNTuk/WaTD20jbmkYnqUkmUz4ELl4bqiwpS+IvN9M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=mOnxlL1K; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=zF82Ri64VnD1/TFKi9NEOhW9+yaqnsiRdJ8v0TrNTtQ=;
-	t=1749123645; x=1750333245; b=mOnxlL1KqShrQn4B+5y3O/jxu8aCHCSe9j55sl+DOIpVyL/
-	pFVfhIBrBubzXA/+Ei99nfTXU4nXVkvE0Edp5Jegp/exB7rbvukrNfmAd1+RtQJ03IFogTERa0Jwq
-	XeT236C4qN67nRY3QNeYxnlCk4sW9f0wKJl/QVOyg+i/cZMigD9eXPSRR2iBGGsBI4qkTzh7GZss9
-	75AYEaVNFnvGSI4PcQ4SWIRU1V0zjAUCoUBuNRL0g71oWlNwXQ8Uy3QuoFth20/U9ihYZqSNDIEiZ
-	x7CuRCwJjoDOUVWzkSzaYTskQ/a3UY9t6ndCTqTu+zyi+bqxnb57133JCEg+jj/A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uN8xd-00000002KlM-3mkK;
-	Thu, 05 Jun 2025 13:40:42 +0200
-Message-ID: <0706792a7d08d7bcfdf7fa929cd5f1afc80e3f19.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless v1] Revert "wifi: mwifiex: Fix HT40 bandwidth
- issue."
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Francesco Dolcini <francesco@dolcini.it>, Brian Norris
-	 <briannorris@chromium.org>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, Jeff Chen
-	 <jeff.chen_1@nxp.com>, stable@vger.kernel.org
-Date: Thu, 05 Jun 2025 13:40:41 +0200
-In-Reply-To: <20250605100313.34014-1-francesco@dolcini.it>
-References: <20250605100313.34014-1-francesco@dolcini.it>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1749123752; c=relaxed/simple;
+	bh=jtVgvzCDP3jga2LIXj6U7e9hXVngQ6HjhOdSnUGz6Ho=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m+26EXQhQNDyYl1FXthO5xydy0V9TrTqRdA6lSx9sbRIpD/ArFc/FC/cZz2qCgXsXWCBB6yBPtUSsdw5G09CW8HA20xRyxRlkUSn6z2Bedc2fvtfS72cJdFy/shtRda2PP5+srBYUBxClv2/ldOZ0gy5LvxMsKSlMC9qBEwk6Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=AtIYjVrp; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 555BgQ3E11470996, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1749123746; bh=61O4171IRFOqXAXu4jKoq/Qwt4z+hPKzeZ5mHN4cubo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=AtIYjVrpVleQ3p48g70mT8nauEaMx5JrUg25rhcin5UadfVtrqzW1WdAyWq3FXtWS
+	 29EvKzihZBGnXwEuPfoagnWFp5pQqd0fl3rJKKXDOinEKduwbkGD+XQNhf36Lhzjmh
+	 FPSBY19TyyH2RtpEsJVLYKXu6ZwPvFIBsvX4C4AsjD2Dvix4XKMEF/ts6hcFBakgWY
+	 hWj9cI3XYvmnrX2c7KNYqnlZra2l5S/epHKOQBETfcYa0v6QQ0/g1Y3nvzZ1Vx8zmI
+	 Hb/S3jHcxrnwPE3/aFJ6n68kVPVRJIr1yYggGD4znRRzy6MCw0GMsWrseQ1s9MtXe+
+	 rJ05MHrbTiU2A==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 555BgQ3E11470996
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Thu, 5 Jun 2025 19:42:26 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 5 Jun 2025 19:42:26 +0800
+Received: from [127.0.1.1] (10.22.226.54) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 5 Jun
+ 2025 19:42:26 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <echuang@realtek.com>, <damon.chen@realtek.com>, <phhuang@realtek.com>,
+        <kevin_yang@realtek.com>
+Subject: [PATCH rtw-next 0/5] wifi: rtw89: support channel switch and correct EHT settings
+Date: Thu, 5 Jun 2025 19:42:02 +0800
+Message-ID: <20250605114207.12381-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On Thu, 2025-06-05 at 12:03 +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
->=20
-> This reverts commit 34253084291cb210b251d64657958b8041ce4ab1.
+First three patches are to support channel switch. The patch 4/5 is to
+adjust EHT PHY status report for RX packets. The last patch is to correct
+non-AP STA behavior under EHT 20MHz bandwidth.
 
-I'm confused. If you want it reverted in wireless, this is the wrong
-sha1? If you want bit only reverted in stable, why are you tagging it
-for wireless?
+Eric Huang (1):
+  wifi: rtw89: add EHT physts and adjust init flow accordingly
 
-johannes
+Kuan-Chung Chen (1):
+  wifi: rtw89: fix EHT 20MHz TX rate for non-AP STA
+
+Zong-Zhe Yang (3):
+  wifi: rtw89: chan: concentrate the logic of setting/clearing chanctx
+    bitmap
+  wifi: rtw89: chan: re-config default chandef only when none is
+    registered
+  wifi: rtw89: implement channel switch support
+
+ drivers/net/wireless/realtek/rtw89/chan.c     | 58 ++++++++++---
+ drivers/net/wireless/realtek/rtw89/chan.h     |  6 ++
+ drivers/net/wireless/realtek/rtw89/core.c     | 40 +++++++++
+ drivers/net/wireless/realtek/rtw89/core.h     |  2 +
+ drivers/net/wireless/realtek/rtw89/mac80211.c | 72 +++++++++++++++
+ drivers/net/wireless/realtek/rtw89/phy.c      | 87 ++++++++++---------
+ drivers/net/wireless/realtek/rtw89/phy.h      |  1 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |  1 +
+ 8 files changed, 215 insertions(+), 52 deletions(-)
+
+-- 
+2.25.1
+
 
