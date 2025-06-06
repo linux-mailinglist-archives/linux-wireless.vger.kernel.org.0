@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-23796-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23797-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D4DACFD9E
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 09:41:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2D39ACFDA5
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 09:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 847F4189880E
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 07:41:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51006178853
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 07:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E413025F98C;
-	Fri,  6 Jun 2025 07:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7F1283FEF;
+	Fri,  6 Jun 2025 07:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="IjRi0i1m"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Rf/IuWwU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp14.infineon.com (smtp14.infineon.com [217.10.52.160])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B956E7FD
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Jun 2025 07:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.160
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F04B25F98C;
+	Fri,  6 Jun 2025 07:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749195689; cv=none; b=UBM6ZcDXbBE9dDuPBq+pq1oFdmlJBzmlBljQd7PAoDNIxy0Bh1gPPgRUgvaANz3GSegECq72gF14BdoozQCGw0eS1veHaAZEcoROACwk/nPrQCegWYihb/+xG3JpM24yZBOUls0mNVKt4oGVktpQ5hTQjuEiFT7Nn+Rjl7/x0sI=
+	t=1749195832; cv=none; b=GQqGbpOySG4/TBFdVqAl0Hs8AY7EOga4Vo6lCxtF42nvIiGRZwXgvjsTs6s1T1TmyHEibD2KDKSX8uIS+YiVGH7pHDDatQQr9qT6I8SnMydJCF3yi8EOJ/1NIyF4IaUKHj2z6ZTTCHFU3j/NlI4gd1wJgwryHsze+Z7kOXAiMBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749195689; c=relaxed/simple;
-	bh=Tl8unUclP/TwV/43wO20oqS3Oa3GYTY5ZBrBU8p/eC0=;
+	s=arc-20240116; t=1749195832; c=relaxed/simple;
+	bh=yOTxnf0MNIgRnQyoM0bcoADdXzJwoUdRrf874ml8Lgo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VG2qoYP3/J1SJoXeKnf/Buj8a5AFaYKyaun+7dnqFfM/1i2/omZfWTYgATlSqOk9ovZpTbZQF8dhSvOuOGx1z3DHQNNcFFKTJJwhscFckeUFHzbwLebE46aLmrkOLZkw0E/BBknL91jQS86gBq+voNmvdYYaoUsSZci5p8oSD3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=IjRi0i1m; arc=none smtp.client-ip=217.10.52.160
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1749195688; x=1780731688;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Tl8unUclP/TwV/43wO20oqS3Oa3GYTY5ZBrBU8p/eC0=;
-  b=IjRi0i1mpMvPZhTkVkFDzrpxCT1Yr2yv7VbrAMt7VzPnJOaeIY2XfJJa
-   8Ej/lRom+U64ZdGxlNMzSwrnzNYJln8zp0VLONA46/e4onoqKfOA0ikjX
-   9owAXeOPO6fUcmLscWZuBQCz9ht2KQ8SwRGpOEm1/1bN1T2wy9yr7b5ZW
-   I=;
-X-CSE-ConnectionGUID: Z5lSI9CqQgqWG+LtXEuH3g==
-X-CSE-MsgGUID: l0mlQQ+aS3y0md31pNdUUA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="87501200"
-X-IronPort-AV: E=Sophos;i="6.16,214,1744063200"; 
-   d="scan'208";a="87501200"
-Received: from unknown (HELO MUCSE805.infineon.com) ([172.23.29.31])
-  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2025 09:41:13 +0200
-Received: from MUCSE835.infineon.com (172.23.7.107) by MUCSE805.infineon.com
- (172.23.29.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 6 Jun
- 2025 09:41:12 +0200
-Received: from [10.234.36.169] (10.161.6.196) by MUCSE835.infineon.com
- (172.23.7.107) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 6 Jun 2025
- 09:41:10 +0200
-Message-ID: <81d02ac4-d1d8-4368-889c-60758b8ce59c@infineon.com>
-Date: Fri, 6 Jun 2025 15:41:07 +0800
+	 In-Reply-To:Content-Type; b=QsRS3DhB+xpNSuMJB2wuLI0ZYf554l22Wb1EnconuPFQN2S2uAuW+XnirYO6sY1pI1qrlyUf3OGwopno3rZDm0qeXjwKdeKb3wwriMmeKe5a7blyqvXpUPDKW3Iu15pyoSARQvNPlZ/p/PBYsB3G/p6NZQly/vwxUczNagFZBpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Rf/IuWwU; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5566ZWlM004261;
+	Fri, 6 Jun 2025 07:43:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	kvMimh7QmZo25zRmksscLKSebUu4yESVGPBM/YkSIME=; b=Rf/IuWwUqko5Pe7u
+	X/bFEkzJ8d61kOBJ4BZ1NhoKswDCH669TrkSGe/qiiMXhn0fJqGEmlO6JbcOIewg
+	vfzgqS+lrpCNXJhMXxDezxZV2ymD/mv74jGy/+GZWvb8pM+WhR8fX5H5lGl0wKQ/
+	hu9OyV8xMtf7tVr1NevW+wP5QC0cfDoocdOoh9iuwh16jh02GQ+kxxQaqxJqsuyL
+	IW6wQCnUX9r+fMHsUEVpIBOA7QqKLfQ7g8s3P0HJorMB3j+KfKomdy+tE8LkF/Hr
+	kH0vxauasnCjd1Ikc2q/c83omqHRBtMYrgNCsWd+MD4VF/MAOPPY65G8/XMucOgP
+	tDvtYg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 471g8s3wkq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Jun 2025 07:43:44 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5567hduY011523
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 6 Jun 2025 07:43:39 GMT
+Received: from [10.133.33.151] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 6 Jun 2025
+ 00:43:37 -0700
+Message-ID: <5330f0fd-5896-4426-92cf-8e8b39b19c14@quicinc.com>
+Date: Fri, 6 Jun 2025 15:43:34 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,91 +65,122 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next 4/4] wifi: brcmfmac: prevent disable
- controller in apmode stop
-To: Arend van Spriel <arend.vanspriel@broadcom.com>,
-	<johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>,
-	<carter.chen@infineon.com>, <double.lo@infineon.com>,
-	<vinoth.sampath@infineon.com>, <gokulkumar.sivakumar@infineon.com>
-References: <20250604091629.3943-1-ian.lin@infineon.com>
- <20250604091629.3943-5-ian.lin@infineon.com>
- <1b15a15d-d02c-42af-a628-a8543ffdf528@broadcom.com>
+Subject: Re: [PATCH 1/3] wifi: ath11k: fix dest ring-buffer corruption
+To: Baochen Qiang <quic_bqiang@quicinc.com>, Johan Hovold <johan@kernel.org>
+CC: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        Johan Hovold
+	<johan+linaro@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20250526114803.2122-1-johan+linaro@kernel.org>
+ <20250526114803.2122-2-johan+linaro@kernel.org>
+ <026b710f-b50f-4302-ad4f-36932c2558ff@quicinc.com>
+ <aD1axxSAJsbUfnHH@hovoldconsulting.com>
+ <5268c9ba-16cf-4d3a-87df-bbe0ddd3d584@quicinc.com>
+ <aD7h0OOoGjVm8pDK@hovoldconsulting.com>
+ <01634993-80b1-496e-8453-e94b2efe658c@quicinc.com>
+ <50555c1a-c200-4ac0-8dfb-424ff121b41d@oss.qualcomm.com>
+ <03354d56-ed21-47e0-a52e-14f559ff3bfb@quicinc.com>
+ <aEFupJ_nd9ryaTVt@hovoldconsulting.com>
+ <bc2afbd6-2876-4f36-81cf-ad8960588a02@quicinc.com>
+ <d3ec49ab-964b-4c50-a6ea-534b6c6e336b@quicinc.com>
+ <06daee91-709e-4a98-b7ff-8233d33877b9@quicinc.com>
 Content-Language: en-US
-From: "Lin Ian (CSS ICW ENG WFS SW WFSW 1)" <ian.lin@infineon.com>
-In-Reply-To: <1b15a15d-d02c-42af-a628-a8543ffdf528@broadcom.com>
+From: Miaoqing Pan <quic_miaoqing@quicinc.com>
+In-Reply-To: <06daee91-709e-4a98-b7ff-8233d33877b9@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MUCSE806.infineon.com (172.23.29.32) To
- MUCSE835.infineon.com (172.23.7.107)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: DWHs2zIX55j2eP5Dt9zGkwh4Ho0TqsAE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA2MDA3MSBTYWx0ZWRfX7TfnkOcqDlxy
+ ZYoAqFVH+P9hOTXH7Z5D9cIeT0OB1lZrEGURVjGYhhEybFvFizmL6Xb3tSlanLYD/C6pi3Zp5V9
+ +5UJUNjSsSME8vHg2D2lCCxoaluYl9e6SHQrexCaJPwq8etk5wyvOFSoL6xKj6mcTekBIUPVhU3
+ uUb1fNaZTzIBYuVa7+F6HOwT1zlhSrRgEMF0OJA+1ZT72Qq8DAffYNwPHL2aoXwkObWn9FxgWJq
+ G0DBhgyUCQ3rU2VIk57MuwBZ3wPHZJxtcZjM1GB1FVQO0gX2255oDGr6IRwE+Zj54OVCz/RMuRV
+ +6Rn+3eOeK47NhdxqYMIDVRcfJkGJeQfXSgOR08fONwsNCVGiwsoQ7ZWCOcRWwOAeV1xwH0ws5h
+ wM/QrTe1HmsSDkOUTpMao7KaVjhBkOQmFTZ+MXOUH0oM5EE9hr4dvVn8caHkk5PM5yfQvdV3
+X-Authority-Analysis: v=2.4 cv=RdWQC0tv c=1 sm=1 tr=0 ts=68429c31 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8
+ a=COk6AnOGAAAA:8 a=3zI7SI0Xz8OAuioJ69MA:9 a=QEXdDO2ut3YA:10
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: DWHs2zIX55j2eP5Dt9zGkwh4Ho0TqsAE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-06_02,2025-06-05_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 mlxscore=0 priorityscore=1501 phishscore=0
+ clxscore=1015 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ impostorscore=0 spamscore=0 mlxlogscore=999 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506060071
 
 
-On 6/4/2025 6:25 PM, Arend van Spriel wrote:
-> Caution: This e-mail originated outside Infineon Technologies. Please 
-> be cautious when sharing information or opening attachments especially 
-> from unknown senders. Refer to our intranet 
-> guide<https://intranet-content.infineon.com/explore/aboutinfineon/rules/informationsecurity/ug/SocialEngineering/Pages/SocialEngineeringElements_en.aspx> 
-> to help you identify Phishing email.
->
->
->
-> On 6/4/2025 11:16 AM, Ian Lin wrote:
->> From: Ian Lin <ian.lin-ee@infineon.com>
+
+On 6/6/2025 10:02 AM, Baochen Qiang wrote:
+> 
+> 
+> On 6/6/2025 8:52 AM, Miaoqing Pan wrote:
 >>
->> Wpa_supplicant will firstly call scan before start apmode.
->> In mbss case, controller will be disabled during stop apmode
->> so next time it reports fail in starting apmpde.
->> Fix by removing the disable operation.
->
-> The function brcmf_cfg80211_stop_ap() is a bit tricky. The flag
-> ifp->vif->mbss is set to true only when there are multiple AP interface
-> and only for subsequent AP interface. For the first AP interface being
-> created the flag is false.
->
-> Now looking at the function I suspect there is an assumption that each
-> AP interface will be stopped. So for a subsequent AP interfaces is will
-> do a BRCMF_C_DOWN and for the first interface it will do other stuff
-> below the if statement follwed by BRCMF_C_UP.
->
-> Clearly you are solving another scenario here so could you elaborate on
-> that?
->
-The patch is applied to solve problem in multiple AP scenario.
-But I found it may be better to include other patches together for the 
-scenario.
-Let me collect the information and submit another new patch series.
-
-> Regards,
-> Arend
->
->> Signed-off-by: Ian Lin <ian.lin-ee@infineon.com>
->> ---
->>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 5 -----
->>   1 file changed, 5 deletions(-)
 >>
->> diff --git 
->> a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c 
->> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> index e23cd6fc0f56..b4078e74f135 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
->> @@ -5392,11 +5392,6 @@ static int brcmf_cfg80211_stop_ap(struct wiphy 
->> *wiphy, struct net_device *ndev,
->>                       profile->use_fwauth = 
->> BIT(BRCMF_PROFILE_FWAUTH_NONE);
->>               }
+>> On 6/5/2025 6:54 PM, Baochen Qiang wrote:
+>>>
+>>>
+>>> On 6/5/2025 6:17 PM, Johan Hovold wrote:
+>>>> On Thu, Jun 05, 2025 at 12:01:29PM +0800, Miaoqing Pan wrote:
+>>>>> On 6/5/2025 12:24 AM, Jeff Johnson wrote:
+>>>>>> On 6/3/2025 7:34 PM, Miaoqing Pan wrote:
+>>>>>>> We previously had extensive discussions on this topic in the
+>>>>>>> https://lore.kernel.org/linux-wireless/ecfe850c-b263-4bee-b888-
+>>>>>>> c34178e690fc@quicinc.com/
+>>>>>>> thread. On my platform, dma_rmb() did not work as expected. The issue
+>>>>>>> only disappeared after disabling PCIe endpoint relaxed ordering in
+>>>>>>> firmware side. So it seems that HP was updated (Memory write) before
+>>>>>>> descriptor (Memory write), which led to the problem.
+>>>>>>
+>>>>>> Have all ath11k and ath12k firmware been updated to prevent this problem from
+>>>>>> the firmware side?
+>>>>>>
+>>>>> No, as this is not a widespread issue, and addressing it would require
+>>>>> modifying the core underlying modules of the firmware. Therefore, we
+>>>>> chose not to proceed with that approach but instead used the workaround
+>>>>> patch I previously submitted.
+>>>
+>>> If firmware has a concern, how about doing it in host? As I know it is only a register in
+>>> PCI config space?
+>>>
 >>
->> -             if (ifp->vif->mbss) {
->> -                     err = brcmf_fil_cmd_int_set(ifp, BRCMF_C_DOWN, 1);
->> -                     return err;
->> -             }
->> -
->>               /* First BSS doesn't get a full reset */
->>               if (ifp->bsscfgidx == 0)
->>                       brcmf_fil_iovar_int_set(ifp, "closednet", 0);
->
-Regards,
-Ian
+>> No, host can only configure the RC, while the initialization of the EP can only be
+>> configured on the firmware side.
+> 
+> Are you talking about this specific register or whole configuration space? If it is the
+> latter case we already have something similar (such as disabling ASPM) done in host side.
+> Just curious why not for your issue.
+> 
 
+ath11k_pci_aspm_disable() disables ASPM for RC, not works here. But we 
+can configured via WMI, which was one of our previous fix options. If 
+there are new questions, we can discuss internally.
+
+
+>>
+>>>>
+>>>> I strongly suggest you fix this at the firmware level rather than try to
+>>>> work around it in the kernel to avoid playing whack-a-mole whenever a
+>>>> new (hard to track down) bug shows up.
+>>>>
+>>>> The barriers should be enough, but if they are not then the firmware
+>>>> must be fixed.
+>>>>
+>>>> Johan
+>>>
+>> This is beyond our control. After nearly three months of effort, we have decided to
+>> abandon it.
+>>
+> 
 
 
