@@ -1,157 +1,222 @@
-Return-Path: <linux-wireless+bounces-23809-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23810-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BBDCAD03CF
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 16:16:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C737AD0773
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 19:24:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D006E174A65
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 14:16:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A274A189DA6E
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 17:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3BD1805E;
-	Fri,  6 Jun 2025 14:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="CvO81td3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B295128A3F8;
+	Fri,  6 Jun 2025 17:24:36 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F94DBA38
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Jun 2025 14:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C477628A1FA
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Jun 2025 17:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749219400; cv=none; b=LJyjxBCMroWpY2PdjJjKl3bLR7Lp2vOGpmJNIM6B8etc5r8e2Yh4D5K6yMr8Obdsg0ZXX7HiG5QZ8VNOXVPU+9fpNDAymaTIgDJ9ITUo9cM4UussyBWbvGmfcTtqvwgvDDFUnK02QcIHB1VNQg/o60p3rjIv/KppcVyl49MS9ig=
+	t=1749230676; cv=none; b=pl47M2OePNIs4Um/IaKv9Au8mghV5bWlEq2dlgNZy14SBYxKduHdJOipAgEYEbW/ozNBcm6tph5QajmuYVc9VQjX0moMM64tk/t7FDNnoNuEQI2lxtRfjETJ5vuch6dm06ifEfOFv3ZlocDoSe1SJx+UUt16a/mL66I7+Hxdm1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749219400; c=relaxed/simple;
-	bh=IeNIre+MuPibbVdFxys+iLRv8iFeZ3xVzdWkJP/vS98=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MzuUUYWzfMNYs1jvj7Kccp++IaqQSb0L8WAc1BVswejrPEklEiUMx3maWMCPpYwSblZga4M7NboOxfzbs9i9RJNPY7hZoovFKyE0NOXcr1+nWiET7pMMHz/d9XGZTaM7tKxlXCYdEOwTpyWjSft+72WZsFo70ZzgwG5WtAp20Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=CvO81td3; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-742af84818cso1608762b3a.1
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Jun 2025 07:16:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1749219398; x=1749824198; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=O0qoIq9MoDwoCUGEwR+DSI41rka0ilkJlnsiGp3Cyf4=;
-        b=CvO81td3O0Z9RoqDkR1O9sQ630qW9jNVszY7mosGF+1IUlwL0zjc4UdoV9Hrw3qOHe
-         0U6P9gqdaCPoqpU3HAqjWVpIvLOUB1zmHSiJ4dMW1N6EdGlCKqCSxxvaXVhJgM7Vg3vT
-         JDu4TZngtWuiCp5yOW/xdFbMyxPh8YiZVxnXQ=
+	s=arc-20240116; t=1749230676; c=relaxed/simple;
+	bh=OfmI4hYuk7S0k7xDrzF8qpyHJ4ezPJC4LnnM2RV3zJg=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=JutDasS4vGJhFv8d+Ydj2kaR4cubJnrmGM61Csw4BK7wezDk5+skIrnq6awoVawi82VN5LpuhhUd/Ozcu+do2EwFN6RRkpA5ZHF50sVMpgXKLT83mH55kRO7aS7eV4tOK7RryI7qPG7KQY8Z2RZgFFBvC36KEesZJHqo9Z98l/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-8649be94fa1so374489939f.0
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Jun 2025 10:24:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749219398; x=1749824198;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O0qoIq9MoDwoCUGEwR+DSI41rka0ilkJlnsiGp3Cyf4=;
-        b=uA6kkPEnEPeDLK5c0UUZuleQ4VyYATYRJn8cXJps3HBhBde12zJcFeFCSMCDOs2QfZ
-         N3ys8F5NdaHBgmRv9GSVT3PS3Zwkz9RLB6QBNDzXkStvCp9JsjqSyRfJ9NTcDilKvR5K
-         mNeRiC2YUrYKDbOc6F5VIObW2VTpabja4WiXXFlIej+uRWkPL4lWUVE7S3erQiZxv5p6
-         ZWx08fLxKJa5SVxdxrZpEMMbac422Wjf8MbIF+R2nt2ZzbhVSH5tEDZxmADNyXxJOMg+
-         mwgYrqbiewrmcSdr9qX07Q0LdJ1E7bJxtMFQONcEdf8sLgqRDBNprf7TMG9mlCUhxXm3
-         zdog==
-X-Gm-Message-State: AOJu0YxudhDWlE5hLzkBLN33IaBQfM10AFUOLoGpZguejOpEaeXpzy33
-	7mDUOn4edG24oveJnIVY1CcRVriNbPuXqUd3dSTwLP5t8dfJPVsi+vUUWZJYTeYEJxNIyeHRbMA
-	OyTbUgQ==
-X-Gm-Gg: ASbGncviW+OrRAMCBsjAMBvlNvMY972CYRP7gULt1V5lAKkKounT/D0A+wtPI9VcXWs
-	wre8NMJln4qoSdNS1kKW7hJ2kuoHXwM6WZUqt6g8T/oigc9ptCFKJAXREYaT0jh66vQzLs3R1ZH
-	JfYzcHtzNoFc8b3FcnpZxvqfq3Fas9hZX/LoDxnC244iiNg+Il9op3hTeW54mgO2pp+7tTjT2ID
-	jyBqJV0u75KOgeTaPrF8c1YWhwtklgwlclgyzSvs7AR48DHHFCxoTClfwDh1exa/QF/z8qqsCF8
-	OuddE+sm3ZQqwx3PwzbWnpgB9PxGDD65nHEmwaYqRI8OZjACg65/+l15ev+GgQFe2L7xAD7RSWl
-	iwmn94r9tm1fkLJX9kwX9ifEDbjLtTsU=
-X-Google-Smtp-Source: AGHT+IEdLPZfjEUSFjHavxarBIzG9lfWo0dN8rDIpY7wyNxwmHusoXkIjd5qMbSD3LzP7L9A7XsGtw==
-X-Received: by 2002:a05:6a21:9988:b0:215:e1a0:805f with SMTP id adf61e73a8af0-21ee685cd85mr4378845637.31.1749219398433;
-        Fri, 06 Jun 2025 07:16:38 -0700 (PDT)
-Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2f5ed58e9bsm1232150a12.10.2025.06.06.07.16.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Jun 2025 07:16:37 -0700 (PDT)
-Message-ID: <5387a3fb-ce1c-4aa8-ab9c-1ce21a2dad36@broadcom.com>
-Date: Fri, 6 Jun 2025 16:16:31 +0200
+        d=1e100.net; s=20230601; t=1749230674; x=1749835474;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NAVXPMJdCcVOsE8gmQnKvDRTVEWIXrEwrI1rszWDhOs=;
+        b=m8BPDMtd95FEX4QOFtYKRB4lgrm0OZvtpA6XiTe2RV2ZNLKtiok3+QKFTNFMDPRt6m
+         SEmZPlBrRYKO8yWt97L8i1KF6mSTiEZsLtRRSCO7XBEv4n1IV+rjQebgzfgt7QWl8Vnw
+         LA53y8mOvVUHY0H5ZBVlQL4ddlRALDrRGHTxki/sdYNp7DFYJBgM6pxEjPfImq0Z4aNs
+         6C7F/jeJQODdh9Vs5SoWiEQxF25cET7hRIsXzlVgrYP4Oy28Tbz3g5xco+9jaNNdeQBR
+         itpUqARYiHNkHa46F/uLLnlBvUfSdZ5CCF91tv0w0yCphop8bZvG4ZcCvcvaJTjohoyW
+         iVqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWSIFkj4k8VspngrMXjmPHhoYh7HX7X8SS/yRe45YFrx4GUXDTi3fPAlZbgKTBF7wgQf5mj/ZR/BbwRAkMhxw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiQdd8b1OoTnfPTJtHhaTSKPgT4rNGFA82Owbbe5gPcKRwAS0m
+	wJkH0AFlU3rWC/mtZY3AVP/BKrmrsKYWSrSFkD+1r48Ae7Ftph5WiqBM/MlClvj9gjo8hsKM5Hy
+	KB94cRq/wCOrBbpcKBRTYcIwD3W14VZ/6xmqJI6MF67IJFqwDASAnzxzIQVs=
+X-Google-Smtp-Source: AGHT+IEzZYA8JWRsTTDM8ueo2eOwGEnueuWH/zYo7Cnlm+sskH68rYp7JXKFweqIhiROqV2jx3fypQGQof10pSlhgpQtqBb0vAvD
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next] wifi: brcmfmac: don't allow arp/nd offload
- to be enabled if ap mode exists
-To: Ian Lin <ian.lin@infineon.com>, johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- carter.chen@infineon.com, double.lo@infineon.com,
- vinoth.sampath@infineon.com, gokulkumar.sivakumar@infineon.com
-References: <20250606093444.15753-1-ian.lin@infineon.com>
-Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <20250606093444.15753-1-ian.lin@infineon.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6e02:250d:b0:3dc:7a9a:44d5 with SMTP id
+ e9e14a558f8ab-3ddce530818mr58573735ab.22.1749230673994; Fri, 06 Jun 2025
+ 10:24:33 -0700 (PDT)
+Date: Fri, 06 Jun 2025 10:24:33 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68432451.a00a0220.29ac89.0047.GAE@google.com>
+Subject: [syzbot] [wireless?] general protection fault in carl9170_usb_rx_complete
+From: syzbot <syzbot+0d8afba53e8fb2633217@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/6/2025 11:34 AM, Ian Lin wrote:
-> From: Ting-Ying Li <tingying.li@cypress.com>
-> 
-> Add a check to determine whether arp/nd offload enabling
-> request is allowed. If there is any interface acts as ap
-> mode and is operating, reject the request of arp offload
-> enabling from cfg80211.
+Hello,
 
-My ACK got lost so here it is once more...
+syzbot found the following issue on:
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Ting-Ying Li <tingying.li@cypress.com>
-> Signed-off-by: Ian Lin <ian.lin@infineon.com>
-> ---
->   .../broadcom/brcm80211/brcmfmac/cfg80211.c      | 17 ++++++++++++++++-
->   .../broadcom/brcm80211/brcmfmac/cfg80211.h      |  1 +
->   .../wireless/broadcom/brcm80211/brcmfmac/core.c |  5 +++++
->   3 files changed, 22 insertions(+), 1 deletion(-)
+HEAD commit:    882826f58b2c ALSA: usb-audio: qcom: fix USB_XHCI dependency
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=113fc1d4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=cc73a376913a3005
+dashboard link: https://syzkaller.appspot.com/bug?extid=0d8afba53e8fb2633217
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16ba180c580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10a9d80c580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/211f4b32c93c/disk-882826f5.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/8b1eeb82b8a1/vmlinux-882826f5.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c4696fbe4f76/bzImage-882826f5.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0d8afba53e8fb2633217@syzkaller.appspotmail.com
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000038: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x00000000000001c0-0x00000000000001c7]
+CPU: 1 UID: 0 PID: 38 Comm: kworker/1:1 Not tainted 6.15.0-rc6-syzkaller-00177-g882826f58b2c #0 PREEMPT(voluntary) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:__queue_work+0x9d/0x10f0 kernel/workqueue.c:2256
+Code: 85 db 0f 84 ae 04 00 00 e8 b0 da 33 00 49 8d 86 c0 01 00 00 48 89 c2 48 89 44 24 10 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e e8 0c 00 00 41 8b 9e c0 01 00
+RSP: 0018:ffffc900001a8a48 EFLAGS: 00010002
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff8148954e
+RDX: 0000000000000038 RSI: ffffffff81489090 RDI: 0000000000000005
+RBP: ffff88810ff73bd0 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000008
+R13: 0000000000000000 R14: 0000000000000000 R15: 0100000000000004
+FS:  0000000000000000(0000) GS:ffff8882692c2000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fd9d9eca0c8 CR3: 0000000124b4e000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <IRQ>
+ queue_work_on+0x15f/0x1f0 kernel/workqueue.c:2392
+ queue_work include/linux/workqueue.h:662 [inline]
+ ieee80211_queue_work net/mac80211/util.c:906 [inline]
+ ieee80211_queue_work+0x113/0x180 net/mac80211/util.c:899
+ carl9170_usb_rx_complete+0x275/0x2b0 drivers/net/wireless/ath/carl9170/usb.c:448
+ __usb_hcd_giveback_urb+0x38a/0x6e0 drivers/usb/core/hcd.c:1650
+ usb_hcd_giveback_urb+0x39b/0x450 drivers/usb/core/hcd.c:1734
+ dummy_timer+0x180e/0x3a20 drivers/usb/gadget/udc/dummy_hcd.c:1994
+ __run_hrtimer kernel/time/hrtimer.c:1761 [inline]
+ __hrtimer_run_queues+0x1ff/0xad0 kernel/time/hrtimer.c:1825
+ hrtimer_run_softirq+0x17d/0x350 kernel/time/hrtimer.c:1842
+ handle_softirqs+0x205/0x8d0 kernel/softirq.c:579
+ __do_softirq kernel/softirq.c:613 [inline]
+ invoke_softirq kernel/softirq.c:453 [inline]
+ __irq_exit_rcu+0xfa/0x160 kernel/softirq.c:680
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
+ sysvec_apic_timer_interrupt+0x90/0xb0 arch/x86/kernel/apic/apic.c:1049
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+RIP: 0010:console_flush_all+0x9a2/0xc60 kernel/printk/printk.c:3227
+Code: 00 e8 72 c5 27 00 9c 5b 81 e3 00 02 00 00 31 ff 48 89 de e8 e0 08 20 00 48 85 db 0f 85 55 01 00 00 e8 62 0d 20 00 fb 4c 89 e0 <48> c1 e8 03 42 80 3c 38 00 0f 84 11 ff ff ff 4c 89 e7 e8 17 d3 7b
+RSP: 0018:ffffc90000287438 EFLAGS: 00000293
+RAX: ffffffff895ba678 RBX: 0000000000000000 RCX: ffffffff815c5dd0
+RDX: ffff8881062b0000 RSI: ffffffff815c5dde RDI: 0000000000000007
+RBP: 0000000000000000 R08: 0000000000000007 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff895ba678
+R13: ffffffff895ba620 R14: ffffc900002874c8 R15: dffffc0000000000
+ __console_flush_and_unlock kernel/printk/printk.c:3285 [inline]
+ console_unlock+0xd8/0x210 kernel/printk/printk.c:3325
+ vprintk_emit+0x418/0x6d0 kernel/printk/printk.c:2450
+ dev_vprintk_emit drivers/base/core.c:4917 [inline]
+ dev_printk_emit+0xfa/0x140 drivers/base/core.c:4928
+ __dev_printk+0xf5/0x270 drivers/base/core.c:4940
+ _dev_info+0xe4/0x120 drivers/base/core.c:4986
+ show_string drivers/usb/core/hub.c:2369 [inline]
+ show_string drivers/usb/core/hub.c:2365 [inline]
+ announce_device drivers/usb/core/hub.c:2388 [inline]
+ usb_new_device+0x94c/0x1a20 drivers/usb/core/hub.c:2644
+ hub_port_connect drivers/usb/core/hub.c:5535 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5675 [inline]
+ port_event drivers/usb/core/hub.c:5835 [inline]
+ hub_event+0x2f85/0x5030 drivers/usb/core/hub.c:5917
+ process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
+ process_scheduled_works kernel/workqueue.c:3319 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
+ kthread+0x3c2/0x780 kernel/kthread.c:464
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__queue_work+0x9d/0x10f0 kernel/workqueue.c:2256
+Code: 85 db 0f 84 ae 04 00 00 e8 b0 da 33 00 49 8d 86 c0 01 00 00 48 89 c2 48 89 44 24 10 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e e8 0c 00 00 41 8b 9e c0 01 00
+RSP: 0018:ffffc900001a8a48 EFLAGS: 00010002
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff8148954e
+RDX: 0000000000000038 RSI: ffffffff81489090 RDI: 0000000000000005
+RBP: ffff88810ff73bd0 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000008
+R13: 0000000000000000 R14: 0000000000000000 R15: 0100000000000004
+FS:  0000000000000000(0000) GS:ffff8882692c2000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fd9d9eca0c8 CR3: 0000000124b4e000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess):
+   0:	85 db                	test   %ebx,%ebx
+   2:	0f 84 ae 04 00 00    	je     0x4b6
+   8:	e8 b0 da 33 00       	call   0x33dabd
+   d:	49 8d 86 c0 01 00 00 	lea    0x1c0(%r14),%rax
+  14:	48 89 c2             	mov    %rax,%rdx
+  17:	48 89 44 24 10       	mov    %rax,0x10(%rsp)
+  1c:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  23:	fc ff df
+  26:	48 c1 ea 03          	shr    $0x3,%rdx
+* 2a:	0f b6 04 02          	movzbl (%rdx,%rax,1),%eax <-- trapping instruction
+  2e:	84 c0                	test   %al,%al
+  30:	74 08                	je     0x3a
+  32:	3c 03                	cmp    $0x3,%al
+  34:	0f 8e e8 0c 00 00    	jle    0xd22
+  3a:	41                   	rex.B
+  3b:	8b                   	.byte 0x8b
+  3c:	9e                   	sahf
+  3d:	c0 01 00             	rolb   $0x0,(%rcx)
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
