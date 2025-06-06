@@ -1,87 +1,102 @@
-Return-Path: <linux-wireless+bounces-23801-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23802-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCF8ACFE4E
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 10:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7C3ACFF16
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 11:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B0B516509F
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 08:30:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49CFD16D9A4
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Jun 2025 09:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B5028642B;
-	Fri,  6 Jun 2025 08:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574912857EE;
+	Fri,  6 Jun 2025 09:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="SQYHhc1K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rNMRrAiK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB88286428;
-	Fri,  6 Jun 2025 08:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282D42857DE;
+	Fri,  6 Jun 2025 09:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749198571; cv=none; b=M59n+j6LOP3AAGcBGR4ZLQxOdhOLrioDpzhhQ2nm0ATKiNG1blD1f9HRv/ywcmAXETEDErdRgpE70nEuTaQRez8K1yrgPYiBJQQl/w7IOpp7VG02HX8/XGjPRf2bNEGZVyVGsJngWZe83CRNJNS/dJ5SKs9fQxpDlVMCjbt2kAM=
+	t=1749201562; cv=none; b=pYs1btsnHbbWg5DRiTI0oe1HlzA6SzZ/USVuBAPisQRwG6wgYvMT4HvOcwvDaTrXs/rX3U/mAWjEo+h0g51NUihS+y2zW69oAjOw1hKQzSQjNgPujG9mxWvchULb1xN+Onr35DNq2X8WDOys8vpKiZ53YAdsBhyJ3v15Atd0Us8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749198571; c=relaxed/simple;
-	bh=49DaA8DXyMY6i18x5JEvk8p3lLkcvagYTP8QF3EeKtk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Rg7ArlOh2MjDCtc7JG/tHmnrx9xKO9g/mRELvQaZx/Rso85fwYUXbgQjLJz4G7e0qV8NLiKBGZ0zSubZpUv46Rnikr5ksfqTwUyN3mIa4M9GWfgr09h8Vaa9GdhwpFBGAJM4PkK0Jhnf7R1mDOBFU7YV6p9QfuyKoeQHJePP06g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=SQYHhc1K; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=IAvmuB1cMZPHO9Dy/0EcZda6EBM6yEw8n1PRljLtuUo=;
-	t=1749198569; x=1750408169; b=SQYHhc1K7x/Rnx05lyg0o5tsElVEY4TssbdTCakrE+R6RJa
-	wHUqshpMAYDls7fS1JQSk5dMKqGBNRNz6bABwsI1MM786Maxb18oroonPUiwuAEwjWK7RUci6+iIP
-	ASnUXR85XD1FJB/cRTyL/kj2zdTLa8tNU4iAo3EaUvgqIV6BJOtLOUWALkW/pYvEalIOEQzc4dhvA
-	A7TUIXxN0RQRW7HwFcV1t5MMt0BOafD6kOlStlL+96690Gk53utjhpUjKS3fq0q/wXnAFuCdtzMTS
-	l7dwn9zGqkSifmaCCG5o5HMqJ1GhWRYGV1+ni9sTXVX4cAfd+p5QSlU2nnoBSfDw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uNSS6-00000007Tvj-1nuC;
-	Fri, 06 Jun 2025 10:29:26 +0200
-Message-ID: <a83d4f351e1c6b676ec19460a2800e5eb9fe7163.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next 1/4] wifi: brcmfmac: don't allow arp/nd
- offload to be enabled if ap mode exists
-From: Johannes Berg <johannes@sipsolutions.net>
-To: "Lin Ian (CSS ICW ENG WFS SW WFSW 1)" <ian.lin@infineon.com>, Arend
- van Spriel <arend.vanspriel@broadcom.com>
-Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
-	carter.chen@infineon.com, double.lo@infineon.com,
- vinoth.sampath@infineon.com, 	gokulkumar.sivakumar@infineon.com
-Date: Fri, 06 Jun 2025 10:29:25 +0200
-In-Reply-To: <5ea555b2-d952-42dd-baad-11acafad5697@infineon.com>
-References: <20250604091629.3943-1-ian.lin@infineon.com>
-	 <20250604091629.3943-2-ian.lin@infineon.com>
-	 <1122ef86-c43b-4d39-aebb-e69a1150f61b@broadcom.com>
-	 <5ea555b2-d952-42dd-baad-11acafad5697@infineon.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1749201562; c=relaxed/simple;
+	bh=frCW/vBzCrEGCM+6G/qXfkE8FGMEPfIpWzwPqLwytyI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KG4DfuNWCHZp7r9qxZcc8Ji0zlHbBlXR2k5tZ+ZsLIcOgKe9NZgfc7Ltd2IlpKCPgQ49A/QXwD2MCDtp/v/K1mWcXhUMvvxE0PvYTFKKABxyY0/OBkUT6M93d+Mi3vJFuO+quVLxbnCSjPiVsk76Sr2qqUdsh4ofNKGcn3AV4YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rNMRrAiK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F5FC4CEEB;
+	Fri,  6 Jun 2025 09:19:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749201561;
+	bh=frCW/vBzCrEGCM+6G/qXfkE8FGMEPfIpWzwPqLwytyI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rNMRrAiK7jsc5fKcq1zGRPDz0tUULP8frmSPSUyrliQr9nTOq9lm/pvPb76qqYiaf
+	 5Q2Z88dU8DOOcCdIOeH+4u/AiM895Vcj9u9rlLRTYZtRYIWiFT6+vU4sawpMVSGcyP
+	 K+p6ztCNAyQQ+HDKGOq1hSSSc8kXTfW36Zn0QcQxEiinFKsjXMIYf9ebYVt8+2uA2W
+	 Ujwh1kzvKNTiHyhsELFWsUFDeqYesP02NwLadObbhMyY/mlQFtDwsZUOJjoam/2mDp
+	 1rABr00hoTzQMGi276EpHhGktvXp3tLFFEKBH41LQJ37ditQY1CfG6eV2FT55L+UT+
+	 DLtUVRiTiQHPA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1uNTEK-000000007mi-1Oin;
+	Fri, 06 Jun 2025 11:19:17 +0200
+Date: Fri, 6 Jun 2025 11:19:16 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] wifi: ath12k: fix dest ring-buffer corruption
+ when ring is full
+Message-ID: <aEKylLhbfLusD3Kq@hovoldconsulting.com>
+References: <20250604144509.28374-1-johan+linaro@kernel.org>
+ <20250604144509.28374-5-johan+linaro@kernel.org>
+ <a8236639-2448-4552-ac21-db7e7370e23e@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a8236639-2448-4552-ac21-db7e7370e23e@quicinc.com>
 
-On Fri, 2025-06-06 at 16:08 +0800, Lin Ian (CSS ICW ENG WFS SW WFSW 1)
-wrote:
->=20
-> May I ask if this one is regarded as ack to merge?
->  =C2=A0- [PATCH wireless-next 1/4] wifi: brcmfmac: don't allow arp/nd off=
-load=20
-> to be enabled if ap mode exists
+On Fri, Jun 06, 2025 at 03:27:04PM +0800, Miaoqing Pan wrote:
+> On 6/4/2025 10:45 PM, Johan Hovold wrote:
+> > Add the missing memory barriers to make sure that destination ring
+> > descriptors are read before updating the tail pointer (and passing
+> > ownership to the device) to avoid memory corruption on weakly ordered
+> > architectures like aarch64 when the ring is full.
 
-You will need to resend though, I'm not going to get into a business of
-trying to poke into patch series to apply them partially.
+> > @@ -2184,6 +2187,10 @@ void ath12k_hal_srng_access_end(struct ath12k_base *ab, struct hal_srng *srng)
+> >   					   srng->u.src_ring.hp);
+> >   		} else {
+> >   			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+> > +			/* Make sure descriptor is read before updating the
+> > +			 * tail pointer.
+> > +			 */
+> > +			mb();
+> 
+> Is rmb() sufficient, since MMIO write already includes wmb()?
 
-johannes
+No, rmb() only orders reads against later reads.
+
+[ The wmb() itself orders reads against later writes on aarch64, but
+that's not generally guaranteed and hence should not be relied on in
+driver code. ]
+
+> >   			ath12k_hif_write32(ab,
+> >   					   (unsigned long)srng->u.dst_ring.tp_addr -
+> >   					   (unsigned long)ab->mem,
+
+Johan
 
