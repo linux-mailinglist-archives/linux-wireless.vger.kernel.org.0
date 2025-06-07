@@ -1,146 +1,513 @@
-Return-Path: <linux-wireless+bounces-23825-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23826-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536FDAD0E04
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Jun 2025 16:44:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7C5AD0ED0
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Jun 2025 20:00:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 805961891944
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Jun 2025 14:45:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 682A116D0C6
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Jun 2025 18:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E153B1F37C5;
-	Sat,  7 Jun 2025 14:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7489D1E2853;
+	Sat,  7 Jun 2025 18:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Kgy1IkXr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lY7gG2NI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A2B1DC9B0
-	for <linux-wireless@vger.kernel.org>; Sat,  7 Jun 2025 14:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227B32F3E
+	for <linux-wireless@vger.kernel.org>; Sat,  7 Jun 2025 17:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749307448; cv=none; b=n97kPVjNPOi075oKS995tOg1twXww86Y1RzZF6hXWtb62m+OikO63lBw6/Nyc/mIl1BCQKg3slCJPivzM6kf13TIByXj0xj5ygfeztXmukLNJyOwW2zZEfj6RTA+QQdmArbXkt5h9y0oGS03kANYKH5QvDJ3LhKMHTidyzlIhhA=
+	t=1749319200; cv=none; b=aEl0TThDae7rlA66WEZEryJbBelf/LXtuamwRpH2fywlX/AZPc7aXZhATcDWNAwmp7dWKXqcV8U/FnJf/dt6vuYZ6KC+gl0HBZGwApjI0FU4l7Al+AqXR7cFXN56Z5qI8zJQkXTbUfeTBljbQO5tyzQqiL7qzq2TBuJENMwz/Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749307448; c=relaxed/simple;
-	bh=LnaHXraGbIP/xhceE8DNIMIvDlTzfiBhctvEU2EuEOw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Py6/hAM4oeksvdaUtWIHADZgW/Mxvvoy01tf2SLrAlTcEDHjoqjGXWIn0+3Q1W524zQuNAvmxFbCp3yTcW8BjpfPiJGPK/PnjC+TSHokhHuNROV4QBfw2yAGyb070R6BbqDIzsL2QgKG8jVSo2tUw9TC/HSUhNonxWNKidkkGYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Kgy1IkXr; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 557EVH6p020534
-	for <linux-wireless@vger.kernel.org>; Sat, 7 Jun 2025 14:44:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	AKP57LtvpN0o4j8981kkmloCcGjwLJ5jDT4OhefdPHE=; b=Kgy1IkXrftGxepmr
-	uc0UArS5i4wrtrf5FZ3Sm/GsO5qk+5F09LCIaCgGbzM1ItDk12kBbnbVOOl/aoG9
-	7492EBodHH5H9qU72eshDI7rYFh8C1oOMCzXBS7Hfko9C6NdD+mJGn8SchsiPyAQ
-	hwdsQdW+VLrFkbdWX5sa3lGMsZBmlMNjvpfxcvvYTng3PTJB5dr9AWeyC+UkYBVz
-	BzBE9kWKBg9CaF+i2OBtDDm9ExgWxzE/jEUW/E/kSyhM3QipAVUywAX0FToW33ZM
-	q0QFLrep/xGkK9xm2yxMHC1r0Z7zeX/RWtMCrmj8loTI/03/F7Xy6Q7JSFMJP2m7
-	4qAlPw==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 474ekpgmtu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Sat, 07 Jun 2025 14:44:06 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-235196dfc50so26435105ad.1
-        for <linux-wireless@vger.kernel.org>; Sat, 07 Jun 2025 07:44:06 -0700 (PDT)
+	s=arc-20240116; t=1749319200; c=relaxed/simple;
+	bh=2Ai/81jks0Pz6ydx0FgXxUjhFRZpcFT9l8WREgxf9BQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=rWC+qZtIKzKo7vMwfs5XSOUKn1Ddt2GmFZ2a4wigDgi1HNc48tQtUuovDYagUOG47Qd5Z3ASv6OJyROCAT1QJYltV4KZV1QSZJjnWah4Gk2WuLhGFOfiJY/h4pvsLAyHjd3M+HdKa6uDlTLyJbha2CPP1mz3Uatd2inD4/JhsMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lY7gG2NI; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ad883afdf0cso594219366b.0
+        for <linux-wireless@vger.kernel.org>; Sat, 07 Jun 2025 10:59:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749319196; x=1749923996; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1KkpYqvDPQmTZ+eznOVxfk7aCfRmlcToQlSVRWYkTxw=;
+        b=lY7gG2NIGUvhxIfHxQDq92tRjz2HkRZqwK3R1Q9kj1HuULZZ+0ELeN/WJ0Wc0jG2ai
+         ZiMXW3Xtu5Wv5DzfLAY/QW3X1/B5OsYwHzZNrKDILLFN1JwEBG+f1SA22ij7BnWCjRih
+         sSlFiP2hSRxP3WNL++Yc1rMbNzBFimqkkYHXc1YzlY3Ycy5qTyr1L0htS2iZuNWyXXLg
+         P//CIawNpPNHS7Xl4SHwLv1/zvaF0QMIzpndsHtVdi68qKv8Kcxfna+1Fbzr2A0PvCMM
+         wI0EVgdCzlefgg0nvK7SM170a5Psm7V4neNX8y7bNyDV9VkefDpVMKDCuyfGFOVHiIOJ
+         AS/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749307446; x=1749912246;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AKP57LtvpN0o4j8981kkmloCcGjwLJ5jDT4OhefdPHE=;
-        b=wqnEQi7uIC2ldpVa+hjxZxZQyZwrgIHm9MeMXDPbuQTvRnfLIgrHYTOcJhmMj0yW57
-         8lL3xH0JoytrxXcmFxRQePzlOcyLlJcWmULu66Yic8L0TFKRopPVMeuweF/1PAGhqtVR
-         g+mJN4X1u5rMm2UXnzmMDYaEgoutMCPeML9eAOKY3bagOgCUSOmKyT9YDsCHV/lwAhGM
-         N26WmU9Ep6mNGFW/E2cXT/1C9vlrUWAVzAALXmr8K+Lj9ybK33M0tEvAmMq4jh2RDZId
-         XIxINQoXCZL2Behl4EQFEzYcsDs+DvCuro7HEKP+NdFDIMysoXPY9YzFIXDlryYusTtu
-         0a0g==
-X-Forwarded-Encrypted: i=1; AJvYcCX7qZbzC8o+u0aiGQmsiu57j306FJc0v9Ie2dgIZqMpx37pV5eBOz1zFkg3aNX61opEoqYhYtLDNXE9IyqsvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzA9quNID7KZH05FR3XhVZxmeCFH5ckhIK61hwL6ZdL+zWrJ0e
-	Us+/h0k1DmeUHuThNaQ7LizYiacRym8lvUtsoejs0e+uhZZjseMOhdzL+fChd2ImEfwd9Qn6fm9
-	I/6Jxk2WQO70tIIZJwIGH3BL4SPaiLs/lnQxF09UPBxVYNSvaforYZDhV+xYEJPVbl7m3tA==
-X-Gm-Gg: ASbGncvWj530IVJ2uBYB0eExfRoH0O/dVCiQLt3EYiiPdlPXskq/y1nx5G1R/uWKjwv
-	GkSDwIbgEsri1owarKZhm+SkwiHKxbbAJCkdCIEsH/HL90pNdT27I+PLxLUYYdhXKhB2u7US1f1
-	ZPBQWb9uvlqkX0dLc4l4fgqmjwlad77bKXfJkExnmAzAtWq8ddY9P4ccfx93Df3PLByC3ebdOAn
-	939GsfxwxA51nasscazIlJDumV0i38TuywQ/87gjAkDvRqRZN+lqqgG0CBwyi/rtK9Nx4pWcsnm
-	rZqSb+kZM8W2TDHfeBDxkmsYbg/6VYNUniPc1SFycwLn2yiY
-X-Received: by 2002:a17:902:e890:b0:233:fd7b:5e0d with SMTP id d9443c01a7336-2360204e078mr98779185ad.5.1749307445911;
-        Sat, 07 Jun 2025 07:44:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHXJtHzI0iZsOHPoQDPNghXFBlVaVQi0Q2yp3wgPLwZoHZhFseuzZTHToiow1f1iVUEDMUQng==
-X-Received: by 2002:a17:902:e890:b0:233:fd7b:5e0d with SMTP id d9443c01a7336-2360204e078mr98778935ad.5.1749307445571;
-        Sat, 07 Jun 2025 07:44:05 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-236030969ebsm27626415ad.72.2025.06.07.07.44.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Jun 2025 07:44:04 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: jjohnson@kernel.org, Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20250604055250.1228501-1-miaoqing.pan@oss.qualcomm.com>
-References: <20250604055250.1228501-1-miaoqing.pan@oss.qualcomm.com>
-Subject: Re: [PATCH ath-next] wifi: ath12k: fix uaf in ath12k_core_init()
-Message-Id: <174930744425.154748.15678214019639234293.b4-ty@oss.qualcomm.com>
-Date: Sat, 07 Jun 2025 07:44:04 -0700
+        d=1e100.net; s=20230601; t=1749319196; x=1749923996;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1KkpYqvDPQmTZ+eznOVxfk7aCfRmlcToQlSVRWYkTxw=;
+        b=j4AZ+nTMocFPp3gnIY2W8ZdN9HOJo0vNLCpS78DgVSpdNfvGQUYGCUiUscczi9MInX
+         ScfXP1nbbFE5fYd4VasOur9uveDds6agsQ/bFNOazAL2rqralDFNxnom9Znox5s1AgI1
+         xTovPuuFEmPePbu929jZE3mc37BoMRo0/DuoNLSYg8UNW8pNSn99we70NYes3SBgYvt2
+         cqm/FPkYlxpVe8DZnrb9UOSn352AUIl/CINebWG6JKJYtKZmMMXdxSaScZSolfX66qB/
+         KWhvj4mNfV84oFj6cEIGIlE1EOYR968LEUK8bbgFA5/d5UXI89c3ZUN3fKdzMd1sgJAs
+         XJxA==
+X-Gm-Message-State: AOJu0Yyw1DMqEWXUhgk+LDFFWwibppkIM6a6/5G1DsYUDmOqlcXhTVWb
+	pC/R4bWZ6tbTxOI+1h2qOIIa1MIOE6nLTM5m2sz+KX7z20+mtTqqaj1sVfiUkA==
+X-Gm-Gg: ASbGncux2D3LeHeGAy4y+6ljLv0pNnGnD7A6RDJoFELW8w8Dkb4OTMnat9ghEpKKGcw
+	MTgtm5avVTmi+msp/UPaGp7KDrDZxycWd9oi04j4b4zkwWIFZ4m9r3bz2FRsajDtgoPzh/bwySy
+	+H3L5LVdfHUihk/dxSiAbBJWTrDWtkaff8FwZS2PFibUI4AwpXr3G/ZfNN6JrFKNaR4DTjjonT3
+	sj4nJpOKmr/j0jwO2ZHNrXRSQuAplvCqJOIEQGrFsTKl2//eTjo1jrtO2gYVIu9jBBl5jRsvR5v
+	OEP1df1Al8/6R1/wgM5n0z+PQ4tQy57lRzPnL5o6sOfS+uNrw8JXMFXcu9yfqiPgHVwZLA==
+X-Google-Smtp-Source: AGHT+IFooWOnHJsnAKkHX/y/TTjg1U0kUu6/xsXDuHsq8oH1bS/toZ1+UEB0pIGD+Y/WHHuRfzeuNg==
+X-Received: by 2002:a17:907:da3:b0:ad8:9909:20aa with SMTP id a640c23a62f3a-ade1ab0872emr731779666b.40.1749319196130;
+        Sat, 07 Jun 2025 10:59:56 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.16])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1d7542bcsm301769966b.32.2025.06.07.10.59.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 07 Jun 2025 10:59:55 -0700 (PDT)
+Message-ID: <bfb1099c-db52-4b25-b111-17ab712e9404@gmail.com>
+Date: Sat, 7 Jun 2025 20:59:53 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next 1/2] wifi: rtw88: Rename the RTW_WCPU_11{AC,N} enums
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
-X-Authority-Analysis: v=2.4 cv=JcO8rVKV c=1 sm=1 tr=0 ts=68445036 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=SO4j_8h2HUBQMcU2vEcA:9
- a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10 a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA3MDEwNiBTYWx0ZWRfX9ykgutXZnckc
- buJ7SU3UVU7vVC4pnNJ4Y9xZHAfVXuuuwGXGOlX3Ml9Di2nRA459WPi5/FIa8FQANu5wAriwj2y
- 3Yjs51z5eXWJsaQyxkfG9gbJ2/Z2XQI+1wYmc4L/vSqNC7boI8gZGx3Wq6kdDsyO0NLUKm67UWg
- 6qGlt9hCWKh6J9kieLVbhOMTA4mvJlg+Ds/7yuB40/0IYWsEmgRj2rEBT3QtsHFB64i17nZeOIE
- mM6oH8B92/Cfi56WqOb8UFRjVhWzNJde9ZICWqF0qPx5MBlfGqZVX97Shri/pIaRYzqfPxaWq4h
- xK3NThpsa928BY1WKpL0FyUYTgqOH+dq8eh4sG/i4pJuWXsXxthWXPYLFbM7U5HWO47ZjsHdFVZ
- pqnCmt38TfVir+akdJ8RweFwIi1SaktYnkttPHdU/bb7E56g4d2+hpSyX5JvmA2kcwuTrjDb
-X-Proofpoint-GUID: CUxfnt1GJUC-m7z8Ocv3Tx38ZX2FCVoX
-X-Proofpoint-ORIG-GUID: CUxfnt1GJUC-m7z8Ocv3Tx38ZX2FCVoX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-07_06,2025-06-05_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 bulkscore=0 spamscore=0 impostorscore=0 phishscore=0
- priorityscore=1501 mlxscore=0 adultscore=0 clxscore=1015 malwarescore=0
- suspectscore=0 lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506070106
 
+The RTW_WCPU_11AC and RTW_WCPU_11N enums are used to identify two
+types of microcontrollers used in Realtek chips, but these names are
+misleading. The "11AC" type was also used in 11n devices (e.g.
+RTL8733BU, not supported by rtw88), and the "11N" type was also used
+in 11ac devices (RTL8821AU, RTL8812AU).
 
-On Wed, 04 Jun 2025 13:52:50 +0800, Miaoqing Pan wrote:
-> When the execution of ath12k_core_hw_group_assign() or
-> ath12k_core_hw_group_create() fails, the registered notifier chain is not
-> unregistered properly. Its memory is freed after rmmod, which may trigger
-> to a use-after-free (UAF) issue if there is a subsequent access to this
-> notifier chain.
-> 
-> Fixes the issue by calling ath12k_core_panic_notifier_unregister() in
-> failure cases.
-> 
-> [...]
+Rename RTW_WCPU_11AC to RTW_WCPU_3081 and RTW_WCPU_11N to RTW_WCPU_8051.
+(8051 is well known. It's less clear what 3081 is, but the out of tree
+drivers use this name.)
 
-Applied, thanks!
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw88/fw.c       |  8 +++----
+ drivers/net/wireless/realtek/rtw88/mac.c      | 22 +++++++++----------
+ drivers/net/wireless/realtek/rtw88/main.c     |  2 +-
+ drivers/net/wireless/realtek/rtw88/main.h     | 12 +++++-----
+ drivers/net/wireless/realtek/rtw88/pci.c      | 12 +++++-----
+ drivers/net/wireless/realtek/rtw88/rtw8703b.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8812a.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8814a.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8821a.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/sdio.c     |  8 +++----
+ 14 files changed, 40 insertions(+), 40 deletions(-)
 
-[1/1] wifi: ath12k: fix uaf in ath12k_core_init()
-      commit: f3fe49dbddd73f0155a8935af47cb63693069dbe
-
-Best regards,
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index 4fc78b882080..c68a9fff6808 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -521,7 +521,7 @@ rtw_fw_send_general_info(struct rtw_dev *rtwdev)
+ 	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
+ 	u16 total_size = H2C_PKT_HDR_SIZE + 4;
+ 
+-	if (rtw_chip_wcpu_11n(rtwdev))
++	if (rtw_chip_wcpu_8051(rtwdev))
+ 		return;
+ 
+ 	rtw_h2c_pkt_set_header(h2c_pkt, H2C_PKT_GENERAL_INFO);
+@@ -544,7 +544,7 @@ rtw_fw_send_phydm_info(struct rtw_dev *rtwdev)
+ 	u16 total_size = H2C_PKT_HDR_SIZE + 8;
+ 	u8 fw_rf_type = 0;
+ 
+-	if (rtw_chip_wcpu_11n(rtwdev))
++	if (rtw_chip_wcpu_8051(rtwdev))
+ 		return;
+ 
+ 	if (hal->rf_type == RF_1T1R)
+@@ -1480,7 +1480,7 @@ int rtw_fw_write_data_rsvd_page(struct rtw_dev *rtwdev, u16 pg_addr,
+ 
+ 	bckp[2] = rtw_read8(rtwdev, REG_BCN_CTRL);
+ 
+-	if (rtw_chip_wcpu_11n(rtwdev)) {
++	if (rtw_chip_wcpu_8051(rtwdev)) {
+ 		rtw_write32_set(rtwdev, REG_DWBCN0_CTRL, BIT_BCN_VALID);
+ 	} else {
+ 		pg_addr &= BIT_MASK_BCN_HEAD_1_V1;
+@@ -1509,7 +1509,7 @@ int rtw_fw_write_data_rsvd_page(struct rtw_dev *rtwdev, u16 pg_addr,
+ 		goto restore;
+ 	}
+ 
+-	if (rtw_chip_wcpu_11n(rtwdev)) {
++	if (rtw_chip_wcpu_8051(rtwdev)) {
+ 		bcn_valid_addr = REG_DWBCN0_CTRL;
+ 		bcn_valid_mask = BIT_BCN_VALID;
+ 	} else {
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index f66d1b302dc5..011b81c82f3b 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -41,7 +41,7 @@ void rtw_set_channel_mac(struct rtw_dev *rtwdev, u8 channel, u8 bw,
+ 	}
+ 	rtw_write32(rtwdev, REG_WMAC_TRXPTCL_CTL, value32);
+ 
+-	if (rtw_chip_wcpu_11n(rtwdev))
++	if (rtw_chip_wcpu_8051(rtwdev))
+ 		return;
+ 
+ 	value32 = rtw_read32(rtwdev, REG_AFE_CTRL1) & ~(BIT_MAC_CLK_SEL);
+@@ -67,7 +67,7 @@ static int rtw_mac_pre_system_cfg(struct rtw_dev *rtwdev)
+ 
+ 	rtw_write8(rtwdev, REG_RSV_CTRL, 0);
+ 
+-	if (rtw_chip_wcpu_11n(rtwdev)) {
++	if (rtw_chip_wcpu_8051(rtwdev)) {
+ 		if (rtw_read32(rtwdev, REG_SYS_CFG1) & BIT_LDO)
+ 			rtw_write8(rtwdev, REG_LDO_SWR_CTRL, LDO_SEL);
+ 		else
+@@ -278,7 +278,7 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
+ 	bool cur_pwr;
+ 	int ret;
+ 
+-	if (rtw_chip_wcpu_11ac(rtwdev)) {
++	if (rtw_chip_wcpu_3081(rtwdev)) {
+ 		rpwm = rtw_read8(rtwdev, rtwdev->hci.rpwm_addr);
+ 
+ 		/* Check FW still exist or not */
+@@ -369,7 +369,7 @@ static int __rtw_mac_init_system_cfg_legacy(struct rtw_dev *rtwdev)
+ 
+ static int rtw_mac_init_system_cfg(struct rtw_dev *rtwdev)
+ {
+-	if (rtw_chip_wcpu_11n(rtwdev))
++	if (rtw_chip_wcpu_8051(rtwdev))
+ 		return __rtw_mac_init_system_cfg_legacy(rtwdev);
+ 
+ 	return __rtw_mac_init_system_cfg(rtwdev);
+@@ -981,7 +981,7 @@ static int __rtw_download_firmware_legacy(struct rtw_dev *rtwdev,
+ static
+ int _rtw_download_firmware(struct rtw_dev *rtwdev, struct rtw_fw_state *fw)
+ {
+-	if (rtw_chip_wcpu_11n(rtwdev))
++	if (rtw_chip_wcpu_8051(rtwdev))
+ 		return __rtw_download_firmware_legacy(rtwdev, fw);
+ 
+ 	return __rtw_download_firmware(rtwdev, fw);
+@@ -1122,7 +1122,7 @@ static int txdma_queue_mapping(struct rtw_dev *rtwdev)
+ 
+ 	rtw_write8(rtwdev, REG_CR, 0);
+ 	rtw_write8(rtwdev, REG_CR, MAC_TRX_ENABLE);
+-	if (rtw_chip_wcpu_11ac(rtwdev))
++	if (rtw_chip_wcpu_3081(rtwdev))
+ 		rtw_write32(rtwdev, REG_H2CQ_CSR, BIT_H2CQ_FULL);
+ 
+ 	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_SDIO) {
+@@ -1145,7 +1145,7 @@ int rtw_set_trx_fifo_info(struct rtw_dev *rtwdev)
+ 	/* config rsvd page num */
+ 	fifo->rsvd_drv_pg_num = chip->rsvd_drv_pg_num;
+ 	fifo->txff_pg_num = chip->txff_size / chip->page_size;
+-	if (rtw_chip_wcpu_11n(rtwdev))
++	if (rtw_chip_wcpu_8051(rtwdev))
+ 		fifo->rsvd_pg_num = fifo->rsvd_drv_pg_num;
+ 	else
+ 		fifo->rsvd_pg_num = fifo->rsvd_drv_pg_num +
+@@ -1163,7 +1163,7 @@ int rtw_set_trx_fifo_info(struct rtw_dev *rtwdev)
+ 	fifo->rsvd_boundary = fifo->txff_pg_num - fifo->rsvd_pg_num;
+ 
+ 	cur_pg_addr = fifo->txff_pg_num;
+-	if (rtw_chip_wcpu_11ac(rtwdev)) {
++	if (rtw_chip_wcpu_3081(rtwdev)) {
+ 		cur_pg_addr -= csi_buf_pg_num;
+ 		fifo->rsvd_csibuf_addr = cur_pg_addr;
+ 		cur_pg_addr -= RSVD_PG_FW_TXBUF_NUM;
+@@ -1292,7 +1292,7 @@ static int priority_queue_cfg(struct rtw_dev *rtwdev)
+ 
+ 	pubq_num = fifo->acq_pg_num - pg_tbl->hq_num - pg_tbl->lq_num -
+ 		   pg_tbl->nq_num - pg_tbl->exq_num - pg_tbl->gapq_num;
+-	if (rtw_chip_wcpu_11n(rtwdev))
++	if (rtw_chip_wcpu_8051(rtwdev))
+ 		return __priority_queue_cfg_legacy(rtwdev, pg_tbl, pubq_num);
+ 	else
+ 		return __priority_queue_cfg(rtwdev, pg_tbl, pubq_num);
+@@ -1308,7 +1308,7 @@ static int init_h2c(struct rtw_dev *rtwdev)
+ 	u32 h2cq_free;
+ 	u32 wp, rp;
+ 
+-	if (rtw_chip_wcpu_11n(rtwdev))
++	if (rtw_chip_wcpu_8051(rtwdev))
+ 		return 0;
+ 
+ 	h2cq_addr = fifo->rsvd_h2cq_addr << TX_PAGE_SIZE_SHIFT;
+@@ -1375,7 +1375,7 @@ static int rtw_drv_info_cfg(struct rtw_dev *rtwdev)
+ 	u8 value8;
+ 
+ 	rtw_write8(rtwdev, REG_RX_DRVINFO_SZ, PHY_STATUS_SIZE);
+-	if (rtw_chip_wcpu_11ac(rtwdev)) {
++	if (rtw_chip_wcpu_3081(rtwdev)) {
+ 		value8 = rtw_read8(rtwdev, REG_TRXFF_BNDY + 1);
+ 		value8 &= 0xF0;
+ 		/* For rxdesc len = 0 issue */
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index c4de5d114eda..88ff3edeaf47 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1765,7 +1765,7 @@ static void __update_firmware_info_legacy(struct rtw_dev *rtwdev,
+ static void update_firmware_info(struct rtw_dev *rtwdev,
+ 				 struct rtw_fw_state *fw)
+ {
+-	if (rtw_chip_wcpu_11n(rtwdev))
++	if (rtw_chip_wcpu_8051(rtwdev))
+ 		__update_firmware_info_legacy(rtwdev, fw);
+ 	else
+ 		__update_firmware_info(rtwdev, fw);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index b0f1fabe9554..89b72d2a9f99 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -1173,8 +1173,8 @@ struct rtw_pwr_track_tbl {
+ };
+ 
+ enum rtw_wlan_cpu {
+-	RTW_WCPU_11AC,
+-	RTW_WCPU_11N,
++	RTW_WCPU_3081,
++	RTW_WCPU_8051,
+ };
+ 
+ enum rtw_fw_fifo_sel {
+@@ -2166,14 +2166,14 @@ static inline void rtw_chip_efuse_grant_off(struct rtw_dev *rtwdev)
+ 		rtwdev->chip->ops->efuse_grant(rtwdev, false);
+ }
+ 
+-static inline bool rtw_chip_wcpu_11n(struct rtw_dev *rtwdev)
++static inline bool rtw_chip_wcpu_8051(struct rtw_dev *rtwdev)
+ {
+-	return rtwdev->chip->wlan_cpu == RTW_WCPU_11N;
++	return rtwdev->chip->wlan_cpu == RTW_WCPU_8051;
+ }
+ 
+-static inline bool rtw_chip_wcpu_11ac(struct rtw_dev *rtwdev)
++static inline bool rtw_chip_wcpu_3081(struct rtw_dev *rtwdev)
+ {
+-	return rtwdev->chip->wlan_cpu == RTW_WCPU_11AC;
++	return rtwdev->chip->wlan_cpu == RTW_WCPU_3081;
+ }
+ 
+ static inline bool rtw_chip_has_rx_ldpc(struct rtw_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index 7f2b6dc21f56..a887b8993e47 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -405,7 +405,7 @@ static void rtw_pci_reset_buf_desc(struct rtw_dev *rtwdev)
+ 	dma = rtwpci->tx_rings[RTW_TX_QUEUE_BCN].r.dma;
+ 	rtw_write32(rtwdev, RTK_PCI_TXBD_DESA_BCNQ, dma);
+ 
+-	if (!rtw_chip_wcpu_11n(rtwdev)) {
++	if (!rtw_chip_wcpu_8051(rtwdev)) {
+ 		len = rtwpci->tx_rings[RTW_TX_QUEUE_H2C].r.len;
+ 		dma = rtwpci->tx_rings[RTW_TX_QUEUE_H2C].r.dma;
+ 		rtwpci->tx_rings[RTW_TX_QUEUE_H2C].r.rp = 0;
+@@ -467,7 +467,7 @@ static void rtw_pci_reset_buf_desc(struct rtw_dev *rtwdev)
+ 	rtw_write32(rtwdev, RTK_PCI_TXBD_RWPTR_CLR, 0xffffffff);
+ 
+ 	/* reset H2C Queue index in a single write */
+-	if (rtw_chip_wcpu_11ac(rtwdev))
++	if (rtw_chip_wcpu_3081(rtwdev))
+ 		rtw_write32_set(rtwdev, RTK_PCI_TXBD_H2CQ_CSR,
+ 				BIT_CLR_H2CQ_HOST_IDX | BIT_CLR_H2CQ_HW_IDX);
+ }
+@@ -487,7 +487,7 @@ static void rtw_pci_enable_interrupt(struct rtw_dev *rtwdev,
+ 
+ 	rtw_write32(rtwdev, RTK_PCI_HIMR0, rtwpci->irq_mask[0] & ~imr0_unmask);
+ 	rtw_write32(rtwdev, RTK_PCI_HIMR1, rtwpci->irq_mask[1]);
+-	if (rtw_chip_wcpu_11ac(rtwdev))
++	if (rtw_chip_wcpu_3081(rtwdev))
+ 		rtw_write32(rtwdev, RTK_PCI_HIMR3, rtwpci->irq_mask[3]);
+ 
+ 	rtwpci->irq_enabled = true;
+@@ -507,7 +507,7 @@ static void rtw_pci_disable_interrupt(struct rtw_dev *rtwdev,
+ 
+ 	rtw_write32(rtwdev, RTK_PCI_HIMR0, 0);
+ 	rtw_write32(rtwdev, RTK_PCI_HIMR1, 0);
+-	if (rtw_chip_wcpu_11ac(rtwdev))
++	if (rtw_chip_wcpu_3081(rtwdev))
+ 		rtw_write32(rtwdev, RTK_PCI_HIMR3, 0);
+ 
+ 	rtwpci->irq_enabled = false;
+@@ -1125,7 +1125,7 @@ static void rtw_pci_irq_recognized(struct rtw_dev *rtwdev,
+ 
+ 	irq_status[0] = rtw_read32(rtwdev, RTK_PCI_HISR0);
+ 	irq_status[1] = rtw_read32(rtwdev, RTK_PCI_HISR1);
+-	if (rtw_chip_wcpu_11ac(rtwdev))
++	if (rtw_chip_wcpu_3081(rtwdev))
+ 		irq_status[3] = rtw_read32(rtwdev, RTK_PCI_HISR3);
+ 	else
+ 		irq_status[3] = 0;
+@@ -1134,7 +1134,7 @@ static void rtw_pci_irq_recognized(struct rtw_dev *rtwdev,
+ 	irq_status[3] &= rtwpci->irq_mask[3];
+ 	rtw_write32(rtwdev, RTK_PCI_HISR0, irq_status[0]);
+ 	rtw_write32(rtwdev, RTK_PCI_HISR1, irq_status[1]);
+-	if (rtw_chip_wcpu_11ac(rtwdev))
++	if (rtw_chip_wcpu_3081(rtwdev))
+ 		rtw_write32(rtwdev, RTK_PCI_HISR3, irq_status[3]);
+ 
+ 	spin_unlock_irqrestore(&rtwpci->hwirq_lock, flags);
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.c b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+index 9e6700c43a63..03475af973b5 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+@@ -1882,7 +1882,7 @@ const struct rtw_chip_info rtw8703b_hw_spec = {
+ 	.id = RTW_CHIP_TYPE_8703B,
+ 
+ 	.fw_name = "rtw88/rtw8703b_fw.bin",
+-	.wlan_cpu = RTW_WCPU_11N,
++	.wlan_cpu = RTW_WCPU_8051,
+ 	.tx_pkt_desc_sz = 40,
+ 	.tx_buf_desc_sz = 16,
+ 	.rx_pkt_desc_sz = 24,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+index 31876e708f9e..bf69f5b06ce2 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+@@ -2116,7 +2116,7 @@ const struct rtw_chip_info rtw8723d_hw_spec = {
+ 	.ops = &rtw8723d_ops,
+ 	.id = RTW_CHIP_TYPE_8723D,
+ 	.fw_name = "rtw88/rtw8723d_fw.bin",
+-	.wlan_cpu = RTW_WCPU_11N,
++	.wlan_cpu = RTW_WCPU_8051,
+ 	.tx_pkt_desc_sz = 40,
+ 	.tx_buf_desc_sz = 16,
+ 	.rx_pkt_desc_sz = 24,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8812a.c b/drivers/net/wireless/realtek/rtw88/rtw8812a.c
+index c2ef41767ff9..03b441639611 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8812a.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8812a.c
+@@ -1038,7 +1038,7 @@ const struct rtw_chip_info rtw8812a_hw_spec = {
+ 	.ops = &rtw8812a_ops,
+ 	.id = RTW_CHIP_TYPE_8812A,
+ 	.fw_name = "rtw88/rtw8812a_fw.bin",
+-	.wlan_cpu = RTW_WCPU_11N,
++	.wlan_cpu = RTW_WCPU_8051,
+ 	.tx_pkt_desc_sz = 40,
+ 	.tx_buf_desc_sz = 16,
+ 	.rx_pkt_desc_sz = 24,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8814a.c b/drivers/net/wireless/realtek/rtw88/rtw8814a.c
+index 44dd3090484b..4a1f850d05c8 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8814a.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8814a.c
+@@ -2180,7 +2180,7 @@ const struct rtw_chip_info rtw8814a_hw_spec = {
+ 	.ops = &rtw8814a_ops,
+ 	.id = RTW_CHIP_TYPE_8814A,
+ 	.fw_name = "rtw88/rtw8814a_fw.bin",
+-	.wlan_cpu = RTW_WCPU_11AC,
++	.wlan_cpu = RTW_WCPU_3081,
+ 	.tx_pkt_desc_sz = 40,
+ 	.tx_buf_desc_sz = 16,
+ 	.rx_pkt_desc_sz = 24,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821a.c b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+index 413aec694c33..1d02ea400b2e 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821a.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+@@ -1138,7 +1138,7 @@ const struct rtw_chip_info rtw8821a_hw_spec = {
+ 	.ops = &rtw8821a_ops,
+ 	.id = RTW_CHIP_TYPE_8821A,
+ 	.fw_name = "rtw88/rtw8821a_fw.bin",
+-	.wlan_cpu = RTW_WCPU_11N,
++	.wlan_cpu = RTW_WCPU_8051,
+ 	.tx_pkt_desc_sz = 40,
+ 	.tx_buf_desc_sz = 16,
+ 	.rx_pkt_desc_sz = 24,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index 413130a30ca9..a2a358d6033f 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -1973,7 +1973,7 @@ const struct rtw_chip_info rtw8821c_hw_spec = {
+ 	.ops = &rtw8821c_ops,
+ 	.id = RTW_CHIP_TYPE_8821C,
+ 	.fw_name = "rtw88/rtw8821c_fw.bin",
+-	.wlan_cpu = RTW_WCPU_11AC,
++	.wlan_cpu = RTW_WCPU_3081,
+ 	.tx_pkt_desc_sz = 48,
+ 	.tx_buf_desc_sz = 16,
+ 	.rx_pkt_desc_sz = 24,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index ab199eaea3c7..9c31c859ccba 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -2513,7 +2513,7 @@ const struct rtw_chip_info rtw8822b_hw_spec = {
+ 	.ops = &rtw8822b_ops,
+ 	.id = RTW_CHIP_TYPE_8822B,
+ 	.fw_name = "rtw88/rtw8822b_fw.bin",
+-	.wlan_cpu = RTW_WCPU_11AC,
++	.wlan_cpu = RTW_WCPU_3081,
+ 	.tx_pkt_desc_sz = 48,
+ 	.tx_buf_desc_sz = 16,
+ 	.rx_pkt_desc_sz = 24,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index 017d959de3ce..f813ce10172d 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -5332,7 +5332,7 @@ const struct rtw_chip_info rtw8822c_hw_spec = {
+ 	.ops = &rtw8822c_ops,
+ 	.id = RTW_CHIP_TYPE_8822C,
+ 	.fw_name = "rtw88/rtw8822c_fw.bin",
+-	.wlan_cpu = RTW_WCPU_11AC,
++	.wlan_cpu = RTW_WCPU_3081,
+ 	.tx_pkt_desc_sz = 48,
+ 	.tx_buf_desc_sz = 16,
+ 	.rx_pkt_desc_sz = 24,
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index e733ed846123..cc2d4fef3587 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -547,7 +547,7 @@ static int rtw_sdio_check_free_txpg(struct rtw_dev *rtwdev, u8 queue,
+ {
+ 	unsigned int pages_free, pages_needed;
+ 
+-	if (rtw_chip_wcpu_11n(rtwdev)) {
++	if (rtw_chip_wcpu_8051(rtwdev)) {
+ 		u32 free_txpg;
+ 
+ 		free_txpg = rtw_sdio_read32(rtwdev, REG_SDIO_FREE_TXPG);
+@@ -1030,7 +1030,7 @@ static void rtw_sdio_rx_isr(struct rtw_dev *rtwdev)
+ 	u32 rx_len, hisr, total_rx_bytes = 0;
+ 
+ 	do {
+-		if (rtw_chip_wcpu_11n(rtwdev))
++		if (rtw_chip_wcpu_8051(rtwdev))
+ 			rx_len = rtw_read16(rtwdev, REG_SDIO_RX0_REQ_LEN);
+ 		else
+ 			rx_len = rtw_read32(rtwdev, REG_SDIO_RX0_REQ_LEN);
+@@ -1042,7 +1042,7 @@ static void rtw_sdio_rx_isr(struct rtw_dev *rtwdev)
+ 
+ 		total_rx_bytes += rx_len;
+ 
+-		if (rtw_chip_wcpu_11n(rtwdev)) {
++		if (rtw_chip_wcpu_8051(rtwdev)) {
+ 			/* Stop if no more RX requests are pending, even if
+ 			 * rx_len could be greater than zero in the next
+ 			 * iteration. This is needed because the RX buffer may
+@@ -1054,7 +1054,7 @@ static void rtw_sdio_rx_isr(struct rtw_dev *rtwdev)
+ 			 */
+ 			hisr = rtw_read32(rtwdev, REG_SDIO_HISR);
+ 		} else {
+-			/* RTW_WCPU_11AC chips have improved hardware or
++			/* RTW_WCPU_3081 chips have improved hardware or
+ 			 * firmware and can use rx_len unconditionally.
+ 			 */
+ 			hisr = REG_SDIO_HISR_RX_REQUEST;
 -- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+2.49.0
 
 
