@@ -1,68 +1,71 @@
-Return-Path: <linux-wireless+bounces-23859-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23860-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E788AD256A
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jun 2025 20:21:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66FCAD256B
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jun 2025 20:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0722188CE6C
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jun 2025 18:22:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70E4E16D319
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jun 2025 18:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB26218593;
-	Mon,  9 Jun 2025 18:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D31527718;
+	Mon,  9 Jun 2025 18:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OF7bXFLs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q3S0iFfV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36B027718
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Jun 2025 18:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BE22185AA
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Jun 2025 18:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749493310; cv=none; b=hlsJx2OpOQ8yH1oVOI2G8y6Wl+AcKSqdWf+WDbkshZtcGFC23OTd1wtRERcjLdolaLuMYNAFCS3KBd8R0jHHiH7QTpGKrlrXmNTeqMaoXJbDDefMeECDt6SJOzIzOnG+67SHIODguJm24WtDtpWAOq5Zb43bRvt4skTl62ohhVE=
+	t=1749493311; cv=none; b=ND2k0QJTP5y7/AhDs2QivVE0lS5pdMTR54fDUGh5IJEpfWr+nShec2NUmh1fPJxbShQjczHUyiLjY0VifBTeCqf2Mrmxo5w8P2QfC7QuJqjOPIqVtoT3Q5aFL5DBLEAySzfFiqlozpKAcqJcQKaeH6kvpTVkF8yAZXv3qql12sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749493310; c=relaxed/simple;
-	bh=kjFpZD/tPBj5P4msdOb1LFaTq7XXaZuG7bjakyMkrx8=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=oaQpF3X03AKY5fIWk2iSfh7XReoDksu6xJ8O4VKFxIPw7ypS9qyitYoEKBgVvw0I5NHHMFzL+gvj2t3h/8oAjhr3UgNNSVNLn6tulPU3po5WYg7Im6ZPbbE4Jj89lBSuRQoftDImRBaBtl8yYEusqgvdFcV/gPR08unIpUe+Evo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OF7bXFLs; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1749493311; c=relaxed/simple;
+	bh=ZAKej4HduCbX9s00H49OKxBhhiuMFNjBiIilIEVMWQo=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=cDoOZcO65LmcLXUheFASniVVx4c6sCGl0Tm995OLlkBuz1ORnOMcNCUTq6vYE7Rehn1TfqXFkeqFD7+Av6uy2oFrDPaiINAWWuquyZbXy/2ZXVxkQ/5jznobWsKGD3eaZ7xgNfLjRJJR3msPJEj09l7lzNjzYbkNvTno8z52EdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q3S0iFfV; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749493308; x=1781029308;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=kjFpZD/tPBj5P4msdOb1LFaTq7XXaZuG7bjakyMkrx8=;
-  b=OF7bXFLs4S9iygo7nW0zIOXXkIU//bwyznCkSj+I/40rVnq4DZvwdZ8X
-   ULOCOML6TYaJENMIgjmZ1Hh/iQyA1lIXWHK2ouyOWtCtsqn4nBy6z9AKq
-   App0kw2eywStpBbBwhw6TerD58DI9ssQkHWfq6CLBnjOOkfUloQkSnlA4
-   AmLBJzkqH3PFadcuj88hhEZG4o320nsoCxbf5iMk0qiK0+n2KC+95kB+/
-   DpUzYyF/Kipcz9quOrs5wPJm071PfNjAKMkRWCIMQ1gQ5IFM8bX7hR0aC
-   70WhR3pEQtHpxJoqCcLAVnIs3wwWUcnWe+LeWJoFmPfRg+ub9GC57umBB
-   Q==;
-X-CSE-ConnectionGUID: tJPO1LVDTT+JdenusWwuEQ==
-X-CSE-MsgGUID: UTZn7YwbRli+iin6JAJXeA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="62237657"
+  t=1749493310; x=1781029310;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=ZAKej4HduCbX9s00H49OKxBhhiuMFNjBiIilIEVMWQo=;
+  b=Q3S0iFfVaqxQAeptLSzgkuyL7KTeI4Gya3zApbhPGSBPfLUVEMkQzgk3
+   XXxpmvzUebYoI3hbwBXuyPIEmxUq42FNv1Ih81767lt+nd1JgHnCVNWAN
+   b9DlhexuTnX078PhrkyCaY3qUpZvefH3bIn9w7z6Z4bfp2k19o/DsMZCM
+   r41nH2jg4SwdduyP8Gl3GdRGFDxDBC4VPtwheK/8xUIiuhI+oGRdxswaz
+   jJbgxB0o0AYl4j5JMW9En8itsk/Iwzk6ERhOIwJMzpvXmYfuJdHBvNxJt
+   hMLXc9rs/yvYJ3QTnNj4bXV6ib4VcWo1EbHDJx3fEGz717rrU7ct6kBeK
+   g==;
+X-CSE-ConnectionGUID: R6ENsdJkSLOP7v18SZBvKg==
+X-CSE-MsgGUID: Vl9hzkzNTCyU1GmX9DmrnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="62237658"
 X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
-   d="scan'208";a="62237657"
+   d="scan'208";a="62237658"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 11:21:47 -0700
-X-CSE-ConnectionGUID: eB4OLPi5SB+l6WghJWQCqA==
-X-CSE-MsgGUID: TflGRhWqQweNqXpUe6ZYLw==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 11:21:48 -0700
+X-CSE-ConnectionGUID: PsgfR5BJSfu3PmH0TM2GwA==
+X-CSE-MsgGUID: LxQoq94YTgKsM8nm34FkYw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
-   d="scan'208";a="146510217"
+   d="scan'208";a="146510226"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 11:21:46 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 11:21:47 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH iwlwifi-next 00/15] wifi: iwlwifi: updates - 2025-06-09
-Date: Mon,  9 Jun 2025 21:21:06 +0300
-Message-Id: <20250609182121.3886519-1-miriam.rachel.korenblit@intel.com>
+Subject: [PATCH iwlwifi-next 01/15] wifi: iwlwifi: mld: remove unneeded compilations
+Date: Mon,  9 Jun 2025 21:21:07 +0300
+Message-Id: <20250609211928.3bfe5222fe79.I1ebd746b0c513e278d231b5c48f5438ca9b9231f@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250609182121.3886519-1-miriam.rachel.korenblit@intel.com>
+References: <20250609182121.3886519-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -72,84 +75,26 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Hi,
+Those are internal files so they should not be compiled.
 
-Features, cleanups and bugfixes from our internal tree.
-
-Thanks,
-Miri
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
+ drivers/net/wireless/intel/iwlwifi/mld/Makefile | 4 ----
+ 1 file changed, 4 deletions(-)
 
-Benjamin Berg (1):
-  wifi: iwlwifi: move dBm averaging function into utils
-
-Daniel Gabay (1):
-  wifi: iwlwifi: mld: respect AUTO_EML_ENABLE in iwl_mld_retry_emlsr()
-
-Itamar Shalev (2):
-  wifi: iwlwifi: mld: respect AUTO_EML_ENABLE in iwl_mld_int_mlo_scan()
-  wifi: iwlwifi: mvm: enable antenna selection for AX210 family
-
-Johannes Berg (4):
-  wifi: iwlwifi: pcie: add missing TOP reset code
-  wifi: iwlwifi: pcie: initiate TOP reset if requested
-  wifi: iwlwifi: mld: fix misspelling of 'established'
-  wifi: iwlwifi: pcie: reinit device properly during TOP reset
-
-Miri Korenblit (5):
-  wifi: iwlwifi: mld: remove unneeded compilations
-  wifi: iwlwifi: move iwl-context-info header files
-  wifi: iwlwifi: bump FW API to 100 for BZ/SC/DR devices
-  wifi: iwlwifi: bump minimum API version in BZ/SC/DR
-  wifi: iwlwifi: pcie: move generation specific files to a folder
-
-Pagadala Yesu Anjaneyulu (2):
-  wifi: iwlwifi: parse VLP AP not allowed nvm channel flag
-  wifi: iwlwifi: Remove unused cfg parameter from
-    iwl_nvm_get_regdom_bw_flags
-
- drivers/net/wireless/intel/iwlwifi/Kconfig    |   1 +
- drivers/net/wireless/intel/iwlwifi/Makefile   |   8 +-
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |   4 +-
- drivers/net/wireless/intel/iwlwifi/cfg/dr.c   |   4 +-
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |   4 +-
- drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |   1 +
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  48 +++----
- .../net/wireless/intel/iwlwifi/iwl-trans.c    |   4 +-
- .../net/wireless/intel/iwlwifi/iwl-utils.c    | 113 ++++++++++++++++-
- .../net/wireless/intel/iwlwifi/iwl-utils.h    |   4 +-
- .../net/wireless/intel/iwlwifi/mld/Makefile   |   4 -
- .../net/wireless/intel/iwlwifi/mld/mac80211.c |   2 +-
- drivers/net/wireless/intel/iwlwifi/mld/mlo.c  |   4 +-
- drivers/net/wireless/intel/iwlwifi/mld/scan.c |   4 +-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   1 -
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 117 +-----------------
- .../wireless/intel/iwlwifi/mvm/tests/Makefile |   2 +-
- .../intel/iwlwifi/pcie/ctxt-info-v2.c         |   2 +-
- .../wireless/intel/iwlwifi/pcie/ctxt-info.c   |   2 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |   2 +-
- .../iwlwifi/pcie/{ => gen1_2}/internal.h      |   3 +-
- .../intel/iwlwifi/pcie/{ => gen1_2}/rx.c      |  18 ++-
- .../iwlwifi/pcie/{ => gen1_2}/trans-gen2.c    |   9 +-
- .../intel/iwlwifi/pcie/{ => gen1_2}/trans.c   |   4 +-
- .../intel/iwlwifi/pcie/{ => gen1_2}/tx-gen2.c |   0
- .../intel/iwlwifi/pcie/{ => gen1_2}/tx.c      |   0
- .../iwlwifi/{ => pcie}/iwl-context-info-v2.h  |   0
- .../iwlwifi/{ => pcie}/iwl-context-info.h     |   0
- .../net/wireless/intel/iwlwifi/tests/Makefile |   2 +-
- .../{mvm/tests/scan.c => tests/utils.c}       |  43 ++++---
- 31 files changed, 220 insertions(+), 193 deletions(-)
- rename drivers/net/wireless/intel/iwlwifi/pcie/{ => gen1_2}/internal.h (99%)
- rename drivers/net/wireless/intel/iwlwifi/pcie/{ => gen1_2}/rx.c (99%)
- rename drivers/net/wireless/intel/iwlwifi/pcie/{ => gen1_2}/trans-gen2.c (98%)
- rename drivers/net/wireless/intel/iwlwifi/pcie/{ => gen1_2}/trans.c (99%)
- rename drivers/net/wireless/intel/iwlwifi/pcie/{ => gen1_2}/tx-gen2.c (100%)
- rename drivers/net/wireless/intel/iwlwifi/pcie/{ => gen1_2}/tx.c (100%)
- rename drivers/net/wireless/intel/iwlwifi/{ => pcie}/iwl-context-info-v2.h (100%)
- rename drivers/net/wireless/intel/iwlwifi/{ => pcie}/iwl-context-info.h (100%)
- rename drivers/net/wireless/intel/iwlwifi/{mvm/tests/scan.c => tests/utils.c} (63%)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/Makefile b/drivers/net/wireless/intel/iwlwifi/mld/Makefile
+index ece66e7a9be4..c966e573f430 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/Makefile
++++ b/drivers/net/wireless/intel/iwlwifi/mld/Makefile
+@@ -9,8 +9,4 @@ iwlmld-$(CONFIG_IWLWIFI_DEBUGFS) += debugfs.o
+ iwlmld-$(CONFIG_IWLWIFI_LEDS) += led.o
+ iwlmld-$(CONFIG_PM_SLEEP) += d3.o
+ 
+-# non-upstream things
+-iwlmld-$(CONFIG_IWL_VENDOR_CMDS) += vendor-cmd.o
+-iwlmld-$(CONFIG_IWLMVM_AX_SOFTAP_TESTMODE) += ax-softap-testmode.o
+-
+ subdir-ccflags-y += -I$(src)/../
 -- 
 2.34.1
 
