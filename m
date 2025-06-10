@@ -1,69 +1,65 @@
-Return-Path: <linux-wireless+bounces-23907-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23908-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36922AD2B2C
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 03:20:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C2E1AD2B53
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 03:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09674188A22D
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 01:20:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 980667A652E
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 01:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6B61714B2;
-	Tue, 10 Jun 2025 01:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1935C19C553;
+	Tue, 10 Jun 2025 01:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="mBXG587q"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ueDvNltS"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BCB29D19;
-	Tue, 10 Jun 2025 01:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8A827472
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Jun 2025 01:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749518438; cv=none; b=Jh1URt6fcpQZe486j9spIVQzHDc4u+hkFT0H3HGib9U22oVaajQN/8hQ9QURn1u4gRY6OXjw+Tz1qhOSWLaBtXrwuYXx1hDRgj5ukSFNl8QB2PAWkD5Ng/Y/bg7mFiGyYOr2eHeErOBeFLbBR88+I7PdxOjhfC+5LkxTz0myCyQ=
+	t=1749518961; cv=none; b=GtxpHrE4v3nKOpCG3DWwQBvtyPP7GTmJ+t3x8gkphnGn2h5upDYdF5kmaj26EJrzWVzWS+xtm5WvM23ttPISyjbp4TrR1hUen8B+lLs4TDPsP8A5mMpH2kt5upX2XbmSI8LdoBalAQbWqTL96AWXQTIkYCBgCGuRg083RhgT0yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749518438; c=relaxed/simple;
-	bh=cM23n6uiyIm0rU+feuBCMfLiJRbypAe34gyr0xRyO7k=;
+	s=arc-20240116; t=1749518961; c=relaxed/simple;
+	bh=gJDTeje8NqXwwWC1q3xtDGeK0ojxQzfKJEePTtq4bTk=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=USOY7teXR2osyilrWBEaEdexIyY1e42U336Au7XgLuySfqjH1A+uGGB7VVgWM5g6olobLtqoqJKATCuso1jQ4613t+DU75hyou/nIe2Uc46zVkmppdR9Z5qon9WQeb+Q0kgM/U9rRaKFnj6uS+giMjzFSMGj2SD1czeFAy2b5D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=mBXG587q; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:Message-ID:Date; b=lGrj8QqAWCgbY3362vNpwFEzVAK4gG8gjqksQvzCU+8w7IH3esKmBhWmzl/RWurRlxsv0Dg4qezfLUEbsD2G/g1uCvClRIYyGb1hav2prczB6+9YlwFJ4h9WsNOOMmbd+WtP1EaXmM+oONLkLaTRGVpjQUjae6t6iaszzThT1dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ueDvNltS; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55A1KVYa81877506, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55A1TDgY42049623, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1749518431; bh=f+C89OLNTJLqm7tctjLTcwKe3fypzJO2eXcQDk6EifE=;
+	t=1749518954; bh=YZUS+SdICwjOr96nSj971Tw3M1A8Jk6/3COe2TjA1YQ=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
 	 Content-Type:Message-ID:Date;
-	b=mBXG587qM5dAIMOF6nm2P7+Y01wwle133ZiJguyU7s/2kKWN4twG3Bi3X1qyZhSF+
-	 2IJUTRmSoiX24/mjY4reTFMaI0i0Wge7Y/7kDVpIhizN6rv+NvqIA28lzonKJKQoqS
-	 5rhsOKnDEtK1mliWZpfiEOIzAetJqILMVG+kn+JgL4M2OREjjedHjOXudxW4SJ8bLP
-	 3k1CES5zuGGKkI/KYfuBcBOQEdufRfbmoF2lTmu0YVEB+QbMlPun1EejyMg0CcOJZd
-	 5ZNlPq4r2ZytAtfPmIBMimbmhfj1tiEFwmX6qBzQZ/AieHUMc5fLRpEExMDtown6DG
-	 cD6vC7gAFziXg==
+	b=ueDvNltSomehljvpFwJzoAKkNunjH7neLAiiDe109LhRyR/wRKH+0sWQERxJuNRMk
+	 GTqnei8ctI3SlvmDBpdmMWNlsCK5WWVV4JjN8CwlR3rqB/q8QvhSwUs9yNYody1t+6
+	 75A7BMiGu0FJ4a9NS8Mrbgfc/Dx1yhqgp/RXJmGxkmu/xisEUAhp7hdFlfrkY6AhhK
+	 +0WcESvK2u2JASTPpca46+hI80MEEE8kOQZbcG5HGBVo/jR6aSSXl2foT3/6YARKb9
+	 ObeI3GgRmC4M3L0VJeHnDhDL5lLgScpemJWoer6DoVsGeO/wKoYyBFfgkgnATQeW9F
+	 0nQ1fAL5PG4tw==
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55A1KVYa81877506
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Jun 2025 09:20:31 +0800
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55A1TDgY42049623
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Jun 2025 09:29:14 +0800
 Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 10 Jun 2025 09:20:31 +0800
+ 15.1.2507.39; Tue, 10 Jun 2025 09:29:14 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXDAG02.realtek.com.tw
  (172.21.6.101) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 10 Jun
- 2025 09:20:30 +0800
+ 2025 09:29:13 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Ping-Ke Shih
-	<pkshih@realtek.com>
-CC: <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: rtlwifi: Constify struct rtl_hal_ops and rtl_hal_cfg
-In-Reply-To: <2c3f3d8d8b2f7dcb8cc64cebe89e55720d1d733d.1747500351.git.christophe.jaillet@wanadoo.fr>
-References: <2c3f3d8d8b2f7dcb8cc64cebe89e55720d1d733d.1747500351.git.christophe.jaillet@wanadoo.fr>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <timlee@realtek.com>
+Subject: Re: [PATCH rtw-next 1/2] wifi: rtw88: pci: add PCI Express error handling
+In-Reply-To: <20250523062711.27213-2-pkshih@realtek.com>
+References: <20250523062711.27213-1-pkshih@realtek.com> <20250523062711.27213-2-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,38 +67,42 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Message-ID: <1573e244-e719-4e2f-9812-f9ba905387ff@RTEXDAG02.realtek.com.tw>
-Date: Tue, 10 Jun 2025 09:20:30 +0800
+Message-ID: <0ea21399-9bc5-451d-82a3-e53901478f99@RTEXDAG02.realtek.com.tw>
+Date: Tue, 10 Jun 2025 09:29:13 +0800
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXDAG02.realtek.com.tw (172.21.6.101)
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> 'struct rtl_hal_ops' and 'struct rtl_hal_cfg' are not modified in these
-> drivers.
+> From: Chin-Yen Lee <timlee@realtek.com>
 > 
-> Constifying this structure moves some data to a read-only section, so
-> increase overall security, especially when the structure holds some
-> function pointers.
+> Sometimes PCIe Advanced Error Reporting(AER), like bad TLP or
+> Data link protocol error, happens due to unstable pci signal or
+> no response from PCI host.
 > 
-> Constification of rtl_hal_cfg is only needed in rtl8192cu/sw.c
+>   pcieport 0000:00:00.0: AER: Multiple Corrected error message received from 0000:00:00.0
+>   pcieport 0000:00:00.0: AER: PCIe Bus Error: severity=Corrected, type=Physical Layer, (Receiver ID)
+>   pcieport 0000:00:00.0: AER:   device [14c3:6786] error status/mask=000000c1/00006000
+>   pcieport 0000:00:00.0: AER:    [ 0] RxErr                  (First)
+>   pcieport 0000:00:00.0: AER:    [ 6] BadTLP
+>   pcieport 0000:00:00.0: AER:    [ 7] BadDLLP
+>   pcieport 0000:00:00.0: AER: Corrected error message received from 0000:00:00.0
+>   pcieport 0000:00:00.0: AER: found no error details for 0000:00:00.0
+>   pcieport 0000:00:00.0: AER: Multiple Corrected error message received from 0000:00:00.0
+>   pcieport 0000:00:00.0: AER: found no error details for 0000:00:00.0
+>   pcieport 0000:00:00.0: AER: Multiple Corrected error message received from 0000:00:00.0
+>   pcieport 0000:00:00.0: AER: found no error details for 0000:00:00.0
 > 
-> On a x86_64, with allmodconfig, as an example:
-> Before:
-> ======
->    text	   data	    bss	    dec	    hex	filename
->   10167	   5512	    128	  15807	   3dbf	drivers/net/wireless/realtek/rtlwifi/rtl8188ee/sw.o
+> Setup callback function to call SER function to reset driver to recover
+> from these states
 > 
-> After:
-> =====
->    text	   data	    bss	    dec	    hex	filename
->   10743	   4936	    128	  15807	   3dbf	drivers/net/wireless/realtek/rtlwifi/rtl8188ee/sw.o
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+2 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-4c95423b6f01 wifi: rtlwifi: Constify struct rtl_hal_ops and rtl_hal_cfg
+cdb82c80b934 wifi: rtw88: pci: add PCI Express error handling
+16e3d93c6183 wifi: rtw89: pci: add PCI Express error handling
 
 ---
 https://github.com/pkshih/rtw.git
