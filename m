@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-23938-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23939-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A374FAD3892
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 15:15:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9320EAD38DA
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 15:21:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D85FC9E6108
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 13:08:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28B31A2014B
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 13:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20597246BB5;
-	Tue, 10 Jun 2025 13:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC095246BB8;
+	Tue, 10 Jun 2025 13:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="RhxSlsN0"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="IKnSGPeD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411DF246BB6
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Jun 2025 13:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E81246BA6
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Jun 2025 13:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749560507; cv=none; b=BdCdDXMCqxDNzXl+PBbJ05L6cnB2Cjh+5ilrLK/YaT9g2r20KzBr43IPu7QIhQGYlRor+i2EIYxrRaW8osHIh+wcOaSD7m6IzWZa4EaxDBV6RNMEfOrXuFsxvzhPb8Wvu5eGOehkUeXcl0ZT5yS2OqT5k5Hm7WuFUthwAnmwHa8=
+	t=1749560510; cv=none; b=O4Sqgi0qILUx8AnsrtHUqoc5YW5GdmaMOaHJNBokQZuxXAiZlx88xlpW+NmHIusprHHlogaHq170ncs16MFspc1N8wNQ3Lw/BOnjY9IqT04TWyUkIfh3W8rZNJ/D1+oPR8Md1QJZqxr01cqIarB5cHVIgaOTOVpF9ac5RVU52oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749560507; c=relaxed/simple;
-	bh=GgRzhZIH4U6UU5XOW5NrJDNmZwjyGfzUn7ZewxmAZyM=;
+	s=arc-20240116; t=1749560510; c=relaxed/simple;
+	bh=TF2GGFXOnaf1Y6Rs4pRCqvlWuK8YzGDXczL8UeoA/Sc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T4PK3vSD/iEhqL4vVKqHWIdZpHJ3ktim5QaZoJFaTlUL41dfr4oCPIHU89vGU+1rURoImoav68WrU7Z4Q0jLn7Sfu9nKUp0XOPl7Sswe9wlgwouZgNZDRKYBR2e3YiYTQnOjUiIWz1Dm5c6fv1kNVFFfgyIEtaOgLMHx+A2go8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RhxSlsN0; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=KtzD2/O4LyhRXwAMh83e88GVplMCOIyxwEwABCHeSLYpgfQNqx4qG1tF/E0196D2yD+bUcwu5oVs//GYRpWXo4VVFXZGTTuQxK4fM/ygecbYYxLpPLqUkDyQgQ++MyW8oY1/AD+PGib5BFMxHKSNF0VZ4szoH8na6l2v+fLIpsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=IKnSGPeD; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55AD1gOtA2995881, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55AD1kppE2995883, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1749560502; bh=VXFTiZzUp+LZnQh94TRfgydUAJgzrvmKcsdmE1v2jK0=;
+	t=1749560506; bh=J4midFrFSQ1xxnI6LO0Rzzu9L2YhgBSMHLl+wmj+SxQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=RhxSlsN0gxXyVmzu4RMXVvpi0BAJhhMo6IlJwLsRSGwiIvloyT1eTIIomT8squpx+
-	 rRm/gq1iKI6dPRiAwQEMGJIcG26Kk6dQFjQrlHBUPDcFUCXcTHDH5TjFHOwZzoB1gb
-	 MgesyZ6TxbazZtZiRvkhkVRSbN3n0UIzy5Ua0E9OUHyO7r1zCK8XNlQQoSu1EHUugZ
-	 1A6dpF5cy0hhesycUA92DhI31t9DcMRs9ggwpoml0zAplxqW67tL18qYAGqLNi9Gun
-	 wQcU+C/XaEEAGhx4bQE1mY5Dp4MJKtGkflpizgBGlxQD4ZhdsxMMiuBzGt0JBuR7ZQ
-	 SQX1YIG+hqqYA==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55AD1gOtA2995881
+	b=IKnSGPeDukC510gzgW/wdIsJD2ISrtlATTF1xRIxCaItlgS83dIsbXFgMnW0psiz5
+	 sOLBhjfKiL/S5usrmy0E8lrG1nUu/A/Mj1HkC4TUyHHouXrNXstbHx8eQ+aNfpsvaI
+	 MW8RLctHNrAf4O58dqwRY540WH8kZ8niPaJLczpAoaGsxR0jDU/QHNcEOv3F4zsPH7
+	 o+p8eSNvmkkjqCc5U87j/LOxn+Wjqr0PkrvXggooHziw4aeWqqSpTH7s4KgkbtjkaX
+	 lmfOliTXs0FFDtu5Y1Sz83D/r7gU8t99p7eilDItSiuRoJzXRh8YLqhiXZzMB8yfAC
+	 yGpDLVQBQ0zDQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55AD1kppE2995883
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Jun 2025 21:01:42 +0800
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Jun 2025 21:01:46 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 10 Jun 2025 21:01:43 +0800
+ 15.1.2507.39; Tue, 10 Jun 2025 21:01:47 +0800
 Received: from [127.0.1.1] (10.22.225.18) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 10 Jun
- 2025 21:01:42 +0800
+ 2025 21:01:46 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <gary.chang@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 11/12] wifi: rtw89: mcc: enlarge TX retry count when GC auth
-Date: Tue, 10 Jun 2025 21:00:33 +0800
-Message-ID: <20250610130034.14692-12-pkshih@realtek.com>
+Subject: [PATCH rtw-next 12/12] wifi: rtw89: scan abort when assign/unassign_vif
+Date: Tue, 10 Jun 2025 21:00:34 +0800
+Message-ID: <20250610130034.14692-13-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250610130034.14692-1-pkshih@realtek.com>
 References: <20250610130034.14692-1-pkshih@realtek.com>
@@ -76,68 +76,43 @@ X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
 
 From: Chih-Kang Chang <gary.chang@realtek.com>
 
-The auth retry only continue 40ms, but the GO might switch to STA role
-50ms when MCC. Therefore, enlarge the TX retry count from 32 to 60 to
-let GC TX time overlapping with GO timeslot.
+If scan happen during start_ap, the register which control TX might be
+turned off during scan. Additionally, if set_channel occurs during scan
+will backup this register and set to firmware after set_channel done.
+When scan complete, firmware will also set TX by this register, causing
+TX to be disabled and beacon can't be TX. Therefore, in assign/unassign_vif
+call scan abort before set_channel to avoid scan racing with set_channel.
 
 Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 14 ++++++++++++++
- drivers/net/wireless/realtek/rtw89/core.h |  1 +
- 2 files changed, 15 insertions(+)
+ drivers/net/wireless/realtek/rtw89/chan.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 9c4360df77f1..4026cda04ef6 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -4006,6 +4006,12 @@ int rtw89_core_sta_link_add(struct rtw89_dev *rtwdev,
- 		rtw89_btc_ntfy_role_info(rtwdev, rtwvif_link, rtwsta_link,
- 					 BTC_ROLE_MSTS_STA_CONN_START);
- 		rtw89_chip_rfk_channel(rtwdev, rtwvif_link);
-+
-+		if (vif->p2p) {
-+			rtw89_mac_get_tx_retry_limit(rtwdev, rtwsta_link,
-+						     &rtwsta_link->tx_retry);
-+			rtw89_mac_set_tx_retry_limit(rtwdev, rtwsta_link, false, 60);
-+		}
- 	} else if (vif->type == NL80211_IFTYPE_AP || sta->tdls) {
- 		ret = rtw89_mac_set_macid_pause(rtwdev, rtwsta_link->mac_id, false);
- 		if (ret) {
-@@ -4190,6 +4196,10 @@ int rtw89_core_sta_link_assoc(struct rtw89_dev *rtwdev,
- 		}
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
+index 2a77b1978c38..2d4d730c8195 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.c
++++ b/drivers/net/wireless/realtek/rtw89/chan.c
+@@ -2910,6 +2910,9 @@ int rtw89_chanctx_ops_assign_vif(struct rtw89_dev *rtwdev,
+ 	rtwvif_link->chanctx_assigned = true;
+ 	cfg->ref_count++;
  
- 		rtw89_fw_h2c_set_bcn_fltr_cfg(rtwdev, rtwvif_link, true);
++	if (rtwdev->scanning)
++		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
 +
-+		if (vif->p2p)
-+			rtw89_mac_set_tx_retry_limit(rtwdev, rtwsta_link, false,
-+						     rtwsta_link->tx_retry);
- 	}
+ 	if (list_empty(&rtwvif->mgnt_entry))
+ 		list_add_tail(&rtwvif->mgnt_entry, &mgnt->active_list);
  
- 	rtw89_assoc_link_set(rtwsta_link);
-@@ -4208,6 +4218,10 @@ int rtw89_core_sta_link_remove(struct rtw89_dev *rtwdev,
- 		rtw89_reg_6ghz_recalc(rtwdev, rtwvif_link, false);
- 		rtw89_btc_ntfy_role_info(rtwdev, rtwvif_link, rtwsta_link,
- 					 BTC_ROLE_MSTS_STA_DIS_CONN);
+@@ -2949,6 +2952,9 @@ void rtw89_chanctx_ops_unassign_vif(struct rtw89_dev *rtwdev,
+ 	rtwvif_link->chanctx_assigned = false;
+ 	cfg->ref_count--;
+ 
++	if (rtwdev->scanning)
++		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
 +
-+		if (vif->p2p)
-+			rtw89_mac_set_tx_retry_limit(rtwdev, rtwsta_link, false,
-+						     rtwsta_link->tx_retry);
- 	} else if (vif->type == NL80211_IFTYPE_AP || sta->tdls) {
- 		ret = rtw89_fw_h2c_role_maintain(rtwdev, rtwvif_link, rtwsta_link,
- 						 RTW89_ROLE_REMOVE);
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index c017bdaf0500..342f6b379f86 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3385,6 +3385,7 @@ struct rtw89_sta_link {
- 	unsigned int link_id;
+ 	if (!rtw89_vif_is_active_role(rtwvif))
+ 		list_del_init(&rtwvif->mgnt_entry);
  
- 	u8 mac_id;
-+	u8 tx_retry;
- 	bool er_cap;
- 	struct rtw89_vif_link *rtwvif_link;
- 	struct rtw89_ra_info ra;
 -- 
 2.25.1
 
