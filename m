@@ -1,178 +1,311 @@
-Return-Path: <linux-wireless+bounces-23915-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23916-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51658AD2C0C
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 05:03:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD86AD2C16
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 05:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D6F73AC84F
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 03:02:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFD301891B27
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 03:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBDC130A54;
-	Tue, 10 Jun 2025 03:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79C71A23B0;
+	Tue, 10 Jun 2025 03:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LSUZJxjg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sPn/JFa2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83159460;
-	Tue, 10 Jun 2025 03:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F939460;
+	Tue, 10 Jun 2025 03:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749524596; cv=none; b=sYkevT6kck1uUgkqQ/Waw2H3v4dGfPX6BdxNCigosovjD9cLDluBGJu4nofZOhUJy3P52Pu3uDUZPY3UxEpkhv5dlDXhR4xjNI0b8rxBEqCbwXWsoGGk7O7AphrBRnsR2HI/5h/3OTmsJY+DWx4DyLAnTRjCk3g3lz9+LgsyXyE=
+	t=1749524784; cv=none; b=JtVESOzczsy2dvQVT364IK0FTiY14/1X56WXByJc7+xH/AOdFDqMMhxzckDh8R88IJiCVi6PKeIPlx6QfdksTM/icrcCR2OobpOaML+WuzgPGX5c1E6mdp0txKkBpN/yA30vZu1sQiIWOPk6T0RIVA5zkoehbg506jeoBDdv9bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749524596; c=relaxed/simple;
-	bh=3dKk6SPl34eNEsYEw8G4Gkc3qv2CKIVl9VFP4C0w/Vk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=bVFam0uXi3wsAIiebWrnHbjuk34lZm6yHGy6N6WqURZzXxgkPXCmqQBmfed/AslkjeMHfHiNHCuvEQi+bgJPTPhGvGYqLmoz6QKNtpv+L6p0reU37l6xQmTWkulS4DHjHcehVXcSI1c5fo6b062bN44Ih/d/CeeaoD6AQKTKqjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LSUZJxjg; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 559JDIXY007352;
-	Tue, 10 Jun 2025 03:03:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ArfNvnxR4/D58nIc1VUnd+S5AAkbAYFa23X9JAICe2Y=; b=LSUZJxjgh7L35jxv
-	qSv11Yd70mXhRsrqLwoICVuj1VyDHxzzadpJgwBOYy2rRetP0FeOO0xB4Gcx08IT
-	hH7W7qTVwxTSLEE72NS0tmGhnAOHEePRZWRxGZ9Iys4pNSn6oK+/j9ZaTJhTz2rZ
-	4I+HnHdsnxBzrmDa6TkfTE7cjjaADcv6oCsXf8OMhDsRZn2Z4U5WkNSPJEcFbpz8
-	4IhJ2V2FkGVkKktsN4g3iXX80laWFZ6VWcbpk3Re8QGwtaUvWCmMb0qfViiNxBMK
-	9rQ+ZFb5yIbxaVY4nbZCNfFAA5oCsnYNmYdOKXwab0mlo8j6/WsBO28d5Oa+JrYY
-	d3wHXg==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 474eqcfrhy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Jun 2025 03:03:02 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55A3310h026094
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Jun 2025 03:03:01 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 9 Jun 2025
- 20:02:59 -0700
-Message-ID: <de532ef3-6f24-40dd-9a92-6f2e6c3b4ff5@quicinc.com>
-Date: Tue, 10 Jun 2025 11:02:56 +0800
+	s=arc-20240116; t=1749524784; c=relaxed/simple;
+	bh=AoTaZLGzoqqkmNSAL5T91ZptQFroksDGcKIxLU9z7y0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rnBWl6auOEH7tzgyvdO8u/oV6KivqYE8WlyW7cJDucrckpG9KkPe6zAJrpbPVihgiDVvEttjvFZaZbU32UIyFACCCzUfBxNryC4M+DvZg///lyKFLvpZ9rT2bPuwAecsfXyoTt4MfH1ZJFwPqXmKdrJVGIoduTIq7TKh5OxwxHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sPn/JFa2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2D8AEC4CEEB;
+	Tue, 10 Jun 2025 03:06:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749524784;
+	bh=AoTaZLGzoqqkmNSAL5T91ZptQFroksDGcKIxLU9z7y0=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=sPn/JFa2C+jD12SM0IdloQfuMVprrNmTbuXTdNnSWeU1jz3vgxRRHSVquMTXuXIFb
+	 OXVKPWzUiSS4FIqLZDvlCV/dLgI3bG4LC2AA+cH/F+6gthxfcI19WWvzV2Er3gAJCZ
+	 d2Fh1J/6SE5Yo07HR3FFyE6ldtZj3A39AbsWFSsYrcQAyX6l+Bv3zPbCEFPSHiKmr0
+	 Ax6L3iCYnuuCq2IhLjBfXUy4bSTr5+GhQEoJkACBQY3uM7T0iehEPzwvYPkMqQIfQl
+	 P+uY/tPozHOQYKf/K7vL+r5O2nmlEpHZTIH7ieO+lE4Ahmsc1VI9hToIZBj+mn6NiO
+	 AWHCWt0Ba0Nlg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11CDFC5B552;
+	Tue, 10 Jun 2025 03:06:24 +0000 (UTC)
+From: Bjorn Andersson via B4 Relay <devnull+bjorn.andersson.oss.qualcomm.com@kernel.org>
+Date: Mon, 09 Jun 2025 22:06:22 -0500
+Subject: [PATCH] wifi: ath12k: Avoid CPU busy-wait by handling VDEV_STAT
+ and BCN_STAT
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next 2/2] wifi: ath11k: support usercase-specific
- firmware overrides
-To: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>, <jjohnson@kernel.org>,
-        <johannes@sipsolutions.net>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>
-CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-References: <20250522013444.1301330-1-miaoqing.pan@oss.qualcomm.com>
- <20250522013444.1301330-3-miaoqing.pan@oss.qualcomm.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20250522013444.1301330-3-miaoqing.pan@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEwMDAyMiBTYWx0ZWRfX9+ysD0Ci7QQa
- 6h6vgZsUOMgnSNbYlreF5c2GZGSevioggPg1QlNQkh8IO4bIr2GC2XKwYbnHjvCg998jIDKB8i/
- gcknhQqLqLhMYdvsGXs5k0prfec4EB8EQnD2Yv6kXONabzl4cR8KMFk4zICvnPtRt7EraoFrqgA
- J/CrtGk4u/mF2BDtJ1RdtbfuEZ2SswxyBqOTuSpL0KtO+q31MQpf2gWgLQlynrvWMgmrj/drIk0
- RqOhC7f50CY9k1QzgcoZQvFV8hrVdHDXTIgDYqScApfSLcKRKqlTV/2acmR2SgFVgS6dyEot/xQ
- l2/5iBqec0lfvvGZQhzUeCh4Y0n7eIEG7aCi9r4Q6DUORZwUWuE47yqQBX1iwowNYD/4YZtO4Tw
- 8gA/nCzDV7bzE/ibi4q4E7wDE8Vy7XZdD+bRXxaWT0sRM7K1LMRtVHejoLsmTzJuSy58+4Bb
-X-Authority-Analysis: v=2.4 cv=Q7TS452a c=1 sm=1 tr=0 ts=6847a066 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8
- a=COk6AnOGAAAA:8 a=J7dR-uFlIZdojmd15SYA:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: fRCW05m_DI0nbHLbYFxvVi1U4fBhkiW3
-X-Proofpoint-ORIG-GUID: fRCW05m_DI0nbHLbYFxvVi1U4fBhkiW3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-10_01,2025-06-09_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 mlxscore=0 spamscore=0 mlxlogscore=824
- bulkscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0 impostorscore=0
- priorityscore=1501 malwarescore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506100022
+Message-Id: <20250609-ath12k-fw-stats-done-v1-1-2b3624656697@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAC2hR2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDMwNL3cSSDEOjbN20ct3iksSSYt2U/LxU3ZTkRIukNHPzRPOURCWg1oK
+ i1LTMCrCx0bG1tQAE2LaZZgAAAA==
+X-Change-ID: 20250609-ath12k-fw-stats-done-dca8bf77a7da
+To: Jeff Johnson <jjohnson@kernel.org>, 
+ Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>, 
+ Mahendran P <quic_mahep@quicinc.com>, 
+ Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, 
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
+ linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, 
+ Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749524783; l=7583;
+ i=bjorn.andersson@oss.qualcomm.com; s=20250318; h=from:subject:message-id;
+ bh=4ab2pBSyw77wiRpufdGeMp8wcqCAzZr9bUoFTeou1RE=;
+ b=XZRCzCTURtCBkIL9HPyWVc/+jQFZXV9YNjI1Sy0fn1SVZHZoKi101zfOA3aHUXaqviDqMX869
+ evaNCoyIKhQB4UPZAlRy/WMe/VJor5UgjV6CQicgYpEjbjv4gF/oNlp
+X-Developer-Key: i=bjorn.andersson@oss.qualcomm.com; a=ed25519;
+ pk=rD3O9C9Erg+mUPBRBNw91AGaIaDVqquHZbnn6N6xh6s=
+X-Endpoint-Received: by B4 Relay for
+ bjorn.andersson@oss.qualcomm.com/20250318 with auth_id=362
+X-Original-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Reply-To: bjorn.andersson@oss.qualcomm.com
 
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
+When the ath12k driver is built without CONFIG_ATH12K_DEBUG, the
+recently refactored stats code can cause any user space application
+(such at NetworkManager) to consume 100% CPU for 3 seconds, every time
+stats are read.
 
-On 5/22/2025 9:34 AM, Miaoqing Pan wrote:
-> Introduce 'firmware-name' property to allow end-users and/or integrators to
-> decide which usecase-specific firmware to run on the WCN6855. This is
-> necessary due to resource limitations such as memory capacity and CPU
-> capability, or performance and power optimization for different application
-> scenarios.
-> 
-> Currently, there are two firmwares, both files can be executed
-> interchangeably.
-> For example:
-> 
-> - ath11k/WCN6855/hw2.0/amss.bin,
->   ath11k/WCN6855/hw2.0/m3.bin
->   ath11k/WCN6855/hw2.0/board-2.bin
-> 
-> - ath11k/WCN6855/hw2.0/nfa765/amss.bin,
->   ath11k/WCN6855/hw2.0/nfa765/m3.bin
->   ath11k/WCN6855/hw2.0/board-2.bin
-> 
-> The former is the default firmware, suitable for most WiFi 6 STA functions.
-> The latter adds support for commercial-quality SAP and optimizes power
-> consumption for IoT applications. And both use the same BDF/regdb data
-> within the main board-2.bin.
-> 
-> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04479-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
-> 
-> Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
-> ---
->  drivers/net/wireless/ath/ath11k/core.h | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-> index 339d4fca1ed5..67b3b6d898fa 100644
-> --- a/drivers/net/wireless/ath/ath11k/core.h
-> +++ b/drivers/net/wireless/ath/ath11k/core.h
-> @@ -17,6 +17,7 @@
->  #include <linux/average.h>
->  #include <linux/firmware.h>
->  #include <linux/suspend.h>
-> +#include <linux/of.h>
->  
->  #include "qmi.h"
->  #include "htc.h"
-> @@ -1320,8 +1321,16 @@ static inline void ath11k_core_create_firmware_path(struct ath11k_base *ab,
->  						    const char *filename,
->  						    void *buf, size_t buf_len)
->  {
-> -	snprintf(buf, buf_len, "%s/%s/%s", ATH11K_FW_DIR,
-> -		 ab->hw_params.fw.dir, filename);
-> +	const char *fw_name = NULL;
-> +
-> +	of_property_read_string(ab->dev->of_node, "firmware-name", &fw_name);
-> +
-> +	if (fw_name && strncmp(filename, "board", 5))
-> +		snprintf(buf, buf_len, "%s/%s/%s/%s", ATH11K_FW_DIR,
-> +			 ab->hw_params.fw.dir, fw_name, filename);
-> +	else
-> +		snprintf(buf, buf_len, "%s/%s/%s", ATH11K_FW_DIR,
-> +			 ab->hw_params.fw.dir, filename);
->  }
->  
->  static inline const char *ath11k_bus_str(enum ath11k_bus bus)
+Commit 'b8a0d83fe4c7 ("wifi: ath12k: move firmware stats out of
+debugfs")' moved ath12k_debugfs_fw_stats_request() out of debugfs, by
+merging the additional logic into ath12k_mac_get_fw_stats().
 
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Among the added responsibility of ath12k_mac_get_fw_stats() was the
+busy-wait for `fw_stats_done`.
+
+Signalling of `fw_stats_done` happens when one of the
+WMI_REQUEST_PDEV_STAT, WMI_REQUEST_VDEV_STAT, and WMI_REQUEST_BCN_STAT
+messages are received, but the handling of the latter two commands remained
+in the debugfs code. As `fw_stats_done` isn't signalled, the calling
+processes will spin until the timeout (3 seconds) is reached.
+
+Moving the handling of these two additional responses out of debugfs
+resolves the issue.
+
+Fixes: b8a0d83fe4c7 ("wifi: ath12k: move firmware stats out of debugfs")
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath12k/debugfs.c | 58 --------------------------
+ drivers/net/wireless/ath/ath12k/debugfs.h |  7 ----
+ drivers/net/wireless/ath/ath12k/wmi.c     | 67 +++++++++++++++++++++++++++----
+ 3 files changed, 60 insertions(+), 72 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs.c b/drivers/net/wireless/ath/ath12k/debugfs.c
+index dd624d73b8b2714e77c9d89b5a52f7b3fcb02951..23da93afaa5c25e806c9859dbbdd796afd23d78a 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs.c
+@@ -1251,64 +1251,6 @@ void ath12k_debugfs_soc_destroy(struct ath12k_base *ab)
+ 	 */
+ }
+ 
+-void
+-ath12k_debugfs_fw_stats_process(struct ath12k *ar,
+-				struct ath12k_fw_stats *stats)
+-{
+-	struct ath12k_base *ab = ar->ab;
+-	struct ath12k_pdev *pdev;
+-	bool is_end;
+-	static unsigned int num_vdev, num_bcn;
+-	size_t total_vdevs_started = 0;
+-	int i;
+-
+-	if (stats->stats_id == WMI_REQUEST_VDEV_STAT) {
+-		if (list_empty(&stats->vdevs)) {
+-			ath12k_warn(ab, "empty vdev stats");
+-			return;
+-		}
+-		/* FW sends all the active VDEV stats irrespective of PDEV,
+-		 * hence limit until the count of all VDEVs started
+-		 */
+-		rcu_read_lock();
+-		for (i = 0; i < ab->num_radios; i++) {
+-			pdev = rcu_dereference(ab->pdevs_active[i]);
+-			if (pdev && pdev->ar)
+-				total_vdevs_started += pdev->ar->num_started_vdevs;
+-		}
+-		rcu_read_unlock();
+-
+-		is_end = ((++num_vdev) == total_vdevs_started);
+-
+-		list_splice_tail_init(&stats->vdevs,
+-				      &ar->fw_stats.vdevs);
+-
+-		if (is_end) {
+-			ar->fw_stats.fw_stats_done = true;
+-			num_vdev = 0;
+-		}
+-		return;
+-	}
+-	if (stats->stats_id == WMI_REQUEST_BCN_STAT) {
+-		if (list_empty(&stats->bcn)) {
+-			ath12k_warn(ab, "empty beacon stats");
+-			return;
+-		}
+-		/* Mark end until we reached the count of all started VDEVs
+-		 * within the PDEV
+-		 */
+-		is_end = ((++num_bcn) == ar->num_started_vdevs);
+-
+-		list_splice_tail_init(&stats->bcn,
+-				      &ar->fw_stats.bcn);
+-
+-		if (is_end) {
+-			ar->fw_stats.fw_stats_done = true;
+-			num_bcn = 0;
+-		}
+-	}
+-}
+-
+ static int ath12k_open_vdev_stats(struct inode *inode, struct file *file)
+ {
+ 	struct ath12k *ar = inode->i_private;
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs.h b/drivers/net/wireless/ath/ath12k/debugfs.h
+index ebef7dace3448e4bdf2d6cb155d089267315172c..21641a8a03460c6cc1b34929a353e5605bb834ce 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs.h
++++ b/drivers/net/wireless/ath/ath12k/debugfs.h
+@@ -12,8 +12,6 @@ void ath12k_debugfs_soc_create(struct ath12k_base *ab);
+ void ath12k_debugfs_soc_destroy(struct ath12k_base *ab);
+ void ath12k_debugfs_register(struct ath12k *ar);
+ void ath12k_debugfs_unregister(struct ath12k *ar);
+-void ath12k_debugfs_fw_stats_process(struct ath12k *ar,
+-				     struct ath12k_fw_stats *stats);
+ void ath12k_debugfs_op_vif_add(struct ieee80211_hw *hw,
+ 			       struct ieee80211_vif *vif);
+ void ath12k_debugfs_pdev_create(struct ath12k_base *ab);
+@@ -126,11 +124,6 @@ static inline void ath12k_debugfs_unregister(struct ath12k *ar)
+ {
+ }
+ 
+-static inline void ath12k_debugfs_fw_stats_process(struct ath12k *ar,
+-						   struct ath12k_fw_stats *stats)
+-{
+-}
+-
+ static inline bool ath12k_debugfs_is_extd_rx_stats_enabled(struct ath12k *ar)
+ {
+ 	return false;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 60e2444fe08cefa39ae218d07eb9736d2a0c982b..2d2444417e2b2d9281754d113f2b073034e27739 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -7626,6 +7626,63 @@ static int ath12k_wmi_pull_fw_stats(struct ath12k_base *ab, struct sk_buff *skb,
+ 				   &parse);
+ }
+ 
++static void ath12k_wmi_fw_stats_process(struct ath12k *ar,
++					struct ath12k_fw_stats *stats)
++{
++	struct ath12k_base *ab = ar->ab;
++	struct ath12k_pdev *pdev;
++	bool is_end;
++	static unsigned int num_vdev, num_bcn;
++	size_t total_vdevs_started = 0;
++	int i;
++
++	if (stats->stats_id == WMI_REQUEST_VDEV_STAT) {
++		if (list_empty(&stats->vdevs)) {
++			ath12k_warn(ab, "empty vdev stats");
++			return;
++		}
++		/* FW sends all the active VDEV stats irrespective of PDEV,
++		 * hence limit until the count of all VDEVs started
++		 */
++		rcu_read_lock();
++		for (i = 0; i < ab->num_radios; i++) {
++			pdev = rcu_dereference(ab->pdevs_active[i]);
++			if (pdev && pdev->ar)
++				total_vdevs_started += pdev->ar->num_started_vdevs;
++		}
++		rcu_read_unlock();
++
++		is_end = ((++num_vdev) == total_vdevs_started);
++
++		list_splice_tail_init(&stats->vdevs,
++				      &ar->fw_stats.vdevs);
++
++		if (is_end) {
++			ar->fw_stats.fw_stats_done = true;
++			num_vdev = 0;
++		}
++		return;
++	}
++	if (stats->stats_id == WMI_REQUEST_BCN_STAT) {
++		if (list_empty(&stats->bcn)) {
++			ath12k_warn(ab, "empty beacon stats");
++			return;
++		}
++		/* Mark end until we reached the count of all started VDEVs
++		 * within the PDEV
++		 */
++		is_end = ((++num_bcn) == ar->num_started_vdevs);
++
++		list_splice_tail_init(&stats->bcn,
++				      &ar->fw_stats.bcn);
++
++		if (is_end) {
++			ar->fw_stats.fw_stats_done = true;
++			num_bcn = 0;
++		}
++	}
++}
++
+ static void ath12k_update_stats_event(struct ath12k_base *ab, struct sk_buff *skb)
+ {
+ 	struct ath12k_fw_stats stats = {};
+@@ -7655,19 +7712,15 @@ static void ath12k_update_stats_event(struct ath12k_base *ab, struct sk_buff *sk
+ 
+ 	spin_lock_bh(&ar->data_lock);
+ 
+-	/* WMI_REQUEST_PDEV_STAT can be requested via .get_txpower mac ops or via
+-	 * debugfs fw stats. Therefore, processing it separately.
+-	 */
++	/* Handle WMI_REQUEST_PDEV_STAT status update */
+ 	if (stats.stats_id == WMI_REQUEST_PDEV_STAT) {
+ 		list_splice_tail_init(&stats.pdevs, &ar->fw_stats.pdevs);
+ 		ar->fw_stats.fw_stats_done = true;
+ 		goto complete;
+ 	}
+ 
+-	/* WMI_REQUEST_VDEV_STAT and WMI_REQUEST_BCN_STAT are currently requested only
+-	 * via debugfs fw stats. Hence, processing these in debugfs context.
+-	 */
+-	ath12k_debugfs_fw_stats_process(ar, &stats);
++	/* Handle WMI_REQUEST_VDEV_STAT and WMI_REQUEST_BCN_STAT updates. */
++	ath12k_wmi_fw_stats_process(ar, &stats);
+ 
+ complete:
+ 	complete(&ar->fw_stats_complete);
+
+---
+base-commit: 4f27f06ec12190c7c62c722e99ab6243dea81a94
+change-id: 20250609-ath12k-fw-stats-done-dca8bf77a7da
+
+Best regards,
+-- 
+Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
 
 
