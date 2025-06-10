@@ -1,150 +1,110 @@
-Return-Path: <linux-wireless+bounces-23906-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23907-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78AF9AD26F4
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jun 2025 21:43:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36922AD2B2C
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 03:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB3B07A9AE7
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Jun 2025 19:41:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09674188A22D
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 01:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9867B155A25;
-	Mon,  9 Jun 2025 19:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6B61714B2;
+	Tue, 10 Jun 2025 01:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ti0RjYMP"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="mBXG587q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1480821E082
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Jun 2025 19:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BCB29D19;
+	Tue, 10 Jun 2025 01:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749498165; cv=none; b=SaUtT0t43z9J5Qo8218Vm3hVx2U5aSNFe5M9UjVt+mMI/sYed2NLEz3k9qfqQAZHs9Me9X+uKGj/cBSa3PCTGPYDfUxGXyAw1uFriaJzCxSPWhiuKM4CMZXnPYUWm0H0kgvp46voiJzx4ftQuRQQbD4CLwLo4eWIaig9o2W7dfQ=
+	t=1749518438; cv=none; b=Jh1URt6fcpQZe486j9spIVQzHDc4u+hkFT0H3HGib9U22oVaajQN/8hQ9QURn1u4gRY6OXjw+Tz1qhOSWLaBtXrwuYXx1hDRgj5ukSFNl8QB2PAWkD5Ng/Y/bg7mFiGyYOr2eHeErOBeFLbBR88+I7PdxOjhfC+5LkxTz0myCyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749498165; c=relaxed/simple;
-	bh=A5qZejXgYhDbWfxjhrhDV+dglLLl8N+6OuuSx3j8hho=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Ke0SEzJxOuro4eRGiIezUjL5a33rDaFNjqyPZvhsdA4GKYZ1h4VlwuScXC9tqzO74gq4jcITjRrK9+cLIY0Q5IzJhtcXryZPaItgz6B+rV7hpjX5v1goC+Vl8wmeKSYakFoyW68HbHdDBDax+aOnWPGNBmnoCG70/fiV0V0w9oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ti0RjYMP; arc=none smtp.client-ip=209.85.219.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e73e9e18556so4465089276.0
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Jun 2025 12:42:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749498163; x=1750102963; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Zf0suIXK7l9tUj4sDwSEuq16I7VSWcqaNo380WkrMA=;
-        b=Ti0RjYMPFDOrHVLKhCdcdMHF5g6UBqfzuCmkXN4CF9hkQ1QaV9PEQvNga/l6sR0bdW
-         tZY1sBbdhzIlO3gJJdYSc1yfx7fO1Z8wtSbCBaBuz9XxQWEAuaHtE4bu3cjln+Jt5tFW
-         XdPEEfudMUGYBg14pb50qeI3PCo9cVBWS4asYxtIj65nU/aTzgqAPIVzMb7Ui177y5C9
-         QPPUoqRKPaMFrTPzmz3Yi7jg/ScbrYcBlktHL275hQUx/keXeSridxt0D15o6XKqKpnk
-         eEgUglWChkS98O6tc1xbtS1v1r3edBzBO6sg/WLErkf97uiaaCg8ceT+G4nq9HjcP3+6
-         HPxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749498163; x=1750102963;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6Zf0suIXK7l9tUj4sDwSEuq16I7VSWcqaNo380WkrMA=;
-        b=HFh7/SCByykiFCJRgwsMapND0v85MccKtZwd5DOp492U2HGaQLSE5XjbBbY3MzcQ3u
-         IKwcvaceK4kZwV8tPFHMXkBTssRift8MhoUs1tPs4XzC3MrKhgB9ZkcPAE1Jn28O0ekZ
-         F/cMTCD9SpYWfYkRMkXu0XSopfdp1dxT7HvGyi6DP/aa43Nx5HDiLjsETsj34Eedha/j
-         2hzButmvE8R9mE4vuB6G6jwsIt6lx5mslqLTGfHIrGiC0NjrRrvWxUZekmSNj2gc/MYB
-         s2UScD1zQPbwRUDfLwsu4VLMtac9Doqr4s5L/VlqkSk0gENqRm9jt07vAnYHCwT9uaIj
-         gz3g==
-X-Forwarded-Encrypted: i=1; AJvYcCUm1YqRcBsBW+le8b2KLiHglbcoTrfAPPUljp9bSWs7sXQfB6YB7Zuz6s/o5+cFmRr8FZfddIM1nTln9gja6Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOP1QW5NC2LQWuPfhZUyI5Kkgi37K7TuSJt4xKUmFW0KOd+h5v
-	/c6kCqJc/X2kM523sjVn/tZrmN+sQ5Qz6abvSwudkaxmoIUuPHFBrEP00TiMWUP7ZLkougfNqZz
-	64A3uddLQ5KK2V16dTVQkLDKA6hWdmYM=
-X-Gm-Gg: ASbGncuW88EArGx2OOibo0qb1LGSmE7ZY94fcvYJeH9ImzlJlaZJ0Z1U+xZ/eRXUd6o
-	odmQtHjbcptURQsxXvFDfLMxxjvYAELZDy6hOBmkJ09Z2SKBfmWTr5J6efLGIH6ut0+1uvEhQqK
-	P+tMd2lFBF1fVdi3GiEprjiXoeG+JNb4mcA9E=
-X-Google-Smtp-Source: AGHT+IGiPRCBM71VlQZOqTkUdEvQLPtmrUYm9pvIz+jXqH+F6YtTl/PJKJkt0Yyz/XT6RBuIerdS2+/IBq7VCwvYPo8=
-X-Received: by 2002:a05:6902:1682:b0:e7d:7963:941 with SMTP id
- 3f1490d57ef6-e81f07b27bamr1310375276.16.1749498162877; Mon, 09 Jun 2025
- 12:42:42 -0700 (PDT)
+	s=arc-20240116; t=1749518438; c=relaxed/simple;
+	bh=cM23n6uiyIm0rU+feuBCMfLiJRbypAe34gyr0xRyO7k=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=USOY7teXR2osyilrWBEaEdexIyY1e42U336Au7XgLuySfqjH1A+uGGB7VVgWM5g6olobLtqoqJKATCuso1jQ4613t+DU75hyou/nIe2Uc46zVkmppdR9Z5qon9WQeb+Q0kgM/U9rRaKFnj6uS+giMjzFSMGj2SD1czeFAy2b5D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=mBXG587q; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55A1KVYa81877506, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1749518431; bh=f+C89OLNTJLqm7tctjLTcwKe3fypzJO2eXcQDk6EifE=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date;
+	b=mBXG587qM5dAIMOF6nm2P7+Y01wwle133ZiJguyU7s/2kKWN4twG3Bi3X1qyZhSF+
+	 2IJUTRmSoiX24/mjY4reTFMaI0i0Wge7Y/7kDVpIhizN6rv+NvqIA28lzonKJKQoqS
+	 5rhsOKnDEtK1mliWZpfiEOIzAetJqILMVG+kn+JgL4M2OREjjedHjOXudxW4SJ8bLP
+	 3k1CES5zuGGKkI/KYfuBcBOQEdufRfbmoF2lTmu0YVEB+QbMlPun1EejyMg0CcOJZd
+	 5ZNlPq4r2ZytAtfPmIBMimbmhfj1tiEFwmX6qBzQZ/AieHUMc5fLRpEExMDtown6DG
+	 cD6vC7gAFziXg==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55A1KVYa81877506
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 10 Jun 2025 09:20:31 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 10 Jun 2025 09:20:31 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXDAG02.realtek.com.tw
+ (172.21.6.101) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 10 Jun
+ 2025 09:20:30 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Ping-Ke Shih
+	<pkshih@realtek.com>
+CC: <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: rtlwifi: Constify struct rtl_hal_ops and rtl_hal_cfg
+In-Reply-To: <2c3f3d8d8b2f7dcb8cc64cebe89e55720d1d733d.1747500351.git.christophe.jaillet@wanadoo.fr>
+References: <2c3f3d8d8b2f7dcb8cc64cebe89e55720d1d733d.1747500351.git.christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: KeithG <ys3al35l@gmail.com>
-Date: Mon, 9 Jun 2025 14:42:32 -0500
-X-Gm-Features: AX0GCFsFLqM9dk08aKYpOa2H33M-oI2qV2wz2gFfGA6FutHHd1sklEtKD6O6Xwo
-Message-ID: <CAG17S_P0WmE4o3wCbi4Pq0j28C-HUZHwGJXzurTME4TsgYLQOQ@mail.gmail.com>
-Subject: wpa_supplicant floods the log with scan error
-To: brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org
-Cc: Arend Van Spriel <arend.vanspriel@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+Message-ID: <1573e244-e719-4e2f-9812-f9ba905387ff@RTEXDAG02.realtek.com.tw>
+Date: Tue, 10 Jun 2025 09:20:30 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXDAG02.realtek.com.tw (172.21.6.101)
 
-I am using wpa_supplicant on RPiOS with the laterst kerenel 6.12.x
-I have wpa_supplicant set up systemd service 'wpa_supplicnat@wlan0'
-and use wpa_cli to manage the known networks. I use systemd-networkd
-to manage DHCP and such. When the RPi is not connected to a wireless
-SSID, I get tons of this in the log:
-Jun 09 14:29:56 rpi wpa_supplicant[420]: wlan0: Failed to initiate sched sc=
-an
-Jun 09 14:30:03 rpi wpa_supplicant[420]: wlan0: Failed to initiate sched sc=
-an
-Jun 09 14:30:10 rpi wpa_supplicant[420]: wlan0: Failed to initiate sched sc=
-an
-Jun 09 14:30:16 rpi wpa_supplicant[420]: wlan0: Failed to initiate sched sc=
-an
-Jun 09 14:30:22 rpi wpa_supplicant[420]: wlan0: Failed to initiate sched sc=
-an
-Jun 09 14:30:29 rpi wpa_supplicant[420]: wlan0: Failed to initiate sched sc=
-an
-Jun 09 14:30:35 rpi wpa_supplicant[420]: wlan0: Failed to initiate sched sc=
-an
-Jun 09 14:30:41 rpi wpa_supplicant[420]: wlan0: Failed to initiate sched sc=
-an
-Jun 09 14:30:47 rpi wpa_supplicant[420]: wlan0: Failed to initiate sched sc=
-an
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-It repeats about every 6 seconds. I know it is scanning, because when
-my known SSID reappears, it connects, so it *is* scanning.
+> 'struct rtl_hal_ops' and 'struct rtl_hal_cfg' are not modified in these
+> drivers.
+> 
+> Constifying this structure moves some data to a read-only section, so
+> increase overall security, especially when the structure holds some
+> function pointers.
+> 
+> Constification of rtl_hal_cfg is only needed in rtl8192cu/sw.c
+> 
+> On a x86_64, with allmodconfig, as an example:
+> Before:
+> ======
+>    text	   data	    bss	    dec	    hex	filename
+>   10167	   5512	    128	  15807	   3dbf	drivers/net/wireless/realtek/rtlwifi/rtl8188ee/sw.o
+> 
+> After:
+> =====
+>    text	   data	    bss	    dec	    hex	filename
+>   10743	   4936	    128	  15807	   3dbf	drivers/net/wireless/realtek/rtlwifi/rtl8188ee/sw.o
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-My wpa_supplicant@wlan0 config has not much in it:
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-# cat /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
-ctrl_interface=3D/run/wpa_supplicant
-update_config=3D1
+4c95423b6f01 wifi: rtlwifi: Constify struct rtl_hal_ops and rtl_hal_cfg
 
-network=3D{
-        ssid=3D"KnownSSID"
-        psk=3D"password"
-        mesh_fwding=3D1
-}
+---
+https://github.com/pkshih/rtw.git
 
-the service is using the default, debian 'wpa_supplicant@.service'
-that comes with RPiOS and uses my config shown above.# systemctl
-status wpa_supplicant@wlan0.service
-=E2=97=8F wpa_supplicant@wlan0.service - WPA supplicant daemon
-(interface-specific version)
-     Loaded: loaded (/lib/systemd/system/wpa_supplicant@.service;
-enabled; preset: enabled)
-     Active: active (running) since Mon 2025-06-09 11:24:42 CDT; 3h 6min ag=
-o
-   Main PID: 420 (wpa_supplicant)
-      Tasks: 1 (limit: 1654)
-        CPU: 6.727s
-     CGroup: /system.slice/system-wpa_supplicant.slice/wpa_supplicant@wlan0=
-.service
-             =E2=94=94=E2=94=80420 /sbin/wpa_supplicant
--c/etc/wpa_supplicant/wpa_supplicant-wlan0.conf -iwlan0
-
-the base wpa_supplicant.service is not running.
-
-I have this in my brcmfmac.conf under /etc/modprobe.d/
-
-options brcmfmac feature_disable=3D0x200000
-
-Is there something I can do to keep this from flooding the log?
-
-Keith
 
