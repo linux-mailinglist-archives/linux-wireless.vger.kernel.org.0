@@ -1,132 +1,188 @@
-Return-Path: <linux-wireless+bounces-23924-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23925-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9E8AD3422
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 12:56:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F16AD355D
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 13:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 659141885CB7
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 10:56:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06A67175448
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Jun 2025 11:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B41527F72C;
-	Tue, 10 Jun 2025 10:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A1A229B2B;
+	Tue, 10 Jun 2025 11:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ks1zTuIO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lP+F2td/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FA8278E6F
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Jun 2025 10:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44632288C3
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Jun 2025 11:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749552975; cv=none; b=R9Tpa9k9x8x+ewac7b2SQnC79e6YXFKXrpYuSBnl+4idXCKrRSNKbQntr0KTjYJJLuW5uTFjFzrt7bErSTN4cLpP2j7ILDUMLk34fB8x2OpEHWMJmPEsW+jgEpu46ImkYWPhHd6DuglQhPVfHD+qPZ+AHlZbqW5R8uU8XejMNlo=
+	t=1749556570; cv=none; b=Dip3Qef4oi/wPF++5LWWjy+MHqenWuADXU1IV9UX4DDXCFN5wrGSFUBmE82OelTpR+nMu+W7eQpfv2GwlpBp8tRgCXKObjegqD0FctTl3nezji/542mmqK788Cv6zALrvbjW4mXM6rWkc2dqkcdVayi4bmjQEYwl4qVJw1GKgXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749552975; c=relaxed/simple;
-	bh=LeMCqbsz2Y6lOb1tBEOvdEU2lstNBFQUpl1wwV7BPVY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Uig+55PIbRgq6IKurMT2Ab0Wr45ic02q0ArICGK3WsSw4wx2k2TebUR/5Mdt9FXEkz/8cXxblClUguTM3Tdt0u0HcOXjUdyD9FoYuXtf/P0iYw01Ujqu3gAivqk4DHtGEbC6eA1lT2vydogSfcYbH58cIpAo+Xjzrmkr99wLcvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ks1zTuIO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BE6C4CEF1
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Jun 2025 10:56:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749552975;
-	bh=LeMCqbsz2Y6lOb1tBEOvdEU2lstNBFQUpl1wwV7BPVY=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=Ks1zTuIOUyn+tyC0ju1aj4EsoInuX1ZIU5xGMlJ3q3vJ3AgJeLJ4OJ6JA11KAokcz
-	 Naz3LPf86u+N9Smb02wzCYZueEr5eS6u+kJUW0Q1KKEMdYmL/n4Db457NcmV3TfBkl
-	 E1tyJx93BGxU1gc9KXMYJsVHakr11Gk6kHs4sfDmT5EQ7Q9hOm/vr5UHs0bTPKLLPN
-	 UKk29B7IcEdavLweqlMWIhdpI0RuY26TAMI5RNi9bH95p+RA2Dvhba9GLODOGe4uRI
-	 rHUvR23iT0EdT2pHhLajnt7KtlMx5ADX/GGY6HWAPXhAiLokx+CWBW72B8W9pXfbYO
-	 8L1SQ4l/z3Osw==
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-70f147b5a52so31859307b3.3
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Jun 2025 03:56:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX1O6hlrHbT76Qtz6x7Jifxccpuu9IliOKjdAzaX5RTpn5qdF33pKNAzyRpvYjnwa6qMycfXnxGNQ58b4zrhw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwavVYmAeclTkyilKnMs8OmCrM6pPODi/7bX19jfUeBUZMfbqRu
-	5/0E9ZcWnpJ6GNa29m4Znayefu2R0zluAd1eeb3UdtuNvMZOlxXe+G0VPg6gjy5gemBVgFi338J
-	Vc5ViEU7xtLCD/4xkjWPbmvFQE8qYwwA=
-X-Google-Smtp-Source: AGHT+IGScghRE/zlPz+X1QQqXKGLodydzMYxvVqaKFuHJnBPG0bTil/7smICi/J2D74Xc8gLOSQpLdjVQXjkn2ITGV4=
-X-Received: by 2002:a05:690c:360a:b0:70c:90af:154 with SMTP id
- 00721157ae682-710f76863d6mr253191787b3.20.1749552974708; Tue, 10 Jun 2025
- 03:56:14 -0700 (PDT)
+	s=arc-20240116; t=1749556570; c=relaxed/simple;
+	bh=zxAz+dMcvZ+ywC1iMO5sYUPbLxvHiurLWur4uytCCqk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a65DwAOGyt0BlO1etjjmpvToc+JVM4e4vZQgO0zclFmKM81809cSgxAkwL/Yk2RTUu3qBGa+3XC8mprE4/h3V20X9MiBPvaXyJ+91lku5UJvxNCr4b7+jNwWzws5kFWjeARvB89ie8oRBbu3tiWQkD/kIj2PxS4wjW04AoLbW6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lP+F2td/; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749556566; x=1781092566;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zxAz+dMcvZ+ywC1iMO5sYUPbLxvHiurLWur4uytCCqk=;
+  b=lP+F2td/+/fo7LJTIWucPPtFSwy3TCmRC1ka+tPdPq6SGC1E4jTS7tmN
+   kgQxqlsUlVv3G7AMvz95p1iQSftgiJmJ3ygx3aKOf7Eyh3LxvUb8K0GDu
+   nxOFvPZBGsh+f3cVjh0fLdOPVByjpozg0e3NwPq+fnMx0pLBW6EUfKHhZ
+   6T2CqB7ZtG8Z3LVudS9MMKdt8IGjRGvDN4XOFjKaQZ2/eYQ4H/XHY0y3Y
+   DVQqaReljrxQvgqSmC999MaagmBbfHtBF+QnODMmAg8jeoW+FIaVWidJy
+   Jt3eMYHLpmayUDc63Wpng7KQk+nOrokPuTx79TZktOxAAVm0SqE9bOMQh
+   Q==;
+X-CSE-ConnectionGUID: afdgebnUThKF0lMSsQz0JQ==
+X-CSE-MsgGUID: xWyrArNsS32/QbByvNfQmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51803146"
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
+   d="scan'208";a="51803146"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 04:56:05 -0700
+X-CSE-ConnectionGUID: viw+LNQmSaedU/cJOvR4hg==
+X-CSE-MsgGUID: evbliLw5QRa2vk/aWLX6wQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
+   d="scan'208";a="177750199"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 10 Jun 2025 04:56:03 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uOxaD-00089t-0h;
+	Tue, 10 Jun 2025 11:56:01 +0000
+Date: Tue, 10 Jun 2025 19:55:52 +0800
+From: kernel test robot <lkp@intel.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [PATCH rtw-next v2 14/14] wifi: rtw89: Enable the new USB modules
+Message-ID: <202506101956.cNXM2Qvb-lkp@intel.com>
+References: <663044d3-0816-4b1b-874d-776835e774e9@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <DM3PPF63A6024A9415C3A590026C051A7A2A36BA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
-In-Reply-To: <DM3PPF63A6024A9415C3A590026C051A7A2A36BA@DM3PPF63A6024A9.namprd11.prod.outlook.com>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Tue, 10 Jun 2025 06:56:03 -0400
-X-Gmail-Original-Message-ID: <CA+5PVA7TR0NZEmn02zetxUHQvHZk3LtNOLW5a1qUaJOhAn0=Yw@mail.gmail.com>
-X-Gm-Features: AX0GCFuzzO-OGaUbuzg1r5Cc6kHI7YCshe0JTmFHLVP3zDKwzC2VInjNgwz8BuQ
-Message-ID: <CA+5PVA7TR0NZEmn02zetxUHQvHZk3LtNOLW5a1qUaJOhAn0=Yw@mail.gmail.com>
-Subject: Re: pull request: iwlwifi firmware updates 2025-06-09
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
-Cc: "linux-firmware@kernel.org" <linux-firmware@kernel.org>, 
-	Linux Wireless <linux-wireless@vger.kernel.org>, "Dreyfuss, Haim" <haim.dreyfuss@intel.com>, 
-	"kyle@infradead.org" <kyle@infradead.org>, "Hutchings, Ben" <ben@decadent.org.uk>, 
-	"Yang, You-Sheng" <vicamo.yang@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <663044d3-0816-4b1b-874d-776835e774e9@gmail.com>
 
-Merged and pushed out.
+Hi Bitterblue,
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/578
+kernel test robot noticed the following build errors:
 
-josh
+[auto build test ERROR on wireless-next/main]
+[also build test ERROR on wireless/main linus/master v6.16-rc1 next-20250610]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-On Mon, Jun 9, 2025 at 6:22=E2=80=AFAM Korenblit, Miriam Rachel
-<miriam.rachel.korenblit@intel.com> wrote:
->
-> Hi,
->
-> Due to an unexpected incompatibility between the FW and PNVM,
-> Revert the FW and PNVM updates for the affected devices.
->
-> Please pull or let me know if there are any issues.
->
-> Thanks,
-> Miri
-> ---
->
-> The following changes since commit 5ac6303062e4f052100439783cf06f26c5529b=
-4c:
->
->   amdgpu: DMCUB updates for various ASICs (2025-06-06 20:58:30 +0000)
->
-> are available in the Git repository at:
->
->   http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.g=
-it tags/iwlwifi-fw-2025-06-09
->
-> for you to fetch changes up to 7738031c44a325b63247f984d19d3a578423f5f3:
->
->   Revert "iwlwifi: add Bz/gl FW for core96-76 release" (2025-06-09 10:18:=
-18 +0300)
->
-> ----------------------------------------------------------------
-> revert core96 for Bz/Gl, due to FW and PNVM compatibility issue
->
-> ----------------------------------------------------------------
-> Miri Korenblit (1):
->       Revert "iwlwifi: add Bz/gl FW for core96-76 release"
->
->  WHENCE                       |  12 ------------
->  iwlwifi-bz-b0-fm-c0-99.ucode | Bin 1927196 -> 0 bytes
->  iwlwifi-bz-b0-fm-c0.pnvm     | Bin 296060 -> 295356 bytes
->  iwlwifi-bz-b0-gf-a0-99.ucode | Bin 1777464 -> 0 bytes
->  iwlwifi-bz-b0-gf-a0.pnvm     | Bin 55208 -> 55208 bytes
->  iwlwifi-bz-b0-hr-b0-99.ucode | Bin 1578840 -> 0 bytes
->  iwlwifi-bz-b0-hr-b0.pnvm     | Bin 1788 -> 1788 bytes
->  iwlwifi-gl-c0-fm-c0-99.ucode | Bin 1912536 -> 0 bytes
->  iwlwifi-gl-c0-fm-c0.pnvm     | Bin 295740 -> 295036 bytes
->  9 files changed, 12 deletions(-)
->  delete mode 100644 iwlwifi-bz-b0-fm-c0-99.ucode
->  delete mode 100644 iwlwifi-bz-b0-gf-a0-99.ucode
->  delete mode 100644 iwlwifi-bz-b0-hr-b0-99.ucode
->  delete mode 100644 iwlwifi-gl-c0-fm-c0-99.ucode
+url:    https://github.com/intel-lab-lkp/linux/commits/Bitterblue-Smith/wifi-rtw89-8851b-Accept-USB-devices-and-load-their-MAC-address/20250610-033543
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/663044d3-0816-4b1b-874d-776835e774e9%40gmail.com
+patch subject: [PATCH rtw-next v2 14/14] wifi: rtw89: Enable the new USB modules
+config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20250610/202506101956.cNXM2Qvb-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250610/202506101956.cNXM2Qvb-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506101956.cNXM2Qvb-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/wireless/realtek/rtw89/rtw8851b.c:523:47: error: use of undeclared identifier 'B_AX_SOP_EDSWR'
+     523 |                 rtw89_write32_clr(rtwdev, R_AX_SYS_PW_CTRL, B_AX_SOP_EDSWR);
+         |                                                             ^
+   1 error generated.
+
+
+vim +/B_AX_SOP_EDSWR +523 drivers/net/wireless/realtek/rtw89/rtw8851b.c
+
+31df6df89f9394 Ping-Ke Shih     2023-05-12  477  
+31df6df89f9394 Ping-Ke Shih     2023-05-12  478  static int rtw8851b_pwr_off_func(struct rtw89_dev *rtwdev)
+31df6df89f9394 Ping-Ke Shih     2023-05-12  479  {
+31df6df89f9394 Ping-Ke Shih     2023-05-12  480  	u32 val32;
+66595e31988626 Ping-Ke Shih     2024-10-09  481  	int ret;
+31df6df89f9394 Ping-Ke Shih     2023-05-12  482  
+31df6df89f9394 Ping-Ke Shih     2023-05-12  483  	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, XTAL_SI_RFC2RF,
+31df6df89f9394 Ping-Ke Shih     2023-05-12  484  				      XTAL_SI_RFC2RF);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  485  	if (ret)
+31df6df89f9394 Ping-Ke Shih     2023-05-12  486  		return ret;
+31df6df89f9394 Ping-Ke Shih     2023-05-12  487  	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, XTAL_SI_OFF_EI);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  488  	if (ret)
+31df6df89f9394 Ping-Ke Shih     2023-05-12  489  		return ret;
+31df6df89f9394 Ping-Ke Shih     2023-05-12  490  	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, XTAL_SI_OFF_WEI);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  491  	if (ret)
+31df6df89f9394 Ping-Ke Shih     2023-05-12  492  		return ret;
+31df6df89f9394 Ping-Ke Shih     2023-05-12  493  	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_WL_RFC_S0, 0, XTAL_SI_RF00);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  494  	if (ret)
+31df6df89f9394 Ping-Ke Shih     2023-05-12  495  		return ret;
+31df6df89f9394 Ping-Ke Shih     2023-05-12  496  	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, XTAL_SI_SRAM2RFC,
+31df6df89f9394 Ping-Ke Shih     2023-05-12  497  				      XTAL_SI_SRAM2RFC);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  498  	if (ret)
+31df6df89f9394 Ping-Ke Shih     2023-05-12  499  		return ret;
+31df6df89f9394 Ping-Ke Shih     2023-05-12  500  	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, XTAL_SI_PON_EI);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  501  	if (ret)
+31df6df89f9394 Ping-Ke Shih     2023-05-12  502  		return ret;
+31df6df89f9394 Ping-Ke Shih     2023-05-12  503  	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, 0, XTAL_SI_PON_WEI);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  504  	if (ret)
+31df6df89f9394 Ping-Ke Shih     2023-05-12  505  		return ret;
+31df6df89f9394 Ping-Ke Shih     2023-05-12  506  
+31df6df89f9394 Ping-Ke Shih     2023-05-12  507  	rtw89_write32_set(rtwdev, R_AX_WLAN_XTAL_SI_CONFIG,
+31df6df89f9394 Ping-Ke Shih     2023-05-12  508  			  B_AX_XTAL_SI_ADDR_NOT_CHK);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  509  	rtw89_write32_set(rtwdev, R_AX_SYS_PW_CTRL, B_AX_EN_WLON);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  510  	rtw89_write32_clr(rtwdev, R_AX_WLRF_CTRL, B_AX_AFC_AFEDIG);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  511  	rtw89_write8_clr(rtwdev, R_AX_SYS_FUNC_EN, B_AX_FEN_BB_GLB_RSTN | B_AX_FEN_BBRSTB);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  512  
+31df6df89f9394 Ping-Ke Shih     2023-05-12  513  	rtw89_write32_set(rtwdev, R_AX_SYS_PW_CTRL, B_AX_APFM_OFFMAC);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  514  
+31df6df89f9394 Ping-Ke Shih     2023-05-12  515  	ret = read_poll_timeout(rtw89_read32, val32, !(val32 & B_AX_APFM_OFFMAC),
+31df6df89f9394 Ping-Ke Shih     2023-05-12  516  				1000, 20000, false, rtwdev, R_AX_SYS_PW_CTRL);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  517  	if (ret)
+31df6df89f9394 Ping-Ke Shih     2023-05-12  518  		return ret;
+31df6df89f9394 Ping-Ke Shih     2023-05-12  519  
+cb97e6b5232342 Bitterblue Smith 2025-06-09  520  	if (rtwdev->hci.type == RTW89_HCI_TYPE_PCIE)
+31df6df89f9394 Ping-Ke Shih     2023-05-12  521  		rtw89_write32(rtwdev, R_AX_WLLPS_CTRL, SW_LPS_OPTION);
+cb97e6b5232342 Bitterblue Smith 2025-06-09  522  	else if (rtwdev->hci.type == RTW89_HCI_TYPE_USB)
+cb97e6b5232342 Bitterblue Smith 2025-06-09 @523  		rtw89_write32_clr(rtwdev, R_AX_SYS_PW_CTRL, B_AX_SOP_EDSWR);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  524  
+31df6df89f9394 Ping-Ke Shih     2023-05-12  525  	if (rtwdev->hal.cv == CHIP_CAV) {
+31df6df89f9394 Ping-Ke Shih     2023-05-12  526  		rtw8851b_patch_swr_pfm2pwm(rtwdev);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  527  	} else {
+31df6df89f9394 Ping-Ke Shih     2023-05-12  528  		rtw89_write32_set(rtwdev, R_AX_SPSLDO_ON_CTRL1, B_AX_FPWMDELAY);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  529  		rtw89_write32_set(rtwdev, R_AX_SPSANA_ON_CTRL1, B_AX_FPWMDELAY);
+31df6df89f9394 Ping-Ke Shih     2023-05-12  530  	}
+31df6df89f9394 Ping-Ke Shih     2023-05-12  531  
+cb97e6b5232342 Bitterblue Smith 2025-06-09  532  	if (rtwdev->hci.type == RTW89_HCI_TYPE_PCIE) {
+31df6df89f9394 Ping-Ke Shih     2023-05-12  533  		rtw89_write32_set(rtwdev, R_AX_SYS_PW_CTRL, B_AX_APFM_SWLPS);
+cb97e6b5232342 Bitterblue Smith 2025-06-09  534  	} else if (rtwdev->hci.type == RTW89_HCI_TYPE_USB) {
+cb97e6b5232342 Bitterblue Smith 2025-06-09  535  		val32 = rtw89_read32(rtwdev, R_AX_SYS_PW_CTRL);
+cb97e6b5232342 Bitterblue Smith 2025-06-09  536  		val32 &= ~B_AX_AFSM_PCIE_SUS_EN;
+cb97e6b5232342 Bitterblue Smith 2025-06-09  537  		val32 |= B_AX_AFSM_WLSUS_EN;
+cb97e6b5232342 Bitterblue Smith 2025-06-09  538  		rtw89_write32(rtwdev, R_AX_SYS_PW_CTRL, val32);
+cb97e6b5232342 Bitterblue Smith 2025-06-09  539  	}
+31df6df89f9394 Ping-Ke Shih     2023-05-12  540  
+31df6df89f9394 Ping-Ke Shih     2023-05-12  541  	return 0;
+31df6df89f9394 Ping-Ke Shih     2023-05-12  542  }
+31df6df89f9394 Ping-Ke Shih     2023-05-12  543  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
