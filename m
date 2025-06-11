@@ -1,87 +1,87 @@
-Return-Path: <linux-wireless+bounces-23995-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23996-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A67BAD5B96
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 18:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3D0AD5B98
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 18:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E90E173BC5
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 16:14:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6665C178F8E
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 16:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B94202F9A;
-	Wed, 11 Jun 2025 16:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D61B20C494;
+	Wed, 11 Jun 2025 16:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="E+UlaHD+"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MNWD3ah3"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5CD1F8756
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 16:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976E91FF7D7
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 16:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749658446; cv=none; b=HFLO3iOu/u+2Z7oFYS9LgwJOZHYCBgVKmImv7BlPG8kTckHVyt2+Fa8DA+rhK+kkhtL5ldEQkGPqvvn3qpG5710WYjT81FX/LBmQT6F7yHPYjXXmm6EDQJPoCpgVESE9ylbsY4IVLjB5dBf2TbhRytGB2IWYcSypVg0u3ny4uTA=
+	t=1749658447; cv=none; b=GFqW4ux6mrFtOwcQ2mNHwt796VUbWWau3f6dT4rhGWSyirJF3dVmH2xskoGigO/Z3R6j5zAc9BGEf39flQJ4BmqmZ8ODlI2N3xSE5KtxO0MR/J9bq5L6g7j66qznyQmdwaMgwxUyHrIwFqKGZ7FeI8bI3PsDbZsgAEStqph7esY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749658446; c=relaxed/simple;
-	bh=vcsYkkT3PzhwTboVZCTSdHIbRa4L8/yfe7DOCfmDlFw=;
+	s=arc-20240116; t=1749658447; c=relaxed/simple;
+	bh=EBSr7VcZwrJX9WQADv767eRuRO+Fqfa161/jwkrav7U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ib1N+abTaYKEUPzwWL/dHarNvEQ8xAs+amePj50j5HcQAY/UYEXBauyzczvoy9O0aNfnD8vadrNDI+DlLUji27qkLBQuOW5zVJQIylXuIkmqNfuTZbimhxtz8WJvIRymhiB9E6YtJEcZC0nQUCV3bqlqD/+lsP1conAEpAlKUfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=E+UlaHD+; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:To:Cc; b=SQJ2M0sjiKRaYEsrMT/zPmz/2Av93Qxf31hX2hDeL8wMMeK79o6rVVJjRgGf4AevA1COjJJCGWP2R4CqDwrTDNOPv17GPjCebuPzt8dpgC8QZPBoghLwynMwsZdtrNIwVLWpB8AEiT2m0MlBbk2UShAgzHjsNA+V7ukP7sTIZiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MNWD3ah3; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55B9DLnP011142
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 16:14:04 GMT
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55B9DnSn028144
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 16:14:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Dxy553rnl4iOCCwPBHilJZl8dv8tb7Ojmt3DJ4lr9Cg=; b=E+UlaHD+abXN/FqV
-	KGu70ycRKjIcsBjDL9u1b9B38gQfKZI23A1mdIIdm7HDI2wckVfqiXQnIR2dPtVO
-	K4elVVlWcNt1Mpg0THT2y+fTQGgT1RjDqph4a/QqfjwxLDe97URcD/19lnMG8zjI
-	pe1yml7lh0QT842Ubjm3JgmlbyBwTiDdTJj8kVBTdnTGR5FqUmb7CustPBjixSN7
-	yeRJi/iMDQiQbD83PQEmpugOl+WA3aGnpqPvEJfyQv0aI1MNJtRrHD617lEC39a+
-	0rZbTFvC8qDG4t2gaG4c2xpYjrCDIglRhw62yjhYaU5hZK64MvOj4WYjGB2BRS1c
-	DELFsQ==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 474ekpw938-1
+	vC+xxtvYYgCeXhh6pwXkgGaTGJbI1B8K+txHJMCvu4E=; b=MNWD3ah3YQDWEqvJ
+	g/y1aZc0m4DzG1wwg+tA1HD1kZvPtHSnX/4EkVKTjGcEYKWsaR4km4jab9ADHva6
+	R4O9M6YroUyY1gDcs+DGw8Yd2td2kxA4xORKUJ4WKN3w7KnjGUo9hvSevVi5NVzK
+	mcWIDbPGElQw6bDSp6u2U+75/2gugHw+rIVnBPCrJec/u1eOB9V6TzF4TjvBPXc0
+	RjF2Bw2u8Lkx6VwXimsvmrEzzKJfcwZat/UKzLEOcf+Id4QZzOt6lNxFcrYnE8DD
+	spfarTr+Sw7fPdoOHLkIhOsYtIZ/A+/BL7Txcy74OuO5YyS5nCEBiqeZ+0VoJB5k
+	XEj4uQ==
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 474ccvdh10-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 16:14:03 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7462aff55bfso30885b3a.2
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 09:14:03 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 16:14:04 +0000 (GMT)
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-7398d70abbfso55912b3a.2
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 09:14:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749658443; x=1750263243;
+        d=1e100.net; s=20230601; t=1749658444; x=1750263244;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Dxy553rnl4iOCCwPBHilJZl8dv8tb7Ojmt3DJ4lr9Cg=;
-        b=X7XUf+JGlo73+RniWhn5KpJjbLDIZk1qmaMq40USi3EbfOrmIHHAQUM/MIZEuqiAgF
-         B9R7lzDH5+YiUT4uBbqDy9U91+WxtQxhUUQdMZI+XepMGmrJRGseXv/kZ4KKYKKt9snr
-         KwLULoPFhiYR3wIUofBMimucd9dm5b22xPif40Q2IJ+P4yczVmPb0gSJtUSvxvZSr3SX
-         g8gI/jN+GAp9HokSuLQTRycV+YwMaU4f/opcwv8+QKyPW8omDbuAkiSM+5THkqOpjWN8
-         6qHE5e2ovCp09SGwMKftQ7RDxSh9Cjg3l86AaN4LJMN09TmyQ8E8Gri6Qk7j3czw6YpG
-         6KZQ==
-X-Gm-Message-State: AOJu0Yyh5R8It+WLbXBaqPDisDDfs90ltE/HLNSPVSPwHtAAnBG28/sv
-	1oI3x8q19wsq9gmcOZwAdpkhfUuVg7sYO/+bdj31Z8e2Oo+dTRXkgo6yyZ4HTREI6QKgisUkTm1
-	8Noq6Lxe5PI+E5DdC0oeuIHI0s06OSXLWBppNJxHQSousOer2bWkAZPFovQeS/DYmllCevQ==
-X-Gm-Gg: ASbGncsBhrDj2Oh0ewdr2j1N/uqrn+GpV4ofYMp3SGANkd1e8U5fKjQ2kFyzOcj4ndM
-	Yzhj0hBFPUSBZXlrAhZcDyRkMM/95073jFrpg4jRbxPk+7Vyhlsa4r6qwjK1PH1EVeyCIq3gj6i
-	7rCn4FtC1pLOxy6nKplnRcF1+1RaVLXTAL2BBlYtI2JPrKhSZwyimJw/kMIrrkr28hSnu5xzekt
-	YjFeU2Bt0Er56vgRBLgBLOHlqF5YKlpiTJky/Zbm32906LbwBx8SMPTGWovn+v+t+R1l607O/4W
-	Vo4FiYSsDJNSMyZRH8g6qqqytxAqjFzOx7pGngbiPcyC/3CcNY58+oeJS+0=
-X-Received: by 2002:a05:6a00:1490:b0:73e:2d7a:8fc0 with SMTP id d2e1a72fcca58-7486cb219b7mr5179606b3a.1.1749658442755;
-        Wed, 11 Jun 2025 09:14:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExcLPif8UAuX4ZoswEaY25R/k69NLePm004lZfTnTJsqF+aqjn9Vn3sVFV0N9NDcXgNtJ3aw==
-X-Received: by 2002:a05:6a00:1490:b0:73e:2d7a:8fc0 with SMTP id d2e1a72fcca58-7486cb219b7mr5179579b3a.1.1749658442306;
-        Wed, 11 Jun 2025 09:14:02 -0700 (PDT)
+        bh=vC+xxtvYYgCeXhh6pwXkgGaTGJbI1B8K+txHJMCvu4E=;
+        b=ROG9jtKdgsViH0UmyjYadbRICbqWSwVimcF2WDWry8e+wEpIbfbiO5JoRoqxVybRVv
+         dvhPhemvKG7qzP4kQp89Nc0VLipa2v8a+WKWN7tWVje8F7lL5B0rOy2e616ZMF6aA+Ir
+         uXTav0jFa0gQYSB9aG47U+AJooZlv6RZy8rzXiYrrSb56mvw9jeM7qLml4nEMNOHUFYP
+         9yxbM8WinpKSJ/lswiTmTS8xvwcpZqhN8VYQdBizTYJgC+9izBl+pF0vs3GTf5tzg1VA
+         MEOabLjfRv0IsQ5JmeXD0L5zXWZefuR0/No1vhE3rHF28KYeWcgLMAXMe0k/1vC7VNr2
+         BypQ==
+X-Gm-Message-State: AOJu0Yywv+XbT+/o0rdDmLko+N8MR6gcyKLlxsnqsasTfkqO4VziAAnY
+	6X7gcucY3r4dTFJ1BjxYwasHCKERcTtfJSjc5SmsmKExjyw1ccu/c17KF0Bc6cO3fWcpnT8Nh3q
+	W/0hlqHp1iIF/rDwozLPtLU43B1heXsasfuGOyOcH/fqciQEmmq1Js7LbP09uGpohefIg4g==
+X-Gm-Gg: ASbGnctsgY1B7Zxd8U7DpXddPk+qxasWfD74ibsfQyLT0KLEye9LEILBNsRZbxwZFFU
+	9xj0ihO6RiHU1KjyJ6zbcj3DyjyVQi7LPM6OLJQ8dxdaAYchspe7Thn4MLqgDUFnb0zS8tcgFb/
+	pbEbRw72PlndhiwTY5NNX2EyQxSBGitZBG3ubVJVX/EBJIBz+5DpOckK/EcmRYn/374OEjQtBEy
+	N2gdWlBQBLp5vfIzJVAgC9CnFV3ai1tk1xa45tbRyWOoGDbqzTlLO634hUCX2+cnAttv38tlzHl
+	9zbrNL8/YttcuzWAI26q9loVGwzgRxVdy1QqIrxRvrHq+otYrgLREODt0FE=
+X-Received: by 2002:a05:6a21:7002:b0:21c:faa4:9abb with SMTP id adf61e73a8af0-21f86725e41mr5990060637.20.1749658443790;
+        Wed, 11 Jun 2025 09:14:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1AbsaLs+Qh4Et0Dv8tLq0lT4GI8TdVK+xPhvb4cHdeQO2njFhkxJ5Zk1PmTPCVdukje/UZw==
+X-Received: by 2002:a05:6a21:7002:b0:21c:faa4:9abb with SMTP id adf61e73a8af0-21f86725e41mr5990014637.20.1749658443185;
+        Wed, 11 Jun 2025 09:14:03 -0700 (PDT)
 Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482cdf1c41sm9443708b3a.149.2025.06.11.09.14.01
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482cdf1c41sm9443708b3a.149.2025.06.11.09.14.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 11 Jun 2025 09:14:02 -0700 (PDT)
 From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Date: Wed, 11 Jun 2025 09:13:55 -0700
-Subject: [PATCH ath-next 2/5] wifi: ath9k: Add missing include of export.h
+Date: Wed, 11 Jun 2025 09:13:56 -0700
+Subject: [PATCH ath-next 3/5] wifi: ath10k: Add missing include of export.h
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,7 +90,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250611-ath-unused-export-v1-2-c36819df7e7b@oss.qualcomm.com>
+Message-Id: <20250611-ath-unused-export-v1-3-c36819df7e7b@oss.qualcomm.com>
 References: <20250611-ath-unused-export-v1-0-c36819df7e7b@oss.qualcomm.com>
 In-Reply-To: <20250611-ath-unused-export-v1-0-c36819df7e7b@oss.qualcomm.com>
 To: Jeff Johnson <jjohnson@kernel.org>,
@@ -100,26 +100,26 @@ Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
         ath12k@lists.infradead.org,
         Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 X-Mailer: b4 0.14.2
-X-Authority-Analysis: v=2.4 cv=JcO8rVKV c=1 sm=1 tr=0 ts=6849ab4b cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=wX-X5SGVYUOQdF0mMgYA:9
- a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjExMDEzNiBTYWx0ZWRfXyUHEnZbf+cQC
- 8Ol6cSdJ1EO3kU3BkJgL3UXKorjIyPVNlQsKkaZlQEp4p8Luu/xUKapBquyoYEhz5FkxOugFO8O
- 8VSoLZ2OEcSDELQWATh2G/kJb5BT+spfd2a1j8n9lUjHkQcCMqAuQyisY6GvsF5AzPY49dTOaI8
- Rg62sUqkCApzKOJ2q+2HZkpogNBj/7JnCEfdEmSUVmGvOUBnxGuFDMp9oo1oEeVX3HhzzqbZ7oR
- GF6acG8wd6FPj2DE9fKS7LtJi+4dyAdUC3d/HCfTkD8cuatvXOkFQwEJCtGyYm/i1bolAziOHyh
- 2tEw7lPCu5TtT9k2QJ8KBwPg/XYSJ8CH9+erMRwTdKqZWgoKufYbM24VKHtzzXoG2etvBhp1VuB
- 5H3AixOUupqRvS/HvAOitMXpBt8F/4b8u32ed+L2URKEDP5PJSyQWOIs1+URxChRP2PVFqb/
-X-Proofpoint-GUID: 0e0_plLf33STcL-rE34EJVnGMqqXdcyU
-X-Proofpoint-ORIG-GUID: 0e0_plLf33STcL-rE34EJVnGMqqXdcyU
+X-Proofpoint-ORIG-GUID: tyK8ynUOXptvyGZsVAHREf98Zb3QSIg0
+X-Authority-Analysis: v=2.4 cv=TsLmhCXh c=1 sm=1 tr=0 ts=6849ab4c cx=c_pps
+ a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=E42zS0385_rVDwRnvgkA:9
+ a=QEXdDO2ut3YA:10 a=2VI0MkxyNR6bbpdq8BZq:22
+X-Proofpoint-GUID: tyK8ynUOXptvyGZsVAHREf98Zb3QSIg0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjExMDEzNiBTYWx0ZWRfXzkNS14n9LKF5
+ Xg/0eJvvFY6OMWQoi3ayW7Cle17RssEBqaMnBY/uGV2quqclv7G9RIkr2E44SrhWtyn+nnzhm8d
+ MHha0IGfLe/2Gs2Nio0FsmaawS0oK8TfwwIdbFCYeq3nAFTBUdKgQht2LkoQLDG5t3ZFpjaMkfM
+ D6sk5L1vfSUCWRzcX50lPRl0BYP4i8BrzaRMn/igaRs9aQ3wUr/axitPvMzAXrWB6wkyY5S+FDR
+ J7sTUVKUzh+dIWdJrcqKGYulQ8Y5afKhZFh8duQZfcCShjXHYBueJ5zm5PEKvCcFiejANeyj5dl
+ lpobFQvUW+qJrXWz9twzsoCVSCKBeyyaesM/ethCfM60C9um1vw1aE8+JkDNLCkjuiMfEH6RpMg
+ TgUVa1mZJqKq6uiRtoibwBk2TML0HhSxCW/qi9XLnzf1sMC0ywz/fIi+hE2ICYUVnmwqJ01D
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-11_07,2025-06-10_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 bulkscore=0 spamscore=0 impostorscore=0 phishscore=0
- priorityscore=1501 mlxscore=0 adultscore=0 clxscore=1015 malwarescore=0
- suspectscore=0 lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a
+ suspectscore=0 phishscore=0 spamscore=0 mlxlogscore=999 impostorscore=0
+ priorityscore=1501 bulkscore=0 adultscore=0 clxscore=1015 mlxscore=0
+ malwarescore=0 lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a
  authcc= route=outbound adjust=0 reason=mlx scancount=1
  engine=8.19.0-2505280000 definitions=main-2506110136
 
@@ -127,111 +127,187 @@ Commit a934a57a42f6 ("scripts/misc-check: check missing #include
 <linux/export.h> when W=1") introduced a new check that is producing
 the following warnings:
 
-drivers/net/wireless/ath/ath9k/common-beacon.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath9k/common-debug.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath9k/common-init.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath9k/common-spectral.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath9k/common.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath9k/dynack.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
-drivers/net/wireless/ath/ath9k/hw.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+drivers/net/wireless/ath/ath10k/bmi.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+drivers/net/wireless/ath/ath10k/ce.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+drivers/net/wireless/ath/ath10k/core.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+drivers/net/wireless/ath/ath10k/coredump.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+drivers/net/wireless/ath/ath10k/debug.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+drivers/net/wireless/ath/ath10k/htc.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+drivers/net/wireless/ath/ath10k/htt_rx.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+drivers/net/wireless/ath/ath10k/htt_tx.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+drivers/net/wireless/ath/ath10k/mac.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+drivers/net/wireless/ath/ath10k/trace.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
 
 Add the missing #include to satisfy the check.
 
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 ---
- drivers/net/wireless/ath/ath9k/common-beacon.c   | 1 +
- drivers/net/wireless/ath/ath9k/common-debug.c    | 1 +
- drivers/net/wireless/ath/ath9k/common-init.c     | 1 +
- drivers/net/wireless/ath/ath9k/common-spectral.c | 1 +
- drivers/net/wireless/ath/ath9k/common.c          | 1 +
- drivers/net/wireless/ath/ath9k/dynack.c          | 1 +
- drivers/net/wireless/ath/ath9k/hw.c              | 1 +
- 7 files changed, 7 insertions(+)
+ drivers/net/wireless/ath/ath10k/bmi.c      | 2 ++
+ drivers/net/wireless/ath/ath10k/ce.c       | 2 ++
+ drivers/net/wireless/ath/ath10k/core.c     | 2 ++
+ drivers/net/wireless/ath/ath10k/coredump.c | 2 ++
+ drivers/net/wireless/ath/ath10k/debug.c    | 2 ++
+ drivers/net/wireless/ath/ath10k/htc.c      | 3 +++
+ drivers/net/wireless/ath/ath10k/htt_rx.c   | 3 +++
+ drivers/net/wireless/ath/ath10k/htt_tx.c   | 2 ++
+ drivers/net/wireless/ath/ath10k/mac.c      | 1 +
+ drivers/net/wireless/ath/ath10k/trace.c    | 2 ++
+ 10 files changed, 21 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/common-beacon.c b/drivers/net/wireless/ath/ath9k/common-beacon.c
-index 01d6d3205a654292397557990ea485b074313341..e4df89f2fa031ad15a40bfb49ea7639b1ab72a74 100644
---- a/drivers/net/wireless/ath/ath9k/common-beacon.c
-+++ b/drivers/net/wireless/ath/ath9k/common-beacon.c
-@@ -14,6 +14,7 @@
-  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+diff --git a/drivers/net/wireless/ath/ath10k/bmi.c b/drivers/net/wireless/ath/ath10k/bmi.c
+index 48efdc71d54dc699e1d43d01507a7a30c9c495b4..52118867ecde5c71b36361e3393d7579116d8be9 100644
+--- a/drivers/net/wireless/ath/ath10k/bmi.c
++++ b/drivers/net/wireless/ath/ath10k/bmi.c
+@@ -3,8 +3,10 @@
+  * Copyright (c) 2005-2011 Atheros Communications Inc.
+  * Copyright (c) 2011-2014,2016-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
   */
  
 +#include <linux/export.h>
- #include "common.h"
- 
- #define FUDGE 2
-diff --git a/drivers/net/wireless/ath/ath9k/common-debug.c b/drivers/net/wireless/ath/ath9k/common-debug.c
-index 7aefb79f6bed5b765de27c1e5d46c9f7ad62647a..1ea070200e4a32be34d2af6784f9196aab4e1925 100644
---- a/drivers/net/wireless/ath/ath9k/common-debug.c
-+++ b/drivers/net/wireless/ath/ath9k/common-debug.c
-@@ -14,6 +14,7 @@
-  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #include "bmi.h"
+ #include "hif.h"
+ #include "debug.h"
+diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
+index a89a7491a76c8b25c38a56cea4196bfbbae277d5..7bbda46cfd93c362b0d8c53dc5e8ad7e8621cacd 100644
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -4,8 +4,10 @@
+  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018 The Linux Foundation. All rights reserved.
+  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
   */
  
 +#include <linux/export.h>
- #include "common.h"
- 
- static ssize_t read_file_modal_eeprom(struct file *file, char __user *user_buf,
-diff --git a/drivers/net/wireless/ath/ath9k/common-init.c b/drivers/net/wireless/ath/ath9k/common-init.c
-index 7c13a1deb3acf1c1a1430a29a50f79bfb539e121..da102c791712e7f2eaac06d0d91b9ade08faf8f9 100644
---- a/drivers/net/wireless/ath/ath9k/common-init.c
-+++ b/drivers/net/wireless/ath/ath9k/common-init.c
-@@ -16,6 +16,7 @@
- 
- /* We use the hw_value as an index into our private channel structure */
- 
-+#include <linux/export.h>
- #include "common.h"
- 
- #define CHAN2G(_freq, _idx)  { \
-diff --git a/drivers/net/wireless/ath/ath9k/common-spectral.c b/drivers/net/wireless/ath/ath9k/common-spectral.c
-index 300d178830adf6aeda9bda6db2ef31becce9c917..ca01a07f6630cac3ca69b3fb64c5e51e983e1d81 100644
---- a/drivers/net/wireless/ath/ath9k/common-spectral.c
-+++ b/drivers/net/wireless/ath/ath9k/common-spectral.c
-@@ -14,6 +14,7 @@
-  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #include "hif.h"
+ #include "ce.h"
+ #include "debug.h"
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index fe3a8f4a1cc1b774ce27112ef7dfe6adb0b4dc2f..760d0a9ab9c2ce54717860e1c810d2b063f75e47 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -4,8 +4,10 @@
+  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+  * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
   */
  
 +#include <linux/export.h>
- #include <linux/relay.h>
- #include <linux/random.h>
- #include "ath9k.h"
-diff --git a/drivers/net/wireless/ath/ath9k/common.c b/drivers/net/wireless/ath/ath9k/common.c
-index 099f3d45c594d7bbe7c56aad7503627bd37d20d1..ffcf2276eb92e5f6d38eff13adc56c9ccfbba56b 100644
---- a/drivers/net/wireless/ath/ath9k/common.c
-+++ b/drivers/net/wireless/ath/ath9k/common.c
-@@ -18,6 +18,7 @@
-  * Module for common driver code between ath9k and ath9k_htc
+ #include <linux/module.h>
+ #include <linux/firmware.h>
+ #include <linux/of.h>
+diff --git a/drivers/net/wireless/ath/ath10k/coredump.c b/drivers/net/wireless/ath/ath10k/coredump.c
+index bb3a276b7ed584f4d4e7418b2e4cf7d913114869..50d0c4213ecfdce975638c66bcdebe35b6ce9d3f 100644
+--- a/drivers/net/wireless/ath/ath10k/coredump.c
++++ b/drivers/net/wireless/ath/ath10k/coredump.c
+@@ -3,11 +3,13 @@
+  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
   */
  
+ #include "coredump.h"
+ 
+ #include <linux/devcoredump.h>
 +#include <linux/export.h>
  #include <linux/kernel.h>
- #include <linux/module.h>
+ #include <linux/types.h>
+ #include <linux/utsname.h>
+diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
+index a0c1afeda4ddf3649ceea8adbca23d771d17dc93..6410d3961e76ca2b4191052277c2072638db4b8d 100644
+--- a/drivers/net/wireless/ath/ath10k/debug.c
++++ b/drivers/net/wireless/ath/ath10k/debug.c
+@@ -4,10 +4,12 @@
+  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+  * Copyright (c) 2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
  
-diff --git a/drivers/net/wireless/ath/ath9k/dynack.c b/drivers/net/wireless/ath/ath9k/dynack.c
-index 321ff54fdb4237f32ffa7c3e52f1c2adddc729fc..598b3a2ad818db88337e74a37d68704e2e4dc241 100644
---- a/drivers/net/wireless/ath/ath9k/dynack.c
-+++ b/drivers/net/wireless/ath/ath9k/dynack.c
-@@ -14,6 +14,7 @@
-  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #include <linux/module.h>
+ #include <linux/debugfs.h>
++#include <linux/export.h>
+ #include <linux/vmalloc.h>
+ #include <linux/crc32.h>
+ #include <linux/firmware.h>
+diff --git a/drivers/net/wireless/ath/ath10k/htc.c b/drivers/net/wireless/ath/ath10k/htc.c
+index 2da08dfebd3e7b56b149a09b5372aa0bfb8538d1..ce9b248c12dc6c0c90a9a7e081e428d439465ede 100644
+--- a/drivers/net/wireless/ath/ath10k/htc.c
++++ b/drivers/net/wireless/ath/ath10k/htc.c
+@@ -3,8 +3,11 @@
+  * Copyright (c) 2005-2011 Atheros Communications Inc.
+  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
   */
  
 +#include <linux/export.h>
- #include "ath9k.h"
- #include "hw.h"
- #include "dynack.h"
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index f9a774bd0e13937034989b772af2ab74e4cb3a49..14de62c1a32bd2459cc443028a4410cc2c6e4b5b 100644
---- a/drivers/net/wireless/ath/ath9k/hw.c
-+++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -14,6 +14,7 @@
-  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++
+ #include "core.h"
+ #include "hif.h"
+ #include "debug.h"
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index fb0d5d4cae3a1c1bcb82c3bf83d57d79c3661f07..f12243d6bee171eeccf4a57e8001cbddfd26733c 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -4,8 +4,11 @@
+  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
   */
  
 +#include <linux/export.h>
- #include <linux/io.h>
- #include <linux/slab.h>
++
+ #include "core.h"
+ #include "htc.h"
+ #include "htt.h"
+diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+index 9725feecefd6fb0f073761fbacf26d6bdbaeff15..c1ddd761af3e9ff987fcfd3a55b8747e48783b9e 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_tx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+@@ -3,8 +3,10 @@
+  * Copyright (c) 2005-2011 Atheros Communications Inc.
+  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
+ 
++#include <linux/export.h>
+ #include <linux/etherdevice.h>
+ #include "htt.h"
+ #include "mac.h"
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 07fe05384cdfb13924a956f7d672042b782e166f..730a6eadf093378d93844a444841fd5826f720bf 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -9,6 +9,7 @@
+ 
+ #include "mac.h"
+ 
++#include <linux/export.h>
+ #include <net/cfg80211.h>
+ #include <net/mac80211.h>
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/ath/ath10k/trace.c b/drivers/net/wireless/ath/ath10k/trace.c
+index c7d4c97e6079f006383b864b1bdb2fc0ee1569c5..421ec47c59bdf9967ad18e2de0182a488b9c5a03 100644
+--- a/drivers/net/wireless/ath/ath10k/trace.c
++++ b/drivers/net/wireless/ath/ath10k/trace.c
+@@ -1,8 +1,10 @@
+ // SPDX-License-Identifier: ISC
+ /*
+  * Copyright (c) 2012 Qualcomm Atheros, Inc.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
+ 
++#include <linux/export.h>
  #include <linux/module.h>
+ 
+ #define CREATE_TRACE_POINTS
 
 -- 
 2.42.0
