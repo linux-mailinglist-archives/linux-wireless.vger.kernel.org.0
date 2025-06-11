@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-23960-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23961-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED23DAD4968
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 05:34:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC62CAD4969
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 05:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A83BE16605F
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 03:34:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50CA13A4D20
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 03:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5300211497;
-	Wed, 11 Jun 2025 03:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CDC1EA7FF;
+	Wed, 11 Jun 2025 03:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T16XFzLX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y6zKO+VS"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EE01EA7FF
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 03:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DFE20C465
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 03:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749612877; cv=none; b=Cd094G05lrSpbDrlfKc0tHt4sVhBRVEqz815/09sQGVqtMBoifF8nX8yYp3e/SvqPJeGe1wHcQbGPNq9Nj2A5IaNc57ySeTkNiS/98BGHPKWoMdrz2NGOJynYS65qPdEJclZ/7GXsnjudaAZinABzj8o9oQCInSJQlV9q4wba2E=
+	t=1749612878; cv=none; b=ojZSiAyU9QZ2SkBzP/J/GgGCJY5Ex6b2SH75bqnkTZoNiVbaBtYclU2H9h7Qc/V2chdx6krb9AdtvgBO+l2tIBBHF9kRgoOm+A6CVYBz/sa5RG9sM8aabHE6yt6VaDwT64uCM2AhPm9u+IBk/tQS2vmrDQL41aqbgRIl5h6XKJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749612877; c=relaxed/simple;
-	bh=vFaw8DdSiGh0at6BYe0LRkJWv/OhnvWxzE6n1Q3UtkM=;
+	s=arc-20240116; t=1749612878; c=relaxed/simple;
+	bh=vVOEhfS8uBmV2AWGbh9zbfC7yYm/3cLvNe3Sk55Reuk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nL5Y5EgyqQrobMvyCnGTFDUm0ohChTTzvWHUIDSRr0SnTyxT1iFvDKUmkZdw0m1P+F+gwwsQpc/qrIkuPMPqvR1VfXegaQUGnR3k3NN6Q0vpz61J/n6yrcRHT+iGOHE63fCiBun3v5RayOgFdfhHspQPkvvt9Uh6cT0GUfRAUnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T16XFzLX; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=UQc2rcC00KesTH1/HNb/zHijDVzKFop8yuF5cENLXIrHP9/buXtQX/lx/9JZJLotjDv0J/WL7hdY6aSgSJQsvJyvVORPvFmGBRnP0qr3kVjz3uhlb5iwgUy5gdcim4eOx2nsN/YkuqKXpnYGWdwinDg6+blyHBgqL4Di61Xvo+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y6zKO+VS; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749612876; x=1781148876;
+  t=1749612877; x=1781148877;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=vFaw8DdSiGh0at6BYe0LRkJWv/OhnvWxzE6n1Q3UtkM=;
-  b=T16XFzLXayJLJAVNrOWaqA3g10I1/CjnlyzO98gd98Ue5/Uid6jy/Efj
-   ul4m7YfXR/G/HGXYuomoUriouKeXyRLyS6VFQdbOhD7qmPjpVjIFE57VT
-   uIw/cWfhMGw33640u3v2FJMK0ZF6NCxPz0CooCc3CNiWmBfZsIiUgYUnF
-   HCzdeygGG9plDtdJQ18H7zTRopcoAqsGZvlx1VPw9s6IkkaDVRdqnpBWu
-   vTdAfHzn7VRFZpTvyWZNyQPZWh32C5BEZvFv/w4hrCyDdnp1kA7MmXNiw
-   hK+ZM58jx1PavY89UypLc6nRq15O3XuSemZEbok+GtcX3V5C32ewoK2GL
-   A==;
-X-CSE-ConnectionGUID: F4nYBoH4RnOvsv9hxz0gqQ==
-X-CSE-MsgGUID: MnAnsFStToWrR+76wjMtMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="63094880"
+  bh=vVOEhfS8uBmV2AWGbh9zbfC7yYm/3cLvNe3Sk55Reuk=;
+  b=Y6zKO+VSoVHp+Bcp3dyReO/H8wagfHLe6juMDxgCAQBbMYQJbwEJMSGB
+   KErIxQ/ql4/bLE/a7ZR5RZ+WsfmRIPfajt0HupN0ChI9bUJfUx6fuS9oL
+   Y5lqSOtQzz6p3q0FOqQfZoh9BTOniPjj4b6fee6zS37fpMSty15d9UdmT
+   p9C+/tdxxHmTcGuK4K2vvTe84Gj7C9VvJBz011im7BKLTyyyw0WKcIJZ5
+   cfMZNUfsu5czHapZrUEMl+fz1j7tvSi7Kyy2eGSmu3kAQwg+Q8xD4jT9r
+   3fTBQxnv9a6E0IHcHNJvAAkaVcFNaOmy/gvcnj0rJk5+0OXbHt6NKf1uk
+   g==;
+X-CSE-ConnectionGUID: GLsNyLC+RJGDIeEKNzzlFA==
+X-CSE-MsgGUID: CijijZfXRCKY4doQ44dsOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="63094885"
 X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="63094880"
+   d="scan'208";a="63094885"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 20:34:36 -0700
-X-CSE-ConnectionGUID: Y0qL3h+eSTiW3cjX6RDtIA==
-X-CSE-MsgGUID: 6C59R+XcTHexm4sxOs4i8g==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 20:34:37 -0700
+X-CSE-ConnectionGUID: TRDooyxASFGP13sEGX+RFw==
+X-CSE-MsgGUID: 5B99nye8TZiKsZInNpziWA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="150880921"
+   d="scan'208";a="150880926"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 20:34:34 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 20:34:36 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Subject: [PATCH iwlwifi-next 03/15] wifi: iwlwifi: mld: Add dump handler to iwl_mld
-Date: Wed, 11 Jun 2025 06:34:03 +0300
-Message-Id: <20250611063124.18ebf46690ce.Ia52941f761a446cb3e43cbe49d2b9a49fc15f4a8@changeid>
+Subject: [PATCH iwlwifi-next 04/15] wifi: iwlwifi: fw: Fix possible memory leak in iwl_fw_dbg_collect
+Date: Wed, 11 Jun 2025 06:34:04 +0300
+Message-Id: <20250611063124.8158d15ec866.Ifa3e422c302397111f20a16da7509e6574bc19e3@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250611033415.1175681-1-miriam.rachel.korenblit@intel.com>
 References: <20250611033415.1175681-1-miriam.rachel.korenblit@intel.com>
@@ -78,45 +78,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-Implement a dump handler in the iwl_mld operation mode to
-collect firmware dump upon trigger from trans layer.
+Ensure descriptor is freed on error to avoid memory leak.
 
 Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/mld.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index 8cdd960c5245..103912c4e4cc 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -723,6 +723,17 @@ static void iwl_mld_device_powered_off(struct iwl_op_mode *op_mode)
- {}
- #endif
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index ea739ebe7cb0..95a732efce45 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -3008,6 +3008,7 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
+ 	struct iwl_fw_dump_desc *desc;
+ 	unsigned int delay = 0;
+ 	bool monitor_only = false;
++	int ret;
  
-+static void iwl_mld_dump(struct iwl_op_mode *op_mode)
-+{
-+	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
-+	struct iwl_fw_runtime *fwrt = &mld->fwrt;
-+
-+	if (!iwl_trans_fw_running(fwrt->trans))
-+		return;
-+
-+	iwl_dbg_tlv_time_point(fwrt, IWL_FW_INI_TIME_POINT_USER_TRIGGER, NULL);
-+}
-+
- static const struct iwl_op_mode_ops iwl_mld_ops = {
- 	.start = iwl_op_mode_mld_start,
- 	.stop = iwl_op_mode_mld_stop,
-@@ -737,6 +748,7 @@ static const struct iwl_op_mode_ops iwl_mld_ops = {
- 	.sw_reset = iwl_mld_sw_reset,
- 	.time_point = iwl_mld_time_point,
- 	.device_powered_off = pm_sleep_ptr(iwl_mld_device_powered_off),
-+	.dump = iwl_mld_dump,
- };
+ 	if (trigger) {
+ 		u16 occurrences = le16_to_cpu(trigger->occurrences) - 1;
+@@ -3038,7 +3039,11 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
+ 	desc->trig_desc.type = cpu_to_le32(trig);
+ 	memcpy(desc->trig_desc.data, str, len);
  
- struct iwl_mld_mod_params iwlmld_mod_params = {
+-	return iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
++	ret = iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
++	if (ret)
++		kfree(desc);
++
++	return ret;
+ }
+ IWL_EXPORT_SYMBOL(iwl_fw_dbg_collect);
+ 
 -- 
 2.34.1
 
