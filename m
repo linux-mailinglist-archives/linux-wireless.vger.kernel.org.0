@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-23954-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23955-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A90AD47FB
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 03:37:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF51AD480A
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 03:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE3291897396
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 01:37:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 976067A4A17
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 01:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB2518EFD1;
-	Wed, 11 Jun 2025 01:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA6219FA92;
+	Wed, 11 Jun 2025 01:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="SsuIigjb"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="wzJ2C6nK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF84158538
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 01:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CDF19A297
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 01:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749605777; cv=none; b=Wwb0IFhQ0/4jHRs0DGXbtNZqozqBB2N8y7bZSRoKfDqkkjvPOEslhoP1NQHNRlCI+Z7vJuHi0a3TuodrE6HIJKM0Tm7Jn1roQqNT3hi46F7xBOfAMLrg2u/A2LKeWwvZ0IlOfDn9mf6pJwtCbGZswD91nOtCx9HO2llg5GmIRw4=
+	t=1749605780; cv=none; b=W4y3rnjkBz+UkGbEYhjxtLE1izjMPAmQbbzXkmm7oBny/wC5g3eI0EE5/wKZ2iqmZnnDTDpkumuduYCa9YAbjzwgvehT3YE0LgQS3gMZS/Cp6Z4dNoKRqvslDz0UizdBnTnznIwjYFR/nQv1bqhksnsFMs2htyJ/0Sxj3455/lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749605777; c=relaxed/simple;
-	bh=l4kh8nQOBB+k1hS7ml/rMHZHvU1JaywbqUf42DJXo5s=;
+	s=arc-20240116; t=1749605780; c=relaxed/simple;
+	bh=ljeRPU5YroadBSrIng1Pio/+fb2M14cTt7mSJEqksBU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sE91ZiDDmD8bBfkmgxn/G4Hh8bHzZHco8k7UyAYmEKmdzoPsD/O05iTvQDbUa48/z8036GvVOi/HIoCAAOoVB/Q6Bjd+vLpQuIEme5cowEKw4upP5QJkMW643CHKju7IFm4kGoYJQMl5zezFC0OKk0vErQiH9Or7IanapFbvz2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=SsuIigjb; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=m3qcVaSuMJf6lkQoasz3xEks8AO8kvdAaWw3nu+wWWZTfAWXFPBcyhDe+GyB4pfbPoVZflZ753m6XCcCKt9ExRv3I5hM0kw4ZZEB2QmtTFdnvFev8Zc/xQ8NGFg8fEHailwVNJ3JaomfazhSHQE4QdcOS7Pb/zlf4ZbUTFmO35U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=wzJ2C6nK; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55B1aEi753938219, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55B1aHm653938237, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1749605774; bh=eDaFdtU5KYOhx/epRAHSLPZer/Vjcfl9F3w2FCkM/Ws=;
+	t=1749605777; bh=imT5urEpsKBAAgZHWl1mhiGINBf383np6fq9iORGX98=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=SsuIigjbmHwE7rtVCOl6s20de9HqE49gKrV6aKg3r3sSYaqivsEFEmCZhS4BD+Yur
-	 Lh/PGcgykSt8OLwaYnGmbd/2Ilef5+1GjLJn15SXfgEFnsj3EqOfrmB//eyQ1j1Qxj
-	 EVIz/FNx7gYkksnTK0uzenBggl090TOpxZs3l32+p9Wo3lOU/vh+tfNXauMjSxZXpm
-	 qGUJ4bUwAp51Nzui31O1MO6HtnhCt141pz7jxNPjBH1waGa/Itm1xKgpSCikhPys+0
-	 r8aNlkRJVwZGmin7lpxk1geunYZWcMrPPaXVSJlFqrFmOmL5g107X7cqhFSS4Cf5vn
-	 i8lnS3wpYO+Dw==
+	b=wzJ2C6nK83NQN7/rRYBCZ+GNjCN0zKbyCKwXEApg9XqRdaOCvqsTSFYgSJuEvg/ok
+	 rpn3gcEM7kTwp71MUkJDb6yBHZ3hmKDeGaTySKYR85aa+L+lU0dPg3lSovu5U7fOmk
+	 bDfpxJ6uuxWIZjqmyWq/QccH2xsy1laDat8yl86SPtPycfgjNzD1K+dGEaL7LwBDth
+	 b4CIQq2kJsIM+EYjUnYhB2DTCvlNCWhfQHTyalqBlGkuB/uvAsJL5ABOnolFjIsHPf
+	 WOmyCE2a8vSO9Sy6gTEuRAtzhcE0OSDv/5wsdUimIhBmvVSr0OLQ6Q1Ch/B1W6fvE8
+	 nNEWae6BmMjJA==
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55B1aEi753938219
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55B1aHm653938237
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 09:36:14 +0800
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 09:36:17 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 11 Jun 2025 09:36:13 +0800
+ 15.1.2507.39; Wed, 11 Jun 2025 09:36:17 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 11 Jun
- 2025 09:36:12 +0800
+ 2025 09:36:16 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <ku920601@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 09/10] wifi: rtw89: coex: Update hardware PTA resource binding logic
-Date: Wed, 11 Jun 2025 09:35:09 +0800
-Message-ID: <20250611013510.15519-10-pkshih@realtek.com>
+Subject: [PATCH rtw-next 10/10] wifi: rtw89: coex: Add PTA grant signal setting offload to firmware feature
+Date: Wed, 11 Jun 2025 09:35:10 +0800
+Message-ID: <20250611013510.15519-11-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250611013510.15519-1-pkshih@realtek.com>
 References: <20250611013510.15519-1-pkshih@realtek.com>
@@ -76,103 +76,73 @@ X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
 
 From: Ching-Te Ku <ku920601@realtek.com>
 
-WiFi 7 generation has 2 MAC, the PTA should bind the input/output to
-correct MAC to do the packet arbitration as expected.
+In the before experience there are many issue occurred because of the
+grant control signal can not be set in time especially WiFi power save
+enter/leave. To control the signal more accuracy, offload the control
+to firmware.
 
 Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 41 ++++++++++++++++++-----
- drivers/net/wireless/realtek/rtw89/reg.h  |  1 +
- 2 files changed, 34 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtw89/coex.c | 30 +++++++++++++++++------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index bd258acc83d8..77df765dc607 100644
+index 77df765dc607..bdda32f735eb 100644
 --- a/drivers/net/wireless/realtek/rtw89/coex.c
 +++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -5360,15 +5360,47 @@ static void _set_bt_rx_scan_pri(struct rtw89_dev *rtwdev)
- 	_write_scbd(rtwdev, BTC_WSCB_RXSCAN_PRI, (bool)(!!bt->scan_rx_low_pri));
- }
- 
-+static void _wl_req_mac(struct rtw89_dev *rtwdev, u8 mac)
-+{
-+	struct rtw89_btc *btc = &rtwdev->btc;
-+	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
-+	struct rtw89_btc_dm *dm = &btc->dm;
-+	u32 add;
-+
-+	if (mac == wl->pta_req_mac)
-+		return;
-+
-+	dm->ost_info.pta_req_hw_band = mac;
-+	wl->pta_req_mac = mac;
-+	wl->pta_reg_mac_chg = true;
-+
-+	if (btc->ver->fcxosi)
-+		return;
-+
-+	if (rtwdev->chip->chip_gen == RTW89_CHIP_BE)
-+		add = R_BE_BTC_CFG;
-+	else
-+		add = R_AX_BTC_CFG;
-+
-+	if (mac == RTW89_MAC_0)
-+		rtw89_write32_clr(rtwdev, add, B_AX_WL_SRC);
-+	else
-+		rtw89_write32_set(rtwdev, add, B_AX_WL_SRC);
-+}
-+
- static void _action_common(struct rtw89_dev *rtwdev)
+@@ -2866,6 +2866,8 @@ static void _set_gnt_v1(struct rtw89_dev *rtwdev, u8 phy_map,
  {
  	struct rtw89_btc *btc = &rtwdev->btc;
- 	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
-+	struct rtw89_btc_wl_role_info_v8 *rinfo_v8 = &wl->role_info_v8;
- 	struct rtw89_btc_wl_smap *wl_smap = &wl->status.map;
- 	struct rtw89_btc_bt_info *bt = &btc->cx.bt;
  	struct rtw89_btc_dm *dm = &btc->dm;
- 	u32 bt_rom_code_id, bt_fw_ver;
++	struct rtw89_btc_fbtc_outsrc_set_info *osi = &dm->ost_info;
++	struct rtw89_mac_ax_wl_act *b = dm->gnt.bt;
+ 	struct rtw89_mac_ax_gnt *g = dm->gnt.band;
+ 	u8 i, bt_idx = dm->bt_select + 1;
  
-+	if (btc->ver->fwlrole == 8)
-+		_wl_req_mac(rtwdev, rinfo_v8->pta_req_band);
-+
- 	_set_btg_ctrl(rtwdev);
- 	_set_wl_preagc_ctrl(rtwdev);
- 	_set_wl_tx_limit(rtwdev);
-@@ -5405,6 +5437,7 @@ static void _action_common(struct rtw89_dev *rtwdev)
- 		btc->cx.cnt_wl[BTC_WCNT_SCBDUPDATE]++;
+@@ -2914,21 +2916,35 @@ static void _set_gnt_v1(struct rtw89_dev *rtwdev, u8 phy_map,
+ 
+ 			switch (wlact_state) {
+ 			case BTC_WLACT_HW:
+-				dm->gnt.bt[i].wlan_act_en = 0;
+-				dm->gnt.bt[i].wlan_act = 0;
++				b[i].wlan_act_en = 0;
++				b[i].wlan_act = 0;
+ 				break;
+ 			case BTC_WLACT_SW_LO:
+-				dm->gnt.bt[i].wlan_act_en = 1;
+-				dm->gnt.bt[i].wlan_act = 0;
++				b[i].wlan_act_en = 1;
++				b[i].wlan_act = 0;
+ 				break;
+ 			case BTC_WLACT_SW_HI:
+-				dm->gnt.bt[i].wlan_act_en = 1;
+-				dm->gnt.bt[i].wlan_act = 1;
++				b[i].wlan_act_en = 1;
++				b[i].wlan_act = 1;
+ 				break;
+ 			}
+ 		}
  	}
- 	btc->dm.tdma_instant_excute = 0;
-+	wl->pta_reg_mac_chg = false;
+-	rtw89_mac_cfg_gnt_v2(rtwdev, &dm->gnt);
++
++	if (!btc->ver->fcxosi) {
++		rtw89_mac_cfg_gnt_v2(rtwdev, &dm->gnt);
++		return;
++	}
++
++	memcpy(osi->gnt_set, dm->gnt.band, sizeof(osi->gnt_set));
++	memcpy(osi->wlact_set, dm->gnt.bt, sizeof(osi->wlact_set));
++
++	/* GBT source should be GBT_S1 in 1+1 (HWB0:5G + HWB1:2G) case */
++	if (osi->rf_band[BTC_RF_S0] == 1 &&
++	    osi->rf_band[BTC_RF_S1] == 0)
++		osi->rf_gbt_source = BTC_RF_S1;
++	else
++		osi->rf_gbt_source = BTC_RF_S0;
  }
  
- static void _action_by_bt(struct rtw89_dev *rtwdev)
-@@ -5867,14 +5900,6 @@ _update_rssi_state(struct rtw89_dev *rtwdev, u8 pre_state, u8 rssi, u8 thresh)
- 	return next_state;
- }
- 
--static void _wl_req_mac(struct rtw89_dev *rtwdev, u8 mac)
--{
--	if (mac == RTW89_MAC_0)
--		rtw89_write32_clr(rtwdev, R_AX_BTC_CFG, B_AX_WL_SRC);
--	else
--		rtw89_write32_set(rtwdev, R_AX_BTC_CFG, B_AX_WL_SRC);
--}
--
- static
- void _update_dbcc_band(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 255a8635b195..4a65b0c9c2d1 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -6070,6 +6070,7 @@
- #define B_BE_MACID_ACQ_GRP0_CLR_P BIT(2)
- #define B_BE_R_MACID_ACQ_CHK_EN BIT(0)
- 
-+#define R_BE_BTC_CFG 0x0E300
- #define R_BE_BT_BREAK_TABLE 0x0E344
- 
- #define R_BE_GNT_SW_CTRL 0x0E348
+ #define BTC_TDMA_WLROLE_MAX 3
 -- 
 2.25.1
 
