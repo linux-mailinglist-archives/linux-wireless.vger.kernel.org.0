@@ -1,118 +1,117 @@
-Return-Path: <linux-wireless+bounces-23987-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23988-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF283AD55B9
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 14:38:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C355CAD576A
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 15:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE7A61BC3695
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 12:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 718F23A1F8B
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 13:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B0627E7F0;
-	Wed, 11 Jun 2025 12:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270371EE033;
+	Wed, 11 Jun 2025 13:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j+FE1Y4L"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=buaa.edu.cn header.i=@buaa.edu.cn header.b="TQNwUR8t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3B127FD7E
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 12:37:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net (zg8tmja5ljk3lje4ms43mwaa.icoremail.net [209.97.181.73])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B783E28314A
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 13:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.181.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749645477; cv=none; b=VEshfZnTAvaIZjxV3VzTYKc4Ew3x9vNSfQYBbUYgnR0rAm7KVu29Pc0O5auROEd5zzWRw2hn8SMlAkS4yA1SUXBJFF9rzijIHClG5Sd03u12qXtdBSo/dlvk1Aqf7OuUSSNCMg6Lo2N52RogE/MrkmRrbfajbygqzVWKoIovov8=
+	t=1749649373; cv=none; b=cfhSJSKeminbPf4VI0rxbbLU8iLHeNI6j3BbXIFwj4XseOgbIDSO02maUyns4xHIoHtz7iMlQ2RPJwkPKEeJfPucL0o6VEw/37VyotUmqN1b13mtKNTOFIbei4CbHWnD8+SFQI+c3tUlVRNuTJ6kbNzlqsmhGGrHZbRd74Aui6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749645477; c=relaxed/simple;
-	bh=N15WjYZh9zLHOd5EXWKe6oFGkNk5YRdrD9gGPdCvDCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JSVj9BinRdDRQ2SIjnOO3SHjQx8n76zBq04BMImC+wjGzNGdHH1AN/xp9eY4EYWZZr+088STwAzJWT+wKtMhiBY4ZNY2+gye/1TN6c3X1ZQut1tmq57D9B49fn5u2fgyxSsbJffyHooErnAyIRsXR4I5M2VIXTPFEFlulyXCvE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j+FE1Y4L; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ad51ba0af48so176765466b.0
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 05:37:55 -0700 (PDT)
+	s=arc-20240116; t=1749649373; c=relaxed/simple;
+	bh=HqYbK1Zn5pXaEcXcUsyIIvDhhRKRUhcVBQwOLA2hEuc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C+xLUGNJOvzMNWPAiMzlvKgTRg8jK431Xmc6nIo2qTYCbiuGD7jEHJt8rpXwB0K2MNMer9uLVeh9tPUtAABhTCSPBR5h2rT2KXTyHNODwX2ckRin75toXtH9OzN6DLa8mZMGm9lmW90n2XQnaUQdAQ1qH+SXCuimqh+C5SV5Fq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buaa.edu.cn; spf=pass smtp.mailfrom=buaa.edu.cn; dkim=fail (0-bit key) header.d=buaa.edu.cn header.i=@buaa.edu.cn header.b=TQNwUR8t reason="key not found in DNS"; arc=none smtp.client-ip=209.97.181.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buaa.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buaa.edu.cn
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749645474; x=1750250274; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dOXeYQ67MJKyIBb8UNaIQyZgXOV3VN582lWGBgx+72o=;
-        b=j+FE1Y4LweAmJtzC/z+6aaD9gHRptmS5D+R5UH+/rpik+NUFw0HswqU/a2/naWaXea
-         CL5y9Yx1Kj+LScIxAFnVzR/eYKuEb7pe2A5UHgDj+ZXFs03f/t3A3qSUWR87Ih0A1NtN
-         tnAZiEowATbZ5z0DUx1pOF+chb/aNeAt8CiadQTspPxQluZHHy0jguDy+GzpiUolS3yh
-         qGVrcqzlkVkr+Okz3QkYCF1A1kjzkD79i5Qm+vsOWLAE+yS3sdzVu6dME0BR5MhE7yq1
-         qWtjzVWDB73y9rYWpDthA2QgF+01vWkMPQ2Ugq5M66fpBE+TYR9fscao/S0NjpLmzeZ1
-         A0OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749645474; x=1750250274;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dOXeYQ67MJKyIBb8UNaIQyZgXOV3VN582lWGBgx+72o=;
-        b=ecTkuJ7MZ8thg1CKLKQIraX3UvHh29HMxvND10W/YZ1MTZC4rNXkZV4uLv8VXJAeUF
-         CEuJmzIbCgVcLUhHzceQeb+yUjSDVRVK6xj8flTQsaiiyCdqQvAaEsBgaGRsTsShYMNm
-         ZGs4ND2YjfPbjdm+1x7bwxe4YB7uIqZ+O0dt7e7suSDrhjbJtuPyhe3T9W0kLZrGY9eJ
-         Bkyt7Jt+wr/qHn1Dd2C5NEi+JDkVYJnwyipyZnJherXqkiW93SPsQn0kurZ+HHs7kt8B
-         g0LAgNX/9qN88+iBhqYYKHYwD1lcs0lU/rZ9+C+zHTRno/qkuVkZiUn+An6iuOoD0cve
-         Lu2g==
-X-Forwarded-Encrypted: i=1; AJvYcCW7/rVQUC4RgJ8FiP0BewAJqbost0UVM0iTysg+Tz8lkA2wIqQhTGcGt7qoZBy4sl7HEGReqc3ACfwN7oRYCQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKlJ5zazw5oZkVI21hKKg+RAtgUjS8gtZmYmiHCnmNYligD9YQ
-	zBRFGLID6Oy5iMVaeQPCZr4WeV/3XHSTuvwy8qLMy4z/sTvf07ioF1RmR+8LdQ==
-X-Gm-Gg: ASbGncuE5OyZAWeXlUrsVm43QbRkBnCQbjeJzD3uo4cPwl55NoXnrVY/A2QDYI9dZQG
-	SOu8pbLk+aszZE8tkPjS0LGJPl5q7PSR1APWf9kBI+94M2rz6MXQXZ5fLSajKfKGpRK2p9qOPmp
-	0A5IUA1Mwc8qVOErOq8+OWAa5snOpKGV3Kgc9qCL8HTFcaKnbxfZJBJRoAxWMzTUm2fFrdTXmtP
-	oDUSbHQfKAQt2gYjc/c2l7QF3C5CTyvuK3DQF7JxXEVil/mGYvDR9AuFqSV+uYsmyl0JQpZJ5Hy
-	n6ovblcbLoXQNcJZRht5fFW6j8sW0LjoklPRXSqOffraxsVRTfiwrbViMiKM4smqCkG0QQ==
-X-Google-Smtp-Source: AGHT+IHHW+D0ougV5xir+6/KUgrN2c375InXtK1X/YNGb9P+kmswRlnqPox8eAbXSjO5ZlB2QjfMVw==
-X-Received: by 2002:a17:907:3f0a:b0:adb:3fb8:27f9 with SMTP id a640c23a62f3a-ade899fd6bbmr285978566b.25.1749645474014;
-        Wed, 11 Jun 2025 05:37:54 -0700 (PDT)
-Received: from [192.168.0.50] ([79.119.240.16])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1dc776ffsm872906766b.152.2025.06.11.05.37.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jun 2025 05:37:53 -0700 (PDT)
-Message-ID: <0d712ef0-ea93-4825-8a4c-45f9d7f9e8d9@gmail.com>
-Date: Wed, 11 Jun 2025 15:37:51 +0300
+	d=buaa.edu.cn; s=buaa; h=Received:From:To:Cc:Subject:Date:
+	Message-Id:MIME-Version:Content-Transfer-Encoding; bh=jIqZLsu+/x
+	5dRvLruSMuPxmHqtGPMhfj7ymBrDEk+WE=; b=TQNwUR8tkbjh1dpIlORcRUJ5qF
+	Y1byt/FvSSlBwwu31laElZBE4leJVreP37JSr8glFH4H2UT0B21OHrv2jV96M/PG
+	nDA6aQqTYiyFSwIA51B4/kE7pFl8Up7EBVBwm8CKEAfbeSWSSw4DzTTBKK8DtX0b
+	PnAdKzgz2lSUOTsLA=
+Received: from f76011e66543.. (unknown [10.133.16.49])
+	by coremail-app1 (Coremail) with SMTP id OCz+CgD3vVOvh0loTAypBQ--.57342S2;
+	Wed, 11 Jun 2025 21:42:07 +0800 (CST)
+From: hzy15610046011 <houzhanyi61@buaa.edu.cn>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	StanleyYP.Wang@mediatek.com,
+	mingyen.hsieh@mediatek.com,
+	chad@monroe.io,
+	razvan.grigore@vampirebyte.ro
+Cc: linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	houzhanyi61@buaa.edu.cn,
+	zhanyihou6011@gmail.com
+Subject: [PATCH] Add non-null judgement branch for return value of  mt76_connac_get_he_phy_cap().
+Date: Wed, 11 Jun 2025 13:42:09 +0000
+Message-Id: <20250611134209.312009-1-houzhanyi61@buaa.edu.cn>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next v2 14/14] wifi: rtw89: Enable the new USB modules
-To: Ping-Ke Shih <pkshih@realtek.com>, kernel test robot <lkp@intel.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: "llvm@lists.linux.dev" <llvm@lists.linux.dev>,
- "oe-kbuild-all@lists.linux.dev" <oe-kbuild-all@lists.linux.dev>
-References: <663044d3-0816-4b1b-874d-776835e774e9@gmail.com>
- <202506101956.cNXM2Qvb-lkp@intel.com>
- <b8690413-059d-4330-992b-36a7af10aa30@gmail.com>
- <01eb10716bdb4241a012d378d1f7b67d@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <01eb10716bdb4241a012d378d1f7b67d@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:OCz+CgD3vVOvh0loTAypBQ--.57342S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AF1fAryxZw4rKw45KF4fAFb_yoW8JF4xpF
+	Wjg34Y9w4UGr4Dta18Aa1vyFWrJ3ZYgry2grn5Xwn8u39ayFn3Gr4IvFy3Ar1rAFZ2k347
+	XF4qvry3GrnYv37anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9v1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kE
+	wVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x
+	0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7Cj
+	xVAFwI0_GcCE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8w
+	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE
+	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II
+	8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_JF0_Jw1l
+	c2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_Aw1UJr1UMxC20s
+	026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_
+	JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14
+	v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xva
+	j40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JV
+	W8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbfWrJUUUUU==
+X-CM-SenderInfo: 1v1siiaurqmqpexdthxhgxhubq/
 
-On 11/06/2025 03:32, Ping-Ke Shih wrote:
->>>
->>>>> drivers/net/wireless/realtek/rtw89/rtw8851b.c:523:47: error: use of undeclared identifier
->> 'B_AX_SOP_EDSWR'
->>>      523 |                 rtw89_write32_clr(rtwdev, R_AX_SYS_PW_CTRL, B_AX_SOP_EDSWR);
->>>          |                                                             ^
->>>    1 error generated.
->>>
->> Oops, I'll add that to reg.h in v3.
-> 
-> The NAPI also reported the same things [1] [2].
-> 
-> Not sure if you will send v3 right away. If so, I will ignore v2. 
-> 
-> [1] http://wifibot.sipsolutions.net/results/969980/14111187/build_32bit/stderr
-> [2] https://patchwork.kernel.org/project/linux-wireless/list/?series=969980
-> 
+From: H-Mole <houzhanyi61@buaa.edu.cn>
 
-I would prefer to wait for your review. Is that okay?
+Since commit https://github.com/torvalds/linux/commit/f503ae90c7355e8506e68498fe84c1357894cd5b
+ showed that drivers/net/wireless/mediatek/mt76/mt7996/mcu.c misses a non-null judgement for the
+ return value of mt76_connac_get_he_phy_cap on variable vc, this null-pointer problem may also happen
+ on mt7915. This commit added such non-null judgement like what was added to function mt7996_mcu_sta_bfer_he()
+ in commit f503ae90c7355e8506e68498fe84c1357894cd5b.
+
+Signed-off-by: H-Mole <houzhanyi61@buaa.edu.cn>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 427542777abc..5dca50d40080 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -1184,6 +1184,9 @@ mt7915_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
+ 	u8 nss_mcs = mt7915_mcu_get_sta_nss(mcs_map);
+ 	u8 snd_dim, sts;
+ 
++	if (!vc)
++		return;
++
+ 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
+ 
+ 	mt7915_mcu_sta_sounding_rate(bf);
+-- 
+2.39.5
+
 
