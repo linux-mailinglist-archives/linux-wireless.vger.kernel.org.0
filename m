@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-23968-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23969-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F90AD4970
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 05:35:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3ACAD4971
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 05:35:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9D7A3A64A5
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 03:34:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D04B16A427
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 03:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11C2224AE8;
-	Wed, 11 Jun 2025 03:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2BF225390;
+	Wed, 11 Jun 2025 03:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="itYqcett"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dqmkM/m5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C877225390
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 03:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F542253FB
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 03:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749612886; cv=none; b=GetcpYdHA0eXpc9cv9Z/BWlCG8KmNn/mDkWpisZi5LIULNaVHSUU4xWPYBfRBJDk0hAWPa3Z/j3cUP5/4OfErbwcOKHgIkG7c9X0CtLtUuDoYSkrXASbFkjvFaAk9avK/SEqjocGKpIwiJ9JP2lD3ahP+sGtUSRW4JA8z/kMw5Q=
+	t=1749612888; cv=none; b=cr5ZtuMNVow78NfVQOvjLNgNEgehsKJh5XTdKeZ+RSHpHv+wTu4PKVGNrjm5TDPvq0MYpepHStZ7CH8TAen4T/L7U/E2bCC6pGAFeBAwu6TqepTtunlh/tNeIq5XcwrNVSxcJA3te54fPEFFBmQE51GaScVjHVj9k+GPWkRnqeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749612886; c=relaxed/simple;
-	bh=RLmNVZjrSHGeXBYCymqhAETWJdCGkX14Wr1pqgtheAI=;
+	s=arc-20240116; t=1749612888; c=relaxed/simple;
+	bh=Y880Dmewf2eHGLtigrHUTnUd1//A+PCGJaeDSkCvrwU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=M0aE72nhN5UdHsu7zVkO/KTu+yTkM3LLATLXimud+b2NwlSdg0gVinca5pkkciYxhZVBz5FQetS7wsrcIJFm48JsxHespTdXLR6l5Xbkk4FhDxTIom7pdjM9ZLhDUgzf0V1dUmKvr2LecFRMeZfBa7YME5EnuNeVM/jd00eLr7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=itYqcett; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=Eq4WkVXgx/dg4MednC0McNOurfHHSgg9icQUXpZ0tNH71mrmUMgB4lXMPoMjb3HGY1+FRc1U+EEQAo4FKhcKhHbJm2sNGoVoxYvao7O9ZJgVJcoi9Z+xo9LZOeSiq02ahtrNmlbeRqoAhjVaoOCQo79+KJVy7Ya5TDg1wC56KrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dqmkM/m5; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749612885; x=1781148885;
+  t=1749612886; x=1781148886;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RLmNVZjrSHGeXBYCymqhAETWJdCGkX14Wr1pqgtheAI=;
-  b=itYqcettiWuoMvCQy51GKkGhZq5gCuAJeytRQtFyrjSe9G+79HG76kVQ
-   orBUkTlUWLdN3DCk8XDh969Uj/xyfwYeIyjJ3FuloiftRdqJubV2cOXPt
-   yqX4oZ6eQVTPsmIU73Qnncuga5bhQDCAay+0qw28/tMSwirsuFFxZ5zV0
-   YZc9Bq+cvoijLKPj890E1LZFceNIJe/fFseSEfh6851nY+kcD9vUxTPSV
-   MG2IvDYyxkYjcjHODE1ANNNlIUK7gSvBBWvKJXE3l6Wpx39yZCphnNED3
-   oMgjmqXyRR2jmrjfMionStsmZeL0EMlpWT0XWqmzzYl/LtJaU3LpUqLBP
+  bh=Y880Dmewf2eHGLtigrHUTnUd1//A+PCGJaeDSkCvrwU=;
+  b=dqmkM/m5tECMc/OvOaSSd58XJglixEvnsZ+A2b07xykZlerEDiD4jbdL
+   vHsZnNF0w4aHbg2L665FfgrXhLOr9XMJ9HvNeZgRZEy8/Bz0eGQrzOGhC
+   QG2EoYfuY/pFW525L9zJZSr6d76SMxsRUS7jSVZnP7ksVRwMJ+APnA350
+   /geHA4KRwoiJtYAWZ3RhtEPANfOx9+dKKlERGkAxSm7VazlvJpPeXZ/yB
+   dqDiZLBnmGsfs+ZST90WVs5vlLJB0X4GyYZie7T6B63E/z+t2ZBXtzJjF
+   AZ5mWQStrslVGVPlK/njXLMzcW2MsMDbnhjuYEkoe2LF2IndEBcThpQec
    Q==;
-X-CSE-ConnectionGUID: GRrk7yozR/i6A5vbAaH4AQ==
-X-CSE-MsgGUID: RHUWDTLfSdy0P60GtyHGaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="63094895"
+X-CSE-ConnectionGUID: yrxpCbluTgqIDRD81aZ6+w==
+X-CSE-MsgGUID: Hkn9iHFxS62q5OBWFWtmDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="63094896"
 X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="63094895"
+   d="scan'208";a="63094896"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 20:34:45 -0700
-X-CSE-ConnectionGUID: cz0pmPH/TSGZabIVuAtfzQ==
-X-CSE-MsgGUID: A7t9aLWKTbS65UbaQsLZgQ==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 20:34:46 -0700
+X-CSE-ConnectionGUID: uVZHvZsyTMKGVFZCEq1KTQ==
+X-CSE-MsgGUID: qH/iJbdZTLeiwHUwvb4gEg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="150880969"
+   d="scan'208";a="150880972"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 20:34:44 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 20:34:45 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 11/15] wifi: iwlwifi: pcie: fix kernel-doc warnings
-Date: Wed, 11 Jun 2025 06:34:11 +0300
-Message-Id: <20250611063124.7434b8ecc4b6.Ia4cfeea63e946f3b54e3e6b7bd6ab81130b0a7e6@changeid>
+Subject: [PATCH iwlwifi-next 12/15] wifi: iwlwifi: mei: fix kernel-doc warnings
+Date: Wed, 11 Jun 2025 06:34:12 +0300
+Message-Id: <20250611063124.82cc1d805bda.I21e7be2df56f20e1215dc35d94f3225708c5d74f@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250611033415.1175681-1-miriam.rachel.korenblit@intel.com>
 References: <20250611033415.1175681-1-miriam.rachel.korenblit@intel.com>
@@ -78,93 +78,110 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Also fix the name of the iwl_prph_scratch_mem_desc_addr_array
-struct and some related spelling.
+Fix some warnings and fill in some TBDs while at it.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-v2.c      | 4 ++--
- drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h   | 5 ++++-
- .../net/wireless/intel/iwlwifi/pcie/iwl-context-info-v2.h   | 6 +++---
- 3 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mei/sap.h | 30 ++++++++++----------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-v2.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-v2.c
-index 0df379fda463..06be929a3ca5 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-v2.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-v2.c
-@@ -391,13 +391,13 @@ static int iwl_pcie_load_payloads_segments
- {
- 	struct iwl_dram_data *cur_payload_dram = &dram_regions->drams[0];
- 	struct iwl_dram_data *desc_dram = &dram_regions->prph_scratch_mem_desc;
--	struct iwl_prph_scrath_mem_desc_addr_array *addresses;
-+	struct iwl_prph_scratch_mem_desc_addr_array *addresses;
- 	const void *data;
- 	u32 len;
- 	int i;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mei/sap.h b/drivers/net/wireless/intel/iwlwifi/mei/sap.h
+index 3b56637b9697..ba1f75f739c2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mei/sap.h
++++ b/drivers/net/wireless/intel/iwlwifi/mei/sap.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ /*
+- * Copyright (C) 2021 - 2022 Intel Corporation
++ * Copyright (C) 2021 - 2022, 2025 Intel Corporation
+  */
  
- 	/* allocate and init DRAM descriptors array */
--	len = sizeof(struct iwl_prph_scrath_mem_desc_addr_array);
-+	len = sizeof(struct iwl_prph_scratch_mem_desc_addr_array);
- 	desc_dram->block = iwl_pcie_ctxt_info_dma_alloc_coherent
- 						(trans,
- 						 len,
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
-index ebcc174f6c62..b1dcaae0dc10 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
-@@ -39,7 +39,7 @@ struct iwl_host_cmd;
-  * trans_pcie layer */
+ #ifndef __sap_h__
+@@ -340,12 +340,12 @@ enum iwl_sap_wifi_auth_type {
+ };
  
  /**
-- * struct iwl_rx_mem_buffer
-+ * struct iwl_rx_mem_buffer - driver-side RX buffer descriptor
-  * @page_dma: bus address of rxb page
-  * @page: driver's pointer to the rxb page
-  * @list: list entry for the membuffer
-@@ -190,6 +190,7 @@ struct iwl_rb_allocator {
-  * iwl_get_closed_rb_stts - get closed rb stts from different structs
-  * @trans: transport pointer (for configuration)
-  * @rxq: the rxq to get the rb stts from
-+ * Return: last closed RB index
+- * enum iwl_sap_wifi_cipher_alg
+- * @SAP_WIFI_CIPHER_ALG_NONE: TBD
+- * @SAP_WIFI_CIPHER_ALG_TKIP: TBD
+- * @SAP_WIFI_CIPHER_ALG_CCMP: TBD
+- * @SAP_WIFI_CIPHER_ALG_GCMP: TBD
+- * @SAP_WIFI_CIPHER_ALG_GCMP_256: TBD
++ * enum iwl_sap_wifi_cipher_alg - MEI WiFi cipher algorithm IDs
++ * @SAP_WIFI_CIPHER_ALG_NONE: No encryption
++ * @SAP_WIFI_CIPHER_ALG_TKIP: TKIPO
++ * @SAP_WIFI_CIPHER_ALG_CCMP: CCMP
++ * @SAP_WIFI_CIPHER_ALG_GCMP: GCMP-128
++ * @SAP_WIFI_CIPHER_ALG_GCMP_256: GCMP-256
   */
- static inline u16 iwl_get_closed_rb_stts(struct iwl_trans *trans,
- 					 struct iwl_rxq *rxq)
-@@ -703,6 +704,7 @@ static inline void iwl_txq_stop(struct iwl_trans *trans, struct iwl_txq *txq)
-  * iwl_txq_inc_wrap - increment queue index, wrap back to beginning
-  * @trans: the transport (for configuration data)
-  * @index: current index
-+ * Return: the queue index incremented, subject to wrapping
-  */
- static inline int iwl_txq_inc_wrap(struct iwl_trans *trans, int index)
- {
-@@ -714,6 +716,7 @@ static inline int iwl_txq_inc_wrap(struct iwl_trans *trans, int index)
-  * iwl_txq_dec_wrap - decrement queue index, wrap back to end
-  * @trans: the transport (for configuration data)
-  * @index: current index
-+ * Return: the queue index decremented, subject to wrapping
-  */
- static inline int iwl_txq_dec_wrap(struct iwl_trans *trans, int index)
- {
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/iwl-context-info-v2.h b/drivers/net/wireless/intel/iwlwifi/pcie/iwl-context-info-v2.h
-index 8c5c0ea46181..19f67f868fe5 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/iwl-context-info-v2.h
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/iwl-context-info-v2.h
-@@ -130,11 +130,11 @@ struct iwl_prph_scratch_pnvm_cfg {
- } __packed; /* PERIPH_SCRATCH_PNVM_CFG_S */
+ enum iwl_sap_wifi_cipher_alg {
+ 	SAP_WIFI_CIPHER_ALG_NONE	= IWL_MEI_CIPHER_NONE,
+@@ -601,7 +601,7 @@ enum iwl_sap_flex_filter_flags {
+ };
  
  /**
-- * struct iwl_prph_scrath_mem_desc_addr_array
-+ * struct iwl_prph_scratch_mem_desc_addr_array - DRAM 
-  * @mem_descs: array of dram addresses.
-- * Each address is the beggining of a pnvm payload.
-+ * Each address is the beginning of a PNVM payload.
-  */
--struct iwl_prph_scrath_mem_desc_addr_array {
-+struct iwl_prph_scratch_mem_desc_addr_array {
- 	__le64 mem_descs[IPC_DRAM_MAP_ENTRY_NUM_MAX];
- } __packed; /* PERIPH_SCRATCH_MEM_DESC_ADDR_ARRAY_S_VER_1 */
+- * struct iwl_sap_flex_filter -
++ * struct iwl_sap_flex_filter - filter configuration
+  * @src_port: Source port in network format.
+  * @dst_port: Destination port in network format.
+  * @flags: Flags and protocol, see &enum iwl_sap_flex_filter_flags.
+@@ -633,7 +633,7 @@ enum iwl_sap_ipv4_filter_flags {
+ };
  
+ /**
+- * struct iwl_sap_ipv4_filter-
++ * struct iwl_sap_ipv4_filter - IPv4 filter configuration
+  * @ipv4_addr: The IP address to filer.
+  * @flags: See &enum iwl_sap_ipv4_filter_flags.
+  */
+@@ -643,7 +643,7 @@ struct iwl_sap_ipv4_filter {
+ } __packed;
+ 
+ /**
+- * enum iwl_sap_ipv6_filter_flags -
++ * enum iwl_sap_ipv6_filter_flags - IPv6 filter flags
+  * @SAP_IPV6_ADDR_FILTER_COPY: Pass packets to the host.
+  * @SAP_IPV6_ADDR_FILTER_ENABLED: If false, the filter should be ignored.
+  */
+@@ -653,7 +653,7 @@ enum iwl_sap_ipv6_filter_flags {
+ };
+ 
+ /**
+- * struct iwl_sap_ipv6_filter -
++ * struct iwl_sap_ipv6_filter - IPv6 filter configuration
+  * @addr_lo24: Lowest 24 bits of the IPv6 address.
+  * @flags: See &enum iwl_sap_ipv6_filter_flags.
+  */
+@@ -663,7 +663,7 @@ struct iwl_sap_ipv6_filter {
+ } __packed;
+ 
+ /**
+- * enum iwl_sap_icmpv6_filter_flags -
++ * enum iwl_sap_icmpv6_filter_flags - ICMPv6 filter flags
+  * @SAP_ICMPV6_FILTER_ENABLED: If false, the filter should be ignored.
+  * @SAP_ICMPV6_FILTER_COPY: Pass packets to the host.
+  */
+@@ -673,8 +673,8 @@ enum iwl_sap_icmpv6_filter_flags {
+ };
+ 
+ /**
+- * enum iwl_sap_vlan_filter_flags -
+- * @SAP_VLAN_FILTER_VLAN_ID_MSK: TBD
++ * enum iwl_sap_vlan_filter_flags - VLAN filter flags
++ * @SAP_VLAN_FILTER_VLAN_ID_MSK: VLAN ID
+  * @SAP_VLAN_FILTER_ENABLED: If false, the filter should be ignored.
+  */
+ enum iwl_sap_vlan_filter_flags {
+@@ -751,7 +751,7 @@ struct iwl_sap_pldr_data {
+ } __packed;
+ 
+ /**
+- * enum iwl_sap_pldr_status -
++ * enum iwl_sap_pldr_status - product reset status
+  * @SAP_PLDR_STATUS_SUCCESS: PLDR started/ended successfully
+  * @SAP_PLDR_STATUS_FAILURE: PLDR failed to start/end
+  */
 -- 
 2.34.1
 
