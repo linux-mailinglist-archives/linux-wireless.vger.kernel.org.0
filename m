@@ -1,158 +1,210 @@
-Return-Path: <linux-wireless+bounces-23997-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23999-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277E8AD5B99
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 18:15:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB09AD5C77
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 18:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C60EF16EED4
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 16:15:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD9A51719DB
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 16:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A224A1E5205;
-	Wed, 11 Jun 2025 16:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D291FE45A;
+	Wed, 11 Jun 2025 16:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pRSNC7R6"
+	dkim=pass (2048-bit key) header.d=moment-tech.20230601.gappssmtp.com header.i=@moment-tech.20230601.gappssmtp.com header.b="y+U4KD3t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B93205AA8
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 16:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B92D1C8632
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 16:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749658448; cv=none; b=l0HKt/D3x2llXKbsrcz/0S1AVAx4XSTgP7jLuMPX55M/x0RI0LqXMBUJZCLVdQh36HGo8HuRQmcPD7I6+cIx+drqO49itWLpAeA5XOTN55XoiV/SaGCkrYNWSpXnjZVxHMuwQrOCEdlpWrLYQMk+8fujG5DiK/wEMyTxx5y98nM=
+	t=1749660022; cv=none; b=IFKWxuUxt5y7U8iiCFG/aKyagLFd87tfssgK7LsekQnZKVvZQFAAga8O1Vw+ey9jEf/21vvY1RfUNGJ6LgH+OiVWgN3bvO7aIzjMxjJkUi8/SZ4k0INbVKBZTiCRZEPSC/Lr6GTKuJpuIK4WZsq5nwFLzD898otceRR1xkhtcc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749658448; c=relaxed/simple;
-	bh=KgmN6Z5U1HBDuCEx3knea+7L6zP1BXlcij2mPYCuio8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZXGTO4VMrzHbiDSd9OlNVNhmL5gT9gErPV7U1q+wSAte7R/kXQx3LLd7HXJS7SNVpdx5Im64BTN4k3HaMhRTrXkPyBOTj58lG4ieJT9G4feJUd7IiqBBRfqKogJxdKY4zHEy0KH5pmyi1DO41qRpz/rdgBNFct5pCuyvocrTYVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pRSNC7R6; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55B9DIF1013866
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 16:14:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	GH2j/JcGCi/wRGQ9dQsBU2fKYdtjABlsIMmBhcg0SgE=; b=pRSNC7R6l5HnmRsq
-	Scnjy8EdxHE1eJmHy9ZUbZAHkX8hC30QotCClFjZ3pNSON3KxyhSz6Oo0+F/24WE
-	5r/hzrSpnTcFpocwRCW0w26zWx/n6q9ptqLi9ABqjXZ4R8i+rtzZu8uM9v13astM
-	YIxexQdGRM7WMPScyf3oLUwix5uCDdN2pIhqfRtoUFk/i8yNBQuUnTUuvoGtC7rW
-	H9sH8oS+0VDXP5mONn5IBw0Ng+gDpkJaX/9alty3gELd7c4145JggGTHAKMyTWXl
-	BGqleD2qrXDTtFhVE8Nxi3Sva+otxjR8V2KcTQYF4tTWQUOjyfFN4DR9n6l3HkcN
-	fRoN6A==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 476fmnd7fv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 16:14:06 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-747af0bf0ebso40744b3a.1
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 09:14:06 -0700 (PDT)
+	s=arc-20240116; t=1749660022; c=relaxed/simple;
+	bh=OllCvvlTLc+b0HxiIdtuK6rR9WGYjQDgTDP5iJcsR1o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jc68IOwt3zD7ZBWLCcLYq30tIjrWmM5CeJfeUBQ6rjtamHvYheHNKHciezjw1Ha6OCRM/sTAFqeA6Wb/BwhrwH8gEFKTvM6RZKUKbyL5WW1AA4G0xa7ldTmywa1bArIyqhTzbamlcdxaAfxE803KPJxUotx4NMc4ornYnO+LZJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moment.tech; spf=pass smtp.mailfrom=moment.tech; dkim=pass (2048-bit key) header.d=moment-tech.20230601.gappssmtp.com header.i=@moment-tech.20230601.gappssmtp.com header.b=y+U4KD3t; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moment.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=moment.tech
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-441d437cfaaso44678685e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 09:40:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=moment-tech.20230601.gappssmtp.com; s=20230601; t=1749660016; x=1750264816; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bpIIr412h6qi7YHWKmAJOkUa0XBDTSw1GCUKcTFMnYg=;
+        b=y+U4KD3tRexKrD6u8PAGjsKLebtVBxhU499tDslZEHJUzuOu/gITwHZNZm0ZyM6h3z
+         fFvGTSdtUchGu5msLXmXcAQtNhdGfzR5wtHfcUQtRQtcQiRDDiRRMgurSBQ3SaRdoF0z
+         74NpIRQXlf4qbU8uMIZ3dkGKWkEhQDLODM9sTvqrn1sZ9Eldr3ArxSsnryv1xEkykFDP
+         m/Pjbv7I7jSyhJP8PuKanWFlKwtSQytl2K8gguZaW3hqzeob4NfEBx09UMh/jXM3SMSC
+         Hb26kkCxZ+IlT3tAY4Uq6vmxxMjxdJ5st5rgg5RkdZ8IRSDrRCCl0l1k3buNQlMAT+rB
+         hZzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749658445; x=1750263245;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GH2j/JcGCi/wRGQ9dQsBU2fKYdtjABlsIMmBhcg0SgE=;
-        b=aM61zVzVNyo15QXVlVmckE4VDtH4qB05/9/nTFTN6baM1d4uhTMcb9KOx4M+V76sMw
-         SF9+eaqIV7Gis64ij2YcG4v/o+0Dq42wqq9e5zsL8JXWHH/CzJf/om/TeZEOGZCuMJq8
-         vbkinrZUqL/uFcs6+zptiTupCA8VpC4TvB72w470Cx3ITXqlc5HBRpzcW4+oFQ2xiFwF
-         YSjMG9rKlFm043Md2N2n+9ivo5j678rqozqpnQfwNa9yWaePzr5jyGk2yarn/STFsaWr
-         X3DBZ7jeOLt7dnvRC23TSfvMQ1W6YIb2/JSvE+fFIYD/hotLkKtJUjGk3DUvFrtMf0KC
-         agoA==
-X-Gm-Message-State: AOJu0Yw/XjUUvr9YhpDIV4+2f+TKFcp1ndIyx/X13FJHIgY7RnxkmrOu
-	EmoX6hWExG+bmLfwR5o1/9iQqbP3pSPykqzr/TpYxLjM+oi1guGNpMZ0X8QBwAMPkvKMrv5cYxD
-	chAzsd6Iihr0l4dazk6h1BVGGGv9ONB4bKrugmrf96naxYebVuUdf+2tOY+9UNFx49TD0QA==
-X-Gm-Gg: ASbGncueL2dj7wWx+A3GyHfLO8JPj+u1JoXlkzQt6GiNuncrs/OEWODWqHLw2mSc3la
-	gAldPFs2OGtvwFB0manjx1mcsM5DStXtBSeJy3GTOV2xeZqen0IZfp2PbKQLxyCy6VmK19Uc1vP
-	JwJl0JogBybUY3riLOIFBlJTN6cX4Vb04Wo2dBjJG6jdvcPkTEaxkZyPI1NJJ9a6MgB2ur6LhbE
-	uPZsvjI92T1c7/xWrWwvLWuTSBJKsoUsm8xOvQ13+YQkvc6R2hGlcgUHl4A+5g5PFhdFZ8keGQz
-	XiWALvAn9/aNSvhmj4NtRFH0KzYYym0gzVuO4yaQsmjeg8Q2aAmXIMjwrmE=
-X-Received: by 2002:a05:6a21:3943:b0:215:dfd0:fd21 with SMTP id adf61e73a8af0-21f8672f2a9mr6863599637.34.1749658445459;
-        Wed, 11 Jun 2025 09:14:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFhF50A00ZTd8vFQ+6dCgRXF844Xy0RmBjMaSc4ILELsZo+JvEhAIFYPQ0WDZr7mZZy0t8u+A==
-X-Received: by 2002:a05:6a21:3943:b0:215:dfd0:fd21 with SMTP id adf61e73a8af0-21f8672f2a9mr6863542637.34.1749658444992;
-        Wed, 11 Jun 2025 09:14:04 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482cdf1c41sm9443708b3a.149.2025.06.11.09.14.04
+        d=1e100.net; s=20230601; t=1749660016; x=1750264816;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bpIIr412h6qi7YHWKmAJOkUa0XBDTSw1GCUKcTFMnYg=;
+        b=aC0TgcIU3O916jrABExkwB/zbdboUgYw/LrflI/ySrpsMzZh1V5W8T7TTY/ER/ake/
+         xw7dhMPk1bHVYFb2FzjSRWEk2RDLb3NhDG9wyDMxetFFiYeY2wUiG6DjFo8u6+yvyKkI
+         6R4Toamtd1B6gQnzzDWVEJQA0jTdHYAimh55lfBudnNeG4aIlIcX6Imzvvbk3y59zy1r
+         sTOsZewpxRHJRFLlXEWO/4ohUGVz4M0GpSW5PqJd+xRoCsLcWEnLzp+hJBiW3IKASKBj
+         4BrTjUa9VsQYpJyU5jrs9hnDT90QnO3Fq0Sba7Vdh+wzSUz1+n26ohv1G91zx4N7vb10
+         JkMg==
+X-Gm-Message-State: AOJu0Yzbo+Dg+vAknnGBVzCH1YBg1f9vwUbu2/joW422Ngzjd3pYtFMp
+	Mv0AQCVpmZKevZFamIaFZkRo0Isz1MCbDIWXqATbfw8gZzot9/5D8SwSbXyXAlIjJS031jzB4Dz
+	pRbzwtuE=
+X-Gm-Gg: ASbGncuv1wFhBm9kUsR489AKHAbVNqK9EOG6TxQjJHfowDWv/tHr7TCMuSWoksvWMxV
+	qubxLvhugCrrZuOZ2tspkjpaJ3GRLUDHH/3THhKR10D8xY9hkDa1sSfLwOzCRX4A3L8DvSU8Djj
+	5aPIz/LlTvNW+LaBgdlqp3vNJHtJMvpx+sI/3cWORTDr2ZoTj2/WUtOHGGCoTJzM4QpyIbK1C51
+	kKeBPyV4+iECcO3hRLaBnSncRauGyTBu21WZ89VEmR/bSHtpQhHVFZslRhsePNXExOdHLb8QjVi
+	HfsuFTq+klQixJBBWLp4FpCxCbwwOn+9NAdSgrXT/cuMHJnkLbsj7fiAXlativGtrq2/Ew29TQG
+	HlbF+JwDXPb7DKuZ+QAx/lA==
+X-Google-Smtp-Source: AGHT+IExmN5nKKRM3cMk/QnLRlHaydJ/Cszjs13vnlBuajVpdmmRJFpfo/it2FNx38EQznXuFXW3vQ==
+X-Received: by 2002:a05:600c:3586:b0:440:6a37:be0d with SMTP id 5b1f17b1804b1-4532b8c2c9amr5327405e9.15.1749660016157;
+        Wed, 11 Jun 2025 09:40:16 -0700 (PDT)
+Received: from Ubuntu24x64.. (288080060.box.freepro.com. [130.180.210.198])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a532461211sm15561599f8f.86.2025.06.11.09.40.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 09:14:04 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Date: Wed, 11 Jun 2025 09:13:58 -0700
-Subject: [PATCH ath-next 5/5] wifi: ath12k: Add missing include of export.h
+        Wed, 11 Jun 2025 09:40:15 -0700 (PDT)
+From: balsam.chihi@moment.tech
+To: linux-wireless@vger.kernel.org
+Cc: ath11k@lists.infradead.org,
+	jjohnson@kernel.org,
+	Balsam CHIHI <balsam.chihi@moment.tech>
+Subject: [PATCH] ath11k: pci: avoid unsafe register access during shutdown
+Date: Wed, 11 Jun 2025 18:40:04 +0200
+Message-ID: <20250611164004.38580-1-balsam.chihi@moment.tech>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250611-ath-unused-export-v1-5-c36819df7e7b@oss.qualcomm.com>
-References: <20250611-ath-unused-export-v1-0-c36819df7e7b@oss.qualcomm.com>
-In-Reply-To: <20250611-ath-unused-export-v1-0-c36819df7e7b@oss.qualcomm.com>
-To: Jeff Johnson <jjohnson@kernel.org>,
-        =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Proofpoint-ORIG-GUID: kCzHlqx0xeLsoYPpOvp2F7VM3jXcFshC
-X-Proofpoint-GUID: kCzHlqx0xeLsoYPpOvp2F7VM3jXcFshC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjExMDEzNiBTYWx0ZWRfX7QnHpE4jVRYi
- 0+t4/jQK/1S0g1AHXgavTjTrD1efO6WZmcRs4mnUzzVqdyYt/hV2kkbs9oos8nOdOI6GSap9FUq
- 4xYakL6T47GZRn078Y7mRw/N+OzzMFANUwPX+0pWA1q4W6U3RTstDTP71w7QIAs9JajCDtTqBHK
- neegp3xWNiVAdTxEwiNr7MBMiRNpzHj2ecm3i/CYe/68JmNyW1A9AHvqdYeyK/AaTcXSWPvupg/
- OdyOli6J8/SR+d+MirTCHWaOwYfUZJg9fGvkM4M3WjtaSM9UbAdMYPPxvmY/GccJfO3Hf1YVEJ+
- oDfs45tzV28xzWsya8CDayejsxOQsdqpGKl+Lc5YeiYY/42zQH84RfHops3/epjV6b5BLTgYfgq
- vw8IROmu0qo3KZZZ9+i9/39fUjaiUtpsq8F3DUVfydHg+4c9MB+271fzlHJvGvtN3QiQpYPT
-X-Authority-Analysis: v=2.4 cv=K8wiHzWI c=1 sm=1 tr=0 ts=6849ab4e cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=xduYLtDgZ1illbjtIHAA:9
- a=QEXdDO2ut3YA:10 a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-11_07,2025-06-10_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0 mlxlogscore=999 phishscore=0 lowpriorityscore=0
- malwarescore=0 adultscore=0 bulkscore=0 spamscore=0 impostorscore=0
- priorityscore=1501 suspectscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506110136
+Content-Transfer-Encoding: 8bit
 
-Commit a934a57a42f6 ("scripts/misc-check: check missing #include
-<linux/export.h> when W=1") introduced a new check that is producing
-the following warning:
+From: Balsam CHIHI <balsam.chihi@moment.tech>
 
-drivers/net/wireless/ath/ath12k/core.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+During system reboot or module removal (rmmod), a crash was observed
+due to a synchronous external abort caused by invalid register access
+in ath11k_pci_clear_dbg_registers(). This happens when the device is
+already powered off and the driver attempts to read debug registers.
 
-Add the missing #include to satisfy the check.
+The crash log shows:
+root@OpenWrt:~# reboot
+[  343.663492] Internal error: synchronous external abort:
+0000000096000210 [#1] SMP
+[  343.670992] Modules linked in: [...]
+[  343.842432] CPU: 7 PID: 9435 Comm: procd Tainted: G O 6.6.86 #0
+[  343.849746] Hardware name: LS1088A
+[  343.856969] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  343.863933] pc : ath11k_pci_get_msi_irq+0x18a0/0x1900 [ath11k_pci]
+[  343.870125] lr : ath11k_pcic_init_msi_config+0x98/0xc4 [ath11k]
+[...]
+[  343.950800] Call trace:
+[  343.953241]  ath11k_pci_get_msi_irq+0x18a0/0x1900 [ath11k_pci]
+[  343.959080]  ath11k_pcic_init_msi_config+0x98/0xc4 [ath11k]
+[  343.964671]  ath11k_pcic_read32+0x30/0xb4 [ath11k]
+[  343.969477]  ath11k_pci_get_msi_irq+0x528/0x1900 [ath11k_pci]
+[  343.975230]  ath11k_pci_get_msi_irq+0x1460/0x1900 [ath11k_pci]
+[  343.981068]  ath11k_pci_get_msi_irq+0x1750/0x1900 [ath11k_pci]
+[  343.986906]  pci_device_shutdown+0x34/0x44
+[  343.991004]  device_shutdown+0x160/0x268
+[  343.994928]  kernel_restart+0x40/0xc0
+[  343.998594]  __do_sys_reboot+0x104/0x23c
+[  344.002518]  __arm64_sys_reboot+0x24/0x30
+[  344.006529]  do_el0_svc+0x6c/0x100
+[  344.009931]  el0_svc+0x28/0x9c
+[  344.012986]  el0t_64_sync_handler+0x120/0x12c
+[  344.017344]  el0t_64_sync+0x178/0x17c
+[  344.021009] Code: f94e0a80 92404a73 91420273 8b130013 (b9400273)
+[  344.027102] ---[ end trace 0000000000000000 ]---
 
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+This patch adds a `power_on` flag to conditionally skip debug register
+reads when the device is not powered, preventing invalid memory access.
+
+With this change, the system no longer crashes on reboot or rmmod,
+and the driver continues to function correctly when reloaded.
+
+Tested-on: QCN9074 hw2.0 PCIe on LS1088A
+Tested-on: OpenWrt 24.10.1
+Fixes: crash on reboot/rmmod due to invalid register access
+Signed-off-by: Balsam CHIHI <balsam.chihi@moment.tech>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/ath11k/pci.c | 36 ++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index ebc0560d40e3419130e4caf01c9b91bd9affb3bd..ee0ac2e4e74b4b7a700b68a2077aa5b9938362c0 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -2,8 +2,10 @@
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-  * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index 78444f8ea153..0c1b55957557 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -203,16 +203,18 @@ static void ath11k_pci_soc_global_reset(struct ath11k_base *ab)
+ 		ath11k_warn(ab, "link down error during global reset\n");
+ }
  
-+#include <linux/export.h>
- #include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/remoteproc.h>
-
+-static void ath11k_pci_clear_dbg_registers(struct ath11k_base *ab)
++static void ath11k_pci_clear_dbg_registers(struct ath11k_base *ab, bool power_on)
+ {
+-	u32 val;
++	if (power_on) {
++		u32 val;
+ 
+-	/* read cookie */
+-	val = ath11k_pcic_read32(ab, PCIE_Q6_COOKIE_ADDR);
+-	ath11k_dbg(ab, ATH11K_DBG_PCI, "pcie_q6_cookie_addr 0x%x\n", val);
++		/* read cookie */
++		val = ath11k_pcic_read32(ab, PCIE_Q6_COOKIE_ADDR);
++		ath11k_dbg(ab, ATH11K_DBG_PCI, "pcie_q6_cookie_addr 0x%x\n", val);
+ 
+-	val = ath11k_pcic_read32(ab, WLAON_WARM_SW_ENTRY);
+-	ath11k_dbg(ab, ATH11K_DBG_PCI, "wlaon_warm_sw_entry 0x%x\n", val);
++		val = ath11k_pcic_read32(ab, WLAON_WARM_SW_ENTRY);
++		ath11k_dbg(ab, ATH11K_DBG_PCI, "wlaon_warm_sw_entry 0x%x\n", val);
++	}
+ 
+ 	/* TODO: exact time to sleep is uncertain */
+ 	mdelay(10);
+@@ -223,14 +225,18 @@ static void ath11k_pci_clear_dbg_registers(struct ath11k_base *ab)
+ 	ath11k_pcic_write32(ab, WLAON_WARM_SW_ENTRY, 0);
+ 	mdelay(10);
+ 
+-	val = ath11k_pcic_read32(ab, WLAON_WARM_SW_ENTRY);
+-	ath11k_dbg(ab, ATH11K_DBG_PCI, "wlaon_warm_sw_entry 0x%x\n", val);
++	if (power_on) {
++		u32 val;
+ 
+-	/* A read clear register. clear the register to prevent
+-	 * Q6 from entering wrong code path.
+-	 */
+-	val = ath11k_pcic_read32(ab, WLAON_SOC_RESET_CAUSE_REG);
+-	ath11k_dbg(ab, ATH11K_DBG_PCI, "soc reset cause %d\n", val);
++		val = ath11k_pcic_read32(ab, WLAON_WARM_SW_ENTRY);
++		ath11k_dbg(ab, ATH11K_DBG_PCI, "wlaon_warm_sw_entry 0x%x\n", val);
++
++		/* A read clear register. clear the register to prevent
++		* Q6 from entering wrong code path.
++		*/
++		val = ath11k_pcic_read32(ab, WLAON_SOC_RESET_CAUSE_REG);
++		ath11k_dbg(ab, ATH11K_DBG_PCI, "soc reset cause %d\n", val);
++	}
+ }
+ 
+ static int ath11k_pci_set_link_reg(struct ath11k_base *ab,
+@@ -368,7 +374,7 @@ static void ath11k_pci_sw_reset(struct ath11k_base *ab, bool power_on)
+ 	}
+ 
+ 	ath11k_mhi_clear_vector(ab);
+-	ath11k_pci_clear_dbg_registers(ab);
++	ath11k_pci_clear_dbg_registers(ab, power_on);
+ 	ath11k_pci_soc_global_reset(ab);
+ 	ath11k_mhi_set_mhictrl_reset(ab);
+ }
 -- 
-2.42.0
+2.43.0
 
 
