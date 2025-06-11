@@ -1,70 +1,69 @@
-Return-Path: <linux-wireless+bounces-24005-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24006-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4036DAD5F09
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 21:27:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7154AD5F0A
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 21:27:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6741BC18D1
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 19:27:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34D747A3294
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 19:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017A12BD5BB;
-	Wed, 11 Jun 2025 19:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1412BDC17;
+	Wed, 11 Jun 2025 19:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NYeuuYA+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DfNHpFuf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648822BDC17
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 19:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966D42BDC24
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 19:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749670018; cv=none; b=dDpZoUVnlVvY/VlFCVXObVvFXRpJ6EPJWBk+vzQZuoTgAu51xRATeVUtSzIOCoCGqT+nFbCLS/mia5TzTRWnYzYZ2a76QT7zH58F7mf2Gv4GoFHdNIHOdA1xNepzh4nbLTW8R41ObjXuz5N9335Yaf/gvvRHKombaaTz3M0tp34=
+	t=1749670020; cv=none; b=k+2KNgOa2aqqz7AHhYyKFReyV0H2MtQlv+ZgIxk/Sn3D9t5enNM7Hq3o1+QAxJnFRZ9ZxvyjLhQHjMEMfoY9+06fStpD93BHpNy5qmxJslmrXR55MNv3+Nw7ex581vIqNNwDFKBqu2+mKN5WvBvGenjOg8wP3onhvyA5SSdigNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749670018; c=relaxed/simple;
-	bh=uU9SdRLZ6Dc5AKK+yj1wJVIU6RdQKS4gSLBFIRAvthM=;
+	s=arc-20240116; t=1749670020; c=relaxed/simple;
+	bh=OO2xFlo3x0olf6gA/wxqaXCWzMI0kLGZWt6CmXfdEwU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uWU/emEjnE91m3NTDs9s1l07gg6l8RafKGIpi5sUmGaunkR8jettbYvQFJ1uuZ2TjulagqRNUkCQs00oxpf0j/PEZ3gcWA+c8oM+TuWpQ94xwLIOO193Vk7gi4sYfc0j2G7xV5BzJqJkGNX5r7+QpBJx5dB2R9Jro6TbIBg/e+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NYeuuYA+; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=TSoo29/V3peWtAzThO4HT15zlARmfu9E3kFRDMB5gJ5Iu5jISjmC5LcUlBiqnSVUjMDKjAlz77wrBCWocPkjLF5Kg0U0E92WBdgKHcMxm+eFZHJiycnUhJQpYSGoY7K29xnPAvdSwzfoJ6hWgYxzQabQiYT5e2Ycv8zrz0OPnVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DfNHpFuf; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749670018; x=1781206018;
+  t=1749670019; x=1781206019;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=uU9SdRLZ6Dc5AKK+yj1wJVIU6RdQKS4gSLBFIRAvthM=;
-  b=NYeuuYA+aUPUTjvEgZFqZdWj+WOEYBNBlHOSH2Nto+KyGuORcmsLzWQV
-   3/tamzK6dwH72qZ0xsBX3UixSWxTZbM+TrB3yFNgVubfI9+tsy9mBMJZ1
-   gtXawEtXNOwn2utX9Ep+fpJZYDymp0OHXr08cGw1+GltXQ4J05u+Cqxpn
-   b7P6CppiFw3R+DhIs/KTHP3W+ywibLsC43hSVAnDlzCl8xiaXFoJojssV
-   HjqFFZ8ZrPd7GmpN4pw3vTMHnwrI0hhsDLeANMk9WscGwf3tGazNxjOMQ
-   a91dQi2UHLPfa4s2M+jknxdyI+U+BIowqmmrsE15qt5MwgWxqZLIkytP6
-   A==;
-X-CSE-ConnectionGUID: XOXknXLMRQ+YCvY+IK26JA==
-X-CSE-MsgGUID: PzX5NMU0RS+8IFlypIcB4w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="74360878"
+  bh=OO2xFlo3x0olf6gA/wxqaXCWzMI0kLGZWt6CmXfdEwU=;
+  b=DfNHpFufwdQ7QZkAg4MUeBv3/xDTQtjtclazW4ESANnpD8W34zYPPHwE
+   XKjHESqC1t9RNZ64gHimL7pMOfCUJ6rI+gNxD/1kYfQqPwRJfiUG8tlPN
+   wD4YDC3bCO1vkyHNz+/io+Tojlj4fy/vczLm+akQyOOnibtiuf9svKPx3
+   plfN4t/IjaE0gLSRipmUhbQVuLVrampYBzVhj6odkxxdbxpHOQqQOeREc
+   qlkzw59g4rXLhA8XAFuROKVItEEmG9GXdJ8jiQtyw/FBnEOrqu4A/5l+v
+   L5m04pjg3i9Qhrou/V++a3ZF3VELAE8QzTz57hUErWZvuYFR871gIuXgE
+   Q==;
+X-CSE-ConnectionGUID: LcZGaUMJSpqWP0iHRpZfIQ==
+X-CSE-MsgGUID: 2Jh0bQgcQ46Fk/lrp/2WtA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="74360882"
 X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
-   d="scan'208";a="74360878"
+   d="scan'208";a="74360882"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 12:26:58 -0700
-X-CSE-ConnectionGUID: MxrEfeQRT7iaRm1M7fQ1hg==
-X-CSE-MsgGUID: /7cfjeUZTPCWrtDKi4Xw0A==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 12:26:59 -0700
+X-CSE-ConnectionGUID: kzrS7bAmThCPOy23y3164g==
+X-CSE-MsgGUID: XDd5dxujTTex4z5Vv9aDdw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
-   d="scan'208";a="147165843"
+   d="scan'208";a="147165846"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 12:26:56 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 12:26:57 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Or Ron <or.ron@intel.com>,
-	Eilon Rinat <eilon.rinat@intel.com>
-Subject: [PATCH iwlwifi-next v2 05/15] wifi: iwlwifi: phy periph read - flow modification
-Date: Wed, 11 Jun 2025 22:26:24 +0300
-Message-Id: <20250611222325.124ce6613edd.Ic1aad57cc6163f0551a3dafae048434f4a2fe7f5@changeid>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi-next v2 06/15] wifi: iwlwifi: mld: add timer host wakeup debugfs
+Date: Wed, 11 Jun 2025 22:26:25 +0300
+Message-Id: <20250611222325.9f2a39cae1e1.Ie0003f21286fea50b507d0debe06332b030cd4cb@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250611192634.2416885-1-miriam.rachel.korenblit@intel.com>
 References: <20250611192634.2416885-1-miriam.rachel.korenblit@intel.com>
@@ -77,80 +76,101 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Or Ron <or.ron@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-If for some reason the reading of phy prph fails, there is no reason to
-keep reading them. Check the status abd break early in such case.
+Add a debugfs file to be able to control how long, at most,
+the device will sleep before waking up the host. This will
+be useful to test certain "assert during suspend" scenarios
+for the previous change.
 
-Signed-off-by: Or Ron <or.ron@intel.com>
-Reviewed-by: Eilon Rinat <eilon.rinat@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 16 ++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h | 10 +++++++++-
- 2 files changed, 25 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/fw/api/d3.h   | 6 ++++--
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c      | 7 +++++++
+ drivers/net/wireless/intel/iwlwifi/mld/debugfs.c | 5 +++++
+ drivers/net/wireless/intel/iwlwifi/mld/mld.h     | 2 ++
+ 4 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 95a732efce45..98ad020014d9 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1106,6 +1106,7 @@ static int iwl_dump_ini_prph_phy_iter_common(struct iwl_fw_runtime *fwrt,
- 	u32 prph_val;
- 	u32 dphy_state;
- 	u32 dphy_addr;
-+	u32 prph_stts;
- 	int i;
- 
- 	range->internal_base_addr = cpu_to_le32(addr);
-@@ -1133,6 +1134,21 @@ static int iwl_dump_ini_prph_phy_iter_common(struct iwl_fw_runtime *fwrt,
- 
- 		iwl_write_prph_no_grab(fwrt->trans, indirect_wr_addr,
- 				       WMAL_INDRCT_CMD(addr + i));
-+
-+		if (fwrt->trans->info.hw_rf_id != IWL_CFG_RF_TYPE_JF1 &&
-+		    fwrt->trans->info.hw_rf_id != IWL_CFG_RF_TYPE_JF2 &&
-+		    fwrt->trans->info.hw_rf_id != IWL_CFG_RF_TYPE_HR1 &&
-+		    fwrt->trans->info.hw_rf_id != IWL_CFG_RF_TYPE_HR2) {
-+			udelay(2);
-+			prph_stts = iwl_read_prph_no_grab(fwrt->trans,
-+							  WMAL_MRSPF_STTS);
-+
-+			/* Abort dump if status is 0xA5A5A5A2 or FIFO1 empty */
-+			if (prph_stts == WMAL_TIMEOUT_VAL ||
-+			    !WMAL_MRSPF_STTS_IS_FIFO1_NOT_EMPTY(prph_stts))
-+				break;
-+		}
-+
- 		prph_val = iwl_read_prph_no_grab(fwrt->trans,
- 						 indirect_rd_addr);
- 		*val++ = cpu_to_le32(prph_val);
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-index 23b2009fbb28..a7214ddcfaf5 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
+index 9c271ea67155..9ce819503aed 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
 @@ -1,6 +1,6 @@
  /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
  /*
-- * Copyright (C) 2005-2014, 2018-2024 Intel Corporation
-+ * Copyright (C) 2005-2014, 2018-2025 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016 Intel Deutschland GmbH
+- * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
+  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
   */
-@@ -514,6 +514,14 @@ enum {
- #define WMAL_INDRCT_CMD(addr) \
- 	((WMAL_CMD_READ_BURST_ACCESS << WMAL_INDRCT_RD_CMD1_OPMOD_POS) | \
- 	 ((addr) & WMAL_INDRCT_RD_CMD1_BYTE_ADDRESS_MSK))
-+#define WMAL_MRSPF_STTS 0xADFC24
-+#define WMAL_MRSPF_STTS_FIFO1_NOT_EMPTY_POS 15
-+#define WMAL_MRSPF_STTS_FIFO1_NOT_EMPTY_MSK 0x8000
-+#define WMAL_TIMEOUT_VAL 0xA5A5A5A2
-+#define WMAL_MRSPF_STTS_IS_FIFO1_NOT_EMPTY(val) \
-+	(((val) >> (WMAL_MRSPF_STTS_FIFO1_NOT_EMPTY_POS)) & \
-+	 ((WMAL_MRSPF_STTS_FIFO1_NOT_EMPTY_MSK) >> \
-+	  (WMAL_MRSPF_STTS_FIFO1_NOT_EMPTY_POS)))
+@@ -19,9 +19,11 @@ enum iwl_d0i3_flags {
+ /**
+  * enum iwl_d3_wakeup_flags - D3 manager wakeup flags
+  * @IWL_WAKEUP_D3_CONFIG_FW_ERROR: wake up on firmware sysassert
++ * @IWL_WAKEUP_D3_HOST_TIMER: wake up on host timer expiry
+  */
+ enum iwl_d3_wakeup_flags {
+-	IWL_WAKEUP_D3_CONFIG_FW_ERROR = BIT(0),
++	IWL_WAKEUP_D3_CONFIG_FW_ERROR	= BIT(0),
++	IWL_WAKEUP_D3_HOST_TIMER	= BIT(1),
+ }; /* D3_MANAGER_WAKEUP_CONFIG_API_E_VER_3 */
  
- #define WFPM_LMAC1_PS_CTL_RW 0xA03380
- #define WFPM_LMAC2_PS_CTL_RW 0xA033C0
+ /**
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+index 339b148d6793..d450d24689f6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+@@ -1317,6 +1317,13 @@ int iwl_mld_no_wowlan_suspend(struct iwl_mld *mld)
+ 	struct iwl_d3_manager_config d3_cfg_cmd_data = {};
+ 	int ret;
+ 
++	if (mld->debug_max_sleep) {
++		d3_cfg_cmd_data.wakeup_host_timer =
++			cpu_to_le32(mld->debug_max_sleep);
++		d3_cfg_cmd_data.wakeup_flags =
++			cpu_to_le32(IWL_WAKEUP_D3_HOST_TIMER);
++	}
++
+ 	lockdep_assert_wiphy(mld->wiphy);
+ 
+ 	IWL_DEBUG_WOWLAN(mld, "Starting the no wowlan suspend flow\n");
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+index 352da8aa7898..75cc1d8bb90c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+@@ -546,6 +546,11 @@ iwl_mld_add_debugfs_files(struct iwl_mld *mld, struct dentry *debugfs_dir)
+ #endif
+ 	MLD_DEBUGFS_ADD_FILE(inject_packet, debugfs_dir, 0200);
+ 
++#ifdef CONFIG_PM_SLEEP
++	debugfs_create_u32("max_sleep", 0600, debugfs_dir,
++			   &mld->debug_max_sleep);
++#endif
++
+ 	debugfs_create_bool("rx_ts_ptp", 0600, debugfs_dir,
+ 			    &mld->monitor.ptp_time);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.h b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
+index 1a2c44f44eff..241ab3a00e56 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mld.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
+@@ -159,6 +159,7 @@
+  * @addresses: device MAC addresses.
+  * @scan: instance of the scan object
+  * @wowlan: WoWLAN support data.
++ * @debug_max_sleep: maximum sleep time in D3 (for debug purposes)
+  * @led: the led device
+  * @mcc_src: the source id of the MCC, comes from the firmware
+  * @bios_enable_puncturing: is puncturing enabled by bios
+@@ -252,6 +253,7 @@ struct iwl_mld {
+ 	struct iwl_mld_scan scan;
+ #ifdef CONFIG_PM_SLEEP
+ 	struct wiphy_wowlan_support wowlan;
++	u32 debug_max_sleep;
+ #endif /* CONFIG_PM_SLEEP */
+ #ifdef CONFIG_IWLWIFI_LEDS
+ 	struct led_classdev led;
 -- 
 2.34.1
 
