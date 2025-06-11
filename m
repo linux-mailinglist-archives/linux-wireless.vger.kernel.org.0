@@ -1,117 +1,123 @@
-Return-Path: <linux-wireless+bounces-23988-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-23989-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C355CAD576A
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 15:42:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1915BAD57AA
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 15:55:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 718F23A1F8B
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 13:42:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 667D73A5EAC
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Jun 2025 13:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270371EE033;
-	Wed, 11 Jun 2025 13:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7918A28B7C6;
+	Wed, 11 Jun 2025 13:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=buaa.edu.cn header.i=@buaa.edu.cn header.b="TQNwUR8t"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lz5vG7H+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net (zg8tmja5ljk3lje4ms43mwaa.icoremail.net [209.97.181.73])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B783E28314A
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Jun 2025 13:42:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.181.73
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55E528937E;
+	Wed, 11 Jun 2025 13:55:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749649373; cv=none; b=cfhSJSKeminbPf4VI0rxbbLU8iLHeNI6j3BbXIFwj4XseOgbIDSO02maUyns4xHIoHtz7iMlQ2RPJwkPKEeJfPucL0o6VEw/37VyotUmqN1b13mtKNTOFIbei4CbHWnD8+SFQI+c3tUlVRNuTJ6kbNzlqsmhGGrHZbRd74Aui6M=
+	t=1749650142; cv=none; b=HBUz2q+wbUe0++Rm80o9ETvzebJyeOJfLmjgwsEqKXu7kWzggJUKusmxCQYgqhkrBtT/fXWthHvTxgqlH7ISVaKM2a9I46K04vMzha8QDJUX5dQsSKhryR5rO5olCXwwUvq0DAyKeK853gWCM3lXSWQuJmgb9ZnrfKruihFO5i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749649373; c=relaxed/simple;
-	bh=HqYbK1Zn5pXaEcXcUsyIIvDhhRKRUhcVBQwOLA2hEuc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C+xLUGNJOvzMNWPAiMzlvKgTRg8jK431Xmc6nIo2qTYCbiuGD7jEHJt8rpXwB0K2MNMer9uLVeh9tPUtAABhTCSPBR5h2rT2KXTyHNODwX2ckRin75toXtH9OzN6DLa8mZMGm9lmW90n2XQnaUQdAQ1qH+SXCuimqh+C5SV5Fq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buaa.edu.cn; spf=pass smtp.mailfrom=buaa.edu.cn; dkim=fail (0-bit key) header.d=buaa.edu.cn header.i=@buaa.edu.cn header.b=TQNwUR8t reason="key not found in DNS"; arc=none smtp.client-ip=209.97.181.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buaa.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buaa.edu.cn
+	s=arc-20240116; t=1749650142; c=relaxed/simple;
+	bh=IifNnRPlQTOlLPQoP4l2aK06ak5l7AOOpGK/E93CQEs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LAXjk4iXVxsIq6MBWKxMO/oaHWfZ5TcQEJ+LmLtOVAh+3HdHvaYsYCHnodwQau8LIewXZXsiQ+xVWxfAvncM8jB4KX8zraw1S2oWXZO8HJQK3UGGLYiQwgpsgrnvwMt2sIPEQblunFmIrGRNS24vZPBpXmp7apn3Q0HEbPPdauM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lz5vG7H+; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-450cb2ddd46so39622105e9.2;
+        Wed, 11 Jun 2025 06:55:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=buaa.edu.cn; s=buaa; h=Received:From:To:Cc:Subject:Date:
-	Message-Id:MIME-Version:Content-Transfer-Encoding; bh=jIqZLsu+/x
-	5dRvLruSMuPxmHqtGPMhfj7ymBrDEk+WE=; b=TQNwUR8tkbjh1dpIlORcRUJ5qF
-	Y1byt/FvSSlBwwu31laElZBE4leJVreP37JSr8glFH4H2UT0B21OHrv2jV96M/PG
-	nDA6aQqTYiyFSwIA51B4/kE7pFl8Up7EBVBwm8CKEAfbeSWSSw4DzTTBKK8DtX0b
-	PnAdKzgz2lSUOTsLA=
-Received: from f76011e66543.. (unknown [10.133.16.49])
-	by coremail-app1 (Coremail) with SMTP id OCz+CgD3vVOvh0loTAypBQ--.57342S2;
-	Wed, 11 Jun 2025 21:42:07 +0800 (CST)
-From: hzy15610046011 <houzhanyi61@buaa.edu.cn>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	StanleyYP.Wang@mediatek.com,
-	mingyen.hsieh@mediatek.com,
-	chad@monroe.io,
-	razvan.grigore@vampirebyte.ro
-Cc: linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	houzhanyi61@buaa.edu.cn,
-	zhanyihou6011@gmail.com
-Subject: [PATCH] Add non-null judgement branch for return value of  mt76_connac_get_he_phy_cap().
-Date: Wed, 11 Jun 2025 13:42:09 +0000
-Message-Id: <20250611134209.312009-1-houzhanyi61@buaa.edu.cn>
-X-Mailer: git-send-email 2.39.5
+        d=gmail.com; s=20230601; t=1749650139; x=1750254939; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KwI5P3Q3ihOeLowm5FSpCJuMLkzkYQo2YbGk0t9yYTo=;
+        b=lz5vG7H+aHyV7HafRBRfQj5ZYRKXR1GW/0pA2upUlPqgCxaq5HOQ/U+x1tR/NSjLLD
+         YAUctI2vySqtdX+p8N3dhRgbbSoaFLLr8FD/5UgpWBM/yrKxOnYATCJyXLV+IstYK7GU
+         Pe8jJRN39rYrRysbWWrSdVOSkhdDYC8C1u4uhAsYS1pOaKFyyOPLtx8ZQ30+oO56M5Tg
+         Xx7f1Lz/oYs0dYxnU/+SIg/my1uB1ePMpdjlWRBgdtGpMz/4lkLZNB08+lxpohPVvgjl
+         MlreAX+aZdxM+HNGEh1m+JHp3ip/WxLdtFsnmjSpCnoJwtUGn8mIi8EMM2vE5zTklTXP
+         GSFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749650139; x=1750254939;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KwI5P3Q3ihOeLowm5FSpCJuMLkzkYQo2YbGk0t9yYTo=;
+        b=wB7ptbSJdDH3LwKc08hIPU6uE7628XBalhDVtcVcusqdn810ps28f4CM/7vuPACt4F
+         +XKvPcwJmlrsD/+j5ywCMEwBcXrrJ4wHEEtyVLyXizksb23bjYu5zblF+mCZ3idVBewb
+         OYInIhj3n/+JJL+Ha8N7brBARM4uxtJ3d0WpgC84LbilpR6tmK3xDmAabnsk7UPpnHw4
+         ivjEJ97Zl435UopZS6X40qmQKvvPMkBLIQEcxpBkSFBYwBKzzBDszFjLw3XmXv1oMQNO
+         ULJQPYbcN+6teuWUbfTdrjFG9GXbf8tKFauHaqM/xr3BJ4/TbURJ5yfcCwHFYKfKtSQV
+         nSXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUjnwRpArldy94gdA4AeKy3XHiqEb+9fvd6NxI8joX0UOAAVKRqGl+OcUMHCFWoJw0rOd49bIlN9ErqqBM=@vger.kernel.org, AJvYcCVnarL05G2L7+ek+f633YBu7URLO3HWe7/yI3wF85myNCce8SBSXuDNQHN4aWljFBlHRUutBWx92eUF4WRoPXI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyX1VsseLl8lbWmfiBKYW/7oO9Q/FiQNN6c38pXMgfj2kXQIhAY
+	Zo7GqeyZAPNlet7eye6zaYarVnz1E44UnePThX2dxxc5fCSNujDCTcMoZSDh5MSWlYc=
+X-Gm-Gg: ASbGncsEGKKJjkeAmAtXFDNlslgIZ9XuHcxpUPDtoiJ8YxlIp/KouScY4A++SJYNRVH
+	4l1fkTlo4hXsuQ0KMkMxY52i8qDKHqaxsU2uJE6nHRdEHtezCpamsKZ5PN76ACvVYDkq/zuVF6R
+	x9X6/DgWyqRc0oo+Nq3FE8yGQsg5BHu/YJqJIv+P4uPen0bwB/Tpm93Ip7pbz0+rBQhBOZHHCmd
+	/RH6qujkERaauy58tzZahbYdIz1PoJnj6/W13XCnTjfzH/pprMbQmJa9a3TGEuNzXouTICgiaos
+	WSTotnN0EjU3+DoU2VEYH9BCtBiggKs0optiqkeP8KP2V5bZU1kEvDrMBNyh
+X-Google-Smtp-Source: AGHT+IGc2bG2Zj3o3WugCbZzNyfbrrgGT+HOzwOj9wWXwjW4xvK6DyhvCSnSahj1aZEAAbVLsrMn1w==
+X-Received: by 2002:a05:600c:3489:b0:441:d4e8:76c6 with SMTP id 5b1f17b1804b1-453248dc848mr35536005e9.30.1749650138776;
+        Wed, 11 Jun 2025 06:55:38 -0700 (PDT)
+Received: from localhost ([87.254.0.133])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4532522a543sm23383005e9.40.2025.06.11.06.55.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jun 2025 06:55:38 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	linux-wireless@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] wifi: rtlwifi: rtl8821ae: make the read-only array params static const
+Date: Wed, 11 Jun 2025 14:55:21 +0100
+Message-ID: <20250611135521.172521-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:OCz+CgD3vVOvh0loTAypBQ--.57342S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AF1fAryxZw4rKw45KF4fAFb_yoW8JF4xpF
-	Wjg34Y9w4UGr4Dta18Aa1vyFWrJ3ZYgry2grn5Xwn8u39ayFn3Gr4IvFy3Ar1rAFZ2k347
-	XF4qvry3GrnYv37anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9v1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kE
-	wVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x
-	0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7Cj
-	xVAFwI0_GcCE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE
-	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II
-	8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_JF0_Jw1l
-	c2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_Aw1UJr1UMxC20s
-	026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_
-	JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14
-	v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xva
-	j40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JV
-	W8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbfWrJUUUUU==
-X-CM-SenderInfo: 1v1siiaurqmqpexdthxhgxhubq/
 
-From: H-Mole <houzhanyi61@buaa.edu.cn>
+Don't populate the read-only array params on the stack at run time,
+instead make it static const.
 
-Since commit https://github.com/torvalds/linux/commit/f503ae90c7355e8506e68498fe84c1357894cd5b
- showed that drivers/net/wireless/mediatek/mt76/mt7996/mcu.c misses a non-null judgement for the
- return value of mt76_connac_get_he_phy_cap on variable vc, this null-pointer problem may also happen
- on mt7915. This commit added such non-null judgement like what was added to function mt7996_mcu_sta_bfer_he()
- in commit f503ae90c7355e8506e68498fe84c1357894cd5b.
-
-Signed-off-by: H-Mole <houzhanyi61@buaa.edu.cn>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 427542777abc..5dca50d40080 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -1184,6 +1184,9 @@ mt7915_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
- 	u8 nss_mcs = mt7915_mcu_get_sta_nss(mcs_map);
- 	u8 snd_dim, sts;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
+index f4b232f038a9..14bd64ff3f88 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/hw.c
+@@ -3064,10 +3064,12 @@ static void _rtl8821ae_read_adapter_info(struct ieee80211_hw *hw, bool b_pseudo_
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+ 	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+ 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	int params[] = {RTL_EEPROM_ID, EEPROM_VID, EEPROM_DID,
+-			EEPROM_SVID, EEPROM_SMID, EEPROM_MAC_ADDR,
+-			EEPROM_CHANNELPLAN, EEPROM_VERSION, EEPROM_CUSTOMER_ID,
+-			COUNTRY_CODE_WORLD_WIDE_13};
++	static const int params[] = {
++		RTL_EEPROM_ID, EEPROM_VID, EEPROM_DID,
++		EEPROM_SVID, EEPROM_SMID, EEPROM_MAC_ADDR,
++		EEPROM_CHANNELPLAN, EEPROM_VERSION, EEPROM_CUSTOMER_ID,
++		COUNTRY_CODE_WORLD_WIDE_13
++	};
+ 	u8 *hwinfo;
  
-+	if (!vc)
-+		return;
-+
- 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
- 
- 	mt7915_mcu_sta_sounding_rate(bf);
+ 	if (b_pseudo_test) {
 -- 
-2.39.5
+2.49.0
 
 
