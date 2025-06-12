@@ -1,157 +1,120 @@
-Return-Path: <linux-wireless+bounces-24043-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24044-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A78EAD6A9A
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 10:25:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE8BAD6AD3
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 10:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DF04168215
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 08:25:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B5241BC223D
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 08:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CFA1B0F0A;
-	Thu, 12 Jun 2025 08:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628FD2147EA;
+	Thu, 12 Jun 2025 08:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uXHNAyk7"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lbnTN3Uv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEAC189BB0;
-	Thu, 12 Jun 2025 08:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC05E1940A2
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 08:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749716741; cv=none; b=JKGGcigwCWEoSgTXUpwBUSRUROnbyReGl1m0e+fVYoGTf04RXg9/XYklKozgM3QphjmJlyHg+9/7uLbe0jiZScnSJx61tVcRq7GTAVEXu81ZqndDFKO+sEtIXyp+mDK5aK2KrSuTQzt+RKcUn9lUXQwF9wAUSLoR1Rl8tirW4X8=
+	t=1749717066; cv=none; b=agcFd11MZhGEt3N8eelXE0jkUBmOGWWs2bJK6sAlOAxfIjS2EwHM5sWoudR9EcyzzxICDZ18BCDV/uOeyrBCrAnZB2OlCz01iZCMC/9W3tyQ8U6QHvksCvTV47Fd9tZEnAtBRWDjzxnvoquM3IVY6obgaXUJRicLVAr0GOS6SoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749716741; c=relaxed/simple;
-	bh=NtyFz2v91XHDD4JVNQ/RmS8itnTzoEojen+Xb/p17wg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FzrMuF7XvnWVCd21oBb9HbgzlNWFCCE1Z7jTNPyzuFRbm1VNpa1a3ZU+avBBrOtB0aKjatYMqkq8ZICKiNBpYmbTN8efEQwMnZChI1R3VlH0fo4nS75xDv1OAck6ADxP/8zrzEa3nEmPTJ4RCuleibBGLgi8t4pYBq25hn5QRVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=uXHNAyk7; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=hU9TAPDtr6fHxQR1sgOHiFV13ms0iwUk0e/U/3LA88A=; t=1749716739; x=1750926339; 
-	b=uXHNAyk73/r4t4UgeUaz5ouT2reCiuXP6+3UVYFqc9TLWbvdsMZCrhl5Tj0V67NXjhXGlbeiWYg
-	9SijQnZ+z7Dqur+lKmdYxkkrYOUXXKkg4mh6378Q9+iArfd683TWEn830KaZRvM22Qpca5t/+UKbf
-	WoKGXbmxmVBwBk3DlTK4tmMu0irWzgz6Aql/3FvGxhFPmyxxIoJKXl6/kPNMuet3X+OXr9vxe9tHr
-	7+IhXo2K589ekYndkRDc56Pv+17KLjX5WcWKUbfZPQFMqgAPuKlEAj6QdSlg6SHy6tKMCnOukqNXm
-	TiTmajuVGrEXxSh0VT31L3rSoZuLdYs2TExg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uPdFX-00000003om0-27fp;
-	Thu, 12 Jun 2025 10:25:28 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2025-06-12
-Date: Thu, 12 Jun 2025 10:24:19 +0200
-Message-ID: <20250612082519.11447-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1749717066; c=relaxed/simple;
+	bh=WAcZZoaVqJVBCCp/zyaxoIzZMJP035kLTOD6rXXjCZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lqgVlvgg9qv40PgGl6VcYwtfyr59OiqyXx0eFKZqI1QnvA++HgLYxCEhl4st2ZfAMS/RyAJeR9QdX3Hwak8tXekAJkGOHSwvwqZDsxalUYSjixo4vHo+cLVtxYAXQtM8pbmv7taUpo3UqLwL5aPD+q+88+oGQlwdImP1Ob2hvYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lbnTN3Uv; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-742caef5896so701369b3a.3
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 01:31:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1749717064; x=1750321864; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FpYtQBVzdFUn1mP60IhVAt0dlEC8nasoUhcUFbuwbTM=;
+        b=lbnTN3Uvk9PM1MjBzX3+Q+Ssey5CooiixNsk+Eb5391aed9Tbi3GnPsXakMV7WN2e+
+         2cZEMaM6PTtHxyCrPh4yOsZBP8p5FAn63jph77sxn2+dgxKoVumiPg6cjbTaaEj6N43V
+         6tdpBaQt0ruA0fcEplkiL1//EQtaH/WYA1jL8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749717064; x=1750321864;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FpYtQBVzdFUn1mP60IhVAt0dlEC8nasoUhcUFbuwbTM=;
+        b=qDNVbbLu5SR2wUcuvgqfv7ZaihM4HAujBaYyt9FLxMAM3+dZaFJvPGgy0C1/2Wo9uf
+         t/LHp6aw0O+itlybsAFc/fZw9CWdxkJChnmKgqLDGpkP0acxcjGshBj+x8BG7JbLh8HY
+         4Em2hPzpv81Q9f7JEtStBUyaOBgg7i4SsCT67h0S30VK47yL955NtTQ0IAnTY26ikJXL
+         H8jK/ja3itYKkDc5xcnqEmaRSbkBD9B9ERWEgii05di7Ngco6qu0LRB3JxKQBQG17eEo
+         6wMBaEgMt5iGc7QluVkfH8CnG3vRYtLzrvmIsj7x0Ec9AAxKHTBVNAepQ4CxLVs6pPfw
+         kbHg==
+X-Forwarded-Encrypted: i=1; AJvYcCUvwyD96MOBedjTK6Ve7HQVlmrFlTffzBvrraVgrkzjhuYrKrbV8KhEZkcscBv+JtjIzcthocYXjQhZAMRekg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6P46AzGJfDBNYvHrDXYi980mXiFJ1m4eLj+eyYk3piS5T4M4/
+	ZkR1uHLCS6eGEoaftQIvMVnibFSOgAFLf7zF1XJ+wFlRS+5PuYgNoGRkEB2uEQN2IA==
+X-Gm-Gg: ASbGncsV2cfsuh9+Fx+dUwysrJa2lSfTzpA6u/w6y9wULvjYLZOMEzHbp+fE+U/BR3F
+	OMxJ3/Lb1AhGGjk4vDajQFlA5GD1gUXYYArgJl1ZhMRb3uSRuYkSsDl97+DjPk9a9I3Tzk6Z4Yf
+	JZ1hI5svPXOoY+i1edSg3g3aRj4fmYL3cHyxY82ZxSAqVwGnhYTGCwgt2RJJzOaSoZiMOMuLiPz
+	SBaW5MOtX6/w0dtKl+Hn33KpajDWEONELMSGUnbfqbe9g0FSyorONtRrzNxjmmmkoweSErD1Riq
+	as+0hkePTZATMqkmyxnA4Xu3qYXfEm8osYzTPAqHmXVT+L26x2GYKuDhAU/be2ja
+X-Google-Smtp-Source: AGHT+IFBDWKNu3QDY5x77Ut+39tjoSMCPpg9YSXyyw7wdPIMWMB03qAOxrhzC+O4LvEzlruhxyx/fg==
+X-Received: by 2002:aa7:8882:0:b0:73d:ff02:8d83 with SMTP id d2e1a72fcca58-7486cb21c08mr10126036b3a.3.1749717064126;
+        Thu, 12 Jun 2025 01:31:04 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:fcb5:79e0:99d6:8d5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7488087aa41sm893458b3a.31.2025.06.12.01.31.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Jun 2025 01:31:03 -0700 (PDT)
+Date: Thu, 12 Jun 2025 17:31:00 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv2] wifi: ath11k: mark reset srng lists as uninitialized
+Message-ID: <kuawjsglndjvwmq2ki2kctvgcdci6mhfp7juux7tzo3g6h5txh@hddxo4o5raea>
+References: <20250529035708.3136232-1-senozhatsky@chromium.org>
+ <5857380e-ced9-4118-b9a0-ce926b25c11c@quicinc.com>
+ <rxaibpgtf37w3th5lnt3w574w443yononqjoglyfktlcxe26qg@jpmtkckrotzp>
+ <2f77045c-6763-4fc4-bf09-50fd9b76a394@quicinc.com>
+ <xr3n5pbohquhaloonctfqvpb2r3eu6fi5jly7ms4pgcotqmqzh@msrgbaawafsj>
+ <ce3c0e51-4df0-4164-adcd-e98f2edee454@quicinc.com>
+ <qqhs2mzhg6mgq23wej5a65iau4ysfjh2raakcsvwc4fuqtpwk2@4ouqfld6mrnd>
+ <d48a228a-5f48-4732-b12d-78f03541ae9e@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d48a228a-5f48-4732-b12d-78f03541ae9e@quicinc.com>
 
-Hi,
+On (25/06/12 16:14), Baochen Qiang wrote:
+> > <4>[23562.576034] ath11k_qmi_driver_event_work+0xbd/0x1050 [ath11k (HASH:6cea 4)]
+> > <4>[23562.576058] worker_thread+0x389/0x930
+> > <4>[23562.576065] kthread+0x149/0x170
+> > <4>[23562.576074] ? start_flush_work+0x130/0x130
+> > <4>[23562.576078] ? kthread_associate_blkcg+0xb0/0xb0
+> > <4>[23562.576084] ret_from_fork+0x3b/0x50
+> > <4>[23562.576090] ? kthread_associate_blkcg+0xb0/0xb0
+> > <4>[23562.576096] ret_from_fork_asm+0x11/0x20
+> > 
+> > 
+> > There are clearly two ath11k_hal_dump_srng_stats() calls, the first
+> > one happens before crash recovery, the second happens right after
+> > and presumably causes UAF, because ->initialized flag is not cleared.
+> 
+> So with above we can confirm our guess.
+> 
+> Could you refine your commit message with these details such that readers have a clear
+> understanding of this issue?
 
-Just a quick couple of fixes as described below. Part of
-the reason to send them now is that Jeff wants to have
-them in -next to avoid conflicts later.
-
-Please pull and let us know if there's any problem.
-
-Thanks,
-johannes
-
-
-
-The following changes since commit 2c7e4a2663a1ab5a740c59c31991579b6b865a26:
-
-  Merge tag 'net-6.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-06-05 12:34:55 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-06-12
-
-for you to fetch changes up to f87586598fffac31afc1141471b789251b030a76:
-
-  wifi: cfg80211: use kfree_sensitive() for connkeys cleanup (2025-06-11 11:36:56 +0200)
-
-----------------------------------------------------------------
-Another quick round of updates:
- - revert mwifiex HT40 that was causing issues
- - many ath10k/ath11k/ath12k fixes
- - re-add some iwlwifi code I lost in a merge
- - use kfree_sensitive() on an error path in cfg80211
-
-----------------------------------------------------------------
-Baochen Qiang (8):
-      wifi: ath11k: avoid burning CPU in ath11k_debugfs_fw_stats_request()
-      wifi: ath11k: don't use static variables in ath11k_debugfs_fw_stats_process()
-      wifi: ath11k: don't wait when there is no vdev started
-      wifi: ath11k: move some firmware stats related functions outside of debugfs
-      wifi: ath11k: adjust unlock sequence in ath11k_update_stats_event()
-      wifi: ath11k: move locking outside of ath11k_mac_get_fw_stats()
-      wifi: ath11k: consistently use ath11k_mac_get_fw_stats()
-      wifi: ath12k: fix GCC_GCC_PCIE_HOT_RST definition for WCN7850
-
-Casey Connolly (1):
-      ath10k: snoc: fix unbalanced IRQ enable in crash recovery
-
-Emmanuel Grumbach (1):
-      wifi: iwlwifi: fix merge damage related to iwl_pci_resume
-
-Francesco Dolcini (1):
-      Revert "wifi: mwifiex: Fix HT40 bandwidth issue."
-
-Jeff Johnson (1):
-      wifi: ath12k: Fix hal_reo_cmd_status kernel-doc
-
-Johannes Berg (1):
-      Merge tag 'ath-current-20250608' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
-
-Loic Poulain (1):
-      wifi: ath10k: Avoid vdev delete timeout when firmware is already down
-
-Miaoqing Pan (1):
-      wifi: ath12k: fix uaf in ath12k_core_init()
-
-Rodrigo Gobbi (1):
-      wifi: ath11k: validate ath11k_crypto_mode on top of ath11k_core_qmi_firmware_ready
-
-Sebastian Gottschall (1):
-      wil6210: fix support for sparrow chipsets
-
-Zilin Guan (1):
-      wifi: cfg80211: use kfree_sensitive() for connkeys cleanup
-
- drivers/net/wireless/ath/ath10k/mac.c         |  33 ++++--
- drivers/net/wireless/ath/ath10k/snoc.c        |   4 +-
- drivers/net/wireless/ath/ath11k/core.c        |  29 ++---
- drivers/net/wireless/ath/ath11k/core.h        |   4 +-
- drivers/net/wireless/ath/ath11k/debugfs.c     | 148 +++-----------------------
- drivers/net/wireless/ath/ath11k/debugfs.h     |  10 +-
- drivers/net/wireless/ath/ath11k/mac.c         | 127 ++++++++++++++--------
- drivers/net/wireless/ath/ath11k/mac.h         |   4 +-
- drivers/net/wireless/ath/ath11k/wmi.c         |  49 +++++++--
- drivers/net/wireless/ath/ath12k/core.c        |  10 +-
- drivers/net/wireless/ath/ath12k/hal.h         |   3 +-
- drivers/net/wireless/ath/ath12k/hw.c          |   6 ++
- drivers/net/wireless/ath/ath12k/hw.h          |   2 +
- drivers/net/wireless/ath/ath12k/pci.c         |   6 +-
- drivers/net/wireless/ath/ath12k/pci.h         |   4 +-
- drivers/net/wireless/ath/wil6210/interrupt.c  |  26 +++--
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  24 ++++-
- drivers/net/wireless/marvell/mwifiex/11n.c    |   6 +-
- net/wireless/nl80211.c                        |   2 +-
- 19 files changed, 251 insertions(+), 246 deletions(-)
+Sure, I can do that.   I didn't want to throw my guesses into the commit
+message, stale ->initialized flag looked like a good enough justification
+for the patch.  But I can send out v3 with a more detailed commit message.
 
