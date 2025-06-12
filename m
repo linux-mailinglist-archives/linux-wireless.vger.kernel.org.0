@@ -1,132 +1,175 @@
-Return-Path: <linux-wireless+bounces-24081-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24082-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B59AAD7B62
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 21:49:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7575DAD7E8B
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jun 2025 00:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DB6C3A2972
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 19:49:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB9BE3B36FD
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 22:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A085A2D1936;
-	Thu, 12 Jun 2025 19:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F582222A0;
+	Thu, 12 Jun 2025 22:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="gclIacj1";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oXtljNtx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cua6nK7E"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6101F5858;
-	Thu, 12 Jun 2025 19:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A48192584;
+	Thu, 12 Jun 2025 22:46:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749757768; cv=none; b=kUmNLRXGEsj8Oet7ZGM1XsKDTmAWAYqAILZxje6AcVMe+0q7y550IQTbM+GLOV9E9KXdq3aPz6NW7IXSXSdBlM1XQV0bG8pl8wEbsQGHxCKukG27xRnBwH95ynPKKb2arG30Ksiifw2lLNhjiqFablGcjYFarWnDAq38FmZp2us=
+	t=1749768372; cv=none; b=UBsKAIidbtpev69iG2oKXD+o4feJdNJRnFZ9LV7dDnlXxPxnnz8eND7okJg2IS5vsEUT0hzfW24QRU7hhjiRiNBKXRQ4bl5HldeoMVQP0lR+D+6ArgiuRsPl6wU2sekND746+oe5j1uqmhjXFPASh354a+KLvPHc2LG66kfc0kY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749757768; c=relaxed/simple;
-	bh=gTjzw7DYnMfcfeme9pufjEyQVylrAdz2sEZRJifMjq8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=V37irDY0hEZ0OA7VNpVAChOjgZulWZPU1QA4nuTFBzKRU1qbEfQU/YUu4UHTl6ufix67hH9cGBtLqaJvRr41Co8JbGWHBu1ddhERi1jH9GaZNtJviU1lH1W6/oM0bB5pWD3TunKcSnJ2vvRWD6GmqDlZLORfD4CDg3FMvoueFNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=gclIacj1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oXtljNtx; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 2383711402D4;
-	Thu, 12 Jun 2025 15:49:25 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Thu, 12 Jun 2025 15:49:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1749757764;
-	 x=1749844164; bh=xu/b7phdvNJx1K04NsqpXKd/hD3Y6fbxZ6wAb9spphk=; b=
-	gclIacj1SuZZUcbY8iXzTAtIQgtQu4eFRJ2RwDNUYg1rEldPaQ8gb0VdWJhtpMwS
-	wlMSwuDCdttJxrVdWbxkyVthnTH40is7IHW1ZhS9HLrgckbpa9xObZ5IWjK8GTPC
-	i1RhedyGlJVOUUgpQZxGD3P3sjoSqmYhct8s13BuFw9y2wOwSNurCoBrHhNehBP2
-	cVnLx1PxqSj6aaTog/QxaNGxk5hawZz7zE8Ojho6MgEIzPvrUVU/C5CzfgGoUnFD
-	YWvpg3TQc5qy0bISq4tvYtqa8ylEBJbAclgUCutfznc1RyZFMQ+etRLMkTSub/z1
-	DqEAJX7ymHzCC7cro33AIA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1749757764; x=
-	1749844164; bh=xu/b7phdvNJx1K04NsqpXKd/hD3Y6fbxZ6wAb9spphk=; b=o
-	XtljNtxF/QxGSyaGKAbc1KLSWCORNof4i1Fej6pOnn34HIbvhtDKFxbkqHce1Blo
-	cfs7uK7nArue7C+v6D+ZdA2b47sXDQoPG5672P7G4qJGrqRodr2WyJxdm0YA/PEM
-	Ra0ySXucMtsa4vzjk3XX48gkm27h9LNk3582c+kq5P//f4DAusbpJMiKTJbf6sEt
-	wHsKXE0cz4gMPFiT3+0/YCYQHhujx0ZcMPTTK7YMDATpwZ2QkcLtQBXhxhS5EQ2z
-	fKmFI2vymYIPdT8R12OFGrSIuvugcNIpEUHAfI6S4/RcgaI1d5eq4IeT4hbUCVmZ
-	MVKmv6NHTRNqtDxKAguwQ==
-X-ME-Sender: <xms:RC9LaEKUfD3SbFyWXRVqnXSIm_qDuH3VSVBkjhfuPCz0fgfrDpuDCg>
-    <xme:RC9LaEKIDEyhPHKtXO1QMX0foCUw8ECbKLL6fUF_Lu2n688tXuljmme297tU1Mvfj
-    hbrdq1Ug2bgqyj1hIw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduheelhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
-    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
-    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
-    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeej
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmihhrihgrmhdrrhgrtghhvghlrd
-    hkohhrvghnsghlihhtsehinhhtvghlrdgtohhmpdhrtghpthhtoheprghnuggvrhhsrdhr
-    ohigvghllheslhhinhgrrhhordhorhhgpdhrtghpthhtohepuggrnhdrtggrrhhpvghnth
-    gvrheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhkfhhtsehlihhnrghrohdrohhr
-    ghdprhgtphhtthhopehjohhhrghnnhgvshesshhiphhsohhluhhtihhonhhsrdhnvghtpd
-    hrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrd
-    horhhg
-X-ME-Proxy: <xmx:RC9LaEuo-XPjUqyHwkurDvht5JriWzd0IS6UbyuEm4yuePIULp1F-Q>
-    <xmx:RC9LaBZ2hyJTEobshnQHkbR8NvitzyfxonacpeblJyiRhbFy1hU5Cg>
-    <xmx:RC9LaLbPUJQlq5KRcLaTGf4xsgt0t-hRbeSA26gCAp1-zXtM0Grhhw>
-    <xmx:RC9LaNCQtJFadscUq2nywzFtViGAERoEojM_lSQLRtPRrPF0KKTTzg>
-    <xmx:RC9LaHSMIs2ZGGoGvusXxzlKjv3_5yJ0sfWnDxaKBIKfVuFc_3_ncRYx>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id B5D1E700062; Thu, 12 Jun 2025 15:49:24 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1749768372; c=relaxed/simple;
+	bh=yBlwGGACujWXuF8os5bqI58U8p7ivNnrZt8Z2R+3XKI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GV7mFlEc6n8VmklWqZLARbmfWC5FV9BGTz5XCRaAiyWX1WqmYk+aNHYD9aSrYuKCYy3WVtAZDh4IlSe/r0Hcvw2wjdniHaoFg/+xzItgOulKIXE/WL22MEAYJM0MRL5uy8EH+B/52NXs3CtMXgvJqpAjcxl0/zmCvthcac0f+xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cua6nK7E; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749768371; x=1781304371;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yBlwGGACujWXuF8os5bqI58U8p7ivNnrZt8Z2R+3XKI=;
+  b=Cua6nK7Ed/9xhlmG+w1Hk92PS5WtY8gjCRZFBWt2Ved8PelqbfXGH4dI
+   T2B35fwMYgdXIshKsXuskOglAUh7sr1rh3ZOH+guYT7a7GBmom2o1GKmU
+   krrZjCQbq9ybLi8dUfLYxf+P/z7iVAlDEh+xbjeA/nlcmOr35jF4XntBP
+   vzM7PjD5SsoQ2icKDcac3+tbyUGyxhjWLc+I7CTo5EjsKNh6M6b2bPD9t
+   el7zFjUCMmaznQw0U3kfD/vJuudHZIAnHBD0ndxQN4oJgBIRjpKDDmSZ7
+   lX2ymiHkMXEuFeDNaX44Ufmsi30D47p17nFlkh7jPKI4RgyqexgXUBjRW
+   Q==;
+X-CSE-ConnectionGUID: COh5U1QaS+O10PhczDKFtA==
+X-CSE-MsgGUID: p+Le8OLfSdW59ZlBVA1XGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="52061786"
+X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; 
+   d="scan'208";a="52061786"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 15:46:10 -0700
+X-CSE-ConnectionGUID: kBeLs/2qQe+tSrlVSyu85A==
+X-CSE-MsgGUID: NvEOFHdbSOSIifL/wP0uLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; 
+   d="scan'208";a="148544889"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 12 Jun 2025 15:46:07 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uPqgO-000C0U-2Z;
+	Thu, 12 Jun 2025 22:46:04 +0000
+Date: Fri, 13 Jun 2025 06:45:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drive/realtek/rtlwifi: fix possible memory leak
+Message-ID: <202506130644.NKPuRVsI-lkp@intel.com>
+References: <20250612090724.17777-1-fourier.thomas@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: T781adb4479eb08a1
-Date: Thu, 12 Jun 2025 21:48:41 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Anders Roxell" <anders.roxell@linaro.org>,
- "Johannes Berg" <johannes@sipsolutions.net>
-Cc: "Miri Korenblit" <miriam.rachel.korenblit@intel.com>,
- "Dan Carpenter" <dan.carpenter@linaro.org>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- "Linaro Kernel Functional Testing" <lkft@linaro.org>
-Message-Id: <ee7559eb-c26b-47c0-bf4c-f710e010a21b@app.fastmail.com>
-In-Reply-To: <aEsrmH7sDVvsmgLs@monster>
-References: <20250612130719.3878754-1-anders.roxell@linaro.org>
- <d2ea3f77ea2737aafc879f4fc291dee097867b61.camel@sipsolutions.net>
- <aEsrmH7sDVvsmgLs@monster>
-Subject: Re: [PATCH] wifi: iwlwifi: pcie: ensure RX_QUEUE_CB_SIZE fits bitfield for
- gcc-8|9
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250612090724.17777-1-fourier.thomas@gmail.com>
 
-On Thu, Jun 12, 2025, at 21:33, Anders Roxell wrote:
-> On 2025-06-12 17:21, Johannes Berg wrote:
->
-> Would it help if I indent like this?
->
-> +	/* This should just be u32_encode_bits() but gcc-8 and gcc-9 fail to build */
-> +	control_flags |= FIELD_PREP(IWL_CTXT_INFO_RB_CB_SIZE,
-> +				    RX_QUEUE_CB_SIZE(iwl_trans_get_num_rbds(trans)) &
-> +				    FIELD_MAX(IWL_CTXT_INFO_RB_CB_SIZE));
->  	control_flags |= u32_encode_bits(rb_size, IWL_CTXT_INFO_RB_SIZE);
+Hi Thomas,
 
-I still find it odd to mix FIELD_PREP() and u32_encode_bits() here,
-as they do the same thing.
+kernel test robot noticed the following build errors:
 
-      Arnd
+[auto build test ERROR on wireless-next/main]
+[also build test ERROR on wireless/main linus/master v6.16-rc1 next-20250612]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Fourier/drive-realtek-rtlwifi-fix-possible-memory-leak/20250612-171134
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20250612090724.17777-1-fourier.thomas%40gmail.com
+patch subject: [PATCH] drive/realtek/rtlwifi: fix possible memory leak
+config: i386-randconfig-006-20250613 (https://download.01.org/0day-ci/archive/20250613/202506130644.NKPuRVsI-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250613/202506130644.NKPuRVsI-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506130644.NKPuRVsI-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/net/wireless/realtek/rtlwifi/pci.c: In function '_rtl_pci_init_one_rxdesc':
+>> drivers/net/wireless/realtek/rtlwifi/pci.c:577:39: error: expected ';' before 'return'
+     577 |                         kfree_skb(skb)
+         |                                       ^
+         |                                       ;
+     578 |                 return 0;
+         |                 ~~~~~~                 
+
+
+vim +577 drivers/net/wireless/realtek/rtlwifi/pci.c
+
+   550	
+   551	static int _rtl_pci_init_one_rxdesc(struct ieee80211_hw *hw,
+   552					    struct sk_buff *new_skb, u8 *entry,
+   553					    int rxring_idx, int desc_idx)
+   554	{
+   555		struct rtl_priv *rtlpriv = rtl_priv(hw);
+   556		struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+   557		u32 bufferaddress;
+   558		u8 tmp_one = 1;
+   559		struct sk_buff *skb;
+   560	
+   561		if (likely(new_skb)) {
+   562			skb = new_skb;
+   563			goto remap;
+   564		}
+   565		skb = dev_alloc_skb(rtlpci->rxbuffersize);
+   566		if (!skb)
+   567			return 0;
+   568	
+   569	remap:
+   570		/* just set skb->cb to mapping addr for pci_unmap_single use */
+   571		*((dma_addr_t *)skb->cb) =
+   572			dma_map_single(&rtlpci->pdev->dev, skb_tail_pointer(skb),
+   573				       rtlpci->rxbuffersize, DMA_FROM_DEVICE);
+   574		bufferaddress = *((dma_addr_t *)skb->cb);
+   575		if (dma_mapping_error(&rtlpci->pdev->dev, bufferaddress)) {
+   576			if (!new_skb)
+ > 577				kfree_skb(skb)
+   578			return 0;
+   579		}
+   580		rtlpci->rx_ring[rxring_idx].rx_buf[desc_idx] = skb;
+   581		if (rtlpriv->use_new_trx_flow) {
+   582			/* skb->cb may be 64 bit address */
+   583			rtlpriv->cfg->ops->set_desc(hw, (u8 *)entry, false,
+   584						    HW_DESC_RX_PREPARE,
+   585						    (u8 *)(dma_addr_t *)skb->cb);
+   586		} else {
+   587			rtlpriv->cfg->ops->set_desc(hw, (u8 *)entry, false,
+   588						    HW_DESC_RXBUFF_ADDR,
+   589						    (u8 *)&bufferaddress);
+   590			rtlpriv->cfg->ops->set_desc(hw, (u8 *)entry, false,
+   591						    HW_DESC_RXPKT_LEN,
+   592						    (u8 *)&rtlpci->rxbuffersize);
+   593			rtlpriv->cfg->ops->set_desc(hw, (u8 *)entry, false,
+   594						    HW_DESC_RXOWN,
+   595						    (u8 *)&tmp_one);
+   596		}
+   597		return 1;
+   598	}
+   599	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
