@@ -1,176 +1,257 @@
-Return-Path: <linux-wireless+bounces-24052-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24053-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E7FCAD6ED6
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 13:19:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF181AD6F59
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 13:46:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7BB189F1E3
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 11:20:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F2DF171208
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 11:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB438205AA3;
-	Thu, 12 Jun 2025 11:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9941442F4;
+	Thu, 12 Jun 2025 11:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PGv+2B6f"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ALhpjvX0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02807EC2
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 11:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14580C13D
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 11:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749727195; cv=none; b=TcpT/7DxVnFU0qOKTPaRLNWMcIQdx5voa21B381xxyZJDO2JsT2op4ksTGZc7sQAIhlR4j8N82TjBYB6xKleeL4NFVdc12pvW/8lWfW6m61vkCRp212bm/bT0t6Tq/625JMYpUid5W1XH5uQFBYGXR0EIDjvy0Tp/wogcbClTIU=
+	t=1749728813; cv=none; b=rvV4ZdrWokppXlJ8GxzprRBpEXugjj5egdQbnxEZLCwtRbRw0sbF7N7Ps10RDvoXpMI1L73uTUuE5udE5JejKSLx36qPlTPupaWUju/f4EzVuq8siCGMEh6eVVSDhiMFLV5ojJmA6ZwmUAlF2qdZXJ6qFilWX28rIWC29q6DckU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749727195; c=relaxed/simple;
-	bh=JAdtqs3zGWrmUQ/02QPjTpOUVJpDF9rKNNKxrvc/EwI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H8tiCU9nlYlTxpL6dho4B7lndooA4u1OqH77529o7IhJvXL87iChdC66Ix7+RvK1RnOOlSKiEVSDiWUZBhVpfvP8z4wiqRddMEsptXzX6bWRlgHd4tQew1cYQ4F9+f3SIf84g9ip3iWK5MqiezmAod30z4trW3L97R5CtuusX58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PGv+2B6f; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55C996ME031607
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 11:19:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	7QIskp7CeaFU7u4UNInC1v8TRYXWF8xfW2XMu+8r6y8=; b=PGv+2B6filVfzlnw
-	qFQC+g29GIxUfp6kN3eTp6J5fHn7JpE2t9AQOpqzwhmTe4fxaw5XQmtP0neba6Y0
-	CQ9ZYkfEjH9uv/hc9IsWVgVAjCWCcfoyS3QrF3V4jCxYJDCI9TrTCfUpS0PXKh+f
-	wRLLgBxL6kTUum7niuaBsRmFG3sJJk/Wv5VFZOpyhIo9evTAMXoPs0o0/QFF2rW6
-	osOusL0EVJ/xfpFvFwUuE2SJSRcRXgEQ8dOl/RfLYka11gvudS5mP3a6si+HbDAE
-	JwWQBNI2kzMFi/1mwakoYz3QB4iI+A6sDSfCwR1zQep/g/3deOSxL0EdVx1jAAAq
-	rDUBWQ==
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 477jdwstge-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 11:19:52 +0000 (GMT)
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-747adea6ddbso825189b3a.0
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 04:19:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749727191; x=1750331991;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7QIskp7CeaFU7u4UNInC1v8TRYXWF8xfW2XMu+8r6y8=;
-        b=ncQx+IUrFF8LaNPKJFXbMGf+o6LhxQxsNWK6sh4maa4+bw49fJolwY6uZ0RnBY5ZRk
-         5sKeyMAHe7PeTdg22ybu5+fY1epV3WOqKhx+2VlJ/ur501tuALKLukQOq8jaslTEEXnu
-         wfRfEORPG/zYg9pHbEPJ/xQ3bunFDpqWWlx089reIO1NShbmZSlS90uwZRVQIeDiKAPv
-         o8AfUWH9GdIW2KcXnifujNZdAnb3Xk60HE2ojVmH08ih6EG+uLAnPao8cCfxDD9I6Ihz
-         Vis3XsCoNc2tI0r+9V2NotSeLnUPJnE6wzvFMW9ru+TSCPVRSdNTnNPd2oLyaYqdodQJ
-         wfBg==
-X-Forwarded-Encrypted: i=1; AJvYcCX4KNZT0dy8t2AGW81S+wNPfDqjk5CLbKcFT9nPbAYDyRVd7e4kn54S2iF2t23xtBd/y0Vnpx+jmrAYUpDMfA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNcK5jfXR8cQTAElraPGFjGnn72x3nMkt59pKvgPAEw2HSHA2A
-	vnFT48tXVUwBJi1i8jskmrgiu7PPz4xuk7WWXUohllOAsYhh9J4iVBmmcXJwtDTRTEAGviNMmYu
-	U34nr/MSHnNRxYl4D029tHnstHUFw3XJWfVcFrGO4AzewfLzj7MY9ulmez6TdlNxhK1U6IA==
-X-Gm-Gg: ASbGncshaxVhkypF5i+yNEiONJHD1EYB4EVdImkiXzga4AsnlztNlBJhWcY7B6gHec0
-	CMNT0zc1YODIovn3ee+IBYkZcR2Acr4ghDroC2JhO9NEtTx+GKjfXXn79s5gDepAtIigB4/kThU
-	P5tlkChLNuD39Z7W7Cft6PUUsg5mowkjjEYtGXLclUp5jjFBmDbnfy8YxLZp7YXODrTv9e2PzG+
-	bpQS5ctYd66AWuEH6qSScDolCvsvVAFeMJlXaBacmnR3K+pG8ZzqajeL3VVguiX5fiavZVt71T/
-	3/SLosPY7dJCrCuAz49a25D3V7sRdmLOz+FZ/IJ+oK/ugMjNMnVZT5PyEXe6ZfDu
-X-Received: by 2002:a05:6a21:1519:b0:216:1fc7:5d51 with SMTP id adf61e73a8af0-21f86747eecmr11545649637.37.1749727191392;
-        Thu, 12 Jun 2025 04:19:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEymZNRL34fw7cMWDROMev8RqOV8BO00M024ki/BJ4JwmO6XOC+uwIudz/uK7cTSGz1z7G5uw==
-X-Received: by 2002:a05:6a21:1519:b0:216:1fc7:5d51 with SMTP id adf61e73a8af0-21f86747eecmr11545609637.37.1749727190903;
-        Thu, 12 Jun 2025 04:19:50 -0700 (PDT)
-Received: from [10.152.204.0] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7488087aa4csm1198848b3a.8.2025.06.12.04.19.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Jun 2025 04:19:50 -0700 (PDT)
-Message-ID: <ec974dc0-962b-f611-7bbb-c07a3872f70f@oss.qualcomm.com>
-Date: Thu, 12 Jun 2025 16:49:47 +0530
+	s=arc-20240116; t=1749728813; c=relaxed/simple;
+	bh=ESInumtKtHuQhvo1aP7n/YNSylSFwU7pK9A7yfLKRu8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r5fDpiH7kSsVqkXdN0lJP/FfN4P8FxwJ86ZLT774xuXPQ2ZrdP8cfR+YsTf/TxhhpusWEYR4JOr8w31joPTj4zt71Fmj8aDRM0eoLOWL8qvqAgsHatrCmhvBf+6upbt2QPKIqXje2TxB6EDyqefOuJd4lzC2w6SAcibZ2+W2nZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ALhpjvX0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55C8DjTr013459;
+	Thu, 12 Jun 2025 11:46:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=tRlSqXWvhEswQjV14frkTW
+	dUGfsegC+OB/RG0k7MWyE=; b=ALhpjvX00RNejqzOWvMlMB89bActYjXItDzaDv
+	Z8IaYEEo3benw5Jqd8H/JpcWlC/eEbxoJNUJmhwY0ygj2IVoZdcmA3YLuzWDek7y
+	rl3I/I46ux6x7emQo2RJlwKVI3J9NKUUxzj/R0X1ukCC69M4gjDKh6CgvFUsGov7
+	Cf5/X7wbLcmym9LYvaCSjPw5QczlNuZwWvhWDOcZKFLdEigeHL0z+DiYzyLQbsLO
+	EPY8Cp7l4ZmCtleUSyxN7CeRBcaN8NPpJ16vHc2O2uWCTdyX7TCiZAZ7lPxrtWKa
+	WkmxU90uMgEuSg6usdLxlciD/kUoWGjebT0sRvLMXUUO4Rrw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 476fmng0aq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Jun 2025 11:46:48 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55CBkcOt025976
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Jun 2025 11:46:38 GMT
+Received: from hu-ssreeela-blr.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 12 Jun 2025 04:46:36 -0700
+From: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Sivashankari Madhavan
+	<quic_sivamadh@quicinc.com>,
+        Sowmiya Sree Elavalagan
+	<quic_ssreeela@quicinc.com>
+Subject: [PATCH ath-next v2] wifi: ath12k: support average ack rssi in station dump
+Date: Thu, 12 Jun 2025 17:16:20 +0530
+Message-ID: <20250612114620.1055840-1-quic_ssreeela@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] wifi: ath11k: support fetching mac address from nvmem
-Content-Language: en-US
-To: george.moussalem@outlook.com, Jeff Johnson <jjohnson@kernel.org>
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20250324-ath11k-nvmem-v1-1-d82bdf72820e@outlook.com>
-From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-In-Reply-To: <20250324-ath11k-nvmem-v1-1-d82bdf72820e@outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEyMDA4NyBTYWx0ZWRfX90xwbpgjKpRq
- XqLk29X+XF62u/kNpUxLsiLiIcKaQujRonXLLmnDIodUTGCvUZ7jz0DlU4ShgMLI3oHCmjAghtv
- Ci05bNSJaCrarQh+N11pnezRCp1zj+Z9pwYc4OWYk2EXzBShZ7aNqNsCzCWQuyetxFDybY7nzCb
- RW9GUtDJcEZaFUqwy9VW+NW8uLiZu8eKmoSlzmY/I7+xyh4/HjVoCY3B0ABCMmjgdYZUR5dCPMX
- 6CLd70Tzov+jLRDd/7CIh3I52UBaNRe7LjdzV7zfsu1fJGCTh68KRD7iEEMFcaYfO+93pKNsEsK
- 497oQLYooc1X/4iG/GCpdtsN9pfpKMBtBis2RbhbgW9l0l04LgecFSHeF15b+BLYau2R5XOtSX9
- PJFb4jE5kAbZSstoPLB76RPYRvxl8kipJvhjuJuKYaH129OHLCNkObzgbk3jDGv6SHYw0MZ8
-X-Proofpoint-ORIG-GUID: S55TRbaYiZIIZ69hhG-GYdMiqDHNfPvf
-X-Proofpoint-GUID: S55TRbaYiZIIZ69hhG-GYdMiqDHNfPvf
-X-Authority-Analysis: v=2.4 cv=Jce8rVKV c=1 sm=1 tr=0 ts=684ab7d8 cx=c_pps
- a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=UqCG9HQmAAAA:8 a=wwL4Hbxs1AlHKMMt3U0A:9
- a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: -V-jY0sGEMaTeZ4XrwNJf6rSfVNDbVXI
+X-Proofpoint-GUID: -V-jY0sGEMaTeZ4XrwNJf6rSfVNDbVXI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEyMDA4OSBTYWx0ZWRfX3mAOCRiXcQaG
+ ZBTxrCw22W7+zhK2LRdfP+dpn8ZHbBfgQ2/HWp9NJHX37XiTiHckCdu5KDkQBD4TKL+FVwMifQU
+ Rb3/qiwXcQi+fepvKElY1GKaDwlIFhver1KvSYqix/whvCDGKGyJlGKcU6VSOyFNC6sEWEEyKFG
+ iqt6F5nd0Z74RW3/YNnaUbgFQJxULoaawBTG6099uWIdKCdQzg7Qw/0fTUzKaxOImxWrr+4V4WM
+ MV2aWA0HPqhuBKhE4Si+j8k2+d7DbFiXiO0kKV8Saol9KVvYFLNH0Zt18uAF/3mkNBHqeD68zRy
+ 7Pn/RLNDDUYy8zGkZ51FVbQhmuds1LfgWge7MG0JOe9L/jpAjBtlVfKczvTI3frfQqW9Rp4W5Sv
+ W5EComm3PQPhaoe2MmZ5kwVyfDVDFBcegKBlI6jC9aB3RwCgqZMsQX+rgXDem5Josua3hZ9Y
+X-Authority-Analysis: v=2.4 cv=K8wiHzWI c=1 sm=1 tr=0 ts=684abe29 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=6IFa9wvqVegA:10 a=COk6AnOGAAAA:8 a=cKTmG8GoOr_ubyX9ojwA:9
+ a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-12_07,2025-06-10_01,2025-03-28_01
+ definitions=2025-06-12_08,2025-06-10_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0
- mlxlogscore=916 priorityscore=1501 malwarescore=0 spamscore=0 impostorscore=0
- mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506120087
+ clxscore=1011 mlxscore=0 mlxlogscore=999 phishscore=0 lowpriorityscore=0
+ malwarescore=0 adultscore=0 bulkscore=0 spamscore=0 impostorscore=0
+ priorityscore=1501 suspectscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506120089
 
+From: Sivashankari Madhavan <quic_sivamadh@quicinc.com>
 
+Currently, the ACK RSSI value is not shown in station dump. Enable WMI
+resource flag for ACK RSSI in WMI INIT command to add ACK RSSI value in
+management TX completion event from WMI. Update ACK RSSI value obtained
+in management and data frame completion path to ieee80211_tx_info. Also
+advertise NL80211_EXT_FEATURE_ACK_SIGNAL_SUPPORT flag during hardware
+register to mac80211 layer so that ACK RSSI is added to station dump
+message.
 
-On 3/24/2025 11:54 AM, George Moussalem via B4 Relay wrote:
-> From: George Moussalem <george.moussalem@outlook.com>
-> 
-> Many embedded devices with ath11k wifi chips store their mac address in
-> nvmem partitions. Currently, the ath11k driver supports getting the
-> mac address from the 'mac-address', 'local-mac-address', and 'address'
-> device tree properties only. As such, add support for obtaining the mac
-> address from nvmem if defined in a 'mac-address' cell by replacing the
-> call to device_get_mac_address by of_get_mac_address which does exactly
-> the same as the former but tries to get it from nvmem if it is not set
-> by above mentioned DT properties,
+Example output :
+Station 00:03:7f:01:5c:4b (on wlp88s0)
+        inactive time:  46584 ms
+        rx bytes:       955
+        rx packets:     10
+        tx bytes:       769
+        tx packets:     6
+        tx retries:     81
+        tx failed:      0
+        rx drop misc:   0
+        signal:         -39 dBm
+        signal avg:     -40 dBm
+        tx bitrate:     6.0 MBit/s
+        tx duration:    1185 us
+        rx bitrate:     309.7 MBit/s 40MHz HE-MCS 6 HE-NSS 2 HE-GI 0 HE-DCM 0
+        rx duration:    0 us
+        last ack signal:-41 dBm
+        avg ack signal: -40 dBm
+        authorized:     yes
+        authenticated:  yes
+	.......
 
-May be not exactly, this also moves from a generic API to DT specific API that
-might impact systems which dont have device tree (x86)?
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-> 
-> Tested-on: IPQ5018, QCN6122, and QCN9074
+Signed-off-by: Sivashankari Madhavan <quic_sivamadh@quicinc.com>
+Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+---
+v2:- Rebased
 
-You may want to follow the existing Tested-on style.
+---
+ drivers/net/wireless/ath/ath12k/dp_tx.c |  3 +++
+ drivers/net/wireless/ath/ath12k/mac.c   |  1 +
+ drivers/net/wireless/ath/ath12k/wmi.c   | 15 +++++++++++----
+ drivers/net/wireless/ath/ath12k/wmi.h   |  3 +++
+ 4 files changed, 18 insertions(+), 4 deletions(-)
 
-> 
-> Signed-off-by: George Moussalem <george.moussalem@outlook.com>
-> ---
->   drivers/net/wireless/ath/ath11k/mac.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-> index 97816916abac..49af6b9fc867 100644
-> --- a/drivers/net/wireless/ath/ath11k/mac.c
-> +++ b/drivers/net/wireless/ath/ath11k/mac.c
-> @@ -9,6 +9,7 @@
->   #include <linux/etherdevice.h>
->   #include <linux/bitfield.h>
->   #include <linux/inetdevice.h>
-> +#include <linux/of_net.h>
->   #include <net/if_inet6.h>
->   #include <net/ipv6.h>
->   
-> @@ -10379,7 +10380,7 @@ int ath11k_mac_register(struct ath11k_base *ab)
->   	if (ret)
->   		return ret;
->   
-> -	device_get_mac_address(ab->dev, mac_addr);
-> +	of_get_mac_address(ab->dev->of_node, mac_addr);
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index b6816b6c2c04..f65814deebf7 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -890,6 +890,9 @@ static void ath12k_dp_tx_status_parse(struct ath12k_base *ab,
+ 
+ 	ts->peer_id = le32_get_bits(desc->info3, HAL_WBM_COMPL_TX_INFO3_PEER_ID);
+ 
++	ts->ack_rssi = le32_get_bits(desc->info2,
++				     HAL_WBM_COMPL_TX_INFO2_ACK_FRAME_RSSI);
++
+ 	if (info0 & HAL_TX_RATE_STATS_INFO0_VALID) {
+ 		ts->pkt_type = u32_get_bits(info0, HAL_TX_RATE_STATS_INFO0_PKT_TYPE);
+ 		ts->mcs = u32_get_bits(info0, HAL_TX_RATE_STATS_INFO0_MCS);
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 88b59f3ff87a..c307d6fe5e80 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -12071,6 +12071,7 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
+ 
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_STA_TX_PWR);
++	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_ACK_SIGNAL_SUPPORT);
+ 
+ 	wiphy->cipher_suites = cipher_suites;
+ 	wiphy->n_cipher_suites = ARRAY_SIZE(cipher_suites);
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 60e2444fe08c..1a238ef36a72 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -3875,7 +3875,8 @@ ath12k_wmi_copy_resource_config(struct ath12k_base *ab,
+ 	wmi_cfg->max_bssid_rx_filters = cpu_to_le32(tg_cfg->max_bssid_rx_filters);
+ 	wmi_cfg->use_pdev_id = cpu_to_le32(tg_cfg->use_pdev_id);
+ 	wmi_cfg->flag1 = cpu_to_le32(tg_cfg->atf_config |
+-				     WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64);
++				     WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64 |
++				     WMI_RSRC_CFG_FLAG1_ACK_RSSI);
+ 	wmi_cfg->peer_map_unmap_version = cpu_to_le32(tg_cfg->peer_map_unmap_version);
+ 	wmi_cfg->sched_params = cpu_to_le32(tg_cfg->sched_params);
+ 	wmi_cfg->twt_ap_pdev_count = cpu_to_le32(tg_cfg->twt_ap_pdev_count);
+@@ -5582,7 +5583,7 @@ static int ath12k_pull_mgmt_rx_params_tlv(struct ath12k_base *ab,
+ }
+ 
+ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
+-				    u32 status)
++				    u32 status, u32 ack_rssi)
+ {
+ 	struct sk_buff *msdu;
+ 	struct ieee80211_tx_info *info;
+@@ -5606,8 +5607,11 @@ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
+ 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+ 
+ 	info = IEEE80211_SKB_CB(msdu);
+-	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status)
++	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status) {
+ 		info->flags |= IEEE80211_TX_STAT_ACK;
++		info->status.ack_signal = ack_rssi;
++		info->status.flags |= IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
++	}
+ 
+ 	if ((info->flags & IEEE80211_TX_CTL_NO_ACK) && !status)
+ 		info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
+@@ -5651,6 +5655,8 @@ static int ath12k_pull_mgmt_tx_compl_param_tlv(struct ath12k_base *ab,
+ 	param->pdev_id = ev->pdev_id;
+ 	param->desc_id = ev->desc_id;
+ 	param->status = ev->status;
++	param->ppdu_id = ev->ppdu_id;
++	param->ack_rssi = ev->ack_rssi;
+ 
+ 	kfree(tb);
+ 	return 0;
+@@ -6552,7 +6558,8 @@ static void ath12k_mgmt_tx_compl_event(struct ath12k_base *ab, struct sk_buff *s
+ 	}
+ 
+ 	wmi_process_mgmt_tx_comp(ar, le32_to_cpu(tx_compl_param.desc_id),
+-				 le32_to_cpu(tx_compl_param.status));
++				 le32_to_cpu(tx_compl_param.status),
++				 le32_to_cpu(tx_compl_param.ack_rssi));
+ 
+ 	ath12k_dbg(ab, ATH12K_DBG_MGMT,
+ 		   "mgmt tx compl ev pdev_id %d, desc_id %d, status %d",
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index ac18f75e0449..49010367dc06 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -2486,6 +2486,7 @@ struct wmi_init_cmd {
+ #define WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION		GENMASK(5, 4)
+ #define WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64	BIT(5)
+ #define WMI_RSRC_CFG_FLAGS2_CALC_NEXT_DTIM_COUNT_SET      BIT(9)
++#define WMI_RSRC_CFG_FLAG1_ACK_RSSI	BIT(18)
+ 
+ struct ath12k_wmi_resource_config_params {
+ 	__le32 tlv_header;
+@@ -4445,6 +4446,8 @@ struct wmi_mgmt_tx_compl_event {
+ 	__le32 desc_id;
+ 	__le32 status;
+ 	__le32 pdev_id;
++	__le32 ppdu_id;
++	__le32 ack_rssi;
+ } __packed;
+ 
+ struct wmi_scan_event {
 
-May be call of_get_mac_address_nvmem() when device_get_mac_address() fails?
+base-commit: 9f92c4a01c5268f57fa19dd7cbcb1f59b0e66da6
+-- 
+2.25.1
 
-Vasanth
 
