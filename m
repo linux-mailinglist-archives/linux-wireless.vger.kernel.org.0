@@ -1,87 +1,132 @@
-Return-Path: <linux-wireless+bounces-24072-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24073-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF53AD709B
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 14:39:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D6CAD7136
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 15:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 119377A921B
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 12:37:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A49FE1899105
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 13:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA5417BED0;
-	Thu, 12 Jun 2025 12:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A3823BF83;
+	Thu, 12 Jun 2025 13:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="JZcMz+ge"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="G0auFR2q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66A98BEE
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 12:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D61E23BCF5
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 13:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749731943; cv=none; b=bIL5zBC3LJD9WkB+dvqL1JN61F8/BMd+yjHCDRGuErZ8/ydYI0JKcMmoblYY/brClIzQR4v4+E0GQPI/3dzrIinifGuVCZ9KXkc9GKW91ARyR5q/4jHDcY8YJCzheMy+P3iDYyyRIit1P1hyUh/kTrb+UzP+Y+EgwJfsPaZj53U=
+	t=1749733655; cv=none; b=fn8b0F1K+za4t/r1gCoglb0kIExZLWEqcLOSwvNs06sJTcLu304YRVsgchso1kD2mKsgN4uqRnhDin87ZwdlaARoIGbZzGwGhjT4hzaoHwGUX1Z11orlZWihXxKt/FVhUtfGEnWeKf6IYW2oNw2aOf99o9Yy3pOCbdE6HdqZlx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749731943; c=relaxed/simple;
-	bh=hPthV2m6xwqO/ek/Ye0/fI+s6Y3mepYQgUiCinLhfjo=;
-	h=Date:From:To:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=XKUPq4AxGg93+YR94ohV2wu9EkM7nh3q07JBEC53dCYVcsUS5Vv8fTNnoCYzhizxTkijuaCR22idce5RF8B/uVX5bPDuRZLXnCDuqxaEx50cVjm1DyEUcz86AgkQ5VzWdLS9wAa3TidnUjHCxbiqo/jcaWAWYGLO3KO2CRPt0rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=JZcMz+ge reason="signature verification failed"; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=11NYePxDlX9GCUuOoutyor13ZOTsszDCKV174D9W/JE=; b=J
-	ZcMz+ge2xSoDP0BpwiB2pBlqHDoSMcpj3WAatznTjj78OTtU4Fzxk0IrGE9PI8vi
-	4QumbX+Kjf0PDXsnZa1iszHRqH5xBUR4Pt16T7MsEuUyMaR+gJeuDWu08PNhH2lx
-	1UJDIZl2MnUuNAFGuY4ngBK1Mxaa9LJSlPSd4RNCC0=
-Received: from lonthn$163.com ( [2409:8a1e:9891:4ec0:ec2e:b1d1:6cfd:bc7] )
- by ajax-webmail-wmsvr-40-121 (Coremail) ; Thu, 12 Jun 2025 20:38:52 +0800
- (CST)
-Date: Thu, 12 Jun 2025 20:38:52 +0800 (CST)
-From: lonthn  <lonthn@163.com>
-To: linux-wireless@vger.kernel.org
-Subject: Re: [rtw89] PCI Passthrough Issue: rtl8852be on ARM VM (Ubuntu
- host/OpenWrt guest)
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
- Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <684A83E1.25166C.00001@m16.mail.163.com>
-References: <684A83E1.25166C.00001@m16.mail.163.com>
-X-NTES-SC: AL_Qu2fC/uYvkEo5CWfY+kfmUsUhO85UMawuP0g3I9VO5l4jArp0ScZTWVSPnrr/8a0KQOgmgmGXCVt7eldbJhgdYEWa8er71RvySdDkdM45iAN1g==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=arc-20240116; t=1749733655; c=relaxed/simple;
+	bh=z6N1TMabJk8XUstMPq0jYPGGMmny/6BK+fsPOJYZ5CY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dUNXQi+O6Y+nnPjee8TgMDgDpnmP4VzTvtsVbjib8Z7O6tQzbIZzmFbba//DS904q3FqmaZDAKBcFTXj017fANdz1hjab4Sp7eHdjmu5zN801SVblde5r0A9G71cm5NAAwKw+lckE6R+7fW5FRcmC66WPHenECGGxIjcFGkmcBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=G0auFR2q; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-55325956c93so80733e87.1
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 06:07:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749733651; x=1750338451; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kCVYnr2NHXP6YD4R7dCQrJMSmoXGQWCXxHYKeLMW5Bc=;
+        b=G0auFR2qLEXdjYxnS9WX54xv/bOdEO9CGe//ke8upTBnp4RpuguQr8m6NPWQXoY+Q8
+         vqu6GT3JvXbtSAU/QoBsQo4EGHkHrenpvfUmMW6gHpUFXzSIRTY3xn9Ba34acA7KNv3J
+         QMVBdFYHmzsfElzbxkclTK1HvR9f33kVa0eIGMpQhVYHYvrXyvBK7ti5nCWrMiHkqb8+
+         8Rh2epcQoRa6/4SJhU8mgVRqJSSv9KqOAyK3upf4EMkrNVyN8mn5hdz/uFwSr3gf6Jd9
+         d4iivEP0oCf6x2goGDlVB4PaA12TGR5/uVecESSjouS0UUp2ksSwvQGBhZzct2btTn35
+         Tiiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749733651; x=1750338451;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kCVYnr2NHXP6YD4R7dCQrJMSmoXGQWCXxHYKeLMW5Bc=;
+        b=G6gzW+vpmX4cWirlFZUcKa7vV9o5vhbVyd1p342KXzK+0qyhAtC7c634kMElM3uYnj
+         vVx2UCLnAKV5jeAlUuyOTGLvo2Ojwegkvws2xxLoBZgyYGgOLbQ+je1o4ZFS0MTlyqQ4
+         zw2lI89ajrWi8vvJmCoZYv1vlT8yuL5EVu2ErO6ZeM4jOkiGcxF3ozTt3Kf1ab38ETBC
+         5WD7IQ5tocNmEAoyN4LFXZwuSo3OmrrmkUbmBcbqMznMwB+pfXT2+c4GrJnex2+DBjXG
+         ODFaiKE8gvF3DhOFVCZFDnuWoK+hNptFQDP7a1JditYykI/yWTrc/eyqeEyXn6epyBRx
+         t00A==
+X-Forwarded-Encrypted: i=1; AJvYcCXdWOoP/SzFFUClmaHUa11elhgcJzVMamsL5BCkZX58fLU5aY1tkZs0ARvBlpDDE44IQM0U0uBFE8SaTcQyxg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3sKqgSlepC8AmnGvxhtIkOrh2QtpVTiRfpe+l2FCwgCEplaxR
+	oCsEGSa7h9nbUkHVHv4n2bAwLkLseFx9xZ5LOFFtNrXrxm4ELwQPVxMmCJxULXecizw=
+X-Gm-Gg: ASbGncsbGLA0Y8Wy0FARqTAYrNB4mS3aQaXrFyphgbd89g7Wxc3FOJiqqHnB9K7sRfc
+	uCDHH6IBE52jUAk+UCL5AGBzmcRFxDg9a3dg/y2EZdQFA2cFWAHpDXEYy/ddsYaBB4w01FE3Y+9
+	UACKhkUv1HJpeJu18ia9wSenKCLy3s0ojOp18gGsgPPozQ1e2r0ZRjdmdfp5lJ892CMKE6kPfZH
+	bZXR697xQNyDnDTQLzJYZQ34tV8/8/VHPIPt5HbHw7W+5D90xQQjsQBBOe1bViOSku8FGujHl0n
+	NiXrlBnpKTBU+vu4yCnJ7VIAcdOy88DE5oNf8aVu0O8FJbWHuFWaQYu3i2yreMeieKy+pZniMR1
+	e8ihRUlCzuh9wiEEAD31B+A==
+X-Google-Smtp-Source: AGHT+IG99wDY0vjvv6M/1KtXYegvp4C3S75fNTyHcxKq9q0WZeCKaCu52C6L42UnkRUNGviHQyf8og==
+X-Received: by 2002:a05:6512:e93:b0:553:a889:9f0e with SMTP id 2adb3069b0e04-553a889a14dmr244104e87.15.1749733651043;
+        Thu, 12 Jun 2025 06:07:31 -0700 (PDT)
+Received: from localhost (c-85-229-7-191.bbcust.telenor.se. [85.229.7.191])
+        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-553ac13f0besm110490e87.84.2025.06.12.06.07.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Jun 2025 06:07:30 -0700 (PDT)
+From: Anders Roxell <anders.roxell@linaro.org>
+To: miriam.rachel.korenblit@intel.com
+Cc: dan.carpenter@linaro.org,
+	arnd@arndb.de,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>
+Subject: [PATCH] wifi: iwlwifi: pcie: ensure RX_QUEUE_CB_SIZE fits bitfield for gcc-8|9
+Date: Thu, 12 Jun 2025 15:07:19 +0200
+Message-ID: <20250612130719.3878754-1-anders.roxell@linaro.org>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <757a4801.a04e.197642679a4.Coremail.lonthn@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:eSgvCgDXf7RdykpoYlcaAA--.43880W
-X-CM-SenderInfo: horq3xrq6rljoofrz/1tbiXQlqB2hKgWE8YAADsk
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
 
-CgoKCgoKCgoKCgoKCgoKCgpBdCAyMDI1LTA2LTEyIDE1OjM4OjA5LCBsb250aG5AMTYzLmNvbSB3
-cm90ZToKPlRoYW5rcyBmb3IgeW91ciBxdWljayByZXNwb25zZS4KPgo+PiBUaGlzIGxvb2tzIGxp
-a2UgaW50ZXJvcGVyYWJpbGl0eSBwcm9ibGVtIG9mIDM2LWJpdCBETUEuCj4+IElmIHlvdSBoYXZl
-IGJlbG93IGNvbW1pdCBpbiB5b3VyIGd1ZXN0IE9TOgo+PiAxZmQ0YjNmZTUyZWYgKCJ3aWZpOiBy
-dHc4OTogcGNpOiBzdXBwb3J0IDM2LWJpdCBQQ0kgRE1BIGFkZHJlc3MiKQo+PiAKPj4gUGxlYXNl
-IGFsc28gaGF2ZSBiZWxvdyBjb21taXQgdG8gcm9sbGJhY2sgMzItYml0IERNQS4KPj4gYWE3MGZm
-MDk0NWZlICgid2lmaTogcnR3ODk6IHBjaTogZWFybHkgY2hpcHMgb25seSBlbmFibGUgMzYtYml0
-IERNQSBvbiBzcGVjaWZpYyBQQ0kgaG9zdHMiKQo+PiAKPj4gV2l0aCB0aGUgbGF0ZXN0IGtlcm5l
-bCwgeW91IGNhbiBqdXN0IGNvbW1lbnQgY29kZSBhcyBiZWxvdyB0byB1c2UgMzItYml0IERNQS4K
-Pgo+SSB0cmllZCBpdCBhbmQgZm91bmQgdGhhdCBpdCBzdGlsbCBkb2Vzbid0IHdvcmsKPgo+PiBJ
-IGhhdmUgbm90IGV2ZXIgdHJpZWQgcGFzc3Rocm91Z2gsIHNvIEknbSBub3Qgc3VyZSBpZiBpdCBj
-YW4gd29yay4KPj4gQ2FuIEkga25vdyBob3cgZGlmZmVyZW50IHRoZSBwYXNzdGhyb3VnaCBpcz8K
-Pgo+WW91IGNhbiByZWZlciB0byB0aGlzOiBodHRwczovL2RvY3Mua2VybmVsLm9yZy9kcml2ZXIt
-YXBpL3ZmaW8uaHRtbAo+Cj4+IERvZXMgcnRsODg1MmJlIHdvcmsgb24gaG9zdCBPUz8KPgo+SSdt
-IHRyeWluZywgYnV0IHdoZW4gSSBsb2FkIHRoZSA4ODUyYmUgZHJpdmVyLCBzdHJhbmdlbHksIEkg
-Z2V0IG5vdGhpbmcuIAo+JD4gZG1lc2cgfGdyZXAgODg1MmJlCj5ubyBtZXNzYWdlIQo+JD4gbHNt
-b2QgfGdyZXAgcnR3Cj5ydHdfODg1MmJlICAgICAgICAgICAgIDE2Mzg0ICAwCj5ydHdfODg1MmIg
-ICAgICAgICAgICAgMzUyMjU2ICAxIHJ0d184ODUyYmUKPnJ0dzg5cGNpICAgICAgICAgICAgICAg
-NjE0NDAgIDEgcnR3Xzg4NTJiZQo+cnR3ODljb3JlICAgICAgICAgICAgIDU2OTM0NCAgMiBydHc4
-OXBjaSxydHdfODg1MmIKPkl0IGxvb2tzIGxpa2UgbXkgZGV2aWNlIGlzIG5vdCBkZXRlY3RlZAoK
-SSd2ZSBjb25maXJtZWQgdGhhdCB0aGUgaG9zdCBzeXN0ZW0gaXMgd29ya2luZwo=
+GCC-8 and GCC-9 emits a hard error when the value passed to
+`u32_encode_bits()`. These versions somehow think that
+RX_QUEUE_CB_SIZE(iwl_trans_get_num_rbds(trans)) is an out of bounds
+constant.  Open code this calculation using FIELD_PREP() to avoid this
+compile error.
+
+error: call to '__field_overflow' declared with attribute error: value
+doesn't fit into mask
+
+Fixes: b8eee90f0ba5 ("wifi: iwlwifi: cfg: unify num_rbds config")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/all/CA+G9fYssasMnOE36xLH5m7ky4fKxbzN7kX5mEE7icnuu+0hGuQ@mail.gmail.com/
+Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+index cb36baac14da..1854d071aff2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+@@ -204,9 +204,10 @@ int iwl_pcie_ctxt_info_init(struct iwl_trans *trans,
+ 
+ 	WARN_ON(RX_QUEUE_CB_SIZE(iwl_trans_get_num_rbds(trans)) > 12);
+ 	control_flags = IWL_CTXT_INFO_TFD_FORMAT_LONG;
+-	control_flags |=
+-		u32_encode_bits(RX_QUEUE_CB_SIZE(iwl_trans_get_num_rbds(trans)),
+-				IWL_CTXT_INFO_RB_CB_SIZE);
++	/* This should just be u32_encode_bits() but gcc-8 and gcc-9 fail to build */
++	control_flags |= FIELD_PREP(IWL_CTXT_INFO_RB_CB_SIZE,
++		RX_QUEUE_CB_SIZE(iwl_trans_get_num_rbds(trans)) &
++		FIELD_MAX(IWL_CTXT_INFO_RB_CB_SIZE));
+ 	control_flags |= u32_encode_bits(rb_size, IWL_CTXT_INFO_RB_SIZE);
+ 	ctxt_info->control.control_flags = cpu_to_le32(control_flags);
+ 
+-- 
+2.47.2
+
 
