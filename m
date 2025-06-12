@@ -1,146 +1,157 @@
-Return-Path: <linux-wireless+bounces-24028-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24029-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390C4AD662E
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 05:30:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B36EAD6646
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 05:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C91233AA39F
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 03:30:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C62D1BC1697
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 03:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEF813C8E8;
-	Thu, 12 Jun 2025 03:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404D01A2643;
+	Thu, 12 Jun 2025 03:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="m1nuZ1JF"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Q9wus7ov"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B234C85;
-	Thu, 12 Jun 2025 03:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EB54690
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 03:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749699019; cv=none; b=MYwMjx+IpWtr9ib1Tnbe3Hqk8OUDLp0CjVDOj1POLFSVUyz+YjRzTCbYmpZ89SMtCUkSgY+5saWWj7jiPf7sjObTPbzwJ5Z5KWEA/Hdc9FCmP3zf1sbNwNKK11XdVcz5szdeZRGlASo578JcqJ4sCENq3F92wOEy7gh/fMPU+H4=
+	t=1749700333; cv=none; b=KP/nT38jBduM527q8CWxUrnJr/TCuQquczgLHfgiJFd6Ig0K1xObY+o4jmpTqQJdyLrMZaA0j5YmaixxhG/9DnA5+K93VfQDsS50MmCnGT8XHaqW5vxk6O7kQCBNdepIGacDsrTx3xBW+1ws4uOKFYPx4jLt1TWGQNChmdTE9c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749699019; c=relaxed/simple;
-	bh=sFhafIeYVorT4nFAM40q5kN48XlN0gqFyb4x3LxYvIA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mWETbsAg/h6vAacderbewsuUHa1xwX5D+UcFhGKjsOXxUT8/BXxS4GgZn0lf/rT03AJIjGHeJWCUc4d1dEJIJRpCaa/JXkKkRcsmTAjEgRf7Ogj6aH7PiaA4jVgE9Ol7ROss+ifNO1hEkv9PoA9BZduaodguFqaWw7mjKEvt4nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=m1nuZ1JF; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55BKE0fR009047;
-	Thu, 12 Jun 2025 03:30:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	rUCmIkuG3LMH9a7Icoxvvg0hF5IF+P9HedQ3RXmEk+I=; b=m1nuZ1JFEVSb0OjI
-	Dv1fkcYzgmmuFlzCQAAWvGJT4I46NpLUXtNvy+pN3Kw7YGaGizjTRkI5p2hy/+oi
-	mDfkUE8LL9N/r3BaGqVlo6OvVBHk979np+pWEEjmTkhrVk+OLQUIoS5KCiH0Ng7B
-	B4a+hpVVFvl735RQiRUBB00uEqU/nUHEJ8UNNjiIyPdNs995jKuqbAfRQDAHc7pC
-	eFO9ipVjKl/+Cpu807L+ddDbkveNouJbKOabiHOclHcTJ2rW/3+8hSSPbLZgprAx
-	4bjJXw2cIBwwHvSWTfigSSpNMXNpp1nEHRCjtz4GsXmne15BVCO8+iwd6tPKwqww
-	lRjX3Q==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47753bu2ad-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Jun 2025 03:30:10 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55C3U9jW020405
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Jun 2025 03:30:09 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 11 Jun
- 2025 20:30:07 -0700
-Message-ID: <5857380e-ced9-4118-b9a0-ce926b25c11c@quicinc.com>
-Date: Thu, 12 Jun 2025 11:30:04 +0800
+	s=arc-20240116; t=1749700333; c=relaxed/simple;
+	bh=IFQnRbFAMSvVCiO5ytGISQ7DTbE+6iGbpFbZ7T4s8w0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=t8gJr+RZE1pNh6bBi0CnIgzJge93DkonL77qGmaxwh5Rvd6/e6KrGduTfONozE736FX8mRR6x0Uj3MH8WoauLtSGfNdjWsi2cf72iO2G+GaaAkqld1Ig2DpA8gw5JB/H4K9aTg5bhca+uzERdGy4SrcDRhW/3YWox9Wl7V/+S2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Q9wus7ov; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55C3mq8I31855020, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1749700132; bh=pWW47s4e3j/22TaPu8xTPvC3T1NXSmPCdvp/ttEPts8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=Q9wus7ovW3NtWHv+4HbpqM0koZgXq6Ct/a+BErdtCxIkgGIC8JQJfFDK23RXoXsB/
+	 RtOiHxAU7FA51KxtH7+INWLV3qRh6qwIWhPva2g5l4Li3QpoKi/+wWTRsTJrnc/S4F
+	 mQxg/tyUB3MVbv5y02/D9A1JD7mEwSi7P97aqhizLMYrdsZLTTlmIwI6iVapmpPjYJ
+	 HbmsLQPK7Sxw2K7IUliJUY8JJMu1a8QZboWaGCHKMYF/uP3/7JhcBFkrqzqIZt+s3k
+	 rNXygR8TkHprthm/DghVQEITQnwepRAA10KzH7qmepjPPwatfrhOMb2Dj7GdIP8qu9
+	 HLc//KvxXX9Cg==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55C3mq8I31855020
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Jun 2025 11:48:52 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 12 Jun 2025 11:48:53 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 12 Jun 2025 11:48:53 +0800
+Received: from RTEXDAG02.realtek.com.tw ([fe80::1d65:b3df:d72:eb25]) by
+ RTEXDAG02.realtek.com.tw ([fe80::1d65:b3df:d72:eb25%5]) with mapi id
+ 15.01.2507.035; Thu, 12 Jun 2025 11:48:52 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: hzy15610046011 <houzhanyi61@buaa.edu.cn>, "nbd@nbd.name" <nbd@nbd.name>,
+        "lorenzo@kernel.org" <lorenzo@kernel.org>,
+        "ryder.lee@mediatek.com"
+	<ryder.lee@mediatek.com>,
+        "shayne.chen@mediatek.com"
+	<shayne.chen@mediatek.com>,
+        "sean.wang@mediatek.com"
+	<sean.wang@mediatek.com>,
+        "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+        "angelogioacchino.delregno@collabora.com"
+	<angelogioacchino.delregno@collabora.com>,
+        "StanleyYP.Wang@mediatek.com"
+	<StanleyYP.Wang@mediatek.com>,
+        "mingyen.hsieh@mediatek.com"
+	<mingyen.hsieh@mediatek.com>,
+        "chad@monroe.io" <chad@monroe.io>,
+        "razvan.grigore@vampirebyte.ro" <razvan.grigore@vampirebyte.ro>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+        "zhanyihou6011@gmail.com" <zhanyihou6011@gmail.com>
+Subject: RE: [PATCH] Add non-null judgement branch for return value of  mt76_connac_get_he_phy_cap().
+Thread-Topic: [PATCH] Add non-null judgement branch for return value of
+  mt76_connac_get_he_phy_cap().
+Thread-Index: AQHb2ta/usBjXSopdEGuxP/fZtaWcbP+4tww
+Date: Thu, 12 Jun 2025 03:48:52 +0000
+Message-ID: <f9689cd14c144a1cab4d0fe8bf0f6849@realtek.com>
+References: <20250611134209.312009-1-houzhanyi61@buaa.edu.cn>
+In-Reply-To: <20250611134209.312009-1-houzhanyi61@buaa.edu.cn>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2] wifi: ath11k: mark reset srng lists as uninitialized
-To: Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Jeff Johnson
-	<jjohnson@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20250529035708.3136232-1-senozhatsky@chromium.org>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20250529035708.3136232-1-senozhatsky@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEyMDAyNSBTYWx0ZWRfX3wyDGGnaofmx
- fCo3ClQLviBvchRWtsKcgrwJkJYr/9SZFTyvooh367ldIQBIWgxYd2rKax7BSVR6dvzffqEPKgU
- +GDa7xlulMdg2SwyM0SAeq6H9G29tTeQT1YlJJwW/VMS5zhoDJPliT8JXmEQNTf632Iqi8DSbcT
- Qwx5F3XMU4GdXfhDDb04MMactXsJp+tFlqjnkXQHg8tv182GUdcvy2BBwio5tfIgSEM055sSUkL
- 0llFbPdyhNq9GFZt/v/t0VNafnfDc9rOpiKXBqqDaY4D6KRwyWOSBle2s9ZUfL7jgeqQuGFPmfi
- 3TgauskYBs3yoSZvB7CK19lthXpa2Enob5y0RBIBo3Kxx5+aUoGMk/96D9gjouv4YR8Qmo98iyK
- dQdBwOcjWPLna39sAYoOQF+Ytd3khLVlsu+ZQmArQY22u2BcRpbJQnJT2QwRyIK5eKRFO0N+
-X-Proofpoint-GUID: q-cGVvltXL7RH_HEyrWg0cT_9zScCsWN
-X-Proofpoint-ORIG-GUID: q-cGVvltXL7RH_HEyrWg0cT_9zScCsWN
-X-Authority-Analysis: v=2.4 cv=SqOQ6OO0 c=1 sm=1 tr=0 ts=684a49c2 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=cm27Pg_UAAAA:8
- a=jT8QrNtKxUptj30f8HwA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-12_02,2025-06-10_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0 impostorscore=0
- spamscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0 suspectscore=0
- clxscore=1011 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506120025
 
+hzy15610046011 <houzhanyi61@buaa.edu.cn> wrote:
+>=20
+> From: H-Mole <houzhanyi61@buaa.edu.cn>
+>=20
+> Since commit https://github.com/torvalds/linux/commit/f503ae90c7355e8506e=
+68498fe84c1357894cd5b
 
+The pattern to reference commit is "commit + 12digits + subject", such as:=
+=20
+   commit f503ae90c735 ("wifi: mt76: mt7996: fix NULL pointer dereference i=
+n mt7996_mcu_sta_bfer_he")
 
-On 5/29/2025 11:56 AM, Sergey Senozhatsky wrote:
-> ath11k_hal_srng_deinit() frees rdp and wrp which are used
-> by srng lists.  Mark srng lists as not-initialized.  This
-> makes sense, for instance, when device fails to resume
-> and the driver calls ath11k_hal_srng_deinit() from
-> ath11k_core_reconfigure_on_crash().
+>  showed that drivers/net/wireless/mediatek/mt76/mt7996/mcu.c misses a non=
+-null judgement for the
+>  return value of mt76_connac_get_he_phy_cap on variable vc, this null-poi=
+nter problem may also happen
+>  on mt7915. This commit added such non-null judgement like what was added=
+ to function
+> mt7996_mcu_sta_bfer_he()
+>  in commit f503ae90c7355e8506e68498fe84c1357894cd5b.
 
-Did you see any issue without your change?
+Have you run checkpatch before sending out?
 
-> 
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+>=20
+> Signed-off-by: H-Mole <houzhanyi61@buaa.edu.cn>
 > ---
-> 
-> v2: fixed subject line and updated commit message
-> 
->  drivers/net/wireless/ath/ath11k/hal.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-> index 8cb1505a5a0c..cab11a35f911 100644
-> --- a/drivers/net/wireless/ath/ath11k/hal.c
-> +++ b/drivers/net/wireless/ath/ath11k/hal.c
-> @@ -1346,6 +1346,10 @@ EXPORT_SYMBOL(ath11k_hal_srng_init);
->  void ath11k_hal_srng_deinit(struct ath11k_base *ab)
->  {
->  	struct ath11k_hal *hal = &ab->hal;
-> +	int i;
+>  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> index 427542777abc..5dca50d40080 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> @@ -1184,6 +1184,9 @@ mt7915_mcu_sta_bfer_he(struct ieee80211_sta *sta, s=
+truct ieee80211_vif *vif,
+>         u8 nss_mcs =3D mt7915_mcu_get_sta_nss(mcs_map);
+>         u8 snd_dim, sts;
+>=20
+> +       if (!vc)
+> +               return;
 > +
-> +	for (i = 0; i < HAL_SRNG_RING_ID_MAX; i++)
-> +		ab->hal.srng_list[i].initialized = 0;
 
-With this flag reset, srng stats would not be dumped in ath11k_hal_dump_srng_stats().
+Before checking vc, ve is induced by vc already.=20
 
->  
->  	ath11k_hal_unregister_srng_key(ab);
->  	ath11k_hal_free_cont_rdp(ab);
+        const struct ieee80211_he_cap_elem *ve =3D &vc->he_cap_elem;
+
+Though pointer doesn't really access the data, it would be better to get
+the pointer after checking vc.
+
+>         bf->tx_mode =3D MT_PHY_TYPE_HE_SU;
+>=20
+>         mt7915_mcu_sta_sounding_rate(bf);
+> --
+> 2.39.5
+>=20
 
 
