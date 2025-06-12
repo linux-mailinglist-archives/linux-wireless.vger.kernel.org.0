@@ -1,63 +1,65 @@
-Return-Path: <linux-wireless+bounces-24021-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24020-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CFB5AD6521
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 03:32:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B52AD6520
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 03:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 978091899B4D
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 01:32:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 039B63ABE2A
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 01:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B487DA7F;
-	Thu, 12 Jun 2025 01:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C209854758;
+	Thu, 12 Jun 2025 01:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Mus47qp7"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="W9OX/VWs"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6926C502BE;
-	Thu, 12 Jun 2025 01:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E26847B;
+	Thu, 12 Jun 2025 01:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749691931; cv=none; b=Ieud0pOl8UwGgOzBPfRhXghQf1w790kBx0UVeMIW96vZp8M23N3KxHK77HmJI6Njbpm+wWBqkijlXeYzWbDrhCx1mvRhikHYFKR9yQIdAIo0iwkjcn7H0o0B5NItBJzG4usSJcIwYqTgIitxVJoEoBMWxYFo920Y8Ix/2i8Ck0A=
+	t=1749691931; cv=none; b=DnxsoOKRA1rpnsXVjPTcVrjSaDj9icgIvyyFnHkteSRSxAjFcaAdNiEzBnPcdB0YSo04SAnMlSSxGgdDPhmFlPdjhOGq9aofyxA+Ev+1Lq/ZL/VEYwMsgwjJ13eha7fil6M9mU3CCgAJujgOCJ+fPeOhVufsF8cX2t0zifpVMfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749691931; c=relaxed/simple;
-	bh=25BHAme0V0/6fwV8v7wf0NFqSAC6drcFzk8SkFALOuA=;
-	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=L5uDOdPS1uZ43F/SrSZ+xVboQft5bgNSxfh55h68jtovZ+M3MI85rqnwXyC6SUIy315blFFO3JJcZ7yypQrr2iI4to8aCRVh5sW+HwWLIz5wMm1fApiSoNX5vZXfJEpCpsGBj6ehtIed+00F9MIqFe1JSvZgp21M4KYyRHXsIeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Mus47qp7; arc=none smtp.client-ip=205.220.180.131
+	bh=HWCkbxMgjAoLsZ1Gl3Xp7a1xv8OeGMZlBxx47ZdiqrI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=RK+SDliI6PmgLnJMcdMjHZnOkySdiODnrk49cbVwlIB3nCzZ+9+VIhAfPS+ZdNbkswbrO37qnw+0xofrLATEq93KS1ypdwKb4+Kl0D9b8/bPBB9QYRSzf6UCnPtOhBxMwNWnL69dz6BRkpqF9n64xWfUh1h1tRdngL3I5R5d1xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=W9OX/VWs; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55BJ0tYL027235;
-	Thu, 12 Jun 2025 01:32:02 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55BM9rEb002604;
+	Thu, 12 Jun 2025 01:32:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=2Ti9jWP13gHxXgYiLxvPYY
-	X73Cvo+ynbHIVu9ujckXQ=; b=Mus47qp7abMP+BhBVit+nZniqHgqj3MvBT8iYb
-	IVyqct93Xcj9howebVQDajQGhVog+f9gDfdKVBWz/wCgWTiq28GXA5B+ahZEG7nN
-	KTdQH7ylnYPys5200l4Pq0aexuWPVjZ7+NJ0MLEIcPoKq0Sg74m/E1BNE1Min++O
-	Bw+mpR5qxAvwuvxlRJBJKVspiWOe9eTk2AWXYvzHfkJeBdf93MNHELKlrhflKJWo
-	Ti9gCce6EiI6plftcOeHIEfRtVIqWRY8aEho/ZZI3ZhFP/RzJllNDmsYmoxZTHqQ
-	hqcPoGDoONahwudpI8GNsVAyeA4riZIVafj4OU55XRdr1pHg==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 476jrhdtc0-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Wq5v0ddsvOvcqNyeuQqlmLxX8cKI76Ec7FRGgFxQFyw=; b=W9OX/VWsRuS+v2Ci
+	CJkGpJdvqeIz0X1XTaFukDbqeMh2aSTpcEB3INQDjTJHCiKyQL8gk6vAdxlNuZx5
+	+oNf25gr32zSFqq+aKY2NWP2+wzyk45EyBfSTx38Quz2IUsqBy1U4soLLOJ8kWlX
+	1Fsn29adXSy9tcyUf4vgGKLNs34M2ksTGXQ0tdqEuNIZTY77jSx7KQR/FS5EsFYq
+	khURkni/ujemlmFsuL3vp6bmqm3ybLMNNqdTMr5Ji+xPf6cQ/I66YRyzYBiLuycL
+	vj7WC09s5mbPGf10pIESnxI/at+N97rI9r1sEe3Y6zFybYOIsk15VAAlFPajnmEb
+	YwPOIw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 477jbpgbte-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Jun 2025 01:32:02 +0000 (GMT)
+	Thu, 12 Jun 2025 01:32:04 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55C1W1H7016131
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55C1W31I012568
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Jun 2025 01:32:01 GMT
+	Thu, 12 Jun 2025 01:32:03 GMT
 Received: from [127.0.1.1] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 11 Jun
- 2025 18:31:59 -0700
+ 2025 18:32:01 -0700
 From: Baochen Qiang <quic_bqiang@quicinc.com>
-Subject: [PATCH ath-current 0/4] wifi: ath12k: fixes to firmware stats
-Date: Thu, 12 Jun 2025 09:31:48 +0800
-Message-ID: <20250612-ath12k-fw-fixes-v1-0-12f594f3b857@quicinc.com>
+Date: Thu, 12 Jun 2025 09:31:49 +0800
+Subject: [PATCH ath-current 1/4] wifi: ath12k: fix documentation on
+ firmware stats
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,12 +68,9 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAQuSmgC/4WPy07DMBBFfyXymqlsJ5k8hFD/A7Fw0gmxIA71O
- AFU5d9x3C7KArEZaV733HsRTN4Siza7CE+rZTu72KiHTPSjca8E9hR7oaUuJSoFJoxKv8HwCYP
- 9IoaamirHSioslYhfH57SIj49i3gM/eI9uSBerktP5yVSwu1iImaTKG32eIXI5g7CwQSG0+wIV
- gUKdJejLrBEbKrjzHw4L+a9n6fpEMvTbqAzTLBPbGizOwNwU6+Tk9FymP13yr2qZOXPiBEswdR
- 505RDgQPiMUboret3ZlJb9T8KOiooGrArsKpLKX8rbNv2A0F7rmGJAQAA
-X-Change-ID: 20250611-ath12k-fw-fixes-8e9736701651
+Message-ID: <20250612-ath12k-fw-fixes-v1-1-12f594f3b857@quicinc.com>
+References: <20250612-ath12k-fw-fixes-v1-0-12f594f3b857@quicinc.com>
+In-Reply-To: <20250612-ath12k-fw-fixes-v1-0-12f594f3b857@quicinc.com>
 To: Jeff Johnson <jjohnson@kernel.org>,
         Ramya Gnanasekar
 	<ramya.gnanasekar@oss.qualcomm.com>,
@@ -80,66 +79,69 @@ To: Jeff Johnson <jjohnson@kernel.org>,
 CC: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
         <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>,
-        Baochen Qiang <quic_bqiang@quicinc.com>, g
-	<gregoire.s93@live.fr>
+        Baochen Qiang <quic_bqiang@quicinc.com>
 X-Mailer: b4 0.14.2
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=EovSrTcA c=1 sm=1 tr=0 ts=684a2e12 cx=c_pps
+X-Proofpoint-GUID: aOfRtIkimQI4GD_GUCZgGTCEZgaz4yxi
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEyMDAxMCBTYWx0ZWRfX3ALXOqJG2jGt
+ 85KqDRCws9kw+N47kErQrskeSFMQG4ZbPMXHsByrYTbayWbniTjP0FQT8ajua5on1evYhVKdcTK
+ w9vFQCyPS6O3H9CorRaozxLhplUZGMLESh3wsS5c93ZJ5U4C3yYjyYDpgL159dFsx9E6wn65uO+
+ S/RwMoJLo45dsu8TOUo0eFc0Q6vqRahzuRfxLrPIE7E1Z8MwoEZKBai6slQXzKK+1qN0atdQkK1
+ 2NwJCUrAwkMN/8/VQhhxSkYv2z/lTxCWUwgZkOgtKDKpaLCnWAUOGP2jjd5Bx+oT4r8biomWJvv
+ 4KwVNbp3h9dqGbuNsx3PZVhnEtHkKm386dpaNGIlDvmaPgT9lEmHKb0+zfpO1uuT0aIw8Bx8KPF
+ xmaieFkJhtye55nD+LMH8iId8uShkajb6TU6syyYlQ1Dbn2qwAe8gXdKawDD58wLMVHhDsDT
+X-Proofpoint-ORIG-GUID: aOfRtIkimQI4GD_GUCZgGTCEZgaz4yxi
+X-Authority-Analysis: v=2.4 cv=OLgn3TaB c=1 sm=1 tr=0 ts=684a2e14 cx=c_pps
  a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8
- a=UqCG9HQmAAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=WBYhJntNMX0R2oXoKHEA:9
- a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: g-ebaOzTeTPWBEfcLr4SfgQAm7Idwn3_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEyMDAxMCBTYWx0ZWRfX1vpGH1aTzm56
- arIPKGN0H6TBTOG+NwDGKR9v38EzX/bxip/GMEEc4YrpVQkhpmEdyzmaQR859xAlAMBuWzQTMOa
- RSdcqT+HohrHSXyH78JMQEtE/TCrZmAsK4uX+QcXPEuq0QglA0YtmtBc5zEFi/Nk/dZxfhrqScV
- dcWeniFxXTecIjm3pm+BI8IFxRA0VxMsWKi6v/GZLW+iN7gDgidMwMIgbAPoCvEdEP/hex3QVOC
- kPXkjjucDODz8mYvC4nZ3ofUbMhJ2dL/l8bZ+IWfdOwg0S5fqUNwHDsoR8Sy6CMWtWjMDmYiLlE
- 6FsRTtGx4d+kwpVHMH2A+i10o9SwAoFjkK1F5qXkHFBkpan81xxhL4XZp/wf/5EAKmRUpOVgCMG
- F0R4a72ZGspn6wHr1GJTKPDljoQDhlRNiYDv7/PWcQUtGQHCI7FmCIqfSzxOMEorii8da/n4
-X-Proofpoint-GUID: g-ebaOzTeTPWBEfcLr4SfgQAm7Idwn3_
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=COk6AnOGAAAA:8
+ a=8tjGaqDP5q2GUWaB4ncA:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-12_01,2025-06-10_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0 suspectscore=0 priorityscore=1501 mlxlogscore=532
- mlxscore=0 clxscore=1011 malwarescore=0 adultscore=0 lowpriorityscore=0
- phishscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ bulkscore=0 priorityscore=1501 impostorscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 adultscore=0
+ malwarescore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2506120010
 
-We get report [1] that CPU is running in hot loop while requesting
-firmware stats, fix it in patch [2/4]. While at it, fix documentation
-on back-to-back firmware stats events in patch [1/4], and fix potential
-failures due to static variables in patch [3/4]. patch [4/4] fix the
-failure when there is no vdev started.
+Regarding the firmware stats events handling, the comment in
+ath12k_mac_get_fw_stats() says host determines whether all events have been
+received based on 'end' tag in TLV. This is wrong as there is no such tag
+at all, actually host makes the decision totally by itself based on the
+stats type and active pdev/vdev counts etc.
 
-[1] https://lore.kernel.org/ath12k/AS8P190MB120575BBB25FCE697CD7D4988763A@AS8P190MB1205.EURP190.PROD.OUTLOOK.COM/
+Fix it to correctly reflect the logic.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284.1-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Tested-on: QCN9274 hw2.0 WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 ---
-Baochen Qiang (4):
-      wifi: ath12k: fix documentation on firmware stats
-      wifi: ath12k: avoid burning CPU while waiting for firmware stats
-      wifi: ath12k: don't use static variables in ath12k_wmi_fw_stats_process()
-      wifi: ath12k: don't wait when there is no vdev started
+ drivers/net/wireless/ath/ath12k/mac.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
- drivers/net/wireless/ath/ath12k/core.c |  4 +++-
- drivers/net/wireless/ath/ath12k/core.h |  4 +++-
- drivers/net/wireless/ath/ath12k/mac.c  | 30 +++++++++---------------------
- drivers/net/wireless/ath/ath12k/wmi.c  | 27 ++++++++++++++-------------
- 4 files changed, 29 insertions(+), 36 deletions(-)
----
-base-commit: 4e89e05afa9fff6e68ec25ba1f21e711d91dcfeb
-change-id: 20250611-ath12k-fw-fixes-8e9736701651
-prerequisite-message-id: <20250609-ath12k-fw-stats-done-v1-1-2b3624656697@oss.qualcomm.com>
-prerequisite-patch-id: 4b16b879aa24110d163279b32576789fa7383913
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 88b59f3ff87af8b48cb3fafcd364fd9ced4ff197..15dc99992f271f3ec81ecedaf1f6a81fbeb03f79 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4400,9 +4400,8 @@ int ath12k_mac_get_fw_stats(struct ath12k *ar,
+ 	/* Firmware sends WMI_UPDATE_STATS_EVENTID back-to-back
+ 	 * when stats data buffer limit is reached. fw_stats_complete
+ 	 * is completed once host receives first event from firmware, but
+-	 * still end might not be marked in the TLV.
+-	 * Below loop is to confirm that firmware completed sending all the event
+-	 * and fw_stats_done is marked true when end is marked in the TLV.
++	 * still there could be more events following. Below loop is to wait
++	 * until firmware completes sending all the events.
+ 	 */
+ 	for (;;) {
+ 		if (time_after(jiffies, timeout))
 
-Best regards,
 -- 
-Baochen Qiang <quic_bqiang@quicinc.com>
+2.34.1
 
 
