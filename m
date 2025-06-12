@@ -1,84 +1,86 @@
-Return-Path: <linux-wireless+bounces-24046-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24047-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2352AD6B3E
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 10:46:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8AA7AD6BAB
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 11:07:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58A8B3AA0F6
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 08:45:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDC451898F7E
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 09:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706631C861B;
-	Thu, 12 Jun 2025 08:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240E5222593;
+	Thu, 12 Jun 2025 09:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="bi7pELAc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kVbGupnt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7E71B412A
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 08:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F241CDA3F;
+	Thu, 12 Jun 2025 09:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749717961; cv=none; b=Rz/Hs+w20gjAjM/sRSkkFyecMywOAbYjO2ZrLU+pFkAUCHTDPnDXSRudoT0MVrfmB0IRKY98ChR40KOHAoEMbt2yDf7Rfi3W9wP2mhKndHZCUMPjsmrQVNysv4ktIA2K+Rj8ZiXYQmIHi9Z4JotAPf4gMIN9o1gskE8EmvTfN8s=
+	t=1749719267; cv=none; b=K2CV36aQ/dc3CWGPWBMmhT/z8Ab7uaK6T8gIR+Ua/x4rCqVVhWRcbd006ciOfeNFlJefH9qx7V5zQ9FVhUhyXpwIHCyi+m/E+yPHj808uMkr8jSnsYqCJM3n0KKhXK8yz2as48l0T1BF4uinHhCXDVhuPf6fE1qBvDbmWeELDS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749717961; c=relaxed/simple;
-	bh=N5wcwfcLu9AlsbJtqb6p3PuoyNM8HmZGrqcbr9Db6sc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U49sLON687v82KJuqKolOTLincnm/RAlCPlSbxaabkapG6WBaEqNA0BM3fW/mCbThRc5qfgRyz9XC+wH/lNTGZKJv7mLF/D0OaNmxjALpBJbQqCbs4WVkhM94giFY1K+EHWCftahxPQHvEg+bBqp/jnYJibQH38p+m6EcF4tXpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=bi7pELAc; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-742c73f82dfso694383b3a.2
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 01:45:59 -0700 (PDT)
+	s=arc-20240116; t=1749719267; c=relaxed/simple;
+	bh=nPaGWMZ4NG9UTsgXyf6E4c3wv/YhKDdZPZghgszys+k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iRSUf0sEPYWenIkYiv/QI9e+/EajmqdDw5GtLSkCPRtb7q/NwYsYsUi3qnaNdYIgka0jGq138XOeDBs3kG0ihNKngrO7gOIoWYTmN2F9QCFfIqztwpLBxhiJB3QoP2VRYlaQ+hfRLJEwX4MLkld5fWTUDsiSSMkWDYB3TcKJJpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kVbGupnt; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4530e6f4db4so205065e9.2;
+        Thu, 12 Jun 2025 02:07:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1749717959; x=1750322759; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749719263; x=1750324063; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TpZLNWW0DOhsGzvSZThrO5Z24o9vsj5Ub5xo7XurfUA=;
-        b=bi7pELAcLeHocAyOixA7yk/JIqU2qOQ1iD9UIHCEYMhyYIKPqSoFaQYmwpRM8PwlNM
-         rBOWUffHCpse9GePdywFQ25luVlmVHEu83GsG2H7K6DShRCFjzr3SFuCHSTfXg8Ty9QD
-         gi5CDlW9P565XyHBzNn61rVuqDkWoL0Hzn8fA=
+        bh=rBWkeK6hGx5OvRMWT1USZjz50+Of77xDqL2XQmoejP8=;
+        b=kVbGupnt6UEYFqwZUuhNICMrztf8n0YE8PGJM9Mb2WGzCRcxqjhdkEJ5GpoJkCjJ1i
+         V31esfRuCRWYVR5IZDzwLvPwnHbJBMtojhq1cyvIt+W2feEYo9IQkGcbUJi7Oq6BnyXa
+         tZvr/HEefh/dAV+MROsqAwiWtAnkwhBnnQMGpmMuVcOEP9m42W2/hGbWI/8u5bj6Ydkw
+         U15/pRRv4kxB5j3G4pfU190ATgvoFxaFJkNL4kmkMCxSoMijG9PgMarkY3QE70VSq/oJ
+         xsuqySaB1NDEJw9HnMf/AQi0jgHlKfJG/fsN/301N9XMNXsBXuGPv/pfqeTyDKjW2SC9
+         usMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749717959; x=1750322759;
+        d=1e100.net; s=20230601; t=1749719263; x=1750324063;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TpZLNWW0DOhsGzvSZThrO5Z24o9vsj5Ub5xo7XurfUA=;
-        b=CFd3LdIfiEOXaP+FsBFGVbEgLTuWfxSlpJy6+DtbnAojOYbrjLLu+icK7TYGLqQote
-         uLfKmQa+R2XEIAHIWxuaD7ARj7w8Lslzl/db8Tv7EGYwzHVGxJ8lRPiPmu+ARPcQ6+Pm
-         jUW1DHyDAKlMwm129999+OqWFgk3F3UFAsDBoIr7KZpwtGZrsj1ClFovLe070wHLLctQ
-         MLWVm8LHeW0RgzrwA3rFhT3E7POLmu1AxIwnH1tGXIVQ7y+WwxwUE5Xt8Ja3VKR69ZZM
-         vXkx3zUK2wjZbbbSWcTgO1tQerxoP0bk9KbRUYg8Ng9q4jJxmi+bEfZ6kBtbWugpCZuw
-         fnjg==
-X-Gm-Message-State: AOJu0YwyYAu0Js9QkxwgD+72G9V7hCRFFJWXnIz7lme5HlVqk25hDyLS
-	qjcQtY4HjHCA5Gx4J0pKf1G7G2o7VTO7zea5gIwtlIKToI+R4Gh4NxQm1PBnFKwo4dU+GHi9jwl
-	ZRA0=
-X-Gm-Gg: ASbGncucEXm40fWZINwbG0q6oAPGyUJoWW5NDLgZj9zib1iVtwueai4RGtj9RV5R62v
-	cdQ6u/NQK4gKhmYDHwCUrNebkv9KYT4g5rTZaISGScrVVl7cW8pHhsABuO8huhiAEjRmSzwhC9B
-	PuvvDPZhK3foQrCXNjeN9r0/TcHWG7EoaNGURy3mf6vVPOSWwGwdLcEGJj3I8FOeH9K8Lcx6ugu
-	nvIl6OihBnZkf8CW0/bfdI21hnJw8+Gu087n34TbnSjc6QEwgM3ic/gU93HHmSccYye1KuEy7r3
-	jA6svY0jzVxmYd6Dw77IQmnTbteHyfG1+Kr0m10piFquFiKJq1khmdmXibUONS9xk+KKO5oK02V
-	FAnc+jh9DEBw=
-X-Google-Smtp-Source: AGHT+IH+WHMtXn8bwbKfQnFjtwXx1iGxMWnJkL+ndCJJX/b5xWKBlUyZSGGvyl1WSRHTr2d/Tewnww==
-X-Received: by 2002:a05:6a00:8593:b0:746:1e35:3307 with SMTP id d2e1a72fcca58-7487e22c268mr2650354b3a.14.1749717959076;
-        Thu, 12 Jun 2025 01:45:59 -0700 (PDT)
-Received: from tigerii.tok.corp.google.com ([2401:fa00:8f:203:fcb5:79e0:99d6:8d5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74880a10152sm933200b3a.172.2025.06.12.01.45.57
+        bh=rBWkeK6hGx5OvRMWT1USZjz50+Of77xDqL2XQmoejP8=;
+        b=h63R6EUydz97lJuBYtkoGOyQLWuSb3I5ehhUGGUms5aoWsRn3R8DDRz4f6B/MUCSi1
+         yX+FFhPtD8b/Tdoy6qsdB+cDLxcW1FnS+ABDKFVZNhTehNeKTPjCvXoCFgeVWacpiDry
+         jPweSF+z4puDJxM/W5NwgTjCG6OMcGvimfx40q2NP4UYr6ZgXAeoGGzSU8Sn0j5bHZKl
+         G9FNAKOapXc4GlIoevlMExANRpRDg0qsRL2wgQVGQKGQeY8OkQ7gjjB0unboBZxudmzp
+         osmwiCiAp48wcHS4+VltDCGt+lRLm6FONeDxUpUU8VXlLUoxmRB3VVmjSl2ZkXAp86G5
+         ebaA==
+X-Forwarded-Encrypted: i=1; AJvYcCVC5BD5gKLqUGq/7MgQqg75eLqH7oIx9P+QUOlUeAtwPuqERmlBFrN3s9UQnxyEESOgXANBdOf7ZpRuPt4=@vger.kernel.org, AJvYcCVuQsmKZZTkzCvnNqc7rAc5G6CTGxnrjyl3qPbWubr55mqI93Ag3ZlquZoeu/4u9GQJkFftkASSZ8+N+UHI1gY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJ/knC3scRBlgoW2cZJaRWNjrpU2OKq1Ktgi4s5Mk3eo3zpC8O
+	Op4hi7u2ORdTwroPsiSQroRkZzC0Ofx9Yz3BWXNJuCkP/6A52exjgIjl
+X-Gm-Gg: ASbGncsMr2xTKecIzoqJt4BfENYVmgw0xo3fjgjW1TT1TcJtAKLgHT1O/RGaYTA8YSg
+	CQOBcoF45bgt/bRapWEDa0hmjumEFQ8MHxqEBNLtPQVeWNCkJjP7IetFGnY4bfkkTzVpPdsKnYZ
+	GN4R9Sj9toXDTXQz1sLKAh5+agtirT0jkYkAVjyyBu99g+NEVvTqx3bHTJvHVyFgqqS4XoSyXHi
+	qIU+BShLTD13AwsImIA7dOebqrNxrLR4gCpoPrHKQrVQHjni3bu19QxTzywPInxwlVJHEuzpP2Z
+	5XRUSXm8RO6BeCuZgzEDlGn/NGuoK3AEJfZaAxYxrHWUs0v2025pS9BNVdflvlCvkRk9yptATTs
+	DZyeNMM8jjC3J0H8=
+X-Google-Smtp-Source: AGHT+IGHbfxT2141g/HEDN48PqEbgPnWCfTrql/YAEm6ytjb6sLkgf9FfpPfKwqSms0MnVYa/zy/Dg==
+X-Received: by 2002:a05:600c:4e0d:b0:439:9fde:da76 with SMTP id 5b1f17b1804b1-453253b0905mr21982685e9.0.1749719262297;
+        Thu, 12 Jun 2025 02:07:42 -0700 (PDT)
+Received: from thomas-precision3591.imag.fr ([2001:660:5301:24:b893:ade0:c175:b695])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4532e2522b1sm13756895e9.25.2025.06.12.02.07.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jun 2025 01:45:58 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCHv3] wifi: ath11k: clear initialized flag for deinit-ed srng lists
-Date: Thu, 12 Jun 2025 17:45:06 +0900
-Message-ID: <20250612084551.702803-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
+        Thu, 12 Jun 2025 02:07:41 -0700 (PDT)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] drive/realtek/rtlwifi: fix possible memory leak
+Date: Thu, 12 Jun 2025 11:07:19 +0200
+Message-ID: <20250612090724.17777-1-fourier.thomas@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -87,91 +89,32 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In a number of cases we see kernel panics on resume due
-to ath11k kernel page fault, which happens under the
-following circumstances:
+When `dma_mapping_error()` is true, if a new `skb` has been allocated,
+then it must be de-allocated.
 
-1) First ath11k_hal_dump_srng_stats() call
-
- Last interrupt received for each group:
- ath11k_pci 0000:01:00.0: group_id 0 22511ms before
- ath11k_pci 0000:01:00.0: group_id 1 14440788ms before
- [..]
- ath11k_pci 0000:01:00.0: failed to receive control response completion, polling..
- ath11k_pci 0000:01:00.0: Service connect timeout
- ath11k_pci 0000:01:00.0: failed to connect to HTT: -110
- ath11k_pci 0000:01:00.0: failed to start core: -110
- ath11k_pci 0000:01:00.0: firmware crashed: MHI_CB_EE_RDDM
- ath11k_pci 0000:01:00.0: already resetting count 2
- ath11k_pci 0000:01:00.0: failed to wait wlan mode request (mode 4): -110
- ath11k_pci 0000:01:00.0: qmi failed to send wlan mode off: -110
- ath11k_pci 0000:01:00.0: failed to reconfigure driver on crash recovery
- [..]
-
-2) At this point reconfiguration fails (we have 2 resets) and
-  ath11k_core_reconfigure_on_crash() calls ath11k_hal_srng_deinit()
-  which destroys srng lists.  However, it does not reset per-list
-  ->initialized flag.
-
-3) Second ath11k_hal_dump_srng_stats() call sees stale ->initialized
-  flag and attempts to dump srng stats:
-
- Last interrupt received for each group:
- ath11k_pci 0000:01:00.0: group_id 0 66785ms before
- ath11k_pci 0000:01:00.0: group_id 1 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 2 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 3 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 4 14780845ms before
- ath11k_pci 0000:01:00.0: group_id 5 14780845ms before
- ath11k_pci 0000:01:00.0: group_id 6 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 7 66814ms before
- ath11k_pci 0000:01:00.0: group_id 8 68997ms before
- ath11k_pci 0000:01:00.0: group_id 9 67588ms before
- ath11k_pci 0000:01:00.0: group_id 10 69511ms before
- BUG: unable to handle page fault for address: ffffa007404eb010
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 100000067 P4D 100000067 PUD 10022d067 PMD 100b01067 PTE 0
- Oops: 0000 [#1] PREEMPT SMP NOPTI
- RIP: 0010:ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k]
- Call Trace:
- <TASK>
- ? __die_body+0xae/0xb0
- ? page_fault_oops+0x381/0x3e0
- ? exc_page_fault+0x69/0xa0
- ? asm_exc_page_fault+0x22/0x30
- ? ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k (HASH:6cea 4)]
- ath11k_qmi_driver_event_work+0xbd/0x1050 [ath11k (HASH:6cea 4)]
- worker_thread+0x389/0x930
- kthread+0x149/0x170
-
-Clear per-list ->initialized flag in ath11k_hal_srng_deinit().
-
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
 ---
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-v3:
-- updated commit message and subject line (Baochen Qiang)
-
- drivers/net/wireless/ath/ath11k/hal.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index 8cb1505a5a0c..cab11a35f911 100644
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1346,6 +1346,10 @@ EXPORT_SYMBOL(ath11k_hal_srng_init);
- void ath11k_hal_srng_deinit(struct ath11k_base *ab)
- {
- 	struct ath11k_hal *hal = &ab->hal;
-+	int i;
-+
-+	for (i = 0; i < HAL_SRNG_RING_ID_MAX; i++)
-+		ab->hal.srng_list[i].initialized = 0;
- 
- 	ath11k_hal_unregister_srng_key(ab);
- 	ath11k_hal_free_cont_rdp(ab);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 898f597f70a9..f754f1c3f783 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -572,8 +572,11 @@ static int _rtl_pci_init_one_rxdesc(struct ieee80211_hw *hw,
+ 		dma_map_single(&rtlpci->pdev->dev, skb_tail_pointer(skb),
+ 			       rtlpci->rxbuffersize, DMA_FROM_DEVICE);
+ 	bufferaddress = *((dma_addr_t *)skb->cb);
+-	if (dma_mapping_error(&rtlpci->pdev->dev, bufferaddress))
++	if (dma_mapping_error(&rtlpci->pdev->dev, bufferaddress)) {
++		if (!new_skb)
++			kfree_skb(skb)
+ 		return 0;
++	}
+ 	rtlpci->rx_ring[rxring_idx].rx_buf[desc_idx] = skb;
+ 	if (rtlpriv->use_new_trx_flow) {
+ 		/* skb->cb may be 64 bit address */
 -- 
-2.50.0.rc1.591.g9c95f17f64-goog
+2.43.0
 
 
