@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-24060-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24061-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDE8BAD6F6E
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 13:50:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C01CAD6F6D
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 13:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C425D1BC4DCF
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 11:50:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7244E3B1DCE
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 11:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0FE229B0F;
-	Thu, 12 Jun 2025 11:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D347A220F2A;
+	Thu, 12 Jun 2025 11:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hUJFxr6w"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bUOsZRyX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7407723C51E
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 11:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D095423A9B8
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 11:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749728965; cv=none; b=Ap4/TbSTRYCh4ROuP4FkVN/G9+OCPmxKMOiv0u0BrUVw1zIRmeTeK/JUCIfafwPQmjDUyhgItadWpXfUup7u0Md7qxxcLKE2qYJ7JJyLsLCYEXQpVXX/rSOFJ2yIToPr5bSm1xQq+mapzQwwNmktDV8It3bgkfKshovOzsJMiH8=
+	t=1749728966; cv=none; b=cS32jJdMq4lI2Tx0LBqbjsCHHx29yL6aGhEyhyQmzl5p8lEtsLoVDz5a21MZ2lqf94oWwN2tKIT67QpjVnts2GGqvBOSPlSZ2l8iWolnOtABroFlHayiRB7SBE6rfaOutVkhj5bxUXyHScdpC7GzFhGQRKKMehfHQQ27ldhWvZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749728965; c=relaxed/simple;
-	bh=yUJ6CK/r3WTHQshy7N2SWU4HmSYNEcw5QbtCNdGdjqE=;
+	s=arc-20240116; t=1749728966; c=relaxed/simple;
+	bh=hO0uMluhPsFCzrRzd2WWHQsrlo6ugkNNwS7nnVGPy2U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ugf9bHDihM6VUjiKcqi4XjONuJjNTTOGvH2rMGg8nTKMWQ8G+zZq1wwGeeedefi3RTf26ZzUF+HkNl2NhOykTOi0ToLUr/W54dmFGR39vfXg8LVvTz6Dry5KzmKh7sz6G5bT4eurqqV7kEdkNtcEcgxj7OhNI6DfQYnaDdbKJ0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hUJFxr6w; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=LYxYo+9uB4/aMvjQxcr143dJwRMR1XQYXdcuNrzf+wUtAMOCjKDDSyXqg18z2IoeqRfvyJSEwBDmzEHOijOs1l7Ne9pEnsXRKPfzf4ZynhkIuM36JtqpyVJbw2jPrAUKRFKE01fjGVjmRcUNMabC+tJSPp3r5yfPmZEWxaP7ZHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bUOsZRyX; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749728964; x=1781264964;
+  t=1749728966; x=1781264966;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=yUJ6CK/r3WTHQshy7N2SWU4HmSYNEcw5QbtCNdGdjqE=;
-  b=hUJFxr6wBZrM/iSUwRuHRQ4eyLGrgxzcuyn/zKUfxs1sd8Tw91YiKx+D
-   JGH3h9Gw60y5j8aO/4JXTHFQQeHVZ9f8Jz7v19R8tWkLumACnwHgsnY/h
-   H/JcPQhbnJOrMyEuboQpgXfF4+ZBAt6UsWFyHpZeYpthhi7BiGmgTI4P1
-   NE06jYRFSETFzDcSNPV83NjuMG/H35v1nlCqEEpeIMMiny1ejTaF2FBr9
-   9N/NPHJpKyorTGns/X0eJMuM7tPeXITStTc+p3g+jxoAlN3fCqhsqwKju
-   EZSKNGp4UxD5VGdI1lMhQfa8QVwQvV1RsnrysqoPXbq5gr9ikoQcneJyE
-   w==;
-X-CSE-ConnectionGUID: Brmv1n0RSy2ZFGPr3g7z8g==
-X-CSE-MsgGUID: ko3bVNhiTsaBEEpwnmBvMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="63248332"
+  bh=hO0uMluhPsFCzrRzd2WWHQsrlo6ugkNNwS7nnVGPy2U=;
+  b=bUOsZRyXsD9Os4sJlAc1eIqmoSMnfrkaE04dJjsdn/MjXkLSN+ZfDdWj
+   pnwzTG8d+sgRM1jFj+fq2x81ltqerLwRuQm7v0RDDzJtyafSjZq7NTPvH
+   FFo3k63wNDdXtW0Edc2zt+ntjCb7SIRqgFoz6DanBTzUDm8QnNBpY2RlG
+   je/88EAhhsBzsEDh6drYMtMzz9W8EsrxOeCH24tAGL983K/KO06OWjIWG
+   j+djq0WV/hgpJW4FJYbZX5Bnqvh0jEZbTzH6HHHTe+9ta/bSNw0NlMGTK
+   eQ/BDls1M1/8rrIrhLV3DCG/DjUczqa7cRmvEYqEgkxUF7qCG6iRm8Mhn
+   g==;
+X-CSE-ConnectionGUID: CkX53yOjQ/OYy8dh4tauAg==
+X-CSE-MsgGUID: BJkQqqA+RLiUjC/xBN3ptQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="63248344"
 X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="63248332"
+   d="scan'208";a="63248344"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 04:49:24 -0700
-X-CSE-ConnectionGUID: 7wqr9+VgTFqh4idh2qbZmQ==
-X-CSE-MsgGUID: hPqo4YQPTn24QFPIY6ZmNw==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 04:49:25 -0700
+X-CSE-ConnectionGUID: 79sQBzqMQkeuYLglo7P7+g==
+X-CSE-MsgGUID: dMO1ctHiR9q0dD/MIxtMuw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="147382124"
+   d="scan'208";a="147382139"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 04:49:22 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 04:49:23 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH iwlwifi-next 06/13] wifi: iwlwifi: mld: advertise support for TTLM changes
-Date: Thu, 12 Jun 2025 14:48:52 +0300
-Message-Id: <20250612144708.3b0a4fd2c12b.I1fab7840f1cc222bd1e8cb58ac1a4177474fcd56@changeid>
+Cc: Rotem Kerem <rotem.kerem@intel.com>
+Subject: [PATCH iwlwifi-next 07/13] wifi: iwlwifi: pcie: move iwl_trans_pcie_dump_regs() to utils.c
+Date: Thu, 12 Jun 2025 14:48:53 +0300
+Message-Id: <20250612144708.06950459ce97.I3105158eb9ae698efebe4b9ada1093aeb1f1b869@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250612114859.3094387-1-miriam.rachel.korenblit@intel.com>
 References: <20250612114859.3094387-1-miriam.rachel.korenblit@intel.com>
@@ -76,52 +76,334 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Rotem Kerem <rotem.kerem@intel.com>
 
-The iwlmld driver is able to handle TTLM changes as long as all TIDs
-have the same TID to Link Mapping. Add the corresponding code so that
-mac80211 will accept and trigger the TTLM change.
+Move the iwl_trans_pcie_dump_regs() function to utils.c in the PCIe
+directory since it operates on PCIe registers and is not
+hardware-dependent.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Refactor the pcie_dbg_dumped_once indicator, previously part of the
+iwl_trans_pcie struct, into a static variable within the
+iwl_trans_pcie_dump_regs() function, where it is used.
+
+Signed-off-by: Rotem Kerem <rotem.kerem@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mld/mac80211.c  | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/Makefile   |   2 +-
+ .../intel/iwlwifi/pcie/gen1_2/internal.h      |   3 -
+ .../intel/iwlwifi/pcie/gen1_2/trans.c         | 101 +----------------
+ .../net/wireless/intel/iwlwifi/pcie/utils.c   | 104 ++++++++++++++++++
+ .../net/wireless/intel/iwlwifi/pcie/utils.h   |  11 ++
+ 5 files changed, 120 insertions(+), 101 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/pcie/utils.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/pcie/utils.h
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index 1eb4dfb83778..a8b2e2046d76 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -2622,6 +2622,23 @@ static int iwl_mld_start_pmsr(struct ieee80211_hw *hw,
- 	return iwl_mld_ftm_start(mld, vif, request);
+diff --git a/drivers/net/wireless/intel/iwlwifi/Makefile b/drivers/net/wireless/intel/iwlwifi/Makefile
+index 71101067b889..b82392978b76 100644
+--- a/drivers/net/wireless/intel/iwlwifi/Makefile
++++ b/drivers/net/wireless/intel/iwlwifi/Makefile
+@@ -9,7 +9,7 @@ iwlwifi-objs		+= iwl-utils.o
+ iwlwifi-objs		+= iwl-phy-db.o iwl-nvm-parse.o
+ 
+ # Bus
+-iwlwifi-objs		+= pcie/ctxt-info.o pcie/ctxt-info-v2.o pcie/drv.o
++iwlwifi-objs		+= pcie/ctxt-info.o pcie/ctxt-info-v2.o pcie/drv.o pcie/utils.o
+ iwlwifi-objs		+= pcie/gen1_2/rx.o pcie/gen1_2/tx.o pcie/gen1_2/trans.o
+ iwlwifi-objs		+= pcie/gen1_2/trans-gen2.o pcie/gen1_2/tx-gen2.o
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
+index b1dcaae0dc10..52c6c22e2cc6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
+@@ -384,7 +384,6 @@ struct iwl_pcie_txqs {
+  * @txq_memory: TXQ allocation array
+  * @sx_waitq: waitqueue for Sx transitions
+  * @sx_state: state tracking Sx transitions
+- * @pcie_dbg_dumped_once: indicates PCIe regs were dumped already
+  * @opmode_down: indicates opmode went away
+  * @num_rx_bufs: number of RX buffers to allocate/use
+  * @affinity_mask: IRQ affinity mask for each RX queue
+@@ -460,7 +459,6 @@ struct iwl_trans_pcie {
+ 
+ 	u16 num_rx_bufs;
+ 
+-	bool pcie_dbg_dumped_once;
+ 	u32 rx_page_order;
+ 	u32 rx_buf_bytes;
+ 	u32 supported_dma_mask;
+@@ -1069,7 +1067,6 @@ static inline bool iwl_pcie_dbg_on(struct iwl_trans *trans)
  }
  
-+static enum ieee80211_neg_ttlm_res
-+iwl_mld_can_neg_ttlm(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+		     struct ieee80211_neg_ttlm *neg_ttlm)
-+{
-+	u16 map;
+ void iwl_trans_pcie_rf_kill(struct iwl_trans *trans, bool state, bool from_irq);
+-void iwl_trans_pcie_dump_regs(struct iwl_trans *trans);
+ 
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+ void iwl_trans_pcie_dbgfs_register(struct iwl_trans *trans);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
+index 6054ebebd8c8..c31a62b8f925 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
+@@ -29,105 +29,12 @@
+ #include "internal.h"
+ #include "iwl-fh.h"
+ #include "pcie/iwl-context-info-v2.h"
++#include "pcie/utils.h"
+ 
+ /* extended range in FW SRAM */
+ #define IWL_FW_MEM_EXTENDED_START	0x40000
+ #define IWL_FW_MEM_EXTENDED_END		0x57FFF
+ 
+-void iwl_trans_pcie_dump_regs(struct iwl_trans *trans)
+-{
+-#define PCI_DUMP_SIZE		352
+-#define PCI_MEM_DUMP_SIZE	64
+-#define PCI_PARENT_DUMP_SIZE	524
+-#define PREFIX_LEN		32
+-	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+-	struct pci_dev *pdev = trans_pcie->pci_dev;
+-	u32 i, pos, alloc_size, *ptr, *buf;
+-	char *prefix;
+-
+-	if (trans_pcie->pcie_dbg_dumped_once)
+-		return;
+-
+-	/* Should be a multiple of 4 */
+-	BUILD_BUG_ON(PCI_DUMP_SIZE > 4096 || PCI_DUMP_SIZE & 0x3);
+-	BUILD_BUG_ON(PCI_MEM_DUMP_SIZE > 4096 || PCI_MEM_DUMP_SIZE & 0x3);
+-	BUILD_BUG_ON(PCI_PARENT_DUMP_SIZE > 4096 || PCI_PARENT_DUMP_SIZE & 0x3);
+-
+-	/* Alloc a max size buffer */
+-	alloc_size = PCI_ERR_ROOT_ERR_SRC +  4 + PREFIX_LEN;
+-	alloc_size = max_t(u32, alloc_size, PCI_DUMP_SIZE + PREFIX_LEN);
+-	alloc_size = max_t(u32, alloc_size, PCI_MEM_DUMP_SIZE + PREFIX_LEN);
+-	alloc_size = max_t(u32, alloc_size, PCI_PARENT_DUMP_SIZE + PREFIX_LEN);
+-
+-	buf = kmalloc(alloc_size, GFP_ATOMIC);
+-	if (!buf)
+-		return;
+-	prefix = (char *)buf + alloc_size - PREFIX_LEN;
+-
+-	IWL_ERR(trans, "iwlwifi transaction failed, dumping registers\n");
+-
+-	/* Print wifi device registers */
+-	sprintf(prefix, "iwlwifi %s: ", pci_name(pdev));
+-	IWL_ERR(trans, "iwlwifi device config registers:\n");
+-	for (i = 0, ptr = buf; i < PCI_DUMP_SIZE; i += 4, ptr++)
+-		if (pci_read_config_dword(pdev, i, ptr))
+-			goto err_read;
+-	print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32, 4, buf, i, 0);
+-
+-	IWL_ERR(trans, "iwlwifi device memory mapped registers:\n");
+-	for (i = 0, ptr = buf; i < PCI_MEM_DUMP_SIZE; i += 4, ptr++)
+-		*ptr = iwl_read32(trans, i);
+-	print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32, 4, buf, i, 0);
+-
+-	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (pos) {
+-		IWL_ERR(trans, "iwlwifi device AER capability structure:\n");
+-		for (i = 0, ptr = buf; i < PCI_ERR_ROOT_COMMAND; i += 4, ptr++)
+-			if (pci_read_config_dword(pdev, pos + i, ptr))
+-				goto err_read;
+-		print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET,
+-			       32, 4, buf, i, 0);
+-	}
+-
+-	/* Print parent device registers next */
+-	if (!pdev->bus->self)
+-		goto out;
+-
+-	pdev = pdev->bus->self;
+-	sprintf(prefix, "iwlwifi %s: ", pci_name(pdev));
+-
+-	IWL_ERR(trans, "iwlwifi parent port (%s) config registers:\n",
+-		pci_name(pdev));
+-	for (i = 0, ptr = buf; i < PCI_PARENT_DUMP_SIZE; i += 4, ptr++)
+-		if (pci_read_config_dword(pdev, i, ptr))
+-			goto err_read;
+-	print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32, 4, buf, i, 0);
+-
+-	/* Print root port AER registers */
+-	pos = 0;
+-	pdev = pcie_find_root_port(pdev);
+-	if (pdev)
+-		pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+-	if (pos) {
+-		IWL_ERR(trans, "iwlwifi root port (%s) AER cap structure:\n",
+-			pci_name(pdev));
+-		sprintf(prefix, "iwlwifi %s: ", pci_name(pdev));
+-		for (i = 0, ptr = buf; i <= PCI_ERR_ROOT_ERR_SRC; i += 4, ptr++)
+-			if (pci_read_config_dword(pdev, pos + i, ptr))
+-				goto err_read;
+-		print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32,
+-			       4, buf, i, 0);
+-	}
+-	goto out;
+-
+-err_read:
+-	print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32, 4, buf, i, 0);
+-	IWL_ERR(trans, "Read failed at 0x%X\n", i);
+-out:
+-	trans_pcie->pcie_dbg_dumped_once = 1;
+-	kfree(buf);
+-}
+-
+ int iwl_trans_pcie_sw_reset(struct iwl_trans *trans, bool retake_ownership)
+ {
+ 	/* Reset entire device - do controller reset (results in SHRD_HW_RST) */
+@@ -704,7 +611,7 @@ static int iwl_pcie_load_firmware_chunk(struct iwl_trans *trans,
+ 				 trans_pcie->ucode_write_complete, 5 * HZ);
+ 	if (!ret) {
+ 		IWL_ERR(trans, "Failed to load firmware chunk!\n");
+-		iwl_trans_pcie_dump_regs(trans);
++		iwl_trans_pcie_dump_regs(trans, trans_pcie->pci_dev);
+ 		return -ETIMEDOUT;
+ 	}
+ 
+@@ -2460,7 +2367,7 @@ bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans, bool silent)
+ 			  "Timeout waiting for hardware access (CSR_GP_CNTRL 0x%08x)\n",
+ 			  cntrl);
+ 
+-		iwl_trans_pcie_dump_regs(trans);
++		iwl_trans_pcie_dump_regs(trans, trans_pcie->pci_dev);
+ 
+ 		if (iwlwifi_mod_params.remove_when_gone && cntrl == ~0U)
+ 			iwl_trans_pcie_reset(trans,
+@@ -4057,7 +3964,7 @@ int iwl_trans_pcie_copy_imr(struct iwl_trans *trans,
+ 				 IMR_D2S_REQUESTED, 5 * HZ);
+ 	if (!ret || trans_pcie->imr_status == IMR_D2S_ERROR) {
+ 		IWL_ERR(trans, "Failed to copy IMR Memory chunk!\n");
+-		iwl_trans_pcie_dump_regs(trans);
++		iwl_trans_pcie_dump_regs(trans, trans_pcie->pci_dev);
+ 		return -ETIMEDOUT;
+ 	}
+ 	trans_pcie->imr_status = IMR_D2S_IDLE;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/utils.c b/drivers/net/wireless/intel/iwlwifi/pcie/utils.c
+new file mode 100644
+index 000000000000..1bb274d8390c
+--- /dev/null
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/utils.c
+@@ -0,0 +1,104 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/*
++ * Copyright (C) 2025 Intel Corporation
++ */
 +
-+	/* Verify all TIDs are mapped to the same links set */
-+	map = neg_ttlm->downlink[0];
-+	for (int i = 0; i < IEEE80211_TTLM_NUM_TIDS; i++) {
-+		if (neg_ttlm->downlink[i] != neg_ttlm->uplink[i] ||
-+		    neg_ttlm->uplink[i] != map)
-+			return NEG_TTLM_RES_REJECT;
++#include <linux/pci.h>
++#include <linux/gfp.h>
++
++#include "iwl-io.h"
++#include "pcie/utils.h"
++
++void iwl_trans_pcie_dump_regs(struct iwl_trans *trans, struct pci_dev *pdev)
++{
++#define PCI_DUMP_SIZE		352
++#define PCI_MEM_DUMP_SIZE	64
++#define PCI_PARENT_DUMP_SIZE	524
++#define PREFIX_LEN		32
++
++	static bool pcie_dbg_dumped_once = 0;
++	u32 i, pos, alloc_size, *ptr, *buf;
++	char *prefix;
++
++	if (pcie_dbg_dumped_once)
++		return;
++
++	/* Should be a multiple of 4 */
++	BUILD_BUG_ON(PCI_DUMP_SIZE > 4096 || PCI_DUMP_SIZE & 0x3);
++	BUILD_BUG_ON(PCI_MEM_DUMP_SIZE > 4096 || PCI_MEM_DUMP_SIZE & 0x3);
++	BUILD_BUG_ON(PCI_PARENT_DUMP_SIZE > 4096 || PCI_PARENT_DUMP_SIZE & 0x3);
++
++	/* Alloc a max size buffer */
++	alloc_size = PCI_ERR_ROOT_ERR_SRC +  4 + PREFIX_LEN;
++	alloc_size = max_t(u32, alloc_size, PCI_DUMP_SIZE + PREFIX_LEN);
++	alloc_size = max_t(u32, alloc_size, PCI_MEM_DUMP_SIZE + PREFIX_LEN);
++	alloc_size = max_t(u32, alloc_size, PCI_PARENT_DUMP_SIZE + PREFIX_LEN);
++
++	buf = kmalloc(alloc_size, GFP_ATOMIC);
++	if (!buf)
++		return;
++	prefix = (char *)buf + alloc_size - PREFIX_LEN;
++
++	IWL_ERR(trans, "iwlwifi transaction failed, dumping registers\n");
++
++	/* Print wifi device registers */
++	sprintf(prefix, "iwlwifi %s: ", pci_name(pdev));
++	IWL_ERR(trans, "iwlwifi device config registers:\n");
++	for (i = 0, ptr = buf; i < PCI_DUMP_SIZE; i += 4, ptr++)
++		if (pci_read_config_dword(pdev, i, ptr))
++			goto err_read;
++	print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32, 4, buf, i, 0);
++
++	IWL_ERR(trans, "iwlwifi device memory mapped registers:\n");
++	for (i = 0, ptr = buf; i < PCI_MEM_DUMP_SIZE; i += 4, ptr++)
++		*ptr = iwl_read32(trans, i);
++	print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32, 4, buf, i, 0);
++
++	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
++	if (pos) {
++		IWL_ERR(trans, "iwlwifi device AER capability structure:\n");
++		for (i = 0, ptr = buf; i < PCI_ERR_ROOT_COMMAND; i += 4, ptr++)
++			if (pci_read_config_dword(pdev, pos + i, ptr))
++				goto err_read;
++		print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET,
++			       32, 4, buf, i, 0);
 +	}
 +
-+	return NEG_TTLM_RES_ACCEPT;
-+}
++	/* Print parent device registers next */
++	if (!pdev->bus->self)
++		goto out;
 +
- const struct ieee80211_ops iwl_mld_hw_ops = {
- 	.tx = iwl_mld_mac80211_tx,
- 	.start = iwl_mld_mac80211_start,
-@@ -2691,4 +2708,5 @@ const struct ieee80211_ops iwl_mld_hw_ops = {
- 	.prep_add_interface = iwl_mld_prep_add_interface,
- 	.set_hw_timestamp = iwl_mld_set_hw_timestamp,
- 	.start_pmsr = iwl_mld_start_pmsr,
-+	.can_neg_ttlm = iwl_mld_can_neg_ttlm,
- };
++	pdev = pdev->bus->self;
++	sprintf(prefix, "iwlwifi %s: ", pci_name(pdev));
++
++	IWL_ERR(trans, "iwlwifi parent port (%s) config registers:\n",
++		pci_name(pdev));
++	for (i = 0, ptr = buf; i < PCI_PARENT_DUMP_SIZE; i += 4, ptr++)
++		if (pci_read_config_dword(pdev, i, ptr))
++			goto err_read;
++	print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32, 4, buf, i, 0);
++
++	/* Print root port AER registers */
++	pos = 0;
++	pdev = pcie_find_root_port(pdev);
++	if (pdev)
++		pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
++	if (pos) {
++		IWL_ERR(trans, "iwlwifi root port (%s) AER cap structure:\n",
++			pci_name(pdev));
++		sprintf(prefix, "iwlwifi %s: ", pci_name(pdev));
++		for (i = 0, ptr = buf; i <= PCI_ERR_ROOT_ERR_SRC; i += 4, ptr++)
++			if (pci_read_config_dword(pdev, pos + i, ptr))
++				goto err_read;
++		print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32,
++			       4, buf, i, 0);
++	}
++	goto out;
++
++err_read:
++	print_hex_dump(KERN_ERR, prefix, DUMP_PREFIX_OFFSET, 32, 4, buf, i, 0);
++	IWL_ERR(trans, "Read failed at 0x%X\n", i);
++out:
++	pcie_dbg_dumped_once = 1;
++	kfree(buf);
++}
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/utils.h b/drivers/net/wireless/intel/iwlwifi/pcie/utils.h
+new file mode 100644
+index 000000000000..af2a2eec7ec5
+--- /dev/null
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/utils.h
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/*
++ * Copyright (C) 2025 Intel Corporation
++ */
++
++#ifndef __iwl_pcie_utils_h__
++#define __iwl_pcie_utils_h__
++
++void iwl_trans_pcie_dump_regs(struct iwl_trans *trans, struct pci_dev *pdev);
++
++#endif /* __iwl_pcie_utils_h__ */
 -- 
 2.34.1
 
