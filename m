@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-24059-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24060-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD58AD6F69
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 13:50:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE8BAD6F6E
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 13:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D3C23B1B07
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 11:49:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C425D1BC4DCF
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 11:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0257723C8B3;
-	Thu, 12 Jun 2025 11:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0FE229B0F;
+	Thu, 12 Jun 2025 11:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SvMUqw/k"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hUJFxr6w"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52688223DF6
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 11:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7407723C51E
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 11:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749728963; cv=none; b=li9MjwOGQHjGsypvtBb6qp5vJ8sp3Qo9Btj9AgkBFbn88oU9PMoESLtthiXAXvhtvel1BQubYa0mlFZj4yeQiUpGp/2GZSqD6F9D2tzjSMozRut985PnE5yZF1x7nCgrDU/oGQMfRYlbBaW2RUhIbKHcI/WiEHS1wLaHE+A8gmk=
+	t=1749728965; cv=none; b=Ap4/TbSTRYCh4ROuP4FkVN/G9+OCPmxKMOiv0u0BrUVw1zIRmeTeK/JUCIfafwPQmjDUyhgItadWpXfUup7u0Md7qxxcLKE2qYJ7JJyLsLCYEXQpVXX/rSOFJ2yIToPr5bSm1xQq+mapzQwwNmktDV8It3bgkfKshovOzsJMiH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749728963; c=relaxed/simple;
-	bh=r+tBw0qxGq/2Pa7snel7AkFmqWNSnOuEyBwrt4yYSi8=;
+	s=arc-20240116; t=1749728965; c=relaxed/simple;
+	bh=yUJ6CK/r3WTHQshy7N2SWU4HmSYNEcw5QbtCNdGdjqE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Zr2HX/tWyldxGeVlFS5YzL+Ot8lzqNj9JUrea8EKAn1juMR+r98piSpu93hZI2XWLmY44XhMGYoDyyZOO5JOlH0SfPXKAkAZKRCFbWXFryzbvdmRQyFrH7S8zkqhkLRF44YYROs41UFKtNtCLoCdJlwa6tONo0FQ4r6KWVLldaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SvMUqw/k; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=ugf9bHDihM6VUjiKcqi4XjONuJjNTTOGvH2rMGg8nTKMWQ8G+zZq1wwGeeedefi3RTf26ZzUF+HkNl2NhOykTOi0ToLUr/W54dmFGR39vfXg8LVvTz6Dry5KzmKh7sz6G5bT4eurqqV7kEdkNtcEcgxj7OhNI6DfQYnaDdbKJ0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hUJFxr6w; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749728963; x=1781264963;
+  t=1749728964; x=1781264964;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=r+tBw0qxGq/2Pa7snel7AkFmqWNSnOuEyBwrt4yYSi8=;
-  b=SvMUqw/k0fy7sT6Xtcg8VAurezWxZcomKgzQmyD38GzuPSMtJo/INcWC
-   uiCmw1s3ZwRMnBHqACsQOtiVj/cuiWzcVEloqwJqJJMWH3WN0t2L/l/us
-   Pq21dRh76XVP3vYy+uAiAx4FY5IEdQHCwuIUv3jxM/iCkIl7nnuc7gv1l
-   gJBJU9mnHtQALISEAtEnWMbidSZfnz9gP8BSUUEfIxVY4rG9G4529m0ug
-   M24oAuSmtpAl9uU1RSNe0by0LiU2ra+2zlSOx6hEb5mGswnLocCHiVC0p
-   +XIoHnEI6o1KtKiAaSIWj04hpRfMALFNZ13KCO033QcSnPTrbUNOdrjtY
-   Q==;
-X-CSE-ConnectionGUID: sV1BiqnYSrGoxzAAD4IuXA==
-X-CSE-MsgGUID: KvV0lDmoSpmI8LD0Ndhyrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="63248330"
+  bh=yUJ6CK/r3WTHQshy7N2SWU4HmSYNEcw5QbtCNdGdjqE=;
+  b=hUJFxr6wBZrM/iSUwRuHRQ4eyLGrgxzcuyn/zKUfxs1sd8Tw91YiKx+D
+   JGH3h9Gw60y5j8aO/4JXTHFQQeHVZ9f8Jz7v19R8tWkLumACnwHgsnY/h
+   H/JcPQhbnJOrMyEuboQpgXfF4+ZBAt6UsWFyHpZeYpthhi7BiGmgTI4P1
+   NE06jYRFSETFzDcSNPV83NjuMG/H35v1nlCqEEpeIMMiny1ejTaF2FBr9
+   9N/NPHJpKyorTGns/X0eJMuM7tPeXITStTc+p3g+jxoAlN3fCqhsqwKju
+   EZSKNGp4UxD5VGdI1lMhQfa8QVwQvV1RsnrysqoPXbq5gr9ikoQcneJyE
+   w==;
+X-CSE-ConnectionGUID: Brmv1n0RSy2ZFGPr3g7z8g==
+X-CSE-MsgGUID: ko3bVNhiTsaBEEpwnmBvMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="63248332"
 X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="63248330"
+   d="scan'208";a="63248332"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 04:49:23 -0700
-X-CSE-ConnectionGUID: 1XPH6PC+SuSI01ynVZcbCQ==
-X-CSE-MsgGUID: 8IjFnBoeQo6l9EVuy5YvAA==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 04:49:24 -0700
+X-CSE-ConnectionGUID: 7wqr9+VgTFqh4idh2qbZmQ==
+X-CSE-MsgGUID: hPqo4YQPTn24QFPIY6ZmNw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="147382115"
+   d="scan'208";a="147382124"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 04:49:21 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 04:49:22 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH iwlwifi-next 05/13] wifi: iwlwifi: mld: Block EMLSR when scanning on P2P Device
-Date: Thu, 12 Jun 2025 14:48:51 +0300
-Message-Id: <20250612144708.85fb79d537fe.I27523f8d3f00f2b66f5f555f098e323be29465ea@changeid>
+Cc: Benjamin Berg <benjamin.berg@intel.com>
+Subject: [PATCH iwlwifi-next 06/13] wifi: iwlwifi: mld: advertise support for TTLM changes
+Date: Thu, 12 Jun 2025 14:48:52 +0300
+Message-Id: <20250612144708.3b0a4fd2c12b.I1fab7840f1cc222bd1e8cb58ac1a4177474fcd56@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250612114859.3094387-1-miriam.rachel.korenblit@intel.com>
 References: <20250612114859.3094387-1-miriam.rachel.korenblit@intel.com>
@@ -76,138 +76,52 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-Temporarily block EMLSR when scanning on a P2P Device interface,
-as this is an indication that P2P activity is about to start, e.g.,
-P2P client connection to a P2P GO.
+The iwlmld driver is able to handle TTLM changes as long as all TIDs
+have the same TID to Link Mapping. Add the corresponding code so that
+mac80211 will accept and trigger the TTLM change.
 
-Since a P2P scan while a station interface connection is active might
-be long, increase the EMLSR blocking timeout to 10 seconds.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mld/mac80211.c | 27 +----------------
- drivers/net/wireless/intel/iwlwifi/mld/mlo.c  | 30 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/mlo.h  |  2 ++
- drivers/net/wireless/intel/iwlwifi/mld/scan.c |  4 +++
- 4 files changed, 37 insertions(+), 26 deletions(-)
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c  | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index 0f156e868504..1eb4dfb83778 100644
+index 1eb4dfb83778..a8b2e2046d76 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -2580,28 +2580,6 @@ static int iwl_mld_mac80211_tx_last_beacon(struct ieee80211_hw *hw)
- 	return mld->ibss_manager;
+@@ -2622,6 +2622,23 @@ static int iwl_mld_start_pmsr(struct ieee80211_hw *hw,
+ 	return iwl_mld_ftm_start(mld, vif, request);
  }
  
--#define IWL_MLD_EMLSR_BLOCKED_TMP_NON_BSS_TIMEOUT (5 * HZ)
--
--static void iwl_mld_vif_iter_emlsr_block_tmp_non_bss(void *_data, u8 *mac,
--						     struct ieee80211_vif *vif)
--{
--	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
--	int ret;
--
--	if (!iwl_mld_vif_has_emlsr_cap(vif))
--		return;
--
--	ret = iwl_mld_block_emlsr_sync(mld_vif->mld, vif,
--				       IWL_MLD_EMLSR_BLOCKED_TMP_NON_BSS,
--				       iwl_mld_get_primary_link(vif));
--	if (ret)
--		return;
--
--	wiphy_delayed_work_queue(mld_vif->mld->wiphy,
--				 &mld_vif->emlsr.tmp_non_bss_done_wk,
--				 IWL_MLD_EMLSR_BLOCKED_TMP_NON_BSS_TIMEOUT);
--}
--
- static void iwl_mld_prep_add_interface(struct ieee80211_hw *hw,
- 				       enum nl80211_iftype type)
- {
-@@ -2614,10 +2592,7 @@ static void iwl_mld_prep_add_interface(struct ieee80211_hw *hw,
- 	      type == NL80211_IFTYPE_P2P_CLIENT))
- 		return;
- 
--	ieee80211_iterate_active_interfaces_mtx(mld->hw,
--						IEEE80211_IFACE_ITER_NORMAL,
--						iwl_mld_vif_iter_emlsr_block_tmp_non_bss,
--						NULL);
-+	iwl_mld_emlsr_block_tmp_non_bss(mld);
- }
- 
- static int iwl_mld_set_hw_timestamp(struct ieee80211_hw *hw,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-index 20c2b436039a..8ed2c6de1282 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
-@@ -287,6 +287,36 @@ int iwl_mld_block_emlsr_sync(struct iwl_mld *mld, struct ieee80211_vif *vif,
- 	return _iwl_mld_emlsr_block(mld, vif, reason, link_to_keep, true);
- }
- 
-+#define IWL_MLD_EMLSR_BLOCKED_TMP_NON_BSS_TIMEOUT (10 * HZ)
-+
-+static void iwl_mld_vif_iter_emlsr_block_tmp_non_bss(void *_data, u8 *mac,
-+						     struct ieee80211_vif *vif)
++static enum ieee80211_neg_ttlm_res
++iwl_mld_can_neg_ttlm(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++		     struct ieee80211_neg_ttlm *neg_ttlm)
 +{
-+	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	int ret;
++	u16 map;
 +
-+	if (!iwl_mld_vif_has_emlsr_cap(vif))
-+		return;
++	/* Verify all TIDs are mapped to the same links set */
++	map = neg_ttlm->downlink[0];
++	for (int i = 0; i < IEEE80211_TTLM_NUM_TIDS; i++) {
++		if (neg_ttlm->downlink[i] != neg_ttlm->uplink[i] ||
++		    neg_ttlm->uplink[i] != map)
++			return NEG_TTLM_RES_REJECT;
++	}
 +
-+	ret = iwl_mld_block_emlsr_sync(mld_vif->mld, vif,
-+				       IWL_MLD_EMLSR_BLOCKED_TMP_NON_BSS,
-+				       iwl_mld_get_primary_link(vif));
-+	if (ret)
-+		return;
-+
-+	wiphy_delayed_work_queue(mld_vif->mld->wiphy,
-+				 &mld_vif->emlsr.tmp_non_bss_done_wk,
-+				 IWL_MLD_EMLSR_BLOCKED_TMP_NON_BSS_TIMEOUT);
++	return NEG_TTLM_RES_ACCEPT;
 +}
 +
-+void iwl_mld_emlsr_block_tmp_non_bss(struct iwl_mld *mld)
-+{
-+	ieee80211_iterate_active_interfaces_mtx(mld->hw,
-+						IEEE80211_IFACE_ITER_NORMAL,
-+						iwl_mld_vif_iter_emlsr_block_tmp_non_bss,
-+						NULL);
-+}
-+
- static void _iwl_mld_select_links(struct iwl_mld *mld,
- 				  struct ieee80211_vif *vif);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.h b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
-index 9afa3d6ea649..704f64134798 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.h
-@@ -157,6 +157,8 @@ struct iwl_mld_link_sel_data {
- 	u16 grade;
+ const struct ieee80211_ops iwl_mld_hw_ops = {
+ 	.tx = iwl_mld_mac80211_tx,
+ 	.start = iwl_mld_mac80211_start,
+@@ -2691,4 +2708,5 @@ const struct ieee80211_ops iwl_mld_hw_ops = {
+ 	.prep_add_interface = iwl_mld_prep_add_interface,
+ 	.set_hw_timestamp = iwl_mld_set_hw_timestamp,
+ 	.start_pmsr = iwl_mld_start_pmsr,
++	.can_neg_ttlm = iwl_mld_can_neg_ttlm,
  };
- 
-+void iwl_mld_emlsr_block_tmp_non_bss(struct iwl_mld *mld);
-+
- #if IS_ENABLED(CONFIG_IWLWIFI_KUNIT_TESTS)
- u32 iwl_mld_emlsr_pair_state(struct ieee80211_vif *vif,
- 			     struct iwl_mld_link_sel_data *a,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.c b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-index cf3063e6ec53..63d5d39bb083 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-@@ -1752,6 +1752,10 @@ int iwl_mld_regular_scan_start(struct iwl_mld *mld, struct ieee80211_vif *vif,
- 			       struct cfg80211_scan_request *req,
- 			       struct ieee80211_scan_ies *ies)
- {
-+
-+	if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
-+		iwl_mld_emlsr_block_tmp_non_bss(mld);
-+
- 	return _iwl_mld_single_scan_start(mld, vif, req, ies,
- 					  IWL_MLD_SCAN_REGULAR);
- }
 -- 
 2.34.1
 
