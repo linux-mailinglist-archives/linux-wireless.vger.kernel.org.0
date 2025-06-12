@@ -1,120 +1,212 @@
-Return-Path: <linux-wireless+bounces-24047-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24048-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AA7AD6BAB
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 11:07:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE30AD6CE8
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 12:01:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDC451898F7E
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 09:08:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3E7E17660F
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 10:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240E5222593;
-	Thu, 12 Jun 2025 09:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B669522A1E6;
+	Thu, 12 Jun 2025 10:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kVbGupnt"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oB10xmED";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="CCQfAkcf";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oB10xmED";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="CCQfAkcf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F241CDA3F;
-	Thu, 12 Jun 2025 09:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C684022172E
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 10:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749719267; cv=none; b=K2CV36aQ/dc3CWGPWBMmhT/z8Ab7uaK6T8gIR+Ua/x4rCqVVhWRcbd006ciOfeNFlJefH9qx7V5zQ9FVhUhyXpwIHCyi+m/E+yPHj808uMkr8jSnsYqCJM3n0KKhXK8yz2as48l0T1BF4uinHhCXDVhuPf6fE1qBvDbmWeELDS8=
+	t=1749722477; cv=none; b=sKtLMq/rK+oWztfX2pFKD/QBrTe8knIn1ZuwXpRY3w186sMySV7CPGHR9/7elUYNW/kHwcRMSh1ToqqqrPazPvK98g+pfgO1nuhHkeYoV+1g1g8WNfM/6jkakvYOnrfahELndJD/rKi2dONBEjfvu1t35cE+AuwGXNo7vMYph8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749719267; c=relaxed/simple;
-	bh=nPaGWMZ4NG9UTsgXyf6E4c3wv/YhKDdZPZghgszys+k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iRSUf0sEPYWenIkYiv/QI9e+/EajmqdDw5GtLSkCPRtb7q/NwYsYsUi3qnaNdYIgka0jGq138XOeDBs3kG0ihNKngrO7gOIoWYTmN2F9QCFfIqztwpLBxhiJB3QoP2VRYlaQ+hfRLJEwX4MLkld5fWTUDsiSSMkWDYB3TcKJJpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kVbGupnt; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4530e6f4db4so205065e9.2;
-        Thu, 12 Jun 2025 02:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749719263; x=1750324063; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rBWkeK6hGx5OvRMWT1USZjz50+Of77xDqL2XQmoejP8=;
-        b=kVbGupnt6UEYFqwZUuhNICMrztf8n0YE8PGJM9Mb2WGzCRcxqjhdkEJ5GpoJkCjJ1i
-         V31esfRuCRWYVR5IZDzwLvPwnHbJBMtojhq1cyvIt+W2feEYo9IQkGcbUJi7Oq6BnyXa
-         tZvr/HEefh/dAV+MROsqAwiWtAnkwhBnnQMGpmMuVcOEP9m42W2/hGbWI/8u5bj6Ydkw
-         U15/pRRv4kxB5j3G4pfU190ATgvoFxaFJkNL4kmkMCxSoMijG9PgMarkY3QE70VSq/oJ
-         xsuqySaB1NDEJw9HnMf/AQi0jgHlKfJG/fsN/301N9XMNXsBXuGPv/pfqeTyDKjW2SC9
-         usMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749719263; x=1750324063;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rBWkeK6hGx5OvRMWT1USZjz50+Of77xDqL2XQmoejP8=;
-        b=h63R6EUydz97lJuBYtkoGOyQLWuSb3I5ehhUGGUms5aoWsRn3R8DDRz4f6B/MUCSi1
-         yX+FFhPtD8b/Tdoy6qsdB+cDLxcW1FnS+ABDKFVZNhTehNeKTPjCvXoCFgeVWacpiDry
-         jPweSF+z4puDJxM/W5NwgTjCG6OMcGvimfx40q2NP4UYr6ZgXAeoGGzSU8Sn0j5bHZKl
-         G9FNAKOapXc4GlIoevlMExANRpRDg0qsRL2wgQVGQKGQeY8OkQ7gjjB0unboBZxudmzp
-         osmwiCiAp48wcHS4+VltDCGt+lRLm6FONeDxUpUU8VXlLUoxmRB3VVmjSl2ZkXAp86G5
-         ebaA==
-X-Forwarded-Encrypted: i=1; AJvYcCVC5BD5gKLqUGq/7MgQqg75eLqH7oIx9P+QUOlUeAtwPuqERmlBFrN3s9UQnxyEESOgXANBdOf7ZpRuPt4=@vger.kernel.org, AJvYcCVuQsmKZZTkzCvnNqc7rAc5G6CTGxnrjyl3qPbWubr55mqI93Ag3ZlquZoeu/4u9GQJkFftkASSZ8+N+UHI1gY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ/knC3scRBlgoW2cZJaRWNjrpU2OKq1Ktgi4s5Mk3eo3zpC8O
-	Op4hi7u2ORdTwroPsiSQroRkZzC0Ofx9Yz3BWXNJuCkP/6A52exjgIjl
-X-Gm-Gg: ASbGncsMr2xTKecIzoqJt4BfENYVmgw0xo3fjgjW1TT1TcJtAKLgHT1O/RGaYTA8YSg
-	CQOBcoF45bgt/bRapWEDa0hmjumEFQ8MHxqEBNLtPQVeWNCkJjP7IetFGnY4bfkkTzVpPdsKnYZ
-	GN4R9Sj9toXDTXQz1sLKAh5+agtirT0jkYkAVjyyBu99g+NEVvTqx3bHTJvHVyFgqqS4XoSyXHi
-	qIU+BShLTD13AwsImIA7dOebqrNxrLR4gCpoPrHKQrVQHjni3bu19QxTzywPInxwlVJHEuzpP2Z
-	5XRUSXm8RO6BeCuZgzEDlGn/NGuoK3AEJfZaAxYxrHWUs0v2025pS9BNVdflvlCvkRk9yptATTs
-	DZyeNMM8jjC3J0H8=
-X-Google-Smtp-Source: AGHT+IGHbfxT2141g/HEDN48PqEbgPnWCfTrql/YAEm6ytjb6sLkgf9FfpPfKwqSms0MnVYa/zy/Dg==
-X-Received: by 2002:a05:600c:4e0d:b0:439:9fde:da76 with SMTP id 5b1f17b1804b1-453253b0905mr21982685e9.0.1749719262297;
-        Thu, 12 Jun 2025 02:07:42 -0700 (PDT)
-Received: from thomas-precision3591.imag.fr ([2001:660:5301:24:b893:ade0:c175:b695])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4532e2522b1sm13756895e9.25.2025.06.12.02.07.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jun 2025 02:07:41 -0700 (PDT)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] drive/realtek/rtlwifi: fix possible memory leak
-Date: Thu, 12 Jun 2025 11:07:19 +0200
-Message-ID: <20250612090724.17777-1-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1749722477; c=relaxed/simple;
+	bh=q5kTkBhWgDYKTr55UJHZdrxdw2kvuVN9wI3YTFpQeJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PjhcwqVbfsIDiUhTyPg1JqKHFSKr8MpFTTGBc0MxLBOft51lLvxXqxnefIAjsw4vK6UE5rElYVxKLROSCdwRZK7CU28IPliLv1Gy4f7VlJkkaKtBi7Z1wAl7uw3/DAPowd681n9OonT4W+kqeQd0NEw/27AM80JLLjSOAFUajQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oB10xmED; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=CCQfAkcf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oB10xmED; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=CCQfAkcf; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1AC621F78E;
+	Thu, 12 Jun 2025 10:01:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1749722474; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MfDva740sbD7wBeTOlrPtgcsAi2TWLZrQwwMYisXkR8=;
+	b=oB10xmEDnnQCgl7Ov5+3Z/w2op1djNanlBxzXo4xZK79GJdzAcQ9L4mIWQ7PfllEKlNHTo
+	VQxcwSdg1iy/F0cKMKYwBJATaZEDnyqoEcpunZuXt0V84pl12QrsmjaapE5/3t0OsTBItt
+	G4J8dEEYMBLDD8k4wj1lcx7uVXiuJKU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1749722474;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MfDva740sbD7wBeTOlrPtgcsAi2TWLZrQwwMYisXkR8=;
+	b=CCQfAkcfmqyL/JwRt0+58QGcb4i5sA9J2V2eC4V9QTbny0fpirayYOGXmv0Eui/CzBHk/W
+	aqZ3kC+n1RE894CA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1749722474; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MfDva740sbD7wBeTOlrPtgcsAi2TWLZrQwwMYisXkR8=;
+	b=oB10xmEDnnQCgl7Ov5+3Z/w2op1djNanlBxzXo4xZK79GJdzAcQ9L4mIWQ7PfllEKlNHTo
+	VQxcwSdg1iy/F0cKMKYwBJATaZEDnyqoEcpunZuXt0V84pl12QrsmjaapE5/3t0OsTBItt
+	G4J8dEEYMBLDD8k4wj1lcx7uVXiuJKU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1749722474;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MfDva740sbD7wBeTOlrPtgcsAi2TWLZrQwwMYisXkR8=;
+	b=CCQfAkcfmqyL/JwRt0+58QGcb4i5sA9J2V2eC4V9QTbny0fpirayYOGXmv0Eui/CzBHk/W
+	aqZ3kC+n1RE894CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 81D6D132D8;
+	Thu, 12 Jun 2025 10:01:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id USolHGmlSmjRSgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 12 Jun 2025 10:01:13 +0000
+Date: Thu, 12 Jun 2025 11:01:03 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	akpm@linux-foundation.org, Jeff Johnson <jjohnson@kernel.org>, 
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCHv2] wifi: ath11k: mark reset srng lists as uninitialized
+Message-ID: <zlzpmburt4o75yizy6uknx4ews4eox6wbr5jleuixp6o6v2tuk@sz6k4x4gcolo>
+References: <20250529035708.3136232-1-senozhatsky@chromium.org>
+ <5857380e-ced9-4118-b9a0-ce926b25c11c@quicinc.com>
+ <rxaibpgtf37w3th5lnt3w574w443yononqjoglyfktlcxe26qg@jpmtkckrotzp>
+ <d02bca79-66f1-48b0-8c3b-aeaaa17135a9@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d02bca79-66f1-48b0-8c3b-aeaaa17135a9@quicinc.com>
+X-Spam-Flag: NO
+X-Spam-Score: -3.80
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.995];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
 
-When `dma_mapping_error()` is true, if a new `skb` has been allocated,
-then it must be de-allocated.
+On Thu, Jun 12, 2025 at 04:01:49PM +0800, Baochen Qiang wrote:
+> [+ kernel mm list]
+> 
+> On 6/12/2025 1:04 PM, Sergey Senozhatsky wrote:
+> > On (25/06/12 11:30), Baochen Qiang wrote:
+> >> On 5/29/2025 11:56 AM, Sergey Senozhatsky wrote:
+> >>> ath11k_hal_srng_deinit() frees rdp and wrp which are used
+> >>> by srng lists.  Mark srng lists as not-initialized.  This
+> >>> makes sense, for instance, when device fails to resume
+> >>> and the driver calls ath11k_hal_srng_deinit() from
+> >>> ath11k_core_reconfigure_on_crash().
+> >>
+> >> Did you see any issue without your change?
+> > 
+> > We do see some issues, yes, on LTS kernels.
+> > 
+> > [..]
+> >>> diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+> >>> index 8cb1505a5a0c..cab11a35f911 100644
+> >>> --- a/drivers/net/wireless/ath/ath11k/hal.c
+> >>> +++ b/drivers/net/wireless/ath/ath11k/hal.c
+> >>> @@ -1346,6 +1346,10 @@ EXPORT_SYMBOL(ath11k_hal_srng_init);
+> >>>  void ath11k_hal_srng_deinit(struct ath11k_base *ab)
+> >>>  {
+> >>>  	struct ath11k_hal *hal = &ab->hal;
+> >>> +	int i;
+> >>> +
+> >>> +	for (i = 0; i < HAL_SRNG_RING_ID_MAX; i++)
+> >>> +		ab->hal.srng_list[i].initialized = 0;
+> >>
+> >> With this flag reset, srng stats would not be dumped in ath11k_hal_dump_srng_stats().
+> > 
+> > I think un-initialized lists should not be dumped.
+> > 
+> > ath11k_hal_srng_deinit() releases wrp.vaddr and rdp.vaddr, which are
+> > accessed, as far as I understand it, in ath11k_hal_dump_srng_stats()
+> > as *srng->u.src_ring.tp_addr and *srng->u.dst_ring.hp_addr, presumably,
+> > causing things like:
+> > 
+> > <1>[173154.396775] BUG: unable to handle page fault for address: ffffb4e4c046f010
+> > <1>[173154.396778] #PF: supervisor read access in kernel mode
+> > <1>[173154.396781] #PF: error_code(0x0000) - not-present page
+> 
+> I am confused here: if the root cause is driver trying to read a freed memory, it should
+> not result in a PF issue. Because even if freed, the page is there and still mapped in
+> kernel page table.
+> 
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
- drivers/net/wireless/realtek/rtlwifi/pci.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Any memory that is virtually-mapped (read: vmalloc, vmap, vm_map_ram, and others)
+will be unmapped on its subsequent free. I'm not familiar with the DMA subsystem,
+but the address ffffb4e4c046f010 is vmalloc-like.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 898f597f70a9..f754f1c3f783 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -572,8 +572,11 @@ static int _rtl_pci_init_one_rxdesc(struct ieee80211_hw *hw,
- 		dma_map_single(&rtlpci->pdev->dev, skb_tail_pointer(skb),
- 			       rtlpci->rxbuffersize, DMA_FROM_DEVICE);
- 	bufferaddress = *((dma_addr_t *)skb->cb);
--	if (dma_mapping_error(&rtlpci->pdev->dev, bufferaddress))
-+	if (dma_mapping_error(&rtlpci->pdev->dev, bufferaddress)) {
-+		if (!new_skb)
-+			kfree_skb(skb)
- 		return 0;
-+	}
- 	rtlpci->rx_ring[rxring_idx].rx_buf[desc_idx] = skb;
- 	if (rtlpriv->use_new_trx_flow) {
- 		/* skb->cb may be 64 bit address */
+> 
+> > <4>[173154.396824] RIP: 0010:ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k]
+> > <4>[173154.396839] Code: 88 c0 44 89 f2 89 c1 e8 3a 14 06 00 41 be e8 25 00 00 eb 6e 42 0f b6 84 33 78 ff ff ff 89 45 d0 46 8b 7c 33 d8 4a 8b 44 33 e0 <44> 8b 20 46 8b 6c 33 e8 42 8b 04 33 48 89 45 c8 48 8b 3d 45 a3 a0
+> > <4>[173154.396842] RSP: 0018:ffffb4e4dceefc50 EFLAGS: 00010246
+> > <4>[173154.396846] RAX: ffffb4e4c046f010 RBX: ffff90d1c3040000 RCX: a0009634a5d28c00
+> > <4>[173154.396849] RDX: ffffffffb0279d80 RSI: ffffffffb0279d80 RDI: ffff90d2e5d17488
+> > <4>[173154.396851] RBP: ffffb4e4dceefc90 R08: ffffffffb0249d80 R09: 0000000000003b82
+> > <4>[173154.396854] R10: 0000000000000004 R11: 00000000ffffffea R12: ffff90d1c3041c90
+> > <4>[173154.396856] R13: ffff90d1c3040000 R14: 0000000000002828 R15: 0000000000000000
+> > <4>[173154.396859] FS: 0000000000000000(0000) GS:ffff90d2e5d00000(0000) knlGS:0000000000000000
+> > <4>[173154.396862] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > <4>[173154.396865] CR2: ffffb4e4c046f010 CR3: 000000005ca24000 CR4: 0000000000750ee0
+> > <4>[173154.396868] PKRU: 55555554
+> > <4>[173154.396870] Call Trace:
+> > <4>[173154.396874] <TASK>
+> > <4>[173154.396883] ? __die_body+0xae/0xb0
+> > <4>[173154.396890] ? page_fault_oops+0x381/0x3e0
+> > <4>[173154.396896] ? exc_page_fault+0x69/0xa0
+> > <4>[173154.396901] ? asm_exc_page_fault+0x22/0x30
+> > <4>[173154.396908] ? ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k (HASH:3de7 4)]
+> > <4>[173154.396923] ath11k_qmi_driver_event_work+0xbd/0x1050 [ath11k (HASH:3de7 4)]
+> > <4>[173154.396942] worker_thread+0x390/0x960
+> > <4>[173154.396949] kthread+0x149/0x170
+> 
+
 -- 
-2.43.0
-
+Pedro
 
