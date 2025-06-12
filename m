@@ -1,179 +1,176 @@
-Return-Path: <linux-wireless+bounces-24051-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24052-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64074AD6EA9
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 13:11:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7FCAD6ED6
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 13:19:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB4EE3A89F9
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 11:11:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7BB189F1E3
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Jun 2025 11:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A97323A9AD;
-	Thu, 12 Jun 2025 11:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB438205AA3;
+	Thu, 12 Jun 2025 11:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="HzRvlTxq"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PGv+2B6f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11012029.outbound.protection.outlook.com [40.107.75.29])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E613239E92;
-	Thu, 12 Jun 2025 11:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.75.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749726668; cv=fail; b=mS0doSepDHd/5cuPV/z1fN3Fq2sbXQiU/aNN9Ik1w4g0mL0a4AnFQwfmgRu6fMcos0M3BXimnC4L6wPiQPKffqyZ5kJ3BzWbtyHliXWAForcjjxkyMzhfPSFDg+ziyYFLNUI9OFIRjrNpnpLE8GpLqn8FhL/5JGWRbDkruoWaIY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749726668; c=relaxed/simple;
-	bh=nFmS7BRQCBVMlef0y0xIompA6YaKgKBJJ150PbC74x0=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=JiSG6kc6FYs49uL1T0vrLu0Cd2ohrgf3Qk37wwydC0CicpStc+7O7+ZSxHAtVET5f66EuYnGfwnUWmjVhR39pBlEmt7rBq8rLKWDoV80uNu3/kMNAK1lBTa3/xYnrZ8Op34yauKY79cRf80Alo7yprOoFF1hPWQBjrFbV5dPWog=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=HzRvlTxq; arc=fail smtp.client-ip=40.107.75.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NyM3h2qx1lxGyULsE4JeFfaDOqtlFG0TZYV3PjCGM97DGsF0miai/Gy5D+n9ulr4e+rtB0u5WMzATSwDupAtZpiBFYRyfuprdHW4m2/nWTtPBJvxJtdIqZEUmLNRCGpK/kqaDgNE9sHZanY1K3STGzVL5a6m/2KTLorLuf9hr1o/Ak7J7k8/9SNjTNo6Asvm7u4fp4d05AIdOi/0bG11vf3dsvLekxa9955nlNw5blIKESWDLgxBc7bLSnrJRV0tJ0CD6M6QmJF663+BpKseDcFP/QrTqpESxraTn2dk2lgsnNYxzvAV2ul/1jF3Jkrh5suYHYB0bzXg/qsSdVWu8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0aSGe54uF7ffWncFONY8hul3imYDwDU4gPRRoPq9vVk=;
- b=f7775VaKAksYIVS3DSIc7v1Yr+1JWqPIzovql+loffvmmFr93hyubU8xqduhwC9N98+vyLZz9wSaqzsMmdhKx0DQLbIO5fZq52Jvvc28s+MIqA+cKTkmzpEBZcZcvfigzAqbbsyaTSwA56Qq4FZdG4RxhaA1Q8cH+j5oUIvwX79HWkxVYy39012ttcjYOxjZvvypt3g7pNmDTDZSKCQXviUVZJLx5y/JeFHJhkD9hEJ/i2aiC+hZY93zpl5wkv6RksRv8AAGrMIJrPxDSCwkcC+FB5gDmq9Wk4TxQ2v1gKu1N9TNi3VqyjDCC88IJXjdgh6snqcGPh1TplSgtjbtXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0aSGe54uF7ffWncFONY8hul3imYDwDU4gPRRoPq9vVk=;
- b=HzRvlTxqTBfh7rh8j5fyM5bvKlLQVHy6kzuXR+rKS5l58mDDNbaLi+kCGmKI13P4hARFolx8u17vPakDj1TKhZSi6F3zbVvYcQlMA0t6RRfLhmpwqJadS3Tk6Fb4va/eBBG6wKZX7MigbPh9pGLM1bFYwxY4USwNKk5IYYRAIfORBNG97K1ydVfDrapGKkkUsMMo4vFB8pdtI719bHs5bmVz+EQy7pjlOHoXx6ZcbnXkf25O8EspoG0sq7rOThAiNr96CBMA3Zw/m4IziW4KYwpe93Ulm5p3xwERFLCETPbYCt6AiecgAuc7XdWjEaS9mQnSEacnuUkHTHYvfzjE6Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SG2PR06MB4802.apcprd06.prod.outlook.com (2603:1096:4:169::8) by
- TY0PR06MB5354.apcprd06.prod.outlook.com (2603:1096:400:214::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8835.22; Thu, 12 Jun 2025 11:11:03 +0000
-Received: from SG2PR06MB4802.apcprd06.prod.outlook.com
- ([fe80::685f:929d:f06c:a349]) by SG2PR06MB4802.apcprd06.prod.outlook.com
- ([fe80::685f:929d:f06c:a349%3]) with mapi id 15.20.8813.024; Thu, 12 Jun 2025
- 11:11:03 +0000
-From: Yuesong Li <liyuesong@vivo.com>
-To: Jeff Johnson <jjohnson@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: opensource.kernel@vivo.com,
-	Yuesong Li <liyuesong@vivo.com>
-Subject: [PATCH ath-next v1] wifi: ath12k: convert to use secs_to_jiffies
-Date: Thu, 12 Jun 2025 19:10:46 +0800
-Message-Id: <20250612111046.94743-1-liyuesong@vivo.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYCPR01CA0106.jpnprd01.prod.outlook.com
- (2603:1096:405:4::22) To SG2PR06MB4802.apcprd06.prod.outlook.com
- (2603:1096:4:169::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02807EC2
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 11:19:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749727195; cv=none; b=TcpT/7DxVnFU0qOKTPaRLNWMcIQdx5voa21B381xxyZJDO2JsT2op4ksTGZc7sQAIhlR4j8N82TjBYB6xKleeL4NFVdc12pvW/8lWfW6m61vkCRp212bm/bT0t6Tq/625JMYpUid5W1XH5uQFBYGXR0EIDjvy0Tp/wogcbClTIU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749727195; c=relaxed/simple;
+	bh=JAdtqs3zGWrmUQ/02QPjTpOUVJpDF9rKNNKxrvc/EwI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H8tiCU9nlYlTxpL6dho4B7lndooA4u1OqH77529o7IhJvXL87iChdC66Ix7+RvK1RnOOlSKiEVSDiWUZBhVpfvP8z4wiqRddMEsptXzX6bWRlgHd4tQew1cYQ4F9+f3SIf84g9ip3iWK5MqiezmAod30z4trW3L97R5CtuusX58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PGv+2B6f; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55C996ME031607
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 11:19:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	7QIskp7CeaFU7u4UNInC1v8TRYXWF8xfW2XMu+8r6y8=; b=PGv+2B6filVfzlnw
+	qFQC+g29GIxUfp6kN3eTp6J5fHn7JpE2t9AQOpqzwhmTe4fxaw5XQmtP0neba6Y0
+	CQ9ZYkfEjH9uv/hc9IsWVgVAjCWCcfoyS3QrF3V4jCxYJDCI9TrTCfUpS0PXKh+f
+	wRLLgBxL6kTUum7niuaBsRmFG3sJJk/Wv5VFZOpyhIo9evTAMXoPs0o0/QFF2rW6
+	osOusL0EVJ/xfpFvFwUuE2SJSRcRXgEQ8dOl/RfLYka11gvudS5mP3a6si+HbDAE
+	JwWQBNI2kzMFi/1mwakoYz3QB4iI+A6sDSfCwR1zQep/g/3deOSxL0EdVx1jAAAq
+	rDUBWQ==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 477jdwstge-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 11:19:52 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-747adea6ddbso825189b3a.0
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Jun 2025 04:19:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749727191; x=1750331991;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7QIskp7CeaFU7u4UNInC1v8TRYXWF8xfW2XMu+8r6y8=;
+        b=ncQx+IUrFF8LaNPKJFXbMGf+o6LhxQxsNWK6sh4maa4+bw49fJolwY6uZ0RnBY5ZRk
+         5sKeyMAHe7PeTdg22ybu5+fY1epV3WOqKhx+2VlJ/ur501tuALKLukQOq8jaslTEEXnu
+         wfRfEORPG/zYg9pHbEPJ/xQ3bunFDpqWWlx089reIO1NShbmZSlS90uwZRVQIeDiKAPv
+         o8AfUWH9GdIW2KcXnifujNZdAnb3Xk60HE2ojVmH08ih6EG+uLAnPao8cCfxDD9I6Ihz
+         Vis3XsCoNc2tI0r+9V2NotSeLnUPJnE6wzvFMW9ru+TSCPVRSdNTnNPd2oLyaYqdodQJ
+         wfBg==
+X-Forwarded-Encrypted: i=1; AJvYcCX4KNZT0dy8t2AGW81S+wNPfDqjk5CLbKcFT9nPbAYDyRVd7e4kn54S2iF2t23xtBd/y0Vnpx+jmrAYUpDMfA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNcK5jfXR8cQTAElraPGFjGnn72x3nMkt59pKvgPAEw2HSHA2A
+	vnFT48tXVUwBJi1i8jskmrgiu7PPz4xuk7WWXUohllOAsYhh9J4iVBmmcXJwtDTRTEAGviNMmYu
+	U34nr/MSHnNRxYl4D029tHnstHUFw3XJWfVcFrGO4AzewfLzj7MY9ulmez6TdlNxhK1U6IA==
+X-Gm-Gg: ASbGncshaxVhkypF5i+yNEiONJHD1EYB4EVdImkiXzga4AsnlztNlBJhWcY7B6gHec0
+	CMNT0zc1YODIovn3ee+IBYkZcR2Acr4ghDroC2JhO9NEtTx+GKjfXXn79s5gDepAtIigB4/kThU
+	P5tlkChLNuD39Z7W7Cft6PUUsg5mowkjjEYtGXLclUp5jjFBmDbnfy8YxLZp7YXODrTv9e2PzG+
+	bpQS5ctYd66AWuEH6qSScDolCvsvVAFeMJlXaBacmnR3K+pG8ZzqajeL3VVguiX5fiavZVt71T/
+	3/SLosPY7dJCrCuAz49a25D3V7sRdmLOz+FZ/IJ+oK/ugMjNMnVZT5PyEXe6ZfDu
+X-Received: by 2002:a05:6a21:1519:b0:216:1fc7:5d51 with SMTP id adf61e73a8af0-21f86747eecmr11545649637.37.1749727191392;
+        Thu, 12 Jun 2025 04:19:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEymZNRL34fw7cMWDROMev8RqOV8BO00M024ki/BJ4JwmO6XOC+uwIudz/uK7cTSGz1z7G5uw==
+X-Received: by 2002:a05:6a21:1519:b0:216:1fc7:5d51 with SMTP id adf61e73a8af0-21f86747eecmr11545609637.37.1749727190903;
+        Thu, 12 Jun 2025 04:19:50 -0700 (PDT)
+Received: from [10.152.204.0] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7488087aa4csm1198848b3a.8.2025.06.12.04.19.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Jun 2025 04:19:50 -0700 (PDT)
+Message-ID: <ec974dc0-962b-f611-7bbb-c07a3872f70f@oss.qualcomm.com>
+Date: Thu, 12 Jun 2025 16:49:47 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SG2PR06MB4802:EE_|TY0PR06MB5354:EE_
-X-MS-Office365-Filtering-Correlation-Id: 520fedee-9aff-4c03-9233-08dda9a1d18d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Gb45diyeEc+1yNCoK1I2V6NdFCSAZG7z8Ry17xy9oEUff9hOEq16yrLHo/P1?=
- =?us-ascii?Q?uMsEx4vKemFQforEZ6bWg2pPEpX4zIyL9mWgiIHIz8Psw0o9t9++mDA3MLvd?=
- =?us-ascii?Q?QmTIWIC4UlD87brNEOI7OkWsl0/ezu77FMKHci1Xb7OCBribI09wHImNOe63?=
- =?us-ascii?Q?0vKPmC7CY89ZzeH5Bb/IOMdNo1/JThN/PEP6cu3/8miJ4kyyoOQJErDlM6Sl?=
- =?us-ascii?Q?6Kh3StRKM9s8groluEEgcRioLDafX0vGNzdc0Ro7955qCo1SriEXp9Vk5zNq?=
- =?us-ascii?Q?B3HcL5bGhu3rKk2QMVPjVWHqvMgRICcVE2c21V3gxeCdhTEQodzPEsYGtklv?=
- =?us-ascii?Q?ufjtVSMjW5mRs6DD1czeebM8AldpuVpO/qrmNyDdL5bZCI9WPdzh1gYcVBF7?=
- =?us-ascii?Q?DoVgHY9hVjnfZM7hU+8xmgMspz8Bbb8LfamniJrZ6QSLCDifq9YVSqABhwAw?=
- =?us-ascii?Q?270qTtBBUgu4uQDX/V9DQf7dzLcWjBzrpjVUl7i7uqlZVm8Cu0YoT+RegkG5?=
- =?us-ascii?Q?Sa9268bIOMrSahVPY/AB1D+dWRNZMkaT5QvEKApZ5kKnRPpSyTPCNfqOllDz?=
- =?us-ascii?Q?a0T5bPcHC8i0zVbo+DghWXBZz7lUHZd/aTOzTNcQ0YwbteKaHpPdDHn1k2fx?=
- =?us-ascii?Q?w9hsDm9T23bogtZF2YtLz0x4g80wBWH+h+JGX7ul2ZyD1Qfqe3rgzY37Lg+0?=
- =?us-ascii?Q?DsJZPDhn1kl3VLmsxIoNM1oiajS//7QAjVZbqM7Y/bW5EWR44FdOckeC/MUx?=
- =?us-ascii?Q?xIhAlk+P8rhpX0NVON7mgfNoYKlhrVGoqiPnm8aVZxqydGSTsbtuxnkj+XA8?=
- =?us-ascii?Q?wbJpuy1aSvsFGTw4mIEzKer5KlOA2Gh84JZ8IlMK14TsDlqPNrmGLEHWXfL7?=
- =?us-ascii?Q?YCEag9i2+qWhTmGJTFiK76SL++O4zHLRkH4Te5NQgLdFOClgQpEsUiTXiJo5?=
- =?us-ascii?Q?AFpDVZLAAVEl2zOpgz3FC7Bk4jT4XsWv2A0vF5qhlvdXD9v4A/iuERAcCaKC?=
- =?us-ascii?Q?2Czmh5IyTHQvmypaobjCSOO2bRrCOqvA2/oC0mVYHJCW5msvNCnhAWJ/Kuir?=
- =?us-ascii?Q?fNcjkidbB1X3RyksgvKFZL6XaaqkQWiAZ6qFHZ8RITzuOmWFsMAlIJqwJNKs?=
- =?us-ascii?Q?jB3wBswP809Ilzx0ekb+ya2BroVhctuvz+yfaPPUkU/idzzRY5oIX7xyq8Ll?=
- =?us-ascii?Q?3hPZLslPssAGlm2TpNVPDNTqZCf9GZTh/a1IyY1WwXQR7Snetqep2xbilVcH?=
- =?us-ascii?Q?rTjEU1+ucXjM3Jq595ANGNNqka/4mjDN5KfAtsNfSkdQlTiLEUyJMrMWpoOr?=
- =?us-ascii?Q?TOPy6rnvAdhPd3d+8wCTGwHGezWzYv0lS7u2X4xpL+3N7XBySuNCz7WnYrJk?=
- =?us-ascii?Q?rdqkrQnvujC3QHB2DkVcNmvQFMxG1kGRAerSW1/+8plEu2rXVVIWIsAheAH/?=
- =?us-ascii?Q?rKWyqTkibom6KdD4VoT1be2w1SILg7smrgvkmXCXNvkzXiIMSYMKBQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR06MB4802.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HjzkSZ1Ii8Yacdc2RQKBvgrLsUFb6mAW2LAzO6YT/BB9SO+Wbv3JIfeeI4j6?=
- =?us-ascii?Q?CZLvG2VmdwLJk/Q5R3wfV2/xJKeiufFWYxzkNEUpQG8pVOosH/VYtqWnicZ3?=
- =?us-ascii?Q?LWIt8vhxpxrt0u23rVCZAcwFYsyWYB2wZMys7V+M4gSi0PDfqGsWBMtKaamE?=
- =?us-ascii?Q?LPcj23n2tPM7CGSUv7xoP0NCTCoKHiAjGBD8SMH5I82c5xY7gAbMmLBOKv18?=
- =?us-ascii?Q?XGeiRd3ShXqKUNqydBJ0l4agJOeigGAX0icyrdor13RQ7sBWqmf7ioOOvQM7?=
- =?us-ascii?Q?QaksFhN0X1GRYJscVc0MLJBcCFvg/qcdAnkD4pmaSdurSt89UPdVmOYTKu3H?=
- =?us-ascii?Q?nxtx/crcnZ9sJ/D/GbDt/REPR4sonSq/MYQ3WtWWUWMSLO/TkA7gJ01Pd5We?=
- =?us-ascii?Q?mEjZnGZHTRgvWnoillsJ0JEAPUqqCbiVzr9LQACyTgbP03uyaFk2Q0cI0w1y?=
- =?us-ascii?Q?sduUVKZHy27qMOM5rawr0CkgytttPMlfY9DzN0Ytdnh+A5522knjUMHUFEnK?=
- =?us-ascii?Q?y10Qw3odqRnkn/gyo1K3Ny1nEGNuulttflsPUKZVlTfXdWwL4mK3ESVR4aIu?=
- =?us-ascii?Q?nm98DPnzRMCrVSrKUGC5RSr2/IhYEFnfklHbgmbSCo3KnYUEc3mGuxXmNZZg?=
- =?us-ascii?Q?PQVhL6FxvtiTyISYPmyuklriNEirfT+3QquOSZw76JtE/SXG5SXhdfrMMw5c?=
- =?us-ascii?Q?H3Ks5M8M1dSBwYxxRb2nGy3MOh8Iw5H04U0QH5szSmgYBHngEJYHHrTAZf0v?=
- =?us-ascii?Q?5cUnV0bfOOc7y53O5plCXQidHiPLxqeQSRShdf+APq/RwywT3/BTyWrJlr+h?=
- =?us-ascii?Q?nEvR5QQs+30V1hppPwuFqqW8SlFaCKRPOAUxq2Df7ilGlNr5s8Dee+MOh4og?=
- =?us-ascii?Q?P/oP6z/6DGIssM8uPHQYq+R1LlBaVhz6+W8sudfnVxDvd60XWvDAa0YxRX55?=
- =?us-ascii?Q?HKNsvoBe+G3UtKyw4TQyaMmfL5NJPF5rCzh0CNUSdP87fPw5eauMkX4ePPD4?=
- =?us-ascii?Q?04i/dbp6L+3d18UN5KprEzKD+a4uRGNwJmSZvrviFJYjA43z/mxubVwtAXOV?=
- =?us-ascii?Q?W8JYkCBAQ9LMeSJOaXcLwyD/GLJjQlw2Iu+twYysxJ3nHE6hWKvQpTn62A7g?=
- =?us-ascii?Q?JOGpddl4JN2J6MmE7yv+wdyTtsPiXcqRuB6qBqj888xNvsBJVU+UkyvBL+ju?=
- =?us-ascii?Q?7U41Xh9QiTfpZkOe9Qv4lWUKq/J0j1659GhWsq6kZHEnC9x8M2lUukz2MNeJ?=
- =?us-ascii?Q?K6e614rYnLioakyF1BJJb0eOvArbNjAlMMcDKSut8bRBOoH6KNjZ18OiKm9H?=
- =?us-ascii?Q?qNI6aak8+NMCFbpdA+bYiVQnsKq8DWNNiMKy7GQa9TDFaVXNkh4qvw/QulSi?=
- =?us-ascii?Q?IaHMdJtQIVBgxYpJGMW7yDgO0Kj22UwwuhRpnFFmtsTorECdE9fw6aypO9b3?=
- =?us-ascii?Q?3SthGiwWigO5pipb88Qm+SxNgHZA9xQXe7KDtj9C4X9HMes3nJX0/l+eQe9k?=
- =?us-ascii?Q?c/Cdr2dQzfE7hLN5EoP5+QogGRbjHY2oIRTI5uVCC5AH7k4G8CxKn+tYMUTW?=
- =?us-ascii?Q?oi6Eg1ruHFokREeX3xr1NrZXvv51ydtwAYhpA/Rg?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 520fedee-9aff-4c03-9233-08dda9a1d18d
-X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB4802.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2025 11:11:02.9796
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UW9I0gSIUSa8UYxfU1VGNfsJxbzxX0iSLE5TMEvD2NttUz/k+d0VnDKmGqw3Lq+l6Z72VPh6vT3IMd61F9z6Gw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR06MB5354
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] wifi: ath11k: support fetching mac address from nvmem
+Content-Language: en-US
+To: george.moussalem@outlook.com, Jeff Johnson <jjohnson@kernel.org>
+Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20250324-ath11k-nvmem-v1-1-d82bdf72820e@outlook.com>
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20250324-ath11k-nvmem-v1-1-d82bdf72820e@outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEyMDA4NyBTYWx0ZWRfX90xwbpgjKpRq
+ XqLk29X+XF62u/kNpUxLsiLiIcKaQujRonXLLmnDIodUTGCvUZ7jz0DlU4ShgMLI3oHCmjAghtv
+ Ci05bNSJaCrarQh+N11pnezRCp1zj+Z9pwYc4OWYk2EXzBShZ7aNqNsCzCWQuyetxFDybY7nzCb
+ RW9GUtDJcEZaFUqwy9VW+NW8uLiZu8eKmoSlzmY/I7+xyh4/HjVoCY3B0ABCMmjgdYZUR5dCPMX
+ 6CLd70Tzov+jLRDd/7CIh3I52UBaNRe7LjdzV7zfsu1fJGCTh68KRD7iEEMFcaYfO+93pKNsEsK
+ 497oQLYooc1X/4iG/GCpdtsN9pfpKMBtBis2RbhbgW9l0l04LgecFSHeF15b+BLYau2R5XOtSX9
+ PJFb4jE5kAbZSstoPLB76RPYRvxl8kipJvhjuJuKYaH129OHLCNkObzgbk3jDGv6SHYw0MZ8
+X-Proofpoint-ORIG-GUID: S55TRbaYiZIIZ69hhG-GYdMiqDHNfPvf
+X-Proofpoint-GUID: S55TRbaYiZIIZ69hhG-GYdMiqDHNfPvf
+X-Authority-Analysis: v=2.4 cv=Jce8rVKV c=1 sm=1 tr=0 ts=684ab7d8 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=UqCG9HQmAAAA:8 a=wwL4Hbxs1AlHKMMt3U0A:9
+ a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-12_07,2025-06-10_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0
+ mlxlogscore=916 priorityscore=1501 malwarescore=0 spamscore=0 impostorscore=0
+ mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506120087
 
-Since secs_to_jiffies()(commit:b35108a51cf7) has been introduced, we can
-use it to avoid scaling the time to msec.
 
-Signed-off-by: Yuesong Li <liyuesong@vivo.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 88b59f3ff87a..1ba2701393b2 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4373,7 +4373,7 @@ int ath12k_mac_get_fw_stats(struct ath12k *ar,
- 	 * received 'update stats' event, we keep a 3 seconds timeout in case,
- 	 * fw_stats_done is not marked yet
- 	 */
--	timeout = jiffies + msecs_to_jiffies(3 * 1000);
-+	timeout = jiffies + secs_to_jiffies(3);
- 	ath12k_fw_stats_reset(ar);
- 
- 	reinit_completion(&ar->fw_stats_complete);
--- 
-2.34.1
+On 3/24/2025 11:54 AM, George Moussalem via B4 Relay wrote:
+> From: George Moussalem <george.moussalem@outlook.com>
+> 
+> Many embedded devices with ath11k wifi chips store their mac address in
+> nvmem partitions. Currently, the ath11k driver supports getting the
+> mac address from the 'mac-address', 'local-mac-address', and 'address'
+> device tree properties only. As such, add support for obtaining the mac
+> address from nvmem if defined in a 'mac-address' cell by replacing the
+> call to device_get_mac_address by of_get_mac_address which does exactly
+> the same as the former but tries to get it from nvmem if it is not set
+> by above mentioned DT properties,
 
+May be not exactly, this also moves from a generic API to DT specific API that
+might impact systems which dont have device tree (x86)?
+
+> 
+> Tested-on: IPQ5018, QCN6122, and QCN9074
+
+You may want to follow the existing Tested-on style.
+
+> 
+> Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+> ---
+>   drivers/net/wireless/ath/ath11k/mac.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+> index 97816916abac..49af6b9fc867 100644
+> --- a/drivers/net/wireless/ath/ath11k/mac.c
+> +++ b/drivers/net/wireless/ath/ath11k/mac.c
+> @@ -9,6 +9,7 @@
+>   #include <linux/etherdevice.h>
+>   #include <linux/bitfield.h>
+>   #include <linux/inetdevice.h>
+> +#include <linux/of_net.h>
+>   #include <net/if_inet6.h>
+>   #include <net/ipv6.h>
+>   
+> @@ -10379,7 +10380,7 @@ int ath11k_mac_register(struct ath11k_base *ab)
+>   	if (ret)
+>   		return ret;
+>   
+> -	device_get_mac_address(ab->dev, mac_addr);
+> +	of_get_mac_address(ab->dev->of_node, mac_addr);
+
+May be call of_get_mac_address_nvmem() when device_get_mac_address() fails?
+
+Vasanth
 
