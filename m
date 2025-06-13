@@ -1,348 +1,313 @@
-Return-Path: <linux-wireless+bounces-24091-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24092-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD6CAD8AA0
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jun 2025 13:36:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11758AD8CA8
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jun 2025 15:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AB233BCE62
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jun 2025 11:35:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 393267ADA98
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Jun 2025 12:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D16F2D2388;
-	Fri, 13 Jun 2025 11:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6E62AD21;
+	Fri, 13 Jun 2025 13:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="U19sVfz6"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="boyWahHn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253FD2D2392;
-	Fri, 13 Jun 2025 11:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749814519; cv=pass; b=WZ88mDkQk9Neoi8B3QDCd4fF7+gjuTVmrb2sjrmebPSStu+n6cuvBYVxD/l3BI2FNnYmN1+Ujma/ztAuzOOfLEs8zj3Qe2HH3qFmKe2CbAM9xHYBo6hAI64/cIVaPkYVE2Z4eUVedfeststBnu9tPXQtN5a38+wUV7wRqHzq5ws=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749814519; c=relaxed/simple;
-	bh=FwF5gcy/sg4T3XYi70dfrvpopDl97RJ7KYLH2cJ4P4M=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=aqYetkR/SzgBDTSF/32fbjbEtGkPG5MAdOgP9OqS1DC+nFfwGpvFRiSPaM0T5iG6XS/7fMYt2WzGSBgnAfgDKmya74G+JnezJpDvvDgFHAEuqH8BIkNtCmlXPalRpnqRipHCv3EGfX7bwQptMROH6GDsVwcs3g6zQIsKEpKIeVY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=U19sVfz6; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1749814474; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=lETLoGB93kdeds4S0KtNgOM7REQiwh+NZ6/JULXJtNWu0wDh7njH+EAT21aIV0vuQZBgZL6HhZL4qjblaCJJms7usXnNucSq6ioJtIRNjT9eEctgPyUG1Wd7dbpxaZasVZszsHIlNh4DLEm0BzZ37fHfFGceOU/LKs8iM0ABrTw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1749814474; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=63O4HhVlmCIQH37e2yHnmXGKXhP1A6hZ3WnVeHzeLEY=; 
-	b=kMZGZWpT0GGC+aDITWLFTMZkO6X0afeAstC8/ug09xlUzVnHv5bfYJHm8LqcdKp2SWXr5pSNumIC/Zza/QdMmDVqhj7haDn1ojsa8ucnNtgfYU1vN1oMTjRwTuqgwHsW5lDBu72GxB4jj8xfbEIqaAH0oL6WGks2uBj+btQmkqI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass header.from=<usama.anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1749814474;
-	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=63O4HhVlmCIQH37e2yHnmXGKXhP1A6hZ3WnVeHzeLEY=;
-	b=U19sVfz6Zbmlpv0eumTx1fIYHMVk7lX/xpIlvbmK7WXwJQbF8yOpD64+dbqp7Ib/
-	Gt3+S9ia5k/c/e30enP+saH+RNyJHoB0/39CvJEu5Pm0szVrVZVSQ1VdPW+aD+fOe12
-	/6zI5fopVgzD3SIYhrF1pyvafdR+9Vb6r/7P35Io=
-Received: by mx.zohomail.com with SMTPS id 174981447219438.66651306626147;
-	Fri, 13 Jun 2025 04:34:32 -0700 (PDT)
-Message-ID: <73496f2a-ae0d-42c8-8013-9e157177c477@collabora.com>
-Date: Fri, 13 Jun 2025 16:34:20 +0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79660F4FA
+	for <linux-wireless@vger.kernel.org>; Fri, 13 Jun 2025 13:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749819615; cv=none; b=BmjodAG5fpSUgDwHgaHVEHaNmrMN4c9HX/X0FUXNs5i3BnbLKMAfqoVOo9hJLX0i82swgVhIvvIc2ONf6yYu0zGkO6+9k/+ukypdePSuak7VbdBejUBeRGXN50bJEPQdzOKtM28Wip40PRwccY9wTrxp0V0ATOyMn9IKNXtiD0s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749819615; c=relaxed/simple;
+	bh=DqSlNDVwqrMMqPQdPfHObgryc6GqTjt9vVn0izUEAzk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QA2w3wIeh4V2EmEj6gdpJfCfs0r9w6cIEdysEp8BWB6egt5KeCtZkBQln8jcWvUaxQHxu59CAYaoC4rNFuRyKlOL+kTHmxxdzWZGVSKtO7Rs/DscCrUKBrWNqwSz4Qb9ZzKnbvl2/t+wMqyrR4o15h9BGxH8HFiftOsN5caOKV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=boyWahHn; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55D9AqUg027161
+	for <linux-wireless@vger.kernel.org>; Fri, 13 Jun 2025 13:00:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	6eKtgM9vr74wvYivbQKkfWU15SlC67xuKSLL1mDKqTU=; b=boyWahHnWr06MmQj
+	Tp3Qgwtd2Aa8rgamMBWFVB9MXwXuz2m+8qAB/ZnD44Lva8s+SjFomrXe1P59St9z
+	8Shm7j9xK0eave+vRMvm6G51hrIq4r92xw4u39MblxbdQ+g4crVbswtt/1yKH4AZ
+	OSQyF2KNi7X3b/FaF28JsryyNLkSKXXLj0oTVgcT1BAKsnS4/4r3pKgg8VI63n2P
+	wZBUYNLrFbdk3oPHfp5a0zdSwVoBVL7pd9pvvPwrH2hVc1wGpbdLZDm/fVTE+dj8
+	xsYI0r/i8kaPGQt4mJrX7ELW8ukMe7yNRDSJWdq1Rj+WXOk5NYZFP6Tgn3ZYHpL9
+	xwDPvQ==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 474ccvkg7j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 13 Jun 2025 13:00:12 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4a589edc51aso52980211cf.0
+        for <linux-wireless@vger.kernel.org>; Fri, 13 Jun 2025 06:00:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749819611; x=1750424411;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6eKtgM9vr74wvYivbQKkfWU15SlC67xuKSLL1mDKqTU=;
+        b=iVliYMlRPW62SuKPBr4P22tGRj/wTfxbVcGELiJry3rC7joaxF8TApi71IlGbB+HQ1
+         nKrkUh44g07bRsFLRLaDYSWbPTqVf1fENYHscSatuYOH9K+6eWo9sKtepKz2pXFtbvsj
+         ClD5g8hOeASGu/QVGsZxRTxu9Jw6Tg+t0J2Hpm/HAvSWi9duec94TZX3JVDeazW41ivO
+         vw0yX3PUZq4SzXzqWRga9roYia5KKZDnq5SCA/OvxvPPoSxaxRT4lO0hwFw7Se2JKlLG
+         KCgpecoRRw41skMU6T9bl6wRuPWLVStMGYi+IjmuGXKoGE2qVHBuOmeqzsDUC9WyrkX0
+         Toag==
+X-Forwarded-Encrypted: i=1; AJvYcCXyOfUtJzuW75a9971KHBwy9u5SAV7sjCTOhb96AWoiEIuUvxZ8I0rHcT78Fef1rBR6aSpNjT1on2FQrMauUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6Qws8A+YV/QhsJuT7kSyuVGPM5wOUl16JMPR7coDH9e2JEmLb
+	q9ZIh+ZIc4470YOWd4BQUZwtcCk2Wx1iPt6qOJJ4jsRC6LlmKOHC6fmB3YIT40yL36Y7/596Pav
+	gr5IeJAtOKxWszqWHz5HzPdm53ycG/mXBFsRHJbHt+q6bAfdeS9Q2zchEKXToGt89Y1+/gRDIhm
+	JZjC8fwUHnEpMp9NP+tfY5A7FSoqYzwomMNAzWnZHWJVJdJOegZEa2uXA=
+X-Gm-Gg: ASbGncu9mHchCod/H9v8DZe78KhsiNrnis6vnVsaD6moB0D8MfiGQPJurCmyS24hQDn
+	f97gSQpXimoNG1wztsk1lxWSIlDOvtUzaTt4KusWn8dXtmE9lM/COe7Ft9oRwKxiKHvjDpXUEdc
+	CPxthY
+X-Received: by 2002:a05:622a:191c:b0:4a6:f81a:4443 with SMTP id d75a77b69052e-4a72febff3emr46131471cf.5.1749819610684;
+        Fri, 13 Jun 2025 06:00:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHXhNG6pAdisKV7R1YfNX3Tz29W+wdEkFARPRWMHpVrGeJOR7PMTBJg1AXBwf9frl/H7mWHUApAgcQdcqI1ZPA=
+X-Received: by 2002:a05:622a:191c:b0:4a6:f81a:4443 with SMTP id
+ d75a77b69052e-4a72febff3emr46130171cf.5.1749819609968; Fri, 13 Jun 2025
+ 06:00:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@collabora.com, kernel@collabora.com,
- sebastian.reichel@collabora.com, Jeff Johnson
- <jeff.johnson@oss.qualcomm.com>, Baochen Qiang <quic_bqiang@quicinc.com>,
- Sumit Garg <sumit.garg@kernel.org>, mhi@lists.linux.dev,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
- ath12k@lists.infradead.org, Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
- Jeff Johnson <jjohnson@kernel.org>,
- Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
- Youssef Samir <quic_yabdulra@quicinc.com>,
- Matthew Leung <quic_mattleun@quicinc.com>,
- Carl Vanderlip <quic_carlv@quicinc.com>,
- "Dr. David Alan Gilbert" <linux@treblig.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Troy Hanson <quic_thanson@quicinc.com>, Alex Elder <elder@kernel.org>,
- Yan Zhen <yanzhen@vivo.com>, Kunwu Chan <chentao@kylinos.cn>
-Subject: Re: [PATCH v6] bus: mhi: host: don't free bhie tables during
- suspend/hibernation
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-References: <20250516184952.878726-1-usama.anjum@collabora.com>
- <819f15f9-1b16-4b96-8273-3f95c1e071bb@collabora.com>
-Content-Language: en-US
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <819f15f9-1b16-4b96-8273-3f95c1e071bb@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+References: <20250610095455.1443-1-kang.yang@oss.qualcomm.com>
+In-Reply-To: <20250610095455.1443-1-kang.yang@oss.qualcomm.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Fri, 13 Jun 2025 14:59:58 +0200
+X-Gm-Features: AX0GCFuLIWwZKM6UXeyyTu0fXzTOnTClBNkqGI5RIWNfgcxN0MiSPe6rLnnSSvQ
+Message-ID: <CAFEp6-2VOQRdYCzW1gjr71L0LZrYK5DFocUGnNoSuvAiQ32CDg@mail.gmail.com>
+Subject: Re: [PATCH ath-next] wifi: ath10k: shutdown driver when hardware is unreliable
+To: Kang Yang <kang.yang@oss.qualcomm.com>
+Cc: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-ORIG-GUID: -g8nYi_A96G0I58zrQeDRa3bLSKXqNec
+X-Authority-Analysis: v=2.4 cv=TsLmhCXh c=1 sm=1 tr=0 ts=684c20dc cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10
+ a=EUspDBNiAAAA:8 a=PHlRw_kzcNOPMu9nZAsA:9 a=QEXdDO2ut3YA:10
+ a=a_PwQJl-kcHnX1M80qC6:22
+X-Proofpoint-GUID: -g8nYi_A96G0I58zrQeDRa3bLSKXqNec
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEzMDA5NCBTYWx0ZWRfX4T7F7Om/tMib
+ RYPuaVHYvH37/5Oqlw/CnFb1AxYJeKlLbv3AKr6385vdtSMIz7hLfy3kVs/Vjrb+CJVHHnjejC9
+ JeCNqe7jwyvZLbuKcY/mFDKuNVYnL1UJF0Y329s1OTBniCZduM5rpNf642DN7k4AYpjQ0D45CnL
+ +sOzTCGIePsf6yauhbJLbtbK3VwprowA62nK7cgydrFikIaOPipN0OSYSYaFw+uHgWZdQ40LyQ+
+ nAdajPsNCVHmgQ1N4e2beuHp/TE+sPupLPQ9wRTpVchj6FiL8ub6MqqZo+ow/PEwuCz4j/jH4kW
+ vHqGEhCg2Uo1mAm8YJ1uLG+M+Cf3+fg9I2I1vbnCwWuyzkszmgGvZ8xOwc9wVTh4ympcXJcyv7O
+ 2G5OPCjp2Cd6WRaCjTDee7cWmPokvP+PF8lD2YxnqWTWb9Aa2OUBjAIp8CXqWmRY0n999DkJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-13_01,2025-06-12_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 spamscore=0 mlxlogscore=999 impostorscore=0
+ priorityscore=1501 bulkscore=0 adultscore=0 clxscore=1015 mlxscore=0
+ malwarescore=0 lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506130094
 
-Hi,
-
-Reminder
-
-On 5/28/25 10:25 AM, Muhammad Usama Anjum wrote:
-> Soft reminder
-> 
-> On 5/16/25 11:49 PM, Muhammad Usama Anjum wrote:
->> Fix dma_direct_alloc() failure at resume time during bhie_table
->> allocation because of memory pressure. There is a report where at
->> resume time, the memory from the dma doesn't get allocated and MHI
->> fails to re-initialize.
->>
->> To fix it, don't free the memory at power down during suspend /
->> hibernation. Instead, use the same allocated memory again after every
->> resume / hibernation. This patch has been tested with resume and
->> hibernation both.
->>
->> Optimize the rddm and fbc bhie allocations. The rddm is of constant
->> size for a given hardware. While the fbc_image size depends on the
->> firmware. If the firmware changes, we'll free and allocate new memory
->> for it. This patch is motivated from the ath12k [1] and ath11k [2]
->> patches. They don't free the memory and reuse the same memory if new
->> size is same. The firmware caching hasn't been implemented for the
->> drivers other than in the nouveau. (The changing of firmware isn't
->> tested/supported for wireless drivers. But let's follow the example
->> patches here.)
->>
->> [1] https://lore.kernel.org/all/20240419034034.2842-1-quic_bqiang@quicinc.com/
->> [2] https://lore.kernel.org/all/20220506141448.10340-1-quic_akolli@quicinc.com/
->>
->> Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
->> Tested-on: WCN7850 hw2.0 WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
->>
->> Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
->> Tested-by: Baochen Qiang <quic_bqiang@quicinc.com>
->> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
->> ---
->> Changes since v1:
->> - Don't free bhie tables during suspend/hibernation only
->> - Handle fbc_image changed size correctly
->> - Remove fbc_image getting set to NULL in *free_bhie_table()
->>
->> Changes since v2:
->> - Remove the new mhi_partial_unprepare_after_power_down() and instead
->>   update mhi_power_down_keep_dev() to use
->>   mhi_power_down_unprepare_keep_dev() as suggested by Mani
->> - Update all users of this API such as ath12k (previously only ath11k
->>   was updated)
->> - Define prev_fw_sz in docs
->> - Do better alignment of comments
->>
->> Changes since v3:
->> - Fix state machine of ath12k by setting ATH12K_MHI_DEINIT with
->>   ATH12K_MHI_POWER_OFF_KEEP_DEV state (Thanks Sebastian for testing and
->>   finding the problem)
->> - Use static with mhi_power_down_unprepare_keep_dev()
->> - Remove crash log as it was showing that kworker wasn't able to
->>   allocate memory.
->>
->> Changes since v4:
->> - Update description
->> - Use __mhi_power_down_unprepare_keep_dev() in
->>   mhi_unprepare_after_power_down()
->>
->> Changes since v5:
->> - Update description to don't give an impression that all bhie
->>   allocations are being fixed. mhi_load_image_bhie() doesn't require
->>   this optimization.
->>
->> This patch doesn't have fixes tag as we are avoiding error in case of
->> memory pressure. We are just making this driver more robust by not
->> freeing the memory and using the same after resuming.
->> ---
->>  drivers/bus/mhi/host/boot.c           | 15 +++++++++++----
->>  drivers/bus/mhi/host/init.c           | 18 ++++++++++++------
->>  drivers/bus/mhi/host/internal.h       |  2 ++
->>  drivers/bus/mhi/host/pm.c             |  1 +
->>  drivers/net/wireless/ath/ath11k/mhi.c |  8 ++++----
->>  drivers/net/wireless/ath/ath12k/mhi.c | 14 ++++++++++----
->>  include/linux/mhi.h                   |  2 ++
->>  7 files changed, 42 insertions(+), 18 deletions(-)
->>
->> diff --git a/drivers/bus/mhi/host/boot.c b/drivers/bus/mhi/host/boot.c
->> index efa3b6dddf4d2..bc8459798bbee 100644
->> --- a/drivers/bus/mhi/host/boot.c
->> +++ b/drivers/bus/mhi/host/boot.c
->> @@ -584,10 +584,17 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->>  	 * device transitioning into MHI READY state
->>  	 */
->>  	if (fw_load_type == MHI_FW_LOAD_FBC) {
->> -		ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image, fw_sz);
->> -		if (ret) {
->> -			release_firmware(firmware);
->> -			goto error_fw_load;
->> +		if (mhi_cntrl->fbc_image && fw_sz != mhi_cntrl->prev_fw_sz) {
->> +			mhi_free_bhie_table(mhi_cntrl, mhi_cntrl->fbc_image);
->> +			mhi_cntrl->fbc_image = NULL;
->> +		}
->> +		if (!mhi_cntrl->fbc_image) {
->> +			ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image, fw_sz);
->> +			if (ret) {
->> +				release_firmware(firmware);
->> +				goto error_fw_load;
->> +			}
->> +			mhi_cntrl->prev_fw_sz = fw_sz;
->>  		}
->>  
->>  		/* Load the firmware into BHIE vec table */
->> diff --git a/drivers/bus/mhi/host/init.c b/drivers/bus/mhi/host/init.c
->> index 13e7a55f54ff4..8419ea8a5419b 100644
->> --- a/drivers/bus/mhi/host/init.c
->> +++ b/drivers/bus/mhi/host/init.c
->> @@ -1173,8 +1173,9 @@ int mhi_prepare_for_power_up(struct mhi_controller *mhi_cntrl)
->>  		/*
->>  		 * Allocate RDDM table for debugging purpose if specified
->>  		 */
->> -		mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->rddm_image,
->> -				     mhi_cntrl->rddm_size);
->> +		if (!mhi_cntrl->rddm_image)
->> +			mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->rddm_image,
->> +					     mhi_cntrl->rddm_size);
->>  		if (mhi_cntrl->rddm_image) {
->>  			ret = mhi_rddm_prepare(mhi_cntrl,
->>  					       mhi_cntrl->rddm_image);
->> @@ -1200,6 +1201,14 @@ int mhi_prepare_for_power_up(struct mhi_controller *mhi_cntrl)
->>  }
->>  EXPORT_SYMBOL_GPL(mhi_prepare_for_power_up);
->>  
->> +void __mhi_unprepare_keep_dev(struct mhi_controller *mhi_cntrl)
->> +{
->> +	mhi_cntrl->bhi = NULL;
->> +	mhi_cntrl->bhie = NULL;
->> +
->> +	mhi_deinit_dev_ctxt(mhi_cntrl);
->> +}
->> +
->>  void mhi_unprepare_after_power_down(struct mhi_controller *mhi_cntrl)
->>  {
->>  	if (mhi_cntrl->fbc_image) {
->> @@ -1212,10 +1221,7 @@ void mhi_unprepare_after_power_down(struct mhi_controller *mhi_cntrl)
->>  		mhi_cntrl->rddm_image = NULL;
->>  	}
->>  
->> -	mhi_cntrl->bhi = NULL;
->> -	mhi_cntrl->bhie = NULL;
->> -
->> -	mhi_deinit_dev_ctxt(mhi_cntrl);
->> +	__mhi_unprepare_keep_dev(mhi_cntrl);
->>  }
->>  EXPORT_SYMBOL_GPL(mhi_unprepare_after_power_down);
->>  
->> diff --git a/drivers/bus/mhi/host/internal.h b/drivers/bus/mhi/host/internal.h
->> index ce566f7d2e924..41b3fb835880b 100644
->> --- a/drivers/bus/mhi/host/internal.h
->> +++ b/drivers/bus/mhi/host/internal.h
->> @@ -427,4 +427,6 @@ void mhi_unmap_single_no_bb(struct mhi_controller *mhi_cntrl,
->>  void mhi_unmap_single_use_bb(struct mhi_controller *mhi_cntrl,
->>  			     struct mhi_buf_info *buf_info);
->>  
->> +void __mhi_unprepare_keep_dev(struct mhi_controller *mhi_cntrl);
->> +
->>  #endif /* _MHI_INT_H */
->> diff --git a/drivers/bus/mhi/host/pm.c b/drivers/bus/mhi/host/pm.c
->> index e6c3ff62bab1d..c2c09c308b9b7 100644
->> --- a/drivers/bus/mhi/host/pm.c
->> +++ b/drivers/bus/mhi/host/pm.c
->> @@ -1263,6 +1263,7 @@ void mhi_power_down_keep_dev(struct mhi_controller *mhi_cntrl,
->>  			       bool graceful)
->>  {
->>  	__mhi_power_down(mhi_cntrl, graceful, false);
->> +	__mhi_unprepare_keep_dev(mhi_cntrl);
->>  }
->>  EXPORT_SYMBOL_GPL(mhi_power_down_keep_dev);
->>  
->> diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
->> index acd76e9392d31..c5dc776b23643 100644
->> --- a/drivers/net/wireless/ath/ath11k/mhi.c
->> +++ b/drivers/net/wireless/ath/ath11k/mhi.c
->> @@ -460,12 +460,12 @@ void ath11k_mhi_stop(struct ath11k_pci *ab_pci, bool is_suspend)
->>  	 * workaround, otherwise ath11k_core_resume() will timeout
->>  	 * during resume.
->>  	 */
->> -	if (is_suspend)
->> +	if (is_suspend) {
->>  		mhi_power_down_keep_dev(ab_pci->mhi_ctrl, true);
->> -	else
->> +	} else {
->>  		mhi_power_down(ab_pci->mhi_ctrl, true);
->> -
->> -	mhi_unprepare_after_power_down(ab_pci->mhi_ctrl);
->> +		mhi_unprepare_after_power_down(ab_pci->mhi_ctrl);
->> +	}
->>  }
->>  
->>  int ath11k_mhi_suspend(struct ath11k_pci *ab_pci)
->> diff --git a/drivers/net/wireless/ath/ath12k/mhi.c b/drivers/net/wireless/ath/ath12k/mhi.c
->> index 08f44baf182a5..3af524ccf4a5a 100644
->> --- a/drivers/net/wireless/ath/ath12k/mhi.c
->> +++ b/drivers/net/wireless/ath/ath12k/mhi.c
->> @@ -601,6 +601,12 @@ static int ath12k_mhi_set_state(struct ath12k_pci *ab_pci,
->>  
->>  	ath12k_mhi_set_state_bit(ab_pci, mhi_state);
->>  
->> +	/* mhi_power_down_keep_dev() has been updated to DEINIT without
->> +	 * freeing bhie tables
->> +	 */
->> +	if (mhi_state == ATH12K_MHI_POWER_OFF_KEEP_DEV)
->> +		ath12k_mhi_set_state_bit(ab_pci, ATH12K_MHI_DEINIT);
->> +
->>  	return 0;
->>  
->>  out:
->> @@ -635,12 +641,12 @@ void ath12k_mhi_stop(struct ath12k_pci *ab_pci, bool is_suspend)
->>  	 * workaround, otherwise ath12k_core_resume() will timeout
->>  	 * during resume.
->>  	 */
->> -	if (is_suspend)
->> +	if (is_suspend) {
->>  		ath12k_mhi_set_state(ab_pci, ATH12K_MHI_POWER_OFF_KEEP_DEV);
->> -	else
->> +	} else {
->>  		ath12k_mhi_set_state(ab_pci, ATH12K_MHI_POWER_OFF);
->> -
->> -	ath12k_mhi_set_state(ab_pci, ATH12K_MHI_DEINIT);
->> +		ath12k_mhi_set_state(ab_pci, ATH12K_MHI_DEINIT);
->> +	}
->>  }
->>  
->>  void ath12k_mhi_suspend(struct ath12k_pci *ab_pci)
->> diff --git a/include/linux/mhi.h b/include/linux/mhi.h
->> index dd372b0123a6d..6fd218a877855 100644
->> --- a/include/linux/mhi.h
->> +++ b/include/linux/mhi.h
->> @@ -306,6 +306,7 @@ struct mhi_controller_config {
->>   *           if fw_image is NULL and fbc_download is true (optional)
->>   * @fw_sz: Firmware image data size for normal booting, used only if fw_image
->>   *         is NULL and fbc_download is true (optional)
->> + * @prev_fw_sz: Previous firmware image data size, when fbc_download is true
->>   * @edl_image: Firmware image name for emergency download mode (optional)
->>   * @rddm_size: RAM dump size that host should allocate for debugging purpose
->>   * @sbl_size: SBL image size downloaded through BHIe (optional)
->> @@ -382,6 +383,7 @@ struct mhi_controller {
->>  	const char *fw_image;
->>  	const u8 *fw_data;
->>  	size_t fw_sz;
->> +	size_t prev_fw_sz;
->>  	const char *edl_image;
->>  	size_t rddm_size;
->>  	size_t sbl_size;
-> 
-> 
+Hi Kang,
 
 
--- 
-Regards,
-Usama
+On Tue, Jun 10, 2025 at 11:55=E2=80=AFAM Kang Yang <kang.yang@oss.qualcomm.=
+com> wrote:
+>
+> In rare cases, ath10k may lose connection with the PCIe bus due to
+> some unknown reasons, which could further lead to system crashes during
+> resuming due to watchdog timeout:
+>
+> ath10k_pci 0000:01:00.0: wmi command 20486 timeout, restarting hardware
+> ath10k_pci 0000:01:00.0: already restarting
+> ath10k_pci 0000:01:00.0: failed to stop WMI vdev 0: -11
+> ath10k_pci 0000:01:00.0: failed to stop vdev 0: -11
+> ieee80211 phy0: PM: **** DPM device timeout ****
+> Call Trace:
+>  panic+0x125/0x315
+>  dpm_watchdog_set+0x54/0x54
+>  dpm_watchdog_handler+0x57/0x57
+>  call_timer_fn+0x31/0x13c
+>
+> At this point, all WMI commands will timeout and attempt to restart
+> device. So set a threshold for consecutive restart failures. If the
+> threshold is exceeded, consider the hardware is unreliable and all
+> ath10k operations should be skipped to avoid system crash.
+>
+> fail_cont_count and pending_recovery are atomic variables, and
+> do not involve complex conditional logic. Therefore, even if recovery
+> check and reconfig complete are executed concurrently, the recovery
+> mechanism will not be broken.
+>
+> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00288-QCARMSWPZ-1
+>
+> Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/core.c | 50 +++++++++++++++++++++++---
+>  drivers/net/wireless/ath/ath10k/core.h | 11 ++++--
+>  drivers/net/wireless/ath/ath10k/mac.c  |  7 +++-
+>  drivers/net/wireless/ath/ath10k/wmi.c  |  6 ++++
+>  4 files changed, 65 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireles=
+s/ath/ath10k/core.c
+> index fe3a8f4a1cc1..f925a3cf9ebd 100644
+> --- a/drivers/net/wireless/ath/ath10k/core.c
+> +++ b/drivers/net/wireless/ath/ath10k/core.c
+> @@ -4,6 +4,7 @@
+>   * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+>   * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+>   * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights r=
+eserved.
+> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+>   */
+>
+>  #include <linux/module.h>
+> @@ -2491,12 +2492,51 @@ static int ath10k_init_hw_params(struct ath10k *a=
+r)
+>         return 0;
+>  }
+>
+> +static bool ath10k_core_needs_recovery(struct ath10k *ar)
+> +{
+> +       long time_left;
+> +
+> +       /* Sometimes the recovery will fail and then the next all recover=
+y fail,
+> +        * so avoid infinite recovery.
+> +        */
+> +       if (atomic_read(&ar->fail_cont_count) >=3D ATH10K_RECOVERY_MAX_FA=
+IL_COUNT) {
+> +               ath10k_err(ar, "consecutive fail %d times, will shutdown =
+driver!",
+> +                          atomic_read(&ar->fail_cont_count));
+> +               ar->state =3D ATH10K_STATE_WEDGED;
+> +               return false;
+> +       }
+> +
+> +       ath10k_dbg(ar, ATH10K_DBG_BOOT, "total recovery count: %d",
+
+You don't need a newline.
+
+> +                  ++ar->recovery_count);
+> +
+> +       if (atomic_read(&ar->pending_recovery)) {
+> +               /* Sometimes it happened another recovery work before the=
+ previous one
+> +                * completed, then the second recovery work will destroy =
+the previous
+> +                * one, thus below is to avoid that.
+> +                */
+> +               time_left =3D wait_for_completion_timeout(&ar->driver_rec=
+overy,
+> +                                                       ATH10K_RECOVERY_T=
+IMEOUT_HZ);
+> +               if (time_left) {
+> +                       ath10k_warn(ar, "previous recovery succeeded, ski=
+p this!\n");
+> +                       return false;
+> +               }
+> +
+> +               /* Record the continuous recovery fail count when recover=
+y failed. */
+> +               atomic_inc(&ar->fail_cont_count);
+> +
+> +               /* Avoid having multiple recoveries at the same time. */
+> +               return false;
+> +       }
+> +
+> +       atomic_inc(&ar->pending_recovery);
+> +
+> +       return true;
+> +}
+> +
+>  void ath10k_core_start_recovery(struct ath10k *ar)
+>  {
+> -       if (test_and_set_bit(ATH10K_FLAG_RESTARTING, &ar->dev_flags)) {
+> -               ath10k_warn(ar, "already restarting\n");
+> +       if (!ath10k_core_needs_recovery(ar))
+>                 return;
+> -       }
+>
+>         queue_work(ar->workqueue, &ar->restart_work);
+>  }
+> @@ -2532,6 +2572,8 @@ static void ath10k_core_restart(struct work_struct =
+*work)
+>         struct ath10k *ar =3D container_of(work, struct ath10k, restart_w=
+ork);
+>         int ret;
+>
+> +       reinit_completion(&ar->driver_recovery);
+> +
+>         set_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags);
+>
+>         /* Place a barrier to make sure the compiler doesn't reorder
+> @@ -2596,8 +2638,6 @@ static void ath10k_core_restart(struct work_struct =
+*work)
+>         if (ret)
+>                 ath10k_warn(ar, "failed to send firmware crash dump via d=
+evcoredump: %d",
+>                             ret);
+> -
+> -       complete(&ar->driver_recovery);
+>  }
+>
+>  static void ath10k_core_set_coverage_class_work(struct work_struct *work=
+)
+> diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireles=
+s/ath/ath10k/core.h
+> index 446dca74f06a..06ac95707531 100644
+> --- a/drivers/net/wireless/ath/ath10k/core.h
+> +++ b/drivers/net/wireless/ath/ath10k/core.h
+> @@ -4,6 +4,7 @@
+>   * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+>   * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+>   * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserv=
+ed.
+> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+>   */
+>
+>  #ifndef _CORE_H_
+> @@ -87,6 +88,8 @@
+>                                   IEEE80211_IFACE_SKIP_SDATA_NOT_IN_DRIVE=
+R)
+>  #define ATH10K_ITER_RESUME_FLAGS (IEEE80211_IFACE_ITER_RESUME_ALL |\
+>                                   IEEE80211_IFACE_SKIP_SDATA_NOT_IN_DRIVE=
+R)
+> +#define ATH10K_RECOVERY_TIMEOUT_HZ                     (5 * HZ)
+> +#define ATH10K_RECOVERY_MAX_FAIL_COUNT                 4
+>
+>  struct ath10k;
+>
+> @@ -865,9 +868,6 @@ enum ath10k_dev_flags {
+>         /* Per Station statistics service */
+>         ATH10K_FLAG_PEER_STATS,
+>
+> -       /* Indicates that ath10k device is during recovery process and no=
+t complete */
+> -       ATH10K_FLAG_RESTARTING,
+> -
+>         /* protected by conf_mutex */
+>         ATH10K_FLAG_NAPI_ENABLED,
+>  };
+> @@ -1211,6 +1211,11 @@ struct ath10k {
+>         struct work_struct bundle_tx_work;
+>         struct work_struct tx_complete_work;
+>
+> +       atomic_t pending_recovery;
+> +       u8 recovery_count;
+
+No reason to be a u8 IMO, use unsigned int.
+
+> +       /* continuous recovery fail count */
+> +       atomic_t fail_cont_count;
+> +
 
