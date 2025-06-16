@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-24123-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24124-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B770EADA7D2
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 07:50:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B459ADA7FE
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 08:11:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67D8216BB1F
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 05:50:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4D5116D95E
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 06:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45CE7262B;
-	Mon, 16 Jun 2025 05:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6211D1C2335;
+	Mon, 16 Jun 2025 06:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="wyDsnzJ+"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="rOkLj5Qo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15362E11CF
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Jun 2025 05:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FB2175A5
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Jun 2025 06:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750052999; cv=none; b=QOlxiRzjCjN6DfcweAFu0DhpSjmosGq2X4pbMgaPc2p2YkmrOPlI7+e8/nnOgNbrSoeqaUbbG1D9QrdKvFVVn9sgycLCallKjRdqHzjbkTK+RPobtxq8esPjSFuKSEj+jdNH29SrIoEwVE+EefonbJl2LR8zvlaKaont73ZN0og=
+	t=1750054271; cv=none; b=mqezdHR+EbZr8t8Oxnpg7JAgPOGDnunfeioLJg70YrZOhvgvuQHSYnUebIgQZ6xixO68ddRzUYfafNwuUGldSU5CUW70/obIyrKVR1t91I6gyqRAB0I6kkphAVXxrPDBt0Zp8LY1s2n2cJ8JyQs2/q+42Upp+T1g1pIr9T03VyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750052999; c=relaxed/simple;
-	bh=/jZK1I9QaTvg3V4BrWU9X9E6Rj/MMYH4v9S/oTJcV9U=;
+	s=arc-20240116; t=1750054271; c=relaxed/simple;
+	bh=JDofK++Wb8ndDXoJWpVmZI3L1fpyfNeOw1aLefkGM+Y=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=cILJIOOVF4dzrkyKNpOAXHo7rY+J4ZbaKT6bX6g5cLjilYKQB09eSNoajXROIYheBK1PbMYEKJKEqutgcR/QSf9mNDe4CdFLV62UDKHjcxMHGtqYpPJG9WGpXS70KNDe3u+QrR/QFCycG+Nypu1lSOBDPF3f2eX6jAkeY/fTNLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=wyDsnzJ+; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:Message-ID:Date; b=Z2YU9Rm3iiDRK/BBLoGGiq9V1UC8Nj2yVyEFRFfCCIIWRYAE6JMMk1pmKdx8o20YtiI1lWfg4odppePHkhpmcsXrrIzpxFbTjD4sjKktYxqNxPUQ0hQ9+vMP/6mod6/R9ejlduNAbDwZchvayA17VCtDj3EyC4VtfIs1SJHXUYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=rOkLj5Qo; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55G5nqJqB4157267, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55G6B5PP04181935, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1750052992; bh=VIB0S1CTrivlsMOXq6J7/qzQuaTn9BJNeTQBEqgNtoM=;
+	t=1750054265; bh=reDuHhP11JkKly7Xyz8gMqytjSZOAOx3FPqp9X0+O6c=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
 	 Content-Type:Message-ID:Date;
-	b=wyDsnzJ+YnQcof51PSz8w6rdPYG0fKaZCa1RWDsXiEZQEGchtoWp98ZbOf0AtIYO+
-	 yHtWgw48jTdpJE4s9L+9ZZlprWNVfhymRxv997HsHig3flsJgAkp1m0pp4yn6He0J9
-	 AS+MeNs/3iW65XOs8nPUtEfsE6VyP7mUpOHa4k927zlxBkJGs2rqUedPi9tfmDOLXf
-	 qhss8rqsA5ZYk0buVYLox3kg2rW4tZ06+K9q8iNQaN9UZWSIdUkgZiAAPef7m0gani
-	 c45vQmVWqNkKuczt5tH1eJjroCafn/LftsHkMPsHQzKuNtWYw0e8YRMop8hohU6mt4
-	 xwh8IuqeYW/7g==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55G5nqJqB4157267
+	b=rOkLj5Qo/NflZNE3lP19x4t2eKa4+b08I0EMeV38VIqdtInjXudN1UUwB3REwFrth
+	 NmwrSH6XganU8j3X3z5gX9M+QKYurbmVA6QnEcXEuu0yStSalOb1GOY1G8BCXDjcIS
+	 Tt/p3TT3wut9/VCvOdPMbFmITX75z99Izd5gUWkw/oQ81twilR00+t9um6n9Ym/dll
+	 FZJSZUJOW/x958Qk95hzpUMDmfXAarS76xX2R8KjWgQfeD6Ghf7BAOJQvFP7NP7Af8
+	 dagrhoW/H/2wl9o6rUvpAgezMxdm/xijV9S2a9k0EAyLl/xXDwHaV8IJry/IVQVzKp
+	 ZrwEfEiKU7YPQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55G6B5PP04181935
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Jun 2025 13:49:52 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Jun 2025 14:11:05 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 16 Jun 2025 13:48:12 +0800
+ 15.1.2507.39; Mon, 16 Jun 2025 14:09:11 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 16 Jun
- 2025 13:48:12 +0800
+ 2025 14:09:10 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-CC: <gary.chang@realtek.com>, <kevin_yang@realtek.com>
-Subject: Re: [PATCH rtw-next 01/12] wifi: rtw89: extend HW scan of WiFi 6 chips for extra OP chan when concurrency
-In-Reply-To: <20250610130034.14692-2-pkshih@realtek.com>
-References: <20250610130034.14692-1-pkshih@realtek.com> <20250610130034.14692-2-pkshih@realtek.com>
+CC: <ku920601@realtek.com>, <kevin_yang@realtek.com>
+Subject: Re: [PATCH rtw-next v2 01/10] wifi: rtw89: introduce rtw89_query_mr_chanctx_info() for multi-role chanctx info
+In-Reply-To: <20250611035523.36432-2-pkshih@realtek.com>
+References: <20250611035523.36432-1-pkshih@realtek.com> <20250611035523.36432-2-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Message-ID: <928d7eab-03e9-4ba9-9790-c04a3a310849@RTEXMBS04.realtek.com.tw>
-Date: Mon, 16 Jun 2025 13:48:12 +0800
+Message-ID: <312d8621-3902-4e05-8793-8d43fe7983a4@RTEXMBS04.realtek.com.tw>
+Date: Mon, 16 Jun 2025 14:09:10 +0800
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
@@ -76,33 +76,28 @@ Ping-Ke Shih <pkshih@realtek.com> wrote:
 
 > From: Zong-Zhe Yang <kevin_yang@realtek.com>
 > 
-> HW scan flow has considered the timing when to get back op for the scanning
-> interface. But, when concurrency, there are two interfaces with connection.
-> The OP channel of another one was not back originally. It then easily lead
-> to connection loss when scanning during concurrency. So, HW scan flow is
-> extended to deal with second OP channel. And, H2C command is also extended
-> to fill second MAC ID.
-> 
-> The changes mentioned above are done for WiFi 6 chips first. HW scan has
-> different handling architectures including FW and driver on WiFi 7 chips.
+> Add Wi-Fi 7 MLO related multi-role (MR) chanctx descriptors and query
+> function. They are designed for other components, e.g. coex, which are
+> interested in the following info.
+>  * whether a MLD exists and how many active link
+>  * the number of AP mode and station mode respectively
+>  * how many chanctx and the number of 2/5/6 GHz respectively
 > 
 > Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-12 patch(es) applied to rtw-next branch of rtw.git, thanks.
+10 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-dbaf5c3aa952 wifi: rtw89: extend HW scan of WiFi 6 chips for extra OP chan when concurrency
-519defe4e8c8 wifi: rtw89: mcc: update format of RF notify MCC H2C command
-f70fe6eab088 wifi: rtw89: mcc: correct frequency when MCC
-95ee7464d374 wifi: rtw89: mcc: adjust beacon filter when MCC and detect connection
-182c7ff8b87e wifi: rtw89: mcc: stop TX during MCC prepare
-47a498b84f01 wifi: rtw89: TX nulldata 0 after scan complete
-62784eae8784 wifi: rtw89: mcc: adjust TX nulldata early time from 3ms to 7ms
-8bb1c30769b2 wifi: rtw89: mcc: enlarge scan time of GC when GO in MCC
-12af7fcea837 wifi: rtw89: mcc: clear normal flow NoA when MCC start
-b3cf6f392dc9 wifi: rtw89: mcc: use anchor pattern when bcn offset less than min of tob
-b470b8951983 wifi: rtw89: mcc: enlarge TX retry count when GC auth
-3db8563bac6c wifi: rtw89: scan abort when assign/unassign_vif
+cbaf1110af41 wifi: rtw89: introduce rtw89_query_mr_chanctx_info() for multi-role chanctx info
+1625d70f523b wifi: rtw89: coex: RTL8922A add Wi-Fi firmware support for v0.35.63.0
+ccd57356f311 wifi: rtw89: coex: Implement Wi-Fi MLO related logic
+26c62dca8243 wifi: rtw89: coex: Update Wi-Fi status logic for WiFi 7
+fac16e4147a2 wifi: rtw89: coex: refine debug log with format version and readable string
+825f5514127a wifi: rtw89: coex: Add H2C command to collect driver outsource information to firmware
+1683ae3e0069 wifi: rtw89: coex: Update Pre-AGC logic for WiFi 7
+4cb9092289ec wifi: rtw89: coex: Update BTG control for WiFi 7
+7d1b3c22fe0f wifi: rtw89: coex: Update hardware PTA resource binding logic
+0bc2aef36949 wifi: rtw89: coex: Add PTA grant signal setting offload to firmware feature
 
 ---
 https://github.com/pkshih/rtw.git
