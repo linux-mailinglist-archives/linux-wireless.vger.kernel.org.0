@@ -1,114 +1,98 @@
-Return-Path: <linux-wireless+bounces-24151-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24152-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33AF6ADB054
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 14:36:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC9BADB262
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 15:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76CF818890E7
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 12:37:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3CB23B9097
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 13:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D42826C3B7;
-	Mon, 16 Jun 2025 12:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31AD2877E9;
+	Mon, 16 Jun 2025 13:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b="GnMEsn3R"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="u5dgqib+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361582E426D;
-	Mon, 16 Jun 2025 12:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427F32877C1
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Jun 2025 13:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750077410; cv=none; b=DYde2hnoVBeazrfHg6nq5d6kS3QQ3RyHuIQ4nolcxjQrHjhMO8CZ5n8GsN+m1tpImgklWi/tW0Ug4o7zfWn/AyKCcoV0TEwobIwYlflcZMbqL5yniFKhmEoUombRT0kC+7fzajEmBpSroRCI1I825BIDPiD1sw3bSP9INl+TBts=
+	t=1750081251; cv=none; b=IeXXxisTnHwlvXVa/7p1PXy3KxdmBOU6IUt/iB6ewhm30TB3IpYHvJQ1kOGqHJPTMTS0kSt720tmRx8PZkvu6IOh/w4hrkmKU09GOsAvvQW5GGPtQsv+64hT4a2MUxmWl4D5DqFtC7zNZKXNjnRu3V0PKPynWYGcpD3IcHjWmN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750077410; c=relaxed/simple;
-	bh=RQ4PNSd4uDAn/WGwFB8brsOBgHiaDMNm/eRLvym1q/Y=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jdWrc5kJZ5LoBXore8TaKi9AuLsXsYaDyji3/1nSPfbnQOTX/n0JxVpfvmuTwpwwzn6nC2SnYKatGvWOfkdaoyPeKwsnJ4CQlPCDLweW+/vuz0ARfZk1PHcSmbUD3jlwznlj9bBE3HNn+sZe3ugfBOLFw+gvNYSFJoBiWTs0iS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b=GnMEsn3R; arc=none smtp.client-ip=91.199.251.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
-DKIM-Signature: v=1; a=rsa-sha256; d=aladdin.ru; s=mail; c=simple/simple;
-	t=1750077388; h=from:subject:to:date:message-id;
-	bh=RQ4PNSd4uDAn/WGwFB8brsOBgHiaDMNm/eRLvym1q/Y=;
-	b=GnMEsn3RqPf4KGphB5avAZhyFF8+XDeC4qM5+KviNUKTl6zVD6V6QeO9/KyPOajMoQ6qJAP3oNq
-	BhBWzdb1H0Ur2fNjC6eMhu54YLCo0RT1mTuxFJ2CSCpO/2btDprJiyGwd3H18i7AuZL0aD4qoJt8g
-	f+BHpWsonIvlrzTAdnbKGB26FSn0JHFSfHXmb/yxjbRUk+j2YXDbXobb+BbGnIWkQ+n//STHUXlDA
-	SgtLsY5Ydgqqk0mRakGzjDEf7EMx0xyEAabOil9xwWd5Y9riePr5nZIBmlT0URxoYmPZ41tD7gE9I
-	x/vE6iYYDlZd0tDNIebyAql5nJPkr4vVoKjQ==
-Date: Mon, 16 Jun 2025 15:36:28 +0300
-From: Daniil Dulov <d.dulov@aladdin.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: Kees Cook <kees@kernel.org>, Emmanuel Grumbach
-	<emmanuel.grumbach@intel.com>, Miri Korenblit
-	<miriam.rachel.korenblit@intel.com>, "John W. Linville"
-	<linville@tuxdriver.com>, Daniel Drake <dsd@gentoo.org>,
-	<linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>
-Subject: Re: [PATCH] wifi: zd1211rw: Fix potential data race in
- zd_mac_tx_to_dev()
-Message-ID: <20250616153628.4706f048@ubuntu>
-In-Reply-To: <13332646e4c8b028504f6a7ec4a2aa9530c519f1.camel@sipsolutions.net>
-References: <20250604101356.6292-1-d.dulov@aladdin.ru>
-	<13332646e4c8b028504f6a7ec4a2aa9530c519f1.camel@sipsolutions.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1750081251; c=relaxed/simple;
+	bh=MQaPxb4rT52JnfnezRz1PXLmCmriu5HydUgDOUCDMew=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YBHQnmNKMH64sEzbKhMtHUh+g9mSm6W9SQNeVDCoduMWkqaNhAa/N1rD4cXPOLjmQoWrlLlNkqQoMHG08YteAiG5bnpU6LVLNyf7TuaC/xPwxFH4YkGyGrXiBvWiHQRmcMsYs5z6HTqkNbiLTENdM+GMpazFzhEEe+qTB7hO6i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=u5dgqib+; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=TjzdQoh1UlsfOQqLoIioIvU68pGG8nIfDN3X8weSAro=; t=1750081250; x=1751290850; 
+	b=u5dgqib+5XYcIGCLRN6rIhmfQoHlQ30eJLyLAz/59GoE+ExXVP0zHvV+NYmIB4jzA6rGcvEHA2l
+	42aBzMAIl9upI02Boq+1tgfLWX/yxleRIqkkP+s/FAil+nf61G7cnCUMUsb3eRCvlf77tauJRxp8U
+	qiBQm2xzX2GMFmllYceZ0u7aCE7rfJrRtbTc7hFsfScO2TcOr+wd/vO4AQQWhvl0/ghxYCETCR4WE
+	GUGtRFjV2OvSeWP4OEj1kORJgV6UYyZB2rJj2QY3lwRaB0yVCtKoryNT3weuvZQigFcl7ycJXaGTj
+	+ZDz4DCVTQ/fKMQ+afhcEzN+umwRtp+m+8+Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uRA4t-0000000CKnX-0D9z;
+	Mon, 16 Jun 2025 15:40:47 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
+Subject: [PATCH] wifi: mac80211: drop invalid source address OCB frames
+Date: Mon, 16 Jun 2025 15:40:40 +0200
+Message-ID: <20250616154041.f0a3109dfa90.I47444d63c72a0bd58d2e2b67bb99e1fea37eec6f@changeid>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: EXCH-2016-01.aladdin.ru (192.168.1.101) To
- EXCH-2016-01.aladdin.ru (192.168.1.101)
+Content-Transfer-Encoding: 8bit
 
-On Wed, 11 Jun 2025 11:35:18 +0200
-Johannes Berg <johannes@sipsolutions.net> wrote:
+From: Johannes Berg <johannes.berg@intel.com>
 
-> Hi,
-> 
+In OCB, don't accept frames from invalid source addresses
+(and in particular don't try to create stations for them),
+drop the frames instead.
 
-Hello,
+Reported-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/6788d2d9.050a0220.20d369.0028.GAE@google.com/
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+#syz test
+---
+ net/mac80211/rx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thank you for the review and sorry for such a late response.
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 09beb65d6108..fe53c664e7c2 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4432,6 +4432,10 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
+ 		if (!multicast &&
+ 		    !ether_addr_equal(sdata->dev->dev_addr, hdr->addr1))
+ 			return false;
++		/* reject invalid/our STA address */
++		if (!ether_addr_valid(hdr->addr2) ||
++		    ether_addr_equal(sdata->dev->dev_addr, hdr->addr2))
++			return false;
+ 		if (!rx->sta) {
+ 			int rate_idx;
+ 			if (status->encoding != RX_ENC_LEGACY)
+-- 
+2.49.0
 
-> So ... I have no idea why you're CC'ing all kinds of people who never
-> had anything to do with this driver, or haven't worked on WiFi in
-> like a decade or so ... Please don't. Even I should've been CC'ed
-> with a different address, at most.
->
-> I also have no idea who's maintaining this driver now though, if
-> anyone. I have hardware if someone wants it ;-)
->
-
-Also, sorry for the mess with the CC list. The driver is marked as
-"Orphaned" now and this is the first time I am trying to send a patch
-for an orphaned driver. MAINTAINERS file only gives the Wireless
-mailing list and the rest of CC list was generated by get_maintainer.pl
-script.
-
-I could not find any relevant information on how to send patches for
-orphaned drivers in kernel docs. 
-
-Can you, please, give me some advice on a process of submitting patches
-to orphaned drivers or, if there is any relevant documentation on the
-topic, can you share a link?
-
-> > In order to avoid potential data races and leading dereference of a
-> > NULL pointer, acquire the queue lock before any work with the queue
-> > is done and replace all skb_* calls with their lockless version.  
-> 
-> You should explain why the locking changes are OK.
-> 
-
-Ok, I'll improve the patch description, thank you!
-
-> johannes
-
-Kind regards,
-Daniil Dulov
 
