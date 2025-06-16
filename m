@@ -1,95 +1,114 @@
-Return-Path: <linux-wireless+bounces-24150-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24151-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916FBADAF10
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 13:49:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33AF6ADB054
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 14:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEAF9188C272
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 11:49:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76CF818890E7
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 12:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57882BD58C;
-	Mon, 16 Jun 2025 11:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D42826C3B7;
+	Mon, 16 Jun 2025 12:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="GUD6fZkr"
+	dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b="GnMEsn3R"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254412C08A7
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Jun 2025 11:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361582E426D;
+	Mon, 16 Jun 2025 12:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750074549; cv=none; b=X1AuW3lW4mnHxANqpRV7DmQVxhxhBMUWCHWGuNumAU588zR1BlPHvAmcoxwzUSLxrZPT/2l5f/6p7/Ami7B0+JLmSRu+3FDglXCIeD3PIyY5WnjE1Ig6Q/dMDEzv+FVK56L/K2A8aZS1zWEeKkpenFw/UtpSLzQmE3JMjCLW2Os=
+	t=1750077410; cv=none; b=DYde2hnoVBeazrfHg6nq5d6kS3QQ3RyHuIQ4nolcxjQrHjhMO8CZ5n8GsN+m1tpImgklWi/tW0Ug4o7zfWn/AyKCcoV0TEwobIwYlflcZMbqL5yniFKhmEoUombRT0kC+7fzajEmBpSroRCI1I825BIDPiD1sw3bSP9INl+TBts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750074549; c=relaxed/simple;
-	bh=zAKZcmxw1OdAIJn2ZgJNzXxNXbf2IJxJ003EAATgiGk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FKWPvmpbikd+LSSfezevbgoOSJEKXwr2IaHqydRbRgjLr4yQlxbloADSUPMFOkzyoXZKublEPd3P4zPg9iADkrBWTI31OpqwOQ9knFZw34upKvvKp4WtWAxuXDOk1gDbaOoWVrHdNgk9yTrdWfghp+XexZNd/Wc2gIJkucIPnG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=GUD6fZkr; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=Yk2vEM6Qic0O2p0bIcEeqegf+DC6AEZ0fO4OH1S4tgc=; t=1750074548; x=1751284148; 
-	b=GUD6fZkrs2uLP6V4LUZRmD5rxJDSxKSbTXh8WyqGhupIbkOMHBkx61xh08c7iMz0EFUUJzFOTEW
-	0a3Bsc9jIR/buP9Oip7fzZSDhDWB9xBQQ4ezC5RttudabEsFEH5GspyW25Gve0kUKzsKm51X33JYe
-	jgb5Ckwl/2m1v99TF4Dm0jFLNFxRzqRNDIVka7AzcrZkjL6/HoelIfd0OOESHmeUmCPshYgf3cH8D
-	gNHkofDuLgLoTnLY+1lUmZicFjBYSmC9ERu30yiJaC9N3czo2AGS1o5DsHeEtuQPmG2oI9uVpHR94
-	RhLXHt/7jf9HaEYJSD5gjoi0YfeT5Cuei7lA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uR8Kn-0000000CDKZ-0bIe;
-	Mon, 16 Jun 2025 13:49:05 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Woody Suwalski <terraluna977@gmail.com>
-Subject: [PATCH iwlwifi-fixes] wifi: iwlwifi: dvm: restore n_no_reclaim_cmds setting
-Date: Mon, 16 Jun 2025 13:48:36 +0200
-Message-ID: <20250616134902.222342908ca4.I47a551c86cbc0e9de4f980ca2fd0d67bf4052e50@changeid>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1750077410; c=relaxed/simple;
+	bh=RQ4PNSd4uDAn/WGwFB8brsOBgHiaDMNm/eRLvym1q/Y=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jdWrc5kJZ5LoBXore8TaKi9AuLsXsYaDyji3/1nSPfbnQOTX/n0JxVpfvmuTwpwwzn6nC2SnYKatGvWOfkdaoyPeKwsnJ4CQlPCDLweW+/vuz0ARfZk1PHcSmbUD3jlwznlj9bBE3HNn+sZe3ugfBOLFw+gvNYSFJoBiWTs0iS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b=GnMEsn3R; arc=none smtp.client-ip=91.199.251.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
+DKIM-Signature: v=1; a=rsa-sha256; d=aladdin.ru; s=mail; c=simple/simple;
+	t=1750077388; h=from:subject:to:date:message-id;
+	bh=RQ4PNSd4uDAn/WGwFB8brsOBgHiaDMNm/eRLvym1q/Y=;
+	b=GnMEsn3RqPf4KGphB5avAZhyFF8+XDeC4qM5+KviNUKTl6zVD6V6QeO9/KyPOajMoQ6qJAP3oNq
+	BhBWzdb1H0Ur2fNjC6eMhu54YLCo0RT1mTuxFJ2CSCpO/2btDprJiyGwd3H18i7AuZL0aD4qoJt8g
+	f+BHpWsonIvlrzTAdnbKGB26FSn0JHFSfHXmb/yxjbRUk+j2YXDbXobb+BbGnIWkQ+n//STHUXlDA
+	SgtLsY5Ydgqqk0mRakGzjDEf7EMx0xyEAabOil9xwWd5Y9riePr5nZIBmlT0URxoYmPZ41tD7gE9I
+	x/vE6iYYDlZd0tDNIebyAql5nJPkr4vVoKjQ==
+Date: Mon, 16 Jun 2025 15:36:28 +0300
+From: Daniil Dulov <d.dulov@aladdin.ru>
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: Kees Cook <kees@kernel.org>, Emmanuel Grumbach
+	<emmanuel.grumbach@intel.com>, Miri Korenblit
+	<miriam.rachel.korenblit@intel.com>, "John W. Linville"
+	<linville@tuxdriver.com>, Daniel Drake <dsd@gentoo.org>,
+	<linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>
+Subject: Re: [PATCH] wifi: zd1211rw: Fix potential data race in
+ zd_mac_tx_to_dev()
+Message-ID: <20250616153628.4706f048@ubuntu>
+In-Reply-To: <13332646e4c8b028504f6a7ec4a2aa9530c519f1.camel@sipsolutions.net>
+References: <20250604101356.6292-1-d.dulov@aladdin.ru>
+	<13332646e4c8b028504f6a7ec4a2aa9530c519f1.camel@sipsolutions.net>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EXCH-2016-01.aladdin.ru (192.168.1.101) To
+ EXCH-2016-01.aladdin.ru (192.168.1.101)
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Wed, 11 Jun 2025 11:35:18 +0200
+Johannes Berg <johannes@sipsolutions.net> wrote:
 
-Apparently I accidentally removed this setting in my transport
-configuration rework, leading to an endless stream of warnings
-from the PCIe code when relevant notifications are received by
-the driver from firmware. Restore it.
+> Hi,
+> 
 
-Reported-by: Woody Suwalski <terraluna977@gmail.com>
-Closes: https://lore.kernel.org/r/e8c45d32-6129-8a5e-af80-ccc42aaf200b@gmail.com/
-Fixes: 08e77d5edf70 ("wifi: iwlwifi: rework transport configuration")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/dvm/main.c | 1 +
- 1 file changed, 1 insertion(+)
+Hello,
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-index dbfd45948e8b..66211426aa3a 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-@@ -1316,6 +1316,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 		     sizeof(trans->conf.no_reclaim_cmds));
- 	memcpy(trans->conf.no_reclaim_cmds, no_reclaim_cmds,
- 	       sizeof(no_reclaim_cmds));
-+	trans->conf.n_no_reclaim_cmds = ARRAY_SIZE(no_reclaim_cmds);
- 
- 	switch (iwlwifi_mod_params.amsdu_size) {
- 	case IWL_AMSDU_DEF:
--- 
-2.49.0
+Thank you for the review and sorry for such a late response.
 
+> So ... I have no idea why you're CC'ing all kinds of people who never
+> had anything to do with this driver, or haven't worked on WiFi in
+> like a decade or so ... Please don't. Even I should've been CC'ed
+> with a different address, at most.
+>
+> I also have no idea who's maintaining this driver now though, if
+> anyone. I have hardware if someone wants it ;-)
+>
+
+Also, sorry for the mess with the CC list. The driver is marked as
+"Orphaned" now and this is the first time I am trying to send a patch
+for an orphaned driver. MAINTAINERS file only gives the Wireless
+mailing list and the rest of CC list was generated by get_maintainer.pl
+script.
+
+I could not find any relevant information on how to send patches for
+orphaned drivers in kernel docs. 
+
+Can you, please, give me some advice on a process of submitting patches
+to orphaned drivers or, if there is any relevant documentation on the
+topic, can you share a link?
+
+> > In order to avoid potential data races and leading dereference of a
+> > NULL pointer, acquire the queue lock before any work with the queue
+> > is done and replace all skb_* calls with their lockless version.  
+> 
+> You should explain why the locking changes are OK.
+> 
+
+Ok, I'll improve the patch description, thank you!
+
+> johannes
+
+Kind regards,
+Daniil Dulov
 
