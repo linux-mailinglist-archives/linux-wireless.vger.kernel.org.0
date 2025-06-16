@@ -1,115 +1,93 @@
-Return-Path: <linux-wireless+bounces-24141-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24148-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B014ADAD09
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 12:07:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC19ADADEC
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 13:01:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8665C3A8369
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 10:07:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A5B71701AA
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Jun 2025 11:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D34A271A6D;
-	Mon, 16 Jun 2025 10:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="S50GKCaC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E269726D4C7;
+	Mon, 16 Jun 2025 11:01:39 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+Received: from RTEXH36506.realtek.com.tw (unknown [122.146.120.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3970F27EFF6;
-	Mon, 16 Jun 2025 10:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E10B1F130A
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Jun 2025 11:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=122.146.120.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750068473; cv=none; b=hZrOPt7DdbvuTDUsXLYR5eroEnJrVBlHsXJ04MQXcT8YlN03K/1xSEauNu4ureJRD327fjQErHWLC7w5svCryP5+Ln0l0nXcuezuObmHGCYt09jbu+VKEVZe96MPt1qQ6YARoZ7LIaqKuQAQAgDdDZ/aiHuuUHb/89o4KpajyXI=
+	t=1750071699; cv=none; b=YSOkRKDVesFcHwh/T7nAynw12mipaZ4i4jvbDzBXe3tmbiskrxYseCHCPW7GCARluUd3YIF6EI3BAzwpdkGrF0Px7x5S3D64HjtmS6KEJHRJM4tw+7hL0MH7ys3MG5WznYAfTukKCqxcaNRRtvfLgI26g5EXcVWqRUufQBs84ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750068473; c=relaxed/simple;
-	bh=3+NUWscYQFNZqNiDoVLK4YsZWnWr4faF6U442YOervk=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
-	 In-Reply-To:Content-Type; b=TcBYkuhpLirAARI7+B8AcQ2CHyoPB02rLc7KDFQgRAPm0z+3fock3NIEVWUg3DB65fr7Xw5Nbbw7W/i9Z2fH3CiNMr0VqWhLtwx3JlY8YE7jgc2RDlmzRZKfZYuQ6/VnYuA7DG4D5TnFEFmybJbIutYcqCMnNCLablfNBeIcTzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=S50GKCaC; arc=none smtp.client-ip=178.154.239.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:1984:0:640:94c0:0])
-	by forward500a.mail.yandex.net (Yandex) with ESMTPS id 7DEBF611DA;
-	Mon, 16 Jun 2025 13:01:33 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id W1IY5V13IGk0-thMQg0Br;
-	Mon, 16 Jun 2025 13:01:33 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1750068093; bh=3+NUWscYQFNZqNiDoVLK4YsZWnWr4faF6U442YOervk=;
-	h=In-Reply-To:Subject:To:From:Cc:Date:References:Message-ID;
-	b=S50GKCaCtgSQLOoCOW0vJifev1JEjnz3plRXmKeGvpVTTJLFJalKqO9no6fMjVTdT
-	 5lqvCBcPqDDm1GhesQ6btyXziElV9gKhH0hXZJTAEgM1LMKZ9Tyw/QJTnxz1I1Ddw+
-	 FKsqwvQkFfjZp8VBL4M+FNZYAn3jvc3PXvv9hX14=
-Authentication-Results: mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <70de6013-a5db-45c6-8288-e7b211a55a1e@yandex.ru>
-Date: Mon, 16 Jun 2025 13:01:32 +0300
+	s=arc-20240116; t=1750071699; c=relaxed/simple;
+	bh=7a1NpH7xFF0Ziy64QlUa3xd6Szov8JD8mAVLHdpTLeM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PYKLoHTamtJrEMly6xbf3ZH/amkUVZvv9MOJ7niQXCbeIfuZA+aAGRpcy7WPqKNNh6qY8sT9616cVyRyAimDIxMGzeKXobfYz3GESF0YuyZp2htaUCcKwq9ciHGY0HShS6+VcQr3cV8hJGgamDjwv73rE+0vbMp1ZTdWauJPAL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=122.146.120.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 16 Jun 2025 17:03:48 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 16 Jun
+ 2025 17:03:48 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <ku920601@realtek.com>
+Subject: [PATCH rtw-next 10/11] wifi: rtw89: coex: RTL8852B coexistence Wi-Fi firmware support for v0.29.122.0
+Date: Mon, 16 Jun 2025 17:02:51 +0800
+Message-ID: <20250616090252.51098-11-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250616090252.51098-1-pkshih@realtek.com>
+References: <20250616090252.51098-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-MW
-To: Fedor Pchelkin <pchelkin@ispras.ru>,
- Christian Lamparter <chunkeey@gmail.com>
-Cc: linux-wireless@vger.kernel.org,
- Christian Lamparter <chunkeey@googlemail.com>, linux-kernel@vger.kernel.org
-References: <3qom4fkg7kp4l3bcgrbivmm2yi2wqrmso7rb5qe3xffjj3k7hz@nc7gx4atzfyq>
-From: Dmitry Antipov <dmantipov@yandex.ru>
-Autocrypt: addr=dmantipov@yandex.ru; keydata=
- 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
- A/UwwXBRuvydGV0=
-Subject: Re: [PATCH] wifi: carl9170: do not ping device which has failed to
- load firmware
-In-Reply-To: <3qom4fkg7kp4l3bcgrbivmm2yi2wqrmso7rb5qe3xffjj3k7hz@nc7gx4atzfyq>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On 6/15/25 10:54 PM, Fedor Pchelkin wrote:
+From: Ching-Te Ku <ku920601@realtek.com>
 
-> So it looks like ar->registered being false here is a "correct" failure
-> condition, i.e. it can be expected when the certain phase of the driver
-> initialization fails and should be handled without any WARNs.
+Add format version of Wi-Fi firmware commands/events for firmware
+version v0.29.122.0.
 
-Looking through Documentation/process/coding-style.rst, it may be
-better to use pr_warn_once() instead; anyway I would prefer leave
-the final decision to the maintainer.
+Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/coex.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Dmitry
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+index f6b482b20dc7..9eecd8e6bfad 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.c
++++ b/drivers/net/wireless/realtek/rtw89/coex.c
+@@ -205,6 +205,14 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
+ 	 .fwevntrptl = 0, .fwc2hfunc = 1, .drvinfo_type = 0, .info_buf = 1280,
+ 	 .max_role_num = 5, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 7,
+ 	},
++	{RTL8852B, RTW89_FW_VER_CODE(0, 29, 122, 0),
++	 .fcxbtcrpt = 8, .fcxtdma = 7,    .fcxslots = 7, .fcxcysta = 7,
++	 .fcxstep = 7,   .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 7,
++	 .fcxbtver = 7,  .fcxbtscan = 7,  .fcxbtafh = 7, .fcxbtdevinfo = 7,
++	 .fwlrole = 7,   .frptmap = 3,    .fcxctrl = 7,  .fcxinit = 7,
++	 .fwevntrptl = 1, .fwc2hfunc = 2, .drvinfo_type = 1, .info_buf = 1800,
++	 .max_role_num = 6, .fcxosi = 0,  .fcxmlo = 0,   .bt_desired = 8,
++	},
+ 	{RTL8852B, RTW89_FW_VER_CODE(0, 29, 29, 0),
+ 	 .fcxbtcrpt = 105, .fcxtdma = 3,  .fcxslots = 1, .fcxcysta = 5,
+ 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
+-- 
+2.25.1
 
 
