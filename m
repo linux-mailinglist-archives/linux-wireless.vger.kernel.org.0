@@ -1,129 +1,237 @@
-Return-Path: <linux-wireless+bounces-24208-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24209-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DDEADC95F
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 13:31:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F15DBADCB07
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 14:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ECB13B4242
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 11:30:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B8F516FD8A
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 12:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95722DF3CB;
-	Tue, 17 Jun 2025 11:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3254022FF2D;
+	Tue, 17 Jun 2025 12:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RH0bVO9/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBFL6Kpl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511451EDA3C
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 11:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093812DE1E0;
+	Tue, 17 Jun 2025 12:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750159856; cv=none; b=B3Idy3qXU7EAv674K5q1gzUy0XY/5ClpSRn12sxHs2fnq7Q9WcBlHpbAOiRip+b1Q5SduZB58g17jabks/W1YzaU0Eti05RcYxMKVsF//7/6o625t25UlzRfu8HndcJMc3G5Vrya5qj+N2MVHH3iIxmjWIH4b6BK3clt8Gqw/cQ=
+	t=1750162940; cv=none; b=cAfQAHhJipQJY9chbm/cQAXjJuuT83hGaximl44M9PQ8zzG+R8uKj2d1SesAWw0vmgZBukfvfzRbFxs9Ju5TNwTIe1vzY3/KC0F4PUTy+hu7nWthW/12y/9gQ/xnswDT7lhMnBtUL7ruf7blVlJwxJ6sVa/LaEZRn9eQAwQsOmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750159856; c=relaxed/simple;
-	bh=bNlKTo7LWbYK7UlbTHftApANVR5DoTo5OzkT18J8z7A=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=PYM4fiAJWqWvR8Mxu7m4/FfBLYeT6MWOFBVOnDuu9d6sOqiYhibzBNmzacJC5dT7moRWD+cErRxOr6HJRHo+Ln0rj6ARXXsR/SPLRhOaC3J9SCQ/MxDarnsFmneoQmhfAgEi0yUj40YHFQVQ0+UFAOG2i5MmkAVzQVy2QCEtK1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RH0bVO9/; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6fac1c60e19so68539666d6.1
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 04:30:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750159854; x=1750764654; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
-         :message-id:from:references:cc:to:subject:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NJPaK+b3PlL6j4vF1vjvdiIRwvx5vJWQyOToTB+3tlg=;
-        b=RH0bVO9/WfMccHRISjABxNCsQqTZTzJoiJ+T7zwYn/te9s5oPqHxkFYU+4XA4rSMoE
-         n4Xj/DmoGKfsT518yJr0ZZXVGrLcSPfnue8LVB9bIQR1/tszJhugHcnQPEbIJLJEIUXT
-         HY3osIpJtqo7Pl+UcHxVZD0t/n2uBJCcRJ0/0ZfQCbvXV6f88HqazeSnxsR5pv8Ay8pX
-         XcyPTRfjILIoxWnepn+88idX7i3wsAOxReCNNUnLU3rVd5hQLxGoJZMRx24M6Acxv58d
-         KeRKvwiCppRbeZeN1ugCtyYc80NGKRbfVow2cCUPJb0JdrCqR6hv8YZx5coYJ6Dq6O2r
-         Jl4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750159854; x=1750764654;
-        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
-         :message-id:from:references:cc:to:subject:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=NJPaK+b3PlL6j4vF1vjvdiIRwvx5vJWQyOToTB+3tlg=;
-        b=MRSEt2B5o19Jm5UpeEn0ggem0tfbcmXqkSwnDZoCGlbWddM/CSW7cD3XajGh+ywBTv
-         EbIrFaQDlzRssmjtguVR1UEj/741N+y+zwpUlZvfbMIeq3w7UlJQRJPNksNahqYmh1S7
-         wBV4VMuj7v8rRvBZHd/dcNQYrlzUI5fHdTJ7zDkUQ//m2v7FeLIYfWvesCiDwbXCcYsw
-         G810QbwHs47MpWOajLQ6wZVwZ9TdwQNlo5XKmCJsX2woYeOQb4L+ZRK4DAwFFgcABsyl
-         VloGp2X74sJR6/jFyxUycCH3iuDeCBWxBTbo20kV2VFDEsHp37XgvAxrePXTM3uipVdO
-         Ekhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUkOru8ngDTAFr8Fq6jTx8wYjD7Jr9QQmfP5UKDqHzdNH1qZCOG2g5UIXlcFrUsE8tnrC4Uat8TQjUPhl7r7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4VX8M8zDvxqWtCk1UL+XKiL3sdhhERJ8TUzTew75IJ+VAvXfp
-	kJs34x3HjAdYxCz90TlcYnasbSF0zxwD3/FZEepyqrppXhU3a/A3TlY=
-X-Gm-Gg: ASbGncslQtC74tEnFBwt0wtLZ0VXyR1+ADQ/g/2sHPTSWUcepfIdwyyDnIxP8xG5lh1
-	X0nb4rb1DiL7VvEaWv+X4TU318f4inn6VGuL/evaET8ry3g6EJERhwn3QVKR7URBybL5JlU273L
-	Hf1V4sGI7HZrSdK6h1R0WqAcS7LIpaqPtT0bYrTrayaB0biQHjzdXE3RNlL8FF7+uCjYBZM3i3J
-	i0zDfqaoX55zhZoCVKjAGcMNLJWS4VbJHs16msrl/akQAUH9jvqj6P4iwO0dttBX5YDlCFzDg6O
-	2R5ZewUseN4gl4e4diDTyc0Y8XN8WU5wcZhJSWwSMFmonKV3B5qRXZAvx4rzhfgByrFeZbMJ/9d
-	CMbjXVOjE30WcXhHlS9dSj2SS4Q==
-X-Google-Smtp-Source: AGHT+IErsgkq5FfER0lPl0Olu8k8AJ6sQFroHTyRR/oGk+cfcpM5Bby+LyJ6mE7ty86J4OJ5I60Naw==
-X-Received: by 2002:a05:6214:5c88:b0:6fa:a4b7:c664 with SMTP id 6a1803df08f44-6fb5eaccc0dmr34189616d6.22.1750159854097;
-        Tue, 17 Jun 2025 04:30:54 -0700 (PDT)
-Received: from [120.7.1.23] (135-23-93-252.cpe.pppoe.ca. [135.23.93.252])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb35c4acb3sm61596666d6.86.2025.06.17.04.30.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Jun 2025 04:30:53 -0700 (PDT)
-Subject: Re: [PATCH iwlwifi-fixes] wifi: iwlwifi: dvm: restore
- n_no_reclaim_cmds setting
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-References: <20250616134902.222342908ca4.I47a551c86cbc0e9de4f980ca2fd0d67bf4052e50@changeid>
-From: Woody Suwalski <terraluna977@gmail.com>
-Message-ID: <9da7a402-bdbc-5585-0860-523b519d6b91@gmail.com>
-Date: Tue, 17 Jun 2025 07:30:59 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101
- Firefox/128.0 SeaMonkey/2.53.21
+	s=arc-20240116; t=1750162940; c=relaxed/simple;
+	bh=Rdc1gAnURumpTQ8uzxF5Gaj1pWDRUTDQlueSbbPsqp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NbU1JSASxeBMIb8m6PL7s5rto1j5kkgiV6qUQAUMNYNKoUle1M4uTa9Kr0voO6FK1uEH8J8BjaxoIvYAjP8qqOmfgCIFIWDOPR+y0VDCpE0dIGT9ylxryLteWmm/lXu2kzonHnrkFkU2AXi6xV0ujUyY2DX9UTTKxy22TM0VIEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBFL6Kpl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEC2C4CEEE;
+	Tue, 17 Jun 2025 12:22:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750162939;
+	bh=Rdc1gAnURumpTQ8uzxF5Gaj1pWDRUTDQlueSbbPsqp4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PBFL6Kpl7dNBO7U2OJl7gD0AtIiMNlNUo1ybwvABTdQDNtbD4l1NWCYEhE3n/Y3BS
+	 nvmJZSZx69tVeEtJmrAM8WaDypAOpArpsAuzIwj/luKV9Q8+/1+FBG0Lyhm2duGHft
+	 5T0cLP+4Q4tGrHN8yasrilPmOJ1PdLPCD5bXglRP3xD8SFtyvituepJqnDcCy2tgEj
+	 /wNo8VLbb9nrEIhsmKbKQVs2tKreDJWSPDF+6hgnXkFFLlstCbsY3CF1guJuAD9vFb
+	 FtsQ0s/IJnDBKIdihSDTgc81BwIXR5N3i/OrNhCk+0U8eNg1+4vnw4duIVqLu45XbL
+	 DbqIi9Z7K0lCA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Sebastian Gottschall <s.gottschall@dd-wrt.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.15 14/15] wil6210: fix support for sparrow chipsets
+Date: Tue, 17 Jun 2025 08:21:44 -0400
+Message-Id: <20250617122147.1968355-14-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250617122147.1968355-1-sashal@kernel.org>
+References: <20250617122147.1968355-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20250616134902.222342908ca4.I47a551c86cbc0e9de4f980ca2fd0d67bf4052e50@changeid>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.15.2
+Content-Transfer-Encoding: 8bit
 
-Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
->
-> Apparently I accidentally removed this setting in my transport
-> configuration rework, leading to an endless stream of warnings
-> from the PCIe code when relevant notifications are received by
-> the driver from firmware. Restore it.
->
-> Reported-by: Woody Suwalski <terraluna977@gmail.com>
-> Closes: https://lore.kernel.org/r/e8c45d32-6129-8a5e-af80-ccc42aaf200b@gmail.com/
-> Fixes: 08e77d5edf70 ("wifi: iwlwifi: rework transport configuration")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
->   drivers/net/wireless/intel/iwlwifi/dvm/main.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-> index dbfd45948e8b..66211426aa3a 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-> @@ -1316,6 +1316,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
->   		     sizeof(trans->conf.no_reclaim_cmds));
->   	memcpy(trans->conf.no_reclaim_cmds, no_reclaim_cmds,
->   	       sizeof(no_reclaim_cmds));
-> +	trans->conf.n_no_reclaim_cmds = ARRAY_SIZE(no_reclaim_cmds);
->   
->   	switch (iwlwifi_mod_params.amsdu_size) {
->   	case IWL_AMSDU_DEF:
+From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
 
-Thanks, it does fix the problem.
+[ Upstream commit 593963660919a97a4546acfd706dac93625724f5 ]
 
-Woody
+the wil6210 driver irq handling code is unconditionally writing
+edma irq registers which are supposed to be only used on Talyn chipsets.
+This however leade to a chipset hang on the older sparrow chipset
+generation and firmware will not even boot.
+Fix that by simply checking for edma support before handling these
+registers.
+
+Tested on Netgear R9000
+
+Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+Link: https://patch.msgid.link/20250304012131.25970-2-s.gottschall@dd-wrt.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+**YES**
+
+This commit should be backported to stable kernel trees. Here's the
+extensive explanation:
+
+## Analysis of the Commit
+
+### 1. **The Bug Being Fixed**
+The commit fixes a critical hardware compatibility issue where the
+wil6210 driver unconditionally writes to EDMA (Enhanced DMA) interrupt
+registers that only exist on Talyn chipsets. When running on older
+Sparrow chipsets (which don't have these registers), this causes:
+- Chipset hang
+- Firmware boot failure
+- Complete device malfunction
+
+### 2. **Code Changes Analysis**
+
+The commit adds conditional checks for `wil->use_enhanced_dma_hw` before
+accessing EDMA-specific registers:
+
+```c
+// In wil_mask_irq():
+- wil6210_mask_irq_tx_edma(wil);
++       if (wil->use_enhanced_dma_hw)
++               wil6210_mask_irq_tx_edma(wil);
+
+// In wil_unmask_irq():
+- wil_w(wil, RGF_DMA_EP_RX_ICR + offsetof(struct RGF_ICR, ICC),
+- WIL_ICR_ICC_VALUE);
++       if (wil->use_enhanced_dma_hw) {
++               wil_w(wil, RGF_DMA_EP_RX_ICR + offsetof(struct RGF_ICR,
+ICC),
++                     WIL_ICR_ICC_VALUE);
++       }
+
+// In wil6210_clear_irq():
+- wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_RX_ICR) +
+- offsetof(struct RGF_ICR, ICR));
++       if (wil->use_enhanced_dma_hw) {
++               wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_RX_ICR) +
++                           offsetof(struct RGF_ICR, ICR));
++       }
+```
+
+### 3. **Why This Qualifies for Stable Backport**
+
+This commit meets all the criteria for stable tree backporting:
+
+**a) Fixes a real bug affecting users:**
+- Users with Sparrow chipsets (like Netgear R9000) experience complete
+  device failure
+- The bug prevents the device from functioning at all (firmware won't
+  boot)
+- This is a regression that breaks existing hardware
+
+**b) Small and contained fix:**
+- The fix is minimal - just adding conditional checks
+- Changes are limited to interrupt handling functions
+- No architectural changes or new features added
+
+**c) Low risk of regression:**
+- The fix follows existing patterns in the code (other functions already
+  check `use_enhanced_dma_hw`)
+- Only affects behavior on non-EDMA hardware (Sparrow)
+- EDMA hardware behavior remains unchanged
+
+**d) Clear cause and effect:**
+- The problem is well-understood: accessing non-existent registers
+- The solution is straightforward: check hardware capability before
+  accessing EDMA registers
+- The fix has been tested on affected hardware (Netgear R9000)
+
+### 4. **Comparison with Similar Commits**
+
+Looking at the provided similar commits:
+- **Similar Commit #1** (Backported: YES) fixed a Talyn reset flow issue
+  - similar hardware-specific bug fix
+- This commit is even more critical as it fixes a complete device
+  failure rather than just a reset issue
+
+### 5. **Critical Nature of the Fix**
+
+This is not just a minor bug - it's a complete breakage of Sparrow
+hardware support. Without this fix:
+- Sparrow chipsets cannot function at all
+- Users with devices like Netgear R9000 have non-functional WiFi
+- This represents a regression in hardware support
+
+The fix is essential for maintaining hardware compatibility across
+different generations of the wil6210 chipset family.
+
+ drivers/net/wireless/ath/wil6210/interrupt.c | 26 ++++++++++++--------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/wil6210/interrupt.c b/drivers/net/wireless/ath/wil6210/interrupt.c
+index 67172385a5d66..89d4394cedcff 100644
+--- a/drivers/net/wireless/ath/wil6210/interrupt.c
++++ b/drivers/net/wireless/ath/wil6210/interrupt.c
+@@ -179,9 +179,11 @@ void wil_mask_irq(struct wil6210_priv *wil)
+ 	wil_dbg_irq(wil, "mask_irq\n");
+ 
+ 	wil6210_mask_irq_tx(wil);
+-	wil6210_mask_irq_tx_edma(wil);
++	if (wil->use_enhanced_dma_hw)
++		wil6210_mask_irq_tx_edma(wil);
+ 	wil6210_mask_irq_rx(wil);
+-	wil6210_mask_irq_rx_edma(wil);
++	if (wil->use_enhanced_dma_hw)
++		wil6210_mask_irq_rx_edma(wil);
+ 	wil6210_mask_irq_misc(wil, true);
+ 	wil6210_mask_irq_pseudo(wil);
+ }
+@@ -190,10 +192,12 @@ void wil_unmask_irq(struct wil6210_priv *wil)
+ {
+ 	wil_dbg_irq(wil, "unmask_irq\n");
+ 
+-	wil_w(wil, RGF_DMA_EP_RX_ICR + offsetof(struct RGF_ICR, ICC),
+-	      WIL_ICR_ICC_VALUE);
+-	wil_w(wil, RGF_DMA_EP_TX_ICR + offsetof(struct RGF_ICR, ICC),
+-	      WIL_ICR_ICC_VALUE);
++	if (wil->use_enhanced_dma_hw) {
++		wil_w(wil, RGF_DMA_EP_RX_ICR + offsetof(struct RGF_ICR, ICC),
++		      WIL_ICR_ICC_VALUE);
++		wil_w(wil, RGF_DMA_EP_TX_ICR + offsetof(struct RGF_ICR, ICC),
++		      WIL_ICR_ICC_VALUE);
++	}
+ 	wil_w(wil, RGF_DMA_EP_MISC_ICR + offsetof(struct RGF_ICR, ICC),
+ 	      WIL_ICR_ICC_MISC_VALUE);
+ 	wil_w(wil, RGF_INT_GEN_TX_ICR + offsetof(struct RGF_ICR, ICC),
+@@ -845,10 +849,12 @@ void wil6210_clear_irq(struct wil6210_priv *wil)
+ 		    offsetof(struct RGF_ICR, ICR));
+ 	wil_clear32(wil->csr + HOSTADDR(RGF_DMA_EP_TX_ICR) +
+ 		    offsetof(struct RGF_ICR, ICR));
+-	wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_RX_ICR) +
+-		    offsetof(struct RGF_ICR, ICR));
+-	wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_TX_ICR) +
+-		    offsetof(struct RGF_ICR, ICR));
++	if (wil->use_enhanced_dma_hw) {
++		wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_RX_ICR) +
++			    offsetof(struct RGF_ICR, ICR));
++		wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_TX_ICR) +
++			    offsetof(struct RGF_ICR, ICR));
++	}
+ 	wil_clear32(wil->csr + HOSTADDR(RGF_DMA_EP_MISC_ICR) +
+ 		    offsetof(struct RGF_ICR, ICR));
+ 	wmb(); /* make sure write completed */
+-- 
+2.39.5
 
 
