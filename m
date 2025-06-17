@@ -1,220 +1,369 @@
-Return-Path: <linux-wireless+bounces-24166-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24167-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9442DADBF35
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 04:32:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE23ADBFEC
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 05:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F7A5164F84
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 02:32:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E0FC3A8C7B
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 03:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6EF34A0C;
-	Tue, 17 Jun 2025 02:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A225B1EF39F;
+	Tue, 17 Jun 2025 03:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FO3C1lS8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9631171C9
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 02:32:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CBC1EA7CC
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 03:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750127554; cv=none; b=P96emMwJAKbuhKY5NkLZPChVtHSMNusT6cUwwGEDAN9c0fbs4GxV5eC7ORk/9vnRkwwiqZQDKHxYfX65Qgfaid0dFXlZ/cfGpDbUOxtkCQGYegdYxvHC77wLS0ZelWd9sIlKi6tfMXPaesKd0j9hjPdyzh7ngn92UIAIISxLJTo=
+	t=1750131369; cv=none; b=ZGW6eF22JDQI5+8TDEx+LKpIwk80HDzV8pPAKShGsbYyUC9yoPNQvlt+mQheapEplQQHtbO88VU5jXOxPlbr9R1PWMlHFnC+PVP6eCoYhwzc++6w0pGYtnLqUgBXwudtSn16F9iFssMcx8KoogGN9rvicE6R2xzoZp1RSo1EvWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750127554; c=relaxed/simple;
-	bh=h4q1rdV/jvVwTNYLtRk4eAkzcqF8Q9upnPzV7KCRXuM=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FcD590S0LRXAUlBK3BSNkHUq2eyy28bc2UJv9ebJ2ow6GoQTTnKfjrHHtPuiEapB03/66+JdPTn8KAaULjbBwpkUwHKnUXfZEwqXgxKX6sp7TwTpVxl4KMKqxxfFXectXUKUrlZg3lXw0B/w5NT2h6dcHjJJqEMMA5LJSaKobyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3ddafe52d04so140889075ab.1
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Jun 2025 19:32:29 -0700 (PDT)
+	s=arc-20240116; t=1750131369; c=relaxed/simple;
+	bh=dQxkobsAclMg4B6C3oDqN3OjfKg7051DNhwLh4ZsfOE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CJ/VzHGGBEKM6KkaERijVr3p4l6QzF5NU/ivm6bp1nz+INm/mpJT9x8ZVLGc7Nje/nTo58lzhQjff98b7CfQ5pBts9Ihkk+Ly2XnSFLtAr/xW13vwgPsZ04ip8+WxUNhy8eAxGO2pshL4a98mh2x0cJFlu2C/v+0RfZvGgNJxnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FO3C1lS8; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55GH8gub016060
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 03:36:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=SXaiysyC/M+/tDpGKqLEbi
+	nKnxqzYegzIqQucICqSuk=; b=FO3C1lS8x/gja3snDKyAey/S7EZk3Y4I7V3Qn8
+	SK7GcLHrkvVE9egepyeFKTRX7U4FIY7XVbYyDrKYMSxOYj+RPH0svVGFh+JyDOhe
+	wnG3q1Sy6lUkohWROBWrEErCC9KsEON7Qk+WIzD1SKJH6fEtKPWedPqHevc1ACdK
+	h16Jo/NSSQqgE4x8E83wYhbl/lSqHiQ4UqFHBEIzCPTBFfGRO6HlQFpSfwP1YuJC
+	yE52MgDZNJZQxrIX5q4pdbpV30wyRX/SIglt/FCXfmgNjM8Y1XirbLFTgVwlCEz0
+	X9Kj725JJgUtYKVm99tYo3/9BHIvOeQ9pO4zYZNtu52Ts/uw==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4791fsxm5q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 03:36:06 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-31218e2d5b0so8288053a91.2
+        for <linux-wireless@vger.kernel.org>; Mon, 16 Jun 2025 20:36:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750127549; x=1750732349;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2kFs6ehQrsbeV5OtP9QYHlGeA6LyGbaav1qAD3QYV/E=;
-        b=eDJfDPSeRTuYD/2AD4xk7zMtK22wsE7N1NDpyu6VyrvjvuT7s2g2AbOyYg0iUqw77U
-         wCp0UiHfxMUCHNVxoWpZaRIsLKUauhHVbEJeg/PhfQoo8UvNoafGH+6aVZmUqlnyzXqJ
-         RVR2JjJK76Z9/VMn6wEhOBgW9ynUJy+TboS1tkHFK+QXC5bc4xSyvSbyhGQHkd3qMRk0
-         CZuIk6Gp6RIW2PwEu82Tmp1hoRTBdjyYmeBiVOdIc2UdIQxlDnpYSoOTTtfn7cUrQk5V
-         RxUQ1dZJ8Iv2iS1qhQxh4hsJCY0f+YX+tpHNg0qJbzTke0XCoHfrQR41xH0Fb9TTaOQR
-         ILnA==
-X-Forwarded-Encrypted: i=1; AJvYcCXHwEMDdEwTcXohbKeD3hzkIuHewA611ElLIywOJOXD+cZQ4IkEu0lwWAPVLwzwvkVEMFBCyl+0QqFs8Vpnvg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLhZW1AJM2VBLAhG2s4CmNHZczsQ1TUcScIPwOiDBNXk9hQLRy
-	90/l8GMM76AGX//0VL3MVNI7Oo24qkTDvB3FWxXUr6Y/vcQq5nkmzLujtU+CO+wGtrIQn98fIIm
-	eNrKg48r72XlRF2nPBMknUj90ZW6Jqhf70E1MUN8r5Mzgbly2CQftADyc2gw=
-X-Google-Smtp-Source: AGHT+IGojPqlwd05Ofb94SwCCl6PaTM0bN7hniK2siRdvVj6Tbgu9X+chhmupx/zHOzGW4YUeA41zt3BbVmujP3nhoOv+1667f7c
+        d=1e100.net; s=20230601; t=1750131365; x=1750736165;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SXaiysyC/M+/tDpGKqLEbinKnxqzYegzIqQucICqSuk=;
+        b=tHMWIc/mOxRE2BK1FwLmG2tV9+71UdRJpkQ9MyMMP6EXtraJrbj02LS4o9c5ByaluL
+         eaRmiOzpFHcEvtfWakEGSZYfReVJu17Ze3LN+xuhgRWgpM8JJ36q5vxOPN4F3qWBM+xe
+         me3xUkfzZ3F0Qhyo0ThlZeEeXpcmhiPazFR+kGV7tqTsq39OYkydSnSd6P9D0J3ZnSdp
+         jjDsSTaf9kjv22W73P6RA6kyrmov0DolPFnY0uBuB/pOyPuZfdJCYYaGGwdVypIWeQqB
+         UF5YSydfhOHOJEZQ/b04Q59uoZNoFOwZXP227e+T9Guh9FA10sUY4BaWKtHHocC5GCf8
+         Fnbw==
+X-Gm-Message-State: AOJu0Yy/HKwkKFQJsGYC0E0SBktRYtN4KdWt9WoKGDSQan3aDGDadbxy
+	QYuGdbZMlm9mVEtG3+AfifDcJBx0/gdz7r4Jl4N6SmXbOQWwn29h6bIkR/3WADoiwLEJt9vnC95
+	PfKy1myR3SV7pSk1uCCDD7M92jK/9s/5VzK595z+8T6X6kCkUUtJiDE+yRT+EoJxtqT7SbA==
+X-Gm-Gg: ASbGncuOjcEyqqizYhLVQXzQW+MarSp6bKfVsvblnKV0v4qI5Se+90rIWDnsoQqUeLK
+	X7pB3g2BsfzX35HmLYEWXKPqeqMQACjKpQ0OR1+HiUU7kiB8VA1vaLBavt5kBosbF4RjlOrNWeR
+	F74iCplm9uOfLl+lx44Mdioqrz72h40dVT6y6qCi3DK2qkG+mtp9+GKkArEXNfMk09wOGwiI4j5
+	vU9FRCDnai+NZs7gnzDyNHFyAwiwOWEioP77DPYXOvNp9AEs/HxQmGyJrAQUeXLiH1JQxDipxP2
+	NglXX9XbxuJeAiKXgfCYTnzklOd7hNmKNX5qiF3oUKoiujki2EN6IQxnA/clm0txK04YLgC6bRn
+	yuMNBmLGoo3oNSzLSPaVbxZrGVGWEDGSgEM7kYmP7dPJsrH0=
+X-Received: by 2002:a17:90b:4e90:b0:312:f88d:260b with SMTP id 98e67ed59e1d1-313f1c07f88mr20268767a91.14.1750131364615;
+        Mon, 16 Jun 2025 20:36:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8F9gocBMZScl0mlUsjSwGe6dHuZffl7cW0gp2NR649XWeFN4k80zvim3Vf1qS+FoYNQ95Ew==
+X-Received: by 2002:a17:90b:4e90:b0:312:f88d:260b with SMTP id 98e67ed59e1d1-313f1c07f88mr20268699a91.14.1750131364049;
+        Mon, 16 Jun 2025 20:36:04 -0700 (PDT)
+Received: from hu-adisi-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365d8a1fa0sm69273695ad.86.2025.06.16.20.36.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Jun 2025 20:36:03 -0700 (PDT)
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Date: Tue, 17 Jun 2025 09:05:59 +0530
+Subject: [PATCH ath-next v2] wifi: ath12k: handle regulatory hints during
+ mac registration
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a2b:b0:3dd:d746:25eb with SMTP id
- e9e14a558f8ab-3de07cd170amr127784865ab.16.1750127549067; Mon, 16 Jun 2025
- 19:32:29 -0700 (PDT)
-Date: Mon, 16 Jun 2025 19:32:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6850d3bd.a70a0220.395abc.01fa.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING: net/mac80211/tx.c:LINE at
- __ieee80211_beacon_get, CPU: syz.NUM.NUM/NUM
-From: syzbot <syzbot+468656785707b0e995df@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250617-handle_user_regd_update_hints_during_insmod-v2-1-10a6a48efe81@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAJ7iUGgC/6WQwW7DIAyGX6XiPCogAZKd9h5ThWhsEqQGOkiiV
+ lXefSSXHbYd1l0s2b/8f7/9IBmTx0xeDw+ScPHZx1Aa8XIg3WBDj9RD6YlgQjIpBC1DuKCZy55
+ J2IOZr2AnNIMPUzYwJx9640MeI9BadJojalc1ihTHa0LnbzvtndhpoAFvEzkVZfB5ium+x1j4r
+ j9FXDjltLHONiAr3bT2LeZ8/JjtpYvjeCxly7FbK/6EtdTqDMwpOCP7br1dsoh/pBcFUUNTO+Y
+ k007/gqi+EIrzvyGq7UFtCxI7BNe6HxDrun4CJfPahRgCAAA=
+X-Change-ID: 20250522-handle_user_regd_update_hints_during_insmod-42c71ee7f386
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE3MDAyOSBTYWx0ZWRfX+X9pOixDZCvV
+ +hUW5YOok42tWaSrk9qX3rcvrexO7LFQoc6z35aSPKShtJm2AYDcwJ3BOQj4gVc6SNQ4+2CuWKd
+ /i8o+Dde6y0XSK6Jvak78YO8muDGa7+x3Si8E2ro6S2F1SfABHOqrqRTlU7siyPl9IG38rPpanr
+ 2GiWk+NxWQlyYkfNSlP7oXC5fjUHSlGcPKWZ/ll71f3z6Cx5NaJDeb8B9bRbEUjJ3p+hMrCQN8Z
+ h/mnUcKuEPxaKnB6n/JxjZLN/dq313102kOwbPF8c4InfLspDsduS7xK3hCrwM2quq7uHBJY1Iy
+ 6y8/RixBJq1rm7rBRpTbzKXiKW/vE9Me6IPBZTI11t1GeSRsOIR4+KKowaRV2r9L3OB5w25h15C
+ iD61zbtpXu+se7jIw13QPi29uC4fpTrYzvGSlm8S28kJeDls9URGQjkeUbzyDva1S9lLZmG/
+X-Proofpoint-ORIG-GUID: -2agoE7T17ioDZLcCJJ8noQPigcJZpr3
+X-Authority-Analysis: v=2.4 cv=OLIn3TaB c=1 sm=1 tr=0 ts=6850e2a6 cx=c_pps
+ a=0uOsjrqzRL749jD1oC5vDA==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=cjyl3gcxlCMcS8tmzmQA:9
+ a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
+X-Proofpoint-GUID: -2agoE7T17ioDZLcCJJ8noQPigcJZpr3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-17_01,2025-06-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ malwarescore=0 impostorscore=0 mlxscore=0 bulkscore=0 adultscore=0
+ suspectscore=0 phishscore=0 spamscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506170029
 
-Hello,
+If a regulatory notification is there in the system while the hardware is
+being registered, it attempts to set the new regulatory country. However,
+ath12k currently boots with a default country derived from the BDF. If this
+default country differs from the one provided in the notification, a race
+condition can occur while updating the regulatory information back to
+userspace. This potentially leads to driver having the incorrect regulatory
+applied.
 
-syzbot found the following issue on:
+For example, suppose the regulatory domain for France (FR) is already
+applied, and then the driver is loaded with a BDF that has the United
+States (US) country programmed. When the driver finishes loading, the
+regulatory domain shown in phyX still reflects the US regulatory settings.
+This is incorrect, as the driver had already received a notification for
+FR during hardware registration, but failed to process it properly due to
+the race condition.
 
-HEAD commit:    050f8ad7b58d Add linux-next specific files for 20250616
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=125e190c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d2efc7740224b93a
-dashboard link: https://syzkaller.appspot.com/bug?extid=468656785707b0e995df
-compiler:       Debian clang version 20.1.6 (++20250514063057+1e4d39e07757-1~exp1~20250514183223.118), Debian LLD 20.1.6
+The race condition exists during driver initialization and hardware
+registration:
+- On driver load, the firmware sends BDF-based country regulatory rules,
+  which are stored in default_regd via ath12k_reg_handle_chan_list().
 
-Unfortunately, I don't have any reproducer for this issue yet.
+- During hardware registration, a regulatory notification is triggered
+  through:
+    ath12k_mac_hw_register()
+      -> ieee80211_register_hw()
+        -> wiphy_register()
+          -> wiphy_regulatory_register()
+            -> reg_call_notifier()
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/49faa18d2f53/disk-050f8ad7.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/7c6f9cd7fe5d/vmlinux-050f8ad7.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/84a08d6403ee/bzImage-050f8ad7.xz
+  This sends a country code to the firmware, which responds with updated
+  regulatory rules.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+468656785707b0e995df@syzkaller.appspotmail.com
+- After registration, ath12k_mac_hw_register() calls ath12k_regd_update(),
+  which copies default_regd and passes it to the upper layers.
 
-------------[ cut here ]------------
-WARNING: net/mac80211/tx.c:5024 at __ieee80211_beacon_update_cntdwn net/mac80211/tx.c:5024 [inline], CPU#1: syz.4.243/6807
-WARNING: net/mac80211/tx.c:5024 at __ieee80211_beacon_get+0x125d/0x1630 net/mac80211/tx.c:5453, CPU#1: syz.4.243/6807
-Modules linked in:
-CPU: 1 UID: 0 PID: 6807 Comm: syz.4.243 Not tainted 6.16.0-rc2-next-20250616-syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-RIP: 0010:__ieee80211_beacon_update_cntdwn net/mac80211/tx.c:5024 [inline]
-RIP: 0010:__ieee80211_beacon_get+0x125d/0x1630 net/mac80211/tx.c:5453
-Code: e7 e8 27 f2 2f f7 45 31 f6 4c 8b bc 24 a0 00 00 00 e9 78 fe ff ff e8 92 bf d6 f6 90 0f 0b 90 e9 e0 f7 ff ff e8 84 bf d6 f6 90 <0f> 0b 90 e9 38 fb ff ff e8 76 bf d6 f6 48 c7 c7 a0 5c 79 8f 4c 89
-RSP: 0018:ffffc90000a089f8 EFLAGS: 00010246
-RAX: ffffffff8ae9aaac RBX: ffffffff8ae99886 RCX: ffff888025e8da00
-RDX: 0000000000000100 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffff888025e8da00 R09: 0000000000000003
-R10: 0000000000000007 R11: 0000000000000100 R12: ffff888058976500
-R13: dffffc0000000000 R14: ffff8880589769d0 R15: ffff888032955024
-FS:  00007fbd84f5b6c0(0000) GS:ffff888125d40000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555570bf35c8 CR3: 000000002eed6000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <IRQ>
- ieee80211_beacon_get_tim+0xb4/0x2b0 net/mac80211/tx.c:5580
- ieee80211_beacon_get include/net/mac80211.h:5638 [inline]
- mac80211_hwsim_beacon_tx+0x3ce/0x860 drivers/net/wireless/virtual/mac80211_hwsim.c:2319
- __iterate_interfaces+0x2a8/0x590 net/mac80211/util.c:761
- ieee80211_iterate_active_interfaces_atomic+0xdb/0x180 net/mac80211/util.c:797
- mac80211_hwsim_beacon+0xbb/0x1c0 drivers/net/wireless/virtual/mac80211_hwsim.c:2353
- __run_hrtimer kernel/time/hrtimer.c:1761 [inline]
- __hrtimer_run_queues+0x529/0xc60 kernel/time/hrtimer.c:1825
- hrtimer_run_softirq+0x187/0x2b0 kernel/time/hrtimer.c:1842
- handle_softirqs+0x283/0x870 kernel/softirq.c:579
- __do_softirq kernel/softirq.c:613 [inline]
- invoke_softirq kernel/softirq.c:453 [inline]
- __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1050
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
-RIP: 0010:finish_wait+0x5/0x1f0 kernel/sched/wait.c:358
-Code: 0f 1e fa 44 89 ef e8 7a 68 f5 ff eb 96 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 55 <41> 57 41 56 41 55 41 54 53 48 83 ec 10 48 89 f3 49 89 fd 48 bd 00
-RSP: 0018:ffffc9001bccf5f0 EFLAGS: 00000246
-RAX: 7fffffffffffffff RBX: dffffc0000000000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: ffffc9001bccf640 RDI: ffff888028058700
-RBP: ffffc9001bccf6f0 R08: ffffffff8fa14ff7 R09: 1ffffffff1f429fe
-R10: dffffc0000000000 R11: fffffbfff1f429ff R12: ffff888028058700
-R13: ffffc9001bccf640 R14: 1ffff92003799ec4 R15: 7fffffffffffffff
- unix_wait_for_peer+0x22f/0x2e0 net/unix/af_unix.c:1587
- unix_dgram_sendmsg+0xb1f/0x1870 net/unix/af_unix.c:2188
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg+0x219/0x270 net/socket.c:727
- ____sys_sendmsg+0x52d/0x830 net/socket.c:2566
- ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2620
- __sys_sendmmsg+0x227/0x430 net/socket.c:2709
- __do_sys_sendmmsg net/socket.c:2736 [inline]
- __se_sys_sendmmsg net/socket.c:2733 [inline]
- __x64_sys_sendmmsg+0xa0/0xc0 net/socket.c:2733
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbd8418e929
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fbd84f5b038 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-RAX: ffffffffffffffda RBX: 00007fbd843b5fa0 RCX: 00007fbd8418e929
-RDX: 0400000000000041 RSI: 0000200000000000 RDI: 0000000000000005
-RBP: 00007fbd84210b39 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007fbd843b5fa0 R15: 00007ffe98cac8e8
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	0f 1e fa             	nop    %edx
-   3:	44 89 ef             	mov    %r13d,%edi
-   6:	e8 7a 68 f5 ff       	call   0xfff56885
-   b:	eb 96                	jmp    0xffffffa3
-   d:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-  14:	00
-  15:	90                   	nop
-  16:	90                   	nop
-  17:	90                   	nop
-  18:	90                   	nop
-  19:	90                   	nop
-  1a:	90                   	nop
-  1b:	90                   	nop
-  1c:	90                   	nop
-  1d:	90                   	nop
-  1e:	90                   	nop
-  1f:	90                   	nop
-  20:	90                   	nop
-  21:	90                   	nop
-  22:	90                   	nop
-  23:	90                   	nop
-  24:	90                   	nop
-  25:	f3 0f 1e fa          	endbr64
-  29:	55                   	push   %rbp
-* 2a:	41 57                	push   %r15 <-- trapping instruction
-  2c:	41 56                	push   %r14
-  2e:	41 55                	push   %r13
-  30:	41 54                	push   %r12
-  32:	53                   	push   %rbx
-  33:	48 83 ec 10          	sub    $0x10,%rsp
-  37:	48 89 f3             	mov    %rsi,%rbx
-  3a:	49 89 fd             	mov    %rdi,%r13
-  3d:	48                   	rex.W
-  3e:	bd                   	.byte 0xbd
+The race occurs between the firmware's response and the execution of
+ath12k_regd_update(). If the firmware's new rules are processed before the
+update call, the correct values are used. Otherwise, outdated boot-time
+country settings are exposed to userspace.
 
+To resolve this issue, introduce a completion mechanism within the hardware
+group (ah). Trigger this completion whenever a regulatory change is
+requested from the firmware. Then, in ath12k_regd_update(), wait for the
+firmware to complete its regulatory processing before proceeding with the
+update.
+
+This ensures that during driver load, the default country is processed
+first. However, before ath12k_regd_update() is called, the new regulatory
+notification will have already been received by the driver. As a result, it
+will wait for the firmware's regulatory processing to complete, and only
+the final, correct regulatory domain will be updated to userspace.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+---
+Changes in v2:
+- Fixed uninitialed variable usage warnings (detected by clang)
+---
+ drivers/net/wireless/ath/ath12k/core.c |  4 ++++
+ drivers/net/wireless/ath/ath12k/core.h |  1 +
+ drivers/net/wireless/ath/ath12k/mac.c  | 15 +++++++++++++++
+ drivers/net/wireless/ath/ath12k/reg.c  | 12 ++++++++++++
+ drivers/net/wireless/ath/ath12k/reg.h  |  2 ++
+ drivers/net/wireless/ath/ath12k/wmi.c  | 17 +++++++++++++++--
+ 6 files changed, 49 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index ebc0560d40e3419130e4caf01c9b91bd9affb3bd..9c18a706dc3ae3b8c5b95d8575e778c8a9c898ba 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -1470,6 +1470,7 @@ static void ath12k_core_pre_reconfigure_recovery(struct ath12k_base *ab)
+ 			complete(&ar->vdev_setup_done);
+ 			complete(&ar->vdev_delete_done);
+ 			complete(&ar->bss_survey_done);
++			complete(&ar->regd_update_completed);
+ 
+ 			wake_up(&ar->dp.tx_empty_waitq);
+ 			idr_for_each(&ar->txmgmt_idr,
+@@ -1509,6 +1510,9 @@ static void ath12k_update_11d(struct work_struct *work)
+ 		ar = pdev->ar;
+ 
+ 		memcpy(&ar->alpha2, &arg.alpha2, 2);
++
++		reinit_completion(&ar->regd_update_completed);
++
+ 		ret = ath12k_wmi_send_set_current_country_cmd(ar, &arg);
+ 		if (ret)
+ 			ath12k_warn(ar->ab,
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 941db6e49d6eaeb03783f7714d433259d887820b..329f3e490a713b179413f73a4024448aedc363fd 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -804,6 +804,7 @@ struct ath12k {
+ 	enum ath12k_11d_state state_11d;
+ 	u8 alpha2[REG_ALPHA2_LEN];
+ 	bool regdom_set_by_user;
++	struct completion regd_update_completed;
+ 
+ 	struct completion fw_stats_complete;
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 88b59f3ff87af8b48cb3fafcd364fd9ced4ff197..ef2e8398cbe8723c020aff03da5db7fa7fb2245e 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -10900,6 +10900,7 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
+ 			struct wmi_set_current_country_arg arg = {};
+ 
+ 			memcpy(&arg.alpha2, ar->alpha2, 2);
++			reinit_completion(&ar->regd_update_completed);
+ 			ath12k_wmi_send_set_current_country_cmd(ar, &arg);
+ 		}
+ 
+@@ -12116,6 +12117,16 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
+ 		goto err_cleanup_if_combs;
+ 	}
+ 
++	/* Boot-time regulatory updates have already been processed.
++	 * Mark them as complete now, because after registration,
++	 * cfg80211 will notify us again if there are any pending hints.
++	 * We need to wait for those hints to be processed, so it's
++	 * important to mark the boot-time updates as complete before
++	 * proceeding with registration.
++	 */
++	for_each_ar(ah, ar, i)
++		complete(&ar->regd_update_completed);
++
+ 	ret = ieee80211_register_hw(hw);
+ 	if (ret) {
+ 		ath12k_err(ab, "ieee80211 registration failed: %d\n", ret);
+@@ -12143,6 +12154,9 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
+ 
+ 			memcpy(&current_cc.alpha2, ab->new_alpha2, 2);
+ 			memcpy(&ar->alpha2, ab->new_alpha2, 2);
++
++			reinit_completion(&ar->regd_update_completed);
++
+ 			ret = ath12k_wmi_send_set_current_country_cmd(ar, &current_cc);
+ 			if (ret)
+ 				ath12k_warn(ar->ab,
+@@ -12215,6 +12229,7 @@ static void ath12k_mac_setup(struct ath12k *ar)
+ 	init_completion(&ar->scan.on_channel);
+ 	init_completion(&ar->mlo_setup_done);
+ 	init_completion(&ar->completed_11d_scan);
++	init_completion(&ar->regd_update_completed);
+ 
+ 	INIT_DELAYED_WORK(&ar->scan.timeout, ath12k_scan_timeout_work);
+ 	wiphy_work_init(&ar->scan.vdev_clean_wk, ath12k_scan_vdev_clean_work);
+diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wireless/ath/ath12k/reg.c
+index 2598b39d5d7ee9b24ad8ed5d6de1bc5bbc6554e0..079dcb6d83df4eb487fb0dbf4088fb8cacca8f6e 100644
+--- a/drivers/net/wireless/ath/ath12k/reg.c
++++ b/drivers/net/wireless/ath/ath12k/reg.c
+@@ -102,6 +102,8 @@ ath12k_reg_notifier(struct wiphy *wiphy, struct regulatory_request *request)
+ 
+ 	/* Send the reg change request to all the radios */
+ 	for_each_ar(ah, ar, i) {
++		reinit_completion(&ar->regd_update_completed);
++
+ 		if (ar->ab->hw_params->current_cc_support) {
+ 			memcpy(&current_arg.alpha2, request->alpha2, 2);
+ 			memcpy(&ar->alpha2, &current_arg.alpha2, 2);
+@@ -272,9 +274,19 @@ int ath12k_regd_update(struct ath12k *ar, bool init)
+ 	struct ieee80211_regdomain *regd, *regd_copy = NULL;
+ 	int ret, regd_len, pdev_id;
+ 	struct ath12k_base *ab;
++	long time_left;
+ 
+ 	ab = ar->ab;
+ 
++	time_left = wait_for_completion_timeout(&ar->regd_update_completed,
++						ATH12K_REG_UPDATE_TIMEOUT_HZ);
++	if (time_left == 0) {
++		ath12k_warn(ab, "Timeout while waiting for regulatory update");
++		/* Even though timeout has occurred, still continue since at least boot
++		 * time data would be there to process
++		 */
++	}
++
+ 	supported_bands = ar->pdev->cap.supported_bands;
+ 	reg_cap = &ab->hal_reg_cap[ar->pdev_idx];
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/reg.h b/drivers/net/wireless/ath/ath12k/reg.h
+index 8af8e9ba462e90db3eb137885d0acd4b1cb2286e..fb508302c7f0f1fea2588ad4cf9d813da574d06b 100644
+--- a/drivers/net/wireless/ath/ath12k/reg.h
++++ b/drivers/net/wireless/ath/ath12k/reg.h
+@@ -13,6 +13,8 @@
+ struct ath12k_base;
+ struct ath12k;
+ 
++#define ATH12K_REG_UPDATE_TIMEOUT_HZ	(3 * HZ)
++
+ #define ATH12K_2GHZ_MAX_FREQUENCY	2495
+ #define ATH12K_5GHZ_MAX_FREQUENCY	5920
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 60e2444fe08cefa39ae218d07eb9736d2a0c982b..db839fc835816c9a2d03d194547af506760f6c81 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -6143,7 +6143,8 @@ static void ath12k_wmi_htc_tx_complete(struct ath12k_base *ab,
+ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *skb)
+ {
+ 	struct ath12k_reg_info *reg_info;
+-	u8 pdev_idx;
++	struct ath12k *ar = NULL;
++	u8 pdev_idx = 255;
+ 	int ret;
+ 
+ 	reg_info = kzalloc(sizeof(*reg_info), GFP_ATOMIC);
+@@ -6198,7 +6199,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
+ 	kfree(reg_info);
+ 
+ 	if (ret == ATH12K_REG_STATUS_VALID)
+-		return ret;
++		goto out;
+ 
+ fallback:
+ 	/* Fallback to older reg (by sending previous country setting
+@@ -6212,6 +6213,18 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
+ 	WARN_ON(1);
+ 
+ out:
++	/* In some error cases, even a valid pdev_idx might not be available */
++	if (pdev_idx != 255)
++		ar = ab->pdevs[pdev_idx].ar;
++
++	/* During the boot-time update, 'ar' might not be allocated,
++	 * so the completion cannot be marked at that point.
++	 * This boot-time update is handled in ath12k_mac_hw_register()
++	 * before registering the hardware.
++	 */
++	if (ar)
++		complete(&ar->regd_update_completed);
++
+ 	return ret;
+ }
+ 
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+base-commit: 7fb79ce2693c94f8f74bf62ad25a97e4b61721b8
+change-id: 20250522-handle_user_regd_update_hints_during_insmod-42c71ee7f386
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
