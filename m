@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-24164-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24165-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7D1ADBE7A
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 03:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC85AADBE81
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 03:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 533903B9897
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 01:12:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2B83B5C46
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 01:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6381198A2F;
-	Tue, 17 Jun 2025 01:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C9C74BE1;
+	Tue, 17 Jun 2025 01:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="aJ6ClQAX"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="jfqHDNsV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B402E85260;
-	Tue, 17 Jun 2025 01:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2526EBE4A;
+	Tue, 17 Jun 2025 01:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750122755; cv=none; b=fKIiFlfITO1o7TMp3usfd406+cuixLaLmikb79w6jICaPgMWxuf13i1u+jiwWMo4iZoud8ZTWrvTz/ANNOhPfuEtorKbgJU9c2aL2lwa8XsQagClxXkez/J0EsFN8GAtTcxd26wl/RfvbtICc9g1G+zxDiVvkFxIa6g3++fM0J8=
+	t=1750123182; cv=none; b=U7TrMeoe0/iMYSXX1rW9MAtVfsDc/zpNQcn2tSr7TsyYtCJ83DlaOupVk84iPrzjSw4LpEE6Vb2YnrD7RYilUYWMDGhOzUT+zsA16z1Q43lNw6FtXoukIRUbCkTyTNmclS9/sZIgZDHkcspB0S3jTSWte629TVY4Vu7wHbE69Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750122755; c=relaxed/simple;
-	bh=oefOgSc1Z039uTfN1C6ysnyJt0su6eLbpzjAuLMfzVs=;
+	s=arc-20240116; t=1750123182; c=relaxed/simple;
+	bh=DA6NbZ1em8IUBv8N+cHNb3cLSGN5iij1bpuMZeqKCm4=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=QR1CelPGdS7AT+NCauzoUmgWDf7fV+PXeTMEZ82RtSVZkB9wIR2AyTfcWMtL/Vy+9w+rZbfrDdYWgG+uEq3yTe9XK3F1z1OcBLm8qk0J+y5DineiJQCnkLoh88A8gMnvHjZtWZvdeITuRYFqt32sK3KLs5jVBhDRjLAajWYQkrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=aJ6ClQAX; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:MIME-Version; b=eYSku04fEGES/8X368I4Kiat0gu73m4taOACUwbmZSTzCDmVdDPvQdFmYqOwr+8GgIF/F0lVYXvPQYHOdt+2ZAQZpXvM29UUPckViHn3boYWFHegJIVdjBveBLodA3Q8IiJ0ETQ7HnJF6NtUuFo1WA00mngwNimhsY8NXSc/PI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=jfqHDNsV; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55H1B4pG41349268, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55H1ITh941355397, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1750122664; bh=7ZvcDqtfgtaeywsuOoqwrM09yTIb0YVKK5xMuDws+d0=;
+	t=1750123109; bh=o/1UOAP2Hwox+w4gqzPebqcdOXSO0WpJAYav/KaZ4XI=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=aJ6ClQAXiSoZTR1EBEIhWlrvTXa50CDvs7LRaUZxYrpclb72k50bmdNFqLxNtcsyi
-	 bPGM0EKXRKPB97V9hx5spjYaKxeoCQzyB8Y2Dfp3+hpdeDdSK07n6p8vqn1fCFH8AS
-	 f62ppZPmAlOj6t4dVL1Gz5H7YJeLVcdvuNTjowjeLSHWueGrx67VPMfADCto241Xz6
-	 EdDJDbZ0C84UAU8v0oefQpdeuYXjo3JGhDjelby0DeMU9OkyoE5H44LbMh+vIkwI8s
-	 XTTryJR/67vATFJCFSmKXcn38BLiVFMFADlp0lSu4+nlillJ5ltL4FVuaivQKLN3YY
-	 8hHLzXVzvyuFA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55H1B4pG41349268
+	b=jfqHDNsVulIoNPrQa0MIBSpLP2x6YzDKX8dBRX5DIW0bbintUfT0IhvMO2ONMPZIP
+	 sPQilm7DSzU2nt8xg34XuNUamTeB/4RnesmWB3kakVGtnl2n9BwjMSqRhFdVD356N/
+	 2tLpT/4QaVf4gh5PFDdDMSr92fB1DkXOdxDK95w8upPwyLffQQzz9yXVpjaMXVJdiO
+	 kQ5wsPIKBAyWanN1B1MA8/0++w/16w4z8iZDSMYM1iheVH6TsGYDWXQlhYa1nPglIj
+	 5OK5dUbjw/qrpwnrFPBlExR0hBFHFwZIGcSylZ7OwuUOqDCgmCKAU1vVxi3sXKUC2E
+	 2dZASUm+yj0TQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55H1ITh941355397
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Jun 2025 09:11:04 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 17 Jun 2025 09:11:10 +0800
+	Tue, 17 Jun 2025 09:18:29 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 17 Jun 2025 09:11:09 +0800
+ 15.2.1544.11; Tue, 17 Jun 2025 09:18:35 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 17 Jun 2025 09:18:35 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
  RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Tue, 17 Jun 2025 09:11:09 +0800
+ 15.01.2507.035; Tue, 17 Jun 2025 09:18:35 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Daniil Dulov <d.dulov@aladdin.ru>, Hin-Tak Leung <hintak.leung@gmail.com>
 CC: Larry Finger <Larry.Finger@lwfinger.net>,
@@ -68,19 +68,16 @@ CC: Larry Finger <Larry.Finger@lwfinger.net>,
 	<linux-kernel@vger.kernel.org>,
         "lvc-project@linuxtesting.org"
 	<lvc-project@linuxtesting.org>
-Subject: RE: [PATCH 1/2] rtl818x: Fix potential data race in rtl8187_tx_cb()
-Thread-Topic: [PATCH 1/2] rtl818x: Fix potential data race in rtl8187_tx_cb()
-Thread-Index: AQHb3qk786dJTgtSZESHoKjQfcrgl7QGghzQ
-Date: Tue, 17 Jun 2025 01:11:09 +0000
-Message-ID: <a139c0c192ff4f1fbc14dafc37c54bab@realtek.com>
+Subject: RE: [PATCH 2/2] rtl818x: Kill URBs before clearing tx status queue
+Thread-Topic: [PATCH 2/2] rtl818x: Kill URBs before clearing tx status queue
+Thread-Index: AQHb3qlL7VN9vAfXfk29Z5DedKzs4LQGjOug
+Date: Tue, 17 Jun 2025 01:18:34 +0000
+Message-ID: <1db5e917fd08403cbddb99a5495fe78e@realtek.com>
 References: <20250616101050.6911-1-d.dulov@aladdin.ru>
- <20250616101050.6911-2-d.dulov@aladdin.ru>
-In-Reply-To: <20250616101050.6911-2-d.dulov@aladdin.ru>
+ <20250616101050.6911-3-d.dulov@aladdin.ru>
+In-Reply-To: <20250616101050.6911-3-d.dulov@aladdin.ru>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -89,157 +86,53 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
 Daniil Dulov <d.dulov@aladdin.ru> wrote:
-> There is a potential data race between rtl8187_tx_cb() and rtl8187_stop()=
-.
-> It is possible for rtl8187_stop() to clear the queue right after rtl8187_=
-tx_cb()
-> checks that queue has more than 5 elements, but before it dequeues any sk=
-b.
-> This results in skb_dequeue() returns NULL and the pointer is dereference=
+> In rtl8187_stop() move the call of usb_kill_anchored_urbs() before cleari=
+ng
+> b_tx_status.queue. This change prevents callbacks from using already free=
 d
-> in ieee80211_tx_status_irqsafe().
+> skb due to anchor was not killed before freeing such skb.
 
-Is there a way to flush rtl8187_tx_cb() before rtl8187_stop() clear queue?
-It looks risky that rtl8187_tx_cb() can still be running after rtl8187_stop=
-().
-Maybe you only treat this patch as a workaround?
+Oh. This is my question in patch 1/2. Seemingly, with this patch, it can
+safely flush rtl8187_tx_cb() and stop, no? I mean just this one is enough,
+no need patch 1/2.=20
 
->=20
->  BUG: kernel NULL pointer dereference, address: 0000000000000080
->  #PF: supervisor read access in kernel mode
->  #PF: error_code(0x0000) - not-present page
->  PGD 0 P4D 0
->  Oops: Oops: 0000 [#1] SMP NOPTI
->  CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Not tainted 6.15.0 #8 PREEMPT(volun=
-tary)
->  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/=
-2015
->  RIP: 0010:ieee80211_tx_status_irqsafe+0x21/0xc0 [mac80211]
->  Call Trace:
->   <IRQ>
->   rtl8187_tx_cb+0x116/0x150 [rtl8187]
->   __usb_hcd_giveback_urb+0x9d/0x120
->   usb_giveback_urb_bh+0xbb/0x140
->   process_one_work+0x19b/0x3c0
->   bh_worker+0x1a7/0x210
->   tasklet_action+0x10/0x30
->   handle_softirqs+0xf0/0x340
->   __irq_exit_rcu+0xcd/0xf0
->   common_interrupt+0x85/0xa0
->   </IRQ>
->=20
-> In order to avoid potential data races and leading dereference of a NULL
-> pointer, acquire the queue lock before any work with the queue is done an=
-d
-> replace all skb_* calls with their lockless versions.
 >=20
 > Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Do you have a real hardware and tested this patchset? If not, please mentio=
-n
-compile tested only in commit message.=20
+Same question as patch 1/2. Do you have a real hardware and test?
 
 >=20
-> Fixes: 3517afdefc3a ("rtl8187: feedback transmitted packets using tx clos=
-e descriptor for 8187B")
+> Fixes: c1db52b9d27e ("rtl8187: Use usb anchor facilities to manage urbs")
 > Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
 > ---
->  .../net/wireless/realtek/rtl818x/rtl8187/dev.c    | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
+>  drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
 > diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
 > b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-> index 220ac5bdf279..8fe6fdc32e56 100644
+> index 8fe6fdc32e56..12e2042ee2d0 100644
 > --- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
 > +++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-> @@ -189,6 +189,7 @@ static void rtl8187_tx_cb(struct urb *urb)
->         struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
->         struct ieee80211_hw *hw =3D info->rate_driver_data[0];
->         struct rtl8187_priv *priv =3D hw->priv;
-> +       unsigned long flags;
+> @@ -1050,10 +1050,10 @@ static void rtl8187_stop(struct ieee80211_hw *dev=
+, bool suspend)
+>         rtl818x_iowrite8(priv, &priv->map->CONFIG4, reg | RTL818X_CONFIG4=
+_VCOOFF);
+>         rtl818x_iowrite8(priv, &priv->map->EEPROM_CMD, RTL818X_EEPROM_CMD=
+_NORMAL);
 >=20
->         skb_pull(skb, priv->is_rtl8187b ? sizeof(struct rtl8187b_tx_hdr) =
-:
->                                           sizeof(struct rtl8187_tx_hdr));
-> @@ -196,7 +197,8 @@ static void rtl8187_tx_cb(struct urb *urb)
+> +       usb_kill_anchored_urbs(&priv->anchored);
+
+nit: an empty line.=20
+
+>         while ((skb =3D skb_dequeue(&priv->b_tx_status.queue)))
+>                 dev_kfree_skb_any(skb);
 >=20
->         if (!(urb->status) && !(info->flags & IEEE80211_TX_CTL_NO_ACK)) {
->                 if (priv->is_rtl8187b) {
-> -                       skb_queue_tail(&priv->b_tx_status.queue, skb);
-> +                       spin_lock_irqsave(&priv->b_tx_status.queue.lock, =
-flags);
-> +                       __skb_queue_tail(&priv->b_tx_status.queue, skb);
->=20
->                         /* queue is "full", discard last items */
->                         while (skb_queue_len(&priv->b_tx_status.queue) > =
-5) {
-> @@ -205,9 +207,11 @@ static void rtl8187_tx_cb(struct urb *urb)
->                                 dev_dbg(&priv->udev->dev,
->                                         "transmit status queue full\n");
->=20
-> -                               old_skb =3D skb_dequeue(&priv->b_tx_statu=
-s.queue);
-
-Another simple way could be just to check if old_skb is NULL here.
-
-    if (!old_skb)
-       break;
-
-No need to adjust spin_lock.
-
-> +                               old_skb =3D __skb_dequeue(&priv->b_tx_sta=
-tus.queue);
->                                 ieee80211_tx_status_irqsafe(hw, old_skb);
->                         }
-> +
-> +                       spin_unlock_irqrestore(&priv->b_tx_status.queue.l=
-ock, flags);
->                         return;
->                 } else {
->                         info->flags |=3D IEEE80211_TX_STAT_ACK;
-> @@ -893,6 +897,7 @@ static void rtl8187_work(struct work_struct *work)
->                                     work.work);
->         struct ieee80211_tx_info *info;
->         struct ieee80211_hw *dev =3D priv->dev;
-> +       unsigned long flags;
->         static u16 retry;
->         u16 tmp;
->         u16 avg_retry;
-> @@ -900,6 +905,8 @@ static void rtl8187_work(struct work_struct *work)
->=20
->         mutex_lock(&priv->conf_mutex);
->         tmp =3D rtl818x_ioread16(priv, (__le16 *)0xFFFA);
-> +
-> +       spin_lock_irqsave(&priv->b_tx_status.queue.lock, flags);
->         length =3D skb_queue_len(&priv->b_tx_status.queue);
->         if (unlikely(!length))
->                 length =3D 1;
-> @@ -909,13 +916,15 @@ static void rtl8187_work(struct work_struct *work)
->         while (skb_queue_len(&priv->b_tx_status.queue) > 0) {
->                 struct sk_buff *old_skb;
->=20
-> -               old_skb =3D skb_dequeue(&priv->b_tx_status.queue);
-> +               old_skb =3D __skb_dequeue(&priv->b_tx_status.queue);
-
-And here as well.=20
-
-    if (!old_skb)
-       break;
-
->                 info =3D IEEE80211_SKB_CB(old_skb);
->                 info->status.rates[0].count =3D avg_retry + 1;
->                 if (info->status.rates[0].count > RETRY_COUNT)
->                         info->flags &=3D ~IEEE80211_TX_STAT_ACK;
->                 ieee80211_tx_status_irqsafe(dev, old_skb);
->         }
-> +       spin_unlock_irqrestore(&priv->b_tx_status.queue.lock, flags);
-> +
->         retry =3D tmp;
+> -       usb_kill_anchored_urbs(&priv->anchored);
 >         mutex_unlock(&priv->conf_mutex);
->  }
+>=20
+>         if (!priv->is_rtl8187b)
 > --
 > 2.34.1
 >=20
