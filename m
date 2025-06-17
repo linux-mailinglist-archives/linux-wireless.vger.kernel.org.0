@@ -1,86 +1,85 @@
-Return-Path: <linux-wireless+bounces-24178-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24179-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D78ADC42D
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 10:11:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0368ADC432
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 10:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68301897AE5
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 08:09:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E6B21885354
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 08:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93A028FA89;
-	Tue, 17 Jun 2025 08:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184422949E3;
+	Tue, 17 Jun 2025 08:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="h8+ZZqlg"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="2oZHPNqA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14957293B55
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 08:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54511293B5C
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 08:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750147631; cv=none; b=lxlAZMb6Kg6uWHlau4YwBmzj/L4CNaAEevSPekVpe2tX9aHw2O0I3ApAPmR5Qk+xvpEgBUA79b8xesEcFAoaK+4f/VKzcuQ5iN0qUEJDg9X1wX/fSxYC2TT7r9JfGhIyeN2p1vRqDv4eCqVgrOL6Qq7uOAPPugQQ0einrYKFOqQ=
+	t=1750147638; cv=none; b=AmzNzLNUGcx6+qiS0PfbKBZT+SfBBkwt9zQPH2LiJXUIJxhK9mf4KHn1BBDB6xoKfRwq5HxOHW/EB6McDCERRjbtxSakqN8iUMxAcVyPM8F87HprkHUSaHtH6z+s/SA6SLi1sm1wCknHsZ7oQkoeinSDazurNqE76JF9wo5deb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750147631; c=relaxed/simple;
-	bh=P/EbJlqv2XUN9Ebq5NtsPlFHuL9Ro0JB9Gb1lH176fw=;
+	s=arc-20240116; t=1750147638; c=relaxed/simple;
+	bh=fwwMqhfVe+1mHmWz6yYhaQyrXgIQlUUr5o33QJ6Q54A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPCUuqrhq4jY/rklRa2QZLVJh+/Zo/JTD5yK6sozLO9lvKKsLiPE3Bi7jaBZsG8ApKiKP5D8RKKiJ7/x9prThqcCkucBgKVtHaNv4XfahUy5hwKds3dzZlz22UMPLsdfs2kjiRFC48Liz3VC2W0ApvQyL5hSobYuDzn5yJWZ94w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=h8+ZZqlg; arc=none smtp.client-ip=209.85.216.46
+	 MIME-Version; b=knbQeOQALNzXFBjtGQPwIpWQ16b5UkMBkKvPyDDqN/jBeysqAQo4+y80z0ouO+StceomBTTuwEsa8jomF7DSONjiA7duuRQuGBmT6L5tu/ndPzmDoN0x3q+Q2zb+8+G9gi3DcWxn5iTVuA1FWh0LRQu2Qj37mVLtrlFz+BOMHxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=2oZHPNqA; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-311e2cc157bso4449860a91.2
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 01:07:09 -0700 (PDT)
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-313bb9b2f5bso6307388a91.3
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 01:07:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1750147629; x=1750752429; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1750147636; x=1750752436; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Wu1nvUxweSKjVbF2MtXKMBXFLPQYrBXqXqdw3tZCfx8=;
-        b=h8+ZZqlgpra22Ou373Syhzd2Jguf7nyeaL3l2hZXwbIkw9wWVzZ2XJiIp996vQ5637
-         3LhplkkbQymbz6lT+mqn+WKqtn57zMQe1FNRD8vubvYzXtVptbkI5lsv/B7LmIi4y3gq
-         djO+jvYvSKC9JLCy6q8h6JkSdx5LSD40Hytbf7nVvRECSHOwaEk9SanU0oTwcAEM5w0n
-         MCbFOucz3G4G4lYBUHbY1aVBt0DjaY/BfVjwmgECUXE3GbK4l3ffP9A4lWubaoS7UVif
-         gQOenaVRxLYlgijW8Ajc07/4AeN92xNAE1rW3rjcGK1P/r/uzXI75Qm0+85oLFGWpcwy
-         kSig==
+        bh=cB0lQRt6Xpqqy3P5+XcfNIt4DXQKBIJJSeQkQiuboUU=;
+        b=2oZHPNqASOY1Itu9cPPLxgQUc162OPsLsr9uE2QAhVwPDwX7smLDYUDQSoy/IZLTIT
+         BmI5StRsaNdZ0BicG17JR8QLIM3vi7tQu6aUyL1m288k1y4ayencZScTqPkaeTxqs0De
+         T5OxCNA4364mFjSF076S6crTNEyGhftwpO3sdnitLbsQhSj2IAib2LIEId20EsG9ZbQj
+         O1doyy0gfn6NZ1EX1V+oyou8sAuX8ojRE+1UUkOYRAin5asictm4QalIrBzlI1nJ5AoU
+         Hd21kbuHkGaXjhmRxDh5YUORxXt4P8uwmkHDHytYCmO+J0jWDMA4+2VIT4RnNRUWI4YD
+         6fpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750147629; x=1750752429;
+        d=1e100.net; s=20230601; t=1750147636; x=1750752436;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Wu1nvUxweSKjVbF2MtXKMBXFLPQYrBXqXqdw3tZCfx8=;
-        b=pn3DAIeJ7saDuD+ZsxZcobtM6cwdqLKLGh7v98MpR6BkBPA6biVnu2yytHno3zxUSC
-         zwZXSVhMw+WpCw/5JtDK3XqUp1jzJgLd5BzFWP+jcS1sEdnumw38xkBIWPamZEbivD+D
-         cJqK0NEGCVGGRbvegdifcF+G6deucJQTkku6i2CsVrQhGX1bnqxlAPZsJZhD8vmzSdKi
-         XOYK72gO2sjSbE6lmLH4wOFCS8clzJt1G8KfQDmNa/kQp47vnCldDQxJHnfGmgOsX3BN
-         AUEBFm/UkY3/OXHk9HjYbihJt5fbPXqDzDqwL2MLzsZTmt2DgeGYsUZtEc5kKsgszScO
-         iNLQ==
-X-Gm-Message-State: AOJu0YxIT1IUCGwq4DzHAAAhVkFYI/2Wm9WqVhksnCUOcNMwfdh9rECQ
-	rtUJs1SJ6i1tRwkS08hF8oHndrX0tPoFxv7jw/Tc5vRuHYuPuDNxQ9rPZLZxGv+3gvNZMOXZ7c4
-	3JRw3AX4=
-X-Gm-Gg: ASbGncsvj2ykOGJbF/2s1EWRlIOFh6glvkkxo+o5mt9XjwKSQwjB+5+FsI83rRmO4ZR
-	cCOt+6adpJuq52+sUjQEvnKIJyheZxAZYeAq+w/h7Mc2kF51HZl3kXna/d+4ZODXAzNvuLgQLQA
-	wteBV2vEVmNjIOEAGvF6z17CDuNRH8ur7eXRY7OCRWf+pa71qdic/BC1R4OdfUjSWIzc6Tbaxgh
-	SvI9+w4JvWEDn38CmaEFzlhJaNxk3ZK//CvAbd1TQmGZbEqnVu6/BrMUbs6eTBM48Ah9Mzz7hr5
-	28ACJ77Web94LMWjMadLi4NJ18SYqxGo5bF03dF2sJ6gt7UOw8K/uA+zznqFfgiH7LzlSV0cJCb
-	Sylat2FJbyeCE7b5Pi7zXZq3nWKNTuNVSDq0=
-X-Google-Smtp-Source: AGHT+IHUe8Oqush8zSdzSUAlQkf3Lh3wQrq9M0A6DZAiaD2NENzpJQbomH4gsxI2xCtI2vEnKJS0bg==
-X-Received: by 2002:a17:90b:4b90:b0:313:f6fa:5bca with SMTP id 98e67ed59e1d1-313f6fa5d94mr13249651a91.22.1750147629178;
-        Tue, 17 Jun 2025 01:07:09 -0700 (PDT)
+        bh=cB0lQRt6Xpqqy3P5+XcfNIt4DXQKBIJJSeQkQiuboUU=;
+        b=Rd37E5NqNAKiT+aXdTk94PL1oyP/bSvBUTnjmYXYsbenhTP5rfIZK6tVoJYmc9BzWw
+         NiV03qxHzqweKR9mHF0g1NpRXJQthr0kGx0DRGeE3Ij5ARGhKAkA16+ZNYBmCQ+CQLdd
+         xvqcGkv+xuctzcQzeb5/jlSdO5JjV8wDt0929VPcQLuM7qx9Xh6K+HAd65eqUMakvuv0
+         oG5srE6kFdbIbooFK09hWN/aIwdN/AQW6t/gbCwDPQzXTYHQ4ccS1Ej06L7wP3Yptn3Q
+         s+0/siXQN2O2ar4GM3tT5UM3TzLZXS3Fpju0ftCJbu+7WufliYyUhdY561wT3S/KJlOr
+         hK7w==
+X-Gm-Message-State: AOJu0YwrZUdNj6LQlqZnnZeu21InxpHYpYJxBB/vol7YKQ9tj9GpIw91
+	s0+91gyGcUUWVZe9hHCIWXUQMu7RtrtQNCZRUSwplalL7CtKSOwcPWuWpBP/Z86dheo=
+X-Gm-Gg: ASbGnct8/ze7srgcGc/7KEQKWha01bmTSGOQfxyD5w1qXnaHyj31C28lOB9q4WbPV5Q
+	OphAbtOAAAhwUvXHoSVeFDGvC/+ETH/SySKTGJSjfcIyQu4XZNOaWVNtZMl2A5HLZHACL3znJEI
+	Ne4E32y+V1znEGJPlmsEDl7JuNXBjsasM5EdUWB3UM+Ciys3GuA0Dhz15QdupObJyLquFPlMgnk
+	Chx+q7md2e9m+VToIRkbMv//0SO55CksLrgZqj8F8o0UvaAljOvEU9dkiovIxrPXkyuk3XGih0q
+	5FnBVEfd32dUtuPZcipj445k+2HV/i108G27YE9herdT0SMQJgrn2icQHn4V8OpxMs/s/GPfBcx
+	Amuy+cDOfAG4o9rTLl5hgz7VLAuAKFF6L9E0=
+X-Google-Smtp-Source: AGHT+IEnruaqr2fda94ONXKl2O4h2/k0xv7Pod3BA2WNa84ZgSIjPsbWelMSzJ0TvDrkqsKO+bvSfA==
+X-Received: by 2002:a17:90b:4c09:b0:313:17e3:7ae0 with SMTP id 98e67ed59e1d1-313f1d8346bmr14763592a91.34.1750147635614;
+        Tue, 17 Jun 2025 01:07:15 -0700 (PDT)
 Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31413d2c8fbsm3579365a91.10.2025.06.17.01.07.06
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31413d2c8fbsm3579365a91.10.2025.06.17.01.07.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 01:07:08 -0700 (PDT)
+        Tue, 17 Jun 2025 01:07:15 -0700 (PDT)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	arien.judge@morsemicro.com,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Subject: [PATCH wireless-next 1/4] wifi: cfg80211: support configuration of S1G station capabilities
-Date: Tue, 17 Jun 2025 18:06:07 +1000
-Message-ID: <20250617080610.756048-2-lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next 2/4] wifi: mac80211: handle station association response with S1G
+Date: Tue, 17 Jun 2025 18:06:08 +1000
+Message-ID: <20250617080610.756048-3-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250617080610.756048-1-lachlan.hodges@morsemicro.com>
 References: <20250617080610.756048-1-lachlan.hodges@morsemicro.com>
@@ -92,70 +91,118 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently there is no support for initialising a peers S1G capabilities,
-this patch adds support for configuring an S1G station.
+Add support for updating the stations S1G capabilities when
+an S1G association occurs.
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- include/net/cfg80211.h | 4 +++-
- net/wireless/nl80211.c | 8 ++++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ include/linux/ieee80211.h  |  4 ++++
+ include/net/mac80211.h     |  2 ++
+ net/mac80211/ieee80211_i.h |  3 +++
+ net/mac80211/mlme.c        |  6 ++++++
+ net/mac80211/s1g.c         | 26 ++++++++++++++++++++++++++
+ 5 files changed, 41 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index d1848dc8ec99..abbf409b936b 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -560,7 +560,7 @@ struct ieee80211_sta_s1g_cap {
-  * @vht_cap: VHT capabilities in this band
-  * @s1g_cap: S1G capabilities in this band
-  * @edmg_cap: EDMG capabilities in this band
-- * @s1g_cap: S1G capabilities in this band (S1B band only, of course)
-+ * @s1g_cap: S1G capabilities in this band (S1G band only, of course)
-  * @n_iftype_data: number of iftype data entries
-  * @iftype_data: interface type data entries.  Note that the bits in
-  *	@types_mask inside this structure cannot overlap (i.e. only
-@@ -1653,6 +1653,7 @@ struct sta_txpwr {
-  * @he_6ghz_capa: HE 6 GHz Band capabilities of station
-  * @eht_capa: EHT capabilities of station
-  * @eht_capa_len: the length of the EHT capabilities
-+ * @s1g_capa: S1G capabilities of station
-  */
- struct link_station_parameters {
- 	const u8 *mld_mac;
-@@ -1671,6 +1672,7 @@ struct link_station_parameters {
- 	const struct ieee80211_he_6ghz_capa *he_6ghz_capa;
- 	const struct ieee80211_eht_cap_elem *eht_capa;
- 	u8 eht_capa_len;
-+	const struct ieee80211_s1g_cap *s1g_capa;
- };
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index ce377f7fb912..5425a5becd5c 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -3160,6 +3160,10 @@ ieee80211_he_spr_size(const u8 *he_spr_ie)
+ #define S1G_OPER_CH_WIDTH_PRIMARY_1MHZ	BIT(0)
+ #define S1G_OPER_CH_WIDTH_OPER		GENMASK(4, 1)
  
- /**
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 85f139016da2..8bf5e092fabe 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -7349,6 +7349,10 @@ static int nl80211_set_station_tdls(struct genl_info *info,
- 		}
++/* IEEE80211 2024 Table 9-351 */
++#define S1G_CAP3_MAX_MPDU_LEN_3895 0
++#define S1G_CAP3_MAX_MPDU_LEN_7991 1
++
+ /* EHT MAC capabilities as defined in P802.11be_D2.0 section 9.4.2.313.2 */
+ #define IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS			0x01
+ #define IEEE80211_EHT_MAC_CAP0_OM_CONTROL			0x02
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 82617579d910..c022b7c1a52d 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -2428,6 +2428,7 @@ struct ieee80211_sta_aggregates {
+  * @he_cap: HE capabilities of this STA
+  * @he_6ghz_capa: on 6 GHz, holds the HE 6 GHz band capabilities
+  * @eht_cap: EHT capabilities of this STA
++ * @s1g_cap: S1G capabilities of this STA
+  * @agg: per-link data for multi-link aggregation
+  * @bandwidth: current bandwidth the station can receive with
+  * @rx_nss: in HT/VHT, the maximum number of spatial streams the
+@@ -2450,6 +2451,7 @@ struct ieee80211_link_sta {
+ 	struct ieee80211_sta_he_cap he_cap;
+ 	struct ieee80211_he_6ghz_capa he_6ghz_capa;
+ 	struct ieee80211_sta_eht_cap eht_cap;
++	struct ieee80211_sta_s1g_cap s1g_cap;
+ 
+ 	struct ieee80211_sta_aggregates agg;
+ 
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 30809f0b35f7..7e080f601ac9 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2269,6 +2269,9 @@ void ieee80211_s1g_rx_twt_action(struct ieee80211_sub_if_data *sdata,
+ 				 struct sk_buff *skb);
+ void ieee80211_s1g_status_twt_action(struct ieee80211_sub_if_data *sdata,
+ 				     struct sk_buff *skb);
++void ieee80211_s1g_cap_to_sta_s1g_cap(struct ieee80211_sub_if_data *sdata,
++				      const struct ieee80211_s1g_cap *s1g_cap_ie,
++				      struct link_sta_info *link_sta);
+ 
+ /* Spectrum management */
+ void ieee80211_process_measurement_req(struct ieee80211_sub_if_data *sdata,
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 2d46d4af60d7..8c98ee2b1d2b 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5399,6 +5399,12 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
+ 		bss_conf->epcs_support = false;
  	}
  
-+	if (info->attrs[NL80211_ATTR_S1G_CAPABILITY])
-+		params->link_sta_params.s1g_capa =
-+			nla_data(info->attrs[NL80211_ATTR_S1G_CAPABILITY]);
++	if (elems->s1g_oper &&
++	    link->u.mgd.conn.mode == IEEE80211_CONN_MODE_S1G &&
++	    elems->s1g_capab)
++		ieee80211_s1g_cap_to_sta_s1g_cap(sdata, elems->s1g_capab,
++						 link_sta);
 +
- 	err = nl80211_parse_sta_channel_info(info, params);
- 	if (err)
- 		return err;
-@@ -7675,6 +7679,10 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
- 		params.link_sta_params.he_6ghz_capa =
- 			nla_data(info->attrs[NL80211_ATTR_HE_6GHZ_CAPABILITY]);
+ 	bss_conf->twt_broadcast =
+ 		ieee80211_twt_bcast_support(sdata, bss_conf, sband, link_sta);
  
-+	if (info->attrs[NL80211_ATTR_S1G_CAPABILITY])
-+		params.link_sta_params.s1g_capa =
-+			nla_data(info->attrs[NL80211_ATTR_S1G_CAPABILITY]);
+diff --git a/net/mac80211/s1g.c b/net/mac80211/s1g.c
+index d4ed0c0a335c..1f68df6e8067 100644
+--- a/net/mac80211/s1g.c
++++ b/net/mac80211/s1g.c
+@@ -194,3 +194,29 @@ void ieee80211_s1g_status_twt_action(struct ieee80211_sub_if_data *sdata,
+ 		break;
+ 	}
+ }
 +
- 	if (info->attrs[NL80211_ATTR_OPMODE_NOTIF]) {
- 		params.link_sta_params.opmode_notif_used = true;
- 		params.link_sta_params.opmode_notif =
++void ieee80211_s1g_cap_to_sta_s1g_cap(struct ieee80211_sub_if_data *sdata,
++				      const struct ieee80211_s1g_cap *s1g_cap_ie,
++				      struct link_sta_info *link_sta)
++{
++	struct ieee80211_sta_s1g_cap *s1g_cap = &link_sta->pub->s1g_cap;
++
++	memset(s1g_cap, 0, sizeof(*s1g_cap));
++
++	memcpy(s1g_cap->cap, s1g_cap_ie->capab_info, sizeof(s1g_cap->cap));
++	memcpy(s1g_cap->nss_mcs, s1g_cap_ie->supp_mcs_nss,
++	       sizeof(s1g_cap->nss_mcs));
++
++	s1g_cap->s1g = true;
++
++	/* Maximum MPDU length is 1 bit for S1G */
++	if (s1g_cap->cap[3] & S1G_CAP3_MAX_MPDU_LEN) {
++		link_sta->pub->agg.max_amsdu_len =
++			IEEE80211_MAX_MPDU_LEN_VHT_7991;
++	} else {
++		link_sta->pub->agg.max_amsdu_len =
++			IEEE80211_MAX_MPDU_LEN_VHT_3895;
++	}
++
++	ieee80211_sta_recalc_aggregates(&link_sta->sta->sta);
++}
 -- 
 2.43.0
 
