@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-24192-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24195-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BE5ADC560
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 10:50:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CED0ADC561
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 10:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9481F1665F7
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 08:50:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B51BB165694
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 08:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BE629346F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0BA293C44;
 	Tue, 17 Jun 2025 08:49:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA95D28C036
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA3028FFF3
 	for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 08:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750150174; cv=none; b=FkMH3rY2iqaYnacJeOPP2pXlY6FTOPc6u69C9fYBIvXVQa1q3E7KmFRBvdy3z/DIFwPWdLhmS3owuSwBvdxJqtAnhj/6VPe3UY+IR7LpklS8oqt/sRBkWoWz7ho9b3RMR4yeyj/BQJLYD2exXndydGCDm4qxnaWWC6CoNCDCEo4=
+	t=1750150174; cv=none; b=q8dCRLU+kBBv++5YYaMyEaLbf2+PvpjIy5itWMuyadHW42CTqEifjo3QyF7cvVMH59o6Nlvstjlvrar+fu4reEHnEQFAB4FYgN4Ysn0lAnv5vew4HnYZNeA8iui6Dz32P98doMZsufZVt3sl4DDQPA+5pU7sWvaxKUvSiQp26pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750150174; c=relaxed/simple;
 	bh=Zb0FAtKn57hylXZbbwWlQKoYiVchTs5O181iCBXBun0=;
 	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=nhGz24At5QDKlI5U377o9clF92AJ7HI0hPOn7Zlu/pErQQWZXYXKjuxAqQrmUFGyshsW9sv/M7jPiBMIoo9WsSJt4/IEvqPXYYl1ErsrD64F3543Z2xF41JOVW4KeLtG/HUduE0JbbsCK6gjITlQrSP2jDEuDQoVMnHfLoHh6+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+	 Content-Type; b=ie6lIGe5beBu3jlrLcFRlgr9+Eg5VSuEMG+smbwlQTDl0weAfP34zFjgzaQDhfV1upDxyT+W65OcfYSuTwcErj2gaghjY+LJYNqO9mAinr3WzyPtm9hjv33SUO+Hhk8yz+viPv1BevLNCHpUUWMYbMIHsSo0o4wEtPh2qRZOqKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3ddc4908c4dso59172225ab.3
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3ddcc14b794so35633095ab.2
         for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 01:49:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1750150170; x=1750754970;
         h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
         bh=W442XvOuTnKTzRsQQgphpGuH6koS5hmx6kx/lqAmOV8=;
-        b=dVSR/58FkLwi4C8X0DZwqHOPz8vItzy+5P22jH3SefDB+ZOiUKXNhdEMs2IVwzl5kc
-         bl3XYCvSKFkiNRXcizzn220PtSOPBmr5GLFGqyyjQeOUy6kGEmZodYyiRB/BqVqG0WcY
-         fnzgLFXhXHrmhEqBGWkH8HRKhBUj/BcjoF7cWy/c1hQF9TUZl5UdFht9UvCpybbNLwY6
-         /tmte8gER68S+edwaDYSCscr72F2FqWs60v3VHhn59dhpAPy2IthMcpok1t6T+h3VTSO
-         +WUwXiz8dZDpXuKQfsn6Uid0kVjRIUJdV85Aq1ecLnFAVfnjiowl+gnsDOIEveDST3f7
-         CacA==
-X-Forwarded-Encrypted: i=1; AJvYcCX+aLqRlTsxW3VhLkIQARky2t/ZMHNkWSZui0UoH/zHINBXRt6kRRspZZ3oG8DNOQDtZ9pHV6PhpvfusjH43w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2DSamiCKAWncD9iO9jnODvKYqPxM+4FxuQty4DhvNP9vMyWJE
-	7wwur4bpTvrGi0hUZgu5p59rSX67j7DH07gmVjmIAHJ9Ayb0hI07vG7PfPty2TDIbDUAT5a201K
-	OGXiY4+bTFtM4c+XqAlhbwCVj4DE8tK+KwMlCqMEKA2UJq9JDl2OXDfcNtXU=
-X-Google-Smtp-Source: AGHT+IHUOC4Yf0aCa67Se2R0wWI/rVIusO839xwvt1Hr4oH23DQ1iA1XVxzx6AC1q4qsmMmatspOmtsej3uizUlqCShY0+RUI/aU
+        b=saR2zduntAw9jBH6IJ2TgBuR1Kz9oDPIM4OzQ4HezaTiTQ8kBU9ZiLZIQZsYJVsoTE
+         1PcoHjV15kjdeHSx79D3st0UgzCuG+kJycby1zeVRTwp2T+IT4B2xA++Ji1gnppS+5WJ
+         lA3UVnL+Jvvu20dvHnP8ej2GI6gyFa+Qr7Hr5Z78T3UQh7zKaEbUsGMT+OHzu6dB8MwL
+         Iph3kp7+a1mYpi/eHnTTLi+gBAqQzi/kQZa/CvzwDYWni7xL3RFQkQ8nkxTYR8nkqRO2
+         TH9b2B0cHOqN82KLDeIXgA7g4RNYYEYysZWuMc3ystXChvulW+5lU2o/qT/q8IJKaRaR
+         hYHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX80rZzKVncwbi3dptCwLMKW+D8EW5RyyzEV+ipI52dei5vSsMWL9C8TkPVtVWeNz/nHMWLlRqrnhprcbX43w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0U6XcH0SjLZixHAwZ1+I6mw5miAtee/p3LWk2l1CpCmn7lRQy
+	1+yIF6oNF5nyunn8A3fk55D4Q0WLCURGWMTtfZC7F5H4xOgP2sj8u7lZ1nyF3cXPoHRzYNp29mS
+	0JmXnf8oQsxuLwfxfC37YwFmIIUx0bVc1Arzu+fTO2SKUMLLtXUGdmh3lhwA=
+X-Google-Smtp-Source: AGHT+IE7SjhnqW/aUQPmgFzqARYXbsP7C8v1bPBoREOWYWln4AHxLYz387BrFlZQDcX0Jn+xm2MvQgny32eRCIBd4Lc/fPD8So9r
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:4509:20b0:3de:12ba:7d6c with SMTP id
- e9e14a558f8ab-3de12ba8202mr65142385ab.8.1750150169938; Tue, 17 Jun 2025
+X-Received: by 2002:a05:6e02:1a2b:b0:3dd:b762:ed1b with SMTP id
+ e9e14a558f8ab-3de07d7ae51mr135662965ab.16.1750150169929; Tue, 17 Jun 2025
  01:49:29 -0700 (PDT)
 Date: Tue, 17 Jun 2025 01:49:29 -0700
 In-Reply-To: <20250617104902.146e10919be1.I85f352ca4a2dce6f556e5ff45ceaa5f3769cb5ce@changeid>
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68512c19.a70a0220.395abc.020b.GAE@google.com>
+Message-ID: <68512c19.050a0220.2608ac.0012.GAE@google.com>
 Subject: Re: [PATCH wireless] wifi: mac80211: don't WARN for late
  channel/color switch
 From: syzbot <syzbot+468656785707b0e995df@syzkaller.appspotmail.com>
