@@ -1,138 +1,80 @@
-Return-Path: <linux-wireless+bounces-24202-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24204-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C316AADC755
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 11:59:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA34ADC7AF
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 12:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA49C1882488
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 09:59:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B2ED188E573
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Jun 2025 10:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5EB288CB5;
-	Tue, 17 Jun 2025 09:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7A82C08C4;
+	Tue, 17 Jun 2025 10:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0TjXq9ws"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QSN30ksR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DC73FBB3
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 09:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6A72DF3CB;
+	Tue, 17 Jun 2025 10:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750154379; cv=none; b=Okpdrj6DP0rPET4mHCD+ZiBJf2ljBVuBasPNx9ktfMhGiAz7SiDwoIydexJqYe9ClfjAtv4/dFPZ4ycX01qEnvGq9I6l77G6g0Gl/97xRbQjtXJfX5Zp62CInJd2qzipO2bMPCSReketpPxobuUD/j+KX0P2Ep556KaXK3Y67Do=
+	t=1750155076; cv=none; b=J87DvzkSoTym6NQohPJ6swmf4f85b0G3rRlAyqgq61CkP8N+QMg3jv/YYcUb6vvaXp+ezV81cHm1xDyeMywh7lo5gwbGETjsDcC3nG4Brv1MpMiT0hZILq2T1mC5+tk00rTOew5nOxHRLfZ8ZSfsZbFrJNEWHcxocoY1avAEEMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750154379; c=relaxed/simple;
-	bh=T11Yz+QUum6W/Sp7RvfgeObytTx3A4fLEIOKNpWe1W0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pPTglzCNd363fSClxBAcPV7tQvSmotbpFTJAmGa+YbUstTuaGh0G6hVj+JrJpEd/ntkOk1Y14UDWT3V7SoT/shOC6ytU4yJIuCAu0h2Ml+dWsxvREap3Jdm/nQC6L9vnoxVnHfbPZrC+Ypiy4cdJvkNAKa0p2xBcl7OUNGI/i6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0TjXq9ws; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3139027b825so3839452a91.0
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Jun 2025 02:59:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750154377; x=1750759177; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T11Yz+QUum6W/Sp7RvfgeObytTx3A4fLEIOKNpWe1W0=;
-        b=0TjXq9wsqHxffuRU1c2RR3tmQWMF3rgMBTSDAo9A/RLJjl0o6leFDXIaZdZtjY1xU0
-         RShNNws1gi6oJK/iG1MnJMBfexe4U28MD1AhI2ZbxliYTZ0FMQxxP6F8hDSnvp8YT3AE
-         iZCXg6bqiczFP9ms8kUlOCQ6J/fYs2ALe58KBZBV/QhPRqrs8iwdvhvXgX9lDhWQEqga
-         EjhzdnNnx+1+X2T5Cx0VAdmZ5c+IqTJONdibdkyxozeNKAVNjJ9BCphcORfcz1xRrxNu
-         wg+GYtQDp6udbBNvZLfXj21lGHzYfrZOZDXFhHep/4JL/cuQAG2iMnpBqlYijnou7H0X
-         DCGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750154377; x=1750759177;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T11Yz+QUum6W/Sp7RvfgeObytTx3A4fLEIOKNpWe1W0=;
-        b=f2Jg99Q+Z8Z98RF8Mn7OT54ZHsCSxMdQoU+cFEi55xyydCaDKUtkEgLBHWKvUdnFJZ
-         OtgAfD0lj5lBsrhCneJ8Zmn+CIaFoKMOrF5WofiZ3Uyry9O8/snmLLkvWtaGLES8Eveo
-         PSBEhov5QPUsWtR9HBEpc2T7zmWbrFz5QRVmhNcb99SeudtxxQ7mi+gN+1u2JheuTYOB
-         +HeTwMhhkwacJQBJmHIdzeN8G+fOjslxYAPQKKCe/X7ARkBizBCz0abBjCDfK+msm0h/
-         1EuHcIdjpP18HOjmaCF8q1Cry9K+6qSxUfBdnl8eVxANInDguGT/e/WB5GldF9xfQFcW
-         fCAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUWAGF2yVpISjacpMMdXn0s0Kroosaeo4Jt7PCMbffi6HNBdYodUFb2V33SFFolZh8UZ3drXq3ZTPT++hqg1w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoPAfz08ap9LAnfuHhbNuW7TP7eXqQ7dwA9LhRLiN4hYF9+jBh
-	MSfwXv9U4h1Bt9vKTxa2JCzo9jxoCOa8z6TVsssNFAPrGr5OVChZDOjzUmE215+MKIwbb51BAqo
-	t5HcM5CxCoD84rhytKe9cfDXjc7R9d/JhOl72aQhesykVN2RBnY2eWNJf
-X-Gm-Gg: ASbGnctZ+2AyvNCk9+OicIu50cLyfcMdhStBW0FfQhL2Wr/zVIkjMMLd8mQgCnbIfae
-	IRvoV5q5E0PUOxY1cCPLOogilPZS+/mcB9iPkREnJTKSyhQBvBGVotuvulutXo7lYOzhj++YTmD
-	cd1PVlyDYGc7mFvsIlzirnpqcN6CuEp3J0kMo8/K1mF2dRjJnhOeYQC+9K+bIK+rAC5ttWw/mJ
-X-Google-Smtp-Source: AGHT+IHNeTT68NvBOK6LqdXHKIzzjhA446o1WLmbvK+HGnNpsJHS6OxLDqwqwuxWZSw59pGNsBTCbNKTHvryBpKg8jQ=
-X-Received: by 2002:a17:90b:3a4b:b0:313:5d2f:54f8 with SMTP id
- 98e67ed59e1d1-313f1e22fc8mr22826886a91.33.1750154377458; Tue, 17 Jun 2025
- 02:59:37 -0700 (PDT)
+	s=arc-20240116; t=1750155076; c=relaxed/simple;
+	bh=cUKbbU/oS3Cg7lShc7Ki9J5+9Zrxia79qJwxm5GCJsY=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TnCFN/mAsuzSAID55b0F7SBa5vKsAMDR7m2nrvfnLRritfhKIs9OJAXzBJJnSEd4gUUZ5PttLElFLqWEsn9jGpyCV1hChclyeC5aYr0oCx+nkZhr3a5VM+DdA6GbKF+O47w+uegyndGqA1Wlux9xW/QDvQRZgkxuhHpee6pkOu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QSN30ksR; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=cUKbbU/oS3Cg7lShc7Ki9J5+9Zrxia79qJwxm5GCJsY=;
+	t=1750155075; x=1751364675; b=QSN30ksRHX52XiNxPdbhNT+9X62W5FKMYdv+ReNrXwdTlN0
+	9QZvJp9qfx5LGJvXSvQwTnSgUPB5aGsjsT/TH8VM9GIwc5Ms7Z9ltOJh9wWweWffBy6TTRAlZZ8wI
+	F6N6R8jxGXjHS994+S7FcVVci2embCOnuhX4rGuGDy3Nvgm4/g3GPjoVwYZt0dS79RS6Q+TESLjGc
+	1xVw072k+pne4c+y98Mp8o05mSljUvlFY0WiXEmNFZzqKMtBDxbGnpWTCgBgkpxp/BJNoWwb82SwO
+	qrOAhzvNnkkeJvqx1lWrL0oX1lPmvLDitUsPFaEdJrFLeoHZEE/dhFTSIPHvYweA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uRTHT-0000000EGoc-3uts;
+	Tue, 17 Jun 2025 12:11:04 +0200
+Message-ID: <67fa81579ed1e4bf289235863eb5728b243a58ba.camel@sipsolutions.net>
+Subject: Re: [syzbot] [wireless?] INFO: task hung in
+ rfkill_global_led_trigger_worker (3)
+From: Johannes Berg <johannes@sipsolutions.net>
+To: syzbot <syzbot+50499e163bfa302dfe7b@syzkaller.appspotmail.com>, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Date: Tue, 17 Jun 2025 12:11:02 +0200
+In-Reply-To: <000000000000114385061d997d9c@google.com>
+References: <000000000000114385061d997d9c@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6850d3bd.a70a0220.395abc.01fa.GAE@google.com> <CANp29Y68ZaQnb0R2fZSLjcCxiOE3uZyW4b7wLEYMAycF0WHNUg@mail.gmail.com>
- <97d6493279ab5c63e8844e8b0f349b2528d2832b.camel@sipsolutions.net>
- <CANp29Y5+W426u0jUz0PT=zVde+QqSD9H1fLpTuaKSzCLrt5FcA@mail.gmail.com> <49456d11ed8d4ff3adc71286b17dc657a6db131b.camel@sipsolutions.net>
-In-Reply-To: <49456d11ed8d4ff3adc71286b17dc657a6db131b.camel@sipsolutions.net>
-From: Aleksandr Nogikh <nogikh@google.com>
-Date: Tue, 17 Jun 2025 11:59:24 +0200
-X-Gm-Features: AX0GCFtZpFbzd7aS93ErUYuYC0VlHJTlAFEcYitrHyt4jKcV8u_uptKDLdvv-rk
-Message-ID: <CANp29Y4hwwLhju3=AVeNuGt-yCwR_Rey1ML_Tkc5sTFzu55yUw@mail.gmail.com>
-Subject: Re: [syzbot] [wireless?] WARNING: net/mac80211/tx.c:LINE at
- __ieee80211_beacon_get, CPU: syz.NUM.NUM/NUM
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: syzbot <syzbot+468656785707b0e995df@syzkaller.appspotmail.com>, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-On Tue, Jun 17, 2025 at 11:50=E2=80=AFAM Johannes Berg
-<johannes@sipsolutions.net> wrote:
->
-> On Tue, 2025-06-17 at 11:48 +0200, Aleksandr Nogikh wrote:
-> > On Tue, Jun 17, 2025 at 11:43=E2=80=AFAM Johannes Berg
-> > <johannes@sipsolutions.net> wrote:
-> > >
-> > > On Tue, 2025-06-17 at 11:34 +0200, Aleksandr Nogikh wrote:
-> > > > #syz dup: WARNING in __ieee80211_beacon_get
-> > > >
-> > >
-> > > Not just this one :)
-> > >
-> > > https://lore.kernel.org/linux-wireless/20250617104902.146e10919be1.I8=
-5f352ca4a2dce6f556e5ff45ceaa5f3769cb5ce@changeid/
-> > >
-> >
-> > Ah, interesting :)
-> >
-> > FWIW, in this particular case, syzbot sent the duplicate report
-> > because the WARNING format has somewhat changed in the latest
-> > linux-next. So before we updated syzbot's parsing rules, it had
-> > managed to re-report quite a few duplicates.
->
-> Right, I had noticed that, but then I looked and the old counter is
-> already at well over 100k so I decided to finally look at it again ;-)
+On Fri, 2024-07-19 at 06:15 -0700, syzbot wrote:
+>=20
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3D50499e163bfa302=
+dfe7b
 
-Nice! So re-reporting things is not always that bad ;)
-Thanks for looking into the problem!
+#syz dup: INFO: task hung in rfkill_unregister (3)
+#syz set label: nfc
 
->
-> This is a really long-standing problem that we discussed a few times in
-> the past I think, and basically the system is loaded enough that the
-> hwsim hrtimer can fire on time and pull the beacon, but the workqueues
-> are overloaded and cannot do the necessary work within the ~100ms beacon
-> interval ...
->
-> Should be rare in practice, but a WARN_ON() that doesn't say anything
-> about what's going on doesn't help anyway.
-
-That sounds totally reasonable indeed.
-
->
-> johannes
+johannes
 
