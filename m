@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-24251-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24252-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DF8ADECFC
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jun 2025 14:48:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882B5ADECF8
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jun 2025 14:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 675E53B3262
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jun 2025 12:47:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C98D161CBC
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Jun 2025 12:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC50A145FE0;
-	Wed, 18 Jun 2025 12:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE85A2586C8;
+	Wed, 18 Jun 2025 12:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ic1q443g"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="i8TnY8n9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED932556E
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Jun 2025 12:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6802556E
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Jun 2025 12:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750250862; cv=none; b=dt2fgfICkUtB7O/SrQ+e/8nDvUIWJA4NlNqQAmuAQBoeNVZ/pvCqGkyfB3OMzGrZfdb5Lk9OB8vzHIAlGlBCMKyJyKOosK4dqhvUoNjKC3xPpPQsr7j9u0WaXHZvlqHafvcDPcXyjBFQiNsV52zat/9R4WjqybJNC5qWHJgFH5w=
+	t=1750250868; cv=none; b=IcC/bjw4PCOlLGHlIZOPfKsl40dHBvyoi5V/7jI+p8RP5b4lf9Av3nM3Wa+/a7JJqWkUEQZkIwaQRlyq/gvf3WQbN7hchtkf7UbSRs81eWZW7nKUvYlqtO3NfUdvitF860Mi4jgzsQp9LtVa9rAW2D97/9oz6EqzwP3ASTvJWFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750250862; c=relaxed/simple;
-	bh=oVhMMkm4Mw9VQyg4hgDbQkJ5FUr3Dz0Rb10zyDzbEhI=;
+	s=arc-20240116; t=1750250868; c=relaxed/simple;
+	bh=NELny7Qdw5cfEEbNgeTw0w89+stQqlNGlwJRnDYIQr0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qp8jk0oHKPm1Ivl+SYuHkV6SmS2OApbli6uPlp0/j1XObN4BR8o5r9ZPsrxORskP26ieT1btD17pE1RN5oj1DPxrzMfuGrQzKQZnxc3GXE3e7Kqp0Fy2n5AP66lZB3ehk76meiSaQXpMcLKDpySkhzDSiklm/FXB4juqWYUquQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ic1q443g; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=spCaT1okFJ/cvfGP/o1ViTz0CEQrHlQwan416HQRPkQ3+xs6y4pIEDE56Cv+/p4huYmqkkznA8oTaNV4loolgbJCPlXM1565DwVqi1VxLlFgtPOmkZ5I/4Mopc2GxjzMlDNniYMqayskdDBYV+n1QWBu9s3QR3Ti34110P/ckn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=i8TnY8n9; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55IClc8mB4151177, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55IClixcF4151184, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1750250858; bh=/iR8sYjZ8V53I+rXLivILD3GuuSKQWm67TxpCIKva2I=;
+	t=1750250864; bh=H2x8S7Kjs48W2Ej3vHO4ofo365FCCxguswbqDjWxCmw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=ic1q443gA3xTPm4R3rBFUURLOVIcGujB7UiTeElg/cFjNwjLIUiw6brmO0oHBGT7+
-	 lE9yxP3UnmX9Oda1ginv5O+jag+SUxO9j+i/D4RzU9hH9aMczV234eEVak3NQjEjo+
-	 nft+O4+0EQDNns1CGETpVDA3vgO3t2zm5ON45BrctEFuBmZGAyC/FVNjTyZEU+kE1/
-	 VCpvJ2R5AHm7kcDQgxdOeIFtdj9QzpNu079ezRNz1W/WFh3sPObU9c1xkQDXDFKKP6
-	 Ks4hO+MOGPVHkjPxrtAXL5ikqFnOV3GwVnAus1O10RR/E+Vx0P/1DhMipuuiPB+aO3
-	 mKRpv3/SJCaTQ==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55IClc8mB4151177
+	b=i8TnY8n9kiOotJVup+tJfjLuQaXxpLPwgG0JJztBRhNhCbJWWXC0OMals2tWCfYhL
+	 rCmv61ccLgtUf9Xj1aR2Rf/ZKJLXLEjSXgWqUa3K3tvRHM15MghY8cD7/3mDHK4axU
+	 tSOTRroPPArzJL3iY/CiYsSvF3HkTKhziPEFZ2wo7C2+2TmiehlUqEaUdBlFpfBU6g
+	 NcOsIVoywshy9cWlGjODjQkHwVdoRRfzQmi6SqF1dAdKOXlnyMRp1y8LMu4BJFjI94
+	 pYC4g9B/t6lGFC8nHiUUZl37FaOjhT3Uq7Ij+RvaaYN/8FS25bO5/6Rdf3xMgju0lk
+	 scG+3pW6irRvA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55IClixcF4151184
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Jun 2025 20:47:38 +0800
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Jun 2025 20:47:44 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 18 Jun 2025 20:47:45 +0800
+ 15.1.2507.39; Wed, 18 Jun 2025 20:47:51 +0800
 Received: from [127.0.1.1] (10.22.224.135) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 18 Jun
- 2025 20:47:45 +0800
+ 2025 20:47:50 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <timlee@realtek.com>, <echuang@realtek.com>, <damon.chen@realtek.com>,
         <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 4/6] wifi: rtw89: avoid NULL dereference when RX problematic packet on unsupported 6 GHz band
-Date: Wed, 18 Jun 2025 20:46:47 +0800
-Message-ID: <20250618124649.11436-5-pkshih@realtek.com>
+Subject: [PATCH rtw-next 5/6] wifi: rtw89: report boottime of receiving beacon and probe response
+Date: Wed, 18 Jun 2025 20:46:48 +0800
+Message-ID: <20250618124649.11436-6-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250618124649.11436-1-pkshih@realtek.com>
 References: <20250618124649.11436-1-pkshih@realtek.com>
@@ -77,73 +77,54 @@ X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-With a quite rare chance, RX report might be problematic to make SW think
-a packet is received on 6 GHz band even if the chip does not support 6 GHz
-band actually. Since SW won't initialize stuffs for unsupported bands, NULL
-dereference will happen then in the sequence, rtw89_vif_rx_stats_iter() ->
-rtw89_core_cancel_6ghz_probe_tx(). So, add a check to avoid it.
+Userspace tools will parse NL80211_BSS_LAST_SEEN_BOOTTIME (if any) for a
+more accurate timing when a BSS was seen. For example, iw, wpa_supplicant.
+For beacon and probe response, fill RX boottime_ns in ieee80211_rx_status.
+And for certain, it shouldn't count the waiting time for the PPDU status,
+i.e. the possible buffering time of a frame in driver.
 
-The following is a crash log for this case.
-
- BUG: kernel NULL pointer dereference, address: 0000000000000032
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: 0000 [#1] PREEMPT SMP NOPTI
- CPU: 1 PID: 1907 Comm: irq/131-rtw89_p Tainted: G     U             6.6.56-05896-g89f5fb0eb30b #1 (HASH:1400 4)
- Hardware name: Google Telith/Telith, BIOS Google_Telith.15217.747.0 11/12/2024
- RIP: 0010:rtw89_vif_rx_stats_iter+0xd2/0x310 [rtw89_core]
- Code: 4c 89 7d c8 48 89 55 c0 49 8d 44 24 02 48 89 45 b8 45 31 ff eb 11
- 41 c6 45 3a 01 41 b7 01 4d 8b 6d 00 4d 39 f5 74 42 8b 43 10 <41> 33 45
- 32 0f b7 4b 14 66 41 33 4d 36 0f b7 c9 09 c1 74 d8 4d 85
- RSP: 0018:ffff9f3080138ca0 EFLAGS: 00010246
- RAX: 00000000b8bf5770 RBX: ffff91b5e8c639c0 RCX: 0000000000000011
- RDX: ffff91b582de1be8 RSI: 0000000000000000 RDI: ffff91b5e8c639e6
- RBP: ffff9f3080138d00 R08: 0000000000000000 R09: 0000000000000000
- R10: ffff91b59de70000 R11: ffffffffc069be50 R12: ffff91b5e8c639e4
- R13: 0000000000000000 R14: ffff91b5828020b8 R15: 0000000000000000
- FS:  0000000000000000(0000) GS:ffff91b8efa40000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000032 CR3: 00000002bf838000 CR4: 0000000000750ee0
- PKRU: 55555554
- Call Trace:
-  <IRQ>
-  ? __die_body+0x68/0xb0
-  ? page_fault_oops+0x379/0x3e0
-  ? exc_page_fault+0x4f/0xa0
-  ? asm_exc_page_fault+0x22/0x30
-  ? __pfx_rtw89_vif_rx_stats_iter+0x10/0x10 [rtw89_core (HASH:1400 5)]
-  ? rtw89_vif_rx_stats_iter+0xd2/0x310 [rtw89_core (HASH:1400 5)]
-  __iterate_interfaces+0x59/0x110 [mac80211 (HASH:1400 6)]
-  ? __pfx_rtw89_vif_rx_stats_iter+0x10/0x10 [rtw89_core (HASH:1400 5)]
-  ? __pfx_rtw89_vif_rx_stats_iter+0x10/0x10 [rtw89_core (HASH:1400 5)]
-  ieee80211_iterate_active_interfaces_atomic+0x36/0x50 [mac80211 (HASH:1400 6)]
-  rtw89_core_rx_to_mac80211+0xfd/0x1b0 [rtw89_core (HASH:1400 5)]
-  rtw89_core_rx+0x43a/0x980 [rtw89_core (HASH:1400 5)]
-
-Fixes: c6aa9a9c4725 ("wifi: rtw89: add RNR support for 6 GHz scan")
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index d0d2ca31b376..0babf5472195 100644
+index 0babf5472195..1f5639a5d166 100644
 --- a/drivers/net/wireless/realtek/rtw89/core.c
 +++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2161,6 +2161,11 @@ static void rtw89_core_cancel_6ghz_probe_tx(struct rtw89_dev *rtwdev,
- 	if (rx_status->band != NL80211_BAND_6GHZ)
- 		return;
+@@ -2796,9 +2796,11 @@ static void rtw89_core_stats_sta_rx_status(struct rtw89_dev *rtwdev,
+ }
  
-+	if (unlikely(!(rtwdev->chip->support_bands & BIT(NL80211_BAND_6GHZ)))) {
-+		rtw89_debug(rtwdev, RTW89_DBG_UNEXP, "invalid rx on unsupported 6 GHz\n");
-+		return;
-+	}
+ static void rtw89_core_update_rx_status(struct rtw89_dev *rtwdev,
++					struct sk_buff *skb,
+ 					struct rtw89_rx_desc_info *desc_info,
+ 					struct ieee80211_rx_status *rx_status)
+ {
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 	const struct cfg80211_chan_def *chandef =
+ 		rtw89_chandef_get(rtwdev, RTW89_CHANCTX_0);
+ 	u16 data_rate;
+@@ -2810,6 +2812,10 @@ static void rtw89_core_update_rx_status(struct rtw89_dev *rtwdev,
+ 	rx_status->freq = chandef->chan->center_freq;
+ 	rx_status->band = chandef->chan->band;
+ 
++	if (ieee80211_is_beacon(hdr->frame_control) ||
++	    ieee80211_is_probe_resp(hdr->frame_control))
++		rx_status->boottime_ns = ktime_get_boottime_ns();
 +
- 	ssid_ie = cfg80211_find_ie(WLAN_EID_SSID, ies, skb->len);
+ 	if (rtwdev->scanning &&
+ 	    RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw)) {
+ 		const struct rtw89_chan *cur = rtw89_scan_chan_get(rtwdev);
+@@ -2966,7 +2972,7 @@ void rtw89_core_rx(struct rtw89_dev *rtwdev,
  
- 	list_for_each_entry(info, &pkt_list[NL80211_BAND_6GHZ], list) {
+ 	rx_status = IEEE80211_SKB_RXCB(skb);
+ 	memset(rx_status, 0, sizeof(*rx_status));
+-	rtw89_core_update_rx_status(rtwdev, desc_info, rx_status);
++	rtw89_core_update_rx_status(rtwdev, skb, desc_info, rx_status);
+ 	rtw89_core_rx_pkt_hdl(rtwdev, skb, desc_info);
+ 	if (desc_info->long_rxdesc &&
+ 	    BIT(desc_info->frame_type) & PPDU_FILTER_BITMAP)
 -- 
 2.25.1
 
