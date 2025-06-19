@@ -1,176 +1,187 @@
-Return-Path: <linux-wireless+bounces-24269-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24270-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916EFAE034F
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jun 2025 13:20:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1C7AE083C
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jun 2025 16:06:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1302188598B
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jun 2025 11:20:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B856716BE1D
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jun 2025 14:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C02D2248AC;
-	Thu, 19 Jun 2025 11:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4A323496F;
+	Thu, 19 Jun 2025 14:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="laUZKVVv"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QOLXza8W"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F43224254
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Jun 2025 11:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F78F25F970
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Jun 2025 14:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750332020; cv=none; b=TVZ5i25P4ds/7px4jsuREGg6U/5nvq0QoWjjVUhTNlECQz6KxR7JLFTPW+rrflJA7vWEzl4SdJdZyQNbjNM5EZhG/Y5yQAYup6gfO9SL+dQ6vF2YnMFa5zOq81WAvbRl1AGSKzd0RtHo3/TdX54dUQdwz+dIxmgUilpeEu05PUY=
+	t=1750341965; cv=none; b=Hwpmcy5gWWfYNV1mX6rSRfwQhmUlRpear4zwA0sQiK+Z2it6mivQACs6+XlisFIA8KMufj0Ffpylo134ILeymkHqCkk/K/Wr+g8DAv+XiFl9zE/97AlNVP9BIdWUm1phHhqSXbEIoSBaIsr2lNSXm2vWIeygsyRS/ghWHmHy9w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750332020; c=relaxed/simple;
-	bh=5IRrl8wQmIlmsNGHbvVAfg5KF1cloTL8nYCSUYwQGG8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ErebhA+G7UzMtT3DjIt+bkLizxmV7K+nCPdzdmcTuqaRkXA2+wMv+owgCfbhg5PjWuAIxqWI9IrhVNgWXx0mhNSVR3leAyhZwGh+b2gMA41Dr/ScTTvEb+Q/tlTgeQiPQ8xoAzQ6NC9AQZgrxjmlHU3emvotaaHgOKXuarXqCLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=laUZKVVv; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 5b9bfa844cff11f0b910cdf5d4d8066a-20250619
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=D+CCFp+Wc7beQ37y1zJonANxhmhz8jMYorTeDhJV7TE=;
-	b=laUZKVVvI0Q9v/dQsf3J5BQ1Rmd0oSJMY5HLOH7zjo4ILltKw0DeiGQ1YpBUe1/2g4w9odjjsdqFGTia0bJfKQAg/nEgpktRLvCcY52w81iJ9X/tciyXsMxJ383NRKAuTXcv8iZ0s9HMzUDJqQjHrm+42NgDPkxl9aZyU8SMVG4=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.3,REQID:26555b1f-225a-4496-96dd-78ac90bfc381,IP:0,UR
-	L:0,TC:0,Content:-25,EDM:-30,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-55
-X-CID-META: VersionHash:09905cf,CLOUDID:63f4dc58-abad-4ac2-9923-3af0a8a9a079,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:2,IP:nil
-	,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:
-	1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 5b9bfa844cff11f0b910cdf5d4d8066a-20250619
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1346564004; Thu, 19 Jun 2025 19:20:08 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Thu, 19 Jun 2025 19:20:01 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Thu, 19 Jun 2025 19:20:05 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Leon Yen <leon.yen@mediatek.com>, "Ming
- Yen Hsieh" <mingyen.hsieh@mediatek.com>
-Subject: [PATCH] wifi: mt76: Limit the concurrent STA and SoftAP to operate on the same channel
-Date: Thu, 19 Jun 2025 19:20:05 +0800
-Message-ID: <20250619112005.2071110-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1750341965; c=relaxed/simple;
+	bh=ZVmgT2s6SZ70A/9Dhoo1SD+oZjDDp7qhQCOPOHMwFq4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SSPcuGTWQRtsmCvzRWvOvIeNeqiMPxmHM/LGohfDTx/iKCSkPlz26znpfNTj9ipaD2awn6uzpsJIeELrNEWwls4FHwHTJkylroNViFKemVQJf0S8wYQ831mymsMJyg/5jCzjav2DAvOTKMDz0mz1WcxR6v0fKv4q4LH88HcTwT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QOLXza8W; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55J938CX032388
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Jun 2025 14:06:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ulMJeCyYI5IB6//qPN7mq8KEhDVWpcgCCr3KrMRtkBA=; b=QOLXza8Wst5QbFEw
+	wqOY0ja23RjpxLvSiXpDVOnDl89E54CPHrRR/Rpu/mA2N3wDEV+q0bpNj3DyYecX
+	WP4pw736vvqE3TSe6b30FM/7HOXZt8KEXg2MaN2ly3z/OyjbOYCA7rZZemmOZeeF
+	uIso8AJKMe6EIhKeCriQD7Uo6+ZpKHYt/bd0r9ezKj5rkfg0mLiyue9R5SpHYXNf
+	1w5L1WNKTdd38ZqHLTJyQS1DPzIQ4W9/6GvQf9sLaicDNc5/AwQU2QL3E17tdEzv
+	4Bl1C6KUGIoaPKhzr1tkPPN+xT6b7GtNPUihDNaOy1q8pFclFKqAKzSmX0bEgWcz
+	V61lhg==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47928mr3vs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Jun 2025 14:06:02 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-311f4f2e6baso826271a91.0
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Jun 2025 07:06:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750341961; x=1750946761;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ulMJeCyYI5IB6//qPN7mq8KEhDVWpcgCCr3KrMRtkBA=;
+        b=NDl+9Ld0YpmgKB+7OC9ATAPClWz33Viccv5tomGVPK6zyh7kTM6AhreP3JWkV04Oga
+         e/Ur1GhOp2BBIiG8hm30SGuUmvl7TZJSOgK01dwRBjggBGXYmJYF5HnJ1ZKc1k4FSuGy
+         sSJXHO2qFfDpbRoby46DuBg2KZXn3VzIWI6vN/QxqlS3TiErgQUvxVrcGa0q6KRMF4lu
+         1/N3WXrSv0bNxj2znDSJ7vzcuosiGGNTpHQf786+LHbamkuxsQLgBU6TCSMdaEmx0ujW
+         qR1GoLH/55vxUG5Zm37X9m4LU1itjfRENs1vBvyOPlmInRlMUeJVu/9yr0UDVM10D1RK
+         JBpQ==
+X-Gm-Message-State: AOJu0YwqiqKWJVxaS2Xcb2r98tFVFtGjBgCMcTfINGTNx5ItRCzkQ7Hb
+	OlcSCTONAq9NGqhYsYBos0SyLYKUtCjYjgvh7h/7PPe3TVnlL/q8LR0xWN5RL/xONqchssV8An8
+	HdIzR0xTDz0mmDj7KekjpKyk0JdloMMjH6w6h3xXw7rkcpNeElHUYeDAZTA9UkxH3X3Xt5A==
+X-Gm-Gg: ASbGncshPUJ19NtcrAR67MT9CTpZaHIPYi5+6RESr7oU4KxeDvx0+cZE6IMaRtZTTyV
+	s+XK7aY52BeaSm8Wg+aaC5IGxWI9/A8P4YkKAb3tgOzJYWj3G4NEeFcQ0O4miWjb1/txGHFZ5mv
+	tpK874G3jTzrKTMazWe+V8iqM8p9VL3msYyXNcqyhX/dJRyOt1gzdBWIj3jHtsa0WxQonDaUSbY
+	8NanC2VI4Qbo5ifwMmb3Mweuez3q1q+wvdtsUcMt24hcY9AmItR49IMQS6mWfOmDatiZ0qiiJsj
+	YZ3m6EYMaoq8Pd7QufLpxn1gC5VGzlLcrNVVjjMxh+Sb/vqtPPOo/5cPrerlMe8IV7A=
+X-Received: by 2002:a17:90b:1d50:b0:313:28f1:fc1b with SMTP id 98e67ed59e1d1-313f1ca127bmr34509204a91.9.1750341961388;
+        Thu, 19 Jun 2025 07:06:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFxEZxw6yv6fxzBWQzL808AZTwJh+fj/FW9ppTk+1ZWotethNWagpS5HYSLGVmsVeMQ1kzapQ==
+X-Received: by 2002:a17:90b:1d50:b0:313:28f1:fc1b with SMTP id 98e67ed59e1d1-313f1ca127bmr34509139a91.9.1750341960814;
+        Thu, 19 Jun 2025 07:06:00 -0700 (PDT)
+Received: from [192.168.11.100] ([124.123.81.173])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365d88c034sm120219265ad.50.2025.06.19.07.05.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Jun 2025 07:06:00 -0700 (PDT)
+Message-ID: <48b3af20-dd6c-49cf-88b0-1d535bd917f7@oss.qualcomm.com>
+Date: Thu, 19 Jun 2025 19:35:56 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next] wifi: mac80211: Fix 6 GHz Band capabilities
+ element advertisement in lower bands
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
+        Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+References: <20250606104436.326654-1-rameshkumar.sundaram@oss.qualcomm.com>
+ <4ab522796b91ed3421991799d3a7831a3c0ffb53.camel@sipsolutions.net>
+ <92a6a3b6-397d-4cf3-95d6-01b50f827183@oss.qualcomm.com>
+ <6290a248adbc1208df293dc22b85fe5a33963239.camel@sipsolutions.net>
+ <ec688c7e-65b1-4ef4-a977-e6c89d2176ef@oss.qualcomm.com>
+ <f80c107d6cf596091865961f8d1371b98486a14a.camel@sipsolutions.net>
+Content-Language: en-US
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+In-Reply-To: <f80c107d6cf596091865961f8d1371b98486a14a.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE5MDExNyBTYWx0ZWRfX+pyx9GLagDyM
+ 7eG7JBoJhXNZbWIN0ZxwNu759Orxns8MeW2kVzIr3o8kIxeeE7V8nN7CwMd/WU+mSFxw972Hshq
+ d7PDTkJIgBdIxNBiGHvZE3AQq302y11FrEdX5MPgxOxOkgLDvTLwLI5hMm7exCqyp24a18Pm5RT
+ tFskblH7dfYLCSGY1YKLpaiAS8+SgZ2UQWfuJ4fDBWo/D4+ZafqRRpD+rdvwSdntoWfIFoeWbPc
+ OZjMr/P1k+tyZElI+QmZHk0dGhR6PEj/0cvGi0uPmwA/zRTEJr2LonYInoY3fFj8g4nlYL2Vvns
+ q/yREmijNbACG4NrMaiwydJDrXeYpx1yr92BFfmigRbEpBDu/TbTJxcNlOa+jRSfVTAN9kC28nS
+ DLFY6KDbJFlIgB+W4ucesd1wcgaYRUZVvHPXmVl5mq07VpT7sCOooypXbvqyRdjd13GYkYci
+X-Authority-Analysis: v=2.4 cv=fvbcZE4f c=1 sm=1 tr=0 ts=6854194a cx=c_pps
+ a=0uOsjrqzRL749jD1oC5vDA==:117 a=R7zuFBDiW8lgADV909h7jA==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=8_dq1OcrlyS03M-rYkMA:9
+ a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
+X-Proofpoint-GUID: dwUUo3bh6S6SuULol_slUHan_QA0HNQ9
+X-Proofpoint-ORIG-GUID: dwUUo3bh6S6SuULol_slUHan_QA0HNQ9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-19_05,2025-06-18_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 bulkscore=0 priorityscore=1501
+ mlxlogscore=999 phishscore=0 clxscore=1015 mlxscore=0 impostorscore=0
+ adultscore=0 spamscore=0 suspectscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506190117
 
-From: Leon Yen <leon.yen@mediatek.com>
 
-Due to the lack of NoA(Notice of Absence) mechanism in SoftAP mode, it is
-inappropriate to allow concurrent SoftAP and STA to operate on the
-different channels.
 
-This patch restricts the concurrent SoftAP and STA to be setup on the same
-channel only.
+On 6/18/2025 5:05 PM, Johannes Berg wrote:
+> On Wed, 2025-06-18 at 16:55 +0530, Rameshkumar Sundaram wrote:
+>>> I think it might make more sense for _mesh_ to do this, and honestly
+>>> mesh probably doesn't have much 6 GHz language in the spec anyway? I
+>>> didn't check now.
+>>
+>> Guess mesh is defined for 6 GHz as well,
+>>
+>> 26.17.2 HE BSS operation in the 6 GHz band
+>> A mesh STA with dot11HE6GOptionImplemented equal to true and operating
+>> in the 6 GHz band is a 6 GHz mesh STA.
+> 
+> OK fair :)
+> 
+>>> I don't see why multi-radio would behave differently, sure, something
+>>> else could be occupying the 6 GHz band but that's also true for a "non-
+>>> multi-radio design", after all that doesn't mean it doesn't have
+>>> multiple radios, it just manages them differently.
+>>>
+>>
+>> That makes sense, thanks for the explanation, but is there a reason we
+>> should include the 6 GHz band capabilities element even-though the link
+>> STA/ mesh BSS that is going to send the beacon/assoc req frames is
+>> operating in a lower band (say 5GHz) ?
+> 
+> It's probably not useful in a *beacon*, I guess?
+> 
+>> Does this help in discovery of any out of band capabilities ? Just
+>> trying to understand how this is useful.
+>>
+>> With current implementation, an ML STA negotiating 5 GHz and 6 GHz links
+>> with an ML AP would send HE 6 GHz Band capabilities element in both the
+>> links as part of association request.
+> 
+> There was, afaik, some discussion here in the spec asking explicitly to
+> have it included if the STA is 6 GHz capable, but don't ask me why.
+> 
+> Now that I look at it again though, it says for both beacon and probe -
+> _request_ to include it when dot11HEOptionImplemented and
+> dot11HE6GOptionImplemented are (both) true... We always though, with
+> some discussions with Cisco IIRC, that we should then always include it
+> even on the other bands for probe requests etc.
+> 
 
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt792x_core.c  | 42 ++++++++++++++++---
- 1 file changed, 36 insertions(+), 6 deletions(-)
+Thanks for the detailed explanation.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index 7f572f8afc02..869fd90202b8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -28,7 +28,7 @@ static const struct ieee80211_iface_combination if_comb[] = {
- 	},
- };
- 
--static const struct ieee80211_iface_limit if_limits_chanctx[] = {
-+static const struct ieee80211_iface_limit if_limits_chanctx_mcc[] = {
- 	{
- 		.max = 2,
- 		.types = BIT(NL80211_IFTYPE_STATION) |
-@@ -36,8 +36,7 @@ static const struct ieee80211_iface_limit if_limits_chanctx[] = {
- 	},
- 	{
- 		.max = 1,
--		.types = BIT(NL80211_IFTYPE_AP) |
--			 BIT(NL80211_IFTYPE_P2P_GO)
-+		.types = BIT(NL80211_IFTYPE_P2P_GO)
- 	},
- 	{
- 		.max = 1,
-@@ -45,16 +44,47 @@ static const struct ieee80211_iface_limit if_limits_chanctx[] = {
- 	}
- };
- 
--static const struct ieee80211_iface_combination if_comb_chanctx[] = {
-+static const struct ieee80211_iface_combination if_comb_chanctx_mcc[] = {
- 	{
--		.limits = if_limits_chanctx,
--		.n_limits = ARRAY_SIZE(if_limits_chanctx),
-+		.limits = if_limits_chanctx_mcc,
-+		.n_limits = ARRAY_SIZE(if_limits_chanctx_mcc),
- 		.max_interfaces = 3,
- 		.num_different_channels = 2,
- 		.beacon_int_infra_match = false,
- 	}
- };
- 
-+static const struct ieee80211_iface_limit if_limits_chanctx_scc[] = {
-+	{
-+		.max = 2,
-+		.types = BIT(NL80211_IFTYPE_STATION) |
-+			 BIT(NL80211_IFTYPE_P2P_CLIENT)
-+	},
-+	{
-+		.max = 1,
-+		.types = BIT(NL80211_IFTYPE_AP)
-+	},
-+	{
-+		.max = 1,
-+		.types = BIT(NL80211_IFTYPE_P2P_DEVICE)
-+	}
-+};
-+
-+static const struct ieee80211_iface_combination if_comb_chanctx_scc[] = {
-+	{
-+		.limits = if_limits_chanctx_scc,
-+		.n_limits = ARRAY_SIZE(if_limits_chanctx_scc),
-+		.max_interfaces = 3,
-+		.num_different_channels = 1,
-+		.beacon_int_infra_match = false,
-+	}
-+};
-+
-+static const struct ieee80211_iface_combination if_comb_chanctx[] = {
-+		if_comb_chanctx_mcc[0],
-+		if_comb_chanctx_scc[0],
-+};
-+
- void mt792x_tx(struct ieee80211_hw *hw, struct ieee80211_tx_control *control,
- 	       struct sk_buff *skb)
- {
--- 
-2.34.1
+> But does that make sense for beacons? Not really?
+
+Feel like it doesn't. Shall i make this patch to restrict this only for 
+mesh beacons ?
+
+
+--
+Ramesh
 
 
