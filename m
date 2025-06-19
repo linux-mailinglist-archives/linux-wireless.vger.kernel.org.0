@@ -1,187 +1,104 @@
-Return-Path: <linux-wireless+bounces-24270-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24271-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1C7AE083C
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jun 2025 16:06:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBC2AE0933
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jun 2025 16:52:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B856716BE1D
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jun 2025 14:06:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75CCA1899C0B
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jun 2025 14:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4A323496F;
-	Thu, 19 Jun 2025 14:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83262253E4;
+	Thu, 19 Jun 2025 14:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QOLXza8W"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="K3psz1id"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F78F25F970
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Jun 2025 14:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFAE267714
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Jun 2025 14:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750341965; cv=none; b=Hwpmcy5gWWfYNV1mX6rSRfwQhmUlRpear4zwA0sQiK+Z2it6mivQACs6+XlisFIA8KMufj0Ffpylo134ILeymkHqCkk/K/Wr+g8DAv+XiFl9zE/97AlNVP9BIdWUm1phHhqSXbEIoSBaIsr2lNSXm2vWIeygsyRS/ghWHmHy9w8=
+	t=1750344602; cv=none; b=jJFUB53dlOtknAy7n31HLSeJy61JTxV3U/CUPImy6zWpZR9JTvegvflCl1XEgeKVPK6V5R6tSQWqvfH20A3d8GCsdbMEREo5AhdjMVRuZIUQ9UYsfp4CvoUvOjstjYg+7m0YhQuVVUJ0CF4TpowIOeXKRzrZDsJl5LWEnrjIdgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750341965; c=relaxed/simple;
-	bh=ZVmgT2s6SZ70A/9Dhoo1SD+oZjDDp7qhQCOPOHMwFq4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SSPcuGTWQRtsmCvzRWvOvIeNeqiMPxmHM/LGohfDTx/iKCSkPlz26znpfNTj9ipaD2awn6uzpsJIeELrNEWwls4FHwHTJkylroNViFKemVQJf0S8wYQ831mymsMJyg/5jCzjav2DAvOTKMDz0mz1WcxR6v0fKv4q4LH88HcTwT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QOLXza8W; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55J938CX032388
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Jun 2025 14:06:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ulMJeCyYI5IB6//qPN7mq8KEhDVWpcgCCr3KrMRtkBA=; b=QOLXza8Wst5QbFEw
-	wqOY0ja23RjpxLvSiXpDVOnDl89E54CPHrRR/Rpu/mA2N3wDEV+q0bpNj3DyYecX
-	WP4pw736vvqE3TSe6b30FM/7HOXZt8KEXg2MaN2ly3z/OyjbOYCA7rZZemmOZeeF
-	uIso8AJKMe6EIhKeCriQD7Uo6+ZpKHYt/bd0r9ezKj5rkfg0mLiyue9R5SpHYXNf
-	1w5L1WNKTdd38ZqHLTJyQS1DPzIQ4W9/6GvQf9sLaicDNc5/AwQU2QL3E17tdEzv
-	4Bl1C6KUGIoaPKhzr1tkPPN+xT6b7GtNPUihDNaOy1q8pFclFKqAKzSmX0bEgWcz
-	V61lhg==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47928mr3vs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Jun 2025 14:06:02 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-311f4f2e6baso826271a91.0
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Jun 2025 07:06:02 -0700 (PDT)
+	s=arc-20240116; t=1750344602; c=relaxed/simple;
+	bh=RmY0Xevw8TVnFstaNyUj2eJowpNdXKcRW6wC6tdkF2E=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=QBjcrLaq4LLGIijsIGpDD1DIxa366mog7Te+9IbX/ryJNEUAVmL6fE2kZYzHXog5mTHClwnY4YyzELWPu1ciK8KubTK/jgrZHUBwvn7fKrTCv7sl1EjKjxUsldkOt8uKU50MsRizecSzWDSL4zBWu7xZe8YFhOodZpVXkJynIFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=K3psz1id; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-748d982e92cso528486b3a.1
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Jun 2025 07:50:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1750344600; x=1750949400; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xyLGIeI2pWRWGSJdrrn8FqSqrDl0tOwVhPMyUFPxpmE=;
+        b=K3psz1idNX3kspWDOGvB0I4HG5Gwymsle511CdV00wSCotC7O3aDGY1n8D0h4A9DPk
+         qTO76Hq1nFwh4Y7Dyy+nRrGDsZV/jn1xEjZgWAVMF59USMspyyh2bu3re7ynLBpNWdQD
+         SUM8aeOWLmKDUefA9NMiTIWpsHPUrtS+SSnLs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750341961; x=1750946761;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1750344600; x=1750949400;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ulMJeCyYI5IB6//qPN7mq8KEhDVWpcgCCr3KrMRtkBA=;
-        b=NDl+9Ld0YpmgKB+7OC9ATAPClWz33Viccv5tomGVPK6zyh7kTM6AhreP3JWkV04Oga
-         e/Ur1GhOp2BBIiG8hm30SGuUmvl7TZJSOgK01dwRBjggBGXYmJYF5HnJ1ZKc1k4FSuGy
-         sSJXHO2qFfDpbRoby46DuBg2KZXn3VzIWI6vN/QxqlS3TiErgQUvxVrcGa0q6KRMF4lu
-         1/N3WXrSv0bNxj2znDSJ7vzcuosiGGNTpHQf786+LHbamkuxsQLgBU6TCSMdaEmx0ujW
-         qR1GoLH/55vxUG5Zm37X9m4LU1itjfRENs1vBvyOPlmInRlMUeJVu/9yr0UDVM10D1RK
-         JBpQ==
-X-Gm-Message-State: AOJu0YwqiqKWJVxaS2Xcb2r98tFVFtGjBgCMcTfINGTNx5ItRCzkQ7Hb
-	OlcSCTONAq9NGqhYsYBos0SyLYKUtCjYjgvh7h/7PPe3TVnlL/q8LR0xWN5RL/xONqchssV8An8
-	HdIzR0xTDz0mmDj7KekjpKyk0JdloMMjH6w6h3xXw7rkcpNeElHUYeDAZTA9UkxH3X3Xt5A==
-X-Gm-Gg: ASbGncshPUJ19NtcrAR67MT9CTpZaHIPYi5+6RESr7oU4KxeDvx0+cZE6IMaRtZTTyV
-	s+XK7aY52BeaSm8Wg+aaC5IGxWI9/A8P4YkKAb3tgOzJYWj3G4NEeFcQ0O4miWjb1/txGHFZ5mv
-	tpK874G3jTzrKTMazWe+V8iqM8p9VL3msYyXNcqyhX/dJRyOt1gzdBWIj3jHtsa0WxQonDaUSbY
-	8NanC2VI4Qbo5ifwMmb3Mweuez3q1q+wvdtsUcMt24hcY9AmItR49IMQS6mWfOmDatiZ0qiiJsj
-	YZ3m6EYMaoq8Pd7QufLpxn1gC5VGzlLcrNVVjjMxh+Sb/vqtPPOo/5cPrerlMe8IV7A=
-X-Received: by 2002:a17:90b:1d50:b0:313:28f1:fc1b with SMTP id 98e67ed59e1d1-313f1ca127bmr34509204a91.9.1750341961388;
-        Thu, 19 Jun 2025 07:06:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFxEZxw6yv6fxzBWQzL808AZTwJh+fj/FW9ppTk+1ZWotethNWagpS5HYSLGVmsVeMQ1kzapQ==
-X-Received: by 2002:a17:90b:1d50:b0:313:28f1:fc1b with SMTP id 98e67ed59e1d1-313f1ca127bmr34509139a91.9.1750341960814;
-        Thu, 19 Jun 2025 07:06:00 -0700 (PDT)
-Received: from [192.168.11.100] ([124.123.81.173])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365d88c034sm120219265ad.50.2025.06.19.07.05.58
+        bh=xyLGIeI2pWRWGSJdrrn8FqSqrDl0tOwVhPMyUFPxpmE=;
+        b=D42lkwFuVY1UlnL7W3tqhQMVU6uNIQBLzjothe1UsaanfDHEiYGmY7HQwk45fRTo6C
+         0A7Xy0Ldb/UX3dXK91MbVSJGdwBuO1rGLm6KJBQBZkZA+zWw0oBt9UwyDFRm4VX7qD71
+         ORrHgrHaFf2yPmNmjEQkMa4XCPJAarcFcnpvro322yfeTAKsID/fYGxTh9yBxQuc4QcR
+         9eRQSfl86UXACbC9NmeoVb5FVq4gU6bmtrw7G/7rXSQwYhldrl/wA+isx70/eeWMbt7J
+         B5MAKzVMt0ItDxu1zc2+iUimIFEoPgjdjLuuo18hfHELfxWxN7n0ZWobY1FA7A1MxdYP
+         gyLw==
+X-Forwarded-Encrypted: i=1; AJvYcCXwM2XwyBg6cI2uN8hC1pYr7QqNvidV6EZXTzBpl9nMXfBINUgoJvhZxykqe3TLP4yvH+L/0IiXhaDXVKdIkQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPGS/LqyDCojIjCqVCepKNWXwdSYkB5/4StTcM3pJylQAnmevn
+	YLWpsY42qDr9VYKxtyX8AFxbwPSpyCKY+ZJ6bWMKt/jZMXEdk+vppkCnQfJiQb+Ehg==
+X-Gm-Gg: ASbGncv5/A4kstxn+GMJFQl/4V8l9XIpX1o+4xARhweiA7lGZCSQlqR0f/jAnlzZMI8
+	4NSMBptyxT76rDOXlBhJIHEnqlfHdtOvMEzT04qhD83ZjzqMal/5F++a9k06HnGt9UZUJUxNwdF
+	e0NFEiyO1AyhpN5eDgdp6zPVgJCI1vTyuivfB0/IP/N9dgb/rBEhyG1//9I2RJVep1tRL4Tlhb4
+	y/ERwiRMDVAdK3Fs56Li8erBvIEzTqU+KM1V+bXWK68M6rKsnuTIU2ykio7uDb1+X0uGkmBXR2s
+	vLGMpcSQtZ63RNMnAjaBAVkttpOLKiP6Kr3bjgDrHYoO4AZYpCTLRqgSJ4cNnc4ZK4NoUG1TGqr
+	+0wy511LyGp5heAFDJ7sHe2HOpulwvzYygOw=
+X-Google-Smtp-Source: AGHT+IE0IABp03aQi/MMdsx50TsZhfjlS77ZjBf2ZnkWRLyJkwYN80FXKFOnWqqtHBqMUe2X9qwO7Q==
+X-Received: by 2002:a05:6a00:228b:b0:748:fb7c:bbe0 with SMTP id d2e1a72fcca58-748fb7cc2d2mr4770370b3a.24.1750344599760;
+        Thu, 19 Jun 2025 07:49:59 -0700 (PDT)
+Received: from [10.229.43.247] ([192.19.176.250])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7490a46b569sm84792b3a.20.2025.06.19.07.49.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Jun 2025 07:06:00 -0700 (PDT)
-Message-ID: <48b3af20-dd6c-49cf-88b0-1d535bd917f7@oss.qualcomm.com>
-Date: Thu, 19 Jun 2025 19:35:56 +0530
+        Thu, 19 Jun 2025 07:49:59 -0700 (PDT)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Colin Ian King <colin.i.king@gmail.com>, Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>
+CC: <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Date: Thu, 19 Jun 2025 16:49:53 +0200
+Message-ID: <19788aaee68.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <20250619082554.1834654-1-colin.i.king@gmail.com>
+References: <20250619082554.1834654-1-colin.i.king@gmail.com>
+User-Agent: AquaMail/1.55.1 (build: 105501552)
+Subject: Re: [PATCH][next] wifi: brcmfmac: Make read-only array cfg_offset static const
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next] wifi: mac80211: Fix 6 GHz Band capabilities
- element advertisement in lower bands
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-        Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
-References: <20250606104436.326654-1-rameshkumar.sundaram@oss.qualcomm.com>
- <4ab522796b91ed3421991799d3a7831a3c0ffb53.camel@sipsolutions.net>
- <92a6a3b6-397d-4cf3-95d6-01b50f827183@oss.qualcomm.com>
- <6290a248adbc1208df293dc22b85fe5a33963239.camel@sipsolutions.net>
- <ec688c7e-65b1-4ef4-a977-e6c89d2176ef@oss.qualcomm.com>
- <f80c107d6cf596091865961f8d1371b98486a14a.camel@sipsolutions.net>
-Content-Language: en-US
-From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-In-Reply-To: <f80c107d6cf596091865961f8d1371b98486a14a.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE5MDExNyBTYWx0ZWRfX+pyx9GLagDyM
- 7eG7JBoJhXNZbWIN0ZxwNu759Orxns8MeW2kVzIr3o8kIxeeE7V8nN7CwMd/WU+mSFxw972Hshq
- d7PDTkJIgBdIxNBiGHvZE3AQq302y11FrEdX5MPgxOxOkgLDvTLwLI5hMm7exCqyp24a18Pm5RT
- tFskblH7dfYLCSGY1YKLpaiAS8+SgZ2UQWfuJ4fDBWo/D4+ZafqRRpD+rdvwSdntoWfIFoeWbPc
- OZjMr/P1k+tyZElI+QmZHk0dGhR6PEj/0cvGi0uPmwA/zRTEJr2LonYInoY3fFj8g4nlYL2Vvns
- q/yREmijNbACG4NrMaiwydJDrXeYpx1yr92BFfmigRbEpBDu/TbTJxcNlOa+jRSfVTAN9kC28nS
- DLFY6KDbJFlIgB+W4ucesd1wcgaYRUZVvHPXmVl5mq07VpT7sCOooypXbvqyRdjd13GYkYci
-X-Authority-Analysis: v=2.4 cv=fvbcZE4f c=1 sm=1 tr=0 ts=6854194a cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=R7zuFBDiW8lgADV909h7jA==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=8_dq1OcrlyS03M-rYkMA:9
- a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
-X-Proofpoint-GUID: dwUUo3bh6S6SuULol_slUHan_QA0HNQ9
-X-Proofpoint-ORIG-GUID: dwUUo3bh6S6SuULol_slUHan_QA0HNQ9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-19_05,2025-06-18_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 bulkscore=0 priorityscore=1501
- mlxlogscore=999 phishscore=0 clxscore=1015 mlxscore=0 impostorscore=0
- adultscore=0 spamscore=0 suspectscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506190117
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
+On June 19, 2025 10:26:15 AM Colin Ian King <colin.i.king@gmail.com> wrote:
 
+> Don't populate the read-only array cfg_offset on the stack at run time,
+> instead make it static const.
 
-On 6/18/2025 5:05 PM, Johannes Berg wrote:
-> On Wed, 2025-06-18 at 16:55 +0530, Rameshkumar Sundaram wrote:
->>> I think it might make more sense for _mesh_ to do this, and honestly
->>> mesh probably doesn't have much 6 GHz language in the spec anyway? I
->>> didn't check now.
->>
->> Guess mesh is defined for 6 GHz as well,
->>
->> 26.17.2 HE BSS operation in the 6 GHz band
->> A mesh STA with dot11HE6GOptionImplemented equal to true and operating
->> in the 6 GHz band is a 6 GHz mesh STA.
-> 
-> OK fair :)
-> 
->>> I don't see why multi-radio would behave differently, sure, something
->>> else could be occupying the 6 GHz band but that's also true for a "non-
->>> multi-radio design", after all that doesn't mean it doesn't have
->>> multiple radios, it just manages them differently.
->>>
->>
->> That makes sense, thanks for the explanation, but is there a reason we
->> should include the 6 GHz band capabilities element even-though the link
->> STA/ mesh BSS that is going to send the beacon/assoc req frames is
->> operating in a lower band (say 5GHz) ?
-> 
-> It's probably not useful in a *beacon*, I guess?
-> 
->> Does this help in discovery of any out of band capabilities ? Just
->> trying to understand how this is useful.
->>
->> With current implementation, an ML STA negotiating 5 GHz and 6 GHz links
->> with an ML AP would send HE 6 GHz Band capabilities element in both the
->> links as part of association request.
-> 
-> There was, afaik, some discussion here in the spec asking explicitly to
-> have it included if the STA is 6 GHz capable, but don't ask me why.
-> 
-> Now that I look at it again though, it says for both beacon and probe -
-> _request_ to include it when dot11HEOptionImplemented and
-> dot11HE6GOptionImplemented are (both) true... We always though, with
-> some discussions with Cisco IIRC, that we should then always include it
-> even on the other bands for probe requests etc.
-> 
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-Thanks for the detailed explanation.
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> ---
+> .../broadcom/brcm80211/brcmfmac/pcie.c        | 24 ++++++++++---------
+> 1 file changed, 13 insertions(+), 11 deletions(-)
 
-> But does that make sense for beacons? Not really?
-
-Feel like it doesn't. Shall i make this patch to restrict this only for 
-mesh beacons ?
-
-
---
-Ramesh
 
 
