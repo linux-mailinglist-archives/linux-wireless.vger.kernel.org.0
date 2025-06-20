@@ -1,124 +1,88 @@
-Return-Path: <linux-wireless+bounces-24287-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24288-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8669AE1A76
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 14:06:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02C1AE1A82
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 14:07:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F0F0188DF47
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 12:06:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 888ED4A54B1
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 12:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF448235056;
-	Fri, 20 Jun 2025 12:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEBA28A1F5;
+	Fri, 20 Jun 2025 12:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="acnDhKlJ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ifPTQ/Rh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7FE17E
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Jun 2025 12:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE9F17E
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Jun 2025 12:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750421170; cv=none; b=FQ4SHcHNuMZcMsddnwRzdJ0PU4fPEPxH7IDICQOuKqmR8Pxs4UwcudNnhZlLFs0mKdsUABZWHQh9ZefSdDt01w9Q6vB8yHt/MSaNdfrMfenYae9V2eXxdjMmLJDvdBWKg8IS/9a3jUdN1h7NMTdfnrYPPn2rLY1/KX1ckBzoy40=
+	t=1750421233; cv=none; b=NS6yCyDbOSydEqO+istunol37t8xaha2C9LLqgXYr1xUhCNiMqKhSJ19nN3PfMlxMkfuebGXmZsP+VK2riNezCzkg9p2y2GCLzlMXa3BVWQT18IBawDd6VqSua5lP/TlC7izefmQQz3S061GjrHc4iKUdVK2lJmYZ5/wxaoNaVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750421170; c=relaxed/simple;
-	bh=aZe3M3OT0KDWKneHYkr7rYNVS1F/f+AhwnnXXYF2HPU=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=Dfi3Gve5axghu9ufpcmrQzIBA5bM0Z2fzi7xtGtTqR7snr6sR8+1ZwkUngLhptnMPRZ34yykCmMwXQS4yOLEgLQQvZT/nug9ZyGBxwUTdj8gdBRoUtPtu9UJIRYdnI4SbOke+Z7ATDAA18WmsWi3b0ocffTsLLIRQN9Dt5PYvCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=acnDhKlJ; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a548a73ff2so1688769f8f.0
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Jun 2025 05:06:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1750421165; x=1751025965; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5QP1Z0UZb1uUg2L12+ZqhqtLHpt/BBjTVaoznzpnQbw=;
-        b=acnDhKlJvV04EOAHz1sNw7fx/hdpPGeNYNSM7V6SVY8RyxlT+gVnD1CaML5tmsz/d8
-         5I0OMdS5vuZDNDplJ8/jqgq9yQs40/SAF6sp91wyf5OEHw5N1PMCC2UkdAPp4EwxQIwJ
-         XtZ/g8CPO7D7ePMkvPExtgsx0qRBq0IPwSNXtW6SCdcZtn1T8WUQxgpCADjY6MOQ+qJd
-         y+Yce2HrbeZ25i7tfAl+ossnuC9kdO1Tyvk/GqVzmAuqH2jCs3ADObY/l0689emgMguA
-         BBKZD7q3mJj0TuoaDFctj476gpzYyW85BHM01nul6xWso5dOAP6n8NfR59hYP734JIvk
-         O7Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750421165; x=1751025965;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5QP1Z0UZb1uUg2L12+ZqhqtLHpt/BBjTVaoznzpnQbw=;
-        b=YzEKaHCl9JJHb6tz6U/Rua9ZxJ1hi66FoXRh0ezl4dn0yGELs1P5JBSY/R7hEPh7Bu
-         jwukTVYnw2vlO8J1livNovhH028sYsjYQ960KOpDt59NUmx55ESfkFVBEHqrJ29scLuI
-         FqhLN5/Oulgg1WPRKFqjFleRGz7FEZGiFzDLxy5Yg+sI0GIRmS6F/0EUUJxUrRHUEETR
-         sR2xeHfA7/7F66je9enk/qTcD0gRrR4MP3Uw1hRhYVY9mSgZp86IvhEpbWfwthrOD8rX
-         +SSuixzCY6y1oXGSeZDlZodxGeuINQbJVzpahCW31caeeO1TF3K8s/TarRIp4oF8vG5v
-         SWHw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/+WK8Oy3GCTFWL4DBkBGZhKGSV1LovnRwTrNtSlIKBGp8oNaQ121hs7ibYG21Hio9KfBYTJfX4UnkvFB2aQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMjc4wVwW4HnrOD1ttRnQqdEZaAIurlFOxbvvl97sINm57IO8c
-	wTJRhe3Tp8c3jf+dRlZQgQbAAKnB1Q15/YOQ4IRmEssdrv5x02P+Hw/NP2jGH0kHTHQ=
-X-Gm-Gg: ASbGncvX/lqljwC7BbOmv20fis478V1e183drxmLLe/0IifvfaNq9ykW/+ao/FipNU4
-	c6i/ulb/Am0EBargGpDYWrp9hEIUdhbZBwJvFfssVJG7VBFvLWWhoWfhB7L8zqtyGkMssWGIE6Q
-	xXOsUEt7G+/+B27g+7PlbMQbRKDIJo62QwLyyzsyx41VpNpQDowPikkhW0Zp3v+X27p31zvYaOF
-	3emSg7z5rGBmbkEvvTPIvZhnZYJlhQt+lLgVR6+fQGQekzgMm5OBUmq6lCSuPoI3lFaUuuYZIWv
-	PNIK2RmbIuN+nSgMnZd2vNcuHGcQdIMqQrnSkWiGTvPBBr2ealo2MSr9jrTUA7Zgch2GtyrOjmt
-	+nE0NrTve6P3anJXBxlBEX+TgQXER
-X-Google-Smtp-Source: AGHT+IGptzPczS7rok+CfAHy5MJMmghXoYqx88HjwgUiLqmliYLa27p1kOnafRJeGI5zbk1fdnezdQ==
-X-Received: by 2002:a05:6000:651:b0:3a5:39a8:199c with SMTP id ffacd0b85a97d-3a6d13129demr2192576f8f.53.1750421164718;
-        Fri, 20 Jun 2025 05:06:04 -0700 (PDT)
-Received: from [192.168.108.121] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d128d063sm1864357f8f.101.2025.06.20.05.06.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Jun 2025 05:06:04 -0700 (PDT)
-Message-ID: <4d9d30d3-a011-46a3-b970-3ab0d647df39@freebox.fr>
-Date: Fri, 20 Jun 2025 14:06:03 +0200
+	s=arc-20240116; t=1750421233; c=relaxed/simple;
+	bh=9jpHB3P4u3CdVzwOgdTOW9WzvTenRp2tCBkclncsTrM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pwX8QglRpuZSotCPAQ+MhqCMVJoH22SCNXPO72CsZMxes9MjQYTI6xXT4NIa1Rpac13nwEUrrg+W2jnkJK6+8SsqX398IGEf5Au1HGsp/MgqgycKoQhBJDF3dSEYKUWrRN4q6gevrCYodJkDJWgCYFz6oWtORyNUTj/ur/i+M/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ifPTQ/Rh; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=9jpHB3P4u3CdVzwOgdTOW9WzvTenRp2tCBkclncsTrM=;
+	t=1750421231; x=1751630831; b=ifPTQ/RhCVEtJhVXXZVcdYVzd9E6NDNAHCzG9nM8u3QnhZs
+	V616Qj2fMo2y0Vt9//PpjwBuS4gqfXCPUF0oKESmqMawqpBb4Yp2Xj88krM8Kf1xZtjFnYSgtukls
+	SNU6ZUscl0TWyEYUlYrPJIX9lSh3rczrsZxRKW89RZALdU6xyt7qWTctGQFCkSb3TezDE55G98sxp
+	UJz3i3RE8nfmlFPqvjUN83UwMY1WOWiwXmbZSyQUne51Lk3h3bMK1OtBGVQ3qSx6lSmLo3F/4WTrV
+	rIiJerJan266Ve4D9avEt4Hc5kw3MHepnPM2Qtfk6Ov4jBLgQZBwFo9lZJ7hOLLg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uSaWS-00000002iXL-0R7Y;
+	Fri, 20 Jun 2025 14:07:08 +0200
+Message-ID: <bcf4480e054a29ebd4eae6927aa303f712f2f272.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next] wifi: mac80211: Fix 6 GHz Band
+ capabilities element advertisement in lower bands
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
+Cc: j@w1.fi, linux-wireless@vger.kernel.org, 
+	rameshkumar.sundaram@oss.qualcomm.com, ramya.gnanasekar@oss.qualcomm.com
+Date: Fri, 20 Jun 2025 14:07:07 +0200
+In-Reply-To: <4d9d30d3-a011-46a3-b970-3ab0d647df39@freebox.fr> (sfid-20250620_140607_008396_D7C98A2C)
+References: 
+	<4a1c89a13b299588bf9c94dd545eda3e30fb5491.camel@sipsolutions.net>
+	 <4d9d30d3-a011-46a3-b970-3ab0d647df39@freebox.fr>
+	 (sfid-20250620_140607_008396_D7C98A2C)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: johannes@sipsolutions.net
-Cc: j@w1.fi, linux-wireless@vger.kernel.org,
- rameshkumar.sundaram@oss.qualcomm.com, ramya.gnanasekar@oss.qualcomm.com
-References: <4a1c89a13b299588bf9c94dd545eda3e30fb5491.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next] wifi: mac80211: Fix 6 GHz Band capabilities
- element advertisement in lower bands
-Content-Language: en-US
-From: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>
-In-Reply-To: <4a1c89a13b299588bf9c94dd545eda3e30fb5491.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-Hi,
+On Fri, 2025-06-20 at 14:06 +0200, Pablo MARTIN-GOMEZ wrote:
+>=20
+> I'm not sure there is any actual STA that does this, but in theory, a HE=
+=20
+> 6GHz-capable STA could do an extended channel switching procedure=20
+> towards a 6GHz channel, and include an Extended Channel Switch=20
+> Announcement in its beacon. Having also the HE 6 GHz Band Capabilities=
+=20
+> element in that same beacon makes sense.
 
-On 20/06/2025 10:39, Johannes Berg wrote:
+Only with the new _really_ extended channel switch, which has ways of
+updating capabilities while doing the switching, so it wouldn't be
+necessary to include it in the beacon beforehand.
 
-> Re: [PATCH wireless-next] wifi: mac80211: Fix 6 GHz Band capabilities 
-> element advertisement in lower bands
-> > > But does that make sense for beacons? Not really? > > Feel like it doesn't. Shall i make this patch to restrict this 
-> only for > mesh beacons ?
-> Not sure? I guess what I'm starting to think is that if the language is
-> all the same across all the frames and says to include it "when
-> dot11HEOptionImplemented and dot11HE6GOptionImplemented are true", but
-> the beacon clearly doesn't make sense - is that a bug in the spec for
-> the beacon, or does it mean your patch is actually correct also for the
-> client?
->
-> Jouni, maybe you have some spec interpretation opinion? :)
->
-> johannes
-
-I'm not sure there is any actual STA that does this, but in theory, a HE 
-6GHz-capable STA could do an extended channel switching procedure 
-towards a 6GHz channel, and include an Extended Channel Switch 
-Announcement in its beacon. Having also the HE 6 GHz Band Capabilities 
-element in that same beacon makes sense.
-
-Pablo MG
-
+johannes
 
