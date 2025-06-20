@@ -1,48 +1,47 @@
-Return-Path: <linux-wireless+bounces-24290-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24291-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9B1AE1F69
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 17:51:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE50AE1F93
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 17:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60E733B7D87
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 15:46:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F62E171DD2
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 15:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91762E8E1D;
-	Fri, 20 Jun 2025 15:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811382D4B42;
+	Fri, 20 Jun 2025 15:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AvNFgUXl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XGZJz9U9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BDB2D29CF;
-	Fri, 20 Jun 2025 15:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5326128B3E2;
+	Fri, 20 Jun 2025 15:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750434328; cv=none; b=QRogJs42MKdVwhlZiVBfTz3zZs66NS0Hg4E46IwRczOcmGmR/z9nQ9anKLL9MkFfI6a0RYBY+wm7+w0oskS9NKEC8ACrtUROvW5uyaFV2jSMdUOm5sZjFl4ETT2/xJLbkDjeDlZjq9hHnM5UzyrvX6KVJagnLgX2B3LNDfCWGRY=
+	t=1750435016; cv=none; b=N8IaYbljmHq/Rr/xSDP4SfNubCFP+dJZH5/pel+ouYvMQK6QpTv9rpOOn+ZGuxgLUVr9mD7p7o3DVGukU5LbN1iNvmfZE5CBusvskiWK3f9QpaPnVYlA68Hjdg3HCmV/CqOgLYpqnTt64m1YK/2rxEp6df3WE/k6tLQ0Uu91nho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750434328; c=relaxed/simple;
-	bh=Zd84NnTL2fRFyvN5Ij331Z+OZS7ttEjUlHQ/6RFI/04=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LKINPUeL6zBO/VDhoW9pGpAso1R9Ay+oqY+S2KM42bghvZOtGYVUYAeDIr/i6xMQT2mCuEVLGoBhH2w0/Fm8UUtN9ulEKSpsFCzncVZ+Pt5g/lwVKMpUiaMjZMkXmFZuBtgRyRtsIB2hNC7eHNFvMlZvwx0ZvbZK/TB149Fejjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AvNFgUXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDBDC4CEE3;
-	Fri, 20 Jun 2025 15:45:25 +0000 (UTC)
+	s=arc-20240116; t=1750435016; c=relaxed/simple;
+	bh=N8WwDnl3pZ51GjycAjgK8S3vmC+4jFGasDU9CnD2Hf8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=XB6JfpY68CGJ/ly3j9W5B4xEwdrfPn77HAmgBZ2aSroF4yKkySn4AIr6QOKlGL7AjQ0DtzTE6voZyn8xfdNNgF058Fp+7ckuGA6YBLJgw7S+ZspKDaM9ZFpbaozqgFTBTB5MT77K8vdiwmMqng67b3cdnF6J6I31GC48kDUyzqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XGZJz9U9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693DCC4CEE3;
+	Fri, 20 Jun 2025 15:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750434328;
-	bh=Zd84NnTL2fRFyvN5Ij331Z+OZS7ttEjUlHQ/6RFI/04=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AvNFgUXlACUxkFVn3xM0WDk9PfcqX0bEtt58WjDUroFsIckjvXLM5rbsVSMxYfQwd
-	 DrwW5lGOQ36ScXDNd/s+Nzk5qIoWxH2j2p9rJiuk6frrcJxGhL3V2mRF7gAp2o2J++
-	 LEsUQveLs0d60HhUbPNnYO2UzzTIGdsd8u+LlVV5fC8DNTmD8XnYXocT75x23eJGSt
-	 nlQOL+H9zoRz8f0eyuvRmM2u2ulQRt3a4jowazEvB6vtAtuWnNNzrFgui9omfagcZN
-	 JDnUvXb2Rpe8IxpZ5iUleDbzUpRdtQkL7Rob+3jzYql6LfkHzl2teaq1K2JwyJwbG5
-	 DU2DM+nE/l0Sw==
-Message-ID: <1788be57-2c26-4bfc-97bf-7d9a0abe3861@kernel.org>
-Date: Fri, 20 Jun 2025 17:45:23 +0200
+	s=k20201202; t=1750435015;
+	bh=N8WwDnl3pZ51GjycAjgK8S3vmC+4jFGasDU9CnD2Hf8=;
+	h=Date:To:Cc:From:Subject:From;
+	b=XGZJz9U9HXpNyk0k7xr5/F5VYE2wam805FF4qfRjRU8ugbjjN/A6KATWQgQMzEE2i
+	 rvlcQoTcgLcZiq1rDfeYbR8X+Untxz22oBqexqubvzgv4twF6V65PcfXMyAnC0Ivkd
+	 GKC+HsJ0eWCPYMSfSKSXN5bAS9YM7P0dVgbLbvy376o72oj2BrZ6chIOGIcbilNfdl
+	 kjiG/zP7S+l3JDGkqz/hJ3kGBpN9bkldXgrXdhP2nSFzdtDNlJNC9WjHAGd79wNl3E
+	 +j/2hor48Xh2deEToDP+ra/BM4Pm3VytLbZ2zmHQoVLxQo/h6r7p3r///uz2FjIRVi
+	 BTR4JbXs3YXMw==
+Message-ID: <e9d7ef79-6a24-4515-aa35-d1f2357da798@kernel.org>
+Date: Fri, 20 Jun 2025 17:56:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,126 +49,203 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 0/5] wifi: ath9k: add ahb OF support
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
- Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
-Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- nbd@nbd.name, Johannes Berg <johannes@sipsolutions.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>
-References: <20250609030851.17739-1-rosenp@gmail.com>
- <37561ac8-ac0f-4744-9495-c7589544d4bb@oss.qualcomm.com>
- <ef0db40a-14d1-4670-82ca-f724a0eeee0d@kernel.org>
- <ddc48fa7-3fca-46a3-9224-11c0c3fce4a4@kernel.org>
- <4a3ad8a6-90a9-45c5-bbdf-7b91d3c18e51@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <4a3ad8a6-90a9-45c5-bbdf-7b91d3c18e51@oss.qualcomm.com>
+Content-Language: en-US, nl
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>,
+ Linux PM <linux-pm@vger.kernel.org>
+From: Hans de Goede <hansg@kernel.org>
+Subject: 6.16-rc2+ lockdep circular locking between iwlwifi and thermal_zone
+ code
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 20/06/2025 17:27, Jeff Johnson wrote:
-> On 6/19/2025 10:39 PM, Krzysztof Kozlowski wrote:
->> On 20/06/2025 07:32, Krzysztof Kozlowski wrote:
->>> On 20/06/2025 02:33, Jeff Johnson wrote:
->>>> On 6/8/2025 8:08 PM, Rosen Penev wrote:
->>>>> First two commits are small cleanups to make the changes of the third
->>>>> simpler. The fourth actually adds dts definitions to use ahb.
->>>>>
->>>>> v2: Add documentation, use kernel_ulong_t, and of_device_get_match_data
->>>>> v3: Use qcom prefix and wifi suffix as in other ath drivers.
->>>>> v4: fix up dts example in Documentation
->>>>> v5: move back to using qca prefix. It makes no sense to diverge between
->>>>> all the other drivers for MIPS based qualcomm devices. qcom as a prefix
->>>>> is used for Quallcomm's ARM(64) stuff.
->>>>>
->>>>> Rosen Penev (5):
->>>>>   wifi: ath9k: ahb: reorder declarations
->>>>>   wifi: ath9k: ahb: reorder includes
->>>>>   wifi: ath9k: ahb: replace id_table with of
->>>>>   dt-bindings: net: wireless: ath9k: add OF bindings
->>>>>   mips: dts: qca: add wmac support
->>>>>
->>>>>  .../bindings/net/wireless/qca,ath9k.yaml      | 23 ++++++-
->>>>>  arch/mips/boot/dts/qca/ar9132.dtsi            |  9 +++
->>>>>  .../boot/dts/qca/ar9132_tl_wr1043nd_v1.dts    |  4 ++
->>>>>  arch/mips/boot/dts/qca/ar9331.dtsi            |  9 +++
->>>>>  arch/mips/boot/dts/qca/ar9331_dpt_module.dts  |  4 ++
->>>>>  .../mips/boot/dts/qca/ar9331_dragino_ms14.dts |  4 ++
->>>>>  arch/mips/boot/dts/qca/ar9331_omega.dts       |  4 ++
->>>>>  .../qca/ar9331_openembed_som9331_board.dts    |  4 ++
->>>>>  arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts   |  4 ++
->>>>>  drivers/net/wireless/ath/ath9k/ahb.c          | 60 +++++++------------
->>>>>  10 files changed, 84 insertions(+), 41 deletions(-)
->>>>>
->>>>
->>>> DT team, should I take this series through my tree?
->>>> Toke, Ack?
->>> No, of course not. The same as you asked some time ago: DTS never, NEVER
->>> goes via driver subsystem tree.
->>>
->>
->> Heh, you do not have any subsystem maintainers acks or reviews on DTS,
->> so this should not be considered. It's like me taking wireless patches
->> without your acks.
-> 
-> That is why I was looking for clarification.
-> All the DT stuff had your R-B and hence why I asked Toke for his Ack.
-> Will DT team take the entire series (I'm ok with that)?
-> Or just the DTS and I should take the rest?
+Hi All,
 
-It's not the DT team, we are not taking any DTS patches ever but
-platform or SoC maintainers are taking DTS for their platform. So please
-take only your subsystem - wireless drivers and wireless DT bindings -
-leaving DTS for platform/SoC maintainers.
+While testing 6.16-rc2+ on a Dell XPS 9640 I got the following lockdep report:
 
-Best regards,
-Krzysztof
+(Note this was a build without debuginfo, so I did not run decode_stacktrace.sh)
+
+[   19.690210] ======================================================
+[   19.690212] WARNING: possible circular locking dependency detected
+[   19.690214] 6.16.0-rc2+ #3 Tainted: G            E      
+[   19.690217] ------------------------------------------------------
+[   19.690218] modprobe/906 is trying to acquire lock:
+[   19.690220] ffff89da8e948768 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: iwl_mld_tzone_get_temp+0x2f/0x1d0 [iwlmld]
+[   19.690269] 
+               but task is already holding lock:
+[   19.690270] ffff89da41ac2708 (&tz->lock){+.+.}-{4:4}, at: thermal_zone_device_set_mode+0x20/0xa0
+[   19.690284] 
+               which lock already depends on the new lock.
+
+[   19.690285] 
+               the existing dependency chain (in reverse order) is:
+[   19.690287] 
+               -> #4 (&tz->lock){+.+.}-{4:4}:
+[   19.690291]        __mutex_lock+0x9f/0xed0
+[   19.690299]        thermal_zone_device_set_mode+0x20/0xa0
+[   19.690302]        pkg_thermal_cpu_online+0x2ad/0x330 [x86_pkg_temp_thermal]
+[   19.690308]        cpuhp_invoke_callback+0x1ab/0x660
+[   19.690315]        cpuhp_thread_fun+0x187/0x270
+[   19.690318]        smpboot_thread_fn+0x12a/0x2e0
+[   19.690323]        kthread+0x108/0x240
+[   19.690328]        ret_from_fork+0x232/0x2a0
+[   19.690334]        ret_from_fork_asm+0x1a/0x30
+[   19.690340] 
+               -> #3 (cpuhp_state-up){+.+.}-{0:0}:
+[   19.690344]        cpuhp_thread_fun+0x99/0x270
+[   19.690348]        smpboot_thread_fn+0x12a/0x2e0
+[   19.690351]        kthread+0x108/0x240
+[   19.690355]        ret_from_fork+0x232/0x2a0
+[   19.690358]        ret_from_fork_asm+0x1a/0x30
+[   19.690361] 
+               -> #2 (cpu_hotplug_lock){++++}-{0:0}:
+[   19.690364]        cpus_read_lock+0x3c/0xe0
+[   19.690368]        static_key_slow_inc+0x12/0x30
+[   19.690375]        __nf_register_net_hook+0xb7/0x210
+[   19.690382]        nf_register_net_hook+0x2d/0x90
+[   19.690385]        nf_tables_addchain.constprop.0+0x2dd/0x6f0 [nf_tables]
+[   19.690410]        nf_tables_newchain+0x78f/0xb10 [nf_tables]
+[   19.690424]        nfnetlink_rcv_batch+0x7a5/0xc50 [nfnetlink]
+[   19.690430]        nfnetlink_rcv+0x12d/0x150 [nfnetlink]
+[   19.690432]        netlink_unicast+0x1bf/0x2b0
+[   19.690436]        netlink_sendmsg+0x211/0x430
+[   19.690438]        ____sys_sendmsg+0x373/0x3b0
+[   19.690444]        ___sys_sendmsg+0x7d/0xc0
+[   19.690447]        __sys_sendmsg+0x5e/0xb0
+[   19.690449]        do_syscall_64+0x94/0x3d0
+[   19.690454]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   19.690458] 
+               -> #1 (&nft_net->commit_mutex){+.+.}-{4:4}:
+[   19.690462]        __mutex_lock+0x9f/0xed0
+[   19.690464]        nf_tables_netdev_event+0x59/0xc0 [nf_tables]
+[   19.690480]        notifier_call_chain+0x3d/0x100
+[   19.690485]        register_netdevice+0x731/0x8f0
+[   19.690489]        cfg80211_register_netdevice+0x4c/0xf0 [cfg80211]
+[   19.690587]        ieee80211_if_add+0x475/0x740 [mac80211]
+[   19.690721]        ieee80211_register_hw+0xd6b/0xdb0 [mac80211]
+[   19.690796]        iwl_op_mode_mld_start+0x438/0x4b0 [iwlmld]
+[   19.690827]        _iwl_op_mode_start+0x67/0x100 [iwlwifi]
+[   19.690856]        iwl_opmode_register+0x6b/0xc0 [iwlwifi]
+[   19.690874]        iwl_mld_init+0x19/0xff0 [iwlmld]
+[   19.690906]        do_one_initcall+0x54/0x390
+[   19.690912]        do_init_module+0x62/0x240
+[   19.690917]        __do_sys_init_module+0x164/0x190
+[   19.690920]        do_syscall_64+0x94/0x3d0
+[   19.690926]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   19.690928] 
+               -> #0 (&rdev->wiphy.mtx){+.+.}-{4:4}:
+[   19.690933]        __lock_acquire+0x1481/0x2270
+[   19.690939]        lock_acquire+0xc9/0x2c0
+[   19.690942]        __mutex_lock+0x9f/0xed0
+[   19.690947]        iwl_mld_tzone_get_temp+0x2f/0x1d0 [iwlmld]
+[   19.690968]        __thermal_zone_get_temp+0x29/0x90
+[   19.690973]        __thermal_zone_device_update+0x69/0x480
+[   19.690977]        thermal_zone_device_set_mode+0x52/0xa0
+[   19.690981]        iwl_mld_thermal_zone_register+0x144/0x1d0 [iwlmld]
+[   19.690994]        iwl_op_mode_mld_start+0x460/0x4b0 [iwlmld]
+[   19.691009]        _iwl_op_mode_start+0x67/0x100 [iwlwifi]
+[   19.691029]        iwl_opmode_register+0x6b/0xc0 [iwlwifi]
+[   19.691044]        iwl_mld_init+0x19/0xff0 [iwlmld]
+[   19.691062]        do_one_initcall+0x54/0x390
+[   19.691064]        do_init_module+0x62/0x240
+[   19.691067]        __do_sys_init_module+0x164/0x190
+[   19.691069]        do_syscall_64+0x94/0x3d0
+[   19.691071]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   19.691074] 
+               other info that might help us debug this:
+
+[   19.691075] Chain exists of:
+                 &rdev->wiphy.mtx --> cpuhp_state-up --> &tz->lock
+
+[   19.691080]  Possible unsafe locking scenario:
+
+[   19.691082]        CPU0                    CPU1
+[   19.691083]        ----                    ----
+[   19.691085]   lock(&tz->lock);
+[   19.691087]                                lock(cpuhp_state-up);
+[   19.691089]                                lock(&tz->lock);
+[   19.691091]   lock(&rdev->wiphy.mtx);
+[   19.691094] 
+                *** DEADLOCK ***
+
+[   19.691095] 2 locks held by modprobe/906:
+[   19.691097]  #0: ffffffffc156dc68 (iwlwifi_opmode_table_mtx){+.+.}-{4:4}, at: iwl_opmode_register+0x21/0xc0 [iwlwifi]
+[   19.691117]  #1: ffff89da41ac2708 (&tz->lock){+.+.}-{4:4}, at: thermal_zone_device_set_mode+0x20/0xa0
+[   19.691124] 
+               stack backtrace:
+[   19.691127] CPU: 17 UID: 0 PID: 906 Comm: modprobe Tainted: G            E       6.16.0-rc2+ #3 PREEMPT(lazy) 
+[   19.691131] Tainted: [E]=UNSIGNED_MODULE
+[   19.691132] Hardware name: Dell Inc. XPS 16 9640/09CK4V, BIOS 1.12.0 02/10/2025
+[   19.691134] Call Trace:
+[   19.691137]  <TASK>
+[   19.691138]  dump_stack_lvl+0x68/0x90
+[   19.691144]  print_circular_bug.cold+0x185/0x1d0
+[   19.691150]  check_noncircular+0x10f/0x130
+[   19.691154]  ? __kernel_text_address+0xe/0x30
+[   19.691158]  ? unwind_get_return_address+0x26/0x50
+[   19.691165]  __lock_acquire+0x1481/0x2270
+[   19.691171]  lock_acquire+0xc9/0x2c0
+[   19.691174]  ? iwl_mld_tzone_get_temp+0x2f/0x1d0 [iwlmld]
+[   19.691190]  __mutex_lock+0x9f/0xed0
+[   19.691194]  ? iwl_mld_tzone_get_temp+0x2f/0x1d0 [iwlmld]
+[   19.691207]  ? iwl_mld_tzone_get_temp+0x2f/0x1d0 [iwlmld]
+[   19.691218]  ? lock_acquire+0xc9/0x2c0
+[   19.691221]  ? thermal_zone_device_set_mode+0x20/0xa0
+[   19.691225]  ? lock_acquire+0xd9/0x2c0
+[   19.691229]  ? iwl_mld_tzone_get_temp+0x2f/0x1d0 [iwlmld]
+[   19.691240]  iwl_mld_tzone_get_temp+0x2f/0x1d0 [iwlmld]
+[   19.691253]  ? lock_is_held_type+0xd5/0x140
+[   19.691258]  __thermal_zone_get_temp+0x29/0x90
+[   19.691261]  __thermal_zone_device_update+0x69/0x480
+[   19.691266]  thermal_zone_device_set_mode+0x52/0xa0
+[   19.691270]  iwl_mld_thermal_zone_register+0x144/0x1d0 [iwlmld]
+[   19.691287]  iwl_op_mode_mld_start+0x460/0x4b0 [iwlmld]
+[   19.691304]  _iwl_op_mode_start+0x67/0x100 [iwlwifi]
+[   19.691322]  iwl_opmode_register+0x6b/0xc0 [iwlwifi]
+[   19.691338]  ? __pfx_iwl_mld_init+0x10/0x10 [iwlmld]
+[   19.691353]  iwl_mld_init+0x19/0xff0 [iwlmld]
+[   19.691366]  do_one_initcall+0x54/0x390
+[   19.691372]  do_init_module+0x62/0x240
+[   19.691375]  ? __do_sys_init_module+0x164/0x190
+[   19.691377]  __do_sys_init_module+0x164/0x190
+[   19.691383]  do_syscall_64+0x94/0x3d0
+[   19.691387]  ? lock_acquire+0xc9/0x2c0
+[   19.691390]  ? __folio_batch_add_and_move+0x8f/0x2f0
+[   19.691395]  ? lock_acquire+0xd9/0x2c0
+[   19.691397]  ? find_held_lock+0x2b/0x80
+[   19.691401]  ? find_held_lock+0x2b/0x80
+[   19.691402]  ? find_held_lock+0x2b/0x80
+[   19.691405]  ? rcu_read_unlock+0x17/0x60
+[   19.691411]  ? lock_release+0x1a0/0x2d0
+[   19.691416]  ? __lock_acquire+0x45f/0x2270
+[   19.691420]  ? __handle_mm_fault+0xaf4/0xe20
+[   19.691426]  ? lock_acquire+0xc9/0x2c0
+[   19.691429]  ? find_held_lock+0x2b/0x80
+[   19.691431]  ? rcu_read_unlock+0x17/0x60
+[   19.691433]  ? lock_release+0x1a0/0x2d0
+[   19.691436]  ? find_held_lock+0x2b/0x80
+[   19.691439]  ? exc_page_fault+0x8c/0x240
+[   19.691441]  ? lock_release+0x1a0/0x2d0
+[   19.691445]  ? do_user_addr_fault+0x370/0x6b0
+[   19.691450]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   19.691453] RIP: 0033:0x7f111e502bae
+[   19.691457] Code: 48 8b 0d 5d 32 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 af 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 2a 32 0f 00 f7 d8 64 89 01 48
+[   19.691460] RSP: 002b:00007ffd319c0df8 EFLAGS: 00000246 ORIG_RAX: 00000000000000af
+[   19.691463] RAX: ffffffffffffffda RBX: 0000558224041e60 RCX: 00007f111e502bae
+[   19.691465] RDX: 00005581ee14b5ee RSI: 00000000000cbf71 RDI: 0000558224bf0cd0
+[   19.691466] RBP: 00007ffd319c0eb0 R08: 0000558224041d40 R09: 00007f111e5f6ac0
+[   19.691467] R10: 0000558224041010 R11: 0000000000000246 R12: 0000000000040000
+[   19.691468] R13: 0000558224041dc0 R14: 00005581ee14b5ee R15: 0000000000000000
+[   19.691472]  </TASK>
+
+I'll glady test any potential fixes.
+
+Regards,
+
+Hans
+
+
 
