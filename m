@@ -1,66 +1,68 @@
-Return-Path: <linux-wireless+bounces-24276-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24275-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E68BAE11B6
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 05:21:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ABE9AE11B3
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 05:20:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46C4F3ABE07
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 03:20:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED5883A5E7A
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jun 2025 03:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C759117BB21;
-	Fri, 20 Jun 2025 03:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61C2819;
+	Fri, 20 Jun 2025 03:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="CGw+zoWO"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GLDJx3/Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142FB433B1;
-	Fri, 20 Jun 2025 03:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900DF433B1;
+	Fri, 20 Jun 2025 03:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750389661; cv=none; b=QFthMVmxLe0zfEACAlm5Vn8eSxPlW3bidoftp6gE/6gzDtAP8MvfTxpMs2PJtrmKBzO8XoLUb9bj15kUIo3c1yLQ0aBBfeAbb4s4pJKoYzsdF/obVNNisfsFuTibgg2iGzAzHkPtM/7NSu8qeLeQlJHdZeaukFpVjhBAFNs5FFY=
+	t=1750389645; cv=none; b=CIztmdrKKBNIFBy1huyjNvFZwONwOoAH5dK4GZ1AYe1MHdP0i5HWw3x+qCx/LN/CzhFLRDbRPhH6TzAWQnmAIzjk/U0PIqnQlJPmfEsGsubIYIsb0SqSx9FlSwRDTK2A8FQJwHzeaaUdXBLvypE8vMQTdtR5NqQcjml2TRnwWnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750389661; c=relaxed/simple;
-	bh=hv8/QDw7pTZTw/Fw7H+r0p4y2KXq8fQUxP/gm1PJpEE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MUXeF9O47JuRcJExaK0qI2Hj0hoBfSfT/abUqQJeYVO+1zFGxb1CUXSnk7NiMO73/HSizDU1Khi4wib2TAOqXol7CoT+eU7HUgHfw9nNU+2v6mXNAjsBmZHrjNTJ0CgOHx0kN3+f8XzH0dA7P5sf+L6zrQD9lk6KAojL6Nrps/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=CGw+zoWO; arc=none smtp.client-ip=15.184.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1750389601;
-	bh=QneHD96w8Ndl9vl9DqoNfTMZSsKRbHbYDBKvCqX8VZs=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=CGw+zoWOrZSODPeJ8c26ciyuz4PVJ/RTo2UYyFbVMEgwp9TPtTIb2DX25LDmK6d+N
-	 iIOieLgM35lyyDq1cFyJ/QAh0V7Clr8/lOMdMfFGM9C359q6h9xnj9exBTAo1mc6xY
-	 NWRbRnksSF6uKTSJTYOTO+6l2LQYV2G4wkTU85XA=
-X-QQ-mid: zesmtpip2t1750389596t81357189
-X-QQ-Originating-IP: /ewM7Z9sq8LHm7YLngXRO+7G1aFgwPHWLDjF85ihRlA=
-Received: from avenger-e500 ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 20 Jun 2025 11:19:54 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 16747492576848269704
-EX-QQ-RecipientCnt: 10
-From: WangYuli <wangyuli@uniontech.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Edward Adam Davis <eadavis@qq.com>,
-	syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 6.1/6.6] wifi: cfg80211: init wiphy_work before allocating rfkill fails
-Date: Fri, 20 Jun 2025 11:19:49 +0800
-Message-ID: <A203ED8C00632F28+20250620031949.227937-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.50.0
+	s=arc-20240116; t=1750389645; c=relaxed/simple;
+	bh=i8rXo9oTmd+znrnGkpfCGoydf0YNzqjCk4FPDQRkQ5Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OLF/5xI1XknkO/9HnOIsR8rZJ3fylQOA0htstAyH1g9MOfpQxKi4aN9LR+G8XtmswD5q0uCrU+9Dq2J1r5cltww7JIDO0TUeRi6A3SkIhUrPzbymZ0YIf/XSiZIhNrlXHABFo3NLhjuTKf0agpHW7iHE7NheWBEICkoWfoe93Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GLDJx3/Z; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55JEtNFB022295;
+	Fri, 20 Jun 2025 03:20:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=Sm1w9saYDvAue76l7Riw5u
+	3/q50lAkpeH1iSpAdMW5o=; b=GLDJx3/ZLn8lcFzazmY/FtTTuPURXTHxEWJdnq
+	o16UAM+7yK/icaTiDP9ByoDRE8Ycn2Dg12Y+ADVrP6PJltG9lGpEYTOIO7tyJ04J
+	kGUX9UQx8SJzJlH688tPguwchIRV7xCV3hWRpX5dGcBPcGKxzCR1AyfjH0wmmHVg
+	8wDcm6ka6AdXqaHGXzHSS1fyb7KIFcMtHJi7EmXukMb+RAxD8ZcVXSZ1bhUHSwih
+	ywCLZUkinV0NLNMWqw5DnilSMUXhHSoDnHAQ4PL1KeOkjfBjmoi3fTKGdE1JOwUs
+	sbiEVKc/Q6BXS3Cre9Fe74cYd7tELhrmoM59snubLauYT0RA==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4791enstqm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Jun 2025 03:20:30 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55K3KToe027165
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Jun 2025 03:20:29 GMT
+Received: from zhonhan-gv.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 19 Jun 2025 20:20:27 -0700
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+To: <johannes@sipsolutions.net>, <miriam.rachel.korenblit@intel.com>
+CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_zhonhan@quicinc.com>,
+        <syzbot+5a7b40bcb34dea5ca959@syzkaller.appspotmail.com>
+Subject: [PATCH v3] wifi: mac80211: Prevent disconnect reports when no AP is associated
+Date: Fri, 20 Jun 2025 11:20:11 +0800
+Message-ID: <20250620032011.1102373-1-quic_zhonhan@quicinc.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,122 +70,325 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: Naz1YHCzw2jI/9JS+yjrnGlH+vTYLorxDLI1EtxBUHqa9y13fyy0Kw2h
-	S05UoyG58TpRFfnsElz5fYUaxsNuYBGNretqajpbIoL/46Wz3+2GIjJOsByzFKzkGD3fC+Q
-	Lf+12ElBpgU/TnMVr0SgYLHGO43nsJZCkPoyEpqkgicG/Azq+JfZSYckepxWU4Fhj3wgtiw
-	6t5O7lvVExljmE5gabiMNWGfao6fUViEChXBea4MHjLK5U6HiJVS4FxarfL8VpUutWV2rh6
-	q2CEP6Eo8D6QGF8h3kx4Yj7MG2+Ebox+3Acpx9iU8w6+QSldCI233GXo4EyymUCGY2WzD9n
-	Dr1ds4XgKZrjEgXYRlEkmdgdOoZHQBZaN4mspiwD/g4L7a7TRwoWsdGZKduUa3k0JPfv9c4
-	2iKPgdOJPDFNuQgYWRySayzTIMf/AEQCJR2AMVeqWz7Jp2PWW2Youzj0OnS9mlU8EVqdFzF
-	rf3nE8sIC0jnTaCxkgl2hwvYRMfRCXsTcm5iZcB4ssf7pOWyqTjzuVittCT7oqD8gfeRVmM
-	+94KcRIakjPMGq+qnDqF9uD4ketYfk0IOwyUwoSl7191hpYOEgL6iaScEAe5l+EAY6KsqCx
-	+nXic8EWagCtjex80IE3SACa7QKqymcwVxpfpxsWKIprjA/pjvB5T1dEayymZKCdXvZB1LG
-	gzcn60FRpYBwsM5jo17j3zSFG0S18DPE0fBLuDZxY8FhqIY/nQKVkPIYOHZJiLMrAox0wxX
-	eiuLAwIS4fDSZQZQPG4ZADUZA1JGfSf73EHroxht23Z99+0d862ugfY3J/QsHkFYPg2ovzo
-	nsvX1sFXc3d9jCRp9onmMu5SImZ/trn6gQmorD4Gb3KfAnFnyz0P3FX3MYGwNZYG7QRIuZL
-	5BoCq6dIF37wgXcTB82y2vIi92KjkeZEuD8Y8RDvs+3bKcx1qwcL11GEtJ00aYF6tjWjGLh
-	ie1gjZMKa+owNIj2tXz4LCaGDdOyHswGAOGiVW0UOcyxIcXZvcg3a/3gMvCU6Wh1jP1elmI
-	krlUfxcA==
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: IMnE3Nd3QSER419gqJ2ryYduQPWHW2Zp
+X-Authority-Analysis: v=2.4 cv=D6RHKuRj c=1 sm=1 tr=0 ts=6854d37e cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8
+ a=COk6AnOGAAAA:8 a=hSkVLCK3AAAA:8 a=UgoVPfYcFPS3iaGcGjQA:9
+ a=TjNXssC_j7lpFel5tvFf:22 a=cQPPKAXgyycSBL8etih5:22
+X-Proofpoint-GUID: IMnE3Nd3QSER419gqJ2ryYduQPWHW2Zp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIwMDAyNCBTYWx0ZWRfX4NcqNFXS0wtQ
+ OGDJBpS7M9vUJ2pnGcZBbfL1xkfNywTm++V9BARANXEKgPB0g6HsuRK4NIL2xnZIO9Mqgn1LiD7
+ kHtv6SAyKb/kf6/sta/T8u2HloIgtDJs3jZta2tKBKv0Q2UGEui0fC0satrMF2pTFnk8ZJZkeco
+ MApyphYKOuLYz/rIV5VEieu2CZktaEOTrW73XlOIQquvOidmHGUftYvV4hhyqSyirug8W+0vNn4
+ NIkzL2ny3fxhJTtbN1GP1JrZ6jMJuumB8lMiLPRkORtnnOohHZG9E2hNuUA7sPcPFjo7SwOCx22
+ BNiA/6y+Gti9CnR+AFsB83NKhW8dkU9FFRUqZRx0xonBKcW1QkTVvyeER4rwbT64SvXcFWNRBxZ
+ bCqe8DTDBoCF8oWDvSOFvoLduG2pEbrQn/DkmiYu/sP9uvJS9zgXzSqATOE6xCau+Unpq0KM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-20_01,2025-06-18_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 impostorscore=0 phishscore=0 adultscore=0
+ suspectscore=0 mlxlogscore=999 clxscore=1011 mlxscore=0 lowpriorityscore=0
+ spamscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506200024
 
-From: Edward Adam Davis <eadavis@qq.com>
+syzbot reports that cfg80211_tx_mlme_mgmt is using uninit-value:
 
-[ Upstream commit fc88dee89d7b63eeb17699393eb659aadf9d9b7c ]
+=====================================================
+BUG: KMSAN: uninit-value in cfg80211_tx_mlme_mgmt+0x155/0x300 net/wireless/mlme.c:226
+cfg80211_tx_mlme_mgmt+0x155/0x300 net/wireless/mlme.c:226
+ieee80211_report_disconnect net/mac80211/mlme.c:4238 [inline]
+ieee80211_sta_connection_lost+0xfa/0x150 net/mac80211/mlme.c:7811
+ieee80211_sta_work+0x1dea/0x4ef0
+ieee80211_iface_work+0x1900/0x1970 net/mac80211/iface.c:1684
+cfg80211_wiphy_work+0x396/0x860 net/wireless/core.c:435
+process_one_work kernel/workqueue.c:3236 [inline]
+process_scheduled_works+0xc1a/0x1e80 kernel/workqueue.c:3317
+worker_thread+0xea7/0x14f0 kernel/workqueue.c:3398
+kthread+0x6b9/0xef0 kernel/kthread.c:464
+ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:148
+ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-syzbort reported a uninitialize wiphy_work_lock in cfg80211_dev_free. [1]
+Local variable frame_buf created at:
+ieee80211_sta_connection_lost+0x43/0x150 net/mac80211/mlme.c:7806
+ieee80211_sta_work+0x1dea/0x4ef0
+=====================================================
 
-After rfkill allocation fails, the wiphy release process will be performed,
-which will cause cfg80211_dev_free to access the uninitialized wiphy_work
-related data.
+If ieee80211_report_disconnect() relies on the frame_buf initialized by
+ieee80211_set_disassoc(), it must ensure that ieee80211_set_disassoc() has
+called ieee80211_send_deauth_disassoc() to initialize it and has not
+returned early. Since commit 687a7c8a7227 ("wifi: mac80211: change
+disassoc sequence a bit"), ieee80211_set_disassoc() may return immediately
+when no AP station is present, leaving frame_buf uninitialized.
 
-Move the initialization of wiphy_work to before rfkill initialization to
-avoid this issue.
+To fix this issue, check the return value of ieee80211_set_disassoc()
+before calling ieee80211_report_disconnect() if the latter relies on the
+frame_buf initialized by the former.
 
-[1]
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
-CPU: 0 UID: 0 PID: 5935 Comm: syz-executor550 Not tainted 6.14.0-rc6-syzkaller-00103-g4003c9e78778 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- assign_lock_key kernel/locking/lockdep.c:983 [inline]
- register_lock_class+0xc39/0x1240 kernel/locking/lockdep.c:1297
- __lock_acquire+0x135/0x3c40 kernel/locking/lockdep.c:5103
- lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5851
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:162
- cfg80211_dev_free+0x30/0x3d0 net/wireless/core.c:1196
- device_release+0xa1/0x240 drivers/base/core.c:2568
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x1e4/0x5a0 lib/kobject.c:737
- put_device+0x1f/0x30 drivers/base/core.c:3774
- wiphy_free net/wireless/core.c:1224 [inline]
- wiphy_new_nm+0x1c1f/0x2160 net/wireless/core.c:562
- ieee80211_alloc_hw_nm+0x1b7a/0x2260 net/mac80211/main.c:835
- mac80211_hwsim_new_radio+0x1d6/0x54e0 drivers/net/wireless/virtual/mac80211_hwsim.c:5185
- hwsim_new_radio_nl+0xb42/0x12b0 drivers/net/wireless/virtual/mac80211_hwsim.c:6242
- genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2533
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1312 [inline]
- netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1338
- netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1882
- sock_sendmsg_nosec net/socket.c:718 [inline]
- __sock_sendmsg net/socket.c:733 [inline]
- ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
- ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
- __sys_sendmsg+0x16e/0x220 net/socket.c:2659
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
-
-Fixes: 72d520476a2f ("wifi: cfg80211: cancel wiphy_work before freeing wiphy")
-Reported-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
-Close: https://syzkaller.appspot.com/bug?extid=aaf0488c83d1d5f4f029
-Tested-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://patch.msgid.link/tencent_258DD9121DDDB9DD9A1939CFAA0D8625B107@qq.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reported-by: syzbot+5a7b40bcb34dea5ca959@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67bf36d3.050a0220.38b081.01ff.GAE@google.com/
+Fixes: 687a7c8a7227 ("wifi: mac80211: change disassoc sequence a bit")
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
 ---
- net/wireless/core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+v2 -> v3:
+- Rebased on top of current next.
+- Update the v2 code implementation:
+  - Remove zero-initialization of frame_buf
+  - Remove WARN_ON and early return in ieee80211_report_disconnect()
+  - Change the return type of ieee80211_set_disassoc(). If
+    ieee80211_report_disconnect() uses the frame_buf initialized by
+    ieee80211_set_disassoc(), its invocation is now conditional based
+    on the return value of ieee80211_set_disassoc(). 
+- Update commit message to reflect the modified code logic.
+- Link to v2: https://lore.kernel.org/all/20250314120614.4032434-1-quic_zhonhan@quicinc.com/
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 1ce8fff2a28a..586e50678ed8 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -553,6 +553,9 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
- 	INIT_WORK(&rdev->mgmt_registrations_update_wk,
- 		  cfg80211_mgmt_registrations_update_wk);
- 	spin_lock_init(&rdev->mgmt_registrations_lock);
-+	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
-+	INIT_LIST_HEAD(&rdev->wiphy_work_list);
-+	spin_lock_init(&rdev->wiphy_work_lock);
+v1 -> v2:
+- Rebased on top of current next.
+- Reorder the tags.
+- Link to v1: https://lore.kernel.org/all/20250227090932.1871272-1-quic_zhonhan@quicinc.com/
+
+ net/mac80211/mlme.c | 109 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 67 insertions(+), 42 deletions(-)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 2d46d4af60d7..51750db61a54 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3917,7 +3917,12 @@ static void ieee80211_ml_reconf_reset(struct ieee80211_sub_if_data *sdata)
+ 	}
+ }
  
- #ifdef CONFIG_CFG80211_DEFAULT_PS
- 	rdev->wiphy.flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
-@@ -570,9 +573,6 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
- 		return NULL;
+-static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
++/*
++ * Note that if ieee80211_report_disconnect() relies on the *frame_buf
++ * initialized by this function, then it must only be called if this function
++ * returns true; otherwise, it may use an uninitialized buffer.
++ */
++static bool ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 				   u16 stype, u16 reason, bool tx,
+ 				   u8 *frame_buf)
+ {
+@@ -3935,13 +3940,13 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+ 
+ 	if (WARN_ON(!ap_sta))
+-		return;
++		return false;
+ 
+ 	if (WARN_ON_ONCE(tx && !frame_buf))
+-		return;
++		return false;
+ 
+ 	if (WARN_ON(!ifmgd->associated))
+-		return;
++		return false;
+ 
+ 	ieee80211_stop_poll(sdata);
+ 
+@@ -4168,6 +4173,8 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 
+ 	memset(ifmgd->userspace_selectors, 0,
+ 	       sizeof(ifmgd->userspace_selectors));
++
++	return true;
+ }
+ 
+ static void ieee80211_reset_ap_probe(struct ieee80211_sub_if_data *sdata)
+@@ -4448,6 +4455,7 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	u8 frame_buf[IEEE80211_DEAUTH_FRAME_LEN];
++	bool report_disconnect;
+ 
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+ 
+@@ -4477,20 +4485,22 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
+ 		}
  	}
  
--	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
--	INIT_LIST_HEAD(&rdev->wiphy_work_list);
--	spin_lock_init(&rdev->wiphy_work_lock);
- 	INIT_WORK(&rdev->rfkill_block, cfg80211_rfkill_block_work);
- 	INIT_WORK(&rdev->conn_work, cfg80211_conn_work);
- 	INIT_WORK(&rdev->event_work, cfg80211_event_work);
+-	ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+-			       ifmgd->driver_disconnect ?
+-					WLAN_REASON_DEAUTH_LEAVING :
+-					WLAN_REASON_DISASSOC_DUE_TO_INACTIVITY,
+-			       true, frame_buf);
++	report_disconnect = ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
++						   ifmgd->driver_disconnect ?
++						   WLAN_REASON_DEAUTH_LEAVING :
++						   WLAN_REASON_DISASSOC_DUE_TO_INACTIVITY,
++						   true, frame_buf);
+ 	/* the other links will be destroyed */
+ 	sdata->vif.bss_conf.csa_active = false;
+ 	sdata->deflink.u.mgd.csa.waiting_bcn = false;
+ 	sdata->deflink.u.mgd.csa.blocked_tx = false;
+ 	ieee80211_vif_unblock_queues_csa(sdata);
+ 
+-	ieee80211_report_disconnect(sdata, frame_buf, sizeof(frame_buf), true,
+-				    WLAN_REASON_DISASSOC_DUE_TO_INACTIVITY,
+-				    ifmgd->reconnect);
++	if (report_disconnect)
++		ieee80211_report_disconnect(sdata, frame_buf, sizeof(frame_buf),
++					    true, WLAN_REASON_DISASSOC_DUE_TO_INACTIVITY,
++					    ifmgd->reconnect);
++
+ 	ifmgd->reconnect = false;
+ }
+ 
+@@ -7477,9 +7487,12 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 	changed |= ieee80211_recalc_twt_req(sdata, sband, link, link_sta, elems);
+ 
+ 	if (ieee80211_config_bw(link, elems, true, &changed, "beacon")) {
+-		ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+-				       WLAN_REASON_DEAUTH_LEAVING,
+-				       true, deauth_buf);
++		if (!ieee80211_set_disassoc(sdata,
++					    IEEE80211_STYPE_DEAUTH,
++					    WLAN_REASON_DEAUTH_LEAVING,
++					    true, deauth_buf))
++			goto free;
++
+ 		ieee80211_report_disconnect(sdata, deauth_buf,
+ 					    sizeof(deauth_buf), true,
+ 					    WLAN_REASON_DEAUTH_LEAVING,
+@@ -8090,8 +8103,9 @@ void ieee80211_sta_connection_lost(struct ieee80211_sub_if_data *sdata,
+ {
+ 	u8 frame_buf[IEEE80211_DEAUTH_FRAME_LEN];
+ 
+-	ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH, reason,
+-			       tx, frame_buf);
++	if (!ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH, reason,
++				    tx, frame_buf))
++		return;
+ 
+ 	ieee80211_report_disconnect(sdata, frame_buf, sizeof(frame_buf), true,
+ 				    reason, false);
+@@ -8967,7 +8981,7 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_bss *bss;
+ 	u16 auth_alg;
+ 	int err;
+-	bool cont_auth, wmm_used;
++	bool cont_auth, wmm_used, report_disconnect;
+ 
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+ 
+@@ -9089,14 +9103,16 @@ int ieee80211_mgd_auth(struct ieee80211_sub_if_data *sdata,
+ 		sdata_info(sdata,
+ 			   "disconnect from AP %pM for new auth to %pM\n",
+ 			   sdata->vif.cfg.ap_addr, auth_data->ap_addr);
+-		ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+-				       WLAN_REASON_UNSPECIFIED,
+-				       false, frame_buf);
++		report_disconnect = ieee80211_set_disassoc(sdata,
++							   IEEE80211_STYPE_DEAUTH,
++							   WLAN_REASON_UNSPECIFIED,
++							   false, frame_buf);
+ 
+-		ieee80211_report_disconnect(sdata, frame_buf,
+-					    sizeof(frame_buf), true,
+-					    WLAN_REASON_UNSPECIFIED,
+-					    false);
++		if (report_disconnect)
++			ieee80211_report_disconnect(sdata, frame_buf,
++						    sizeof(frame_buf), true,
++						    WLAN_REASON_UNSPECIFIED,
++						    false);
+ 	}
+ 
+ 	/* needed for transmitting the auth frame(s) properly */
+@@ -9345,6 +9361,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 	struct cfg80211_bss *cbss;
+ 	bool override, uapsd_supported;
+ 	bool match_auth;
++	bool report_disconnect;
+ 	int i, err;
+ 	size_t size = sizeof(*assoc_data) + req->ie_len;
+ 
+@@ -9392,14 +9409,16 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 		sdata_info(sdata,
+ 			   "disconnect from AP %pM for new assoc to %pM\n",
+ 			   sdata->vif.cfg.ap_addr, assoc_data->ap_addr);
+-		ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+-				       WLAN_REASON_UNSPECIFIED,
+-				       false, frame_buf);
++		report_disconnect = ieee80211_set_disassoc(sdata,
++							   IEEE80211_STYPE_DEAUTH,
++							   WLAN_REASON_UNSPECIFIED,
++							   false, frame_buf);
+ 
+-		ieee80211_report_disconnect(sdata, frame_buf,
+-					    sizeof(frame_buf), true,
+-					    WLAN_REASON_UNSPECIFIED,
+-					    false);
++		if (report_disconnect)
++			ieee80211_report_disconnect(sdata, frame_buf,
++						    sizeof(frame_buf), true,
++						    WLAN_REASON_UNSPECIFIED,
++						    false);
+ 	}
+ 
+ 	memset(sdata->u.mgd.userspace_selectors, 0,
+@@ -9720,6 +9739,7 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	u8 frame_buf[IEEE80211_DEAUTH_FRAME_LEN];
+ 	bool tx = !req->local_state_change;
++	bool report_disconnect;
+ 	struct ieee80211_prep_tx_info info = {
+ 		.subtype = IEEE80211_STYPE_DEAUTH,
+ 	};
+@@ -9773,11 +9793,14 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
+ 			   req->bssid, req->reason_code,
+ 			   ieee80211_get_reason_code_string(req->reason_code));
+ 
+-		ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+-				       req->reason_code, tx, frame_buf);
+-		ieee80211_report_disconnect(sdata, frame_buf,
+-					    sizeof(frame_buf), true,
+-					    req->reason_code, false);
++		report_disconnect = ieee80211_set_disassoc(sdata,
++							   IEEE80211_STYPE_DEAUTH,
++							   req->reason_code, tx, frame_buf);
++
++		if (report_disconnect)
++			ieee80211_report_disconnect(sdata, frame_buf,
++						    sizeof(frame_buf), true,
++						    req->reason_code, false);
+ 		return 0;
+ 	}
+ 
+@@ -9788,6 +9811,7 @@ int ieee80211_mgd_disassoc(struct ieee80211_sub_if_data *sdata,
+ 			   struct cfg80211_disassoc_request *req)
+ {
+ 	u8 frame_buf[IEEE80211_DEAUTH_FRAME_LEN];
++	bool report_disconnect;
+ 
+ 	if (!sdata->u.mgd.associated ||
+ 	    memcmp(sdata->vif.cfg.ap_addr, req->ap_addr, ETH_ALEN))
+@@ -9798,12 +9822,13 @@ int ieee80211_mgd_disassoc(struct ieee80211_sub_if_data *sdata,
+ 		   req->ap_addr, req->reason_code,
+ 		   ieee80211_get_reason_code_string(req->reason_code));
+ 
+-	ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DISASSOC,
+-			       req->reason_code, !req->local_state_change,
+-			       frame_buf);
++	report_disconnect = ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DISASSOC,
++						   req->reason_code, !req->local_state_change,
++						   frame_buf);
+ 
+-	ieee80211_report_disconnect(sdata, frame_buf, sizeof(frame_buf), true,
+-				    req->reason_code, false);
++	if (report_disconnect)
++		ieee80211_report_disconnect(sdata, frame_buf, sizeof(frame_buf), true,
++					    req->reason_code, false);
+ 
+ 	return 0;
+ }
 -- 
-2.50.0
+2.43.0
 
 
