@@ -1,153 +1,136 @@
-Return-Path: <linux-wireless+bounces-24321-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24322-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5F0AE3259
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Jun 2025 23:31:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A16AE32C7
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 00:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABFC816CAEE
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Jun 2025 21:31:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DDAE16EA09
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Jun 2025 22:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7C27FBA1;
-	Sun, 22 Jun 2025 21:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47239219E8C;
+	Sun, 22 Jun 2025 22:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="er0j6+JA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l9/Ak8Sp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f67.google.com (mail-pj1-f67.google.com [209.85.216.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D900C2E0;
-	Sun, 22 Jun 2025 21:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BFC6136
+	for <linux-wireless@vger.kernel.org>; Sun, 22 Jun 2025 22:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750627881; cv=none; b=C/cflnjEbSN1hlbpMJ2HhKR3NBgRwGDNnpzk+fXZ7mcfmN7U3n+7qWM+tluDIkIsL7DvCBre0MNfyvQmPkgSjXvqFPS/cQRWWpRU9DFUM+xp2BJhbyOts/s51dLA7e5lI6uUsftwuTpPTpoXgW7xXc4LmjWUnWxr8rGpkVZmbX8=
+	t=1750631128; cv=none; b=lAg8Ca5tTmh84OiNpnX+bexk1oEUmjX3YV1Fmc9cnuvbOcGHaAP3D4ymCW0OjDVSnLc4QA+D5subqKSxfSGBNl+MiLOhsW2wdNGgfq91m7QanDYKY5RNoHvQyQsP34S4zZoL/bFna1J92dJ14tZzCJ3Zb0LvIbN5NBbrBLwdoLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750627881; c=relaxed/simple;
-	bh=IdW5b/ilQ2wpV5HyTgBGLknyissGVZ99awUBdPrUHEw=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=DlhASIEOE2teDj7sLbN2GWpid104F2jFpZA1xN0PY4LsxmKmNN4lvv11kbcc4jLgykvNWJ8yY9AL8gtLzIoXd88Ux2ddBatW1Du/XJNZiYcKO9TjGF9AzZmt3iEx3cSQdeEIxL5mPPaRFXMMjdJbj6wzU/4aEOh6QCnBmO03/FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=er0j6+JA; arc=none smtp.client-ip=209.85.216.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f67.google.com with SMTP id 98e67ed59e1d1-3139027b825so2625484a91.0;
-        Sun, 22 Jun 2025 14:31:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750627879; x=1751232679; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IdW5b/ilQ2wpV5HyTgBGLknyissGVZ99awUBdPrUHEw=;
-        b=er0j6+JANzClYFfbe2EuFJcWVBFjeDvQMCZsaX63d8os6GbNgv1BjYPQs3AGjLP0wP
-         5ktP8jE9RZShC2apqXwQAZ0StnbiulKNBEBxlm/+ySeorRhOCbvxg73FC7YryhUu1XHb
-         J4o7Uwd1jGU8uOGWTiW4+dnE9CbA6sEHH4pyLBXJOl0gRwJMCC4sh1Q5/3GhzmcIqeBC
-         zzJ+NeXrNJ2oNW907IlHkb33aJiG0URYmRMgmAGLUt45odC6pZvHLjI2BVUjPrNIkUFg
-         rNMIc+3sHpOO41NK97Ana2wUhR+qNUjBf5rOEL1eHm+jDv8eSBJKU7YOQ9rKjPDCbOc1
-         BcUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750627879; x=1751232679;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IdW5b/ilQ2wpV5HyTgBGLknyissGVZ99awUBdPrUHEw=;
-        b=mwh7zo55SJc2BGqtOMOIsT7SIWmXk351KGrmpVJf7vTUuLyvWk6Czw13+bBWCpcB0n
-         NacHBgrl9/xwfADIUKcdxZNpYBVvKxUD3+vKyJp4VXCADPBpnt/t8wsi/fccRVnMcOzC
-         tQEsmGLWGL8cggLdT/D14C9/GA2rBWc+fsvhe5szpyu3fCFDvnKQB4owlFV91kurkbiy
-         bC06WL4IyJXTT5HvdhbKKA/LA1pNvrn3+RdFfBKXeDUYPe4QDL6LMqXlOy8Y/5HZWCyH
-         fz0QW0XLb28Jr8eoQnqYSLWMqX4HqCtFLb41K37RHKsX+5mCIexeXn1sOcXxoq3qtD4X
-         8gUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvpbCbDzpFca0kLK6efTgVEKFnzAh6cp1k1CS8MPe6uZtIiwa1ksAIN86ipQon6eAy26KE848GFbv7L0ul/Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeqbXMxqviPm5WHJq9a8q4hJYYTukEKsQGl136ZpFSPGeKVXS2
-	uEPsuvTpnDkECN5SOe+vdmrhQKEnpLeoY8RG4cSzzA2yYMzDyYfG9gZc5PN/2KPap5KxKCyMaPm
-	wsQKi3akvWgKWLH+fkSq2urndYb9BdD4=
-X-Gm-Gg: ASbGncs93y8BuP3t8CxJsMGgAjdtoXE9a9PSMOgojaAA10SEZSBtKfEYOy651i5m2BD
-	keqcHn3/txd1SVoCO2+n+c7ThWV0PZldlT7cYWMFAujyRgIABw01jz4RtQNoVJiQWUqeSavqARE
-	PJlPcVf7e3J6GljJoTeBbNan6B494vQorkCQEqEL2gSmK0
-X-Google-Smtp-Source: AGHT+IFZWKTvXxbH3G7bLqTtzvIEx7H67Au/OCzCNxls/aVYC/EQxcLNtVDi0fCMPkkqWWhWpADdtxZfBDjg7529qc0=
-X-Received: by 2002:a17:90b:3d0b:b0:311:b413:f5e1 with SMTP id
- 98e67ed59e1d1-3159d8ffc0amr14898875a91.32.1750627879479; Sun, 22 Jun 2025
- 14:31:19 -0700 (PDT)
+	s=arc-20240116; t=1750631128; c=relaxed/simple;
+	bh=Y0dGfVGe4zpK96ClThSFQWl6PTsFOjwjLUcPC7kNeuI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fCqA1hbr7x9oelX4NJmYabr8Y50S0cd68HUYdIfk30GGqAoLSPsc28UkvyeSpAjVLtpTL4sKK4JAPRxRYWD+hq6Do80VqRBCJIO1ZzJAKOTnqymQvsvxWVe9UdaRtViGo98/D9olQepzWyn0+Nxkx2HAa8Pi4dw/JoTDrF4VBIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l9/Ak8Sp; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750631127; x=1782167127;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Y0dGfVGe4zpK96ClThSFQWl6PTsFOjwjLUcPC7kNeuI=;
+  b=l9/Ak8Sp7fh/yKIk1o/2iKlR3bXGhJg3BZ+xk0KOkY82tTBAWkLn9sdo
+   iP3mdPLcZVlF/RGO8BYv4+EPaSXzRwmbJykopu0CM3y0X4kSIz0z1A4p1
+   ppFZepYAUYfJrXz8NMHoBbyZgoQx5qM0AJd2IrKWyxWNO2IFGnIqu5tFN
+   WfiQWFD2SR19Z3WereT4bQOPVoWw8zIt+Z3S/jyg+X/4yJMsbpsZUGUxS
+   nFXdUPX1JK1DLwAmRfAhN+rOQda+aG8VSPI8eJtgSKUcEsXqsQAQ/Oteb
+   uxfzBkM5kdshJgsV1tlOLhj+xFjR77moIrrNItBgW2a2CEyqKKXNFikPX
+   g==;
+X-CSE-ConnectionGUID: B0+nKA0kRV2lesxyFN8zXg==
+X-CSE-MsgGUID: 62i+Io8jQn6sbX43c8c1gQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="52916069"
+X-IronPort-AV: E=Sophos;i="6.16,257,1744095600"; 
+   d="scan'208";a="52916069"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 15:25:26 -0700
+X-CSE-ConnectionGUID: FcPs3J3jS2STYnTAnmVdNA==
+X-CSE-MsgGUID: Koo4O9JtTrG6wygjF+tWsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,257,1744095600"; 
+   d="scan'208";a="182295512"
+Received: from aotchere-mobl1.ger.corp.intel.com (HELO localhost.localdomain) ([10.245.248.120])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 15:25:24 -0700
+From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+Subject: [RFC 0/5] wifi: nl80211: Extend NAN APIs to allow more flexible implementations
+Date: Mon, 23 Jun 2025 01:24:39 +0300
+Message-ID: <20250622222444.356435-1-andrei.otcheretianski@intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-Date: Mon, 23 Jun 2025 03:01:08 +0530
-X-Gm-Features: AX0GCFv-PIdhMtiuqEmBSJhBAx3V8LVajpf5wYth2A1G7mmD97Qg2BPG5kV2AXg
-Message-ID: <CAEmM+Qh=8tm55Ypa2w3ZtOFFrGXTpKqxue59mVAo_5TVy0RJ6g@mail.gmail.com>
-Subject: [ath10k][QCA9377] Firmware crashes on Dell Inspiron 5567 (IRQ #16,
- all modern distro kernels)
-To: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+This patch series extends exiting NAN APIs to support more
+configuration options for NAN synchronization and a user space oriented
+NAN Service Discovery implementation.
+Existing NAN APIs are very limited and not really used, resulting in
+vendors using proprietary vendor commands and a need to offload NAN
+protocol implementations to the device firmware or driver.
+In this series, additional APIs are added which allow to extend the
+configuration of the NAN Synchronization logic and support user space
+oriented NAN Service Discovery implementation.
+With this design, wireless devices/drivers are still required to
+implement NAN synchronization and cluster merging. NAN Discovery Engine,
+may be either offloaded (keep using the existing APIs) or alternatively
+implemented in user space.
+To support user space oriented NAN Discovery Engine, the device will
+notify user space with %NL80211_CMD_NAN_NEXT_DW_NOTIFICATION about the
+upcoming Discovery Window (DW). This notification should be used as a
+trigger for transmission of uncsolicited multicast SDF's (i.e.
+unsolicited publish and active subscribe). Once SDF transmission is
+requested with %NL80211_CMD_FRAME, the device shall take care of the
+actual frame transmission during the upcoming DW.
+Note, this notification may be sent before the actual DW start time.
+On DW termination, the device/driver shall flush all untransmitted NAN
+management frames. Untransmitted frames shall not be carried forward to
+the next DW.
+Note that such approach may not be appropriate for highly power
+efficient devices or scenarios that require long discovery sessions, as
+it may require the host to wake up for each DW.
+User space can in turn turn off this notification using
+%NL80211_NAN_CONF_NOTIFY_DW configuration flag if it doesn't intend to
+send unsolicited multicast SDFs to prevent unneeded wake ups.
 
-This is to inform all that constant firmware crashes have been seen in
-the "Qualcomm Atheros QCA9377 802.11ac Wireless Network Adapter",
-which was shipped with the Dell Inspiron 5567 laptops. This affects
-every kernel release, including the stable and the longterm ones.
+%NL80211_CMD_NAN_CLUSTER_JOINED notification shall be sent once after
+new NAN cluster has been started or the device has joined an existing
+cluster. In addition each time, cluster merge procedure results in
+cluster merging, user space shall be notified. This is required, as
+cluster ID is used as address 3 in SDF frames. Untransmitted frames
+should be flushed, when this notification is generated in order to
+prevent transmission of SDFs with invalid address 3.
 
-All the logs have been taken after livebooting an Arch Linux ISO.
+This patch series goal is to provide APIs to support NAN synchronization
+and user space oriented Service Discovery. It will be further extended
+in a separate patch set to support user space implementation of NAN data
+path (NDP) and NDL schedule establishment.
 
-Every distro has been tried, and it has been confirmed that some error
-of this kind is shown in every distro.
+Andrei Otcheretianski (5):
+  wifi: nl80211: Add more configuration options for NAN commands
+  wifi: nl80211: Add more NAN capabilities
+  wifi: nl80211: Add NAN Discovery Window (DW) notification
+  wifi: cfg80211: Add cfg80211_next_nan_dw_notif() API
+  wifi: cfg80211: Add cluster joined notification API's
 
-## Steps to reproduce the issue
+ include/net/cfg80211.h       |  95 +++++++++
+ include/uapi/linux/nl80211.h | 144 +++++++++++++-
+ net/wireless/nl80211.c       | 373 +++++++++++++++++++++++++++++++----
+ net/wireless/trace.h         |  34 ++++
+ 4 files changed, 607 insertions(+), 39 deletions(-)
 
-1. Boot/liveboot any Linux ISO through this card (and possibly, this laptop).
-2. Wi-Fi network interface appears.
-3. Connect the Wi-Fi router to the computer.
-4. A few moments/minutes after that, the touchpad stops working, and
-the network interface cannot even access the Internet anymore (BUT,
-the network interface might disappear, might not disappear).
+-- 
+2.49.0
 
-## Affected distros and the necessary workarounds
-
-This has been the pattern on every distro and their corresponding
-kernels (LMDE, Linux Mint, Pop!_OS, Zorin, Kubuntu, KDE Neon,
-elementaryOS, Fedora, and even Arch). The fix which made these distros
-usable is to add two things:
-
-- Adding "options ath10k_core skip_otp=y" to a new conf file in /etc/modprobe.d.
-- Adding "pci=noaer" in GRUB kernel parameters so that the logs are
-not flooded with Multiple Correctable Errors.
-
-To defend my case (that it occurs in the other models of Inspiron 5567
-too), I have recently contacted someone running Linux Mint on the same
-model. The answer was the same: the touchpad and the Wi-Fi stop
-simultaneously.
-
-## Some of the limitations
-
-The kernel was tainted, but the other things have been properly noted
-in case they might provide some useful details. As stated,
-investigating why IRQ #16 is disabled will probably give us the
-answer.
-
-## Logs provided
-
-All the logs in a combined manner can be found here:
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180
-
-- Full dmesg: https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-dmesg-log
-- Hostnamectl: https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-hostnamectl-log
-- lspci: https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-lspci-log
-- Modinfo of the driver:
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-modinfo-log
-- Ping command:
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-ping-log
-- /proc/interrupts:
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-proc_interrupts-log
-- IP addr command (Heavily Redacted):
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-ip_addr-log
-
-Lastly, this issue on the GitHub repository of Pop!_OS 'might' be
-relevant: https://github.com/pop-os/pop/issues/1470
-
-It would be highly appreciated if the matter were looked into.
-
-Thanks,
-
-Bandhan Pramanik
 
