@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-24325-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24326-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C002FAE32CA
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 00:25:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A84CAE32CB
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 00:26:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B63416EAF3
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Jun 2025 22:25:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFE9A16ED0C
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Jun 2025 22:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843E46136;
-	Sun, 22 Jun 2025 22:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0841219E8C;
+	Sun, 22 Jun 2025 22:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X3ANjxNa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="arw7bTwV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE10F21C187
-	for <linux-wireless@vger.kernel.org>; Sun, 22 Jun 2025 22:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D40F6136
+	for <linux-wireless@vger.kernel.org>; Sun, 22 Jun 2025 22:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750631154; cv=none; b=DKc7LnFjy3VuVHVhPHUIpkoQPpXeVWu7uZexxeUNmpHJRtvLWCUXRHPjvTc8FwmJNusxsqUWHZib46jvcKaMJXp2QmJFIC8Krk7I9BrdMIAuAO7dc60BdQUylXesjc3JMgymnOoBVNrPNvnlJmaUDog9l8q87o+PlafLXg0YiGU=
+	t=1750631159; cv=none; b=EQgKpXhq5Zj7PtRpfOdVfYuY2RG1eH7CTlL6Ju0BUpkgxgponzbQg3S4KGYvWrnQ6vcSpurx+lX699XLxETpya0HwnW54VBJkPahFNDfUP8NOWR1qJ3WDAR63D4xPHctAvIy9kvUXR5FhF7N+OIlutzkQfFTn0ADHAy9FV8OYAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750631154; c=relaxed/simple;
-	bh=9YD86E+kVFrUWNkttCTRoXa6NGoCuyuoPE4wdZs+VBM=;
+	s=arc-20240116; t=1750631159; c=relaxed/simple;
+	bh=RYKroEbKBDYYfR/vi82IGpgp+Km/dMJydiCWgG0yr1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjU1a12keC8EWamJV2t7UUS1TMinLECHBk+PyBV+qQIWHa+LXInptuk/mi0EwoI1GhtN9Gy+F5hlzS4XO7OkrkXVmlcV87S+UZKb4BL/A7JBgdmemww19QjT+UcHJdcLY1g3rQiQJeG48911cg77RtZdSDopoh9GV0k19hLYUJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X3ANjxNa; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=IhBDiSAoGTn94I9aqF29Ihk7DGKnCPU3r5jXdpJHwy2BRt/S70zCQyJ5n7l7jAth46ECWL8Qz3ykvjhczafX0f8stK+ERP3gKPFsXNmexM6khgqK7u1sy7Os7YVhuwuZOo4Mr7+BUV8v/kxFUhFuL0Z8FWGDr1BQd2Lq9mK1fCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=arw7bTwV; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750631153; x=1782167153;
+  t=1750631159; x=1782167159;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9YD86E+kVFrUWNkttCTRoXa6NGoCuyuoPE4wdZs+VBM=;
-  b=X3ANjxNaAJ3ZWI9V/+D6zDFxMCKkTTEuJyBaCg/Dvdeqbmqi0zZjfPW9
-   fL8AAAZ8ytRszY59zAsFrmvOvdJm/URx47DTuZJKODxHIihq8ZB1nTq5S
-   CNk9L2T8E5l/f6rbfRySQMHTvFKnMseOJNFqBEY6u8duWL9tpIkG3iffL
-   ClubI0+0cs12oRRm1Yq/ebPj9bBFBNF7RFq67CowvUHJDj6ErPE+5TBa0
-   iMnlqBTVkbmdlUU3rHpHkHqO2iTKwpPMjaL99J0YWj17JD5VWsOszJkhB
-   Lq9Q68uWwlyvuWiKV+GmD1xhMS4IBhqsutOsEE0TOeGpryq7p0l/WQCob
-   A==;
-X-CSE-ConnectionGUID: CODrcW83QLKP+idKLaoY9Q==
-X-CSE-MsgGUID: Kg3NY0s5ReGCCTVYG+6hOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="52916082"
+  bh=RYKroEbKBDYYfR/vi82IGpgp+Km/dMJydiCWgG0yr1c=;
+  b=arw7bTwVID/5AuLDcfE3+/auY0hVsLotof1u7s+omQAgalitf7KHiLpA
+   Cdx0e5ywbihPQnGa+nPwPs2cGC3GaXbJeg1MOgQNgYnZludJqengAQ+UY
+   W1cSMJ4PbK+0Bk+SzLG7osUsX4lcpDz/VlaCdOctDCOgidJhQ2qwzPmTY
+   Z/wnENbW/Xi6+Ste3SLf97NV7gtBKjuBQZdbGR2oIHQqggHKJGsPMI7yP
+   WrmkLl6AvSztgCRPJZEM3XeoxHr4wbmThWOcuhO//sswUBiPQakWH6uCI
+   N0aNHPZQV7BpeVry0vyDvOjgL7eQwYau3JmBVuIxsDr6NXMblC4YNI48h
+   Q==;
+X-CSE-ConnectionGUID: ibvYRu+pRWycUhrFGReDqw==
+X-CSE-MsgGUID: VMzfUFsNQEayDFBoPENUNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="52916084"
 X-IronPort-AV: E=Sophos;i="6.16,257,1744095600"; 
-   d="scan'208";a="52916082"
+   d="scan'208";a="52916084"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 15:25:53 -0700
-X-CSE-ConnectionGUID: kgbtmvokTI6bZtBBDR5TgQ==
-X-CSE-MsgGUID: qhjnJ/q+RG2RXa1HKSr0xQ==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 15:25:59 -0700
+X-CSE-ConnectionGUID: M2L0NBXoTQ2bNDz3ZlWvzw==
+X-CSE-MsgGUID: wzTvYG9EQlSiZqqp70JM4A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,257,1744095600"; 
-   d="scan'208";a="182295740"
+   d="scan'208";a="182295770"
 Received: from aotchere-mobl1.ger.corp.intel.com (HELO localhost.localdomain) ([10.245.248.120])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 15:25:51 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 15:25:56 -0700
 From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Andrei Otcheretianski <andrei.otcheretianski@intel.com>
-Subject: [RFC 3/5] wifi: nl80211: Add NAN Discovery Window (DW) notification
-Date: Mon, 23 Jun 2025 01:24:42 +0300
-Message-ID: <20250622222444.356435-4-andrei.otcheretianski@intel.com>
+Subject: [RFC 4/5] wifi: cfg80211: Add cfg80211_next_nan_dw_notif() API
+Date: Mon, 23 Jun 2025 01:24:43 +0300
+Message-ID: <20250622222444.356435-5-andrei.otcheretianski@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250622222444.356435-1-andrei.otcheretianski@intel.com>
 References: <20250622222444.356435-1-andrei.otcheretianski@intel.com>
@@ -76,48 +76,116 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This notification will be used by the device to inform user space
-about upcoming DW. When received, user space will be able to prepare
-multicast Service Discovery Frames (SDFs) to be transmitted during the
-next DW using %NL80211_CMD_FRAME command on the NAN management interface.
-The device/driver will take care to transmit the frames in the correct
-timing and flush the queues upon the termination of the DW.
-This allows to implement a synchronized Discovery Engine (DE) in user
-space, if the device doesn't support DE offload.
-Note that this notification can be sent before the actual DW starts as
-long as the driver/device handles the actual timing of the SDF
-transmission.
+Implement and export a new API that will be used by drivers to notify
+user space about upcoming NAN Discovery Window (DW).
 
 Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
 ---
- include/uapi/linux/nl80211.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/net/cfg80211.h | 10 ++++++++++
+ net/wireless/nl80211.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ net/wireless/trace.h   | 16 ++++++++++++++++
+ 3 files changed, 67 insertions(+)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index f2d4a2007463..134cea046bd0 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -1347,6 +1347,11 @@
-  *	control EPCS configuration. Used to notify userland on the current state
-  *	of EPCS.
-  *
-+ * @NL80211_CMD_NAN_NEXT_DW_NOTIFICATION: This command is used to notify
-+ *	userspace about the next Discovery Window (DW). Userspace may use it
-+ *	to prepare frames to be sent in the next DW. %NL80211_ATTR_WIPHY_FREQ
-+ *	is used to indicate the frequency of the next DW.
-+ *
-  * @NL80211_CMD_MAX: highest used command number
-  * @__NL80211_CMD_AFTER_LAST: internal use
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index b3d3b039c913..27a3b8795d9b 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -9871,6 +9871,16 @@ void cfg80211_schedule_channels_check(struct wireless_dev *wdev);
   */
-@@ -1607,6 +1612,8 @@ enum nl80211_commands {
- 	NL80211_CMD_ASSOC_MLO_RECONF,
- 	NL80211_CMD_EPCS_CFG,
+ void cfg80211_epcs_changed(struct net_device *netdev, bool enabled);
  
-+	NL80211_CMD_NAN_NEXT_DW_NOTIFICATION,
++/**
++ * cfg80211_next_nan_dw_notif - Notify about the next NAN Discovery Window (DW)
++ * @wdev: Pointer to the wireless device structure
++ * @chan: DW channel (6, 44 or 149)
++ * @gfp: Memory allocation flags
++  */
++void cfg80211_next_nan_dw_notif(struct wireless_dev *wdev,
++				struct ieee80211_channel *chan,
++				gfp_t gfp);
 +
- 	/* add new commands above here */
+ #ifdef CONFIG_CFG80211_DEBUGFS
+ /**
+  * wiphy_locked_debugfs_read - do a locked read in debugfs
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 6727580c0a50..5936ec1557fe 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -20823,6 +20823,47 @@ void cfg80211_epcs_changed(struct net_device *netdev, bool enabled)
+ }
+ EXPORT_SYMBOL(cfg80211_epcs_changed);
  
- 	/* used to define NL80211_CMD_MAX below */
++void cfg80211_next_nan_dw_notif(struct wireless_dev *wdev,
++				struct ieee80211_channel *chan,
++				gfp_t gfp)
++{
++	struct wiphy *wiphy = wdev->wiphy;
++	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
++	struct sk_buff *msg;
++	void *hdr;
++
++	trace_cfg80211_next_nan_dw_notif(wdev, chan);
++	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
++	if (!msg)
++		return;
++
++	hdr = nl80211hdr_put(msg, 0, 0, 0,
++			     NL80211_CMD_NAN_NEXT_DW_NOTIFICATION);
++	if (!hdr)
++		goto nla_put_failure;
++
++	if (nla_put_u32(msg, NL80211_ATTR_WIPHY, rdev->wiphy_idx) ||
++	    nla_put_u64_64bit(msg, NL80211_ATTR_WDEV, wdev_id(wdev),
++			      NL80211_ATTR_PAD) ||
++	    nla_put_u32(msg, NL80211_ATTR_WIPHY_FREQ, chan->center_freq))
++		goto nla_put_failure;
++
++	genlmsg_end(msg, hdr);
++
++	if (!wdev->owner_nlportid)
++		genlmsg_multicast_netns(&nl80211_fam, wiphy_net(&rdev->wiphy),
++					msg, 0, NL80211_MCGRP_NAN, gfp);
++	else
++		genlmsg_unicast(wiphy_net(&rdev->wiphy), msg,
++				wdev->owner_nlportid);
++
++	return;
++
++ nla_put_failure:
++	nlmsg_free(msg);
++}
++EXPORT_SYMBOL(cfg80211_next_nan_dw_notif);
++
+ /* initialisation/exit functions */
+ 
+ int __init nl80211_init(void)
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 61a5eca9c513..bf84e6abaf69 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -4187,6 +4187,22 @@ TRACE_EVENT(cfg80211_epcs_changed,
+ 		  WDEV_PR_ARG, __entry->enabled)
+ );
+ 
++TRACE_EVENT(cfg80211_next_nan_dw_notif,
++	TP_PROTO(struct wireless_dev *wdev,
++		 struct ieee80211_channel *chan),
++	TP_ARGS(wdev, chan),
++	TP_STRUCT__entry(
++		WDEV_ENTRY
++		CHAN_ENTRY
++	),
++	TP_fast_assign(
++		WDEV_ASSIGN;
++		CHAN_ASSIGN(chan);
++	),
++	TP_printk(WDEV_PR_FMT " " CHAN_PR_FMT,
++		  WDEV_PR_ARG, CHAN_PR_ARG)
++);
++
+ #endif /* !__RDEV_OPS_TRACE || TRACE_HEADER_MULTI_READ */
+ 
+ #undef TRACE_INCLUDE_PATH
 -- 
 2.49.0
 
