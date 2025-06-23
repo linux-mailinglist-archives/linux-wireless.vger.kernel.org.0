@@ -1,168 +1,108 @@
-Return-Path: <linux-wireless+bounces-24373-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24374-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79354AE4DE4
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 22:08:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DAB7AE577B
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 00:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 006D4178CE1
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 20:08:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C78B1BC828D
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 22:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B792D12F4;
-	Mon, 23 Jun 2025 20:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E77A223DEF;
+	Mon, 23 Jun 2025 22:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KqybAjod"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RaCyt8im"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D678A28D8CD
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 20:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991BB70838;
+	Mon, 23 Jun 2025 22:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750709325; cv=none; b=tZmHfDip9u1ke1t8sm09D5AYeL4qNZZz3fFh9vp8HUmZzJoAT8bqJ4fXH38Pfw/RMVjIo/ub9A6wrUdPEA+dKVXrzV/WuHsZFylLcpn0aq5YVpKV6eqa681o1bnBUUdyYhr7dilVuowI7DQbUM6VNEEDlwTb7O8YnNA686jRQ9M=
+	t=1750718181; cv=none; b=H3PEclHwixrzZxHM69mGK8ej1ckedhJy2+bjY6ZLgu9OamkiWuwspRwvv4HR8EO5dfOnx+LeUf0lhU9EJ5m09iCtGBctsLh68vOJb/ySAnk4u9PY6ykq28pFdn2xO52661VKDpMwyDcsseHZBYs5NY59FOOX/W+zW/OO6It40tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750709325; c=relaxed/simple;
-	bh=gT6AJjP4fwyZYLktCzn4YBpsclFuzv1uhDUZQeQVE/s=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=rON96wSP4i+vy4crQjIztpU/c9D5KT9wP6t3z5raZWJQwVzBdKr06e11dg2pD6poDzlAECerDiStGBBehIfPP9oXH68E0eRK/76KT8J0Ew6HWsG5i1XFS5uAWaCYO7VcsQiTmyJdXItrKCp41Ap40CSzja3mGUr1gdmfY8gk3Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KqybAjod; arc=none smtp.client-ip=209.85.221.54
+	s=arc-20240116; t=1750718181; c=relaxed/simple;
+	bh=VMqjvdqjYjwE3uE3p4fOORmN3YUCuI69v1hvsEPa/as=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=PVyXeXAjRUd4IPeWe4nMmnncmHUnNqcC837sG9gGaqkHitoMxjBfP6bNHuRDpG0hw8SCj0kBawz6VYdppoNJbUxdSTO5KU2d/5bPwKfSaEWFHtK2aSwKJkLxzAbDPuA8tkowKleL+NJmbj4bX9JgnlPgOIJROhLkKKT0/ckPny4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RaCyt8im; arc=none smtp.client-ip=209.85.214.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a54700a46eso2592568f8f.1
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 13:08:43 -0700 (PDT)
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-235d6de331fso67295835ad.3;
+        Mon, 23 Jun 2025 15:36:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750709322; x=1751314122; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=7NKVmiUuQV0Dw1Vw6tRW3MAOw4c13j+AOH9euCOJSZU=;
-        b=KqybAjodaL16D/jZ+kWGP1f3FdaKIVXK4fq/98rIw6WdnuEB7FPozeXSg28erTkg79
-         XUrON/rYuf0H3QDU/czrRjnzyP4wakRp4VL7fmaSeg5Eq+NjCXt9AnyWpE2+9EY8VVbN
-         4VfsoeyrFpOO8EbxSbRAGwHebqrYwne0jDGDNmvuwkJf6UyPtmKt9UrZH4+Ip5/tr60O
-         peiGqVlSINvLiv/1HXRI+eXmtjVoiwmJi280RMVpSDuBPJkrc/WFvbPnh64VVaYys6cb
-         bpEUewLNbpZ8JS0kcFBGDQgbgAJYBo5HBJWRhGPcicElGUDxaw+VcjhJ5hNMHOVilTmS
-         s0eQ==
+        d=gmail.com; s=20230601; t=1750718179; x=1751322979; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VMqjvdqjYjwE3uE3p4fOORmN3YUCuI69v1hvsEPa/as=;
+        b=RaCyt8imbpjdfN3GsDqDfCAnqLfRUO/ETgsHdiqsJfQgZqxAhecNkz/U0bebUYeyYp
+         URnJvb5qOQKhr3SaZYk8c3CwPFiD+n2TOvMlMgmiQFPfdTWRCZ5j34XEN9yshEeKnvSZ
+         z85e2/tpBWLEQjWdeNulZAnkHbJkhAKlU5iFO4mykoJ6ghDBk6h0SQ1aiDQ+BvzhK6Jp
+         QJTB+o1/PtI0kJzP7k1ZpUgGC3l9tBtnLBymsAhciurJlfBLEXHLMRmAU5axFhE6Zlsy
+         ezN3kAABQB3oeH8pE+15RddHzoojbBHqtOW5JR8h8Ky2qyDzZrEw7rbY6beckR+zvF3M
+         J8uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750709322; x=1751314122;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7NKVmiUuQV0Dw1Vw6tRW3MAOw4c13j+AOH9euCOJSZU=;
-        b=HKdmydZKhKKGlIc+lZyypXX9qhCu3R2zPe52xOcPtg8WPXjZHTYkhj5lSn2Iy6e4sX
-         BLUvUli7haJh50wlhiCivdwyVXZjhCCifQQGSjaZRHc8Q8kLEfsZGIprg4Y1+WS7dqa9
-         z+dRs4uSmRk4CgXOpJlsVspNfr0aj4Jw68V+dmGKCW8BqsjvPtyK26qIUMTFnBBBnfJQ
-         A3uTyXh7SbU5GoCDeI+akFK8Efm/t464xg8tcw/jK4NbJUVu4VNcZKXFjHozgY6ronwc
-         hMkRwC1Dj8JwStN/Cj1sInxgI9bhYOTohjRUW5WiGennBzkWwQogD0/E6b8FyWN1k/W5
-         imLQ==
-X-Gm-Message-State: AOJu0YyQ6NQTW/8+jTYetVOqbvoZKBgHj70ZxGDof7zc83B4jxKZYhJc
-	J4PtozCCLIH64VnbaqzcKqJxhNSXjhQUDeTzfFM6Owf4ui9uhi5pzzli8mBb/Q==
-X-Gm-Gg: ASbGncv8rSWHnh0tgNabxLJMK2CwnMRs99kzI/fes+yAy82/SZQCUvDz2PK6Cy+rDEN
-	4JWhTIqwbaEj7GbxaC9luiTnNbYRDHCYXxuL72Xb6iGC+GPizCuwZsHjl9zXbNPQ1W5KUU+/bAs
-	gMkpW0/KlUD4cI9vbj2dqDu2DiDIyy2EX36dizyjh0SV5ME6HFottExm3+G9G/c47JLnqRwTBGq
-	fgnBINqMOcOZX6whVObD9j0aBpk2a9fiXaEtGEfRAV10KNIsZiCyKaqp6+BHpkSLs8GjylU8aVa
-	0sVABlmxiCXNQBWmxSrEssl/0JQXYjDM0nHkln7jybv19FzMPEo0pkmlRd+OcDbMGW7EgQ==
-X-Google-Smtp-Source: AGHT+IFtCeUOSrvaVTZYVswtRGFZ6sqyrZ8mTcMhn0DTXbvKhjAbACVgzJHjZldDvUYC0gDB8CoZGA==
-X-Received: by 2002:a05:6000:2dc4:b0:3a5:1cc5:aa6f with SMTP id ffacd0b85a97d-3a6d1322b77mr11426546f8f.34.1750709321930;
-        Mon, 23 Jun 2025 13:08:41 -0700 (PDT)
-Received: from [192.168.0.50] ([79.119.240.16])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e8062e9csm41354f8f.25.2025.06.23.13.08.40
+        d=1e100.net; s=20230601; t=1750718179; x=1751322979;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VMqjvdqjYjwE3uE3p4fOORmN3YUCuI69v1hvsEPa/as=;
+        b=ZJ4RXmcOlm0ewnc1x/JZxIFOz9Q1NAKcyRcAeuMkZytLkwOk2gdUo3v1OO2/qwV05u
+         /dApYQ+AyBo97vNT1ovfwlY2DrC2/xkoeBCygbvo0jw98vbAMgSca1XxyKBEKsLnpBzC
+         QMR5FPLQkzPBG/7KRIjpwxqjbeD1lltLwbt7onKixUwCNrBJCt+6KPwekxMOZ85pKsxs
+         2cedsdXK2ruPOencVb2Yi9Rh44aXr4cxPm/4mQWdHOnHhXxzkKSOjurOwTJXlKxTwqGe
+         k3eT5DR/CH0sFigRgptWOsO/TBMGsilN6Im5wdbchwQsa4oO7JlC48As8maVd3M90NCY
+         oLQw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4IltdrqkZfC69VDpRHzoAnOMbsG3+4q6odlBJ3zAFEsa3dWkb6N3KoqpLlq/cGhhSuwt9OxElhr5TybXlyg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8pB5kLkI+kwSNp1LuTBURwHwWCiTTrdoGBJv0uRB1XK/6dyRq
+	ZD1Greez9ZttUrG3zu30MmMFuzEi8u464QBqbH/8TzVW7ur0AJwJceas
+X-Gm-Gg: ASbGncve/oYWlBuEWEKFKepKF0S1Z3JQhv6luPiZPofpF8pMA1NNSrclMWdcDhdZr4P
+	iwnnJL3suEp8N1xC12LAm4mUUIWzT6ORHoNH7y459zhZAFQNLaM0F96Fx/pGGlwHxdWZTSPVoc5
+	ZZmc2XM2aBmLpFKutkjqrfBnvjGF6sXZ6QGVFYYbD+KzpZ42BFubzIy4tMehXCxVJc3jhG7iuHk
+	tGYVhJCWO6Jh9YsXxBBHTmannF0wEtno5QCSv4uo0Txee2rW7tra9O7mwyZxGPHdYZyWcvt8xvB
+	UbSrWKsSHftyCR7AVQ1UV/bywpdSeDzW5cCmCDmJAkMXbX6UNW6oOPlbpL3soNq+162I3j4e7Dn
+	P4Q==
+X-Google-Smtp-Source: AGHT+IGiVCAqyMHQ0aUFxGZw6AWg0MqiQazeu7JnOPflkRiJ+eMoHJV1tXkOWbhWH0g+7MB4gsek8w==
+X-Received: by 2002:a17:903:8cb:b0:234:de0a:b36e with SMTP id d9443c01a7336-237d9bd9bc3mr218762735ad.49.1750718178827;
+        Mon, 23 Jun 2025 15:36:18 -0700 (PDT)
+Received: from [127.0.0.1] ([115.187.48.251])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d86d77b4sm93201365ad.205.2025.06.23.15.36.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jun 2025 13:08:41 -0700 (PDT)
-Message-ID: <1e5e97d4-8267-4f77-a4bf-1fe23ea40f77@gmail.com>
-Date: Mon, 23 Jun 2025 23:08:39 +0300
+        Mon, 23 Jun 2025 15:36:18 -0700 (PDT)
+Date: Tue, 24 Jun 2025 04:06:13 +0530
+From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+To: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+CC: stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5Bath10k=5D=5BQCA9377=5D_Firmware_crashes_on_Dell_I?=
+ =?US-ASCII?Q?nspiron_5567_=28IRQ_=2316=2C_all_modern_distro_kernels=29?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <2DC25FD4-0EA4-41CE-BA17-BFF84C1C5F7E@gmail.com>
+References: <CAEmM+Qh=8tm55Ypa2w3ZtOFFrGXTpKqxue59mVAo_5TVy0RJ6g@mail.gmail.com> <CD81F065-CDDD-41F6-AECD-167B509F57C6@gmail.com> <2DC25FD4-0EA4-41CE-BA17-BFF84C1C5F7E@gmail.com>
+Message-ID: <690B1DB2-C9DC-4FAD-8063-4CED659B1701@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next v3 12/14] wifi: rtw89: Add usb.{c,h}
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-References: <d055bd81-6c79-46f5-8d6d-62185cc65630@gmail.com>
- <4f456355-fdc5-4624-ab00-ed374f3b58a1@gmail.com>
-Content-Language: en-US
-In-Reply-To: <4f456355-fdc5-4624-ab00-ed374f3b58a1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 20/06/2025 22:04, Bitterblue Smith wrote:
-> Add very basic USB support. No TX/RX aggregation, no TX queues,
-Commit 47a498b84f01 ("wifi: rtw89: TX nulldata 0 after scan complete")
-exposed a problem with my lazy "no TX queues" approach:
+Resending this as it appears that the original message did not reach the at=
+h10k mailing list=2E
 
-[30316.444515] BUG: KFENCE: use-after-free write in rtw89_core_tx_kick_off_and_wait+0xed/0x1e0 [rtw89_core]
-                                                                                     
-[30316.444616] Use-after-free write at 0x00000000719224cd (in kfence-#231):
-[30316.444623]  rtw89_core_tx_kick_off_and_wait+0xed/0x1e0 [rtw89_core]
-[30316.444716]  rtw89_core_scan_complete+0x19b/0x260 [rtw89_core]
-[30316.444810]  rtw89_hw_scan_complete_cb+0xbb/0x150 [rtw89_core]
-[30316.444906]  rtw89_chanctx_proceed_cb+0x21/0x40 [rtw89_core]
-[30316.444988]  rtw89_chanctx_proceed+0x45/0x90 [rtw89_core]
-[30316.445067]  rtw89_hw_scan_complete+0x4e/0x70 [rtw89_core]
-[30316.445156]  rtw89_mac_c2h_scanofld_rsp+0x33a/0x380 [rtw89_core]
-[30316.445241]  rtw89_fw_c2h_cmd_handle+0x89/0x100 [rtw89_core]
-[30316.445332]  rtw89_fw_c2h_work+0x3c/0x60 [rtw89_core]
-[30316.445412]  cfg80211_wiphy_work+0x110/0x190 [cfg80211]
-[30316.445412]  process_one_work+0x190/0x350
-[30316.445412]  worker_thread+0x2d7/0x410                                                                                                                                  
-[30316.445412]  kthread+0xf9/0x240                                                   
-[30316.445412]  ret_from_fork+0x31/0x50                                              
-[30316.445412]  ret_from_fork_asm+0x1a/0x30                            
-  
-[30316.445412] kfence-#231: 0x0000000049346f7c-0x000000006dacad1c, size=232, cache=skbuff_head_cache
-
-[30316.445412] allocated by task 17836 on cpu 0 at 30316.413509s (0.031903s ago):
-[30316.445412]  __alloc_skb+0x148/0x1a0
-[30316.445412]  __netdev_alloc_skb+0x38/0x190
-[30316.445412]  ieee80211_nullfunc_get+0x3f/0x210 [mac80211]
-[30316.445412]  rtw89_core_send_nullfunc+0xd2/0x190 [rtw89_core]
-[30316.445412]  rtw89_core_scan_complete+0x19b/0x260 [rtw89_core]
-[30316.445412]  rtw89_hw_scan_complete_cb+0xbb/0x150 [rtw89_core]
-[30316.445412]  rtw89_chanctx_proceed_cb+0x21/0x40 [rtw89_core]
-[30316.445412]  rtw89_chanctx_proceed+0x45/0x90 [rtw89_core]
-[30316.445412]  rtw89_hw_scan_complete+0x4e/0x70 [rtw89_core]
-[30316.445412]  rtw89_mac_c2h_scanofld_rsp+0x33a/0x380 [rtw89_core]
-[30316.445412]  rtw89_fw_c2h_cmd_handle+0x89/0x100 [rtw89_core]
-[30316.445412]  rtw89_fw_c2h_work+0x3c/0x60 [rtw89_core]
-[30316.445412]  cfg80211_wiphy_work+0x110/0x190 [cfg80211]
-[30316.445412]  process_one_work+0x190/0x350
-[30316.445412]  worker_thread+0x2d7/0x410
-[30316.445412]  kthread+0xf9/0x240
-[30316.445412]  ret_from_fork+0x31/0x50
-[30316.445412]  ret_from_fork_asm+0x1a/0x30
-
-[30316.445412] freed by task 0 on cpu 3 at 30316.413558s (0.031854s ago):
-[30316.445412]  ieee80211_tx_status_skb+0x75/0xb0 [mac80211]
-[30316.445412]  ieee80211_handle_queued_frames+0x9f/0xd0 [mac80211]
-[30316.445412]  tasklet_action_common+0xc5/0x230
-[30316.445412]  handle_softirqs+0xe3/0x2a0
-[30316.445412]  __irq_exit_rcu+0xcb/0xf0
-[30316.445412]  common_interrupt+0x85/0xa0
-[30316.445412]  asm_common_interrupt+0x26/0x40
-[30316.445412]  cpuidle_enter_state+0xbb/0x410
-[30316.445412]  cpuidle_enter+0x31/0x50
-[30316.445412]  do_idle+0x1b1/0x210
-[30316.445412]  cpu_startup_entry+0x29/0x30
-[30316.445412]  start_secondary+0x119/0x140
-[30316.445412]  common_startup_64+0x13e/0x141
-
-[30316.445412] CPU: 0 UID: 0 PID: 17836 Comm: kworker/u16:1 Tainted: G           OE       6.15.1-arch1-2 #1 PREEMPT(full)  cd63386364b969355862abafc710704c8116e874
-[30316.445412] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-[30316.445412] Hardware name: LENOVO 82KR/LNVNB161216, BIOS HBCN18WW 08/27/2021
-[30316.445412] Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
-
-rtw89_core_send_nullfunc() calls rtw89_core_tx_write_link().
-rtw89_usb_ops_tx_write() transmits the frame immediately and
-rtw89_usb_write_port_complete() hands it to
-ieee80211_tx_status_irqsafe(). Then rtw89_core_send_nullfunc()
-calls rtw89_core_tx_kick_off_and_wait(), but the nullfunc was
-already freed by mac80211.
-
-So I will add TX queues in v4.
+On 24 June 2025 1:09:54=E2=80=AFam IST, Bandhan Pramanik <bandhanpramanik0=
+6=2Efoss@gmail=2Ecom> wrote:
+> For some reason, the Reddit link on troubleshooting the firmware leads t=
+o nowhere=2E
+>=20
+> Here is the Reddit link yet again (let's see if it works): https://www=
+=2Ereddit=2Ecom/r/linux/s/egXvRBYhYp
+>=20
+> Apologies for interrupting more than once=2E
 
