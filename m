@@ -1,82 +1,109 @@
-Return-Path: <linux-wireless+bounces-24348-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24349-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BDAAE3D9E
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 13:05:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92406AE3DBC
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 13:14:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BA6C168AB2
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 11:05:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0BBE1897590
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 11:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB2A2367CC;
-	Mon, 23 Jun 2025 11:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFED323D284;
+	Mon, 23 Jun 2025 11:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b="JdN9xc7T"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R81/LODI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ptr1337.dev (mail.ptr1337.dev [202.61.224.105])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5238230BF8
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 11:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.61.224.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52D319F480
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 11:14:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750676726; cv=none; b=VVWova2w/N4fvoCIrhyWZjyGHMz1Ueca4omBGic0tPS/f00qgqsM9SEXd37ISUICXuo33N3eQGcQPB8ANkgEL2HHSb0UVaDc2AOqqaXXbihJO36EIBQDeD9CpC+drDCWw6ULCbK71XAt1ScfTJBpDqiJyCm5g/Wc+AL58ks+1a0=
+	t=1750677252; cv=none; b=V/al0R9cK8Dh1NqaRRx196Rl8XciGvKvZN/22GWr5qaIrHi6aisH6d2qDRvamDFARxrZ2t/YqCN8xeWhCaJq5eKm50Jbt5wEMQXRZHdUjKoyLypM4sMk+xOEXKVA2h8nl6OyZfYi9Wg8C3tdEKbMtPKrdMuwlH6vGrCSnBXClyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750676726; c=relaxed/simple;
-	bh=QImPzGlcmZcQre2zha8QJT6YpFNy74m2Gm1IddutGuI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ApgNLa3vWSSZzw/v/hw5Ue3xugobB0ue/DFONxGzVApCzkZi+2NTT/SwG3FT3nnodOs5cpebDQ0XP7t0kGzoWemyalkZSB8eOxqo461mR8NO1wrXWpVanWTCSu1byg0e4T4kqB1luZonSAHbmPGRsjeTCi1PBkwJ0jQRuc3X2t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org; spf=pass smtp.mailfrom=cachyos.org; dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b=JdN9xc7T; arc=none smtp.client-ip=202.61.224.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cachyos.org
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 41A0828399E;
-	Mon, 23 Jun 2025 13:05:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cachyos.org; s=dkim;
-	t=1750676722; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=r87tb0TbKqg0Xu1Or8rhZ4c8gOQkQkDQ4/ufNe9yZJo=;
-	b=JdN9xc7T+fNzuvwXstr/HjHzrmBddKYAWYYpxgNZHqMN9D/HNRaZXIoaqWrWvBKjpmWikF
-	nac9sTYDSN8twOArDL0dPVmRCyJYy9q0Oi2HEAZphicR5r6Tl/sDT58BYKmi+OHJHJ0HhF
-	T359JTW/dYtFtIF1ozx9WNzQhnbTQcvOY8iR5MhQ7/CWUjt3GorIlSKlvBmik3peLSsXHI
-	vgQBr37q3mWirEnxh/e5m1rRC4KE5RXKKKpcOxA2foQBLN1NhkRxp+6vAyxy/vDfaUm4gE
-	yCYCTKu0yMQCPNu9A1boNun+jPwIzTYqGwqvX/sgb9QUvjxhB+7VNUGLJHt+Ig==
-Message-ID: <eb25ad40-dc61-44b6-9649-5e743d4e8974@cachyos.org>
-Date: Mon, 23 Jun 2025 18:05:10 +0700
+	s=arc-20240116; t=1750677252; c=relaxed/simple;
+	bh=RXP+6nxmiDyBjivK0O/Sitclnz0PuNOfD7kibkk0hHQ=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=j94KWgzqPQW8OR1Qv33uGHmewIngygFj3vjFANth2mJP2+23rXO2Kl3EG7p7qfaHwKW8/66G4uyvkgxjki9UspLu7uWgss31lXcHJrouBWWj2bIlBdaztYvfaCcmGsEMDM5IBljTrG9hcJO1TNOcDJZZZd3Ty/uGtReOqyCthp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R81/LODI; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750677251; x=1782213251;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RXP+6nxmiDyBjivK0O/Sitclnz0PuNOfD7kibkk0hHQ=;
+  b=R81/LODIEKOU+q7A17HVmSXHPsSOehhS8JsLGCA5CPLhzSa4Wsm+sSlk
+   NMwLQSzNGOUowX/5xS9lyVYuNUFdANoCbK2sKUz9lNz7b6V6DxSjEd8r0
+   D3HOloCnyf+Db0Da1mymElmPdozqKCE8k75gxFF8W2kKzRkBNwwBjyJF2
+   pXC7cfa4TJbnWdQ+QzkRFH0BlzKyFBu2sWUQXwDc4WXGobhlFCZ18L+RH
+   F/RuI+sStPdDHpS7A7TZvggDQGMvT4j4Vn7k6iMYa3h+TzKyLTtZfCXrf
+   kjFrwFvQ7YKlX3XlSJnSUMl3D/H6QsEtgM6idV2I6p19cOUmbRe5JvgGf
+   Q==;
+X-CSE-ConnectionGUID: /N1CdgVoSgCQWl+QWQ5HKw==
+X-CSE-MsgGUID: B8Ny7yxKQLuAAfWEkHYJ5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="52595284"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="52595284"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 04:14:10 -0700
+X-CSE-ConnectionGUID: Xw9/gVG8QS2XAOGPMmqsVQ==
+X-CSE-MsgGUID: IRWI0oqOTQiQ6H2+Z5W5Dg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="155874754"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 04:14:09 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH iwlwifi-fixes v2] wifi: iwlwifi: mvm: assume '1' as the default mac_config_cmd version
+Date: Mon, 23 Jun 2025 14:13:51 +0300
+Message-Id: <20250623111351.1819915-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION v6.16-rc3] Commit 83f3ac2848b4 breaks WiFi on Intel
- AX200
-To: Johannes Berg <johannes@sipsolutions.net>,
- "Colin King (gmail)" <colin.i.king@gmail.com>,
- miriam.rachel.korenblit@intel.com, regressions@lists.linux.dev
-Cc: linux-wireless@vger.kernel.org,
- Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-References: <1b3f2387-e27f-4b74-99b7-0596a9331a1e@cachyos.org>
- <61cae2d3-d4a1-4715-8b63-0738e9ad5353@gmail.com>
- <aa5977435ed7de7183ed68e5767bfcc430379df3.camel@sipsolutions.net>
-Content-Language: en-US
-From: Eric Naim <dnaim@cachyos.org>
-In-Reply-To: <aa5977435ed7de7183ed68e5767bfcc430379df3.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-On 6/23/25 17:05, Johannes Berg wrote:
-> This should already be fixed by
-> https://lore.kernel.org/r/20250622235542.66160fc997da.Iba487b3addfad95e51c7d5ad79c962be3eab046f@changeid/
-> 
-> johannes
+Unfortunately, FWs of some devices don't have the version of the
+iwl_mac_config_cmd defined in the TLVs. We send 0 as the 'def argument
+to  iwl_fw_lookup_cmd_ver, so for such FWs, the return value will be 0,
+leading to a warning, and to not sending the command.
 
-Indeed this fixes rc3 for me without any reverts. Thanks!
+Fix this by assuming that the default version is 1.
 
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+v2: removed the check if the ver is smaller than 1, as it can't happen
+now.
+
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+index 3c255ae916c8..3f8b840871d3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+@@ -32,9 +32,9 @@ static void iwl_mvm_mld_mac_ctxt_cmd_common(struct iwl_mvm *mvm,
+ 	unsigned int link_id;
+ 	int cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw,
+ 					    WIDE_ID(MAC_CONF_GROUP,
+-						    MAC_CONFIG_CMD), 0);
++						    MAC_CONFIG_CMD), 1);
+ 
+-	if (WARN_ON(cmd_ver < 1 || cmd_ver > 3))
++	if (WARN_ON(cmd_ver > 3))
+ 		return;
+ 
+ 	cmd->id_and_color = cpu_to_le32(mvmvif->id);
 -- 
-Regards,
-  Eric
+2.34.1
+
 
