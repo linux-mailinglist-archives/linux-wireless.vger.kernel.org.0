@@ -1,204 +1,178 @@
-Return-Path: <linux-wireless+bounces-24364-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24365-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3834DAE479E
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 16:57:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1BFAE47BF
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 17:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF75216285E
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 14:53:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06C3A1882574
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 15:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE2126D4F9;
-	Mon, 23 Jun 2025 14:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525BE1A42C4;
+	Mon, 23 Jun 2025 15:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HhTxkR3R"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="muv1LrfI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BB726B747;
-	Mon, 23 Jun 2025 14:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B054B24BC09
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 15:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750690385; cv=none; b=QAXfXknRBKkJXUNey611RP2QyGzoQo8KBQPORZ0C/nN8PtiThDb+AEI7xofjFmaPYSEo3ZjC6jg6H/Uv/FcRpzqKXLWDnzAcmOb2FlAhFpexqLWPiZyrwzLg/ImnEtCLbBRYNMMYr16oX1g9QSiYauCWMxeYC4uvksKAtkN6QvI=
+	t=1750690855; cv=none; b=AwwRhyHPkJCxA6Hx+1hXsS0A1HWeCOwLlXqRrMbnHzBsjgiVdsWkqRT51RLIh3GJdm9r3Ad0Jw9ja80QYGcJJHgAOu3Kin34aefSZKQZpAIYLEBtHl8o3siv4NBAYabN3C0o+S6bRgvWY046ykaC+h8emB606mSigPP0b0UBGG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750690385; c=relaxed/simple;
-	bh=6rnP6cA4XpkCV+nk1j1HPQAk1FnLLZr1V8SkkJgMTz4=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=KnxSrkhCW2ykblSFbmad7Xx4VpV1bgghM5WODIiwVht8E/sEEezSMgpfEW/vu1NQjvZzBFOA161F701QURBoCeN76G/cqrOKVd4iI5R4AhWtVGwcWItBGA+X5HwswBJH4UaD3cgZJCf8osucj7YmHORMraFGlfB6lXaWEoWDhHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HhTxkR3R; arc=none smtp.client-ip=209.85.214.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-22c33677183so38730155ad.2;
-        Mon, 23 Jun 2025 07:53:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750690383; x=1751295183; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6rnP6cA4XpkCV+nk1j1HPQAk1FnLLZr1V8SkkJgMTz4=;
-        b=HhTxkR3RlIgH2q9aberXhZxs0zTs0+PRmGkST7yZRW7QMsYv3hel+MJl6b2542f9Rd
-         vp7DLFfBV8KRADAf9SqRbIBIcvFq2OV8rWjxBsbxNZ2a70cSBZ0gp1AdhUCVYnkNqi6n
-         n2lkKOK++9bs1ZQF2G3tHXGT2M6N+AyjtxByiilVbZHjPB5Js96grxJ0t1nQIEmnLzbw
-         Jr+zqFgRgK1Pds7UiodwZ/RGG+Vr2bxdFtV9Iu2wbspYAcXBqDvAHTB4hJe82sKescc3
-         KP49zCrNKpJPE4OHK9uMsBPiWUTLWmr7qBH70o8xLwU+1CWJK+WW998WHLIK8wScF5zd
-         6scg==
+	s=arc-20240116; t=1750690855; c=relaxed/simple;
+	bh=IeITghrJP4iPSsALB9poQfKO0wZfiG/sVqffHWQCkRQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BjwRGupP8MDT7T+GWfnkFgaJ6j86F9m5grz9nHlVY9YLIsORq47fjgFuJutbWV/yHh0ckVzCLCSLpdpJbrmUdZsPFhIwIB746cf8M2cPVkgKYCLXF/K+FgSKeI43oWKLlQBabgt5j+jPZfboP7DD4S2rrywvQtL3Pv3SLRuZRa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=muv1LrfI; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55N9UApT022368
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 15:00:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	jSlSLiXE9ML5oVRqrkn0OwhaNJ+Eurdiuji/Hh4dp2A=; b=muv1LrfI6fQfE/9N
+	bU4Ebn3xwqoNrav6Ntazr9z+L3QR9eeaVAlZuJyO2ZshGr7/cVVrOtnpaePK4rHl
+	CxTsCbxNlyj+9E+Fo/YZa4S947mMa3BC5JzypOt5fYsSekqczVIYTnVgDkm1j89h
+	77EZQCYiVJNt/+spruq+ySYXEm9OZ/1tPo69VAwyxV/GbaXD9hwsqTEUxpzlUy9m
+	IRQht1z1zUQfmTWL2T+8OnSqTquljQvx8X3uiNQV8QnvE2fKdKCtcz/oKEYGktjh
+	ctKXjJSUSh5T2lIQYFbpshob1qWDcmGkpxQGaz6YhR7lBfns8K+P9pZ1CNVrtCeg
+	zFZUBw==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47f4b3rwws-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 15:00:52 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3138e671316so3786940a91.0
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 08:00:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750690383; x=1751295183;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6rnP6cA4XpkCV+nk1j1HPQAk1FnLLZr1V8SkkJgMTz4=;
-        b=k2thONk6mGd2ZJ3lxGhGEgwy0YU319M5mIcZckHMWiXrnuKAx4zH/5USkGFw72g98S
-         k430pfsh6+dnZlkBs0RqjGnJh+wNkoqcf7ieoRwCz1d+M1p0ARyW7zHbMYt+gBT/1jwF
-         d3emp+Pwn96vvoO4/Ixvj0YMZkdaPIlKYDC8ErhxCeWfhMNDMLzNamn0uqHreOfytSny
-         wVZ+rODR09Rtr471cmPZMLrfMT/0fCE7Lp2RLWqlaSnm3GKJcZhFOMl3utSvZbrvk5mI
-         VrM0kfVpOTxFiyGIPpzRuBdvnz4bNFTENeJ5VDw1YDV8aJkrkovCNY7ADt1/kjQr71cd
-         eCRA==
-X-Forwarded-Encrypted: i=1; AJvYcCUvAyfa15HcpFTbKDjlVU+W6XNav5GLr/SWxyEieGd26R+yAE/UMTx9jxQTwutlH3uKUh2SkqxNLs/zKp/7Wg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQF1q8qDyx94q8FLB58tWRh6Ic8YSHM3enlTp2k245D2uoDl3H
-	i1lg9ypOeplulBGsPl126L06ldbPREyCQofedceH6dxboFsPwfXiHPJx
-X-Gm-Gg: ASbGncvdk2yJ7wVi0hIl2nsxBnynQMXQ4DIYjjfS7haGqNveKgYHhu6dL/SmObiLJb0
-	TZVCoScpTrTKqOcV5AGhbwQhbccVxZg9WBtHcWzOPFcmNVw7975bpA4QFxDIyzoZxhz9EzIw/Cc
-	gVsW7zOyyk5YYM7j1GXYSYnqHHJpkZOCEORsQgHxx2t6FfKQxGOB7aCBKqhmEJIP45ECOv/Qc4f
-	be6BQ8XHknvnFEmfoI2IT6UNjZgDyEsPNEm956Xv40MhBtyzc9Hv6XeHKZiW4mZiqLIoUSvEhdw
-	q9vgG5kgweeGOHIQqLaC/AB02mQcoP7vcLD3whWksSfGcgHX5lA4MXfUr/ezPFSYqSAdae28wRW
-	jWg==
-X-Google-Smtp-Source: AGHT+IEpofGO1rB/8THZSo27dmHyR0/onH+VJ5lhvs94WqBArO7vFA8MObxLSVNA5KrNdZ+XBMOaAg==
-X-Received: by 2002:a17:903:1aa7:b0:234:8a4a:adad with SMTP id d9443c01a7336-237d98f9968mr203103975ad.26.1750690383294;
-        Mon, 23 Jun 2025 07:53:03 -0700 (PDT)
-Received: from [127.0.0.1] ([115.187.48.251])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d83ce31asm84459365ad.63.2025.06.23.07.53.02
+        d=1e100.net; s=20230601; t=1750690851; x=1751295651;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jSlSLiXE9ML5oVRqrkn0OwhaNJ+Eurdiuji/Hh4dp2A=;
+        b=Rckd7IFWulVsgHy3WUxzXa7S1ZNMoxyxIAdPy02YNJGlDM2jxjSIsWKNqgimPWioUf
+         4sa27dav7uYMs1nIjq59UIp/0JkKeuTIHTxby3uEwoQa2jfJHkG8zrQoctnV4x851b51
+         /oAunFTE8SRRzS/D+CSmX2Oq+AnqTrVkIkoskzKxB4d05edQE7pGAykTajXF0gX4R1pK
+         fNv7KGqjWQkDNCeGGofQlkPUKgxiHy1mErRIo1CneIKG0nH5dZF+4XKwoDKUUHCRmBYW
+         W/n+NkAgOHAE01iMXa+5MpZzX1QW+PWDnwFjI99mWe5lM9M68x6MlFt+zliua+Lco2Fq
+         HZqw==
+X-Gm-Message-State: AOJu0YwZK3PDO0ByKFI8EetDCgs93x9mTIdGs50Nj3fTvEh70ymYpHsf
+	rK3B73iQNwm7w3lxFEK0zMBmow/p35e3kp3EPbckmK3JCLC5J6oAC9HeYV2XaxEj06EsuD96Uop
+	WbTJEzES6UeTDMbZJhq0Q9qaUib5BnUhSI8mcdqL82ZSDU0PuEzaXawUtCyRzwE9jag3C1g==
+X-Gm-Gg: ASbGncvjYepCXN64/ALk/EL+M3n0ZLZMmfTcjS70lYVtUv+VPcPSWyRctwutbbqJXrT
+	/FU45fptqN+o2ldOnj81R4BRbXEKdZz5vHQKL/RaBDSfX0OuIwHGrxG+cmkJsnbg7uKSl5sWjqK
+	HAwn8WDkG55+bwigLAaegL9q42GpVh4RV5faY+5MqrLxKYiw/j4+j+677niHcOBKveSOt+pXtst
+	bgFz8WiRBmauGZr/zhAK1fuwHCmlwoyM/pqiYEmlSoRiirLMYWu/pccG7OFpLvDmSv2N0xmjwsx
+	HE3ECepxpgg/I8596sWEpvlDvwVPY5Vze/D11PbfiuVvpdED+ezCfJTudheZ7NfwZhlAWRHpmYl
+	rFg==
+X-Received: by 2002:a17:90b:510b:b0:311:abba:53b6 with SMTP id 98e67ed59e1d1-3159f51aac2mr17078285a91.14.1750690851270;
+        Mon, 23 Jun 2025 08:00:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHGdABP063Vlk5OVUgONkfYW+i6XNH2ryukyv215HD7e7TxM3SjPrhrNyrPInpcakQhC9K4cA==
+X-Received: by 2002:a17:90b:510b:b0:311:abba:53b6 with SMTP id 98e67ed59e1d1-3159f51aac2mr17078205a91.14.1750690850497;
+        Mon, 23 Jun 2025 08:00:50 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3158a318733sm10835361a91.38.2025.06.23.08.00.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jun 2025 07:53:02 -0700 (PDT)
-Date: Mon, 23 Jun 2025 20:22:57 +0530
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-To: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-CC: stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5Bath10k=5D=5BQCA9377=5D_Firmware_crashes_on_Dell_I?=
- =?US-ASCII?Q?nspiron_5567_=28IRQ_=2316=2C_all_modern_distro_kernels=29?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <CAEmM+Qh=8tm55Ypa2w3ZtOFFrGXTpKqxue59mVAo_5TVy0RJ6g@mail.gmail.com>
-References: <CAEmM+Qh=8tm55Ypa2w3ZtOFFrGXTpKqxue59mVAo_5TVy0RJ6g@mail.gmail.com>
-Message-ID: <CD81F065-CDDD-41F6-AECD-167B509F57C6@gmail.com>
+        Mon, 23 Jun 2025 08:00:50 -0700 (PDT)
+Message-ID: <500a10c9-c56e-4192-818e-8e07ef6c51f4@oss.qualcomm.com>
+Date: Mon, 23 Jun 2025 08:00:48 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next 0/2] wifi: ath12k: use real noise floor value
+To: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+References: <20250528-support_real_noise_floor-v1-0-04507bd3bc76@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250528-support_real_noise_floor-v1-0-04507bd3bc76@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA5MCBTYWx0ZWRfX7ZD4n5AjZ59s
+ spCry97vNozwPvLIL2Osl2mMTo+tJte+bpgAyb2N9IzF6onOqCBHi3eFf5dAaU1SvVTH7cyQitX
+ JioAiYQPJIG2le6Il3DmG5ajFkk6vio+jhUiDnfgZkQk0UyBkAgV2EGOXNzmLPn56vqQsBsb5gv
+ bh8KPL/3GEYy8XNoGuUf5f0K6PfaNoiNoDbTNN+YMUPLnvQ3ryPCFqDYxJk5XSlU1Tl9BLVpPMJ
+ aOPyHej1Xknr5dMdp2L34V+NoMdkZiDtcpNV+/inwUQM+ghBGlIwmAjlUe5PMKksRFoYWNZD0Pg
+ H1Qj/MqunnOjFQOK7J8hSiVaeoH8EgWCzp7TROnt+r5wgA9u2Ie5xe7DseRudLS4o9nuDQPwQ0s
+ nVtqjK5V2hEbNwe9Iuwbwr42CkTNNrvWGocZLXbtUsfY4v3w59hWF2xO3P+JhtQ4UhcUOyOD
+X-Proofpoint-ORIG-GUID: 8x3vqZF9IPhS6ihFGqvAzXzTmr0BCrv1
+X-Proofpoint-GUID: 8x3vqZF9IPhS6ihFGqvAzXzTmr0BCrv1
+X-Authority-Analysis: v=2.4 cv=A8BsP7WG c=1 sm=1 tr=0 ts=68596c24 cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=ksen3YYlDcNkJCCezrIA:9
+ a=QEXdDO2ut3YA:10 a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-23_04,2025-06-23_06,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 spamscore=0 bulkscore=0
+ phishscore=0 adultscore=0 impostorscore=0 suspectscore=0 mlxscore=0
+ clxscore=1015 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506230090
 
-Hello,
+On 5/28/2025 4:23 AM, Aditya Kumar Singh wrote:
+> At present, the ATH12K_DEFAULT_NOISE_FLOOR (-95) is used to calculate RSSI
+> value, providing an estimated noise floor value. Consequently, the RSSI
+> value is also approximate. This works but however, using actual noise floor
+> value will enable the reporting of the true RSSI value.
+> 
+> The firmware possesses the necessary data to determine the actual noise
+> floor. This data is provided to the host via the WMI event
+> WMI_PDEV_RSSI_DBM_CONVERSION_PARAMS_INFO_EVENTID, which includes the
+> runtime parameters needed for calculating the real noise floor in dBm. This
+> event is triggered by the firmware during channel changes, temperature
+> offset adjustments, and hardware chainmask modifications.
+> 
+> Add support to handle and parse this WMI event. Use the received values to
+> calculate and store the noise floor value and use at the required places.
+> 
+> ---
+> Raj Kumar Bhagat (2):
+>       wifi: ath12k: handle WMI event for real noise floor calculation
+>       wifi: ath12k: use real noise floor instead of default value
+> 
+>  drivers/net/wireless/ath/ath12k/core.h   |  17 +++
+>  drivers/net/wireless/ath/ath12k/dp_mon.c |   7 +-
+>  drivers/net/wireless/ath/ath12k/dp_tx.c  |  20 ++-
+>  drivers/net/wireless/ath/ath12k/mac.c    |  14 +-
+>  drivers/net/wireless/ath/ath12k/wmi.c    | 233 ++++++++++++++++++++++++++++++-
+>  drivers/net/wireless/ath/ath12k/wmi.h    |  42 ++++++
+>  6 files changed, 324 insertions(+), 9 deletions(-)
+> ---
+> base-commit: 3d933084a072fd5fb5da54c06a017abc0412c86f
+> change-id: 20250513-support_real_noise_floor-205986936cd3
 
-An update on the situation=2E
+This series no longer applies cleanly on ath/main, please rebase
 
-I installed Fedora KDE Plasma Spin, and the skip_otp option didn't work th=
-ere=2E KDE specifically said that the Wi-Fi is still connected but it is no=
-t connecting to the Internet (confirming my suspicions as true, that the ne=
-twork interface is not disappearing this time and the Destination Host is u=
-nreachable, because of the network card)=2E
+Applying: wifi: ath12k: handle WMI event for real noise floor calculation
+Using index info to reconstruct a base tree...
+M       drivers/net/wireless/ath/ath12k/core.h
+M       drivers/net/wireless/ath/ath12k/mac.c
+M       drivers/net/wireless/ath/ath12k/wmi.c
+M       drivers/net/wireless/ath/ath12k/wmi.h
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/ath/ath12k/wmi.h
+CONFLICT (content): Merge conflict in drivers/net/wireless/ath/ath12k/wmi.h
+Auto-merging drivers/net/wireless/ath/ath12k/wmi.c
+Auto-merging drivers/net/wireless/ath/ath12k/mac.c
+Auto-merging drivers/net/wireless/ath/ath12k/core.h
+Recorded preimage for 'drivers/net/wireless/ath/ath12k/wmi.h'
+error: Failed to merge in the changes.
+Patch failed at 0001 wifi: ath12k: handle WMI event for real noise floor calculation
 
-Only the following convoluted (and strictly step-by-step) solution seems t=
-o potentially work (not tested on my own laptop yet): https://www=2Ereddit=
-=2Ecom/r/linux/s/8VKDJ6QeP
-(This solution has been taken from the GitHub Issue of the Pop!_OS repo)
-
-I used these exact sequence of steps before, and it worked properly=2E But=
- this time, I simply wrote the skip_otp option to /etc/modprobe=2Ed, and it=
- didn't work=2E
-
-Reiterating my point: this issue seriously requires urgent attention becau=
-se it affects all the stable and longterm kernels as of now=2E
-
-Thanks,
-
-Bandhan Pramanik
-
-
-On 23 June 2025 3:01:08=E2=80=AFam IST, Bandhan Pramanik <bandhanpramanik0=
-6=2Efoss@gmail=2Ecom> wrote:
-> Hello,
->=20
-> This is to inform all that constant firmware crashes have been seen in
-> the "Qualcomm Atheros QCA9377 802=2E11ac Wireless Network Adapter",
-> which was shipped with the Dell Inspiron 5567 laptops=2E This affects
-> every kernel release, including the stable and the longterm ones=2E
->=20
-> All the logs have been taken after livebooting an Arch Linux ISO=2E
->=20
-> Every distro has been tried, and it has been confirmed that some error
-> of this kind is shown in every distro=2E
->=20
-> ## Steps to reproduce the issue
->=20
-> 1=2E Boot/liveboot any Linux ISO through this card (and possibly, this l=
-aptop)=2E
-> 2=2E Wi-Fi network interface appears=2E
-> 3=2E Connect the Wi-Fi router to the computer=2E
-> 4=2E A few moments/minutes after that, the touchpad stops working, and
-> the network interface cannot even access the Internet anymore (BUT,
-> the network interface might disappear, might not disappear)=2E
->=20
-> ## Affected distros and the necessary workarounds
->=20
-> This has been the pattern on every distro and their corresponding
-> kernels (LMDE, Linux Mint, Pop!_OS, Zorin, Kubuntu, KDE Neon,
-> elementaryOS, Fedora, and even Arch)=2E The fix which made these distros
-> usable is to add two things:
->=20
-> - Adding "options ath10k_core skip_otp=3Dy" to a new conf file in /etc/m=
-odprobe=2Ed=2E
-> - Adding "pci=3Dnoaer" in GRUB kernel parameters so that the logs are
-> not flooded with Multiple Correctable Errors=2E
->=20
-> To defend my case (that it occurs in the other models of Inspiron 5567
-> too), I have recently contacted someone running Linux Mint on the same
-> model=2E The answer was the same: the touchpad and the Wi-Fi stop
-> simultaneously=2E
->=20
-> ## Some of the limitations
->=20
-> The kernel was tainted, but the other things have been properly noted
-> in case they might provide some useful details=2E As stated,
-> investigating why IRQ #16 is disabled will probably give us the
-> answer=2E
->=20
-> ## Logs provided
->=20
-> All the logs in a combined manner can be found here:
-> https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a1=
-6180
->=20
-> - Full dmesg: https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03c=
-a2ea43a1d832a16180#file-dmesg-log
-> - Hostnamectl: https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03=
-ca2ea43a1d832a16180#file-hostnamectl-log
-> - lspci: https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea4=
-3a1d832a16180#file-lspci-log
-> - Modinfo of the driver:
-> https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a1=
-6180#file-modinfo-log
-> - Ping command:
-> https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a1=
-6180#file-ping-log
-> - /proc/interrupts:
-> https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a1=
-6180#file-proc_interrupts-log
-> - IP addr command (Heavily Redacted):
-> https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a1=
-6180#file-ip_addr-log
->=20
-> Lastly, this issue on the GitHub repository of Pop!_OS 'might' be
-> relevant: https://github=2Ecom/pop-os/pop/issues/1470
->=20
-> It would be highly appreciated if the matter were looked into=2E
->=20
-> Thanks,
->=20
-> Bandhan Pramanik
+/jeff
 
