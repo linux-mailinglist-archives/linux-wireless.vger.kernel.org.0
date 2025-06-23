@@ -1,247 +1,163 @@
-Return-Path: <linux-wireless+bounces-24366-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24367-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3861FAE47CD
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 17:04:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2574AE4960
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 17:55:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CC941883DF8
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 15:03:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94BCA1886000
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 15:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D47D26D4E7;
-	Mon, 23 Jun 2025 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62954262FC5;
+	Mon, 23 Jun 2025 15:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="A+ShHQbs"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mAbcCwwt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7506D2192F8
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 15:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95BF3FB31
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 15:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750690993; cv=none; b=SkEKIOstjWQqTaiICHc7lBcc1NM19eWbFuO+bxLenOsXWmsdsvIouzMaMtz4qB+yeZXtAqdX0i2cGDIFYFddJ+t9I3LZxbRL8HZmiZVUwcWQFcfFArtJEvi7+wz0xh5EwuHwAaogW+U8E0qyqi1Ue/zh+Vikc0Yy8WDW1ibriHc=
+	t=1750693770; cv=none; b=LnIdYx21n2xZBdKVznAvoJ4IbjDiQcXSZDfoDzUuBkixykZ47Ew6TLb7XKeNYvRTGaUBTUkobe1fK6z/i9xtHH8IHrnUP3ta2TCAfIcqUo8Ac/f1Op7+X98t/Y4MOtmW0WoERUOxWM5JtprRwCjqSUys0wjwqObBCTCTRiU/eS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750690993; c=relaxed/simple;
-	bh=kj2vit4ULQDNg/xWvdli3lSrm+UIS209GlENiy2LTnc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cXqWg/FwB/qPS27oQBfOjoyH0T6NmcH5VlPS6UUynxtwG8+crjpBOCkI0/wNo+u2814wPjF5STzsaYkopO2fxPThbz7IRCdicKnxsth2JH0S2WtiqL5nIkvWm4q4TByvrfKbUasQTGL/zOco5ShdzuPUcnjbwthhbs4AKEOpA8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=A+ShHQbs; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1750693770; c=relaxed/simple;
+	bh=X/bAF2TNbXnzhe4oF4P3tu5+sLD6uP/XlevngG2itCg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DfLdaLby4Exr/U/L8g19jDXUbPSAz3ImJ0knFSjHSi5FLBR+EsVh1ttIZoe8ZY6uhW2wpdMgPb6Hpjdc+sataIYp/KE2H0TgbRiMGtr60kDOE4g25w//fXXGFRTWZ+KPiqAlNSVOBVFle4fvqjVUHYFAoBTkJKkN8knmDShSlB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mAbcCwwt; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55N9ZeHF019573
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 15:03:10 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55N93A4w015471
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 15:49:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ACu+Ugoc+fmjjc65HLikxPSEZ4wRcHUDOKbnH+1uLps=; b=A+ShHQbsJjOrz3s2
-	9Z/Plg0bKxg1oEMZ5FNLwGstZORMWILp+gfXq/Zje/ePad3uWhLCoopqoz0jv6BM
-	iUvoc5YBenfaJe0BHfaMMVkfiQ5mD+aLxL6ZLXYxg21ciOYZkelvT47v8T9zHM9w
-	iXWh2lDDd04IynJsGsyabXcXFIsLRIJ8IyyzepoAk7cQSoe/V52aGi9cqgIFwudC
-	fFFUF1EoJlygd10U63wGLctLzx60S+XDFctM7H0PoURmFvCcwcgNxjGhw1KwoGnI
-	r+WlgdoAIeVlu4PRzaXEuCtEAR3QG1RUnYMPtAaHmWOwv/HU5+jdfnPwpIhG32/Q
-	oZGpRg==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47esa4jc1p-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=/FTgFQceHzcn7zExBhEXuf
+	yVW/RSqrJSAUW2RET5N6U=; b=mAbcCwwtEl2BoT6Mzvs1Tce5Ddd/Nxtz/G8bl6
+	3SJ1nsske2+PYv3q5X9MCuVJP70KoqV7OxQaUPZIhQTp6tFxhxpYMDAMQvDWZ9Ws
+	gzexT58bMSLndUEcUNSyaRJyJVEguoluo/ldXHpr4PWtfJaKI28MCSs59vzAQZA1
+	053VLQtFGUlhPU8TedZrxkRqjvp53IL8UcA/WjQjwV3YJhhco+ugnC2IocCbGAJO
+	96HtsyBFlmNDdk89LJYDZb+JmbcLtZSdGUp+NeCWgVUHqoDtiPjPhZfcBUiOjCTj
+	bh2SXDkktksHS3/Ixw/aURJkR9yKrGbAp5VjrdcIHj+xgn6w==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47f3xu16q7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 15:03:10 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-74943a7cd9aso1782332b3a.3
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 08:03:09 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 15:49:27 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-23689228a7fso68717085ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 08:49:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750690988; x=1751295788;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ACu+Ugoc+fmjjc65HLikxPSEZ4wRcHUDOKbnH+1uLps=;
-        b=HrihWStbdpEE5SXahYSU50X5ry28QmQv5Xoh3xvHdfMRBwUatX6z5SY/j+RiCm9gIx
-         0jlvo1izawJItgfzz5cA2HjXXwtTnpayUNkXcEQNLpKeneXmhyV8UnNN9BrsSDULIETs
-         9Kf13JdiozvttGyRohDjfQfW8c3QydBWQeK1w+JzgwNg0x7C4cesKm52pz+fqJeC657n
-         k85oI2xuKj9Uj+v8X9S0bC6aNeImpTs7F8lFvGP0NNb6qYG0EZM1vbrs7nlSpDWlHyU9
-         liuaAdcYisIZCPmhu2mSR0Vo5hBZnQ3gYlM9wrK277/63AXtWGmqWO5txrbkd5sUpriw
-         yRcw==
-X-Gm-Message-State: AOJu0Yw36gPmn0ejcHFubE8qk9gi5vZAZWwZY3cf0WXk+w4BVYQTjfWq
-	Z62i5RDxVO5KEd1ka0Hr28ZEWY4ldQHEMSde6Ax76Qv2OUdRSYkgZPrxfK+RhkOUQEzqKOKgh4S
-	ZO3grvmSbcsmhMbSvb4YSw5sHhKtp6CUY3Qn15TzO56xHjVuGWV/OiGlkBjrcGKC9IvqAzQ==
-X-Gm-Gg: ASbGncvHY6VdcN3XqoyzlwCM2qJA2k9S5YBL8uPU7Pp78ptiGzgZliL2QhArWEXcdUV
-	Bzjmb0uVRdGa2Wji4qbWteGGqKTCR4bcC/yHtjfa3yqyKWfH8Z3roTv2AJx2kF5JsevntDJ1mnP
-	5sCTIZwOj89gHz+WMOs3LQOHLlY0UJd3lqrLFFohwydYMD0dL6S+h68xX0HP1WFQFUrol65ScVN
-	QgRSJxf2AWMO9gEtEWwAep77NryD67M4z49Lv4OdM483voo5ZZFN+8SlGcMKLfFv9qrEzljmJef
-	+9YHm6FNAb0JBHkIO/wE6SrutjjILEnn3O9CJl0brWpeu7weyfdOsrXP8RqbyPzcMs3nSMIH5Sl
-	4sQ==
-X-Received: by 2002:a05:6a20:72a7:b0:215:ead1:b867 with SMTP id adf61e73a8af0-22026d8c81bmr22088500637.14.1750690988255;
-        Mon, 23 Jun 2025 08:03:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG74WojNJSxdTzppMSfsKAjS02fehU849MkaHH5rLr8CDvVCCJUz/6i6k/1xBO9Cr/2SAoM7g==
-X-Received: by 2002:a05:6a20:72a7:b0:215:ead1:b867 with SMTP id adf61e73a8af0-22026d8c81bmr22088433637.14.1750690987654;
-        Mon, 23 Jun 2025 08:03:07 -0700 (PDT)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b31f125d668sm7015916a12.54.2025.06.23.08.03.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jun 2025 08:03:07 -0700 (PDT)
-Message-ID: <4521d120-422d-4dbc-9461-6bd0dc32d628@oss.qualcomm.com>
-Date: Mon, 23 Jun 2025 08:03:06 -0700
+        d=1e100.net; s=20230601; t=1750693766; x=1751298566;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/FTgFQceHzcn7zExBhEXufyVW/RSqrJSAUW2RET5N6U=;
+        b=FrPvWMKwOJzEG8uwIck653BUb3I2D8fmDcRY3cp/5tdf7LR+ONOo9wDNNrpcgNOwNu
+         r0udPE7VJP77+Id1IrRJN8fxd32ourvgU+O6UKW3c2UgbQJfaWitSR7GfazvwEH8DmNZ
+         ZlbGGD6YhXRlpR2QD9M6gAwEFXLgJjSDcJvTwRBvLcZNvofOhUHj+vX1AFWk8mUHXQE5
+         4f4YFSFF8DGCRu6dIbW0EU55rSbb8AS3t8yiTpOUISmcMUU4eO7fN1AyNCsv3f9VTor8
+         FtiB5OAJOEuWbOCY6c8QdyUAtXiom8DYjQU1sti6Ni3AovIHELz4nuo3tZMg7d73GCMz
+         s4MA==
+X-Gm-Message-State: AOJu0Yze0ez/lgYsJHT+yPHXwxNmZhghVOKHk5kGO2Rxx9CZNbM/2fFY
+	xs6YaaKoUR+BOiHhAR4MJZDb4//THNb5uIHK2RmAtQekodfcdqmvTSlioxt23FSM7lMU1Ri+p5A
+	0+EJgT+i74C3A7rCqVsXv/9aASDTPuekPYxNp8BhO6ykNdiFGrjOUyaOxeIJNkcQJwisWxA==
+X-Gm-Gg: ASbGncuMfISDDjCOTANsTw9gmO9nvc97w+NBErCOJn8aGJcrli31eMcf9NELA8m2l+x
+	42FPv1K7qWaGCJlyfncIn4/HKkUU+lPtE4lJTm3c2u0BSvFuhsaXJnIyTvixCP7PECqErrRv8rZ
+	ENQo+d9GL6ySG4lH64ILMh0MGgC2MxKcyWOQvUn+fbV/nT5PJnnAqGKfFhGLNdDN+lFQX831Zwt
+	LHlRKJ/MpBCpOQoG5QoA+uWtRXX8MXLqMgv7CJpU2Ix0zZ7XLmotIRIKEwJ4HiXoE4sibGP6SXl
+	K4WbtxfTKNzwWUA0jx1Mj5Ivpl/pBrvUCvHWUzcsig1ABWeFmVwDXZD2baKOgvVF+R53jv0jtxu
+	vh1idrZVuBKN4UulpnvNRXueR61n/lred2IhW4bnUfj4hBIk=
+X-Received: by 2002:a17:903:4b30:b0:234:8c3d:2912 with SMTP id d9443c01a7336-237d96b6361mr197474985ad.11.1750693766005;
+        Mon, 23 Jun 2025 08:49:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGFU3ABXiRqt3xUYh9w8TVC9FxESy/q0q0aSkLDt7c0OY6Y6oqyIh13ZrozUzjpmduHLQDZTg==
+X-Received: by 2002:a17:903:4b30:b0:234:8c3d:2912 with SMTP id d9443c01a7336-237d96b6361mr197474645ad.11.1750693765598;
+        Mon, 23 Jun 2025 08:49:25 -0700 (PDT)
+Received: from hu-adisi-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d83f14a2sm88447095ad.80.2025.06.23.08.49.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jun 2025 08:49:25 -0700 (PDT)
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Subject: [PATCH ath-next v2 0/2] wifi: ath12k: use real noise floor value
+Date: Mon, 23 Jun 2025 21:19:08 +0530
+Message-Id: <20250623-support_real_noise_floor-v2-0-974bbafa317e@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next V14 0/9] wifi: ath12k: add MU-MIMO and 160 MHz
- bandwidth support
-To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250521224539.355985-1-quic_pradeepc@quicinc.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20250521224539.355985-1-quic_pradeepc@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=eLYTjGp1 c=1 sm=1 tr=0 ts=68596cae cx=c_pps
- a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=ewB7IA-g4tuOwMp8HOQA:9
- a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
-X-Proofpoint-GUID: wZ4oN3-w9HEYKLEEMr4Tqy9tIb9_GlqO
-X-Proofpoint-ORIG-GUID: wZ4oN3-w9HEYKLEEMr4Tqy9tIb9_GlqO
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA5MCBTYWx0ZWRfX0faVNt/UpFlG
- z4OUX7Bc7rhv7nLZDtZPbVQiaUYY6TKCc0I/oduvdR2Dv/bxvZqUWlJmh5PaqluZIZm2BqKxul+
- vAoV85MkmHPPZV62TE/dBA+XBeOWoG/b0xauHeZfIHFjjz5ZAAKWzCvKafEmpawTrt+uIioxEd9
- Fua2xH9adEoOhBLoZ6tbKmXQ7zhASM/mKOWhGu/WVmxkKRkTK4NTEUUg6tiorI4GsXHok+ZNjwl
- CN/tJyqPSDkmY+gBBxBT1nq+ZQlLbTLtw329xHlurD/pDDC5M+oNfnZVZRLZy/p5+0Gq5maG0xm
- 0epnN4UfmE7k+jpojfqO6ywBjHMa8zecDce0WbEu9ZELI+mW01JWyQJex/FX0pKh8w/6RtFpN6T
- dusyitfOrKe++5acMUQxFNCfZFsD3pQJ5aKMad+eMmcJ4aAzKifzx/yAWKbsdv5oCqmo5COG
+X-B4-Tracking: v=1; b=H4sIAHR3WWgC/3WNQQqDMBREryJ/3UhMGrVd9R5FJGqsAc23+VEs4
+ t0b7Lqbgccwb3Yg460huCc7eLNasugiiEsC7aDdyzDbRQbBheIqk4yWeUYfam/0WDu0ZOp+RPR
+ McHUr85vM205CnM/e9HY71U/QYWDObAGq2AyWAvrP+blmZ//Ti/K/fs0YZ/yqeNF0smmL/IFE6
+ XvRY4vTlMaA6jiOLzdlUtTRAAAA
+X-Change-ID: 20250513-support_real_noise_floor-205986936cd3
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+        Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA5NSBTYWx0ZWRfXwMSy+NUqBTE1
+ U/kUr86I8f5+RLhXRRC8pQG5AvEzL8xp5b9zCKdpzjufCim3zM+CnX4U5TU60bTOlJWagtu4jXH
+ oWiQvKeUyT8/v0nXSQuTn9Y/zzgFQI9l3TeAqOcZQcCiHGQOHWiRV8TDEl/SUhUJAsq8CfUJ42d
+ A8d7+mbGuhg9FYGSa63W6SqUgRhd1Mmka4wO+OW8MpBDftPa2/t42cWE+r4GGYTlBj3reQSxfls
+ FQWPwyiuKmMNxUAhF+fUKPnGbPnTcvhHiKaSJQD832foqgrIu862yIHXJuLvAjK4A6em4u0fd3r
+ d11Ll39EBE61rxS8+5hZ/hamEVVFZ+rDxy0TORnZoKedAd+MSwr9GzSL9ICqXXuyocNgK8uTuIC
+ 6WDI/4ebDll3kbmaqOH43Z8cqiVpffw5kxDwCqpU0Ucvu9liR6MnF5zyVGKo3HfaFKCyvkY3
+X-Authority-Analysis: v=2.4 cv=SvuQ6OO0 c=1 sm=1 tr=0 ts=68597787 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=oo-PE9G31wNHbytkz5MA:9 a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-ORIG-GUID: 17PjsuWeEnWtZX_Zc-0sekesiXr30NdA
+X-Proofpoint-GUID: 17PjsuWeEnWtZX_Zc-0sekesiXr30NdA
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-06-23_04,2025-06-23_06,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 mlxscore=0 clxscore=1015 mlxlogscore=999
- suspectscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
- adultscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506230090
+ clxscore=1015 priorityscore=1501 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 spamscore=0 phishscore=0 adultscore=0 malwarescore=0
+ mlxlogscore=999 bulkscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506230095
 
-On 5/21/2025 3:45 PM, Pradeep Kumar Chitrapu wrote:
->  Add support for
-> 1. enabling MU-MIMO in HE and EHT modes from hardware
-> 2. setting fixed HE rate/GI/LTF
-> 3. 160 MHz bandwidth in HE mode
-> 4. extended NSS bandwidth support
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> changes in v14:
->  patch 6/9:
->  - cap max_nss using ar->num_tx_chains to fix interop issue caused due
->    to sending nss value 4 when firmware only supports nss value 2.
->  patch 8/9:
->  - Set the default return value to MODE_11AC_VHT160 for 160 MHz
->    to allow STA to connect to the AP even if it does not
->    explicitly indicate 160 MHz bandwidth support.
-> 
-> changes in v13:
->  - rebase
-> 
-> changes in v12:
->  - rebase
-> 
-> changes in v11:
->  patch 1/9:
->   - fix return values in ath12k_mac_set_he_txbf_conf() and
->     ath12k_mac_vif_recalc_sta_he_txbf()
->  patch 6/9:
->   - fix missing he_mcs initialization in ath12k_mac_init_arvif()
-> 
-> changes in v10:
->  patch 6/9:
->   - use ath12k_ahsta_to_sta()
->   - fix rcu_dereference warning in ath12k_mac_set_bitrate_mask_iter()
->   - change return type for ath12k_mac_validate_fixed_rate_settings()
->   - improve readability by adhering to nl80211 definitions of GI
->     NL80211_TXRATE_DEFAULT_GI. Introduce ath12k_mac_nlgi_to_wmigi()
->     for conversion.
->  patch 7/9:
->   - do not change default MODE_11AC_VHT160 in
->     ath12k_mac_get_phymode_vht() as it breaks clients which do not
->     set VHT_CAP_SUPP_CHAN_WIDTH_160MHZ.
->  patch 8/9:
->   - Use IEEE80211_VHT_CAP_EXT_NSS_BW_MASK along with
->     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ for determining VHT160
->     phymode.
-> 
-> changes in v9: rebase on top of master branch with mlo changes
->  patch 1/9 and 2/9:
->   - fetch link_conf using ath12k_mac_get_link_bss_conf()
->     instead of arvif->vif->bss_conf before mlo
->  patch 6/9
->   - fetch mcs/nss values from sta->link[] instead of sta->deflink
->   - fix spelling of 'incompatibility'
->  patch 8/9
->   - replace sta->deflink.addr with arsta->addr in
->     ath12k_peer_assoc_h_vht
->  patch 9/9
->   - replace sta->deflink.rx_nss with link_sta->rx_nss
-> 
-> changes in v8:
->  - rebase and resolve KASAN warnings reported by Jeff in v7, in patch 6/9.
-> 
-> Pradeep Kumar Chitrapu (9):
->   wifi: ath12k: push HE MU-MIMO params to hardware
->   wifi: ath12k: push EHT MU-MIMO params to hardware
->   wifi: ath12k: move HE MCS mapper to a separate function
->   wifi: ath12k: generate rx and tx mcs maps for supported HE mcs
->   wifi: ath12k: fix TX and RX MCS rate configurations in HE mode
->   wifi: ath12k: add support for setting fixed HE rate/GI/LTF
->   wifi: ath12k: clean up 80P80 support
->   wifi: ath12k: add support for 160 MHz bandwidth
->   wifi: ath12k: add extended NSS bandwidth support for 160 MHz
-> 
->  drivers/net/wireless/ath/ath12k/core.h |    2 +
->  drivers/net/wireless/ath/ath12k/mac.c  | 1144 ++++++++++++++++++++----
->  drivers/net/wireless/ath/ath12k/mac.h  |   17 +
->  drivers/net/wireless/ath/ath12k/wmi.c  |   13 +-
->  drivers/net/wireless/ath/ath12k/wmi.h  |  107 ++-
->  5 files changed, 1061 insertions(+), 222 deletions(-)
-> 
-> 
-> base-commit: 0d777aa2ca77584b339ce195db86fe0ee7dda5d5
+At present, the ATH12K_DEFAULT_NOISE_FLOOR (-95) is used to calculate RSSI
+value, providing an estimated noise floor value. Consequently, the RSSI
+value is also approximate. This works but however, using actual noise floor
+value will enable the reporting of the true RSSI value.
 
-This series no longer applies cleanly on ath/main, please rebase
+The firmware possesses the necessary data to determine the actual noise
+floor. This data is provided to the host via the WMI event
+WMI_PDEV_RSSI_DBM_CONVERSION_PARAMS_INFO_EVENTID, which includes the
+runtime parameters needed for calculating the real noise floor in dBm. This
+event is triggered by the firmware during channel changes, temperature
+offset adjustments, and hardware chainmask modifications.
 
-Applying: wifi: ath12k: push HE MU-MIMO params to hardware
-Using index info to reconstruct a base tree...
-M       drivers/net/wireless/ath/ath12k/mac.c
-M       drivers/net/wireless/ath/ath12k/mac.h
-M       drivers/net/wireless/ath/ath12k/wmi.h
-Falling back to patching base and 3-way merge...
-Auto-merging drivers/net/wireless/ath/ath12k/wmi.h
-Auto-merging drivers/net/wireless/ath/ath12k/mac.h
-Auto-merging drivers/net/wireless/ath/ath12k/mac.c
-Applying: wifi: ath12k: push EHT MU-MIMO params to hardware
-Applying: wifi: ath12k: move HE MCS mapper to a separate function
-Applying: wifi: ath12k: generate rx and tx mcs maps for supported HE mcs
-Applying: wifi: ath12k: fix TX and RX MCS rate configurations in HE mode
-Applying: wifi: ath12k: add support for setting fixed HE rate/GI/LTF
-Applying: wifi: ath12k: clean up 80P80 support
-Applying: wifi: ath12k: add support for 160 MHz bandwidth
-Using index info to reconstruct a base tree...
-M       drivers/net/wireless/ath/ath12k/core.h
-M       drivers/net/wireless/ath/ath12k/mac.c
-M       drivers/net/wireless/ath/ath12k/mac.h
-M       drivers/net/wireless/ath/ath12k/wmi.c
-M       drivers/net/wireless/ath/ath12k/wmi.h
-Falling back to patching base and 3-way merge...
-Auto-merging drivers/net/wireless/ath/ath12k/wmi.h
-CONFLICT (content): Merge conflict in drivers/net/wireless/ath/ath12k/wmi.h
-Auto-merging drivers/net/wireless/ath/ath12k/wmi.c
-Auto-merging drivers/net/wireless/ath/ath12k/mac.h
-Auto-merging drivers/net/wireless/ath/ath12k/mac.c
-Auto-merging drivers/net/wireless/ath/ath12k/core.h
-Recorded preimage for 'drivers/net/wireless/ath/ath12k/wmi.h'
-error: Failed to merge in the changes.
-Patch failed at 0008 wifi: ath12k: add support for 160 MHz bandwidth
+Add support to handle and parse this WMI event. Use the received values to
+calculate and store the noise floor value and use at the required places.
+
+---
+Changes in v2:
+- Rebased to latest main. Simple conflict was only in wmi.h. No other changes.
+- Link to v1: https://lore.kernel.org/r/20250528-support_real_noise_floor-v1-0-04507bd3bc76@oss.qualcomm.com
+
+---
+Raj Kumar Bhagat (2):
+      wifi: ath12k: handle WMI event for real noise floor calculation
+      wifi: ath12k: use real noise floor instead of default value
+
+ drivers/net/wireless/ath/ath12k/core.h   |  17 +++
+ drivers/net/wireless/ath/ath12k/dp_mon.c |   7 +-
+ drivers/net/wireless/ath/ath12k/dp_tx.c  |  20 ++-
+ drivers/net/wireless/ath/ath12k/mac.c    |  14 +-
+ drivers/net/wireless/ath/ath12k/wmi.c    | 233 ++++++++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/wmi.h    |  42 ++++++
+ 6 files changed, 324 insertions(+), 9 deletions(-)
+---
+base-commit: e9efdcce074c55be396ca45add336121549bdcbc
+change-id: 20250513-support_real_noise_floor-205986936cd3
 
 
