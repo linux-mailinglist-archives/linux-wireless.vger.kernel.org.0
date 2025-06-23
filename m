@@ -1,215 +1,168 @@
-Return-Path: <linux-wireless+bounces-24372-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24373-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CCFDAE4DB2
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 21:40:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79354AE4DE4
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 22:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0E9A7A2ADC
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 19:38:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 006D4178CE1
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 20:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34919296156;
-	Mon, 23 Jun 2025 19:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B792D12F4;
+	Mon, 23 Jun 2025 20:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MXWi/euI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KqybAjod"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D5719C554;
-	Mon, 23 Jun 2025 19:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D678A28D8CD
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 20:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750707602; cv=none; b=nOuImT91RyMv2yFvBrudQ6ZMnyPTy5Mf2P4+jTmvHD1hAg7X7gt4RlFUjGmG9pCFvSGO3yvJ1keus4i5uY/R+VAo3OKD8uIPi8te8BNSknlCRk1Dy3X9ivWMnCNN6he7dvAT1CL6tPWrFdHFwjqDdXzQVA01aJEFfbfQ7DqXBWA=
+	t=1750709325; cv=none; b=tZmHfDip9u1ke1t8sm09D5AYeL4qNZZz3fFh9vp8HUmZzJoAT8bqJ4fXH38Pfw/RMVjIo/ub9A6wrUdPEA+dKVXrzV/WuHsZFylLcpn0aq5YVpKV6eqa681o1bnBUUdyYhr7dilVuowI7DQbUM6VNEEDlwTb7O8YnNA686jRQ9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750707602; c=relaxed/simple;
-	bh=YjGxbIXYgtou/2N9dnExwJU6eiqD4x/SaqWx1BAYUcc=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=bEyaUAB4IoSvtBnBoxiL7DuWYq23U3cOymV09TY5u21XYAmGyXzuiLu3v26PG+u1WPnVuO/6Pdizw4U4dDywGGatYhBcvOgSJev8YEmGwAqB2m12jaSsQVCb20WeXLdSCJB0qbaq9hxeF26KpVuCdDN3xx+EhwjCLq40XHz5Vo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MXWi/euI; arc=none smtp.client-ip=209.85.214.193
+	s=arc-20240116; t=1750709325; c=relaxed/simple;
+	bh=gT6AJjP4fwyZYLktCzn4YBpsclFuzv1uhDUZQeQVE/s=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=rON96wSP4i+vy4crQjIztpU/c9D5KT9wP6t3z5raZWJQwVzBdKr06e11dg2pD6poDzlAECerDiStGBBehIfPP9oXH68E0eRK/76KT8J0Ew6HWsG5i1XFS5uAWaCYO7VcsQiTmyJdXItrKCp41Ap40CSzja3mGUr1gdmfY8gk3Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KqybAjod; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-235d6de331fso65538145ad.3;
-        Mon, 23 Jun 2025 12:40:00 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a54700a46eso2592568f8f.1
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Jun 2025 13:08:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750707600; x=1751312400; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YjGxbIXYgtou/2N9dnExwJU6eiqD4x/SaqWx1BAYUcc=;
-        b=MXWi/euIkgbVNMD4lrFTleic7AncK25XEecBe4TrvmWoRcTqPBZNSlTOWpzTeBO2Yj
-         9TRhH9haG+ne/Nz62rt8udGOOuGGIVuaRI3WL+DkPI8KC+YY2PR3FmIPykcXEiWPX2Ff
-         PGVvyUc0EmIj1BjCdgHRjChMxQ7HIFt55OTu2HNyH3uj/xFd3Kqz4aiOvEtCyNcoiedZ
-         /Jn2xQHgxXA4ZEYwsivI+qqa6l0V++bdccAQ0FtOXIzGMAjwWubilQUqnF1Ufu3BX2g5
-         +ES1SUTnFHc+mcf9+x1oz8rIldsae1TlCtoXjYLWOGvxCoL9ha0/B1KxcKVGxmsE641A
-         tCxg==
+        d=gmail.com; s=20230601; t=1750709322; x=1751314122; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7NKVmiUuQV0Dw1Vw6tRW3MAOw4c13j+AOH9euCOJSZU=;
+        b=KqybAjodaL16D/jZ+kWGP1f3FdaKIVXK4fq/98rIw6WdnuEB7FPozeXSg28erTkg79
+         XUrON/rYuf0H3QDU/czrRjnzyP4wakRp4VL7fmaSeg5Eq+NjCXt9AnyWpE2+9EY8VVbN
+         4VfsoeyrFpOO8EbxSbRAGwHebqrYwne0jDGDNmvuwkJf6UyPtmKt9UrZH4+Ip5/tr60O
+         peiGqVlSINvLiv/1HXRI+eXmtjVoiwmJi280RMVpSDuBPJkrc/WFvbPnh64VVaYys6cb
+         bpEUewLNbpZ8JS0kcFBGDQgbgAJYBo5HBJWRhGPcicElGUDxaw+VcjhJ5hNMHOVilTmS
+         s0eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750707600; x=1751312400;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YjGxbIXYgtou/2N9dnExwJU6eiqD4x/SaqWx1BAYUcc=;
-        b=V0oilinXttirE6TyDBTz4H7rBFTsknOXEml5/Kx4eRYHXoY+j0gM7iOIP6j7g8tUNF
-         PNNfOT03pSjJ7iGcCRzgrqQ91Bgu65ZiowLJHTCbMbu+/gsOfj/wPyd2O/qi3Z19MA/e
-         vDjxJ/y39zy05XB13nrZ3q2Opo4flvUjPM+/wAJ2iZ6/YjnfHv03ufYJpZ94hkOX5V2D
-         lRk+DBnko1Yo3u1/KBWqFJ2+ffgEGrngo9n6Smm8u7bE/bPM7mFL5bdh1IjStWeg56ai
-         +rjKM+Eho/XU+SvMMqM1qWRB4+5jGMdbZYmem/9ZSg00hiKN4/R+eEDPbWFVkoohbyBD
-         A8ug==
-X-Forwarded-Encrypted: i=1; AJvYcCWKSxlcEnZDH8CxwVzML5vmcR2I/uM1vICG+AG1YoPRgP290S9IKgd1ofFyoLtzv8TE5on9CqRIo4ur+tAVXA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQrrSbSSOzDqHFX+gZHUlQ0ghNG4cs1wmCgWBDj60hqDl5Rg26
-	DC9IQa7S8ZsaalXq4okmpZN/CWVy2CV6sZN7d052x1CVjehf7Gco768W/Ug3on3rVxlUuQ==
-X-Gm-Gg: ASbGnctn6rlTT+k0FfovBwxjN1pU6ecfeEMlGvTf3XCt15+mRzgvA9W9x1OgK/0r0+r
-	cfqj8L8bx7OcCK7iqfodg+hXxIVwJMEwZ5pbmc0yh2/Hb0fXWun9+WM4+zN95V5ogIQbOiwn/kF
-	tyPeUMoNrqNOB4oAwqd+Kv8R4EPuqaVVsrGKHF3fh8A1GR7ysboFlxnsS77QVz7JXec+g0+waMV
-	a1GHONLD0Y49/HGTEKhXghXyhRHzWkGNnCSudrj2I/UGS+RY6Kfvmh9hyM1ty0C1QHCWm2C5cS8
-	2qAThcydLw/qaKs9IOu8htQwTHdPgqdiUEekSzbHkgOYnSDRAHUliZrxlik/ZHiZUCVnfM04QE6
-	4GA==
-X-Google-Smtp-Source: AGHT+IFz4YvLG07mimiQgwKZPZoghEEezyT2BnEsvi6aWF8kiYYOdo4a1M9ViO9A648E8FlyqHklig==
-X-Received: by 2002:a17:902:c404:b0:234:a139:11fa with SMTP id d9443c01a7336-237d980c3f8mr184292145ad.3.1750707599736;
-        Mon, 23 Jun 2025 12:39:59 -0700 (PDT)
-Received: from [127.0.0.1] ([115.187.48.251])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d873845esm93019575ad.243.2025.06.23.12.39.58
+        d=1e100.net; s=20230601; t=1750709322; x=1751314122;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7NKVmiUuQV0Dw1Vw6tRW3MAOw4c13j+AOH9euCOJSZU=;
+        b=HKdmydZKhKKGlIc+lZyypXX9qhCu3R2zPe52xOcPtg8WPXjZHTYkhj5lSn2Iy6e4sX
+         BLUvUli7haJh50wlhiCivdwyVXZjhCCifQQGSjaZRHc8Q8kLEfsZGIprg4Y1+WS7dqa9
+         z+dRs4uSmRk4CgXOpJlsVspNfr0aj4Jw68V+dmGKCW8BqsjvPtyK26qIUMTFnBBBnfJQ
+         A3uTyXh7SbU5GoCDeI+akFK8Efm/t464xg8tcw/jK4NbJUVu4VNcZKXFjHozgY6ronwc
+         hMkRwC1Dj8JwStN/Cj1sInxgI9bhYOTohjRUW5WiGennBzkWwQogD0/E6b8FyWN1k/W5
+         imLQ==
+X-Gm-Message-State: AOJu0YyQ6NQTW/8+jTYetVOqbvoZKBgHj70ZxGDof7zc83B4jxKZYhJc
+	J4PtozCCLIH64VnbaqzcKqJxhNSXjhQUDeTzfFM6Owf4ui9uhi5pzzli8mBb/Q==
+X-Gm-Gg: ASbGncv8rSWHnh0tgNabxLJMK2CwnMRs99kzI/fes+yAy82/SZQCUvDz2PK6Cy+rDEN
+	4JWhTIqwbaEj7GbxaC9luiTnNbYRDHCYXxuL72Xb6iGC+GPizCuwZsHjl9zXbNPQ1W5KUU+/bAs
+	gMkpW0/KlUD4cI9vbj2dqDu2DiDIyy2EX36dizyjh0SV5ME6HFottExm3+G9G/c47JLnqRwTBGq
+	fgnBINqMOcOZX6whVObD9j0aBpk2a9fiXaEtGEfRAV10KNIsZiCyKaqp6+BHpkSLs8GjylU8aVa
+	0sVABlmxiCXNQBWmxSrEssl/0JQXYjDM0nHkln7jybv19FzMPEo0pkmlRd+OcDbMGW7EgQ==
+X-Google-Smtp-Source: AGHT+IFtCeUOSrvaVTZYVswtRGFZ6sqyrZ8mTcMhn0DTXbvKhjAbACVgzJHjZldDvUYC0gDB8CoZGA==
+X-Received: by 2002:a05:6000:2dc4:b0:3a5:1cc5:aa6f with SMTP id ffacd0b85a97d-3a6d1322b77mr11426546f8f.34.1750709321930;
+        Mon, 23 Jun 2025 13:08:41 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.16])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e8062e9csm41354f8f.25.2025.06.23.13.08.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jun 2025 12:39:59 -0700 (PDT)
-Date: Tue, 24 Jun 2025 01:09:54 +0530
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-To: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-CC: stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5Bath10k=5D=5BQCA9377=5D_Firmware_crashes_on_Dell_I?=
- =?US-ASCII?Q?nspiron_5567_=28IRQ_=2316=2C_all_modern_distro_kernels=29?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <CD81F065-CDDD-41F6-AECD-167B509F57C6@gmail.com>
-References: <CAEmM+Qh=8tm55Ypa2w3ZtOFFrGXTpKqxue59mVAo_5TVy0RJ6g@mail.gmail.com> <CD81F065-CDDD-41F6-AECD-167B509F57C6@gmail.com>
-Message-ID: <2DC25FD4-0EA4-41CE-BA17-BFF84C1C5F7E@gmail.com>
+        Mon, 23 Jun 2025 13:08:41 -0700 (PDT)
+Message-ID: <1e5e97d4-8267-4f77-a4bf-1fe23ea40f77@gmail.com>
+Date: Mon, 23 Jun 2025 23:08:39 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rtw-next v3 12/14] wifi: rtw89: Add usb.{c,h}
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+References: <d055bd81-6c79-46f5-8d6d-62185cc65630@gmail.com>
+ <4f456355-fdc5-4624-ab00-ed374f3b58a1@gmail.com>
+Content-Language: en-US
+In-Reply-To: <4f456355-fdc5-4624-ab00-ed374f3b58a1@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-For some reason, the Reddit link on troubleshooting the firmware leads to n=
-owhere=2E
+On 20/06/2025 22:04, Bitterblue Smith wrote:
+> Add very basic USB support. No TX/RX aggregation, no TX queues,
+Commit 47a498b84f01 ("wifi: rtw89: TX nulldata 0 after scan complete")
+exposed a problem with my lazy "no TX queues" approach:
 
-Here is the Reddit link yet again (let's see if it works): https://www=2Er=
-eddit=2Ecom/r/linux/s/egXvRBYhYp
+[30316.444515] BUG: KFENCE: use-after-free write in rtw89_core_tx_kick_off_and_wait+0xed/0x1e0 [rtw89_core]
+                                                                                     
+[30316.444616] Use-after-free write at 0x00000000719224cd (in kfence-#231):
+[30316.444623]  rtw89_core_tx_kick_off_and_wait+0xed/0x1e0 [rtw89_core]
+[30316.444716]  rtw89_core_scan_complete+0x19b/0x260 [rtw89_core]
+[30316.444810]  rtw89_hw_scan_complete_cb+0xbb/0x150 [rtw89_core]
+[30316.444906]  rtw89_chanctx_proceed_cb+0x21/0x40 [rtw89_core]
+[30316.444988]  rtw89_chanctx_proceed+0x45/0x90 [rtw89_core]
+[30316.445067]  rtw89_hw_scan_complete+0x4e/0x70 [rtw89_core]
+[30316.445156]  rtw89_mac_c2h_scanofld_rsp+0x33a/0x380 [rtw89_core]
+[30316.445241]  rtw89_fw_c2h_cmd_handle+0x89/0x100 [rtw89_core]
+[30316.445332]  rtw89_fw_c2h_work+0x3c/0x60 [rtw89_core]
+[30316.445412]  cfg80211_wiphy_work+0x110/0x190 [cfg80211]
+[30316.445412]  process_one_work+0x190/0x350
+[30316.445412]  worker_thread+0x2d7/0x410                                                                                                                                  
+[30316.445412]  kthread+0xf9/0x240                                                   
+[30316.445412]  ret_from_fork+0x31/0x50                                              
+[30316.445412]  ret_from_fork_asm+0x1a/0x30                            
+  
+[30316.445412] kfence-#231: 0x0000000049346f7c-0x000000006dacad1c, size=232, cache=skbuff_head_cache
 
-Apologies for interrupting more than once=2E
+[30316.445412] allocated by task 17836 on cpu 0 at 30316.413509s (0.031903s ago):
+[30316.445412]  __alloc_skb+0x148/0x1a0
+[30316.445412]  __netdev_alloc_skb+0x38/0x190
+[30316.445412]  ieee80211_nullfunc_get+0x3f/0x210 [mac80211]
+[30316.445412]  rtw89_core_send_nullfunc+0xd2/0x190 [rtw89_core]
+[30316.445412]  rtw89_core_scan_complete+0x19b/0x260 [rtw89_core]
+[30316.445412]  rtw89_hw_scan_complete_cb+0xbb/0x150 [rtw89_core]
+[30316.445412]  rtw89_chanctx_proceed_cb+0x21/0x40 [rtw89_core]
+[30316.445412]  rtw89_chanctx_proceed+0x45/0x90 [rtw89_core]
+[30316.445412]  rtw89_hw_scan_complete+0x4e/0x70 [rtw89_core]
+[30316.445412]  rtw89_mac_c2h_scanofld_rsp+0x33a/0x380 [rtw89_core]
+[30316.445412]  rtw89_fw_c2h_cmd_handle+0x89/0x100 [rtw89_core]
+[30316.445412]  rtw89_fw_c2h_work+0x3c/0x60 [rtw89_core]
+[30316.445412]  cfg80211_wiphy_work+0x110/0x190 [cfg80211]
+[30316.445412]  process_one_work+0x190/0x350
+[30316.445412]  worker_thread+0x2d7/0x410
+[30316.445412]  kthread+0xf9/0x240
+[30316.445412]  ret_from_fork+0x31/0x50
+[30316.445412]  ret_from_fork_asm+0x1a/0x30
 
-On 23 June 2025 8:22:57=E2=80=AFpm IST, Bandhan Pramanik <bandhanpramanik0=
-6=2Efoss@gmail=2Ecom> wrote:
-> Hello,
->=20
-> An update on the situation=2E
->=20
-> I installed Fedora KDE Plasma Spin, and the skip_otp option didn't work =
-there=2E KDE specifically said that the Wi-Fi is still connected but it is =
-not connecting to the Internet (confirming my suspicions as true, that the =
-network interface is not disappearing this time and the Destination Host is=
- unreachable, because of the network card)=2E
->=20
-> Only the following convoluted (and strictly step-by-step) solution seems=
- to potentially work (not tested on my own laptop yet): https://www=2Ereddi=
-t=2Ecom/r/linux/s/8VKDJ6QeP
-> (This solution has been taken from the GitHub Issue of the Pop!_OS repo)
->=20
-> I used these exact sequence of steps before, and it worked properly=2E B=
-ut this time, I simply wrote the skip_otp option to /etc/modprobe=2Ed, and =
-it didn't work=2E
->=20
-> Reiterating my point: this issue seriously requires urgent attention bec=
-ause it affects all the stable and longterm kernels as of now=2E
->=20
-> Thanks,
->=20
-> Bandhan Pramanik
->=20
->=20
-> On 23 June 2025 3:01:08=E2=80=AFam IST, Bandhan Pramanik <bandhanpramani=
-k06=2Efoss@gmail=2Ecom> wrote:
-> > Hello,
-> >=20
-> > This is to inform all that constant firmware crashes have been seen in
-> > the "Qualcomm Atheros QCA9377 802=2E11ac Wireless Network Adapter",
-> > which was shipped with the Dell Inspiron 5567 laptops=2E This affects
-> > every kernel release, including the stable and the longterm ones=2E
-> >=20
-> > All the logs have been taken after livebooting an Arch Linux ISO=2E
-> >=20
-> > Every distro has been tried, and it has been confirmed that some error
-> > of this kind is shown in every distro=2E
-> >=20
-> > ## Steps to reproduce the issue
-> >=20
-> > 1=2E Boot/liveboot any Linux ISO through this card (and possibly, this=
- laptop)=2E
-> > 2=2E Wi-Fi network interface appears=2E
-> > 3=2E Connect the Wi-Fi router to the computer=2E
-> > 4=2E A few moments/minutes after that, the touchpad stops working, and
-> > the network interface cannot even access the Internet anymore (BUT,
-> > the network interface might disappear, might not disappear)=2E
-> >=20
-> > ## Affected distros and the necessary workarounds
-> >=20
-> > This has been the pattern on every distro and their corresponding
-> > kernels (LMDE, Linux Mint, Pop!_OS, Zorin, Kubuntu, KDE Neon,
-> > elementaryOS, Fedora, and even Arch)=2E The fix which made these distr=
-os
-> > usable is to add two things:
-> >=20
-> > - Adding "options ath10k_core skip_otp=3Dy" to a new conf file in /etc=
-/modprobe=2Ed=2E
-> > - Adding "pci=3Dnoaer" in GRUB kernel parameters so that the logs are
-> > not flooded with Multiple Correctable Errors=2E
-> >=20
-> > To defend my case (that it occurs in the other models of Inspiron 5567
-> > too), I have recently contacted someone running Linux Mint on the same
-> > model=2E The answer was the same: the touchpad and the Wi-Fi stop
-> > simultaneously=2E
-> >=20
-> > ## Some of the limitations
-> >=20
-> > The kernel was tainted, but the other things have been properly noted
-> > in case they might provide some useful details=2E As stated,
-> > investigating why IRQ #16 is disabled will probably give us the
-> > answer=2E
-> >=20
-> > ## Logs provided
-> >=20
-> > All the logs in a combined manner can be found here:
-> > https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832=
-a16180
-> >=20
-> > - Full dmesg: https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca0=
-3ca2ea43a1d832a16180#file-dmesg-log
-> > - Hostnamectl: https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca=
-03ca2ea43a1d832a16180#file-hostnamectl-log
-> > - lspci: https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2e=
-a43a1d832a16180#file-lspci-log
-> > - Modinfo of the driver:
-> > https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832=
-a16180#file-modinfo-log
-> > - Ping command:
-> > https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832=
-a16180#file-ping-log
-> > - /proc/interrupts:
-> > https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832=
-a16180#file-proc_interrupts-log
-> > - IP addr command (Heavily Redacted):
-> > https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832=
-a16180#file-ip_addr-log
-> >=20
-> > Lastly, this issue on the GitHub repository of Pop!_OS 'might' be
-> > relevant: https://github=2Ecom/pop-os/pop/issues/1470
-> >=20
-> > It would be highly appreciated if the matter were looked into=2E
-> >=20
-> > Thanks,
-> >=20
-> > Bandhan Pramanik
+[30316.445412] freed by task 0 on cpu 3 at 30316.413558s (0.031854s ago):
+[30316.445412]  ieee80211_tx_status_skb+0x75/0xb0 [mac80211]
+[30316.445412]  ieee80211_handle_queued_frames+0x9f/0xd0 [mac80211]
+[30316.445412]  tasklet_action_common+0xc5/0x230
+[30316.445412]  handle_softirqs+0xe3/0x2a0
+[30316.445412]  __irq_exit_rcu+0xcb/0xf0
+[30316.445412]  common_interrupt+0x85/0xa0
+[30316.445412]  asm_common_interrupt+0x26/0x40
+[30316.445412]  cpuidle_enter_state+0xbb/0x410
+[30316.445412]  cpuidle_enter+0x31/0x50
+[30316.445412]  do_idle+0x1b1/0x210
+[30316.445412]  cpu_startup_entry+0x29/0x30
+[30316.445412]  start_secondary+0x119/0x140
+[30316.445412]  common_startup_64+0x13e/0x141
+
+[30316.445412] CPU: 0 UID: 0 PID: 17836 Comm: kworker/u16:1 Tainted: G           OE       6.15.1-arch1-2 #1 PREEMPT(full)  cd63386364b969355862abafc710704c8116e874
+[30316.445412] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[30316.445412] Hardware name: LENOVO 82KR/LNVNB161216, BIOS HBCN18WW 08/27/2021
+[30316.445412] Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
+
+rtw89_core_send_nullfunc() calls rtw89_core_tx_write_link().
+rtw89_usb_ops_tx_write() transmits the frame immediately and
+rtw89_usb_write_port_complete() hands it to
+ieee80211_tx_status_irqsafe(). Then rtw89_core_send_nullfunc()
+calls rtw89_core_tx_kick_off_and_wait(), but the nullfunc was
+already freed by mac80211.
+
+So I will add TX queues in v4.
 
