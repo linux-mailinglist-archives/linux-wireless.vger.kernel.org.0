@@ -1,99 +1,145 @@
-Return-Path: <linux-wireless+bounces-24344-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24345-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012B9AE3857
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 10:27:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA34AE3B41
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 11:55:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95DA316CA48
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 08:27:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E99FD7A266C
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jun 2025 09:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B28202983;
-	Mon, 23 Jun 2025 08:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8AA2192E1;
+	Mon, 23 Jun 2025 09:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="JYoydXgp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8081D86DC;
-	Mon, 23 Jun 2025 08:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEA61A3168;
+	Mon, 23 Jun 2025 09:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750667232; cv=none; b=BLhXSS6Z2OCfEJ8oBwS0bUn551uFvF8XsWfsdwh/vhYn37ffHKYFfAYsM3afMTmpy1NdkASBTIzOjUeEFEzzRu5sf0nAtBQV/STVDWqgvUlBEeLlyRjzc6LhCRQo63kr8aemMWfVzX/zMEWvvDXETf1WXmQbomRGI1lwRudiods=
+	t=1750672535; cv=none; b=L5cZAcgD4DGyIv9eEy6N3jksgqpHp9E7Y5AQctoYEWIQ9vAFIyjd6Yqrn7h3jZyer1EKMXIxcRK79de2QkaaPluAZpmpbPZRUqn+0d/hfiPfPr9dQbPaOGNRobdPXwS3dcrHfrXpjSAGU+VGl6/jZxq5OeA3LB8evuUc828mKws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750667232; c=relaxed/simple;
-	bh=I2RHzOCqZiz/ej3QKR8ozrRKNcND3ktYGlOZ9oF0vjs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T6SUAhgaXnoetn8BlbhoC5fEeQLF60t5LMfvzVlHXM6WnShMqouGuMSc1EZhPD7jevGqHu1min539fwivoEciNBD92MU23x0urdXBap01QXXlUYQqT1gDWHqgEE0Sxq3HWwCqElXlkLLi36lSRoj/kOwW/DAWTXdLS0mr9++1JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55N4PIbB002542;
-	Mon, 23 Jun 2025 01:26:30 -0700
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 47dv8mh76g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 23 Jun 2025 01:26:30 -0700 (PDT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.57; Mon, 23 Jun 2025 01:26:29 -0700
-Received: from pek-lpd-ccm6.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Mon, 23 Jun 2025 01:26:26 -0700
-From: Lizhi Xu <lizhi.xu@windriver.com>
-To: <johannes@sipsolutions.net>
-CC: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <lizhi.xu@windriver.com>, <netdev@vger.kernel.org>,
-        <pabeni@redhat.com>,
-        <syzbot+189dcafc06865d38178d@syzkaller.appspotmail.com>,
-        <syzkaller-bugs@googlegroups.com>
-Subject: Re: [PATCH] wifi: cfg80211: Prevent comparison with invalid registered dev scan req
-Date: Mon, 23 Jun 2025 16:26:25 +0800
-Message-ID: <20250623082626.3104528-1-lizhi.xu@windriver.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <c78aef54d57a83c874cd9092d6e50c3656540c02.camel@sipsolutions.net>
-References: <c78aef54d57a83c874cd9092d6e50c3656540c02.camel@sipsolutions.net>
+	s=arc-20240116; t=1750672535; c=relaxed/simple;
+	bh=OEDsOsbmBWlSCJexaT7tuU8s+GVAmb4vdTnegemyQIY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=L53ywB98k5yLEjB1ixygG87CEd1/T/+4pl+3kykzZTU4rygsmXhARHh4wlsluLLLajm5v4Nxc3JrwpJm5OBvcb/s8fIW5BOeGquLShLrOp2n8+XmrulW5vYxvp0rJtuqByF1KJf4tQUTqr9RHXZoXblyamSWlRcwZ8siFG9mJrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=JYoydXgp; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=5JC8N6waXzbkMsJ2s1DGUOkVB2uBD2HJQeuuu3PQE4w=;
+	t=1750672533; x=1751882133; b=JYoydXgpIAbbe3Urr4micMGUJODHvF12x3woeOVX50wbiWd
+	QCy5s8MG4+3lhjhsro8gG6KC/N2WNSDlCEGOIJV3tc/i8gi0AeEqjyC2E8XoBLaDn/Yyql3ele1SW
+	uKLJV46XXZLtChNAX1u45iAeSmjQ1v2RJPVJrQtX+9tC2C+zvJPK52TRXtFizkzypc3FB7QxY48TJ
+	F9KT4v88xICoH2SSrc0jEbMyWWoEdjQ6i6Jv1/vZkVQQkUS7BUpLetaqDCSRr1yHotfb7Ff/yknDz
+	3yNZn3s5pnfHQCxryynqYGgPUagyii7q2935IWheusQp2+Z/Cqg95tbvjEyfhghA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <benjamin@sipsolutions.net>)
+	id 1uTdtX-00000007blh-3eQd;
+	Mon, 23 Jun 2025 11:55:20 +0200
+Message-ID: <3a9f8d73ecd8fc1f6994b58d69014aa064d6cd60.camel@sipsolutions.net>
+Subject: Re: 6.16-rc2+ lockdep circular locking between iwlwifi and
+ thermal_zone code
+From: Benjamin Berg <benjamin@sipsolutions.net>
+To: Hans de Goede <hansg@kernel.org>, Miri Korenblit	
+ <miriam.rachel.korenblit@intel.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>,  Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui
+ <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>, Linux PM
+	 <linux-pm@vger.kernel.org>
+Date: Mon, 23 Jun 2025 11:55:17 +0200
+In-Reply-To: <e9d7ef79-6a24-4515-aa35-d1f2357da798@kernel.org>
+References: <e9d7ef79-6a24-4515-aa35-d1f2357da798@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA0OSBTYWx0ZWRfXytO55s3AmuW+ 5c9xZvno/Wq+dmEhwmr/i0zJOomjW0yVSOXymGUZzD5mmRysMIU8IpHFj+YB8+AopneMsxP9Ldg wTCOTaFhNgiQe8k5hGC7wYnUzhLyKKwE5a8Sa3kcQzg5aN81vtlNVkR6MkK/gLFa4/t3IzDFTwa
- d8zuiS5Vo5zg3sDsS/zO63Lg+ztFrBfH9f74yOSAhogWiTQlp4V5Xt5/Jlx/KdBw5RbEQ4z5nWO nmVdv7we3uoz3t+VkRn0hSewSOpov4Tk2p0rv8t/bkUJA8eDYdqm1WCgxGadLtw3meKb8JVAixU fnN90fNt4jxTb8rF12cD990hK4oH6gpdAf5JLAIyx0G+LIqWirzCwVEo+5iw3EY+oF+vYIwU8YM
- hQEifrgquMbbXPKZbTiJ4e2MX0mFYO0QDNCx8dQZhswNvdhBkCORBn6jgGwgWI/1hs9rI4Ct
-X-Authority-Analysis: v=2.4 cv=MeNsu4/f c=1 sm=1 tr=0 ts=68590fb6 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=6IFa9wvqVegA:10 a=J1YBbKYVWwK1OX1Y3BsA:9
-X-Proofpoint-GUID: vIrRGiyC5ypHUKuL2kgVxH63CP1OPy0e
-X-Proofpoint-ORIG-GUID: vIrRGiyC5ypHUKuL2kgVxH63CP1OPy0e
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-23_02,2025-06-20_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- mlxscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 spamscore=0 bulkscore=0 phishscore=0 adultscore=0
- mlxlogscore=493 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2505280000
- definitions=main-2506230049
+X-malware-bazaar: not-scanned
 
-On Fri, 20 Jun 2025 13:01:51 +0200, Johannes Berg wrote:
-> > The scan req of a registered device may have been released, so it should
-> > be checked to be valid before comparing it with the current req.
-> >
-> 
-> I don't understand the subject/commit log at all. You're now accepting
-> scan_done() with a NULL scan request, why does that make sense?
-It is meaningless to compare the registered device with NULL scan_req with
-the current scan request.
+Hi Hans,
 
-Because there is a check for scan_req being NULL in ___cfg80211_scan_done(),
-cfg80211_scan_done() is not directly exited when the scan_req of the registered
-device is NULL.
 
-Lizhi
+On Fri, 2025-06-20 at 17:56 +0200, Hans de Goede wrote:
+> While testing 6.16-rc2+ on a Dell XPS 9640 I got the following lockdep re=
+port:
+>=20
+> (Note this was a build without debuginfo, so I did not run decode_stacktr=
+ace.sh)
+>=20
+> [=C2=A0=C2=A0 19.690210] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [=C2=A0=C2=A0 19.690212] WARNING: possible circular locking dependency de=
+tected
+> [=C2=A0=C2=A0 19.690214] 6.16.0-rc2+ #3 Tainted: G=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 E=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=20
+> [=C2=A0=C2=A0 19.690217] ------------------------------------------------=
+------
+> [=C2=A0=C2=A0 19.690218] modprobe/906 is trying to acquire lock:
+> [=C2=A0=C2=A0 19.690220] ffff89da8e948768 (&rdev->wiphy.mtx){+.+.}-{4:4},=
+ at: iwl_mld_tzone_get_temp+0x2f/0x1d0 [iwlmld]
+> [=C2=A0=C2=A0 19.690269]=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 but task is already holding lock:
+> [=C2=A0=C2=A0 19.690270] ffff89da41ac2708 (&tz->lock){+.+.}-{4:4}, at: th=
+ermal_zone_device_set_mode+0x20/0xa0
+> [=C2=A0=C2=A0 19.690284]=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 which lock already depends on the new lock.
+> [SNIP]
+
+I am thinking that this is a false-positive and the
+
+    lock(cpuhp_state-up);
+    lock(&tz->lock);
+
+chain is happening on a different type of thermal device. A solution
+might be to create a separate lock class for every thermal_zone_device.
+Something like the below, I suspect.
+
+Benjamin
+
+diff --git a/drivers/thermal/thermal_core.c
+b/drivers/thermal/thermal_core.c
+index 17ca5c082643..fcb060898733 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -1556,6 +1556,7 @@ thermal_zone_device_register_with_trips(const
+char *type,
+ 	INIT_LIST_HEAD(&tz->trips_invalid);
+ 	ida_init(&tz->ida);
+ 	mutex_init(&tz->lock);
++	lockdep_set_class(&tz->lock, &tz->lock_class);
+ 	init_completion(&tz->removal);
+ 	init_completion(&tz->resume);
+ 	id =3D ida_alloc(&thermal_tz_ida, GFP_KERNEL);
+diff --git a/drivers/thermal/thermal_core.h
+b/drivers/thermal/thermal_core.h
+index bdadd141aa24..9ad5c37620f3 100644
+--- a/drivers/thermal/thermal_core.h
++++ b/drivers/thermal/thermal_core.h
+@@ -141,6 +141,7 @@ struct thermal_zone_device {
+ 	void *governor_data;
+ 	struct ida ida;
+ 	struct mutex lock;
++	struct lock_class_key lock_class;
+ 	struct list_head node;
+ 	struct delayed_work poll_queue;
+ 	enum thermal_notify_event notify_event;
+
 
