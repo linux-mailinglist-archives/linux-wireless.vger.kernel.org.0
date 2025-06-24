@@ -1,103 +1,109 @@
-Return-Path: <linux-wireless+bounces-24421-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24422-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1090AE6349
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 13:08:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C2CAE63BC
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 13:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB0C77A7636
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 11:06:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 164444A12E6
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 11:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21946283FC2;
-	Tue, 24 Jun 2025 11:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1922288538;
+	Tue, 24 Jun 2025 11:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="P0TqaJ5G"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="a2PQwmjn"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935E52288EE
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Jun 2025 11:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5101F3B9E
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Jun 2025 11:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750763283; cv=none; b=swXoDpGj1z2PvSBC8ZGMksYwMMZP4mfRhLn8asbUtjIAQJpxI6Qjbrqn0qvOhrZudvlFRNi1zC+2TF7LymT3nO1d5TdPfHSWYGSWEszZ1Uxiz+NfqUdx5FcfKKXIsDaAPWhBvlqKVZMGgV5oxIH02iKL82d3t6apywUtW6P8m+k=
+	t=1750765246; cv=none; b=WbKnZdTSAul/EBf0ft7+uA8ftACuwV2pDsNuUDRH4gMt+MqjjtDvj3TeCvJL4wH1rjXxXoFZTq6CktAoPKgHRZlabcg085veBg9fbBZKJe86m2PH+Z7wpi3X7TRgMRzUN7E+MuUogAML7L8UXh1pTu5fB7HbB32MD7iEqBfOQsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750763283; c=relaxed/simple;
-	bh=CMl8z6OKD+6/1QVrOU5K87eptYIfszTT46a487NNys0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KuxIrDmJbfPwhx4CDkg2YIDz6V0bgLLD2NwxgG8sHFR7rMvVwFdYzz4kGHNBRvtpryPHFmyRQa/jFxeKN8ZdQmBi8LV7sy7mWdKD/2cH/WfVdbufUQ8IrQCD3MSTc+OuddZAe6WLtvonewILshVEtGd4tXoInhEKdaIucJy4OAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=P0TqaJ5G; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1750765246; c=relaxed/simple;
+	bh=zvinYU9B1ZgrNHjRhHC0X8jo9fgCUmx4Wmw7LLQKTF8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uyc4vp2Vky+PkoUsGha34QQuKZgWUNMt7KIxG3jwAZ/+nZRE93c+dDA9w6nLJiq0suz9mgnUnCIKblqh1zEVjNqVERZ79k57SOeMixmEMF56nOv7s1HYsfgP5ecq+QWjo6szH+BCItiC6DII8NtxmLrg0VBS4JS3aS/RfCeW97A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=a2PQwmjn; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=Jod9N3Q8dO/dE3Ov3Yh1B8ba131XGIOXudfCi5GVBww=; t=1750763281; x=1751972881; 
-	b=P0TqaJ5GichuKRismd/gAlrwM3jXbg1ZcviGhzq5CapsXLTc051PzsGOEiXspxjg7pVoudbM/gD
-	8oOCUow/h9jQPXo5TBFYI0q3gdu4TWa+mO7i4hdvqAL3/W3SopOs2LzLqEV3qsu8KI1LbJZsPqeA0
-	uAEoO/YkTELKbbICmD9Xa3l2X7w5+n8PvAtsqIUtA6x5zt6N6KVn+Vg1GAo1xzrSd72tG+Y8ITgiR
-	Nq9Gbxshrg1asZfUAvQ/luIo+NgcUC4A5XJmtrFMwo2Tqq7rAX1fEdb2XYeinV2gonzvX4BZ78nkD
-	UnjRhljqY/8bzzngd363651gVbijbrrBZd9w==;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=IiW1Y6nq6J0mDP49jBUoaV5f/M9C0ZQ7msa0aa8i1e0=;
+	t=1750765245; x=1751974845; b=a2PQwmjnsi95+xBuaVzsOUxmzKN5eYtU5kgQqTyBKVyQF6r
+	0gX6dpLq5tuKOJ4zKUUOvcq7n6BibyJ/YV88ZV26EgKwP9sOJKdv+ynkYeZDXxzc7o6AXFweTj7Oj
+	z9H8IGaJc0fgU4JUm9viikUa/Ctt8Mg6NaagjdRuQril00jbMwUlPnpZU7UHYVViddoXNJT6oPIRl
+	WjrtJ2SqQ3h6ViMM5PQfC0e0f6syeeK8RwnNntxVt46YXODLZJtxIzWVet+XS91qyo43UZTpdGA15
+	cU62pUwgV85PAu6SIbDAERE3l8Ztd5BtqmWrrEr0De/ZLmVn4oAbDiEbPThTK0Pg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uU1VI-00000008mBI-1k80;
-	Tue, 24 Jun 2025 13:07:52 +0200
+	id 1uU214-00000008nNP-07go;
+	Tue, 24 Jun 2025 13:40:42 +0200
+Message-ID: <ae46cc4ffc3ec8c776f70c4c61031d82ffdc4be0.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v10 00/10] wifi: cfg80211/mac80211: add
+ support to handle per link statistics of multi-link station
 From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless] wifi: mac80211: fix RCU initialization
-Date: Tue, 24 Jun 2025 13:07:49 +0200
-Message-ID: <20250624130749.9a308b713c74.I4a80f5eead112a38730939ea591d2e275c721256@changeid>
-X-Mailer: git-send-email 2.49.0
+To: Sarika Sharma <quic_sarishar@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Tue, 24 Jun 2025 13:40:41 +0200
+In-Reply-To: <20250528054420.3050133-1-quic_sarishar@quicinc.com>
+References: <20250528054420.3050133-1-quic_sarishar@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Wed, 2025-05-28 at 11:14 +0530, Sarika Sharma wrote:
+> Current implementation of NL80211_CMD_GET_STATION does not work
+> for multi-link operation(MLO) since in case of MLO only deflink
+> (or one of the links) is considered and not all links.
+>=20
+> Hence, add the link_sinfo structure to provide infrastructure
+> for link-level station statistics for multi-link operation(MLO).
+>=20
+> Additionally, accumulated stats for MLO are included in a concise
+> manner to provide a comprehensive overview of the ML stations.
+>=20
+> V10:
+>  - Add WARN_ON_ONCE(!link_sinfo), if valid links.
+>  - Fixed kernel doc error.
+>  - Corrected logic for setting sinfo->valid_links only if memory is
+>    allocated for link_sinfo.
+>=20
 
-Since the link/conf pointers can be accessed without any
-protection other than RCU, make sure the data is actually
-set up before publishing the structures.
+I'm going to apply this because we're at v10 and I'm losing track of all
+the changes etc., but while looking through it now, here are a couple of
+things I think you/we should still change:
 
-Fixes: b2e8434f1829 ("wifi: mac80211: set up/tear down client vif links properly")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/link.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ - We already require a call to allocate TID stats, I think it'd make
+   sense to also do that for link stats, instead of allocating _all_ of
+   them always. The cfg80211_link_sinfo_alloc_tid_stats() could go away
+   in favour of cfg80211_sinfo_allocate_link() that gets an argument
+   'bool tidstats' to allocate (or not) TID stats with it
 
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index d40c2bd3b50b..4f7b7d0f64f2 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -93,9 +93,6 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
- 	if (link_id < 0)
- 		link_id = 0;
- 
--	rcu_assign_pointer(sdata->vif.link_conf[link_id], link_conf);
--	rcu_assign_pointer(sdata->link[link_id], link);
--
- 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN) {
- 		struct ieee80211_sub_if_data *ap_bss;
- 		struct ieee80211_bss_conf *ap_bss_conf;
-@@ -145,6 +142,9 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
- 
- 		ieee80211_link_debugfs_add(link);
- 	}
-+
-+	rcu_assign_pointer(sdata->vif.link_conf[link_id], link_conf);
-+	rcu_assign_pointer(sdata->link[link_id], link);
- }
- 
- void ieee80211_link_stop(struct ieee80211_link_data *link)
--- 
-2.49.0
+ - I still don't like patch 7, I think that should be a WARN_ON_ONCE or
+   so and the producers shouldn't be creating that in the first place,
+   otherwise reading the mac80211 code is misleading since you don't
+   even get that data. Also the producers shouldn't even _have_ valid
+   data for these values.
 
+ - What about TX statistics, we still have these patches:
+   https://lore.kernel.org/linux-wireless/20241218232519.3156080-1-greearb@=
+candelatech.com/
+   which is still needed, right?
+
+johannes
 
