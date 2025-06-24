@@ -1,88 +1,54 @@
-Return-Path: <linux-wireless+bounces-24440-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24441-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC3DAE6C47
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 18:16:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5063AE6CE2
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 18:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9229A4A177C
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 16:16:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E61357B0AAF
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 16:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DD34A00;
-	Tue, 24 Jun 2025 16:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2248A2E336E;
+	Tue, 24 Jun 2025 16:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VJP8ug+t"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="N6lO9vKH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E268F1D5CE5
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Jun 2025 16:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1177826CE3A;
+	Tue, 24 Jun 2025 16:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750781756; cv=none; b=WE+yt+pP8aijIjOsxdl9/qYtLvYPbjtw7O84/hwcRJhqHtgDhdRJykF6IOXl0ekVEltFuDlQTe8NjRYn040UA97IdzVNIP5+HeWG3vmro17YiX8XUHnpPP1XmgEBq9Ab3yFUyH+gcvIkegf6oa5Im8W3VKC01MLywaGlzgU10Fo=
+	t=1750783836; cv=none; b=m4D9+89GzYiwG0CBPFjHqJGu/oArdIowLBjfZWnadRv9/T6ZYOtEglL1kgUcXfOHyFyPzdH6qi7Ou0Up8OJz8WnxHg2hrirzchNlaW8wdUDmGXZzY8Hmbrqg7zNngsy06O+xAxEjADT1YcDRnQYKT/JQ+PBbAnzenFJL12+aBjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750781756; c=relaxed/simple;
-	bh=cnqRmP3MWftqLsVV3rIWse2EOfNLNh9JhYIyXhzOGog=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lnad2/l5GQIzJEK1AZAVW+OgK7g78aQBKlpZVxI3veN1c6R5KC29TIYM/zVES/9av6ff21oUaSqXWjvVO1jQ6UzzLTRvny75lwqtIAxOMiiKItc6aY9NCAWsTBlwN5M7VD+BCbDQ0Myg1teGRFeT8U/Wc6R8k09SqKu7ssx86ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VJP8ug+t; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55OBwHYq026045
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Jun 2025 16:15:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Qyfhlor21ICWZh+rc4+fdzgPyjA2dUWzPSk1D9SVOxw=; b=VJP8ug+t6fivQjJ9
-	2HdIITE3R/FvdMiFv/sFzLfYQdjlR6LZfI0tk+12LkzUfCaWvffmwc90exzRsxKK
-	UnvVLM0QdfIFKK+CvwZyvict5EgEX4l+GIzBh+GhR8MSXn2oiaR4/+EXpwiN/sQa
-	e4l8j0Y9W72UPEnouis0Zg28oux4KNQ2zXElHUE+oSMvlgF9qw74nBZ46+2+rqnb
-	TOdKOpXc0klR2Ak36eoxs8eTTBQvXx/CjBDtfPduiIA4CSIorzhA+cINUYInl5ee
-	Y+H4INM1M28qQRnvek+Qna+bQ6Mc0dwgilAqPxMJroBoYT5qmIF94fsCByFje5pz
-	EdjfSA==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47f8ymutgj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Jun 2025 16:15:53 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-23536f7c2d7so92333355ad.2
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Jun 2025 09:15:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750781753; x=1751386553;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qyfhlor21ICWZh+rc4+fdzgPyjA2dUWzPSk1D9SVOxw=;
-        b=OwPrgac/z7M/NgU9IAasVcMuH+WRYM7IVWn4cpSIJfTS+1DBA4s9nbXrcz4QUcHAkC
-         SjpNSG4GE8fxNkT4HTiMKerV9cF5opzWlrowvGsQQPbylJH0SsG9vKWfuVzedP7xZPvV
-         ULSQOdOOMxWly3AYoLTdAE9+l10V2U0Hs+8VQHhHJ4LlW1d68mhJPJWLm3Oe70zDuGQA
-         7hcxNClsq2CeDP2ssL7zkvJp18EHd/GyIFbv3R6znZ3T7reM1UhirBzzn+8/trAKgdH3
-         4cB+4Rda472p+NtMtEjZqJbI4ycJWtFm3wsscnuJiXAboumLQYgP6r6Xj4FJRHgaDJXJ
-         wbEA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2Mnm+aHPrsWb93iDHdEyLqBWikHpzL3vXD91At0Po0+DFt/20atizGbjJQDEHMccI27j9TSb3EwVIbHR3kg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2oLFkL6L5PyjnPpBFrnZMXLErf5UmNicRSUuPP3rkXWE/tHZD
-	jsoEvi82AI5MhWEq81TxGN1wvgXubg7n/u80z80sN9a7s3xXJlDItX4GOvKsm5P+zV4s2g0o0RN
-	blRPgesnPpc1YpzIgCHq/9f21XpfXXTim+anRbtkCJc/3ecGDgKr177bjh1asi5CkGK2s5A==
-X-Gm-Gg: ASbGnct5G3X6o9hP4UmUeKDIWVx9EWKAZ7qewKzVobSmGoTqHMGOI5xEHLb9KE1gugh
-	keY/mDCcnWUqvFUOhCuURKPnOtD78vZqXNayFNnP5faW7w1DrRumEi7sI3Auh0HSGD0vNaGPKiU
-	BkcAUoLXHNLiF/mdkc3bj+V8ip1sRshXu8Nll5Efswu4RnxACRAwDd7IuzJZNkHKs8Bt+Eul389
-	QGUiNX9+8UGaIjnQRh2nOvtMawXQ1ONXRsR3XqCshLrE/o73n3NJLiDsTu3EY9TwrM5sUneRNVx
-	Zs0HNKfgaEG5ue48bTmfI26AeWI7JK36sYydJtTVnx8lP1cNyn9mvWQaD+uWk1XaLnoKQaEIflv
-	dCXU6IKI2FMX1ADU=
-X-Received: by 2002:a17:902:fc44:b0:234:e655:a632 with SMTP id d9443c01a7336-237d9b19e2cmr287442615ad.51.1750781753001;
-        Tue, 24 Jun 2025 09:15:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH3GDtY6uAafIPWUwLJ9fdR1mlv1odipIGVPfHXlQOfWlJDASFtqBzLLuEVdFTlA964kKvR6g==
-X-Received: by 2002:a17:902:fc44:b0:234:e655:a632 with SMTP id d9443c01a7336-237d9b19e2cmr287442015ad.51.1750781752475;
-        Tue, 24 Jun 2025 09:15:52 -0700 (PDT)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d8695440sm113338745ad.185.2025.06.24.09.15.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Jun 2025 09:15:52 -0700 (PDT)
-Message-ID: <377affe8-fa88-4ade-9cf8-aaeaaabee679@oss.qualcomm.com>
-Date: Tue, 24 Jun 2025 09:15:51 -0700
+	s=arc-20240116; t=1750783836; c=relaxed/simple;
+	bh=jypxy5YrrrwHn5OZnPatbc8/doa480riJ7fn4J04Tf8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=Ql7ZElTTE1qxonEA8d9E7pU9OZJcl+RoE0TNzFnfVW/Mzvs7H67mPq1CLizGjdjHXzDG+kDmx6vxus7fDKm1FfmlvDVmKv18WNNmzfpO8ISDpRjGj5KsyTExOjaRYSSbGK6OFc6yaLvWQgHqe+xCcrd9I0OhAI2e7uIedgsdWVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=N6lO9vKH; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1750783831; x=1751388631; i=markus.elfring@web.de;
+	bh=lygtFga4Zzar3EOZ2eacheVtpaUZOubLZPWP3hzvSZE=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=N6lO9vKHkbZfUQA39Xmwgz1E85NPGO73xBrx6d8yKfABeW7zlGpN6zoc3DWZpNnp
+	 1cBfIKjzNRrbeD4xe4qfQZZkqdyUPHW/UVCjGcd2G46qYS/tw+GqGt0Q465OgdM+z
+	 sGTsswua9kziiVIeQ1UfK8QTWggVdPZthLExS/OpkZ3NJem5a3r/HtxF8Wmm89/Gc
+	 yND1QoVmnfcQxOPomubRkv2qNHPdylYLsEnvrMwwwrfgHXKCQVtiRsyQaGdk6FZox
+	 R3aA0Mj9SC3t6eFFzv4X/P76aksFKbws2e9XCzLuLVEQMLFZy8f/Nq49EVuan+N0V
+	 tnxZRCwe7RbYicY9ug==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.200]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MCXZh-1ucfJ737H1-001XBS; Tue, 24
+ Jun 2025 18:50:30 +0200
+Message-ID: <d04019cd-f782-4d81-97ce-3d70946e5c54@web.de>
+Date: Tue, 24 Jun 2025 18:50:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,60 +56,111 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath11k: fix suspend use-after-free after probe
- failure
-To: Johan Hovold <johan@kernel.org>, Johan Hovold <johan+linaro@kernel.org>
-Cc: Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Baochen Qiang <quic_bqiang@quicinc.com>
-References: <20250624082022.15469-1-johan+linaro@kernel.org>
- <aFpingRwP3foaKJ9@hovoldconsulting.com>
- <43b978a5-c1c3-450d-8340-dc1a6dddc884@oss.qualcomm.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <43b978a5-c1c3-450d-8340-dc1a6dddc884@oss.qualcomm.com>
+To: linux-wireless@vger.kernel.org
+Content-Language: en-GB, de-DE
+Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org,
+ Chen Ni <nichen@iscas.ac.cn>, Kalle Valo <kvalo@kernel.org>
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] wifi: rsi: Use usb_endpoint_type() rather than duplicating
+ its implementation
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI0MDEzNiBTYWx0ZWRfXzN7F1Sd4UUYs
- G6iO4X4E8B/fC8M17kRbpvDfVFIXtU0n3Msvage4PGS6n/SfBVHVsL/0+BI165Nq2gpBKsmfMLa
- f7G512NkfLnqNSUo08e64f0DXF1G5l3F7K8gDgNjHBs6K+U5Ys+7OUjx/DxNYmrK5NlROadO+vw
- ADpojn3keOdvMoSk7fz5mfklJ9aQKLInLiqEd/cRHcr3pA6J1ZntsKTlvrGSZC44IldbZKGSXoR
- OGy61mSZ3NBZF5Cl6dJGmak+SYp+cExtSFlkFyI9bLkeew3MlCN4fxR1sluB3rfH2ZNJzj+J7WJ
- o584kj7ifRazmsyP/8qiJHnoiB+rWEbYT9dAPLP+Q1/6W4Yb8ITyUSj1XkxutEPplr9MqcvDf7E
- TIpn1FCbPvALM8uv1Xmg5NtmRs/lSqfcVPG/2GoejsnwnTFLdaYd48PlYX9c7xfYsFNslie+
-X-Proofpoint-ORIG-GUID: O8oOsygqMxIfVWlv7u0G0Y5h2o5eiQ9q
-X-Proofpoint-GUID: O8oOsygqMxIfVWlv7u0G0Y5h2o5eiQ9q
-X-Authority-Analysis: v=2.4 cv=GLYIEvNK c=1 sm=1 tr=0 ts=685acf39 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=e70TP3dOR9hTogukJ0528Q==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=qSSGdmx9Lv0nWuJ4rdQA:9
- a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-24_06,2025-06-23_07,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 impostorscore=0 clxscore=1015 malwarescore=0
- bulkscore=0 mlxscore=0 mlxlogscore=999 phishscore=0 lowpriorityscore=0
- priorityscore=1501 adultscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506240136
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:lXqP4SBeKatBUgQxHpIBKFyCDNJqkN5F/V+bZzAkdP9xv2Uj8ol
+ r2Nkg9KPvjbMWT+pj3WLQKmmbMLGBljG6/eJ9WrbRvURp7V1kUxjPhTpzWx5tFKUOjSj0fU
+ +kDpii0dzT8P7Khb4uGlQz8O8Qt5UBsaqkkbjAtpGC4XiZjq+lcmbDGIMLFXztUlNMaqI1T
+ uMHeOO5HtkXPkVk2l+HWQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:tHnLAntKgus=;Uxld4nniI8GeEOO5MisbefS46Fi
+ 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
+ br4NP/wvGyYU0XGtedpw==
 
-On 6/24/2025 8:11 AM, Jeff Johnson wrote:
-> On 6/24/2025 1:32 AM, Johan Hovold wrote:
->> On Tue, Jun 24, 2025 at 10:20:22AM +0200, Johan Hovold wrote:
->>> Make sure to deregister the PM notifier to avoid a use-after-free on
->>> suspend in case core initialisation fails (e.g. due to missing
->>> firmware).
->>
->> Not sure it matters in this case, but forgot to include:
->>
->> Tested-on: WCN6855 hw2.0 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-> 
-> I'll add that.
-> I'll also change the Link: to Closes: per checkpatch:
-> 
-> WARNING:BAD_REPORTED_BY_LINK: Reported-by: should be immediately followed by Closes: with a URL to the report
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Tue, 24 Jun 2025 18:42:39 +0200
 
-Please check pending patch:
-https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=2418079880408c5ae0b2a93f72af044eaff18cb6
+Reuse existing functionality from usb_endpoint_type() instead of keeping
+duplicate source code.
+
+The source code was transformed by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/net/wireless/rsi/rsi_91x_usb.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/rsi/rsi_91x_usb.c b/drivers/net/wireless=
+/rsi/rsi_91x_usb.c
+index dccc139cabb2..64994022b33e 100644
+=2D-- a/drivers/net/wireless/rsi/rsi_91x_usb.c
++++ b/drivers/net/wireless/rsi/rsi_91x_usb.c
+@@ -122,8 +122,7 @@ static int rsi_find_bulk_in_and_out_endpoints(struct u=
+sb_interface *interface,
+=20
+ 		if (!dev->bulkin_endpoint_addr[bin_found] &&
+ 		    (endpoint->bEndpointAddress & USB_DIR_IN) &&
+-		    ((endpoint->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) =3D=3D
+-		    USB_ENDPOINT_XFER_BULK)) {
++		    usb_endpoint_type(endpoint) =3D=3D USB_ENDPOINT_XFER_BULK) {
+ 			buffer_size =3D endpoint->wMaxPacketSize;
+ 			dev->bulkin_size[bin_found] =3D buffer_size;
+ 			dev->bulkin_endpoint_addr[bin_found] =3D
+@@ -133,8 +132,7 @@ static int rsi_find_bulk_in_and_out_endpoints(struct u=
+sb_interface *interface,
+=20
+ 		if (!dev->bulkout_endpoint_addr[bout_found] &&
+ 		    !(endpoint->bEndpointAddress & USB_DIR_IN) &&
+-		    ((endpoint->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) =3D=3D
+-		    USB_ENDPOINT_XFER_BULK)) {
++		    usb_endpoint_type(endpoint) =3D=3D USB_ENDPOINT_XFER_BULK) {
+ 			buffer_size =3D endpoint->wMaxPacketSize;
+ 			dev->bulkout_endpoint_addr[bout_found] =3D
+ 				endpoint->bEndpointAddress;
+=2D-=20
+2.50.0
+
 
