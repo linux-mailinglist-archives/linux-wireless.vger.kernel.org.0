@@ -1,122 +1,113 @@
-Return-Path: <linux-wireless+bounces-24409-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24410-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7F8AE5DDA
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 09:34:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C71CAE5E1A
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 09:40:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A6167A1E53
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 07:33:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F13BE1B61FA6
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 07:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B942561C5;
-	Tue, 24 Jun 2025 07:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="pxcT+AjY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0A72571DC;
+	Tue, 24 Jun 2025 07:38:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719B3252906;
-	Tue, 24 Jun 2025 07:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A904255F56
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Jun 2025 07:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750750465; cv=none; b=QsAHx9K2u2CC4ZMygGzazil1T/jjWi/o0740bIDc4YXWV7C+OVDlbCD/oIYepXjo8Ht0FfCxG4fnED96YoT0pL14nh3rAw4NKK4bPHTpPOwdw1M8ojbbUFe9+3vck2BPzIaI34v9js0jnULA4vDFln/V4zvNpNqWvmhbRN7iQhI=
+	t=1750750710; cv=none; b=nYiCGynk6oCQ6m9FpDeaoEhggmi9Yeco5Q6j1chFs+T73rUcCH/pAkihDHRFQNceyY9tYi5zMbs8PCKS8XdwLF6++b9hpvdWauapNUhxq63CZldsRPu6vuYgDHr60Jh8jMLC/uy/kVUTeVHBc+PYoKvDw7ZHk4yppRxGVH1gkas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750750465; c=relaxed/simple;
-	bh=4L4p8mzQIrawtPvkgMyDPHn1DG4pqUKquaAb1QnlhgU=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=PtcLUkvlsaeWHli6FHiKPfgWDVE5h7+uj9lMd0nwsxgH3mHtmYusf4Y+UDzUUEKHdOwvITHjYOtogkdU/3K8d8FzgXN7yzGmIo8KqtwMTDYqLBJawBD7N0zGIG0wxWFHc7errkVcVDne5ZslakxuH5hZHmNw/e+BJhpQ7vZF2jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=pxcT+AjY; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55O7X4Qp83232313, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1750750385; bh=+E+259xMEjdlVbAqk5TSc75UapVAIhlftohVhdBf7Hw=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date;
-	b=pxcT+AjYRzNsJxtH/yCu7DK16gT7BoQXfkbldezyvQBXBdrsgtB1qXtGoVWYAUpJw
-	 FWgUUQwFDd9m8stUZG7tQfN9nX/VCvB3BUaaHQiLu17i9tjGJxO5J7Pquu2OhrVxFX
-	 bsRWECyw3Y/RXbVqT2lOcJ9KC/ctn4CikLNdAVrHp2AfemKnaO3AMoC6fp41CVj9+Y
-	 MyDPg8MIJcpMtCsaFEcY+KA6l6IHGmnGNF23lrH8h/1ZnCozOp/is1XvlBtHGfQpwM
-	 x5jJsoCf88BY1q+TOK73fkbaHBgxv1LB91LpgAfpAaLmYpyGp4PAPhnXLOAqPCqXfJ
-	 M7fuOIIVyWMrQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55O7X4Qp83232313
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Jun 2025 15:33:05 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 24 Jun 2025 15:33:18 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXDAG02.realtek.com.tw
- (172.21.6.101) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 24 Jun
- 2025 15:33:17 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Daniil Dulov <d.dulov@aladdin.ru>, Ping-Ke Shih <pkshih@realtek.com>
-CC: Daniil Dulov <d.dulov@aladdin.ru>, Hin-Tak Leung <hintak.leung@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        "John W. Linville"
-	<linville@tuxdriver.com>,
-        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <lvc-project@linuxtesting.org>
-Subject: Re: [PATCH v2] rtl818x: Kill URBs before clearing tx status queue
-In-Reply-To: <20250617135634.21760-1-d.dulov@aladdin.ru>
-References: <20250617135634.21760-1-d.dulov@aladdin.ru>
+	s=arc-20240116; t=1750750710; c=relaxed/simple;
+	bh=bu7lf+8eNZa6HkeLexi/tLJzh61KugG0RPEB9GwynZc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=E9fEfmz6//v5k+ynZijvVPFlZvcLgMw7Jv4ZVK5UgDPPOigY9gfSVE28HEHyoF5YAQRUNkkQwvjTTdXhwBWA9Js9dTDcvpbC483ZQVzpcK2ZiTFslf4etMreBBinDgregzjy6dGs37Kz5dAHr7ugP4Iw+7PJlWJdrSCExVQ3xLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3ddd90ca184so841295ab.0
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Jun 2025 00:38:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750750708; x=1751355508;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dD1pfGKpIHd7EJHi4GSso/Jg7ueKo2Dyr930wdR6pvs=;
+        b=l6IhCUsMG6s3yw+Apzd3+duKSzrCraewU+LV9e8jKxjY3uG/Je9vq87C96OA7K9sYo
+         vfHX1vcEqbpZ8NXA9iNG/hVHEdGgVPRFFsvZ6lLWefhGkpaqEi5KcXNclWwc+PFVXnbt
+         9edtASPMjAb3eyT8Bv84b4cA0auBDyz9spBWjbYa24FSBzGumLp4s2nIdNjBNr9o5d7e
+         lFOtVJLIaIpt+YxuaMYJ+kZyhvuf8rPHGZc6KKFI4cTkCwborno97zoWlt7jenDtugJZ
+         7gC7Ak8oq3eKmYRDQV3QgZ5Q2od+qRtuKumVTcE9g8HszUZm2OlGd/sz2yF2feFqQDVc
+         vZnA==
+X-Forwarded-Encrypted: i=1; AJvYcCWkw36AzN4vFs6cVz+80a4KBlPxsyI5ZY8szOrr6ck5xJjq2ccUtZdvzk9c0jdllJXR2OgEDyhAfm0+yJsbiA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQIXUZZOziYbzB4zTdqXDqagWQCSKTkl3av9Dl1BEOgNrcbb3L
+	om2mbfJ3CEDa6+equmW+jh/DwkYTtp7rNKN5OKcph51X80EhkcBitI0yVXvvIUmuHl0BoKLf+zB
+	wWwbnjesbcWPlQzAfaxRzef+z+qDxezk0gNpSf1BMRPLXRXJscEx1i1Kt1CQ=
+X-Google-Smtp-Source: AGHT+IGFvan+sLVICasUV9mrknNLM93SyV2I3nVI8xj82yoT87rTsXmrftSXQU1UlH9ARBM7yizP6NW2nEvbn0f3fQybPgAqy8c8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <08206e08-f59f-4819-91c1-14e871fde06f@RTEXDAG02.realtek.com.tw>
-Date: Tue, 24 Jun 2025 15:33:17 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXDAG02.realtek.com.tw (172.21.6.101)
+X-Received: by 2002:a92:cd8a:0:b0:3dd:d98c:cca9 with SMTP id
+ e9e14a558f8ab-3de38c15abemr181040565ab.3.1750750707815; Tue, 24 Jun 2025
+ 00:38:27 -0700 (PDT)
+Date: Tue, 24 Jun 2025 00:38:27 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <685a55f3.050a0220.2303ee.0007.GAE@google.com>
+Subject: [syzbot] Monthly wireless report (Jun 2025)
+From: syzbot <syzbot+list0a0103c65a978177d9c8@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Daniil Dulov <d.dulov@aladdin.ru> wrote:
+Hello wireless maintainers/developers,
 
-> In rtl8187_stop() move the call of usb_kill_anchored_urbs() before clearing
-> b_tx_status.queue. This change prevents callbacks from using already freed
-> skb due to anchor was not killed before freeing such skb.
-> 
->  BUG: kernel NULL pointer dereference, address: 0000000000000080
->  #PF: supervisor read access in kernel mode
->  #PF: error_code(0x0000) - not-present page
->  PGD 0 P4D 0
->  Oops: Oops: 0000 [#1] SMP NOPTI
->  CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Not tainted 6.15.0 #8 PREEMPT(voluntary)
->  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
->  RIP: 0010:ieee80211_tx_status_irqsafe+0x21/0xc0 [mac80211]
->  Call Trace:
->   <IRQ>
->   rtl8187_tx_cb+0x116/0x150 [rtl8187]
->   __usb_hcd_giveback_urb+0x9d/0x120
->   usb_giveback_urb_bh+0xbb/0x140
->   process_one_work+0x19b/0x3c0
->   bh_worker+0x1a7/0x210
->   tasklet_action+0x10/0x30
->   handle_softirqs+0xf0/0x340
->   __irq_exit_rcu+0xcd/0xf0
->   common_interrupt+0x85/0xa0
->   </IRQ>
-> 
-> Tested on RTL8187BvE device.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: c1db52b9d27e ("rtl8187: Use usb anchor facilities to manage urbs")
-> Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+During the period, 3 new issues were detected and 4 were fixed.
+In total, 52 issues are still open and 163 have already been fixed.
 
-16d8fd74dbfc wifi: rtl818x: Kill URBs before clearing tx status queue
+Some of the still happening issues:
+
+Ref  Crashes Repro Title
+<1>  11683   Yes   WARNING in rate_control_rate_init (3)
+                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
+<2>  8852    Yes   WARNING in __rate_control_send_low (3)
+                   https://syzkaller.appspot.com/bug?extid=34463a129786910405dd
+<3>  6771    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<4>  1213    Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<5>  654     Yes   INFO: task hung in reg_process_self_managed_hints
+                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
+<6>  571     Yes   INFO: task hung in crda_timeout_work (8)
+                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
+<7>  559     Yes   INFO: task hung in reg_check_chans_work (7)
+                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
+<8>  431     No    WARNING in ieee80211_request_ibss_scan
+                   https://syzkaller.appspot.com/bug?extid=1634c5399e29d8b66789
+<9>  430     Yes   INFO: rcu detected stall in ieee80211_handle_queued_frames
+                   https://syzkaller.appspot.com/bug?extid=1c991592da3ef18957c0
+<10> 201     Yes   INFO: task hung in ath9k_hif_usb_firmware_cb (3)
+                   https://syzkaller.appspot.com/bug?extid=e9b1ff41aa6a7ebf9640
 
 ---
-https://github.com/pkshih/rtw.git
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
 
