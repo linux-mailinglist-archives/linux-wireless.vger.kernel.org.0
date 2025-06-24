@@ -1,173 +1,91 @@
-Return-Path: <linux-wireless+bounces-24394-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24395-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5367AE5B6F
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 06:17:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9E6AE5BE6
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 07:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F6592C3041
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 04:16:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8C2F1B67647
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 05:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8325C23C8A2;
-	Tue, 24 Jun 2025 04:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B794716D9C2;
+	Tue, 24 Jun 2025 05:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pDmJL/oW"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="FW17Otjm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADC6226D00;
-	Tue, 24 Jun 2025 04:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD322CCC1
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Jun 2025 05:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750738415; cv=none; b=T8R6VL5Te1qd6oga9F5oFOEhiHL2oKVWbJZSwLnnnYRjFPcj131R/sxgssghnfG0mhFLpril3K7ip54zm8vfdVE30rS8KBc2o/8THkOvuN1PFrCSzMuCZQJR915rdIkiN+qz+4ZC+/aOA9Bf0VgscRbRRe8uC5Y45uw13QFYoGk=
+	t=1750743756; cv=none; b=U04TMwQ0RKzD/FxLDf8j0gYUKnMjfCLxHJcdOw9gqD/bkN5cpml/x3lxSpHakB4a9JbxNApmGhkOrp9a9JlEuG6i6Q8GOQpFaeY+WN9GgdWbXJ/XSTeG4dW2nw13hQqYiMhkOn8jksufdkK+rlpZw8ASm8WlGpvJypMkUJjfRXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750738415; c=relaxed/simple;
-	bh=facy8F0nUNf3E9Ua+SPcJBCIrt1Ln1cNIBezrr34KXI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NIbbLKdZfASYTy9ryJLY6SAfLKjHTJFIGwlPYPqzSJgE0zAcoGzL/q3458hVKJkUOGwDrdxFoFlqbQWu7RE7auHErYV8XhtnNRqUhR2/vbqOxvotZHN4LQMfV7GpBrPQT6sbEYL4znV5w2FmjErY9po3xf3Ad3bi1KXBh0QOPRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pDmJL/oW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC64C4CEE3;
-	Tue, 24 Jun 2025 04:13:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750738415;
-	bh=facy8F0nUNf3E9Ua+SPcJBCIrt1Ln1cNIBezrr34KXI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pDmJL/oW0MnwpzJOX6wGxz3fjjstEuYCSeU9hUiMXXAdowDc/wOQ6swkVdWtRue4C
-	 v+/v5TQ8epvfyED7M9RJQBNdI/m4w1waBmoJTjT1tGc77zz8eh3KhYlshzr868ORzR
-	 ApaCgt9Icp7+cYr4Gqp2QWqnuyULRecKZsObQfXB5nNbeyxJlY36+mXDorRr+GUjy/
-	 tb2wLNd4O2cCjFyESVRzOlflNrKVB3k9aVBYnX5hDeaSj+6HNDitpis7XJMhAZjhzx
-	 58NlAxcMzqeOdg+ogh9E8yvtaMgcufjzlCtL72xCmsVHnAxuCjZoiJ3Lvq3XO8t0cY
-	 7AESvM0dprIAA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 5/7] wifi: ath6kl: remove WARN on bad firmware input
-Date: Tue, 24 Jun 2025 00:13:24 -0400
-Message-Id: <20250624041327.85407-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250624041327.85407-1-sashal@kernel.org>
-References: <20250624041327.85407-1-sashal@kernel.org>
+	s=arc-20240116; t=1750743756; c=relaxed/simple;
+	bh=xS/xwLbCENK80NNPyi+yguW9fCYGu6C6qcCCnBsyui0=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QiHtkEa2xBzavASduDOS4VT7nVMsxIZXqAyDiy/tjhSjqdRcGjLsPLKvI9yWXFYYf4+ARG6oFOyxy50EYGrTE1tOOD8McuOtsEyiiW6OBSZ8+7ibveoWSgDuXAg/CId1Qs0smaQ6CsKiEG3FyUF6z3jsbDNaizam2McxkElLUyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=FW17Otjm; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55O5gTekD3094935, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1750743749; bh=xS/xwLbCENK80NNPyi+yguW9fCYGu6C6qcCCnBsyui0=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=FW17Otjm5KkLOG3ep+NLfkLRFe0ajufsSH8BcedNVseSZIgssKUGNC7EFgPYhQ02G
+	 1RfXj6d2JKISJ+hZfefB9TpFNjhEVahHPZD7hRRikxcAcOWCso+79wMr06xaPd3DAB
+	 Sj6e7xfnVnnpXLUWxD+pEbZIngt+DK2Cf29nJjTTTn03pFYViwl73bhwmkmkFjldBG
+	 y6X7DGEmKN6PCKAb2dF8BL4ocVTKrvE+8rv4i0HUDXZ9MYvSCwXwxJ/bw8SwBisdyy
+	 VwNVdOYmnsthLa123guGPKeQLPYFVFx5TwdUjUVzTcXGaxQ99UnTUye570y9uQdtZ5
+	 QNBuEabL5j7Aw==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55O5gTekD3094935
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Jun 2025 13:42:29 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 24 Jun 2025 13:42:43 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 24 Jun 2025 13:42:42 +0800
+Received: from RTEXDAG02.realtek.com.tw ([fe80::1d65:b3df:d72:eb25]) by
+ RTEXDAG02.realtek.com.tw ([fe80::1d65:b3df:d72:eb25%5]) with mapi id
+ 15.01.2507.035; Tue, 24 Jun 2025 13:42:42 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH rtw-next v3 02/14] wifi: rtw89: Make dle_mem in rtw89_chip_info an array
+Thread-Topic: [PATCH rtw-next v3 02/14] wifi: rtw89: Make dle_mem in
+ rtw89_chip_info an array
+Thread-Index: AQHb4hTABDmJnTymWEmDu9HKZ7MfU7QR0VEQ
+Date: Tue, 24 Jun 2025 05:42:42 +0000
+Message-ID: <48029e46aca34c02b8ba5f462a8c78d0@realtek.com>
+References: <d055bd81-6c79-46f5-8d6d-62185cc65630@gmail.com>
+ <62339c51-87c8-4064-ae9c-9f34127632e5@gmail.com>
+In-Reply-To: <62339c51-87c8-4064-ae9c-9f34127632e5@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.294
-Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
-
-[ Upstream commit e7417421d89358da071fd2930f91e67c7128fbff ]
-
-If the firmware gives bad input, that's nothing to do with
-the driver's stack at this point etc., so the WARN_ON()
-doesn't add any value. Additionally, this is one of the
-top syzbot reports now. Just print a message, and as an
-added bonus, print the sizes too.
-
-Reported-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
-Tested-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
-Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250617114529.031a677a348e.I58bf1eb4ac16a82c546725ff010f3f0d2b0cca49@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-**YES**
-
-This commit should be backported to stable kernel trees for the
-following reasons:
-
-## Security and Stability Impact
-
-1. **Syzbot Report**: The commit explicitly mentions this is "one of the
-   top syzbot reports now", indicating it's a frequently triggered issue
-   that impacts kernel stability testing. Syzbot is Google's continuous
-   fuzzing infrastructure that finds kernel bugs, and high-frequency
-   reports indicate significant impact.
-
-2. **WARN_ON Misuse**: The removed WARN_ON is checking for bad firmware
-   input, which violates kernel best practices. WARN_ON should only be
-   used for "impossible" conditions that indicate kernel bugs, not for
-   validating external input. As the commit message states: "If the
-   firmware gives bad input, that's nothing to do with the driver's
-   stack at this point."
-
-3. **DoS Potential**: A WARN_ON can be triggered by malicious or
-   corrupted firmware, potentially causing:
-   - Stack traces in kernel logs (log spam)
-   - Performance degradation
-   - In some configurations, system panic (if panic_on_warn is set)
-
-## Code Analysis
-
-The change is minimal and safe:
-```c
-- WARN_ON(1);
-+ ath6kl_err("mismatched byte count %d vs. expected %zd\n",
-+            le32_to_cpu(targ_info->byte_count),
-+            sizeof(*targ_info));
-```
-
-The fix:
-- Removes the inappropriate WARN_ON
-- Adds informative error logging with actual vs expected sizes
-- Maintains the same error handling path (return -EINVAL)
-- No functional changes beyond logging
-
-## Similar Precedent
-
-Looking at similar commits:
-- Commit #5 (ath6kl: reduce WARN to dev_dbg() in callback) -
-  **Backported: YES** - Similar removal of WARN for known race condition
-- Commit #3 (ath10k: Change the warning message string) - **Backported:
-  YES** - Modified warning to avoid syzbot confusion
-
-## Stable Kernel Criteria
-
-This meets stable kernel criteria:
-- **Fixes a real bug**: Addresses inappropriate WARN_ON usage that can
-  be triggered by external input
-- **Minimal change**: Only removes WARN_ON and adds error message
-- **Low risk**: No functional changes, just logging improvement
-- **Tested**: Explicitly tested by syzbot
-- **Clear benefit**: Reduces false positive warnings and improves
-  debugging
-
-The commit is a straightforward fix that improves kernel robustness
-without introducing new risks, making it an ideal candidate for stable
-backporting.
-
- drivers/net/wireless/ath/ath6kl/bmi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
-index af98e871199d3..5a9e93fd1ef42 100644
---- a/drivers/net/wireless/ath/ath6kl/bmi.c
-+++ b/drivers/net/wireless/ath/ath6kl/bmi.c
-@@ -87,7 +87,9 @@ int ath6kl_bmi_get_target_info(struct ath6kl *ar,
- 		 * We need to do some backwards compatibility to make this work.
- 		 */
- 		if (le32_to_cpu(targ_info->byte_count) != sizeof(*targ_info)) {
--			WARN_ON(1);
-+			ath6kl_err("mismatched byte count %d vs. expected %zd\n",
-+				   le32_to_cpu(targ_info->byte_count),
-+				   sizeof(*targ_info));
- 			return -EINVAL;
- 		}
- 
--- 
-2.39.5
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBVU0Ig
+MiwgVVNCIDMsIGFuZCBTRElPIHdpbGwgbmVlZCBkaWZmZXJlbnQgc2V0cyBvZiB2YWx1ZXMgY29t
+cGFyZWQgdG8NCj4gUENJZS4NCj4gDQo+IEFkZCBhIG5ldyBkbGVfdHlwZSBtZW1iZXIgaW4gc3Ry
+dWN0IHJ0dzg5X2hjaV9pbmZvIGFuZCBtYWtlIGRsZV9tZW0gaW4NCj4gc3RydWN0IHJ0dzg5X2No
+aXBfaW5mbyBhbiBhcnJheSB0byBob2xkIHRoZSBmb3VyIGRpZmZlcmVudCBzZXRzIG9mDQo+IHZh
+bHVlcy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJm
+ZTJAZ21haWwuY29tPg0KDQpBY2tlZC1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5j
+b20+DQoNCg0K
 
