@@ -1,44 +1,45 @@
-Return-Path: <linux-wireless+bounces-24424-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24425-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C192AE655D
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 14:48:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B0FAE6560
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 14:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DEFA7AC108
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 12:46:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57DEC4A5C47
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 12:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419BB290D83;
-	Tue, 24 Jun 2025 12:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABF729827D;
+	Tue, 24 Jun 2025 12:48:14 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.prodrive-technologies.com (mail.prodrive-technologies.com [212.61.153.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B46621765E;
-	Tue, 24 Jun 2025 12:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4BF2951B3;
+	Tue, 24 Jun 2025 12:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.61.153.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750769292; cv=none; b=B1/0dlHF0OfaZ72N7/iKMK84kjCp102LqxxVFN47ImsIUtpD4EebPCC8ntCnE2YuXh72W22kX0/XVLBdpSDjkHijm+OYAOnSGfDczdJPFPg6/PupgwYdffc5LtAyvhn3eP9Ozv6S6Rwoypw7w09ZaMMJNpZKi61PBG/aWetAOfs=
+	t=1750769294; cv=none; b=GO+1qn5gpgXEcIjteNQtdWFXIzu9hD4sV5kkIlfQpnSe0/nqlyfmrGBGlOKWWmJgGSvo29LcxQi4FtpLc03to5Lnw6C5g3banqZwaPv26ZlxR5p71vHO3feWu2xEBmPmohAyjrGFSJkgxIf0K1EJtqmu6FqrIIS1FHlrjEC1YaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750769292; c=relaxed/simple;
-	bh=Hilcgacb5T6lcTk4xUKS+2QL0eNiJ3t+yrbfo/oLiPE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kTTk04aJ3XL7a+nfuSiOPL4IQenDVjYmooO0aJTUv+vhHUkkCM4Tn7lJuu9y1dDy+PPNknzcxlajzQ6pQtbnhQznctD2Vwd6W1ebixUQv0z351B4qPIgKFkiX5c4FeDsVpIKhhi8kNeYPhr77Rdhi048OmKOCUW4fZ8jn6mFVOo=
+	s=arc-20240116; t=1750769294; c=relaxed/simple;
+	bh=GDg7794sHBbkt+MM1DfT6KRSx7x6z575w6eN9ITIxXc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Fgo28bYBqCDH9VGNtAcWSJ1w2cTNEB2nvd6ngq8wM2F1WVQv6BP0UguPCYiDMlzP8DA+0jzHGhnn0zyDTm1KM6JgcK/niw/VykconLRZRvwLh3PVrYwP4YvMNupHbORwfiW8byJTaXFLLJvY2mKCvH+g5ogL163kClhmLDpW8Dc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com; spf=pass smtp.mailfrom=prodrive-technologies.com; arc=none smtp.client-ip=212.61.153.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prodrive-technologies.com
 Received: from EXCOP01.bk.prodrive.nl (10.1.0.22) by EXCOP01.bk.prodrive.nl
  (10.1.0.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 24 Jun
- 2025 14:42:59 +0200
+ 2025 14:43:03 +0200
 Received: from lnxdevrm02.bk.prodrive.nl (10.1.1.121) by
  EXCOP01.bk.prodrive.nl (10.1.0.22) with Microsoft SMTP Server id 15.2.1544.4
- via Frontend Transport; Tue, 24 Jun 2025 14:42:59 +0200
+ via Frontend Transport; Tue, 24 Jun 2025 14:43:03 +0200
 Received: from paugeu by lnxdevrm02.bk.prodrive.nl with local (Exim 4.96)
 	(envelope-from <paul.geurts@prodrive-technologies.com>)
-	id 1uU2zL-00Bg0N-0d;
-	Tue, 24 Jun 2025 14:42:59 +0200
+	id 1uU2zO-00BgGz-35;
+	Tue, 24 Jun 2025 14:43:02 +0200
 From: Paul Geurts <paul.geurts@prodrive-technologies.com>
 To: <mgreer@animalcreek.com>, <krzk@kernel.org>, <andrew+netdev@lunn.ch>,
 	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
@@ -47,10 +48,12 @@ To: <mgreer@animalcreek.com>, <krzk@kernel.org>, <andrew+netdev@lunn.ch>,
 	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <martijn.de.gouw@prodrive-technologies.com>, Paul Geurts
 	<paul.geurts@prodrive-technologies.com>
-Subject: [PATCH v2 0/2] NFC: trf7970a: Add option to reduce antenna gain
-Date: Tue, 24 Jun 2025 14:42:45 +0200
-Message-ID: <20250624124247.2763864-1-paul.geurts@prodrive-technologies.com>
+Subject: [PATCH v2 1/2] dt-bindings: net/nfc: ti,trf7970a: Add ti,rx-gain-reduction option
+Date: Tue, 24 Jun 2025 14:42:46 +0200
+Message-ID: <20250624124247.2763864-2-paul.geurts@prodrive-technologies.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250624124247.2763864-1-paul.geurts@prodrive-technologies.com>
+References: <20250624124247.2763864-1-paul.geurts@prodrive-technologies.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -60,16 +63,39 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-The TRF7970a device is sensitive to RF disturbances, which can make it
-hard to pass some EMC immunity tests. By reducing the RX antenna gain,
-the device becomes less sensitive to EMC disturbances, as a trade-off
-against antenna performance.
+Add option to reduce the RX antenna gain to be able to reduce the
+sensitivity.
 
 Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
 ---
-v1 -> v2:
-- Added vendor prefix
-- Added units
+ Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
+diff --git a/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml b/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
+index d0332eb76ad2..066a7abc41e0 100644
+--- a/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
++++ b/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
+@@ -55,6 +55,12 @@ properties:
+     description: |
+       Regulator for supply voltage to VIN pin
+ 
++  ti,rx-gain-reduction:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Specify a RX gain reduction to reduce antenna sensitivity with 5dB per
++      increment, with a maximum of 15dB.
++
+ required:
+   - compatible
+   - interrupts
+@@ -95,5 +101,6 @@ examples:
+             irq-status-read-quirk;
+             en2-rf-quirk;
+             clock-frequency = <27120000>;
++            ti,rx-gain-reduction = <3>;
+         };
+     };
+-- 
+2.39.2
 
 
