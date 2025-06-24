@@ -1,61 +1,64 @@
-Return-Path: <linux-wireless+bounces-24429-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24430-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FEEEAE666C
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 15:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D716AE66A7
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 15:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1941F17E24B
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 13:27:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4289179FE2
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 13:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F692BFC7C;
-	Tue, 24 Jun 2025 13:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0975B2C08A0;
+	Tue, 24 Jun 2025 13:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="jjjF2km9"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="EowkTcGk"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC8E291C29;
-	Tue, 24 Jun 2025 13:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB2A291C16;
+	Tue, 24 Jun 2025 13:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750771623; cv=none; b=N1RYh1j/CsbzyXTSTcPQMlOD9DFX2T1NGNv7mrnzC6V8VI2yixerLRKbsM6YdKg9hkG6pnRvqMK3MH4YVU5vqyQqZN5nIZtKHBti3CiZmLgHkbRSwxaaL9wnflj3BCHLAwKmjw606eQ+ntgxpXa6Zye5lMkQF7alyiKHhPQYoeE=
+	t=1750772161; cv=none; b=fkNMm5GTciPWxrt6ZNeVKBIjRPyMSs5Dajc26/frIYZB8ElIa4fQoppMNWRjsknq1o5UpFYgJe1EYFwSRwsfC3iJpOxxEA2EksGAZb5MQOnMpGigSyg5dpIvIYoQgXrYgWkniCcWtuL7QP4KYd3wS5jwAFlyE6lsiCsQEbU2xYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750771623; c=relaxed/simple;
-	bh=4Oq/SF/xG32qfmS58AwTENC3gPz6m+J729giDcFj69E=;
+	s=arc-20240116; t=1750772161; c=relaxed/simple;
+	bh=WMgPqwWNGooS2on5RHUN/crTZkEr4pBbRv54KtcQLL8=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=thxogkuRlzCLu1QZtxQCuCVpnVcokQWFhd4HdcZY7oPfz6Vq3yet947KFs2HPqzuD3a4NL9wxDLEB81CCiolgEzy92hSHBq69rRLYFFSoR04ne2k9/VCyxLvLmrLqUF2H8IQqKwbXwgLQ4MxUuj5FlqJVvAEg/UEkeqaXCsLmT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=jjjF2km9; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=krKjOtLd9Jhya4YYG/2UKq+PdqI7vKdB7nb7QPjeTowL0NrwYgDEzyCxCQed246h3HcHLzKTRh2z9pFlOqF7diMAeQPciHE3bBn5DR0+WkgaPWhVCN1j/llNGdwOu3hjOktfjVmMeKAvwO4yFqIh82MeGQ4/tfnUkaDKHVkHjU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=EowkTcGk; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=4Oq/SF/xG32qfmS58AwTENC3gPz6m+J729giDcFj69E=;
-	t=1750771622; x=1751981222; b=jjjF2km9QhdJ0PWAdsCMKZ0R3oDEWokQklhMpNVba+vnWVM
-	kYbG6oQAdbvVvJn9E1qTjXdVKS4s+ZE02d7jQo+G1Hy7q+VyccIG7wDV55Tx0XUqqpzsdfEX8iNEY
-	8piWB9/lXx4ixJohljcS0snvTVounoa97/xiQLc3g17cRe4MSODXS0Tun6DrY4hVcnqlC5kIU5FLx
-	S+1oMm2ta2yrcIo41FEEpheJ9y43XpX2wn2KVq9QW7t4sAfnB1qiu//J7N8hzLhi0gnhaYDkDZ9Rs
-	xqUklJjx0kWPISzKYIaJG7/t3a9vj47G8XP/lBQMk+wXktNkKlzSeYKhYyZDuR+g==;
+	Resent-Cc:Resent-Message-ID; bh=n8C/vPKKTuaIjOs0cw/MxpZIz0SU+4HBNS9FPaA6jJ4=;
+	t=1750772160; x=1751981760; b=EowkTcGkoSEzICJCmMo2bdu6zWwIGpUWTH4d6Gjx/wZe2E1
+	EFrzpIS7dO9ysMQ4CZZQ3bPORlofnlNjGXdHmK+ADiUmCnt8ULKv6a+FLIoXxktMj05s+W4nRZdQZ
+	giR6+b/RtWLndx28zu2FCbGRyjcFOkp3nQA0Y9LNKlP2muBsxgFsTlk8yLcYUU8afy0Pg94OMZHZw
+	/UcaEJ4+WmOWMzgaJKAkwPsfrJsigZyN7rD4cxuBVbmC8c6lBy2PViHr41ncXzjLnJVgYJm7jYrcq
+	iS7eE7tqpLUGnBc2Eflsr18FxrsYAGEsF2jW6aS1r/lwVShjh35wBK1UE0ULlNRA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uU3fu-00000008rkm-1xe7;
-	Tue, 24 Jun 2025 15:26:58 +0200
-Message-ID: <e83c0841a3875aebcbb830949abc44d909d64da4.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next v2] wifi: mac80211: consider links for
- validating SCAN_FLAG_AP in scan request during MLO
+	id 1uU3oZ-00000008s2r-3Zaf;
+	Tue, 24 Jun 2025 15:35:56 +0200
+Message-ID: <89dd111db62029f1575f7a7113e2a0cb5a1a8d5f.camel@sipsolutions.net>
+Subject: Re: [PATCH v3] wifi: mac80211: Prevent disconnect reports when no
+ AP is associated
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 24 Jun 2025 15:26:57 +0200
-In-Reply-To: <20250624-fix_scan_ap_flag_requirement_during_mlo-v2-1-c8067d0ee1f0@oss.qualcomm.com>
-References: 
-	<20250624-fix_scan_ap_flag_requirement_during_mlo-v2-1-c8067d0ee1f0@oss.qualcomm.com>
+To: Zhongqiu Han <quic_zhonhan@quicinc.com>, 
+	miriam.rachel.korenblit@intel.com
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot+5a7b40bcb34dea5ca959@syzkaller.appspotmail.com
+Date: Tue, 24 Jun 2025 15:35:55 +0200
+In-Reply-To: <5e378fe7-90ec-4453-b549-1106f9d0cfef@quicinc.com>
+References: <20250620032011.1102373-1-quic_zhonhan@quicinc.com>
+	 <a5078d3c7f3d1c2281a3f5a50386fdb7072935bb.camel@sipsolutions.net>
+	 <5e378fe7-90ec-4453-b549-1106f9d0cfef@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
@@ -67,30 +70,45 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Tue, 2025-06-24 at 14:25 +0530, Aditya Kumar Singh wrote:
-> Commit 78a7a126dc5b ("wifi: mac80211: validate SCAN_FLAG_AP in scan reque=
-st
-> during MLO") introduced a check that rejects scan requests if any link is
-> already beaconing. This works fine when all links share the same radio, b=
-ut
-> breaks down in multi-radio setups.
+> >=20
+> > >    - Remove WARN_ON and early return in ieee80211_report_disconnect()
+> > >    - Change the return type of ieee80211_set_disassoc(). If
+> > >      ieee80211_report_disconnect() uses the frame_buf initialized by
+> > >      ieee80211_set_disassoc(), its invocation is now conditional base=
+d
+> > >      on the return value of ieee80211_set_disassoc().
+> >=20
+> > I don't understand this change ... surely syzbot couldn't have run into
+> > an uninitialized buffer after the WARN_ON since it has panic_on_warn. S=
+o
+> > why all these changes:
 >=20
-> Consider a scenario where a 2.4 GHz link is beaconing and a scan is
-> requested on a 5 GHz link, each backed by a different physical radio. The
-> current logic still blocks the scan, even though it should be allowed. As=
- a
-> result, interface bring-up fails unnecessarily in valid configurations.
+> yes, syzbot couldn't have run into an uninitialized buffer after the
+> WARN_ON on **patch v2** such as:
 >=20
-> Fix this by checking whether the scan is being requested on the same
-> underlying radio as the beaconing link. Only reject the scan if it target=
-s
-> a link that is already beaconing and the SCAN_FLAG_AP is not set. This
-> ensures correct behavior in multi-radio environments and avoids false
-> rejections.
->=20
+> --- a/net/mac80211/mlme.c
+> +++ b/net/mac80211/mlme.c
+> @@ -4433,6 +4433,10 @@ static void ieee80211_report_disconnect(struct=20
+> ieee80211_sub_if_data *sdata,
+>   		.u.mlme.data =3D tx ? DEAUTH_TX_EVENT : DEAUTH_RX_EVENT,
+>   		.u.mlme.reason =3D reason,
+>   	};
+> +	struct sta_info *ap_sta =3D sta_info_get(sdata, sdata->vif.cfg.ap_addr)=
+;
+> +
+> +	if (WARN_ON(!ap_sta))
+> +		return;
 
-This triggers a warning in ieee80211_is_radio_idx_in_scan_req() in hwsim
-tests.
+I think you misunderstood ... We have this WARN_ON since 687a7c8a7227
+("wifi: mac80211: change disassoc sequence a bit"). Therefore, !ap_sta
+cannot be the cause of syzbot complaints, since WARN_ON would panic it
+before it ever gets to the uninitialized memory use.
+
+
+> "You're adding a WARN_ON() that's now guaranteed to trigger, no
+
+so now it's no longer your WARN_ON, I guess, but how did it trigger? I
+really think we need to figure out how it triggered and fix _that_.
 
 johannes
 
