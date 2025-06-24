@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-24383-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24384-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 125CBAE5B04
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 06:13:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93569AE5B08
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 06:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3EF23A74DC
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 04:12:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A2C14444F6
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jun 2025 04:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34544238C3B;
-	Tue, 24 Jun 2025 04:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AD323A58B;
+	Tue, 24 Jun 2025 04:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C/A/QiYP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l+tkwvDC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9B2238D53;
-	Tue, 24 Jun 2025 04:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59ABB226D00;
+	Tue, 24 Jun 2025 04:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750738327; cv=none; b=WhHHZ88FoblwnEDj2YNlAMnVTuJCBdKMhcfrblazt9TE52FqZofkLTzHXl3HM00O/MU3pr6kTBcwLjJ5CCzn9AY6x7m2FwFy8Bh9rTpr5g9UhMWyj7sHRsoDHqCIC3wQHKe2+Qee+EoZEJZBCWQ73vQ+ZiMidPkuUfmtXWqwjJc=
+	t=1750738329; cv=none; b=IOfPrK7Mc/njCg1+JZCL0oriYISL4swRBRk4o2C3pO6u6fl8xvpJpZMqrnsjYYR1m4gBuMIL6yFMGKtJlJFg+Ati3FKLxr/1Haq6gMaoixrkqee1WckzrkZVzlA3JZFO4YniAG/aTvMOpci7ruokEEl4+Hu6QLDaFfBlgwjcgOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750738327; c=relaxed/simple;
-	bh=ffeeUxwsuymqPYPtz5B0th7puZxyJ/LVpNy5qwGpV8A=;
+	s=arc-20240116; t=1750738329; c=relaxed/simple;
+	bh=facy8F0nUNf3E9Ua+SPcJBCIrt1Ln1cNIBezrr34KXI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kBjW4wAQGDI1sYLssgc2fc5NEnkzuQ0PtrUscT/lGCz9lXOi4Wv4NJB3+EDdSd+mzmj46wfkoEvyTlQmkqeGfEXzw97kbDXb7f6wW43d1SvyGNDW4Gig9rw8ToAe31RXACYVXwDzvX1BO5Vuv6ZeEcqRzUNCqaLs/B7vsR2rTUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C/A/QiYP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95142C4CEF0;
-	Tue, 24 Jun 2025 04:12:06 +0000 (UTC)
+	 MIME-Version; b=Ew2JQwwhBAorqVmYPSbXPLsVk5a8pUXQuVelqdF/FDTyB5JhPzviMdw7RUU4bAuYJcnBxi+InVw+xbe8WEL7+1YhGtgGKyD/HZAwMVFop6645pdh0cJgcZfYdPvMY8caUKWycNg2NnmmyR9PWbP98zxrWQi5JGMgKBsEzvt4Kfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l+tkwvDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA1EC4CEEF;
+	Tue, 24 Jun 2025 04:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750738326;
-	bh=ffeeUxwsuymqPYPtz5B0th7puZxyJ/LVpNy5qwGpV8A=;
+	s=k20201202; t=1750738329;
+	bh=facy8F0nUNf3E9Ua+SPcJBCIrt1Ln1cNIBezrr34KXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/A/QiYP3C4BTnEcyVj9Zcrmnc4SQHYZRFFStuE32N8RMUBvhe7E4j0l7Y2IAwVj1
-	 V+JacYMfmLhflXdbTNhOykF37r5dPMDpB0iHUy9c0waSc276UrS8LYGPZT8n911EwM
-	 pL5+MM9eXlj2GNYSJJOeSai2AAuHQ+lS/9WkXV2syUCOt5BBpQNzR5kLOR+gjW+g9C
-	 u5VXKIwkHVctb2WLmnxuMOQa7M3x3Cnv5zh8fMI2nm36Dj104myJcoMQQWuHFHsBWD
-	 lFOxYlwUv7fCqrQT4pI9fgJU3fex1XQ0VTJbhCYe0P6RJrLpSrevHAbOSXgV/XMITv
-	 4HfQ3TDal8LfA==
+	b=l+tkwvDCwzEqbZGc1z2HdhHgii6/oklsKk6pJIokBT1JOtfJ048Kwb2LW+4GK59V3
+	 Z+xM2fRDwke+hgs3fIDLWHYR5y/xL31NjWzVer9n1dMBI1hMFos0jUHWtDLsPM91ou
+	 5alZvbLYnBzN/bPck388SkzDRa5qvc6lO/m5SWAnKKnILpViZADSbbAX/pJRrzOqmZ
+	 DLB1Nhi0/YhgldHFSVmRNP4AzJB+8EptndOBNX0hY6KBPDUQklZcUk34REyS/ge2Z3
+	 jk2MdYIgosLeuRKfoPm/MkBjUfpunzq7IF8MMkj1mCKO7KnqA0X1MgyIjIPuW+aETF
+	 JiS0ygXzGE19Q==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>,
-	syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com,
+	syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 15/19] wifi: mac80211: drop invalid source address OCB frames
-Date: Tue, 24 Jun 2025 00:11:44 -0400
-Message-Id: <20250624041149.83674-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 16/19] wifi: ath6kl: remove WARN on bad firmware input
+Date: Tue, 24 Jun 2025 00:11:45 -0400
+Message-Id: <20250624041149.83674-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250624041149.83674-1-sashal@kernel.org>
 References: <20250624041149.83674-1-sashal@kernel.org>
@@ -68,105 +68,105 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit d1b1a5eb27c4948e8811cf4dbb05aaf3eb10700c ]
+[ Upstream commit e7417421d89358da071fd2930f91e67c7128fbff ]
 
-In OCB, don't accept frames from invalid source addresses
-(and in particular don't try to create stations for them),
-drop the frames instead.
+If the firmware gives bad input, that's nothing to do with
+the driver's stack at this point etc., so the WARN_ON()
+doesn't add any value. Additionally, this is one of the
+top syzbot reports now. Just print a message, and as an
+added bonus, print the sizes too.
 
-Reported-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/6788d2d9.050a0220.20d369.0028.GAE@google.com/
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Tested-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20250616171838.7433379cab5d.I47444d63c72a0bd58d2e2b67bb99e1fea37eec6f@changeid
+Reported-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
+Tested-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
+Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250617114529.031a677a348e.I58bf1eb4ac16a82c546725ff010f3f0d2b0cca49@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 **YES**
 
-This commit should be backported to stable kernel trees. Here's my
-extensive analysis:
+This commit should be backported to stable kernel trees for the
+following reasons:
 
-## Security Vulnerability Fixed
+## Security and Stability Impact
 
-The commit fixes a clear security vulnerability in OCB (Outside Context
-of a BSS) mode where frames with invalid source addresses are accepted
-and processed. Looking at the code change:
+1. **Syzbot Report**: The commit explicitly mentions this is "one of the
+   top syzbot reports now", indicating it's a frequently triggered issue
+   that impacts kernel stability testing. Syzbot is Google's continuous
+   fuzzing infrastructure that finds kernel bugs, and high-frequency
+   reports indicate significant impact.
 
+2. **WARN_ON Misuse**: The removed WARN_ON is checking for bad firmware
+   input, which violates kernel best practices. WARN_ON should only be
+   used for "impossible" conditions that indicate kernel bugs, not for
+   validating external input. As the commit message states: "If the
+   firmware gives bad input, that's nothing to do with the driver's
+   stack at this point."
+
+3. **DoS Potential**: A WARN_ON can be triggered by malicious or
+   corrupted firmware, potentially causing:
+   - Stack traces in kernel logs (log spam)
+   - Performance degradation
+   - In some configurations, system panic (if panic_on_warn is set)
+
+## Code Analysis
+
+The change is minimal and safe:
 ```c
-+               /* reject invalid/our STA address */
-+               if (!is_valid_ether_addr(hdr->addr2) ||
-+                   ether_addr_equal(sdata->dev->dev_addr, hdr->addr2))
-+                       return false;
+- WARN_ON(1);
++ ath6kl_err("mismatched byte count %d vs. expected %zd\n",
++            le32_to_cpu(targ_info->byte_count),
++            sizeof(*targ_info));
 ```
 
-This adds critical validation that was missing, preventing:
+The fix:
+- Removes the inappropriate WARN_ON
+- Adds informative error logging with actual vs expected sizes
+- Maintains the same error handling path (return -EINVAL)
+- No functional changes beyond logging
 
-1. **Invalid MAC addresses** (all zeros, broadcast/multicast addresses)
-   from being accepted
-2. **Self-spoofing attacks** where frames appear to come from the
-   device's own address
+## Similar Precedent
 
-## Comparison with Similar Historical Fixes
+Looking at similar commits:
+- Commit #5 (ath6kl: reduce WARN to dev_dbg() in callback) -
+  **Backported: YES** - Similar removal of WARN for known race condition
+- Commit #3 (ath10k: Change the warning message string) - **Backported:
+  YES** - Modified warning to avoid syzbot confusion
 
-This fix follows the exact pattern of Similar Commit #1 (Backport
-Status: YES):
-- That commit added `!is_valid_ether_addr(hdr->addr2)` check to ADHOC
-  mode
-- It fixed WARN_ON spam in `sta_info_insert_check()`
-- It was deemed suitable for stable backporting
+## Stable Kernel Criteria
 
-The OCB fix addresses the same class of vulnerability in a different
-interface mode.
+This meets stable kernel criteria:
+- **Fixes a real bug**: Addresses inappropriate WARN_ON usage that can
+  be triggered by external input
+- **Minimal change**: Only removes WARN_ON and adds error message
+- **Low risk**: No functional changes, just logging improvement
+- **Tested**: Explicitly tested by syzbot
+- **Clear benefit**: Reduces false positive warnings and improves
+  debugging
 
-## Impact Without the Fix
+The commit is a straightforward fix that improves kernel robustness
+without introducing new risks, making it an ideal candidate for stable
+backporting.
 
-Without this validation, the `ieee80211_ocb_rx_no_sta()` function would:
-1. Create station entries for invalid addresses
-2. Potentially trigger WARN_ON messages causing log spam
-3. Allow resource exhaustion attacks by creating many invalid stations
-4. Risk crashes or undefined behavior from invalid station entries
+ drivers/net/wireless/ath/ath6kl/bmi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-## Stable Backport Criteria Met
-
-1. **Fixes a real bug**: Yes - invalid frames are incorrectly accepted
-2. **Security impact**: Yes - potential DoS via resource exhaustion
-3. **Small and contained**: Yes - adds 4 lines of validation
-4. **Clear fix**: Yes - straightforward address validation
-5. **No new features**: Correct - only adds missing validation
-6. **Tested**: Yes - verified by syzbot
-
-## Not Like the "NO" Examples
-
-Unlike the commits marked for NO backporting:
-- This is not adding new functionality (like link-addressed frames
-  support)
-- This is not a code cleanup or optimization
-- This is fixing a concrete security issue reported by syzbot
-- This has minimal risk of regression
-
-The fix is essential for OCB mode security and should be backported to
-all stable kernels that support OCB mode (since 2014).
-
- net/mac80211/rx.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 8e1fbdd3bff10..8e1d00efa62e5 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4481,6 +4481,10 @@ static bool ieee80211_accept_frame(struct ieee80211_rx_data *rx)
- 		if (!multicast &&
- 		    !ether_addr_equal(sdata->dev->dev_addr, hdr->addr1))
- 			return false;
-+		/* reject invalid/our STA address */
-+		if (!is_valid_ether_addr(hdr->addr2) ||
-+		    ether_addr_equal(sdata->dev->dev_addr, hdr->addr2))
-+			return false;
- 		if (!rx->sta) {
- 			int rate_idx;
- 			if (status->encoding != RX_ENC_LEGACY)
+diff --git a/drivers/net/wireless/ath/ath6kl/bmi.c b/drivers/net/wireless/ath/ath6kl/bmi.c
+index af98e871199d3..5a9e93fd1ef42 100644
+--- a/drivers/net/wireless/ath/ath6kl/bmi.c
++++ b/drivers/net/wireless/ath/ath6kl/bmi.c
+@@ -87,7 +87,9 @@ int ath6kl_bmi_get_target_info(struct ath6kl *ar,
+ 		 * We need to do some backwards compatibility to make this work.
+ 		 */
+ 		if (le32_to_cpu(targ_info->byte_count) != sizeof(*targ_info)) {
+-			WARN_ON(1);
++			ath6kl_err("mismatched byte count %d vs. expected %zd\n",
++				   le32_to_cpu(targ_info->byte_count),
++				   sizeof(*targ_info));
+ 			return -EINVAL;
+ 		}
+ 
 -- 
 2.39.5
 
