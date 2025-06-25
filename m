@@ -1,109 +1,197 @@
-Return-Path: <linux-wireless+bounces-24462-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24463-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A0DAE7933
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 09:57:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04BEEAE7989
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 10:08:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8846A1BC5E59
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 07:57:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F76D3BC8AC
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 08:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4480920B81D;
-	Wed, 25 Jun 2025 07:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773591FBE8C;
+	Wed, 25 Jun 2025 08:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="YN7b5j++"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="crrMuLvL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832B320E023
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Jun 2025 07:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDDE1DE4D2
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Jun 2025 08:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750838183; cv=none; b=ueb7Cy6seWRgZoCUAihXiD8EOMNznFrsvoRQWpFy2bQerAtC4a5qkbLGdKYtdROg0kY8OrxHZ6/gKrZI8naZ7YpJZieXWYRVDRue1wOPZDx0d9h7e0AGbBGLzNtXSyvOd1Jf3TsB21f3srxympDt7qWlMemG22lhYnAD0EMsKRI=
+	t=1750838893; cv=none; b=LFBhBV/sqVDV5aKJCgc488A5DM+Dzz/2IvlL5cQGEqaB3jxs/pFPbyYslgmyv46ZrTnKzrdBQ8rgAFuR7oKeilKWmQuntozybzA8PMnrkZJcWUmBe4QhB59975mnPIYNVgc/8WbHSHTEK5f4qxs6H2BWQl0bel9zGX0AlnMAunE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750838183; c=relaxed/simple;
-	bh=7eMnLCs7oSqJdIpi0CZnGVroUpg+aWXKlN7bQU5zl8I=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qAa+fSoJVQJ2RIZK0PB2TwvETv8YfvKA3+fUFr03u9VPOzsfA3KeGeG/r1bAJalgAURNHWBwUewZqCkXCrGvGHu67np1SKYmNugb7dGYTSKUZjBvGmSD3DOqkCXhiLtIylBUGjb5QiVxrirUNqx4ScKIsAcSWuXxwFzHLIrUdLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=YN7b5j++; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: de746fec519911f0b910cdf5d4d8066a-20250625
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=69VBIZfQNwWsu8uaGX5IB4wz7qaAKWYG3oiO37LImtE=;
-	b=YN7b5j++SDPry9fA3RlPmaxihivVGzEsttAXlk7K5N9gCiHY6piyhha+skRj3Lj76sH7Xv9cCl5bgqNk7qILFBuqEWpccsklQwojey0NvtpxhNAsKMZM7NJn/YW8vPXr//CoZIVfRwYdit+8gl9Usu5xZua69o2yzvVUDWyrPBc=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.2,REQID:d5456f42-10e4-46e3-b239-f57712667da6,IP:0,UR
-	L:0,TC:0,Content:0,EDM:-30,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-30
-X-CID-META: VersionHash:9eb4ff7,CLOUDID:c5008b14-6a0e-4a76-950f-481909c914a4,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:2,IP:nil
-	,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:
-	1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: de746fec519911f0b910cdf5d4d8066a-20250625
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 284019634; Wed, 25 Jun 2025 15:56:15 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Wed, 25 Jun 2025 15:56:01 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Wed, 25 Jun 2025 15:56:12 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt792x: set NO_VIRTUAL_MONITOR flag to improve monitor interface handling
-Date: Wed, 25 Jun 2025 15:56:11 +0800
-Message-ID: <20250625075611.1407687-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1750838893; c=relaxed/simple;
+	bh=BYrU3cANEbdAYXQUqPfo37CbVHiUU+b/KfuI2sGV8Lo=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=r0v5CBS2l1VvhvZlUmqP5jRfuoI1loJO2GrZznzjPUR+zEnDavZ/4AHFxoaLMQ2g25z7qy+pAQkZrAA2PAyHXchS1FZ/Cv0/6QTqqwlGoE886XKXRbD4iVi3zOVVxY0wBnqHUq2jh3LVAmnKl6Hdy84JisNn1uxT/r/KH3SoOww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=crrMuLvL; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750838891; x=1782374891;
+  h=date:from:to:cc:subject:message-id;
+  bh=BYrU3cANEbdAYXQUqPfo37CbVHiUU+b/KfuI2sGV8Lo=;
+  b=crrMuLvLT0Bd1/dNE4OdJnGk7LRmYe5fmPtIkUsF8Dk9L00YRmhsqSAm
+   HpM4Dl8wMpujtEV+sQerawZmh//MrSGMivNaM6XC9teAOm9MajdTAPn6S
+   7DfF2N7KgGrSr76KGRQ63hMyr1M/cAoW5kcL0vElyg6piJAQY7yj77W0T
+   k6pl0klaiamApkFvqR3MxPRs407D7s7I1JCZmMlxx1M8AmGyo68rl/ZNV
+   2spsfbM3ZHEPQjiIGtUTp7p1Xu4APkvc4JLyetcR1/HhEO5UZ/orkThVX
+   jl6jpAGWmPqqjK9ceiQ+9ljTLsC75ISwm1rbNdW9vLxMxYNwjCExToQyj
+   g==;
+X-CSE-ConnectionGUID: 6TzHID+ERHOv4AgV3TJkiA==
+X-CSE-MsgGUID: n6powJn3QgSa+0Ay8oLqJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="40717696"
+X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
+   d="scan'208";a="40717696"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 01:08:11 -0700
+X-CSE-ConnectionGUID: k9xEKg9SSUimAikQfSclDw==
+X-CSE-MsgGUID: pM/6amXnQr6s6TDy+0hVmA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
+   d="scan'208";a="183181550"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 25 Jun 2025 01:08:10 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uULAt-000SsA-0q;
+	Wed, 25 Jun 2025 08:08:07 +0000
+Date: Wed, 25 Jun 2025 16:07:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ d87c3ca0f8f1ca4c25f2ed819e954952f4d8d709
+Message-ID: <202506251603.9Iiw240c-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: d87c3ca0f8f1ca4c25f2ed819e954952f4d8d709  wifi: mac80211: finish link init before RCU publish
 
-Enable IEEE80211_HW_NO_VIRTUAL_MONITOR to ensure the driver is notified of
-all monitor interfaces and their channels.
+elapsed time: 1068m
 
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt792x_core.c | 1 +
- 1 file changed, 1 insertion(+)
+configs tested: 104
+configs skipped: 1
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index b59ab29f8ce0..bdb4fefc6d36 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -696,6 +696,7 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
- 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
- 	ieee80211_hw_set(hw, CONNECTION_MONITOR);
-+	ieee80211_hw_set(hw, NO_VIRTUAL_MONITOR);
- 	if (is_mt7921(&dev->mt76))
- 		ieee80211_hw_set(hw, CHANCTX_STA_CSA);
- 
--- 
-2.34.1
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    clang-19
+arc                              allmodconfig    clang-19
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    clang-19
+arc                   randconfig-001-20250625    gcc-11.5.0
+arc                   randconfig-002-20250625    gcc-11.5.0
+arc                   randconfig-002-20250625    gcc-12.4.0
+arm                              allmodconfig    clang-19
+arm                               allnoconfig    clang-21
+arm                               allnoconfig    gcc-15.1.0
+arm                              allyesconfig    clang-19
+arm                   randconfig-001-20250625    clang-21
+arm                   randconfig-001-20250625    gcc-11.5.0
+arm                   randconfig-002-20250625    gcc-11.5.0
+arm                   randconfig-003-20250625    gcc-11.5.0
+arm                   randconfig-003-20250625    gcc-13.3.0
+arm                   randconfig-004-20250625    gcc-11.5.0
+arm                   randconfig-004-20250625    gcc-15.1.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20250625    gcc-11.5.0
+arm64                 randconfig-002-20250625    clang-20
+arm64                 randconfig-002-20250625    gcc-11.5.0
+arm64                 randconfig-003-20250625    gcc-11.5.0
+arm64                 randconfig-003-20250625    gcc-12.3.0
+arm64                 randconfig-004-20250625    clang-20
+arm64                 randconfig-004-20250625    gcc-11.5.0
+csky                              allnoconfig    gcc-15.1.0
+hexagon                          allmodconfig    clang-19
+hexagon                           allnoconfig    clang-21
+hexagon                           allnoconfig    gcc-15.1.0
+hexagon                          allyesconfig    clang-19
+i386                             allmodconfig    clang-20
+i386                              allnoconfig    clang-20
+i386                             allyesconfig    clang-20
+i386        buildonly-randconfig-001-20250625    clang-20
+i386        buildonly-randconfig-001-20250625    gcc-12
+i386        buildonly-randconfig-002-20250625    gcc-12
+i386        buildonly-randconfig-003-20250625    gcc-12
+i386        buildonly-randconfig-004-20250625    gcc-12
+i386        buildonly-randconfig-005-20250625    clang-20
+i386        buildonly-randconfig-005-20250625    gcc-12
+i386        buildonly-randconfig-006-20250625    clang-20
+i386        buildonly-randconfig-006-20250625    gcc-12
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    gcc-15.1.0
+loongarch                         allnoconfig    gcc-15.1.0
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-14.2.0
+openrisc                          allnoconfig    clang-21
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    clang-21
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    clang-21
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    gcc-15.1.0
+riscv                            allmodconfig    gcc-15.1.0
+riscv                             allnoconfig    clang-21
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    gcc-15.1.0
+s390                             allmodconfig    clang-18
+s390                             allmodconfig    gcc-15.1.0
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-15.1.0
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    clang-19
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250625    gcc-12
+x86_64      buildonly-randconfig-002-20250625    clang-20
+x86_64      buildonly-randconfig-002-20250625    gcc-12
+x86_64      buildonly-randconfig-003-20250625    clang-20
+x86_64      buildonly-randconfig-003-20250625    gcc-12
+x86_64      buildonly-randconfig-004-20250625    clang-20
+x86_64      buildonly-randconfig-004-20250625    gcc-12
+x86_64      buildonly-randconfig-005-20250625    clang-20
+x86_64      buildonly-randconfig-005-20250625    gcc-12
+x86_64      buildonly-randconfig-006-20250625    clang-20
+x86_64      buildonly-randconfig-006-20250625    gcc-12
+x86_64                              defconfig    clang-20
+x86_64                                  kexec    clang-20
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-12
+x86_64                         rhel-9.4-kunit    gcc-12
+x86_64                           rhel-9.4-ltp    gcc-12
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
