@@ -1,132 +1,155 @@
-Return-Path: <linux-wireless+bounces-24502-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24503-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21B2AE8E60
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 21:18:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 397B7AE8EE7
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 21:44:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD9891C20480
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 19:18:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C074C4A4FA1
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 19:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FC42DAFDE;
-	Wed, 25 Jun 2025 19:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC902DCC12;
+	Wed, 25 Jun 2025 19:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m44wtbqB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NYJF6ZrI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f194.google.com (mail-yb1-f194.google.com [209.85.219.194])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E01C2DCBEC;
-	Wed, 25 Jun 2025 19:18:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215502DAFDF;
+	Wed, 25 Jun 2025 19:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750879083; cv=none; b=hcOoumqqkV4o16ifFa2oYjDZFhjv4Lx5QFcRYlCgKf6RhzBV1wXe/xjLH5PvIgUFz0X8swp4zhrikRgm/7nT+7ofxSCdfONGFh3W75K9yaw57EiSFah2/h5YvnQsnv6YVTeliox5wydbW2zBu0yfnNJ9k8Gkl+z7obLVxqF9ACE=
+	t=1750880632; cv=none; b=SneNSIC2hqtPhJ5BzWAL5yZe+SDwOEMlQIRD+f2KslOEH94LAF+CoG1ZGiLfAW/oRl6V9uQfJc/Svdo4o/prr218cEHsgNymlDBnkMOhtzLjtghgSjjCTFSUbD1YGw0Cf9atkTibTp7sKk7wWhACWO0QvgQoJj8bQyFM+f9c2jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750879083; c=relaxed/simple;
-	bh=r4Jd7amZN0Y++n+cxyUCk6FX3dy8XmJ4WfVyH1KUlkA=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=j18ue/pHJwjPwbgwbVBKzUNQSryvhtLCNEEn4kXXk4b98T+STS+xOC/15PwqUy9Ba9O3zdhimC95/fFtA2x+dy8VA7iW7Yv6msE7hq+VwVP8a9DgComEZ1WjHT4I6PYBxlG/iw00qBURCOrKGpqI6j7/ODYydJ0GzCLeRvR6xFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m44wtbqB; arc=none smtp.client-ip=209.85.219.194
+	s=arc-20240116; t=1750880632; c=relaxed/simple;
+	bh=FQ+2YiIDDX9scLGt0YxJPyj9uRJhs7aO0tAyrIhhXmc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H1uZJjyHuWwZKv4hLc8TycW38Hjq5qKTfIpIV+ftRuObo1KQeICI0PcfCK9bC9W6ZDDRbzdn6KlaPSrbDI9L3Ma5rWMzpWgoaz6trGa4Anyn6kaTIQzyDQkMJl7TzMIYGpVPQuLAs12EFgnizkVYrmGPlLk4gyGFe2511xAI37I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NYJF6ZrI; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f194.google.com with SMTP id 3f1490d57ef6-e81a7d90835so142787276.1;
-        Wed, 25 Jun 2025 12:18:01 -0700 (PDT)
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-73c17c770a7so430762b3a.2;
+        Wed, 25 Jun 2025 12:43:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750879081; x=1751483881; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8403cEKgjhhrx1TsMbshffovgr9tyzdkU6aIUKCINXk=;
-        b=m44wtbqBw0uy6VANJ3KUvIvNX7iepvodFICO/5pfl2w0VQfw3M3o1mXQS+/DDpeK/U
-         n1lofqIlDJtS1YVdF1Sacu7jAU2P2aq+bO+muHRa5qIt/qnYaqviwTaWB5J3U2vplUAa
-         hjrAIKza4AKDc0XgOK3zHc+Gy++7rmhnP95nF80rbLZC9gnu6Vy+8fbnn+DTxiXLBsd/
-         u8DW3XVB0VHU+x3lDmNZv99Ds3Mt+6OpGDdLRaJCr9//61eu14LO/qtcGhNTSFleCsgX
-         ySJzklpTwBa2k1ZWjInTNsoQRR1qzgh0N3T1OjSFdXePTKhpu1eULijXTo/3vv3gyhCb
-         kocg==
+        d=gmail.com; s=20230601; t=1750880630; x=1751485430; darn=vger.kernel.org;
+        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cO3PBcARXLOd/sYmktk+SQ6pShkzV36dVIEfKJix4Xw=;
+        b=NYJF6ZrIQuNe8rIDScuqzragsQpbtYNfO1+xnvjdZKOIstK7kOLMF7gLEOgjLdhVHO
+         Oy+nnOkmbIQTRSXq7NTf77f4MSTBVAVwzPCnTYsn1n2dcdMjhipSlgRCCp63flvyEc7v
+         g8MUZ9Am3prJZvKlI5mBlEvR/wwlmuJymeFf0gPql0/T2PMBsIZ9VJqMed30BDC+UxyO
+         MCJT+mU9bDxTlrYZXVTuajbOVtwukta25toSUOHcDTZWURc67GowsLmHUXzAkJ/z30ZF
+         RmZhODwnVoxfmxN67V2HXDBX1r6EuI/eakk7TPOHh+lJs6XIOkhzwYsxqr+TfNVC1ofJ
+         DW5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750879081; x=1751483881;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8403cEKgjhhrx1TsMbshffovgr9tyzdkU6aIUKCINXk=;
-        b=AMwDsz3ONkw5HKlvJkfESOCTQ9fWRoJZLga+YD77CwAT5jDqn5vnOACE/i3toJiY8A
-         Pk3CfgFbVoFeik1WU+xp9hH27VgY6Hp3TtDNKLEQs6mROXOxLTl5nZICMWGWIJskxBqT
-         wZeUDQ2kCKRweojuw56S2R3n/UTP5AYIHEkNXcN/qqN00Rxu+8ErLOgMY8WG7zgnUQJH
-         8vXP1Ce2COYSCi25YT/9HYc4Dcm1i0/nvTXQmPTlfslTWe7cLvwIkxOdHAKjwEcD4plS
-         9wt3/YRGMYiz7XPsVqkGQZJC1uO5npuxIKOT3H6wsI73LlNG4Sim5OZ9mZMaqm323SE1
-         ntCg==
-X-Forwarded-Encrypted: i=1; AJvYcCUTjA0ALMi7Cf55s4CNlS0r9N6Ts5jHEe5qtiTPCLWpnNsfkOOT3+WH55/xYIZsW5snhcsoV5me4po0rOBPH4A=@vger.kernel.org, AJvYcCUq1XR6ilcySY5g9NkT+e71Aa4Vhea9+53V64OeAeerrywdda000Mhk3ixGsiWFlgq620UxkLOKk89B@vger.kernel.org, AJvYcCXdxQa7qbRTeaHBKGEHUxBlomRUlRzecCRD/3we9p3h/tCqBqaLLtXPxP7jjgdWMwG9VmkrFRuG@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgcCbR/i7niaHtyIrc0v8kQJyUiaLyQ4s80KYJf/F3OFQY7wx7
-	bpEyFV2VHKc87cHCDGnTgcYni81J0ZWwoCEiO4mMGK1HT8NIl0WPyJWMitqTUuhiPVTEE8NeAgl
-	zYhJhvzLWQtS1dX9E7NyMj8OG7ryuWxhf5jJvVMU=
-X-Gm-Gg: ASbGncs+PJLp/g4mI0j63NMQN/C3G+2bPjiqlnNzBEgVxLziciA9QxsPLwQ3qFfgitO
-	kwjqOVJKubi2iBsYrPLNse9zQQHQaOFYlAqPo6aUfJU/eh2nZzwgzcYP09ryC2iG/SGtFGmxg1s
-	BZmp+jYfmvT/Qx/smeTDwIUEoKZPPjH/uQMP2ztABEL2il0Q==
-X-Google-Smtp-Source: AGHT+IEBJ1HQs0iJN6i2v3yoEYIATq1lJulVqezGwirJwda+5IVis0IKTmDBeXLkkfhMuPo/Gu6h1RQpTOE45CdVKtA=
-X-Received: by 2002:a05:690c:3804:b0:714:13:357a with SMTP id
- 00721157ae682-71406db2354mr62440497b3.20.1750879080340; Wed, 25 Jun 2025
- 12:18:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750880630; x=1751485430;
+        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cO3PBcARXLOd/sYmktk+SQ6pShkzV36dVIEfKJix4Xw=;
+        b=QlNg2GG+pkIVfGOhEDY1WBR7rzhHSa5rmsU/BXQzjW7+JYV+pLQQKqKm7fQxiAhinN
+         dM700i8EPbKC4HeG7E2HicpS1DwXMe7/42gDA8FZmq/Y9IQKkWmo+utsB4qTjhvsCbkA
+         LNqueD8s6hOEM5nXbH2C1gl3rFW+vSS3HJ3dsQcqijkuDyA2NQsbZAZWJzFN4/mM17SD
+         1n/y7rY0Y3FLWIOcBf18OR++wSGuHtiXPnKBrRNcOENGpns5tZu1dPGt1Xo9n1EwWVv2
+         w9x8ZPLx8p13ht7MkyZ7ouPvEtF1vM57H2yq5bfaXbrt40zyTtINYJE+ilPk+AVSaMd1
+         EptA==
+X-Forwarded-Encrypted: i=1; AJvYcCUBIXdCSpL7RywfqWqgyuGatKA/o6hIUm4p2542jmstBa1k5aLV0xoWqYQzkBHN6huu451zHdiP2BJr+nI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywtg542B95SBeevHMAdGUB9aPASY9GnfNp6Gxm4TCI0GSddJUO5
+	TnkZin8JLhXEmN6iTgiZEyUr6vKK9Tum+Yiex87vjn+Id46SR3uqxe6/Fo/YCQ==
+X-Gm-Gg: ASbGncuEfsd8+VOKMRxu85Ho+QPxhUxNGr5BJZw33NoFOow7PxbqBqVYinHmDmnYDbW
+	SyWdLHjguJ7WNlN1eOeYiynSaBzZNLcSDu3449Gs371xkrBZLy+ObXKTThYxZvzwWfUxhytDFDt
+	inmYIOAHU7G7ZLJW5Cq1l2olgBSShiUnHV42+ZM3qjLlK0Tud72F54beZZLZHOWr/Cim75uL0L8
+	uzRGMqHrumWQbklOtO98pxXE9aRv+Cr1To2x0dPHBa6JwCw4avnSdBF3+V4WnYO0eAYvNVwdXKp
+	CQH8bzn6KOeq+GfeJC1pBF5Z7qS4jZPdoIxBgZcHAEkX68Fx3hrCs2O8ny0ltP4AqhGHe2cyD9n
+	jk49WoPmDX1o=
+X-Google-Smtp-Source: AGHT+IEhUydBkMoqI3UZUfhUfnDyHW1/OUO1X1n4XWiTV71XwTKd4PIn2fvv0TFfc2VJ1kRP3Ilscw==
+X-Received: by 2002:a05:6a00:1883:b0:740:5927:bb8b with SMTP id d2e1a72fcca58-74ad42d4316mr6489404b3a.0.1750880630052;
+        Wed, 25 Jun 2025 12:43:50 -0700 (PDT)
+Received: from tx3000mach.io (static.220.227.itcsa.net. [190.15.220.227])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-749b5e08d1csm5185779b3a.13.2025.06.25.12.43.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jun 2025 12:43:49 -0700 (PDT)
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+To: linux-wireless@vger.kernel.org, Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: rtl8xxxu: toggle P2P for supported devices
+Date: Wed, 25 Jun 2025 16:43:36 -0300
+Message-ID: <13830882.uLZWGnKmhe@tx3000mach.io>
+In-Reply-To: <bde434a6-68b8-4c5f-8ec0-6c41dd1b6558@gmail.com>
+References:
+ <20250625142541.44795-1-yakoyoku@gmail.com>
+ <bde434a6-68b8-4c5f-8ec0-6c41dd1b6558@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-Date: Thu, 26 Jun 2025 00:47:49 +0530
-X-Gm-Features: AX0GCFvRn0BDXlBswPH6d5ky9QP8oDFSJMjA4U3BLjHSMHUHJF7QbU0sAtdUwJ4
-Message-ID: <CAEmM+Qi-Waxk5qcR+nfip-QGXaKk0-Kq7QSq890e9oYOPjW+bA@mail.gmail.com>
-Subject: Instability in ALL stable and LTS distro kernels (IRQ #16 being
- disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
-To: linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="nextPart3037379.e9J7NaK4W3";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-Hello,
+--nextPart3037379.e9J7NaK4W3
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Subject: Re: [PATCH] wifi: rtl8xxxu: toggle P2P for supported devices
+Date: Wed, 25 Jun 2025 16:43:36 -0300
+Message-ID: <13830882.uLZWGnKmhe@tx3000mach.io>
+In-Reply-To: <bde434a6-68b8-4c5f-8ec0-6c41dd1b6558@gmail.com>
+MIME-Version: 1.0
 
-The following is the original thread, where a bug was reported to the
-linux-wireless and ath10k mailing lists. The specific bug has been
-detailed clearly here.
+On Wednesday 25 June 2025 13:01:04 Argentina Standard Time Bitterblue Smith 
+wrote:
+> On 25/06/2025 17:25, Martin Rodriguez Reboredo wrote:
+> [...]
+>> As of now only rtl8192ex devices have their P2P_CLIENT and P2P_GO wiphy
+>> interface modes ensured because those are the only ones I can test on
+>> my rtl8192eu card. The rest of chips have them set from what I've seen
+>> in a cursory Internet search, they might or might not work.
+>> 
+>> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> 
+> So... does it work with your chip? How do we test?
 
-https://lore.kernel.org/linux-wireless/690B1DB2-C9DC-4FAD-8063-4CED659B1701@gmail.com/T/#t
+You can test this feature with GNOME Network Displays, that's the only 
+userspace application I can think of. KDE doesn't offer anything yet and 
+there's no other software out there that uses WiFi P2P, not even for simple 
+file transfers. Maybe utils could be written like what was done for Bluez and 
+be part of a known package like NetworkManager or a thing by themselves.
 
-There is also a Bugzilla report by me, which was opened later:
-https://bugzilla.kernel.org/show_bug.cgi?id=220264
+With respect to my case I say it's listed by wpa_cli and it gets detected by 
+Network Displays, but I cannot do anything further than that. Because I don't 
+know how to use wpa's utility properly and while I try to share my screen or 
+see another one, I get no dice there. Maybe this is due to an incompatibility 
+with my Samsung mobile or that for proper P2P support more functionalities 
+need to be added to rtl8xxxu, I can say that as of now.
+--nextPart3037379.e9J7NaK4W3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-As stated, it is highly encouraged to check out all the logs,
-especially the line of IRQ #16 in /proc/interrupts.
+-----BEGIN PGP SIGNATURE-----
 
-Here is where all the logs are:
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180
-(these logs are taken from an Arch liveboot)
+iQIzBAABCgAdFiEEoKWxm2R3rrCyIqCZhYg+G2pbUccFAmhcUWgACgkQhYg+G2pb
+UccwNBAAmsV9jX+ADJ2yI04UQQBoH4Zxwed3fXp2G8ZFM3wuqsGiOmjJRxEHjJWE
+nAzKLVgYCVjLJwX/uu1uOcmoV71wavSUq8T2NAskdYz3zbLTRFHT6PBgzYcBS/d7
+2P5TIlydSgbYMtxsrr6SK8pVpA4SSIU9xiHI0NAnWEE+AtPuu1zxQRSug6QUv1yz
+IDwXB4JBlgcT5TFuMAaDDZ521EGuEguh1R/P7aiUYZ8QRofFRVND3bt/1HPpQwxr
+LDLqMHx6aU1N+o+d1PMKYIDYgy9FG7HepPZSO5hAJtg82mvmy60EVbGkzBtVCBEQ
+UAVFa6G+Jy/qxaNPT8OR4fn6xFiwFQ521GoeVOFoqXFmqR3QHNFyYQpMOvB/vWcC
+2NDSa5QGfrfPS4Uwx7ePQq+T70JmIkGwfGE7Bq0hh4d70WWz64d4ZGR1kEXUL9gw
+8ACzKGKBzwSBmXyNTm9EXU15ibRzL7XgFswhXvOW35DzeGmKU+StWcZ2kwanGm28
+3iwsXDJUvGaztTiOL5BEGw+kuZ3mc4P2RgHEXUYeTVT2nQ05bGSowgJDpbOidgJI
+gPVSm2KTmZuHJvnKyx8XuNDbkyT0cYs67sN9is/BUfVkIxGe5Hk3AxnNTebeymZG
+klMyA+uKhNeVarjBf2QozZl2nNTZAXKW4wNFF0iwFNpSKx+0ZL4=
+=MBvp
+-----END PGP SIGNATURE-----
 
-On my daily driver, I found these on my IRQ #16:
+--nextPart3037379.e9J7NaK4W3--
 
-  16:     173210          0          0          0 IR-IO-APIC
-16-fasteoi   i2c_designware.0, idma64.0, i801_smbus
 
-The fixes stated on the Reddit post for this Wi-Fi card didn't quite
-work. (But git-cloning the firmware files did give me some more time
-to have stable internet)
 
-This time, I had to go for the GRUB kernel parameters.
-
-Right now, I'm using "irqpoll" to curb the errors caused.
-"intel_iommu=off" did not work, and the Wi-Fi was constantly crashing
-even then. Did not try out "pci=noaer" this time.
-
-If it's of any concern, there is a very weird error in Chromium-based
-browsers which has only happened after I started using irqpoll. When I
-Google something, the background of the individual result boxes shows
-as pure black, while the surrounding space is the usual
-greyish-blackish, like we see in Dark Mode. Here is a picture of the
-exact thing I'm experiencing: https://files.catbox.moe/mjew6g.png
-
-If you notice anything in my logs/bug reports, please let me know.
-(Because it seems like Wi-Fi errors are just a red herring, there are
-some ACPI or PCIe-related errors in the computers of this model - just
-a naive speculation, though.)
-
-Thanking you,
-Bandhan Pramanik
 
