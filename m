@@ -1,63 +1,53 @@
-Return-Path: <linux-wireless+bounces-24475-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24476-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78B5AE7EDB
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 12:16:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 859D4AE7F38
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 12:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4DA416AA8E
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 10:15:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 678D27A80C5
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 10:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8BE29AB0F;
-	Wed, 25 Jun 2025 10:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E962882CA;
+	Wed, 25 Jun 2025 10:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gcPbRqMe"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="uoFUjwJ8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917E12080C1;
-	Wed, 25 Jun 2025 10:15:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5A52857F1;
+	Wed, 25 Jun 2025 10:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750846551; cv=none; b=ZUBZ+sfcxIFXQa1oGgWN1idbyAw9fKn+qrireKNd+I8VovFnyVzVOqhhNkh8u5eDmG9uKIDuCoKAXOpCk2pvDAU1HICb/Gmsc44X5j3nq6ju4eELWL35zr0M68NhRqwlYVu19P24R9W0kwH8O3Qx7CGObY9A/c4Lz2DEmL1VKlQ=
+	t=1750847140; cv=none; b=a58qvlBoKJPh2TlQB7/7G0hIk/UUwTQH5AS7qIYkHtNjMp8XHfxzMOhLQ0xgP2QJjBUXrvLB9W8BGRipVAgd2MhB6a/gdy/ePwoR+7BbVEROhDCV5uTGmxWcXUbKVCpI2KUW6EKrLwxa4/ka2t8AgTSqSGf0cIVPqQh+4VWdCOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750846551; c=relaxed/simple;
-	bh=ejRSnZMZOb8MetpeM54/FhC/hbo4wCQaq/hnZzlt120=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Hsc5lPg9xkWyGv0v29773tNbmigz0IdWrdFY4uWCS87e2ZrtMX/L5S7Ud5lUUEyuLaQZN3VmeuRYIrAVOMwrm5+DEhf+xQIVBKRSPKBbBx0g68Hwkz6MDWeJHNoMMqNAhR23s9tUNil1uxphQm51vm3vt4ids3hdmjJReieMe/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gcPbRqMe; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55P5Uage014612;
-	Wed, 25 Jun 2025 10:15:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	63/bL2IIGIhEgVAkuZEz0w9mUZlosciFa/3XDDkBNPc=; b=gcPbRqMeHb0eFjY9
-	dXeTSIscHXthu4m2AZQJ1yPz8rwjjqcAm3eXyYxKCYGrxuiSPnhDA6ieevU2qrnW
-	ftclR3te/Ugcuwqn39Ejd6sIz5uVVGIV/3Cg2k/eawJziZAb7TwX301p0evHPS5v
-	zNd8V41ey3f9zDSgw1oYrw+oE/ga6NKpTRVVok2VKu1eSlFRjOWW6cMao/roFRxz
-	su3cdEXexfugcuvLt9apkXag3NuyfuA0LLiOhrepRIK4yOajUWO82wU5ViL57ygo
-	qJUv4/wRUYknfBZtyhoaL8kWJ0NtTPk2FhdeIs6MHY//bbo/WKe/3WANCqLtZYXa
-	WzOM5g==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47f2rpyqm6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 10:15:39 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55PAFcNw020623
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 10:15:38 GMT
-Received: from [10.133.33.71] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 25 Jun
- 2025 03:15:36 -0700
-Message-ID: <2d688040-e547-4e18-905e-ea31ea9d627b@quicinc.com>
-Date: Wed, 25 Jun 2025 18:15:34 +0800
+	s=arc-20240116; t=1750847140; c=relaxed/simple;
+	bh=OT05aiHEgxlpJtauo1lOQHDjKjcVf+YutBo6Aak4sUY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sRNoTH60xk8kO3UpDjtLya/X2hz0M9S+ebm3cpJqv9JF2lLO5JPaNSB99+BbsEMn52FRdNuarQ2qBjyP3tlFnafxJoaVWI8iH1GHRAF2fmtrtTOzHK7NxHCdBEvpqTmli51sh3IRz2TcuawN8E/pFr9HPaO2uXne8Xr6Nv1yPd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=uoFUjwJ8; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=vJ3mwn0o0bNWIsKKV9EgOQNug5ExZy+GsquJ5hq125c=; b=uoFUjwJ8Jh3yc0ecE27bc1VUee
+	1EonnoamVyY+y7eJXmxmzochQ/PjP8cTbux05fhoXcdUGc3FgWxQTynwWLJTMVZR4ZbilwvmXcwrS
+	N/tibEuTq4/LbUL9TYdQ01QGR1IHfEPmi2wKF6sSsnUuHP8GX3Zmf1CVOI4eEtdYP8UI=;
+Received: from p54ae9243.dip0.t-ipconnect.de ([84.174.146.67] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1uUNCi-003Twy-0A;
+	Wed, 25 Jun 2025 12:18:08 +0200
+Message-ID: <26e6c7f7-a35f-4ebb-a55b-ade2ac7c20bb@nbd.name>
+Date: Wed, 25 Jun 2025 12:18:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,85 +55,75 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next 0/2] wifi: ath12k: install pairwise key first
-To: Johan Hovold <johan@kernel.org>
-CC: Jeff Johnson <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        Gregoire
-	<gregoire.s93@live.fr>, Sebastian Reichel <sre@kernel.org>
-References: <20250523-ath12k-unicast-key-first-v1-0-f53c3880e6d8@quicinc.com>
- <aFvGnJwMTqDbYsHF@hovoldconsulting.com>
+Subject: Re: [PATCH v10 RESEND] wifi: mt76: mt7915: add wds support when wed
+ is enabled
+To: Shengyu Qu <wiagn233@outlook.com>, pkshih@realtek.com,
+ lorenzo@kernel.org, ryder.lee@mediatek.com, shayne.chen@mediatek.com,
+ sean.wang@mediatek.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, johannes.berg@intel.com,
+ miriam.rachel.korenblit@intel.com, christophe.jaillet@wanadoo.fr,
+ greearb@candelatech.com, howard-yh.hsu@mediatek.com,
+ StanleyYP.Wang@mediatek.com, deren.wu@mediatek.com,
+ chui-hao.chiu@mediatek.com, quic_adisi@quicinc.com, gustavoars@kernel.org,
+ razvan.grigore@vampirebyte.ro, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+Cc: Sujuan Chen <sujuan.chen@mediatek.com>, Bo Jiao <bo.jiao@mediatek.com>
+References: <OSZPR01MB84342A0E21AAD111ED7AF6B198B82@OSZPR01MB8434.jpnprd01.prod.outlook.com>
+ <TY4PR01MB1443294C4D36DF73852B4E79B9878A@TY4PR01MB14432.jpnprd01.prod.outlook.com>
+From: Felix Fietkau <nbd@nbd.name>
 Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <aFvGnJwMTqDbYsHF@hovoldconsulting.com>
-Content-Type: text/plain; charset="UTF-8"
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <TY4PR01MB1443294C4D36DF73852B4E79B9878A@TY4PR01MB14432.jpnprd01.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=NdDm13D4 c=1 sm=1 tr=0 ts=685bcc4b cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8
- a=UqCG9HQmAAAA:8 a=COk6AnOGAAAA:8 a=DXNEfgFaXloPVKmhlksA:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDA3NyBTYWx0ZWRfX/S9JpvsSuZkw
- /6lT3pInHPGkUYiPRogRT0qYb5M4y2vtnyGSor3NxU6Eoe3IrM9TdsCFK7aUgqJhwSKOvgFpKNw
- A5YzNSE/tWbHwdYg3RGEG26Gv2QyWae5kaA1fJIjwXvDhq8o2LRmtwlGGFlqUfVzKRtK4bg6NDE
- nMlFXm6R1eZNMCkxVPf9XPHxfL1/vcxekRRhk3k6ycOeVVcpead9f7zOpAl1PQXFHHU+73iU7/E
- A5MCUaLVENKMm4CAQLTCcJxEaV5sFhHipHvavhwfIEVFFioGC0y1at9r0tgANIHm9RWXmmi7h3H
- 2i8W0Ns4q9fYS/RJ20XrV9sbBBZQ1ktJB5Ii8lWAm6HOjqh+0Kz1VUjHuznCMy5oGCzVzQHan7E
- Ie338x+ajIyDcGM8e71ciZglhJ2+ftBaQxyZtqFZYUrvgv+REyv5yDV+6ZbQef9MKr6ydPW+
-X-Proofpoint-ORIG-GUID: U5h60NmTV_qS2FdWiRKR7rNBv3AlkNaW
-X-Proofpoint-GUID: U5h60NmTV_qS2FdWiRKR7rNBv3AlkNaW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-25_02,2025-06-23_07,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
- phishscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999 adultscore=0
- clxscore=1011 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506250077
 
-
-
-On 6/25/2025 5:51 PM, Johan Hovold wrote:
-> [ +CC: Gregoire ]
+On 24.06.25 16:11, Shengyu Qu wrote:
+> Hi Felix,
 > 
-> On Fri, May 23, 2025 at 11:49:00AM +0800, Baochen Qiang wrote:
->> We got report that WCN7850 is not working with IWD [1][2]. Debug
->> shows the reason is that IWD installs group key before pairwise
->> key, which goes against WCN7850's firmware.
->>
->> Reorder key install to workaround this.
->>
->> [1] https://bugzilla.kernel.org/show_bug.cgi?id=218733
->> [2] https://lore.kernel.org/all/AS8P190MB12051DDBD84CD88E71C40AD7873F2@AS8P190MB1205.EURP190.PROD.OUTLOOK.COM
->>
->> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
->> ---
->> ---
->> Baochen Qiang (2):
->>       wifi: ath12k: avoid bit operation on key flags
->>       wifi: ath12k: install pairwise key first
-> 
-> Thanks for fixing this, Baochen.
-> 
-> I noticed the patches weren't clearly marked as fixes. Do you think we
-> should ask the stable team to backport these once they are in mainline
-> (e.g. after 6.17-rc1 is out)? Or do you think they are too intrusive and
-> risky to backport or similar?
+> Please, tell me if this patch needs any polishing. I really don't know
+> why this patch still not get merged after such a long time(and 2x
+> resend), especially it already got a Reviewed-by and is a bugfix.
 
-Yeah, I think they should be backported.
+Hi Shengyu,
 
-> 
-> [ Also please try to remember to CC any (public) reporters. I only found
->   out today that this had been addressed in linux-next. ]
+sorry it took such a long time for me to take a look at this patch.
+I don't see how it can even work properly in its current form, because 
+of at least one bug:
 
-Thanks, will keep in mind.
+When switching from non-wds to wds mode, the code calls 
+mt7915_mac_sta_add in order to create the new sta. However, after 
+changes that I made a while back, this function does not actually upload 
+the station to the MCU anymore, since it is called on the NOTEXIST->NONE 
+transition before assoc. Without corresponding ASSOC/AUTHORIZE events 
+(handled by mt7915_mac_sta_event), the firmware doesn't get any data for 
+the new wcid.
 
-> 
-> Johan
+That said, I finally got around to starting to rework your patch myself. 
+I will let you know when I have something ready for testing, hopefully 
+later today.
 
+- Felix
 
