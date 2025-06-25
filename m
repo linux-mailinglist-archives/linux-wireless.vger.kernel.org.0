@@ -1,86 +1,81 @@
-Return-Path: <linux-wireless+bounces-24487-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24488-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFC2AE87D9
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 17:22:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFDFBAE87F2
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 17:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A43136802A6
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 15:22:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29F4D175808
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Jun 2025 15:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCE02652AF;
-	Wed, 25 Jun 2025 15:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A050528D8FB;
+	Wed, 25 Jun 2025 15:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NWtTrG1k"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KRDpV8x+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B42126B2AE
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Jun 2025 15:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B3910942
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Jun 2025 15:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750864931; cv=none; b=YEBON/UGAE4/eId6+yC5BTj9HgTwThWxLr42tBRuSDZbZKzXYUoUDEsArJCAfKcVv1CO8/JznSz+7r1i7SitPYYXUcM/i0pNwOTbytzgN/mwzGAPfICko9tcwSspBaITECFDIvmsJ48pTwJfPDa/nyEL1N4+zdPYihqmpC7Ct00=
+	t=1750864961; cv=none; b=LtC/i6QIU7UuqmJUf+U4dxh9QQ+Xb3LAaV3ZpBRAPGk8L+SxM5l1eGYfT6+bh0YVzazapQ+SGob/97xpttu1wY/IqdkGf7ZCrVSJZFFZu10Ea7EGuquKFAyWLkx8ukipX1136T2xETMRZY0zu9+bC018DtFr+oyjmDY9Daokdqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750864931; c=relaxed/simple;
-	bh=T/WgMs1t2r6GpZznn+R0tQC4GQB69BnKFtR2iVgkMCQ=;
-	h=Message-ID:Date:From:To:Cc:Subject:MIME-Version:Content-Type:
-	 Content-Disposition; b=IiZNMjJYWtZ3L2ZxOmVAPRiALMsVx+FJDLu9dGKaWVXfnRTGj81dJn3XyN2hqlOXJDtFKpIBuLD7/q0Ycy2B60uRfmjSACnJ8NyPZYydL/54nBBJ30Jl3O41yC9ennYzqcQffLuvRR/oRPKS9gTF1sy9nvw848y2PUXiYjT0yg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NWtTrG1k; arc=none smtp.client-ip=209.85.167.175
+	s=arc-20240116; t=1750864961; c=relaxed/simple;
+	bh=ahDkylJlWV6yIJvOk87q3Hhzt7yMMnBLATOf3igMxbc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=N2vTe6j9htkMzz1IE02hXdf7v8clGbWWQFlUDAQQhM4oNKxfTbZ+QC7k8SsoNeZdPQFPJo9uvWiY6KN90dKq3TZYAFFLNVH8ixaaAkDiw68Mejh/Rw/4aFZRzhFI0FPnahx5YFZG/KLfd6wfsaRnqE8p6Tl7uUX09kKsGOLZCKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KRDpV8x+; arc=none smtp.client-ip=209.85.161.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-40af40aef06so15908b6e.3
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Jun 2025 08:22:09 -0700 (PDT)
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-60be827f2b7so645572eaf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Jun 2025 08:22:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750864929; x=1751469729; darn=vger.kernel.org;
-        h=content-disposition:mime-version:subject:cc:to:from:date:message-id
+        d=linaro.org; s=google; t=1750864958; x=1751469758; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=v7oc7DM7sUp9Q2g/4DgfS/ixOMuqC8G8HAAnnDTr+l8=;
-        b=NWtTrG1kG1OIjAVGUGyjezZPw/SzftN/pTuyohNdThOkXwWjoqtlxfZeZhaG4iEGYo
-         Ff/VjDH1pue4OfewT3cg4PMhwGfJJ4WBo6oKyYrX9D7gxbaUXaBDbVufUuEpXFoKVZxM
-         +qlfKUY7ymPNI6ekmnfZkV84ZLd/ZV5NgCIAnXg1cU7q89XzxuH5ptCYjrpuIWyj/NNb
-         h2gSX50tAkxlFRx4jnhLglb8Es+/xQBerR9448rqpfrLrzJoxKM0kXwNn1KNwG0VlGgv
-         MwKwkKyrND4DolM3yvxuHJWod4MzOlQwQf8ntSm3lralYY7wts18FnQs0W3oPi9kndY+
-         XE3g==
+        bh=HEFHtV5vxf5zb+tIs/qh5kRcSwNQ0cdHi0Ku63sa+ss=;
+        b=KRDpV8x+jH/97BoNoAaFxHcNlJ7d4p6XIbgjvZkNOd2fLGFfOYow5X1fP0mqZ0wQOf
+         qdIemCjoQYe68HXSByLO+O6UKoEYdZQKqSH9yjazqb9WL2OUTWjOnD1DNJ822QO6iUpW
+         YkhvoCaH6pPEjLjhU9ejrh5GTEcD/PgEqBzaMh7STwJ+VrPNoIPAhPCJTBCUdYezs5sb
+         850yIJ3u7QmJltAifDuIBZsDg+/4G7QuRKoQgMDex9oDNK/YU8A4AfEQrZLvqzG0ciCX
+         3g1T6XHyL9YTtdkifxBuKtOB4HxiKwVJTaQuYK1uJhAkGh6vziyhwrUhVnFLzNZbDBOZ
+         v/Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750864929; x=1751469729;
-        h=content-disposition:mime-version:subject:cc:to:from:date:message-id
+        d=1e100.net; s=20230601; t=1750864958; x=1751469758;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v7oc7DM7sUp9Q2g/4DgfS/ixOMuqC8G8HAAnnDTr+l8=;
-        b=Bhjwpq8nLjfZWNqdIqH5n39Kv+PvyGHEyLUBZYEYLlt+9RV6lulCrQbZzJOkfDxXjC
-         XR6/38w74pzoKfYUxpUvENVkg6SWz+ZiPOcQW7aWcPrdxXZI5zpfFSSsZ1TgmS1XdMUt
-         Wi/1M9y6469B6d66EwqtBnA2EUiAqGZEBLDCpHCawWUqHmKJFyw2pqCd/tYk29ZgE5NG
-         FrdPy1hYwKUlMPFHunOMLGuxDaflSgic/7uimLqaLZhIwCsc9ckLph909oo7KtnyxZbr
-         I4JaagkpPJGQJhjfJg+O4r8Mmtm9FwJCTYUvRP6bBD7rk5GW90E0medV03OGRASqJ3g+
-         uV8w==
-X-Forwarded-Encrypted: i=1; AJvYcCXY/q5pKsWJTdNF8YpHpUWWYgPGM/58KCtXqvlRwEIuRCEdHx1HfCQUfx43OJ515pTltfcwx+gUKu3vf1Q3Ag==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7R0yxgtftjmMMwhTdy3ubpdsBjIHo++LAXmEHvVSxxeigukKS
-	3PjTgK6hQJpv+eWTb9q/cOgOpMxG5fbknFBPDYuUPW102nJsShbkWXC9M36wpCcG80s=
-X-Gm-Gg: ASbGncvtSdpau6izg1Dx7NnnqBYOZfavZ64tN9VJPWurTKd7jSq7ABbn3gp9fRETOf9
-	iveigZ83WQ53aRosWcYND9st+ICi4VLwy2RFryZINjOscgdR7V0pshPIoxqwm7e5Yit1A7iegZ0
-	vASQ29lJc8rgrplRoayB6OqnOeFnnAIcv9CEty1g+6rA82EFt6zdjrXe1iDFB8mqg8L+t6zLpbW
-	qdqzgyLP7Nj2F10kJrK4K1/3Sq1ABsEVXst6cxhn6W7InrwcmkkPPBr3Pew0OwrosofgKmBUuTp
-	qMMq+RAkggk6ObJyPZzlSk/k1wRCMyCzQ/26ogO0wXT4uXdMUezSA/ZQhHmFE3HDR2OUTg==
-X-Google-Smtp-Source: AGHT+IGcFvEYPWqui0Yt0xXJPtapA6f/IqOEU7Zk6imoU5KH28ETem8+ya9bGVLKj6PAPIC1zVqo4A==
-X-Received: by 2002:a05:6808:1789:b0:407:77e9:a104 with SMTP id 5614622812f47-40b05762eb8mr3132816b6e.17.1750864928919;
-        Wed, 25 Jun 2025 08:22:08 -0700 (PDT)
+        bh=HEFHtV5vxf5zb+tIs/qh5kRcSwNQ0cdHi0Ku63sa+ss=;
+        b=Do51OLwfZ5okYTF1jbnpxOrK77H+KGN+GKsnmTVcj9YxpYqZa9XEfWK69ncBKI/YyA
+         1k0PJXiO1VHhiEJhMgFEKZZ970uRTHoQcLBWDaDnazTNGH7xTS26zjKH9J9eczomoccf
+         g3WLztQMmXYCbx27YG0yUmtaCsM5u4TaURB9NNhRLPMKaq5u8aVlK5DHDch7PY34sKmf
+         MNEF/wNRmU04xxykiooA++4TVu0HsQpNAe0RzKupPwLAATlhja/V+x/dQSyNYiWKtywQ
+         D6EFL2mxTAGrW0HOvFGLBtMPDpUNsBzk8gL3O/wpdpmNuVa8bOI/HDJ3EcPzygAsuCGa
+         vrbQ==
+X-Gm-Message-State: AOJu0YxwxeEdis80OpFqJbUl5MC3MfYd8KmGS7KIcdouoS9tfICMNxfl
+	SOZvS16nqaHqjeCrruj4gWlPH2t9LYcIesUS565YqXktgLvAqa00IRfyi8uNwuqWeGCP52lAfib
+	V7vRs
+X-Gm-Gg: ASbGncvCcD0WXlIwiqJwbv0EcL/u7SWvgTZZAXvRAYwDp69cVr7y0gjDPqKruYPasMu
+	oLRaPHJh/GBUKVAx+WHjTnW2s3i4vURpwO1oexWwmJLOs467BgweRpg/nVcssK6mad/3zNMh2YV
+	jX3PjD58eYLh5jDWjL2fzd7NM5X2xPWAUQaRaoGSViMqeWH9lkrdYi1B6gPo7D/gChAaHpLjgnK
+	g1forizutaK62IOwqzAgpWDQP/tbJQE4eznwYIhCCuPInOtCLFSmLx4sSiaPFkJK/LDGYr2CIta
+	bFI4+EQSzPOgYuovWtjuLYvOCouHzraD6WNJIMUtWT9Uijx1uga73WRc0i6W86vjmVXnlQ==
+X-Google-Smtp-Source: AGHT+IFHxRRAQoCy4i1T3IHOUzPocziGtUS8Dk+opafUpg2P980j4psy7fAAHvkrBAt4ZGQ5QnJO5A==
+X-Received: by 2002:a05:6871:a711:b0:2da:b91c:919b with SMTP id 586e51a60fabf-2efcea6e865mr7674fac.0.1750864957872;
+        Wed, 25 Jun 2025 08:22:37 -0700 (PDT)
 Received: from localhost ([2603:8080:b800:f700:1fca:a60b:12ab:43a3])
-        by smtp.gmail.com with UTF8SMTPSA id 006d021491bc7-6115b6d233bsm1689623eaf.16.2025.06.25.08.22.08
+        by smtp.gmail.com with UTF8SMTPSA id 006d021491bc7-6115b6cec03sm1628521eaf.13.2025.06.25.08.22.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 08:22:08 -0700 (PDT)
-Message-ID: <685c1420.050a0220.ae80e.9bfa@mx.google.com>
-X-Google-Original-Message-ID: <@sabinyo.mountain>
-Date: Wed, 25 Jun 2025 10:22:07 -0500
+        Wed, 25 Jun 2025 08:22:37 -0700 (PDT)
+Date: Wed, 25 Jun 2025 10:22:36 -0500
 From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] wifi: iwlwifi: pcie: unlock on error in
- iwl_trans_pcie_gen2_start_fw()
+To: miriam.rachel.korenblit@intel.com
+Cc: linux-wireless@vger.kernel.org
+Subject: [bug report] wifi: iwlwifi: add iwlmld sub-driver
+Message-ID: <5e346776-6854-46fc-aa41-a1ac3b395d70@sabinyo.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,35 +84,73 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
 
-We need to call mutex_unlock(&trans_pcie->mutex) before returning on this
-error path.
+Hello Miri Korenblit,
 
-Fixes: aeee73e27f2d ("wifi: iwlwifi: pcie: move generation specific files to a folder")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+The patch d1e879ec600f: "wifi: iwlwifi: add iwlmld sub-driver" from
+Feb 16, 2025, leads to the following static checker warning:
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
-index 0df8522ca410..8ff23f3931c6 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
-@@ -546,8 +546,10 @@ int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
- 	}
- 
- 	if (WARN_ON(trans->do_top_reset &&
--		    trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_SC))
--		return -EINVAL;
-+		    trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_SC)) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
- 
- 	/* we need to wait later - set state */
- 	if (trans->do_top_reset)
--- 
-2.47.2
+	drivers/net/wireless/intel/iwlwifi/mld/d3.c:1232 iwl_mld_wait_d3_notif()
+	error: uninitialized symbol 'd3_status'.
 
+drivers/net/wireless/intel/iwlwifi/mld/d3.c
+    1200 static int iwl_mld_wait_d3_notif(struct iwl_mld *mld,
+    1201 				 struct iwl_mld_resume_data *resume_data,
+    1202 				 bool with_wowlan)
+    1203 {
+    1204 	static const u16 wowlan_resume_notif[] = {
+    1205 		WIDE_ID(PROT_OFFLOAD_GROUP, WOWLAN_INFO_NOTIFICATION),
+    1206 		WIDE_ID(PROT_OFFLOAD_GROUP, WOWLAN_WAKE_PKT_NOTIFICATION),
+    1207 		WIDE_ID(SCAN_GROUP, OFFLOAD_MATCH_INFO_NOTIF),
+    1208 		WIDE_ID(PROT_OFFLOAD_GROUP, D3_END_NOTIFICATION)
+    1209 	};
+    1210 	static const u16 d3_resume_notif[] = {
+    1211 		WIDE_ID(PROT_OFFLOAD_GROUP, D3_END_NOTIFICATION)
+    1212 	};
+    1213 	struct iwl_notification_wait wait_d3_notif;
+    1214 	enum iwl_d3_status d3_status;
+    1215 	int ret;
+    1216 
+    1217 	if (with_wowlan)
+    1218 		iwl_init_notification_wait(&mld->notif_wait, &wait_d3_notif,
+    1219 					   wowlan_resume_notif,
+    1220 					   ARRAY_SIZE(wowlan_resume_notif),
+    1221 					   iwl_mld_handle_d3_notif,
+    1222 					   resume_data);
+    1223 	else
+    1224 		iwl_init_notification_wait(&mld->notif_wait, &wait_d3_notif,
+    1225 					   d3_resume_notif,
+    1226 					   ARRAY_SIZE(d3_resume_notif),
+    1227 					   iwl_mld_handle_d3_notif,
+    1228 					   resume_data);
+    1229 
+    1230 	ret = iwl_trans_d3_resume(mld->trans, &d3_status, false, false);
+    1231 	if (ret || d3_status != IWL_D3_STATUS_ALIVE) {
+--> 1232 		if (d3_status != IWL_D3_STATUS_ALIVE) {
+
+This should be an if (!ret) test.  On this path d3_status could be
+uninitialized.
+
+    1233 			IWL_INFO(mld, "Device was reset during suspend\n");
+    1234 			ret = -ENOENT;
+    1235 		} else {
+    1236 			IWL_ERR(mld, "Transport resume failed\n");
+    1237 		}
+    1238 		iwl_remove_notification(&mld->notif_wait, &wait_d3_notif);
+    1239 		return ret;
+    1240 	}
+    1241 
+    1242 	ret = iwl_wait_notification(&mld->notif_wait, &wait_d3_notif,
+    1243 				    IWL_MLD_D3_NOTIF_TIMEOUT);
+    1244 	if (ret)
+    1245 		IWL_ERR(mld, "Couldn't get the d3 notif %d\n", ret);
+    1246 
+    1247 	if (resume_data->notif_handling_err)
+    1248 		ret = -EIO;
+    1249 
+    1250 	return ret;
+    1251 }
+
+regards,
+dan carpenter
 
