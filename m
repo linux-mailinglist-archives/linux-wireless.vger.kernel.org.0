@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-24550-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24549-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E874AE9FE9
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 16:08:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 361F6AE9FE7
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 16:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD3AD4A4AD8
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 14:08:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4238517CFB3
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 14:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931D52E88B0;
-	Thu, 26 Jun 2025 14:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12E72E7F3A;
+	Thu, 26 Jun 2025 14:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="YcIBgnUL"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="Es5++TV1"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990632E7F10;
-	Thu, 26 Jun 2025 14:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD8A249F9;
+	Thu, 26 Jun 2025 14:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750946906; cv=none; b=pjkoxEmF1you8RmXoxhy9Js2LD5WHXp1rp1XT/8JnjQ6R+y6ojrKkgtK9kCjwRcHGssIEaIhkuqU9IkEnJIlSgWmYSatYjFLntekgkHu5ZfJixKWQcQDX4qQhZGVvIhIL8SLMmbsVcFhUnGJj/xp/Kvb5tF7MbChPsWLlqezIxU=
+	t=1750946905; cv=none; b=N670IJtvHYFT83NIzKIUuqL1n9aIJt3xXmofBIusdto4aSBCNwfyyk3HMsfn7cY6vgSWa3xt2oKktPPIjkQ5XhZG1yVTMYelDyfaGWyrW9pSE0CchKjpxSQ5SnbGwE3E5FaC5ia+VIoA+v54X63TJq1PPHuVknOZCTf8eCEHyi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750946906; c=relaxed/simple;
-	bh=Ye9E6qmXRgS8ZYKjBGLs+ZMjHxUXnaSg6rPROXafcA4=;
+	s=arc-20240116; t=1750946905; c=relaxed/simple;
+	bh=tUBl3/+5OUqMf8A25bSfwc6qZLx3mmbFz53TrNqSXI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffzzY6KPLWBuoQgYk2MUu+4hRZbuzvdp7gzSUvM+fhP9iMgeFowacXdRRs9/eaVo+DpNbGbfazcHBZYluh7wYIylcguhofG+Cj1ksiKcydHoDJYF2qRc6LJSQ5FF42SV//+TOH/qVXtHKiyVns/hrq/jawEuxvXP8mclQ6fdub0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=YcIBgnUL; arc=none smtp.client-ip=46.235.229.95
+	 MIME-Version; b=ZnW3gss0a2X+/VcfbxmL8Xbr1B3uyooB9jSEbnCfpPUGetrDmAHI9XR2EyDSxshT3CUzsK56O3dl/sXLPbXHbki9Ep8sRceYFBLKY2Dr9cujGhRVLmbgXQtaWyEiFMvAFRXZ0dJiCb55lMcyLPBYdZ9p6OQKuZpFxOx013hw5uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=Es5++TV1; arc=none smtp.client-ip=46.235.229.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
 	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=5igwPeYjKzUcdm/Fbs42E4EG4NJWXIdzB2hW+G9AefY=; b=YcIBgnULd/GMn73b
-	nOtyi36NQlHxQaUpVCaDjz7hu/x5tKWYPrnv02BGtsUuw7h+3OGkdrdx4xzlqr4ZwVTpELDhfT3sQ
-	6SIOBdlPzfxq37yIYCqvLo3yt5V+ErwQAXAfXZ87IwwNPz1Cz4Dp0+13ceft3H0B4zA/NbqVWpdUh
-	tyLHX0tT9jmzup5cHO2rY0OyuqKjGJYTwcbF5sjYoyXYPrMeMfgzeejr90V3AN0CgQs/uzPa5Jzf3
-	D04mjev9uNYm2u5XVIRfHcepkqgKtyJRVTsTG/Kx0StM2m4lOTj3CK5GLbIUPKQLylNHZMLE/UePn
-	tk78Ef9LSMIKRSBwJg==;
+	:Subject; bh=l8y3xxi75s06RxRa4UiF6jCDuy+pZDEsMzs8mWVDNNo=; b=Es5++TV14JsXNUox
+	/DZEn+h4jXiobQ5blTkfPfz0jgrN0s9pP2WghVhcbOB6pwLgfeuXncDzKlfCWg/RR60Fr0bY5qszi
+	DTtVZkmRrcHD5OOiAclsYtmx0+F8LGyDEIY21xwxNFskIZqJkn206QjfsePr39lFJE0yu8u5cmkRp
+	m1TVp9diNd5MuRs/ynhlkCWiCZZPBg1hdrEocaLLMqdDnc406YW/yqQozscR353lxap01gDX8F/u4
+	NrKCdRLFuIDIrSCF9oZ02iIDbEVOpm0sBkhjB8YXueCXGFZls70vQGkovVnAanzlTSM25uJWVHL73
+	GSBbBKhVoX6e1Tq3tQ==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
 	by mx.treblig.org with esmtp (Exim 4.96)
 	(envelope-from <linux@treblig.org>)
-	id 1uUnGw-00CF9J-1C;
+	id 1uUnGw-00CF9J-2l;
 	Thu, 26 Jun 2025 14:08:14 +0000
 From: linux@treblig.org
 To: arend.vanspriel@broadcom.com,
@@ -52,9 +52,9 @@ Cc: brcm80211@lists.linux.dev,
 	brcm80211-dev-list.pdl@broadcom.com,
 	linux-kernel@vger.kernel.org,
 	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH 1/3] wifi: brcm80211: Remove unused functions
-Date: Thu, 26 Jun 2025 15:08:10 +0100
-Message-ID: <20250626140812.56700-2-linux@treblig.org>
+Subject: [PATCH 2/3] wifi: brcm80211: Remove more unused functions
+Date: Thu, 26 Jun 2025 15:08:11 +0100
+Message-ID: <20250626140812.56700-3-linux@treblig.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250626140812.56700-1-linux@treblig.org>
 References: <20250626140812.56700-1-linux@treblig.org>
@@ -74,291 +74,300 @@ commit a9533e7ea3c4 ("Staging: Add initial release of brcm80211 - Broadcom
 802.11n wireless LAN driver.")
 
 Remove them.
-Then remove two more functions in phy_n.c that were only used
-by the ones just removed.
 
 Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 ---
- .../broadcom/brcm80211/brcmsmac/phy/phy_cmn.c | 128 ------------------
- .../broadcom/brcm80211/brcmsmac/phy/phy_hal.h |  11 --
- .../broadcom/brcm80211/brcmsmac/phy/phy_int.h |   8 --
- .../broadcom/brcm80211/brcmsmac/phy/phy_n.c   |  19 ---
- 4 files changed, 166 deletions(-)
+ .../broadcom/brcm80211/brcmsmac/phy/phy_cmn.c | 186 ------------------
+ .../broadcom/brcm80211/brcmsmac/phy/phy_hal.h |  12 --
+ 2 files changed, 198 deletions(-)
 
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_cmn.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_cmn.c
-index c3d7aa570b4e..2dca926acac6 100644
+index 2dca926acac6..0dbf239400c3 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_cmn.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_cmn.c
-@@ -2555,27 +2555,6 @@ int wlc_phy_rssi_compute(struct brcms_phy_pub *pih,
- 	return rssi;
+@@ -1308,56 +1308,6 @@ int wlc_phy_txpower_get(struct brcms_phy_pub *ppi, uint *qdbm, bool *override)
+ 	return 0;
  }
  
--void wlc_phy_freqtrack_start(struct brcms_phy_pub *pih)
+-void wlc_phy_txpower_target_set(struct brcms_phy_pub *ppi,
+-				struct txpwr_limits *txpwr)
 -{
--	return;
+-	bool mac_enabled = false;
+-	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
+-
+-	memcpy(&pi->tx_user_target[TXP_FIRST_CCK],
+-	       &txpwr->cck[0], BRCMS_NUM_RATES_CCK);
+-
+-	memcpy(&pi->tx_user_target[TXP_FIRST_OFDM],
+-	       &txpwr->ofdm[0], BRCMS_NUM_RATES_OFDM);
+-	memcpy(&pi->tx_user_target[TXP_FIRST_OFDM_20_CDD],
+-	       &txpwr->ofdm_cdd[0], BRCMS_NUM_RATES_OFDM);
+-
+-	memcpy(&pi->tx_user_target[TXP_FIRST_OFDM_40_SISO],
+-	       &txpwr->ofdm_40_siso[0], BRCMS_NUM_RATES_OFDM);
+-	memcpy(&pi->tx_user_target[TXP_FIRST_OFDM_40_CDD],
+-	       &txpwr->ofdm_40_cdd[0], BRCMS_NUM_RATES_OFDM);
+-
+-	memcpy(&pi->tx_user_target[TXP_FIRST_MCS_20_SISO],
+-	       &txpwr->mcs_20_siso[0], BRCMS_NUM_RATES_MCS_1_STREAM);
+-	memcpy(&pi->tx_user_target[TXP_FIRST_MCS_20_CDD],
+-	       &txpwr->mcs_20_cdd[0], BRCMS_NUM_RATES_MCS_1_STREAM);
+-	memcpy(&pi->tx_user_target[TXP_FIRST_MCS_20_STBC],
+-	       &txpwr->mcs_20_stbc[0], BRCMS_NUM_RATES_MCS_1_STREAM);
+-	memcpy(&pi->tx_user_target[TXP_FIRST_MCS_20_SDM],
+-	       &txpwr->mcs_20_mimo[0], BRCMS_NUM_RATES_MCS_2_STREAM);
+-
+-	memcpy(&pi->tx_user_target[TXP_FIRST_MCS_40_SISO],
+-	       &txpwr->mcs_40_siso[0], BRCMS_NUM_RATES_MCS_1_STREAM);
+-	memcpy(&pi->tx_user_target[TXP_FIRST_MCS_40_CDD],
+-	       &txpwr->mcs_40_cdd[0], BRCMS_NUM_RATES_MCS_1_STREAM);
+-	memcpy(&pi->tx_user_target[TXP_FIRST_MCS_40_STBC],
+-	       &txpwr->mcs_40_stbc[0], BRCMS_NUM_RATES_MCS_1_STREAM);
+-	memcpy(&pi->tx_user_target[TXP_FIRST_MCS_40_SDM],
+-	       &txpwr->mcs_40_mimo[0], BRCMS_NUM_RATES_MCS_2_STREAM);
+-
+-	if (bcma_read32(pi->d11core, D11REGOFFS(maccontrol)) & MCTL_EN_MAC)
+-		mac_enabled = true;
+-
+-	if (mac_enabled)
+-		wlapi_suspend_mac_and_wait(pi->sh->physhim);
+-
+-	wlc_phy_txpower_recalc_target(pi);
+-	wlc_phy_cal_txpower_recalc_sw(pi);
+-
+-	if (mac_enabled)
+-		wlapi_enable_mac(pi->sh->physhim);
 -}
 -
--void wlc_phy_freqtrack_end(struct brcms_phy_pub *pih)
--{
--	return;
--}
--
--void wlc_phy_set_deaf(struct brcms_phy_pub *ppi, bool user_flag)
--{
--	struct brcms_phy *pi;
--	pi = (struct brcms_phy *) ppi;
--
--	if (ISLCNPHY(pi))
--		wlc_lcnphy_deaf_mode(pi, true);
--	else if (ISNPHY(pi))
--		wlc_nphy_deaf_mode(pi, true);
--}
--
- void wlc_phy_watchdog(struct brcms_phy_pub *pih)
+ int wlc_phy_txpower_set(struct brcms_phy_pub *ppi, uint qdbm, bool override)
  {
- 	struct brcms_phy *pi = container_of(pih, struct brcms_phy, pubpi_ro);
-@@ -2636,28 +2615,6 @@ void wlc_phy_watchdog(struct brcms_phy_pub *pih)
+ 	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
+@@ -1441,59 +1391,6 @@ wlc_phy_txpower_sromlimit(struct brcms_phy_pub *ppi, uint channel, u8 *min_pwr,
  	}
  }
  
--void wlc_phy_BSSinit(struct brcms_phy_pub *pih, bool bonlyap, int rssi)
+-void
+-wlc_phy_txpower_sromlimit_max_get(struct brcms_phy_pub *ppi, uint chan,
+-				  u8 *max_txpwr, u8 *min_txpwr)
 -{
--	struct brcms_phy *pi = container_of(pih, struct brcms_phy, pubpi_ro);
--	uint i;
--	uint k;
+-	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
+-	u8 tx_pwr_max = 0;
+-	u8 tx_pwr_min = 255;
+-	u8 max_num_rate;
+-	u8 maxtxpwr, mintxpwr, rate, pactrl;
 -
--	for (i = 0; i < MA_WINDOW_SZ; i++)
--		pi->sh->phy_noise_window[i] = (s8) (rssi & 0xff);
--	if (ISLCNPHY(pi)) {
--		for (i = 0; i < MA_WINDOW_SZ; i++)
--			pi->sh->phy_noise_window[i] =
--				PHY_NOISE_FIXED_VAL_LCNPHY;
+-	pactrl = 0;
+-
+-	max_num_rate = ISNPHY(pi) ? TXP_NUM_RATES :
+-		       ISLCNPHY(pi) ? (TXP_LAST_SISO_MCS_20 +
+-				       1) : (TXP_LAST_OFDM + 1);
+-
+-	for (rate = 0; rate < max_num_rate; rate++) {
+-
+-		wlc_phy_txpower_sromlimit(ppi, chan, &mintxpwr, &maxtxpwr,
+-					  rate);
+-
+-		maxtxpwr = (maxtxpwr > pactrl) ? (maxtxpwr - pactrl) : 0;
+-
+-		maxtxpwr = (maxtxpwr > 6) ? (maxtxpwr - 6) : 0;
+-
+-		tx_pwr_max = max(tx_pwr_max, maxtxpwr);
+-		tx_pwr_min = min(tx_pwr_min, maxtxpwr);
 -	}
--	pi->sh->phy_noise_index = 0;
--
--	for (i = 0; i < PHY_NOISE_WINDOW_SZ; i++) {
--		for (k = WL_ANT_IDX_1; k < WL_ANT_RX_MAX; k++)
--			pi->nphy_noise_win[k][i] = PHY_NOISE_FIXED_VAL_NPHY;
--	}
--	pi->nphy_noise_index = 0;
+-	*max_txpwr = tx_pwr_max;
+-	*min_txpwr = tx_pwr_min;
 -}
--
- void
- wlc_phy_papd_decode_epsilon(u32 epsilon, s32 *eps_real, s32 *eps_imag)
- {
-@@ -2812,14 +2769,6 @@ void wlc_phy_stf_chain_set(struct brcms_phy_pub *pih, u8 txchain, u8 rxchain)
- 	pi->pubpi.phy_corenum = (u8)hweight8(pi->sh->phyrxchain);
- }
- 
--void wlc_phy_stf_chain_get(struct brcms_phy_pub *pih, u8 *txchain, u8 *rxchain)
--{
--	struct brcms_phy *pi = container_of(pih, struct brcms_phy, pubpi_ro);
--
--	*txchain = pi->sh->phytxchain;
--	*rxchain = pi->sh->phyrxchain;
--}
--
- u8 wlc_phy_stf_chain_active_get(struct brcms_phy_pub *pih)
- {
- 	s16 nphy_currtemp;
-@@ -2852,89 +2801,12 @@ u8 wlc_phy_stf_chain_active_get(struct brcms_phy_pub *pih)
- 	return active_bitmap;
- }
- 
--s8 wlc_phy_stf_ssmode_get(struct brcms_phy_pub *pih, u16 chanspec)
--{
--	struct brcms_phy *pi = container_of(pih, struct brcms_phy, pubpi_ro);
--	u8 siso_mcs_id, cdd_mcs_id;
--
--	siso_mcs_id =
--		(CHSPEC_IS40(chanspec)) ? TXP_FIRST_MCS_40_SISO :
--		TXP_FIRST_MCS_20_SISO;
--	cdd_mcs_id =
--		(CHSPEC_IS40(chanspec)) ? TXP_FIRST_MCS_40_CDD :
--		TXP_FIRST_MCS_20_CDD;
--
--	if (pi->tx_power_target[siso_mcs_id] >
--	    (pi->tx_power_target[cdd_mcs_id] + 12))
--		return PHY_TXC1_MODE_SISO;
--	else
--		return PHY_TXC1_MODE_CDD;
--}
--
- const u8 *wlc_phy_get_ofdm_rate_lookup(void)
- {
- 	return ofdm_rate_lookup;
- }
- 
--void wlc_lcnphy_epa_switch(struct brcms_phy *pi, bool mode)
--{
--	if ((pi->sh->chip == BCMA_CHIP_ID_BCM4313) &&
--	    (pi->sh->boardflags & BFL_FEM)) {
--		if (mode) {
--			u16 txant = 0;
--			txant = wlapi_bmac_get_txant(pi->sh->physhim);
--			if (txant == 1) {
--				mod_phy_reg(pi, 0x44d, (0x1 << 2), (1) << 2);
--
--				mod_phy_reg(pi, 0x44c, (0x1 << 2), (1) << 2);
--
--			}
--
--			bcma_chipco_gpio_control(&pi->d11core->bus->drv_cc,
--						 0x0, 0x0);
--			bcma_chipco_gpio_out(&pi->d11core->bus->drv_cc,
--					     ~0x40, 0x40);
--			bcma_chipco_gpio_outen(&pi->d11core->bus->drv_cc,
--					       ~0x40, 0x40);
--		} else {
--			mod_phy_reg(pi, 0x44c, (0x1 << 2), (0) << 2);
--
--			mod_phy_reg(pi, 0x44d, (0x1 << 2), (0) << 2);
--
--			bcma_chipco_gpio_out(&pi->d11core->bus->drv_cc,
--					     ~0x40, 0x00);
--			bcma_chipco_gpio_outen(&pi->d11core->bus->drv_cc,
--					       ~0x40, 0x00);
--			bcma_chipco_gpio_control(&pi->d11core->bus->drv_cc,
--						 0x0, 0x40);
--		}
--	}
--}
--
- void wlc_phy_ldpc_override_set(struct brcms_phy_pub *ppi, bool ldpc)
- {
- 	return;
- }
 -
 -void
--wlc_phy_get_pwrdet_offsets(struct brcms_phy *pi, s8 *cckoffset, s8 *ofdmoffset)
+-wlc_phy_txpower_boardlimit_band(struct brcms_phy_pub *ppi, uint bandunit,
+-				s32 *max_pwr, s32 *min_pwr, u32 *step_pwr)
 -{
--	*cckoffset = 0;
--	*ofdmoffset = 0;
+-	return;
 -}
 -
--s8 wlc_phy_upd_rssi_offset(struct brcms_phy *pi, s8 rssi, u16 chanspec)
--{
--
--	return rssi;
--}
--
--bool wlc_phy_txpower_ipa_ison(struct brcms_phy_pub *ppi)
+-u8 wlc_phy_txpower_get_target_min(struct brcms_phy_pub *ppi)
 -{
 -	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
 -
--	if (ISNPHY(pi))
--		return wlc_phy_n_txpower_ipa_ison(pi);
--	else
--		return false;
+-	return pi->tx_power_min;
 -}
+-
+-u8 wlc_phy_txpower_get_target_max(struct brcms_phy_pub *ppi)
+-{
+-	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
+-
+-	return pi->tx_power_max;
+-}
+-
+ static s8 wlc_phy_env_measure_vbat(struct brcms_phy *pi)
+ {
+ 	if (ISLCNPHY(pi))
+@@ -1797,13 +1694,6 @@ wlc_phy_txpower_reg_limit_calc(struct brcms_phy *pi, struct txpwr_limits *txpwr,
+ 	}
+ }
+ 
+-void wlc_phy_txpwr_percent_set(struct brcms_phy_pub *ppi, u8 txpwr_percent)
+-{
+-	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
+-
+-	pi->txpwr_percent = txpwr_percent;
+-}
+-
+ void wlc_phy_machwcap_set(struct brcms_phy_pub *ppi, u32 machwcap)
+ {
+ 	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
+@@ -1811,35 +1701,6 @@ void wlc_phy_machwcap_set(struct brcms_phy_pub *ppi, u32 machwcap)
+ 	pi->sh->machwcap = machwcap;
+ }
+ 
+-void wlc_phy_runbist_config(struct brcms_phy_pub *ppi, bool start_end)
+-{
+-	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
+-	u16 rxc;
+-	rxc = 0;
+-
+-	if (start_end == ON) {
+-		if (!ISNPHY(pi))
+-			return;
+-
+-		if (NREV_IS(pi->pubpi.phy_rev, 3)
+-		    || NREV_IS(pi->pubpi.phy_rev, 4)) {
+-			bcma_wflush16(pi->d11core, D11REGOFFS(phyregaddr),
+-				      0xa0);
+-			bcma_set16(pi->d11core, D11REGOFFS(phyregdata),
+-				   0x1 << 15);
+-		}
+-	} else {
+-		if (NREV_IS(pi->pubpi.phy_rev, 3)
+-		    || NREV_IS(pi->pubpi.phy_rev, 4)) {
+-			bcma_wflush16(pi->d11core, D11REGOFFS(phyregaddr),
+-				      0xa0);
+-			bcma_write16(pi->d11core, D11REGOFFS(phyregdata), rxc);
+-		}
+-
+-		wlc_phy_por_inform(ppi);
+-	}
+-}
+-
+ void
+ wlc_phy_txpower_limit_set(struct brcms_phy_pub *ppi, struct txpwr_limits *txpwr,
+ 			  u16 chanspec)
+@@ -1940,37 +1801,6 @@ bool wlc_phy_txpower_hw_ctrl_get(struct brcms_phy_pub *ppi)
+ 		return pi->hwpwrctrl;
+ }
+ 
+-void wlc_phy_txpower_hw_ctrl_set(struct brcms_phy_pub *ppi, bool hwpwrctrl)
+-{
+-	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
+-	bool suspend;
+-
+-	if (!pi->hwpwrctrl_capable)
+-		return;
+-
+-	pi->hwpwrctrl = hwpwrctrl;
+-	pi->nphy_txpwrctrl = hwpwrctrl;
+-	pi->txpwrctrl = hwpwrctrl;
+-
+-	if (ISNPHY(pi)) {
+-		suspend = (0 == (bcma_read32(pi->d11core,
+-					     D11REGOFFS(maccontrol)) &
+-				 MCTL_EN_MAC));
+-		if (!suspend)
+-			wlapi_suspend_mac_and_wait(pi->sh->physhim);
+-
+-		wlc_phy_txpwrctrl_enable_nphy(pi, pi->nphy_txpwrctrl);
+-		if (pi->nphy_txpwrctrl == PHY_TPC_HW_OFF)
+-			wlc_phy_txpwr_fixpower_nphy(pi);
+-		else
+-			mod_phy_reg(pi, 0x1e7, (0x7f << 0),
+-				    pi->saved_txpwr_idx);
+-
+-		if (!suspend)
+-			wlapi_enable_mac(pi->sh->physhim);
+-	}
+-}
+-
+ void wlc_phy_txpower_ipa_upd(struct brcms_phy *pi)
+ {
+ 
+@@ -2128,13 +1958,6 @@ void wlc_phy_antsel_type_set(struct brcms_phy_pub *ppi, u8 antsel_type)
+ 	pi->antsel_type = antsel_type;
+ }
+ 
+-bool wlc_phy_test_ison(struct brcms_phy_pub *ppi)
+-{
+-	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
+-
+-	return pi->phytest_on;
+-}
+-
+ void wlc_phy_ant_rxdiv_set(struct brcms_phy_pub *ppi, u8 val)
+ {
+ 	struct brcms_phy *pi = container_of(ppi, struct brcms_phy, pubpi_ro);
+@@ -2448,15 +2271,6 @@ wlc_phy_noise_sample_request(struct brcms_phy_pub *pih, u8 reason, u8 ch)
+ 
+ }
+ 
+-void wlc_phy_noise_sample_request_external(struct brcms_phy_pub *pih)
+-{
+-	u8 channel;
+-
+-	channel = CHSPEC_CHANNEL(wlc_phy_chanspec_get(pih));
+-
+-	wlc_phy_noise_sample_request(pih, PHY_NOISE_SAMPLE_EXTERNAL, channel);
+-}
+-
+ static const s8 lcnphy_gain_index_offset_for_pkt_rssi[] = {
+ 	8,
+ 	8,
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_hal.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_hal.h
-index 1efc92fd1671..8388eea8b17f 100644
+index 8388eea8b17f..1dbec80194a7 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_hal.h
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_hal.h
-@@ -194,14 +194,9 @@ void wlc_phy_por_inform(struct brcms_phy_pub *ppi);
- void wlc_phy_noise_sample_intr(struct brcms_phy_pub *ppi);
- bool wlc_phy_bist_check_phy(struct brcms_phy_pub *ppi);
+@@ -205,10 +205,6 @@ u16 wlc_phy_chanspec_band_firstch(struct brcms_phy_pub *ppi, uint band);
  
--void wlc_phy_set_deaf(struct brcms_phy_pub *ppi, bool user_flag);
--
- void wlc_phy_switch_radio(struct brcms_phy_pub *ppi, bool on);
- void wlc_phy_anacore(struct brcms_phy_pub *ppi, bool on);
- 
--
--void wlc_phy_BSSinit(struct brcms_phy_pub *ppi, bool bonlyap, int rssi);
--
- void wlc_phy_chanspec_ch14_widefilter_set(struct brcms_phy_pub *ppi,
- 					  bool wide_filter);
- void wlc_phy_chanspec_band_validch(struct brcms_phy_pub *ppi, uint band,
-@@ -224,13 +219,10 @@ bool wlc_phy_txpower_hw_ctrl_get(struct brcms_phy_pub *ppi);
- void wlc_phy_txpower_hw_ctrl_set(struct brcms_phy_pub *ppi, bool hwpwrctrl);
- u8 wlc_phy_txpower_get_target_min(struct brcms_phy_pub *ppi);
- u8 wlc_phy_txpower_get_target_max(struct brcms_phy_pub *ppi);
--bool wlc_phy_txpower_ipa_ison(struct brcms_phy_pub *pih);
+ void wlc_phy_txpower_sromlimit(struct brcms_phy_pub *ppi, uint chan, u8 *_min_,
+ 			       u8 *_max_, int rate);
+-void wlc_phy_txpower_sromlimit_max_get(struct brcms_phy_pub *ppi, uint chan,
+-				       u8 *_max_, u8 *_min_);
+-void wlc_phy_txpower_boardlimit_band(struct brcms_phy_pub *ppi, uint band,
+-				     s32 *, s32 *, u32 *);
+ void wlc_phy_txpower_limit_set(struct brcms_phy_pub *ppi, struct txpwr_limits *,
+ 			       u16 chanspec);
+ int wlc_phy_txpower_get(struct brcms_phy_pub *ppi, uint *qdbm, bool *override);
+@@ -216,9 +212,6 @@ int wlc_phy_txpower_set(struct brcms_phy_pub *ppi, uint qdbm, bool override);
+ void wlc_phy_txpower_target_set(struct brcms_phy_pub *ppi,
+ 				struct txpwr_limits *);
+ bool wlc_phy_txpower_hw_ctrl_get(struct brcms_phy_pub *ppi);
+-void wlc_phy_txpower_hw_ctrl_set(struct brcms_phy_pub *ppi, bool hwpwrctrl);
+-u8 wlc_phy_txpower_get_target_min(struct brcms_phy_pub *ppi);
+-u8 wlc_phy_txpower_get_target_max(struct brcms_phy_pub *ppi);
  
  void wlc_phy_stf_chain_init(struct brcms_phy_pub *pih, u8 txchain, u8 rxchain);
  void wlc_phy_stf_chain_set(struct brcms_phy_pub *pih, u8 txchain, u8 rxchain);
--void wlc_phy_stf_chain_get(struct brcms_phy_pub *pih, u8 *txchain, u8 *rxchain);
- u8 wlc_phy_stf_chain_active_get(struct brcms_phy_pub *pih);
--s8 wlc_phy_stf_ssmode_get(struct brcms_phy_pub *pih, u16 chanspec);
+@@ -226,7 +219,6 @@ u8 wlc_phy_stf_chain_active_get(struct brcms_phy_pub *pih);
  void wlc_phy_ldpc_override_set(struct brcms_phy_pub *ppi, bool val);
  
  void wlc_phy_cal_perical(struct brcms_phy_pub *ppi, u8 reason);
-@@ -257,9 +249,6 @@ void wlc_phy_machwcap_set(struct brcms_phy_pub *ppi, u32 machwcap);
+-void wlc_phy_noise_sample_request_external(struct brcms_phy_pub *ppi);
+ void wlc_phy_edcrs_lock(struct brcms_phy_pub *pih, bool lock);
+ void wlc_phy_cal_papd_recal(struct brcms_phy_pub *ppi);
  
- void wlc_phy_runbist_config(struct brcms_phy_pub *ppi, bool start_end);
+@@ -241,14 +233,10 @@ void wlc_phy_txpower_get_current(struct brcms_phy_pub *ppi,
+ 				 struct tx_power *power, uint channel);
  
--void wlc_phy_freqtrack_start(struct brcms_phy_pub *ppi);
--void wlc_phy_freqtrack_end(struct brcms_phy_pub *ppi);
+ void wlc_phy_initcal_enable(struct brcms_phy_pub *pih, bool initcal);
+-bool wlc_phy_test_ison(struct brcms_phy_pub *ppi);
+-void wlc_phy_txpwr_percent_set(struct brcms_phy_pub *ppi, u8 txpwr_percent);
+ void wlc_phy_ofdm_rateset_war(struct brcms_phy_pub *pih, bool war);
+ void wlc_phy_bf_preempt_enable(struct brcms_phy_pub *pih, bool bf_preempt);
+ void wlc_phy_machwcap_set(struct brcms_phy_pub *ppi, u32 machwcap);
+ 
+-void wlc_phy_runbist_config(struct brcms_phy_pub *ppi, bool start_end);
 -
  const u8 *wlc_phy_get_ofdm_rate_lookup(void);
  
  s8 wlc_phy_get_tx_power_offset_by_mcs(struct brcms_phy_pub *ppi,
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_int.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_int.h
-index 70a9ec050717..18028f673574 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_int.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_int.h
-@@ -985,7 +985,6 @@ s8 wlc_lcnphy_tempsense_degree(struct brcms_phy *pi, bool mode);
- s8 wlc_lcnphy_vbatsense(struct brcms_phy *pi, bool mode);
- void wlc_phy_carrier_suppress_lcnphy(struct brcms_phy *pi);
- void wlc_lcnphy_crsuprs(struct brcms_phy *pi, int channel);
--void wlc_lcnphy_epa_switch(struct brcms_phy *pi, bool mode);
- void wlc_2064_vco_cal(struct brcms_phy *pi);
- 
- void wlc_phy_txpower_recalc_target(struct brcms_phy *pi);
-@@ -1031,7 +1030,6 @@ struct phy_iq_est {
- };
- 
- void wlc_phy_stay_in_carriersearch_nphy(struct brcms_phy *pi, bool enable);
--void wlc_nphy_deaf_mode(struct brcms_phy *pi, bool mode);
- 
- #define wlc_phy_write_table_nphy(pi, pti) \
- 	wlc_phy_write_table(pi, pti, 0x72, 0x74, 0x73)
-@@ -1115,10 +1113,4 @@ int wlc_phy_rssi_compute_nphy(struct brcms_phy *pi, struct d11rxhdr *rxh);
- #define NPHY_TESTPATTERN_BPHY_RFCS  1
- 
- void wlc_phy_nphy_tkip_rifs_war(struct brcms_phy *pi, u8 rifs);
--
--void wlc_phy_get_pwrdet_offsets(struct brcms_phy *pi, s8 *cckoffset,
--				s8 *ofdmoffset);
--s8 wlc_phy_upd_rssi_offset(struct brcms_phy *pi, s8 rssi, u16 chanspec);
--
--bool wlc_phy_n_txpower_ipa_ison(struct brcms_phy *pih);
- #endif				/* _BRCM_PHY_INT_H_ */
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-index d362c4337616..09e2e8bdd804 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-@@ -19713,11 +19713,6 @@ u8 wlc_phy_rxcore_getstate_nphy(struct brcms_phy_pub *pih)
- 	return (u8) rxen_bits;
- }
- 
--bool wlc_phy_n_txpower_ipa_ison(struct brcms_phy *pi)
--{
--	return PHY_IPA(pi);
--}
--
- void wlc_phy_cal_init_nphy(struct brcms_phy *pi)
- {
- }
-@@ -28577,17 +28572,3 @@ void wlc_phy_stay_in_carriersearch_nphy(struct brcms_phy *pi, bool enable)
- 		}
- 	}
- }
--
--void wlc_nphy_deaf_mode(struct brcms_phy *pi, bool mode)
--{
--	wlapi_suspend_mac_and_wait(pi->sh->physhim);
--
--	if (mode) {
--		if (pi->nphy_deaf_count == 0)
--			wlc_phy_stay_in_carriersearch_nphy(pi, true);
--	} else if (pi->nphy_deaf_count > 0) {
--		wlc_phy_stay_in_carriersearch_nphy(pi, false);
--	}
--
--	wlapi_enable_mac(pi->sh->physhim);
--}
 -- 
 2.50.0
 
