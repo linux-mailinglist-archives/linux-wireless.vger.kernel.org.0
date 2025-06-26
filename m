@@ -1,150 +1,125 @@
-Return-Path: <linux-wireless+bounces-24525-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24526-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61DB8AE9848
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 10:28:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2A06AE9851
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 10:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E3203B61EE
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 08:27:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 893414A14F0
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 08:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48621206F23;
-	Thu, 26 Jun 2025 08:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRp1h5yj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401BE272808;
+	Thu, 26 Jun 2025 08:30:05 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.prodrive-technologies.com (mail.prodrive-technologies.com [212.61.153.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E4025A65C
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 08:27:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4199B267713;
+	Thu, 26 Jun 2025 08:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.61.153.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750926437; cv=none; b=opgrvLdW36hzEnmRuTg+jpid0ZmFkQdLzRJumGq2VYpENyErTUqznaVpcVwQJQrq9VlCY2jvUnuy76PkJHJZiVmTf46ra7kUkED+Y9xSux8pZU5z5JMCOqU9VYdRI4ixoE0miStH+0gFb2Y01LWtenbW2cUwpbvUaphjxeGCSNU=
+	t=1750926605; cv=none; b=mqata9UBPnIdcoGIh/Km2UX+Jc43uC/miaGWFsPuN2j9ricN2hllTe8+5UGCjgs5kj34juSNnvMuUFkVxi+R8zbDPmfJ0EJxE/NwHV2H0FXUVvhbQ6XScL7JPrlYTq+cgO2FHJlnK+tj2IN29O9unkmj/XC/WJsxbvGL4E4yi7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750926437; c=relaxed/simple;
-	bh=ckd0GlwWLs0d33EZzMA60VfoCwiHb7tAei/jeOLSky0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BYMkijAA3kUnV73s6kgMSLy5qfGKCqeZmbVaaA8NyxsXUauFdrLiQm7GqQDiwIDcr8T33yFAjmSN91cHd4VF3eb6zTX3b9xLL7lNPofOkgwEESYTvt+LyrW52ntUdl3/R6iC0a3EC2UPCkWy9YimQbsnKdXnSuAF8tDjxLMtZ3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRp1h5yj; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-74264d1832eso1105176b3a.0
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 01:27:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750926435; x=1751531235; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=r44Ps5HqcvcXd12Bv7YuHRDLW7HVn7gJJ8BWHLqEXCo=;
-        b=NRp1h5yjU1xc80gpOqtKG0+gSkfehbBFTDczIP3t/D82ET6BBDe2vvdmUx2Nxcq1lk
-         sf0ytDBN/R/D1kJ2aKmpLn3qnyBH8NFaYo43oV9gXkqFSpJHNj+7Zu6N3SG2ojZkvSb9
-         nvrAZzI1xdyWvLYkhVAyEt0+1N8VoZIskZOfM6zMD88gn7c0nUz1W9VFkk0xRdo35QfC
-         cXPxiwbYIMWmh/r19rdY2ALSNgFJ1aXt8G+utJOcVwOpg78yHZs2AgxNPh0jLz4QVYGg
-         nLjYzZwgWqq3pt7+nczs/tCUGrxBtBnDnk+uHXX3B6Wq8SUH1lu59zaqXrmHcSOW5B/t
-         KZ/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750926435; x=1751531235;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r44Ps5HqcvcXd12Bv7YuHRDLW7HVn7gJJ8BWHLqEXCo=;
-        b=JMUHOnjzsbzdtGZi2I6zNmKxtm/EXzc0hCQHXgrXUiBccSyjiVzs7/9E75Ej96lyap
-         JYGnOn3auAK9X9ilbasyB1gF6WOR69kPF0P7D1KIvq4DKbTKOgbbcuDhsNtkIYdaLwuk
-         M745/WLUeMhPXva+5ZXI70Ta+EPXKYPlR0tkgLBEXD/3F3mKBn/x/Gd++giNLymwOFqx
-         w+AASG/nxYVngLTp0aZQXtVLC3k2Bp7GL5njAqTDjcnQ3d9xQ3rlmGkUjjvw1DOU88BL
-         9xgstwm8UzP3j0lJl66l4buLPuq78iq8yEdJGHfm/mJJZbrgPkARlqxt8yliU3Npf+0h
-         zxOQ==
-X-Gm-Message-State: AOJu0Yyez9Pqi2t5Rir8jXV4C5g4pW42C7DMSZMWEYJX4y1vB6NI7N7w
-	5kJVs7A/uUDjixiCrr7+wstyc+YBedrjGSCizDiJOwYe50zy9mGiCeAo
-X-Gm-Gg: ASbGncslcIRZ+gzXAmvRJtiZ4mQ7azaLFhh7KnzhDJWBDKlFvii7z6765CFpf6Lst87
-	3f6cfkucyrGO6SGv6gVv5rr8mVOWjHz3yiNyvpNmbziqKeXR9ueVrvM2vBfsvig2JozOeYxoI+0
-	4JQFz/iK023rFTfg+7MYO5GHQAmzaosmM/gdN3o2OU7xHLOIubUGGH0z1XDARMxAetPuNtdmNTj
-	L67ZHT08b8uxV5vk2pZpaLav2eMLqAVXY+kYMuevhBQJIV24s7HiSc9LCGNAA0BiPHhYZ0krWGs
-	6b1VUR208V9P7lDJT1tiRGoJ2/72r4h4uoXWTpFwY2qL2C2Vkg9p8xTUfidu1YCYotyOGA+2tYh
-	O4LC6FEns44EVwUwOnXPW1B0nWcdjtCaSkW5nig==
-X-Google-Smtp-Source: AGHT+IEiHwZoRdxmeyDqqEk5iNn/sTySGGYhVTyXP+TA9IALmRWdoU/A9ILuHjZO/XP1IKMFQaIFXg==
-X-Received: by 2002:a05:6a00:9a9:b0:740:b5f9:287b with SMTP id d2e1a72fcca58-74ad445badamr8669777b3a.1.1750926434952;
-        Thu, 26 Jun 2025 01:27:14 -0700 (PDT)
-Received: from ?IPV6:2804:d51:4975:7202:7e03:331b:6be0:eea6? ([2804:d51:4975:7202:7e03:331b:6be0:eea6])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-749c88721b9sm6390260b3a.150.2025.06.26.01.27.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Jun 2025 01:27:14 -0700 (PDT)
-Message-ID: <a5d676db-20e2-476a-aa75-53e2c99629e1@gmail.com>
-Date: Thu, 26 Jun 2025 05:27:11 -0300
+	s=arc-20240116; t=1750926605; c=relaxed/simple;
+	bh=pkxTjPhLMGyJG2LYhRzWNpcmEeQWv2oYgzhEsh6CSMQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=je7Txk+jxoGtQv2ngawkqPJb9vIoQ6yrdQCja7A/cqkCbRvYQL0EZzvWNlEPBoAPbz6DJEZ5fdPZ4Ksv1KFSBJ9MMbdgroviigs/+Iq4hMzV1S2PhWqC5zvvZaY0PMnNkdC5KDxmLw6CvrEsY4V2aIh9dlPlagXr5NOKl5YeKCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com; spf=pass smtp.mailfrom=prodrive-technologies.com; arc=none smtp.client-ip=212.61.153.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prodrive-technologies.com
+Received: from EXCOP01.bk.prodrive.nl (10.1.0.22) by EXCOP01.bk.prodrive.nl
+ (10.1.0.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 26 Jun
+ 2025 10:29:53 +0200
+Received: from lnxdevrm02.bk.prodrive.nl (10.1.1.121) by
+ EXCOP01.bk.prodrive.nl (10.1.0.22) with Microsoft SMTP Server id 15.2.1544.4
+ via Frontend Transport; Thu, 26 Jun 2025 10:29:53 +0200
+Received: from paugeu by lnxdevrm02.bk.prodrive.nl with local (Exim 4.96)
+	(envelope-from <paul.geurts@prodrive-technologies.com>)
+	id 1uUhzV-00GdE8-2n;
+	Thu, 26 Jun 2025 10:29:53 +0200
+From: Paul Geurts <paul.geurts@prodrive-technologies.com>
+To: <andrew@lunn.ch>
+CC: <mgreer@animalcreek.com>, <krzk@kernel.org>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <robh@kernel.org>, <conor+dt@kernel.org>,
+	<linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<martijn.de.gouw@prodrive-technologies.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: net/nfc: ti,trf7970a: Add ti,rx-gain-reduction option
+Date: Thu, 26 Jun 2025 10:29:53 +0200
+Message-ID: <20250626082953.3963992-1-paul.geurts@prodrive-technologies.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: cf871c23-963a-4d50-a13b-97e84ee0ddb7@lunn.ch
+References:
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wireless-regdb: Update regulatory rules for Brazil (BR)
- on 6GHz
-Content-Language: en-US
-To: wens@kernel.org
-Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
-References: <20250602121434.3011282-1-marcoshalano@gmail.com>
- <CAGb2v645_kB3mNb79ytFb9y2xw6zp1oFvof5NX-FF7eDPNCBFQ@mail.gmail.com>
-From: Marcos Alano <marcoshalano@gmail.com>
-In-Reply-To: <CAGb2v645_kB3mNb79ytFb9y2xw6zp1oFvof5NX-FF7eDPNCBFQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On 26/06/2025 05:12, Chen-Yu Tsai wrote:
-> On Mon, Jun 2, 2025 at 8:15 PM Marcos Alano <marcoshalano@gmail.com> wrote:
->>
->> Change rules for 6GHz on Brazil removing `NO-IR` and adding
->> `AUTO-BW` so the 6GHz band can be used.
+> On Tue, Jun 24, 2025 at 02:42:46PM +0200, Paul Geurts wrote:
+> > Add option to reduce the RX antenna gain to be able to reduce the
+> > sensitivity.
+> > 
+> > Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
+> > ---
+> >  Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml b/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
+> > index d0332eb76ad2..066a7abc41e0 100644
+> > --- a/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
+> > +++ b/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
+> > @@ -55,6 +55,12 @@ properties:
+> >      description: |
+> >        Regulator for supply voltage to VIN pin
+> >  
+> > +  ti,rx-gain-reduction:
 > 
-> AUTO-BW is not needed since there are no adjacent bands that can be
-> combined.
+> You should include the units, "ti,rx-gain-reduction-db"
+
+Well, Currently it's not really a dB value (see below).
+
 > 
-Ok. I thought it was about the range selection, like if there is no 
-320MHz available, it would choose 160MHz.
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    description: |
+> > +      Specify a RX gain reduction to reduce antenna sensitivity with 5dB per
+> > +      increment, with a maximum of 15dB.
+> 
+> Given that description i think you can provide a list of values, [0,
+> 5, 10, 15] and the tools will validate values in .dts files.
+> 
+> > +
+> >  required:
+> >    - compatible
+> >    - interrupts
+> > @@ -95,5 +101,6 @@ examples:
+> >              irq-status-read-quirk;
+> >              en2-rf-quirk;
+> >              clock-frequency = <27120000>;
+> > +            ti,rx-gain-reduction = <3>;
+> 
+> Err, how does 3 fit into 5dB increments?
 
-I will remove then.
+I implemented it in a way that the value of ti,rx-gain-reduction is programmed
+directly into the RX_GAIN reduction register, and there it means 5 dB/LSB. My
+description probably was not clear enough about that. So a value of 3 here actually
+means 15dB.
+So I could either improve the description here that this is the case, or make the
+value in here in actual dB, and do some calculations in the driver. What has your
+preference?
 
-Marcos.
->> Add the relevant normatives in comments.
->>
->> Signed-off-by: Marcos Alano <marcoshalano@gmail.com>
->> ---
->>   db.txt | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/db.txt b/db.txt
->> index e331d4f..3b0adbb 100644
->> --- a/db.txt
->> +++ b/db.txt
->> @@ -321,8 +321,8 @@ country BO: DFS-JP
->>
->>   # Source:
->>   # https://www.gov.br/anatel/pt-br/regulado/radiofrequencia/radiacao-restrita
->> -# https://informacoes.anatel.gov.br/legislacao/resolucoes/2017/936-resolucao-680
->> -# https://informacoes.anatel.gov.br/legislacao/atos-de-certificacao-de-produtos/2017/1139-ato-14448
->> +# https://informacoes.anatel.gov.br/legislacao/resolucoes/2025/2001-resolucao-772
->> +# https://informacoes.anatel.gov.br/legislacao/atos-de-requisitos-tecnicos-de-gestao-do-espectro/2024/1920-ato-915
->>   country BR: DFS-FCC
->>          (2400 - 2483.5 @ 40), (30)
->>          # The next three ranges have been reduced by 3dB, could be increased
->> @@ -331,7 +331,7 @@ country BR: DFS-FCC
->>          (5250 - 5350 @ 80), (27), NO-OUTDOOR, DFS, AUTO-BW
->>          (5470 - 5725 @ 160), (27), DFS, AUTO-BW
->>          (5725 - 5850 @ 80), (30), AUTO-BW
->> -       (5925 - 7125 @ 320), (12), NO-OUTDOOR, NO-IR
->> +       (5925 - 7125 @ 320), (30), NO-OUTDOOR, AUTO-BW
->>          # EIRP=40dBm (43dBm peak)
->>          (57000 - 71000 @ 2160), (40)
->>
->> --
->> 2.49.0
->>
->>
+> 
+> 	Andrew
+> 
 
--- 
-Marcos Alano
+Thanks!
 
+Paul
 
