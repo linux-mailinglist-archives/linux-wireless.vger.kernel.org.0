@@ -1,161 +1,164 @@
-Return-Path: <linux-wireless+bounces-24569-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24570-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D0BAEA485
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 19:40:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C9FAEA4C4
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 19:53:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19CAB17FE47
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 17:40:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85EFB1C259F6
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 17:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25AA2E5424;
-	Thu, 26 Jun 2025 17:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ABC2ECE8C;
+	Thu, 26 Jun 2025 17:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="AX6ZuC3D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KN5mwU0K"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49631F5828;
-	Thu, 26 Jun 2025 17:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750959626; cv=pass; b=cGbJZCib+ZI3lADW10euarzztp5Qz7uPLTefYdnwPXP6f6k/j2AhkLr1uwO9yONyP8NwczQU3uwZKPID0tu8Iw6PbMGKGgA17QUDrF0c5sWavDPU6jUvHHnc+A8en1j98RVgVGol1+N28KfaU67xJAmsiUJS76Q5+kRcj8srByk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750959626; c=relaxed/simple;
-	bh=D+OrFF0y2Fir+Ix0NvFJdJwyQB6g9qXrFBDGSEHHH90=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=cKU0nP17n0OG2TbMzab7Ej7FjCthMOiqOlPbvbRBWdyWChsEjus58Q2cw7omU73/+NXjb356u4tnx6lV0R8VVsDdPaKXFsbsHLxOGoWOmiihphJp4F7Q/nAqPz02lrDvaDHMeNgKNcM+8NV1GYotLM02v6g9PWrjRXNIOUgbSgs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=AX6ZuC3D; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1750959595; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Mmb+f4ZWCUo9GBSmRldzmeJLMUdYDwzTZhy2HScX/XjewpqkPiL02caw56hcIiETnOBZLx6FOzC9T1vID61RI4AqMHVhtYDJ3P8XjZCDKl9EUBj4HUcYGSNgrsCNkgPhcA4Mia42ZYtrNcy/6cDihYuAAKS1MVdoQ+HNTwYNmfc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1750959595; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ecYgXEsH7M5ZozoPfYHUQqxlKMweMDt5KaU45qVQwDM=; 
-	b=jZdljkBNAfewjMdXoSWqevLj/i6uKXJSK54w03Tg4EeFaJKeqFi3X/6Z+zJmhJ82LrvigWBOq484OzwVscMPhY34NLkjcMM0UCwEgCYPKhkCctNp0h/LSJC7xZwSuqFAhd+MDluIK9XqxaDlu25geR6vFEsVKDyy1HYVTmPe02c=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
-	dmarc=pass header.from=<usama.anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750959595;
-	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:From:From:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=ecYgXEsH7M5ZozoPfYHUQqxlKMweMDt5KaU45qVQwDM=;
-	b=AX6ZuC3DutekJ1wSPD0J63Ol97yR27H6irJ3YO2TxLQA7WAlj3H1AuLOHfNnz6s8
-	pF/dXI3D+2iH9X19XUZfs72AyIKOjEciS1IX2Kc9We4oCrC2cOC9ej4lwG3mZTJDRYr
-	Bd2FjheyVRpD8uB/pdbfNNUU2ganW23lBaGui3Ic=
-Received: by mx.zohomail.com with SMTPS id 1750959592998994.6843598636191;
-	Thu, 26 Jun 2025 10:39:52 -0700 (PDT)
-Message-ID: <63fee713-34f0-4c76-bd38-8f2fc095849f@collabora.com>
-Date: Thu, 26 Jun 2025 22:39:45 +0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C052ECD3E;
+	Thu, 26 Jun 2025 17:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750960413; cv=none; b=GUkTktJmkRgbPHQWRUoJLICq6m/01ojn4/d3AgJ70pannOOLyHlp6VpdAcNbkap577ius01oY45WvDdResI41f3wSeCcZl/zEQPQpsQRiIoAi/EGXI8wpg9vb3zyVz2oJsp2sNGEJWv8scdVLpiIF4outIKCZ93sVSdLseIAI3Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750960413; c=relaxed/simple;
+	bh=3DW+isIgbcOam9K3su8rrNYApBVcaHJL5UXxTcvoqeA=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=FvdJ/9K+wV32NlfGd0KWpY4l27zWL3/uY7LWBpWC2/bm/rFZvL4fpl1J2bfO8YvBlN4HfTVQjfAPCOZpRUNaVZDnCPGexLjTO5ss+WRTGACu0lVaSpPneISkEuRMWzEl9jULsv/L3ApbOwRsuEUjk5xR/DHneHWpCI0dUVeCi78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KN5mwU0K; arc=none smtp.client-ip=209.85.214.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-236377f00easo16668745ad.1;
+        Thu, 26 Jun 2025 10:53:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750960411; x=1751565211; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3DW+isIgbcOam9K3su8rrNYApBVcaHJL5UXxTcvoqeA=;
+        b=KN5mwU0KK7pXmP/CH45uebT/jMPCaGZnKvGm20uu8lP2kLrANHK+9MY1DHUVoviPnd
+         NoQ2ahO4jkWZG69Wpz3Rvvyo7aociNoyrh71Qp2Zv7rtYNHYvcptMKKreFBdIC7rfjm8
+         1tb1K+jbTDcsYLSQtR4yCrCb/qH+0jtkDqevLvutgzLrpCGs9ZlKCndjW0QcUitSqwAG
+         o3Snn+fiFw3fVr3jd1x8zzhhqOWmIcWRvPyVTgKwO1qSnrI/acHUTNfY34N+ArT9lrzY
+         1F2jgmKxv0plqzQKAuK6cd8hJ+wg7s/GTmXtNJO2yUD2/uwo9mgHDIuQ5MJiwXViCibf
+         pzEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750960411; x=1751565211;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3DW+isIgbcOam9K3su8rrNYApBVcaHJL5UXxTcvoqeA=;
+        b=unPdtOc9NE/dtwJqG4bKt749VrX0X/ZFvgLP4L+SPIUWfIKvKhmOYgIMJF/WRjE2xm
+         IfC7zvC9+CcRr5el2Dy0HsUqeAw7nSr37lNlo9tyVzSMqYzBAgfEG3Dh/kXWPbotYQXq
+         lNbH1ULWuzBvmDndK3K5fpwg49QooeFkHPyYvroP4CqPf498Yb73ngL8TqKB/OgFieyd
+         igQhcXNXfmZ+loXhS52yx3kZ8SfFuqkMMdYXraW/aZik/PRRdyu7G/u+SWpt0xljgeRh
+         KD+89t3udqWTIEBaZ6oyi7aDj4HhvUeqUptPexn/CyQN5GDvirY1Z4h3Mf4BucrEBTRk
+         tuog==
+X-Forwarded-Encrypted: i=1; AJvYcCUhzCZyZ6NWSCn2YFD//lKhOIKmm12EjwT+LQR4ylWNlXviaAFFLQ6C0+8brUDsoY8wGwOoyDvx@vger.kernel.org, AJvYcCWm21K1DGcQcvSv7pkMPRTCPUQImhLXw4SJwnpTZUXbqkF6WHhH7OKhRLDn4r+ND7gIo/61jIn2nLae6OgKpgo=@vger.kernel.org, AJvYcCWxqO4z8K+DJAn3U5TdqCGAriX2H0vKpNFv/4YjXvXG5J6TF0R9OlyLFiyh5nQgzPeLIq2aWV2XbADn@vger.kernel.org, AJvYcCXN59WdDr8IBXnOkHX5cE7+mSqlZXh6LaXBoiVm/DlTmQpB5a2UXBKMRp00bEJIl9YecqrkgVpKhS1P@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYqieERovBdSbAmzWK54ziQyyaq51Z6XHS7m6Ii8zXubIN6oE3
+	OZyNvrf6+3HzFbNlcX/orx0MPclbUKP0/MYMOvrbouB9TmAhCOCS24mcx8qnPykwSCs=
+X-Gm-Gg: ASbGncsv6sDHFjzWkwXWmV86Sm1RNh+8LSgutvo+1uMplZqbvFd8RZj2Lo52iszbgl8
+	eSLxp+Z10p/xLR8od16Mku7B1l6DCYdEDEVE/6SyFuJLP5zqsTa8VpA9BoQTLKADKFsjcd2/Msg
+	oiJVeJHXYs2zEerarnSmxiyqTd0FcP8Qpls7q6wmR40l9x+1ZaZ6abnjCqntX/hTxwvt9ptoz6O
+	9w6eIDZ56pPltSF80yf1dk1DGuyMJLo5aA6PMDY5mULpXfYgfsi9T5aGX4a0BYx3K2n7x8Wpeqz
+	KWwKsGd1LNeVZjGHlbRh7HUg/Wn3mXnxsdAb7P8ngCs0ITSEfvmL4++cTKUOX9H2iiemTp52uJj
+	eugE=
+X-Google-Smtp-Source: AGHT+IGMAGEXF0yV0ZZzuhQSFlpR4GVzlRjXoSxE+CF+J+ar1VbxUo+RYXwsDYzu1MLVP4aLNgLoyA==
+X-Received: by 2002:a17:902:c950:b0:235:799:eca5 with SMTP id d9443c01a7336-23ac463e850mr3573485ad.44.1750960410691;
+        Thu, 26 Jun 2025 10:53:30 -0700 (PDT)
+Received: from [127.0.0.1] ([116.206.223.154])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23abe312819sm3768515ad.34.2025.06.26.10.53.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Jun 2025 10:53:30 -0700 (PDT)
+Date: Thu, 26 Jun 2025 23:23:14 +0530
+From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+CC: Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
+ linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_Instability_in_ALL_stable_an?=
+ =?US-ASCII?Q?d_LTS_distro_kernels_=28IRQ_=2316_be?=
+ =?US-ASCII?Q?ing_disabled=2C_PCIe_bus_errors=2C_a?=
+ =?US-ASCII?Q?th10k=5Fpci=29_in_Dell_Inspiron_5567?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <CAEmM+Qg+xxMfXb=704OfwYLou7Mh_BNaTevLaGfiG2peZotJoA@mail.gmail.com>
+References: <CAEmM+Qi-Waxk5qcR+nfip-QGXaKk0-Kq7QSq890e9oYOPjW+bA@mail.gmail.com> <20250625202014.GA1585022@bhelgaas> <CAEmM+Qg+xxMfXb=704OfwYLou7Mh_BNaTevLaGfiG2peZotJoA@mail.gmail.com>
+Message-ID: <E8A26FD9-13E3-474A-87FF-ED8D27A1F27B@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Bug Report] mhi: ath11k: dma_alloc_coherent() failures during
- resume
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-To: Manivannan Sadhasivam <mani@kernel.org>,
- Jeff Johnson <jjohnson@kernel.org>, quic_bqiang@quicinc.com,
- jeff.hugo@oss.qualcomm.com
-Cc: mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, ath11k@lists.infradead.org,
- linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
- sumit.garg@kernel.org
-References: <ead32f5b-730a-4b81-b38f-93d822f990c6@collabora.com>
-Content-Language: en-US
-In-Reply-To: <ead32f5b-730a-4b81-b38f-93d822f990c6@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hello everyone,
 
-I'm trying to understand ath11k_core_reconfigure_on_crash(). It seems after
-every suspend/hibernate cycle, the hal and dp specifically are de-initialized
-and initialized again to have clean state again to start working with firmware.
-When there's memory pressure, driver isn't able to get the free-ed dma memory
-area again.
+I think I found it=2E I used irqpoll and I didn't experience any hiccups w=
+ith my mouse performance=2E But the Wi-Fi was still malfunctioning=2E
 
-The name of the function, ath11k_core_reconfigure_on_crash() suggests that we
-are recovering from crash and that's why all of the states of different
-components are being allocated cleanly from the start. But we aren't resuming
-from crash, instead we are resuming from suspend which was handled by the driver
-itself. So this state cleanup must have been done by the suspend handler.
+To linux-pci and linux-acpi:
 
-Any pointers on how to avoid going through deinit-init cycle of whole objects
-every time?
+It's an ath10k problem, sure, but there's something definitely problematic=
+ happening if, in the normal state, these Wi-Fi bugs hamper the touchpad mo=
+vement=2E
 
-Thanks,
-Usama
+To ath10k and linux-wireless:
 
-On 6/19/25 3:27 PM, Muhammad Usama Anjum wrote:
-> Hi,
-> 
-> When there is memory pressure during resume and no DMA memory is available,
-> the ath11k driver fails to resume. The driver currently frees its DMA memory
-> during suspend or hibernate, and attempts to re-allocate it during resume.
-> However, if the DMA memory has been consumed by other software in the
-> meantime, these allocations can fail, leading to critical failures in the WiFi
-> driver.
-> 
-> Although I have recently fixed several instances to ensure DMA memory is not
-> freed once allocated, we continue to receive reports of failures. I was
-> preparing to submit a patch for the another case, but this issue cannot be
-> fully resolved as long as even one DMA allocation remains in the resume path.
-> 
-> The following functions are allocating dma memory in resume path:
-> 
-> <function> <size> <index>
-> mhi_init_dev_ctxt dma_alloc_coherent(5632)
-> mhi_init_dev_ctxt dma_alloc_coherent(88)
-> mhi_alloc_aligned_ring dma_alloc_coherent(1023)
-> mhi_alloc_aligned_ring dma_alloc_coherent(8191)
-> mhi_init_dev_ctxt dma_alloc_coherent(44)
-> mhi_alloc_aligned_ring dma_alloc_coherent(4095)
-> mhi_alloc_aligned_ring dma_alloc_coherent(2047)
-> mhi_alloc_aligned_ring dma_alloc_coherent(2047)
-> ath11k_hal_alloc_cont_rdp dma_alloc_coherent(688)
-> [ath11k_hal_alloc_cont_wrp dma_alloc_coherent(180)
-> ath11k_dp_srng_setup dma_alloc_coherent(262143)
-> ath11k_dp_link_desc_bank_alloc dma_alloc_coherent(2097152) 0
-> ath11k_dp_link_desc_bank_alloc dma_alloc_coherent(2097152) 1
-> ath11k_dp_link_desc_bank_alloc dma_alloc_coherent(384) 2
-> ath11k_dp_srng_setup dma_alloc_coherent(2055)
-> ath11k_dp_srng_setup dma_alloc_coherent(1031)
-> ath11k_dp_srng_setup dma_alloc_coherent(1159)
-> ath11k_dp_srng_setup dma_alloc_coherent(16391)
-> ath11k_dp_srng_setup dma_alloc_coherent(1048583)
-> ath11k_dp_srng_setup dma_alloc_coherent(1031)
-> ath11k_dp_srng_setup dma_alloc_coherent(32775)
-> ath11k_dp_srng_setup dma_alloc_coherent(8199)
-> ath11k_dp_srng_setup dma_alloc_coherent(10247)
-> ath11k_dp_srng_setup dma_alloc_coherent(212999)
-> ath11k_dp_srng_setup dma_alloc_coherent(131079)
-> ath11k_dp_srng_setup dma_alloc_coherent(131079)
-> ath11k_dp_srng_setup dma_alloc_coherent(131079)
-> ath11k_dp_srng_setup dma_alloc_coherent(131079)
-> ath11k_dp_srng_setup dma_alloc_coherent(32775)
-> ath11k_dp_srng_setup dma_alloc_coherent(8199)
-> ath11k_dp_srng_setup dma_alloc_coherent(8199)
-> ath11k_dp_srng_setup dma_alloc_coherent(32775)
-> ath11k_dp_srng_setup dma_alloc_coherent(32775)
-> ath11k_dp_srng_setup dma_alloc_coherent(8199)
-> ath11k_dp_srng_setup dma_alloc_coherent(8199)
-> 
-> Let's discuss the general possible solution for this. I'm sure a lot
-> of other drivers would be facing the same kind of issues. What can be
-> general approach to solve this problem.
-> 
-> Regards,
-> Muhammad Usama Anjum
+I tried out "options ath10k_core rawmode =3D 0" along with "skip_otp=3Dy' =
+and the Wi-Fi seems to work perfectly as of now=2E It might be the fix, it =
+might not be either=2E But I think there's something more important to ask:=
+ Are there any good resources/documentation on referring to what the differ=
+ent key-value pairs mean? Like, what's the exact documentation through whic=
+h people arrive at "rawmode=3D0" or "skip_otp=3Dy"?
 
+
+
+Bandhan
+
+
+On 26 June 2025 4:20:13=E2=80=AFam IST, Bandhan Pramanik <bandhanpramanik0=
+6=2Efoss@gmail=2Ecom> wrote:
+> Please ignore the last email (I haven't replied to everyone)=2E Also,
+> here's the actual updated dmesg (the previous one was the old one):
+> https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a1=
+6180/raw/78460e6931a055b6776afe756a95d467913d5ebd/updated-dmesg
+>=20
+> On Thu, Jun 26, 2025 at 4:16=E2=80=AFAM Bandhan Pramanik
+> <bandhanpramanik06=2Efoss@gmail=2Ecom> wrote:
+> >
+> > Hello Bjorn,
+> >
+> > First of all, thanks a LOT for replying=2E
+> >
+> > I have included the files in my previous GitHub Gist=2E Sharing the ra=
+w
+> > files for easier analysis=2E
+> >
+> > lspci -vv: https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca=
+2ea43a1d832a16180/raw/78460e6931a055b6776afe756a95d467913d5ebd/detailed-lsp=
+ci=2Etxt
+> > dmesg: https://gist=2Egithub=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea4=
+3a1d832a16180/raw/78460e6931a055b6776afe756a95d467913d5ebd/dmesg=2Elog
+> >
+> > On a different note, I had to use pci=3Dnoaer, so that the ring buffer
+> > wouldn't get cleared that fast=2E
+> >
+> > Regarding the ath10k thing, none of the fixes worked this time=2E Only
+> > irqpoll worked=2E I don't know if it's because of a disparity b/w GNOM=
+E
+> > and KDE (because my daily driver is Fedora 42), but I'm 300% sure that
+> > it's not just the Wi-Fi that's the issue here=2E It's most probably a
+> > lot of issues here, and the harder issues to fix are usually the ones
+> > closer to the hardware=2E
+> >
+> > Anyway, if you get something, please let me know=2E
+> >
+> > Bandhan
+> >
 
