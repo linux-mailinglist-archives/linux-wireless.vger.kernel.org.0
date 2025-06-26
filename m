@@ -1,223 +1,133 @@
-Return-Path: <linux-wireless+bounces-24555-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24556-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A825BAEA135
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 16:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0393FAEA1FA
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 17:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A196C7ACCF5
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 14:48:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7DF47B1048
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 15:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E16328934F;
-	Thu, 26 Jun 2025 14:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435742EF9C9;
+	Thu, 26 Jun 2025 15:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UrW7wgQS"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MLsyhEPS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E322E4274
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 14:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC6B2EF9D4
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 15:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750949302; cv=none; b=Ju2R5K73dE3AXThJS8mTeuyZ+hm5AQk+VahRizZZCod75iZtR3vKVAyn7vIfjK4CxqQDLHThCotS4t4RYRW4aetVlw4BsJNuvvBAAWxt7gvOJXfFVr4C6r7ZwL3L40B5Sb7H9ylbfA3UXxsW7FsNjJRy/p+Dja09Q0FSgVKB3MQ=
+	t=1750950175; cv=none; b=JFoaF17ydao+qWbCTReoZTN4EYWCIPvxGnDG7PNZaUHkduUmXQ7r/+wRzeZ6dNGcZfqLHDsZoqIrGPFUyf/KZq3+0vmnMXiFcoVYvSRnxhArWinQPe6EdcyERfsWtSm9AvKhVRO+RL23crS/6C1wdPXy6z7iiMPFCZjFzKSOXuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750949302; c=relaxed/simple;
-	bh=aiw8VEIBdfphQwyrfdK4iKbqclBGgU7G8SNbgjBdszU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=nXFOqd1H5+q9mNh2SUCt0Y4Zouoyb73uFus3mqzoO5/rSI2+2RdUlOSQsvrgGJ/V5v170CqclO3uy6Gmwj/voCYvTpnxRCDn7wjgf8bnn0wWMzNf32GffX2a2lVmeA0gYk9FfY45VhOJjVYupMLyj8e1CJMETHqQnVwROgebuR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UrW7wgQS; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-451dbe494d6so11288755e9.1
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 07:48:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750949298; x=1751554098; darn=vger.kernel.org;
-        h=to:from:subject:cc:message-id:date:content-transfer-encoding
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=iJwlXkm7kquT9VL2iSx95X+5Uf83x9tlRzgwBHxTlN8=;
-        b=UrW7wgQScxzg0bjJSKS/HtTHQ3IcilHwo8gSai6kzj001+HRsKBiQvnhHnNXxhoV78
-         TLyqd6ZsE3ZRnZiUnsMAH3tW46N4yV+PxuMLZBBMqzkXkqz+80HAnZH/rmbVKOiA3V0V
-         uIkOz3T/vlv5qdwxlYoBE4CBv9978lwyM0Y4XTy4znWADqGOTRhmaSiTD14UpK8ZvLS+
-         NIoHCwbizuiIlIA/wso0I1ph81guPx3Pkd7Tu6auUNFZmtfSi+aIY1Wq+kPBCDB7Q7/R
-         geR0nVKmpp5vo3NT3lcFeKaPVZ1QrRgZOd3/Yr2WLLbLOwkUcIVshrIwTSJncmWKdixg
-         llrQ==
+	s=arc-20240116; t=1750950175; c=relaxed/simple;
+	bh=wGWJ1Sswd47PGcB2x/iOZY6omMkR+LwiTigIHQ5o8VI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vcb+/FUZD504imY2sK3Scm2uBUp/NjyQot8pgGpsT9DkeBdBCGR1AI3ScgKaD2A3UsKkaCcTocG5omjcobAPNmczMMCQqjE97NWpARKi0O7pylyjRk/Vkom9qOZAM2jp9TKZcNByo4vNOLMIMJ2Aw8UAqL6kft7yjusLBUYjqzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MLsyhEPS; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55Q9xSXl013199
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 15:02:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	wGWJ1Sswd47PGcB2x/iOZY6omMkR+LwiTigIHQ5o8VI=; b=MLsyhEPS0AYQuE/q
+	0ZLQ6k+sCoYnDpqCYEoTp2zl0ZzzcUeT9AivWKJNd7XNPQ1YShEn8p5Wy19AeSc4
+	1jhl4WVeHB9lOSVr56avIcBvdRUMwGG7lM/TTgYCfwYDpGALy/gi5ezbd+qnKeP1
+	hzRxWpq5SzOiQOueWdA1gsOn2rpYgkJNNquG4wUYoU7JtoLkRU9FcRitf9Rga0gS
+	VKGj5P4jwtn783sQrxHFkhIcmA3NgQf3/hAPn/CVRPxD7z18yFLtgUyPOVljzGRy
+	rDh3hfcmMReJoms0UkcZBGRfogfAHKAEJlMGmIDssaHjffFXLvjc8v44sqFVYSue
+	Y+OW5g==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47fbm22aq1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 15:02:52 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3132c1942a1so1751363a91.2
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 08:02:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750949298; x=1751554098;
-        h=to:from:subject:cc:message-id:date:content-transfer-encoding
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iJwlXkm7kquT9VL2iSx95X+5Uf83x9tlRzgwBHxTlN8=;
-        b=iK6qpZzMR76IriyVw/ZdgJeMz3iP5l67MnltGb2Lv3oLnkxrkJtZxnpVFuhY3trxUz
-         FU07BNbGvA17VwauMc9gOF6Wud7miYB4oY7hdDmcEWFgSzcQkvMeIlGBXnffi8VrSS6O
-         nvet1vb0zNiKQEZkTMVmV68GVvLhGApPe5nHwyfw2forjOa1p63gZN98SMv/LxowMg0k
-         /sE92Tmf2hnCYBMlV9X5NksbT4bldXJPYE2tjfeE9PWYQyfA9h5O/CWt1Gx9pxxsX3ps
-         LwE6mthneoNbqshmF5uXhSq9Ko9LMj1xPSawW/PI+J6HXx9qct22idUjMCinbehhMv46
-         tMag==
-X-Gm-Message-State: AOJu0Yxqyor/j7/4BBD9orysB6QWlFmiOxmeuRTybcE4WOojanO2HB3R
-	gDqoBnoxRQV+BJAAKQv2RDwGE8E6xk7xm81tdyRY3X7VnOR/HvgDBHC7T6UJ5UU8068=
-X-Gm-Gg: ASbGncuJMl8qDpArnD86B3v7US5RVBKaWzbBqf9EszvlTFkt1U1PG6IYbxXHV81qrh4
-	BGnsHe2m9g4jCtgH3OP0iSvtP9fCXPX/zsBAFWUpvaytuAAFwlAksT5gG1/mgQT7WfX44bFXMif
-	tJwdjv+q4gVFXSJDkGjRaJADIzRFPL/4gBHvOKyFXtWY9tITShbxEiOuDpPIgS+KIDDATkmW/z9
-	uwwDO4/sEQHrJkKWi/P44EY79RPvOWOwcvuN1x3IbkKk4lN5svemBpVmS1BC6u5wogRNey468bx
-	3zJNIf8EETH/jMkVxnD0Sbsiy/VczT8dX7NvkS1Swu6+HdZHVmjtqQdLo2EFRpzDBqFJ6iiWb2t
-	LQA==
-X-Google-Smtp-Source: AGHT+IFeME8z8xyt10nAyrnqInmUfp/yZ6rndW5t7mimqK/e6IHzphs36nsFBZGRV/KKh3o/5tTo2w==
-X-Received: by 2002:a05:600c:8b45:b0:440:6a1a:d89f with SMTP id 5b1f17b1804b1-45381a9f5a2mr69583125e9.4.1750949298311;
-        Thu, 26 Jun 2025 07:48:18 -0700 (PDT)
-Received: from localhost ([2a00:2381:fd67:101:6c39:59e6:b76d:825])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538a3b3213sm21843175e9.18.2025.06.26.07.48.17
+        d=1e100.net; s=20230601; t=1750950171; x=1751554971;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wGWJ1Sswd47PGcB2x/iOZY6omMkR+LwiTigIHQ5o8VI=;
+        b=FzLPgwx1btBnNgnkdQGmWqWzlZRe2Xf2dizTSPFZoV7sNeQv+kpggr6VkFXZdw9FWT
+         XlqmskFrc8ay756u8jVulrrytK+4fwYCBF0TGCxUZ1YppptZe4rCoIHmcaj7+mMuYKFA
+         FHGFenBVij2Qmgd6X4ZnVcA++tk5jTXhxxGNi+gUglSGXXcWv8VxeyE4/Bo6IK37fIIw
+         +9cXbNlYplGNyqjIWxJm9AeHIe8vXGtfEKM9kqMVD6HxHEzJ3h/yq2uYwg2mKvASSA3o
+         fAvruwaxFS57e+EKYZuUc0oXamlPmpMx/BaPa3hjuWEr5mjc2Ce1m8LLx8o9/FSS4lAZ
+         G56g==
+X-Gm-Message-State: AOJu0Yz849B6aTdxbQczv3LqZ7adl32q8fnxZnS2/u7gFuL3juIb38XJ
+	kh2QcEuKUP6qlwkyKkKBH+z/8XqhZHHA2P1to1uMCFqmR00pLrBm73qdc4GHPptAWQjeAjB6Q0u
+	3EVfvc2Dymt7pu489WNzUfzM4UQtQ20sp6zfzR/k3fctQZsK+nIQqEJx/+9ZALHFKEYekeQ==
+X-Gm-Gg: ASbGncvtfcphH3hTCzrJnIT2E37W1p2iB9Tcu+XFpWgeUe4yqXFsHRy494lN2gzM6iz
+	YpqGmFLNrjg0JAtwEzWCBpBJQSd8WiXZNQKASMT76oS6EvbM5NQRsb1xU73nY2CkS8+0sZkyeMH
+	CQKmu6P4IkRFafCNwxMukp7W2jm4ZiOHMg5FzQPcnUgrwOXlMmHAY0ysegGa/vC78/iZdCI7rqu
+	0nWMWloh76DJ3bHgvbmyqZPVSRx/nABZMLQhRo9v9LWFQQ6l3p1XHvhFgDD3rOApLSY8NzlrJ3n
+	NZemcfzzpUPaVactVrcnRWc6AZn9sT0xqspcnxYQVWhNmaODFH5ZyNlWtCXRTbgmtPzSykrbki4
+	i9Q==
+X-Received: by 2002:a17:90b:3b8f:b0:311:e8cc:4248 with SMTP id 98e67ed59e1d1-315f26d29ffmr11663500a91.33.1750950170678;
+        Thu, 26 Jun 2025 08:02:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFdptXbuCusOcSSm1v4l2+op7oqmsQT4Ib4rFlDAj00T7SkOzlBe2kguaZuOM+pV5f/S3t6xw==
+X-Received: by 2002:a17:90b:3b8f:b0:311:e8cc:4248 with SMTP id 98e67ed59e1d1-315f26d29ffmr11663420a91.33.1750950169970;
+        Thu, 26 Jun 2025 08:02:49 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-315f539e6aasm4593623a91.15.2025.06.26.08.02.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Jun 2025 07:48:17 -0700 (PDT)
+        Thu, 26 Jun 2025 08:02:48 -0700 (PDT)
+Message-ID: <3f6c106f-cbd3-4f9a-8e7c-e43b51457bfb@oss.qualcomm.com>
+Date: Thu, 26 Jun 2025 08:02:47 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [question, bug] regularly disconnecting wifi on RB1 and RB2
+ boards, ath10
+To: Alexey Klimov <alexey.klimov@linaro.org>, jjohnson@kernel.org,
+        ath10k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <DAWJQ2NIKY28.1XOG35E4A682G@linaro.org>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <DAWJQ2NIKY28.1XOG35E4A682G@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Jun 2025 15:48:17 +0100
-Message-Id: <DAWJQ2NIKY28.1XOG35E4A682G@linaro.org>
-Cc: <linux-wireless@vger.kernel.org>, <jeff.johnson@oss.qualcomm.com>,
- <linux-arm-msm@vger.kernel.org>
-Subject: [question, bug] regularly disconnecting wifi on RB1 and RB2 boards,
- ath10
-From: "Alexey Klimov" <alexey.klimov@linaro.org>
-To: <jjohnson@kernel.org>, <ath10k@lists.infradead.org>
-X-Mailer: aerc 0.20.0
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=YYu95xRf c=1 sm=1 tr=0 ts=685d611c cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=sXrhvLzian3437fu5cAA:9
+ a=QEXdDO2ut3YA:10 a=B0GORZ8-IyoA:10 a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-GUID: Q132XPfFoS-Px3yns6Gzg4Ze0fgD-swT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI2MDEyNyBTYWx0ZWRfXxDwBqchO+3x8
+ Yyt0adOHKJWqR6iA4fzv+CFOc0IwLFm2Ht5tedYTf9JiN+UNuLI0tp4WerNw840X3WYhJBr5yAA
+ b1T97/zyA9ogjvoba9Q8YqHdSnEobx2oJ+75aGArU9lYzd25dEuGPaM1aWPtkOKVRsaPsLqhU6C
+ DdpU+BOO0zyXG+6CBOSclIUVFcm0F+PlGPZQuR1Xf/qYDpqEwQpeQ5/b140IvQuAwNJL2Dk+hjH
+ C4lpShXBWpn4A2qAwhK5X5GeUnTnfaCRGb6/+6MVAYlmHq4mpvx69KDb8C4LhOq5Be7gTZkc2DC
+ D+VtiW11QoKoy/Ydxp9/XUUOEOmpF4+ql0o+F5TptavMvMhW4RKFpnh2K0bHv7QQ7aBnsa4hV38
+ MKP98SvaP84sor3Rcg98pslNNZ+H+FrPbz4MfiEGp+8WT+hM0VbgrC6vGd1GpEWOpQFD5jHZ
+X-Proofpoint-ORIG-GUID: Q132XPfFoS-Px3yns6Gzg4Ze0fgD-swT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-26_06,2025-06-26_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 mlxlogscore=755
+ clxscore=1015 mlxscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506260127
 
-Hi all,
+On 6/26/2025 7:48 AM, Alexey Klimov wrote:
+...
+> Any hints on how to debug this? Any debug switches I can toggle to debug this?
+> I am happy to provide more info or test changes/patches if any.
 
-After a long time of testing it seems the problem narrows down to qrb2210 r=
-b1
-and qrb4210 rb2 boards.
+https://wireless.docs.kernel.org/en/latest/en/users/drivers/ath10k/debug.html
 
-After booting, the board connects to the wifi network and after around ~5-1=
-0
-minutes it loses the connection (nothing in dmesg). A simple ping of anothe=
-r
-machine on the local network doesn't work. After, I guess, around 5000
-seconds the GROUP_KEY_HANDSHAKE_TIMEOUT message is printked:
-
-[ 5064.093748] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason: 16=3D=
-GROUP_KEY_HANDSHAKE_TIMEOUT)
-[ 5067.083790] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=3D=
-82:95:77:b1:05:a5)
-[ 5067.091971] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
-[ 5067.100192] wlan0: authenticated
-[ 5067.104734] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
-[ 5067.113230] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x11 sta=
-tus=3D0 aid=3D2)
-[ 5067.193624] wlan0: associated
-
-and after that wireless connection works for ~5-10 minutes and then the cyc=
-le
-repeats. The longer log with more info and some info with firmware versions=
-,
-ids, etc is at the end of this email [1]. Simple wlan0 down and wlan0 up fi=
-xes
-things for a few minutes.
-
-iw wlan0 link reports the following when wireless network is working:
-
-root@rb1:~# iw wlan0 link
-Connected to 8c:58:72:d4:d1:8d (on wlan0)
-        SSID: void
-        freq: 5300
-        RX: 45802 bytes (424 packets)
-        TX: 71260 bytes (125 packets)
-        signal: -66 dBm
-        rx bitrate: 433.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 1
-
-bss flags:      short-slot-time
-dtim period:    1
-beacon int:     100
-
-and this when wireless connection doesn't work:
-
-Connected to 8c:58:72:d4:d1:8d (on wlan0)
-        SSID: void
-        freq: 5300
-        RX: 850615 bytes (9623 packets)
-        TX: 20372 bytes (247 packets)
-        signal: -61 dBm
-        rx bitrate: 6.0 MBit/s
-
-    bss flags:      short-slot-time
-    dtim period:    1
-    beacon int:     100
-
-This was tested with three different routers and different wifi networks.
-Other devices here do not exhibit this behaviour.
-
-Any hints on how to debug this? Any debug switches I can toggle to debug th=
-is?
-I am happy to provide more info or test changes/patches if any.
-
-Thanks in advance.
-Best regards,
-Alexey
-
-[1]:
-
-[    7.758934] ath10k_snoc c800000.wifi: qmi chip_id 0x120 chip_family 0x40=
-07 board_id 0xff soc_id 0x40670000
-[    7.769740] ath10k_snoc c800000.wifi: qmi fw_version 0x337703a3 fw_build=
-_timestamp 2023-10-14 01:26 fw_build_id QC_IMAGE_VERSION_STRING=3DWLAN.HL.3=
-.3.7.c2-00931-QCAHLSWMTPLZ-1
-[   11.086123] ath10k_snoc c800000.wifi: wcn3990 hw1.0 target 0x00000008 ch=
-ip_id 0x00000000 sub 0000:0000
-[   11.095622] ath10k_snoc c800000.wifi: kconfig debug 0 debugfs 0 tracing =
-0 dfs 0 testmode 0
-[   11.103998] ath10k_snoc c800000.wifi: firmware ver  api 5 features wowla=
-n,mgmt-tx-by-reference,non-bmi,single-chan-info-per-channel crc32 a79c5b24
-[   11.144810] ath10k_snoc c800000.wifi: htt-ver 3.128 wmi-op 4 htt-op 3 ca=
-l file max-sta 32 raw 0 hwcrypto 1
-[   11.230894] ath10k_snoc c800000.wifi: invalid MAC address; choosing rand=
-om
-[   11.238128] ath: EEPROM regdomain: 0x0
-[   11.242060] ath: EEPROM indicates default country code should be used
-[   11.248582] ath: doing EEPROM country->regdmn map search
-[   11.253950] ath: country maps to regdmn code: 0x3a
-[   11.258805] ath: Country alpha2 being used: US
-[   11.263466] ath: Regpair used: 0x3a
-[   15.355756] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=3D=
-82:95:77:b1:05:a5)
-[   15.363942] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
-[   15.372142] wlan0: authenticated
-[   15.377928] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
-[   15.386338] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x11 sta=
-tus=3D0 aid=3D2)
-[   15.466514] wlan0: associated
-[   23.167251] systemd-journald[195]: Oldest entry in /var/log/journal/ec3e=
-0078e5e0499bac67949f3edf3fcf/system.journal is older than the configured fi=
-le retention duration (1month), suggesting rotation.
-[   23.185186] systemd-journald[195]: /var/log/journal/ec3e0078e5e0499bac67=
-949f3edf3fcf/system.journal: Journal header limits reached or header out-of=
--date, rotating.
-[   31.750177] l5: disabling
-[   31.753382] l11: disabling
-[   31.756385] l16: disabling
-[ 5064.093748] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason: 16=3D=
-GROUP_KEY_HANDSHAKE_TIMEOUT)
-[ 5067.083790] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=3D=
-82:95:77:b1:05:a5)
-[ 5067.091971] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
-[ 5067.100192] wlan0: authenticated
-[ 5067.104734] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
-[ 5067.113230] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x11 sta=
-tus=3D0 aid=3D2)
-[ 5067.193624] wlan0: associated
-[10437.346541] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason: 16=3D=
-GROUP_KEY_HANDSHAKE_TIMEOUT)
-[10440.340111] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=3D=
-82:95:77:b1:05:a5)
-[10440.348408] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
-[10440.356698] wlan0: authenticated
-[10440.361077] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
-[10440.369516] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x11 sta=
-tus=3D0 aid=3D2)
-[10440.446661] wlan0: associated
 
