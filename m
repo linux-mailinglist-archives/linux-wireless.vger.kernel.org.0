@@ -1,274 +1,223 @@
-Return-Path: <linux-wireless+bounces-24554-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24555-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60633AEA023
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 16:16:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A825BAEA135
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 16:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66DBB1C45C9C
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 14:14:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A196C7ACCF5
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 14:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E2A2EA492;
-	Thu, 26 Jun 2025 14:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E16328934F;
+	Thu, 26 Jun 2025 14:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UrW7wgQS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.prodrive-technologies.com (mail.prodrive-technologies.com [212.61.153.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AFB2E975F;
-	Thu, 26 Jun 2025 14:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.61.153.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E322E4274
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 14:48:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750947172; cv=none; b=QU34gY1WZPu4cUwHHC6gAMSCDqXs/gDri0djVVRaImquR6le00pqNLwDJjKFv77XBBduJjnXGxaurR6WYgL6WNZf++RqRAhAZ0X8X8331BXrzoj8+mxWnj5PGXcx6fM1SztTgfL/YbIN58PcDzshtmJ7gx13TE5UrfDKQdxWYCk=
+	t=1750949302; cv=none; b=Ju2R5K73dE3AXThJS8mTeuyZ+hm5AQk+VahRizZZCod75iZtR3vKVAyn7vIfjK4CxqQDLHThCotS4t4RYRW4aetVlw4BsJNuvvBAAWxt7gvOJXfFVr4C6r7ZwL3L40B5Sb7H9ylbfA3UXxsW7FsNjJRy/p+Dja09Q0FSgVKB3MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750947172; c=relaxed/simple;
-	bh=O0n5PkvYZHuE+ymEljfo8kaBgOXB9iTy2XFyl6J2Z4A=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M82cYxWkV67VFsxWWfLuXV/1+Gqk2LSbiDYO5rkUdLRlryMR9jNwZTRblnIlOanEuZZw8fLlVyeu+rTldH95E4p/XmBQhSnGGb7SO5MOQc0Cs0hULPD7h49yx178J05+wqfOjL2TOS9UIJhqb9cY5AEyMo9v17s9Wn6v2KqrXBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com; spf=pass smtp.mailfrom=prodrive-technologies.com; arc=none smtp.client-ip=212.61.153.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prodrive-technologies.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prodrive-technologies.com
-Received: from EXCOP01.bk.prodrive.nl (10.1.0.22) by EXCOP01.bk.prodrive.nl
- (10.1.0.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 26 Jun
- 2025 16:12:43 +0200
-Received: from lnxdevrm02.bk.prodrive.nl (10.1.1.121) by
- EXCOP01.bk.prodrive.nl (10.1.0.22) with Microsoft SMTP Server id 15.2.1544.4
- via Frontend Transport; Thu, 26 Jun 2025 16:12:43 +0200
-Received: from paugeu by lnxdevrm02.bk.prodrive.nl with local (Exim 4.96)
-	(envelope-from <paul.geurts@prodrive-technologies.com>)
-	id 1uUnLH-00Fqup-1B;
-	Thu, 26 Jun 2025 16:12:43 +0200
-From: Paul Geurts <paul.geurts@prodrive-technologies.com>
-To: <mgreer@animalcreek.com>, <krzk@kernel.org>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <robh@kernel.org>, <conor+dt@kernel.org>,
-	<linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <martijn.de.gouw@prodrive-technologies.com>, Paul Geurts
-	<paul.geurts@prodrive-technologies.com>
-Subject: [PATCH v3 2/2] NFC: trf7970a: Create device-tree parameter for RX gain reduction
-Date: Thu, 26 Jun 2025 16:12:42 +0200
-Message-ID: <20250626141242.3749958-3-paul.geurts@prodrive-technologies.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250626141242.3749958-1-paul.geurts@prodrive-technologies.com>
-References: <20250626141242.3749958-1-paul.geurts@prodrive-technologies.com>
+	s=arc-20240116; t=1750949302; c=relaxed/simple;
+	bh=aiw8VEIBdfphQwyrfdK4iKbqclBGgU7G8SNbgjBdszU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=nXFOqd1H5+q9mNh2SUCt0Y4Zouoyb73uFus3mqzoO5/rSI2+2RdUlOSQsvrgGJ/V5v170CqclO3uy6Gmwj/voCYvTpnxRCDn7wjgf8bnn0wWMzNf32GffX2a2lVmeA0gYk9FfY45VhOJjVYupMLyj8e1CJMETHqQnVwROgebuR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UrW7wgQS; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-451dbe494d6so11288755e9.1
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 07:48:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750949298; x=1751554098; darn=vger.kernel.org;
+        h=to:from:subject:cc:message-id:date:content-transfer-encoding
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=iJwlXkm7kquT9VL2iSx95X+5Uf83x9tlRzgwBHxTlN8=;
+        b=UrW7wgQScxzg0bjJSKS/HtTHQ3IcilHwo8gSai6kzj001+HRsKBiQvnhHnNXxhoV78
+         TLyqd6ZsE3ZRnZiUnsMAH3tW46N4yV+PxuMLZBBMqzkXkqz+80HAnZH/rmbVKOiA3V0V
+         uIkOz3T/vlv5qdwxlYoBE4CBv9978lwyM0Y4XTy4znWADqGOTRhmaSiTD14UpK8ZvLS+
+         NIoHCwbizuiIlIA/wso0I1ph81guPx3Pkd7Tu6auUNFZmtfSi+aIY1Wq+kPBCDB7Q7/R
+         geR0nVKmpp5vo3NT3lcFeKaPVZ1QrRgZOd3/Yr2WLLbLOwkUcIVshrIwTSJncmWKdixg
+         llrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750949298; x=1751554098;
+        h=to:from:subject:cc:message-id:date:content-transfer-encoding
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iJwlXkm7kquT9VL2iSx95X+5Uf83x9tlRzgwBHxTlN8=;
+        b=iK6qpZzMR76IriyVw/ZdgJeMz3iP5l67MnltGb2Lv3oLnkxrkJtZxnpVFuhY3trxUz
+         FU07BNbGvA17VwauMc9gOF6Wud7miYB4oY7hdDmcEWFgSzcQkvMeIlGBXnffi8VrSS6O
+         nvet1vb0zNiKQEZkTMVmV68GVvLhGApPe5nHwyfw2forjOa1p63gZN98SMv/LxowMg0k
+         /sE92Tmf2hnCYBMlV9X5NksbT4bldXJPYE2tjfeE9PWYQyfA9h5O/CWt1Gx9pxxsX3ps
+         LwE6mthneoNbqshmF5uXhSq9Ko9LMj1xPSawW/PI+J6HXx9qct22idUjMCinbehhMv46
+         tMag==
+X-Gm-Message-State: AOJu0Yxqyor/j7/4BBD9orysB6QWlFmiOxmeuRTybcE4WOojanO2HB3R
+	gDqoBnoxRQV+BJAAKQv2RDwGE8E6xk7xm81tdyRY3X7VnOR/HvgDBHC7T6UJ5UU8068=
+X-Gm-Gg: ASbGncuJMl8qDpArnD86B3v7US5RVBKaWzbBqf9EszvlTFkt1U1PG6IYbxXHV81qrh4
+	BGnsHe2m9g4jCtgH3OP0iSvtP9fCXPX/zsBAFWUpvaytuAAFwlAksT5gG1/mgQT7WfX44bFXMif
+	tJwdjv+q4gVFXSJDkGjRaJADIzRFPL/4gBHvOKyFXtWY9tITShbxEiOuDpPIgS+KIDDATkmW/z9
+	uwwDO4/sEQHrJkKWi/P44EY79RPvOWOwcvuN1x3IbkKk4lN5svemBpVmS1BC6u5wogRNey468bx
+	3zJNIf8EETH/jMkVxnD0Sbsiy/VczT8dX7NvkS1Swu6+HdZHVmjtqQdLo2EFRpzDBqFJ6iiWb2t
+	LQA==
+X-Google-Smtp-Source: AGHT+IFeME8z8xyt10nAyrnqInmUfp/yZ6rndW5t7mimqK/e6IHzphs36nsFBZGRV/KKh3o/5tTo2w==
+X-Received: by 2002:a05:600c:8b45:b0:440:6a1a:d89f with SMTP id 5b1f17b1804b1-45381a9f5a2mr69583125e9.4.1750949298311;
+        Thu, 26 Jun 2025 07:48:18 -0700 (PDT)
+Received: from localhost ([2a00:2381:fd67:101:6c39:59e6:b76d:825])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538a3b3213sm21843175e9.18.2025.06.26.07.48.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Jun 2025 07:48:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 26 Jun 2025 15:48:17 +0100
+Message-Id: <DAWJQ2NIKY28.1XOG35E4A682G@linaro.org>
+Cc: <linux-wireless@vger.kernel.org>, <jeff.johnson@oss.qualcomm.com>,
+ <linux-arm-msm@vger.kernel.org>
+Subject: [question, bug] regularly disconnecting wifi on RB1 and RB2 boards,
+ ath10
+From: "Alexey Klimov" <alexey.klimov@linaro.org>
+To: <jjohnson@kernel.org>, <ath10k@lists.infradead.org>
+X-Mailer: aerc 0.20.0
 
-The TRF7970a device is sensitive to RF disturbances, which can make it
-hard to pass some EMC immunity tests. By reducing the RX antenna gain,
-the device becomes less sensitive to EMC disturbances, as a trade-off
-against antenna performance.
+Hi all,
 
-Add a device tree option to select RX gain reduction to improve EMC
-performance.
+After a long time of testing it seems the problem narrows down to qrb2210 r=
+b1
+and qrb4210 rb2 boards.
 
-Selecting a communication standard in the ISO control register resets
-the RX antenna gain settings. Therefore set the RX gain reduction
-everytime the ISO control register changes, when the option is used.
+After booting, the board connects to the wifi network and after around ~5-1=
+0
+minutes it loses the connection (nothing in dmesg). A simple ping of anothe=
+r
+machine on the local network doesn't work. After, I guess, around 5000
+seconds the GROUP_KEY_HANDSHAKE_TIMEOUT message is printked:
 
-Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
----
- drivers/nfc/trf7970a.c | 91 +++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 80 insertions(+), 11 deletions(-)
+[ 5064.093748] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason: 16=3D=
+GROUP_KEY_HANDSHAKE_TIMEOUT)
+[ 5067.083790] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=3D=
+82:95:77:b1:05:a5)
+[ 5067.091971] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+[ 5067.100192] wlan0: authenticated
+[ 5067.104734] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+[ 5067.113230] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x11 sta=
+tus=3D0 aid=3D2)
+[ 5067.193624] wlan0: associated
 
-diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-index 9e1a34e23af2..d17c701c7888 100644
---- a/drivers/nfc/trf7970a.c
-+++ b/drivers/nfc/trf7970a.c
-@@ -272,12 +272,18 @@
- #define TRF7970A_MODULATOR_EN_OOK		BIT(6)
- #define TRF7970A_MODULATOR_27MHZ		BIT(7)
- 
-+#define TRF7970A_RX_GAIN_REDUCTION_MAX_DB	15
-+#define TRF7970A_RX_GAIN_REDUCTION_DB_PER_LSB	5
- #define TRF7970A_RX_SPECIAL_SETTINGS_NO_LIM	BIT(0)
- #define TRF7970A_RX_SPECIAL_SETTINGS_AGCR	BIT(1)
--#define TRF7970A_RX_SPECIAL_SETTINGS_GD_0DB	(0x0 << 2)
--#define TRF7970A_RX_SPECIAL_SETTINGS_GD_5DB	(0x1 << 2)
--#define TRF7970A_RX_SPECIAL_SETTINGS_GD_10DB	(0x2 << 2)
--#define TRF7970A_RX_SPECIAL_SETTINGS_GD_15DB	(0x3 << 2)
-+#define TRF7970A_RX_SPECIAL_SETTINGS_GD_SHIFT	2
-+#define TRF7970A_RX_SPECIAL_SETTINGS_GD_MAX	(0x3)
-+#define TRF7970A_RX_SPECIAL_SETTINGS_GD_MASK	(TRF7970A_RX_SPECIAL_SETTINGS_GD_MAX << \
-+							TRF7970A_RX_SPECIAL_SETTINGS_GD_SHIFT)
-+#define TRF7970A_RX_SPECIAL_SETTINGS_GD_0DB	(0x0 << TRF7970A_RX_SPECIAL_SETTINGS_GD_SHIFT)
-+#define TRF7970A_RX_SPECIAL_SETTINGS_GD_5DB	(0x1 << TRF7970A_RX_SPECIAL_SETTINGS_GD_SHIFT)
-+#define TRF7970A_RX_SPECIAL_SETTINGS_GD_10DB	(0x2 << TRF7970A_RX_SPECIAL_SETTINGS_GD_SHIFT)
-+#define TRF7970A_RX_SPECIAL_SETTINGS_GD_15DB	(0x3 << TRF7970A_RX_SPECIAL_SETTINGS_GD_SHIFT)
- #define TRF7970A_RX_SPECIAL_SETTINGS_HBT	BIT(4)
- #define TRF7970A_RX_SPECIAL_SETTINGS_M848	BIT(5)
- #define TRF7970A_RX_SPECIAL_SETTINGS_C424	BIT(6)
-@@ -452,6 +458,8 @@ struct trf7970a {
- 	unsigned int			timeout;
- 	bool				ignore_timeout;
- 	struct delayed_work		timeout_work;
-+	u8				rx_gain_reduction;
-+	bool			custom_rx_gain_reduction;
- };
- 
- static int trf7970a_cmd(struct trf7970a *trf, u8 opcode)
-@@ -551,6 +559,41 @@ static int trf7970a_read_irqstatus(struct trf7970a *trf, u8 *status)
- 	return ret;
- }
- 
-+static int trf7970a_update_rx_gain_reduction(struct trf7970a *trf)
-+{
-+	int ret = 0;
-+	u8 reg;
-+
-+	if (!trf->custom_rx_gain_reduction)
-+		return 0;
-+
-+	ret = trf7970a_read(trf, TRF7970A_RX_SPECIAL_SETTINGS, &reg);
-+	if (ret)
-+		return ret;
-+	reg &= ~(TRF7970A_RX_SPECIAL_SETTINGS_GD_MASK);
-+	reg |= trf->rx_gain_reduction;
-+
-+	ret = trf7970a_write(trf, TRF7970A_RX_SPECIAL_SETTINGS, reg);
-+
-+	return ret;
-+}
-+
-+static int trf7970a_update_iso_ctrl_register(struct trf7970a *trf, u8 iso_ctrl)
-+{
-+	int ret;
-+
-+	ret = trf7970a_write(trf, TRF7970A_ISO_CTRL, iso_ctrl);
-+	if (ret)
-+		return ret;
-+	/*
-+	 * Every time the ISO_CTRL register is written, the RX special setting register is reset by
-+	 * the chip. When a custom gain reguduction is required, it should be rewritten now.
-+	 */
-+	ret = trf7970a_update_rx_gain_reduction(trf);
-+
-+	return ret;
-+}
-+
- static int trf7970a_read_target_proto(struct trf7970a *trf, u8 *target_proto)
- {
- 	int ret;
-@@ -930,8 +973,7 @@ static irqreturn_t trf7970a_irq(int irq, void *dev_id)
- 			}
- 
- 			if (iso_ctrl != trf->iso_ctrl) {
--				ret = trf7970a_write(trf, TRF7970A_ISO_CTRL,
--						     iso_ctrl);
-+				ret = trf7970a_update_iso_ctrl_register(trf, iso_ctrl);
- 				if (ret)
- 					goto err_unlock_exit;
- 
-@@ -1035,6 +1077,11 @@ static int trf7970a_init(struct trf7970a *trf)
- 	if (ret)
- 		goto err_out;
- 
-+	/* Set the gain reduction after soft init */
-+	ret = trf7970a_update_rx_gain_reduction(trf);
-+	if (ret)
-+		goto err_out;
-+
- 	ret = trf7970a_cmd(trf, TRF7970A_CMD_IDLE);
- 	if (ret)
- 		goto err_out;
-@@ -1309,7 +1356,7 @@ static int trf7970a_in_config_framing(struct trf7970a *trf, int framing)
- 	}
- 
- 	if (iso_ctrl != trf->iso_ctrl) {
--		ret = trf7970a_write(trf, TRF7970A_ISO_CTRL, iso_ctrl);
-+		ret = trf7970a_update_iso_ctrl_register(trf, iso_ctrl);
- 		if (ret)
- 			return ret;
- 
-@@ -1441,7 +1488,7 @@ static int trf7970a_per_cmd_config(struct trf7970a *trf,
- 		}
- 
- 		if (iso_ctrl != trf->iso_ctrl) {
--			ret = trf7970a_write(trf, TRF7970A_ISO_CTRL, iso_ctrl);
-+			ret = trf7970a_update_iso_ctrl_register(trf, iso_ctrl);
- 			if (ret)
- 				return ret;
- 
-@@ -1605,8 +1652,7 @@ static int trf7970a_tg_config_rf_tech(struct trf7970a *trf, int tech)
- 	 */
- 	if ((trf->framing == NFC_DIGITAL_FRAMING_NFC_DEP_ACTIVATED) &&
- 	    (trf->iso_ctrl_tech != trf->iso_ctrl)) {
--		ret = trf7970a_write(trf, TRF7970A_ISO_CTRL,
--				     trf->iso_ctrl_tech);
-+		ret = trf7970a_update_iso_ctrl_register(trf, trf->iso_ctrl_tech);
- 
- 		trf->iso_ctrl = trf->iso_ctrl_tech;
- 	}
-@@ -1654,7 +1700,7 @@ static int trf7970a_tg_config_framing(struct trf7970a *trf, int framing)
- 	trf->framing = framing;
- 
- 	if (iso_ctrl != trf->iso_ctrl) {
--		ret = trf7970a_write(trf, TRF7970A_ISO_CTRL, iso_ctrl);
-+		ret = trf7970a_update_iso_ctrl_register(trf, iso_ctrl);
- 		if (ret)
- 			return ret;
- 
-@@ -1755,6 +1801,10 @@ static int _trf7970a_tg_listen(struct nfc_digital_dev *ddev, u16 timeout,
- 	if (ret)
- 		goto out_err;
- 
-+	ret = trf7970a_update_rx_gain_reduction(trf);
-+	if (ret)
-+		goto out_err;
-+
- 	ret = trf7970a_write(trf, TRF7970A_REG_IO_CTRL,
- 			     trf->io_ctrl | TRF7970A_REG_IO_CTRL_VRS(0x1));
- 	if (ret)
-@@ -1945,6 +1995,10 @@ static int trf7970a_startup(struct trf7970a *trf)
- 	if (ret)
- 		return ret;
- 
-+	ret = trf7970a_update_rx_gain_reduction(trf);
-+	if (ret)
-+		return ret;
-+
- 	pm_runtime_set_active(trf->dev);
- 	pm_runtime_enable(trf->dev);
- 	pm_runtime_mark_last_busy(trf->dev);
-@@ -1993,6 +2047,7 @@ static int trf7970a_probe(struct spi_device *spi)
- 	struct trf7970a *trf;
- 	int uvolts, autosuspend_delay, ret;
- 	u32 clk_freq = TRF7970A_13MHZ_CLOCK_FREQUENCY;
-+	u32 rx_gain_reduction_db;
- 
- 	if (!np) {
- 		dev_err(&spi->dev, "No Device Tree entry\n");
-@@ -2054,6 +2109,20 @@ static int trf7970a_probe(struct spi_device *spi)
- 		trf->modulator_sys_clk_ctrl = 0;
- 	}
- 
-+	if (of_property_read_u32(np, "ti,rx-gain-reduction-db", &rx_gain_reduction_db) == 0) {
-+		if (rx_gain_reduction_db > TRF7970A_RX_GAIN_REDUCTION_MAX_DB) {
-+			dev_warn(trf->dev, "RX Gain reduction too high. Ignored\n");
-+		} else if ((rx_gain_reduction_db % TRF7970A_RX_GAIN_REDUCTION_DB_PER_LSB)) {
-+			dev_warn(trf->dev, "RX Gain must be set in 5 dB increments. Ignored\n");
-+		} else {
-+			dev_dbg(trf->dev, "RX gain set to -%udB\n", rx_gain_reduction_db);
-+			trf->rx_gain_reduction = ((rx_gain_reduction_db /
-+				TRF7970A_RX_GAIN_REDUCTION_DB_PER_LSB) <<
-+				TRF7970A_RX_SPECIAL_SETTINGS_GD_SHIFT);
-+			trf->custom_rx_gain_reduction = true;
-+		}
-+	}
-+
- 	ret = devm_request_threaded_irq(trf->dev, spi->irq, NULL,
- 					trf7970a_irq,
- 					IRQF_TRIGGER_RISING | IRQF_ONESHOT,
--- 
-2.39.2
+and after that wireless connection works for ~5-10 minutes and then the cyc=
+le
+repeats. The longer log with more info and some info with firmware versions=
+,
+ids, etc is at the end of this email [1]. Simple wlan0 down and wlan0 up fi=
+xes
+things for a few minutes.
 
+iw wlan0 link reports the following when wireless network is working:
+
+root@rb1:~# iw wlan0 link
+Connected to 8c:58:72:d4:d1:8d (on wlan0)
+        SSID: void
+        freq: 5300
+        RX: 45802 bytes (424 packets)
+        TX: 71260 bytes (125 packets)
+        signal: -66 dBm
+        rx bitrate: 433.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 1
+
+bss flags:      short-slot-time
+dtim period:    1
+beacon int:     100
+
+and this when wireless connection doesn't work:
+
+Connected to 8c:58:72:d4:d1:8d (on wlan0)
+        SSID: void
+        freq: 5300
+        RX: 850615 bytes (9623 packets)
+        TX: 20372 bytes (247 packets)
+        signal: -61 dBm
+        rx bitrate: 6.0 MBit/s
+
+    bss flags:      short-slot-time
+    dtim period:    1
+    beacon int:     100
+
+This was tested with three different routers and different wifi networks.
+Other devices here do not exhibit this behaviour.
+
+Any hints on how to debug this? Any debug switches I can toggle to debug th=
+is?
+I am happy to provide more info or test changes/patches if any.
+
+Thanks in advance.
+Best regards,
+Alexey
+
+[1]:
+
+[    7.758934] ath10k_snoc c800000.wifi: qmi chip_id 0x120 chip_family 0x40=
+07 board_id 0xff soc_id 0x40670000
+[    7.769740] ath10k_snoc c800000.wifi: qmi fw_version 0x337703a3 fw_build=
+_timestamp 2023-10-14 01:26 fw_build_id QC_IMAGE_VERSION_STRING=3DWLAN.HL.3=
+.3.7.c2-00931-QCAHLSWMTPLZ-1
+[   11.086123] ath10k_snoc c800000.wifi: wcn3990 hw1.0 target 0x00000008 ch=
+ip_id 0x00000000 sub 0000:0000
+[   11.095622] ath10k_snoc c800000.wifi: kconfig debug 0 debugfs 0 tracing =
+0 dfs 0 testmode 0
+[   11.103998] ath10k_snoc c800000.wifi: firmware ver  api 5 features wowla=
+n,mgmt-tx-by-reference,non-bmi,single-chan-info-per-channel crc32 a79c5b24
+[   11.144810] ath10k_snoc c800000.wifi: htt-ver 3.128 wmi-op 4 htt-op 3 ca=
+l file max-sta 32 raw 0 hwcrypto 1
+[   11.230894] ath10k_snoc c800000.wifi: invalid MAC address; choosing rand=
+om
+[   11.238128] ath: EEPROM regdomain: 0x0
+[   11.242060] ath: EEPROM indicates default country code should be used
+[   11.248582] ath: doing EEPROM country->regdmn map search
+[   11.253950] ath: country maps to regdmn code: 0x3a
+[   11.258805] ath: Country alpha2 being used: US
+[   11.263466] ath: Regpair used: 0x3a
+[   15.355756] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=3D=
+82:95:77:b1:05:a5)
+[   15.363942] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+[   15.372142] wlan0: authenticated
+[   15.377928] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+[   15.386338] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x11 sta=
+tus=3D0 aid=3D2)
+[   15.466514] wlan0: associated
+[   23.167251] systemd-journald[195]: Oldest entry in /var/log/journal/ec3e=
+0078e5e0499bac67949f3edf3fcf/system.journal is older than the configured fi=
+le retention duration (1month), suggesting rotation.
+[   23.185186] systemd-journald[195]: /var/log/journal/ec3e0078e5e0499bac67=
+949f3edf3fcf/system.journal: Journal header limits reached or header out-of=
+-date, rotating.
+[   31.750177] l5: disabling
+[   31.753382] l11: disabling
+[   31.756385] l16: disabling
+[ 5064.093748] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason: 16=3D=
+GROUP_KEY_HANDSHAKE_TIMEOUT)
+[ 5067.083790] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=3D=
+82:95:77:b1:05:a5)
+[ 5067.091971] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+[ 5067.100192] wlan0: authenticated
+[ 5067.104734] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+[ 5067.113230] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x11 sta=
+tus=3D0 aid=3D2)
+[ 5067.193624] wlan0: associated
+[10437.346541] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason: 16=3D=
+GROUP_KEY_HANDSHAKE_TIMEOUT)
+[10440.340111] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=3D=
+82:95:77:b1:05:a5)
+[10440.348408] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+[10440.356698] wlan0: authenticated
+[10440.361077] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+[10440.369516] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x11 sta=
+tus=3D0 aid=3D2)
+[10440.446661] wlan0: associated
 
