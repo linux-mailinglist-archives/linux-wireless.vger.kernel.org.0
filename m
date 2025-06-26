@@ -1,320 +1,230 @@
-Return-Path: <linux-wireless+bounces-24576-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24577-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01227AEA8F3
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 23:43:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0746EAEAA35
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 01:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87B8E642BD9
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 21:43:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48AFF4E08FE
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 23:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EACBB25EF81;
-	Thu, 26 Jun 2025 21:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C825E225388;
+	Thu, 26 Jun 2025 23:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QUaXqM/n"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NplTnHlt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FAA260576
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 21:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866CB223DD1
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 23:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750974203; cv=none; b=S5xVgX5e/kMNjzez7ZMtnF0QEhcQ2ZQmDIGhXFQFzPgH132xTJIVdDLlJlyJz3sHrNOcPvWO4StwL0JEVGwJuHHHaVNd/vmlRiS1L3YeVsHG+8eCuLiYFBTkajThSic5WInJ7K048mrRmUwWSucstazne9cyhONdH57S104oAno=
+	t=1750979361; cv=none; b=e36x/6CnOYSJb8Z10j0SHNwRaiaU91+FW7c9G7b6sw2/Y0/eGc6Sl/Hhu7CnvXtEyWf4V9zGfDdHb032jrB8IpWcOy/zoP0CgzopCYgJfuJAth9zjExzfoS+bv/NHWI1op98zHl2h6JgXoDaK6AN+3BiymLz2BnA4OuxBLg8ycI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750974203; c=relaxed/simple;
-	bh=pw6xK40rku8NDOLy6KT9yvZzuOy6y0/JZHQPwZMvE8k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=uByR2Pvsz2H3GhWtbIARlsN3PF1QBsL15oWuTPTELzL36NOIaaVGOyv2DOHFIjYmZum8iUPmUmpHEQj1QHelQK2JrTr8QYcCK3OpDyMJgxi0y2io7bH9t6bhoshlmhFMGP3Tu7C553iFqfgy25lrGXO1UtekVB/STHvWlAbVldg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QUaXqM/n; arc=none smtp.client-ip=209.85.217.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-4e7949d9753so397613137.2
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 14:43:21 -0700 (PDT)
+	s=arc-20240116; t=1750979361; c=relaxed/simple;
+	bh=sYxekMkD45reXqceAZfeKek4IPprnhR3B/ofXTSdIFk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AsdHt9KTD4Jzr0Tbg8GdYATY7AMBirb0DL3d9JsqgFn3DBNO08EYX+mVrS4AAk8tagnEHx24K9lChgZNp84D6Ib7Zxr2uJE+GRN5HZyMJ4rhoKaU5DRmPIVCFu+VED+fVCAdNGTZZ98amo4EjnXOH2xadVM8eWcqFc2GhO3HkYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NplTnHlt; arc=none smtp.client-ip=209.85.128.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-45348bff79fso15845925e9.2
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 16:09:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750974200; x=1751579000; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z0fcSToKtDjFu+STsYFG6ZOh3l1V2v+F/ieuz4CccIc=;
-        b=QUaXqM/nbc8NPfu9kyRF453zpoGMkT/M3L+R3d4LXGzzsZBXw6l/pe5y7Sw81Ti1rt
-         1AaGlijnkdaqypm8bz+9xJoSzSoi7/kwTF0XoZ8GLFTyx2Mdzz6UOffZMkTUJsw7KStl
-         z5QVT0DYjK4QO+KvK7H2yGC0ZwdIKyvKYKJffb0pFhVEOfWv1o9brlDbK0fjSvWp0hWO
-         UE/9LkEbYNl4C6P1FVYKXs1k9uAq4H+i/gdHK1SO11Qu846RPLPA63vezwMNhh4M/aNc
-         nq0SKHk6Y/4FM0D02078f1Btb3lfUsosiu2wPDdNnuCMyWs6OqhXKdSV8dkNDTXCiRUO
-         ZMhQ==
+        d=linaro.org; s=google; t=1750979358; x=1751584158; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=I984LjdCSI2og4FoX/by4gyCjX2JLqS5cCJCVpz/WdQ=;
+        b=NplTnHltxEe0lAP6fvPtvgjtUUeDjB2MqSHo7x068wLiOZtkw5kkmpShg0xUmYcRmy
+         ubtL9BkKONJscJ2H8qPL0aHWbt0H9IAH5f+5O4MZJOuaOEVKpR2xX+RrH6H0fFfdmNR/
+         mH9br68cSx7ChiegYtx+xFRXY8kZpIMvDvBlLjRuMn3EMpB/vU6ODibWnY8w9TDH+pl/
+         XzDGSzhO+sLTpNzD8xOpiuvaB0oEa+i69VorsPFoOAEpNiQI7d/uavEK4JAkE/24xnb5
+         G8bIdoO9vwAubUlc9siwSDUrnnf2HYP6FDCXTZiQyQLzvC3KEdo+zbDgdaRhjTVFEWSX
+         pM6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750974200; x=1751579000;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z0fcSToKtDjFu+STsYFG6ZOh3l1V2v+F/ieuz4CccIc=;
-        b=sITZ76924iGMmYHmR+WH2Z8FlHGRBFJU6d8mmiyVdY7DfrQFVdaYl1gnVGrdvzz6xu
-         fl8sWjTboYnvh3E/SxzwhDdncpLXB+UL/5li48JWzGcCud8Mjri22vUjQb+N5odECJWO
-         RIpSv5YAhdzxuvdTxQEwB6IVGsdPqg1bpZYSPMk4cGJnL3FGAUG42diHJT9VsotGnOmr
-         4R+Pu01fqq70BIsiT2t8tRUyUhqzmvlpyrl7nv/lEY6l+tdULYpjxaAbkL26DEcUIUBc
-         F0+4++VPKVxzp1cEp8XOkES7P6W8Tx+djAWUFyx2Zc+9cooYrXD33DdcXQv1OZYDN4tp
-         z9qQ==
-X-Gm-Message-State: AOJu0YzJxQRK7RhhimydWttDfiCs5/hZoa8F3ZQ+a+9SxdBbXqOEEV+h
-	r+NW+lya1F00HlsPKDQic7ZfOi8pIzRY7ZssiFOEgaEuPS+d1Tv7YGRZRmk8Qmbnch0fbfriJ2C
-	5h3GyrEprOffODB5VZrLvWdzPjwfJA4oF0cCy0x4=
-X-Gm-Gg: ASbGnctPl1P7D59QHD5o7p+pWyhf0qOHTDv+L+9T73Sz/OHQWRakbmJkyqpPfEiHpfB
-	6jHPKO+eiJOgA51td6iwyRSDbyrMznnE/RpNIFpOsSJyFu9A2JxdI1rntW76pArOV53qOafV9vG
-	qmcqTN4PER+rt5UM7gLkGwgl4aqAo5lcNujAXLsUBLvqk=
-X-Google-Smtp-Source: AGHT+IGsxVOqZCmtpx/NFQZIKOrYWgDwiZDMfF54u8NqFJlYvOcElBJs1TEGQVRaI5rs91k8VM8SR+J3aZWEPI+amys=
-X-Received: by 2002:a05:6102:3596:b0:4e5:963b:738a with SMTP id
- ada2fe7eead31-4ee4f8973c7mr1039515137.16.1750974200286; Thu, 26 Jun 2025
- 14:43:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750979358; x=1751584158;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I984LjdCSI2og4FoX/by4gyCjX2JLqS5cCJCVpz/WdQ=;
+        b=rurVN14hngNGA4Xf8nqxXTgZX4RQA74QJPkvuI5vf0Pm45XOXUiA6SK910/9tjxMn2
+         zRTpg7/7mjwaVn201UWQzJD+rTLxQ3XVvhudz0H8LLu1m/lPjugtmmDl8RebpXX1OAb2
+         IpsJz5nO9TXXj/Tr4qxoZ9MJn9PbnV8ySsc8aJD9BAqMxLO48GM5yr7T0Q0T47PopDv+
+         SFA/bJqeKDw66tWpLssKcKJqg81gf+764VuWW1PgZ5r/Ws4rr63X3rEeVVmaMkrjvm54
+         jTADtCgAQOgetKIqAJf4zwsIvYDDz89PbhW8NXZ2i4dHewfLSvb+v3myqmutSKTNs4J4
+         wUAA==
+X-Gm-Message-State: AOJu0YyWXDGRQ+ipIgKi/kyshN9CT/bQP3VnpDHLnk2IqTHC4cwW6Fyk
+	53sAESch4MTvo2Ewayy1cusgL8DSlRuWuJzZaaomRcOOxL7eax0TMAIngmajRhnAQjIUM0TJHQd
+	FeIuQ+sU+Nyky
+X-Gm-Gg: ASbGncuFU7gnUGsJpbUM+a0u7pokfk9EReRms+pUvPzXX9mykPI3ZGtrEuwmr43zYri
+	cMQS2vXG1zPddBVNRCmpi2bcBIz8eKWsG6v9LiJMMewePAkAUP2cR9Hx1jkOkFaRakvx4qdAIOA
+	ooqbgnaP6IhlhmDPIXEeEALDoUK7gDzft5mbJSTL0Z6F/OwYADiG7OIna4qchkbpoBZhYJxMZxE
+	2Vcc0Jg6x0qQ+inj7ShmjcFxXbb54peIW5BddcXG2xs1cHPWnCqILW/5M95z4rKfaqwbqkK4gmb
+	5bT5t6kDrW2oeKzGKEcurPmEIbvMAvmU/iqOEGI6P51XZAP3kCYunMGkHIx2s47BVMY1nkzPutT
+	1uMkcVAEnEbV+/2fo2D8FazkimwttEA+tXjxy9g==
+X-Google-Smtp-Source: AGHT+IEDFLoM1pQr68aMEgp9Er98cj+bVVx1qoDX24JDkdLwRTa9t2VgKEse7pcv2zD5qy19rP/Gjg==
+X-Received: by 2002:a05:600c:a40e:b0:43c:fe5e:f03b with SMTP id 5b1f17b1804b1-4538f8836bcmr3662345e9.30.1750979357707;
+        Thu, 26 Jun 2025 16:09:17 -0700 (PDT)
+Received: from [192.168.0.35] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538a421434sm32864855e9.37.2025.06.26.16.09.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Jun 2025 16:09:16 -0700 (PDT)
+Message-ID: <5df11ee4-d645-4be2-841f-715343f1b7a4@linaro.org>
+Date: Fri, 27 Jun 2025 00:09:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAA85sZsTtL_Amydo+N6O5OY9U7U1ZKyQAOnqBQx7kAOwY7amZQ@mail.gmail.com>
-In-Reply-To: <CAA85sZsTtL_Amydo+N6O5OY9U7U1ZKyQAOnqBQx7kAOwY7amZQ@mail.gmail.com>
-From: Ian Kumlien <ian.kumlien@gmail.com>
-Date: Thu, 26 Jun 2025 23:43:08 +0200
-X-Gm-Features: Ac12FXxFIFEwNdDUxrw8KWvZLoDCKR6CSIr3I8ec97VmeizanaEF0KCPWdAEAGw
-Message-ID: <CAA85sZv94-GDMKjuQizvwzhVuptdG5UWUus1j4q6NaZ_FuuJAA@mail.gmail.com>
-Subject: Re: mt7925 performance issues?
-To: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [question, bug] regularly disconnecting wifi on RB1 and RB2
+ boards, ath10
+To: Alexey Klimov <alexey.klimov@linaro.org>, jjohnson@kernel.org,
+ ath10k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, jeff.johnson@oss.qualcomm.com,
+ linux-arm-msm@vger.kernel.org
+References: <Zgp0ym-MGzX2eSZdlkVYbgvjkJ0CzKItjaC5pafzQnj1AOZnVAqvCIZfYoK7nwDhUgOA0U8eNolNtaWXbExOAQ==@protonmail.internalid>
+ <DAWJQ2NIKY28.1XOG35E4A682G@linaro.org>
+Content-Language: en-US
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <DAWJQ2NIKY28.1XOG35E4A682G@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Some more information that might be helpful
+On 26/06/2025 15:48, Alexey Klimov wrote:
+> Hi all,
+> 
+> After a long time of testing it seems the problem narrows down to qrb2210 rb1
+> and qrb4210 rb2 boards.
+> 
+> After booting, the board connects to the wifi network and after around ~5-10
+> minutes it loses the connection (nothing in dmesg). A simple ping of another
+> machine on the local network doesn't work. After, I guess, around 5000
+> seconds the GROUP_KEY_HANDSHAKE_TIMEOUT message is printked:
+> 
+> [ 5064.093748] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason: 16=GROUP_KEY_HANDSHAKE_TIMEOUT)
+> [ 5067.083790] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=82:95:77:b1:05:a5)
+> [ 5067.091971] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+> [ 5067.100192] wlan0: authenticated
+> [ 5067.104734] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+> [ 5067.113230] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=0x11 status=0 aid=2)
+> [ 5067.193624] wlan0: associated
+> 
+> and after that wireless connection works for ~5-10 minutes and then the cycle
+> repeats. The longer log with more info and some info with firmware versions,
+> ids, etc is at the end of this email [1]. Simple wlan0 down and wlan0 up fixes
+> things for a few minutes.
+> 
+> iw wlan0 link reports the following when wireless network is working:
+> 
+> root@rb1:~# iw wlan0 link
+> Connected to 8c:58:72:d4:d1:8d (on wlan0)
+>          SSID: void
+>          freq: 5300
+>          RX: 45802 bytes (424 packets)
+>          TX: 71260 bytes (125 packets)
+>          signal: -66 dBm
+>          rx bitrate: 433.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 1
+> 
+> bss flags:      short-slot-time
+> dtim period:    1
+> beacon int:     100
+> 
+> and this when wireless connection doesn't work:
+> 
+> Connected to 8c:58:72:d4:d1:8d (on wlan0)
+>          SSID: void
+>          freq: 5300
+>          RX: 850615 bytes (9623 packets)
+>          TX: 20372 bytes (247 packets)
+>          signal: -61 dBm
+>          rx bitrate: 6.0 MBit/s
+> 
+>      bss flags:      short-slot-time
+>      dtim period:    1
+>      beacon int:     100
+> 
+> This was tested with three different routers and different wifi networks.
+> Other devices here do not exhibit this behaviour.
+> 
+> Any hints on how to debug this? Any debug switches I can toggle to debug this?
+> I am happy to provide more info or test changes/patches if any.
+> 
+> Thanks in advance.
+> Best regards,
+> Alexey
+> 
+> [1]:
+> 
+> [    7.758934] ath10k_snoc c800000.wifi: qmi chip_id 0x120 chip_family 0x4007 board_id 0xff soc_id 0x40670000
+> [    7.769740] ath10k_snoc c800000.wifi: qmi fw_version 0x337703a3 fw_build_timestamp 2023-10-14 01:26 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
+> [   11.086123] ath10k_snoc c800000.wifi: wcn3990 hw1.0 target 0x00000008 chip_id 0x00000000 sub 0000:0000
+> [   11.095622] ath10k_snoc c800000.wifi: kconfig debug 0 debugfs 0 tracing 0 dfs 0 testmode 0
+> [   11.103998] ath10k_snoc c800000.wifi: firmware ver  api 5 features wowlan,mgmt-tx-by-reference,non-bmi,single-chan-info-per-channel crc32 a79c5b24
+> [   11.144810] ath10k_snoc c800000.wifi: htt-ver 3.128 wmi-op 4 htt-op 3 cal file max-sta 32 raw 0 hwcrypto 1
+> [   11.230894] ath10k_snoc c800000.wifi: invalid MAC address; choosing random
+> [   11.238128] ath: EEPROM regdomain: 0x0
+> [   11.242060] ath: EEPROM indicates default country code should be used
+> [   11.248582] ath: doing EEPROM country->regdmn map search
+> [   11.253950] ath: country maps to regdmn code: 0x3a
+> [   11.258805] ath: Country alpha2 being used: US
+> [   11.263466] ath: Regpair used: 0x3a
+> [   15.355756] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=82:95:77:b1:05:a5)
+> [   15.363942] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+> [   15.372142] wlan0: authenticated
+> [   15.377928] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+> [   15.386338] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=0x11 status=0 aid=2)
+> [   15.466514] wlan0: associated
+> [   23.167251] systemd-journald[195]: Oldest entry in /var/log/journal/ec3e0078e5e0499bac67949f3edf3fcf/system.journal is older than the configured file retention duration (1month), suggesting rotation.
+> [   23.185186] systemd-journald[195]: /var/log/journal/ec3e0078e5e0499bac67949f3edf3fcf/system.journal: Journal header limits reached or header out-of-date, rotating.
+> [   31.750177] l5: disabling
+> [   31.753382] l11: disabling
+> [   31.756385] l16: disabling
+> [ 5064.093748] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason: 16=GROUP_KEY_HANDSHAKE_TIMEOUT)
 
-And in reverse mode
-WIFI 7 MLO,
-Reverse mode, remote host 10.0.0.129 is sending
-[  5] local 10.0.0.54 port 42062 connected to 10.0.0.129 port 5201
-[ ID] Interval           Transfer     Bitrate
-[  5]   0.00-1.00   sec  1.75 MBytes  14.7 Mbits/sec
-[  5]   1.00-2.00   sec   128 KBytes  1.05 Mbits/sec
-[  5]   2.00-3.00   sec   128 KBytes  1.05 Mbits/sec
-[  5]   3.00-4.00   sec   256 KBytes  2.10 Mbits/sec
-[  5]   4.00-5.00   sec   128 KBytes  1.05 Mbits/sec
-[  5]   5.00-6.00   sec   256 KBytes  2.10 Mbits/sec
-[  5]   6.00-7.00   sec   384 KBytes  3.14 Mbits/sec
-[  5]   7.00-8.00   sec   896 KBytes  7.34 Mbits/sec
-[  5]   8.00-9.00   sec   384 KBytes  3.15 Mbits/sec
-[  5]   9.00-10.00  sec  1.00 MBytes  8.38 Mbits/sec
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate         Retr
-[  5]   0.00-10.01  sec  5.62 MBytes  4.72 Mbits/sec    1            sender
-[  5]   0.00-10.00  sec  5.25 MBytes  4.40 Mbits/sec                  recei=
-ver
+So.
 
-Wifi 7:
-Reverse mode, remote host 10.0.0.129 is sending
-[  5] local 10.0.0.53 port 57988 connected to 10.0.0.129 port 5201
-[ ID] Interval           Transfer     Bitrate
-[  5]   0.00-1.00   sec  41.9 MBytes   351 Mbits/sec
-[  5]   1.00-2.00   sec  53.2 MBytes   447 Mbits/sec
-[  5]   2.00-3.00   sec  43.9 MBytes   368 Mbits/sec
-[  5]   3.00-4.00   sec  55.6 MBytes   467 Mbits/sec
-[  5]   4.00-5.00   sec  55.2 MBytes   463 Mbits/sec
-[  5]   5.00-6.00   sec  56.2 MBytes   472 Mbits/sec
-[  5]   6.00-7.00   sec  52.8 MBytes   443 Mbits/sec
-[  5]   7.00-8.00   sec  60.4 MBytes   506 Mbits/sec
-[  5]   8.00-9.00   sec  57.5 MBytes   482 Mbits/sec
-[  5]   9.00-10.00  sec  47.8 MBytes   401 Mbits/sec
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate         Retr
-[  5]   0.00-10.02  sec   541 MBytes   453 Mbits/sec    0            sender
-[  5]   0.00-10.00  sec   524 MBytes   440 Mbits/sec                  recei=
-ver
+I wonder what state the GTK - offload is in here.
 
-Wifi 5:
-Reverse mode, remote host 10.0.0.129 is sending
-[  5] local 10.0.0.64 port 46632 connected to 10.0.0.129 port 5201
-[ ID] Interval           Transfer     Bitrate
-[  5]   0.00-1.00   sec  27.4 MBytes   229 Mbits/sec
-[  5]   1.00-2.00   sec  27.1 MBytes   228 Mbits/sec
-[  5]   2.00-3.00   sec  26.5 MBytes   222 Mbits/sec
-[  5]   3.00-4.00   sec  27.9 MBytes   234 Mbits/sec
-[  5]   4.00-5.00   sec  26.9 MBytes   225 Mbits/sec
-[  5]   5.00-6.00   sec  28.6 MBytes   240 Mbits/sec
-[  5]   6.00-7.00   sec  27.4 MBytes   230 Mbits/sec
-[  5]   7.00-8.00   sec  23.4 MBytes   196 Mbits/sec
-[  5]   8.00-9.00   sec  23.0 MBytes   193 Mbits/sec
-[  5]   9.00-10.00  sec  23.9 MBytes   200 Mbits/sec
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate         Retr
-[  5]   0.00-10.01  sec   271 MBytes   227 Mbits/sec    5            sender
-[  5]   0.00-10.00  sec   262 MBytes   220 Mbits/sec                  recei=
-ver
+         WMI_GTK_OFFLOAD_CMDID = WMI_CMD_GRP(WMI_GRP_GTK_OFL),
 
-Dmesg, connecting to wifi 5:
-[  710.879456] wlp192s0: authenticate with 28:bd:89:bd:85:b5 (local
-address=3D06:72:c6:7d:fa:71)
-[  710.897099] wlp192s0: send auth to 28:bd:89:bd:85:b5 (try 1/3)
-[  710.925295] wlp192s0: authenticate with 28:bd:89:bd:85:b5 (local
-address=3D06:72:c6:7d:fa:71)
-[  710.937335] wlp192s0: send auth to 28:bd:89:bd:85:b5 (try 1/3)
-[  710.939884] wlp192s0: authenticated
-[  710.943737] wlp192s0: associate with 28:bd:89:bd:85:b5 (try 1/3)
-[  710.959794] wlp192s0: RX AssocResp from 28:bd:89:bd:85:b5
-(capab=3D0x1011 status=3D0 aid=3D1)
-[  711.003933] wlp192s0: associated
-[  711.060218] wlp192s0: Limiting TX power to 20 (20 - 0) dBm as
-advertised by 28:bd:89:bd:85:b5
+drivers/net/wireless/ath/ath10k/wmi-tlv.c:	cfg->gtk_offload_max_vdev = 
+__cpu_to_le32(2);
 
-connecting to wifi7 mlo:
-[  747.760815] wlp192s0: [link 2] regulatory prevented using AP
-config, downgraded
-[  747.921523] wlp192s0: authenticate with 84:78:48:1a:7b:89 (local
-address=3D82:c7:e0:db:f7:be)
-[  748.055412] wlp192s0: send auth to 84:78:48:1a:7b:89 (try 1/3)
-[  748.085076] wlp192s0: authenticate with 84:78:48:1a:7b:89 (local
-address=3D82:c7:e0:db:f7:be)
-[  748.096669] wlp192s0: send auth to 84:78:48:1a:7b:89 (try 1/3)
-[  748.099984] wlp192s0: authenticated
-[  748.104727] wlp192s0: associate with 84:78:48:1a:7b:89 (try 1/3)
-[  748.196697] wlp192s0: RX AssocResp from 84:78:48:1a:7b:89
-(capab=3D0x1111 status=3D0 aid=3D16)
-[  748.206900] wlp192s0: [link 0] local address 26:09:c7:9c:94:40, AP
-link address 8a:78:48:1a:7b:8b
-[  748.207025] wlp192s0: [link 1] local address d6:89:a5:d1:0a:da, AP
-link address 8e:78:48:1a:7b:8a
-[  748.207087] wlp192s0: [link 2] local address 82:c7:e0:db:f7:be, AP
-link address 86:78:48:1a:7b:8c (assoc)
-[  748.257096] wlp192s0: associated
-[  751.623567] wlp192s0: Limiting TX power to 20 (20 - 0) dBm as
-advertised by 8a:78:48:1a:7b:8b
+Try toggling that offload off or on and see what happens.
 
-Connecting to wifi7:
-[  795.799038] wlp192s0: regulatory prevented using AP config, downgraded
-[  795.829049] wlp192s0: authenticate with 86:78:48:1a:7b:8d (local
-address=3D8e:b3:e9:89:36:2f)
-[  795.835430] wlp192s0: send auth to 86:78:48:1a:7b:8d (try 1/3)
-[  795.861369] wlp192s0: authenticate with 86:78:48:1a:7b:8d (local
-address=3D8e:b3:e9:89:36:2f)
-[  795.873062] wlp192s0: send auth to 86:78:48:1a:7b:8d (try 1/3)
-[  795.878880] wlp192s0: authenticated
-[  795.882712] wlp192s0: associate with 86:78:48:1a:7b:8d (try 1/3)
-[  795.910918] wlp192s0: RX AssocResp from 86:78:48:1a:7b:8d
-(capab=3D0x1111 status=3D0 aid=3D18)
-[  795.950640] wlp192s0: associated
+> [ 5067.083790] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=82:95:77:b1:05:a5)
+> [ 5067.091971] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+> [ 5067.100192] wlan0: authenticated
+> [ 5067.104734] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+> [ 5067.113230] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=0x11 status=0 aid=2)
+> [ 5067.193624] wlan0: associated
+> [10437.346541] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason: 16=GROUP_KEY_HANDSHAKE_TIMEOUT)
+> [10440.340111] wlan0: authenticate with 8c:58:72:d4:d1:8d (local address=82:95:77:b1:05:a5)
+> [10440.348408] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+> [10440.356698] wlan0: authenticated
+> [10440.361077] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+> [10440.369516] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=0x11 status=0 aid=2)
+> [10440.446661] wlan0: associated
+> 
+You can put another device on your WiFi network into monitor mode and 
+sniff what is taking place.
 
+Kali Linux I've used in the past on an RPI for this purpose and it was 
+very easy todo.
 
-On Thu, Jun 26, 2025 at 11:20=E2=80=AFPM Ian Kumlien <ian.kumlien@gmail.com=
-> wrote:
->
-> Hi,
->
-> I just got a new laptop with
-> c0:00.0 Network controller: MEDIATEK Corp. MT7925 (RZ717) Wi-Fi 7 160MHz
->
-> I have read that there is a lot of theories, and ideas about what
-> could be going wrong in the driver...
->
-> I did some tests, wifi5 is a google wifi next ap, which seems to work
-> fine for this card.
->
-> Wifi 7 is a unifi wifi7 ap -. max measured with other clients is 931
-> mbit - with the same measuring server but with a iwlwifi
-> card reporting a txpower of 22dbm
->
-> Also interesting that i get 0 at times with wifi 7 and especially with ML=
-O
-> this is testing with 6.16 HEAD e34a79b96ab9d49ed8b605fee11099cf3efbb428
->
-> Any benchmarks/tests i can do to help fix this?
-> ----
-> Wifi 5
->
->         channel 36 (5180 MHz), width: 80 MHz, center1: 5210 MHz
->         txpower 3.00 dBm
->         multicast TXQ:
->                 qsz-byt qsz-pkt flows   drops   marks   overlmt
-> hashcol tx-bytes        tx-packets
->                 0       0       0       0       0       0       0
->  0               0
->
->
-> [ ID] Interval           Transfer     Bitrate         Retr  Cwnd
-> [  5]   0.00-1.00   sec  59.8 MBytes   501 Mbits/sec    2    724 KBytes
-> [  5]   1.00-2.00   sec  32.0 MBytes   268 Mbits/sec    0    863 KBytes
-> [  5]   2.00-3.00   sec  42.8 MBytes   359 Mbits/sec    0   1.11 MBytes
-> [  5]   3.00-4.00   sec  10.6 MBytes  89.1 Mbits/sec    0   1.17 MBytes
-> [  5]   4.00-5.00   sec  21.1 MBytes   177 Mbits/sec    0   1.22 MBytes
-> [  5]   5.00-6.00   sec  21.4 MBytes   179 Mbits/sec    1   1.24 MBytes
-> [  5]   6.00-7.00   sec  21.5 MBytes   180 Mbits/sec    0   1012 KBytes
-> [  5]   7.00-8.00   sec  21.4 MBytes   179 Mbits/sec    0   1004 KBytes
-> [  5]   8.00-9.00   sec  43.4 MBytes   364 Mbits/sec    0    897 KBytes
-> [  5]   9.00-10.00  sec  32.6 MBytes   274 Mbits/sec    2    993 KBytes
-> - - - - - - - - - - - - - - - - - - - - - - - - -
-> [ ID] Interval           Transfer     Bitrate         Retr
-> [  5]   0.00-10.00  sec   306 MBytes   257 Mbits/sec    5            send=
-er
-> [  5]   0.00-10.00  sec   284 MBytes   238 Mbits/sec                  rec=
-eiver
-> ---
->
-> Wifi 7
->
->         type managed
->         wiphy 0
->         multicast TXQ:
->                 qsz-byt qsz-pkt flows   drops   marks   overlmt
-> hashcol tx-bytes        tx-packets
->                 0       0       0       0       0       0       0
->  0               0
->         MLD with links:
->          - link ID  0 link addr ce:67:53:b2:b1:9d
->            channel 6 (2437 MHz), width: 40 MHz, center1: 2447 MHz
->          - link ID  1 link addr c2:e3:9b:67:2b:67
->          - link ID  2 link addr 1e:5a:37:e5:97:b2
->            channel 37 (6135 MHz), width: 160 MHz, center1: 6185 MHz
->
-> [ ID] Interval           Transfer     Bitrate         Retr  Cwnd
-> [  5]   0.00-1.00   sec  5.50 MBytes  46.1 Mbits/sec    1    160 KBytes
-> [  5]   1.00-2.00   sec  0.00 Bytes  0.00 bits/sec    0    136 KBytes
-> [  5]   2.00-3.00   sec  0.00 Bytes  0.00 bits/sec    0    137 KBytes
-> [  5]   3.00-4.00   sec  2.00 MBytes  16.8 Mbits/sec    0    110 KBytes
-> [  5]   4.00-5.00   sec  0.00 Bytes  0.00 bits/sec    0    178 KBytes
-> [  5]   5.00-6.00   sec  2.25 MBytes  18.9 Mbits/sec    0   82.0 KBytes
-> [  5]   6.00-7.00   sec  0.00 Bytes  0.00 bits/sec    0   73.5 KBytes
-> [  5]   7.00-8.00   sec  0.00 Bytes  0.00 bits/sec    0   82.0 KBytes
-> [  5]   8.00-9.00   sec  0.00 Bytes  0.00 bits/sec    0   96.2 KBytes
-> [  5]   9.00-10.00  sec  2.12 MBytes  17.8 Mbits/sec    0    184 KBytes
-> - - - - - - - - - - - - - - - - - - - - - - - - -
-> [ ID] Interval           Transfer     Bitrate         Retr
-> [  5]   0.00-10.00  sec  11.9 MBytes  9.96 Mbits/sec    1            send=
-er
-> [  5]   0.00-10.02  sec  5.50 MBytes  4.60 Mbits/sec                  rec=
-eiver
-> ----
->
->         type managed
->         wiphy 0
->         channel 37 (6135 MHz), width: 160 MHz, center1: 6185 MHz
->         txpower 3.00 dBm
->         multicast TXQ:
->                 qsz-byt qsz-pkt flows   drops   marks   overlmt
-> hashcol tx-bytes        tx-packets
->                 0       0       0       0       0       0       0
->  0               0
->
-> [ ID] Interval           Transfer     Bitrate         Retr  Cwnd
-> [  5]   0.00-1.00   sec  25.6 MBytes   215 Mbits/sec    0    461 KBytes
-> [  5]   1.00-2.00   sec  13.4 MBytes   112 Mbits/sec    0    413 KBytes
-> [  5]   2.00-3.00   sec  26.6 MBytes   223 Mbits/sec    0    390 KBytes
-> [  5]   3.00-4.00   sec  13.4 MBytes   112 Mbits/sec    0    413 KBytes
-> [  5]   4.00-5.00   sec  20.0 MBytes   168 Mbits/sec    0    515 KBytes
-> [  5]   5.00-6.00   sec  20.1 MBytes   169 Mbits/sec    0    390 KBytes
-> [  5]   6.00-7.00   sec  0.00 Bytes  0.00 bits/sec    1    444 KBytes
-> [  5]   7.00-8.00   sec  13.4 MBytes   112 Mbits/sec    1    348 KBytes
-> [  5]   8.00-9.00   sec  20.2 MBytes   170 Mbits/sec    0    379 KBytes
-> [  5]   9.00-10.00  sec  20.6 MBytes   173 Mbits/sec    0    373 KBytes
-> - - - - - - - - - - - - - - - - - - - - - - - - -
-> [ ID] Interval           Transfer     Bitrate         Retr
-> [  5]   0.00-10.00  sec   173 MBytes   145 Mbits/sec    2            send=
-er
-> [  5]   0.00-10.01  sec   160 MBytes   134 Mbits/sec                  rec=
-eiver
-> ----
+https://cyberlab.pacific.edu/resources/lab-network-wireless-sniffing
+
+Another thing to try is to do this same test on an open - unencrypted link.
+
+If we really suspect firmware here, lets try switching off firmware 
+offload features one-by-one, starting with GTK offload.
+
+---
+bod
 
