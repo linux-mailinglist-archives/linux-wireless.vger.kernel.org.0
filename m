@@ -1,62 +1,61 @@
-Return-Path: <linux-wireless+bounces-24544-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24545-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566E2AE9DC3
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 14:46:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62323AE9DD2
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 14:51:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7331316E020
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 12:46:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2C547AC047
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 12:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9975521CA18;
-	Thu, 26 Jun 2025 12:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2913E2E0B72;
+	Thu, 26 Jun 2025 12:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="fN0VrDgc"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="scJ6KuU+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F181EB2F
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 12:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1241EB2F
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 12:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750941979; cv=none; b=uGxCjZs7HXqTv5kJNgXZrA0liEA/uZBAyE9I6StfkXSrn4rh1DeKmXnnV1WIvXnvkXgum3tI26w/nJzti1UubNF50jKID/OZdEFcTurTmOmWRfYkSOt4MdXhJyV3EAuA5ztR595nYgFcJl3QJaYywYEySbsuUbHyOPyMha0csbU=
+	t=1750942274; cv=none; b=DksvaEIQmjHKx7Xl47wrSkmWGFDQHARZ2fO+cxFXUgveYhzapTUQXS7+oL/YEjdGs+tLH59Oq1ag2dDBJuSjNe/d/N+EhRwuGNtmGX8ViaFSJ+J+LlweUpT4WIlCpYQrEruAmyCcKaKvdyf91Z3yhHJim6Yg5tz1h80xLbZWO6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750941979; c=relaxed/simple;
-	bh=g2hqAew2KcyvRs0qg/WeOf9Mmedze2U/3UUJ0t4ql24=;
+	s=arc-20240116; t=1750942274; c=relaxed/simple;
+	bh=6RyCZAVHE8tO2dd+1cgIIG6QdA1XUM82v2LhoFio33w=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Mm+96227veP25YMCXXJa/D0Cu0Rjgw4zh5/AsJxEYasKkrIvhDluRoIrY555siuXUpHRpGIlYVWSgeay7unf1Pdm4f8n61sOjmn0DoWFl1Iqmn580F2TuAf14o+ZIhGFmihFsF8tFDEEb8z5LjIeHGnloiTcHwY5SVenxOv1bIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=fN0VrDgc; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=QLH4+V5eT8gEqP7AfruatHxdVDW2O2RP+93m632TWL3jvCU7mOkxud2lkZIbNbKcyUNU6GlM4w9cQemwWiueLAHBiI1Cx645FOaz9eriZ0z3q1BbUm73i9Q/IV8Y/vkOyYNYce/iYIe+AjkGGlvRK5sWet1lerVu6te1jEXDYUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=scJ6KuU+; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=BjpbYn5KC5fcA1frvlYurkHCT8TfX07S70ZDyyJOVs4=;
-	t=1750941978; x=1752151578; b=fN0VrDgcEYZcwSQBraCVydK4TChaQukxVwjv2v6V0cb2Rol
-	QhpD1BKMU/GQsCSsVk43UNAMEKNK5h8yl3AP6xVdaHpqlwRcoS3AbO8Hx4H/iynR0+BAJ1G4LIPGX
-	BODPvUpm9/zsVoW/+Q+sEwg522q4+xPm6mi0Xxb+yJtXWaad2/NYLILVxgrUbGFStvk7lCSLlzzrO
-	7JMbWBrxY7LMIC2Spfl1fPdynKt3bNcRxz3lbQi9TM25mMzlCOfcmXmSf/mMqtUH4guUuwi4W5kBb
-	5wdX4qnYmNvhftX0CMPc41qD1e5mTqPzNOcoJkYvVauuZKQUlHVymZHT6JqU6kig==;
+	Resent-Cc:Resent-Message-ID; bh=s5Em1+2Dl/8Na3maupvgcxRVVzKcJD1iBgXt9epwcy8=;
+	t=1750942272; x=1752151872; b=scJ6KuU+bdiUGB8lFra0vXynqHHI8S6dFcBmOhBsYa308hp
+	6rxoYvJ+zgtGdcKj3HSicTCnZlXby+JP2HwYV0C5ZuaIvvpPyqrO3cYVx+i2/KT2swNfD5stuN0+0
+	SDLFul8/7vCvonEqz56o3ikoRZ7lQ0MAAw2jInRb1Iwr+bR97z33gGDT83IcqfbhR9nQquKwVFADZ
+	QqXWISRuIYLS7wTTSvBHvzO2kMwCU/Ct8Co1aGn9iqcaxeWrETSps2ExtS1jXJMlWBcyk3x/rmyjb
+	ilxy9YajFgd4T7Kp3ZiAnT8keYEyUbKy4Y5R7/Rk3LyK8DXNpoMI7bjBuw8wCjgw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uUlza-0000000BXXt-3S78;
-	Thu, 26 Jun 2025 14:46:15 +0200
-Message-ID: <e39611e7990541138e7d82809fee924433274912.camel@sipsolutions.net>
-Subject: Re: [RFC 1/5] wifi: nl80211: Add more configuration options for NAN
- commands
+	id 1uUm4L-0000000BXm7-0lB6;
+	Thu, 26 Jun 2025 14:51:09 +0200
+Message-ID: <7e465c62d96c872e1f75a35d4f3d1f058d237cfc.camel@sipsolutions.net>
+Subject: Re: [RFC 2/5] wifi: nl80211: Add more NAN capabilities
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
 Cc: linux-wireless@vger.kernel.org
-Date: Thu, 26 Jun 2025 14:46:14 +0200
-In-Reply-To: <20250622222444.356435-2-andrei.otcheretianski@intel.com> (sfid-20250623_002839_326397_7F85850C)
+Date: Thu, 26 Jun 2025 14:51:08 +0200
+In-Reply-To: <20250622222444.356435-3-andrei.otcheretianski@intel.com> (sfid-20250623_002842_027258_89DFA3E1)
 References: <20250622222444.356435-1-andrei.otcheretianski@intel.com>
-	 <20250622222444.356435-2-andrei.otcheretianski@intel.com>
-	 (sfid-20250623_002839_326397_7F85850C)
+	 <20250622222444.356435-3-andrei.otcheretianski@intel.com>
+	 (sfid-20250623_002842_027258_89DFA3E1)
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
@@ -69,87 +68,74 @@ MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
 On Mon, 2025-06-23 at 01:24 +0300, Andrei Otcheretianski wrote:
+> Add better break down for NAN capabilities, as NAN has multiple optional
+> features. This allows to better indicate which features are supported or
+> or offloaded to the device.
 >=20
-> + * @rssi_close: RSSI close threshold used for NAN master selection. If n=
-ot
-> + *	specified (set to 0), default device value is used. The value should
-> + *	be greater than -60 dBm (unsigned).
-> + * @rssi_middle: RSSI middle threshold used for NAN master selection. If=
- not
-> + *	specified (set to 0), default device value is used. The value should =
-be
-> + *	greater than -75 dBm and less than rssi_close.
-
-I think these are not described well, and I also don't understand why we
-shouldn't use negative values in the APIs? I know the iwlwifi firmware
-doesn't like to do it, but that's not a good reason not to do it in
-other places?
-
-> +	struct cfg80211_nan_band_config low_band_cfg;
-> +	struct cfg80211_nan_band_config high_band_cfg;
-> +	bool enable_hb_scan;
-
-When we have "nan_supported_bands", it seems to me these should really
-be by arbitrary band, and bitmap of bands to enable scan on, or
-something like that ... also this really applies to the nl80211 API.
-
-> +	u8 *extra_nan_attrs;
-> +	u8 *vendor_elems;
-
-const u8 *, presumably
-
-> +	size_t vendor_elems_len;
-
-Also not sure I see a need for size_t here, it's certainly going to be
-limited to a netlink attribute (u16?) anyway?
-
-> + * @NL80211_NAN_BAND_CONF_CHAN: Discovery channel.=C2=A0
-
-> Ignored on 2.4GHz band.
-
-Shouldn't be ignored. Either require a correct value, or reject the
-presence of the attribute.
-
-> + *	Either 44 or 149 for 5 GHz band.
-
-We should use frequencies.
-
-A lot of these are missing docs about their attribute type too.
-
-> + * @NL80211_NAN_BAND_CONF_RSSI_CLOSE: RSSI close for NAN cluster state c=
-hanges.
-> + *	This is unsigned 8-bit value in dBm (absolute value).
-
-Nah, see above.
-
-> +	/* Check if the channel is allowed */
-> +	if (!cfg80211_reg_can_beacon(wiphy, &def, NL80211_IFTYPE_NAN))
-> +		return false;
+> Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+> ---
+>  include/uapi/linux/nl80211.h | 36 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
+>=20
+> diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+> index a68c486e2083..f2d4a2007463 100644
+> --- a/include/uapi/linux/nl80211.h
+> +++ b/include/uapi/linux/nl80211.h
+> @@ -2915,6 +2915,10 @@ enum nl80211_commands {
+>   *	%NL80211_CMD_START_NAN and %NL80211_CMD_CHANGE_NAN_CONFIG.
+>   *	See &enum nl80211_nan_conf_attributes for details.
+>   *	This attribute is optional.
+> + * @NL80211_ATTR_NAN_CAPABILITIES: Nested attribute for NAN capabilities=
+.
+> + *	This is used with %NL80211_CMD_GET_WIPHY to indicate the NAN
+> + *	capabilities supported by the driver. See &enum nl80211_nan_capabilit=
+ies
+> + *	for details.
+>   *
+>   * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+>   * @NL80211_ATTR_MAX: highest attribute number currently defined
+> @@ -3474,6 +3478,7 @@ enum nl80211_attrs {
+>  	NL80211_ATTR_ASSOC_MLD_EXT_CAPA_OPS,
+> =20
+>  	NL80211_ATTR_NAN_CONFIG,
+> +	NL80211_ATTR_NAN_CAPABILITIES,
+>  	/* add attributes here, update the policy in nl80211.c */
+> =20
+>  	__NL80211_ATTR_AFTER_LAST,
+> @@ -8226,4 +8231,35 @@ enum nl80211_wiphy_radio_freq_range {
+>  	NL80211_WIPHY_RADIO_FREQ_ATTR_MAX =3D __NL80211_WIPHY_RADIO_FREQ_ATTR_L=
+AST - 1,
+>  };
+> =20
+> +/**
+> + * enum nl80211_nan_capabilities - NAN (Neighbor Aware Networking)
+> + *	capabilities.
+> + *
+> + * @__NL80211_NAN_CAPABILITIES_INVALID: Invalid.
+> + * @NL80211_NAN_CAPA_SYNC_OFFLOAD: Flag attribute indicating that
+> + *	NAN synchronization offload is supported. If this capability is set,
+> + *	the driver must be able to handle %NL80211_ATTR_NAN_CONFIG
+> + *	attribute in the %NL80211_CMD_START_NAN (and change) command.
+> + * @NL80211_NAN_CAPA_DE_OFFLOAD: Flag attribute indicating that
+> + *	NAN Discovery Engine (DE) offload is supported. Drivers/devices that =
+set
+> + *	this capability must be able to handle %NL80211_CMD_ADD_NAN_FUNCTION,
+> + *	%NL80211_CMD_DEL_NAN_FUNCTION and %NL80211_CMD_NAN_MATCH commands.
+> + * @NL80211_NAN_CAPA_DW_NOTIF_SUPPORT: Flag attribute indicating that
+> + *	the device supports notifying user space about the upcoming
+> + *	discovery window (DW) using %NL80211_CMD_NAN_NEXT_DW_NOTIFICATION.
+> + *
+> + * @__NL80211_NAN_CAPABILITIES_LAST: Internal
+> + * @NL80211_NAN_CAPABILITES_MAX: Highest NAN capability attribute.
+> + */
+> +enum nl80211_nan_capabilities {
+> +	__NL80211_NAN_CAPABILITIES_INVALID,
 > +
-> +	return true;
+> +	NL80211_NAN_CAPA_SYNC_OFFLOAD,
+> +	NL80211_NAN_CAPA_DE_OFFLOAD,
+> +	NL80211_NAN_CAPA_DW_NOTIF_SUPPORT,
 
-return cfg80211_reg_can_beacon()?
-
-> +	if (!conf->low_band_cfg.chan) {
-> +		/* If no 2GHz channel is specified, use the default */
-> +		conf->low_band_cfg.chan =3D
-> +			ieee80211_get_channel(wiphy, 2437);
-> +		if (!conf->low_band_cfg.chan ||
-> +			!nl80211_valid_nan_freq(wiphy, 2437))
-> +			return -EINVAL;
-
-code style
-
-> +static int nl80211_start_nan(struct sk_buff *skb, struct genl_info *info=
-)
-> +{
-> +	struct cfg80211_registered_device *rdev =3D info->user_ptr[0];
-> +	struct wireless_dev *wdev =3D info->user_ptr[1];
-> +	struct cfg80211_nan_conf conf =3D {};
-> +	int err;
-> +	u32 changed =3D 0;
-
-what's that 'changed' even doing?
+This seems complex, why not just add three new extended flags?
 
 johannes
 
