@@ -1,74 +1,70 @@
-Return-Path: <linux-wireless+bounces-24512-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24513-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A631AE9464
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 04:48:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05326AE950E
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 07:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84ACC4E1762
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 02:48:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64EBF4A4A61
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jun 2025 05:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB571F91C5;
-	Thu, 26 Jun 2025 02:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D534211A31;
+	Thu, 26 Jun 2025 05:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="QLs+eZZz"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="HG95pDcG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from smtp11.infineon.com (smtp11.infineon.com [217.10.52.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5C312CDBE
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 02:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A50038FB9
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Jun 2025 05:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750906122; cv=none; b=i0rdL/tD0oLEXBJEocmeOV0alya5XmlObc0KA/JAYyj1u2l2pF/8V+kOimHvSL4yTnDVfWAuu2jlWl373qJ+950Usj4Vic3WtCL4IWuTyNq5R/GuWQPyrTM7CyTfZI2N+3CHbvqAtDbBCv6TBdLicEfl7Jp6erym+x80d3f+cV0=
+	t=1750914446; cv=none; b=o7hXAX/XqXomlPOjbJekdIz08xiK9rzsr37TeMTY5WhFdetYWLz94WBpGWkdYwA1TYtcgKyeEVgn3un/+w2QRNqMoqVOBDPL8nzjPWaBmbN+J4Xl4n9GeBqqh4uHz5dc3PNacJR1zX03F7ZGoTxrybLEWGDSXY1oWM0D9HguGvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750906122; c=relaxed/simple;
-	bh=9dIHx34OloNH/xP1Z89QRJLAEIpIeqRs7pA4nRuDAN0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=F2CVZHbXyfk0ooq5lyeEO+se71NfoTXBEe6hfSng1GE40HkVmufiz7cqCedG7vv8pnGM5P3E+PSn9BpCYavbnP/13vbTrEiXz7NANhPDKP336HrJPxpXaHPpALHC+JZ0LprcytjLtVxKbZfeS/9QReeV/gNun6yudsjGxJYrJQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=QLs+eZZz; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 0c966896523811f0b910cdf5d4d8066a-20250626
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=o9zZenT208Kdh9QhO8IBxP3KLL+36xJprHwoxaJOxRs=;
-	b=QLs+eZZz5xQ1mWAIQ+2guEJiLu/NSdjyscqY2RKsn0aeH6CEdlxXLf8iKcaFsPHZQjEA9htvRTMiYalGQlnNT+YQzf2OhLY7l3XbG22bOigkPyVodVq29ILW1BsThEjMoEKSZhb2ZTh6dxfXKARbXeCVAuvgg0ENnLCTQpUmaqg=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.2,REQID:fc4e34e0-9be8-44f5-bbc6-3ec9955c7236,IP:0,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-5
-X-CID-META: VersionHash:9eb4ff7,CLOUDID:d7353682-cc21-4267-87cf-e75829fa6365,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 0c966896523811f0b910cdf5d4d8066a-20250626
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-	(envelope-from <michael-cy.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1756653006; Thu, 26 Jun 2025 10:48:33 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+	s=arc-20240116; t=1750914446; c=relaxed/simple;
+	bh=AKzivFgfGZhK3wNXIzhi9adSJDcnzcuv1iu4Tm7CEEA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tIpLieRvElMmW/G4pkZn9Ub0wcatEtQAFnmuV5sSKoBEX1Xg0nkRliLnrznQXh22ejj4mdAFavUslDApPE4OICEyxGd714mG/5ffOLvCwI2bqql7Z/HXqcRqTRP0RCqbUsFbeySbNhobNb7STuBq41AeOrVtEp9Jl7asEUv33Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=HG95pDcG; arc=none smtp.client-ip=217.10.52.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
+  t=1750914445; x=1782450445;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=AKzivFgfGZhK3wNXIzhi9adSJDcnzcuv1iu4Tm7CEEA=;
+  b=HG95pDcGBnKKYtyuFeJcBRX8OSWsJfuTSYeKHtr353VChQuJoQVGOMsn
+   CALZE9UFztS0aKn28n8hZepSB1fvbBX06b/heVbSxFrh87vQZMncIkr2V
+   n/+UXlc6mSEqnJsfFcv7wGT3iRHPpPoTlgJe9yE2DYgHKz59Vi6G0TEec
+   k=;
+X-CSE-ConnectionGUID: vyOfOD71QpGY40oDNjpARg==
+X-CSE-MsgGUID: HhGv3IpLR3a5jVKNVkZdWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="100358752"
+X-IronPort-AV: E=Sophos;i="6.16,266,1744063200"; 
+   d="scan'208";a="100358752"
+Received: from unknown (HELO MUCSE819.infineon.com) ([172.23.29.45])
+  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 07:07:23 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE819.infineon.com
+ (172.23.29.45) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 26 Jun
+ 2025 07:07:22 +0200
+Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
+ MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Thu, 26 Jun 2025 10:48:31 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Thu, 26 Jun 2025 10:48:31 +0800
-From: Michael-CY Lee <michael-cy.lee@mediatek.com>
-To: linux-wireless <linux-wireless@vger.kernel.org>
-CC: Johannes Berg <johannes@sipsolutions.net>, Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, Money Wang <money.wang@mediatek.com>,
-	linux-mediatek <linux-mediatek@lists.infradead.org>, Michael-CY Lee
-	<michael-cy.lee@mediatek.com>
-Subject: [PATCH] wifi: mac80211: break the outer loop if target nontransmitted BSSID profile is found in ieee802_11_find_bssid_profile()
-Date: Thu, 26 Jun 2025 10:48:25 +0800
-Message-ID: <20250626024825.2231721-1-michael-cy.lee@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+ 15.2.1544.4; Thu, 26 Jun 2025 07:07:20 +0200
+From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>, Johannes Berg
+	<johannes.berg@intel.com>
+CC: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
+	<linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>,
+	<wlan-kernel-dev-list@infineon.com>
+Subject: [PATCH wireless-next RESEND] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
+Date: Thu, 26 Jun 2025 10:37:02 +0530
+Message-ID: <20250626050706.7271-1-gokulkumar.sivakumar@infineon.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,33 +73,58 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-MTK: N
+X-ClientProxiedBy: MUCSE819.infineon.com (172.23.29.45) To
+ MUCSE827.infineon.com (172.23.29.20)
 
-If the target nontransmitted BSSID profile is found, the outer for-loop
-should be broken, otherwise the "profile_len" might be incorrectly
-overwritten.
+After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
+IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
+got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
 
-Fixes: 5023b14cf4df ("mac80211: support profile split between elements")
-Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
+Because of this, as part of the scan request handler for the P2P Discovery,
+vif struct used for adding the Probe Request P2P IE in firmware got changed
+from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
+So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
+requests frames and the other P2P peers were unable to discover this device
+causing a regression on the P2P feature.
+
+To fix this, while setting the P2P IE in firmware, properly use the vif of
+the P2P discovery wdev on which the driver received the P2P scan request.
+This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
+is completed.
+
+Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
+Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- net/mac80211/parse.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index 96584b39215e..a985a439051a 100644
---- a/net/mac80211/parse.c
-+++ b/net/mac80211/parse.c
-@@ -815,6 +815,9 @@ static size_t ieee802_11_find_bssid_profile(const u8 *start, size_t len,
- 				break;
- 			}
- 		}
-+
-+		if (found)
-+			break;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 4b70845e1a26..075b99478e65 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -1545,10 +1545,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 		return -EAGAIN;
  	}
  
- 	return found ? profile_len : 0;
+-	/* If scan req comes for p2p0, send it over primary I/F */
+-	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
+-		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
+-
+ 	brcmf_dbg(SCAN, "START ESCAN\n");
+ 
+ 	cfg->scan_request = request;
+@@ -1564,6 +1560,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 	if (err)
+ 		goto scan_out;
+ 
++	/* If scan req comes for p2p0, send it over primary I/F */
++	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
++		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
++
+ 	err = brcmf_do_escan(vif->ifp, request);
+ 	if (err)
+ 		goto scan_out;
 -- 
-2.25.1
+2.43.0
 
 
