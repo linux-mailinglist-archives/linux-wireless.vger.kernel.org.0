@@ -1,93 +1,81 @@
-Return-Path: <linux-wireless+bounces-24604-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24605-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6CFAEAFD0
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 09:10:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EB3FAEAFD5
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 09:11:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AC1F1746E4
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 07:10:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F06283A7BC9
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 07:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94224219EAD;
-	Fri, 27 Jun 2025 07:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320F121B9E2;
+	Fri, 27 Jun 2025 07:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AaY4RI4g"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="xhXtrFLC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641CC1922DE;
-	Fri, 27 Jun 2025 07:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A8C219E8F;
+	Fri, 27 Jun 2025 07:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751008248; cv=none; b=LctMrY4BmRZdiJxPibWeDW/l+LnX22M4dHqnoEq2aWWESywrVnNCdqyM9p1MgHZZBUH5ZGD6btU9qc47ed2vv6V/dUYWc2BA0pjymzItySssMBi0DzZZjoGVS8kM+Q+i+Y/Y17EoHvDancTk/Q3iOoguP3LPN07ooJWg+O4mVME=
+	t=1751008282; cv=none; b=OYQNW1ksgaMfIftlCgHGNaXpt7a4RmMK13uPbZUJ0i0gRgckNY3lseSkaHJHpE4hlKVy7CkYzMabMFTbUmtQqu6FSNk6nNWnxolU8rG7jpdwFxMxryma9NeIDhDg4+GWHMf/Rzp8KZxkIlnfBRRdu6yY6ZR02AnONAyshiN8OMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751008248; c=relaxed/simple;
-	bh=nnswXYndmbNMxoIgrEQe1qpxvAMbKFPmz+5XgVZHh8w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a/6POMKG8LjcbYCVPYsH0QEBU8UbQj8JAaZ0F90apiFIqKEa4DChpM0HcKlY4K04D478C2kekGDhXKk5vlxr191P9YHQs6vALWz4OPblwIqTQapyXtPGJZ+zxv5O+TgCSgvZrEn7/6cvSIQfn/hXcAU2H8+CwD4hLPRylkZIfVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AaY4RI4g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC32C4CEE3;
-	Fri, 27 Jun 2025 07:10:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751008248;
-	bh=nnswXYndmbNMxoIgrEQe1qpxvAMbKFPmz+5XgVZHh8w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AaY4RI4gh/7Lu88584y3ELtmCSxOUwcsAVy9dP2R62yVxlB5k7cSkRWO35zMQrBHD
-	 ahM2K5UV1sJu3w5Z1RXOlSbyVLj8xgWw6VYFOg/tOx5BF0FOOc12D7MGo3fQdxNTFZ
-	 6cMt+VeF+IYwilKUo3u8l9XRz46YZkDDmc9UuXnVEQa08ljv+qWuZKLMNuGFhZsgzx
-	 yXKLTy2vkP7mddjyJUkFRLmFWg2KlsZaagLaco1LjDqvBIxk8hN7SpaJa01jeRapBo
-	 er2azhDOlTFQfvYDwkXFm1VAvDQ85vWwfEww0aKG/TJKmGYT0XxARdUsTU4uoSY/8l
-	 0ZmI44RQTzk5g==
-Date: Fri, 27 Jun 2025 09:10:44 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Paul Geurts <paul.geurts@prodrive-technologies.com>
-Cc: mgreer@animalcreek.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, 
-	conor+dt@kernel.org, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	martijn.de.gouw@prodrive-technologies.com
-Subject: Re: [PATCH v3 1/2] dt-bindings: net/nfc: ti,trf7970a: Add
- ti,rx-gain-reduction-db option
-Message-ID: <20250627-helpful-venomous-tanuki-3bca5f@krzk-bin>
-References: <20250626141242.3749958-1-paul.geurts@prodrive-technologies.com>
- <20250626141242.3749958-2-paul.geurts@prodrive-technologies.com>
+	s=arc-20240116; t=1751008282; c=relaxed/simple;
+	bh=jeOWj62VBktV2lbF8miUqMjm4wZIUMF8VgfmuLsJJfo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KwgHGZyPEZvFHslO04OUha58A786ZwrRn5DAtCbUkx3XQ0J8d8vMebHGTgQ4HV6WhFQISPT3ygFsskjMefgM9WAk1qgqX1FdoStOawUJ+rMLMZuv2Poi68NwOY/qpNYO+SX5Wx0oCiftp0n1nV96W4BAKWEB5rqXkKwTgqlrWJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=xhXtrFLC; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=oN9j1CmBXqrVIvSaYmetxctZyz3xJzMLI6M+DqnVu/Y=;
+	t=1751008280; x=1752217880; b=xhXtrFLCT7n1zV14Ec0TBTw4NLLKNPWNQlYiRK8Loy0PWBq
+	hqPfHG/Ny81EXmaSSjLMwWuB7f8VRbDBoaODeHegQIyOjFbUPgkESwovE7q3HGVfdZGrelrhq1FqJ
+	beyMS1wENV0RFDpmujkrqXRMMnoM97RYi0jG/KovGCk1saoQ6uj1hMAVYbbMJ+8NqSgYJ3Vh3m2mx
+	grNmJK0JMZXpx4hjBHvJx3CQWiR+U1CQe0nMEwzgKPhnsFXnog/n5/AJykQtNRC8UzYbr6HpoxpMk
+	vP8O525RGOWczHttydOVdRLwyUnF8TyS5yTAECFlRhUwxdg6MGvmgKc3W5fYah+Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uV3Ep-0000000DFrh-1yWn;
+	Fri, 27 Jun 2025 09:11:08 +0200
+Message-ID: <7625f178e7c2be9fd11f1b4cdeb4da47a4635c93.camel@sipsolutions.net>
+Subject: Re: [PATCH 0/3] wifi: brcm80211: Deadcoding around phy_cmn
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux@treblig.org, arend.vanspriel@broadcom.com, kvalo@kernel.org, 
+	linux-wireless@vger.kernel.org
+Cc: brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
+	linux-kernel@vger.kernel.org
+Date: Fri, 27 Jun 2025 09:11:05 +0200
+In-Reply-To: <20250626140812.56700-1-linux@treblig.org>
+References: <20250626140812.56700-1-linux@treblig.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250626141242.3749958-2-paul.geurts@prodrive-technologies.com>
+X-malware-bazaar: not-scanned
 
-On Thu, Jun 26, 2025 at 04:12:41PM +0200, Paul Geurts wrote:
-> Add option to reduce the RX antenna gain to be able to reduce the
-> sensitivity.
-> 
-> Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
-> ---
->  Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml b/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
-> index d0332eb76ad2..5f49bd9ac5e6 100644
-> --- a/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
-> +++ b/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
-> @@ -55,6 +55,12 @@ properties:
->      description: |
->        Regulator for supply voltage to VIN pin
->  
-> +  ti,rx-gain-reduction-db:
+Hi,
 
-I'll add db unit to the dtschema.
+Just a couple of general comments for the future:
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+1) you can drop Kalle, he hasn't been involved for a while now
 
-Best regards,
-Krzysztof
+2) it'd help for the automatic bot runs etc. to have, in the subject,
+   '[PATCH wireless-next]' (or perhaps rtw-next etc.)
 
+Thanks,
+johannes
 
