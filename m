@@ -1,84 +1,90 @@
-Return-Path: <linux-wireless+bounces-24608-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24609-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F89FAEB040
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 09:39:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E68AAEB041
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 09:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 383231C2280C
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 07:40:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE77A16CE47
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 07:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776AF21C9E5;
-	Fri, 27 Jun 2025 07:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1277F21B9E2;
+	Fri, 27 Jun 2025 07:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="KvCwpp4f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHT+f6H7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425FA21C9EA
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Jun 2025 07:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AFA218E96;
+	Fri, 27 Jun 2025 07:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751009977; cv=none; b=eDZY80XmylefvC+tdqL50phBWFMNv2KUjQ5Iqmx2m7eDDbtIfUmzDBWzji3YcVCDpcu2dr2VygDmJr197OgB3mnqiWaX96QWJEfTNnEnzeH+dsPjo7HVhSu5zASh0vwdAUXlrhu6Nm7U/JLvkkZPLzO7kOuKH2BIRUAEssHv69A=
+	t=1751009991; cv=none; b=tjfxqDhNOzxPgFM3LOUq9h5i4VDvfgklpzE7oaFeipZ1CuXqO42NSwBLr3Cbtuv/in8euQmDVE8CuHkd7nooLmCrSSA3xya+nRRGTPaIfX8m1xbu5UlPKpvPHqUtQXwQ3MvtpbuMk6BvXlDj1O/2MzQqGTUe59ekRw4iRQkS93U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751009977; c=relaxed/simple;
-	bh=2UNS+t12bOTOBv0KGjF2xoNYFhekMbEAG5UFH+BDJuo=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AtmSMUuOIH9NrycCYvbzlf9O5YKRz1r8z6BXQ3Y7D5m2/bZjQF7tQy61Xp6hmR/665+BMocJ96yXefO3Ytp5ADmovr5w3imiGFAMYzPzEP3twdDnW1Ao9VKhotGqYJhHwEPhoXB37KasWzOzLJOVKiP/2mEXRxIY172veFCok5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=KvCwpp4f; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=2UNS+t12bOTOBv0KGjF2xoNYFhekMbEAG5UFH+BDJuo=;
-	t=1751009976; x=1752219576; b=KvCwpp4fg07bxinALbm5VHZUCu48gqj5ug0aVp0Xv6J4UhJ
-	JfwdSFSASoTNfmG+dDDZBwYQfYA+L40DJljnQN3ccri1+iSwLQfTIohmOf2PvucG7YfrgYO7RHZVH
-	Zh1E0Jkr3NsyorDnVBEi/jQmgPI9xc5yFjBUecpK1D4nFNJjNS12EGBYAUK3Pj3Ty7B7XCLOoYl1m
-	bgn7Ngi5gQz8lfmUWi9JVbobuZhpyg6jYXp1toZRuFg1+1y0g1HJf91i93JagHNUn5XQWkSqAFMog
-	7Np7/m0ORHUEShaxsQwmXCyELpmglw7No+QhMMBipfj8atbX49Wt2XjQMuL3TafQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uV3gG-0000000DIdK-0vRC;
-	Fri, 27 Jun 2025 09:39:28 +0200
-Message-ID: <dd5d7dabccee33e81f77163b5ba640841cfe5ac8.camel@sipsolutions.net>
-Subject: Re: Linux Wireless Request for Collaboration (AP-centric features)
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, linux-wireless
-	 <linux-wireless@vger.kernel.org>
-Date: Fri, 27 Jun 2025 09:39:26 +0200
-In-Reply-To: <6f4dc13a-b2f9-4f88-a1fb-8c457a6ed057@oss.qualcomm.com>
-References: <6f4dc13a-b2f9-4f88-a1fb-8c457a6ed057@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1751009991; c=relaxed/simple;
+	bh=Vr3ciGbUBECVXTyaRD7kyJd4xFPIaK8NPuTFXbZGnZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BXgkI0oarlPBbcDqpkBOuJIo0t8oQxDa5aoaB07oioHQlWqeWSxW+eQ417tHQe06cJr0Z/B3wrQVV23z5VpnGXWt76vXD8F5wtrK4lTyx/W9u2NcwJFElVKr4f60mSbObr8i5Xail6Wz93n6sSnhjWLIfejqWYFHLirlqCOdIQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qHT+f6H7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4D1C4CEE3;
+	Fri, 27 Jun 2025 07:39:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751009990;
+	bh=Vr3ciGbUBECVXTyaRD7kyJd4xFPIaK8NPuTFXbZGnZQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qHT+f6H7BOh5vJA8ftR/Qoz65ardOB+vyVzODm+a5FQqvBzQo1KrQpN9NU2sR5w4a
+	 Lyh02Y/UNxwtoUPgP4gmq16d8DTowNj1V0yPopOvInLFoT8f+GVi+3fcW4ywNFv2bl
+	 Xxt6H9apxCFO5I8y5lefaZaPpB+xz6KX6hJCQ6QgOzTL13yCYq3WT2DGMf7500jKPu
+	 ji2FygFEmmtx7JPP4VTYBN28cCemrehrALINZ7pqIpfCJq1pBi/i5fVKu7yGa8Bk2g
+	 jS1691C0ZREd3LDT0msPIQXLU34BrTHRZr6leDyrOtM01Lo2jTRylKsS/GlHIEFBxr
+	 7tozF8pNXt3wQ==
+Date: Fri, 27 Jun 2025 09:39:46 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Paul Geurts <paul.geurts@prodrive-technologies.com>
+Cc: mgreer@animalcreek.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, 
+	conor+dt@kernel.org, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	martijn.de.gouw@prodrive-technologies.com
+Subject: Re: [PATCH v3 2/2] NFC: trf7970a: Create device-tree parameter for
+ RX gain reduction
+Message-ID: <20250627-truthful-versed-civet-375ea4@krzk-bin>
+References: <20250626141242.3749958-1-paul.geurts@prodrive-technologies.com>
+ <20250626141242.3749958-3-paul.geurts@prodrive-technologies.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250626141242.3749958-3-paul.geurts@prodrive-technologies.com>
 
-Hi,
+On Thu, Jun 26, 2025 at 04:12:42PM +0200, Paul Geurts wrote:
+> The TRF7970a device is sensitive to RF disturbances, which can make it
+> hard to pass some EMC immunity tests. By reducing the RX antenna gain,
+> the device becomes less sensitive to EMC disturbances, as a trade-off
+> against antenna performance.
+> 
+> Add a device tree option to select RX gain reduction to improve EMC
+> performance.
+> 
+> Selecting a communication standard in the ISO control register resets
+> the RX antenna gain settings. Therefore set the RX gain reduction
+> everytime the ISO control register changes, when the option is used.
+> 
+> Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
+> ---
+>  drivers/nfc/trf7970a.c | 91 +++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 80 insertions(+), 11 deletions(-)
 
-So I held off for a while since I didn't want anyone to think I have it
-covered ;-)
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> Specific areas of interest at this time include:
-> Robust AV Streaming (IEEE Std 802.11-2020 section 11.25)
-> Seamless Roaming (IEEE P802.11bn/D0.2, March 2025 section 37.9)
+Best regards,
+Krzysztof
 
-But of course generally with my maintainer hat on I'm interested, and to
-some extend perhaps the seamless roaming overlaps a bit with client?
-
-Now that I learned more about it though, it seems the seamless roaming
-isn't even all _that_ seamless, and doesn't require major surgery?
-
-johannes
 
