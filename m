@@ -1,144 +1,84 @@
-Return-Path: <linux-wireless+bounces-24607-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24608-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A7FFAEB01F
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 09:32:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F89FAEB040
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 09:39:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 732AC4A7823
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 07:32:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 383231C2280C
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 07:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AB4224AE0;
-	Fri, 27 Jun 2025 07:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776AF21C9E5;
+	Fri, 27 Jun 2025 07:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HaSfYuhl"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="KvCwpp4f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE9D3C2F
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Jun 2025 07:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425FA21C9EA
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Jun 2025 07:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751009510; cv=none; b=nykypwgPeepw8WoMLqZt9hdlk8abJkBhJPmQMk1NUbzdpiORgKouTnvz0GyZNxhHu6KFG+mGTnmM18vhOHQ3C93RA9fA90l83vhMpIRAqKcUpzFYbvghRnmP7RSVjWApQPO+ubzNsdDCG0G5yFJQK9faqm8Lk5937Y6oeo/fwa8=
+	t=1751009977; cv=none; b=eDZY80XmylefvC+tdqL50phBWFMNv2KUjQ5Iqmx2m7eDDbtIfUmzDBWzji3YcVCDpcu2dr2VygDmJr197OgB3mnqiWaX96QWJEfTNnEnzeH+dsPjo7HVhSu5zASh0vwdAUXlrhu6Nm7U/JLvkkZPLzO7kOuKH2BIRUAEssHv69A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751009510; c=relaxed/simple;
-	bh=sn0WeSM24B/vzlgYYF7p/UbB3vjcQLKlmQkOWEDTPa8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=UeBB4hnRzpP8X/iT69z5EaJcSTFH0dXIBmK/jt0XrytkgSTohCtm70hLaZD8pUsIwIp7DMFCEvxBQ5bMxsWOYFV+OV+cOV9L7kdRs+qGEmaZCjBcU1O7oUcDFf9yL1LmjTrarUdFGQ42vJFpF+73REiZTiFPdCMVsi7AIHdxdWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HaSfYuhl; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-451e2f0d9c2so12544445e9.1
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Jun 2025 00:31:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751009508; x=1751614308; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sn0WeSM24B/vzlgYYF7p/UbB3vjcQLKlmQkOWEDTPa8=;
-        b=HaSfYuhl7m7v7RMJ+fSQtK+59IszPRdwBORbcmj/xAGjiTdbZoGm9Q6/RNojNPuApn
-         8bmSBHrgkIwbhxdhl4c4pMslPk4JXMFCgtX98vIEn7g1Q+BbRTQq6oHXh/VOm1YMtNY6
-         JaU0fs2+mxaWn0P3DjS8rk/CSB0Et1tvWstYF1B92Z6WDza/mLKbEk8oPiYWFVdIo/yy
-         aNBd3qdbTgB34lG4GKsYTW8iJGTAw4mN9II8WMu0Gux6MpTjV9gRt4z1GBp9Kv3kBmP4
-         /zHGIU+PGhQGeenkbslLuLvZvk/0ZUh6oMyKsDniuLU9MUEOV+t2MOHJFMBI1gWSqP7I
-         ZgiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751009508; x=1751614308;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sn0WeSM24B/vzlgYYF7p/UbB3vjcQLKlmQkOWEDTPa8=;
-        b=jSZgCvlMKsbNIVNHlCozwag6MkwzEOcm5hZgLkG8jIsv7khYMvBzWfR0sASuUO6ZFK
-         kcZARIgzKCzcONe7Yq9xhjo48Gkaqh9/JoBk5BoRGJ9+jm17yWLf066w3NNucKNHnhzq
-         UisMoa7Qz4QZLGvyFjh3gvtmjMPNR9lngqBcytAO5y64LjuPwpsYmB521in1bL6vBahR
-         IJmnYTQ/0G904cHc0OhbCTf3a3N4C1LSbggjIQKrQGJCQmiZwCjytD5oUfB8sBh3qFyK
-         WHm4weMoE+EiwMsPymarw0baTq81SsxoPrOX4JzyV+vb2Ir2l+m654z4bMVwjkv9hC+P
-         Pmmg==
-X-Gm-Message-State: AOJu0YxEi05tRKpOQdz+HR00A4I28Fx8dQgy+CHI8+WCWvaTJdtjFNJQ
-	GZcK4u4hTfUIG9JAcHDY141JKxyYk828lFgvDVibOhWjOPGHu8nJefyTLLGlbw==
-X-Gm-Gg: ASbGnctoukzUbT8ZaE4TjXhfXo00PdnxabJoX6fqWzsOSMo+mgkLFxlk/o9cffvWYtu
-	Ctj6hXlOKbHjKIVxe19A2W7BbWn6nAJynazcXx1IP9wT0FvomPE/3TX3tX7TUKmLz5xoiIZZoHR
-	oLqMuA4fKPQbnG+IdrGQL/frqhcNb9GDm1/y2ymAOLF5KUuiXdO2HgM/td0C/u19RW4Dzj7lOBB
-	pV7sOiCG/sFBtZHvMzJiY1ok7XWo4LUTHjWeQRbpYXXF7QAMFYvESrVgznIFdh6NgPjjehi/y2c
-	ds7rGka8FiVk0xlSypwX6hkpQ0A9657IF6/6SJ5QxM/YE8pqhYAPqNFOsFA56RXUMOO43DQn6H0
-	7898fMGwfYuCAfKQ=
-X-Google-Smtp-Source: AGHT+IH0LyLYrdKmf3DPLsDNklPgmfuPw+5P0zql/CEgTDuwp2yhva7iCbZKj/XeODsOzg7JnSm5Xw==
-X-Received: by 2002:a05:600c:1994:b0:450:d79d:3b16 with SMTP id 5b1f17b1804b1-4538f309394mr18058945e9.14.1751009507308;
-        Fri, 27 Jun 2025 00:31:47 -0700 (PDT)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823ba553sm70454755e9.31.2025.06.27.00.31.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jun 2025 00:31:46 -0700 (PDT)
+	s=arc-20240116; t=1751009977; c=relaxed/simple;
+	bh=2UNS+t12bOTOBv0KGjF2xoNYFhekMbEAG5UFH+BDJuo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=AtmSMUuOIH9NrycCYvbzlf9O5YKRz1r8z6BXQ3Y7D5m2/bZjQF7tQy61Xp6hmR/665+BMocJ96yXefO3Ytp5ADmovr5w3imiGFAMYzPzEP3twdDnW1Ao9VKhotGqYJhHwEPhoXB37KasWzOzLJOVKiP/2mEXRxIY172veFCok5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=KvCwpp4f; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=2UNS+t12bOTOBv0KGjF2xoNYFhekMbEAG5UFH+BDJuo=;
+	t=1751009976; x=1752219576; b=KvCwpp4fg07bxinALbm5VHZUCu48gqj5ug0aVp0Xv6J4UhJ
+	JfwdSFSASoTNfmG+dDDZBwYQfYA+L40DJljnQN3ccri1+iSwLQfTIohmOf2PvucG7YfrgYO7RHZVH
+	Zh1E0Jkr3NsyorDnVBEi/jQmgPI9xc5yFjBUecpK1D4nFNJjNS12EGBYAUK3Pj3Ty7B7XCLOoYl1m
+	bgn7Ngi5gQz8lfmUWi9JVbobuZhpyg6jYXp1toZRuFg1+1y0g1HJf91i93JagHNUn5XQWkSqAFMog
+	7Np7/m0ORHUEShaxsQwmXCyELpmglw7No+QhMMBipfj8atbX49Wt2XjQMuL3TafQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uV3gG-0000000DIdK-0vRC;
+	Fri, 27 Jun 2025 09:39:28 +0200
+Message-ID: <dd5d7dabccee33e81f77163b5ba640841cfe5ac8.camel@sipsolutions.net>
+Subject: Re: Linux Wireless Request for Collaboration (AP-centric features)
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, linux-wireless
+	 <linux-wireless@vger.kernel.org>
+Date: Fri, 27 Jun 2025 09:39:26 +0200
+In-Reply-To: <6f4dc13a-b2f9-4f88-a1fb-8c457a6ed057@oss.qualcomm.com>
+References: <6f4dc13a-b2f9-4f88-a1fb-8c457a6ed057@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Jun 2025 09:31:46 +0200
-Message-Id: <DAX52ECUSPW5.1P50QHZ8X2QFX@gmail.com>
-Cc: <linux-wireless@vger.kernel.org>, "Steffen Moser"
- <lists@steffen-moser.de>
-Subject: Re: [PATCH] Revert "ath11k: clear the keys properly via
- DISABLE_KEY"
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Vasanthakumar Thiagarajan" <quic_vthiagar@quicinc.com>,
- <ath11k@lists.infradead.org>, "Sven Eckelmann" <se@simonwunderlich.de>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250117191455.3395145-1-nico.escande@gmail.com>
- <20e0a239-3d23-473b-5bc8-41bc25a64088@quicinc.com>
- <D9NDQJB4VMWA.V4IPOZOIR46W@gmail.com>
- <0c166b5b-f358-1f39-4569-a1ac388033df@quicinc.com>
-In-Reply-To: <0c166b5b-f358-1f39-4569-a1ac388033df@quicinc.com>
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-On Tue May 6, 2025 at 11:19 AM CEST, Vasanthakumar Thiagarajan wrote:
-> Hi Nicolas
->
-> On 5/4/2025 6:06 PM, Nicolas Escande wrote:
->> On Sat Jan 18, 2025 at 11:29 AM CET, Vasanthakumar Thiagarajan wrote:
->>> Hi Nicolas,
->>>
->>> On 1/18/2025 12:44 AM, Nicolas Escande wrote:
->>>> This reverts commit 436a4e88659842a7cf634d7cc088c8f2cc94ebf5.
->>>>
->>>> This as been reported by multiple people [0] that with this commit,
->>>> broadcast packets were not being delivered after GTK exchange.
->>>> Qualcomm seems to have a similar patch [1] confirming the issue.
->>>>
->>>
->>> This will re-open https://www.spinics.net/lists/hostap/msg08921.html
->>> reported by Sven. The recommended ath firmware ABI during GTK re-keying
->>> is SET_KEY instead of current DEL_KEY followed by SET_KEY. We are looki=
-ng
->>> at other options like some marking by mac80211 for the driver to be abl=
-e
->>> to identify if the received DEL_KEY is for re-keying. Also I'm curious
->>> if roaming between secure and non-secure mode is a critical use case.
->>> If not, we can probably go ahead with this revert as temporary WAR,
->>> @Sven?
->>>
->>> Vasanth
->>=20
->> Hello,
->>=20
->> Any news on this ?
->> I would hate for this to sink into oblivion once again given how hard th=
-is
->> affects end users when it does hit.
->
-> We are working on a driver change w/o reverting the commit, we'll share
-> the patch once complete.
->
-> Vasanth
+Hi,
 
-Hello,
+So I held off for a while since I didn't want anyone to think I have it
+covered ;-)
 
-I might be mistaken but I did not see anything posted for that yet, right ?
+> Specific areas of interest at this time include:
+> Robust AV Streaming (IEEE Std 802.11-2020 section 11.25)
+> Seamless Roaming (IEEE P802.11bn/D0.2, March 2025 section 37.9)
 
-Thanks
+But of course generally with my maintainer hat on I'm interested, and to
+some extend perhaps the seamless roaming overlaps a bit with client?
+
+Now that I learned more about it though, it seems the seamless roaming
+isn't even all _that_ seamless, and doesn't require major surgery?
+
+johannes
 
