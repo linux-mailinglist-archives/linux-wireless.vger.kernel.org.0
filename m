@@ -1,141 +1,102 @@
-Return-Path: <linux-wireless+bounces-24628-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24629-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E07D4AEBE29
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 19:06:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E45BAEBE9D
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 19:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1444A6A58B9
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 17:05:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE1A64A7D31
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 17:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692FF2EA727;
-	Fri, 27 Jun 2025 17:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A930E2EB5C9;
+	Fri, 27 Jun 2025 17:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PQrKSTpk"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="RM5+bK7p"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99542D3EFC
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Jun 2025 17:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE062EA742;
+	Fri, 27 Jun 2025 17:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751043938; cv=none; b=Fp47ZZyKt8eEh5gb1/VYCyNZj3m7Od+JkYZluURggz8TIi4gzC0Fz622aUmqZlBUnIzNw4obX7fl7NAdINHUsz5Z1o7MKf+Y02hgzhyToF5VUh4PBSBtN9YVOX3edraefnBZqqgu6YGPSx/J7uYhtXlUgbneWW1/aSfdK37VGjI=
+	t=1751046729; cv=none; b=JlUu2xs3kS8oMDR9ZOg1/KydX3WEs/Bn7Cg/kQAnYgFpAE7UVo6wEA2FW5JHnraav9HARyFSnrC8vxDV3x+EOTsq2HF2Nzarq5wKNpl+SKcgakimqbLOW96DZgNXvYelofVysgBlTV/lSoKEtiBzpVAGm9rIHTwGUCTC/wh1OjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751043938; c=relaxed/simple;
-	bh=URri9rtaeFQEwjHRWvdApiO5uoPZoUHI9uwK9qQupGY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QkZvj2tuOMmhwuozafBkpkzDOkqrNpPfRwfM7oe+gQMiH7Y8auu5LpXwup4L9FntSSoHlpiuXe24jQV+u5khU/I9TNyVJD0ywoHy62Lfiibxoh52iHyYINb6/pAywm3AG/vsE/0BBI88J/BuVUnHsni4zpIn1z0doLJFE5KcGbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PQrKSTpk; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55RBu32i009871
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Jun 2025 17:05:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	e4hhTOqWZMo9V6fIdyRvsV5cpbd4ClOqy3EZwA5PfkI=; b=PQrKSTpkR7xP6Vlm
-	FCq7dTVdQAkxRJOB6dySi85NLfwt67iLTLjItHwjwt2leXZq2limx3G9tIXbyfOC
-	zv/B6QBl1A1Flz8wmCBadNwW6IM1zalbaoitjvVattK6Yxvx0h/ErOiR/THlatCI
-	7Pi7LbVJc6SUKeSatof0/cVLNyy4V8p//t83bsmEbi54wC8AA9m5n5qAXf5F3/m1
-	m6BNs/F9nePB0sPcHT0pCTabPGIFyVxP2XqxdshVvJcgnT3+Z6R/F8fP3u1Kajf6
-	SMZUNbLqJSlWa9UMqiizTc8SQ4oyEuTDfEsJK2JY9XiSTBFjmLp8vxX47of04Y3e
-	Araw3Q==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47g88fh85g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Jun 2025 17:05:34 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b31e1ef8890so54577a12.2
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Jun 2025 10:05:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751043933; x=1751648733;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e4hhTOqWZMo9V6fIdyRvsV5cpbd4ClOqy3EZwA5PfkI=;
-        b=PXpeQL70BIM2hyZ1PpfYSkLMIrS77tMQEB8vyBzRIv/oFGmkUF9V4G1RaDNEE/qFr+
-         RTVk1QuhQDIDIIfGMZjUKhTkzQBEpP1EDx4bjQhP4KtFr8VWfpjplHpvEgPbwsON8374
-         oHHvim4SU+zJqP/GGlCHhk/eF2Hb5KSKQShINvWCujeG9FwKRBUM0duYIfK4xLZBro2M
-         wIOiZdlS/bOdDdCTtlAnaON8Tb9+P10ZhszbiyWPMv8v15y/ttSVNyqUBi87V35mSn4r
-         rmU4XK6RoCc3hCOdBxvcW0xNOhYCcBzhBHE+fRerPzapB1Ymf1hwyj2k5t+0TkYnGPVr
-         gdoA==
-X-Gm-Message-State: AOJu0Yxvh0NOldmeFCJKANEdIMVSY4/gszT6PCyYwPwk9IufZRhj6jdJ
-	Zk9o+U7zVGRjC7LzsgCZOPlesU6p0/5U75vqwJ5JUi95PhQcoEHZj+Qu6gVvM1+2xjCFi7ycTN4
-	lQKSacB8vT2mZQIjABmjLLwOcnkHInNttz4fUgkgdhLbQYyyroMbBoIkY1HdOPQ44LpuA20NwWU
-	VD3g==
-X-Gm-Gg: ASbGncuvvYPrUkMuZG95aEda0LRWEGegNq/8AVSCgn79zm9Zv7VO221I9Ji+AHsBBBk
-	UmnaNwn6C3qPGHcHQdddMQzGZUgCkJ6+O8rRqkV4FEUIzeCB+t7qQISrQ4iJayFi+mmyBTMfNk5
-	0NmUEchUpe3dc/tdwLxnzLyxdHvT+7J3L45A1L8/NhYwWw3kJsbTPwvBZwNT1Ng9ZYo7B2HHhX+
-	00U6QvRIJ/SnQqFfOJvCTxCn0Hd3i/StG4UBSx8D2GLk2vNhMljjkAOVrPjVfYPfXpP3hEUEHuV
-	yqjHwKFoXnsrm6CPYDXvBR7Lt2L3b4s26KDkbfDL8kTun+YMIloouWtyE3qVfVyOy1RWmE0KmXm
-	V+3QMUbhOQg8JHzk=
-X-Received: by 2002:a17:90b:4c89:b0:312:29e:9ec9 with SMTP id 98e67ed59e1d1-318c92ee68dmr6494982a91.24.1751043932726;
-        Fri, 27 Jun 2025 10:05:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEh27OnPNhZGxxlt8ifDAaNJo9KryjgRVl1DMLDe3mGcXsunT1yKUcnQR+Cw4Ulqx7TgvFUA==
-X-Received: by 2002:a17:90b:4c89:b0:312:29e:9ec9 with SMTP id 98e67ed59e1d1-318c92ee68dmr6494932a91.24.1751043932125;
-        Fri, 27 Jun 2025 10:05:32 -0700 (PDT)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-315f54270a5sm7444241a91.25.2025.06.27.10.05.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jun 2025 10:05:31 -0700 (PDT)
-Message-ID: <94cc1f71-7de0-459c-90bc-84e25bd76353@oss.qualcomm.com>
-Date: Fri, 27 Jun 2025 10:05:30 -0700
+	s=arc-20240116; t=1751046729; c=relaxed/simple;
+	bh=sdgfvVloB/QFl6iqoeelnvm1/3gLL3sDSj0P0PWGIs4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e/mU7Oxm40M91sm/7PvyqmXGSCxRab1N1yO+sGJf4NoR+IlG4DjIKHS4nlFlFZnJDc/I5p/lzDU7cTGWrjPiylQn6nnoS3+x6DUkzMLL4C4fxCRU27P9LY5m5rwFKf/mNlN6TW/ImqSOwwwNC8zMqgdjGAg/bkt2OuInozzuT2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=RM5+bK7p; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+	:Subject; bh=fhAy7nKKx0JGyjq1aCihLVL+QejNvq1pgv4yXYKDpSk=; b=RM5+bK7puaJGTLuD
+	+LLEez2w9hyxm2dUopDohR8Ar2mLonEoUUssfm+4jukIGcS/ikHsWLSLhlCTNa2wO1KUl6KpPHjMy
+	4IZwjT8xRJ8wfY7s1WwBljBUee816Pg2flEHXwmM0X5/rjKMEXmKV3EYibgJm7oKBWM37cN9p7ujp
+	SPTBjEM6g0e8KAmqqJvxndDdLw+fAVV6yajeBQPPHAzg0y8yhfbnNbPhzSLjjGRD+jfXKbxwun6KJ
+	sx2mpFAg55Lh0ZeT23rUfR8kO6KUU5gt/bc6jdU1C9BEkfNVYostTOfl5COVOV58LacV9z/WfuxEo
+	gavEhtKc9WtZ3aMMRw==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+	(envelope-from <dg@treblig.org>)
+	id 1uVDEz-00CZ1u-1p;
+	Fri, 27 Jun 2025 17:51:57 +0000
+Date: Fri, 27 Jun 2025 17:51:57 +0000
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: arend.vanspriel@broadcom.com, kvalo@kernel.org,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] wifi: brcm80211: Deadcoding around phy_cmn
+Message-ID: <aF7aPZc3xXfcc-UR@gallifrey>
+References: <20250626140812.56700-1-linux@treblig.org>
+ <7625f178e7c2be9fd11f1b4cdeb4da47a4635c93.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bug report] wifi: cfg80211: allocate memory for link_station
- info structure
-To: Dan Carpenter <dan.carpenter@linaro.org>,
-        Sarika Sharma <quic_sarishar@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-References: <81f30515-a83d-4b05-a9d1-e349969df9e9@sabinyo.mountain>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <81f30515-a83d-4b05-a9d1-e349969df9e9@sabinyo.mountain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI3MDEzOCBTYWx0ZWRfXxonWM455rGLq
- YKAROeouqbQxFBiL00Rc6Jbrq4lmf9NsLXlOyEd9nvEpuWizmcLkd6PWSO0y7TDm90HHsr5hcRJ
- 7VX0LivWPREjeLuhKeRbeJCsK4kAYnjngu+r9qu6AqSEzCEHv0LAYdw/+28iPPZ1qamM3/tGwys
- dT7LjMUd1XZVOKBq06IU0szSgDDDMAg1gGROvioSKk21UPIDY+GU0LvbICwThva/aEZEsgFiQsb
- w8jsbxAsM3ea348qOhTBvptg9ZiP0LmKfXo/DGNkvJI0odnOSv4MhAI5moT0WqLBIx0Ts7aq6uZ
- ysje0mW0OiyQcm2uYLYRdfC/Pv+NkvECpTyp4nU56VAxqbzMMVJq/t6Bmta8/o9Es1KQ/TGoiJA
- GbMALnSTV+9s7scVDzOIfKlcpbdK7YpU4UrFEJQDWFydw5/ApRF4bkvL0HnGMumhAlqOKsco
-X-Proofpoint-ORIG-GUID: 68pIHulE46F7mNfD3InxaM23jaykJTAi
-X-Proofpoint-GUID: 68pIHulE46F7mNfD3InxaM23jaykJTAi
-X-Authority-Analysis: v=2.4 cv=LNNmQIW9 c=1 sm=1 tr=0 ts=685ecf5e cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=e70TP3dOR9hTogukJ0528Q==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=Fu7zB1KMxb34FjUOL24A:9
- a=QEXdDO2ut3YA:10 a=bFCP_H2QrGi7Okbo017w:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-27_05,2025-06-26_05,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0 mlxlogscore=999
- impostorscore=0 mlxscore=0 clxscore=1015 adultscore=0 priorityscore=1501
- lowpriorityscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506270138
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <7625f178e7c2be9fd11f1b4cdeb4da47a4635c93.camel@sipsolutions.net>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
+X-Uptime: 17:49:06 up 61 days,  2:02,  1 user,  load average: 0.00, 0.00, 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-On 6/27/2025 8:37 AM, Dan Carpenter wrote:
-> Hello Sarika Sharma,
+* Johannes Berg (johannes@sipsolutions.net) wrote:
+> Hi,
+
+Hi Johannes,
+
+> Just a couple of general comments for the future:
 > 
-> Commit 49e47223ecc4 ("wifi: cfg80211: allocate memory for
-> link_station info structure") from May 28, 2025 (linux-next), leads
-> to the following Smatch static checker warning:
-> 
-> 	net/wireless/nl80211.c:7505 nl80211_dump_station()
-> 	warn: 'sinfo.pertid' double freed
+> 1) you can drop Kalle, he hasn't been involved for a while now
 
-Thanks for the report, Dan.
-Sarika is working on this.
+Oh yeh, I forgot about that.
 
-/jeff
+> 2) it'd help for the automatic bot runs etc. to have, in the subject,
+>    '[PATCH wireless-next]' (or perhaps rtw-next etc.)
+
+Oh right; that wasn't too obvious to me because get_maintainer has
+linux-wireless@ in the list but also had the brcm80211 - so I
+didn't know if this went through brcm or wireless picked it up.
+And what's rtw ?
+
+(Perhaps a Documenation/process/maintainer-wireless.rst would be good? )
+
+Thanks again,
+
+Dave
+
+> Thanks,
+> johannes
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
