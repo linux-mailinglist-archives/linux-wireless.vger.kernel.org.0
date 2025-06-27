@@ -1,377 +1,149 @@
-Return-Path: <linux-wireless+bounces-24594-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24595-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6654FAEAC6C
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 03:54:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E26AEAD80
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 05:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F381F3AE336
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 01:53:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59FD51885850
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jun 2025 03:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB18146A60;
-	Fri, 27 Jun 2025 01:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B48D19D081;
+	Fri, 27 Jun 2025 03:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="H8rIpnHs";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HPS+Ga3t"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Itc0cpOc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E1F78F59;
-	Fri, 27 Jun 2025 01:54:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9378F15746E
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Jun 2025 03:44:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750989243; cv=none; b=C0XH2uyazsOVD3RJgZDBDC+Tqk35q/WZDOZI3zm/eZrLO0Z/frAZVLDcjcD288hsY4W4sOIsxV99Rj7SmTJIeVKHjDRjLDtUxs5lpyjKq2bKXodJ6FoXfoXU1aqS5v08ZodlzJh+m522FDyxj4hh2t6x/AKNO6wgLlp+ojD1DIY=
+	t=1750995855; cv=none; b=rR98vCA/155JNVKtoPsm+zpS9MSkkbCK+GXQ/SDHb0YUhdo+oKHL+G12mAXtIVhjsZVZhL2IFPvucoaHfae/rjogK8GQizNQy2wQZFJJXhMtJ6avH4OgVChbjoL+7uZU4/13a+dx5P3qI1MCj0pL61yxDzvgfLJYrn/RmbCL7bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750989243; c=relaxed/simple;
-	bh=9/3UKOq/ZQWjiyH2+5gwYB5rh+qnO3UVXnq2yd/Qzi4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cdhslQ94mlCOoEBbY5RxPFvhgnv7uZQTPxfZ6eNOsBvIb9YPibOowTp6TzP9RbeMDJB1SZ9QKaGDPQXNoSf+DmTxoGUQH1O/blFwlGjuaveSs+WWo93kIrlNFL+AFn2uWhFyCkkBu1knXfql00APr4xmhaIMiXTiSgAmqBVHrpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=H8rIpnHs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HPS+Ga3t; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 5A134EC008F;
-	Thu, 26 Jun 2025 21:54:00 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 26 Jun 2025 21:54:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1750989240;
-	 x=1751075640; bh=R7H+I8t7+/Sphir7DxxTWFcy0tOG7sN1kMnh2M9QQ6Q=; b=
-	H8rIpnHsbIi7WbZGpuOBTXtft2R20fmeMWkXozKVC/yLQCHHOF2S+UHZKsROKZHt
-	eQjFiKZSu0lTiQVN/h6fktXY7Nkgg+iMy9vGNCCBX7Shg4RJ9ACAt9WMb6vJQdyW
-	3YFz558H58CBidel8rXZPOIGJEigJ0zjp7xmsf9aSrzX3H9DmyBOpDV/aabD0RIX
-	WGpBkGyEU2eOlRU9PMQgQbl5OCj3n//zBK6QKVs2BTE+k/TWCZjDhXvrnwZKc/0r
-	Lk8zji5CTEZoJUcNvjqYpmv+fhAJUQzH9Bo+M/U8yclKSqU2+uoWWqgUIrghN+/T
-	R3VskE5OsVFFxie10KQxbA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1750989240; x=1751075640; bh=R7H+I8t7+/Sphir7DxxTWFcy0tOG7sN1kMn
-	h2M9QQ6Q=; b=HPS+Ga3tEIvpTV+r7lskSdp5zVwBAvx/+jsB/lc7JmUeTQwXdq/
-	atE2VzMrH8OYNwrfBxdvIB/Yv15i9d0J4p9qvcZHV4OQzXb42GV80vXMLM0esg2X
-	FF0Nsd8vB+ZEwtwnJ7oQEVgbygQQjB3f33IC3yH54WZkc3n3rV84cpwauG4OBWpS
-	5KY7coCopdvyKf6aEAJp/lXyFcZcAscilXIJeXdlWfVSCUV8TYoi8kyzoQLkdhHW
-	edeKcJFFBl4nrvELio3MMp/0HDWODb9SVXn4qRyYb12GZ2Cg00+JFwbYYHLljo5L
-	Duo5Fro7RtzX9GjZmj8SkLYJa1yCKHm0F6w==
-X-ME-Sender: <xms:uPldaHI-wbFv1kW67jyqZYgMd_sqOEtnTUqnx-uUR2Jl4hHjHgU0nQ>
-    <xme:uPldaLIecALaDN6wlV2o1IySIzSbLn7VeM3fUI7PBLps74yuZcyhkrZdhi8qmb4MI
-    gIyiVshB_WDRw>
-X-ME-Received: <xmr:uPldaPtVyWSa6sSoRJK-YvNbQckrvLf4-vOv9ekgK1F_MtuVoy19So9rdEewPcsY8NdkgpIF7FF4iZlWQ4twI42sCJhh8hpIKg4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddujeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgvkhcuofgr
-    rhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinhhvihhsih
-    gslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepieeluddvkeej
-    ueekhfffteegfeeiffefjeejvdeijedvgfejheetuddvkeffudeinecuffhomhgrihhnpe
-    hkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
-    ihhlfhhrohhmpehmrghrmhgrrhgvkhesihhnvhhishhisghlvghthhhinhhgshhlrggsrd
-    gtohhmpdhnsggprhgtphhtthhopeehpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pehmihhrihgrmhdrrhgrtghhvghlrdhkohhrvghnsghlihhtsehinhhtvghlrdgtohhmpd
-    hrtghpthhtoheptgholhhinhdrihdrkhhinhhgsehgmhgrihhlrdgtohhmpdhrtghpthht
-    oheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheprhgvghhrvghsshhiohhnsheslhhishhtshdrlhhinhhugidruggvvh
-X-ME-Proxy: <xmx:uPldaAaKQP-iWQSqIszMQJsvuzGnLCFW0gW5mQneOXQz1pZvrzcedg>
-    <xmx:uPldaObsR1gshmVWza6uxh9r5SVNktR2PMmOxXmJ9rIPwAvQZVzuAQ>
-    <xmx:uPldaEAeZY6UjCIkfZ3YjutAyrOlwR45OVlkrkXB-kZb4mPvkZf80Q>
-    <xmx:uPldaMby2E8Jz7zWbAFNXeUSSIt8-ZTwaGWCXaLRXmJ_1lJhTAkx4g>
-    <xmx:uPldaHBfI527JH89ur_Otguop4uyo6h7SjoQpqBQA0DAISXbG54QBQTX>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Jun 2025 21:53:59 -0400 (EDT)
-Date: Fri, 27 Jun 2025 03:53:57 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Colin Ian King <colin.i.king@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev
-Subject: Re: iwlwifi stopped working with AX200 (6.16-rc3 regression)
-Message-ID: <aF35tbqxHtyj9fJO@mail-itl>
-References: <aF35FqJAw63NSl63@mail-itl>
+	s=arc-20240116; t=1750995855; c=relaxed/simple;
+	bh=Ufs0UHD31CyIZk3c5wqqBSwaJDBQQi5oidfZLsh8duk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=DpUVKJlVvcqNBZ9vRN5ZhbJSANO/uDtSHkho+h703blimJHReVknrHiTn+wg2EFbbcye7d0VtQmFhT/151F+6Wdw85ui4iys7FsyzapcSHZPvrDLhi5pnx8Kt8j5E2qxN1hcQWMv6oBlTy0D9THoloM+d4l0sm02rbVTbqb2cQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Itc0cpOc; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55QKHSmJ013542;
+	Fri, 27 Jun 2025 03:44:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	W6haESMb17b0awpmARzv+pxnGvZhyPxdFdK53R9oEB0=; b=Itc0cpOcxvjvHyeE
+	zV+Vy552ez1lq8NQYhehs+byWqtd/Tkb5u3Ss8jD61a9cKTtEmv8oNS4SzMYFi3s
+	uuemkgRmSuGBpcmfgk+rLx8pBd8TvrS9uFFU1+qAHm9R+hmf1caRMKro0YRvMJUS
+	u+E531boDHecPakw+Ob0tDZ/Ooqln5wDfjpHIqiOZCirAPp1dI23D/pyvRB45Hg6
+	Iu/NOm3j1fjll3GFe7V14pJy92SpeZ6/HYMdQa4kp9tFjXD2wY2FJVmrhsBtYyrg
+	fuch4J2nGmhid27fHDFU0H61qXM/w3DE9UkPrxBtge/0WRklMIXgi2HLJ0ddNVBr
+	iVlA0Q==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47f3bgnan2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Jun 2025 03:44:09 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55R3i85x029397
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Jun 2025 03:44:08 GMT
+Received: from [10.216.56.23] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 26 Jun
+ 2025 20:44:06 -0700
+Message-ID: <e657ddc8-84c8-a9dc-7b86-482437079c7a@quicinc.com>
+Date: Fri, 27 Jun 2025 09:14:00 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="WMHaSM0+1xq+v8x3"
-Content-Disposition: inline
-In-Reply-To: <aF35FqJAw63NSl63@mail-itl>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH ath-next v2] wifi: ath12k: Add support for transmit
+ histogram stats
+Content-Language: en-US
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        Vasanthakumar Thiagarajan
+	<vasanthakumar.thiagarajan@oss.qualcomm.com>,
+        Roopni Devanathan
+	<quic_rdevanat@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Saleemuddin Shaik
+	<quic_saleemud@quicinc.com>
+References: <20250617112139.865788-1-quic_rdevanat@quicinc.com>
+ <6b32c871-0d18-4cdd-e097-97fc2e7bdf28@oss.qualcomm.com>
+ <cab5daaf-bafb-4df3-9e44-1d0e6dda0341@oss.qualcomm.com>
+ <fca2def0-227b-4208-8104-abc40368f7fb@oss.qualcomm.com>
+From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+In-Reply-To: <fca2def0-227b-4208-8104-abc40368f7fb@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 7vYCiBxcLiNaqejugmexJisyz8jTKpC9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI3MDAyNyBTYWx0ZWRfX8MZ4gyeXn9Ho
+ g89DeBjsu2tuyGjbLFcaUZ4n0O60SzVd/5wde23V38Yyqs0NzlC2DTlUO8vs0/pSyVx862e4Mkq
+ 7fqr1fsjvrRmBpVQ06TAgGUpT+FtAJCCa+uXppKwwX6TigKML1CojhEhxojZ6VPu9tcNgW5QlWm
+ JAQWF67cEUAS/pfqMIIMBYkTr39j5VoaY6Vg5AMMIEOszu4DVvSyL6+ceYfBv2oWIMgJqcj9dct
+ 1mISDwFvmHT1TwqIxx1n71T0hRlVjudBFjs3ZEyULFxi8G0Jn0YwVF/SmnAdRrjjQXqTO6dRIFU
+ u2HYMCZ5CQQudF8lGgpzuxfonO5Bz3ddpSYVreDKdFWEZIXJt7zGZIgEJ3MQd4rL1XFGqng3dI9
+ Tibs08QOKbIcAIaYSueqd9A+nBxJf+uJZ6bibJvFAkwSpxNCJn0kM1LcLWUZiUx2ubrV0PnZ
+X-Authority-Analysis: v=2.4 cv=L4kdQ/T8 c=1 sm=1 tr=0 ts=685e1389 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=COk6AnOGAAAA:8
+ a=TE82o3EEuiIpzjil3jEA:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: 7vYCiBxcLiNaqejugmexJisyz8jTKpC9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-27_01,2025-06-26_05,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0 bulkscore=0 clxscore=1015 suspectscore=0
+ adultscore=0 priorityscore=1501 impostorscore=0 lowpriorityscore=0
+ spamscore=0 phishscore=0 mlxlogscore=977 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506270027
 
 
---WMHaSM0+1xq+v8x3
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 27 Jun 2025 03:53:57 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Colin Ian King <colin.i.king@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev
-Subject: Re: iwlwifi stopped working with AX200 (6.16-rc3 regression)
 
-On Fri, Jun 27, 2025 at 03:51:18AM +0200, Marek Marczykowski-G=C3=B3recki w=
-rote:
-> Hi,
->=20
-> With Linux 6.16-rc3 iwlwifi stopped working for me - device never
-> initializes fully. It was working fine with Linux 6.16-rc2. Log
-> includes:
->=20
->     iwlwifi 0000:00:07.0: Registered PHC clock: iwlwifi-PTP, with index: 0
->     ------------[ cut here ]------------
->     WARNING: CPU: 0 PID: 516 at drivers/net/wireless/intel/iwlwifi/mvm/ml=
-d-mac.c:37 iwl_mvm_mld_mac_ctxt_cmd_common+0x17d/0x1d0 [iwlmvm]
->     Modules linked in: nft_reject_ipv6 nf_reject_ipv6 nft_reject_ipv4 nf_=
-reject_ipv4 nft_reject qrtr nft_ct nft_masq nft_chain_nat nf_nat nf_conntra=
-ck nf_defrag_ipv6 nf_defrag_ipv4 nf_tables iwlmvm mac80211 libarc4 joydev i=
-wlwifi intel_rapl_msr intel_rapl_common cfg80211 polyval_clmulni ghash_clmu=
-lni_intel sha512_ssse3 rfkill sha1_ssse3 r8169 pcspkr i2c_piix4 ehci_pci re=
-altek ata_generic ehci_hcd i2c_smbus pata_acpi serio_raw xen_scsiback targe=
-t_core_mod xen_netback xen_privcmd xen_gntdev xen_gntalloc xen_blkback xen_=
-evtchn i2c_dev fuse loop nfnetlink overlay xen_blkfront
->     CPU: 0 UID: 0 PID: 516 Comm: NetworkManager Not tainted 6.16.0-0.rc3.=
-1.qubes.1.fc41.x86_64 #1 PREEMPT(full)=20
->     Hardware name: Xen HVM domU, BIOS 4.19.2 05/27/2025
->     RIP: 0010:iwl_mvm_mld_mac_ctxt_cmd_common+0x17d/0x1d0 [iwlmvm]
->     Code: eb a2 ba 01 00 00 00 66 41 89 55 18 eb 96 41 83 fe 02 74 25 41 =
-c6 45 19 01 eb c8 b9 01 00 00 00 66 41 89 4d 1a e9 7a ff ff ff <0f> 0b 5b 5=
-d 41 5c 41 5d 41 5e e9 04 26 f5 ec bf 01 00 00 00 66 41
->     RSP: 0018:ffffd45c807b3600 EFLAGS: 00010282
->     RAX: 00000000ffffffff RBX: ffff8d334a68a008 RCX: ffff8d33428c3efc
->     RDX: 00000000000000bf RSI: 0000000000000308 RDI: ffff8d33428c3efc
->     RBP: 0000000000000001 R08: 0000000000000003 R09: 0000000000000000
->     R10: 0000000000000000 R11: 0000000000000001 R12: ffff8d334a799c98
->     R13: ffffd45c807b3634 R14: 0000000000000000 R15: ffff8d334a799c98
->     FS:  00007b3ca8f0a800(0000) GS:ffff8d33a15db000(0000) knlGS:000000000=
-0000000
->     CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->     CR2: 000072848666ab60 CR3: 000000000049f000 CR4: 0000000000350ef0
->     Call Trace:
->      <TASK>
->      iwl_mvm_mld_mac_ctxt_cmd_sta+0x6b/0x1d0 [iwlmvm]
->      iwl_mvm_mld_mac_ctxt_add+0x32/0xc0 [iwlmvm]
->      iwl_mvm_mld_mac_add_interface+0x137/0x3b0 [iwlmvm]
->      drv_add_interface+0x52/0x230 [mac80211]
->      ieee80211_do_open+0x57b/0x720 [mac80211]
->      ieee80211_open+0x8c/0xa0 [mac80211]
->      __dev_open+0x114/0x2a0
->      __dev_change_flags+0x1f6/0x240
->      ? security_inode_post_setattr+0xf8/0x110
->      netif_change_flags+0x26/0x70
->      do_setlink.isra.0+0x326/0xcd0
->      ? cred_has_capability.isra.0+0xa7/0x140
->      ? __rtnl_newlink+0x1fe/0x3f0
->      rtnl_newlink+0x4a4/0x8d0
->      ? __pfx_rtnl_newlink+0x10/0x10
->      rtnetlink_rcv_msg+0x37e/0x450
->      ? avc_has_perm+0x5c/0xe0
->      ? __pfx_rtnetlink_rcv_msg+0x10/0x10
->      netlink_rcv_skb+0x52/0x100
->      netlink_unicast+0x27d/0x3d0
->      netlink_sendmsg+0x228/0x480
->      ____sys_sendmsg+0x35e/0x390
->      ___sys_sendmsg+0x99/0xe0
->      __sys_sendmsg+0x88/0xf0
->      do_syscall_64+0x84/0x2c0
->      ? syscall_exit_work+0x108/0x140
->      ? do_syscall_64+0x200/0x2c0
->      ? syscall_exit_work+0x108/0x140
->      ? do_syscall_64+0x200/0x2c0
->      entry_SYSCALL_64_after_hwframe+0x76/0x7e
->     RIP: 0033:0x7b3ca9e876c2
->     Code: 08 0f 85 81 42 ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 =
-c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 66 2e 0=
-f 1f 84 00 00 00 00 00 66 2e 0f 1f 84 00 00 00 00 00 66
->     RSP: 002b:00007ffed9f47ff8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
->     RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007b3ca9e876c2
->     RDX: 0000000000000000 RSI: 00007ffed9f48090 RDI: 000000000000000d
->     RBP: 00007ffed9f48030 R08: 0000000000000000 R09: 0000000000000000
->     R10: 0000000000000000 R11: 0000000000000246 R12: 0000642f470dd5a0
->     R13: 000000000000001a R14: 0000000000000000 R15: 00007ffed9f4822c
->      </TASK>
->     ---[ end trace 0000000000000000 ]---
->     iwlwifi 0000:00:07.0: Microcode SW error detected. Restarting 0x0.
->     iwlwifi 0000:00:07.0: Start IWL Error Log Dump:
->     iwlwifi 0000:00:07.0: Transport status: 0x0000004B, valid: 6
->     iwlwifi 0000:00:0[2025-06-27 00:40:21] 7.0: Loaded firmware version: =
-77.864baa2e.0 cc-a0-77.ucode
->     iwlwifi 0000:00:07.0: 0x00000071 | NMI_INTERRUPT_UMAC_FATAL   =20
->     iwlwifi 0000:00:07.0: 0x00A0A2F0 | trm_hw_status0
->     iwlwifi 0000:00:07.0: 0x00000000 | trm_hw_status1
->     iwlwifi 0000:00:07.0: 0x004F8D82 | branchlink2
->     iwlwifi 0000:00:07.0: 0x004EEDD2 | interruptlink1
->     iwlwifi 0000:00:07.0: 0x004EEDD2 | interruptlink2
->     iwlwifi 0000:00:07.0: 0x00015332 | data1
->     iwlwifi 0000:00:07.0: 0x00001000 | data2
->     iwlwifi 0000:00:07.0: 0x00000000 | data3
->     iwlwifi 0000:00:07.0: 0x00000000 | beacon time
->     iwlwifi 0000:00:07.0: 0x00062EC7 | tsf low
->     iwlwifi 0000:00:07.0: 0x00000000 | tsf hi
->     iwlwifi 0000:00:07.0: 0x00000000 | time gp1
->     iwlwifi 0000:00:07.0: 0x00069534 | time gp2
->     iwlwifi 0000:00:07.0: 0x00000001 | uCode revision type
->     iwlwifi 0000:00:07.0: 0x0000004D | uCode version major
->     iwlwifi 0000:00:07.0: 0x864BAA2E | uCode version minor
->     iwlwifi 0000:00:07.0: 0x00000340 | hw version
->     iwlwifi 0000:00:07.0: 0x00C89000 | board version
->     iwlwifi 0000:00:07.0: 0x8032F500 | hcmd
->     iwlwifi 0000:00:07.0: 0x20028000 | isr0
->     iwlwifi 0000:00:07.0: 0x00000000 | isr1
->     iwlwifi 0000:00:07.0: 0x08F04802 | isr2
->     iwlwifi 0000:00:07.0: 0x00C3400C | isr3
->     iwlwifi 0000:00:07.0: 0x00000000 | isr4
->     iwlwifi 0000:00:07.0: 0x00110148 | last cmd Id
->     iwlwifi 0000:00:07.0: 0x00015332 | wait_event
->     iwlwifi 0000:00:07.0: 0x00000000 | l2p_control
->     iwlwifi 0000:00:07.0: 0x00000000 | l2p_duration
->     iwlwifi 0000:00:07.0: 0x00000000 | l2p_mhvalid
->     iwlwifi 0000:00:07.0: 0x00000000 | l2p_addr_match
->     iwlwifi 0000:00:07.0: 0x00000008 | lmpm_pmg_sel
->     iwlwifi 0000:00:07.0: 0x00000000 | timestamp
->     iwlwifi 0000:00:07.0: 0x0000084C | flow_handler
->     iwlwifi 0000:00:07.0: Start IWL Error Log Dump:
->     iwlwifi 0000:00:07.0: Transport status: 0x0000004B, valid: 7
->     iwlwifi 0000:00:07.0: 0x20103126 | ADVANCED_SYSASSERT
->     iwlwifi 0000:00:07.0: 0x00000000 | umac branchlink1
->     iwlwifi 0000:00:07.0: 0x80455D7A | umac branchlink2
->     iwlwifi 0000:00:07.0: 0xC0081228 | umac interruptlink1
->     iwlwifi 0000:00:07.0: 0x00000000 | umac interruptlink2
->     iwlwifi 0000:00:07.0: 0x00000000 | umac data1
->     iwlwifi 0000:00:07.0: 0x00000000 | umac data2
->     iwlwifi 0000:00:07.0: 0xDEADBEEF | umac data3
->     iwlwifi 0000:00:07.0: 0x0000004D | umac major
->     iwlwifi 0000:00:07.0: 0x864BAA2E | umac minor
->     iwlwifi 0000:00:07.0: 0x0006952F | frame pointer
->     iwlwifi 0000:00:07.0: 0xC0886C14 | stack pointer
->     iwlwifi 0000:00:07.0: 0x00120308 | last host cmd
->     iwlwifi 0000:00:07.0: 0x00000009 | isr status reg
->     iwlwifi 0000:00:07.0: IML/ROM dump:
->     iwlwifi 0000:00:07.0: 0x00000003 | IML/ROM error/state
->     iwlwifi 0000:00:07.0: 0x000062FC | IML/ROM data1
->     iwlwifi 0000:00:07.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
->     iwlwifi 0000:00:07.0: Fseq Registers:
->     iwlwifi 0000:00:07.0: 0x60000000 | FSEQ_ERROR_CODE
->     iwlwifi 0000:00:07.0: 0x80290021 | FSEQ_TOP_INIT_VERSION
->     iwlwifi 0000:00:07.0: 0x00050008 | FSEQ_CNVIO_INIT_VERSION
->     iwlwifi 0000:00:07.0: 0x0000A503 | FSEQ_OTP_VERSION
->     iwlwifi 0000:00:07.0: 0x80000003 | FSEQ_TOP_CONTENT_VERSION
->     iwlwifi 0000:00:07.0: 0x4552414E | FSEQ_ALIVE_TOKEN
->     iwlwifi 0000:00:07.0: 0x00100530 | FSEQ_CNVI_ID
->     iwlwifi 0000:00:07.0: 0x00000532 | FSEQ_CNVR_ID
->     iwlwifi 0000:00:07.0: 0x00100530 | CNVI_AUX_MISC_CHIP
->     iwlwifi 0000:00:07.0: 0x00000532 | CNVR_AUX_MISC_CHIP
->     iwlwifi 0000:00:07.0: 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_V=
-TRIM
->     iwlwifi 0000:00:07.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDI=
-G_MIRROR
->     iwlwifi 0000:00:07.0: 0x00050008 | FSEQ_PREV_CNVIO_INIT_VERSION
->     iwlwifi 0000:00:07.0: 0x00290021 | FSEQ_WIFI_FSEQ_VERSION
->     iwlwifi 0000:00:07.0: 0x00290021 | FSEQ_BT_FSEQ_VERSION
->     iwlwifi 0000:00:07.0: 0x000000F0 | FSEQ_CLASS_TP_VERSION
->     iwlwifi 0000:00:07.0: UMAC CURRENT PC: 0x80472b1c
->     iwlwifi 0000:00:07.0: LMAC1 CURRENT PC: 0xd0
->     iwlwifi 0000:00:07.0: FW error in SYNC CMD MAC_CONFIG_CMD
->     CPU: 0 UID: 0 PID: 516 Comm: NetworkManager Tainted: G        W      =
-     6.16.0-0.rc3.1.qubes.1.fc41.x86_64 #1 PREEMPT(full)=20
->     Tainted: [W]=3DWARN
->     Hardware name: Xen HVM domU, BIOS 4.19.2 05/27/2025
->     Call Trace:
->      <TASK>
->      dump_stack_lvl+0x5d/0x80
->      iwl_trans_pcie_send_hcmd_sync+0x355/0x360 [iwlwifi]
->      ? __pfx_autoremove_wake_function+0x10/0x10
->      iwl_trans_send_cmd+0x4f/0xe0 [iwlwifi]
->      iwl_mvm_send_cmd_pdu+0x61/0xb0 [iwlmvm]
->      iwl_mvm_mld_mac_ctxt_cmd_sta+0x10b/0x1d0 [iwlmvm]
->      iwl_mvm_mld_mac_ctxt_add+0x32/0xc0 [iwlmvm]
->      iwl_mvm_mld_mac_add_interface+0x137/0x3b0 [iwlmvm]
->      drv_add_interface+0x52/0x230 [mac80211]
->      ieee80211_do_open+0x57b/0x720 [mac80211]
->      ieee80211_open+0x8c/0xa0 [mac80211]
->      __dev_open+0x114/0x2a0
->      __dev_change_flags+0x1f6/0x240
->      ? security_inode_post_setattr+0xf8/0x110
->      netif_change_flags+0x26/0x70
->      do_setlink.isra.0+0x326/0xcd0
->      ? cred_has_capability.isra.0+0xa7/0x140
->      ? __rtnl_newlink+0x1fe/0x3f0
->      rtnl_newlink+0x4a4/0x8d0
->      ? __pfx_rtnl_newlink+0x10/0x10
->      rtnetlink_rcv_msg+0x37e/0x450
->      ? avc_has_perm+0x5c/0xe0
->      ? __pfx_rtnetlink_rcv_msg+0x10/0x10
->      netlink_rcv_skb+0x52/0x100
->      netlink_unicast+0x27d/0x3d0
->      netlink_sendmsg+0x228/0x480
->      ____sys_sendmsg+0x35e/0x390
->      ___sys_sendmsg+0x99/0xe0
->      __sys_sendmsg+0x88/0xf0
->      do_syscall_64+0x84/0x2c0
->      ? syscall_exit_work+0x108/0x140
->      ? do_syscall_64+0x200/0x2c0
->      ? syscall_exit_work+0x108/0x140
->      ? do_syscall_64+0x200/0x2c0
->      entry_SYSCALL_64_after_hwframe+0x76/0x7e
->     RIP: 0033:0x7b3ca9e876c2
->     Code: 08 0f 85 81 42 ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 =
-c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 66 2e 0=
-f 1f 84 00 00 00 00 00 66 2e 0f 1f 84 00 00 00 00 00 66
->     RSP: 002b:00007ffed9f47ff8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
->     RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007b3ca9e876c2
->     RDX: 0000000000000000 RSI: 00007ffed9f48090 RDI: 000000000000000d
->     RBP: 00007ffed9f48030 R08: 0000000000000000 R09: 0000000000000000
->     R10: 0000000000000000 R11: 0000000000000246 R12: 0000642f470dd5a0
->     R13: 000000000000001a R14: 0000000000000000 R15: 00007ffed9f4822c
->      </TASK>
->     iwlwifi 0000:00:07.0: Failed to send MAC_CONFIG_CMD (action:0): -5
->=20
-> I see the only change there between rc2 and rc3 is fixing that WARN_ON
-> condition. Unfortunately, I don't know what cmd_ver value I have there,
-> but apparently it's outside of that range (and yet, the driver worked
-> fine before).
->=20
-> The device is:
-> 02:00.0 Network controller [0280]: Intel Corporation Wi-Fi 6 AX200 [8086:=
-2723] (rev 1a)
->     Subsystem: Intel Corporation Wi-Fi 6 AX200NGW [8086:0084]
->=20
-> #regzbot introduced: v6.16-rc2..v6.16-rc3
+On 6/26/2025 11:55 PM, Jeff Johnson wrote:
+> On 6/26/2025 11:18 AM, Jeff Johnson wrote:
+>> On 6/26/2025 10:20 AM, Vasanthakumar Thiagarajan wrote:
+>>> On 6/17/2025 4:51 PM, Roopni Devanathan wrote:
+>>>> From: Saleemuddin Shaik <quic_saleemud@quicinc.com>
+>>>> +struct ath12k_htt_tx_histogram_stats_tlv {
+>>>> +	__le32 rate_retry_mcs_drop_cnt;
+>>>> +	__le32 mcs_drop_rate[ATH12K_HTT_TX_PDEV_STATS_NUM_MCS_DROP_COUNTERS];
+>>>> +	__le32 per_histogram_cnt[ATH12K_HTT_TX_PDEV_STATS_NUM_PER_COUNTERS];
+>>>> +	__le32 low_latency_rate_cnt;
+>>>> +	__le32 su_burst_rate_drop_cnt;
+>>>> +	__le32 su_burst_rate_drop_fail_cnt;
+>>>> +};
+>>>
+>>> Since this strcuture represents the message format used between host and firmware, pls add
+>>> __packed annotation even though it may not have any effect in this case.
+>>
+>> looks like I missed this in a few other structs as well, at least:
+>> ath12k_htt_tx_pdev_rate_stats_tlv
+>> ath12k_htt_rx_pdev_rate_ext_stats_tlv
+>>
+>> perhaps i'll take this as-is and then have another patch that adds __packed to
+>> all _tlv structs that are missing it?
+> 
+> actually let me fix this instance in pending, and we can fix other existing
+> ones separately
 
-Oh, I see it might be already fixed by
-https://lore.kernel.org/linux-wireless/20250623111351.1819915-1-miriam.rach=
-el.korenblit@intel.com/,
-I'll test it.
+Sounds good, thanks.
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
 
---WMHaSM0+1xq+v8x3
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmhd+bUACgkQ24/THMrX
-1yyYngf+PPH/WZJ8AkWYwL8ACgxKIAOpVpiJ2SFIai3lNtIDekVqeeqG4FwHli1A
-vjjfo6erFIPFc3EQUZIoV4TWANmqNOXijZA1XuUQwDeP9RZF7GKM1Y3YuqENGlmY
-R4rO7w9ShRphFfe/L/4ZREwASuJG2X/QPBas/BkIFGAcvzyCcLJ16WKMqdmjzREE
-bho2AIyc8g+tRsyDFQnFlcrHRPXbBXoYgVRage4EaFLyD9Ojlc/1/wnn1PqC9kvE
-GQjCO/NQopSFZAuUCz86n4wo+dZxWwxeKtGR84sI9FvdE/y+Yk1582ZabPJFYMaI
-uTN2kOU5XuVT0KQmH3899hOdMdhw5A==
-=i+7L
------END PGP SIGNATURE-----
-
---WMHaSM0+1xq+v8x3--
+Vasanth
 
