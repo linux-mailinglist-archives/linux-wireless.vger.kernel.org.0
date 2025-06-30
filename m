@@ -1,61 +1,64 @@
-Return-Path: <linux-wireless+bounces-24665-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24666-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB87AEDC89
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 14:18:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6FAAEDEE7
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 15:25:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3041B188CEE7
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 12:18:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03DF93A1591
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 13:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0906241CB7;
-	Mon, 30 Jun 2025 12:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B508243378;
+	Mon, 30 Jun 2025 13:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VyYblwQe"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="dS7daHgR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A02A23ABB4
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Jun 2025 12:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD612522B6
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Jun 2025 13:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751285872; cv=none; b=SSsb573SHOyQTIf3Hd/s8ls6V1gfCvir/EqzWSgVbPft0gK3d6Fe9ErEFgdFsLYqIItYNEy6xCo1c7W4VNG6V5i/r/hPuk1rsJtbV/UlzVjKSFjIv4API3ckKxUVElc7T7vSj8TVVSmVH1Wyi4FeivmuAUpuAJ6SbxbrxJEDCFk=
+	t=1751289681; cv=none; b=WSozHkiM/6kJ1pZV17mn6OXqICu0ahU0DXh/UWty0KLMxcFxFkkEf/QZUj1k/8N+h5EIzVgHLht9LSaM5PuLFv9q13+fD9U7SYyQNfZlHSSbReUPV8xoAjiaIYu+yCVpA+LNG2CdhTjDNu5j2g5/vQppORx0jUJ0zQrxBxdFEwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751285872; c=relaxed/simple;
-	bh=oSuvCxd0deSF+8IMvbA2/ulMGhyIPWsHf1nn1Po0USY=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=g3gm4IQ79XlfnTfpjuU/dyclarwINAtukxvzdSBY8l1UbcWy7BINFctEgfkpc33D+wQVnOP1GZ1Zhlcs8lzpu37XblqxND/dklxe0apuIB4rpI4PAXS+xTP6GzO2ndZ/wJKti7VArwjnXISNnuVdl4hsTfSc7Xtiscwkh50nIrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VyYblwQe; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1751289681; c=relaxed/simple;
+	bh=zYe4cjPabOuRUub+QHwJtNEwLEuE25UXE6C1ayUhmVU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=H9JX0ZCiCBfPlsgn/CFgnl/8ERg78jSul5HQfyAUSD7xXZWyZKkJEbhsslpC6j4W5bVe3/6bx116R74nUEZRTYR6ANrjYe4+I1pBmC9ssnbllDSsYhs2bcqdZOnKgw0dHvn6iiszY+0bTcpth+ALAjka1ny2WkkwV0JxBU7CO2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=dS7daHgR; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=oSuvCxd0deSF+8IMvbA2/ulMGhyIPWsHf1nn1Po0USY=;
-	t=1751285871; x=1752495471; b=VyYblwQebjFpx93YjCTbLrDD/AkcCewLGJbegjC7VwE3ayr
-	G4QzIpjXr1UL8RughflMhFACqRRzs+1u7e7/MgWuBIDUzk3agdm5kHgvNsz94E7wqZMPhbUG78gYA
-	T58KTtI6ZK3+5BCaXaNwsdHL11YDwl+wn1cgBSMt4VBw4cQZ4USBdYi5GZWHE1z/z8ZdlP1OEGiui
-	INf1M0k9krYC5p6nXsxHSUkIDV6WjxGcdVfA3mlrLsWoB8TPawEgB21BXE08L0p5v/mbb7YcGxpAr
-	XkcqtmPtB4ITqXItTHbclVoqAyeo+Xw5x4yZP6Z+/N5d8X0PFfYwteLJEPR9Y8DA==;
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=zYe4cjPabOuRUub+QHwJtNEwLEuE25UXE6C1ayUhmVU=;
+	t=1751289679; x=1752499279; b=dS7daHgRsf9v+Zeh90Bor8jYIpzg9MkaFOix1f9dmrMebeI
+	baq3Ae8/ALfLOxjZQrltc8rb6Qv5jOX5ncXG7tKVeVPaw85iE9DD4JIi2sk7KtmHsDxHTaMuu+RWm
+	QIbry6YOiLqAJI6hqvWeyyVjPXmCzouSRrqKqD9Yz54up+xrKZwnaYf7XMBpIgxd4C34yf11mNlHQ
+	v8srracgYQxpn4ZIbc4F69jhBka1eV4/JcfkMlEzu4F5SP3afnOBdKbkUc+v+aogzc+YjYP6LiRHO
+	a81qQrCH+0aY9CDEXk4zwon0ZOfzcf7wurilTODl0KDhihOqEhODD4nkKKN87Hdw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uWDSD-00000001D9I-2h6E;
-	Mon, 30 Jun 2025 14:17:46 +0200
-Message-ID: <50b5a8cd4f47d68c1ec5fd46b9c706f74bad0635.camel@sipsolutions.net>
-Subject: Re: Linux Wireless Request for Collaboration (AP-centric features)
+	id 1uWERf-00000001LGD-2l9m;
+	Mon, 30 Jun 2025 15:21:15 +0200
+Message-ID: <61d6cdebee2c89e5d2d93d3297c94051efb70790.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next 0/3] wifi: Preamble puncturing support for
+ mesh
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, linux-wireless
-	 <linux-wireless@vger.kernel.org>
-Date: Mon, 30 Jun 2025 14:17:44 +0200
-In-Reply-To: <a2b447ca-fe62-49d4-b24a-f9709575b693@oss.qualcomm.com>
-References: <6f4dc13a-b2f9-4f88-a1fb-8c457a6ed057@oss.qualcomm.com>
-	 <dd5d7dabccee33e81f77163b5ba640841cfe5ac8.camel@sipsolutions.net>
-	 <a2b447ca-fe62-49d4-b24a-f9709575b693@oss.qualcomm.com>
+To: Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>, 
+	ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Ramasamy Kaliappan
+	 <rkaliapp@qti.qualcomm.com>
+Date: Mon, 30 Jun 2025 15:21:14 +0200
+In-Reply-To: <21b7d547-b550-23a9-3bff-1f1787e307a8@oss.qualcomm.com>
+References: <20250609001048.2263586-1-ramasamy.kaliappan@oss.qualcomm.com>
+	 <a8ff80ff5a811a09cf5556e20c7232eb1e201c2b.camel@sipsolutions.net>
+	 <21b7d547-b550-23a9-3bff-1f1787e307a8@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
@@ -67,68 +70,65 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Fri, 2025-06-27 at 07:21 -0700, Jeff Johnson wrote:
-> On 6/27/2025 12:39 AM, Johannes Berg wrote:
-> > Hi,
+On Fri, 2025-06-27 at 19:49 +0530, Ramasamy Kaliappan wrote:
+> > I ... don't really understand how this is supposed to work.
 > >=20
-> > So I held off for a while since I didn't want anyone to think I have it
-> > covered ;-)
+> > Say, for the sake of simplicity, we have an 80 MHz channel, the lowest
+> > channel is the control channel (so puncturing 0x1 is invalid). Possible
+> > puncturing values are 0x2, 0x4 and 0x8.
 > >=20
-> > > Specific areas of interest at this time include:
-> > > Robust AV Streaming (IEEE Std 802.11-2020 section 11.25)
-> > > Seamless Roaming (IEEE P802.11bn/D0.2, March 2025 section 37.9)
+> > If locally we have 0x2, that means (I assume, since that's how chandef
+> > is meant to work) CCA and RX is always on the control channel and upper
+> > 40 MHz parts. If you're now going to transmit to a station that has
+> > puncturing 0x8, you didn't do CCA on the 0x2 subchannel, but ...
+> > transmit anyway?
 > >=20
-> > But of course generally with my maintainer hat on I'm interested, and t=
-o
-> > some extend perhaps the seamless roaming overlaps a bit with client?
+> Yes,we do not transmit blindly to mesh peers with different puncturing.
+> Before initiating transmission, the driver computes the intersection of=
+=20
+> the local and peer puncturing bitmaps to determine the set of valid sub=
+=20
+> channels.
+
+Hm, I guess that's fair, but why not do that in mac80211 instead, that'd
+be simpler and far more obvious/safe?
+
+Also, clearly your driver _doesn't_ do what you say "the driver" does,
+if anything it magically and "undocumentedly" happens in firmware.
+
+> > I mean, maybe this could work if the remote puncturing is a superset of
+> > the local puncturing? But just blindly doing it the way it appears to b=
+e
+> > done in this patchset seems ... questionable at best?
 > >=20
-> > Now that I learned more about it though, it seems the seamless roaming
-> > isn't even all _that_ seamless, and doesn't require major surgery?
+> > Can you explain more how this is even supposed to work?
+> >=20
+> When associating with a mesh peer, the mesh peer's puncture pattern is=
+=20
+> shared with the driver. The driver evaluates the intersection of this=20
+> bitmap with local pattern.
+
+Could also be done in mac80211, I guess.
+
+> if the resulting pattern corresponds to valid transmission bandwidth,=20
+> the valid subchannels used for transmission.
 >=20
-> I think you have a typo: s/doesn't/does/
+> If the resulting pattern does not support a valid bandwidth, the driver=
+=20
+> falls back to using only the primary 20 MHz control channel for=20
+> transmission.
 
-:)
-(I didn't)
+Right.
 
-> Seamless roaming is meant to be seamless to the end user but definitely n=
-ot
-> seamless to the underlying client or the AP code. And although the scope =
-isn't
-> as bad as MLO (we hope), it is still a complex handshake, and there are s=
-ome
-> things that will be in our proposal will definitely need discussion.
+I also note that there's not even any definition where the puncturing
+pattern is rooted ... is it relative to the local chandef? Relative to
+the peer's chandef? Clearly not even that is documented. What happens if
+the bitmap changes? Why does userspace track it rather than mac80211,
+which has the beacon of the peer and handles CSA, so what happens with
+puncturing in CSA?
 
-OK, I look forward to seeing that then, maybe I'm just completely wrong.
-Especially the AP part seemed fairly simple from the kernel space POV to
-me since it just has to keep the STA alive for long enough to drain out
-all the pending frames, while already having redirected the L2 to the
-new AP. The APs will maintain two STAs but that's split over two APs
-too, so shouldn't be that bad? Although I suppose if you get someone
-trying to do seamless roaming from one link of an AP MLD to another link
-of an AP MLD ... but I don't think it works that way?
-
-It also has to copy state like the PN/SN etc. but that's also not
-architecturally challenging, I'd think?
-
-
-The client part also didn't seem nearly as bad as I had anticipated;
-yes, we have to swap from the old to the new AP more seamlessly, but we
-don't have to support two AP STAs at the same time, just drain traffic
-while queuing new TX traffic and then swap over quickly without dropping
-the STA. Perhaps at a mac80211 level we still create a new STA but then
-have an atomic 'swap()' callback to the driver? Haven't thought about it
-too hard yet.
-
-> The reason my team is focused on the AP part is that, as reported earlier=
-, for
-> Wi-Fi 8 we want to transition to upstream for all of our AP products. Our
-> primary Wi-Fi 8 client will continue to use the downstream qcacld driver,=
- so
-> client design is currently a lower priority for my team. Perhaps Intel ca=
-n
-> drive that :)
-
-We definitely will be working on the client side.
+Did you think about any of these questions, or are you just using me as
+a design tool? ;-)
 
 johannes
 
