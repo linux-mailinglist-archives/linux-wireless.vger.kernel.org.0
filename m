@@ -1,79 +1,78 @@
-Return-Path: <linux-wireless+bounces-24678-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24679-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9F7AEE871
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 22:43:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F892AEE872
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 22:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2094C163E81
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 20:43:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13ACB189EB12
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 20:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4155622DFBA;
-	Mon, 30 Jun 2025 20:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0157A233136;
+	Mon, 30 Jun 2025 20:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gRtWYmK8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eoKE9DyT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8C421D3D2
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Jun 2025 20:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED891F2BB5
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Jun 2025 20:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751316180; cv=none; b=f8U/K2+kHrQ2XR6A53FDTdopXi7qRgoj+4tsP3aSYI7tToRZHskS38BPyNQOn+lrhxa3r7lteBEiiZxvS4AAxZWMPpKPg8wPIsbhIxLfKmZYqxDa/6YtI7wWzyG8piKFZ+witToHCy251dzkqdUbTNcZC2tkFXp4GbzJGrIBODE=
+	t=1751316209; cv=none; b=Z+lld+HxRuYAsuAFlhUoFJBENGpABNk8mhOOLormCpWh3XCnffFvjZ4ZgOd1wHw7HMdfoWIbC8hatS82UTUm6lpIaJnmT0BaB2iyda4t+POcPiDb5oSIQA2Pj5cY1f0vzOjn8250D1fFTguMtsW0C+XKsIZ2jBvUKEN/LpmP3PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751316180; c=relaxed/simple;
-	bh=xB8mjIqG4qSa2ShqjTFqACUDq182YVXdocEzzmU+M9M=;
+	s=arc-20240116; t=1751316209; c=relaxed/simple;
+	bh=Uqzh5HyqhEf3wGOCDxHqD6BKqr5Dc3Xaesp1J9sV65E=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=XOFIzInF52AW58dE5SLwADSnW3GqWIPM064T+CDkIl3ZO5VnFj3Zlc6qWwfG43E3Km2q/QX6/1/xGzedqSxSIZQbMKoAR09wqa86W1isLRfzvgKxz4Uy1SsvDlPQxHc4VfA/8ME/Ce+DGWtY65gbBTV2+9jirHaKWOnpcd6Ml3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gRtWYmK8; arc=none smtp.client-ip=209.85.128.51
+	 In-Reply-To:Content-Type; b=Dzl5v7yetbvuwfBztJNDN9dq3dZlX0hTLuF/zxCF0dNGlFsoxmm0OaZHQeqV2a2ZIf5r/lHKVPj7SlbooRkMHdGLo1VQr1G2YKgBdGLMciTI4hwgAGTjDj8/59ziqXRynt1xvi8l/r5Rwb0c2QackxN915Ht/vP6mgER5CZrueU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eoKE9DyT; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-450cf214200so21635815e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Jun 2025 13:42:58 -0700 (PDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45310223677so18046505e9.0
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Jun 2025 13:43:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751316177; x=1751920977; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751316207; x=1751921007; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=+wKbt1dGDxC4bzaur+UvuWWaw1d3vwmEtuJDncgknm8=;
-        b=gRtWYmK892w5EJyG0hpJQjxkDlcevM9qIY0weENUhZ9Rd+LQBN1UAX9p68B6y4WaNM
-         k15gFnmZTorw2CslpXFoR2GGQF18RVofkPNu/uepuKgtPctooh4380RSdCjujY/P/fxy
-         i7mVi4IF8FMkRCu5pEMY4QsVRUJ1cCg67WRCOOvRZd01PaVUbC9ORKKFPULnHxaIlqxC
-         CrUcnbQXdWVI4x6QPtsyB8xeWMy7CTnwlJk9HvZd8mkS2SeLS1S1nBCYIz6Hs29AoTa+
-         L2ZTdDCLWD9gVn45BOBwP1CM6abxdaPq7TomNMsU+vlCD+IH7u1+foKZ/zq9+iOn7taE
-         Zwag==
+        bh=XjxjoJG4eb8vDMNOv4A4KVhikwwZ01dcCvfujJ/cD4Y=;
+        b=eoKE9DyT8SDV2MoEbcXXQulXzgnCwk8wfIPByH6lg2JPr10PjxstsDx8JB4GsyG1h1
+         NkiOs2z675znLmBPx0QxM+siwMGQC2uuwdkinb6EcsEljt2Ti/PrNCzxHPTNo2BrUhBZ
+         NtN1hzwrzxboxYxFXPzFXHI5r1P1FvTUsQgkJ/obd0mZQcS47TOqlTo8Dxy4TjDr4iLm
+         ZD0AOXsiBSEmrNtpMb2PiOp0n/LaXj2N942minjtmYJcUYfLYd6WF1HrNcH4JgUfDI/3
+         FxVC/7RpqROwP/1RzaDiOK32ZyRAKjBdQnA0rL4ehy5ka+i9zBAu7x/9/XambJtxnQQi
+         sJ/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751316177; x=1751920977;
+        d=1e100.net; s=20230601; t=1751316207; x=1751921007;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+wKbt1dGDxC4bzaur+UvuWWaw1d3vwmEtuJDncgknm8=;
-        b=ldQEfVifFmPtwYCwsyaGqgUCxRyG4sfIRatwXZezglF4eP7URZS9kGTjpZDRRXASsk
-         o1UWc7aHsoLTyEsliRcEettmCRZyQpb1m8JOZCPXr+TUQWeh+cUu40zkB/NfUF+DReC6
-         r4uIi9avUuCzcCmKLVxfxew6BzS0P4sZnWZZtRMV2ANBZZN9BSxQPnrqcKUs9c6u6Nok
-         c+KrEX2rlY15dlzt6mnByWe2Uo5P02WxeZgv1O2F7OUdK4G/RD9jjnkc2Y3+ClKM98W3
-         pVIbAs79AeV/4bOCKwe2f0wzYIiU9hpRnvzeL325lsnQmHyxdAJepXR9Q2vWPXjJi5UW
-         VNzA==
-X-Gm-Message-State: AOJu0YxsroVC+HuhBgyOe+rsHsO3r8dUvYcHr4HiVdiD2QfiBs5qxiTj
-	TXm8ADcoRcT3X6HMzOh2nofG6ZylCKlnxqrHomtca6VHaaRq0MFH2uxoD1N8GQ==
-X-Gm-Gg: ASbGnctc8zZnB6UyYZcmNf3yzzqBa5G4XpKXBZF0kkbNmTMFaSOIvZ0+jpLfC6WSR2k
-	SKZWM2UUfSLCSlh37UfCkKNQ2fJ9W4XySLSgba/kk1IQWTTAMSB7C7jmxhQJmCvGrzaonJGiHmX
-	Ry1lBWJyUN/Yuld1QLAR+OUJrWmbrE3tKkC2XML9FVMGRmCfE7MSwx8MctarSs1AzT/mYJH0AlY
-	qpeB2W8JNj0s9cq+dcdqnher1RVVquS6rwX/nxjbMs/2Q8exklV7cEgkaX8+M3ukSyn0zSDkeu+
-	XqSeLj2z7WlLqGH0taGUWw1qTBkrHtifb0IQN3+CGzTtLZMKm2fxE5jL5dqpr5HKWnQ4TuiLy6Z
-	ayfZm
-X-Google-Smtp-Source: AGHT+IFOoZ0hHxidXSCbvXjMZX66iCyqCwULh99pqkxqK0wZXhGWQpgfUb+6W0hGBpRgOaTzPxiqsg==
-X-Received: by 2002:a05:6000:4903:b0:3a4:c713:7d8 with SMTP id ffacd0b85a97d-3a8f51c1ae7mr12721371f8f.16.1751316176509;
-        Mon, 30 Jun 2025 13:42:56 -0700 (PDT)
+        bh=XjxjoJG4eb8vDMNOv4A4KVhikwwZ01dcCvfujJ/cD4Y=;
+        b=Sal0iLzjFC8R5cGYEX2smdE5Bnq9JIDkpLKNlWMhJgVk6OqldTL0a8oRNeRMipoEew
+         BHYAWNxCaPadnGIApOJhla4le+INICDgkjLUfFeAMsroN7+ScmYv5MjDLuANTdlZtSYM
+         sgIAa6IWThLC/2Iswgj3yQpV6w+HFCE+HAWOXVZ690sm9Rp+lk4Yzc3Tu9uysir+kWxe
+         pWPinn2wsMJH7pqXiHKs/Lwgds7QeN7VEsnwlWW7DBIQPrOdpkHj6AGQzzFGmDJzsg/N
+         MRP44GYGtVs5OnIT+fNCYIc62liPV6Z8wRa03AEUU4N3MKeQOcTsf/d/xvPLUVyheefU
+         HZeA==
+X-Gm-Message-State: AOJu0Ywb6zMx9al5JnmOyZlmj5cJ1sFkw7BvYUrKf2BABWHq5qA7rxL6
+	qdVKNHPpL2KXq9U3xOOy/SMupgadmfZpY9RvTrzn5gLFArP6w+u/wz9HEbfKGg==
+X-Gm-Gg: ASbGnct/inTp1h3dizPe3dcBbwaXWgjxpm4wBbVFOSDoRrAb0FSyQD2X4/NUqndC8Hz
+	dYGDTy2+3q9OpeHZZxqiuwquX5YEzKr8xWeAaDcU5OsBY+1+ULckGWJetzos27sk3z7PVlBLoG8
+	OncQTjVge6+IGk00GiwdE4cUb+hseKeJaFPNbu2gzjuZpKfxaDwzwMJVJHTzROn73UVbfV55wHB
+	sFVn3uutBY/Y3KbAv4g5TzADEuxtEDfyhpZnp3/HLyboZMBmwLHmjdenOwRPwT3Ac1r3pINRzEZ
+	tT3sFNXM9NXVuaEoi2aXUk0jvLRHdkX+88sbFwJeohYUzkFZU5zQFQfMPekPty+7VN7wsg==
+X-Google-Smtp-Source: AGHT+IH3rw50/6dzYoE/rZrUO7s9bYXxHlMZ9pmvQ1igGUzO1BAlVou+50wzzWsEv5pFX2bmIsNpNw==
+X-Received: by 2002:a05:600c:698c:b0:441:b076:fce8 with SMTP id 5b1f17b1804b1-4538ee5db08mr159699605e9.14.1751316206479;
+        Mon, 30 Jun 2025 13:43:26 -0700 (PDT)
 Received: from [192.168.0.50] ([79.119.240.43])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a892e52c8esm11401545f8f.55.2025.06.30.13.42.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538a306a01sm153191255e9.0.2025.06.30.13.43.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Jun 2025 13:42:56 -0700 (PDT)
-Message-ID: <a0dec631-de05-4302-9ef1-e730eb233f08@gmail.com>
-Date: Mon, 30 Jun 2025 23:42:55 +0300
+        Mon, 30 Jun 2025 13:43:26 -0700 (PDT)
+Message-ID: <0f49eceb-0de0-47e2-ba36-3c6a0dddd17d@gmail.com>
+Date: Mon, 30 Jun 2025 23:43:25 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,7 +80,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH rtw-next v4 05/14] wifi: rtw89: Add rtw8851b_hfc_param_ini_usb
+Subject: [PATCH rtw-next v4 06/14] wifi: rtw89: Disable deep power saving for
+ USB/SDIO
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
@@ -91,90 +91,46 @@ In-Reply-To: <7880bca2-17de-4d55-93a1-16977dd6502e@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-"hfc" means "hci fc" which is "Host Control Interface Flow Control".
-These are some parameters needed for RTL8851BU.
+Disable deep power saving for USB and SDIO because rtw89_mac_send_rpwm()
+is called in atomic context and accessing hardware registers results in
+"scheduling while atomic" errors.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
 v2:
- - Adapt to the changes in patch 3.
- - Add more information in the commit message.
+ - Disable deep power saving for SDIO also.
+ - Don't disable rtw89_ps_power_mode_change() for USB/SDIO.
+ - Disable rtw89_mac_power_mode_change() for USB/SDIO.
+ - Call rtw89_ps_power_mode_change_with_hci() only for PCI and call
+   rtw89_mac_power_mode_change() for USB/SDIO.
+ - Update the commit message.
 
 v3:
- - Add Acked-by.
- - Adjust the wording of the commit message.
+ - Disable deep ps from rtw89_update_ps_mode() because it's simpler.
+ - Leave rtw89_ps_power_mode_change_with_hci() for later.
+ - Update the commit message.
 
 v4:
- - No change.
+ - Add Acked-by.
 ---
- drivers/net/wireless/realtek/rtw89/rtw8851b.c | 46 ++++++++++++++++++-
- 1 file changed, 45 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index 7fa3d15ee10f..5fda45174dfb 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -51,6 +51,48 @@ static const struct rtw89_hfc_param_ini rtw8851b_hfc_param_ini_pcie[] = {
- 	[RTW89_QTA_INVALID] = {NULL},
- };
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 1f5639a5d166..fe6b19a078c5 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2884,6 +2884,9 @@ static enum rtw89_ps_mode rtw89_update_ps_mode(struct rtw89_dev *rtwdev)
+ {
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
  
-+static const struct rtw89_hfc_ch_cfg rtw8851b_hfc_chcfg_usb[] = {
-+	{18, 152, grp_0}, /* ACH 0 */
-+	{18, 152, grp_0}, /* ACH 1 */
-+	{18, 152, grp_0}, /* ACH 2 */
-+	{18, 152, grp_0}, /* ACH 3 */
-+	{0, 0, grp_0}, /* ACH 4 */
-+	{0, 0, grp_0}, /* ACH 5 */
-+	{0, 0, grp_0}, /* ACH 6 */
-+	{0, 0, grp_0}, /* ACH 7 */
-+	{18, 152, grp_0}, /* B0MGQ */
-+	{18, 152, grp_0}, /* B0HIQ */
-+	{0, 0, grp_0}, /* B1MGQ */
-+	{0, 0, grp_0}, /* B1HIQ */
-+	{0, 0, 0} /* FWCMDQ */
-+};
++	if (rtwdev->hci.type != RTW89_HCI_TYPE_PCIE)
++		return RTW89_PS_MODE_NONE;
 +
-+static const struct rtw89_hfc_pub_cfg rtw8851b_hfc_pubcfg_usb = {
-+	152, /* Group 0 */
-+	0, /* Group 1 */
-+	152, /* Public Max */
-+	0 /* WP threshold */
-+};
-+
-+static const struct rtw89_hfc_prec_cfg rtw8851b_hfc_preccfg_usb = {
-+	9, /* CH 0-11 pre-cost */
-+	32, /* H2C pre-cost */
-+	64, /* WP CH 0-7 pre-cost */
-+	24, /* WP CH 8-11 pre-cost */
-+	1, /* CH 0-11 full condition */
-+	1, /* H2C full condition */
-+	1, /* WP CH 0-7 full condition */
-+	1, /* WP CH 8-11 full condition */
-+};
-+
-+static const struct rtw89_hfc_param_ini rtw8851b_hfc_param_ini_usb[] = {
-+	[RTW89_QTA_SCC] = {rtw8851b_hfc_chcfg_usb, &rtw8851b_hfc_pubcfg_usb,
-+			   &rtw8851b_hfc_preccfg_usb, RTW89_HCIFC_STF},
-+	[RTW89_QTA_DLFW] = {NULL, NULL,
-+			   &rtw8851b_hfc_preccfg_usb, RTW89_HCIFC_STF},
-+	[RTW89_QTA_INVALID] = {NULL},
-+};
-+
- static const struct rtw89_dle_mem rtw8851b_dle_mem_pcie[] = {
- 	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size6,
- 			   &rtw89_mac_size.ple_size6, &rtw89_mac_size.wde_qt6,
-@@ -2491,7 +2533,9 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
- 	.max_amsdu_limit	= 3500,
- 	.dis_2g_40m_ul_ofdma	= true,
- 	.rsvd_ple_ofst		= 0x2f800,
--	.hfc_param_ini		= {rtw8851b_hfc_param_ini_pcie, NULL, NULL},
-+	.hfc_param_ini		= {rtw8851b_hfc_param_ini_pcie,
-+				   rtw8851b_hfc_param_ini_usb,
-+				   NULL},
- 	.dle_mem		= {rtw8851b_dle_mem_pcie,
- 				   rtw8851b_dle_mem_usb2,
- 				   rtw8851b_dle_mem_usb3,
+ 	if (rtw89_disable_ps_mode || !chip->ps_mode_supported ||
+ 	    RTW89_CHK_FW_FEATURE(NO_DEEP_PS, &rtwdev->fw))
+ 		return RTW89_PS_MODE_NONE;
 -- 
 2.49.0
 
