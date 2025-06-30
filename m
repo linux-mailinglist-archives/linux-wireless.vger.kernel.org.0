@@ -1,147 +1,176 @@
-Return-Path: <linux-wireless+bounces-24639-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24640-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB20AED245
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 03:51:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C10AED2D6
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 05:15:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCEAA1703FA
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 01:51:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA4023B517E
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jun 2025 03:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD43A81732;
-	Mon, 30 Jun 2025 01:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70674C6C;
+	Mon, 30 Jun 2025 03:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="QA0lYvaj"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NHhuR+Hp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A474D14A8B;
-	Mon, 30 Jun 2025 01:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166CBEC4
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Jun 2025 03:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751248289; cv=none; b=QFp+F/MsjDb+R5QKV+3QrEUxWdiv4P14ZlTJ8gr69PtBcUKcPT9I8DuB5jAZYAFqiGRmQTVrnlFqOrXbny4VGRVqemCyGBiN7huYz2yuKJqPAVNbs9pfGN+OsCXRuWRoHP9xPeaXKBHRghjHbFBz/YyR4PKS646gCWHiujLEW/Q=
+	t=1751253317; cv=none; b=js/c3Rc0glQ81fgSXXtcr3jWWNsDzzW7+GpS+1oXoBoknWVxqS0yeqoaRN4IitBD71c4UfSQZrTcNWXwoZOt+H7Hm4PT1E8lFVRwzIWxEfWgz9yvHdD8wuapgH1tP/tfFEMbznxdOi/MaUCKEOASzs2cHcBQLxAs5Hu2oHeVrio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751248289; c=relaxed/simple;
-	bh=z5utaZjAok3SMsLK5G8+BSjY/xei4JILXCIyrOUAuRM=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ng/7GqXJQrKasH8Uw8vfMq4Rpn5rSTyIB4AbrTJYE0Ithh1CSfOPfAZd+Ij3Oh85Vg5Uv9ZMAQV5BNpBoNR/0NYGcWStJH8E2tz52JS8WEcoQEzep0dKMMYJOaYKnNX1TQ8eO3dpUri4WpjWSIy7qD2ZIlnfq48CsVx1kS0133g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=QA0lYvaj; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 55U1orZQ33802774, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1751248254; bh=xWTvLLWPzUP66I+4GfYn1Z0bMym8AnJFCNygSFBp1aA=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=QA0lYvajs7rB66V3qqdtB7Ze6kZ4qFSO83gjBL4d6z9lYu2FAftIbfFDoTiAjOOc/
-	 g8WvO7wl/csi6CAL+gmG7cG1TqVg4I4m9+Rbpd7qiiYNPxL3J2HQAxE9Pfg91SH+IX
-	 Nmut3aca2kOk9W9UOkrLkTn2EaR4NFSjxEPOV52mt+XnadTrS7ZmMPMKy0xhNjttDH
-	 6Xy9uNjoARq0wqbKqNbVyGh5NYUK8xw7dGYEVcxERSr36BH+PjCMDjotpaW6dIRyLy
-	 tyOALJal1VOTsi6ivHy6bbFi4c0/B6P5Q+fWUldJ9XPz3xgwRid69S1CYQA6SZPn5i
-	 8545zXl+wIgig==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 55U1orZQ33802774
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Jun 2025 09:50:54 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 30 Jun 2025 09:51:14 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 30 Jun 2025 09:51:13 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Mon, 30 Jun 2025 09:51:13 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-        Kalle Valo
-	<kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        Fiona Klute <fiona.klute@gmx.de>
-Subject: RE: [PATCH] wifi: rtw88: enable TX reports for the management queue
-Thread-Topic: [PATCH] wifi: rtw88: enable TX reports for the management queue
-Thread-Index: AQHb6HzPChsugwZFCE+9DYTxskrPbLQa8FQQ
-Date: Mon, 30 Jun 2025 01:51:13 +0000
-Message-ID: <dbd7eee63629497194901210c46bd704@realtek.com>
-References: <20250628223048.3597641-1-andrej.skvortzov@gmail.com>
-In-Reply-To: <20250628223048.3597641-1-andrej.skvortzov@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1751253317; c=relaxed/simple;
+	bh=mE+yEpq3+hNh8HJbfo9b7r5P/debEfmJpBm5UtFFxLY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oVVUqTeaLYg9h0UjS49C/pDiHmuS7EJOb9j2vuM3L2a/JhNvuS+XUw9lwHkjg8ht/A41qS0dDebX+KmF3d0PtRf8JBU/Z3ArolZ3RSEbXASbvQ05LBs4bPXUgVEivjQia0blpDrFaur7dwnvBjTRIzZnUd60msdlpdvHIs0FbW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NHhuR+Hp; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55TMJ979020075
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Jun 2025 03:15:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=zouhYTDahyyqlN7l7LkNnQ0ijp4WMADMJKc
+	PTqyHBZ4=; b=NHhuR+HpC+XlAXwStAUIXJmmpiTtEfdvXvYtG9fQ5oYal1Hgg2A
+	7v+FL4zGlq2BHCpPDmMWENWSTEmOeemR6wMZbf6GLzAHVKGGYvoesNxFQ1/FmuEB
+	ZWug7LSWX7vlEfNp5qvfbtOGgnMzHZc/smo/Eb+Ui6QRMRIaNw+kxl7u3jnU/jn9
+	2TsklRmSfJ9+SI+QkoNlTyH2FV9Z/4R46uAs1JmiSaKPdgk4DccP+RlxMqcw1ChS
+	cTqZoFM/Uq8+qn4vcgkmr5gXJH2NTnr0ENNn1qFC6Cs64HhT26wLds6F47PMRcFE
+	6UUBW0tW4q1qP2PSy1xgaZhEWn/zuyGTzWg==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47j9pck4k7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Jun 2025 03:15:15 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-313f8835f29so2130345a91.3
+        for <linux-wireless@vger.kernel.org>; Sun, 29 Jun 2025 20:15:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751253313; x=1751858113;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zouhYTDahyyqlN7l7LkNnQ0ijp4WMADMJKcPTqyHBZ4=;
+        b=gOdtnFgxaT//YkVnJQk3JecG4hWJ1lShGe8e8N8RO6j3JQoaS7k5cA4ILX+Z8ch8aR
+         G9Hmkw9WT7BtSSgvSnPspW5emK3q0jctUxeCrCJIVEYjhljj5tSxIdJQCEmNCHO7sagM
+         VlBVCGvyN9O+ADEx5bMmsMfmMlxIwS1wob0MUlVbn2AQ/FHsQvMUjJ8jhG7TcxNQMzdJ
+         Kb/W5BQsuXgATkG7KyfD5piJPz8iAgLEYhpqY33u266qxC41meq+T2HznnCdh01TrfTf
+         JtEEVG3rqdO4iZ1LOdZSazQ1Ulfwrap9eSUlPe2yJ6vaKxo66kZxLbS1SP7WxLtS8ixt
+         RgXQ==
+X-Gm-Message-State: AOJu0YzK7bDbHs+uN3t3hJ5pFOoCJJVrjyNsXrSDzHhCUgRJsysaDumV
+	JX1hAaXywIReK0994fwJQUxOW1X04mm+TKVlB4ov2WI2NqPeJjQJJkwUyO+RuAiPU9jxeZGnPKK
+	ESX9Z/555tzUHpXrfTwsG0sQsKI7bJECyP2lrC4iDFXUfIL5GGCF3SNa79zJB7sqYXMbwjg==
+X-Gm-Gg: ASbGncsZ8oNARUJYlfzdnoRVVl6YaI3gnEF/3BpMVwGynex7v9Ogpw2kOfUZpAWyuWt
+	49zGZ0jAbcGzZu2SMn7n5zBtR6nV6+OYtEfoAsfROpMDA5CLVo+FGFhJwQ80rVb1OSSQweHCFZ7
+	Y7H3nRrwRJUkIV6SbZsvln1tgS04JTjc/EspdV4u2979lmnNSm29ZVwjMIVKi9ZTYPSOWffWnI2
+	oMBCnV6h1gAo1ECHeEvLYdDEYeqoINpVLePln7pcCSiCY0bK4FMa8j3FRFD3ktEGM71qbTcolB+
+	5lNwFpwKYsJOBYFuBXJDkgBMwIqdbq/dC8eIRRV/5Y4UyFvWktvT8X49xlRrQbYBAYZ95O9Oct4
+	rwtt35jRN/KiTduMv7ThgfRw1gOYHe74RQVWfTOGXvTjT0A==
+X-Received: by 2002:a17:90b:5823:b0:311:a4d6:30f8 with SMTP id 98e67ed59e1d1-318c8eecfcamr15544476a91.13.1751253312715;
+        Sun, 29 Jun 2025 20:15:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2c9a+v7if/VyAPvMaNeR1gC+/LtweHuvaEBcZAbeOPnEZMDQC/yQ3gQukPSHNR4RIZWWfDw==
+X-Received: by 2002:a17:90b:5823:b0:311:a4d6:30f8 with SMTP id 98e67ed59e1d1-318c8eecfcamr15544446a91.13.1751253312317;
+        Sun, 29 Jun 2025 20:15:12 -0700 (PDT)
+Received: from hu-aarasahu-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-315f539e6ccsm12165421a91.17.2025.06.29.20.15.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Jun 2025 20:15:11 -0700 (PDT)
+From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+Subject: [PATCH ath-next] wifi: ath12k: Block radio bring-up in FTM mode
+Date: Mon, 30 Jun 2025 08:45:02 +0530
+Message-Id: <20250630031502.8902-1-aaradhana.sahu@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: 7PVl_tIsofUZlY7BibpKhZf3D5OqQfCk
+X-Proofpoint-ORIG-GUID: 7PVl_tIsofUZlY7BibpKhZf3D5OqQfCk
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDAyNiBTYWx0ZWRfX7BqVvXN7/01e
+ 65jFiv2iY8cTHSwSJSwxsTZbtRjeahLPwwuI4FdZJtCNtw1K0RUP6/KHvx+1+sspvR9jf6mEyQv
+ bYlGbx43JBbnVsZP9y7p41dOBcLohs8p8fCU0h7IPuARs5Iq/g+UYlMK8H4N5zpeHcmsruawSNU
+ im1sYbHqZq3Q3sxIchclEaxeIHVlVmEEZZ+i8anqN+mkQaTRO+Bakf8sL0zhp0IBDpamwFcTAjX
+ H/ZJId3gZ9pzU/ggJPcqkT/qWam+QvM0DZTPRhlStymIC9UvvumwgX/iWR91mZta40BlRuf8qjo
+ bPN9JYguNMINjr4rDNtIH6A5ibNmqz8dAzRN1rn78cEiqVTb8uk9XCOcr/ZUTc8PCKHHYTegWdD
+ BKJUUmVkDps46rzrFnDjo7DZqgqh6hGPUHdBzQYE42HhH0OMfZSgkcqt03XQwfTE3vyiumHK
+X-Authority-Analysis: v=2.4 cv=QMFoRhLL c=1 sm=1 tr=0 ts=68620143 cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=ClpxArXO_HDk_Ajs1zgA:9
+ a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-27_05,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 bulkscore=0 spamscore=0 adultscore=0
+ mlxlogscore=999 mlxscore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0
+ clxscore=1011 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506300026
 
-Andrey Skvortsov <andrej.skvortzov@gmail.com> wrote:
-> This is needed for AP mode. Otherwise client sees the network, but
-> can't connect to it.
->=20
-> REG_FWHW_TXQ_CTRL+1 is set to WLAN_TXQ_RPT_EN (0x1F) in common mac
-> init function (__rtw8723x_mac_init), but the value was overwritten
-> from mac table later.
+Ensure that all radios remain down when the driver operates in Factory
+Test Mode (FTM). Reject any userspace attempts to bring up an
+interface in this mode.
 
-Since the tables were copied from vendor driver, I suspect people might
-overwrite the tables again resulting in regression.=20
+Currently, the driver allows userspace to bring up the interface even
+though it operates in FTM mode, which violates FTM constraints and
+leads to FTM command failures.
 
-So we can add a mac_post_init to set the value after loading parameters:
+Hence, block the radio start when the driver is in FTM mode. Also,
+remove ath12k_ftm_mode check from ath12k_drain_tx() because FTM mode
+check is already handled in the caller function
+(ath12k_mac_op_start()).
 
-  rtw_mac_init(rtwdev); // not set REG_FWHW_TXQ_CTRL+1 to WLAN_TXQ_RPT_EN
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-  chip->ops->phy_set_param(rtwdev); // "0x421, 0x0000000F," by table
+Fixes: 3bc374cbc49e ("wifi: ath12k: add factory test mode support")
+Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-  rtw_mac_postinit(rtwdev); // set REG_FWHW_TXQ_CTRL+1 to WLAN_TXQ_RPT_EN=20
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 32519666632d..22a04b32c0ca 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -8342,14 +8342,9 @@ static int ath12k_mac_start(struct ath12k *ar)
+ 
+ static void ath12k_drain_tx(struct ath12k_hw *ah)
+ {
+-	struct ath12k *ar = ah->radio;
++	struct ath12k *ar;
+ 	int i;
+ 
+-	if (ath12k_ftm_mode) {
+-		ath12k_err(ar->ab, "fail to start mac operations in ftm mode\n");
+-		return;
+-	}
+-
+ 	lockdep_assert_wiphy(ah->hw->wiphy);
+ 
+ 	for_each_ar(ah, ar, i)
+@@ -8362,6 +8357,9 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
+ 	struct ath12k *ar;
+ 	int ret, i;
+ 
++	if (ath12k_ftm_mode)
++		return -EPERM;
++
+ 	lockdep_assert_wiphy(hw->wiphy);
+ 
+ 	ath12k_drain_tx(ah);
 
-Only rtw8703b/rtw8723d implement postinit ops.
-
->=20
-> Tested on rtl8723cs, that reuses rtw8703b driver.
->=20
-> Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/rtw8703b_tables.c | 1 -
->  drivers/net/wireless/realtek/rtw88/rtw8723d_table.c  | 1 -
->  2 files changed, 2 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b_tables.c
-> b/drivers/net/wireless/realtek/rtw88/rtw8703b_tables.c
-> index 81020fd907aa6..fe4b112f582ba 100644
-> --- a/drivers/net/wireless/realtek/rtw88/rtw8703b_tables.c
-> +++ b/drivers/net/wireless/realtek/rtw88/rtw8703b_tables.c
-> @@ -199,7 +199,6 @@ static const u32 rtw8703b_mac[] =3D {
->         0x035, 0x00000000,
->         0x067, 0x00000002,
->         0x092, 0x00000080,
-> -       0x421, 0x0000000F,
->         0x428, 0x0000000A,
->         0x429, 0x00000010,
->         0x430, 0x00000000,
-> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d_table.c
-> b/drivers/net/wireless/realtek/rtw88/rtw8723d_table.c
-> index 27a22b392df00..bc7c6111782b2 100644
-> --- a/drivers/net/wireless/realtek/rtw88/rtw8723d_table.c
-> +++ b/drivers/net/wireless/realtek/rtw88/rtw8723d_table.c
-> @@ -10,7 +10,6 @@ static const u32 rtw8723d_mac[] =3D {
->         0x020, 0x00000013,
->         0x02F, 0x00000010,
->         0x077, 0x00000007,
-> -       0x421, 0x0000000F,
->         0x428, 0x0000000A,
->         0x429, 0x00000010,
->         0x430, 0x00000000,
-> --
-> 2.47.2
+base-commit: 4fb98d37afdac11db1f82c1d662e0fd3d209afaa
+-- 
+2.34.1
 
 
