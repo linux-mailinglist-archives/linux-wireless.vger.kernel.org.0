@@ -1,87 +1,77 @@
-Return-Path: <linux-wireless+bounces-24739-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24740-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F4BAF016A
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jul 2025 19:12:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77FE1AF01AB
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jul 2025 19:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19FA93AB27B
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jul 2025 17:11:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D016188049F
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jul 2025 17:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D2927CCE4;
-	Tue,  1 Jul 2025 17:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E3C19644B;
+	Tue,  1 Jul 2025 17:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BvDhCxyc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1HH44/8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90BE125D6
-	for <linux-wireless@vger.kernel.org>; Tue,  1 Jul 2025 17:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE351DD529
+	for <linux-wireless@vger.kernel.org>; Tue,  1 Jul 2025 17:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751389893; cv=none; b=tm9qTjJZC9hGINTuXtBJFmujhJH4L0csxFLZn/YFi6s8rAdQX1kcY87Cv8psQHeOzUiX6kN8ZX9DiIl0H8CbkNet0HwnoYHz0OS2Pkw3nvWBqD43MajELm/qRrbhE11exCK5NLeSpYV4vNqA/8TljT04vOotbKVU8vh8IBL6GWY=
+	t=1751390140; cv=none; b=PHyOEtalfz3yDfX4elz0oUdXdCZmAVrchZnvnEJfINWi+GKXGrKdq/KmoOur6fJmIbaxCFhaRi2cPzHC0yKQOQ5hMxHqiWV20H3MmJF+sdKCXsDhM2mcofTNxvn6HUUTc4tVj5UvZjuyc+XPFs6w07sUPuK5nyXaVkFVOcsxRJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751389893; c=relaxed/simple;
-	bh=A6BKh/+n8bI9/9Ur6tRJJAOVNRUbgLnCido7flEyJNE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=odf39dtUVsxPFHMRvNHwcNRQct+W0VyT9pFcTPrP+wkv/vODms7n+MEEpbBD7EdvT9/jcujFTgRJerx5YqeQOXdFzmf1zmJjjCDl8csZ8TTrrTLhD5ggiFnX4Awn0ERFL8FjI8rSY/rocMaEY456Z945qS/xWzkSzeINpJ5cTm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BvDhCxyc; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 561GVbG2007345
-	for <linux-wireless@vger.kernel.org>; Tue, 1 Jul 2025 17:11:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	mLKwVrPy8P5xsiw/HOitfvrBYE0u4Z+NAYr1E1YeUXg=; b=BvDhCxycOvs406Hg
-	XKSEt+OM/Xz7LknUhbQI5bZ4r+eL4AwoFQpnQuSL3z+2ploryyB1qjSHXxwE4Yxm
-	xbu05lxB1sVqj9vbKM7pcnrxkqEBKMhVhEKaTcTt4gRtyo1U4TMdPglAJYMakgMQ
-	hnt4Xnq1EC8a4NRRUljZAmmPIcpjB4UO1CBK8WdYe6YE+BI9YP55V2y5iuEAaev/
-	KZ+FuAPcvOGPbSgrRDcBDY+mnInUtyalJWS0DSAZB3lvxQCFV7GqbnFDD6ZPfy42
-	LBwTaT4dyWM6k7VHJWj8vXLQVTB6IwHwvpM2DNTpgKNdUX4sCuk6q057Pw2NOi2S
-	vkYx3g==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47kn5je3em-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 01 Jul 2025 17:11:30 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-235e1d70d67so25501745ad.0
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Jul 2025 10:11:30 -0700 (PDT)
+	s=arc-20240116; t=1751390140; c=relaxed/simple;
+	bh=8Q0Ny3NtQrE4ubdfyrtuU5L7rqhGxW/N4XvRHvSQ350=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=XaFzu3PYdJly2gs6TMDeD07T2N1qogIfLvhSXipOIAa9OmykmtwKlK49k3Y1A+T+LtjDlr2y7GxlrtCYuQiD4bf2J5VnWESURASPxD5cGneMvT/AScCQydRI5nHKd7MpttF9UykDZJAhDkshlIjymhI3FffGbsCh5vieS2g78LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G1HH44/8; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4537deebb01so18668915e9.0
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Jul 2025 10:15:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751390137; x=1751994937; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3PZ0MvLcvlv6cXMfiRORnjjV6KSf1C4T73C/jZOCGwQ=;
+        b=G1HH44/84544CgHsoyyZI3miwvX3dO7xV7YVZOSTXO727TVkIDngVrMhiu8qw9mstb
+         VojcfSct0HMHl0w5TTlePILHux+8R2Wg6QHHOIz7y4CSxZLFxLuORipioefr8QBAaGvr
+         HX0IfuGwkxMUOaBSzYTgqgP660TXBNb1nnSIL+4y0UwVY1G4N3HFQvG/2oBpqqkNZyc4
+         AXTBCDXHYUvbhnmX03JeatJzoNPtxKaC4Bq4wIP/l61rvGdvDjlwWHAnIQW87pXj4lRi
+         L0Zh+slexTfl8+hbGYZoJKUqNu3fgQDojwQQWft1qd8q1e0KkWT/9iMoZKAZsaNb8tuT
+         /NWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751389889; x=1751994689;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mLKwVrPy8P5xsiw/HOitfvrBYE0u4Z+NAYr1E1YeUXg=;
-        b=j2aegRkEaLiFMo+Yo/OGHV3u3qrni0snhNp6ZoMJU4+Drwfu6ap4gd9IvTeWoMNWBe
-         RmX7ttBbCt4qzC2EasXiM/KbA1oWdcEGIjCxAMUf7Pi5B3b1JrQPnO8H1Oa9Y72loE7H
-         MzpUud2OFi6BtCRSiYBUukfQuHtl6akovn3DLjEeBIDd7MVr/Vxc/XQI9ohHZ0bU5FM3
-         KVA5ZrK/lrbGNpYRTQ2jtB/JI4Y7j+IvO9qVMlTnM/cIiITtgflm4mTkshlvA4fZhkRk
-         r2IIiNXATECqhK8LN4I73SgSuCPDidHoZmrh5PGY3/ic9lR3h8//Wg6S1U8LXo5yisLz
-         2w/Q==
-X-Gm-Message-State: AOJu0YykhgaF0hZaOHf9yQW4nf5X9hD4EqJQULwmxyCXxJg0iJTwPbkH
-	82uFsdiApocJdMkLK/Uc+f5PpjOKkK8RAzpqWdilSWeY5Zc0GFWhs8Ofy9G911EvoK0IHg3nPYO
-	fLLMjBKPFv3I0O9UVKXnuo1ov4Gq0Gth4hnWJoHZQkRctMLhzDH0/o3vZpbKQSoG+ecpmUg==
-X-Gm-Gg: ASbGncsvygZye925sVfRc6NDvQESj432i+oPqSz/TfWDSSJYQkFIgvR6PG5sYdSUA91
-	6pJ9+dvbzXF1QlBLShbH0PgbWOBtgHfv2BC6q7Lld5qsRL47SbaoxKVKqRXG/kZmqC4wHAIIUvc
-	b/9NxYzSEcySGFXJPl3i+BSgyLYaNsj6fUabFelvoPTrhWDMBC42kTXPPWzbm+kuvKSABC/oigd
-	kQySFiUFJQqM+Ll4XY3+i4QfO4nleaKzsgs4771aJA3i52Mv4emw9dl6A65RWMUmSFufD1muBOU
-	BgWwQJAUqAFUxCwMDbOUo7eFsy7vyGKzhAYRH9strnLWpgpdvuS3wRAZUIaQ+9yNRpnFo5wc9U7
-	p2gxkgKfjsvzW38I=
-X-Received: by 2002:a17:903:284:b0:22d:b243:2fee with SMTP id d9443c01a7336-23ac43d3211mr254109305ad.13.1751389888955;
-        Tue, 01 Jul 2025 10:11:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE1X6qVKPWmnadI+fNItnBMIaARjs/GLjlFIwWamaa1inE9HiS3RpXyTjkCNyG2A8IQ9wooCw==
-X-Received: by 2002:a17:903:284:b0:22d:b243:2fee with SMTP id d9443c01a7336-23ac43d3211mr254108685ad.13.1751389888273;
-        Tue, 01 Jul 2025 10:11:28 -0700 (PDT)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb3ce960sm110348185ad.250.2025.07.01.10.11.27
+        d=1e100.net; s=20230601; t=1751390137; x=1751994937;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3PZ0MvLcvlv6cXMfiRORnjjV6KSf1C4T73C/jZOCGwQ=;
+        b=VX4wAIRHhha1HFgwHVJhooJsAepyiC4x+YcMFN4KclWfomY0+sQ0hDtqdBV8bz5tBZ
+         jbcPPfEAa5ANAOLVYU3q0IKYuPkf1WUk2FHwzn6Lu30uZc7o7phMmtd90oLRoVZgaa4l
+         vCzXt6AWe+84aoux92umU+juXdQfEXK7xTv2x/qChWuObLi1RzPX92GEWqzJlqiYrom6
+         AuBY2dosrEnf07HJLUcCVnocJRRXksW6cotC3L5C7vI7JUkOOBqvogrBFlLuffVSOYOd
+         kMf+8rBazoZu/CPLGHjSzt0X9kOH39XHxgWweyGfhRiHF7t4DZ72dQYZt4cKar7AmqJy
+         QIIw==
+X-Gm-Message-State: AOJu0YzXwJlTAfJKVU0Qf10XPWLbZQtMP/u0IIuEcczyYX4GA+7xZmqF
+	s5GZKnQsGbipoAbdgt+n44/CXDg0YpwhynqmXdmz9GA4u7fdLv++wY0zTr4kEw==
+X-Gm-Gg: ASbGncth9KGi/pfgJavy6BJbe/ram33bXI0t8sRD7PTXMjKFOxrJb1+dkuXX03eYIGX
+	KILadPEWDn96PnDvLnPIrfsanyjFCfImLjk9bybRxSLoCiXl5emWuePtuN+w5NSldDPi9Z1+SBU
+	ZPi2enFmD3j+nndjIreKxAE8GnG6xaEkoGt5LxNuClIi4KBoHsMSY8Zw33kUvqsB/zC6EPrb9ZM
+	huTvNitOqDGTPadvUYOjvPI3PpokogCCkDGIwznRuBV5Pja0vwTVzwh4L9BcKjsRefjONbuP9uS
+	O6KK+gCJtdiuwgmiyxo5Udv3Eg6tpGyS/gnTLn2VYD5XdcNUINaAm+o4XYXe+ImXNsbPSA==
+X-Google-Smtp-Source: AGHT+IEuQFy8LtKuHgvXtloUoKO3fZRyowuJhNMnoJKBsUcNuhGh3zHOmK720hsIPRfgHsAc/1vy7g==
+X-Received: by 2002:a05:600c:8b06:b0:442:f4a3:8c5c with SMTP id 5b1f17b1804b1-4538ee3b85amr227917685e9.10.1751390136526;
+        Tue, 01 Jul 2025 10:15:36 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538a3fe592sm167906785e9.21.2025.07.01.10.15.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Jul 2025 10:11:27 -0700 (PDT)
-Message-ID: <a6e82fa5-8094-4ae2-b6f1-53b6e6c13e4e@oss.qualcomm.com>
-Date: Tue, 1 Jul 2025 10:11:26 -0700
+        Tue, 01 Jul 2025 10:15:35 -0700 (PDT)
+Message-ID: <0abbda91-c5c2-4007-84c8-215679e652e1@gmail.com>
+Date: Tue, 1 Jul 2025 20:15:34 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,139 +79,182 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next V15 0/9] wifi: ath12k: add MU-MIMO and 160 MHz
- bandwidth support
-To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250701010408.1257201-1-quic_pradeepc@quicinc.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: rtw89: Firmware bug related to the hardware scan channel list
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
 Content-Language: en-US
-In-Reply-To: <20250701010408.1257201-1-quic_pradeepc@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=KtJN2XWN c=1 sm=1 tr=0 ts=686416c2 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=e70TP3dOR9hTogukJ0528Q==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=MeVQk6Yvlubu_z84HK4A:9
- a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-ORIG-GUID: 2jI6Q9hSzABES9K-Ktd9zxv_wyhVVksO
-X-Proofpoint-GUID: 2jI6Q9hSzABES9K-Ktd9zxv_wyhVVksO
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAxMDExNyBTYWx0ZWRfX7v+bIQ01rPHy
- yrUqJAzvfXkQdpopGaK4i0e05X7s2gWn3O9EKC1H9gAgYeY73tdPlwHEhkKTIA0xAi4T4s4HXtV
- TyU0rGVFQHp/ywQejEsljeZlbFiYIAIX3W93mW1C7dazNBte61NNgb93B67RfeeOF9e+/UgZ3as
- joXNR6V89a/QkuxqtQD1F+giYlcGRJ1rESReClnHQ3GvBiA0GIlNre5tC+TILFiSbLvzHC6WlZO
- +Fua63DGOU7XSLFlTYrUl8O8w09ohBp4JTZa2AOHBVCYIYoDEsL5R4q6TTxOHGreE9vmDr9sVF5
- JajZelikbm6ReyvO5qj6l2iBLi5+M55/b23CBkwvA/lS2tU7tFuXsn24vlu9tR233xbJ6ovGai0
- 9hjvEFSH6jW0CizekG/jBAzacDK7r35kh84fKhcD3WYoLFNhXpWuEJknwiDM6XPrNB+xtlwl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-01_02,2025-06-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
- mlxscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 phishscore=0
- clxscore=1015 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507010117
 
-On 6/30/2025 6:03 PM, Pradeep Kumar Chitrapu wrote:
->   Add support for
-> 1. enabling MU-MIMO in HE and EHT modes from hardware
-> 2. setting fixed HE rate/GI/LTF
-> 3. 160 MHz bandwidth in HE mode
-> 4. extended NSS bandwidth support
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> changes in v15:
->  - rebased the series after merge conflicts reported
->  patch 4/9:
->  - change the fix to apply for all modes except STA mode as
->    WCN7850 expect it same as before.
-> 
-> changes in v14:
->  patch 6/9:
->  - cap max_nss using ar->num_tx_chains to fix interop issue caused due
->    to sending nss value 4 when firmware only supports nss value 2.
->  patch 8/9:
->  - Set the default return value to MODE_11AC_VHT160 for 160 MHz
->    to allow STA to connect to the AP even if it does not
->    explicitly indicate 160 MHz bandwidth support.
-> 
-> changes in v13:
->  - rebase
-> 
-> changes in v12:
->  - rebase
-> 
-> changes in v11:
->  patch 1/9:
->   - fix return values in ath12k_mac_set_he_txbf_conf() and
->     ath12k_mac_vif_recalc_sta_he_txbf()
->  patch 6/9:
->   - fix missing he_mcs initialization in ath12k_mac_init_arvif()
-> 
-> changes in v10:
->  patch 6/9:
->   - use ath12k_ahsta_to_sta()
->   - fix rcu_dereference warning in ath12k_mac_set_bitrate_mask_iter()
->   - change return type for ath12k_mac_validate_fixed_rate_settings()
->   - improve readability by adhering to nl80211 definitions of GI
->     NL80211_TXRATE_DEFAULT_GI. Introduce ath12k_mac_nlgi_to_wmigi()
->     for conversion.
->  patch 7/9:
->   - do not change default MODE_11AC_VHT160 in
->     ath12k_mac_get_phymode_vht() as it breaks clients which do not
->     set VHT_CAP_SUPP_CHAN_WIDTH_160MHZ.
->  patch 8/9:
->   - Use IEEE80211_VHT_CAP_EXT_NSS_BW_MASK along with
->     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ for determining VHT160
->     phymode.
-> 
-> changes in v9: rebase on top of master branch with mlo changes
->  patch 1/9 and 2/9:
->   - fetch link_conf using ath12k_mac_get_link_bss_conf()
->     instead of arvif->vif->bss_conf before mlo
->  patch 6/9
->   - fetch mcs/nss values from sta->link[] instead of sta->deflink
->   - fix spelling of 'incompatibility'
->  patch 8/9
->   - replace sta->deflink.addr with arsta->addr in
->     ath12k_peer_assoc_h_vht
->  patch 9/9
->   - replace sta->deflink.rx_nss with link_sta->rx_nss
-> 
-> changes in v8:
->  - rebase and resolve KASAN warnings reported by Jeff in v7, in patch 6/9.
-> 
-> Pradeep Kumar Chitrapu (9):
->   wifi: ath12k: push HE MU-MIMO params to hardware
->   wifi: ath12k: push EHT MU-MIMO params to hardware
->   wifi: ath12k: move HE MCS mapper to a separate function
->   wifi: ath12k: generate rx and tx mcs maps for supported HE mcs
->   wifi: ath12k: fix TX and RX MCS rate configurations in HE mode
->   wifi: ath12k: add support for setting fixed HE rate/GI/LTF
->   wifi: ath12k: clean up 80P80 support
->   wifi: ath12k: add support for 160 MHz bandwidth
->   wifi: ath12k: add extended NSS bandwidth support for 160 MHz
-> 
->  drivers/net/wireless/ath/ath12k/core.h |    2 +
->  drivers/net/wireless/ath/ath12k/mac.c  | 1144 ++++++++++++++++++++----
->  drivers/net/wireless/ath/ath12k/mac.h  |   17 +
->  drivers/net/wireless/ath/ath12k/wmi.c  |   28 +-
->  drivers/net/wireless/ath/ath12k/wmi.h  |  100 ++-
->  5 files changed, 1069 insertions(+), 222 deletions(-)
-> 
-> 
-> base-commit: c256a94d1b1b15109740306f7f2a7c2173e12072
+Hi,
 
-Since there are lingering questions about the 5/9 patch I plan to take 1-4,6-9
+A few users with RTL8851BU who did not install wireless-regdb reported this:
 
-Given that there is ongoing discussion about the 5/9 patch logic in the
-context of the ath11k driver, this patch can be posted again separately when
-the discussions have concluded and the correct interpretation by firmware is
-clear across all chipsets and interface types.
+kernel: rtw89_8851bu 1-2:1.2: Firmware version 0.29.41.3 (65cefb31), cmd version 0, type 3
+...
+kernel: rtw89_8851bu 1-2:1.2: rtw89_hw_scan_offload failed ret -110
+kernel: rtw89_8851bu 1-2:1.2: c2h reg timeout
+kernel: rtw89_8851bu 1-2:1.2: FW does not process h2c registers
+kernel: rtw89_8851bu 1-2:1.2: HW scan failed: -110
 
-/jeff
+The AP can't be pinged anymore, but the driver is still receiving beacons.
 
+It's the same with RTL8832BU.
+
+It can also be reproduced with RTL8852BE (PCI). The output is different:
+
+[  628.015012] rtw89_8852be_git 0000:02:00.0: Firmware version 0.29.29.8 (39dbf50f), cmd version 0, type 3
+...
+[  698.619819] rtw89_8852be_git 0000:02:00.0: FW status = 0x67001220
+[  698.619830] rtw89_8852be_git 0000:02:00.0: FW BADADDR = 0x0
+[  698.619835] rtw89_8852be_git 0000:02:00.0: FW EPC/RA = 0xb89bacd3
+[  698.619841] rtw89_8852be_git 0000:02:00.0: FW MISC = 0xb8900635
+[  698.619845] rtw89_8852be_git 0000:02:00.0: R_AX_HALT_C2H = 0x30000008
+[  698.619850] rtw89_8852be_git 0000:02:00.0: R_AX_SER_DBG_INFO = 0x0
+[  698.619858] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8987df9
+[  698.619873] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb89784e7
+[  698.619888] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8935ea7
+[  698.619903] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8920565
+[  698.619917] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8935e9f
+[  698.619932] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8935ed1
+[  698.619947] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb890cd1f
+[  698.619961] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb893035c
+[  698.619976] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8934333
+[  698.619990] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8934345
+[  698.620005] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8935f1f
+[  698.620019] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb89bac9d
+[  698.620034] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb89afeb3
+[  698.620048] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8935e1b
+[  698.620063] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb89bac2b
+[  698.620076] rtw89_8852be_git 0000:02:00.0: SER catches error: 0x4000
+[  698.620139] rtw89_8852be_git 0000:02:00.0: FW status = 0x68001220
+[  698.620144] rtw89_8852be_git 0000:02:00.0: FW BADADDR = 0x0
+[  698.620150] rtw89_8852be_git 0000:02:00.0: FW EPC/RA = 0xb89bacd3
+[  698.620156] rtw89_8852be_git 0000:02:00.0: FW MISC = 0xb8900635
+[  698.620161] rtw89_8852be_git 0000:02:00.0: R_AX_HALT_C2H = 0x30000008
+[  698.620167] rtw89_8852be_git 0000:02:00.0: R_AX_SER_DBG_INFO = 0x0
+[  698.620177] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb893037c
+[  698.620214] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8935df9
+[  698.620231] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8934345
+[  698.620246] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb893435b
+[  698.620261] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb893435b
+[  698.620276] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb893435b
+[  698.620291] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8934379
+[  698.620306] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8934377
+[  698.620321] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb893437f
+[  698.620336] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8934315
+[  698.620351] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb89333b5
+[  698.620366] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb893432d
+[  698.620381] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb893432f
+[  698.620396] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb893432f
+[  698.620412] rtw89_8852be_git 0000:02:00.0: [ERR]fw PC = 0xb8934349
+[  698.620424] rtw89_8852be_git 0000:02:00.0: SER catches error: 0x4000
+[  698.621158] rtw89_8852be_git 0000:02:00.0: FW backtrace invalid size: 0x0
+[  698.625076] ieee80211 phy1: Hardware restart was requested
+[  698.625098] ------------[ cut here ]------------
+[  698.625100] ieee80211_restart_work called with hardware scan in progress
+[  698.625172] WARNING: CPU: 2 PID: 61 at net/mac80211/main.c:354 ieee80211_restart_work+0x13d/0x150 [mac80211]
+[  698.625313] Modules linked in: rtw89_8852be_git(OE) rtw89_8852b_git(OE) rtw89_8852b_common_git(OE) rtw89_pci_git(OE) rtw89_core_git(OE) cmac ccm vfat edac_mce_amd fat kvm_amd ccp kvm mac80211 irqbypass crct10dif_pclmul crc32_pclmul polyval_clmulni polyval_generic gf128mul eeepc_wmi snd_hda_codec_hdmi libarc4 ghash_clmulni_intel asus_wmi sha512_ssse3 ledtrig_audio snd_hda_intel sha256_ssse3 cfg80211 sparse_keymap snd_intel_dspcfg sha1_ssse3 platform_profile snd_intel_sdw_acpi aesni_intel i8042 serio snd_hda_codec crypto_simd rfkill acpi_cpufreq pcspkr wmi_bmof snd_hda_core cryptd k10temp sp5100_tco i2c_piix4 snd_hwdep snd_pcm snd_timer joydev snd soundcore mousedev mac_hid it87 hwmon_vid sg crypto_user dm_mod fuse loop nfnetlink bpf_preload ip_tables x_tables ext4 crc32c_generic crc16 mbcache jbd2 usbhid radeon drm_ttm_helper ttm video i2c_algo_bit crc32c_intel drm_suballoc_helper drm_display_helper xhci_pci cec xhci_pci_renesas wmi
+[  698.625424] Unloaded tainted modules: rtw89_core_git(OE):1 rtw89_pci_git(OE):1 rtw89_8852b_common_git(OE):1 rtw89_8852b_git(OE):1 rtw89_8852be_git(OE):1 [last unloaded: rtw89_core_git(OE)]
+[  698.625439] CPU: 2 PID: 61 Comm: kworker/2:1 Tainted: G           OE      6.6.88-1-lts66 #1 29602267a9340ebc551d246a9d0d242da9be9d82
+[  698.625445] Hardware name: System manufacturer System Product Name/F2A85-M, BIOS 6508 07/11/2014
+[  698.625448] Workqueue: events_freezable ieee80211_restart_work [mac80211]
+[  698.625551] RIP: 0010:ieee80211_restart_work+0x13d/0x150 [mac80211]
+[  698.625656] Code: bd f0 e9 ff ff e8 73 b6 da ff 5b 5d 41 5c 41 5d 41 5e e9 76 17 ff c1 48 c7 c6 50 ea cc c0 48 c7 c7 a8 d0 cd c0 e8 53 3d 51 c1 <0f> 0b e9 03 ff ff ff 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90
+[  698.625660] RSP: 0018:ffffc900002b7e40 EFLAGS: 00010282
+[  698.625664] RAX: 0000000000000000 RBX: ffff88810129a900 RCX: 0000000000000027
+[  698.625667] RDX: ffff888227521748 RSI: 0000000000000001 RDI: ffff888227521740
+[  698.625669] RBP: ffff888192781f50 R08: 0000000000000000 R09: ffffc900002b7cb0
+[  698.625672] R10: ffffffff840b26c8 R11: 0000000000000003 R12: ffff88810007ac00
+[  698.625674] R13: ffff888192780900 R14: ffff88810007ac05 R15: 0000000000000000
+[  698.625677] FS:  0000000000000000(0000) GS:ffff888227500000(0000) knlGS:0000000000000000
+[  698.625680] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  698.625683] CR2: 00005eb01aafb000 CR3: 0000000108b16000 CR4: 00000000000406e0
+[  698.625686] Call Trace:
+[  698.625690]  <TASK>
+[  698.625695]  process_one_work+0x190/0x3a0
+[  698.625705]  worker_thread+0x318/0x460
+[  698.625711]  ? __pfx_worker_thread+0x10/0x10
+[  698.625716]  kthread+0xe8/0x120
+[  698.625719]  ? __pfx_kthread+0x10/0x10
+[  698.625723]  ret_from_fork+0x34/0x50
+[  698.625729]  ? __pfx_kthread+0x10/0x10
+[  698.625732]  ret_from_fork_asm+0x1b/0x30
+[  698.625739]  </TASK>
+[  698.625740] ---[ end trace 0000000000000000 ]---
+[  698.625750] rtw89_8852be_git 0000:02:00.0: rtw89_hw_scan_offload failed ret 1
+
+I guess that's a firmware crash.
+
+Interestingly, this test firmware with version 1.29.29.9 works fine for
+RTL8852BE and RTL8832BU:
+
+https://lore.kernel.org/linux-wireless/42783d9a032143bfb67ea969ee0b805d@realtek.com/
+
+As far as I can tell, this problem happens when the hardware scan channel
+list is too long to fit in a single H2C message (see
+"if (list_len == RTW89_SCAN_LIST_LIMIT_AX)" in
+rtw89_hw_scan_add_chan_list_ax()) and the last channel in the first H2C
+message happens to be the operating channel (RTW89_CHAN_OPERATE).
+
+To reproduce this condition in a reliable way, pretend that every channel is
+a DFS channel:
+
+diff --git a/fw.c b/fw.c
+index 48575e4..bf5df41 100644
+--- a/fw.c
++++ b/fw.c
+@@ -7121,6 +7121,7 @@ int rtw89_hw_scan_prep_chan_list_ax(struct rtw89_dev *rtwdev,
+ 			type = RTW89_CHAN_DFS;
+ 		else
+ 			type = RTW89_CHAN_ACTIVE;
++		type = RTW89_CHAN_DFS;
+ 		rtw89_hw_scan_add_chan_ax(rtwdev, type, req->n_ssids, ch_info);
+ 
+ 		if (scan_info->connected &&
+
+Then the driver will add RTW89_CHAN_OPERATE before every single channel and
+the list of channels will be longer than RTW89_SCAN_LIST_LIMIT_AX.
+
+One workaround is to not let the operating channel be the last one in the
+split list:
+
+diff --git a/fw.c b/fw.c
+index 27d84464347b..ef036e1585f3 100644
+--- a/fw.c
++++ b/fw.c
+@@ -7381,6 +7381,13 @@ int rtw89_hw_scan_add_chan_list_ax(struct rtw89_dev *rtwdev,
+ 	INIT_LIST_HEAD(&list);
+ 
+ 	list_for_each_entry_safe(ch_info, tmp, &scan_info->chan_list, list) {
++		/* The operating channel (tx_null == true) should
++		 * not be last in the list, to avoid breaking
++		 * RTL8851BU and RTL8832BU.
++		 */
++		if (list_len + 1 == RTW89_SCAN_LIST_LIMIT_AX && ch_info->tx_null)
++			break;
++
+ 		list_move_tail(&ch_info->list, &list);
+ 
+ 		list_len++;
+
+Another way is to keep tx_null false, then it doesn't matter how the list of
+channels is split:
+
+diff --git a/fw.c b/fw.c
+index 48575e4..420a665 100644
+--- a/fw.c
++++ b/fw.c
+@@ -6906,7 +6906,7 @@ static void rtw89_hw_scan_add_chan_ax(struct rtw89_dev *rtwdev, int chan_type,
+ 		ch_info->pri_ch = op->primary_channel;
+ 		ch_info->ch_band = op->band_type;
+ 		ch_info->bw = op->band_width;
+-		ch_info->tx_null = true;
++		// ch_info->tx_null = true;
+ 		ch_info->num_pkt = 0;
+ 		break;
+ 	case RTW89_CHAN_DFS:
+
+Hopefully this can help you find the problem in the firmware.
 
