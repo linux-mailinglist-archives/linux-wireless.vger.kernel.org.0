@@ -1,78 +1,87 @@
-Return-Path: <linux-wireless+bounces-24738-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24739-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D3AAEFF18
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jul 2025 18:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F4BAF016A
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jul 2025 19:12:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F24D63AF591
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jul 2025 16:06:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19FA93AB27B
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Jul 2025 17:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A4B347D5;
-	Tue,  1 Jul 2025 16:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D2927CCE4;
+	Tue,  1 Jul 2025 17:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OyR/ZVM2"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BvDhCxyc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EF41B0F0A
-	for <linux-wireless@vger.kernel.org>; Tue,  1 Jul 2025 16:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90BE125D6
+	for <linux-wireless@vger.kernel.org>; Tue,  1 Jul 2025 17:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751385944; cv=none; b=u28TtAEIkMTI1fakzkL8tuNx7LykRyYT+/gV6DCtTfwAHPdDzCCkjAr0fQ92aQ6HxqJF/KRo9/ckMTnxGMYJcb12c6+scP1ZdD1QKylytX2sm/aqQIPoLg7w3xa2nFmu9zEUnVT05QQM71VoknyRMVfaIdhdUdEWVd/FB7GO604=
+	t=1751389893; cv=none; b=tm9qTjJZC9hGINTuXtBJFmujhJH4L0csxFLZn/YFi6s8rAdQX1kcY87Cv8psQHeOzUiX6kN8ZX9DiIl0H8CbkNet0HwnoYHz0OS2Pkw3nvWBqD43MajELm/qRrbhE11exCK5NLeSpYV4vNqA/8TljT04vOotbKVU8vh8IBL6GWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751385944; c=relaxed/simple;
-	bh=M3VORN/QHBUl9MuolNjKFuOXKE2s4e07nvrZCyUmYkM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=IEsNCaONeJcHI1ZbTmaM9oqiaUxwr4AYjPstCZ6lIlnYC98jQgow3JvX7T48o5Z+pnZP86E7GZ46vvCGS7Qvmt5Ndzc8tjneD3GGB8nI5FY4hl73I7k1zU2LggGj0CkNIT/sszpEMHdim6SNw1CRp0JObfqJ3yvO5f0L2ktzWY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OyR/ZVM2; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4537edf2c3cso58403875e9.3
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Jul 2025 09:05:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751385942; x=1751990742; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=djsa9oG8I50LoiYAfASC39jvv74Y+bSEaBGzSbPly48=;
-        b=OyR/ZVM2qIUEfu8/DUuaajCp1Ey2mTdkPBxK+Feh+U1pcqXzrX+G7SG3cBg5/4kous
-         RDx3Hp6iDI8/z4blYfajGoPwal0nbji3U8/hcPq2Y0ymgEygIQyHRSu2+7RjjM02yjsB
-         T2qgCcpLm1j9LptV1DzySayV0Y8Smj3vQttlRTtRR1ALdmPScAEjVRQoobGH15t78S+4
-         WkZ/gOCwoYeHwFo2Yk0f2j1r2ZZyYkZqhu5/LP2xTb0Dw9Fv9p63+8hVC5CNM9hE6sON
-         rfXmLYePikV4G7RV7Sxa7tvveGBEa6EJmMh55EaylH+ZLnU0xOXqstuNuyM6Pepa7TIS
-         uRuw==
+	s=arc-20240116; t=1751389893; c=relaxed/simple;
+	bh=A6BKh/+n8bI9/9Ur6tRJJAOVNRUbgLnCido7flEyJNE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=odf39dtUVsxPFHMRvNHwcNRQct+W0VyT9pFcTPrP+wkv/vODms7n+MEEpbBD7EdvT9/jcujFTgRJerx5YqeQOXdFzmf1zmJjjCDl8csZ8TTrrTLhD5ggiFnX4Awn0ERFL8FjI8rSY/rocMaEY456Z945qS/xWzkSzeINpJ5cTm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BvDhCxyc; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 561GVbG2007345
+	for <linux-wireless@vger.kernel.org>; Tue, 1 Jul 2025 17:11:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	mLKwVrPy8P5xsiw/HOitfvrBYE0u4Z+NAYr1E1YeUXg=; b=BvDhCxycOvs406Hg
+	XKSEt+OM/Xz7LknUhbQI5bZ4r+eL4AwoFQpnQuSL3z+2ploryyB1qjSHXxwE4Yxm
+	xbu05lxB1sVqj9vbKM7pcnrxkqEBKMhVhEKaTcTt4gRtyo1U4TMdPglAJYMakgMQ
+	hnt4Xnq1EC8a4NRRUljZAmmPIcpjB4UO1CBK8WdYe6YE+BI9YP55V2y5iuEAaev/
+	KZ+FuAPcvOGPbSgrRDcBDY+mnInUtyalJWS0DSAZB3lvxQCFV7GqbnFDD6ZPfy42
+	LBwTaT4dyWM6k7VHJWj8vXLQVTB6IwHwvpM2DNTpgKNdUX4sCuk6q057Pw2NOi2S
+	vkYx3g==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47kn5je3em-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 01 Jul 2025 17:11:30 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-235e1d70d67so25501745ad.0
+        for <linux-wireless@vger.kernel.org>; Tue, 01 Jul 2025 10:11:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751385942; x=1751990742;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1751389889; x=1751994689;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=djsa9oG8I50LoiYAfASC39jvv74Y+bSEaBGzSbPly48=;
-        b=ZeI9iEUmWftQkgO5z+6QO2gWzuUj7aX1ARPbFaQB8UrZpeLIXCaZyeP3kkpCcRBS46
-         u9VFSDGKb46F1wWASaLtYdxueQggyb/Bbf5gPv25CESYyQ//HkpqWYEhRUZSr5/L9cGx
-         Fvi6Sq535GKJE390T/glOWuQg6sCWfGZUkbax6vkCRFtvw9J2gOmn/+bv/Citxxx11C4
-         st2cpWfW1MzTHJDUDFHOTw3WYXlOwacMTOwTsIzEKc5cHFaJ4PSw3DUikJCrMr7lluRR
-         JjvBdRSYsCXEv+BHW8vONp9evj0QY48QdaKHxQ7E9tDvDbvKkNJgq6Ouux4MXJhPa4Hx
-         YKSg==
-X-Gm-Message-State: AOJu0YwQFX41MEYrpaZpKc4P2CSLYDoPCeZwZ+tLoMBcP5f8oHV0vvOV
-	gnKgqvKwvuuIW1Dceh/FcOPwXQBw3bJ/7kRmvKhmX0V3SES3JGrxe3x6MOK3aQ==
-X-Gm-Gg: ASbGncvWEZFlOLEgyDoPd3vU0twnZZRzhC7fAaJ9gHjwtvT+AGktIKKVQOPtbqiXPTg
-	qLrZtWBkzE1GVN6cZtfCuceDrMaa4i+2ykK5IWqZi/arjyLeD9jk7I8LWzTDaZ+EUkm6CiSbsGq
-	ywGwe8fpIs4D8nbYhjef2wHu/bhRrgKxbDVeDespN5we1tiTS7z9IxWTJvI519oLpH3aVVbXl9/
-	xFkIsbuvocpbtKhfT2UNrVUxkEMhGU7GTl9WmdQAXNNcOQ7vxHLv5qWXVdJyaAHHMkVvfjREeOj
-	lCYjOXapzwTdaJmWNGDvpu07XxL9gdfqrFR7sp9k7nl4WjkeSmbE0TYE8JcydBvxH4qmLA==
-X-Google-Smtp-Source: AGHT+IGtnj3L3BSZX4IcVChP27JBBEIOcc8g0IC8kURJRdNB9Qp1CQi6HkWKKi1ibS/pnnGC7fp8MQ==
-X-Received: by 2002:a05:600c:a48:b0:453:58e8:a445 with SMTP id 5b1f17b1804b1-45396a94e32mr123593685e9.11.1751385939847;
-        Tue, 01 Jul 2025 09:05:39 -0700 (PDT)
-Received: from [192.168.0.50] ([79.119.240.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823c42e1sm198813955e9.37.2025.07.01.09.05.39
+        bh=mLKwVrPy8P5xsiw/HOitfvrBYE0u4Z+NAYr1E1YeUXg=;
+        b=j2aegRkEaLiFMo+Yo/OGHV3u3qrni0snhNp6ZoMJU4+Drwfu6ap4gd9IvTeWoMNWBe
+         RmX7ttBbCt4qzC2EasXiM/KbA1oWdcEGIjCxAMUf7Pi5B3b1JrQPnO8H1Oa9Y72loE7H
+         MzpUud2OFi6BtCRSiYBUukfQuHtl6akovn3DLjEeBIDd7MVr/Vxc/XQI9ohHZ0bU5FM3
+         KVA5ZrK/lrbGNpYRTQ2jtB/JI4Y7j+IvO9qVMlTnM/cIiITtgflm4mTkshlvA4fZhkRk
+         r2IIiNXATECqhK8LN4I73SgSuCPDidHoZmrh5PGY3/ic9lR3h8//Wg6S1U8LXo5yisLz
+         2w/Q==
+X-Gm-Message-State: AOJu0YykhgaF0hZaOHf9yQW4nf5X9hD4EqJQULwmxyCXxJg0iJTwPbkH
+	82uFsdiApocJdMkLK/Uc+f5PpjOKkK8RAzpqWdilSWeY5Zc0GFWhs8Ofy9G911EvoK0IHg3nPYO
+	fLLMjBKPFv3I0O9UVKXnuo1ov4Gq0Gth4hnWJoHZQkRctMLhzDH0/o3vZpbKQSoG+ecpmUg==
+X-Gm-Gg: ASbGncsvygZye925sVfRc6NDvQESj432i+oPqSz/TfWDSSJYQkFIgvR6PG5sYdSUA91
+	6pJ9+dvbzXF1QlBLShbH0PgbWOBtgHfv2BC6q7Lld5qsRL47SbaoxKVKqRXG/kZmqC4wHAIIUvc
+	b/9NxYzSEcySGFXJPl3i+BSgyLYaNsj6fUabFelvoPTrhWDMBC42kTXPPWzbm+kuvKSABC/oigd
+	kQySFiUFJQqM+Ll4XY3+i4QfO4nleaKzsgs4771aJA3i52Mv4emw9dl6A65RWMUmSFufD1muBOU
+	BgWwQJAUqAFUxCwMDbOUo7eFsy7vyGKzhAYRH9strnLWpgpdvuS3wRAZUIaQ+9yNRpnFo5wc9U7
+	p2gxkgKfjsvzW38I=
+X-Received: by 2002:a17:903:284:b0:22d:b243:2fee with SMTP id d9443c01a7336-23ac43d3211mr254109305ad.13.1751389888955;
+        Tue, 01 Jul 2025 10:11:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE1X6qVKPWmnadI+fNItnBMIaARjs/GLjlFIwWamaa1inE9HiS3RpXyTjkCNyG2A8IQ9wooCw==
+X-Received: by 2002:a17:903:284:b0:22d:b243:2fee with SMTP id d9443c01a7336-23ac43d3211mr254108685ad.13.1751389888273;
+        Tue, 01 Jul 2025 10:11:28 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb3ce960sm110348185ad.250.2025.07.01.10.11.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Jul 2025 09:05:39 -0700 (PDT)
-Message-ID: <9da12cb0-d364-41bd-a62d-4c1f87e14a16@gmail.com>
-Date: Tue, 1 Jul 2025 19:05:38 +0300
+        Tue, 01 Jul 2025 10:11:27 -0700 (PDT)
+Message-ID: <a6e82fa5-8094-4ae2-b6f1-53b6e6c13e4e@oss.qualcomm.com>
+Date: Tue, 1 Jul 2025 10:11:26 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,64 +89,139 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH rtw-next 6/6] wifi: rtw89: Enable the new rtw89_8852bu module
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-References: <6f7333ac-17ad-445a-b273-c45e3f0542fa@gmail.com>
+Subject: Re: [PATCH ath-next V15 0/9] wifi: ath12k: add MU-MIMO and 160 MHz
+ bandwidth support
+To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250701010408.1257201-1-quic_pradeepc@quicinc.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <6f7333ac-17ad-445a-b273-c45e3f0542fa@gmail.com>
+In-Reply-To: <20250701010408.1257201-1-quic_pradeepc@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=KtJN2XWN c=1 sm=1 tr=0 ts=686416c2 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=e70TP3dOR9hTogukJ0528Q==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=MeVQk6Yvlubu_z84HK4A:9
+ a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-ORIG-GUID: 2jI6Q9hSzABES9K-Ktd9zxv_wyhVVksO
+X-Proofpoint-GUID: 2jI6Q9hSzABES9K-Ktd9zxv_wyhVVksO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAxMDExNyBTYWx0ZWRfX7v+bIQ01rPHy
+ yrUqJAzvfXkQdpopGaK4i0e05X7s2gWn3O9EKC1H9gAgYeY73tdPlwHEhkKTIA0xAi4T4s4HXtV
+ TyU0rGVFQHp/ywQejEsljeZlbFiYIAIX3W93mW1C7dazNBte61NNgb93B67RfeeOF9e+/UgZ3as
+ joXNR6V89a/QkuxqtQD1F+giYlcGRJ1rESReClnHQ3GvBiA0GIlNre5tC+TILFiSbLvzHC6WlZO
+ +Fua63DGOU7XSLFlTYrUl8O8w09ohBp4JTZa2AOHBVCYIYoDEsL5R4q6TTxOHGreE9vmDr9sVF5
+ JajZelikbm6ReyvO5qj6l2iBLi5+M55/b23CBkwvA/lS2tU7tFuXsn24vlu9tR233xbJ6ovGai0
+ 9hjvEFSH6jW0CizekG/jBAzacDK7r35kh84fKhcD3WYoLFNhXpWuEJknwiDM6XPrNB+xtlwl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-01_02,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
+ mlxscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 phishscore=0
+ clxscore=1015 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507010117
 
-Enable compilation of the new rtw89_8852bu module.
+On 6/30/2025 6:03 PM, Pradeep Kumar Chitrapu wrote:
+>   Add support for
+> 1. enabling MU-MIMO in HE and EHT modes from hardware
+> 2. setting fixed HE rate/GI/LTF
+> 3. 160 MHz bandwidth in HE mode
+> 4. extended NSS bandwidth support
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> changes in v15:
+>  - rebased the series after merge conflicts reported
+>  patch 4/9:
+>  - change the fix to apply for all modes except STA mode as
+>    WCN7850 expect it same as before.
+> 
+> changes in v14:
+>  patch 6/9:
+>  - cap max_nss using ar->num_tx_chains to fix interop issue caused due
+>    to sending nss value 4 when firmware only supports nss value 2.
+>  patch 8/9:
+>  - Set the default return value to MODE_11AC_VHT160 for 160 MHz
+>    to allow STA to connect to the AP even if it does not
+>    explicitly indicate 160 MHz bandwidth support.
+> 
+> changes in v13:
+>  - rebase
+> 
+> changes in v12:
+>  - rebase
+> 
+> changes in v11:
+>  patch 1/9:
+>   - fix return values in ath12k_mac_set_he_txbf_conf() and
+>     ath12k_mac_vif_recalc_sta_he_txbf()
+>  patch 6/9:
+>   - fix missing he_mcs initialization in ath12k_mac_init_arvif()
+> 
+> changes in v10:
+>  patch 6/9:
+>   - use ath12k_ahsta_to_sta()
+>   - fix rcu_dereference warning in ath12k_mac_set_bitrate_mask_iter()
+>   - change return type for ath12k_mac_validate_fixed_rate_settings()
+>   - improve readability by adhering to nl80211 definitions of GI
+>     NL80211_TXRATE_DEFAULT_GI. Introduce ath12k_mac_nlgi_to_wmigi()
+>     for conversion.
+>  patch 7/9:
+>   - do not change default MODE_11AC_VHT160 in
+>     ath12k_mac_get_phymode_vht() as it breaks clients which do not
+>     set VHT_CAP_SUPP_CHAN_WIDTH_160MHZ.
+>  patch 8/9:
+>   - Use IEEE80211_VHT_CAP_EXT_NSS_BW_MASK along with
+>     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ for determining VHT160
+>     phymode.
+> 
+> changes in v9: rebase on top of master branch with mlo changes
+>  patch 1/9 and 2/9:
+>   - fetch link_conf using ath12k_mac_get_link_bss_conf()
+>     instead of arvif->vif->bss_conf before mlo
+>  patch 6/9
+>   - fetch mcs/nss values from sta->link[] instead of sta->deflink
+>   - fix spelling of 'incompatibility'
+>  patch 8/9
+>   - replace sta->deflink.addr with arsta->addr in
+>     ath12k_peer_assoc_h_vht
+>  patch 9/9
+>   - replace sta->deflink.rx_nss with link_sta->rx_nss
+> 
+> changes in v8:
+>  - rebase and resolve KASAN warnings reported by Jeff in v7, in patch 6/9.
+> 
+> Pradeep Kumar Chitrapu (9):
+>   wifi: ath12k: push HE MU-MIMO params to hardware
+>   wifi: ath12k: push EHT MU-MIMO params to hardware
+>   wifi: ath12k: move HE MCS mapper to a separate function
+>   wifi: ath12k: generate rx and tx mcs maps for supported HE mcs
+>   wifi: ath12k: fix TX and RX MCS rate configurations in HE mode
+>   wifi: ath12k: add support for setting fixed HE rate/GI/LTF
+>   wifi: ath12k: clean up 80P80 support
+>   wifi: ath12k: add support for 160 MHz bandwidth
+>   wifi: ath12k: add extended NSS bandwidth support for 160 MHz
+> 
+>  drivers/net/wireless/ath/ath12k/core.h |    2 +
+>  drivers/net/wireless/ath/ath12k/mac.c  | 1144 ++++++++++++++++++++----
+>  drivers/net/wireless/ath/ath12k/mac.h  |   17 +
+>  drivers/net/wireless/ath/ath12k/wmi.c  |   28 +-
+>  drivers/net/wireless/ath/ath12k/wmi.h  |  100 ++-
+>  5 files changed, 1069 insertions(+), 222 deletions(-)
+> 
+> 
+> base-commit: c256a94d1b1b15109740306f7f2a7c2173e12072
 
-Tested mostly in station mode, and a little bit in AP mode.
+Since there are lingering questions about the 5/9 patch I plan to take 1-4,6-9
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
- drivers/net/wireless/realtek/rtw89/Kconfig  | 12 ++++++++++++
- drivers/net/wireless/realtek/rtw89/Makefile |  3 +++
- 2 files changed, 15 insertions(+)
+Given that there is ongoing discussion about the 5/9 patch logic in the
+context of the ath11k driver, this patch can be posted again separately when
+the discussions have concluded and the correct interpretation by firmware is
+clear across all chipsets and interface types.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/Kconfig b/drivers/net/wireless/realtek/rtw89/Kconfig
-index bd180f3369c3..4288c30b400a 100644
---- a/drivers/net/wireless/realtek/rtw89/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw89/Kconfig
-@@ -86,6 +86,18 @@ config RTW89_8852BE
- 
- 	  802.11ax PCIe wireless network (Wi-Fi 6) adapter
- 
-+config RTW89_8852BU
-+	tristate "Realtek 8852BU USB wireless network (Wi-Fi 6) adapter"
-+	depends on USB
-+	select RTW89_CORE
-+	select RTW89_USB
-+	select RTW89_8852B
-+	select RTW89_8852B_COMMON
-+	help
-+	  Select this option will enable support for 8852BU chipset
-+
-+	  802.11ax USB wireless network (Wi-Fi 6) adapter
-+
- config RTW89_8852BTE
- 	tristate "Realtek 8852BE-VT PCI wireless network (Wi-Fi 6) adapter"
- 	depends on PCI
-diff --git a/drivers/net/wireless/realtek/rtw89/Makefile b/drivers/net/wireless/realtek/rtw89/Makefile
-index 891e2d55c335..23e43c444f69 100644
---- a/drivers/net/wireless/realtek/rtw89/Makefile
-+++ b/drivers/net/wireless/realtek/rtw89/Makefile
-@@ -55,6 +55,9 @@ rtw89_8852b-objs := rtw8852b.o \
- obj-$(CONFIG_RTW89_8852BE) += rtw89_8852be.o
- rtw89_8852be-objs := rtw8852be.o
- 
-+obj-$(CONFIG_RTW89_8852BU) += rtw89_8852bu.o
-+rtw89_8852bu-objs := rtw8852bu.o
-+
- obj-$(CONFIG_RTW89_8852BT) += rtw89_8852bt.o
- rtw89_8852bt-objs := rtw8852bt.o \
- 		    rtw8852bt_rfk.o \
--- 
-2.49.0
+/jeff
 
 
