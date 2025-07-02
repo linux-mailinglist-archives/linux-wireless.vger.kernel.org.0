@@ -1,91 +1,84 @@
-Return-Path: <linux-wireless+bounces-24764-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24765-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 663BBAF12A3
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 12:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D20AF5887
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 15:22:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DC2A4E185B
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 10:54:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 947CA4E2887
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 13:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7734024BC0A;
-	Wed,  2 Jul 2025 10:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="EVkuAQH6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DEF28724B;
+	Wed,  2 Jul 2025 13:19:35 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C721F25A33A
-	for <linux-wireless@vger.kernel.org>; Wed,  2 Jul 2025 10:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B75B286D5D;
+	Wed,  2 Jul 2025 13:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751453561; cv=none; b=RyCR9UbGx+kK3v7z+AWJW+79+XTUEU09500CY7QKIUsiFxv/arsCsYJAVBwA4j3zRRKdEW3PJI9jon7FHJN2YhzUXGB5AyLPlf5bl6WA8b7SPlC7fUW6wQecbgRlgXu7dk9sGnRtXorTCpy/cBe3gAq1A2Lo5GJE/qY7AoXe5ak=
+	t=1751462375; cv=none; b=ShalVzZFRv8eW6/Ic19GCHfeL39tNb7yeePA2dFwcO2+I+1q4OEhvRNGG9rjfcv9dpOJEyX5G/R0lFBv1rAkk1Fb7SOMtLnEXf7wsvsfKEqxDwCXBz2mcDdesa0myZoq7QCcIgASxMGQYb8QKMMZggJbyYFQC8ghaKa9KZ5FbP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751453561; c=relaxed/simple;
-	bh=VmjK8rNSM/xmVXwtCilTwJLsFw22/Z+6WW9SGkMh9Y4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UvSvp7jHBha1C2BbxKgKW3VGi3sA1qNIfpWKeT8KYlCV5e3w/aMpG2gPZI7ilZGTc9++Wlu5XPH7D9vvkk0LUPdkwnnRETbViy0djgKdMdXxD052ZyvK78NmiFqyl0S2Xiytk2XlEGxjJUmGEjs4bK2KxFszuwQnLQncDkhlX8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=EVkuAQH6; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=VmjK8rNSM/xmVXwtCilTwJLsFw22/Z+6WW9SGkMh9Y4=;
-	t=1751453559; x=1752663159; b=EVkuAQH6SCK7X+OQphNh5F8SNe0wuOhXo4R+8udvxcQdpL9
-	ruKfclB6qKKjOWQPnfLj9k3qdz/7eIuhuAhKMRMW/87rWKzrQnKdj+2AENXB8oTEL3QBPdo66dqrv
-	UxuA+z5hvivVk0X8+nzdbKFmjQqSdjx1Zq83AG2z8xCuFOI8Sftzt37NXFFE+vXCc7GH2yS6Yx7oD
-	qw2x3szAbkgj+YAEqTsXvDZZktQ0fHzybAAYVwwpZetNKWJNmAJLCwM7O0zd2q0Say7pFxArcG9BT
-	J6KwSVSEjiDjuhw6LNgZmx0ROhqPPwCb6u0RE434QeaaraTDorbQvdCevvTzfUwA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uWv4m-0000000429T-40sT;
-	Wed, 02 Jul 2025 12:52:29 +0200
-Message-ID: <6c666ab6d83ba45f9f15643eeffed5d0f4770867.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: determine missing link_id in
- ieee80211_rx_for_interface() based on band
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Michael-CY Lee <michael-cy.lee@mediatek.com>, linux-wireless
-	 <linux-wireless@vger.kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- Evelyn Tsai <evelyn.tsai@mediatek.com>, Money Wang
- <money.wang@mediatek.com>, linux-mediatek	
- <linux-mediatek@lists.infradead.org>
-Date: Wed, 02 Jul 2025 12:52:27 +0200
-In-Reply-To: <20250702104403.2738634-1-michael-cy.lee@mediatek.com>
-References: <20250702104403.2738634-1-michael-cy.lee@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1751462375; c=relaxed/simple;
+	bh=U21Vck/VgyCaiFV68QQ9fY52qyjiIU3NzWjI2rcDFEI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fxe6UfwCrSm/AeBepOOkyizstYvZK24OS9McVE74g+y5buLDYZ4F9BNW0z1SQ/M+YNOKwu36QrkpZ+Be8HqHu7jsXSEE/D6ZoCH+eLbjzrKpE4cfi/AINjFg0+hXlmXjZfT1kH2Qs8ucOqjtlfr/3yYZvcC1iipGNG7sl99ztDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
+Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
+	id 1uWwab-00058S-00; Wed, 02 Jul 2025 14:29:25 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+	id E7961C0C1C; Wed,  2 Jul 2025 14:28:11 +0200 (CEST)
+Date: Wed, 2 Jul 2025 14:28:11 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-wireless@vger.kernel.org,
+	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+	nbd@nbd.name, Johannes Berg <johannes@sipsolutions.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:MIPS" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCHv5 5/5] mips: dts: qca: add wmac support
+Message-ID: <aGUl2_kSTkF4qUgZ@alpha.franken.de>
+References: <20250609030851.17739-1-rosenp@gmail.com>
+ <20250609030851.17739-6-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250609030851.17739-6-rosenp@gmail.com>
 
-On Wed, 2025-07-02 at 18:44 +0800, Michael-CY Lee wrote:
-> For broadcast frames, every interface might have to process it and
-> therefore the link_id cannot be determined in the driver.
->=20
-> When the frame is about to be forwarded to each interface, we can
-> use the member "band" in struct ieee80211_rx_status to determine the
-> "link_id" for each interface.
+On Sun, Jun 08, 2025 at 08:08:51PM -0700, Rosen Penev wrote:
+> Now that OF ahb support was added to the ath9k driver, we can use it to
+> enable and use the SoC wireless found in these chipsets.
+> 
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  arch/mips/boot/dts/qca/ar9132.dtsi                       | 9 +++++++++
+>  arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts         | 4 ++++
+>  arch/mips/boot/dts/qca/ar9331.dtsi                       | 9 +++++++++
+>  arch/mips/boot/dts/qca/ar9331_dpt_module.dts             | 4 ++++
+>  arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts           | 4 ++++
+>  arch/mips/boot/dts/qca/ar9331_omega.dts                  | 4 ++++
+>  .../mips/boot/dts/qca/ar9331_openembed_som9331_board.dts | 4 ++++
+>  arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts              | 4 ++++
+>  8 files changed, 42 insertions(+)
 
-Hm. Qualcomm has a similar thing with frequency, I think, and that
-probably makes more sense for them since 'band' isn't unique for the
-radio:
+applied to mips-next.
 
-https://lore.kernel.org/linux-wireless/20250612121127.1960948-3-maharaja.ke=
-nnadyrajan@oss.qualcomm.com/
+Thomas.
 
-Or is it not related?
-
-johannes
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
 
