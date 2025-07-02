@@ -1,135 +1,183 @@
-Return-Path: <linux-wireless+bounces-24779-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24780-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BE5AF63CA
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 23:13:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C141CAF63FE
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 23:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A6A04E23B0
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 21:13:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABB7F188ED89
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 21:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98A523026B;
-	Wed,  2 Jul 2025 21:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487E32882C5;
+	Wed,  2 Jul 2025 21:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fDGpMe3v"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Ptp18aqn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0752C2DE704
-	for <linux-wireless@vger.kernel.org>; Wed,  2 Jul 2025 21:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C70271473
+	for <linux-wireless@vger.kernel.org>; Wed,  2 Jul 2025 21:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751490822; cv=none; b=gUriqB9+xx07OOOlTAavQiclmUzwiG2vfgHrXpNGK/gf5TFX/5rbnNhN5GX3OJs6MY5CS+cgA1lNF2erpOCrYdr6tMbiCWmqimebACCdryf7MjY9EieuwLP8U1xT4dkVMFKMD1ITWvAejDVZyY4k7OY6NTWjlTYzpe/Mw6Gm0RY=
+	t=1751491762; cv=none; b=C4jbnOobNsE6nxJP6vTn9XOVMHe89iIzi+q0HsHB8XJyfGuV3uxoeYH7u12N9POVrPeQBTKdQHxGQGzJjfMiGPXmwTCh2GL2TFgNNHTxKVctvNpz4UdNm63XESjMsqCpsJlcxHdx7gwpRO5v8tlb83dwz43MRANSYHYJTUTmkOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751490822; c=relaxed/simple;
-	bh=8YMsS5fkKyvSyItUz09TgJmgIS/5LonUGAE5AZTXh98=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ZDvJk+3tEuJszLFW95NX89fjK/E8TYFNbiAVblmuo8ILW7GcthLsw87Udcjd3B0aG0RTtiXk0KY39NI/YP4Pi/AqCC12/jHQPG+AvMclVqokd+EX0azUnMt88GlbeYJR9RYFKFaDOAKaBl2ObfLZeZ/t5w9jkOnR7/WunJSkwks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fDGpMe3v; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-454aaade1fbso1913085e9.3
-        for <linux-wireless@vger.kernel.org>; Wed, 02 Jul 2025 14:13:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751490819; x=1752095619; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3+Hl7cVnRlSb37aVj0JkVJ0ftgbOilQfeh37QUHOGh8=;
-        b=fDGpMe3vVk5S/v2/EBv7d1IhPky4P5vyJBeH+J1PRniaURewx2lgx7RAJJZKVleejx
-         lq42uvyX4pZsolHYQy1iopVpg7Wqk3eBbEWK4O+rmSX/bFJL24GZ1keWcn2vU4VhX1IS
-         0IwVmItSSJ/MKfBHZMf3T+Q2fiKMyMZD79GxnudNRGvKWLtkUWkJLkTmvOA+/XHK0AP2
-         uB5n5qH8oGvrn8t8gSSaqdoHJnjm0JBYpHATqD5ahxZmy8t5HZ1nYrY4Q+hBWCrzb8aF
-         OIHfZYdZeN2HliOWeo8jHMDUAc3kAdjg/19Eh6S+qiHGC5PL8jdjsbVfsZ4ve3NeND1w
-         tiBQ==
+	s=arc-20240116; t=1751491762; c=relaxed/simple;
+	bh=Y5btjcLStliu36Bn8Uhic+V1o6cgfUUtrOPeBAIpTMw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZJHG47EJDNo75MjcBNBE4eYhW+bGDua1Ce/0Lhiw6oMJPVXMUwkM5x2ljcQxHMUiCLsLgmH5j5R5yciRguXfnybv7mywIjcF1PIV/LaFTpKUD2dZm3S2MZ80dIfEc8qfCs1e20gBbMz+t21vt3fM15M2P02H/LkNaXRcdsUnAlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Ptp18aqn; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 562KRU07024702
+	for <linux-wireless@vger.kernel.org>; Wed, 2 Jul 2025 21:29:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=QAMUxNTMudJ0u2WdFXC4VN
+	sJOM9BJjWzohjBXdkzFms=; b=Ptp18aqn6XyQBoOs9ViAMe7T2Sp72K6D9XFt+T
+	sDfznSvZDxPu2RqKT+KPYald9dUBiX+SYZm+h/8dBJbvo3yy9ibH1sVFrC1icMU0
+	BvT+NTU6UAXI1xWxS3D6ACsW4K0s3E3mJfgQNuaAcXLFGrQ9gJx0s0mny5XKmZQr
+	IdrYJjMq8tzSdKAl45h0mtlphThZHMjj0sTaKlXtiTl9y0hGq/BmBEmDLSHse72U
+	oDNs9bvoRP9pIwHcIIe5rOrVHKzMDNwK44bQWxud6suY05QJkCI7Bshi5xsSC30B
+	13SDjKKQNsQn5Op75uw6lToYnNFR/m5VKMv0NVG54NJna0HQ==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47j8s9p3rv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 02 Jul 2025 21:29:18 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b34ca003f1cso3573197a12.2
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Jul 2025 14:29:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751490819; x=1752095619;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3+Hl7cVnRlSb37aVj0JkVJ0ftgbOilQfeh37QUHOGh8=;
-        b=ZXSmCBPFdqXCN9W+6jqR8Ms1Ts4xUq6IXhPknaLGbtUnmjcnPHFsdvsTUdqCE3Tmek
-         WE4Ib+YLF1o9DMKc2yTz4d6F9Ep3oyHckysqPm3AbGOGfai0V2erGlyq80Xqtxw3fpR9
-         m1Jovm4bMTRPgpA+lsMjM1SweKC47qcDdFDG12VYEbJtmppj2+J1Igz1ujvRsdMunLDt
-         FezOl8TxhK7XmDLqgMKCR1jqzzFPhJ1zzqITWlhWAUj6K1Qj44MOyTp4QtLPoYtrzeE4
-         BOLVSMWoukvhwbiGErBPWVu/f0PsYZbKZkQyW5CJltUy66fUadioK/dgbHfoDIAnGuSU
-         VuDw==
-X-Forwarded-Encrypted: i=1; AJvYcCV+/sFsnnSIj9Jw2eKfD9oAdpDDioctEhZfJy6NZ2p0zDF3wgP2J9WmoujuX/XG3a1VILjr/zJ3flf5YX6BKA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQlrRCtgOpXHVq1NLXRGTBMmCDR3UdZXAryoOzBntC/3W0HTOa
-	lF3KIuu0PZ07Uz+APmv2JUPbt/FbefGlBAvY4AXo19rUQxHVbc8b6fQl
-X-Gm-Gg: ASbGncud4xFy5tQsSl77ijLQYlxthMz2vpIVG6FHNKMnfLmrycJENIZuiyDgCIiMiV8
-	6tmF6Lp9JCS3M9uEz9HCTil8AIv8m+xO/LV+PsbScpbgKwMLbTd3g7lu+AhWtTCqNWZj7ljHCvJ
-	kYLwgcow1kk6r4CSYjCzKaCK8FISd6jgXPpxEn9XC59HfVxsOlac4sCHX1Z0jIOcryAHAui1GbR
-	HdvTVkFdPVTtfVa2Jaaj19QadyncwXUZ+Wqk6STzXOPAMV+HtXFIOsJ352WjlqHeqUl5uKY773n
-	a+Wg9tHmjB425vv0iXmPMJyFjhorG3+8Hb9vo5nBgiO+w+Wh2TDCVtS3KFL4CVzcQpfd2g==
-X-Google-Smtp-Source: AGHT+IEZDUhkiq9MhKVcmrjgRKqGKG8stuauBYu9wBvFFrRy/6yraHeumPmYwXzhq4GGYpfMvxPDPA==
-X-Received: by 2002:a05:600c:8710:b0:43c:fe5e:f03b with SMTP id 5b1f17b1804b1-454a372e783mr54859725e9.30.1751490819063;
-        Wed, 02 Jul 2025 14:13:39 -0700 (PDT)
-Received: from [192.168.0.50] ([79.119.240.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454a997e367sm8102605e9.15.2025.07.02.14.13.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Jul 2025 14:13:38 -0700 (PDT)
-Message-ID: <db605d50-5424-4cd8-968a-9864f9067458@gmail.com>
-Date: Thu, 3 Jul 2025 00:13:37 +0300
+        d=1e100.net; s=20230601; t=1751491758; x=1752096558;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QAMUxNTMudJ0u2WdFXC4VNsJOM9BJjWzohjBXdkzFms=;
+        b=lNq618AqZEMAoQ+hjsbbA83F0YhLJjpMbD/DzoXoqhrehaHzFA5jIsnD0n3TVpfQMY
+         mvJZNAcTDQagStB3AbRkd65XIda+mv5z4SAwKu3pSNZiaGPB5wTTAhuJKN1Kre12I+KZ
+         D5McOarvAYZymwRObVoDE9Zal9TcKfKsV8YoufNpR5ETolyDVDlr3y8G8usDejAAiHcX
+         Ngbw/FZvJuSqdbldz2UOfZDMlCte3fjYjy8+9zLDmR+bCunJJN1tHYcIikp4+QfFUVZU
+         iT6v91qoySJipnojcqc4iUrWloR1v+WreuwiGsdyuuHIDcMB198yUVLCZRLUH0V0nM+G
+         t/lQ==
+X-Gm-Message-State: AOJu0YyWcaLV6VOrDXflz0WDGxbbmGBc7OwmZDFSiIiBHDZGrt51fuqY
+	4pWa+IA0qiey9qSuv7jdLLz7YFaV+jxq9h0lg4RGkkOYGj8iLzUGHBwvsMWNt+hFxAymbCeDFWH
+	SkAD5wLAjcn52hUy1EVMt3mAtjB861OGTegBdoVhH60TDjWy4Y/lN8/aC73Lt9PPQyRsmcQ==
+X-Gm-Gg: ASbGncvMQrHOsA1whgXbdQTj+W3byzEhpCK4L15j1mUnD24f9br6riar+MtKWAZy7mZ
+	9xVRswb2hBabiy+MCgD/Mc46AyNPm4W/698M9WnTqS5tbqcyseQ38nM/yXoZCGK2wkmZJG3Vi2W
+	wa74wqgZ5YTDiWiAvOqOZ343IHW09VoCOfqGdH1Yu0PltYSDZJc6z263h4Ut43hJispRVdsej3l
+	si2xio/xpYW2KvszQVf/ljWFxk9sc9O12yPckiyeapFc5yTSS8Zefb1n5thP2Ct3xdfaLsilTju
+	E5Y1HTHGBndJ0YgKmGGZQ2HYjFiBAdZ2IkKwkw9UrQ0QpsgtrSAAQcJMKo8=
+X-Received: by 2002:a05:6a20:4328:b0:220:2d0f:f8e1 with SMTP id adf61e73a8af0-222d7daa53emr8016848637.3.1751491757716;
+        Wed, 02 Jul 2025 14:29:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGEmyEvM038J3qLY65BE/Fi+fMTyDd0sD3BGBXcQD/A4mIsv9ZpGlW6A9zozkpoV7Ns/MnkpA==
+X-Received: by 2002:a05:6a20:4328:b0:220:2d0f:f8e1 with SMTP id adf61e73a8af0-222d7daa53emr8016824637.3.1751491757335;
+        Wed, 02 Jul 2025 14:29:17 -0700 (PDT)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af56cd84csm15732466b3a.132.2025.07.02.14.29.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jul 2025 14:29:16 -0700 (PDT)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Date: Wed, 02 Jul 2025 14:29:12 -0700
+Subject: [PATCH ath-next] wifi: ath12k: pack HTT pdev rate stats structs
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH rtw-next 0/6] wifi: rtw89: Add support for RTL8852BU
-To: Shengyu Qu <wiagn233@outlook.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-References: <6f7333ac-17ad-445a-b273-c45e3f0542fa@gmail.com>
- <TY4PR01MB1443286365BCAAE548AD4702A9841A@TY4PR01MB14432.jpnprd01.prod.outlook.com>
-Content-Language: en-US
-In-Reply-To: <TY4PR01MB1443286365BCAAE548AD4702A9841A@TY4PR01MB14432.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250702-debugfs_htt_packed-v1-1-07bd18b31e79@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAKekZWgC/22NQQ6DIBREr9L8dTEgtWhXvUdjDIWvkFaxgMbGe
+ PcS1t1M8jKZNzsE9BYD3E47eFxtsG5KwM4nUEZOAxKrE0NJy4peOSUan8vQh87E2M1SvVCTXl8
+ kFY2oK8UhDWePvd2y9AEyGjLhFqFNjbEhOv/NbyvLfRYLyv6JV0YYkbXivFSNrAS7uxCKzyLfy
+ o1jkQLa4zh+ZVl2dMUAAAA=
+X-Change-ID: 20250630-debugfs_htt_packed-fd4a079785c3
+To: Jeff Johnson <jjohnson@kernel.org>,
+        Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+        Lingbo Kong <quic_lingbok@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Authority-Analysis: v=2.4 cv=H/Pbw/Yi c=1 sm=1 tr=0 ts=6865a4af cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=x3mXCiuBoapq5SUTYUMA:9
+ a=QEXdDO2ut3YA:10 a=_Vgx9l1VpLgwpw_dHYaR:22
+X-Proofpoint-ORIG-GUID: KOg9HV1CGGUVsjB1P-t7QzGpVJuR6Na-
+X-Proofpoint-GUID: KOg9HV1CGGUVsjB1P-t7QzGpVJuR6Na-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDE3OCBTYWx0ZWRfX3T7s1Qic+XYs
+ iYjPrjs4Gpm+uTiMA6qYidhT9q5x2c55lSdlrNUfFUzlYYnu5tRBtLPd3M8E2nNOyVUeKcSGBoQ
+ OFsb/TQn93IJtNj5uqfxLErkUQ8A1Iy6egDSBg1lwWYpB9sZJWiwmGONXaktnYCgKBJByxf+m/g
+ qlTQQWcXoBkm1GOPHg7XjoHjRNvVt5SlYL+IB3DwJXSI2p3Z2qju+u7nyXBtlgSZa41Y2eC56AS
+ s6y9tlM9T4VugxMHdBq2T0LLPkQxaKtrdz/vOpwdoPaBCN98r3Bwo+adJyErUlWsj1OY8ZvPpR9
+ uu9BloYvvL2CVgb/feb84vr2VjwA9080om1iBFkuA5pYe/x1O9lw8qu42dRYot1DiOVC4WQBg5J
+ 4dV67iTdV/K1itPNLFUR8usqZRI8GiLc3kZ/rAmGHS0ogPX1d2i9zXjf4Whiw4NzWGo2Ung6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-02_04,2025-07-02_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999
+ priorityscore=1501 clxscore=1015 mlxscore=0 lowpriorityscore=0 spamscore=0
+ adultscore=0 bulkscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507020178
 
-On 01/07/2025 20:44, Shengyu Qu wrote:
-> Hi,
-> 
-> Great to see 8852BU support! Btw will you also add support for 8852BS?
-> 
-> Best regards,
-> Shengyu
-> 
+In order to ensure the HTT DebugFS structs shared with firmware have
+matching alignment, the structs should be packed. Most of the structs
+are correctly packed, however the following are not:
 
-Hi,
+ath12k_htt_tx_pdev_rate_stats_tlv
+ath12k_htt_rx_pdev_rate_stats_tlv
+ath12k_htt_rx_pdev_rate_ext_stats_tlv
 
-I can do it if someone wants to pay for that. Otherwise, I don't have
-any plans.
+So pack those structs.
 
-> 在 2025/7/2 0:00, Bitterblue Smith 写道:
->> Add support for RTL8852BU. The changes needed for this chip are very
->> similar to the changes needed for RTL8851BU.
->>
->> These patches depend on the initial USB support, of course:
->> https://patchwork.kernel.org/project/linux-wireless/list/?series=977480
->>
->> Bitterblue Smith (6):
->>    wifi: rtw89: 8852bx: Accept USB devices and load their MAC address
->>    wifi: rtw89: 8852b: Fix rtw8852b_pwr_{on,off}_func() for USB
->>    wifi: rtw89: 8852b: Add rtw8852b_dle_mem_usb3
->>    wifi: rtw89: 8852b: Add rtw8852b_hfc_param_ini_usb
->>    wifi: rtw89: Add rtw8852bu.c
->>    wifi: rtw89: Enable the new rtw89_8852bu module
->>
->>   drivers/net/wireless/realtek/rtw89/Kconfig    | 12 +++
->>   drivers/net/wireless/realtek/rtw89/Makefile   |  3 +
->>   drivers/net/wireless/realtek/rtw89/rtw8852b.c | 85 +++++++++++++++++--
->>   .../wireless/realtek/rtw89/rtw8852b_common.c  | 16 ++--
->>   .../net/wireless/realtek/rtw89/rtw8852bu.c    | 55 ++++++++++++
->>   5 files changed, 156 insertions(+), 15 deletions(-)
->>   create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852bu.c
->>
-> 
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: ba42b22aa336 ("wifi: ath12k: Dump PDEV transmit rate HTT stats")
+Fixes: a24cd7583003 ("wifi: ath12k: Dump PDEV receive rate HTT stats")
+Fixes: 7a3e8eec8d18 ("wifi: ath12k: Dump additional PDEV receive rate HTT stats")
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+index 13fbfb069ead4062487e40bfb17ef0f423f33b3f..9bd3a632b002d02db6c1f7fb173635b6119cc62c 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+@@ -490,7 +490,7 @@ struct ath12k_htt_tx_pdev_rate_stats_tlv {
+ 			   [ATH12K_HTT_TX_PDEV_STATS_NUM_EXTRA_MCS_COUNTERS];
+ 	__le32 tx_mcs_ext_2[ATH12K_HTT_TX_PDEV_STATS_NUM_EXTRA2_MCS_COUNTERS];
+ 	__le32 tx_bw_320mhz;
+-};
++} __packed;
+ 
+ struct ath12k_htt_tx_histogram_stats_tlv {
+ 	__le32 rate_retry_mcs_drop_cnt;
+@@ -579,7 +579,7 @@ struct ath12k_htt_rx_pdev_rate_stats_tlv {
+ 	__le32 rx_ulofdma_non_data_nusers[ATH12K_HTT_RX_PDEV_MAX_OFDMA_NUM_USER];
+ 	__le32 rx_ulofdma_data_nusers[ATH12K_HTT_RX_PDEV_MAX_OFDMA_NUM_USER];
+ 	__le32 rx_mcs_ext[ATH12K_HTT_RX_PDEV_STATS_NUM_EXTRA_MCS_COUNTERS];
+-};
++} __packed;
+ 
+ #define ATH12K_HTT_RX_PDEV_STATS_NUM_BW_EXT_COUNTERS		4
+ #define ATH12K_HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS_EXT		14
+@@ -609,7 +609,7 @@ struct ath12k_htt_rx_pdev_rate_ext_stats_tlv {
+ 	__le32 rx_gi_ext_2[ATH12K_HTT_RX_PDEV_STATS_NUM_GI_COUNTERS]
+ 		[ATH12K_HTT_RX_PDEV_STATS_NUM_EXTRA2_MCS_COUNTERS];
+ 	__le32 rx_su_punctured_mode[ATH12K_HTT_RX_PDEV_STATS_NUM_PUNCTURED_MODE_COUNTERS];
+-};
++} __packed;
+ 
+ #define ATH12K_HTT_TX_PDEV_STATS_SCHED_PER_TXQ_MAC_ID	GENMASK(7, 0)
+ #define ATH12K_HTT_TX_PDEV_STATS_SCHED_PER_TXQ_ID	GENMASK(15, 8)
+
+---
+base-commit: 0339e1433e228fbbbb106d9284dcc8b35ae6c4e6
+change-id: 20250630-debugfs_htt_packed-fd4a079785c3
 
 
