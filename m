@@ -1,58 +1,57 @@
-Return-Path: <linux-wireless+bounces-24754-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24753-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C76AAF0A0B
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 06:53:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F30AF0A0C
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 06:53:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01B01C06ADF
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 04:53:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61E4E7B0471
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 04:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3452A1DED5B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344D41DED52;
 	Wed,  2 Jul 2025 04:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXfnouIV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u3kcTlKg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED531DE4FC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECFC1B9831
 	for <linux-wireless@vger.kernel.org>; Wed,  2 Jul 2025 04:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751431989; cv=none; b=RAGzWRgkg0H2yTfAIGqkydpY19iUyRrunHTtVUKoVBUcnnRWJiEV3soxdcBEkVa0S5opeL1mK6Kw6ksGzr5zwQNRwHYsRrV6MuO0IsgeFoSmAE7eWbGfJ36+ZKs1wtNkeJ3ZBBHZrTkQ3y01ySSEQhr53ZQwgRSHF308D1742VY=
+	t=1751431989; cv=none; b=JO+m/MHNrkIolQF4/zo6T5CMr21tBHxdBXlWGdz+azBm5oeEw0ubMJ4fESQ0xvn17ROghrAXjgrYBAgGegIPc7n/ypu0rnDwiM/sL7QqPPWFoZsgSjk32JEygqS+znxdsBvptnpudA28H0tnY0xYT2NfpRG7VpfXdgeQ8/qHhQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751431989; c=relaxed/simple;
-	bh=K+a7v7XFsKVYnxpGrqsaLyzKHzYX23MbQzgYUjbYv6U=;
+	bh=U0MmV9GD7Pjqnyd9ukW4/UdBnpirT6pIr0xOABSdnME=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=AKhcnaLYnItexK7BK6535CaL5Z1rtVe2FNrt+seowoTnwdSGQJWQOkxvsZX3I/qdIuDKdaOlGqtPguF1IrutOh35HTfUsdTcmu3e9J2ZNZkFhMUfPTqaqhmbIfJ++UD2K3LvGIxfPRI/4NGV7lGg8pdAmW72c121MNLWkDDyMXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXfnouIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9187CC4CEF1;
+	 MIME-Version:Content-Type; b=SiBUFxfqXb5rIgAMmhhq9/u2QqvS8pZADavgfiw4aIDxAczHuMM2+OuCDzUPfCT+e5qxcPhAjIME8WnVPmxav/GQ4d9c3B5jJrXFGyW0a1AQqMoST4X5n8Dl+rjWs/kjF0cax5viK7H0FLosufUlhiiMQx1ekM0dy/kHhEXtrzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u3kcTlKg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F11DC4CEEE;
 	Wed,  2 Jul 2025 04:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1751431988;
-	bh=K+a7v7XFsKVYnxpGrqsaLyzKHzYX23MbQzgYUjbYv6U=;
+	bh=U0MmV9GD7Pjqnyd9ukW4/UdBnpirT6pIr0xOABSdnME=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=NXfnouIVp4Lpy6ve4ljApPt0JLXpDVVYT9Duhd1++LO3wKMtZRdTkLoZR9b9Tf2y0
-	 PpLw7gF1RhzZpBdqUuspBwBfhm4XJ9dmOYrJ/yBWsqmttZVNHNLiGBap2A6dVMHiLg
-	 U5OF/HcAG/gBmTROfwc+96soziOHvcv158HMEW08Ku2X3GpESFQ/GdQplOVpgNjjUN
-	 nWzL8gyOOlqv1yGWa+TRBw5QDRw4TpH1CLcMBivfs+hUcD6vo05RrA8rXQlmK/jzVR
-	 0C602vLpgIa2QUez84DMKzv+SWH9FAuh2kSqo8URdJZx7jIa2rlXLENprrWJ8YNP0i
-	 dN2XaK0CyE13w==
+	b=u3kcTlKgD3tl0iHObjuff8/hQx5mG/7/gDzY+mXBkBgwyg6SA5mmasrllcB5LruBy
+	 bfRSFKOmDQvfI6Ta89vKv/TSBC1f3kOettz7KuMyhCN42nOOmZIbKJBODq6+GIF/cP
+	 2ZBciUVEw3aTBkOp11nkeXjbZGGiSrGZK33VYLLP7OW4Axl2ilbKaVVWVG9iTF9XFM
+	 TcKRPbJF1jIrNyUhBpulC9dtmRz05woL1J7oZzkoFjKqZuEpW2y5tmmNvoiZKmsRDt
+	 tXt00jCaJibm/F0sLDtLQEDcxOXh7TSjxqHwV/XxXN0VxZXaXBk+l2BpEJ37qaBvwT
+	 PgvP9aWh6v57A==
 Received: from wens.tw (localhost [127.0.0.1])
-	by wens.tw (Postfix) with ESMTP id B741B5F71D;
+	by wens.tw (Postfix) with ESMTP id C2E7D5FC08;
 	Wed,  2 Jul 2025 12:53:05 +0800 (CST)
 From: Chen-Yu Tsai <wens@kernel.org>
-To: linux-wireless@vger.kernel.org, Marcos Alano <marcoshalano@gmail.com>
+To: linux-wireless@vger.kernel.org, Duy Hoang <duy@etylix.me>
 Cc: wireless-regdb@lists.infradead.org
-In-Reply-To: <20250626102326.3815520-1-marcoshalano@gmail.com>
-References: <20250602121434.3011282-1-marcoshalano@gmail.com>
- <20250626102326.3815520-1-marcoshalano@gmail.com>
-Subject: Re: [PATCH v4] wireless-regdb: Update regulatory rules for Brazil
- (BR) on 6GHz
-Message-Id: <175143198568.473566.2185176281152831539.b4-ty@kernel.org>
+In-Reply-To: <12521651747386138@mail-sendbernar-production-main-36.klg.yp-c.yandex.net>
+References: <12521651747386138@mail-sendbernar-production-main-36.klg.yp-c.yandex.net>
+Subject: Re: [PATCH v2] wireless-regdb: Update regulatory info for Vietnam
+ (VN) for 2025
+Message-Id: <175143198579.473566.3806316258566400343.b4-ty@kernel.org>
 Date: Wed, 02 Jul 2025 12:53:05 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,18 +63,43 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 
-On Thu, 26 Jun 2025 07:23:26 -0300, Marcos Alano wrote:
-> Change rules for 6GHz on Brazil removing `NO-IR` since it's
-> not mentioned in the normative.
+On Fri, 16 May 2025 16:02:18 +0700, Duy Hoang wrote:
+> According to [1] and [2]:
+> - Update frequency range to match with Circular
+> - Update units from dBm to mW to match values listed in Circular
+> - Add AUTO-BW flags to allow the use of 160 MHz based on other rules
+> - Update to allow use of 6 GHz band
 > 
-> Change the comment to point to the newer normative.
+> Detail:
+> * 2400 - 2483.5 MHz
+>   - 200 mW (23 dBm)
+> * 5150 - 5250 MHz
+>   - 200 mW (23 dBm)
+>   - Indoor only
+> * 5250 - 5350 MHz
+>   - 100 mW (20 dBm)
+>   - DFS/TPC
+> * 5470 - 5725 MHz
+>   - 500 mW (27 dBm)
+>   - DFS/TPC
+> * 5725 - 5850 MHz
+>   - 1000 mW (30 dBm)
+> * 5925 - 6425 MHz
+>   - LPI
+>     * 200 mW (23 dBm)
+>     * Indoor only
+>   - VLP
+>     * 25 mW (14 dBm)
+>     * Indoor and outdoor
+> * 57000 - 66000 MHz
+>   - 10000 mW
 > 
-> 
+> [...]
 
 Applied to master in wens/wireless-regdb.git, thanks!
 
-[1/1] wireless-regdb: Update regulatory rules for Brazil (BR) on 6GHz
-      https://git.kernel.org/wens/wireless-regdb/c/7628ce291d74
+[1/1] wireless-regdb: Update regulatory info for Vietnam (VN) for 2025
+      https://git.kernel.org/wens/wireless-regdb/c/4411b3985baa
 
 Best regards,
 -- 
