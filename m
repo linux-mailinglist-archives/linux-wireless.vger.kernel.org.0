@@ -1,157 +1,225 @@
-Return-Path: <linux-wireless+bounces-24777-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24778-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D738AF5FEC
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 19:25:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D2EAF6356
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 22:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2263B1886B22
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 17:25:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9150521EA6
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Jul 2025 20:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1372FC3AE;
-	Wed,  2 Jul 2025 17:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F411E489;
+	Wed,  2 Jul 2025 20:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QI7URzgI"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="A/8w7MgX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BFA301123
-	for <linux-wireless@vger.kernel.org>; Wed,  2 Jul 2025 17:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DE02DE717
+	for <linux-wireless@vger.kernel.org>; Wed,  2 Jul 2025 20:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751477114; cv=none; b=J5CQyPpFjMxW5Hw7sqMgto5gurRF1ks2z+SHR4Nan/nojiuVO/NRwaPGJQsPl50PseabSk1RqeIMnuLfLjMa7gTc8WfoBgzivG7XupX91v4w5kXKzupfIfn47fAjLY1utZCZf62/Y0prze6Q4sgLqkpBLE4fg74Lv4wipVtJKzc=
+	t=1751488273; cv=none; b=PWxBpQXCZG7QZre+WWp+bHMLNaoYuYkUcCIRvSughhr43V/8jd+ENRyQIlYnd9tChxQTVKy8UVUuijIF7187Om982gX8KqcpUoc1V1tZVZ6HizJmPQRvTUMr8I2DDZVxN//5zmHwj4LNi/Qj//+7OfAxSWwg+JqlNOFlv01X3D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751477114; c=relaxed/simple;
-	bh=WZyYTlWdSGjfbQpzDv1VK2XsfyDqeUoKt+82ACxQjtA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J3g/ozlIF8e4kxO+CaDzwQpVt0jhMgEJtipRZ2z8nAguJvEENUnxYAA2H1ZfKJL106zfprIdYWSvhpPvzE1SIIsnEmNrWJHktSBAmPH7yaa5NyaIXpQpzIUlX78p6Qo9dQanKFQX6imvxMNJvqJ+U0roon9IlxotDZVWHTK6zKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QI7URzgI; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 562AG866022671
-	for <linux-wireless@vger.kernel.org>; Wed, 2 Jul 2025 17:25:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WZyYTlWdSGjfbQpzDv1VK2XsfyDqeUoKt+82ACxQjtA=; b=QI7URzgIoK97WDeU
-	W7XfEdAkMALd2S9JLF7oFTq42JWw60Uf4B7wVXDym1R04OBPUAMbW69dS+/XPfFW
-	ymM0Pe6IVAethNd43a2dPwLwJEAQIY0MRZyvMgfhwLnAKRsn7OaJcq+VI9fKWGgX
-	6zANcbxt51nX1fS32u1P0Ej3xEXbVn1rJbKtEYtCTu3/HvsKjXJF8T8TZrYUehUa
-	jaJ0w6/QcNm1fAe9gGJjnL1MLFehJlGVbzBtLd5/V1eIEnsoaL7l3cAVvT/U+T+b
-	05e6ySKYb4RO1/vHqevrVNWv6rrbeqemzKR6ZVlflSFhrNcL/5Ck4bQpBGL1KxTv
-	o+cwug==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47mhxn44n1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 02 Jul 2025 17:25:11 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-74ae13e99d6so88170b3a.0
-        for <linux-wireless@vger.kernel.org>; Wed, 02 Jul 2025 10:25:11 -0700 (PDT)
+	s=arc-20240116; t=1751488273; c=relaxed/simple;
+	bh=K6miw7sbzNPxUDk13yZx1t9xKxmuEYq6bas2ceSvc08=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DSjt5ww7OJDedWzPjMabU8h1ErzLPu2DKQHjjMEmONGdj/xB5UYhM556pE4CqEPiPIaUjSQaurAyaJ9YRROJ6du+cUoC8Ua3U81DKswTJdj5Vx500TjqaABeDmYpm1DZvDfZUsM0wUWVI+5PPdJq0ASr35FMay15X3IHQIZ5Zdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=A/8w7MgX; arc=none smtp.client-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-610cbca60cdso3017835eaf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Jul 2025 13:31:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1751488271; x=1752093071; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DxP8oLw+K/WoH5QKOF7Rw2VCFpcI7Pct1Qdk7h37Mpk=;
+        b=A/8w7MgX2ju9cse6Xl4NR1ufcAobZrADZQehRpvqv8zFF2CzYbJU8Z5MU7JuSLI4t4
+         rtfa9ToHp3yhGD+nF49/L7htgJ4+aB0gW5x4McxTPYvSWkKugW1zFNGgR+Ed9ku4CW8B
+         sf+YRh2C6agtzaRSiGlYeKS6voOjFowpHU2Fsld8nTYc257BbOoroba83BRv6HoErDtS
+         yzffUEygN7y6wb+KqEyvJzs+3MaBAKu6ajIHlMcfYff47AOEjoJBCTN+l40RJqw43jLk
+         AaW8S8ROsTkNUuWx7Xo7k/Nydsr4MAndIUraSBlOvVK0NP6PbMKWjDM6EVJORMx2rpf1
+         lQhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751477110; x=1752081910;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WZyYTlWdSGjfbQpzDv1VK2XsfyDqeUoKt+82ACxQjtA=;
-        b=hIqjA1M+AaVvTozNRbFxxAlEplE1fblFXYtmgen0QVEdNko7vDGQKfuHnWWpATmJhF
-         F/IiU3vzVYOh08nqxm14RRWBOjkjOKEgYtamWYSG8vhQkSco3G4bh3UnQIS3DSrE2YvR
-         b/fLKikhiL9xpFZ6x58vRJGfe3tF3r70/9xRBv0AdszetNBQOreCmMZt/N1SS+koKTCt
-         bUwOuSbSh1g3oubpD4qx7lAgxlKfYAGYugcDgyOM8SKa3xsQUseWlxyOoiGWkynOO1lR
-         j5fc1XmLwzT/LX421yd+VX9QNVupr1BDmXMbDHCGkgeV9qzbKZmAaMSLeYhhccIR/a/B
-         GH6g==
-X-Forwarded-Encrypted: i=1; AJvYcCUKWdQSYUf1sB8pVbzetQRqKfAopRLQlO6jCY+E4FhbZsnLPyK/Of9bFySucF0E6kSILE63+SqWrBfYAKz1uA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq9tupVxH6icSMUyPqtUDPZSBJc7rWafmpX2Yi+H+M7LIQdisF
-	uyYwo7/yo+Y6IWiOk84XyXv9QTb0g/b10fzGEspPwYlYxchSTDQdmPC3PegCUI7OSykyg2Rn7Kr
-	U3XX/xsIAEZ8oZJLt5LGVlgk+MtdRvmtmNvEIQtcapK3HSgXhAKA9JTVmz/ElrtTlHFE+NA==
-X-Gm-Gg: ASbGncvk0ugyZiRgY5w2+pFuYu/wdR+g47c/YaUCIF7gPar5lNrO2qaxJcgGhjV/40a
-	Qc/LLjSJfdxoBl99jXR093TfxJ2XygW7DyjT6mQBfsA0C5xQnczjKF/jOickIFeRRjuZTYUbcU9
-	FBMewb90cGOBpn5XzfNVdSluBNpamdho91js6BoG0yzGAnGwK1IDTeadr16MdyQPGJrIdI+DQt4
-	9uiVsGNHZ4I1g6RGaIXCqrkvWdSpwX8YvPJpPZmqtj+4zeMS2pE8SswOZh/K9iWk70qlrrLYXdQ
-	4725vOxEAl6PISNnXyyjEdxjzZsu8FBGg4yjjQbQJDBJJ+MMBvRlnZw8BUCnBBApTF92mECcvmT
-	dUncoWrVZ8iQHZ0I=
-X-Received: by 2002:a05:6a00:1488:b0:736:4e14:8ec5 with SMTP id d2e1a72fcca58-74c998b115bmr395800b3a.11.1751477110471;
-        Wed, 02 Jul 2025 10:25:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNL+mjpubj8oTFu+kPvG+vg07PpxKV0Dl1sFm81HYHH53fukGuY5jdbk7k4o7/GpFwTLHvZg==
-X-Received: by 2002:a05:6a00:1488:b0:736:4e14:8ec5 with SMTP id d2e1a72fcca58-74c998b115bmr395756b3a.11.1751477109849;
-        Wed, 02 Jul 2025 10:25:09 -0700 (PDT)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74b548a1fbbsm2105715b3a.81.2025.07.02.10.25.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Jul 2025 10:25:09 -0700 (PDT)
-Message-ID: <e38dc5db-7c7b-413d-9ef8-8dfae7feeb2e@oss.qualcomm.com>
-Date: Wed, 2 Jul 2025 10:25:07 -0700
+        d=1e100.net; s=20230601; t=1751488271; x=1752093071;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DxP8oLw+K/WoH5QKOF7Rw2VCFpcI7Pct1Qdk7h37Mpk=;
+        b=Fz/bRInz8gg7N6n1pdZQZD7ID80LR71ey1QpeGNhnpoTA09/IADiDzzOpkXvxaA0HC
+         y5PneYgaOGHGzHvZT0NGjI3gYfyEIon2XdKyVzTxUZOiv7NpQeD2Bw0bGuKtMKraquN6
+         Rxe6PQeJFrcgX/KxCgbgOALdK1djR4+0G5Q2IEYmEXlg9CkyYa6lu60kHBV/SMR7j//j
+         7ccspzmSbWdmToWL5W+GjjXLA2PN2qIGJU8FTtZb1MW3/IlCykvPHawF+OVFW6PXiT/S
+         CCCvT4s+Du9AK/eBYZKGUFheGdFzJxk+1Eu8cvO+8GpYmmsjthzY1UDNcFq+Cyj0QJGZ
+         Ikow==
+X-Forwarded-Encrypted: i=1; AJvYcCVHzovAExb92vVrJ9MGyTsgh5aVPFbTCxJMUWCG8iHvu2Xsro33uA5FdDXPYANSO4bJ2cgG3YYryt7NJjCwlw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFXAwF0qqeOSXf6A2ViYIK0P1fESYxsPhK2UcWNV5tciIOIXtc
+	IzM8SsrMimUkQTZtQsCwxNGT5QNNseZAzvcRAW8cvPcQZ0txmiMUTQkkxz+yHIotCjWaLrMEflO
+	DvHBo
+X-Gm-Gg: ASbGncuUqL5tQnf5t9OeKdZZ91St4NcInaaOwR7CuhAqgc5L6TeDQwSZXFdIBHTRJiS
+	yv704KMr0hyEwyQvg1oVobaVRpZzOBmcYG396aN9Evj2bu5KpDe/fXsPNUsDXUoY6mvu9XEo3Et
+	7/8XhygGvUTyarTjv0VtokUOnLxpXAgugPxitxnojZlsmzsW6qc9+QzO9TqNlmb2ShY/x8oaD+2
+	tg5W30tpuqQ8dZktYUIeY8MJVBdzU3ryRBmLiO3k3szLUpYYjl2nXfryTUesjY11qjeBqewFFey
+	vz+JLDRHepTL5BC1Uz9hDEU/zfHR9EfE3TzgVqRzLpclAa263FOwKxVRaX5ynTUq444n3g==
+X-Google-Smtp-Source: AGHT+IHWVf6uaMOPj3PPQDVaRHjqTQ7LaMlYeTrBiFxloldJf9Nhz9IxkILSTFQdDWd8e5A3OTGJTA==
+X-Received: by 2002:a05:6870:b603:b0:2d0:4a2c:7be6 with SMTP id 586e51a60fabf-2f5a8c62e71mr3709232fac.30.1751488270999;
+        Wed, 02 Jul 2025 13:31:10 -0700 (PDT)
+Received: from localhost ([2603:8080:b800:f700:7056:ddb5:3445:864f])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2efd50fb14esm4050638fac.42.2025.07.02.13.31.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jul 2025 13:31:10 -0700 (PDT)
+Date: Wed, 2 Jul 2025 23:31:08 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Sarika Sharma <quic_sarishar@quicinc.com>,
+	linux-wireless@vger.kernel.org,
+	syzbot+4ba6272678aa468132c8@syzkaller.appspotmail.com
+Subject: Re: [PATCH wireless-next] wifi: cfg80211: Nullify freed pointers in
+ cfg80211_sinfo_release_content()
+Message-ID: <a274f5b6-d6d6-48f8-adb4-e081040cb0a1@suswa.mountain>
+References: <20250702162531.2705566-1-quic_sarishar@quicinc.com>
+ <c7d5adbc4fe45c0bc55567f9d1b228d169dd9097.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] bus: mhi: don't deinitialize and re-initialize again
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-        Youssef Samir <quic_yabdulra@quicinc.com>,
-        Matthew Leung <quic_mattleun@quicinc.com>, Yan Zhen <yanzhen@vivo.com>,
-        Alexander Wilhelm <alexander.wilhelm@westermo.com>,
-        Alex Elder <elder@kernel.org>, Kunwu Chan <chentao@kylinos.cn>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Siddartha Mohanadoss <smohanad@codeaurora.org>,
-        Sujeev Dias <sdias@codeaurora.org>,
-        Julia Lawall <julia.lawall@lip6.fr>, John Crispin <john@phrozen.org>,
-        Muna Sinada <quic_msinada@quicinc.com>,
-        Venkateswara Naralasetty <quic_vnaralas@quicinc.com>,
-        Maharaja Kennadyrajan <quic_mkenna@quicinc.com>, mhi@lists.linux.dev,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Cc: kernel@collabora.com
-References: <20250630074330.253867-1-usama.anjum@collabora.com>
- <20250630074330.253867-3-usama.anjum@collabora.com>
- <855ae20a-3675-4cce-b87d-6f25fb69e0a8@oss.qualcomm.com>
- <defad9df-e248-48d2-a3b6-3f057c6f0b76@collabora.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <defad9df-e248-48d2-a3b6-3f057c6f0b76@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDE0MyBTYWx0ZWRfX15x6LffPXIr1
- 27EY/Qr48S28dqecxTut3DDb3nS73szTfxvxqcKKgEuZ1LKbq/wAIbAzfTSnR8fO6JTaEzJNGCq
- 9ydOqrsw9al11nkWEoVDajgS5Z0YOnUR1aCW4gP1Hvtj8N/0WgneMIooig90e3PSNLOITXD/Xmz
- XAxo28MijjHyppBw5kr32APkqTl83w30O5x8gA1Jn+tboVCb6k6Qx+z5LYl9naJ+lSYShHFkBmd
- eJzl4MkVYE6ulIn52UfbdW7yhu0a9zLRSDBaTvX7LGaNfArwv2A+yMvkcuzih+NEIVYVajnDLw8
- Kiec9jRx6coc5rK2Bc3nNeMsgOtGXVh8EEhaWU1sTf58I37RsLrQGAUhqzxvNNjOGbep/YLnHe5
- xktWqa726Vs1oVF7Ef6gjShKw1QEZ9z5axzIzTu+x6snGx/tH99zqcWI2h10uALbE97cr8/A
-X-Authority-Analysis: v=2.4 cv=EbvIQOmC c=1 sm=1 tr=0 ts=68656b77 cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=e70TP3dOR9hTogukJ0528Q==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=7FD9jUKyMsHjXuVnl2EA:9
- a=QEXdDO2ut3YA:10 a=Sn0URPYyO7IA:10 a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-ORIG-GUID: LSfD_WWXJw5ySVn5LQQ4yBIMjdBkNWH4
-X-Proofpoint-GUID: LSfD_WWXJw5ySVn5LQQ4yBIMjdBkNWH4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-02_02,2025-07-02_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=737 lowpriorityscore=0
- malwarescore=0 adultscore=0 clxscore=1015 bulkscore=0 impostorscore=0
- spamscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507020143
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c7d5adbc4fe45c0bc55567f9d1b228d169dd9097.camel@sipsolutions.net>
 
-On 7/2/2025 8:28 AM, Muhammad Usama Anjum wrote:
-> On 7/1/25 7:49 PM, Jeff Johnson wrote:
->> On 6/30/2025 12:43 AM, Muhammad Usama Anjum wrote:
->>> the same memory allocated from dma when there is high memory pressure.
->>>
->>> Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
->>
->> not quite the right format since it is missing hw version and bus
-> I've been using the same tag from last accepted patches. How to construct the
-> correct patch?
+On Wed, Jul 02, 2025 at 06:41:31PM +0200, Johannes Berg wrote:
+> On Wed, 2025-07-02 at 21:55 +0530, Sarika Sharma wrote:
+> > Currently, cfg80211_sinfo_release_content() frees dynamically
+> > allocated memory but does not reset the associated pointers.
+> > This results in double free issues in nl80211_dump_station(),
+> > where both link_sinfo and link_sinfo->pertid are released twice,
+> > once after the send_station() call and again in the error handling path.
+> > 
+> > Hence, to fix accidental dereferencing of dangling pointers, explicitly
+> > set the freed pointers to NULL.
+> > 
+> 
+> Do we have to fix it this way? It feels like perhaps it should rather be
+> fixed by only having one call to cfg80211_sinfo_release_content() in
+> each path.
 
-https://wireless.docs.kernel.org/en/latest/en/users/drivers/ath12k/submittingpatches.html#tested-on-tag
+That was my bad.  I suggested it because the diff from changing the
+callers was a bit larger.  Technically I suggested just memsetting the
+struct to zero, but that approach doesn't work because of
+batadv_v_elp_get_throughput().
+
+Re-working the callers is totally doable.  It would look something like
+the diff below.
+
+regards,
+dan carpenter
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 70ca74a75f22..2066aefc05c7 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -6996,10 +6996,8 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
+ 	int link_id;
+ 
+ 	hdr = nl80211hdr_put(msg, portid, seq, flags, cmd);
+-	if (!hdr) {
+-		cfg80211_sinfo_release_content(sinfo);
++	if (!hdr)
+ 		return -1;
+-	}
+ 
+ 	if (nla_put_u32(msg, NL80211_ATTR_IFINDEX, dev->ifindex) ||
+ 	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, mac_addr) ||
+@@ -7247,7 +7245,6 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
+ 	return 0;
+ 
+  nla_put_failure:
+-	cfg80211_sinfo_release_content(sinfo);
+ 	genlmsg_cancel(msg, hdr);
+ 	return -EMSGSIZE;
+ }
+@@ -7530,34 +7527,38 @@ static int nl80211_get_station(struct sk_buff *skb, struct genl_info *info)
+ 	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
+ 		sinfo.links[i] = kzalloc(sizeof(*sinfo.links[0]), GFP_KERNEL);
+ 		if (!sinfo.links[i]) {
+-			cfg80211_sinfo_release_content(&sinfo);
+-			return -ENOMEM;
++			err = -ENOMEM;
++			goto err_free_sinfo;
+ 		}
+ 	}
+ 
+ 	err = rdev_get_station(rdev, dev, mac_addr, &sinfo);
+-	if (err) {
+-		cfg80211_sinfo_release_content(&sinfo);
+-		return err;
+-	}
++	if (err)
++		goto err_free_sinfo;
+ 
+ 	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+ 	if (!msg) {
+-		cfg80211_sinfo_release_content(&sinfo);
+-		return -ENOMEM;
++		err = -ENOMEM;
++		goto err_free_sinfo;
+ 	}
+ 
+ 	if (sinfo.valid_links)
+ 		cfg80211_sta_set_mld_sinfo(&sinfo);
+ 
+-	if (nl80211_send_station(msg, NL80211_CMD_NEW_STATION,
++	err = nl80211_send_station(msg, NL80211_CMD_NEW_STATION,
+ 				 info->snd_portid, info->snd_seq, 0,
+-				 rdev, dev, mac_addr, &sinfo) < 0) {
+-		nlmsg_free(msg);
+-		return -ENOBUFS;
+-	}
++				 rdev, dev, mac_addr, &sinfo);
++	if (err < 0)
++		goto err_free_msg;
+ 
+ 	return genlmsg_reply(msg, info);
++
++err_free_msg:
++	nlmsg_free(msg);
++err_free_sinfo:
++	cfg80211_sinfo_release_content(&sinfo);
++
++	return err;
+ }
+ 
+ int cfg80211_check_station_change(struct wiphy *wiphy,
+@@ -19558,11 +19559,15 @@ void cfg80211_new_sta(struct net_device *dev, const u8 *mac_addr,
+ 	trace_cfg80211_new_sta(dev, mac_addr, sinfo);
+ 
+ 	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
+-	if (!msg)
++	if (!msg) {
++		// This bugfix needs a mention in the commit message
++		cfg80211_sinfo_release_content(sinfo);
+ 		return;
++	}
+ 
+ 	if (nl80211_send_station(msg, NL80211_CMD_NEW_STATION, 0, 0, 0,
+ 				 rdev, dev, mac_addr, sinfo) < 0) {
++		cfg80211_sinfo_release_content(sinfo);
+ 		nlmsg_free(msg);
+ 		return;
+ 	}
+@@ -19593,6 +19598,7 @@ void cfg80211_del_sta_sinfo(struct net_device *dev, const u8 *mac_addr,
+ 
+ 	if (nl80211_send_station(msg, NL80211_CMD_DEL_STATION, 0, 0, 0,
+ 				 rdev, dev, mac_addr, sinfo) < 0) {
++		cfg80211_sinfo_release_content(sinfo);
+ 		nlmsg_free(msg);
+ 		return;
+ 	}
 
 
