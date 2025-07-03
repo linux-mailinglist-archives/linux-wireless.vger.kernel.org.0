@@ -1,68 +1,68 @@
-Return-Path: <linux-wireless+bounces-24789-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24790-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85704AF729B
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 13:39:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AC9AF72B1
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 13:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 690394E2C21
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 11:37:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EDAE3B9DC2
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 11:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6612D23B630;
-	Thu,  3 Jul 2025 11:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A271BD4F7;
+	Thu,  3 Jul 2025 11:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="EpeLuLZF"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="P9FCDqKr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp14.infineon.com (smtp14.infineon.com [217.10.52.160])
+Received: from smtp11.infineon.com (smtp11.infineon.com [217.10.52.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6AB261591
-	for <linux-wireless@vger.kernel.org>; Thu,  3 Jul 2025 11:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.160
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F516B676
+	for <linux-wireless@vger.kernel.org>; Thu,  3 Jul 2025 11:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751542655; cv=none; b=SlIzDnwOa1u4SiRAVnjYVlKeA8gVseGHxYsHBAtWu3kuQFOvj6roPIPFubdmiQt5tFWk9sf+gItF/+TkV5erL/qz/cJX65QET85gpmlIm6xSuScpOkTBRmClTaRj+64dKTp3Xup2MRtSPSGxEPEwnUsnTXaUraQEvGTQTN6sFx0=
+	t=1751543013; cv=none; b=Gzig0HF6Pg8ltYPhGv9W+c0kTpuuWGq3iAvwG8gJ8AzP+YIw/gV4ptcbCYowr8/AWt/37HzOVErMgre0CITFhu/2xlmmUoVu6roGlCuwUhFgMAAZFPScDjNvF1GFL5jiOi8L4vMhnnfTk/uKFzbOpuGJEltDbNt82HRJI0P57Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751542655; c=relaxed/simple;
+	s=arc-20240116; t=1751543013; c=relaxed/simple;
 	bh=afAQNldEH9D37rnb+6FmjpuPSAP5CJbJLlvdHp4Z0MQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NaSu5qvfEO7ShR/K9a4C6DX6YSOn8HHQcla33HHp2dP0x3PjsU+hT4zWmYL3ynp5cFGz/1PM79Lg9zCx0gY4WJ5t6rNBeld1CqbN1YXEHdL65m3tHk3Ao+4y8nWyKL8FSz8u85JDty2vddFBzwZY4XmUpb7AigmvWnfjcOt+JVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=EpeLuLZF; arc=none smtp.client-ip=217.10.52.160
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=T5tjoLxmdIZWdev7ltWkfUZJDBKGWqLI2wrx3zo8VNpSV8/RZH/7sp5Yy8OlwUoILw3Fp7B4LFxDn7PxKGZ9ZN7SunO1964d+I3Ierep06rOhF5YkO2FW34BDkReZswoi5/xlvaDJ9ll7ka8GP23p0VR7S23t7yULdWELwxvVdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=P9FCDqKr; arc=none smtp.client-ip=217.10.52.105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1751542652; x=1783078652;
+  t=1751543011; x=1783079011;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
   bh=afAQNldEH9D37rnb+6FmjpuPSAP5CJbJLlvdHp4Z0MQ=;
-  b=EpeLuLZFdJxAFSSqowTu4MHOlpsts0wxu+L842YrktIDGpUWLdp8IpDA
-   yX3TEs08vi4+tnHttZzQJzte5wpmDCHs3Y4zvepTAZZPt4y1AFskFWj9G
-   cHIhFD8/1s4c9WTqCOqoLtKuPd954hHROevdgCDkofBVSR1zZK8Wvo5AB
-   4=;
-X-CSE-ConnectionGUID: vxXFY7DbQJCnlYJh9FkGcA==
-X-CSE-MsgGUID: Utn8g6mrTvSzm0U8uyfaiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="90407361"
+  b=P9FCDqKrRvdUdB5TDepZHSx5DckL2ICC2y6N/dn0X5qaa0F+NSpcBHZ+
+   2TBFkGA4zcwz0wvGYQmN8x5LWVT/Gi2mx7fQeBIDGeIZrpER+eKDQ22Zg
+   mC5LC6x+06eEjnMNh/DmRAlYcpo+f9S7nXz+HZJeUUYkx9VNphmSa7mkV
+   Y=;
+X-CSE-ConnectionGUID: 9M4XyxftRnia6V95VfP1AA==
+X-CSE-MsgGUID: VCmYQoO6QBqx00OCkIYN/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="101291569"
 X-IronPort-AV: E=Sophos;i="6.16,284,1744063200"; 
-   d="scan'208";a="90407361"
-Received: from unknown (HELO MUCSE819.infineon.com) ([172.23.29.45])
-  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 13:36:20 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE819.infineon.com
- (172.23.29.45) with Microsoft SMTP Server (version=TLS1_2,
+   d="scan'208";a="101291569"
+Received: from unknown (HELO MUCSE803.infineon.com) ([172.23.29.29])
+  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 13:43:16 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE803.infineon.com
+ (172.23.29.29) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 3 Jul
- 2025 13:36:19 +0200
+ 2025 13:43:15 +0200
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Thu, 3 Jul 2025 13:36:17 +0200
+ 15.2.1544.14; Thu, 3 Jul 2025 13:43:13 +0200
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: Johannes Berg <johannes@sipsolutions.net>, Arend van Spriel
 	<arend.vanspriel@broadcom.com>
 CC: <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>,
 	<wlan-kernel-dev-list@infineon.com>, <gokulkumar.sivakumar@infineon.com>
 Subject: [PATCH] wifi: brcmfmac: fix EXTSAE WPA3 connection failure due to AUTH TX failure
-Date: Thu, 3 Jul 2025 17:03:39 +0530
-Message-ID: <20250703113339.6356-1-gokulkumar.sivakumar@infineon.com>
+Date: Thu, 3 Jul 2025 17:12:58 +0530
+Message-ID: <20250703114258.6417-1-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -72,7 +72,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE823.infineon.com (172.23.29.54) To
+X-ClientProxiedBy: MUCSE803.infineon.com (172.23.29.29) To
  MUCSE827.infineon.com (172.23.29.20)
 
 From: Ting-Ying Li <tingying.li@cypress.com>
