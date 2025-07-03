@@ -1,119 +1,202 @@
-Return-Path: <linux-wireless+bounces-24788-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24789-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F84AF6E0C
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 11:02:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85704AF729B
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 13:39:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F3E11C25DF1
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 09:02:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 690394E2C21
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 11:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04422D3733;
-	Thu,  3 Jul 2025 09:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6612D23B630;
+	Thu,  3 Jul 2025 11:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bYMp0EcQ"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="EpeLuLZF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp14.infineon.com (smtp14.infineon.com [217.10.52.160])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52ABA2D0C94;
-	Thu,  3 Jul 2025 09:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6AB261591
+	for <linux-wireless@vger.kernel.org>; Thu,  3 Jul 2025 11:37:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.160
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751533339; cv=none; b=jwn3L00sU3vXLeUksrjTde5aao4GStiinndH76hGWOhgUDx9DdxwggYhdeBoE/hlm0cUSBOVviOrLzrhLPqK8uCJADcxrUdQKkN84dOSMY3/AFsQo+HPD1OaIxYTXYovjslN67Sx24hBTlfzQhorhjZED6iXayMQy5vaw2OHh6U=
+	t=1751542655; cv=none; b=SlIzDnwOa1u4SiRAVnjYVlKeA8gVseGHxYsHBAtWu3kuQFOvj6roPIPFubdmiQt5tFWk9sf+gItF/+TkV5erL/qz/cJX65QET85gpmlIm6xSuScpOkTBRmClTaRj+64dKTp3Xup2MRtSPSGxEPEwnUsnTXaUraQEvGTQTN6sFx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751533339; c=relaxed/simple;
-	bh=r9iNBHzBMwWsOC2LNoiI/v8Ks+Adv9SBboC7T9eoqaU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T6KiExIh5g2KI4wnKn6MNs4rD3m+l7u9wNXCPJo6z6ALFPut65hvcZ5ievSCArVO467yVnfUT3ZLeatIFJLO6WQpw7zj/YSy54NtrrBFP44GrCTaJTKgzom6eG4y3l9CWS9clkBmRsF4eCI6QPEq7mX108yBtEi9TF327RwqIYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bYMp0EcQ; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-70e1d8c2dc2so53820497b3.3;
-        Thu, 03 Jul 2025 02:02:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751533337; x=1752138137; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Dua4EX6vICZ4ncNmnpExr5W8cwU+tQuHJtXdNhi/iGU=;
-        b=bYMp0EcQOaK1pbRYdCB0BzQgu8oBFEgJcHeBy+2sBC+7prvtzpiG9b6BeLglvZEJtl
-         Nfo+qdrSMmreJikNYREYUtBVWVID2l4mNRzLSd19AFKSN8DOmj86I4KnhhB4/l8FrQ2r
-         HNDet7iQ8xZkOfpTaG0FAxwQRPbbDzPQ2Tg6t3KYZQqhgW7yCaP92+KMXpCeTmCRHJ3q
-         TuEIe81dV1JHqUXKTL8bbpjLONx6IL3Jkey0Tu8yS5kGAPDsljtd1x+/fegqie2jgj/0
-         SPcRifCk6/wPLgQ6z1zbDYACBz/HoPy38HjJ84jAK3eL/E1QU2CTz9dkNsZFzE2FsZcq
-         ycHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751533337; x=1752138137;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Dua4EX6vICZ4ncNmnpExr5W8cwU+tQuHJtXdNhi/iGU=;
-        b=L2gk/RYxZuhgSIgZQ5kLQ89iYqDgExDr+0Uwi+n8CIIzk7fsd4xh9BcjBsY6G3ViCY
-         J6ECWYcUrV6kQwpxFPukO3kpML/gn7fZmF+d+nXX2MWPgPmUflIvJMkX5MwB0sB7RRON
-         mh8ov8pbV0cEodnukQwqflzYmtDlfarBcJRoQ0hRIzvWrasrBZR3iStuMvYockjfj1+1
-         4/hf1Mp9rmmW1/SE7geKBlp3nP9zZ0M/SyM9kMH2ZVfMmZIdIjxxDHaPHfaOKNMVKQht
-         Sd6oXcH+unbYJUaelvW9rHA85Ivqyi61f/7LjIPhovO/cyHmXU+FOuJVZoPgGdpIGaXt
-         AMjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUQqAJQeII2xB8e28HgHhfZ8mCSGmzWM2u4RRXfeNubtRacFRoJNKDPN5Gl/sAj5WGxF0EFqj1JUqW7/JhAZbU=@vger.kernel.org, AJvYcCWDthsPrxh9y/e9PndDfxyRqrrAiVz+HUpyLRiB8jCaqu0DoP82zuq75bYvWc0mDksQzsMx0d+6006To2o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdPUrMg6oiXCeUMSTiux4LIIgDOi9LYKLBjcR8d/UvTVPSmD1v
-	BD+AMbSWisFb+MBF+f2eau4iaVDi0nKNREFZXaOqlcJKrXWhihDSag3VzvWkdO1DwGZg4chyaF2
-	4SH9RaTdfRzploiikDqXSqqnjITguSBbWFQaYJUo=
-X-Gm-Gg: ASbGncsnvmCKb3ql2NJ5QWhiUiXzL4NjcG4OGa5TqKuZflR7nFwX5dB2fFHOHrQi+gu
-	lTyilCZQpiVJ9lErc1KeiqVZym0Z9oTKNPUIk+Az0hDVnsPEMU7QD29odoixF4IRwlNqamv40t+
-	NtUh/pD8WB7jUSQpG4vUShz/5LVkhYMZf8xyOCZ8/RWAAJxpa/ge7iLGTUNKA/EkJzumqaeAJYZ
-	5m+fu+swkmeVf8=
-X-Google-Smtp-Source: AGHT+IFPagC/bJXD/I8xAFfYmmHWH8z3OLkpesDap76h+qYDoOuGP8g36pSAUapeCBHboIP7KJtMiM5WqD9+MQ8t/7I=
-X-Received: by 2002:a05:690c:fcc:b0:709:197d:5d3c with SMTP id
- 00721157ae682-7164d2c7e12mr90141507b3.11.1751533337096; Thu, 03 Jul 2025
- 02:02:17 -0700 (PDT)
+	s=arc-20240116; t=1751542655; c=relaxed/simple;
+	bh=afAQNldEH9D37rnb+6FmjpuPSAP5CJbJLlvdHp4Z0MQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NaSu5qvfEO7ShR/K9a4C6DX6YSOn8HHQcla33HHp2dP0x3PjsU+hT4zWmYL3ynp5cFGz/1PM79Lg9zCx0gY4WJ5t6rNBeld1CqbN1YXEHdL65m3tHk3Ao+4y8nWyKL8FSz8u85JDty2vddFBzwZY4XmUpb7AigmvWnfjcOt+JVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=EpeLuLZF; arc=none smtp.client-ip=217.10.52.160
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
+  t=1751542652; x=1783078652;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=afAQNldEH9D37rnb+6FmjpuPSAP5CJbJLlvdHp4Z0MQ=;
+  b=EpeLuLZFdJxAFSSqowTu4MHOlpsts0wxu+L842YrktIDGpUWLdp8IpDA
+   yX3TEs08vi4+tnHttZzQJzte5wpmDCHs3Y4zvepTAZZPt4y1AFskFWj9G
+   cHIhFD8/1s4c9WTqCOqoLtKuPd954hHROevdgCDkofBVSR1zZK8Wvo5AB
+   4=;
+X-CSE-ConnectionGUID: vxXFY7DbQJCnlYJh9FkGcA==
+X-CSE-MsgGUID: Utn8g6mrTvSzm0U8uyfaiQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="90407361"
+X-IronPort-AV: E=Sophos;i="6.16,284,1744063200"; 
+   d="scan'208";a="90407361"
+Received: from unknown (HELO MUCSE819.infineon.com) ([172.23.29.45])
+  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 13:36:20 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE819.infineon.com
+ (172.23.29.45) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 3 Jul
+ 2025 13:36:19 +0200
+Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
+ MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 3 Jul 2025 13:36:17 +0200
+From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+To: Johannes Berg <johannes@sipsolutions.net>, Arend van Spriel
+	<arend.vanspriel@broadcom.com>
+CC: <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>,
+	<wlan-kernel-dev-list@infineon.com>, <gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH] wifi: brcmfmac: fix EXTSAE WPA3 connection failure due to AUTH TX failure
+Date: Thu, 3 Jul 2025 17:03:39 +0530
+Message-ID: <20250703113339.6356-1-gokulkumar.sivakumar@infineon.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250702065908.430229-2-moonhee.lee.ca@gmail.com> <DB29OMQH4W9Z.1GPKEZBBIRSTS@gmail.com>
-In-Reply-To: <DB29OMQH4W9Z.1GPKEZBBIRSTS@gmail.com>
-From: Moonhee Lee <moonhee.lee.ca@gmail.com>
-Date: Thu, 3 Jul 2025 02:02:06 -0700
-X-Gm-Features: Ac12FXxcX-6zWRjtsp0bKhB4_ffVbC4IS-cAUihVV3UL7VYsPXyWVqyR0taTsEQ
-Message-ID: <CAF3JpA7wM4JBdd6OvGS+hmv0UahcW=h4HrPNDwRNhduk8iKsWw@mail.gmail.com>
-Subject: Re: [PATCH wireless-next] wifi: mac80211: reject VHT opmode for
- unsupported channel widths
-To: Nicolas Escande <nico.escande@gmail.com>
-Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev, 
-	syzbot+ededba317ddeca8b3f08@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MUCSE823.infineon.com (172.23.29.54) To
+ MUCSE827.infineon.com (172.23.29.20)
 
-Hi Nicolas,
+From: Ting-Ying Li <tingying.li@cypress.com>
 
-On Thu, Jul 3, 2025 at 1:12=E2=80=AFAM Nicolas Escande <nico.escande@gmail.=
-com> wrote:
+For WPA3-SAE Connection in EXTSAE mode, the userspace daemon is allowed to
+generate the SAE Auth frames. The driver uses the "mgmt_frame" FW IOVAR to
+transmit this MGMT frame.
 
-> Is this really specific for VHT ? or for HE /EHT as well ?
->
-> > +             switch (width) {
-> > +             case NL80211_CHAN_WIDTH_20_NOHT:
-> Because this seems weird for VHT
-> > +             case NL80211_CHAN_WIDTH_320:
-> And this did not exist for VHT either
->
+Before sending the IOVAR, the Driver is incorrectly treating the channel
+number read from the FW as a frequency value and again attempts to convert
+this into a channel number using ieee80211_frequency_to_channel().
 
-Thanks for the feedback. The intention was to handle VHT opmode notificatio=
-ns,
-as noted in the commit message, but the check incorrectly included widths t=
-hat
-are not valid for VHT, such as 20_NOHT and 320. I will update v2 to reject =
-any
-invalid widths, not just 5 or 10 MHz, and restrict the check to the valid s=
-et
-for VHT: 20, 40, 80, 160, and 80+80.
+This added an invalid channel number as part of the IOVAR request to the FW
+And some FW which strictly expects a valid channel would return BAD_CHAN
+error, while failing to transmit the driver requested SAE Auth MGMT frame.
 
-Best regards,
-Moonhee
+Fix this in the CYW vendor specific MGMT TX cfg80211 ops handler, by not
+treating the channel number read from the FW as frequency value and skip
+the attempt to convert it again into a channel number.
+
+Also fix this in the generic MGMT TX cfg80211 ops handler.
+
+Fixes: c2ff8cad6423 ("brcm80211: make mgmt_tx in brcmfmac accept a NULL channel")
+Fixes: 66f909308a7c ("wifi: brcmfmac: cyw: support external SAE authentication in station mode")
+Signed-off-by: Ting-Ying Li <tingying.li@cypress.com>
+Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+---
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 21 +++++++++++--------
+ .../broadcom/brcm80211/brcmfmac/cyw/core.c    | 19 ++++++++++-------
+ 2 files changed, 23 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 40a9a8177de6..cecaca194979 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -5545,7 +5545,7 @@ brcmf_cfg80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 	struct brcmf_fil_af_params_le *af_params;
+ 	bool ack;
+ 	s32 chan_nr;
+-	u32 freq;
++	u32 hw_channel;
+ 
+ 	brcmf_dbg(TRACE, "Enter\n");
+ 
+@@ -5606,19 +5606,22 @@ brcmf_cfg80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		/* Add the channel. Use the one specified as parameter if any or
+ 		 * the current one (got from the firmware) otherwise
+ 		 */
+-		if (chan)
+-			freq = chan->center_freq;
+-		else
++		if (chan) {
++			chan_nr = ieee80211_frequency_to_channel(chan->center_freq);
++			af_params->channel = cpu_to_le32(chan_nr);
++		} else {
+ 			brcmf_fil_cmd_int_get(vif->ifp, BRCMF_C_GET_CHANNEL,
+-					      &freq);
+-		chan_nr = ieee80211_frequency_to_channel(freq);
+-		af_params->channel = cpu_to_le32(chan_nr);
++					      &hw_channel);
++			af_params->channel = hw_channel;
++		}
++
+ 		af_params->dwell_time = cpu_to_le32(params->wait);
+ 		memcpy(action_frame->data, &buf[DOT11_MGMT_HDR_LEN],
+ 		       le16_to_cpu(action_frame->len));
+ 
+-		brcmf_dbg(TRACE, "Action frame, cookie=%lld, len=%d, freq=%d\n",
+-			  *cookie, le16_to_cpu(action_frame->len), freq);
++		brcmf_dbg(TRACE, "Action frame, cookie=%lld, len=%d, channel=%d\n",
++			  *cookie, le16_to_cpu(action_frame->len),
++			  le32_to_cpu(af_params->channel));
+ 
+ 		ack = brcmf_p2p_send_action_frame(cfg, cfg_to_ndev(cfg),
+ 						  af_params);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
+index c9537fb597ce..57d7c32e517c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
+@@ -113,10 +113,10 @@ int brcmf_cyw_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 	s32 err = 0;
+ 	bool ack = false;
+ 	s32 chan_nr;
+-	u32 freq;
+ 	struct brcmf_mf_params_le *mf_params;
+ 	u32 mf_params_len;
+ 	s32 ready;
++	u32 hw_channel;
+ 
+ 	brcmf_dbg(TRACE, "Enter\n");
+ 
+@@ -143,13 +143,15 @@ int brcmf_cyw_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 	mf_params->len = cpu_to_le16(len - DOT11_MGMT_HDR_LEN);
+ 	mf_params->frame_control = mgmt->frame_control;
+ 
+-	if (chan)
+-		freq = chan->center_freq;
+-	else
++	if (chan) {
++		chan_nr = ieee80211_frequency_to_channel(chan->center_freq);
++		mf_params->channel = cpu_to_le32(chan_nr);
++	} else {
+ 		brcmf_fil_cmd_int_get(vif->ifp, BRCMF_C_GET_CHANNEL,
+-				      &freq);
+-	chan_nr = ieee80211_frequency_to_channel(freq);
+-	mf_params->channel = cpu_to_le16(chan_nr);
++				      &hw_channel);
++		mf_params->channel = hw_channel;
++	}
++
+ 	memcpy(&mf_params->da[0], &mgmt->da[0], ETH_ALEN);
+ 	memcpy(&mf_params->bssid[0], &mgmt->bssid[0], ETH_ALEN);
+ 	mf_params->packet_id = cpu_to_le32(*cookie);
+@@ -159,7 +161,8 @@ int brcmf_cyw_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 	brcmf_dbg(TRACE, "Auth frame, cookie=%d, fc=%04x, len=%d, channel=%d\n",
+ 		  le32_to_cpu(mf_params->packet_id),
+ 		  le16_to_cpu(mf_params->frame_control),
+-		  le16_to_cpu(mf_params->len), chan_nr);
++		  le16_to_cpu(mf_params->len),
++		  le32_to_cpu(mf_params->channel));
+ 
+ 	vif->mgmt_tx_id = le32_to_cpu(mf_params->packet_id);
+ 	set_bit(BRCMF_MGMT_TX_SEND_FRAME, &vif->mgmt_tx_status);
+-- 
+2.43.0
+
 
