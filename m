@@ -1,153 +1,119 @@
-Return-Path: <linux-wireless+bounces-24787-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24788-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B982AAF6C88
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 10:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F84AF6E0C
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 11:02:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8B6B1BC7334
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 08:12:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F3E11C25DF1
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 09:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0022C1586;
-	Thu,  3 Jul 2025 08:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04422D3733;
+	Thu,  3 Jul 2025 09:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZETcyJ2C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bYMp0EcQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AE02C08CC;
-	Thu,  3 Jul 2025 08:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52ABA2D0C94;
+	Thu,  3 Jul 2025 09:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751530337; cv=none; b=EDrItqGeH8BlMZNagbP8RPn42TsLIX2e9n+VIu4tFJGam2Wg2ExTsyu+veltHfUsgDTOLIN9meYaRs1wJGeBbN2WtF7xroOhIxSkmf2Rij5vBrp965QMlZn9+DHPgjr0I/ccSGz9F9fvqqRKoD+kynAQrzmMOBP1iwItG1IIxMo=
+	t=1751533339; cv=none; b=jwn3L00sU3vXLeUksrjTde5aao4GStiinndH76hGWOhgUDx9DdxwggYhdeBoE/hlm0cUSBOVviOrLzrhLPqK8uCJADcxrUdQKkN84dOSMY3/AFsQo+HPD1OaIxYTXYovjslN67Sx24hBTlfzQhorhjZED6iXayMQy5vaw2OHh6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751530337; c=relaxed/simple;
-	bh=gerF8JQWMEdkhKtxPVw/PtBWBbq5eskmcKg3u+ll64w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=JWgUpK2fkA9XfixKOztczQOxZEJOq/fCItcTJOFLSdLED3O8c61UYTVn8+HPHVI0FAsAd7KQDBvtUia1BHgW3SB1YqFKJ5ud2AhkqTToBjLOesDoHWrtYoSRGJSVEbSFjz/tmxBGwelmpTRWIiQaLV7a2DXMtgvXpn52YZvH+qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZETcyJ2C; arc=none smtp.client-ip=209.85.221.43
+	s=arc-20240116; t=1751533339; c=relaxed/simple;
+	bh=r9iNBHzBMwWsOC2LNoiI/v8Ks+Adv9SBboC7T9eoqaU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T6KiExIh5g2KI4wnKn6MNs4rD3m+l7u9wNXCPJo6z6ALFPut65hvcZ5ievSCArVO467yVnfUT3ZLeatIFJLO6WQpw7zj/YSy54NtrrBFP44GrCTaJTKgzom6eG4y3l9CWS9clkBmRsF4eCI6QPEq7mX108yBtEi9TF327RwqIYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bYMp0EcQ; arc=none smtp.client-ip=209.85.128.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a6e8b1fa37so4627134f8f.2;
-        Thu, 03 Jul 2025 01:12:15 -0700 (PDT)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-70e1d8c2dc2so53820497b3.3;
+        Thu, 03 Jul 2025 02:02:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751530334; x=1752135134; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1751533337; x=1752138137; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=n2Amm6SDjKC70sAGhYgLWsL4iEpai6FEV+TRkntvAp0=;
-        b=ZETcyJ2CesOB/5P5LEv16xLTUfjyHayVmHDugtmlmozvFoAvx5fUNJMa7hH30TqOtj
-         qJXWXFeUeIiu5qpS652wb9KODHaWgn2Eq58+glbBbJtWrwGsc88i6jHyY+9Nnx3fn0DT
-         7PZA0NrJ8s7X/LAbSK5qd6ZC3IW/o0penquMgB7VXjSDuNDFv+3hHJUAtTl6DV/5q9Wu
-         qJ6VlobI9HxDwollVC93cIWV9J4pfemnwqJ2b9k2iaM1JPcodPIXDOnKepJvSXGgavLD
-         PiV+0bot6hvBZnhE2JIxJ4bdBQBilYanY7v2/sNzWz9cvznBcq3r3UFAhGhtf/mMurfN
-         co+A==
+        bh=Dua4EX6vICZ4ncNmnpExr5W8cwU+tQuHJtXdNhi/iGU=;
+        b=bYMp0EcQOaK1pbRYdCB0BzQgu8oBFEgJcHeBy+2sBC+7prvtzpiG9b6BeLglvZEJtl
+         Nfo+qdrSMmreJikNYREYUtBVWVID2l4mNRzLSd19AFKSN8DOmj86I4KnhhB4/l8FrQ2r
+         HNDet7iQ8xZkOfpTaG0FAxwQRPbbDzPQ2Tg6t3KYZQqhgW7yCaP92+KMXpCeTmCRHJ3q
+         TuEIe81dV1JHqUXKTL8bbpjLONx6IL3Jkey0Tu8yS5kGAPDsljtd1x+/fegqie2jgj/0
+         SPcRifCk6/wPLgQ6z1zbDYACBz/HoPy38HjJ84jAK3eL/E1QU2CTz9dkNsZFzE2FsZcq
+         ycHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751530334; x=1752135134;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=n2Amm6SDjKC70sAGhYgLWsL4iEpai6FEV+TRkntvAp0=;
-        b=xOn9OJjD+IRNYmCVeieQdml6b2WxsrwoFoMfguszQqP16qm1H7vDawqN0G7KO/cq7w
-         3IUxMTuW3LlWiD7Exkq7CNABgaGjK8J3CghAVzmgDicBIYwLMtyT29/PxcjlGQoMk0xs
-         YZ88+cTSmDFbSkjs8BzCef/Hg8365fpIsyv3UzLDgJHE6yyUXbl7HWZ+I1RFH1FbJt1C
-         ab+cXz0R0KTDyi1BBcoqhSoM2LvORi69hhFCbsjNhgq0WgY4bWnFLKeOfbXcmgfK6yyI
-         +ZU8OVDRp1aeYvbQ3vRnw2QYiBO8fU4pF9P/OiXcKDxq2UouLzv0UBYSn623w7aC4yb3
-         mmzw==
-X-Forwarded-Encrypted: i=1; AJvYcCVlCzJ7R0OTMMHW0UmN/SA6gnMFdzBRMKLpDEUk+1oJufn4psDXuDaGlRGk4mixYGh6CwrCgQiXEXLrDmFIpg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAGxHJm8Oq3ycZ8ryT5CG++3DYDQl5n3hpwmXV7YaejSyl2tcM
-	BCTqcn2f4uYTQard1MH2ZXXlc+vy0A8wEc3Ppzf6+Km3ijGPsK3ZL73y
-X-Gm-Gg: ASbGnctARHmC6KT5NnzmS5Sfm4d07Ch9wAnZj2gY+sZnYJxVyJt+kZ+CAwQEYr+6JGv
-	cPICYuvCcp+I/kZuJzLQBmpTX4ewzHLylCFDrAO0hkk91sgooLgNV4UnkRfk9Anv0R6V5hmZ7tf
-	hp+V/NLZbhnN75aJ4H6FGD5lzkjcf1hsLKHG+NwPlF2f5r6QxmXN1UhMMw3RIw03TsuSJkaDwIA
-	vfsieCqDwp33RFqqG18msr6trJAb2P8Sj8PQi5IJosX6QE+0dikK4jGToqElT8g+QQF6/+a0edI
-	WCBv6USTxkpjPx71MDl5Igs6PxkkhncM2P5fz50JNEtCElvE8oSxd9lTadEmzgdorcMxAHx1Wcl
-	qYqNQ
-X-Google-Smtp-Source: AGHT+IEsq9wzUgl/VuH0s0iIjat6vHpL06Nc9v/cKnSMypsYOplsRyGJHy9CMEXSR8iNqHbAWyjM3A==
-X-Received: by 2002:adf:b60c:0:b0:3a3:71cb:f0bd with SMTP id ffacd0b85a97d-3b32c196f1bmr1505622f8f.23.1751530333868;
-        Thu, 03 Jul 2025 01:12:13 -0700 (PDT)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a892e5972bsm18169702f8f.68.2025.07.03.01.12.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Jul 2025 01:12:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751533337; x=1752138137;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Dua4EX6vICZ4ncNmnpExr5W8cwU+tQuHJtXdNhi/iGU=;
+        b=L2gk/RYxZuhgSIgZQ5kLQ89iYqDgExDr+0Uwi+n8CIIzk7fsd4xh9BcjBsY6G3ViCY
+         J6ECWYcUrV6kQwpxFPukO3kpML/gn7fZmF+d+nXX2MWPgPmUflIvJMkX5MwB0sB7RRON
+         mh8ov8pbV0cEodnukQwqflzYmtDlfarBcJRoQ0hRIzvWrasrBZR3iStuMvYockjfj1+1
+         4/hf1Mp9rmmW1/SE7geKBlp3nP9zZ0M/SyM9kMH2ZVfMmZIdIjxxDHaPHfaOKNMVKQht
+         Sd6oXcH+unbYJUaelvW9rHA85Ivqyi61f/7LjIPhovO/cyHmXU+FOuJVZoPgGdpIGaXt
+         AMjw==
+X-Forwarded-Encrypted: i=1; AJvYcCUQqAJQeII2xB8e28HgHhfZ8mCSGmzWM2u4RRXfeNubtRacFRoJNKDPN5Gl/sAj5WGxF0EFqj1JUqW7/JhAZbU=@vger.kernel.org, AJvYcCWDthsPrxh9y/e9PndDfxyRqrrAiVz+HUpyLRiB8jCaqu0DoP82zuq75bYvWc0mDksQzsMx0d+6006To2o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdPUrMg6oiXCeUMSTiux4LIIgDOi9LYKLBjcR8d/UvTVPSmD1v
+	BD+AMbSWisFb+MBF+f2eau4iaVDi0nKNREFZXaOqlcJKrXWhihDSag3VzvWkdO1DwGZg4chyaF2
+	4SH9RaTdfRzploiikDqXSqqnjITguSBbWFQaYJUo=
+X-Gm-Gg: ASbGncsnvmCKb3ql2NJ5QWhiUiXzL4NjcG4OGa5TqKuZflR7nFwX5dB2fFHOHrQi+gu
+	lTyilCZQpiVJ9lErc1KeiqVZym0Z9oTKNPUIk+Az0hDVnsPEMU7QD29odoixF4IRwlNqamv40t+
+	NtUh/pD8WB7jUSQpG4vUShz/5LVkhYMZf8xyOCZ8/RWAAJxpa/ge7iLGTUNKA/EkJzumqaeAJYZ
+	5m+fu+swkmeVf8=
+X-Google-Smtp-Source: AGHT+IFPagC/bJXD/I8xAFfYmmHWH8z3OLkpesDap76h+qYDoOuGP8g36pSAUapeCBHboIP7KJtMiM5WqD9+MQ8t/7I=
+X-Received: by 2002:a05:690c:fcc:b0:709:197d:5d3c with SMTP id
+ 00721157ae682-7164d2c7e12mr90141507b3.11.1751533337096; Thu, 03 Jul 2025
+ 02:02:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 03 Jul 2025 10:12:12 +0200
-Message-Id: <DB29OMQH4W9Z.1GPKEZBBIRSTS@gmail.com>
-Cc: <linux-kernel@vger.kernel.org>, <linux-kernel-mentees@lists.linux.dev>,
- <syzbot+ededba317ddeca8b3f08@syzkaller.appspotmail.com>
+MIME-Version: 1.0
+References: <20250702065908.430229-2-moonhee.lee.ca@gmail.com> <DB29OMQH4W9Z.1GPKEZBBIRSTS@gmail.com>
+In-Reply-To: <DB29OMQH4W9Z.1GPKEZBBIRSTS@gmail.com>
+From: Moonhee Lee <moonhee.lee.ca@gmail.com>
+Date: Thu, 3 Jul 2025 02:02:06 -0700
+X-Gm-Features: Ac12FXxcX-6zWRjtsp0bKhB4_ffVbC4IS-cAUihVV3UL7VYsPXyWVqyR0taTsEQ
+Message-ID: <CAF3JpA7wM4JBdd6OvGS+hmv0UahcW=h4HrPNDwRNhduk8iKsWw@mail.gmail.com>
 Subject: Re: [PATCH wireless-next] wifi: mac80211: reject VHT opmode for
  unsupported channel widths
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Moon Hee Lee" <moonhee.lee.ca@gmail.com>, <johannes@sipsolutions.net>,
- <linux-wireless@vger.kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250702065908.430229-2-moonhee.lee.ca@gmail.com>
-In-Reply-To: <20250702065908.430229-2-moonhee.lee.ca@gmail.com>
+To: Nicolas Escande <nico.escande@gmail.com>
+Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev, 
+	syzbot+ededba317ddeca8b3f08@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed Jul 2, 2025 at 8:59 AM CEST, Moon Hee Lee wrote:
-> VHT operating mode notifications must not be processed when the channel
-> width is 5 MHz or 10 MHz, as the VHT specification does not support these
-> narrow widths.
+Hi Nicolas,
 
-Hello,
-Is this really specific for VHT ? or for HE /EHT as well ?
+On Thu, Jul 3, 2025 at 1:12=E2=80=AFAM Nicolas Escande <nico.escande@gmail.=
+com> wrote:
 
+> Is this really specific for VHT ? or for HE /EHT as well ?
 >
-> Without validation, a malformed notification using 10 MHz can reach
-> ieee80211_chan_width_to_rx_bw(), triggering a WARN_ON due to the invalid
-> width. This issue was reported by syzbot.
+> > +             switch (width) {
+> > +             case NL80211_CHAN_WIDTH_20_NOHT:
+> Because this seems weird for VHT
+> > +             case NL80211_CHAN_WIDTH_320:
+> And this did not exist for VHT either
 >
-> Reject these widths early in sta_link_apply_parameters() when
-> opmode_notif is used.
->
-> Reported-by: syzbot+ededba317ddeca8b3f08@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3Dededba317ddeca8b3f08
-> Fixes: 751e7489c1d7 ("wifi: mac80211: expose ieee80211_chan_width_to_rx_b=
-w() to drivers")
-> Tested-by: syzbot+ededba317ddeca8b3f08@syzkaller.appspotmail.com
-> Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-> ---
->  net/mac80211/cfg.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->
-> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-> index 56540c3701ed..5a6ae093a8bd 100644
-> --- a/net/mac80211/cfg.c
-> +++ b/net/mac80211/cfg.c
-> @@ -1981,6 +1981,21 @@ static int sta_link_apply_parameters(struct ieee80=
-211_local *local,
->  	ieee80211_sta_init_nss(link_sta);
-> =20
->  	if (params->opmode_notif_used) {
-> +		enum nl80211_chan_width width =3D link->conf->chanreq.oper.width;
-> +
-> +		switch (width) {
-> +		case NL80211_CHAN_WIDTH_20_NOHT:
-Because this seems weird for VHT
-> +		case NL80211_CHAN_WIDTH_20:
-> +		case NL80211_CHAN_WIDTH_40:
-> +		case NL80211_CHAN_WIDTH_80:
-> +		case NL80211_CHAN_WIDTH_160:
-> +		case NL80211_CHAN_WIDTH_80P80:
-> +		case NL80211_CHAN_WIDTH_320:
-And this did not exist for VHT either
-> +			break;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +
->  		/* returned value is only needed for rc update, but the
->  		 * rc isn't initialized here yet, so ignore it
->  		 */
 
+Thanks for the feedback. The intention was to handle VHT opmode notificatio=
+ns,
+as noted in the commit message, but the check incorrectly included widths t=
+hat
+are not valid for VHT, such as 20_NOHT and 320. I will update v2 to reject =
+any
+invalid widths, not just 5 or 10 MHz, and restrict the check to the valid s=
+et
+for VHT: 20, 40, 80, 160, and 80+80.
+
+Best regards,
+Moonhee
 
