@@ -1,164 +1,140 @@
-Return-Path: <linux-wireless+bounces-24796-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24797-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404F8AF7CF0
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 17:56:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A90F0AF7DF8
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 18:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15BC1881679
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 15:55:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A0F24823A9
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Jul 2025 16:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9762E221FC7;
-	Thu,  3 Jul 2025 15:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106262550D2;
+	Thu,  3 Jul 2025 16:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nfZ3Vsip"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UY5FOgby"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0228922173A
-	for <linux-wireless@vger.kernel.org>; Thu,  3 Jul 2025 15:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1FE158535;
+	Thu,  3 Jul 2025 16:35:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751558097; cv=none; b=RAagJ7tUW6Oo5pBWSSBEJiaFQz0u9FuaSL8ePdOjThpk+V0ETtjGqYLHVJlwlRKu8DTq4ulrrztK8+qKfvnbdpT/ogEOJ+QYbJJdZcscFjcFcMI3SK2mHfOBTrdNGjei98vFefZ221ENbFN0Y8/LWjCZ1P/aayGupA7Z+WF9l4Q=
+	t=1751560536; cv=none; b=iHbFtHlUaEXMofunICr+WLBoP2i/0EcIQpqqujDLZ7Cw5zayPa01Mx8yoGuLn8Z7QoGtVctm7x34C9bmdKyMiGNgerYtEaBHs/z3mLrFqyP45/uMlTqYx2kRHf5NSyv95+ih/OaeNPMObIunpYpk7efgpYdKVyxyccJjoULr/48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751558097; c=relaxed/simple;
-	bh=D75uDndTm89/LjoUOIo8PABuNHsIGX5xwyDFq8URPeE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OfIdCeBiqG5kLMtRcjAHpvz03v9GlNI+Ax6eHJCs7S6qUqfSkF/7TMN9KMDqH5fi2h+KLuxHPdvJ1TA52qaZx/4twSmtmmdwNbsgZgaQniLrwS1zfCF19uA7wT5kqpn+0kRmBzF0Wkv9Rcgz6MLUwcUg9gHm/+um5qS5+NjeUQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nfZ3Vsip; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 563DLS3h021104
-	for <linux-wireless@vger.kernel.org>; Thu, 3 Jul 2025 15:54:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	e66gJPAc2xxHrV57qPovzty1Bqs4Qv1z3TiDtg2p3rI=; b=nfZ3Vsip35cjxAb5
-	JzAo3tUZeDQTIonX8+mC0Owgn2JWD7V0yTFXpmHkJcreN+dTQAW+Fq4BV8QiAcrb
-	vWVpnzPtNjKm+AA0Vu+AfOCpybWX/g9PffjjxeGpG0R4M/B830zwU5fobltiNEkK
-	+sJPDwk8nev7WgORZ+/NF5elH0VoU+D8TeHap24y5ypI4EUJnosO2oDWuVeVK2+m
-	Tu9GCm3Zg2N4YpQbkD7cVco0OpQcWu5u89AK4L1ZO2vYBo9Wt0fNm0PoSSFRdqH1
-	DeIC8Qov6epeZCy8XmC39A74YxjejBzAr5c2tq2Z0InXKSVf41Xk8OJiNIStcPpH
-	F57iLw==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47mhxn7pha-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 03 Jul 2025 15:54:54 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b2c36d3f884so1877a12.2
-        for <linux-wireless@vger.kernel.org>; Thu, 03 Jul 2025 08:54:54 -0700 (PDT)
+	s=arc-20240116; t=1751560536; c=relaxed/simple;
+	bh=mitvISWYz9VXM4jc5Q04XMHY5jFnGMTPup9ISmOOkYg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gJ9jpFy10p7Iu7N+ERRQYynpSg0SEr1EHWJq7uLrOmpHIwW+aPbibqKiCZ/1vnL8VLQdbsa+CYmoCAXJYf9xrTJRR2MsP/4atkzdqvnciii+wNCJyQTM2ViKCRA50I01UuSt5Q7bpk+1NCALUZHHtT1h3PX5YoE0hhy/ZjZHG3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UY5FOgby; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-710bbd7a9e2so857b3.0;
+        Thu, 03 Jul 2025 09:35:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751560533; x=1752165333; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=utBS017XFgzQ0zp8Wqpxes+6RofiALZItP1TdxQEbKI=;
+        b=UY5FOgbyBBj+kSSZpBFIsg8aTN3KuofERMODv1/VLegb2csYRXt0QZmyRzLfYM9ApQ
+         kf3XsOC52LXL/+7R3Exf40yz+UjyJjJUsVzqwOVvpbxwys0WMNVdBUgl+nqS7b8oVoiN
+         20Ec8cOnP2vepiTP5KnPMLhfIKMgs52E+MH4N4KhQcyRKfex0afMq1tVN2Ld4Hc4VNe7
+         tnLeFObkdai4YkbtMk1RRP04cHrXBr5lEoW5BrSIEvBmW9vFI5xw1n0amMJaMjfjxc3M
+         TpbSq3/29YLU2hHWk5nmadz/sEOeN7r3PfFQxvWOVly5BN3JwzlL9/n7R3+4jO5EIEhd
+         ampg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751558093; x=1752162893;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e66gJPAc2xxHrV57qPovzty1Bqs4Qv1z3TiDtg2p3rI=;
-        b=OKq9+txnNg9Rlg+klhX9HdnMLYmu1hPer5Ys3hzvsHlE/ijRg65TypljjEFSK2gMNj
-         9nlXVB5pmMYCQUTSJCxvLUXNhD4xNSpWe4W7LzOhnKBH24wzXXJQNceeUJdKe/1BiWS9
-         6NyECjWuNtgKec2jZyvGlPoKiB6/fWK5w33p1iptNcCWNwZDgde6+s92ZDjcahZwoHKv
-         wGJLuV9K0iMcV0ajysbu3vNoF5rVOzaEH2Go/aRnru1sXEjHdd7PX2z7WUvC1ISyV79w
-         vCcQBVzsUiFXQ7Sje6N9d0H6zaNnJkblBO267LOWotntOrv0PfjJGqEoQktUTb5NPQIf
-         5uZQ==
-X-Gm-Message-State: AOJu0Yzx9jnGv/+RbMfxO2EuHPHgLYU64mrh8OWUTRz8soQmeKo7EjZl
-	NyEJQoAycJP2SDnoq75PQlhqEE8MaK5k66gF1r+xexk/j6Pd4DS0iv1vJvqb+FqumEAgoJyYfsb
-	D07KxWHqd/UMKMLfAtzGxgCsN42Of/Bg+xaoUopn+lH0bf1Zq1P/iW5mV8ICXBKPC1e5l06rrR4
-	G9ag==
-X-Gm-Gg: ASbGncuPAr2q11q7/ktcHaOERFSeqjQRCtsNTOfMAclco0nwSE9Q4gR7PsFlpVEWqTo
-	k6chtIiax1+/LR+PrDT1B/yTNnuHO+f9hW0yaHlIZhh3q3UC7gAyvuNqqi3BxJjZNqZndz5/EO2
-	7X+kad9ZSZq0SW9WrWqZCnVaxy/TguceVsm+8+/Ugp3py7yP4vJhjylH1Pjw4hAWii5l00x+J+/
-	1YXa0VIjr89p8vw5EhmYaR4xFB2olca0abHkLZxYY3f9vZyvwDXlpIONXjiPo8yp+r6dz1Gf3qy
-	yNGmIHsyRWl2q87OCxNGRlMbp39k8+jN6t0ryj+1rdN84cky23/ciBTgizbNpWZSSxga8FpufD6
-	oPw==
-X-Received: by 2002:a05:6a20:9d91:b0:222:1802:2ddb with SMTP id adf61e73a8af0-224096f8886mr7277311637.8.1751558093147;
-        Thu, 03 Jul 2025 08:54:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEfovFLKP4ugccyq6pnPkpHs0glNAnh7iMFcqkw0GbaDtFTnQSzrA3bcHKulIzAv25RYx7aCA==
-X-Received: by 2002:a05:6a20:9d91:b0:222:1802:2ddb with SMTP id adf61e73a8af0-224096f8886mr7277279637.8.1751558092718;
-        Thu, 03 Jul 2025 08:54:52 -0700 (PDT)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af540a846sm16542311b3a.31.2025.07.03.08.54.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Jul 2025 08:54:52 -0700 (PDT)
-Message-ID: <20e56c81-8327-49dd-8d5a-09df66a724e6@oss.qualcomm.com>
-Date: Thu, 3 Jul 2025 08:54:50 -0700
+        d=1e100.net; s=20230601; t=1751560533; x=1752165333;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=utBS017XFgzQ0zp8Wqpxes+6RofiALZItP1TdxQEbKI=;
+        b=QRzDwDWir3RHUcWtUxQC7Mz4QINvh2rQSjsBz/phYJjT08Wi+cUkd7Y6NAKbK414nU
+         SW3YQ3yawxLI1+qlZ8zUWQw1ixW5bFYe35uUuumY/18KNHvnYKGb89ImaiSgCfZLmw/7
+         jNK+oeSeHeMwa52ckNXIYFYZikHuhcA7/Up5UisMurmRBBQt0BCtqZheVgVbODatbtUy
+         PM89DU8+8LnVtI9zTxu3CQcQIseYqQcZ6vD0ahwj2kx3S7YpoAFTS55MppokmYdwuQhi
+         pHJjFkBe7XDYWK064pzdXY0gGr2/3T/IcDrOYoVoGIId7kkg8MZaSu04kpjrgbBs9CXR
+         iivg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGIwfUbeWwol2SPRIo21a55i02R8g4zrvirM7m9VAiW0mMXAkpTSevEdPqrIMqPMEU+QAOCyujoA/hZco=@vger.kernel.org, AJvYcCVEsw6Ebqk4kNaDmrgLgxsVPHkk7IGQ3e08DqzOVK1PM1vmY7KNFdiOlFxGfVBgpohMSLJomYoj9bin1hUHZuc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdRiKrnNwY4YxXtEFXeKgoIZutQjY+aFZvopm4dBa0gndmKPAE
+	7Hh0s8U+ggFlhPO/4HhYMI/Yy9e0HcdvuE92IK+jmj0HCGuU3NqSq7HCHD4H4LkiyDRhL/RWBLy
+	tV0Ex+EgsV/I7CwoMu1QjdNwTAuBgTlM=
+X-Gm-Gg: ASbGncthucmBi2+6JPa7lri71tTKa8cXxRdggg9UefJKNc8zRql9wWHdQQu+w0VWpNn
+	72sSal31HOuS1BwP4rAz739Bzl0fh2Sj4aIZ//Wn/mwDpQo2SrvhpJ0tUOM2J7WfRJA7mv67gnl
+	z/QEMXq9byR5Og6p1w9UqFS7Xrs7M5Fdf3UWpQF115MF0lxMeyhm4cD+Vy60xIfl884xrsXjN8e
+	w0=
+X-Google-Smtp-Source: AGHT+IH/iyPTFqL3M3jHfprWGyO2TfoMbrPC7NbrggZ1Yo0bYJAC8QHCPeDEMdhCNBakZBK3OaY2qZtlskNgpVcnuS0=
+X-Received: by 2002:a05:690c:9993:b0:70f:253d:f278 with SMTP id
+ 00721157ae682-7164d2d0f01mr107532887b3.15.1751560533232; Thu, 03 Jul 2025
+ 09:35:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next 0/3] wifi: ath12k: Add 802.11 encap/decap offload
- support
-To: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250530180247.424349-1-nithyanantham.paramasivam@oss.qualcomm.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20250530180247.424349-1-nithyanantham.paramasivam@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAzMDEzMSBTYWx0ZWRfX+62cr5s59d/f
- 1iaWeUBkkQQDs8Ol4qHjZ3nMr5057Oo5vNcyhZG5CpbBi8mpMnUIRYlSxv+hGMDREo6ov1qPMot
- RCe+XLF2NFRDVUbaG51/cFeHoQUg8dagiVsJ1inXDABYIH3WYv1OwoFx8tblgwnJbNJSci1tHiY
- q7hLQ6f0sCj72P9c1+BgPIlrhtQ4emR3AKkh3EDizH2jxBPlrBxPjmkMoTaNVqGVPndYTkzqSN8
- KOtGjbADU1jA2ctQRpbI22vW5jtNAio8BF0IIX6f68wpAeJisq+///+8y9l4I/HA827GFNYe9wz
- Ph8b0DMEbro1neiAOozKVrMp3mtVWx/LowJXX5uhPE6vIpo6JS8b4wtWrLVDtSbaIkQ3VfdDA7B
- wGaUs1h338hTr37AlRHkbtEYuT+AcgIM150QZjnUok0grVst6e2PRCyalkxnjeax2R9XJFhi
-X-Authority-Analysis: v=2.4 cv=EbvIQOmC c=1 sm=1 tr=0 ts=6866a7ce cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=obG9VW9YuJGvX6oOf2IA:9
- a=QEXdDO2ut3YA:10 a=bFCP_H2QrGi7Okbo017w:22
-X-Proofpoint-ORIG-GUID: tNZzyITsM0RzbMRwu4kLPaOdGlr87YQp
-X-Proofpoint-GUID: tNZzyITsM0RzbMRwu4kLPaOdGlr87YQp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-03_04,2025-07-02_04,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=988 lowpriorityscore=0
- malwarescore=0 adultscore=0 clxscore=1015 bulkscore=0 impostorscore=0
- spamscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507030131
+References: <20250702065908.430229-2-moonhee.lee.ca@gmail.com>
+ <DB29OMQH4W9Z.1GPKEZBBIRSTS@gmail.com> <CAF3JpA7wM4JBdd6OvGS+hmv0UahcW=h4HrPNDwRNhduk8iKsWw@mail.gmail.com>
+ <1f13328a55c54fb49d8ca1dd72bc5de23f161ac8.camel@sipsolutions.net> <6ecced8b962cf3a6f5056a87aa3442c49941e74c.camel@sipsolutions.net>
+In-Reply-To: <6ecced8b962cf3a6f5056a87aa3442c49941e74c.camel@sipsolutions.net>
+From: Moonhee Lee <moonhee.lee.ca@gmail.com>
+Date: Thu, 3 Jul 2025 09:35:22 -0700
+X-Gm-Features: Ac12FXwg4u1q7mSzj9AU16Ms01bFVIpviQb0K31UMy7j7IsxJBZgw4Jou9gHLgw
+Message-ID: <CAF3JpA7ZeG5uxLJr1NQBBzF=UZRi4sj4TSfBw=Pvx7xb1NCqTw@mail.gmail.com>
+Subject: Re: [PATCH wireless-next] wifi: mac80211: reject VHT opmode for
+ unsupported channel widths
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Nicolas Escande <nico.escande@gmail.com>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev, 
+	syzbot+ededba317ddeca8b3f08@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 5/30/2025 11:02 AM, Nithyanantham Paramasivam wrote:
-> Currently, the mac80211 layer handles construction and parsing
-> of 802.11 headers during packet transmission and reception.
-> Offloading encapsulation and decapsulation to hardware can
-> significantly enhance performance. This can be achieved by
-> having the driver advertise hardware support to mac80211 to
-> bypass 802.11 header processing
-> 
-> Nithyanantham Paramasivam (3):
->   wifi: ath12k: Fix the handling of TX packets in Ethernet mode
->   wifi: ath12k: Fix TX status reporting to mac80211 when offload is
->     enabled
->   wifi: ath12k: Advertise encapsulation/decapsulation offload support to
->     mac80211
-> 
->  drivers/net/wireless/ath/ath12k/dp_tx.c | 101 +++++++++++++++++++++---
->  drivers/net/wireless/ath/ath12k/mac.c   |   3 +
->  2 files changed, 93 insertions(+), 11 deletions(-)
-> 
-> 
-> base-commit: 3d933084a072fd5fb5da54c06a017abc0412c86f
+Hi Johannes,
 
-I already privately reported this to the developer, but for public awareness
-I've dropped this patch since my laptop fails to connect when the series is
-applied:
+On Thu, Jul 3, 2025 at 8:09 AM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> I'm not entirely sure that'd be correct. 320 MHz can only be used on the
+> 6 GHz band, so clients must be at least HE, but I'm not sure that VHT
+> opmode notification frames are completely illegal for them, even if
+> they'd like use OMI instead.
+>
 
-wlo1: CTRL-EVENT-DISCONNECTED bssid=xx:xx:xx:xx:xx:xx reason=15
-wlo1: WPA: 4-Way Handshake failed - pre-shared key may be incorrect
-wlo1: CTRL-EVENT-SSID-TEMP-DISABLED id=0 ssid=""<my SSID>"" auth_failures=1 duration=10 reason=WRONG_KEY
-<info>  [1750467721.8771] device (wlo1): supplicant interface state: 4way_handshake -> disconnected
-<info>  [1750467721.8773] device (wlo1): Activation: (wifi) disconnected during association, asking for new key
-<info>  [1750467721.8775] device (wlo1): state change: config -> need-auth (reason 'supplicant-disconnect', sys-iface-state: 'managed')
-<info>  [1750467721.8778] device (p2p-dev-wlo1): supplicant management interface state: 4way_handshake -> disconnected
-<warn>  [1750467721.8784] device (wlo1): no secrets: No agents were available for this request.
-<info>  [1750467721.8785] device (wlo1): state change: need-auth -> failed (reason 'no-secrets', sys-iface-state: 'managed')
-<warn>  [1750467721.8789] device (wlo1): Activation: failed for connection '<my SSID>'
-<info>  [1750467721.8792] device (wlo1): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')"
+Understood. That clarifies the case for not filtering out 320 MHz, even when a
+VHT opmode notification is present.
+
+On Thu, Jul 3, 2025 at 8:11 AM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> n/m, it just did that quite explicitly. I really want to get rid of all
+> that 5/10 MHz code, but we still have S1G so that might still happen
+> anyway, and I expect for S1G VHT operating mode notification frames
+> _are_ invalid.
+
+To address this, I plan to reject the set of channel widths that are not valid
+with VHT opmode. This includes all channel widths below 20 MHz, as well as
+20 MHz without HT (20_NOHT), which is also incompatible.
+
+Would the following logic for v2 be acceptable?
+
+    /* reject channel widths not valid with VHT opmode */
+    switch (width) {
+    case NL80211_CHAN_WIDTH_5:
+    case NL80211_CHAN_WIDTH_10:
+    case NL80211_CHAN_WIDTH_1:
+    case NL80211_CHAN_WIDTH_2:
+    case NL80211_CHAN_WIDTH_4:
+    case NL80211_CHAN_WIDTH_8:
+    case NL80211_CHAN_WIDTH_16:
+    case NL80211_CHAN_WIDTH_20_NOHT:
+        return -EINVAL;
+    default:
+        break;
+    }
+
+This allows valid HT/VHT channel widths, including 20, 40, 80, 80+80, 160, and
+320, to pass through while filtering out values that would otherwise trigger a
+WARN_ON.
+
+Best regards,
+Moonhee
 
