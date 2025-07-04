@@ -1,50 +1,50 @@
-Return-Path: <linux-wireless+bounces-24822-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24823-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5548AF93A6
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 15:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D42AF93A9
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 15:08:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808FC188141F
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 13:08:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A17B918817C7
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 13:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C442F7D00;
-	Fri,  4 Jul 2025 13:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CF52D77E5;
+	Fri,  4 Jul 2025 13:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVFxkFs5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utiiFBeC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDA72D77E5
-	for <linux-wireless@vger.kernel.org>; Fri,  4 Jul 2025 13:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F409938DDB
+	for <linux-wireless@vger.kernel.org>; Fri,  4 Jul 2025 13:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751634512; cv=none; b=C/tc3pST+nj/AZtXxlCkJJ4R1aGNDJQ5kOdQlcN3PENtxjqXr9n95AKS/GuQuUcAR1Y2Er+UZP7hmpXtZFs48JOkoIVR78UcFStIu6ohmOU0HS7x7hYohpEf75u4lu98nFPDveLNsxsL2MVkHIO75j+W4KlaP6LuF3oS8ZVj0Ak=
+	t=1751634515; cv=none; b=Q8bznfv0LJo021HKR/GGiPPjge+l4i+D1+5l3WuUPud5zCLRkKsv9F3XYIdCLTkj0uAvl6EBm+vk/ks79mL3eSkFyXi1hyv3JvrTjZsmq6MPW0xM9giZLxpCMi0dmSjpooRyFFfeiJyBeZhBEvGFZLowxPw5Nuq0WahVl0H+pSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751634512; c=relaxed/simple;
-	bh=ILv/QO9c6pKGzlXGfDlAmwZqWVYtSQrj2CTzSCJrX6k=;
+	s=arc-20240116; t=1751634515; c=relaxed/simple;
+	bh=13s+yUJkFfS3KoiwPRRfaKBkp+syuO1jDT4DF9d14Tc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L52cSLcmeTQJ9je1YWltwg8CHGVmGMaBsyYL+p86X0WC7aN8js6sm1FTD+SaQhLtipUYRQPoJj0/O+XOtZ5mtLVm+PJEjCSO9uTNWV9vOE3mRYjCepZyG2Gd7+qYfBIodAt9vrjsMg11KixmXLBHtlsVGgilNmSmkiofgkN5EuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVFxkFs5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CE6C4CEE3;
-	Fri,  4 Jul 2025 13:08:31 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=Pkavk8AePDQb1pL9ydjoYQ/dhm9ywIZkBv8ZcCarcbQLo77KIFfT+CjYVtEmMcJgMxQ3/vwiho0HVHpwEv9VZMkLdU+9qJz/3zxXuczxHBK5o0hKH8YzObt7Q6Qx01VbojtqT3ucFUzOH34l7Ci6Z7hZB2+rnIynQKDBr+aqEkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utiiFBeC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E829C4CEE3;
+	Fri,  4 Jul 2025 13:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751634512;
-	bh=ILv/QO9c6pKGzlXGfDlAmwZqWVYtSQrj2CTzSCJrX6k=;
+	s=k20201202; t=1751634514;
+	bh=13s+yUJkFfS3KoiwPRRfaKBkp+syuO1jDT4DF9d14Tc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=YVFxkFs5oFczlYj9RTnTQrGJ2vZGkCS9vnrgBt2OswslWd2UtKnh/lhknqxxrMGuo
-	 k/EdHY1KwlTa6zelKZ+NQJgaHRfYhq/TtfW9jt3y8VhwXeEs66Pe+2Pya+t8w6KZ+v
-	 tEsZDtfe5vbecBItPX9Wns1pjLKNNeRg8ydLgpr7hOWrHPfLm7U6BH7EhBYvn0iCya
-	 1cr1UAs9AUtl5hzYyBFqy47NXoawz0XIVMbwLj/7WkBJEWltqeqvnj0O5Y8JdcKeWW
-	 aMX8q05Pdf+znpI7k96FxmB44BPfBo6eGmwCgylZlZDOrhl2iAzCMeKbRfUYcA20Xw
-	 GBT/+rimA8MNQ==
+	b=utiiFBeC12pPXuC2G8rvmRsKlTB4bE8w5JKGI3ccQ8SCSpovT3aox5ZW16Zi6bPd3
+	 DZ5di+LFJokeBXGySSgvwQU0dsHctEZU8tEMTOW5pZ5JKG5xFUyfMLGlHiMlcKkElm
+	 gzVK7ga40TznMkN+4OFh2/2MlOmppja0xKxi/oZFZIpYGOQJlD0f9odZPkGSejTqw8
+	 hLsNUfKCu8o59GnK5iShUocwuO9lrQASq9g/GCbH6lZMhI7MeBTM12S2n3MVEFJ/ud
+	 OxDZSNezNHLIe2Rd59H1WT+rrxFC02tM9RnusghgC6BPv87o1OmNHFiSA8cvoPEoIR
+	 MJlgDTaKKbqVw==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Fri, 04 Jul 2025 15:08:07 +0200
-Subject: [PATCH mt76 3/9] wifi: mt76: mt7996: Rely on
- for_each_sta_active_link() in mt7996_mcu_sta_mld_setup_tlv()
+Date: Fri, 04 Jul 2025 15:08:08 +0200
+Subject: [PATCH mt76 4/9] wifi: mt76: mt7996: Do not set wcid.sta to 1 in
+ mt7996_mac_sta_event()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250704-mt7996-mlo-fixes-v1-3-356456c73f43@kernel.org>
+Message-Id: <20250704-mt7996-mlo-fixes-v1-4-356456c73f43@kernel.org>
 References: <20250704-mt7996-mlo-fixes-v1-0-356456c73f43@kernel.org>
 In-Reply-To: <20250704-mt7996-mlo-fixes-v1-0-356456c73f43@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
@@ -65,67 +65,26 @@ Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-mediatek@lists.infradead.org, Lorenzo Bianconi <lorenzo@kernel.org>
 X-Mailer: b4 0.14.2
 
-Reuse for_each_sta_active_link utility macro in
-mt7996_mcu_sta_mld_setup_tlv routine.
+msta_link->wcid.sta is already set to 1 in mt7996_mac_sta_init_link
+routine.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 1bf5632cb0f754d49ec6201254d35652d23c0a8c..0374872db4777cc85eed594f7d977dd822927b6d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2216,15 +2216,15 @@ mt7996_mcu_add_group(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 5283aee619a9811f2e75fa4434ceced9185991f0..d1f90dea512bade652743611b7d062863a63ccfe 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -1119,7 +1119,6 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 				return err;
  
- static void
- mt7996_mcu_sta_mld_setup_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
-+			     struct ieee80211_vif *vif,
- 			     struct ieee80211_sta *sta)
- {
- 	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
--	unsigned long links = sta->valid_links;
--	unsigned int nlinks = hweight16(links);
-+	unsigned int nlinks = hweight16(sta->valid_links);
- 	struct mld_setup_link *mld_setup_link;
-+	struct ieee80211_link_sta *link_sta;
- 	struct sta_rec_mld_setup *mld_setup;
- 	struct mt7996_sta_link *msta_link;
--	struct ieee80211_vif *vif;
- 	unsigned int link_id;
- 	struct tlv *tlv;
- 
-@@ -2242,7 +2242,7 @@ mt7996_mcu_sta_mld_setup_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
- 	mld_setup->primary_id = cpu_to_le16(msta_link->wcid.idx);
- 
- 	if (nlinks > 1) {
--		link_id = __ffs(links & ~BIT(msta->deflink_id));
-+		link_id = __ffs(sta->valid_links & ~BIT(msta->deflink_id));
- 		msta_link = mt76_dereference(msta->link[link_id], &dev->mt76);
- 		if (!msta_link)
- 			return;
-@@ -2250,9 +2250,8 @@ mt7996_mcu_sta_mld_setup_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
- 	mld_setup->seconed_id = cpu_to_le16(msta_link->wcid.idx);
- 	mld_setup->link_num = nlinks;
- 
--	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
- 	mld_setup_link = (struct mld_setup_link *)mld_setup->link_info;
--	for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
-+	for_each_sta_active_link(vif, sta, link_sta, link_id) {
- 		struct mt7996_vif_link *link;
- 
- 		msta_link = mt76_dereference(msta->link[link_id], &dev->mt76);
-@@ -2344,7 +2343,8 @@ int mt7996_mcu_add_sta(struct mt7996_dev *dev,
- 		mt7996_mcu_sta_muru_tlv(dev, skb, link_conf, link_sta);
- 
- 		if (sta->mlo) {
--			mt7996_mcu_sta_mld_setup_tlv(dev, skb, sta);
-+			mt7996_mcu_sta_mld_setup_tlv(dev, skb, link_conf->vif,
-+						     sta);
- 			mt7996_mcu_sta_eht_mld_tlv(dev, skb, sta);
- 		}
- 	}
+ 			msta_link->wcid.tx_info |= MT_WCID_TX_INFO_SET;
+-			msta_link->wcid.sta = 1;
+ 			break;
+ 		case MT76_STA_EVENT_AUTHORIZE:
+ 			err = mt7996_mcu_add_sta(dev, link_conf, link_sta,
 
 -- 
 2.50.0
