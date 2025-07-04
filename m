@@ -1,235 +1,132 @@
-Return-Path: <linux-wireless+bounces-24828-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24829-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21E0AF93B2
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 15:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4148AF99F8
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 19:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C25234A3F63
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 13:09:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 416235A75E6
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 17:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937E92F94B4;
-	Fri,  4 Jul 2025 13:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TG3HQW/E"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0452D9487;
+	Fri,  4 Jul 2025 17:44:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEA02F9484
-	for <linux-wireless@vger.kernel.org>; Fri,  4 Jul 2025 13:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240902D8381
+	for <linux-wireless@vger.kernel.org>; Fri,  4 Jul 2025 17:44:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751634528; cv=none; b=NojGpdPplFNj7BEMeCvQ/juOe1X5xMlgFZIKXZ06Must1gK6T5TsXlJ5e/13U2XbuNxZRf0EhFMqcFfYvOZhPIq3poYyWd8pb2iinNYKj5v1kFVt7PKwR8DvA4ZRNUBbf1CBSSCMTgSNBORKYPQgbMEmpwpEDeM0b/Pi6netGxc=
+	t=1751651071; cv=none; b=HEk29mpNWhZhfdvpSUeg522Mg08V6JtEVJ+6sX9assLyNJt+tJiQYCKNnH3Z+ubXF/GNyJpRNxzDOCkd7YjdxrasQd/fprmbIYd013nRq3VSvxCCtmDtzOSSlC09zmZKUWmWhdQa12rMo3eTN7IjuoB596ER5FNYdYDNxXlPaso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751634528; c=relaxed/simple;
-	bh=MNN957gl/XvFVsV+v94sSjjJXgimNA11TE2gLceFiKQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RQMpSoSiKO103iX2McxHIM6N7XAN00vb9BrFb+o+l+7Cyq3BOSwK9acd2sULO1bSLUBlTgLhKIYKepl3zlZ3g/5GVU3bVAT5RKggF4+w8UM17ZBd9gg7cX4ZA+ZZCOG2zcloHF98ypSWbMhVdIfcDCtU+vuA5TTRclMj+qbGNcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TG3HQW/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75A6C4CEE3;
-	Fri,  4 Jul 2025 13:08:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751634528;
-	bh=MNN957gl/XvFVsV+v94sSjjJXgimNA11TE2gLceFiKQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=TG3HQW/EXwpyrvLIWf6ZxyjxUFkliXFdXt15xnEykwu04weKly1VM4PwNr+fLibXf
-	 K+bJiEpO7FTZa26CNyBzErF05GIHjXfYO4XJPLBmpViE3YppgkfbwH/fkTe8k9NPID
-	 V2XfO22p92pgMGv19e2oYvPzXlXxydGtanQIVbvUfc1YYVU44I0JdmrIAcOdBgvKKq
-	 6wiPLvX7B7tI97scXnclJr/hojA9GTKLEJI/0rrqZv8r057uDIe7Q1Qs/QBDU0Mjfw
-	 R/hRXxHEqOxPw5awKfcOALD6YksJ1hAnFaNJVvZD1Z2VaQCWQTjUyerwwgC6IPku7M
-	 Ji705VbFK2l6A==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Fri, 04 Jul 2025 15:08:13 +0200
-Subject: [PATCH mt76 9/9] wifi: mt76: mt7996: Move num_sta accounting in
- mt7996_mac_sta_{add,remove}_links
+	s=arc-20240116; t=1751651071; c=relaxed/simple;
+	bh=+XClgXfK5539UpfpVJ0FXUXY6s0Q6GsORz9dYVHVAt0=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=RpqISjN2Wdq4r2DaIV6gbLRRdF6NdO11MzdMHK/+zqISgOvLDRiDfvXqHZilR1uhcUX6fFaDcNRzUVm2idoJcRnPa/XqZOQbvZnKYxhMD2oLhub9/LUNKqTYG8Y1dzNGQS8kubMS7mbR4XmLwQWKJ19Qx8XdffLRlOaYkF6ZRUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3ddc5137992so10189365ab.2
+        for <linux-wireless@vger.kernel.org>; Fri, 04 Jul 2025 10:44:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751651069; x=1752255869;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6reEAjZbC0EFOta4hsE/f6/3JFK1KtUWT6rEBCyeXtM=;
+        b=INk8lyadd4qOwUUM0TlzYfRT/yTSRK3Wm2yBzF8qfcAtZqkv0dOu+2ibp9uS6oDsv9
+         24ZH4+28i9wdeOVAEfolQGLK9NcxW63ubpEPGJKuCqM/jr8x+1zmF30HRrvJhi4GaccG
+         hp3Dx8Vd/Xgv2QeqtNmX56Bq9Xtigk1HaBcS5OBufIAY2yzDiGeFeB3wjFJnA0tB94js
+         EMSPDydz4tfrdJW6Ci3dbXyyvPuZyyHcaniz7VaRTbwK1xVAwcsdwCUCVyQIW5AURAs2
+         HegdUiJp4bXAhD0poUrFUfhOtR4lNF0VgcZJOSK1xOeDLgow/up3fy4R1daMvgCLS+SZ
+         PnOg==
+X-Forwarded-Encrypted: i=1; AJvYcCUc5ZYiBK8hAgTyvpvz8UFF+zitF0/dfko8N0ROBNfps6jtQGSHRIA145pYLwkD7nDG8ssYt1MVcWIsDoXRVw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwNuE+fPYEh/bmy3wwkCge/40COUbBSHB5pfErTtoWsmEE2Jy1
+	55jkL7Ms29PBRvNKRjXl5NJfqrUv7WBN4zkASEQDmYMygsven10Ki29AUbPmpEOr7N/nqozFao4
+	Y8RZ1ZVwj58BGFWewRsK2HHL+VdxsA8NjhYc0QL+r1gZ6mLPIG1lBXPoH6ZM=
+X-Google-Smtp-Source: AGHT+IGxnkF+jK9kcfbeYVAYPmNFQGpp0HxbAR/UMkQSYP3VAXKmHVJI7VOExp4skgFZmmGT0iL2Btc8ZkLaAqmbYCZ6V27EfVd8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250704-mt7996-mlo-fixes-v1-9-356456c73f43@kernel.org>
-References: <20250704-mt7996-mlo-fixes-v1-0-356456c73f43@kernel.org>
-In-Reply-To: <20250704-mt7996-mlo-fixes-v1-0-356456c73f43@kernel.org>
-To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Bo Jiao <Bo.Jiao@mediatek.com>, Peter Chiu <chui-hao.chiu@mediatek.com>
-Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.2
+X-Received: by 2002:a05:6e02:2591:b0:3df:3222:278e with SMTP id
+ e9e14a558f8ab-3e136ea4bf6mr30724205ab.1.1751651069283; Fri, 04 Jul 2025
+ 10:44:29 -0700 (PDT)
+Date: Fri, 04 Jul 2025 10:44:29 -0700
+In-Reply-To: <682602fd.a00a0220.a2f23.01d0.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <686812fd.a00a0220.c7b3.0020.GAE@google.com>
+Subject: Re: [syzbot] [wireless?] WARNING in mac80211_hwsim_sta_rc_update
+From: syzbot <syzbot+c0472dd80bb8f668625f@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Move phy num_sta accounting in mt7996_mac_sta_add() and
-mt7996_mac_sta_remove() routines in order to take into account all
-possibles MLO links.
+syzbot has found a reproducer for the following issue on:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+HEAD commit:    4c06e63b9203 Merge tag 'for-6.16-rc4-tag' of git://git.ker..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=16f94582580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b29b1a0d7330d4a8
+dashboard link: https://syzkaller.appspot.com/bug?extid=c0472dd80bb8f668625f
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13f66c8c580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12497ebc580000
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-4c06e63b.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/ff61efc838cb/vmlinux-4c06e63b.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/dea44d0d14bb/bzImage-4c06e63b.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c0472dd80bb8f668625f@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+intf 08:02:11:00:00:01 [link=0]: bad STA 00:00:00:ff:ff:ff bandwidth 20 MHz (0) > channel config 10 MHz (7)
+WARNING: CPU: 0 PID: 176 at drivers/net/wireless/virtual/mac80211_hwsim.c:2653 mac80211_hwsim_sta_rc_update+0x6f5/0x860 drivers/net/wireless/virtual/mac80211_hwsim.c:2650
+Modules linked in:
+CPU: 0 UID: 0 PID: 176 Comm: kworker/u4:4 Not tainted 6.16.0-rc4-syzkaller-00123-g4c06e63b9203 #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: events_unbound cfg80211_wiphy_work
+RIP: 0010:mac80211_hwsim_sta_rc_update+0x6f5/0x860 drivers/net/wireless/virtual/mac80211_hwsim.c:2650
+Code: 71 17 00 00 48 c7 c7 c0 ae 2d 8c 48 8b 74 24 28 89 ea 48 8b 4c 24 10 41 89 d8 45 89 f9 41 56 50 e8 d0 df 8f fa 48 83 c4 10 90 <0f> 0b 90 90 e9 0c ff ff ff e8 2d 37 cc fa 90 0f 0b 90 e9 fe fe ff
+RSP: 0018:ffffc90001a07768 EFLAGS: 00010282
+RAX: 2b7aa56dabf85f00 RBX: 0000000000000014 RCX: ffff888000b5a440
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000002
+RBP: 0000000000000000 R08: ffff88801fc24293 R09: 1ffff11003f84852
+R10: dffffc0000000000 R11: ffffed1003f84853 R12: 0000000000000000
+R13: dffffc0000000000 R14: 0000000000000007 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff88808d21c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffec31d80b8 CR3: 000000001216d000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ mac80211_hwsim_sta_add+0xa3/0x310 drivers/net/wireless/virtual/mac80211_hwsim.c:2670
+ drv_sta_add net/mac80211/driver-ops.h:466 [inline]
+ drv_sta_state+0x8be/0x1840 net/mac80211/driver-ops.c:155
+ sta_info_insert_drv_state net/mac80211/sta_info.c:775 [inline]
+ sta_info_insert_finish net/mac80211/sta_info.c:883 [inline]
+ sta_info_insert_rcu+0xd32/0x1940 net/mac80211/sta_info.c:960
+ ieee80211_ocb_finish_sta net/mac80211/ocb.c:102 [inline]
+ ieee80211_ocb_work+0x31f/0x580 net/mac80211/ocb.c:136
+ cfg80211_wiphy_work+0x2df/0x460 net/wireless/core.c:435
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3321
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
+ kthread+0x70e/0x8a0 kernel/kthread.c:464
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 58 +++++++++++++-----------
- 1 file changed, 32 insertions(+), 26 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index ea0cdd092a3f396c2a8cb655ff941b833fb9983e..f846b8309ae2e9c39f9d5f2a21ca1edd89dcdf0c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -960,8 +960,8 @@ mt7996_mac_sta_deinit_link(struct mt7996_dev *dev,
- }
- 
- static void
--mt7996_mac_sta_remove_links(struct mt7996_dev *dev, struct ieee80211_sta *sta,
--			    unsigned long links)
-+mt7996_mac_sta_remove_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
-+			    struct ieee80211_sta *sta, unsigned long links)
- {
- 	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
- 	struct mt76_dev *mdev = &dev->mt76;
-@@ -969,6 +969,8 @@ mt7996_mac_sta_remove_links(struct mt7996_dev *dev, struct ieee80211_sta *sta,
- 
- 	for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
- 		struct mt7996_sta_link *msta_link = NULL;
-+		struct mt7996_vif_link *link;
-+		struct mt76_phy *mphy;
- 
- 		msta_link = rcu_replace_pointer(msta->link[link_id], msta_link,
- 						lockdep_is_held(&mdev->mutex));
-@@ -976,6 +978,15 @@ mt7996_mac_sta_remove_links(struct mt7996_dev *dev, struct ieee80211_sta *sta,
- 			continue;
- 
- 		mt7996_mac_sta_deinit_link(dev, msta_link);
-+		link = mt7996_vif_link(dev, vif, link_id);
-+		if (!link)
-+			continue;
-+
-+		mphy = mt76_vif_link_phy(&link->mt76);
-+		if (!mphy)
-+			continue;
-+
-+		mphy->num_sta--;
- 		if (msta->deflink_id == link_id) {
- 			msta->deflink_id = IEEE80211_LINK_UNSPECIFIED;
- 			continue;
-@@ -997,6 +1008,7 @@ mt7996_mac_sta_add_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 		struct ieee80211_bss_conf *link_conf;
- 		struct ieee80211_link_sta *link_sta;
- 		struct mt7996_vif_link *link;
-+		struct mt76_phy *mphy;
- 
- 		if (rcu_access_pointer(msta->link[link_id]))
- 			continue;
-@@ -1023,12 +1035,19 @@ mt7996_mac_sta_add_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 					       link_id);
- 		if (err)
- 			goto error_unlink;
-+
-+		mphy = mt76_vif_link_phy(&link->mt76);
-+		if (!mphy) {
-+			err = -EINVAL;
-+			goto error_unlink;
-+		}
-+		mphy->num_sta++;
- 	}
- 
- 	return 0;
- 
- error_unlink:
--	mt7996_mac_sta_remove_links(dev, sta, new_links);
-+	mt7996_mac_sta_remove_links(dev, vif, sta, new_links);
- 
- 	return err;
- }
-@@ -1045,7 +1064,7 @@ mt7996_mac_sta_change_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 
- 	mutex_lock(&dev->mt76.mutex);
- 
--	mt7996_mac_sta_remove_links(dev, sta, rem);
-+	mt7996_mac_sta_remove_links(dev, vif, sta, rem);
- 	ret = mt7996_mac_sta_add_links(dev, vif, sta, add);
- 
- 	mutex_unlock(&dev->mt76.mutex);
-@@ -1054,25 +1073,21 @@ mt7996_mac_sta_change_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- }
- 
- static int
--mt7996_mac_sta_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
-+mt7996_mac_sta_add(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 		   struct ieee80211_sta *sta)
- {
--	struct mt76_dev *mdev = mphy->dev;
--	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
- 	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
- 	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
- 	unsigned long links = sta->valid_links ? sta->valid_links : BIT(0);
- 	int err;
- 
--	mutex_lock(&mdev->mutex);
-+	mutex_lock(&dev->mt76.mutex);
- 
- 	msta->deflink_id = IEEE80211_LINK_UNSPECIFIED;
- 	msta->vif = mvif;
- 	err = mt7996_mac_sta_add_links(dev, vif, sta, links);
--	if (!err)
--		mphy->num_sta++;
- 
--	mutex_unlock(&mdev->mutex);
-+	mutex_unlock(&dev->mt76.mutex);
- 
- 	return err;
- }
-@@ -1150,19 +1165,14 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- }
- 
- static void
--mt7996_mac_sta_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
-+mt7996_mac_sta_remove(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 		      struct ieee80211_sta *sta)
- {
--	struct mt76_dev *mdev = mphy->dev;
--	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
- 	unsigned long links = sta->valid_links ? sta->valid_links : BIT(0);
- 
--	mutex_lock(&mdev->mutex);
--
--	mt7996_mac_sta_remove_links(dev, sta, links);
--	mphy->num_sta--;
--
--	mutex_unlock(&mdev->mutex);
-+	mutex_lock(&dev->mt76.mutex);
-+	mt7996_mac_sta_remove_links(dev, vif, sta, links);
-+	mutex_unlock(&dev->mt76.mutex);
- }
- 
- static int
-@@ -1170,20 +1180,16 @@ mt7996_sta_state(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		 struct ieee80211_sta *sta, enum ieee80211_sta_state old_state,
- 		 enum ieee80211_sta_state new_state)
- {
--	struct mt76_phy *mphy = mt76_vif_phy(hw, vif);
- 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
- 	enum mt76_sta_event ev;
- 
--	if (!mphy)
--		return -EINVAL;
--
- 	if (old_state == IEEE80211_STA_NOTEXIST &&
- 	    new_state == IEEE80211_STA_NONE)
--		return mt7996_mac_sta_add(mphy, vif, sta);
-+		return mt7996_mac_sta_add(dev, vif, sta);
- 
- 	if (old_state == IEEE80211_STA_NONE &&
- 	    new_state == IEEE80211_STA_NOTEXIST)
--		mt7996_mac_sta_remove(mphy, vif, sta);
-+		mt7996_mac_sta_remove(dev, vif, sta);
- 
- 	if (old_state == IEEE80211_STA_AUTH &&
- 	    new_state == IEEE80211_STA_ASSOC)
-
--- 
-2.50.0
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
