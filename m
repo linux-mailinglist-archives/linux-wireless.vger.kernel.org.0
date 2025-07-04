@@ -1,48 +1,79 @@
-Return-Path: <linux-wireless+bounces-24817-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24818-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF98AF8B56
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 10:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45734AF8F39
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 11:54:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A03123ABB43
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 08:21:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFF444A2478
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 09:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910E52FE333;
-	Fri,  4 Jul 2025 08:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB0E2EAD11;
+	Fri,  4 Jul 2025 09:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N1qsomdR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kY/EH/fV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7342FD896;
-	Fri,  4 Jul 2025 08:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B3728689A
+	for <linux-wireless@vger.kernel.org>; Fri,  4 Jul 2025 09:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751616211; cv=none; b=j6vb5X36/rOOppaF1+qiZUgC7Tf4J2gDBFQiKc13FLcKZ9Qe6QwO+jhAg/f/Yz2FgD1k8QRWMs9onVuGSPXY7z4tUcb2iYdwf9SSZSI68aBlTq+0jRNv6H7xXzfQVfwwumdEaiiijzyamjiHlXBZvKa7kEMXtwnxVJPa+leuCNw=
+	t=1751622845; cv=none; b=pd66IbzuXsgbjZL9CWQ4cs8aD8KkBJwwu4/ftvYOgLemTQEx+LkMZTUwAVcXXzXE9psfPdba+l+jFvRq+hcV7vPG62F9TYyLBnW8Ivtlf0Qvx/sClz7wuRYwrs5aqnWWCM+9mq5HeUnFPOJUGnHnoPRgspMwjkXQ1t0jn4z+FVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751616211; c=relaxed/simple;
-	bh=QxxkEyOjJNJTCeb7MO7040oT6nQ1b7SDESRmzDTEDKs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bxgyMgqJ4vs8dWJZGgjCkZ0VnA8iRDdUoy2Wjj4P+qejicqd4MFQtrnNSFEsySoxL45dVB7vfDYRO1HXyt+fCTiMv+QQSOpMKFEfHxvxD1pDKjQr9cJknirTldOEDyrJIpbQ5givJNBFam7Wtec3fp0rXpFgKMgyzfHeUKs2CwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N1qsomdR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEDCC4CEE3;
-	Fri,  4 Jul 2025 08:03:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751616211;
-	bh=QxxkEyOjJNJTCeb7MO7040oT6nQ1b7SDESRmzDTEDKs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=N1qsomdRgikUv2usvSotFco33ECoxLfxcchjZk+oiSAbMOxa2aHP5kf0wsJNtv9db
-	 lcxJoIhNhYe1dXmrJjRzQAsioexf3QWdtq+PZYh3bkAw+N6tezq/zbVqE0MhfgDWxk
-	 EfOwKC6jR0DP3bd/9islJHOz9PZCWK6fPsttHOCSBszqny3tfc6A2unpiji9u6RmQD
-	 wdSPGquUu8+lkp913B/aAb3n1ckC6maIHICTSMc90SQ+rK8UKnhjfx7MHVgLWu+xKK
-	 2HkwabcqyJ60RD28ZvzVCZVDgjphS2yXtXnu0G1/6cUrxkJZ6nqzESKTkIREZgVwEJ
-	 THx5uOkLMCQTg==
-Message-ID: <51feb545-42a4-4f8b-a983-59104980f97d@kernel.org>
-Date: Fri, 4 Jul 2025 10:03:27 +0200
+	s=arc-20240116; t=1751622845; c=relaxed/simple;
+	bh=7tofie9Z+QIqWJE/gxd4Qq7/YWCs23ub0OH8ynlX3gE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Qm60hTVgtF434M+JNb4NpihygjCKiV8kyoXyIix/bDqHzt85I5G2uXDC2E7YW894hRChwdbwmKUP1YY+1CSDuEm1m9OoSoDzGCjMWhtLnc+jWsQXKiTX/O3dKo/KYrhuZgdnI7elB7NXGO42XWciQ6o4dnHHkujXNGErx3+tlDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kY/EH/fV; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4530921461aso5173555e9.0
+        for <linux-wireless@vger.kernel.org>; Fri, 04 Jul 2025 02:54:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751622842; x=1752227642; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=B9KVe91w703mNefwUBfD3/84oRiZ024EdtbQhOcD4Bc=;
+        b=kY/EH/fVAEjWmNnrfxowV4+rfHSvgFnW1/f2ZobElTfYRLV885z6GIXZa++mWN1C3+
+         lwhLcpM/T1SQ+5cvpxDsT4x/OwI9bPDMD7GJZnpR6H7MLGC5TpN5O2v750i076RDE6jc
+         B2VbqS0FFA1DDbpzOeZoQo315ZrPjWX+g310HUVVqlOTVTTWEMce/yGX1JWV8GI0puVU
+         xU9JzH4x5so+pAPMWam96RIf4pGSc26UIZ75U0ZBZ1o2KC0FamdCsaSvN7mA+y0u+UHE
+         vUEBueDL/0C7IHGV/30VhJF906j9S70nVkzHviJP/eNu5+ekcEnv7WSbZnLqS1ffQAgl
+         MxRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751622842; x=1752227642;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B9KVe91w703mNefwUBfD3/84oRiZ024EdtbQhOcD4Bc=;
+        b=O06WwkHab85awC6fAAe7Mky5dJG/H7vaVp/7THfu/OMMvorBHkMzyBO7UmFLtVC4ev
+         aS0UMdsw5eaYZwx3TS8c7Auo94hOfj9tcgjolHe4WuJ/87FiX2+a5v+9iArz0uj39xQc
+         CTdypu4LNgPFSG4jxODdj7BMZAoJarTbwT7imTmftzSLhqCmmtEsQk+e3VDB7MS+Ztcn
+         wLNkq2P9oqD+te7LoESdn9cgvD7yVYg5dt+SMdSGsxzX0e7C64Xk+dkkyAy7i+T+AlAZ
+         xFPTjgQ2MXUmqcJdwWMfLTHfvZeMucVygPqorobFDInle1B0gkCNokRmlrr5YQbkS2Xo
+         xpLg==
+X-Forwarded-Encrypted: i=1; AJvYcCVhkyGXslvr0eRs/b7mUFOKuz88objQqkX9IqtFHl83MfViOeWUH5TQqimNzkUijU5vsSnIYJ91wY+Pjzyf+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrD1z41ZzUvfZYw4AXQn3rNIWZ1hy/yMQVwYf+Tk6BVu+cp+Oz
+	yD04TeAxfGKh44Wue8Kira3xVZpQmuhvnFs6yhYKCD5zdhpAS8ha1bRL
+X-Gm-Gg: ASbGncv7xASEFYeJj2uqBnW2aBnTZsAikqf1r+S0TR73fZXBTOhsOk4Usm2X7TZixtX
+	yfy72tYOXiC9dMRl9Xm4h6JMRWFYKLiqQ9voNAtDobE0Mp/cMW20qbR56kcmGoIRECVzXJWBFvP
+	BP7dqnoGct/6cqeVa7mKR87o9aUI48vxbIlv9S0iWoB6XlH8bKso0spdDXrumFKDVYnNpquW20I
+	us7j3lYbA7BqnBvGA8uYh0z73nqgZlK68RHXIxFivjoAws/geFpd4zV1EKzRfe3itSHJEfGopWu
+	RMwQKEBeMrpXrSNx8gtEwUCeWAn1NieVPf74N2sY9vVZmkiccF0S6CnwnTj8C7w3GYVcoQ==
+X-Google-Smtp-Source: AGHT+IHjh9Wuiwk+Utg9B3miPDJZruZhMqKtNZJarrSvQnqYFHu9WZ1KzyVIwKUtNxbb/Inq2I1jDA==
+X-Received: by 2002:adf:e18d:0:b0:3a9:16d5:cacc with SMTP id ffacd0b85a97d-3b4966023b6mr1360907f8f.49.1751622841565;
+        Fri, 04 Jul 2025 02:54:01 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454a9bcececsm50900175e9.23.2025.07.04.02.54.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Jul 2025 02:54:01 -0700 (PDT)
+Message-ID: <727d5933-7b6f-4c6b-a7d6-9a5c0606fd46@gmail.com>
+Date: Fri, 4 Jul 2025 12:53:59 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,82 +81,71 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 50/80] nfc: trf7970a: Remove redundant
- pm_runtime_mark_last_busy() calls
-To: Sakari Ailus <sakari.ailus@linux.intel.com>,
- Mark Greer <mgreer@animalcreek.com>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
- <20250704075439.3221036-1-sakari.ailus@linux.intel.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH rtw-next v4 01/14] wifi: rtw89: 8851b: Accept USB devices
+ and load their MAC address
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <7880bca2-17de-4d55-93a1-16977dd6502e@gmail.com>
+ <6b2a1382-3be4-4038-8005-cf96922e4332@gmail.com>
+ <69ad0a30-b5f6-4312-b4f4-317d715d5a25@RTEXMBS04.realtek.com.tw>
+ <dde8077adb654294901a42ac078e5751@realtek.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250704075439.3221036-1-sakari.ailus@linux.intel.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <dde8077adb654294901a42ac078e5751@realtek.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 04/07/2025 09:54, Sakari Ailus wrote:
-> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-> pm_runtime_mark_last_busy().
+On 04/07/2025 06:36, Ping-Ke Shih wrote:
+> Ping-Ke Shih <pkshih@realtek.com> wrote:
+>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>
+>>> Make rtw8851b_read_efuse() accept USB devices and load the MAC address
+>>> from the correct offset.
+>>>
+>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+>>
+>> 14 patch(es) applied to rtw-next branch of rtw.git, thanks.
+>>
+>> 4b6ea5a38197 wifi: rtw89: 8851b: Accept USB devices and load their MAC address
+>> ee47816f24a1 wifi: rtw89: Make dle_mem in rtw89_chip_info an array
+>> 82870ba25f32 wifi: rtw89: Make hfc_param_ini in rtw89_chip_info an array
+>> 3c63450c8723 wifi: rtw89: Add rtw8851b_dle_mem_usb{2,3}
+>> 02a44c263031 wifi: rtw89: Add rtw8851b_hfc_param_ini_usb
+>> a3b871a0f7c0 wifi: rtw89: Disable deep power saving for USB/SDIO
+>> ec542d5e4bf6 wifi: rtw89: Add extra TX headroom for USB
+>> 0740c6beefae wifi: rtw89: Hide some errors when the device is unplugged
+>> e906a11753c9 wifi: rtw89: 8851b: Modify rtw8851b_pwr_{on,off}_func() for USB
+>> e2b71603333a wifi: rtw89: Fix rtw89_mac_power_switch() for USB
+>> ed88640ea1ac wifi: rtw89: Add some definitions for USB
+>> bd569751baff wifi: rtw89: Add usb.{c,h}
 > 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
-> The cover letter of the set can be found here
-> <URL:https://lore.kernel.org/linux-pm/20250704075225.3212486-1-sakari.ailus@linux.intel.com>.
+> My work flow missed to build newly added usb.c, causing sparse warning.
 > 
-> In brief, this patch depends on PM runtime patches adding marking the last
-> busy timestamp in autosuspend related functions. The patches are here, on
-> rc2:
+> Fixed by:
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
+> index 72870a80f801..6cf89aee252e 100644
+> --- a/drivers/net/wireless/realtek/rtw89/usb.c
+> +++ b/drivers/net/wireless/realtek/rtw89/usb.c
+> @@ -210,7 +210,7 @@ static void rtw89_usb_write_port_complete(struct urb *urb)
+>                 txdesc = (struct rtw89_txwd_body *)skb->data;
+> 
+>                 txdesc_size = rtwdev->chip->txwd_body_size;
+> -               if (u32_get_bits(txdesc->dword0, RTW89_TXWD_BODY0_WD_INFO_EN))
+> +               if (le32_get_bits(txdesc->dword0, RTW89_TXWD_BODY0_WD_INFO_EN))
+>                         txdesc_size += rtwdev->chip->txwd_info_size;
+> 
+>                 skb_pull(skb, txdesc_size);
+> 
+> And push out (force update):
+> 
+> ed88640ea1ac wifi: rtw89: Add some definitions for USB
+> 2135c28be6a8 wifi: rtw89: Add usb.{c,h}
+> 52cf44323785 wifi: rtw89: Add rtw8851bu.c
+> 0030088148d5 wifi: rtw89: Enable the new USB modules
 > 
 
-You did not send cover letter to people, so this changelog should
-explain what I should do with this patch (what is the merging/dependency).
-
-Best regards,
-Krzysztof
+Thank you for fixing that. I ran sparse on v3, but I must have forgotten
+to run it on v4.
 
