@@ -1,49 +1,50 @@
-Return-Path: <linux-wireless+bounces-24820-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24821-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32553AF93A4
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD3ABAF93A5
 	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 15:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56A107B5BD5
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 13:07:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0702A17FCB1
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Jul 2025 13:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8031D2F50B0;
-	Fri,  4 Jul 2025 13:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268402D9EE5;
+	Fri,  4 Jul 2025 13:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="anzXzF2u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P4HHiL8S"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FFF2D63E8
-	for <linux-wireless@vger.kernel.org>; Fri,  4 Jul 2025 13:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0212A2D9488
+	for <linux-wireless@vger.kernel.org>; Fri,  4 Jul 2025 13:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751634507; cv=none; b=Uinb1anwISnBo43hCmfWbpL1dZZ9SyOvCTFO4dlbA1PYqBlyIE//BOhcyVh1B5b60V5y4tXaF8u7X5/Qt3iJr/8xXRJLVk7hYK540oPJMlUDys30O9uKpUgQ1vThoFy2o0L42dPSj+1N0l5CypLFcwD8FXwUqQN+vSiLV4E5Q2I=
+	t=1751634510; cv=none; b=gUKGvghXQ+vhD8XG6KnpWRlfYVruJptrv5baFsXw2gSKH80xsHyYh21rAn/6R5T7YQIqyaLaHAcVqy+YwmoiyDaVrS2YcOov1e+wz/CD2ITJM/vAZ+z/+cS9mJk+f59OYc2AuoYvIToLSH8VXt9pOfvbFm+2KvGlOHhBBRMQa84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751634507; c=relaxed/simple;
-	bh=tQbN0zpDKtZUkhv/MpLlcCccFqUgkW64nZndPIHZEfQ=;
+	s=arc-20240116; t=1751634510; c=relaxed/simple;
+	bh=Tqd6c2PBuvH0+CD+jJ53eqF3MMSBYOHgiwjdQEVbvJg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Yl2pM72Q51gjUg3vavb3gCjVVpX/NhvBcYLyv1RSwajN5JFOX9YXjAt93Eht2kh9kUg+vQMpdOJKRJqpQchBvaAIREoe+Hk1rwE30rCZIuTj/Kfh6HXkrTcW8XUapiG62vKENkRaV/zcSffImoOS6FgFzpdoRClWzpW4oFp/Ww4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=anzXzF2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EABAC4CEE3;
-	Fri,  4 Jul 2025 13:08:26 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=cUtbcRjP0TJ/Skp1r6K9BzzGOXaPpRIGgPWPo/kyd6OdiQm8c2/X/icY6vxWQLDYlw+Ge1Rl1tuiK9Bz2m6wAJfUVmUmHVj2+yk0c4hs0Bj1v4ws2Xvop4tK0CqumhcwNGw5nqI1ixwDbZblPOJbYCnHoX32so+ABiFjFF9iOpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P4HHiL8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BA9C4CEE3;
+	Fri,  4 Jul 2025 13:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751634507;
-	bh=tQbN0zpDKtZUkhv/MpLlcCccFqUgkW64nZndPIHZEfQ=;
+	s=k20201202; t=1751634509;
+	bh=Tqd6c2PBuvH0+CD+jJ53eqF3MMSBYOHgiwjdQEVbvJg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=anzXzF2uMEeKjaXubq2vr+o1Z7qkBGyYRG8NnDMFZjsAS97unymxdNGhOc/dMEgQF
-	 LPVTDBCkbTypHKFZ1Sy1TpmG+/e1XEkYmNXTnf76JqeRvGF4B9wJXdZxDeUD4gwCbx
-	 85lTxmunxhPgLQGfv99kyBbinH5gsHyAMcLTP4RGaHADZLUGAyFnRXZMshq8LeB599
-	 aMS+Z6AC3lJlyOX6FMFdFrQb0ymYcdAL3SOrH0if4xNa6NSSPqehmNKcDOrT2JEdmt
-	 +Oul4BJruit9wb5uZA52gIuQFpoGAjVfUk//kF+gvEzqGHhgCPljHN3iYmltiHSuLe
-	 tIggKCmSRq4/Q==
+	b=P4HHiL8S0fid99gDAM/Ju/gve81njtuioaHPOpZXNN196xJDpjEOXF8OyR2+Ju+8D
+	 5NaHh+e5FOwmezX0iSHaUWaogNU1ByowWfYp972EhseAqjUKYR35kgdQEHnG7xSpxG
+	 ozi/mnANdDxkXYJy4jzgaddfO1+QReMUDUjj9PlUComKK/fMpaWpTT3w2ZssLE9k1m
+	 RYuy+9S01Ruk9wKT8NN50i3cSWWNyonfIw5WZuqNMGvAHvOehD8F/If+NPmJnjRaPy
+	 Xti5lBb943WKCT60csqa5nkR0jiwzZ/5pFTQKNV4zFe5eB6OxQDMnBt99vRSOXxlwT
+	 VMG4vSOd+96Vw==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Fri, 04 Jul 2025 15:08:05 +0200
-Subject: [PATCH mt76 1/9] wifi: mt76: fix vif link allocation
+Date: Fri, 04 Jul 2025 15:08:06 +0200
+Subject: [PATCH mt76 2/9] wifi: mt76: mt7996: Fix secondary link lookup in
+ mt7996_mcu_sta_mld_setup_tlv()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -52,7 +53,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250704-mt7996-mlo-fixes-v1-1-356456c73f43@kernel.org>
+Message-Id: <20250704-mt7996-mlo-fixes-v1-2-356456c73f43@kernel.org>
 References: <20250704-mt7996-mlo-fixes-v1-0-356456c73f43@kernel.org>
 In-Reply-To: <20250704-mt7996-mlo-fixes-v1-0-356456c73f43@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
@@ -61,63 +62,32 @@ To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
  Bo Jiao <Bo.Jiao@mediatek.com>, Peter Chiu <chui-hao.chiu@mediatek.com>
 Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org
+ linux-mediatek@lists.infradead.org, Lorenzo Bianconi <lorenzo@kernel.org>
 X-Mailer: b4 0.14.2
 
-From: Felix Fietkau <nbd@nbd.name>
+Use proper link_id value for secondary link lookup in
+mt7996_mcu_sta_mld_setup_tlv routine.
 
-Reuse the vif deflink for link_id = 0 in order to avoid confusion with
-vif->bss_conf, which also gets a link id of 0.
-
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 00cef41d9d8f5 ("wifi: mt76: mt7996: Add mt7996_mcu_sta_mld_setup_tlv() and mt7996_mcu_sta_eht_mld_tlv()")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/channel.c | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt76.h    | 5 ++++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/channel.c b/drivers/net/wireless/mediatek/mt76/channel.c
-index cc2d888e3f17a58512e6282686b446109ec7ab3c..77b75792eb488e9c5da9ca8026c04157182c13a4 100644
---- a/drivers/net/wireless/mediatek/mt76/channel.c
-+++ b/drivers/net/wireless/mediatek/mt76/channel.c
-@@ -173,13 +173,13 @@ void mt76_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 	if (!mlink)
- 		goto out;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index f0adc0b4b8b6ccdc6ce11991a4d99b89500fe7a9..1bf5632cb0f754d49ec6201254d35652d23c0a8c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2243,8 +2243,7 @@ mt7996_mcu_sta_mld_setup_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
  
--	if (link_conf != &vif->bss_conf)
-+	if (mlink != (struct mt76_vif_link *)vif->drv_priv)
- 		rcu_assign_pointer(mvif->link[link_id], NULL);
- 
- 	dev->drv->vif_link_remove(phy, vif, link_conf, mlink);
- 	mlink->ctx = NULL;
- 
--	if (link_conf != &vif->bss_conf)
-+	if (mlink != (struct mt76_vif_link *)vif->drv_priv)
- 		kfree_rcu(mlink, rcu_head);
- 
- out:
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 14927a92f9d1b313253158c0e53dce8fab9fba18..022d83bb03da1803440c942c9343b709d76aecd4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1865,6 +1865,9 @@ mt76_vif_link(struct mt76_dev *dev, struct ieee80211_vif *vif, int link_id)
- 	struct mt76_vif_link *mlink = (struct mt76_vif_link *)vif->drv_priv;
- 	struct mt76_vif_data *mvif = mlink->mvif;
- 
-+	if (!link_id)
-+		return mlink;
-+
- 	return mt76_dereference(mvif->link[link_id], dev);
- }
- 
-@@ -1875,7 +1878,7 @@ mt76_vif_conf_link(struct mt76_dev *dev, struct ieee80211_vif *vif,
- 	struct mt76_vif_link *mlink = (struct mt76_vif_link *)vif->drv_priv;
- 	struct mt76_vif_data *mvif = mlink->mvif;
- 
--	if (link_conf == &vif->bss_conf)
-+	if (link_conf == &vif->bss_conf || !link_conf->link_id)
- 		return mlink;
- 
- 	return mt76_dereference(mvif->link[link_conf->link_id], dev);
+ 	if (nlinks > 1) {
+ 		link_id = __ffs(links & ~BIT(msta->deflink_id));
+-		msta_link = mt76_dereference(msta->link[msta->deflink_id],
+-					     &dev->mt76);
++		msta_link = mt76_dereference(msta->link[link_id], &dev->mt76);
+ 		if (!msta_link)
+ 			return;
+ 	}
 
 -- 
 2.50.0
