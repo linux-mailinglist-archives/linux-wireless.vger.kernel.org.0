@@ -1,136 +1,120 @@
-Return-Path: <linux-wireless+bounces-24858-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24859-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B725AFA7FE
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Jul 2025 23:43:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F43AFA82E
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 00:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFB443B7A31
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Jul 2025 21:42:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DFA73B8C8E
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Jul 2025 22:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EA62BE7CB;
-	Sun,  6 Jul 2025 21:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8874A1EF36B;
+	Sun,  6 Jul 2025 22:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eNo9iAVx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UaIqaj+b"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9F31E8335;
-	Sun,  6 Jul 2025 21:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C755846F;
+	Sun,  6 Jul 2025 22:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751838083; cv=none; b=Sso4q7M1kdWHsq7S3u3Gg43Z0yNajexu9aabusXdQhpwtCvICw1Vc/VVOTV+FlVNbEwP24vIfCtPmyPLfCGsKLlIwNi5Ahs6XowPyRBf9D4bxQW+OAlcMIxpQGAh7DX1wjjLkKJbJOkh4ATBu+Nq9Pt4ct2z3Yekmm0js+zb4ck=
+	t=1751840989; cv=none; b=HYr87vCEgaDHM7IhQv0eyxT0GRRY9Ncxfmh56YURSAS42sSSQQ3/SnVUqGQH1veZ497AIA6O06C0+MR74ypw5Sg38z785orOnyPPtp9ETlzg/imYGeyAtmtfb1G/H/TH700ZHvnpj9kdnjd2ROB56R/XzVDH5GWZGlrbU5dZA6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751838083; c=relaxed/simple;
-	bh=oso3s84HHIL4dE7V1UAH+9yd50ezAj1vpkwyK51jz3M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQXu9/stezz9MNqQDLdCZwNpRzFsgcVDwW2I3r4xAUs0IPgp7Xo6QKSYOJs9bdQxONJs42ywlKunzKl3C02P1KYKV8CteunMprqp4uXHey5ArOoZeMkH+vzPldncBrF/4fUcJUYk5Pmvhsy3xNdCBa1M869NJvYgIt/WWqnpmIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eNo9iAVx; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-74b54cead6cso1488432b3a.1;
-        Sun, 06 Jul 2025 14:41:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751838081; x=1752442881; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RvZgwDhd8R+31/oVgTrgK7V+PUBtSsqxq+ciLntuUVw=;
-        b=eNo9iAVx3h26F51EjW9ES7u7jGyMg0T3E+20kHdefK8iN+/ZswlboQ4IWssKcxEZrb
-         QyfuDGViAyLP2UV2EEO2aj31/tx+TkB1m0A/uMz7MFViYKfQx7n39UpcvYWOntbIqZ6G
-         mdID9Ypc2phcVW+rriSB7VcJPLkCvaqbDrU/LpS50SvdaMolhPe1M65BnLz52XCERqh7
-         PO9byeMEctY5qXRc7riTC4FsUlqVrieqm4egmME8Lhbg/dv7E+FeQ+FGkEbN6ll2ee0u
-         nlIQLpidHg5i1Pgh2VUI6R7kPbTmc69G1uVqnR7hmGbs29ZZahKO4RItWbw5VVEpB3t/
-         KrqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751838081; x=1752442881;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RvZgwDhd8R+31/oVgTrgK7V+PUBtSsqxq+ciLntuUVw=;
-        b=HltTuGNYzLSXoIR0z9BtybciNjmzeAkDWO8fqIDXRTVLqUAtSXMOfhdX8AztEfbjZ8
-         aEvw4NIUOR2cq8bClCVwwIaArfbjjpyTGzR0A31BssIKwh2E8b3JFViXHI2+pBYAWYFo
-         iEdaItaXyubHOFP4IlleVvgZ4ugiYFUyEblzEn01oMefOP95uTOybIiGfvxvjh4KwwAo
-         9T+62sfvfUxnxIdj6/8VMeGkASSZWnfJDBbIfN0M5Y7OeKPRzW8l6A7M8E9xAVLJtRv3
-         fRGJIGRPmaImehIN7Dl0mm6+6ARAPjTth0THPmx1Aw6VX9TFprAORkTtKRyX0ve9rBYK
-         2ckw==
-X-Forwarded-Encrypted: i=1; AJvYcCUWmFK6BB1oggFUXs70tQ2FGjEHcv/8wE25o7amL86FymminxZ5fDnojWhsfeRNAJbB97SRdW5ppxrZIR+5@vger.kernel.org, AJvYcCVaQjNRMvEYNTiiiZDP+jg01y4ElaFlEygh2YpySXhVTeo2XchWsNVMUDbIxwhSFvMgmzUamZ0uQamlEQ==@vger.kernel.org, AJvYcCWqxcdZEoaUR/G4p90Mm/7P3WpjxsRgfNrsGCms5GN125YlqaZmNftKbzzC7PunnMs9sS7nPpFyj/K8@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNPFEx1NVCzxHnOFCRiIxVBSomll79+A2Y28tqNuTv2cPqJFvp
-	Bs8FgqLPVsjlOZD2QURTYTx77GbZm82dqXKjkEpYxNT/JPAeWrHI5bEd8VVmGv3dOFc=
-X-Gm-Gg: ASbGnctwO1h7pnREFWg+xMe77pNpX2TkCPR/u813bJtEThug9BtznbWuJyYejdjt6AL
-	08Pm2tnK6oVIAWRrp+b5kzxtwZFRvO/tTx2CEAsOuULoQxHSSCrZB4UXUSk5Eg32tWJJ6eOT5IQ
-	nH+7/5hw0/WrFYzm4BKU6kaXy11HQod6NeNmFXlE4WVXtgtSPPo8IZGVmZnEb1+SPVU2BjnK1sh
-	q9WkFqfyYbf8ikpk8Ab88MB2I0VxXfdl45oLGcrd3HEQml+vkKKbtWyVUoMDMRn8ltkhN3Oxmwb
-	bscdOMlOb6unNFjJXWtQoOqUXMOQ6RGu95LoxDWi1iQ=
-X-Google-Smtp-Source: AGHT+IEphJnWnMpJ5IZuXkzIdAl/4PySIfNR7SCiDO+NvDhnTpiFTe9sAWW/ka2hDv/gm3VHHolLYQ==
-X-Received: by 2002:a05:6a21:3282:b0:21e:7d1b:4401 with SMTP id adf61e73a8af0-225b9484b0bmr16419609637.22.1751838081538;
-        Sun, 06 Jul 2025 14:41:21 -0700 (PDT)
-Received: from archlinux.lan ([2601:644:8200:dab8::1f6])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74cfad75020sm4126416b3a.109.2025.07.06.14.41.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Jul 2025 14:41:21 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	yangshiji66@qq.com,
-	ansuelsmth@gmail.com,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list),
-	linux-mips@vger.kernel.org (open list:MIPS),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Mediatek SoC support),
-	linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC support)
-Subject: [PATCH 6/6] MIPS: dts: ralink: mt7628a: add wifi binding
-Date: Sun,  6 Jul 2025 14:41:11 -0700
-Message-ID: <20250706214111.45687-7-rosenp@gmail.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250706214111.45687-1-rosenp@gmail.com>
-References: <20250706214111.45687-1-rosenp@gmail.com>
+	s=arc-20240116; t=1751840989; c=relaxed/simple;
+	bh=+FqcxieyCSl/BmyJUx6uOpbHQwdGTCBbRvnIJVsyPnQ=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=Lh+QP1I4C6Skgtuw5c4mDZCit3r5HQuM1jEnHR2udsQ21w/oACqJKPYpi9ucFqcuvhm6lAqfDMSGEujRMtEPxDnnc1eA8Ul0opZaRwhqmKdTwAfXUalKGLL/PtZftCxmDhn0U2b8w6zeHyUlviYzgjkHAteElmYxUHQlD8Cw3/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UaIqaj+b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD28C4CEED;
+	Sun,  6 Jul 2025 22:29:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751840988;
+	bh=+FqcxieyCSl/BmyJUx6uOpbHQwdGTCBbRvnIJVsyPnQ=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=UaIqaj+bE2PNvlzxHFsU8bKx/TvQ3nxBydLq7fyxyT/z8TiiGRP9154ikYh0K54sb
+	 Z4EZ6WP+xlLWwTRPFvI279+Mu0sNBBWRDyf93thd0x4XgRbRAi9/899cayp1axI3Qq
+	 EX4yMhpZd/Sy8d7UosGDsR4TuLoxLRVpwwKSuDeFL1+akM2+E1ByWZ4LcnDzOzltDM
+	 hTeuVRd+gUQpuOtJ8lda/i58I8WztFNzGk0pcu9nmY2i4NZ116tt+L4mOTB4wA4T13
+	 B1BO2f0YH9Xirjm5Vwyc9JwduiRJwc5yaCwXeqfw6fTuID9y6HlDM1XEm5tFvl3eg0
+	 U+xUMsY5ribCA==
+Date: Sun, 06 Jul 2025 17:29:47 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-mips@vger.kernel.org, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, ansuelsmth@gmail.com, 
+ Conor Dooley <conor+dt@kernel.org>, Stanislaw Gruszka <stf_xl@wp.pl>, 
+ linux-mediatek@lists.infradead.org, 
+ Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, yangshiji66@qq.com
+To: Rosen Penev <rosenp@gmail.com>
+In-Reply-To: <20250706214111.45687-6-rosenp@gmail.com>
+References: <20250706214111.45687-1-rosenp@gmail.com>
+ <20250706214111.45687-6-rosenp@gmail.com>
+Message-Id: <175184098772.672740.2328928098872646704.robh@kernel.org>
+Subject: Re: [PATCH 5/6] dt-bindings: net: wireless: rt2800: add
 
-MT7620A devices all contain a wifi device as part of the SOC. Add it
-here to get it working.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- arch/mips/boot/dts/ralink/mt7620a.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+On Sun, 06 Jul 2025 14:41:10 -0700, Rosen Penev wrote:
+> Add device-tree bindings for the RT2800 SOC wifi device found in older
+> Ralink/Mediatek devices.
+> 
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  .../bindings/net/wireless/ralink,rt2800.yaml  | 49 +++++++++++++++++++
+>  1 file changed, 49 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
+> 
 
-diff --git a/arch/mips/boot/dts/ralink/mt7620a.dtsi b/arch/mips/boot/dts/ralink/mt7620a.dtsi
-index d66045948a83..460164bdd430 100644
---- a/arch/mips/boot/dts/ralink/mt7620a.dtsi
-+++ b/arch/mips/boot/dts/ralink/mt7620a.dtsi
-@@ -62,4 +62,14 @@ uartlite@c00 {
- 			reg-shift = <2>;
- 		};
- 	};
-+
-+	wmac: wifi@10180000 {
-+		compatible = "ralink,rt2880-wifi";
-+		reg = <0x10180000 0x40000>;
-+
-+		clocks = <&sysc 16>;
-+
-+		interrupt-parent = <&cpuintc>;
-+		interrupts = <6>;
-+	};
- };
--- 
-2.50.0
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml:43:5: [warning] wrong indentation: expected 2 but found 4 (indentation)
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml: ignoring, error in schema: examples
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml: examples: 'wifi@110180000 { compatible = "ralink,rt2880-wifi"; reg = <0x10180000 0x40000>; clocks = <&sysc 16>; interrupt-parent = <&cpuintc>; interrupts = <6>; };' is not of type 'array'
+	from schema $id: http://json-schema.org/draft-07/schema#
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml: examples: 'wifi@110180000 { compatible = "ralink,rt2880-wifi"; reg = <0x10180000 0x40000>; clocks = <&sysc 16>; interrupt-parent = <&cpuintc>; interrupts = <6>; };' is not of type 'array'
+	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml: properties:interrupt-parent: False schema does not allow {'maxItems': 1}
+	from schema $id: http://devicetree.org/meta-schemas/interrupts.yaml#
+Error: Documentation/devicetree/bindings/net/wireless/ralink,rt2800.example.dts:19.5-6 syntax error
+FATAL ERROR: Unable to parse input tree
+make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/bindings/net/wireless/ralink,rt2800.example.dtb] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1525: dt_binding_check] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250706214111.45687-6-rosenp@gmail.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 
