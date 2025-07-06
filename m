@@ -1,176 +1,96 @@
-Return-Path: <linux-wireless+bounces-24847-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24848-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92318AFA1A3
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Jul 2025 21:58:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AABAFA333
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Jul 2025 07:13:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09DC2483357
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Jul 2025 19:58:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 857EA7A94C2
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Jul 2025 05:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA6E226D0F;
-	Sat,  5 Jul 2025 19:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9597C19343B;
+	Sun,  6 Jul 2025 05:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKlcUgtR"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="NUYyb6Yv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ADD16DEB3;
-	Sat,  5 Jul 2025 19:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3691386DA
+	for <linux-wireless@vger.kernel.org>; Sun,  6 Jul 2025 05:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751745528; cv=none; b=JxxkBM9AE/O65OfGQyjgNVA+66kN23vklqem5yvNq8lCeX60IS5ohww6zTFLmHxojbQvAnZNXaYxlAYNevPRwcv8v9OwrK2GwzdP/148O0FmWVzB2ZIhd8q9LNYd9v9734ARlO4HJ/lDdYr7QeUQRfvGGibj5UTw8/pE7mOhYIU=
+	t=1751778805; cv=none; b=pyxJvzVm/Lu//sSnCIR0I/mqUsFJYoz4M6NYpltOtObWKXiZMo1liXGbW7symUttmjWYteIdzQDIT9SQik5bK1fI9pIO/ybd5ugT95QC92i4obL64o7v3dpDoQvdghK1M/CYvNJe+VCcu6cCN8NZeAPaKX4pSFHWI68MLbmKsyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751745528; c=relaxed/simple;
-	bh=Xztashzz8S3rALHR7n+WkyY0p7wV1/pTuPU/AVjSB2M=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=G+3+h+7RF6zFZIIYSUIzrNmJeZm6k0JOSG88kAaCAew1fwG4GTgL0usoWPPrUdDe1fJJYTm4EFsFwBTi2Rkm8FmK4qSbl0xgg2Yhcl9gTdTOuggPyrLBcIeZygBahnkFM/Uif6es1m36LVHaeE2VfRiYxlEqeJd7poihkITI9UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKlcUgtR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF56AC4CEE7;
-	Sat,  5 Jul 2025 19:58:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751745528;
-	bh=Xztashzz8S3rALHR7n+WkyY0p7wV1/pTuPU/AVjSB2M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=FKlcUgtR8BPpPMDvBeSXGB2Ct5v8ELniZ9+JhPcv0Hb1o1OWTgBVLS2DyNUmFOqza
-	 Y5lv22XMc/zfJ94wwaLJ4zcioveFQSIXQkAeQkeVKxvhawKfd/0FdTI8bEQRjXERN+
-	 C5l/Q0DyVop2JqjR3w8b3sPyqT5iipwjWczVmqBcHLrwaiyMDLEcZpCZZDH/C4HnOj
-	 DolwZDLT96eFLEf4p6CGMhK3D3NVVMZtWib27BmwgJjb1jXsf+JcKJktZFA/DDYScM
-	 Inbq7BCi5+6jnCMNNl8C4Us9hm6SdXw+B6kurqjNjsGjU+62/m920s8831cq6oKCnn
-	 TT/f6BHgfi5qQ==
-Date: Sat, 5 Jul 2025 14:58:46 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
-	linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being
- disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
-Message-ID: <20250705195846.GA2011829@bhelgaas>
+	s=arc-20240116; t=1751778805; c=relaxed/simple;
+	bh=cRs4nt2/uMGOIJV3cgwwou6RQ4wheKW8zcvpYgqN3UY=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=Q/1A+tstfGnk0h/8fJQjSNlnUS6HXK2qRqMqiHoAISMCg0LfimfBcm6zEqRrjeylztTopFZSdMNuUVoW6c6XJon/MqkkCNfNU7KQyTyJMWpIKUuHWgxDpBv2J9pYpYWjkVlAJJZVj/nJu7m7N6oOO8uaT0eOCjawEyKZJxSY3qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=NUYyb6Yv; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5665DIglC3356637, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1751778798; bh=TesPmotCaij+exXSd9eprIgsJAMKgfUY2Rh2xyYVfj8=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date;
+	b=NUYyb6YvkR9/eSat+GOc+/Jq2a4d5zh7ATaOhWS5/75f3LNb7OSORemeYCByuamah
+	 ysyOTAywjkFkffZa92FkZHvvwysyC0skl2h+xCcFEliGszq8HSHFpQvTbeHC9hw71U
+	 BTrxZ2RHAqgF03XLlLUxk4WJsuc6DJ6JZIayxARZOjRF3TjCIwZ3/+sha+yt+WZmjs
+	 CiwZ8KWUBH2FipdgSvqaTmW1tPbMt2PJdIv2fLAJ6AmYOK25XDOnUrL/PsSgQR+9tt
+	 /1BLy1BlgYGhQLbVI23z6QchsFms2XULqXOd9T/SKiouGkDgrd8R/fzrqC8mMwH98o
+	 PT8eJVhT8W5gw==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 5665DIglC3356637
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 6 Jul 2025 13:13:18 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sun, 6 Jul 2025 13:13:44 +0800
+Received: from [127.0.1.1] (10.22.225.182) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sun, 6 Jul
+ 2025 13:13:43 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [PATCH rtw-next v2 1/6] wifi: rtw89: 8852bx: Accept USB devices and load their MAC address
+In-Reply-To: <1f58d168-67a9-4d86-9e6a-73789c7a59f4@gmail.com>
+References: <e6538194-116b-49b6-b2d5-2dbc69aa1a11@gmail.com> <1f58d168-67a9-4d86-9e6a-73789c7a59f4@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEmM+QjHnU0h3HtWH8AXP05k2dTYozu81eRxn45HVEUSRG8jLw@mail.gmail.com>
+Content-Type: text/plain
+Message-ID: <075f5134-1d97-4138-8680-6292c4b0bc6e@RTEXMBS04.realtek.com.tw>
+Date: Sun, 6 Jul 2025 13:13:43 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On Sat, Jul 05, 2025 at 08:30:46PM +0530, Bandhan Pramanik wrote:
-> Hello,
+Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+
+> Make __rtw8852bx_read_efuse() accept USB devices and load the MAC
+> address from the correct offset.
 > 
-> The dmesg log (the older one) is present here:
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-[1]:
-> https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/78460e6931a055b6776afe756a95d467913d5ebd/dmesg.log
-> 
-> The newer dmesg log includes the first line and is not overwritten by
-> the ring buffer (used pci=noaer in this case):
-> https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/78460e6931a055b6776afe756a95d467913d5ebd/updated-dmesg
->  (The newer one doesn't have the error recorded).
-> 
-> You should check out the older dmesg, the quoted line was taken from
-> there verbatim, including any additional details.
-> 
-> Bandhan
-> 
-> On Sat, Jul 5, 2025 at 7:20 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> >
-> > On Sat, Jul 05, 2025 at 01:00:23AM +0530, Bandhan Pramanik wrote:
-> > > Hi everyone,
-> > >
-> > > Here after a week. I did my research.
-> > >
-> > > I talked to some folks on IRC and the glaring issue was basically this:
-> > >
-> > > > [ 1146.810055] pcieport 0000:00:1c.0: AER: Uncorrectable (Fatal) error message received from 0000:01:00.0
+6 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-From [1]:
+5e9184ae7207 wifi: rtw89: 8852bx: Accept USB devices and load their MAC address
+0980de01da08 wifi: rtw89: 8852b: Fix rtw8852b_pwr_{on,off}_func() for USB
+b57b556a02e6 wifi: rtw89: 8852b: Add rtw8852b_dle_mem_usb3
+f56b4446d07a wifi: rtw89: 8852b: Add rtw8852b_hfc_param_ini_usb
+0ed2a8b1a14e wifi: rtw89: Add rtw8852bu.c
+4b295f4fdc80 wifi: rtw89: Enable the new rtw89_8852bu module
 
-  [ 1146.810055] pcieport 0000:00:1c.0: AER: Uncorrectable (Fatal) error message received from 0000:01:00.0
-  [ 1146.810069] ath10k_pci 0000:01:00.0: AER: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Inaccessible, (Unregistered Agent ID)
-  [ 1146.813130] ath10k_pci 0000:01:00.0: AER: can't recover (no error_detected callback)
-  [ 1146.948066] pcieport 0000:00:1c.0: AER: Root Port link has been reset (0)
-  [ 1146.948112] pcieport 0000:00:1c.0: AER: device recovery failed
-  [ 1146.949480] ath10k_pci 0000:01:00.0: failed to wake target for read32 at 0x0003a028: -110
+---
+https://github.com/pkshih/rtw.git
 
-I think Linux is not doing a very good job of extracting error
-information.  I think is_error_source() read PCI_ERR_UNCOR_STATUS from
-01:00.0 and saw an error logged, but aer_get_device_error_info()
-declined to read PCI_ERR_UNCOR_STATUS again because we thought the
-link was unusable, so aer_print_error() didn't have any info to print,
-hence the "Inaccessible" message.
-
-Are you able to rebuild a kernel with the patch below?  This is based
-on v6.16-rc1 and likely wouldn't apply cleanly to your v6.14 kernel.
-But if you are able to build v6.16-rc1 with this patch, or adapt it to
-v6.14, I'd be interested in the output.
-
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 70ac66188367..99acb1e1946e 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -990,6 +990,8 @@ static bool is_error_source(struct pci_dev *dev, struct aer_err_info *e_info)
- 	if ((PCI_BUS_NUM(e_info->id) != 0) &&
- 	    !(dev->bus->bus_flags & PCI_BUS_FLAGS_NO_AERSID)) {
- 		/* Device ID match? */
-+		pci_info(dev, "%s: bus_flags %#x e_info->id %#04x\n",
-+			 __func__, dev->bus->bus_flags, e_info->id);
- 		if (e_info->id == pci_dev_id(dev))
- 			return true;
- 
-@@ -1025,6 +1027,10 @@ static bool is_error_source(struct pci_dev *dev, struct aer_err_info *e_info)
- 		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, &status);
- 		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK, &mask);
- 	}
-+	pci_info(dev, "%s: %s STATUS %#010x MASK %#010x\n",
-+		 __func__,
-+		 e_info->severity == AER_CORRECTABLE ? "COR" : "UNCOR",
-+		 status, mask);
- 	if (status & ~mask)
- 		return true;
- 
-@@ -1368,6 +1374,8 @@ int aer_get_device_error_info(struct aer_err_info *info, int i)
- 	aer = dev->aer_cap;
- 	type = pci_pcie_type(dev);
- 
-+	pci_info(dev, "%s: type %#x cap %#04x\n", __func__, type, aer);
-+
- 	/* Must reset in this function */
- 	info->status = 0;
- 	info->tlp_header_valid = 0;
-@@ -1383,16 +1391,14 @@ int aer_get_device_error_info(struct aer_err_info *info, int i)
- 			&info->mask);
- 		if (!(info->status & ~info->mask))
- 			return 0;
--	} else if (type == PCI_EXP_TYPE_ROOT_PORT ||
--		   type == PCI_EXP_TYPE_RC_EC ||
--		   type == PCI_EXP_TYPE_DOWNSTREAM ||
--		   info->severity == AER_NONFATAL) {
--
-+	} else {
- 		/* Link is still healthy for IO reads */
- 		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
- 			&info->status);
- 		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,
- 			&info->mask);
-+		pci_info(dev, "%s: UNCOR STATUS %#010x MASK %#010x\n",
-+			 __func__, info->status, info->mask);
- 		if (!(info->status & ~info->mask))
- 			return 0;
- 
-@@ -1471,6 +1477,8 @@ static void aer_isr_one_error(struct pci_dev *root,
- {
- 	u32 status = e_src->status;
- 
-+	pci_info(root, "%s: ROOT_STATUS %#010x ROOT_ERR_SRC %#010x\n",
-+		 __func__, e_src->status, e_src->id);
- 	pci_rootport_aer_stats_incr(root, e_src);
- 
- 	/*
 
