@@ -1,120 +1,109 @@
-Return-Path: <linux-wireless+bounces-24859-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24860-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F43AFA82E
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 00:29:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA85AFA83A
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 01:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DFA73B8C8E
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Jul 2025 22:29:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE7767AB9CB
+	for <lists+linux-wireless@lfdr.de>; Sun,  6 Jul 2025 23:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8874A1EF36B;
-	Sun,  6 Jul 2025 22:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111C21DF244;
+	Sun,  6 Jul 2025 23:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UaIqaj+b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z5qYZ6di"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C755846F;
-	Sun,  6 Jul 2025 22:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949521311AC;
+	Sun,  6 Jul 2025 23:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751840989; cv=none; b=HYr87vCEgaDHM7IhQv0eyxT0GRRY9Ncxfmh56YURSAS42sSSQQ3/SnVUqGQH1veZ497AIA6O06C0+MR74ypw5Sg38z785orOnyPPtp9ETlzg/imYGeyAtmtfb1G/H/TH700ZHvnpj9kdnjd2ROB56R/XzVDH5GWZGlrbU5dZA6c=
+	t=1751842888; cv=none; b=MV1NiZbOri/4Vrl0TUV2BKIG1EZnt7/ugN02K6gnSVlBs8RqL0RVrPJZlJ8N14mRm51yHYyQ2VJ/jxCg+mMN6dQ6rY4LNv4C6Zc6Hqt9rmH8Mt1QQt5+dTMuZLaweNhxPaDneizwpMxZlwKWerSRV0cI37A4TRgBbKmo3uv/3Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751840989; c=relaxed/simple;
-	bh=+FqcxieyCSl/BmyJUx6uOpbHQwdGTCBbRvnIJVsyPnQ=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=Lh+QP1I4C6Skgtuw5c4mDZCit3r5HQuM1jEnHR2udsQ21w/oACqJKPYpi9ucFqcuvhm6lAqfDMSGEujRMtEPxDnnc1eA8Ul0opZaRwhqmKdTwAfXUalKGLL/PtZftCxmDhn0U2b8w6zeHyUlviYzgjkHAteElmYxUHQlD8Cw3/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UaIqaj+b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD28C4CEED;
-	Sun,  6 Jul 2025 22:29:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751840988;
-	bh=+FqcxieyCSl/BmyJUx6uOpbHQwdGTCBbRvnIJVsyPnQ=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=UaIqaj+bE2PNvlzxHFsU8bKx/TvQ3nxBydLq7fyxyT/z8TiiGRP9154ikYh0K54sb
-	 Z4EZ6WP+xlLWwTRPFvI279+Mu0sNBBWRDyf93thd0x4XgRbRAi9/899cayp1axI3Qq
-	 EX4yMhpZd/Sy8d7UosGDsR4TuLoxLRVpwwKSuDeFL1+akM2+E1ByWZ4LcnDzOzltDM
-	 hTeuVRd+gUQpuOtJ8lda/i58I8WztFNzGk0pcu9nmY2i4NZ116tt+L4mOTB4wA4T13
-	 B1BO2f0YH9Xirjm5Vwyc9JwduiRJwc5yaCwXeqfw6fTuID9y6HlDM1XEm5tFvl3eg0
-	 U+xUMsY5ribCA==
-Date: Sun, 06 Jul 2025 17:29:47 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1751842888; c=relaxed/simple;
+	bh=zturyjfI2N9e2c/AG3k9CJQA3JKr2kQzkhiHb/r8Khs=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=squDh4mt7epzmptZHIzWYuIPlAI7qCAiRM/OCxvcVs5WjYCzxMQF6z+d9Jc9WGtwxj+TnFuwNUcvuUbOy9DN+uXooLml6OQ5/uuImXomQN2gcwpb9LgvrCjlbaELQBVhnoFJPmhgLOn3tnZCRYHJ9PY+TRT2jizNp9NmAa0OVw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z5qYZ6di; arc=none smtp.client-ip=209.85.216.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-311bd8ce7e4so1928304a91.3;
+        Sun, 06 Jul 2025 16:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751842887; x=1752447687; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zturyjfI2N9e2c/AG3k9CJQA3JKr2kQzkhiHb/r8Khs=;
+        b=Z5qYZ6diSUDxsKgALtcCuflZNpLxK2c/Fl/8uJiocyWKYLq6wBmlkyHICXpcU+xpEW
+         y0VvrR1sc5LZwodW46Qig0gG/h4fm23NxYMN4fXkPauB2HAf+FnMm/re1jX6JK3PgT4D
+         7+EB99VBgyPP3Q8tW/dOzLOPchYUSvey6L0ySzWfSWEr3gm3rk8qaR3Gya3FVA/nW+aL
+         1XFlpKUo5n2pblBoQbA41qR26yOWYoK1H2b0FXuph/LVHYVlDPAmGwcojfr7KRbnJESR
+         LFIeQ/jM71vDtP3RSAn08UH1EsWLJkssi8RTqCwCSGg51JFOrkN0Or7wAoA+tSJWtXQj
+         4mhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751842887; x=1752447687;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zturyjfI2N9e2c/AG3k9CJQA3JKr2kQzkhiHb/r8Khs=;
+        b=ssnysp+NOfxptx6bDaCqcXr41I5sZMx+9q5dJi7PS18XSHa8MCRKJUuvCWwjdQRHa7
+         h2yzLjTx35CqpXlOHXuWe7uKpoalnuotDND+EBYHB/+UPKdUxmvFEmAOWxTfAY6HK6Mo
+         oTfm2WahdW0MSpfTDcDyAZvM5KxLilN491kK7TNjv6W4tVGD6MZ3cQJ8XKRPWPmEayw/
+         g8lWH2deRkOK4w5nWpb7HqF0DvsoIhxmt8DtbOW2MT9VIdeXV48knJ0wO3re9Sg468FV
+         BNbL6J7cx7B5hHIC/BsxfCsXr7itAeDFpnyM6AHpAJZzu1SeXhFqJXDZ4ISYXNFeDen6
+         dSGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVhtRM5V8Z2CIplnweKlpCycpoYHjbdg4CN/3h84bYfttpxcaH2m04UzakPASPrWEosNpD/nlvs@vger.kernel.org, AJvYcCWFp/yZqABGTBUj2q2/UJ1kYcqw6dRgNTYAAyQ+m+vXPYJRCbKvqLSWjPWWSeZJCGPWyfLEU+v6olnP/7oFYKU=@vger.kernel.org, AJvYcCWpmJvRiSkUpcyMMuJ3ZIo0QNcFKsUEM6eQ8UrKIiMZKy+uIWkhWS3GJmsRSKNdKHQHs3d1l7W/0JYs@vger.kernel.org, AJvYcCXwBBxmeV67uUMP5JtRdSCgbWARx0g9fRMekNVUwDtkC3xA/dy6S4RUye94pTwly2Qh5L372TXk9JG+@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdMGKFxoZB+3KIOqGR+XY8IrIS51kEMepkIOaUY8ApZl33bFF4
+	wrolJlhFQKAn1gNh0tlPYQ3GiHbhiXIhuy/tNVkm10q4Ont02Xp4e/a1
+X-Gm-Gg: ASbGnctdZcbaazlmtF0e/4llA3DrfQSunPF2ECA56EUrOUmqgELLNoFFUF0GPj+1cdl
+	ivJ7JvB6MFIYy+KubqbhbM2XQZkQbqkiZTP36Hs9VksoWLhGVPF6/1/9Cow0GjR8qe4Gz0unKhl
+	QUscEE9AMn1L91j+PFbd8gXi3rBpNa2g9dyr6Nx/No8wg9GY2yp3ti3S98iy2AXwFY5fJ16SyYl
+	pZDiJIk50BTrVz01cgNCUPaWj3UVB+Q5nom9RRF71aZUkNpnXuo9gLDaO2ndGgjIeitPHIdEuKj
+	pfmAV+gDJrODmZKNKt1V72iI6LTDykmftjNkM+77xIUHfzHLryT1rnp8NIhf/Uw1rG+P3gk/x1X
+	pWGw=
+X-Google-Smtp-Source: AGHT+IGAJIAPUxPwiRpQD8RGqbgSJ3Srthut5cwID5L28xg/vABhqLkk3Ayb4sm+d6UnVkJoYDakGQ==
+X-Received: by 2002:a17:90b:3ece:b0:311:c1ec:7cfd with SMTP id 98e67ed59e1d1-31aba8d323amr7588550a91.26.1751842886617;
+        Sun, 06 Jul 2025 16:01:26 -0700 (PDT)
+Received: from [127.0.0.1] ([116.206.223.154])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c8431e1b0sm70869455ad.44.2025.07.06.16.01.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 06 Jul 2025 16:01:26 -0700 (PDT)
+Date: Mon, 07 Jul 2025 04:31:22 +0530
+From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+CC: Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
+ linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_Instability_in_ALL_stable_an?=
+ =?US-ASCII?Q?d_LTS_distro_kernels_=28IRQ_=2316_be?=
+ =?US-ASCII?Q?ing_disabled=2C_PCIe_bus_errors=2C_a?=
+ =?US-ASCII?Q?th10k=5Fpci=29_in_Dell_Inspiron_5567?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20250705195846.GA2011829@bhelgaas>
+References: <20250705195846.GA2011829@bhelgaas>
+Message-ID: <9D9D9375-1BD0-46EA-9E85-47A2D8325F98@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-mips@vger.kernel.org, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, ansuelsmth@gmail.com, 
- Conor Dooley <conor+dt@kernel.org>, Stanislaw Gruszka <stf_xl@wp.pl>, 
- linux-mediatek@lists.infradead.org, 
- Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, yangshiji66@qq.com
-To: Rosen Penev <rosenp@gmail.com>
-In-Reply-To: <20250706214111.45687-6-rosenp@gmail.com>
-References: <20250706214111.45687-1-rosenp@gmail.com>
- <20250706214111.45687-6-rosenp@gmail.com>
-Message-Id: <175184098772.672740.2328928098872646704.robh@kernel.org>
-Subject: Re: [PATCH 5/6] dt-bindings: net: wireless: rt2800: add
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+Hi Bjorn,
 
-On Sun, 06 Jul 2025 14:41:10 -0700, Rosen Penev wrote:
-> Add device-tree bindings for the RT2800 SOC wifi device found in older
-> Ralink/Mediatek devices.
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->  .../bindings/net/wireless/ralink,rt2800.yaml  | 49 +++++++++++++++++++
->  1 file changed, 49 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
-> 
+I have downloaded 6=2E16-rc4, and I have a bootable pendrive having the ar=
+ch iso, but I really don't know how to rebuild the kernel on a bootable dri=
+ve=2E
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Any tips on how to do that?
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml:43:5: [warning] wrong indentation: expected 2 but found 4 (indentation)
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml: ignoring, error in schema: examples
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml: examples: 'wifi@110180000 { compatible = "ralink,rt2880-wifi"; reg = <0x10180000 0x40000>; clocks = <&sysc 16>; interrupt-parent = <&cpuintc>; interrupts = <6>; };' is not of type 'array'
-	from schema $id: http://json-schema.org/draft-07/schema#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml: examples: 'wifi@110180000 { compatible = "ralink,rt2880-wifi"; reg = <0x10180000 0x40000>; clocks = <&sysc 16>; interrupt-parent = <&cpuintc>; interrupts = <6>; };' is not of type 'array'
-	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml: properties:interrupt-parent: False schema does not allow {'maxItems': 1}
-	from schema $id: http://devicetree.org/meta-schemas/interrupts.yaml#
-Error: Documentation/devicetree/bindings/net/wireless/ralink,rt2800.example.dts:19.5-6 syntax error
-FATAL ERROR: Unable to parse input tree
-make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/bindings/net/wireless/ralink,rt2800.example.dtb] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1525: dt_binding_check] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250706214111.45687-6-rosenp@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+Bandhan
 
