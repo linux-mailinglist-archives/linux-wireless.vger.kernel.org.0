@@ -1,166 +1,154 @@
-Return-Path: <linux-wireless+bounces-24886-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24887-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACAFAFBC78
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 22:25:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E44D4AFBE48
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 00:36:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0BEB7A1A7B
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 20:24:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 933E218902F0
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 22:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3F921C190;
-	Mon,  7 Jul 2025 20:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD649274B5F;
+	Mon,  7 Jul 2025 22:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="JeWPaLRJ"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dAH8uzZo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1872214A6A
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Jul 2025 20:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02087221FAE
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Jul 2025 22:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751919928; cv=none; b=is3K2dlVkinluCQc/Ee/6qiLcmx6yJACkrog5K1TU+33lUxvzzB4pajG7JDh/NKeqmm0SOo0tmA5TWKSliMPRHJzFvBaalilmUNKERxhR/oI0BVIVYwca1Sy9tI++v1fh4biI8vjJIWvupCsLlnyoPWDbTtXlCllPVsqva7u7ao=
+	t=1751927785; cv=none; b=EppCW0trnyjBHMfRqoh27+VUxcaXAqGzoGfjUtmVmagC/lwvRYrAnKOzIFeciNBB3jt3I+bsc6LNWJBj0goBNHUXw+mce/Isy0ayQo5em8RImALulVMJYkjZPQChFZNjzkQvcWFdWig8txUJ1pIXqXYFAPhOnd1kAB+3JQCjFmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751919928; c=relaxed/simple;
-	bh=LJTnbmhTL1DMZhV+UXqfmZeJ6dx5zLKM290oh1VcSvY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=nMbTet832jd07M+9wr5NUGIX2jeINAmiJJiOvJrNrNz8dPQWk28Lx0cmCECUcprMb12qR2S8dr/mn4FOVRfxqkNCQewJRkC/iL8DStaAvU1rA0vowu1o9YFm5hHX7J84Zy86NLf/FdFpIyVLgd6Vk7+RImo+qCJslGAlueTT41Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=JeWPaLRJ; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
-	MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=ZEYsJsgfj2jz5OT+u+0dYUIC3FRzPhCqYcly7kwyEbY=; b=JeWPaLRJ1CE0vlVrJn4V5tyZiR
-	q9082baVLgeKQFzr9TB56kVZvr9eF2oFH0LS1d+TjEM6BvcQjhMIfXtQxiSWWmtgXMW6byaSKrl6e
-	Ii23MDawsYLgIkrmwU/Z0KbfIu8YczhxW1jw+hLSHpdKc15raETCTk1LkJwf3Hs8Ufbg=;
-Received: from p5b2062ed.dip0.t-ipconnect.de ([91.32.98.237] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1uYsOy-0084Mk-0m;
-	Mon, 07 Jul 2025 22:25:24 +0200
-Message-ID: <8cbd9e22-f1f3-4b67-bc3b-676d6f68b044@nbd.name>
-Date: Mon, 7 Jul 2025 22:25:23 +0200
+	s=arc-20240116; t=1751927785; c=relaxed/simple;
+	bh=MIuthvYTx8uH4Kc7xYvAqoaDGc+tz80q76HGIVuUgHw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=DtgChiAyaWmUOPTELBAI2sBoGCKo+tl+8Kn1oYvuS/MuHvRcfu7R2eMWr9DRSXr1EPyHz8vsUdlzmLBzKT0Aqf+/1SiWA65jlgKaIJb5ydMYLKsrOWEpytzlJlXbOWXEDSviCoUUPJO9lnQYjg44mApQyrllCSHNQ5BUdFJd1t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dAH8uzZo; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 567Iswqx023870
+	for <linux-wireless@vger.kernel.org>; Mon, 7 Jul 2025 22:36:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	9kObBHOTy4GemSrwADqjuQYpPPym9U0e2cueEvewwqA=; b=dAH8uzZoSsbI5yBM
+	li4RLnOkYtr0PyMckS7IACh6Y+ygocCtb/zaRBCXSBhA7mU0Yeomt0knFEJhzp9C
+	v+3HpSavpoIRRWjhq8QBWvJXP0FemWlCTiDS2cKcqFD5KJ4zlRGTpphrgAUur+Up
+	30+sbE7W2SYXHQky0PRtQx5pwbAHeeKOSb5jiQLCg0L9FbZ5jUrwYD+k7qCqTA4u
+	bZ8quy9D6P8oKR16RY0GoqEXRObmeMWZB5RaMKEYCRmfRMqeIWPoQR0UAycRzf75
+	/5aL0E03xcplKkbgZONE8Ty5AE53gPKso4cp46B12hbsrqOYRANb1JQe4rFsT3Yw
+	oi0XbQ==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47pv97gpyh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 07 Jul 2025 22:36:23 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2356ce66d7cso57856445ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Jul 2025 15:36:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751927782; x=1752532582;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9kObBHOTy4GemSrwADqjuQYpPPym9U0e2cueEvewwqA=;
+        b=p8w96hkLYTD3kgbQAyzEaw7Cv0HvPOfEe247EOgPnqx1h1zWJP595L++CCdu+90Ydq
+         Si9EJY2D0nDQp+qj6WarcG4SpK4YI2AExhFh8cV2e+zEWQDUiGgxCQqOt+Ky5B5Tm8zZ
+         tJhQMVvzwkluBMT5bXJkFkVPhw7wNkDHZZCgLXjnwbYWbQWZOhxhnooVAxlCgne+zphm
+         GFrjhvlBf50ru7f5izye2p1nfYMneCvBMHefRxuPOy0rxNZDk/bsQfWqbuAog6/OQb7S
+         nwxPSVGVXXXyI1IO0OV08fwnI8uULyr8QKwOXEHiiqGil0dJvIORjnTugPnFBsEYRr3Y
+         m9Fw==
+X-Gm-Message-State: AOJu0YwzAk/g4n9aR0V3F2RCW77tkA0hQ+ptKCyLYjaohmBSWGCkgORb
+	VXRG8a9T3SUfQgN899l7g4uYNr+eD399n1C+SpJ9qzsxhpw2tPeEvZpqp4fZLJkxbUYdzJ2gSOF
+	QFcR9T0cnwLChH9kLSkqqj5kV63pQbTgvSHuhYXbrvLqxftAb5Z2yII+zsLuK21C9RpKRLVtpyU
+	P3gw==
+X-Gm-Gg: ASbGnct6lWamW9fSvCFjnYLGNJEYfVG/B6P0ZAVFoM9j9tCAU3SmluoTSGNjeUkDfGH
+	pr9ylpxAFtJLN39u3ogXVlH3C09H2jhSkv7hZXP5gREd0ZzNq7GsDjxbHoqWpuRbBBrqc5OgrVL
+	ZL9jNoNVMiEKTwcqF0SsL68z86uqXWSJhHpab1sSvEVin5+w0qV82+KHyScnItF+thvcISahrcR
+	HiqcAbezcSDadCohmoWEsjpeMcTs1kF30esgOzCkbMJTGjTN0Wum+DRN+4JSW5NyyIOxxwpcKDy
+	AqwxRRPIlD1Dyk2aYCTr0vKr4SAfHqd5tH7yyySociFWlfqPvEi8ECmyYz4=
+X-Received: by 2002:a17:903:2343:b0:235:f45f:ed55 with SMTP id d9443c01a7336-23c87470019mr251805925ad.1.1751927781857;
+        Mon, 07 Jul 2025 15:36:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGW1Bef0ceUwQpnhYjXdX6dtTGeppIizcEogBC6WZz0uiIFGUyIDjkxNhouugTUww4w3XZDJg==
+X-Received: by 2002:a17:903:2343:b0:235:f45f:ed55 with SMTP id d9443c01a7336-23c87470019mr251805535ad.1.1751927781443;
+        Mon, 07 Jul 2025 15:36:21 -0700 (PDT)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b38ee6358edsm9668064a12.58.2025.07.07.15.36.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Jul 2025 15:36:21 -0700 (PDT)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: ath12k@lists.infradead.org, Sarika Sharma <quic_sarishar@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+In-Reply-To: <20250701105927.803342-1-quic_sarishar@quicinc.com>
+References: <20250701105927.803342-1-quic_sarishar@quicinc.com>
+Subject: Re: [PATCH ath-next v8 0/5] wifi: ath12k: add support to fill link
+ statistics of multi-link station
+Message-Id: <175192778075.314276.9132568715963228413.b4-ty@oss.qualcomm.com>
+Date: Mon, 07 Jul 2025 15:36:20 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Felix Fietkau <nbd@nbd.name>
-Subject: pull request: mt76-fixes 2025-07-07
-To: linux-wireless <linux-wireless@vger.kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
+X-Authority-Analysis: v=2.4 cv=FrUF/3rq c=1 sm=1 tr=0 ts=686c4be7 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=zQT3B7j2P7N7IL7r6JwA:9
+ a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA3MDE1NSBTYWx0ZWRfXzFwIt883qK7R
+ YOujJ2Kg+Gk8U5V3rG0FSVOThZNYp417K0Qlpaa7CNjmL0xJD8rWcYjOu/9KrT/VsaRNIYLi5/X
+ UHSEit938lTfDQiteEeXQ/FoMmHOdQQlD2xdRwIw+qtaDApng1BsObEQF0Wf8Mmyxd/tJqc4dMM
+ OqbaeXvUzowu3ywgC2gmYFnf7iPqGAkd+L9Qxo0mhIh/71MDuk/gw/UWJ0GIZob4Y1NFjF2Aev7
+ 04qtcAa1jDvjtlmWvZlotxj8SNP7sJRMDpsl2OES34WIr73lFsE/JjzYE9kImLvV5yiHwaxEvym
+ xb1e17x1T1rvaGxfbS9HoOA1qUOclURUZKsV0UQpjlSUKTpASqluVlmxn9Myw2eb+Mg2iuJK0V2
+ m4DCTpY5e+WAGM+v6VjJc+fCzjsyv2v0Iv5G4bxPu5KY1a5bm6ucBavj2MYdSQCgoQz9ZHDV
+X-Proofpoint-GUID: r4kRJi2QbEYeDXoaBgs_VPS82EzreGbp
+X-Proofpoint-ORIG-GUID: r4kRJi2QbEYeDXoaBgs_VPS82EzreGbp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-07_06,2025-07-07_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 clxscore=1015 mlxscore=0 spamscore=0
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0
+ adultscore=0 mlxlogscore=796 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507070155
 
-Hi,
 
-Here's my mt76-fixes pull request for 6.16
+On Tue, 01 Jul 2025 16:29:22 +0530, Sarika Sharma wrote:
+> Currently, station statistics are filled at deflink for both non-ML and
+> multi-link(ML) station.
+> 
+> Hence, add support to fill station statistics for the corresponding
+> link of station.
+> 
+> V8:
+>  - Remove unnecessary initialization of bool is_ofdma.
+> 
+> [...]
 
-- Felix
+Applied, thanks!
 
-The following changes since commit 737bb912ebbe4571195c56eba557c4d7315b26fb:
+[1/5] wifi: ath12k: fill link station statistics for MLO
+      commit: ebebe66ec208d37e3368b91e2033907cb5140821
+[2/5] wifi: ath12k: add link support for multi-link in arsta
+      commit: 3b8aa249d0fce93590888a6ed3d22b458091ecb9
+[3/5] wifi: ath12k: add EHT support for TX rate
+      commit: ebde0514b4f4e78b5f9629179ca947d98b77da15
+[4/5] wifi: ath12k: correctly update bw for ofdma packets
+      commit: e0618fca1af294f2e52ec3545d76ee5d937c177e
+[5/5] wifi: ath12k: fetch tx_retry and tx_failed from htt_ppdu_stats_user_cmpltn_common_tlv
+      commit: a0b963e1da5bff03a43c87b96ae3c0ed78a11960
 
-   wifi: prevent A-MSDU attacks in mesh networks (2025-07-07 10:54:13 +0200)
+Best regards,
+-- 
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
-are available in the Git repository at:
-
-   https://github.com/nbd168/wireless tags/mt76-fixes-2025-07-07
-
-for you to fetch changes up to eb8352ee2d1e70f916fac02094dca2b435076fa4:
-
-   wifi: mt76: mt792x: Limit the concurrent STA and SoftAP to operate on the same channel (2025-07-07 18:07:43 +0200)
-
-----------------------------------------------------------------
-mt76 fixes for 6.16
-
-----------------------------------------------------------------
-Deren Wu (2):
-       wifi: mt76: mt7925: prevent NULL pointer dereference in mt7925_sta_set_decap_offload()
-       wifi: mt76: mt7921: prevent decap offload config before STA initialization
-
-Felix Fietkau (2):
-       wifi: mt76: add a wrapper for wcid access with validation
-       wifi: mt76: fix queue assignment for deauth packets
-
-Henry Martin (1):
-       wifi: mt76: mt7925: Fix null-ptr-deref in mt7925_thermal_init()
-
-Leon Yen (1):
-       wifi: mt76: mt792x: Limit the concurrent STA and SoftAP to operate on the same channel
-
-Lorenzo Bianconi (5):
-       wifi: mt76: Assume __mt76_connac_mcu_alloc_sta_req runs in atomic context
-       wifi: mt76: Move RCU section in mt7996_mcu_set_fixed_field()
-       wifi: mt76: Move RCU section in mt7996_mcu_add_rate_ctrl_fixed()
-       wifi: mt76: Move RCU section in mt7996_mcu_add_rate_ctrl()
-       wifi: mt76: Remove RCU section in mt7996_mac_sta_rc_work()
-
-Michael Lo (1):
-       wifi: mt76: mt7925: fix invalid array index in ssid assignment during hw scan
-
-Ming Yen Hsieh (2):
-       wifi: mt76: mt7925: fix the wrong config for tx interrupt
-       wifi: mt76: mt7925: fix incorrect scan probe IE handling for hw_scan
-
-  drivers/net/wireless/mediatek/mt76/mt76.h            |  10 +++++++
-  drivers/net/wireless/mediatek/mt76/mt7603/dma.c      |   2 +-
-  drivers/net/wireless/mediatek/mt76/mt7603/mac.c      |  10 ++-----
-  drivers/net/wireless/mediatek/mt76/mt7615/mac.c      |   7 ++---
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |   2 +-
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |   6 ++---
-  drivers/net/wireless/mediatek/mt76/mt76x02.h         |   5 +---
-  drivers/net/wireless/mediatek/mt76/mt76x02_mac.c     |   4 +--
-  drivers/net/wireless/mediatek/mt76/mt7915/mac.c      |  12 +++------
-  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |   2 +-
-  drivers/net/wireless/mediatek/mt76/mt7915/mmio.c     |   5 +---
-  drivers/net/wireless/mediatek/mt76/mt7921/mac.c      |   6 ++---
-  drivers/net/wireless/mediatek/mt76/mt7921/main.c     |   3 +++
-  drivers/net/wireless/mediatek/mt76/mt7925/init.c     |   2 ++
-  drivers/net/wireless/mediatek/mt76/mt7925/mac.c      |   6 ++---
-  drivers/net/wireless/mediatek/mt76/mt7925/main.c     |   8 +++++-
-  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c      |  79 ++++++++++++++++++++++++++++++++++++++++++-------------
-  drivers/net/wireless/mediatek/mt76/mt7925/mcu.h      |   5 ++--
-  drivers/net/wireless/mediatek/mt76/mt7925/regs.h     |   2 +-
-  drivers/net/wireless/mediatek/mt76/mt792x_core.c     |  32 +++++++++++++++++++----
-  drivers/net/wireless/mediatek/mt76/mt792x_mac.c      |   5 +---
-  drivers/net/wireless/mediatek/mt76/mt7996/mac.c      |  52 +++++++------------------------------
-  drivers/net/wireless/mediatek/mt76/mt7996/main.c     |   5 ++--
-  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c      | 199 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------------------
-  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h   |  16 ++++--------
-  drivers/net/wireless/mediatek/mt76/tx.c              |  11 ++++----
-  drivers/net/wireless/mediatek/mt76/util.c            |   2 +-
-  27 files changed, 301 insertions(+), 197 deletions(-)
 
