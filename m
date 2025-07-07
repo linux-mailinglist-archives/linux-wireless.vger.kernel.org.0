@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-24885-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24886-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40481AFBBAF
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 21:29:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ACAFAFBC78
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 22:25:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70C35424F6F
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 19:28:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0BEB7A1A7B
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 20:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C19B266B6F;
-	Mon,  7 Jul 2025 19:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3F921C190;
+	Mon,  7 Jul 2025 20:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="sbAk4lX8"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="JeWPaLRJ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191EB224B0E
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Jul 2025 19:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1872214A6A
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Jul 2025 20:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751916538; cv=none; b=CYz78oNWk4ljzArGyYsfcfx+Ap5IFOCsXf06AWaR4yatj/6l5kqWN0yxlgnMeTAwRFADLuqNQxuq6fiHbmM4iJFMHdZGv0alS/IgMex03gJpjwCrAMrqcmwB8XXnW244JyB6BujtAcNJlBgL64/E6/xVF267UGT0yickt7g5emk=
+	t=1751919928; cv=none; b=is3K2dlVkinluCQc/Ee/6qiLcmx6yJACkrog5K1TU+33lUxvzzB4pajG7JDh/NKeqmm0SOo0tmA5TWKSliMPRHJzFvBaalilmUNKERxhR/oI0BVIVYwca1Sy9tI++v1fh4biI8vjJIWvupCsLlnyoPWDbTtXlCllPVsqva7u7ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751916538; c=relaxed/simple;
-	bh=nDiEpdt8gKWfY9wSVMpBNMw24DdtoSxpYy+XSRJreEA=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=KF3XOw0EZjF5WAXsgYEBRQ7DDFuY/nFB0QXvnG1zI80baWkcBkeUz0wnAFfi8WZhxqtW9/WSmt5a8GeIA81w3UFO1t6n2tAlbf/NeFyAdnpKs0O4vVi0NRKbka7QU22KXlsFFgS52G6BfgMD9QtV98Qyhabe9wLMhwPowreb0R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=sbAk4lX8; arc=none smtp.client-ip=46.4.11.11
+	s=arc-20240116; t=1751919928; c=relaxed/simple;
+	bh=LJTnbmhTL1DMZhV+UXqfmZeJ6dx5zLKM290oh1VcSvY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=nMbTet832jd07M+9wr5NUGIX2jeINAmiJJiOvJrNrNz8dPQWk28Lx0cmCECUcprMb12qR2S8dr/mn4FOVRfxqkNCQewJRkC/iL8DStaAvU1rA0vowu1o9YFm5hHX7J84Zy86NLf/FdFpIyVLgd6Vk7+RImo+qCJslGAlueTT41Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=JeWPaLRJ; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -36,17 +36,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
 	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=8XbnuTh2NND+SBWxffck8Ue72UbjDN/+mCNbYgX7ErU=; b=sbAk4lX8KshpFDatm5hg3iLI6A
-	Z76PfNCcc4yvwv9IvK1IekA1RsDaKvzlz9/NXZvraVAaenA8z2qPUg4pXilRSOlv7wqoeOekwKHEo
-	WtTBgMFN6RsMtLZ8rcB8a9C5678gIx0Fk0U89kyLjsew4vZhmwBEsabn0XKnTKdzOzrU=;
+	bh=ZEYsJsgfj2jz5OT+u+0dYUIC3FRzPhCqYcly7kwyEbY=; b=JeWPaLRJ1CE0vlVrJn4V5tyZiR
+	q9082baVLgeKQFzr9TB56kVZvr9eF2oFH0LS1d+TjEM6BvcQjhMIfXtQxiSWWmtgXMW6byaSKrl6e
+	Ii23MDawsYLgIkrmwU/Z0KbfIu8YczhxW1jw+hLSHpdKc15raETCTk1LkJwf3Hs8Ufbg=;
 Received: from p5b2062ed.dip0.t-ipconnect.de ([91.32.98.237] helo=nf.local)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1uYrWI-0083sL-07;
-	Mon, 07 Jul 2025 21:28:54 +0200
-Message-ID: <2890ea02-d19e-422f-bd80-72a3a1d0ff91@nbd.name>
-Date: Mon, 7 Jul 2025 21:28:53 +0200
+	id 1uYsOy-0084Mk-0m;
+	Mon, 07 Jul 2025 22:25:24 +0200
+Message-ID: <8cbd9e22-f1f3-4b67-bc3b-676d6f68b044@nbd.name>
+Date: Mon, 7 Jul 2025 22:25:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Felix Fietkau <nbd@nbd.name>
-Subject: pull request: mt76 2025-07-07
+Subject: pull request: mt76-fixes 2025-07-07
 To: linux-wireless <linux-wireless@vger.kernel.org>
 Cc: Johannes Berg <johannes@sipsolutions.net>
 Content-Language: en-US
@@ -87,72 +87,80 @@ Content-Transfer-Encoding: 7bit
 
 Hi,
 
-Here's my first mt76 pull request for 6.17
+Here's my mt76-fixes pull request for 6.16
 
 - Felix
 
-The following changes since commit 28aa52b6189f1cc409f96910c63fa1b99370b99e:
+The following changes since commit 737bb912ebbe4571195c56eba557c4d7315b26fb:
 
-   Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-06-26 10:40:50 -0700)
+   wifi: prevent A-MSDU attacks in mesh networks (2025-07-07 10:54:13 +0200)
 
 are available in the Git repository at:
 
-   https://github.com/nbd168/wireless tags/mt76-next-2025-07-07
+   https://github.com/nbd168/wireless tags/mt76-fixes-2025-07-07
 
-for you to fetch changes up to e553ac0d7616d6bcd06ed0c5f6126ce83097b31a:
+for you to fetch changes up to eb8352ee2d1e70f916fac02094dca2b435076fa4:
 
-   wifi: mt76: mt7921s: Introduce SDIO WiFi/BT combo module card reset (2025-07-07 18:10:32 +0200)
-
-----------------------------------------------------------------
-mt76 patches for 6.17
-
-- firmware recovery improvements for mt7915
-- mlo improvements
-- fixes
+   wifi: mt76: mt792x: Limit the concurrent STA and SoftAP to operate on the same channel (2025-07-07 18:07:43 +0200)
 
 ----------------------------------------------------------------
-Dan Carpenter (1):
-       wifi: mt76: mt7925: fix off by one in mt7925_mcu_hw_scan()
+mt76 fixes for 6.16
 
-David Bauer (3):
-       wifi: mt76: mt7915: mcu: increase eeprom command timeout
-       wifi: mt76: mt7915: mcu: lower default timeout
-       wifi: mt76: mt7915: mcu: re-init MCU before loading FW patch
+----------------------------------------------------------------
+Deren Wu (2):
+       wifi: mt76: mt7925: prevent NULL pointer dereference in mt7925_sta_set_decap_offload()
+       wifi: mt76: mt7921: prevent decap offload config before STA initialization
 
-Felix Fietkau (1):
-       wifi: mt76: fix vif link allocation
+Felix Fietkau (2):
+       wifi: mt76: add a wrapper for wcid access with validation
+       wifi: mt76: fix queue assignment for deauth packets
+
+Henry Martin (1):
+       wifi: mt76: mt7925: Fix null-ptr-deref in mt7925_thermal_init()
 
 Leon Yen (1):
-       wifi: mt76: mt7921s: Introduce SDIO WiFi/BT combo module card reset
+       wifi: mt76: mt792x: Limit the concurrent STA and SoftAP to operate on the same channel
 
-Lorenzo Bianconi (9):
-       wifi: mt76: mt7996: Fix secondary link lookup in mt7996_mcu_sta_mld_setup_tlv()
-       wifi: mt76: mt7996: Rely on for_each_sta_active_link() in mt7996_mcu_sta_mld_setup_tlv()
-       wifi: mt76: mt7996: Do not set wcid.sta to 1 in mt7996_mac_sta_event()
-       wifi: mt76: mt7996: Fix mlink lookup in mt7996_tx_prepare_skb
-       wifi: mt76: mt7996: Fix possible OOB access in mt7996_tx()
-       wifi: mt76: mt7996: Fix valid_links bitmask in mt7996_mac_sta_{add,remove}
-       wifi: mt76: mt7996: Add MLO support to mt7996_tx_check_aggr()
-       wifi: mt76: mt7996: Move num_sta accounting in mt7996_mac_sta_{add,remove}_links
-       wifi: mt76: Get rid of dma_sync_single_for_device() for MMIO devices
+Lorenzo Bianconi (5):
+       wifi: mt76: Assume __mt76_connac_mcu_alloc_sta_req runs in atomic context
+       wifi: mt76: Move RCU section in mt7996_mcu_set_fixed_field()
+       wifi: mt76: Move RCU section in mt7996_mcu_add_rate_ctrl_fixed()
+       wifi: mt76: Move RCU section in mt7996_mcu_add_rate_ctrl()
+       wifi: mt76: Remove RCU section in mt7996_mac_sta_rc_work()
 
-Ming Yen Hsieh (1):
-       wifi: mt76: mt792x: improve monitor interface handling
+Michael Lo (1):
+       wifi: mt76: mt7925: fix invalid array index in ssid assignment during hw scan
 
-  drivers/net/wireless/mediatek/mt76/channel.c         |  4 ++--
-  drivers/net/wireless/mediatek/mt76/dma.c             | 11 +++--------
-  drivers/net/wireless/mediatek/mt76/mcu.c             |  4 ++++
-  drivers/net/wireless/mediatek/mt76/mt76.h            |  7 ++++++-
-  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      | 30 ++++++++++++++++++++----------
-  drivers/net/wireless/mediatek/mt76/mt7921/mac.c      |  2 ++
-  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c     |  2 ++
-  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c      |  4 ++--
-  drivers/net/wireless/mediatek/mt76/mt792x_core.c     |  1 +
-  drivers/net/wireless/mediatek/mt76/mt7996/mac.c      | 48 +++++++++++++++++++++++-------------------------
-  drivers/net/wireless/mediatek/mt76/mt7996/main.c     | 80 ++++++++++++++++++++++++++++++++++++++++++++++----------------------------------
-  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c      | 17 ++++++++---------
-  drivers/net/wireless/mediatek/mt76/sdio_txrx.c       |  6 ++++--
-  drivers/net/wireless/mediatek/mt76/wed.c             |  6 +-----
-  15 files changed, 182 insertions(+), 98 deletions(-)
+Ming Yen Hsieh (2):
+       wifi: mt76: mt7925: fix the wrong config for tx interrupt
+       wifi: mt76: mt7925: fix incorrect scan probe IE handling for hw_scan
+
+  drivers/net/wireless/mediatek/mt76/mt76.h            |  10 +++++++
+  drivers/net/wireless/mediatek/mt76/mt7603/dma.c      |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7603/mac.c      |  10 ++-----
+  drivers/net/wireless/mediatek/mt76/mt7615/mac.c      |   7 ++---
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |   6 ++---
+  drivers/net/wireless/mediatek/mt76/mt76x02.h         |   5 +---
+  drivers/net/wireless/mediatek/mt76/mt76x02_mac.c     |   4 +--
+  drivers/net/wireless/mediatek/mt76/mt7915/mac.c      |  12 +++------
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7915/mmio.c     |   5 +---
+  drivers/net/wireless/mediatek/mt76/mt7921/mac.c      |   6 ++---
+  drivers/net/wireless/mediatek/mt76/mt7921/main.c     |   3 +++
+  drivers/net/wireless/mediatek/mt76/mt7925/init.c     |   2 ++
+  drivers/net/wireless/mediatek/mt76/mt7925/mac.c      |   6 ++---
+  drivers/net/wireless/mediatek/mt76/mt7925/main.c     |   8 +++++-
+  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c      |  79 ++++++++++++++++++++++++++++++++++++++++++-------------
+  drivers/net/wireless/mediatek/mt76/mt7925/mcu.h      |   5 ++--
+  drivers/net/wireless/mediatek/mt76/mt7925/regs.h     |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt792x_core.c     |  32 +++++++++++++++++++----
+  drivers/net/wireless/mediatek/mt76/mt792x_mac.c      |   5 +---
+  drivers/net/wireless/mediatek/mt76/mt7996/mac.c      |  52 +++++++------------------------------
+  drivers/net/wireless/mediatek/mt76/mt7996/main.c     |   5 ++--
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c      | 199 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------------------
+  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h   |  16 ++++--------
+  drivers/net/wireless/mediatek/mt76/tx.c              |  11 ++++----
+  drivers/net/wireless/mediatek/mt76/util.c            |   2 +-
+  27 files changed, 301 insertions(+), 197 deletions(-)
 
