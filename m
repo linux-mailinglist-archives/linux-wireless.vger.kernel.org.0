@@ -1,170 +1,216 @@
-Return-Path: <linux-wireless+bounces-24861-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24862-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EBADAFA87B
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 01:52:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A88CAFA9DC
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 04:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EA237AADBD
-	for <lists+linux-wireless@lfdr.de>; Sun,  6 Jul 2025 23:50:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62EE53AEEF7
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Jul 2025 02:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2201E9B08;
-	Sun,  6 Jul 2025 23:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC56F1C5D5A;
+	Mon,  7 Jul 2025 02:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d/RKlhpD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RtOqGWy4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2A3F510;
-	Sun,  6 Jul 2025 23:52:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EC51B425C
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Jul 2025 02:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751845925; cv=none; b=I686/nqYWtay3h8Ke2A4nSaMHHmc9F9PvVe3RW9zw4yLdkrc+RTUGqwSEOrRIhz6f2pc5oDWIud5rxrJMr0qlnbaeb392qON2ee0AQwZPwgXwzC2NDocHnk+sztI6j14J3jnTW8QUu5x+dZHBm9ujFZbpKp2y0R+aDuNZkBedyM=
+	t=1751856389; cv=none; b=tRKbGW5d+dTZsuK6kTVsMRKdkcEBX8atLifbCuRSswAAaaROtpg1bKEox2f2y66JbXjsWvCYCpffjzS/RSi94vigr4xw0pbdPWH/lbnx4F5W+3ADp2OVSKcX0QwfTdeK5Qm72Dj3xlAZoKqk9xcc+i4PSh6aOMZ+t46wmUKJN+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751845925; c=relaxed/simple;
-	bh=Gf1BtcZgWW1sIpUGKPzzEJETeKvs5xaSuw7T3VIHBTE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n5se0tK+4Gbwa+NIkgsOdjLJam4V8OMME32MN9W+gsp3UeImFRv/k0l0jT7Q7WQe1ryabnYos4b1vTRrmOe1SvuKQ8jO9biEBeyr1tm2/MkALpynd91rF78kp1RuDIo5omLMP3nseWLP/2XDedS4ryKDJnrRq/Po8KFWYnatyNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d/RKlhpD; arc=none smtp.client-ip=209.85.128.169
+	s=arc-20240116; t=1751856389; c=relaxed/simple;
+	bh=003YQfanfIu9VqJrBzj3HE9Sio2Zxb10yPG5z/NNOGs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=cfLS4J9a5zCHE+zYbfnn2gE/y6NswpMtlj6LhKJTT7XNBB5kdHLhfXt3SvscW1NnDvkZHJQYEsUxf7ckNE8qYOL38Ezg+PXLj8w8G0mElBZC5ogZ+4pG/zCt1SmDT1KY1QxwZyap7fkmB5YBb9RsNZy9bt8DSj5pgH1fcwQx7FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RtOqGWy4; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7176c66e99cso11131477b3.3;
-        Sun, 06 Jul 2025 16:52:03 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-74ce477af25so1430382b3a.3
+        for <linux-wireless@vger.kernel.org>; Sun, 06 Jul 2025 19:46:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751845923; x=1752450723; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x+m7B0diOiXhfs636fv/zQA7WEVjYquVXLLYKJKTbjE=;
-        b=d/RKlhpDtaDp9GDubbhyo3yxczSAYKbYJ4IYHvl4kFwwpHvTBebu7S+RaPsSw5SxnV
-         rzTdf2yspmFu9Z5y536UmnEv/icLHiDDE/NWM07CSs8OlINLSIzkN3wwbFn4VoUP4kxX
-         i7rEelotljDLT065i/rv1/MCj/9msfSK1Ydw12nYEPKgmzj9jsKZubr0sCHkn/p1V3yj
-         JUeNhJc3zHG/4kgPTD4S80TyqT5GiaBijKHYgilBmsRBCB4mdCFNor9xSxD4c4UPY912
-         LypHk2sFhbnciTKOcoq+l1OOtdikfxnYuua2lgv/H5/67gvQqbqu4Z8GwBzCsIPKNkN+
-         gAyA==
+        d=gmail.com; s=20230601; t=1751856387; x=1752461187; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vLFT9YUi2kgk4IHIMXEm1tnwQfNF6uLUtXcFAl9ufZ4=;
+        b=RtOqGWy4qnmwyA+/aYjNM1D41U/GiB+tD7SwMjhD8f27YAeS6WtVyPvZPITN/jvtwk
+         GObyuGDYH2PJasmhKZQl2ha/PlKeZJBQ5gQiK+/175FlYRAlxNf/6pmKz+HZjkp6DPhO
+         8yAoKGnmDHZco8gesC6670/m2VX56T0nzkLTC46vgliAKEN7dKHfyF2DTt+59/Qx0XWE
+         /VvIjqbe3XDBMjUkWBRwoQiBTUn0CLf/fJAHOMh7hrSzHEKzzXR6wi2oRulxdvZjyXeC
+         mi+IPE8kSEMv90SwHRqsseVC66CbfeQ8Vfo4Yq/ez7BovnfuX+S7kvvtgeD0AQ5NtKjb
+         ddUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751845923; x=1752450723;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x+m7B0diOiXhfs636fv/zQA7WEVjYquVXLLYKJKTbjE=;
-        b=l8thmD4LSt4uJJbHqFps0e9ahU0hgI9y4hJiOgZkfJBQQdTJniwdVon9aGynCtNaoi
-         +kefVmC5ojd/FDWzObdiptaL89RTjrw8iAvVpKDr6Y47D+Xz0lwWlRm2TDngGJWkr6JB
-         hE4pTdgVWFe0EqHkx6EbIdFgOW/M8uy5P50vKRenIoeLQGE9rKhT6uYQ9+qeC6MVPY+L
-         RDMwAca5dNT7jf2l6sMHi/kVty4d/ik2K/cWshIw7KhVvGBI3FVMNSSwe7KXxMnRKfKR
-         ySwQ6Xce7hjCgdSOhbo9Jrg0/RBjlToN2TRulbaXaM4lZ8qqkz/PRe83Y8r41bZVxwCn
-         +ubQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW08VBf196rsP1D2sMAzlVEa9QLggWBmlQpesSy76dyyAmrljEp3KAoWiBU0E+pYW8+wrTdEkziu7oL@vger.kernel.org, AJvYcCWR0q6qVX7XpGvilqf+UVm0j9PBotIMcQ3T0TMfaOGXJYPDNNbKGZ6MWCrHd0drzZR7AjEC2lyPo0MyWNnuCKs=@vger.kernel.org, AJvYcCX6WyRu4BMmY1aqfyR0nsKJPNUsKL/16qVm3E3QsLuM59xSqCtDzPOb1+iyrRgAHOMgAfO1WTfNhZdSKO7v@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqAklRqZrLDR2kqZTRQF4/5PsJWgG+f+HQXNJZNUgJvij2pV+E
-	cRYnGVxfq2p9tMeWVlbhXPIDIAn/9/jvULnPWBJAkVcHLLBPBE4gcLYBz4OxbETQ4GQZgVZUqAp
-	7jAJzztngrll8Yf29N23JQP5J0YQ4x3k=
-X-Gm-Gg: ASbGncsQkyLG1UZOO7gfnFmhkHHIQ6KZMXS8/035taf/GxOorrPwQREACMUW4FIChpo
-	71mIlka1svKnaI0N26rRKp2dQIZRKRsTrcHQG90oBVGzQQwNn87NhwLH8sGSjltyaS/9gqpnmZA
-	ln2BYEP6ssdf4768EQuwiVoyrqf8zYnW7FemvkYAzG/A5ziX1hZgbkfRW5
-X-Google-Smtp-Source: AGHT+IGu33ZcXT4Q2qak/JrpD+2hFPhuRT5IYYS4i7palcZ3fTaJxZJQdYShxp5sOWjY0V7f4eKKvGCM6HpyE/MpNsc=
-X-Received: by 2002:a05:690c:61c6:b0:70e:6333:64ac with SMTP id
- 00721157ae682-71668d1e097mr151850977b3.10.1751845922931; Sun, 06 Jul 2025
- 16:52:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751856387; x=1752461187;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vLFT9YUi2kgk4IHIMXEm1tnwQfNF6uLUtXcFAl9ufZ4=;
+        b=MZsw7aX7DQuQdSbhhGRi6vrHfmfgYHtfS9uLIcq0RSDmySZZTIcrOnkXDYpgz+EFSF
+         ueesRj/dAMonIPzGcRdRQiclqRxKfaAnkqqRae07YbIvHO1uNbVNWdwoBVs+9Qg5nUDE
+         gl5c+QRieLLGgVYq6oRDb13lpsAs/BVlRTO4QF7C+NI9k0MtSTwhhxZ/SToLoK8uCKPj
+         t2y94HJQ9GtdxBmE5G9qWXoQTy0j9nwWbKkq951wxX/3mqOTWxeUW30gnBKbV2YQvqNn
+         igLCxPDIBbbt19LMUH+5pSlQ3zqlnbzqrcQaGzttWDP4jp+OHLvjCqD7JK6JANcsH4Jk
+         S+lQ==
+X-Gm-Message-State: AOJu0YxbzX+lNRimMLSjlfjq7V1FW/oQaPrH4MnM1d2S1NH3E28tKFDi
+	6Gr+4rDA5Ot/5TutUsqZDzxpfASr7b5YKcwOGYFQpb3UY4kYsoaKReWyUyU8iQ==
+X-Gm-Gg: ASbGnctNFKrAsPWUQwm8/oguioevZ0zzQ+/SDQBiTchpGuWI3btBdijei9roSgKpruj
+	HmB0NcxRi4AXPcdaHzE/jbh4VnpRg38/ACjJQzLZwjQAT9KXfycWjfMdLPziZGF1cQUURKYNJLA
+	1iMEFFlXyDKjn9BSEs0WTXW0UvaiDrn2kFuPTgRYKYnJbqmvP4Sx8JUCVnIRwMKsuX6qAClUc7V
+	CfoBpxShByw4AQIzKto0Db7XI3E0j853AsKYmMxI6rkczOpv4BAghRVgS8VhNlR6HLdXaXLoxK1
+	A8S0fr1CQbGP+exk3z4i4J+a51XoNoY5XFFuzDcXU82tWAcaZNtRaoG/UFfLauoqdCdPhpU0CRc
+	EB2qNfllZ3GdRADkOwCuIlc4zAlfV0ygnNpP2
+X-Google-Smtp-Source: AGHT+IGZ6t+i+0pA1w4HjlrKayguT9lc3j1A3wPeXlmDAPtkqs9+ohFZq6n50UzOxDd+2xwoBhEIWQ==
+X-Received: by 2002:a05:6a00:3c8b:b0:748:3485:b99d with SMTP id d2e1a72fcca58-74ce65c53bamr16375568b3a.18.1751856386905;
+        Sun, 06 Jul 2025 19:46:26 -0700 (PDT)
+Received: from localhost.localdomain (125-231-129-141.dynamic-ip.hinet.net. [125.231.129.141])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-74ce35cd066sm8205274b3a.53.2025.07.06.19.46.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Jul 2025 19:46:26 -0700 (PDT)
+From: Ping-Ke Shih <pkshih@gmail.com>
+To: wens@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	wireless-regdb@lists.infradead.org
+Subject: [PATCH 1/3] wireless-regdb: Update regulatory info for CEPT countries for 6GHz listed by WiFi Alliance
+Date: Mon,  7 Jul 2025 10:46:13 +0800
+Message-Id: <20250707024615.38507-1-pkshih@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250706214111.45687-1-rosenp@gmail.com> <20250706214111.45687-6-rosenp@gmail.com>
- <175184098772.672740.2328928098872646704.robh@kernel.org>
-In-Reply-To: <175184098772.672740.2328928098872646704.robh@kernel.org>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Sun, 6 Jul 2025 16:51:52 -0700
-X-Gm-Features: Ac12FXyEdEOs68iBa0GWZ6aV7SXltB6qi7ZK7vbmauFADvR3IvntzZnjx5C06UQ
-Message-ID: <CAKxU2N-912DUV6_zSxVOeegR03U39WzHo37oN1EO0rH++a_QEg@mail.gmail.com>
-Subject: Re: [PATCH 5/6] dt-bindings: net: wireless: rt2800: add
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-mips@vger.kernel.org, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	ansuelsmth@gmail.com, Conor Dooley <conor+dt@kernel.org>, 
-	Stanislaw Gruszka <stf_xl@wp.pl>, linux-mediatek@lists.infradead.org, 
-	Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, yangshiji66@qq.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jul 6, 2025 at 3:29=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org> =
-wrote:
->
->
-> On Sun, 06 Jul 2025 14:41:10 -0700, Rosen Penev wrote:
-> > Add device-tree bindings for the RT2800 SOC wifi device found in older
-> > Ralink/Mediatek devices.
-> >
-> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> > ---
-> >  .../bindings/net/wireless/ralink,rt2800.yaml  | 49 +++++++++++++++++++
-> >  1 file changed, 49 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/net/wireless/rali=
-nk,rt2800.yaml
-> >
->
-> My bot found errors running 'make dt_binding_check' on your patch:
->
-> yamllint warnings/errors:
-> ./Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml:43:5:=
- [warning] wrong indentation: expected 2 but found 4 (indentation)
->
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/n=
-et/wireless/ralink,rt2800.yaml: ignoring, error in schema: examples
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/n=
-et/wireless/ralink,rt2800.yaml: examples: 'wifi@110180000 { compatible =3D =
-"ralink,rt2880-wifi"; reg =3D <0x10180000 0x40000>; clocks =3D <&sysc 16>; =
-interrupt-parent =3D <&cpuintc>; interrupts =3D <6>; };' is not of type 'ar=
-ray'
->         from schema $id: http://json-schema.org/draft-07/schema#
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/n=
-et/wireless/ralink,rt2800.yaml: examples: 'wifi@110180000 { compatible =3D =
-"ralink,rt2880-wifi"; reg =3D <0x10180000 0x40000>; clocks =3D <&sysc 16>; =
-interrupt-parent =3D <&cpuintc>; interrupts =3D <6>; };' is not of type 'ar=
-ray'
->         from schema $id: http://devicetree.org/meta-schemas/base.yaml#
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/n=
-et/wireless/ralink,rt2800.yaml: properties:interrupt-parent: False schema d=
-oes not allow {'maxItems': 1}
->         from schema $id: http://devicetree.org/meta-schemas/interrupts.ya=
-ml#
-> Error: Documentation/devicetree/bindings/net/wireless/ralink,rt2800.examp=
-le.dts:19.5-6 syntax error
-> FATAL ERROR: Unable to parse input tree
-> make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/binding=
-s/net/wireless/ralink,rt2800.example.dtb] Error 1
-> make[2]: *** Waiting for unfinished jobs....
-> make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1525: dt_bin=
-ding_check] Error 2
-> make: *** [Makefile:248: __sub-make] Error 2
-forgot to run dt_binding_check. Will fix in v2.
->
-> doc reference errors (make refcheckdocs):
->
-> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/202507=
-06214111.45687-6-rosenp@gmail.com
->
-> The base for the series is generally the latest rc1. A different dependen=
-cy
-> should be noted in *this* patch.
->
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
->
-> pip3 install dtschema --upgrade
->
-> Please check and re-submit after running the above command yourself. Note
-> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-> your schema. However, it must be unset to test all examples with your sch=
-ema.
->
+From: Ping-Ke Shih <pkshih@realtek.com>
+
+The regulations enabling 6GHz WiFi [1] of WiFi Alliance lists CEPT
+countries including
+ - Albania (AL)
+ - Andorra (AD)
+ - Austria (AT)
+ - Belarus (BY)
+ - Belgium (BE)
+ - Georgia (GE)
+ - Iceland (IS)
+ - Liechtenstein (LI)
+ - Macedonia, The Former Yugoslav Republic of (MK)
+ - Moldova, Republic of (MD)
+ - Monaco (MC)
+ - Montenegro (ME)
+ - Norway (NO)
+ - Russian Federation (RU)
+ - Switzerland (CH)
+ - Türky (TR)
+ - Ukraine (UA)
+Add 6 GHz frequency entry if not being added yet.
+
+But being pending to add rules to below entires because countries are not
+existing yet:
+ - Faroe Islands (FO)
+ - Gibraltar (GI)
+ - Isle of Man (IM)
+ - San Marino (SM)
+ - Holy See (Vatican City State) (VA)
+
+Links of all these countries are to point to ECC/DEC/(20)01 [2] [3], which
+decision enters into force on 8 November 2024; preferred date for
+implementation of this Decision shall be 8 May 2025.
+
+ * LPI devices
+   - 5945-6425 MHz
+   - Restricted to indoor use only
+   - Maximum mean e.i.r.p.: 23 dBm
+   - Maximum mean e.i.r.p. density: 10 dBm/MHz
+ * VLP devices
+   - 5945-6425 MHz
+   - Indoors and outdoors
+   - Maximum mean e.i.r.p.: 14 dBm
+   - Maximum mean e.i.r.p. density: 1 dBm/MHz
+
+[1] https://www.wi-fi.org/regulations-enabling-6-ghz-wi-fi
+[2] https://docdb.cept.org/implementation/16737
+[3] https://docdb.cept.org/download/4685
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ db.txt | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/db.txt b/db.txt
+index acfbcbf29887..b5b1308460cc 100644
+--- a/db.txt
++++ b/db.txt
+@@ -41,6 +41,7 @@ country AD: DFS-ETSI
+ 	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
+ 	# 60 GHz band channels 1-4, ref: Etsi En 302 567
+ 	(57000 - 66000 @ 2160), (40)
+ 
+@@ -80,6 +81,7 @@ country AL: DFS-ETSI
+ 	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
+ 
+ # Source:
+ # 2.4 GHz https://www.psrc.am/contents/document/4749
+@@ -355,6 +357,7 @@ country BY: DFS-ETSI
+ 	(5170 - 5250 @ 80), (20), AUTO-BW
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+ 	(5490 - 5710 @ 160), (27), DFS
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
+ 
+ country BZ: DFS-JP
+ 	(2402 - 2482 @ 40), (30)
+@@ -742,6 +745,7 @@ country GE: DFS-ETSI
+ 	(2402 - 2482 @ 40), (20)
+ 	(5170 - 5250 @ 80), (18), AUTO-BW
+ 	(5250 - 5330 @ 80), (18), DFS, AUTO-BW
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
+ 	# 60 GHz band channels 1-4, ref: Etsi En 302 567
+ 	(57000 - 66000 @ 2160), (40)
+ 
+@@ -1234,6 +1238,7 @@ country MC: DFS-ETSI
+ 	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
+ 
+ # Source:
+ # http://www.cnfr.md/index.php?pag=sec&id=117&l=en
+@@ -1266,6 +1271,7 @@ country ME: DFS-ETSI
+ 	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
+ 
+ country MF: DFS-ETSI
+ 	(2402 - 2482 @ 40), (20)
+@@ -1292,6 +1298,7 @@ country MK: DFS-ETSI
+ 	(5470 - 5725 @ 160), (500 mW), DFS, wmmrule=ETSI
+ 	# short range devices (ETSI EN 300 440-1)
+ 	(5725 - 5875 @ 80), (25 mW)
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
+ 	# 60 GHz band channels 1-4, ref: Etsi En 302 567
+ 	(57000 - 66000 @ 2160), (40)
+ 
+@@ -1924,6 +1931,7 @@ country UA: DFS-ETSI
+ 	(5250 - 5350 @ 80), (100 mW), DFS, NO-OUTDOOR, AUTO-BW, wmmrule=ETSI
+ 	(5470 - 5725 @ 160), (100 mW), DFS, NO-OUTDOOR, wmmrule=ETSI
+ 	(5725 - 5850 @ 80), (100 mW), NO-OUTDOOR
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
+ 	# 60 GHz band channels 1-4, ref: Etsi En 302 567
+ 	(57000 - 66000 @ 2160), (40 mW), NO-OUTDOOR
+ 
+-- 
+2.25.1
+
 
