@@ -1,243 +1,191 @@
-Return-Path: <linux-wireless+bounces-24974-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24975-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D0CAFD62E
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 20:11:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE359AFD690
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 20:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60AAE17E523
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 18:11:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 892D01C26094
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 18:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99552E7178;
-	Tue,  8 Jul 2025 18:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D300B2E762B;
+	Tue,  8 Jul 2025 18:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="I4sBTt+O"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nKiuRx3A"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408AC14A60D
-	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 18:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806FF2E6D0D
+	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 18:37:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751998280; cv=none; b=Ih4tCv6Q4JckA0fqXR2gZZj90zdxPnj6hrj4SR8wyR5B6r5z58C5yMcI0xq+QM8lS9npvBMXpd0p+Tep58/7wW/VN9Cgx0ijFbO0ze/4qlEUEsQMUdLbIUsTaHcE4x7q6syEaDrkMTCDXkxpsAWjX0Ze6WDL/2D+gPptVTLLjEY=
+	t=1751999857; cv=none; b=qxtk77zbPx1rQH9V8PpEOzgvh0y5rs5wpwGPuFuMZu4umDfH2a7e8SseZDBbN966uE3Gi1IvJvArL8mJq4UKfn9tsO9Jm4aYm9X820eS5atoHX8LHts+ZKE3BKrL4GNu0aiVkwFOSS+xcTkKx5V1Hvk2B6uov1xthL+btdFgmg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751998280; c=relaxed/simple;
-	bh=E0u5P7I3WkgfHvZE3fnJKZGoKYo3qoRrCMma1baXDPo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=egi6Co0pxB2zEK34TSD0Ysjue2YAmlucWzJ1FUyhwbg9QE4zHqxvAAWIIYdibXaMjDUjEGIPrqd/HyeamHnfoir5DQuJDiDNtOpzhP/IVBDvPmcVM8CuI24R+PJKHTHF1LI/hrCqf33Ch8rSm+AgqGvfn2I9K1fY238xvfivwSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=I4sBTt+O; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 568AAP64012171
-	for <linux-wireless@vger.kernel.org>; Tue, 8 Jul 2025 18:11:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=PDQQPlyVXHe
-	TjS0woDlYKuu2qKMss3vgvb8MQtjuQHw=; b=I4sBTt+O7CVW0clC3AfMWaoZPaJ
-	gT+NLiNgFVp7B3jUr4mNpyW5QUvQyNdFTPdgzy3aJ0L9VZZJFAy4WabPFBLkuPEu
-	6B/FxHN7SwtXDFeDwFv1SPNkrHrX/qd2JOw1CO7mJe9dLrDgAahOcpUtEleedHBD
-	UpE4gDarMeF3a10veLOWcGmS7ganWLGPTju0+KlDCUAudm51K2CRRvsglFQvrrtN
-	G0lF7H3lH9QnyhMHiyYtVy4qqqegzwjnltFGMEJkxwPvkLzuSvE1uNgyt6+eH9ig
-	JePmiJ8YqUjb4s8P62bmZJZloer1gSKJvawztELTHq1oVYycbW5FtH/MqHw==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47pv97rk6j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 08 Jul 2025 18:11:18 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2369dd58602so48867885ad.1
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Jul 2025 11:11:18 -0700 (PDT)
+	s=arc-20240116; t=1751999857; c=relaxed/simple;
+	bh=P4m28JgcIHcb3RfuA5FHxRC9SfiH1YZ53dw4Tti4Mv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pCZConPx+nRpn0LwQXv8PckcOqVs2QpaP3BvqU0P80DioEAIsiA5O04B6ei/kfVIHnEqiGd5ebCzte6zBU5UpB6cr5gNWjwRzAdX+bmVRNrI+Wor1LWvGcIaCIJl5vwRCnWrBq/YTbOFdD0Ner/6j8ueNLF77iBF2FspMQkGr7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=nKiuRx3A; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-879d2e419b9so3700861a12.2
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Jul 2025 11:37:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1751999855; x=1752604655; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9Qf6OoUd6t9+5P1mzZep4RXSNUTyvyaP3uN0U0SlC0k=;
+        b=nKiuRx3AtW+N/gQUMNSbdat/IGNyn+u0YA3d+WB3hsnyJvXPdKCYD2Ji8MdqvniPpQ
+         DD7WXaNkqhq5wLerj1MjU+fPm/+PnorGdNYR6v5kxqmDObsbELSgQmuehEwTmOJaQ0bQ
+         MMVOeyBNBPhLdSN99VXKDEUjjkWqRM1ck9avY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751998277; x=1752603077;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PDQQPlyVXHeTjS0woDlYKuu2qKMss3vgvb8MQtjuQHw=;
-        b=sDgwnPd9gWq6IFtDQrdGxPGkEQm+zfqA9Fuj0P2VPcgIpd4mmkgSGSaoDWl1K/+FA1
-         Bgzx7s71kQisbWxlv0/J+omegJkrRs66IuD0wHCF8AW4q92opnm97zo7sIJ+G16SE1Lu
-         7PilXyVnCTwZduFQYnDSNmwmMtU9COju2SWu/0fOSTwmnlEPdVENfDP7MjD6zxQ5VIUs
-         w4ANdJCwWbfLXPiP21TEdiywBBwdLQJcVvX/grRtzUHvmPxGFKaVN3QL6sO5j6R+3a2Q
-         TunmZxemmbGeIDbxYjjcWXb1dNsCybYNkp3//yP40l2qRnSJag+NTnqsrAr8b2L4AXGC
-         SHiw==
-X-Gm-Message-State: AOJu0YzTZKugbYwtAZlgM6g8m7gJ62sUAhZoT/jttxaHxv01RKsKP+0W
-	2DSEieFvF05ZJ0Fk0Oj9K18iCDcitr4O+k/ioKJREVnH/Yv1Kb/JR7yddO2z5H+65/Jt8l/xCRu
-	xLiMecd0/Qc00pKdKKTpecjvR2Du55u/stjIsFEwmKNlecQhgRTv6x438mmki2mWtGStXGQ==
-X-Gm-Gg: ASbGncuY+iZFI0dZTXA0MGOGoSJ3bMzfqBJXfPMbuQg3WMxdrFfBvN5ZwzV0FFY+YJT
-	yJYVW0ZjdfdHSHd7MmRftMXtgj2dWN2HsuTGv8Yltf5E/rlIGyJeS2WXDtfPORg0wiXzGRaN4Q6
-	zb5bvegXh+gN2yBKpPFtnu8P0lVvbqMMCB00SQyijMG5H+hpZ0IeiLMQ1oLckLBCxY19ljvJM+H
-	OP65DHUUmquLxXV9wOziwudZPF5v7wlK6AzNfX0EHtleZIESwOuAtantpbugba4adFnIyy7L8y5
-	7qfdAk256O1wh/ACFMxbEyKf+nUCNyMxEeM036noX7phFrvo8QlG1JvaEKDcT1G43P/zcZdybnO
-	wUh9N1AeD2Cl7tI4QTZJxz7y/QHFDxIgNikS2FZ2i56PZQA==
-X-Received: by 2002:a17:903:11c8:b0:234:c2e7:a102 with SMTP id d9443c01a7336-23c875acb4bmr302714165ad.43.1751998277481;
-        Tue, 08 Jul 2025 11:11:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFMyeSXllmP6m2/JdAhcJhqK49ek9KKCbovVDSPqQI+Y6lC8k1G7S2GMhzpPyUXaWnSfqUxiA==
-X-Received: by 2002:a17:903:11c8:b0:234:c2e7:a102 with SMTP id d9443c01a7336-23c875acb4bmr302713865ad.43.1751998277053;
-        Tue, 08 Jul 2025 11:11:17 -0700 (PDT)
-Received: from hu-aarasahu-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c8455d0a9sm115980425ad.95.2025.07.08.11.11.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jul 2025 11:11:16 -0700 (PDT)
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Subject: [PATCH ath-next 4/4] wifi: ath12k: Enable memory profile selection for QCN9274
-Date: Tue,  8 Jul 2025 23:41:02 +0530
-Message-Id: <20250708181102.4111054-5-aaradhana.sahu@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250708181102.4111054-1-aaradhana.sahu@oss.qualcomm.com>
-References: <20250708181102.4111054-1-aaradhana.sahu@oss.qualcomm.com>
+        d=1e100.net; s=20230601; t=1751999855; x=1752604655;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9Qf6OoUd6t9+5P1mzZep4RXSNUTyvyaP3uN0U0SlC0k=;
+        b=JswZW/cpkKH6l+mo0e8FDKQujmra3MrSRgIMIRAfjh4YOL+954xsPVCz5TJcx2YX3y
+         Wk9/0g174jH4Wb13z5Dgz8D8mAvWgHEOevZld8CHbNBhuL6j1bsLxYfCY+xOqENqxvGM
+         On+biQFGuB/jJIJ4hyHOKDbll+q6Z0rd2BLApBrKnLSmcteUNQxB48lXtK8ApmQCJ+gb
+         7XBU7SATOzrDEjS3brzkwY9GDZQVYO1IdRcvsvv9zEM25JTIulhDJ4e8x2myGCmqY181
+         A+KnnzRidJhxcQMmS6nXzoqEywAMjLgfYwNmBObAxzjUSVgog3y1+IvrkXdGljrAplKI
+         UF9w==
+X-Forwarded-Encrypted: i=1; AJvYcCX162LEu2TY+tSD7APGfMMoD5d7AfKS7kTqo33zfhQFDyFP9ILOiCjpUbQQ8vEiRwW6mxDqX6pHC4gkNDEmlg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyy6LWGfc6U2MePuPkzJyRxm/tLTNNqffxfw/ZSLers8XMXMOhg
+	aDUFMR0AgTF1Yh72pcjxXbCPSxutlb8jHSvf8y1HoiG4cvVfQY5nl8g2Pe02CRhTFQ==
+X-Gm-Gg: ASbGnctNhYYzwfAahFX2hUc2cNeC7V8TJ+ntGMmjcHu1xe0qxiPiZZEnNnYBZuVlhW0
+	IumjgoVQieDnFkljHMjRA09/Ezbw4u0+yBvk+b5toPn+gfenWDAMb7cwSPlPocQqsezU990u+b5
+	q7WUjnnEQp55KBINpeb9QEi1EjCK11KFynyDNDI3a9/xjLgHQLkg33T+9l/d36JMf03+xIF+aQi
+	h5vW5VkmIoA25o8PlXo9J+DXNYmvjyUWehA3SjGSPMUsTpwcb5YyL1Nz6kkBc+/8gKUEZyefxUT
+	WtkXwbJAYqey7DUzAH1Do1tNQ0wC0USE1iJ4L6ZK1EXRtd0HWZiIucwqgYC26LKoNkAFQBduLhd
+	vZDFTL1+WywnumS3rqOyrIM/ytcpVO9D5Bfk=
+X-Google-Smtp-Source: AGHT+IECRmB2ficBX+Y4W2qALMbEbYmKFGHf8YDow88MlFUlVsgHhubDrdqKig06lIkFEiP/MGe7zg==
+X-Received: by 2002:a05:6a20:7fa6:b0:222:d191:5bbd with SMTP id adf61e73a8af0-22c7f544ef9mr708165637.39.1751999854754;
+        Tue, 08 Jul 2025 11:37:34 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:9b88:4872:11ac:8ccb])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-74cfad75020sm9321070b3a.109.2025.07.08.11.37.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Jul 2025 11:37:33 -0700 (PDT)
+Date: Tue, 8 Jul 2025 11:37:32 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Vitor Soares <ivitro@gmail.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Vitor Soares <vitor.soares@toradex.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	David Lin <yu-hao.lin@nxp.com>, stable@vger.kernel.org
+Subject: Re: [PATCH wireless v1] wifi: mwifiex: discard erroneous disassoc
+ frames on STA interface
+Message-ID: <aG1lbC4LJDKzMuco@google.com>
+References: <20250701142643.658990-1-ivitro@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=FrUF/3rq c=1 sm=1 tr=0 ts=686d5f46 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=RydBrGAMdIcuIQtkkqMA:9
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA4MDE1MiBTYWx0ZWRfX/HDvZovcWWBR
- fkK4FTI4GSC20+MhR6VYLm0k4sGzrMHG20I5QB/OmHs88U9FPhlKEWdtI1pONDa81QbdufEflq9
- ATZLG4BlyH9fdUgkUURMzXHoqFFCPJhuEKnZ0DtjMckDNyGAOxxq88mRA9ICmGO41akfbC+8MF0
- bFLFE9LVfOlFpsli9oXsrGtzO4nJcEcDsLBXqspbMYaA93xwlevTdJzpgnXeIjFqUp+jJnfI8a2
- q3jhD1OYIZG39W7KqO7mI/meflBIhB1h6MpT25gyzuAQPgJUbjwAGxllr6oTTnqC0ZfUk7SeaU8
- 80cvfey26rGiVCh1KoPywShNm8/Z/pNpKeU1tjX3Ygg8i6MJR8kiobSme2xVYcORlvjYl8ZYcSU
- tJnkf+oRqmqN8/mPeeqkLDTegsuCtzQ/fJAJvC8FLJvBzUzSH1cLZYvCp8lAhniOBrRoj1/9
-X-Proofpoint-GUID: Ipp5k95CkJpr91jm9QMN8L01qqN1gcUb
-X-Proofpoint-ORIG-GUID: Ipp5k95CkJpr91jm9QMN8L01qqN1gcUb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-08_05,2025-07-08_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 clxscore=1015 mlxscore=0 spamscore=0
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0
- adultscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507080152
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250701142643.658990-1-ivitro@gmail.com>
 
-The QCN9274 supports two memory profiles: a default profile and a
-low-memory profile. The driver signals the firmware to enable
-low-memory optimizations using the QMI initialization service.
+Hi Vitor,
 
-Add support to select the low-memory profile on system with less than
-512 MB RAM.
+On Tue, Jul 01, 2025 at 03:26:43PM +0100, Vitor Soares wrote:
+> From: Vitor Soares <vitor.soares@toradex.com>
+> 
+> When operating in concurrent STA/AP mode with host MLME enabled,
+> the firmware incorrectly sends disassociation frames to the STA
+> interface when clients disconnect from the AP interface.
+> This causes kernel warnings as the STA interface processes
+> disconnect events that don't apply to it:
+> 
+> [ 1303.240540] WARNING: CPU: 0 PID: 513 at net/wireless/mlme.c:141 cfg80211_process_disassoc+0x78/0xec [cfg80211]
+> [ 1303.250861] Modules linked in: 8021q garp stp mrp llc rfcomm bnep btnxpuart nls_iso8859_1 nls_cp437 onboard_us
+> [ 1303.327651] CPU: 0 UID: 0 PID: 513 Comm: kworker/u9:2 Not tainted 6.16.0-rc1+ #3 PREEMPT
+> [ 1303.335937] Hardware name: Toradex Verdin AM62 WB on Verdin Development Board (DT)
+> [ 1303.343588] Workqueue: MWIFIEX_RX_WORK_QUEUE mwifiex_rx_work_queue [mwifiex]
+> [ 1303.350856] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [ 1303.357904] pc : cfg80211_process_disassoc+0x78/0xec [cfg80211]
+> [ 1303.364065] lr : cfg80211_process_disassoc+0x70/0xec [cfg80211]
+> [ 1303.370221] sp : ffff800083053be0
+> [ 1303.373590] x29: ffff800083053be0 x28: 0000000000000000 x27: 0000000000000000
+> [ 1303.380855] x26: 0000000000000000 x25: 00000000ffffffff x24: ffff000002c5b8ae
+> [ 1303.388120] x23: ffff000002c5b884 x22: 0000000000000001 x21: 0000000000000008
+> [ 1303.395382] x20: ffff000002c5b8ae x19: ffff0000064dd408 x18: 0000000000000006
+> [ 1303.402646] x17: 3a36333a61623a30 x16: 32206d6f72662063 x15: ffff800080bfe048
+> [ 1303.409910] x14: ffff000003625300 x13: 0000000000000001 x12: 0000000000000000
+> [ 1303.417173] x11: 0000000000000002 x10: ffff000003958600 x9 : ffff000003625300
+> [ 1303.424434] x8 : ffff00003fd9ef40 x7 : ffff0000039fc280 x6 : 0000000000000002
+> [ 1303.431695] x5 : ffff0000038976d4 x4 : 0000000000000000 x3 : 0000000000003186
+> [ 1303.438956] x2 : 000000004836ba20 x1 : 0000000000006986 x0 : 00000000d00479de
+> [ 1303.446221] Call trace:
+> [ 1303.448722]  cfg80211_process_disassoc+0x78/0xec [cfg80211] (P)
+> [ 1303.454894]  cfg80211_rx_mlme_mgmt+0x64/0xf8 [cfg80211]
+> [ 1303.460362]  mwifiex_process_mgmt_packet+0x1ec/0x460 [mwifiex]
+> [ 1303.466380]  mwifiex_process_sta_rx_packet+0x1bc/0x2a0 [mwifiex]
+> [ 1303.472573]  mwifiex_handle_rx_packet+0xb4/0x13c [mwifiex]
+> [ 1303.478243]  mwifiex_rx_work_queue+0x158/0x198 [mwifiex]
+> [ 1303.483734]  process_one_work+0x14c/0x28c
+> [ 1303.487845]  worker_thread+0x2cc/0x3d4
+> [ 1303.491680]  kthread+0x12c/0x208
+> [ 1303.495014]  ret_from_fork+0x10/0x20
+> 
+> Add validation in the STA receive path to verify that disassoc/deauth
+> frames originate from the connected AP. Frames that fail this check
+> are discarded early, preventing them from reaching the MLME layer and
+> triggering WARN_ON().
+> 
+> This filtering logic is similar with that used in the
+> ieee80211_rx_mgmt_disassoc() function in mac80211, which drops
+> disassoc frames that don't match the current BSSID
+> (!ether_addr_equal(mgmt->bssid, sdata->vif.cfg.ap_addr)), ensuring
+> only relevant frames are processed.
+> 
+> Tested on:
+> - 8997 with FW 16.68.1.p197
+> 
+> Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/util.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
+> index 4c5b1de0e936..6882e90e90b2 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/util.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/util.c
+> @@ -459,7 +459,9 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+>  				    "auth: receive authentication from %pM\n",
+>  				    ieee_hdr->addr3);
+>  		} else {
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.1.c5-00284.1-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+How about the other leg of this 'else' (ieee80211_is_auth())? Is it
+possible for these spurious frames to accidentally look like our AUTH
+frames?
 
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/ahb.c  |  1 +
- drivers/net/wireless/ath/ath12k/core.c | 16 +++++++++++++++-
- drivers/net/wireless/ath/ath12k/core.h |  2 ++
- drivers/net/wireless/ath/ath12k/pci.c  |  2 ++
- drivers/net/wireless/ath/ath12k/qmi.c  |  2 +-
- 5 files changed, 21 insertions(+), 2 deletions(-)
+> -			if (!priv->wdev.connected)
+> +			if (!priv->wdev.connected ||
+> +			    !ether_addr_equal(ieee_hdr->addr3,
 
-diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
-index 8d1a86e420a4..3b983f4e3268 100644
---- a/drivers/net/wireless/ath/ath12k/ahb.c
-+++ b/drivers/net/wireless/ath/ath12k/ahb.c
-@@ -1022,6 +1022,7 @@ static int ath12k_ahb_probe(struct platform_device *pdev)
- 	ab->hif.ops = hif_ops;
- 	ab->pdev = pdev;
- 	ab->hw_rev = hw_rev;
-+	ab->target_mem_mode = ATH12K_QMI_MEMORY_MODE_DEFAULT;
- 	platform_set_drvdata(pdev, ab);
- 	ab_ahb = ath12k_ab_to_ahb(ab);
- 	ab_ahb->ab = ab;
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 53e60dba3bf8..bf46acb54268 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1728,6 +1728,20 @@ static void ath12k_core_reset(struct work_struct *work)
- 	mutex_unlock(&ag->mutex);
- }
- 
-+enum ath12k_qmi_mem_mode ath12k_core_get_memory_mode(struct ath12k_base *ab)
-+{
-+	unsigned long total_ram;
-+	struct sysinfo si;
-+
-+	si_meminfo(&si);
-+	total_ram = si.totalram * si.mem_unit;
-+
-+	if (total_ram < SZ_512M)
-+		return ATH12K_QMI_MEMORY_MODE_LOW_512_M;
-+
-+	return ATH12K_QMI_MEMORY_MODE_DEFAULT;
-+}
-+
- int ath12k_core_pre_init(struct ath12k_base *ab)
- {
- 	const struct ath12k_mem_profile_based_param *param;
-@@ -1739,7 +1753,7 @@ int ath12k_core_pre_init(struct ath12k_base *ab)
- 		return ret;
- 	}
- 
--	param = &ath12k_mem_profile_based_param[ATH12K_QMI_MEMORY_MODE_DEFAULT];
-+	param = &ath12k_mem_profile_based_param[ab->target_mem_mode];
- 	ab->profile_param = param;
- 	ath12k_fw_map(ab);
- 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 272b7e9822ea..996753d794f0 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -1230,6 +1230,7 @@ struct ath12k_base {
- 	struct ath12k_reg_freq reg_freq_5ghz;
- 	struct ath12k_reg_freq reg_freq_6ghz;
- 	const struct ath12k_mem_profile_based_param *profile_param;
-+	enum ath12k_qmi_mem_mode target_mem_mode;
- 
- 	/* must be last */
- 	u8 drv_priv[] __aligned(sizeof(void *));
-@@ -1364,6 +1365,7 @@ void ath12k_fw_stats_free(struct ath12k_fw_stats *stats);
- void ath12k_fw_stats_reset(struct ath12k *ar);
- struct reserved_mem *ath12k_core_get_reserved_mem(struct ath12k_base *ab,
- 						  int index);
-+enum ath12k_qmi_mem_mode ath12k_core_get_memory_mode(struct ath12k_base *ab);
- 
- static inline const char *ath12k_scan_state_str(enum ath12k_scan_state state)
- {
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 1f3cfd9b89fd..b4e7e77518dd 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1595,6 +1595,7 @@ static int ath12k_pci_probe(struct pci_dev *pdev,
- 		ab->hal_rx_ops = &hal_rx_qcn9274_ops;
- 		ath12k_pci_read_hw_version(ab, &soc_hw_version_major,
- 					   &soc_hw_version_minor);
-+		ab->target_mem_mode = ath12k_core_get_memory_mode(ab);
- 		switch (soc_hw_version_major) {
- 		case ATH12K_PCI_SOC_HW_VERSION_2:
- 			ab->hw_rev = ATH12K_HW_QCN9274_HW20;
-@@ -1618,6 +1619,7 @@ static int ath12k_pci_probe(struct pci_dev *pdev,
- 		ab->hal_rx_ops = &hal_rx_wcn7850_ops;
- 		ath12k_pci_read_hw_version(ab, &soc_hw_version_major,
- 					   &soc_hw_version_minor);
-+		ab->target_mem_mode = ATH12K_QMI_MEMORY_MODE_DEFAULT;
- 		switch (soc_hw_version_major) {
- 		case ATH12K_PCI_SOC_HW_VERSION_2:
- 			ab->hw_rev = ATH12K_HW_WCN7850_HW20;
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index 5e8943060443..7c611a1fd6d0 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -3856,7 +3856,7 @@ int ath12k_qmi_init_service(struct ath12k_base *ab)
- 	memset(&ab->qmi.target_mem, 0, sizeof(struct target_mem_chunk));
- 	ab->qmi.ab = ab;
- 
--	ab->qmi.target_mem_mode = ATH12K_QMI_MEMORY_MODE_DEFAULT;
-+	ab->qmi.target_mem_mode = ab->target_mem_mode;
- 	ret = qmi_handle_init(&ab->qmi.handle, ATH12K_QMI_RESP_LEN_MAX,
- 			      &ath12k_qmi_ops, ath12k_qmi_msg_handlers);
- 	if (ret < 0) {
--- 
-2.34.1
+"addr3" doesn't make it totally obvious to me what this actually means,
+nor that it's correct. Would ieee80211_get_SA(ieee_hdr) be equivalent?
+That seems a bit more descriptive. Or else maybe a short comment (e.g.,
+"ignore spurious management frames from other BSSIDs").
 
+It seems like it's correct, because this block already filters for
+specific frame types (auth, deauth, disassoc), but in isolation, it's
+not the most readable.
+
+Brian
+
+> +					      priv->curr_bss_params.bss_descriptor.mac_address))
+>  				return 0;
+>  
+>  			if (ieee80211_is_deauth(ieee_hdr->frame_control)) {
+> -- 
+> 2.34.1
+> 
 
