@@ -1,67 +1,64 @@
-Return-Path: <linux-wireless+bounces-24913-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24914-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B09AFC54D
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 10:21:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1163AFC596
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 10:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C35981892655
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 08:21:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81559562C18
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 08:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6BD1B0F1E;
-	Tue,  8 Jul 2025 08:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCBE21B9CF;
+	Tue,  8 Jul 2025 08:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="U+WDzF5V"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="JH1e0vdp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF73298261
-	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 08:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E28298999
+	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 08:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751962879; cv=none; b=GQoEYAFkwoWYZZSOMdzMtzYBnrNxl38g8CIdmCm3fblvDLaf5eX6PtDU6Bh7D+m8ITaVpz9pf4yI8JftsKycvLC+LGqxDn7XzxCxxXufVl7s3Jn3rEKI/ohdQ/c3nL3Gprrf9uJz99QrFeVpqS75xkvJ21IuIo0DCXmA5haPMP4=
+	t=1751963215; cv=none; b=ixeE5iSGmQ24Ld0Llz6ggg3wLW3Z9BWGR55wC2UGl5Q8o2TV/Xlr/v4rVPX71XhA6oM1W5Aq0Tz0GQGlPJAgAPoJ3wb2MWtqhrGhpvlJItcrMdzweO2kmiUcc/i/SJxmoU+Naz0PVJl2btlgEAQEY5nrwFkCkr0G+diPrCf1OSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751962879; c=relaxed/simple;
-	bh=9FDGGat7DSIAxa7cgP2V9wEpPTgLHuvbPii0mExepSE=;
+	s=arc-20240116; t=1751963215; c=relaxed/simple;
+	bh=ycMmNgQPXhFJ5HotlVvrLJRC+zPoFvW58HF/P10WpC8=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SMKVm7JdxklFcKC68r4UhX8wYtMROQnOOecte7869coYQZp3Ukt9eyz/PNLVDcLW0jpN6OFryls4ppvbxueERS0uJUfwjCQW7RZv1HhCHuRmR1GCoP2+lXXSnsEr53KB4xAG9Wlikw3KHVTtnT0qq31qWbcTo64zH2Rq/kFsWq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=U+WDzF5V; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=Ps7PZeZw9EOlRrDZu7EluXzHX+J5EnN6A8xw+B64R6aMTaOQt2Og0t7of2s+rQ63Xgt8QDOzBr2l4hTRE0YWDpyUSYhm+VMPqRbtOH99NAe199K1P9IxOAQQGa9/G5awWOFofyu7edq1zB+WnuvJbKgOwiHTJlRq0BIsBn72/Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=JH1e0vdp; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=9FDGGat7DSIAxa7cgP2V9wEpPTgLHuvbPii0mExepSE=;
-	t=1751962877; x=1753172477; b=U+WDzF5VMSbjteNCONI8EEOn4bCbSEl2045wiPfXXKw9pk5
-	wxhtAadRUUBGy7XkXddPuDXdMBvozlzja6pYaBxalJjCv/dGvQWAprUjQlUFQvJMCM8picwfKS38n
-	JdyZRayg6MJPPsvar0BfCQwht7nrjj5Zh0mrInSUNS0j7aUmHcSAUSDwPO64jRBjlX9tuLp93PLaO
-	mEqmSOZOlcLmS88/H/+M5M+cTUU6OAfG2xJBt1NonmXgyAx81TUf88JbF0scTiDYbLNKvoozrvG6T
-	BiiYm+JT4e+Oy5b+GeFK4DIu2aFhLpL/U5QStNnB9wvYUkoow59zwv4cdPtYnaDA==;
+	Resent-Cc:Resent-Message-ID; bh=21hQW5N5nZA/JerVYq7h605l0Ii0PUeCaKPMFrRer5c=;
+	t=1751963213; x=1753172813; b=JH1e0vdpdBru+7NoZ/gaop/9gG1oZ7zZ6/7Ooy6Zxn6fZA5
+	euEI6GQX/f5pXexhQ+dADE3ADi5KKtt1D2GJzCB4bxcHh56SfnBQjQooa0pFK1MiEZLSswhlMTdXB
+	D5amVuavJfcb+6g5PQnYPG2zuQk/pfEJRCdC6Y/eSYE9NVV5DsKdENuQXO/eAavLwjGfgVUiP0hXm
+	6kx4V8hTmGRtguQT8zXgv7mIMELopQNOuDpoPXM7CQ/dXVLA4d6uwbGh/cf+zHwO2Q1ojgf/PXIFZ
+	IphRgDan89m0Y9BqRPb8BATPcYICC7BsPrdgdWG19WcrUxjLDlOG6xsgrOlW1hzA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uZ3ZS-0000000BjWB-3H1r;
-	Tue, 08 Jul 2025 10:21:01 +0200
-Message-ID: <c28ccc70b5baca6aff28a520d3f8810e196daa21.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: determine missing link_id in
- ieee80211_rx_for_interface() based on band
+	id 1uZ3f2-0000000Bjtz-2SO1;
+	Tue, 08 Jul 2025 10:26:44 +0200
+Message-ID: <e4200088d9a56fa4ec6bf25c13375df7b9d13b42.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: disallow AP interface from getting
+ BIGTK in RX path
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Michael-CY Lee <michael-cy.lee@mediatek.com>, linux-wireless
 	 <linux-wireless@vger.kernel.org>
 Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- Evelyn Tsai =?UTF-8?Q?=28=E8=94=A1=E7=8F=8A=E9=88=BA=29?=	
- <Evelyn.Tsai@mediatek.com>, Money Wang
- =?UTF-8?Q?=28=E7=8E=8B=E4=BF=A1=E5=AE=89=29?=	 <Money.Wang@mediatek.com>,
- linux-mediatek <linux-mediatek@lists.infradead.org>
-Date: Tue, 08 Jul 2025 10:20:53 +0200
-In-Reply-To: <54df1d3fe61bb861b97c897aaa4a2a3e08f71e62.camel@mediatek.com>
-References: <20250702104403.2738634-1-michael-cy.lee@mediatek.com>
-		 <6c666ab6d83ba45f9f15643eeffed5d0f4770867.camel@sipsolutions.net>
-	 <54df1d3fe61bb861b97c897aaa4a2a3e08f71e62.camel@mediatek.com>
+ Evelyn Tsai <evelyn.tsai@mediatek.com>, Money Wang
+ <money.wang@mediatek.com>, linux-mediatek	
+ <linux-mediatek@lists.infradead.org>
+Date: Tue, 08 Jul 2025 10:26:43 +0200
+In-Reply-To: <20250702104516.2738962-1-michael-cy.lee@mediatek.com>
+References: <20250702104516.2738962-1-michael-cy.lee@mediatek.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
@@ -73,59 +70,41 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-Hi,
+On Wed, 2025-07-02 at 18:45 +0800, Michael-CY Lee wrote:
+> The problem was that when the AP interface with BIGTK set received
+> beacons with MMIE from other BSSes, it tried to verify the MIC using its
+> BIGTK, which must fail and be notified to the upper layer by
+> cfg80211_rx_unprot_mlme_mgmt().
+>=20
+> The solution is to prevent the AP interface from getting BIGTK in
+> the RX path, as the AP should only use the BIGTK to calculate the
+> beacon's MIC value.
+>=20
+> Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
+> Reviewed-by: Money Wang <money.wang@mediatek.com>
+> ---
+>  net/mac80211/rx.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+> index 7671fd39a60e..f2d63a7cc642 100644
+> --- a/net/mac80211/rx.c
+> +++ b/net/mac80211/rx.c
+> @@ -1888,6 +1888,10 @@ ieee80211_rx_get_bigtk(struct ieee80211_rx_data *r=
+x, int idx)
+>  	 * index (i.e., a key that we do not have).
+>  	 */
+> =20
+> +	/* AP interface sould not use BIGTK to decrypt */
+> +	if (rx->sdata->vif.type =3D=3D NL80211_IFTYPE_AP)
+> +		return NULL;
 
-[btw, you're sending HTML that looks like plain text, seems redundant
-and also made the links non-clickable here? maybe try to change that]
+Could this apply to other interface types (AP_VLAN? mesh?) as well?
+Maybe this validation should instead be restricted to where it matters?
+Or maybe it should only limit the rx->link->gtk[] lookups, not the per-
+STA ones?
 
-> > Hm. Qualcomm has a similar thing with frequency, I think, and that
-> > probably makes more sense for them since 'band' isn't unique for the
-> > radio:
-> >=20
-> > https://lore.kernel.org/linux-wireless/20250612121127.1960948-3-maharaj=
-a.kennadyrajan@oss.qualcomm.com/
-> >=20
-> > Or is it not related?
-
-> I think they're related but address different issues about group-
-> addressed frames.
-
-OK, fair.
-
-> The Qualcomm patch seems to focus on preventing frames from getting
-> processed on an interface running on a different band. (referred from
-> their commit message)
-> For example, a frame from frequency 6135 MHz should not be processed by
-> an interface that does not have a link on frequency 6135 MHz.
-
-Right, it's just in some way I thought many frames should be processed
-for a link in the first place, though I guess you're thinking more
-generally, and the other patch was explicitly about data frames for
-which that of course isn't really true.
-
-> On the other hand, the problem we encountered is that the interface is
-> going to process the frame, but the "status->link_valid" is unset
-> because the driver is incapable of determining the "link_id". The
-> "link_id" remains its default value of -1, and the frame is handled by
-> the interface's default link and is dropped because an AP MLD interface
-> is not using its default link (sdata->deflink).
-
-Right.
-
-> In summary, the Qualcomm patch focuses on avoiding frames being
-> processed by unsuitable interfaces, while our patch aims to determine
-> the "link_id" so that the interface can correctly handle it.
-
-OK.
-
-> Additionally, we also think the 'link_id' can be determined based on
-> 'freq' rather than 'band'. What do you think?
-
-I'm starting to wonder if either should be in mac80211 at all, but I
-guess if you both need it why not :)
-
-I'd say we should be consistent, and use the frequency because there are
-(likely? going to be?) devices with two separate low/high 5 GHz links.
+(Also, what about wireless/wireless-next? please add a tag)
 
 johannes
 
