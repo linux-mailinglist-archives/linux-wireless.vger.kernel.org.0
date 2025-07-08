@@ -1,63 +1,59 @@
-Return-Path: <linux-wireless+bounces-24938-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24939-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0723CAFCA5A
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 14:24:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF05AFCA73
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 14:31:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27DC63B82B6
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 12:24:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C260424DA7
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 12:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1AC35959;
-	Tue,  8 Jul 2025 12:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E908CCA52;
+	Tue,  8 Jul 2025 12:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="azARzAK3"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="tAY3kLx3"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DFA282EE
-	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 12:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767452882A5
+	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 12:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751977465; cv=none; b=b6eJHAfRS9FB8MFYKpMMogAPydaOGYbkBrQbfastGGJxC11GtUMdnZ2D+oZHq22HinlOP5x36HaZjNRtF6l6u2B9u9by17oa5x34rxrMDaQiP/oJE0JnDuLySUwkSQTx/0D9/Fsx63Kiomnj/By1ZUpKsVAjSNkCVYCdZB0IdjI=
+	t=1751977867; cv=none; b=Kl85ubeBdOzy1vOQbnmC27VBJM/OUcSfWBujLaYndQCS03YaWK392QM6X5fKpVQ62l9KL/WW2z8XmloQfWd4LSaj6SK/ACTqYQDNunkyitkTCtmlMLsM5A9pbjTeKAxnyb+CLIwzV6OKm3niznFKsOn5rvHbzUqcYRct0vNl2CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751977465; c=relaxed/simple;
-	bh=DLmadgNY8ajnnaq1U5474830LbLZZJXQYAp2CScc3Uw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bUnU3KKfVweQwXC2d1inPk1ePRIK1gZybCSmydWz9MoNqAItlBWS5TOtah9VboivRKsJg4Zjjx5SiXcoAMUI4d7Zatze+665aXnV1yOnd4E+sTk4yLVCCx8kCbvhCWRKrDzb7GtApzMdPffTtM7q4byDXVjkkuvwdn/OYlNDSY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=azARzAK3; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1751977867; c=relaxed/simple;
+	bh=CajInpPMtzw+3y91LRZGsup9M9DdJxJO9EhP+BZp/50=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YJ10GRrEnEiHrJD1Ui+PryiLfgYpHwPvmFHskdktFRBM+snzVQvbMfMhPVg0kKEQ/bBdiymzeovRQDSW9heaHir+1O6SwPlFiw4wrizv5aaY+Bw/FlyAcfCaj7BQnkD3NC6ou41OgavlDuXyp90YvBE91662XdIIsCXLZSIX62U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=tAY3kLx3; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=DLmadgNY8ajnnaq1U5474830LbLZZJXQYAp2CScc3Uw=;
-	t=1751977464; x=1753187064; b=azARzAK3GnF7fDTyeTSjADHnj1Iwc8FpvgH6u5LUC6SMjNn
-	wjf5l75Jb1s4kHzprRle3n4deaSqZDIf7BBhFhrvAa2rFnZN9kkDCVTErJfrgcG1bvCQeug/j+pPC
-	J2VqS6imBELTLP+uieMY2ilFphliG/qJdifj4HHd2TJ/a1m9sostQxDXYFwMAtP0rQiNz8miHiqx+
-	oBy8I29IoGMtsOjTJrobNC4eitiItP/jnc/Hchyicn00ohzIx68TfYGo7OEfOCp1aZvSmbbiJC3Ur
-	YTlRldQzSEunb7bltg7p1MXdeJzm3lMtkvxcxpCqBjMfLB4ZdRSZvFFwqOaty0eQ==;
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=bsg8/2oAKvKo3JJ9oXYBsaG6wInJWuF4e7/mAqdsMFc=;
+	t=1751977866; x=1753187466; b=tAY3kLx3otBa0ODWK9uvOegkXQapw7VLgDbUYF9PoKVUYFt
+	D522KFGC69EvELrWiwj888nHOdCQX9Ngsdv/W7IcK6M0sUiU3e1kvax37R6INIBAaU9U1luQi4Wqj
+	Vc+YsUYfe3WLtjNob5p18M7Akm/4kOI8NGxK2ZfVe1kLKlCLVJJLereONaabk0YrJeJEHgh+AOT2A
+	ONvmgJji+26XH0ge9jbf5pf10wQiu7q0ciy2DvjlvWZH/2zeMh/1vB0dDNXaKoxLy3jQKT2mX7cFE
+	dAlBNFaTqjy3cnctJwm8thxvO6o9gIyVKt7VpxOP/bqazineZUFPrJOJ/2Ox10Jg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uZ7Mz-0000000BsUH-07aP;
-	Tue, 08 Jul 2025 14:24:21 +0200
-Message-ID: <afd988d56f95b5041ee9ee30d59f168f3fdc9aa0.camel@sipsolutions.net>
-Subject: Re: [RFC 1/5] wifi: nl80211: Add more configuration options for NAN
- commands
+	id 1uZ7TT-0000000Bsg5-2Dzg;
+	Tue, 08 Jul 2025 14:31:03 +0200
+Message-ID: <54ede5f58c3abc7de58010e492283c7930a2495f.camel@sipsolutions.net>
+Subject: Re: [PATCH v5 1/3] wifi: mac80211: Assign tx-stats to the proper
+ link.
 From: Johannes Berg <johannes@sipsolutions.net>
-To: "Otcheretianski, Andrei" <andrei.otcheretianski@intel.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date: Tue, 08 Jul 2025 14:24:20 +0200
-In-Reply-To: <SJ1PR11MB625216838B22D946DC359C74F54EA@SJ1PR11MB6252.namprd11.prod.outlook.com>
-References: <20250622222444.356435-1-andrei.otcheretianski@intel.com>
-		 <20250622222444.356435-2-andrei.otcheretianski@intel.com>
-		 (sfid-20250623_002839_326397_7F85850C) <e39611e7990541138e7d82809fee924433274912.camel@sipsolutions.net>
-	 <SJ1PR11MB625216838B22D946DC359C74F54EA@SJ1PR11MB6252.namprd11.prod.outlook.com>
+To: greearb@candelatech.com, linux-wireless@vger.kernel.org
+Date: Tue, 08 Jul 2025 14:31:02 +0200
+In-Reply-To: <20241218232519.3156080-1-greearb@candelatech.com>
+References: <20241218232519.3156080-1-greearb@candelatech.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
@@ -69,35 +65,26 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Tue, 2025-07-08 at 12:00 +0000, Otcheretianski, Andrei wrote:
-> >=20
-> > When we have "nan_supported_bands", it seems to me these should really =
-be
-> > by arbitrary band, and bitmap of bands to enable scan on, or something =
-like
-> > that ... also this really applies to the nl80211 API.
+On Wed, 2024-12-18 at 15:25 -0800, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
 >=20
-> NAN synchronization is only defined for 2.4 and 5 GHZ bands.
-> Now, "bands" (supported bands) field existed before, and I didn't want to=
- change it.
-> Having an array of band_configs imho looks overkill.
+> For drivers that can report the tx link-id, account tx
+> stats against that link.  If we cannot determine tx link,
+> then use deflink.
 
-Sure, there are any number of things that are not (yet!) defined. I
-still don't think that's a good way to do software architecture. We
-didn't _need_ to support MLO for P2P, but in software architecture,
-handling everything as the currently supported special cases mostly ends
-up hurting in my experience.
+According to all the RX stats discussion [1] you need some changes here,
+so I'd appreciate if you could take a look and rebase/resend.
 
-And Vinay was just also asking for a 6G support flag. Am I supposed to
-believe NAN operation there is only unsynchronised, or how does that
-match?
+[1] https://lore.kernel.org/linux-wireless/c22a9e7e-d0f7-477b-b732-c2454a0a=
+c904@quicinc.com/
 
-> Regarding enable_hb_scan (if this comment refers to this field),
-> it can't be for "arbitrary" band, as disabling scanning on 2.4GHz is not =
-allowed.
 
-We can still represent it that way ("scan bands"?) and just forbid
-certain values, that's not really much of an argument either?
+And please, as I very frequently keep asking you, don't mix different
+things into a single patch (such as 'rep_packets'/'rep_bytes' in this
+patch). By insisting on not splitting your patches properly before
+submitting them you're effectively saying your time is more important
+than mine, and I don't appreciate that. All that achieves is that I
+don't even want to look at your patches.
 
 johannes
 
