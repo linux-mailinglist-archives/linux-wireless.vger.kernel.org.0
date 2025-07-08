@@ -1,131 +1,131 @@
-Return-Path: <linux-wireless+bounces-24912-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24913-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A0C1AFC53E
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 10:17:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B09AFC54D
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 10:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 422293AD551
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 08:16:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C35981892655
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 08:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F47242D84;
-	Tue,  8 Jul 2025 08:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6BD1B0F1E;
+	Tue,  8 Jul 2025 08:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f4d2MmHb"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="U+WDzF5V"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F7618024
-	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 08:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF73298261
+	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 08:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751962636; cv=none; b=fmpXe4w9xt7rPKpQks8WhRAoRmbbgHb1xRLiFremdja3epbivmqO0GHUP3mvdG5+PAtweBB8F6guRjyy4aCTHmZPH6ucBK8UpW+aFYba+xUcn9e1eWZHoZEeXBm2bfTz1yniZP+dAmtGEjBHxjTHewXHD3AKd2rIaZm7KJU6a6A=
+	t=1751962879; cv=none; b=GQoEYAFkwoWYZZSOMdzMtzYBnrNxl38g8CIdmCm3fblvDLaf5eX6PtDU6Bh7D+m8ITaVpz9pf4yI8JftsKycvLC+LGqxDn7XzxCxxXufVl7s3Jn3rEKI/ohdQ/c3nL3Gprrf9uJz99QrFeVpqS75xkvJ21IuIo0DCXmA5haPMP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751962636; c=relaxed/simple;
-	bh=blPw/yc4VZHM6zJf/RilVwmyL6mOylS/kcJWUNpZZsg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g+qTOSeC476UQ+zmAlSRI/se1xumIkd1AO/GUW0m0K4McLnE0+49biIqhQ/+FpV6qis92lxq1Z59+Fo0y6SFI/A+AQZUAHWaDlSk/rj+j/MkcH1Lv9G+WUdewHS9TviUkOWFsWmBAG5Pwcj+7H5NaxojZb1oUX6cGHm+7H72ZTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f4d2MmHb; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ae36dc91dc7so701401366b.2
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Jul 2025 01:17:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751962633; x=1752567433; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HI6uy3/VA9ODWgnMqFTSxnicfikmsNzPdv5EuvAouoU=;
-        b=f4d2MmHbhnc0eSxdigO6zjy6RotrJzklfWaFRSrPri1gVWz8iPldlks8AqoZaYCOK9
-         hS498GTkYfYtWQEA9fXeAM4aKzFHwCsJx6oTPZOc1RS8SsEh+M1huO78HdhJOVv+yOVH
-         AqOKk5YflA6Q4zr9NDvTeg8jUVjy3w64RlT/ctotc+5FWl9AOsEDxUXAHnFWhbWmV8hr
-         hR2h9o4Ru/mhKxgQDl5SxNupC3AgS9p5Ob9JuaaOQX5kT9vMVweIwrWhN73mM9xoAtB/
-         U27iYGIZ4WF3RFnK2I4NZqumRxmnQrSbxJovuHL1JIugFWdPz8h8uoH6Y3NnkUz1Cj8Z
-         wWsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751962633; x=1752567433;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HI6uy3/VA9ODWgnMqFTSxnicfikmsNzPdv5EuvAouoU=;
-        b=LnUFKbbAuy/VpjeWz7AV5pUCR22vkjNGQJYvLQh7FQB/A0tl4TouXwd6W0sJZRjzAC
-         aRRgpXTWwClqWzxn4xcpnr9J3Fd2kpqYIRcYgnMC8ZnpdJ+LKeRzg+r/91S0TtVzsjAW
-         hGfkTA4tQDNdbs1sA7Mn5SNElpPa9vKGPuKbXYSP+JlQchhXkZWCQmI2oxnM/c44F6sb
-         MdwowDVhgXlUTYfHBT+soed8QWxV0HWbKrX+G7CpifPwG3AeWkPz1SM69l07GdmtjahN
-         f+t9yUSAtbh9AOFOnIQnuqbKGLV08eMNbx6rqwfV4VuRsklLdPP9bCxvCwYDTOehUMJV
-         VvEg==
-X-Gm-Message-State: AOJu0Yzs6lghOmW17A+qGBPAH8FVJjIIp7Y6+vuj7sD6cxTGFIsl/6EC
-	VlxHdH05oOw3kyMLVVtH9jYxwDCesKybxTVoqOKkPYIfOFiMtNK67d9dMDQPhIjRPE/ffOIwUQS
-	TzUdgQBT0PrK/PdI9tjjt61HNroikEBw=
-X-Gm-Gg: ASbGncuB5UsnlsRB9Ycg9fmxAeejpEcghmGprYaqeDrKXl2hWSA/7ADsNNb8my0X21M
-	BgpGC1zKh6FtMmR9CJoyTwhaYbFTQ7saWx8eVtZMpA+9JYB1o16oGJ2D6QzbY/GLciUTwYX+oNt
-	S+QJGzHxlonVnD3GBrByclzvCiTNyy/8U3JOfNlZYdTiw=
-X-Google-Smtp-Source: AGHT+IEmWCLMD3Tas03el2MROEquJ/ls6tdQP9T7z9a0b5GgjOI02bv1CITiE/ML+H5CRU9PQbtqjE+hJArr3fhhtpA=
-X-Received: by 2002:a17:906:6a16:b0:ae3:c780:b883 with SMTP id
- a640c23a62f3a-ae3fe82d4d8mr1633925566b.54.1751962632684; Tue, 08 Jul 2025
- 01:17:12 -0700 (PDT)
+	s=arc-20240116; t=1751962879; c=relaxed/simple;
+	bh=9FDGGat7DSIAxa7cgP2V9wEpPTgLHuvbPii0mExepSE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SMKVm7JdxklFcKC68r4UhX8wYtMROQnOOecte7869coYQZp3Ukt9eyz/PNLVDcLW0jpN6OFryls4ppvbxueERS0uJUfwjCQW7RZv1HhCHuRmR1GCoP2+lXXSnsEr53KB4xAG9Wlikw3KHVTtnT0qq31qWbcTo64zH2Rq/kFsWq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=U+WDzF5V; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=9FDGGat7DSIAxa7cgP2V9wEpPTgLHuvbPii0mExepSE=;
+	t=1751962877; x=1753172477; b=U+WDzF5VMSbjteNCONI8EEOn4bCbSEl2045wiPfXXKw9pk5
+	wxhtAadRUUBGy7XkXddPuDXdMBvozlzja6pYaBxalJjCv/dGvQWAprUjQlUFQvJMCM8picwfKS38n
+	JdyZRayg6MJPPsvar0BfCQwht7nrjj5Zh0mrInSUNS0j7aUmHcSAUSDwPO64jRBjlX9tuLp93PLaO
+	mEqmSOZOlcLmS88/H/+M5M+cTUU6OAfG2xJBt1NonmXgyAx81TUf88JbF0scTiDYbLNKvoozrvG6T
+	BiiYm+JT4e+Oy5b+GeFK4DIu2aFhLpL/U5QStNnB9wvYUkoow59zwv4cdPtYnaDA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uZ3ZS-0000000BjWB-3H1r;
+	Tue, 08 Jul 2025 10:21:01 +0200
+Message-ID: <c28ccc70b5baca6aff28a520d3f8810e196daa21.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: determine missing link_id in
+ ieee80211_rx_for_interface() based on band
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Michael-CY Lee <michael-cy.lee@mediatek.com>, linux-wireless
+	 <linux-wireless@vger.kernel.org>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+ Evelyn Tsai =?UTF-8?Q?=28=E8=94=A1=E7=8F=8A=E9=88=BA=29?=	
+ <Evelyn.Tsai@mediatek.com>, Money Wang
+ =?UTF-8?Q?=28=E7=8E=8B=E4=BF=A1=E5=AE=89=29?=	 <Money.Wang@mediatek.com>,
+ linux-mediatek <linux-mediatek@lists.infradead.org>
+Date: Tue, 08 Jul 2025 10:20:53 +0200
+In-Reply-To: <54df1d3fe61bb861b97c897aaa4a2a3e08f71e62.camel@mediatek.com>
+References: <20250702104403.2738634-1-michael-cy.lee@mediatek.com>
+		 <6c666ab6d83ba45f9f15643eeffed5d0f4770867.camel@sipsolutions.net>
+	 <54df1d3fe61bb861b97c897aaa4a2a3e08f71e62.camel@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250708015005.6470-1-pkshih@gmail.com> <CAGb2v67YNZG_-MtJT_pncaqeQULj3FGLj7jpSUSOGTXe2ipGag@mail.gmail.com>
-In-Reply-To: <CAGb2v67YNZG_-MtJT_pncaqeQULj3FGLj7jpSUSOGTXe2ipGag@mail.gmail.com>
-From: Ping-Ke Shih <pkshih@gmail.com>
-Date: Tue, 8 Jul 2025 16:17:30 +0800
-X-Gm-Features: Ac12FXw5cCDxyXC22kgmT8lPlGYC45ldlFXO_SGEEYiTvFw45_ycYDRtycdSzl4
-Message-ID: <CAHrRpu=rcXQzBO-NdDYBxj02WpMAHyP8ZdQhU=ScO=bOQXk9Tw@mail.gmail.com>
-Subject: Re: [PATCH v3] wireless-regdb: Update regulatory info for CEPT
- countries for 6GHz listed by WiFi Alliance
-To: wens@kernel.org
-Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-Chen-Yu Tsai <wens@kernel.org> wrote:
->
-> On Tue, Jul 8, 2025 at 9:50=E2=80=AFAM Ping-Ke Shih <pkshih@gmail.com> wr=
-ote:
-> >
-> > From: Ping-Ke Shih <pkshih@realtek.com>
-> >
-> > The regulations enabling 6GHz WiFi [1] of WiFi Alliance lists CEPT
-> > countries including
-> >  - Albania (AL)
-> >  - Andorra (AD)
-> >  - Austria (AT)
-> >  - Belgium (BE)
-> >  - Georgia (GE)
-> >  - Iceland (IS)
-> >  - Liechtenstein (LI)
-> >  - Macedonia, The Former Yugoslav Republic of (MK)
-> >  - Moldova, Republic of (MD)
-> >  - Monaco (MC)
-> >  - Montenegro (ME)
-> >  - Norway (NO)
-> >  - Switzerland (CH)
-> >  - T=C3=BCrky (TR)
-> >  - Ukraine (UA)
-> > Add 6 GHz frequency entry if not being added yet.
-> >
-> > The following are skipped as they do not have corresponding entries in
-> > the database yet. Adding an entry just for 6 GHz would cause 2.4 GHz an=
-d
-> > 5 GHz bands from the world domain to stop working.
-> >  - Faroe Islands (FO)
-> >  - Gibraltar (GI)
-> >  - Isle of Man (IM)
-> >  - San Marino (SM)
-> >  - Holy See (Vatican City State) (VA)
->
-> I also went through the whole list, and it seems "Bosnia and Herzegovina"=
- (BA)
-> is missing a 6 GHz entry. Could you send a followup patch to add it?
->
+Hi,
 
-Sure. I will go through whole CEPT countries for 6 GHz entries.
+[btw, you're sending HTML that looks like plain text, seems redundant
+and also made the links non-clickable here? maybe try to change that]
+
+> > Hm. Qualcomm has a similar thing with frequency, I think, and that
+> > probably makes more sense for them since 'band' isn't unique for the
+> > radio:
+> >=20
+> > https://lore.kernel.org/linux-wireless/20250612121127.1960948-3-maharaj=
+a.kennadyrajan@oss.qualcomm.com/
+> >=20
+> > Or is it not related?
+
+> I think they're related but address different issues about group-
+> addressed frames.
+
+OK, fair.
+
+> The Qualcomm patch seems to focus on preventing frames from getting
+> processed on an interface running on a different band. (referred from
+> their commit message)
+> For example, a frame from frequency 6135 MHz should not be processed by
+> an interface that does not have a link on frequency 6135 MHz.
+
+Right, it's just in some way I thought many frames should be processed
+for a link in the first place, though I guess you're thinking more
+generally, and the other patch was explicitly about data frames for
+which that of course isn't really true.
+
+> On the other hand, the problem we encountered is that the interface is
+> going to process the frame, but the "status->link_valid" is unset
+> because the driver is incapable of determining the "link_id". The
+> "link_id" remains its default value of -1, and the frame is handled by
+> the interface's default link and is dropped because an AP MLD interface
+> is not using its default link (sdata->deflink).
+
+Right.
+
+> In summary, the Qualcomm patch focuses on avoiding frames being
+> processed by unsuitable interfaces, while our patch aims to determine
+> the "link_id" so that the interface can correctly handle it.
+
+OK.
+
+> Additionally, we also think the 'link_id' can be determined based on
+> 'freq' rather than 'band'. What do you think?
+
+I'm starting to wonder if either should be in mac80211 at all, but I
+guess if you both need it why not :)
+
+I'd say we should be consistent, and use the frequency because there are
+(likely? going to be?) devices with two separate low/high 5 GHz links.
+
+johannes
 
