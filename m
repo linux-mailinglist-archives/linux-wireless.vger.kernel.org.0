@@ -1,84 +1,114 @@
-Return-Path: <linux-wireless+bounces-24952-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24953-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51BFAFCE2A
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 16:49:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E92AFCEB9
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 17:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE92D1AA4CD9
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 14:47:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8354B3A8675
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 15:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5DD2E0402;
-	Tue,  8 Jul 2025 14:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89342E06FD;
+	Tue,  8 Jul 2025 15:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="tsH7Z2gn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jgbu+3uI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4CF2DC33F
-	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 14:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54992E041F;
+	Tue,  8 Jul 2025 15:14:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751986003; cv=none; b=mfeyfjvSvTP6GR135Fb5MMbILU7KQAAmcq6yGvhI1OZaHDrp+hSZaGy9Z2i24u5Ybzb37R6Pd/YOahdZeDXEnhHU9mH5OYOZ8Fd7kH/IibTDT/ku71XrgiqobIbdsFWXncOzZKPJZPNEO7kRiOhCndKfnl+nbRqUcvJwVZMDjdA=
+	t=1751987645; cv=none; b=StyxZmEkmG7iNwGbwOw8GLdlAlJg04iM0uWlZ7cmn7037p0gx+OxqNIyXPbwRSM8nOlSScb1dmxzuZh2/lJrVt4apES+abxdMvQ1VoED2jVaddDWD7SU3xUnWDtCwsKWpUpXTM3//KFX+GjfLH0uTk2LxFO8aX+lGad2bO0Z5cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751986003; c=relaxed/simple;
-	bh=LdOFD18Nwt0ejNuG+2TIKM+g5zs10jYK+o59KINlkiE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=onxYtJSx5ewIabqsVV/VAybd06gXLWUCawpc7yAAtS6X9zvg5/1mlYq9wL01PFkro3AF8XlKpeSeOHTDVPd6itiHj9yvWs777x1XKdRRQQ0KqyMr1t+rn1EibpJqDDI5NbRfrSARo/4cSW+QpCoKUi+ur6GBVWibKIY31e/TL8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=tsH7Z2gn; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=LdOFD18Nwt0ejNuG+2TIKM+g5zs10jYK+o59KINlkiE=;
-	t=1751986002; x=1753195602; b=tsH7Z2gn9FUYc6Sk4LK5LTabVDGv7jtfLR2aXmFHKq9Nsbj
-	ZIrS5jkRrelQMXlhbOZsCye9fX73WbjUe17jaSvauGyp/KNnVbG+1IgBUo/bu8NGp2WBlwYa/giZ2
-	k/e2bsPzMoSNU/+R62FcGJDBdSxIGIiU2Nj0x0QUwlmyHhoey171EJ1zjShHnpXqeS6OVZehN242D
-	BDyKU0BYegOt/Zkuf3OUuKpaV10xaeNCvSHXVlP20JzdgluB/pbAEPB/8A81rxxtDaxE1vAB/IGGd
-	Ppc73MiP5NIHJnhVFkw0vTX7OzoAbK9vv5Xh+XQQXL92MZ2Z7f4stQXE8QqpsXvQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uZ9ah-0000000Bzj9-1PG2;
-	Tue, 08 Jul 2025 16:46:39 +0200
-Message-ID: <ca3395ac1d47fe25b57df7da692a7891f02d88d2.camel@sipsolutions.net>
-Subject: Re: [PATCH v5 1/3] wifi: mac80211: Assign tx-stats to the proper
- link.
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ben Greear <greearb@candelatech.com>, linux-wireless@vger.kernel.org
-Date: Tue, 08 Jul 2025 16:46:38 +0200
-In-Reply-To: <5d0ee94c-88b0-41c3-a850-e5942a2982ca@candelatech.com>
-References: <20241218232519.3156080-1-greearb@candelatech.com>
-	 <54ede5f58c3abc7de58010e492283c7930a2495f.camel@sipsolutions.net>
-	 <de881905-a708-4f96-b3dc-16d950322218@candelatech.com>
-	 <dfc23d5813928b138ff531734f75d7190d7450db.camel@sipsolutions.net>
-	 <5d0ee94c-88b0-41c3-a850-e5942a2982ca@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1751987645; c=relaxed/simple;
+	bh=HLwJX5QT3UNWX3z8LqzLY6nx+EIVfmL3uCZ2H723Z0k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y7oTKvACXW7iDlm9LmuCDL1I0fH3gf9iNGMcWathBmSNr6mx/DqRtnKGTcjyQyyDdjoy27MwRa149IyO9NuURX8Qxe0X7DoxFElZREMaELJ6yVscia7pL14m8wIGKPSOJU0nyOr9YbqlkDV8OjlhIjmNVKIECxjieyXeE2nZXyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jgbu+3uI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A0FC4CEED;
+	Tue,  8 Jul 2025 15:13:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751987645;
+	bh=HLwJX5QT3UNWX3z8LqzLY6nx+EIVfmL3uCZ2H723Z0k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jgbu+3uICnilzU7yt4gSm3YEVbHVhirbcQsISXRWu4gqnqi9Wa2emvrvgygt1EpFE
+	 32I7u1RHIwC29A5oaKIMevVrhZ20ST2jMpVPoTGIwYotmQiPzNAIH5JdYxd5SkKYcO
+	 PXE+xIggAcD1T/W7iXoXXkmiXuwar32bLf4jdlPoMxeIIYOqiAi6l0xxD4s0513u9N
+	 j9yh75kAPe/6fqdPoY/4UUx9KCuaApckykXEIYugO5TnYZap60X2XZJy3weg2y3K5K
+	 4WZWHlNYn0sob0oiI+smCF9Y2kLPR+E/YXFe+Cg6YhsuhgzxiGZUtScKeI9djQpCyL
+	 GRlSdW5d7vgwQ==
+Date: Tue, 8 Jul 2025 20:43:52 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, 
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Jingoo Han <jingoohan1@gmail.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, mhi@lists.linux.dev, linux-wireless@vger.kernel.org, 
+	ath11k@lists.infradead.org, qiang.yu@oss.qualcomm.com, quic_vbadigan@quicinc.com, 
+	quic_vpernami@quicinc.com, quic_mrana@quicinc.com, 
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: Re: [PATCH v4 01/11] PCI: Update current bus speed as part of
+ pci_pwrctrl_notify()
+Message-ID: <g4aynbh4kve3kdbnxhwgogxdvylynpdfu47lq3m3ngj6abuk7b@ross7a2ilqtz>
+References: <20250609-mhi_bw_up-v4-0-3faa8fe92b05@qti.qualcomm.com>
+ <20250609-mhi_bw_up-v4-1-3faa8fe92b05@qti.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250609-mhi_bw_up-v4-1-3faa8fe92b05@qti.qualcomm.com>
 
-On Tue, 2025-07-08 at 07:32 -0700, Ben Greear wrote:
->=20
->=20
-> So I added new counters, and I wanted them named to indicate it is what i=
-s reported by
-> the driver, not something specified by the mac80211 stack.
+On Mon, Jun 09, 2025 at 04:21:22PM GMT, Krishna Chaitanya Chundru wrote:
+> If the link is not up till the pwrctl drivers enable power to endpoints
+> then cur_bus_speed will not be updated with correct speed.
+> 
+> As part of rescan, pci_pwrctrl_notify() will be called when new devices
+> are added and as part of it update the link bus speed.
+> 
+> Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+> ---
+>  drivers/pci/pwrctrl/core.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/pci/pwrctrl/core.c b/drivers/pci/pwrctrl/core.c
+> index 6bdbfed584d6d79ce28ba9e384a596b065ca69a4..4c1d3832c43503a7e434a3fe5e0bf15a148434dc 100644
+> --- a/drivers/pci/pwrctrl/core.c
+> +++ b/drivers/pci/pwrctrl/core.c
+> @@ -10,16 +10,21 @@
+>  #include <linux/pci-pwrctrl.h>
+>  #include <linux/property.h>
+>  #include <linux/slab.h>
+> +#include "../pci.h"
+>  
+>  static int pci_pwrctrl_notify(struct notifier_block *nb, unsigned long action,
+>  			      void *data)
+>  {
+>  	struct pci_pwrctrl *pwrctrl = container_of(nb, struct pci_pwrctrl, nb);
+>  	struct device *dev = data;
+> +	struct pci_bus *bus = to_pci_dev(dev)->bus;
+>  
+>  	if (dev_fwnode(dev) != dev_fwnode(pwrctrl->dev))
+>  		return NOTIFY_DONE;
+>  
+> +	if (bus->self)
+> +		pcie_update_link_speed(bus);
 
-I'm not sure what you're arguing. I know you did. I'm saying you
-shouldn't have done it in this 1/3 patch, but rather in 3/3 or maybe
-4/4...
+I'm wondering why this should be in pwrctrl driver and not in pci_device_add()?
 
-johannes
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
