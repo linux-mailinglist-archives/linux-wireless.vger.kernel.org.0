@@ -1,77 +1,77 @@
-Return-Path: <linux-wireless+bounces-24996-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24997-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C731AFD81B
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 22:18:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C82E2AFD81E
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 22:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF87A7AD3BA
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 20:16:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64121542626
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 20:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77829241CAF;
-	Tue,  8 Jul 2025 20:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE0424501C;
+	Tue,  8 Jul 2025 20:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGklrWOc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BEZSGreP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E987423D2BB;
-	Tue,  8 Jul 2025 20:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764B3241CA2;
+	Tue,  8 Jul 2025 20:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752005872; cv=none; b=GjaCQBIlEXRe97RH9bx/ND/FCbZFeai9iIdT3oHw2Ly3yU1CA+PxjPIXDbE84CmIRp8BMZtcDFY46Idm3JSL35tNLJgH1WMLNOpU1vT7OGbQo/UXh+HUrHj0Iwomitgymg4AWuWLHySL5Hwua5900zIMNcXE9Fcd2LBenKi20Wk=
+	t=1752005873; cv=none; b=Fj1m3cIoCCsMYv0NsuXYaU5te2zjWp+16cpJJpWNKDPHYc6np76ybFrh5McWXq5RGiSRvLDA7dJbvy9+hbvzPkq0XomHJGb2ire1sfAirWYWA6OAfEW/vOuVMbdLZInhrq0OjTm/NmQc8UOOdQiqPUoV2q6pOlq0Ye0HkuHEaDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752005872; c=relaxed/simple;
-	bh=X3APSiAWL3Go+tUkn+KBsEhWZUZF0XELnyOttvravBg=;
+	s=arc-20240116; t=1752005873; c=relaxed/simple;
+	bh=ct7lwlmAT8/f+/iRjJ3dyzHaVO3ooUiOe7cpt27Npe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M+K/qNZp6CXu6TkXuW6eqlR4s09L+3djsd6VF80oGkcCOQ82NF7nUeZzxszVZL4uMzdt1c+SOWX8tKphkVjQ0/ovzzUkP1J+pNtT7UD8uMGZo9akmhL7acNKW466pUC1SPYvOwmivR/FgVwzZh3fMXontfkdkS8PDnYf+4/Qeyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGklrWOc; arc=none smtp.client-ip=209.85.215.173
+	 MIME-Version; b=eeY65AmeSdVv05o0J2hbZM7NnVpBmVHuJbSdAV4pdET8Y8z76qRsR+J26NgrFdUs8+cByBxAZjpG4dmvhwE0AXN5Ehb7cenHX7cZMMTCgYY727ArLPZ8XZv0xRnTzeujxlrTzJ+zf0plMzU6hufmDE7UO5e9+GL0bqQgorsAlJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BEZSGreP; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b271f3ae786so3944389a12.3;
-        Tue, 08 Jul 2025 13:17:50 -0700 (PDT)
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-742c7a52e97so3810362b3a.3;
+        Tue, 08 Jul 2025 13:17:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752005870; x=1752610670; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752005872; x=1752610672; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FKAwUXOLwMRO+DlBAOVwR1oRm93Guv88/PxNLjpkT9I=;
-        b=OGklrWOcsjZWaFcyp6I9kuY/oOPTcbfUyHhrZD+2voFtWCICBRzhIC5oZktaaX+6Ac
-         mtHQEMmkiL02ftHTXegQwpygVWC+pJkOJMPDCa9DHaSlLRZbkfd4sRYttUAz72y3KTAd
-         1HB7xwZxIhTdW4l76prqWJ1MdbSxedm2MQGkRCA7HQkD16mBxxs5ClYtecHN4awy7OSD
-         G06U37T6jIeeyYhBhP2EB9QxlVQiGrUAzXRzZSM86j+50TQsvL8pm3bWmuRwbX7iAnxy
-         KF888VmD2WrLWiPvR8SIKlnLryXKb66hKRordYPSrrR25iXZ3z+sDTsA/Lz4C7soMRk5
-         al+A==
+        bh=/QNlEHfEUZYvh9WH2X1qfGtuDYzY2qNWdQQnVhSVobw=;
+        b=BEZSGrePoLoP6XFpAhagU3oLNhcl0KrXCewsiJ2WzeyQZyhDvxRX16GetYUxtjt5co
+         GBDTfPaYROkH8XiBOZ9E0oTRlG0DtQATMI/apLKptOX6nMs544XmRTeXBW+mipJARweD
+         83NUwa7pOHA8KXi8iDIU/Mf43ZWexsocZPLwPkZqBDskODafYaYxIbzU43LfYLC7qjoE
+         LWDBuNYDrnXDda9f57Ww4gzR+KvKfefL/EaNLvPa64sZPsZVVXCND6GpHlqpTf90XnwJ
+         W4hZgpN4Srh0XTUdm7S26YLtXtEqU5du/Y0av6XRgrPkZAW0YHlTfCgZ4nF8jSqg0Iv6
+         Kqhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752005870; x=1752610670;
+        d=1e100.net; s=20230601; t=1752005872; x=1752610672;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FKAwUXOLwMRO+DlBAOVwR1oRm93Guv88/PxNLjpkT9I=;
-        b=a0wLDtoDBwRWQz1iI1SpGOgJONaYW0JyjFUgDQ72XTaUSuRz3094Ukolsjtp652P0v
-         e/e/h6l3murvOt3bNTEYqQxPsxfHc8JeX49ntXR2edpiMy6E0v6NmDhf/EXZuBcORSgE
-         xknfdCHh+6uBJnR/gAoz+X5VKriDBNLa3cuE2oOJiLvI9QyKFInL0HNdEOxdEG/8SQLD
-         5u8rTucTW8i8qZoHeSV7VkIDkTtf5QDk9Hc2QixBO32+bH3LyDDdFvOuAUvm6RrbDvBB
-         TNUsjm6cFfRw++diq+/9A4jXHdlD2CV90EjbVGbLq9hkncudlmzdGjiYvRWOBZrKRCkd
-         j/dA==
-X-Forwarded-Encrypted: i=1; AJvYcCUuO7k+Rg7Q8x9sdocADwdw8zXD5YaPhbgdM0FjlvROBct3tPTYldeeJAvYVMrzSJgn1vEu0n8yG4eK@vger.kernel.org, AJvYcCXMgS8GtmlUV9557d45kAGKZCswx8Q95hbiSe6uOBCZRSy7W7R1NdKmJvR/Akh2TAXVSlhKenfPhP9M/Q==@vger.kernel.org, AJvYcCXsuMpmJtUWkkl+OztRTUQgfcaiETBBPkGInoqLqVLW7ra6MR27ZDKpO1KpubFdPmns99gyFe8oYOM6vH/t@vger.kernel.org
-X-Gm-Message-State: AOJu0YyG0fFE1lHx2arxVk5+AehuV4BAgW8fZDPBb+kGQ0RM1YrF1OMc
-	dL6C1robkVHeXPzn8rYICiAmoqXBhD+9NRppZS8+N1aBkRwyq51Lg2TlhYr1ZD0w0zE=
-X-Gm-Gg: ASbGnctpXDTHxCVwvMBDukcTt2ORsTAoOfcDEMXkTCgR9ydeUp7uPAXB74LfjDBvO2P
-	sY30HoFfj8JtBKb+SRc7lhelpcsnLzEXyQkgh8AOqoAtrqQGfmLIM2/9YGYoAyRt71PFd4jsKxl
-	OZ00LXrMx4hf9KH15f7kLHoiovYZFdie6G2WmUXVOkEvLEVkeKDIb8DxLeQSxMY+YiVXBLr+f82
-	4uGDc1W0jhFsf/+6qXOZWfzuIUlO85ot6gDqKtq3ahbMTMYm8IOaUWXeIPWOcAUFA036aQJ87LV
-	6cdQClrRjTP7PZdu7PIVF4XQnj3ysM701KvMFL1SEA4=
-X-Google-Smtp-Source: AGHT+IGhYZvUIjBIxwlODZkl6zsUOB58jiXQGVodXCDwRucgR+wkS29RzQC5R5fPb2KJH/9J6nMNUQ==
-X-Received: by 2002:a05:6a21:998b:b0:21f:becf:5f4d with SMTP id adf61e73a8af0-22b4504428dmr6840682637.20.1752005870125;
-        Tue, 08 Jul 2025 13:17:50 -0700 (PDT)
+        bh=/QNlEHfEUZYvh9WH2X1qfGtuDYzY2qNWdQQnVhSVobw=;
+        b=qZZ29NHu2NUm5MgtEB4oR499fM/5m1gVplLGp0dNNHaxOuIeb6V7dxzhKsW/c0VKB+
+         930e2ReByy1ngRzGpSkl5S8vHI0bBj0yyhCKwtdB3Zc8KH6n9tB2rwmlUvTHv/yy1TRX
+         CvbHbMhFscSicdudj6g+84fVT0zoNbvaS4pGdrqkYoKgWOMvybwwrWqllHFa2rx/qu7S
+         XJKGRNHBE/JCKSP1Wg4Kt/Sa6VRhf69uDHPI6LA7OdO5YbU+fBAMGLnRBfcmO9Swc3uJ
+         LjyL96/sGbs49ZkQtMhCf8Jf4fs3150KCPS6/NAiXjA3PKUNcTNKYLsZKOzuhcO4fy3E
+         cIeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVlvA84prwQ9FNtXNFxvSIabQqkzZOpA3k9sMZXhbbIH++/RTwIEa4seoD0Ttw4nvb6ZhfnGLDL2uleNw==@vger.kernel.org, AJvYcCVuOFXgteKAyr5s5EwOFdeV+/ezgHgJ4ToAedQftMdS283t6lWtNywSqoYVXOfa/Z5zxGyy+/58kExgmGz1@vger.kernel.org, AJvYcCWieCNT7ouAE1TN25bcHS81OyegEjcYl9CeTFTSCb76wGbHfCWHBPnrtzyYOMupGsfSDV/QE1n97pA7@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6tHoI6Ln+FeMKS5Lidy8elregL9T414sVLqbiR3pjueFoeOXJ
+	ZbrdYwrmJq9nR3zFhxfLO4wGiHwc1rXSjFv4tJbgiwev0INasKNOe5ltWgKdSZfFiSQ=
+X-Gm-Gg: ASbGncumqvOEzf7unqOuVzEa8p6Na2tSb7WG2Kn2VmwmXbJuMeTYwReOhxD1/ta9owp
+	RWAXPBJPzc+JZZ57UA9JvlvG94Z/aFI3cppy4cn0r5MP5ypVqpDgblO5rLahBG7nEVhV/jFPF03
+	a4mesENA6fCNytD3ME6mevSyu7vhTQAb9urKZWLfXKjdf592Q8FL1wZNdHqZc02ACYOCCZe5xG7
+	WKI6aneDoFBwowL+0FUIX52CFOCdDAM5judTbVhLN3eD62dPhBT819yZubHN80PUeSnbYI9W89W
+	+qzz40HGun8WWrIIRvqMKAmHLagZBaSSiTd5qdNCCcP7iRTD7y9jgg==
+X-Google-Smtp-Source: AGHT+IHbYO4srYMIJVFpXEofQgmzn6XNXlOmY818mJw4NNQt11WzJSfS6QV2PLjLjUQtpdhW9yWPFQ==
+X-Received: by 2002:a05:6a20:3c8d:b0:1f5:9098:e42e with SMTP id adf61e73a8af0-22caf53c026mr334789637.7.1752005871552;
+        Tue, 08 Jul 2025 13:17:51 -0700 (PDT)
 Received: from archlinux.lan ([2601:644:8200:dab8::1f6])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b38ee5f5d8csm12289625a12.39.2025.07.08.13.17.49
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b38ee5f5d8csm12289625a12.39.2025.07.08.13.17.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jul 2025 13:17:49 -0700 (PDT)
+        Tue, 08 Jul 2025 13:17:51 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes@sipsolutions.net>,
@@ -87,9 +87,9 @@ Cc: Johannes Berg <johannes@sipsolutions.net>,
 	linux-mips@vger.kernel.org (open list:MIPS),
 	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Mediatek SoC support),
 	linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC support)
-Subject: [PATCHv2 wireless-next 2/7] wifi: rt2x00: remove mod_name from platform_driver
-Date: Tue,  8 Jul 2025 13:17:40 -0700
-Message-ID: <20250708201745.5900-3-rosenp@gmail.com>
+Subject: [PATCHv2 wireless-next 3/7] wifi: rt2800soc: allow loading from OF
+Date: Tue,  8 Jul 2025 13:17:41 -0700
+Message-ID: <20250708201745.5900-4-rosenp@gmail.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708201745.5900-1-rosenp@gmail.com>
 References: <20250708201745.5900-1-rosenp@gmail.com>
@@ -101,24 +101,39 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mod_name is a legacy debugging feature with no real modern use. An
-analysis of the underlying MIPS setup code reveals it to also be unused.
+Add a single binding to help the already present dts files load the
+driver. More are possible but there doesn't seem to be a significant
+difference between them to justify this.
+
+Use wifi name per dtschema requirements.
+
+The data field will be used to remove the custom non static probe
+function and use of_device_get_match_data.
 
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 Reviewed-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2800soc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/ralink/rt2x00/rt2800soc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
-index 701ba54bf3e5..e73394cf6ea6 100644
+index e73394cf6ea6..db8d01f0cdc3 100644
 --- a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
 +++ b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
-@@ -246,7 +246,6 @@ static int rt2800soc_probe(struct platform_device *pdev)
+@@ -243,9 +243,16 @@ static int rt2800soc_probe(struct platform_device *pdev)
+ 	return rt2x00soc_probe(pdev, &rt2800soc_ops);
+ }
+ 
++static const struct of_device_id rt2880_wmac_match[] = {
++	{ .compatible = "ralink,rt2880-wifi", .data = &rt2800soc_ops },
++	{},
++};
++MODULE_DEVICE_TABLE(of, rt2880_wmac_match);
++
  static struct platform_driver rt2800soc_driver = {
  	.driver		= {
  		.name		= "rt2800_wmac",
--		.mod_name	= KBUILD_MODNAME,
++		.of_match_table = rt2880_wmac_match,
  	},
  	.probe		= rt2800soc_probe,
  	.remove		= rt2x00soc_remove,
