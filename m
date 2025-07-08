@@ -1,183 +1,148 @@
-Return-Path: <linux-wireless+bounces-24992-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24993-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C89AFD79E
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 21:52:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4D2AFD7B2
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 21:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8D831888053
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 19:52:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6913A1829
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 19:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976BF239E9F;
-	Tue,  8 Jul 2025 19:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342D323AB95;
+	Tue,  8 Jul 2025 19:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y/HIl298"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I5jVEdBh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8318242910
-	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 19:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A42A18E02A;
+	Tue,  8 Jul 2025 19:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752004294; cv=none; b=h8+MUHNqn+os2MwXwnd6GzPMJvr4JU9/TEFKDeQ4wCin3gHSnTEmo2ZwB7t4LonlDwJnHQ2rXx5ZdSfzF5SGgOaVA9F+9rnzday6/z/Zkx/XhpKpdBzZwFi4Jg5HtzXEdv77n9TMk25oCoVoj/hjzJXZ9OVPAoBmVS1tbqK32sE=
+	t=1752004571; cv=none; b=Ft0nQiU6Cz2xtGi/IP6wSJlmbeSzOIAjAbOH8UPQvveKKbqLd8mEWIBPQCjIdWcH6C+DB/vHA3sCoVBtvwBHs/kp8S5I6BdW8IT5BfFdbRF6+t9XCsJEJRLwgLh0BOVg+4erZJwLeS9gz02NfwWDq881hDtf5pDIqNwDAPHk/40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752004294; c=relaxed/simple;
-	bh=c+4KpCoF/sVcc19/O0BP2e2MCGNmlfj3Ck7wYvp7xUQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NPFtK0sUkiacouE4Z+qyREk0fGPUaaC3m/NsWqtEKu2fHEHAecdviJdYQBWmz9ymFuRANT+X0GQS0btT7WeRwVuLpc4ZT2ssM/C7Y2XD8Pkag0bE4d7lAmGXdPaWrmL79ImYTJIEsbWavq+mpzLDeqqcmSrdSF2Tjhs3wAjXgdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y/HIl298; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752004293; x=1783540293;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=c+4KpCoF/sVcc19/O0BP2e2MCGNmlfj3Ck7wYvp7xUQ=;
-  b=Y/HIl298JBDCY3YheIH5KbYR8U3L5bvZRiZFZqoHeWjPKMGFYFnPJwJj
-   h0ULTSCNeYuLFXO59BfrWNWou3Y+k6Dlbh2qCBTTW/rM/49HWETl+uYux
-   guYKDWPiRwh5rSk5JdBW/whgzsobQQZUryUywYZWw/L3hFvuJD/tLcPMT
-   Z2vh7irw0tjEUJ03ouRzp7NYk5BHrBy9yn8+fEt3yx9yZE+GGX8Rdj4oC
-   ibw85gzC4z9uR2X3wsbS2ls+At6+6MFnLw7SsjksAACcDzIqjxlzFVSrx
-   WArjmtRJzRy0lQICha8LDs5/nszALty+3ZPV7ZZrzUOqkvqUA8ydlA0kt
-   g==;
-X-CSE-ConnectionGUID: vSD9v5z1RI2gZk0BVE8RRw==
-X-CSE-MsgGUID: WCFRk2RTT8eLrvt+O4CvnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54229733"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="54229733"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 12:51:32 -0700
-X-CSE-ConnectionGUID: KvKgfrvHQFmpJmOXh2znGw==
-X-CSE-MsgGUID: kCEOXaE7R1uavP284X4ttQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="155669006"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 12:51:31 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 15/15] wifi: iwlwifi: mvm: remove support for iwl_wowlan_info_notif_v4
-Date: Tue,  8 Jul 2025 22:50:53 +0300
-Message-Id: <20250708224652.721f70e65497.I488d69251aed62f0b11a2553f972a1730bc8b6cf@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250708195053.451143-1-miriam.rachel.korenblit@intel.com>
-References: <20250708195053.451143-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1752004571; c=relaxed/simple;
+	bh=jUWBRe3iRDoQXRRk311xSOHvhXGde8JAOo6mW5QTuxs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jnwNJC5IF5AhQNju31eHjmY3CD6p60eOzlpjHBwINIToID4Q5KkqhDR6o6hroH77qYDHuI+zyJYC3zEfJ4Zu/hjwqmYrIL48vPkqg/1K4B8El7uSV/3CoJdFfphhz0jIPZoNR6n3Gs91RjyC+RWy6WCda53crPwe+MxuNXZA3X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I5jVEdBh; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-714078015edso42891237b3.2;
+        Tue, 08 Jul 2025 12:56:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752004568; x=1752609368; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wruTsCuKvKaETBLWdKH4PD/aur092+ZnEJpoT9arrX0=;
+        b=I5jVEdBhc3HS1ut2afZ57zOeFUlAxIFZJ8Kdr6pPdvc7QbovstCt6EZqOFEGS7dFkv
+         u+I2CFcY7/rRaygejs7vw0ynluxh2yUQsLdFe4dYQTyXP5G3zNyrxrBg1okoEKTzVmxW
+         OxLUToRNxxyaml5UOkmXzKRhwrVjcvA6sFjGjtCXTsCnWiOF8s4nHbc4W+jiwa3Ov8Gb
+         ByPQ+cafmuYNPF8nb7oO3Vz4GH4M50n7mWLHoe15M1n69ustGBBkvdN+DQTGU54RQqYt
+         BKRZahRD3vvwtbl5rwiLeOBDYJqlOkJAayNThuY5vjSaqJO1djTGTINMOmR5H0chRXub
+         1N+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752004568; x=1752609368;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wruTsCuKvKaETBLWdKH4PD/aur092+ZnEJpoT9arrX0=;
+        b=A7rZN7jmrAz1BD0m5tdvs77NIWyHDFs5zLU1u6N/ZOT06EjExJipJCd72YrA+tZUUp
+         sO8AUOGl2QR1iiUaFjIFW1wucUGImIBN3ckvO+UJURBSYgdcXwUGZXYixNXaatHZgkuu
+         I39Jd1PL24Igu7Jz3iVrnbup7WgU7qnjtr9vovJbqNya+9XnoHCiX00dUoGca0tl3d4O
+         4RmQlZ9aMw2XOM9p69yq9Sff0/BWHcDTsFJL8KcInFXyQVVKtn5gT1pCK46hbXmOCApT
+         K3VD6j1yC4ukUhy1Etoabj/nAO6TtWg6ElUKtuq0VVOnvwqkfGq7u2dArdJRkjPjRLtd
+         sABw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4eQC0BlJdHziw2yAANtqhq095n362o979xt615Joq3D/lEEHkEpplyy4ZNRiKj7Ew/eKHD/r6HTIRdcez@vger.kernel.org, AJvYcCWf4/oFUsniRwH0dTqKThlXJaV4wBwIoLlUI2QaIQDZBzl7Q4bqZ9EtAex5S/KkM3YolvCGa4SDqxx+@vger.kernel.org, AJvYcCWzsevFah6i0E8EO2dGngWOQLPGQnrndDsHwLoeF6p/wPeZwjdjc90pBQ8T3Nj57u8niq5ZmB5F3URkEw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzd/Rt6ZJPYlgQFn1/3EliKNotVUKIaRY7pZLkPr9vfboV+9Z5x
+	qsPpEbv4KfsM3M3l2TvpxqSWObq8op27UpiJ9PWD3sQVqjU0z1eQv2kVJvQB8HSEjwZ9ki7xy2y
+	8dklSj0bk0UuhJWGAdCqwTghk7NIE4CjfbIyiXY1A9w==
+X-Gm-Gg: ASbGncsMg019DCnaWAJ1nImLPBKtnh6kLttTATFW9TNUKchSDZEgQThXLLHP6pTnDjO
+	oqQ1TShaK00vaRT2MoCIXoh73vzBri00JNppka+tNPOM1LseSpsdmlj+oKAF5lktgWA7oaoMEWE
+	jqw8dguJI7bQKAULDMflgvv9MvbLa7vK4z3c9c1OVah4ltA+8D8hoR4mJj
+X-Google-Smtp-Source: AGHT+IHV3WcRVetEt/pXYpJBPnp7CoKd1YQLzSqdVXAfvRiB3oYyGXRiaCQKdnq4XcQzLIX5Z1zNPpu10KNmNf36jIk=
+X-Received: by 2002:a05:690c:9511:b0:70e:143:b82f with SMTP id
+ 00721157ae682-7166b69ebf6mr206027377b3.32.1752004568588; Tue, 08 Jul 2025
+ 12:56:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+References: <20250704214219.18796-1-rosenp@gmail.com> <20250704214219.18796-2-rosenp@gmail.com>
+ <20250708172617.GA652174-robh@kernel.org>
+In-Reply-To: <20250708172617.GA652174-robh@kernel.org>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Tue, 8 Jul 2025 12:55:57 -0700
+X-Gm-Features: Ac12FXw8nv5PL1imX1j4h3MXzepe-GV6FqTPsQU6x-MvYBqxDxyGEGW5lREzbCo
+Message-ID: <CAKxU2N-KwwFy0No4U4Ssg2e09Bh=xLD+CqvAN-LTET0uHMdNGQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3] dt-bindings: net: wireless: ath9k: add led bindings
+To: Rob Herring <robh@kernel.org>
+Cc: linux-wireless@vger.kernel.org, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
+	nbd@nbd.name, jeff.johnson@oss.qualcomm.com, 
+	Johannes Berg <johannes@sipsolutions.net>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:MIPS" <linux-mips@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-FWs with this version are no longer supported on any device.
-
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- .../net/wireless/intel/iwlwifi/fw/api/d3.h    | 13 ++++--------
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 21 ++++++++++---------
- 2 files changed, 15 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
-index 9ce819503aed..99554496300a 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
-@@ -912,7 +912,7 @@ struct iwl_wowlan_mlo_gtk {
- } __packed; /* WOWLAN_MLO_GTK_KEY_API_S_VER_1 */
- 
- /**
-- * struct iwl_wowlan_info_notif_v4 - WoWLAN information notification
-+ * struct iwl_wowlan_info_notif_v3 - WoWLAN information notification
-  * @gtk: GTK data
-  * @igtk: IGTK data
-  * @bigtk: BIGTK data
-@@ -927,12 +927,9 @@ struct iwl_wowlan_mlo_gtk {
-  * @tid_tear_down: bit mask of tids whose BA sessions were closed
-  *	in suspend state
-  * @station_id: station id
-- * @num_mlo_link_keys: number of &struct iwl_wowlan_mlo_gtk structs
-- *	following this notif, or reserved in version < 4
-  * @reserved2: reserved
-- * @mlo_gtks: array of GTKs of size num_mlo_link_keys for version >= 4
-  */
--struct iwl_wowlan_info_notif_v4 {
-+struct iwl_wowlan_info_notif_v3 {
- 	struct iwl_wowlan_gtk_status_v3 gtk[WOWLAN_GTK_KEYS_NUM];
- 	struct iwl_wowlan_igtk_status igtk[WOWLAN_IGTK_KEYS_NUM];
- 	struct iwl_wowlan_igtk_status bigtk[WOWLAN_BIGTK_KEYS_NUM];
-@@ -946,10 +943,8 @@ struct iwl_wowlan_info_notif_v4 {
- 	__le32 received_beacons;
- 	u8 tid_tear_down;
- 	u8 station_id;
--	u8 num_mlo_link_keys;
--	u8 reserved2;
--	struct iwl_wowlan_mlo_gtk mlo_gtks[];
--} __packed; /* WOWLAN_INFO_NTFY_API_S_VER_3, _VER_4 */
-+	u8 reserved2[2];
-+} __packed; /* WOWLAN_INFO_NTFY_API_S_VER_3 */
- 
- /**
-  * struct iwl_wowlan_info_notif - WoWLAN information notification
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 7f0b2089ab8e..66749dc38fc5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2347,17 +2347,13 @@ static void iwl_mvm_parse_wowlan_info_notif(struct iwl_mvm *mvm,
- }
- 
- static void
--iwl_mvm_parse_wowlan_info_notif_v4(struct iwl_mvm *mvm,
--				   struct iwl_wowlan_info_notif_v4 *data,
-+iwl_mvm_parse_wowlan_info_notif_v3(struct iwl_mvm *mvm,
-+				   struct iwl_wowlan_info_notif_v3 *data,
- 				   struct iwl_wowlan_status_data *status,
- 				   u32 len)
- {
- 	u32 i;
- 
--	if (IWL_FW_CHECK(mvm, data->num_mlo_link_keys,
--			 "MLO is not supported, shouldn't receive MLO keys\n"))
--		return;
--
- 	if (len < sizeof(*data)) {
- 		IWL_ERR(mvm, "Invalid WoWLAN info notification!\n");
- 		status = NULL;
-@@ -3126,18 +3122,23 @@ static bool iwl_mvm_wait_d3_notif(struct iwl_notif_wait_data *notif_wait,
- 			iwl_mvm_parse_wowlan_info_notif_v2(mvm, notif_v2,
- 							   d3_data->status,
- 							   len);
--		} else if (wowlan_info_ver < 5) {
--			struct iwl_wowlan_info_notif_v4 *notif =
-+		} else if (wowlan_info_ver == 3) {
-+			struct iwl_wowlan_info_notif_v3 *notif =
- 				(void *)pkt->data;
- 
--			iwl_mvm_parse_wowlan_info_notif_v4(mvm, notif,
-+			iwl_mvm_parse_wowlan_info_notif_v3(mvm, notif,
- 							   d3_data->status, len);
--		} else {
-+		} else if (wowlan_info_ver == 5) {
- 			struct iwl_wowlan_info_notif *notif =
- 				(void *)pkt->data;
- 
- 			iwl_mvm_parse_wowlan_info_notif(mvm, notif,
- 							d3_data->status, len);
-+		} else {
-+			IWL_FW_CHECK(mvm, 1,
-+				     "Firmware advertises unknown WoWLAN info notification %d!\n",
-+				     wowlan_info_ver);
-+			return false;
- 		}
- 
- 		d3_data->notif_received |= IWL_D3_NOTIF_WOWLAN_INFO;
--- 
-2.34.1
-
+On Tue, Jul 8, 2025 at 10:26=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
+:
+>
+> On Fri, Jul 04, 2025 at 02:42:17PM -0700, Rosen Penev wrote:
+> > This is used to override the various defaults the ath9k driver has for
+> > LED pin values.
+> >
+> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > ---
+> >  .../bindings/net/wireless/qca,ath9k.yaml         | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.y=
+aml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > index d16ca8e0a25d..58c7b873cecb 100644
+> > --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > @@ -50,6 +50,19 @@ properties:
+> >
+> >    ieee80211-freq-limit: true
+> >
+> > +  led:
+> > +    type: object
+> > +    $ref: /schemas/leds/common.yaml#
+> > +    additionalProperties: false
+>
+> You really don't want any other common properties? Like defining the
+> function?
+All of this was copy/paste from mediatek,mt76.yaml , where the same
+binding is used for mostly the same purpose.
+>
+> > +    properties:
+> > +      led-active-low:
+> > +        description:
+> > +          LED is enabled with ground signal.
+> > +        type: boolean
+> > +
+> > +      led-sources:
+> > +        maxItems: 1
+>
+> This property is really for cases where the LED source is configurable
+> from the LED instance. If that's not the case here just use 'reg' for
+> each instance (assuming there's more than 1). I shouldn't be wondering
+> what the h/w looks like though. Please describe it in the commit msg
+> rather than what some driver does.
+>
+> If you do need led-sources, you should define some constraints on the
+> values, not just the length.
+The original downstream version used a u8 for the number. But again,
+I'm just copy/pasting.
+>
+> Rob
+>
 
