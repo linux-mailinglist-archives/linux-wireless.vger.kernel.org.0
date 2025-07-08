@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-24985-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24986-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86043AFD79D
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 21:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAADBAFD79F
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 21:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E02B3A6C05
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 19:51:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5566B3A8FE9
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 19:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2ABB23C8CE;
-	Tue,  8 Jul 2025 19:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0E4239E70;
+	Tue,  8 Jul 2025 19:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JC/7tpYp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cb63Hwtk"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0264323D2BA
-	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 19:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F44023ABAB
+	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 19:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752004286; cv=none; b=hyddiLOV9aM+HYfbRNbelyn8yfrRMrRFnE3vFjH8jZCY0cFgHkr7Olil5aXOwolGPIXf62biUNwFTApD8ISBDwY9/V8SkPaDJYnWNs3DrR8XzupJw0AIHVQski5o60QYIAZ+l3FgBnHLZAHgE8gPOxJ8mGPW01w9GEYDes0ktB8=
+	t=1752004287; cv=none; b=His5WUygawnSsHobnoftfHHQYZEECen4w7CLVlgkGwfxRZhPVlLpdeYPFMa52IFPl3uJA55YtheZmCWmJai1CKkrGdl1NNWdV5mUraYTOsIEGceHfY+E2LltcDrLS4m09UnX+yPIuFQR+kyjDaMmz4GaAP3AlokbzCItrvDowtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752004286; c=relaxed/simple;
-	bh=bd8AZMHiOKUx0QQa3RzgnKQ3hk/20Z+g4CH6o7zKxMc=;
+	s=arc-20240116; t=1752004287; c=relaxed/simple;
+	bh=Jt1LemJ7lyuw0ysHRo6Ek2o3vEj0uvSZY3MobRPaOOY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=n9RmZv3hpLU+gYEpFv8Nsb7YQDrmJSVws3Xg3UF81lxrA1P9gO/D2gjh1iQUauzSoym1a5SpSXMEwS4gUyG3sX9Lr7mtWWTFLAznJl9f5weoXMV85e1NqHfnULym5AxXOMrXYCpFWd2u+qpwPtATrOetK0hWz4fK7OmE+0o/4CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JC/7tpYp; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=Lye+3FWpPa6VkcNDO7MGbrswqnFleSwRrlvR+9EL8k3zr+SHVloGYlARLkDmijqDiey0svTr+F/og8lQOoLhyRbLMFJAhv7//+5YSfVRrb+cV6Vy+LAYFErHB8YgwZdpRnxZsdmwJgPduPpDs57pFLMmLDjI3piGq+awp3fpzXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cb63Hwtk; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752004285; x=1783540285;
+  t=1752004286; x=1783540286;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=bd8AZMHiOKUx0QQa3RzgnKQ3hk/20Z+g4CH6o7zKxMc=;
-  b=JC/7tpYpfDHemm473Prh0oSvcuOOMrhT6F4tndAOB4VYcPmepincX5Js
-   Taj8UMMK7XSa974r6YeA5qfZszZ0DLodFKrmb+IkFiwQYtYdgN+LG3HyG
-   FbyKDdCKAsL5wT4jk8ji2uxr176lWIK6lt/O30hMkr8NAFEz2Fkv81Lww
-   k67+uX1jK/d4bZ8j7Xw+KVHH7AB8ty047rBxgJtYz62mIB4/QGoIynOMO
-   wRhekkmZ5aanfR+cflwFKWTeoXKmG/6YUcxuEyF9I7hi5oQZEwwyL9Loe
-   CxkDwfme2kmVk9QlgIPA8a8eeIKsHvDNoSiUmTQCvAYih6oGHvPjl1LdY
-   Q==;
-X-CSE-ConnectionGUID: 8VfIFmNaRteiiW49tWMbWg==
-X-CSE-MsgGUID: KbmkaDWbQpOZJsZLJdM2NQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54229720"
+  bh=Jt1LemJ7lyuw0ysHRo6Ek2o3vEj0uvSZY3MobRPaOOY=;
+  b=cb63Hwtky65eEzkZeBzoBhHEbmGaqlTtWJccka5edHMP0VSgXntGaQsd
+   2FA0/Ec/OcSF8CjBMbMkOGWQ1LzxmVw74A9KMYByA2qWtEmvo8F1MXUJ4
+   OHzvCv0kd0saodY9B1DqN1jRabjrF0sHdUlVJTRh1XMGsOW4vdHzeaoog
+   6JvjDZPmgrZU06on14U3gxBSpfHsT+J57oSmjWN4cFbXqXxLY+051aWO4
+   B1Pnley9isIJe5AHq3TqOtYIko7Z7SWTDGguPQYBLJftPlMZpeIwETvog
+   fPMHnxQVwgSiXc4a4zwtPlMj6rBCKJrGI01BzHmoB19Dp39W7G65y7dt7
+   g==;
+X-CSE-ConnectionGUID: 6g+hEGHOTEKZa7vJsLkt5Q==
+X-CSE-MsgGUID: Ay+LmJcWRhSx+9XNKT646A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54229721"
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="54229720"
+   d="scan'208";a="54229721"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 12:51:24 -0700
-X-CSE-ConnectionGUID: U+NMFwxTSGupV+ATlPDFAQ==
-X-CSE-MsgGUID: UWvxjbRYRuyJQ0BbC8jwIA==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 12:51:26 -0700
+X-CSE-ConnectionGUID: 3sVRORWORFqlBv49Ek1UvA==
+X-CSE-MsgGUID: xLB9uA8oRuOO5BzZvJx3lA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="155668966"
+   d="scan'208";a="155668973"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 12:51:23 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 12:51:24 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 08/15] wifi: iwlwifi: mvm/mld: make PHC messages debug messages
-Date: Tue,  8 Jul 2025 22:50:46 +0300
-Message-Id: <20250708224652.e52f143577ba.Ic6f042588ef17719653c077ff89a8b9149c22f92@changeid>
+Subject: [PATCH iwlwifi-next 09/15] wifi: iwlwifi: remove Intel driver load message
+Date: Tue,  8 Jul 2025 22:50:47 +0300
+Message-Id: <20250708224652.620820f8111e.I16a9cbcfce92a1d1b8b26a20ea9911e8a5a0b1cc@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250708195053.451143-1-miriam.rachel.korenblit@intel.com>
 References: <20250708195053.451143-1-miriam.rachel.korenblit@intel.com>
@@ -78,83 +78,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-These have no real value for normal users, print them as
-debug messages instead.
+There's really not much value in printing something just
+because the driver loaded, remove that message.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/ptp.c | 12 ++++++------
- drivers/net/wireless/intel/iwlwifi/mvm/ptp.c | 14 +++++++-------
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-index 5ee38fc168c1..ffeb37a7f830 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-@@ -299,18 +299,18 @@ void iwl_mld_ptp_init(struct iwl_mld *mld)
- 			PTR_ERR(mld->ptp_data.ptp_clock));
- 		mld->ptp_data.ptp_clock = NULL;
- 	} else {
--		IWL_INFO(mld, "Registered PHC clock: %s, with index: %d\n",
--			 mld->ptp_data.ptp_clock_info.name,
--			 ptp_clock_index(mld->ptp_data.ptp_clock));
-+		IWL_DEBUG_INFO(mld, "Registered PHC clock: %s, with index: %d\n",
-+			       mld->ptp_data.ptp_clock_info.name,
-+			       ptp_clock_index(mld->ptp_data.ptp_clock));
- 	}
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 064ff2135411..f62f7c7ee7f3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -2049,8 +2049,6 @@ static int __init iwl_drv_init(void)
+ 	for (i = 0; i < ARRAY_SIZE(iwlwifi_opmode_table); i++)
+ 		INIT_LIST_HEAD(&iwlwifi_opmode_table[i].drv);
  
- void iwl_mld_ptp_remove(struct iwl_mld *mld)
- {
- 	if (mld->ptp_data.ptp_clock) {
--		IWL_INFO(mld, "Unregistering PHC clock: %s, with index: %d\n",
--			 mld->ptp_data.ptp_clock_info.name,
--			 ptp_clock_index(mld->ptp_data.ptp_clock));
-+		IWL_DEBUG_INFO(mld, "Unregistering PHC clock: %s, with index: %d\n",
-+			       mld->ptp_data.ptp_clock_info.name,
-+			       ptp_clock_index(mld->ptp_data.ptp_clock));
- 
- 		ptp_clock_unregister(mld->ptp_data.ptp_clock);
- 		mld->ptp_data.ptp_clock = NULL;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-index e89259de6f4c..06a4c9f74797 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2021 - 2023 Intel Corporation
-+ * Copyright (C) 2021 - 2023, 2025 Intel Corporation
-  */
- 
- #include "mvm.h"
-@@ -298,9 +298,9 @@ void iwl_mvm_ptp_init(struct iwl_mvm *mvm)
- 			PTR_ERR(mvm->ptp_data.ptp_clock));
- 		mvm->ptp_data.ptp_clock = NULL;
- 	} else if (mvm->ptp_data.ptp_clock) {
--		IWL_INFO(mvm, "Registered PHC clock: %s, with index: %d\n",
--			 mvm->ptp_data.ptp_clock_info.name,
--			 ptp_clock_index(mvm->ptp_data.ptp_clock));
-+		IWL_DEBUG_INFO(mvm, "Registered PHC clock: %s, with index: %d\n",
-+			       mvm->ptp_data.ptp_clock_info.name,
-+			       ptp_clock_index(mvm->ptp_data.ptp_clock));
- 	}
- }
- 
-@@ -312,9 +312,9 @@ void iwl_mvm_ptp_init(struct iwl_mvm *mvm)
- void iwl_mvm_ptp_remove(struct iwl_mvm *mvm)
- {
- 	if (mvm->ptp_data.ptp_clock) {
--		IWL_INFO(mvm, "Unregistering PHC clock: %s, with index: %d\n",
--			 mvm->ptp_data.ptp_clock_info.name,
--			 ptp_clock_index(mvm->ptp_data.ptp_clock));
-+		IWL_DEBUG_INFO(mvm, "Unregistering PHC clock: %s, with index: %d\n",
-+			       mvm->ptp_data.ptp_clock_info.name,
-+			       ptp_clock_index(mvm->ptp_data.ptp_clock));
- 
- 		ptp_clock_unregister(mvm->ptp_data.ptp_clock);
- 		mvm->ptp_data.ptp_clock = NULL;
+-	pr_info(DRV_DESCRIPTION "\n");
+-
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+ 	/* Create the root of iwlwifi debugfs subsystem. */
+ 	iwl_dbgfs_root = debugfs_create_dir(DRV_NAME, NULL);
 -- 
 2.34.1
 
