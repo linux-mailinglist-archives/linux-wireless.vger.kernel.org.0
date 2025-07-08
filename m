@@ -1,69 +1,68 @@
-Return-Path: <linux-wireless+bounces-24980-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-24982-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35940AFD795
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 21:51:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A12AFD796
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 21:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3C201891242
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 19:51:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B996F176DC7
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Jul 2025 19:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333D021A421;
-	Tue,  8 Jul 2025 19:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BED23D2AF;
+	Tue,  8 Jul 2025 19:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gxBd8Dfi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S2G3i4vt"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E66823ABAB
-	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 19:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF291DDA24
+	for <linux-wireless@vger.kernel.org>; Tue,  8 Jul 2025 19:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752004283; cv=none; b=NNW8+Fu12DrCi5ebXqOUE3I+pfl+3uFNHS7XFg4V0qxTpL77kX6B3+7np7CM1lxUkZXHAvbhcxEgX7m8L0PFO80HJX70CF3PPqQWSktD0OYHWksWAGy0WOlsIyUO09Dyd2tOfdRSbRZTTnmw1FupvpOEfxDmNBmtVLNxdhoKxls=
+	t=1752004284; cv=none; b=pj6tdv2dJOTtFO1cU5I6yq7bsmNr8z4zd4vQ/zkWbSbt+8KjJ6ouMVxxElI7Oao6faDs3HdNbociK7KH1tZkcr5zQulYtzSBep/kNhVJj07RF/iSCTrk6y2PpBcC9mHgNwbfSAPi+SYQ7PkK97mB6TnPM6aainHtJWV4oDBWwzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752004283; c=relaxed/simple;
-	bh=sAJlFxiHeZQXZ90jEA/K2X4s01mUcHYQbl5bPSoG7qA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NEjAozxHrZF7490WHeAo0bgqA4P/DuL6vULuXwhH9MLw/0WaEG4l8ekMh/7fEAsE9A21MV32AqnXUA1EIf0eR5x+4dqreqD6nR7qlaitwYw2LIsyCI5WWXtJy7850m3RpVoCAy240UAovJ3k2Gmio26s48m/d/aqcE4yhCEk+wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gxBd8Dfi; arc=none smtp.client-ip=198.175.65.17
+	s=arc-20240116; t=1752004284; c=relaxed/simple;
+	bh=L+k4Se5bijqIXNA3qnnceqMeYHHL6EWEcThhrJIfopQ=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=lneFNbh1+1SfNsfpvY76xby3BZ+y1iIpuNIi6CRpMPtbqRRK9DP/YRbx5il+zyUFEjsoQeVYfjNbMyI8hDu9mWztFSHelzoyxGtuOR9SMKXpSmrci3k8KTykKkU4dk0I9xJBIbIVf0mgZBclW3ydthcgM4I/yN4VmJ1j7pfIbJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S2G3i4vt; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752004281; x=1783540281;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=sAJlFxiHeZQXZ90jEA/K2X4s01mUcHYQbl5bPSoG7qA=;
-  b=gxBd8Dfis4xE1f/xa/DaMcbVO9A7ZNrXdzXswYxW08fY8O5XZvX5/22v
-   eiIlmFN+Y0dh9OKYyRNb55sYO2vnAs6tn2q3x/eIsfHJ2rHXOZbdQQ+o4
-   EMPVB3At5cfXijblirBtCkJgBiiLiE0C+BrHejJX3sfjdMMXovd5yUjfS
-   LqVASNjEvmG5XDVyNMSqWRwfB5z3IqleWCDC1B/p0Mxb9LF0kQvzmS7LN
-   pBqTROdt3s/7y0nnKKBTAQpTGIgNLY678GEWp+FRlo47RkBK1VgIy1HzF
-   s37wiSuflOxI2PACj7jqSqq5Mzz0nlQ1otRu9PiyxveA0U9mZ2T+m5mED
-   A==;
-X-CSE-ConnectionGUID: GzB0DICTQUah+PFZWInnjA==
-X-CSE-MsgGUID: 3qLfp6SwSUCFSDKQYyTpcA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54229710"
+  t=1752004283; x=1783540283;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=L+k4Se5bijqIXNA3qnnceqMeYHHL6EWEcThhrJIfopQ=;
+  b=S2G3i4vtq8pJlfmlR2tXPfvx90GXpWHjEfbBedg11VXNRG29ZIZ1oj7P
+   Ns8Qto6oEM0FAG8yaWcOF+nYkhEe5+6jUlIiGTuIxWFdAb2jqoY4YvzVx
+   ioiMgVvy+mcY7YBfIGbo3UvxcTOddFheIOsNO7gae1zBEANLFJ3h2Gz+f
+   ZqLTODowNiWvON4pA9Vle8wJGMlZdk6ChpAgS91XZbLS0fiYmNV0OxX+1
+   ZZ56gmLAZnJnAPqeoslydGTskpNHw/yDLfuV1Mlgb0dc8pfIX7nC29x20
+   UT2vqcmnhc/0ms2npmBJ3eeDz8FrT6ZNxx736t51kjyg2oFH5DKfMBq98
+   Q==;
+X-CSE-ConnectionGUID: kbS7fEtuQNeu+DyQUTBE4A==
+X-CSE-MsgGUID: SG9ufVR4T1+EJATBuMubJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54229714"
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="54229710"
+   d="scan'208";a="54229714"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 12:51:20 -0700
-X-CSE-ConnectionGUID: krrxSfM1QfeH0hCDxvOioA==
-X-CSE-MsgGUID: RSlYtxMyS6eIQbuMyYIDLA==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 12:51:21 -0700
+X-CSE-ConnectionGUID: 944CGP//SH2alytSrCgqXg==
+X-CSE-MsgGUID: dU+9RYN3TFGtVDXNO65Xxg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="155668935"
+   d="scan'208";a="155668938"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 12:51:19 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 12:51:20 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Subject: [PATCH iwlwifi-next 04/15] wifi: iwlwifi: pcie: Move txcmd size/align calculation to callers
-Date: Tue,  8 Jul 2025 22:50:42 +0300
-Message-Id: <20250708224652.0b7819f2e5bb.I3552860dd062a523606c8a5c85c9a6f0d4f04262@changeid>
+Subject: [PATCH iwlwifi-next 05/15] wifi: iwlwifi: bump FW API to 102 for BZ/SC/DR
+Date: Tue,  8 Jul 2025 22:50:43 +0300
+Message-Id: <20250708224652.7abe947221d1.I77150bbf55eb160dbe0ef75c3e28afc053f27ec3@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250708195053.451143-1-miriam.rachel.korenblit@intel.com>
 References: <20250708195053.451143-1-miriam.rachel.korenblit@intel.com>
@@ -76,106 +75,54 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+Start supporting FW API version 102 on those devices.
 
-Refactor iwl_trans_init to accept txcmd_size and txcmd_align as parameters
-instead of calculating them internally.
-
-Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c   | 16 ++--------------
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h   |  3 ++-
- .../wireless/intel/iwlwifi/pcie/gen1_2/trans.c   | 16 +++++++++++++++-
- 3 files changed, 19 insertions(+), 16 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/dr.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index 78808c956444..6288779ff8ec 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -293,25 +293,13 @@ struct iwl_trans *iwl_trans_alloc(unsigned int priv_size,
- 	return trans;
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+index b5ad6d635fcb..c6cd892bff69 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+@@ -10,7 +10,7 @@
+ #include "fw/api/txq.h"
  
--int iwl_trans_init(struct iwl_trans *trans)
-+int iwl_trans_init(struct iwl_trans *trans, unsigned int txcmd_size,
-+		   unsigned int txcmd_align)
- {
--	int txcmd_size, txcmd_align;
--
- 	/* check if name/num_rx_queues were set as a proxy for info being set */
- 	if (WARN_ON(!trans->info.name || !trans->info.num_rxqs))
- 		return -EINVAL;
+ /* Highest firmware API version supported */
+-#define IWL_BZ_UCODE_API_MAX	99
++#define IWL_BZ_UCODE_API_MAX	102
  
--	if (!trans->mac_cfg->gen2) {
--		txcmd_size = sizeof(struct iwl_tx_cmd_v6);
--		txcmd_align = sizeof(void *);
--	} else if (trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210) {
--		txcmd_size = sizeof(struct iwl_tx_cmd_v9);
--		txcmd_align = 64;
--	} else {
--		txcmd_size = sizeof(struct iwl_tx_cmd);
--		txcmd_align = 128;
--	}
--
- 	txcmd_size += sizeof(struct iwl_cmd_header);
- 	txcmd_size += 36; /* biggest possible 802.11 header */
+ /* Lowest firmware API version supported */
+ #define IWL_BZ_UCODE_API_MIN	94
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
+index 95aa27c35357..807f4e29d55a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
+@@ -9,7 +9,7 @@
+ #include "fw/api/txq.h"
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 012b1e44bce3..49a695e30109 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -1206,7 +1206,8 @@ static inline void iwl_trans_finish_sw_reset(struct iwl_trans *trans)
- struct iwl_trans *iwl_trans_alloc(unsigned int priv_size,
- 			  struct device *dev,
- 			  const struct iwl_mac_cfg *cfg_trans);
--int iwl_trans_init(struct iwl_trans *trans);
-+int iwl_trans_init(struct iwl_trans *trans, unsigned int txcmd_size,
-+		   unsigned int txcmd_align);
- void iwl_trans_free(struct iwl_trans *trans);
+ /* Highest firmware API version supported */
+-#define IWL_DR_UCODE_API_MAX	99
++#define IWL_DR_UCODE_API_MAX	102
  
- static inline bool iwl_trans_is_hw_error_value(u32 val)
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
-index 49baa4b57b42..162c61e97629 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
-@@ -25,6 +25,7 @@
- #include "fw/dbg.h"
- #include "fw/api/tx.h"
- #include "fw/acpi.h"
-+#include "fw/api/tx.h"
- #include "mei/iwl-mei.h"
- #include "internal.h"
- #include "iwl-fh.h"
-@@ -4142,6 +4143,7 @@ int iwl_pci_gen1_2_probe(struct pci_dev *pdev,
- 	};
- 	struct iwl_trans *iwl_trans;
- 	struct iwl_trans_pcie *trans_pcie;
-+	unsigned int txcmd_size, txcmd_align;
- 	int ret;
+ /* Lowest firmware API version supported */
+ #define IWL_DR_UCODE_API_MIN	98
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
+index 12c2adb4b5c4..97e503a25eae 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
+@@ -10,7 +10,7 @@
+ #include "fw/api/txq.h"
  
- 	iwl_trans = iwl_trans_pcie_alloc(pdev, trans, &info);
-@@ -4250,7 +4252,19 @@ int iwl_pci_gen1_2_probe(struct pci_dev *pdev,
+ /* Highest firmware API version supported */
+-#define IWL_SC_UCODE_API_MAX	99
++#define IWL_SC_UCODE_API_MAX	102
  
- 	iwl_trans_set_info(iwl_trans, &info);
- 
--	ret = iwl_trans_init(iwl_trans);
-+	if (!iwl_trans->mac_cfg->gen2) {
-+		txcmd_size = sizeof(struct iwl_tx_cmd_v6);
-+		txcmd_align = sizeof(void *);
-+	} else if (iwl_trans->mac_cfg->device_family <
-+		   IWL_DEVICE_FAMILY_AX210) {
-+		txcmd_size = sizeof(struct iwl_tx_cmd_v9);
-+		txcmd_align = 64;
-+	} else {
-+		txcmd_size = sizeof(struct iwl_tx_cmd);
-+		txcmd_align = 128;
-+	}
-+	ret = iwl_trans_init(iwl_trans, txcmd_size, txcmd_align);
-+
- 	if (ret)
- 		goto out_free_trans;
- 
+ /* Lowest firmware API version supported */
+ #define IWL_SC_UCODE_API_MIN	98
 -- 
 2.34.1
 
