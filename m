@@ -1,436 +1,158 @@
-Return-Path: <linux-wireless+bounces-25100-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25101-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA9EAFEDB8
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 17:28:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA88AFEDD5
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 17:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B663EB401B3
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 15:19:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF010481E7A
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 15:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137022C3254;
-	Wed,  9 Jul 2025 15:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1312E7BB6;
+	Wed,  9 Jul 2025 15:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PQmPdIRM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hdrhrda1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE09C28DF08
-	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 15:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE81E2E6127;
+	Wed,  9 Jul 2025 15:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752074425; cv=none; b=N4YfMGP6arUEm+guIgcTdtMXx2Y1g5R5tRA+N4kQ6sxBAcO89i5y9zyJem0cbBzeMN7NVGMprZGfIUKaSL5Y98n+3uJNcBSYG2Rqv+g4H2YNswD6B/ezSaoSvbqAAqieMlcPubU9NYhOaYo/Pi12hzMdzLp7nz1qQZuYIvPdJbY=
+	t=1752075289; cv=none; b=c8+5DSZwFPbA8MI1Mnfapzv+38DZHoJgEL19Bh0lusox12zfGmCrf/rqD5J4h4HunYMdjz4W23+sRYGNPGSeKfSZ1hZCbFDs+bHSbFmSwOw/7XWavw4kKxrxJ9DvEPlZrp7/1vcpCD3UW006k9p1fh3CU96mtLLPw9/FD8cL+6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752074425; c=relaxed/simple;
-	bh=UYOngeoSEUZGA85kwILvi1tOn3wfEJ252Zy66up7nlU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oVzlTij9AF8KfykAORd6zjCOpUiucFJvNKOtCIidIf5v/PMBHDFFQFo2rrWkEEZhonWdec/K5w2826AZVk+QWPUkumA1D1xSqdFCe7gwlP01Onf6Y0P77DBNK7HsDebBSqEs7k7ElcRaXf0sNkWJY0rOp9Jnq62HGnqqlMKIQLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PQmPdIRM; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 569CokUX023193;
-	Wed, 9 Jul 2025 15:20:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=RjesZqT4PMO5pvwQGzjmcX
-	y4yCP8XTlet8zwMyQc6X8=; b=PQmPdIRMP5ov66LGVnt6mahF4UWP1ZqmJekDvN
-	IpY/WFuc4xZuYtyqSCLqwrfHdH8stBKwTXQIyYw4T23V90S9wNBQcxMw9qpMgbjy
-	R/neNCexvOwaHRathd9imSGfUFLTKOIAtXY6ssKKqKgD0W/t1Q0LI0FzFxBakow2
-	4t8DcJYtDDF/DcMH4YZKXY+xylWihWUbVbp57wxTOpyLPby408LTzqAYC4Lvu4Ma
-	UgkfYlXZ53dL7z6PurksZNHaOzlfRfQS2hfk4MCw8oexOqqNGpEJxRBRFUKIgDJh
-	TWiw2lg+DUh2UeQS/q11SX/1haqjjj3fwN92L7AZF8ISOPOw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47smbehgfk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Jul 2025 15:20:19 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 569FKJfn008244
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 9 Jul 2025 15:20:19 GMT
-Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 9 Jul 2025 08:20:17 -0700
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>,
-        Roopni Devanathan <quic_rdevanat@quicinc.com>
-Subject: [PATCH ath-next v2] wifi: ath12k: Add support to enqueue management frame at MLD level
-Date: Wed, 9 Jul 2025 20:49:54 +0530
-Message-ID: <20250709151954.2601052-1-quic_rdevanat@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1752075289; c=relaxed/simple;
+	bh=GARUNpM9H4+xNBBzYx9lXk4Njm6ZssGnZSUDn36uSlA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=byjfYtWTtKOkToDhSfua3rcHGvtY/s2I3eX/dsVltQfM+VIMKrE59cW30EysIJEdkfXIW/A0uIpA7zYUV5dEJmSiS5tFDjeSY/NtT6uj5zTjXRxK808l596+L6mIvNNtNMDPqvchxfIiAMPvz6gueecPDaFmp3vWqaCnIuUbTO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hdrhrda1; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752075288; x=1783611288;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GARUNpM9H4+xNBBzYx9lXk4Njm6ZssGnZSUDn36uSlA=;
+  b=hdrhrda1s34kQjgqYmZP03FcF2UzeFE3re6yCZ/kWKcqTMrcuExT/fbQ
+   4Fa72c1SYZCof+KRpRLPAP28sV45OkhAC9bw85kL8skPyGmtLoT5Hn1sc
+   GPDE2dQhlzyuskRd8vFZ4asbnoFTU9Bx0Z9IzYN5EE6px4UZysLeXymg0
+   d2Vpv8+wX916HojHr3e6WSZocVl05qTr9Vxbpt/A7GkyX4fwaXkWehTRo
+   1COZHip72X6p2MtlKFgJPRXoO5lpttDU/P98BZgm9m7yWlsbqc3j8eZ8I
+   MMwPiv94VtFAa8cyUCnDZzAqQeEaTfiSwf68yUiwRuSvMS62uzWgGn97B
+   g==;
+X-CSE-ConnectionGUID: KSfqR9XYSQKIx/uj2/dNzw==
+X-CSE-MsgGUID: V0fvVmtgRBOBTm4tha6CIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54312170"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="54312170"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 08:34:47 -0700
+X-CSE-ConnectionGUID: mY03xM4IRxauD+4+tnfP1w==
+X-CSE-MsgGUID: qXLM07ZQRV2rU23uJAT5NA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="159836384"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 09 Jul 2025 08:34:43 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uZWoi-0003g7-2m;
+	Wed, 09 Jul 2025 15:34:40 +0000
+Date: Wed, 9 Jul 2025 23:34:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org
+Subject: Re: [PATCHv2 wireless-next 5/7] wifi: rt2x00: soc: modernize probe
+Message-ID: <202507092348.YnsHKi8x-lkp@intel.com>
+References: <20250708201745.5900-6-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA5MDEzOCBTYWx0ZWRfX5CBRVVdH40jU
- /iY6QYB4wV3Ml4YtmnqGHfTtBaL1dPm4BKNnQEYf0FbJwtM7TJRML+7verAppRyFLrFY7BQLkRx
- +kbwxcNRzDlLc3EycDlU7PlLNq0Q7rhlJhoOWnJYKll6e9D5RXd7Uz4SAlsMvNLxy3Wg/1TRUwq
- z1Gl/fC/2/a5oJ6Do5rZWDhyfbabmZbLxXO027e7jaEzJX4t+Ut/D/btCtsRmz7XRRJpyXtIfRa
- 9gDtpvMJGz+hpR/Rui0BoSxCf+Cmf8P3SpMsikD3ZWe0AmNPvLk0EpWUMuBdmF7i+1vIWgTwCyB
- VG9bIjSrGmEDeDolrVt09BtrES5XUwFHGQLxKb7CSf+RsvBO9e4Az04zt55BDmRGkMIq31SE9+R
- rGPYOYwQh28MDN+ATbVtU8wK/DvPLpN1UGEG4N/boddQZwWjBLVEloS1n/XSjovHO4w9SuKn
-X-Proofpoint-GUID: Bx0a3H5CVTdTLyz_xxONYLm2b0KCMV3r
-X-Proofpoint-ORIG-GUID: Bx0a3H5CVTdTLyz_xxONYLm2b0KCMV3r
-X-Authority-Analysis: v=2.4 cv=VpQjA/2n c=1 sm=1 tr=0 ts=686e88b3 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8 a=tUOTtS-gRCeqhucjqJ4A:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-09_03,2025-07-08_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0 suspectscore=0 clxscore=1015 impostorscore=0
- phishscore=0 mlxlogscore=999 lowpriorityscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507090138
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250708201745.5900-6-rosenp@gmail.com>
 
-From: Sriram R <quic_srirrama@quicinc.com>
+Hi Rosen,
 
-A multi-link client can use any link for transmissions. It can decide to
-put one link in power save mode for longer periods while listening on the
-other links as per MLD listen interval. Unicast management frames sent to
-that link station might get dropped if that link station is in power save
-mode or inactive. In such cases, firmware can take decision on which link
-to use.
+kernel test robot noticed the following build errors:
 
-Allow the firmware to decide on which link management frame should be
-sent on, by filling the hardware link with maximum value of u32, so that
-the firmware will not have a specific link to transmit data on and so
-the management frames will be link agnostic. For QCN devices, all action
-frames are marked as link agnostic. For WCN devices, if the device is
-configured as an AP, then all frames other than probe response frames,
-authentication frames, association response frames, re-association response
-frames and ADDBA request frames are marked as link agnostic and if the
-device is configured as a station, then all frames other than probe request
-frames, authentication frames and ADDBA request frames are marked as link
-agnostic.
+[auto build test ERROR on wireless/main]
+[also build test ERROR on next-20250709]
+[cannot apply to wireless-next/main robh/for-next linus/master v6.16-rc5]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+url:    https://github.com/intel-lab-lkp/linux/commits/Rosen-Penev/wifi-rt2x00-add-COMPILE_TEST/20250709-042051
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git main
+patch link:    https://lore.kernel.org/r/20250708201745.5900-6-rosenp%40gmail.com
+patch subject: [PATCHv2 wireless-next 5/7] wifi: rt2x00: soc: modernize probe
+config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20250709/202507092348.YnsHKi8x-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250709/202507092348.YnsHKi8x-lkp@intel.com/reproduce)
 
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-Co-developed-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.h |  1 +
- drivers/net/wireless/ath/ath12k/hw.c   | 55 +++++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/hw.h   |  2 +
- drivers/net/wireless/ath/ath12k/mac.c  |  5 ++-
- drivers/net/wireless/ath/ath12k/peer.c |  2 +-
- drivers/net/wireless/ath/ath12k/peer.h |  2 +
- drivers/net/wireless/ath/ath12k/wmi.c  | 56 ++++++++++++++++++++++++--
- drivers/net/wireless/ath/ath12k/wmi.h  | 16 +++++++-
- 8 files changed, 131 insertions(+), 8 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507092348.YnsHKi8x-lkp@intel.com/
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index afc8329980c8..c6221f7305fd 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -116,6 +116,7 @@ static inline u64 ath12k_le32hilo_to_u64(__le32 hi, __le32 lo)
- enum ath12k_skb_flags {
- 	ATH12K_SKB_HW_80211_ENCAP = BIT(0),
- 	ATH12K_SKB_CIPHER_SET = BIT(1),
-+	ATH12K_SKB_MLO_STA = BIT(2),
- };
- 
- struct ath12k_skb_cb {
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index ec77ad498b33..6791ae1d64e5 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -14,6 +14,7 @@
- #include "hw.h"
- #include "mhi.h"
- #include "dp_rx.h"
-+#include "peer.h"
- 
- static const guid_t wcn7850_uuid = GUID_INIT(0xf634f534, 0x6147, 0x11ec,
- 					     0x90, 0xd6, 0x02, 0x42,
-@@ -49,6 +50,12 @@ static bool ath12k_dp_srng_is_comp_ring_qcn9274(int ring_num)
- 	return false;
- }
- 
-+static bool ath12k_is_frame_link_agnostic_qcn9274(struct ath12k_link_vif *arvif,
-+						  struct ieee80211_mgmt *mgmt)
-+{
-+	return ieee80211_is_action(mgmt->frame_control);
-+}
-+
- static int ath12k_hw_mac_id_to_pdev_id_wcn7850(const struct ath12k_hw_params *hw,
- 					       int mac_id)
- {
-@@ -74,6 +81,52 @@ static bool ath12k_dp_srng_is_comp_ring_wcn7850(int ring_num)
- 	return false;
- }
- 
-+static bool ath12k_is_addba_resp_action_code(struct ieee80211_mgmt *mgmt)
-+{
-+	if (!ieee80211_is_action(mgmt->frame_control))
-+		return false;
-+
-+	if (mgmt->u.action.category != WLAN_CATEGORY_BACK)
-+		return false;
-+
-+	if (mgmt->u.action.u.addba_resp.action_code != WLAN_ACTION_ADDBA_RESP)
-+		return false;
-+
-+	return true;
-+}
-+
-+static bool ath12k_is_frame_link_agnostic_wcn7850(struct ath12k_link_vif *arvif,
-+						  struct ieee80211_mgmt *mgmt)
-+{
-+	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
-+	struct ath12k_hw *ah = ath12k_ar_to_ah(arvif->ar);
-+	struct ath12k_base *ab = arvif->ar->ab;
-+	__le16 fc = mgmt->frame_control;
-+
-+	spin_lock_bh(&ab->base_lock);
-+	if (!ath12k_peer_find_by_addr(ab, mgmt->da) &&
-+	    !ath12k_peer_ml_find(ah, mgmt->da)) {
-+		spin_unlock_bh(&ab->base_lock);
-+		return false;
-+	}
-+	spin_unlock_bh(&ab->base_lock);
-+
-+	if (vif->type == NL80211_IFTYPE_STATION)
-+		return arvif->is_up &&
-+		       (vif->valid_links == vif->active_links) &&
-+		       !ieee80211_is_probe_req(fc) &&
-+		       !ieee80211_is_auth(fc) &&
-+		       !ieee80211_is_deauth(fc) &&
-+		       !ath12k_is_addba_resp_action_code(mgmt);
-+
-+	if (vif->type == NL80211_IFTYPE_AP)
-+		return !(ieee80211_is_probe_resp(fc) || ieee80211_is_auth(fc) ||
-+			 ieee80211_is_assoc_resp(fc) || ieee80211_is_reassoc_resp(fc) ||
-+			 ath12k_is_addba_resp_action_code(mgmt));
-+
-+	return false;
-+}
-+
- static const struct ath12k_hw_ops qcn9274_ops = {
- 	.get_hw_mac_from_pdev_id = ath12k_hw_qcn9274_mac_from_pdev_id,
- 	.mac_id_to_pdev_id = ath12k_hw_mac_id_to_pdev_id_qcn9274,
-@@ -81,6 +134,7 @@ static const struct ath12k_hw_ops qcn9274_ops = {
- 	.rxdma_ring_sel_config = ath12k_dp_rxdma_ring_sel_config_qcn9274,
- 	.get_ring_selector = ath12k_hw_get_ring_selector_qcn9274,
- 	.dp_srng_is_tx_comp_ring = ath12k_dp_srng_is_comp_ring_qcn9274,
-+	.is_frame_link_agnostic = ath12k_is_frame_link_agnostic_qcn9274,
- };
- 
- static const struct ath12k_hw_ops wcn7850_ops = {
-@@ -90,6 +144,7 @@ static const struct ath12k_hw_ops wcn7850_ops = {
- 	.rxdma_ring_sel_config = ath12k_dp_rxdma_ring_sel_config_wcn7850,
- 	.get_ring_selector = ath12k_hw_get_ring_selector_wcn7850,
- 	.dp_srng_is_tx_comp_ring = ath12k_dp_srng_is_comp_ring_wcn7850,
-+	.is_frame_link_agnostic = ath12k_is_frame_link_agnostic_wcn7850,
- };
- 
- #define ATH12K_TX_RING_MASK_0 0x1
-diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-index 0a75bc5abfa2..9c69dd5a22af 100644
---- a/drivers/net/wireless/ath/ath12k/hw.h
-+++ b/drivers/net/wireless/ath/ath12k/hw.h
-@@ -246,6 +246,8 @@ struct ath12k_hw_ops {
- 	int (*rxdma_ring_sel_config)(struct ath12k_base *ab);
- 	u8 (*get_ring_selector)(struct sk_buff *skb);
- 	bool (*dp_srng_is_tx_comp_ring)(int ring_num);
-+	bool (*is_frame_link_agnostic)(struct ath12k_link_vif *arvif,
-+				       struct ieee80211_mgmt *mgmt);
- };
- 
- static inline
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 42eb9e8e14d1..72aa7ba4da99 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -8351,7 +8351,7 @@ static int ath12k_mac_mgmt_tx_wmi(struct ath12k *ar, struct ath12k_link_vif *arv
- 
- 	skb_cb->paddr = paddr;
- 
--	ret = ath12k_wmi_mgmt_send(ar, arvif->vdev_id, buf_id, skb);
-+	ret = ath12k_wmi_mgmt_send(arvif, buf_id, skb);
- 	if (ret) {
- 		ath12k_warn(ar->ab, "failed to send mgmt frame: %d\n", ret);
- 		goto err_unmap_buf;
-@@ -8845,6 +8845,9 @@ static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
- 
- 		skb_cb->flags |= ATH12K_SKB_HW_80211_ENCAP;
- 	} else if (ieee80211_is_mgmt(hdr->frame_control)) {
-+		if (sta && sta->mlo)
-+			skb_cb->flags |= ATH12K_SKB_MLO_STA;
-+
- 		ret = ath12k_mac_mgmt_tx(ar, skb, is_prb_rsp);
- 		if (ret) {
- 			ath12k_warn(ar->ab, "failed to queue management frame %d\n",
-diff --git a/drivers/net/wireless/ath/ath12k/peer.c b/drivers/net/wireless/ath/ath12k/peer.c
-index ec7236bbccc0..eb7aeff01490 100644
---- a/drivers/net/wireless/ath/ath12k/peer.c
-+++ b/drivers/net/wireless/ath/ath12k/peer.c
-@@ -8,7 +8,7 @@
- #include "peer.h"
- #include "debug.h"
- 
--static struct ath12k_ml_peer *ath12k_peer_ml_find(struct ath12k_hw *ah, const u8 *addr)
-+struct ath12k_ml_peer *ath12k_peer_ml_find(struct ath12k_hw *ah, const u8 *addr)
- {
- 	struct ath12k_ml_peer *ml_peer;
- 
-diff --git a/drivers/net/wireless/ath/ath12k/peer.h b/drivers/net/wireless/ath/ath12k/peer.h
-index 92c4988df2f1..44afc0b7dd53 100644
---- a/drivers/net/wireless/ath/ath12k/peer.h
-+++ b/drivers/net/wireless/ath/ath12k/peer.h
-@@ -91,6 +91,8 @@ struct ath12k_peer *ath12k_peer_find_by_ast(struct ath12k_base *ab, int ast_hash
- int ath12k_peer_ml_create(struct ath12k_hw *ah, struct ieee80211_sta *sta);
- int ath12k_peer_ml_delete(struct ath12k_hw *ah, struct ieee80211_sta *sta);
- int ath12k_peer_mlo_link_peers_delete(struct ath12k_vif *ahvif, struct ath12k_sta *ahsta);
-+struct ath12k_ml_peer *ath12k_peer_ml_find(struct ath12k_hw *ah,
-+					   const u8 *addr);
- static inline
- struct ath12k_link_sta *ath12k_peer_get_link_sta(struct ath12k_base *ab,
- 						 struct ath12k_peer *peer)
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index b34f2c183312..b01c97d42a64 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -786,20 +786,46 @@ struct sk_buff *ath12k_wmi_alloc_skb(struct ath12k_wmi_base *wmi_ab, u32 len)
- 	return skb;
- }
- 
--int ath12k_wmi_mgmt_send(struct ath12k *ar, u32 vdev_id, u32 buf_id,
-+int ath12k_wmi_mgmt_send(struct ath12k_link_vif *arvif, u32 buf_id,
- 			 struct sk_buff *frame)
- {
-+	struct ath12k *ar = arvif->ar;
- 	struct ath12k_wmi_pdev *wmi = ar->wmi;
- 	struct wmi_mgmt_send_cmd *cmd;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(frame);
--	struct wmi_tlv *frame_tlv;
-+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)frame->data;
-+	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
-+	int cmd_len = sizeof(struct ath12k_wmi_mgmt_send_tx_params);
-+	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)hdr;
-+	struct ath12k_wmi_mlo_mgmt_send_params *ml_params;
-+	struct ath12k_base *ab = ar->ab;
-+	struct wmi_tlv *frame_tlv, *tlv;
-+	struct ath12k_skb_cb *skb_cb;
-+	u32 buf_len, buf_len_aligned;
-+	u32 vdev_id = arvif->vdev_id;
-+	bool link_agnostic = false;
- 	struct sk_buff *skb;
--	u32 buf_len;
- 	int ret, len;
-+	void *ptr;
- 
- 	buf_len = min_t(int, frame->len, WMI_MGMT_SEND_DOWNLD_LEN);
- 
--	len = sizeof(*cmd) + sizeof(*frame_tlv) + roundup(buf_len, 4);
-+	buf_len_aligned = roundup(buf_len, sizeof(u32));
-+
-+	len = sizeof(*cmd) + sizeof(*frame_tlv) + buf_len_aligned;
-+
-+	if (ieee80211_vif_is_mld(vif)) {
-+		skb_cb = ATH12K_SKB_CB(frame);
-+		if ((skb_cb->flags & ATH12K_SKB_MLO_STA) &&
-+		    ab->hw_params->hw_ops->is_frame_link_agnostic &&
-+		    ab->hw_params->hw_ops->is_frame_link_agnostic(arvif, mgmt)) {
-+			len += cmd_len + TLV_HDR_SIZE + sizeof(*ml_params);
-+			ath12k_generic_dbg(ATH12K_DBG_MGMT,
-+					   "Sending Mgmt Frame fc 0x%0x as link agnostic",
-+					   mgmt->frame_control);
-+			link_agnostic = true;
-+		}
-+	}
- 
- 	skb = ath12k_wmi_alloc_skb(wmi->wmi_ab, len);
- 	if (!skb)
-@@ -822,6 +848,28 @@ int ath12k_wmi_mgmt_send(struct ath12k *ar, u32 vdev_id, u32 buf_id,
- 
- 	memcpy(frame_tlv->value, frame->data, buf_len);
- 
-+	if (!link_agnostic)
-+		goto send;
-+
-+	ptr = skb->data + sizeof(*cmd) + sizeof(*frame_tlv) + buf_len_aligned;
-+
-+	tlv = ptr;
-+
-+	/* Tx params not used currently */
-+	tlv->header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_TX_SEND_PARAMS, cmd_len);
-+	ptr += cmd_len;
-+
-+	tlv = ptr;
-+	tlv->header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_ARRAY_STRUCT, sizeof(*ml_params));
-+	ptr += TLV_HDR_SIZE;
-+
-+	ml_params = ptr;
-+	ml_params->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_MLO_TX_SEND_PARAMS,
-+						       sizeof(*ml_params));
-+
-+	ml_params->hw_link_id = cpu_to_le32(WMI_MGMT_LINK_AGNOSTIC_ID);
-+
-+send:
- 	ret = ath12k_wmi_cmd_send(wmi, skb, WMI_MGMT_TX_SEND_CMDID);
- 	if (ret) {
- 		ath12k_warn(ar->ab,
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index ed9b4324a7b8..19e9ecdeca4f 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -4014,6 +4014,7 @@ struct wmi_scan_chan_list_cmd {
- } __packed;
- 
- #define WMI_MGMT_SEND_DOWNLD_LEN	64
-+#define WMI_MGMT_LINK_AGNOSTIC_ID	0xFFFFFFFF
- 
- #define WMI_TX_PARAMS_DWORD0_POWER		GENMASK(7, 0)
- #define WMI_TX_PARAMS_DWORD0_MCS_MASK		GENMASK(19, 8)
-@@ -4039,7 +4040,18 @@ struct wmi_mgmt_send_cmd {
- 
- 	/* This TLV is followed by struct wmi_mgmt_frame */
- 
--	/* Followed by struct wmi_mgmt_send_params */
-+	/* Followed by struct ath12k_wmi_mlo_mgmt_send_params */
-+} __packed;
-+
-+struct ath12k_wmi_mlo_mgmt_send_params {
-+	__le32 tlv_header;
-+	__le32 hw_link_id;
-+} __packed;
-+
-+struct ath12k_wmi_mgmt_send_tx_params {
-+	__le32 tlv_header;
-+	__le32 tx_param_dword0;
-+	__le32 tx_param_dword1;
- } __packed;
- 
- struct wmi_sta_powersave_mode_cmd {
-@@ -6271,7 +6283,7 @@ void ath12k_wmi_init_wcn7850(struct ath12k_base *ab,
- int ath12k_wmi_cmd_send(struct ath12k_wmi_pdev *wmi, struct sk_buff *skb,
- 			u32 cmd_id);
- struct sk_buff *ath12k_wmi_alloc_skb(struct ath12k_wmi_base *wmi_sc, u32 len);
--int ath12k_wmi_mgmt_send(struct ath12k *ar, u32 vdev_id, u32 buf_id,
-+int ath12k_wmi_mgmt_send(struct ath12k_link_vif *arvif, u32 buf_id,
- 			 struct sk_buff *frame);
- int ath12k_wmi_p2p_go_bcn_ie(struct ath12k *ar, u32 vdev_id,
- 			     const u8 *p2p_ie);
+All errors (new ones prefixed by >>):
 
-base-commit: 45bbd91fc41b7cb6319e45e6fd732c5c8a0c44e3
+   drivers/net/wireless/ralink/rt2x00/rt2800soc.c:347:13: error: use of undeclared identifier 'rt2x00soc_suspend'; did you mean 'rt2x00lib_suspend'?
+     347 |         .suspend        = rt2x00soc_suspend,
+         |                           ^~~~~~~~~~~~~~~~~
+         |                           rt2x00lib_suspend
+   drivers/net/wireless/ralink/rt2x00/rt2x00.h:1504:5: note: 'rt2x00lib_suspend' declared here
+    1504 | int rt2x00lib_suspend(struct rt2x00_dev *rt2x00dev);
+         |     ^
+   drivers/net/wireless/ralink/rt2x00/rt2800soc.c:348:13: error: use of undeclared identifier 'rt2x00soc_resume'; did you mean 'rt2x00lib_resume'?
+     348 |         .resume         = rt2x00soc_resume,
+         |                           ^~~~~~~~~~~~~~~~
+         |                           rt2x00lib_resume
+   drivers/net/wireless/ralink/rt2x00/rt2x00.h:1505:5: note: 'rt2x00lib_resume' declared here
+    1505 | int rt2x00lib_resume(struct rt2x00_dev *rt2x00dev);
+         |     ^
+>> drivers/net/wireless/ralink/rt2x00/rt2800soc.c:347:13: error: incompatible function pointer types initializing 'int (*)(struct platform_device *, pm_message_t)' (aka 'int (*)(struct platform_device *, struct pm_message)') with an expression of type 'int (struct rt2x00_dev *)' [-Wincompatible-function-pointer-types]
+     347 |         .suspend        = rt2x00soc_suspend,
+         |                           ^~~~~~~~~~~~~~~~~
+>> drivers/net/wireless/ralink/rt2x00/rt2800soc.c:348:13: error: incompatible function pointer types initializing 'int (*)(struct platform_device *)' with an expression of type 'int (struct rt2x00_dev *)' [-Wincompatible-function-pointer-types]
+     348 |         .resume         = rt2x00soc_resume,
+         |                           ^~~~~~~~~~~~~~~~
+   4 errors generated.
+
+
+vim +347 drivers/net/wireless/ralink/rt2x00/rt2800soc.c
+
+90ce325a735fa7 drivers/net/wireless/ralink/rt2x00/rt2800soc.c Rosen Penev 2025-07-08  339  
+fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  340  static struct platform_driver rt2800soc_driver = {
+fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  341  	.driver		= {
+fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  342  		.name		= "rt2800_wmac",
+90ce325a735fa7 drivers/net/wireless/ralink/rt2x00/rt2800soc.c Rosen Penev 2025-07-08  343  		.of_match_table = rt2880_wmac_match,
+fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  344  	},
+fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  345  	.probe		= rt2800soc_probe,
+115321558169cc drivers/net/wireless/ralink/rt2x00/rt2800soc.c Rosen Penev 2025-07-08  346  	.remove		= rt2800soc_remove,
+fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17 @347  	.suspend	= rt2x00soc_suspend,
+fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17 @348  	.resume		= rt2x00soc_resume,
+fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  349  };
+fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  350  
+
 -- 
-2.25.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
