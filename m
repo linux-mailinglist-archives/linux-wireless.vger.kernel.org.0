@@ -1,69 +1,70 @@
-Return-Path: <linux-wireless+bounces-25134-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25135-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E484AFF328
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 22:38:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1A1AFF329
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 22:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F43617CBC1
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 20:38:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7B21BC6D21
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 20:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E3F24729D;
-	Wed,  9 Jul 2025 20:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE412243374;
+	Wed,  9 Jul 2025 20:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jw1/AlAe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gXA+TeC8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C9624677E
-	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 20:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05121246BC6
+	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 20:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752093512; cv=none; b=PWwH2cm72TR2H1N12gTW2yr8gQgtkgLs47WpNBcwVT1oKv5zqGMvS+y+urs+feBFW90/CJz0T3epl3cYo8TrPlSC4Kw8awTFQd8birkro3Sapm031PI4BaefgaZAyVl7kgVLEIXcwjf8jI8UWNDABqtwsPibQbvGC250k4ZlF/w=
+	t=1752093513; cv=none; b=i8aH0eLvakUKQJ8kEibBunGRdFzNIWw3N/0ToUjNx4mr7Ng7udgaS5qJbK0dY3WWb22Hk0DkgGSQkQKBfbQkdfvz80ieEJGh7lFl4VL340pe5P9+TIAt4+ySOg+IqOUDTXwzykOVua4NlGMOra2Ytask2Jj1qrV9/1Q/hVjTU7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752093512; c=relaxed/simple;
-	bh=E4+O1y7C8pVnYTEFCrRmWIHPI9mD89rapbmh/nUuYQ8=;
+	s=arc-20240116; t=1752093513; c=relaxed/simple;
+	bh=N/uY5u3A0eIJyRndKwZfeQew6g9a/r1RUIzGRxqFpBo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t8fL6jmQhvu8H+/Sj9VYTnjT7Kj6VyvdMtlosh2xEtizoxEZyGwAn6psNAK7Zhcf2cDsuwTDfeAmbOOv7ld14nHX5M/Ex8lskfp/QGz28p7McPTmuFEv2Ta1aXxa0jOZz/lq9CxyOWG99uG29cp5qdb/PoET+AUBtsIHTFP54Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jw1/AlAe; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=H1mQy5NqFUaeqIQyd9EAhlWwOnXZ1mdnqfXb1a1YCNjg4DywuF26Wcb+KpvhdTHNkeqTReLwNZ3xUJ2LoZvGwThceXNoge0hXPWLaATwbfnBjSEnfDqy2/nyhBLqPJlg70XXrwpc1GmoU/DDrn2gNqDjLL0n2Zp9BSd1xa4K+0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gXA+TeC8; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752093510; x=1783629510;
+  t=1752093512; x=1783629512;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=E4+O1y7C8pVnYTEFCrRmWIHPI9mD89rapbmh/nUuYQ8=;
-  b=jw1/AlAeGPjUT8Tot+vQRt+QEypwsuVAX+n3UT2x5Dc7jcwN0NtRSniU
-   0Urf80CNX8boV3bohQQE3tGntN+ADwHB8BXsSsZyHjzKwOMBkezya+jYo
-   zLX4KZTOZegroR8hp6WYMp9R2ikALQWxUJVEyPJeyM9fk5jxh4m4MD0H/
-   xuziljXtElmLmJzfdKpnn26lY1uR9FqfrPLqoKtye3zwlk7ruyYDCScq/
-   mel/7T1sCqxI+sm8VRZwTWNtc5pgbjbllPRR+Ok6Lviz4VbyM4b3ITbbQ
-   TMvbi1xxIWQBpqf/0BkOB2+HrKc8iEGBB/wtbc0XubCTIocGreVFdRwT2
+  bh=N/uY5u3A0eIJyRndKwZfeQew6g9a/r1RUIzGRxqFpBo=;
+  b=gXA+TeC82huY2OwdT3+Iq9dOCKm88/p4AhVetaajZ1Umj8sbZTxORBBI
+   R0//x5gL6A87RSdbO+CVlbLE/maX1QRY6FPuuMOaBfF+Ycsughc0ChtI+
+   LWSmrv5oZlAN/7WEgQMzlhyVWaMZu0Eh8fZJtZD0FN20TC3cvWiAbByLw
+   q4xRvYtoyk+VPHCY6GNLr2Z7fdUPxtB51yNlbZvswvYx/S6r0RQxR9yY8
+   bl3DQNMD7gx/EOSBguZDt1urdBVx3VfnXBhKtBYBV6dUknMh4Qi+2UUdI
+   Klr2zxeTdSkmqHTpkvuGUD7kQk9saRfr5cgraSMBTy7pv7bqXjjoJWw0p
    Q==;
-X-CSE-ConnectionGUID: p6f3Fgz3Qy+jLsuqGentvw==
-X-CSE-MsgGUID: sgiQe+2WTr2hmrFczxzSXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="56974447"
+X-CSE-ConnectionGUID: pnZe5wtJRkumLZSUzzns4w==
+X-CSE-MsgGUID: Bh8MprvDQdO8sj/CPfDpeA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="56974448"
 X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; 
-   d="scan'208";a="56974447"
+   d="scan'208";a="56974448"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:38:30 -0700
-X-CSE-ConnectionGUID: +Ae8ugFIQOuiXFxO5wA6/A==
-X-CSE-MsgGUID: 64YilCzrSS+lhD3ndWM89w==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:38:31 -0700
+X-CSE-ConnectionGUID: 9tFKttISQMm8AW2bF1vDJg==
+X-CSE-MsgGUID: 5YZ2Ja7HRpu7frQaAZQpwg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; 
-   d="scan'208";a="161532936"
+   d="scan'208";a="161533012"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:38:29 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:38:30 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 05/11] wifi: mac80211: clean up cipher suite handling
-Date: Wed,  9 Jul 2025 23:37:57 +0300
-Message-Id: <20250709233537.cff427e8f8a5.I744d1ea6a37e3ea55ae8bc3e770acee734eff268@changeid>
+Cc: Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless-next 06/11] wifi: mac80211_hwsim: Declare support for AP scanning
+Date: Wed,  9 Jul 2025 23:37:58 +0300
+Message-Id: <20250709233537.6916e0a49955.I48e374ad7e3ea5877a5e93e5c5fe8301465771c8@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250709203803.1736809-1-miriam.rachel.korenblit@intel.com>
 References: <20250709203803.1736809-1-miriam.rachel.korenblit@intel.com>
@@ -76,157 +77,31 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-Under the previous commit's assumption that FIPS isn't
-supported by hardware, we don't need to modify the
-cipher suite list, but just need to use the software
-one instead of the driver's in this case, so clean up
-the code.
+To support testing scenarios.
 
-Also fix it to exclude TKIP in this case, since that's
-also dependent on RC4.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/ieee80211_i.h |  2 --
- net/mac80211/main.c        | 69 ++++++++++----------------------------
- 2 files changed, 17 insertions(+), 54 deletions(-)
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 142b547ca606..2a482089f9e1 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1403,8 +1403,6 @@ struct ieee80211_local {
- 	bool rx_mcast_action_reg;
- 	unsigned int filter_flags; /* FIF_* */
- 
--	bool wiphy_ciphers_allocated;
--
- 	struct cfg80211_chan_def dflt_chandef;
- 	bool emulate_chanctx;
- 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index c1c758e76d2e..ec60b82af007 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -5,7 +5,7 @@
-  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2017     Intel Deutschland GmbH
-- * Copyright (C) 2018-2024 Intel Corporation
-+ * Copyright (C) 2018-2025 Intel Corporation
-  */
- 
- #include <net/mac80211.h>
-@@ -1025,12 +1025,9 @@ EXPORT_SYMBOL(ieee80211_alloc_hw_nm);
- 
- static int ieee80211_init_cipher_suites(struct ieee80211_local *local)
- {
--	bool have_wep = !fips_enabled; /* FIPS does not permit the use of RC4 */
- 	bool have_mfp = ieee80211_hw_check(&local->hw, MFP_CAPABLE);
--	int r = 0, w = 0;
--	u32 *suites;
- 	static const u32 cipher_suites[] = {
--		/* keep WEP first, it may be removed below */
-+		/* keep WEP and TKIP first, they may be removed below */
- 		WLAN_CIPHER_SUITE_WEP40,
- 		WLAN_CIPHER_SUITE_WEP104,
- 		WLAN_CIPHER_SUITE_TKIP,
-@@ -1046,34 +1043,17 @@ static int ieee80211_init_cipher_suites(struct ieee80211_local *local)
- 		WLAN_CIPHER_SUITE_BIP_GMAC_256,
- 	};
- 
--	if (ieee80211_hw_check(&local->hw, SW_CRYPTO_CONTROL) ||
--	    local->hw.wiphy->cipher_suites) {
--		/* If the driver advertises, or doesn't support SW crypto,
--		 * we only need to remove WEP if necessary.
--		 */
--		if (have_wep)
--			return 0;
--
--		/* well if it has _no_ ciphers ... fine */
--		if (!local->hw.wiphy->n_cipher_suites)
--			return 0;
--
--		/* Driver provides cipher suites, but we need to exclude WEP */
--		suites = kmemdup_array(local->hw.wiphy->cipher_suites,
--				       local->hw.wiphy->n_cipher_suites,
--				       sizeof(u32), GFP_KERNEL);
--		if (!suites)
--			return -ENOMEM;
--
--		for (r = 0; r < local->hw.wiphy->n_cipher_suites; r++) {
--			u32 suite = local->hw.wiphy->cipher_suites[r];
--
--			if (suite == WLAN_CIPHER_SUITE_WEP40 ||
--			    suite == WLAN_CIPHER_SUITE_WEP104)
--				continue;
--			suites[w++] = suite;
--		}
--	} else {
-+	if (ieee80211_hw_check(&local->hw, SW_CRYPTO_CONTROL) && fips_enabled) {
-+		dev_err(local->hw.wiphy->dev.parent,
-+			"Drivers with SW_CRYPTO_CONTROL cannot work with FIPS\n");
-+		return -EINVAL;
-+	}
-+
-+	if (WARN_ON(ieee80211_hw_check(&local->hw, SW_CRYPTO_CONTROL) &&
-+		    !local->hw.wiphy->cipher_suites))
-+		return -EINVAL;
-+
-+	if (fips_enabled || !local->hw.wiphy->cipher_suites) {
- 		/* assign the (software supported and perhaps offloaded)
- 		 * cipher suites
- 		 */
-@@ -1083,19 +1063,13 @@ static int ieee80211_init_cipher_suites(struct ieee80211_local *local)
- 		if (!have_mfp)
- 			local->hw.wiphy->n_cipher_suites -= 4;
- 
--		if (!have_wep) {
--			local->hw.wiphy->cipher_suites += 2;
--			local->hw.wiphy->n_cipher_suites -= 2;
-+		/* FIPS does not permit the use of RC4 */
-+		if (fips_enabled) {
-+			local->hw.wiphy->cipher_suites += 3;
-+			local->hw.wiphy->n_cipher_suites -= 3;
- 		}
--
--		/* not dynamically allocated, so just return */
--		return 0;
- 	}
- 
--	local->hw.wiphy->cipher_suites = suites;
--	local->hw.wiphy->n_cipher_suites = w;
--	local->wiphy_ciphers_allocated = true;
--
- 	return 0;
- }
- 
-@@ -1651,10 +1625,6 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	ieee80211_led_exit(local);
- 	destroy_workqueue(local->workqueue);
-  fail_workqueue:
--	if (local->wiphy_ciphers_allocated) {
--		kfree(local->hw.wiphy->cipher_suites);
--		local->wiphy_ciphers_allocated = false;
--	}
- 	kfree(local->int_scan_req);
- 	return result;
- }
-@@ -1725,11 +1695,6 @@ void ieee80211_free_hw(struct ieee80211_hw *hw)
- 
- 	mutex_destroy(&local->iflist_mtx);
- 
--	if (local->wiphy_ciphers_allocated) {
--		kfree(local->hw.wiphy->cipher_suites);
--		local->wiphy_ciphers_allocated = false;
--	}
--
- 	idr_for_each(&local->ack_status_frames,
- 		     ieee80211_free_ack_frame, NULL);
- 	idr_destroy(&local->ack_status_frames);
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index eefe8da3b14d..3789d46d5614 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -5384,7 +5384,8 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 			       NL80211_FEATURE_AP_MODE_CHAN_WIDTH_CHANGE |
+ 			       NL80211_FEATURE_STATIC_SMPS |
+ 			       NL80211_FEATURE_DYNAMIC_SMPS |
+-			       NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
++			       NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR |
++			       NL80211_FEATURE_AP_SCAN;
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_BEACON_PROTECTION);
+ 	wiphy_ext_feature_set(hw->wiphy,
 -- 
 2.34.1
 
