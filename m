@@ -1,145 +1,267 @@
-Return-Path: <linux-wireless+bounces-25084-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25085-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9EC4AFE414
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 11:31:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722C8AFE425
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 11:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A459C188FFB2
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 09:31:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3CB77A710D
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 09:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A49285065;
-	Wed,  9 Jul 2025 09:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B872857C2;
+	Wed,  9 Jul 2025 09:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TY69fjRo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UtTYfJSm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6391721ABDB;
-	Wed,  9 Jul 2025 09:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619191D5150;
+	Wed,  9 Jul 2025 09:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752053474; cv=none; b=M01qtJlvcegB8Xlz5AQKJAN+txELqdtiBJ0gyg+0HRdaNty3IfMCnrQDXq9V+4FoKa5N470L2OmXbJKPyNeR+k9PoiPxdbA62qxgcLJZ05UQAfmVxtLv9w5AHEgVvAdUtFfMxjzNafRxj6tjGFR/32DsK7bA2xo0M+xVSTbdPaI=
+	t=1752053696; cv=none; b=YPUm4Fy180Mduh+rPDiKCJMyQlF33y5J5tiaqBovvhud1aGmZE9OyYoLrKtubFf1IJQycu14J2IVVM+I+CK7u8A4M/hqJfHiRV5wlA9q6KV59ljT+MUtY+kaxEmHYIvYAnDu0LW5gGcseYLf99S65qTDinklmiGg4gTCLXV3DAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752053474; c=relaxed/simple;
-	bh=NDIeKvKN6PhyGm+E4n56kqaD22eU91kCw5AVe3oMfyA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tm9bbjb11Xw/ja+IE7497EWaUv1hwK6FIrsAgY+2hv3W6a+q7dFSubiKg3PjW6vr1OrzKgIF48VR94hoZqsZCbHJIBJC23K85b3d2ggXRFuCW3ZuArYg8fA9l37XEzz8loqNF4q+Vk2IU3kQjjR13mFLMJUg4Ng0o9RxhTqTu/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TY69fjRo; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752053472; x=1783589472;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NDIeKvKN6PhyGm+E4n56kqaD22eU91kCw5AVe3oMfyA=;
-  b=TY69fjRo9VxIAF8Nxx76P2gqL3LVVGJVrwm7QZcZfuwGuPTbLpUEJHNw
-   RnP3YK3/q08kjCxbMhFtkWcDqp+FnGtPwyMt4PEZvJsU2FsdP7OkTxEHm
-   C20yoIkCDTyJsUA/XUWLsmd6mSeRlnj8k3gOYM1Ll4FXVe9NaH+s51JPZ
-   +5PDrgJtnGLg33B/ixWu2XkoX+gmHlDTDymcde5ywnEm+PnWr2mMDhzY4
-   JOJUys5liEUcA3XQlTV1FYRpenkqZeQWdCotcGsF40uFeTqqFIaGOnLzK
-   JWZXjkzB1Ifu1SYisbq9AasmSp4dkS/pt6OArphUfE3EFiP5+xpVpO9zr
-   Q==;
-X-CSE-ConnectionGUID: bFNP7nVeRnqKOiYgMeW/dg==
-X-CSE-MsgGUID: Opoe+V57SJ+bQrylKr+jEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="64556060"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="64556060"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 02:31:11 -0700
-X-CSE-ConnectionGUID: EoIfbataRlSJM9AyKJtNYA==
-X-CSE-MsgGUID: afWGX1HFQAapc7+fWbUdRA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="156462685"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 09 Jul 2025 02:31:08 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uZR8s-0003M3-06;
-	Wed, 09 Jul 2025 09:31:06 +0000
-Date: Wed, 9 Jul 2025 17:30:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org
-Subject: Re: [PATCHv2 wireless-next 4/7] wifi: rt2800: move 2x00soc to 2800soc
-Message-ID: <202507091735.YeYeU2tw-lkp@intel.com>
-References: <20250708201745.5900-5-rosenp@gmail.com>
+	s=arc-20240116; t=1752053696; c=relaxed/simple;
+	bh=r3uGUCdL6VdjxNHNtjRfySw9ECmoX3D9N3rOm6BkdHs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NEyCZSIhpkeHcRCS3InnY8CWwIGWpUHkMbRVA9OpBb2Ke/azzzdc/y0GFjsfxRbThznS+ga7gbrRHhROc+q96MjAjAcLz8o7rdNxnh9odqiquRt+2WiYxi89y2eJzboEZ3wPIVClqt3+4QRc/jbXbNbuhZHOZ3BwIq/1spEQF+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UtTYfJSm; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-453749aef9eso19414645e9.3;
+        Wed, 09 Jul 2025 02:34:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752053693; x=1752658493; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=r3uGUCdL6VdjxNHNtjRfySw9ECmoX3D9N3rOm6BkdHs=;
+        b=UtTYfJSmyMrC7SkcO8TpZ4IEL42G/JSbmiLV/mGJ7OgvYjSE8S0Tb4PuMVfz8H7d9z
+         ZQEKd9EJufREqIHwtp356jyL+zUnyCU4n1CcWTOIx1rUmLSt19oRlMgvRwYPyiIPog7j
+         sOj52LmuyVA64ypRMAbgDIuBNy4MQtJp5L8kikZHDtaZ+sxI2FxuJtWDVGATwiwmKLHg
+         FCydDhM/FJqJUajPfutpenmvpelEPpHJP0uPXuI8qsE5c6xlNwO2p+gJn11by1a6TXy+
+         2c/cOkOjpTqclVt5NCJ525qsZeReuyIQzRqnduOZ74AJJAvedO0ubRLqwgjSFFeQ8WSb
+         gGZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752053693; x=1752658493;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=r3uGUCdL6VdjxNHNtjRfySw9ECmoX3D9N3rOm6BkdHs=;
+        b=JU3MQRbY+ie0LHMRNQp7eewdj8hK7GIuyQ7xa/OPwKlctu4aTDA8FC0LXE5+iZstt3
+         4brGhlcVVeAaQ2+YwobwDMOZoDySSA7/iB0ysg+Ymv7YYgJvB8bZWsofYFq/cqbBWZcL
+         OQs+Cbgy01ptFoDGHIHw9I6uUjhPXE5weVPEVLrqMZJ8K2pDPmupogfu5TwllUEOPa5n
+         HY/UUvLUc/urYcaMRLEhciK8vCyveVUvxheDeoe1HtqJnhqQxy0SXWI3X82qEKS52pCd
+         r2PxBFY1fuqgfYARQAqO/3HcVIFAfIX48BmvF/IYk1BVYWN4jtwzvR8gZRlUZG7wdN54
+         m8lA==
+X-Forwarded-Encrypted: i=1; AJvYcCXAYpV3MgBrHhlwv0eUCWpSfBNdFW/fMiX+SHEB4JEewlX6Zws5Sy/mik9ZjfITnrUg9JYGtpQ2tJDWfLU=@vger.kernel.org, AJvYcCXJhm71HTHLh1FiEzIVe5AjGc2G9jaZ2cmol79ZKi63OUHjwMgEoNaZ0PWHSh2aiQZ1D4mJlD7I@vger.kernel.org, AJvYcCXxjmX+GWnAuOSLm4jq5M0SOrJrxR7T42USw/B7OLRGNjq5p1L4YpJxLZ0ZZKvCR2+DnRp3zwfmKDuf4k41BxU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLINVy7Nu0RtUrhbNo0HwMheG4NgA+fhl5zcqZCoVDf+6vAyZF
+	bAvvUpPQCSL4xLHndKjZDwuXtzRJV5YCOlOz1z7VfymbcMdFmpZlN1Bj
+X-Gm-Gg: ASbGncu5VtRBm9J2mJULu8vsvyRuIOrv7ilguzUvZqREX0pt5YRmgTCe4lb6SJXtwtb
+	mZ/iEab7a+sKSLYAbDS13d4FNKcU8LL+qAzj+OEMS18h0b891Nad+9JP8YvRUvcVfpscujt1kTn
+	FC1pO78ShzbIL/fGHAesEe+66+9dLWsFie3CVHqvF88kkoKCfQnL2SVXTAkUIdnT/LocCpliViy
+	RdYd1Ow6cuS9kyXwD94T/WncNf7mtX0yOpKPMTKpIADaWpYDiiiUFZjxYfY4J1b4WNtUTxjJjy1
+	vmuQK6wbXnC/CTsm8/fT4+yo09cHfpFYgOVPRPNz4xvdfXbfGQ9btlWBIush7YdInMBo5QM3DcK
+	af5cZjks=
+X-Google-Smtp-Source: AGHT+IHFE/4lz+pXT1J2vuAB2sISwkp+K6S5gulkD0S/u+uitE+iDpKG56hey3SX5ivqJSrzP0P1RA==
+X-Received: by 2002:a05:600c:4f11:b0:43d:9d5:474d with SMTP id 5b1f17b1804b1-454d522d0d0mr17241865e9.0.1752053692156;
+        Wed, 09 Jul 2025 02:34:52 -0700 (PDT)
+Received: from vitor-nb.Home (bl21-87-120.dsl.telepac.pt. [2.82.87.120])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454d508e9d7sm16621975e9.36.2025.07.09.02.34.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Jul 2025 02:34:51 -0700 (PDT)
+Message-ID: <d6fc989334064cf9fe50185e7ecd20a5f614c312.camel@gmail.com>
+Subject: Re: [PATCH wireless v1] wifi: mwifiex: discard erroneous disassoc
+ frames on STA interface
+From: Vitor Soares <ivitro@gmail.com>
+To: Brian Norris <briannorris@chromium.org>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Vitor Soares
+	 <vitor.soares@toradex.com>, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, David Lin <yu-hao.lin@nxp.com>, 
+	stable@vger.kernel.org
+Date: Wed, 09 Jul 2025 10:34:50 +0100
+In-Reply-To: <aG1lbC4LJDKzMuco@google.com>
+References: <20250701142643.658990-1-ivitro@gmail.com>
+	 <aG1lbC4LJDKzMuco@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250708201745.5900-5-rosenp@gmail.com>
 
-Hi Rosen,
+On Tue, 2025-07-08 at 11:37 -0700, Brian Norris wrote:
+> Hi Vitor,
+>=20
+> On Tue, Jul 01, 2025 at 03:26:43PM +0100, Vitor Soares wrote:
+> > From: Vitor Soares <vitor.soares@toradex.com>
+> >=20
+> > When operating in concurrent STA/AP mode with host MLME enabled,
+> > the firmware incorrectly sends disassociation frames to the STA
+> > interface when clients disconnect from the AP interface.
+> > This causes kernel warnings as the STA interface processes
+> > disconnect events that don't apply to it:
+> >=20
+> > [ 1303.240540] WARNING: CPU: 0 PID: 513 at net/wireless/mlme.c:141
+> > cfg80211_process_disassoc+0x78/0xec [cfg80211]
+> > [ 1303.250861] Modules linked in: 8021q garp stp mrp llc rfcomm bnep
+> > btnxpuart nls_iso8859_1 nls_cp437 onboard_us
+> > [ 1303.327651] CPU: 0 UID: 0 PID: 513 Comm: kworker/u9:2 Not tainted 6.=
+16.0-
+> > rc1+ #3 PREEMPT
+> > [ 1303.335937] Hardware name: Toradex Verdin AM62 WB on Verdin Developm=
+ent
+> > Board (DT)
+> > [ 1303.343588] Workqueue: MWIFIEX_RX_WORK_QUEUE mwifiex_rx_work_queue
+> > [mwifiex]
+> > [ 1303.350856] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BT=
+YPE=3D-
+> > -)
+> > [ 1303.357904] pc : cfg80211_process_disassoc+0x78/0xec [cfg80211]
+> > [ 1303.364065] lr : cfg80211_process_disassoc+0x70/0xec [cfg80211]
+> > [ 1303.370221] sp : ffff800083053be0
+> > [ 1303.373590] x29: ffff800083053be0 x28: 0000000000000000 x27:
+> > 0000000000000000
+> > [ 1303.380855] x26: 0000000000000000 x25: 00000000ffffffff x24:
+> > ffff000002c5b8ae
+> > [ 1303.388120] x23: ffff000002c5b884 x22: 0000000000000001 x21:
+> > 0000000000000008
+> > [ 1303.395382] x20: ffff000002c5b8ae x19: ffff0000064dd408 x18:
+> > 0000000000000006
+> > [ 1303.402646] x17: 3a36333a61623a30 x16: 32206d6f72662063 x15:
+> > ffff800080bfe048
+> > [ 1303.409910] x14: ffff000003625300 x13: 0000000000000001 x12:
+> > 0000000000000000
+> > [ 1303.417173] x11: 0000000000000002 x10: ffff000003958600 x9 :
+> > ffff000003625300
+> > [ 1303.424434] x8 : ffff00003fd9ef40 x7 : ffff0000039fc280 x6 :
+> > 0000000000000002
+> > [ 1303.431695] x5 : ffff0000038976d4 x4 : 0000000000000000 x3 :
+> > 0000000000003186
+> > [ 1303.438956] x2 : 000000004836ba20 x1 : 0000000000006986 x0 :
+> > 00000000d00479de
+> > [ 1303.446221] Call trace:
+> > [ 1303.448722]=C2=A0 cfg80211_process_disassoc+0x78/0xec [cfg80211] (P)
+> > [ 1303.454894]=C2=A0 cfg80211_rx_mlme_mgmt+0x64/0xf8 [cfg80211]
+> > [ 1303.460362]=C2=A0 mwifiex_process_mgmt_packet+0x1ec/0x460 [mwifiex]
+> > [ 1303.466380]=C2=A0 mwifiex_process_sta_rx_packet+0x1bc/0x2a0 [mwifiex=
+]
+> > [ 1303.472573]=C2=A0 mwifiex_handle_rx_packet+0xb4/0x13c [mwifiex]
+> > [ 1303.478243]=C2=A0 mwifiex_rx_work_queue+0x158/0x198 [mwifiex]
+> > [ 1303.483734]=C2=A0 process_one_work+0x14c/0x28c
+> > [ 1303.487845]=C2=A0 worker_thread+0x2cc/0x3d4
+> > [ 1303.491680]=C2=A0 kthread+0x12c/0x208
+> > [ 1303.495014]=C2=A0 ret_from_fork+0x10/0x20
+> >=20
+> > Add validation in the STA receive path to verify that disassoc/deauth
+> > frames originate from the connected AP. Frames that fail this check
+> > are discarded early, preventing them from reaching the MLME layer and
+> > triggering WARN_ON().
+> >=20
+> > This filtering logic is similar with that used in the
+> > ieee80211_rx_mgmt_disassoc() function in mac80211, which drops
+> > disassoc frames that don't match the current BSSID
+> > (!ether_addr_equal(mgmt->bssid, sdata->vif.cfg.ap_addr)), ensuring
+> > only relevant frames are processed.
+> >=20
+> > Tested on:
+> > - 8997 with FW 16.68.1.p197
+> >=20
+> > Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> > ---
+> > =C2=A0drivers/net/wireless/marvell/mwifiex/util.c | 4 +++-
+> > =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/util.c
+> > b/drivers/net/wireless/marvell/mwifiex/util.c
+> > index 4c5b1de0e936..6882e90e90b2 100644
+> > --- a/drivers/net/wireless/marvell/mwifiex/util.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/util.c
+> > @@ -459,7 +459,9 @@ mwifiex_process_mgmt_packet(struct mwifiex_private
+> > *priv,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "auth: r=
+eceive authentication from
+> > %pM\n",
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ieee_hdr=
+->addr3);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
+>=20
+> How about the other leg of this 'else' (ieee80211_is_auth())? Is it
+> possible for these spurious frames to accidentally look like our AUTH
+> frames?
 
-kernel test robot noticed the following build errors:
+I haven't seen spurious frames matching the AUTH path so far. Also, if ther=
+e's
+no pending authentication on the STA, those frames should be already ignore=
+d.
 
-[auto build test ERROR on wireless/main]
-[also build test ERROR on next-20250708]
-[cannot apply to wireless-next/main robh/for-next linus/master v6.16-rc5]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>=20
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!p=
+riv->wdev.connected)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!p=
+riv->wdev.connected ||
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 !ether_addr_equal(ieee_hdr->addr3,
+>=20
+> "addr3" doesn't make it totally obvious to me what this actually means,
+> nor that it's correct. Would ieee80211_get_SA(ieee_hdr) be equivalent?
+> That seems a bit more descriptive. Or else maybe a short comment (e.g.,
+> "ignore spurious management frames from other BSSIDs").
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Rosen-Penev/wifi-rt2x00-add-COMPILE_TEST/20250709-042051
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git main
-patch link:    https://lore.kernel.org/r/20250708201745.5900-5-rosenp%40gmail.com
-patch subject: [PATCHv2 wireless-next 4/7] wifi: rt2800: move 2x00soc to 2800soc
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20250709/202507091735.YeYeU2tw-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250709/202507091735.YeYeU2tw-lkp@intel.com/reproduce)
+In this case, ieee80211_get_SA() wouldn't be equivalent and as far as I kno=
+w,
+there isn't a helper like ieee80211_get_SA() available.
+This is an IBSS/Ad-hoc frame (To DS =3D 0, From DS =3D 0), so addr3 contain=
+s the
+BSSID, which is what we need to match against (same as
+ieee80211_rx_mgmt_disassoc()).
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507091735.YeYeU2tw-lkp@intel.com/
+Since the patch was already merged, if you think a clarifying comment would
+still be valuable, I can send a follow-up patch to add it.
 
-All errors (new ones prefixed by >>):
+>=20
+> It seems like it's correct, because this block already filters for
+> specific frame types (auth, deauth, disassoc), but in isolation, it's
+> not the most readable.
+>=20
 
->> drivers/net/wireless/ralink/rt2x00/rt2800soc.c:376:27: error: 'rt2x00soc_suspend' undeclared here (not in a function); did you mean 'rt2x00lib_suspend'?
-     376 |         .suspend        = rt2x00soc_suspend,
-         |                           ^~~~~~~~~~~~~~~~~
-         |                           rt2x00lib_suspend
->> drivers/net/wireless/ralink/rt2x00/rt2800soc.c:377:27: error: 'rt2x00soc_resume' undeclared here (not in a function); did you mean 'rt2x00soc_remove'?
-     377 |         .resume         = rt2x00soc_resume,
-         |                           ^~~~~~~~~~~~~~~~
-         |                           rt2x00soc_remove
+Yes, I agree with you.
 
+thanks,
+Vitor
 
-vim +376 drivers/net/wireless/ralink/rt2x00/rt2800soc.c
+> Brian
+>=20
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 priv-
+> > >curr_bss_params.bss_descriptor.mac_address))
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+if (ieee80211_is_deauth(ieee_hdr->frame_control)) {
+> > --=20
+> > 2.34.1
+> >=20
 
-90ce325a735fa7 drivers/net/wireless/ralink/rt2x00/rt2800soc.c Rosen Penev 2025-07-08  368  
-fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  369  static struct platform_driver rt2800soc_driver = {
-fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  370  	.driver		= {
-fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  371  		.name		= "rt2800_wmac",
-90ce325a735fa7 drivers/net/wireless/ralink/rt2x00/rt2800soc.c Rosen Penev 2025-07-08  372  		.of_match_table = rt2880_wmac_match,
-fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  373  	},
-fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  374  	.probe		= rt2800soc_probe,
-fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  375  	.remove		= rt2x00soc_remove,
-fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17 @376  	.suspend	= rt2x00soc_suspend,
-fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17 @377  	.resume		= rt2x00soc_resume,
-fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  378  };
-fe7ef7c60c33fd drivers/net/wireless/rt2x00/rt2800soc.c        Gabor Juhos 2013-10-17  379  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
