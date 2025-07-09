@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-25137-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25138-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 646F2AFF32C
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 22:39:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA33EAFF331
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 22:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24249188EEA3
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 20:39:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E6557ACFB6
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 20:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08A624DD10;
-	Wed,  9 Jul 2025 20:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D1C248F52;
+	Wed,  9 Jul 2025 20:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="giHXG/Mb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R4D994BF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A615248F52
-	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 20:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A8D24DCE1
+	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 20:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752093515; cv=none; b=lg817ZlTWYvl/FmJNLT56jWjmy04gfw2PZ0Vlp8c8OQ+mHmAW7pupng1IQMM7y14TSfIpW3rg+kjW5Fndk/4P3PyOxti0PeaXzpuL+g09XTfuBDLM7xJSVmo8VmHC9F3P/qfIb467qfhEZgUBk5U9zjkKfA3vKwnrx5yLGlqJ2c=
+	t=1752093516; cv=none; b=d+It6DskpusihiNBVLJKhv4ZDLSRpoL0tsyW0L1Dy1K1AXk7TYKPkoDJo70RTwVYMtuF8SN2t8yMQqBDspbdvwP78dYkl9ltS+85gY4Rgl9hrMLKbteVmflgLkVapoaECOOwlFaD0Ln4qLKsfDgnq6JfmcziS3NTcvcSB+arb6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752093515; c=relaxed/simple;
-	bh=hnqAYHyu/P+TsgHx8FhV0MyVAf6k6TeqlcrRWm9iDQs=;
+	s=arc-20240116; t=1752093516; c=relaxed/simple;
+	bh=+5s/NKMZYniyfHxTGoGtfu0C0mxR0ct+9jWCh3qdcAc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uhqc0ROH61+f7XPBT3bVk/eZccB/B+b4UsYfllEIBbyrz8nyKm+yWM/M2YTI38hBal5rKYNZ+pi9zuvNcvNjpDrpal7dqAjiC2neAv0jNt2Eke7kKwdYrE+S+TtxfYy9AktEX5+RrIOiUbOIvZbJOzxj/4Jb+qn4D+JHiP2p210=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=giHXG/Mb; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=YX4cySEAZfsjFw9LsCDUSjsa9I+RZYlwDKKlNt79eZAY6d5qEhhs1qIsGRIUi1akNj1qGHZMR0ax3fYKKrvMbsZhTAW/XcqTPJCwJgIWh0VRPj3cYISWhTF7uIp+6VVlYX13781gCtXNVqXW0yh5VsIW7LLvYZbucejW4279lao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R4D994BF; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752093514; x=1783629514;
+  t=1752093515; x=1783629515;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hnqAYHyu/P+TsgHx8FhV0MyVAf6k6TeqlcrRWm9iDQs=;
-  b=giHXG/Mb9laaxPt4w+DNkQYtkQX8Tf4C/HoXtlOM4cljExugcZXaLqco
-   z0zwb6UsyoRGoG8d4zZh8Vw+CGu4SlIwsu6IcdESr3CDoCkEklwIR28Lq
-   Jrw/tdDl4t5VNVf0KaH4ZwJDgKDq9AghUBbCtUlg1g64tiSJxtmDX5bcg
-   vLoJpZjsYX4siRe4zXw79cDgSVLa1AJO60enZI33zNa5ADq9+nDTBr6Mq
-   JefcD9anCPR+ju9DnhO6YDUS7Oy5yaNRu7CkRDkt3n/LRxWYwcVLJtTnO
-   LeaHC8Afj++0ovZ0FZEoF/yUvITEPV6GQ5+L/QbRYt0s24MmTxbet4IQg
-   g==;
-X-CSE-ConnectionGUID: HeeyEqxZTYKIPFuv5y9NBw==
-X-CSE-MsgGUID: dqCAFKc0Q6GaqfppdmBkow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="56974452"
+  bh=+5s/NKMZYniyfHxTGoGtfu0C0mxR0ct+9jWCh3qdcAc=;
+  b=R4D994BFl4Ea6KcKyqXmHnAHWFNxhEIoqDHTSv13G+xYZoci05PC0oez
+   hmBCRFt/nAL82C85ip2rcCxmaY+6CVFFipn562OgafeWvCUILgJnO1vh6
+   vHO8JCYLuu0t8BmKMlQBowp6w/tl11L3D00QXlPX22OWFTCqpAR3Pn53N
+   GV/tprkWeLZDSF8ZHCZb8kkXnZiy/BimuMhYzdcrVzFBjj6WG/doKsOFs
+   dfhYBfCC/b5ePe+CUGJpDVXHd0eY2FB8GLpGJo9BG21pLPyiE2k+greuD
+   SyJdP2s3cTBjpbb4HY1ziLEBC5j7rsixV+ulyFt/e35+YCYtEOCuv6E7x
+   A==;
+X-CSE-ConnectionGUID: Ya1OnT5NQZKEYcH27GfhGg==
+X-CSE-MsgGUID: KdNktTS1RgOjbdZSf4zypQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="56974455"
 X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; 
-   d="scan'208";a="56974452"
+   d="scan'208";a="56974455"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:38:34 -0700
-X-CSE-ConnectionGUID: R3kwH4tyRkObtNrfU5Sf0A==
-X-CSE-MsgGUID: pLSaPwx0SjqHzmwiEDsXeg==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:38:35 -0700
+X-CSE-ConnectionGUID: lXKy/VhDS9KecYLkwRMJyQ==
+X-CSE-MsgGUID: hdiOKko3Q0OsLgskoNhVvg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; 
-   d="scan'208";a="161533106"
+   d="scan'208";a="161533162"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:38:33 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:38:34 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 08/11] wifi: mac80211: don't mark keys for inactive links as uploaded
-Date: Wed,  9 Jul 2025 23:38:00 +0300
-Message-Id: <20250709233537.655094412b0b.Iacae31af3ba2a705da0a9baea976c2f799d65dc4@changeid>
+Subject: [PATCH wireless-next 09/11] wifi: mac80211: simplify __ieee80211_rx_h_amsdu() loop
+Date: Wed,  9 Jul 2025 23:38:01 +0300
+Message-Id: <20250709233537.a217a1e8c667.I5283df9627912c06c8327b5786d6b715c6f3a4e1@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250709203803.1736809-1-miriam.rachel.korenblit@intel.com>
 References: <20250709203803.1736809-1-miriam.rachel.korenblit@intel.com>
@@ -76,31 +76,62 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-During resume, the driver can call ieee80211_add_gtk_rekey for keys that
-are not programmed into the device, e.g. keys of inactive links.
-Don't mark such a key as uploaded to avoid removing it later from the
-driver/device.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+The loop handling individual subframes can be simplified to
+not use a somewhat confusing goto inside the loop.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/key.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/rx.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index dcf8643a0baa..997892da8886 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -510,7 +510,8 @@ static int ieee80211_key_replace(struct ieee80211_sub_if_data *sdata,
- 	} else {
- 		if (!new->local->wowlan)
- 			ret = ieee80211_key_enable_hw_accel(new);
--		else
-+		else if (link_id < 0 || !sdata->vif.active_links ||
-+			 BIT(link_id) & sdata->vif.active_links)
- 			new->flags |= KEY_FLAG_UPLOADED_TO_HARDWARE;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index caa3e6b3f46e..9bca5e0a41b0 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -3033,7 +3033,6 @@ __ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx, u8 data_offset)
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 	__le16 fc = hdr->frame_control;
+ 	struct sk_buff_head frame_list;
+-	ieee80211_rx_result res;
+ 	struct ethhdr ethhdr;
+ 	const u8 *check_da = ethhdr.h_dest, *check_sa = ethhdr.h_source;
+ 
+@@ -3095,24 +3094,18 @@ __ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx, u8 data_offset)
+ 	while (!skb_queue_empty(&frame_list)) {
+ 		rx->skb = __skb_dequeue(&frame_list);
+ 
+-		res = ieee80211_rx_mesh_data(rx->sdata, rx->sta, rx->skb);
+-		switch (res) {
++		switch (ieee80211_rx_mesh_data(rx->sdata, rx->sta, rx->skb)) {
+ 		case RX_QUEUED:
+-			continue;
+-		case RX_CONTINUE:
+ 			break;
++		case RX_CONTINUE:
++			if (ieee80211_frame_allowed(rx, fc)) {
++				ieee80211_deliver_skb(rx);
++				break;
++			}
++			fallthrough;
+ 		default:
+-			goto free;
++			dev_kfree_skb(rx->skb);
+ 		}
+-
+-		if (!ieee80211_frame_allowed(rx, fc))
+-			goto free;
+-
+-		ieee80211_deliver_skb(rx);
+-		continue;
+-
+-free:
+-		dev_kfree_skb(rx->skb);
  	}
  
+ 	return RX_QUEUED;
 -- 
 2.34.1
 
