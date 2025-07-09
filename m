@@ -1,177 +1,131 @@
-Return-Path: <linux-wireless+bounces-25140-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25141-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487D6AFF32D
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 22:39:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC71AFF49D
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 00:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 998E85840D9
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 20:39:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CE3D4E2443
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 22:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719D1253F1B;
-	Wed,  9 Jul 2025 20:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D83243399;
+	Wed,  9 Jul 2025 22:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N+z9pdrS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GjDF+iHZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D9B2528E1
-	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 20:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82934801;
+	Wed,  9 Jul 2025 22:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752093519; cv=none; b=r10tH0oji9dYgmNI4/QEzmG6w1kTCCOJYWGqEimIHSHNiHkvhy7fFCRhixkz59BU9lBGz7RUcxVMfXdGqJWE5FaEs71gO0qXga7m6/7hr+kqi/wDk4z5S6FfGY0ELShcpipG/KvD5MvZH9uoqM+6gQyqJig3d6jBgjqSqJ5gVPk=
+	t=1752099801; cv=none; b=nqtMaGEEzrM9aYNFOn9teclTXP9QmR5vTbuUFO4luxFjCohTkylCdudSzesIFCiKrBUaxCVe72Gw82LewK4CkulkVUFc/ovq0ttR2uJ31i9c5MbeSvNWsZhasnA9bo3DWnpsN2pG8hJM/lRiY4ICA4oJC5n7kkS3FQiReRD7p0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752093519; c=relaxed/simple;
-	bh=7FwsIBETJjRHxDxLPEhTkeVicyFG4S1790oYA9ybUL8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gcSARbEGsMYdsplecEVrt2XmDYo1j+GES0l4R06yGtE9f8Iq97jHc8ICdePd8vhDO8w5VFrBWv32QpC3Y78++qWt2ZuRVRglDRtjbtds3UrLFaYQ40RDIi2LwNX9zPaeyRHRQPb0WfbR1Tkpse9J4wPWh3NniMiC+zDYeHZgHLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N+z9pdrS; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752093517; x=1783629517;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7FwsIBETJjRHxDxLPEhTkeVicyFG4S1790oYA9ybUL8=;
-  b=N+z9pdrSQ5fwc+dW/Nvl8O3dO4P6LdLDdt8/TR2/EijDu3Qzy2I/nxED
-   3UodXB2g9pHqDsCaJwLnubV2lmjeqYwyCGuIy2c3FrX6DvGb7gE3Z7rPL
-   1UE+M4yxbZ2sya3H7FzujBkecX3PS+L0QeQgF7gmBMGvoEsb3vTErYX4E
-   EBM9KaH3/Jc5FDRuuz7EgnSHFJVyHqPWCT8SJ66MnK0+LdQoD8aKVmmWf
-   QaGmlg0k0MrEbnA104KbZE3dvj2PwqYAF+GxxBcyLoFV24ul1I9GRxVPT
-   nKXqEi8mM9nRl9rjb7PgMlCKuwdShrXZ1nvZWS+O+4JNpMKvaKeWUWKWu
-   Q==;
-X-CSE-ConnectionGUID: d8CCv70gSKSGeHSVMt/dfA==
-X-CSE-MsgGUID: OOvGJpraRLGBBdsQ8fNcvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="56974461"
-X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; 
-   d="scan'208";a="56974461"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:38:37 -0700
-X-CSE-ConnectionGUID: rA63X6q6Qg68XYB+WQ61dA==
-X-CSE-MsgGUID: g/BnltKASLig/2JGVA8Z1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; 
-   d="scan'208";a="161533254"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:38:37 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 11/11] wifi: mac80211: don't use TPE data from assoc response
-Date: Wed,  9 Jul 2025 23:38:03 +0300
-Message-Id: <20250709233537.caa1ca853f5a.I588271f386731978163aa9d84ae75d6f79633e16@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250709203803.1736809-1-miriam.rachel.korenblit@intel.com>
-References: <20250709203803.1736809-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1752099801; c=relaxed/simple;
+	bh=24abscj+2i0/x8q5F6sm4ALzwy1Yuq8FqxkeCqDKPvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jCtAnInleMHJH6fjfygdV2xItB0NLTUFfhIQ3MQ6oV5T2A8Ra6ZQTK8w0/YUdT69ZaML9wEESwsY2hAg68odJaGtTtuYzFNuGGaQ0e9P/BWe6zogLuUFe60HNCO02BSVhl7eauR+DApEoAtuMtGQa7nzib+UX/5yECPkuTiLai8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GjDF+iHZ; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-553be4d2fbfso325647e87.0;
+        Wed, 09 Jul 2025 15:23:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752099795; x=1752704595; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mAjCWrXsEExfgLvwmihVAXrAcyRTsmUgAr/4yGrIjDM=;
+        b=GjDF+iHZyRQNDR8NTzVbK3q+lzJ8bBcMNCzxjFsdWAtN/RChv9ivrEoxCdg/uXj5pj
+         TUhNA4isS755DrXAN9Vr3ROxnYtazDNg0lXR7cFG4l7lOpfT2qwHenBkm5gCoX3K9CzE
+         /pYee++yx6blBVsi0sl8PK6vspfNJl9pv6YqpBTgwSnBfDGsLhdhNPWhBV3crgBGmDn9
+         MYmsB3daJTbwQNeEdOj85imB0ddnbfD7ly5JUDRkPlkoAglUz0nLX4SvFDqrrKYsTdv+
+         /BZxWuWC9tVUzN9/0mmlOHCUIPlNUZC/jqA/WLZ5f/rd/x2XyR3qJBgIWwNRC+FcYjA/
+         n+SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752099795; x=1752704595;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mAjCWrXsEExfgLvwmihVAXrAcyRTsmUgAr/4yGrIjDM=;
+        b=OcFxvemLaZmUuiaAf4MDsANp3kmlwv/eu8u85e5bc9s5zgPzXvGEpixCnu8UUvP+B/
+         ocYBxpSplQUxIdr22ur84T79u0Ow83z2jwttmkyXRbQB6Hnbq7U777kyUwsZvl5wLtzz
+         aRxsOqc+WVZ3lUcfQRP+lVVDQotY/pivRAhLb5P9vtSr0uZrTZ1e+3APuxaSgqEK2EgY
+         3McG2oVIWSx/fU4O4AvFdlCcngTIZJNOm4Gx75gNkLQc2Eqk2VUSgKy6HShq+L1JwWca
+         v28xfLt5KauX1ZVXbfbIdGcUDs1uP/sE67t4nqrzeE8Bky55atmbUKUbZiP8IOIJjTVj
+         En3w==
+X-Forwarded-Encrypted: i=1; AJvYcCVEJHuCkiPmglDJGdHsX1kEhV2O5bN2pAQi0e5PTwtyOsSzCYJ2TCdGxWx5R9fZdygEV9mF6U6P5Aijxyw=@vger.kernel.org, AJvYcCVvayM0o9TSQPB1q9MPonCrqUQFG9J9WzXrvbIrnvNQlx/F1p19YsGaSJqnhor3nyIlMw+ZHfddgOoiEsI4mTU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzK4sxw2836UYmbe06rltD7mbTxSwHkZDZmbfRQQL+mPfRmnpaE
+	ylrp6EakliVyghJMQFYG/BWN83JW0g4xE8lHp3fj3hOa69a1RDZeHNNF
+X-Gm-Gg: ASbGnctljdKuhcSdVwnKi9yv9lJ52OTa6wZutfPRsIDxwo3eK6VoA+XZbq24v297q2f
+	Bi+sYGeu1qPYLflp2c0tTvBbA1x1EAvQp+1Ym/v3Ce41uo3niSdm9JZCHZNFDH9IOn7Hslc1N8d
+	MPFsVcMgfExZtBM5XTXH70MvR+0nf6MlPQSQFSvVR8D86le9V+ZM2s/qvNHMi8YZRtT0NWHXYBR
+	9l4n/Plz4xxKZQTuOpsB33RyN+mlcNbqRfXsWJY3Y1PurMqRzMcIKB4xulmmBImhff0WFO+WS/3
+	cS2LqoA/H/igj2ykgdyVmJYE8P3+yP7TW3stv5/VVRdp/4Cdz+zb3IM+Qoh+o/MuK7U=
+X-Google-Smtp-Source: AGHT+IGjAqkTuDqUOw0tCaorkdTiv3r6cliFcRPETFVSCXAth56x1yOq9aCfBsrHaxyKWZwnPb36kQ==
+X-Received: by 2002:a05:6512:3050:b0:553:25f4:695c with SMTP id 2adb3069b0e04-55935b42d54mr112318e87.50.1752099795229;
+        Wed, 09 Jul 2025 15:23:15 -0700 (PDT)
+Received: from localhost ([94.19.228.143])
+        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-5593c7f3522sm52588e87.87.2025.07.09.15.23.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Jul 2025 15:23:14 -0700 (PDT)
+Date: Thu, 10 Jul 2025 01:20:59 +0300
+From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Kalle Valo <kvalo@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Fiona Klute <fiona.klute@gmx.de>
+Subject: Re: [PATCH] wifi: rtw88: enable TX reports for the management queue
+Message-ID: <aG7rSzyOWqIWMSII@skv.local>
+Mail-Followup-To: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Fiona Klute <fiona.klute@gmx.de>
+References: <20250628223048.3597641-1-andrej.skvortzov@gmail.com>
+ <dbd7eee63629497194901210c46bd704@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <dbd7eee63629497194901210c46bd704@realtek.com>
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 25-06-30 01:51, Ping-Ke Shih wrote:
+> Andrey Skvortsov <andrej.skvortzov@gmail.com> wrote:
+> > This is needed for AP mode. Otherwise client sees the network, but
+> > can't connect to it.
+> > 
+> > REG_FWHW_TXQ_CTRL+1 is set to WLAN_TXQ_RPT_EN (0x1F) in common mac
+> > init function (__rtw8723x_mac_init), but the value was overwritten
+> > from mac table later.
+> 
+> Since the tables were copied from vendor driver, I suspect people might
+> overwrite the tables again resulting in regression. 
+> 
+> So we can add a mac_post_init to set the value after loading parameters:
+> 
+>   rtw_mac_init(rtwdev); // not set REG_FWHW_TXQ_CTRL+1 to WLAN_TXQ_RPT_EN
+> 
+>   chip->ops->phy_set_param(rtwdev); // "0x421, 0x0000000F," by table
+> 
+>   rtw_mac_postinit(rtwdev); // set REG_FWHW_TXQ_CTRL+1 to WLAN_TXQ_RPT_EN 
+> 
+> Only rtw8703b/rtw8723d implement postinit ops.
+> 
 
-Since there's no TPE element in the (re)assoc response, trying
-to use the data from it just leads to using the defaults, even
-though the real values had been set during authentication from
-the discovered BSS information.
+Thanks for the feedback, I'll add this in v2.
 
-Fix this by simply not handling the TPE data in assoc response
-since it's not intended to be present, if it changes later the
-necessary changes will be made by tracking beacons later.
-
-As a side effect, by passing the real frame subtype, now print
-a correct value for ML reconfiguration responses.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- net/mac80211/mlme.c | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
-
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index d64b09d07db3..2dc97b0095d3 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1214,18 +1214,36 @@ EXPORT_SYMBOL_IF_MAC80211_KUNIT(ieee80211_determine_chan_mode);
- 
- static int ieee80211_config_bw(struct ieee80211_link_data *link,
- 			       struct ieee802_11_elems *elems,
--			       bool update, u64 *changed,
--			       const char *frame)
-+			       bool update, u64 *changed, u16 stype)
- {
- 	struct ieee80211_channel *channel = link->conf->chanreq.oper.chan;
- 	struct ieee80211_sub_if_data *sdata = link->sdata;
- 	struct ieee80211_chan_req chanreq = {};
- 	struct cfg80211_chan_def ap_chandef;
- 	enum ieee80211_conn_mode ap_mode;
-+	const char *frame;
- 	u32 vht_cap_info = 0;
- 	u16 ht_opmode;
- 	int ret;
- 
-+	switch (stype) {
-+	case IEEE80211_STYPE_BEACON:
-+		frame = "beacon";
-+		break;
-+	case IEEE80211_STYPE_ASSOC_RESP:
-+		frame = "assoc response";
-+		break;
-+	case IEEE80211_STYPE_REASSOC_RESP:
-+		frame = "reassoc response";
-+		break;
-+	case IEEE80211_STYPE_ACTION:
-+		/* the only action frame that gets here */
-+		frame = "ML reconf response";
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
- 	/* don't track any bandwidth changes in legacy/S1G modes */
- 	if (link->u.mgd.conn.mode == IEEE80211_CONN_MODE_LEGACY ||
- 	    link->u.mgd.conn.mode == IEEE80211_CONN_MODE_S1G)
-@@ -1274,7 +1292,9 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
- 			ieee80211_min_bw_limit_from_chandef(&chanreq.oper))
- 		ieee80211_chandef_downgrade(&chanreq.oper, NULL);
- 
--	if (ap_chandef.chan->band == NL80211_BAND_6GHZ &&
-+	/* TPE element is not present in (re)assoc/ML reconfig response */
-+	if (stype == IEEE80211_STYPE_BEACON &&
-+	    ap_chandef.chan->band == NL80211_BAND_6GHZ &&
- 	    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_HE) {
- 		ieee80211_rearrange_tpe(&elems->tpe, &ap_chandef,
- 					&chanreq.oper);
-@@ -5345,7 +5365,9 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
- 	/* check/update if AP changed anything in assoc response vs. scan */
- 	if (ieee80211_config_bw(link, elems,
- 				link_id == assoc_data->assoc_link_id,
--				changed, "assoc response")) {
-+				changed,
-+				le16_to_cpu(mgmt->frame_control) &
-+					IEEE80211_FCTL_STYPE)) {
- 		ret = false;
- 		goto out;
- 	}
-@@ -7537,7 +7559,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 
- 	changed |= ieee80211_recalc_twt_req(sdata, sband, link, link_sta, elems);
- 
--	if (ieee80211_config_bw(link, elems, true, &changed, "beacon")) {
-+	if (ieee80211_config_bw(link, elems, true, &changed,
-+				IEEE80211_STYPE_BEACON)) {
- 		ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
- 				       WLAN_REASON_DEAUTH_LEAVING,
- 				       true, deauth_buf);
 -- 
-2.34.1
-
+Best regards,
+Andrey Skvortsov
 
