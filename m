@@ -1,177 +1,189 @@
-Return-Path: <linux-wireless+bounces-25018-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25019-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007D8AFDD82
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 04:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1A1AFDDA7
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 04:47:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04B3C3A8CBA
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 02:35:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2719482F9A
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 02:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098981E25E8;
-	Wed,  9 Jul 2025 02:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F2B1D516F;
+	Wed,  9 Jul 2025 02:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NKy61/ff"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cuY2EPFY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1071DE4CD
-	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 02:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F392AD2C
+	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 02:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752028542; cv=none; b=jU2r3RzLAxDyATgfXnzbfbuyh9fvFX/GBSDn0/hw+jzqCWZ5O5+FPmN7ZiIGVkNuPfRaxqqr/M6Rw5AUVu09do21YRBGhWR1csX2rPwlD/wB0Nh1ywGCl4k9jYPsF/6Iz8Dg4cqIFfOU4W8dlvdftEoq8t94r9C7Kyi9ANtUWLo=
+	t=1752029248; cv=none; b=SC4uHfIzT5Si9g+oBf4i9t2tNaza0nROsuZNmGl2MphST1y8wK1q65UAApzJUnniVnksw9aOumyvJJv0/r/wm8oVdkLF2YLICmYDF5sstnbBmDcKT4ETU2QqGwhLI0ewtczDld5UPVPvOAq/rUDHxspTNZkQrvoj2UlzR3gRJfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752028542; c=relaxed/simple;
-	bh=TdkwTNIzAwUJoAPXjj02yqITZherri+LDBhfwYcnBn4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=N5uWEkXf64CkQvhmZZ8ivQL6T8VsmpbgyJ/NqNAqjoh89kmT2atPdro7Mqir7xNquYnpGa8W9EPZ8aEtdGIWBqTROed5gJThJ4L+30rJgmNATy+goTM8v3q4ZO7bvb8E9YAWS5GncTPya5saEl+XJd/2WZwRAshEp39F71DXfvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NKy61/ff; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1752029248; c=relaxed/simple;
+	bh=JgjFV8ttalnLWfax5cAC90o1K+OVxDfN9tj9+H+BGBc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ptVIbGZIFEBESzbG/AAYox1FekB+OWrwf7XSmhlkJG+//POFC+FBpsGYg1JEa59SPU+PdkQ3SmMsH5Vby5uPUSwRAdegpISefP8hooN2zG0hi5QflD4P5Kn1M6wlFvmEVazH7E5A8mYh2b9cMKTbnnfv1eyyk4st5pXLhAqoqVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cuY2EPFY; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 568JNqVu032668
-	for <linux-wireless@vger.kernel.org>; Wed, 9 Jul 2025 02:35:33 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 568MwFDV031658
+	for <linux-wireless@vger.kernel.org>; Wed, 9 Jul 2025 02:47:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	c/HxZsbEcLj6/NqQ7QRrp90LaiZ00WBbmS7LhVxRCbo=; b=NKy61/ffodXz8EMY
-	vqgJm0nwXS44TdphYdA2zc+x12LwpfbBn3UsMVnMESocqYjb6QuwPLHIR5LCJ35J
-	YYZTbPlHkTc6HeMKsj6g67Bw2NiJx131Ene7UOIHPLdv8fAHMcAe9kf0FxrHGz7y
-	UWAIL8NSylflfZ0JXf+7uJ76Xom9A/YdMsoYAxyKJ81VJQZ1scyO1i1Ot4L+o2VQ
-	glCvW57m7T2wRXaZrxm3AxY/iaR1XCo6X0vaJpECMWlztMYhf7tb116K50PCVGAt
-	BW5MYPlHWSdE9rKPINmsUU3EBfEGhNblQ0ACPUbKi4YNngFe503Cru6wMbP2TXVI
-	CSgzUQ==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47psrktdhs-1
+	nQ/DF0j8qjp6KjrDbYkX903lF1T/sv5VpjC/UZ0thFQ=; b=cuY2EPFYWDKn49QG
+	Up3kEHogbSBHV65Ol+DbOuy3c0lvJaa42VMjpZvE1Cw2yJNN9If+AEMthrGUBHl9
+	CMJYEtEXIEeAMnTEq+NN10sB0WK4BnFdYS4xu/8J45blOC/+1T75cK82+Pk+NtgF
+	XXeUo2qAkD9SkisJkGWNOU0y2mdQbDDKKbWBK2m4PDwdR/E9EIt5C6Usdv0Y+b97
+	htNn0stvN9n3mavg05iUQ566WxNW0wBEWPKUns9K1rEy6xa/h81d5FoJcfr4IwiA
+	TNj7G4Bcfunb0A+TRalZAebr0aN32KO9F5286RkoKwwPuam7SRrduuBkvMjObDh7
+	PKWAqA==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47pucn2vej-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 09 Jul 2025 02:35:33 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3132c8437ffso7020304a91.1
-        for <linux-wireless@vger.kernel.org>; Tue, 08 Jul 2025 19:35:33 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Wed, 09 Jul 2025 02:47:25 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-74913385dd8so6870506b3a.0
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Jul 2025 19:47:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752028533; x=1752633333;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c/HxZsbEcLj6/NqQ7QRrp90LaiZ00WBbmS7LhVxRCbo=;
-        b=kNKrRSEPuVuk+giudpsV31Mn74UWPzlh9u9ZDEpmmki92ePF6VtSPyNSckBIC7+7vX
-         kglOnrHHyUx72dZ2/7aAoSQtGZmjgKaq5K68TToo6fNl83lpeyZrk7WGD3ojSjGhXv1h
-         AQ/Pp0lY68GAlt+sSUe4Eh7iFMh770Pas8bSMXe6kT12KTuXwSIlQtKQUeNBrnChMKpk
-         NOukaLfVCbwZfgE3OMNv3UfkNrxH5q/4VekEVoNSU46Ii6P7lQyfvN/mTuaNdLQwN7fL
-         gUKtKeeOdS3WwjT14I52gA+w7CkANHfSmkWYBApyOhtHDcbcwBtiTYqARdeAyzLSZmVv
-         Imrg==
-X-Gm-Message-State: AOJu0Yxj49a6hLX/WN1slRfx4MEU3bQXnmO2y3TANiSsb2nebUw66WY6
-	93JvLV/zsuQnou8ztkZ/x5PfBI90bJaUtH/t+W7QtdWo/BnJpcQoFL7H6rnzHLQ1MMrdES7/5+5
-	4Y4RQeEYm2rEIQgmSBWtdOvzhMOc7SsKtHOJfLiQ4Aou74A6OPc6tW7853ZU+svf6xsncNQ==
-X-Gm-Gg: ASbGncvI/u0LbieG2SWn5LijOCw3rW7/1VefH6JHy6YCv3rEIl1aiQxnDvAyJlomKKe
-	V9yAWxu8IDiGtNZeOn1oBobWZvKeb0Zx+UK4el/JWjoZLrVsML+4NTw+fzWyDzPxJE7n7K8w/cc
-	0HA5oBdMUmVo95ryRulOc7P2IlhtVMAp9TRcTYGbNj7YXkgNj6CqalnkYU4SLMt3cG2LcOvEkRN
-	rgc3HThrPwBqNQW8DZoJk1AwpxBG4JndnTXS/KlOWOl6+StYDkqDyopuyiIRSfNcTBBzFG6Hv0b
-	yjdUaaAZ0QnJHiqiuqgypS4l62hYvJX0ZqKvyPvV1pH1xd/1b0A5onrTD8mhAj4QI+mSBDfNuVL
-	XNdCO1JJDc7HOQF3PgBMrhUIAE/XWtxb41M5NYiBjCoFKjkU=
-X-Received: by 2002:a17:90b:3ec3:b0:311:e5b2:356b with SMTP id 98e67ed59e1d1-31c2fce1e72mr1527312a91.11.1752028532741;
-        Tue, 08 Jul 2025 19:35:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF099tninrRE01bhqR4B5YPR57K8M4RtHfAmPQGM2zE5xavw2PxyYuLVylNvUkSK44dy67aHg==
-X-Received: by 2002:a17:90b:3ec3:b0:311:e5b2:356b with SMTP id 98e67ed59e1d1-31c2fce1e72mr1527275a91.11.1752028532290;
-        Tue, 08 Jul 2025 19:35:32 -0700 (PDT)
-Received: from hu-adisi-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c8431ef2bsm133169315ad.33.2025.07.08.19.35.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jul 2025 19:35:32 -0700 (PDT)
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Date: Wed, 09 Jul 2025 08:05:19 +0530
-Subject: [PATCH wireless-next 2/2] wifi: mac80211: parse unsolicited
- broadcast probe response data
+        d=1e100.net; s=20230601; t=1752029244; x=1752634044;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nQ/DF0j8qjp6KjrDbYkX903lF1T/sv5VpjC/UZ0thFQ=;
+        b=HPAK97Lv/RWDYfzmyuV21fdj54FjmlpzyA6aO/wNg21e+xL/NsSlNhbspDvgJFqrL5
+         lGp4Km8WNPY6AJ0eEHah3DwyGnjuZR2kjltaLjp0PTWF3iK2E0RPxRusZFypL6xQSB4N
+         Gy99cVM9i8TzJRnwXtxhdUBPwrFpkR9bpQHt5h6EiWs9sYvU7NonEg0oCGk4GrB1uRgA
+         XyBJ7ykh7xsliot1Z9TGryS7s6cRPImALW192m9vNfRiqZm9nWmodwPbn6PHdCbZaVuu
+         hFswm6lYvDfmS1fWbXWT3zNtxyQ6zzehKX5/rj8cpB0r8fUgRNj6+gHcquwRvyvr+BCr
+         ENFg==
+X-Gm-Message-State: AOJu0YyfhEV6+ihf2oCCtWzySVK0QXSiWz1YsSAw3gUjHe5gKl1iRCuG
+	EPUGhnrSBfm3aFKSl6dJZO5O18UZYF3LmwL03qJPEhJbcc1TYY+yUWYwphDXZK6sNSZdtCNq3wQ
+	3nKWbfd4SCH9DWzCL+9sVFKO1SDQvjBWWlYOyY9b5IP2m2QyHM6N5GFPNVq0Cg4YIhnzOPQ==
+X-Gm-Gg: ASbGnctUe9gbtw0IbhL9kwdNHJoJz8hzqJvNXQW/IdbivXI6Qv/Z+7n5zxmrjLCFIJf
+	px3lvY8aBpAr2Mad/wJn8xYuqVChs1+slVPqcxi4ZehoXwp/jLHecT3xdn0BAkRUQnr2uJKZ9EW
+	QzIVjh+gaRFpOZZs9vNuyyAS9f6FJp+I2HJgtUHs1ESaYOmvnYqBQbfcJmnrq1wGAEXi+j0Jfvd
+	zb3Rg4jpv/yNG2pM0N9vhJx6CKr5KKIFZNdL0zy07/iTM5hn074AhtfBXAHP3YvC1rAgm8S5YFK
+	HcJuATjSUQGlmqxVQVdGZOslzo72fmk1V3k6pBzih9UWrZWN6ioHigdDqQ9xYQ==
+X-Received: by 2002:a05:6a00:c84:b0:748:eb38:8830 with SMTP id d2e1a72fcca58-74ea6652bb4mr1477307b3a.13.1752029244451;
+        Tue, 08 Jul 2025 19:47:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4f2L3r+oNT/avXH/4ZfezYoJMBm/VekozQ6XrcYIynsKjsadJJ4UbsxMUYMB1n2pUGbU6Zw==
+X-Received: by 2002:a05:6a00:c84:b0:748:eb38:8830 with SMTP id d2e1a72fcca58-74ea6652bb4mr1477281b3a.13.1752029243986;
+        Tue, 08 Jul 2025 19:47:23 -0700 (PDT)
+Received: from [192.168.29.88] ([49.37.212.249])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74ce43d4f1asm12802173b3a.161.2025.07.08.19.47.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Jul 2025 19:47:23 -0700 (PDT)
+Message-ID: <114409da-5d1e-40ed-aa8e-3bcb769ac0a1@oss.qualcomm.com>
+Date: Wed, 9 Jul 2025 08:17:20 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250709-update_unsol_bcast_probe_resp-v1-2-d3323ce9a7b5@oss.qualcomm.com>
-References: <20250709-update_unsol_bcast_probe_resp-v1-0-d3323ce9a7b5@oss.qualcomm.com>
-In-Reply-To: <20250709-update_unsol_bcast_probe_resp-v1-0-d3323ce9a7b5@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next v3] wifi: mac80211: consider links for
+ validating SCAN_FLAG_AP in scan request during MLO
 To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Yuvarani V <quic_yuvarani@quicinc.com>,
-        Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Proofpoint-ORIG-GUID: ATraqDoi2EQ1DNhf3W4P0UdnAYPokob5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA5MDAyMyBTYWx0ZWRfX0ZxNEpyUCMDy
- mXWmvLcMX0H5XpYeqv7CN6RowOg4MvxyF2G4raYUQSCixKbTRZNDhqpPkB5HkpJD4IEGL5V+G5W
- K0UiMFWXnQT3drpRWNU0kWTEcbtuP6Dms7UIk9dK7ospox6q1dh7GvuHcRYGJdnBxvqJrLOIaAS
- kS0SrwofFMnV1kE3UDx++k3MBf0I+W0Id1+L3nxgjUasKwBJKQlli441crCqtsQE1Nx6GIJMxg+
- 93H8WqtiduuFQ/68slsA041srqKbX4U4fm0OC8b61uMjGQxEbj2vDWO8ACkcrHcOzgXSsayBqsT
- wdlwYOm1KkaMbHX9eEiDsZEspkow7gDS7WSQg7Z3zQxAFdTugshI519W3yGIpfpnWL922iYGLL8
- rSU5IJttel6DP2GZiUE3Z4V/t5QanTBOf4vKBotvOfIfJ/MUvFSdRjSo2IVdIG2Vi+rO+jTk
-X-Proofpoint-GUID: ATraqDoi2EQ1DNhf3W4P0UdnAYPokob5
-X-Authority-Analysis: v=2.4 cv=GtBC+l1C c=1 sm=1 tr=0 ts=686dd575 cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=GDPEl8sVpxXbRvpnLXsA:9 a=QEXdDO2ut3YA:10 a=uKXjsCUrEbL0IQVhDsJ9:22
- a=TjNXssC_j7lpFel5tvFf:22
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250625-fix_scan_ap_flag_requirement_during_mlo-v3-1-dca408b10ba4@oss.qualcomm.com>
+ <f5148f63e6f96fd18558dbb7f49d090aec931745.camel@sipsolutions.net>
+Content-Language: en-US
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+In-Reply-To: <f5148f63e6f96fd18558dbb7f49d090aec931745.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=GdQXnRXL c=1 sm=1 tr=0 ts=686dd83d cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=mPedDPIPg4NzqpvR87qMnA==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=4ctZDmFpGKd6Wb6K1JoA:9
+ a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-GUID: 4N2bD7mWCAXWvT7L8ama-bRL1m0u_xD8
+X-Proofpoint-ORIG-GUID: 4N2bD7mWCAXWvT7L8ama-bRL1m0u_xD8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA5MDAyNCBTYWx0ZWRfXwcBhJf/d0MFb
+ BpD0ZbkGhM8+H4Mx4II7l87C85WOHE0Q3aOLCwh1/HNN1bbgCeZBRbnexatN3+khcSSrZHZsdUY
+ GU5NvfOKvQPPgPDVQqgM2q49hJzmx9Z1JYBDJWjFJe42FZ0T/S1eqIs5BExRe4AijmJT58vwXg5
+ B79Wj4aRIHSNWe3+whcZMvJRHqx7WD3KgaqG6RDKX00Uwll3WqDblxYvy8JATsWEbgqJRqfHddj
+ IzRSOWYD1JF1AMBYAhcCuMh1f1JFLkkU87EsiBv9D+X107XPNBvDxAVPN/rBJsGfIeSw6OWKMV9
+ uPvmI5K0l6cI2/WNfrRx1gQxCLRBH7Ls1qumTYqlkFbaPvDLTPli/JgTm5XhBa0syFjX6HW5TV+
+ P4vg614E4i1H25TWuw4iG4MoGXabMsG2Oz4vQaQEDS1U36R9DnaMtoG98OWHY5noB+U6e8qk
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-09_01,2025-07-08_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 clxscore=1015 spamscore=0 adultscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 lowpriorityscore=0 bulkscore=0 suspectscore=0
- impostorscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507090023
+ lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0 clxscore=1015
+ spamscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501 impostorscore=0
+ malwarescore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507090024
 
-From: Yuvarani V <quic_yuvarani@quicinc.com>
+On 7/8/2025 4:16 PM, Johannes Berg wrote:
+> On Wed, 2025-06-25 at 18:31 +0530, Aditya Kumar Singh wrote:
+>>
+>> -		if (ieee80211_num_beaconing_links(sdata) &&
+>> -		    (!(wiphy->features & NL80211_FEATURE_AP_SCAN) ||
+>> -		     !(req->flags & NL80211_SCAN_FLAG_AP)))
+>> -			return -EOPNOTSUPP;
+>> +		for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS;
+>> +		     link_id++) {
+>> +			link = sdata_dereference(sdata->link[link_id], sdata);
+>> +			if (!link)
+>> +				continue;
+> 
+> for_each_link_data()
 
-During commands like channel switch and color change, the updated
-unsolicited broadcast probe response template may be provided. However,
-this data is not parsed or acted upon in mac80211.
+Sure. When I was writing this, this macro was not present hence did not 
+use it. Now that it is there, I will use it. Thanks for pointing it out.
 
-Add support to parse it and set the BSS changed flag
-BSS_CHANGED_UNSOL_BCAST_PROBE_RESP so that drivers could take further
-action.
+> 
+>> +
+>> +			/* if the link is not beaconing, ignore it */
+>> +			if (!sdata_dereference(link->u.ap.beacon, sdata))
+>> +				continue;
+>> +
+>> +			/* If we are here then at least one of the link is
+>> +			 * beaconing and since radio level information is
+>> +			 * not present or single underlying radio is present,
+>> +			 * no point in checking further and hence return if
+>> +			 * flag requirements are not met.
+>> +			 */
+>> +			if (wiphy->n_radio < 2) {
+>> +				if (!(wiphy->features & NL80211_FEATURE_AP_SCAN) ||
+>> +				    !(req->flags & NL80211_SCAN_FLAG_AP))
+>> +					return -EOPNOTSUPP;
+>> +
+>> +				continue;
+>> +			}
+> 
+> Is that _really_ worth special-casing in the scan control path? It's not
+> like this is a performance question here.
+> 
+> Maybe ieee80211_is_radio_idx_in_scan_req() shouldn't WARN_ON() then or
+> something, so we can reuse it. Or maybe (better?) just reorder the
+> checks there, if the chan_radio_idx==-1 and radio_idx==-1 would return
+> first, and WARN only if we found a scan channel that isn't covered by a
+> radio?
 
-Signed-off-by: Yuvarani V <quic_yuvarani@quicinc.com>
-Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
----
- net/mac80211/cfg.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+sure reordering seems much better. Thanks for the suggestion, will change.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 56540c3701ed786c37f946f9c4af820c15b5922d..cdecda1bd07b31cb7d8bd76eed074ecc2a828eb1 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4173,6 +4173,12 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 		goto out;
- 	}
- 
-+	err = ieee80211_set_unsol_bcast_probe_resp(sdata,
-+						   &params->unsol_bcast_probe_resp,
-+						   link_data, link_conf, &changed);
-+	if (err)
-+		goto out;
-+
- 	chanctx = container_of(conf, struct ieee80211_chanctx, conf);
- 
- 	ch_switch.timestamp = 0;
-@@ -5114,6 +5120,12 @@ ieee80211_color_change(struct wiphy *wiphy, struct net_device *dev,
- 		goto out;
- 	}
- 
-+	err = ieee80211_set_unsol_bcast_probe_resp(sdata,
-+						   &params->unsol_bcast_probe_resp,
-+						   link, link_conf, &changed);
-+	if (err)
-+		goto out;
-+
- 	err = ieee80211_set_color_change_beacon(link, params, &changed);
- 	if (err)
- 		goto out;
+> 
+> And <2 seems really strange anyway, ==1 should basically never happen,
+> it's equivalent to ==0, as in no list of radios?
+
+That is correct. If underlying wiphy does not advertise, it would be 0. 
+And if it advertises, ideally it should be 2 or more (otherwise why 
+advertising?) But, there is no check for 1. So a radio can choose to 
+advertise but keep n_radios as 1. And having n_radio 1 is also same as 
+not advertising it. Hence to ensure these kicks in only when we know 
+n_radios is greater than 1, < 2 is checked. Same way other two places 
+also it is used.
+
 
 -- 
-2.34.1
-
+Aditya
 
