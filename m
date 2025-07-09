@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-25048-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25049-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9D9AFDEFC
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 07:03:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C728AFDEFE
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 07:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7283B1C26A36
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 05:03:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEA21165111
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 05:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74711CAA85;
-	Wed,  9 Jul 2025 05:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DB2269AF3;
+	Wed,  9 Jul 2025 05:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VM7Zrxlg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SX7XHJdF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E3D269AF3
-	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 05:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC9C26A0E0
+	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 05:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752037356; cv=none; b=FkXWfu/ZLa3ivZwFlD5Zt4L+14pTDtI197HRCFBtkPoqFBAVEifdZbKSAA76rRGSBJqcbXdxvtSRekIpktCewb1lKlL3qoHsyctPftk1N4TQIzAvYiouDcQjKT7CLNzXCd0yRJVc4QRqV/K2rkxRbK8kUwG1LdcTzA1HyGBkRdY=
+	t=1752037358; cv=none; b=OijAMeuLtTQsD5NpwYi2XqgD6d4vxO1tknEvk2C3ZQOpbsSJ/ECJvWRnCCNKjcFaVY43d40pB4OSwy4JIVZDwoe3wvf53B5yQMcC7uyeZHI/+6dToqxQvZTpAAzmArSOSyUc9tcUyYRcLUT0SAMnIcO71HNJEiMLuMB7VDqQxFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752037356; c=relaxed/simple;
-	bh=UlHi/ivh6rO6X6wFs3YLYAl/j8RDYdaEuIfGQUCb4Qk=;
+	s=arc-20240116; t=1752037358; c=relaxed/simple;
+	bh=9tQQMNZRDrFeL1hT1TevQqSX/C6Ww6h4XtYymdubs1w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Nn4bJ7mgbirs+/conlduEFmZG+cPQfAgeSstSk5ZoCG1L6zw0yNfJwnXQCL41XJzmBbmVtQVOWNKGpxYc4Vytl+mJ55msxT4VNKYi4qHIFsYy+4kdZxYIfjEV/lTbpBta6rtlSb56MGYuIyADM7fDft5NcWQ73LIOLap74wjUqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VM7Zrxlg; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=ExAjjfSmPED4EsCbJVmN1KjtrDwTHiizSdpdHUia8dTzzUrT1Ttn/prv1QLL+BHB/0D/754gtVNEI54Q1cc2iqH3fPpP+NjbNX4wKYNGfehLHlQhCbtC2VeEnedSa8Atpm3bWZnRg2KpO1+CZdqWMS13sqyP355red8uCkmytLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SX7XHJdF; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752037355; x=1783573355;
+  t=1752037357; x=1783573357;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UlHi/ivh6rO6X6wFs3YLYAl/j8RDYdaEuIfGQUCb4Qk=;
-  b=VM7ZrxlgPpUkxNGRN4n56ZAA214RSq9mwcOnHmPicLrjdrUeBhp97m7/
-   put7UzpkkiUcYGs3ct5vySa5Du2HH7IcAMY2iTMwu5lXRRMuc15YFYxU1
-   A2jQGA8d03pgsJHhVa/7TggERWhZGhudQmlnOslfQ0f7SaKgGSqh63NSE
-   X6+1hD5Tc+WJJ7bPWn7MbNgsIwfrw/6lAzZvhzzekZPiGI656g2Rh6eKN
-   NJQE58cKJuDM0qkkBLJ8k+NJB/jCOEuEdCBGCs/ZQr1FRQV7J63ZAaKgm
-   fDzv38F9z9ieCIoWHzmylGU8epP2nxNfSdGBNDopb7vuWs0KLlW7BeYtz
+  bh=9tQQMNZRDrFeL1hT1TevQqSX/C6Ww6h4XtYymdubs1w=;
+  b=SX7XHJdFk866BEvLWzseqLSTfSQsN9mMcxBcW6KGcGq5WsCvLD/FXlTz
+   M8AlQypFLcBdnyNz3Kb4nL6W4LCTzZSR8O0LVLqjVxiDaE74tP8uNselg
+   hG9ona5Obkl1HscY0jQSjNvYrZcAR+21VVCZ0R5O1wYyBcCNkVtxfDy6H
+   TDJasxutQmzwykAHQ6g4GomDrOR9coOQytblukesP3yHEVEtkGv3dyFmP
+   ovOvABdnAzlIzDKKicVUefPK0KvYOXYmiQTNxvs8FLxv8JdwtpSm+hVKu
+   oN2Z2a4woolPx7HGH5IX+adWQZvOWulvDh3VZjlg/BaOjSJVI90KWcdXW
    Q==;
-X-CSE-ConnectionGUID: o3UaRBzxS9Kb4Ud6+a1KGA==
-X-CSE-MsgGUID: oEQC5RF8SvmhZHsdNttmFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="53501472"
+X-CSE-ConnectionGUID: NLtC820RQwiZammVMpxM2w==
+X-CSE-MsgGUID: IckF2faoSVeFimowHvdlvw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="53501477"
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="53501472"
+   d="scan'208";a="53501477"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 22:02:35 -0700
-X-CSE-ConnectionGUID: cUPpcKcxTsC0OUKURPqU2Q==
-X-CSE-MsgGUID: QS3xT921Qou3bFYznsdquw==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 22:02:37 -0700
+X-CSE-ConnectionGUID: owdfu3fIR6+M/64HOkEXUQ==
+X-CSE-MsgGUID: iDBbiiuhT7qzW8z7g719tA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="192859263"
+   d="scan'208";a="192859267"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 22:02:34 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 22:02:35 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 10/15] wifi: iwlwifi: pcie: accept new devices for MVM-only configs
-Date: Wed,  9 Jul 2025 08:01:54 +0300
-Message-Id: <20250709075928.a1e004f239b4.Ic05530048fc0b67b1cd8772882a595d56b204e65@changeid>
+Subject: [PATCH iwlwifi-next 11/15] wifi: iwlwifi: assign a FW API range for HR
+Date: Wed,  9 Jul 2025 08:01:55 +0300
+Message-Id: <20250709075928.81e9ca4112ab.I47340ecaefbf40bb0bd254485d242b7f39df85b1@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250709050159.854432-1-miriam.rachel.korenblit@intel.com>
 References: <20250709050159.854432-1-miriam.rachel.korenblit@intel.com>
@@ -76,53 +76,227 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+HR device is frozen on API 100, so it is not allowed to use FW APIs
+higher than that. Make sure of that by assigning a MIN and MAX API range
+for HR.
 
-For newer MACs, the MVM opmode may be used for older firmware images
-or when the RF isn't EHT/WiFi7 capable. List such devices in the PCI
-device list when MLD isn't built.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/Makefile   | 1 +
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    | 12 -----
+ .../net/wireless/intel/iwlwifi/cfg/ax210.c    | 13 -----
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |  5 --
+ .../net/wireless/intel/iwlwifi/cfg/rf-hr.c    | 49 ++++++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |  9 ----
+ 5 files changed, 48 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/Makefile b/drivers/net/wireless/intel/iwlwifi/Makefile
-index b82392978b76..941257b811b4 100644
---- a/drivers/net/wireless/intel/iwlwifi/Makefile
-+++ b/drivers/net/wireless/intel/iwlwifi/Makefile
-@@ -22,6 +22,7 @@ iwlwifi-$(CONFIG_IWLMVM) += cfg/7000.o cfg/8000.o
- # MAC configurations
- iwlwifi-$(CONFIG_IWLMVM) += cfg/9000.o cfg/22000.o
- iwlwifi-$(CONFIG_IWLMVM) += cfg/ax210.o
-+iwlwifi-$(CONFIG_IWLMVM) += cfg/bz.o cfg/sc.o
- iwlwifi-$(CONFIG_IWLMLD) += cfg/bz.o cfg/sc.o cfg/dr.o
- # RF configurations
- iwlwifi-$(CONFIG_IWLMVM) += cfg/rf-jf.o cfg/rf-hr.o cfg/rf-gf.o
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 0bd9b44d295b..b7add05f7a85 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -501,7 +501,7 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x2729, PCI_ANY_ID, iwl_ma_mac_cfg)},
- 	{IWL_PCI_DEVICE(0x7E40, PCI_ANY_ID, iwl_ma_mac_cfg)},
- #endif /* CONFIG_IWLMVM */
--#if IS_ENABLED(CONFIG_IWLMLD)
-+#if IS_ENABLED(CONFIG_IWLMVM) || IS_ENABLED(CONFIG_IWLMLD)
- /* Bz devices */
- 	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_gl_mac_cfg)},
- 	{IWL_PCI_DEVICE(0xA840, 0x0000, iwl_bz_mac_cfg)},
-@@ -546,7 +546,7 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0xD340, PCI_ANY_ID, iwl_sc_mac_cfg)},
- 	{IWL_PCI_DEVICE(0x6E70, PCI_ANY_ID, iwl_sc_mac_cfg)},
- 	{IWL_PCI_DEVICE(0xD240, PCI_ANY_ID, iwl_sc_mac_cfg)},
--#endif /* CONFIG_IWLMLD */
-+#endif /* CONFIG_IWLMVM || CONFIG_IWLMLD */
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+index 57af51a3ee0b..ca488931a33c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+@@ -19,17 +19,8 @@
+ #define IWL_22000_SMEM_OFFSET		0x400000
+ #define IWL_22000_SMEM_LEN		0xD0000
  
- 	{0}
+-#define IWL_QU_B_HR_B_FW_PRE		"iwlwifi-Qu-b0-hr-b0"
+-#define IWL_QU_C_HR_B_FW_PRE		"iwlwifi-Qu-c0-hr-b0"
+-#define IWL_QUZ_A_HR_B_FW_PRE		"iwlwifi-QuZ-a0-hr-b0"
+ #define IWL_CC_A_FW_PRE			"iwlwifi-cc-a0"
+ 
+-#define IWL_QU_B_HR_B_MODULE_FIRMWARE(api) \
+-	IWL_QU_B_HR_B_FW_PRE "-" __stringify(api) ".ucode"
+-#define IWL_QUZ_A_HR_B_MODULE_FIRMWARE(api) \
+-	IWL_QUZ_A_HR_B_FW_PRE "-" __stringify(api) ".ucode"
+-#define IWL_QU_C_HR_B_MODULE_FIRMWARE(api) \
+-	IWL_QU_C_HR_B_FW_PRE "-" __stringify(api) ".ucode"
+ #define IWL_CC_A_MODULE_FIRMWARE(api)			\
+ 	IWL_CC_A_FW_PRE "-" __stringify(api) ".ucode"
+ 
+@@ -123,7 +114,4 @@ const char iwl_ax201_killer_1650s_name[] =
+ const char iwl_ax201_killer_1650i_name[] =
+ 	"Killer(R) Wi-Fi 6 AX1650i 160MHz Wireless Network Adapter (201NGW)";
+ 
+-MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+-MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+-MODULE_FIRMWARE(IWL_QUZ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_CC_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
+index 467c45ed9af2..cf7d91894ab9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
+@@ -19,24 +19,14 @@
+ #define IWL_AX210_SMEM_OFFSET		0x400000
+ #define IWL_AX210_SMEM_LEN		0xD0000
+ 
+-#define IWL_SO_A_HR_B_FW_PRE		"iwlwifi-so-a0-hr-b0"
+ #define IWL_SO_A_GF_A_FW_PRE		"iwlwifi-so-a0-gf-a0"
+ #define IWL_TY_A_GF_A_FW_PRE		"iwlwifi-ty-a0-gf-a0"
+ #define IWL_SO_A_GF4_A_FW_PRE		"iwlwifi-so-a0-gf4-a0"
+-#define IWL_MA_A_HR_B_FW_PRE		"iwlwifi-ma-a0-hr-b0"
+ #define IWL_MA_A_GF_A_FW_PRE		"iwlwifi-ma-a0-gf-a0"
+ #define IWL_MA_A_GF4_A_FW_PRE		"iwlwifi-ma-a0-gf4-a0"
+-#define IWL_MA_B_HR_B_FW_PRE		"iwlwifi-ma-b0-hr-b0"
+ #define IWL_MA_B_GF_A_FW_PRE		"iwlwifi-ma-b0-gf-a0"
+ #define IWL_MA_B_GF4_A_FW_PRE		"iwlwifi-ma-b0-gf4-a0"
+ 
+-#define IWL_SO_A_HR_B_MODULE_FIRMWARE(api) \
+-	IWL_SO_A_HR_B_FW_PRE "-" __stringify(api) ".ucode"
+-#define IWL_MA_A_HR_B_FW_MODULE_FIRMWARE(api)		\
+-	IWL_MA_A_HR_B_FW_PRE "-" __stringify(api) ".ucode"
+-#define IWL_MA_B_HR_B_FW_MODULE_FIRMWARE(api)		\
+-	IWL_MA_B_HR_B_FW_PRE "-" __stringify(api) ".ucode"
+-
+ static const struct iwl_family_base_params iwl_ax210_base = {
+ 	.num_of_queues = 512,
+ 	.max_tfd_queue_size = 65536,
+@@ -141,12 +131,9 @@ const struct iwl_mac_cfg iwl_ma_mac_cfg = {
+ 	.umac_prph_offset = 0x300000
  };
+ 
+-MODULE_FIRMWARE(IWL_SO_A_HR_B_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ IWL_FW_AND_PNVM(IWL_SO_A_GF_A_FW_PRE, IWL_AX210_UCODE_API_MAX);
+ IWL_FW_AND_PNVM(IWL_TY_A_GF_A_FW_PRE, IWL_AX210_UCODE_API_MAX);
+-MODULE_FIRMWARE(IWL_MA_A_HR_B_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ IWL_FW_AND_PNVM(IWL_MA_A_GF_A_FW_PRE, IWL_AX210_UCODE_API_MAX);
+ IWL_FW_AND_PNVM(IWL_MA_A_GF4_A_FW_PRE, IWL_AX210_UCODE_API_MAX);
+-MODULE_FIRMWARE(IWL_MA_B_HR_B_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
+ IWL_FW_AND_PNVM(IWL_MA_B_GF_A_FW_PRE, IWL_AX210_UCODE_API_MAX);
+ IWL_FW_AND_PNVM(IWL_MA_B_GF4_A_FW_PRE, IWL_AX210_UCODE_API_MAX);
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+index 50d454514fe5..02d6df7fa7a8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+@@ -19,7 +19,6 @@
+ #define IWL_BZ_SMEM_OFFSET		0x400000
+ #define IWL_BZ_SMEM_LEN			0xD0000
+ 
+-#define IWL_BZ_A_HR_B_FW_PRE		"iwlwifi-bz-a0-hr-b0"
+ #define IWL_BZ_A_GF_A_FW_PRE		"iwlwifi-bz-a0-gf-a0"
+ #define IWL_BZ_A_GF4_A_FW_PRE		"iwlwifi-bz-a0-gf4-a0"
+ #define IWL_BZ_A_FM_B_FW_PRE		"iwlwifi-bz-a0-fm-b0"
+@@ -28,9 +27,6 @@
+ #define IWL_GL_B_FM_B_FW_PRE		"iwlwifi-gl-b0-fm-b0"
+ #define IWL_GL_C_FM_C_FW_PRE		"iwlwifi-gl-c0-fm-c0"
+ 
+-#define IWL_BZ_A_HR_B_MODULE_FIRMWARE(api) \
+-	IWL_BZ_A_HR_B_FW_PRE "-" __stringify(api) ".ucode"
+-
+ static const struct iwl_family_base_params iwl_bz_base = {
+ 	.num_of_queues = 512,
+ 	.max_tfd_queue_size = 65536,
+@@ -107,7 +103,6 @@ const struct iwl_mac_cfg iwl_gl_mac_cfg = {
+ 	.low_latency_xtal = true,
+ };
+ 
+-MODULE_FIRMWARE(IWL_BZ_A_HR_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
+ IWL_FW_AND_PNVM(IWL_BZ_A_GF_A_FW_PRE, IWL_BZ_UCODE_API_MAX);
+ IWL_FW_AND_PNVM(IWL_BZ_A_GF4_A_FW_PRE, IWL_BZ_UCODE_API_MAX);
+ IWL_FW_AND_PNVM(IWL_BZ_A_FM_B_FW_PRE, IWL_BZ_UCODE_API_MAX);
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/rf-hr.c b/drivers/net/wireless/intel/iwlwifi/cfg/rf-hr.c
+index db02664e3917..9f408d276ce9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/rf-hr.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/rf-hr.c
+@@ -5,6 +5,41 @@
+  */
+ #include "iwl-config.h"
+ 
++/* Highest firmware API version supported */
++#define IWL_HR_UCODE_API_MAX	100
++
++/* Lowest firmware API version supported */
++#define IWL_HR_UCODE_API_MIN	98
++
++#define IWL_QU_B_HR_B_FW_PRE		"iwlwifi-Qu-b0-hr-b0"
++#define IWL_QU_C_HR_B_FW_PRE		"iwlwifi-Qu-c0-hr-b0"
++#define IWL_QUZ_A_HR_B_FW_PRE		"iwlwifi-QuZ-a0-hr-b0"
++#define IWL_SO_A_HR_B_FW_PRE		"iwlwifi-so-a0-hr-b0"
++#define IWL_MA_A_HR_B_FW_PRE		"iwlwifi-ma-a0-hr-b0"
++#define IWL_MA_B_HR_B_FW_PRE		"iwlwifi-ma-b0-hr-b0"
++#define IWL_BZ_A_HR_B_FW_PRE		"iwlwifi-bz-a0-hr-b0"
++#define IWL_SC_A_HR_A_FW_PRE		"iwlwifi-sc-a0-hr-b0"
++#define IWL_SC_A_HR_B_FW_PRE		"iwlwifi-sc-a0-hr-b0"
++
++#define IWL_QU_B_HR_B_MODULE_FIRMWARE(api)	\
++	IWL_QU_B_HR_B_FW_PRE "-" __stringify(api) ".ucode"
++#define IWL_QUZ_A_HR_B_MODULE_FIRMWARE(api)	\
++	IWL_QUZ_A_HR_B_FW_PRE "-" __stringify(api) ".ucode"
++#define IWL_QU_C_HR_B_MODULE_FIRMWARE(api)	\
++	IWL_QU_C_HR_B_FW_PRE "-" __stringify(api) ".ucode"
++#define IWL_SO_A_HR_B_MODULE_FIRMWARE(api)	\
++	IWL_SO_A_HR_B_FW_PRE "-" __stringify(api) ".ucode"
++#define IWL_MA_A_HR_B_FW_MODULE_FIRMWARE(api)	\
++	IWL_MA_A_HR_B_FW_PRE "-" __stringify(api) ".ucode"
++#define IWL_MA_B_HR_B_FW_MODULE_FIRMWARE(api)	\
++	IWL_MA_B_HR_B_FW_PRE "-" __stringify(api) ".ucode"
++#define IWL_BZ_A_HR_B_MODULE_FIRMWARE(api)	\
++	IWL_BZ_A_HR_B_FW_PRE "-" __stringify(api) ".ucode"
++#define IWL_SC_A_HR_A_FW_MODULE_FIRMWARE(api)	\
++	IWL_SC_A_HR_A_FW_PRE "-" __stringify(api) ".ucode"
++#define IWL_SC_A_HR_B_FW_MODULE_FIRMWARE(api)	\
++	IWL_SC_A_HR_B_FW_PRE "-" __stringify(api) ".ucode"
++
+ /* NVM versions */
+ #define IWL_HR_NVM_VERSION		0x0a1d
+ 
+@@ -20,7 +55,9 @@
+ 	},								\
+ 	.num_rbds = IWL_NUM_RBDS_HE,					\
+ 	.nvm_ver = IWL_HR_NVM_VERSION,					\
+-	.nvm_type = IWL_NVM_EXT
++	.nvm_type = IWL_NVM_EXT,					\
++	.ucode_api_min = IWL_HR_UCODE_API_MIN,				\
++	.ucode_api_max = IWL_HR_UCODE_API_MAX
+ 
+ const struct iwl_rf_cfg iwl_rf_hr1 = {
+ 	IWL_DEVICE_HR,
+@@ -40,3 +77,13 @@ const char iwl_ax101_name[] = "Intel(R) Wi-Fi 6 AX101";
+ const char iwl_ax200_name[] = "Intel(R) Wi-Fi 6 AX200 160MHz";
+ const char iwl_ax201_name[] = "Intel(R) Wi-Fi 6 AX201 160MHz";
+ const char iwl_ax203_name[] = "Intel(R) Wi-Fi 6 AX203";
++
++MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_HR_UCODE_API_MAX));
++MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_HR_UCODE_API_MAX));
++MODULE_FIRMWARE(IWL_QUZ_A_HR_B_MODULE_FIRMWARE(IWL_HR_UCODE_API_MAX));
++MODULE_FIRMWARE(IWL_SO_A_HR_B_MODULE_FIRMWARE(IWL_HR_UCODE_API_MAX));
++MODULE_FIRMWARE(IWL_MA_A_HR_B_FW_MODULE_FIRMWARE(IWL_HR_UCODE_API_MAX));
++MODULE_FIRMWARE(IWL_MA_B_HR_B_FW_MODULE_FIRMWARE(IWL_HR_UCODE_API_MAX));
++MODULE_FIRMWARE(IWL_BZ_A_HR_B_MODULE_FIRMWARE(IWL_HR_UCODE_API_MAX));
++MODULE_FIRMWARE(IWL_SC_A_HR_A_FW_MODULE_FIRMWARE(IWL_HR_UCODE_API_MAX));
++MODULE_FIRMWARE(IWL_SC_A_HR_B_FW_MODULE_FIRMWARE(IWL_HR_UCODE_API_MAX));
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
+index 97e503a25eae..ab44298d421e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
+@@ -24,8 +24,6 @@
+ 
+ #define IWL_SC_A_FM_B_FW_PRE		"iwlwifi-sc-a0-fm-b0"
+ #define IWL_SC_A_FM_C_FW_PRE		"iwlwifi-sc-a0-fm-c0"
+-#define IWL_SC_A_HR_A_FW_PRE		"iwlwifi-sc-a0-hr-b0"
+-#define IWL_SC_A_HR_B_FW_PRE		"iwlwifi-sc-a0-hr-b0"
+ #define IWL_SC_A_GF_A_FW_PRE		"iwlwifi-sc-a0-gf-a0"
+ #define IWL_SC_A_GF4_A_FW_PRE		"iwlwifi-sc-a0-gf4-a0"
+ #define IWL_SC_A_WH_A_FW_PRE		"iwlwifi-sc-a0-wh-a0"
+@@ -34,11 +32,6 @@
+ #define IWL_SC2F_A_FM_C_FW_PRE		"iwlwifi-sc2f-a0-fm-c0"
+ #define IWL_SC2F_A_WH_A_FW_PRE		"iwlwifi-sc2f-a0-wh-a0"
+ 
+-#define IWL_SC_A_HR_A_FW_MODULE_FIRMWARE(api) \
+-	IWL_SC_A_HR_A_FW_PRE "-" __stringify(api) ".ucode"
+-#define IWL_SC_A_HR_B_FW_MODULE_FIRMWARE(api) \
+-	IWL_SC_A_HR_B_FW_PRE "-" __stringify(api) ".ucode"
+-
+ static const struct iwl_family_base_params iwl_sc_base = {
+ 	.num_of_queues = 512,
+ 	.max_tfd_queue_size = 65536,
+@@ -107,8 +100,6 @@ const struct iwl_mac_cfg iwl_sc_mac_cfg = {
+ 
+ IWL_FW_AND_PNVM(IWL_SC_A_FM_B_FW_PRE, IWL_SC_UCODE_API_MAX);
+ IWL_FW_AND_PNVM(IWL_SC_A_FM_C_FW_PRE, IWL_SC_UCODE_API_MAX);
+-MODULE_FIRMWARE(IWL_SC_A_HR_A_FW_MODULE_FIRMWARE(IWL_SC_UCODE_API_MAX));
+-MODULE_FIRMWARE(IWL_SC_A_HR_B_FW_MODULE_FIRMWARE(IWL_SC_UCODE_API_MAX));
+ IWL_FW_AND_PNVM(IWL_SC_A_GF_A_FW_PRE, IWL_SC_UCODE_API_MAX);
+ IWL_FW_AND_PNVM(IWL_SC_A_GF4_A_FW_PRE, IWL_SC_UCODE_API_MAX);
+ IWL_FW_AND_PNVM(IWL_SC_A_WH_A_FW_PRE, IWL_SC_UCODE_API_MAX);
 -- 
 2.34.1
 
