@@ -1,69 +1,68 @@
-Return-Path: <linux-wireless+bounces-25122-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25123-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA103AFF2B0
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B141AFF2AF
 	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 22:08:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 940953BEEDF
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 20:08:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 901ED1C82DB3
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 20:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1799267729;
-	Wed,  9 Jul 2025 20:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A44C268C63;
+	Wed,  9 Jul 2025 20:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kmlBK37A"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZU9CblgC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D871265631
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE1626657D
 	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 20:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752091580; cv=none; b=paP29Fnknbd0yLj379JQcNC/g6CGo9gNNqpkAZbuAkxHkfi64epoRFCDzkxBLPHBmC1RA18LHAEx1ZPTM+qeyZFvxPltSCHKlCWLyrqhJqnm/jSE9FDlDUAzyyb3aNplAmWJ6fXLfNV9P+lMlGrGvHG0y+C/Fd/xX+YNOBrypnU=
+	t=1752091581; cv=none; b=S6FnAlO0oiYdEO7nNCu52hYfZVHPuKXOuwJx6V024Gp8JlVwxmtrLhvrjPNF3SOU2pmxmHVrHjxIjqIK5dQ3OZcjNjyQKU/8i+AM+6fRUp8nSMPndJDWnRl5uWoxu2BVnsP01kJNjjdd+cGKPfHfKT1YuTEoGbtW/5r9hGUxAeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752091580; c=relaxed/simple;
-	bh=NFmAn22hGb1uR3DqXm75s8Xdo9kyl9arFV93kUGLjiw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p5PC4/VTPP818ax/2xlrlVqWFNtMHY3I5LFjVk/G6834pE818TlkAZbcWG7hTD1gHp44Ag7/LrFNrDrBTxJXSG3+SEE8fnafPbiuypJ21d6q2NthZeg3Za0jRMzQqTIyvROZXBzfR9Bf65kr6zW9jcImQDMUm4wIJspbv5S5FNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kmlBK37A; arc=none smtp.client-ip=198.175.65.21
+	s=arc-20240116; t=1752091581; c=relaxed/simple;
+	bh=CZkdLZeRMp3xYK78tLAdoJnCzpxejN7SNqFlczVuso0=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=n3JdqZ759yujT5H6+/WHpFlCvIkT/znCqGJFNbkvNMS62/XeMDvdYK98qza5GDL2L8/+p2aZCsyw7rKXXYG58pn3UREjsCIMkh+VYmbh5HWw+fw91/jm8/dHWRZe2MOWjK38gbOXv8NmcL7Zex2J1C8ghgOxF7qGAcXQprmQg+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZU9CblgC; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752091579; x=1783627579;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=NFmAn22hGb1uR3DqXm75s8Xdo9kyl9arFV93kUGLjiw=;
-  b=kmlBK37AV46LwlfsVZ4g1F4+A8GDtTBZnFtbOJLUzbLfc+3RinKacvqQ
-   D37wCiCoIYM7atC+TLxwoJ6NEZSh2mAQNQwMQhmwmY9q2AlG+NGaUtbXE
-   KD4LcRj0gMYaqZTv0JyrYnQTNgRlBNQMvOgOIeXEJcBETzctguyB91FXQ
-   st8/7JEVdHv1AKYY/PGdfiHlxoWFgyg8lZsI3Da09wmlpYQYZ1v/JfqQp
-   iN0fqM4bm08EBJKLhe3AjciCAu1G8HEg/UyqQSHLmT2BloZxfzNMbnjSs
-   bHU++u0dRvLlfGZT/nh6fIrfg7ngoErDWkDq5lMnnfdfZ4WfZmsKxK97A
-   Q==;
-X-CSE-ConnectionGUID: InPyE7pYQq2VXV6AUA4KLA==
-X-CSE-MsgGUID: wLWbdWuVQM642l/vM2gnpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54240327"
+  t=1752091580; x=1783627580;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=CZkdLZeRMp3xYK78tLAdoJnCzpxejN7SNqFlczVuso0=;
+  b=ZU9CblgCk3t9pIrgEHuD9mNA0O8puEqG2UvHA4vP1sB9aIIzHnVTapNA
+   kGYAfhLPgkrM0Z5OoycthnuMrMNsxOgSkV2JfzkiNYdQSFhcn6b0ksKFt
+   YJF+0MQEWu5k2+6Kd3H0pGb9wEGqc27fSSMo8jur6Zo/JHcdiMhGU0Bq+
+   Nwxdu031dF8Oj8Hdt0+rEMMt09GsPq0r1GbAUc4mU6pY9vH8OPK2jCJ4s
+   aUYSuYkBjuVr1VejSCwBc5F/OkrW0w6yEvSt/fk2WNAva7whC33lXshKO
+   Y7VKn1g5VeQelcdJtze8XK8ytcBpu2BMMJK5EYeRvWbfYrk7ftnKnhN9M
+   A==;
+X-CSE-ConnectionGUID: g83fHY2tTzO39dAzPacLrQ==
+X-CSE-MsgGUID: mVj3vwimSQSSlXZvsDC0rw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54240330"
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="54240327"
+   d="scan'208";a="54240330"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:06:19 -0700
-X-CSE-ConnectionGUID: nR9aqwyBSHWCl8H8PieEYw==
-X-CSE-MsgGUID: ztqZH5ISTvybcTPe5cdjAw==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:06:20 -0700
+X-CSE-ConnectionGUID: UOoEkZM2SZ6mytEr4DSxzw==
+X-CSE-MsgGUID: 2JE4CW08RcCUYkHafp/G6Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="160126084"
+   d="scan'208";a="160126086"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:06:18 -0700
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 13:06:19 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Itamar Shalev <itamar.shalev@intel.com>
-Subject: [PATCH iwlwifi-next 13/15] wifi: iwlwifi: trans: remove retake_ownership parameter from sw_reset
-Date: Wed,  9 Jul 2025 23:05:41 +0300
-Message-Id: <20250709230308.0a103d021815.I2a3da6f83aa691496a53a548bd73bddd4d4d2db8@changeid>
+Subject: [PATCH iwlwifi-next 14/15] wifi: iwlwifi: pcie: add a missing include
+Date: Wed,  9 Jul 2025 23:05:42 +0300
+Message-Id: <20250709230308.716e8b54ebcb.If75c28a85b5ba4c2661bdf4ce20b97dbe7d2abb2@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250709200543.1628666-1-miriam.rachel.korenblit@intel.com>
 References: <20250709200543.1628666-1-miriam.rachel.korenblit@intel.com>
@@ -76,62 +75,27 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Itamar Shalev <itamar.shalev@intel.com>
+pcie/utils.h needs to include iwl-io.h for the iwl_read/iwl_write calls.
+Add it.
 
-Remove the retake_ownership parameter from the sw_reset function, as it
-was always set to true and is not needed by other opmodes.
-Simplify the sw_reset API function.
-
-Signed-off-by: Itamar Shalev <itamar.shalev@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dump.c   | 2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c | 4 ++--
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/utils.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dump.c b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-index 3ec42a4ea801..4e1ef165f058 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-@@ -199,7 +199,7 @@ static void iwl_fwrt_dump_lmac_error_log(struct iwl_fw_runtime *fwrt, u8 lmac_nu
- 		IWL_ERR(trans, "HW error, resetting before reading\n");
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/utils.h b/drivers/net/wireless/intel/iwlwifi/pcie/utils.h
+index 031dfdf4bba4..27437d5e099b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/utils.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/utils.h
+@@ -6,6 +6,8 @@
+ #ifndef __iwl_pcie_utils_h__
+ #define __iwl_pcie_utils_h__
  
- 		/* reset the device */
--		err = iwl_trans_sw_reset(trans, true);
-+		err = iwl_trans_sw_reset(trans);
- 		if (err)
- 			return;
++#include "iwl-io.h"
++
+ void iwl_trans_pcie_dump_regs(struct iwl_trans *trans, struct pci_dev *pdev);
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index b6e71c172e7b..810923053053 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -498,9 +498,9 @@ void iwl_trans_set_pmi(struct iwl_trans *trans, bool state)
- }
- IWL_EXPORT_SYMBOL(iwl_trans_set_pmi);
- 
--int iwl_trans_sw_reset(struct iwl_trans *trans, bool retake_ownership)
-+int iwl_trans_sw_reset(struct iwl_trans *trans)
- {
--	return iwl_trans_pcie_sw_reset(trans, retake_ownership);
-+	return iwl_trans_pcie_sw_reset(trans, true);
- }
- IWL_EXPORT_SYMBOL(iwl_trans_sw_reset);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 103a36d8ee30..ac37d9613ade 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -1096,7 +1096,7 @@ static inline u32 iwl_trans_write_mem32(struct iwl_trans *trans, u32 addr,
- 
- void iwl_trans_set_pmi(struct iwl_trans *trans, bool state);
- 
--int iwl_trans_sw_reset(struct iwl_trans *trans, bool retake_ownership);
-+int iwl_trans_sw_reset(struct iwl_trans *trans);
- 
- void iwl_trans_set_bits_mask(struct iwl_trans *trans, u32 reg,
- 			     u32 mask, u32 value);
+ static inline void _iwl_trans_set_bits_mask(struct iwl_trans *trans,
 -- 
 2.34.1
 
