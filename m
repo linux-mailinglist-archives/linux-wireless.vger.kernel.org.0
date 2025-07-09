@@ -1,83 +1,152 @@
-Return-Path: <linux-wireless+bounces-25086-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25087-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E17FAFE47E
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 11:45:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFD3AFE46F
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 11:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A67BD7A420E
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 09:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1590A1C4448B
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 09:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5512C287279;
-	Wed,  9 Jul 2025 09:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1249F285C91;
+	Wed,  9 Jul 2025 09:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="BDhyF9J0"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Jve4vwER"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C18D28726B;
-	Wed,  9 Jul 2025 09:38:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A23B284686
+	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 09:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752053924; cv=none; b=sznd8SWSESSPtlKJCrIxcW8oNCjI1nSMUuMLwhLShzReycSMzzc6C19Y6V3hpFzsco/Qh0yg+xjx5GMOGzCsUL+TsbtIbq7nWPE7vpBr9sw2QF120x+bLrMtZrfKrwHnP5EAR4KEitAb5d6bYchi0OxqPB6uD8lqJsy09PqY+yM=
+	t=1752054171; cv=none; b=PhUqfdf8YlalfxWM5aD2Igm+rcyhyg6C4pOoSotxUH3Ci/nFdzsoKPUnQ78bG4qGB5sLciYw6VsW2/UQZIufOqmJBl6ptazT1QagpNj7Xv8yClyf42cML6bBmcMSh2LnP5FdK44yGKH543aiC36ZO7V55O80yI6gu5pu+qsD8ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752053924; c=relaxed/simple;
-	bh=IfVARssC/e/6ICtO7cP3Zm7g0j4V52NkdfC2FG0xnqo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FFyM3Nr+WjbPn4up5/WBU4eU4DD++mxeQXDn/U6vHfCUViB80+Tol+kxxms2gLJ3TBs8q1M8qRW7ZC/Wr/bqc8mgINAlNu6UI4VYipFBunKw7TrpQ160pxqWdDZclNhQVa4lEbzKXFU5IKQm9biuOpz4yP9+yKbO0Msn04/8Zvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=BDhyF9J0; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=G/enIP3LgpSjrZJnLI4Xugtqu1O8tS9WsIl68GWUahc=;
-	t=1752053922; x=1753263522; b=BDhyF9J09rQIcvblc4RCis6Ca5g5JhdTjl10/dfJKbQPPRY
-	AAXor59Tn/xPB1BgTmXaQ2Eccn05nQsalecR0lYUd/Znz0YJHLV4ed/+pUuttCoG1xPgHLJcJm/5u
-	wnHb1oW/ILT5gDYAvAmc8t32SXPaWnOH1+RwENVmKk0e4ga0+xnlct0n2En/qkdYaohj0D6M5E9pz
-	VElhkZ2VUD4NyMmlmGa1Hjc7yb+8T/UuKbeL2rk2l+hRYRD/23yWRpObpOMn3h6QqeNL7GP/IALM8
-	mBtLw84NieJZccfqFOfuBZ8IN7K430eDOeZrYblqalSTSmcvzpwQevK+Jux1Z+GA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uZRFy-0000000DCrI-1iFJ;
-	Wed, 09 Jul 2025 11:38:27 +0200
-Message-ID: <9dd32e266523cc7f5f5fdc3e676216f4a0057615.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next 1/2] wifi: cfg80211: parse attribute to
- update unsolicited probe response template
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, Yuvarani V
-	 <quic_yuvarani@quicinc.com>
-Date: Wed, 09 Jul 2025 11:38:24 +0200
-In-Reply-To: <20250709-update_unsol_bcast_probe_resp-v1-1-d3323ce9a7b5@oss.qualcomm.com>
-References: 
-	<20250709-update_unsol_bcast_probe_resp-v1-0-d3323ce9a7b5@oss.qualcomm.com>
-	 <20250709-update_unsol_bcast_probe_resp-v1-1-d3323ce9a7b5@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1752054171; c=relaxed/simple;
+	bh=fBagXmBYAaqwTAW0n1oNeRMF4TMz/TXw9Q0TGE8Kogk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=HOAVZ6Yi68+G3I75fMS0Fij9V2A0+AVuvsWmZoTTaLHbY9YjTKIFPRYgqIY3c7SlP1rOTT3ZeMR5Ecznc8/MabNPpJxnwgtXq7HzG5HdxOkX8CqBkH0VB6nUn601Ta1/oqiVTP59Me3zaDo6ADridBz0MDMuQ+rUy1umVw7Wklk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Jve4vwER; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5697jcRd010288;
+	Wed, 9 Jul 2025 09:42:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	RPYvA5vSmHpUV2IK4qsXPlLV4jdUjIeekLEIW4CvMGU=; b=Jve4vwERGPQrQHgf
+	dIHxidf80HEjTJjas2aGGy4A46g0qvEwtT+o+FLYEcB60tyWUrJqD6oE8eq46SEx
+	A9vZud3Ow1rSmttxQ60mmrlA4WaUAf0IXOUaOUebkyKChQsTpSwnc2Hs7xi8JE2u
+	rcATH1kMNAE8cFB7l908mF1/XmLnnkrWCTtIHf7ExVGX7GBP5jfvkud1BL087Ov/
+	CejFEdiGqmP2rGtnXgdn/LkhEqk5+Rev3mQ61+opaWSjIe64Zh0CZfPMYO2awLWn
+	NAgaa1D/uAPYoJ/BHdbHwdqVEDpzEGCXAcLcDJblSs8rv1hn1G6TFv7XFQBm1/Y5
+	Cqolmg==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47smap0ccd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Jul 2025 09:42:36 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5699gZmJ018467
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 9 Jul 2025 09:42:35 GMT
+Received: from [10.151.41.2] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 9 Jul
+ 2025 02:42:33 -0700
+Message-ID: <b875682f-8645-4aab-8946-78a10fda134f@quicinc.com>
+Date: Wed, 9 Jul 2025 15:12:31 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next v2 1/2] wifi: mac80211: extend beacon
+ monitoring for MLO
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Maharaja Kennadyrajan
+	<maharaja.kennadyrajan@oss.qualcomm.com>
+CC: <linux-wireless@vger.kernel.org>
+References: <20250626160713.2399707-1-maharaja.kennadyrajan@oss.qualcomm.com>
+ <20250626160713.2399707-2-maharaja.kennadyrajan@oss.qualcomm.com>
+ <ee3286c8e7d869b066e1f39cf7707f2186cd45cc.camel@sipsolutions.net>
+Content-Language: en-US
+From: Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
+In-Reply-To: <ee3286c8e7d869b066e1f39cf7707f2186cd45cc.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=Ar7u3P9P c=1 sm=1 tr=0 ts=686e398c cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10
+ a=3zBYkr6dedwpUm-ps7kA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: XSY1m4vjdn12VXRDeqvS_48gkf3YLGYv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA5MDA4NiBTYWx0ZWRfX47rnNQ7mSroq
+ kDbSQGGgQ8VAfAcWZxwEf7eCvJoAIlanfqPsfD31Tfo8ni0fFT+386fkVpgUZPZWxGsDq7xMHfK
+ oaWBgFaQVIZxLwboZaaVNg4zdc+8O7lafrMrox0eonlxZ5h85+SYu/GcobEnEuSx3liLXzav9j9
+ /GqD5d5IyNF494Bi/vHxNv22Ov/pjJikv/pLlspB78cDD9GxxArf/JkSqDJyaWUwL4w94f/oe9z
+ oteWAYKNg9tXxK8S1OsMn7gjs1WmHbuRGGBBQIKAtTu8Lralxv07DTZ0Ov0DymSy9jEP3BDY8CD
+ BzVBKAJUoDd74W5ikqOB2djkPjTKnTzl1bsbwdRsrVOIVMd2E+LddnJpiSKRvuY6QWAfPTfz+5i
+ sjyLGNCZmH0WfnaIhZSaKiE598K2e1xCsBYNex6OtWVNKtkAXCDb9exssgVj/EAuDcaGxYoZ
+X-Proofpoint-GUID: XSY1m4vjdn12VXRDeqvS_48gkf3YLGYv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-09_02,2025-07-08_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
+ impostorscore=0 suspectscore=0 mlxlogscore=784 clxscore=1015 adultscore=0
+ phishscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507090086
 
-On Wed, 2025-07-09 at 08:05 +0530, Aditya Kumar Singh wrote:
->=20
-> +	if (wdev->iftype =3D=3D NL80211_IFTYPE_AP &&
-> +	    info->attrs[NL80211_ATTR_UNSOL_BCAST_PROBE_RESP]) {
-> +		err =3D nl80211_parse_unsol_bcast_probe_resp(
-> +			rdev, info->attrs[NL80211_ATTR_UNSOL_BCAST_PROBE_RESP],
-> +			&params.unsol_bcast_probe_resp);
 
-I don't see why this should be only for AP, not e.g. P2P GO?
+On 7/8/2025 4:32 PM, Johannes Berg wrote:
+> On Thu, 2025-06-26 at 21:37 +0530, Maharaja Kennadyrajan wrote:
+>>   
+>> +static bool
+>> +ieee80211_is_csa_in_progress(struct ieee80211_sub_if_data *sdata)
+>> +{
+>> +	/*
+>> +	 * In MLO, check the CSA flags 'active' and 'waiting_bcn' for all
+>> +	 * the links.
+>> +	 */
+>> +	unsigned int link_id;
+>> +
+>> +	guard(rcu)();
+>> +
+>> +	for (link_id = 0; link_id < ARRAY_SIZE(sdata->link);
+>> +	     link_id++) {
+>> +		struct ieee80211_link_data *link =
+>> +			rcu_dereference(sdata->link[link_id]);
+>> +
+>> +		if (!link)
+>> +			continue;
+> We should probably add for_each_link_data_rcu() instead of open-coding
+> it here, even if we'd only have a single user for it now.
 
-johannes
+
+Thanks for your inputs here. I will add the for_each_link_data_rcu() 
+macro and send a patch and will use it here.
+
+
+>
+>> +		if (!(link->conf
+>>
+> I pointed out elsewhere (possibly multiple times?), that this check is
+> useless.
+
+
+My bad. This hunk got missed here. I will fix in in the next version 
+along with the for_each_link_data_rcu() addition.
+
+
+> johannes
+>
 
