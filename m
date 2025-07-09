@@ -1,123 +1,234 @@
-Return-Path: <linux-wireless+bounces-25080-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25081-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B915AFE166
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 09:35:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06480AFE387
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 11:05:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC8967ACFE0
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 07:34:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98B6A3BB0EC
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Jul 2025 09:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671322701C3;
-	Wed,  9 Jul 2025 07:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A4E283FDB;
+	Wed,  9 Jul 2025 09:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uPHamjPZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QSpX862a"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FDD26E703
-	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 07:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE7379DA
+	for <linux-wireless@vger.kernel.org>; Wed,  9 Jul 2025 09:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752046538; cv=none; b=mubaBy0T6SclJYpvtUisQnhDFScxDTdVKoa6Fr/zm9mFNoRWw8ltm0DL6TKgRErueEsIPiVPhJTGAH4gaZPFCio2/jAEr4bBqtYKofHhSHm2tIRAact+jyb6/xnBIahK6b3HuUVYaoHWIgTbrn+QiziDZtdhMbz+IQ43Q3+px8c=
+	t=1752051910; cv=none; b=NfJ1BH2X2C0JkUhLV1b9j+CNS3ZReCSsWNxzl5UCQ0AKafKopPZD93vI8xl3j+xr8jGb/WJpiMYWdi7EyAULzzGf17Fp4vBpautJVL/U2aD0NpMpRwLJCveErwgVpR5bXtNvEXmKiaSopFuYVEwRsgJHab7bosLwt4C9/SrfIUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752046538; c=relaxed/simple;
-	bh=Na8vZDniEFoMrFDyU3PU41mV44Yb5XOwKD28HtafQ1g=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qvQ2hqqBcxcLcwXMEjkKwIBdl/fhCeiEXPei3kWer0j3Ljehr/rHnBxtRFC4+STsy+kkL33xIoV9h2a6XJtSCXcJN7ikz2Rmp91FxgS27UUrL76kEDW2twKzq9yLJHkE6auuFmsWJhiPgZzKZELcZqa3jsIluODAi0ZY+1eGtos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=uPHamjPZ; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=LED0uGQgEF5uQkF68tEOE3J2klCHMgxNk+/RECqTiDY=;
-	t=1752046536; x=1753256136; b=uPHamjPZtTX1R6Q+/uU9pvW1B4KGtkEtf9TDqypthI1Jsmc
-	qZN4fPlmvsKvdXHow60WLTDOTXf2iclKIOlL9CeRhCZzAp/yRiUZyRVesYdBwMNHZq9dXXdMXcQX4
-	/3qDrHO4mC7zVV766HathzLowtYWeCb9duefUHzcY4dIgnKMsgdx9r8EiDQ9fYZ7TUZGRTOdIPXHs
-	ZmV5gkRNIKST96f8qrQDVQVFu266KUBza2JqsnB9cXjXarJPwGXUt8BaHV6T988GxOTuZQx2tJe/f
-	KkK34pwSG+bL/wA1VKmF3YrLbXM0uxvBJZLhR3hf8nBqwL3ahZf6fvFm6OAQZPRg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uZPKy-0000000D7XO-2KLp;
-	Wed, 09 Jul 2025 09:35:29 +0200
-Message-ID: <0ef5bed7464aba017f843ed493ca79a9c22688bf.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: make VHT opmode NSS ignore a debug
- message
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 09 Jul 2025 09:35:18 +0200
-In-Reply-To: <c0058c94-35c0-40fc-b23f-93864baa9d5c@molgen.mpg.de>
-References: <20250708105849.22448-2-johannes@sipsolutions.net>
-	 <00a86131-3258-4a96-b223-4be0d020a126@molgen.mpg.de>
-	 <abc76a87bf8b5fffcee18d64bfbd6c641c7739c2.camel@sipsolutions.net>
-	 <c0058c94-35c0-40fc-b23f-93864baa9d5c@molgen.mpg.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1752051910; c=relaxed/simple;
+	bh=ftUmRnOrM6vfulrF3hDUU99XPN1PFvpzdjwGMftHEnc=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=BwTeUOPUHuN61yOLXTETyVyPXcgWnU49rxqyJ/2vHsYagE4Zpng4kwls32RsW+qKHKp3/1coqsW3iIgSG700eXroptg6Qfr9DSIvkDuDSildjtZt2QCnhYpPLPmPi9Tugvm6Y8zHEPibcq8yNHTVu5B7V0eDoJRc2Mf2qDHo2Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QSpX862a; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752051908; x=1783587908;
+  h=date:from:to:cc:subject:message-id;
+  bh=ftUmRnOrM6vfulrF3hDUU99XPN1PFvpzdjwGMftHEnc=;
+  b=QSpX862aByFyKnFt0wBpUIrvTcf498B/5Kkw9S9MoWdJ5eL8OZ3m2s3c
+   KxBILDMRrRtyhnx9xvIJN9zAEvYrlfgdpNLO7DyPJDNRrteC3srOsPHlM
+   Ajih8hgpj3870U2oTQHlbWa184/lpP2S/7YxLZWpEQ4DhmVK11oklHYp3
+   A78MtRHnbYyQ4OSYTelMwKPrh9pZB2Hei6H4uXVTYpr6qnCHJYoPXVaWI
+   8vaixgs4SNBwNjXVCht5oEzyjgBySaNFDcM1uuB+lS5thzk/0qLghigVf
+   3cbE15g987bJ/qqQUqVGlX/0SLTgaBFTlKeX6xw0CzPUZ9f/kO1ovb5Lh
+   w==;
+X-CSE-ConnectionGUID: hw7vaM+MSwGqJuVqbclZow==
+X-CSE-MsgGUID: 2UtYHDmmQ2CDIKmcwyXcRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="79744508"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="79744508"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 02:05:08 -0700
+X-CSE-ConnectionGUID: 568K7YlTSj++KUmXkeyHzg==
+X-CSE-MsgGUID: 48C2ck6fQIiyLXhw7aYVAA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="155142368"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 09 Jul 2025 02:05:06 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uZQjg-0003KZ-0P;
+	Wed, 09 Jul 2025 09:05:04 +0000
+Date: Wed, 09 Jul 2025 17:04:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ cc2b722132893164bcb3cee4f08ed056e126eb6c
+Message-ID: <202507091739.l1QQWT1J-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
 
-Hi,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: cc2b722132893164bcb3cee4f08ed056e126eb6c  wifi: mac80211: fix rx link assignment for non-MLO stations
 
-> > It just doesn't seem useful to print the message - there's nothing you
-> > can do about it, it basically means we ignore it and keep transmitting
-> > with a lower NSS (which is fine anyway, it's subject to rate control an=
-d
-> > the AP cannot have any expectation on how many streams we really use),
-> > and so it's not actionable to the user in any way.
->=20
-> In some cases, people can contact the router manufacturer asking to look=
-=20
-> into their firmware.
+elapsed time: 1198m
 
-Yeah, maybe? But like I said, it also shouldn't have much consequences -
-it's perhaps saying "I now can receive up to 8 streams" but only
-supports 4, so that's physically impossible. Maybe we could allow 4 in
-that case, but right now we're careful and just ignore that instruction.
-And in most cases the client only will have two anyway. Not that I know
-the numbers for your case :)
+configs tested: 141
+configs skipped: 3
 
-> > but it's easy to tell what that value is from the association and/or
-> > beacon, so it didn't really seem all that useful. Perhaps more to be
-> > said for simply disconnecting in this case in strict mode, or
-> > something, so it's noticeable to people working on this/testing it.
-> Maybe. I have never heard of strict mode. ;-)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-You probably wouldn't want to use it :) but we want to behave more
-strictly when we're testing with APs etc. before they ship to customers,
-we can get these kinds of issues fixed.
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                   randconfig-001-20250708    gcc-13.4.0
+arc                   randconfig-002-20250708    gcc-8.5.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-21
+arm                              allyesconfig    gcc-15.1.0
+arm                         orion5x_defconfig    clang-21
+arm                   randconfig-001-20250708    clang-21
+arm                   randconfig-002-20250708    clang-17
+arm                   randconfig-003-20250708    gcc-10.5.0
+arm                   randconfig-004-20250708    clang-21
+arm                           sama5_defconfig    gcc-15.1.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20250708    gcc-9.5.0
+arm64                 randconfig-002-20250708    clang-19
+arm64                 randconfig-003-20250708    clang-21
+arm64                 randconfig-004-20250708    gcc-8.5.0
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20250708    gcc-13.4.0
+csky                  randconfig-002-20250708    gcc-15.1.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250708    clang-21
+hexagon               randconfig-002-20250708    clang-21
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250708    clang-20
+i386        buildonly-randconfig-002-20250708    clang-20
+i386        buildonly-randconfig-003-20250708    clang-20
+i386        buildonly-randconfig-004-20250708    gcc-12
+i386        buildonly-randconfig-005-20250708    clang-20
+i386        buildonly-randconfig-006-20250708    clang-20
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-21
+loongarch             randconfig-001-20250708    clang-21
+loongarch             randconfig-002-20250708    clang-21
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+m68k                          atari_defconfig    gcc-15.1.0
+m68k                       m5275evb_defconfig    gcc-15.1.0
+m68k                           sun3_defconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                           ip32_defconfig    clang-21
+mips                           jazz_defconfig    clang-17
+mips                         rt305x_defconfig    clang-21
+nios2                            alldefconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                               defconfig    gcc-14.2.0
+nios2                 randconfig-001-20250708    gcc-8.5.0
+nios2                 randconfig-002-20250708    gcc-8.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250708    gcc-9.3.0
+parisc                randconfig-002-20250708    gcc-14.3.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-21
+powerpc                     asp8347_defconfig    clang-21
+powerpc                 mpc8313_rdb_defconfig    gcc-15.1.0
+powerpc               randconfig-001-20250708    gcc-8.5.0
+powerpc               randconfig-002-20250708    clang-19
+powerpc               randconfig-003-20250708    clang-21
+powerpc64             randconfig-001-20250708    clang-21
+powerpc64             randconfig-002-20250708    clang-21
+powerpc64             randconfig-003-20250708    clang-21
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-21
+riscv                    nommu_k210_defconfig    clang-21
+riscv                 randconfig-001-20250708    clang-16
+riscv                 randconfig-002-20250708    gcc-11.5.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-15.1.0
+s390                                defconfig    clang-21
+s390                  randconfig-001-20250708    gcc-14.3.0
+s390                  randconfig-002-20250708    gcc-9.3.0
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                        apsh4ad0a_defconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                    randconfig-001-20250708    gcc-11.5.0
+sh                    randconfig-002-20250708    gcc-15.1.0
+sh                           sh2007_defconfig    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250708    gcc-13.4.0
+sparc                 randconfig-002-20250708    gcc-13.4.0
+sparc                       sparc64_defconfig    gcc-15.1.0
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20250708    clang-21
+sparc64               randconfig-002-20250708    gcc-15.1.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                                  defconfig    clang-21
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250708    clang-21
+um                    randconfig-002-20250708    clang-17
+um                           x86_64_defconfig    clang-21
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250708    gcc-12
+x86_64      buildonly-randconfig-001-20250709    gcc-12
+x86_64      buildonly-randconfig-002-20250708    gcc-12
+x86_64      buildonly-randconfig-002-20250709    clang-20
+x86_64      buildonly-randconfig-003-20250708    clang-20
+x86_64      buildonly-randconfig-003-20250709    gcc-12
+x86_64      buildonly-randconfig-004-20250708    gcc-12
+x86_64      buildonly-randconfig-004-20250709    gcc-12
+x86_64      buildonly-randconfig-005-20250708    clang-20
+x86_64      buildonly-randconfig-005-20250709    clang-20
+x86_64      buildonly-randconfig-006-20250708    clang-20
+x86_64      buildonly-randconfig-006-20250709    gcc-12
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250708    gcc-8.5.0
+xtensa                randconfig-002-20250708    gcc-9.3.0
 
->  For the ignorant like me,=20
-> having more details in the log message would help, as it=E2=80=99s not so=
- easy=20
-> for me to capture and interpret the beacon. ;-)
-
-Well, if we made each of these messages tell a story about how to figure
-out what could be wrong, that'd probably be too verbose ;-)
-
-You can see the values with just
-
-$ iw wlan0 scan dump
-
-and looking for your AP's data. You'd have to understand that too, but
-honestly just knowing say "8 > 4" doesn't really help much either, you
-still have to understand where the 4 comes from and that requires
-looking at the details like that.
-
-
-Anyway ... I'll just put in this patch I think :)
-
-johannes
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
