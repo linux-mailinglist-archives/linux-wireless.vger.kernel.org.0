@@ -1,128 +1,161 @@
-Return-Path: <linux-wireless+bounces-25171-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25172-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F1BAFF898
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 07:47:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1278DAFFB49
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 09:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16795567DA0
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 05:47:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E516C3B1DC7
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 07:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7E4286417;
-	Thu, 10 Jul 2025 05:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA5023B626;
+	Thu, 10 Jul 2025 07:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rw5ZZe0m"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Fia7RcU+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CIqBhEG7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1369E28640B;
-	Thu, 10 Jul 2025 05:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9C322FDEC
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Jul 2025 07:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752126451; cv=none; b=Puwv+lcmNttgqgQIdcXIuvPYAkgA8pGm0dK/9h4zl8s8C/53c+81A2unm8houXtwFyCyqthSlZJ/IQEPUvRspKd8l+QRRKLYT9+gFWgK7BWgCH18tqT8bvbJCb7bjCMHFwpbGPiIRqlzmufwGBr/2E4WcPt/NOi7BBTN4sLUl8s=
+	t=1752133634; cv=none; b=sYoWg9rL/OztNqdaN+qZLAxZREhE/ZjTI8AY8jhMkrK6yxzCdBQzu5UlItyf3NJ8ouTKN3zHoHA0Ko0w0NsLSTSsLtroZl2wlTBRsOwr4VD9oYR6RXHJhX1tV3M0KIG8RFWjNBWUziqqvKbD2zqBwE0656XF1pI8KMBHbkUSC+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752126451; c=relaxed/simple;
-	bh=h71xMkuvu0NJWxV/1p2bWm6fmXUjPv4qo4m5BgHOf0Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=itOmRSm7zID7LKB8a2eB+yPaqWVdsCtyVLndUkiWX24N8HCStKMq8I1+D3uZV6IesmFbgVsVS/qiRd86+jigk/yU86Im2scvEnAHH4Sf0lEA7OocI4c92gl50Ovc+0gfti1k3eG5prceM4PCvp48ElgPbAZDH3VdqYnzSeoUeqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rw5ZZe0m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FFAC4CEE3;
-	Thu, 10 Jul 2025 05:47:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752126450;
-	bh=h71xMkuvu0NJWxV/1p2bWm6fmXUjPv4qo4m5BgHOf0Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Rw5ZZe0mI2+EfSVaxUcdd5EjisLSBIepWWsDlZXrQUB+gQYxIo5PTlzUHVKinn9AU
-	 FIgV7+fZPi3sC3NYFqqAkJrlt8GzZTo+fc8WjsaETaA36NHhSI4lrBfekQJEwKIBe6
-	 ePMblpG0P6XYRbIY4YvdwIbmRS0bdoC/QPlsG0IpEpWorKpHm+oOD8GsqWuKN6xfoR
-	 BTD1LhNBOdZLkGtBOsnRxH4KyKJBXOXKnR1zbDgktEHd9DnIVN9zsmxEU05YEFHA5/
-	 yXLgXy9D93yGvUqM+VCItcNQQ97q/+//FLy9XQhxFnLnv4o+5yAjiwySLG8FIYof71
-	 euIyT+K6tnvsQ==
-Message-ID: <354d249c-fd85-4090-af49-25d154f4be24@kernel.org>
-Date: Thu, 10 Jul 2025 07:47:25 +0200
+	s=arc-20240116; t=1752133634; c=relaxed/simple;
+	bh=Cs9Vet9+y4pqCPaTE/ZAhUEpraQsCm8ezCWbyjMHK0I=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=URPZo92mN3ia6tnjEshb/8SPQ5rfMnH8PNjWvgek+MXvO68PsMiWAKWdS6AUiHmpkEmossVuq9RgVoUNQvgzYSxrwRz2RrhM1C0xfhcuPNLNiWHk00TVQ1UUG9LUClPHDXD44P5oBZ8n/8RPmfjM7R5mAfSsfkgsYkrUoaKFv94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Fia7RcU+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CIqBhEG7; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Message-ID: <a9de62a0-28f1-4981-84df-253489da74ed@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1752133630;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=AwZEBbpsxzYdzVGw0G60IakcpnD+tCviU1RQXfM0gaM=;
+	b=Fia7RcU+8QOALD6F34u4sB8q6Ml4oaVBTRuDo6xYWUGLyZeW3fkKFHlALO3A/7AQb/hwWF
+	UIswL2RdZzl2IzreuOB7+MROPU9zu+qynAMsmYxMWl5B4usftCjRoQ1QbFcBtYLBnV7kyZ
+	ZFlN3U1TceMVn4CCnna4slZk6KxBV8rbAzCrf4tb5qm4SXFHRsONPC9DnRzxGUZaLMQH1j
+	K9sSscbJsHMXpk/g0YKRNMW3yhhsY4J7dFkSBbuBOUQXYPjisHUfN4n/O9tuytCLkNiaEa
+	beTphd+4/kjXQXzMAQP8XRt7Fy3wm+MbEZm5zmwYaQDRIgq9JIQHKyN6a+Z/gQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1752133630;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=AwZEBbpsxzYdzVGw0G60IakcpnD+tCviU1RQXfM0gaM=;
+	b=CIqBhEG7BGJgEStYkOXX30tnQSbJIUOpR1wxtAl4mCirgfM4FnJM/je2Vuwk9aIKvVqBuP
+	Wg4p8erSaOBWt8Bg==
+Date: Thu, 10 Jul 2025 09:47:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mt76: fix potential memory leak in
- mt76_wmac_probe()
-To: Abdun Nihaal <abdun.nihaal@gmail.com>, nbd@nbd.name
-Cc: lorenzo@kernel.org, ryder.lee@mediatek.com, shayne.chen@mediatek.com,
- sean.wang@mediatek.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, kvalo@kernel.org, toke@toke.dk,
- jeff.johnson@oss.qualcomm.com, u.kleine-koenig@baylibre.com,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20250709145532.41246-1-abdun.nihaal@gmail.com>
 Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20250709145532.41246-1-abdun.nihaal@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+Subject: WARNING check-sdata-in-driver in ieee80211_link_info_change_notify
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 09. 07. 25, 16:55, Abdun Nihaal wrote:
-> In mt76_wmac_probe(), when the mt76_alloc_device() call succeeds, memory
-> is allocated for both struct ieee80211_hw and a workqueue. However, on
-> the error path, the workqueue is not freed. Fix that by calling
-> mt76_free_device() on the error path.
-> 
-> Fixes: c8846e101502 ("mt76: add driver for MT7603E and MT7628/7688")
-> Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Hi,
 
-I am not sure, why I am CCed, but makes sense anyway (free the one 
-obtained by alloc_ordered_workqueue() in mt76_alloc_device()):
+when trying to use monitor mode with either rtl8xxxu or rtlwifi driver I get a 
+"Failed check-sdata-in-driver check" warning in 
+ieee80211_link_info_change_notify(). Aside from the warning, monitor mode seems 
+to work fine. This might also affect other drivers, I just don't have the 
+hardware to test.
 
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+I bisected and found that the warning started with c4382d5ca1af ("wifi: 
+mac80211: update the right link for tx power").
 
--- 
-js
-suse labs
+I can make the warning go away when I add WANT_MONITOR_VIF to the driver, but 
+the real fix should probably go in mac80211.
+
+[   48.529085] ------------[ cut here ]------------
+[   48.530216] phy0-monitor: Failed check-sdata-in-driver check, flags: 0x0
+[   48.531154] WARNING: CPU: 0 PID: 260 at net/mac80211/main.c:413 
+ieee80211_link_info_change_notify0
+[   48.532423] Modules linked in: rtl8xxxu
+[   48.532949] CPU: 0 UID: 0 PID: 260 Comm: ip Not tainted 
+6.14.0-rc6-g1794d7ab34d2 #67
+[   48.533957] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 
+1.16.2-debian-1.16.2-1 044
+[   48.535245] RIP: 0010:ieee80211_link_info_change_notify+0xa1/0xe0
+[   48.536240] Code: b3 58 06 00 00 4c 89 04 24 48 c7 c7 38 13 80 82 c6 05 e7 37 
+ba 00 01 48 8d 88 2b
+[   48.541667] RSP: 0018:ffffc900002bb5e8 EFLAGS: 00010282
+[   48.542772] RAX: 0000000000000000 RBX: ffff88800486a000 RCX: 0000000000000000
+[   48.543700] RDX: ffff88807dc28f20 RSI: ffff88807dc1c940 RDI: ffff88807dc1c940
+[   48.544666] RBP: ffff88800486adc0 R08: 0000000000009ffb R09: 00000000ffffdfff
+[   48.545626] R10: 00000000ffffdfff R11: ffffffff82a59b80 R12: ffff8880077cc8e0
+[   48.546594] R13: ffff88800486adc0 R14: ffff888005ba8c00 R15: 0000000000000000
+[   48.547584] FS:  00007f5e551961c0(0000) GS:ffff88807dc00000(0000) 
+knlGS:0000000000000000
+[   48.548699] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   48.549519] CR2: 00007f5e552acc30 CR3: 0000000005b9e000 CR4: 00000000000006f0
+[   48.550513] Call Trace:
+[   48.550884]  <TASK>
+[   48.551210]  ? __warn+0x89/0x130
+[   48.551664]  ? ieee80211_link_info_change_notify+0xa1/0xe0
+[   48.552447]  ? report_bug+0x164/0x190
+[   48.552979]  ? handle_bug+0x53/0x90
+[   48.553472]  ? exc_invalid_op+0x17/0x70
+[   48.554031]  ? asm_exc_invalid_op+0x1a/0x20
+[   48.554603]  ? ieee80211_link_info_change_notify+0xa1/0xe0
+[   48.555376]  ? ieee80211_link_info_change_notify+0xa1/0xe0
+[   48.556136]  ieee80211_assign_link_chanctx+0x180/0x330
+[   48.556849]  _ieee80211_link_use_channel+0x353/0x3a0
+[   48.557540]  ? snprintf+0x4d/0x70
+[   48.558009]  ? ieee80211_link_init+0x148/0x1d0
+[   48.558558]  ieee80211_add_virtual_monitor+0x14a/0x260
+[   48.559094]  ieee80211_do_open+0x6ee/0x750
+[   48.559576]  ieee80211_open+0x6b/0x90
+[   48.560231]  __dev_open+0x101/0x210
+[   48.560586]  __dev_change_flags+0x1b1/0x220
+[   48.561023]  netif_change_flags+0x26/0x70
+[   48.561427]  do_setlink.constprop.0+0x357/0x1250
+[   48.561921]  ? avc_has_perm_noaudit+0x6b/0xf0
+[   48.562597]  ? cred_has_capability.isra.0+0x75/0x110
+[   48.563491]  rtnl_newlink+0x835/0xc10
+[   48.564200]  ? cred_has_capability.isra.0+0x75/0x110
+[   48.564700]  ? __rtnl_unlock+0x37/0x70
+[   48.565089]  ? __pfx_rtnl_newlink+0x10/0x10
+[   48.565512]  rtnetlink_rcv_msg+0x356/0x3f0
+[   48.565937]  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+[   48.566425]  netlink_rcv_skb+0x5b/0x110
+[   48.566818]  netlink_unicast+0x245/0x390
+[   48.567225]  netlink_sendmsg+0x1f7/0x440
+[   48.567624]  ____sys_sendmsg+0x2e4/0x310
+[   48.568035]  ? copy_msghdr_from_user+0x6d/0xa0
+[   48.568494]  ___sys_sendmsg+0x86/0xd0
+[   48.568863]  ? fsnotify_grab_connector+0x42/0x80
+[   48.569332]  ? fsnotify_destroy_marks+0x2a/0x1a0
+[   48.569804]  ? __call_rcu_common.constprop.0+0x8b/0x260
+[   48.570354]  __sys_sendmsg+0x6a/0xc0
+[   48.570729]  do_syscall_64+0x4b/0x110
+[   48.571117]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   48.571613] RIP: 0033:0x7f5e552bdf43
+[   48.571989] Code: 64 89 02 48 c7 c0 ff ff ff ff eb b7 66 2e 0f 1f 84 00 00 00 
+00 00 90 64 8b 04 28
+[   48.573838] RSP: 002b:00007fffcec71dc8 EFLAGS: 00000246 ORIG_RAX: 
+000000000000002e
+[   48.574601] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f5e552bdf43
+[   48.575313] RDX: 0000000000000000 RSI: 00007fffcec71e30 RDI: 0000000000000003
+[   48.576543] RBP: 00000000686388b9 R08: 0000000000000001 R09: 00007f5e5538fbe0
+[   48.577810] R10: 0000000000000076 R11: 0000000000000246 R12: 0000000000000001
+[   48.579140] R13: 00007fffcec71f00 R14: 0000000000000000 R15: 0000563fc755e020
+[   48.579928]  </TASK>
+[   48.580176] ---[ end trace 0000000000000000 ]---
+
 
