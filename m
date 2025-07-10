@@ -1,124 +1,103 @@
-Return-Path: <linux-wireless+bounces-25164-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25165-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4317AAFF810
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 06:28:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 576A7AFF826
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 06:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3B9F7BA1F7
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 04:27:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A5DB7B300B
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 04:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C953424728C;
-	Thu, 10 Jul 2025 04:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE1D283FDF;
+	Thu, 10 Jul 2025 04:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fgPWifM9"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Wds4JoN8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A71236A73
-	for <linux-wireless@vger.kernel.org>; Thu, 10 Jul 2025 04:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4E52F3E
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Jul 2025 04:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752121720; cv=none; b=se+EYC6gMbte+S3W163seIDt1BDEkr3F1rWBxsFnxKG5GDKy3yJqK+KnDxHjG748vdcB01dxDFgHHWoW1lyL/tOWiXuOcQQyMAzUvzjCj87F4j/m8P4LEaL6EvbyUxJkAt+stCEBJIWYYNmMrcRU0W6Lxq7fcT5tyVBIEi8uS4c=
+	t=1752122670; cv=none; b=hc11pmsKlEmprio0jR3agYkzBttNGWoR//kf0t3t+ksaoYJMNC01IeU6htb916ZDZH4VVqH0IMwWYL63QRlirhRoa/9NqbwsGK8fbOYR4oh7dpPxhuNKnzyt1i7t2gclP82xHlFGZnjpLAlbaRH+vYw3Q3iF4DGTVfJb43Nv2zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752121720; c=relaxed/simple;
-	bh=ZsaUnOyYFhyMD3db3mLl5l9dFCIMZhZptm61KDEnSh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Y6qZ2dztbDudLNxuYMhUcze7xxM0/OlTcESHL1d0b6q8jxXDnrSvtivZiyrxJoebtE+u/ihRScLdZ96tXmReMDLyjJ8w3ATXgSK/zNThaxkFUO/V41GBXRSt9bIuOp9vZ5Jr6kp8ONFhrcfd0r+xSnKACtGwLEhAcMjdjr6tt6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fgPWifM9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3109EC4CEE3;
-	Thu, 10 Jul 2025 04:28:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752121720;
-	bh=ZsaUnOyYFhyMD3db3mLl5l9dFCIMZhZptm61KDEnSh4=;
-	h=Date:From:To:Cc:Subject:From;
-	b=fgPWifM9LItlDM3wQ7BEKEYA9bDssbaAsersw3sSKJZ5mBJva6gl7STJVj4ey7jzr
-	 OA66OojbzM4Qu1Y7JsAp3RvIW8iQU9E3XTmzADPCh5JimJp8wXUETaDY2LP2IX8/fo
-	 otpiU+HGtq24Dxp9gloYHbxnUkuiC3U3IGqlKqjvuDxwlKgXsm9b691gAPVDEgDsCP
-	 mKA/CIRadednj3f6uySlJhDmRQCGBzYKOmMDKRtmMEzByAgqaFWONRwCcBGY6Otw17
-	 yu8jvCgn9/7T2rkSFL4TcrIwTDa++mvZoqMPkjI703VIvToCMjGZyYQH2dW1BPEXJC
-	 kT7qegbkDDsTw==
-Received: by wens.tw (Postfix, from userid 1000)
-	id 18F3C5F87F; Thu, 10 Jul 2025 12:28:37 +0800 (CST)
-Date: Thu, 10 Jul 2025 12:28:36 +0800
-From: Chen-Yu Tsai <wens@kernel.org>
-To: wireless-regdb@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [ANN] wireless-regdb: master-2025-07-10
-Message-ID: <aG9BdH1fxJBk-5ka@wens.tw>
+	s=arc-20240116; t=1752122670; c=relaxed/simple;
+	bh=hOnAkJ5IgOdiNR8vedi7ctomD2vPW/oVMcHh5gKmmoI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=TOoyTAZjEiKgM2Kt2SXiIzlPNmkSNvr9BuJ0ALI3e3oNuumyrb5WOxFA8QsTPv/PilVIQNgXHtD4y/KmOs3zxe9hJpq6JJ44BwIjrpX7+hVQ+RjA/82fbLuu5ewUpcS8lGSC2+Dc+N7IC/CnQUF1gqINa+foLd2pKYGf9R7r5Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Wds4JoN8; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56A4i1g652471628, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1752122641; bh=hOnAkJ5IgOdiNR8vedi7ctomD2vPW/oVMcHh5gKmmoI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=Wds4JoN8/cowm3+BqtouqITvNQcxpsJmgdHWdDD+D9T0pqu0vma0H2WEQVcCXWrnu
+	 dW/4JB1DG09uGBiCma1fHe3jxvFdZr8sthEtC0RbyKub7hlEVMAFdBYaKSg7mAHN5H
+	 ZgrN46obFVaNHoQNBtuVDq2oz6EkTEKYljt3IF5ZiYu2qFh3XgZCxoinmytj5xDNZk
+	 bB6CLykuGDNtgs2m+/d5Qx6oCjm8OrtpPQfkGxZzmh8e/tY5IgTPlAf4XohNxL3IPD
+	 Su1yqZBV0e6wtYpQbJx7ihKhxGFe43v8BDf+sddfnPVIXR3nRdFyUdi3s2Nt37y/UO
+	 KGdDnAjua4OrA==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56A4i1g652471628
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 10 Jul 2025 12:44:01 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 10 Jul 2025 12:44:01 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 10 Jul 2025 12:44:00 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Thu, 10 Jul 2025 12:44:00 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Martin Kaistra <martin.kaistra@linutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Bitterblue Smith
+	<rtl8821cerfe2@gmail.com>
+Subject: RE: [PATCH] wifi: rtl8xxxu: Fix RX skb size for aggregation disabled
+Thread-Topic: [PATCH] wifi: rtl8xxxu: Fix RX skb size for aggregation disabled
+Thread-Index: AQHb8Mss9Ikf8sQhxUyZ3JyD0WC4VLQqyMWA
+Date: Thu, 10 Jul 2025 04:44:00 +0000
+Message-ID: <75dcf79857984c9aafdb0fff680eb3f4@realtek.com>
+References: <20250709121522.1992366-1-martin.kaistra@linutronix.de>
+In-Reply-To: <20250709121522.1992366-1-martin.kaistra@linutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="w+jTzmT9zPeuLXzS"
-Content-Disposition: inline
+
+Martin Kaistra <martin.kaistra@linutronix.de> wrote:
+> Commit 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for
+> phystats") increased the skb size when aggregation is enabled but decreas=
+ed
+> it for the aggregation disabled case.
+>=20
+> As a result, if a frame near the maximum size is received,
+> rtl8xxxu_rx_complete() is called with status -EOVERFLOW and then the
+> driver starts to malfunction and no further communication is possible.
+>=20
+> Restore the skb size in the aggregation disabled case.
+>=20
+> Fixes: 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for p=
+hystats")
+> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
 
---w+jTzmT9zPeuLXzS
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-A new release of wireless-regdb (master-2025-07-10) is available at:
-
-https://www.kernel.org/pub/software/network/wireless-regdb/wireless-regdb-2=
-025.07.10.tar.xz
-
-The short log of changes since the master-2025-02-20 release is below.
-
---
-
-Chen-Yu Tsai (1):
-      wireless-regdb: update regulatory database based on preceding changes
-
-Duy Hoang (1):
-      wireless-regdb: Update regulatory info for Vietnam (VN) for 2025
-
-Emily (1):
-      wireless-regdb: Permit 320 MHz bandwidth in 6 GHz band for GB
-
-Marcos Alano (1):
-      wireless-regdb: Update regulatory rules for Brazil (BR) on 6GHz
-
-Ping-Ke Shih (5):
-      wireless-regdb: Update regulatory info for Indonesia (ID) for 2025
-      wireless-regdb: Update regulatory info for Egypt (EG) for 2024
-      wireless-regdb: update regulatory rules for Paraguay (PY) on 6 GHz fo=
-r 2025
-      wireless-regdb: Update regulatory info for CEPT countries for 6GHz li=
-sted by WiFi Alliance
-      wireless-regdb: update regulatory rules for Bosnia and Herzegovina (B=
-A) for 6 GHz
-
-Taavi Eom=E4e (1):
-      wireless-regdb: Update regulatory info for Estonia (EE) for 2024
-
-
---w+jTzmT9zPeuLXzS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE2nN1m/hhnkhOWjtHOJpUIZwPJDAFAmhvQXIACgkQOJpUIZwP
-JDAK+w//e7nnUlMACU7fZEB7VoNwmCveXuXzb3LscC5RqtZ5h+3qo+YgkNyUW4qV
-2uNOljo6EDbHnhqVfI60YwoQL/xKhPj1OfXExtYmPoO+7ZTkTPlWayTA1uLd7IX6
-HM09WWNb7vQU4EIv55sVw1M8a5/WbC6iF07Xb1Z/BjDW0n/hVSinatUT8WMeZWNg
-DcyyhcMdXVY6Az4Zrpq641/Vb8RP2fruHEz2HXMcDGnUWJjp6doDVopQW0TA8dpp
-0IaX64d7a2RWBK8NwGW+5oN65mCx1eF22sz/Oy1z/6+eq+M1+Vscf6xgJoowPYtv
-V4v6EUVx20nQdItkH+tlEg+NXslz4Nhh4UPgYCEcksq7txBtQtN6U8J/a5rF8imS
-RM55TjFNVVx+XOUFdqRvic3RgmIknwmzaKy576yeFlJitISGU77D39j83wu4VCLA
-zmSscdLKK945E4okwgdO6das3BZw9YbNmcecdztoVMw40gFVITeyWvNVKZgSTMar
-CPfiPSYnkknNahliOllb/5PG2F/tFS89CM0ZGbvnidrH4FxB/+zfoXfF60Q1FeOr
-RWdK8whF+9J1uQvTSQdrV0CHWd/RxNnIu5xR1/OmcVOJ1hFfBBG5Y19wkw3sj3Ze
-VYh8sEtbz5fMYuGhU6TaIl7pWX6sGjUZjK8MaEGuKwbe0OwUJ6I=
-=8zUb
------END PGP SIGNATURE-----
-
---w+jTzmT9zPeuLXzS--
 
