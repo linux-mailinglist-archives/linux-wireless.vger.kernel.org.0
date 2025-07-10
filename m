@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-25212-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25213-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829E8B00B65
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 20:29:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D35B00B62
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 20:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE0DC1C8115E
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 18:29:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D3195C1349
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 18:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17172FCE14;
-	Thu, 10 Jul 2025 18:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C052FCE3D;
+	Thu, 10 Jul 2025 18:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LtZk8zsZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FVOYPWdS"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CA82FCFDE
-	for <linux-wireless@vger.kernel.org>; Thu, 10 Jul 2025 18:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0972F0E29
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Jul 2025 18:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752172145; cv=none; b=dSMVWxsDxK3aw8u5O6A043641/mJ77pfp9D0S+Faa87+wNpN4qb92deJVuKysW44pUrydmoTXN3JOgQB3hefw24bRJIEfJIUM2eSrvqFbxyhiTZ5ww/L2HD7UllW5Jt/YNUC0i8M0Ou7MHdQqKNVwdfdxiCkQO+Usks+Yg9459w=
+	t=1752172146; cv=none; b=Rd0s39BOyGwTdGAVtB6kbFu8/VMAx+dP/C9xZQU1hjraWsBDi79t8+HFfKg7Dn9PJA7g5so6Irlw0uc8LyOOf2e7SstGTUDAWHx7XfXZVA12rEmVaDfVxBdzVqUlK2+4nHZTgXOj1+S6riZLbFr3aFRHxuB+0pkjSW9NEXDpxYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752172145; c=relaxed/simple;
-	bh=pPYjZvh/LnEhOgPmFmL0Ce6BSwmo87NLlPjtrPgphrg=;
+	s=arc-20240116; t=1752172146; c=relaxed/simple;
+	bh=hyntf3PudfD806anOq87YH9+IxaMm7kp2vdtC2gUmfU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WhwLRYTHffsEL1hD6Dxs5vEJD3OK4Ao9xB9C2mnqVck06PkeUrOO7oqOwSiLDeNwKXyOcsiVGx0+rcT9Suct0QzMe5m2FHC5+2U82l77ELrkmxgeka9E9hG8McwbwvIZ/C6U53N6QLpPv18b75HHRH+BhboSUeyapDSKvgMjPJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LtZk8zsZ; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=dc/1itf3QjCPOHUZzOjWh8TPWSgC5eSE9BSfSL0mAoE+Iko50rz1Ifi6Ta35UGBSYmIxLu7uCIhG1QjWT323TmvYin/6qIuvsw4bKAjgOcYivAJk646FB6Pz7XWnkgL9P/bgaCwZVokJeZ1UaoTvl6lKQMtgPPmBcgGy8qsMJJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FVOYPWdS; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752172144; x=1783708144;
+  t=1752172145; x=1783708145;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pPYjZvh/LnEhOgPmFmL0Ce6BSwmo87NLlPjtrPgphrg=;
-  b=LtZk8zsZL5Y2XBswmtlp3HjxsHcq3aRA1Gz6JpJ3VS2RM1wNCDk1j4eU
-   WJiCikZm4cJPxDp8vT9h6/RzApEM+73u0ZK/v7WQCLxG10ILfKT0BWImX
-   TDcuRDkomCFd8m4/b1BdoliziqGy28aoHQ8dPzm4c0vJvivUxu0t3os6j
-   d/vfy5ed5TkJZCI/WgJeyTEGi5g/8hTFkbI1JdFtlS3bS29Kd0fg0PUHq
-   LBnNr83ArVEDlH6dXxEJ/1UXWGdYCdxIW2xaRDTgOWNkZKQ1xOr/LZHZC
-   pCpuYp8F3OvIk3qVrOu0Z5o83NXExFP/iHMuu35b9JzRdr2YcpMwCIhL9
-   A==;
-X-CSE-ConnectionGUID: cdeM26iNQ56WP9T3Jmfvvg==
-X-CSE-MsgGUID: UFjDi/boQZypDNoUlNprLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="57077799"
+  bh=hyntf3PudfD806anOq87YH9+IxaMm7kp2vdtC2gUmfU=;
+  b=FVOYPWdSAoS5K5W+E+T0h/T6k3nKFsZ35jP3mvvjEnKmhih5pN6iaGHm
+   NbVKQ5hRUNuM0GOxzrcJCUVQSto17UbUkWxQBcEf1sHY9gYrRXaw/C+0K
+   GcmhbJEvpbX6fcEZYNGjP5uwT/YxaBxiXCUxdd+Ru5X09M0OOv9a3QzvH
+   u6BY8w99pZRbeshjJWj/jMW5uJlPH+G9EmBg7c5jwZ12ywsa3O6Ewqp4s
+   SpRCG42I7aqIyQf32q9aiC6u6NQDJmDfPOi3Zovdd+LpsviIvjnK3ABaM
+   Niy+BzgPxZ/5/rEcR6uRvt9lY6p+I0hCxoBVyi9Xz+QL9F2LJUFpfIXUC
+   w==;
+X-CSE-ConnectionGUID: q4PTzaV/SVWA/10Uaycbwg==
+X-CSE-MsgGUID: a4wyzYv4QEWJpyFh9kLf3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="57077805"
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="57077799"
+   d="scan'208";a="57077805"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 11:29:03 -0700
-X-CSE-ConnectionGUID: bngYDDzhQ/Sd6DinuORS0g==
-X-CSE-MsgGUID: 5M8OafKoSA2pAAWI7p+d1A==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 11:29:05 -0700
+X-CSE-ConnectionGUID: ssqUZTBTQFevw213I8c/BA==
+X-CSE-MsgGUID: prnDngQYSfq/XqLU0p3AVg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="160718730"
+   d="scan'208";a="160718735"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 11:29:02 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 11:29:04 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Rotem Kerem <rotem.kerem@intel.com>
-Subject: [PATCH iwlwifi-next 08/15] wifi: iwlwifi: add iwl_trans_is_dead() API
-Date: Thu, 10 Jul 2025 21:28:25 +0300
-Message-Id: <20250710212632.cd89d8013261.I214b7ffbabc393593fb57831d61d1a9ffa318a1e@changeid>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi-next 09/15] wifi: iwlwifi: fix HE/EHT capabilities
+Date: Thu, 10 Jul 2025 21:28:26 +0300
+Message-Id: <20250710212632.69b9dac7d906.I7885499bc80453d5a84285ec927f5e89f9adfb21@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250710182832.2615019-1-miriam.rachel.korenblit@intel.com>
 References: <20250710182832.2615019-1-miriam.rachel.korenblit@intel.com>
@@ -76,90 +76,161 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Rotem Kerem <rotem.kerem@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Add iwl_trans_is_dead() function to be called by the op modes instead
-of directly checking the trans status bits. This hides the trans
-internal implementation details from callers.
+The default capabilities were set to much more than the hardware
+currently is intended to support, and then masked off for only
+the GL MAC type. However, this was due to some miscommunication
+and is incorrect, it should've been masked off for all current
+and planned MACs/RFs. Instead of doing this removing and adding
+of capabilities, simply list the ones that currently apply to
+all devices. If this changes for a new device type we can change
+the code, but at least the driver won't erroneously advertise
+some capabilities that aren't actually implemented in hardware.
 
-Signed-off-by: Rotem Kerem <rotem.kerem@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c    | 2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c   | 2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 5 +++++
- drivers/net/wireless/intel/iwlwifi/mld/mld.c   | 2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c   | 2 +-
- 5 files changed, 9 insertions(+), 4 deletions(-)
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 78 ++++---------------
+ 1 file changed, 15 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index ed72199c0b21..2879be4b8fcb 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -3186,7 +3186,7 @@ static void iwl_fw_dbg_collect_sync(struct iwl_fw_runtime *fwrt, u8 wk_idx)
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index 1e4162f1bb44..4424443d2328 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -663,6 +663,8 @@ static const struct ieee80211_sband_iftype_data iwl_he_eht_capa[] = {
+ 				.phy_cap_info[9] =
+ 					IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_COMP_SIGB |
+ 					IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_NON_COMP_SIGB |
++					IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU |
++					IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU |
+ 					(IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_RESERVED <<
+ 					IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_POS),
+ 				.phy_cap_info[10] =
+@@ -691,44 +693,26 @@ static const struct ieee80211_sband_iftype_data iwl_he_eht_capa[] = {
+ 			.has_eht = true,
+ 			.eht_cap_elem = {
+ 				.mac_cap_info[0] =
+-					IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
+-					IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
+-					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1 |
+-					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE2 |
+-					IEEE80211_EHT_MAC_CAP0_SCS_TRAFFIC_DESC,
+-				.mac_cap_info[1] =
+-					IEEE80211_EHT_MAC_CAP1_UNSOL_EPCS_PRIO_ACCESS,
++					IEEE80211_EHT_MAC_CAP0_OM_CONTROL,
+ 				.phy_cap_info[0] =
+ 					IEEE80211_EHT_PHY_CAP0_242_TONE_RU_GT20MHZ |
+ 					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
+-					IEEE80211_EHT_PHY_CAP0_PARTIAL_BW_UL_MU_MIMO |
+ 					IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE |
+ 					IEEE80211_EHT_PHY_CAP0_BEAMFORMEE_SS_80MHZ_MASK,
+ 				.phy_cap_info[1] =
+ 					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_80MHZ_MASK  |
+ 					IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_160MHZ_MASK,
+ 				.phy_cap_info[3] =
+-					IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK |
+-					IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK |
+-					IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FDBK |
+-					IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK |
+-					IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FDBK |
+-					IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FDBK |
+-					IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FDBK,
++					IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FDBK,
+ 
+ 				.phy_cap_info[4] =
+-					IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO |
+-					IEEE80211_EHT_PHY_CAP4_POWER_BOOST_FACT_SUPP |
+ 					IEEE80211_EHT_PHY_CAP4_EHT_MU_PPDU_4_EHT_LTF_08_GI,
+ 				.phy_cap_info[5] =
+ 					FIELD_PREP_CONST(IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_MASK,
+ 							 IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_16US) |
+-					IEEE80211_EHT_PHY_CAP5_NON_TRIG_CQI_FEEDBACK |
+ 					IEEE80211_EHT_PHY_CAP5_TX_LESS_242_TONE_RU_SUPP |
+-					IEEE80211_EHT_PHY_CAP5_RX_LESS_242_TONE_RU_SUPP,
+-				.phy_cap_info[6] =
+-					IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK |
+-					IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP,
++					IEEE80211_EHT_PHY_CAP5_RX_LESS_242_TONE_RU_SUPP |
++					IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF,
+ 				.phy_cap_info[8] =
+ 					IEEE80211_EHT_PHY_CAP8_RX_1024QAM_WIDER_BW_DL_OFDMA |
+ 					IEEE80211_EHT_PHY_CAP8_RX_4096QAM_WIDER_BW_DL_OFDMA,
+@@ -796,6 +780,7 @@ static const struct ieee80211_sband_iftype_data iwl_he_eht_capa[] = {
+ 					IEEE80211_HE_PHY_CAP8_HE_ER_SU_PPDU_4XLTF_AND_08_US_GI |
+ 					IEEE80211_HE_PHY_CAP8_DCM_MAX_RU_242,
+ 				.phy_cap_info[9] =
++					IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU |
+ 					IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_RESERVED
+ 					<< IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_POS,
+ 			},
+@@ -822,9 +807,7 @@ static const struct ieee80211_sband_iftype_data iwl_he_eht_capa[] = {
+ 			.has_eht = true,
+ 			.eht_cap_elem = {
+ 				.mac_cap_info[0] =
+-					IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
+-					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1 |
+-					IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE2,
++					IEEE80211_EHT_MAC_CAP0_OM_CONTROL,
+ 				.phy_cap_info[0] =
+ 					IEEE80211_EHT_PHY_CAP0_242_TONE_RU_GT20MHZ |
+ 					IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI,
+@@ -1039,48 +1022,17 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
+ 			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
  	}
  
- 	/* there's no point in fw dump if the bus is dead */
--	if (test_bit(STATUS_TRANS_DEAD, &fwrt->trans->status)) {
-+	if (iwl_trans_is_dead(fwrt->trans)) {
- 		IWL_ERR(fwrt, "Skip fw error dump since bus is dead\n");
- 		goto out;
- 	}
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 2dff87c07512..6d983fe2ee44 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1545,7 +1545,7 @@ _iwl_op_mode_start(struct iwl_drv *drv, struct iwlwifi_opmode_table *op)
- 		if (!IS_ERR(op_mode))
- 			return op_mode;
- 
--		if (test_bit(STATUS_TRANS_DEAD, &drv->trans->status))
-+		if (iwl_trans_is_dead(drv->trans))
- 			break;
- 
- #ifdef CONFIG_IWLWIFI_DEBUGFS
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 200a8d5d5bb6..d0e658801c2e 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -1240,6 +1240,11 @@ static inline bool iwl_trans_device_enabled(struct iwl_trans *trans)
- 	return test_bit(STATUS_DEVICE_ENABLED, &trans->status);
- }
- 
-+static inline bool iwl_trans_is_dead(struct iwl_trans *trans)
-+{
-+	return test_bit(STATUS_TRANS_DEAD, &trans->status);
-+}
++	/* prior RFs don't have HE, HR RF doesn't have this, later have it */
++	if (CSR_HW_RFID_TYPE(trans->info.hw_rf_id) == IWL_CFG_RF_TYPE_HR1 ||
++	    CSR_HW_RFID_TYPE(trans->info.hw_rf_id) == IWL_CFG_RF_TYPE_HR2)
++		iftype_data->he_cap.he_cap_elem.phy_cap_info[9] &=
++			~(IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU |
++			  IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU);
 +
- /*****************************************************
-  * PCIe handling
-  *****************************************************/
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index 7ade5b714457..12682396bdc3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -630,7 +630,7 @@ iwl_mld_nic_error(struct iwl_op_mode *op_mode,
- 		  enum iwl_fw_error_type type)
- {
- 	struct iwl_mld *mld = IWL_OP_MODE_GET_MLD(op_mode);
--	bool trans_dead = test_bit(STATUS_TRANS_DEAD, &mld->trans->status);
-+	bool trans_dead = iwl_trans_is_dead(mld->trans);
+ 	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_AX210 && !is_ap)
+ 		iftype_data->he_cap.he_cap_elem.phy_cap_info[2] |=
+ 			IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO;
  
- 	if (type == IWL_ERR_TYPE_CMD_QUEUE_FULL)
- 		IWL_ERR(mld, "Command queue full!\n");
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 7dfae8b1a43e..eb1b2f182be5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -2053,7 +2053,7 @@ static void iwl_mvm_nic_error(struct iwl_op_mode *op_mode,
- 
- 	if (type == IWL_ERR_TYPE_CMD_QUEUE_FULL)
- 		IWL_ERR(mvm, "Command queue full!\n");
--	else if (!test_bit(STATUS_TRANS_DEAD, &mvm->trans->status) &&
-+	else if (!iwl_trans_is_dead(mvm->trans) &&
- 		 !test_and_clear_bit(IWL_MVM_STATUS_SUPPRESS_ERROR_LOG_ONCE,
- 				     &mvm->status))
- 		iwl_mvm_dump_nic_error_log(mvm);
+-	switch (CSR_HW_RFID_TYPE(trans->info.hw_rf_id)) {
+-	case IWL_CFG_RF_TYPE_GF:
+-	case IWL_CFG_RF_TYPE_FM:
+-	case IWL_CFG_RF_TYPE_WH:
+-	case IWL_CFG_RF_TYPE_PE:
+-		iftype_data->he_cap.he_cap_elem.phy_cap_info[9] |=
+-			IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU;
+-		if (!is_ap)
+-			iftype_data->he_cap.he_cap_elem.phy_cap_info[9] |=
+-				IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU;
+-		break;
+-	}
+-
+-	if (CSR_HW_REV_TYPE(trans->info.hw_rev) == IWL_CFG_MAC_TYPE_GL &&
+-	    iftype_data->eht_cap.has_eht) {
+-		iftype_data->eht_cap.eht_cap_elem.mac_cap_info[0] &=
+-			~(IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE1 |
+-			  IEEE80211_EHT_MAC_CAP0_TRIG_TXOP_SHARING_MODE2);
+-		iftype_data->eht_cap.eht_cap_elem.phy_cap_info[3] &=
+-			~(IEEE80211_EHT_PHY_CAP0_PARTIAL_BW_UL_MU_MIMO |
+-			  IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK |
+-			  IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK |
+-			  IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FDBK |
+-			  IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK |
+-			  IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FDBK |
+-			  IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FDBK);
+-		iftype_data->eht_cap.eht_cap_elem.phy_cap_info[4] &=
+-			~(IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO |
+-			  IEEE80211_EHT_PHY_CAP4_POWER_BOOST_FACT_SUPP);
+-		iftype_data->eht_cap.eht_cap_elem.phy_cap_info[5] &=
+-			~IEEE80211_EHT_PHY_CAP5_NON_TRIG_CQI_FEEDBACK;
+-		iftype_data->eht_cap.eht_cap_elem.phy_cap_info[6] &=
+-			~(IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK |
+-			  IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP);
+-		iftype_data->eht_cap.eht_cap_elem.phy_cap_info[5] |=
+-			IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF;
+-	}
+-
+ 	if (fw_has_capa(&fw->ucode_capa, IWL_UCODE_TLV_CAPA_BROADCAST_TWT))
+ 		iftype_data->he_cap.he_cap_elem.mac_cap_info[2] |=
+ 			IEEE80211_HE_MAC_CAP2_BCAST_TWT;
 -- 
 2.34.1
 
