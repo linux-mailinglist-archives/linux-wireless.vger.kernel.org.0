@@ -1,205 +1,209 @@
-Return-Path: <linux-wireless+bounces-25175-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25176-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AF4AFFF6D
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 12:40:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C19CB00192
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 14:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 739E33B6BCF
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 10:39:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D3BE3B1977
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 12:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EDD2D8DC4;
-	Thu, 10 Jul 2025 10:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504612512D5;
+	Thu, 10 Jul 2025 12:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IpGRUIzg"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="oOkRBua1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4C2246788
-	for <linux-wireless@vger.kernel.org>; Thu, 10 Jul 2025 10:39:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7648B226CFC;
+	Thu, 10 Jul 2025 12:22:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752143997; cv=none; b=q4iq4PRU4vbWYczoDK/LRI6UX/okGrTYd33ygGw5B2or7QTP96Za299lpogR7I0HT3M0wgVgy7UxzUDpoxk9Its6MXlmfjpo+Sh824jBV7cq9K0kqKmIWdfeWPG+3hhFjLflGIurBXlQRhPZS18fpVXJ/0W27caodGmbOllZQCw=
+	t=1752150144; cv=none; b=Fi531r5MS0eudo9QN5DJQijKPB8CEniAFkqzyIYeNi7VPCn/HL2ZjtwLQ+AYv/LzG01fWZfw+YmNE2WIK/xQ6LUGsGUv3Mns1i6pMiM5kjukOERSsGZBrlmOqGv0OJGCBJqw+yC8kaw4v8xTXAmDIrmOmkDYX3gLcuVCuswnuuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752143997; c=relaxed/simple;
-	bh=YBn0OnNUfwQKFDfxuXkQhsRzVH+uy6yGVYRXkh3UIIo=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=jZxO0pMUbe18Hk5W30XwyIae274cOXd1htODfA8hvyloRaqYi+9bAnQ9b6a5MCaOxUaMwubwH+fBfGfZXzI3ERd77IsKo7Z5XEbArX+SUnilM6BNP5tziiAJAxJkRkwwMPhJE+6vDQKmN8lpdXYUMZI1xCpROnbAMYeqFGsjt8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IpGRUIzg; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752143996; x=1783679996;
-  h=date:from:to:cc:subject:message-id;
-  bh=YBn0OnNUfwQKFDfxuXkQhsRzVH+uy6yGVYRXkh3UIIo=;
-  b=IpGRUIzgr9KpKk7KpGvnSMSZhkDFrryQPAH96uUj99oi9kWp3aLguiGg
-   J7vtD65i0tlcsg2xh7fclZjeI+pmIEyjvkTpMnGeNw83bPDx36yx+1fHW
-   BIQBXMekY5LIo1YX/la0tTKYHyLuLLSTV/9PoXDfgdq3/XnZdUznrLKtE
-   13MyPtUbzu34P+2xfra2hhWZbcdWJ4MxRgH2eBnNi/t86i5wX/51Uaqs6
-   jKv16ZgS365egkY8BNPEYsezg71oVa4kMgTX7YEEwWgi72kO1UwoEgBew
-   XG2AHlkIEtQzUs6iDrmkAMEfHLnZoWV/L8VmZt0QDtv2YjneYlgjStMM3
-   w==;
-X-CSE-ConnectionGUID: QyjiCUagRoieBTDnJ1maMg==
-X-CSE-MsgGUID: WPdKsDctRS6/UJ4mrWLKzg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="65869902"
-X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
-   d="scan'208";a="65869902"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 03:39:56 -0700
-X-CSE-ConnectionGUID: NWOSTyumTgGlZZPgLnh8UQ==
-X-CSE-MsgGUID: 73lrJ0CSRea5Pq46gDbXBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
-   d="scan'208";a="155813008"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 10 Jul 2025 03:39:54 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uZogx-0004w4-36;
-	Thu, 10 Jul 2025 10:39:51 +0000
-Date: Thu, 10 Jul 2025 18:39:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- a066917360ed5000c4f73fb190773cfac004c885
-Message-ID: <202507101848.EfHfvwTO-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1752150144; c=relaxed/simple;
+	bh=NdB7wbqsB1g307z8h8mAp8NQyBypa3IXNIzoHMkODMU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vr/EtT3veW2yup8pQvmJlAyI6caSFiD5FuRtDPnwdl9txT6hEIa9pAyPzq1IFhErEMpyWTr4ObG/9pM8KCoUFE1p94qKQLk4qSeaBjWtdiNLo5qJ8McAtoqM6giGFcY2LZTlxjH+3QlCgdhPrh9TOJ+8X5wJkdJTJYOKlTM9ZMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=oOkRBua1; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=r6cpPlRsY6k/wANUJdTvmlu8GuUUvS3y0WGIYPpTNk8=; t=1752150142; x=1753359742; 
+	b=oOkRBua13WxfnPxoIx6QyjtULLy9IRhm8seUU5qc5rG74VZXs5qlknJ1D03xaR/kMeVBIpra6Q5
+	6ZmnqrYhkAyIjUkM4+lo6b+ooaB3xhSp0wW8k/9mWV1ts3Yq2Cf23LHMuL5YSM5xge5Ggn6HwGlLP
+	tRTqK/n/PhslA81jzap0csKnix5SEMp1g692FUBTS6vEp9ea4/qBi+eW98dYdXjNPyW2IxBW1QlAj
+	ccv44FaBH8D9tmPzF0iP2n6c3OL22/gU3Cc5KYaSxMGzPSpnLcDnASDPsBWLua/wz7xOpz7kgV/yv
+	xuQqpgIehydC+0LMOKY47fI6VFlMDeUAcSHA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uZqI8-0000000ElRl-0Bld;
+	Thu, 10 Jul 2025 14:22:20 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [GIT PULL] wireless-2025-07-10
+Date: Thu, 10 Jul 2025 14:21:06 +0200
+Message-ID: <20250710122212.24272-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: a066917360ed5000c4f73fb190773cfac004c885  wifi: mac80211: Fix uninitialized variable with __free() in ieee80211_ml_epcs()
+Hi,
 
-elapsed time: 1447m
+So I have more fixes than I'd like at this point, but a few
+were under discussion for a while, mt76 fixes were just not
+forthcoming until now, and all of them really don't seem
+wrong to put into the tree at this point...
 
-configs tested: 112
-configs skipped: 3
+Please pull and let us know if there's any problem.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Thanks,
+johannes
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                   randconfig-001-20250709    gcc-8.5.0
-arc                   randconfig-002-20250709    gcc-11.5.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-21
-arm                              allyesconfig    gcc-15.1.0
-arm                   randconfig-001-20250709    gcc-12.4.0
-arm                   randconfig-002-20250709    gcc-10.5.0
-arm                   randconfig-003-20250709    clang-21
-arm                   randconfig-004-20250709    clang-21
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20250709    clang-21
-arm64                 randconfig-002-20250709    gcc-15.1.0
-arm64                 randconfig-003-20250709    clang-21
-arm64                 randconfig-004-20250709    gcc-10.5.0
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20250709    gcc-15.1.0
-csky                  randconfig-002-20250709    gcc-15.1.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-21
-hexagon               randconfig-001-20250709    clang-19
-hexagon               randconfig-002-20250709    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250709    gcc-12
-i386        buildonly-randconfig-002-20250709    clang-20
-i386        buildonly-randconfig-003-20250709    clang-20
-i386        buildonly-randconfig-004-20250709    clang-20
-i386        buildonly-randconfig-005-20250709    gcc-12
-i386        buildonly-randconfig-006-20250709    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-21
-loongarch             randconfig-001-20250709    gcc-15.1.0
-loongarch             randconfig-002-20250709    gcc-12.4.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                               defconfig    gcc-14.2.0
-nios2                 randconfig-001-20250709    gcc-14.2.0
-nios2                 randconfig-002-20250709    gcc-14.2.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250709    gcc-15.1.0
-parisc                randconfig-002-20250709    gcc-14.3.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-21
-powerpc               randconfig-001-20250709    gcc-8.5.0
-powerpc               randconfig-002-20250709    clang-21
-powerpc               randconfig-003-20250709    clang-21
-powerpc64             randconfig-001-20250709    gcc-10.5.0
-powerpc64             randconfig-002-20250709    gcc-10.5.0
-powerpc64             randconfig-003-20250709    clang-21
-riscv                            allmodconfig    clang-21
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                 randconfig-001-20250709    gcc-10.5.0
-riscv                 randconfig-002-20250709    clang-21
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-15.1.0
-s390                  randconfig-001-20250709    clang-17
-s390                  randconfig-002-20250709    clang-21
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                    randconfig-001-20250709    gcc-10.5.0
-sh                    randconfig-002-20250709    gcc-14.3.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250709    gcc-15.1.0
-sparc                 randconfig-002-20250709    gcc-10.3.0
-sparc64               randconfig-001-20250709    clang-21
-sparc64               randconfig-002-20250709    clang-21
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250709    clang-17
-um                    randconfig-002-20250709    gcc-12
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250709    gcc-12
-x86_64      buildonly-randconfig-002-20250709    clang-20
-x86_64      buildonly-randconfig-003-20250709    gcc-12
-x86_64      buildonly-randconfig-004-20250709    gcc-12
-x86_64      buildonly-randconfig-005-20250709    clang-20
-x86_64      buildonly-randconfig-006-20250709    gcc-12
-x86_64                              defconfig    gcc-11
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250709    gcc-8.5.0
-xtensa                randconfig-002-20250709    gcc-11.5.0
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+The following changes since commit e34a79b96ab9d49ed8b605fee11099cf3efbb428:
+
+  Merge tag 'net-6.16-rc4' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-06-26 09:13:27 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-07-10
+
+for you to fetch changes up to c07981af55d3ba3ec3be880cfe4a0cc10f1f7138:
+
+  wifi: mac80211: add the virtual monitor after reconfig complete (2025-07-10 13:27:14 +0200)
+
+----------------------------------------------------------------
+Quite a number of fixes still:
+ - mt76 (hadn't sent any fixes so far)
+   - RCU
+   - scanning
+   - decapsulation offload
+   - interface combinations
+ - rt2x00: build fix (bad function pointer prototype)
+ - cfg80211: prevent A-MSDU flipping attacks in mesh
+ - zd1211rw: prevent race ending with NULL ptr deref
+ - cfg80211/mac80211: more S1G fixes
+ - mwifiex: avoid WARN on certain RX frames
+ - mac80211:
+   - avoid stack data leak in WARN cases
+   - fix non-transmitted BSSID search
+     (on certain multi-BSSID APs)
+   - always initialize key list so driver
+     iteration won't crash
+   - fix monitor interface in device restart
+   - fix __free() annotation usage
+
+----------------------------------------------------------------
+Daniil Dulov (1):
+      wifi: zd1211rw: Fix potential NULL pointer dereference in zd_mac_tx_to_dev()
+
+Deren Wu (2):
+      wifi: mt76: mt7925: prevent NULL pointer dereference in mt7925_sta_set_decap_offload()
+      wifi: mt76: mt7921: prevent decap offload config before STA initialization
+
+Felix Fietkau (3):
+      wifi: rt2x00: fix remove callback type mismatch
+      wifi: mt76: add a wrapper for wcid access with validation
+      wifi: mt76: fix queue assignment for deauth packets
+
+Henry Martin (1):
+      wifi: mt76: mt7925: Fix null-ptr-deref in mt7925_thermal_init()
+
+Johannes Berg (3):
+      wifi: mac80211: clear frame buffer to never leak stack
+      wifi: mac80211: fix non-transmitted BSSID profile search
+      Merge tag 'mt76-fixes-2025-07-07' of https://github.com/nbd168/wireless
+
+Lachlan Hodges (2):
+      wifi: cfg80211: fix S1G beacon head validation in nl80211
+      wifi: mac80211: correctly identify S1G short beacon
+
+Leon Yen (1):
+      wifi: mt76: mt792x: Limit the concurrent STA and SoftAP to operate on the same channel
+
+Lorenzo Bianconi (5):
+      wifi: mt76: Assume __mt76_connac_mcu_alloc_sta_req runs in atomic context
+      wifi: mt76: Move RCU section in mt7996_mcu_set_fixed_field()
+      wifi: mt76: Move RCU section in mt7996_mcu_add_rate_ctrl_fixed()
+      wifi: mt76: Move RCU section in mt7996_mcu_add_rate_ctrl()
+      wifi: mt76: Remove RCU section in mt7996_mac_sta_rc_work()
+
+Mathy Vanhoef (1):
+      wifi: prevent A-MSDU attacks in mesh networks
+
+Michael Lo (1):
+      wifi: mt76: mt7925: fix invalid array index in ssid assignment during hw scan
+
+Ming Yen Hsieh (2):
+      wifi: mt76: mt7925: fix the wrong config for tx interrupt
+      wifi: mt76: mt7925: fix incorrect scan probe IE handling for hw_scan
+
+Miri Korenblit (2):
+      wifi: mac80211: always initialize sdata::key_list
+      wifi: mac80211: add the virtual monitor after reconfig complete
+
+Moon Hee Lee (1):
+      wifi: mac80211: reject VHT opmode for unsupported channel widths
+
+Pagadala Yesu Anjaneyulu (1):
+      wifi: mac80211: Fix uninitialized variable with __free() in ieee80211_ml_epcs()
+
+Vitor Soares (1):
+      wifi: mwifiex: discard erroneous disassoc frames on STA interface
+
+ drivers/net/wireless/marvell/mwifiex/util.c        |   4 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h          |  10 ++
+ drivers/net/wireless/mediatek/mt76/mt7603/dma.c    |   2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c    |  10 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c    |   7 +-
+ .../net/wireless/mediatek/mt76/mt76_connac_mac.c   |   2 +-
+ .../net/wireless/mediatek/mt76/mt76_connac_mcu.c   |   6 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02.h       |   5 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mac.c   |   4 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c    |  12 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c    |   2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mmio.c   |   5 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c    |   6 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c   |   3 +
+ drivers/net/wireless/mediatek/mt76/mt7925/init.c   |   2 +
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c    |   6 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c   |   8 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c    |  79 ++++++--
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.h    |   5 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/regs.h   |   2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x_core.c   |  32 +++-
+ drivers/net/wireless/mediatek/mt76/mt792x_mac.c    |   5 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c    |  52 ++----
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c   |   5 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 199 +++++++++++++++------
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  16 +-
+ drivers/net/wireless/mediatek/mt76/tx.c            |  11 +-
+ drivers/net/wireless/mediatek/mt76/util.c          |   2 +-
+ drivers/net/wireless/ralink/rt2x00/rt2x00soc.c     |   4 +-
+ drivers/net/wireless/ralink/rt2x00/rt2x00soc.h     |   2 +-
+ drivers/net/wireless/zydas/zd1211rw/zd_mac.c       |   6 +-
+ include/linux/ieee80211.h                          |  45 +++--
+ net/mac80211/cfg.c                                 |  14 ++
+ net/mac80211/iface.c                               |   4 +-
+ net/mac80211/mlme.c                                |  12 +-
+ net/mac80211/parse.c                               |   6 +-
+ net/mac80211/util.c                                |   9 +-
+ net/wireless/nl80211.c                             |   7 +-
+ net/wireless/util.c                                |  52 +++++-
+ 39 files changed, 430 insertions(+), 233 deletions(-)
 
