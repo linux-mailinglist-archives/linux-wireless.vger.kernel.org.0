@@ -1,137 +1,205 @@
-Return-Path: <linux-wireless+bounces-25178-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25179-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1625B0035F
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 15:31:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E0BB004E7
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 16:16:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB87B3B4CC4
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 13:30:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59B25486B5F
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 14:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEC782899;
-	Thu, 10 Jul 2025 13:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F339D27056B;
+	Thu, 10 Jul 2025 14:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="y7zv1h9O";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="Uh6/0juL"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="OIDPkdGX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47192586C8
-	for <linux-wireless@vger.kernel.org>; Thu, 10 Jul 2025 13:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752154283; cv=none; b=fYix/u28wqdblwXMzJTtH5ZaCcBYOem/0g4xXQoHOLuOb4ZNW6+NkVi6bT8dO4byiLKPtsLz5X3U5hEpUQVsnxm9Ky7qlp7HWBvGC29Z4QnG7CVZROqDFmba0N3FL97KYFjLzEGxPpvsEoyuicuq8wbky5i0YVPEIPdd9xRxKfo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752154283; c=relaxed/simple;
-	bh=aGkY5FkpXlRasmX7IkSFUC1z895PdUw3R9nsi4qUscU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LYMZfQuvUfMUVGO4p/AWxsPwTG2YpGZ2KSql+gNqjo/2rJk3dwlpkot5MErq0rRpHMhYgAc+hFGzmygZg9tdgKQZrZat1+SzvIdnC7k8RtdcNVB0uVlrQ7lfvV2DjETtbvGG0dGWxL7ISJLGFBUJtOF0AizaJ40RmP67SZHPF38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=y7zv1h9O reason="unknown key version"; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=Uh6/0juL; arc=none smtp.client-ip=103.2.141.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=smtpservice.net; s=maxzs0.a1-4.dyn; x=1752155180; h=Feedback-ID:
-	X-Smtpcorp-Track:Message-ID:Subject:To:From:Date:Reply-To:Sender:
-	List-Unsubscribe:List-Unsubscribe-Post;
-	bh=BsR5rXUF8TnVSQ9rfmGhuw/H5eoO2vMI7vkzhS8PYSI=; b=y7zv1h9OvEWUGoXELkM0ySi4JV
-	DJ6GQ08bAtSWYVsZYpde5Z7V3xqGPAjTUPL2Ky7Z8fB8hcfAAoUrU7v2urhljwAMSGAYVaIC9cRis
-	gu6YTNZH5NuBK0zfPqSide6igl/MgJKyVGkZAW6YT1sAeNni1pbMo1k5sRDPJMZLgjEV5ogNtk09g
-	v6YHPJ90wf+E74Jo7cXLNcnes1H1tOnRSsoxU+P7NYO8fu6as35SDfAeVzYFa2OKt2wO9s/GLiZvA
-	s2/mI8Fz5c0V/RMNMl4G5bmk+pPjnd3na1hr4h4+bvPQVz/CbqGi+5emtziF/ztLoFcmgCvqNKnMN
-	haVRAblQ==;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1752154279; h=from : subject
- : to : message-id : date;
- bh=BsR5rXUF8TnVSQ9rfmGhuw/H5eoO2vMI7vkzhS8PYSI=;
- b=Uh6/0juL/KFLw9ZatzKT0GltdqshNQUWgMhmrSC7Ebkok96JULRz9oLo532bh2bT44sqK
- d9PKFUUXBwiuKHLoJIsv5MaQlUo3s+y4xr0KRuesrs3Kape4UxDxQbpvK6px5ShbS3RDwDk
- uQ5FsdHh6woWqR8HaWV5OsngRlOQlpxUTXxBylpftB9amh7bEavka2gLQWFqXOshNSnqbaY
- rcfaCPSHS8g2TOIumdxhojX/MLhqK0Y3Of2c2nq8rd08JyDvixpbeJEr2evA40qoqBxLhcy
- 0Eh3AfXoMWbd4Mu7CTAsw7DC/gBesjmaHmyMRzTPZPQOlPb4RZaqPRXYcfVQ==
-Received: from [10.172.233.45] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.94.2-S2G) (envelope-from <repk@triplefau.lt>)
- id 1uZrMh-TRk6GJ-S4; Thu, 10 Jul 2025 13:31:07 +0000
-Received: from [10.12.239.196] (helo=localhost) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.98.1-S2G) (envelope-from <repk@triplefau.lt>)
- id 1uZrMh-AIkwcC8oc00-JHJu; Thu, 10 Jul 2025 13:31:07 +0000
-Date: Thu, 10 Jul 2025 15:21:08 +0200
-From: Remi Pommarel <repk@triplefau.lt>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH wireless-next 0/3] Allow non-MLD sta to roam between MLD
- AP links
-Message-ID: <aG--RKqY7RBfkvLR@pilgrim>
-References: <cover.1751057146.git.repk@triplefau.lt>
- <4d50e8de5750cd6b915f209b9d3ab26f34efda99.camel@sipsolutions.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049A8231A24;
+	Thu, 10 Jul 2025 14:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752156944; cv=pass; b=DRHq9dtcO5+mEYaUySW3PK9LzWD7wNawODkoQbem7wxIurpaCUNom5Z4gRDEu6XPehbL0h7j4jEMe2PHcEJgi/hQt1pEHYKU4fez4ehm0wo69i+F5Rfv9VFBrlG44ocmD2HnLmgM+E+HiLbIXa40lAZOfQWMYereCxWRM2eCa+s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752156944; c=relaxed/simple;
+	bh=VkWIov4pncN1CxRUjWnTedpZphrnmnhBJGxO59cUQio=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n2CQrgplkTih2p4fEEmR0nElUcznkLn245ObJbRF1vHfJR4RRvbBh8ObswkBTzAOEMH3zQhxNTR3y7r+hAvb4l3qBnmyz+sYhH+CmzBGPBkbdpxympvPUcR1Q6v055HhvdzUVjF4wxUUPe5jXwBr8WmhQSDfyGpe3YJ9wd1fclY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=OIDPkdGX; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1752156866; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=BxbU6/hBdzFK5J83uPrxiRnMJK5DwDubdmhCFsE8xTFJLhOQwhMIoE0J/wBnyQyVlNelxEurbeyG3Xb5KTEPiBLS8OuGd9aH4/YeNeOF16WOmHfai83x8rCj2fNCFcM8D0abUMGw+4K606NNNvOwossKZ2ZMZhpe21y84FzzmbQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752156866; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=+Bd1ScZrM2JC5+XfTmUMVfKPSMOMu2+hKdobUpn9uAo=; 
+	b=AWvkfaannUwK9VBk/+ID3M8INlNR+LiGkN7SOXEEnqmMuDP4zI3T+5yxF6efYDCxhR+Z8TG8xY5n450grEiA0kOdZ/E3Nz80+CF01Blo8mcW30Zc5SpF8UpJdaUFNybrwuCMUjWqAScmFQb47e2MLe3O+kweM9JCdjLvuO2frAU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass header.from=<usama.anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752156866;
+	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=+Bd1ScZrM2JC5+XfTmUMVfKPSMOMu2+hKdobUpn9uAo=;
+	b=OIDPkdGXgEeMzXE5rpruOGW/k17fl/ejoogEYAs4cEaibKURNF8jt9+ONc15Ma8w
+	ynSLNOGF5peSetDKVHK6VxLJi/C1EuJNxkmowaFbwvPQuPK8ez2Ud3aSag9e1SxQypg
+	MVpEQC+ZI+L9/HgMSDY9Yc3FhtnaiQxRiVysRfBA=
+Received: by mx.zohomail.com with SMTPS id 1752156862699411.0438114787785;
+	Thu, 10 Jul 2025 07:14:22 -0700 (PDT)
+Message-ID: <d4e9f38b-895e-45ea-90db-3c2839c76c70@collabora.com>
+Date: Thu, 10 Jul 2025 19:14:15 +0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4d50e8de5750cd6b915f209b9d3ab26f34efda99.camel@sipsolutions.net>
-X-Smtpcorp-Track: UBpTE96Z6G7C.BIWBSzlvnuVd.YHANVwOvTHL
-Feedback-ID: 510616m:510616apGKSTK:510616sQxsm_LMAk
-X-Report-Abuse: Please forward a copy of this message, including all headers,
- to <abuse-report@smtp2go.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] bus: mhi: host: keep bhi buffer through suspend cycle
+To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+ Manivannan Sadhasivam <mani@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+ Youssef Samir <quic_yabdulra@quicinc.com>,
+ Matthew Leung <quic_mattleun@quicinc.com>, Yan Zhen <yanzhen@vivo.com>,
+ Alexander Wilhelm <alexander.wilhelm@westermo.com>,
+ Alex Elder <elder@kernel.org>, Kunwu Chan <chentao@kylinos.cn>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Siddartha Mohanadoss <smohanad@codeaurora.org>,
+ Sujeev Dias <sdias@codeaurora.org>, Julia Lawall <julia.lawall@lip6.fr>,
+ John Crispin <john@phrozen.org>, Muna Sinada <quic_msinada@quicinc.com>,
+ Venkateswara Naralasetty <quic_vnaralas@quicinc.com>,
+ Maharaja Kennadyrajan <quic_mkenna@quicinc.com>, mhi@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Cc: kernel@collabora.com
+References: <20250630074330.253867-1-usama.anjum@collabora.com>
+ <20250630074330.253867-2-usama.anjum@collabora.com>
+ <b76cfe82-b977-4166-85d8-368539b392fd@oss.qualcomm.com>
+Content-Language: en-US
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <b76cfe82-b977-4166-85d8-368539b392fd@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Tue, Jul 08, 2025 at 11:00:26AM +0200, Johannes Berg wrote:
-> On Fri, 2025-06-27 at 22:46 +0200, Remi Pommarel wrote:
-> > 
-> > To fix that, the first patch of this serie does not report management
-> > frames with a link id (link id == -1) and let hostapd do the freq to
-> > link conversion to respond. This relies on the fact that hostapd knows
-> > how to do this freq to link conversion which is needed anyway for the
-> > first pre-association scan. We can also do this conversion in mac80211
-> > instead if it is deem preferrable.
+Thank you so much for review.
+
+On 7/8/25 2:47 PM, Krishna Chaitanya Chundru wrote:
 > 
-> You should probably send patches as RFC if you have things like that.
-
-Sure. Some subsystems have a tendency to ignore those RFCs patches but
-that does not seem to be the case for linux-wireless.
-
 > 
-> > This serie along with the mentionned hostapd patch allowes a non-MLD
-> > STA to successfully roam between several MLD AP links with hwsim.
-> 
-> Maybe so, but does anything _else_ MLO related still work? Surely it
-> cannot, given you just unconditionally made it no longer have a link ID
-> ... And indeed most of the EHT hwsim tests no longer pass, and even
-> crash the kernel.
-> 
-> Since you clearly were running hwsim tests, please run the existing ones
-> too :)
+> On 6/30/2025 1:13 PM, Muhammad Usama Anjum wrote:
+>> When there is memory pressure, at resume time dma_alloc_coherent()
+>> returns error which in turn fails the loading of firmware and hence
+>> the driver crashes:
+>>
+> why only bhi? bhie can also have same issue.
+I was thinking I'd handled all bhie cases in earlier patch. But I haven't. I'll post
+fix for bhie in next version.
 
-Agh, sorry about that. I was not running the hostapd's hwsim tests
-because I just discovered they exist. With the mentionned hostapd
-patch most of them pass, but yes of course, let's not break old
-wpa_supplicant/hostapd with kernel changes.
+>> kernel: kworker/u33:5: page allocation failure: order:7,
+>> mode:0xc04(GFP_NOIO|GFP_DMA32), nodemask=(null),cpuset=/,mems_allowed=0
+>> kernel: CPU: 1 UID: 0 PID: 7693 Comm: kworker/u33:5 Not tainted
+>> 6.11.11-valve17-1-neptune-611-g027868a0ac03 #1
+>> 3843143b92e9da0fa2d3d5f21f51beaed15c7d59
+>> kernel: Hardware name: Valve Galileo/Galileo, BIOS F7G0112 08/01/2024
+>> kernel: Workqueue: mhi_hiprio_wq mhi_pm_st_worker [mhi]
+>> kernel: Call Trace:
+>> kernel:  <TASK>
+>> kernel:  dump_stack_lvl+0x4e/0x70
+>> kernel:  warn_alloc+0x164/0x190
+>> kernel:  ? srso_return_thunk+0x5/0x5f
+>> kernel:  ? __alloc_pages_direct_compact+0xaf/0x360
+>> kernel:  __alloc_pages_slowpath.constprop.0+0xc75/0xd70
+>> kernel:  __alloc_pages_noprof+0x321/0x350
+>> kernel:  __dma_direct_alloc_pages.isra.0+0x14a/0x290
+>> kernel:  dma_direct_alloc+0x70/0x270
+>> kernel:  mhi_fw_load_handler+0x126/0x340 [mhi
+>> a96cb91daba500cc77f86bad60c1f332dc3babdf]
+>> kernel:  mhi_pm_st_worker+0x5e8/0xac0 [mhi
+>> a96cb91daba500cc77f86bad60c1f332dc3babdf]
+>> kernel:  ? srso_return_thunk+0x5/0x5f
+>> kernel:  process_one_work+0x17e/0x330
+>> kernel:  worker_thread+0x2ce/0x3f0
+>> kernel:  ? __pfx_worker_thread+0x10/0x10
+>> kernel:  kthread+0xd2/0x100
+>> kernel:  ? __pfx_kthread+0x10/0x10
+>> kernel:  ret_from_fork+0x34/0x50
+>> kernel:  ? __pfx_kthread+0x10/0x10
+>> kernel:  ret_from_fork_asm+0x1a/0x30
+>> kernel:  </TASK>
+>> kernel: Mem-Info:
+>> kernel: active_anon:513809 inactive_anon:152 isolated_anon:0
+>>      active_file:359315 inactive_file:2487001 isolated_file:0
+>>      unevictable:637 dirty:19 writeback:0
+>>      slab_reclaimable:160391 slab_unreclaimable:39729
+>>      mapped:175836 shmem:51039 pagetables:4415
+>>      sec_pagetables:0 bounce:0
+>>      kernel_misc_reclaimable:0
+>>      free:125666 free_pcp:0 free_cma:0
+>>
+>> In above example, if we sum all the consumed memory, it comes out
+>> to be 15.5GB and free memory is ~ 500MB from a total of 16GB RAM.
+>> Even though memory is present. But all of the dma memory has been
+>> exhausted or fragmented.
+>>
+>> Fix it by allocating it only once and then reuse the same allocated
+>> memory. As we'll allocate this memory only once, this memory will stay
+>> allocated.
+>>
+>> Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+>>
+>> Fixes: cd457afb1667 ("bus: mhi: core: Add support for downloading firmware over BHIe")
+>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+>> ---
+>> Reported here:
+>> https://lore.kernel.org/all/ead32f5b-730a-4b81-b38f-93d822f990c6@collabora.com
+>>
+>> Still a lot of more fixes are required. Hence, I'm not adding closes tag.
+>> ---
+>>   drivers/bus/mhi/host/boot.c     | 19 ++++++++++---------
+>>   drivers/bus/mhi/host/init.c     |  5 +++++
+>>   drivers/bus/mhi/host/internal.h |  2 ++
+>>   include/linux/mhi.h             |  1 +
+>>   4 files changed, 18 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/bus/mhi/host/boot.c b/drivers/bus/mhi/host/boot.c
+>> index b3a85aa3c4768..11bb8c12ac597 100644
+>> --- a/drivers/bus/mhi/host/boot.c
+>> +++ b/drivers/bus/mhi/host/boot.c
+>> @@ -302,8 +302,8 @@ static int mhi_fw_load_bhi(struct mhi_controller *mhi_cntrl,
+>>       return -EIO;
+>>   }
+>>   -static void mhi_free_bhi_buffer(struct mhi_controller *mhi_cntrl,
+>> -                struct image_info *image_info)
+>> +void mhi_free_bhi_buffer(struct mhi_controller *mhi_cntrl,
+>> +             struct image_info *image_info)
+>>   {
+>>       struct mhi_buf *mhi_buf = image_info->mhi_buf;
+>>   @@ -455,18 +455,19 @@ static enum mhi_fw_load_type mhi_fw_load_type_get(const struct mhi_controller *m
+>>     static int mhi_load_image_bhi(struct mhi_controller *mhi_cntrl, const u8 *fw_data, size_t size)
+>>   {
+>> -    struct image_info *image;
+>> +    struct image_info *image = mhi_cntrl->bhi_image;
+>>       int ret;
+>>   -    ret = mhi_alloc_bhi_buffer(mhi_cntrl, &image, size);
+>> -    if (ret)
+>> -        return ret;
+>> +    if (!image) {
+>> +        ret = mhi_alloc_bhi_buffer(mhi_cntrl, &image, size);
+>> +        if (ret)
+>> +            return ret;
+>>   -    /* Load the firmware into BHI vec table */
+>> -    memcpy(image->mhi_buf->buf, fw_data, size);
+>> +        /* Load the firmware into BHI vec table */
+>> +        memcpy(image->mhi_buf->buf, fw_data, size);
+>> +    }
+>>         ret = mhi_fw_load_bhi(mhi_cntrl, &image->mhi_buf[image->entries - 1]);
+> if mhi fw load fails didn't we need to free bhi buffer.
+Good point. I'll fix in v2.
 
-Doing freq to link id conversion instead makes all eht test to pass (I
-will of course also add a hwsim test for this specific issue).
-
-> 
-> Also, I suspect that https://lore.kernel.org/linux-
-> wireless/20250630084119.3583593-1-quic_sarishar@quicinc.com/ might go
-> some way towards fixing this as well?
-
-No I am afraid this one won't help.
-
-The issue here is receiving off channel management frames and using the
-link id the sta is currently associated with to report them to userland.
-For example if sta is associated with link 0 and send a probe request on
-link 1 (off channel scan), this frame should be reported to hostapd with
-either no link id or a link id of 1.
-
-Thanks
-
--- 
-Remi
 
