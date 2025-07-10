@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-25206-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25207-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF440B00B5C
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 20:29:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CAEB00B5D
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 20:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61C061888A89
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 18:29:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D8A33A9A4A
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 18:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD9B2FCE1A;
-	Thu, 10 Jul 2025 18:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A36D2FCFD1;
+	Thu, 10 Jul 2025 18:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n8S34lIL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ixhU7pN8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1E12FCE13
-	for <linux-wireless@vger.kernel.org>; Thu, 10 Jul 2025 18:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFD32FCE2F
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Jul 2025 18:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752172137; cv=none; b=JiTO7c+pfIj5dyfpmWfWR59SbvgYnZfavf5OVOxcm4f/vCJUh9wrLgyTwsMt5oU5c4frrO6x/qtVX6tMsp4MOH4Y1kcwtSzS2w0tr+jdS4JyhdkdXg1AKHale/j++xl7C2tK20R/kzsilbDZhGp8yhPGawhPTDo8ayolxsgxNqU=
+	t=1752172139; cv=none; b=BirifYXC5ext6/1JzQkfTfK3XjjAzb3tLRgr1BKXAcGQZt+F2g26OxLBK/nWb1Z0rCbIqf7Oqh9gon0BsjU/wlWc7zWK6Xka6VZfkLmIoS7+ENdUcWL285adt39CgjrIMFsIwNW/iz9QW1m3S/JVml1d9q7ats+cklpP417/M+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752172137; c=relaxed/simple;
-	bh=LO7huGSL163+cY+C5ddUIBKoGInm0+2nmxJstvnm46w=;
+	s=arc-20240116; t=1752172139; c=relaxed/simple;
+	bh=jfk9gvqh2Ms7ekcflGXuw/11k3Rr0QKqlQxlkLXVmys=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=olFpYnamNWksEI0/7bYDQMzfYoO/LLTXHzD8PJLrhm5qQnbqmvoxfvfrFk6vgt6YvVrD39kuCObPNQVY3ngufXF2rSfjjmRswqxNwe1nrfce0GJyFRySregYL8RG8bL76ld1zbt/Ns4secFtapORX/LaDULuv+3n/yA+BRlN4yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n8S34lIL; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=PIhWpKJdp+pGXz0lbCZTQtwRyxz28zLNKKU7GzW7ZlJjJh/e8hZcd3UDekSnnIoCqH20TresJ5gtSOlVaUZm5QxCcRchGM9CDNQhyxMNwG1zNCIWYL4jO5sUgbCsMD6Hh0phbnb4lQ486n/Al9tjmxS+30IJXOsTxVf1Et7BLwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ixhU7pN8; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752172136; x=1783708136;
+  t=1752172138; x=1783708138;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=LO7huGSL163+cY+C5ddUIBKoGInm0+2nmxJstvnm46w=;
-  b=n8S34lILGx/O9yxYzoIuy263gUTtTCEOnUY2uGiHZBtbmYlKyMWRwrzL
-   b8br1RfGuatum7TO4a8Y5NRblU6PUhtrpK3uJAZqEAjfd2aYTzzH19j9X
-   //mF/+m45KalynADidjeWhjimRmbznvWxvNrM2mYzoIz36O7Yal6fetyP
-   z8F/zxM9bcE2WG6iV5onmePQuA/TcK13s9Zl38j6D/WXIqb0U8myBaYD+
-   ctYfCGFWz5R++RUUpq07veRd1IWxno0T6mElpN+pCev5KDak5DdfsTtuB
-   au+lXBBUBKJa2eCETe+VluFj7hgGZdXinOp5LQBqP9rJL8hxa7UDHn3r8
+  bh=jfk9gvqh2Ms7ekcflGXuw/11k3Rr0QKqlQxlkLXVmys=;
+  b=ixhU7pN8OngCs+ruM050ap1JrTOkiIxrIEg48i3zgc2ZGq9MHlj+Og8c
+   f77GN8Ng2RnweeBgOpzzRg55NMoL8G2w1tnfKrvWtSD9v8HkvPpo3NsCv
+   P4rAm4E88rDgZeho6IVAGoc5zYxfi5zfQ9eRhKXhEVUQ2bAbdbAGQwCVa
+   AomBI0cHamubp0VjQemEa4NW9/w0Ato81fNPCQugVsiA5C5wNzCiL1T4l
+   wNcDIHlmGkjTaq/41wFRuhpuzF4scdmy0Tat7Jm1k/AqqLMcumGT9Ip9s
+   mCsTlaLgw/3fN37CXgTs5N+v/u3ItfmjXoIggyO9VBSJGyJo6jrbnJpzD
    Q==;
-X-CSE-ConnectionGUID: 6FQ7olDNTwaLmjAsd6BEZw==
-X-CSE-MsgGUID: WBmwOdC8TiugteOKx6gWng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="57077790"
+X-CSE-ConnectionGUID: w+78pRXDTiu4UPBKICWoDQ==
+X-CSE-MsgGUID: sWDpZLa7T1WWUY9GP8txfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="57077791"
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="57077790"
+   d="scan'208";a="57077791"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 11:28:56 -0700
-X-CSE-ConnectionGUID: jVgoPEvzSYCOvB3JK37BLQ==
-X-CSE-MsgGUID: od5mVyo2Sea0TSkxugs5ug==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 11:28:57 -0700
+X-CSE-ConnectionGUID: 2sopeD9oR1y6qkD3MEhJQg==
+X-CSE-MsgGUID: odzz8YpsRm2SVg01TfAG4w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="160718672"
+   d="scan'208";a="160718676"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 11:28:54 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 11:28:56 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Avraham Stern <avraham.stern@intel.com>
-Subject: [PATCH iwlwifi-next 02/15] wifi: iwlwifi: mld: update the P2P device mac before starting the GO
-Date: Thu, 10 Jul 2025 21:28:19 +0300
-Message-Id: <20250710212632.463a0ad545f9.I85a25484d787b65f6a27e794285911e319df0b2d@changeid>
+Subject: [PATCH iwlwifi-next 03/15] wifi: iwlwifi: mld: update expected range response notification version
+Date: Thu, 10 Jul 2025 21:28:20 +0300
+Message-Id: <20250710212632.377d24e29ac6.I44119a4e793bba35b46e1d35e2c378ce6f901bfd@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250710182832.2615019-1-miriam.rachel.korenblit@intel.com>
 References: <20250710182832.2615019-1-miriam.rachel.korenblit@intel.com>
@@ -78,70 +78,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Avraham Stern <avraham.stern@intel.com>
 
-When a GO is started, the P2P device mac is updated to indicate
-that frames for the P2P device mac should be filtered in while
-the GO is active. However, this configuration is done after the GO is
-already started so it doesn't take effect. Fix it by updating the
-P2P device mac before adding the broadcast station, which actually
-starts the GO.
+The last version for the range response notification is 10.
+Update the expected version accordingly.
 
 Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/ap.c | 24 +++++++++++++++------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/notif.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ap.c b/drivers/net/wireless/intel/iwlwifi/mld/ap.c
-index 26511b49d89a..5c59acc8c4c5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/ap.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ap.c
-@@ -294,9 +294,20 @@ int iwl_mld_start_ap_ibss(struct ieee80211_hw *hw,
- 	if (ret)
- 		return ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/notif.c b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
+index c0e62d46aba6..ff1a3b9079e2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/notif.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
+@@ -350,7 +350,7 @@ CMD_VERSIONS(time_sync_confirm_notif,
+ 	     CMD_VER_ENTRY(1, iwl_time_msmt_cfm_notify))
+ CMD_VERSIONS(omi_status_notif,
+ 	     CMD_VER_ENTRY(1, iwl_omi_send_status_notif))
+-CMD_VERSIONS(ftm_resp_notif, CMD_VER_ENTRY(9, iwl_tof_range_rsp_ntfy))
++CMD_VERSIONS(ftm_resp_notif, CMD_VER_ENTRY(10, iwl_tof_range_rsp_ntfy))
  
-+	mld_vif->ap_ibss_active = true;
-+
-+	if (vif->p2p && mld->p2p_device_vif) {
-+		ret = iwl_mld_mac_fw_action(mld, mld->p2p_device_vif,
-+					    FW_CTXT_ACTION_MODIFY);
-+		if (ret) {
-+			mld_vif->ap_ibss_active = false;
-+			goto rm_mcast;
-+		}
-+	}
-+
- 	ret = iwl_mld_add_bcast_sta(mld, vif, link);
- 	if (ret)
--		goto rm_mcast;
-+		goto update_p2p_dev;
- 
- 	/* Those keys were configured by the upper layers before starting the
- 	 * AP. Now that it is started and the bcast and mcast sta were added to
-@@ -310,12 +321,6 @@ int iwl_mld_start_ap_ibss(struct ieee80211_hw *hw,
- 		iwl_mld_vif_update_low_latency(mld, vif, true,
- 					       LOW_LATENCY_VIF_TYPE);
- 
--	mld_vif->ap_ibss_active = true;
--
--	if (vif->p2p && mld->p2p_device_vif)
--		return iwl_mld_mac_fw_action(mld, mld->p2p_device_vif,
--					     FW_CTXT_ACTION_MODIFY);
--
- 	/* When the channel context was added, the link is not yet active, so
- 	 * min_def is always used. Update the PHY again here in case def should
- 	 * actually be used.
-@@ -326,6 +331,11 @@ int iwl_mld_start_ap_ibss(struct ieee80211_hw *hw,
- 	return 0;
- rm_bcast:
- 	iwl_mld_remove_bcast_sta(mld, vif, link);
-+update_p2p_dev:
-+	mld_vif->ap_ibss_active = false;
-+	if (vif->p2p && mld->p2p_device_vif)
-+		iwl_mld_mac_fw_action(mld, mld->p2p_device_vif,
-+				      FW_CTXT_ACTION_MODIFY);
- rm_mcast:
- 	iwl_mld_remove_mcast_sta(mld, vif, link);
- 	return ret;
+ DEFINE_SIMPLE_CANCELLATION(session_prot, iwl_session_prot_notif, mac_link_id)
+ DEFINE_SIMPLE_CANCELLATION(tlc, iwl_tlc_update_notif, sta_id)
 -- 
 2.34.1
 
