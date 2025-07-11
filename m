@@ -1,147 +1,146 @@
-Return-Path: <linux-wireless+bounces-25274-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25275-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314DFB01F49
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 16:36:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 955F1B02082
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 17:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 696003AFC39
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 14:36:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C73B3A8A31
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 15:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA231898E9;
-	Fri, 11 Jul 2025 14:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E31D2D9798;
+	Fri, 11 Jul 2025 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VFdnqTh7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dqA3uKZ3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8A02A8C1
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 14:36:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8EF1DBB3A
+	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 15:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752244594; cv=none; b=aWB52Hc52ZU/lrosACxnm2Z3JpzTRJjb3+aTknsQbR+l7jy+TJ/OTJ9ORxVPPzgN0XbUs0JmKZvcoS5nG04E/EL7a3rDWpwMwap5ZJGPWqDiS7yLMALm6grRd1hl+C/fyNE4g/eSCNntiJpf6dGDpaQfwCkTsaLvIRkL38pY9kc=
+	t=1752248093; cv=none; b=X/W/v5ItTQYjJ5PAYRRo98dU3w07ysKUs5Z7TxVDhRc0edNtnxEDv5RQztnnYl6oQLruhuVjphAZxg8uqYtiBnl0NXuaryPE47CGzvXkALh+fAtaIw73yzdFF79e2Td93pEHtHY9zV1QyPfOWEey4L0VoxbmYA4IltAz5A24kCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752244594; c=relaxed/simple;
-	bh=jc53zF6GfjPcGJRxAZlGbfHpA1Ll8jVRIqbW3lGKILQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=GgIDghTIriUQYd9PMfN5E0Use8bESHZlc9ApqO4uDm1vDqnqYZojIQLs/YZduFOjspDp8cPtHOoW9S3p1ELvSzvQHIRtP7d72qOYOV41Ug57q03BwR0dqbrgTF3/yEytjldj5UnV9vPPx2ORt3VggkuXTT7/yTvtVGC4jBzydk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VFdnqTh7; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56BAkHHc031119
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 14:36:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	0yYJm1Xs6KWdBMs0DOSWRCH6qDdlMmJk+yMWDHUJv1E=; b=VFdnqTh7hyXjN0yQ
-	L3mwFmn76+rshZV5c0Q4n8+lSzq49Oh0H/cMJv9B1rd0SvGtlxzuCE7YFlQyKLOq
-	5q/T+Drd5EqzkPprOKXlS+rSe1wcruYk6CDVGDpf1uPT17T9ZHTndCrafjhq2lVB
-	RBk8gWXOX7O51fLKMcM3Tw5/7Vr0Apmo8kbMgGCLBeNx5DBKwStiiLWeihtZwYVx
-	AowcK4Q2B+yytfnDf3r9rHDc8owPi0rSsvFMGqs3NxYHRBqMx0h7ZHvWLjAjv39Q
-	T/l5qxCm8zvDBv1ur3fUCz7Q+a6pijFYIuexUVl6xqUiaXAjl8BdGDd7md4gp6IZ
-	/jTf4w==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47u15arkj8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 14:36:30 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b34abbcdcf3so1688925a12.1
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 07:36:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752244589; x=1752849389;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0yYJm1Xs6KWdBMs0DOSWRCH6qDdlMmJk+yMWDHUJv1E=;
-        b=Dv2/ifSbOfjAmdji4PSKU53s6bclRaMgq4POehYvwyNo/TsC7JTReMqxBFUQJmqtSP
-         WqBT9ZUhPf8saZ8UB/uCDDBD2x4YyN2kiYag1XEdqDiuKWqhFWBtM5GaT7zWX6fY8AtU
-         te3/Y02CPfyQd1hICfMyIp2FJxCzW+WclJwQ3tqdNDhRWQ7qwj7HNfIpNYwwoPcD/hl8
-         +FgyflzpUb/dKdgUapRgni/d9E72usciCwJO1w0AtecUOfRctgb/WO3DxDR7gm9uNfMT
-         QOWN8ns7E4hH4NZdPtM58b1zMH6rqv1SiauE7PCpcmhtr2mXlPZA8nJ5b6hv2cRqcghl
-         RDtQ==
-X-Gm-Message-State: AOJu0Yxjckj2BuKIqbJuVynaee4qCHJbwnzxgRhbrsP0hQGGCMJoVxeK
-	qWapOEoOtnGQver5G9ks502kNJ86APFMwadnmIYs9B0V7mXUfUJZ/T6j/nvhyAVyFbcMrHVUvrc
-	n+P59WLtLeSWOgJInTk2wmbDFEmmump5a9edIzV24+yfAiFPy527GShWMu6jmpG67xWFR/0OA5A
-	4yiw==
-X-Gm-Gg: ASbGnctu2Ja0PdMUpnLwdvwRO/kLbem4UsPUCAnSLs9Cmda9nakt75FByqQ3M2l6kWl
-	BXuOoyNs1l4J9afk7bSgz64GYXCF0s1K9QDwS+J42YmRRJ6R6u4xp2FO4Ap5T1DJJ7WPy9t2gqN
-	QciKohvgQcd35uf005wqevO53mVl1e2dj2gQSm3rjX2bil2uZuPEZrqbQ46nqUuRyDOYb1784kr
-	EktLO9hGa1NZnRH4TE3qY2ZbSm8xdsi6LRJv3KWm+yhEECh78eYUPUho5TGMgmXiq9eHw6PHMWt
-	/PtOFeMiWXGeGpJOFe6H91gLuxQMbF/PLL0lyLt6QQ8uKgE/lKkcEXtRssD2KsvVHLEnq2AaI29
-	Z
-X-Received: by 2002:a17:903:4b4c:b0:236:7333:f183 with SMTP id d9443c01a7336-23df0832a28mr33198805ad.19.1752244588777;
-        Fri, 11 Jul 2025 07:36:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHQ2IGUji2MbmVaeROoj3x/5OstU+J0FYQfdfbwfgdC1ILup/VJnpyOopuqa8866YtgxtupZw==
-X-Received: by 2002:a17:903:4b4c:b0:236:7333:f183 with SMTP id d9443c01a7336-23df0832a28mr33198345ad.19.1752244588286;
-        Fri, 11 Jul 2025 07:36:28 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4341e90sm48581615ad.177.2025.07.11.07.36.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Jul 2025 07:36:28 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: ath12k@lists.infradead.org,
-        Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, tanguy@squaremind.io
-In-Reply-To: <20250710011754.559817-1-nithyanantham.paramasivam@oss.qualcomm.com>
-References: <20250710011754.559817-1-nithyanantham.paramasivam@oss.qualcomm.com>
-Subject: Re: [PATCH ath-next] wifi: ath12k: Fix packets received in WBM
- error ring with REO LUT enabled
-Message-Id: <175224458767.3666374.6744524220388570841.b4-ty@oss.qualcomm.com>
-Date: Fri, 11 Jul 2025 07:36:27 -0700
+	s=arc-20240116; t=1752248093; c=relaxed/simple;
+	bh=WEukoCV8JhGnLNWBmK6u2qKXKRVjv1TOX1KGKow0uWU=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=qCbo503dURiyBL28RimQykFxT3w3HIbfecDRNigi5zmtRfqrDpq+seOjAL/2GNJfHxkvlvgZ5kjH7Enx6NFMjGm6Fze++/UcPj8vXH+t0K5/DPlu8mqtpig5ensoa/6giiPRxGTI7p06gnalgSF5GQ5v+y2dqIRDDOowXUh/uZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dqA3uKZ3; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752248091; x=1783784091;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=WEukoCV8JhGnLNWBmK6u2qKXKRVjv1TOX1KGKow0uWU=;
+  b=dqA3uKZ3Ut04h6txxWXeV6UGCFhgdgV/nhFqqQuIMM1gDN6kt57ED7Os
+   W2r6NWNyaZpnTjKqZ51l7hsBtHTLx9cdm69rITpnNizh/3xoF95ff/ney
+   xefETMYZYOtKs860IQM2gjQ78nqXAgVskWdXNB03e6Gwa9XZszpm8VytU
+   g4e3tl99CBexAUPTtgRSAw+zNhyZnv7o6IMpVck15euJQIzrXrrgDJswa
+   sWXRI1+7V5XJ2wYJfoRLF5Pa2F8Xrttfv0TXGDWtdTsd2d2vPfssdCet9
+   TNVLSzQUphGGNGnOL915y/3fYmj/yH5tZL08U0et0oscgKYzZz6vR8W00
+   Q==;
+X-CSE-ConnectionGUID: 4mwg3xfeSlW+6djRba46zA==
+X-CSE-MsgGUID: RGDoj0WaSqaTOxujE3GrOQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54264148"
+X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
+   d="scan'208";a="54264148"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 08:34:51 -0700
+X-CSE-ConnectionGUID: TbdZc0BET2mOiPCZlNr+jw==
+X-CSE-MsgGUID: UsISCyGORwm+O8Yp7/b9WA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
+   d="scan'208";a="156485068"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 08:34:49 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH iwlwifi-next 00/15] wifi: iwlwifi: updates - 2025-07-11
+Date: Fri, 11 Jul 2025 18:34:14 +0300
+Message-Id: <20250711153429.3417098-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: flv6Kg_MPxy3mIHCYFs-y2aMbYjb63x2
-X-Proofpoint-ORIG-GUID: flv6Kg_MPxy3mIHCYFs-y2aMbYjb63x2
-X-Authority-Analysis: v=2.4 cv=RtzFLDmK c=1 sm=1 tr=0 ts=6871216e cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=p0o8ilPX4fJNFhDpVC0A:9
- a=QEXdDO2ut3YA:10 a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzExMDEwNCBTYWx0ZWRfX2f4z1zhkg3S1
- vpZPOCaSGWyF/F1InSfZBVgvo9Wu1SEVORt6i9DenZpge/TBwRH8/EIRzQhCOQGRGjar44sRi/o
- 4JYMg9UXs1YSoqHqlS5hpOarNqME/sT9nAMv3PLuzU1kuBmH5ClD8NUhIIILRF1uYp7N/BnNIRP
- 0aRkC49jXg/VI5jGD16TVQTRWjPTsJH1lYsQsMm/0mt2F08WlOvn+7klU5T9t9BKNYZEkE9BRPx
- hdCPaXaeGvgF2IftK0ct2O6qgL1qfB3NzFAoLxFiZGY6Jmb+LTgeD5opW/c1hO55M606lDmKgEf
- p5g55LCJUqQPra7HBH8Hi9sTUeQqDqO9bYOdSeH8MNz8DrfU/Zg8PSJR9uyVi+ecwvfxUSRPR1e
- z1A51M8R86RxhlJE4FvVshFhC4QUHOpeyWVX/1iwjvNqlNxROSel+5rUHhm1XDW4wLnKAwkv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-11_04,2025-07-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxlogscore=835 suspectscore=0 adultscore=0 bulkscore=0
- clxscore=1015 malwarescore=0 mlxscore=0 impostorscore=0 phishscore=0
- spamscore=0 lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507110104
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
+Hi,
 
-On Thu, 10 Jul 2025 06:47:54 +0530, Nithyanantham Paramasivam wrote:
-> Currently, packets are being received into the WBM error ring when
-> REO queue lookup is enabled, resulting in degraded RX performance.
-> The issue arises because the REO queue LUT TID memory reference is
-> set to zero-it's being assigned before the memory is allocated.
-> Fix this by assigning the REO queue TID memory reference in the LUT
-> immediately after memory allocation to ensure correct packet
-> processing.
-> 
-> [...]
+Features, cleanups and fixes from our internal tree.
 
-Applied, thanks!
+Miri
+---
 
-[1/1] wifi: ath12k: Fix packets received in WBM error ring with REO LUT enabled
-      commit: afcefc58fdfd687e3a9a9bef0be5846b96f710b7
+Emmanuel Grumbach (1):
+  wifi: iwlwifi: mld: support iwl_omi_send_status_notif version 2
 
-Best regards,
+Johannes Berg (2):
+  wifi: iwlwifi: mvm: remove extra link ID
+  wifi: iwlwifi: mvm/mld: use average RSSI for beacons
+
+Miri Korenblit (10):
+  wifi: iwlwifi: mvm: remove support for REDUCE_TX_POWER_CMD ver 6 and 7
+  wifi: iwlwifi: mld: remove support for REDUCE_TX_POWER_CMD ver 9
+  wifi: iwlwifi: remove an unused struct
+  wifi: iwlwifi: mld: remove support for iwl_geo_tx_power_profiles_cmd
+    version 4
+  wifi: iwlwifi: mld: Revert "wifi: iwlwifi: mld: add kunit test for
+    emlsr with bt on"
+  wifi: iwlwifi: mld: Revert "wifi: iwlwifi: mld: allow EMLSR with 2.4
+    GHz when BT is ON"
+  wifi: iwlwifi: mld: remove support for iwl_mcc_update_resp versions
+  wifi: iwlwifi: remove support of versions 4 and 5 of iwl_alive_ntf
+  wifi: iwlwifi: remove support of version 4 of
+    iwl_wowlan_rsc_tsc_params_cmd
+  wifi: iwlwifi: remove support of several iwl_ppag_table_cmd versions
+
+Pagadala Yesu Anjaneyulu (2):
+  wifi: iwlwifi: mvm: remove IWL_MVM_ESR_EXIT_FAIL_ENTRY
+  wifi: iwlwifi: mvm: Add dump handler to iwl_mvm
+
+ .../net/wireless/intel/iwlwifi/fw/api/alive.h |  15 --
+ .../net/wireless/intel/iwlwifi/fw/api/d3.h    |   5 -
+ .../wireless/intel/iwlwifi/fw/api/datapath.h  |  18 ++-
+ .../net/wireless/intel/iwlwifi/fw/api/power.h |  81 +---------
+ .../net/wireless/intel/iwlwifi/fw/api/rx.h    |  24 ++-
+ .../wireless/intel/iwlwifi/fw/regulatory.c    |  20 +--
+ drivers/net/wireless/intel/iwlwifi/mld/coex.c |   8 +-
+ drivers/net/wireless/intel/iwlwifi/mld/link.c |  50 ++++++-
+ drivers/net/wireless/intel/iwlwifi/mld/link.h |   6 +
+ drivers/net/wireless/intel/iwlwifi/mld/mcc.c  |  52 +------
+ drivers/net/wireless/intel/iwlwifi/mld/mld.c  |   1 +
+ drivers/net/wireless/intel/iwlwifi/mld/mld.h  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.c  |  68 ++-------
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.h  |   4 -
+ .../net/wireless/intel/iwlwifi/mld/notif.c    |   7 +-
+ .../net/wireless/intel/iwlwifi/mld/power.c    |  10 +-
+ .../wireless/intel/iwlwifi/mld/regulatory.c   |  72 ++-------
+ drivers/net/wireless/intel/iwlwifi/mld/rx.c   |  73 ++++++++-
+ .../wireless/intel/iwlwifi/mld/tests/Makefile |   2 +-
+ .../intel/iwlwifi/mld/tests/emlsr_with_bt.c   | 140 ------------------
+ .../intel/iwlwifi/mld/tests/link-selection.c  |   6 -
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |  29 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  67 +++------
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c |  62 +-------
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  34 ++---
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  11 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  30 +---
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  60 +++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |  24 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  91 +++++++++++-
+ .../wireless/intel/iwlwifi/mvm/time-event.c   |  25 +---
+ 31 files changed, 391 insertions(+), 708 deletions(-)
+ delete mode 100644 drivers/net/wireless/intel/iwlwifi/mld/tests/emlsr_with_bt.c
+
 -- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+2.34.1
 
 
