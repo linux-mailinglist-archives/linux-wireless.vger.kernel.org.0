@@ -1,142 +1,355 @@
-Return-Path: <linux-wireless+bounces-25254-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25255-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285F6B015C7
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 10:23:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6243FB016CE
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 10:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54E074A4C60
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 08:23:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BF5C7A5D4B
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 08:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7789D23645D;
-	Fri, 11 Jul 2025 08:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218E522068B;
+	Fri, 11 Jul 2025 08:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="BwBcU3nY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kwoyn3qJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BF9236457
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 08:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E024E21CA1F;
+	Fri, 11 Jul 2025 08:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752221737; cv=none; b=WpYV5qJNSIvcF/g12Gxhmu65rIkUzmXClgIgz2bo6c3v6NJ511kcKboElkct4C84DAYgeh9LHROhPS4Pi95w+dRkTqUHeOS8BdmwNRp2XMYLKceh7KcwgAT1dci1BsUqVPsut4tOj0jbX9PH2wg+HrUGDZENXg4LkLKD6Ln44yg=
+	t=1752223798; cv=none; b=S6L+lf3mdC2xQCqYDNpJUE6vCwgj1c3utIsTl9IwdAWr0Cz2m6bCDUaZJLovvmR3ep1dbGUw6A5BK8JihlKhK3ZuGzqr8Gi0mpxOTHKraAieG9A/MwZAABKLrc6CznGiABEhhTJNOianqkhYYNjYk5ZvsJZn7HZxe1tYma9VHlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752221737; c=relaxed/simple;
-	bh=DmnOA7/OEt/LBII566oYepew39ik18GbMM5NMMV1L+0=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tPgnYZ2cATbeujYdZ4lu8AYu4Anz6lYFdv0C1w9Rz4dBCSHREci4k+k2atOvykCgrN2T6tgxmdDajz/snN9QLqDEDbyObnLWsSAcb04C1h9y8QmOxxNczbX/ky/OIjQmwprhEAa3w6qfzEFeJH0pdh+1Lc00rb88vFj88qLX/nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=BwBcU3nY; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56B8FOb24700275, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1752221724; bh=DmnOA7/OEt/LBII566oYepew39ik18GbMM5NMMV1L+0=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=BwBcU3nYT3LtgO0NuzpWN6q5IqhBAaUtepeo5HKyhnfvyNGCH85ffT9DjpOM60fgt
-	 S1zKEwmOOk8J93ghAvQWaPMq1hGppPFgrNXgiE9PzilebVFEawR5MqSLobJGuRLNNd
-	 qNooudUvwlTL9FWZhD6lGsSWEqqnFDagKYGNDhylCkdXkfE5AuFYTEJcU9+6XOzW4Y
-	 ZPBO+MmEsnqTKEw6cuwNp6+HKYlxu5hWivtVDuGc+LM5V9LcjdwLXS9q/X9Llv+ETS
-	 n3nSH4VandjSotb4AvWU1ICCuPxFII0VpFeh0+cDXRyRrtcvCnvcHD6V1X13ZaIYub
-	 BrGTSqxQMe2uQ==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56B8FOb24700275
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Jul 2025 16:15:24 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 11 Jul 2025 16:15:23 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 11 Jul 2025 16:15:22 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Fri, 11 Jul 2025 16:15:22 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ansh Gupta <anshgupta1941@outlook.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-Subject: RE: rtw89: RTL8852BE Frequent Bluetooth disconnections and occasional Wi-Fi dropouts
-Thread-Topic: rtw89: RTL8852BE Frequent Bluetooth disconnections and
- occasional Wi-Fi dropouts
-Thread-Index: AQHb6mPDvLIql/k04UqqEVq5M618M7QeMTtQgABOS4CADh7AMA==
-Date: Fri, 11 Jul 2025 08:15:22 +0000
-Message-ID: <2eb3a7fb50184ab3afd86260db2d99ce@realtek.com>
-References: <KL1PR01MB5322B34FA3997A94C6F12A3BB241A@KL1PR01MB5322.apcprd01.prod.exchangelabs.com>
- <1293cd1841414523ac2d159e69db482f@realtek.com>
- <KL1PR01MB5322C6C207221EED26EE92DCB240A@KL1PR01MB5322.apcprd01.prod.exchangelabs.com>
-In-Reply-To: <KL1PR01MB5322C6C207221EED26EE92DCB240A@KL1PR01MB5322.apcprd01.prod.exchangelabs.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1752223798; c=relaxed/simple;
+	bh=mzLDNdeiYwNjPPn1UOsfOKrllEh4CpboX14l/mMDhEE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KC6Vg2np5crx3I89WkBD4IUK9VcQhQd/+Orfb/n4k+keFVoaRDa8xpCEKvlF3lPUygvx0ljWbL9Polzn5rEMPpJjPuiKl+HEKe2Y2ujaQBVHNy2/u+wyyB5kV//eVv93Ug9wdCoEQ9WefvAgsVybb22xasgU8D9dc5y/E5rK/4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kwoyn3qJ; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-553ba7f11cbso1846258e87.1;
+        Fri, 11 Jul 2025 01:49:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752223793; x=1752828593; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bxKi9opXiTJ3CDj+KbpcJEzcbrlXBBIPp0CvXM8Ar8A=;
+        b=Kwoyn3qJZG3SeXZ2pyg1PUSck+bbVwVVLt6K0cz9wLuQs6S2Lc7JSJWlku03yfS57u
+         ejEprJ9ZnAsGuBYdduNJWKenedsGHc/lVJA85z66ZJNNCYt4bnAfycchN8L1j2Han0Es
+         lB6PpZrJFLxCBR2tJlFRYlgqstItJw1wzsOrQhED8gkV0OXQYkGDzcYza3yCsdpxdfLf
+         aoQa++kAYgq/kFyEi2/h5I7HNwoJqrZqaOCNloke2MmDf5Fp2QstgdhIkw6lMC1G30sr
+         RFPJDdBu1fU9UFYLfbJ29XHr+JsIC6GYxA/s0uR1kU9zVMKOegSQD+MiKXNngFK5urtB
+         85AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752223793; x=1752828593;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bxKi9opXiTJ3CDj+KbpcJEzcbrlXBBIPp0CvXM8Ar8A=;
+        b=UHZYCAfpuBVE4mewY5M+BjpjN6AS4RRFbqj2lWI5I6OGaPXpM8/QTswrc5JGloY5vZ
+         kzkTVEJXlbqkbW7qup20Ux9HXeFmTYE2qQv1Ay0o/nzAQ35CJSqhLcJrQ2HTmPeYxYaw
+         OqQIE9HK6yrSRdfuIvc3f7Eax9kdwEO9So8R65jrCOou8qG8uFnF5GZklZxZjF4zqQM8
+         bU8eYeLM+7p3FXP9J+vaAs4b7KkzkHsLopMdI7PUzgsOgRvJA+mADB48qmyPCkqB3Hyl
+         6CTjjDE93aYsxOgueK+PI00xVDYdk5RN4YFTvG+lo4NBLW6M0+gZdnI4uAGk8UmhehIH
+         0Hyw==
+X-Forwarded-Encrypted: i=1; AJvYcCWX2UtO9hTotGSvFlNaNeKjtDJmQ1ZaTvyQFiqZRagysrFax8fdDqWQAfzTuFKkjGkhY+tdjazZJwXy+Hk=@vger.kernel.org, AJvYcCXHdYLzg33qvJp3hYbzSSYmXNqQ2dSWV2WT4FfHpNjVLBkF2auLhQ2CoiHh/RRB5ZtCO5Fu/vzckQ/rEIkToMA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6QdpRbIHNe10s/WG4irPsRo5bxsapy1eb8LK4NjdilNacsHm2
+	rExfo9O0AlJ/lrRRKuP9dLFrldb9tVDfk1fKwOp+RX3PFa38CXGd6kpB
+X-Gm-Gg: ASbGncuH0/ycONDquMbI4qvnPc9Yj+Zfb3fmJJz49JBliJMa1HdSMG+H4r5VogsdLIr
+	KnYJ5VjuG9WjmarFTxhXpgJ/WVInh/qVv48AeqtlkESvHNXxWE9+FUjyWisiDM9nz4b2gLWL3aV
+	4CvNiI1bZL+qkF+AQm5J18ym8pCfB6q20Cx3F2Jh2cimWMwxs8pMu7NYyqXm3HjB9bejLwS9j6b
+	rR+wsOARCRACwIaMI/HVbRM0Uu7SIiQPE4LVnFo/kGG9rP1ZWRnpa2EOs3ZlmCp6H148LTx7jbv
+	S212GOmlJQtQKstbQyT2kCwW3rUHE5Gva/Yq/a94X8e93iP8zlMwyA6azlWl2bJSYpUJK2Z12q7
+	nr+Qlpr5F4OzC0zqgt02UG3PhScCDl4Zwav05ALrhSaA=
+X-Google-Smtp-Source: AGHT+IGXeQJBPPar+WbdrJX+EUk7WlBpn2r/+Zx7dcz9XyuDydBh4QVkO9qSsj/KbaYe7fgw1/39RQ==
+X-Received: by 2002:a05:6512:1388:b0:553:381f:c45b with SMTP id 2adb3069b0e04-55a044d43b3mr714045e87.19.1752223792437;
+        Fri, 11 Jul 2025 01:49:52 -0700 (PDT)
+Received: from localhost.localdomain ([94.19.228.143])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5593c7f37e8sm824507e87.85.2025.07.11.01.49.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Jul 2025 01:49:52 -0700 (PDT)
+From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Fiona Klute <fiona.klute@gmx.de>
+Cc: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Subject: [PATCH v4] wifi: rtw88: enable TX reports for the management queue
+Date: Fri, 11 Jul 2025 11:47:40 +0300
+Message-ID: <20250711084740.3396766-1-andrej.skvortzov@gmail.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 8bit
 
-QW5zaCBHdXB0YSA8YW5zaGd1cHRhMTk0MUBvdXRsb29rLmNvbT4gd3JvdGU6DQo+IEhlbGxvLA0K
-PiANCj4gDQo+ID4gSWYgeW91IHBsYXkgYSBsb2NhbCBtdXNpYyB3aXRob3V0IFdpRmkgY29ubmVj
-dGlvbiwgZG9lcyBpdCB3b3JrIHdlbGw/DQo+IA0KPiBXb3JrcyBhIGxvdCBiZXR0ZXIsIG5vIGRp
-c2Nvbm5lY3Rpb25zIGV2ZW4gYWZ0ZXIgZ29pbmcgdG8gaWRsZSBtb2RlLg0KPiBUaGVyZSBpcyBz
-dGlsbCBhIGRlbGF5IGluIHByb3ZpZGluZyBhdWRpbyBvdXRwdXQsIGJ1dCB0aGUgZGVsYXkgaGFz
-DQo+IHJlZHVjZWQgdG8gMSB0byAyIHNlY29uZHMsIGFmdGVyIHdoaWNoIEkgY2FuIGhlYXIuDQo+
-IA0KPiANCj4gPiBJZiBvbmx5IFdpRmkgY29ubmVjdGlvbiAod2l0aG91dCBCbHVldG9vdGgpLCBk
-b2VzIGNvbm5lY3Rpb24gZHJvcD8NCj4gTm8uDQo+IA0KPiANCj4gPiBCbHVldG9vdGggb3BlcmF0
-ZXMgb24gMi40R0h6IGJhbmQsIHNvIGlzIGl0IHBvc3NpYmxlIHRvIGNvbm5lY3QgQVAgb24NCj4g
-PiA1IEdIeiBiYW5kPw0KPiANCj4gVGhlIDVHSHogYmFuZCBTU0lEIGRvZXMgbm90IHNob3cgdXAg
-aW4gdGhlIGF2YWlsYWJsZSBuZXR3b3JrIGxpc3QgdW50aWwNCj4gSSBhbSAxIHRvIDIgZmVldCBh
-d2F5IGZyb20gQVAuIFRoaXMgaGFwcGVucyByZWdhcmRsZXNzIG9mIHdoZXRoZXINCj4gYmx1ZXRv
-b3RoIGlzIG9uIG9yIG9mZi4gV2hlbiBjb25uZWN0ZWQsIEkgY2FuIHVzZSB0aGF0IG5ldHdvcmsg
-YXQgbm9ybWFsDQo+IHNwZWVkcyBldmVuIGlmIEkgYW0gYWJvdXQgMyBtZXRlcnMgYXdheSBmcm9t
-IEFQIHdpdGggYSB3YWxsIGluDQo+IGJldHdlZW4uIEkgaGF2ZSBhIHNlcGFyYXRlIFNTSUQgc2V0
-dXAgZm9yIGJvdGggdGhlIDIuNCBhbmQgNUdIeiBiYW5kcy4gSQ0KPiBkaWQgY3Jvc3MgY2hlY2sg
-d2l0aCBvdGhlciBkZXZpY2VzLCBhbmQgdGhleSBjb3VsZCBjb25uZWN0IHRvIHRoZSA1R0h6DQo+
-IFNTSUQgZnJvbSBhIDMgbWV0ZXIgZGlzdGFuY2UuDQo+IA0KPiBQbGVhc2Ugbm90ZSB0aGF0IEkg
-ZG8gbm90IGhhdmUgYWNjZXNzIHRvIHRoaXMgcGFydGljdWxhciBBUCBhbnltb3JlIHRoYW4NCj4g
-OSBkYXlzLCBzbyBJIHdvdWxkIG5vdCBiZSBhYmxlIHRvIHByb3ZpZGUgaW5mb3JtYXRpb24gcmVn
-YXJkaW5nIGl0IGFmdGVyDQo+IHRoYXQuIFRoZSBpc3N1ZSB3aXRoIGJsdWV0b290aCBhbmQgMi40
-R0h6IGJhbmQgaXMgbm90IHVuaXF1ZSB0byB0aGlzIEFQLg0KPiBJIHRyaWVkIHRoaXMgd2l0aCBt
-eSBwaG9uZSBob3RzcG90IHVzaW5nIDVHSHogYmFuZCwgYnV0IHRoZSByZXN1bHRzIGFyZQ0KPiBz
-YW1lIGZvciBldmVyeSBkZXZpY2UgLSBpdCB3b3VsZCBjb25uZWN0IG9ubHkgd2l0aGluIGEgMSBm
-b290IHJhZGl1cy4NCg0KVGhpcyBpcyB2ZXJ5IHdlaXJkLiBBY3R1YWxseSwgU1RBIGNhbiBmaW5k
-IEFQIHBhc3NpdmVseSBieSBsaXN0ZW5pbmcgYmVhY29ucy4NCklzIGl0IHBvc3NpYmxlIHRha2Ug
-eW91ciBwaG9uZSB3aXRoIGhvdHNwb3Qgb24gNUdIeiBhdCBhIGNsZWFyIHBsYWNlPw0KDQo+IA0K
-PiBCZXNpZGVzLCBibHVldG9vdGggd29ya3MgZmluZSBvbiA1R0h6IGJhbmQsIGFsdGhvdWdoIGRl
-bGF5IGluIGF1ZGlvDQo+IG91dHB1dCBieSAxIHRvIDIgc2Vjb25kcyBpcyBwcmVzZW50Lg0KPiAN
-Cj4gPiBUdXJuIG9mZiBwb3dlciBzYXZlaW5nIGVudGlyZWx5IGJ5DQo+ID4gICAgc3VkbyBpdyB3
-bGFuMCBzZXQgcG93ZXJfc2F2ZSBvZmYNCj4gPg0KPiA+IHRvIHNlZSBpZiBlYXNlIHN5bXB0b20u
-DQo+IE5vIGltcHJvdmVtZW50cyBub3RpY2VkIGluIGJsdWV0b290aCBhbmQgNUdIeiB3aWZpIGRl
-dGVjdGlvbi4NCj4gDQo+IA0KPiBBZGRpdGlvbmFsIGRldGFpbHMgSSB0aG91Z2h0IHdvdWxkIGJl
-IHVzZWZ1bDoNCj4gDQo+IA0KPiBJIGhhdmUgYSB3aXJlbGVzcyB1c2IgbW91c2UgYXR0YWNoZWQg
-dG8gbXkgbGFwdG9wLA0KPiANCj4gJCBsc3VzYiAtZCAzOTM4OjEwMzENCj4gDQo+IEJ1cyAwMDMg
-RGV2aWNlIDAwMzogSUQgMzkzODoxMDMxIE1PU0FSVCBTZW1pLiAyLjRHIFdpcmVsZXNzIE1vdXNl
-DQo+IA0KPiBIb3dldmVyLCBkaXNjb25uZWN0aW5nIHRoZSBtb3VzZSBkaWQgbm90IG1ha2UgYSBu
-b3RpY2VhYmxlIGRpZmZlcmVuY2UuDQo+IA0KPiANCj4gT2NjYXNpb25hbGx5LCB0aGUgZWFycGhv
-bmVzIGRpc2Nvbm5lY3Qgd2hlbiBhdWRpbyBwcm9maWxlcyBhcmUgc3dpdGNoZWQsDQo+IGZyb20g
-QTJEUCB0byBIU1AvSEZQIGFuZCB2aWNlIHZlcnNhLg0KPiANCj4gVGhpcyBvbmx5IG9jY3VycmVk
-IHdpdGggdGhlIDIuNEdIeiBiYW5kIGFuZCBub3QgdGhlIDVHSHogYmFuZC4gU29mdHdhcmUNCj4g
-d2hpY2ggcmVjb3JkcyB2b2ljZSBkb2VzIHRoaXMgcHJvZmlsZSBzd2l0Y2hpbmcuDQoNClRvIGRp
-YWdub3NlIEJUIGRpc2Nvbm5lY3Rpb24gcHJvYmxlbSwgcGxlYXNlIGNhcHR1cmUgbG9nIGJ5Og0K
-ICAgDQogICB3aGlsZSBbIDEgXTsgZG8gZWNobyAiIjsgZGF0ZSAtUjsgY2F0IC9zeXMva2VybmVs
-L2RlYnVnL2llZWU4MDIxMS9waHkwL3J0dzg5L2J0Y19pbmZvIDsgc2xlZXAgMjsgZG9uZSB8IHRl
-ZSB4eHh4eC5sb2cNCg0KQXMgSSBhZGQgJ2RhdGUnIGluIGxvZywgcGxlYXNlIG1hbnVhbGx5IHJl
-Y29yZCB0aGUgdGltZSBCVCBnZXRzIGRpc2Nvbm5lY3QNCm9yIGFibm9ybWFsLg0KDQpBbHNvLCBy
-ZXByb2R1Y2Ugc3ltcHRvbXMgYXQgbGVhc3QgdGhyZWUgdGltZXMuIChtb3JlIGlzIGJldHRlcikN
-Cg0KDQpTdW1tYXJpemUgd2hhdCB3ZSBuZWVkOg0KMS4gYnRjX2luZm8gbG9nIChtZW50aW9uZWQg
-YWJvdmUpDQoyLiBrZXJuZWwgYW5kIHN5c2xvZyBsb2cgKHdpdGggZGF0ZSB0byBhbGlnbiBidGNf
-aW5mbyBsb2cpDQozLiByZXBlYXQgZXhwZXJpbWVudHMgYXQgbGVhc3QgdGhyZWUgdGltZXMsIGFu
-ZCByZWNvcmQvc2hhcmUgdGhlDQogICBkaXNjb25uZWN0aW9uL2Fibm9ybWFsIHRpbWUvc3ltcHRv
-bSB0byB1cy4NCg0KDQo=
+This is needed for AP mode. Otherwise client sees the network, but
+can't connect to it.
+
+REG_FWHW_TXQ_CTRL+1 is set to WLAN_TXQ_RPT_EN (0x1F) in common mac
+init function (__rtw8723x_mac_init), but the value was overwritten
+from mac table later.
+
+Tables with register values for phy parameters initialization are
+copied from vendor driver usually. When table will be regenerated,
+manual modifications to it may be lost. To avoid regressions in this
+case new callback mac_postinit is introduced, that is called after
+parameters from table are set.
+
+Tested on rtl8723cs, that reuses rtw8703b driver.
+
+Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+---
+
+Changes in v2:
+ - introduce mac_postinit callback to avoid changing register tables
+
+Changes in v3:
+ - merge two patches back together
+ - remove unused initialization in rtw_mac_postinit
+ - init unused .mac_postinit fields in drivers with NULL
+
+Changes in v4:
+ - fixed unused ret variable
+
+ drivers/net/wireless/realtek/rtw88/mac.c      | 10 ++++++++++
+ drivers/net/wireless/realtek/rtw88/mac.h      |  1 +
+ drivers/net/wireless/realtek/rtw88/main.c     |  6 ++++++
+ drivers/net/wireless/realtek/rtw88/main.h     |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8703b.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723x.c |  9 ++++++++-
+ drivers/net/wireless/realtek/rtw88/rtw8723x.h |  6 ++++++
+ drivers/net/wireless/realtek/rtw88/rtw8812a.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8814a.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8821a.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  1 +
+ 14 files changed, 40 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index 011b81c82f3ba..eaa928bab240c 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -1409,3 +1409,13 @@ int rtw_mac_init(struct rtw_dev *rtwdev)
+ 
+ 	return 0;
+ }
++
++int rtw_mac_postinit(struct rtw_dev *rtwdev)
++{
++	const struct rtw_chip_info *chip = rtwdev->chip;
++
++	if (!chip->ops->mac_postinit)
++		return 0;
++
++	return chip->ops->mac_postinit(rtwdev);
++}
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.h b/drivers/net/wireless/realtek/rtw88/mac.h
+index e92b1483728d5..b73af90ee1d7f 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.h
++++ b/drivers/net/wireless/realtek/rtw88/mac.h
+@@ -38,6 +38,7 @@ void rtw_write_firmware_page(struct rtw_dev *rtwdev, u32 page,
+ 			     const u8 *data, u32 size);
+ int rtw_download_firmware(struct rtw_dev *rtwdev, struct rtw_fw_state *fw);
+ int rtw_mac_init(struct rtw_dev *rtwdev);
++int rtw_mac_postinit(struct rtw_dev *rtwdev);
+ void rtw_mac_flush_queues(struct rtw_dev *rtwdev, u32 queues, bool drop);
+ int rtw_set_trx_fifo_info(struct rtw_dev *rtwdev);
+ int rtw_ddma_to_fw_fifo(struct rtw_dev *rtwdev, u32 ocp_src, u32 size);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 97756bdf57b27..b706c5a21a6c5 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1412,6 +1412,12 @@ int rtw_power_on(struct rtw_dev *rtwdev)
+ 
+ 	chip->ops->phy_set_param(rtwdev);
+ 
++	ret = rtw_mac_postinit(rtwdev);
++	if (ret) {
++		rtw_err(rtwdev, "failed to configure mac in postinit\n");
++		goto err_off;
++	}
++
+ 	ret = rtw_hci_start(rtwdev);
+ 	if (ret) {
+ 		rtw_err(rtwdev, "failed to start hci\n");
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index b42538cce3598..43ed6d6b42919 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -858,6 +858,7 @@ struct rtw_chip_ops {
+ 	int (*power_on)(struct rtw_dev *rtwdev);
+ 	void (*power_off)(struct rtw_dev *rtwdev);
+ 	int (*mac_init)(struct rtw_dev *rtwdev);
++	int (*mac_postinit)(struct rtw_dev *rtwdev);
+ 	int (*dump_fw_crash)(struct rtw_dev *rtwdev);
+ 	void (*shutdown)(struct rtw_dev *rtwdev);
+ 	int (*read_efuse)(struct rtw_dev *rtwdev, u8 *map);
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.c b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+index 03475af973b52..821c28d9cb5d4 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+@@ -1832,6 +1832,7 @@ static const struct rtw_chip_ops rtw8703b_ops = {
+ 	.power_on		= rtw_power_on,
+ 	.power_off		= rtw_power_off,
+ 	.mac_init		= rtw8723x_mac_init,
++	.mac_postinit		= rtw8723x_mac_postinit,
+ 	.dump_fw_crash		= NULL,
+ 	.shutdown		= NULL,
+ 	.read_efuse		= rtw8703b_read_efuse,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+index bf69f5b06ce26..8715e0435f173 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+@@ -1397,6 +1397,7 @@ static const struct rtw_chip_ops rtw8723d_ops = {
+ 	.query_phy_status	= query_phy_status,
+ 	.set_channel		= rtw8723d_set_channel,
+ 	.mac_init		= rtw8723x_mac_init,
++	.mac_postinit		= rtw8723x_mac_postinit,
+ 	.shutdown		= rtw8723d_shutdown,
+ 	.read_rf		= rtw_phy_read_rf_sipi,
+ 	.write_rf		= rtw_phy_write_rf_reg_sipi,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723x.c b/drivers/net/wireless/realtek/rtw88/rtw8723x.c
+index 4c77963fdd370..3f3e9b0c44e80 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723x.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723x.c
+@@ -353,7 +353,6 @@ static int __rtw8723x_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
+ 
+ static int __rtw8723x_mac_init(struct rtw_dev *rtwdev)
+ {
+-	rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 1, WLAN_TXQ_RPT_EN);
+ 	rtw_write32(rtwdev, REG_TCR, BIT_TCR_CFG);
+ 
+ 	rtw_write16(rtwdev, REG_RXFLTMAP0, WLAN_RX_FILTER0);
+@@ -370,6 +369,13 @@ static int __rtw8723x_mac_init(struct rtw_dev *rtwdev)
+ 	return 0;
+ }
+ 
++static int __rtw8723x_mac_postinit(struct rtw_dev *rtwdev)
++{
++	rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 1, WLAN_TXQ_RPT_EN);
++
++	return 0;
++}
++
+ static void __rtw8723x_cfg_ldo25(struct rtw_dev *rtwdev, bool enable)
+ {
+ 	u8 ldo_pwr;
+@@ -760,6 +766,7 @@ const struct rtw8723x_common rtw8723x_common = {
+ 	.lck = __rtw8723x_lck,
+ 	.read_efuse = __rtw8723x_read_efuse,
+ 	.mac_init = __rtw8723x_mac_init,
++	.mac_postinit = __rtw8723x_mac_postinit,
+ 	.cfg_ldo25 = __rtw8723x_cfg_ldo25,
+ 	.set_tx_power_index = __rtw8723x_set_tx_power_index,
+ 	.efuse_grant = __rtw8723x_efuse_grant,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723x.h b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
+index a99af527c92cf..0fc70dfdfc8b2 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723x.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
+@@ -137,6 +137,7 @@ struct rtw8723x_common {
+ 	void (*lck)(struct rtw_dev *rtwdev);
+ 	int (*read_efuse)(struct rtw_dev *rtwdev, u8 *log_map);
+ 	int (*mac_init)(struct rtw_dev *rtwdev);
++	int (*mac_postinit)(struct rtw_dev *rtwdev);
+ 	void (*cfg_ldo25)(struct rtw_dev *rtwdev, bool enable);
+ 	void (*set_tx_power_index)(struct rtw_dev *rtwdev);
+ 	void (*efuse_grant)(struct rtw_dev *rtwdev, bool on);
+@@ -383,6 +384,11 @@ static inline int rtw8723x_mac_init(struct rtw_dev *rtwdev)
+ 	return rtw8723x_common.mac_init(rtwdev);
+ }
+ 
++static inline int rtw8723x_mac_postinit(struct rtw_dev *rtwdev)
++{
++	return rtw8723x_common.mac_postinit(rtwdev);
++}
++
+ static inline void rtw8723x_cfg_ldo25(struct rtw_dev *rtwdev, bool enable)
+ {
+ 	rtw8723x_common.cfg_ldo25(rtwdev, enable);
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8812a.c b/drivers/net/wireless/realtek/rtw88/rtw8812a.c
+index 03b441639611f..2078eb6e36280 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8812a.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8812a.c
+@@ -919,6 +919,7 @@ static const struct rtw_chip_ops rtw8812a_ops = {
+ 	.query_phy_status	= rtw8812a_query_phy_status,
+ 	.set_channel		= rtw88xxa_set_channel,
+ 	.mac_init		= NULL,
++	.mac_postinit		= NULL,
+ 	.read_rf		= rtw88xxa_phy_read_rf,
+ 	.write_rf		= rtw_phy_write_rf_reg_sipi,
+ 	.set_antenna		= NULL,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8814a.c b/drivers/net/wireless/realtek/rtw88/rtw8814a.c
+index 4a1f850d05c87..ca1079e120235 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8814a.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8814a.c
+@@ -2055,6 +2055,7 @@ static const struct rtw_chip_ops rtw8814a_ops = {
+ 	.query_phy_status	= rtw8814a_query_phy_status,
+ 	.set_channel		= rtw8814a_set_channel,
+ 	.mac_init		= rtw8814a_mac_init,
++	.mac_postinit		= NULL,
+ 	.read_rf		= rtw_phy_read_rf,
+ 	.write_rf		= rtw_phy_write_rf_reg_sipi,
+ 	.set_tx_power_index	= rtw8814a_set_tx_power_index,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821a.c b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+index 1d02ea400b2e6..414b77eef07c6 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821a.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+@@ -865,6 +865,7 @@ static const struct rtw_chip_ops rtw8821a_ops = {
+ 	.query_phy_status	= rtw8821a_query_phy_status,
+ 	.set_channel		= rtw88xxa_set_channel,
+ 	.mac_init		= NULL,
++	.mac_postinit		= NULL,
+ 	.read_rf		= rtw88xxa_phy_read_rf,
+ 	.write_rf		= rtw_phy_write_rf_reg_sipi,
+ 	.set_antenna		= NULL,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index a2a358d6033f6..2078b067562e7 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -1663,6 +1663,7 @@ static const struct rtw_chip_ops rtw8821c_ops = {
+ 	.query_phy_status	= query_phy_status,
+ 	.set_channel		= rtw8821c_set_channel,
+ 	.mac_init		= rtw8821c_mac_init,
++	.mac_postinit		= NULL,
+ 	.read_rf		= rtw_phy_read_rf,
+ 	.write_rf		= rtw_phy_write_rf_reg_sipi,
+ 	.set_antenna		= NULL,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index bb5c41905afe1..89b6485b229a8 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -2154,6 +2154,7 @@ static const struct rtw_chip_ops rtw8822b_ops = {
+ 	.query_phy_status	= query_phy_status,
+ 	.set_channel		= rtw8822b_set_channel,
+ 	.mac_init		= rtw8822b_mac_init,
++	.mac_postinit		= NULL,
+ 	.read_rf		= rtw_phy_read_rf,
+ 	.write_rf		= rtw_phy_write_rf_reg_sipi,
+ 	.set_tx_power_index	= rtw8822b_set_tx_power_index,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index 58c1958e6170d..28c121cf1e683 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -4964,6 +4964,7 @@ static const struct rtw_chip_ops rtw8822c_ops = {
+ 	.query_phy_status	= query_phy_status,
+ 	.set_channel		= rtw8822c_set_channel,
+ 	.mac_init		= rtw8822c_mac_init,
++	.mac_postinit		= NULL,
+ 	.dump_fw_crash		= rtw8822c_dump_fw_crash,
+ 	.read_rf		= rtw_phy_read_rf,
+ 	.write_rf		= rtw_phy_write_rf_reg_mix,
+-- 
+2.47.2
+
 
