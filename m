@@ -1,130 +1,172 @@
-Return-Path: <linux-wireless+bounces-25234-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25235-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A66BB00F65
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 01:18:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 076E8B01015
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 02:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52C3E7A2D6F
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Jul 2025 23:16:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77CE73ADD2B
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 00:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2EA2741C9;
-	Thu, 10 Jul 2025 23:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2175238B;
+	Fri, 11 Jul 2025 00:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jw4R9Qng"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="SZ/CMihG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3786621516E;
-	Thu, 10 Jul 2025 23:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEEA376;
+	Fri, 11 Jul 2025 00:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752189494; cv=none; b=slIZ3dpbcNexr49ZgLAkoUqczz1IU9dFmnFceOcW6eyvaLWP/bf7suIWU+cdjroTc+mLr8H4SrosVwgvoCAMj9yj8d8P4a4+fqpJy+PIg46upzxsh5qJvjVbf144bUMmzEB9vetYCphl7mFZskbDINDSLQr62Y4djh2wSibLDTE=
+	t=1752192708; cv=none; b=BeEM0MRsmZlD+tlQnxmj/aWK53xNS4VC97mlez4YqxqfLmN0Rqhukr5tEuB4+byY6fwXrgYVyV94SnRakrJ96SdYMijlyFCLxbelY1TWIIYuF3QTfboJeIbvZFCIN4FH6takn2/4Ck4qXR3SXmNEztniUwl5NElpPej5Z5OsvZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752189494; c=relaxed/simple;
-	bh=tjyghXvqEojFj3Pfwby+hkzR77SXqdDqIKc/4prwiCc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q4lz/YKpIPV54jTkla/FuPhwZ29ADzBz79Vz8T4KZVUSvumELl3nCEV8Xju2qehBiK5dEXX94Gsz8OP42fT8A1q63irkEuFvBts8J3NeAEiWB23EA9yuA/A/uROvFQeSWpk8ohg9Aa7/Z+FLr/GUyuQPL/GaGuswgT9tYXM9CVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jw4R9Qng; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752189491; x=1783725491;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tjyghXvqEojFj3Pfwby+hkzR77SXqdDqIKc/4prwiCc=;
-  b=Jw4R9QngzggoEYx+GEtSTwfVSt0CIVzEhr4FdG7afCnqPWMoNgeruT8i
-   r0qGnP/5bJZHPCKc2Q1Wp8/1sT+3mYMaLoEC3pQZ6YJt+PSuj19SWjRYd
-   W7A1aUDErf1yammTdiIc/DV8z/4gHmZ91ZHAwh0ysHAEzfJfQqjRw92ky
-   cSPkpB1iJda2gHdMLTni7kbpqQhudGDzI26lbRCR04dhHBdJEcVqfpafe
-   mMXdNAqcWauOS2+Ml3SrheL5pnU4PN/3b26UPxD5j0QFPeS/b7oHUaNdz
-   Q+6fooGGAxDAstu0F5r3EiuGMBT4YCVYPafNmpNmbd/i936Z1hk1njRRc
-   A==;
-X-CSE-ConnectionGUID: IujVuMasSzChslYwFcMpeA==
-X-CSE-MsgGUID: BL1XFvvoQOi/kcfT22fL4w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54573698"
-X-IronPort-AV: E=Sophos;i="6.16,302,1744095600"; 
-   d="scan'208";a="54573698"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 16:18:11 -0700
-X-CSE-ConnectionGUID: /adAwK4+Sh6eT546oXugAA==
-X-CSE-MsgGUID: Go9DAg15TKq2937p/k7/bg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,302,1744095600"; 
-   d="scan'208";a="160517973"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 10 Jul 2025 16:18:09 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ua0Wk-0005Zj-25;
-	Thu, 10 Jul 2025 23:18:06 +0000
-Date: Fri, 11 Jul 2025 07:17:27 +0800
-From: kernel test robot <lkp@intel.com>
+	s=arc-20240116; t=1752192708; c=relaxed/simple;
+	bh=TQIIfmNqxEhvyQXhWM7U1p5Dnqt020Pcf3TSAkgN6z4=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=g7+Lx7bPSwHRW65t5gsO12uvc8gDD9n0DypS7XBXy5OR/zlK4/t9eRgA8kmf0eQFLHScaYXSBp1f4sVAl0vrQLaklkcKCHogKI9Z1MuFWIsQPny1PJuqdEGqbOukLtBoIDLD3bHsnTRYGlbjk7p3YQ3Bou1NMespgQWnGJh9vSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=SZ/CMihG; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56B0BLsL43966558, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1752192681; bh=JGO2QeMwptWkrM8L6r9tZyPNhODydfWglgaJITahPPA=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=SZ/CMihGmOMSbHsFEsDHJiLdIV1/WYNoDuaBBsvd7CwlWqqtdLA78NG8UBZ653bJg
+	 UYZ++mquV77LyNINs/dTevy9vDDr1Dkc7zpdFVsfqXq+FKasNUuIQFBqjPsb8bpiEq
+	 K6Nw7KU2EoXW/7JzQPe/EIyD0xGO28gma0wuZ6oZYrGxtxVe2PvEjo1cVSpik5yM5U
+	 g7RboMEhA/vTesBflPA8n2kKusW591SasWxawhAWQna7jggJHLCttfG6wEXfrk2d6u
+	 sBfd7to0ScOh75DXCezn5NbYJbT3XoIYAlcGIxWdJLWaCJRB7vwXSpdvGEL6zworLm
+	 JJ3QR/U0NTbow==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56B0BLsL43966558
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Jul 2025 08:11:21 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 11 Jul 2025 08:11:22 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 11 Jul 2025 08:11:21 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Fri, 11 Jul 2025 08:11:21 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
 To: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Fiona Klute <fiona.klute@gmx.de>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Subject: Re: [PATCH v2 1/2] wifi: rtw88: introduce callback to override phy
- parameters from tables
-Message-ID: <202507110636.fqI1Fyh7-lkp@intel.com>
-References: <20250709223159.2787192-2-andrej.skvortzov@gmail.com>
+        Kalle Valo
+	<kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Fiona Klute <fiona.klute@gmx.de>
+Subject: RE: [PATCH v3] wifi: rtw88: enable TX reports for the management queue
+Thread-Topic: [PATCH v3] wifi: rtw88: enable TX reports for the management
+ queue
+Thread-Index: AQHb8enPOUIDreW220yczxSl7U1tKbQsC/OA
+Date: Fri, 11 Jul 2025 00:11:21 +0000
+Message-ID: <7e7a3532816b48ef94c18e735a0f7a3f@realtek.com>
+References: <20250710222432.3088622-1-andrej.skvortzov@gmail.com>
+In-Reply-To: <20250710222432.3088622-1-andrej.skvortzov@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250709223159.2787192-2-andrej.skvortzov@gmail.com>
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Hi Andrey,
+Andrey Skvortsov <andrej.skvortzov@gmail.com> wrote:
+> This is needed for AP mode. Otherwise client sees the network, but
+> can't connect to it.
+>=20
+> REG_FWHW_TXQ_CTRL+1 is set to WLAN_TXQ_RPT_EN (0x1F) in common mac
+> init function (__rtw8723x_mac_init), but the value was overwritten
+> from mac table later.
+>=20
+> Tables with register values for phy parameters initialization are
+> copied from vendor driver usually. When table will be regenerated,
+> manual modifications to it may be lost. To avoid regressions in this
+> case new callback mac_postinit is introduced, that is called after
+> parameters from table are set.
+>=20
+> Tested on rtl8723cs, that reuses rtw8703b driver.
+>=20
+> Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+> ---
+>=20
+> Changes in v2:
+>  - introduce mac_postinit callback to avoid changing register tables
+>=20
+> Changes in v3:
+>  - merge two patches back together
+>  - remove unused initialization in rtw_mac_postinit
+>  - init unused .mac_postinit fields in drivers with NULL
+>=20
+>  drivers/net/wireless/realtek/rtw88/mac.c      | 11 +++++++++++
+>  drivers/net/wireless/realtek/rtw88/mac.h      |  1 +
+>  drivers/net/wireless/realtek/rtw88/main.c     |  6 ++++++
+>  drivers/net/wireless/realtek/rtw88/main.h     |  1 +
+>  drivers/net/wireless/realtek/rtw88/rtw8703b.c |  1 +
+>  drivers/net/wireless/realtek/rtw88/rtw8723d.c |  1 +
+>  drivers/net/wireless/realtek/rtw88/rtw8723x.c |  9 ++++++++-
+>  drivers/net/wireless/realtek/rtw88/rtw8723x.h |  6 ++++++
+>  drivers/net/wireless/realtek/rtw88/rtw8812a.c |  1 +
+>  drivers/net/wireless/realtek/rtw88/rtw8814a.c |  1 +
+>  drivers/net/wireless/realtek/rtw88/rtw8821a.c |  1 +
+>  drivers/net/wireless/realtek/rtw88/rtw8821c.c |  1 +
+>  drivers/net/wireless/realtek/rtw88/rtw8822b.c |  1 +
+>  drivers/net/wireless/realtek/rtw88/rtw8822c.c |  1 +
+>  14 files changed, 41 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wirel=
+ess/realtek/rtw88/mac.c
+> index 011b81c82f3ba..e1ec9aa401fa0 100644
+> --- a/drivers/net/wireless/realtek/rtw88/mac.c
+> +++ b/drivers/net/wireless/realtek/rtw88/mac.c
+> @@ -1409,3 +1409,14 @@ int rtw_mac_init(struct rtw_dev *rtwdev)
+>=20
+>         return 0;
+>  }
+> +
+> +int rtw_mac_postinit(struct rtw_dev *rtwdev)
+> +{
+> +       const struct rtw_chip_info *chip =3D rtwdev->chip;
+> +       int ret;
+> +
+> +       if (chip->ops->mac_postinit)
+> +               ret =3D chip->ops->mac_postinit(rtwdev);
+> +
 
-kernel test robot noticed the following build warnings:
+'ret' is not used [1].
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main linus/master v6.16-rc5 next-20250710]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Prefer:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andrey-Skvortsov/wifi-rtw88-introduce-callback-to-override-phy-parameters-from-tables/20250710-063838
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20250709223159.2787192-2-andrej.skvortzov%40gmail.com
-patch subject: [PATCH v2 1/2] wifi: rtw88: introduce callback to override phy parameters from tables
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20250711/202507110636.fqI1Fyh7-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250711/202507110636.fqI1Fyh7-lkp@intel.com/reproduce)
+if (!chip->ops->mac_postinit)
+    return 0;
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507110636.fqI1Fyh7-lkp@intel.com/
+return chip->ops->mac_postinit(rtwdev);
 
-All warnings (new ones prefixed by >>):
+[1] http://wifibot.sipsolutions.net/results/981272/14152513/build_clang/std=
+err
 
-   drivers/net/wireless/realtek/rtw88/mac.c: In function 'rtw_mac_postinit':
->> drivers/net/wireless/realtek/rtw88/mac.c:1416:13: warning: variable 'ret' set but not used [-Wunused-but-set-variable]
-    1416 |         int ret = 0;
-         |             ^~~
+> +       return 0;
+> +}
 
+[...]
 
-vim +/ret +1416 drivers/net/wireless/realtek/rtw88/mac.c
-
-  1412	
-  1413	int rtw_mac_postinit(struct rtw_dev *rtwdev)
-  1414	{
-  1415		const struct rtw_chip_info *chip = rtwdev->chip;
-> 1416		int ret = 0;
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
