@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-25288-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25289-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D61B0208D
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 17:36:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7EDB02094
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 17:37:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07E56A602FB
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 15:35:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88CC67BECE8
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 15:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD0A2ED176;
-	Fri, 11 Jul 2025 15:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0992EE27E;
+	Fri, 11 Jul 2025 15:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XasUplgg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AOserGcp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7C82EE27E
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 15:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316E82EE28C
+	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 15:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752248107; cv=none; b=Q9o2LEH9VZHWZvkhl9on0yukukrAtX95V77dgNxFap8JHVkvW5KnST1PsZcEhIQMiywNC5+cU1meXHBxTtlaEWze6kXATfUSTEfc0M0XL1MSyHpi3Kr09HYUjtckK5UIG77exJcAT3mIBlHezCtQ9+aQ+So730f4zN3oT/kzbS4=
+	t=1752248108; cv=none; b=lTl/gSnDbj3RagQc8KQ1VlqNmaNzA4Ui/O+CvdBqxwypN46fO8WCHCapt77b7DNSj4qHIxVKmT+d9wJUtYEKfBiEDW21KUHe0EPTcjoEloyY+5RvvQ6nanVLBcEpfT9x7K0Nm75ZqWJD8SKIyIRP3ievcBG9gtXZrHsVYCmF4yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752248107; c=relaxed/simple;
-	bh=xTET5F5nB5qYwHmKYMjT234uR/gzmxrK3LBgDgHdu6w=;
+	s=arc-20240116; t=1752248108; c=relaxed/simple;
+	bh=28FePwuHE151rXhmaFBkn+CGG4MFHhHZsdkSs12gCsE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m0i3k2Pwvmogy4eZ6ubYn6DJ9dxHopCVxLxKMZLlMOR9CGjxs3QblDybCwVO7ikkWf3j4qLrjKjRRG1CZqp/gcH4Pquu2xTyiljTvEuALSJlFx2QkwLCw4ljil4s20F+/VIHuGmmOiu1Z8hy/IxjK3+Na5zdLSQ7JSPREEBak6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XasUplgg; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=kdwTd2e6u50EhqvrBWWGlaKpS5h+SsFk5/hqJDcclnLqYBL6qp6n052p9I/CiRMjEDpxxLO/nyvhHUBp75AJiJ2Z4g5omKPrvH5AhCpgk9GeXKqauxee7eT4p5Pt1xfX+72Z5xEIFtQt0+KqXQjFSqK0unD9AjVHyACxzfvPaeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AOserGcp; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752248106; x=1783784106;
+  t=1752248108; x=1783784108;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xTET5F5nB5qYwHmKYMjT234uR/gzmxrK3LBgDgHdu6w=;
-  b=XasUplgghowiz5CinKIKTelCizFxqb5kQEZgWJmtNRa9bSknamo0TkXe
-   S29igYM7OG730I7o/3sNAb0739oY/H4Prhc0nhdkgFQ6SqyNXWEGYvXhv
-   Z9MvkdvkEOt/A/KmgaZzVRJsSqSoBKK2mF4L7OZvN2pm8oWkbAHZLWZ+O
-   904GXwd48PI78ymmD2zGssZfMc6WScqPxRKLFmCJcs6L5gLEIqdwJYeXo
-   Ay5ozUQT20zSBarlWOEMgC7IfaHAhLDxuMER++X0JmjVR23+nhYuZtNNB
-   qSD6pvr3MsYwcSI7CFGQt+Xk1eAbsxqImfYlUS0p6h1UfHcANEZjv35PP
+  bh=28FePwuHE151rXhmaFBkn+CGG4MFHhHZsdkSs12gCsE=;
+  b=AOserGcpXykxsB2dqnsPxxhBBupvnYs4fCvSmOKSdwsvJ5/lES6KhRSX
+   k4vDxvz85zpBPhubnprX3tk+q8UFIQYoQvD+NunqMZRjHv6ORSQ9RNtdo
+   rDChs44uAXbun5keuHWGsHIGSau75c3Cn/AFPrFfj4brlPjpBAbyQpUQt
+   OlbeNC4u4UiXLq9UrJ0ne3mPgVOflWJbSw4hyw0vqePFbR9MaQ2XJbIFZ
+   0pvt9vn2v6O/SHqF5lN/zuikuYkVYeLEuBDuR6bH9JgQThkDjpckKaDjl
+   7weEofCKq9RburtLtT8dIfIrqphusz7IZ6jGaf/KE+chjLf+0AE7Js/tU
    Q==;
-X-CSE-ConnectionGUID: 3hlFazLaTW2sYnNi9AXItQ==
-X-CSE-MsgGUID: FEaZqzGNTbG4ks6bI2AD+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54264172"
+X-CSE-ConnectionGUID: KWgIriOeQxO0kEjya1EO/w==
+X-CSE-MsgGUID: 7FoV1jr6R0mTEfvhzeHptw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54264173"
 X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
-   d="scan'208";a="54264172"
+   d="scan'208";a="54264173"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 08:35:06 -0700
-X-CSE-ConnectionGUID: NxkSxRq2QLurtivOB2XaFQ==
-X-CSE-MsgGUID: e2wsr8PJRS2vnOwrgN3rPw==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 08:35:07 -0700
+X-CSE-ConnectionGUID: gMbQBGUBTzy3M/GWuNweVA==
+X-CSE-MsgGUID: fvekPDzsTG2LddGXvtSI/Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
-   d="scan'208";a="156485177"
+   d="scan'208";a="156485191"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 08:35:05 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 08:35:06 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 13/15] wifi: iwlwifi: remove support of versions 4 and 5 of iwl_alive_ntf
-Date: Fri, 11 Jul 2025 18:34:27 +0300
-Message-Id: <20250711183056.dd784443be53.I4ff3b2392294f5df2625a71e2deee3364e9708f6@changeid>
+Subject: [PATCH iwlwifi-next 14/15] wifi: iwlwifi: remove support of version 4 of iwl_wowlan_rsc_tsc_params_cmd
+Date: Fri, 11 Jul 2025 18:34:28 +0300
+Message-Id: <20250711183056.89156be9bc7f.I5ff5c1055eaf4fef9bd73233ea4d95504634ceed@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250711153429.3417098-1-miriam.rachel.korenblit@intel.com>
 References: <20250711153429.3417098-1-miriam.rachel.korenblit@intel.com>
@@ -76,109 +76,117 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-These are not used in any of our devices. Remove them.
+This are not used in any of our devices. Remove it.
 
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/alive.h | 15 ------
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 50 ++++++-------------
- 2 files changed, 16 insertions(+), 49 deletions(-)
+ .../net/wireless/intel/iwlwifi/fw/api/d3.h    |  5 ----
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 29 +++++++------------
+ 2 files changed, 10 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h b/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h
-index 3ce477c248ce..ad5b95cad0bf 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h
-@@ -82,21 +82,6 @@ struct iwl_alive_ntf_v3 {
- 	struct iwl_umac_alive umac_data;
- } __packed; /* UCODE_ALIVE_NTFY_API_S_VER_3 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
+index b16bd8aa136a..53445087e9cb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
+@@ -456,11 +456,6 @@ struct iwl_wowlan_rsc_tsc_params_cmd_ver_2 {
+ 	union iwl_all_tsc_rsc all_tsc_rsc;
+ } __packed; /* ALL_TSC_RSC_API_S_VER_2 */
  
--struct iwl_alive_ntf_v4 {
--	__le16 status;
--	__le16 flags;
--	struct iwl_lmac_alive lmac_data[2];
--	struct iwl_umac_alive umac_data;
--} __packed; /* UCODE_ALIVE_NTFY_API_S_VER_4 */
+-struct iwl_wowlan_rsc_tsc_params_cmd_v4 {
+-	struct iwl_wowlan_rsc_tsc_params_cmd_ver_2 params;
+-	__le32 sta_id;
+-} __packed; /* ALL_TSC_RSC_API_S_VER_4 */
 -
--struct iwl_alive_ntf_v5 {
--	__le16 status;
--	__le16 flags;
--	struct iwl_lmac_alive lmac_data[2];
--	struct iwl_umac_alive umac_data;
--	struct iwl_sku_id sku_id;
--} __packed; /* UCODE_ALIVE_NTFY_API_S_VER_5 */
--
- struct iwl_imr_alive_info {
- 	__le64 base_addr;
- 	__le32 size;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 749fb8441190..d931c6eaf12f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -121,6 +121,22 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
- 			return false;
+ struct iwl_wowlan_rsc_tsc_params_cmd {
+ 	__le64 ucast_rsc[IWL_MAX_TID_COUNT];
+ 	__le64 mcast_rsc[WOWLAN_GTK_KEYS_NUM][IWL_MAX_TID_COUNT];
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 8930f8e3c0de..ef9bab042902 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -211,7 +211,7 @@ static void iwl_mvm_wowlan_program_keys(struct ieee80211_hw *hw,
+ }
  
- 		palive = (void *)pkt->data;
-+
-+		umac = &palive->umac_data;
-+		lmac1 = &palive->lmac_data[0];
-+		lmac2 = &palive->lmac_data[1];
-+		status = le16_to_cpu(palive->status);
-+
-+		BUILD_BUG_ON(sizeof(palive->sku_id.data) !=
-+			     sizeof(alive_data->sku_id));
-+		memcpy(alive_data->sku_id, palive->sku_id.data,
-+		       sizeof(palive->sku_id.data));
-+
-+		IWL_DEBUG_FW(mvm, "Got sku_id: 0x0%x 0x0%x 0x0%x\n",
-+			     le32_to_cpu(alive_data->sku_id[0]),
-+			     le32_to_cpu(alive_data->sku_id[1]),
-+			     le32_to_cpu(alive_data->sku_id[2]));
-+
- 		mvm->trans->dbg.imr_data.imr_enable =
- 			le32_to_cpu(palive->imr.enabled);
- 		mvm->trans->dbg.imr_data.imr_size =
-@@ -168,40 +184,6 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
- 			IWL_DEBUG_FW(mvm, "platform id: 0x%llx\n",
- 				     palive_v8->platform_id);
+ struct wowlan_key_rsc_tsc_data {
+-	struct iwl_wowlan_rsc_tsc_params_cmd_v4 *rsc_tsc;
++	struct iwl_wowlan_rsc_tsc_params_cmd_ver_2 *rsc_tsc;
+ 	bool have_rsc_tsc;
+ };
+ 
+@@ -236,16 +236,16 @@ static void iwl_mvm_wowlan_get_rsc_tsc_data(struct ieee80211_hw *hw,
+ 			u64 pn64;
+ 
+ 			tkip_sc =
+-			   data->rsc_tsc->params.all_tsc_rsc.tkip.unicast_rsc;
++			   data->rsc_tsc->all_tsc_rsc.tkip.unicast_rsc;
+ 			tkip_tx_sc =
+-				&data->rsc_tsc->params.all_tsc_rsc.tkip.tsc;
++				&data->rsc_tsc->all_tsc_rsc.tkip.tsc;
+ 
+ 			pn64 = atomic64_read(&key->tx_pn);
+ 			tkip_tx_sc->iv16 = cpu_to_le16(TKIP_PN_TO_IV16(pn64));
+ 			tkip_tx_sc->iv32 = cpu_to_le32(TKIP_PN_TO_IV32(pn64));
+ 		} else {
+ 			tkip_sc =
+-			  data->rsc_tsc->params.all_tsc_rsc.tkip.multicast_rsc;
++			  data->rsc_tsc->all_tsc_rsc.tkip.multicast_rsc;
  		}
--	}
+ 
+ 		/*
+@@ -269,15 +269,15 @@ static void iwl_mvm_wowlan_get_rsc_tsc_data(struct ieee80211_hw *hw,
+ 			u64 pn64;
+ 
+ 			aes_sc =
+-			   data->rsc_tsc->params.all_tsc_rsc.aes.unicast_rsc;
++			   data->rsc_tsc->all_tsc_rsc.aes.unicast_rsc;
+ 			aes_tx_sc =
+-				&data->rsc_tsc->params.all_tsc_rsc.aes.tsc;
++				&data->rsc_tsc->all_tsc_rsc.aes.tsc;
+ 
+ 			pn64 = atomic64_read(&key->tx_pn);
+ 			aes_tx_sc->pn = cpu_to_le64(pn64);
+ 		} else {
+ 			aes_sc =
+-			   data->rsc_tsc->params.all_tsc_rsc.aes.multicast_rsc;
++			   data->rsc_tsc->all_tsc_rsc.aes.multicast_rsc;
+ 		}
+ 
+ 		/*
+@@ -480,30 +480,21 @@ static int iwl_mvm_wowlan_config_rsc_tsc(struct iwl_mvm *mvm,
+ 		else
+ 			ret = 0;
+ 		kfree(data.rsc);
+-	} else if (ver == 4 || ver == 2 || ver == IWL_FW_CMD_VER_UNKNOWN) {
++	} else if (ver == 2 || ver == IWL_FW_CMD_VER_UNKNOWN) {
+ 		struct wowlan_key_rsc_tsc_data data = {};
+-		int size;
+ 
+ 		data.rsc_tsc = kzalloc(sizeof(*data.rsc_tsc), GFP_KERNEL);
+ 		if (!data.rsc_tsc)
+ 			return -ENOMEM;
+ 
+-		if (ver == 4) {
+-			size = sizeof(*data.rsc_tsc);
+-			data.rsc_tsc->sta_id =
+-				cpu_to_le32(mvm_link->ap_sta_id);
+-		} else {
+-			/* ver == 2 || ver == IWL_FW_CMD_VER_UNKNOWN */
+-			size = sizeof(data.rsc_tsc->params);
+-		}
 -
--	if (version >= 5) {
--		struct iwl_alive_ntf_v5 *palive;
--
--		if (pkt_len < sizeof(*palive))
--			return false;
--
--		palive = (void *)pkt->data;
--		umac = &palive->umac_data;
--		lmac1 = &palive->lmac_data[0];
--		lmac2 = &palive->lmac_data[1];
--		status = le16_to_cpu(palive->status);
--
--		BUILD_BUG_ON(sizeof(palive->sku_id.data) !=
--			     sizeof(alive_data->sku_id));
--		memcpy(alive_data->sku_id, palive->sku_id.data,
--		       sizeof(palive->sku_id.data));
--
--		IWL_DEBUG_FW(mvm, "Got sku_id: 0x0%x 0x0%x 0x0%x\n",
--			     le32_to_cpu(alive_data->sku_id[0]),
--			     le32_to_cpu(alive_data->sku_id[1]),
--			     le32_to_cpu(alive_data->sku_id[2]));
--	} else if (iwl_rx_packet_payload_len(pkt) == sizeof(struct iwl_alive_ntf_v4)) {
--		struct iwl_alive_ntf_v4 *palive;
--
--		if (pkt_len < sizeof(*palive))
--			return false;
--
--		palive = (void *)pkt->data;
--		umac = &palive->umac_data;
--		lmac1 = &palive->lmac_data[0];
--		lmac2 = &palive->lmac_data[1];
--		status = le16_to_cpu(palive->status);
- 	} else if (iwl_rx_packet_payload_len(pkt) ==
- 		   sizeof(struct iwl_alive_ntf_v3)) {
- 		struct iwl_alive_ntf_v3 *palive3;
+ 		ieee80211_iter_keys(mvm->hw, vif,
+ 				    iwl_mvm_wowlan_get_rsc_tsc_data,
+ 				    &data);
+ 
+ 		if (data.have_rsc_tsc)
+ 			ret = iwl_mvm_send_cmd_pdu(mvm, WOWLAN_TSC_RSC_PARAM,
+-						   CMD_ASYNC, size,
++						   CMD_ASYNC,
++						   sizeof(data.rsc_tsc),
+ 						   data.rsc_tsc);
+ 		else
+ 			ret = 0;
 -- 
 2.34.1
 
