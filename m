@@ -1,139 +1,185 @@
-Return-Path: <linux-wireless+bounces-25296-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25297-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836B9B02601
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 22:55:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16358B0260B
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 22:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF1B0564D38
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 20:55:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A1C5566F83
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 20:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3481F30BB;
-	Fri, 11 Jul 2025 20:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D1F1F30BB;
+	Fri, 11 Jul 2025 20:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="k58LvMWC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MpUYgXS2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669CE19995E
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 20:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA013221267
+	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 20:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752267338; cv=none; b=SYpVBQ18mnkAWNrBPQxKygA43a3jd1Uo/c8ZhR3MihQjdc++KqhjCuebVMPe+FIwkrQF6XD9ZkeD1GlzjXl2xuNiudQ8Qp2wbw2xes6bJyfLwk9wqH6iF+xcebb74Ly7P3ypWvrmjiEAp4cpilAHWziqulyakBrXxZrb6woGXfg=
+	t=1752267469; cv=none; b=qqH120eE2Df0/pZTf6T8nqOejB3Q9XIgrvW061RIbXwc1/ALer2CxZlRMI4vRB+gXSyOZWualPjptESV0Yk1dM4gYd0CANrI80Li9+G0lUOq3rbLpiQ2gIX8MW38S927ZH918IxN/kju1S/H06aHsTF5g+0Oq7ka1HHnNXcVchM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752267338; c=relaxed/simple;
-	bh=g8xumnlJKhg8TvzfYUZcKaeMMbkMPqFgS9w1YvjfoZg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X9heg8PTHFVwCGHLUuC+8bdZSEApBZcWEUISY2geCrol+AXzZ6Ctt0ZkaMev+0q9sJI+fUc68HaPBuac2PCwuOXRUuGQqhnTsT9weYtAtkPPqKSRAM0Qq8PXa/6HVKwTCC01+7Fa6cV3YrI2B6iAp0AJObcG80RWJJAWsPLch+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=k58LvMWC; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56BAjmGj008142
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 20:55:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	g8xumnlJKhg8TvzfYUZcKaeMMbkMPqFgS9w1YvjfoZg=; b=k58LvMWCjdxDKPNi
-	MYhffkoFEEl8XWUvGQXBs1emGPakKiA5d5gFbSCM6pLgrWeYa9iL3iihCfiGugiv
-	4hmLKtZ/sS0k/7Xe8Jkaig19zWGBv7etDQEs/yvFVQJHEhFpCQQ8ctjiJ/j2spCk
-	JexEF+MyKLut1st2nDtjDzqWXHqu7nBGgNRWesdKIbBCwoVnpqG4C6Nx7CKVT4VT
-	YuuwygMcWRTB7jZz9FEDRBjs3ubBgJHMU0NGuXLa+XkiMQQykZ09jlWBdoKHgcxD
-	t/8Fiz6jOMjkyHGKbLDhaPLg5Z4DmMoXcW/pPrlW91BuY76BViiHAI6ES4ka/vG4
-	9WKPwA==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47smcg9tpw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 20:55:35 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-74b29ee4f8bso2315664b3a.2
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 13:55:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752267334; x=1752872134;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g8xumnlJKhg8TvzfYUZcKaeMMbkMPqFgS9w1YvjfoZg=;
-        b=aTLBHpyYXbgT7YsEKcVOEoMVUOZcMmrf/asXNFJaMi9cF2RL3mJqNNhupIGQA/FQJE
-         ZnfcCOChH4VdwHhS0p1fRgezl8fi2bs2qUFf9+kKRVo3CUZNGHrPxrf1c/tebpxhV4Yf
-         Z9+P2UvSd5NlVChYYvRIRy0Ie6pdqH8NcQUqMezKdtPgk4dUWzfdAEzxk+wQLwYABz15
-         cptffaPLcd0NZUwCD7ykvV9YFeT5uj/bAXbZmtSD7d3utyHv/2H4G+PLX+mKi8PvwlU8
-         EGBMPHmk0HbdQmqGp/dAvx56mkBQgOkDSWyYhg7LNzNPKbSz0w/Vzdcc61H222h6+Gxk
-         L0mg==
-X-Forwarded-Encrypted: i=1; AJvYcCXKH7USLqBPMMFV96Q4L5rwoTgIit0S1h9R1eopAYfKLVqpOXQZXLePbjcz5fEGiSyUNTcJO/jMu3/fhzBt4A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yznra+gl5rRTXpXbs6Sqf5aLAvQFLTVkhcHpWOCr0PR0myFEbPa
-	q1pOHkhBZ7MM8nyYXaWs8zRQTZ7B4yQty6PVyInAyouCo3PcxopBkyTWdC+D9TFwIF2pubFLKAo
-	GGP65wv22jJL7HWo+PHGkK0trweV1+z4ozA33vYuwBcR8qdKHOOXzfDMfotSOQNO1jJ4tKA==
-X-Gm-Gg: ASbGncsk5c6cZElxl+HYqKoWE5mvBuPCv6WMHXh+3UEqf98jgqRRr8s2UtT3lPO4LBa
-	5n5qZ++PwafIBTdPcAD6aCA1Z2wrwvXLkyc4rG3xJ5KKa4LOJNsyXcJ6LQReQ5t89V2X+3jidqf
-	nSlDxezC60G0/juNhPRVL8ZpE3mMzKZuDFzuVuVieA8e0+kYwhn8rWYq3wcEdQPMkgeizo2+X7A
-	o3FFqzzQKF3pTGk5YsWhU0/ERjmzOttNaWZftloJxwrKBcJ0EKWJPnX5T/jUO+LLOKSgxtcSR2I
-	DwhNhs2P2tKHKD/Dobhi8YVfewLorhOrJE1p3Mllx1HDpeuyJXPs4gCGDHuKtx04E12ird68JU5
-	dg9MsN+LaTdI1sIhDEM/AylTq6fK73VdB
-X-Received: by 2002:a05:6a00:4f8e:b0:740:afda:a742 with SMTP id d2e1a72fcca58-74edd64c6bcmr6178030b3a.0.1752267334486;
-        Fri, 11 Jul 2025 13:55:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGJ+7Q4jYJh5aHc1D1Mi2+k4SzD1hY5UuKAGZpXpIPCcTz1Wm5TRFPEpAjDLHuHOTCW2uOJaQ==
-X-Received: by 2002:a05:6a00:4f8e:b0:740:afda:a742 with SMTP id d2e1a72fcca58-74edd64c6bcmr6178007b3a.0.1752267333998;
-        Fri, 11 Jul 2025 13:55:33 -0700 (PDT)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74eb9e06890sm6204889b3a.48.2025.07.11.13.55.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Jul 2025 13:55:33 -0700 (PDT)
-Message-ID: <b4217107-f81c-4004-8683-2f9b37af9f31@oss.qualcomm.com>
-Date: Fri, 11 Jul 2025 13:55:32 -0700
+	s=arc-20240116; t=1752267469; c=relaxed/simple;
+	bh=GPo56t9auo/cWugkymiaJWoX2WIiC9AkdQW1oXbDFGg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o3mw8akh/JGnwwda2+Cd7MmXEC37l+MSvaqqSTx0YG6vMKc80R5k2njMnHeKk7NLudUrzxxKrZqJgyd07MnuEpzcWTy1O3m4aSx+yCjwZOd8VHTQNvK5x+kXoYTu5pNkwNrVe9X6fgPotDXg/ehjJvxm3QV7MsA7b/MWIvC/Gdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MpUYgXS2; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752267468; x=1783803468;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=GPo56t9auo/cWugkymiaJWoX2WIiC9AkdQW1oXbDFGg=;
+  b=MpUYgXS21Uk2/wruAw0lIi0Igvc98RYPe/TSUBRZdiQox7JRo2YkBzKI
+   HoV8A/9MjiVpc6Vu4nocI8dfztmSMZ0usd2Eu3uxy14Tt8TaN2rMpc5BL
+   fP1l5zsbkYpNQAp285ee7DwUhJGcxz4qTqQEO+Isi8xCnhRdkPf9CdXTS
+   ni2QI7Xbfz8aHyL+Af/PBTcEV03R4SDADOB/C+Da3t/Igw8wxnWAda/bK
+   AGA6HCbzDm4oVLLcu3UkkRPD3eVMGiJIy7bAl272btAUdC2rocHxbHyCr
+   MM48sv77XGvfYkR3JwaNrxywoEy8gH8FLcYKkzx4RVKVA1U5wCi1FMplH
+   w==;
+X-CSE-ConnectionGUID: qlLFNS/BQt6HNJhPcd3dJA==
+X-CSE-MsgGUID: LjTrDpVDSj6cc7HpM0owrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66015188"
+X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
+   d="scan'208";a="66015188"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 13:57:47 -0700
+X-CSE-ConnectionGUID: QiXW3JMMQM6ciE9+34LGsw==
+X-CSE-MsgGUID: gb4c0mkAThelJ8xKy5xRSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
+   d="scan'208";a="162137845"
+Received: from johunt-mobl9.ger.corp.intel.com (HELO stinkbox) ([10.245.245.78])
+  by orviesa005.jf.intel.com with SMTP; 11 Jul 2025 13:57:45 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Fri, 11 Jul 2025 23:57:44 +0300
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: linux-wireless@vger.kernel.org
+Cc: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH] wifi: iwlwifi: Fix botched indexing conversion
+Date: Fri, 11 Jul 2025 23:57:44 +0300
+Message-ID: <20250711205744.28723-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [GIT PULL] wireless-2025-07-10
-To: Johannes Berg <johannes@sipsolutions.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-References: <20250710122212.24272-3-johannes@sipsolutions.net>
- <20250710172352.3ccd34ec@kernel.org>
- <934e5e1e253ee3025f617cc38ce6fc15e0619d6c.camel@sipsolutions.net>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <934e5e1e253ee3025f617cc38ce6fc15e0619d6c.camel@sipsolutions.net>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=P7o6hjAu c=1 sm=1 tr=0 ts=68717a47 cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=e70TP3dOR9hTogukJ0528Q==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=udskd3E0VjEkj09em8MA:9
- a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-ORIG-GUID: bWSvp6iT0FtImkTPdKElLIQAJobfsKlI
-X-Proofpoint-GUID: bWSvp6iT0FtImkTPdKElLIQAJobfsKlI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzExMDE1NyBTYWx0ZWRfX6BOzaIcgQZHj
- L9Uywa+R4e9h7pPKEY94sTjViTx5Tw+eKbgNzi7LA5BgurswaZKIosx9HKdrNqSdKm3RaMQn8GX
- 7DCkow14p7IDt/uwt839ON1cp3CwKf6ZlRZXyhtl9cGouBPwRw9oAZmk2PtfuIXKymsjl2aunl2
- gMmYyJKNw/4nfuOB7xxYkETkFm7v6otk6QxjfyjnvlG6NfYaPN+L3eQvc6qcHX/QBn4b0ztKg9I
- 8X+q2Ey6rLFKz0t2eyco2NxeD37CdYzL7z/AKjEd/eD45qlOZoD3paShEuZWz5lv3YZd0J2ot1l
- nQUAjlhCCdW1KV0EeFSfvB7AtO21SZ3FzRbT9vFdtEiKfrV/io3VydNF75KhGxFSa6sgmLLGaYl
- mH6Q5Er8cHUhykXhvgM9VzLZAY7pu0BbMiGQwuycCZ/ynQsn3rfzyHFN0DQloDYEoR7jzN9h
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-11_06,2025-07-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 phishscore=0 bulkscore=0 mlxscore=0
- malwarescore=0 spamscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015
- adultscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507110157
+Content-Transfer-Encoding: 8bit
 
-On 7/10/2025 11:41 PM, Johannes Berg wrote:
-> No worries, and thanks for the heads-up, I can wait. I actually really
-> hope this was the last pull request for the current -rc cycle anyway,
-> but of course now that I said it someone's going to come out of the
-> woodwork with a fix ;)
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-<sticks out head>
-I have one small patch for -rc7.
-I'm holding off a PR until Monday to make sure there aren't any more
+The conversion from compiler assisted indexing to manual
+indexing wasn't done correctly. The array is still made
+up of __le16 elements so multiplying the outer index by
+the element size is not what we want. Fix it up.
 
-/jeff
+This causes the kernel to oops when trying to transfer any
+significant amount of data over wifi:
+
+BUG: unable to handle page fault for address: ffffc900009f5282
+PGD 100000067 P4D 100000067 PUD 1000fb067 PMD 102e82067 PTE 0
+Oops: Oops: 0002 [#1] SMP
+CPU: 1 UID: 0 PID: 99 Comm: kworker/u8:3 Not tainted 6.15.0-rc2-cl-bisect3-00604-g6204d5130a64-dirty #78 PREEMPT
+Hardware name: Dell Inc. Latitude E5400                  /0D695C, BIOS A19 06/13/2013
+Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
+RIP: 0010:iwl_trans_pcie_tx+0x4dd/0xe60 [iwlwifi]
+Code: 00 00 66 81 fa ff 0f 0f 87 42 09 00 00 3d ff 00 00 00 0f 8f 37 09 00 00 41 c1 e0 0c 41 09 d0 48 8d 14 b6 48 c1 e2 07 48 01 ca <66> 44 89 04 57 48 8d 0c 12 83 f8 3f 0f 8e 84 01 00 00 41 8b 85 80
+RSP: 0018:ffffc900001c3b50 EFLAGS: 00010206
+RAX: 00000000000000c1 RBX: ffff88810b180028 RCX: 00000000000000c1
+RDX: 0000000000002141 RSI: 000000000000000d RDI: ffffc900009f1000
+RBP: 0000000000000002 R08: 0000000000000025 R09: ffffffffa050fa60
+R10: 00000000fbdbf4bc R11: 0000000000000082 R12: ffff88810e5ade40
+R13: ffff88810af81588 R14: 000000000000001a R15: ffff888100dfe0c8
+FS:  0000000000000000(0000) GS:ffff8881998c3000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc900009f5282 CR3: 0000000001e39000 CR4: 00000000000426f0
+Call Trace:
+ <TASK>
+ ? rcu_is_watching+0xd/0x40
+ ? __iwl_dbg+0xb1/0xe0 [iwlwifi]
+ iwlagn_tx_skb+0x8e2/0xcb0 [iwldvm]
+ iwlagn_mac_tx+0x18/0x30 [iwldvm]
+ ieee80211_handle_wake_tx_queue+0x6c/0xc0 [mac80211]
+ ieee80211_agg_start_txq+0x140/0x2e0 [mac80211]
+ ieee80211_agg_tx_operational+0x126/0x210 [mac80211]
+ ieee80211_process_addba_resp+0x27b/0x2a0 [mac80211]
+ ieee80211_iface_work+0x4bd/0x4d0 [mac80211]
+ ? _raw_spin_unlock_irq+0x1f/0x40
+ cfg80211_wiphy_work+0x117/0x1f0 [cfg80211]
+ process_one_work+0x1ee/0x570
+ worker_thread+0x1c5/0x3b0
+ ? bh_worker+0x240/0x240
+ kthread+0x110/0x220
+ ? kthread_queue_delayed_work+0x90/0x90
+ ret_from_fork+0x28/0x40
+ ? kthread_queue_delayed_work+0x90/0x90
+ ret_from_fork_asm+0x11/0x20
+ </TASK>
+Modules linked in: ctr aes_generic ccm sch_fq_codel bnep xt_tcpudp xt_multiport xt_state iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv4 ip_tables x_tables btusb btrtl btintel btbcm bluetooth ecdh_generic ecc libaes hid_generic usbhid hid binfmt_misc joydev mousedev snd_hda_codec_hdmi iwldvm snd_hda_codec_idt snd_hda_codec_generic mac80211 coretemp iTCO_wdt watchdog kvm_intel i2c_dev snd_hda_intel libarc4 kvm snd_intel_dspcfg sdhci_pci sdhci_uhs2 snd_hda_codec iwlwifi sdhci irqbypass cqhci snd_hwdep snd_hda_core cfg80211 firewire_ohci mmc_core psmouse snd_pcm i2c_i801 firewire_core pcspkr led_class uhci_hcd i2c_smbus tg3 crc_itu_t iosf_mbi snd_timer rfkill libphy ehci_pci snd ehci_hcd lpc_ich mfd_core usbcore video intel_agp usb_common soundcore intel_gtt evdev agpgart parport_pc wmi parport backlight
+CR2: ffffc900009f5282
+---[ end trace 0000000000000000 ]---
+RIP: 0010:iwl_trans_pcie_tx+0x4dd/0xe60 [iwlwifi]
+Code: 00 00 66 81 fa ff 0f 0f 87 42 09 00 00 3d ff 00 00 00 0f 8f 37 09 00 00 41 c1 e0 0c 41 09 d0 48 8d 14 b6 48 c1 e2 07 48 01 ca <66> 44 89 04 57 48 8d 0c 12 83 f8 3f 0f 8e 84 01 00 00 41 8b 85 80
+RSP: 0018:ffffc900001c3b50 EFLAGS: 00010206
+RAX: 00000000000000c1 RBX: ffff88810b180028 RCX: 00000000000000c1
+RDX: 0000000000002141 RSI: 000000000000000d RDI: ffffc900009f1000
+RBP: 0000000000000002 R08: 0000000000000025 R09: ffffffffa050fa60
+R10: 00000000fbdbf4bc R11: 0000000000000082 R12: ffff88810e5ade40
+R13: ffff88810af81588 R14: 000000000000001a R15: ffff888100dfe0c8
+FS:  0000000000000000(0000) GS:ffff8881998c3000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc900009f5282 CR3: 0000000001e39000 CR4: 00000000000426f0
+Kernel panic - not syncing: Fatal exception in interrupt
+Kernel Offset: disabled
+---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Fixes: 6204d5130a64 ("wifi: iwlwifi: use bc entries instead of bc table also for pre-ax210")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index bb467e2b1779..eee55428749c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -2101,10 +2101,10 @@ static void iwl_txq_gen1_update_byte_cnt_tbl(struct iwl_trans *trans,
+ 
+ 	bc_ent = cpu_to_le16(len | (sta_id << 12));
+ 
+-	scd_bc_tbl[txq_id * BC_TABLE_SIZE + write_ptr].tfd_offset = bc_ent;
++	scd_bc_tbl[txq_id * TFD_QUEUE_BC_SIZE + write_ptr].tfd_offset = bc_ent;
+ 
+ 	if (write_ptr < TFD_QUEUE_SIZE_BC_DUP)
+-		scd_bc_tbl[txq_id * BC_TABLE_SIZE + TFD_QUEUE_SIZE_MAX + write_ptr].tfd_offset =
++		scd_bc_tbl[txq_id * TFD_QUEUE_BC_SIZE + TFD_QUEUE_SIZE_MAX + write_ptr].tfd_offset =
+ 			bc_ent;
+ }
+ 
+@@ -2328,10 +2328,10 @@ static void iwl_txq_gen1_inval_byte_cnt_tbl(struct iwl_trans *trans,
+ 
+ 	bc_ent = cpu_to_le16(1 | (sta_id << 12));
+ 
+-	scd_bc_tbl[txq_id * BC_TABLE_SIZE + read_ptr].tfd_offset = bc_ent;
++	scd_bc_tbl[txq_id * TFD_QUEUE_BC_SIZE + read_ptr].tfd_offset = bc_ent;
+ 
+ 	if (read_ptr < TFD_QUEUE_SIZE_BC_DUP)
+-		scd_bc_tbl[txq_id * BC_TABLE_SIZE + TFD_QUEUE_SIZE_MAX + read_ptr].tfd_offset =
++		scd_bc_tbl[txq_id * TFD_QUEUE_BC_SIZE + TFD_QUEUE_SIZE_MAX + read_ptr].tfd_offset =
+ 			bc_ent;
+ }
+ 
+-- 
+2.49.0
+
 
