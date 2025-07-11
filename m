@@ -1,279 +1,151 @@
-Return-Path: <linux-wireless+bounces-25245-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25246-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42A36B0124F
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 06:35:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8731B0126B
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 06:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E76A170C96
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 04:35:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CEDE4852C4
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 04:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4451E1A33;
-	Fri, 11 Jul 2025 04:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECD278C91;
+	Fri, 11 Jul 2025 04:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nPMc6wqM"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="EQX2MHRU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130641C4A20;
-	Fri, 11 Jul 2025 04:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3683FFD
+	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 04:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752208401; cv=none; b=TmmALwdcxlZScuuETaDyJFcgu5BDM1flpG244tiS95XZpyBSiVYZUJydVQI+ae/SRTbRL3+Gjfhf8bQnSwOXG1Sqz4CEW8J2+KmKb/AQLlxvbtIB3ThOcIL7WDDdN0njvHQYb6IEXwoWIIBTo8AiUCCBAnX4rW3nCPcHBpcTqrw=
+	t=1752209649; cv=none; b=mDueQQd2owihLvmBYlX4tOS+LV1doaTr2jKPmsJtSH7Jg1iqVKmypK+VbZIYJ+l0jtGPTDNrDf/zM/TTKYRUQu2a/EuzSFwDkJ+b8DlNtKDC19MtLhF4NPDRaONXcLcRadm4iMSGDWlY+2neAvJcNIbMP9nyNRYRdmxdRAdx3Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752208401; c=relaxed/simple;
-	bh=ADUlxN5vRAMoH+bUBIPnCkxN+wm8oydTF3zMTV6RCPE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mgElQpdl3O+JDLZnyoo5W+CQ0mq07eCsDDCgWL/mHIlQpqOVeT2gs47HpIBriAvMONSZbZzOWLC9+xaHBvQLJVHuPQI/urP87ZPbKToY2EG3TmvG3NsVGTJPASggu82ONGlQwtTtHDd/695/520rGfWAkHf8hKIv9MUtcDm7Iro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nPMc6wqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6A1C4CEEF;
-	Fri, 11 Jul 2025 04:33:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752208400;
-	bh=ADUlxN5vRAMoH+bUBIPnCkxN+wm8oydTF3zMTV6RCPE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nPMc6wqMegydFdHC/efGONuSfXTyZbe5tsXbIroa82StpgKDbEvJPuj48tapBwPyf
-	 EtVHrya8nElzNy0urWzuc6uc3+P/BhYhyllSsJwAlWh7lYs5nCg3PCVMoSGtmE4eHa
-	 IMX942N7HcpHaEDvKk/pcHyxWkS1lUIozmVu6pPPyubGupM4QuWOeg3fVzOPXb5Z4h
-	 SrGb9KgLIy6SLPmYDVt0CEvM6cQ1M97xX5zkwXVewuH3ePmqmSFbhBCz4+5V2E/5j0
-	 ZGDphlx7xrl9wUIVzNALWHUi/AasvWNt1O4R7Oz1o3rxk3Gy07+Zd4C10f5VgqL7ur
-	 LWVdCR8rbYDhQ==
-Date: Fri, 11 Jul 2025 10:03:08 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
-	Jeff Johnson <jjohnson@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Jingoo Han <jingoohan1@gmail.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	mhi@lists.linux.dev, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
-	qiang.yu@oss.qualcomm.com, quic_vbadigan@quicinc.com, quic_vpernami@quicinc.com, 
-	quic_mrana@quicinc.com
-Subject: Re: [PATCH v4 04/11] bus: mhi: host: Add support for Bandwidth scale
-Message-ID: <eg2v3kctnztxcaulffu7tvysljimmyhnramyjj5gpa4vrv3yxu@g3pgwpwx37iq>
-References: <20250609-mhi_bw_up-v4-0-3faa8fe92b05@qti.qualcomm.com>
- <20250609-mhi_bw_up-v4-4-3faa8fe92b05@qti.qualcomm.com>
- <j24c2ii33yivc7rb3vwbwljxwvhdpqwbfgt3gid2njma6t47i4@uhykehw23h2q>
- <31c192f7-cd69-46ad-9443-5d57ae2aa86e@oss.qualcomm.com>
+	s=arc-20240116; t=1752209649; c=relaxed/simple;
+	bh=lCRy9buydG1gBLisJ4q3nYIJ836JpgB+/cctXNLrah8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=RdQE70dSNZZaqoUts1agsJxVPqeNTV/XbfRq8yaJIafTUGwXuMpgc3YXPT4gYumZlCkfJi7/UCCSKZyFeY/qavbNmaCxsyX3v9kxJ7MIBQuHvir3hcP/C/+cF93E+pnytJGZKE1OJkjxM421z2Lw/H90FDlyUs4cwBE9k0r9FvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=EQX2MHRU; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56B3H0tx017065;
+	Fri, 11 Jul 2025 04:54:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2NGnsBP5CqshXNv+cPv+R/WuRwIErWSfoRCEPx1w4SE=; b=EQX2MHRUmpH4H46N
+	ri9bzWh7k2pC3PT/ye5j51+oTaRcDqh2CcVTxUcoe7sBDWZ7X6eU1vL3awJhcU6X
+	c2jREGhf5XfKV4yzNUn0QpAtwyAScLNtqTCGjmvLJmUM/o53RgB13tjoEUH0Spq2
+	1wrrBY4z61d2LxMJ7gnl69RBP/AOIBLUxXZgnyNl9k8EfdG29oCYXoGxl0KvYe9E
+	tEiDGeBUd2kM3LUeU5psVYCDBt+l93tczRjjWOtwZ+DopqwPu/HDuEe6m8+Vk41m
+	3mlUIAYa8m6ZyIVnE0rmvzBzLiSG11cnR8GA172yeKO1fsacAh8ThqwKy/a7IIhV
+	egJvbw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47ttj9r6ax-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Jul 2025 04:54:03 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 56B4s2i3006913
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Jul 2025 04:54:02 GMT
+Received: from [10.216.58.181] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 10 Jul
+ 2025 21:54:00 -0700
+Message-ID: <c14abd0b-9f07-50b0-29c2-b7b74892e7d2@quicinc.com>
+Date: Fri, 11 Jul 2025 10:23:51 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <31c192f7-cd69-46ad-9443-5d57ae2aa86e@oss.qualcomm.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH ath-next v2] wifi: ath12k: Add support to enqueue
+ management frame at MLD level
+Content-Language: en-US
+To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
+References: <20250709151954.2601052-1-quic_rdevanat@quicinc.com>
+From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+In-Reply-To: <20250709151954.2601052-1-quic_rdevanat@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzExMDAzMSBTYWx0ZWRfX3rOCVEqYVSxR
+ dPXijnhE4eNHkGVdWn/cIGXTKbkNk2leZHb5lxOTPKwGmyeBpbirwAxu8lwpdxetZFMSUqsoLpX
+ H18MUlGKr4cBN53qOO5HYVqqYJNVNp3+cl+CDxX95/8gFGcJsr26gwOUvoSiBqhBo8C0LPkgi4l
+ ssHh2bbmVRbGmw7FMZ1WyiQdH8TzDhAamU9BIVt5yjhkHtx0PDnqNgG/WE8bNSpNuB+lwafOdDo
+ TynaTcAwH2wNDVNa91+rsnjH/ZS85HOa2yaCIieLrXQcMTSL504Qt7NM2CPg7FeDBgDTLgNAzIQ
+ ROo4De4bXb/U5L1hC7Qe8O8XbvRNJv6pvD21n/8hdaBZq07kmk73uJX+QuFPBbvy9ROEs3lqi0N
+ pEzHvKqxTZXChqq2uqBSgrk3mGK8B33AucnCHH408FQ2eNa9s5JJuubguqC0WDxNrr92FnwN
+X-Proofpoint-ORIG-GUID: m8P6F7q_b18XyCYKW3FDMFVSTshuI7Mi
+X-Authority-Analysis: v=2.4 cv=Gu1C+l1C c=1 sm=1 tr=0 ts=687098eb cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8
+ a=7ZWk5FXIFxzhtYbW22wA:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: m8P6F7q_b18XyCYKW3FDMFVSTshuI7Mi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-11_01,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0 impostorscore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 priorityscore=1501 adultscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507110031
 
-On Wed, Jul 09, 2025 at 05:51:34PM GMT, Krishna Chaitanya Chundru wrote:
+
+
+On 7/9/2025 8:49 PM, Roopni Devanathan wrote:
+> From: Sriram R <quic_srirrama@quicinc.com>
 > 
+> A multi-link client can use any link for transmissions. It can decide to
+> put one link in power save mode for longer periods while listening on the
+> other links as per MLD listen interval. Unicast management frames sent to
+> that link station might get dropped if that link station is in power save
+> mode or inactive. In such cases, firmware can take decision on which link
+> to use.
 > 
-> On 7/8/2025 10:36 PM, Manivannan Sadhasivam wrote:
-> > On Mon, Jun 09, 2025 at 04:21:25PM GMT, Krishna Chaitanya Chundru wrote:
-> > > As per MHI spec v1.2, sec 14, MHI supports bandwidth scaling to reduce
-> > > power consumption. MHI bandwidth scaling is advertised by devices that
-> > > contain the bandwidth scaling capability registers. If enabled, the device
-> > > aggregates bandwidth requirements and sends them to the host through
-> > > dedicated mhi event ring. After the host performs the bandwidth switch,
-> > > it sends an acknowledgment by ringing a doorbell.
-> > > 
-> > > if the host supports bandwidth scaling events, then it must set
-> > > BW_CFG.ENABLED bit, set BW_CFG.DB_CHAN_ID to the channel ID to the
-> > > doorbell that will be used by the host to communicate the bandwidth
-> > > scaling status and BW_CFG.ER_INDEX to the index for the event ring
-> > > to which the device should send bandwidth scaling request in the
-> > > bandwidth scaling capability register.
-> > > 
-> > > As part of mmio init check if the bw scale capability is present or not,
-> > > if present advertise host supports bw scale by setting all the required
-> > > fields.
-> > > 
-> > > MHI layer will only forward the bw scaling request to the controller
-> > > driver since MHI doesn't have any idea about transport layer used by
-> > > the controller, it is responsibility of the controller driver to do actual
-> > > bw scaling and then pass status to the MHI. MHI will response back to the
-> > > device based up on the status of the bw scale received.
-> > > 
-> > > Add a new get_misc_doorbell() to get doorbell for misc capabilities to
-> > > use the doorbell with mhi events like MHI BW scale etc.
-> > > 
-> > > Use workqueue & mutex for the bw scale events as the pci_set_target_speed()
-> > > which will called by the mhi controller driver can sleep.
-> > > 
-> > > Co-developed-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
-> > > Signed-off-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
-> > > Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-> > > ---
-> > >   drivers/bus/mhi/common.h        | 13 ++++++
-> > >   drivers/bus/mhi/host/init.c     | 63 +++++++++++++++++++++++++-
-> > >   drivers/bus/mhi/host/internal.h |  7 ++-
-> > >   drivers/bus/mhi/host/main.c     | 98 ++++++++++++++++++++++++++++++++++++++++-
-> > >   drivers/bus/mhi/host/pm.c       | 10 ++++-
-> > >   include/linux/mhi.h             | 13 ++++++
-> > >   6 files changed, 198 insertions(+), 6 deletions(-)
-> > > 
-> > > diff --git a/drivers/bus/mhi/common.h b/drivers/bus/mhi/common.h
-> > > index 58f27c6ba63e3e6fa28ca48d6d1065684ed6e1dd..6e342519d80b7725e9ef5390a3eb2a06ac69ceac 100644
-> > > --- a/drivers/bus/mhi/common.h
-> > > +++ b/drivers/bus/mhi/common.h
-> > > @@ -217,6 +217,19 @@ enum mhi_capability_type {
-> > >   	MHI_CAP_ID_MAX,
-> > >   };
-> > > +/* MHI Bandwidth scaling offsets */
-> > > +#define MHI_BW_SCALE_CFG_OFFSET		0x4
-> > > +#define MHI_BW_SCALE_CAP_ID		(3)
-> > > +#define MHI_BW_SCALE_DB_CHAN_ID		GENMASK(31, 25)
-> > > +#define MHI_BW_SCALE_ENABLED		BIT(24)
-> > > +#define MHI_BW_SCALE_ER_INDEX		GENMASK(23, 19)
-> > > +
-> > > +#define MHI_TRE_GET_EV_BW_REQ_SEQ(tre)	FIELD_GET(GENMASK(15, 8), (MHI_TRE_GET_DWORD(tre, 0)))
-> > > +
-> > > +#define MHI_BW_SCALE_RESULT(status, seq)	cpu_to_le32(FIELD_PREP(GENMASK(11, 8), status) | \
-> > > +						FIELD_PREP(GENMASK(7, 0), seq))
-> > > +#define MHI_BW_SCALE_NACK			0xF
-> > > +
-> > >   enum mhi_pkt_type {
-> > >   	MHI_PKT_TYPE_INVALID = 0x0,
-> > >   	MHI_PKT_TYPE_NOOP_CMD = 0x1,
-> > > diff --git a/drivers/bus/mhi/host/init.c b/drivers/bus/mhi/host/init.c
-> > > index 9102ce13a2059f599b46d25ef631f643142642be..26703fea6272de7fd19c6ee76be067f0ff0fd309 100644
-> > > --- a/drivers/bus/mhi/host/init.c
-> > > +++ b/drivers/bus/mhi/host/init.c
-> > > @@ -501,10 +501,55 @@ static int mhi_find_capability(struct mhi_controller *mhi_cntrl, u32 capability,
-> > >   	return -ENXIO;
-> > >   }
-> > > +static int mhi_get_er_index(struct mhi_controller *mhi_cntrl,
-> > > +			    enum mhi_er_data_type type)
-> > > +{
-> > > +	struct mhi_event *mhi_event = mhi_cntrl->mhi_event;
-> > > +	int i;
-> > > +
-> > > +	/* Find event ring for requested type */
-> > > +	for (i = 0; i < mhi_cntrl->total_ev_rings; i++, mhi_event++) {
-> > > +		if (mhi_event->data_type == type)
-> > > +			return mhi_event->er_index;
-> > > +	}
-> > > +
-> > > +	return -ENOENT;
-> > > +}
-> > > +
-> > > +static int mhi_init_bw_scale(struct mhi_controller *mhi_cntrl,
-> > > +			     int bw_scale_db)
-> > > +{
-> > > +	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-> > > +	u32 bw_cfg_offset, val;
-> > > +	int ret, er_index;
-> > > +
-> > > +	ret = mhi_find_capability(mhi_cntrl, MHI_BW_SCALE_CAP_ID, &bw_cfg_offset);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	er_index = mhi_get_er_index(mhi_cntrl, MHI_ER_BW_SCALE);
-> > > +	if (er_index < 0)
-> > > +		return er_index;
-> > > +
-> > > +	bw_cfg_offset += MHI_BW_SCALE_CFG_OFFSET;
-> > > +
-> > > +	/* Advertise host support */
-> > > +	val = (__force u32)cpu_to_le32(FIELD_PREP(MHI_BW_SCALE_DB_CHAN_ID, bw_scale_db) |
-> > > +				       FIELD_PREP(MHI_BW_SCALE_ER_INDEX, er_index) |
-> > > +				       MHI_BW_SCALE_ENABLED);
-> > > +
-> > 
-> > It is wrong to store the value of cpu_to_le32() in a non-le32 variable.
-> > mhi_write_reg() accepts the 'val' in native endian. writel used in the
-> > controller drivers should take care of converting to LE before writing to the
-> > device.
-> > 
-> ok then I will revert to u32.
+> Allow the firmware to decide on which link management frame should be
+> sent on, by filling the hardware link with maximum value of u32, so that
+> the firmware will not have a specific link to transmit data on and so
+> the management frames will be link agnostic. For QCN devices, all action
+> frames are marked as link agnostic. For WCN devices, if the device is
+> configured as an AP, then all frames other than probe response frames,
+> authentication frames, association response frames, re-association response
+> frames and ADDBA request frames are marked as link agnostic and if the
+
+As per the code, it looks like ADDBA response is excluded from the list
+of link agnostic frames, no?
+
+> device is configured as a station, then all frames other than probe request
+> frames, authentication frames and ADDBA request frames are marked as link
+> agnostic.
+
+deauth frame is not mnetioned, here also it is ADDBA resp in the excluded list
+not ADDBA req as per the logic.
+
 > 
-> I think we need a patch in the controller drivers seperately to handle
-> this.
-
-Why?
-
-> > > +	mhi_write_reg(mhi_cntrl, mhi_cntrl->regs, bw_cfg_offset, val);
-> > > +
-> > > +	dev_dbg(dev, "Bandwidth scaling setup complete with event ring: %d\n",
-> > > +		er_index);
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > >   int mhi_init_mmio(struct mhi_controller *mhi_cntrl)
-> > >   {
-> > >   	u32 val;
-> > > -	int i, ret;
-> > > +	int i, ret, doorbell = 0;
-> > >   	struct mhi_chan *mhi_chan;
-> > >   	struct mhi_event *mhi_event;
-> > >   	void __iomem *base = mhi_cntrl->regs;
-> > > @@ -638,6 +683,16 @@ int mhi_init_mmio(struct mhi_controller *mhi_cntrl)
-> > >   		return ret;
-> > >   	}
-> > > +	if (mhi_cntrl->get_misc_doorbell)
-> > > +		doorbell = mhi_cntrl->get_misc_doorbell(mhi_cntrl, MHI_ER_BW_SCALE);
-> > > +
-> > > +	if (doorbell > 0) {
-> > > +		ret = mhi_init_bw_scale(mhi_cntrl, doorbell);
-> > > +		if (!ret)
-> > > +			mhi_cntrl->bw_scale_db = base + val + (8 * doorbell);
-> > > +		else
-> > > +			dev_warn(dev, "Failed to setup bandwidth scaling: %d\n", ret);
-> > 
-> > That's it? And you would continue to setup doorbell setup later?
-> > 
-> event ring for BW scale and capability are exposed during bootup only,
-> if those are not present at bootup no need to retry later.
-
-I'm not asking you to retry. I was asking why would you continue to initialize
-bw_scale resources (like workqueue) even if mhi_init_bw_scale() fails.
-
-> > > +	}
-> > 
-> > nit: newline
-> > 
-> > >   	return 0;
-> > >   }
-
-[...]
-
-> > > +		goto exit_bw_scale;
-> > > +	}
-> > > +
-> > > +	link_info.target_link_speed = MHI_TRE_GET_EV_LINKSPEED(dev_rp);
-> > > +	link_info.target_link_width = MHI_TRE_GET_EV_LINKWIDTH(dev_rp);
-> > > +	link_info.sequence_num = MHI_TRE_GET_EV_BW_REQ_SEQ(dev_rp);
-> > > +
-> > > +	dev_dbg(dev, "Received BW_REQ with seq:%d link speed:0x%x width:0x%x\n",
-> > > +		link_info.sequence_num,
-> > > +		link_info.target_link_speed,
-> > > +		link_info.target_link_width);
-> > > +
-> > > +	/* Bring host and device out of suspended states */
-> > > +	ret = mhi_device_get_sync(mhi_cntrl->mhi_dev);
-> > 
-> > Looks like mhi_device_get_sync() is going runtime_get()/runtime_put() inside
-> > mhi_trigger_resume(). I'm wondering why that is necessary.
-> > 
-> Before mhi_trigger_resume we are doing wake_get, which will make sure
-> device will not transition to the low power modes while servicing this
-> event. And also make sure mhi state is in M0 only.
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > 
-> As we are in workqueue this can be scheduled at some later time and by
-> that time mhi can go to m1 or m2 state.
-> 
+> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+> Co-developed-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+> ---
 
-My comment was more about the behavior of mhi_trigger_resume(). Why does it call
-get() and put()? Sorry if I was not clear.
+Pls include version log
 
-- Mani
 
--- 
-மணிவண்ணன் சதாசிவம்
+Vasanth
 
