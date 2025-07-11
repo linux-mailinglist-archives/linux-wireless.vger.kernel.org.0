@@ -1,219 +1,182 @@
-Return-Path: <linux-wireless+bounces-25259-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25260-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0F6B01786
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 11:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42618B0185F
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 11:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E88DA7B0B51
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 09:20:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36253B45B25
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Jul 2025 09:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE5227A11A;
-	Fri, 11 Jul 2025 09:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD431F3B85;
+	Fri, 11 Jul 2025 09:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nvwysewU"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="B4jheiAi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F964279903;
-	Fri, 11 Jul 2025 09:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA3F252292
+	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 09:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752225708; cv=none; b=Stx1PPaZHKj4GFHyjaQtNYd5mvJUvsjOBiAhKLrg3pF+sIqT58aJHIxuI+5BrvZ87sSgxrCv6BdPni305oVpY8LPsdB47JZsHZi2X35iQ2zziGobLrQw7rKuA6tdvYszNry82/nHiHDcDw1nLwbZqz1cO7a0PRM6jIEyzY2txVs=
+	t=1752226724; cv=none; b=EEwOYEDXuv4k30y1mY055eHytJ7K2+j1QvT8b+1f8Ra/1njrVjnsDNGg+dSRWRAQO0GUBZtq70vfWEhuxJ84Ep+ig9gKftd+EdnE1PZs0hubcJ4El4USMnRlZxGud9iXcNbXO6COplm7X6vW/O7AUE+ogezE3cGa7FfgTAdrfvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752225708; c=relaxed/simple;
-	bh=ne44bbTYibQEKk06zvdeZXV0JGbJvTKjbOlOl+PFBzk=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=riYxoVZWkzEU35ehYLdzQsiOXocPGq1C2ytYkF9jNq4Y6bFeJiBiYkXnA3uZX1N20e+W1CYZLQNqtfewwK4mBmHq3hWtf9zoR9vxHCWL5giI/vn/pJPLHp8L8jhAU7hBJ0KB9O37RCewYiNsh0ogi5nmPef02Gd+HQ8qXyRF0eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nvwysewU; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752225706; x=1783761706;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=ne44bbTYibQEKk06zvdeZXV0JGbJvTKjbOlOl+PFBzk=;
-  b=nvwysewU2S+nZlK4caS8sdHhQHk/6mBK74hxvfV876P8fBRxyyFXVFGS
-   CEQiysWAmsWdjn+vWx3H5ZtfmRJjnol6lve7mqvno06S658ynV+ivnDVo
-   BwIv9aOf6BzniX7fmFa6epkkzDjHhp/kpCK8eLsogrMnTdfNxnf++hgU6
-   djfubIDc/ysKi+JXLXp1TdwOj1LnNCQSgKdHCpYHO4mUWIisUR7gHqFlw
-   rudkwGuDqWV7FmeVFx3EY5ukk5u9Zk7+3Aoe76cVPkuW5gLkPjMxzmS2T
-   NHpXVamqg/y601/Xu02oSBf3+0mEyyyLud1VquTSFbSZNQDnpX1gztb9i
-   w==;
-X-CSE-ConnectionGUID: vLTQtjgZR72oWYoBbLrtrw==
-X-CSE-MsgGUID: TcuCp9hPQv+OK8Alr1eVoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="79956152"
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; 
-   d="scan'208";a="79956152"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 02:21:45 -0700
-X-CSE-ConnectionGUID: PvcNX0ouT4iYz06C15Oy9w==
-X-CSE-MsgGUID: xk3fq7z+Tg23rwGF7zV5Gg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; 
-   d="scan'208";a="160872671"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.249])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 02:21:39 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 11 Jul 2025 12:21:36 +0300 (EEST)
-To: Manivannan Sadhasivam <mani@kernel.org>
-cc: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
-    Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>, 
-    Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob Herring <robh@kernel.org>, 
-    Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-    =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kwilczynski@kernel.org>, 
-    linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    linux-arm-msm@vger.kernel.org, mhi@lists.linux.dev, 
-    linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
-    qiang.yu@oss.qualcomm.com, quic_vbadigan@quicinc.com, 
-    quic_vpernami@quicinc.com, quic_mrana@quicinc.com, 
-    Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: Re: [PATCH v4 06/11] PCI/ASPM: Clear aspm_disable as part of
- __pci_enable_link_state()
-In-Reply-To: <irnkdlrmlozp7joydgnawfuivl2nnuxsb2t4osgxzbtyrfzd3n@7dhzjcd42aiw>
-Message-ID: <c7d4288d-4d0e-a3c2-83d2-c3f1b282d4ac@linux.intel.com>
-References: <20250609-mhi_bw_up-v4-0-3faa8fe92b05@qti.qualcomm.com> <20250609-mhi_bw_up-v4-6-3faa8fe92b05@qti.qualcomm.com> <qo6mb3qlt3xpuvhepwcv6be4wd53neee2t6buzk4tdiy22xsub@vu7lykp3rnu2> <226bab3a-54e5-94ad-9d84-0b82f9dc4e2f@linux.intel.com>
- <2a18cf9e-1dd2-4e09-81f4-eb1d07324c8e@oss.qualcomm.com> <irnkdlrmlozp7joydgnawfuivl2nnuxsb2t4osgxzbtyrfzd3n@7dhzjcd42aiw>
+	s=arc-20240116; t=1752226724; c=relaxed/simple;
+	bh=muMfI4OOLnGlA/O3uFoM0JDLiikIYkooPujm1O815xI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b6ojPVLSSCp67ziVoU47VRO/jlPF81ZYbx14CcS5GJ0mSGsg7FaxwDbNvAd5iIC5E+8l+xESr8CPBlV14iUemAoN8hpf/aZ/zWPlg65P0Wv2ubnMmXKBxyFdTA0/WjEPUdXwrKmfRgE2titF+/WinHZmVu1vEzCG8/Ji1rHenoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=B4jheiAi; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56B1XMtF030881
+	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 09:38:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	HGL/SZNkDefnD8rnQdJa++pgq2SPm6cH4YHcPivQI8U=; b=B4jheiAikNANkj5K
+	kdYwcGuJnFijefFrmCxBtyoxZtDOTXk+XCvPIHtZk3qyGYiwoPlBX/iM4zGoQRTS
+	1AwUwyIr7LKQlteGGmhK/BmUxZFoT5uxRJ3ZOeZIaQCaJcPmvA6W++WlJxPKcYlo
+	ni04g1m2RZMPo+7pDDViLxBilHR0TbPAPNh5l8mp6rNdEqA6Q9JMM4V015IExrDl
+	1hDgUz4+SAkwRH4u4zTxCJUlMC1qxcxxYbU4G5Nd2238m1GjH8E6lgmyJ6DIIRbp
+	TjHIHDWrWyDWG9vvg1MRcOoCgGt1F4YcpSx8oQjdJELvMMeHckJisB4R//m2aqIq
+	pgTETQ==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47smber4tp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 09:38:41 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-235e7550f7bso18797955ad.3
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Jul 2025 02:38:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752226721; x=1752831521;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HGL/SZNkDefnD8rnQdJa++pgq2SPm6cH4YHcPivQI8U=;
+        b=adKp/J+fXcV9oe8fnIQeNLXmNh4FZvbYkoqGuiNxEwV7E85iEqSETPzsPpUiP0Sgvc
+         b3TWfRbLCaial+EkG5ksXQs+W9sUnBT2fHz7ZVR1WFtfPCBwum7fRl5mUKW9qYTKE1wI
+         Jtw1aptIEjs7gNF8Icv2+TFN7M3Ko4r+h+d/Ap7SZ662StYCgk478Ty5WlnQMZROLDq3
+         9KEz9oZGsy4aM/A1ri/HzhHdWoYad1vgLIfdlTyciqTXWAwHKGW7OuYEF/jEv26qdpO1
+         wxjXwcAX2GKQYeYp048hcT5oKKwxwaJ/uyNLw/A/3KDmYFXxoNUBR5DUmmtRu1PWYjZu
+         lZXA==
+X-Gm-Message-State: AOJu0YzLRZpVnvdZRq/KiJY2LYvWn9lgQySGn1UGxlKUrLKrHS0aredE
+	dO722i+crGbpxuLXp1C1rxYcU0QFVU586XyciENTQXD/CQPTnHBZ+bmIY6rRROaP9p1n5mGFD4P
+	Vjul8v8iamznGMinyvBFwYuoMP6QyVhw1YNhzvzLoGKS2XRP6tJUvAFMBs7yPofngs+VxCA==
+X-Gm-Gg: ASbGncsLk3yYgbjxXNSSdWOnjaX7zr2JDTUi6vuXm1aOfvk3FiaBSMAr8S+s+Ec/+WZ
+	6AJVMBoVsQ/iE0X47FdYGKaSOxwXLWWH3hCPodSy332HQT5FVljY7Ot/bJXoFMi8zNSLR15eilD
+	hiMJuh8TUTaWBKknjJJCIP3Mj0pepKHM3nyoymMp6GcbGnAZt0ehNitaYFfI+BvFzXNYUVA0c7s
+	i6tEk0E+4qWHjhqCF74qDaPG5w2LaAK2HitnuzVQ415Jfumj2mDQTEPRNrfbbuxtA73VWRqHdVK
+	O0aMYx0ZyRxJZaAA8YvdqJBFNu2CUGk8NkE3OAXgIzR4mEzPxbD6xWa+KyaMkTWz/mg2sT/vCCv
+	wknpmRocYDfr18w2zJEWLKZFZGOglw/v7
+X-Received: by 2002:a17:903:90e:b0:234:d7c5:a0f6 with SMTP id d9443c01a7336-23dede860c0mr32494655ad.31.1752226720666;
+        Fri, 11 Jul 2025 02:38:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHL/Jqdo5vlOQiCfiDk4KSGN3BOX4g13P+XxoqP0LXTTfRT6yCGKdy3OfUF0j3Ba8Bvb/D5fg==
+X-Received: by 2002:a17:903:90e:b0:234:d7c5:a0f6 with SMTP id d9443c01a7336-23dede860c0mr32494245ad.31.1752226720121;
+        Fri, 11 Jul 2025 02:38:40 -0700 (PDT)
+Received: from [10.133.33.179] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4333e6csm47071625ad.162.2025.07.11.02.38.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Jul 2025 02:38:39 -0700 (PDT)
+Message-ID: <3cb437c4-d113-48fc-a672-d8f7fbbd11ff@oss.qualcomm.com>
+Date: Fri, 11 Jul 2025 17:38:37 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-1361302077-1752225289=:933"
-Content-ID: <0e71b6ef-a263-4169-3869-f785789a47fb@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next] wifi: ath12k: Fix packets received in WBM error
+ ring with REO LUT enabled
+To: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, tanguy@squaremind.io
+References: <20250710011754.559817-1-nithyanantham.paramasivam@oss.qualcomm.com>
+Content-Language: en-US
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+In-Reply-To: <20250710011754.559817-1-nithyanantham.paramasivam@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzExMDA2NyBTYWx0ZWRfX4Kn0HCH5xh64
+ 3mDqfT+lP8olGFyaQoyGcZBeS1bivJgMrGEVIlmK67MydVTAJhY0ULqDuZOx5vCNg55+xp/f2vh
+ 76m2rrfbPI1FDDV7Cx6VSAi22c79zdnbJZoRJIFpjd/PyOnPoTogVk4iGfZH2ufNeJccoKLsQ3y
+ BCBVtZ+TPc2xItlKM9AF1qUD+cSFEK6fW4WL+7bOwgH+i8M75V+7z0ie0r+eUzoa6bvPjU/JdXh
+ Z+mVVJz1wnoocmCINlgaQ7XpySV4DjxYkKNAcYxs7fJKEmyLkXiHsK7ogClcEFbEfryjqI8/DYv
+ LrOGfxIXdEPVgk9dKQvjEnmxPs/FEjSxZPNplSCQaPmOfDcGnBkdpdpF7tBxaVohkyCGCaZA3hD
+ qPnMtIdKdSwl/XloNvBO5ybvSy1vBJCn5XJfrFk011H0FZmVOz4EGY1Of8j3hyQCvI0lA4Jh
+X-Proofpoint-GUID: hAxpdNtoGIMGdddPA5a2jlJnG_to1yFY
+X-Proofpoint-ORIG-GUID: hAxpdNtoGIMGdddPA5a2jlJnG_to1yFY
+X-Authority-Analysis: v=2.4 cv=VpQjA/2n c=1 sm=1 tr=0 ts=6870dba1 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=COk6AnOGAAAA:8 a=p8CdzvKiexFK_hkQNEAA:9 a=QEXdDO2ut3YA:10
+ a=1OuFwYUASf3TG4hYMiVC:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-11_03,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0 suspectscore=0 clxscore=1015 impostorscore=0
+ phishscore=0 mlxlogscore=999 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507110067
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323328-1361302077-1752225289=:933
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <6c0bed1f-8dc1-cb12-cf09-a337d07698de@linux.intel.com>
 
-On Fri, 11 Jul 2025, Manivannan Sadhasivam wrote:
+On 7/10/2025 9:17 AM, Nithyanantham Paramasivam wrote:
+> Currently, packets are being received into the WBM error ring when
+> REO queue lookup is enabled, resulting in degraded RX performance.
+> The issue arises because the REO queue LUT TID memory reference is
+> set to zero-it's being assigned before the memory is allocated.
+> Fix this by assigning the REO queue TID memory reference in the LUT
+> immediately after memory allocation to ensure correct packet
+> processing.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Reported-by: Tanguy Serrat <tanguy@squaremind.io>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220282
+> Fixes: 3b9cbce6fdd3 ("wifi: ath12k: alloc REO queue per station")
+> Signed-off-by: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/dp_rx.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+> index ed325aa6322d..65b4c91e4fe5 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_rx.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+> @@ -1060,7 +1060,6 @@ int ath12k_dp_rx_peer_tid_setup(struct ath12k *ar, const u8 *peer_mac, int vdev_
+>  	}
+>  
+>  	rx_tid = &peer->rx_tid[tid];
+> -	paddr_aligned = rx_tid->qbuf.paddr_aligned;
+>  	/* Update the tid queue if it is already setup */
+>  	if (rx_tid->active) {
+>  		ret = ath12k_peer_rx_tid_reo_update(ar, peer, rx_tid,
+> @@ -1072,6 +1071,7 @@ int ath12k_dp_rx_peer_tid_setup(struct ath12k *ar, const u8 *peer_mac, int vdev_
+>  		}
+>  
+>  		if (!ab->hw_params->reoq_lut_support) {
+> +			paddr_aligned = rx_tid->qbuf.paddr_aligned;
+>  			ret = ath12k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id,
+>  								     peer_mac,
+>  								     paddr_aligned, tid,
+> @@ -1098,6 +1098,7 @@ int ath12k_dp_rx_peer_tid_setup(struct ath12k *ar, const u8 *peer_mac, int vdev_
+>  		return ret;
+>  	}
+>  
+> +	paddr_aligned = rx_tid->qbuf.paddr_aligned;
+>  	if (ab->hw_params->reoq_lut_support) {
+>  		/* Update the REO queue LUT at the corresponding peer id
+>  		 * and tid with qaddr.
+> 
+> base-commit: 45bbd91fc41b7cb6319e45e6fd732c5c8a0c44e3
 
-> On Wed, Jul 09, 2025 at 06:01:22PM GMT, Krishna Chaitanya Chundru wrote:
-> >=20
-> >=20
-> > On 7/9/2025 2:40 PM, Ilpo J=E4rvinen wrote:
-> > > On Tue, 8 Jul 2025, Manivannan Sadhasivam wrote:
-> > >=20
-> > > > On Mon, Jun 09, 2025 at 04:21:27PM GMT, Krishna Chaitanya Chundru w=
-rote:
-> > > > > ASPM states are not being enabled back with pci_enable_link_state=
-() when
-> > > > > they are disabled by pci_disable_link_state(). This is because of=
- the
-> > > > > aspm_disable flag is not getting cleared in pci_enable_link_state=
-(), this
-> > > > > flag is being properly cleared when ASPM is controlled by sysfs.
-> > > > >=20
-> > > >=20
-> > > > A comment in pcie_config_aspm_link() says:
-> > > >=20
-> > > >   /* Enable only the states that were not explicitly disabled */
-> > > >=20
-> > > > But the function is called from both aspm_attr_store_common() and
-> > > > __pci_enable_link_state(). So I don't know if this is behavior is i=
-ntentional
-> > > > or wrong.
-> > >=20
-> > > Hi,
-> > >=20
-> > > I think it's intentional. Whether the behavior is useful is another g=
-ood
-> > > question but the current behavior aligns with the explanation in the
-> > > comment.
-> > >=20
-> > > My understanding of the situation is:
-> > >=20
-> > > pci_disable_link_state() and pci_enable_link_state() are not symmetri=
-c
-> > > despite the names, never have been (this is one of those many quirks =
-ASPM
-> > > driver has which should be eventually cleaned up, IMO).
-> > >=20
-> > > It might be appropriate to rename pci_enable_link_state() to
-> > > pci_set_default_link_state() to match the name to its functionality (=
-and
-> > > the function comment):
-> > >=20
-> > >   * pci_enable_link_state - Clear and set the default device link sta=
-te
-> > >=20
-> > > Note: "the default ... link state".
-> > >=20
-> > >=20
-> > > I've already raised this concern earlier! As you see, my comment are
-> > > not getting addressed. I'd like to see the author does one of these:
-> >
-> > I replied to your comment on v3 patch[1], and I feel instead of having
-> > new function() we can use same API to our purpose.
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
 
-It's not about what "feels" something. One should clearly write down why
-such conversion is correct/acceptable when it comes to existing callers=20
-if changing an existing API. The note should be such that it remains a=20
-permanent record for future (in the changelog).
-
-I don't have answer to what are the expectations or intent of the existing=
-=20
-callers. Convincing a patch is fine is responsibility of the one who is=20
-submitting the patch, not reviewer's.
-
-Unfortunately, it is usually quite hard to figure out for existing drivers=
-=20
-we're not familiar with. I'm not saying your "feel" is necessarily wrong,=
-=20
-but the existing callers need to be properly investigated if you choose=20
-that path, not just handwaved over. It likely boils down if the=20
-->aspm_default and controlling it are useful features to have in the ASPM=
-=20
-driver as your patch would take away that ability.
-
-> You replied to Ilpo, but never got an agreement. Please try to close the
-> discussions before posting next rev. If reviewers forgot to reply to your=
- query,
-> feel free to ping them in the same thread itself.
->
-> > > 1) Renames pci_enable_link_state() to pci_set_default_link_state()
-> > >=20
-> > > 1b) If pci_enable_link_state() is still needed after that, a new func=
-tion
-> > > is added to symmetrically pair with pci_disable_link_state().
-> > >=20
-> > > or alternatively,
-> > >=20
-> > > 2) Changelog justifies very clearly why this change is okay with the
-> > > existing callers. (And obviously the function comment should be alter=
-ed to
-> > > match the functionality in that case too).
-> > >=20
-> > > If approach 2 is chosen, it should be very carefully reviewed when it
-> > > comes to the callers.
-> > >=20
-> > I am in favor of approach 2 which you suggested, but lets wait for othe=
-r
-> > reviewers feedback on this. Based up on the response i will make
-> > necessary changes in v5.
-> >=20
->=20
-> I would go for (1). It is always going to be a problem to change a legacy=
- API
-> like this. We might end up causing regressions. So it is safe to rename t=
-o
-> reflect the purpose and try to come up with a new API that does what you =
-want.
-> If callers want to migrate to the new API, they can also do it in the fut=
-ure.
-
-That's my recommendation as well.
-
---=20
- i.
---8323328-1361302077-1752225289=:933--
 
