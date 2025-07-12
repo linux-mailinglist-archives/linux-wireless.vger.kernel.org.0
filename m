@@ -1,45 +1,48 @@
-Return-Path: <linux-wireless+bounces-25315-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25316-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F76B02BD0
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 18:07:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B59EB02C04
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 18:53:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FD2D189F769
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 16:07:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 882FC1C27309
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 16:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741AE286421;
-	Sat, 12 Jul 2025 16:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536432882B7;
+	Sat, 12 Jul 2025 16:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="S+j6qs76"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PkUJztUb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DC31F1906;
-	Sat, 12 Jul 2025 16:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB5219DF60;
+	Sat, 12 Jul 2025 16:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752336401; cv=none; b=FDJHd2cJAy6WfvXwt+azAy6qyFlStFjajXIMTPblbD6NzfD2aPMB8SJpHxDwwJqLvZEPKfJ6xUAlHpGsd6EYJMakJ7J0EmQymgaAR4fDjhUT4a8IS/yNjrcPrqyJQOHgapmNC5jCRCEqw4ykRSex0SCPdWo4UougPPxqI44Wn0M=
+	t=1752339224; cv=none; b=ptitdO6EqugP44rmx1OlVHOpvT+jpg/lLwf6GQiBPAe2MZdCRFQ+V35Mmp1vfMB3bZD/EEzN7NQFbRTpBKSwAGhBhEKSHDBR8g9vzsfSdAgj7596R13xUktkQ8I8bccqqW4cNcyAzkc+PZ5GKj8mm3TKo5r5m4uJWb/0ASDtaUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752336401; c=relaxed/simple;
-	bh=8QMnezUr6RcxdJ1mE8flllbSLTsIaWjyZOkrmVf3mMc=;
+	s=arc-20240116; t=1752339224; c=relaxed/simple;
+	bh=tW1N0tkK1B6gjOAFUX2iqzAUwiIyvzfA0KIAbOuUz7k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZNndaR2cidav9kuNPuCa2zsynIqtDEzI7xYzBVrUuldiF/ry9HuV7OXkbLdFd6iYzP72shTsaa2vZRdlgZtOYD7P3G4bqE4YXLPw97QWQcKP76uBElenxFvZD5FGXtNChhO+NAcTYADz1DsxPmloXSeg3iiBLKYGXRmueF4+Qns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=S+j6qs76; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=yFk0YyJvli1XN+U/jjkn0xB8ubUiOgd+hURsOqBNf9A=;
-	b=S+j6qs763V46bHzoyxwgydQT5N0u4ktlfIpn1OKSgRh5nwt7hFgfhQQleZ64pn
-	mdWlwlSBdXqDssSuyxqXbTVW/VBnwirbYVaOu1b+bgbFd0K7ZnRCeQZx0xesnmns
-	Fg1C8l2sQsnxjonA9XQ2BThELeyWA4v9Mpuq3YDgtN8ME=
-Received: from [IPV6:240e:b8f:919b:3100:7981:39b4:a847:709a] (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgCHkby7h3JoR4ilAA--.23899S2;
-	Sun, 13 Jul 2025 00:05:17 +0800 (CST)
-Message-ID: <470742a6-861e-498e-9da4-1fa213969c7e@163.com>
-Date: Sun, 13 Jul 2025 00:05:18 +0800
+	 In-Reply-To:Content-Type; b=IY7DiI5CLGayoMn5JjetOGM6E2fTJHUzit6g1Qtc0xvD0jY28ny3Gmiark9w7OxXFifpR1H+78z+UnAGGVv4wVo10ve6X2tT+G57rWaiHPJ5ls+5902UOqPh/9DqgMZubLTY3zItXZYZpVc/GgbUaj6RVT7R8fnTCTj7wOcP0lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PkUJztUb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB3AC4CEEF;
+	Sat, 12 Jul 2025 16:53:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752339223;
+	bh=tW1N0tkK1B6gjOAFUX2iqzAUwiIyvzfA0KIAbOuUz7k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PkUJztUb2b/iaBuKzmxVtkpmImoyRyvLufwYqlIPkTG2oDvfT0JBskTgl/IztJMPt
+	 2PZJE93XUIxpKPTam67rvmpwj5AFhx3KZxR4Q6Gi2mm0ijskK69nutoJZqXmd/Ce1k
+	 STDSlU7ZVTnIPNQfuoSkyNgvPiL594BuOeYIC/Yty7wGKEhLwxqnECJIp8nLJjiniF
+	 TGaNQAAg9IMgIWrgT+CESbnIMAmiuSNMUSUX1r5LmDxQMYFfCvy74i0U4TkWV5TNNJ
+	 mFEfIiXb5DlV3qyYVWywPDrWB0kTI5JxLjrFlu5eT9jHQJZVbCy/nEAjGLFwQDXecV
+	 2n83HJFDYaoCA==
+Message-ID: <e435a765-fb91-408f-81dd-01a73fc43b6b@kernel.org>
+Date: Sat, 12 Jul 2025 18:53:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -47,85 +50,126 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/11] PCI/ASPM: Clear aspm_disable as part of
- __pci_enable_link_state()
-To: Manivannan Sadhasivam <mani@kernel.org>,
- Bjorn Helgaas <helgaas@kernel.org>
-Cc: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob Herring <robh@kernel.org>,
- Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- linux-arm-msm@vger.kernel.org, mhi@lists.linux.dev,
- linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
- qiang.yu@oss.qualcomm.com, quic_vbadigan@quicinc.com,
- quic_vpernami@quicinc.com, quic_mrana@quicinc.com,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-References: <604ffae3-1bfc-0922-b001-f3338880eb21@linux.intel.com>
- <20250711230013.GA2309106@bhelgaas>
- <qay63njqf7z7mchizt5sm66i67rvxxxicikxmfuvllmmxfy7ek@mulnjvde5q7w>
+Subject: Re: [PATCHv3 wireless-next 7/7] dt-bindings: net: wireless: rt2800:
+ add
+To: Stanislaw Gruszka <stf_xl@wp.pl>
+Cc: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org,
+ Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ "moderated list:ARM/Mediatek SoC support"
+ <linux-arm-kernel@lists.infradead.org>,
+ "moderated list:ARM/Mediatek SoC support"
+ <linux-mediatek@lists.infradead.org>
+References: <20250710200820.262295-1-rosenp@gmail.com>
+ <20250710200820.262295-8-rosenp@gmail.com>
+ <d8b0abb2-1a12-42bf-aafd-4cd1e21babd6@kernel.org>
+ <CAKxU2N-c2tHBYWBM+FJGqdSaqzw9u0O8e0G7AVqk6b0QdRnPTw@mail.gmail.com>
+ <20250711-invisible-dainty-jackrabbit-acbf8f@krzk-bin>
+ <20250712104006.GA13512@wp.pl>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Hans Zhang <18255117159@163.com>
-In-Reply-To: <qay63njqf7z7mchizt5sm66i67rvxxxicikxmfuvllmmxfy7ek@mulnjvde5q7w>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:QCgvCgCHkby7h3JoR4ilAA--.23899S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tw1ftFy5uw13Zr43KF1kuFg_yoW8uFW8pF
-	Wrtr9aka1kAF97Cw12yw1UJFyFyw4SyryYk348Xw1UAF45uasrGr4UtrWruF9xXrWxWw4Y
-	vr4jgF1Dua4q9a7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UiZ2-UUUUU=
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/1tbiWwuIo2hyg6ZSywAAsd
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250712104006.GA13512@wp.pl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-
-
-On 2025/7/12 17:35, Manivannan Sadhasivam wrote:
->> We only have two callers of this (pcie-qcom.c and vmd.c, both in
->> drivers/pci/), so it's not clear to me that it needs to be in
->> include/linux/pci.h.
->>
->> I'm a little dubious about it in the first place since I don't think
->> drivers should be enabling ASPM states on their own, but pcie-qcom.c
->> and vmd.c are PCIe controller drivers, not PCI device drivers, so I
->> guess we can live with them for now.
->>
->> IMO the "someday" goal should be that we get rid of aspm_policy and
->> enable all the available power saving states by default.  We have
->> sysfs knobs that administrators can use if necessary, and drivers or
->> quirks can disable states if they need to work around hardware
->> defects.
->>
+On 12/07/2025 12:40, Stanislaw Gruszka wrote:
+> Hi Krzysztof,
 > 
-> Yeah, I think the default should be powersave and let the users disable it for
-> performance if they want.
+> On Fri, Jul 11, 2025 at 09:48:49AM +0200, Krzysztof Kozlowski wrote:
+>> On Thu, Jul 10, 2025 at 03:40:30PM -0700, Rosen Penev wrote:
+>>> On Thu, Jul 10, 2025 at 2:40 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>>
+>>>> On 10/07/2025 22:08, Rosen Penev wrote:
+>>>>> Add device-tree bindings for the RT2800 SOC wifi device found in older
+>>>>> Ralink/Mediatek devices.
+>>>>>
+>>>>> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+>>>>> ---
+>>>>>  .../bindings/net/wireless/ralink,rt2800.yaml  | 47 +++++++++++++++++++
+>>>>>  1 file changed, 47 insertions(+)
+>>>>>  create mode 100644 Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
+>>>>>
+>>>>> diff --git a/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml b/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
+>>>>> new file mode 100644
+>>>>> index 000000000000..8c13b25bd8b4
+>>>>> --- /dev/null
+>>>>> +++ b/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
+>>>>
+>>>> Filename should match compatible. You were already changing something
+>>>> here...
+>>> hrm? that makes no sense. Various drivers have multiple compatible lines.
+>>
+>> Luckily we do not speak about drivers here. Anyway, follow standard
+>> review practices, you don't get special rules.
 > 
+> Could you please elaborate what you mean ?
 
-Dear Bjorn and Mani,
+Rosen replied in abrasive way, so I am not going to dig this.
 
-Perhaps I don't think so. At present, our company's testing team has 
-tested quite a few NVMe SSDS. As far as I can remember, the SSDS from 
-two companies have encountered problems and will hang directly when 
-turned on. We have set CONFIG_PCIEASPM_POWERSAVE=y by default. When 
-encountering SSDS from these two companies, we had to add 
-"pcie_aspm.policy=default" in the cmdline, and then the boot worked 
-normally. Currently, we do not have a PCIe protocol analyzer to analyze 
-such issues. The current approach is to modify the cmdline. So I can't 
-prove whether it's a problem with the Root Port of our SOC or the SSD 
-device.
+> 
+> I greped through Documentation/devicetree/bindings/*/*.yaml and plenty
 
-Here I agree with Bjorn's statement that sometimes the EP is not 
-necessarily very standard and there are no hardware issues. Personally, 
-I think the default is default or performance. When users need to save 
-power, they should then decide whether to configure it as powersave or 
-powersupersave. Sometimes, if the EP device connected by the customer is 
-perfect, they can turn it on to save power. But if the EP is not 
-perfect, at least they will immediately know what caused the problem.
+I assume you refer to last 2 years bindings, not something older, right?
+It is really poor argument to find old files and use them as example
+"they did like that".
 
-I wonder if there are others who have encountered similar problems as 
-well. If I say anything wrong, please point it out. Thank you.
+> of "compatible:" items do not match the filename. So hard to tell
+
+I did not ask for compatible to match filename.
+
+> what rule you are referencing, as it seems it's not really applied.
+Check reviews on the lists. It is pretty standard review. Everyone gets
+it for this case here - single device, single compatible.
 
 Best regards,
-Hans
-
+Krzysztof
 
