@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-25316-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25317-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B59EB02C04
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 18:53:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 028CAB02C0A
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 18:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 882FC1C27309
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 16:54:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7D09188F084
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 16:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536432882B7;
-	Sat, 12 Jul 2025 16:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3EB288C8C;
+	Sat, 12 Jul 2025 16:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PkUJztUb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B8dtt/mN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB5219DF60;
-	Sat, 12 Jul 2025 16:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A3D70823;
+	Sat, 12 Jul 2025 16:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752339224; cv=none; b=ptitdO6EqugP44rmx1OlVHOpvT+jpg/lLwf6GQiBPAe2MZdCRFQ+V35Mmp1vfMB3bZD/EEzN7NQFbRTpBKSwAGhBhEKSHDBR8g9vzsfSdAgj7596R13xUktkQ8I8bccqqW4cNcyAzkc+PZ5GKj8mm3TKo5r5m4uJWb/0ASDtaUo=
+	t=1752339573; cv=none; b=b46/Gvumb5TcNNAArtDGLMsFb90D582Nnz8zB53yqIi1Oc4Mtf/G2ZEkD5Yi3I9FdeOdIRQdGHMzVFPtAoas07QR4i0yO1zVSlC18YCHl6ixCQZjDnHvbOX4R1n0NDDKM/LiKlJ0ZUu0srbsbHxSnaGA0fDaIcxEtlkHaVW9Oi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752339224; c=relaxed/simple;
-	bh=tW1N0tkK1B6gjOAFUX2iqzAUwiIyvzfA0KIAbOuUz7k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IY7DiI5CLGayoMn5JjetOGM6E2fTJHUzit6g1Qtc0xvD0jY28ny3Gmiark9w7OxXFifpR1H+78z+UnAGGVv4wVo10ve6X2tT+G57rWaiHPJ5ls+5902UOqPh/9DqgMZubLTY3zItXZYZpVc/GgbUaj6RVT7R8fnTCTj7wOcP0lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PkUJztUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB3AC4CEEF;
-	Sat, 12 Jul 2025 16:53:40 +0000 (UTC)
+	s=arc-20240116; t=1752339573; c=relaxed/simple;
+	bh=O6/br0HScFLjxFbUFDku985RqpRVfW8PbxO4etqtAeo=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=FURC1FXPdHOGsH0fxEOXY0NPwnRD71bsbmLHWBUV4+QrX0P9e2533uleZUSQo8T4dj/w3H8COuRBbrofoJi21lfZ9jhu9acphjdb5xMKFaIKKwffz1B59zz+rn7FQ/b2jGMUG1QC62ii4P0V38jNMNcFOem2NlZOR0dpq12CSPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B8dtt/mN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764FEC4CEEF;
+	Sat, 12 Jul 2025 16:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752339223;
-	bh=tW1N0tkK1B6gjOAFUX2iqzAUwiIyvzfA0KIAbOuUz7k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PkUJztUb2b/iaBuKzmxVtkpmImoyRyvLufwYqlIPkTG2oDvfT0JBskTgl/IztJMPt
-	 2PZJE93XUIxpKPTam67rvmpwj5AFhx3KZxR4Q6Gi2mm0ijskK69nutoJZqXmd/Ce1k
-	 STDSlU7ZVTnIPNQfuoSkyNgvPiL594BuOeYIC/Yty7wGKEhLwxqnECJIp8nLJjiniF
-	 TGaNQAAg9IMgIWrgT+CESbnIMAmiuSNMUSUX1r5LmDxQMYFfCvy74i0U4TkWV5TNNJ
-	 mFEfIiXb5DlV3qyYVWywPDrWB0kTI5JxLjrFlu5eT9jHQJZVbCy/nEAjGLFwQDXecV
-	 2n83HJFDYaoCA==
-Message-ID: <e435a765-fb91-408f-81dd-01a73fc43b6b@kernel.org>
-Date: Sat, 12 Jul 2025 18:53:38 +0200
+	s=k20201202; t=1752339571;
+	bh=O6/br0HScFLjxFbUFDku985RqpRVfW8PbxO4etqtAeo=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=B8dtt/mNnQuXk73OIgDAEefgL+cjk4d2PkFYjC4FBG6AIMDS7ggf2ReZKwhJ2BJ03
+	 LwZPDHqE2TPIMQyORbUjDB5rC2w95bs/mv0C8zvMBYd4wsUI+jt5DzEjubxKgyyVnP
+	 4dCVS0dB7rb1fhp6N4vRcYHCYYZKIHGlhmC8IWOaeqqzeTCQpE1ga7jCwiTKqoUs8L
+	 0dD6Es8xCiPN8iFmNMtxDPc8JM8OJyknplW2FTPZKClJueYgqY9cIH3QC4zmwnN/XZ
+	 CXjg3FED78ntmr3mTDjoAKtIFEDDiGLYUIhiATo59f51hRhldezOK5RxmGnfds7HiK
+	 1UrwIKV1/K3Wg==
+Message-ID: <23e629cb-0698-4a9c-aa18-9a7e71aa8b73@kernel.org>
+Date: Sat, 12 Jul 2025 18:59:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -52,6 +52,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCHv3 wireless-next 7/7] dt-bindings: net: wireless: rt2800:
  add
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Stanislaw Gruszka <stf_xl@wp.pl>
 Cc: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org,
  Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
@@ -72,7 +73,7 @@ References: <20250710200820.262295-1-rosenp@gmail.com>
  <CAKxU2N-c2tHBYWBM+FJGqdSaqzw9u0O8e0G7AVqk6b0QdRnPTw@mail.gmail.com>
  <20250711-invisible-dainty-jackrabbit-acbf8f@krzk-bin>
  <20250712104006.GA13512@wp.pl>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <e435a765-fb91-408f-81dd-01a73fc43b6b@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -117,58 +118,64 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250712104006.GA13512@wp.pl>
+In-Reply-To: <e435a765-fb91-408f-81dd-01a73fc43b6b@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 12/07/2025 12:40, Stanislaw Gruszka wrote:
-> Hi Krzysztof,
-> 
-> On Fri, Jul 11, 2025 at 09:48:49AM +0200, Krzysztof Kozlowski wrote:
->> On Thu, Jul 10, 2025 at 03:40:30PM -0700, Rosen Penev wrote:
->>> On Thu, Jul 10, 2025 at 2:40 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>>>
->>>> On 10/07/2025 22:08, Rosen Penev wrote:
->>>>> Add device-tree bindings for the RT2800 SOC wifi device found in older
->>>>> Ralink/Mediatek devices.
->>>>>
->>>>> Signed-off-by: Rosen Penev <rosenp@gmail.com>
->>>>> ---
->>>>>  .../bindings/net/wireless/ralink,rt2800.yaml  | 47 +++++++++++++++++++
->>>>>  1 file changed, 47 insertions(+)
->>>>>  create mode 100644 Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml b/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
->>>>> new file mode 100644
->>>>> index 000000000000..8c13b25bd8b4
->>>>> --- /dev/null
->>>>> +++ b/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
->>>>
->>>> Filename should match compatible. You were already changing something
->>>> here...
->>> hrm? that makes no sense. Various drivers have multiple compatible lines.
+On 12/07/2025 18:53, Krzysztof Kozlowski wrote:
+> On 12/07/2025 12:40, Stanislaw Gruszka wrote:
+>> Hi Krzysztof,
 >>
->> Luckily we do not speak about drivers here. Anyway, follow standard
->> review practices, you don't get special rules.
+>> On Fri, Jul 11, 2025 at 09:48:49AM +0200, Krzysztof Kozlowski wrote:
+>>> On Thu, Jul 10, 2025 at 03:40:30PM -0700, Rosen Penev wrote:
+>>>> On Thu, Jul 10, 2025 at 2:40 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>>>
+>>>>> On 10/07/2025 22:08, Rosen Penev wrote:
+>>>>>> Add device-tree bindings for the RT2800 SOC wifi device found in older
+>>>>>> Ralink/Mediatek devices.
+>>>>>>
+>>>>>> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+>>>>>> ---
+>>>>>>  .../bindings/net/wireless/ralink,rt2800.yaml  | 47 +++++++++++++++++++
+>>>>>>  1 file changed, 47 insertions(+)
+>>>>>>  create mode 100644 Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
+>>>>>>
+>>>>>> diff --git a/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml b/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
+>>>>>> new file mode 100644
+>>>>>> index 000000000000..8c13b25bd8b4
+>>>>>> --- /dev/null
+>>>>>> +++ b/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
+>>>>>
+>>>>> Filename should match compatible. You were already changing something
+>>>>> here...
+>>>> hrm? that makes no sense. Various drivers have multiple compatible lines.
+>>>
+>>> Luckily we do not speak about drivers here. Anyway, follow standard
+>>> review practices, you don't get special rules.
+>>
+>> Could you please elaborate what you mean ?
 > 
-> Could you please elaborate what you mean ?
-
-Rosen replied in abrasive way, so I am not going to dig this.
-
+> Rosen replied in abrasive way, so I am not going to dig this.
 > 
-> I greped through Documentation/devicetree/bindings/*/*.yaml and plenty
+>>
+>> I greped through Documentation/devicetree/bindings/*/*.yaml and plenty
+> 
+> I assume you refer to last 2 years bindings, not something older, right?
+> It is really poor argument to find old files and use them as example
+> "they did like that".
+> 
+>> of "compatible:" items do not match the filename. So hard to tell
+> 
+> I did not ask for compatible to match filename.
+> 
+>> what rule you are referencing, as it seems it's not really applied.
+> Check reviews on the lists. It is pretty standard review. Everyone gets
+> it for this case here - single device, single compatible.
 
-I assume you refer to last 2 years bindings, not something older, right?
-It is really poor argument to find old files and use them as example
-"they did like that".
+BTW, it is not hiding on the lists:
 
-> of "compatible:" items do not match the filename. So hard to tell
-
-I did not ask for compatible to match filename.
-
-> what rule you are referencing, as it seems it's not really applied.
-Check reviews on the lists. It is pretty standard review. Everyone gets
-it for this case here - single device, single compatible.
+https://lore.kernel.org/linux-devicetree/?q=f%3Aherring+filename
+https://lore.kernel.org/linux-devicetree/?q=f%3Akozlowski+filename
 
 Best regards,
 Krzysztof
