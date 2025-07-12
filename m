@@ -1,123 +1,131 @@
-Return-Path: <linux-wireless+bounces-25314-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25315-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB93B02A72
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 12:40:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F76B02BD0
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 18:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 689F51BC1213
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 10:40:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FD2D189F769
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 16:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C8F2750E4;
-	Sat, 12 Jul 2025 10:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741AE286421;
+	Sat, 12 Jul 2025 16:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="yv0ZYtfY"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="S+j6qs76"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3FC274FDB
-	for <linux-wireless@vger.kernel.org>; Sat, 12 Jul 2025 10:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DC31F1906;
+	Sat, 12 Jul 2025 16:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752316811; cv=none; b=YdYerzcR8pYDtnO+XWD6qJF3tSuVbz6MBJqGTmoI4ie4fcjVoLZkmX3w4ACbBEjGK/m6SqQ1E0uugsqYhtmZeumRNafSP1jt6fr+k1efQ98e5/0uac3BdO+nf8R6n19THs+wSeVzUwr1CxZUjtryB7/bdl27JAy7RHpu1AppiFQ=
+	t=1752336401; cv=none; b=FDJHd2cJAy6WfvXwt+azAy6qyFlStFjajXIMTPblbD6NzfD2aPMB8SJpHxDwwJqLvZEPKfJ6xUAlHpGsd6EYJMakJ7J0EmQymgaAR4fDjhUT4a8IS/yNjrcPrqyJQOHgapmNC5jCRCEqw4ykRSex0SCPdWo4UougPPxqI44Wn0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752316811; c=relaxed/simple;
-	bh=XZsKN/Tbj775B4v+W6nKZzTEyimEd6fd2fZmGpYuJj4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ceN6n4Tb6SR6d3rI89mv6bjHl3JclM5uER8EdEYnVvcLL71l08XIF+F76ShzmFGD2PXaGi2M2A2AYCRBoWRadQ+SAovb7l4lFSe5vQ9Uap8vu7vYi4oPjdGTdXtQFGm7Eycp+T6pM43BPQhT8NmzNxmPL8AkFcBv+ogiPZS106o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=yv0ZYtfY; arc=none smtp.client-ip=212.77.101.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 42019 invoked from network); 12 Jul 2025 12:40:07 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1752316807; bh=qTgJpmSd6LhUXQuIB22IcfoJEWSMVfDYaSNR4+UA678=;
-          h=From:To:Cc:Subject;
-          b=yv0ZYtfYVIyUtWCPL0JQMBhSr+6rYxg/gu36uJsHkR9DG+bwk4cRSrZ+HM4sRq85R
-           oCgJNh/5S5u+D3P2NjBIRNurak3N3BAk6Jfa8zrsVFv+abBriFKs1giWDJHePdnTn8
-           awhIFsMi/PKXJqSUusvyXjpptxLNdVQvqlLmdv0dmWScKu80wFw6BwsyzYhid3V9zI
-           pxKcDiiBlJHQGVc5Z10eaAuuMAlbd3Z4fzLBHSaSKiDTdeH6+Zk+ngsuyku6PkmItS
-           Om36QpxAKISBedjxPiyfqVH+FU0ySxOhUu85Bjeuw4Zllr5EEPt9bG3yNSHvRU6xnN
-           tNRKX1G04TYFg==
-Received: from 89-64-3-180.dynamic.play.pl (HELO localhost) (stf_xl@wp.pl@[89.64.3.180])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <krzk@kernel.org>; 12 Jul 2025 12:40:07 +0200
-Date: Sat, 12 Jul 2025 12:40:06 +0200
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:MIPS" <linux-mips@vger.kernel.org>,
-	"moderated list:ARM/Mediatek SoC support" <linux-arm-kernel@lists.infradead.org>,
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCHv3 wireless-next 7/7] dt-bindings: net: wireless: rt2800:
- add
-Message-ID: <20250712104006.GA13512@wp.pl>
-References: <20250710200820.262295-1-rosenp@gmail.com>
- <20250710200820.262295-8-rosenp@gmail.com>
- <d8b0abb2-1a12-42bf-aafd-4cd1e21babd6@kernel.org>
- <CAKxU2N-c2tHBYWBM+FJGqdSaqzw9u0O8e0G7AVqk6b0QdRnPTw@mail.gmail.com>
- <20250711-invisible-dainty-jackrabbit-acbf8f@krzk-bin>
+	s=arc-20240116; t=1752336401; c=relaxed/simple;
+	bh=8QMnezUr6RcxdJ1mE8flllbSLTsIaWjyZOkrmVf3mMc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZNndaR2cidav9kuNPuCa2zsynIqtDEzI7xYzBVrUuldiF/ry9HuV7OXkbLdFd6iYzP72shTsaa2vZRdlgZtOYD7P3G4bqE4YXLPw97QWQcKP76uBElenxFvZD5FGXtNChhO+NAcTYADz1DsxPmloXSeg3iiBLKYGXRmueF4+Qns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=S+j6qs76; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=yFk0YyJvli1XN+U/jjkn0xB8ubUiOgd+hURsOqBNf9A=;
+	b=S+j6qs763V46bHzoyxwgydQT5N0u4ktlfIpn1OKSgRh5nwt7hFgfhQQleZ64pn
+	mdWlwlSBdXqDssSuyxqXbTVW/VBnwirbYVaOu1b+bgbFd0K7ZnRCeQZx0xesnmns
+	Fg1C8l2sQsnxjonA9XQ2BThELeyWA4v9Mpuq3YDgtN8ME=
+Received: from [IPV6:240e:b8f:919b:3100:7981:39b4:a847:709a] (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgCHkby7h3JoR4ilAA--.23899S2;
+	Sun, 13 Jul 2025 00:05:17 +0800 (CST)
+Message-ID: <470742a6-861e-498e-9da4-1fa213969c7e@163.com>
+Date: Sun, 13 Jul 2025 00:05:18 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250711-invisible-dainty-jackrabbit-acbf8f@krzk-bin>
-X-WP-MailID: c2d83bddf527eb597eb6cc17933b5770
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [EbNB]                               
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 06/11] PCI/ASPM: Clear aspm_disable as part of
+ __pci_enable_link_state()
+To: Manivannan Sadhasivam <mani@kernel.org>,
+ Bjorn Helgaas <helgaas@kernel.org>
+Cc: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob Herring <robh@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-arm-msm@vger.kernel.org, mhi@lists.linux.dev,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+ qiang.yu@oss.qualcomm.com, quic_vbadigan@quicinc.com,
+ quic_vpernami@quicinc.com, quic_mrana@quicinc.com,
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+References: <604ffae3-1bfc-0922-b001-f3338880eb21@linux.intel.com>
+ <20250711230013.GA2309106@bhelgaas>
+ <qay63njqf7z7mchizt5sm66i67rvxxxicikxmfuvllmmxfy7ek@mulnjvde5q7w>
+Content-Language: en-US
+From: Hans Zhang <18255117159@163.com>
+In-Reply-To: <qay63njqf7z7mchizt5sm66i67rvxxxicikxmfuvllmmxfy7ek@mulnjvde5q7w>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:QCgvCgCHkby7h3JoR4ilAA--.23899S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tw1ftFy5uw13Zr43KF1kuFg_yoW8uFW8pF
+	Wrtr9aka1kAF97Cw12yw1UJFyFyw4SyryYk348Xw1UAF45uasrGr4UtrWruF9xXrWxWw4Y
+	vr4jgF1Dua4q9a7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UiZ2-UUUUU=
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/1tbiWwuIo2hyg6ZSywAAsd
 
-Hi Krzysztof,
 
-On Fri, Jul 11, 2025 at 09:48:49AM +0200, Krzysztof Kozlowski wrote:
-> On Thu, Jul 10, 2025 at 03:40:30PM -0700, Rosen Penev wrote:
-> > On Thu, Jul 10, 2025 at 2:40 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > >
-> > > On 10/07/2025 22:08, Rosen Penev wrote:
-> > > > Add device-tree bindings for the RT2800 SOC wifi device found in older
-> > > > Ralink/Mediatek devices.
-> > > >
-> > > > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> > > > ---
-> > > >  .../bindings/net/wireless/ralink,rt2800.yaml  | 47 +++++++++++++++++++
-> > > >  1 file changed, 47 insertions(+)
-> > > >  create mode 100644 Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
-> > > >
-> > > > diff --git a/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml b/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
-> > > > new file mode 100644
-> > > > index 000000000000..8c13b25bd8b4
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/net/wireless/ralink,rt2800.yaml
-> > >
-> > > Filename should match compatible. You were already changing something
-> > > here...
-> > hrm? that makes no sense. Various drivers have multiple compatible lines.
+
+On 2025/7/12 17:35, Manivannan Sadhasivam wrote:
+>> We only have two callers of this (pcie-qcom.c and vmd.c, both in
+>> drivers/pci/), so it's not clear to me that it needs to be in
+>> include/linux/pci.h.
+>>
+>> I'm a little dubious about it in the first place since I don't think
+>> drivers should be enabling ASPM states on their own, but pcie-qcom.c
+>> and vmd.c are PCIe controller drivers, not PCI device drivers, so I
+>> guess we can live with them for now.
+>>
+>> IMO the "someday" goal should be that we get rid of aspm_policy and
+>> enable all the available power saving states by default.  We have
+>> sysfs knobs that administrators can use if necessary, and drivers or
+>> quirks can disable states if they need to work around hardware
+>> defects.
+>>
 > 
-> Luckily we do not speak about drivers here. Anyway, follow standard
-> review practices, you don't get special rules.
+> Yeah, I think the default should be powersave and let the users disable it for
+> performance if they want.
+> 
 
-Could you please elaborate what you mean ?
+Dear Bjorn and Mani,
 
-I greped through Documentation/devicetree/bindings/*/*.yaml and plenty
-of "compatible:" items do not match the filename. So hard to tell
-what rule you are referencing, as it seems it's not really applied.
+Perhaps I don't think so. At present, our company's testing team has 
+tested quite a few NVMe SSDS. As far as I can remember, the SSDS from 
+two companies have encountered problems and will hang directly when 
+turned on. We have set CONFIG_PCIEASPM_POWERSAVE=y by default. When 
+encountering SSDS from these two companies, we had to add 
+"pcie_aspm.policy=default" in the cmdline, and then the boot worked 
+normally. Currently, we do not have a PCIe protocol analyzer to analyze 
+such issues. The current approach is to modify the cmdline. So I can't 
+prove whether it's a problem with the Root Port of our SOC or the SSD 
+device.
 
-Regards
-Stanislaw
+Here I agree with Bjorn's statement that sometimes the EP is not 
+necessarily very standard and there are no hardware issues. Personally, 
+I think the default is default or performance. When users need to save 
+power, they should then decide whether to configure it as powersave or 
+powersupersave. Sometimes, if the EP device connected by the customer is 
+perfect, they can turn it on to save power. But if the EP is not 
+perfect, at least they will immediately know what caused the problem.
+
+I wonder if there are others who have encountered similar problems as 
+well. If I say anything wrong, please point it out. Thank you.
+
+Best regards,
+Hans
+
 
