@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-25327-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25328-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27208B02D21
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 23:06:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9B7B02D26
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 23:06:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CBDF4E4FFB
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 21:05:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56B2A4A2EAC
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 21:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37017235355;
-	Sat, 12 Jul 2025 21:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668952367B1;
+	Sat, 12 Jul 2025 21:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RUaS+roU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lIrX18QM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943E2233149;
-	Sat, 12 Jul 2025 21:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9BA1FF1C7;
+	Sat, 12 Jul 2025 21:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752354300; cv=none; b=l3OyDGtVSRYl4rUnIQP7wB1Go2D4pqrPgKz8Cm4oXDKP4zZqaFa8LsVAzBqZeB2VsOUhaGl1AL7M6CwjwbR4SrprbuElUzc0oAJznzKvCMIMk+L/F72+PVCXzWq/QnrbkSnjPKcqPPEcC23pWlLJpXlWrN7jgqb1AeVAkWdWZ3k=
+	t=1752354301; cv=none; b=go8KChcByN9CFAynk7bEMOXE8/o6pMhnWev6QpMqRqcOw3ZJUt18htbnFYTyxg4K2ChSR+qvAzqd7lVNvBb71Ot94yHAq1d7VQ6TH/szP9NOlx61aV6gLjCT4BAk6Sve6hRWxbfVVoczPMPOzJbfCfYlDynmWwA0r9buaPshYf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752354300; c=relaxed/simple;
-	bh=oso3s84HHIL4dE7V1UAH+9yd50ezAj1vpkwyK51jz3M=;
+	s=arc-20240116; t=1752354301; c=relaxed/simple;
+	bh=oR7MXeK2kNeHBJiihl3hom/RSoggd1b4/7OVwsS+/io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ILHZVCcZQO5ezIib0Iul3qHMtCz22LHbzPeVZX5ookFGMhrcsvZxCB7BSbaqTrV0/aDhueAsvcK47H1RBa95lzPHauOeB7tEd4xK93wVUM6f85FryP5ZI5LQQMz4LRvoLDiq4+ypuT6qUQ385dTNrxdbEFX5NgAvj690KZTtXlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RUaS+roU; arc=none smtp.client-ip=209.85.210.174
+	 MIME-Version; b=clVFNcWt5H0dY6YrMfV5L0bc5nPZK9Yt1kjuJ0ql24tLPz10EpK1elxKXSdWZuE3ONuZkD+WGsiTFr8DwmSPF6C2a51W5qnXfjFm4ePSrU6HPB4uuOdEd3sEq2a/YroNFNPm8X/ArE+qBW/MI4s2sGFLUIuZR1KxuC+iuRid47g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lIrX18QM; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-739b3fe7ce8so2810240b3a.0;
-        Sat, 12 Jul 2025 14:04:58 -0700 (PDT)
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-74b54af901bso2035938b3a.2;
+        Sat, 12 Jul 2025 14:04:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752354298; x=1752959098; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752354299; x=1752959099; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RvZgwDhd8R+31/oVgTrgK7V+PUBtSsqxq+ciLntuUVw=;
-        b=RUaS+roUCGB6kAy9f24WT9ty3BM3PhCvYhVW4D4FIH3a08o3mAeFuYO22XQQ6cm0Y/
-         3WbfUXwjOUj0cKG7a0+NMVWIypsarTSOr6P0NOiO+wiumOs+n4Mpd3hj/Fj/I1MSbh/Z
-         /QYf+AeoRPlGSPTyHd5T6TiuxJjQUeQcZASa3+8Uo9XmpgWH6jWnZNaQJIwIB9u7z9IE
-         3YHzepGjG6is1hic7THt5m68YOVGO1ahgP/RFPKpC4DsGsqFbaCzfV/uWES6NPp/0XAM
-         TD8OeuDYi/CWmU4AXPSEEJcNOae76nxyZyjpt8YATCJJMGhC/5z+PRRwYcgctaco0aEK
-         gIwQ==
+        bh=ejYbSlwrvFkbrHBW6bffd77Xp+VgExQz5WmoZWm5X3A=;
+        b=lIrX18QMw0gNxbEk9andzez5R2viTfRXahWa2nLtKHXDDZnPa08KfxI/hw/fW4R28h
+         k2jfsbL7B/V8yK/BFi/jugQ7wyMu7Zr/wDFKejInn+PQJJ9jem1hNcMMYgeexqzmvHmP
+         2pMcKwDXlG4H9wd+o6XNyCU8WbIjawO+wNwUxsQURhYPXnNyA2CDYpPQssdljpkoinNh
+         +CRoOYOUbOV4tnQNU9xSJjRL0WRvM8XSWCG7VBYNPsiyHVc36T9mtnD6dEFHTqmiqnxl
+         ES6QUjubnPEbEQiTUPZjHhiB/K8GQWpCnIAfVWAgAqVaXGQrFxrVOET6Km0HmTKmNi76
+         SB4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752354298; x=1752959098;
+        d=1e100.net; s=20230601; t=1752354299; x=1752959099;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RvZgwDhd8R+31/oVgTrgK7V+PUBtSsqxq+ciLntuUVw=;
-        b=FbNUozPyMH7f6w0nC090+YrN8/JA+RoXLRBrjul18I6kvctNdKu80s7ti09Pvrf9po
-         lNZVrtZlNB7nMEl+DbbtAZ9u+aW4UHi7l3d9pOMxTLrubrjgdHbpKUdKFm5uWOM0DB43
-         OdHHe55UC03gx0fjM7yzUvL05YZ7x56gr7jSJBrarUFJRoaUycmwzIwub1GRZ8bbGeW6
-         2d0n/k3hTsxSSDWLW3L8qsfhjhr5HLIiNExfNATJuB2dzE8f/fJmRpMKQdLDFg63MRwd
-         cGEVrXeAtXgNszlX2nwWwk21HYBPGbSEqV++Y6fsfxUrVlC+yK5uCYdEiAHloHvvxGOl
-         nJeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJ0uIfTq0Wv/8eqEm1wxfamVWS/GIvwpdLTLhQOLQekyO0nIYXJ7kk76gWPERNUlG96m1uZLXQFv69Yg==@vger.kernel.org, AJvYcCVAqxJ99uIo3Os4nppNWvNRlapo/NGmDkzbqCwQbece6dGWQ1NlpXFBk0bn4Nay/czidlqqu4wiWe4+@vger.kernel.org, AJvYcCVVyc3kmOK+BO8ZJmqCEtr7edCPj3JHGQiRJyD70AMEOXjCfBOzJNTY1RyIJa7VST7hVYCQmpEvpgalPXA9@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyr7VrY1M9GaB7POWbjXuPnFUYrOzdvRWN7ne4dxOe7f+RFu0sh
-	+GOUCcTCMigzGg7DhzrsUcgFZI0bTHNTPFm5fqxI4hFe2nxr0d/4+MJnJ04RDHQs
-X-Gm-Gg: ASbGncvLoJHpyzJzTnSLLkpLV8/vq13pUuy7hkREVBjQ50r/H2pC5k8inVCP2eMyOAW
-	Pdts79hsZ2V9ZsrJbFq6S3AQoRZczxpQYT9GWOmub8vXde7QZg2Ff9TCTxsXJbpWMlbmlby9RQW
-	/pWlB+FiofGlVioyDAQ6loM7nxYbA/ay5cByjMiK/Bzs/hISH/60Tm6BrfmY2FMxFnaj6SJPY4d
-	EVMM9yGDJ37DdLd29Kvk+0m0jjcr2iCvMJC/DdQAIV5VzHW0rUz6kOm2dm5qmm+0AVAdYDCd7Uj
-	AS4XGuKRF7kcogg5YnKy/o25LNzAfFWAjRgXJllW5LHylOj7TTuutzswi2hCspGuJsLVpo/sTMP
-	FPwI=
-X-Google-Smtp-Source: AGHT+IH05LGizbK3GZZZX/dFXVZD4uKLCLM5CZELt23GFHFB/4CwZk3LskZFmMki9iqIUXWnuhX5uQ==
-X-Received: by 2002:a05:6a20:c709:b0:215:efed:acfc with SMTP id adf61e73a8af0-2311dd59489mr17727867637.7.1752354297699;
-        Sat, 12 Jul 2025 14:04:57 -0700 (PDT)
+        bh=ejYbSlwrvFkbrHBW6bffd77Xp+VgExQz5WmoZWm5X3A=;
+        b=UiqoxY5XAgVQCvjrl+rsC2yVyjqGKzQvkIGc3rT5BoUu4ElXUgsieRGIsWHQgnGWQ1
+         ezzEU61tnfAJ9tysA8j0MoDFAbiRKYtXRwo79vh3Xb40fGs9z7G14LDK+4uP3vhUj1Eu
+         7VL1RO4XgE+GdSAB93SfzdBgHqC7+lqnZHRe0jyGCv1+mCUUZhCOFPkOvmiY1bdpFQQe
+         0syPnAvGtG5Lc2uHkIOUpChbe7w9x6Go7JRdTzXPysZm+xpEfDNY7PvAw27J5jFaGrV5
+         W6/Z7HDnxeLt8UeUObK97DPAam4axbdXHWH9afQuAqI92EU5zAbcG5SNKmD1oQFrM4WN
+         GPSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUeCD4oHT554XkrRBgjWKjGWZzvzneMsOo4Ic13oJxYGL+mZrmiikMDiQ8WxZjiyy5KYrH7rME1iB/tKA==@vger.kernel.org, AJvYcCWYfAfz6Xkp2MyppcUFNE8mQrr+MkCJsvqWzG4DZ+cin2mz9fcHuSkK20iDxNdgqqQEb2eWf5z9g7G7@vger.kernel.org, AJvYcCWsUs1PLadSsdpn7tZ+/GoTkJhtkf7Bg3G2tUn5iIamY3B1s6CeM06vgX9mOfO7TlCcR9UPW5bDXdma1Imi@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWplD+lBBTYDui4SUYYntWZf97lgieqSQAjiKxu3NCJwpBYz3z
+	pqlCWoctZmtSkoxcW66OvaVSVA+01Djyp7pFvoWH05zJkozXJYWzboPZrubtwmZ0
+X-Gm-Gg: ASbGncu/vQgB253vKvCQbMEcjJdRzU9w6k1DeqI3XVUPUrdxBjP7yU83reI502KYpYF
+	DsinDvnpWzs19E2nHPT4eltU+rk66/UyHFpvcWdXPCYwBUQrNH/EWQ2hARazP2t5HOsA7yyJTn7
+	xCmHT9VnkHUS7bWjXinBYUDq9e8l5Z9jCH5vq6L6xBWI/pmkpX6PNqmTJ/lgxgCdJSgEJ2KG5db
+	E7X10Oh8LTzi7Xe13EmVFJam/XJH6zihuih2+n0iCtVhY3yhWOWwmvHQZ729JjpxSWrySBodvcj
+	vKBi6mGN5IGN+eQ9zIPs79V/N1XdImCxaa8sekjNXqVBOlwatdc/W5cWJD8SWhFjPA+wwZu+uXc
+	YaJU=
+X-Google-Smtp-Source: AGHT+IH+1if3RW5zQDx5NFLjOzn1Iy9WzIcJAUTGZjLlAWikIuAA6K+2n56KMZrocse6CCNK9iTVig==
+X-Received: by 2002:a05:6a20:c709:b0:215:efed:acfc with SMTP id adf61e73a8af0-2311dd59489mr17727971637.7.1752354299008;
+        Sat, 12 Jul 2025 14:04:59 -0700 (PDT)
 Received: from archlinux.lan ([2601:644:8200:dab8::1f6])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74eb9dd5d30sm7988645b3a.5.2025.07.12.14.04.56
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74eb9dd5d30sm7988645b3a.5.2025.07.12.14.04.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Jul 2025 14:04:57 -0700 (PDT)
+        Sat, 12 Jul 2025 14:04:58 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes@sipsolutions.net>,
@@ -88,9 +88,9 @@ Cc: Johannes Berg <johannes@sipsolutions.net>,
 	linux-mips@vger.kernel.org (open list:MIPS),
 	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Mediatek SoC support),
 	linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC support)
-Subject: [PATCHv4 wireless-next 6/7] MIPS: dts: ralink: mt7620a: add wifi
-Date: Sat, 12 Jul 2025 14:04:47 -0700
-Message-ID: <20250712210448.429318-7-rosenp@gmail.com>
+Subject: [PATCHv4 wireless-next 7/7] dt-bindings: net: wireless: rt2800: add
+Date: Sat, 12 Jul 2025 14:04:48 -0700
+Message-ID: <20250712210448.429318-8-rosenp@gmail.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250712210448.429318-1-rosenp@gmail.com>
 References: <20250712210448.429318-1-rosenp@gmail.com>
@@ -102,33 +102,68 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-MT7620A devices all contain a wifi device as part of the SOC. Add it
-here to get it working.
+Add device-tree bindings for the RT2800 SOC wifi device found in older
+Ralink/Mediatek devices.
 
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- arch/mips/boot/dts/ralink/mt7620a.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../bindings/net/wireless/ralink,rt2880.yaml  | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml
 
-diff --git a/arch/mips/boot/dts/ralink/mt7620a.dtsi b/arch/mips/boot/dts/ralink/mt7620a.dtsi
-index d66045948a83..460164bdd430 100644
---- a/arch/mips/boot/dts/ralink/mt7620a.dtsi
-+++ b/arch/mips/boot/dts/ralink/mt7620a.dtsi
-@@ -62,4 +62,14 @@ uartlite@c00 {
- 			reg-shift = <2>;
- 		};
- 	};
+diff --git a/Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml b/Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml
+new file mode 100644
+index 000000000000..a92aedf6ba01
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml
+@@ -0,0 +1,47 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/wireless/ralink,rt2880.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	wmac: wifi@10180000 {
-+		compatible = "ralink,rt2880-wifi";
-+		reg = <0x10180000 0x40000>;
++title: Ralink RT2880 wireless device
 +
-+		clocks = <&sysc 16>;
++maintainers:
++  - Stanislaw Gruszka <stf_xl@wp.pl>
 +
-+		interrupt-parent = <&cpuintc>;
-+		interrupts = <6>;
-+	};
- };
++description: |
++  This node provides properties for configuring RT2880 SOC wifi devices.
++  The node is expected to be specified as a root node of the device.
++
++allOf:
++  - $ref: ieee80211.yaml#
++
++properties:
++  compatible:
++    enum:
++      - ralink,rt2880-wifi
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    wifi@110180000 {
++      compatible = "ralink,rt2880-wifi";
++      reg = <0x10180000 0x40000>;
++      clocks = <&sysc 16>;
++      interrupt-parent = <&cpuintc>;
++      interrupts = <6>;
++    };
 -- 
 2.50.0
 
