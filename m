@@ -1,171 +1,143 @@
-Return-Path: <linux-wireless+bounces-25331-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25332-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E19D4B02E58
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jul 2025 03:28:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D85AB02F11
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jul 2025 09:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A1004A1496
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jul 2025 01:28:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3FF31895C30
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jul 2025 07:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CDF22094;
-	Sun, 13 Jul 2025 01:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679491BE238;
+	Sun, 13 Jul 2025 07:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=melanic.xyz header.i=@melanic.xyz header.b="fI1F8d7S"
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="FRjGIAFt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from butterfly.birch.relay.mailchannels.net (butterfly.birch.relay.mailchannels.net [23.83.209.27])
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12C04A1E
-	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 01:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=23.83.209.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752370120; cv=fail; b=X+e3fX3lo95B81ihxKjeSwqX4MxT/CI02YzSTdX2MF/nhynPhiGNeKHo5Ufb44dlY2/w/1IBcUcAtnYfXEtuDuqX7cd8E2U6hSuqBMjSNNN7eeNEFGlVc55aW1SSFEwMhiHsB6rQb7w8e4V4qefdw0Gtg+2KOfv1DJbah6Qi/kA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752370120; c=relaxed/simple;
-	bh=svWnScUXbjNpseQrXQmi57MuxfFLd3IRBao/2iTRo44=;
-	h=MIME-Version:From:To:Subject:Message-ID:Content-Type:Date; b=MfVtGQXbCZdLyzg2MpDC42jYwGuGHWBx6C1S412MUhGsdrJCVDQJ8uW6efhHbj+l4Co5djrbByk7/lNxfHh8Vt4X/fvBdw9lZjmPdrJEV6Jcbq6zXMqZqawnq5H/xDwwwFsluvdw/4ibin3b49V+iE4UP1yPL8cdTeBuEJ9NCq0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=melanic.xyz; spf=pass smtp.mailfrom=melanic.xyz; dkim=pass (2048-bit key) header.d=melanic.xyz header.i=@melanic.xyz header.b=fI1F8d7S; arc=fail smtp.client-ip=23.83.209.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=melanic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=melanic.xyz
-X-Sender-Id: hostingeremail|x-authuser|andyman@melanic.xyz
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id CF514903E4B
-	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 00:12:12 +0000 (UTC)
-Received: from nl-srv-smtpout9.hostinger.io (100-114-117-211.trex-nlb.outbound.svc.cluster.local [100.114.117.211])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 19DD5903DFD
-	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 00:12:11 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1752365532; a=rsa-sha256;
-	cv=none;
-	b=l4bKVXt+Jvleakzv0i5kR40Jtfi704fZfa4IFU03OD9BbfbyXwfgHl8xsff0wJ+hvH0b+z
-	8zbuVOEmRs8ziXmH0ixp+oucUVqWjC/00mtlzBpcL0QZ2i0qbQqpOUafhoudOuyJBviNWN
-	g8GdMeMTGtSvITWADu9nWXFX0EP2jOKwWcPw3aF18K4sTzSXHgZW3lVe0SxLVNtVrDnFvH
-	zGbjnuS3f5ENbrJYixIONulkIATRuEDlU4tOvlsmpZFA2tGhSCZBCuLFdhFhVDf8je1Ndp
-	wwwBlU7aZzk0WT+katJgUNhBA/qYknjHgs0iG2TaeMfQyawtjcRYCIWQxnuhQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1752365532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
-	bh=VgKKsfDywV/o7i/WlkUyQLYuXopStdzR7GUeypQ4LPg=;
-	b=TLFphThhDUqX1sZsaAyNnABKxjJcZrI0nZKtJfnpD3JhOJI6NyUw7FEr72wV1sEt+2qTR1
-	eCyQtm058gNgg/lx7FhRKEaRF2nfopNRMQQfp/eg1lSMt8+TkX6NaXer+n/6kyjtq4iSMc
-	p/bY709ygsI/58txhwtbjVXfGxkh6xGhe64Ez1/RrL4XFL2CgvjF1l32mXEYggQl7pFBlz
-	Y0/SQ1XDpy+vz2vC2+SAmS0nZ4CHFcmqtGwKuC5wbDcou7ADgvPTNEp+H0zpH33eNy6JmD
-	JY7TCkZ7cKvS3nMuil2Ytm/2E/knf6/g+58+AUMUFovZ5Mn0ny/y5FhyKIJmkA==
-ARC-Authentication-Results: i=1;
-	rspamd-5c976dc8b-wfkdl;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=andyman@melanic.xyz
-X-Sender-Id: hostingeremail|x-authuser|andyman@melanic.xyz
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|andyman@melanic.xyz
-X-MailChannels-Auth-Id: hostingeremail
-X-Scare-Exultant: 71505ba010609332_1752365532692_3561811649
-X-MC-Loop-Signature: 1752365532692:807910464
-X-MC-Ingress-Time: 1752365532692
-Received: from nl-srv-smtpout9.hostinger.io (nl-srv-smtpout9.hostinger.io
- [45.87.82.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.114.117.211 (trex/7.1.3);
-	Sun, 13 Jul 2025 00:12:12 +0000
-Received: from mail.hostinger.com (122.132.242.35.bc.googleusercontent.com [IPv6:2600:1700:7b50:2cf0:609e:c94f:9893:c5b9])
-	(Authenticated sender: andyman@melanic.xyz)
-	by smtp.hostinger.com (smtp.hostinger.com) with SMTP id 4bfm960mhSzGY3Xk
-	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 00:12:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=melanic.xyz;
-	s=hostingermail-a; t=1752365530;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+Ios/6tOLJOs9JZqQLCRMzc0DWcj2UbB9A3TYThX8Lc=;
-	b=fI1F8d7SbnXPKebFSelGFZ6iIdXLu1GjZf6ezUcOL521dWgGKINrA2bEf5P2p7rD3/OoCd
-	VGbJ9yXqAFiUItN7dzIxo4QymBpu5/GL+c3CVJn0g3tH+4Dr89H4/A9p4d0DOFxzieC9FL
-	vv7YAbf0wR7I0evcvuJn2nCpjhZ+HlD7D7uHBILXErEkQtdi38eCVNZUwvZNDqTALNmlWB
-	eY5nztMqOt8skPjB1gnbLAR8GE/iTnSyQy8kMUyMIqTpVjbkMgLkU4NH6RSXFu+gP0iNWJ
-	rwe/ZOeVgN3MP8T0nmzZMwvk2zFt9/UNfqUQ5TPjWLV1qQNka18lslChC3/XYQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDCB19E96A
+	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 07:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752390938; cv=none; b=V3wuNMw35a92ecVBo9L9RRIMPIoZSHchwhlh0zV10mWJpQNd4putoix/Vn25tMP9ikmhhMSXekxQebNFY12SWD4fqgkJqk4ZUGYHT6i/dOg0EXx0RtNmrRmy7e9CYnPUCUxnksVYupE9q7i9avT319toM+1F5S5lvxi9YF5e3Ms=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752390938; c=relaxed/simple;
+	bh=f0BZ1aEY6y4Cc1MStO+sICC9i1OV/GQNzAgioBiOqus=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uWAQyWzsp0YW+7JTQeJsYEb4kHgV4scP0EbAq1JEdNxD7saT8q5Hf6huVwDzavjc0F0SMiW3E/RvgInYfUmJWpTkwctv06YDuSZr0YkAm2grcPHrWjiI0P1rT80ufp7WCuTyUEPJZxHuAvUyKdPB0kfxtpTJKV6+nr9gMVgEloc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=FRjGIAFt; arc=none smtp.client-ip=212.77.101.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Received: (wp-smtpd smtp.wp.pl 19348 invoked from network); 13 Jul 2025 09:15:32 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1752390932; bh=w6uk2vSSK6kqFUYuqq9wRIV5THBtnHlaQCSQ8TziC3o=;
+          h=From:To:Cc:Subject;
+          b=FRjGIAFts+ncFni3a1QtStmqoRjGSBbzbv+fu3CCrvg0POfGxtRWy1qe9BDOdMv05
+           Jgufu28olMCo4lCy3gPEaC8Dtt0HTwAAUJti3zEEq+lbgP+qGGTjSgNVYY7tF6ECtG
+           GLQpn2fay8FHGilvqOc+/+XeYVIBavvoXRz6I9Qpj68JowKrrd9YhnRQzI28eb+A9C
+           8BtpVXwEBMRol9SJUvlvFF9aoE86vfLer19dJtVHzi99olSl7rMbQt7zuNt1FvEW+K
+           Bh6ZGVr4iRyVqvJVOEwHWe9OvldV49IM5X77YFpIUJrZS0Tuj3is0zaL+EJ3N0s+aJ
+           qbF6niVbKxudg==
+Received: from 89-64-3-180.dynamic.play.pl (HELO localhost) (stf_xl@wp.pl@[89.64.3.180])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <rosenp@gmail.com>; 13 Jul 2025 09:15:32 +0200
+Date: Sun, 13 Jul 2025 09:15:32 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:MIPS" <linux-mips@vger.kernel.org>,
+	"moderated list:ARM/Mediatek SoC support" <linux-arm-kernel@lists.infradead.org>,
+	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCHv3 wireless-next 3/7] wifi: rt2800soc: allow loading from
+ OF
+Message-ID: <20250713071532.GA18469@wp.pl>
+References: <20250710200820.262295-1-rosenp@gmail.com>
+ <20250710200820.262295-4-rosenp@gmail.com>
+ <20250712101418.GD9845@wp.pl>
+ <CAKxU2N-RXgFKYPAqEu3iZDMAisj_K-b+ZZTGFsabWz7pMK+02A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: andyman@melanic.xyz
-To: Linux Wireless <linux-wireless@vger.kernel.org>
-Subject: MT7922: Frequent disconnects and a failure to bring up on boot
-Message-ID: <0b99450be5a37676a0afa3c17590ce15@melanic.xyz>
-X-Sender: andyman@melanic.xyz
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Sun, 13 Jul 2025 00:12:10 +0000 (UTC)
-X-CM-Envelope: MS4xfKZGo+WsnNq4shRzdcAMhIGSh2Z+ZmFsEmivvXHwibJ9nRulr08zp2Um4CRWCliTwZ8gjAuZi13W6dIHU8mrrbOasahc0KaB3TKbv935Ico73lRU9jcF WAvpE0/xN63yttGSRTalTqkuzwb7MWy7hM4f2hKIBBeOrCrDxHUCNPqkze34wgyurGOx4++K7z1jzVmhHDbgpBPrltE5cfO5KeoZyEmFr+WDQaNeWXx60IPO dRkSVqmsHyh3oKK8Ddp8nobf42XQExvyvuLePKkd86Y=
-X-CM-Analysis: v=2.4 cv=OrcdyD/t c=1 sm=1 tr=0 ts=6872f9da a=RC2A8uE2lK0PEXFq6u+tzw==:617 a=9zTY3BIwtN1Myf9W:21 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10 a=ivH2Aw7XoB-j8qGvbTcA:9 a=CjuIK1q_8ugA:10 a=XReUu7uucrU0zjlRU2xT:22 a=RADZSm3owst0GkL05-i7:22
-X-AuthUser: andyman@melanic.xyz
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKxU2N-RXgFKYPAqEu3iZDMAisj_K-b+ZZTGFsabWz7pMK+02A@mail.gmail.com>
+X-WP-MailID: a575d8a94d89fffda96a0f3af808d2f5
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [kZMB]                               
 
-Hi all.
+On Sat, Jul 12, 2025 at 12:02:35PM -0700, Rosen Penev wrote:
+> On Sat, Jul 12, 2025 at 3:14 AM Stanislaw Gruszka <stf_xl@wp.pl> wrote:
+> >
+> > On Thu, Jul 10, 2025 at 01:08:16PM -0700, Rosen Penev wrote:
+> > > Add a single binding to help the already present dts files load the
+> > > driver. More are possible but there doesn't seem to be a significant
+> > > difference between them to justify this.
+> > >
+> > > Use wifi name per dtschema requirements.
+> > >
+> > > The data field will be used to remove the custom non static probe
+> > > function and use of_device_get_match_data.
+> > >
+> > > Added OF dependency to SOC CONFIG as adding of_match_table without OF
+> > > being present makes no sense.
+> > >
+> > > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > > Reviewed-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+> > > ---
+> > >  drivers/net/wireless/ralink/rt2x00/Kconfig     | 2 +-
+> > >  drivers/net/wireless/ralink/rt2x00/rt2800soc.c | 7 +++++++
+> > >  2 files changed, 8 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/net/wireless/ralink/rt2x00/Kconfig b/drivers/net/wireless/ralink/rt2x00/Kconfig
+> > > index 3a32ceead54f..a0dc9a751234 100644
+> > > --- a/drivers/net/wireless/ralink/rt2x00/Kconfig
+> > > +++ b/drivers/net/wireless/ralink/rt2x00/Kconfig
+> > > @@ -202,7 +202,7 @@ endif
+> > >
+> > >  config RT2800SOC
+> > >       tristate "Ralink WiSoC support"
+> > > -     depends on SOC_RT288X || SOC_RT305X || SOC_MT7620 || COMPILE_TEST
+> > > +     depends on OF && (SOC_RT288X || SOC_RT305X || SOC_MT7620 || COMPILE_TEST)
+> > >       select RT2X00_LIB_SOC
+> > >       select RT2X00_LIB_MMIO
+> > >       select RT2X00_LIB_CRYPTO
+> > > diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
+> > > index e73394cf6ea6..db8d01f0cdc3 100644
+> > > --- a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
+> > > +++ b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
+> > > @@ -243,9 +243,16 @@ static int rt2800soc_probe(struct platform_device *pdev)
+> > >       return rt2x00soc_probe(pdev, &rt2800soc_ops);
+> > >  }
+> > >
+> > > +static const struct of_device_id rt2880_wmac_match[] = {
+> > > +     { .compatible = "ralink,rt2880-wifi", .data = &rt2800soc_ops },
+> >
+> > Why do .data = rt2800soc_ops here and use it via of_device_get_match_data()
+> > in patch 5, insead of just use rt2800soc_ops directly in rt2800soc_probe ?
+> I see more of the former instead of the latter in drivers.
 
-I have this device, in NixOS 25.05, on a Framework 16 laptop:
+If there is no technical reason to use indirection, this can be
+simplified as well. Can be done as separate patch since you already
+posed v4.
 
-01:00.0 Network controller [0280]: MEDIATEK Corp. MT7922 802.11ax PCI 
-Express Wireless Network Adapter [14c3:0616]
-         Subsystem: MEDIATEK Corp. Device [14c3:e616]
-         Flags: bus master, fast devsel, latency 0, IRQ 131, IOMMU group 
-13
-         Memory at 7810900000 (64-bit, prefetchable) [size=1M]
-         Memory at 90b00000 (64-bit, non-prefetchable) [size=32K]
-         Capabilities: [80] Express Endpoint, IntMsgNum 0
-         Capabilities: [e0] MSI: Enable+ Count=1/32 Maskable+ 64bit+
-         Capabilities: [f8] Power Management version 3
-         Capabilities: [100] Vendor Specific Information: ID=1556 Rev=1 
-Len=008 <?>
-         Capabilities: [108] Latency Tolerance Reporting
-         Capabilities: [110] L1 PM Substates
-         Capabilities: [200] Advanced Error Reporting
-         Kernel driver in use: mt7921e
-         Kernel modules: mt7921e
+Regards
+Stanislaw
 
-Unless I disable power management on the card, it pretty frequently
-randomly disconnects from the AP. Sometimes it runs for half a day,
-sometimes it disconnects every 10-20 minutes. This is pretty consistent
-across kernel versions (6.6.93 up to 6.15.3 at least) and firmware
-revisions back to Feb 2024. Disabling power management ("iw dev wlp1s0
-set power_save off") seems to make the connections stable. My usual
-setup is an environment with a few different APs with the same SSID,
-some with good signals and some others with very weak signals, but that
-may not matter; I've also seen the dropouts when it's connected to just
-a single AP (even just when tethering to my phone which is sitting on
-the table right next to the machine.)
-
-I started running 6.15.5 to test, don't really have much to say yet
-in terms of whether it shows the disconnects also, but I just saw it
-completely fail to bring up the card on boot:
-
-[    2.360745] usb 1-5: new high-speed USB device number 7 using 
-xhci_hcd
-[    2.512351] usb 1-5: New USB device found, idVendor=0e8d, 
-idProduct=e616, bcdDevice= 1.00
-[    2.513874] usb 1-5: New USB device strings: Mfr=5, Product=6, 
-SerialNumber=7
-[    2.515263] usb 1-5: Product: Wireless_Device
-[    2.516510] usb 1-5: Manufacturer: MediaTek Inc.
-[    2.517681] usb 1-5: SerialNumber: 000000000
-
-... and nothing else about the wireless card in the log; no messages
-about mt7921e, the string "mt7" doesn't even appear in the kernel log.
-The mt7921e driver module doesn't load and the wifi interface doesn't
-come up. This is, I guess, a combo Bluetooth / Wifi card with both USB
-and PCIe interfaces? I'm honestly not sure. It's a Framework 16 laptop
-with the built in wireless module.
-
-This is the first time I've seen this failure-to-come-up behavior, I've
-only seen it once. The frequent disconnects have been consistent with
-this machine across kernel versions in NixOS, although I haven't been
-able to get them to happen with a couple of days of testing on Ubuntu
-24.04 LTS.
-
-Happy to post any logs or etc, or other information. Cheers.
 
