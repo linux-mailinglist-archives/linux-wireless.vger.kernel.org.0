@@ -1,246 +1,129 @@
-Return-Path: <linux-wireless+bounces-25341-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25342-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74645B032AE
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jul 2025 20:59:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 014A9B032BD
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jul 2025 21:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A132189531F
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jul 2025 18:59:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 078EB189847C
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jul 2025 19:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDFC280A3B;
-	Sun, 13 Jul 2025 18:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1F9A48;
+	Sun, 13 Jul 2025 19:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NuMvbprJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vbl0M/5D"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6732651C5A
-	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 18:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CA22E36FC
+	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 19:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752433157; cv=none; b=idopJjJgRgagN4ceg0opLkGjoMihmta4+E9pDbYiwrRV+ySS0pCBNFM4MwUnvshH1diDJ7joYAq9N4NaDkKVKKA+mo2U+z5Xkr6jIn8RwaJnTr3z3IUs/goiB6t5ugs9EOTmH88GP/8BjIUIC4g7iW64euOePzEre8Y3SVjqHu4=
+	t=1752434861; cv=none; b=ODWy/CnARVKVTYCXHpX1fEehDQqHUjX/L5SBT/43Y7qPUTtfUU0QlSKN+05dNEQCXPtnCc0CS/mXpZCsB/eLz+rVhdSO79fAPW+mwJTEBM15d8zWZ3Za4B89Dkuq8DAJBRilV5pGWrFv0hURCQMtLAh5DtIsj3l4fUH1BFu0Ekg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752433157; c=relaxed/simple;
-	bh=iPIl4OoSWVWBC1QnIoDkEU5st6FYMe9HpX04zR+ptt8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ao8NZSYSDKnYcpS6vyFV3CRfPIzxPY28QSgl/TA5+xtww8yCmB8IOyLVbB8LGs8DP93k5c2smYu+/g0q7ScUnhx5Vj+K+PssmasQfQdOmROUUCPwdxil62ZWT6+PaSYgZuN/XQbF8+D5Elx63LG/mMofZT7d2/G28COpMcgcMCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NuMvbprJ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56D5R5mA012290
-	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 18:59:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	wyZvakpdmc+ctfdhCgjkf+kMrxFZE2wvdi85totUeJM=; b=NuMvbprJFlyz7x3C
-	JH5Wlk+4c3AQ3GX2iGHS1McjYXcui4G9etHw5xxbmo0XkZeL7V+tLQXp5tFCpTcG
-	MBAIS/oOUcpKDtch59KTAdBRKn76mraiQdev6x/r9ajI4qb+M/jTyP2VGZL4ry+P
-	gYEP2Me5K6NbshL/ApqHn1PMh3XVFCDdBwwJX6KiqiBzc0BWLcsvl5U09qIH2xaK
-	OAlE5X3HcpkKzdy9cN7ki/Tk8V3gaCHSO8krt8L4mpuvGshQ9BagfHLJYnHVS2ao
-	tCaFoaOVmEed3eCZU6NOU3SXlkNTypuc/9zLGbHiNd7kgh4xg6fi7hM+k7PefbCr
-	eOZgMw==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47ufut2eap-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 18:59:12 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-234fedd3e51so33835895ad.1
-        for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 11:59:12 -0700 (PDT)
+	s=arc-20240116; t=1752434861; c=relaxed/simple;
+	bh=wzeSWUmdoDIAzzo+jJzqpCI6MA2Ddlzo+oFhcEcQ0AI=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=iloiZStDBuPJCZA1PK1p5ai9s5wCXfHaYlgYpe6emg30HZISiot2zwlxS1e32QAmygpAdpLBf1iW7ufqnG00r7xIu5+zBXmOrXjaYP7PpDRfvtu+OdztfmEA/qfRiUBtjx1e4roLfZ5uzJX5nfJy28bniHiKtdnYXpmrmTEOIGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vbl0M/5D; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6070293103cso5805518a12.0
+        for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 12:27:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752434856; x=1753039656; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LO70RIsH+WAnWizSfxBLh51Rx1BS3z9WC95syYohuXU=;
+        b=Vbl0M/5D18tljJpDq9Q+Q2cgvoPW89i3So2qZ4yrj4NvbHgGWEyYRqNG1OC9YVOWxr
+         YF+7kZqwtt+/5JgkAYeuL5kBzZwXvftJqi2ikzuQZ0WjJq92TDEvRSQPSjREEsqWnu2p
+         FsaJ2vAx83xMxtfVIh4wk2pvUIYx2guJ1mB+9l+v8TN+OYk2zqKfhr9MW/10FuaE5Ner
+         iVmpewqybAZBLE5fRLGRVgIHp7VbYZNUPtiopXdhQZX/cQHr8NifNbxv5WvQX3r62ct2
+         JiTpx4uaploU83uyWjuUj4rd7UDgm9lp/mIpuC6XYmkdeKrVriQuhljFsjZvIu2FCB4U
+         IofA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752433151; x=1753037951;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wyZvakpdmc+ctfdhCgjkf+kMrxFZE2wvdi85totUeJM=;
-        b=BrD0yGAi94alzezlqRFkziaTFQ6y6LavYtxfu22PgqcwOP/AAMXtsStHNNBXMpWTT0
-         0tBYGY0ToJpbC1iqMcxh5m/V+L/2kSmp+E9H/a192Q7Scv89gRVuPDm9eUAcgwLX/L4+
-         ODtBV04N1BjE4gCGkITMjgMnK7Ew7xPzSJYyrg7Q5fBZjTVhwyqCilLwHQlY2Sjz7Q2W
-         GpF1yhNzusFoIpieKV0f/2bCSRI8vBMliA7D9kc2SLE4BHXFcW3/owbKIK4J5wM/59eM
-         VY5X0Wgffd7kXsoKcXF44jV+JnD4Dr2mxzG48g2g7szUCx8CQ3mqEu7iPoCO892aofN8
-         0qnQ==
-X-Gm-Message-State: AOJu0YzEjLlexnhKkRZHxzaVGJQPRbTHQgyAOpXmPEdP0ANJsTbCq47d
-	o7s+tH1aDSFdyVIJqUJF9r445Xye7ATK3u5WwkHyzcaHZWYNzoq/KOCzA0ytmi313hOSUNR2yim
-	V9YziQXWepV4Fp5HyiS8guwS+thpqFqNTGG4/+gTBmYJTArQca6rw77mkK+wKMeoGsdxU6g==
-X-Gm-Gg: ASbGncvYzRONV4ncXvEkAspwrJEhXRmFQhZdf+Zyv4OkUqg4cSPNmYBl891ot688Lez
-	gDVrxKHA/TNEO9sgchMCFCQQYU7rwtD5043G2gZOeqeiWchnvhBghccImSO92nhvFHhm0GkvUmQ
-	D797HiB0C11banL0+9zjEHZ7qeAr05FJuCzcscS8WgBsRilEFnrM2ARXc8Z8hi+MNmiVpOqDhPu
-	jl0ONqxtYeY+MkCcUptgSxj74a/mP0LFZ624GkvYK8zT1rTG/FI1DIiRsqyF75BKfbsZQT/CCO7
-	SVp5WHKwSQJ3EudqB268p+b/h+OXoGtqZcHh8uso53nOzrtFYlfIPIbh9B8nHFgZVvJ13QZ+
-X-Received: by 2002:a17:902:cece:b0:236:9726:7261 with SMTP id d9443c01a7336-23dee0c6ed8mr164466495ad.39.1752433151473;
-        Sun, 13 Jul 2025 11:59:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFuaNgVKheQk3b8imU87osEwh6357NjhpUB01ZTuui3OhavmkVNst3Pv+44GC5dKU3LNhXnLg==
-X-Received: by 2002:a17:902:cece:b0:236:9726:7261 with SMTP id d9443c01a7336-23dee0c6ed8mr164466245ad.39.1752433151007;
-        Sun, 13 Jul 2025 11:59:11 -0700 (PDT)
-Received: from [192.168.1.2] ([122.164.84.98])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4359b6fsm78444725ad.212.2025.07.13.11.59.09
+        d=1e100.net; s=20230601; t=1752434856; x=1753039656;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=LO70RIsH+WAnWizSfxBLh51Rx1BS3z9WC95syYohuXU=;
+        b=AuLMysBtJPQ1UkhO2lhtIgKY3zfXlyucYpmkUS+UxtD56QCd1PE5onYIbCHdtzhXyt
+         N8YS8HXsxZHYyEQbRnNM+79SWuWRAGIjWAj3sYj9BgtpILJl6TP8DMD7WFUErC0vhe4W
+         Zsxphd/A5P/ukimPURo7pwZtwh9h+gSDzaILca2SVmnb3O+SbnWPeur3euWKNs2sGgmU
+         Z4r9WBSnJQDzqgfthgw4d2AYZr+fIBydxv3qJGPoEHyu0QCgflRPCimEstczPnkbOaH1
+         mdpRtvqKStt8LJTZe2HjOpg1tqPLS6CIVEdsoJcEaArGjLGIQa/lVKyIXuWGKnz++NWT
+         98tg==
+X-Gm-Message-State: AOJu0YwGWePm4rsjrHxC/4qYrKwe5nHMouWFAzGXLEJ/9VGPeBXZNNVd
+	Cn22QubpP1XT3Dwd8R3Bm7a8dIERj5jYvQ2WdOkIrZ1BPjkENumKDxtUpmMkxQ==
+X-Gm-Gg: ASbGnctnT1apI/FD+yjc2WArqqFtSpGhAfGN9YPU7b2PeSMDfS3WrqmgRmWhOPrjqwP
+	v8Hb2XHYe0obgrapqJ28pgwkuIJUX2HHB1Q7zkxvIUIYbq92qjNJL5Z0zJBlEF2w1h9zCV0+Iqf
+	IEwB9URMBmYK21LrI2kPSNk1pMUBzHNfhmxvRaMQ+HEaIjYcL3Nj1M4DFTCMBEvDl6/Kou/EGTD
+	zP88hhy2IoQxLV9XKSWBhml8LOig8jItzhA9XgIIKON4wMIyyoqsiRacJZrROdFo1fpuzUtdphV
+	7MbJqtNuqWwyp0xb4pqQeN6HkHRcBIPAKURqyPa7nAlJy1wCiaNjrz4mX/i2qCxRy5b5qVO7NoM
+	Wzd+V+0ru4oPVpj7gdMWFdnHMkS9euJcK2KD1omv1
+X-Google-Smtp-Source: AGHT+IHS4/kgAwC2WaUwPCgvQfKw5jve/6eUggC0cSW7SObFb4CZF4Tp1Dtu7ivCaInnHG9jhAP3IQ==
+X-Received: by 2002:a17:906:7314:b0:ae0:bd48:b9c2 with SMTP id a640c23a62f3a-ae6fbe866b3mr1144505766b.21.1752434856127;
+        Sun, 13 Jul 2025 12:27:36 -0700 (PDT)
+Received: from [192.168.0.50] ([81.196.40.253])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e7ee4478sm707585666b.56.2025.07.13.12.27.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 13 Jul 2025 11:59:10 -0700 (PDT)
-Message-ID: <94354e7b-1931-da3a-bec6-78e578468dd2@oss.qualcomm.com>
-Date: Mon, 14 Jul 2025 00:29:06 +0530
+        Sun, 13 Jul 2025 12:27:35 -0700 (PDT)
+Message-ID: <58648c09-8553-4bcc-a977-9dc9afd63780@gmail.com>
+Date: Sun, 13 Jul 2025 22:27:32 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH wireless-next 0/3] wifi: Preamble puncturing support for
- mesh
-To: Johannes Berg <johannes@sipsolutions.net>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Ramasamy Kaliappan <rkaliapp@qti.qualcomm.com>
-References: <20250609001048.2263586-1-ramasamy.kaliappan@oss.qualcomm.com>
- <a8ff80ff5a811a09cf5556e20c7232eb1e201c2b.camel@sipsolutions.net>
- <21b7d547-b550-23a9-3bff-1f1787e307a8@oss.qualcomm.com>
- <61d6cdebee2c89e5d2d93d3297c94051efb70790.camel@sipsolutions.net>
+User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-From: Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>
-In-Reply-To: <61d6cdebee2c89e5d2d93d3297c94051efb70790.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=e7gGSbp/ c=1 sm=1 tr=0 ts=68740200 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=6VSqIenKxx6KD5xKWEYkZg==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=QZ1lA0b2CmYMIHELQRAA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-GUID: p0p51JrY_A66Y1VSFAHdD1XIIwhphWsx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEzMDEzMiBTYWx0ZWRfX/Ch363JbE7kV
- 4u0rYl/z848p79jKidJHF3SmTWiWGKxQJj84qytRfUTxpGkPvBW+dKTYKpGJI49GvLjnaEDvRsK
- ECgJlMQcSh/7A998WuorQWQSWrrNRT2lAxgvfL94007bRNQyqJqvjFTJajjtaQJb2R5AxmNDOz0
- EuguIELF08tsYjMptfTkGgjvlhsqn1PCm+smWQGLUnPuYsmg1iXkc0WNEYIDMDJwVhRJGQdfDGt
- jVGlKJhIp/+ahyf1RqonuxkbqHVjo8sz1kajBUQtgbx0tWd9dqdA2CiQmc8IpTN8rXGgmDOyC8y
- B7IqspZi8sRLuFWS6jb7o3DwhMs4BKGsy3yWo80C0mZjyc52a5q9ZPaPXXBoPke6xHPjB5HNJVp
- jMcchUOGRdruITDlVEUmckVXNMqXRRqiWfbRwRA1+0ejDhrnmwuGiWNnQDe8LfVCrb7DkATO
-X-Proofpoint-ORIG-GUID: p0p51JrY_A66Y1VSFAHdD1XIIwhphWsx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-13_02,2025-07-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 mlxscore=0 spamscore=0 suspectscore=0
- phishscore=0 bulkscore=0 impostorscore=0 clxscore=1015 adultscore=0
- malwarescore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507130132
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next] wifi: rtw88: Fix macid assigned to TDLS station
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+When working in station mode, TDLS peers are assigned macid 0, even
+though 0 was already assigned to the AP. This causes the connection
+with the AP to stop working after the TDLS connection is torn down.
 
+Assign the next available macid to TDLS peers, same as client stations
+in AP mode.
 
-On 6/30/2025 6:51 PM, Johannes Berg wrote:
-> On Fri, 2025-06-27 at 19:49 +0530, Ramasamy Kaliappan wrote:
->>> I ... don't really understand how this is supposed to work.
->>>
->>> Say, for the sake of simplicity, we have an 80 MHz channel, the lowest
->>> channel is the control channel (so puncturing 0x1 is invalid). Possible
->>> puncturing values are 0x2, 0x4 and 0x8.
->>>
->>> If locally we have 0x2, that means (I assume, since that's how chandef
->>> is meant to work) CCA and RX is always on the control channel and upper
->>> 40 MHz parts. If you're now going to transmit to a station that has
->>> puncturing 0x8, you didn't do CCA on the 0x2 subchannel, but ...
->>> transmit anyway?
->>>
->> Yes,we do not transmit blindly to mesh peers with different puncturing.
->> Before initiating transmission, the driver computes the intersection of
->> the local and peer puncturing bitmaps to determine the set of valid sub
->> channels.
-> 
-> Hm, I guess that's fair, but why not do that in mac80211 instead, that'd
-> be simpler and far more obvious/safe?
-> 
+Fixes: 902cb7b11f9a ("wifi: rtw88: assign mac_id for vif/sta and update to TX desc")
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw88/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Hmm, I originally thought the bandwidth determination would need to 
-happen within the driver,  since it’s required at the time of packet 
-transmission for each mesh STA. The assumption was partly influenced by 
-our existing firmware design.
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index c0103ace8239..f4a5580b75c1 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -349,7 +349,7 @@ int rtw_sta_add(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
+ 	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
+ 	int i;
+ 
+-	if (vif->type == NL80211_IFTYPE_STATION) {
++	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls) {
+ 		si->mac_id = rtwvif->mac_id;
+ 	} else {
+ 		si->mac_id = rtw_acquire_macid(rtwdev);
+@@ -386,7 +386,7 @@ void rtw_sta_remove(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
+ 
+ 	cancel_work_sync(&si->rc_work);
+ 
+-	if (vif->type != NL80211_IFTYPE_STATION)
++	if (vif->type != NL80211_IFTYPE_STATION || sta->tdls)
+ 		rtw_release_macid(rtwdev, si->mac_id);
+ 	if (fw_exist)
+ 		rtw_fw_media_status_report(rtwdev, si->mac_id, false);
+-- 
+2.50.0
 
-But yeah, since the bandwidth doesn’t really change much across PPDUs 
-for the same STA, it actually makes more sense to handle it in mac80211 
-and drivers can use it.
-
-> Also, clearly your driver _doesn't_ do what you say "the driver" does,
-> if anything it magically and "undocumentedly" happens in firmware.
-> 
-
-Yes that's right, the intersection and BW selection is done for every 
-PPDU at Firmware.
-
->>> I mean, maybe this could work if the remote puncturing is a superset of
->>> the local puncturing? But just blindly doing it the way it appears to be
->>> done in this patchset seems ... questionable at best?
->>>
->>> Can you explain more how this is even supposed to work?
->>>
->> When associating with a mesh peer, the mesh peer's puncture pattern is
->> shared with the driver. The driver evaluates the intersection of this
->> bitmap with local pattern.
-> 
-> Could also be done in mac80211, I guess.
-> 
-
-Thats right
-
->> if the resulting pattern corresponds to valid transmission bandwidth,
->> the valid subchannels used for transmission.
->>
->> If the resulting pattern does not support a valid bandwidth, the driver
->> falls back to using only the primary 20 MHz control channel for
->> transmission.
-> 
-> Right.
-> 
-> I also note that there's not even any definition where the puncturing
-> pattern is rooted ... is it relative to the local chandef? Relative to
-> the peer's chandef? Clearly not even that is documented.
-
-
-When not considering CSA scenario then the puncturing pattern is an 
-intersection of the local channel def and puncturing pattern advertised 
-by peer.
-
-If the local and peer mesh are capable of EHT, the negotiated EHT 
-bandwidth of the peer mesh is considered first. The intersection of 
-puncturing patterns is then applied on top of this to derive 
-bandwidth—potentially reduced and with or without additional puncturing.
-
-> What happens if
-> the bitmap changes? Why does userspace track it rather than mac80211,
-
-When a channel switch is triggered by a userspace application,
-the user space is fully aware of the bitmap changes and pass them to the 
-mac80211 driver.
-But when a peer mesh initiates a channel switch via CSA, the mac80211 
-driver on the local mesh receives bitmap changes through CSA 
-beacon/action frames and processes the channel changes internally.
-
-However, unless the new bitmap is explicitly forwarded to userspace, the 
-userspace component might not be aware of the bitmap changes.
-
-> which has the beacon of the peer and handles CSA, so what happens with
-> puncturing in CSA?
-> 
-
-I am thinking something like below for CSA with puncturing in Mesh,
-1. Acquire the puncturing bitmap from the peer initiating the CSA action 
-/ beacon frame.
-2. Validate the new channel's compatibility with the new puncturing 
-pattern, and apply the new channel context.
-3. Forward the csa beacon/CSA action.
-4. Reset the existing bitmap and apply the new bitmap to associated STAs.
-
-I didn't take care of this in the patch series. I am planning to address 
-this in the upcoming series
-
-> Did you think about any of these questions, or are you just using me as
-> a design tool? ;-)
-> 
-
-No, certainly not Johannes! 😊
-I initially assumed the bandwidth would need to be decided by the driver 
-  since it’s tied to packet transmission for each mesh STA— that’s kind of
-how the firmware seemed to be built.
-
-> johannes
 
