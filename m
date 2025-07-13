@@ -1,197 +1,171 @@
-Return-Path: <linux-wireless+bounces-25330-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25331-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB932B02D87
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jul 2025 01:20:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E19D4B02E58
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jul 2025 03:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21081177703
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Jul 2025 23:20:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A1004A1496
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Jul 2025 01:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25732309B2;
-	Sat, 12 Jul 2025 23:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CDF22094;
+	Sun, 13 Jul 2025 01:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BtSyUuf/"
+	dkim=pass (2048-bit key) header.d=melanic.xyz header.i=@melanic.xyz header.b="fI1F8d7S"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from butterfly.birch.relay.mailchannels.net (butterfly.birch.relay.mailchannels.net [23.83.209.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D1B1F560B;
-	Sat, 12 Jul 2025 23:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752362426; cv=none; b=hGfMU9p8bsD4skAR7W+jcbNFB43m1wVOoAdOdstYcgvEilgUtUA5qAUKJyJWg0W7kAq9U7SgbyX8Q96aZFLdb1snKQsvugW8XLvA5yRSqaJz0miCllNWS5NU4p0o5G7uuaUjcoskSzKpnkKm/JzMKq2rp8jLVYSutBz5drO1R6Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752362426; c=relaxed/simple;
-	bh=9Y8Fjr7KqkE3E/uJ3c0Bp0ihg+c1iAP3vmMRnvmL9GU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sUwQGRgmI3mZmVfaYdnePla4iR5r6RSRnZ+/9NjURULJeOATnnFteWDttTGl5ytzt0qMDPIYuy+rgn6ztF++/qK49pGtbRoDmxaq6I63S/mNz10zUeOfUnHJrINONAV9PkgjiJ13J9DgOy1mQ/Xr2D0e6H5+M3wLZWQcu6pG6vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BtSyUuf/; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6facba680a1so39346546d6.3;
-        Sat, 12 Jul 2025 16:20:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752362424; x=1752967224; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OJFl78XZ+XY3PQ6hqlxJcMbRGA/vaIbR4su4ePprkx4=;
-        b=BtSyUuf/VDY0diQjWosqgShnbh3m3waNqhpbAi66DH5GaeHoilHQlitmciNqXh+4Po
-         D478Z16NaWEqmteUrz6t7FH1N96kCdcRr4ExXaUgUe80gbq+y6e77zAIySeMsP7kDCmf
-         kJPV+R/xmpSEqb7HdbWODQp7HrVe7MCSJQijNlw9bCc8j2Qxjb5mQ2tyIjOBrvkXKEIj
-         0sy08ZprmgDwM6Dr3S3Gcth85adFKmZO4j2hg7ofP6Aza/sl+bI0RgRdhwpJwOQBEFXQ
-         4KZp9zmLtJGclR7k/smMD/00y0agY84fwvUftodQg0Tf9ac/+szMEw133BbA3sZLNj+g
-         TauA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752362424; x=1752967224;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OJFl78XZ+XY3PQ6hqlxJcMbRGA/vaIbR4su4ePprkx4=;
-        b=XaSF4Oeh+yVglS1JR8IxuhWFYM7ge49ZkkQLt7ELshqfPqxuy/c4gYSY2jjn4hEvSc
-         qr8FTQAkkUF46ftorQK7iulcZ/LrQcztn72Y7Rf4qLs2dodSWyv6+d9tpK2g9iN37Zhb
-         1Gt/hB6oUGI1tCCKoyBIYxdjFn0jC1zWvWPq5d3M7HvJiKI4rBBv7d4tVuiCerlugP9w
-         u6xr/vsK7/BHRHFvXyL8wbtNF6qkihbmwUffCYGfWMwrckEPb2SsvSXOyc6a7M+ReJvY
-         baBXNB6k2ElWLhHGrm5+hnDbYKNlCHRpenLjoK9xdyFjHf3GHN3uaep5zSWUCrdPNJgX
-         XLGA==
-X-Forwarded-Encrypted: i=1; AJvYcCUAJ+F9fXXmrjYmuwzz6PHb7vHoIw1OG6bbSdZaZU8/qNvbI2K2UOoB/D93FPdaDApAusvoMliRrnZ9XLTWNT0=@vger.kernel.org, AJvYcCUXm5/aMWGCWA31U4o3wmkDmmkztDQWZs6/qW9/RyE+W0kjVgg9J24LTrMKAPJLd5xrGSBeJHhnv+Aq@vger.kernel.org, AJvYcCVM8dMb2DrYJxNEFHe5SoCU/ns8tnpN56Ak6GbWveNjks5cCAwezyCln81BixEMXGVPeoWYTKlb9/uSsw==@vger.kernel.org, AJvYcCXEvhnG1uudB7fWRcgvxUz1An8qmqhb3cIhaumwrzi0Kb5m1kYkEaflHEZ2yBpcbHN8cy693sYeksjhV2F+@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyNUFciuIbGeh4BFtY98XakLoVbHWyV6x40UhgPvF8uQgapN//
-	EEJadIwI5ED+daINS3vbP8rbEScQ6xjwjVZ/22Q0Octkor+xVTj0rcvNYqXh3JangECSrR05ooF
-	SETE8VBeoivEaUneI+K0giR3mYzSmQeE=
-X-Gm-Gg: ASbGncstBhaBTpO5tizQBlHkoy3O4TXa4hw1ezby1ip35QxVkd2ZGjrLy5LXP6K2oVc
-	ESiclEGUVBrm0ha+lqM8XJAUFvKFnSshnf89XWxZjnWTJS2rLNSnAOVZ79Vq6w/jRByx1OLLbZh
-	KoA6PCvg7Nlf0i+UDnT4Z8v68Yb1gyNIcbK5m04ZkebDUJz2lUZe3gjXiQGQB/FeyFTQxO44gaO
-	S7yMoE=
-X-Google-Smtp-Source: AGHT+IFxoLdRf98+nAnGYYkZ3v8X8Zabbt4512qKXAZnA97TDHShi9FJhWzH8PYyZvNSK3yat23YgSRK0z1vNWmf/lY=
-X-Received: by 2002:a05:6214:2b86:b0:702:c939:9d9d with SMTP id
- 6a1803df08f44-704a4220990mr161700106d6.28.1752362423744; Sat, 12 Jul 2025
- 16:20:23 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12C04A1E
+	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 01:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=23.83.209.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752370120; cv=fail; b=X+e3fX3lo95B81ihxKjeSwqX4MxT/CI02YzSTdX2MF/nhynPhiGNeKHo5Ufb44dlY2/w/1IBcUcAtnYfXEtuDuqX7cd8E2U6hSuqBMjSNNN7eeNEFGlVc55aW1SSFEwMhiHsB6rQb7w8e4V4qefdw0Gtg+2KOfv1DJbah6Qi/kA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752370120; c=relaxed/simple;
+	bh=svWnScUXbjNpseQrXQmi57MuxfFLd3IRBao/2iTRo44=;
+	h=MIME-Version:From:To:Subject:Message-ID:Content-Type:Date; b=MfVtGQXbCZdLyzg2MpDC42jYwGuGHWBx6C1S412MUhGsdrJCVDQJ8uW6efhHbj+l4Co5djrbByk7/lNxfHh8Vt4X/fvBdw9lZjmPdrJEV6Jcbq6zXMqZqawnq5H/xDwwwFsluvdw/4ibin3b49V+iE4UP1yPL8cdTeBuEJ9NCq0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=melanic.xyz; spf=pass smtp.mailfrom=melanic.xyz; dkim=pass (2048-bit key) header.d=melanic.xyz header.i=@melanic.xyz header.b=fI1F8d7S; arc=fail smtp.client-ip=23.83.209.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=melanic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=melanic.xyz
+X-Sender-Id: hostingeremail|x-authuser|andyman@melanic.xyz
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id CF514903E4B
+	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 00:12:12 +0000 (UTC)
+Received: from nl-srv-smtpout9.hostinger.io (100-114-117-211.trex-nlb.outbound.svc.cluster.local [100.114.117.211])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 19DD5903DFD
+	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 00:12:11 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1752365532; a=rsa-sha256;
+	cv=none;
+	b=l4bKVXt+Jvleakzv0i5kR40Jtfi704fZfa4IFU03OD9BbfbyXwfgHl8xsff0wJ+hvH0b+z
+	8zbuVOEmRs8ziXmH0ixp+oucUVqWjC/00mtlzBpcL0QZ2i0qbQqpOUafhoudOuyJBviNWN
+	g8GdMeMTGtSvITWADu9nWXFX0EP2jOKwWcPw3aF18K4sTzSXHgZW3lVe0SxLVNtVrDnFvH
+	zGbjnuS3f5ENbrJYixIONulkIATRuEDlU4tOvlsmpZFA2tGhSCZBCuLFdhFhVDf8je1Ndp
+	wwwBlU7aZzk0WT+katJgUNhBA/qYknjHgs0iG2TaeMfQyawtjcRYCIWQxnuhQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1752365532;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=VgKKsfDywV/o7i/WlkUyQLYuXopStdzR7GUeypQ4LPg=;
+	b=TLFphThhDUqX1sZsaAyNnABKxjJcZrI0nZKtJfnpD3JhOJI6NyUw7FEr72wV1sEt+2qTR1
+	eCyQtm058gNgg/lx7FhRKEaRF2nfopNRMQQfp/eg1lSMt8+TkX6NaXer+n/6kyjtq4iSMc
+	p/bY709ygsI/58txhwtbjVXfGxkh6xGhe64Ez1/RrL4XFL2CgvjF1l32mXEYggQl7pFBlz
+	Y0/SQ1XDpy+vz2vC2+SAmS0nZ4CHFcmqtGwKuC5wbDcou7ADgvPTNEp+H0zpH33eNy6JmD
+	JY7TCkZ7cKvS3nMuil2Ytm/2E/knf6/g+58+AUMUFovZ5Mn0ny/y5FhyKIJmkA==
+ARC-Authentication-Results: i=1;
+	rspamd-5c976dc8b-wfkdl;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=andyman@melanic.xyz
+X-Sender-Id: hostingeremail|x-authuser|andyman@melanic.xyz
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|andyman@melanic.xyz
+X-MailChannels-Auth-Id: hostingeremail
+X-Scare-Exultant: 71505ba010609332_1752365532692_3561811649
+X-MC-Loop-Signature: 1752365532692:807910464
+X-MC-Ingress-Time: 1752365532692
+Received: from nl-srv-smtpout9.hostinger.io (nl-srv-smtpout9.hostinger.io
+ [45.87.82.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.114.117.211 (trex/7.1.3);
+	Sun, 13 Jul 2025 00:12:12 +0000
+Received: from mail.hostinger.com (122.132.242.35.bc.googleusercontent.com [IPv6:2600:1700:7b50:2cf0:609e:c94f:9893:c5b9])
+	(Authenticated sender: andyman@melanic.xyz)
+	by smtp.hostinger.com (smtp.hostinger.com) with SMTP id 4bfm960mhSzGY3Xk
+	for <linux-wireless@vger.kernel.org>; Sun, 13 Jul 2025 00:12:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=melanic.xyz;
+	s=hostingermail-a; t=1752365530;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+Ios/6tOLJOs9JZqQLCRMzc0DWcj2UbB9A3TYThX8Lc=;
+	b=fI1F8d7SbnXPKebFSelGFZ6iIdXLu1GjZf6ezUcOL521dWgGKINrA2bEf5P2p7rD3/OoCd
+	VGbJ9yXqAFiUItN7dzIxo4QymBpu5/GL+c3CVJn0g3tH+4Dr89H4/A9p4d0DOFxzieC9FL
+	vv7YAbf0wR7I0evcvuJn2nCpjhZ+HlD7D7uHBILXErEkQtdi38eCVNZUwvZNDqTALNmlWB
+	eY5nztMqOt8skPjB1gnbLAR8GE/iTnSyQy8kMUyMIqTpVjbkMgLkU4NH6RSXFu+gP0iNWJ
+	rwe/ZOeVgN3MP8T0nmzZMwvk2zFt9/UNfqUQ5TPjWLV1qQNka18lslChC3/XYQ==
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250710200820.262295-1-rosenp@gmail.com> <20250710200820.262295-8-rosenp@gmail.com>
- <d8b0abb2-1a12-42bf-aafd-4cd1e21babd6@kernel.org> <CAKxU2N-c2tHBYWBM+FJGqdSaqzw9u0O8e0G7AVqk6b0QdRnPTw@mail.gmail.com>
- <20250711-invisible-dainty-jackrabbit-acbf8f@krzk-bin> <20250712104006.GA13512@wp.pl>
- <e435a765-fb91-408f-81dd-01a73fc43b6b@kernel.org> <23e629cb-0698-4a9c-aa18-9a7e71aa8b73@kernel.org>
-In-Reply-To: <23e629cb-0698-4a9c-aa18-9a7e71aa8b73@kernel.org>
-From: Julian Calaby <julian.calaby@gmail.com>
-Date: Sun, 13 Jul 2025 09:20:12 +1000
-X-Gm-Features: Ac12FXzHmWw2pTYCCUYiI4xo0Q3W3oiBA__ty2FODlbGDbYFA2NA_IcVvNhC2_U
-Message-ID: <CAGRGNgVk9__2mCE-hYSP7T0yKLjPsDkvG6+NghJMXazYXUid1w@mail.gmail.com>
-Subject: Re: [PATCHv3 wireless-next 7/7] dt-bindings: net: wireless: rt2800: add
-To: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>
-Cc: Stanislaw Gruszka <stf_xl@wp.pl>, Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org, 
-	Johannes Berg <johannes@sipsolutions.net>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:MIPS" <linux-mips@vger.kernel.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-arm-kernel@lists.infradead.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: andyman@melanic.xyz
+To: Linux Wireless <linux-wireless@vger.kernel.org>
+Subject: MT7922: Frequent disconnects and a failure to bring up on boot
+Message-ID: <0b99450be5a37676a0afa3c17590ce15@melanic.xyz>
+X-Sender: andyman@melanic.xyz
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Sun, 13 Jul 2025 00:12:10 +0000 (UTC)
+X-CM-Envelope: MS4xfKZGo+WsnNq4shRzdcAMhIGSh2Z+ZmFsEmivvXHwibJ9nRulr08zp2Um4CRWCliTwZ8gjAuZi13W6dIHU8mrrbOasahc0KaB3TKbv935Ico73lRU9jcF WAvpE0/xN63yttGSRTalTqkuzwb7MWy7hM4f2hKIBBeOrCrDxHUCNPqkze34wgyurGOx4++K7z1jzVmhHDbgpBPrltE5cfO5KeoZyEmFr+WDQaNeWXx60IPO dRkSVqmsHyh3oKK8Ddp8nobf42XQExvyvuLePKkd86Y=
+X-CM-Analysis: v=2.4 cv=OrcdyD/t c=1 sm=1 tr=0 ts=6872f9da a=RC2A8uE2lK0PEXFq6u+tzw==:617 a=9zTY3BIwtN1Myf9W:21 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10 a=ivH2Aw7XoB-j8qGvbTcA:9 a=CjuIK1q_8ugA:10 a=XReUu7uucrU0zjlRU2xT:22 a=RADZSm3owst0GkL05-i7:22
+X-AuthUser: andyman@melanic.xyz
 
-Hi Krzysztof and Rob,
+Hi all.
 
-On Sun, Jul 13, 2025 at 2:59=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
->
-> On 12/07/2025 18:53, Krzysztof Kozlowski wrote:
-> > On 12/07/2025 12:40, Stanislaw Gruszka wrote:
-> >> Hi Krzysztof,
-> >>
-> >> On Fri, Jul 11, 2025 at 09:48:49AM +0200, Krzysztof Kozlowski wrote:
-> >>> On Thu, Jul 10, 2025 at 03:40:30PM -0700, Rosen Penev wrote:
-> >>>> On Thu, Jul 10, 2025 at 2:40=E2=80=AFPM Krzysztof Kozlowski <krzk@ke=
-rnel.org> wrote:
-> >>>>>
-> >>>>> On 10/07/2025 22:08, Rosen Penev wrote:
-> >>>>>> Add device-tree bindings for the RT2800 SOC wifi device found in o=
-lder
-> >>>>>> Ralink/Mediatek devices.
-> >>>>>>
-> >>>>>> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> >>>>>> ---
-> >>>>>>  .../bindings/net/wireless/ralink,rt2800.yaml  | 47 ++++++++++++++=
-+++++
-> >>>>>>  1 file changed, 47 insertions(+)
-> >>>>>>  create mode 100644 Documentation/devicetree/bindings/net/wireless=
-/ralink,rt2800.yaml
-> >>>>>>
-> >>>>>> diff --git a/Documentation/devicetree/bindings/net/wireless/ralink=
-,rt2800.yaml b/Documentation/devicetree/bindings/net/wireless/ralink,rt2800=
-.yaml
-> >>>>>> new file mode 100644
-> >>>>>> index 000000000000..8c13b25bd8b4
-> >>>>>> --- /dev/null
-> >>>>>> +++ b/Documentation/devicetree/bindings/net/wireless/ralink,rt2800=
-.yaml
-> >>>>>
-> >>>>> Filename should match compatible. You were already changing somethi=
-ng
-> >>>>> here...
-> >>>> hrm? that makes no sense. Various drivers have multiple compatible l=
-ines.
-> >>>
-> >>> Luckily we do not speak about drivers here. Anyway, follow standard
-> >>> review practices, you don't get special rules.
-> >>
-> >> Could you please elaborate what you mean ?
-> >
-> > Rosen replied in abrasive way, so I am not going to dig this.
-> >
-> >>
-> >> I greped through Documentation/devicetree/bindings/*/*.yaml and plenty
-> >
-> > I assume you refer to last 2 years bindings, not something older, right=
-?
-> > It is really poor argument to find old files and use them as example
-> > "they did like that".
-> >
-> >> of "compatible:" items do not match the filename. So hard to tell
-> >
-> > I did not ask for compatible to match filename.
-> >
-> >> what rule you are referencing, as it seems it's not really applied.
-> > Check reviews on the lists. It is pretty standard review. Everyone gets
-> > it for this case here - single device, single compatible.
->
-> BTW, it is not hiding on the lists:
->
-> https://lore.kernel.org/linux-devicetree/?q=3Df%3Aherring+filename
-> https://lore.kernel.org/linux-devicetree/?q=3Df%3Akozlowski+filename
+I have this device, in NixOS 25.05, on a Framework 16 laptop:
 
-I just had a quick look through the in-tree documentation on device
-tree bindings and can't find this rule there.
+01:00.0 Network controller [0280]: MEDIATEK Corp. MT7922 802.11ax PCI 
+Express Wireless Network Adapter [14c3:0616]
+         Subsystem: MEDIATEK Corp. Device [14c3:e616]
+         Flags: bus master, fast devsel, latency 0, IRQ 131, IOMMU group 
+13
+         Memory at 7810900000 (64-bit, prefetchable) [size=1M]
+         Memory at 90b00000 (64-bit, non-prefetchable) [size=32K]
+         Capabilities: [80] Express Endpoint, IntMsgNum 0
+         Capabilities: [e0] MSI: Enable+ Count=1/32 Maskable+ 64bit+
+         Capabilities: [f8] Power Management version 3
+         Capabilities: [100] Vendor Specific Information: ID=1556 Rev=1 
+Len=008 <?>
+         Capabilities: [108] Latency Tolerance Reporting
+         Capabilities: [110] L1 PM Substates
+         Capabilities: [200] Advanced Error Reporting
+         Kernel driver in use: mt7921e
+         Kernel modules: mt7921e
 
-It's good that you and Rob are consistent in applying this rule, but
-pointing to the mailing list archives instead of the documentation
-makes it feel like patch submissions in this space are judged by some
-arbitrary set of undocumented rules.
+Unless I disable power management on the card, it pretty frequently
+randomly disconnects from the AP. Sometimes it runs for half a day,
+sometimes it disconnects every 10-20 minutes. This is pretty consistent
+across kernel versions (6.6.93 up to 6.15.3 at least) and firmware
+revisions back to Feb 2024. Disabling power management ("iw dev wlp1s0
+set power_save off") seems to make the connections stable. My usual
+setup is an environment with a few different APs with the same SSID,
+some with good signals and some others with very weak signals, but that
+may not matter; I've also seen the dropouts when it's connected to just
+a single AP (even just when tethering to my phone which is sitting on
+the table right next to the machine.)
 
-Could you please update the documentation with the current set of
-requirements so that people who are new to this space have a
-consistent set of rules they can apply to their work?
+I started running 6.15.5 to test, don't really have much to say yet
+in terms of whether it shows the disconnects also, but I just saw it
+completely fail to bring up the card on boot:
 
-I understand that Krzysztof doesn't particularly like having
-discussions around the rules given his usual abrasive manner, so
-having the full rules documented would be a way to shift these
-conversations into something a bit more like how Greg applies stable
-rules: if you get it wrong, you get a link to the documentation, which
-should clarify most issues without any further discussion.
+[    2.360745] usb 1-5: new high-speed USB device number 7 using 
+xhci_hcd
+[    2.512351] usb 1-5: New USB device found, idVendor=0e8d, 
+idProduct=e616, bcdDevice= 1.00
+[    2.513874] usb 1-5: New USB device strings: Mfr=5, Product=6, 
+SerialNumber=7
+[    2.515263] usb 1-5: Product: Wireless_Device
+[    2.516510] usb 1-5: Manufacturer: MediaTek Inc.
+[    2.517681] usb 1-5: SerialNumber: 000000000
 
-Thanks,
+... and nothing else about the wireless card in the log; no messages
+about mt7921e, the string "mt7" doesn't even appear in the kernel log.
+The mt7921e driver module doesn't load and the wifi interface doesn't
+come up. This is, I guess, a combo Bluetooth / Wifi card with both USB
+and PCIe interfaces? I'm honestly not sure. It's a Framework 16 laptop
+with the built in wireless module.
 
---=20
-Julian Calaby
+This is the first time I've seen this failure-to-come-up behavior, I've
+only seen it once. The frequent disconnects have been consistent with
+this machine across kernel versions in NixOS, although I haven't been
+able to get them to happen with a couple of days of testing on Ubuntu
+24.04 LTS.
 
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
+Happy to post any logs or etc, or other information. Cheers.
 
