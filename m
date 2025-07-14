@@ -1,130 +1,174 @@
-Return-Path: <linux-wireless+bounces-25399-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25400-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B324B046B2
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 19:38:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11140B0473A
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 20:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67E021A66DED
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 17:38:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E975167734
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 18:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A765B26C383;
-	Mon, 14 Jul 2025 17:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BCE272816;
+	Mon, 14 Jul 2025 18:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KMIagtnL"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jVJFZG+B"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C985B26B750;
-	Mon, 14 Jul 2025 17:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB4A271478
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 18:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752514600; cv=none; b=HwYw3Z4cYoU11rCNE8EACM/0AsQuo68X4OXFhGFQL4HtcE0Ogyf2zCCCbtNKaAuJmX7Ferc1eSrjc3aeUBC7arVgzrU2IIPlfgim/LdMFJEzigcSfZHKo9xEDX0DSsNxuBmw1qEvK24PokJnhDXua99JP9TFnGv47JPmx3Mvm24=
+	t=1752516583; cv=none; b=psPTyvf1tvZS2b/s9COsHO3teaxDcZZ4f4febxltilR6FiS+pT6xzvnW+9oEq6LwDuEnAzg/oFddiC9CcwXxocXWhMmrr+i8w8s7b1QsQde/yboeQgfANIJSiC7czorL5EVaRZ5grjjoL7SDf43pP8tTagY1FECcWnUM/D7lTKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752514600; c=relaxed/simple;
-	bh=xRbvSQSkVTQAN77iIf/pGHg5FiTyuUQT9pQ6/+VKzXE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g9D6B5KuzxyeWnE2oewg1mh1uIGIn9D/pok0cggh4T/2p6MfQ8RGeaYVo3rglQ1wCjvEcDaFFe4B6UGO78JdZUFu2NjpGyUukqr+/88eGB7CTgGmBqbMskqrUEEatGN5Bm7nPt7MNe0ZOQXOj6GIJNf8KEzNuWIWi9qkUIuHJug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KMIagtnL; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a531fcaa05so2660811f8f.3;
-        Mon, 14 Jul 2025 10:36:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752514597; x=1753119397; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u/NHhBLuDbQC85igx5PNLL+bdPfiQETJROiq4RU4vuc=;
-        b=KMIagtnLBI1M6UcM2NKZMYinLbhlwLHYnUBMf/pBuLLEJpFUFvCnfbeiHBhN+WKvI1
-         FkUFDABEYQdnU6eq8dtWGzw4lqBosRDoh1t50GzOI1EQZbz3lL5HhOy7Vh4pfFIxll3g
-         yu17nfs328+rs3o13BavJd72soNMDdJyrw/rI5wBYITX/WUZVzPGHA+E7T7i5z3l4iyZ
-         cjd+LSpQtI6o+PrCj5EA8SXb6gd9npUK/japlXssfQx4FKeBwN/U3uxVs8e9i1iF+toL
-         3CWcP+KzbIpf3KTL1CBgsh0N++4EmlJ3pO+aRPQp98MVs/fKV4WKre4v7sqj8lA6ONIf
-         rpQg==
+	s=arc-20240116; t=1752516583; c=relaxed/simple;
+	bh=WsaWmaegmJOBuzrButycOEhIwHgX6JJZYWmvfJkZj/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ma0YCrDC5+vivJOAhNHKmAZ/QzMRYN7k8QtSmJvcJWAgBgFz9URIhDBXr0bW6wU2hcyTUBdxgBvm4Avq1tYO/7xrxY0BliUJwIUFjkWzobjS5B1UbQbXeBQfj91cbDHRb3TMwjDq4aHmflqENweYqLSD+WWpmFnK9wIgTEsuihI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jVJFZG+B; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56EGSG8G021381
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 18:09:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	kFbISeN0ohGUXeUcsSpHboAG15E9IOEo2muJrWYerQ4=; b=jVJFZG+Bx9TvUuzA
+	HcW1vIGzlMNI5EN39Gi+w43yyVk8K9pEqzlKDF7F3IbJ0d/O5rAeqx2r5YeQ6UoV
+	nBwsdnatjOGUONO5ANp//iSEfi3tdD8+i10N3z8lVAafTBamdIzpP1hpc+aDz3G8
+	X1Sw7S/rrJPDCVo33wx24K4h/6u/xWVEQBG5jf3REymwwu2IUZBa7sUU41zk4MwD
+	+Ai3re+1JpcwP4G2xSc5vBfTMUCbYywvPwyoRYmfDarSQp8gw9UBBEruxNSqX9Me
+	+E54+GYiWe0IpCUfzVFo4QL0c4P+6ws1McjK5HjRFFFrNbT2aa80goUTeel6zhuI
+	RwjPOw==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47w5dw09ju-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 18:09:41 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-23507382e64so47238395ad.2
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 11:09:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752514597; x=1753119397;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u/NHhBLuDbQC85igx5PNLL+bdPfiQETJROiq4RU4vuc=;
-        b=hyQvb4/Pqq+n1I6oORzKjPGzTvboC9o6uFRdyGuO7O/3rmu+6T5CFfiXVHNwA/jbSs
-         u421hQ5VQ168Fz32Z/YSLXMDe02hksEU4cRAnabqPi3FIztIR4AFa0nbmUM8Ndo/d+J9
-         nQZJ2toQRJZ2P5fa1SThge9NNIGNEG3UKtVJlKJe6H7B4yHE3MTA8ZmlRG08gradmbWh
-         Samq+aY+CALvSmRsTtwOFdWTXcj9IbpyjWsvHjY0EJ+L9rIuTr9kxx/fl2MN0KjJVzkB
-         +UXTiYzeNbwp0hAYrZ6uh0E69w7p74ABejyHxdqrr5Ix8wI6SCOXCWFOq/tZgAK2LdaO
-         cCyw==
-X-Forwarded-Encrypted: i=1; AJvYcCUpNu6DQUOE2N20WEx6yPSSbbKfuebs05C6dtXkMy168DC14EsO2fpACP37Rog2zYG/IAZfRflYE3K8XHQ=@vger.kernel.org, AJvYcCX6V2frHQXmWO3olJn2SJHn11g8nlfDeDMfhMNVoVPPJ+428dR7HbCJrmS+s6QZT/szIp42W8GxvdtvTaTvrh4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySl65G/VO6zW26YG+xQUEfHoBM5mR5Y/e87nE6sGvhk96hE/V6
-	qOSoVv2GqSHSpqnUmYijWucmBaOEoeeGZubQnCh9/jDFjfL7vc0nXc4S
-X-Gm-Gg: ASbGncsiMbpJ21GS3lJKzLkkmEe2JCc9HEnTNn1D92iwjjASLfbGNTaYWIsc5D8V/9p
-	m5FFhkOFCFgO1MBWpOQy5mqtrBxacLQptb0yNGi2YVYn7MOBq4ve23QkjjNkgUWEf/kU6oWOq42
-	FwkP8qdRF3+CJFCzz1AusLzABrbxtiRBCWMacRqWC8ZfcS9OvnSqk8K0cnd+vRPj9j4qEf/g6Rf
-	1lDZy7m6AJoXL7i760JZSXRgru1v59ThpNfzTVoKONI+vkGF9UPx5LfppOYOwdDauETigZnjt9z
-	2nUbMnVWiDV9CZInlMp8Ee4qs1PkvkizlpghYF8fk6AOCe+SVbdsYT16/XFCvSTd3fCgBEUlGyS
-	sW0S3qPPjmE+Azpbggp4cDpSc6R18HnxEp/eLySyzXX2fxQ==
-X-Google-Smtp-Source: AGHT+IHuJn8kD3q+6JLMG915sldZVVMLWRV6lbHRgVZd2dkQuekCTh7DL4CuETxuZNDsUcz9P/VGZQ==
-X-Received: by 2002:adf:9d8e:0:b0:3a4:dfc2:bb60 with SMTP id ffacd0b85a97d-3b5f189df70mr10700130f8f.26.1752514596667;
-        Mon, 14 Jul 2025 10:36:36 -0700 (PDT)
-Received: from alarm (92.40.201.95.threembb.co.uk. [92.40.201.95])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8e0d872sm13152531f8f.60.2025.07.14.10.36.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Jul 2025 10:36:36 -0700 (PDT)
-From: Dale Whinham <daleyo@gmail.com>
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: =?UTF-8?q?J=C3=A9r=C3=B4me=20de=20Bretagne?= <jerome.debretagne@gmail.com>,
-	Dale Whinham <daleyo@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 8/9 RFC] wifi: ath12k: Add support for disabling rfkill via devicetree
-Date: Mon, 14 Jul 2025 18:35:44 +0100
-Message-ID: <20250714173554.14223-9-daleyo@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250714173554.14223-1-daleyo@gmail.com>
-References: <20250714173554.14223-1-daleyo@gmail.com>
+        d=1e100.net; s=20230601; t=1752516580; x=1753121380;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kFbISeN0ohGUXeUcsSpHboAG15E9IOEo2muJrWYerQ4=;
+        b=ISeynLmrjrC7EzrQM2op6lNhgJztJII/BXOAAEi32Arw/iJ5UuUoaDGY7bTVizuVBi
+         93yxuyfS9yJKJnz5Z1RMbRoP6kK7tUwXwyDgWN0TFxOxyqhH8T1TvDeGHJjxbVfQSIfU
+         varFsI6i0frY+5m/v606Aplbs1gOY6fRqZwMAPBfl7tAX4+IeeCpE/R/YOuqhYlh6cD1
+         h4L5KV0eDVbK5kOlsnsQ7+o6ajNg4vplVQJc6/MlDHEVnRvOiZGL//4GIIAQP4Z3QieL
+         5WOfTplDlCzzDcr+MGGqFFOE547uRSVtf0rWsKw5P9AofPufQ/3thJZBdbw0BR2cXqiu
+         qnLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWwWFn5hNAIpzdtGfD6SygCRNi5zNnq8j9UAx2KgGxqxI8pN1jP9CvNGDpnuzGM+4iu14PN5uxTquJmLFUd7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrRTXaH3WGoOi4u8a5Wuh0mKjpTVZmqpefd9P23fgIQetTASeV
+	RSf6Qk951S76jt1MzRWP6a8cjq4YmEw2xvVC1+YAM4FQX6aJVpKUuc/Ke6RIqIhyx+2aP1F4agm
+	L5DltI7HSezRv31F08WizvGlYn6fhonu+DQJQng571wcvaKz72lr+ZBpu14YWhBlEGD7lHQ==
+X-Gm-Gg: ASbGncsY3JEjkKLAwkvIfBj4i7HU1+k20Nz1cgnm3cX9t0F523Bu/i8GixQ9Cbq0+yC
+	8HsFSEDxTTCUtuBpGg9FwGfHlCM0q6piJ3klo9CUhkxUKT6/Frrb0soPKu2lhWydwTzuZzCy/u4
+	O8T+R7/nC3QfaOBIO8Q343+FV5YrvYcKGmucoL5+s3E5EPwHS1Fk9yN91ALVZ5UsNkh+D67+VCh
+	PpV0yLVy5b7vOd4adYni/jIgCYtGLp4M6aRQf7SMZ0y89SFI7CiyXZQ39cg2YXdw7M9ahJJCnP0
+	8RNFPHN69YPKtFJJIsd8/npTBPad2E0QtseqxF5EPY5rDuDHmzlg+xzd1SzflHeo445KvQICwlD
+	0n+0JC8htzUP0LTk9CKs=
+X-Received: by 2002:a17:903:2c8:b0:234:9375:e081 with SMTP id d9443c01a7336-23dee28fca7mr188893325ad.42.1752516580251;
+        Mon, 14 Jul 2025 11:09:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlrVJWOBDRvGbBSjF25XzVNgGrlOj935taOAHhzqu22n2fpLGzjDIzZGTjZuXNECU08IYR/g==
+X-Received: by 2002:a17:903:2c8:b0:234:9375:e081 with SMTP id d9443c01a7336-23dee28fca7mr188892995ad.42.1752516579769;
+        Mon, 14 Jul 2025 11:09:39 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4333e6csm100580675ad.162.2025.07.14.11.09.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Jul 2025 11:09:38 -0700 (PDT)
+Message-ID: <87d96834-0b29-4282-8538-fc53551824e8@oss.qualcomm.com>
+Date: Mon, 14 Jul 2025 11:09:37 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next] wifi: cfg80211/mac80211: remove wrong scan
+ request n_channels
+To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
+Cc: Kees Cook <kees@kernel.org>, Haoyu Li <lihaoyu499@gmail.com>,
+        Johannes Berg <johannes.berg@intel.com>
+References: <20250714142405.02beff564ba8.I25dd7af47f5dab3b560dec7b33cdaf49c3a4418f@changeid>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250714142405.02beff564ba8.I25dd7af47f5dab3b560dec7b33cdaf49c3a4418f@changeid>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 2BfRC7_WT0DtV2tIHWhOa3Az1qKQg4wp
+X-Proofpoint-ORIG-GUID: 2BfRC7_WT0DtV2tIHWhOa3Az1qKQg4wp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDExNSBTYWx0ZWRfX6vf1UVmchXOo
+ p1tbmdJiLDd9AU5bWTFTwAL43Irq/RLA5Cgj6LFnYEIJIqWSnuBv48hpOgjvsthLyA3oW2hKDni
+ wY3pwtpF0gHQeOuXlQdrgH8G6tBmOSpCu8iAP0UmJAhiOK6+E8vXDwvrq0ByNFKjcjxerV8AmXf
+ FAk8rupSwhvcI6zy7ijqmdfct0FBij3nV6wojatSTVykxYBlTmhvHvAOtkVHvS0shO872wQqG9p
+ Mi9jCFGIfjxOQ0hkQcJPhAbMjbOcaAOEkWVybdMJL7Oxyk4Iu0QikfzH5fLkQlOyvuRGUABzzt9
+ dVqXo5J4eUEDo4TF+901gPlXhrSId4xRpNcS1aveZBJQ/7k3G8H5d67I320ANtI0LI6f25Z/j2U
+ bzTatQaaerJRJPOL1gdgYZsCzTXoBBP/hoE0r9SUXy9ijw4lROiZxD6oiQVKJhH6CGpIZA8P
+X-Authority-Analysis: v=2.4 cv=CJQqXQrD c=1 sm=1 tr=0 ts=687547e5 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
+ a=kRP92PEwoq-KMulAjFkA:9 a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-14_02,2025-07-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxlogscore=999 suspectscore=0 impostorscore=0 spamscore=0
+ adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0 bulkscore=0
+ clxscore=1015 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507140115
 
-Some devices (e.g. Microsoft Surface Pro 11) indicate that the rfkill
-feature should be disabled by means of an ACPI bitflag.
+On 7/14/2025 5:24 AM, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> This (partially) reverts commits
+>  - 838c7b8f1f27 ("wifi: nl80211: Avoid address calculations via out of bounds array indexing")
+>  - f1d3334d604c ("wifi: cfg80211: sme: init n_channels before channels[] access")
+>  - 82bbe02b2500 ("wifi: mac80211: Set n_channels after allocating struct cfg80211_scan_request")
+> 
+> These commits all set the structure to be in an inconsistent
+> state, setting n_channels to some value before them actually
+> being filled in. That's fine for what the code does now, but
+> with the removal of __counted_by() it's no longer needed and
+> it does leave a bit of a landmine there since breaking out of
+> some code to send the scan or something would leave it wrong.
 
-If ACPI is not being used (i.e. booting using a devicetree) then this
-property will not be read and therefore rfkill may be enabled and
-the ath12k will be hard-blocked with no way to disable it.
+Perhaps also refer to:
+<https://lore.kernel.org/all/20250714142130.9b0bbb7e1f07.I09112ccde72d445e11348fc2bef68942cb2ffc94@changeid/>
 
-Add a devicetree property that allows us to disable the rfkill feature.
+Since (as of now) __counted_by() is still there in wireless-next
 
-Tested-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
-Signed-off-by: Dale Whinham <daleyo@gmail.com>
----
- drivers/net/wireless/ath/ath12k/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+> 
+> Remove the now superfluous n_channels settings.
+> 
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> ---
+>  net/mac80211/main.c    | 1 -
+>  net/wireless/nl80211.c | 1 -
+>  net/wireless/sme.c     | 1 -
+>  3 files changed, 3 deletions(-)
+> 
+> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+> index 6b6de43d9420..2a7587955127 100644
+> --- a/net/mac80211/main.c
+> +++ b/net/mac80211/main.c
+> @@ -1359,7 +1359,6 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+>  				      GFP_KERNEL);
+>  	if (!local->int_scan_req)
+>  		return -ENOMEM;
+> -	local->int_scan_req->n_channels = channels;
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 0b2dec081c6e..42a1d384457b 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -43,6 +43,9 @@ static int ath12k_core_rfkill_config(struct ath12k_base *ab)
- 	if (ath12k_acpi_get_disable_rfkill(ab))
- 		return 0;
- 
-+	if (of_property_read_bool(ab->dev->of_node, "disable-rfkill"))
-+		return 0;
-+
- 	for (i = 0; i < ab->num_radios; i++) {
- 		ar = ab->pdevs[i].ar;
- 
--- 
-2.50.1
+so i'm looking at how int_scan_req is used.
+is there ever a possibility that at the time it is used that the underlying
+wiphy information may have changed such that the number of channels trying to
+be filled exceed the number calculated and allocated in this function?
+just want to make sure there isn't a reason to keep track of the allocation
+size somewhere.
 
 
