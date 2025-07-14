@@ -1,60 +1,62 @@
-Return-Path: <linux-wireless+bounces-25382-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25383-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB83B03F01
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 14:50:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA49CB03F20
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 15:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3F51188CFEA
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 12:51:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A7577A7A51
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 12:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DE7246335;
-	Mon, 14 Jul 2025 12:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4303024DD00;
+	Mon, 14 Jul 2025 13:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="dLzOikdv"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="foFEY35j"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0D11DEFDD
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 12:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8753024A051
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 13:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752497448; cv=none; b=qM0hS6QT+M8SrjdxLoiL1FTlbm3QMVtw0evYG4qauv6S6Ts1pODQEJH1HlBkfqBncTo/c9yOmXmMb2dAIozOqplR5e9xJQZegMKtohkJSOA68D0bcd2B7ZHk9huFijINC+hywc/Lt8M/SewDQ7MSOOVNHQfVfTkhEDHRx4iYRs4=
+	t=1752498017; cv=none; b=BnUF9bfSKJh5VO1i5Ej8zsnGjaHWBgPWr2xE0opqFiBXH7+xzXdGyS+3RHrY8rxykTwJGERtszjPv/adkyhuB57VvPZ348VLD8NPZGExAXB3Rg5g6kSaUQwYVzhNSB3X2F+3i+ihXx5HkU8UH558oK25xH5JWo+1uNI7FhG8cZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752497448; c=relaxed/simple;
-	bh=3+f1SMsepcYIfI0WMT9FLDTkYXNVuJ66tGsPdANYAyk=;
+	s=arc-20240116; t=1752498017; c=relaxed/simple;
+	bh=NcME/Wt9+5/7VL4lYUOVqWLoRY2NOpElAFRfUGH6M68=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YWyAx3u9V2whNVGyVezKeaOMwCdQJRlKKkEbCpqBdLJzleFz7hNt8PjqHJ3HVNtzAx6GdyoWLfs/5v215EY0lp4sI5cLWMP98zWdaNOvxuiA0EOr9XTWv1g+eXCEkXl2OhjYrW4XLfqClzmbA/TbjsNty3IKECf5yU2rxMHjUDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=dLzOikdv; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=O/K4Tl2NUqA7afKN54ix/spnOdHFkKFHdc2XnIfMrWW9zxAl7aVWi98YwR4YSmVUgS48pGM13tOGn5s5rCZOg9U5NHB7zsFL1NWyJtt8mbDUGZz6fgKNn4UoroMq3kx0HFpbqzYQ2CSi7xW6Va05xphyt/iPzjurv/zEySBgF9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=foFEY35j; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=pmNLtpIiZNLq1k3w9t8gztVS/oeOCA2BrerUAQ0EJyY=;
-	t=1752497446; x=1753707046; b=dLzOikdv2jgkSOgFofmY0/6bT8H/nzQIABN7X+N0UyZBTQW
-	crx3h7Y8CMzzdfecF49bLwhve8WJ0mYVQJZIHota21PCUpZ4v7cQqNl7hqvuCLR//dKUc0CMz5V79
-	B6tIuTeL+1cmTrONMzAj+1UWOjO1kEXOCR5Mljc4/jejbJ34xQSmXxsnKZYlYIPBCorOfv74Qozrn
-	28B5Tj/lZJEmZH7Ds9NtjWFIBm8TEu/fWZVql1Qikg79maiQevb0U85dpQVCOS99cvG2khspQ99wa
-	Ym0akM1FGYXemVZv0bpSexPVfZImk4pucEyqB1GftSJnntqlU0wQuM40yLiWtmdg==;
+	Resent-Cc:Resent-Message-ID; bh=J/Mob8kUpptXtlYOpZQBc6VjtiHIckgBQpSSM/sMSQA=;
+	t=1752498015; x=1753707615; b=foFEY35jAQiyfPHrZSD0IVhVzv7qPf+7R9z7U2PImpjcCVc
+	SUpYpd3CoByMbQBQop/Tu3DdAwtSKinfr5DCaZLCU/Sz2aBWu8nXqYr1amLatv87CWV7FECWSgy9c
+	O2n0b3aZp+MyMu9jm2PYYe4sBRYKn7X7MGgcnXkUNaxf9DlEbZythqu1YMPN1vOeHWbzolVkodLwe
+	I1ePL4lRjDVP05iDYJoFsVT4MIjtl0WbVxzXjWRsluvoxdjOpS6uLutI1DwApUEkLIc3kBbh+8qy5
+	uV+qSs5kwtEXa8p3OanYVBVAdAL7Qjxq1f2UXJs5aRzKL0w7RM+qSgNjT+RfN86A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1ubIdn-000000045ci-1mQw;
-	Mon, 14 Jul 2025 14:50:43 +0200
-Message-ID: <fa265deeae5dedcc7e13cda8cccd9b42f85026d3.camel@sipsolutions.net>
-Subject: Re: [RFC 0/5] wifi: S1G short beacon support
+	id 1ubImx-000000045y2-3fbG;
+	Mon, 14 Jul 2025 15:00:12 +0200
+Message-ID: <4333caeb7a98bf2d29da7a26181dc34032d5bd9b.camel@sipsolutions.net>
+Subject: Re: [RFC 1/5] wifi: cfg80211: support configuring an S1G short
+ beaconing BSS
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Date: Mon, 14 Jul 2025 14:50:42 +0200
-In-Reply-To: <20250714051403.597090-1-lachlan.hodges@morsemicro.com> (sfid-20250714_071427_168904_8E2A2A44)
+Date: Mon, 14 Jul 2025 15:00:11 +0200
+In-Reply-To: <20250714051403.597090-2-lachlan.hodges@morsemicro.com> (sfid-20250714_071432_241839_F48088A7)
 References: <20250714051403.597090-1-lachlan.hodges@morsemicro.com>
-	 (sfid-20250714_071427_168904_8E2A2A44)
+	 <20250714051403.597090-2-lachlan.hodges@morsemicro.com>
+	 (sfid-20250714_071432_241839_F48088A7)
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
@@ -66,114 +68,201 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-Hi,
-
-So just to say this up front I have very little interest per se in this
-feature directly, so I'll mostly leave it to you :)
-
-> Preface:
+On Mon, 2025-07-14 at 15:13 +1000, Lachlan Hodges wrote:
 >=20
-> Previously, some work was done ~2 years ago to get short beaconing
-> in the kernel but it was never successful. The patches can be found
-> here:
->=20
-> 1/2: https://patchwork.kernel.org/project/linux-wireless/patch/2023081009=
-3556.33800-1-bassem@morsemicro.com/
-> 2/2: https://patchwork.kernel.org/project/linux-wireless/patch/2023081009=
-3556.33800-2-bassem@morsemicro.com/
+> +/**
+> + * enum nl80211_s1g_short_beacon_attrs - S1G short beacon data
+> + *
+> + * @__NL80211_S1G_SHORT_BEACON_ATTR_INVALID: Invalid
+> + *
+> + * @NL80211_S1G_SHORT_BEACON_HEAD: Short beacon head (binary).
+> + * @NL80211_S1G_SHORT_BEACON_TAIL: Short beacon tail (binary).
+> + * @NL80211_S1G_SHORT_BEACON_INTERVAL: Time in TUs between each short
+> + *	beacon transmission (u32).
+> + * @NL80211_S1G_SHORT_BEACON_DTIM_PERIOD: DTIM period for a short
+> + *	beaconing BSS (u8).
+> + */
+> +enum nl80211_s1g_short_beacon_attrs {
+> +	__NL80211_S1G_SHORT_BEACON_ATTR_INVALID,
+> +
+> +	NL80211_S1G_SHORT_BEACON_HEAD,
+> +	NL80211_S1G_SHORT_BEACON_TAIL,
+> +	NL80211_S1G_SHORT_BEACON_INTERVAL,
+> +	NL80211_S1G_SHORT_BEACON_DTIM_PERIOD,
 
-Heh, I didn't even remember.
+nit: we usually have _ATTR_ in there after the qualification, so
+something like NL80211_S1G_SHORT_BEACON_ATTR_HEAD.
 
-> There is something to say regarding whether this is "correct" as
-> after all they are extension frames and while we feel this is the best
-> approach when all factors are taken into account - ultimately it is
-> up to maintainers to decide.
+Also, the bot complained about some missing kernel-doc.
+=20
+> +/*
+> + * Short beacons contain a limited set of allowed elements as per
+> + * IEEE80211-2024 9.3.4.3 Table 9-76. The TIM element is allowed,
+> + * but as it is inserted by mac80211, we do not check for it.
+> + */
+> +static int is_valid_s1g_short_elem(const struct element *elem)
+> +{
+> +	switch (elem->id) {
+> +	case WLAN_EID_FMS_DESCRIPTOR:
+> +	case WLAN_EID_RPS:
+> +	case WLAN_EID_SST:
+> +	case WLAN_EID_S1G_RELAY:
+> +	case WLAN_EID_PAGE_SLICE:
+> +	case WLAN_EID_VENDOR_SPECIFIC:
+> +	case WLAN_EID_MMIE:
+> +	case WLAN_EID_MIC:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
 
-Seems reasonable to me, and anyway probably necessary so that we don't
-regress.
+Is that really worth it? We don't have to protect userspace from
+shooting it self into the foot _too_ much, just make sure that we don't
+get into a mess in the kernel itself. As long as the elements are not
+malformed, I'd argue we're fine from a kernel perspective?
 
-> 11.1.3.10.2:
->=20
-> "The value for the dot11ShortBeaconPeriod shall be such that
-> dot11BeaconPeriod =3D n * dot11ShortBeaconPeriod, where n is a
-> positive integer. This defines a series of TSBTTs exactly
-> dot11ShortBeaconPeriod TUs apart"
->=20
-> the value for n here is what we are denoting as
-> s1g_short_beacon_period (another deviation from the naming
-> within the standard) which represents the number of short
-> beacons between each long beacon.
+This also prevents future updates and experimentation, and I see little
+value in it?
 
-That seems slightly confusing - I've have interpreted a 'period' either
-as a span of time (as in the spec), or the number of steps between
-events, so maybe that's rather 's1g_long_beacon_period'? But if the spec
-uses period as a span of time, then perhaps 's1g_long_beacon_step' or
-something would be easier to understand? Not sure ...
+> +static int nl80211_validate_s1g_short_conf(struct cfg80211_ap_settings *=
+params)
+> +{
+> +	struct cfg80211_s1g_short_beacon *sb =3D &params->s1g_short_beacon;
+> +	u64 beacon_int =3D params->beacon_interval;
 
-> To keep track of the current
-> state, we introduce a new parameter sb_count within the
-> struct ps_data structure to track the current index into this
-> period. This is what is used to determine whether we send a
-> long or short beacon on beacon retrieval where a value of 0
-> indicates a long beacon (following the same cadence of
-> decrementing the DTIM count).
+Why a u64, it's not a u64 in the params? and it makes the division
+harder (well, really you wanted the remainder)
 
-Seems fair.
+> +	u32 short_int =3D sb->short_interval;
+> +
+> +	/*
+> +	 * As per IEEE80211 11.1.3.10.2, beacon_interval =3D n * short_interval
+> +	 * where n is a positive integer. Meaning a BSS can be configured such
+> +	 * that both the short beacon interval and long beacon interval are
+> +	 * equivalent. This effectively means we aren't short beaconing. In
+> +	 * this case, since the short beacon data is irellevent its probably a
 
-> (4) Beacon retrieval
->=20
-> There were essentially two options we could take with regards to
-> retrieving the beacons:
->=20
-> 1.implement it in the traditional beacon path via
->   ieee80211_beacon_get_ap
->=20
-> 2.Implement an S1G (or maybe extension frame?) specific path
->   such as ieee80211_s1g_beacon_get_ap where the S1G specific
->   handling can be done in its own function, leaving the regular
->   beacon path untouched
->=20
-> We have opted to take method (1) but this really comes down to
-> maintainers preference. New conditionals will be introduced
-> in the beacon path regardless and we feel this is the best
-> approach but are open to feedback.
+typo: irrelevant
 
-That seems reasonable to me, why bother the driver with the difference,
-it's likely simply going to transmit the frame anyway, regardless of
-what it is.
+> +	 * misconfiguration and we should reject it.
+> +	 */
+> +	if (sb->short_interval >=3D params->beacon_interval)
+> +		return -EINVAL;
+> +
+> +	if (do_div(beacon_int, short_int))
+> +		return -EINVAL;
 
-> (5) Testing
->=20
-> This patchset has been tested on the following configurations:
->=20
-> 1. Multi-sta setup with real Morse Micro hardware.
-> 2. S1G hwsim configuration with a single AP and > 10 STAs
-> 3. 2.4GHz hwsim configuration to test for regressions along the
->    non-s1g path consisting of a single AP and STA.
-> 4. hostapd hwsim tests were run to ensure no regression for
->    regular 2.4/5/6 radios.
+so that could just be
 
-Cool.
+	if (params->beacon_interval % sb->short_interval)
+		return -EINVAL;
 
-> (6) Other notes:
->=20
-> 1. The update mechanism is not really that nice. Though that may
->    stem from a misunderstanding with how FILS discovery and unsol
->    bcast update mechanisms work. Since short beacons rely on a BSS
->    to be configured we ensure that an update is only performed
->    when this is the case, and when the BSS has not been configured
->    we do not allow a set of parameters used for updating the beacon
->    to be used when the BSS has not been initialised. Would like some
->    feedback on our implementation here as Im not really convinved
->    it's the right way, but it seems this is how we currently handle
->    it. My understanding of an "update" is that we are updating an
->    existing interface. When an interface is being initialised, we
->    are not updating - we are setting... An option here is to just
->    not even allow updates since this is how S1G is done now and this
->    can be ammended in the future.
+no?
 
-Noted. I'll go through the commits and shout if I find anything :)
+> +static int
+> +nl80211_parse_s1g_short_beacon(struct cfg80211_registered_device *rdev,
+> +			       struct nlattr *attrs,
+> +			       struct cfg80211_s1g_short_beacon *sb)
+> +{
+> +	struct nlattr *tb[NL80211_S1G_SHORT_BEACON_ATTR_MAX + 1];
+> +	int ret;
+> +
+> +	if (!rdev->wiphy.bands[NL80211_BAND_S1GHZ])
+> +		return -EINVAL;
 
+Maybe we should (instead?) check that it's operating as or being set up
+for s1g? Not sure how easy that is, but I've actually wanted it in other
+places before, I think.
+
+> +
+> +	ret =3D nla_parse_nested(tb, NL80211_S1G_SHORT_BEACON_ATTR_MAX, attrs,
+> +			       NULL, NULL);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Short beacon tail is optional (i.e might only include the TIM) */
+> +	if (!tb[NL80211_S1G_SHORT_BEACON_HEAD])
+> +		return -EINVAL;
+> +
+> +	sb->update =3D false;
+> +	sb->short_head =3D nla_data(tb[NL80211_S1G_SHORT_BEACON_HEAD]);
+> +	sb->short_head_len =3D nla_len(tb[NL80211_S1G_SHORT_BEACON_HEAD]);
+> +	sb->short_tail_len =3D 0;
+> +
+> +	if (tb[NL80211_S1G_SHORT_BEACON_TAIL]) {
+> +		sb->short_tail =3D nla_data(tb[NL80211_S1G_SHORT_BEACON_TAIL]);
+> +		sb->short_tail_len =3D nla_len(tb[NL80211_S1G_SHORT_BEACON_TAIL]);
+> +	}
+> +
+> +	if (!tb[NL80211_S1G_SHORT_BEACON_INTERVAL] ||
+> +	    !tb[NL80211_S1G_SHORT_BEACON_DTIM_PERIOD]) {
+> +		sb->update =3D true;
+> +		return 0;
+> +	}
+> +
+> +	sb->short_interval =3D
+> +		nla_get_u32(tb[NL80211_S1G_SHORT_BEACON_INTERVAL]);
+> +	sb->short_dtim_period =3D
+> +		nla_get_u8(tb[NL80211_S1G_SHORT_BEACON_DTIM_PERIOD]);
+> +
+> +	return 0;
+> +}
+> +
+>  static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+>  {
+>  	struct cfg80211_registered_device *rdev =3D info->user_ptr[0];
+> @@ -6442,6 +6615,28 @@ static int nl80211_start_ap(struct sk_buff *skb, s=
+truct genl_info *info)
+>  		goto out;
+>  	}
+> =20
+> +	if (info->attrs[NL80211_ATTR_S1G_SHORT_BEACON]) {
+> +		err =3D nl80211_parse_s1g_short_beacon(
+> +			rdev, info->attrs[NL80211_ATTR_S1G_SHORT_BEACON],
+> +			&params->s1g_short_beacon);
+> +		if (err)
+> +			goto out;
+> +
+> +		/*
+> +		 * If we have only received the parameters to perform a
+> +		 * short beacon update, return an error to usermode as
+> +		 * the BSS has not yet been configured for short beaconing.
+> +		 */
+> +		if (params->s1g_short_beacon.update) {
+> +			err =3D -EINVAL;
+> +			goto out;
+> +		}
+> +
+> +		err =3D nl80211_validate_s1g_short_conf(params);
+> +		if (err)
+> +			goto out;
+
+why not call the validation inside nl80211_parse_s1g_short_beacon()?
+seems harder to misuse later then, and the order shouldn't matter much?
+
+> @@ -6550,6 +6745,19 @@ static int nl80211_set_beacon(struct sk_buff *skb,=
+ struct genl_info *info)
+>  			goto out;
+>  	}
+> =20
+> +	attr =3D info->attrs[NL80211_ATTR_S1G_SHORT_BEACON];
+> +	if (attr) {
+> +		err =3D nl80211_parse_s1g_short_beacon(rdev, attr,
+> +						     &params->s1g_short_beacon);
+> +		if (err)
+> +			goto out;
+> +
+> +		if (!params->s1g_short_beacon.update) {
+> +			err =3D -EINVAL;
+> +			goto out;
+> +		}
+> +	}
+
+And you already forgot the validation here, it seems?
+
+Looks fine from the perspective of when/how you parse it, I think,
+unless you were going to need channel switch and/or BSS color change.
 
 johannes
 
