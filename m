@@ -1,32 +1,32 @@
-Return-Path: <linux-wireless+bounces-25376-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25373-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49039B03E20
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 14:04:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03BD8B03E2A
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 14:05:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E09673B71B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 12:03:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDD6B7AFDA8
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 12:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E53257436;
-	Mon, 14 Jul 2025 12:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF932550C2;
+	Mon, 14 Jul 2025 12:01:05 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9994B24BD0C;
-	Mon, 14 Jul 2025 12:01:02 +0000 (UTC)
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BA32475E3;
+	Mon, 14 Jul 2025 12:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752494465; cv=none; b=fLZrwFk/63UY2dIGAzgyjHfpd8HJbjrTlUcYBNMaGtSyKZa9UFoOOzcp6urzQ3l9C9J9lH2aBbm8Tc72Nm9mRJEkzuJE24suVB7eVArCJ4IL7bNI6c0PFns1H3qEMEBMmvBwJ3vwj3GYVpxzXiQHT+6YySGLxpSeE9zHCcucpkY=
+	t=1752494465; cv=none; b=NeE0u7NwH/xHEQGSAu0KQuQ1FLsTxOw6G6ddbh1ssY8Rhq9zRiaa+XoGxgVQZTRxYWIfXKJeMSNNcqFCP9oSKy0RHJ20MAQloQ6KLsPox86T5Wf5wn2avmocu5z3mQ6sV8fu82dV8OXEMRsyraLwapNtNjEHtvjYvCn0G+7xwYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752494465; c=relaxed/simple;
-	bh=d5pRUXcsNde4PyqBNFIgKWZO4NjNH9yOMdFkd645phM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=CZUM9HWlYuW//OnyWWuZusPCBpNQUTykhkOMwXo3E6muCk3GMs6WOuhsKkykI+OW4ut/3vKJbwAeDMoirZaynX+zrwijzBTA1iwkId97MZ4NUjNKNzkB8bSWTRmRg+yrQZJqRvThYpVLQQ+VT+VjLp292ZxXVvtvIRBeKZEu3Y0=
+	bh=jZE4z2vlAcgsz6KEgAaLdhF3+0u4GDlDhy48OM3X6x8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=H/h+0y0Edifvr4xwkNhsVhBpKxyzuZiJGlOkurZnGxeJnIuBECb/IrGTYslO7MKImtd9gj0wF9uP3fXxBTjCVQm1hCv4JaxqFb+L7EWJll+QSr5FmF9cpCa6DHQasc2TAwuJoFnPp/a2VjA9ip7KGgnR8Ls7Q6nEsxaWBbteAv0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-681ff7000002311f-90-6874f17ac5f4
+X-AuditID: a67dfc5b-681ff7000002311f-59-6874f17afa44
 From: Byungchul Park <byungchul@sk.com>
 To: willy@infradead.org,
 	netdev@vger.kernel.org
@@ -95,44 +95,45 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH net-next v10 09/12] idpf: access ->pp through netmem_desc instead of page
-Date: Mon, 14 Jul 2025 21:00:44 +0900
-Message-Id: <20250714120047.35901-10-byungchul@sk.com>
+Subject: [PATCH net-next v10 06/12] net: fec: access ->pp through netmem_desc instead of page
+Date: Mon, 14 Jul 2025 21:00:41 +0900
+Message-Id: <20250714120047.35901-7-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20250714120047.35901-1-byungchul@sk.com>
 References: <20250714120047.35901-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe2xLcRTH/e57zRo3JVxvaSxkiXlzEoKIcCMRjyHxCMrutNF10lVtQgxd
-	xGzdMkS3dVZ0dBs2rVnRFd3MvKdYiq2zeWToGGPadVOtx3+fnHO+3+85yWFwyQtyOKNQaQS1
-	SqaUUiJC1Bl9euLurxr55KvWCWCsOE/Bk+5TJJT7U+HcazsJ7lIOrjf6MTCWXUHwPfCKBuvh
-	Zhy66+5QcOZUDw6BymwCjI91BPyo6MXhXX07DQ2ufgLKrUuh9ex7AhyHqnGo/RED7TkNFGTr
-	gjjkezMoCL0MklAT+EzDAbsFg5pPVTQ0XtGTcKy3BIfq9NfhrDdNJDy9ZqTg6cEnCLznQyS8
-	d4UDfZZmGvTlBQhcN0opOKCbBr6q7zR0Ha/DoVU/H34ZtFBvGgI9930IXpU8xyDksNPwyHuR
-	hLqKagyetQVw6MkqoiCzMwfB8/xrGDwoqiTBfP8ZFt4jHppCfRgcdZsoeKNrReCubSegcL8e
-	QYXTQ8JXR/jkoN9IzV/A1/q+4Ly9xYz4y6UvML4j9xfGe5z3MP5qQQvNm6w7eZsllj/j+IDx
-	mR43zlvLDlO89VsezTc3OSi+wRAkeJt5H99hy0fLR60TzUkQlAqtoJ40d7NIHrj7ltiREZ3a
-	/2V2OioRZaIohmOncz/r+oj/3N1xhI4wxY7nPJ4AHuHB7BSuu/1OeEbE4OzDaK7GZsAijUHs
-	Wq6roO2PmGBjOF1TFxlhMTuTO2aux/6ajuHKK2/+MYoK14uL2lCEJewMzplpxiOmHFscxXlN
-	vn+CYdwti4fIRWITGlCGJAqVNkmmUE6Pk6epFKlxW5OTrCj8cGf39q23o2+N8S7EMkgaLYaP
-	GrmElGlT0pJciGNw6WDxxxa1XCJOkKXtFtTJm9Q7lUKKC41gCOlQ8dSeXQkSdptMI2wXhB2C
-	+n8XY6KGpyO0MCZucl6yLTHevcqwLXFWYsu7Q1syWrFV1Ssf+B1TPxnjO0feZhaOJwurskLZ
-	cf36PRsXz+M+xA5c1D9qyd5hElHuZSdbmLVmbM4mseuW/1zQnNc1Js1JnVSuKF42dOm4E3e3
-	eHNGei4N0WpmzLXsH63aYDhptNeuljti2y5Yx/VKiRS5bEosrk6R/Qb7QWBBbAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0hTcRjG+5//uczh6rTEDgUVAwmMLnbjDaOEgk5REURF9aFOeWijuWSz
-	4aLLylm48tIN1FwabeaNtJm6allNs5V28dKYebcLVlbW1FxqthV9+73PA8/zfHglWF5JzZCo
-	NAmiViOoFbSUlG6OTpp/5HuCcpFxgIWc0hIaGn3XKCgeSYQb3Q4Kmgo5uPdqhICcokoEg/42
-	Buwp7Rh8tU9ouH5tGIO/LJWEnJcmEoZKf2F4X9fLgNs1TkKxfRN05X8gwXmmCkPNUAT0prtp
-	SDWNYsjqTKZh4s0oBff9Xxk45SggoMbyNHB+rmDgVWUaBZd+2TBUGbsDhW89FDTfzaGhOakR
-	QWfJBAUfXIHW/oJ2BtKKsxG4HhTScMq0BPorBhkYuFyLoSstBn5n6qEuLxyG6/sRtNleEzDh
-	dDDwovMmBbWlVQS09PgxDJ+z0GD+ko7gddZdAhosZRRY61uIwI6t4JkYI+BiUx4Nb01dCJpq
-	ekm4cjINQWm1l4LvThMZs4av6f+GeUeHFfG3C1sJvi/jN8F7q58R/J3sDobPsx/mywsi+evO
-	jwRv9jZh3l6UQvP2HxcYvt3jpHl35ijJl1tP8H3lWWjLrF3SlbGiWqUXtQtX7ZUq/U/fkfHJ
-	oYnj36KNyCY1oxAJxy7lfH1nmSDT7FzO6/XjIIexUZyv9wlpRlIJZp+HcvfLM4mgMY3dyQ1k
-	95BBJtkIzuQZoIIsY5dzl6x1xL/Q2Vxx2cO/QSEBPdfSg4IsZ5dx1WYrzkDSPDSpCIWpNPo4
-	QaVetkB3UGnQqBIX7D8UZ0eBb8o/NnbegQab17kQK0GKUBl8SlDKKUGvM8S5ECfBijDZpw6t
-	Ui6LFQxHRO2hPdrDalHnQjMlpGK6bMMOca+cPSAkiAdFMV7U/ncJScgMI7pquzPcAETj9vV4
-	xdTju/UpvtWpYWXThPhk75ShqLUjutH3j0cyJ7fUzxHW3fA9P75v3oNkH5xuMSy2G5dUe6Ux
-	7kfusYqCpJ8R4yG3Hnmc8lpbriU8XfvCjRrWbM84YBhPMeV/PGqPjdRs84dfIOsyIFSt3K9X
-	R7bmTi8p3KggdUohKhJrdcIfZ+A0mkkDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSeUxTaRTF/d73Npo+fal2fEKMpm6Jk1EQZnKjxqgx5iVqNPKHUWO0Iy/T
+	jmWZgmwZFRWdWGSJW0BLQEFZipYUkQ4UZixEC24IiM+RUqkRUXEDIbQwYqvxv19yzz3nnuSy
+	WPWECmX1cUmSMU5r0NAKUvFWeemn9I9JunCTrAaztYqGh8MXKbCMpULZMzsFHRUCNLSPEWCu
+	vIHgk+8pA7YTPRiGW27TUHJxFIOvOpsE84NMEkasfgwvbnkZcDn/J8Fi2wSeK/0kOP6qw9A8
+	sgC8uS4asjPHMRT0HqNh8r9xChp97xg4Yi8noPFNLQPtN3IoOOO/jKEu41kg63k3BZ31Zho6
+	jz5E0Fs1SUG/MxA4WN7DQI7lPALnPxU0HMmMhMHaTwx8ONuCwZOzGj7nJ8Ot4h9g9M4ggqeX
+	HxEw6bAzcL/3GgUt1joCuvp8GEZPFtJgepuL4FFBPQF3C6spKL3TRQTuiIbuyQkCTncU0/A8
+	04Ogo9lLwoXDOQisTTIFHx2ByuNjZnr1WrF58D0W7e5SJF6veEKIA3mfCVFuaiPEv8+7GbHY
+	tl+sKV8sljheEaJJ7sCirfIELdqGTjFiT7eDFl3546RYU3pIHKgpQFtm71CsjJEM+mTJuHTV
+	HoVu+PFNlFDEpVpM93EGalOYUAgr8FHCVX89+s7uvFNUkGl+kSDLPhzkGXyEMOy9TZqQgsX8
+	PaXQWJNPmBDLTud3CbV5YUENyS8Q5P4GIsgc/7NQJZ/B3zznCJbqf79yCP+LUFTY9zVLFdA0
+	mUpx0FPgrSHCg7v51LeFWcLNcpnMQ1wxmlKJVPq45Fit3hC1RJcWp09dsjc+1oYCD3flwMRO
+	Oxpqj3YinkUaJQevk3QqSpucmBbrRAKLNTO4126jTsXFaNPSJWP8buN+g5ToRGEsqZnJLRtN
+	iVHxv2mTpH2SlCAZv08JNiQ0A019fGza6UjLvNbpNl/UTPUf8eHRhuOhG8LDurM2HFWu9Oz9
+	VV3dNr/vXKEV1oSrvYcb3q07uLCzbKNr+azs/ixtQsma1qFL/hVbo+tsU1wftr8ZmYgse7nc
+	EhWx+c/1Yy1z1XBtwj/391x3WasyZRvJdQ3oDnStT5c8nI/I+vFFSrqGTNRpIxZjY6L2C6Gn
+	Y8hsAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xTZxjG953v3GisOemYnmDiki5kCcm8RN3eqFkMS+TERGMk0YzFjE5P
+	1kYo7LQSiuiY7WJsFPGWAOMaCkJLBmkFKtaiLRG0XoAiO05KBTbmpFMRJBQQbF387/fkffI8
+	7x8Pi1XtVBKr0xtFSa/JUtMKUrFnm/kL05RRu6H63laoaGmmoX+6lgLHXD5ceeqmYKCJh+t9
+	cwRU2NsRzESfMOA8PYxhuruHhrraWQzR1rMkVDy0kPCmZR7D37fHGOj1vSXB4dwN4YYJEjyn
+	OjD43yTD2LleGs5aFjCUjfxKw/KfCxTciL5g4KS7kQB/5Z2YnGxjoK+9mIJL8/UYOoqexgrH
+	hygIdlbQEDT3IxhpXqZgwhdrjTQOM1DsKEfg62qi4aRlE0TaZhh4dbkbQ7h4ByyV5sHtmlUw
+	G4ggeFL/iIBlj5uBByO/U9Dd0kHA4GgUw+yZShqs/51D8Kisk4B7la0U2AKDROyPdBhaXiTg
+	4kANDeOWMIIB/xgJv/1SjKDFK1Mw5bGQO74R/JGXWHCHbEi42vSYEJ6VLBGC7L1LCNfKQ4xQ
+	4zwquBpThDrPv4RglQew4LSfpgXn6wuMMDzkoYXe0gVScNl+Fp65ytDetRmK7YfFLF2eKK3/
+	OlOhnf7jFsqtVuY7rA9wEbqrsKIEluc286GSC1Scae5zXpajOM6J3EZ+eqyHtCIFi7n7K/gb
+	rlLCilj2Y+4g31ayJu4huWRenrhOxFnJbeGb5Uv4/8xPeUfrzfecwH3JV1eOojirYh6v1YZL
+	kKIGfWRHiTp9XrZGl7VlneGI1qTX5a87lJPtRLE1NRxfPO9GM8E0H+JYpF6hhOdGrYrS5BlM
+	2T7Es1idqHwekrQq5WGNqUCUcr6XjmaJBh9aw5Lq1cpdB8RMFfejxigeEcVcUfpwJdiEpCK0
+	6dtQaDjQOR4pfNhXNSWF560Nk+b5nJ3yyh/6Tr2a/cfmUiwuzf2U4U854SpN9ZYnn3DRgXBa
+	l91+/6+kqvSRBqM57ZNg76oq07Ha9GZp/+DjHq959KvU7zL2ve6/li+t5j3i1n6q8LPJrgQp
+	lQ8WRTMLe3Llg3W6RH2goL5ATRq0mo0pWDJo3gF9g0E7SQMAAA==
 X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -143,39 +144,48 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 To eliminate the use of struct page in page pool, the page pool users
 should use netmem descriptor and APIs instead.
 
-Make idpf access ->pp through netmem_desc instead of page.
+Make fec access ->pp through netmem_desc instead of page.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index cef9dfb877e8..6b5f440aede3 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -3276,8 +3276,10 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index d4eed252ad40..1d0bd6f75368 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1043,7 +1043,9 @@ static void fec_enet_bd_init(struct net_device *dev)
+ 				struct page *page = txq->tx_buf[i].buf_p;
  
- 	hdr_page = __netmem_to_page(hdr->netmem);
- 	buf_page = __netmem_to_page(buf->netmem);
--	dst = page_address(hdr_page) + hdr->offset + hdr_page->pp->p.offset;
--	src = page_address(buf_page) + buf->offset + buf_page->pp->p.offset;
-+	dst = page_address(hdr_page) + hdr->offset +
-+		pp_page_to_nmdesc(hdr_page)->pp->p.offset;
-+	src = page_address(buf_page) + buf->offset +
-+		pp_page_to_nmdesc(buf_page)->pp->p.offset;
+ 				if (page)
+-					page_pool_put_page(page->pp, page, 0, false);
++					page_pool_put_page(pp_page_to_nmdesc(page)->pp,
++							   page, 0,
++							   false);
+ 			}
  
- 	memcpy(dst, src, LARGEST_ALIGN(copy));
- 	buf->offset += copy;
-@@ -3296,7 +3298,7 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
- struct sk_buff *idpf_rx_build_skb(const struct libeth_fqe *buf, u32 size)
- {
- 	struct page *buf_page = __netmem_to_page(buf->netmem);
--	u32 hr = buf_page->pp->p.offset;
-+	u32 hr = pp_page_to_nmdesc(buf_page)->pp->p.offset;
- 	struct sk_buff *skb;
- 	void *va;
+ 			txq->tx_buf[i].buf_p = NULL;
+@@ -1581,7 +1583,8 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
+ 			xdp_return_frame_rx_napi(xdpf);
+ 		} else { /* recycle pages of XDP_TX frames */
+ 			/* The dma_sync_size = 0 as XDP_TX has already synced DMA for_device */
+-			page_pool_put_page(page->pp, page, 0, true);
++			page_pool_put_page(pp_page_to_nmdesc(page)->pp, page,
++					   0, true);
+ 		}
  
+ 		txq->tx_buf[index].buf_p = NULL;
+@@ -3343,7 +3346,8 @@ static void fec_enet_free_buffers(struct net_device *ndev)
+ 			} else {
+ 				struct page *page = txq->tx_buf[i].buf_p;
+ 
+-				page_pool_put_page(page->pp, page, 0, false);
++				page_pool_put_page(pp_page_to_nmdesc(page)->pp,
++						   page, 0, false);
+ 			}
+ 
+ 			txq->tx_buf[i].buf_p = NULL;
 -- 
 2.17.1
 
