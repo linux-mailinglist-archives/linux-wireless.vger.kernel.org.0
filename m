@@ -1,168 +1,160 @@
-Return-Path: <linux-wireless+bounces-25410-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25411-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5976BB04ABC
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 00:33:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8BCB04BD9
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 01:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 935974A4A76
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 22:33:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD8567B4AF8
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 23:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AAF6236A73;
-	Mon, 14 Jul 2025 22:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8623127A904;
+	Mon, 14 Jul 2025 23:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cLnbG/TV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TXiZUhNs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B67C230BD9
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 22:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533BB1A5BB1;
+	Mon, 14 Jul 2025 23:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752532424; cv=none; b=lril0HRWp1D6OUlMtGtMpvySPvlGAfyxZNUN1KJ/dCL/4Soo8u3czaE6BUGdkzlVLWKemNNrE7dg1ikcLB+t+oFWsnzEm8LQJPdyPa49EaZHw7t+pe0C1P6pQbOX0MFn+uzLX/YNZejrTUCrVIznTb9Gk0FXwhIjVDYis6iwBP4=
+	t=1752534382; cv=none; b=glFn9t6wQAdmvZUdyjRXOVcdpbVGpLIysTiJss4GO6bEMiiaKRYC5pUADcN+wM2hIyQTehCe3vrhWaW84Q/6qc7B9o1pFnc/n20uAIt/8DtTkmd8gZeeFTotLnxvL5U3Glmg2PAxd//76gZhYpB7HUsL/9Zor8JvTZoQk+8SS4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752532424; c=relaxed/simple;
-	bh=bunis5LfXrPX5VTCd+1M7mKLIy9OUoNx+GoYz1o1G4k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RQEzQ2oVWLKmXHlwQ9USWbqLAWlPRwnTog8hG+HMUXg7eOrhAoN27mmOh2S1bKg6Gvgjp1yNHhknNDo9TOski7WXR2BQfXFuIBe3XfCk/iPlGKIR3HaPCnvDNk6xbStL1tMfuYWchdPzJjZVHGd+DRrRw3Ah6QR3it6OeHbbxyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cLnbG/TV; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56EGSO1d022401
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 22:33:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	jin39v5RU2OC6taZwVEep++H4MP+V5H7HkCH2SULjQw=; b=cLnbG/TVb7wqSU9v
-	zXIC8UP2dgJsrBQ/B49OUI5+PtwnNpBuqPs7LZhg2O42Jmd6A5PxQw/dh/SgKwIK
-	EzxjQqEWQRmCdeUQFQHRPpkwOCxY4f4rXXUTe31S63/hhRRkKLWIKjFeAoW1IYUe
-	VTohsGPvpiI51AuRT5/LwE4T/NbaSkfokgp8/Pgadh9/CNNOKetIbDQf7wWyq8Tu
-	5phMJwzNcqPQV7F/zdmW7gUKxPcm9lXFrY0cB1IfKmQ/iOvEKpx1CnImyFgedVEU
-	ONa83X4bOFlrR9FXvS9Xgr1nrLa9HgxCtFlv94cLsUbt14wEBqu0s9+Sqpdour2l
-	pcPwew==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47w5dw0u4d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 22:33:42 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7da0850c9e5so797692485a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 15:33:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752532421; x=1753137221;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jin39v5RU2OC6taZwVEep++H4MP+V5H7HkCH2SULjQw=;
-        b=hQVrfYZ3P/gZlIOWG0amBNeh/yFY8zV2MiHeug8qnCHv9K0uPi+QyvpBG9HYQnbRWW
-         nj+GJ0RCi7z3iMzkniBR5a2gMjoi0t3J1nwVaEZH01pLqI91zMkAL4lteW6+6GKvT/0Y
-         CSyVX0mHEjXYWXR2p9k4ouw18lWwGlCjNvD14lO7gXYfxrXxHUg9HcgGS3Kk0aiPlGz/
-         nLaB9CgAEECZqmH+W/SQ/Ba1bxUlqtG3oV+QHRqNgRoSC9sEYlc1VjZZAIIk2S1LeyX5
-         Z43ZphMn/qEeKdZsLKZDfHMxDnLQCxI6i+4gk7nDJTWRbChH4DTciNHMwl8iSwyNK0MH
-         EhvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW0Cah5hvWB62NlVW/yfOy6gv9R23lTXb8mRfiNggruUsXoUyUdYX7SrmQxNXbe+smRn5B5Uczy4mzb0u7dQQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt8zmBZqfBNRGzJWat13tVVrVz2mvJ4yCEF9Qdd2gqmlJuMt2Z
-	ufij/nLBPwMeG+oCFh7puOzRCtPMoOTStbp3BiuUsESlniaIBBeQjx9IoqmUetBP2hpqIJVhGVu
-	HVFPvqjLQPRMVR67iIknwbfDJ7W5fB7u6FXF9RlKSR3MYg+I+s/ja6+ZrQAUGTOSSizTj8g==
-X-Gm-Gg: ASbGnctNSV9XIxE0VeR8WHQZHgPecIzvD+Ax8drT3R9HAghKejP2TDhbdxnEU/8SnPR
-	LCDM9zaEIN/WOJLYoy7nAsEPrtGAuu90I8kan+0NN4exmVzt9xW/Kl1tI+69ZalXeTEfR8/KBCT
-	rpTCW04quL1OzLK1t3RbH+2GvCLBFLLePrbUHwRJlZLALUqkOFDav+plpkwutXkwRk0vM4rdujb
-	6sochG1u4urvoQKCP2fOTz+vICCs4/qXbnKdZloUCb1+rHQqNuD6jAMsxy5JT7wK5T9iknb8lPR
-	PhHrZs65YXcSzODH4EVTIYBz3A/Tf0G0jjdMHi9l+a5Zc0uu28Ea0veyau31Ksx5sJzXQJCSIv0
-	DHGH96Uh61coD7LEu/ChKorkRgBixgZR9tmUhueBQnDaselYBcpVF
-X-Received: by 2002:a05:620a:472c:b0:7d7:891:83f with SMTP id af79cd13be357-7e338d264c6mr102022585a.50.1752532420660;
-        Mon, 14 Jul 2025 15:33:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFCqBgY+159Vec1cfE9dZ+u3XhxSpLqUZeIaerPTNko5JEPCLrdG5Wtqgg6IXPtXcsQrNQU6A==
-X-Received: by 2002:a05:620a:472c:b0:7d7:891:83f with SMTP id af79cd13be357-7e338d264c6mr102017785a.50.1752532420066;
-        Mon, 14 Jul 2025 15:33:40 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32fa2930e70sm17078441fa.33.2025.07.14.15.33.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Jul 2025 15:33:39 -0700 (PDT)
-Date: Tue, 15 Jul 2025 01:33:37 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Dale Whinham <daleyo@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-        =?utf-8?B?SsOpcsO0bWU=?= de Bretagne <jerome.debretagne@gmail.com>,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
-        ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/9 RFC] dt-bindings: wireless: ath12k: Add
- disable-rfkill property
-Message-ID: <prrra3lon2p4pugkgeytf5ow5wls62lfdnwcdykztw3qzwity2@d26aqh6wdyln>
-References: <20250714173554.14223-1-daleyo@gmail.com>
- <20250714173554.14223-8-daleyo@gmail.com>
+	s=arc-20240116; t=1752534382; c=relaxed/simple;
+	bh=6DCvfU5giSJ8LSZJiRv0rOvXtgh27hEO3Dhyb4f7w/E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o62iWxkW0zGSFfwNxCUuuPtvPDlrgkKn7Hh7IhTqvtx1rhgWIFBOD1dk1/UdkjMe6OjFgbJPMSkiQBptjmkIrDPzgubj7X63gnWLJlAjbY1O4TcqkNQJz432XIE95Y6whKTl+9OT271KuKutxRSymblx5WVxUT+vzaZQA3028fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TXiZUhNs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A0BC4CEED;
+	Mon, 14 Jul 2025 23:06:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752534381;
+	bh=6DCvfU5giSJ8LSZJiRv0rOvXtgh27hEO3Dhyb4f7w/E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TXiZUhNsPR8vZdEA/x8/GAM5zzTGMKA6mt3CR+g1kO0sDhPJeFUnRaTVfqLxWw1/0
+	 PmowTpF3SRjtDf0QMjxFyk7NFWlAMEZq0bGlnRxOsDKoj9UJZqnciZIhfkzV9OMLBL
+	 YR11cDkaQSyMnLzkIr5Qjit6kPduc1cyrg6X9jzh0eqTtn9h67SEKpZR+6dFIP1M4/
+	 Tqv4NcRmA8Uq/ynWCimXbUGAbtebDexyUZN8/UfvahsjKyHMzrbVx/wJNqmEU2+x7/
+	 OuVFu3B0/a+m/ndn2KnCvAvnMTgC70W+r9/tnI/Pxtmfx5pAbw5VpX2GzeGwWBrphT
+	 JyTTPXzYH6LPA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.15 01/15] wifi: mac80211: always initialize sdata::key_list
+Date: Mon, 14 Jul 2025 19:06:02 -0400
+Message-Id: <20250714230616.3709521-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.15.6
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250714173554.14223-8-daleyo@gmail.com>
-X-Proofpoint-GUID: giimcG9IqVlBWHZm_zELmqCyldym-5C7
-X-Proofpoint-ORIG-GUID: giimcG9IqVlBWHZm_zELmqCyldym-5C7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDE1NyBTYWx0ZWRfXzgB88mYfjyt3
- 0+Loft0j6Cz0MsdKE9+WSf1ChCLZ3g2Flu1PDJbdXdBA845JFT8ALynjciCl2mBApfuCgmFCzC5
- /hoBPQrP3yNWsUnJr4aqvMOy2X+YUjs4ureoo/rz3JDFtVPxMZZZCCnYOBh7u34dkxNQIYxxy8d
- to9BcCwo0AkzBQWAW4+oR/RbmpuebVw6xQG3QsaRSNgHPCw2aNzyY6SGUUMCKfFR7+nmb7dE5UX
- gafDGiCR4AwCmF/G+VNh7yOKzqhljcb/s6KOLDAQC+WDdTdSxLvFygW1sfCu/z6hvyPDkvSM/1m
- gLmX0jVQ7Py/LtSTsjPUPxTMvScsgqtECrncfsncqhxiA5xqdE8np6KbdRW2WvOO1qs2rL4362R
- 06jK23hyazeYG3Zn8oF3TWf9clvuAf4nWmTjjGCBUOW0IyuqA9gC2jyGahijmJzdMYBpj93S
-X-Authority-Analysis: v=2.4 cv=CJQqXQrD c=1 sm=1 tr=0 ts=687585c6 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
- a=Wb1JkmetP80A:10 a=pGLkceISAAAA:8 a=g818jjc2pSN6WLbPb0IA:9 a=3ZKOabzyN94A:10
- a=wPNLvfGTeEIA:10 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-14_02,2025-07-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxlogscore=999 suspectscore=0 impostorscore=0 spamscore=0
- adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0 bulkscore=0
- clxscore=1011 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507140157
 
-On Mon, Jul 14, 2025 at 06:35:43PM +0100, Dale Whinham wrote:
-> From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
-> 
-> Document the disable-rfkill property.
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-Why? What does it mean? Why are you describing Linux driver firmware in
-the DT?
+[ Upstream commit d7a54d02db41f72f0581a3c77c75b0993ed3f6e2 ]
 
-> 
-> Signed-off-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
-> Signed-off-by: Dale Whinham <daleyo@gmail.com>
-> ---
->  .../devicetree/bindings/net/wireless/qcom,ath12k.yaml          | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-> index 9e557cb838c7..f15b630fb034 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-> @@ -48,6 +48,9 @@ properties:
->    vddpcie1p8-supply:
->      description: VDD_PCIE_1P8 supply regulator handle
->  
-> +  disable-rfkill:
-> +    type: boolean
-> +
->  required:
->    - compatible
->    - reg
-> -- 
-> 2.50.1
-> 
+This is currently not initialized for a virtual monitor, leading to a
+NULL pointer dereference when - for example - iterating over all the
+keys of all the vifs.
 
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709233400.8dcefe578497.I4c90a00ae3256520e063199d7f6f2580d5451acf@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+Based on my analysis of the commit and the code changes, here is my
+assessment:
+
+**YES**
+
+This commit should be backported to stable kernel trees for the
+following reasons:
+
+1. **Critical NULL Pointer Dereference Fix**: The commit fixes a NULL
+   pointer dereference that occurs when iterating over the key_list of
+   virtual monitor interfaces. This is a crash-inducing bug that affects
+   system stability.
+
+2. **Clear Bug with Simple Fix**: The issue is straightforward - the
+   `key_list` was not initialized for virtual monitor interfaces created
+   via `ieee80211_add_virtual_monitor()`. The fix is minimal and
+   contained - it simply moves the `INIT_LIST_HEAD(&sdata->key_list)`
+   initialization from `ieee80211_if_add()` into
+   `ieee80211_sdata_init()`, ensuring all sdata structures have their
+   key_list properly initialized.
+
+3. **Real-World Impact**: The bug can be triggered when any code
+   iterates over all interfaces and their keys. Looking at the code,
+   functions like `ieee80211_iter_keys()` and
+   `ieee80211_iter_keys_rcu()` iterate through all interfaces when
+   called without a specific vif parameter:
+  ```c
+  list_for_each_entry(sdata, &local->interfaces, list)
+  list_for_each_entry_safe(key, tmp, &sdata->key_list, list)
+  ```
+  This would cause a NULL pointer dereference when it encounters a
+  virtual monitor interface.
+
+4. **Minimal Risk**: The change is extremely low risk - it only adds
+   initialization of a list head that should have been initialized all
+   along. There are no architectural changes or feature additions.
+
+5. **Follows Stable Rules**: This perfectly fits the stable kernel
+   criteria:
+   - Fixes a real bug (NULL pointer dereference/crash)
+   - Small and contained change (2 lines moved)
+   - Obviously correct fix
+   - No new features or behaviors introduced
+
+The commit is similar in nature to commit #5 in the reference list which
+was marked as suitable for backporting - both fix NULL pointer
+dereferences in the wifi/mac80211 subsystem with minimal, targeted
+changes.
+
+ net/mac80211/iface.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 7d93e5aa595b2..0485a78eda366 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1117,6 +1117,8 @@ static void ieee80211_sdata_init(struct ieee80211_local *local,
+ {
+ 	sdata->local = local;
+ 
++	INIT_LIST_HEAD(&sdata->key_list);
++
+ 	/*
+ 	 * Initialize the default link, so we can use link_id 0 for non-MLD,
+ 	 * and that continues to work for non-MLD-aware drivers that use just
+@@ -2177,8 +2179,6 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 
+ 	ieee80211_init_frag_cache(&sdata->frags);
+ 
+-	INIT_LIST_HEAD(&sdata->key_list);
+-
+ 	wiphy_delayed_work_init(&sdata->dec_tailroom_needed_wk,
+ 				ieee80211_delayed_tailroom_dec);
+ 
 -- 
-With best wishes
-Dmitry
+2.39.5
+
 
