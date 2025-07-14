@@ -1,60 +1,57 @@
-Return-Path: <linux-wireless+bounces-25414-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25415-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52211B04BB7
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 01:10:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1487AB04BE3
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 01:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 219E54A776A
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 23:10:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82D9E7B59E9
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 23:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B41285CA5;
-	Mon, 14 Jul 2025 23:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA0D28FA85;
+	Mon, 14 Jul 2025 23:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1hro4Ps"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2UeT4Iy"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA1C27FB28;
-	Mon, 14 Jul 2025 23:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87F528F533;
+	Mon, 14 Jul 2025 23:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752534425; cv=none; b=I400e79Ypa+PxlCkQl3FyewCxwDtEa9BpM7sOY1/ZMwp5P/fTvkdkcUl7xrPD3QfpaVNe55/+aeChLOtV5jriaq+Zd24nOlxgtXGiYtY4b7eFGGKnIYrDigxEoy2UEwUTmzEAbXnRmqXgGWEJ93zMk7VA4B5ITuNvuWm0Thiu3o=
+	t=1752534440; cv=none; b=ZTydGthdvpOVrOBHe9BbwRIfIPTpztVS4SKAhRV1cuqmAmX+4qdI2f4xS/kGcq9bCvmkkz8vwAYw0zPucDADAffYkBwx8lChWQl9Aa33rgqUcINr7P1mbu4VHHzp7rO1BImUyL5HeWGdBeGIOWurRkjdJfbRt2DVMl+yPxJK4+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752534425; c=relaxed/simple;
-	bh=1x/8Ft3aSFTbS+ffIN1sVe8c8ypmlC8xA1NZxWPCfSk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o4xTtx74ItVdVOpEZrAOwDEl7UGQPs/Fc3iuidBRAEum0s31Vkv2s4TIhFwKzt97HvMC4wTEhc8kUgNZLVajxAlI7dGFCJijej758RMCBgj7vr6UcVbmWwXRUL9DVJvcBpFGyi96tLqkSZIP4Zx72FwkHsyPOI7ZkocgZqwa0ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1hro4Ps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E896FC4CEF4;
-	Mon, 14 Jul 2025 23:07:03 +0000 (UTC)
+	s=arc-20240116; t=1752534440; c=relaxed/simple;
+	bh=BszdfQb86N5o8gOZU3QPEvtEPUnfJJPU+QZJXfnxgRU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pexeh1Av80C0sQdJ0te3s/d/X2n9N7IuWBt18wQmM3jn3xjRduX6OQhl6+/r0G30h44QoT/AqV4qigHMgAc3uyPDP1LG7qtH1un2jzLcSmxjQsGvWyFSPkxwjo+5VZH7kZQgXiDyj7DQrtdoMk//h0y5YkAQvdrI80rPjwaAPf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2UeT4Iy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B402C4CEED;
+	Mon, 14 Jul 2025 23:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752534424;
-	bh=1x/8Ft3aSFTbS+ffIN1sVe8c8ypmlC8xA1NZxWPCfSk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b1hro4PsdtNahZeqbDeGEov07wg3mIydZ9swiZbnAQt/xeFKI5jLtPglXP0CK6prc
-	 qz1tk6lNUeIotG9EjL282SSEs9/pbnvcRzftF0JqcmquC8sJ7dGZO11TQ+ux30BMC6
-	 lngqfraPuaAnVIkt9I3bSrK8BPHS1iNcTK8vF5ed/66f9MORY3Rxp4Hwa1NxX/jNmV
-	 Ty4DAE7oWlaE6HSG93ANRTPbM5rJktxZnb+9x/i9NIx+SN/aKHZlNPhMSijBDgKjk7
-	 yuQLvcQWNUoM7KxhB50q7b6stNGnOvl1p4Ji0qRrXYBYrrAKypdNlHjcHK9Mex6NgB
-	 Y1zF1OVTN6gQg==
+	s=k20201202; t=1752534440;
+	bh=BszdfQb86N5o8gOZU3QPEvtEPUnfJJPU+QZJXfnxgRU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=b2UeT4IyziSmm2GlLv84zUsqQDLrRujMF6899LKoo2m6+ty+5sxTEra9tiCjFHTEU
+	 /QUhLm3wChXI0GolKoVcoh+24CyYggsrRDmp5PhtH3D6N0wJGHpCVIEPdHY0VaViqU
+	 PoXyHH6y5kty5wBc6RvIu/EP5YdBLF9gG6jT+6J/5xcxfwpL4pX2oxJQdKpzo/jQsz
+	 ndSjNcXoeQV75P7PW3jraK57jMDbxgLWHdJmE03cN16vIFq4hKx0BCiY0ZtjBrnnLe
+	 rTKySm6nfsH875lVtCL5Ifm424UioMq4utmxN1hZVZoek+xClDmAnQefwyuuL/MBis
+	 6qSP5wjkQ/rvA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.15 12/15] wifi: mac80211: clear frame buffer to never leak stack
-Date: Mon, 14 Jul 2025 19:06:13 -0400
-Message-Id: <20250714230616.3709521-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 01/12] wifi: mac80211: always initialize sdata::key_list
+Date: Mon, 14 Jul 2025 19:07:04 -0400
+Message-Id: <20250714230715.3710039-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250714230616.3709521-1-sashal@kernel.org>
-References: <20250714230616.3709521-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -63,93 +60,99 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.15.6
+X-stable-base: Linux 6.12.38
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 8af596e8ae44c3bcf36d1aea09fc9a6f17c555e5 ]
+[ Upstream commit d7a54d02db41f72f0581a3c77c75b0993ed3f6e2 ]
 
-In disconnect paths paths, local frame buffers are used
-to build deauthentication frames to send them over the
-air and as notifications to userspace. Some internal
-error paths (that, given no other bugs, cannot happen)
-don't always initialize the buffers before sending them
-to userspace, so in the presence of other bugs they can
-leak stack content. Initialize the buffers to avoid the
-possibility of this happening.
+This is currently not initialized for a virtual monitor, leading to a
+NULL pointer dereference when - for example - iterating over all the
+keys of all the vifs.
 
-Suggested-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Link: https://patch.msgid.link/20250701072213.13004-2-johannes@sipsolutions.net
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709233400.8dcefe578497.I4c90a00ae3256520e063199d7f6f2580d5451acf@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Based on my analysis, here is my conclusion:
+Based on my analysis of the commit and the code changes, here is my
+assessment:
 
 **YES**
 
 This commit should be backported to stable kernel trees for the
 following reasons:
 
-1. **Security Impact**: This is a security fix that prevents potential
-   leakage of stack content to userspace. The commit message explicitly
-   states that "in the presence of other bugs they can leak stack
-   content."
+1. **Critical NULL Pointer Dereference Fix**: The commit fixes a NULL
+   pointer dereference that occurs when iterating over the key_list of
+   virtual monitor interfaces. This is a crash-inducing bug that affects
+   system stability.
 
-2. **Bug Fix Nature**: The commit fixes a clear bug where frame buffers
-   can be used uninitialized in error paths. Looking at the code:
-   - In `ieee80211_set_disassoc()`, there are three early return paths
-     (lines 3936, 3939, 3942) that can exit without initializing
-     `frame_buf`
-   - If these error paths are taken, the caller's `frame_buf` remains
-     uninitialized
-   - The caller (e.g., `__ieee80211_disconnect()`) then passes this
-     uninitialized buffer to `ieee80211_report_disconnect()`, which
-     ultimately sends it to userspace via `cfg80211_tx_mlme_mgmt()`
+2. **Clear Bug with Simple Fix**: The issue is straightforward - the
+   `key_list` was not initialized for virtual monitor interfaces created
+   via `ieee80211_add_virtual_monitor()`. The fix is minimal and
+   contained - it simply moves the `INIT_LIST_HEAD(&sdata->key_list)`
+   initialization from `ieee80211_if_add()` into
+   `ieee80211_sdata_init()`, ensuring all sdata structures have their
+   key_list properly initialized.
 
-3. **Minimal and Contained Fix**: The fix is extremely simple - just
-   adding a `memset(frame_buf, 0, IEEE80211_DEAUTH_FRAME_LEN)` at the
-   beginning of the function. This is a safe, minimal change with no
-   architectural impact.
+3. **Real-World Impact**: The bug can be triggered when any code
+   iterates over all interfaces and their keys. Looking at the code,
+   functions like `ieee80211_iter_keys()` and
+   `ieee80211_iter_keys_rcu()` iterate through all interfaces when
+   called without a specific vif parameter:
+  ```c
+  list_for_each_entry(sdata, &local->interfaces, list)
+  list_for_each_entry_safe(key, tmp, &sdata->key_list, list)
+  ```
+  This would cause a NULL pointer dereference when it encounters a
+  virtual monitor interface.
 
-4. **Low Risk**: The change has virtually no risk of regression as it
-   only initializes memory that should have been initialized anyway. It
-   doesn't change any logic or behavior.
+4. **Minimal Risk**: The change is extremely low risk - it only adds
+   initialization of a list head that should have been initialized all
+   along. There are no architectural changes or feature additions.
 
-5. **Similar to Historical Backports**: This fix is similar in nature to
-   the first historical commit example ("wifi: cfg80211: avoid leaking
-   stack data into trace") which was marked for backporting. Both fix
-   stack data leaks with simple initialization.
+5. **Follows Stable Rules**: This perfectly fits the stable kernel
+   criteria:
+   - Fixes a real bug (NULL pointer dereference/crash)
+   - Small and contained change (2 lines moved)
+   - Obviously correct fix
+   - No new features or behaviors introduced
 
-6. **Defensive Programming**: Even though the error paths are marked
-   with WARN_ON (indicating they "cannot happen" under normal
-   circumstances), the commit message acknowledges that "in the presence
-   of other bugs" these paths could be triggered. This defensive
-   approach is exactly what stable kernels need.
+The commit is similar in nature to commit #5 in the reference list which
+was marked as suitable for backporting - both fix NULL pointer
+dereferences in the wifi/mac80211 subsystem with minimal, targeted
+changes.
 
-The fix meets all stable kernel criteria: it fixes an important security
-issue (information leak), is minimal and contained, has low regression
-risk, and doesn't introduce new features or architectural changes.
+ net/mac80211/iface.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- net/mac80211/mlme.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 53d5ffad87be8..36fc496a906a1 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -3933,6 +3933,9 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 209d6ffa8e426..adfdc14bd91ac 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1121,6 +1121,8 @@ static void ieee80211_sdata_init(struct ieee80211_local *local,
+ {
+ 	sdata->local = local;
  
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
-+	if (frame_buf)
-+		memset(frame_buf, 0, IEEE80211_DEAUTH_FRAME_LEN);
++	INIT_LIST_HEAD(&sdata->key_list);
 +
- 	if (WARN_ON(!ap_sta))
- 		return;
+ 	/*
+ 	 * Initialize the default link, so we can use link_id 0 for non-MLD,
+ 	 * and that continues to work for non-MLD-aware drivers that use just
+@@ -2162,8 +2164,6 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 
+ 	ieee80211_init_frag_cache(&sdata->frags);
+ 
+-	INIT_LIST_HEAD(&sdata->key_list);
+-
+ 	wiphy_delayed_work_init(&sdata->dec_tailroom_needed_wk,
+ 				ieee80211_delayed_tailroom_dec);
  
 -- 
 2.39.5
