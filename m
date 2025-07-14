@@ -1,212 +1,213 @@
-Return-Path: <linux-wireless+bounces-25407-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25408-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DE5B04827
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 21:58:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB51B048EF
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 23:02:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A716A1A67B4C
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 19:58:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B5FA4A1A10
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 21:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B6025A323;
-	Mon, 14 Jul 2025 19:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TvsJ6Q/T"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E124239E6E;
+	Mon, 14 Jul 2025 21:02:35 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02607246794
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 19:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87ED6238150
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 21:02:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752523110; cv=none; b=bow1jtNKEwtnZBHzzK6lukaPA7k6yHLV74Y/WqXe+FntsuUABKBROrtS7frb3S05n8EfNNrfdMkO+Mw9ZMoLKLu1rP6qB42n9592VzdgD8iWN4lNxyoJ1/RVvqdY/Rcqm9p8p0ZRwMp0eZbtnf4s7zVCBrIpJoTKIwm1h/XfxM4=
+	t=1752526955; cv=none; b=RBz1RUgD2+ejR7ZfHp98t6hf6PxDqK24k/SvG1yZEstfrBhNT1/GRArrOk2PD8q/CFyMmdtq7k48eBybzJfe/crDOnQS0wFwKayioQ7lPt/cHt5kp1QbSUWpwwznkpypvp4x6zFR2jK+DdNQoNFQvEC/qLRa03l/BgbaiFaQl0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752523110; c=relaxed/simple;
-	bh=+pqyeAoD5157xnmPHhmqS7gq9lKU2DrmIZAQW9Mfn58=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D9yPcFvXRytXoWCwe30jqazwJrU2FjSObYCaEq+V2BqM8/qFhA7GrzWLL6/3a73o8rVa7Z+wSa+1qeqGTNEe2C0ZUH5cysfi/KSvQMDSxXMJeffkNaMjf0MjLe55Qaw0iUhT+/zdI8Nn7srDWq6O53/naepYEWNpc7QqC72ajj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TvsJ6Q/T; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-237f18108d2so45795ad.0
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 12:58:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752523108; x=1753127908; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tDa5D0A4lwaiBKd2JNzdgebIMAD7+wg9x+lwbfz747o=;
-        b=TvsJ6Q/TBr/xSzZ19yFXmoqEptr5c1imFBCqpPwSpUWlqJT6i+aKgrEXw62mYctkUR
-         qrzflpNLMiqQjMEYHHJGRcTuN93QiAQkExL4kVrTrpVQB8gCy8BuFy7qNHPQDkRhBk/c
-         j5e7PVO3d0zyrAouvz/L6ZNspf3+c0412LTkkvIHIBBTJQM3Ow4P3Bq9zxBpmjPNcWAx
-         eRIrK9ADLtPiMGSB3wcGUpUXr8F5Xmr17MnYTkvmGiMNUVvBRfSf33RelrJD1vAMWdtr
-         CqIlTOORaHKrt5c0RwLgkYeQ9rSjqm+lOFusQLH4zoRrcUO8R3SGQuCT6yXNIopoBk2E
-         E81Q==
+	s=arc-20240116; t=1752526955; c=relaxed/simple;
+	bh=xH3QLy9ZM+VnbqR3ZsfNogbkwjOy1dIvl2E4ICHDUwY=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=cEgQJeY1LIX1jwIjgwvRzSNy5FE2Y1vvRfSLZ2nU09RJZd0w3NXpE9kWC4tzefS/dMZ+2td+IWbv9/H+ahZ8Kpg2AhGKBQXn0x9/cH7B64oJRXfqC9JRG4osK7fBNrBWBnIsx/3DsaAQWZB0582A1hlZdgyeeMmJ0623CuLfH2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-86d07944f29so1010065139f.0
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 14:02:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752523108; x=1753127908;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tDa5D0A4lwaiBKd2JNzdgebIMAD7+wg9x+lwbfz747o=;
-        b=TA+iXEuTarXdeD2T7Ew8xaqX1vvjje+fg977GkSIXDNT2mKRRyJ/NKSy4U5dVEGLzL
-         4PLglVUKjJzSkQrm+dPTLm23OI0b6K6tlUlBjJfXI4M0Eq8eZk5LVSwmLftCis1J5xkJ
-         fLOdVtxryDgFfdp+RtdhEZWt4D+DTkZiOrllNo/9JYHcxyPFWLWSMtb9O9cV1Sl0dYqg
-         P95dmBp0EXobM1F6kkavG9wrW/vQeTMnAMXnuTHjgVomv2bmIJq5v7HLWQTbtKGa+ewU
-         amiAuPgbaOum7xlJiM9SekgTIZWvV4+FsIwcsHkpI9oldDgIQChzcg5zO7p/7Zq37YrB
-         kH0w==
-X-Forwarded-Encrypted: i=1; AJvYcCX8k0OH7yusx6O20bWS3i2Gas+iBfNFVy3+E9dpCvQpQljzAHC+uq5jk9JyrmWuBKezprpDSWu20YRDc6VaFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/fBwEqUdajSW6iD5iSIMv8Yi8hJDNncU5qOd/4/crv4631cg5
-	jKY+LCkHqyuiFTxrFuOugPQg2hY40M56TVNvETqvLNOEX/be6bCtI8ukLVkXghrTMv3WpR5ANiy
-	Zx2kLvJImuzuzV/BUi4nRGfilBbRGBY2YCY4OqTf9
-X-Gm-Gg: ASbGncvB4wTvTcu9oEviWTr22mv73xHAGESvOAW5eKVGAyhTAk5DfTYwfeHI3oyd4Ch
-	1/EWqyq3ChTGR6HnGVDNltGNZX6lDDg9eHCBUDz0gcKneelB4mCmVxIFvZTL9fz/kV5Kj4tXCsJ
-	SkkM4J0zauAJDC2Uhel1TqT1At0aDjGrf9nyygSA+zUkG4zGdPWSrLkxecFKTDwOAjxO4XuxcBa
-	Ej/DazYGyrhbHmFjoQix6K9XFeHbt1qiC8v8Iq54fUVLggM
-X-Google-Smtp-Source: AGHT+IFWnfMDtJC2CezIF3KnAbgH/pbj3O5jwVGjDMwdXbeGoiYAzNm9r+9HSREvdPvfvdh1fRM05JSSpaSXXTed5k8=
-X-Received: by 2002:a17:902:c40d:b0:235:e1fa:1fbc with SMTP id
- d9443c01a7336-23e1aa6bd1bmr603895ad.0.1752523107669; Mon, 14 Jul 2025
- 12:58:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752526953; x=1753131753;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=C2Q1NLh7gUoTVClx27jDS/g66nSd1V24PSANTOejsys=;
+        b=jGPCNMzSNkzVU1WgFHQpHNvVJIebj5lvHntATupxSCrb+h6kRI5S1+jRq4jqEE2CfF
+         t0XCnsD3V80aB63uHFCpuXhmOU6DjdqDyX2htXK4cdZKEuWx7FL9j+wfRvF3uRtXNqMP
+         lWQvApIZ45nbiDMrs8pih7T7ccx46+oMEMTVocyZA+9JwAdspeIJr1cyGMbneAQFoA9e
+         vL2WcJkvzXIELf5sYndhzdFQRf61rYtajerKTSCxVsdMTPLGEWT6x1RQByfMOR9w3pck
+         MxzAoQnh+11E/4SgzrwAlhHSowq5aQ+JnAi2mPqkzwpU9fAJHykKWzmNonYtoqSPU+pa
+         IL6A==
+X-Forwarded-Encrypted: i=1; AJvYcCWT8og8ZUgg8s/EadLwsOi8DRaHq1PL1XAUvWRNAwrtMkNoS36Al84FSXYSTOHcEe66kwjFbiIiOpAG+8KGxA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPaDWByHTt8RyKu8x3SiYLG907wE7o0kVbQ85NI84iIH7bqpkn
+	AlWXzcp4ohojQOLRtbWBrPMZj/qhU5Up18MM3PI9/yYvjRqrQfuNzuSq68VV/v5wpbGnt2Lw90y
+	3L+9Rg1riaPuYwuAXIrCrmBopt4Vevx+PP1BZt09r0vD8Ac9bAL8Zhh8l7gM=
+X-Google-Smtp-Source: AGHT+IH8lFGhU84Vmgqxm566NwZTQrh3zGXp2GScmXDpOp9azBaSRZ+zVJ3KiQ1WYhskdPAtHVvLeToalmaGLoapz1rMj4jaMNII
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250714120047.35901-1-byungchul@sk.com> <20250714120047.35901-3-byungchul@sk.com>
- <CAHS8izO393X_BDJxnX2d-auhTwrUZK5wYdoAh_tJc0GBf0AqcQ@mail.gmail.com>
-In-Reply-To: <CAHS8izO393X_BDJxnX2d-auhTwrUZK5wYdoAh_tJc0GBf0AqcQ@mail.gmail.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 14 Jul 2025 12:58:15 -0700
-X-Gm-Features: Ac12FXz5nYW9H_RK0Nw_oICAspVAx9135uss8L0AQRp8qp4a_9a4RkfhL6o4a4I
-Message-ID: <CAHS8izNh7aCJOb1WKTx7CXNDPv_UBqFyq2XEHHhqHH=5JPmJCQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v10 02/12] netmem: use netmem_desc instead of
- page to access ->pp in __netmem_get_pp()
-To: Byungchul Park <byungchul@sk.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kernel_team@skhynix.com, ilias.apalodimas@linaro.org, 
-	harry.yoo@oracle.com, akpm@linux-foundation.org, andrew+netdev@lunn.ch, 
-	asml.silence@gmail.com, toke@redhat.com, david@redhat.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
-	vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com, 
-	jackmanb@google.com, wei.fang@nxp.com, shenwei.wang@nxp.com, 
-	xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com, 
-	przemyslaw.kitszel@intel.com, sgoutham@marvell.com, gakula@marvell.com, 
-	sbhatta@marvell.com, hkelam@marvell.com, bbhushan2@marvell.com, 
-	tariqt@nvidia.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, 
-	mbloch@nvidia.com, danishanwar@ti.com, rogerq@kernel.org, nbd@nbd.name, 
-	lorenzo@kernel.org, ryder.lee@mediatek.com, shayne.chen@mediatek.com, 
-	sean.wang@mediatek.com, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, aleksander.lobakin@intel.com, 
-	horms@kernel.org, m-malladi@ti.com, krzysztof.kozlowski@linaro.org, 
-	matthias.schiffer@ew.tq-group.com, robh@kernel.org, imx@lists.linux.dev, 
-	intel-wired-lan@lists.osuosl.org, linux-arm-kernel@lists.infradead.org, 
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+X-Received: by 2002:a05:6602:60ca:b0:86c:ef0b:3a52 with SMTP id
+ ca18e2360f4ac-8797883ec84mr1643507939f.11.1752526952671; Mon, 14 Jul 2025
+ 14:02:32 -0700 (PDT)
+Date: Mon, 14 Jul 2025 14:02:32 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68757068.a70a0220.18f9d4.000a.GAE@google.com>
+Subject: [syzbot] [wireless?] INFO: task hung in el1_interrupt
+From: syzbot <syzbot+6d053681b57b25d51ba9@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 14, 2025 at 12:37=E2=80=AFPM Mina Almasry <almasrymina@google.c=
-om> wrote:
->
-> On Mon, Jul 14, 2025 at 5:01=E2=80=AFAM Byungchul Park <byungchul@sk.com>=
- wrote:
-> >
-> > To eliminate the use of the page pool fields in struct page, the page
-> > pool code should use netmem descriptor and APIs instead.
-> >
-> > However, __netmem_get_pp() still accesses ->pp via struct page.  So
-> > change it to use struct netmem_desc instead, since ->pp no longer will
-> > be available in struct page.
-> >
-> > While at it, add a helper, pp_page_to_nmdesc(), that can be used to
-> > extract netmem_desc from page only if it's pp page.  For now that
-> > netmem_desc overlays on page, it can be achieved by just casting.
-> >
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > ---
-> >  include/net/netmem.h | 13 ++++++++++++-
-> >  1 file changed, 12 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/net/netmem.h b/include/net/netmem.h
-> > index 535cf17b9134..2b8a7b51ac99 100644
-> > --- a/include/net/netmem.h
-> > +++ b/include/net/netmem.h
-> > @@ -267,6 +267,17 @@ static inline struct net_iov *__netmem_clear_lsb(n=
-etmem_ref netmem)
-> >         return (struct net_iov *)((__force unsigned long)netmem & ~NET_=
-IOV);
-> >  }
-> >
-> > +static inline struct netmem_desc *pp_page_to_nmdesc(struct page *page)
-> > +{
-> > +       DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page));
-> > +
-> > +       /* XXX: How to extract netmem_desc from page must be changed,
-> > +        * once netmem_desc no longer overlays on page and will be
-> > +        * allocated through slab.
-> > +        */
-> > +       return (struct netmem_desc *)page;
-> > +}
-> > +
->
-> Same thing. Do not create a generic looking pp_page_to_nmdesc helper
-> which does not check that the page is the correct type. The
-> DEBUG_NET... is not good enough.
->
-> You don't need to add a generic helper here. There is only one call
-> site. Open code this in the callsite. The one callsite is marked as
-> unsafe, only called by code that knows that the netmem is specifically
-> a pp page. Open code this in the unsafe callsite, instead of creating
-> a generic looking unsafe helper and not even documenting it's unsafe.
->
+Hello,
 
-On second read through the series, I actually now think this is a
-great idea :-) Adding this helper has simplified the series greatly. I
-did not realize you were converting entire drivers to netmem just to
-get rid of page->pp accesses. Adding a pp_page_to_nmdesc helper makes
-the entire series simpler.
+syzbot found the following issue on:
 
-You're also calling it only from code paths like drivers that already
-assumed that the page is a pp page and did page->pp deference without
-a check, so this should be safe.
+HEAD commit:    ec4801305969 Merge branches 'for-next/core' and 'for-next/..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=157c3a8c580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9e99b6fcd403d050
+dashboard link: https://syzkaller.appspot.com/bug?extid=6d053681b57b25d51ba9
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+userspace arch: arm64
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=141c0d82580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=137c3a8c580000
 
-Only thing I would change is add a comment explaining that the calling
-code needs to check the page is pp page or know it's a pp page (like a
-driver that supports pp).
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/64d8dc107d9d/disk-ec480130.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/31280b2dee28/vmlinux-ec480130.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/b3f9fb3d09f8/Image-ec480130.gz.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+6d053681b57b25d51ba9@syzkaller.appspotmail.com
+
+INFO: task kworker/u8:7:279 blocked for more than 143 seconds.
+      Not tainted 6.16.0-rc5-syzkaller-gec4801305969 #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/u8:7    state:D stack:0     pid:279   tgid:279   ppid:2      task_flags:0x4208060 flags:0x00000010
+Workqueue: events_power_efficient crda_timeout_work
+Call trace:
+ __switch_to+0x414/0x834 arch/arm64/kernel/process.c:742 (T)
+ context_switch kernel/sched/core.c:5401 [inline]
+ __schedule+0x1414/0x2a28 kernel/sched/core.c:6790
+ preempt_schedule_irq+0x80/0x188 kernel/sched/core.c:7113
+ arm64_preempt_schedule_irq+0x44/0x58 arch/arm64/kernel/entry-common.c:305
+ el1_interrupt+0x3c/0x
+ __el1_irq arch/arm64/kernel/entry-common.c:656 [inline]
+ el1_interrupt+0x3c/0x54 arch/arm64/kernel/entry-common.c:668
+ el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:673
+ el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
+ __daif_local_irq_restore arch/arm64/include/asm/irqflags.h:175 [inline] (P)
+ arch_local_irq_restore arch/arm64/include/asm/irqflags.h:195 [inline] (P)
+ put_cpu_partial+0x154/0x1c0 mm/slub.c:3258 (P)
+ __slab_free+0x1b0/0x280 mm/slub.c:4513
+ do_slab_free mm/slub.c:4595 [inline]
+ ___cache_free+0x150/0x170 mm/slub.c:4701
+ qlink_free+0x48/0x94 mm/kasan/quarantine.c:163
+ qlist_free_all+0x44/0xb8 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x118/0x124 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x2c/0x88 mm/kasan/common.c:329
+ kasan_slab_alloc include/linux/kasan.h:250 [inline]
+ slab_post_alloc_hook mm/slub.c:4148 [inline]
+ slab_alloc_node mm/slub.c:4197 [inline]
+ __kmalloc_cache_noprof+0x238/0x3fc mm/slub.c:4354
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ kzalloc_noprof include/linux/slab.h:1039 [inline]
+ regulatory_hint_core net/wireless/reg.c:3246 [inline]
+ restore_regulatory_settings+0x1664/0x2504 net/wireless/reg.c:3578
+ crda_timeout_work+0x38/0x68 net/wireless/reg.c:543
+ process_one_work+0x7e8/0x155c kernel/workqueue.c:3238
+ process_scheduled_works kernel/workqueue.c:3321 [inline]
+ worker_thread+0x958/0xed8 kernel/workqueue.c:3402
+ kthread+0x5fc/0x75c kernel/kthread.c:464
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:843
+
+Showing all locks held in the system:
+3 locks held by kworker/u8:0/12:
+ #0: ffff0000d11ae948 ((wq_completion)ipv6_addrconf){+.+.}-{0:0}, at: process_one_work+0x63c/0x155c kernel/workqueue.c:3212
+ #1: ffff800097a87bc0 ((work_completion)(&(&ifa->dad_work)->work)){+.+.}-{0:0}, at: process_one_work+0x6d4/0x155c kernel/workqueue.c:3212
+ #2: ffff8000928b6568 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock+0x20/0x2c net/core/rtnetlink.c:80
+2 locks held by kworker/1:0/24:
+1 lock held by khungtaskd/32:
+ #0: ffff80008f8599c0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x48 include/linux/rcupdate.h:330
+3 locks held by kworker/u8:2/41:
+ #0: ffff0000c0031948 ((wq_completion)events_power_efficient){+.+.}-{0:0}, at: process_one_work+0x63c/0x155c kernel/workqueue.c:3212
+ #1: ffff8000990e7bc0 ((reg_check_chans).work){+.+.}-{0:0}, at: process_one_work+0x6d4/0x155c kernel/workqueue.c:3212
+ #2: ffff8000928b6568 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock+0x20/0x2c net/core/rtnetlink.c:80
+3 locks held by kworker/u8:3/42:
+5 locks held by pr/ttyAMA0/43:
+2 locks held by kworker/u8:6/217:
+4 locks held by kworker/u8:7/279:
+3 locks held by kworker/u8:8/318:
+2 locks held by kworker/1:2/1821:
+3 locks held by kworker/u8:10/2084:
+3 locks held by kworker/u8:11/2164:
+4 locks held by kworker/0:2/2316:
+1 lock held by klogd/6132:
+4 locks held by udevd/6143:
+3 locks held by dhcpcd/6198:
+2 locks held by getty/6295:
+ #0: ffff0000d25040a0 (&tty->ldisc_sem){++++}-{0:0}, at: ldsem_down_read+0x3c/0x4c drivers/tty/tty_ldsem.c:340
+ #1: ffff80009ba2e2f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x34c/0xfa4 drivers/tty/n_tty.c:2222
+2 locks held by kworker/1:3/6637:
+3 locks held by kworker/0:3/6642:
+ #0: ffff0000c0028d48 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x63c/0x155c kernel/workqueue.c:3212
+ #1: ffff80009ff67bc0 (deferred_process_work){+.+.}-{0:0}, at: process_one_work+0x6d4/0x155c kernel/workqueue.c:3212
+ #2: ffff8000928b6568 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock+0x20/0x2c net/core/rtnetlink.c:80
+1 lock held by syz-executor/6650:
+ #0: ffff8000928b6568 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock+0x20/0x2c net/core/rtnetlink.c:80
+3 locks held by syz-executor/6651:
+ #0: ffff80009291bdb0 (cb_lock){++++}-{4:4}, at: genl_rcv+0x28/0x50 net/netlink/genetlink.c:1218
+ #1: ffff80009291bbc8 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffff80009291bbc8 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffff80009291bbc8 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0xf4/0x624 net/netlink/genetlink.c:1209
+ #2: ffff8000928b6568 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock+0x20/0x2c net/core/rtnetlink.c:80
+2 locks held by syz-executor/6657:
+ #0: ffff80009291bdb0 (cb_lock){++++}-{4:4}, at: genl_rcv+0x28/0x50 net/netlink/genetlink.c:1218
+ #1: ffff8000928b6568 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock+0x20/0x2c net/core/rtnetlink.c:80
+1 lock held by syz-executor/6658:
+ #0: ffff8000928b6568 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock+0x20/0x2c net/core/rtnetlink.c:80
+3 locks held by kworker/u8:12/6822:
+3 locks held by kworker/u8:13/6823:
+2 locks held by kworker/1:5/6824:
+3 locks held by kworker/u8:16/6827:
+2 locks held by kworker/u8:17/6828:
+3 locks held by syz-executor/6829:
+2 locks held by udevd/6832:
+
+=============================================
 
 
-> >  /**
-> >   * __netmem_get_pp - unsafely get pointer to the &page_pool backing @n=
-etmem
-> >   * @netmem: netmem reference to get the pointer from
-> > @@ -280,7 +291,7 @@ static inline struct net_iov *__netmem_clear_lsb(ne=
-tmem_ref netmem)
-> >   */
-> >  static inline struct page_pool *__netmem_get_pp(netmem_ref netmem)
-> >  {
-> > -       return __netmem_to_page(netmem)->pp;
-> > +       return pp_page_to_nmdesc(__netmem_to_page(netmem))->pp;
-> >  }
->
-> This makes me very sad. Casting from netmem -> page -> nmdesc...
->
-> Instead, we should be able to go from netmem directly to nmdesc. I
-> would suggest rename __netmem_clear_lsb to netmem_to_nmdesc and have
-> it return netmem_desc instead of net_iov. Then use it here.
->
-> We could have an unsafe version of netmem_to_nmdesc which converts the
-> netmem to netmem_desc without clearing the lsb and mark it unsafe.
->
 
-This, I think, we should address to keep some sanity in the code and
-reduce the casts and make it a bit more maintainable.
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
---=20
-Thanks,
-Mina
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
