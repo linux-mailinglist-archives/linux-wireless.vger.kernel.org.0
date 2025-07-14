@@ -1,57 +1,66 @@
-Return-Path: <linux-wireless+bounces-25415-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25416-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1487AB04BE3
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 01:12:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DECDB04BCF
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 01:11:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82D9E7B59E9
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 23:09:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624DE4A81F6
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 23:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA0D28FA85;
-	Mon, 14 Jul 2025 23:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE12293C6E;
+	Mon, 14 Jul 2025 23:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2UeT4Iy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V12mS15M"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87F528F533;
-	Mon, 14 Jul 2025 23:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22F129346E;
+	Mon, 14 Jul 2025 23:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752534440; cv=none; b=ZTydGthdvpOVrOBHe9BbwRIfIPTpztVS4SKAhRV1cuqmAmX+4qdI2f4xS/kGcq9bCvmkkz8vwAYw0zPucDADAffYkBwx8lChWQl9Aa33rgqUcINr7P1mbu4VHHzp7rO1BImUyL5HeWGdBeGIOWurRkjdJfbRt2DVMl+yPxJK4+4=
+	t=1752534454; cv=none; b=H9/G4qWMg91NpamQPS32ElFzfMUyovlnKOAUPU8Uf8mAMab5DQ9fVYLrTc3bd7G4zJELa37mcKjf/jkjAG+BROeLz8GpaLak2TkmWuCotxoswiZk4jOwi13wgowV5P8U+MuYNmyKFrdwisjfNB3qdUeOPheR0KHJmnhg+tVFahY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752534440; c=relaxed/simple;
-	bh=BszdfQb86N5o8gOZU3QPEvtEPUnfJJPU+QZJXfnxgRU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pexeh1Av80C0sQdJ0te3s/d/X2n9N7IuWBt18wQmM3jn3xjRduX6OQhl6+/r0G30h44QoT/AqV4qigHMgAc3uyPDP1LG7qtH1un2jzLcSmxjQsGvWyFSPkxwjo+5VZH7kZQgXiDyj7DQrtdoMk//h0y5YkAQvdrI80rPjwaAPf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2UeT4Iy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B402C4CEED;
-	Mon, 14 Jul 2025 23:07:19 +0000 (UTC)
+	s=arc-20240116; t=1752534454; c=relaxed/simple;
+	bh=yVFlXPDCgvTi/g7cKT+0xKWJ/Se/ufuBEBi8X15GVyI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ZV0MxqqH6M1/fXRSeMwxWPpz00oCZaGnUPoAFEiRaKwhCaIF2MU+q3OrBfh43IxK5QBrFTvU/tAak1IyffmGc2o2xFulwW+LhXhXcWlPOqXBJMNWqBVQtEU9AgVQKyRRuqBKZ4DYgrGlW9Cv9puOUmGixYQ2nMnQ1kwLQhjT6/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V12mS15M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DADC4CEF4;
+	Mon, 14 Jul 2025 23:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752534440;
-	bh=BszdfQb86N5o8gOZU3QPEvtEPUnfJJPU+QZJXfnxgRU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=b2UeT4IyziSmm2GlLv84zUsqQDLrRujMF6899LKoo2m6+ty+5sxTEra9tiCjFHTEU
-	 /QUhLm3wChXI0GolKoVcoh+24CyYggsrRDmp5PhtH3D6N0wJGHpCVIEPdHY0VaViqU
-	 PoXyHH6y5kty5wBc6RvIu/EP5YdBLF9gG6jT+6J/5xcxfwpL4pX2oxJQdKpzo/jQsz
-	 ndSjNcXoeQV75P7PW3jraK57jMDbxgLWHdJmE03cN16vIFq4hKx0BCiY0ZtjBrnnLe
-	 rTKySm6nfsH875lVtCL5Ifm424UioMq4utmxN1hZVZoek+xClDmAnQefwyuuL/MBis
-	 6qSP5wjkQ/rvA==
+	s=k20201202; t=1752534454;
+	bh=yVFlXPDCgvTi/g7cKT+0xKWJ/Se/ufuBEBi8X15GVyI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=V12mS15MjiFXfn6UfxhfnFteczSuXiA/xv69+oyogoGttLWt4+XRR9i5jgZxF6Uyh
+	 Zo9vxVwlzhx4sOKNyqs4YgY0d9i0dhqA0hhmaKWuAepTnhZhfUbNIthXGXIqwdz0xs
+	 X3e6WjnKDj7y/xRe/xJoxKdiuP1qY7abmPxMMyzZaDoejthcpiKAjpbMudmm1w3mQl
+	 7ZIJR2okJ50/L+99ckYxu1WXVheWxwjx+nth00d4H7YEudb/1fDGXasULOv6k99dOC
+	 jWxE3uegJy0UBpzOgpj7gKzPpPc3rYCadS45hJkRTLSSV1eJbQqiRx02jLLQHNuAFg
+	 JnhQHr9NrtBzQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Felix Fietkau <nbd@nbd.name>,
+	Chad Monroe <chad.monroe@adtran.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 01/12] wifi: mac80211: always initialize sdata::key_list
-Date: Mon, 14 Jul 2025 19:07:04 -0400
-Message-Id: <20250714230715.3710039-1-sashal@kernel.org>
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 09/12] wifi: mt76: fix queue assignment for deauth packets
+Date: Mon, 14 Jul 2025 19:07:12 -0400
+Message-Id: <20250714230715.3710039-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250714230715.3710039-1-sashal@kernel.org>
+References: <20250714230715.3710039-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -63,97 +72,95 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.38
 Content-Transfer-Encoding: 8bit
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit d7a54d02db41f72f0581a3c77c75b0993ed3f6e2 ]
+[ Upstream commit dedf2ec30fe417d181490896adf89cd6b9885b23 ]
 
-This is currently not initialized for a virtual monitor, leading to a
-NULL pointer dereference when - for example - iterating over all the
-keys of all the vifs.
+When running in AP mode and deauthenticating a client that's in powersave
+mode, the disassoc/deauth packet can get stuck in a tx queue along with
+other buffered frames. This can fill up hardware queues with frames
+that are only released after the WTBL slot is reused for another client.
 
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250709233400.8dcefe578497.I4c90a00ae3256520e063199d7f6f2580d5451acf@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix this by moving deauth packets to the ALTX queue.
+
+Reported-by: Chad Monroe <chad.monroe@adtran.com>
+Link: https://patch.msgid.link/20250707154702.1726-2-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Based on my analysis of the commit and the code changes, here is my
-assessment:
+Now I understand the issue and the fix better. Let me analyze this
+commit:
 
 **YES**
 
 This commit should be backported to stable kernel trees for the
 following reasons:
 
-1. **Critical NULL Pointer Dereference Fix**: The commit fixes a NULL
-   pointer dereference that occurs when iterating over the key_list of
-   virtual monitor interfaces. This is a crash-inducing bug that affects
-   system stability.
+1. **It fixes a real bug affecting users**: The commit addresses a
+   specific issue where deauthentication packets sent to clients in
+   powersave mode can get stuck in hardware TX queues. This causes queue
+   exhaustion and prevents the WTBL (Wireless Table) slot from being
+   properly reused for new clients. This is a significant functional bug
+   that impacts AP mode operation.
 
-2. **Clear Bug with Simple Fix**: The issue is straightforward - the
-   `key_list` was not initialized for virtual monitor interfaces created
-   via `ieee80211_add_virtual_monitor()`. The fix is minimal and
-   contained - it simply moves the `INIT_LIST_HEAD(&sdata->key_list)`
-   initialization from `ieee80211_if_add()` into
-   `ieee80211_sdata_init()`, ensuring all sdata structures have their
-   key_list properly initialized.
+2. **The fix is small and contained**: The change is minimal - it only
+   adds a single condition (`||
+   ieee80211_is_deauth(hdr->frame_control)`) to the existing queue
+   assignment logic. This is a low-risk change that doesn't introduce
+   new functionality or architectural changes.
 
-3. **Real-World Impact**: The bug can be triggered when any code
-   iterates over all interfaces and their keys. Looking at the code,
-   functions like `ieee80211_iter_keys()` and
-   `ieee80211_iter_keys_rcu()` iterate through all interfaces when
-   called without a specific vif parameter:
-  ```c
-  list_for_each_entry(sdata, &local->interfaces, list)
-  list_for_each_entry_safe(key, tmp, &sdata->key_list, list)
-  ```
-  This would cause a NULL pointer dereference when it encounters a
-  virtual monitor interface.
+3. **Clear problem and solution**: The commit message clearly describes
+   the issue (deauth packets getting stuck with other buffered frames)
+   and the solution (moving deauth packets to the ALTX/PSD queue). The
+   fix is logical because:
+   - According to `ieee80211_is_bufferable_mmpdu()` (line 4517), deauth
+     frames ARE considered bufferable MMPDUs
+   - However, when a client is being deauthenticated, we don't want
+     these frames to be buffered with regular data - they need immediate
+     transmission
+   - The PSD (Power Save Delivery) queue is more appropriate for
+     management frames that need immediate handling
 
-4. **Minimal Risk**: The change is extremely low risk - it only adds
-   initialization of a list head that should have been initialized all
-   along. There are no architectural changes or feature additions.
+4. **Similar to previous backported fixes**: Looking at the similar
+   commits, commit #1 (fca9615f1a43) which fixed queue handling for
+   loopback packets was backported. This current fix addresses a similar
+   class of queue assignment issues.
 
-5. **Follows Stable Rules**: This perfectly fits the stable kernel
-   criteria:
-   - Fixes a real bug (NULL pointer dereference/crash)
-   - Small and contained change (2 lines moved)
-   - Obviously correct fix
-   - No new features or behaviors introduced
+5. **No architectural changes**: The fix uses existing infrastructure
+   (MT_TXQ_PSD queue) and existing helper functions
+   (ieee80211_is_deauth). It doesn't introduce new features or change
+   any APIs.
 
-The commit is similar in nature to commit #5 in the reference list which
-was marked as suitable for backporting - both fix NULL pointer
-dereferences in the wifi/mac80211 subsystem with minimal, targeted
-changes.
+6. **Prevents resource exhaustion**: The bug can lead to hardware queue
+   exhaustion which is a serious issue in production AP deployments.
+   This makes it an important fix for stable kernels.
 
- net/mac80211/iface.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The code change shows that previously, only non-bufferable MMPDUs were
+assigned to the PSD queue, but deauth frames (which are technically
+bufferable) were getting stuck in regular data queues when sent to
+powersave clients. This fix ensures deauth frames bypass the normal
+buffering mechanism and get transmitted promptly via the PSD queue.
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 209d6ffa8e426..adfdc14bd91ac 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1121,6 +1121,8 @@ static void ieee80211_sdata_init(struct ieee80211_local *local,
- {
- 	sdata->local = local;
+ drivers/net/wireless/mediatek/mt76/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index 065a1e4537457..da31bf3c18db8 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -615,7 +615,8 @@ mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid,
+ 		if ((dev->drv->drv_flags & MT_DRV_HW_MGMT_TXQ) &&
+ 		    !(info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) &&
+ 		    !ieee80211_is_data(hdr->frame_control) &&
+-		    !ieee80211_is_bufferable_mmpdu(skb))
++		    (!ieee80211_is_bufferable_mmpdu(skb) ||
++		     ieee80211_is_deauth(hdr->frame_control)))
+ 			qid = MT_TXQ_PSD;
  
-+	INIT_LIST_HEAD(&sdata->key_list);
-+
- 	/*
- 	 * Initialize the default link, so we can use link_id 0 for non-MLD,
- 	 * and that continues to work for non-MLD-aware drivers that use just
-@@ -2162,8 +2164,6 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 
- 	ieee80211_init_frag_cache(&sdata->frags);
- 
--	INIT_LIST_HEAD(&sdata->key_list);
--
- 	wiphy_delayed_work_init(&sdata->dec_tailroom_needed_wk,
- 				ieee80211_delayed_tailroom_dec);
- 
+ 		q = phy->q_tx[qid];
 -- 
 2.39.5
 
