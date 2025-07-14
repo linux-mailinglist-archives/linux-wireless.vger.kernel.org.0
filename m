@@ -1,216 +1,174 @@
-Return-Path: <linux-wireless+bounces-25355-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25356-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB74B03905
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 10:18:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90851B039BB
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 10:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71922189D5EE
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 08:18:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C962B3B5EAC
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 08:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A33023C4E3;
-	Mon, 14 Jul 2025 08:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E215B1F3FC6;
+	Mon, 14 Jul 2025 08:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZFdWwfwr"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hIO97sXS"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15D5239E82
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 08:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD9B23A9B0
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 08:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752481009; cv=none; b=rNi6xPiNP4yFeu/0Avgrqe3p2Px0qmAjuEr3oVhok+2emBBqoqaQiawWKTkHY1saHw5uQPWcHENO8uncaV8nfp2ywTbweHylWHkTW28/VxwHMI5w30CfoLUWI1CHv8SOW2xmWIP20RyfrQnfXutVieukfxVexZb4WUX8SjftfN8=
+	t=1752482679; cv=none; b=ORSOalnmKBWjYt2Tk/QIUes9vFFZB0GT+EpLsVftl3fSWL4Elbu1PGpFLp+YuIh7FbSiZK9IFaDuq6yNwGf4JsvGev0L741MjNYtkdZDufIYM2ZgiLKO96FhCixuzoBc7az5Tzl7wXPIZeN/9QlFt4XNwlP9dumO0OkIXSsXQN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752481009; c=relaxed/simple;
-	bh=2bzl+U5a4xnOTSTMm9NmX5loSNBN0Pnks6+xExVwShw=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=MM0BVea1e2JM3+jqijyBsFNVAyCpLVR3MTs+soYixTr1xuol/xNMK6wrXD0YCkh+HylmxtHKhsMMat6WSSg84LGtOqaL68wKZIdlfTQzAqzIbF9IQCQAcKyaWMy+XEXPkJxiDIlbt97kh/IQwBVRsuvf2GE8/Ljc2Hs3bDlHOBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZFdWwfwr; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56DL03Ri012224
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 08:16:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	s=arc-20240116; t=1752482679; c=relaxed/simple;
+	bh=lJSfkolDdXhKresxvEnJqFKOENg+a3980DEMm24S5rk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SCTK0xJWE2DsaQEVe0Cd89377lkIznBXQ+ijh6eNm4JsstFiXI4PsP9CsOkL7veMkNbFTJAAMprUaonFHWAAtkUYI/zT3qybwDcIXTYzpu//CcSRRyEdzw+485TZ8r9PWdmRDotous69jICsFMPe0xkG+ISFjDkqSz/WuWyVM0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hIO97sXS; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56E7Qscc008247;
+	Mon, 14 Jul 2025 08:44:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=9lG70Zv4bkzP0assEuJjlG
-	H/iFaBGlX2QEBmpkORB/U=; b=ZFdWwfwrzPVp9ubYNeogpm7xOcmtzau16sAVCy
-	ikyTGxqzE5h1GA5BPaAALVOvFN7jNc4dVFhG73aBO1oZnwjay5mTB47rs8gyghK1
-	RYW8eJc6CA7ADKeeKOQKh7Ck8gpY/1AEGxZWIHlsv/pCNRb3vDHToCp4YWFxNS+d
-	64KjOQecTDL7Iclt/9YOO6dlIMgn+JMttRpVGAGKwar7e6IVAHO4EPSpt7jwSmzC
-	TJWsKD28c6eSwwLS+FrI5DZcyquK1+te505ktu1qtLTZKSRTOT7AWXdYGfh5Huc8
-	5UbLKxsVTI+xEiwWwUZjweMK6DikJL1XbKELC29DaRcb6WZw==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47ugfhbu01-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 08:16:46 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2369dd58602so39135665ad.1
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 01:16:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752481006; x=1753085806;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=9lG70Zv4bkzP0assEuJjlGH/iFaBGlX2QEBmpkORB/U=;
-        b=L+Lpy8T2u7kY3nReGYHWu5Pr7FoXtWUr3NSKU0jj7gHojPG7GsZQ+SQFmy6lOyLqkR
-         I9tADC59CQ4uNk8Tu9eKVzko6jWtxAGR9Zt1fiHwskfGW5dLp+PLyzjFkWAO0zSkdIH0
-         1YVRrr4TxUUaczgxJXOkNlEH+Q5DoPMyq9+g6Kmx9TZHNfl35tFa+mvl0JN6v2w2iMQe
-         veXUdf+Xndxg52gP5HFi62zFZWRclma0ZV40G+4Ey/dnPF1vKfDkOk0nmADOxni18Qss
-         Q9gB9p1xjzDvbPnkWc1pkygZ11zquRFOLgmCCl9+tQ+PsIm0jCNXPnZUBNnC6e6Rh5Xq
-         8Jdw==
-X-Gm-Message-State: AOJu0Ywpct8msrWsIXbQjv7svq9Xo9SVGmTjvpmhRfjIZlxgfQ1lB4l8
-	TClqeZo82Nw1EoFBoh+F5NyyUAtuHHtq588Lrltj1krjx01ma+IkgYS6zUduf+8q0TsIzZtC1zi
-	Qq01Z7XMaBowkgohjuX+SA9uozsNKUEk86vDQFMOPpWlLsv6CarYB8ASPV+V4HjqvkD0Zzfdijn
-	uM6w==
-X-Gm-Gg: ASbGncvU5u13AbsmdfXbcXlTUdz5BLM0fCNQyEaABebCQpKvN0sHSOzhXdluIaWHtYw
-	a76b5t8ItbJEY9lZn0I55dtXymF66OhZGAYmDW/1hkzfamg3Tgf420/9QxhJe7CqHOJdhEf7s+V
-	+AwSAu1cApAJUoTZllIZqn3ilZCd3EIRu20ifs42ymiLJvYDiASveaRk1hkrpODdzd8qvwZufqw
-	ONzpEQP2tff4Kxg9XpokpqtARy8HWYtewFfhF8J4Ipt9bOCfHYLfV4TnrLXqkMqLr7c3wjJmgGZ
-	o4CF0ZbR/IPV0AZA9uFjq17qPTjaN155CS1ENcnMxPz/4SLa0Y3tBR40vgucW9aiNVMQKcRxddL
-	aNZ+hCv3J0hgE6MZCS0cx1vgOrNGRiQwX
-X-Received: by 2002:a17:902:cccb:b0:234:ef42:5d65 with SMTP id d9443c01a7336-23dee3a6cd5mr170343865ad.52.1752481005635;
-        Mon, 14 Jul 2025 01:16:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF3QjOFHsJQftslJ1aVj+dR6xHYDlsdPVSdPohZb6e7ScidSUihj88RSYciui3oBDSC+Bbgg==
-X-Received: by 2002:a17:902:cccb:b0:234:ef42:5d65 with SMTP id d9443c01a7336-23dee3a6cd5mr170343445ad.52.1752481005052;
-        Mon, 14 Jul 2025 01:16:45 -0700 (PDT)
-Received: from [10.133.33.219] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4322b2dsm89475715ad.92.2025.07.14.01.16.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Jul 2025 01:16:44 -0700 (PDT)
-Message-ID: <e80d5786-b1c1-46f5-b723-e6197e2d06e9@oss.qualcomm.com>
-Date: Mon, 14 Jul 2025 16:16:43 +0800
+	:mime-version:subject:to; s=qcppdkim1; bh=+9TeC78v2SYBndiwfDUSQE
+	XCetOO/+/nZQ0eNcPG0sU=; b=hIO97sXSJiW9zQFppl12W90QdX1u+b5rOcn76F
+	GjjRIJpYDLIaruEuu14we9T5XkxzwbZdBzRWWImAiFprmUdiV/MUd7q3SUYqsB08
+	0ENhu7b4aLqU/RGlOq7swElDaeZm60JMWlFZ4yDUXALubkpFDtddx5OpAcT4HkYb
+	UJUm8eVKagJbRwg2rVLAnAP5/PzSVeipcZjTiJQfrbO29fXgU25ZIwCPyJJa18mQ
+	7xqtnWOWoHzsxT8qJweIA9yoEnf8l88USyjZA+O34/WwgJGnTB4tT5tqDqCKIk9p
+	DvgFCYByvPjrCVOJc6hTD5rchsZvcidkYYOd5pwEMKYb76rg==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47vwghg73y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Jul 2025 08:44:25 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 56E8iPZa001199
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Jul 2025 08:44:25 GMT
+Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Mon, 14 Jul 2025 01:44:23 -0700
+From: Sarika Sharma <quic_sarishar@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>,
+        Sarika Sharma
+	<quic_sarishar@quicinc.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        <syzbot+4ba6272678aa468132c8@syzkaller.appspotmail.com>
+Subject: [PATCH wireless-next v2] wifi: cfg80211: fix double free for link_sinfo in nl80211_station_dump()
+Date: Mon, 14 Jul 2025 14:14:05 +0530
+Message-ID: <20250714084405.178066-1-quic_sarishar@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless <linux-wireless@vger.kernel.org>
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Subject: Disconnection triggered by Puncture advertisement
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: 0o4TbIPxci_iYD2zdo3ifg__H-RkLYxT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDA0OCBTYWx0ZWRfXwMBbeJEGNDUL
- v7Sr2IuEruiZJPe/x0RQf1ciYkys4ta6Vo6b4se59/V9aZJQMi9tEqO67UYrFLOSsbpxafGxxbC
- 82il/9KEYO1eyY2CTeMJNXH64yGhWxhjIh5ertcOn+8TDpwHxD2rfUdmLsPcnTvM99eiKVFCkxU
- B5WAvLY2fw8wn1WbLI3l4PrJuqXSKB60V/FizVSGTPZJ2aYNNPSK7YLyAkSUWsekMcTvF4ktsGh
- G9PoPxsle2eHgfAod9R+oXJ7ooKszAxOoKe75joaSWXBdp0zS+aYvgnmBzLfusoLFc9CvTh6HFH
- 0S3Iv24+0AYdZ4xUJN289/8JpYflWytv9BpPuDhv0dSxd7nYFltJd4K9CrmCT+eQTl36Sok8b9k
- ohgYNOVVqMun53G1IOEMQT3cw+elQIjp1oE3nThMi4xzjTYG2tw1NTzD6eVBQVq8K+ffGl1G
-X-Proofpoint-GUID: 0o4TbIPxci_iYD2zdo3ifg__H-RkLYxT
-X-Authority-Analysis: v=2.4 cv=HYkUTjE8 c=1 sm=1 tr=0 ts=6874bcee cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=WCmjr0ptvIdc0iB-jngA:9
- a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=EbLIQOmC c=1 sm=1 tr=0 ts=6874c369 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8
+ a=KKAkSRfTAAAA:8 a=hSkVLCK3AAAA:8 a=COk6AnOGAAAA:8 a=LGBCXmjPTBdmNyd4FXgA:9
+ a=cvBusfyB2V15izCimMoJ:22 a=cQPPKAXgyycSBL8etih5:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: 5EATKGf1lHS2rLSwkY8UMUzs7AKas3c3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDA1MCBTYWx0ZWRfX4H6hjkxAtJmg
+ 345taAynzdF2e6PVkBNjD77WRs7TqgIT1AKBpeF0teOxNUOAfK/LFjELVnFYs9uZIOcd30mU7o+
+ 9PDnuWM/7cpWDNjy8FptoA7RekS3dapHcIYUoxKlV1sfifkmEOCLUp9XyvJlBMz+zbkfZd64jDS
+ jqn34vIq26r6k7VRPatnLBUXLf6w0QA/KdYPnQMwo0uef2nntWonr6Y8xQtfL5vc5ZuhzIog2Rw
+ gYkReYwEJsm93PKf6SnMrOHiuglc/tCDpI270f49YWoTBiwnJXv01GxhVaFiEhPTzc4LWSJqT+U
+ dPXD+OGs2bBEeXmZmlF+jy0ILOX2nQhlYzVzBm8FXMzBZx6eoLs4ZAxI0TJOC43eFfsxKGEI3iT
+ yjkjfydN+OmEXRykowdTJx2wCKYK38QLJ9z5+XmHPdLmfhVhJVqvT+ngYkxEgiXhgTz1pz6h
+X-Proofpoint-ORIG-GUID: 5EATKGf1lHS2rLSwkY8UMUzs7AKas3c3
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-14_01,2025-07-09_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- mlxscore=0 mlxlogscore=999 malwarescore=0 impostorscore=0 spamscore=0
- lowpriorityscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507140048
+ spamscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
+ malwarescore=0 bulkscore=0 mlxscore=0 suspectscore=0 impostorscore=0
+ adultscore=0 phishscore=0 mlxlogscore=999 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507140050
 
-Hi,
+Currently, the link_sinfo structure is being freed twice in
+nl80211_dump_station(), once after the send_station() call and again
+in the error handling path. This results in a double free of both
+link_sinfo and link_sinfo->pertid, which might lead to undefined
+behavior or kernel crashes.
 
-Recently I hit an IoT issue while connecting to an TP-LINK AP. As a station, the
-connection with the AP initially succeeded, as indicated by the authentication and
-association logs:
+Hence, fix by ensuring cfg80211_sinfo_release_content() is only
+invoked once during execution of nl80211_station_dump().
 
-[  528.655093] wlan0: authenticate with 16:d8:64:56:ab:5b (local address=66:81:93:de:79:d8)
-[  528.655112] wlan0: send auth to 16:d8:64:56:ab:5b (try 1/3)
-[  528.720573] wlan0: authenticate with 16:d8:64:56:ab:5b (local address=66:81:93:de:79:d8)
-[  528.720584] wlan0: send auth to 16:d8:64:56:ab:5b (try 1/3)
-[  528.790413] wlan0: authenticated
-[  528.794115] wlan0: associate with 16:d8:64:56:ab:5b (try 1/3)
-[  528.831371] wlan0: RX AssocResp from 16:d8:64:56:ab:5b (capab=0x1911 status=0 aid=1024)
-[  528.858116] wlan0: [link 0] local address 9e:c1:c3:67:13:db, AP link address
-14:d8:64:4c:ab:5b
-[  528.858201] wlan0: [link 1] local address 66:81:93:de:79:d8, AP link address
-14:d8:64:4c:ab:5c (assoc)
-[  528.911598] wlan0: associated
-[  528.978910] wlan0: Limiting TX power to 35 (35 - 0) dBm as advertised by 14:d8:64:4c:ab:5c
+Fixes: 49e47223ecc4 ("wifi: cfg80211: allocate memory for link_station info structure")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/81f30515-a83d-4b05-a9d1-e349969df9e9@sabinyo.mountain/
+Reported-by: syzbot+4ba6272678aa468132c8@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68655325.a70a0220.5d25f.0316.GAE@google.com
 
-However, the connection was later disrupted:
-
-[  533.845338] wlan0: AP EHT information doesn't match HT/VHT/HE, disabling EHT
-[  533.845344] wlan0: [link 1] AP 14:d8:64:4c:ab:5c appears to change mode (expected EHT,
-found HE) in beacon, disconnect
-
-with some logs added:
-
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
 ---
-+static void cfg80211_dump_chan_def(const struct cfg80211_chan_def *def)
-+{
-+       struct ieee80211_channel *chan = def->chan;
-+       pr_info("chan: [band %u center_freq %u freq_offset %u hw_value %u flags %u
-max_antenna_gain %u max_power %u max_reg_power %u beacon_found %u orig_flags %u] width %u
-center_freq1 %u center_freq2 %u freq1_offset %u punctured %u\n",
-+               chan->band, chan->center_freq, chan->freq_offset, chan->hw_value,
-chan->flags, chan->max_antenna_gain, chan->max_power, chan->max_reg_power,
-chan->beacon_found, chan->orig_flags,
-+               def->width, def->center_freq1, def->center_freq2, def->freq1_offset,
-def->punctured);
-+}
-+
- static const struct cfg80211_chan_def *
- _cfg80211_chandef_compatible(const struct cfg80211_chan_def *c1,
-                             const struct cfg80211_chan_def *c2)
- {
-        const struct cfg80211_chan_def *ret;
-
-+       cfg80211_dump_chan_def(c1);
-+       cfg80211_dump_chan_def(c2);
-+
-        /* If they are identical, return */
+v2:
+ - Change the logic to fix double free issue.
 ---
+ net/wireless/nl80211.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-The disconnection is caused by different 'punctured':
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 4e6c0a4e2a82..0cdfdf007210 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -7451,6 +7451,7 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ 	struct wireless_dev *wdev;
+ 	u8 mac_addr[ETH_ALEN];
+ 	int sta_idx = cb->args[2];
++	bool sinfo_alloc = false;
+ 	int err, i;
+ 
+ 	err = nl80211_prepare_wdev_dump(cb, &rdev, &wdev, NULL);
+@@ -7479,6 +7480,7 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ 				err = -ENOMEM;
+ 				goto out_err;
+ 			}
++			sinfo_alloc = true;
+ 		}
+ 
+ 		err = rdev_dump_station(rdev, wdev->netdev, sta_idx,
+@@ -7491,6 +7493,11 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ 		if (sinfo.valid_links)
+ 			cfg80211_sta_set_mld_sinfo(&sinfo);
+ 
++		/* reset the sinfo_alloc flag as nl80211_send_station()
++		 * always releases sinfo
++		 */
++		sinfo_alloc = false;
++
+ 		if (nl80211_send_station(skb, NL80211_CMD_NEW_STATION,
+ 				NETLINK_CB(cb->skb).portid,
+ 				cb->nlh->nlmsg_seq, NLM_F_MULTI,
+@@ -7505,7 +7512,8 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ 	cb->args[2] = sta_idx;
+ 	err = skb->len;
+  out_err:
+-	cfg80211_sinfo_release_content(&sinfo);
++	if (sinfo_alloc)
++		cfg80211_sinfo_release_content(&sinfo);
+ 	wiphy_unlock(&rdev->wiphy);
+ 
+ 	return err;
 
-[  533.845311] chan: [band 1 center_freq 5180 freq_offset 0 hw_value 36 flags 524320
-max_antenna_gain 6 max_power 24 max_reg_power 24 beacon_found 1 orig_flags 0] width 3
-center_freq1 5210 center_freq2 0 freq1_offset 0 punctured 0
-[  533.845322] chan: [band 1 center_freq 5180 freq_offset 0 hw_value 36 flags 524320
-max_antenna_gain 6 max_power 24 max_reg_power 24 beacon_found 1 orig_flags 0] width 3
-center_freq1 5210 center_freq2 0 freq1_offset 0 punctured 8
-
-This 'punctured' is suddenly (I mean even 'EHT Operation' was not seen in previous
-beacons) advertised in EHT Operation element contained in AP's beacon:
-
-Ext Tag: EHT Operation (802.11be D3.0)
-    Ext Tag length: 10 (Tag len: 11)
-    Ext Tag Number: EHT Operation (802.11be D3.0) (106)
-    EHT Operation Parameters: 0x03, EHT Operation Information Present, Disabled Subchannel
-Bitmap Present
-        .... ...1 = EHT Operation Information Present: True
-        .... ..1. = Disabled Subchannel Bitmap Present: True
-        .... .0.. = EHT Default PE Duration: False
-        .... 0... = Group Addressed BU Indication Limit: False
-        ..00 .... = Group Addressed BU Indication Exponent: 0
-        00.. .... = Reserved: 0x0
-    Basic EHT-MCS And Nss Set: 0x00000011
-    Control: 0x02, Channel Width: 80 MHz EHT BSS bandwidth
-        .... .010 = Channel Width: 80 MHz EHT BSS bandwidth (2)
-        0000 0... = Reserved: 0x00
-    CCFS0: 0x0000002a
-    CCFS1: 0x00000000
-    Disabled Subchannel Bitmap: 0x0008
-
-Which fails the check in _cfg80211_chandef_compatible(), because the chandef's are not
-identical but have the same width.
-
-Is this AP misbehaving? or is cfg80211/mac80211 not doing correctly?
-
-I am not very familiar with Puncturing, want to hear professional opinions from your guys.
-
-Thanks
-Baochen
+base-commit: 0cad34fb7c5d12a9b61862744e7130e9ce3bc58f
+-- 
+2.34.1
 
 
