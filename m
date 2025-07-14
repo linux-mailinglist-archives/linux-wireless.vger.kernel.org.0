@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-25416-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25417-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DECDB04BCF
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 01:11:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517A2B04BDF
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 01:12:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 624DE4A81F6
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 23:11:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FD8A56049E
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 23:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE12293C6E;
-	Mon, 14 Jul 2025 23:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2C1299A94;
+	Mon, 14 Jul 2025 23:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V12mS15M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOnH0Zw7"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22F129346E;
-	Mon, 14 Jul 2025 23:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE4E299A87;
+	Mon, 14 Jul 2025 23:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752534454; cv=none; b=H9/G4qWMg91NpamQPS32ElFzfMUyovlnKOAUPU8Uf8mAMab5DQ9fVYLrTc3bd7G4zJELa37mcKjf/jkjAG+BROeLz8GpaLak2TkmWuCotxoswiZk4jOwi13wgowV5P8U+MuYNmyKFrdwisjfNB3qdUeOPheR0KHJmnhg+tVFahY=
+	t=1752534478; cv=none; b=pw5RTz82Ab1/ye4XH68H9Ir4T4GAGb1Bx+HX9NZt4wXdK+OhxA2h/7hMa5yxgrNOqX4WV+dmIM38mX37rn4rkXkZxyu1uMzN7Sv0kkS4nxKhf60LPA6XyWTVhDfvbePE/2zwuBRwmbnGlvE1MUEnmcAnfngTaA5MoL2Lhc6gqP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752534454; c=relaxed/simple;
-	bh=yVFlXPDCgvTi/g7cKT+0xKWJ/Se/ufuBEBi8X15GVyI=;
+	s=arc-20240116; t=1752534478; c=relaxed/simple;
+	bh=llCKPdymkwOCEQqOyhPXP7KMp3M4AAo5dbahH5BPm3w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZV0MxqqH6M1/fXRSeMwxWPpz00oCZaGnUPoAFEiRaKwhCaIF2MU+q3OrBfh43IxK5QBrFTvU/tAak1IyffmGc2o2xFulwW+LhXhXcWlPOqXBJMNWqBVQtEU9AgVQKyRRuqBKZ4DYgrGlW9Cv9puOUmGixYQ2nMnQ1kwLQhjT6/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V12mS15M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DADC4CEF4;
-	Mon, 14 Jul 2025 23:07:32 +0000 (UTC)
+	 MIME-Version; b=cNNVp7BkSyXsWUu3iHpxAnXAUSn4UIDvjED3KVXtPccuTwB95XNwhBT4+9r7DySW3lMEnHg63A/y1btD02Br8bpD+C/EKh51jp56Eg4eTuHhGiDNB9pvRVC3df96bJq3M/wLZdejbIKLCLrSy2K9QLWYf4LfxE7pkPJINsb8Hs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOnH0Zw7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE80EC4CEFE;
+	Mon, 14 Jul 2025 23:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752534454;
-	bh=yVFlXPDCgvTi/g7cKT+0xKWJ/Se/ufuBEBi8X15GVyI=;
+	s=k20201202; t=1752534478;
+	bh=llCKPdymkwOCEQqOyhPXP7KMp3M4AAo5dbahH5BPm3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V12mS15MjiFXfn6UfxhfnFteczSuXiA/xv69+oyogoGttLWt4+XRR9i5jgZxF6Uyh
-	 Zo9vxVwlzhx4sOKNyqs4YgY0d9i0dhqA0hhmaKWuAepTnhZhfUbNIthXGXIqwdz0xs
-	 X3e6WjnKDj7y/xRe/xJoxKdiuP1qY7abmPxMMyzZaDoejthcpiKAjpbMudmm1w3mQl
-	 7ZIJR2okJ50/L+99ckYxu1WXVheWxwjx+nth00d4H7YEudb/1fDGXasULOv6k99dOC
-	 jWxE3uegJy0UBpzOgpj7gKzPpPc3rYCadS45hJkRTLSSV1eJbQqiRx02jLLQHNuAFg
-	 JnhQHr9NrtBzQ==
+	b=BOnH0Zw7fUoFkyUlx1Z+RKr/v4P5y1ooVXQOku/OvIm3CDH6OwzuetkppdB1X/8E1
+	 G94Lbsh/LW3qNQs3kCXFa94zaugNo67N9ERDXeoYe6oYf3Wfsk3P319CmHOV3oYq9t
+	 X+q/JyHPUMRj2GQ4GT/5Ns4igaSUhyh4Ly8UQNsfPXBdFOnvuAjyjpAxTAFI9g6bNl
+	 yBxLIRAwzBq5lLJzOwkDwUIx3UGB3j7EUiuI4SN7SAwNsNJA2hvDl9JQzdQyfi8OAT
+	 U8yYPmMqHyGxUWPEvLklAx8vKKhxm+KrPFKXhrDRy/NcQDYeHktaRpTGZjYiq4AaEP
+	 aVRJ+RNUzXGcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -55,12 +55,12 @@ Cc: Felix Fietkau <nbd@nbd.name>,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 09/12] wifi: mt76: fix queue assignment for deauth packets
-Date: Mon, 14 Jul 2025 19:07:12 -0400
-Message-Id: <20250714230715.3710039-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 6/6] wifi: mt76: fix queue assignment for deauth packets
+Date: Mon, 14 Jul 2025 19:07:43 -0400
+Message-Id: <20250714230744.3710270-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250714230715.3710039-1-sashal@kernel.org>
-References: <20250714230715.3710039-1-sashal@kernel.org>
+In-Reply-To: <20250714230744.3710270-1-sashal@kernel.org>
+References: <20250714230744.3710270-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.38
+X-stable-base: Linux 6.6.98
 Content-Transfer-Encoding: 8bit
 
 From: Felix Fietkau <nbd@nbd.name>
@@ -148,10 +148,10 @@ buffering mechanism and get transmitted promptly via the PSD queue.
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index 065a1e4537457..da31bf3c18db8 100644
+index 47cdccdbed6aa..dfca2369e97d5 100644
 --- a/drivers/net/wireless/mediatek/mt76/tx.c
 +++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -615,7 +615,8 @@ mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid,
+@@ -604,7 +604,8 @@ mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid)
  		if ((dev->drv->drv_flags & MT_DRV_HW_MGMT_TXQ) &&
  		    !(info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) &&
  		    !ieee80211_is_data(hdr->frame_control) &&
