@@ -1,573 +1,137 @@
-Return-Path: <linux-wireless+bounces-25395-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25396-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15744B0436E
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 17:20:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FC2B04549
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 18:19:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1A5F3AE4C6
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 15:18:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09A431889278
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 16:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18BF626058B;
-	Mon, 14 Jul 2025 15:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F02D25E816;
+	Mon, 14 Jul 2025 16:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uYd2BCO6"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Vz598LLg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AF226280A
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 15:17:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA3E256C9C
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 16:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752506228; cv=none; b=O7qjyvPuse9dLNKFPxRocYwv89Qz6TpwAI7hIzLRSBGDN5fP0jDrY3i4jDgzS51RdS835l5zy/VeT47EyLrRqfEjYTt55/X0kPeSXXY3jkedH94s2C2drtHpwebvRlTnjjA3/c0nHOqrvHAEl+wWtfftMTOeGiCp1SKLZPmD2Aw=
+	t=1752509562; cv=none; b=AuL7yekryTwWNxeHwNyD2LfBYJs0HjPU3I5Yh9QjJpcuIfYsl6Q1DirJxqTPBkQv25DBKY0voxStTVVX7DxE8Kln1W+VSd2uJhfR7lXpxe0GDs45blviydD+u+RCL1c3H6P9TNoj+Z5t4HFJOYuiGVXnqkoH6GZ5D2M+uXrn47A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752506228; c=relaxed/simple;
-	bh=HY39uDgY9hysxAuRaO156t68YA0wod3hDYYueiMBkAI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/XVYn3k8ZLY69Ha++IXMrouv9HzSDXV/5pdO5RZ6x3Y3XutJQpaC6G8jCqHkAqR2la+BDLv7YIvbm01PFwKEUABCr488xIWNPEftkvqqUifGUAKRHCBu49AHOS3Ti3AV6z0WkCU5RXiltY9dpnY8xZi3UbL2WFWKB9EVd6F3Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uYd2BCO6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D98C4CEF6;
-	Mon, 14 Jul 2025 15:17:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752506227;
-	bh=HY39uDgY9hysxAuRaO156t68YA0wod3hDYYueiMBkAI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYd2BCO6TgA1a3kYbVVnxR4RqOIIIhC/qdobREX41ZAg1k8lGy+xhqgoTbKLJ0hgQ
-	 0WGLkJxcu8DND98PnAOLUhNCqzmMew78Vz4MJmZNdJx6JK6uEuqFg4qr8qyLjolzgX
-	 3qBQGDhrjdzS6a8qWsXOgR3T4uaxGUCPGTnUJm884RrnB9hzAqfCQ9b3ouiFXSh3/d
-	 dwSwfx3qM2I6wV7s5rNV0hnEqlt2DpzdeAlD7v6HcZvcrrGleiCSZQzUj7OTQMP1vM
-	 +1zEqnhI3cJZaGhyMSNsEqAzIY2sJsP7KJvyy8dLvQHMr5Ig+uS1QT1HpiyzDoqCqD
-	 W2Z9w12/eGIkg==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: nbd@nbd.name,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com
-Cc: matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	krzk@kernel.org,
-	lorenzo@kernel.org,
-	horms@kernel.org
-Subject: [RFC mt76 4/4] wifi: mt76: mt7996: Add NPU offload support to MT7996 driver
-Date: Mon, 14 Jul 2025 17:16:22 +0200
-Message-ID: <e06c62af1711a5ccc51e7680d1930dc7a075d6f4.1752505597.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1752505597.git.lorenzo@kernel.org>
-References: <cover.1752505597.git.lorenzo@kernel.org>
+	s=arc-20240116; t=1752509562; c=relaxed/simple;
+	bh=m2RN1PbmM2qJn2u2RVn3EdYDYkhISSePktCsQio9N+M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KpbbDUYNJZvHzSmJF3MAwC6bRgLSV0B/50htYBOeHggjWn3fc6p6VmEkHj3KEn2WMuYq9OzhKqKW2W8VyCyb8Gx7DdgE8CTvMKFstKMiFuPWtaQGqEkIXFZiInp8wYiHyqEoepM+Bbd6VE5MoiRFHKE4k9iW1bwS/xh3L49CqQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Vz598LLg; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56E9MbQC013581
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 16:12:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	rw40OLZb8DmaHdUuMAQhKLnxkhsuaJHUAZeS8EQfAkk=; b=Vz598LLg5T4K89dh
+	en+r6xuPOq8LGBQ657HaIjEUigyePNIRFbrskpaxj+LbLlTwC3WeRsIoA9SatYZE
+	FPGEWAgR57mTCABQJBK2uNZo2TVxr1rmy+m04o+XkDx6jwxk2X8AvxA2OD0UmHzH
+	TKtV/K+lfLIVH2hmZg31cp9miR/1gvJR1i5MoCjj4A2pwujDKIGzXFw3AXXty5El
+	uxtzoyZXOiaMdZe27W0mcHanPb73bhdefxKlLQJlWmA6slKy7uPIzu/nqj3aZ9JW
+	D+SUVYsW4vJG6Nyi/N8Qfb/3W0QURisiRP6tRoRVEFJyu+cVtE8ta4X4VSVhraaw
+	OWrxxw==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47ugvmw9gm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 16:12:16 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-236725af87fso74438455ad.3
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 09:12:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752509508; x=1753114308;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rw40OLZb8DmaHdUuMAQhKLnxkhsuaJHUAZeS8EQfAkk=;
+        b=b9u4MiMc9mVaeL9R1KlJzDyN7JZ3W4s8ZXsHId56TXW1tKCa0rYcR8Tg329jjvuVdT
+         qh3CgbYPPXUlOdaiHTu55V9Li9nEUzf02VogMWwPPvw6TJvr4HJcnjtO0PbXpbROEXfn
+         4iSZDQBwDs04risCIygBvpgBT/9HfIxdQVhIFkPxc8bbAACp0aGtuD+ebSUPkg1Sb6C3
+         bORbZ+oyIpKe8ZYjnfXr9Fe4e7z9pdX/nYKFk3jRIpGNNVQKmjdSzGQS8Nm00EFmsv2p
+         F43yRCQHNqfrhYS1t2sFJupAPWONRWBZeaYyslMjLQOr/Y2SY5djFn8V88rnyjLXls6/
+         R6UQ==
+X-Gm-Message-State: AOJu0YzDYnQO810Mu4VYPxMm3xS90dAyXErHziCkt9pHTmfbd1kDmLzz
+	fTVywi6IclP0HuqR8mqxfi1ICOxC4CCbSA1xU09TjkjtnguLUTUvqfpiM6cYsuegLlcuxU35lty
+	TEMCM+WCGeuzMbNHnFvxkadEP6hVzn73CBSLsbdfwECjs9B+COFRYmVq4V+x/R1SnGRIMYw==
+X-Gm-Gg: ASbGnctb1YDkwRP1pSxuZ6nHPbgbieL2REf9X979VFE/sg3jN8yJoBATKfSYYUVhM+i
+	c9PudlCW52Hl/L4lyA4btgNTHjRlTsatVxfzXmoy+72+qpEmhJVVk8HaTSA5fsNweSVNxiW8dl9
+	MWMPi/QbXSWYRIukdTrC72YYyetKNPDJDeeJdit+96VcuQqNlCocJxJtphzos3OkeqwTXoKJk14
+	QBJSLPbJBpF10DGOtMLpaVfoZZ/ix7++gFaklnt3eSGb7vnyel6eBmmYseK/52ma4UDy4hIXjbA
+	VQMYRg1AP/2UIiFH/O6eUGjjAZRnOjyg8+PpapZTiq4cAalZkog16ETN01fg+gvWafADcKpS/7k
+	2gam/hEb0fCYF2k4kZMo=
+X-Received: by 2002:a17:902:8b8b:b0:238:f2a:8893 with SMTP id d9443c01a7336-23dede984b9mr126994485ad.42.1752509508221;
+        Mon, 14 Jul 2025 09:11:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFhQER9vRAE25eTuAqmHDTfAWwBwxOI0u3/MNS+rhHXQILJw2sqscUlvRSowDfnOj2v7faYeQ==
+X-Received: by 2002:a17:902:8b8b:b0:238:f2a:8893 with SMTP id d9443c01a7336-23dede984b9mr126994205ad.42.1752509507750;
+        Mon, 14 Jul 2025 09:11:47 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de43227b7sm93757965ad.106.2025.07.14.09.11.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Jul 2025 09:11:47 -0700 (PDT)
+Message-ID: <c2870627-536d-4680-9fbd-1c4f5fea6d2c@oss.qualcomm.com>
+Date: Mon, 14 Jul 2025 09:11:46 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next] wifi: ath12k: Use HTT_TCL_METADATA_VER_V1 in FTM
+ mode
+To: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250711035420.1509029-1-aaradhana.sahu@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250711035420.1509029-1-aaradhana.sahu@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 4ltypqHNDZNUvqew8WE-jQSJBDrzHPeP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDA5OCBTYWx0ZWRfX3CZ4w/9FL+2P
+ PmvKOeJUaCdx68iJvesxjU/CYB1roHRucOzcPT2GQXi1mfKzY7OgiSlebijRIUn5z8oulvukiQt
+ xOIA2UZ/ZtoyTFdhH+7IeDu2H8X1H1d4XddVoYgUas4LppqYgjapVS4mWbrbBiieWWEdVF7aEVR
+ pFtd3AxSD/QixaTZ7NYGnPElWePGHc4um6Fhka6otW96r8kh+CF8/2A+R7NTuQPcUp6Yle9IpKm
+ ENwXSN7GUgcTwWh9OVSzM41aKViJYVyKbw7SIfVXz4P9CxyyF08oGUVlhNNeObIZ/y1+5UY+2ay
+ dGUdXgRlDIOEFNs+1Nc/5boxTJynsWp8o+r1vDTPQI5eXzFbrEZ7Z8Mkk5GMKg=
+X-Authority-Analysis: v=2.4 cv=C4fpyRP+ c=1 sm=1 tr=0 ts=68752c60 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=D0RHpJgxHeOTfRx_DPgA:9
+ a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-ORIG-GUID: 4ltypqHNDZNUvqew8WE-jQSJBDrzHPeP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-14_01,2025-07-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 mlxscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=894 classifier=spam
+ authscore=0 authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507140098
 
-Introduce Airoha NPU support to MT7996 driver. NPU is used to enable
-traffic forward offloading between the MT76 NIC and Airoha ethernet one
-available on the Airoha EN7581 SoC using Netfilter Flowtable APIs.
+On 7/10/2025 8:54 PM, Aaradhana Sahu wrote:
+>  };
+>  
+>  #define HTT_VER_REQ_INFO_MSG_ID		GENMASK(7, 0)
+> +#define HTT_OPTION_TCL_METADATA_VER_V1 1
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../wireless/mediatek/mt76/mt7996/Makefile    |   2 +-
- .../net/wireless/mediatek/mt76/mt7996/dma.c   |  17 +-
- .../net/wireless/mediatek/mt76/mt7996/init.c  |   4 +
- .../net/wireless/mediatek/mt76/mt7996/mac.c   |   3 +
- .../net/wireless/mediatek/mt76/mt7996/main.c  |  15 +-
- .../net/wireless/mediatek/mt76/mt7996/mmio.c  |  13 +-
- .../wireless/mediatek/mt76/mt7996/mt7996.h    |   3 +
- .../net/wireless/mediatek/mt76/mt7996/npu.c   | 268 ++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7996/pci.c   |   6 +-
- 9 files changed, 320 insertions(+), 11 deletions(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/npu.c
+use tab for value alignment to match other macros
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/Makefile b/drivers/net/wireless/mediatek/mt76/mt7996/Makefile
-index 07c8b555c1ac..87041a0ad84b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/Makefile
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/Makefile
-@@ -3,6 +3,6 @@
- obj-$(CONFIG_MT7996E) += mt7996e.o
- 
- mt7996e-y := pci.o init.o dma.o eeprom.o main.o mcu.o mac.o \
--	     debugfs.o mmio.o
-+	     debugfs.o mmio.o npu.o
- 
- mt7996e-$(CONFIG_DEV_COREDUMP) += coredump.o
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
-index c8bef0b2a144..d93b9ed50972 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
-@@ -23,6 +23,9 @@ int mt7996_init_tx_queues(struct mt7996_phy *phy, int idx, int n_desc,
- 			flags = MT_WED_Q_TX(idx);
- 	}
- 
-+	if (mt76_npu_device_active(&dev->mt76))
-+		flags = MT_NPU_Q_TX(phy->mt76->band_idx);
-+
- 	return mt76_connac_init_tx_queues(phy->mt76, idx, n_desc,
- 					  ring_base, wed, flags);
- }
-@@ -302,7 +305,7 @@ void mt7996_dma_start(struct mt7996_dev *dev, bool reset, bool wed_reset)
- 		mtk_wed_device_start(wed, wed_irq_mask);
- 	}
- 
--	if (!mt7996_has_wa(dev))
-+	if (!mt7996_has_wa(dev) || mt76_npu_device_active(&dev->mt76))
- 		irq_mask &= ~(MT_INT_RX(MT_RXQ_MAIN_WA) |
- 			      MT_INT_RX(MT_RXQ_BAND1_WA));
- 	irq_mask = reset ? MT_INT_MCU_CMD : irq_mask;
-@@ -705,6 +708,18 @@ int mt7996_dma_init(struct mt7996_dev *dev)
- 		}
- 	}
- 
-+	if (mt76_npu_device_active(&dev->mt76)) {
-+		ret = mt76_npu_rx_queue_init(&dev->mt76,
-+					     &dev->mt76.q_rx[MT_RXQ_NPU0]);
-+		if (ret)
-+			return ret;
-+
-+		ret = mt76_npu_rx_queue_init(&dev->mt76,
-+					     &dev->mt76.q_rx[MT_RXQ_NPU1]);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	ret = mt76_init_queues(dev, mt76_dma_rx_poll);
- 	if (ret < 0)
- 		return ret;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index a9599c286328..66db8d4aa5a0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -1511,6 +1511,10 @@ int mt7996_register_device(struct mt7996_dev *dev)
- 	if (ret)
- 		return ret;
- 
-+	ret = mt7996_npu_hw_init(dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
- 				   ARRAY_SIZE(mt76_rates));
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 226534490792..6fac336bac0c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -2018,6 +2018,8 @@ void mt7996_mac_reset_work(struct work_struct *work)
- 
- 	mutex_lock(&dev->mt76.mutex);
- 
-+	mt7996_npu_hw_stop(dev);
-+
- 	mt76_wr(dev, MT_MCU_INT_EVENT, MT_MCU_INT_EVENT_DMA_STOPPED);
- 
- 	if (mt7996_wait_reset_state(dev, MT_MCU_CMD_RESET_DONE)) {
-@@ -2092,6 +2094,7 @@ void mt7996_mac_reset_work(struct work_struct *work)
- 
- 	mutex_unlock(&dev->mt76.mutex);
- 
-+	mt7996_npu_hw_init(dev);
- 	mt7996_update_beacons(dev);
- 
- 	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mphy.mac_work,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 92b57bcce749..af68b9f64376 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -2054,7 +2054,6 @@ mt7996_set_radar_background(struct ieee80211_hw *hw,
- 	return ret;
- }
- 
--#ifdef CONFIG_NET_MEDIATEK_SOC_WED
- static int
- mt7996_net_fill_forward_path(struct ieee80211_hw *hw,
- 			     struct ieee80211_vif *vif,
-@@ -2090,12 +2089,18 @@ mt7996_net_fill_forward_path(struct ieee80211_hw *hw,
- 	if (phy != &dev->phy && phy->mt76->band_idx == MT_BAND2)
- 		wed = &dev->mt76.mmio.wed_hif2;
- 
--	if (!mtk_wed_device_active(wed))
-+	if (!mtk_wed_device_active(wed) &&
-+	    !mt76_npu_device_active(&dev->mt76))
- 		return -ENODEV;
- 
- 	path->type = DEV_PATH_MTK_WDMA;
- 	path->dev = ctx->dev;
--	path->mtk_wdma.wdma_idx = wed->wdma_idx;
-+#ifdef CONFIG_NET_MEDIATEK_SOC_WED
-+	if (mtk_wed_device_active(wed))
-+		path->mtk_wdma.wdma_idx = wed->wdma_idx;
-+	else
-+#endif
-+		path->mtk_wdma.wdma_idx = link->phy->mt76->band_idx;
- 	path->mtk_wdma.bss = mlink->idx;
- 	path->mtk_wdma.queue = 0;
- 	path->mtk_wdma.wcid = msta_link->wcid.idx;
-@@ -2106,8 +2111,6 @@ mt7996_net_fill_forward_path(struct ieee80211_hw *hw,
- 	return 0;
- }
- 
--#endif
--
- static int
- mt7996_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			u16 old_links, u16 new_links,
-@@ -2168,8 +2171,8 @@ const struct ieee80211_ops mt7996_ops = {
- 	.sta_add_debugfs = mt7996_sta_add_debugfs,
- #endif
- 	.set_radar_background = mt7996_set_radar_background,
--#ifdef CONFIG_NET_MEDIATEK_SOC_WED
- 	.net_fill_forward_path = mt7996_net_fill_forward_path,
-+#ifdef CONFIG_NET_MEDIATEK_SOC_WED
- 	.net_setup_tc = mt76_wed_net_setup_tc,
- #endif
- 	.change_vif_links = mt7996_change_vif_links,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-index 30b40f4a91be..a8b5e754ca26 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-@@ -671,9 +671,18 @@ void mt7996_dual_hif_set_irq_mask(struct mt7996_dev *dev, bool write_reg,
- static void mt7996_rx_poll_complete(struct mt76_dev *mdev,
- 				    enum mt76_rxq_id q)
- {
--	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
-+	if (q == MT_RXQ_NPU0 || q == MT_RXQ_NPU1) {
-+		struct airoha_npu *npu;
-+
-+		npu = rcu_dereference(mdev->mmio.npu);
-+		if (npu)
-+			airoha_npu_wlan_enable_irq(npu, q - MT_RXQ_NPU0);
-+	} else {
-+		struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev,
-+						      mt76);
- 
--	mt7996_irq_enable(dev, MT_INT_RX(q));
-+		mt7996_irq_enable(dev, MT_INT_RX(q));
-+	}
- }
- 
- /* TODO: support 2/4/6/8 MSI-X vectors */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 33ac16b64ef1..54d5ddbfc4dc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -782,6 +782,9 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
- 			 bool hif2, int *irq);
- u32 mt7996_wed_init_buf(void *ptr, dma_addr_t phys, int token_id);
- 
-+int mt7996_npu_hw_init(struct mt7996_dev *dev);
-+int mt7996_npu_hw_stop(struct mt7996_dev *dev);
-+
- #ifdef CONFIG_MTK_DEBUG
- int mt7996_mtk_init_debugfs(struct mt7996_phy *phy, struct dentry *dir);
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/npu.c b/drivers/net/wireless/mediatek/mt76/mt7996/npu.c
-new file mode 100644
-index 000000000000..bce448820e73
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/npu.c
-@@ -0,0 +1,268 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (c) 2025 AIROHA Inc
-+ * Author: Lorenzo Bianconi <lorenzo@kernel.org>
-+ */
-+#include <linux/kernel.h>
-+#include <linux/soc/airoha/airoha_offload.h>
-+
-+#include "mt7996.h"
-+
-+static int mt7996_npu_offload_init(struct mt7996_dev *dev,
-+				   struct airoha_npu *npu)
-+{
-+	u32 hif1_ofs = 0, phy_addr;
-+	int i, err;
-+
-+	err = airoha_npu_wlan_send_msg(npu, 0,
-+				       WLAN_FUNC_SET_WAIT_PCIE_PORT_TYPE,
-+				       dev->mt76.mmio.npu_type, GFP_KERNEL);
-+	if (err) {
-+		dev_warn(dev->mt76.dev,
-+			 "failed setting npu wlan PCIe port type\n");
-+		return err;
-+	}
-+
-+	if (dev->hif2)
-+		hif1_ofs = MT_WFDMA0_PCIE1(0) - MT_WFDMA0(0);
-+
-+	for (i = MT_BAND0; i < MT_BAND2; i++) {
-+		phy_addr = dev->mt76.mmio.phy_addr;
-+		if (i)
-+			phy_addr += MT_RXQ_RING_BASE(MT_RXQ_RRO_BAND1) + 0x90 +
-+				    hif1_ofs;
-+		else
-+			phy_addr += MT_RXQ_RING_BASE(MT_RXQ_RRO_BAND0) + 0x80;
-+
-+		err = airoha_npu_wlan_send_msg(npu, i,
-+					       WLAN_FUNC_SET_WAIT_PCIE_ADDR,
-+					       phy_addr, GFP_KERNEL);
-+		if (err) {
-+			dev_warn(dev->mt76.dev,
-+				 "failed setting npu wlan PCIe desc addr\n");
-+			return err;
-+		}
-+
-+		err = airoha_npu_wlan_send_msg(npu, i, WLAN_FUNC_SET_WAIT_DESC,
-+					       MT7996_RX_RING_SIZE, GFP_KERNEL);
-+		if (err) {
-+			dev_warn(dev->mt76.dev,
-+				 "failed setting npu wlan PCIe desc size\n");
-+			return err;
-+		}
-+
-+		phy_addr = dev->mt76.mmio.phy_addr;
-+		if (i)
-+			phy_addr += MT_TXQ_RING_BASE(0) + 0x150 + hif1_ofs;
-+		else
-+			phy_addr += MT_TXQ_RING_BASE(0) + 0x120;
-+
-+		err = airoha_npu_wlan_send_msg(npu, i,
-+					       WLAN_FUNC_SET_WAIT_TX_RING_PCIE_ADDR,
-+					       phy_addr, GFP_KERNEL);
-+		if (err) {
-+			dev_warn(dev->mt76.dev,
-+				 "failed setting npu wlan tx desc addr\n");
-+			return err;
-+		}
-+	}
-+
-+	err = airoha_npu_wlan_send_msg(npu, 9, WLAN_FUNC_SET_WAIT_DESC,
-+				       MT7996_RX_RING_SIZE, GFP_KERNEL);
-+	if (err) {
-+		dev_warn(dev->mt76.dev,
-+			 "failed setting npu wlan rxdmad_c desc size\n");
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mt7996_npu_txd_init(struct mt7996_dev *dev, struct airoha_npu *npu)
-+{
-+	int i, err;
-+
-+	for (i = MT_BAND0; i < MT_BAND2; i++) {
-+		dma_addr_t dma_addr;
-+		u32 val;
-+
-+		err = airoha_npu_wlan_get_msg(npu, i + 5,
-+					      WLAN_FUNC_GET_WAIT_RXDESC_BASE,
-+					      &val, GFP_KERNEL);
-+		if (err) {
-+			dev_warn(dev->mt76.dev,
-+				 "failed retriving npu wlan tx ring addr\n");
-+			return err;
-+		}
-+		writel(val, &dev->mt76.phys[i]->q_tx[0]->regs->desc_base);
-+
-+		if (!dmam_alloc_coherent(dev->mt76.dma_dev,
-+					 256 * MT7996_TX_RING_SIZE,
-+					 &dma_addr, GFP_KERNEL))
-+			return -ENOMEM;
-+
-+		err = airoha_npu_wlan_send_msg(npu, i,
-+					       WLAN_FUNC_SET_WAIT_TX_BUF_SPACE_HW_BASE,
-+					       dma_addr, GFP_KERNEL);
-+		if (err) {
-+			dev_warn(dev->mt76.dev,
-+				 "failed setting npu wlan queue buf addr\n");
-+			return err;
-+		}
-+
-+		if (!dmam_alloc_coherent(dev->mt76.dma_dev,
-+					 256 * MT7996_TX_RING_SIZE,
-+					 &dma_addr, GFP_KERNEL))
-+			return -ENOMEM;
-+
-+		err = airoha_npu_wlan_send_msg(npu, i + 5,
-+					       WLAN_FUNC_SET_WAIT_TX_BUF_SPACE_HW_BASE,
-+					       dma_addr, GFP_KERNEL);
-+		if (err) {
-+			dev_warn(dev->mt76.dev,
-+				 "failed setting npu wlan tx buf addr\n");
-+			return err;
-+		}
-+
-+		if (!dmam_alloc_coherent(dev->mt76.dma_dev, 256 * 1024,
-+					 &dma_addr, GFP_KERNEL))
-+			return -ENOMEM;
-+
-+		err = airoha_npu_wlan_send_msg(npu, i + 10,
-+					       WLAN_FUNC_SET_WAIT_TX_BUF_SPACE_HW_BASE,
-+					       dma_addr, GFP_KERNEL);
-+		if (err) {
-+			dev_warn(dev->mt76.dev,
-+				 "failed setting npu wlan tx buf base\n");
-+			return err;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int mt7996_npu_rx_event_init(struct mt7996_dev *dev,
-+				    struct airoha_npu *npu)
-+{
-+	struct mt76_queue *q = &dev->mt76.q_rx[MT_RXQ_MAIN_WA];
-+	phys_addr_t phy_addr = dev->mt76.mmio.phy_addr;
-+	int err;
-+
-+	err = airoha_npu_wlan_send_msg(npu, 0,
-+				       WLAN_FUNC_SET_WAIT_RX_RING_FOR_TXDONE_HW_BASE,
-+				       q->desc_dma, GFP_KERNEL);
-+	if (err) {
-+		dev_warn(dev->mt76.dev,
-+			 "failed setting npu wlan tx-done ring\n");
-+		return err;
-+	}
-+
-+	err = airoha_npu_wlan_send_msg(npu, 10, WLAN_FUNC_SET_WAIT_DESC,
-+				       MT7996_RX_MCU_RING_SIZE, GFP_KERNEL);
-+	if (err) {
-+		dev_warn(dev->mt76.dev,
-+			 "failed setting npu wlan descriptors\n");
-+		return err;
-+	}
-+
-+	phy_addr += MT_RXQ_RING_BASE(MT_RXQ_MAIN_WA) + 0x20;
-+	err = airoha_npu_wlan_send_msg(npu, 10, WLAN_FUNC_SET_WAIT_PCIE_ADDR,
-+				       phy_addr, GFP_KERNEL);
-+	if (err)
-+		dev_warn(dev->mt76.dev,
-+			 "failed setting npu wlan rx pcie address\n");
-+	return err;
-+}
-+
-+static int mt7996_npu_tx_done_init(struct mt7996_dev *dev,
-+				   struct airoha_npu *npu)
-+{
-+	int err;
-+
-+	err = airoha_npu_wlan_send_msg(npu, 2,
-+				       WLAN_FUNC_SET_WAIT_INODE_TXRX_REG_ADDR, 0,
-+				       GFP_KERNEL);
-+	if (err) {
-+		dev_warn(dev->mt76.dev, "failed setting npu wlan txrx addr2\n");
-+		return err;
-+	}
-+
-+	err = airoha_npu_wlan_send_msg(npu, 7,
-+				       WLAN_FUNC_SET_WAIT_INODE_TXRX_REG_ADDR, 0,
-+				       GFP_KERNEL);
-+	if (err)
-+		dev_warn(dev->mt76.dev, "failed setting npu wlan txrx addr7\n");
-+
-+	return err;
-+}
-+
-+int mt7996_npu_hw_init(struct mt7996_dev *dev)
-+{
-+	struct airoha_npu *npu;
-+	int i, err = 0;
-+
-+	mutex_lock(&dev->mt76.mutex);
-+
-+	npu = rcu_dereference_protected(dev->mt76.mmio.npu, &dev->mt76.mutex);
-+	if (!npu)
-+		goto unlock;
-+
-+	err = mt7996_npu_offload_init(dev, npu);
-+	if (err)
-+		goto unlock;
-+
-+	err = mt7996_npu_txd_init(dev, npu);
-+	if (err)
-+		goto unlock;
-+
-+	err = mt7996_npu_rx_event_init(dev, npu);
-+	if (err)
-+		goto unlock;
-+
-+	err = mt7996_npu_tx_done_init(dev, npu);
-+	if (err)
-+		goto unlock;
-+
-+	for (i = MT_RXQ_NPU0; i <= MT_RXQ_NPU1; i++)
-+		airoha_npu_wlan_enable_irq(npu, i - MT_RXQ_NPU0);
-+unlock:
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	return err;
-+}
-+
-+int mt7996_npu_hw_stop(struct mt7996_dev *dev)
-+{
-+	struct airoha_npu *npu;
-+	int i, err;
-+	u32 info;
-+
-+	npu = rcu_dereference_protected(dev->mt76.mmio.npu, &dev->mt76.mutex);
-+	if (!npu)
-+		return 0;
-+
-+	err = airoha_npu_wlan_send_msg(npu, 4,
-+				       WLAN_FUNC_SET_WAIT_INODE_TXRX_REG_ADDR,
-+				       0, GFP_KERNEL);
-+	if (err)
-+		return err;
-+
-+	for (i = 0; i < 10; i++) {
-+		err = airoha_npu_wlan_get_msg(npu, 3,
-+					      WLAN_FUNC_GET_WAIT_NPU_INFO,
-+					      &info, GFP_KERNEL);
-+		if (err)
-+			continue;
-+
-+		if (info) {
-+			err = -ETIMEDOUT;
-+			continue;
-+		}
-+	}
-+
-+	if (!err)
-+		err = airoha_npu_wlan_send_msg(npu, 6,
-+					       WLAN_FUNC_SET_WAIT_INODE_TXRX_REG_ADDR,
-+					       0, GFP_KERNEL);
-+	return err;
-+}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-index 19e99bc1c6c4..2dbb6e51e80a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-@@ -98,10 +98,10 @@ static int mt7996_pci_hif2_probe(struct pci_dev *pdev)
- static int mt7996_pci_probe(struct pci_dev *pdev,
- 			    const struct pci_device_id *id)
- {
-+	int irq, hif2_irq, ret, npu_type;
- 	struct pci_dev *hif2_dev;
- 	struct mt7996_hif *hif2;
- 	struct mt7996_dev *dev;
--	int irq, hif2_irq, ret;
- 	struct mt76_dev *mdev;
- 
- 	ret = pcim_enable_device(pdev);
-@@ -138,6 +138,10 @@ static int mt7996_pci_probe(struct pci_dev *pdev,
- 	mt7996_wfsys_reset(dev);
- 	hif2 = mt7996_pci_init_hif2(pdev);
- 
-+	npu_type = pdev->bus && pci_domain_nr(pdev->bus) ? 3 : 2;
-+	if (mt76_npu_init(mdev, pci_resource_start(pdev, 0), npu_type))
-+		dev_warn(mdev->dev, "failed loading npu\n");
-+
- 	ret = mt7996_mmio_wed_init(dev, pdev, false, &irq);
- 	if (ret < 0)
- 		goto free_wed_or_irq_vector;
--- 
-2.50.1
+i'll fix this in the 'pending' branch
 
+>  #define HTT_OPTION_TCL_METADATA_VER_V2	2
+>  #define HTT_OPTION_TAG			GENMASK(7, 0)
+>  #define HTT_OPTION_LEN			GENMASK(15, 8)
 
