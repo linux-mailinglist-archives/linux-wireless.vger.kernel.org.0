@@ -1,45 +1,46 @@
-Return-Path: <linux-wireless+bounces-25391-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25392-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D79B04366
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 17:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E864B04368
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 17:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15E594A1E44
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 15:17:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF9F14A2091
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 15:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08F425EFBF;
-	Mon, 14 Jul 2025 15:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0681C25E448;
+	Mon, 14 Jul 2025 15:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yv2k2zTk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZHKVqaC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6F725E448
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 15:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66B625DB12
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 15:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752506216; cv=none; b=HGSiTaXBUSBSFcoYgH70iry6Ef/Ced0rve84t6iwxu07KfwEWCYOa/mYTr+wWlhFjAfW8Ab0t+YiZOqmIQ7TFopiBZOQDHxZMi9DVP0ramrYNgA/UkiU69MMpSQrH4K2t7v110k53GVmGWFQZ0W/+HonTciXDXmoOLspDKz1vA0=
+	t=1752506219; cv=none; b=Gdj+zcGgZrZ3/wYHyyDdcSqdVVlpFza4pIhmjhj4KbSHantTPltPxgRSEZciOn1WyN1VBV6EyBcJGMGCTaVBY/zKRbU4ZLkUCC99dNe7bAU8/u6vJUQ7qOLyh+BP3GEBuFvleg+gC8JuR18M3hW8iIF/Bjz5JGpmqKX1bsIefGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752506216; c=relaxed/simple;
-	bh=cNl2G+4nID9VEq/SkN/gUiR1UE/E6bO8XMUjvivYSMU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b2hIKJHkSbqYVhsyZE0FJ/aX9YRgAPN6mcGGyTZzMbmhRNcTBVxR3hUKQOMpWFoGfhRWVqYyApN9FaI2uF+sToA8SU8FBU/auKJTnQsU4ZiSW2+00gRHlERM5H5zK0GxFPIfqJ8Vdmxla3It+h79iGuMcTMKvTmfU47jW2PX+Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yv2k2zTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60ADC4CEED;
-	Mon, 14 Jul 2025 15:16:55 +0000 (UTC)
+	s=arc-20240116; t=1752506219; c=relaxed/simple;
+	bh=H3mnst5PJ8yNkfvT4AUb7ofM/mh624lIAEQ/llNlbfY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=J+N4RvWPPuwZTpxPo/MmzXZtlhbTKb0RSfj3XgjG38a9rKB3CvC9N4hnIkPx/JEkdQgvjyif0cPbTXl6oTHB6+hRQQ30Zn5NeZG6DQ6wbvYZxjPlzfdJ8BP5eZTozBkAFbeMq2OYI82NRi8FEWE1Q7sSSz5Ydu5t7udtlCxOz/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZHKVqaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4579C4CEED;
+	Mon, 14 Jul 2025 15:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752506216;
-	bh=cNl2G+4nID9VEq/SkN/gUiR1UE/E6bO8XMUjvivYSMU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Yv2k2zTkXByHZEoKL4c7km2DuInQFDAfQMJOk0h6uEpmR1gEIjWAnuF0lY9qwZAn3
-	 3jxmnM/APPXVeiaRNQY7C2sXG9pJpCU8UePyDShfSC3HTJJRjlg5pfVWfIdvkgZ2bz
-	 W4NjrhrlxdvldLLulBwnlYqBqGRRqYUDpNVTWyz61Hc6uS4n5HK3VvN6D9sgTPo/y1
-	 aqWC8noOHSQvySVV0OiCWLGdxFzq0+2wxk9iPszT9igjSvkJKOXoxTZJNhlI/rPZMa
-	 /G1a1JZ4s4Dr30d74QjNwcSsRALwj12qGMTXW6uOjNkP9KVkvrsfpNYc9Pd1tYiDcJ
-	 s4t656AgRHFCw==
+	s=k20201202; t=1752506219;
+	bh=H3mnst5PJ8yNkfvT4AUb7ofM/mh624lIAEQ/llNlbfY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YZHKVqaCHe0d7nIOYk/dFqDtpZnNMC+YFG1oTSdbItmc6LOR4F3BAc81YenfeNFmz
+	 GvP/BjZia5IVxXcXUTjNYLqFHpAoPJ/mqi8dFf4azH0iqt0aFU539/XpCwIIRhhti8
+	 1BbCMjzAEkLmeiOxajnUIOyvcRoIlzih5lP2yZY5QFGmjPAQmWpGFP6+ngYEoR06eO
+	 LoB/imSCbNFVWiLWfgLdyJTMooHbABJwi+WDqQpGht/Pci4MdZeQtgSCMS2792Sm9p
+	 lG/L1ZCl+wFuZhc3Q9/Eg/+nVwchJWs8sqadjcm3w8RH1z7EWoccg7ghe6foUhzeYu
+	 HDghe8dmOxhWw==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
 To: nbd@nbd.name,
 	ryder.lee@mediatek.com,
@@ -52,10 +53,12 @@ Cc: matthias.bgg@gmail.com,
 	krzk@kernel.org,
 	lorenzo@kernel.org,
 	horms@kernel.org
-Subject: [RFC mt76 0/4] Add NPU offload support to MT7996 driver
-Date: Mon, 14 Jul 2025 17:16:18 +0200
-Message-ID: <cover.1752505597.git.lorenzo@kernel.org>
+Subject: [RFC mt76 1/4] wifi: mt76: Move Q_READ/Q_WRITE definitions in dma.h
+Date: Mon, 14 Jul 2025 17:16:19 +0200
+Message-ID: <e7f8cda2eafe3bb1c04779f05fc58d52c2838fd9.1752505597.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1752505597.git.lorenzo@kernel.org>
+References: <cover.1752505597.git.lorenzo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -64,37 +67,100 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce Airoha NPU support to MT7996 driver. NPU is used to enable
-traffic forward offloading between the MT76 NIC and Airoha ethernet one
-available on the Airoha EN7581 SoC using Netfilter Flowtable APIs.
-This series is based on the following net-next series for airoha_npu driver:
-https://patchwork.kernel.org/project/netdevbpf/cover/20250705-airoha-en7581-wlan-offlaod-v2-0-3cf32785e381@kernel.org/
+This is a preliminary patch to enable traffic forward offloading between
+the MT76 NIC and Airoha ethernet one via the Airoha NPU module available
+on the Airoha EN7581 SoC.
 
-Lorenzo Bianconi (4):
-  wifi: mt76: Move Q_READ/Q_WRITE definitions in dma.h
-  wifi: mt76: Add mt76_dev pointer in mt76_queue struct.
-  wifi: mt76: Introduce the NPU generic layer
-  wifi: mt76: mt7996: Add NPU offload support to MT7996 driver
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/dma.c | 31 ------------------------
+ drivers/net/wireless/mediatek/mt76/dma.h | 31 ++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+), 31 deletions(-)
 
- drivers/net/wireless/mediatek/mt76/Makefile   |   2 +-
- drivers/net/wireless/mediatek/mt76/dma.c      |  71 ++--
- drivers/net/wireless/mediatek/mt76/dma.h      |  67 ++++
- drivers/net/wireless/mediatek/mt76/mac80211.c |   6 +-
- drivers/net/wireless/mediatek/mt76/mt76.h     |  49 +++
- .../wireless/mediatek/mt76/mt7996/Makefile    |   2 +-
- .../net/wireless/mediatek/mt76/mt7996/dma.c   |  17 +-
- .../net/wireless/mediatek/mt76/mt7996/init.c  |   4 +
- .../net/wireless/mediatek/mt76/mt7996/mac.c   |   3 +
- .../net/wireless/mediatek/mt76/mt7996/main.c  |  15 +-
- .../net/wireless/mediatek/mt76/mt7996/mmio.c  |  13 +-
- .../wireless/mediatek/mt76/mt7996/mt7996.h    |   3 +
- .../net/wireless/mediatek/mt76/mt7996/npu.c   | 268 +++++++++++++
- .../net/wireless/mediatek/mt76/mt7996/pci.c   |   6 +-
- drivers/net/wireless/mediatek/mt76/npu.c      | 378 ++++++++++++++++++
- 15 files changed, 855 insertions(+), 49 deletions(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/npu.c
- create mode 100644 drivers/net/wireless/mediatek/mt76/npu.c
-
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 87f531297f85..a66cda167374 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -7,37 +7,6 @@
+ #include "mt76.h"
+ #include "dma.h"
+ 
+-#if IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED)
+-
+-#define Q_READ(_q, _field) ({						\
+-	u32 _offset = offsetof(struct mt76_queue_regs, _field);		\
+-	u32 _val;							\
+-	if ((_q)->flags & MT_QFLAG_WED)					\
+-		_val = mtk_wed_device_reg_read((_q)->wed,		\
+-					       ((_q)->wed_regs +	\
+-					        _offset));		\
+-	else								\
+-		_val = readl(&(_q)->regs->_field);			\
+-	_val;								\
+-})
+-
+-#define Q_WRITE(_q, _field, _val)	do {				\
+-	u32 _offset = offsetof(struct mt76_queue_regs, _field);		\
+-	if ((_q)->flags & MT_QFLAG_WED)					\
+-		mtk_wed_device_reg_write((_q)->wed,			\
+-					 ((_q)->wed_regs + _offset),	\
+-					 _val);				\
+-	else								\
+-		writel(_val, &(_q)->regs->_field);			\
+-} while (0)
+-
+-#else
+-
+-#define Q_READ(_q, _field)		readl(&(_q)->regs->_field)
+-#define Q_WRITE(_q, _field, _val)	writel(_val, &(_q)->regs->_field)
+-
+-#endif
+-
+ static struct mt76_txwi_cache *
+ mt76_alloc_txwi(struct mt76_dev *dev)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.h b/drivers/net/wireless/mediatek/mt76/dma.h
+index e3ddc7a83757..982722b2e5a5 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.h
++++ b/drivers/net/wireless/mediatek/mt76/dma.h
+@@ -41,6 +41,37 @@
+ #define MT_FCE_INFO_LEN			4
+ #define MT_RX_RXWI_LEN			32
+ 
++#if IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED)
++
++#define Q_READ(_q, _field) ({						\
++	u32 _offset = offsetof(struct mt76_queue_regs, _field);		\
++	u32 _val;							\
++	if ((_q)->flags & MT_QFLAG_WED)					\
++		_val = mtk_wed_device_reg_read((_q)->wed,		\
++					       ((_q)->wed_regs +	\
++					        _offset));		\
++	else								\
++		_val = readl(&(_q)->regs->_field);			\
++	_val;								\
++})
++
++#define Q_WRITE(_q, _field, _val)	do {				\
++	u32 _offset = offsetof(struct mt76_queue_regs, _field);		\
++	if ((_q)->flags & MT_QFLAG_WED)					\
++		mtk_wed_device_reg_write((_q)->wed,			\
++					 ((_q)->wed_regs + _offset),	\
++					 _val);				\
++	else								\
++		writel(_val, &(_q)->regs->_field);			\
++} while (0)
++
++#else
++
++#define Q_READ(_q, _field)		readl(&(_q)->regs->_field)
++#define Q_WRITE(_q, _field, _val)	writel(_val, &(_q)->regs->_field)
++
++#endif
++
+ struct mt76_desc {
+ 	__le32 buf0;
+ 	__le32 ctrl;
 -- 
 2.50.1
 
