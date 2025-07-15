@@ -1,80 +1,80 @@
-Return-Path: <linux-wireless+bounces-25464-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25465-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4718AB0577D
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 12:07:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 241DFB057F2
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 12:36:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A61947A47D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 10:06:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46BFE3BC42B
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 10:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2D02D7810;
-	Tue, 15 Jul 2025 10:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16052D7807;
+	Tue, 15 Jul 2025 10:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QVu70fEn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jLRq7Wkd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04422D12E4
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 10:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC8826FA5C;
+	Tue, 15 Jul 2025 10:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752574049; cv=none; b=VVlbts1oJF8eyT3CPIH78LQRB+EtYyD22ynw/xxReoIaOed3uoSX+EM9xTwabwXAScxtLWrIITr9AJ+X61d4NIjBseyNWbRaJ+cFS0KTVDR71GTzMKzMQl7z3xAE8h2Rd/rOMlgSV4ZvlSdGUxMF0QNE2UmflL1B7qtMUYYwSVw=
+	t=1752575782; cv=none; b=mbPM6+EgmJngvIxPjTV3ZzEA9K604hWOuKvQkQLLXS/3OsAOjP3ObqoagA8hg4mjzWP55hgtOypAdSUBiXvdABCT1pmWBoxeWZyqug1vmTUzd97ta44l9uYUnjWVtSNuPCQpyGHxPZ9d2Ficl/Qa616M1Z0xIeMlfIb0c2rF+jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752574049; c=relaxed/simple;
-	bh=hOFfk3ODOl3A3dgoLqAqD/ifgxfbh7Op/eON6JMTA5Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=lxouWs2Z25X6BYas97td/HqTkbyfszhE2xZLjDtjgTE8EdfBytz/oM35MDl9RxC8IL7tw+a+2fPohPYMwoANPczbr5cQ24vAy4yf4MDuHXc63YlfLKEtX5VEdSqkWBVi9ed8rX9nrm2ad5hI+h0F89CEP1bKrAG1ZaYsPiz4XrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QVu70fEn; arc=none smtp.client-ip=209.85.218.41
+	s=arc-20240116; t=1752575782; c=relaxed/simple;
+	bh=F+tYOXJ8hjiy2s7ICd+QbNKS1sdyZsQBpGzRhNcc6jw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VvS0HmwWN4rpr06EATS+0a/HqWTKmvT4x5yFePkxdrl2HasSO2Z1jdkjF6KfTt2U4dA6KftBGeX3hlIo9UIZ1HXt+Hfa5Kx684lAadfTM8jdr8Il40Q6S4cYVB3j+P/g6uLfm2z1rSF99TxZWoY9m8g+2kGawystLagAClQJuVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jLRq7Wkd; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ae0a0cd709bso1290910266b.0
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 03:07:27 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-606b58241c9so8828084a12.3;
+        Tue, 15 Jul 2025 03:36:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752574046; x=1753178846; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752575779; x=1753180579; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=h1SI0zaETaEy8VkisAtkFcUBp/sz/alqQ2dJ8XRfreE=;
-        b=QVu70fEnca7oSj6cn9kZQ1jyBG1xURxqQ/7dyyPr7ejQRKsCapfody5IrBWEga3rsf
-         S4Y1M7zbBZ8NhXOV3lhaYV8e4fQQBWiB/guBnh2clS7xFiQpPseXjEBrguneA5StfVIC
-         rc7WnPy6ydTU72P2KQflfbrUuEJmtEw2XUj3yxD6VsFsKlXPjwZuK3c6ZCpbvX8qXJjP
-         vdreGYEFW8KuOEq50256JB4Nvedr2dNJenz4mSylJkiWCaLGE9YzIc2KwjurW7UmnCkS
-         Wp+R5f3m8pp4Lywb7vpykH9ZgPvCRtirY+UvVn6xWrq83fJaqS1mk98Wr8KfZRYYvf8t
-         3dUg==
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RwJj2XW0Xtg7vWbGRjw0IzVQ1p4FfGBNG+AO9cOWVHY=;
+        b=jLRq7WkdZMcSiLTaLVo7wsMRPJhu8Vi22rCcac22t1+fk9PVHtmbbebj7bFJYtEsj3
+         YXawYvu3CGGetIn/4FPdpUFhTc0HE7aGDO92BvrzCbPM4YQJljtis07+KKJXHM1ipEq1
+         TEKJrMwGfiYZ6zXjdFmK74Uy1O5ajGflD7JLCKbGRnYY1abTUmreKlXHJuwCFycuDmvh
+         jXHpyQd1I/sWmfzpOiMpgFnXf2aGn+TKz7H2Ilrac9oEWnIK2/wENKSSkTYf1W7JkNHC
+         TjDfrYWlw672+tyk0aA5tEOQ7l0n/l0FxN0LSdeEw/DD9h4RW71cWPitgwSxOZkJuL9Y
+         5eaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752574046; x=1753178846;
+        d=1e100.net; s=20230601; t=1752575779; x=1753180579;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=h1SI0zaETaEy8VkisAtkFcUBp/sz/alqQ2dJ8XRfreE=;
-        b=mCpF190RBHb5+vt6ScpLGeEfja7IHJSqNAddBDFd0T5ZuH8pgZBqs3p5BS7h3TDXwv
-         fOhHrsjk8QZKnMxzY91lTPD0vkZOJ5eylbZe2X6DXjY0v09zycQBvs/O09oq8JUCNFSX
-         Ww8dWrIc5m3GZCh05pG1pEGhp7245Kqe8CxYZ13E09cefaTahA3HsIxXH3rn5Y+4ZPB+
-         g1Qo/voyUw14ScqCPg+3oSbTJdtHDHppNy84M4lCCWM9U+0vesCdIdLCFS7ERzseVxTE
-         bWi80jeyPzeASprZRIdVP7i25qJiKrtMlG6JGrCjFs5wlJ2tNAmfS6sHBqkoo4L4sJgR
-         Ftow==
-X-Forwarded-Encrypted: i=1; AJvYcCXaeJSH5Ro0uRczAX1PIDSIN6g9JaKhK0GXEMrb0LAR69LhSanYTXS3k1NCWpBs6AY8dPNPBJlsx+las0ngYQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPRhxmIFELyd3xahOmBnMFb1IHQJnJjTAJD42c/9v4D9BZx5Jh
-	ptypj2N4ghUh4heyroCFX4I+7Vd7ewPieCg8YNlNjfYQO5MGv6yEtRvN
-X-Gm-Gg: ASbGncseJP439kppfU1NiLidJ0TT1wapC2GMJGPWmjxfb0ANIyoWq7tEs/qWnn0uggx
-	CTYwsfcAPv87NvTOzCv55x9rmNtpc+M7ZwQO2FfVivXSkTZA2098cHJ/QHdU8zSdHBUoq/ZCB52
-	LpTPxtJF69L0rQ/SiNXSt/yw00WaNcK8c8NhdKg/U1YGr+6KqhDbI4bxki6Wn/UNmu472Nv5hmT
-	wj3Fvpr6p1FCAI2XUmdZFIzAVAv2g2HVtv6oGFYi903TOwHeg46fmcssaIoKgWDwWriMJP38LCz
-	mq4i7foDmAJbv+6pdrhZZ4kZIR0kk3HkGCkhFsrN+eHxzmzGLu4ffMkJwg+thhZ2Tony4LtjUw3
-	vljBES7smFrYel4SDnnXaIaXpHKR8sTJMMrpLyA7S
-X-Google-Smtp-Source: AGHT+IFX49N/dtq2R9i25vV26ipRiDizalSPmGjpjxsdJQ8OOeei/9ahddxWWbILt4WW1VQ16bGAOw==
-X-Received: by 2002:a17:907:b815:b0:ae3:5185:5416 with SMTP id a640c23a62f3a-ae9b5c2bb65mr288591466b.13.1752574046056;
-        Tue, 15 Jul 2025 03:07:26 -0700 (PDT)
-Received: from [192.168.0.50] ([81.196.40.253])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e8294013sm975112666b.118.2025.07.15.03.07.25
+        bh=RwJj2XW0Xtg7vWbGRjw0IzVQ1p4FfGBNG+AO9cOWVHY=;
+        b=fRX/gvWiP7kNG0x/Tou2BwWsyQGD7FmbeCN3nhjQrmzTsR/tLIiJwDixcYovTFAxqB
+         96aHcgAsLV+SxQvnOR1g4BqwCSzICyBWjkfFBjhhDhlaPa2aAIghIXRdSWyedAXhGUs0
+         nEkxr/JwfbTuKnxGj7iRIfJzf0giePzfE3/in7/hskj7exFTCfaEiL4rWbQq/gtIVIPy
+         Qra4NdMV67KaDuZr8Wi2ayuIgsBXWd9GuVC28lVbinge2GPbXzHlkKW0OwLaVUfXdb8A
+         xBILe0sRpkhzzdY1IsdgVapSOHFoZhVHeCUFo3B8Of2FOv8bpw1gRVI8ngX2REv1rWsP
+         9Kyw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9fiQqqiDjpOj+Kig2Q87XSpJuhWG0qBZIMPLe6U9ET8yH4uw9T+ClUaOznlrYvA2xMIOHKfaOi78ra3G1@vger.kernel.org, AJvYcCVZsnhDbiyE/JgAah3tzPW2f+IQZjpMi4Hhz3et+UtOugLx4t78bDjM5nRJs6bmqx28poY=@vger.kernel.org, AJvYcCWhavnj3O1PTKR8zI9QqXyoHXmtaZWLzPLTEtxtT0Qx5GtxzazpofwNq9Tg/aCB4TAIbGT1Iu0G@vger.kernel.org, AJvYcCXazEYsKl7jAoKhtxP35zuL0x2hOTmN7amcCte9N7aWsiZFmOHYxML6TcOQ/jYowugySxCu/X0dq0V3x7SkAgA=@vger.kernel.org, AJvYcCXpeKODxpGM2n1jjr6eqi6EvZ16iUVKvQUYP4I/hvWoK6YMxaXYwsNN/jwqAOeG4IvJzdqKXRavaoEHHQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyteToK/UTJ/hBhdG31uTCfny/IppUCtdnAPOwA84yr/M+/vQf
+	tp9UIW2JtVkdcF25ESyoSnZeiLbJi+Wyz94Wf3InBToNa1LMmVZzG+Ic
+X-Gm-Gg: ASbGncu2a/IUk7obcDeeAYwrV6+/LBvFNWTUt/AEE5tJpevr7bq39I4osD2lLd0Hq6W
+	Ei7E3Fnojp7r3pQF9PcNFJREBhxTy7XVPJnWfooWshbz2gKSONe6hRyb3poGZYb9d1mUzDCudI0
+	S0LQ7AeuWHESjUAvpJ74DMopQhYY8VOSYZQmnjTALXJftMVdSWQjQ9pP5VS7VvxrgjaDsqeq7Yk
+	+z5O41JWFwkPRRPEqpZxfNwivMNt3lRajAZXbANIg74+cvkVqeQHOv/8hPl8x2mvdWiJ+mlunK2
+	e0kuVsWmkzy+7spl34zvx20PALOMWNEzdz/LKb7s6GUTPVyc6Elg/TZDb9ngp8+5V8qOrPSnfaN
+	R2VjyLk3dFjWdjabm2VZCDQoLbHrFVxJaaB/qEJIjrAmauQ==
+X-Google-Smtp-Source: AGHT+IGaK5G3wNkKd0FQXTFLEb3wcMNGQ8G+9vcipY4gHF5O0bM0XfRnvGt5TQBO6UmtOz1kGEnKVw==
+X-Received: by 2002:a17:907:930c:b0:ae6:a8c1:c633 with SMTP id a640c23a62f3a-ae6fc1fae79mr1633481566b.34.1752575779007;
+        Tue, 15 Jul 2025 03:36:19 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::1ac? ([2620:10d:c092:600::1:a4c1])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e82dedd3sm976790966b.150.2025.07.15.03.36.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Jul 2025 03:07:25 -0700 (PDT)
-Message-ID: <e8b39833-2115-42dc-8f80-79559224aab0@gmail.com>
-Date: Tue, 15 Jul 2025 13:07:23 +0300
+        Tue, 15 Jul 2025 03:36:18 -0700 (PDT)
+Message-ID: <9bed2f6e-6251-4d0c-ad1e-f1b8625a0a10@gmail.com>
+Date: Tue, 15 Jul 2025 11:37:45 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,50 +82,97 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next 1/2] wifi: rtw89: Increase polling delay in
- rtw89_fw_read_c2h_reg() for USB
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <73f8bdbf-ff7f-4741-a6ea-b1d9026833c3@gmail.com>
- <9ce9b78535d74f08927ce2ac9c7731e9@realtek.com>
- <b24bb8a2-d635-4312-b451-065b8d8e950c@gmail.com>
- <541d90fbd7114d9b8c5247ee50d68507@realtek.com>
+Subject: Re: [PATCH net-next v10 02/12] netmem: use netmem_desc instead of
+ page to access ->pp in __netmem_get_pp()
+To: Mina Almasry <almasrymina@google.com>, Byungchul Park <byungchul@sk.com>
+Cc: willy@infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel_team@skhynix.com,
+ ilias.apalodimas@linaro.org, harry.yoo@oracle.com,
+ akpm@linux-foundation.org, andrew+netdev@lunn.ch, toke@redhat.com,
+ david@redhat.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, linux-rdma@vger.kernel.org,
+ bpf@vger.kernel.org, vishal.moola@gmail.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, jackmanb@google.com, wei.fang@nxp.com, shenwei.wang@nxp.com,
+ xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com, sgoutham@marvell.com, gakula@marvell.com,
+ sbhatta@marvell.com, hkelam@marvell.com, bbhushan2@marvell.com,
+ tariqt@nvidia.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+ leon@kernel.org, mbloch@nvidia.com, danishanwar@ti.com, rogerq@kernel.org,
+ nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+ shayne.chen@mediatek.com, sean.wang@mediatek.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, aleksander.lobakin@intel.com,
+ horms@kernel.org, m-malladi@ti.com, krzysztof.kozlowski@linaro.org,
+ matthias.schiffer@ew.tq-group.com, robh@kernel.org, imx@lists.linux.dev,
+ intel-wired-lan@lists.osuosl.org, linux-arm-kernel@lists.infradead.org,
+ linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+References: <20250714120047.35901-1-byungchul@sk.com>
+ <20250714120047.35901-3-byungchul@sk.com>
+ <CAHS8izO393X_BDJxnX2d-auhTwrUZK5wYdoAh_tJc0GBf0AqcQ@mail.gmail.com>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <541d90fbd7114d9b8c5247ee50d68507@realtek.com>
-Content-Type: text/plain; charset=UTF-8
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CAHS8izO393X_BDJxnX2d-auhTwrUZK5wYdoAh_tJc0GBf0AqcQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 15/07/2025 03:28, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> On 14/07/2025 05:49, Ping-Ke Shih wrote:
->>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>>> This read_poll_timeout_atomic() with a delay of 1 µs and a timeout of
->>>> 1000000 µs can take ~250 seconds in the worst case because sending a
->>>> USB control message takes ~250 µs.
->>>
->>> I was not aware of the change of [1]. The behavior of atomic version becomes
->>> different from non-atomic version.
->>>
->>> For this patch, I feel we can keep delay_us to 1 and treat timeout_us as
->>> 'count', which USB devices do smaller retries. The smaller delay_us can
->>> reduce total polling time, especially for PCIE devices (see my comments below)
->>>
->>> Though I don't measure total polling time of patch 2/2, I feel we can apply
->>> similar idea.
->>>
->>
->> Yes, a smaller timeout also works. I tested 4000 for this patch and 3200
->> for patch 2. 
+On 7/14/25 20:37, Mina Almasry wrote:
+> On Mon, Jul 14, 2025 at 5:01 AM Byungchul Park <byungchul@sk.com> wrote:
+...>> +static inline struct netmem_desc *pp_page_to_nmdesc(struct page *page)
+>> +{
+>> +       DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page));
+>> +
+>> +       /* XXX: How to extract netmem_desc from page must be changed,
+>> +        * once netmem_desc no longer overlays on page and will be
+>> +        * allocated through slab.
+>> +        */
+>> +       return (struct netmem_desc *)page;
+>> +}
+>> +
 > 
-> Forgot to say, for PCIE devices please keep the timeout as was.
+> Same thing. Do not create a generic looking pp_page_to_nmdesc helper
+> which does not check that the page is the correct type. The
+> DEBUG_NET... is not good enough.
+> 
+> You don't need to add a generic helper here. There is only one call
+> site. Open code this in the callsite. The one callsite is marked as
+> unsafe, only called by code that knows that the netmem is specifically
+> a pp page. Open code this in the unsafe callsite, instead of creating
+> a generic looking unsafe helper and not even documenting it's unsafe.
+> 
+>>   /**
+>>    * __netmem_get_pp - unsafely get pointer to the &page_pool backing @netmem
+>>    * @netmem: netmem reference to get the pointer from
+>> @@ -280,7 +291,7 @@ static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
+>>    */
+>>   static inline struct page_pool *__netmem_get_pp(netmem_ref netmem)
+>>   {
+>> -       return __netmem_to_page(netmem)->pp;
+>> +       return pp_page_to_nmdesc(__netmem_to_page(netmem))->pp;
+>>   }
+> 
+> This makes me very sad. Casting from netmem -> page -> nmdesc...
+
+The function is not used, and I don't think the series adds any
+new users? It can be killed then. It's a horrible function anyway,
+would be much better to have a variant taking struct page * if
+necessary.
+
+> Instead, we should be able to go from netmem directly to nmdesc. I
+> would suggest rename __netmem_clear_lsb to netmem_to_nmdesc and have
+> it return netmem_desc instead of net_iov. Then use it here.
+
+Glad you liked the diff I suggested :) In either case, seems
+like it's not strictly necessary for this iteration as
+__netmem_get_pp() should be killed, and the rest of patches work
+directly with pages.
+
+  
+> We could have an unsafe version of netmem_to_nmdesc which converts the
+> netmem to netmem_desc without clearing the lsb and mark it unsafe.
 > 
 
-Yes, of course.
-
->> (4000 * 250 = 1000000 and 3200 * 125 = 400000. I don't know
->> why rtw89_read8() in the second patch takes only 125 µs.)
-> 
-> 
+-- 
+Pavel Begunkov
 
 
