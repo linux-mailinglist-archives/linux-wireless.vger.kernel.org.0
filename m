@@ -1,96 +1,127 @@
-Return-Path: <linux-wireless+bounces-25426-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25427-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2737EB04DB4
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 04:10:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6542B04DB8
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 04:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DC9E7A5A56
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 02:09:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B1337AC5C0
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 02:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1534B2C326A;
-	Tue, 15 Jul 2025 02:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715182C3272;
+	Tue, 15 Jul 2025 02:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="O4PtGEH/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qj2KM3qW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CF42C031E
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 02:10:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBDA2C031E;
+	Tue, 15 Jul 2025 02:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752545441; cv=none; b=ev9Yxil9wlTxzVleK3qDYkm8+VSz9ohcq534BH2siyYA2pTLQK3fED/cDAX3+3ukf7UeYSVWVC0A/oVROJt1TgpoVMigUYQNm5UZ+oDbs5vXqn4kxL73uaA3AJuXS7/W/B4zhPGIhjht41C1lzUscQiTT1Ktd7fc6OK4OmcFnMI=
+	t=1752545546; cv=none; b=pZSzS0uAtAvibLbefpvALXetxXfKTqpzTVBhAm/ogaBZ7ay50igWyCWUMxYYXjOhirqvXkPXxMvRg+LNujYfmy0z74X24Joxmx/Z2go3iviBR0Bigd7hwC1jL3Uq2X+QjBKRRoW2cP27WzLa4jsK+pmIgQWNosz4iGJSGHKvj0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752545441; c=relaxed/simple;
-	bh=Wb1amVlWY0gPqe6FLhVQbzE8+rnAPSESMy07/DM03FE=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=gOJDHuQMQfqvcIcwZhYaSjvfKNFfYqnMRM3WisMrZFsyLWdSkFOjHBecduZWwS3ILvkgU2s5klw0jIIfZ9G4oHv7h4zpeOuY9OIa2sjdAUybt83eD7nwnb3Z18T34OjgAJSzuiIKSRddYlRvy3NsBj0nP+0lHowm8gO6JWAokGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=O4PtGEH/; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56F2AZygC3816546, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1752545436; bh=KoRNK8R5S9fz5XBG9kusLpNjQVbKrlUvU+7Uy0eeupA=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date;
-	b=O4PtGEH/mSuF4KwuFQb2hvvuNrZ2AI9nROq7LI4o2RIDO+NgAz+GFwC6dokuI5yz5
-	 oNaXeZIcUqI5GvX9KVqsYknYQCyhGpMN4/G3+Q6jcvQuC9zr5uU009Dh7Z07G+h233
-	 IUfNQRoH32vwXcrUejBMCcXXsVGl7c+z1EBw4l+REvtvNLrU44UIOWY/esfgQ26xxd
-	 FbazCho0DV5itLXv2OFz/mk3FaPixGfEf5rxJFg3b2GUEW6FpxTXBaCK2u43GqcSRn
-	 JP1XQHsyDNQG6y+pNZYHIvlQfRLohuVV44kQPfKSzBsSU4Kedjo8/Pt8UmhUw8VP4q
-	 MKFtcEYDlkHBQ==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56F2AZygC3816546
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 15 Jul 2025 10:10:35 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 15 Jul 2025 10:10:35 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 15 Jul
- 2025 10:10:34 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [PATCH rtw-next] wifi: rtw88: Fix macid assigned to TDLS station
-In-Reply-To: <58648c09-8553-4bcc-a977-9dc9afd63780@gmail.com>
-References: <58648c09-8553-4bcc-a977-9dc9afd63780@gmail.com>
+	s=arc-20240116; t=1752545546; c=relaxed/simple;
+	bh=OL8eh+ET7ODxT9eqmQeIc1DaHSMO83XtpakOahXi1HI=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=YUcqouvKLpWxbaitDOl3uVkGCgjrCUXSKqVxCUSHrWZoeEmhNTxJszuI/Giawm3nPwZh/9C9sASybsBhCSXYkSAkhCHAH7petsFvrMSV2/gjmqO8kL9sjqBmt3k4j/ClHep34ZA23MB1W4h5lmKD8VFpSoBSQCYx/P6gWV8vYrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qj2KM3qW; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-70e77831d68so49483907b3.2;
+        Mon, 14 Jul 2025 19:12:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752545544; x=1753150344; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=P/kiJ0AGrl246k+hU6tFxQRZl1/F2KkE4EwQPyUtMzE=;
+        b=Qj2KM3qWj2A0U38RoMxsNatdKf3Ng09JND+snq19qy1MWGKoChQInuM3Efj8PnhzoU
+         x3Lk6/Q/WMVGMHiN2ImrtnNq+l3gL9XsZODSpg3PrkaKbca+Y6hn0UIio5d1Pplc7Xy3
+         50tCp2mSiaTXvL8yRrR8bCEQlbrW8qK2wkhoGoOIB5of4NjSG15nxl0yxg/YPTTMlWkC
+         w1eTa85JK6Tu4GIBy+wfTilrxMzdO1/2B4+oBziIUVn8MvRpZta64EMp4bJQcDtK+jFb
+         dGwMA4WAmdPwZP+wRY++6Xd1mD9tfzZtjxPn4UxUaG/29LSxlX6fYuZz51RKcSAoZ6E8
+         5ndg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752545544; x=1753150344;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P/kiJ0AGrl246k+hU6tFxQRZl1/F2KkE4EwQPyUtMzE=;
+        b=heJQ9KFXpJvTcHvKpp/Nt/hAOY6j15XlUiEhR2Vv9JV9iLhqY27Q+Zlq1MV/9qn+LH
+         Envfv9WSpen7tBMX/OEnat7uRxDFubTcecnaAQXSo7/04Ou7taOwpK5O7dk0+8KkouRg
+         fYeTj3PEjFO/7IfY8Qac/nNw9jChvJCNS8e4Q8MHyhcuWSOJyRrG94SBpDDEFPal2x2t
+         24yyglKR+jrYTpK5Bjzf6nsAWyCrhvRDggfkKweOdgNn4p8OD7qvzbU6cdJjsCXAdpL6
+         OS50GeU/3LT98wT7YW/SIuMlm6PgjJuAHBbvExXen2aTU+iOt8MPMySZqumvWlWMUJ0b
+         2UZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVGnBG43aB9P9eIu1Qyebe+B2lUyNKa71iBxhU5xbY+oIvSOM1ZgNiemhGo8WzOv40CgoFG6sN0Xc61V41wGyg=@vger.kernel.org, AJvYcCWjSZa1T/fQfjHPr5VUk3ZEr3v7Px87B0a17qyWI8EQ9HPQdz/iN4IJf+jbf6Wb1wyFz84ylfsWp85bfow=@vger.kernel.org, AJvYcCXvhrAs51mA4ekXE5NjQA6r6uuVl/IL5NEGRPLxmpQDIyVIWW4iLvBI0YUvdf2V3brxU/GXQXdW@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJkKk6t3D8N4GYs9iA84nFfI0bS0YB0qI8Jxt5go4phScbPvvO
+	9jUuSMFAwSdtKxqJTKpMxRflvmYDxIypNB5fojyr1kjJaaLH9Yvn9dzwKdgR1Dhnf8RSz+VO0Qy
+	SNlPh8R9SycqRFztZaT5CuPnbF3bOUPI=
+X-Gm-Gg: ASbGncud4rZs7Y0/a+xzU5AU2mWmyCgsWcWwC5b7/NKl5Dw9Gpay7iRk5GT88bzWDBQ
+	w/FG2+66+Bivqw1KK6pN+fT06uDSiN/hfbtTe3/OrFlGT7pQWWdd+kbSvJTS+7XsV2eAsJfGZZ/
+	qYyM5hu1ihXC07vbYy9Utl5uhZIbWgsmwFTg8p80gdr3Zjf1Wx7tZLBV7HmHBTL2pSjZi/yiYjN
+	q4SHcwUCyp/7TIeimrdJXPqq+oPVCCpPP4a/LTY
+X-Google-Smtp-Source: AGHT+IEtVr+JsxC2gJh379iPBuOZoVuruZ3Umbs9N3Juzg1W5BMxEFQML9bdmwsk2kq+ovB/XipjouSJmFQN3pe3GuQ=
+X-Received: by 2002:a05:690c:f14:b0:717:c40f:be9c with SMTP id
+ 00721157ae682-717d5bc0652mr226143477b3.9.1752545543522; Mon, 14 Jul 2025
+ 19:12:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <c9d87474-f4fe-4239-b3b2-d923bf579e53@RTEXMBS04.realtek.com.tw>
-Date: Tue, 15 Jul 2025 10:10:34 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+Date: Mon, 14 Jul 2025 19:12:12 -0700
+X-Gm-Features: Ac12FXwsgRjDPpzTojqRaKExjmsAG5iXutBqOoKqYivzz9QyVrL7TRtbrLx7q1o
+Message-ID: <CAF3JpA4QvNvdx-tq-5ogMmmaOuZuYq8Q=JZjQj0egWGE-=Nogg@mail.gmail.com>
+Subject: [syzbot] [wireless?] WARNING in ieee80211_tdls_oper
+To: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
+Cc: Johannes Berg <johannes@sipsolutions.net>, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: multipart/mixed; boundary="00000000000093565a0639ee4e4b"
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+--00000000000093565a0639ee4e4b
+Content-Type: text/plain; charset="UTF-8"
 
-> When working in station mode, TDLS peers are assigned macid 0, even
-> though 0 was already assigned to the AP. This causes the connection
-> with the AP to stop working after the TDLS connection is torn down.
-> 
-> Assign the next available macid to TDLS peers, same as client stations
-> in AP mode.
-> 
-> Fixes: 902cb7b11f9a ("wifi: rtw88: assign mac_id for vif/sta and update to TX desc")
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
+main
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+--00000000000093565a0639ee4e4b
+Content-Type: text/x-patch; charset="UTF-8"; 
+	name="0001-mac80211-reject-TDLS-operations-when-station-is-not-.patch"
+Content-Disposition: attachment; 
+	filename="0001-mac80211-reject-TDLS-operations-when-station-is-not-.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_md3w7m310>
+X-Attachment-Id: f_md3w7m310
 
-526b000991b5 wifi: rtw88: Fix macid assigned to TDLS station
-
----
-https://github.com/pkshih/rtw.git
-
+RnJvbSA2MGJjZWY2YzY3ZWRmNjZmZjk2MzY3ZTAzYWFhNzA0MjI1ODVlYTRhIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBNb29uIEhlZSBMZWUgPG1vb25oZWUubGVlLmNhQGdtYWlsLmNv
+bT4KRGF0ZTogTW9uLCAxNCBKdWwgMjAyNSAxOTowMjoxMCAtMDcwMApTdWJqZWN0OiBbUEFUQ0hd
+IG1hYzgwMjExOiByZWplY3QgVERMUyBvcGVyYXRpb25zIHdoZW4gc3RhdGlvbiBpcyBub3QKIGFz
+c29jaWF0ZWQKTUlNRS1WZXJzaW9uOiAxLjAKQ29udGVudC1UeXBlOiB0ZXh0L3BsYWluOyBjaGFy
+c2V0PVVURi04CkNvbnRlbnQtVHJhbnNmZXItRW5jb2Rpbmc6IDhiaXQKClRETFMgY2FuIGJlIGVz
+dGFibGlzaGVkIG9ubHkgYWZ0ZXIgdGhlIFNUQSBpcyBjb25uZWN0ZWQgdG8gYW4gQVAuCklmIHVz
+ZXJzcGFjZSAob3IgZnV6emVycykgaXNzdWVzIE5MODAyMTFfVERMU18qIGNvbW1hbmRzIGJlZm9y
+ZQphc3NvY2lhdGlvbiBpcyBjb21wbGV0ZSwgaW50ZXJuYWwgc3RhdGUgc3VjaCBhcyBzZGF0YS0+
+dS5tZ2QudGRsc19wZWVyCnJlbWFpbnMgdW5pbml0aWFsaXNlZCBhbmQgaWVlZTgwMjExX3RkbHNf
+b3BlcigpIHJhaXNlcyBXQVJOX09OKCkuCgpBZGQgYW4g4oCcYXNzb2NpYXRlZOKAnSBjaGVjayBp
+biBpZWVlODAyMTFfdGRsc19vcGVyKCkgc28gdGhlIGZ1bmN0aW9uCnJldHVybnMgLUVJTlZBTCB3
+aGVuZXZlciB0aGUgaW50ZXJmYWNlIGlzIG5vdCBib3RoIGluIHN0YXRpb24gbW9kZQphbmQgYWxy
+ZWFkeSBhc3NvY2lhdGVkLgoKU2lnbmVkLW9mZi1ieTogTW9vbiBIZWUgTGVlIDxtb29uaGVlLmxl
+ZS5jYUBnbWFpbC5jb20+Ci0tLQogbmV0L21hYzgwMjExL3RkbHMuYyB8IDIgKy0KIDEgZmlsZSBj
+aGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL25ldC9t
+YWM4MDIxMS90ZGxzLmMgYi9uZXQvbWFjODAyMTEvdGRscy5jCmluZGV4IDk0NzE0ZjhmZmQyMi4u
+YmE1ZmJhY2JlZWRhIDEwMDY0NAotLS0gYS9uZXQvbWFjODAyMTEvdGRscy5jCisrKyBiL25ldC9t
+YWM4MDIxMS90ZGxzLmMKQEAgLTE0MjIsNyArMTQyMiw3IEBAIGludCBpZWVlODAyMTFfdGRsc19v
+cGVyKHN0cnVjdCB3aXBoeSAqd2lwaHksIHN0cnVjdCBuZXRfZGV2aWNlICpkZXYsCiAJaWYgKCEo
+d2lwaHktPmZsYWdzICYgV0lQSFlfRkxBR19TVVBQT1JUU19URExTKSkKIAkJcmV0dXJuIC1FT1BO
+T1RTVVBQOwogCi0JaWYgKHNkYXRhLT52aWYudHlwZSAhPSBOTDgwMjExX0lGVFlQRV9TVEFUSU9O
+KQorCWlmIChzZGF0YS0+dmlmLnR5cGUgIT0gTkw4MDIxMV9JRlRZUEVfU1RBVElPTiB8fCAhc2Rh
+dGEtPnZpZi5jZmcuYXNzb2MpCiAJCXJldHVybiAtRUlOVkFMOwogCiAJc3dpdGNoIChvcGVyKSB7
+Ci0tIAoyLjQzLjAKCg==
+--00000000000093565a0639ee4e4b--
 
