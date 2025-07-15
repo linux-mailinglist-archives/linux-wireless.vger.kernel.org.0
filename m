@@ -1,122 +1,143 @@
-Return-Path: <linux-wireless+bounces-25485-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25486-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F153FB05F87
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 16:07:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9508B06213
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 16:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D7E34E5A6D
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 14:00:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8104E5A4A0C
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 14:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1F02EA75E;
-	Tue, 15 Jul 2025 13:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF6E1E5701;
+	Tue, 15 Jul 2025 14:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DV3FuCcu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130642E6136;
-	Tue, 15 Jul 2025 13:50:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934B226281;
+	Tue, 15 Jul 2025 14:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587422; cv=none; b=nSQeM90gmr8QzB2fDyUsA9rujAhSCM7Zs7TDyXu+fn427s7CBNnpQrZ+Zco/f+HyQuzhoEueH2jaAYqu+p5ZEtOnjiOvkRD5i00vfDSjhd+B9mg73Kvtwm4s4v6nW8zCfPo0PzCqzUdWt3wUCzsE7Rha2EVszw0cLnKnaFWcpE0=
+	t=1752591016; cv=none; b=aw/iAHP1H1BV0F09AQp9oo4Hsuqa/nhVEyJbj87EDNrMctfav92leBqTeQCvnOFxVH7TTRsMw+G3p9ajoBaN5SxYZ0beWAUBN1+GU+a05G8UNpBTYVskFvz6uBYQG0UkzdI+/qFQxMzdnf6yzjM/rjbyyXEPH90SH3b8NiqiDzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587422; c=relaxed/simple;
-	bh=+0PGXrsSAKe+iUuwlrADb2v3BmRkBV8/GR6xTlwwAMo=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U/i9oZ8kA3RpLFZSkTm21BRt4negqC3pKfBOvQTOqx9kOzdlDRSUdi6WKUkuyfQm2E2mBtudUcwhUqf0UrlhU+LujNTYqdDs/M1SjfGlF6WWC4BFRCgPqHQIW/hAyaE5LISy/MWwzgAwi8XPzLWD399i59BWUSmxWDVRn+D0qaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bhL874BTNz6L4wL;
-	Tue, 15 Jul 2025 21:46:47 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7F934140446;
-	Tue, 15 Jul 2025 21:50:17 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 15 Jul
- 2025 15:50:15 +0200
-Date: Tue, 15 Jul 2025 14:50:14 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: WangYuli <wangyuli@uniontech.com>
-CC: <airlied@gmail.com>, <akpm@linux-foundation.org>,
-	<alison.schofield@intel.com>, <andrew+netdev@lunn.ch>,
-	<andriy.shevchenko@linux.intel.com>, <arend.vanspriel@broadcom.com>,
-	<bp@alien8.de>, <brcm80211-dev-list.pdl@broadcom.com>,
-	<brcm80211@lists.linux.dev>, <colin.i.king@gmail.com>, <cvam0000@gmail.com>,
-	<dan.j.williams@intel.com>, <dave.hansen@linux.intel.com>,
-	<dave.jiang@intel.com>, <dave@stgolabs.net>, <davem@davemloft.net>,
-	<dri-devel@lists.freedesktop.org>, <edumazet@google.com>,
-	<gregkh@linuxfoundation.org>, <guanwentao@uniontech.com>, <hpa@zytor.com>,
-	<ilpo.jarvinen@linux.intel.com>, <intel-xe@lists.freedesktop.org>,
-	<ira.weiny@intel.com>, <j@jannau.net>, <jeff.johnson@oss.qualcomm.com>,
-	<jgross@suse.com>, <jirislaby@kernel.org>, <johannes.berg@intel.com>,
-	<kuba@kernel.org>, <kvalo@kernel.org>, <kvm@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-serial@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<linux@treblig.org>, <lucas.demarchi@intel.com>, <marcin.s.wojtas@gmail.com>,
-	<ming.li@zohomail.com>, <mingo@kernel.org>, <mingo@redhat.com>,
-	<netdev@vger.kernel.org>, <niecheng1@uniontech.com>,
-	<oleksandr_tyshchenko@epam.com>, <pabeni@redhat.com>, <pbonzini@redhat.com>,
-	<quic_ramess@quicinc.com>, <ragazenta@gmail.com>, <rodrigo.vivi@intel.com>,
-	<seanjc@google.com>, <shenlichuan@vivo.com>, <simona@ffwll.ch>,
-	<sstabellini@kernel.org>, <tglx@linutronix.de>,
-	<thomas.hellstrom@linux.intel.com>, <vishal.l.verma@intel.com>,
-	<x86@kernel.org>, <xen-devel@lists.xenproject.org>, <yujiaoliang@vivo.com>,
-	<zhanjun@uniontech.com>
-Subject: Re: [PATCH v2 8/8] scripts/spelling.txt: Add notifer||notifier to
- spelling.txt
-Message-ID: <20250715145014.000075ec@huawei.com>
-In-Reply-To: <A205796B545C4241+20250715134407.540483-8-wangyuli@uniontech.com>
-References: <BD5C52D2838AEA48+20250715134050.539234-1-wangyuli@uniontech.com>
-	<A205796B545C4241+20250715134407.540483-8-wangyuli@uniontech.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1752591016; c=relaxed/simple;
+	bh=KwW3Ct+eYQAN7duoTjUPdigF52dVr0dEmIwj3cGLFWI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ol+1ug0scDXCAtjDsV80zQTkOU/ZJgY/mvMYAD+ZKlOA1f6+fxe7LiZ3qPGNLxqNmpYreKJd9fBhPrVyNLgnTNoJwoVGygUhK1GWb0zjm/YO7s12Wb1inNgkXA07IPNcKlIdHrO5u1dCChOux3IL0YEv3NkV45euklQykSmSItI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DV3FuCcu; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=y8FmBktC9WSRYxvxolkGYL5S4AI0gxd1QPXCyRbb+Bw=;
+	b=DV3FuCcum96CB6OJl3oa/EcvfiVGdVsWmvSySDMjIyTZCnpMC4bboVdDK+mD72
+	GtTSSKWuSnsg+whFjBRn8GL29NJh9i/eTQ4cD8j1VMxO6p5BvyrgKhq8LkBu0ksv
+	MNbGlbHEC2XQO11n4cIfhSj3hQLoS3vZBSMdzm35evdjk=
+Received: from [IPV6:240e:b8f:919b:3100:7981:39b4:a847:709a] (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAH7fhVanZoxSGjFA--.45568S2;
+	Tue, 15 Jul 2025 22:48:54 +0800 (CST)
+Message-ID: <7da900a6-04cd-41f7-afc8-5570eb7639e1@163.com>
+Date: Tue, 15 Jul 2025 22:48:53 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 06/11] PCI/ASPM: Clear aspm_disable as part of
+ __pci_enable_link_state()
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob Herring <robh@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-arm-msm@vger.kernel.org, mhi@lists.linux.dev,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+ qiang.yu@oss.qualcomm.com, quic_vbadigan@quicinc.com,
+ quic_vpernami@quicinc.com, quic_mrana@quicinc.com,
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+References: <20250714193214.GA2415073@bhelgaas>
+Content-Language: en-US
+From: Hans Zhang <18255117159@163.com>
+In-Reply-To: <20250714193214.GA2415073@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- frapeml500008.china.huawei.com (7.182.85.71)
+X-CM-TRANSID:_____wAH7fhVanZoxSGjFA--.45568S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJFW7tw18Gry7Cr1DXFW5ZFb_yoW5Xr1xpa
+	yrtasIkFZ5Jr97Gw12vw1jqF4SkwnYy345G3s5tryUJw45u39xGr4xtrZY9F93WrWxW3ya
+	vrZ8WwnrZFyq9a7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07URa0QUUUUU=
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/1tbiQwWLo2h2Y3mQSAAAsy
 
-On Tue, 15 Jul 2025 21:44:07 +0800
-WangYuli <wangyuli@uniontech.com> wrote:
 
-> This typo was not listed in scripts/spelling.txt, thus it was more
-> difficult to detect. Add it for convenience.
+
+On 2025/7/15 03:32, Bjorn Helgaas wrote:
+> On Sun, Jul 13, 2025 at 12:05:18AM +0800, Hans Zhang wrote:
+>> On 2025/7/12 17:35, Manivannan Sadhasivam wrote:
+>> ...
 > 
-> Link: https://lore.kernel.org/all/B3C019B63C93846F+20250715071245.398846-1-wangyuli@uniontech.com/
-
-Adding a link tag to your own previous patch doesn't seem particularly
-useful as something to end up in the git log (which depending on
-maintainer preference may gain a link tag to this version).
-
-> Signed-off-by: WangYuli <wangyuli@uniontech.com>
-other than that, LGTM
-
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
-> ---
->  scripts/spelling.txt | 1 +
->  1 file changed, 1 insertion(+)
+>>>> IMO the "someday" goal should be that we get rid of aspm_policy
+>>>> and enable all the available power saving states by default.  We
+>>>> have sysfs knobs that administrators can use if necessary, and
+>>>> drivers or quirks can disable states if they need to work around
+>>>> hardware defects.
+>>>
+>>> Yeah, I think the default should be powersave and let the users
+>>> disable it for performance if they want.
+>>
+>> Perhaps I don't think so. At present, our company's testing team has
+>> tested quite a few NVMe SSDS. As far as I can remember, the SSDS
+>> from two companies have encountered problems and will hang directly
+>> when turned on. We have set CONFIG_PCIEASPM_POWERSAVE=y by default.
+>> When encountering SSDS from these two companies, we had to add
+>> "pcie_aspm.policy=default" in the cmdline, and then the boot worked
+>> normally. Currently, we do not have a PCIe protocol analyzer to
+>> analyze such issues. The current approach is to modify the cmdline.
+>> So I can't prove whether it's a problem with the Root Port of our
+>> SOC or the SSD device.
 > 
-> diff --git a/scripts/spelling.txt b/scripts/spelling.txt
-> index c9a6df5be281..d824c4b17390 100644
-> --- a/scripts/spelling.txt
-> +++ b/scripts/spelling.txt
-> @@ -1099,6 +1099,7 @@ notication||notification
->  notications||notifications
->  notifcations||notifications
->  notifed||notified
-> +notifer||notifier
->  notity||notify
->  notfify||notify
->  nubmer||number
+> Have you reported these?
+
+Dear Bjorn,
+
+I haven't reported it. Because we don't have a PCIe protocol analyzer to 
+analyze this situation, it's not certain whether it's a problem with our 
+SOC Root Port or the NVMe SSD. If I have time later, I will conduct a 
+comparison test on the RK3588.
+
+> 
+>> Here I agree with Bjorn's statement that sometimes the EP is not
+>> necessarily very standard and there are no hardware issues.
+>> Personally, I think the default is default or performance. When
+>> users need to save power, they should then decide whether to
+>> configure it as powersave or powersupersave.  Sometimes, if the EP
+>> device connected by the customer is perfect, they can turn it on to
+>> save power. But if the EP is not perfect, at least they will
+>> immediately know what caused the problem.
+> 
+> We should discover device defects as early as possible so we can add
+> quirks for them.  Defaulting to ASPM being partly disabled means it
+> gets much less testing and users end up passing around "fixes" like
+> booting with "pcie_aspm.policy=default" or similar.  I do not want
+> users to trip over a device that doesn't work and have to look for
+> workarounds on the web.
+> 
+> I also think it's somewhat irresponsible of us to consume more power
+> than necessary.  But as Mani said, this would be a big change and
+> might have to be done with a BIOS date check or something to try to
+> avoid regressions.
+> 
+
+Ok. I understand your purpose now.
+
+Best regards,
+Hans
 
 
