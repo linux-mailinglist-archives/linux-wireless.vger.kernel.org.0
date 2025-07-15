@@ -1,109 +1,129 @@
-Return-Path: <linux-wireless+bounces-25441-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25442-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF34B05147
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 07:53:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E6EB05160
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 07:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14EAB18986D0
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 05:53:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31ABC3AFC80
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 05:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044D11A275;
-	Tue, 15 Jul 2025 05:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 791092D29CA;
+	Tue, 15 Jul 2025 05:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="o66cjgRR"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="VXW1Eih2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99D85C96
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 05:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF2A25C81F;
+	Tue, 15 Jul 2025 05:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752558814; cv=none; b=KobkdtMKBhLpcCjVL2dFRw7uI0/CLULeSLNIvS+LBEBooAl9oriMdZtjD8x7ONIjmAhCf9ltDhx5RsK2ijtiuN+5eWi0hK5qqFNo+GQckUfWVl5VXSby+XiAxC0F3M9fBy0+j8XGpsMxJzAsMHQzYLOsR2pl86GIlr1X+GMZkH8=
+	t=1752559165; cv=none; b=i3rO+L0cRb8zLIRpxORWRC/Dw0YDQfY/+z/nXaMRpv//DXnua2lfp3pCf72GpdG0Nue+PlWR8Czw8rmkPVtm5vvN/YYsLv+SbMexivsZPvOU4INVj7Ze3X/Y7x+6b6mCyobalc2scwNoZi39zylI7xqrYiwGcFmAVC+aQnkRFTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752558814; c=relaxed/simple;
-	bh=Ij/mQ+RHPua0HBXgzms/hjA0gm2CYsVFLxzq3zoPUrA=;
-	h=From:To:CC:Subject:MIME-Version:Content-Type:Message-ID:Date; b=l/Doch6oGPiUo9NxkitH0wPMhM4W+5iseTiflfo+r4Qw2WUfnabcEaTyG+MvFCp92nhiEcFOKv2HJY39pf0xotXomrMn6NTSS22LkTlF3xWem0O2U2Tf1u+qfi5aaQWOmUAHZpwBkUZBz+LCgCh+qLhOLxaihRx6/C7E8orHbEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=o66cjgRR; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56F5rN7K14102918, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1752558803; bh=xclZmh2xRITrmzsHcCyo1PMvRxfYEpWHUhZzeGJzLMM=;
-	h=From:To:CC:Subject:MIME-Version:Content-Type:Message-ID:Date;
-	b=o66cjgRRHIvAgJfVyBsqK48aoTW2mjkhAOvJnGReAWQP2iJTKfveSfvyDe1BF5yT7
-	 NVwQFH5pNbpSfIifT0lT+kn5ZRkCnMJVFYzkjh9YrxcLPYiZNqAOhI5KzWRAjFfjmx
-	 UDsTmd5JSVbblkNgY2M8IK9rtFsq/vJUtoVbUapmOLDRA131yqA96fJrxexucm2yhm
-	 LV1OZmB4737FY/0Pd7FsZqrDRrJiIgnu0or8UTiQGAewOqBWtqi2nfsCc9caqpp7Bx
-	 6qFDF0VOL/MQlztuaraTj8cRXbIfUrWi4UQLf3REl+xxXb+TQ/QQ7afxaenjkwz4N1
-	 EaokdNsF2+lug==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56F5rN7K14102918
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 15 Jul 2025 13:53:23 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 15 Jul 2025 13:53:24 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 15 Jul
- 2025 13:53:23 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-firmware@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <kevin_yang@realtek.com>,
-        <damon.chen@realtek.com>
-Subject: pull-request: update rtw firmware rtw-fw-2025-07-15
+	s=arc-20240116; t=1752559165; c=relaxed/simple;
+	bh=0U65jY1JSweZeonjbw53MB956XveJQ4ZWSFbUUDJ5Y8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E1HMPgi5OxoChPwnlvnL5o9WBtmXLcoLrWHyQPfTKUQU3EiB9LD2v6VwTXkRaWJCveoGu0yKT5s5BJEggTFnnHgqCczZmvXmOKuj3QevpZKnbVTb8Bhk//9KLPh+m8w0PqQMBQw4rXwKOYd1GFoo1GS20pXLizxDXXNC5AKi3Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=VXW1Eih2; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1752559130;
+	bh=jelvRAB9ICUj9aQsz028m+IpsJ9lty8ne5yvm7AhAyo=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=VXW1Eih2ZZfVQbZeZ67Acc8stG+RTT/nruM7wsJ1MEiHdc+/Ybcv0bVrX3SDCkULF
+	 lThRaj5Z21DnbDohne30fsLUwmTxd0Ooj+d05lxlj/IAcmJcobrN9PPvhFE0a35w4h
+	 dN0yfqlrQxRpwjwPSQsbbZ9iIYQIwvoHD/y5NBmY=
+X-QQ-mid: zesmtpip2t1752559119tb009464f
+X-QQ-Originating-IP: NntTmx6BlALLFfmLjbcpQ9CFOZTDRFLWwsmaPBOtvm0=
+Received: from avenger-e500 ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 15 Jul 2025 13:58:37 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 18388915070200021082
+EX-QQ-RecipientCnt: 15
+From: WangYuli <wangyuli@uniontech.com>
+To: wangyuli@uniontech.com
+Cc: akpm@linux-foundation.org,
+	colin.i.king@gmail.com,
+	cvam0000@gmail.com,
+	emmanuel.grumbach@intel.com,
+	guanwentao@uniontech.com,
+	johannes.berg@intel.com,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	miriam.rachel.korenblit@intel.com,
+	niecheng1@uniontech.com,
+	shenlichuan@vivo.com,
+	yanzhen@vivo.com,
+	yujiaoliang@vivo.com,
+	zhanjun@uniontech.com
+Subject: [PATCH v2] wifi: iwlwifi: Fix typo "ransport"
+Date: Tue, 15 Jul 2025 13:58:27 +0800
+Message-ID: <8F065DF7EF7EEB89+20250715055828.932160-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <949F0ED6008D554F+20250715055031.928947-1-wangyuli@uniontech.com>
+References: <949F0ED6008D554F+20250715055031.928947-1-wangyuli@uniontech.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <880417d5-c1ae-4423-9019-e3dcc2673c43@RTEXMBS04.realtek.com.tw>
-Date: Tue, 15 Jul 2025 13:53:23 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: OEQtS9MrhLe4F0seu7yVgNbVjSZbOsHWuLEOb9ldjNK5H2o9fTbmf4Jm
+	nk5ahb6MvXkBcn/g2rqXSf+ky2JcpPQaF00qlj5ybaV8L8ZP4cVeztQUHDsIstAla3A4Sim
+	zEL0NSw7RcxfFKldgB2YPLsATQF6z5T7Jj9h8RlpVxzqqyzWn/zNdEBXHvcKw0TCT3R3jrX
+	AF0ah24TzueTv6NExn9gy3lm6qOJ6MuHVWb6d+A5GrRCWb/uteTq6ERSJTRNdigDnA6ip0g
+	LNSGKzGqOF/Lnl/sOwIzSPsahhFeJO4q6ULxGzjcWSS2x6qCb0c0LN+ZiPxNhA/V1DUTzIB
+	j5XXywoCkncDRNP7bzUyabSFHFWonmmozGt3GvZKOJVgX7IcI1GhK5Fn+S956YWxsCRA0bD
+	hOdILiTzOZM8R16yqX5qXSfxXzGe0nlSjjoCcMRf26jNoTRvWl47p8XljBJAq2RHitGwnha
+	EwBAxeM3rhNIHlQIGmfqDx+hWdZi7FgZFRuCKiSbuM+VgzoYw5ncfdsOFwtAbBZtnsFTIMH
+	UkU8weR7V+UqJe5M8Tit8Di9LjxwbGeCsqiKO4DvFO6ZIE2xdvHj/AtZwC8tQs+zNLqmzAf
+	l8WWf0mkKsa4tr8p3cG67QNeuOVLByI4gWEWG6DMVyz1keMKvfMpteyZcbPEUtWkAYCMKFt
+	Y4UoV0g4qC0AlUxOLHJssdPMCEXxM8RjXfW9eg4frQ8zkXvPXFKffdD0Geh3uD4aTfE5Lz0
+	5GiagYNUkb/d0WJIzwzJHfyehb/0P7TyckTBR8y9OTj3khSoE/tCXGe66r59TsJ/2EHDFTl
+	kaQS+Zhy2AqOLxcwEdEA3mQCq1rMi9AfPBOMRG9yu8pF1ktiuzcOy2DdILa2X8XZGWSnz75
+	Dev3P6oD5kFnsNcXSKMi+DEAcfQxYt0gwRHORMS55bQpHcLFu18tS+JYcUsWXLwizP9zNCp
+	rE5HZP39UYUFLL/eufV8TxCS/VfXCBBwf3IcjuadaZLQEgb3PzgIuCwvxO727wMockpDQsV
+	+g4pFawwF6F0ED0fjdaMXddLDytIAga+DTswF59DoRJw0OoTLhqdNCkc57gE7TJeQ6A2Zmg
+	8+7GrnOgcfCVYvY+/OXYWKLQI6td0qMrzDVdEGOehtQg0GcmkmrzCc=
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+X-QQ-RECHKSPAM: 0
 
-Hi,
+There is a spelling mistake of 'ransport' in comments which
+should be 'transport'.
 
-Update firmware of Realtek WiFi driver rtw89 to update BB and regd
-parameters, and to support MCC P2P feature.
-
-Thank you
-Ping-Ke
-
+Link: https://lore.kernel.org/all/03DFEDFFB5729C96+20250714104736.559226-1-wangyuli@uniontech.com/
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
 ---
+Changelog:
+  *v1->v2: Move the change of spelling.txt to a separate patch.
+---
+ drivers/net/wireless/intel/iwlwifi/dvm/agn.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The following changes since commit ecdbd2b8af04b515732fbf11113cec16651915f0:
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/agn.h b/drivers/net/wireless/intel/iwlwifi/dvm/agn.h
+index 1ebc7effcc2a..061c69286951 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/agn.h
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/agn.h
+@@ -388,7 +388,7 @@ static inline void iwl_dvm_set_pmi(struct iwl_priv *priv, bool state)
+ /**
+  * iwl_parse_eeprom_data - parse EEPROM data and return values
+  *
+- * @trans: ransport we're parsing for, for debug only
++ * @trans: transport we're parsing for, for debug only
+  * @cfg: device configuration for parsing and overrides
+  * @eeprom: the EEPROM data
+  * @eeprom_size: length of the EEPROM data
+-- 
+2.50.0
 
-  Merge branch 'robot/pr-0-1752505495' into 'main' (2025-07-14 15:45:59 +0000)
-
-are available in the Git repository at:
-
-  https://github.com/pkshih/linux-firmware.git tags/rtw-fw-2025-07-15
-
-for you to fetch changes up to eb03c8ce595d75f2a2f81cbe87698c2539f64377:
-
-  rtw89: 8852b: update fw to v0.29.128.0 (2025-07-15 13:49:01 +0800)
-
-----------------------------------------------------------------
-Kuan-Chung Chen (1):
-      rtw89: 8922a: update BB parameter V49
-
-Zong-Zhe Yang (4):
-      rtw89: 8852c: add regd fw element with version R72-R57
-      rtw89: 8922a: add regd fw element with version R72-R6
-      rtw89: 8852bt: update fw to v0.29.127.0
-      rtw89: 8852b: update fw to v0.29.128.0
-
- rtw89/rtw8852b_fw-1.bin | Bin 1244784 -> 1290952 bytes
- rtw89/rtw8852bt_fw.bin  | Bin 918376 -> 937688 bytes
- rtw89/rtw8852c_fw-2.bin | Bin 2461176 -> 2463394 bytes
- rtw89/rtw8922a_fw-4.bin | Bin 1259006 -> 1263938 bytes
- 4 files changed, 0 insertions(+), 0 deletions(-)
 
