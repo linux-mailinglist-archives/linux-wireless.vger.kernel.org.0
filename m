@@ -1,85 +1,86 @@
-Return-Path: <linux-wireless+bounces-25457-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25458-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 130D3B055D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 11:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A94B055FA
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 11:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640E4189AA13
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 09:07:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2F721AA7883
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 09:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29AC271456;
-	Tue, 15 Jul 2025 09:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B1A2D5424;
+	Tue, 15 Jul 2025 09:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="xu7KhmTZ"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="SoYLbehl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA54324886A
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 09:07:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E34277CB0
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 09:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752570429; cv=none; b=MpD7MDIpjn+CpX5510zam3De90lMYZfG7jYTptpiU2gAK+0I6hCS3Icf/uJctrXpQKJiN5mehsZ/rNjIrYH6Nj33aIt63E3gOZ7iZ6H3GG9osOG1FariFf8V7p+6LgofyhxT3hNwnlmTt9EMK/kZX6t5O5kJ9FMxCbnBzh5IxBU=
+	t=1752570750; cv=none; b=KufPj+8/yQ9VVOUjdHcyypN60aznpmdOooqtBT6totb/5EpGZ/g7tUqxpP8PpNljE5uAvdYo8IWFQbgUvw8VTlKogxmzK4eDRjZjqKcupckABf8Ab23Qi6Vlok35CSsRzKS2sQcsx6jlCOUfAAuwhpnYVe90qmdudHUZ0kysKmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752570429; c=relaxed/simple;
-	bh=A80/GZ9EM5qvdI8sKy6c57arpHnC0UHFtODB8zD0p6Q=;
+	s=arc-20240116; t=1752570750; c=relaxed/simple;
+	bh=7gk1fAMm+bpVPCVv+Tj4gFv+zk63/lpK8GIE3gpDj1U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fujoz3l+8J241IWtdPQxDzEnIwHncR/2CDNZj2DXop7EceqA5CyIU22d679Zj8QllT8zbacwq+BT6GISJ6RWJcO35Lp7jb4ioUUQWH7DT4MNvxd2AQrKLKJG1J7SxMQTsW7/5Lg7eOCwuGR6H72dUa1wabsB4ZtULot5y0OeYhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=xu7KhmTZ; arc=none smtp.client-ip=209.85.214.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=oQmD88DXL51dd5rBIXp/Z3YrETfjSVAHTUpW1xCoAzIh0llRCBx8ansORJcbGi9o/4tFzp58ErbAN4NISavJkBIe+IuhQb/rfepopKUU2LpdnsDwpMfh300BcRVLxKiUx9qPAvC21BPq58dH3zdiaSx5osOMiQbCkInJwodDJnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=SoYLbehl; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-235f9e87f78so47821965ad.2
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 02:07:07 -0700 (PDT)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-74931666cbcso4153923b3a.0
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 02:12:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1752570427; x=1753175227; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1752570748; x=1753175548; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E13MMtr6ZbzASYbT6FGr6cq+Zd9bDxwz58pMR/dxpkY=;
-        b=xu7KhmTZL9m6V/xjgL5DxsUOvk7DabbLv0Cthl7/yVfj/kivI9cyNOGMAK/AmhdFd2
-         dHMm3IOOSRBPFUEf8gWprQJP65kOQJSHqmNm4lVa9hBmfZOM+/JFrQ+JnMnVYMe1qGFl
-         Tud9lMF0ofk4GUHj/jOFgZgHIKv6jlzF2vyE+G5Z+CB2A0BZcFp0NGB+ez+9+8z/moB5
-         qNX1wxcm4gJu5vzCNNJK0AnbudKuhITx/RkleRcaQFv0JFuzlfoKHZ/VZK26n9wqE4IJ
-         xYzo/quasbAZdpcBtWPwMWx69FfHmU+5if0Mk/Y5CVsETDOsrbp1Cm7TKC1pA+G+plNz
-         Kd/g==
+        bh=R9OxszSt1/RmIAVP/jtUMOWgSI7Qv1C2lWFwEIS/7CQ=;
+        b=SoYLbehlXrvZrU2CX84pR/Vicp6pUfde3MwONN445m2s7DKnGMV78V+bzzLJ8IS2dU
+         rWZBnx4gjon6gc45ZdDddXtqAMZyBN95caMEEzvysxQekJorBgO0A7IGl+lLvxudnQ99
+         osuHnNCBjNYExZxD43hgPPcWG8VnzEqfr0liSFXgsE2ZOJ73iaahPGRgYHBRMY0AByRv
+         BPe0oncIN4cFR7sjZ/bVZ8ob0pOL570WBMpBqfFVVP9M7rlSkwI0iXRG2IYtLU9VDPGj
+         WzD6I43GwSkSmRasPQ2fGT2GhTK6trQteJgd3PM7xz78kLI5Lr2yDKCQfnhpOwbYN4eA
+         uqxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752570427; x=1753175227;
+        d=1e100.net; s=20230601; t=1752570748; x=1753175548;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E13MMtr6ZbzASYbT6FGr6cq+Zd9bDxwz58pMR/dxpkY=;
-        b=ucd5KuhS/HKoHRnHNBn2b5Qs7B73Kyp4fCA8lm4MM4e6qw0e56rt/yTxULzLMMYwvt
-         jAtGx7roCkgKJjVimUT8GEu0mdnKdKSog8YCHCJj5RLXi/udwaUxevuFJ9yTc9LUzkd8
-         BmumehJGPOxA1qWOXr8IGBbnE0qe7m6BKdUtB+FJwyGtMNxVQxlpVV639hSJYi+xG4/a
-         PwfRFYkumkda2BF/yH1J9B4AXHBLKSnAR3zvZdR47IU/vRjRrcb2DnPoG2gpK1KYnNxe
-         78Bt26AWeujIZZkPwzrTwXvGDo8Ub5ZMYI1HiM5FM8aoyXVrbtVbpGpJyIRbL9gjhqtg
-         sBCw==
-X-Gm-Message-State: AOJu0YwBEIHX4d0UYzaRQVhQy03/ChM7fHU1gUCr+TlI3gyZThNkC25Q
-	lyWesRZur146yRTh7U6/B3HclolFmAEeHTeHmvHKHDodGNevfvI45F/keNYwhAjlJ78u89+7xxA
-	G+kcE
-X-Gm-Gg: ASbGncv6qvDDgklD/TweWZfRTrk5gtsTXqfCcga8Yz/T4Xt4cZ5OSgMmsOXfrrSF49/
-	RRNoNC/toSaniik04kCpurP1fvaYARU8sSNYbaoBA18DtErRgFgYH4GZQHuCfk2HygZE7trCbIo
-	aWRRVQgcbJxkq04UBDdNtWsv8C+ZGGjoMzKSMThM+JEAspu54gUyvlsdci8oEL7X5lIKipWKnRC
-	Hg1ZsbY/m9KLAdOmjuZ0fJQtC4nSYthpXdE6GJSov8jgr5tJN1dF/ngwoiami/eBM50Kk2BjQmP
-	bji9aOLmWkK652vTWiCQ5h7rRaJRSkWxG9o6X7jZn/c1TFlIM+/JWFm980p3PpngnRW+gK1uvv+
-	IDCtV9cEc0f6QAwR4uvmr67zfELNWtBWMAaPqFQ==
-X-Google-Smtp-Source: AGHT+IHd2UabRSO/iygQaEDL5exS/DQ+iPK+k5E2A+itZYV67AOzy27rlcKMCJ5fm8cPX/LIQpg2Vw==
-X-Received: by 2002:a17:903:2a8e:b0:234:ed31:fcaa with SMTP id d9443c01a7336-23dede98453mr196725595ad.50.1752570426956;
-        Tue, 15 Jul 2025 02:07:06 -0700 (PDT)
+        bh=R9OxszSt1/RmIAVP/jtUMOWgSI7Qv1C2lWFwEIS/7CQ=;
+        b=XJUr98EY3e+ZFfgLoidBz9QzLp5BsVHr+XuIHoOjE9sgVcAEadOnBS+KJHjmP634is
+         72eGNwHPVJQL8qDXhqIOI+oSeKc9WotE7/n4R/rUZpTVzrWLGlNczJx+qLw3oaXYiVQ0
+         CGuLy6Eu9r/VF8zFYJhIPFXyGyCOj7CX/GPm7RrdGZe+CqYNupkXqptAtBSRZua/QjBh
+         ygilzfebDvV3FEduRUJpQYaqrw0ltrLlMiZbX0SjygvFPp+ULTmeplmKXrA7dAW5rPGV
+         zpQjnqK6H0lED4CIGtQEA82cs8OTu24RMSNP9yANI/6xk37RYTxamFMfBF2jse/q9j5P
+         bedw==
+X-Gm-Message-State: AOJu0Yy8/5zFkmLpYxQuxqWZ/dOJQDgtC3PWLUtp+g66AKbmYY79WByV
+	GYgeQio5McB1foOdLPmmoNYp6ZzV8Wd0IGJ6AL8b2CIEBxHTQHorl3U7HMnaJgMBMxI=
+X-Gm-Gg: ASbGncv1vFDQ/6nRRAUj81hFi1TsS1Xt6ZPEDsB+yB1yUh7L16F4wgaBIDPidMGjT7R
+	FslBxkHGmTqAQ53htUYqKB68F3mz/5lOucjD1VpMrvQo+jwdK0O9t0hTYyMyK0uEGtBdQqjEuwx
+	U3rMM4JAEXouY6obWF5/ztOMdJHgSeUHSUdm75WdTvPl21azkrbGLqs06hTcGMac++50yGlYwSp
+	7rUYRGLu6cAzEbnkNqZBP6QXXhn+dnnSra2xa90mf496VMxs3IuK6LtklCDkCC9Ka+p6sQotbXF
+	p57xFjR4pCIDdiZ93zqML2lL1/hdo+jf6CjUExPoOEF/UV0kc9vf3KFKoAz+DnKZmvW66PEdA67
+	JnKmkLQ91gqJQfa4uu82ofh68vjk=
+X-Google-Smtp-Source: AGHT+IHq5bqBQalOkZQK/Az1F0HizrKC4bliSgq9gbU1yT+lJWYu22JoFgU54DEdjK2bLdHx1JeSAw==
+X-Received: by 2002:a05:6a00:21d3:b0:749:b41:2976 with SMTP id d2e1a72fcca58-74ee0aa6410mr24329313b3a.3.1752570747938;
+        Tue, 15 Jul 2025 02:12:27 -0700 (PDT)
 Received: from localhost ([1.145.89.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4322776sm106737025ad.132.2025.07.15.02.07.05
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74eb9dd7341sm12128350b3a.15.2025.07.15.02.12.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Jul 2025 02:07:06 -0700 (PDT)
-Date: Tue, 15 Jul 2025 19:07:01 +1000
+        Tue, 15 Jul 2025 02:12:27 -0700 (PDT)
+Date: Tue, 15 Jul 2025 19:12:21 +1000
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: Johannes Berg <johannes@sipsolutions.net>
 Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Subject: Re: [RFC 0/5] wifi: S1G short beacon support
-Message-ID: <roc64x2sxlgjwos52gqopszycjmdyazuu7pz2e4vf2huwhbs5e@inmocfqrssr6>
+Subject: Re: [RFC 1/5] wifi: cfg80211: support configuring an S1G short
+ beaconing BSS
+Message-ID: <bbxqihfwpz3w64md63opkek3z5p2vssgs2g5ha4gwerlbzqknn@wl53iztdzxfb>
 References: <20250714051403.597090-1-lachlan.hodges@morsemicro.com>
- <fa265deeae5dedcc7e13cda8cccd9b42f85026d3.camel@sipsolutions.net>
+ <20250714051403.597090-2-lachlan.hodges@morsemicro.com>
+ <4333caeb7a98bf2d29da7a26181dc34032d5bd9b.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,39 +89,97 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fa265deeae5dedcc7e13cda8cccd9b42f85026d3.camel@sipsolutions.net>
+In-Reply-To: <4333caeb7a98bf2d29da7a26181dc34032d5bd9b.camel@sipsolutions.net>
 
-Mon, Jul 14, 2025 at 02:50:42PM +0200, Johannes Berg wrote:
-> Hi,
-> 
-> So just to say this up front I have very little interest per se in this
-> feature directly, so I'll mostly leave it to you :)
-
-Hi Johannes,
-
-Firstly appreciate the thorough and quick reply... and of course that is
-fine. We still want to make sure we implement it correctly :)
-
-> > 11.1.3.10.2:
+On Mon, Jul 14, 2025 at 03:00:11PM +0200, Johannes Berg wrote:
+> On Mon, 2025-07-14 at 15:13 +1000, Lachlan Hodges wrote:
 > > 
-> > "The value for the dot11ShortBeaconPeriod shall be such that
-> > dot11BeaconPeriod = n * dot11ShortBeaconPeriod, where n is a
-> > positive integer. This defines a series of TSBTTs exactly
-> > dot11ShortBeaconPeriod TUs apart"
-> > 
-> > the value for n here is what we are denoting as
-> > s1g_short_beacon_period (another deviation from the naming
-> > within the standard) which represents the number of short
-> > beacons between each long beacon.
+> > +/**
+> > + * enum nl80211_s1g_short_beacon_attrs - S1G short beacon data
+> > + *
+> > + * @__NL80211_S1G_SHORT_BEACON_ATTR_INVALID: Invalid
+> > + *
+> > + * @NL80211_S1G_SHORT_BEACON_HEAD: Short beacon head (binary).
+> > + * @NL80211_S1G_SHORT_BEACON_TAIL: Short beacon tail (binary).
+> > + * @NL80211_S1G_SHORT_BEACON_INTERVAL: Time in TUs between each short
+> > + *	beacon transmission (u32).
+> > + * @NL80211_S1G_SHORT_BEACON_DTIM_PERIOD: DTIM period for a short
+> > + *	beaconing BSS (u8).
+> > + */
+> > +enum nl80211_s1g_short_beacon_attrs {
+> > +	__NL80211_S1G_SHORT_BEACON_ATTR_INVALID,
+> > +
+> > +	NL80211_S1G_SHORT_BEACON_HEAD,
+> > +	NL80211_S1G_SHORT_BEACON_TAIL,
+> > +	NL80211_S1G_SHORT_BEACON_INTERVAL,
+> > +	NL80211_S1G_SHORT_BEACON_DTIM_PERIOD,
 > 
-> That seems slightly confusing - I've have interpreted a 'period' either
-> as a span of time (as in the spec), or the number of steps between
-> events, so maybe that's rather 's1g_long_beacon_period'? But if the spec
-> uses period as a span of time, then perhaps 's1g_long_beacon_step' or
-> something would be easier to understand? Not sure ...
+> nit: we usually have _ATTR_ in there after the qualification, so
+> something like NL80211_S1G_SHORT_BEACON_ATTR_HEAD.
+> 
+> Also, the bot complained about some missing kernel-doc.
+>
 
-You are right, it should be the long beacon period (similar to how the
-DTIM period describes the number of intervals between each DTIM beacon).
+Yea, forgot to describe the max attributes :( Will fix for next set.
+
+> > +/*
+> > + * Short beacons contain a limited set of allowed elements as per
+> > + * IEEE80211-2024 9.3.4.3 Table 9-76. The TIM element is allowed,
+> > + * but as it is inserted by mac80211, we do not check for it.
+> > + */
+> > +static int is_valid_s1g_short_elem(const struct element *elem)
+> > +{
+> > +	switch (elem->id) {
+> > +	case WLAN_EID_FMS_DESCRIPTOR:
+> > +	case WLAN_EID_RPS:
+> > +	case WLAN_EID_SST:
+> > +	case WLAN_EID_S1G_RELAY:
+> > +	case WLAN_EID_PAGE_SLICE:
+> > +	case WLAN_EID_VENDOR_SPECIFIC:
+> > +	case WLAN_EID_MMIE:
+> > +	case WLAN_EID_MIC:
+> > +		return true;
+> > +	default:
+> > +		return false;
+> > +	}
+> > +}
+> 
+> Is that really worth it? We don't have to protect userspace from
+> shooting it self into the foot _too_ much, just make sure that we don't
+> get into a mess in the kernel itself. As long as the elements are not
+> malformed, I'd argue we're fine from a kernel perspective?
+> 
+> This also prevents future updates and experimentation, and I see little
+> value in it?
+
+In that case, would you have any opposition to using the regular
+validate_beacon_head and validate_ie_attr for short beacon validation?
+ 
+> why not call the validation inside nl80211_parse_s1g_short_beacon()?
+> seems harder to misuse later then, and the order shouldn't matter much?
+> 
+> > @@ -6550,6 +6745,19 @@ static int nl80211_set_beacon(struct sk_buff *skb, struct genl_info *info)
+> >  			goto out;
+> >  	}
+> >  
+> > +	attr = info->attrs[NL80211_ATTR_S1G_SHORT_BEACON];
+> > +	if (attr) {
+> > +		err = nl80211_parse_s1g_short_beacon(rdev, attr,
+> > +						     &params->s1g_short_beacon);
+> > +		if (err)
+> > +			goto out;
+> > +
+> > +		if (!params->s1g_short_beacon.update) {
+> > +			err = -EINVAL;
+> > +			goto out;
+> > +		}
+> > +	}
+> 
+> And you already forgot the validation here, it seems?
+
+The lack of validation is one of the issues I have with doing this
+"correctly". I've made some changes here so I'll leave that to be
+discussed in the forthcoming patchset.
 
 lachlan
 
