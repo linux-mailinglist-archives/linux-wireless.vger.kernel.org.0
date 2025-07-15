@@ -1,128 +1,83 @@
-Return-Path: <linux-wireless+bounces-25438-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25439-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CCBB04FA6
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 06:02:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9793EB05092
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 07:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65C57175EEF
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 04:02:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 214C47A2BD0
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 05:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BFC2D0C73;
-	Tue, 15 Jul 2025 04:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463A11A2398;
+	Tue, 15 Jul 2025 05:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g9hfz6KU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cv87xMjC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6610F946A;
-	Tue, 15 Jul 2025 04:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21506EC2
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 05:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752552136; cv=none; b=s4LCGNcM8sgO2abHaqraMIIPqc3R2p1wvnNTVMbde7+NW5AXOu3XErVZCVxOWTgN4q/VwcjpVwCi4sJhXGQTMul8vYc7riuXiL64mxpqcv//DVxPdTg/r0FpQStJDa5N5f3kaEN4+LEhCw6weW05ezHnwS2WHoMnO05Js6zyBPk=
+	t=1752555843; cv=none; b=A6nnNVeGFYIBRn1H3EdXoNhbZ4TDSEiLafU4I4yej1ite0GeUP30YmyUjEGCFb3lVdcGMJP25zZYGsz0PA2nILe7/yCzALBVFpo6FIxZAseAi0pjfJSX/fztq8jIws9MO/7d+1A8pioqZtef+tFvQ+VsuPPQUsakZ94UptguzkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752552136; c=relaxed/simple;
-	bh=XTpTiYZCt+831D8WJ+GyCYjH/IxQRruB1cTTUcZo054=;
+	s=arc-20240116; t=1752555843; c=relaxed/simple;
+	bh=ZXEDXplXmH7B3Gmxrz2M5kb0QTV0cjR+JIHLkCduKSY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SCjZDV+vd124ZSpJqBJA+/Z0JgTZSKuiOwqbvbC+x250ZZ4F8/wNnmm+TbyVsp2TdidO2aAXa2WSyiOs7aka8sgz6Gc06ujtxygVUsQpKi26kJA0KOGHsUlzrjUdF2g+8ymJwAn9ztr/yXgzie4TwAxWzGRjexO4XPqhkZ9KaSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g9hfz6KU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05AFC4CEE3;
-	Tue, 15 Jul 2025 04:02:15 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=oX9BhGLoABHHVqSsy4CPvUwN592L5fwsdsCeRQZ0rNRBGt61sz126Hq2m91CUXGcNltZujTRftzQRUivuGaJnYvUsZpfQN+xRSFGg3qv3jdGlzZI7eeJAG8/946AT35sbUdOBlX4BTzUb35OOEV8w2BSseYFA5AiVrUN1SL5fuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cv87xMjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F33C4CEE3;
+	Tue, 15 Jul 2025 05:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752552136;
-	bh=XTpTiYZCt+831D8WJ+GyCYjH/IxQRruB1cTTUcZo054=;
+	s=k20201202; t=1752555842;
+	bh=ZXEDXplXmH7B3Gmxrz2M5kb0QTV0cjR+JIHLkCduKSY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g9hfz6KULY0Fap/fLlLOyRyIzj1Nakml0N8IWzcDYZXAhYbIWyUEubLZC7UwkF/Z2
-	 Q6quDzNAJgUiG0z6HmPtLEuYL62Kdl4HTAs1t5XvnvRwsnHilPrNLcyibFVGi0JXWY
-	 Jd59fRfZ4tyEblo4wBLXnPhFS3Zk4uOoss6IkeGXX/Llf7u6Kj7ntsr2YioodItpCe
-	 KbUFOUMT76nuXnhhUrRLuTIUOPzNSZ17Mh1/zDItfUfzpMeL1WJi0rV16NoZoR5Ofg
-	 j7x3eWdNBsJ4EDhnvydnCOIKjQy68PjiCUZGHeYmLYkqEpvwNVYUJT0Bvg1q8Hp69y
-	 6nqsL1nGSth/g==
-Date: Mon, 14 Jul 2025 23:02:15 -0500
-From: Rob Herring <robh@kernel.org>
-To: =?iso-8859-1?B?Suly9G1l?= de Bretagne <jerome.debretagne@gmail.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Dale Whinham <daleyo@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
-	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Lingbo Kong <quic_lingbok@quicinc.com>
-Subject: Re: [PATCH 7/9 RFC] dt-bindings: wireless: ath12k: Add
- disable-rfkill property
-Message-ID: <20250715040215.GA20887-robh@kernel.org>
-References: <20250714173554.14223-1-daleyo@gmail.com>
- <20250714173554.14223-8-daleyo@gmail.com>
- <prrra3lon2p4pugkgeytf5ow5wls62lfdnwcdykztw3qzwity2@d26aqh6wdyln>
- <CA+kEDGFR3FB=ead50kFBAL23-1dXo-LOMqhT7f=WecNMf_MaNg@mail.gmail.com>
+	b=cv87xMjCUBqkt2D71YSvnK4Aslo8+wa+dqcw9rMILJ26HEKtwi65pHNnQUK9OWcAG
+	 X2hLLfI+HdEp+Mn6IRknAujBVJTT8oXzLUPZl8sSd3z2KUrUtFI5Jyr9F2b3qM2JkL
+	 EL2gXvmz+/YjFpa/8OuROm5eDm1sev+8PeDNj3wKbI+p/V+YIEnVCNXJV2cT8DuxIT
+	 eEe8fpPGbjCWO6JCZc6k6AhRWrXQ4zrI4jWhwzfdYaWbcUdrZ+fGdiqiycgZwaj1B1
+	 ndmh0UerfKZ1StD4PJ6jPM1/DWD09kZsoOpOn68HqV3SbMUObIYijz/tYsWRvqGHHO
+	 BUQcqtb63nlpA==
+Date: Mon, 14 Jul 2025 22:04:02 -0700
+From: Kees Cook <kees@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, Haoyu Li <lihaoyu499@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+e834e757bd9b3d3e1251@syzkaller.appspotmail.com
+Subject: Re: [PATCH wireless] wifi: cfg80211: remove scan request n_channels
+ counted_by
+Message-ID: <202507142200.D315742C@keescook>
+References: <20250714142130.9b0bbb7e1f07.I09112ccde72d445e11348fc2bef68942cb2ffc94@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+kEDGFR3FB=ead50kFBAL23-1dXo-LOMqhT7f=WecNMf_MaNg@mail.gmail.com>
+In-Reply-To: <20250714142130.9b0bbb7e1f07.I09112ccde72d445e11348fc2bef68942cb2ffc94@changeid>
 
-On Tue, Jul 15, 2025 at 01:26:48AM +0200, Jérôme de Bretagne wrote:
-> On Mon. Jul 15, 2025 at 00:33, Dmitry Baryshkov
-> <dmitry.baryshkov@oss.qualcomm.com> wrote :
-> >
-> > On Mon, Jul 14, 2025 at 06:35:43PM +0100, Dale Whinham wrote:
-> > > From: Jérôme de Bretagne <jerome.debretagne@gmail.com>
-> > >
-> > > Document the disable-rfkill property.
-> >
-> > Why? What does it mean? Why are you describing Linux driver firmware in
-> > the DT?
-> 
-> rfkill should be disabled according to the Surface Pro 11's DSDT.
-> 
-> https://lore.kernel.org/all/20250113074810.29729-3-quic_lingbok@quicinc.com/
-> has added support to read the ACPI bitflag when ACPI is supported.
-> 
-> The idea was to expose one specific feature (DISABLE_RFKILL_BIT) for
-> devices described with a DT, so that the feature can be disabled.
+On Mon, Jul 14, 2025 at 02:21:30PM +0200, Johannes Berg wrote:
+> If we really wanted to fix it, we'd need to separately track the
+> number of channels allocated and the number of channels currently
+> used, but given that no bugs were found despite the numerous syzbot
+> reports, that'd just be a waste of time.
 
-The commit msg should answer all this. That was the purpose of the 
-questions.
+This mismatch between "quantity allocated" and "quantity used from the
+allocation" is repeated in more places that just wifi, and I'd agree
+that it has caused some confusion. The intent of __counted_by is to
+track the _allocation_, so my mistake was trying to apply it in places
+where the allocation size is not retained, and to shoe-horn it into the
+"used" tracking member.
 
-Assuming it belongs in DT, why is this ath12k specific? Could be for any 
-wireless chip...
+Any opposition to adding such a field here, maybe "avail_channels"?
 
-> > > Signed-off-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
-> > > Signed-off-by: Dale Whinham <daleyo@gmail.com>
-> > > ---
-> > >  .../devicetree/bindings/net/wireless/qcom,ath12k.yaml          | 3 +++
-> > >  1 file changed, 3 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-> > > index 9e557cb838c7..f15b630fb034 100644
-> > > --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-> > > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-> > > @@ -48,6 +48,9 @@ properties:
-> > >    vddpcie1p8-supply:
-> > >      description: VDD_PCIE_1P8 supply regulator handle
-> > >
-> > > +  disable-rfkill:
-> > > +    type: boolean
-> > > +
-> > >  required:
-> > >    - compatible
-> > >    - reg
-> > > --
-> > > 2.50.1
-> > >
-> >
-> > --
-> > With best wishes
-> > Dmitry
+-Kees
+
+-- 
+Kees Cook
 
