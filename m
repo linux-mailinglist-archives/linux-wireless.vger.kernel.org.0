@@ -1,201 +1,277 @@
-Return-Path: <linux-wireless+bounces-25444-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25445-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3F4B051C3
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 08:28:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA176B05277
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 09:13:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 547091AA7601
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 06:29:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21CE41AA6558
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 07:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D132D5402;
-	Tue, 15 Jul 2025 06:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB5526E179;
+	Tue, 15 Jul 2025 07:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QlelfTFr"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="fGVxSsnO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D032D3A93;
-	Tue, 15 Jul 2025 06:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684DC1C8FBA;
+	Tue, 15 Jul 2025 07:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752560916; cv=none; b=ZAdwpedw2Z50GW2hlNeI0PoOTgJXMXX4+8x++f57zq2XISP2vYndu0HyR0DyuQTWfffUIM8IFKLLc9lz15jJWFwg8AEVM64twNE9hJKTEGYWHlzEn/FUGLAUvdvHUsGYCceVo/Yetn+oiUoypxPtL/Gc930e86I96KGxO0cR4Co=
+	t=1752563627; cv=none; b=gl+eXotel5ceMpmloUYRtMFRnmalfB3wTAYNE1AGMIFBZeJeLEBpXXJh2kRQs+9YX9uAL3Cp27mPmeSJmh/MNwzjAXsNJaPJiRgd+rg28zHg7tL1KbDrXXBg9mkwxk+UOu8mM/V5hCanLTP5CVnPlb9RS5Sa26hNDeJGqWDO0P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752560916; c=relaxed/simple;
-	bh=BJsnU8xVlShjcg5+ZFwrkWOQBaBFls93PGR1Hwz0nLI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iPEsyHgM7wcmTi8TkAVlwwbPUwxw3D5tQSUtS6FC6roEF0ZV54g3tyTemACvlH0/AphJXHGnF6xEteMW++kw1wTklG46H2rCOzBatv0Qo4miDfc4c4RqiT+/5Oy9FmUDksUV31uGKynqztN8anhU7d9PqXqBiOD60gTMKUiSz4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QlelfTFr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD34FC4CEE3;
-	Tue, 15 Jul 2025 06:28:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752560915;
-	bh=BJsnU8xVlShjcg5+ZFwrkWOQBaBFls93PGR1Hwz0nLI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QlelfTFr8Rhi4m0sFq/NarCbyHtIvfy52UDegp08jMNiITRMTdz2sPUaEEHhLXulm
-	 nWHqC0buwbfLtL/02X+vgjAJu6QvaRl0sVoRJltoknIrQ0vfkoDCtKyD9VN8fjZykn
-	 vE3s0XbjPiPRe1MY8hnDIn5dsPEEyBz6XnHtb7X4j12RXlTXj5LIbM/rQ/tJjgjOdS
-	 6NZASM3CKmYzoInRBWf8DmWC0YkPYRUVmib7iIBPNLm8Z6X3lTaqBJHv83ZKKbk1Gp
-	 T5tv2E6M3Xta9eEZ/kB2sv+0s29W5k5VmdwZN8053KWt98CtebNti2xgfG5M/A9g8p
-	 BCDKQ/Sjll3kQ==
-Message-ID: <8b2ee5da-4696-432a-bb0e-bed723192353@kernel.org>
-Date: Tue, 15 Jul 2025 08:28:30 +0200
+	s=arc-20240116; t=1752563627; c=relaxed/simple;
+	bh=3tRzF+eAG69iCFJsLHqK7qCIOSv/sCoudEUDZNrr2KA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DBH4P+mU3WzfTegDzwyMOqnX0o0cPvXuVe9NhgUa0kyt5chXjWcWMqkcIRc/azElhOYIrSl0G+Ec9FM93j1dJ4qPWXJv+hBqXJj/yEFazI5ill9B2NvJ3wpfdTIPD+MlxAKxTGOf3X3rjg/sg6YVCb3uSYSQwzABipxzsQd+9cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=fGVxSsnO; arc=none smtp.client-ip=15.184.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1752563604;
+	bh=RFKqX/8jGLZ0gCM1lRc1v1zeuP3fiXSjkW615zWkF/8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=fGVxSsnOyLb+URLacjA1Sd3bbCsbyuEhRq1fqx/9kf9hxKAfgwJglUml0EAcf66lr
+	 qP5bwH2xTPNO89oJgiIGSIe7rO7+BstjN+GEPqloQKhHWEeVxqnQCBXEKNUyVVL6S2
+	 Zn3uC07ASOaEv2fW+Hoe7yFbmdxKoXTBgjiZK0Vc=
+X-QQ-mid: zesmtpip3t1752563587t54e86ea1
+X-QQ-Originating-IP: LAPbbLpI8/WwODO7cz/sB4Ix6FIzw86cgmvoh1lVP0U=
+Received: from avenger-e500 ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 15 Jul 2025 15:13:02 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 14369993403465055196
+EX-QQ-RecipientCnt: 63
+From: WangYuli <wangyuli@uniontech.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	dan.j.williams@intel.com,
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	marcin.s.wojtas@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	arend.vanspriel@broadcom.com,
+	ilpo.jarvinen@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	jgross@suse.com,
+	sstabellini@kernel.org,
+	oleksandr_tyshchenko@epam.com,
+	akpm@linux-foundation.org
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	wangyuli@uniontech.com,
+	ming.li@zohomail.com,
+	linux-cxl@vger.kernel.org,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org,
+	kvalo@kernel.org,
+	johannes.berg@intel.com,
+	quic_ramess@quicinc.com,
+	ragazenta@gmail.com,
+	jeff.johnson@oss.qualcomm.com,
+	mingo@kernel.org,
+	j@jannau.net,
+	linux@treblig.org,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-serial@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	shenlichuan@vivo.com,
+	yujiaoliang@vivo.com,
+	colin.i.king@gmail.com,
+	cvam0000@gmail.com,
+	zhanjun@uniontech.com,
+	niecheng1@uniontech.com,
+	guanwentao@uniontech.com
+Subject: [PATCH] treewide: Fix typo "notifer"
+Date: Tue, 15 Jul 2025 15:12:45 +0800
+Message-ID: <B3C019B63C93846F+20250715071245.398846-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv4 wireless-next 7/7] dt-bindings: net: wireless: rt2800:
- add
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linux-wireless@vger.kernel.org, Johannes Berg
- <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Stanislaw Gruszka <stf_xl@wp.pl>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "moderated list:ARM/Mediatek SoC support"
- <linux-arm-kernel@lists.infradead.org>,
- "moderated list:ARM/Mediatek SoC support"
- <linux-mediatek@lists.infradead.org>
-References: <20250712210448.429318-1-rosenp@gmail.com>
- <20250712210448.429318-8-rosenp@gmail.com>
- <20250714-subtle-origami-gopher-c9099f@krzk-bin>
- <CAKxU2N8au-uncWoP+vGH4cHhHMOtq+VRFGNDs6rRLuHn-i1G-Q@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <CAKxU2N8au-uncWoP+vGH4cHhHMOtq+VRFGNDs6rRLuHn-i1G-Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: NYOnBmlw6PSq7qfgCwz2XzMxcZWmpyFzt+hN2mg3FQguPczQComUKfYl
+	M7q60PKhl/wMTk5Pm+ZTCDiwSKGwzwMxD/w72ijm5S+exZ3ncEpCpzp2Jf//EAQ/xmUvVoj
+	VLbP0vvUBmRAGQbmOvmCDAeotInA+zVGcBsLXuPJVK7auy9s0tx9J9buR3544TvcV7/yS+N
+	2G4KWGv/ipIcm3pj75vvZzf9tbcMXJ9xc/jG5P3WaLqO62zwWvBCnCSVsBbTXw+rRNAbOIV
+	7O6yYK3hMj0IZwjWi5xNWFgb4yQX3YvFnWk9XCUHOg+uJt+viSpjX+3xc69yZ4lxjoPTxEM
+	E04uhaZwMh4X6dfJqcIiCuCgGfYf7hzUSzvvpfFjEgFsevtOYn8GlHIf5XQ7fVn5FEn3vGO
+	krc2zuOG/G7yJGLDyV9daWLGLjP6E1H2Ni5NP5x2Yu9c6jrMJs3f6kWWKZLp0QzKwqB5911
+	IVUskZCsApQ5n7c8ROTA22tL4kCGJohhx75NQdsB/FG06QSl5+Kc5XDWSdgDMqaVE3UPRp7
+	bN3EuXL50PHvt2Eyynqi7RRjin9ueCW5vaQc2E+IXnuXf8zNfes0ofjBbKk3YPzFLbjv/j/
+	AhhnpgvDuHiUyXkOWLBXc1Ov1RnNGw176r2M/Rqb2VsJgpBa+giL/mwrkXOvVQYgqWVHm+m
+	GMrVAAkc6zgFQlCBDoOQw6RK6bhd39P0DIojV3Z8LaNFCVllqb6A7FlWXyt7Fmor4FYflXR
+	LVcHcnV3Iunc3TmGGs3ySUoND+WnQ5DJReExzQK2auKTVvjnOHu34VrtkZWNqGrVSHWqJrG
+	iSKqa7mfBOloXR4ak/oiJId7tqLd/iFL0qDFPAXHMrCiFGkDjQYSHRBOGgbny4ffufHeyKq
+	+rByfMK4770/JGnjKbuJcopzKzSDmiGDCMq4q7EEALyZw9zXySgeUDiAL3L6EHxh1iG/0Na
+	C6dtgfKvngjxElogxtL5HYu9lD95iR1HVEyQ5k3+9zxOu5bPkJTZ6mmIcxEICbl5I53n0d8
+	8UxpAgPwKjUHN1AQU8A3jWB4I3mXxYLZBr83kg7uMYUmsysjYJ
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+X-QQ-RECHKSPAM: 0
 
-On 14/07/2025 21:44, Rosen Penev wrote:
-> On Mon, Jul 14, 2025 at 12:27 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>
->> On Sat, Jul 12, 2025 at 02:04:48PM -0700, Rosen Penev wrote:
->>> Add device-tree bindings for the RT2800 SOC wifi device found in older
->>> Ralink/Mediatek devices.
->>
->> Your subject was cut. Probably you wanted something like add "Realtek foo adapter" etc.
-> Not sure I follow.
+There are some spelling mistakes of 'notifer' in comments which
+should be 'notifier'.
 
-Your subject is oddly incomplete.
+Fix them and add it to scripts/spelling.txt.
 
->>
->>
->>>
->>> Signed-off-by: Rosen Penev <rosenp@gmail.com>
->>> ---
->>>  .../bindings/net/wireless/ralink,rt2880.yaml  | 47 +++++++++++++++++++
->>>  1 file changed, 47 insertions(+)
->>>  create mode 100644 Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml b/Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml
->>> new file mode 100644
->>> index 000000000000..a92aedf6ba01
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml
->>> @@ -0,0 +1,47 @@
->>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/net/wireless/ralink,rt2880.yaml#
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: Ralink RT2880 wireless device
->>> +
->>> +maintainers:
->>> +  - Stanislaw Gruszka <stf_xl@wp.pl>
->>> +
->>> +description: |
->>> +  This node provides properties for configuring RT2880 SOC wifi devices.
->>> +  The node is expected to be specified as a root node of the device.
->>> +
->>> +allOf:
->>> +  - $ref: ieee80211.yaml#
->>> +
->>> +properties:
->>> +  compatible:
->>> +    enum:
->>> +      - ralink,rt2880-wifi
->>> +
->>> +  reg:
->>> +    maxItems: 1
->>> +
->>> +  clocks:
->>> +    maxItems: 1
->>> +
->>> +  interrupts:
->>> +    maxItems: 1
->>> +
->>> +required:
->>> +  - compatible
->>> +  - reg
->>
->> Why clocks are optional? SoC devices rarely work without a clock.
-> Before this patchset the code was doing
-> 
->  25         rt2x00dev->clk = clk_get(&pdev->dev, NULL);
->  24         if (IS_ERR(rt2x00dev->clk))
->  23                 rt2x00dev->clk = NULL;
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+---
+ arch/x86/kvm/i8254.c                                        | 4 ++--
+ drivers/cxl/core/mce.h                                      | 2 +-
+ drivers/gpu/drm/xe/xe_vm_types.h                            | 2 +-
+ drivers/net/ethernet/marvell/mvneta.c                       | 2 +-
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
+ drivers/tty/serial/8250/8250_dw.c                           | 2 +-
+ include/xen/xenbus.h                                        | 2 +-
+ scripts/spelling.txt                                        | 1 +
+ 8 files changed, 9 insertions(+), 8 deletions(-)
 
+diff --git a/arch/x86/kvm/i8254.c b/arch/x86/kvm/i8254.c
+index 739aa6c0d0c3..9ff55112900a 100644
+--- a/arch/x86/kvm/i8254.c
++++ b/arch/x86/kvm/i8254.c
+@@ -641,7 +641,7 @@ static void kvm_pit_reset(struct kvm_pit *pit)
+ 	kvm_pit_reset_reinject(pit);
+ }
+ 
+-static void pit_mask_notifer(struct kvm_irq_mask_notifier *kimn, bool mask)
++static void pit_mask_notifier(struct kvm_irq_mask_notifier *kimn, bool mask)
+ {
+ 	struct kvm_pit *pit = container_of(kimn, struct kvm_pit, mask_notifier);
+ 
+@@ -694,7 +694,7 @@ struct kvm_pit *kvm_create_pit(struct kvm *kvm, u32 flags)
+ 
+ 	pit_state->irq_ack_notifier.gsi = 0;
+ 	pit_state->irq_ack_notifier.irq_acked = kvm_pit_ack_irq;
+-	pit->mask_notifier.func = pit_mask_notifer;
++	pit->mask_notifier.func = pit_mask_notifier;
+ 
+ 	kvm_pit_reset(pit);
+ 
+diff --git a/drivers/cxl/core/mce.h b/drivers/cxl/core/mce.h
+index ace73424eeb6..ca272e8db6c7 100644
+--- a/drivers/cxl/core/mce.h
++++ b/drivers/cxl/core/mce.h
+@@ -7,7 +7,7 @@
+ 
+ #ifdef CONFIG_CXL_MCE
+ int devm_cxl_register_mce_notifier(struct device *dev,
+-				   struct notifier_block *mce_notifer);
++				   struct notifier_block *mce_notifier);
+ #else
+ static inline int
+ devm_cxl_register_mce_notifier(struct device *dev,
+diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
+index 1979e9bdbdf3..0ca27579fd1f 100644
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -259,7 +259,7 @@ struct xe_vm {
+ 		 * up for revalidation. Protected from access with the
+ 		 * @invalidated_lock. Removing items from the list
+ 		 * additionally requires @lock in write mode, and adding
+-		 * items to the list requires either the @userptr.notifer_lock in
++		 * items to the list requires either the @userptr.notifier_lock in
+ 		 * write mode, OR @lock in write mode.
+ 		 */
+ 		struct list_head invalidated;
+diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
+index 147571fdada3..ee4696600146 100644
+--- a/drivers/net/ethernet/marvell/mvneta.c
++++ b/drivers/net/ethernet/marvell/mvneta.c
+@@ -4610,7 +4610,7 @@ static int mvneta_stop(struct net_device *dev)
+ 		/* Inform that we are stopping so we don't want to setup the
+ 		 * driver for new CPUs in the notifiers. The code of the
+ 		 * notifier for CPU online is protected by the same spinlock,
+-		 * so when we get the lock, the notifer work is done.
++		 * so when we get the lock, the notifier work is done.
+ 		 */
+ 		spin_lock(&pp->lock);
+ 		pp->is_stopped = true;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index b94c3619526c..bcd56c7c4e42 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -8313,7 +8313,7 @@ struct brcmf_cfg80211_info *brcmf_cfg80211_attach(struct brcmf_pub *drvr,
+ 	cfg->d11inf.io_type = (u8)io_type;
+ 	brcmu_d11_attach(&cfg->d11inf);
+ 
+-	/* regulatory notifer below needs access to cfg so
++	/* regulatory notifier below needs access to cfg so
+ 	 * assign it now.
+ 	 */
+ 	drvr->config = cfg;
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index 1902f29444a1..6d9af6417620 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -392,7 +392,7 @@ static void dw8250_set_termios(struct uart_port *p, struct ktermios *termios,
+ 	rate = clk_round_rate(d->clk, newrate);
+ 	if (rate > 0) {
+ 		/*
+-		 * Note that any clock-notifer worker will block in
++		 * Note that any clock-notifier worker will block in
+ 		 * serial8250_update_uartclk() until we are done.
+ 		 */
+ 		ret = clk_set_rate(d->clk, newrate);
+diff --git a/include/xen/xenbus.h b/include/xen/xenbus.h
+index 3f90bdd387b6..00b84f2e402b 100644
+--- a/include/xen/xenbus.h
++++ b/include/xen/xenbus.h
+@@ -180,7 +180,7 @@ int xenbus_printf(struct xenbus_transaction t,
+  * sprintf-style type string, and pointer. Returns 0 or errno.*/
+ int xenbus_gather(struct xenbus_transaction t, const char *dir, ...);
+ 
+-/* notifer routines for when the xenstore comes up */
++/* notifier routines for when the xenstore comes up */
+ extern int xenstored_ready;
+ int register_xenstore_notifier(struct notifier_block *nb);
+ void unregister_xenstore_notifier(struct notifier_block *nb);
+diff --git a/scripts/spelling.txt b/scripts/spelling.txt
+index c9a6df5be281..d824c4b17390 100644
+--- a/scripts/spelling.txt
++++ b/scripts/spelling.txt
+@@ -1099,6 +1099,7 @@ notication||notification
+ notications||notifications
+ notifcations||notifications
+ notifed||notified
++notifer||notifier
+ notity||notify
+ notfify||notify
+ nubmer||number
+-- 
+2.50.0
 
-That's driver. I am asking about hardware. Hardware rarely works without
-clock. Just because some driver works is not a really a good proof,
-because clock could be enabled by bootloader which would still prove my
-point: hardware cannot work without clock.
-
-Best regards,
-Krzysztof
 
