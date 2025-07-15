@@ -1,115 +1,137 @@
-Return-Path: <linux-wireless+bounces-25453-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25454-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57419B054C3
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 10:24:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC91B054CD
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 10:25:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30FC9174AB3
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 08:24:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 726E07B6483
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 08:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E355F274B30;
-	Tue, 15 Jul 2025 08:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25AA2741D4;
+	Tue, 15 Jul 2025 08:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kISjnJZq"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QU2S/zmj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD8426C396;
-	Tue, 15 Jul 2025 08:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E561A226CF3
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 08:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752567831; cv=none; b=OGT3UfEhzqhoLymfjTy6R88zQoZsahk/7JVKuvYJ79evdDbdXUQq+X8dzKxJc7qD31WjsLDTkzWW1twX8kezoAvXXkYdO4ooPu4Q0axoSBNjQb8Z5352eGSq7rpR/GQ7jRpARKpUdksNB1r9ZlGfz+lqG1t2cqQ1KYcJAGC04wA=
+	t=1752567867; cv=none; b=Bh+hEhOJgJszrzFcueVOMtq1xtqqDjoOukS1QskuQh8swkKrefXcB9JcSn5eeQ23yl1S4iLMVr02SFd3MOo965TbXnAphiWZ8eNIfQ4yI28Ef1lpPl/7/n1HysIniA34jLGkNXo/q1KRZVKHZI/jdZd2vm224cSoaOe2cBJ/LCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752567831; c=relaxed/simple;
-	bh=IXRCyqqh4GTD9xil3vhdDoGw5vRt665/k6/t0dxA3pI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fpldVkuh3meKTBzsjoxc1LAYfa4Dz9w1lhtWKsCuV6CIGxGsm6EurfP78lGdP5Dc6MFZG78S5EoZJgK8ec5JmMO3AxTiWA950S75XsCF3zLl14bU6nepMxqkTjiWf0emj1FA2gJFjjN1ucQVXPVyU6nbnURiWSx4a6bp4dvEzbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kISjnJZq; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-311e2cc157bso4437662a91.2;
-        Tue, 15 Jul 2025 01:23:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752567830; x=1753172630; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AR57cyXHpNdEBRao+1ozE9zC0Ys9s/kP9hmKhK9UHUA=;
-        b=kISjnJZq8sexE3vCQ2FpiUTcVlba4K1+zW+0xTsyZ4ySdKqADeN5oYsQvYy3TklpVV
-         3Bshb0O1tHsUnGwzY6ExK87+75Szj5NGB56rUAYaSbDTa/jlpK7/0gu4vS9O6aX10I/N
-         usk0XgM7nbfc1bZkAX/Q0rk1kkRBVzMk1KfN6WE6JR8Nvn5l45gKX3ycEm0kaD4bOJb3
-         527MawZul9w7rPynDhXQoAK+BrRcFHE7R0G8fFfiQMueGtZ86FA2zF4ztJoc7tPAgK0s
-         XkBZnIdyU6BfO0KL/MPUkZxwTTTZ+gWiu2T4aIhg1QxkcVpVd33XALqWrqsAvmF5x7UD
-         EGPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752567830; x=1753172630;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AR57cyXHpNdEBRao+1ozE9zC0Ys9s/kP9hmKhK9UHUA=;
-        b=rsKmsuuQ1M3cuU6hC2mOf2V057uT7Cclg7F3+IEa/85eG/OCm3LouQmfWulci0S0g2
-         /+2KvYTvygjq70vRw2YgG6ua3M+I7Bd1/vtdJq1478mVcviv9QJwxL+qEwBKqId4cL8y
-         18ND9Wt75BW/AX7o+y85Z13bq5HxdtM/qRNp16/IIPJ9GHZrGgEnPgoO/1H6k/iLs9dz
-         yUuzxZzvVzyaDngVa2MiFd6r2ELQDS81NfI7piIn66A9/fsc4/694a35oVB/PYVibvlr
-         r2LpO1MljGvDs0fNA5M7cf5me84zNL6K+Kqa7OR09mYP+j//b8xxAxISLfJuzfNxHIMt
-         2u6g==
-X-Forwarded-Encrypted: i=1; AJvYcCUghI2edBraYd7A7mGiu4pctV8vmvxkodJdFlo8SlJ3zm2POzoxPTxKvZSImhXnSt9iKKUgNfsrx/0s@vger.kernel.org, AJvYcCWLsIZwFqgPwK5psZAkW/Xt3aRTOphLBDn1xHzAIOWS6bh0Shh1AdardqJOyC9mzeKCG8lYHx6cQoWLTQ==@vger.kernel.org, AJvYcCXoZ69i0Un1eKG4jnuK7qgCsY/AhPu8LDcPwVOYvRHF2vAb+Mx01jjRD1ui0gHMXCk2wKxVrtbvW9YFoph8@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1mgjhyWhz2zXzJuu5t+JztAIQ0DK9II+HQeRPnrteUC8sL3Fw
-	ItAPgYN5YEJtr5+GkqDuAAcV/mbQqsksxoe8UI8Azl+T1K6dVhFtHOfuJvQ0tdmFPeTsOvviiUf
-	F3y6AihkbLJcMvAy/v3PgspBzUwNTcTGiI7pTybBFsQYD
-X-Gm-Gg: ASbGncsO7ycElB22Rgj/dBQMk4dyVV3wdYcPoMm98c991fD4IM/Y/fI7MaTbo9tfi30
-	xJxjJ2rMcNDFCJevrui2j5g0GdeirpXt/NU5s23quRFngEG6OxsGilv9aHUJlVqHf5BvgFNVcIJ
-	S9ZD5d0FE08jSN/WKj8h3T1Btrw20Wdm6IvQN1Cer5bwAq6T3sAfXSY4ttEh99HvNI8HY6nWsLB
-	mau
-X-Google-Smtp-Source: AGHT+IGQim4tVu7RMI5fjr1GyhLLVevwXHUGV3YhMyRCmfDdHKplROEF+/5RsJJ3UPhiAa6LDTi+DGZv63jRAIn0aBU=
-X-Received: by 2002:a17:90b:5885:b0:319:bf4:c3e8 with SMTP id
- 98e67ed59e1d1-31c91f25558mr3528982a91.18.1752567829634; Tue, 15 Jul 2025
- 01:23:49 -0700 (PDT)
+	s=arc-20240116; t=1752567867; c=relaxed/simple;
+	bh=goPlUPod258oAtfVyqL8bc8ABijrKZhDzYOX7GDta9I=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CrdAxD1ABj2flp2eHznpoq8c+tPD+/YXe5UzIP0WdvRcE5KWBF8cKI9tGoq4Ifh7TRCwhSGzAtiJTHeLQfP++KR+9QIzRN/Knqm1EK6we4GhvcD2pR06ojbJhxC6hAeC6HyGGIDkRpoN8r9Oe4GXKQ05/kV2bcpA5Ieu49L5c0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QU2S/zmj; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=DRTJbQ2pz8nbp6jDElJbcTmi81BwA5y47EYAupgTk/o=;
+	t=1752567866; x=1753777466; b=QU2S/zmjUdMptKpw/Y40ijJnCQWs5Nz8xbonPhqMRkCzq4c
+	ib/ssdtmP4uGDSzRqF5x9KraV6qJEXAbjHbrAk6cJxQbXojA2HYtbUTPoat74s9NPwOQFw7knTozD
+	0aFCSafloaGJpcvwv4zBAt4x3B4COUt/B9bJqO8AMRZdYzKKe/2WwtMFARCPaLBW5N8hNyeKpoXDg
+	T7oWnfD0krPbWRLRNT+Dg7GUO//ZZoJ2tw4TemAqSpHZ+EvYKLN46bkML6+XMrlOFF3hY29z1vcEk
+	3/SG2qdeXl8NDAMsgclQXO8hUbdjjs+39s9Uda3BJD3HxuSgxVLcUC+5Wi0sFGDg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1ubaxa-00000005mUX-09RW;
+	Tue, 15 Jul 2025 10:24:22 +0200
+Message-ID: <adb4d011c640aacb2273f81a4ad6e658ea2f52f1.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless] wifi: cfg80211: remove scan request n_channels
+ counted_by
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Kees Cook <kees@kernel.org>
+Cc: linux-wireless@vger.kernel.org, Haoyu Li <lihaoyu499@gmail.com>, 
+	syzbot+e834e757bd9b3d3e1251@syzkaller.appspotmail.com
+Date: Tue, 15 Jul 2025 10:24:16 +0200
+In-Reply-To: <202507142200.D315742C@keescook>
+References: 
+	<20250714142130.9b0bbb7e1f07.I09112ccde72d445e11348fc2bef68942cb2ffc94@changeid>
+	 <202507142200.D315742C@keescook>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250712210448.429318-1-rosenp@gmail.com> <20250712210448.429318-6-rosenp@gmail.com>
-In-Reply-To: <20250712210448.429318-6-rosenp@gmail.com>
-From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Date: Tue, 15 Jul 2025 10:23:38 +0200
-X-Gm-Features: Ac12FXyjagyqzzwK9h4VxCo7FvGtmHUddwyUc5g6qUy0YRPcOqUgDiJgtz5UTuw
-Message-ID: <CAMhs-H_xaV6o7ah=7m8KVBqRgudjKS5o5JA0LTLxf+S2gsuDAQ@mail.gmail.com>
-Subject: Re: [PATCHv4 wireless-next 5/7] wifi: rt2x00: soc: modernize probe
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linux-wireless@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Stanislaw Gruszka <stf_xl@wp.pl>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:MIPS" <linux-mips@vger.kernel.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-arm-kernel@lists.infradead.org>, 
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-On Sat, Jul 12, 2025 at 11:06=E2=80=AFPM Rosen Penev <rosenp@gmail.com> wro=
-te:
->
-> Remove a bunch of static memory management functions and simplify with
-> devm.
->
-> Also move allocation before ieee80211_alloc_hw to get rid of goto
-> statements and clarify the error handling a bit more.
->
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->  .../net/wireless/ralink/rt2x00/rt2800soc.c    | 185 ++++++++----------
->  1 file changed, 79 insertions(+), 106 deletions(-)
+On Mon, 2025-07-14 at 22:04 -0700, Kees Cook wrote:
+> On Mon, Jul 14, 2025 at 02:21:30PM +0200, Johannes Berg wrote:
+> > If we really wanted to fix it, we'd need to separately track the
+> > number of channels allocated and the number of channels currently
+> > used, but given that no bugs were found despite the numerous syzbot
+> > reports, that'd just be a waste of time.
+>=20
+> This mismatch between "quantity allocated" and "quantity used from the
+> allocation" is repeated in more places that just wifi, and I'd agree
+> that it has caused some confusion. The intent of __counted_by is to
+> track the _allocation_, so my mistake was trying to apply it in places
+> where the allocation size is not retained, and to shoe-horn it into the
+> "used" tracking member.
 
-Reviewed-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+I'd expect in most cases it's really the same - you allocate, fill, and
+never touch it again before throwing it away at the end. I'd argue
+though that in those cases the whole thing is quite pointless, although
+it still allows finding out-of-bounds reads.
 
-Thanks,
-    Sergio Paracuellos
+> Any opposition to adding such a field here, maybe "avail_channels"?
+
+I guess fundamentally not, however, as described here, I don't think it
+has actually all _that_ useful. We haven't found a single _real_ bug
+with it in the two years this has been around, and quite frequently had
+false positives. Now, tracking the allocation size would hopefully not
+get into the false positives again but ...
+
+Also, I still have 11 other such annotations that are probably at least
+somewhat wrong in the same ways, and I guess it'll fall on me to review
+them, since before forming an opinion on how it should be used I just
+merged the changes, naively trusting you (and others.) The scheduled
+scan for example is likely in a similar situation, though in that case
+maybe we don't reuse the allocations as much.
+
+So for now: no, I'm not going to apply any new counted_by() annotations.
+It's cost me far too much time for having absolutely nothing to show for
+the investment. Ask me again again next year maybe.
+
+If you feel motivated you could help review and perhaps annotate the
+still existing ones I guess, I'm thinking we should have comments there
+like this perhaps:
+
+--- a/net/mac80211/parse.c
++++ b/net/mac80211/parse.c
+@@ -54,8 +54,9 @@ struct ieee80211_elems_parse {
+         * scratch buffer that can be used for various element parsing rela=
+ted
+         * tasks, e.g., element de-fragmentation etc.
+         */
+-       size_t scratch_len;
+        u8 *scratch_pos;
++       /* __counted_by: scratch_len tracks the allocation and doesn't chan=
+ge */
++       size_t scratch_len;
+        u8 scratch[] __counted_by(scratch_len);
+ };
+=20
+
+which also helps for otherwise understanding how scratch_len is used.
+
+But I'm also not completely sure I've convinced myself that all the
+above discussion about allocated vs. used is really the _entire_
+explanation for it being such a spectacular failure here.
+
+johannes
 
