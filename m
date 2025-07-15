@@ -1,146 +1,177 @@
-Return-Path: <linux-wireless+bounces-25430-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25431-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC739B04E79
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 05:04:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4C9B04EAB
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 05:24:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 151E93B4CF9
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 03:03:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B3A97A4216
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 03:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB6819DF4F;
-	Tue, 15 Jul 2025 03:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90572D0C76;
+	Tue, 15 Jul 2025 03:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iVk1xmge"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="MD2aeH+c"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7FC18DB1A
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 03:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494E67081E;
+	Tue, 15 Jul 2025 03:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752548640; cv=none; b=A/QAv8RaZz7ZBQ5K/YeKt4hZdXGu1nQ0NvYrwvJhrRQEE7FhkOycUEf5CgqNZzTQZOtaztSLYg4SslBIdK0OYXPgv4+YRYGaS+kAPau4ikcsAbkfFkWt4mJkJ3dyEQMn4+t58joofmJ2453Mp54eghAgFoYNSDWLVS6kQpnwyYM=
+	t=1752549889; cv=none; b=G7KL4KOoTpuIW+85QSuuG1nafteivJEm/Sww0VpCfWXRcYT/yGPN0SMFh0llN6d41z+zRD/t0NelknQ26y5vPmiIqx+ePW3OkIl5jlfT+EUjwJEjt2Z9lR/Uf6x57373nUG33nrg+KZf4SEH20o3oAXl0ghmuqYXokEjDeeJATU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752548640; c=relaxed/simple;
-	bh=1ilVfC+jxYYA3Y60yLlL4D+iquYBjKNl6CBbmWcaCWE=;
+	s=arc-20240116; t=1752549889; c=relaxed/simple;
+	bh=uKoZoBLiQvZEVv5sNgc3TbKgYExtRbQiGXxdjBdy2rs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=teQVhBL0WDKH+A2N7AuEROy1hKzOBrXq1tyIm0LhrBAdBCa0yp/KqGmc3UKFqpOnW7PI4xm0LmGFbvLusENOm6xMXmQQi8dLtDzgXMjv4b+qqyNX5/rQSE1owt14pIp7oZZEuZ/lpLtYBZ4B7w3AyPILew/byVUZGuvWTGL+PRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iVk1xmge; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56EGRcJF029642
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 03:03:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4DTCGRhIs1G8ZriYF+cftr7+2fBBpADwLLPYQcSjDfQ=; b=iVk1xmgevH0Cd481
-	uiwcu9F9DZWyYT8EnqDaMDUEmqdnZ0zbnBzJa9WuNJhdf133S9JjXAWPtq62YDNc
-	esNxyY0bsOuH5NOAc/uc4P5Kd5crdAKQ7WuSHbRRY+tqaMfCHBV5mbX8jxCBPyx2
-	939zEAKOzKMIHVn3y1q2MWvwljD85Uky5e3+mu9uWXJtM3D4ELCrlBlLAw/My/EI
-	822NEp0N1+FFee3YfhyQ4lw4ysC17GnFB38OzbZrt+5MePerlYgALIOe8lFe8Z8P
-	l/MmUQgY5HNJs7sdKyuMXTDrV9FEfV0oYmjYWrWD0CFiiYAxjtT1Xh1biX/zSzqo
-	mxtlig==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47w5dq1cc2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 03:03:57 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3132c8437ffso8360855a91.1
-        for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 20:03:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752548637; x=1753153437;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4DTCGRhIs1G8ZriYF+cftr7+2fBBpADwLLPYQcSjDfQ=;
-        b=FlVvGeHaSBBz0GjHr9jrPZzjB3xy4yG0fyTjBWkbgW7NVZqkG3FtPve2vlLiGkA2lx
-         et8LPb+SvnKR1u/reiqNQvMqJolIQwFEp12A6Z5jTrNzFl1iJWPfRD6a5UKl5Tmtisuk
-         rjuS2QIj9BGNYSPZ/Pe/YFz3tyFkbczZn7mlEJVJgFo4A8fezNntYIQ65SUwEkemKZx4
-         Pn68mRPHOs7H73bWWa+oLdruoHFekkDLKANw9TccVCU9DenH4d647LMm4y7UEcwwiqMl
-         /HffGn5Q2KiTkHDeKK2bLP5YpAuruZoPcElxPN55WXgNZGu/+dqiCATl5lQYbSEmXdor
-         3QRA==
-X-Gm-Message-State: AOJu0YyAT4FcFDdTmpkn1qZZ/eTcz0gX8h1/5e6plRKIbUCosSUAlUqh
-	ZRD1iB/Lp8WYzoYQl/j7OBWph6Cg/p+S0tSjyIAsWNnVfkfaRd7qGLzT6dzSXNjLFHalx7vG9xJ
-	lmDRGCnbBNBRTlvvQwPB8qD4ij3uiBFQofZgoW/3O6dXCViIAgvMGOXBcIL3KlxS9A0Ek6A==
-X-Gm-Gg: ASbGncu6Z8TtnMpAzmL/wWryCsAFw62D/onRsk3FpBK8Vx3WQC6EWJU+vtsjVjRvZsR
-	ZYFdJ3DezpRDBuP7qkMOoqgpNhkE/22YHmbuabwVNXW9T7t/wiVrlHFQ2IX6SAj2698pk4xPgvg
-	oa/0s0EsT3fA1dlHE8+gZGm9qBHitRvVb92UsE9NGK/GH94dD0L269vtBJudfxBpn/eoK8GbsRu
-	r6SSCWLO4HOUfXFIdAYb7bbz/b8TlxqsRLMfhn2M0InMTV7NKg6/Nppq4C0NH6h9ruQUpVmT8y5
-	xoNFDgVQs6RedoMnp65gFcgDKlMHG5VQ5LuV7Yu/JZepsu8JBoRWO6dOmpEGHoWliiz2lk5DiPo
-	jHhwWqYmFDo3a
-X-Received: by 2002:a17:90b:4a81:b0:31a:9004:899d with SMTP id 98e67ed59e1d1-31c4ccd89b4mr28714302a91.18.1752548636980;
-        Mon, 14 Jul 2025 20:03:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQk8UV8Z7wa/o8AdX75PKgIiy/izrir0RGwfamCQ4qVyHT6O7Nc98rChTuodHQMpHEAso/tQ==
-X-Received: by 2002:a17:90b:4a81:b0:31a:9004:899d with SMTP id 98e67ed59e1d1-31c4ccd89b4mr28714258a91.18.1752548636521;
-        Mon, 14 Jul 2025 20:03:56 -0700 (PDT)
-Received: from [192.168.225.142] ([157.49.226.115])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c3eb45d1asm11017676a91.30.2025.07.14.20.03.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Jul 2025 20:03:56 -0700 (PDT)
-Message-ID: <36d25bdb-e0b6-e55a-4060-e7cdcfeb6417@oss.qualcomm.com>
-Date: Tue, 15 Jul 2025 08:33:52 +0530
+	 In-Reply-To:Content-Type; b=iBgvxcPhdC46EXi/2zwLpxCXOc/HG/PqADr8iyNKqbwJwA6bmIj+L5TJfnOlzkHwE3yo06gd5Izcm51e3AfRwNPgF+isTeb8VEPCh8FFQQq4iha5SSTimXYz4ufIEPDnWBh9dzZRpsljr6bDG4e20oK9vxGoxp+rh3cAV9T/xz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=MD2aeH+c; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1752549837;
+	bh=uKoZoBLiQvZEVv5sNgc3TbKgYExtRbQiGXxdjBdy2rs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=MD2aeH+cabB/6IB9u3A9Qw3gtnnUvR2zjLbjQppgfaz0R0/HXE6EcRMPmiw1/xprR
+	 C1fY2hgZDxQlUFB14K8sDKQ4fOhMzyyKnSsMY54rUNHeX35wY7H6WVn0R0QVBUT/P7
+	 U16UE+Rl9+qEl2grYJpRinfZ62eUSYfeBmrLLFX4=
+X-QQ-mid: zesmtpip3t1752549825ta015b457
+X-QQ-Originating-IP: gPo+Rg9dBF/Wn3/8bHgVxJuFxW4nl67Kf+kTqQA0+Gc=
+Received: from [IPV6:240e:668:120a::212:232] ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 15 Jul 2025 11:23:43 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 5126880462787841085
+EX-QQ-RecipientCnt: 14
+Message-ID: <C17A7B492949C5EC+1ddb2dab-9bb0-43d9-a022-118a34180a87@uniontech.com>
+Date: Tue, 15 Jul 2025 11:23:43 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH ath-next v2] wifi: ath12k: Validate peer_id before
- searching for peer
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: iwlwifi: Fix typo "ransport"
+To: Johannes Berg <johannes@sipsolutions.net>,
+ miriam.rachel.korenblit@intel.com, akpm@linux-foundation.org
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ emmanuel.grumbach@intel.com, yanzhen@vivo.com, shenlichuan@vivo.com,
+ yujiaoliang@vivo.com, colin.i.king@gmail.com, cvam0000@gmail.com,
+ zhanjun@uniontech.com, niecheng1@uniontech.com, guanwentao@uniontech.com
+References: <03DFEDFFB5729C96+20250714104736.559226-1-wangyuli@uniontech.com>
+ <791111506ac7772108f00b9dae92fc4fce4217d3.camel@sipsolutions.net>
 Content-Language: en-US
-To: Nagarajan Maran <nagarajan.maran@oss.qualcomm.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Sriram R <quic_srirrama@quicinc.com>
-References: <20250714111438.1134438-1-nagarajan.maran@oss.qualcomm.com>
-From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-In-Reply-To: <20250714111438.1134438-1-nagarajan.maran@oss.qualcomm.com>
+From: WangYuli <wangyuli@uniontech.com>
+Autocrypt: addr=wangyuli@uniontech.com; keydata=
+ xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSKP+nX39DN
+ IVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAxFiEEa1GMzYeuKPkg
+ qDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMBAAAKCRDF2h8wRvQL7g0UAQCH
+ 3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfPbwD/SrncJwwPAL4GiLPEC4XssV6FPUAY
+ 0rA68eNNI9cJLArOOARmgSyJEgorBgEEAZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7
+ VTL0dvPDofBTjFYDAQgHwngEGBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIb
+ DAAKCRDF2h8wRvQL7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkU
+ o9ERi7qS/hbUdUgtitI89efbY0TVetgDsyeQiwU=
+In-Reply-To: <791111506ac7772108f00b9dae92fc4fce4217d3.camel@sipsolutions.net>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------Tbdwz2Q3DgQFtomI7hfmjYVm"
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: Mm8VRyTxzGuAoZe/X649Ny1sD9hfMKoEjp/sEXnbOkJsRI+zgmJ/ZVJ1
+	lnKAKqfJaE7fU9Le+LVTaN366gAY/lryxA6LLGCWX5WYrBosCHKZF42lxSknBPcvwdDqgJw
+	VbqpZBPdZDTaIy2xgD5jMD7LLsb/UUUGXa8Z4nvLggiCoLfEJ3mgFg1QFANyLJgfcCi19Is
+	KinvfgF9XKK47xRdJjWxl4ZSRVWX/UMIkIHn6ca9IyDSCACx/iYQ+KSgRndZw5GI8u43ENY
+	pk5B5GW5mwG+QX1BDPLw9JnloyMGu3X3SDxkSDZ5qkcsG2ro4HzbLCDQSuz6WvIaNk8ASXl
+	3HPEZ+K/gcWi0/S7UG3/iwdlZgI5893Vmfunpas/62hjA2mM0D3usFDdMP7qEij0bLwH6Es
+	8o3dVaLUaYP8WKOcJ1GHZxhikDLK4eyrADmgPaOLN7h7FMHMuwncGgRKD4apNGigD/fXDZt
+	yME6LmkGLl4jAiwxNZ/0NM3cV0JIdrOaweaITPevlH0/wfqAiJOFg0NqE+croCmdXJnDG8C
+	IpR5Kgo2WR6hhoQaG4qLfs9wG789bEc/O6cEmCJiX2509wYLwEyehbdn5E8PkiOA6FhXi4B
+	nJG2Ylop9oBNy/g73mvJf+voAQ74bL+ukC0dESuC31encRb7Fk/NLkRzSUCYMHsktQV00AE
+	kIFZl+enyxtBvfWAgditkLd6o713Jkv4/trhCxwNHatIYyFnWXCTaQ1io1PteoyHVWSVuLR
+	/ziPLTuwSieHWKxlp4KskrlRVzG7Q4ik3DP4PAMp/GJ787LvuwX0ZAAr7iPNI724IfTNyOB
+	pw1hOELQq3LkgVMMeotgOl19XIeGSXqYOrRyNIYbKgB8E/hiIyNP6yHr0GJNDlYFFL1IQBA
+	a/dRaLeMP+PSkD4Wpw3lK3si+oGn0+3WV0JGmEc7C+IWRhhGDu/3dsv0E8054vQA+ucIaIj
+	JdSXEzms+lbvA15G+LbmlSy3s5iTPSjZqeb8Kl3Odl2oHHvP9ZVpO0avsiV2kq1OBsAxWYO
+	3IEa41sLRVbjvu2qdwJRczUw8kOGkZD9nQgcqXKpfamhCUMiRswL23CYHHwQRf2E+7q3ykP
+	Q==
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-RECHKSPAM: 0
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------Tbdwz2Q3DgQFtomI7hfmjYVm
+Content-Type: multipart/mixed; boundary="------------0DXW2O0a7QW4e1MkvyHJ6BpX";
+ protected-headers="v1"
+From: WangYuli <wangyuli@uniontech.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+ miriam.rachel.korenblit@intel.com, akpm@linux-foundation.org
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ emmanuel.grumbach@intel.com, yanzhen@vivo.com, shenlichuan@vivo.com,
+ yujiaoliang@vivo.com, colin.i.king@gmail.com, cvam0000@gmail.com,
+ zhanjun@uniontech.com, niecheng1@uniontech.com, guanwentao@uniontech.com
+Message-ID: <1ddb2dab-9bb0-43d9-a022-118a34180a87@uniontech.com>
+Subject: Re: [PATCH] wifi: iwlwifi: Fix typo "ransport"
+References: <03DFEDFFB5729C96+20250714104736.559226-1-wangyuli@uniontech.com>
+ <791111506ac7772108f00b9dae92fc4fce4217d3.camel@sipsolutions.net>
+In-Reply-To: <791111506ac7772108f00b9dae92fc4fce4217d3.camel@sipsolutions.net>
+
+--------------0DXW2O0a7QW4e1MkvyHJ6BpX
+Content-Type: multipart/mixed; boundary="------------7RiO27RoJcoxc10bLXJOUvvz"
+
+--------------7RiO27RoJcoxc10bLXJOUvvz
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE1MDAyNyBTYWx0ZWRfX18cgV7cgnW+R
- 5tF0ei8SStUTYAwgahU1wH5oKU/YEl2a4csdoasgl3NvRaRcdl4U5R826IDgJ8PD2X3SWJSHK25
- sn53mj+yO9g0hbbGAB5nsNVRMzaIjrjuVtsZ+HMIGJNb7jw8oBVcufwqSIzdWRBzXqUNqd3yG93
- ng0QfqCo/4WY4nJi91wgt7OSjrST7Vmx5kY59fyOYnuO7VPR4FIbj0vQ2NZOj4MP6/zBwq/54+5
- +Stb7I++4dkSn8cC8DGZw8NRg0cizHERAVvEarcXr0uqCRo+xZhvQm25CExVSUv5H9d90MgKwC2
- 0TZkBH650b264wNNt7aBRqpj8b8ym4Gfq+OOVOyX0q3I6vHqHQTWj8q0y6VvZCXT3FQ+0Y2ovk2
- U3xI3T1P5nAPW6P6YzmpCkYSUEAM8yW/NaRMivF8FJkZ+p4Hy757PlFunqJsRQ6KoRZCL36X
-X-Proofpoint-ORIG-GUID: z7HHgWNYm0prUqUBTXNfE8nq26TfUPoG
-X-Proofpoint-GUID: z7HHgWNYm0prUqUBTXNfE8nq26TfUPoG
-X-Authority-Analysis: v=2.4 cv=MpZS63ae c=1 sm=1 tr=0 ts=6875c51e cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=bFupCVmCsjxzjGptNxIE4g==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=o3kOZhjVV3aoIho8ZNQA:9 a=QEXdDO2ut3YA:10 a=uKXjsCUrEbL0IQVhDsJ9:22
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-14_03,2025-07-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 priorityscore=1501 malwarescore=0 spamscore=0
- impostorscore=0 mlxscore=0 clxscore=1015 adultscore=0 bulkscore=0
- lowpriorityscore=0 mlxlogscore=598 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507150027
+Content-Transfer-Encoding: base64
 
+SGkgam9oYW5uZXMsDQoNCk9uIDIwMjUvNy8xNCAxOTowMiwgSm9oYW5uZXMgQmVyZyB3cm90
+ZToNCj4gSSBkb24ndCBrbm93IHdobyBtYWludGFpbnMgc3BlbGxpbmcudHh0LCBidXQgSSBn
+dWVzcyB3ZSB3b24ndCBtZXJnZSB0aGF0DQo+IHRocm91Z2ggb3VyIHRyZWUocykuIEFsc28g
+ZG9lc24ndCByZWFsbHkgc2VlbSB3b3J0aCBpdCBmb3IgYSBzaW5nbGUNCj4gaW5zdGFuY2Ug
+YW55d2F5Pw0KDQpPa2F5LiBJJ2xsIHNlbmQgYSBwYXRjaCB2MiB0aGF0IG9ubHkgZml4ZXMg
+dGhlIHNwZWxsaW5nIGVycm9yLg0KDQpQZXJzb25hbGx5LCBJIHN0aWxsIHRoaW5rIGl0IHdv
+dWxkIGJlIGJldHRlciB0byBpbmNsdWRlIGl0IGluIA0Kc3BlbGxpbmcudHh0LCBidXQgSSds
+bCBzZW5kIGEgc2VwYXJhdGUgcGF0Y2ggc3BlY2lmaWNhbGx5IGZvciB0aGF0Lg0KDQpUaGFu
+a3MsDQoNCi0tIA0KV2FuZ1l1bGkNCg==
+--------------7RiO27RoJcoxc10bLXJOUvvz
+Content-Type: application/pgp-keys; name="OpenPGP_0xC5DA1F3046F40BEE.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xC5DA1F3046F40BEE.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-On 7/14/2025 4:44 PM, Nagarajan Maran wrote:
-> From: Sriram R <quic_srirrama@quicinc.com>
-> 
-> In RX WBM error path, error packet is received with invalid
-> peer_id (0x3FFF) as there is no peer associated with that packet.
-> However, this invalid peer_id coincides with the ML peer_id valid
-> bit mask, causing an unnecessary search in the ML peer list.
-> 
-> Prevent searching the peer list for invalid peer_id and return NULL.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-> Signed-off-by: Nagarajan Maran <nagarajan.maran@oss.qualcomm.com>
+xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSK
+P+nX39DNIVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAx
+FiEEa1GMzYeuKPkgqDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMB
+AAAKCRDF2h8wRvQL7g0UAQCH3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfP
+bwD/SrncJwwPAL4GiLPEC4XssV6FPUAY0rA68eNNI9cJLArOOARmgSyJEgorBgEE
+AZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7VTL0dvPDofBTjFYDAQgHwngE
+GBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIbDAAKCRDF2h8wRvQL
+7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkUo9ERi7qS
+/hbUdUgtitI89efbY0TVetgDsyeQiwU=3D
+=3DBlkq
+-----END PGP PUBLIC KEY BLOCK-----
 
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+--------------7RiO27RoJcoxc10bLXJOUvvz--
+
+--------------0DXW2O0a7QW4e1MkvyHJ6BpX--
+
+--------------Tbdwz2Q3DgQFtomI7hfmjYVm
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wnsEABYIACMWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCaHXJvwUDAAAAAAAKCRDF2h8wRvQL7ibM
+AQDGWcfZkqVU64F7e61SS7NixPc8/4R+RtEQ79AksTIYnAEAzR/dSTajpnigXpVYN3yNQ4sPjNi2
+0w70OOsX7xXDBQk=
+=9qDJ
+-----END PGP SIGNATURE-----
+
+--------------Tbdwz2Q3DgQFtomI7hfmjYVm--
+
 
