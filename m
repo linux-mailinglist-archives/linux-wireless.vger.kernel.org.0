@@ -1,127 +1,89 @@
-Return-Path: <linux-wireless+bounces-25427-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25428-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6542B04DB8
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 04:12:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16189B04DDC
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 04:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B1337AC5C0
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 02:11:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A76716CA7A
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 02:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715182C3272;
-	Tue, 15 Jul 2025 02:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qj2KM3qW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F122C3761;
+	Tue, 15 Jul 2025 02:33:07 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBDA2C031E;
-	Tue, 15 Jul 2025 02:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDF124E019
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 02:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752545546; cv=none; b=pZSzS0uAtAvibLbefpvALXetxXfKTqpzTVBhAm/ogaBZ7ay50igWyCWUMxYYXjOhirqvXkPXxMvRg+LNujYfmy0z74X24Joxmx/Z2go3iviBR0Bigd7hwC1jL3Uq2X+QjBKRRoW2cP27WzLa4jsK+pmIgQWNosz4iGJSGHKvj0Q=
+	t=1752546787; cv=none; b=PhmNNxXDvwbGIvEe86kap6fezANTncbBuM+/AXWMM+OumZ7xeQSks7RRrSfSA33HTUyEqi4xN29yXQCgO9yx9s5HHXhw9USqXvocBwTVfYdmZYxA/j/rdU6sYs5lS1iG7iPOCCmutLgu9cIlIzLFea1QXlM+WZFY/2RX6tTpcLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752545546; c=relaxed/simple;
-	bh=OL8eh+ET7ODxT9eqmQeIc1DaHSMO83XtpakOahXi1HI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=YUcqouvKLpWxbaitDOl3uVkGCgjrCUXSKqVxCUSHrWZoeEmhNTxJszuI/Giawm3nPwZh/9C9sASybsBhCSXYkSAkhCHAH7petsFvrMSV2/gjmqO8kL9sjqBmt3k4j/ClHep34ZA23MB1W4h5lmKD8VFpSoBSQCYx/P6gWV8vYrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qj2KM3qW; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-70e77831d68so49483907b3.2;
-        Mon, 14 Jul 2025 19:12:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752545544; x=1753150344; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=P/kiJ0AGrl246k+hU6tFxQRZl1/F2KkE4EwQPyUtMzE=;
-        b=Qj2KM3qWj2A0U38RoMxsNatdKf3Ng09JND+snq19qy1MWGKoChQInuM3Efj8PnhzoU
-         x3Lk6/Q/WMVGMHiN2ImrtnNq+l3gL9XsZODSpg3PrkaKbca+Y6hn0UIio5d1Pplc7Xy3
-         50tCp2mSiaTXvL8yRrR8bCEQlbrW8qK2wkhoGoOIB5of4NjSG15nxl0yxg/YPTTMlWkC
-         w1eTa85JK6Tu4GIBy+wfTilrxMzdO1/2B4+oBziIUVn8MvRpZta64EMp4bJQcDtK+jFb
-         dGwMA4WAmdPwZP+wRY++6Xd1mD9tfzZtjxPn4UxUaG/29LSxlX6fYuZz51RKcSAoZ6E8
-         5ndg==
+	s=arc-20240116; t=1752546787; c=relaxed/simple;
+	bh=7AndiXTD4sbV5agjvgEfYoTGkIYfFDWFjpNYdv3Xtho=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=eTFHPJvR/63R+4zALwOYWkY7EhWc+vVK5fTvm3AA68EfUsMUaGs+LCFZyCKsYzGBATq4wRJFzAzdXrRZ/a1neWatEglM9xk/PNqth4l+YRngDMtz5VnDPaQSRX7WdRrSsytj4p6nPyW9j0p+aRpWqnp4Ua0EfVK45MShTtSba94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3df2e89fc8aso44025505ab.2
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Jul 2025 19:33:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752545544; x=1753150344;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=P/kiJ0AGrl246k+hU6tFxQRZl1/F2KkE4EwQPyUtMzE=;
-        b=heJQ9KFXpJvTcHvKpp/Nt/hAOY6j15XlUiEhR2Vv9JV9iLhqY27Q+Zlq1MV/9qn+LH
-         Envfv9WSpen7tBMX/OEnat7uRxDFubTcecnaAQXSo7/04Ou7taOwpK5O7dk0+8KkouRg
-         fYeTj3PEjFO/7IfY8Qac/nNw9jChvJCNS8e4Q8MHyhcuWSOJyRrG94SBpDDEFPal2x2t
-         24yyglKR+jrYTpK5Bjzf6nsAWyCrhvRDggfkKweOdgNn4p8OD7qvzbU6cdJjsCXAdpL6
-         OS50GeU/3LT98wT7YW/SIuMlm6PgjJuAHBbvExXen2aTU+iOt8MPMySZqumvWlWMUJ0b
-         2UZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGnBG43aB9P9eIu1Qyebe+B2lUyNKa71iBxhU5xbY+oIvSOM1ZgNiemhGo8WzOv40CgoFG6sN0Xc61V41wGyg=@vger.kernel.org, AJvYcCWjSZa1T/fQfjHPr5VUk3ZEr3v7Px87B0a17qyWI8EQ9HPQdz/iN4IJf+jbf6Wb1wyFz84ylfsWp85bfow=@vger.kernel.org, AJvYcCXvhrAs51mA4ekXE5NjQA6r6uuVl/IL5NEGRPLxmpQDIyVIWW4iLvBI0YUvdf2V3brxU/GXQXdW@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJkKk6t3D8N4GYs9iA84nFfI0bS0YB0qI8Jxt5go4phScbPvvO
-	9jUuSMFAwSdtKxqJTKpMxRflvmYDxIypNB5fojyr1kjJaaLH9Yvn9dzwKdgR1Dhnf8RSz+VO0Qy
-	SNlPh8R9SycqRFztZaT5CuPnbF3bOUPI=
-X-Gm-Gg: ASbGncud4rZs7Y0/a+xzU5AU2mWmyCgsWcWwC5b7/NKl5Dw9Gpay7iRk5GT88bzWDBQ
-	w/FG2+66+Bivqw1KK6pN+fT06uDSiN/hfbtTe3/OrFlGT7pQWWdd+kbSvJTS+7XsV2eAsJfGZZ/
-	qYyM5hu1ihXC07vbYy9Utl5uhZIbWgsmwFTg8p80gdr3Zjf1Wx7tZLBV7HmHBTL2pSjZi/yiYjN
-	q4SHcwUCyp/7TIeimrdJXPqq+oPVCCpPP4a/LTY
-X-Google-Smtp-Source: AGHT+IEtVr+JsxC2gJh379iPBuOZoVuruZ3Umbs9N3Juzg1W5BMxEFQML9bdmwsk2kq+ovB/XipjouSJmFQN3pe3GuQ=
-X-Received: by 2002:a05:690c:f14:b0:717:c40f:be9c with SMTP id
- 00721157ae682-717d5bc0652mr226143477b3.9.1752545543522; Mon, 14 Jul 2025
- 19:12:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752546784; x=1753151584;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/yE4JhMmA44lV+WjxvtXYki/dvYzl3IpMsCSep6EbVg=;
+        b=dBIckFNXcqKVlq0umkGE8j7TKVjcVX0a8bI+abtO+bCf3tPl4L6AJhWOBNcCtYtEW2
+         0zlYD4lbDhQocpVhH8lwUXcvoj94WDJlzk88oDbUwaBDXbys1StFiil2zFoNnYIo4HJV
+         gaDBPv8iOaaZZTLaNWOFP2kANNb3x4kvThZy5lxJJq/ZrllakESYzB2BlxPKA7O0kxZi
+         OGoEHiI5QGaaX7f4A8idbPQwZc2/po8UJAKDVHw1rn4MT9MeGiqWKwzvA4SbA3huA0Ty
+         7KV9wnwfnpn6mKGglleAHg+yHcNdZ7kIMlcFK1o+AIkdaGWDQ43B9CcHF45AbMLw0pro
+         iDHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXv+sIEvh7vF9Ns8DTNil4FCw5dA1uewuMDiccABigQnv1g526ZI9A9rfy9Wyb27JnnpPYb91MpmMX7DBusRA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyU/DB4D4G2Q4K1mg0a4NSL7r0v0Q9gtC/1W5V8IsMM/U6ITAMt
+	RxrVqpeRGGqidbP16PIdVYtMLTUCOozDF6UkSwjRConQ8JVf+SS3/b1QieIwaWLLZYVkuQFVr1G
+	3b0hwI0gCvCOpXQoLrBDqpAG/fXA4ruwJcZRv1TQhWJpxFr06kyMdnZROAPs=
+X-Google-Smtp-Source: AGHT+IF2UUDClpYWB6viGBXYp28+nczoOwxL4W6ADfPyApY+NBZpSA62Hg8TL78bt20h7n3z9+OWCwAApBxgMoMd2psNr7we5eog
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Date: Mon, 14 Jul 2025 19:12:12 -0700
-X-Gm-Features: Ac12FXwsgRjDPpzTojqRaKExjmsAG5iXutBqOoKqYivzz9QyVrL7TRtbrLx7q1o
-Message-ID: <CAF3JpA4QvNvdx-tq-5ogMmmaOuZuYq8Q=JZjQj0egWGE-=Nogg@mail.gmail.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_tdls_oper
-To: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
-Cc: Johannes Berg <johannes@sipsolutions.net>, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: multipart/mixed; boundary="00000000000093565a0639ee4e4b"
-
---00000000000093565a0639ee4e4b
+X-Received: by 2002:a05:6e02:b48:b0:3dc:7f3b:aca9 with SMTP id
+ e9e14a558f8ab-3e2532fc02bmr34673265ab.14.1752546784316; Mon, 14 Jul 2025
+ 19:33:04 -0700 (PDT)
+Date: Mon, 14 Jul 2025 19:33:04 -0700
+In-Reply-To: <CAF3JpA4QvNvdx-tq-5ogMmmaOuZuYq8Q=JZjQj0egWGE-=Nogg@mail.gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6875bde0.a70a0220.5f69f.0008.GAE@google.com>
+Subject: Re: [syzbot] [wireless?] WARNING in ieee80211_tdls_oper
+From: syzbot <syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, moonhee.lee.ca@gmail.com, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
-main
+Hello,
 
---00000000000093565a0639ee4e4b
-Content-Type: text/x-patch; charset="UTF-8"; 
-	name="0001-mac80211-reject-TDLS-operations-when-station-is-not-.patch"
-Content-Disposition: attachment; 
-	filename="0001-mac80211-reject-TDLS-operations-when-station-is-not-.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_md3w7m310>
-X-Attachment-Id: f_md3w7m310
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-RnJvbSA2MGJjZWY2YzY3ZWRmNjZmZjk2MzY3ZTAzYWFhNzA0MjI1ODVlYTRhIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBNb29uIEhlZSBMZWUgPG1vb25oZWUubGVlLmNhQGdtYWlsLmNv
-bT4KRGF0ZTogTW9uLCAxNCBKdWwgMjAyNSAxOTowMjoxMCAtMDcwMApTdWJqZWN0OiBbUEFUQ0hd
-IG1hYzgwMjExOiByZWplY3QgVERMUyBvcGVyYXRpb25zIHdoZW4gc3RhdGlvbiBpcyBub3QKIGFz
-c29jaWF0ZWQKTUlNRS1WZXJzaW9uOiAxLjAKQ29udGVudC1UeXBlOiB0ZXh0L3BsYWluOyBjaGFy
-c2V0PVVURi04CkNvbnRlbnQtVHJhbnNmZXItRW5jb2Rpbmc6IDhiaXQKClRETFMgY2FuIGJlIGVz
-dGFibGlzaGVkIG9ubHkgYWZ0ZXIgdGhlIFNUQSBpcyBjb25uZWN0ZWQgdG8gYW4gQVAuCklmIHVz
-ZXJzcGFjZSAob3IgZnV6emVycykgaXNzdWVzIE5MODAyMTFfVERMU18qIGNvbW1hbmRzIGJlZm9y
-ZQphc3NvY2lhdGlvbiBpcyBjb21wbGV0ZSwgaW50ZXJuYWwgc3RhdGUgc3VjaCBhcyBzZGF0YS0+
-dS5tZ2QudGRsc19wZWVyCnJlbWFpbnMgdW5pbml0aWFsaXNlZCBhbmQgaWVlZTgwMjExX3RkbHNf
-b3BlcigpIHJhaXNlcyBXQVJOX09OKCkuCgpBZGQgYW4g4oCcYXNzb2NpYXRlZOKAnSBjaGVjayBp
-biBpZWVlODAyMTFfdGRsc19vcGVyKCkgc28gdGhlIGZ1bmN0aW9uCnJldHVybnMgLUVJTlZBTCB3
-aGVuZXZlciB0aGUgaW50ZXJmYWNlIGlzIG5vdCBib3RoIGluIHN0YXRpb24gbW9kZQphbmQgYWxy
-ZWFkeSBhc3NvY2lhdGVkLgoKU2lnbmVkLW9mZi1ieTogTW9vbiBIZWUgTGVlIDxtb29uaGVlLmxl
-ZS5jYUBnbWFpbC5jb20+Ci0tLQogbmV0L21hYzgwMjExL3RkbHMuYyB8IDIgKy0KIDEgZmlsZSBj
-aGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL25ldC9t
-YWM4MDIxMS90ZGxzLmMgYi9uZXQvbWFjODAyMTEvdGRscy5jCmluZGV4IDk0NzE0ZjhmZmQyMi4u
-YmE1ZmJhY2JlZWRhIDEwMDY0NAotLS0gYS9uZXQvbWFjODAyMTEvdGRscy5jCisrKyBiL25ldC9t
-YWM4MDIxMS90ZGxzLmMKQEAgLTE0MjIsNyArMTQyMiw3IEBAIGludCBpZWVlODAyMTFfdGRsc19v
-cGVyKHN0cnVjdCB3aXBoeSAqd2lwaHksIHN0cnVjdCBuZXRfZGV2aWNlICpkZXYsCiAJaWYgKCEo
-d2lwaHktPmZsYWdzICYgV0lQSFlfRkxBR19TVVBQT1JUU19URExTKSkKIAkJcmV0dXJuIC1FT1BO
-T1RTVVBQOwogCi0JaWYgKHNkYXRhLT52aWYudHlwZSAhPSBOTDgwMjExX0lGVFlQRV9TVEFUSU9O
-KQorCWlmIChzZGF0YS0+dmlmLnR5cGUgIT0gTkw4MDIxMV9JRlRZUEVfU1RBVElPTiB8fCAhc2Rh
-dGEtPnZpZi5jZmcuYXNzb2MpCiAJCXJldHVybiAtRUlOVkFMOwogCiAJc3dpdGNoIChvcGVyKSB7
-Ci0tIAoyLjQzLjAKCg==
---00000000000093565a0639ee4e4b--
+Reported-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
+Tested-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
+
+Tested on:
+
+commit:         0cad34fb Merge git://git.kernel.org/pub/scm/linux/kern..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+console output: https://syzkaller.appspot.com/x/log.txt?x=10ad518c580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=37db4c8907581400
+dashboard link: https://syzkaller.appspot.com/bug?extid=f73f203f8c9b19037380
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=1183718c580000
+
+Note: testing is done by a robot and is best-effort only.
 
