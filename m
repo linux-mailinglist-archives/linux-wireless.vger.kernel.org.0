@@ -1,77 +1,74 @@
-Return-Path: <linux-wireless+bounces-25472-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25473-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A126B059D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 14:20:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C2CB059D9
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 14:20:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D3474120B
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 12:19:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA726741D6D
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 12:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33BE2E3B0F;
-	Tue, 15 Jul 2025 12:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A24D2DE700;
+	Tue, 15 Jul 2025 12:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="CeM/FWQj"
+	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="WNfgnKhD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11012032.outbound.protection.outlook.com [52.101.126.32])
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11012020.outbound.protection.outlook.com [52.101.126.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701422E0400;
-	Tue, 15 Jul 2025 12:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.126.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A772CCC5;
+	Tue, 15 Jul 2025 12:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.126.20
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752581895; cv=fail; b=LtC37HHNgsdPrLFXf9fsMxLWoyh0SQbMmJDKEwTy2U2yFoyF8TAuKIMQWf62OlmyweFUGV3a/0cTKMEMs1OucpqIjq98ypzC58rVKMb485a6axmhDBz3oXx7A+O21LvfPbqwykpeMmNeJif6a682vvDzE7LnAOFNLXgYkwCOCX4=
+	t=1752581920; cv=fail; b=WFx8mZsXJt1cQnJFL+16tOHK8TJCi3BBESdp+aSifEhH+KlcRkmOYmDJXwldjrkezqgFutfnxKJfiAyhDBvM9J0BvrJWIvovGG3FbCL02jmyvEB1gih31e2PbMG7KoUxgqn6G1uyFLp5gHs+LHmcdOpVQylZ807oADUX1OhcBaY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752581895; c=relaxed/simple;
-	bh=glge1X30xkVS7ETLwpvfGQfZVTkGAKrLLFrdy/7Oa9o=;
+	s=arc-20240116; t=1752581920; c=relaxed/simple;
+	bh=Vprd88rDnwOu9qwNr6dNYzeCFVrA75m/Pl6juAC78yM=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ID1JHUV+yf1+e7QrUYqH0NJ0TSsnfwFPpPcprP+eDzq+Nwi3MkBgwQ9dFsNUvwsxhR+iRMXxhXIJmrC9YUjjOZpHnn13h56oWdvciH3WRmLY/gGTlCzGTZtDWSprdNwAFsEjoPDXScTOd5VNvWRgmiUeKmR/fe08SlKa2qE8neQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=CeM/FWQj; arc=fail smtp.client-ip=52.101.126.32
+	 Content-Type:MIME-Version; b=Vixzh4DRcQF1DrV0sI1qVstk8ikPnGdGW0I2N+FJ24K3q2QxyvZxEf05UbmmkBd8ePy9Q/7AWPAT26ifJDDRdbQ1HNvzgHdrds7kxVm1fY/BesUf4T3gOvQ5pDxgnX1qK0dKBtmUky2KJjIVUNt1F4sOl3YLyp40puJukULdcfc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=WNfgnKhD; arc=fail smtp.client-ip=52.101.126.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q/EnjIm7W+d1AP7XZyDRlWEpuVIJKhDrRai1dgA5gKLlI222bLddYYqzc86SP1leNaCpak3S2FVROJXi1Af+N246T813CEXhq7OavRhJvlq0mi3JPUqpR9H0+1LqK+oIYvbdGRk3jntJgG7c2JP94RWb7af4WAEDJvhyS6MiOaniW1gTF+A3URtHGrMv6WHj8lMYtZlskHVk69A8/uEQ8yNgw7qwlPCiB29SeCY4OFsPPk3u4O2Dl5+yJDhUGtJThqqR/LVyaI5CWT8p1MSJMEeVT1OrAabdxiOQ8J17t5Ai0Rn44RoLeoN7n9FTmdblBSBuIKInOp3rVesDRgQz2A==
+ b=p2NmtJXtIsNc4jCiEd0/vrjaNFnN8Vj5jahCuLA9LdK7Z3OaRh1hy4NVf2ITYXZULNMfTJaeODl99kM1yZ47QQATWflNFsz0c8G41CBl0GZTQjWzkF7Zuho7QCDAA6JeZ1HdcH4CogSbVXbF8zE+QVh1Z97X6Q0dB6Ep98PxwSSNfan2chWirzW2ohjrKBCkUpV/afuDiA6bqI1V9vaJQKYMemfSZbQTHmNueSVhZpf4fkHInoxscpncfospaZyVfhESWQ5geWkNNS6tthFfCOpq3aT/0oPwgTPUxtRUZvvqf7LkD+4bq10FB6JGkMncCzN99ZwdNF288jVZEwlzSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7MNUklGgo2xDPt6BuiO/jdzyBn83AtRRsWcYYXum0Hc=;
- b=NabEwMt6L7g/1kZIHX7LYZuRawI2ZtHwAj9Hd1jJei5148icDQVhU7pPWi00NTtDY81mF64Yok9W6CPtqQYlqfaZNmLnlEfJbwGW7l5XyK2sZrkEBujTKEjdXiPiIdFXE1lCOget0+zdCkHzFKf+pMHAEnoUVU4d9zTFw3ILdoONfQktSoICi809Sh09HlU5CJlu3JeDpuqOrSTnyTz/YFmxDR+iiKFLtfqgS9fDHfHYmDl1E4AjZq9U2BJNzzdZ/DGLyjZm56f/FWBq1u92FandaCg4kADeVj9mWggUao2GvdXM8JT/4RT28WTo4QO8SrzPQfhIH+7JbH2ArRIJqQ==
+ bh=xrbNFdpu+ggr0nErNlkjoT/55vhjOofJSKTcf/QocxQ=;
+ b=wW3i2FuvEjd5bAlgWWZKy1Z3WToK2U1xReYIWipGlw/9oggoirJ2bGVWXYzzUg23jHzN5/zNdDAQuXF2rXyHJ6yq6HPJCrpqkHGksu4dxhJfJn3LhhuPyCEGV0BowEZqMYjTl6zo0RiLYnkKj/3hTizLq2vABvNArMW/iRKCMF3Hz9PUN/3PMio51h1T1SdhtLASt+w96/HLnnyyzFAuuPwJkoE2WOK2Ifgwq/pnngj8YkOulLyOJxKJtuWw3Xw6DYAJnN0lv8M8qT3t+P10UJU5lfkEV0VJ2Z3COpoTPWwzUI9mYbP9DqQgXAMsF8i6zUIb+B89d+XNsAukl1L3cA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
  dkim=pass header.d=vivo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7MNUklGgo2xDPt6BuiO/jdzyBn83AtRRsWcYYXum0Hc=;
- b=CeM/FWQjJT2xaL8ETzJg0hamsbDmsRgLTgJqb33eJi6y4WJ53G3g4aRSXtd4Ltg9xAp8Qrv0J/iYIe8JWzujgQYXzBoza23hxPZtMBA5fHRPOXdhnKeb0W4jImpQYCRAGLxI9QGhuhEPQF2tlUednn1jB2tFgHUn2PfiR0A+k4JXkCK18YqLOrkpBhQRmzyv5CvEl0hvthj9/8BtcqTYaGtVr3H+6VfJnL7sCH4RrFl3nhDO0TriVaL03fCewyV0qyjXJrSJDHG4jJS/ufUCYgd6oXGnZ5ysZr0OSzuz3T/LuGf36Ce1jcTG/E5LUn2NOqPSsdDpp8EpPTxYohWQuw==
+ bh=xrbNFdpu+ggr0nErNlkjoT/55vhjOofJSKTcf/QocxQ=;
+ b=WNfgnKhDumYPEaq01utkD9LhAxwSPMtrBSTRB03AYBRl27lD5+chwg222olC4nycy8SH0RifRX/8jc0vT0DOdXMUVE7QwuR5IkpGEd9v2i8DD/IJTcg5KjJIaeNfKXIyySfl6kfE0inR/S2Orwn8hEZ8D7foEA1RI/YhpWOGJ0S5JRT1f9TRQcHznfn6yMq5Ro2+KtH4ZCbqwDooV/8UC8tkcCgozYFRvng9OgFLtaQZ3Ki1jImbRXXirJJAip7pKiXKO0GxkMzox522ADNzbvhRvRrTbKs4NSenbzbwdoVn74O2vSBbw/ZDWD4j7dAfAeEkEFb2bhJ9ztJeMfqRNQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=vivo.com;
 Received: from SI2PR06MB5140.apcprd06.prod.outlook.com (2603:1096:4:1af::9) by
  TY0PR06MB5428.apcprd06.prod.outlook.com (2603:1096:400:219::9) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8922.32; Tue, 15 Jul 2025 12:18:11 +0000
+ 15.20.8922.32; Tue, 15 Jul 2025 12:18:35 +0000
 Received: from SI2PR06MB5140.apcprd06.prod.outlook.com
  ([fe80::468a:88be:bec:666]) by SI2PR06MB5140.apcprd06.prod.outlook.com
  ([fe80::468a:88be:bec:666%4]) with mapi id 15.20.8880.024; Tue, 15 Jul 2025
- 12:18:11 +0000
+ 12:18:35 +0000
 From: Qianfeng Rong <rongqianfeng@vivo.com>
-To: Ajay Singh <ajay.kathat@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Marek Vasut <marex@denx.de>,
-	Kalle Valo <kvalo@kernel.org>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Qianfeng Rong <rongqianfeng@vivo.com>,
-	linux-wireless@vger.kernel.org (open list:MICROCHIP WILC1000 WIFI DRIVER),
+	linux-wireless@vger.kernel.org (open list:REALTEK WIRELESS DRIVER (rtlwifi family)),
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2 6/7] wifi: wilc1000: Use min() to improve code
-Date: Tue, 15 Jul 2025 20:16:52 +0800
-Message-Id: <20250715121721.266713-7-rongqianfeng@vivo.com>
+Subject: [PATCH v2 7/7] wifi: rtlwifi: Use min()/max() to improve code
+Date: Tue, 15 Jul 2025 20:16:53 +0800
+Message-Id: <20250715121721.266713-8-rongqianfeng@vivo.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250715121721.266713-1-rongqianfeng@vivo.com>
 References: <20250715121721.266713-1-rongqianfeng@vivo.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ClientProxiedBy: SG2P153CA0013.APCP153.PROD.OUTLOOK.COM (2603:1096::23) To
  SI2PR06MB5140.apcprd06.prod.outlook.com (2603:1096:4:1af::9)
 Precedence: bulk
@@ -82,122 +79,225 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SI2PR06MB5140:EE_|TY0PR06MB5428:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef943540-fbdf-4d59-79d1-08ddc399aa4e
+X-MS-Office365-Filtering-Correlation-Id: 9e54a5fb-3471-40c3-54d9-08ddc399b8b8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|38350700014;
+	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|7053199007|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?aUx5Q21DT1IwUkFvSzViMzkxS2JvSFFiQ3NYbFl2VVJXclVQWTEvc2NWTzcz?=
- =?utf-8?B?RWFQRXZ0cUNtaUMvdkZwQmVyNnY1QmJ4NkdkMWIvY1UvWTFlb0lTYXpLV1Y4?=
- =?utf-8?B?NnpYNDBrZHYwT0I1Q2JIVTZWaTJKNWJvSjRHTktLeDl3RGt1cldsbmFDRmps?=
- =?utf-8?B?amxSaWU2MXhyVEViQVlSN0t6M0VRaUVzbkpqRG94VjRkUzNpZ0xLYUROV3U3?=
- =?utf-8?B?UHVDeEpOejhIbC8yMDY4akZpOS8wNzV6bUlJRU0wVGwyLzhoZzhPL0ljT2Yw?=
- =?utf-8?B?RGF5NmdPdXpPL0tKRVRTSHBLR2xleUVOOVdrZzh0Wk8rNEtid1dnbGdwSW90?=
- =?utf-8?B?eStrWFdGVFk2TnNrV2c2cElHUmJpWDF6dkdpUHd1U2JEMWtITkJ3R0JYakkz?=
- =?utf-8?B?SURROExXUG1PNksvOFJSMzJzaVJleGFyNHFSckRkUVdtOWRibW0vWlRRdWNw?=
- =?utf-8?B?VUs1VmwwR3VOTjJLZW4xZzFzclE3YlJka0VaT0pjVWZ6bFBrSGlLS0ltM1kx?=
- =?utf-8?B?YUs4MHBRd040Sit4RUljbTdSaDUxU2p6UGREdE12eEVBSFlCN1hKNWJ6UE01?=
- =?utf-8?B?dy92U1RWVFNLSHNNdGZ5MU1lUjE1c0NYbC9rZ1ZLYWllSW9jaytBZzNDSUho?=
- =?utf-8?B?UkJNbnYwTFVydnNUdVRHTGE1eTRrUXdCVE9TL0tKRHg2YmFBbXZLR1VLZ2hG?=
- =?utf-8?B?eW1RYkJDQ1VCckFLQWkrRnZ2TWJsSFFBYi82Qk1rd0ZqWEU0M2dLY0FJWjh1?=
- =?utf-8?B?VVFBcHhRYldLbThMRm9xZzJtSy96ZUIwY1BNelUzZCtPblhmL1FjWC9uNEdv?=
- =?utf-8?B?YjNaYlB1Um9DVHhLTVFnR0J3UGNKa3N0cUhmL3ZOUEU4Nm1PdWtSUVRpRGpG?=
- =?utf-8?B?aFRhVFY5ZG1mc0EzNEdnay9BUTF4alI4T0gzQkdpRVI0Y1Q3VjRZSDVmbHhp?=
- =?utf-8?B?d0Y5Q1NMbGtManNaa1lZSzg0amx6K3NYYUwrdCtyaCtwWUFuaWo2NHozL0lX?=
- =?utf-8?B?UG1VdThoR3dnTXUzODlxUjN5bVhQalhNcWVjR24wYXpOei9kZVZDS292dkc4?=
- =?utf-8?B?Q3hQeU9QMXYyZTVwNHk2VkhlanJmQTFOcmNLMURqa0hJbXBzeXZQVHQrQ0dR?=
- =?utf-8?B?T1pUTGhNSGlVSDdDY3l4YlU5OEJ3K1B0NitJaVorVkdMNlgxYlFUR2s1dU03?=
- =?utf-8?B?SG1wUTJYOTBUMGNJdWNJMXlqV3g5RXRNUEdqaFdXL3BTRm1VODhJV3JiaFpv?=
- =?utf-8?B?SUluampBZEJaeW90bEtUeWlIL1BiaXNmNDdxME1JMFZxSEhXcm9heXZlZyt4?=
- =?utf-8?B?MW8wY2k2ZlpaMzE1U1ZpeE04ZnU5NGlEb1lIYnUxZld3OTcyTVJTZFdpT2tJ?=
- =?utf-8?B?d2h4MHJTUDZ0S0Q2S0VLYzBxZmdHNjVMZm5nNWpmTWNLK2VlemRwMWhkd1Ri?=
- =?utf-8?B?cHJVeXJEM0ZlME0yeUJpdVdnWitNeUlnVVRmbTdENVVyemllaEFWbTB3QnVN?=
- =?utf-8?B?WjNqeTJLR0FQcXNmNU5ITG9xMGlIbkQ2V1lOa1pFajBJem9STmhoK0ZTRVdS?=
- =?utf-8?B?Z3ZtdVdpYXdKUDRCY2dUaW5WeS82QXNzck8vQ3R3UnZheWp6MHBSVnZ5d3dM?=
- =?utf-8?B?Z09iaGtKaHFtVzlaR3ZlKzA0NFlYSFhrK0xraGlBZmsvcEhndTNTL1d0RUdT?=
- =?utf-8?B?UVE3T0Vab1RjWWpxVk1pR3RETjJ0b1ZsY015YW84UWNXL3ByenJhZHVIR3RS?=
- =?utf-8?B?UW8rdXdJYmJRWkM0eWtiVytsY09YNFdMbmFTMkNkVkRhUnY2Qk1POVdlU0tV?=
- =?utf-8?B?SWh1c1JQOG9wWGh6NDZ3NWN3RjluRlFSeGQwMU4zVDRqM3MrZHVLdHBJSVVj?=
- =?utf-8?B?UU5CbEN0VDFLeDEyL1NRYTlxOHFqWUk1M3VxS2xqYS85TXlZcFU3TkdMZGxq?=
- =?utf-8?B?RG11MWRVeHRZZ0Nia1dmdDJnazJpVFRKUWFTSkxHYmRYK3NuK25vaFgyLzBE?=
- =?utf-8?B?WUVnQVozSkhnPT0=?=
+	=?us-ascii?Q?hRVow4Q24SflF8qMiZ7fQMZwsDEpJb62hgXRYV4RtQxcX1OlHF6830QT3Cnx?=
+ =?us-ascii?Q?WWsSeHanuZKPgmC6oW1CS/4uFvwrom5LV+rymRv2tHlnYUxVL/30P2Ue4WV/?=
+ =?us-ascii?Q?5Tb3UZ8fONfYQausXIdmN+Wrg/2M0YFD40o8BQFcmlluXublJGE+IqWFerMi?=
+ =?us-ascii?Q?/FG0/eTsfOaS+4E6MbsC+KoZK2dFyiBI6fDquOgJFMh+Lk2tCV9+1pL7MVnl?=
+ =?us-ascii?Q?60KG3SUpwtxmNyhG1THK+TA4yZRm+anTyfUreznTMws+NtakXOwWOKcrf48W?=
+ =?us-ascii?Q?9CIFIlh68H8LfEE7rypB8IwZbp+znzijqBho7B5Kw3tyM3jfn/9YpjBPKWqO?=
+ =?us-ascii?Q?odYFWTbwqYHoP4Db0dP16O6qOdmJNFkqHqLiIjhTflLsdahDZyjRQOWFtTv+?=
+ =?us-ascii?Q?0ZLH1SGnfQhwW50FNY2o6cNVw552EqAw7eQYkRTs1Od5t3WLwEEo9mk5f3Nm?=
+ =?us-ascii?Q?lmdTO2T1e9DdyFCnQR6dfc+1CYIFHMRYM/fpnfWUCJr1gykrVITGlI/XBPk0?=
+ =?us-ascii?Q?UjNJS02YJfD2fdH0Ve6c+6b3r5lc789m8lMBkhTCfGAmZJbVdV2jueEkKCzz?=
+ =?us-ascii?Q?zUJHgvRbdBeeaUMYiMKSCNla2TIRuQGjQMtZ8wlmixZIx+afDIUmFlyaxHO/?=
+ =?us-ascii?Q?zs3I8DR4qFXOizRB0y4otVLNCz8bpznRPEa1yzkTI/348ViGHlKfkeR/0gGR?=
+ =?us-ascii?Q?HsBUFpjKbmHBK2hUFVjIoY5VonuF2gMGFGeiM62DBQCX1z+lvlJnOgTmlccK?=
+ =?us-ascii?Q?BKjNLtLEg6NRPidqXys1HYARGUBSALeWYi2AazgO+a5kste8kWZFXdtBNoQG?=
+ =?us-ascii?Q?usuJgxOrEYwwAmD3OJH2tBL4yTsKJaX9S8wq3WGdhhtl7jjBQgTbE93FGKXD?=
+ =?us-ascii?Q?u9YyGfTMkBTaFDvzwe6JByGAvCY03k2diiL1RAT4Ugq7oBAc+wIz3H27CxUr?=
+ =?us-ascii?Q?+vRp/PPTk6eBpuhgfxo5H9KEnMvC8cEE859abXDeUPGRZ4M6IFnAZqnKR5a8?=
+ =?us-ascii?Q?MSPFDtI2evlBANXwdlBEdMrJL5hn69xwEFqWZ0xnBnylJPp9Of57+e98/Yav?=
+ =?us-ascii?Q?MGLptRmSE+euDrKOQgTiKIOhKGIDg/OXYjaivF4MOQd71Yg0LCQzLA9CI7B2?=
+ =?us-ascii?Q?7+RRUoZOEoWu873+7/xIs4E7bFFVZU88ImZ9c9iTZXmTkyodkjFg7tK1fqNG?=
+ =?us-ascii?Q?nqnqzsBuoyAxZnWVgbPMO0UGOH9BtIO/1fISxcIYkft5Hb8rlMnJ3QxPiTkQ?=
+ =?us-ascii?Q?ONZcoXYU+COB0jVN33TeUu4EbQEaapkKUXc3qhM5ii9Hn6v5jEiAT2qnBuf3?=
+ =?us-ascii?Q?yeeDAtiX7ENKpYFgl/Gk9VJGqCO3Yv78fcvbsrGmSoAapZz9jWcO0AioQ3kh?=
+ =?us-ascii?Q?aJYsBD317ijCvRHJ30/vNShitISgMp88mDLSNFdq4duWLR4rlTxs7ExzGXzg?=
+ =?us-ascii?Q?5bL4o0ivdpD8umtzIxYo9M4OLDv1i5zRqdd/UZ32lgm6et+j2G/pEw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR06MB5140.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR06MB5140.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?clRCdlFSZ3ZBYTliT1JkSVh5ZnYxYTdSci8vd1Q5Vk4wMmRxRURSZnE4QU9l?=
- =?utf-8?B?UWFtSGRRTDZEOGI5MnVJa1ZPemR2MERkMm9XS0xBa0pjdXpERUFScDN1Vzg5?=
- =?utf-8?B?d2JRYm9NZi9HT1EyUXA0SzgxYzBpQ213eGtXMHMwVlZQbzJZKzFSUWtneHJ1?=
- =?utf-8?B?VWZvN3FQM2E5Vi8xWmZ5VytNN3lJbzE2ck1kUTJkelViK0w2VFhhb1huY2c5?=
- =?utf-8?B?R0NvTUMyQ1NZU09UVDJ5ck5YRFRPRWVYRHVvVGZkUFpqOFVZMzJ3d3prK2lF?=
- =?utf-8?B?cXB6VWp2VkwyazU0WWMrN0EyRUY5RFpiOEhVeHBQT0tkc1ZGYjdLMlhGSWpw?=
- =?utf-8?B?eEozWnd1Q2VUYnhxeWtIcy92aGxXbWIzZGdVMG5LUzRTMlp5d3Z5SENkN0h0?=
- =?utf-8?B?bi8yWXFIVUZKY29LS3M5K084Vi9FL0ZMNHg1NDdObVVOVW5GZEJhUkEvRy85?=
- =?utf-8?B?MXNpeG5heHJyaHMzb2d4U3krYjFhc3lpTjViNGtSUFJnaWJoU3NleXRBdGM5?=
- =?utf-8?B?RmN1a2w2NHNZYzZRcDZVZS9GeHRXZURPT0dGOFl4VHp4ckliS1dHeUhHdkV5?=
- =?utf-8?B?N29ORndObmJGZk80c25yV0xQUnZEa2k4dkNudlhXYm1OU2h3WUhGazRRMmRx?=
- =?utf-8?B?YmltL1Z6T2xKaDNuWjNCbTZMdnVEdlFHOVpKNEpDN21vOS9iSG5HK2FUdUxo?=
- =?utf-8?B?N1JvVVJvWGErbU5VL1dMVUhZck1FOFBzeitIL1MwT0oxTU9leUhUV1l5VG1q?=
- =?utf-8?B?MkIrTWFldnYrWXBSZHE2clZGM3lvVitkOStYS3NCVzFCbkJTcWZxZUVzdmc2?=
- =?utf-8?B?UGEwZWZnRnBWQTNDWFJ1UGlscG1iMHJ1U3NCT2l6bEx3S1RJbXNMbEJTeEVF?=
- =?utf-8?B?VFpvWGxLYlMyUzRKUVk4OUpPZENpSytLUGcrb1N0MUVTUnpQYlJmYTlablZS?=
- =?utf-8?B?UjQvTkNHdkhvSXJFVHlyd0N0a0RUL2kzUzBDSnBFNUtab05DbzlzNXVNVnRN?=
- =?utf-8?B?aG01Qk5RaTR0NE4wRHM1YngzTStlN21EeCttdmdVNmNVc3VOYTQ4VXlxM0xz?=
- =?utf-8?B?bjdPckRIU3hXTWwxaTlGT05sdUlVRDJDTGN1RURmNThnanB3UVludVBSU1dp?=
- =?utf-8?B?MXdEdWlTTC9KM1RxRXRZKzVLKzAzNU1MN1BzZUYrcExqRnVpcGE4QVJCT3dC?=
- =?utf-8?B?bVBRNVdscmZtdWxiQjQ1Rlk0RndHWXB1alhwZkxYamkzRmFma0hySVc2Z2pM?=
- =?utf-8?B?WTN0VWVJM0NvTDlrNDZjSFZ5SERGL2U1NGQ4N2cwMmZOV3JUQ29sOWxOVHhT?=
- =?utf-8?B?bkVqNGNSeU03UXplWU9tdkdFQklWaEU2UjNQUlk5cjI5QU50ZU1HRGFWMkwx?=
- =?utf-8?B?KzN1VGR4SXg3VUdMODczZVEvREtvc0JzdlVEazNKT2c1RmpqVGtrSGJFZEt0?=
- =?utf-8?B?ZVlNWjVoTjVuNmNpc3lVd21VVHVsRFF5R0Q1UDl4a2cvdlp0R05KY1BUZkRr?=
- =?utf-8?B?a2FpVzZlSW83YlBteGR6akVHQnI1bjNYNng0UXIxdyttV0JleHhsL1duR2Iy?=
- =?utf-8?B?OGc2aG9qaTNzdFRkMW1aTkl1ZzRiRllJcUJvK1ZLc1ppUmZDYUx0d1RqY1By?=
- =?utf-8?B?bkFYbFVVS0tadlFaTjVKUFNuZVd1cEllYzJZN0Y2ZkdOd1pYKzczaWxVOGpP?=
- =?utf-8?B?cFNWeHgvaTdNYlUyVm03VFJqSVR2bVJieGxsWk5Sem1XL3MybVNLeXp4MHZs?=
- =?utf-8?B?d3ZXWFV3Zk4xWG9UY3IvVi8yZXFlSUlFK0l4b3lDWFk1V2VmYndFaVpSTlFl?=
- =?utf-8?B?K1pJaFNRZElsQnVRZHRSa2xTbHpWMFo4MURtNWJJZEc0ZjZ0dFdHMHZCbEp1?=
- =?utf-8?B?Ly9rRjlYWjgwaTBrN2dZSWZBVHFBMjBITm5OVkVSYXhONXJaY3lpdSt1eU1O?=
- =?utf-8?B?MVQ2c0lZYTJSMTdmNDdZeklvSTl5SERpUDd1RUdyN2RRcWFGOElsWlMxTnpL?=
- =?utf-8?B?cGVaVDVmZmxPOHFndmJiczlrNGc0dEtaVWFOMGk0MHd6UEo4MFFTUmZzSDhw?=
- =?utf-8?B?eEhRMDBVQTFEblpRZGFLR1c4a0hqT05abEpLQXUvWDlOK09GV0hjMytEYmdw?=
- =?utf-8?Q?IoEws5tzJUq07yEiEXApY9vO4?=
+	=?us-ascii?Q?iKdQfDRF0SSQ+j55bCGsCqN/KxKnRCVpj77NWlGWuvu5+mTdqasdBMtN9ufo?=
+ =?us-ascii?Q?hrRBiuY6ndUPr9oOj0u7A5B9hV58niHl9M7MfWym14uD9YcaG6eFPIBC0mC1?=
+ =?us-ascii?Q?XCYDauvcWrqzwuv3GUXbywNrWHG5AYNWVbpERXMgE5Sr38MEIF8FfIjgudHQ?=
+ =?us-ascii?Q?/zChwHD/ovqBp3alqUoO8+ekzPtFTt4xsr/xxVX3GKAr6LzWYYVrpcuzq4UB?=
+ =?us-ascii?Q?dlCsdzVuYgC+81e9U1buGRQdl10yWUwRm4E/6sR1aNNdhEfqaz+jH1ivZybC?=
+ =?us-ascii?Q?Zy058+EmxlroAPYUJfNM5yOQS2bnwDPaJbTqObXb0hdRz5i4pP0R8klD5uGQ?=
+ =?us-ascii?Q?07LCElv9qET2VUUA7gxXXhdQvlk1CkJ8Pxrq9rVEHq6XfIew175NS/7rpWIE?=
+ =?us-ascii?Q?GfWw00W2gQSU4GxAppLQZGbpt83rcpGAeK/Ae3ZN2QpeNEzNXPW6XsrrELHS?=
+ =?us-ascii?Q?a8lfQk+2uKOhkz/un8t8kDbf0lrDJYdhpUgptoQ0kvMmTsAoVXjGu8bxKYrv?=
+ =?us-ascii?Q?oCewt+LgTpcFEFMehyXm/DyXuuscVuuG/+fZZGoNkEZ6RT7PzpnfZ/zfhymu?=
+ =?us-ascii?Q?n3IUv5YRMqonjhs6SByi2nyJoYXcrnhplXnpaWeM49hvPlRLTv4bdSTXcm4t?=
+ =?us-ascii?Q?TItinD2BUAH+CsAqBSG27MBEUvg4fWOJmasCHY8m10g36Lg3CPbCmDVmRUnp?=
+ =?us-ascii?Q?M/YsqT23mOwGldbOo0G9yeXZIk1HBw8tQexrNE3cVBjDwzqvLR5XC7d0R1RZ?=
+ =?us-ascii?Q?Y4/iNmPkshVD3FM3nxLpmQJrcyjH+xAMKz5AjaiFeas4mKji0jPR4ED7zJob?=
+ =?us-ascii?Q?AOFNRDg1jgsT7+1PyP12QvIRGe300FwURbckZ7+t2IaKJGVepZ1WnpEdet9m?=
+ =?us-ascii?Q?/w4srJP9/7rbCfrji7HtiWB0CNaUAlYatNzTCSDn0JuzxTBcwu6/8RRuiRDS?=
+ =?us-ascii?Q?z9vZnUq4cXl7hS7csrtDNZgcpvFb9dYgYYU9VXkWf6gGe0T7VMvGqM5z6wEY?=
+ =?us-ascii?Q?yZt5EbtzFKYz2tAuvDrKF7K/bwKJ3jXad2LtXrH9CZpjQHk4yJJAqiF/OEwL?=
+ =?us-ascii?Q?LbqlEuKFdHfOWbsBf9OTEif/wJEnywPdR5mh1YDXGbfFyv3IaMyUBhenaWaq?=
+ =?us-ascii?Q?6JbSQC78zUSnpkCq4iQGs4CM9Ruq7m+CgKo8cuKoBw6uwkOz6gN1bY8F8/8E?=
+ =?us-ascii?Q?qxDJCzlim7Asq/nSbWKF1Z+p5zrvkzXWSCYebRi3AXbwUkQ9UGV9dWvgNVab?=
+ =?us-ascii?Q?5QxKf2eseE+KHj2xdg47QbXIEOdAFZwRzrrZCL7HBh83kXjYqbJ+fsjLKSEY?=
+ =?us-ascii?Q?gZX7fdqF8s4hhqa67ofqg6AO44XHU037B5G/sxsOCgoCNb6w8jXuZdsixSln?=
+ =?us-ascii?Q?bBVpJRyx6m2tghe1bmSOmz5vkOhbvypWpiL5zn74NdYo4BnCiuKE3JNouydw?=
+ =?us-ascii?Q?fF7a72wCnb2rEK+bzx/xFeiFJGXaRp8RLIt3Ky73YvwEeJiod1cTWj8tt5YX?=
+ =?us-ascii?Q?d66OnkMOJeFKtcXNYzuQXAVh3Ye7pRYd7Ir/yo6xBVAvbsGMcgBl2jRBT2a0?=
+ =?us-ascii?Q?Hf4UB+zC1zO1FgXDPE6sgbuQIj7cbfLZNcxgVgpq?=
 X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef943540-fbdf-4d59-79d1-08ddc399aa4e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e54a5fb-3471-40c3-54d9-08ddc399b8b8
 X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5140.apcprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 12:18:11.2632
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 12:18:35.4409
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ctxI9/7QYPw0hW1aBP6S1ihQZ+l7Zvzn0T/fd2TiX1gADYwErvAUJT9VCUPVy6ffuS4LyFr1wGLehMOyY0C/3A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9uplGpPpjaX4mw5CRNhTKzqvH313btz09GgpivVtiXKVw5OVSaE3FyZV+pT3Wi/oj1wR9gjn9FEMZFVWt5xRxQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR06MB5428
 
-Use min() to reduce the code and improve its readability.
+Use min()/max() to reduce the code and improve its readability.
 
-Reviewed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
 ---
- drivers/net/wireless/microchip/wilc1000/wlan.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ .../wireless/realtek/rtlwifi/rtl8192ce/hw.c   | 19 +++----------------
+ .../wireless/realtek/rtlwifi/rtl8192cu/hw.c   | 17 +++--------------
+ .../wireless/realtek/rtlwifi/rtl8192ee/dm.c   |  5 +----
+ .../wireless/realtek/rtlwifi/rtl8723ae/hw.c   | 15 +++------------
+ .../wireless/realtek/rtlwifi/rtl8723be/dm.c   |  5 +----
+ .../wireless/realtek/rtlwifi/rtl8821ae/dm.c   |  5 +----
+ 6 files changed, 12 insertions(+), 54 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 9d80adc45d6b..fedc7d59216a 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -1287,10 +1287,7 @@ int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/hw.c
+index 5ca6b49e73c7..4354ae67a379 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/hw.c
+@@ -1487,22 +1487,9 @@ _rtl92ce_read_txpower_info_from_hwpg(struct ieee80211_hw *hw,
+ 			rtlefuse->txpwrlevel_ht40_1s[rf_path][i] =
+ 			    rtlefuse->
+ 			    eeprom_chnlarea_txpwr_ht40_1s[rf_path][index];
+-
+-			if ((rtlefuse->
+-			     eeprom_chnlarea_txpwr_ht40_1s[rf_path][index] -
+-			     rtlefuse->
+-			     eprom_chnl_txpwr_ht40_2sdf[rf_path][index])
+-			    > 0) {
+-				rtlefuse->txpwrlevel_ht40_2s[rf_path][i] =
+-				    rtlefuse->
+-				    eeprom_chnlarea_txpwr_ht40_1s[rf_path]
+-				    [index] -
+-				    rtlefuse->
+-				    eprom_chnl_txpwr_ht40_2sdf[rf_path]
+-				    [index];
+-			} else {
+-				rtlefuse->txpwrlevel_ht40_2s[rf_path][i] = 0;
+-			}
++			rtlefuse->txpwrlevel_ht40_2s[rf_path][i] =
++				max(rtlefuse->eeprom_chnlarea_txpwr_ht40_1s[rf_path][index] -
++				    rtlefuse->eprom_chnl_txpwr_ht40_2sdf[rf_path][index], 0);
+ 		}
  
- 		offset += 8;
- 		while (((int)size) && (offset < buffer_size)) {
--			if (size <= blksz)
--				size2 = size;
+ 		for (i = 0; i < 14; i++) {
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
+index ec5d558609fe..989e7cff8e20 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
+@@ -163,20 +163,9 @@ _rtl92cu_read_txpower_info_from_hwpg(struct ieee80211_hw *hw,
+ 			rtlefuse->txpwrlevel_ht40_1s[rf_path][i] =
+ 			    rtlefuse->
+ 			    eeprom_chnlarea_txpwr_ht40_1s[rf_path][index];
+-			if ((rtlefuse->
+-			     eeprom_chnlarea_txpwr_ht40_1s[rf_path][index] -
+-			     rtlefuse->
+-			     eprom_chnl_txpwr_ht40_2sdf[rf_path][index])
+-			    > 0) {
+-				rtlefuse->txpwrlevel_ht40_2s[rf_path][i] =
+-				    rtlefuse->
+-				    eeprom_chnlarea_txpwr_ht40_1s[rf_path]
+-				    [index] - rtlefuse->
+-				    eprom_chnl_txpwr_ht40_2sdf[rf_path]
+-				    [index];
+-			} else {
+-				rtlefuse->txpwrlevel_ht40_2s[rf_path][i] = 0;
+-			}
++			rtlefuse->txpwrlevel_ht40_2s[rf_path][i] =
++				max(rtlefuse->eeprom_chnlarea_txpwr_ht40_1s[rf_path][index] -
++				    rtlefuse->eprom_chnl_txpwr_ht40_2sdf[rf_path][index], 0);
+ 		}
+ 		for (i = 0; i < 14; i++) {
+ 			RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
+index 17486e3f322c..0108850bb9e5 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
+@@ -223,10 +223,7 @@ static void rtl92ee_dm_dig(struct ieee80211_hw *hw)
+ 
+ 	if (mac->link_state >= MAC80211_LINKED) {
+ 		if (bfirstconnect) {
+-			if (dm_dig->rssi_val_min <= dig_maxofmin)
+-				current_igi = dm_dig->rssi_val_min;
 -			else
--				size2 = blksz;
-+			size2 = min(size, blksz);
+-				current_igi = dig_maxofmin;
++			current_igi = min(dm_dig->rssi_val_min, dig_maxofmin);
  
- 			memcpy(dma_buffer, &buffer[offset], size2);
- 			ret = wilc->hif_func->hif_block_tx(wilc, addr,
+ 			dm_dig->large_fa_hit = 0;
+ 		} else {
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c
+index 21b827f519b6..bd45d9bd40bb 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c
+@@ -1449,18 +1449,9 @@ _rtl8723e_read_txpower_info_from_hwpg(struct ieee80211_hw *hw,
+ 				rtlefuse->eeprom_chnlarea_txpwr_ht40_1s
+ 					[rf_path][index];
+ 
+-			if ((rtlefuse->eeprom_chnlarea_txpwr_ht40_1s
+-					[rf_path][index] -
+-			     rtlefuse->eprom_chnl_txpwr_ht40_2sdf
+-					[rf_path][index]) > 0) {
+-				rtlefuse->txpwrlevel_ht40_2s[rf_path][i] =
+-				  rtlefuse->eeprom_chnlarea_txpwr_ht40_1s
+-				  [rf_path][index] -
+-				  rtlefuse->eprom_chnl_txpwr_ht40_2sdf
+-				  [rf_path][index];
+-			} else {
+-				rtlefuse->txpwrlevel_ht40_2s[rf_path][i] = 0;
+-			}
++			rtlefuse->txpwrlevel_ht40_2s[rf_path][i] =
++				max(rtlefuse->eeprom_chnlarea_txpwr_ht40_1s[rf_path][index] -
++				    rtlefuse->eprom_chnl_txpwr_ht40_2sdf[rf_path][index], 0);
+ 		}
+ 
+ 		for (i = 0; i < 14; i++) {
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
+index c53f95144812..c65d14fb914f 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/dm.c
+@@ -468,10 +468,7 @@ static void rtl8723be_dm_dig(struct ieee80211_hw *hw)
+ 
+ 	if (mac->link_state >= MAC80211_LINKED) {
+ 		if (bfirstconnect) {
+-			if (dm_digtable->rssi_val_min <= dig_maxofmin)
+-				current_igi = dm_digtable->rssi_val_min;
+-			else
+-				current_igi = dig_maxofmin;
++			current_igi = min(dm_digtable->rssi_val_min, dig_maxofmin);
+ 
+ 			dm_digtable->large_fa_hit = 0;
+ 		} else {
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+index 76b5395539d0..f8b159c74658 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+@@ -756,10 +756,7 @@ static void rtl8821ae_dm_dig(struct ieee80211_hw *hw)
+ 		rtl_dbg(rtlpriv, COMP_DIG, DBG_LOUD,
+ 			"DIG AfterLink\n");
+ 		if (first_connect) {
+-			if (dm_digtable->rssi_val_min <= dig_max_of_min)
+-				current_igi = dm_digtable->rssi_val_min;
+-			else
+-				current_igi = dig_max_of_min;
++			current_igi = min(dm_digtable->rssi_val_min, dig_max_of_min);
+ 			rtl_dbg(rtlpriv, COMP_DIG, DBG_LOUD,
+ 				"First Connect\n");
+ 		} else {
 -- 
 2.34.1
 
