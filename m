@@ -1,131 +1,122 @@
-Return-Path: <linux-wireless+bounces-25501-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25502-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16C8B069C0
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 01:12:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62642B069E3
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 01:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4B1E4E5EAD
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 23:12:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDB31189E508
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 23:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7382C178E;
-	Tue, 15 Jul 2025 23:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D2F25B31B;
+	Tue, 15 Jul 2025 23:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4KlHejU"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G0qLr8q1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCA24A3C;
-	Tue, 15 Jul 2025 23:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4BB23E320
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 23:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752621173; cv=none; b=SEhLtiEshyi1IuSwwv+Ejh1IyhYWKPkAQ/f9aYp9Pc3kBupqF0YcYO4pBrjUivS3idvSw5JUbD8FJ/rNULNl9LI9K/h1CV5xPrM426GmOQEF5LGFtLvGZVKJEzwo738j/S3LNBZ1mw5x7OozCCFV8oa6rOWTWJvMkqzGJN+TArc=
+	t=1752622179; cv=none; b=iM1HCC0yTPWoO3487hJcmM0zNd9w5fXUf8L5goNvZOiTSz8FCMfGleEquPkGzGtATzeGYJK3WUwOIlTh/CCKzCCRCXr9iIZnnqew13QnMhveKIhrDVvTWr/CFxtymBApzvWDDXbpY3ptUpg4czYBZJ90DMLo5aRmr1yfrSz4HF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752621173; c=relaxed/simple;
-	bh=cnSaEW1G2x+Vi12ZOlKThqIkkcwIaeVH5M8TjdoEHkY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jl0CUM6bTC6zZUcSyiuFWr5zncqHXjqMBatYMxX5jOSdy1rpIP/BDAufGa+B5h8JX5v7NKst5pd6M8vDXeJdCI1MsKc8kCt35h6V7rgvonmMJQ+cf/Ow/MktMnJ+Q4607GGJ5RCkx+JGdZ71YtlC28EzZNmOiLNOBFghWoIGXlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4KlHejU; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-23c8a505177so56048375ad.2;
-        Tue, 15 Jul 2025 16:12:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752621171; x=1753225971; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hAPRSx32Yoh23SFp75OsDGsW9gXJ3MOIHEnOw0OZgZI=;
-        b=G4KlHejUFZL4smMIC2i6wHh4dbmZRpIxq42rpDCPR9LDEcj35/3WuIUToPW/V1wJy4
-         VSDa235vdqmjdT6ELQByih/3yB0BQUQ1Ez3OqYytaTxbxcL4nEjgnE1U7U/+QRALm49i
-         keAW/KQezbpq5Cp4n9hsOdjwXgdzS38iUNZLN2y+/S42NIECqPZAGTqI6UGFiobaKOEQ
-         XaTdhwkaji6UBd5I2ZCpbd+XIjyOK137+iVlnqNfX6bQls5XQqWIC29bW8xP31PYlF5Z
-         NPcojUXc3UlAB2qz9NmGQfl4pfisjoCM+cDBLCKDUcvpEwfkIa2MP3AWd2u3o/2Zhx4j
-         +PTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752621171; x=1753225971;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hAPRSx32Yoh23SFp75OsDGsW9gXJ3MOIHEnOw0OZgZI=;
-        b=HOdLfUBGnmksB22/ii5R9/Y0ZBfDaizVqux5aSXhOy6t9QKwwPVgO124kd68iSX7GH
-         Jw7JC2D5pnoIcVLMRO6W1HkaDk9tHTEfHEILZQgSlpdf8bbU4UkzsQW3/GLlkM+1roiv
-         NOJDj+Q5cwYhRTzZO6ksCrX86Z6DSErhglCO9jXkltNiUwax42N0a5mw394L8eu38Hx3
-         Cdvv/EtWZ+eLqmsg3nEGgjYJalwfl6JRHRDWavMd1CbJu5wgyCcrNQaulm2chYIVE4gZ
-         1rZ+owfSQRP17TS3GsPtCh/mTouIpiLr7hQdX5Du9ysu7A748atnGZoG7I48GwA5GCyE
-         fuvA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPeOoj4/uTOvO/lZTzT5jUbX0v0LmSEMm4gaCpRy362IQo2929QqkuvGRTrfCcguvBczRnB6+V@vger.kernel.org, AJvYcCX7SG55GKPHvU0ya6RqEAYpnN9WbGUrlXVnEdK8HAvWd6poBhL0AdzV0n+PslRXyiGoszpa6Yg9XPnaIbT3CA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzotWltq6VneCjWWar0dnoA/m1kYtlNU3PJpTFi8qFgsrI2afgQ
-	likA3zmGK5u4MdpbrKI5/44o1Ot3851wldimGsbTl4M4wLGf8tJDgo1F
-X-Gm-Gg: ASbGncvpOKCZEqaKNmm8QVlGykZGcptWWjiqU2Kggo9HgUegkUCVueug0ihHapy5Yre
-	cSCU/8FumqrsjLRXiBzE8WCPpa2FM8/atNfknLfyWug2nCBG0tcI+un5nGHAtoWoeLuNi91ZHVj
-	3o3JpM/qLNyToevauW1ku+r+weRIiGMlFXdFHokQ4icRbrZM2xoNMySG3IM9sGRXCeFY6UKKimO
-	lEOwmlLNQsQZ0DhvGHKfXXmTW8BDao3kThO4WhdnhxFw1gl17de1Zq7Tqn2G8hz86gvUwYhJVYH
-	LoyGLnYKnTjdyHR6qrZ8D2wMwN9WQYlbfs0zz/FotoB1wTE2MY7kveJ/jtye/rvcreZxkHRsnrT
-	+5TSdv8J87A+jPu6NocjJhzs4
-X-Google-Smtp-Source: AGHT+IGshsBE0EpvzBXYF91wyMej1W2e+64pc4pC0n1OrITGe6q1Y4ZuOz24myUDG1ahFwsL3M85jQ==
-X-Received: by 2002:a17:903:198c:b0:235:e1d6:4e45 with SMTP id d9443c01a7336-23e24f44b0amr9612455ad.25.1752621170746;
-        Tue, 15 Jul 2025 16:12:50 -0700 (PDT)
-Received: from p920.. ([2001:569:799a:1600:5324:4bfb:25b5:ccf1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de42847casm119769045ad.14.2025.07.15.16.12.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Jul 2025 16:12:50 -0700 (PDT)
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-To: johannes@sipsolutions.net
-Cc: linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	netdev@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Subject: [PATCH wireless-next] wifi: mac80211: reject TDLS operations when station is not associated
-Date: Tue, 15 Jul 2025 16:09:05 -0700
-Message-ID: <20250715230904.661092-2-moonhee.lee.ca@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1752622179; c=relaxed/simple;
+	bh=KCefVLyeHt67wusi/u+A5bCJDM0bRI+Sue4ywQXllzM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Etjx97yJ6aXZNJUMvfjSQbTum5kCQx0UAs0sMxJrqTnQdZCU6udX7XwwwO76Tza4+4iw+sUt0gjreq4umXXjC7N97zck4fIT54MCTiO7W84LLzdLBmGpai3yAdV/hgpT/l8vz5hRiXqfXfgb3sHFR5yb6lo1+HPNgUxhPh6G644=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G0qLr8q1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A16C4CEF6
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 23:29:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752622178;
+	bh=KCefVLyeHt67wusi/u+A5bCJDM0bRI+Sue4ywQXllzM=;
+	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
+	b=G0qLr8q1OgCU39qe3pwOudKktsTUTrDIZ6KyBBZoaGZ+dhEDlqbTW+xqQnFqug6Q3
+	 n/ftFNIl8SMqgT82T0/jKp7Fwrfif6SDjl1sr+3GIXWLYFBuOWiSnXAzS7RREDYkB3
+	 A6KBAwIaSEx0XxncCAYDaYzVEuvNgUjLDE8+Amt8qKzsJIBtZGWEqzq4LgjBg4UhRk
+	 7bzKkErPxsfRoSrdtcWmbgCAWSweMkqKQyQV9D3qiVRUK56q+IBVMW8NY3Uwg/19Qg
+	 y8Lfo7vG9uUKa+rFbrTljEGJ4aZd3sh3/1q891tiLdH1VScNzbJb0GI23p3iRut2uG
+	 mazwxNUiV3AVA==
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-70f94fe1e40so4468737b3.1
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 16:29:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV2kzrbUAHqknmo7e8F6R7QX6ur1AqTfyhFg67dPMuqvzt7VKfoE/ss8q126TJXj0Q94Hb826cBL3KntSs28A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNJiZIBOXyXovs38vcWLjNN5rO5NwdUMWizM3L/z4FbGqQZnqp
+	GLGzeDshtgBOaB1UxrRteHIV3bfPMH9m9Y7tnv3Vc3tvcGOU3lifEX81+5yRMViaMcoRh5mNepq
+	EcfWrByXgtSVE7mRiszJGpwMmzEl2dyc=
+X-Google-Smtp-Source: AGHT+IEJu/eBBAD3iifWrQWBSgjRMLvDefwtQwh5jkKvlvitkBGQHk6rycQbT3hypyz1bc5KJ48TJ8i7qq1zwG1U714=
+X-Received: by 2002:a05:690c:9a87:b0:713:fed3:70a5 with SMTP id
+ 00721157ae682-71835031badmr15649077b3.9.1752622177581; Tue, 15 Jul 2025
+ 16:29:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <880417d5-c1ae-4423-9019-e3dcc2673c43@RTEXMBS04.realtek.com.tw>
+In-Reply-To: <880417d5-c1ae-4423-9019-e3dcc2673c43@RTEXMBS04.realtek.com.tw>
+From: Josh Boyer <jwboyer@kernel.org>
+Date: Tue, 15 Jul 2025 19:29:26 -0400
+X-Gmail-Original-Message-ID: <CA+5PVA4LGpLH281XmCEFE1qiOmz=-BzeJkGzABCgrpW91JOR0w@mail.gmail.com>
+X-Gm-Features: Ac12FXwrckbRQyejK9MbaPclOdLeZP6m2RttV1MSObnqzZMpp133MYQpGVFZTEY
+Message-ID: <CA+5PVA4LGpLH281XmCEFE1qiOmz=-BzeJkGzABCgrpW91JOR0w@mail.gmail.com>
+Subject: Re: pull-request: update rtw firmware rtw-fw-2025-07-15
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org, 
+	kevin_yang@realtek.com, damon.chen@realtek.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-syzbot triggered a WARN in ieee80211_tdls_oper() by sending
-NL80211_TDLS_ENABLE_LINK immediately after NL80211_CMD_CONNECT,
-before association completed and without prior TDLS setup.
+Pulled and pushed out.
 
-This left internal state like sdata->u.mgd.tdls_peer uninitialized,
-leading to a WARN_ON() in code paths that assumed it was valid.
+https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/615
 
-Reject the operation early if not in station mode or not associated.
+josh
 
-Reported-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f73f203f8c9b19037380
-Fixes: 81dd2b882241 ("mac80211: move TDLS data to mgd private part")
-Tested-by: syzbot+f73f203f8c9b19037380@syzkaller.appspotmail.com
-Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
----
- net/mac80211/tdls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index 94714f8ffd22..ba5fbacbeeda 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -1422,7 +1422,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
- 	if (!(wiphy->flags & WIPHY_FLAG_SUPPORTS_TDLS))
- 		return -EOPNOTSUPP;
- 
--	if (sdata->vif.type != NL80211_IFTYPE_STATION)
-+	if (sdata->vif.type != NL80211_IFTYPE_STATION || !sdata->vif.cfg.assoc)
- 		return -EINVAL;
- 
- 	switch (oper) {
--- 
-2.43.0
-
+On Tue, Jul 15, 2025 at 1:53=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
+rote:
+>
+> Hi,
+>
+> Update firmware of Realtek WiFi driver rtw89 to update BB and regd
+> parameters, and to support MCC P2P feature.
+>
+> Thank you
+> Ping-Ke
+>
+> ---
+>
+> The following changes since commit ecdbd2b8af04b515732fbf11113cec16651915=
+f0:
+>
+>   Merge branch 'robot/pr-0-1752505495' into 'main' (2025-07-14 15:45:59 +=
+0000)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/pkshih/linux-firmware.git tags/rtw-fw-2025-07-15
+>
+> for you to fetch changes up to eb03c8ce595d75f2a2f81cbe87698c2539f64377:
+>
+>   rtw89: 8852b: update fw to v0.29.128.0 (2025-07-15 13:49:01 +0800)
+>
+> ----------------------------------------------------------------
+> Kuan-Chung Chen (1):
+>       rtw89: 8922a: update BB parameter V49
+>
+> Zong-Zhe Yang (4):
+>       rtw89: 8852c: add regd fw element with version R72-R57
+>       rtw89: 8922a: add regd fw element with version R72-R6
+>       rtw89: 8852bt: update fw to v0.29.127.0
+>       rtw89: 8852b: update fw to v0.29.128.0
+>
+>  rtw89/rtw8852b_fw-1.bin | Bin 1244784 -> 1290952 bytes
+>  rtw89/rtw8852bt_fw.bin  | Bin 918376 -> 937688 bytes
+>  rtw89/rtw8852c_fw-2.bin | Bin 2461176 -> 2463394 bytes
+>  rtw89/rtw8922a_fw-4.bin | Bin 1259006 -> 1263938 bytes
+>  4 files changed, 0 insertions(+), 0 deletions(-)
 
