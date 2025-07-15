@@ -1,148 +1,104 @@
-Return-Path: <linux-wireless+bounces-25418-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25419-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B70EB04C3C
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 01:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C30B04CCC
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 02:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAAE93BF1B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Jul 2025 23:27:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 641CC3AEF2C
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 00:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D64243956;
-	Mon, 14 Jul 2025 23:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5838D4400;
+	Tue, 15 Jul 2025 00:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BdPqp6kt"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="rigIUXI9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2167C1DFCE;
-	Mon, 14 Jul 2025 23:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069AE13AA2D
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 00:28:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752535647; cv=none; b=XyPP28Pq9vSR8WxpbCVWdkY0Q4bwkLaqXRv+6ezS99+TnmKJf1xyu0a5wYPMdbX+OsxoFmAykC2n2RHWB2l5TZT9fNTK5OAFoEGDmxF2jccu6rFv1e/6U9ejGk3cQjy7PqfxoISBAIhRJQ/joLuysO4KgHX73DSNoAdRkNTt6BY=
+	t=1752539313; cv=none; b=YAn9KUZ73Sxxg3POjiEeSYxDLqnVmwoniJi4PLAq3QvkK6UOWSzkth2tZ6vtGxC5RurU3Oo0QXkUAytpGj4+kAFOWRL/sq6Rqhrx0GvGQ17gBz3IfnK3TW3uZztHsZzHAEyHG8z5AWwoEk6KEYsi2gdc88bdJQHqLs3iFDxWQbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752535647; c=relaxed/simple;
-	bh=oSMnXm8xNMGu8kyySNLUWLKWniZxyLqIJbwxo2+Cymw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fY8IMEVO1Xqqul0I8G2hCggiBY7+++34c5W0FKNlBUm7oF4BzuhjXYSwESuNTEr7NXdv0T0S8l0FSX8c/pEDZ5i1Ns+r95J6GsYeJt+ygnEx8OFnoZsfmnKqoCbC/yTnavgW+O4I/pA+vv3x8S9gw3JIbbPao+IodZ5Wmjfg9P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BdPqp6kt; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-60789b450ceso9060377a12.2;
-        Mon, 14 Jul 2025 16:27:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752535644; x=1753140444; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5cWUdw/XWL0wKty/4mlXjtObOvYTaL5gOM763vl3Zdc=;
-        b=BdPqp6kt6EpQn8WMNMOah/DVoZ9L3e5/jYIXheQTGUmvQ2jrgxYzPPuGU45lbrd5Tc
-         eu0627fjogu0z3Gvj5SI5saRy59iFH9+RTTgTIIbhcFjjxOMyOAhW1nxUaxz8R0fKJ/R
-         emgGnHd6/Zg4fDN+Y54lMHUnS1tthNU3vWexcnKWZZ6n/9gitzE7ASCzGCol+Q3Gex+Q
-         AcidJJxHmEhYDu7bFKgbFm6by/TXlTe35jkNiBxI/uXFSjscri+kkC9hB7r2RUVogeMW
-         w6a56/sC/dBStv44JcjtePWBEW2IYodxKmeFvsVfBOeYvCNiW3fOJq+4kX6sYQiFbYIV
-         CkNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752535644; x=1753140444;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5cWUdw/XWL0wKty/4mlXjtObOvYTaL5gOM763vl3Zdc=;
-        b=CUe385RzDTVpaNAd9ySdviNl9niB7B/qgWiDKtpkA6P7UfwBIIO0JQUwFYMqFTAM0h
-         qVgsWWJK3MJBR2xVPsJsRfDL4r8sO0iEIGZQRjrpJqXih4kabSL98k2IsbtCK+wrr9gt
-         CqrRKEu2bQG4O8wpEsHOMcYwTs7Atimb7tvwSn2drlxxuUn8FLipZNzT7iaFH/4q77lR
-         VycYO/EFxJFpFXKzHgl6aTu57DCQPJaWzVkLwsyYnybbGkwKFk5a7Ioe3oRW2ebjnaej
-         Ctmkp+sB9X/bFi3oRHLN2CdWpMLAwWNK1UKJDZvxT9yQrEAcNYZlOWKTAQOWNDKMn5Xr
-         imAA==
-X-Forwarded-Encrypted: i=1; AJvYcCW6OqnAontJfVAhNPo3jFxV2RCRC8jj2vrPDxQHiG/SkneWKPoYe1O6tlsvyZEOQq6LTRXcPD9nmBXofeHK@vger.kernel.org, AJvYcCXI5iczKmUn/nQ6zqgLPXSatlP0YpebpOmWk0Lv9Tv4SlbsRllwQRO/GycOWaSAeycE6OZLas44gv1D4xcuaxg=@vger.kernel.org, AJvYcCXJh90YXQY2vz3TrH5C0Jl5Ze+yRUXvvLaxLhfKUzk02idnWIIXbeBGlolDzabzPnGmyJwcfjckAIDe@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRbJT9U8Zr9eUHyOCGcGm4vnvmnkIdpVI8FXECgRK3rFtdl0cU
-	c6LfRw5OLpWlFOvSTZ/An4GSHuJLbqtPa8Z6lJgTxCPVIcuJWM7sVVDrCmrdS5WU/upUgUoUvmi
-	zmnW3QKdbGMZg8qb/QKWcg7scZYGwv83m
-X-Gm-Gg: ASbGncuVOWsw3H7yUB2oh+7RxgkiNDtVhGgZ3VEMmCZ6NoKFNSXqNhzlQrR4Hx4flGz
-	CCBbgwq/6nL+Ept4i5qjJs2gKIsVdbx2alTcpvcY6I0XmA9KYCGP5oU3wiTOLxoKgWuONTe2zOW
-	uHqvJm3nt9YCtFcc4mho8GGAFs853OiPPvlFWVqj8fGQuiDtfb4ZBkGy0DZrNq+rkICgahdS/kM
-	YWXGys/XLKv9Tuvs5GMREQS3qEOgHPT8INWxugFQsUETyulHQ==
-X-Google-Smtp-Source: AGHT+IE1PoTMFQT9rN7uOrNQbjO/MTvhGrGizKsF8Ga/T1DM3Q0YSP9nliT/80O/sEv8vzCBNVnaHRdoGdRfcsiVDlc=
-X-Received: by 2002:a05:6402:5202:b0:608:50ab:7e38 with SMTP id
- 4fb4d7f45d1cf-611e7c21fa9mr14227624a12.14.1752535644154; Mon, 14 Jul 2025
- 16:27:24 -0700 (PDT)
+	s=arc-20240116; t=1752539313; c=relaxed/simple;
+	bh=TRRwZu/sw6hL36UuBXm9ZZbOmCtlV6RkO4Ju1AH6zdg=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=gzKzExdzjtAqhrT2EVl7zK82CfSMNvHsDn6huoaLlf5zYZj66HuQcasldDZ8+6A3/0ZVqQM1jakcvqOQsJtsn9oXxmXS3hpRLUHSQzW/RRejYcXrFDuhim2Lk0xix7msaILGt42IxFYORKWq5gWFcs7B0SxAZSNAKIUB1N/hYFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=rigIUXI9; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56F0SJlH43320660, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1752539299; bh=TRRwZu/sw6hL36UuBXm9ZZbOmCtlV6RkO4Ju1AH6zdg=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=rigIUXI9dSRaL0E/pyXV4A9X1dy0cmkxuDvyJ1V8lkuJe/oKtVQn8cJ59baAjXGjJ
+	 htGWa5lrOQf3wgZhbPk4XlGpRTBk7VVyn4mRSJfjeMA2ubXoFi/x/GoLd4RvngiqGJ
+	 21wNqmWQRdf4nfkfloU8eN3LPe0AIet/caCS3/xcxFAp/SYSUP1Tn5I50AoPk1nmOD
+	 R7ngfgAxLpVgvb/ClLF+oI5cSxjLJmR665HWdbHvUA8cQ4v5N96xg7XTZC6d8QKHu3
+	 i8A3ftZTm1HTJ4RwuBkidhjr+fGO4XWZ3SyDqGyH+qTI2sT56gnh1Cb2jKvfoLwovl
+	 xSuUK6qhn7fLw==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56F0SJlH43320660
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 15 Jul 2025 08:28:19 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 15 Jul 2025 08:28:20 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 15 Jul 2025 08:28:19 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47]) by
+ RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47%5]) with mapi id
+ 15.01.2507.035; Tue, 15 Jul 2025 08:28:19 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH rtw-next 1/2] wifi: rtw89: Increase polling delay in rtw89_fw_read_c2h_reg() for USB
+Thread-Topic: [PATCH rtw-next 1/2] wifi: rtw89: Increase polling delay in
+ rtw89_fw_read_c2h_reg() for USB
+Thread-Index: AQHb8mIExRh8regsMUWLQVkqazNfxLQw3ZoQgADNTICAAK5tcA==
+Date: Tue, 15 Jul 2025 00:28:19 +0000
+Message-ID: <541d90fbd7114d9b8c5247ee50d68507@realtek.com>
+References: <73f8bdbf-ff7f-4741-a6ea-b1d9026833c3@gmail.com>
+ <9ce9b78535d74f08927ce2ac9c7731e9@realtek.com>
+ <b24bb8a2-d635-4312-b451-065b8d8e950c@gmail.com>
+In-Reply-To: <b24bb8a2-d635-4312-b451-065b8d8e950c@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250714173554.14223-1-daleyo@gmail.com> <20250714173554.14223-8-daleyo@gmail.com>
- <prrra3lon2p4pugkgeytf5ow5wls62lfdnwcdykztw3qzwity2@d26aqh6wdyln>
-In-Reply-To: <prrra3lon2p4pugkgeytf5ow5wls62lfdnwcdykztw3qzwity2@d26aqh6wdyln>
-From: =?UTF-8?B?SsOpcsO0bWUgZGUgQnJldGFnbmU=?= <jerome.debretagne@gmail.com>
-Date: Tue, 15 Jul 2025 01:26:48 +0200
-X-Gm-Features: Ac12FXyokWE3P9WfHcZydzKzoz6l-6OPJ8mBLmVCv-L78yLEYDKASAdX8sAOtqw
-Message-ID: <CA+kEDGFR3FB=ead50kFBAL23-1dXo-LOMqhT7f=WecNMf_MaNg@mail.gmail.com>
-Subject: Re: [PATCH 7/9 RFC] dt-bindings: wireless: ath12k: Add disable-rfkill property
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Dale Whinham <daleyo@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jeff Johnson <jjohnson@kernel.org>, Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
-	linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, 
-	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Lingbo Kong <quic_lingbok@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon. Jul 15, 2025 at 00:33, Dmitry Baryshkov
-<dmitry.baryshkov@oss.qualcomm.com> wrote :
->
-> On Mon, Jul 14, 2025 at 06:35:43PM +0100, Dale Whinham wrote:
-> > From: J=C3=A9r=C3=B4me de Bretagne <jerome.debretagne@gmail.com>
-> >
-> > Document the disable-rfkill property.
->
-> Why? What does it mean? Why are you describing Linux driver firmware in
-> the DT?
-
-rfkill should be disabled according to the Surface Pro 11's DSDT.
-
-https://lore.kernel.org/all/20250113074810.29729-3-quic_lingbok@quicinc.com=
-/
-has added support to read the ACPI bitflag when ACPI is supported.
-
-The idea was to expose one specific feature (DISABLE_RFKILL_BIT) for
-devices described with a DT, so that the feature can be disabled.
-
-
-
-> >
-> > Signed-off-by: J=C3=A9r=C3=B4me de Bretagne <jerome.debretagne@gmail.co=
-m>
-> > Signed-off-by: Dale Whinham <daleyo@gmail.com>
-> > ---
-> >  .../devicetree/bindings/net/wireless/qcom,ath12k.yaml          | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k=
-.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-> > index 9e557cb838c7..f15b630fb034 100644
-> > --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-> > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-> > @@ -48,6 +48,9 @@ properties:
-> >    vddpcie1p8-supply:
-> >      description: VDD_PCIE_1P8 supply regulator handle
-> >
-> > +  disable-rfkill:
-> > +    type: boolean
-> > +
-> >  required:
-> >    - compatible
-> >    - reg
-> > --
-> > 2.50.1
-> >
->
-> --
-> With best wishes
-> Dmitry
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBPbiAx
+NC8wNy8yMDI1IDA1OjQ5LCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4gQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiA+PiBUaGlzIHJlYWRfcG9sbF90
+aW1lb3V0X2F0b21pYygpIHdpdGggYSBkZWxheSBvZiAxIMK1cyBhbmQgYSB0aW1lb3V0IG9mDQo+
+ID4+IDEwMDAwMDAgwrVzIGNhbiB0YWtlIH4yNTAgc2Vjb25kcyBpbiB0aGUgd29yc3QgY2FzZSBi
+ZWNhdXNlIHNlbmRpbmcgYQ0KPiA+PiBVU0IgY29udHJvbCBtZXNzYWdlIHRha2VzIH4yNTAgwrVz
+Lg0KPiA+DQo+ID4gSSB3YXMgbm90IGF3YXJlIG9mIHRoZSBjaGFuZ2Ugb2YgWzFdLiBUaGUgYmVo
+YXZpb3Igb2YgYXRvbWljIHZlcnNpb24gYmVjb21lcw0KPiA+IGRpZmZlcmVudCBmcm9tIG5vbi1h
+dG9taWMgdmVyc2lvbi4NCj4gPg0KPiA+IEZvciB0aGlzIHBhdGNoLCBJIGZlZWwgd2UgY2FuIGtl
+ZXAgZGVsYXlfdXMgdG8gMSBhbmQgdHJlYXQgdGltZW91dF91cyBhcw0KPiA+ICdjb3VudCcsIHdo
+aWNoIFVTQiBkZXZpY2VzIGRvIHNtYWxsZXIgcmV0cmllcy4gVGhlIHNtYWxsZXIgZGVsYXlfdXMg
+Y2FuDQo+ID4gcmVkdWNlIHRvdGFsIHBvbGxpbmcgdGltZSwgZXNwZWNpYWxseSBmb3IgUENJRSBk
+ZXZpY2VzIChzZWUgbXkgY29tbWVudHMgYmVsb3cpDQo+ID4NCj4gPiBUaG91Z2ggSSBkb24ndCBt
+ZWFzdXJlIHRvdGFsIHBvbGxpbmcgdGltZSBvZiBwYXRjaCAyLzIsIEkgZmVlbCB3ZSBjYW4gYXBw
+bHkNCj4gPiBzaW1pbGFyIGlkZWEuDQo+ID4NCj4gDQo+IFllcywgYSBzbWFsbGVyIHRpbWVvdXQg
+YWxzbyB3b3Jrcy4gSSB0ZXN0ZWQgNDAwMCBmb3IgdGhpcyBwYXRjaCBhbmQgMzIwMA0KPiBmb3Ig
+cGF0Y2ggMi4gDQoNCkZvcmdvdCB0byBzYXksIGZvciBQQ0lFIGRldmljZXMgcGxlYXNlIGtlZXAg
+dGhlIHRpbWVvdXQgYXMgd2FzLg0KDQo+ICg0MDAwICogMjUwID0gMTAwMDAwMCBhbmQgMzIwMCAq
+IDEyNSA9IDQwMDAwMC4gSSBkb24ndCBrbm93DQo+IHdoeSBydHc4OV9yZWFkOCgpIGluIHRoZSBz
+ZWNvbmQgcGF0Y2ggdGFrZXMgb25seSAxMjUgwrVzLikNCg0KDQo=
 
