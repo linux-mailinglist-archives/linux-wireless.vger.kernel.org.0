@@ -1,155 +1,134 @@
-Return-Path: <linux-wireless+bounces-25499-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25500-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3741B0672F
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 21:46:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F3FB06953
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 00:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A48914E7AC7
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 19:46:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BF9E17E9BB
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Jul 2025 22:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2741B672;
-	Tue, 15 Jul 2025 19:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0879929B8E4;
+	Tue, 15 Jul 2025 22:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y5dAkkBA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P8LHvr61"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5B14A11
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 19:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F5F1C2DB2;
+	Tue, 15 Jul 2025 22:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752608785; cv=none; b=O/zwRfzl26GGI7toY7WWD6/cduZfdnQ03elQfCw0klkszUf6fLZPmyxoqu9wSHmbTlooxb4+M8MvIw84/krkJsSLzHxA9Tsy4DM22VTHxh8k3mfWldOxNnMAkJPmhZQI8vwk9pgmmSja6lYw7QSTCEEaJr1GaQof/0OK7ujthyU=
+	t=1752618813; cv=none; b=VhgeEGHZTsr8mJ67dBn6tQDmGvkKyZ3c6q2ryHIWPvHPPlyfPicZjvDQld0BXh0aEC5E4Qmu/WV+MjDgDIRt4BS0NOjN+8TGcbX/x3G6t6WdgfuOgV264Wbwoo1PV2hCoJmE1j/7nIzCtb74/mU2AMEcW4coFGS9Nkz8TU+h5yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752608785; c=relaxed/simple;
-	bh=o0Dw6z999QCDssAkPgkSRmJH5p7dW98GysuPmaHNLBY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=EsVwd8yKBmcf8SNkIk35rDQLZ/7rEbEDx9QELjOA0fxIyWLw4WXnQHEJUdBz6uxv+8D02VfTrXfonK6Cf4ilczo5IylZJ0exbkcS9xnk6CqiAQvIIEYNiv4TnaeCDhi8tADPwqB2pRLa1w2xzK5S0BMwhwZD6oG8MnaoZN6YgWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y5dAkkBA; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ae0e0271d82so1050890066b.3
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 12:46:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752608782; x=1753213582; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eK2HCyZphB5bFqM1EjD/A+9nfXOARsTutPayGnXcX3M=;
-        b=Y5dAkkBAr143aiIio4pY1PhiryyO1Qf0FRbvrfjt7DbF/tmczrPdMJDzmM9Bw+5c9t
-         qHY7UkOxrNljMy0gLg0R7P7ZUjLuqI/1/lPFXrUELuEXkZJlTdjmWCOXwDvY4E3u+E1a
-         /HUyRH0rNh8pqb5kbfooIGP/j4AwR39zSpiLDjzveTaxUH3q/tleMGhLm8mQqCKIs3lz
-         vCg0ynqUVUZ0UdU+NwTAvSh3kqYyGqwCGZJbkt7tPf7vdKfOzQjJ8WTsWLiCQrGEVwMq
-         qCj9lE/zs4VTdI+aug5JzrEz3749gzgDP77yp1to7Csg7AR3RVbQKMqLxO72AfV9e4g1
-         F56A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752608782; x=1753213582;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eK2HCyZphB5bFqM1EjD/A+9nfXOARsTutPayGnXcX3M=;
-        b=V/0rW58tIHQvfNN9GJxzCEmH7n/KqUN9/zW0OdffVZmELXNAkFeNVBGUgxPNbqFfk1
-         QaOpj6ozd7BD6A979cLLyVuYhojks1En6ZbRoCKHGzlMgWdaIsbPqTWopnYKxg32D9X0
-         38yJ5y5zKdjooFzj2AhxqeEkQh83lwDuZD/WZbv+JW3T25LBi7z83W0vumyYNNaM+Ugs
-         UfOtlkmonJ/k6BSfIM01uIGFj8IJJ1ld7ygjmS0ZkZTcS+tyylAqufwHgHC99VTEF4hh
-         MYTwElJfUmG5tUvc3L8cxzq4v6Xua90cB0Ml97EEQiEDhBaAJGbEL5KTp489QIeKodji
-         i34A==
-X-Gm-Message-State: AOJu0YwBIA6RRhkzoeB94P9GIEHPEw8v+kTr6DJ35oiElDGQiTt64IXT
-	QmPbdskdkRsIrF5fsmPk1uRRqygHdne/88ezHb4dzd0YCTXOwD0FgmnLTArYXg==
-X-Gm-Gg: ASbGnct+Vq+ENKpaVDuF1CIF50DhNKstGv88gKpCB/Yj/bUXmDmsY1IVulwpj0F4rlk
-	ElvSCeMCst4FTsiKghs5SCxY7dtFTw3HqjpxmfeKOuM31skTYuYjzd8dr4iZqqk4exvIb8Mjoxi
-	FpPsgc3m13D+tNydEcUryhcGFsdDeMA1D6k3IZkdppeJPwPZUCYokSFYAvd76t+mE3u+c/mPfvr
-	Z4mzddeqPwi2aYKyxe191v+q3KAxyWdqUOIWWAc61amz6+x2dcncAoHmsOCA8BovU8krfnlXY9A
-	il4nSSB78oHCHvF91agxlbAgTmtq4B8DaUcSR8nGQcMfK10aXryHNdlLUk/FhRCsyJk+GRbft6M
-	Bpw8i/Xe5/8l5xMKL5MLboHFxnivQLQ==
-X-Google-Smtp-Source: AGHT+IFMHB7GyefuVnVGBjBGfusiZewmHiv+BdcMlMibNNIn+vjBoKCmK33DQgW6Veai1PciAYsxtg==
-X-Received: by 2002:a17:907:2da9:b0:add:f191:d851 with SMTP id a640c23a62f3a-ae9c9aeb321mr80224966b.32.1752608781772;
-        Tue, 15 Jul 2025 12:46:21 -0700 (PDT)
-Received: from [192.168.0.50] ([81.196.40.253])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e82645c3sm1068572666b.99.2025.07.15.12.46.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Jul 2025 12:46:21 -0700 (PDT)
-Message-ID: <af0b25d0-ea67-455e-91f2-8e4c18ae4328@gmail.com>
-Date: Tue, 15 Jul 2025 22:46:20 +0300
+	s=arc-20240116; t=1752618813; c=relaxed/simple;
+	bh=dyGcpzNngBMQ2YV4Wi/gcf3C7b7anIslY6CBRkZ6gEE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=n84BMLfHeAc8A5/nXzGwEfcFkGbl66CCDNSWjYQJ3SMH57yg2V/qWn7AcXlBgy+3nRuIaMyoz0+ATE5+EO7UYOJXI5ubXzAcoXTK3sF9RASoDMzIv64H94gXA5uEi756IBAtpmG05EmGt8valSRar/e1HRLvEL6VyXOL8UAtkRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P8LHvr61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C871AC4CEF5;
+	Tue, 15 Jul 2025 22:33:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752618813;
+	bh=dyGcpzNngBMQ2YV4Wi/gcf3C7b7anIslY6CBRkZ6gEE=;
+	h=From:Date:Subject:To:Cc:From;
+	b=P8LHvr61VPq1o/fizrHXVI4ZPQCeIcgDWWg9nU8IuyP9DkmCIuOYg33Kk3u9D8uHW
+	 hjg99qwKbp9Lx5zRv+WcOV1qP5UqE2vz4MfiiBJDmILiyi00XkSLcYV86mLF+mCFj5
+	 PG+MrGH3YwscS65wzsYMYvVT4hsCg6fR1mzlHUZIFJk1siRg+znhFrF0jcpWNlF/gF
+	 +POYE3XwtpXRXVmqxqeDR6zMfesXb6gnhU6kNg9JjFtoyuy0QlwZYWg3S8PDPmI7LU
+	 kYwV0QPt5BqsjMFt3T2/jDlB4f2JRun+PaIc23D/YkgvrnuTD4TLKxvnL1NboxaXln
+	 K9EVa3xRC0NtQ==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 15 Jul 2025 15:33:25 -0700
+Subject: [PATCH] wifi: mt76: mt7996: Initialize hdr before passing to
+ skb_put_data()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH rtw-next v2 2/2] wifi: rtw89: Lower the timeout in
- rtw89_fwdl_check_path_ready_ax() for USB
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-References: <09313da6-c865-4e91-b758-4cb38a878796@gmail.com>
-Content-Language: en-US
-In-Reply-To: <09313da6-c865-4e91-b758-4cb38a878796@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250715-mt7996-fix-uninit-const-pointer-v1-1-b5d8d11d7b78@kernel.org>
+X-B4-Tracking: v=1; b=H4sIADTXdmgC/x2NQQqAIBAAvxJ7bkHLivpKdIjcag+toRaB9Pek4
+ 8AwkyCQZwowFAk83RzYSQZdFrDss2yEbDNDpapGdbrBI3Z93+LKD17CwhEXJyHi6VgieVSatLW
+ qtsYYyJXTU3b/wzi97wfbvvL3cQAAAA==
+X-Change-ID: 20250715-mt7996-fix-uninit-const-pointer-01e1dd03d444
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+ Ryder Lee <ryder.lee@mediatek.com>
+Cc: Shayne Chen <shayne.chen@mediatek.com>, 
+ Sean Wang <sean.wang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ llvm@lists.linux.dev, stable@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2306; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=dyGcpzNngBMQ2YV4Wi/gcf3C7b7anIslY6CBRkZ6gEE=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBll1624BTtKdzdwrLrW6+cz6019Vte06mtHtylMNdKU/
+ 7D7lNTSjlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRtfmMDLOlHf62PTyYUm0q
+ tuKShooYa4bf/6J9Fr/9l7o0bV56fg/D/yr38kR/+wMs/x7lBqxxW+cW5hvCfeUFx6GS0KgVR+P
+ 8OAE=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-When the chip is not powered on correctly (like during driver
-development) rtw89_fwdl_check_path_ready_ax() can fail.
-read_poll_timeout_atomic() with a delay of 1 µs and a timeout of
-400000 µs can take 50 seconds with USB because of the time it takes to
-send a USB control message. The firmware upload is tried 5 times, so
-in total it takes 250 seconds.
+A new warning in clang [1] points out a couple of places where a hdr
+variable is not initialized then passed along to skb_put_data().
 
-Lower the timeout to 3200 for USB in order to reduce the time
-rtw89_fwdl_check_path_ready_ax() takes from 50 seconds to less than 1
-second.
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:1894:21: warning: variable 'hdr' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
+   1894 |         skb_put_data(skb, &hdr, sizeof(hdr));
+        |                            ^~~
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:3386:21: warning: variable 'hdr' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
+   3386 |         skb_put_data(skb, &hdr, sizeof(hdr));
+        |                            ^~~
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Zero initialize these headers as done in other places in the driver when
+there is nothing stored in the header.
+
+Cc: stable@vger.kernel.org
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2104
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
-v2:
- - Lower the timeout for USB instead of increasing the delay.
- - Don't change rtw89_fwdl_check_path_ready_be().  It uses a larger
-   timeout than rtw89_fwdl_check_path_ready_ax(). Leave it for later
-   when I can test it.
----
- drivers/net/wireless/realtek/rtw89/fw.h  | 1 +
- drivers/net/wireless/realtek/rtw89/mac.c | 8 +++++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index a731c242f389..7e07df4beba7 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -4697,6 +4697,7 @@ struct rtw89_c2h_rf_tas_info {
- #define RTW89_FW_BACKTRACE_KEY 0xBACEBACE
- 
- #define FWDL_WAIT_CNT 400000
-+#define FWDL_WAIT_CNT_USB 3200
- 
- int rtw89_fw_check_rdy(struct rtw89_dev *rtwdev, enum rtw89_fwdl_check_type type);
- int rtw89_fw_recognize(struct rtw89_dev *rtwdev);
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index f6bbc796329c..dfaf33173611 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -6932,10 +6932,16 @@ int rtw89_fwdl_check_path_ready_ax(struct rtw89_dev *rtwdev,
- 				   bool h2c_or_fwdl)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 994526c65bfc..640abb4dce7f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1879,8 +1879,8 @@ mt7996_mcu_get_mmps_mode(enum ieee80211_smps_mode smps)
+ int mt7996_mcu_set_fixed_rate_ctrl(struct mt7996_dev *dev,
+ 				   void *data, u16 version)
  {
- 	u8 check = h2c_or_fwdl ? B_AX_H2C_PATH_RDY : B_AX_FWDL_PATH_RDY;
-+	u32 timeout;
- 	u8 val;
- 
-+	if (rtwdev->hci.type == RTW89_HCI_TYPE_USB)
-+		timeout = FWDL_WAIT_CNT_USB;
-+	else
-+		timeout = FWDL_WAIT_CNT;
-+
- 	return read_poll_timeout_atomic(rtw89_read8, val, val & check,
--					1, FWDL_WAIT_CNT, false,
-+					1, timeout, false,
- 					rtwdev, R_AX_WCPU_FW_CTRL);
- }
- 
--- 
-2.50.0
++	struct uni_header hdr = {};
+ 	struct ra_fixed_rate *req;
+-	struct uni_header hdr;
+ 	struct sk_buff *skb;
+ 	struct tlv *tlv;
+ 	int len;
+@@ -3373,7 +3373,7 @@ int mt7996_mcu_set_hdr_trans(struct mt7996_dev *dev, bool hdr_trans)
+ {
+ 	struct {
+ 		u8 __rsv[4];
+-	} __packed hdr;
++	} __packed hdr = {};
+ 	struct hdr_trans_blacklist *req_blacklist;
+ 	struct hdr_trans_en *req_en;
+ 	struct sk_buff *skb;
+
+---
+base-commit: eb8352ee2d1e70f916fac02094dca2b435076fa4
+change-id: 20250715-mt7996-fix-uninit-const-pointer-01e1dd03d444
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
 
 
