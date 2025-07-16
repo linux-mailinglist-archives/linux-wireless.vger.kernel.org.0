@@ -1,121 +1,179 @@
-Return-Path: <linux-wireless+bounces-25557-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25558-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0F0B07F2E
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 22:56:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD18B07FAC
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 23:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47EB8A44B2E
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 20:55:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D41A1C42BBA
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 21:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B464828C2DE;
-	Wed, 16 Jul 2025 20:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949782EBB95;
+	Wed, 16 Jul 2025 21:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hs7DDZT5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aRS7DB9/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C57D1CD2C;
-	Wed, 16 Jul 2025 20:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCE52EBDCC
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 21:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752699363; cv=none; b=X9gyc0L5T9WiPGzL/0dS+OLX7I2rcrATE8G/WCDhR/lLZKaT4WtCxHsYn5OWImZxVyc/8GCrVjxIW6//50XPeRahu7OVd7dWAN+A7N9B/wzmgbiJp7b1/PA6wTlbnxxgUftnxng7C+uQRsZEQSn1yPhiW3AsRqTF5AEJJ/ELzpI=
+	t=1752701522; cv=none; b=JRtM1F5wE4ZrUq3xrXR9S0NyU6rbsK0TYzmM1deAqiQ4jDWpmLhg0UiUIfw65WSmTdsRVLGK8MlPIhzBkAGzEPVLMC49AXE8ufE28TnVuu6G6/Kx2RvOe6cj+eFVM0nmT+0P13KbUBQ/bURmeXUZJ+NB0l5ggkBSaJLqoOffJsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752699363; c=relaxed/simple;
-	bh=1eT1bU8K2ROCVSdByZdiqCJahWUYakFk0s/KHQHgDy0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ojDr9Z4BkqzrxaFrQsWrXF1DDIdsimIo7hzlPCbt8lwKXSOkeakB3UU5oqosZsLvgucHTgh87KwdwVUxBgiPo3ljNosLRfiKrpZcpraoy159lFwi/7sqrufOTnEYEgPp4tqnvv8aD4icLrsXm8iouHLnlplOOVmf6oInYGrGMlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hs7DDZT5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1039DC4CEF1;
-	Wed, 16 Jul 2025 20:56:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752699363;
-	bh=1eT1bU8K2ROCVSdByZdiqCJahWUYakFk0s/KHQHgDy0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Hs7DDZT5y7ghwrrP2RoLIPD/uvZHmLasbXo2TT4fFIO7edIcBrZV86BNmu6s52Pe2
-	 GiXm1OSTqbaMlmfNhVJedqxHISA/wrhm2gLbzV7c7jkbfhFiiuLC38tyjBoPUYv2SI
-	 c5gN69aqyBcZ6IX7zJxosf4QmOf4AUeQH4BAUNjE40OTOLWHCIupvCvIgEVG53phaI
-	 VPoNle4itK3nDgSes+CYKnpEt2/l5BSdcMpFIOkTJ5n6dtkhB5pcJHezOQoRMlgkK5
-	 GMrfGRzeI23y1uUdJ81ubwpBoYxkrOfhRw2XxAwcTjK+nQQwp+gBPd1oL5R7lGcE7f
-	 CdHEgEcAb4nag==
-Date: Wed, 16 Jul 2025 15:56:01 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: manivannan.sadhasivam@oss.qualcomm.com,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Jeff Johnson <jjohnson@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Nirmal Patel <nirmal.patel@linux.intel.com>,
-	Jonathan Derrick <jonathan.derrick@linux.dev>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ath12k@lists.infradead.org, ath11k@lists.infradead.org,
-	ath10k@lists.infradead.org, ilpo.jarvinen@linux.intel.com,
-	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: Re: [PATCH 2/6] PCI/ASPM: Transition the device to D0 (if required)
- inside pci_enable_link_state_locked() API
-Message-ID: <20250716205601.GA2555277@bhelgaas>
+	s=arc-20240116; t=1752701522; c=relaxed/simple;
+	bh=WD1bZzwFyI5Fi4OzA+pYP40Yl21WGqXanjHH3MrAYfw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=UEf5Lyfbu5WNvDpGQrBvTlwgPXwN5ZgVPG0kAaM08J6AbzZq6hF5IymaC+tZh21WEv1RYPEhkh8umnMjDusC3doSOBQAvN1mi7+PrdzZKT2YuwcA3HxeLO3g1I+wplJMZF3UyfhylPui8Zi63ASDoLqcCRoJjXB6vMAH5Dl2VTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aRS7DB9/; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ae6fa02d8feso48005266b.0
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 14:32:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752701519; x=1753306319; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WV1UAZjH4MPVzLTWNEZMAbmjemP2og7AexIEde37b4M=;
+        b=aRS7DB9/O+YXiiM4K8xgwRELpxjTcKc87PTJ4Pgt4uys4Q/qtyRjH2vcqrzFeXANBC
+         pry4QqtXGqF32SEuM5vcj0N6lNUkOYn2RonIg2UgLGgK/lRhIT7pyqgYB6C6b+iDV3qQ
+         0RypjX4reVrCS1IGEjLOUHhkIRAOBEHkg7qC+BC5HDu032hlc8WvJQAlquvl+J6ngF0B
+         Gf1hMCnhwKfDnMZOpUEF1HloEwSz0fNZxle9dpxe55vag2jmnTDvhKmeoFjgJteZZgHr
+         o0MMWPNa9YT7UNeA+3BdJ8uLQLJ/0dCtj8RsTmaglRli38FspVwYnHkW7dyecpgDY0T1
+         K6RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752701519; x=1753306319;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WV1UAZjH4MPVzLTWNEZMAbmjemP2og7AexIEde37b4M=;
+        b=Wrqlc3aEfS5FfOwn803bVVCeutT4BAMG5f0hhgIEcypSjkarcz3gRVNpX00lqIMK9g
+         lN3kI8x++cK2S0kQXOcAYF0C+MnTQLVcGO2b0fBLOt26TnOuTVP6UQSQN+Pk9tOXSw+l
+         cuViGECReXRcxJf4q9btvUliz/g4PyQ+ntAk1muzEvINjO0LaOFrRV+I6kzJV6MiPCJm
+         OVzutT32tiuGWSPXkkCMd8gUpG3kuheYD+kG/cUsdkxBQ3KzhKyE9NVENhJzedaw9XHy
+         nOgAKT0+d+hEDXkOartUQEwvZqKskSsUNk1uOAj6zTTUU0+GnfNWmDrlMlLyyldVAUwt
+         Zm4A==
+X-Forwarded-Encrypted: i=1; AJvYcCVflvLo93bI42jWfRihKT4tShtmc4e3hEAw9TgKmWBBVjPLfHWF71Z6jxHcJGbRluul698kuz65lljJQHyHiQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVOiCWzUma+w93oHf7DZUilQpBBYuJXxxOmxj4wUA8+D+FFLdZ
+	JHPIzjZhRY4kvswWWyEnkJzqG/MxEv+2bFzpwmCAxtMLck0rk0yisRwN
+X-Gm-Gg: ASbGncvbNKKi/PCQxC068Ja2Ytozhlm5PCShlMDA2xf6ULAjgzGB4nCfTPdc81VXlOv
+	WRHlzHbmun2EKKBcnHXFPDcRrPY8oqHlpyt61OK1Rkjj0XQ6F7yNnfH5hHS8dBhEM+aDRIuYoFT
+	230aq5ACwJ9idCmRjWC+ExrFm3m323KXOZToxuC54rU5gxkhmp9d9x7uGkP5E/qHcsVKt3RLurl
+	QN2YvHtZiexMQoq5sAQMpWYK2XzxIUbpIGddLGR3oCyCEshpvG2jiihwAVN2ptA2VIp9wInIrSv
+	4/XaPgsG4tW2mDDElASipvfc/L8RBElW0Xn9PY7wfR8diyiPUbJJU+PryrAE5/iBQumPA6ymDS8
+	Y0PgnbEGi7kIMHAccqh/BAt5oHqqMRA==
+X-Google-Smtp-Source: AGHT+IH6OsV+QLFaSZthBhlxAX/hjJ9ASBrt7Xuqf3LW1JjTCAgtSgDBX7JJeRHfZVglNOKNLuQFAA==
+X-Received: by 2002:a17:907:894b:b0:ae3:90cc:37b3 with SMTP id a640c23a62f3a-ae9cddddbd9mr439133966b.17.1752701518668;
+        Wed, 16 Jul 2025 14:31:58 -0700 (PDT)
+Received: from [192.168.0.50] ([81.196.40.253])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e8266992sm1234830066b.82.2025.07.16.14.31.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Jul 2025 14:31:58 -0700 (PDT)
+Message-ID: <0dab5755-4801-46c4-b78d-d8d3f0cf042b@gmail.com>
+Date: Thu, 17 Jul 2025 00:31:56 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250716-ath-aspm-fix-v1-2-dd3e62c1b692@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rtw-next v2 1/2] wifi: rtw89: Lower the timeout in
+ rtw89_fw_read_c2h_reg() for USB
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <09313da6-c865-4e91-b758-4cb38a878796@gmail.com>
+ <e3db33c50a7b4729947816551c5eba17@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <e3db33c50a7b4729947816551c5eba17@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 16, 2025 at 06:26:21PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+On 16/07/2025 03:17, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> This read_poll_timeout_atomic() with a delay of 1 µs and a timeout of
+>> 1000000 µs can take ~250 seconds in the worst case because sending a
+>> USB control message takes ~250 µs.
+>>
+>> Lower the timeout to 4000 for USB in order to reduce the maximum polling
+>> time to ~1 second.
+>>
+>> This problem was observed with RTL8851BU while suspending to RAM with
+>> WOWLAN enabled. The computer sat for 4 minutes with a black screen
+>> before suspending.
+>>
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> ---
+>> v2:
+>>  - Lower the timeout for USB instead of increasing the delay.
+>> ---
+>>  drivers/net/wireless/realtek/rtw89/fw.c | 9 +++++++--
+>>  drivers/net/wireless/realtek/rtw89/fw.h | 2 ++
+>>  2 files changed, 9 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+>> index 73a4ec988d16..b774a329e7c7 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/fw.c
+>> +++ b/drivers/net/wireless/realtek/rtw89/fw.c
+>> @@ -6755,13 +6755,18 @@ static int rtw89_fw_read_c2h_reg(struct rtw89_dev *rtwdev,
+>>         const struct rtw89_chip_info *chip = rtwdev->chip;
+>>         struct rtw89_fw_info *fw_info = &rtwdev->fw;
+>>         const u32 *c2h_reg = chip->c2h_regs;
+>> -       u32 ret;
+>> +       u32 ret, timeout;
+>>         u8 i, val;
+>>
+>>         info->id = RTW89_FWCMD_C2HREG_FUNC_NULL;
+>>
+>> +       if (rtwdev->hci.type == RTW89_HCI_TYPE_USB)
+>> +               timeout = RTW89_C2H_TIMEOUT_USB;
 > 
-> Both of the current callers of the pci_enable_link_state_locked() API
-> transition the device to D0 before calling. This aligns with the PCIe spec
-> r6.0, sec 5.5.4:
+> Should we have different timeout times for USB2 and USB3? 
+> The same question for patch 2/2.
 > 
-> "If setting either or both of the enable bits for PCI-PM L1 PM Substates,
-> both ports must be configured as described in this section while in D0."
+
+I measured the time it takes to read R_AX_WCPU_FW_CTRL (patch 2/2):
+
+		USB 2		USB 3
+RTL8851BU	125 µs		not supported
+RTL8852BU	250 µs		40 µs
+RTL8852CU	375 µs		40 µs
+
+In my setup the same timeout works for both. Even with the faster reads
+it still waits long enough.
+
+> Otherwise, looks good to me.
 > 
-> But it looks redundant to let the callers transition the device to D0. So
-> move the logic inside the API and perform D0 transition only if the PCI-PM
-> L1 Substates are getting enabled.
+> 
+>> +       else
+>> +               timeout = RTW89_C2H_TIMEOUT;
+>> +
+>>         ret = read_poll_timeout_atomic(rtw89_read8, val, val, 1,
+>> -                                      RTW89_C2H_TIMEOUT, false, rtwdev,
+>> +                                      timeout, false, rtwdev,
+>>                                        chip->c2h_ctrl_reg);
+>>         if (ret) {
+>>                 rtw89_warn(rtwdev, "c2h reg timeout\n");
+>> diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+>> index 98be7e72c685..a731c242f389 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/fw.h
+>> +++ b/drivers/net/wireless/realtek/rtw89/fw.h
+>> @@ -115,6 +115,8 @@ struct rtw89_h2creg_sch_tx_en {
+>>  #define RTW89_C2HREG_HDR_LEN 2
+>>  #define RTW89_H2CREG_HDR_LEN 2
+>>  #define RTW89_C2H_TIMEOUT 1000000
+>> +#define RTW89_C2H_TIMEOUT_USB 4000
+>> +
+>>  struct rtw89_mac_c2h_info {
+>>         u8 id;
+>>         u8 content_len;
+>> --
+>> 2.50.0
+> 
 
-> +++ b/drivers/pci/pcie/aspm.c
-> @@ -1474,13 +1474,20 @@ static int __pci_enable_link_state(struct pci_dev *pdev, int state, bool locked)
->   * Note that if the BIOS didn't grant ASPM control to the OS, this does
->   * nothing because we can't touch the LNKCTL register.
->   *
-> - * Note: Ensure devices are in D0 before enabling PCI-PM L1 PM Substates, per
-> - * PCIe r6.0, sec 5.5.4.
-> + * Note: The device will be transitioned to D0 state if the PCI-PM L1 Substates
-> + * are getting enabled.
->   *
->   * Return: 0 on success, a negative errno otherwise.
->   */
->  int pci_enable_link_state(struct pci_dev *pdev, int state)
->  {
-> +	/*
-> +	 * Ensure the device is in D0 before enabling PCI-PM L1 PM Substates, per
-> +	 * PCIe r6.0, sec 5.5.4.
-> +	 */
-> +	if (FIELD_GET(PCIE_LINK_STATE_L1_SS_PCIPM, state))
-> +		pci_set_power_state(pdev, PCI_D0);
-
-This is really just a move, not new code, but this niggles at me a
-little bit because my impression is that pci_set_power_state() doesn't
-guarantee that the device *stays* in the given state.
-
-Rafael, is there a get/put interface we should be wrapping this with
-instead?
-
-I'm also not sure it's worth the FIELD_GET().  This should be a
-low-frequency operation and making the power state dependent on the
-exact "state" makes more paths to worry about.
-
->  	return __pci_enable_link_state(pdev, state, false);
->  }
 
