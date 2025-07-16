@@ -1,117 +1,156 @@
-Return-Path: <linux-wireless+bounces-25537-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25538-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADFE3B075A9
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 14:29:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103C8B0765A
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 14:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF501C2445D
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 12:30:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79A611AA670F
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 12:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F652F5081;
-	Wed, 16 Jul 2025 12:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091292F508C;
+	Wed, 16 Jul 2025 12:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="aiVRsAWQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6f37LOL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3809522068F
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 12:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9A838F80;
+	Wed, 16 Jul 2025 12:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752668991; cv=none; b=JAlnbWvnwgjJBiUkmHskDa9640qSN5zJWTg3eiHYt50jL8Uoax8rH4gxj6xVU1+Ds9SWey3Y/pPU97asBJBSbVZ5vngbKASBkXQs/htpdJPS62dPcM6cZhhId3R7PyFWvZlvCCA++DEWpMNwW9HZht2WNGSXftldR7OREDpCsLw=
+	t=1752670584; cv=none; b=bH4HjSRjXJrEH0KAEAo1BrJwT527LS6d/1nwe6ojbNTQPe7hRfnhq8vADg4m9HJeC+2iSlElmAUv3wNGQzPNro4J5eBhFZnmtPGhVMGszYdjvy9tbwQB+oaLtTUXsml+lonkANSM15eLPPIJAtI53xE7pU8rL4nf3aJDA7M616g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752668991; c=relaxed/simple;
-	bh=JYweOJsgF/+DiThAwrWa/lopfhJ6zIRL1vo55aiCYq0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VtxM7aZaRsve4+nrikRMVLoGelDsexiACwgJSZk9UK0bESAv3KtGVYCGVLDHmoxNtyUHdMZ/KKPRCtylncBeVQeAoqzWrWCUYjNAPlef0EVcqO0d3T3yjx/W9zd6tqOBzcEHvc1HFH89QNdw5q0OGDisRYP6DKy2r4hDj9RG4F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=aiVRsAWQ; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56GCTjbyE2353414, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1752668985; bh=gAfrbPcsRGiXovvbeqwqrm4ySpKcgdHwahR/9zpMkY4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=aiVRsAWQv9EM2xUHJ5bwdCYKItJt1a+FmTbY+icVORO60D8wKvu8Y6JkVlJQISJqa
-	 acy9hjcBqIHY68ztwLmHoLqVV+vN/MOv3tU7izyVvNchnPPUn6jM5PX4mmXfGCc/32
-	 rWbG0i0CZVpUMJ1HCJ3z55F5lNmu4vYFIK1GEU779ZkQKcTj8/WwaVrHXtQPr9gUO2
-	 BM29f1STggkV0fvOqrSX9zfgYkH7892oe4tNAPwk/OIo6rUUwxMFp8WD2nrExaAklZ
-	 xG+8/hXrU5oxZ7Kf3WzJ0JDPDPOmjanzMhi6p0becD4cxXQ7h2Xv511/g4TXM5DE5u
-	 /arkP7q3gSiXw==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56GCTjbyE2353414
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 20:29:45 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 16 Jul 2025 20:29:45 +0800
-Received: from [127.0.1.1] (10.22.225.195) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 16 Jul
- 2025 20:29:44 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <timlee@realtek.com>
-Subject: [PATCH rtw-next] wifi: rtw89: wow: Add Basic Rate IE to probe request in scheduled scan mode
-Date: Wed, 16 Jul 2025 20:29:26 +0800
-Message-ID: <20250716122926.6709-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1752670584; c=relaxed/simple;
+	bh=XJHu0BU6B2oAYGh4zlJhKIwWPQugh47Z5AJ6yeiT7Z4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Zg6bZErzJe22O+nJ2h/gEZauXNezbJyWNrF4SQQBxZ46bvyeCf7W9NDxPtvyfOQ3kaKqjZzQSaocAB8RRICCJpdutw+QfxB4LBTidFq9gXjYkRChHunw/BgvRgDofkRe7hIP47o7wTzyiX8ZbXHqKmRS+cyHf8afC466eVZ4pcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6f37LOL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A128EC4CEF4;
+	Wed, 16 Jul 2025 12:56:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752670584;
+	bh=XJHu0BU6B2oAYGh4zlJhKIwWPQugh47Z5AJ6yeiT7Z4=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=T6f37LOL55CAf6De29GNzmhzCyVDSGnGtukns/GoO03iBooiZmthuBpMqVQlRYK9C
+	 W46IF4PieyurJp8WQmqlUCMT2R/HP6hJfdJljwXpZ1UaRYu33EAm/kZFPgYEfpJUuW
+	 enp5lezsZOWEYssn+Ykp98f5p6itslJv5lBa8x5x0hyIV56ZXdA69YxkboqlMNFG4+
+	 VeXyb2H3+7qXz6eugC8jNqjNHjrgn9lcgl416dpT0qFLHF9mYZnCj1LKUG5k/yQJoT
+	 5VID/Ks5gM3fZ1K1sQROXTiWOPRZ4dP4ZjlA5AqshFYzpkw74x8v1X4JrHxn5wUQ3r
+	 DLMdbaHUJmXNQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E9C6C83F22;
+	Wed, 16 Jul 2025 12:56:24 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
+Subject: [PATCH 0/6] PCI/ASPM: Fix pci_enable_link_state*() APIs behavior
+Date: Wed, 16 Jul 2025 18:26:19 +0530
+Message-Id: <20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHOhd2gC/x2MQQqAMAzAviI9W7BjMvQr4qFodT04ZRURxL87P
+ CaQPGCSVQz66oEsl5ruqQDVFUyR0yqoc2FwjWubQIR8RmQ7Nlz0xomC945b7ligJEeWov/dML7
+ vBxDLtA5eAAAA
+X-Change-ID: 20250711-ath-aspm-fix-c17442a5a9ae
+To: Jeff Johnson <jjohnson@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ Nirmal Patel <nirmal.patel@linux.intel.com>, 
+ Jonathan Derrick <jonathan.derrick@linux.dev>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ ath12k@lists.infradead.org, ath11k@lists.infradead.org, 
+ ath10k@lists.infradead.org, Bjorn Helgaas <helgaas@kernel.org>, 
+ ilpo.jarvinen@linux.intel.com, linux-arm-msm@vger.kernel.org, 
+ linux-pci@vger.kernel.org, 
+ Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+ Qiang Yu <qiang.yu@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2631;
+ i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
+ bh=XJHu0BU6B2oAYGh4zlJhKIwWPQugh47Z5AJ6yeiT7Z4=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBod6F2iDbObtlH1SjC+CqMAksFgzOriAQ1Avz7v
+ IVgkpT7eMSJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaHehdgAKCRBVnxHm/pHO
+ 9YnKB/wIw+Evh74fkz1+e3zKFQWHQKJJSazZGHS5g4sICCMPZ/4M93vTf+iLF4Blp3veDJhLy1B
+ BGe8V3AJq+xqMdOOWmaPj/fEy7ukevvMlLZHnS5yHIrebv9ehwe60fjePHZ+kkwke2JXgh5SMn2
+ aoNSydN026Nm+C+XW0IVVbZqMpsq3pFyN5MLTUVKM9zREWmmg/RAd75jPZ0oWkNiqzEj2C4XoVV
+ M3swsNxSU7uFYHGzLxGFSLk3zf3Sm1Tl48owufc1zv9xTnXYeobMvQIsx4hvQSBACG7gwFxjUmc
+ 4epgfpo4UEHaA5y6LDHB/oAZex/9Q6hTaG0SGH/st9KFUCxN
+X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reply-To: manivannan.sadhasivam@oss.qualcomm.com
 
-From: Chin-Yen Lee <timlee@realtek.com>
+Hi,
 
-In scheduled scan mode, the current probe request only includes the SSID
-IE, but omits the Basic Rate IE. Some APs do not respond to such
-incomplete probe requests, causing net-detect failures. To improve
-interoperability and ensure APs respond correctly, add the Basic Rate IE
-to the probe request in driver.
+This series fixes the behavior of the pci_enable_link_state() and
+pci_enable_link_state_locked() APIs to be in symmetry with
+pci_disable_link_state*() couterparts.
 
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+First 3 patches fixes and cleans up the ASPM code and the last 3 patches
+modifies the atheros drivers to use the pci{enable/disable}_link_state() APIs
+instead of modifying the LNKCTL register directly for enabling ASPM.
+
+NOTE: The current callers of the pci_enable_link_state_locked() APIs (vmd and
+pcie-qcom) drivers doesn't look like depending on the old behavior of the API. I
+can atleast assure that for pcie-qcom. For VMD, it would be great if VMD folks
+CCed could provide their review tags for patch 1/6.
+
+Testing
+=======
+
+I've tested this series on Lenovo Thinkpad T14s with WCN7850 chipset (so that's
+just ath12k driver). Rest of the drivers are compile tested only.
+
+Merging Strategy
+================
+
+Even though there is no build dependency between PCI core and atheros patches,
+there is a functional dependency. So I'd recommend creating an immutable branch
+with PCI patches and merging that branch into both PCI and linux-wireless trees
+and finally merging the atheros patches into linux-wireless tree.
+
+If immutable branch seems like a hassle, then PCI core patches could get merged
+for 6.17 and atheros patches can wait for 6.18.
+
+- Mani
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 ---
- drivers/net/wireless/realtek/rtw89/wow.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Manivannan Sadhasivam (6):
+      PCI/ASPM: Fix the behavior of pci_enable_link_state*() APIs
+      PCI/ASPM: Transition the device to D0 (if required) inside pci_enable_link_state_locked() API
+      PCI/ASPM: Improve the kernel-doc for pci_disable_link_state*() APIs
+      wifi: ath12k: Use pci_{enable/disable}_link_state() APIs to enable/disable ASPM states
+      wifi: ath11k: Use pci_{enable/disable}_link_state() APIs to enable/disable ASPM states
+      wifi: ath10k: Use pci_{enable/disable}_link_state() APIs to enable/disable ASPM states
 
-diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index 4f759c75389e..2ef9117fdd6e 100644
---- a/drivers/net/wireless/realtek/rtw89/wow.c
-+++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -1412,6 +1412,8 @@ static void rtw89_fw_release_pno_pkt_list(struct rtw89_dev *rtwdev,
- static int rtw89_pno_scan_update_probe_req(struct rtw89_dev *rtwdev,
- 					   struct rtw89_vif_link *rtwvif_link)
- {
-+	static const u8 basic_rate_ie[] = {WLAN_EID_SUPP_RATES, 0x08,
-+		 0x0c, 0x12, 0x18, 0x24, 0x30, 0x48, 0x60, 0x6c};
- 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
- 	struct cfg80211_sched_scan_request *nd_config = rtw_wow->nd_config;
- 	u8 num = nd_config->n_match_sets, i;
-@@ -1423,10 +1425,11 @@ static int rtw89_pno_scan_update_probe_req(struct rtw89_dev *rtwdev,
- 		skb = ieee80211_probereq_get(rtwdev->hw, rtwvif_link->mac_addr,
- 					     nd_config->match_sets[i].ssid.ssid,
- 					     nd_config->match_sets[i].ssid.ssid_len,
--					     nd_config->ie_len);
-+					     nd_config->ie_len + sizeof(basic_rate_ie));
- 		if (!skb)
- 			return -ENOMEM;
- 
-+		skb_put_data(skb, basic_rate_ie, sizeof(basic_rate_ie));
- 		skb_put_data(skb, nd_config->ie, nd_config->ie_len);
- 
- 		info = kzalloc(sizeof(*info), GFP_KERNEL);
+ drivers/net/wireless/ath/ath.h         | 14 ++++++
+ drivers/net/wireless/ath/ath10k/pci.c  |  7 +--
+ drivers/net/wireless/ath/ath11k/pci.c  | 10 ++---
+ drivers/net/wireless/ath/ath12k/pci.c  | 10 ++---
+ drivers/pci/controller/dwc/pcie-qcom.c |  5 ---
+ drivers/pci/controller/vmd.c           |  5 ---
+ drivers/pci/pcie/aspm.c                | 78 ++++++++++++++++++++++++----------
+ 7 files changed, 79 insertions(+), 50 deletions(-)
+---
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250711-ath-aspm-fix-c17442a5a9ae
+
+Best regards,
 -- 
-2.25.1
+Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+
 
 
