@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-25524-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25527-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73238B07001
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 10:14:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60169B07038
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 10:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94F517AA299
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 08:12:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AB7B504F09
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 08:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B7128EA70;
-	Wed, 16 Jul 2025 08:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE08292B20;
+	Wed, 16 Jul 2025 08:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="RtJdE10a";
-	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="gWpHUWVd"
+	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="TFMwmJKT";
+	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="mmsMnPl4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx08-0057a101.pphosted.com (mx08-0057a101.pphosted.com [185.183.31.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B22A28C5BD;
-	Wed, 16 Jul 2025 08:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7E6291C06;
+	Wed, 16 Jul 2025 08:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.183.31.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752653657; cv=fail; b=dxFcnL3raXXG70PxmBtFe5/CJy8yeC7iOOoeoLFdprwxd/A8m3exBoi77YWvF4teVv2PBjRXf0nCIPmrahdzaoIMPrD1m6GhHXkWrcfK1hJ3Ao0jAWsu0yw+qwYTYuTjWpCWBE0Kqf+q+disWRTMASjQEolsHcgyRF6QQwQte9c=
+	t=1752653899; cv=fail; b=H+5tlswbrijJqRdzKMbZVLz8YW1xkZBlwiBmZlu/D3Qsw5B1415zLekj4OScbursZqU5M273ywKq3+SKNKO3bHeNJjZo4YWrs9jO2wf0m0wbARytXtrBUayJroSA8an9twrwA3Km9ct+EzuAgdE6JPUHfWjOujRz2AZkEngJySo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752653657; c=relaxed/simple;
-	bh=m+tld8a5RV7YSIagMxEV+rm0QVjDyAT8NFa6DyPWV5k=;
+	s=arc-20240116; t=1752653899; c=relaxed/simple;
+	bh=LW2xbtUzjDmxzPJU4Shce+QIvXUxE14EQ3Gcascx9xk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YcysEuwf+Y752QhsTP+ANis5BFHT9lJaYX/e+WH66uT+tTI1qSUCS3fzfTvgnThHFyP2ka2DRqWNU54Ci9EtyteiQ+gSa07rjhFCrTf+0m1OYDvXzB9ooFmiDp2j2kW4V4ypOE7yoYUDk3f5H/CWE+c5R3Io5jTxILCRdcbF6WY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=RtJdE10a; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=gWpHUWVd; arc=fail smtp.client-ip=185.183.31.45
+	 Content-Type:MIME-Version; b=tqFcouuos/9Z1sQvE7UchL9WSnPTR7I2B/ZjykB4G3gPPqpTvI0w+Uk+18A3DZNr9DWQwgMG6uP2JB/mqb2mli4KctpbYRg0b4GO2t5x29rzUa/i/mbqana1CPqrs9MwryyTmPeHYurQH+UOJlAFGowTf/9HXg+MPy1Ow4bUsac=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=TFMwmJKT; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=mmsMnPl4; arc=fail smtp.client-ip=185.183.31.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=westermo.com
 Received: from pps.filterd (m0214196.ppops.net [127.0.0.1])
-	by mx07-0057a101.pphosted.com (8.18.1.8/8.18.1.8) with ESMTP id 56G6VsLY2289289;
-	Wed, 16 Jul 2025 09:51:22 +0200
+	by mx07-0057a101.pphosted.com (8.18.1.8/8.18.1.8) with ESMTP id 56G5t3Uk2228410;
+	Wed, 16 Jul 2025 09:51:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=270620241; bh=
-	ecLprBiEVCA4tUnONjuUXYtOxpW+pihpAieT6ENxTZU=; b=RtJdE10aDTo56xJ1
-	Ao5nHQ28s9QDImvhph0CoKdD7115FSwu8tcwWViRYnICAp5BI04DnOh+7AqlLoD9
-	LFYIKZBo1UwCCmOO6W+hmtskUxaIiRapubghATqKqIRYFcfDr0NKapgyNgR/Tjuz
-	QNN9K7R+6Y+vk0jvS9qNZbp4jYNAvywhPqjIaWhkwnx/CzjZrAnGsavdArPZy2om
-	/oW/GPE6RkB2ZUpq6D2O106FJM3RhZD9XnVwa35y7kU5L3OJuc3CBrM4KNy2ilVy
-	5ER8oLhSYXJtYFcTLs2up3E8agtyfitukpEpFLj4koA5pUV+TdEvrITGkNv/ebMG
-	seQhAg==
-Received: from eur03-dba-obe.outbound.protection.outlook.com (mail-dbaeur03on2114.outbound.protection.outlook.com [40.107.104.114])
-	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 47ut22b7nd-1
+	WMixVzblsg7zo/PyBGVFv4L2PCWzV4jtjoeKM6QmVOQ=; b=TFMwmJKTlt5C20br
+	ZdlmHUD3IpvruR/TB3FbCHq4U0rjFMK6KG/rjcK9I/jz0ZGMaoOoZI9JG24uw6VB
+	FG4EysKFlFoMFbmmWJ9+qbG2r73WFQIamO7QvFv21zNAfPpZsKKs8Hq+US2G3i73
+	RmrnGxvHt9MImer1L8ZhVd+In1TDEkawY7oZsCR8X2YXmylzsCbOSMQ8XItZRXMV
+	isPJTApOp8riAlS4V/UBx3xV2+PzTKSPGRYHOzXt+FEWcvKH62BR6Rn/W+CPI+eS
+	nkoi0S0ngSdL0HuR3coz87J/GK1dd6/jiwyzrOjdF4Neigv+xE7jAjriav5fDwUw
+	7TWT2A==
+Received: from eur03-dba-obe.outbound.protection.outlook.com (mail-dbaeur03on2120.outbound.protection.outlook.com [40.107.104.120])
+	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 47ut22b7ne-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 16 Jul 2025 09:51:22 +0200 (MEST)
+	Wed, 16 Jul 2025 09:51:23 +0200 (MEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jnWQL2pah/OBLHolHzLv2FqPuMGDb5IE6Ub4vwM8ZX/9n6RGMlLcNv0v5oo2G4VuFI2wiKc9ZOqNe76DqfudcB1vbc1kVW2d9Wmd8OpBW4lNTlMuk0ZjInuFiFgU4ZliW1QucCkTRhjzJuaGXasSNcoDSWBq8JqpE506k4tiKsiwTpWMVBCGiJEC1SoA8DZOauSGTteJDmI2tMPnab9iIbL/FcSFDHVaw0ZbIftyvm5V9Kb1YlnOrHQmkDMAU1MbFI2VyqPJDwKbqgNIoCgSEiclZ2WYk63hIwBZv5ijQ0/HkBkwjKxG+uMdGNx/RBhtGfQCuK7lzsZ5NvP+7+WdWQ==
+ b=t1SuzfC+JuzBQlxGi+2HMMJkVCB628y5UsBf4kyGNxknVcX6MPCJuFsJXq6SY+jd/LOF7BQknZcWH2zNd7oVxGykn84c5iMCm+aTG5+m4kdgiBatzUPB8z9bOPBadX1Mh8oBHkxS3HMIuaOfyf+Op/xoKa2uQ1yU+rBPifTgXxipj+msGnGIphhS9Xqf7kbkKgFakc8aOLQiLjJOx7/vFBKvcAzO6xOPAxF9PbcmkEp0JCzFiJ0L8naj5zp6WCWNNhJlxmjvG/Ct7vh4rOYPvXa6RnIp42mJTfP3NBAg4Z86CYImH6czBSdq/1rYlpV42N1leG0442wFKqbr7Ij7Cg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ecLprBiEVCA4tUnONjuUXYtOxpW+pihpAieT6ENxTZU=;
- b=Ih86LN+eVR2ggIi/QWj6G2fOvfVTv+//DtxL6QiP44Tk6+rOnWe1pqH9IqENj54QvJutUaohP71KJEbTFxSNjVoczuLNMs2dGSthXrT2dL7mOvzp9iGkdpWgfb65Q3vupLzmdvuQrPW4uwenA7kAMyRYXDkpeKS64ZYVeNC0AJQsJxxYTNJYmm88j7n0nTRPVpFsNGxkhYzLNOqKnZr6UK2wRvMlwrt42abksgAPCPNUGHWMwIEpIPTGXDtzcNpHzsV7KAPbowwhF6cGd1JQImiqkawjNjPmIW1ShU0siTYNLvMOWrwUgQFPtWbss/JXCGsssLUNzGqCAJ99GXS9kA==
+ bh=WMixVzblsg7zo/PyBGVFv4L2PCWzV4jtjoeKM6QmVOQ=;
+ b=k0WsJudhU0t14ScRv4zyNwbEhJoWCf8RI+V/TDMSyQvz+5NjH5eN7U42zzdQNwoUkLpewa2NVwpjZjijCyl3oJw2O+3l6W9dq4l9ppvqdZ+IjMgZIC7tr1MCqJp0jPkgrY9yccpclpWx0lwQnlaCw0O6Kyzy4XryXmqNvDqyy3qXXR9rz0tpHCqU+4r7MFDGsfkvTyqLMPQUppSjoR9cbjL5iXTmEfmrHkSndTGU5kNQW7D9Hg/sFg1Zef7vqTTBMUAj/GV9JZSl9rsRJfQhr+UNV9XlALcskhdSuG1NaRheo09j3hnXD24BtYbPT+4VmdguBCsp7l7TUUgzXzLK5w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
  dkim=pass header.d=westermo.com; arc=none
@@ -63,32 +63,32 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=beijerelectronicsab.onmicrosoft.com;
  s=selector1-beijerelectronicsab-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ecLprBiEVCA4tUnONjuUXYtOxpW+pihpAieT6ENxTZU=;
- b=gWpHUWVdZMpX2egsIeGjPjInxL84/zPcwFi5GRpcUebGAkb8fdREYY7+9tOlCcaJ18Rvz2kf4GwscIoZ6ZaTRLfw+TcxmpS494m3vu1KxLUVgZZDOM9rsX8TbyNBzO2RvaHRepgnLW76amz6pixGmcyBe7xsH8CkNLH6URPcreM=
+ bh=WMixVzblsg7zo/PyBGVFv4L2PCWzV4jtjoeKM6QmVOQ=;
+ b=mmsMnPl49nw5jHdRTl7olQo155HV0XJ+xNBvYcKJlZjjLiuBeP+Yw4tbbFd/MAFpM/+rwRtR0qgHWnAovrKckIU3dM6bOSmxWIG8SrbL0Cs9QbfSIiNno9QtAb7WUTs/DyzUzc4AYoO2+gtbbP28BSKy5gq8Q2j11NqoqYoEm0M=
 Received: from AS8P192MB2240.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:63a::18)
  by GVXP192MB1853.EURP192.PROD.OUTLOOK.COM (2603:10a6:150:1::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Wed, 16 Jul
- 2025 07:51:19 +0000
+ 2025 07:51:21 +0000
 Received: from AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
  ([fe80::f6d5:55ee:51e7:b13a]) by AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
  ([fe80::f6d5:55ee:51e7:b13a%4]) with mapi id 15.20.8922.028; Wed, 16 Jul 2025
- 07:51:19 +0000
+ 07:51:21 +0000
 From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
 To: Jeff Johnson <jjohnson@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konradybcio@kernel.org>
 Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: [PATCH 06/11] wifi: ath12k: fix endianness handling in QMI firmware capabilities
-Date: Wed, 16 Jul 2025 09:50:55 +0200
-Message-Id: <20250716075100.1447352-7-alexander.wilhelm@westermo.com>
+Subject: [PATCH 07/11] wifi: ath12k: fix endianness handling in QMI bdf download
+Date: Wed, 16 Jul 2025 09:50:56 +0200
+Message-Id: <20250716075100.1447352-8-alexander.wilhelm@westermo.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250716075100.1447352-1-alexander.wilhelm@westermo.com>
 References: <20250716075100.1447352-1-alexander.wilhelm@westermo.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: HE1PR0902CA0060.eurprd09.prod.outlook.com
- (2603:10a6:7:15::49) To AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
+X-ClientProxiedBy: HE1PR0102CA0019.eurprd01.prod.exchangelabs.com
+ (2603:10a6:7:14::32) To AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
  (2603:10a6:20b:63a::18)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -98,80 +98,80 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AS8P192MB2240:EE_|GVXP192MB1853:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88c0850d-c3fb-4af0-15c3-08ddc43d8cdd
+X-MS-Office365-Filtering-Correlation-Id: 694ea6e1-f573-4887-98cb-08ddc43d8df8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XS7jhLG8hEt/TsswOjyguav42mZrcTZ6KFyBOwRtbx2Dzqr66EDntCaCohN/?=
- =?us-ascii?Q?nJQpCBYrnMVo6LzEjWTTwv2hgkHHyrAtBufeTB4TDStsiy33qKqpE8thYA/M?=
- =?us-ascii?Q?xsH633a6srRwEBWVhaVJJMTmHSQvq5CE4IS/XN1cLAlpNXZLqXgJXkWJuMuM?=
- =?us-ascii?Q?du8RH3xX7Y8V+HB6piwsl1FyIwXLeIo2B1PE5wt0bb/8b0j7/0l9q6V22p87?=
- =?us-ascii?Q?0qC7YzpNJj7yVabCj3TIkv4nD2uD418YBWAYcXdQeOO5w0mbOFpL9fjcG7c0?=
- =?us-ascii?Q?hTdhO1ZwslWZ+ZbsnQFxNrJdI6UkkP4xwBpZ8wVXpzZqwl8TOfdMyjKWbtTt?=
- =?us-ascii?Q?9vSDJ4+K/MovojLWAmais5HhO9nL2FYhwFja5aTbQE2wath7cWdtK70zzNa8?=
- =?us-ascii?Q?zsBYbAAFYa8LLalTKGyZUFUmDVZeELBMCcBeH0wZmbGxbc3oupwhZbBwlLSk?=
- =?us-ascii?Q?IGz8OeqVjSvkgqDdyH6GwRdnCfTMZGZx3tM1Kic+MwCGLJpeP7EzopIob8Su?=
- =?us-ascii?Q?LOcK0AWtdDUCMIYxFQKTmZzQpSR7cilGfa5gtDJi4Py7ueQE8EZyF7/7tkdb?=
- =?us-ascii?Q?eN2BdJScc41TUxmuxvp7ML5G9wVsale39uwXeMCTPvQVmqTpWYl9TnMrrkbJ?=
- =?us-ascii?Q?QyGbgPVoRuaBUsxRLop8XZcpyFbKKayZbhW8bD9vagh5NZBkH54Rh3lyY9ph?=
- =?us-ascii?Q?9DDgCzWlex4NsYlKpC3M0dILF8nn4P4DyrfayGWzFizz9vYth9ELLvjb+hGW?=
- =?us-ascii?Q?X4hqditan3oaWCMC+XdALSkmIWeGdX6q4Syqo93v7An1/WLUAo5UkS7Te8Q/?=
- =?us-ascii?Q?HhBJ3Y+4itOP0y1u21rKSCm0dQV1DcBPp6TlSOPaMQZmEGwMhwePrS+pTPHy?=
- =?us-ascii?Q?5r5KWMkIhmmnidAcDr93CeVU5cwqXybH6kbqjRKWCbREoQF6ILxOsrRubSBx?=
- =?us-ascii?Q?xWaF3ouTNSJ8TRShvzHX6DiEgDEzBeRbzUWHnKc2ho/Fa2JUE3dMgIJ/YgaG?=
- =?us-ascii?Q?j36oC4ZX6oFqAq3fKz/LGbrCml9WaH0+X+G06o9/l8tYm7IPQK7apBphscJ4?=
- =?us-ascii?Q?9lDpyFvk4y0yi9gmNilSBQ2oE53FwLEx32cm4dVY2ZqL2Tue4mJFOesUZTQM?=
- =?us-ascii?Q?RkewAzSp3/vIwefWbIIo9gTcjS53EBWIyTcHBCV1y8BXqGOFm0yTbKkQSHPO?=
- =?us-ascii?Q?dkOGWrsQJGhueH/vJVvHlfQgkaQLgBvSMEWFRcD3MKJUURHYArVwxcF+ggcy?=
- =?us-ascii?Q?FFNp+Qg3hBhfE4o1/CXbnDLDiHKLx5FVoz8AvkgnwClkczK4jm6aQWvLVlaP?=
- =?us-ascii?Q?FISIy8Fu5zg7va9rP158aWz3yKvQSDm+W75Z9J3XRhDSxOsz6yVqmRBE0eNm?=
- =?us-ascii?Q?nLtrA/dDxg94xbbgqacyzup9lqZJgjgiNT4Y3vvhGBaf2cU+006u7BbE8w0z?=
- =?us-ascii?Q?HAu26oFbBvI=3D?=
+	=?us-ascii?Q?EzJ0XDtCS0OHpCgmL7Y9uDELQ26Uy1UcG0c3X1HoDeBa4pgG1/vd8oeYBA2n?=
+ =?us-ascii?Q?Gts8i/UDWqGi4SRLnLE2klY4ApVetb0AnsvvHB1iKTrkIvVoKZNpGMIsaJd/?=
+ =?us-ascii?Q?53XL/9rSG5+xpr7G/YGP7DarrMRKjr4J3gjNoe95cYHIr6o5tncxz78ZaMyN?=
+ =?us-ascii?Q?SNYh1m5xtMXqm9eznYz/+MeQvZZaC4+GaUF6Njy+Uv9R0d/2f0QMQrhb8YPW?=
+ =?us-ascii?Q?E3pEZ+lO3Sr6UBOKr70Q6Gbv+KK0yJ05XbkwJZUyn96tOGSyqHpyuQKogjDb?=
+ =?us-ascii?Q?iTDGAmVXZlOIyNKuhASL/MPrqrwxLusbCdakwdZh2SIQpEZi89O3srKK5ALY?=
+ =?us-ascii?Q?TPYdYPxLHn30tI+J+CsHPr/oYJ+nqVJ7onM0/EAIdDwrdOdHWDfZFOtoebyP?=
+ =?us-ascii?Q?Cvg5R962POb33633fGj4m8P8gwzB6HL657h+Ryjf8UGre/ARWl0o/xdqmuGX?=
+ =?us-ascii?Q?QoWPBtTBbJDgdQ2b28ie/F8L9rRLhwN7qK7QmrZyQJbrf1Zvjh0zgHh2Pd/C?=
+ =?us-ascii?Q?7B2sFbiP6LOCaMuSZGDmt66cjATT6TcCuAigW/0Lp7vHVqxNeFMEkS+KG3UF?=
+ =?us-ascii?Q?JpTMfvlGL5YJ5XqRMxeeJzai2c5V+xprrLjM9pI4wrwwm4KRCH5SDbPcy4AJ?=
+ =?us-ascii?Q?r8aXG4bPXMP48ex5C5k0WOr7DbX6UtdU1FtJAaEE+hrfbd4b4jZTW32hEahW?=
+ =?us-ascii?Q?uKUDKqR5kfGppdmeA9FyEdHa6nAk8iOGBI6j/iDtY47lmOh/eX3DygyDTeBU?=
+ =?us-ascii?Q?LWS61ke/dPNTQKe0eQOScfjiModBd2xuy9FB6MUwKKbyPS7XK6fJ0ttYXlpu?=
+ =?us-ascii?Q?H3wO2DUPNsbm8FxLB72CDrhgeyHafKRhXyPbQnyD1M8zJ07eCOs+6s48MOAC?=
+ =?us-ascii?Q?cB+k80ZK2XEvOssRUwgx14iwBp2mzuPzKrRNJeNRjjskP7tv1EyjECFfmb5K?=
+ =?us-ascii?Q?trcsdV61iBvcFEXWpiPP+SmlMbpZQgOiUKiLSvAp5bzSXsy4w5wuHMqQmoP0?=
+ =?us-ascii?Q?6O6QyKmANbeWWmi2pR7FCA9umUkLzrnwRjQA4FQ/IjLGUjSs+8p/b5mbDaFp?=
+ =?us-ascii?Q?HHqRly8e9A5Ku3PTyodddBn9ws4l+3pGi7HMfdodtyuG/0hPV31uqpodFo8E?=
+ =?us-ascii?Q?uSOw682L2GNs5LwXl0F9Hc1R2RRn5+A7TaUGte8l1vror6hFbACw8aKkLZ6x?=
+ =?us-ascii?Q?9Ni0V0Gn3QlOW/Cz2cGZuuDQ+XmcTJD/VHTFCjm+06sctTtVHWM9rPz8pR7i?=
+ =?us-ascii?Q?QX6vkeqsxD/D06DLgfKrWhNZVKTzPvFkX+zKYn+wajgIrXvAqYheqMxVZaU7?=
+ =?us-ascii?Q?SsoUJ6rqUCG2OaJu7wGJvs81BREMr6iIyQLfFca5XBbN1dHpjpQPZKaAiWPM?=
+ =?us-ascii?Q?pxkG2Kqme/OARtv2jVMr/fA2V+RhlSmWjtd5sJvs/ioKU7kpla+H4bUCM/YG?=
+ =?us-ascii?Q?jtOMMy56Dos=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P192MB2240.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?F/D8M1Cln3djfFhsAy98HItq0MoOefYFKP4c4Vzesb40hQ6Y/z97FiuoukfE?=
- =?us-ascii?Q?fTwWGBd7rQRlf3Ojb4SvM0yczR9ijBdG+BRhijql72GtJaOkBEOfTNWJsXQm?=
- =?us-ascii?Q?+mfSABmNWqIydB/rDUaDn0gR2rPFnxbp/Nm3GR370iofGwnsdMJn+q2WHkOc?=
- =?us-ascii?Q?WjB+JnCtjbpm+0DI+JsOh7UGtKoaZX+2+4U5b1eYrdRl+5l/HJ3I6GuKyD21?=
- =?us-ascii?Q?PJ41MwMGsCbNWYrJxw59hRpSN1tVjOWc5Xw3eF4Y0yZfndnLjju1QXUAFO0P?=
- =?us-ascii?Q?LIhKigNwYcyMVvZYDz76mA77dDnH9VL1e+NdqqblJk4XMkNGJX1gBEBX7WSe?=
- =?us-ascii?Q?OzIeqbqplhUfZSipzCde5UZNG+DdQq742uBvA8Jr6dqYq9ThQ2yZpANPGkWD?=
- =?us-ascii?Q?R6emu6vRYwTgsSpPM3NGPPJTi5RpJLMuF8PRjWOomJG1DLnDa9YqIQdCHcO6?=
- =?us-ascii?Q?TqcPH8ryskQM8XX+Ei6TzaE130OuEMED1s6TWO2YuOXtVygtRpcfqtivbcUj?=
- =?us-ascii?Q?GMOc25U4Rk8MqwO6AaTTHrtAdgHBKmRDuhR/SbnX1IQYgdj2rlx5BGH04t93?=
- =?us-ascii?Q?mIQxD/Wk9FEj5c1rG2S5/pHJY0phDqSjgnei9ixv2MpoXiGH1JCsHL7EeU1i?=
- =?us-ascii?Q?cXV133CZxfQwb2FaEqJBRk5Q86hV9ElSKSSoUuW4HyiAL0EnUad7J/xRU3kn?=
- =?us-ascii?Q?6q52TO+uRE9WgAC99lsHsQS8XnwyQ05PbzHSUR6SQAm2SUTB1OCZqkZXpjjc?=
- =?us-ascii?Q?384gEydPgWNl9bEUPsPirF0FQK2/w9v6yUvQFKHss6Cq0cBpWoJBwecqDCL3?=
- =?us-ascii?Q?9dye5rHdFXvxRHQhLfQBUoMhrP6k5MREUL8RJ0G7hfPXlrFoIfSyXk4rSKnM?=
- =?us-ascii?Q?pGP7mqJQIOokZZy8YPgO9lPHWglhk8G2xkyJ7xgGopg6yadDmiAOHjmm3T4/?=
- =?us-ascii?Q?P0uHiA3qZ1CS4RS6icFaOXo8VDnqDrxJrva4QEE6enUzpX6EazoOj9Z30pVj?=
- =?us-ascii?Q?FPYtHqfQ73RHMcpKSbvkpl16Hul+mk/t5mD9C5IqdN54JgSlIsI/vv8HF5zw?=
- =?us-ascii?Q?9K3Z+GVDToqwRWU/4D1x3PNuqPQRGnl54dV5reG6yWuymd90vIT3XJrFzvUI?=
- =?us-ascii?Q?5yaDr+Z2pIk8OXZrKbMYPmVGuEzMTVomXZaksNUtYs7+w84LbHT1bJ/VnEB7?=
- =?us-ascii?Q?bsiUpawzzKSxTxFgzKW725hmzrvD9d2tCVintSvM6Eq3dWA01qfiwne4lYX2?=
- =?us-ascii?Q?SrblWo7rKT0NvnkohO+8PIEBEGQyaFaiUq4ZsXKSM6gmNSwH5TrDO7NsdPsH?=
- =?us-ascii?Q?ggv0MtozjuD12/WlACqQkANCHakYnUAg6VJmdpXp9adVjcY9W+ZzGsl0eLbT?=
- =?us-ascii?Q?Q4ORVbusqt2Q0dyNBIwRPwrYhtHTlELlUlJHhgZHoFuS8acVs3Loa4pdZ8Au?=
- =?us-ascii?Q?Q2ZsN5tn9uTJHoJ0+43FlQyL5u5apHOe/o6+NK8IMZnCq7OPB0R8jXVssusy?=
- =?us-ascii?Q?6/dQcoSdiQ1aYG/U66+tg0G1hTQUma7oA0FcII/6KBi9wBJC0GNzZyje4VKs?=
- =?us-ascii?Q?0RAIzTMfD3qUiFCL9dnjSBTzqd0FLIMWH8xdskYn?=
+	=?us-ascii?Q?f0X6ipMKg4nwIVFHieLCFb9tHz/Y1LKDldZBSy03/DjgSKhfNtPkuMHhbzT2?=
+ =?us-ascii?Q?IVI6WxoUk+rJCw1WS5CFsBEONIuxSsUh0Y5J43YBcrB1+iHr55R67IeqKmE5?=
+ =?us-ascii?Q?5VD2TVI8+RT+/DUi+I0Heaswr1UNW6BsXuzeGfq0f/O58MJPQXMOda25I5Qb?=
+ =?us-ascii?Q?BIIgzRV068iuMRw6/HhKS7zbr2aFJLmA2igeaUdjPTjcnRVczBx5b76r6Qqs?=
+ =?us-ascii?Q?DcUIo+/Z6v2S+AkrfcZ2+C4MokrVTemb9GyQX+QzMVx6DfXDqUWPAS/Xzhh+?=
+ =?us-ascii?Q?fdefszepYEdnSb4NXkAOSg2zVPZdWpI45Mi80DEY0HzVfziIYTiMkUXQ+C/k?=
+ =?us-ascii?Q?jt1CYGCEky0FBZm4XLsu2ru7Y8hy7mZ6YnEdKG4fJQJkT4tX+K3SpTpGGJe2?=
+ =?us-ascii?Q?G8fSQzPAl+8dZUJx5oQZ3gFurCdeYdHZw/7sNSk8ZXM+U7HbCralqPFj60IN?=
+ =?us-ascii?Q?27vfGyHkTRhoyymIANOoAqzXI6Z2XJ935g9DQsRVuJ9NjL7vdA0t6NEosyME?=
+ =?us-ascii?Q?Ju/B5OBikNLV7TwlLxgWCFngYuV2el0LkpxpJhIg9OV2aOuaI/711o5Fo32d?=
+ =?us-ascii?Q?1HergqhLKhp8+SV1rYdk+F3gpGVzr94LmoVbijtzFonZ7fCv51ahPXCdD+xP?=
+ =?us-ascii?Q?hRutub4j16it+wpE/hWFjXeHJi/dYTsv1EQ4RdUU1NBpJTphlAiva3AtdP5k?=
+ =?us-ascii?Q?cnrPPA0K/SdnHNOAXzVy/6x8m8NleJubIZoPdLkzHkPv2s/V3nQEyzYF9F3u?=
+ =?us-ascii?Q?WtjG7zNMNIdWtY5UD3AiwURO4GUSVrxUx2qadrH5A9s/DWfLIyqKsV3I+GqC?=
+ =?us-ascii?Q?PvpCz/5L4qiVL/LH5SrJvbqny+q9L71idw2fni36G+eNwAMOxFQ+hZtGg7Uo?=
+ =?us-ascii?Q?T6l8k+yCWln5HpDh0zACiPcpoQpqcVGnplvj71mtEx4hnglO3zNardlEM+GV?=
+ =?us-ascii?Q?0ToI4iOJiHBoBsj4VPJfnWp1wSLG7TbrQeukhnozJnUHit+YlQwYoE+usniw?=
+ =?us-ascii?Q?n+noGNGI9pBo6gT/meyXaK0DLB/bWqw0nV582FvQVwZ2zQiwUrGFG+o9DvtZ?=
+ =?us-ascii?Q?GZkN9cyDLjuMjiaUL5H0uiPk68PUouj/xIItjNXC1R9LSnl06A0+Io0/im8j?=
+ =?us-ascii?Q?ZCGnCEFCyM8QRo71qUjtvKmBBIPdethUJatWQwVCfvFfT2OsbcW6Vjp9YZK5?=
+ =?us-ascii?Q?H1iKUdcC33jPCAoneRHiMLYMQDueAv15cBu1qLMecol9B7Ogm9/2TNXmLBL4?=
+ =?us-ascii?Q?fu3EOaGbI+mHeSHYMKmLKemZpFHnAKxt/9oMBypTJ4lTaO8Obw1dlkbszfuX?=
+ =?us-ascii?Q?fSOsJxkd3W1hd50zBZnTdluLwyhTuOO6cbnuoUuRcvpICI823DkjDPOm1EWq?=
+ =?us-ascii?Q?ehX2K5x7mQRkzZlCi3u2LthWztp5qMa3CbiHz8Vh5L7JYZQuoCKXWEPXZgQM?=
+ =?us-ascii?Q?+bUJupJWENrSyxHjsWZZSCQeigj++AWKuwtqK50Nsr9K41h9AqcmxqZeGGgT?=
+ =?us-ascii?Q?XCNFwDDZhOlzf3N8I9r62+QltLhos5CeLxFPBxrUD/pQ1gxXoAHrCPH582B6?=
+ =?us-ascii?Q?iqhLqp1U2aahUgF9T6qDQgYIPdYoxUnhxC21pNhQ?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	oUsydy8H1+3DPFw+WKN2rHu8qS4jfIHhDvuJTg/5t/1Kknirwp2t1Y72TdIz5jvdzdn9PQP6RUs1UxC9OoapN7oSKElYB3ErJXawJ32saRsyjBs91591a9rmNFC8M0bcDmapEJ65euRb0Jcw1xYVatXj2VavqEMlH4jgbP4LxheZqlxqm6JCtgadr1fOxk2bwf7HXuLUEkL0JngW1Zy76LAQ3LsJs8fTz2vxUGBo34NBfUFtQtdHBM+M/SRBdl0xWDco/pnJPlrcDx6d+EuqdGN2wsVV33/6ZtoEj3Ip2A3ml/Si5T83O1FMuytro9MJeGqn+jKc1OhlA9RCRvVyVTJRU/lq5yxzvnSN02xWvqOGteZJGkHgo4HX2qJ4iPFGS9L8C+zEVInxbMdIpr57hyTHavZHZjWZlkXNEjyGVahuz0PDhgnPSI1k8v7w5e13NBbUjnkoFPa44cu7ppHMpKm2o3GoYFBzYcbzIh/8HpkFAAidjCU2WrMOlJKwbGMGSG6NSRihp7V1GOBoOnyqeL3WAUofeNP03U1kGTmecMqmU6iDyq0eeZzpTPGTwBDQEonNRNgo4kec4isaPovvTwQOkXEdSvqoEXt2zI++95/rS7NLRMdeun/DW2iw/4Kk
+	0g2mDc92xF0snj2lv9jIOFuy/jWXCZx6NDL44PJjf1aGby1AnvzHzN/Ehu8I/ZhQh0Hq4320OWS+ScCD04/OzWWZLFI2xdKFwoxEJbg5+Ooykp7VGsXI+j8FOtKOKDuRr49VprSFJl1H2g2TaaY4jLi0BrlQTKYgkl7z5vZedYJr9F/StgtYhpH4NiH0ZsZl62GSyaMJ35jdI5Nfue6WujNoiaptt8oo+z0QkWG8tU1SKXAh4UbjXsE5sMEqa8ztwZHAtZTbDzqFiq7TROd3OXGFkLCP1S4uIAcI5rTXpR6prtAfIwQchXnmc8N2jenv6g93u79ozzRXtsfyV5QWVumKqqeB15gOOsDpTjkux5ni4t2wyYsNJChcnh5r+PLu2+i2KmxSj1rBV2wXPd1QZKmJhAZYjYhTada9C6+f2zmn1hAqSyAmOlmW/Azd8CIRHPjF/oFil1Ro+u6FKk1yJERqLDptvR9/OTFzg55GEEAceb5OWj1JEs9IJSOcBYoq/AIrto/Kq/xqc75WV6wtrf5NZdyBXr2uzKzqCGYg89RSON1H01Pkq02cUDm26rG83C+eXgLUuyvjgW8ciK+Rk3UgQa1Z/B2/DzRkttD+C4/D2+6t71aK+93K5GCizKUR
 X-OriginatorOrg: westermo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88c0850d-c3fb-4af0-15c3-08ddc43d8cdd
+X-MS-Exchange-CrossTenant-Network-Message-Id: 694ea6e1-f573-4887-98cb-08ddc43d8df8
 X-MS-Exchange-CrossTenant-AuthSource: AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 07:51:19.2595
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 07:51:21.1491
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J4S/IWYK+dWB5n5E2Xm7AV7PZhRtvQIbZCgEH5hri4b0INMZg9oDqxN2WTstmfFetqORvOhIMP2+YIU4kP3YTg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: hlCVP9S5H6irvgQjKGMMYe1L4uN0m5+n/JdCHFxvHOuoyBMvHQR/6wVhGPwgFAen4VuYe/ClNq9x9ajt173z/A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXP192MB1853
 X-MS-Exchange-CrossPremises-AuthSource: AS8P192MB2240.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossPremises-AuthAs: Internal
@@ -186,147 +186,107 @@ X-MS-Exchange-CrossPremises-Antispam-ScanContext:
 X-MS-Exchange-CrossPremises-SCL: 1
 X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
 X-OrganizationHeadersPreserved: GVXP192MB1853.EURP192.PROD.OUTLOOK.COM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEyMDExNiBTYWx0ZWRfXxPoq1pRMPW25
- xXWzM5pvYoszQfCM6o+A0RNmVSQ6jIVQpacsejlVRUOL1mBH/Ewlat5wbrrw+Nzb5ZbLMrUX/zr
- IPPdkU6n4u5/FPGBp1rV6VktVTlwKRSoS5UEONIb92sCGXdUYztybujurEVo974v3SOCaNfPcvA
- o6Y8GmBTSmZJw79waFETiPNRRpv9K665M3oIqq2gkwuBG0tfhToGW9zXeTw5feSpiI96TadWcub
- bZY6gFlESPi8pcymKCfcqfDoCLDKhBAeBuKBKx2FTt5jyZeExX+TVBhUNje9u9v61RHBiMbVKiV
- EGrgeDBrXBwLpgvsky5U180uk8APolQlYNYc7L2MZTxl872Hw++WMFCDv8x8qcBS3Sd1jOx116B
- MPLHtD8q
-X-Proofpoint-GUID: 241-NLk55mt9Ue4Hek9oCXSv-I4KA2Lu
-X-Proofpoint-ORIG-GUID: 241-NLk55mt9Ue4Hek9oCXSv-I4KA2Lu
-X-Authority-Analysis: v=2.4 cv=NOrV+16g c=1 sm=1 tr=0 ts=687759fa cx=c_pps
- a=0c3FZvCe35elBS0vCCollQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEyMDExNiBTYWx0ZWRfX1LMyYy23hFkY
+ ujzqSfBdp6yIlObnvJROHa1LbtZjlQBdJ70nNNwnrCLb4vQ45JyxXZAvtVyS1LJjjoScXJHFJsD
+ ipRfw8c9zt0iVFnOfQb9dRkPuY4NMg1I/ObTVn+O8m+1wQ5K4AKq66PzmmjoTDloIe72Ohdic8C
+ EeqmDHrxbQQMtL4coawzEGgZz8XKetkAiUVrJ2l3MNQk7hd43aHetnrcZqMynOi7qYtJy1iISAw
+ 9JfcM1hN//V5xz5k4ZSokLSoUBmA7I9vsBMFi0KJqW2z9y+63aKaSZsKusw69R2mTX+0eHDGbe9
+ YvFfGy4GO7LzJjzl4cjSo3/5TXs37DFmUsJC5N/3Uk+JDiZ33mDD5Pz0vjEj8CEut0leLKXlOrn
+ NqPcZ7jG
+X-Proofpoint-GUID: Ggpl5zNpcuCr_2QSWO9hHy8dH8PcWbIB
+X-Proofpoint-ORIG-GUID: Ggpl5zNpcuCr_2QSWO9hHy8dH8PcWbIB
+X-Authority-Analysis: v=2.4 cv=NOrV+16g c=1 sm=1 tr=0 ts=687759fc cx=c_pps
+ a=1T+Jk3iLsGfRLyt5uBfG9w==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
  a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=Wb1JkmetP80A:10
- a=8gLI3H-aZtYA:10 a=N9GNhs4bAAAA:8 a=Fcvcvy57vIv4vxiygTkA:9
+ a=8gLI3H-aZtYA:10 a=N9GNhs4bAAAA:8 a=J49g4d0EefnLm9aTGK4A:9
  a=PZhj9NlD-CKO8hVp7yCs:22
 
 Ensure proper endianness support for big-endian platforms by correcting
-data types in the QMI firmware capabilities response message and its
-associated structures as well. Add missing byte swaps wherever these
-structures are accessed or modified.
+data types in the QMI board data file download request message. Add
+missing byte swaps wherever this structure is accessed or modified.
 
 Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
 Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
 ---
- drivers/net/wireless/ath/ath12k/qmi.c | 16 ++++++++--------
- drivers/net/wireless/ath/ath12k/qmi.h | 26 +++++++++++++-------------
- 2 files changed, 21 insertions(+), 21 deletions(-)
+ drivers/net/wireless/ath/ath12k/qmi.c | 18 +++++++++---------
+ drivers/net/wireless/ath/ath12k/qmi.h |  8 ++++----
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index 2d00ea54e478..0bcfb9281d01 100644
+index 0bcfb9281d01..d18ffb86f7bc 100644
 --- a/drivers/net/wireless/ath/ath12k/qmi.c
 +++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -2850,20 +2850,20 @@ int ath12k_qmi_request_target_cap(struct ath12k_base *ab)
- 	}
+@@ -2934,9 +2934,9 @@ static int ath12k_qmi_load_file_target_mem(struct ath12k_base *ab,
+ 	while (remaining) {
+ 		req->valid = 1;
+ 		req->file_id_valid = 1;
+-		req->file_id = ab->qmi.target.board_id;
++		req->file_id = cpu_to_le32(ab->qmi.target.board_id);
+ 		req->total_size_valid = 1;
+-		req->total_size = remaining;
++		req->total_size = cpu_to_le32(remaining);
+ 		req->seg_id_valid = 1;
+ 		req->data_valid = 1;
+ 		req->bdf_type = type;
+@@ -2945,18 +2945,18 @@ static int ath12k_qmi_load_file_target_mem(struct ath12k_base *ab,
+ 		req->end = 0;
  
- 	if (resp.chip_info_valid) {
--		ab->qmi.target.chip_id = resp.chip_info.chip_id;
--		ab->qmi.target.chip_family = resp.chip_info.chip_family;
-+		ab->qmi.target.chip_id = le32_to_cpu(resp.chip_info.chip_id);
-+		ab->qmi.target.chip_family = le32_to_cpu(resp.chip_info.chip_family);
- 	}
+ 		if (remaining > QMI_WLANFW_MAX_DATA_SIZE_V01) {
+-			req->data_len = QMI_WLANFW_MAX_DATA_SIZE_V01;
++			req->data_len = cpu_to_le32(QMI_WLANFW_MAX_DATA_SIZE_V01);
+ 		} else {
+-			req->data_len = remaining;
++			req->data_len = cpu_to_le32(remaining);
+ 			req->end = 1;
+ 		}
  
- 	if (resp.board_info_valid)
--		ab->qmi.target.board_id = resp.board_info.board_id;
-+		ab->qmi.target.board_id = le32_to_cpu(resp.board_info.board_id);
- 	else
- 		ab->qmi.target.board_id = board_id;
+ 		if (type == ATH12K_QMI_FILE_TYPE_EEPROM) {
+ 			req->data_valid = 0;
+ 			req->end = 1;
+-			req->data_len = ATH12K_QMI_MAX_BDF_FILE_NAME_SIZE;
++			req->data_len = cpu_to_le32(ATH12K_QMI_MAX_BDF_FILE_NAME_SIZE);
+ 		} else {
+-			memcpy(req->data, temp, req->data_len);
++			memcpy(req->data, temp, le32_to_cpu(req->data_len));
+ 		}
  
- 	if (resp.soc_info_valid)
--		ab->qmi.target.soc_id = resp.soc_info.soc_id;
-+		ab->qmi.target.soc_id = le32_to_cpu(resp.soc_info.soc_id);
- 
- 	if (resp.fw_version_info_valid) {
--		ab->qmi.target.fw_version = resp.fw_version_info.fw_version;
-+		ab->qmi.target.fw_version = le32_to_cpu(resp.fw_version_info.fw_version);
- 		strscpy(ab->qmi.target.fw_build_timestamp,
- 			resp.fw_version_info.fw_build_timestamp,
- 			sizeof(ab->qmi.target.fw_build_timestamp));
-@@ -2876,9 +2876,9 @@ int ath12k_qmi_request_target_cap(struct ath12k_base *ab)
- 	if (resp.dev_mem_info_valid) {
- 		for (i = 0; i < ATH12K_QMI_WLFW_MAX_DEV_MEM_NUM_V01; i++) {
- 			ab->qmi.dev_mem[i].start =
--				resp.dev_mem[i].start;
-+				le64_to_cpu(resp.dev_mem[i].start);
- 			ab->qmi.dev_mem[i].size =
--				resp.dev_mem[i].size;
-+				le64_to_cpu(resp.dev_mem[i].size);
+ 		ret = qmi_txn_init(&ab->qmi.handle, &txn,
+@@ -2991,9 +2991,9 @@ static int ath12k_qmi_load_file_target_mem(struct ath12k_base *ab,
+ 		if (type == ATH12K_QMI_FILE_TYPE_EEPROM) {
+ 			remaining = 0;
+ 		} else {
+-			remaining -= req->data_len;
+-			temp += req->data_len;
+-			req->seg_id++;
++			remaining -= le32_to_cpu(req->data_len);
++			temp += le32_to_cpu(req->data_len);
++			req->seg_id += cpu_to_le32(1);
  			ath12k_dbg(ab, ATH12K_DBG_QMI,
- 				   "devmem [%d] start 0x%llx size %llu\n", i,
- 				   ab->qmi.dev_mem[i].start,
-@@ -2887,7 +2887,7 @@ int ath12k_qmi_request_target_cap(struct ath12k_base *ab)
- 	}
- 
- 	if (resp.eeprom_caldata_read_timeout_valid) {
--		ab->qmi.target.eeprom_caldata = resp.eeprom_caldata_read_timeout;
-+		ab->qmi.target.eeprom_caldata = le32_to_cpu(resp.eeprom_caldata_read_timeout);
- 		ath12k_dbg(ab, ATH12K_DBG_QMI, "qmi cal data supported from eeprom\n");
- 	}
- 
+ 				   "qmi bdf download request remaining %i\n",
+ 				   remaining);
 diff --git a/drivers/net/wireless/ath/ath12k/qmi.h b/drivers/net/wireless/ath/ath12k/qmi.h
-index bd715bca8f23..114324157e84 100644
+index 114324157e84..a48850ec0296 100644
 --- a/drivers/net/wireless/ath/ath12k/qmi.h
 +++ b/drivers/net/wireless/ath/ath12k/qmi.h
-@@ -421,26 +421,26 @@ struct qmi_wlanfw_memory_region_info_s_v01 {
- };
- 
- struct qmi_wlanfw_rf_chip_info_s_v01 {
--	u32 chip_id;
--	u32 chip_family;
-+	__le32 chip_id;
-+	__le32 chip_family;
- };
- 
- struct qmi_wlanfw_rf_board_info_s_v01 {
--	u32 board_id;
-+	__le32 board_id;
- };
- 
- struct qmi_wlanfw_soc_info_s_v01 {
--	u32 soc_id;
-+	__le32 soc_id;
- };
- 
- struct qmi_wlanfw_fw_version_info_s_v01 {
--	u32 fw_version;
-+	__le32 fw_version;
- 	char fw_build_timestamp[ATH12K_QMI_WLANFW_MAX_TIMESTAMP_LEN_V01 + 1];
- };
- 
- struct qmi_wlanfw_dev_mem_info_s_v01 {
--	u64 start;
--	u64 size;
-+	__le64 start;
-+	__le64 size;
- };
- 
- enum qmi_wlanfw_cal_temp_id_enum_v01 {
-@@ -475,17 +475,17 @@ struct qmi_wlanfw_cap_resp_msg_v01 {
- 	u8 num_macs_valid;
- 	u8 num_macs;
- 	u8 voltage_mv_valid;
--	u32 voltage_mv;
-+	__le32 voltage_mv;
- 	u8 time_freq_hz_valid;
--	u32 time_freq_hz;
-+	__le32 time_freq_hz;
- 	u8 otp_version_valid;
--	u32 otp_version;
-+	__le32 otp_version;
- 	u8 eeprom_caldata_read_timeout_valid;
--	u32 eeprom_caldata_read_timeout;
-+	__le32 eeprom_caldata_read_timeout;
- 	u8 fw_caps_valid;
--	u64 fw_caps;
-+	__le64 fw_caps;
- 	u8 rd_card_chain_cap_valid;
--	enum qmi_wlanfw_rd_card_chain_cap_v01 rd_card_chain_cap;
-+	__le32 rd_card_chain_cap;
- 	u8 dev_mem_info_valid;
- 	struct qmi_wlanfw_dev_mem_info_s_v01 dev_mem[ATH12K_QMI_WLFW_MAX_DEV_MEM_NUM_V01];
- };
+@@ -504,13 +504,13 @@ struct qmi_wlanfw_cap_req_msg_v01 {
+ struct qmi_wlanfw_bdf_download_req_msg_v01 {
+ 	u8 valid;
+ 	u8 file_id_valid;
+-	enum qmi_wlanfw_cal_temp_id_enum_v01 file_id;
++	__le32 file_id;
+ 	u8 total_size_valid;
+-	u32 total_size;
++	__le32 total_size;
+ 	u8 seg_id_valid;
+-	u32 seg_id;
++	__le32 seg_id;
+ 	u8 data_valid;
+-	u32 data_len;
++	__le32 data_len;
+ 	u8 data[QMI_WLANFW_MAX_DATA_SIZE_V01];
+ 	u8 end_valid;
+ 	u8 end;
 -- 
 2.34.1
 
