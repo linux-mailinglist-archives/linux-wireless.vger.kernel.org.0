@@ -1,273 +1,166 @@
-Return-Path: <linux-wireless+bounces-25508-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25509-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AF9B06CCC
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 06:51:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2A1B06D3A
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 07:33:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D310562335
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 04:51:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD1461C20121
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 05:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6671525A651;
-	Wed, 16 Jul 2025 04:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B374B2E6D11;
+	Wed, 16 Jul 2025 05:33:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="Nh+5paTr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A67221544;
-	Wed, 16 Jul 2025 04:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCF72E6D02
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 05:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752641496; cv=none; b=RO7hXNzwt5LGY3wHX2IR5xAIVfoLgE1GGG8u57HvQ/Ap2nnEa6YpmOvdJwiTGZBt+/eVqfWVri4i/+A0G/PLS0PbmezyGd9bKHlVxJu8bZeYgM/XQFT0nwzDv4II2W7i7cX90GEZhSPtTt0rwD/UWZR9pEUC6DPxZhz8WFwXbA4=
+	t=1752644007; cv=none; b=Aoim/7O0ODywZVtdFNvP2nkKkvAlUvwFLipWPIRpc8BHQ0MKzR+Wd7IVChOoB80uwpBrDTu4ZPb2Yki7mObZjbY0bGx4sgDvWDO+CAKWWdPgl4nBh4t03bURYMFbx4gxheI+f0jnldWxA3iffRpFc8naHpfMJ44Dbbd0iJ2DXT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752641496; c=relaxed/simple;
-	bh=cnWvurfSEIowWEmeKeCClSAuxFNBnx6JPkdMlHA8QMs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iKFTrARvQrlHWJPiLZp/8c0NSmR8QowKYUyJOZAyyKFmU8zY/j/JfNPKEgH+J3n0q9NWLPQUl1kTM/UUKzNNHeaBRl/d6RV+XRNhucK4lsV5m4rSKeKEt9+GEz8e26pFL/I5B/M1akr6RA2Ubb885Sji+k3qRpMNrSdoNvmTPB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-669ff7000002311f-e0-68772fd17b46
-Date: Wed, 16 Jul 2025 13:51:24 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel_team@skhynix.com, ilias.apalodimas@linaro.org,
-	harry.yoo@oracle.com, akpm@linux-foundation.org,
-	andrew+netdev@lunn.ch, asml.silence@gmail.com, toke@redhat.com,
-	david@redhat.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-	vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	jackmanb@google.com, wei.fang@nxp.com, shenwei.wang@nxp.com,
-	xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com, sgoutham@marvell.com,
-	gakula@marvell.com, sbhatta@marvell.com, hkelam@marvell.com,
-	bbhushan2@marvell.com, tariqt@nvidia.com, ast@kernel.org,
-	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
-	sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org,
-	mbloch@nvidia.com, danishanwar@ti.com, rogerq@kernel.org,
-	nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com, sean.wang@mediatek.com,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	aleksander.lobakin@intel.com, horms@kernel.org, m-malladi@ti.com,
-	krzysztof.kozlowski@linaro.org, matthias.schiffer@ew.tq-group.com,
-	robh@kernel.org, imx@lists.linux.dev,
-	intel-wired-lan@lists.osuosl.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v10 02/12] netmem: use netmem_desc instead of
- page to access ->pp in __netmem_get_pp()
-Message-ID: <20250716045124.GB12760@system.software.com>
-References: <20250714120047.35901-1-byungchul@sk.com>
- <20250714120047.35901-3-byungchul@sk.com>
- <CAHS8izO393X_BDJxnX2d-auhTwrUZK5wYdoAh_tJc0GBf0AqcQ@mail.gmail.com>
- <CAHS8izNh7aCJOb1WKTx7CXNDPv_UBqFyq2XEHHhqHH=5JPmJCQ@mail.gmail.com>
- <20250715013626.GA49874@system.software.com>
- <CAHS8izNgfrN-MimH1uv349AqNudvQJoeOsyHpoBT_QokF3Zv=w@mail.gmail.com>
+	s=arc-20240116; t=1752644007; c=relaxed/simple;
+	bh=ulKcL97ipqI66R3ISVFVZkVnrLVclUH/0NTZzyPaE9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q2zBTquOz9uGaIeI/D4V5MukUBgc1QBACJpWskKzAdRj61ejpC3qgYUzi2Ix54Khk3YRS2AYzXDny1rEUVjgUfIijbJ90A5DQURppVk03t1eZ7Hnvet1w2M93zUdmdci0hHWcjNVmiC0ptGGJcxcT6xdxiwFXYV/jksy9rZz5lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=Nh+5paTr; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b34a78bb6e7so5007677a12.3
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 22:33:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1752644005; x=1753248805; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kKYJXAwAjKFW4dGonImlaj8Ujch3wxOgs+1LnQOo9zs=;
+        b=Nh+5paTr1OMqV9ILOeeO7e9dx7ghIqzdDsEfRB1pSM65xiuqSTILrVZ/XxzcNHebl+
+         roh//d+aknAtPtd1XsVMQwkub9XdfEwfl9FPANBKytrmF1IW5jqsTVUT5AjSpL9JYnKR
+         0P0Nj/l1RQdu1N2fe/VrGcbuRGfPKeeWn0nh1DecYFCf0X37odogWAeoUFF80NH5EIY/
+         Q/gAUS2loee4HbSdbjAp/u0lEF0Mxq099dEJYkW7LMvOYooD3HibP+uvtx3D1ymdBAUZ
+         3WwDnDlWUo6QUKv5Z96ERPg8m1Hp+h4+AI4g/8+GX6P1p06x3Ds5IotMwPqaZXGkq86f
+         ADDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752644005; x=1753248805;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kKYJXAwAjKFW4dGonImlaj8Ujch3wxOgs+1LnQOo9zs=;
+        b=uDOfyvHYXyaTTu1CM69PLEJPOaDMiswqqf2Gz1Yai/MuPIwwIx8kJBFPahgzSX+kBZ
+         s3R0CxtePtSdeX0widef3mFkaaI0Er+rG0oW1Pq1XaP/A9uD4d8yq/twD49Cjczo+NuI
+         hQ41R8btUVYXSDnItUK5rFqeF7FhcWvVMSBAZp0j2hlNGbOGF4a2SgF5PoLxO8LhK1P5
+         j13tXvLsRPqt/kE/27Bs1FwLNKRdm5h399WUigmh6/Y+rIJoj/cQ/kTjTna9c0AYtpoI
+         w7TZvqixNBePWqQ4MATHAYQUosNs+rcIip1dExNJr6j69GZ9n+lhB/LniJmdPbQrfMr5
+         A2BA==
+X-Gm-Message-State: AOJu0YzEizyjuglmyeU72QQ7+hyqLyvFNcI9n59wL8CsSrDTecK2lVlS
+	bFgqTaAokppDeXuHASz0ReOq8bw1ZYM8MqetZf2TPaJUmn1WrUM5xDX5U40z7GMcg1k=
+X-Gm-Gg: ASbGnct4uk3TKYnYLDvpw1UVr1nZtgQAhGKmWDLoOpo9KayVQDy7I3t4Sf1wrjLmSBA
+	Ecsky/PqD8evFQcSlJajJ8HBIPTiUyluImNRjME3bt0KSa4tl0/Y29frK6J3MWKO/y2J5NsV+CL
+	/eF5mJmSO13b4hl725SJTHLNVAxjd7wNblXDRgFqoIOwcj+OwwLmti0C0bDev4Ol6COI49tZ6+V
+	uSYax5NVbrWhLLz+cLoC8EAGpJSLOZd1NAyNOr8IEcRCvkTnG204y1yDSDICx6SpwH5yUJhGfjy
+	nevF7xlueHDD35+rqmsN3OmSuZWX+Z3frpzt0M+T2JclPY6BMOL1NyN5T7uDWur+WR45C8QZcFo
+	9u+Ehb82GRkrZzfZjnWoMeJlfWTeZoI+YL3VsJYQ=
+X-Google-Smtp-Source: AGHT+IHwZ9a0CodGDuhqCony9M93DovvnSuPLJgbH1nnfACNgS/PvYXP+fUYb4jioyYw+FZEtp3U7A==
+X-Received: by 2002:a17:90b:180b:b0:315:9ac2:8700 with SMTP id 98e67ed59e1d1-31c9f44606emr2145690a91.24.1752644005007;
+        Tue, 15 Jul 2025 22:33:25 -0700 (PDT)
+Received: from mma-H9MHD44.lan ([101.180.88.40])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c9f1ba792sm580382a91.5.2025.07.15.22.33.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Jul 2025 22:33:24 -0700 (PDT)
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	arien.judge@morsemicro.com,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Subject: [wireless-next v2 0/4] [v2] wifi: S1G short beacon support
+Date: Wed, 16 Jul 2025 15:32:50 +1000
+Message-ID: <20250716053254.439698-1-lachlan.hodges@morsemicro.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHS8izNgfrN-MimH1uv349AqNudvQJoeOsyHpoBT_QokF3Zv=w@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUyTZxDA87zfdHZ517HtGWwhlpExkonbMLkpMWTJklcTFhf/MJsxrpNu
-	7VYQi5SPaAZY58BR3KpGSjFVqxRqVlIEOlfY1hJAMXxUYB3yIaBEszInSqFS2rV1Zvz3u7vc
-	/e6S40hJN5PAKfMOytV5MpWUEVGi+XXn3x5KL1JsPHksFYy2ywwMPTpHg3W5GBpuO2jwNGL4
-	ZXCZAGNTG4LHgVss2CvHSXjU1cPAhXN+EgLN1RQYB7QULNqekHC3e4aFXtcqBVZ7NkxdmqPA
-	eaydBPdiCszU9DJQrV0hoXbyKAPhsRUaOgJ/s1DhsBDQ8VcrC4NtOhpOPrlIQnvZ7YhrdpSG
-	m1eNDNw8MoRg8nKYhjlXROizjLOgsxoQuH5tZKBC+x74Wh+z8M+pLhKmdFkQOqOBbtPL4O/z
-	Ibh1cYSAsNPBQv/kTzR02doJGJ4OkOD/vp6BqvkaBCO1Vwm4Ud9Mg7lvmIjssRNGw0EC9B4T
-	A7PaKQQe9wwFdeU6BLZOLw0PnZGTV5aNTNYHgtv3gBQcE2YkXGn8kxDunQgRgrfzOiH8bJhg
-	BZO9UGixpAkXnPcJocrrIQV7UyUj2Bd+ZIXxUScj9J5ZoYQW8zfCvZZatOP1T0WZOXKVUiNX
-	p2/9TKQo7x9A+S2biiuDVqYMzaVWoTgO8xn4j7kbxDMeHdFTUab4FDygHWOizPBvYq83QEY5
-	nn8Lmzt/oKuQiCN5M4fvdzhQNHieXyBx32JfrPtFvhCfn/bGWMwD9k0/jHVI+LsEXr1z9r/C
-	C/ha7Z0YkxFF8KwnouAinIgbQtzTdBI+0loXM8fxH+Ol/lNslF/ik/FvbT1EdCbmQ3H4evMS
-	+/SEV/HvFi91AkkMaxSGNQrD/wrDGoUJUU1IoszT5MqUqowNipI8ZfGGfftz7Sjy3ZcOB3c7
-	0MLgThfiOSRdJ3Zs0SgktExTUJLrQpgjpfFivSeSEufISkrl6v171YUqeYELJXKU9BXxu/6i
-	HAn/peyg/Gu5PF+uflYluLiEMpT1RWnH0idU8nO7eqqlZMMW+Ha3R5O2bdOBCu3n6Qd0w6e3
-	+muGutZb9hzatv0jiXX1tc2hTvfxfNv0vpTTh79LPZqgXf9VWSYrbZ13q97YfMUW70qse7Ax
-	vD1zh774WryEmCmqNNXPFmYH2ePlHybR3WNJ+uSM98erxYccronsklIpVaCQvZNGqgtk/wLy
-	0C982QMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTZxSH8973ftHQedd1eqPJtnQxm2bCzCA7kcW4LNlulmjYR+Z0W7CB
-	q+0sYFopZQsZSreFZgKOudgKBKXKRw01ZUDViq4UxGFAirAqCEKVaNbBlA8tlLLbbsv47znn
-	5Pye88dhsaKWXstqcw6K+hy1TkXLSNmOtOJN/cn5mteLLyZApfMsDf0zJylwPDVB3V03Bf4G
-	Hi7eeEpAZWMrgtnwMAOukhEMM76rNNSenMcQPneEhMo+MwlzzgUM97smGOj2LpHgcG2HsTOT
-	JHi+b8PQMbceJsq6aThiXsRgHf2WhuXbixRcCk8xcNhdT0BH1TWp/KOFgRutpRT8tHAaQ1vR
-	XUkYHKJg4EIlDQPF/QhGzy5TMOmVrKH6EQZKHTYE3ssNNBw2vwGhllkG/jrmwzBWug2ix43Q
-	VbMa5ntCCIZPDxKw7HEz0DvaRIHP2UbAzfEwhvkfqmiw/FmGYNB6gYDrVecosPfcJKQ7PoKh
-	5QgBFf4aGoLmMQT+jgkSThwqReBsD1DwyGMmt70jdISmseC+Y0fCLw23COFBeZQQAu2/EcJ5
-	2x1GqHHlCc31G4Vaz0NCsAT8WHA1ltCC6/GPjDAy5KGF7uOLpNBs/0Z40GxF6S/slr2VJeq0
-	RlGfvHWPTHOotw8daE41lUQcdBGafNWCElieS+GHBivIGJPcer7PfJuOMc29wgcCYRxjJbeB
-	t7cfpSxIxmLOzvIPL7lRrHiGe4z5nrme+PZzXB5/ajwQZzkHfGj8UXxDwd0n+KV71f8OnuWv
-	We/FGUuKSLVfUrASr+Prouw/7Rf54pYTcXMC9wH/pPcYE+PnuZf5K61XiXK0yrYiybYiyfZ/
-	km1FUg0iG5FSm2PMVmt1qUmG/ZqCHK0pKTM324Wk1z1TGDnqRrMD73kRxyJVotydZtQoKLXR
-	UJDtRTyLVUp5hV9qybPUBV+J+twMfZ5ONHjROpZUrZG/v1Pco+D2qQ+K+0XxgKj/b0qwCWuL
-	0Lity5SfWOKJDFdkfPlpelNGSzRzc9umr2dm1rx0vZrbu6Wq/JPXzFm5vsxdhWllCx8v/dye
-	8hkd7Ew2WhLzrBqf81d7cMdW/GHS9pTv0nftnFr9JNkiV+iappXvTm3xd1pvKUbT3nTsK/uC
-	fbtOmTppMnxe+Pv0qnQfaepsCEbzT6lIg0a9eSPWG9R/Ay6goT22AwAA
-X-CFilter-Loop: Reflected
 
-On Tue, Jul 15, 2025 at 12:09:34PM -0700, Mina Almasry wrote:
-> On Mon, Jul 14, 2025 at 6:36 PM Byungchul Park <byungchul@sk.com> wrote:
-> >
-> > On Mon, Jul 14, 2025 at 12:58:15PM -0700, Mina Almasry wrote:
-> > > On Mon, Jul 14, 2025 at 12:37 PM Mina Almasry <almasrymina@google.com> wrote:
-> > > >
-> > > > On Mon, Jul 14, 2025 at 5:01 AM Byungchul Park <byungchul@sk.com> wrote:
-> > > > >
-> > > > > To eliminate the use of the page pool fields in struct page, the page
-> > > > > pool code should use netmem descriptor and APIs instead.
-> > > > >
-> > > > > However, __netmem_get_pp() still accesses ->pp via struct page.  So
-> > > > > change it to use struct netmem_desc instead, since ->pp no longer will
-> > > > > be available in struct page.
-> > > > >
-> > > > > While at it, add a helper, pp_page_to_nmdesc(), that can be used to
-> > > > > extract netmem_desc from page only if it's pp page.  For now that
-> > > > > netmem_desc overlays on page, it can be achieved by just casting.
-> > > > >
-> > > > > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > > > > ---
-> > > > >  include/net/netmem.h | 13 ++++++++++++-
-> > > > >  1 file changed, 12 insertions(+), 1 deletion(-)
-> > > > >
-> > > > > diff --git a/include/net/netmem.h b/include/net/netmem.h
-> > > > > index 535cf17b9134..2b8a7b51ac99 100644
-> > > > > --- a/include/net/netmem.h
-> > > > > +++ b/include/net/netmem.h
-> > > > > @@ -267,6 +267,17 @@ static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
-> > > > >         return (struct net_iov *)((__force unsigned long)netmem & ~NET_IOV);
-> > > > >  }
-> > > > >
-> > > > > +static inline struct netmem_desc *pp_page_to_nmdesc(struct page *page)
-> > > > > +{
-> > > > > +       DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page));
-> > > > > +
-> > > > > +       /* XXX: How to extract netmem_desc from page must be changed,
-> > > > > +        * once netmem_desc no longer overlays on page and will be
-> > > > > +        * allocated through slab.
-> > > > > +        */
-> > > > > +       return (struct netmem_desc *)page;
-> > > > > +}
-> > > > > +
-> > > >
-> > > > Same thing. Do not create a generic looking pp_page_to_nmdesc helper
-> > > > which does not check that the page is the correct type. The
-> > > > DEBUG_NET... is not good enough.
-> > > >
-> > > > You don't need to add a generic helper here. There is only one call
-> > > > site. Open code this in the callsite. The one callsite is marked as
-> > > > unsafe, only called by code that knows that the netmem is specifically
-> > > > a pp page. Open code this in the unsafe callsite, instead of creating
-> > > > a generic looking unsafe helper and not even documenting it's unsafe.
-> > > >
-> > >
-> > > On second read through the series, I actually now think this is a
-> > > great idea :-) Adding this helper has simplified the series greatly. I
-> > > did not realize you were converting entire drivers to netmem just to
-> > > get rid of page->pp accesses. Adding a pp_page_to_nmdesc helper makes
-> > > the entire series simpler.
-> > >
-> > > You're also calling it only from code paths like drivers that already
-> > > assumed that the page is a pp page and did page->pp deference without
-> > > a check, so this should be safe.
-> > >
-> > > Only thing I would change is add a comment explaining that the calling
-> > > code needs to check the page is pp page or know it's a pp page (like a
-> > > driver that supports pp).
-> > >
-> > >
-> > > > >  /**
-> > > > >   * __netmem_get_pp - unsafely get pointer to the &page_pool backing @netmem
-> > > > >   * @netmem: netmem reference to get the pointer from
-> > > > > @@ -280,7 +291,7 @@ static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
-> > > > >   */
-> > > > >  static inline struct page_pool *__netmem_get_pp(netmem_ref netmem)
-> > > > >  {
-> > > > > -       return __netmem_to_page(netmem)->pp;
-> > > > > +       return pp_page_to_nmdesc(__netmem_to_page(netmem))->pp;
-> > > > >  }
-> > > >
-> > > > This makes me very sad. Casting from netmem -> page -> nmdesc...
-> > > >
-> > > > Instead, we should be able to go from netmem directly to nmdesc. I
-> > > > would suggest rename __netmem_clear_lsb to netmem_to_nmdesc and have
-> > > > it return netmem_desc instead of net_iov. Then use it here.
-> > > >
-> > > > We could have an unsafe version of netmem_to_nmdesc which converts the
-> > > > netmem to netmem_desc without clearing the lsb and mark it unsafe.
-> > > >
-> > >
-> > > This, I think, we should address to keep some sanity in the code and
-> > > reduce the casts and make it a bit more maintainable.
-> >
-> > I will reflect your suggestions.  To summarize:
-> >
-> >    1) The current implementation of pp_page_to_nmdesc() is good enough
-> >       to keep, but add a comment on it like "Check if the page is a pp
-> >       page before calling this function or know it's a pp page.".
-> >
-> 
-> Yes please.
-> 
-> >    2) Introduce the unsafe version, __netmem_to_nmdesc(), and use it in
-> >       __netmem_get_pp().
-> >
-> 
-> No need following Pavel's feedback. We can just delete
-> __netmem_get_pp. If we do find a need in the future to extract the
-> netmem_desc from a netmem_ref, I would rather we do a straight cast
-> from netmem_ref to netmem_desc rather than netmem_ref -> pages/net_iov
-> -> netmem_desc.
-> 
-> But that seems unnecessary for this series.
+This patchset implements S1G short beaconing within mac80211 and
+cfg80211. I don't think its worth going into the technical detail
+again as that can be found in the commit messages or in v1:
 
-No.  The series should remove accessing ->pp through page.
+https://patchwork.kernel.org/project/linux-wireless/cover/20250714051403.597090-1-lachlan.hodges@morsemicro.com/
 
-I will kill __netmem_get_pp() as you and I prefer.  However,
-__netmem_get_pp() users e.i. libeth_xdp_return_va() and
-libeth_xdp_tx_fill_buf() should be altered.  I will modify the code like:
+The changes since v1 are as follows:
 
-as is: __netmem_get_pp(netmem)
-to be: __netmem_nmdesc(netmem)->pp
+(1) Rather than introduce new validation routines for the short
+    beacons, we leverage the existing routines since they can
+    handle all beacon formats and ensure both long and short
+    beacons are well formed without validating the existence of
+    particular elements.
 
-Is it okay with you?
+(2) The long beacon period (renamed from short beacon period to
+    better describe what it actually is i.e the number of beacon
+    intervals between each long beacon) is now an individual
+    attribute. The reasoning behind this is that this attribute
+    cannot be updated dynamically, unlike the beacon template. So
+    we have taken inspiration for how the regular beacon interval,
+    DTIM period etc. are handled. This allows us to use the same
+    routine for both updating and setting the beacon data, but
+    require this attribute when bringing up the interface if it
+    is to be using short beacons. We think this is a much cleaner
+    approach.
 
-> >    3) Rename __netmem_clear_lsb() to netmem_to_nmdesc(), and return
-> >       netmem_desc, and use it in all users of __netmem_clear_lsb().
-> >
-> 
-> Following Pavel's comment, this I think also is not necessary for this
-> series. Cleaning up the return value of __netmem_clear_lsb is good
-> work I think, but we're already on v10 of this and I think it would
-> unnecessary to ask for added cleanups. We can do the cleanup on top.
+NB: It was mentioned it would be good to find a better way (or
+    introduce) a new method for determining if we are bringing up
+    an S1G interface. This patch does not handle that, though it is
+    something I briefly looked into and will probably be done in a
+    future patchset.
 
-However, I still need to include 'introduce __netmem_nmdesc() helper'
-in this series since it should be used to remove __netmem_get_pp() as I
-described above.  I think I'd better add netmem_nmdesc() too while at it.
+(3) We no longer introduce the short beacon variant for the beacon
+    interval or DTIM period - and instead just reuse the existing
+    parameters since - fundamentally - they don't change anything
+    besides add more code complexity to various key code paths plus
+    require changes within mac80211_hwsim. This patch now no longer
+    requires hwsim changes.
 
-I assume __netmem_nmdesc() is an unsafe version not clearing lsb.  The
-safe version, netmem_nmdesc() needs an additional operation clearing lsb.
-If you are fine with it, I will add these two helpers in the next spin.
-Or I could add __netmem_nmdesc() only.  Thoughts?  
+(4) Drop further validation from within mac80211, and just perform
+    it within cfg80211.
 
-> > Anything else?
-> 
-> Thank you very much :-)
+(5) Due to (3), we can drop all mac80211_hwsim changes.
 
-I rather apprecisate your feedbacks.
+(6) Fix up a kernel-doc error and properly describe the max
+    short beacon nested attributes.
 
-	Byungchul
+Overall this patch is much leaner, and has less of an affect on
+non S1G interfaces so that is obviously preferable for everyone.
+Even then it is more inline with what is currently done when setting
+vs updating an interface and handling optional attributes.
 
-> --
-> Thanks,
-> Mina
+I've sent this as a non-RFC as I think it's a "finished patchset"
+but obviously still open to any feedback to resend another version.
+
+Lachlan Hodges (4):
+  wifi: cfg80211: support configuring an S1G short beaconing BSS
+  wifi: mac80211: support initialising an S1G short beaconing BSS
+  wifi: mac80211: support initialising current short beacon index
+  wifi: mac80211: support returning the S1G short beacon skb
+
+ include/net/cfg80211.h        |  23 ++++++++
+ include/net/mac80211.h        |   9 +++
+ include/uapi/linux/nl80211.h  |  39 +++++++++++++
+ net/mac80211/cfg.c            |  93 +++++++++++++++++++++++++++++-
+ net/mac80211/debugfs_netdev.c |   2 +-
+ net/mac80211/ieee80211_i.h    |  15 ++++-
+ net/mac80211/mesh.c           |   2 +-
+ net/mac80211/tx.c             | 104 ++++++++++++++++++++++++++++++----
+ net/mac80211/util.c           |  31 +++++++++-
+ net/wireless/nl80211.c        |  72 +++++++++++++++++++++++
+ 10 files changed, 370 insertions(+), 20 deletions(-)
+
+-- 
+2.43.0
+
 
