@@ -1,124 +1,121 @@
-Return-Path: <linux-wireless+bounces-25556-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25557-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FE3B07EFE
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 22:34:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0F0B07F2E
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 22:56:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F84A3AF280
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 20:34:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47EB8A44B2E
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 20:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F24C2D1;
-	Wed, 16 Jul 2025 20:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B464828C2DE;
+	Wed, 16 Jul 2025 20:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="tMyM3cS+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hs7DDZT5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7102C2641E7;
-	Wed, 16 Jul 2025 20:34:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C57D1CD2C;
+	Wed, 16 Jul 2025 20:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752698082; cv=none; b=HWZ2PPAVAU55fBnW2rpph/NtMgrqCDmXLq69JOMkySLQGgzx4Uh7DZjxklZiEzU8euiKsV8pJ/YhYivJB1MDkK2dHH0GBxHPnlEoPOHogO107c290djfCMeBfafn4oZfHraeWT6dJFcBhdayXBR7zF9k7LascNIfRmcAK+L6K4c=
+	t=1752699363; cv=none; b=X9gyc0L5T9WiPGzL/0dS+OLX7I2rcrATE8G/WCDhR/lLZKaT4WtCxHsYn5OWImZxVyc/8GCrVjxIW6//50XPeRahu7OVd7dWAN+A7N9B/wzmgbiJp7b1/PA6wTlbnxxgUftnxng7C+uQRsZEQSn1yPhiW3AsRqTF5AEJJ/ELzpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752698082; c=relaxed/simple;
-	bh=oo8T2cYrBKx9rgy8ohBi0I3AkkxDaufyY0d6O5mhSIA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Zm/3ehTw6VoIUEl6VVKkwqNV1japVNOIAjf9MaiWYA0D7zS8zBYLhcxJEVLzkq3rrbWPNHOTk/NB9wuELrFEKPNqOAOvkEYoznHRgF/BfBrWXK0xLIkaMeetBJ5ua+SEYLOiVny8HuFZB0Dwmu/kOn6USXm3reFa0LcJb670U5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=tMyM3cS+; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=RtWoiGvdEq/pdKNPWoj9fYGr2I9VDyHYeS7oB2+nuao=;
-	t=1752698080; x=1753907680; b=tMyM3cS+/tHRKvBw24N7q+PmGRT7MUlDBqAtle0oKteHpxz
-	NLhr1xOvRbsHuNDbWvSRgFbzn3yQVg3RLcZXmcTiDE8rd8MapaGWuQnp7EBcjWfdhaHHJVT/8kH8j
-	xw4gdkYeLkL0nEjSmqfLedPO3lyVsf9GutXSacT7b8idZPtUaGxnhXoNpP4X6sEPe0fKiKTT7DDM8
-	d6u6OZ8hXAQFfffQ4aUgiMxkNiimaNvaFRCbIYmwTK4HCxp26i/9tWZ3zk9oDYUk8HEx7tnZ8zFf/
-	AS2lBHIlssy8lZq2cMEXizTxf+yBkFSI+guaBrk7LKz2zZ34iKfNGaUwsWAwVHWA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uc8ph-00000008rc7-3QrX;
-	Wed, 16 Jul 2025 22:34:30 +0200
-Message-ID: <1dc3bd17827527fbdb2c972dcb5c9f90d8f4d1ff.camel@sipsolutions.net>
-Subject: Re: [REGRESSION] iwlwifi: probe with driver iwlwifi failed with
- error -22
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Bjorn Helgaas <helgaas@kernel.org>, Chris Bainbridge
-	 <chris.bainbridge@gmail.com>
-Cc: "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>, 
- "linux-wireless@vger.kernel.org"	 <linux-wireless@vger.kernel.org>,
- "kvalo@kernel.org" <kvalo@kernel.org>,  "Korenblit, Miriam Rachel"
- <miriam.rachel.korenblit@intel.com>, "benjamin@sipsolutions.net"
- <benjamin@sipsolutions.net>,  "regressions@lists.linux.dev"	
- <regressions@lists.linux.dev>
-Date: Wed, 16 Jul 2025 22:34:29 +0200
-In-Reply-To: <20250716184226.GA2547862@bhelgaas>
-References: <20250716184226.GA2547862@bhelgaas>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1752699363; c=relaxed/simple;
+	bh=1eT1bU8K2ROCVSdByZdiqCJahWUYakFk0s/KHQHgDy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ojDr9Z4BkqzrxaFrQsWrXF1DDIdsimIo7hzlPCbt8lwKXSOkeakB3UU5oqosZsLvgucHTgh87KwdwVUxBgiPo3ljNosLRfiKrpZcpraoy159lFwi/7sqrufOTnEYEgPp4tqnvv8aD4icLrsXm8iouHLnlplOOVmf6oInYGrGMlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hs7DDZT5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1039DC4CEF1;
+	Wed, 16 Jul 2025 20:56:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752699363;
+	bh=1eT1bU8K2ROCVSdByZdiqCJahWUYakFk0s/KHQHgDy0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Hs7DDZT5y7ghwrrP2RoLIPD/uvZHmLasbXo2TT4fFIO7edIcBrZV86BNmu6s52Pe2
+	 GiXm1OSTqbaMlmfNhVJedqxHISA/wrhm2gLbzV7c7jkbfhFiiuLC38tyjBoPUYv2SI
+	 c5gN69aqyBcZ6IX7zJxosf4QmOf4AUeQH4BAUNjE40OTOLWHCIupvCvIgEVG53phaI
+	 VPoNle4itK3nDgSes+CYKnpEt2/l5BSdcMpFIOkTJ5n6dtkhB5pcJHezOQoRMlgkK5
+	 GMrfGRzeI23y1uUdJ81ubwpBoYxkrOfhRw2XxAwcTjK+nQQwp+gBPd1oL5R7lGcE7f
+	 CdHEgEcAb4nag==
+Date: Wed, 16 Jul 2025 15:56:01 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: manivannan.sadhasivam@oss.qualcomm.com,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Nirmal Patel <nirmal.patel@linux.intel.com>,
+	Jonathan Derrick <jonathan.derrick@linux.dev>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ath12k@lists.infradead.org, ath11k@lists.infradead.org,
+	ath10k@lists.infradead.org, ilpo.jarvinen@linux.intel.com,
+	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Subject: Re: [PATCH 2/6] PCI/ASPM: Transition the device to D0 (if required)
+ inside pci_enable_link_state_locked() API
+Message-ID: <20250716205601.GA2555277@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250716-ath-aspm-fix-v1-2-dd3e62c1b692@oss.qualcomm.com>
 
-On Wed, 2025-07-16 at 13:42 -0500, Bjorn Helgaas wrote:
-> On Fri, Mar 28, 2025 at 12:36:38AM +0000, Chris Bainbridge wrote:
-> > Hi,
-> >=20
-> > Laptop: Lenovo Legion 7 16ACHg6.
-> > Wifi: Killer(R) Wi-Fi 6 AX1650x 160MHz Wireless Network Adapter (200NGW=
-)
-> > 04:00.0 Network controller [0280]: Intel Corporation Wi-Fi 6 AX200 [808=
-6:2723] (rev 1a)
-> >=20
-> > Wifi stopped working in recent kernel builds:
-> >=20
-> > [   20.907824] Intel(R) Wireless WiFi driver for Linux
-> > [   20.907955] iwlwifi 0000:04:00.0: enabling device (0000 -> 0002)
-> > [   20.912024] ee1004 2-0050: 512 byte EE1004-compliant SPD EEPROM, rea=
-d-only
-> > [   20.913666] NET: Registered PF_BLUETOOTH protocol family
-> > [   20.913670] Bluetooth: HCI device and connection manager initialized
-> > [   20.913806] Bluetooth: HCI socket layer initialized
-> > [   20.913810] Bluetooth: L2CAP socket layer initialized
-> > [   20.913828] Bluetooth: SCO socket layer initialized
-> > [   20.917455] iwlwifi 0000:04:00.0: Detected crf-id 0x3617, cnv-id 0x1=
-00530 wfpm id 0x80000000
-> > [   20.917674] iwlwifi 0000:04:00.0: PCI dev 2723/1654, rev=3D0x340, rf=
-id=3D0x10a100
-> > [   20.917679] iwlwifi: No config found for PCI dev 2723/1654, rev=3D0x=
-340, rfid=3D0x10a100
-> > [   20.920126] iwlwifi 0000:04:00.0: probe with driver iwlwifi failed w=
-ith error -22
-> >=20
-> > Bisect led to:
-> >=20
-> > commit 75a3313f52b7e08e7e73746f69a68c2b7c28bb2b (HEAD)
-> > Author: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-> > Date:   Wed Feb 5 14:55:42 2025 +0200
-> >=20
-> >     wifi: iwlwifi: make no_160 more generic
->=20
-> https://git.kernel.org/linus/64dc5d5e341d ("Revert "wifi: iwlwifi:
-> make no_160 more generic"") appeared in v6.15-rc5 and reverts
-> 75a3313f52b7 ("wifi: iwlwifi: make no_160 more generic"), so it
-> *looks* like this regression should be fixed, but it still appears in
-> the tracker at https://linux-regtracking.leemhuis.info/regzbot/mainline/
->=20
+On Wed, Jul 16, 2025 at 06:26:21PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> 
+> Both of the current callers of the pci_enable_link_state_locked() API
+> transition the device to D0 before calling. This aligns with the PCIe spec
+> r6.0, sec 5.5.4:
+> 
+> "If setting either or both of the enable bits for PCI-PM L1 PM Substates,
+> both ports must be configured as described in this section while in D0."
+> 
+> But it looks redundant to let the callers transition the device to D0. So
+> move the logic inside the API and perform D0 transition only if the PCI-PM
+> L1 Substates are getting enabled.
 
-And for 6.16 it was completely reworked. But I don't really know if
-there might still be related issues.
+> +++ b/drivers/pci/pcie/aspm.c
+> @@ -1474,13 +1474,20 @@ static int __pci_enable_link_state(struct pci_dev *pdev, int state, bool locked)
+>   * Note that if the BIOS didn't grant ASPM control to the OS, this does
+>   * nothing because we can't touch the LNKCTL register.
+>   *
+> - * Note: Ensure devices are in D0 before enabling PCI-PM L1 PM Substates, per
+> - * PCIe r6.0, sec 5.5.4.
+> + * Note: The device will be transitioned to D0 state if the PCI-PM L1 Substates
+> + * are getting enabled.
+>   *
+>   * Return: 0 on success, a negative errno otherwise.
+>   */
+>  int pci_enable_link_state(struct pci_dev *pdev, int state)
+>  {
+> +	/*
+> +	 * Ensure the device is in D0 before enabling PCI-PM L1 PM Substates, per
+> +	 * PCIe r6.0, sec 5.5.4.
+> +	 */
+> +	if (FIELD_GET(PCIE_LINK_STATE_L1_SS_PCIPM, state))
+> +		pci_set_power_state(pdev, PCI_D0);
 
-johannes
+This is really just a move, not new code, but this niggles at me a
+little bit because my impression is that pci_set_power_state() doesn't
+guarantee that the device *stays* in the given state.
+
+Rafael, is there a get/put interface we should be wrapping this with
+instead?
+
+I'm also not sure it's worth the FIELD_GET().  This should be a
+low-frequency operation and making the power state dependent on the
+exact "state" makes more paths to worry about.
+
+>  	return __pci_enable_link_state(pdev, state, false);
+>  }
 
