@@ -1,133 +1,119 @@
-Return-Path: <linux-wireless+bounces-25503-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25504-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EAEAB06A5F
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 02:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7BFB06BCC
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 04:45:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB047564649
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 00:17:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19C1D56372D
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 02:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A28515D1;
-	Wed, 16 Jul 2025 00:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F041428E7;
+	Wed, 16 Jul 2025 02:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="PE1KMgtJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h2JWK47u"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEE72F50
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 00:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE688B660;
+	Wed, 16 Jul 2025 02:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752625047; cv=none; b=c8C6IT7H7kG1gt1DG1PjRgkes1kjcLEmL8j4PvCah1MIg93UQuHHcOzXFE/rS4b29bKmQbiaDtCL2atvjSlzFaG9poffggkS88U6ovDtNDXpe5zJCIN1UefD/R0S2lVTEQdbYb5Vh9NJ70KmQ5xnc0N6uMU1WuUSahuK/5NoyOM=
+	t=1752633938; cv=none; b=XJhohwGv4afCCZn9oKEeiar0LmvWnKT1eoGHeQgceNKUI9i1T82V6MHC+aOZ5mzYZZNqCu+hAxgxX07tMWvRU7HOu/go2uKXh2FiBbl/pxQ1MIqwR/yeoT4pktUmbMqiOvz6DfnbNMOCM3wdPxMbiL/Oid5Y5sHrgq6Hvtm52vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752625047; c=relaxed/simple;
-	bh=rVz6ePMOXKefj+9FhYfRNUyvOoHTJhfyWeLzCpbsGFA=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=mTJA24AQXGXenDchuWY7KefEfeuAcHmE4idnRzyjjrbcaUfSsjDeW3cZERGldz6LuUdxWYb8akXK0YRhkOKK9H8KKapowEPa1U3p1qJZRdg7LvpdVtVdElI66R863LwWuRmv5gNU9DSvWrqKEJOYGgZlobEqmdLSaFi5syIff68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=PE1KMgtJ; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56G0HJUY01484796, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1752625039; bh=rVz6ePMOXKefj+9FhYfRNUyvOoHTJhfyWeLzCpbsGFA=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=PE1KMgtJPrDm1zPUFxE5N/QvjNCqXtHoYHiAwI1lXg4+0wqL52Jk6RrB0FUUe0Bgx
-	 /mlRqz10QZgwP3lrzZTtnWO5RI3P4hmDeMI6pNtO9peqGIyNIgk+ocI+5BeTmJ9MFH
-	 PpjZbkDM/ZomgFneqngqDMqwdCuwGgtY3RrImToRrPP76bEuEb5iu6ZglWLr87d5nG
-	 eFs/GwIhb6OhmO0oa13/nzSnLJBBYWc0eI+HvgiE7QYOSgOVaMdgQjF6n4pjPs3Htd
-	 12ZXM0U/loyQ5ip6wU6HPgILbqo2VzW/Uzclx5EK8vp7oTT5EiaTxWOQws/iPJJBRu
-	 gJhMr9Ucq4IsA==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56G0HJUY01484796
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Jul 2025 08:17:19 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 16 Jul 2025 08:17:19 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 16 Jul 2025 08:17:19 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47]) by
- RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47%5]) with mapi id
- 15.01.2507.035; Wed, 16 Jul 2025 08:17:19 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next v2 1/2] wifi: rtw89: Lower the timeout in rtw89_fw_read_c2h_reg() for USB
-Thread-Topic: [PATCH rtw-next v2 1/2] wifi: rtw89: Lower the timeout in
- rtw89_fw_read_c2h_reg() for USB
-Thread-Index: AQHb9cDvTeQ1hJc5tUKW4VZya+p+RbQz4dmw
-Date: Wed, 16 Jul 2025 00:17:19 +0000
-Message-ID: <e3db33c50a7b4729947816551c5eba17@realtek.com>
-References: <09313da6-c865-4e91-b758-4cb38a878796@gmail.com>
-In-Reply-To: <09313da6-c865-4e91-b758-4cb38a878796@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1752633938; c=relaxed/simple;
+	bh=+1u16U4vS2dn7v0o/6oq4Gia80+YfN2DVuNgYAdEeeA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=j8QG/tLXkF3wYG9spR2wH3dQ7JxCAn3zlDLJJ6xkC9gopUmSsaA+oIfDbizuSyW3JL/RYmKS1wYN3PhncVJ2I8Nw481R+HKEm+Jlv4KiNjvcRjJST5F/zNbMH7/JzCkS0WAINnXbla/77bMtczLzqzkAdtJukhZLncU+5WqfD9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h2JWK47u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F190FC4CEE3;
+	Wed, 16 Jul 2025 02:45:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752633937;
+	bh=+1u16U4vS2dn7v0o/6oq4Gia80+YfN2DVuNgYAdEeeA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=h2JWK47uhreeBPFGmYAom7RJvXOFQcdFGYGkYLAyaU+n6AL8GFwO4vvyiWfAN4yKm
+	 6u4DDs34IhMYLrdl30zgNdOR6hlLZLFobNXVAuCywq2WjpHiJfKfh/fJ6Cs1av64Jt
+	 8DuVY2VlsLxTBCyvL4BdF4jptwL4gFmV0NvxAu6oFUnoy9EGbiU0gpT4adZ+rHNSHx
+	 Ujc0+z5gn/KcJTtZe4ycPrzV6I0pg/4d4vnSiL8itLZSp1G6ysgqJG5NIPBeL0ZfEp
+	 vaz2BwtlnMnn3iTDmKT99M7ifwhbD3H12ANdFLhvChT0aHeb34poUoKeNPO7e3ZmzT
+	 4FCy+k9+4SQjg==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 15 Jul 2025 19:45:23 -0700
+Subject: [PATCH] wifi: brcmsmac: Remove const from tbl_ptr parameter in
+ wlc_lcnphy_common_read_table()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAEISd2gC/x2NQQqDMBAAvyJ77kKixtJ+pXhI49buwY3sRimIf
+ zf0ODDMHGCkTAbP5gClnY2zVPC3BtI3ykzIU2VoXRvc3Qd8a1psiQk//MNNWLhgymIF18xSSHH
+ qgvd9DO7RDVA7q1J1/4/XeJ4XUqdxNHMAAAA=
+X-Change-ID: 20250715-brcmsmac-fix-uninit-const-pointer-d35114a50936
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
+ brcm80211-dev-list.pdl@broadcom.com, llvm@lists.linux.dev, 
+ patches@lists.linux.dev, stable@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2033; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=+1u16U4vS2dn7v0o/6oq4Gia80+YfN2DVuNgYAdEeeA=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBnlQv69i7iPCH66tmfp7Gl/HNNXNDqecKng+8HquHBJ1
+ svXhWu6OkpZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEmioZGSb77nXUNsqYJsPV
+ erD+dknSp+cPfQ/ubjWKbDvSU8Yq58LIMGNm2rVdB7LZZM0ehj8L6W0T/Jh2/RL/ZYtNmw51Szr
+ uYgAA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBUaGlz
-IHJlYWRfcG9sbF90aW1lb3V0X2F0b21pYygpIHdpdGggYSBkZWxheSBvZiAxIMK1cyBhbmQgYSB0
-aW1lb3V0IG9mDQo+IDEwMDAwMDAgwrVzIGNhbiB0YWtlIH4yNTAgc2Vjb25kcyBpbiB0aGUgd29y
-c3QgY2FzZSBiZWNhdXNlIHNlbmRpbmcgYQ0KPiBVU0IgY29udHJvbCBtZXNzYWdlIHRha2VzIH4y
-NTAgwrVzLg0KPiANCj4gTG93ZXIgdGhlIHRpbWVvdXQgdG8gNDAwMCBmb3IgVVNCIGluIG9yZGVy
-IHRvIHJlZHVjZSB0aGUgbWF4aW11bSBwb2xsaW5nDQo+IHRpbWUgdG8gfjEgc2Vjb25kLg0KPiAN
-Cj4gVGhpcyBwcm9ibGVtIHdhcyBvYnNlcnZlZCB3aXRoIFJUTDg4NTFCVSB3aGlsZSBzdXNwZW5k
-aW5nIHRvIFJBTSB3aXRoDQo+IFdPV0xBTiBlbmFibGVkLiBUaGUgY29tcHV0ZXIgc2F0IGZvciA0
-IG1pbnV0ZXMgd2l0aCBhIGJsYWNrIHNjcmVlbg0KPiBiZWZvcmUgc3VzcGVuZGluZy4NCj4gDQo+
-IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29t
-Pg0KPiAtLS0NCj4gdjI6DQo+ICAtIExvd2VyIHRoZSB0aW1lb3V0IGZvciBVU0IgaW5zdGVhZCBv
-ZiBpbmNyZWFzaW5nIHRoZSBkZWxheS4NCj4gLS0tDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0dzg5L2Z3LmMgfCA5ICsrKysrKystLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-cmVhbHRlay9ydHc4OS9mdy5oIHwgMiArKw0KPiAgMiBmaWxlcyBjaGFuZ2VkLCA5IGluc2VydGlv
-bnMoKyksIDIgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9y
-dHc4OS9mdy5jDQo+IGluZGV4IDczYTRlYzk4OGQxNi4uYjc3NGEzMjllN2M3IDEwMDY0NA0KPiAt
-LS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2Z3LmMNCj4gKysrIGIvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jDQo+IEBAIC02NzU1LDEzICs2NzU1
-LDE4IEBAIHN0YXRpYyBpbnQgcnR3ODlfZndfcmVhZF9jMmhfcmVnKHN0cnVjdCBydHc4OV9kZXYg
-KnJ0d2RldiwNCj4gICAgICAgICBjb25zdCBzdHJ1Y3QgcnR3ODlfY2hpcF9pbmZvICpjaGlwID0g
-cnR3ZGV2LT5jaGlwOw0KPiAgICAgICAgIHN0cnVjdCBydHc4OV9md19pbmZvICpmd19pbmZvID0g
-JnJ0d2Rldi0+Znc7DQo+ICAgICAgICAgY29uc3QgdTMyICpjMmhfcmVnID0gY2hpcC0+YzJoX3Jl
-Z3M7DQo+IC0gICAgICAgdTMyIHJldDsNCj4gKyAgICAgICB1MzIgcmV0LCB0aW1lb3V0Ow0KPiAg
-ICAgICAgIHU4IGksIHZhbDsNCj4gDQo+ICAgICAgICAgaW5mby0+aWQgPSBSVFc4OV9GV0NNRF9D
-MkhSRUdfRlVOQ19OVUxMOw0KPiANCj4gKyAgICAgICBpZiAocnR3ZGV2LT5oY2kudHlwZSA9PSBS
-VFc4OV9IQ0lfVFlQRV9VU0IpDQo+ICsgICAgICAgICAgICAgICB0aW1lb3V0ID0gUlRXODlfQzJI
-X1RJTUVPVVRfVVNCOw0KDQpTaG91bGQgd2UgaGF2ZSBkaWZmZXJlbnQgdGltZW91dCB0aW1lcyBm
-b3IgVVNCMiBhbmQgVVNCMz8gDQpUaGUgc2FtZSBxdWVzdGlvbiBmb3IgcGF0Y2ggMi8yLg0KDQpP
-dGhlcndpc2UsIGxvb2tzIGdvb2QgdG8gbWUuDQoNCg0KPiArICAgICAgIGVsc2UNCj4gKyAgICAg
-ICAgICAgICAgIHRpbWVvdXQgPSBSVFc4OV9DMkhfVElNRU9VVDsNCj4gKw0KPiAgICAgICAgIHJl
-dCA9IHJlYWRfcG9sbF90aW1lb3V0X2F0b21pYyhydHc4OV9yZWFkOCwgdmFsLCB2YWwsIDEsDQo+
-IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFJUVzg5X0MySF9USU1FT1VU
-LCBmYWxzZSwgcnR3ZGV2LA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB0aW1lb3V0LCBmYWxzZSwgcnR3ZGV2LA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICBjaGlwLT5jMmhfY3RybF9yZWcpOw0KPiAgICAgICAgIGlmIChyZXQpIHsNCj4g
-ICAgICAgICAgICAgICAgIHJ0dzg5X3dhcm4ocnR3ZGV2LCAiYzJoIHJlZyB0aW1lb3V0XG4iKTsN
-Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZncuaCBi
-L2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZncuaA0KPiBpbmRleCA5OGJlN2U3
-MmM2ODUuLmE3MzFjMjQyZjM4OSAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-cmVhbHRlay9ydHc4OS9mdy5oDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnR3ODkvZncuaA0KPiBAQCAtMTE1LDYgKzExNSw4IEBAIHN0cnVjdCBydHc4OV9oMmNyZWdfc2No
-X3R4X2VuIHsNCj4gICNkZWZpbmUgUlRXODlfQzJIUkVHX0hEUl9MRU4gMg0KPiAgI2RlZmluZSBS
-VFc4OV9IMkNSRUdfSERSX0xFTiAyDQo+ICAjZGVmaW5lIFJUVzg5X0MySF9USU1FT1VUIDEwMDAw
-MDANCj4gKyNkZWZpbmUgUlRXODlfQzJIX1RJTUVPVVRfVVNCIDQwMDANCj4gKw0KPiAgc3RydWN0
-IHJ0dzg5X21hY19jMmhfaW5mbyB7DQo+ICAgICAgICAgdTggaWQ7DQo+ICAgICAgICAgdTggY29u
-dGVudF9sZW47DQo+IC0tDQo+IDIuNTAuMA0KDQo=
+A new warning in clang [1] complains that diq_start in
+wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
+wlc_lcnphy_common_read_table():
+
+  drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+   2728 |                                                      &diq_start, 1, 16, 69);
+        |                                                       ^~~~~~~~~
+
+The table pointer passed to wlc_lcnphy_common_read_table() should not be
+considered constant, as wlc_phy_read_table() is ultimately going to
+update it. Remove the const qualifier from the tbl_ptr to clear up the
+warning.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
+Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+index d0faba240561..b4bba67a45ec 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+@@ -919,7 +919,7 @@ void wlc_lcnphy_read_table(struct brcms_phy *pi, struct phytbl_info *pti)
+ 
+ static void
+ wlc_lcnphy_common_read_table(struct brcms_phy *pi, u32 tbl_id,
+-			     const u16 *tbl_ptr, u32 tbl_len,
++			     u16 *tbl_ptr, u32 tbl_len,
+ 			     u32 tbl_width, u32 tbl_offset)
+ {
+ 	struct phytbl_info tab;
+
+---
+base-commit: bbc19fef578970158847a41d9b6b6b218034b8c2
+change-id: 20250715-brcmsmac-fix-uninit-const-pointer-d35114a50936
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
+
 
