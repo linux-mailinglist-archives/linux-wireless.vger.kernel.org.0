@@ -1,110 +1,117 @@
-Return-Path: <linux-wireless+bounces-25536-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25537-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49058B0751F
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 13:55:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFE3B075A9
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 14:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E70C5834F3
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 11:55:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF501C2445D
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 12:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6ED2F4302;
-	Wed, 16 Jul 2025 11:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F652F5081;
+	Wed, 16 Jul 2025 12:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="YZZempSc"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="aiVRsAWQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9293C2F3648;
-	Wed, 16 Jul 2025 11:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3809522068F
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 12:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752666905; cv=none; b=MkP4z3qU120dzmpJ0g9h/6/N7g/uV13N5/jDGwZf6TqyOT9bkBMBuFqhUJmkutd+RRXV4CvCPOjNZ6QgQ2/WT8rveOibOOL785RRND/0TLuaRSiC3DIW8T8nIOzpdZ5rZbX3izxI6LkEdr2O4MbbDSgXAAiBvr1kdPntoKrMFq8=
+	t=1752668991; cv=none; b=JAlnbWvnwgjJBiUkmHskDa9640qSN5zJWTg3eiHYt50jL8Uoax8rH4gxj6xVU1+Ds9SWey3Y/pPU97asBJBSbVZ5vngbKASBkXQs/htpdJPS62dPcM6cZhhId3R7PyFWvZlvCCA++DEWpMNwW9HZht2WNGSXftldR7OREDpCsLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752666905; c=relaxed/simple;
-	bh=6hS1hhCet8VVQXPHSWs+K0hLedykf6nuOOJw4zP3+e0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AQLAWdpNs6xAsEP99bdztkmarJXiAZsmzhKRvjsuJywaVUDwsMnWMYCuUvRP5cz+VbBsV024wgX6OawG+xrKoxpGIoA6h1hhgbE0y3m1GdTVIJWFWuZo1b0hPhT+Phu0q2GXt4Xu6Pi8jQPG0AKeYA0Owpsx029fMC9sh3OeT0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=YZZempSc; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=202503; t=1752666782;
-	bh=6hS1hhCet8VVQXPHSWs+K0hLedykf6nuOOJw4zP3+e0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YZZempScizbqdERacBRcuYeDs1eVRwwcxVnT/NOSAaqf2Q5JZTAtJmrNxTQolCgoq
-	 Cet+Fwyq3zOILB5SquCcwX9uKeqdUQCE4tWhLeyX+Hvd6t6lJFQy4AuDuul81U/q6q
-	 h2h+TOvzqG4ptu0fkTm9YqPfo3k9uYBB/S50iIjPYURQr62X1/R8klylL1wrhvZ7oQ
-	 RxhCaWXE/ABG4kiriM4DFrAKSIGySgth+k+y9FR+9tZVUUeT3fc1KxdubeFMCKgjji
-	 7Y96U6qZviUVWcm7x+qNM3RSEKxlImIy6NKdZhmQkcCCmG/YLfRW1MOg8jw/UW5TKb
-	 MK49OPPgl7VTQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4bhvZQ4Nkzz4x11;
-	Wed, 16 Jul 2025 21:53:02 +1000 (AEST)
-Date: Wed, 16 Jul 2025 21:54:56 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Kalle Valo <kvalo@kernel.org>, Wireless
- <linux-wireless@vger.kernel.org>, Linux Kernel Mailing List	
- <linux-kernel@vger.kernel.org>, Linux Next Mailing List	
- <linux-next@vger.kernel.org>, Miri Korenblit
- <miriam.rachel.korenblit@intel.com>, Pagadala Yesu Anjaneyulu
- <pagadala.yesu.anjaneyulu@intel.com>
-Subject: Re: linux-next: manual merge of the wireless-next tree with the
- wireless tree
-Message-ID: <20250716215456.764d3eb1@canb.auug.org.au>
-In-Reply-To: <4ee6758a49e6f01c5e42b2f7c27aff905ac07dfa.camel@sipsolutions.net>
-References: <20250716135252.51125baa@canb.auug.org.au>
-	<4ee6758a49e6f01c5e42b2f7c27aff905ac07dfa.camel@sipsolutions.net>
+	s=arc-20240116; t=1752668991; c=relaxed/simple;
+	bh=JYweOJsgF/+DiThAwrWa/lopfhJ6zIRL1vo55aiCYq0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VtxM7aZaRsve4+nrikRMVLoGelDsexiACwgJSZk9UK0bESAv3KtGVYCGVLDHmoxNtyUHdMZ/KKPRCtylncBeVQeAoqzWrWCUYjNAPlef0EVcqO0d3T3yjx/W9zd6tqOBzcEHvc1HFH89QNdw5q0OGDisRYP6DKy2r4hDj9RG4F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=aiVRsAWQ; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56GCTjbyE2353414, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1752668985; bh=gAfrbPcsRGiXovvbeqwqrm4ySpKcgdHwahR/9zpMkY4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=aiVRsAWQv9EM2xUHJ5bwdCYKItJt1a+FmTbY+icVORO60D8wKvu8Y6JkVlJQISJqa
+	 acy9hjcBqIHY68ztwLmHoLqVV+vN/MOv3tU7izyVvNchnPPUn6jM5PX4mmXfGCc/32
+	 rWbG0i0CZVpUMJ1HCJ3z55F5lNmu4vYFIK1GEU779ZkQKcTj8/WwaVrHXtQPr9gUO2
+	 BM29f1STggkV0fvOqrSX9zfgYkH7892oe4tNAPwk/OIo6rUUwxMFp8WD2nrExaAklZ
+	 xG+8/hXrU5oxZ7Kf3WzJ0JDPDPOmjanzMhi6p0becD4cxXQ7h2Xv511/g4TXM5DE5u
+	 /arkP7q3gSiXw==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56GCTjbyE2353414
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 20:29:45 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 16 Jul 2025 20:29:45 +0800
+Received: from [127.0.1.1] (10.22.225.195) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 16 Jul
+ 2025 20:29:44 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <timlee@realtek.com>
+Subject: [PATCH rtw-next] wifi: rtw89: wow: Add Basic Rate IE to probe request in scheduled scan mode
+Date: Wed, 16 Jul 2025 20:29:26 +0800
+Message-ID: <20250716122926.6709-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/qWyPK7U0zwDAqBtVDW=jkFv";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
---Sig_/qWyPK7U0zwDAqBtVDW=jkFv
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+From: Chin-Yen Lee <timlee@realtek.com>
 
-Hi Johannes,
+In scheduled scan mode, the current probe request only includes the SSID
+IE, but omits the Basic Rate IE. Some APs do not respond to such
+incomplete probe requests, causing net-detect failures. To improve
+interoperability and ensure APs respond correctly, add the Basic Rate IE
+to the probe request in driver.
 
-On Wed, 16 Jul 2025 10:59:31 +0200 Johannes Berg <johannes@sipsolutions.net=
-> wrote:
->
-> I also just noticed that you're still sending this to Kalle - he stepped
-> down as maintainer earlier this year, so you should probably change the
-> contact for the wireless/wireless-next trees to just me.
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/wow.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Fixed. Thanks.
+diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
+index 4f759c75389e..2ef9117fdd6e 100644
+--- a/drivers/net/wireless/realtek/rtw89/wow.c
++++ b/drivers/net/wireless/realtek/rtw89/wow.c
+@@ -1412,6 +1412,8 @@ static void rtw89_fw_release_pno_pkt_list(struct rtw89_dev *rtwdev,
+ static int rtw89_pno_scan_update_probe_req(struct rtw89_dev *rtwdev,
+ 					   struct rtw89_vif_link *rtwvif_link)
+ {
++	static const u8 basic_rate_ie[] = {WLAN_EID_SUPP_RATES, 0x08,
++		 0x0c, 0x12, 0x18, 0x24, 0x30, 0x48, 0x60, 0x6c};
+ 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
+ 	struct cfg80211_sched_scan_request *nd_config = rtw_wow->nd_config;
+ 	u8 num = nd_config->n_match_sets, i;
+@@ -1423,10 +1425,11 @@ static int rtw89_pno_scan_update_probe_req(struct rtw89_dev *rtwdev,
+ 		skb = ieee80211_probereq_get(rtwdev->hw, rtwvif_link->mac_addr,
+ 					     nd_config->match_sets[i].ssid.ssid,
+ 					     nd_config->match_sets[i].ssid.ssid_len,
+-					     nd_config->ie_len);
++					     nd_config->ie_len + sizeof(basic_rate_ie));
+ 		if (!skb)
+ 			return -ENOMEM;
+ 
++		skb_put_data(skb, basic_rate_ie, sizeof(basic_rate_ie));
+ 		skb_put_data(skb, nd_config->ie, nd_config->ie_len);
+ 
+ 		info = kzalloc(sizeof(*info), GFP_KERNEL);
+-- 
+2.25.1
 
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/qWyPK7U0zwDAqBtVDW=jkFv
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmh3kxAACgkQAVBC80lX
-0GxKAgf+KOOETHP2duwnjrfK85tRxjFnz3TlplRbq7hWXxmbVke3ddL4/ZPQuZri
-/oU5wLVNeMo0kHqehrZLYyumx/JN3c6ZYCCmG0yADI57ElS9cP1KvamfRFQmOX+A
-GSGneSU2U3upPAvQBRjJLjyWcaG67VzJeCQlU65/aW8v/DQWYAOZM4+fISraUC8e
-vI2bAy8rGC264WF5oxG1Lw3IX6oZdPW1ADjrtL7756BAF3pioK0jHBI7xPvF0k1N
-bkOId7rLFWGrhN6BoOhq5xdMssVChoOA9QMRyra2cAcvb8MtcsqKNZsSNDEDedTX
-w6b6m7unydD5SuOJB6Kq+aOoCLM3rw==
-=poFu
------END PGP SIGNATURE-----
-
---Sig_/qWyPK7U0zwDAqBtVDW=jkFv--
 
