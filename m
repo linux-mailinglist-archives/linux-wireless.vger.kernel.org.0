@@ -1,86 +1,85 @@
-Return-Path: <linux-wireless+bounces-25512-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25513-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5C9B06D3E
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 07:33:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBD6B06D3F
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 07:33:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F51050009E
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 05:33:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA0DB5001CB
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 05:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B96F2E6D2D;
-	Wed, 16 Jul 2025 05:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667302E7634;
+	Wed, 16 Jul 2025 05:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="t4BC1SWw"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="X33qzvLZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838AB2E7BB2
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 05:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B362E7BA9
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 05:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752644027; cv=none; b=KpNe2Dz6sFpTd1A8YNVS+G/JDK+D74VBz/ntJU37w+1MHrdBFhGv+9fhGcoN8ugSXRELGDsrLPU6g0ijCgpSG/n+0ZsUrnIrM3oScQrR0KcukpJ0uwJjiC65mVXskY9WjbWw1QiNQNrdhVUjnM1e76XgI08X6orWFAtKR4niyLY=
+	t=1752644030; cv=none; b=GS7BGRkB5DU2gpWj8fMJ6GbXyQlXP4G9LDbngUUJ9npVupG6f3YQgYrje/VtTLgvBy+kM6Ry3m0QtTw05jT4Ug0yv8jGOagOLrkAMulR1G4xc+SKJYfZwCOkAe6ZSsCPhbaiPrAjK2HJK57XdKiXMmS0TjqyNfGGmyuxiezxDxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752644027; c=relaxed/simple;
-	bh=rIWUwAzP4Qh9EozFaPTKy/JqyKPDOw+VUG+XjwZ4lhA=;
+	s=arc-20240116; t=1752644030; c=relaxed/simple;
+	bh=ePODAOINBVPi1dLzYiNrCY7n3yzwrTgi7JrVgCAB4i4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CbnZxQIo3SOqTYAdv6yXNBbt6Ko3GWQAY7qC3rsNNl+LRllGUiVPGUcwYaw777lOGIwzr0NQH6TDG64HPE/pjpyzgqihgSOmpDYVoJHq1yLWsZb2qWXWfvGdS1a74wSps1NDHkgUyOlKfmaigdgcHcoK642HzipVvDhNrIsWHZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=t4BC1SWw; arc=none smtp.client-ip=209.85.215.181
+	 MIME-Version; b=RIRiJoRHVszOhRkEEc1Cr1lQR1MZkpzCTHrURMOO9XnZnDXShqZQzl4xMZ4tHAC1Y6EvNRqAW/+nX8P+Q5OlU79HKDPsOjZuKSS31reft0CNiXOwn+dan4/30DMMwvM7iA42QzWWIEfg8s4kyJgro9WXzfn8sgpgKIMjgPzirZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=X33qzvLZ; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b271f3ae786so4694740a12.3
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 22:33:45 -0700 (PDT)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2350fc2591dso5230545ad.1
+        for <linux-wireless@vger.kernel.org>; Tue, 15 Jul 2025 22:33:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1752644025; x=1753248825; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1752644028; x=1753248828; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LqtVwZSeRCA6cHFdtdQSheaDrzGMyuYxXxg+/T7uhow=;
-        b=t4BC1SWwSamLANU+e6T2sPp4yGNuyY5ibtU0SC0Mbj06WLvyehgNJUq0Du4dbEbuoH
-         mLaotJdKQG2lsT2+Een04obUAsjwE6otiIp3RJTYDoDzzS2g5LjjmEef5S3PX+JcQQLB
-         gPjWz0EfyCefetDe62aKKJMBrw6P79/D/RzJ2f2Gd65VUOKzzDWmrSeDJsqmCC8BIaJI
-         DVZuh2DhRFLrXbvjEIZWju49Y97b3xqmOFKUEFXJfhRubMnGEonppBSQwjUyvpP0nXRV
-         yhVi6HuMdUUeWQPZVDyvumwhzkLan5gqVnQ3uuvlzhXLMB/hE3itIo+8x3sMus6gGQCF
-         4YyQ==
+        bh=1owtfS7EFiNYiyz3yGZbKzDjqZdfeO+pxLURPVkbAzM=;
+        b=X33qzvLZ1bLamJ8F+vFHNf1/pZZ29JmzcRFXvtBoexEosssILLJzihVy6Ns96rXOvq
+         Vm1+XIt4K+z1kbrwPDw2qTQ63U48c5hNgVpwltlwl9LnG2Fpyy12qASXQZrOTGpoub6I
+         9p4zk+irtmKc8XMGZZ5w+IX2ObaAMMwZi3plLt1r9q1jUV/1w3Dmb8bsNpfb8PCnv9b6
+         tUcUEpujPgdABaTWQ1xyWy5cakmPuPOQwZEh+/pGun2yIa/jdIzW3RctzsCOc10hrcBT
+         OnSHBTCXvxHML1iaMAKPGd8rI22RxRzbrIZE3q4cFeX6Rxk1oMhvb/vavGZ6gIXJfRuF
+         ocgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752644025; x=1753248825;
+        d=1e100.net; s=20230601; t=1752644028; x=1753248828;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LqtVwZSeRCA6cHFdtdQSheaDrzGMyuYxXxg+/T7uhow=;
-        b=Xcnuc3hQdCb01ECC72qwQ4tTJh6pW8j2TUMHg35Fp3sQL2IVcnwm0nluQxpKg/Spho
-         YvKeZtdi7GkpoKdLQ0Qk70XP3ZeygDfYFwASEZHV4hsj1REu4mD7CsiiIqPO+65U+IoH
-         yG5IHZKPnTo6AQtazAr8f4xoJe49epq2CeO6L2mqB8q8nnaF2KEhc/A7F1Ak/Njrf9Np
-         ID7cNm3ZWW1/3fkIRK4M2m3jdPwTT7/DCFmFYDuqwgODfa8UdlEpCgqqXtGFf/drgOnz
-         xyZZsnbK7zDTstKTK7KRoZkvxdKEVRwb0wCzD//ge+vg7lLO+10PnuzhuwOHJFQvNbtO
-         tGJA==
-X-Gm-Message-State: AOJu0YxodGyN+tIOoXJdi45pY1enwQrnEfozUmJldcNPPmA8peUC0F5j
-	Xlo7H/9ckqp36fpV+a3qoDh+mzc264jf7/jUFSWAad/K07RGYmfaMTab0l8j/gH2UfP7HJGH/wv
-	L6mDuTfI=
-X-Gm-Gg: ASbGncteXvBp1xiZ/MVPDgt0ba5YgWnfzURvKmqrNzNyOsSym3LWXeHE+tWzm5FiNdu
-	IKXKfduTcIRw7QF8K1fD7LaY11XPxu+kJXm1jscCD8kEpIOZerMWK4tsVI0+XxNAoJzIohFSr04
-	KO877i/h5DZBrZj1YDh/bAhMCdeqSsg0GOS3hQBOrHkWkfsLiwgi3CSNeHcLN+VDgOmXO5Z9xIt
-	mLQ6JAJw2Aa/s9efJOLJpdB823X80h0xeWNh8DjkGhxjtWlgFft7ceReaoKjSVxzA/4C7J8felj
-	IHzSwkfIWYa3U6ueT9zkFalPuJyMLHPtWxGCG1rFMUpDwMYEHlmDNzDaisBtkk3dMC8j9EOCpd5
-	k3ZVGxHLBQ7kzC3HKmqevUY5EGV0S+YAxggTKafA=
-X-Google-Smtp-Source: AGHT+IHa37psyQqOnrarFU7KoY7zq01ll3zaHYJiHFD1kLgWPMIeiKZHlVEOo/HyvvF0ITbKwbcN5w==
-X-Received: by 2002:a17:90b:3f8d:b0:316:d69d:49fb with SMTP id 98e67ed59e1d1-31c9e70915amr3081625a91.14.1752644024632;
-        Tue, 15 Jul 2025 22:33:44 -0700 (PDT)
+        bh=1owtfS7EFiNYiyz3yGZbKzDjqZdfeO+pxLURPVkbAzM=;
+        b=cnQ/ttl71wAMhg0ozNG6zLHNe2Dmtbjxuz71yAikM9zcQ9KsrIdDo1BsihXGLvgOqN
+         wiDgtQDxb97GBHpDUqKc5RWP09WQjl6Rp+KsVz1idgq54iRSSJX/IiTmj9JF7GWBfuQT
+         OLCPE1jCbD6ClfOZsC7QjDYLwwLl8JgsrYsAmgIos3ZQegm9LQVDVplwiotrYZpBNJIj
+         nqoduuFb1Ws1GEYQnYxdT79lLa7+JeNq1/K0DTnzpI7ZOI9I93F63IiLqwY21Q4AbO6j
+         M6WSbfush1t2usyh7qJaDv/P4R6Z9KgiuWpOt4nw42Q1kmCxY6RtUwAZjAEsPcbqNMod
+         2NWA==
+X-Gm-Message-State: AOJu0YzVp0ivS0Xj/ZCoycNyhMUMzP8HrQ9PKOP7Iqon/A6xORpMUDQX
+	awcHv4E2zVuxo9i99Z5din7qidDok7tRgZlN3cxH1QIM9rBNuKzH4C7n7Y9vHfoMTqs=
+X-Gm-Gg: ASbGncshg3wqajgGRKc3GxGKduDD1LzWkK8HyNlctxUB93X++TOzGAm/SNTZ/zYWktk
+	3Ngv8XvYKh2W6ziNDvQA40p4jeP7EQ7XfZc24Qpp3kOmdVmPp1G9MJxk/5+q+wxWNfVmjgGYWQb
+	71FdlxIbkFruOwbQlMzbbOnFq78CiEYMjIwBTbctZuVOIqS++6hDD5/p8NIJRm2PqhzXYgrNLGr
+	ZzgqUxNN77LUTGVUsKMQZjABJ//xQU5EezdNr/1yNiWeywqkAABQVAza0lQA0+ZR5LWXMjYvhls
+	kYLlQiIaxtcCb09Tj34UgdvmDbGgLJ6TaMRWDB++SnrtymKyAXH0mrW4LR5gFgKVJcZl0q1uc6n
+	F3PfErGzPGEtPpo1zJLidrwG4gxPUzN+G5rx6GZMfHBItL8i5nw==
+X-Google-Smtp-Source: AGHT+IFfpHkGoTdADDUUDdLSaYztHO0htQOdBQiPOVJBaMDY7XI0ZtV/Zq9thrMzou5/WMYaSCYG2g==
+X-Received: by 2002:a17:903:230f:b0:232:609:86c9 with SMTP id d9443c01a7336-23e1a43ad9amr79791815ad.9.1752644027906;
+        Tue, 15 Jul 2025 22:33:47 -0700 (PDT)
 Received: from mma-H9MHD44.lan ([101.180.88.40])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c9f1ba792sm580382a91.5.2025.07.15.22.33.42
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c9f1ba792sm580382a91.5.2025.07.15.22.33.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Jul 2025 22:33:44 -0700 (PDT)
+        Tue, 15 Jul 2025 22:33:47 -0700 (PDT)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	arien.judge@morsemicro.com,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Subject: [wireless-next v2 3/4] wifi: mac80211: support initialising current short beacon index
-Date: Wed, 16 Jul 2025 15:32:53 +1000
-Message-ID: <20250716053254.439698-4-lachlan.hodges@morsemicro.com>
+Subject: [wireless-next v2 4/4] wifi: mac80211: support returning the S1G short beacon skb
+Date: Wed, 16 Jul 2025 15:32:54 +1000
+Message-ID: <20250716053254.439698-5-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250716053254.439698-1-lachlan.hodges@morsemicro.com>
 References: <20250716053254.439698-1-lachlan.hodges@morsemicro.com>
@@ -92,154 +91,174 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce the sb_count variable which tracks the number of
-beacon intervals until the next long beacon. Similarly to the DTIM
-count, initialise the current index into the long beacon period
-using the current TSF. Utilise the same TSF value used to initialise
-the DTIM count to ensure they are in sync as its common for the long
-beacon period and DTIM period to be equal.
+When short beaconing is enabled, check the value of the sb_count
+to determine whether we are to send a long beacon or short beacon.
+sb_count represents the number of short beacons until the next
+long beacon, where if its value is 0 we are to send a long beacon.
+The value is then reset to the long beacon period, which represents
+the number of beacon intervals between each long beacon. The decrement
+process follows the same cadence as the decrement of the DTIM count value.
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
 v1 -> v2:
 
-- Rely on existing beacon_int and dtim_period values rather then
-  selecting the short variants (removed).
+- short_beacon_period -> long_beacon_period
 
 ---
- net/mac80211/cfg.c            |  8 +++++++-
- net/mac80211/debugfs_netdev.c |  2 +-
- net/mac80211/ieee80211_i.h    |  6 +++---
- net/mac80211/mesh.c           |  2 +-
- net/mac80211/util.c           | 31 ++++++++++++++++++++++++++++---
- 5 files changed, 40 insertions(+), 9 deletions(-)
+ net/mac80211/tx.c | 104 +++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 93 insertions(+), 11 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index aeceac5747b6..8fb73952bf39 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1395,6 +1395,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 	struct ieee80211_link_data *link;
- 	struct ieee80211_bss_conf *link_conf;
- 	struct ieee80211_chan_req chanreq = { .oper = params->chandef };
-+	u64 tsf;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
-@@ -1624,7 +1625,12 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 		goto error;
- 	}
- 
--	ieee80211_recalc_dtim(local, sdata);
-+	tsf = drv_get_tsf(local, sdata);
-+	ieee80211_recalc_dtim(sdata, tsf);
-+
-+	if (link_conf->s1g_short_beaconing)
-+		ieee80211_recalc_sb_count(sdata, tsf);
-+
- 	ieee80211_vif_cfg_change_notify(sdata, BSS_CHANGED_SSID);
- 	ieee80211_link_info_change_notify(sdata, link, changed);
- 
-diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
-index 54c479910d05..1dac78271045 100644
---- a/net/mac80211/debugfs_netdev.c
-+++ b/net/mac80211/debugfs_netdev.c
-@@ -704,7 +704,7 @@ static ssize_t ieee80211_if_parse_tsf(
- 		}
- 	}
- 
--	ieee80211_recalc_dtim(local, sdata);
-+	ieee80211_recalc_dtim(sdata, drv_get_tsf(local, sdata));
- 	return buflen;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 6fa883a9250d..d59cf87c6d96 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5290,14 +5290,14 @@ ieee80211_beacon_add_mbssid(struct sk_buff *skb, struct beacon_data *beacon,
  }
- IEEE80211_IF_FILE_RW(tsf);
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 47b51c7eb09c..297ae35a1e79 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -314,6 +314,7 @@ struct ps_data {
- 	atomic_t num_sta_ps; /* number of stations in PS mode */
- 	int dtim_count;
- 	bool dtim_bc_mc;
-+	int sb_count; /* num short beacons til next long beacon */
- };
  
- struct ieee80211_if_ap {
-@@ -2740,9 +2741,8 @@ void ieee80211_dfs_radar_detected_work(struct wiphy *wiphy,
- 				       struct wiphy_work *work);
- int ieee80211_send_action_csa(struct ieee80211_sub_if_data *sdata,
- 			      struct cfg80211_csa_settings *csa_settings);
--
--void ieee80211_recalc_dtim(struct ieee80211_local *local,
--			   struct ieee80211_sub_if_data *sdata);
-+void ieee80211_recalc_sb_count(struct ieee80211_sub_if_data *sdata, u64 tsf);
-+void ieee80211_recalc_dtim(struct ieee80211_sub_if_data *sdata, u64 tsf);
- int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
- 				 const struct cfg80211_chan_def *chandef,
- 				 enum ieee80211_chanctx_mode chanmode,
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index d00d9d413c5c..a4a715f6f1c3 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1202,7 +1202,7 @@ int ieee80211_start_mesh(struct ieee80211_sub_if_data *sdata)
- 		return -ENOMEM;
- 	}
- 
--	ieee80211_recalc_dtim(local, sdata);
-+	ieee80211_recalc_dtim(sdata, drv_get_tsf(local, sdata));
- 	ieee80211_link_info_change_notify(sdata, &sdata->deflink, changed);
- 
- 	netif_carrier_on(sdata->dev);
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 0d85a382746f..d5dbfd37dd85 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3913,10 +3913,8 @@ int ieee80211_parse_p2p_noa(const struct ieee80211_p2p_noa_attr *attr,
- }
- EXPORT_SYMBOL(ieee80211_parse_p2p_noa);
- 
--void ieee80211_recalc_dtim(struct ieee80211_local *local,
--			   struct ieee80211_sub_if_data *sdata)
-+void ieee80211_recalc_dtim(struct ieee80211_sub_if_data *sdata, u64 tsf)
+ static struct sk_buff *
+-ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
+-			struct ieee80211_vif *vif,
+-			struct ieee80211_link_data *link,
+-			struct ieee80211_mutable_offsets *offs,
+-			bool is_template,
+-			struct beacon_data *beacon,
+-			struct ieee80211_chanctx_conf *chanctx_conf,
+-			u8 ema_index)
++__ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
++			  struct ieee80211_vif *vif,
++			  struct ieee80211_link_data *link,
++			  struct ieee80211_mutable_offsets *offs,
++			  bool is_template,
++			  struct beacon_data *beacon,
++			  struct ieee80211_chanctx_conf *chanctx_conf,
++			  u8 ema_index)
  {
--	u64 tsf = drv_get_tsf(local, sdata);
- 	u64 dtim_count = 0;
- 	u32 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
- 	u8 dtim_period = sdata->vif.bss_conf.dtim_period;
-@@ -3954,6 +3952,33 @@ void ieee80211_recalc_dtim(struct ieee80211_local *local,
- 	ps->dtim_count = dtim_count;
+ 	struct ieee80211_local *local = hw_to_local(hw);
+ 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
+@@ -5358,6 +5358,80 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
+ 	return skb;
  }
  
-+/*
-+ * Given a long beacon period, calculate the current index into
-+ * that period to determine the number of TSBTTs until the next TBTT.
-+ * It is completely valid to have a short beacon period that differs
-+ * from the dtim period (i.e a TBTT thats not a DTIM).
-+ */
-+void ieee80211_recalc_sb_count(struct ieee80211_sub_if_data *sdata, u64 tsf)
++static bool ieee80211_s1g_need_long_beacon(struct ieee80211_sub_if_data *sdata,
++					   struct ieee80211_link_data *link)
 +{
-+	u32 sb_idx;
-+	struct ps_data *ps = &sdata->bss->ps;
-+	u16 lb_period = sdata->vif.bss_conf.s1g_long_beacon_period;
-+	u32 beacon_int = sdata->vif.bss_conf.beacon_int * 1024;
++	struct ps_data *ps = &sdata->u.ap.ps;
 +
-+	/* No mesh / IBSS support for short beaconing */
-+	if (tsf == -1ULL || !lb_period ||
-+	    (sdata->vif.type != NL80211_IFTYPE_AP &&
-+	     sdata->vif.type != NL80211_IFTYPE_AP_VLAN))
-+		return;
++	if (ps->sb_count == 0)
++		ps->sb_count = link->conf->s1g_long_beacon_period - 1;
++	else
++		ps->sb_count--;
 +
-+	/* find the current TSBTT index in our lb_period */
-+	do_div(tsf, beacon_int);
-+	sb_idx = do_div(tsf, lb_period);
-+
-+	/* num TSBTTs until the next TBTT */
-+	ps->sb_count = sb_idx ? lb_period - sb_idx : 0;
++	return ps->sb_count == 0;
 +}
 +
- static u8 ieee80211_chanctx_radar_detect(struct ieee80211_local *local,
- 					 struct ieee80211_chanctx *ctx)
- {
++static struct sk_buff *
++ieee80211_s1g_short_beacon_get(struct ieee80211_hw *hw,
++			       struct ieee80211_vif *vif,
++			       struct ieee80211_link_data *link,
++			       struct ieee80211_chanctx_conf *chanctx_conf,
++			       struct s1g_short_beacon_data *sb,
++			       bool is_template)
++{
++	struct ieee80211_local *local = hw_to_local(hw);
++	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
++	struct ieee80211_if_ap *ap = &sdata->u.ap;
++	struct sk_buff *skb;
++
++	skb = dev_alloc_skb(local->tx_headroom + sb->short_head_len +
++			    sb->short_tail_len + 256 +
++			    local->hw.extra_beacon_tailroom);
++	if (!skb)
++		return NULL;
++
++	skb_reserve(skb, local->tx_headroom);
++	skb_put_data(skb, sb->short_head, sb->short_head_len);
++
++	ieee80211_beacon_add_tim(sdata, link, &ap->ps, skb, is_template);
++
++	if (sb->short_tail)
++		skb_put_data(skb, sb->short_tail, sb->short_tail_len);
++
++	ieee80211_beacon_get_finish(hw, vif, link, NULL, NULL, skb,
++				    chanctx_conf, 0);
++	return skb;
++}
++
++static struct sk_buff *
++ieee80211_beacon_get_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++			struct ieee80211_link_data *link,
++			struct ieee80211_mutable_offsets *offs,
++			bool is_template, struct beacon_data *beacon,
++			struct ieee80211_chanctx_conf *chanctx_conf,
++			u8 ema_index, struct s1g_short_beacon_data *s1g_sb)
++{
++	struct sk_buff *skb = NULL;
++	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
++
++	if (!vif->cfg.s1g || !link->conf->s1g_short_beaconing || !s1g_sb)
++		return __ieee80211_beacon_get_ap(hw, vif, link, offs,
++						 is_template, beacon,
++						 chanctx_conf, ema_index);
++
++	if (ieee80211_s1g_need_long_beacon(sdata, link)) {
++		skb = __ieee80211_beacon_get_ap(hw, vif, link, offs,
++						is_template, beacon,
++						chanctx_conf, ema_index);
++	} else {
++		skb = ieee80211_s1g_short_beacon_get(hw, vif, link,
++						     chanctx_conf, s1g_sb,
++						     is_template);
++	}
++
++	return skb;
++}
++
+ static struct ieee80211_ema_beacons *
+ ieee80211_beacon_get_ap_ema_list(struct ieee80211_hw *hw,
+ 				 struct ieee80211_vif *vif,
+@@ -5381,7 +5455,7 @@ ieee80211_beacon_get_ap_ema_list(struct ieee80211_hw *hw,
+ 			ieee80211_beacon_get_ap(hw, vif, link,
+ 						&ema->bcn[ema->cnt].offs,
+ 						is_template, beacon,
+-						chanctx_conf, ema->cnt);
++						chanctx_conf, ema->cnt, NULL);
+ 		if (!ema->bcn[ema->cnt].skb)
+ 			break;
+ 	}
+@@ -5410,6 +5484,7 @@ __ieee80211_beacon_get(struct ieee80211_hw *hw,
+ 	struct ieee80211_sub_if_data *sdata = NULL;
+ 	struct ieee80211_chanctx_conf *chanctx_conf;
+ 	struct ieee80211_link_data *link;
++	struct s1g_short_beacon_data *s1g_short_bcn = NULL;
+ 
+ 	rcu_read_lock();
+ 
+@@ -5431,6 +5506,13 @@ __ieee80211_beacon_get(struct ieee80211_hw *hw,
+ 		if (!beacon)
+ 			goto out;
+ 
++		if (vif->cfg.s1g && link->conf->s1g_short_beaconing) {
++			s1g_short_bcn =
++				rcu_dereference(link->u.ap.s1g_short_beacon);
++			if (!s1g_short_bcn)
++				goto out;
++		}
++
+ 		if (ema_beacons) {
+ 			*ema_beacons =
+ 				ieee80211_beacon_get_ap_ema_list(hw, vif, link,
+@@ -5451,8 +5533,8 @@ __ieee80211_beacon_get(struct ieee80211_hw *hw,
+ 
+ 			skb = ieee80211_beacon_get_ap(hw, vif, link, offs,
+ 						      is_template, beacon,
+-						      chanctx_conf,
+-						      ema_index);
++						      chanctx_conf, ema_index,
++						      s1g_short_bcn);
+ 		}
+ 	} else if (sdata->vif.type == NL80211_IFTYPE_ADHOC) {
+ 		struct ieee80211_if_ibss *ifibss = &sdata->u.ibss;
 -- 
 2.43.0
 
