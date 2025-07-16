@@ -1,129 +1,162 @@
-Return-Path: <linux-wireless+bounces-25532-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25533-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83897B0713F
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 11:10:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 733EBB071BC
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 11:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 904DF1AA1D50
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 09:10:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 679217B7126
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 09:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9712028850E;
-	Wed, 16 Jul 2025 09:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6C82F0E5E;
+	Wed, 16 Jul 2025 09:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="pXJ8oMDb"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Hlx14o4A"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFA52F0C5F
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 09:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487FA2F1987
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 09:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752656906; cv=none; b=TWobNphj7shSdXv80UDCvauS4HojBUbuoM3M2jtSxyf8ywGhnoH/5KqoCtiPd3TG6jtVzJbRq3IFD1ko1IoJ/qeYwKrWBbp1axXcguhEzCZkxu066o1xzu7etaMdZQfWmfIstWhB2m9Uw1iDdgMQ9YDwA6RDy+Kt0SeAQ5Gcy5k=
+	t=1752658327; cv=none; b=l7vHoxGzPhYS1sizXcX6HlwZtp+q+UlNJYtk1EYPvnFvBLa/aG36vDt9vDxWjz1JXcJPwDghnBaPYA1Msll3goAeRf661MFjpF7n+DgH92VWvttnoN2IAnVwmCUJzF2rWHjgjoDO2pI1lZFLhEdiGNu/WhLXSQXezcRNWTbIgNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752656906; c=relaxed/simple;
-	bh=2AgMZz8+zVAQYsxFA39m0xRpEFpTDOvzt2dddCFIbGA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rx+/xFM6ZTKo0cTZCc8dl7HKYA1wG0k+Mm28KqYZT+EXKFpoQ6PYuHU9++JSuBNy9FklgrMg/ntqRJgbHQUeY9JfpBd26iStqphoheq+2q5kPpQVEqd0IUsz3sv2kZz4n0b4vf4VJm0hXO0Re62ZYDVkw+BiDx7zSHkpIKKy3FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=pXJ8oMDb; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=kd7zlID236o0mW9tPUvKT8Ai/ovAOBvYU6eLD40GKzU=;
-	t=1752656905; x=1753866505; b=pXJ8oMDb6zW13wyzYcGZgkD3VeJrNMY2CkYs+LTx894xOAR
-	WPfmOYT47alLfFngi2e0cdqVjnp58h8AO5BctGspNGT9c3YuLMeA1Tr0GrD2MlvgSbRQyABsiQB3B
-	oJyCvWcvLZ7MnNgj0xfen5ewChNQqMpkocOQ/mWY2ZES4JzM1ph549zlFtOWuUAV1p6Oc1rLpCUv7
-	RcqJnGvwU/DTo8tUcsa/w1KalwHv2x/DkpFzbN09amecJMSA1ch5+uC2ySuiCh0qxLPquFgQbiXbC
-	e/xn9E8VY/MO5l/wa5vrpMuaHjZymNDO5EQzYE3nJj3jUsZz7Xk6awuFYayrl5hQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uby7O-000000080ky-25f0;
-	Wed, 16 Jul 2025 11:08:04 +0200
-Message-ID: <625f49d3963b7b5c17ebbb3c201633befc16a8ad.camel@sipsolutions.net>
-Subject: Re: [wireless-next v2 2/4] wifi: mac80211: support initialising an
- S1G short beaconing BSS
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Date: Wed, 16 Jul 2025 11:08:00 +0200
-In-Reply-To: <3rvtczj6c3svz273xdeowocxfx5cln4qsxqatkvtyfdujjwnrb@o3vc3ekryfrj> (sfid-20250716_110122_087167_0F5DB5C1)
-References: <20250716053254.439698-1-lachlan.hodges@morsemicro.com>
-	 <20250716053254.439698-3-lachlan.hodges@morsemicro.com>
-	 <d5d5cce69b8300cfe1de7c0b2109403a4735f309.camel@sipsolutions.net>
-	 <3rvtczj6c3svz273xdeowocxfx5cln4qsxqatkvtyfdujjwnrb@o3vc3ekryfrj>
-	 (sfid-20250716_110122_087167_0F5DB5C1)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1752658327; c=relaxed/simple;
+	bh=KoC0Gnw4tQwX09Mh2nGi8LKThqV4C12CyHgjb/vzF98=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lhJtpGScDFH3BbD7YFh1Nr8DlwlWXCFoSLMAerwF3bo7Nc/Ds0WMbGqIU6xz8UhfS9q641QI6aCwuWs9czoeI4vccX9vvGMkr7+MEl49ybRBQc0vmKXPSks4GfujJnsAcBga8Y6DiCaqbd2++EbiCh2Pp8AwKhX1OANCQaaCWjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Hlx14o4A; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4a77ffcb795so59864661cf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 02:32:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1752658324; x=1753263124; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=wYGQ+EFxCY8Kqn3gT5PrXpdAsZ+hUnOgnFL6azab8Q0=;
+        b=Hlx14o4AaAzgxNDBo/s01E5I1FwRWVVIfVz5qmvLKS0ZTW7//tVgdsYMyNQi93eTcH
+         HJYYdTZqX3+LZtO1oVP2TA32YyuzTgf2fOaQ/Y7MgVgEyi7EQi9nmBeu51f5GkzG2sXz
+         F4qiYl2SPLGyayiU4HGuNxm0y52HvVMcyHpgQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752658324; x=1753263124;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wYGQ+EFxCY8Kqn3gT5PrXpdAsZ+hUnOgnFL6azab8Q0=;
+        b=V4WmOpc11nRJkWbedKE36DxPSEZyC59UzEEJ2ayLp2eX8QgWIme6TlGHdQDha7O25h
+         ENcKtm+4i8PmZ29VgOGbVLYISiSW70BIT2Ker/FSVXX8A6uWM/7WAE68HDb9fntwS21E
+         kGmwHgnCaZSw+4KMVXwG6xevwCQaNWHMMm8VtKROgtGAaQhEUVL3M8pi5Fr5hb9eVohd
+         6YoXz4YcDChf83FiFqC5ruQaFPVVFV8mpm9k3nARWfo/ALobcF6FkaLHp25FzFjJxDR6
+         Eby5y3b4b0TGI6Zh696BRqwqh1XXNQk42DIdUZ7yHoXJ1DubNWBltk4m9AIEetu7pGfP
+         ybvA==
+X-Gm-Message-State: AOJu0YyKMeJayovZc+AhMUPv4PmZmeQth6WmnQABZajH+3dlds09CKSP
+	WMNwj6rPURNCs8ZiA1WMvY7FguuwA9MBfPlde62tWnLh7Dv9zWtAddK+/okBqZHU+w==
+X-Gm-Gg: ASbGncvzoLVkMg704IFrfV09xdSr5Y3vhgCLZh4LVjnxstMClLJff9iGe7NPNeZPgkF
+	ePQZf2tZXVQCob4iZ7veMFZrz+vK9erbB5m3kwDls1EWbAwh/jWLS35Tvyy37MR5DIZYiS4Ml/c
+	W40olJuhttUJNEIi/ztcYuZ1Hlef/vwFJSjBCsM7yzxtDbHS9KYihHyCgj3FwxEGZ1iSV+efvsy
+	a/258TjqO+jAjTvAwvuXffzpoqSKT8/yymQqY0SbMosr6bpH6THgR1wvpmMPHYXS2vngZUA6wvf
+	PYEW6GGZ3ymc5UAx1Klj8dcecOs+MmNmwufEa47GegFLmCOKdAEV1OnUfwS+LwbrnLUIKXpM7h3
+	i7fJdyUIWFfVlMJsfMMKK5OiEzZiRRCiNCdQ6jT64QixVTW402+oc
+X-Google-Smtp-Source: AGHT+IFp5F4xszFRerdbJYejB3SFipyFazjaIzmM2lu+vwPOe+RMBqGUutuRN/hMwoxSJmKwSFPD7w==
+X-Received: by 2002:a05:622a:4a16:b0:4ab:63b8:32da with SMTP id d75a77b69052e-4ab90c8eb25mr35840481cf.45.1752658323928;
+        Wed, 16 Jul 2025 02:32:03 -0700 (PDT)
+Received: from [10.176.2.178] ([192.19.176.227])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ab85620d80sm14469101cf.61.2025.07.16.02.32.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Jul 2025 02:32:03 -0700 (PDT)
+Message-ID: <caaaa276-71fa-403a-9557-b8d3edadeb81@broadcom.com>
+Date: Wed, 16 Jul 2025 11:32:01 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: brcmsmac: Remove const from tbl_ptr parameter in
+ wlc_lcnphy_common_read_table()
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, llvm@lists.linux.dev,
+ patches@lists.linux.dev, stable@vger.kernel.org
+References: <20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <20250715-brcmsmac-fix-uninit-const-pointer-v1-1-16e6a51a8ef4@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 2025-07-16 at 19:01 +1000, Lachlan Hodges wrote:
-> An interface can't be modified such that we can disable short beaconing
-> without tearing it down.
+On 7/16/2025 4:45 AM, Nathan Chancellor wrote:
+> A new warning in clang [1] complains that diq_start in
+> wlc_lcnphy_tx_iqlo_cal() is passed uninitialized as a const pointer to
+> wlc_lcnphy_common_read_table():
+> 
+>    drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c:2728:13: error: variable 'diq_start' is uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+>     2728 |                                                      &diq_start, 1, 16, 69);
+>          |                                                       ^~~~~~~~~
+> 
+> The table pointer passed to wlc_lcnphy_common_read_table() should not be
+> considered constant, as wlc_phy_read_table() is ultimately going to
+> update it. Remove the const qualifier from the tbl_ptr to clear up the
+> warning.
+> 
+> Cc: stable@vger.kernel.org
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2108
+> Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+> Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
 
-OK, that's fair. No objection to that, just wanted to clarify if that
-was what you intended.
-
-> > This should probably be on the cfg80211 patch, but now that I'm writing
-> > here ... If there is no new short beacon update cannot currently be set
-> > to true, I think? And also, right now by the policy you can't set the
-> > long_beacon_interval =3D=3D 1 from userspace, but what if you actively =
-want
-> > to _remove_ the short beacon entirely?
-> >=20
->=20
-> I initially did think so that this should be in a cfg80211 targetted
-> patch but since cfg.c since within mac80211 I did such. Can do either.
-
-Oh, sorry, what I said was confusing. I meant I should be _commenting_
-on the cfg80211 patch instead (about the logic of being able to remove
-the short beacon or not). But you clarified that above.
-
-> So you are correct, It's not legal to disable short beaconing without
-> tearing the interface down (as mentioned above). Thats why within
-> ieee80211_change_beacon() we check if we are short beaconing first
-> and if theres an update proceed with said update. This function should
-> really just be setting the new pointers and discarding the old pointers
-> if they exist i.e during an update.=20
-
-Right, makes sense.
-
-> Yea.. this seems to be a case of me stealing the beacon change code...
-> :).
-
-OK, I don't know what that code does off-hand, maybe there we have some
-other things that don't always need to change.
-
-> static int
-> ieee80211_set_s1g_short_beacon(struct ieee80211_sub_if_data *sdata,
-> 			       struct cfg80211_s1g_short_beacon *params,
-> 			       struct ieee80211_link_data *link)
-> {
-...
-
-> 	/* Memory layout: | struct | head | tail | */
-> 	new->short_head =3D ((u8 *)new) + sizeof(*new);
-
-You probably don't need the extra () around "(u8 *)new".
-
-> seems more robust, where we simply update the new beacon given
-> the parameters and discard the old, else if theres no update
-> we do nothing.
-
-Yeah, that looks good to me.
-
-johannes
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>> 
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
