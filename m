@@ -1,88 +1,87 @@
-Return-Path: <linux-wireless+bounces-25549-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25550-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00946B07BC9
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 19:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD164B07BE0
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 19:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53BE93A4B67
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 17:11:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34F6BA419C9
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Jul 2025 17:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED33D2F5499;
-	Wed, 16 Jul 2025 17:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650832F5C39;
+	Wed, 16 Jul 2025 17:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lcrgpN0R"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hPR9P7Vn"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1F12F547C
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 17:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C359B277030
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 17:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752685893; cv=none; b=lXZ2CJ0zQLuGkeh7r+RoybBTONKkzKLeY24zIOPA41ddv3xIrwRjUeqLb8hiqkusXNj0n56bQSNnvhxqxDFQX5qowmkJP0eMTHIMVpQl1LO5zo9ka6X8za0mwwL8J4NkHyiHud9QVSrkb+5UIW6MPhOtNUFGdb5nPc1lG9Le0PI=
+	t=1752686306; cv=none; b=QUofSeWxgFOJ6ez93MXGdayBIdSEF31rzbcXVbJrAHIJFvQrVkRChGwEAch+qV8unVFPboe0zvUUP8HTJ+p5D7rppoH5ogFblXp6C8aATs8i8iJNnAHaPjSDJGvTtl7R37Y/m2yEa0EOhhQUsKcy9cLdY+2B40RSJwNgfvBA/zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752685893; c=relaxed/simple;
-	bh=teMc9fjwUgbak3TeVa32zmM1K7Kuh41Gi+pH8Ju0/BM=;
+	s=arc-20240116; t=1752686306; c=relaxed/simple;
+	bh=6RzJT1L60GvhmajeO4pYpV61WuPIfNveFy1ljekZwUg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oChQFtadAebNlx9kVbweVL/5WeoUCg/2Y574FJa3P3lc2pDMx2ksyTzcpfXNIcZRLnWE5lBtIJ8bOuFYbnLqisQ9k8WP+Hxq4l3zl801Bj5jzuNXZoyCXKSm/dvZWkrBpjhLkUG77xyzGBr79QFL8DHlqE+DfkkOODI6+SGuj3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lcrgpN0R; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=QjKCBMMBofSmWKqiSIW5P1tNCNyRg81qiuRRPYLX3Sb+09HCicMNMnK1L603P8Te4JZwXZnb6QbP/o4eoox7FKu3IrGfkHFYzmViTa80MXBxHGzKBl5jbPJXTTPoozYwZ448NJV5vzmHEfaMLpCJLN82i7d0se9Gd9Ooz6hC+9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hPR9P7Vn; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56GGDgbK016545
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 17:11:31 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56GGDbff016003
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 17:18:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	AvZu+s6FPUG3iM8B2iDP144HoBABMQMyB2lUuofN4v8=; b=lcrgpN0RS21s/wFj
-	BA3V9E2v1JVAb0Jubcya9oPGT/MF+0yYlDwuJymmhDfnmwOBvvSZbbRcJCBu1TOY
-	8NLV+BAE+cMui13Nej2B0JwpSsfbb4p+XU1HEM8aFm6g/eSVLKdLXMhUan+Wo37U
-	LyaF8coJAdDXauV/J+qOph7zsKyDCWH2iAWQGHe/M6upStdCLSQNHLxJHs2xdLyA
-	3EyrsJuzQ5fqObKx9gfBbbjcyyVvdCO4R/aO/aN3jLhSi+KVjnO5pgQcPhEFwVp/
-	8OZdVTpXIZiVJPZLCb1QIh2yqciql6cFRNZ8xSj9ykqhbeAsK6/K1AvK9BPDslu2
-	Z0w+Ag==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47w5dyqqxr-1
+	/tMth6o7tHgbIUQxZkR6tUZ2rv+sepU1UeAb/Pu8vhE=; b=hPR9P7VnD6Vfboen
+	Oe0xd1Hbb1CL+U8J8zbXW/1QCBNPzds+NcaxleI45fPoewHe81S+KWfBgRSizcxH
+	h31zRd6dXlLR/y9Rm/X9XG/mF4YAC/sj3YFRp+4p+vjNhp18YNzx9bvF/iqPnMik
+	Ir3mQBdU6YFs+8JXvPZAJCglt7cY6IpMy45ButNyHot1hj5ldKfMLXbg+MgBIb0b
+	DQClV5cw5FosXR/mwchmdNA7PYTmjwNIrr/QfJpOvPxBKe/Ib1TYRrOc9CJkkh6b
+	Hm10V8eIPtpcTZxaskQCLL6LZV6yWsvU9cpzQiy2qpR94snWFQAbWNSOm1kKJAoe
+	9cxjfw==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47w5dyqrn2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 17:11:31 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2369dd58602so346705ad.1
-        for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 10:11:31 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 17:18:23 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-748e6457567so776885b3a.1
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Jul 2025 10:18:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752685890; x=1753290690;
+        d=1e100.net; s=20230601; t=1752686303; x=1753291103;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AvZu+s6FPUG3iM8B2iDP144HoBABMQMyB2lUuofN4v8=;
-        b=a6+g3l1KyYMOC669Q4ZONenf7zA3MtINe1cd9VPvLbj3wQ0VjoVdQr3sAwjsnWUxUE
-         uOEMBFdhTBaOUHo6tt9WDNbVbjLRhY8V3uKgDfC2homE2NGc44fe3oDW565tm/kZj4LY
-         EvhbAubKTS8GmdE6nxXO32tBTDgG32gbA4Je4GHIn30wEkaYqJft54Y+V7mDhLIGP98k
-         5+sQJWj+q5MKnUWQsc5Xvv4I//58n2wqUHqSMMqlMklzJE+vhTsk2+nXuggOf8YyWNP8
-         s1ALDM8S2Xgwm2Zed2K5Fb8YBz72QqH3oPhRsrj/jk0y3BEOZbNnHPB06uKpQQu7aF0Y
-         FvYg==
-X-Gm-Message-State: AOJu0Yx+vNh5COi89YpKwuO9rlGhXzn+uZX6tiWVrF/hdUIMcQrCXxVS
-	Z4TpsTcUAYihZUeWL/TYODl0wUtp9OyvoRJtQcUKFtrZiyTxgYyIRjQ8FSVSmfDifLtPRU4/rMg
-	NEOYghMh9YBHtFYb3gKYCsoRMuCWrI572aW9a9jmptIxCxYX13Jrge5P2Dj+gxTYSEDlvY1xzN4
-	b/Cw==
-X-Gm-Gg: ASbGnctptlS2FD3QR40JH1ZUxczkL1ut2ca86NqiBYlMWcpI0HMmluVYmL8T++a7FhD
-	R0ZINK+vPA3ZpCZs9s0zHEAEAok7FmoS3zKO/TnQxyNXgiH1shvNBuRIsjxXFH3BsG87dvAmOyI
-	9eFlth5DnceGP85J5Lm6BisvOGGzNK2ga4hm11s2Gksz2G/q4+m941W0o9XKnrLhoSe4xkWeyE8
-	alULSo6otyucP2lK13PTh37IUF24bZGAnuDWU+4a96zff4Y/JvAJN6c1ycNvvfC2N37Afr+lSXh
-	Eh5lPgEYzXg/UbihqJF5YjDQroUr4DLROjV5xuNE/oUSM0lMy/dBG6ohwSbj5zYuEI1+f2jd/MZ
-	W7GLepeApUJr8DpUWdj0=
-X-Received: by 2002:a17:903:1cf:b0:235:efbb:9539 with SMTP id d9443c01a7336-23e256b6e94mr60970165ad.17.1752685890508;
-        Wed, 16 Jul 2025 10:11:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHCaXQ8h/tJKVUb7+n8ZsAIn5RASnIJXRAkFzeIQw6HcoivPyubiz6hlD2vF/imJdL6JmfECw==
-X-Received: by 2002:a17:903:1cf:b0:235:efbb:9539 with SMTP id d9443c01a7336-23e256b6e94mr60969775ad.17.1752685890010;
-        Wed, 16 Jul 2025 10:11:30 -0700 (PDT)
+        bh=/tMth6o7tHgbIUQxZkR6tUZ2rv+sepU1UeAb/Pu8vhE=;
+        b=oCx5nb1kawvM6hdSoT5oUXp8NbnJ69B9iJG92RRwUrfpdY6ttb5Ak8jSVVH+ht10DP
+         5Vo68rP6BNiW/GhPu+o7t4gILUJFFOmnm2twULiksSLZY4FQURDqu1HgCmgVPdM0k54u
+         DPpKIYwhPV7YTcwXpbLi3qSRo/1fZrwDA0zevoV22s4rWjHMXqZGtynugVtVgKGS+jwb
+         7QVANnm4Pe2z2coESYqVFOtOv8tY6kBhXCsieIU/8awZ8rW3UT8B2+EOQgUpq1I1FKk+
+         7SiqlKFCAEbdB+GJzeJ8+MWFYmSYjpAXoEyoCrGCa5qUKErVY1CqlULdZM+RIJq55SSm
+         6IqQ==
+X-Gm-Message-State: AOJu0Yxn1dPHmjL6/YaV/KCUBqkJfEriVNQ6Cl8cpQgegIiiRUK0RSfg
+	qIshdlpqjoUtPMr4QK8/NTHxbDMlYwQWxsKCO/MRAyPjruNj/yV/wBAL4mPgKt2oaRz7jHblLSI
+	r5PMc2YjIlvtUIoZn0DH+8FEGoPJ3x/rOqTm5uKU3n4crZLgppCHI7McdA+5cmYG/SeFxTw==
+X-Gm-Gg: ASbGncsAxjMlJZXc0FDB9HOtq/22ahZqQVsYAfujERIRW7qsoImfLbP0yrLkAU4UcSe
+	WeFUVtd1JGtQSkn7wBiGWGm2dpPtrS5T8OWLlhdnbsB8Jj0gNy2LDGkLmpoLkgXP5ZaD+fRyAWo
+	EQMGSPC2w/ANz2d2IUrst6nwXwMPSBXjLcNY+S07A/Kw3Z2RokXD1nSl1cj2PPRk9ydoZH4kiSC
+	w+1Y8c6udjNyx6Pq6xBZLFVvGW6yI5tQrjfOVjeuoMCE9fXU9K8AIphcLdQTxoM2XLZfV4it2bA
+	VwPLFjN2nXfFBkNq8O2cm61oec6p41gaTafzoAMJdtoIDeOlZTwS6EZKT0+o4ZBAAzphF1Toe9s
+	bJ6OfXisVNmkR3fK72ac=
+X-Received: by 2002:a05:6a20:1584:b0:234:e109:6bdf with SMTP id adf61e73a8af0-2390c56e8bbmr294958637.19.1752686303070;
+        Wed, 16 Jul 2025 10:18:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF56y5nV1rAeM2TuaaRxByMhD0eKi4TFlVWOHGMOxWKdeVyu82Dt3msTx7dIP/gme5crNDFgg==
+X-Received: by 2002:a05:6a20:1584:b0:234:e109:6bdf with SMTP id adf61e73a8af0-2390c56e8bbmr294908637.19.1752686302511;
+        Wed, 16 Jul 2025 10:18:22 -0700 (PDT)
 Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de42abd8esm128205355ad.54.2025.07.16.10.11.28
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3bbe345f2esm13991621a12.0.2025.07.16.10.18.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Jul 2025 10:11:29 -0700 (PDT)
-Message-ID: <f3374104-684d-48c7-9e2d-e97dd48700e9@oss.qualcomm.com>
-Date: Wed, 16 Jul 2025 10:11:27 -0700
+        Wed, 16 Jul 2025 10:18:22 -0700 (PDT)
+Message-ID: <3dc23475-1c16-435b-9c6d-d2d7996280c4@oss.qualcomm.com>
+Date: Wed, 16 Jul 2025 10:18:20 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,67 +89,73 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] PCI/ASPM: Fix pci_enable_link_state*() APIs behavior
-To: manivannan.sadhasivam@oss.qualcomm.com,
-        Jeff Johnson
- <jjohnson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-        Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-        Nirmal Patel <nirmal.patel@linux.intel.com>,
-        Jonathan Derrick <jonathan.derrick@linux.dev>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ath12k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath10k@lists.infradead.org, Bjorn Helgaas <helgaas@kernel.org>,
-        ilpo.jarvinen@linux.intel.com, linux-arm-msm@vger.kernel.org,
-        linux-pci@vger.kernel.org,
-        Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-        Qiang Yu <qiang.yu@oss.qualcomm.com>
-References: <20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com>
+Subject: Re: linux-next: manual merge of the wireless-next tree with the
+ wireless tree
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Stephen Rothwell <sfr@canb.auug.org.au>, Kalle Valo <kvalo@kernel.org>
+Cc: Wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+References: <20250716135252.51125baa@canb.auug.org.au>
+ <4ee6758a49e6f01c5e42b2f7c27aff905ac07dfa.camel@sipsolutions.net>
 From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com>
+In-Reply-To: <4ee6758a49e6f01c5e42b2f7c27aff905ac07dfa.camel@sipsolutions.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: Twio3VQQjp9ky53tSbyqarj7bN1LrL1B
-X-Authority-Analysis: v=2.4 cv=RtXFLDmK c=1 sm=1 tr=0 ts=6877dd43 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=rhYh_zIkBfzxVmIspk8A:9
- a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE2MDE1NSBTYWx0ZWRfXwsPS5Lm7muvH
- iJ3n0Xtj1xvRizo6EaGKVmovYcmlgCAgNUi1ThGyDC5o3FzraUxOdVx83w+2n3cupHnbaIaW3El
- pECYEJh2DtJZGg9TqztJr/q88/G+3vo/0A4k942mMhclvdQPS8WPVIYenLEnyy2JnO9WmTNL59U
- jNKyhuov6EpG4VyllgUkTt8ulZhGm9Yqj8zwX9WMS13TRQ6cm86xBjvZaIdmb4dKOBX9pzw3zQe
- MxlDcv6UMaCiimWRMMSNhGLEO/Cidsb9ZgeZrnBeTktqlv6hD8tX3+s/1nb1CZ9yOjM2XPXgBfS
- jC4C+2eOv/MndVTlhmP5V+6trJhPXOG9WScVkhemAtjZuKdtbu4MFVmCXKDjVeXsjYJqnRTbxLe
- Sfi75ifDA3JqFIcud0RMQ49edEkqXpujlYAkUt2mzWgO9q3j3WhfnpYUPTP/f4bfkpaRM85R
-X-Proofpoint-GUID: Twio3VQQjp9ky53tSbyqarj7bN1LrL1B
+X-Proofpoint-ORIG-GUID: oJ6MgmzJSAhzu76C5fZ8ueGrARKMpSjO
+X-Authority-Analysis: v=2.4 cv=RtXFLDmK c=1 sm=1 tr=0 ts=6877dee0 cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=ULWNt2tdzX7OOLHh:21 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10
+ a=Swg7eHfTgBCftI4JXWkA:9 a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE2MDE1NSBTYWx0ZWRfXyALH32adTRqT
+ otrcDmC0GHhLgi8A1ALXEbud/X6x1WKtqhZlDg3rT1leOz2w9SWNkRTurR7hoOjtpRJd2fMrw0B
+ 7NQm6FT3/tgELu5UECNnSjrxaB23gjyMUxOJ/nGuGzFMhyZ4CVvNlA4f3/95BqN1dhHy7PtuktW
+ +h91bf8fGL3lPhdAOLs4MBi0g2Aaq5ytqCy0H5kaTn1rvR1XNYzWFvJ0QdFdHJfsvMntccKDiRn
+ gt6JjDk6/I2KJwjs+SKJmh+2V+hKW5LRKk7sugg1fRR+9turvrRY8RdNM3tlrSeFd1Jk+BXIhJV
+ 7flYTYZJagBrRvSoMu96DDu8LU9FU3vJ/764UnSRfDVGotta6wQ7z9pkDLnBVLnZ4UT16KveXzR
+ 7oiWXgeJWI5HFGzJ9eXITpAFd/7ducRRNZqDTdG2hvw6bBKC+x76t+OBkP9MOYb9T7ky+g5J
+X-Proofpoint-GUID: oJ6MgmzJSAhzu76C5fZ8ueGrARKMpSjO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-16_02,2025-07-16_02,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  adultscore=0 mlxscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
- impostorscore=0 malwarescore=0 clxscore=1015 mlxlogscore=405
+ impostorscore=0 malwarescore=0 clxscore=1015 mlxlogscore=999
  priorityscore=1501 phishscore=0 spamscore=0 classifier=spam authscore=0
  authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
  engine=8.19.0-2505280000 definitions=main-2507160155
 
-On 7/16/2025 5:56 AM, Manivannan Sadhasivam via B4 Relay wrote:
-> Merging Strategy
-> ================
+On 7/16/2025 1:59 AM, Johannes Berg wrote:
+> On Wed, 2025-07-16 at 13:52 +1000, Stephen Rothwell wrote:
+>> Hi all,
+>>
+>> Today's linux-next merge of the wireless-next tree got conflicts in:
+>>
+>>   drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
+>>   drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
+>>
+>> between commit:
+>>
+>>   5fde0fcbd760 ("wifi: iwlwifi: mask reserved bits in chan_state_active_bitmap")
+>>
+>> from the wireless tree and commit:
+>>
+>>   ea045a0de3b9 ("wifi: iwlwifi: add support for accepting raw DSM tables by firmware")
+>>
+>> from the wireless-next tree.
+>>
 > 
-> Even though there is no build dependency between PCI core and atheros patches,
-> there is a functional dependency. So I'd recommend creating an immutable branch
-> with PCI patches and merging that branch into both PCI and linux-wireless trees
-> and finally merging the atheros patches into linux-wireless tree.
+> Thanks for the heads-up.
 > 
-> If immutable branch seems like a hassle, then PCI core patches could get merged
-> for 6.17 and atheros patches can wait for 6.18.
+> I'll double-check, and give Jakub a heads-up, he's probably going to hit
+> this, unless I defer the wireless-next pull request. We'll figure it
+> out.
 
-I'm fine with either strategy. In the first case I'd merge the immutable
-branch into the ath tree. Note I plan to issue my final PR to linux-wireless
-for the 6.17 merge window on Monday, so we should close on this decision soon.
+I'm planning on sending an ath PR for the 6.17 merge window early next week,
+so I hope there will still be one more wireless-next PR.
 
 /jeff
 
