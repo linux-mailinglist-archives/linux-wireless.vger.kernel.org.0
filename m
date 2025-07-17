@@ -1,202 +1,174 @@
-Return-Path: <linux-wireless+bounces-25589-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25590-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A12CB087FD
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 10:34:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6A9B08908
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 11:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F148BA4023D
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 08:33:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CF3B567754
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 09:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959C4279798;
-	Thu, 17 Jul 2025 08:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5782C18A;
+	Thu, 17 Jul 2025 09:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RgwbKFlQ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="O8wYtx4a"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7711EF0B9;
-	Thu, 17 Jul 2025 08:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F60289829
+	for <linux-wireless@vger.kernel.org>; Thu, 17 Jul 2025 09:11:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752741239; cv=none; b=S5pl5FDyaVnHFq2KHbkzAWtVQkZqRE6MGK4snC2bo4V2GW728hDP+FwQ+dHr11If+YWpZWTvEUbmzQB5hmKskClID7GQ2JH+NQ7yVgjhjPzqfOEEkhw5loJBuEpQGS9aSZTodnDTlV0SuAMnHYXoeLjc4pvhD7krenSURFGso/Y=
+	t=1752743469; cv=none; b=WXj3p+cu+tQcIgKB67WDawbHxyceezU+70QydujXEXEo9bl6apkkbcaxv9baBiV4ZUJdAySd/N551V8QvrTgBgL4S7kRTNVTloEgFnbZDsh0k6CBU8RTAiFUxIsd9+Li2jSldbsVAryWl1UQP2YAaO1akBK5pWaDpwjSKwqheGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752741239; c=relaxed/simple;
-	bh=yLCrBOZm7Q9yTCeRS40yaLfmpTFicj1UCMT0A5NRQmA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DtzmL+GArHalHPuKC3Np4dtRy5bksteW4EvS78K6CJzU6eNHPAfJ2mOpsk10WNRQxCMmNA66zQk9RLHVYT2wtbScYPr9aUYRRh3DoJt8ypS44f846pmwll5WYEzavIqT0GG+1ThfnpxGkt+4ia4Rm3z+A+4QhN+/yGkdIf0yDbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RgwbKFlQ; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752741238; x=1784277238;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yLCrBOZm7Q9yTCeRS40yaLfmpTFicj1UCMT0A5NRQmA=;
-  b=RgwbKFlQNwRkttxuUiiaEJhBj2pBvwQeByE0F/0E83RlQiNjBo9+S/lD
-   tzgINOFJyFpjhtWV8yZTs/VQUvmVZfJ6pSJ/dUhHz1FO3SsyfDazgFz29
-   FREuPVbGKU0wVT1S69WHcwEaSC+zueH/oYzgYPUAjL4C5XmgemlOMWc/n
-   xEC2sGc+pt/tMzvVLJqftWezO4nEkYHymnwtgNPbWDQNuoNsazUtka0JY
-   kG4F3W4U3YZd2QegDYdNqGkY/LXu3x1gYVjLHyZeDU7lIkpu9qeXC84lI
-   goZTkFbRTSCvmvHjCmcRUyaVQUfnUDgXbilP0oo9g0QGjF4NXBqBjqNgI
-   w==;
-X-CSE-ConnectionGUID: X0Zl2uv8SfmSCywEJoeWEw==
-X-CSE-MsgGUID: An/PyB/yTt+Uoz3vG/4LVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="66456965"
-X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; 
-   d="scan'208";a="66456965"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 01:33:58 -0700
-X-CSE-ConnectionGUID: BZcksriHRYi9EJu3ijnb3A==
-X-CSE-MsgGUID: kJOhJ3oaRfqvVgtmVOxesg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; 
-   d="scan'208";a="163265703"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 17 Jul 2025 01:33:54 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ucK3s-000DNP-0o;
-	Thu, 17 Jul 2025 08:33:52 +0000
-Date: Thu, 17 Jul 2025 16:33:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexander Wilhelm <alexander.wilhelm@westermo.com>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 11/11] wifi: ath12k: fix endianness handling in QMI
- response
-Message-ID: <202507171640.30pUvpPv-lkp@intel.com>
-References: <20250716075100.1447352-12-alexander.wilhelm@westermo.com>
+	s=arc-20240116; t=1752743469; c=relaxed/simple;
+	bh=ttlr88v9rAB4t92QIODYz7AhNgMQClE1aB1jvpFGOE0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=KuQdAR1UUOUjg86y1iTZPS9gizGY8LRnErBKE9xLF39NLhz7kid2AWPSD6xY7tEjU9yVGv6T7kKA1EnKRRvol5Io8bUUI650lPewoNwme+AbP7qd+K8QbnWPCj13h7kiMkKGfHkAX7my4RMHJ0paHTwp6LsrV+WPhPzUJ2rtEnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=O8wYtx4a; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56H525bv008498;
+	Thu, 17 Jul 2025 09:10:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ONz0pazu5hz7FVc39q0rmuR3I+njG+EKcs2//uX+z0k=; b=O8wYtx4adglrEqqh
+	3Q0fu77lpm1EdtzgKC5wIqSI0s9JQTbhwqx+Frxn3npPYWRC/FN0esQkdxIFi8Sm
+	Tzw6+ihQh8W3vLfg+TGy3ZIABehhPwKvhQX8dxlz0u6gHnVRS0wmHjuhS1SBy+N9
+	XNkRNm9lMDB6mI0jnmY5NPnFOgA6/2GqyD+A2/0QYah9EYRjz9KfwUtypyfUNVxu
+	EdeHnzBOO5Q/9fGsaiTwu36c0kmfj+SXvyYS3ZEwgp6xTLUiuQ7UsSEntcexJ0Vf
+	KaXd/Ug4wxOvm8LutnEmR19/T29/YEEgMXb2v2i296dPD6VZiw1IhSj/xDosQyMS
+	Ohz2Vw==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47ufxb71us-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Jul 2025 09:10:58 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 56H9AvlP029000
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Jul 2025 09:10:57 GMT
+Received: from [10.152.205.125] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 17 Jul
+ 2025 02:10:55 -0700
+Message-ID: <95f682da-8be0-49fb-875e-4200ee348903@quicinc.com>
+Date: Thu, 17 Jul 2025 14:40:52 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250716075100.1447352-12-alexander.wilhelm@westermo.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: BPCC in per-STA profile in link reconfiguration response
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Mohan Kumar G
+	<mkumarg@qti.qualcomm.com>
+CC: Yuvarani V <yuvarani@qti.qualcomm.com>,
+        Manish Dharanenthiran
+	<manish.dharanenthiran@oss.qualcomm.com>,
+        Jouni Malinen <j@w1.fi>, <hostap@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>
+References: <aa29ba3015d533796516a1fcf8036aa1e0090624.camel@sipsolutions.net>
+Content-Language: en-US
+From: Mohan Kumar G <quic_mkumarg@quicinc.com>
+In-Reply-To: <aa29ba3015d533796516a1fcf8036aa1e0090624.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: wRWocwn0GWOHekckiUe5jbspCWUOgHPo
+X-Proofpoint-ORIG-GUID: wRWocwn0GWOHekckiUe5jbspCWUOgHPo
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE3MDA4MCBTYWx0ZWRfX6dOaoy0buTUp
+ Kif6Kg7TrL6A4IXAdV0vXLFtB+okqGOly0QfAF2Pnd464q+KhRNMqstBULsWvNLkHdoSIVu4OXY
+ 6KqJDKqwY1A+pl6WP+lkR7338uEWwEr4J+AleTOLwvORXlXSk4Lej1iMTd7jEXHddJWyjXh2b/6
+ m2SKq+bTT1XjTg5tSGo0VCA86GV0HGz79M6HpLMMj/BcdGYsFfIXADFP3s1iB3A7I3N1D1TbCaW
+ LnnK2/b+XUgMKeEvCfP/4Kls/5b9TsFsmAE0vaNhbiG1kaOoAsPJ90F3U+mS+GCfYm0xf5wBIBC
+ ESISU3CgczTQ588J8JwKSKghvqtgYQMQjW2wxv1cqXUAM1AkOT6ZsSWkAmaegMEromNJos5NWIA
+ VOiFjd8/MF/iWpZhc7aF/SFLc3oUS6LLmdS3yW0A/3hScG6Y5kgrGffGqW+AEpjPhn72eaMH
+X-Authority-Analysis: v=2.4 cv=Xc2JzJ55 c=1 sm=1 tr=0 ts=6878be22 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10
+ a=leKzB7mKujqwlGhS_bUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-17_01,2025-07-16_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0 priorityscore=1501 adultscore=0 mlxlogscore=939
+ phishscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0
+ clxscore=1011 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507170080
 
-Hi Alexander,
 
-kernel test robot noticed the following build warnings:
+On 7/15/2025 5:47 PM, Johannes Berg wrote:
+> Hi,
+>
+> Jouni pointed out to me that mac80211 currently requires the BSS
+> Parameter Change Count in the (Re)Association response multi-link
+> element per-STA profile(s), and via sharing the code, also in Link
+> Reconfiguration response, as you note in hostap commit ce8a121287bf ("AP
+> MLD: Include BPCC only in (Re)Associtiation Response frames").
+>
+>
+> Also, as you note there, the spec seems to suggest this should not be
+> the case, per section 9.4.2.322.2.4, where it is only in (re)association
+> response frames.
+>
+>
+> However, in the spec it seems to be explicitly required in section
+> 35.3.6.4:
+>
+>        If the AP MLD accepts link additions for one or more links, it
+>        shall include [...] For each Per-STA Profile subelement included
+>        in the BSS Multi-Link Element, [...] and the STA Profile field
+>        corresponding to that AP shall be complete and consists of all the
+>        elements and fields that would be included in the STA Profile
+>        field for that AP in a Reassociation Response frame that includes
+>        the corresponding AP as a reported AP [...].
+>
+> We had some discussion about this internally and think that this is
+> inconsistent in the spec, and also that the 35.3.6.4 text (that suggests
+> including the field) makes more sense, so we'd suggest clarifying the
+> spec in section 9.4.2.322.2.4.
+>
+>
+> It seems to me that your commit was more meant to fix the ML Probe
+> response (no disagreement here with that, I believe) than the Link
+> Reconfiguration response, so two questions:
+>
+>   1) Did you actually look into the various texts about it and decide
+>      that despite the seeming spec inconsistency, it should _not_ be
+>      present in Link Reconfiguration responses? As I said above, we
+>      think it makes more sense to have it present.
 
-[auto build test WARNING on ath/ath-next]
-[also build test WARNING on linus/master v6.16-rc6 next-20250716]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Hey Johannes,
+As you mentioned, this commit was initially intended to fix ML Probe 
+Response,
+which is why section 9.4.2.322.2.4 was referenced.
+However, after reviewing section 35.3.6.4 — which says that the
+Per-STA Profile in the ML Reconfiguration Response should be the
+same as in the Reassociation Response — I agree that it makes sense
+to include the BPCC in this case as well.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Wilhelm/wifi-ath12k-fix-endianness-handling-in-QMI-host-capability-request/20250716-162058
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git ath-next
-patch link:    https://lore.kernel.org/r/20250716075100.1447352-12-alexander.wilhelm%40westermo.com
-patch subject: [PATCH 11/11] wifi: ath12k: fix endianness handling in QMI response
-config: mips-randconfig-r123-20250717 (https://download.01.org/0day-ci/archive/20250717/202507171640.30pUvpPv-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 8.5.0
-reproduce: (https://download.01.org/0day-ci/archive/20250717/202507171640.30pUvpPv-lkp@intel.com/reproduce)
+>
+>   2) Are you aware of any APs that don't include it, which would mean
+>      regardless of that, mac80211 should accept both?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507171640.30pUvpPv-lkp@intel.com/
+As far as I know, I'm not aware of any APs in the market that don't 
+include it.
+Maybe people in community can comment on this. If such APs do exist, we 
+can consider accepting both.
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/soc/qcom/pdr_interface.c:612:22: sparse: sparse: restricted __le16 degrades to integer
-   drivers/soc/qcom/pdr_interface.c:613:22: sparse: sparse: restricted __le16 degrades to integer
-
-vim +612 drivers/soc/qcom/pdr_interface.c
-
-fbe639b44a8275 Sibi Sankar           2020-03-12  549  
-fbe639b44a8275 Sibi Sankar           2020-03-12  550  /**
-fbe639b44a8275 Sibi Sankar           2020-03-12  551   * pdr_restart_pd() - restart PD
-fbe639b44a8275 Sibi Sankar           2020-03-12  552   * @pdr:	PDR client handle
-fbe639b44a8275 Sibi Sankar           2020-03-12  553   * @pds:	PD service handle
-fbe639b44a8275 Sibi Sankar           2020-03-12  554   *
-fbe639b44a8275 Sibi Sankar           2020-03-12  555   * Restarts the PD tracked by the PDR client handle for a given service path.
-fbe639b44a8275 Sibi Sankar           2020-03-12  556   *
-fbe639b44a8275 Sibi Sankar           2020-03-12  557   * Return: 0 on success, negative errno on failure.
-fbe639b44a8275 Sibi Sankar           2020-03-12  558   */
-fbe639b44a8275 Sibi Sankar           2020-03-12  559  int pdr_restart_pd(struct pdr_handle *pdr, struct pdr_service *pds)
-fbe639b44a8275 Sibi Sankar           2020-03-12  560  {
-fbe639b44a8275 Sibi Sankar           2020-03-12  561  	struct servreg_restart_pd_resp resp;
-a161ffe4b87772 Tom Rix               2020-08-19  562  	struct servreg_restart_pd_req req = { 0 };
-fbe639b44a8275 Sibi Sankar           2020-03-12  563  	struct sockaddr_qrtr addr;
-fbe639b44a8275 Sibi Sankar           2020-03-12  564  	struct pdr_service *tmp;
-fbe639b44a8275 Sibi Sankar           2020-03-12  565  	struct qmi_txn txn;
-fbe639b44a8275 Sibi Sankar           2020-03-12  566  	int ret;
-fbe639b44a8275 Sibi Sankar           2020-03-12  567  
-fbe639b44a8275 Sibi Sankar           2020-03-12  568  	if (IS_ERR_OR_NULL(pdr) || IS_ERR_OR_NULL(pds))
-fbe639b44a8275 Sibi Sankar           2020-03-12  569  		return -EINVAL;
-fbe639b44a8275 Sibi Sankar           2020-03-12  570  
-fbe639b44a8275 Sibi Sankar           2020-03-12  571  	mutex_lock(&pdr->list_lock);
-fbe639b44a8275 Sibi Sankar           2020-03-12  572  	list_for_each_entry(tmp, &pdr->lookups, node) {
-fbe639b44a8275 Sibi Sankar           2020-03-12  573  		if (tmp != pds)
-fbe639b44a8275 Sibi Sankar           2020-03-12  574  			continue;
-fbe639b44a8275 Sibi Sankar           2020-03-12  575  
-fbe639b44a8275 Sibi Sankar           2020-03-12  576  		if (!pds->service_connected)
-fbe639b44a8275 Sibi Sankar           2020-03-12  577  			break;
-fbe639b44a8275 Sibi Sankar           2020-03-12  578  
-fbe639b44a8275 Sibi Sankar           2020-03-12  579  		/* Prepare req message */
-26bc7a6a0beed8 Len Baker             2021-08-08  580  		strscpy(req.service_path, pds->service_path, sizeof(req.service_path));
-fbe639b44a8275 Sibi Sankar           2020-03-12  581  		addr = pds->addr;
-fbe639b44a8275 Sibi Sankar           2020-03-12  582  		break;
-fbe639b44a8275 Sibi Sankar           2020-03-12  583  	}
-fbe639b44a8275 Sibi Sankar           2020-03-12  584  	mutex_unlock(&pdr->list_lock);
-fbe639b44a8275 Sibi Sankar           2020-03-12  585  
-fbe639b44a8275 Sibi Sankar           2020-03-12  586  	if (!req.service_path[0])
-fbe639b44a8275 Sibi Sankar           2020-03-12  587  		return -EINVAL;
-fbe639b44a8275 Sibi Sankar           2020-03-12  588  
-fbe639b44a8275 Sibi Sankar           2020-03-12  589  	ret = qmi_txn_init(&pdr->notifier_hdl, &txn,
-fbe639b44a8275 Sibi Sankar           2020-03-12  590  			   servreg_restart_pd_resp_ei,
-fbe639b44a8275 Sibi Sankar           2020-03-12  591  			   &resp);
-fbe639b44a8275 Sibi Sankar           2020-03-12  592  	if (ret < 0)
-fbe639b44a8275 Sibi Sankar           2020-03-12  593  		return ret;
-fbe639b44a8275 Sibi Sankar           2020-03-12  594  
-fbe639b44a8275 Sibi Sankar           2020-03-12  595  	ret = qmi_send_request(&pdr->notifier_hdl, &addr,
-fbe639b44a8275 Sibi Sankar           2020-03-12  596  			       &txn, SERVREG_RESTART_PD_REQ,
-fbe639b44a8275 Sibi Sankar           2020-03-12  597  			       SERVREG_RESTART_PD_REQ_MAX_LEN,
-fbe639b44a8275 Sibi Sankar           2020-03-12  598  			       servreg_restart_pd_req_ei, &req);
-fbe639b44a8275 Sibi Sankar           2020-03-12  599  	if (ret < 0) {
-fbe639b44a8275 Sibi Sankar           2020-03-12  600  		qmi_txn_cancel(&txn);
-fbe639b44a8275 Sibi Sankar           2020-03-12  601  		return ret;
-fbe639b44a8275 Sibi Sankar           2020-03-12  602  	}
-fbe639b44a8275 Sibi Sankar           2020-03-12  603  
-fbe639b44a8275 Sibi Sankar           2020-03-12  604  	ret = qmi_txn_wait(&txn, 5 * HZ);
-fbe639b44a8275 Sibi Sankar           2020-03-12  605  	if (ret < 0) {
-fbe639b44a8275 Sibi Sankar           2020-03-12  606  		pr_err("PDR: %s PD restart txn wait failed: %d\n",
-fbe639b44a8275 Sibi Sankar           2020-03-12  607  		       req.service_path, ret);
-fbe639b44a8275 Sibi Sankar           2020-03-12  608  		return ret;
-fbe639b44a8275 Sibi Sankar           2020-03-12  609  	}
-fbe639b44a8275 Sibi Sankar           2020-03-12  610  
-fbe639b44a8275 Sibi Sankar           2020-03-12  611  	/* Check response if PDR is disabled */
-fbe639b44a8275 Sibi Sankar           2020-03-12 @612  	if (resp.resp.result == QMI_RESULT_FAILURE_V01 &&
-fbe639b44a8275 Sibi Sankar           2020-03-12  613  	    resp.resp.error == QMI_ERR_DISABLED_V01) {
-fbe639b44a8275 Sibi Sankar           2020-03-12  614  		pr_err("PDR: %s PD restart is disabled: 0x%x\n",
-fbe639b44a8275 Sibi Sankar           2020-03-12  615  		       req.service_path, resp.resp.error);
-fbe639b44a8275 Sibi Sankar           2020-03-12  616  		return -EOPNOTSUPP;
-fbe639b44a8275 Sibi Sankar           2020-03-12  617  	}
-fbe639b44a8275 Sibi Sankar           2020-03-12  618  
-fbe639b44a8275 Sibi Sankar           2020-03-12  619  	/* Check the response for other error case*/
-fbe639b44a8275 Sibi Sankar           2020-03-12  620  	if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
-fbe639b44a8275 Sibi Sankar           2020-03-12  621  		pr_err("PDR: %s request for PD restart failed: 0x%x\n",
-fbe639b44a8275 Sibi Sankar           2020-03-12  622  		       req.service_path, resp.resp.error);
-fbe639b44a8275 Sibi Sankar           2020-03-12  623  		return -EREMOTEIO;
-fbe639b44a8275 Sibi Sankar           2020-03-12  624  	}
-fbe639b44a8275 Sibi Sankar           2020-03-12  625  
-fbe639b44a8275 Sibi Sankar           2020-03-12  626  	return 0;
-fbe639b44a8275 Sibi Sankar           2020-03-12  627  }
-9b09c0f289c5a8 Unnathi Chalicheemala 2023-09-22  628  EXPORT_SYMBOL_GPL(pdr_restart_pd);
-fbe639b44a8275 Sibi Sankar           2020-03-12  629  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> Thanks,
+> johannes
+>
 
