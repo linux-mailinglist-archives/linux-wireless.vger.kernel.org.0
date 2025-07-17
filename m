@@ -1,209 +1,135 @@
-Return-Path: <linux-wireless+bounces-25612-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25614-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD35B0913B
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 18:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD37EB091F4
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 18:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 040615A473F
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 16:01:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4FC916C64F
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 16:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0232F949E;
-	Thu, 17 Jul 2025 16:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75262FCE2B;
+	Thu, 17 Jul 2025 16:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gBMpdII8"
+	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="FdW3Kql3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8722FA65D;
-	Thu, 17 Jul 2025 16:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB211E5207
+	for <linux-wireless@vger.kernel.org>; Thu, 17 Jul 2025 16:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752768009; cv=none; b=EcF4dUyjsJ+mZLPpRqiVoO0WzGzn77r5nAB510WBD33t2ox8WARhuFHE5cSmGL8OH851tDa78cQS1JYqivaekzunoZk2nE5g7dbyowXicJhfwGGrUlztHaYRGTRwqaXWDf9eiOe925plf8nwgpqXcLwepEIfaADCbkfV9O2pVsg=
+	t=1752770119; cv=none; b=PeOYT+NYlS32na5Bam0U71IuIvG9LAWX1xKUizycsAtaFglemFOMGfoRrx3nDPW/WMMKai+JApMvYAib8GulZTvJuDiEgz1ispCUT6D+8+Xl9xwqgRGd3SjkAPxDnlA13SbwspTCPXesZusM/MjUvmZ0Mz4w8QuaWyqgiSuVpuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752768009; c=relaxed/simple;
-	bh=ozatPYm8SkCRErUJZAqo7DV6TZZ+7eY1RkGwfl3kkqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RY4Vk93ylDiQ/n+04GQ+53i1yX8ecCoMRnKPUBBwWE4OkUtd1ZBbPNFtv8AybJdJShtU6YzmFwSwa2mneksD+kzNlR9GHyxVlHEe1nwXUcy3FZsF/EVx005/ZXPooJOih9MKC5Ygzuzs/Y9Gp0jekgyZ1yent4B/+euycL8qNCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gBMpdII8; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752768008; x=1784304008;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ozatPYm8SkCRErUJZAqo7DV6TZZ+7eY1RkGwfl3kkqY=;
-  b=gBMpdII8leJoqx20gWOm0EuFjd9CWG8e4hcSyECr8ZTM8StgkccOpdFR
-   GtbUpI2y909DxEb5SnvvYk0ZN80R4ZqsIe1x5joJY1LI7h87VpDNitki4
-   CjV5wRMYkVKt/hcQA9aLZaiFuVQQ5Co5pbXmBxezZkWPPecjviZQf2yil
-   pRIpXBvzBEsB20ozg34NjNC1n6Uf0s96qMmAFWqn5vNPNfVQ8fLUSM5rV
-   WmlDhWIFpZrgsvtOx3BNO+dYCe0P0D2c34KMMnpLPd2pQI12dUchpz2+N
-   rmoI012qH+d3Sv521yYRVs5JbLrAz6uIuDu3UfiVUP1lsyhBjCgSQz2l2
-   Q==;
-X-CSE-ConnectionGUID: TBqp/MerR9KJHRBpiJPuFw==
-X-CSE-MsgGUID: XilDiSxZRnSGomzjdaaLHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="77585774"
-X-IronPort-AV: E=Sophos;i="6.16,319,1744095600"; 
-   d="scan'208";a="77585774"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 09:00:07 -0700
-X-CSE-ConnectionGUID: r095Z+45RpqpTaJi1g3AEg==
-X-CSE-MsgGUID: Nm1YwRngSc+K7tDnca0fbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,319,1744095600"; 
-   d="scan'208";a="157501256"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 17 Jul 2025 09:00:01 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ucR1a-000Dmh-0F;
-	Thu, 17 Jul 2025 15:59:58 +0000
-Date: Thu, 17 Jul 2025 23:59:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexander Wilhelm <alexander.wilhelm@westermo.com>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 07/11] wifi: ath12k: fix endianness handling in QMI bdf
- download
-Message-ID: <202507172333.LZcmFwWs-lkp@intel.com>
-References: <20250716075100.1447352-8-alexander.wilhelm@westermo.com>
+	s=arc-20240116; t=1752770119; c=relaxed/simple;
+	bh=0NFLL3me1XRe/ez3VDPXWm4Yf/vrm+BIForIRp/9Yo0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pRVrq4xUPzvmjhZ6V61aA+LR4JPdagNIrFEuXgIdUyV0o16/XIIL8ABk2ixVhwtwasAtyZPhDFk2B+22zUHjFBhREfwPEyTzxRLgSVXs6hvb7d8YZQ7IHBwKaKWE9HVwyf9/8rzx683j1XsehVfuK7smbS2fp922D277Wc1MlKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=FdW3Kql3; arc=none smtp.client-ip=5.252.227.236
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
+From: Alexander Wetzel <Alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+	s=wetzel-home; t=1752769689;
+	bh=0NFLL3me1XRe/ez3VDPXWm4Yf/vrm+BIForIRp/9Yo0=;
+	h=From:To:Cc:Subject:Date;
+	b=FdW3Kql3DqkNH7zAm/XHtyb2EFrV+MydNCb4zW8KkS/hzMwfOEa5S9LVLxAWOJ8CU
+	 3GF80BO24Lnkar9FN3VhS/LIQMj8Ab4yxDl6Ci75IWBrUsCEFnJabaXTrHKPYhMVZB
+	 QGq1Dwlz61fM6YRueSQqNEgy8h4ogvRoLAkLqhEI=
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	Alexander Wetzel <Alexander@wetzel-home.de>
+Subject: [PATCH wireless] wifi: cfg80211: Add missing lock in cfg80211_check_and_end_cac()
+Date: Thu, 17 Jul 2025 18:25:45 +0200
+Message-ID: <20250717162547.94582-1-Alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250716075100.1447352-8-alexander.wilhelm@westermo.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Alexander,
+Callers of wdev_chandef() must hold the wiphy mutex.
 
-kernel test robot noticed the following build warnings:
+But the worker cfg80211_propagate_cac_done_wk() never takes the lock.
+Which triggers the warning below with the mesh_peer_connected_dfs
+test from hostapd and not (yet) released mac80211 code changes:
 
-[auto build test WARNING on ath/ath-next]
-[also build test WARNING on linus/master v6.16-rc6 next-20250717]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+WARNING: CPU: 0 PID: 495 at net/wireless/chan.c:1552 wdev_chandef+0x60/0x165
+Modules linked in:
+CPU: 0 UID: 0 PID: 495 Comm: kworker/u4:2 Not tainted 6.14.0-rc5-wt-g03960e6f9d47 #33 13c287eeabfe1efea01c0bcc863723ab082e17cf
+Workqueue: cfg80211 cfg80211_propagate_cac_done_wk
+Stack:
+ 00000000 00000001 ffffff00 6093267c
+ 00000000 6002ec30 6d577c50 60037608
+ 00000000 67e8d108 6063717b 00000000
+Call Trace:
+ [<6002ec30>] ? _printk+0x0/0x98
+ [<6003c2b3>] show_stack+0x10e/0x11a
+ [<6002ec30>] ? _printk+0x0/0x98
+ [<60037608>] dump_stack_lvl+0x71/0xb8
+ [<6063717b>] ? wdev_chandef+0x60/0x165
+ [<6003766d>] dump_stack+0x1e/0x20
+ [<6005d1b7>] __warn+0x101/0x20f
+ [<6005d3a8>] warn_slowpath_fmt+0xe3/0x15d
+ [<600b0c5c>] ? mark_lock.part.0+0x0/0x4ec
+ [<60751191>] ? __this_cpu_preempt_check+0x0/0x16
+ [<600b11a2>] ? mark_held_locks+0x5a/0x6e
+ [<6005d2c5>] ? warn_slowpath_fmt+0x0/0x15d
+ [<60052e53>] ? unblock_signals+0x3a/0xe7
+ [<60052f2d>] ? um_set_signals+0x2d/0x43
+ [<60751191>] ? __this_cpu_preempt_check+0x0/0x16
+ [<607508b2>] ? lock_is_held_type+0x207/0x21f
+ [<6063717b>] wdev_chandef+0x60/0x165
+ [<605f89b4>] regulatory_propagate_dfs_state+0x247/0x43f
+ [<60052f00>] ? um_set_signals+0x0/0x43
+ [<605e6bfd>] cfg80211_propagate_cac_done_wk+0x3a/0x4a
+ [<6007e460>] process_scheduled_works+0x3bc/0x60e
+ [<6007d0ec>] ? move_linked_works+0x4d/0x81
+ [<6007d120>] ? assign_work+0x0/0xaa
+ [<6007f81f>] worker_thread+0x220/0x2dc
+ [<600786ef>] ? set_pf_worker+0x0/0x57
+ [<60087c96>] ? to_kthread+0x0/0x43
+ [<6008ab3c>] kthread+0x2d3/0x2e2
+ [<6007f5ff>] ? worker_thread+0x0/0x2dc
+ [<6006c05b>] ? calculate_sigpending+0x0/0x56
+ [<6003b37d>] new_thread_handler+0x4a/0x64
+irq event stamp: 614611
+hardirqs last  enabled at (614621): [<00000000600bc96b>] __up_console_sem+0x82/0xaf
+hardirqs last disabled at (614630): [<00000000600bc92c>] __up_console_sem+0x43/0xaf
+softirqs last  enabled at (614268): [<00000000606c55c6>] __ieee80211_wake_queue+0x933/0x985
+softirqs last disabled at (614266): [<00000000606c52d6>] __ieee80211_wake_queue+0x643/0x985
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Wilhelm/wifi-ath12k-fix-endianness-handling-in-QMI-host-capability-request/20250716-162058
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git ath-next
-patch link:    https://lore.kernel.org/r/20250716075100.1447352-8-alexander.wilhelm%40westermo.com
-patch subject: [PATCH 07/11] wifi: ath12k: fix endianness handling in QMI bdf download
-config: alpha-randconfig-r122-20250717 (https://download.01.org/0day-ci/archive/20250717/202507172333.LZcmFwWs-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 8.5.0
-reproduce: (https://download.01.org/0day-ci/archive/20250717/202507172333.LZcmFwWs-lkp@intel.com/reproduce)
+Fixes: 26ec17a1dc5e ("cfg80211: Fix radar event during another phy CAC")
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+---
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507172333.LZcmFwWs-lkp@intel.com/
+The issue addressed here is also in older kernels, without
+f42d22d3f7963 ("wifi: cfg80211: define and use wiphy guard ").
+Porting to kernel 6.13 or lower require us to use wiphy_lock() an
+wiphy_unlock() instead of guard().
+---
+ net/wireless/reg.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/net/wireless/ath/ath12k/qmi.c:2996:37: sparse: sparse: bad assignment (+=) to restricted __le32
-
-vim +2996 drivers/net/wireless/ath/ath12k/qmi.c
-
-  2919	
-  2920	static int ath12k_qmi_load_file_target_mem(struct ath12k_base *ab,
-  2921						   const u8 *data, u32 len, u8 type)
-  2922	{
-  2923		struct qmi_wlanfw_bdf_download_req_msg_v01 *req;
-  2924		struct qmi_wlanfw_bdf_download_resp_msg_v01 resp = {};
-  2925		struct qmi_txn txn;
-  2926		const u8 *temp = data;
-  2927		int ret = 0;
-  2928		u32 remaining = len;
-  2929	
-  2930		req = kzalloc(sizeof(*req), GFP_KERNEL);
-  2931		if (!req)
-  2932			return -ENOMEM;
-  2933	
-  2934		while (remaining) {
-  2935			req->valid = 1;
-  2936			req->file_id_valid = 1;
-  2937			req->file_id = cpu_to_le32(ab->qmi.target.board_id);
-  2938			req->total_size_valid = 1;
-  2939			req->total_size = cpu_to_le32(remaining);
-  2940			req->seg_id_valid = 1;
-  2941			req->data_valid = 1;
-  2942			req->bdf_type = type;
-  2943			req->bdf_type_valid = 1;
-  2944			req->end_valid = 1;
-  2945			req->end = 0;
-  2946	
-  2947			if (remaining > QMI_WLANFW_MAX_DATA_SIZE_V01) {
-  2948				req->data_len = cpu_to_le32(QMI_WLANFW_MAX_DATA_SIZE_V01);
-  2949			} else {
-  2950				req->data_len = cpu_to_le32(remaining);
-  2951				req->end = 1;
-  2952			}
-  2953	
-  2954			if (type == ATH12K_QMI_FILE_TYPE_EEPROM) {
-  2955				req->data_valid = 0;
-  2956				req->end = 1;
-  2957				req->data_len = cpu_to_le32(ATH12K_QMI_MAX_BDF_FILE_NAME_SIZE);
-  2958			} else {
-  2959				memcpy(req->data, temp, le32_to_cpu(req->data_len));
-  2960			}
-  2961	
-  2962			ret = qmi_txn_init(&ab->qmi.handle, &txn,
-  2963					   qmi_wlanfw_bdf_download_resp_msg_v01_ei,
-  2964					   &resp);
-  2965			if (ret < 0)
-  2966				goto out;
-  2967	
-  2968			ath12k_dbg(ab, ATH12K_DBG_QMI, "qmi bdf download req fixed addr type %d\n",
-  2969				   type);
-  2970	
-  2971			ret = qmi_send_request(&ab->qmi.handle, NULL, &txn,
-  2972					       QMI_WLANFW_BDF_DOWNLOAD_REQ_V01,
-  2973					       QMI_WLANFW_BDF_DOWNLOAD_REQ_MSG_V01_MAX_LEN,
-  2974					       qmi_wlanfw_bdf_download_req_msg_v01_ei, req);
-  2975			if (ret < 0) {
-  2976				qmi_txn_cancel(&txn);
-  2977				goto out;
-  2978			}
-  2979	
-  2980			ret = qmi_txn_wait(&txn, msecs_to_jiffies(ATH12K_QMI_WLANFW_TIMEOUT_MS));
-  2981			if (ret < 0)
-  2982				goto out;
-  2983	
-  2984			if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
-  2985				ath12k_warn(ab, "qmi BDF download failed, result: %d, err: %d\n",
-  2986					    resp.resp.result, resp.resp.error);
-  2987				ret = -EINVAL;
-  2988				goto out;
-  2989			}
-  2990	
-  2991			if (type == ATH12K_QMI_FILE_TYPE_EEPROM) {
-  2992				remaining = 0;
-  2993			} else {
-  2994				remaining -= le32_to_cpu(req->data_len);
-  2995				temp += le32_to_cpu(req->data_len);
-> 2996				req->seg_id += cpu_to_le32(1);
-  2997				ath12k_dbg(ab, ATH12K_DBG_QMI,
-  2998					   "qmi bdf download request remaining %i\n",
-  2999					   remaining);
-  3000			}
-  3001		}
-  3002	
-  3003	out:
-  3004		kfree(req);
-  3005		return ret;
-  3006	}
-  3007	
-
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index c1752b31734f..92e04370fa63 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -4229,6 +4229,8 @@ static void cfg80211_check_and_end_cac(struct cfg80211_registered_device *rdev)
+ 	struct wireless_dev *wdev;
+ 	unsigned int link_id;
+ 
++	guard(wiphy)(&rdev->wiphy);
++
+ 	/* If we finished CAC or received radar, we should end any
+ 	 * CAC running on the same channels.
+ 	 * the check !cfg80211_chandef_dfs_usable contain 2 options:
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.50.0
+
 
