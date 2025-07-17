@@ -1,212 +1,290 @@
-Return-Path: <linux-wireless+bounces-25602-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25604-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB38CB08BBE
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 13:29:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3D3B08E79
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 15:47:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D968172516
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 11:29:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB8947AE280
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 13:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED59129A31C;
-	Thu, 17 Jul 2025 11:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64AF2EE962;
+	Thu, 17 Jul 2025 13:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D8KeEUQX"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="xpNA0Vos";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="QYiTWilU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from e3i105.smtp2go.com (e3i105.smtp2go.com [158.120.84.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC8228935C;
-	Thu, 17 Jul 2025 11:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C132EE29B
+	for <linux-wireless@vger.kernel.org>; Thu, 17 Jul 2025 13:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752751794; cv=none; b=N+oh+aEd+bVHkuIQV7mnccJJNqeeBvtZdde4k4zkeuXotRiMFckj9MhE/ygs2hapYR4YKpoDChsAwj7m2VNcrDdefAKPtmZZua8Q7dTJrCdiP+6qY+y38owSBZW63O0fUljOXZDWi+G39zioVtIKWT7A40T/uFHHYLv1zi/8jRc=
+	t=1752760012; cv=none; b=nX3hjJMn1U1GghS6nWtTy7zJDT316XECKt0pStOxwwNs2PFh5pJUDHf7DtJKlwGeyuH3zM+/PK7raqwsXLco/E1n6ZTbDbMm/I8uW13Dn4NqlxcKZrKvXS/9iGeGIDdLgbWJ8hbSDsTmdDw+BUBnAqztbXtcprkrDIayMv/vdxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752751794; c=relaxed/simple;
-	bh=1IupY/CooA5f6pTF5w5s9P710FrsORD0Fd3kcUZOJkk=;
+	s=arc-20240116; t=1752760012; c=relaxed/simple;
+	bh=2AFVLZpaDJuvTy/9IR0EjWZDdFrNKje4FwspU0zrMDo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gcovE+t6sYcMCxFs/+RF/57ylfMQ0DPqg7lzWwk2m3XjPpGuEJzuRSg4FH40uQFekNaNhk6ifNN7krbDGl7XDkx7ww8VKfP7Ui68fX8JhXonBid3kaDOMM7c8Al1mRQBTyBoHSXdZ6HOH057UIv5K1HTHK2v2MeNbnMWbRT3pCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D8KeEUQX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81258C4CEE3;
-	Thu, 17 Jul 2025 11:29:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752751794;
-	bh=1IupY/CooA5f6pTF5w5s9P710FrsORD0Fd3kcUZOJkk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D8KeEUQXcg+1wnwbQNzAzQ/n9tnkOAg7Au4X3cFOHr7O4BvmKNAB/yHXs0QaRPvu9
-	 OXfKJmgdOGZeO8BnednyRslMU3sZhQdALSDu5F/k42bKOS2H+GlKvGro9zMHxbhbFs
-	 3FtlsoYJXdxINg3qjEGUcQUkqS6lpVGd/cSgFLbpSZGQJOC7i1MPrTdzsl67kHdCzs
-	 SZh2XGyU0SXLPyskQ+d2hNQs1C9xxmcHcSjFawNXYRFUFIrAjreR35aEbZpbXfCHYr
-	 O8KE5bgHoXe84Mvy38u4gaaeu2zWhiTD3uWSN28rke7U/AfOKhYZ8yELOR64NfuA73
-	 4oilaLZmvjm0A==
-Date: Thu, 17 Jul 2025 16:59:42 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, 
-	Jeff Johnson <jjohnson@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Nirmal Patel <nirmal.patel@linux.intel.com>, 
-	Jonathan Derrick <jonathan.derrick@linux.dev>, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ath12k@lists.infradead.org, ath11k@lists.infradead.org, ath10k@lists.infradead.org, 
-	Bjorn Helgaas <helgaas@kernel.org>, ilpo.jarvinen@linux.intel.com, linux-arm-msm@vger.kernel.org, 
-	linux-pci@vger.kernel.org, Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
-	Qiang Yu <qiang.yu@oss.qualcomm.com>
-Subject: Re: [PATCH 4/6] wifi: ath12k: Use pci_{enable/disable}_link_state()
- APIs to enable/disable ASPM states
-Message-ID: <o2gqqty6lakc4iw7vems2dejh6prjyl746gnq4gny4sxdxl65v@zmqse3244afv>
-References: <20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com>
- <20250716-ath-aspm-fix-v1-4-dd3e62c1b692@oss.qualcomm.com>
- <38ace6a3-d594-4438-a193-cf730a7b87d6@oss.qualcomm.com>
- <wyqtr3tz3k2zdf62kgtcepf3sedm7z7wacv27visl2xsrqspmq@wi4fgef2mn2m>
- <03806d02-1cfc-4db2-8b63-c1e51f5456e2@oss.qualcomm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sn+3VJuyMg26Fd8VEp8YuluSDGTLlTrPLpDGWp8NSjw6DCQuWnFrN+UkCbnIirl5LWPwB7MYa8TIlnmK6p7YXibw1tuLjirr/TdNAyq0z4rhiMxwKXSGQ6ZhBBRb+pAdNkDdUQz7qDNXqWqUiLf+QtRkjoMyqEJhP8Hrp5oxwWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=xpNA0Vos; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=QYiTWilU; arc=none smtp.client-ip=158.120.84.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1752759099; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe : list-unsubscribe-post;
+ bh=U+rA0WL2vtAgdbnb0RO7hJmpVlrm4hMeQOrhAQBOlvs=;
+ b=xpNA0VosGSlPYeFWZWkhoOymccu91BWSghcn64r6pZhIR/ihaBfsiZnldIa8Jf8E+y4f7
+ SqbkYbpVH8n1QqJcMRmiolz5AkM+Teh1/eBhraHzgKbWIHbGoj0wWjD1SCq0H2AhWSZpE1i
+ tIGsBNpMX4ntWnAZQeCJ2AFY5vG6B8kQvMv6eLEkT6mzgFMRzL2UK5b7lcAzVSp44iDxTFo
+ fPAL39+XMnsGEYtC7P4EHY0rE4D1P6Rf6y1y5EWBsl3I89gWWaD003gbagsZN9ggfND96Sk
+ MDDQgpbOVeNPDpW+ixbJBG944MGDwGA1+w5UxN5vVVMhsdnbOPZPGZFyyuAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1752759099; h=from : subject
+ : to : message-id : date;
+ bh=U+rA0WL2vtAgdbnb0RO7hJmpVlrm4hMeQOrhAQBOlvs=;
+ b=QYiTWilUNMVDNrsh3/jZURVmaDAeBJoMT0AAfMI2lWC5qluuhrEsE63A2ItirtexYPFTY
+ GI6SlqYN1wRlRIUvk/L0+3U29lsrD9wqOgnrmf6sNRwyDEQl+L99eHFZUJc2B9L20qogjtZ
+ Piz7Ol/ORfa+WiaOa2maB5bpKBAPQvFdZRmqJGiAogoovn+LQJ3NWNvfXXp8Z9M0/A/k+YZ
+ a6jFlLFX0eGovJ2z1B6DDQSMPqDdryB7ueY64ENz/GNcsp7Yc5WQ+NEd3v2aZv8sJgQ18lW
+ xKJKGHoY/kBHkO0NZd7/9+a3aar7uPUBEBRKRurgYqmB6pzMogDrUpNz621A==
+Received: from [10.12.239.196] (helo=localhost)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.1-S2G)
+	(envelope-from <repk@triplefau.lt>)
+	id 1ucOhx-4o5NDgrvtl6-ppbp;
+	Thu, 17 Jul 2025 13:31:33 +0000
+Date: Thu, 17 Jul 2025 15:21:17 +0200
+From: Remi Pommarel <repk@triplefau.lt>
+To: Bert Karwatzki <spasswolf@web.de>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	johannes@sipsolutions.net, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH wireless v2 1/2] wifi: mac80211: Update skb's control
+ block key in ieee80211_tx_dequeue()
+Message-ID: <aHj4zS_3uhDRhzDn@pilgrim>
+References: <06aa507b853ca385ceded81c18b0a6dd0f081bc8.1742833382.git.repk@triplefau.lt>
+ <20250410215527.3001-1-spasswolf@web.de>
+ <Z_jpq26P99qzPP1c@pilgrim>
+ <1df3a3df19b77e3b8d1f71a3a93c61221ff46a6b.camel@web.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <03806d02-1cfc-4db2-8b63-c1e51f5456e2@oss.qualcomm.com>
+In-Reply-To: <1df3a3df19b77e3b8d1f71a3a93c61221ff46a6b.camel@web.de>
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 510616m:510616apGKSTK:510616sBGiWowcYh
+X-smtpcorp-track: tT_gXoYkorvC.jl35aod29ly9.qZebfA7ByG1
 
-On Thu, Jul 17, 2025 at 06:46:12PM GMT, Baochen Qiang wrote:
-> 
-> 
-> On 7/17/2025 6:31 PM, Manivannan Sadhasivam wrote:
-> > On Thu, Jul 17, 2025 at 05:24:13PM GMT, Baochen Qiang wrote:
-> > 
-> > [...]
-> > 
-> >>> @@ -16,6 +16,8 @@
-> >>>  #include "mhi.h"
-> >>>  #include "debug.h"
-> >>>  
-> >>> +#include "../ath.h"
-> >>> +
-> >>>  #define ATH12K_PCI_BAR_NUM		0
-> >>>  #define ATH12K_PCI_DMA_MASK		36
-> >>>  
-> >>> @@ -928,8 +930,7 @@ static void ath12k_pci_aspm_disable(struct ath12k_pci *ab_pci)
-> >>>  		   u16_get_bits(ab_pci->link_ctl, PCI_EXP_LNKCTL_ASPM_L1));
-> >>>  
-> >>>  	/* disable L0s and L1 */
-> >>> -	pcie_capability_clear_word(ab_pci->pdev, PCI_EXP_LNKCTL,
-> >>> -				   PCI_EXP_LNKCTL_ASPMC);
-> >>> +	pci_disable_link_state(ab_pci->pdev, PCIE_LINK_STATE_L0S | PCIE_LINK_STATE_L1);
-> >>
-> >> Not always, but sometimes seems the 'disable' does not work:
-> >>
-> >> [  279.920507] ath12k_pci_power_up 1475: link_ctl 0x43 //before disable
-> >> [  279.920539] ath12k_pci_power_up 1482: link_ctl 0x43 //after disable
-> >>
-> >>
-> >>>  
-> >>>  	set_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags);
-> >>>  }
-> >>> @@ -958,10 +959,7 @@ static void ath12k_pci_aspm_restore(struct ath12k_pci *ab_pci)
-> >>>  {
-> >>>  	if (ab_pci->ab->hw_params->supports_aspm &&
-> >>>  	    test_and_clear_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags))
-> >>> -		pcie_capability_clear_and_set_word(ab_pci->pdev, PCI_EXP_LNKCTL,
-> >>> -						   PCI_EXP_LNKCTL_ASPMC,
-> >>> -						   ab_pci->link_ctl &
-> >>> -						   PCI_EXP_LNKCTL_ASPMC);
-> >>> +		pci_enable_link_state(ab_pci->pdev, ath_pci_aspm_state(ab_pci->link_ctl));
-> >>
-> >> always, the 'enable' is not working:
-> >>
-> >> [  280.561762] ath12k_pci_start 1180: link_ctl 0x43 //before restore
-> >> [  280.561809] ath12k_pci_start 1185: link_ctl 0x42 //after restore
-> >>
-> > 
-> > Interesting! I applied your diff and I never see this issue so far (across 10+
-> > reboots):
-> 
-> I was not testing reboot. Here is what I am doing:
-> 
-> step1: rmmod ath12k
-> step2: force LinkCtrl using setpci (make sure it is 0x43, which seems more likely to see
-> the issue)
-> 
-> 	sudo setpci -s 02:00.0 0x80.B=0x43
-> 
-> step3: insmod ath12k and check linkctrl
-> 
+Hello Bert, Johannes
 
-So I did the same and got:
-
-[ 3283.363569] ath12k_pci_power_up 1475: link_ctl 0x43
-[ 3283.363769] ath12k_pci_power_up 1480: link_ctl 0x40
-[ 3284.007661] ath12k_pci_start 1180: link_ctl 0x40
-[ 3284.007826] ath12k_pci_start 1185: link_ctl 0x42
-
-My host machine is Qcom based Thinkpad T14s and it doesn't support L0s. So
-that's why the lnkctl value once enabled becomes 0x42. This is exactly the
-reason why the drivers should not muck around LNKCTL register manually.
-
-> > 
-> > [    3.758239] ath12k_pci_power_up 1475: link_ctl 0x42
-> > [    3.758315] ath12k_pci_power_up 1480: link_ctl 0x40
-> > [    4.383900] ath12k_pci_start 1180: link_ctl 0x40
-> > [    4.384026] ath12k_pci_start 1185: link_ctl 0x42
-> > 
-> > Are you sure that you applied all the 6 patches in the series and not just the
-> > ath patches? Because, the first 3 PCI core patches are required to make the API
-> > work as intended.
+On Fri, Apr 11, 2025 at 01:10:02PM +0200, Bert Karwatzki wrote:
+> Am Freitag, dem 11.04.2025 um 12:06 +0200 schrieb Remi Pommarel:
+> > Hi Bert,
+> >
+> > On Thu, Apr 10, 2025 at 11:55:26PM +0200, Bert Karwatzki wrote:
+> > > This commit breaks the mediatek mt7921 wireless driver. In linux-next-20250410
+> > > my mt7921e Wi-Fi controller is no longer able to connect to a network.
+> > > I bisected this to commit a104042e2bf6 ("wifi: mac80211: Update skb's control
+> > > block key in ieee80211_tx_dequeue()").
+> > >
+> > > Hardware:
+> > > 04:00.0 Network controller: MEDIATEK Corp. MT7921K (RZ608) Wi-Fi 6E 80MHz
+> > >
+> > > This debugging patch reveals that the change causes key to be NULL in
+> > > mt7921_tx_prepare_skb().
+> > >
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> > > index 881812ba03ff..3b8552a1055c 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> > > @@ -13,6 +13,7 @@ int mt7921e_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+> > >         struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
+> > >         struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_info->skb);
+> > >         struct ieee80211_key_conf *key = info->control.hw_key;
+> > > +       dev_info(mdev->dev, "%s: key = %px\n", __func__, key);
+> > >         struct mt76_connac_hw_txp *txp;
+> > >         struct mt76_txwi_cache *t;
+> > >         int id, pid;
+> > >
+> > >
+> > > So why is info->control.hw_key not updated by ieee80211_tx_h_select_key()?
+> > >
+> > > diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+> > > index 34f229a6eab0..2510e3533d13 100644
+> > > --- a/net/mac80211/tx.c
+> > > +++ b/net/mac80211/tx.c
+> > > @@ -631,8 +631,10 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
+> > >  		case WLAN_CIPHER_SUITE_WEP40:
+> > >  		case WLAN_CIPHER_SUITE_WEP104:
+> > >  		case WLAN_CIPHER_SUITE_TKIP:
+> > > -			if (!ieee80211_is_data_present(hdr->frame_control))
+> > > +			if (!ieee80211_is_data_present(hdr->frame_control)) {
+> > > +				printk(KERN_INFO "%s %d: setting tx->key = NULL\n", __func__, __LINE__);
+> > >  				tx->key = NULL;
+> > > +			}
+> > >  			break;
+> > >  		case WLAN_CIPHER_SUITE_CCMP:
+> > >  		case WLAN_CIPHER_SUITE_CCMP_256:
+> > > @@ -641,19 +643,23 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
+> > >  			if (!ieee80211_is_data_present(hdr->frame_control) &&
+> > >  			    !ieee80211_use_mfp(hdr->frame_control, tx->sta,
+> > >  					       tx->skb) &&
+> > > -			    !ieee80211_is_group_privacy_action(tx->skb))
+> > > +			    !ieee80211_is_group_privacy_action(tx->skb)) {
+> > > +				printk(KERN_INFO "%s %d: setting tx->key = NULL\n", __func__, __LINE__);
+> > >  				tx->key = NULL;
+> > > -			else
+> > > +			} else {
+> > >  				skip_hw = (tx->key->conf.flags &
+> > >  					   IEEE80211_KEY_FLAG_SW_MGMT_TX) &&
+> > >  					ieee80211_is_mgmt(hdr->frame_control);
+> > > +			}
+> > >  			break;
+> > >  		case WLAN_CIPHER_SUITE_AES_CMAC:
+> > >  		case WLAN_CIPHER_SUITE_BIP_CMAC_256:
+> > >  		case WLAN_CIPHER_SUITE_BIP_GMAC_128:
+> > >  		case WLAN_CIPHER_SUITE_BIP_GMAC_256:
+> > > -			if (!ieee80211_is_mgmt(hdr->frame_control))
+> > > +			if (!ieee80211_is_mgmt(hdr->frame_control)) {
+> > > +				printk(KERN_INFO "%s %d: setting tx->key = NULL\n", __func__, __LINE__);
+> > >  				tx->key = NULL;
+> > > +			}
+> > >  			break;
+> > >  		}
+> > >
+> > > @@ -662,9 +668,13 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
+> > >  			     tx->skb->protocol != tx->sdata->control_port_protocol)
+> > >  			return TX_DROP;
+> > >
+> > > +		printk(KERN_INFO "%s: skip_hw=%d tx->key=%px\n",
+> > > +				__func__, skip_hw, tx->key);
+> > >  		if (!skip_hw && tx->key &&
+> > > -		    tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
+> > > +		    tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE) {
+> > >  			info->control.hw_key = &tx->key->conf;
+> > > +			printk(KERN_INFO "%s: info->control.hw_key = %px\n", __func__, info->control.hw_key);
+> > > +		}
+> > >  	} else if (ieee80211_is_data_present(hdr->frame_control) && tx->sta &&
+> > >  		   test_sta_flag(tx->sta, WLAN_STA_USES_ENCRYPTION)) {
+> > >  		return TX_DROP;
+> > > @@ -3894,6 +3904,8 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+> > >  	 * The key can be removed while the packet was queued, so need to call
+> > >  	 * this here to get the current key.
+> > >  	 */
+> > > +	printk(KERN_INFO "%s: info->control.hw_key = %px, setting to NULL\n",
+> > > +			__func__, info->control.hw_key);
+> > >  	info->control.hw_key = NULL;
+> > >  	r = ieee80211_tx_h_select_key(&tx);
+> > >  	if (r != TX_CONTINUE) {
+> > >
+> > > This patch reveals that tx->key is set to NULL (in the @@ -641,19 +643,23 @@ chunk)
+> > > and so the updating of info->contro.hw_key is skipped:
+> > >
+> > > [   17.411298] [   T1232] ieee80211_tx_h_select_key 647: setting tx->key = NULL
+> >
+> > That means that we are trying to send non management frames using
+> > AES_CMAC, or BIP_* cipher, aren't those ciphers used only for group
+> > management frames ?
+> >
+> > > [   17.411300] [   T1232] ieee80211_tx_h_select_key: skip_hw=0 tx->key=0000000000000000
+> > > [   17.411307] [   T1232] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key = 0000000000000000
+> > >
+> > > If I revert commit a104042e2bf6 while keeping the debug patches it shows that
+> > > the for mt7921e the key is never updated in ieee80211_tx_h_select_key(), mt7921e
+> > > relies on the key your patch is setting to NULL.
+> > >
+> > > Is this a problem with your patch or with the mt7921e driver that just got
+> > > revealed by your patch?
+> >
+> > Not sure yet, do you happen to know which kind of frame mt7921e is
+> > trying to be sent using this NULL key ?
+> >
+> > Thanks,
 > 
-> pretty sure all of them:
+> I modified my debugging patch to print mgmt->frame_control, if needed I could
+> also insert a nore complicated function printing out frame types using the
+> ieee80211_is_*() functions:
 > 
-> $ git log --oneline
-> 07387d1bc17f (HEAD -> VALIDATE-pci-enable-link-state-behavior) wifi: ath12k: dump linkctrl reg
-> dbb3e5a7828b wifi: ath10k: Use pci_{enable/disable}_link_state() APIs to enable/disable
-> ASPM states
-> 392d7b3486b3 wifi: ath11k: Use pci_{enable/disable}_link_state() APIs to enable/disable
-> ASPM states
-> f2b0685c456d wifi: ath12k: Use pci_{enable/disable}_link_state() APIs to enable/disable
-> ASPM states
-> b1c8fad998f1 PCI/ASPM: Improve the kernel-doc for pci_disable_link_state*() APIs
-> b8f5204ba4b0 PCI/ASPM: Transition the device to D0 (if required) inside
-> pci_enable_link_state_locked() API
-> 186b1bbd4c62 PCI/ASPM: Fix the behavior of pci_enable_link_state*() APIs
-> 5a1ad8faaa16 (tag: ath-202507151704, origin/master, origin/main, origin/HEAD) Add
-> localversion-wireless-testing-ath
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> index 881812ba03ff..cfbe7e1e4713 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+> @@ -13,6 +13,9 @@ int mt7921e_tx_prepare_skb(struct mt76_dev *mdev, void
+> *txwi_ptr,
+>         struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
+>         struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_info->skb);
+>         struct ieee80211_key_conf *key = info->control.hw_key;
+> +       struct ieee80211_mgmt *mgmt = (void *)tx_info->skb->data;
+> +       __le16 fc = mgmt->frame_control;
+> +       dev_info(mdev->dev, "%s: key = %px fc = 0x%hx\n", __func__, key, fc);
+>         struct mt76_connac_hw_txp *txp;
+>         struct mt76_txwi_cache *t;
+>         int id, pid;
 > 
+> and get this, while unsuccesfully trying to connect (also note that one time
+> getting a key worked):
+> 
+> $ dmesg | grep prepare_skb
+> [   11.775642] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0xb0
+> [   11.800047] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0x0
+> [   13.365330] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0xb0
+> [   13.370257] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0x0
+> [   16.468481] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0xb0
+> [   16.472407] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0x0
+> [   16.542017] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0x188
+> [   16.549581] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0x188
+> [   16.597120] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0xffff
+> [   16.612263] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0xd0
+> 
+> Here we actually go a key:
+> [   16.614478] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> ffff89c275297230 fc = 0x4188
+> 
+> [   16.654273] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0x3333
+> [   16.698286] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0x3333
+> [   17.735855] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
+> 0000000000000000 fc = 0x3333
+> [   17.837355] [   T1227] mt7921e 0000:04:00.0: mt7921e_tx_prepare_skb: key =
 
-Ok!
+[....]
 
-> 
-> > 
-> >>
-> >>>  }
-> >>>  
-> >>>  static void ath12k_pci_cancel_workqueue(struct ath12k_base *ab)
-> >>>
-> >>
-> >> In addition, frequently I can see below AER warnings:
-> >>
-> >> [  280.383143] aer_ratelimit: 30 callbacks suppressed
-> >> [  280.383151] pcieport 0000:00:1c.0: AER: Correctable error message received from
-> >> 0000:00:1c.0
-> >> [  280.383177] pcieport 0000:00:1c.0: PCIe Bus Error: severity=Correctable, type=Data Link
-> >> Layer, (Transmitter ID)
-> >> [  280.383184] pcieport 0000:00:1c.0:   device [8086:7ab8] error status/mask=00001000/00002000
-> >> [  280.383193] pcieport 0000:00:1c.0:    [12] Timeout
-> >>
-> > 
-> > I don't see any AER errors either.
-> 
-> My WLAN chip is attached via a PCIe-to-M.2 adapter, maybe some hardware issue? However I
-> never saw them until your changes applied.
-> 
+I have ordered a mt7921 card so I could reproduce this and finally took
+time to debug that. The issue comes to the fact that mt7921 uses 802.11
+encapsulation offloading and as such we are calling
+ieee80211_tx_h_select_key() on a 802.3 frame.
 
-I don't think it should matter. I have an Intel NUC lying around with QCA6390
-attached via M.2. Let me test this change on that and report back the result.
+This function casts the skb data as a 802.11 header regardless the skb
+is 802.11 or not in order to decide if the info->control.hw_key needs to
+be set. So the hw_key is likely to remain NULL in ieee80211_tx_dequeue()
+and because mt7921 driver needs this key to be valid data frames are
+dropped.
 
-- Mani
+Will send a patch so that ieee80211_tx_h_select_key() does not try to
+get info from a ieee80211_hdr mapped on 802.3 packet data (i.e. when
+IEEE80211_TX_CTL_HW_80211_ENCAP is set).
+
+Thanks
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Remi
 
