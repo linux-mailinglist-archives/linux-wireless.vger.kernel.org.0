@@ -1,75 +1,78 @@
-Return-Path: <linux-wireless+bounces-25618-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25619-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74128B0934B
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 19:35:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C44B0934C
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 19:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3A51189F5C6
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 17:36:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 878E516BC66
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 17:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5692FD874;
-	Thu, 17 Jul 2025 17:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426EC28FFD2;
+	Thu, 17 Jul 2025 17:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="OYJUE1rY"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TZOaIpl4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068A41F95C
-	for <linux-wireless@vger.kernel.org>; Thu, 17 Jul 2025 17:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76DC1F872D
+	for <linux-wireless@vger.kernel.org>; Thu, 17 Jul 2025 17:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752773756; cv=none; b=P53pLux1+CjlCokOizqiyPBF4y8pnw73WUsbRKm+IE2p9sy8CTJmEIGaJ21Uahe3Ccj4IJ4Q0ZSCdTeZXZlaT59Wan5Hdidc1qqRoxbTHRF2Uojx9Pg5s8/ZSRojYVfZsDifcbDm9wreXf5y6wtw6wE3DGNRvZZUu63Vp2clAy4=
+	t=1752773766; cv=none; b=tb+mYCxMe8dY2UOWCsBzJDKXFms/TZjRmbFCZl7vNbbENMwvRnqAhbxhzGTUOsX69zqwZwT2YoDIFEzmIwEXejf11XdfKoKbU9WIjx2nhfYpiK3K5n53ewvfYxdDWp3wqtUW2i5f3qq9/DCyIiRSMdz+3vxp12Agi/MuJ4NRZNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752773756; c=relaxed/simple;
-	bh=5ibM1Ytq9AxsfzCxvr+5m76tJz1o9hjO5IoiVNoq3Dk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ry+K/hD4qoIrxkyTbXMOuSTpUlGi8iYf2mZCSapDsjMyd3biMWtOjmgA7YmRN1zxg72MEInYd7kRfYTlpDUpVgLpfzzgJm/nNY4aVWcgD69diU3T3iG81mX+qLgOKG28Fjqp+Tv66r8zSS7wa7P279Wg+BLGUSaSrHPTn4+y1SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=OYJUE1rY; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1752773766; c=relaxed/simple;
+	bh=Z1TfGOJgvp+AXXNMqR2Hmwkw2Earaa6LgFD/GJxb1eE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=PA6ObQaL8ddyPXWdmH6hUNGA/QXLbhn9LFaa41vfeMmOiyPvkLXcLFIMwh3RW7ICTvoZHAFroG839nncJLVF2pjH/weSmtBT6uVvcCC1gtKmt0asr1sLGjHxIABd3KQKLaEsvJyIWRUVS0WY0tP2hwH2HFXx061RyF6/zRTNoJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TZOaIpl4; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56HBk1GJ022239;
-	Thu, 17 Jul 2025 17:35:52 GMT
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56HFQMkA016516;
+	Thu, 17 Jul 2025 17:36:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=rvDDOwlAfh07/HCzM7218UDU9HsLIY6jh5N
-	b5g1s6DA=; b=OYJUE1rYvAnZTgLRhcnCQoUu87EPXRLwJWrqRgxflEn7X4L5xGl
-	x3HYv2+Zh/96jdVmX0z8r0hFry8VigLVKjpYPb561HMnGwVvR2bFqNPyvTbpwNqG
-	UsgTu0DeXsb658/Lb81asHG0tmpYo8x85bcChyRbvn+F+lms9DGw27qHLoaCP4RW
-	gQJM2HAXhxtiO1CYNahahDkQSRspd9fBGMMSFPK+tNQj5qsVsYgIgmaFbVw77Wkj
-	pTZQghatholywurQk/o2uJ1hXjnusb2a99vzQZu1IvYZO9oOs7izuiNgWDliyIb0
-	abSHZoHOQAAUj23LscPesV5xp/7wTZ+Fulw==
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=H0moyXYEsrI
+	UbYrBVHxe6uChMaAAlhJVgiTpy6uNs+Q=; b=TZOaIpl43uCTfm4Vpk0cTz/pSmD
+	3xO9ZgUkSE7IBcwuqTDOJ1udVNASMtvXRXrpEGsOk829dYchhhFqMB3dmy4lPWmJ
+	da6Q/xpGrWIxRYchVKCis2MN9bwudlXbh3Eeq6nXNpE9AopMrAOj1RZ7YNJg2p0g
+	FhPPvw0Be7+k80U4GowErKLzQty7GOXVN4LioedJFbGbW/4FkX7f8dTysidjdvBF
+	rl3FqFkh4C0hPZaxWwXvz+B/D1804eoX23sH8kjlcKr7rdrLv8GdnFUOMV/eLi2E
+	r7NvV+/nGHZrIf0EYcEY1D2DlwVjMNZnHHIbKaqHka4mFIY3IDju0fKaEvA==
 Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47wqsy8mxj-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47y3tc0g8q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Jul 2025 17:35:52 +0000 (GMT)
+	Thu, 17 Jul 2025 17:36:00 +0000 (GMT)
 Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 56HHZmoU004189;
-	Thu, 17 Jul 2025 17:35:48 GMT
+	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 56HHZvhi004244;
+	Thu, 17 Jul 2025 17:35:57 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 47xuvs3b98-1
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 47xuvs3b9s-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Jul 2025 17:35:48 +0000
+	Thu, 17 Jul 2025 17:35:57 +0000
 Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56HHZlFg004184;
-	Thu, 17 Jul 2025 17:35:47 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56HHZuAD004238;
+	Thu, 17 Jul 2025 17:35:57 GMT
 Received: from hu-devc-blr-u22-a.qualcomm.com (hu-tamizhr-blr.qualcomm.com [10.190.110.180])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 56HHZlT5004183
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 56HHZu6g004237
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Jul 2025 17:35:47 +0000
+	Thu, 17 Jul 2025 17:35:56 +0000
 Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 380741)
-	id 29DC741566; Thu, 17 Jul 2025 23:05:47 +0530 (+0530)
+	id 0E68341566; Thu, 17 Jul 2025 23:05:56 +0530 (+0530)
 From: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org,
         Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
-Subject: [PATCH ath-next v2 0/2] wifi: ath12k: Extend support to parse wmi service bit 
-Date: Thu, 17 Jul 2025 23:05:37 +0530
-Message-Id: <20250717173539.2523396-1-tamizh.raja@oss.qualcomm.com>
+Subject: [PATCH ath-next v2 1/2] wifi: ath12k: fix endianness handling while accessing wmi service bit
+Date: Thu, 17 Jul 2025 23:05:38 +0530
+Message-Id: <20250717173539.2523396-2-tamizh.raja@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250717173539.2523396-1-tamizh.raja@oss.qualcomm.com>
+References: <20250717173539.2523396-1-tamizh.raja@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,44 +84,82 @@ X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE3MDE1NSBTYWx0ZWRfX5IDFy361Kxpn
- FY0e6GoHMCPn6TJXsicnvtMJBkCLIahYR/+Su5Tg7v/jDn7CQ86qmyVAD+LqomC0vdZ0uT4wBwd
- l2XhXXnxXsuX10BGtzZ/kRdDtHyvAhOo6/emqVB/Sc7GYn+L4M1uREn67IsktYCRWL7Ic2gq+W3
- OE6Tg/1W1LaXBEF5nCPH78oB0qZdLqLnS+EKTpNsmWyUG6Bvlti8qy+Gmy3nCHYBYSQBZaIq7dw
- X55V7sjQ/xinUldrT3Vzo589YHNESRJIpjNrzwqpSj+mOJ1JazLaYfIdXsNU4W4nehtqEyFZLPR
- 7pDuNAmDWv0Hm/DDew+MBopsIt9jorjrbaTTGc92S5N6pq8NSvQauCvX+EF8Ehttl9+aLiybUJK
- kxARn1WYz+7ieqKRQ2RHQm28Z0u1UyvWpB3kqvGtYm7HtjW4Hh3IuqRdysKuDW7H4mbyZFD/
-X-Proofpoint-GUID: vG4BRdLFVwxMQbD9IbsA0oGa9rw_hioa
-X-Proofpoint-ORIG-GUID: vG4BRdLFVwxMQbD9IbsA0oGa9rw_hioa
-X-Authority-Analysis: v=2.4 cv=McZsu4/f c=1 sm=1 tr=0 ts=68793478 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=Z5PsHGRA c=1 sm=1 tr=0 ts=68793480 cx=c_pps
  a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=Wb1JkmetP80A:10 a=VqKXJ2bPb1k_lhZ8nysA:9
+ a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=_lmSwQ0K4W1q_jVrfeUA:9
+X-Proofpoint-ORIG-GUID: JU4I5NGxjXEy294XKUteAgvLFxHwGizE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE3MDE1NSBTYWx0ZWRfX/pHtavwHPLe+
+ dYeOVNph1nRjJ/LKhf8EfarRAIdrCZ0FjqpEPZVTex3SsPnbD9HaM1swYTv0GwIFDjHfi+4SGCN
+ I3S7UQvZdz2VDf/GPN82REBOdbRC2SEIg2F56oVu/prTpAL6vy6iNZYdesDp5C7BdWSPYRY5KZB
+ Aak2NsQskIkHJxAE4uGPtjwLy024To9kaYrHkQLErsxjcCv4A9F5r3EMWFTxBXbcSoy/9xc8QwK
+ QZpH+009yXN6TPjMO8aI8PuRgUUeUPNKl9FVn8jcKfizXJuRtpu+foOl+T6x7cklqDCjYhye46V
+ XSfj1hpFK41vb2ABV0vBq46ApTV39FGnNgeD/eAGEmZxaCz+Yc+HWMi2GdWFK817Ua2PQDPxSOG
+ EJ2SmnbXPHKEEfRJ30iR+OsGMUsfiukgVmTMkJ6lo4zy5yrhgYPIegqqJXjIYGEbGrelFCzv
+X-Proofpoint-GUID: JU4I5NGxjXEy294XKUteAgvLFxHwGizE
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-17_02,2025-07-17_02,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 mlxlogscore=999 impostorscore=0 mlxscore=0 phishscore=0
- adultscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015 suspectscore=0
- spamscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ impostorscore=0 mlxlogscore=999 suspectscore=0 spamscore=0 clxscore=1015
+ mlxscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2507170155
 
-Extend support to parse wmi service bit till the last value firmware
-is advertising and use endian conversion while accessing the
-wmi_ext2_service_bitmap value in ath12k_wmi_tlv_services_parser().
+Currently there is no endian conversion in ath12k_wmi_tlv_services_parser()
+so the service bit parsing will be incorrect on a big endian platform and
+to fix this by using appropriate endian conversion.
 
-Tamizh Chelvam Raja (2):
-  wifi: ath12k: fix endianness handling while accessing wmi service bit
-  wifi: ath12k: Add support to parse max ext2 wmi service bit
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00217-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
- v2:
-   * Modified commit log as per review comments.
+Fixes: 342527f35338 ("wifi: ath12k: Add support to parse new WMI event for 6 GHz regulatory")
+Signed-off-by: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath12k/wmi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
- drivers/net/wireless/ath/ath12k/wmi.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-
-base-commit: 65c12b104cb942d588a1a093acc4537fb3d3b129
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index ed3c08dbd899..535c9849b98c 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -7581,7 +7581,7 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
+ 					  void *data)
+ {
+ 	const struct wmi_service_available_event *ev;
+-	u32 *wmi_ext2_service_bitmap;
++	__le32 *wmi_ext2_service_bitmap;
+ 	int i, j;
+ 	u16 expected_len;
+ 
+@@ -7613,12 +7613,12 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
+ 			   ev->wmi_service_segment_bitmap[3]);
+ 		break;
+ 	case WMI_TAG_ARRAY_UINT32:
+-		wmi_ext2_service_bitmap = (u32 *)ptr;
++		wmi_ext2_service_bitmap = (__le32 *)ptr;
+ 		for (i = 0, j = WMI_MAX_EXT_SERVICE;
+ 		     i < WMI_SERVICE_SEGMENT_BM_SIZE32 && j < WMI_MAX_EXT2_SERVICE;
+ 		     i++) {
+ 			do {
+-				if (wmi_ext2_service_bitmap[i] &
++				if (__le32_to_cpu(wmi_ext2_service_bitmap[i]) &
+ 				    BIT(j % WMI_AVAIL_SERVICE_BITS_IN_SIZE32))
+ 					set_bit(j, ab->wmi_ab.svc_map);
+ 			} while (++j % WMI_AVAIL_SERVICE_BITS_IN_SIZE32);
+@@ -7626,8 +7626,10 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
+ 
+ 		ath12k_dbg(ab, ATH12K_DBG_WMI,
+ 			   "wmi_ext2_service_bitmap 0x%04x 0x%04x 0x%04x 0x%04x",
+-			   wmi_ext2_service_bitmap[0], wmi_ext2_service_bitmap[1],
+-			   wmi_ext2_service_bitmap[2], wmi_ext2_service_bitmap[3]);
++			   __le32_to_cpu(wmi_ext2_service_bitmap[0]),
++			   __le32_to_cpu(wmi_ext2_service_bitmap[1]),
++			   __le32_to_cpu(wmi_ext2_service_bitmap[2]),
++			   __le32_to_cpu(wmi_ext2_service_bitmap[3]));
+ 		break;
+ 	}
+ 	return 0;
 -- 
 2.34.1
 
