@@ -1,132 +1,103 @@
-Return-Path: <linux-wireless+bounces-25605-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25611-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80819B08F86
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 16:34:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F75FB0911F
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 17:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6DD23A5D9B
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 14:32:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 783671C42E2D
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 15:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCC014E2E2;
-	Thu, 17 Jul 2025 14:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C852FE391;
+	Thu, 17 Jul 2025 15:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="EV84grIb";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="FA4KjP/g"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="NPng9LZM";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="cemtNlFI"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from e3i105.smtp2go.com (e3i105.smtp2go.com [158.120.84.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579104086A
-	for <linux-wireless@vger.kernel.org>; Thu, 17 Jul 2025 14:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229762FE333
+	for <linux-wireless@vger.kernel.org>; Thu, 17 Jul 2025 15:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752762793; cv=none; b=YjmGQId6fXLs41/N7Ur4rBvdVnwwUUK9pBEkUpnFXdvflmXCqwJ59tYBPiIf4Sjr0Xl8E6NUQcQAc0p4dr24j2SPVhjlu8RZiEN8HPfXdWbkdgkCJ1bOn7VJdcpWwVeXr7hU/b9mcw0QyjDUyJY6vm/T/batdyHFuhaQ+oQWvwM=
+	t=1752767761; cv=none; b=o2ZQAQHDc8Ln1yID3kp951nPcyCYLcpZyWFPhz5Gcu9OOHnwmL1ujV5cedgKjB3YJ0bjGZf5lzzNnufj6IZZ1cxEx+CHUWUILKkEDADV5c85LhFrpEB9otgTkAblsuigUP/c/rh2AIXalZ803X9lsemdO7MWDFVpx3YiFRgCtvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752762793; c=relaxed/simple;
-	bh=KEDsAVHxVGER8/quttS1kdduOVdPIELhw1UAUA4h8Bg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sdb1fUa7Jkom6omGTgh0tlBGiMziPJCUgKdf1dkjS8a7JYwtn7egR9bTK2nA7TSioZeetAmDffPRspVD/NAxTDLh0uIk+AEuZS08ZvZZlga/qSSQqq+d8D0C/uG5AmUgtEJ/eK8jUyMmOHHooV764DQpPEQKDbv8fD+yd1x0o6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=EV84grIb; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=FA4KjP/g; arc=none smtp.client-ip=158.120.84.105
+	s=arc-20240116; t=1752767761; c=relaxed/simple;
+	bh=U47f9WVWX49XwgYkmvGT+3joZrWkuzftZnBDgHqGLyw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sKWGMHCF+UAoEqX6rt6l8UjDu9IaGdQSaAjdvV97hV4oWnsQ11TIMpc71KLsfsVWoV0WAvz1I+SmLTSBEbTYzicfQt4MqKio9hQRYK36PZ6ZOiNJG+mMXTk87Zuj31Tn5DgqtxFKyW5UZVj7UZkQgEEZInSmuoKPOfbluO1QRQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=NPng9LZM; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=cemtNlFI; arc=none smtp.client-ip=158.120.84.105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
- i=@smtpservice.net; q=dns/txt; s=a1-4; t=1752762788; h=feedback-id :
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1752767753; h=feedback-id :
  x-smtpcorp-track : date : message-id : to : subject : from : reply-to
  : sender : list-unsubscribe : list-unsubscribe-post;
- bh=P8aWAVi1JHdhRfr6mcngPcM1V/JkdL8TAXeFc1ey/hs=;
- b=EV84grIbCEBYjAKb4t2vBTrbaOJ56+2+LNuj+/Cbz7V+eP6KYm3al5NjrsM3yGcQKMWnb
- 7i40D/fjDYyDJ4Mc5H8t8nmDlYzC7Vav4KjZ8cGFllRjPA8wB0fB1VjDPyE8w7ovgt/JxU2
- n8B1us6RL1fu1ekzebjdxY6yZTPdrH8d8LbDW+UfYG3GFuXIz0+v/P+JwCYS00DhLPo7bTf
- GUweiad8fAfzu/PtOqg1E8hd8B31MUYC7fhFGlMFFc/QDor96P//0T30p5qEcvn2MeIZNg4
- 3BCitA7vs5ymiKCb/pUrmNio3uhJlaScBlEAoMiM+47rtUkdOZt3lsx1B/Gw==
+ bh=OYtEACTZzGea53FbOPy1SO3CM3inWtkbAiQquRgeXPc=;
+ b=NPng9LZMj7Ry49FungneUI525kgnJne7+dUqzYMZ7TgSWcVtjWeDC/9frPXkXdI/Nps0Q
+ ZCmRozsBmUS2vET0I5TcNq5PCwmwUbbazWbiPtwjOurYlSftFrjzBvmb6ZadVXpmCAKrcnH
+ 6vtJn7A7sUwRUlrvj58ea86swu8rjmAVX5HiUTcxoh3bRNzhDRKqxSnfTxzQTf99zULHaj/
+ K5ME/H7NKjLMdBD6kepBDhkVAsQua+c+/TvfCHPGWGbb/cPLHWSvi4/AiaQ5kVxusHj32pz
+ k1n8jYfwYlOUkEbDCo5bs4AE6rNT7EHHrOT0jMW2Q9YU0qKD//UN1fihdMyQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1752762788; h=from : subject
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1752767753; h=from : subject
  : to : message-id : date;
- bh=P8aWAVi1JHdhRfr6mcngPcM1V/JkdL8TAXeFc1ey/hs=;
- b=FA4KjP/gPLL2F6TDHD7Xmx8KcoUpGKmxFQ9oibpp1s7FX/S0Aqi8w0IZ+qODeias2qGZx
- XXAUs9Eog5A96ZD5fjcKjQsb9YeN9cO4i7JAVIhiq3P83cVI+EbJIatk0vA09IXT508cYQf
- YMZZVUathPlUWliX6VR9/S2kOoH00UsPyNXwWZM3g190LtaU/4jioB8GOZQ//bY/rHtwoez
- 9ydm4UU6W7vQN8px7YzV6I8lsALBz4jVzYYOyPJYv5v2exWtQfuklByoQEPtrZdpj2Am6Xa
- 3GI4ufAnFF9NkdH54Od2BSU2uuyw3T5g1Tp+NkAPOvbB2VWn6aVoI8vUogWQ==
+ bh=OYtEACTZzGea53FbOPy1SO3CM3inWtkbAiQquRgeXPc=;
+ b=cemtNlFIKk/b8gNlyC8ZgLHBIalBVGRRuXbLtKsVKcDuIuNduAK6UCds2jU4jb/J25QVP
+ SfSgayqEOD7T73yIUMbpCTa1+g6ft39ekQwGcLoY/JBNQk6yIRpSf0RLDjRQYj20NUMhnN7
+ GdcKiNsYh6yvuO2LdFmasJ4fdGj4Q73MalK+FkVsHzMbfFBBnoZGfZ1Mgc8PWweuekpyMEr
+ Qt5zcwHKTun16/JhiyKpurxpw1PP4xq0TqnfR6v7QMRRaMv9Mzyb2539rEbBo/xkqGAYTkH
+ dYS5ZmvTo14gihhnSbeMOOEOjRJDMs/lJnUlKxsmeZjpejZNMwwLbyapd+Kw==
 Received: from [10.12.239.196] (helo=localhost)
 	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.1-S2G)
 	(envelope-from <repk@triplefau.lt>)
-	id 1ucPfU-4o5NDgrfJDm-sFY3;
-	Thu, 17 Jul 2025 14:33:04 +0000
-Date: Thu, 17 Jul 2025 16:22:48 +0200
+	id 1ucQxZ-AIkwcC8pXvG-HvHi;
+	Thu, 17 Jul 2025 15:55:49 +0000
 From: Remi Pommarel <repk@triplefau.lt>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Bert Karwatzki <spasswolf@web.de>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH wireless v2 1/2] wifi: mac80211: Update skb's control
- block key in ieee80211_tx_dequeue()
-Message-ID: <aHkHOC6DYBXtnE5e@pilgrim>
-References: <06aa507b853ca385ceded81c18b0a6dd0f081bc8.1742833382.git.repk@triplefau.lt>
- <20250410215527.3001-1-spasswolf@web.de>
- <Z_jpq26P99qzPP1c@pilgrim>
- <1df3a3df19b77e3b8d1f71a3a93c61221ff46a6b.camel@web.de>
- <aHj4zS_3uhDRhzDn@pilgrim>
- <fa538ba960369497f6d65c1448ab7710f76aa078.camel@sipsolutions.net>
+To: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Remi Pommarel <repk@triplefau.lt>
+Subject: [PATCH wireless 0/2] Fix ieee80211_tx_h_select_key() for 802.11 encaps offloading
+Date: Thu, 17 Jul 2025 17:45:27 +0200
+Message-ID: <cover.1752765971.git.repk@triplefau.lt>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fa538ba960369497f6d65c1448ab7710f76aa078.camel@sipsolutions.net>
 X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 510616m:510616apGKSTK:510616sBGiWowcYh
-X-smtpcorp-track: HJqb4GyGjO7l.s_ahIxnitvv9.yGidzwKZnlM
+Feedback-ID: 510616m:510616apGKSTK:510616sQtDXqd4MU
+X-smtpcorp-track: 6yQpQZZNUOwW.5Q1-VyjFVtNd.2ftShAW6Ue5
 
-On Thu, Jul 17, 2025 at 03:46:00PM +0200, Johannes Berg wrote:
-> Hi,
-> 
-> On Thu, 2025-07-17 at 15:21 +0200, Remi Pommarel wrote:
-> > I have ordered a mt7921 card so I could reproduce this and finally took
-> > time to debug that. 
-> 
-> Oh wow, talk about dedication. Thank you!
-> 
-> > The issue comes to the fact that mt7921 uses 802.11
-> > encapsulation offloading and as such we are calling
-> > ieee80211_tx_h_select_key() on a 802.3 frame.
-> 
-> Oh... Guess we could've thought about that, sorry. Though I would've
-> thought ath12k will also do that. Maybe not in the config you were
-> seeing the issue in?
+The fix in [0] introduces issue with mt7921 chips (at least), due to the
+802.11 encapsulation offloading support of those chips.
+ieee80211_tx_h_select_key() treated 802.3 frames as if they were 802.11
+ones causing the skb's control block hw_key to be invalid.
 
-I've mainly tested on ath*k HW. Either without 802.11 encapsulation HW
-offloading or with it but only on ath12k and it seems that this driver
-does not need the key in this mode. After a quick look into ath11k and
-10k that also seems to be the case for those chips.
+The first patch fixes the root cause of this issue and the second one
+reapplies the initial use after free fix that has been temporarly
+reverted meanwhile.
 
-For the record, if I am not mistaken, ath12k driver does not seem to
-support 802.11 encaps HW offloading mainline yet, I do seem to have some
-vendor patches to support it though.
+[0] https://lore.kernel.org/linux-wireless/06aa507b853ca385ceded81c18b0a6dd0f081bc8.1742833382.git.repk@triplefau.lt/
 
-> 
-> > This function casts the skb data as a 802.11 header regardless the skb
-> > is 802.11 or not in order to decide if the info->control.hw_key needs to
-> > be set. So the hw_key is likely to remain NULL in ieee80211_tx_dequeue()
-> > and because mt7921 driver needs this key to be valid data frames are
-> > dropped.
-> > 
-> > Will send a patch so that ieee80211_tx_h_select_key() does not try to
-> > get info from a ieee80211_hdr mapped on 802.3 packet data (i.e. when
-> > IEEE80211_TX_CTL_HW_80211_ENCAP is set).
-> > 
-> 
-> Sounds good!
-> 
-> johannes
+Remi Pommarel (2):
+  wifi: mac80211: Check 802.11 encaps offloading in
+    ieee80211_tx_h_select_key()
+  Reapply "wifi: mac80211: Update skb's control block key in
+    ieee80211_tx_dequeue()"
+
+ net/mac80211/tx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 -- 
-Remi
+2.50.1
+
 
