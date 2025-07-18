@@ -1,77 +1,78 @@
-Return-Path: <linux-wireless+bounces-25654-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25655-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7D7B0A0B3
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 12:31:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B691B0A0CA
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 12:37:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58E894E0F03
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 10:30:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EFD11AA1CBC
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 10:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5BD198A2F;
-	Fri, 18 Jul 2025 10:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD9F29E0F5;
+	Fri, 18 Jul 2025 10:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="FGPwPmmx"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="MEGDTNK7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16202EAE3
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 10:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ABE198A2F
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 10:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752834677; cv=none; b=Uuck+Zm6CoUFvIWp2t9sLgLjEfwKmKCkcVf8qGIX3BL+EQlpLnFDsHosWSbYeCkIg+ewEqmG7TBFnmYc1g+++Bmr553an3pdhuO15Y0V79P601tODFOQdfr967l2Lx/HBvnec1AgZN1Gx/LzR9q4OushFLupNCbhL22zpo39Vw0=
+	t=1752835025; cv=none; b=NGtEMKlMGfXZCEP2JXwADQE10lKQPVdNtKgkhJWl4JeiQ+TsEucvyvbR4sX39t0dQXJ71XpMErcxpn4klE9sQnM+xhtC9GBfmls2uat63KYkmA+RxOQ0sVAGZY4j6FhmZXwROTVocMjM3vkqsq7S9yNg10Z5crOodB5+GnLrCSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752834677; c=relaxed/simple;
-	bh=WWg6MBGv38Tm36mwG/FuPlXOO0l9S5FTb8TXeTWet6Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s+RAdxZOlOzaCKXqtEU3k3XIYZg2qrsdzkAAfBGU1QHe9O4OIoQk+j6mRvS6bfGN7qTFBcGfnltCfJEo3ava3MX9a4CZ4iMa2IDxBd89GnpbU6i1xonwP4mz7UAB9w6rWkWqzuPoT2y/D2UdOUfFMRLOmh/izeIqVyiQOEluxU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FGPwPmmx; arc=none smtp.client-ip=209.85.160.182
+	s=arc-20240116; t=1752835025; c=relaxed/simple;
+	bh=o7AiU/V34b0UGWXaW0uOVGBXivX7HWYrqo4HOg5hGI8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=a2q24BocEdMEvZCepqQBI5L2cD68Ve/vG0Adyj31t8Xkp/0pryP8V2aqFVxf/M1YY2Y1O7ivVCm8PXixgB93js1xB7qOebaieNLAXtaF8YBRHrdssQOSoG+V/SFe2fLaH8L0rcsHzQLe7CJQ4LQtwrBT+l18y3A0yI2wJDYnLgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=MEGDTNK7; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4ab53fce526so28556621cf.2
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 03:31:15 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45618ddd62fso20757615e9.3
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 03:37:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1752834675; x=1753439475; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1752835022; x=1753439822; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=R9WPk8aPKLe1G69XM4dNOt8IpjWfnNfoYmOHm3WzbAY=;
-        b=FGPwPmmxu1J+/+8elic+OdEAZsWjPmfV8uqfmUqHhMmH9Ra1ZJgGDoixT+zKMqCz3U
-         aSb8g98yebR2SKLEZUX3rRRkoDWOLPmSYtPiJVJ/R0UPhgPeBKjQuWIMq9k2F4ABEU9G
-         5qKFoUcHbuYwSTn4uXSD4FNzzMj3WnZoySZN4=
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=be2WTQLsa5uvXybUvNfmScdP010rblWY6zgN5KBpjt0=;
+        b=MEGDTNK7wnRBjnR5CJsIk8UQBa5WAY7ZzNrh14dFymaIHTme90Ovv5HuxQON/qlWpV
+         9Bx6HAqyhYXA2IPMN8sKKfEx9/ZbeHyI3/wnjPyA/byyoj8YKPX4Hl3FImCREXeKLa4/
+         E6TluHT52LATVutAa0nnIMlkfGMQqGvNS+RDw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752834675; x=1753439475;
+        d=1e100.net; s=20230601; t=1752835022; x=1753439822;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R9WPk8aPKLe1G69XM4dNOt8IpjWfnNfoYmOHm3WzbAY=;
-        b=azxgudrlqXaxe6Szz2DAc+UPrAS7dffF3AO3q43loqL61xR1bNR1WRYOmo8VbCUt33
-         sebsge9xHQFZlNhn5yLngoJEqXdqIlq9zC7qbVYkUT2UNmiEpS8G4/XoVwwt7Ao+liSS
-         oEs+jdO0NXXiN3NKaL/ujpesEv1F2xw5AZQMURZYP0IV23JcLXoUg5MxtvRxldz1ggdV
-         2Y1iieJ1xKWsIXQgmFbvU9B+mXkd2fBalEvkc9SZKAEL0kvf7qGDsFZW4ty4z/4bGEsG
-         +8Eph/uOdey7ccxCIIY0xzmrYBw0p0bu01SC80OkY114Nw+U1svf28C/udGqx+HKn+U8
-         x5Gg==
-X-Gm-Message-State: AOJu0Yygdx508FwSb56y8gzauGJrKMbhdo+1VWt+vTjunzVfVrvlrKkb
-	PLMQw1TJi31WvcxTrdxkVM1x4/q6H8O0GezJHJDgR1pPN9HtOmPgQkyFJwpuhcvMpw==
-X-Gm-Gg: ASbGnctMpknoTibYsA5pVEuABL9UCRYUD6+lEEtvTWQ8YWTQIomQqh8M7mTtAsg8lRU
-	2vElk9IvcVC70PwPxQ2dJ6yt0bcKQl7TMU3Caex6S3K9Zdr3tGOTr7HASYlcZjP1FHKsNQJEnT2
-	z/typdQ56hvqIj5fPa7hBTTAUnhFwJyA5+tF4bP3VHFK0QjdanpsndH948j8LXiGJtcH1XCgu63
-	NvkqmE1r9qKs3R+B6bL+VHa8lplp9CycdY//fbo7uo771rkA45hiRFp1bfQIhuSqFwl2/RqqQl3
-	+oXBBNEUyTiVMsRmiCHXFZI3yVR5Vmjvz8huM8nOaLW2aJAtxkEjwj44oeCnOBCWbThWaUwUaTO
-	u4vZn43WAxtaZd2lWqZqohtOohCzTOYkIBPrvYDQlcCb2nFmglRo=
-X-Google-Smtp-Source: AGHT+IFnS/sBMsCQF8ir9ETlwK9uMWpC1im5EdvJ5cQQSkgledwF4j3tjDWV/FzNasYprvJfY6T7Mw==
-X-Received: by 2002:a05:6214:8117:b0:704:f7cb:dd25 with SMTP id 6a1803df08f44-704f7cbdd7cmr106620256d6.21.1752834674421;
-        Fri, 18 Jul 2025 03:31:14 -0700 (PDT)
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=be2WTQLsa5uvXybUvNfmScdP010rblWY6zgN5KBpjt0=;
+        b=Ytdw+UdgmTTuJIfETWtLoYEsZumGceIvsvAn0K9zgkuSmnEi5xpeB1VcyMS8WSl5HV
+         BPhmeXPXsgoECz3MsvOtSF8pz5iOl+N9p6rjskoqjhRmj4t4S6ScnYeoQpNYbDLvgkvM
+         aFnLpyZwvT8QecXy1O5wCyxnFDCMolpf5gy9TzHH46FAYuTNTXmjb8gbGBN5nXk9ha02
+         8FAs5MzwjHLRYVqSEQKmX2kl1yirh+lo1PsTKq89nHzjmWoxRc0vj8IE9oLjFKvk5fDS
+         rCt2Rx2pH89AMTfyHyO979AxJ/wBrF2xwcIUDYJIrL8nKGEXWfScNJqKupxaHH5P3XoD
+         +6ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW/BqKhB8BPNZTYCUdzhL4ZQbci0NSwXCwj1Yreed5Y+Ho0fUK+Ak5FSndwNXc6pamK8cWrzNNCaVCh36mJNg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3epaWV1GxBk3MbCzsSWOiPC6Y5u8bUemkNXllm6AqMzqvi/+Y
+	0KHzgZgecxA4I31Oo0htT1GZ4Wb+K5HObds7Tp4Y2E/MXWGXEuElpZ2WuQhHPTJDGg==
+X-Gm-Gg: ASbGncuGJgUPLQmqO7IQvjZw0GNjm8vcFJ/vtQHV+xVBm/CqWZ0wGBIgberZ0PC6duk
+	jl675SG9IZWjD2ZIL6auhVrHV3nUnX+erp5vfno7o1NjbHE5TQftkZiRVOpTa3dN83r+ywdzAHl
+	PeignjpNbS/N5Ax0ltQ3qCIbTcPk7ephUh42lf5SZbGLepICb39ZusFM41uMgUSOrNEIQOJMv1a
+	TSCqSruUBbo2nV5UY7ewgS3mtOYl4BX8bB3DrTKf/d9oPX4RUCNxM/dAIoEmt1N9LG62EhQKAVO
+	Th+y0EKqz2NAIo+o+9u7Fhl5FWkwhNZ71TCW902AqHUrH7sQRtynuvuZykqCJ/8+wfDZqmcnquK
+	5MLTPP4QXQKtr4eHZNSiPRMwFWMX9SpRz1/lO3KlSEqPWh9dNzgM=
+X-Google-Smtp-Source: AGHT+IGaw18z6ZbgBi879Fyj3WOC2+vT3XshuuU7f+qrvOz7x5pcOoeAvZ79K/rtNQcSabe8GjOYiA==
+X-Received: by 2002:a05:600c:4688:b0:456:a1b:e906 with SMTP id 5b1f17b1804b1-4562e3cbb03mr85040605e9.33.1752835022389;
+        Fri, 18 Jul 2025 03:37:02 -0700 (PDT)
 Received: from [10.229.41.1] ([192.19.176.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7051ba93626sm5870606d6.87.2025.07.18.03.31.12
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca2ba0asm1461626f8f.21.2025.07.18.03.37.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Jul 2025 03:31:13 -0700 (PDT)
-Message-ID: <0f645579-0c37-4dd1-8c01-dc9a6dfb4131@broadcom.com>
-Date: Fri, 18 Jul 2025 12:31:11 +0200
+        Fri, 18 Jul 2025 03:37:01 -0700 (PDT)
+Message-ID: <f58ac73c-4d9d-4382-8bdb-65ac40ee529c@broadcom.com>
+Date: Fri, 18 Jul 2025 12:37:00 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,10 +80,21 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: brcmfmac: Add support for the SDIO 43751 device
-To: Fabio Estevam <festevam@gmail.com>, kvalo@kernel.org
-Cc: linux-wireless@vger.kernel.org, gokulkumar.sivakumar@infineon.com
-References: <20250712215307.1310802-1-festevam@gmail.com>
+Subject: Re: [PATCH v2 4/7] wifi: brcm80211: Use min() to improve code
+To: Qianfeng Rong <rongqianfeng@vivo.com>, Wentao Liang <vulab@iscas.ac.cn>,
+ Johannes Berg <johannes.berg@intel.com>,
+ Sai Krishna <saikrishnag@marvell.com>, Ondrej Jirman <megi@xff.cz>,
+ Jacobe Zang <jacobe.zang@wesion.com>, Kalle Valo <kvalo@kernel.org>,
+ Dmitry Antipov <dmantipov@yandex.ru>,
+ "open list:BROADCOM BRCM80211 IEEE802.11 WIRELESS DRIVERS"
+ <linux-wireless@vger.kernel.org>,
+ "open list:BROADCOM BRCM80211 IEEE802.11 WIRELESS DRIVERS"
+ <brcm80211@lists.linux.dev>,
+ "open list:BROADCOM BRCM80211 IEEE802.11 WIRELESS DRIVERS"
+ <brcm80211-dev-list.pdl@broadcom.com>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20250715121721.266713-1-rongqianfeng@vivo.com>
+ <20250715121721.266713-5-rongqianfeng@vivo.com>
 Content-Language: en-US
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
@@ -128,33 +140,17 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <20250712215307.1310802-1-festevam@gmail.com>
+In-Reply-To: <20250715121721.266713-5-rongqianfeng@vivo.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 7/12/2025 11:53 PM, Fabio Estevam wrote:
-> Add the SDIO ID and firmware matching for the 43751 device.
-> 
-> Based on the previous work from Marc Gonzalez <mgonzalez@freebox.fr>.
-> 
-> Tested on an i.MX6DL board connected to an AP6398SV chip with the
-> brcmfmac43752-sdio.bin firmware taken from:
-> 
-> https://source.puri.sm/Librem5/firmware-brcm43752-nonfree
-
-These chips seem to be shipped by Synaptics so maybe worth adding that 
-in the commit message(?). Other than that it looks fine so...
+On 7/15/2025 2:16 PM, Qianfeng Rong wrote:
+> Use min() to reduce the code and improve its readability.
 
 Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>> 
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
 > ---
-> Changes since v1:
-> - Do not declare 43751 as a Infineon/Cypress device. (Gokul)
-> 
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c    | 1 +
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c      | 2 ++
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c      | 5 ++++-
->   .../net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h    | 1 +
->   include/linux/mmc/sdio_ids.h                                 | 1 +
->   5 files changed, 9 insertions(+), 1 deletion(-)
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c      | 5 +----
+>   .../net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c    | 6 ++----
+>   2 files changed, 3 insertions(+), 8 deletions(-)
 
