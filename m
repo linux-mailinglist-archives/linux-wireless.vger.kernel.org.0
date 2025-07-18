@@ -1,97 +1,92 @@
-Return-Path: <linux-wireless+bounces-25637-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25638-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3BEB09B3C
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 08:18:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BEC8B09B77
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 08:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E2CB188DC72
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 06:19:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48B217BA2B7
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 06:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D4A1E521B;
-	Fri, 18 Jul 2025 06:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2465919F40A;
+	Fri, 18 Jul 2025 06:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="A7RwwXQg"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="v/MuHvRh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E141552FD
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 06:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A04919E97C
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 06:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752819521; cv=none; b=SjvkEdFNtyDxeJeywVTJnmbCwqn2WEULDoPZ5dvQjEc78kROzszJ2pQ1sWZFmAXQIakzdr4d8xmXg+TJLp+poS8Ou54VTa5pwfDYHV1d2ZoBYaXYr7UJsmTGq3UIoCk8aGA0LPBBLdMpQWuUAK1ksf49EpPILPFyIgdEm7sUaT8=
+	t=1752820535; cv=none; b=ikBNEuAx4IYwcAVoNUrSRQcXRvle8hBN8F818BnGjthr6GemY7EYKIL5QGcUSk0myascN1gwWbxxj+lYP5N7gW8v1497vTnf/ns9tx3l56LxaRGc3WlG6g5qSXXjvxdIHMxyP51TM6shgliIjApNwx8vnl6bDJjB8jjaQp+JxxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752819521; c=relaxed/simple;
-	bh=pRGMVnhZzWrQn8HP3PSWaQkQ4qVGoNSJqWuKHNqrkuI=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=JWtNyCmkTW3kzHSzDnOkyxD1+JOIT9KCqW6rQk7SM/lD7/wD8kfk0Jw8TAbj7whW8cxxBnoofjTvfLtVrOv065NxMrjbQfocyzf3DIHTcuaXlcpHydgEHee2bnG5uXLrfSBrXTrpUlXS1m5BNfIp9zq8IWFDr5+jQPryeudIn6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=A7RwwXQg; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1752820535; c=relaxed/simple;
+	bh=9pQGG5tmxr8ATFmyyPt0Gkft5YsUVtJu3dR0Ru4umrg=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=YLNPP5J581vuSW8W56lYiGZwZZmXEVUxGcB0lW/98wzce5OejNFXLEaXalbC4TQ8QcYWj2fMH+BfYn0vK2a5pm3xdII7hgKmg3rcMZs/cnIRfQYXRZoRO8CUm0UDQUww2eW4ymGi0fFZt1q0fdfTqT1IrDOQLu/36vL1verwm94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=v/MuHvRh; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56I6IaGtA1135474, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56I6ZRoO41147776, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1752819516; bh=l4T0teDVADnYdlxdObHUdBBfZhMod7i/dch8QPY+FFQ=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date;
-	b=A7RwwXQg1L/VIlUrADDCiz9FPmOakmyBZQN3fBpJXt9wZDRcjYElNpDA1hyziTmCy
-	 B3AVG3CfobtQykAjR3o9/F0wVmoVa7Y0jxn8WL4wo7fkwZJF/em5lk9IT7C+YbtE8h
-	 vraQFUg1sBymYR/yKYcYmAv0lYl2YlMkGfHa6+FZOFC1pZ0iQQ9LjtBkSGsQHPi6Ic
-	 PtThLDliLLSxZvlcNy7A4juQYjKQGLl+0It8F+enn95rnDU3q202K5NEeLXclY9+xv
-	 F7J40Vrb8rpl8xXhMoThs+M6jZ619IQudLmJXN4LLSZk+tGZD2uD1zTj9kPSWbdr9N
-	 U8KuUs1bj88bg==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56I6IaGtA1135474
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 14:18:36 +0800
+	t=1752820527; bh=9pQGG5tmxr8ATFmyyPt0Gkft5YsUVtJu3dR0Ru4umrg=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Content-Transfer-Encoding:Message-ID:Date;
+	b=v/MuHvRhvH2tWcgcIrz4FalEbAuerrEiE8fTD0s4MVc8Yrj4BCXSKj8U1b0Xuaxcq
+	 vO9mbSalc41rr8mMb3D5LcKUeXvxWRmOW962czthadwjP1xQZgHu5x3Rh6JM/3OgZu
+	 BDMP0bmLNTdeYaL5CSgZLYYNLC7lQdQFElFwCeh4trvtAeSriU4Wpvjb8pUzOGRdIb
+	 naAKgvkQXA0Ou+LfD7SYLHWXVBFnC3CBP0A5CNnRVgYCa5jmguyAX7YCvUK2bOAxbh
+	 znZa6achmwpHJq8IQAodUOZZk2yL3eeJhV79MC4lGAy5pu2p/9Hu/rvROaLOqM5ygS
+	 wJlKe2zj4XpGA==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56I6ZRoO41147776
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 18 Jul 2025 14:35:27 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 18 Jul 2025 14:18:36 +0800
+ 15.2.1544.11; Fri, 18 Jul 2025 14:35:27 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 18 Jul
- 2025 14:18:35 +0800
+ 2025 14:35:26 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-CC: <leo.li@realtek.com>, <damon.chen@realtek.com>
-Subject: Re: [PATCH rtw-next 1/5] wifi: rtw89: trigger TX stuck if FIFO full
-In-Reply-To: <20250715035259.45061-2-pkshih@realtek.com>
-References: <20250715035259.45061-1-pkshih@realtek.com> <20250715035259.45061-2-pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [PATCH rtw-next v2 1/2] wifi: rtw89: Lower the timeout in rtw89_fw_read_c2h_reg() for USB
+In-Reply-To: <09313da6-c865-4e91-b758-4cb38a878796@gmail.com>
+References: <09313da6-c865-4e91-b758-4cb38a878796@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <bedb24c2-4b19-4e91-b7bb-a07c32482c8f@RTEXMBS04.realtek.com.tw>
-Date: Fri, 18 Jul 2025 14:18:35 +0800
+Content-Transfer-Encoding: base64
+Message-ID: <6a03b8fb-fab7-4990-8bc5-8f6beb626b45@RTEXMBS04.realtek.com.tw>
+Date: Fri, 18 Jul 2025 14:35:26 +0800
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
-
-> From: Chia-Yuan Li <leo.li@realtek.com>
-> 
-> In order for the situation where the dispatcher blocking
-> causes HAXIDMA to be unable to TX to be reported as
-> a TX stuck, so that subsequent recovery can be handled.
-> 
-> Signed-off-by: Chia-Yuan Li <leo.li@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-
-5 patch(es) applied to rtw-next branch of rtw.git, thanks.
-
-cbf510e21e0c wifi: rtw89: trigger TX stuck if FIFO full
-8552f2b3153e wifi: rtw89: mac: reduce PPDU status length for WiFi 6 chips
-b552a3ef8a3d wifi: rtw89: dynamically update EHT preamble puncturing
-f1000385d47b wifi: rtw89: purge obsoleted scan events with software sequence number
-8b4a02773881 wifi: rtw89: check path range before using in rtw89_fw_h2c_rf_ps_info()
-
----
-https://github.com/pkshih/rtw.git
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOgoKPiBUaGlz
+IHJlYWRfcG9sbF90aW1lb3V0X2F0b21pYygpIHdpdGggYSBkZWxheSBvZiAxIMK1cyBhbmQgYSB0
+aW1lb3V0IG9mCj4gMTAwMDAwMCDCtXMgY2FuIHRha2UgfjI1MCBzZWNvbmRzIGluIHRoZSB3b3Jz
+dCBjYXNlIGJlY2F1c2Ugc2VuZGluZyBhCj4gVVNCIGNvbnRyb2wgbWVzc2FnZSB0YWtlcyB+MjUw
+IMK1cy4KPiAKPiBMb3dlciB0aGUgdGltZW91dCB0byA0MDAwIGZvciBVU0IgaW4gb3JkZXIgdG8g
+cmVkdWNlIHRoZSBtYXhpbXVtIHBvbGxpbmcKPiB0aW1lIHRvIH4xIHNlY29uZC4KPiAKPiBUaGlz
+IHByb2JsZW0gd2FzIG9ic2VydmVkIHdpdGggUlRMODg1MUJVIHdoaWxlIHN1c3BlbmRpbmcgdG8g
+UkFNIHdpdGgKPiBXT1dMQU4gZW5hYmxlZC4gVGhlIGNvbXB1dGVyIHNhdCBmb3IgNCBtaW51dGVz
+IHdpdGggYSBibGFjayBzY3JlZW4KPiBiZWZvcmUgc3VzcGVuZGluZy4KPiAKPiBTaWduZWQtb2Zm
+LWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4KCjIgcGF0Y2go
+ZXMpIGFwcGxpZWQgdG8gcnR3LW5leHQgYnJhbmNoIG9mIHJ0dy5naXQsIHRoYW5rcy4KCjY3MWJl
+NDZhZmQxZiB3aWZpOiBydHc4OTogTG93ZXIgdGhlIHRpbWVvdXQgaW4gcnR3ODlfZndfcmVhZF9j
+MmhfcmVnKCkgZm9yIFVTQgoxMjMyMmEwMjYwMzAgd2lmaTogcnR3ODk6IExvd2VyIHRoZSB0aW1l
+b3V0IGluIHJ0dzg5X2Z3ZGxfY2hlY2tfcGF0aF9yZWFkeV9heCgpIGZvciBVU0IKCi0tLQpodHRw
+czovL2dpdGh1Yi5jb20vcGtzaGloL3J0dy5naXQKCg==
 
