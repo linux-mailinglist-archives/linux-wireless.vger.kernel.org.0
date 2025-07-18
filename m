@@ -1,242 +1,185 @@
-Return-Path: <linux-wireless+bounces-25672-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25673-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BC0B0A946
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 19:19:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D12B0A9F0
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 20:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30E931C25CB3
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 17:19:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BE0A7A3634
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 18:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D2A2135D1;
-	Fri, 18 Jul 2025 17:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9072E7178;
+	Fri, 18 Jul 2025 18:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kEP8lrnM"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="S8ipk19X"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E974503B;
-	Fri, 18 Jul 2025 17:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C88F1799F;
+	Fri, 18 Jul 2025 18:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752859159; cv=none; b=SqIek6BxCVWT7j5Ar9QmRYhheYDwLFWEDGA3uL+TRWQ3A6Jq4VEgRuF9vTBOK+wLw/OrWbX7RRaI6s6rbuXNRcAoZG26csMGbjdP6IIhO/aLQnA44hln7lCyMx4bPEl7Rhm+YaTV+pY079xgWaTOKb9Cp9XI+Uuq4MkaQP7x/wg=
+	t=1752861808; cv=none; b=ZSa3TDHcoQ+f/p2zI0PbR6F8n8Ef8Svndr27H2Bnxbvgm1wx+rgfuxFn+CL49hPmczVi3eAsgSROmdxwjM2vzGjSpuv/mK2nQbuuqKirwahU/DkH6lKjfgFK5Iq0mgAQ6maYWMhzZ1SDQS7v653Bk6ZsLp9FIWTnZNP8C68j6jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752859159; c=relaxed/simple;
-	bh=mljt/m6pDjyin7CmecUSJC0AWe2g4NWfh4t5P5lPJlo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EOy8Z2o07UG9quFVPxYYfBpjQCgLTiXVB0DES+tFg3giEvN96TDZ/VRVwDxOjpkghsvB19P2bABDQEGojLu0vttv8WYp0mKnRnqvkl2sb32pTWU4uLiPT2exiL2ItDyMr7EXCmDOLutXO9PulJpb69CRlz/juJrGn3nUCmz7fA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kEP8lrnM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D492EC4CEEB;
-	Fri, 18 Jul 2025 17:19:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752859156;
-	bh=mljt/m6pDjyin7CmecUSJC0AWe2g4NWfh4t5P5lPJlo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kEP8lrnMy3WJ5T+X/JwfsKsMsFjX7gn1+L/uaIurjVW/b8RNxluNmMoHNt7Shp78b
-	 Nb+HTeUL0DGh7jVbzarEdbA/mNHEbaupxLvUCxwFE+BW1ViuqsxwOQPnGlsQgDlY/4
-	 xKwxnN+T+mqgmuzSOfw8XNE9SHnr+2SlYHfY5mQgXXz5bESvF+H0ppY0a5fuxH59N9
-	 zLIgD3fOTKPdzsqFnHOAQYJR3z91+O1sLXzKAoRv1YMVEF+Xf2QnciVQEXBbvsMWip
-	 k4ctmJp/td2uN+CrX4jooN0ifp99j1Q0a4WsRLDYVXr60ZAB/VffyBZ6HZ903CJQnr
-	 Rpb3fk9b44qvQ==
-Date: Fri, 18 Jul 2025 22:49:05 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>, 
-	manivannan.sadhasivam@oss.qualcomm.com, Jeff Johnson <jjohnson@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Nirmal Patel <nirmal.patel@linux.intel.com>, Jonathan Derrick <jonathan.derrick@linux.dev>, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, ath12k@lists.infradead.org, 
-	ath11k@lists.infradead.org, ath10k@lists.infradead.org, ilpo.jarvinen@linux.intel.com, 
-	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, Qiang Yu <qiang.yu@oss.qualcomm.com>
-Subject: Re: [PATCH 4/6] wifi: ath12k: Use pci_{enable/disable}_link_state()
- APIs to enable/disable ASPM states
-Message-ID: <qqskde7ar4dthidew2wrwbu5zzqhna7b27ivsyngzdanztdzwf@nvmxi7kzqkgv>
-References: <wkapzhyr6hzp5az4jae3y5c77c3fg4uwrmyyipbq4uosamcivq@z7nv6w7nbyrp>
- <20250718162600.GA2700538@bhelgaas>
+	s=arc-20240116; t=1752861808; c=relaxed/simple;
+	bh=KFKBL9lxu9qRH0uSM7O9Zi7SITZuQeQ43sS4hJNZllQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Rh7f8FmVtoF9yP218lLpCVjDvBmk43pIGfN6t7kvvugO/ekfLDDzXRoUNBcXBAMr7kG4KW5j9IVGE5IH7Qh3JGtC5uJfyapizdPq3teWDqQXRX2v80opVwdUvp5nFYMjtLgMvukz1/ZQ2xsblX/q9qfmi5CqrEK0peZQrNhonsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=S8ipk19X; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=CTATvulFqJ/iDBKnDw6rem6MuwIVbUfJ3v7HDdYiJto=;
+	t=1752861807; x=1754071407; b=S8ipk19XzR3bEd4Q4LEICTuFg+HlQKgpOyr9l4e1sxqvUwx
+	O7tk+5YOFwZpid7IRtPIfleZTUOrdrwO0d8w7SSNYQsbKp60WdGr5qhd6zezGLLfSdLxmmZvGBSw5
+	O3XH9p+LDjAaN5cKnDErYuI+5dULJgG2wfkXb68U1NI4LeSJjvaAGAI34RyBTJhmwAVKIXo3Z7tAa
+	LVwNJ9EZhzr4baapLJHd5QaUShYk9zbVGQ4qUxLjaqMIwEX7tgzVyf8qol1Mctes6dmryvGC3DXhx
+	m3o9u/QtZoLkygHBfSnhEuE/1LTL8dWO4/x//FMatQqM7DAKEzG9Zmim9Dsosjkw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1ucpQT-0000000D2pj-3LuU;
+	Fri, 18 Jul 2025 20:03:17 +0200
+Message-ID: <753bc16161f9f1024d33b93d6aa984c0b6adf51d.camel@sipsolutions.net>
+Subject: Re: [syzbot] [wireless] BUG: unable to handle kernel paging request
+ in ieee80211_wep_encrypt
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Eric Biggers <ebiggers@kernel.org>, linux-wireless@vger.kernel.org
+Cc: syzbot <syzbot+d1008c24929007591b6b@syzkaller.appspotmail.com>, 
+	ardb@kernel.org, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+ mingo@redhat.com, 	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+ tglx@linutronix.de, 	x86@kernel.org
+Date: Fri, 18 Jul 2025 20:03:16 +0200
+In-Reply-To: <2d1a41aa000c8de8f82827bd8c06459e01f10423.camel@sipsolutions.net>
+References: <6878cd49.a70a0220.693ce.0044.GAE@google.com>
+		 <20250718145049.GA1574@quark>
+	 <2d1a41aa000c8de8f82827bd8c06459e01f10423.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250718162600.GA2700538@bhelgaas>
+X-malware-bazaar: not-scanned
 
-On Fri, Jul 18, 2025 at 11:26:00AM GMT, Bjorn Helgaas wrote:
-> On Fri, Jul 18, 2025 at 05:19:28PM +0530, Manivannan Sadhasivam wrote:
-> > On Fri, Jul 18, 2025 at 07:05:03PM GMT, Baochen Qiang wrote:
-> > > On 7/18/2025 6:20 PM, Manivannan Sadhasivam wrote:
-> > > > On Fri, Jul 18, 2025 at 01:27:27PM GMT, Manivannan Sadhasivam wrote:
-> > > >> On Fri, Jul 18, 2025 at 10:05:02AM GMT, Baochen Qiang wrote:
-> > > >>> On 7/17/2025 7:29 PM, Manivannan Sadhasivam wrote:
-> > > >>>> On Thu, Jul 17, 2025 at 06:46:12PM GMT, Baochen Qiang wrote:
-> > > >>>>> On 7/17/2025 6:31 PM, Manivannan Sadhasivam wrote:
-> > > >>>>>> On Thu, Jul 17, 2025 at 05:24:13PM GMT, Baochen Qiang wrote:
-> > > >>>>>>
-> > > >>>>>> [...]
-> > > >>>>>>
-> > > >>>>>>>> @@ -16,6 +16,8 @@
-> > > >>>>>>>>  #include "mhi.h"
-> > > >>>>>>>>  #include "debug.h"
-> > > >>>>>>>>  
-> > > >>>>>>>> +#include "../ath.h"
-> > > >>>>>>>> +
-> > > >>>>>>>>  #define ATH12K_PCI_BAR_NUM		0
-> > > >>>>>>>>  #define ATH12K_PCI_DMA_MASK		36
-> > > >>>>>>>>  
-> > > >>>>>>>> @@ -928,8 +930,7 @@ static void ath12k_pci_aspm_disable(struct ath12k_pci *ab_pci)
-> > > >>>>>>>>  		   u16_get_bits(ab_pci->link_ctl, PCI_EXP_LNKCTL_ASPM_L1));
-> > > >>>>>>>>  
-> > > >>>>>>>>  	/* disable L0s and L1 */
-> > > >>>>>>>> -	pcie_capability_clear_word(ab_pci->pdev, PCI_EXP_LNKCTL,
-> > > >>>>>>>> -				   PCI_EXP_LNKCTL_ASPMC);
-> > > >>>>>>>> +	pci_disable_link_state(ab_pci->pdev, PCIE_LINK_STATE_L0S | PCIE_LINK_STATE_L1);
-> > > >>>>>>>
-> > > >>>>>>> Not always, but sometimes seems the 'disable' does not work:
-> > > >>>>>>>
-> > > >>>>>>> [  279.920507] ath12k_pci_power_up 1475: link_ctl 0x43 //before disable
-> > > >>>>>>> [  279.920539] ath12k_pci_power_up 1482: link_ctl 0x43 //after disable
-> > > >>>>>>>
-> > > >>>>>>>
-> > > >>>>>>>>  
-> > > >>>>>>>>  	set_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags);
-> > > >>>>>>>>  }
-> > > >>>>>>>> @@ -958,10 +959,7 @@ static void ath12k_pci_aspm_restore(struct ath12k_pci *ab_pci)
-> > > >>>>>>>>  {
-> > > >>>>>>>>  	if (ab_pci->ab->hw_params->supports_aspm &&
-> > > >>>>>>>>  	    test_and_clear_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags))
-> > > >>>>>>>> -		pcie_capability_clear_and_set_word(ab_pci->pdev, PCI_EXP_LNKCTL,
-> > > >>>>>>>> -						   PCI_EXP_LNKCTL_ASPMC,
-> > > >>>>>>>> -						   ab_pci->link_ctl &
-> > > >>>>>>>> -						   PCI_EXP_LNKCTL_ASPMC);
-> > > >>>>>>>> +		pci_enable_link_state(ab_pci->pdev, ath_pci_aspm_state(ab_pci->link_ctl));
-> > > >>>>>>>
-> > > >>>>>>> always, the 'enable' is not working:
-> > > >>>>>>>
-> > > >>>>>>> [  280.561762] ath12k_pci_start 1180: link_ctl 0x43 //before restore
-> > > >>>>>>> [  280.561809] ath12k_pci_start 1185: link_ctl 0x42 //after restore
-> > > >>>>>>>
-> > > >>>>>>
-> > > >>>>>> Interesting! I applied your diff and I never see this issue so far (across 10+
-> > > >>>>>> reboots):
-> > > >>>>>
-> > > >>>>> I was not testing reboot. Here is what I am doing:
-> > > >>>>>
-> > > >>>>> step1: rmmod ath12k
-> > > >>>>> step2: force LinkCtrl using setpci (make sure it is 0x43, which seems more likely to see
-> > > >>>>> the issue)
-> > > >>>>>
-> > > >>>>> 	sudo setpci -s 02:00.0 0x80.B=0x43
-> > > >>>>>
-> > > >>>>> step3: insmod ath12k and check linkctrl
-> > > >>>>>
-> > > >>>>
-> > > >>>> So I did the same and got:
-> > > >>>>
-> > > >>>> [ 3283.363569] ath12k_pci_power_up 1475: link_ctl 0x43
-> > > >>>> [ 3283.363769] ath12k_pci_power_up 1480: link_ctl 0x40
-> > > >>>> [ 3284.007661] ath12k_pci_start 1180: link_ctl 0x40
-> > > >>>> [ 3284.007826] ath12k_pci_start 1185: link_ctl 0x42
-> > > >>>>
-> > > >>>> My host machine is Qcom based Thinkpad T14s and it doesn't
-> > > >>>> support L0s. So that's why the lnkctl value once enabled
-> > > >>>> becomes 0x42. This is exactly the reason why the drivers
-> > > >>>> should not muck around LNKCTL register manually.
-> > > >>>
-> > > >>> Thanks, then the 0x43 -> 0x40 -> 0x40 -> 0x42 sequence should
-> > > >>> not be a concern. But still the random 0x43 -> 0x43 -> 0x43 ->
-> > > >>> 0x42 sequence seems problematic.
-> > > >>>
-> > > >>> How many iterations have you done with above steps? From my
-> > > >>> side it seems random so better to do some stress test.
-> > > >>>
-> > > >>
-> > > >> So I ran the modprobe for about 50 times on the Intel NUC that
-> > > >> has QCA6390, but didn't spot the disparity. This is the script
-> > > >> I used:
-> > > >>
-> > > >> for i in {1..50} ;do echo "Loop $i"; sudo setpci -s 01:00.0 0x80.B=0x43;\
-> > > >> sudo modprobe -r ath11k_pci; sleep 1; sudo modprobe ath11k_pci; sleep 1;done
-> > > >>
-> > > >> And I always got:
-> > > >>
-> > > >> [ 5862.388083] ath11k_pci_aspm_disable: 609 lnkctrl: 0x43
-> > > >> [ 5862.388124] ath11k_pci_aspm_disable: 614 lnkctrl: 0x40
-> > > >> [ 5862.876291] ath11k_pci_start: 880 lnkctrl: 0x40
-> > > >> [ 5862.876346] ath11k_pci_start: 886 lnkctrl: 0x42
-> > > >>
-> > > >> Also no AER messages. TBH, I'm not sure how you were able to
-> > > >> see the random issues with these APIs. That looks like a race,
-> > > >> which is scary.
-> > > >>
-> > > >> I do not want to ignore your scenario, but would like to
-> > > >> reproduce and get to the bottom of it.
-> > > > 
-> > > > I synced with Baochen internally and able to repro the issue.
-> > > > Ths issue is due to hand modifying the LNKCTL register from
-> > > > userspace. The PCI core maintains the ASPM state internally and
-> > > > uses it to change the state when the
-> > > > pci_{enable/disable}_link_state*() APIs are called.
-> > > > 
-> > > > So if the userspace or a client driver modifies the LNKCTL
-> > > > register manually, it makes the PCI cached ASPM states invalid.
-> > > > So while this series fixes the driver from doing that, nothing
-> > > > prevents userspace from doing so using 'setpci' and other tools.
-> > > > Userspace should only use sysfs attributes to change the state
-> > > > and avoid modifying the PCI registers when the PCI core is
-> > > > controlling the device.  So this is the reason behind the
-> > > > errantic behavior of the API and it is not due to the issue with
-> > > > the API or the PCI core.
-> > > 
-> > > IMO we can not rely on userspace doing what or not doing what, or
-> > > on how it is doing, right? So can we fix PCI core to avoid this?
-> > 
-> > I'm not sure it is possible to *fix* the PCI core here. Since the
-> > PCI core gives userspace access to the entire config space of the
-> > device, the userspace reads/writes to any of the registers it want.
-> > So unless the config space access if forbidden if a driver is bound
-> > to the device, it is inevitable. And then there is also /dev/mem...
-> > 
-> > Interestingly, there is an API available for this purpose:
-> > pci_request_config_region_exclusive(), but it is used only by the
-> > AMD arch driver to prevent userspace from writing to the entire
-> > config space of the device.
-> > 
-> > Maybe it makes sense to use something like this to prevent the
-> > userspace access to the entire config space if the driver is bind to
-> > the device.
-> 
-> I'm not really a fan of pci_request_config_region_exclusive() because
-> it's such a singleton thing.  I don't like to be one of only a few
-> users of an interface.
-> 
+On Fri, 2025-07-18 at 17:57 +0200, Johannes Berg wrote:
+> On Fri, 2025-07-18 at 07:50 -0700, Eric Biggers wrote:
+> > >=20
+> > > BUG: unable to handle page fault for address: ffff8880bfffd000
+> [...]
+> > > Call Trace:
+> > >  <TASK>
+> > >  crc32_le_arch+0x56/0xa0 arch/x86/lib/crc32.c:21
+> > >  crc32_le include/linux/crc32.h:18 [inline]
+> > >  ieee80211_wep_encrypt_data net/mac80211/wep.c:114 [inline]
+> > >  ieee80211_wep_encrypt+0x228/0x410 net/mac80211/wep.c:158
+> [...]
+> > >  nl80211_tx_mgmt+0x9fd/0xd50 net/wireless/nl80211.c:12921
+> >=20
+> > syzbot assigned this to the "crypto" subsystem.  However, the crash
+> > happened in crc32_le() which is not part of the crypto subsystem.  Also=
+,
+> > crc32_le() is well-tested (e.g. by crc_kunit), and the bug is unlikely
+> > to be there.  Rather, the calling code in ieee80211_wep_encrypt_data()
+> > is passing an invalid data buffer to crc32_le().  So let's do:
+>=20
+> Agree, that makes sense, looks like we never check the frame length
+> correctly. Since there's no reproducer (yet) I guess we won't be testing
+> against it with syzbot though :)
 
-If the API is serving the purpose, I don't see why we cannot be 'one among the
-few users'.
+Well, hmm. So we're in
 
-> Linux has a long tradition of allowing root users to shoot themselves
-> in the foot, and setpci is very useful as a debugging tool.  Maybe
-> tainting the kernel for config writes from userspace, and possibly
-> even a WARN_ONCE() at the time, would be a compromise.
-> 
+int ieee80211_wep_encrypt_data(struct arc4_ctx *ctx, u8 *rc4key,
+                               size_t klen, u8 *data, size_t data_len)
+{
+        __le32 icv;
 
-I really do not see a need to let the userspace modify the config space when a
-driver is bind to it. It fully makes sense when there is no driver attached to
-the device. But if there is one, then it just warrants trouble.
+        icv =3D cpu_to_le32(~crc32_le(~0, data, data_len));
 
-If we want to be really cautious with userspace tooling, then we can introduce
-a kernel config option similar to CONFIG_IO_STRICT_DEVMEM and keep it disabled
-by default.
+with presumably data/data_len being garbage. Via
 
-- Mani
+int ieee80211_wep_encrypt(struct ieee80211_local *local,
+                          struct sk_buff *skb,
+                          const u8 *key, int keylen, int keyidx)
+{
+        u8 *iv;
+        size_t len;
+        u8 rc4key[3 + WLAN_KEY_LEN_WEP104];
 
--- 
-மணிவண்ணன் சதாசிவம்
+        if (WARN_ON(skb_tailroom(skb) < IEEE80211_WEP_ICV_LEN))
+                return -1;
+
+        iv =3D ieee80211_wep_add_iv(local, skb, keylen, keyidx);
+        if (!iv)
+                return -1;
+
+        len =3D skb->len - (iv + IEEE80211_WEP_IV_LEN - skb->data);
+
+which _looks_ OK at first, however, looking at
+
+
+static u8 *ieee80211_wep_add_iv(struct ieee80211_local *local,
+                                struct sk_buff *skb,
+                                int keylen, int keyidx)
+{
+        struct ieee80211_hdr *hdr =3D (struct ieee80211_hdr *)skb->data;
+        struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
+        unsigned int hdrlen;
+        u8 *newhdr;
+
+        hdr->frame_control |=3D cpu_to_le16(IEEE80211_FCTL_PROTECTED);
+
+        if (WARN_ON(skb_headroom(skb) < IEEE80211_WEP_IV_LEN))
+                return NULL;
+
+        hdrlen =3D ieee80211_hdrlen(hdr->frame_control);
+        newhdr =3D skb_push(skb, IEEE80211_WEP_IV_LEN);
+        memmove(newhdr, newhdr + IEEE80211_WEP_IV_LEN, hdrlen);
+
+        /* the HW only needs room for the IV, but not the actual IV */
+        if (info->control.hw_key &&
+            (info->control.hw_key->flags & IEEE80211_KEY_FLAG_PUT_IV_SPACE)=
+)
+                return newhdr + hdrlen;
+
+        ieee80211_wep_get_iv(local, keylen, keyidx, newhdr + hdrlen);
+        return newhdr + hdrlen;
+}
+
+
+there's no check that the skb->len is actually >=3D hdrlen(), in which
+case we would return an 'iv' that's outside of [skb->data..+len].
+
+Then the
+
+	len =3D skb->len - (iv + IEEE80211_WEP_IV_LEN - skb->data);
+
+subtraction could underflow and result in this issue, I guess.
+
+But the stack dump is strange in that we appear to get here via
+nl80211_tx_mgmt() which only accepts management frames, but
+ieee80211_tx_h_select_key() at least for WEP will NULL out the key for
+!data frames, and then we can't get into the encrypt functions. Data
+frames are always built by the kernel itself, so shouldn't get into some
+kind of weird "header is shorter than the frame" situation.
+
+It's theoretically possible that this is a _different_ frame being
+dequeued than was just enqueued, but that seems like quite a stretch
+since we just immediately dequeue after the enqueue with the hwsim
+implementation ... and I'm not sure where that frame would come from
+anyway.
+
+So right now I have no idea what's going on here, nothing seems right.
+
+johannes
 
