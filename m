@@ -1,157 +1,183 @@
-Return-Path: <linux-wireless+bounces-25631-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25632-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B84B09A0E
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 05:08:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE54AB09B20
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 08:09:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1229177A5F
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 03:08:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A34C188058C
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 06:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB731400C;
-	Fri, 18 Jul 2025 03:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B6B1DF994;
+	Fri, 18 Jul 2025 06:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZGYswyYT"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Yao2Uedm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724A017A2E3
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 03:08:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB9D17578
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 06:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752808115; cv=none; b=cMULo5fRlVNFH3Z34THY9bXIKJZLzIaYeoThnJeOktvOdxj9nhlhVY3/Gzg5v6yYBc7IH8aSznZ/6TOkIH70ikmXWCI4eLIQ2AgJF7mNUiJotAzPmpYIfnUM9feIBpxNwQ/wsAVFKoqbhKSAAHH7URGNQPa47xStjnR/6H8IHdo=
+	t=1752818943; cv=none; b=n2HWSI7v1T0T6d1/nDsK4Gk5EW3EYIvu2Nlx4iP/O1csAdtTo8ZB5LzeVpknHoXcdbdj0ezo+QFYjCgBuAWYVzEkDmvq2KTvpM45tYy90nFZjHiktlEuiKFjhOH/Lv6OJ6jR7wxKcT2FxbK/vUHxKCikooxE5tuM6S8kies5aSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752808115; c=relaxed/simple;
-	bh=VY7pZU06+nEgMd1eB5aka3grkVYW073bF1S+aedjlho=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=h9W542Yt1FG3Uy5TQECljnc5DLCHwtZs6mQDOtHDARQMS6FgJz2BdTsnE0e5iPHmLevKUZ0jYkhuAgl5OgdeqRKA1unmFb+zJowtr0K3wX+PUuxeUzte+Zgy3cbIVgWWNoYDJVJHDfH7Tzl+pUU3Ccy7Mp05vKAK4qQ9frCFXHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZGYswyYT; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b31e076f714so1948287a12.0
-        for <linux-wireless@vger.kernel.org>; Thu, 17 Jul 2025 20:08:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752808113; x=1753412913; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gliDNT8UmrvqpL4JkSM9BrFqPID+dcYPsDKzUoYCBEY=;
-        b=ZGYswyYTezmumwwLQGuq7G6hnBbjXtzA8lAqUF7L1eQWPzZGuv6TVbG3VHpRuEtcow
-         In2FXoeWIoSHMYA6RQtZ8sXl13hWIBRWoLoFzQqqpGbTEJNJ98nIJuhVWvF1/Ew9yYpR
-         OoB4ZUks+VN4fsA8UpaO9/5sJzr9LUZHiWEf9BY/4/mDU0EvNIobAQI/768XgxzGyI9i
-         bfwTLxxaObIZeykbC9+uqAqQL6vx1ZWDFfaFfsxaa1d8wZDKB1V8v9TJQ3VjFvunId+j
-         Yuy5J30jUD/1RvPSSRhRhK3XDmuGPoO7sjKTzc2OowWhLrmxWk/jmJJ0gM8//VdRGP0L
-         vcKA==
+	s=arc-20240116; t=1752818943; c=relaxed/simple;
+	bh=ZxVyFgg8Y3CqCPNTBa3wYyZmBqA/HCPEKa25OaB8zmw=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=KA1ihJgc4gGbcgTPKMCHk5I+aSFpGdhEe2b/rXCF3QBDthAqcRWIla11f0rtGLE+obwJWP4QMTiDc44RPMH8hR6IZYu2iWsWeGOydIpFeaK5wSmDZLLSooVMvdl5Wdj9V4Uf/6picrTpwkFWNPHZ8kPxCVT3DPZ2aGR49xjPuzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Yao2Uedm; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56HLtlR5030480
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 06:09:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:date:from:message-id:subject:to; s=qcppdkim1; bh=jm1TqmyaJ73a
+	Ev/+A0NMqHKknbGzbroM81UPzBcA/zk=; b=Yao2UedmxstYn+aevf/NeEH/QM3I
+	UzVUDS+zEsvOsb7OAGaYdClatujU1wdgBo8bohOzM/KAUtCNRbxS6x7ewh6GfbTx
+	6E0xGc8vSlkkj9EECbQhGfCvgG1+5wViKVP9XPB2eBX8INJbzJNcTTrw5rPubllm
+	xfQnlzf9MCyBqVQ6SotxIYe/p+Sr6NC0lXWBiXAsJ93pIpDQ1dja1WfGdPkhlDmw
+	qM41Yw9895FocE+KehVAd+vTBLbN1r0lbOICtmllaI20DC1Ag6m1N2Tqc3mATtSr
+	8v3CQ4tn0WEsQwtBxGIJWSwK+YaMD2tWpmpl64pDoTQcB0hpaD9aM9gj2A==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47x8x7q62c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 06:09:00 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-748cf01de06so2515391b3a.3
+        for <linux-wireless@vger.kernel.org>; Thu, 17 Jul 2025 23:08:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752808113; x=1753412913;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1752818939; x=1753423739;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gliDNT8UmrvqpL4JkSM9BrFqPID+dcYPsDKzUoYCBEY=;
-        b=kYfsSSLtFmSmD/tAVI3vvbFo8RCC2Kl00c9hJx1TH1g8V+QiIW2bY9PoWWzWbLqNOv
-         NjGjF/4RmXb54UZfLKGXoVx3Nm3ETaNSWOdGw+73owcp0JxSYdHU5qsdR5vuP5UZ/+/4
-         8bfhS6yMVi1+tGNE6Obxls2ooG32QwkcL3CrbUGC6fP/yVoNZWCvaPaKNvTGUSa1eOpv
-         WgayniDiU5fdL1H1gEk72D06z0kCK5JQsHg1dYOH2pgciI2vb1Mq5b6lAn1Hgarktyj6
-         7Q2Q44zdcDzRDWZyaAWMXEQnfvN3lWesJRy1SppvmaqowFptk3W0djPRzPHWztXo0nvR
-         1G/A==
-X-Gm-Message-State: AOJu0YzWzkmNKPR/hVJfW+COxocV2gJpIJ+f5gQLXXHktEjsPxISlxC0
-	aPkJkcmzKXj3J4Nhriem5Q4Ry4kzRMM75Bmh5bzmqFpHsu4PbXS1slnC
-X-Gm-Gg: ASbGncv8vqhM0pc63Rph3GNlhEEHgCqRjF0j4/1symK+TsWHT1wsTV8rmMRen5VzUTk
-	hden137KUFlnrt5NafCbIKpyavi6ck0I8x41LaOd4GsnCFOodbLCe8v263V8Vo2N5FXQeb/ZdLB
-	6PP+ZSJCg33Je09m4f0PfxfwxjChkwLaQVKI8g8XGf7Uq+p7GCYsz5qOqT0l1Emohdr4deai9Bp
-	A9DC6AMzzo6EF0BPhL25i0fPv0A0eDZ3rFhK9fCGC3pNHKOqrVqJOC+PwPCkbVCw9K6WZ8rUSHQ
-	L3GVltOhN5CIWJGVu10fN8B4pNFFzGlU3pZRWZonmLV5h70O1CzkW5zzIh3rHFvpNFDllsltsai
-	S6zERlt2VG0bOHktMG+9hf7n9NUTfWw/1q2zV5oFX5e8UnzMoqXabMiydvV75pbt3
-X-Google-Smtp-Source: AGHT+IGX1RxEzDOyTjrxinqZXxreXvwXhjTUNtlBZU1o/JS9UqTvXFLmf1LA1aobDwIlVR4JbHakVQ==
-X-Received: by 2002:a17:90b:3d0a:b0:313:d361:73d7 with SMTP id 98e67ed59e1d1-31caeba85c4mr8247747a91.13.1752808112634;
-        Thu, 17 Jul 2025 20:08:32 -0700 (PDT)
-Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-31cc3e5b46csm275324a91.11.2025.07.17.20.08.31
+        bh=jm1TqmyaJ73aEv/+A0NMqHKknbGzbroM81UPzBcA/zk=;
+        b=IpUXtMZ7/ko6Vhob6m0iTZ75vaQzELkajaqywf/nxeJJGftK6dwIPNUhzHVpvF0pEJ
+         loP9B7olwUxQBz3Kp24Iz3O/0+ZD0FYYewGaS5nsoJ2nGo35MwAx/3q/adkUc16VGJL2
+         EEJ3szrsPZhnTQ8Nb3x29ldpsa5fjrO9D1i8nNWKgPcuNRpKaOzgcr4TzHxq2j6609+F
+         0XxvBkiUenrM9mtFMo9i8KDBYBpUgcaxcBgKVbsddNOacEC6145JXP7aoQvUUwam5W3h
+         MOsxPE0RH7aciCk46PNLoByzMACOFDYqOBzFGpOTctguBQz4U9ck+MVSdwrSWTXuBMdI
+         OQGQ==
+X-Gm-Message-State: AOJu0YzP+TkJ+3xtJrgyZjnv6u+UEWpYmh2AZRs2BAzI+gRmTBM2QAgp
+	7LFKN8M6aFFaTHSa9sn3E3QhgAW7ZJmv6RqWDLait3+isWgdM3P7NFfR6wPa508KgR+f6XsZhFf
+	7ihmVyvC131tMQdYY/0fHSbEMZAUeLOgIcO1tjvGnZnUXeTFPpYGlF1pBRlbQwMSiH1QovQ==
+X-Gm-Gg: ASbGncv+9rxVUUbbJ7fiX9MxYqUc0OVz/9g01alinqmSYhgIWbnUojSRVgqPKWTnReT
+	FtgPfP2uqfpHCE25YBfJCqh7FVnixuH+xyAAVy2p6IyRJs3G0WYk/D9LY31pHwK6CFB4oH60kp6
+	3z37X3idglIKjjIiDBhQJaCtBBysU/krULHyFjJaY+Ne6NOeQOLCQNN1W0CFZ8aam2/E/6jk1PG
+	FuS5OP0wbhNH+ZDqoVUmeWSxU2wZZISUd3bX+IG1BxrY0B50NVvdJFWUTph+jcdA60Uzca/0ku8
+	VvVesiyuVl21N+JYKKxFuKLsbUXfsqjU2q+9CTsg/ODHdJZHTPeAPKbDN4S6pQAjYqwzhIAatMj
+	RdGzO3RE=
+X-Received: by 2002:a05:6a00:21d4:b0:748:eedb:902a with SMTP id d2e1a72fcca58-75724875604mr10736968b3a.17.1752818938824;
+        Thu, 17 Jul 2025 23:08:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHpAa2lmp4jzT1+uFjVv9p1F0RymBCKCQqrEkSouLtBg+vv3hzORnwWPx6LuBbYyr1ZjYo+dw==
+X-Received: by 2002:a05:6a00:21d4:b0:748:eedb:902a with SMTP id d2e1a72fcca58-75724875604mr10736931b3a.17.1752818938303;
+        Thu, 17 Jul 2025 23:08:58 -0700 (PDT)
+Received: from che-ventolnx02.qualcomm.com ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759c84e26d0sm531236b3a.8.2025.07.17.23.08.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Jul 2025 20:08:32 -0700 (PDT)
-From: Ping-Ke Shih <pkshih@gmail.com>
-To: wens@kernel.org
+        Thu, 17 Jul 2025 23:08:57 -0700 (PDT)
+From: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	wireless-regdb@lists.infradead.org
-Subject: [PATCH 2/2] wireless-regdb: update regulatory rules for Sint Marteen (SX) for 2018
-Date: Fri, 18 Jul 2025 11:08:10 +0800
-Message-Id: <20250718030810.17213-2-pkshih@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250718030810.17213-1-pkshih@gmail.com>
-References: <20250718030810.17213-1-pkshih@gmail.com>
+        Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+Subject: [PATCH wireless-next v3 0/4] wifi: mac80211: macro improvements and MLO enhancements
+Date: Fri, 18 Jul 2025 11:38:33 +0530
+Message-Id: <20250718060837.59371-1-maharaja.kennadyrajan@oss.qualcomm.com>
+X-Mailer: git-send-email 2.17.1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE4MDA0NiBTYWx0ZWRfXyNEAlddpHOay
+ PyGpADSeNavZR8KeNweYICcTwLyyJBn4plZ+p7bcUIQZQXlyPfXOqLs+FQ+FKpqwWVJT1f5MZEb
+ Ow/svcRDmRZDoJtO0gVS8+vEheerGWQhM/EBdbU+k3OP1MlOihK1T8tEk933Hqo+yrhAuzPQd4H
+ Ms8BCHJcRp+a4NAvkeMi8q8MugZg/5xgT2QAcQSjBKIYVR1BNDFBazmE5g0E+8mT2daufzVkQ2m
+ boCDV12U3irC9EtxaM3Nn+aNUqTeC0PotxKF1qU5ofrWIgv5eVR87e10rrL+q7Wneyuu3S8j7ix
+ QSAJ+RhE3oZtA1nQHnTGDbybhAhDfQO6TQ2v2qDEqG4KCsKIwhvI7jYLn1jej+c/pAiytVAFU9G
+ XVFsM9XEz4+37tBh6hWPqEtC4i+5x3E9dyD9VsP1VrNhTVFeu90DqlFGrO3hkh8vVqOkXJoI
+X-Proofpoint-GUID: 8tYriFXaj3KjYV5oUUm_8X8OrSW2y8EK
+X-Proofpoint-ORIG-GUID: 8tYriFXaj3KjYV5oUUm_8X8OrSW2y8EK
+X-Authority-Analysis: v=2.4 cv=N9YpF39B c=1 sm=1 tr=0 ts=6879e4fc cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=Wb1JkmetP80A:10 a=VIiajhFgAjV4fBB1mBcA:9 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-18_01,2025-07-17_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 mlxlogscore=999 bulkscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 mlxscore=0 suspectscore=0 impostorscore=0
+ phishscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507180046
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+This patch series introduces improvements in the macro definitions and
+extending support for Multi-Link Operation (MLO) in beacon and connection
+monitoring logic.
 
-By "Legal and illegal wireless communication devices" in [1], Bureau
-Telecommunications and Post St. Maarten lists the allowed equipment [2].
+The first two patches address macro usage in link iteration:
 
-With ETSI rules:
+* Patch 1 cleans up the for_each_link_data() macro to avoid variable
+  scoping issues, improving compatibility with static analyzers and
+  preventing potential redefinition errors.
 
-* 2.4-2.4835 GHz
-  - max. power 100mW
-* 5.15-5.25 GHz
-  - max. power 50mW
-* 5.25-5.35 GHz
-  - max. power 250mW
-  - ESTI EN 301 893
-    * DFS
-    * for devices without TPC, the limit is lowered 3 dBm
-      (reduce to 21 dBm)
-* 5.47-5.725 GHz
-  - max. power 250mW
-  - ESTI EN 301 893
-    * DFS
-    * for devices without TPC, the limit is lowered 3 dBm
-      - Not required for devices that operate at a maximum mean e.i.r.p. of
-        27 dBm when operating in 5470 MHz to 5725 MHz
-        (keep 250 mW for 5470 MHz to 5725 MHz)
-* 5.725-5.875 GHz
-  - max. power 1W
-  - ETSI EN 302 502
-    * DFS: 5725 - 5850
-    * The FWA device shall have the capability to reduce the operating
-      mean EIRP level to a level not exceeding 24 dBm for ChS = 20 MHz
-      (reduce to 24 dBm)
+* Patch 2 introduces a new macro, for_each_link_data_rcu(), which uses
+  rcu_dereference() instead of sdata_dereference(), making it safe for use
+  in atomic and RCU read-side contexts such as the RX path.
 
-[1] https://btp.sx/telecommunication.html
-[2] https://btp.sx/dash/files/Telecommunications/Technical-Requirements/10t98466434723___TGVnYWwgYW5kIGlsbGVnYWwgd2lyZWxlc3MgY29tbXVuaWNhdGlvbiBkZXZpY2Vzb_64.pdf
+The remaining patches extend the beacon and connection monitoring logic to
+support non-AP MLD STAs.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- db.txt | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Currently, reset beacon monitor (ieee80211_sta_reset_beacon_monitor()) and
+reset connection monitor timers (ieee80211_sta_reset_conn_monitor()) are
+handled only for non-AP non-MLD STA and do not support non-AP MLD STA.
 
-diff --git a/db.txt b/db.txt
-index d2414810442b..56868cf58759 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1867,6 +1867,15 @@ country SV: DFS-FCC
- 	(5735 - 5835 @ 20), (30)
- 	(5925 - 7125 @ 320), (12), NO-OUTDOOR
- 
-+# Source:
-+# https://btp.sx/dash/files/Telecommunications/Technical-Requirements/10t98466434723___TGVnYWwgYW5kIGlsbGVnYWwgd2lyZWxlc3MgY29tbXVuaWNhdGlvbiBkZXZpY2Vzb_64.pdf
-+country SX: DFS-ETSI
-+	(2400 - 2483.5 @ 40), (100 mW)
-+	(5150 - 5250 @ 80), (50 mW), AUTO-BW
-+	(5250 - 5350 @ 80), (21), DFS, AUTO-BW
-+	(5470 - 5725 @ 160), (250 mW), DFS
-+	(5725 - 5875 @ 80), (24), DFS
-+
- # Source:
- # https://sytpra.gov.sy/public/uploads/files/%D8%A7%D9%84%D8%A7%D8%B7%D8%A7%D8%B1%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%D9%8A/%D9%84%D9%88%D8%A7%D8%A6%D8%AD%20%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D9%8A%D8%A9/%D9%84%D9%88%D8%A7%D8%A6%D8%AD%20%D8%A7%D9%84%D8%B7%D9%8A%D9%81%20%D8%A7%D9%84%D8%AA%D8%B1%D8%AF%D8%AF%D9%8A%20%D8%A7%D9%84%D8%B1%D8%A7%D8%AF%D9%8A%D9%88%D9%8A/L1.pdf
- country SY: DFS-ETSI
+When the beacon loss/connection loss occurs in non-AP MLD STA with the
+current implementation, it is treated as a single link and the timers are
+reset based on the timeout of the deflink, without checking all the links.
+
+Check the CSA flags for all the links in the MLO and decide whether to
+schedule the work queue for beacon loss. If any of the links has CSA
+active, then beacon loss work is not scheduled in
+ieee80211_sta_reset_beacon_monitor().
+
+In ieee80211_sta_reset_conn_monitor(), the CSA flags of all links are
+checked. The connection monitoring logic proceeds only if none of the links
+have CSA active. The timeout is determined based on the link that will
+expire last among all links. If at least one link has not timed out,
+the timer is updated accordingly. The connection loss work is scheduled
+only when all links have timed out.
+
+Also, call the functions ieee80211_sta_reset_beacon_monitor() and
+ieee80211_sta_reset_conn_monitor() from ieee80211_csa_switch_work() only
+when all the links are CSA active.
+
+Since the beacon and connection monitoring logic now supports MLO, remove
+the MLO-related WARN_ON() checks in these paths.
+
+v3: Addressed Johannes's comment by adding a new macro for link iteration.
+
+v2: Addressed Johannes's comments.
+    * Changed the comments special style.
+    * Blank link after guard(rcu).
+    * Changed the helper function name and return type in the 2nd patch.
+
+Aditya Kumar Singh (1):
+  wifi: mac80211: fix macro scoping in for_each_link_data
+
+Maharaja Kennadyrajan (3):
+  wifi: mac80211: Add link iteration macro for link data with
+    rcu_dereference
+  wifi: mac80211: extend beacon monitoring for MLO
+  wifi: mac80211: extend connection monitoring for MLO
+
+ net/mac80211/ieee80211_i.h |  17 +++++-
+ net/mac80211/mlme.c        | 117 ++++++++++++++++++++++++++++---------
+ 2 files changed, 104 insertions(+), 30 deletions(-)
+
+
+base-commit: af2d6148d2a159e1a0862bce5a2c88c1618a2b27
 -- 
-2.25.1
+2.17.1
 
 
