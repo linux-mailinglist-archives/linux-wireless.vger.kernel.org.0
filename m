@@ -1,112 +1,130 @@
-Return-Path: <linux-wireless+bounces-25623-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25624-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 150FDB09717
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 01:14:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF04B098BA
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 02:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91F77188BDF5
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Jul 2025 23:14:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDAD61895AD7
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 00:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7CC23ED6A;
-	Thu, 17 Jul 2025 23:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8939E29B0;
+	Fri, 18 Jul 2025 00:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jwEdpv4f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GxALx1Ze"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5102C1A2541;
-	Thu, 17 Jul 2025 23:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654AE20E6
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 00:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752794076; cv=none; b=dLWWXduzBVzv0K4eefq+4T6eXzOQa8diATT6SKJIU9W3o9NXZfyAz/F3Xu3AlhBq+8PANVYDuSZyE1AkNKUK8LL8ndvxJsrQeucDskBMwpK2D0IyBkBt4iu7kUDOXfIjrB62xo3qWyBMCFlv6x1q3PG2+jHTWJzwFE9CJgS/ckU=
+	t=1752797150; cv=none; b=AQBiT0XS17YWBWlgiMY7gEcl+5pdPP9FYjHNQKOR56MtA4ii2IXIUPjysVMQ2zFlqBi5VqOxBXExBobP8y2KZBEYWGPWbTHcyqXtpxEbwZr/SCItwDcII71XHJaTd/tiKuPbRsSH+58QnwO8G1VE1TzQa20Kyqv+YV/jx18mHAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752794076; c=relaxed/simple;
-	bh=Boz1NnANL68jZFSj5utovY8CrOn3qt7bAPUypNpOzTM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=XgW5CT1FXNbZjhEVxkqOMKgl4lLZo2bwt2OtRn2XJP6mCHldirTScMFKHTmyvJVO89G7XlklSssWZh7XkN7Z1HpGejXhQCXZRNXtPrfslrh4A4mZ0agydVgT01jVsDs8uSt8YEPF3FZJQ6voebYT+ft8DJ+DTsccs8fg3sROWOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jwEdpv4f; arc=none smtp.client-ip=209.85.210.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-74801bc6dc5so1702054b3a.1;
-        Thu, 17 Jul 2025 16:14:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752794074; x=1753398874; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Boz1NnANL68jZFSj5utovY8CrOn3qt7bAPUypNpOzTM=;
-        b=jwEdpv4fSp/9RTt7mTPsy0pb1hOLwHI1khg8fn4VvrX/pGe2LmaR6zZrXVwMVQfFqd
-         ZiN1vPn1OSm2PtOm75fAY5X7jVBTpTKYh7BKnpP2JPx3WR6B9OTxB6OjosFRoHkdhUGt
-         6Iyj8y2OWTN0BQoOE/BD0jhl7DFyQ7g58BvFgnqDOGBv0rvavVe/H3Yi2NhjnwRdZFVH
-         Yo/xqxHztYn3oYekVCTjiXE+stO4ahz5YmLuOTEwGOxh4z407yXR3yY8viRHLJBSBnlD
-         M55do4ga/MGKT7wbZZwzbhbquMeyTQYUr1czmBBoYfpApt7hdvOuIiCNipNDVop8Cndk
-         cMZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752794074; x=1753398874;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Boz1NnANL68jZFSj5utovY8CrOn3qt7bAPUypNpOzTM=;
-        b=ZWVrOrWFdff/ewEj3FMJ1+YXz7LmmGY5KUVf7z7aWxAMUOUinK9QlAECDFli+92wvq
-         /Q7vY2ai6DJQsM57QcfBfnsgWwKMbaSnf+gG3fFXve8BfK9VBZEUS4OSGI0xc509mENz
-         2tZorZjMNNRwk+eQ/qfwiaOseeW17cA0uW/5F09oTlZD24te0gk2G1xpXItwkwftdREq
-         yYDW2vd5aysVzJf6KxIUGL72cBIrg/UtAZOob+M6Ng9BJfo4yJURihwlcmNn0B8R1Fw7
-         NNAIwpnt7ppXpnW5pUl0mTPYCQSzu1uZqe7ebhf5liwoFnyESG9y4SAjqKaGzy2LTyT3
-         XgNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVC0uDrlBMVH2fUQ8D9J1BiPZN+7dqPhuqezIdOoEpl9VacVXxNljpB8rjMYh+3lq2ob0Ab6RHMLW7SlU7xGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzn4M5O3jEGeKu3aAQRMZlYHcofJ+Jvg0SOUhJvBDLiGJJVK4AQ
-	GPef2dkhseOsTs3CQsU0ffxlvdVKVfJz3UwLD0QGfIh364QG4hOIRJKP
-X-Gm-Gg: ASbGncuLM0K9vpyMAMDenZ4l/ZIlg2LbKDRckhRVL9QIz/AahaM04DCqJkI7QHRVJ+q
-	3iGdDCbbBJFYxBNA12pJymkL+eD7mCUWlEi1H+ssCAwfDTlPkXCuz6oJRieJvhblFkTS/oQY/+U
-	/6UUZuF2oo2EIWE0lmuXiQLKxZCXAnncKEKa+N/YeeBzzLntLjAVxClOAxEmShuoraH3tXpNipc
-	ypdQiVu4CfV5dT8WIfzzIV2yV4vo5yQxeZmWkrtLkIMjCHA3GYu7aY5zLmZhlLF5Lm3MGIlNsSa
-	3L1cqNEYvyz6xPC3UH46z5s4NzZfb3GXiAmv2owE2GZyk5l56vB7h2fa74GGi1FqziNb1z8uvA4
-	jSJW4N1Hz4IenwQbEALGTItdn1+r2ffTy5lsBOaw=
-X-Google-Smtp-Source: AGHT+IGqxUgt2M7kl0/VxWjAcj+d9qWEHTt2Cy17UaLhAJdy0zmaf5a76BKuMYJ7ItuMr/jiUnopIw==
-X-Received: by 2002:a05:6a21:998b:b0:238:351a:f960 with SMTP id adf61e73a8af0-2390c84dd57mr8247735637.23.1752794074432;
-        Thu, 17 Jul 2025 16:14:34 -0700 (PDT)
-Received: from [127.0.0.1] ([116.206.223.147])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759cbc6c16esm81623b3a.149.2025.07.17.16.14.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Jul 2025 16:14:33 -0700 (PDT)
-Date: Fri, 18 Jul 2025 04:44:23 +0530
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-To: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-CC: stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5Bath10k=5D=5BQCA9377=5D_Firmware_crashes_on_Dell_I?=
- =?US-ASCII?Q?nspiron_5567_=28IRQ_=2316=2C_all_modern_distro_kernels=29?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <690B1DB2-C9DC-4FAD-8063-4CED659B1701@gmail.com>
-References: <CAEmM+Qh=8tm55Ypa2w3ZtOFFrGXTpKqxue59mVAo_5TVy0RJ6g@mail.gmail.com> <CD81F065-CDDD-41F6-AECD-167B509F57C6@gmail.com> <2DC25FD4-0EA4-41CE-BA17-BFF84C1C5F7E@gmail.com> <690B1DB2-C9DC-4FAD-8063-4CED659B1701@gmail.com>
-Message-ID: <D048183F-E342-4505-9891-8F35D09812FA@gmail.com>
+	s=arc-20240116; t=1752797150; c=relaxed/simple;
+	bh=yCw7IpmH0rgNcz07JxWMJ7jAeiHi3+CslcvWHjywjRk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sn+ukXcjZah3fYZKjPkzT9QH3yphn/eU/qj0jLbmWVbNU+e2aMujF2QT/UTschShhb+KT3ygCYqKpRdlnqAvKCaP0/m/PLsLN6BBjRRKTvMu5ZNiD7xjJ8V4hfF1m8mGyazcGlAbV9dE5QRGKrooSo3gyXbo2QUylHLmvvsqmvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GxALx1Ze; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150E0C4CEE3;
+	Fri, 18 Jul 2025 00:05:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752797150;
+	bh=yCw7IpmH0rgNcz07JxWMJ7jAeiHi3+CslcvWHjywjRk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GxALx1Zef4/WSOWZejUEPAIFd8ovrNredReiPXVqQxvo9HtHV09TgICAqWSTMWGns
+	 vCFv6jr4u8P2/l1roUDmBYNXkA8QdJN63WDgpzM7cnSkYAQOA/clquMOr61HGNjxGy
+	 A9ngwyc/cYb8QlOAY909bERFCWPxNJ4c0nGRSPeVlTQ9/T3qbCZKG/XlkoFeBrRVT6
+	 NniPB9z+zblrg8WuIyCYkJ+UX47GZsfSojRukMzumBWCNGoAQZyNz987YtTafM+k+T
+	 kuQTo76JBXvUPxVVeys1UXhppKJ+lRNAGMUnUiAUg336Mw+83OB6qGkamzx8t8rJWr
+	 VcDq6y5JgqZ7A==
+Date: Thu, 17 Jul 2025 17:05:49 -0700
+From: Kees Cook <kees@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, Haoyu Li <lihaoyu499@gmail.com>,
+	syzbot+e834e757bd9b3d3e1251@syzkaller.appspotmail.com
+Subject: Re: [PATCH wireless] wifi: cfg80211: remove scan request n_channels
+ counted_by
+Message-ID: <202507171651.8E89C32F4@keescook>
+References: <20250714142130.9b0bbb7e1f07.I09112ccde72d445e11348fc2bef68942cb2ffc94@changeid>
+ <202507142200.D315742C@keescook>
+ <adb4d011c640aacb2273f81a4ad6e658ea2f52f1.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adb4d011c640aacb2273f81a4ad6e658ea2f52f1.camel@sipsolutions.net>
 
-Hello everyone,
+On Tue, Jul 15, 2025 at 10:24:16AM +0200, Johannes Berg wrote:
+> I'd expect in most cases it's really the same - you allocate, fill, and
+> never touch it again before throwing it away at the end. I'd argue
+> though that in those cases the whole thing is quite pointless, although
+> it still allows finding out-of-bounds reads.
 
-Sending this on the initial email thread to the ath10k mailing list=2E
+Adding counted_by has filled a large gap in the compiler's ability to
+provide the bounds checking. Back in 2022 I had mostly written it off as
+"unsolvable" with dynamic sizes being over 60% of the uninstrumentable
+memcpy() destinations: https://outflux.net/slides/2022/lss-na/#/6
 
-I have built the kernel using Bjorn's patch=2E The kernel is still tainted=
- but certain issues could be pinpointed (for example, ath10k_pci mishandlin=
-g write32)=2E
+But thanks to counted_by, we can actually chip away at that percentage
+and it's fallen under 50% now, which is nice. :)
 
-Here it is:
-https://gist=2Egithubusercontent=2Ecom/BandhanPramanik/ddb0cb23eca03ca2ea4=
-3a1d832a16180/raw/07b34aa3fa19da5afa4bb161454e3cb2081b9880/journalctl%2520v=
-6=2E16-rc4-PATCH1
+> So for now: no, I'm not going to apply any new counted_by() annotations.
+> It's cost me far too much time for having absolutely nothing to show for
+> the investment. Ask me again again next year maybe.
 
-It would be highly beneficial if the matter is looked into=2E
+Yup, totally understood. My desire to get them applied was mainly due to
+there being so many (fixed size) array bounds problems in various wifi
+drivers that it felt like a good place to focus: dynamic sizes in the
+core wifi code. From the same slides above, you can arrow-down through
+all of the then-recent array bounds flaws and excepting one in BT,
+they're all in wifi: https://outflux.net/slides/2022/lss-na/#/1/6
 
-Bandhan
+> If you feel motivated you could help review and perhaps annotate the
+> still existing ones I guess, I'm thinking we should have comments there
+> like this perhaps:
+> 
+> --- a/net/mac80211/parse.c
+> +++ b/net/mac80211/parse.c
+> @@ -54,8 +54,9 @@ struct ieee80211_elems_parse {
+>          * scratch buffer that can be used for various element parsing related
+>          * tasks, e.g., element de-fragmentation etc.
+>          */
+> -       size_t scratch_len;
+>         u8 *scratch_pos;
+> +       /* __counted_by: scratch_len tracks the allocation and doesn't change */
+> +       size_t scratch_len;
+>         u8 scratch[] __counted_by(scratch_len);
+>  };
+
+Sure, I can add this to the TODO list.
+
+> But I'm also not completely sure I've convinced myself that all the
+> above discussion about allocated vs. used is really the _entire_
+> explanation for it being such a spectacular failure here.
+
+I think it's a big part of it -- having the counted member change after
+initial assignment is even frowned upon by the compiler folks, but is
+technically supported.
+
+Anyway, sorry again for the wasting of time of yours (and others) that I
+caused with this -- I really wasn't expecting it to go that way, and it
+hasn't been anywhere near as troublesome in other areas of the kernel,
+so it took me by surprise. I have tried to chase down and fix the glitches
+when I became aware of them, FWIW.
+
+I'll see if I can write up some patches for comments like you suggest
+above with good "proof" attached to them. :)
+
+-Kees
+
+-- 
+Kees Cook
 
