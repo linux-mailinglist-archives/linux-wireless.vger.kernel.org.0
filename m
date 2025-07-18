@@ -1,174 +1,240 @@
-Return-Path: <linux-wireless+bounces-25652-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25653-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B813B0A098
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 12:27:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851B6B0A0A2
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 12:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBDDE5A6301
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 10:27:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD7084E2F56
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 10:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5FC29A331;
-	Fri, 18 Jul 2025 10:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F31221297;
+	Fri, 18 Jul 2025 10:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="dUTptwpj"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YSTm91bK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EC82957A0
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 10:26:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FFA29B218
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 10:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752834418; cv=none; b=dqphL+VsA4Qhi8EBpsA08rKh+GZiuUon3lDFv57c5t+PjygQTDD1Y+I5DRraMeUA3rfhbQufFWUURPh9zDQ+BjNKRE7InO4wfGHKwEycDcy37VOwSGnvm7NIVbGLxyPnWlpurE34pFLntaof/zopLfmLVHTopixS8PovRfD0FGk=
+	t=1752834451; cv=none; b=QewHqA7Z5sQwxZ+olc12mViMmVyOAPd6ayiy+V1bQTROA0gMMRZ7B2siyO5XJZVOBw9lTOfQcdmqBfU1diNQ/ea2dogclXUuZxY1/Ah1q+Fv5P6u31BtCcpSvd3KLHiZKD0DU0SZwTQPRXWJ7k0ApvBjpHFgGL75TYz2kE1AgP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752834418; c=relaxed/simple;
-	bh=iOuJFTTwJt339tYjnwcMIWFz/RUheBu5DfdHuCk8cH8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rFzD/ywh0dXL1L8/ymBuGN5NQZzhJDK8MlCA3IJmd2uqtgG6XHM84bZm9g/5lNl1QBfShIuzvXV8gtMF03caa/c4iJCw9YglH1JTEAOpH5NATu1ILzHRcklOaMAk7PkTEsGk1avK2CaPE4X8g14QCEzANt+hfSidc323H5oRuyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=dUTptwpj; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7e29616cc4fso190047385a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 03:26:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1752834415; x=1753439215; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tceb6O3nBrebvy+ZDwLDwrGTRdGaZ8naYMQfV4XKrrU=;
-        b=dUTptwpjD2CfWgUwDgumV9Tyfz2J3Z3D//IIMS18fws4cPiZA2fx1VBTwps4t/jEb9
-         ce4d7Y/dZsDx1GP27VILaf+yJECvizSWN3gLf0cOGptwlnblfGiDp0ATqNAVB2t4PDu1
-         Zha58DZmeXu/50FEdP6btJbsGdAIM/+Ufh8uU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752834415; x=1753439215;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Tceb6O3nBrebvy+ZDwLDwrGTRdGaZ8naYMQfV4XKrrU=;
-        b=gt+Bnn40NIhksm1biRo+DWaewGu/RwUP87qPZ+qSpx5KiF7WIgRaiLOg7zRLa9/3e7
-         LUpGXR2jqRhyax/4cvArPE+hekJ8GQ1TTLf67A5A4niW+fj4j8b3QmMDgReLFv83SPER
-         6IdhzgbsHnU0YJpKYG4J1y2EusWstaB5c8F/kz9FmNwLeP+id6dbYur3/oc/qbGSsbCJ
-         n9BluPiaFomBfu1yfaFD/eR+c8kfp9Blg+d+O23Ox0ot3RCXdEVg8IjTIeR9L79l6Ecj
-         dsz/gZxY2X2FlKZ0cLpbHV4fQom9uJIp5lCoMdBkuYRDG3YjeVrqaP4nPKMh3cy6oTyw
-         OzMw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4xeiPQXZ6vWSty+prpSZ7VBw2Z0F4d5AMjpji2j2g57FKpC+8om+PXJSUNBR3WL20L9zlxSWfrJf2o9YUDw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZU4KumKLULTBEwp7VzFp+Txo/29SI/maBXZGqWUPORJ3/1X+u
-	0v5uASuIdpxQshqQIc2iOSk4+xToYxxVgRj8pTOMr38aoMcjHZP2vs7DzHcOnB1FKQ==
-X-Gm-Gg: ASbGncsA9JH8abFw2zkzYxPMp0+UH/NOA1okKhC5V9xoLsvQtaRwtMYZD4mxqB/Jqoa
-	rSN6KcfqgifqMAZ5ZQVTNIvF8C2mR02Du4G5m5RKbFn9d2CmSOrZttn/zh2hpCLt36y3Jt1jOl0
-	byQT+yTYMkIK/n75vgHFoeX5IgAlEsJ7H2kGVzXmKvVV1DHiW5nQIr2NeGlIvgBULYlMzivsn6t
-	V5nzThDx8/+k5nX9CI/78M6/goQ1vrcU73En8i5gEAQdbYH2S9tiCvE7Pi7YeVjgRszJTlCWyRx
-	gwqre8HGI5p9PIa6/6xk/YB1qGjyG3bfbWdZxkzH0Nw1XhIBSCSFcfokVUeIQu6VPIQa1tLKM4M
-	9TSK8vXEMQiZDYtVXrGtHkW+747JGuRTA44MF/m6b6pJPetoN8r0=
-X-Google-Smtp-Source: AGHT+IEqo4UAFanleVPdYl4dXVyU1lZnXf1z6whg+8xWt/p2QDWx5PJ8H+d/5db0hyJyi9WF5q8VPA==
-X-Received: by 2002:a05:620a:19a5:b0:7e3:52f6:66e5 with SMTP id af79cd13be357-7e352f6672amr568859885a.35.1752834415217;
-        Fri, 18 Jul 2025 03:26:55 -0700 (PDT)
-Received: from [10.229.41.1] ([192.19.176.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e356b46814sm68537885a.30.2025.07.18.03.26.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Jul 2025 03:26:54 -0700 (PDT)
-Message-ID: <4445c7ec-a580-4c28-89cf-2df5790de6ac@broadcom.com>
-Date: Fri, 18 Jul 2025 12:26:43 +0200
+	s=arc-20240116; t=1752834451; c=relaxed/simple;
+	bh=vBr2FgFFDfnulZmIaKgfN5ggegmntUFJI5LACMPEEFM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jOqxCAhT0Xg9JejQWqMvDVvZetCF+GZ4g4nmErMkelL4W/fLN6ZC4DFzO7pLVARZV1+QnHsGQaCvUe17rTuMXmtHDYK1RV1lip81JrizSGlWwY0LfrtkBhYfgKlZPbgQgfDN94WMaLhMaUrMGupfH4BFLEFBg0BrHOETFe4RnNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YSTm91bK; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56I8TMZE007306;
+	Fri, 18 Jul 2025 10:27:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=VG9vK9RtKGUs58TNh+emgm
+	V6C4Up1lwz4mfMtUSB5Ko=; b=YSTm91bKrT3ZhT57iyN0/kTbnEN+EiQ6AvNwCS
+	G4gYtRa7qQsM4fnQ+gWXA34xjGe5v4AbZ96laWq8RsAelHwJLQMwGKTH4mcx1pgZ
+	NWvXezdW5kpzUX7BeiEbBFas1G1AvV9bW4rG7w5HB3gqkhJpvYKwjVaDraVU/b6W
+	AbVXw8bQSPETU4WIy16Av3LQFQET6mU1p/fq4Swb6fGlYEd/pDlgPzNfl2Udq3LJ
+	feKcQYu/5zseD9ejoXPb3XJRToFVAV8rafmPA3E37ZFTkffnGyTt+GKZKZ5JIpf5
+	sjcZOGyocD06tsk+lqF3vpgGQePIx7ZUdRVB2OXhVrDbhPVw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47wfcac9xr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Jul 2025 10:27:21 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 56IARK9i024044
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Jul 2025 10:27:20 GMT
+Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 18 Jul 2025 03:27:19 -0700
+From: Roopni Devanathan <quic_rdevanat@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>,
+        Roopni Devanathan
+	<quic_rdevanat@quicinc.com>
+Subject: [PATCH v2] iw: Add support to set per-radio RTS threshold in multi-radio wiphy
+Date: Fri, 18 Jul 2025 15:56:59 +0530
+Message-ID: <20250718102659.111058-1-quic_rdevanat@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/8] wifi: brcmfmac: Fix typo "notifer"
-To: WangYuli <wangyuli@uniontech.com>
-Cc: airlied@gmail.com, akpm@linux-foundation.org, alison.schofield@intel.com,
- andrew+netdev@lunn.ch, andriy.shevchenko@linux.intel.com, bp@alien8.de,
- brcm80211-dev-list.pdl@broadcom.com, brcm80211@lists.linux.dev,
- colin.i.king@gmail.com, cvam0000@gmail.com, dan.j.williams@intel.com,
- dave.hansen@linux.intel.com, dave.jiang@intel.com, dave@stgolabs.net,
- davem@davemloft.net, dri-devel@lists.freedesktop.org, edumazet@google.com,
- gregkh@linuxfoundation.org, guanwentao@uniontech.com, hpa@zytor.com,
- ilpo.jarvinen@linux.intel.com, intel-xe@lists.freedesktop.org,
- ira.weiny@intel.com, j@jannau.net, jeff.johnson@oss.qualcomm.com,
- jgross@suse.com, jirislaby@kernel.org, johannes.berg@intel.com,
- jonathan.cameron@huawei.com, kuba@kernel.org, kvalo@kernel.org,
- kvm@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux@treblig.org, lucas.demarchi@intel.com,
- marcin.s.wojtas@gmail.com, ming.li@zohomail.com, mingo@kernel.org,
- mingo@redhat.com, netdev@vger.kernel.org, niecheng1@uniontech.com,
- oleksandr_tyshchenko@epam.com, pabeni@redhat.com, pbonzini@redhat.com,
- quic_ramess@quicinc.com, ragazenta@gmail.com, rodrigo.vivi@intel.com,
- seanjc@google.com, shenlichuan@vivo.com, simona@ffwll.ch,
- sstabellini@kernel.org, tglx@linutronix.de,
- thomas.hellstrom@linux.intel.com, vishal.l.verma@intel.com, x86@kernel.org,
- xen-devel@lists.xenproject.org, yujiaoliang@vivo.com, zhanjun@uniontech.com
-References: <BD5C52D2838AEA48+20250715134050.539234-1-wangyuli@uniontech.com>
- <F92035B0A9123150+20250715134407.540483-5-wangyuli@uniontech.com>
-Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <F92035B0A9123150+20250715134407.540483-5-wangyuli@uniontech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE4MDA4MSBTYWx0ZWRfX2XkbYhkFXs6F
+ nbih0aTdFgOPrmP0Bkrg9G2Zx/WSmBRueg7B33BdI9frp0C8AtootSyiSXGUo/6jHDxkHjvctP1
+ UE/WdV241mJbTch0GQMpDdq+AHA18iY+aUa80CN+dLEnwafSxCMimsdCjKGNSO9fUa1QdVGx2f2
+ ekIWkS6+nAPr54mMsBGMl3dxTUtDBZEW3zbubWFyYUMhIFVb6EwOEMVdsg1kpgq/6FmlpSFjA0L
+ PHDFR+JRme2Ho+R1iutF3r47v9e/icEjrwr6Uz+9oMpTvspRWxTNcPnFyEZ0dQUIPwqy646EmvS
+ XNLAzsJS/qjpB+v27kVccyJiJ6whdt4Ihb2qzuHYGcmc59WJFoIMlmFOdugY8Lyqh9l0YdGtoNe
+ IRTA6U7e5Wf/3rwLwDOTjO/YgOL7PIE9nlQbQmFdBxDUb1th9QwPjiceeW4cRqPPaNOUSHRd
+X-Proofpoint-GUID: fM71nHD9CyJEc8bijmHPMbO2_8mAnnNW
+X-Authority-Analysis: v=2.4 cv=SeX3duRu c=1 sm=1 tr=0 ts=687a2189 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8 a=xbzPlRsWZ6QRjj0LRVsA:9
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: fM71nHD9CyJEc8bijmHPMbO2_8mAnnNW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-18_02,2025-07-17_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0 priorityscore=1501 bulkscore=0 phishscore=0
+ lowpriorityscore=0 mlxlogscore=999 impostorscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507180081
 
-On 7/15/2025 3:44 PM, WangYuli wrote:
-> There is a spelling mistake of 'notifer' in the comment which
-> should be 'notifier'.
-> 
-> Link:https://lore.kernel.org/all/B3C019B63C93846F+20250715071245.398846-1- 
-> wangyuli@uniontech.com/
+Currently, setting RTS threshold changes the threshold for all radios in a
+multi-radio wiphy. But different radios in a multi-radio wiphy can have
+different RTS threshold requirements. Modify the iw command to get radio
+index from user to operate on per-radio attributes in a multi-radio wiphy.
+Modify the command such that the legacy userspace will still interact with
+traditional drivers as well as multi-radio wiphy drivers. Also, print the
+RTS threshold along with other per-radio attributes for each radio under
+the section - "Supported wiphy radios" in iw phy#XXX info command.
 
-I think it has been said on other patches but it is not common to link 
-to obsolete version of the patch series. Apart from that:
+In order to be able to set RTS threshold for a particular radio from user
+space, without disturbing the other radios in a wiphy, pass the radio
+index for which RTS threshold needs to be changed as optional pair of
+arguments, along with its corresponding RTS threshold value. The valid
+radio index values can be checked in iw phy#XXX info, under "Supported
+wiphy radios". If radio index is not available, i.e., in case of single
+radio wiphy, passing radio index is not required. If the radio index is not
+provided, then the current behavior of setting passed RTS threshold to all
+radios will be retained.
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>> 
-Signed-off-by: WangYuli<wangyuli@uniontech.com>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+Command Usage:
+iw phyX set rts <rts threshold|off> [radio <radio index>]
+
+Sample output:
+root@buildroot:~# iw phyXXX info
+Wiphy phy0
+        wiphy index: 0
+        max # scan SSIDs: 16
+        max scan IEs length: 339 bytes
+        RTS threshold: 536
+        Retry short limit: 7
+        Retry long limit: 4
+	.....
+	Supported wiphy radios:
+                * Idx 0:
+                        RTS Threshold: 536
+                        Frequency Range: 5170 MHz - 5835 MHz
+			.....
+
+                * Idx 1:
+                        RTS Threshold: 231
+                        Frequency Range: 2312 MHz - 2732 MHz
+			.....
+
+                * Idx 2:
+                        RTS Threshold: 425
+                        Frequency Range: 5945 MHz - 7125 MHz
+			.....
+
+	Globally valid interface combinations:
+		.....
+
+Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+---
+v2:
+ - Made changes to adhere to kernel code.
+ - Dropped patch "[PATCH 2/2] iw: Add support to set per-radio Tx power
+   config in multi-radio wiphy" from the series. This has to wait until
+   changes related to tx power are merged.
+---
+ info.c |  4 ++++
+ phy.c  | 28 ++++++++++++++++++++++++----
+ 2 files changed, 28 insertions(+), 4 deletions(-)
+
+diff --git a/info.c b/info.c
+index 986eaa6..18dcd36 100644
+--- a/info.c
++++ b/info.c
+@@ -926,6 +926,10 @@ next:
+ 					if (!have_combinations)
+ 						printf("\t\t\tRadio level interface combinations are not supported\n");
+ 					break;
++				case NL80211_WIPHY_RADIO_ATTR_RTS_THRESHOLD:
++					printf("\t\t\tRTS Threshold: %d\n",
++					       nla_get_u32(radio_prop));
++					break;
+ 				default:
+ 					printf("\t\t\t* <failed to parse>\n");
+ 				}
+diff --git a/phy.c b/phy.c
+index 584b103..0c7f844 100644
+--- a/phy.c
++++ b/phy.c
+@@ -449,15 +449,14 @@ static int handle_rts(struct nl80211_state *state,
+ 		      enum id_input id)
+ {
+ 	unsigned int rts;
++	char *end;
+ 
+-	if (argc != 1)
++	if (argc != 1 && argc != 3)
+ 		return 1;
+ 
+ 	if (strcmp("off", argv[0]) == 0)
+ 		rts = -1;
+ 	else {
+-		char *end;
+-
+ 		if (!*argv[0])
+ 			return 1;
+ 		rts = strtoul(argv[0], &end, 10);
+@@ -467,11 +466,32 @@ static int handle_rts(struct nl80211_state *state,
+ 
+ 	NLA_PUT_U32(msg, NL80211_ATTR_WIPHY_RTS_THRESHOLD, rts);
+ 
++	argv++;
++	argc--;
++
++	if (argc > 1 && strcmp("radio", argv[0]) == 0) {
++		int radio_idx;
++
++		argv++;
++		argc--;
++
++		radio_idx = strtoul(argv[0], &end, 10);
++		if (*end != '\0')
++			return 1;
++
++		NLA_PUT_U8(msg, NL80211_ATTR_WIPHY_RADIO_INDEX, radio_idx);
++		argv++;
++		argc--;
++	}
++
++	if (argc)
++		return 1;
++
+ 	return 0;
+  nla_put_failure:
+ 	return -ENOBUFS;
+ }
+-COMMAND(set, rts, "<rts threshold|off>",
++COMMAND(set, rts, "<rts threshold|off> [radio <radio index>]",
+ 	NL80211_CMD_SET_WIPHY, 0, CIB_PHY, handle_rts,
+ 	"Set rts threshold.");
+ 
+
+base-commit: 8d52fb4ccc5398a89dd99eba132a7faa3136e1ce
+-- 
+2.25.1
 
 
