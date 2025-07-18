@@ -1,240 +1,160 @@
-Return-Path: <linux-wireless+bounces-25653-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25654-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851B6B0A0A2
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 12:28:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7D7B0A0B3
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 12:31:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD7084E2F56
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 10:27:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58E894E0F03
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 10:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F31221297;
-	Fri, 18 Jul 2025 10:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5BD198A2F;
+	Fri, 18 Jul 2025 10:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YSTm91bK"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="FGPwPmmx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FFA29B218
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 10:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16202EAE3
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 10:31:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752834451; cv=none; b=QewHqA7Z5sQwxZ+olc12mViMmVyOAPd6ayiy+V1bQTROA0gMMRZ7B2siyO5XJZVOBw9lTOfQcdmqBfU1diNQ/ea2dogclXUuZxY1/Ah1q+Fv5P6u31BtCcpSvd3KLHiZKD0DU0SZwTQPRXWJ7k0ApvBjpHFgGL75TYz2kE1AgP8=
+	t=1752834677; cv=none; b=Uuck+Zm6CoUFvIWp2t9sLgLjEfwKmKCkcVf8qGIX3BL+EQlpLnFDsHosWSbYeCkIg+ewEqmG7TBFnmYc1g+++Bmr553an3pdhuO15Y0V79P601tODFOQdfr967l2Lx/HBvnec1AgZN1Gx/LzR9q4OushFLupNCbhL22zpo39Vw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752834451; c=relaxed/simple;
-	bh=vBr2FgFFDfnulZmIaKgfN5ggegmntUFJI5LACMPEEFM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jOqxCAhT0Xg9JejQWqMvDVvZetCF+GZ4g4nmErMkelL4W/fLN6ZC4DFzO7pLVARZV1+QnHsGQaCvUe17rTuMXmtHDYK1RV1lip81JrizSGlWwY0LfrtkBhYfgKlZPbgQgfDN94WMaLhMaUrMGupfH4BFLEFBg0BrHOETFe4RnNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YSTm91bK; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56I8TMZE007306;
-	Fri, 18 Jul 2025 10:27:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=VG9vK9RtKGUs58TNh+emgm
-	V6C4Up1lwz4mfMtUSB5Ko=; b=YSTm91bKrT3ZhT57iyN0/kTbnEN+EiQ6AvNwCS
-	G4gYtRa7qQsM4fnQ+gWXA34xjGe5v4AbZ96laWq8RsAelHwJLQMwGKTH4mcx1pgZ
-	NWvXezdW5kpzUX7BeiEbBFas1G1AvV9bW4rG7w5HB3gqkhJpvYKwjVaDraVU/b6W
-	AbVXw8bQSPETU4WIy16Av3LQFQET6mU1p/fq4Swb6fGlYEd/pDlgPzNfl2Udq3LJ
-	feKcQYu/5zseD9ejoXPb3XJRToFVAV8rafmPA3E37ZFTkffnGyTt+GKZKZ5JIpf5
-	sjcZOGyocD06tsk+lqF3vpgGQePIx7ZUdRVB2OXhVrDbhPVw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47wfcac9xr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Jul 2025 10:27:21 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 56IARK9i024044
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Jul 2025 10:27:20 GMT
-Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 18 Jul 2025 03:27:19 -0700
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Roopni Devanathan
-	<quic_rdevanat@quicinc.com>
-Subject: [PATCH v2] iw: Add support to set per-radio RTS threshold in multi-radio wiphy
-Date: Fri, 18 Jul 2025 15:56:59 +0530
-Message-ID: <20250718102659.111058-1-quic_rdevanat@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1752834677; c=relaxed/simple;
+	bh=WWg6MBGv38Tm36mwG/FuPlXOO0l9S5FTb8TXeTWet6Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s+RAdxZOlOzaCKXqtEU3k3XIYZg2qrsdzkAAfBGU1QHe9O4OIoQk+j6mRvS6bfGN7qTFBcGfnltCfJEo3ava3MX9a4CZ4iMa2IDxBd89GnpbU6i1xonwP4mz7UAB9w6rWkWqzuPoT2y/D2UdOUfFMRLOmh/izeIqVyiQOEluxU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FGPwPmmx; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4ab53fce526so28556621cf.2
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 03:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1752834675; x=1753439475; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=R9WPk8aPKLe1G69XM4dNOt8IpjWfnNfoYmOHm3WzbAY=;
+        b=FGPwPmmxu1J+/+8elic+OdEAZsWjPmfV8uqfmUqHhMmH9Ra1ZJgGDoixT+zKMqCz3U
+         aSb8g98yebR2SKLEZUX3rRRkoDWOLPmSYtPiJVJ/R0UPhgPeBKjQuWIMq9k2F4ABEU9G
+         5qKFoUcHbuYwSTn4uXSD4FNzzMj3WnZoySZN4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752834675; x=1753439475;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R9WPk8aPKLe1G69XM4dNOt8IpjWfnNfoYmOHm3WzbAY=;
+        b=azxgudrlqXaxe6Szz2DAc+UPrAS7dffF3AO3q43loqL61xR1bNR1WRYOmo8VbCUt33
+         sebsge9xHQFZlNhn5yLngoJEqXdqIlq9zC7qbVYkUT2UNmiEpS8G4/XoVwwt7Ao+liSS
+         oEs+jdO0NXXiN3NKaL/ujpesEv1F2xw5AZQMURZYP0IV23JcLXoUg5MxtvRxldz1ggdV
+         2Y1iieJ1xKWsIXQgmFbvU9B+mXkd2fBalEvkc9SZKAEL0kvf7qGDsFZW4ty4z/4bGEsG
+         +8Eph/uOdey7ccxCIIY0xzmrYBw0p0bu01SC80OkY114Nw+U1svf28C/udGqx+HKn+U8
+         x5Gg==
+X-Gm-Message-State: AOJu0Yygdx508FwSb56y8gzauGJrKMbhdo+1VWt+vTjunzVfVrvlrKkb
+	PLMQw1TJi31WvcxTrdxkVM1x4/q6H8O0GezJHJDgR1pPN9HtOmPgQkyFJwpuhcvMpw==
+X-Gm-Gg: ASbGnctMpknoTibYsA5pVEuABL9UCRYUD6+lEEtvTWQ8YWTQIomQqh8M7mTtAsg8lRU
+	2vElk9IvcVC70PwPxQ2dJ6yt0bcKQl7TMU3Caex6S3K9Zdr3tGOTr7HASYlcZjP1FHKsNQJEnT2
+	z/typdQ56hvqIj5fPa7hBTTAUnhFwJyA5+tF4bP3VHFK0QjdanpsndH948j8LXiGJtcH1XCgu63
+	NvkqmE1r9qKs3R+B6bL+VHa8lplp9CycdY//fbo7uo771rkA45hiRFp1bfQIhuSqFwl2/RqqQl3
+	+oXBBNEUyTiVMsRmiCHXFZI3yVR5Vmjvz8huM8nOaLW2aJAtxkEjwj44oeCnOBCWbThWaUwUaTO
+	u4vZn43WAxtaZd2lWqZqohtOohCzTOYkIBPrvYDQlcCb2nFmglRo=
+X-Google-Smtp-Source: AGHT+IFnS/sBMsCQF8ir9ETlwK9uMWpC1im5EdvJ5cQQSkgledwF4j3tjDWV/FzNasYprvJfY6T7Mw==
+X-Received: by 2002:a05:6214:8117:b0:704:f7cb:dd25 with SMTP id 6a1803df08f44-704f7cbdd7cmr106620256d6.21.1752834674421;
+        Fri, 18 Jul 2025 03:31:14 -0700 (PDT)
+Received: from [10.229.41.1] ([192.19.176.250])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7051ba93626sm5870606d6.87.2025.07.18.03.31.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Jul 2025 03:31:13 -0700 (PDT)
+Message-ID: <0f645579-0c37-4dd1-8c01-dc9a6dfb4131@broadcom.com>
+Date: Fri, 18 Jul 2025 12:31:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE4MDA4MSBTYWx0ZWRfX2XkbYhkFXs6F
- nbih0aTdFgOPrmP0Bkrg9G2Zx/WSmBRueg7B33BdI9frp0C8AtootSyiSXGUo/6jHDxkHjvctP1
- UE/WdV241mJbTch0GQMpDdq+AHA18iY+aUa80CN+dLEnwafSxCMimsdCjKGNSO9fUa1QdVGx2f2
- ekIWkS6+nAPr54mMsBGMl3dxTUtDBZEW3zbubWFyYUMhIFVb6EwOEMVdsg1kpgq/6FmlpSFjA0L
- PHDFR+JRme2Ho+R1iutF3r47v9e/icEjrwr6Uz+9oMpTvspRWxTNcPnFyEZ0dQUIPwqy646EmvS
- XNLAzsJS/qjpB+v27kVccyJiJ6whdt4Ihb2qzuHYGcmc59WJFoIMlmFOdugY8Lyqh9l0YdGtoNe
- IRTA6U7e5Wf/3rwLwDOTjO/YgOL7PIE9nlQbQmFdBxDUb1th9QwPjiceeW4cRqPPaNOUSHRd
-X-Proofpoint-GUID: fM71nHD9CyJEc8bijmHPMbO2_8mAnnNW
-X-Authority-Analysis: v=2.4 cv=SeX3duRu c=1 sm=1 tr=0 ts=687a2189 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8 a=xbzPlRsWZ6QRjj0LRVsA:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: fM71nHD9CyJEc8bijmHPMbO2_8mAnnNW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-18_02,2025-07-17_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0 priorityscore=1501 bulkscore=0 phishscore=0
- lowpriorityscore=0 mlxlogscore=999 impostorscore=0 clxscore=1015 adultscore=0
- suspectscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507180081
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: brcmfmac: Add support for the SDIO 43751 device
+To: Fabio Estevam <festevam@gmail.com>, kvalo@kernel.org
+Cc: linux-wireless@vger.kernel.org, gokulkumar.sivakumar@infineon.com
+References: <20250712215307.1310802-1-festevam@gmail.com>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ xsFNBGP96SABEACfErEjSRi7TA1ttHYaUM3GuirbgqrNvQ41UJs1ag1T0TeyINqG+s6aFuO8
+ evRHRnyAqTjMQoo4tkfy21XQX/OsBlgvMeNzfs6jnVwlCVrhqPkX5g5GaXJnO3c4AvXHyWik
+ SOd8nOIwt9MNfGn99tkRAmmsLaMiVLzYfg+n3kNDsqgylcSahbd+gVMq+32q8QA+L1B9tAkM
+ UccmSXuhilER70gFMJeM9ZQwD/WPOQ2jHpd0hDVoQsTbBxZZnr2GSjSNr7r5ilGV7a3uaRUU
+ HLWPOuGUngSktUTpjwgGYZ87Edp+BpxO62h0aKMyjzWNTkt6UVnMPOwvb70hNA2v58Pt4kHh
+ 8ApHky6IepI6SOCcMpUEHQuoKxTMw/pzmlb4A8PY//Xu/SJF8xpkpWPVcQxNTqkjbpazOUw3
+ 12u4EK1lzwH7wjnhM3Fs5aNBgyg+STS1VWIwoXJ7Q2Z51odh0XecsjL8EkHbp9qHdRvZQmMu
+ Ns8lBPBkzpS7y2Q6Sp7DcRvDfQQxPrE2sKxKLZVGcRYAD90r7NANryRA/i+785MSPUNSTWK3
+ MGZ3Xv3fY7phISvYAklVn/tYRh88Zthf6iDuq86m5mr+qOO8s1JnCz6uxd/SSWLVOWov9Gx3
+ uClOYpVsUSu3utTta3XVcKVMWG/M+dWkbdt2KES2cv4P5twxyQARAQABzS9BcmVuZCB2YW4g
+ U3ByaWVsIDxhcmVuZC52YW5zcHJpZWxAYnJvYWRjb20uY29tPsLBhwQTAQgAMRYhBLX1Z69w
+ T4l/vfdb0pZ6NOIYA/1RBQJj/ek9AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQlno04hgD/VGw
+ 8A//VEoGTamfCks+a12yFtT1d/GjDdf3i9agKMk3esn08JwjJ96x9OFFl2vFaQCSiefeXITR
+ K4T/yT+n/IXntVWT3pOBfb343cAPjpaZvBMh8p32z3CuV1H0Y+753HX7gdWTEojGWaWmKkZh
+ w3nGoRZQEeAcwcF3gMNwsM5Gemj7aInIhRLUeoKh/0yV85lNE1D7JkyNheQ+v91DWVj5/a9X
+ 7kiL18fH1iC9kvP3lq5VE54okpGqUj5KE5pmHNFBp7HZO3EXFAd3Zxm9ol5ic9tggY0oET28
+ ucARi1wXLD/oCf1R9sAoWfSTnvOcJjG+kUwK7T+ZHTF8YZ4GAT3k5EwZ2Mk3+Rt62R81gzRF
+ A6+zsewqdymbpwgyPDKcJ8YUHbqvspMQnPTmXNk+7p7fXReVPOYFtzzfBGSCByIkh1bB45jO
+ +TM5ZbMmhsUbqA0dFT5JMHjJIaGmcw21ocgBcLsJ730fbLP/L08udgWHywPoq7Ja7lj5W0io
+ ZDLz5uQ6CEER6wzD07vZwSl/NokljVexnOrwbR3wIhdr6B0Hc/0Bh7T8gpeM+QcK6EwJBG7A
+ xCHLEacOuKo4jinf94YQrOEMnOmvucuQRm9CIwZrQ69Mg6rLn32pA4cK4XWQN1N3wQXnRUnb
+ MTymLAoxE4MInhDVsZCtIDFxMVvBUgZiZZszN33OwU0EY/3pIgEQAN35Ii1Hn90ghm/qlvz/
+ L+wFi3PTQ90V6UKPv5Q5hq+1BtLA6aj2qmdFBO9lgO9AbzHo8Eizrgtxp41GkKTgHuYChijI
+ kdhTVPm+Pv44N/3uHUeFhN3wQ3sTs1ZT/0HhwXt8JvjqbhvtNmoGosZvpUCTwiyM1VBF/ICT
+ ltzFmXd5z7sEuDyZcz9Q1t1Bb2cmbhp3eIgLmVA4Lc9ZS3sK1UMgSDwaR4KYBhF0OKMC1OH8
+ M5jfcPHR8OLTLIM/Thw0YIUiYfj6lWwWkb82qa4IQvIEmz0LwvHkaLU1TCXbehO0pLWB9HnK
+ r3nofx5oMfhu+cMa5C6g3fBB8Z43mDi2m/xM6p5c3q/EybOxBzhujeKN7smBTlkvAdwQfvuD
+ jKr9lvrC2oKIjcsO+MxSGY4zRU0WKr4KD720PV2DCn54ZcOxOkOGR624d5bhDbjw1l2r+89V
+ WLRLirBZn7VmWHSdfq5Xl9CyHT1uY6X9FRr3sWde9kA/C7Z2tqy0MevXAz+MtavOJb9XDUlI
+ 7Bm0OPe5BTIuhtLvVZiW4ivT2LJOpkokLy2K852u32Z1QlOYjsbimf77avcrLBplvms0D7j6
+ OaKOq503UKfcSZo3lF70J5UtJfXy64noI4oyVNl1b+egkV2iSXifTGGzOjt50/efgm1bKNkX
+ iCVOYt9sGTrVhiX1ABEBAAHCwXYEGAEIACAWIQS19WevcE+Jf733W9KWejTiGAP9UQUCY/3p
+ PgIbDAAKCRCWejTiGAP9UaC/EACZvViKrMkFooyACGaukqIo/s94sGuqxj308NbZ4g5jgy/T
+ +lYBzlurnFmIbJESFOEq0MBZorozDGk+/p8pfAh4S868i1HFeLivVIujkcL6unG1UYEnnJI9
+ uSwUbEqgA8vwdUPEGewYkPH6AaQoh1DdYGOleQqDq1Mo62xu+bKstYHpArzT2islvLdrBtjD
+ MEzYThskDgDUk/aGPgtPlU9mB7IiBnQcqbS/V5f01ZicI1esy9ywnlWdZCHy36uTUfacshpz
+ LsTCSKICXRotA0p6ZiCQloW7uRH28JFDBEbIOgAcuXGojqYx5vSM6o+03W9UjKkBGYFCqjIy
+ Ku843p86Ky4JBs5dAXN7msLGLhAhtiVx8ymeoLGMoYoxqIoqVNaovvH9y1ZHGqS/IYXWf+jE
+ H4MX7ucv4N8RcsoMGzXyi4UbBjxgljAhTYs+c5YOkbXfkRqXQeECOuQ4prsc6/zxGJf7MlPy
+ NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
+ eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
+ AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
+In-Reply-To: <20250712215307.1310802-1-festevam@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Currently, setting RTS threshold changes the threshold for all radios in a
-multi-radio wiphy. But different radios in a multi-radio wiphy can have
-different RTS threshold requirements. Modify the iw command to get radio
-index from user to operate on per-radio attributes in a multi-radio wiphy.
-Modify the command such that the legacy userspace will still interact with
-traditional drivers as well as multi-radio wiphy drivers. Also, print the
-RTS threshold along with other per-radio attributes for each radio under
-the section - "Supported wiphy radios" in iw phy#XXX info command.
+On 7/12/2025 11:53 PM, Fabio Estevam wrote:
+> Add the SDIO ID and firmware matching for the 43751 device.
+> 
+> Based on the previous work from Marc Gonzalez <mgonzalez@freebox.fr>.
+> 
+> Tested on an i.MX6DL board connected to an AP6398SV chip with the
+> brcmfmac43752-sdio.bin firmware taken from:
+> 
+> https://source.puri.sm/Librem5/firmware-brcm43752-nonfree
 
-In order to be able to set RTS threshold for a particular radio from user
-space, without disturbing the other radios in a wiphy, pass the radio
-index for which RTS threshold needs to be changed as optional pair of
-arguments, along with its corresponding RTS threshold value. The valid
-radio index values can be checked in iw phy#XXX info, under "Supported
-wiphy radios". If radio index is not available, i.e., in case of single
-radio wiphy, passing radio index is not required. If the radio index is not
-provided, then the current behavior of setting passed RTS threshold to all
-radios will be retained.
+These chips seem to be shipped by Synaptics so maybe worth adding that 
+in the commit message(?). Other than that it looks fine so...
 
-Command Usage:
-iw phyX set rts <rts threshold|off> [radio <radio index>]
-
-Sample output:
-root@buildroot:~# iw phyXXX info
-Wiphy phy0
-        wiphy index: 0
-        max # scan SSIDs: 16
-        max scan IEs length: 339 bytes
-        RTS threshold: 536
-        Retry short limit: 7
-        Retry long limit: 4
-	.....
-	Supported wiphy radios:
-                * Idx 0:
-                        RTS Threshold: 536
-                        Frequency Range: 5170 MHz - 5835 MHz
-			.....
-
-                * Idx 1:
-                        RTS Threshold: 231
-                        Frequency Range: 2312 MHz - 2732 MHz
-			.....
-
-                * Idx 2:
-                        RTS Threshold: 425
-                        Frequency Range: 5945 MHz - 7125 MHz
-			.....
-
-	Globally valid interface combinations:
-		.....
-
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
----
-v2:
- - Made changes to adhere to kernel code.
- - Dropped patch "[PATCH 2/2] iw: Add support to set per-radio Tx power
-   config in multi-radio wiphy" from the series. This has to wait until
-   changes related to tx power are merged.
----
- info.c |  4 ++++
- phy.c  | 28 ++++++++++++++++++++++++----
- 2 files changed, 28 insertions(+), 4 deletions(-)
-
-diff --git a/info.c b/info.c
-index 986eaa6..18dcd36 100644
---- a/info.c
-+++ b/info.c
-@@ -926,6 +926,10 @@ next:
- 					if (!have_combinations)
- 						printf("\t\t\tRadio level interface combinations are not supported\n");
- 					break;
-+				case NL80211_WIPHY_RADIO_ATTR_RTS_THRESHOLD:
-+					printf("\t\t\tRTS Threshold: %d\n",
-+					       nla_get_u32(radio_prop));
-+					break;
- 				default:
- 					printf("\t\t\t* <failed to parse>\n");
- 				}
-diff --git a/phy.c b/phy.c
-index 584b103..0c7f844 100644
---- a/phy.c
-+++ b/phy.c
-@@ -449,15 +449,14 @@ static int handle_rts(struct nl80211_state *state,
- 		      enum id_input id)
- {
- 	unsigned int rts;
-+	char *end;
- 
--	if (argc != 1)
-+	if (argc != 1 && argc != 3)
- 		return 1;
- 
- 	if (strcmp("off", argv[0]) == 0)
- 		rts = -1;
- 	else {
--		char *end;
--
- 		if (!*argv[0])
- 			return 1;
- 		rts = strtoul(argv[0], &end, 10);
-@@ -467,11 +466,32 @@ static int handle_rts(struct nl80211_state *state,
- 
- 	NLA_PUT_U32(msg, NL80211_ATTR_WIPHY_RTS_THRESHOLD, rts);
- 
-+	argv++;
-+	argc--;
-+
-+	if (argc > 1 && strcmp("radio", argv[0]) == 0) {
-+		int radio_idx;
-+
-+		argv++;
-+		argc--;
-+
-+		radio_idx = strtoul(argv[0], &end, 10);
-+		if (*end != '\0')
-+			return 1;
-+
-+		NLA_PUT_U8(msg, NL80211_ATTR_WIPHY_RADIO_INDEX, radio_idx);
-+		argv++;
-+		argc--;
-+	}
-+
-+	if (argc)
-+		return 1;
-+
- 	return 0;
-  nla_put_failure:
- 	return -ENOBUFS;
- }
--COMMAND(set, rts, "<rts threshold|off>",
-+COMMAND(set, rts, "<rts threshold|off> [radio <radio index>]",
- 	NL80211_CMD_SET_WIPHY, 0, CIB_PHY, handle_rts,
- 	"Set rts threshold.");
- 
-
-base-commit: 8d52fb4ccc5398a89dd99eba132a7faa3136e1ce
--- 
-2.25.1
-
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>> 
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+> ---
+> Changes since v1:
+> - Do not declare 43751 as a Infineon/Cypress device. (Gokul)
+> 
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c    | 1 +
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c      | 2 ++
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c      | 5 ++++-
+>   .../net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h    | 1 +
+>   include/linux/mmc/sdio_ids.h                                 | 1 +
+>   5 files changed, 9 insertions(+), 1 deletion(-)
 
