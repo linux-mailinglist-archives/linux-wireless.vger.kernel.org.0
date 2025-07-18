@@ -1,123 +1,202 @@
-Return-Path: <linux-wireless+bounces-25650-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25651-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78DCAB09EE5
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 11:15:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5339FB0A07C
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 12:20:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86A92177470
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 09:15:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D11F73AA666
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 10:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FA7298267;
-	Fri, 18 Jul 2025 09:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C46A299957;
+	Fri, 18 Jul 2025 10:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="EdYT4YgT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iuSlBAGv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBA8298261
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 09:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0720E218EA8;
+	Fri, 18 Jul 2025 10:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752830129; cv=none; b=qIKbsL+6pTKJ7Ro9gguakpAzKU7DQvoqO5PL82dvCgo+y1T9Qk0dYUQRGvQfDGI60zMtehP+H3XnjaAMhpdCELGFxwurTuGcFmyQPV9gZjz+cjFC3fLX6qnl1CcQJnFxE0ImGuAZzL3iR9gEKf12QRitXfMeiqiAiEPElx9Y9qg=
+	t=1752834015; cv=none; b=PJeEAlc/24auhBlWWVjQh4yyP9xvEV1plWNO8fLWaM3+9+Ia//Dz+X3BOrztGyE6bJruSP1zO3tY10TDfnJ23xaDwUS9gW6NGfCMif175AKXg5zUfDDGwBjqQS1nx3wWqKyWGwrPhmSl9XzbhAnP8VaQ7IZ5c8JaXQQVtvJ9iVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752830129; c=relaxed/simple;
-	bh=OirKHy6cmPZm5+tt+jd/N5BcMkSgFa4hTzP5z7TzfuE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Kg5Zr425/IDASmsHyGlY6u/CpkyzZAM0iWoM1MmBaSzHgusq7rls3KQY2iXkXl4JSsAFEZZx5vp05mdEKbdSLqFaLQGBCxtfHmrmjc6WNbcrXK+CDKtSU8Xnic7ohp4sOWk5kha9Qs5mJFgqCAYEkWZJV6KjnvJ1YbcBCtuBa/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=EdYT4YgT; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56I9Cr9821358635, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1752829973; bh=JU/D1u80IAGlxNvBKN9XLOhXRwokeSEddkNQjmjDT6Y=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=EdYT4YgTNfTWufUyh31G1xVn7VUfmPyOYdVfizCWwrPLOhRdcFAffKzXz8votfxgV
-	 3xv9/63YxnTN+162ETBFUrgaF4Jd416M1VKQs/7sMgGQ8prCR/BWi9CirRuJ3KvYLm
-	 aUc7sU2DW4076BetHu0yTmby41GEnNUr0Aap3YzMUQqCtDbr0xCamuTKE7QqusYhh/
-	 6mfMqGGiFs9Eoq3iv+RSPMe/xblxKvM4+55BNfhqnIsJnavtaen2IzbKCb2OOruUsU
-	 xYOzUj5/H36vSmBvV8jOEKUEnZsEQhos6ZKEijvE9gBiUSQHzzwrDDzXbMmRhiVUxd
-	 mJLIE8rLjKD6A==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56I9Cr9821358635
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Jul 2025 17:12:53 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 18 Jul 2025 17:12:54 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 18 Jul 2025 17:12:53 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47]) by
- RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47%5]) with mapi id
- 15.01.2507.035; Fri, 18 Jul 2025 17:12:53 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>,
-        "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH ath-next v2 2/3] wifi: ath12k: Fix TX status reporting to mac80211 when offload is enabled
-Thread-Topic: [PATCH ath-next v2 2/3] wifi: ath12k: Fix TX status reporting to
- mac80211 when offload is enabled
-Thread-Index: AQHb9490SpnHrcjKUkyO9X2R+DBAhLQ3mHNw
-Date: Fri, 18 Jul 2025 09:12:53 +0000
-Message-ID: <1ae4000edd954cf492e95bdb059c89b2@realtek.com>
-References: <20250718025513.32982-1-nithyanantham.paramasivam@oss.qualcomm.com>
- <20250718025513.32982-3-nithyanantham.paramasivam@oss.qualcomm.com>
-In-Reply-To: <20250718025513.32982-3-nithyanantham.paramasivam@oss.qualcomm.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1752834015; c=relaxed/simple;
+	bh=+5ibE7W/5saHgifi0etEPnKSgL+kf0dniPuKyO3xXDc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FoKi4+zJ5UtY17F35MEh2OU5yWrqx3y9cra8bQODNhLIbrqwUUkD2IvibpOrF+L1+hTmeUy+LpzHrXkDEV1z9RtCpP+ugvh5jds/IoELm1zLc1d3hR3koC9ADuXC8AFYRn9W/WkbS0IZPjkWI9G/GRpb7koQyq0KjRQGrcFteCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iuSlBAGv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9827C4CEEB;
+	Fri, 18 Jul 2025 10:20:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752834014;
+	bh=+5ibE7W/5saHgifi0etEPnKSgL+kf0dniPuKyO3xXDc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iuSlBAGv+ZcdD3mBcvVOK3pWxBQHS5Cf3X5tUUogmfSgNJPbcxpxwPTbALmSV5hzZ
+	 JKWjAkKaGm0nkRbz3yBvGd1aiVCmsawQkCOJ+mxCb81TSSP2WesMvpISYpv/nqs6l3
+	 yjOlzFXchTxybbRIkvE3tVlrWqfopsMvXyhyqqpWLn/5f6qBSThEGEjmXHfW/xTJ0+
+	 j/xPjyf/azbwtxaQBr6+2BxYR1MAFK2Us6QoB9+LQZKrUKJwmAhynws3owTORgr9MV
+	 Ejmff87hbc2Sc783ZqcHr7C1wjRjIeLIRvr3lIL5rla9Egp5MK9MpE1lcBSZj0VEss
+	 KWedwqYlyG7jQ==
+Date: Fri, 18 Jul 2025 15:50:02 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Cc: manivannan.sadhasivam@oss.qualcomm.com, 
+	Jeff Johnson <jjohnson@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Nirmal Patel <nirmal.patel@linux.intel.com>, 
+	Jonathan Derrick <jonathan.derrick@linux.dev>, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ath12k@lists.infradead.org, ath11k@lists.infradead.org, ath10k@lists.infradead.org, 
+	Bjorn Helgaas <helgaas@kernel.org>, ilpo.jarvinen@linux.intel.com, linux-arm-msm@vger.kernel.org, 
+	linux-pci@vger.kernel.org, Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
+	Qiang Yu <qiang.yu@oss.qualcomm.com>
+Subject: Re: [PATCH 4/6] wifi: ath12k: Use pci_{enable/disable}_link_state()
+ APIs to enable/disable ASPM states
+Message-ID: <otdgyzdymraa3f33vyb445kmssi3mqf5z2mw7w5pib4q4sb7vz@qbrzvrojqji3>
+References: <20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com>
+ <20250716-ath-aspm-fix-v1-4-dd3e62c1b692@oss.qualcomm.com>
+ <38ace6a3-d594-4438-a193-cf730a7b87d6@oss.qualcomm.com>
+ <wyqtr3tz3k2zdf62kgtcepf3sedm7z7wacv27visl2xsrqspmq@wi4fgef2mn2m>
+ <03806d02-1cfc-4db2-8b63-c1e51f5456e2@oss.qualcomm.com>
+ <o2gqqty6lakc4iw7vems2dejh6prjyl746gnq4gny4sxdxl65v@zmqse3244afv>
+ <1db7c119-882f-4184-9ca4-9dbe5a49cb16@oss.qualcomm.com>
+ <gx5gruyhrhwhvwkiqlkp2bggqd4oqe4quvqiiphfzolhjtzun6@okogvabkqah3>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <gx5gruyhrhwhvwkiqlkp2bggqd4oqe4quvqiiphfzolhjtzun6@okogvabkqah3>
 
-> @@ -578,6 +579,8 @@ ath12k_dp_tx_htt_tx_complete_buf(struct ath12k_base *=
-ab,
->         struct ath12k *ar;
->         struct sk_buff *msdu =3D desc_params->skb;
->         s32 noise_floor;
-> +       struct ieee80211_tx_status status =3D { 0 };
+On Fri, Jul 18, 2025 at 01:27:27PM GMT, Manivannan Sadhasivam wrote:
+> On Fri, Jul 18, 2025 at 10:05:02AM GMT, Baochen Qiang wrote:
+> > 
+> > 
+> > On 7/17/2025 7:29 PM, Manivannan Sadhasivam wrote:
+> > > On Thu, Jul 17, 2025 at 06:46:12PM GMT, Baochen Qiang wrote:
+> > >>
+> > >>
+> > >> On 7/17/2025 6:31 PM, Manivannan Sadhasivam wrote:
+> > >>> On Thu, Jul 17, 2025 at 05:24:13PM GMT, Baochen Qiang wrote:
+> > >>>
+> > >>> [...]
+> > >>>
+> > >>>>> @@ -16,6 +16,8 @@
+> > >>>>>  #include "mhi.h"
+> > >>>>>  #include "debug.h"
+> > >>>>>  
+> > >>>>> +#include "../ath.h"
+> > >>>>> +
+> > >>>>>  #define ATH12K_PCI_BAR_NUM		0
+> > >>>>>  #define ATH12K_PCI_DMA_MASK		36
+> > >>>>>  
+> > >>>>> @@ -928,8 +930,7 @@ static void ath12k_pci_aspm_disable(struct ath12k_pci *ab_pci)
+> > >>>>>  		   u16_get_bits(ab_pci->link_ctl, PCI_EXP_LNKCTL_ASPM_L1));
+> > >>>>>  
+> > >>>>>  	/* disable L0s and L1 */
+> > >>>>> -	pcie_capability_clear_word(ab_pci->pdev, PCI_EXP_LNKCTL,
+> > >>>>> -				   PCI_EXP_LNKCTL_ASPMC);
+> > >>>>> +	pci_disable_link_state(ab_pci->pdev, PCIE_LINK_STATE_L0S | PCIE_LINK_STATE_L1);
+> > >>>>
+> > >>>> Not always, but sometimes seems the 'disable' does not work:
+> > >>>>
+> > >>>> [  279.920507] ath12k_pci_power_up 1475: link_ctl 0x43 //before disable
+> > >>>> [  279.920539] ath12k_pci_power_up 1482: link_ctl 0x43 //after disable
+> > >>>>
+> > >>>>
+> > >>>>>  
+> > >>>>>  	set_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags);
+> > >>>>>  }
+> > >>>>> @@ -958,10 +959,7 @@ static void ath12k_pci_aspm_restore(struct ath12k_pci *ab_pci)
+> > >>>>>  {
+> > >>>>>  	if (ab_pci->ab->hw_params->supports_aspm &&
+> > >>>>>  	    test_and_clear_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags))
+> > >>>>> -		pcie_capability_clear_and_set_word(ab_pci->pdev, PCI_EXP_LNKCTL,
+> > >>>>> -						   PCI_EXP_LNKCTL_ASPMC,
+> > >>>>> -						   ab_pci->link_ctl &
+> > >>>>> -						   PCI_EXP_LNKCTL_ASPMC);
+> > >>>>> +		pci_enable_link_state(ab_pci->pdev, ath_pci_aspm_state(ab_pci->link_ctl));
+> > >>>>
+> > >>>> always, the 'enable' is not working:
+> > >>>>
+> > >>>> [  280.561762] ath12k_pci_start 1180: link_ctl 0x43 //before restore
+> > >>>> [  280.561809] ath12k_pci_start 1185: link_ctl 0x42 //after restore
+> > >>>>
+> > >>>
+> > >>> Interesting! I applied your diff and I never see this issue so far (across 10+
+> > >>> reboots):
+> > >>
+> > >> I was not testing reboot. Here is what I am doing:
+> > >>
+> > >> step1: rmmod ath12k
+> > >> step2: force LinkCtrl using setpci (make sure it is 0x43, which seems more likely to see
+> > >> the issue)
+> > >>
+> > >> 	sudo setpci -s 02:00.0 0x80.B=0x43
+> > >>
+> > >> step3: insmod ath12k and check linkctrl
+> > >>
+> > > 
+> > > So I did the same and got:
+> > > 
+> > > [ 3283.363569] ath12k_pci_power_up 1475: link_ctl 0x43
+> > > [ 3283.363769] ath12k_pci_power_up 1480: link_ctl 0x40
+> > > [ 3284.007661] ath12k_pci_start 1180: link_ctl 0x40
+> > > [ 3284.007826] ath12k_pci_start 1185: link_ctl 0x42
+> > > 
+> > > My host machine is Qcom based Thinkpad T14s and it doesn't support L0s. So
+> > > that's why the lnkctl value once enabled becomes 0x42. This is exactly the
+> > > reason why the drivers should not muck around LNKCTL register manually.
+> > 
+> > Thanks, then the 0x43 -> 0x40 -> 0x40 -> 0x42 sequence should not be a concern. But still
+> > the random 0x43 -> 0x43 -> 0x43 -> 0x42 sequence seems problematic.
+> > 
+> > How many iterations have you done with above steps? From my side it seems random so better
+> > to do some stress test.
+> > 
+> 
+> So I ran the modprobe for about 50 times on the Intel NUC that has QCA6390, but
+> didn't spot the disparity. This is the script I used:
+> 
+> for i in {1..50} ;do echo "Loop $i"; sudo setpci -s 01:00.0 0x80.B=0x43;\
+> sudo modprobe -r ath11k_pci; sleep 1; sudo modprobe ath11k_pci; sleep 1;done
+> 
+> And I always got:
+> 
+> [ 5862.388083] ath11k_pci_aspm_disable: 609 lnkctrl: 0x43
+> [ 5862.388124] ath11k_pci_aspm_disable: 614 lnkctrl: 0x40
+> [ 5862.876291] ath11k_pci_start: 880 lnkctrl: 0x40
+> [ 5862.876346] ath11k_pci_start: 886 lnkctrl: 0x42
+> 
+> Also no AER messages. TBH, I'm not sure how you were able to see the random
+> issues with these APIs. That looks like a race, which is scary.
+> 
+> I do not want to ignore your scenario, but would like to reproduce and get to
+> the bottom of it.
+> 
 
-With '=3D {}', no matter how the struct changes, you don't need to change t=
-he
-code accordingly.=20
+I synced with Baochen internally and able to repro the issue. Ths issue is due
+to hand modifying the LNKCTL register from userspace. The PCI core maintains
+the ASPM state internally and uses it to change the state when the
+pci_{enable/disable}_link_state*() APIs are called.
 
-> +       struct ath12k_peer *peer;
->=20
->         skb_cb =3D ATH12K_SKB_CB(msdu);
->         info =3D IEEE80211_SKB_CB(msdu);
+So if the userspace or a client driver modifies the LNKCTL register manually, it
+makes the PCI cached ASPM states invalid. So while this series fixes the driver
+from doing that, nothing prevents userspace from doing so using 'setpci' and
+other tools. Userspace should only use sysfs attributes to change the state and
+avoid modifying the PCI registers when the PCI core is controlling the device.
+So this is the reason behind the errantic behavior of the API and it is not due
+to the issue with the API or the PCI core.
 
-[...]
+- Mani
 
-> @@ -805,6 +830,12 @@ static void ath12k_dp_tx_complete_msdu(struct ath12k=
- *ar,
->         struct ath12k_vif *ahvif;
->         struct sk_buff *msdu =3D desc_params->skb;
->         s32 noise_floor;
-> +       struct ieee80211_tx_status status =3D { 0 };
-> +       struct ieee80211_rate_status status_rate =3D { 0 };
-
-ditto.
-
-> +       struct ath12k_peer *peer;
-> +       struct ath12k_link_sta *arsta;
-> +       struct ath12k_sta *ahsta;
-> +       struct rate_info rate;
->=20
->         if (WARN_ON_ONCE(ts->buf_rel_source !=3D HAL_WBM_REL_SRC_MODULE_T=
-QM)) {
->                 /* Must not happen */
-
-
-
+-- 
+மணிவண்ணன் சதாசிவம்
 
