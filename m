@@ -1,83 +1,84 @@
-Return-Path: <linux-wireless+bounces-25678-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25679-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4124CB0B085
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jul 2025 16:43:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 217CEB0B0BE
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jul 2025 17:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B05A41AA5355
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jul 2025 14:43:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34EFB562686
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jul 2025 15:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A4928726A;
-	Sat, 19 Jul 2025 14:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363D27F477;
+	Sat, 19 Jul 2025 15:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KeridxFc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O4f8Z14i"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2495479B;
-	Sat, 19 Jul 2025 14:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961DC1EB3D;
+	Sat, 19 Jul 2025 15:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752936208; cv=none; b=BalEFsKsw7wmowyhiF6QdY9feVHUUpNdjZlYTr7JUHCYS69B7qw/9HPxjdGEHWqSMrr3LLmNiemCtj5gUwxOQJyLZeWG0l9AHoXrfiSqw/F2ZQFQyiIsPPf9tf72zfxV/BYXmqClrifoW36q8dCoe70IepFEjI2aix4XV3g41/M=
+	t=1752940342; cv=none; b=OXK/XLf933WLixd7CUB3DslDtQX1Wue6sEncSCuAJfclL5fcuAFhymac+TopL2VGkEwIiO+ThwjvmiHdQ5jwnAT9ZhwBLmhuPr7PB9a7+Az61K21yIfzSsE+2QP1KYdgTxIOatHB9vNdxiB/5rakyC+EQ+2LemkPnxwmgM3A854=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752936208; c=relaxed/simple;
-	bh=kiYYKb9OBftr0y8ZJPDKJAyQyL662fXoi9F6AXSCTTM=;
+	s=arc-20240116; t=1752940342; c=relaxed/simple;
+	bh=cin655EQGH7FsjcGWRKN7CQ3dY5XGKAhN0J9RkHwm8Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=JL6Xc/s6ITHBFL+G5XaDa55NErJ8/6xW+g8/d7VGLs8R9b+VHT6yGH9qQlogEzTX9qr37xKUjdM6DLoU7oyQ3HLRaQKXW3CS+o10aiosUZtMlKKxHwwDbDYv2bCbo0tDu3G9rM+7LGNySQpZrxWxFUHnee43Mz50dRZRhfkA0DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KeridxFc; arc=none smtp.client-ip=209.85.222.178
+	 Content-Disposition:In-Reply-To; b=qHnHtKW2s2/SRnSVkaIOfBdrcbexlmGvLH2Tw0lm8gKjLBip9yuP0wd/erpkhRiQc1IgrxlY5dHxGBe8+Yf3IzQOEEqCDZxas9JaBhrKKhzNKSI0bX6YEJEUycctNpKshvWSpapQWGuxJWC9L+dnvGXYt3Kjc0RUqDSSkKM3d74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O4f8Z14i; arc=none smtp.client-ip=209.85.222.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7e334de8df9so337978085a.0;
-        Sat, 19 Jul 2025 07:43:26 -0700 (PDT)
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7e182e4171bso326306185a.3;
+        Sat, 19 Jul 2025 08:52:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752936206; x=1753541006; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RhWUdLMBkHa/VmL6SvN8zMUj9EPv2Ix6mJIXJQMgHG0=;
-        b=KeridxFctqcNrgrd0c2mdIySOPIJIWetxDpipsbrI+u9H2q4AtpXkUaVHdctdKCgge
-         hfDJtTQdpNgYeP9tnTGUD3km3diXom0DtvFnhsebOTQFFyj/Y4v7dZZTx4HM3fQg8R71
-         LrhsJaXokruJrcYGbmHvjS3uV4UIY836XbNxKVVMZT0NGYk6KJX/4wzRqYDeLxau9WMl
-         hxkPHOM2s4bohf8YRxDMMBDkUquzDO9Z2a/UTZ1yFwNjKp+IQ1FgZSviqrxixZqrcQO5
-         eMKfWRSTNZ57i4NAS9RjWFGPzDwX93m7beMii7V4QJXiLnTYqolYGtGYE8xoejN7yMMN
-         u9VA==
+        d=gmail.com; s=20230601; t=1752940339; x=1753545139; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nNgvgnp9VW65TFUHyeSpqBiDH6x3REnx6kZhnFLQurA=;
+        b=O4f8Z14igGBe0oQDq+G5cN77P0wWSylhVkSbZDopXrnqv/4memzgZJkqquGbhFwunq
+         MWFTryiSOcmLqZJADg5CsTjW/ngYhzd531ZFl02POySIVRx8kDjhMwb9meEjpcAr9NeH
+         u353gfolQ4QnFHC44BBt/OmCcbu5PyUh/NMBzLmb0vmtPHUsZmSSenxYOpAnmEOaeDdC
+         CDbA71kVyqfJUrdkN6cy4/SFaHC54s6WOclYRdCuVMe10okSS8mAvRzLfwDSYC04B0rr
+         y1NAnFPgbzrTK4+33iEn6PSbRooVn3U3UpKb+Nn3DINypW04vrxRKdrh2wqtjmSTCpFw
+         8sjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752936206; x=1753541006;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RhWUdLMBkHa/VmL6SvN8zMUj9EPv2Ix6mJIXJQMgHG0=;
-        b=ROdQ8xRIBMdS2Qd3tzgaOCzqhXmGCBE+x8Qqoloih/LvQyuuH7HyPHHEUaezvpSazG
-         57/YjiSZQ5W8elmkt5ZTo8026Q2erxs0SJjNMnlktswqVKQ78ZzQEQ9rEXV1Ypz/+/rR
-         FQB1rXQK3/5H9+mK7HmPHRDR6OHlerudi9UAy35AOextpzeT/iCyc2Cwa5QhsQokX/nk
-         6sqkby/tDMarvBoh7TRe1WSMsFzyDa0RNc8gUtc7N7DwOV7y2x/AoHRQKeLX5KFL+Fpr
-         EoOfS+BqJ9G3K18kNOyL2ObBjzA+e0DalP4NRVSX0muL5nqojb6rQcF33ltx+NaK7jPG
-         32Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCWynGILs3x3sDnJkmEU2fAAa2LsVVcDj8To13zOaKuGcd/6K103ceFLKy9VOxA+jnS9KdBAbV9+2AbzuXE=@vger.kernel.org, AJvYcCX9CUl/mDz5HAlaE5w5aa2WXqfYm29VUYCPHNehR4k0SIIe/8XRcjahEWCuNWQ88r0XGvftp4nUMhKHfOZh60Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1NBRtkdjcB1Sh3N9yd4s4e8DYxKEy6gU4pYI+5qA0qhm9n/Fk
-	gy0hyMCZa+xke52+Vz9k7qP/mommU045TVSGwBfqUmeKOmEoRiDdSbfK
-X-Gm-Gg: ASbGncvS/Zxtd4A2gv5JyrHD8tJNHNLBy+F6AidfFRzoFBXAQluA0N+/Wv+TaVUqgB7
-	+2w8G4ZSVFKgSvTxv149rayul7JGF16sC8TVyKm7TAALIOpipPQy8NNwlnzGgphosKNTPFmzxa4
-	KvkY/UDHrr3JnVgaaalaiMkKWVxc0g17cAGKe6RK9Qjfxx4xnRcpXaWAnFMvDdF8R9NHfIKu/qU
-	ON5syhl7q4yMsvCfFnSlt+aoVxHA4/f/9u+e5h1wUw3L3Ym95kJ/v5xUAW+4uE8n8gmArajc5G2
-	I8op9KX0H5mY5uHm6cICDL24saX2qsIa9ZsrmPWdgtsiBUEqvRkwa6GJVS7/ci2+8sTPncbc/OJ
-	8L9M+ChQ75XlxoXxPCutZ66w=
-X-Google-Smtp-Source: AGHT+IF/dNLtRi00UDiSBMjTUuhj3EXijLt6s9DftrDL+2bf5nBduUOw0gFg6rlzRxfrQJkTppmmOw==
-X-Received: by 2002:a05:620a:8013:b0:7df:dea8:63a1 with SMTP id af79cd13be357-7e34357af07mr1804323685a.23.1752936205969;
-        Sat, 19 Jul 2025 07:43:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752940339; x=1753545139;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nNgvgnp9VW65TFUHyeSpqBiDH6x3REnx6kZhnFLQurA=;
+        b=KQYrkbPvi3PV3dSWEt4kVg9RMer01R/FBSTkmJmnEh/7tQ3MM4hJ7aOzeYRgzgosbc
+         7KTwsoqQcDn2AhWLm+R6c1ZHzegMhp56GI10EKxENikMgzfcLGKDXVAZG5L13YhkJED2
+         gWOvGaPnQnLJTKGzp/NqDSasstbJ21eTBbDl1+37g6WuNcecllZMsMMHHJ35Cr9TGZs2
+         Bf8ex4rYUsU9Tdk+QVlE+QLW8FTWvBRvHxkAKVIaEfX2K+ppKBLEmZ2ZijvLA8vZIJ2z
+         SXor/Cx8DhUn8gAJc+cV6rvcvzBBcQgp3q4BYrHOxDE/Essz6MgFf+NwrK1x/OaTazyj
+         pBeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWU8CBE8mM/hgILiqXsj606rkzuU/GWJF1VZ0ri6pHN+eJXIpfibaRcZr957A5eLv7F3OnNPBc+QU0aP0s=@vger.kernel.org, AJvYcCXLS+k+8/UGlkTtHv5gl/KIvYxwOnq08U9O+VSfA1ME69DkQyGNl9GgQ4LENDLGbE7ghzN6YJ8RIR0fprcm78Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIdUoeHRU/YpU220I9Apq1mxwYBMB/eH8puH/j5RHjOpr2C0yc
+	zCCKdrTX3olb/WghpFBniPXIzvj7ooRxy2bZIdFPt2y192Jsu6owL5r2a7GfvMEC
+X-Gm-Gg: ASbGncvNtXUt3oKxemwVZjgGVr8fU8AWEr9BBPsEbEFYcVFJ6dZefy6d6wwvSf4FTkr
+	iXlCojkOtjGaNR8UMO9GETdEGl9V4g6FP4w2zuAX+29dZLjU+QjwpagMU1Sp0qzBBSCfhubIvIm
+	gnfhZaSFwJIgEln2gQGZvzO3FsSCy4WbOu2C7JOi3B3hT7uA8GuGCDmP1UhmVlOXHiq5wqx0X7D
+	N1tthVl9Q579+33PlaN07S2ZZlRewDVARjIYIcNXf7dXoz2PloPCWXuLXRTtCzH1LpyhfGXJl4c
+	cOZre0Q3HidiVYH6Vhcq+57emcYgjPC1ICB56ORDrWgG1C0x+zk0d2vbebjZH+NyEY1RljpKfYn
+	ajLSHJkMn/U19
+X-Google-Smtp-Source: AGHT+IHAUTIRWkoe+CDTlju6sOUvxj0pxoPNUZXb0JQMt1ClqQcAJ5JYjALPlQQGFDxfIfNV/Gsvgw==
+X-Received: by 2002:a05:620a:6088:b0:7e3:6270:ab59 with SMTP id af79cd13be357-7e36270ac35mr454657185a.57.1752940339392;
+        Sat, 19 Jul 2025 08:52:19 -0700 (PDT)
 Received: from pc ([196.235.236.92])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e356ca2c5dsm202612785a.103.2025.07.19.07.43.24
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e356b2a976sm210185985a.13.2025.07.19.08.52.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Jul 2025 07:43:25 -0700 (PDT)
-Date: Sat, 19 Jul 2025 15:43:22 +0100
+        Sat, 19 Jul 2025 08:52:19 -0700 (PDT)
+Date: Sat, 19 Jul 2025 16:52:16 +0100
 From: Salah Triki <salah.triki@gmail.com>
 To: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
 	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: salah.triki@gmail.com
-Subject: [PATCH] bcma: Use managed APIs
-Message-ID: <aHuvCpFcC2DwBU1P@pc>
+Subject: [PATCH v2] bcma: Use managed APIs
+Message-ID: <aHu_MHDYB7-Vuua_@pc>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -86,28 +87,24 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <aHuvCpFcC2DwBU1P@pc>
 
 Replace pci_* with pcim_* and kzalloc() with devm_kzalloc() so that no
 need to worry about freeing resources and disabling the device.
 
 Signed-off-by: Salah Triki <salah.triki@gmail.com>
 ---
- drivers/bcma/host_pci.c | 39 ++++++++++++++-------------------------
- 1 file changed, 14 insertions(+), 25 deletions(-)
+Changes in v2:
+    -Delete the inclusion of serdev.h since it is not needed
+
+ drivers/bcma/host_pci.c | 38 +++++++++++++-------------------------
+ 1 file changed, 13 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/bcma/host_pci.c b/drivers/bcma/host_pci.c
-index 960632197b05..665990b8afb5 100644
+index 960632197b05..8cdb546ce697 100644
 --- a/drivers/bcma/host_pci.c
 +++ b/drivers/bcma/host_pci.c
-@@ -10,6 +10,7 @@
- #include <linux/bcma/bcma.h>
- #include <linux/pci.h>
- #include <linux/module.h>
-+#include <linux/serdev.h>
- 
- static void bcma_host_pci_switch_core(struct bcma_device *core)
- {
-@@ -161,22 +162,23 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
+@@ -161,22 +161,23 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
  			       const struct pci_device_id *id)
  {
  	struct bcma_bus *bus;
@@ -138,7 +135,7 @@ index 960632197b05..665990b8afb5 100644
  	pci_set_master(dev);
  
  	/* Disable the RETRY_TIMEOUT register (0x41) to keep
-@@ -188,17 +190,16 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
+@@ -188,17 +189,16 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
  	/* SSB needed additional powering up, do we have any AMBA PCI cards? */
  	if (!pci_is_pcie(dev)) {
  		bcma_err(bus, "PCI card detected, they are not supported.\n");
@@ -159,7 +156,7 @@ index 960632197b05..665990b8afb5 100644
  
  	/* Host specific */
  	bus->host_pci = dev;
-@@ -214,7 +215,7 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
+@@ -214,7 +214,7 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
  	/* Scan bus to find out generation of PCIe core */
  	err = bcma_bus_scan(bus);
  	if (err)
@@ -168,7 +165,7 @@ index 960632197b05..665990b8afb5 100644
  
  	if (bcma_find_core(bus, BCMA_CORE_PCIE2))
  		bus->host_is_pcie2 = true;
-@@ -226,19 +227,11 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
+@@ -226,19 +226,11 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
  
  	pci_set_drvdata(dev, bus);
  
@@ -189,7 +186,7 @@ index 960632197b05..665990b8afb5 100644
  	return err;
  }
  
-@@ -247,10 +240,6 @@ static void bcma_host_pci_remove(struct pci_dev *dev)
+@@ -247,10 +239,6 @@ static void bcma_host_pci_remove(struct pci_dev *dev)
  	struct bcma_bus *bus = pci_get_drvdata(dev);
  
  	bcma_bus_unregister(bus);
