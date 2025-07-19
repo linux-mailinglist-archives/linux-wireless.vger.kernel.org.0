@@ -1,93 +1,106 @@
-Return-Path: <linux-wireless+bounces-25674-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25675-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDA9B0AA15
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 20:23:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02249B0ADB5
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jul 2025 05:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4399C7B472F
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Jul 2025 18:21:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DCCC4E81C4
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jul 2025 03:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A251E98FB;
-	Fri, 18 Jul 2025 18:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74EB01DE8B3;
+	Sat, 19 Jul 2025 03:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="fpCcpQjG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u6ZIsGkr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4884117A2F5
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Jul 2025 18:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAD2EEA8;
+	Sat, 19 Jul 2025 03:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752862996; cv=none; b=A92f1pJyeizoE6ACGEbzb6MzXS9gFIMFj7sOugGIpcvbWwElh4VY6QDEdbMXcjMcINU8ENb6w8cdUrIx0XCmVInUf/ZMB4RkVo2i9hNz9VijPpHU7U5xDn0S1KmY/dNt5ePlpwZX1FMCVnA7h+AVpwSPLPYA/CupYa5IcYZgFQI=
+	t=1752895489; cv=none; b=DLlmqEVGZ6jN0FuO4pL3CGnVwh1pMTuKaKkf7oPd8EddYNt6Q/XAyBVp9ymIahuauQblqZ4RsXOumgZxXZMxee0KQceI3ZDpLEww2qQQXjxucmcU9pmfbcvI1rCI4Lx2KNUgUS6HpfG/c1Q6capIK8Y6IG7S184KDWklNC+qheY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752862996; c=relaxed/simple;
-	bh=6tiieU13nl5zLLWJjjT1+3/aMTCBzmJzQWt6XVm+ksU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Npl+PELR0XUkHQahgPjdxFB4tWUNPQ1bqkVu91gfRuUBoVrRVZfD6gcwTmaoepqmG/DsZ7+VrZ6s6tX1KxmQNVU1gv8qRnBxikBhX9uekGXf/c22Y5IlULibKNQotonzikMwjxPRFn5B1o7IVX7nH6OEm8gC59UnYSW0mjBLlSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=fpCcpQjG; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=kU2rpD4nsbMPvBreXn8OAWk1IYWVVpXf91Nlf5dRXNw=; t=1752862995; x=1754072595; 
-	b=fpCcpQjGTJysVQwV4YQU4xmdj9vMllVqMsIyEewG3XEr2j2a4/hbnbDyfODd4AZeg+FAhgTSsT3
-	IpCETU7xwv2LTzz7TksOl8r7c1lCifiVqhFBHs4DtQz2YnRNy8qj7AqbYaAxwQj/k/606+1g3WB9Q
-	WGy4vyDKY4ecQ99oITgmm6mzuQ0NV5XRGNctZ2gY1zHAVyd+c2Z17XRIdPVAXcWm+izFX2B5uUFgI
-	jDbzWAmoXb9cKX5AKKhldiSK7rHJ0E8ZU/krd85jQb3y2a+/WnPa1O6VIwWGpIvlhoSagETgcjQDI
-	bWENZY7mue0X/ZczUSC2P2e4tGQWjuCsj5hw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1ucpjj-0000000D3bR-2hBy;
-	Fri, 18 Jul 2025 20:23:12 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next] wifi: cfg80211: reject HTC bit for management frames
-Date: Fri, 18 Jul 2025 20:23:06 +0200
-Message-ID: <20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1752895489; c=relaxed/simple;
+	bh=XEASl2DavDoT9hNzoWLmpWGP6OxRxWr3zHYeH6vOsgI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ID0RmFa/tOLXuJPj9xkgZGeyMLR8tV+2F7XPX/gbnb7haed/Z+7RMwePSygfoeguRspwvWldmRuFBaRSpv9TkvehlNjY0QiWLcMNqhium0fxg/tZoA+43Ob86qv8Khql8BqftjgIZ4ZDIzxSnVjEWhjVbbNEmEci2HGfFTZ7ELQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u6ZIsGkr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C80C4CEEB;
+	Sat, 19 Jul 2025 03:24:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752895488;
+	bh=XEASl2DavDoT9hNzoWLmpWGP6OxRxWr3zHYeH6vOsgI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u6ZIsGkrXKkcYkOZjst0jboOvYy8GYi1dDxIImUnOqZSAPd3tOKvpKieaGRhjhk1Y
+	 1saGJ/cmKKBPfxeUvMwrKrRCaFvFJcIgg8Mfia6TZpmloYfbez6xQwfdg+dxQAXJs5
+	 WoiOw8cbJUPAL1qbgTucPlp6VWGNetFEQ97ZVHGn7lLWETNkicnr+8+CiltnDq0CeO
+	 /sTRDFmIo1HJOps9HLo83uB+7Z2IRlIAFsXy8pKOqjikoJSqsGHE2opNBuoGHiX8sl
+	 jW+uFsTHNBLNTdKRLTkNVojJdoHTO8Tb2zIPFhAIuOZBTixAfT/D9N6Eq4E9QLQZwO
+	 gNLgeuUNsrM9A==
+Date: Sat, 19 Jul 2025 08:54:35 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Jeff Johnson <jjohnson@kernel.org>, 
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Youssef Samir <quic_yabdulra@quicinc.com>, 
+	Matthew Leung <quic_mattleun@quicinc.com>, Carl Vanderlip <quic_carlv@quicinc.com>, 
+	Yan Zhen <yanzhen@vivo.com>, Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>, 
+	Alex Elder <elder@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Kunwu Chan <chentao@kylinos.cn>, "Dr. David Alan Gilbert" <linux@treblig.org>, 
+	Troy Hanson <quic_thanson@quicinc.com>, Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: kernel@collabora.com, sebastian.reichel@collabora.com, 
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Baochen Qiang <quic_bqiang@quicinc.com>, 
+	Sumit Garg <sumit.garg@kernel.org>, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	ath12k@lists.infradead.org
+Subject: Re: [PATCH v6] bus: mhi: host: don't free bhie tables during
+ suspend/hibernation
+Message-ID: <yywgwnk3aky2qqyxnyiisqxdi5a545tijtigm3al3yyzxrjnst@ged5v7i24nsc>
+References: <20250516184952.878726-1-usama.anjum@collabora.com>
+ <175014516328.16478.17449149106590025798.b4-ty@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <175014516328.16478.17449149106590025798.b4-ty@kernel.org>
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Tue, Jun 17, 2025 at 12:58:51PM GMT, Manivannan Sadhasivam wrote:
+> 
+> On Fri, 16 May 2025 23:49:31 +0500, Muhammad Usama Anjum wrote:
+> > Fix dma_direct_alloc() failure at resume time during bhie_table
+> > allocation because of memory pressure. There is a report where at
+> > resume time, the memory from the dma doesn't get allocated and MHI
+> > fails to re-initialize.
+> > 
+> > To fix it, don't free the memory at power down during suspend /
+> > hibernation. Instead, use the same allocated memory again after every
+> > resume / hibernation. This patch has been tested with resume and
+> > hibernation both.
+> > 
+> > [...]
+> 
+> Applied, thanks!
+> 
+> [1/1] bus: mhi: host: don't free bhie tables during suspend/hibernation
+>       commit: df75d6d7ce922645e674f5d591c7333f11027cdc
+> 
 
-Management frames sent by userspace should never have the
-order/HTC bit set, reject that. It could also cause some
-confusion with the length of the buffer and the header so
-the validation might end up wrong.
+Dropped this patch from mhi-next as Greg is opposed to drivers keeping memory
+during suspend [1].
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Please resubmit once the consensus is reached.
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 05d44a443518..fd88a32d43d6 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -850,7 +850,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
- 
- 	mgmt = (const struct ieee80211_mgmt *)params->buf;
- 
--	if (!ieee80211_is_mgmt(mgmt->frame_control))
-+	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
-+	    ieee80211_has_order(mgmt->frame_control))
- 		return -EINVAL;
- 
- 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
+- Mani
+
+[1] https://lore.kernel.org/mhi/2025071722-panther-legwarmer-d2be@gregkh/
+
 -- 
-2.50.1
-
+மணிவண்ணன் சதாசிவம்
 
