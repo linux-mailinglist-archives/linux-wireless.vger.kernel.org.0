@@ -1,151 +1,231 @@
-Return-Path: <linux-wireless+bounces-25676-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25677-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F06AB0B02B
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jul 2025 15:10:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D82CB0B06C
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jul 2025 16:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC5FC1AA3EC3
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jul 2025 13:10:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A59E7A7057
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Jul 2025 14:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E33A15278E;
-	Sat, 19 Jul 2025 13:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43A0287255;
+	Sat, 19 Jul 2025 14:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="gfoPIPyt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZmKjzPFO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07B6DDC1
-	for <linux-wireless@vger.kernel.org>; Sat, 19 Jul 2025 13:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EB41DC9A3
+	for <linux-wireless@vger.kernel.org>; Sat, 19 Jul 2025 14:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752930615; cv=none; b=Ij+YLDA3RLYyhb9+V1MDnZpozoIVXo6EGQAeFi6JPhEe+oo36FvPZylPg7bqYfWOZnbcjohkQZOHEGpPahzdzV98g4k8h6uHg/9tGXVUMDp03PXxUZZ7TpYjkUpy9f2XMzJyF/0FQ27SmPMUPVgvRlJklf2UHvX2e9nseWfXjB8=
+	t=1752935128; cv=none; b=KIZs3WsmDmdvzFFb+aXsuQ6QM/fQIWAuFW9+7gsWEGsKDIiCqEheedeeRFS/Fizt7hpXpJwTsLEkssxFwgDeWOWGJRADAt1SaBDtODKUi9p9C/1KUOPRy0vsYE9tDMZAVVGwo7PXIyiFX9BARVF5amHYGOf+knvrd3ejmxIrCXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752930615; c=relaxed/simple;
-	bh=8SGl7r65wEVgyZ3SjxUwL8eWFzfmZy4H+rf6w0b/N8o=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=kWQVWiNdIxRC7WU5yHTV1kj0ys6DJ9+xvcB5s83MH7JZ7zWKZ68M1fjTZJjgZJ6/z/aUKE8a5ODqEmM24IucCSmZR7w+dYGT2qzW4mUckpdA2oVBMFvAXqxLk7JKrw4NdV+G8LlgzpbY4Ru+Jp7DV0KWk3uLwbQ7I++9gTEtlkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=gfoPIPyt; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-60c51860bf5so5257143a12.1
-        for <linux-wireless@vger.kernel.org>; Sat, 19 Jul 2025 06:10:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1752930612; x=1753535412; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HJDpncAmbJKu1kr3LNcv6DPuOBIpHS6OJlJ+9JXb1xY=;
-        b=gfoPIPytCUYUvByxfAdzyOrPEOKX6S+rexeLpxhk7cGhL49Xwam/zdiADe09k5Sadj
-         QPdwkn09sL3cflZjF28fdYDDiVzJbiEnqpOnpJLd/UXNaz3TGwkxH8DyYT81b94iQAPm
-         emQocXlQ39QrPt5QIFGIHds6T8s4ER+IOGAE0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752930612; x=1753535412;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HJDpncAmbJKu1kr3LNcv6DPuOBIpHS6OJlJ+9JXb1xY=;
-        b=Q9klD9JHseAw0rpk6Lu0RhVKap1wCrJ2AhVOiw4znVlxKih0SyLhhEYaL+E4fH/nwD
-         9Sf/yIP1knvoKAHLF4Big4OtXrfPGMe3H9kaxmihDSIw61IKDvgLqOTAVHlm5ohrs11o
-         j8Cs1SRAjSk79W7tQ2EOVuIGZrpLioBgH+2bGS50cFETsQcjTykZI9rsrODnxMYfD9Ot
-         IM0h1R2fCBylZBuHJFrV7mh64C60v7qmn/0udj1Ax4jFSOlSKW/E5sibiP7aLYj2/2la
-         nuoWY1WijNnqaLX44OA2qXqw4BC53LRUnWdBPL9pDdGnmqMIyBEMLbUWpwa43KuTR3OO
-         PNGw==
-X-Gm-Message-State: AOJu0YytwjKD45s3YnfxPJCJth4Lslz9RDzhop2hAcyTDK1Gjnk6//Lg
-	tHPAuZ2sLm3f3HRnyg0vqAGEUK7ZxzplIQgbeo4kNgp4SvDSKe91Co0DJbSOIEo6ww==
-X-Gm-Gg: ASbGncutYWN+LHjrUSao/dbzYqGJmC0M/4KzPDwY3tBlRrvLZ0x+OqGCfQtqodUSMyb
-	Oi0J2fXx3G86OCGoNxDulSaT7dLj3OUg3idnVKXT+RcTwns+rWnONLgSiobuKwgAK6g9G/BsLT3
-	QOsjihI+YO+YVM4oT52r0x+3qeiCYw87moluWEG8Zuvp6yTRWS+zbMStOgTMh9CA4f9WNuspn2V
-	9XqFhqW22DRh1tt0KJFrp0msPS2rH4LgyigqnwsuR8teXskBKfXtDUggpemsM5mb8zdYQrKThC2
-	4RDsec6iDCxhVtWhVwOpaf6IeaeMRdmtVRz9pzCkpLGH0Jajg6lQA6ANrZ1MwT1slrd+czdwi7O
-	Z9Ug/+Qih79T5RkTKLN9gvdnCVJ57L7OwNAWoADkhnXFGisTfpNkRHCiaByb51L0dgOCjV/0=
-X-Google-Smtp-Source: AGHT+IHvTuWbAwAWdDAC+dFHxC6tFVTmU1n2PXejwG8LX6Dyq9sGIapdMJ7mFFZ8/uR6gvPbc9KCyg==
-X-Received: by 2002:a05:6402:520c:b0:608:a7a0:48 with SMTP id 4fb4d7f45d1cf-6128262b18dmr13395215a12.28.1752930611917;
-        Sat, 19 Jul 2025 06:10:11 -0700 (PDT)
-Received: from [192.168.178.39] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c8dea633sm2519414a12.0.2025.07.19.06.10.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Jul 2025 06:10:11 -0700 (PDT)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>, Johannes Berg <johannes.berg@intel.com>
-CC: <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>, <wlan-kernel-dev-list@infineon.com>
-Date: Sat, 19 Jul 2025 15:10:09 +0200
-Message-ID: <19822ce6768.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20250626050706.7271-1-gokulkumar.sivakumar@infineon.com>
-References: <20250626050706.7271-1-gokulkumar.sivakumar@infineon.com>
-User-Agent: AquaMail/1.55.2 (build: 105502562)
-Subject: Re: [PATCH wireless-next RESEND] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
+	s=arc-20240116; t=1752935128; c=relaxed/simple;
+	bh=miSkwoiKtRWuKtgjQ5NaomF1TTgsfRDS61rSLm4KtnE=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=JvSqtl7mjWu1apc16i0Iz6o0RbBP/yf+kBzPmLZgesrMtFBiygfSAZ96DgseV3SS6FTqtFiPWpwmJN3fwnv2SSMGCfAB4ktX4BHSfoi067MQpBkumYJHJOqVIUUzmQ/t3tmO2AmwGrAZImFNxrO/chmM2AHd/6EcJFtX+H8q6Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZmKjzPFO; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752935127; x=1784471127;
+  h=date:from:to:cc:subject:message-id;
+  bh=miSkwoiKtRWuKtgjQ5NaomF1TTgsfRDS61rSLm4KtnE=;
+  b=ZmKjzPFOqCpsXznlK4NjpkVb2kINQhmeSRXyeS/zO5oLs4ul1mbG4f73
+   7RpwAeEAt5hi7uVJl/h0VzmSc+iHujv2cr2TafuDpwwl6nXfLMs18IkgX
+   DVSvQLd1VXI2WVMRfsPbaP3OopL5QR71h1XsFG7q9nlessCaNy9NgYhJ7
+   h7GqjR1VkLUoz9Eu6lwnSfIxISSAr4pJBO9jgMng0f87bd6Je2YQ301ab
+   QKt1F359peYujGr8OOWfSSBXESbl4H0s+wE5qxzuggDA3l6fQuL1Dl9gZ
+   frhoRBS6NG/MZpuror8mOaErK+STYh/JZ24BhW01Nt9hziL23F1gx+7tj
+   Q==;
+X-CSE-ConnectionGUID: 8BrezlS0TCS554XjMTzRAQ==
+X-CSE-MsgGUID: pJyVhdqpSt+DcE2SPv69BQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11497"; a="72665954"
+X-IronPort-AV: E=Sophos;i="6.16,324,1744095600"; 
+   d="scan'208";a="72665954"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2025 07:25:26 -0700
+X-CSE-ConnectionGUID: TSRUvdfyQymbPV9E+O16LQ==
+X-CSE-MsgGUID: 4W4ff89pSn2oSKZ+fpDBFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,324,1744095600"; 
+   d="scan'208";a="158773971"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 19 Jul 2025 07:25:25 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ud8V9-000FXv-0p;
+	Sat, 19 Jul 2025 14:25:23 +0000
+Date: Sat, 19 Jul 2025 22:25:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 754fe848b3b297fc85ec24cd959bad22b6df8cb8
+Message-ID: <202507192201.wq4DQcfP-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
 
-On June 26, 2025 7:07:23 AM Gokul Sivakumar 
-<gokulkumar.sivakumar@infineon.com> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 754fe848b3b297fc85ec24cd959bad22b6df8cb8  Reapply "wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()"
 
-> After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
-> IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
-> got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
->
-> Because of this, as part of the scan request handler for the P2P Discovery,
-> vif struct used for adding the Probe Request P2P IE in firmware got changed
-> from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
-> So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
-> requests frames and the other P2P peers were unable to discover this device
-> causing a regression on the P2P feature.
->
-> To fix this, while setting the P2P IE in firmware, properly use the vif of
-> the P2P discovery wdev on which the driver received the P2P scan request.
-> This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
-> is completed.
->
-> Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
+elapsed time: 1443m
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-> ---
-> .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
-> 1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c 
-> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index 4b70845e1a26..075b99478e65 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -1545,10 +1545,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct 
-> cfg80211_scan_request *request)
->  return -EAGAIN;
->  }
->
-> - /* If scan req comes for p2p0, send it over primary I/F */
-> - if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
-> - vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
-> -
->  brcmf_dbg(SCAN, "START ESCAN\n");
->
->  cfg->scan_request = request;
-> @@ -1564,6 +1560,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct 
-> cfg80211_scan_request *request)
->  if (err)
->  goto scan_out;
->
-> + /* If scan req comes for p2p0, send it over primary I/F */
-> + if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
-> + vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
-> +
->  err = brcmf_do_escan(vif->ifp, request);
->  if (err)
->  goto scan_out;
-> --
-> 2.43.0
+configs tested: 138
+configs skipped: 6
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                   randconfig-001-20250718    gcc-10.5.0
+arc                   randconfig-001-20250719    gcc-14.3.0
+arc                   randconfig-002-20250718    gcc-8.5.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-21
+arm                              allyesconfig    gcc-15.1.0
+arm                            hisi_defconfig    gcc-15.1.0
+arm                       omap2plus_defconfig    gcc-15.1.0
+arm                   randconfig-001-20250718    gcc-8.5.0
+arm                   randconfig-001-20250719    gcc-14.3.0
+arm                   randconfig-002-20250718    gcc-8.5.0
+arm                   randconfig-003-20250718    gcc-8.5.0
+arm                   randconfig-004-20250718    gcc-10.5.0
+arm                         socfpga_defconfig    gcc-15.1.0
+arm                        spear6xx_defconfig    clang-21
+arm                       versatile_defconfig    gcc-15.1.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20250718    gcc-13.4.0
+arm64                 randconfig-002-20250718    gcc-8.5.0
+arm64                 randconfig-003-20250718    clang-21
+arm64                 randconfig-004-20250718    gcc-8.5.0
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20250718    gcc-15.1.0
+csky                  randconfig-001-20250719    gcc-15.1.0
+csky                  randconfig-002-20250718    gcc-15.1.0
+csky                  randconfig-002-20250719    gcc-11.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250718    clang-21
+hexagon               randconfig-001-20250719    clang-21
+hexagon               randconfig-002-20250718    clang-21
+hexagon               randconfig-002-20250719    clang-21
+i386        buildonly-randconfig-001-20250718    gcc-12
+i386        buildonly-randconfig-002-20250718    clang-20
+i386        buildonly-randconfig-003-20250718    gcc-12
+i386        buildonly-randconfig-004-20250718    gcc-11
+i386        buildonly-randconfig-005-20250718    gcc-12
+i386        buildonly-randconfig-006-20250718    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-21
+loongarch             randconfig-001-20250718    gcc-15.1.0
+loongarch             randconfig-001-20250719    clang-18
+loongarch             randconfig-002-20250718    gcc-15.1.0
+loongarch             randconfig-002-20250719    gcc-15.1.0
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                       bmips_be_defconfig    gcc-15.1.0
+mips                           ip32_defconfig    clang-21
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20250718    gcc-8.5.0
+nios2                 randconfig-001-20250719    gcc-11.5.0
+nios2                 randconfig-002-20250718    gcc-11.5.0
+nios2                 randconfig-002-20250719    gcc-8.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                 simple_smp_defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250718    gcc-14.3.0
+parisc                randconfig-001-20250719    gcc-8.5.0
+parisc                randconfig-002-20250718    gcc-13.4.0
+parisc                randconfig-002-20250719    gcc-8.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-21
+powerpc                      pcm030_defconfig    clang-21
+powerpc                     rainier_defconfig    gcc-15.1.0
+powerpc               randconfig-001-20250718    gcc-9.5.0
+powerpc               randconfig-001-20250719    clang-19
+powerpc               randconfig-002-20250718    gcc-11.5.0
+powerpc               randconfig-002-20250719    gcc-10.5.0
+powerpc               randconfig-003-20250718    clang-17
+powerpc               randconfig-003-20250719    gcc-12.5.0
+powerpc                        warp_defconfig    gcc-15.1.0
+powerpc64             randconfig-001-20250718    clang-18
+powerpc64             randconfig-001-20250719    gcc-8.5.0
+powerpc64             randconfig-002-20250718    clang-21
+powerpc64             randconfig-002-20250719    clang-21
+powerpc64             randconfig-003-20250719    gcc-10.5.0
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                 randconfig-001-20250719    clang-21
+riscv                 randconfig-002-20250719    clang-21
+s390                             alldefconfig    gcc-15.1.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-15.1.0
+s390                  randconfig-001-20250719    gcc-9.5.0
+s390                  randconfig-002-20250719    gcc-9.5.0
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                        edosk7705_defconfig    gcc-15.1.0
+sh                             espt_defconfig    gcc-15.1.0
+sh                    randconfig-001-20250719    gcc-13.4.0
+sh                    randconfig-002-20250719    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250719    gcc-15.1.0
+sparc                 randconfig-002-20250719    gcc-15.1.0
+sparc64               randconfig-001-20250719    gcc-9.5.0
+sparc64               randconfig-002-20250719    gcc-9.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20250719    clang-16
+um                    randconfig-002-20250719    clang-21
+x86_64                           alldefconfig    gcc-12
+x86_64                            allnoconfig    clang-20
+x86_64      buildonly-randconfig-001-20250718    clang-20
+x86_64      buildonly-randconfig-002-20250718    gcc-12
+x86_64      buildonly-randconfig-003-20250718    gcc-12
+x86_64      buildonly-randconfig-004-20250718    clang-20
+x86_64      buildonly-randconfig-005-20250718    clang-20
+x86_64      buildonly-randconfig-006-20250718    clang-20
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250719    gcc-14.3.0
+xtensa                randconfig-002-20250719    gcc-8.5.0
 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
