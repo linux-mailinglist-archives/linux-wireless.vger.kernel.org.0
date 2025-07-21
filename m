@@ -1,136 +1,105 @@
-Return-Path: <linux-wireless+bounces-25713-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25723-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1225BB0BC81
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 08:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66506B0BC9A
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 08:33:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6643AB17B
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 06:29:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D46043BCC63
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 06:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF2B26E700;
-	Mon, 21 Jul 2025 06:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DB62820D7;
+	Mon, 21 Jul 2025 06:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="B2ZZvsF4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H77zI1vl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9D42AD04
-	for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 06:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3CC283683
+	for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 06:31:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753079401; cv=none; b=lo/VWOLVP9VJq9wmKskcHGsh9BtmCosDdCm/Slv8xHXtRwFIRSDYiKQOeJH3XaoAnu4jybFFvKw0I/UmbRNWsz/VT5IYOfBSGsnYQM5HORYalfRegb6Ed+jqNh4TaQrj+3Vc/QBsNDP/c3FHzirKh5oPz7rGvfZhQ7BPY9sPfJA=
+	t=1753079500; cv=none; b=ulovbQs47a+9/DctfcvjzvnQfgtmKJx8mDUY8gTSV0wvwtX/6OMR+kDLcYOBMwBHUgRCf+z/r+B+nkXSDAvu/BQhd6SCrQyY8Mc+Vrp20qJorXzsJoMbJ1JuZKW4Clu5DhRSxASas9H8D9gVhKL4djNPY8LarQfLK4grzBrYW4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753079401; c=relaxed/simple;
-	bh=SRwR9OMjhQkfEUfExDSBzoq5qxpvRQNusnayBTYx1dQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SXn3EFkjuwdfZgkwm3y9iNA+NLsBRTStTSrJZUGBYpBXzAnnTwBDKOpq8yl4jns9GKFu6gDTrpO4s8LdMmfxHuDbzl2eVzdG6FyG5skudaUlmX1weeiGbJ5FSZztA+YhcCvNvCx8Jjs9dHV1deBOTNbjunTCjBZnZUsJIGx5bHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=B2ZZvsF4; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 18a36b6665fc11f08b7dc59d57013e23-20250721
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ejOCHf77d+DjOE4ApvpfLpumIkFayGw7G+IOfOQkomY=;
-	b=B2ZZvsF43eCnqOuC/a4H4P/5YClJgkNzTihDqORJU239GNta1fEDur2tv4+CXt2RsftKTG1kgMEyJ8/XXG+b8/z5MZ00O6+xIAnAHU14JX/SPsNT4erT5qvkb2aoaCy/LavGUTeOzJ6KN38lIW9zK+yZd/A3AqwYxuHhvroj+AM=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.2,REQID:f0683237-628f-4ab1-887a-f54f06a1725e,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:9eb4ff7,CLOUDID:c7d5ff0e-6968-429c-a74d-a1cce2b698bd,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 18a36b6665fc11f08b7dc59d57013e23-20250721
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
-	(envelope-from <michael-cy.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1232205285; Mon, 21 Jul 2025 14:29:46 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Mon, 21 Jul 2025 14:29:43 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Mon, 21 Jul 2025 14:29:43 +0800
-From: Michael-CY Lee <michael-cy.lee@mediatek.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: linux-wireless <linux-wireless@vger.kernel.org>, Felix Fietkau
-	<nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, Money Wang <money.wang@mediatek.com>,
-	linux-mediatek <linux-mediatek@lists.infradead.org>, Michael-CY Lee
-	<michael-cy.lee@mediatek.com>
-Subject: [PATCH wireless-next v2] wifi: mac80211: determine missing link_id in ieee80211_rx_for_interface() based on frequency
-Date: Mon, 21 Jul 2025 14:29:29 +0800
-Message-ID: <20250721062929.1662700-1-michael-cy.lee@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1753079500; c=relaxed/simple;
+	bh=oVqTpyuGf3I0RDcNQa2ryHSA26LPcCE2tf1KhElZSs0=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type; b=iKssC2emLeF86F6dRmrP2BYObH2aSZnuUcCum3nBOuJKzJJkHRvnNmfak+lJQ5yQ1nyaz4aqxB3vrr+C/UUhBpyO7kdqHUcrzVlMO/DbXI0Sa0hxraJ9KuV1l4vuHJzmFUyV1qyXRLHCmsBC3u1t5SFDgmHRbXpLAqeD1R3KxAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H77zI1vl; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753079499; x=1784615499;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oVqTpyuGf3I0RDcNQa2ryHSA26LPcCE2tf1KhElZSs0=;
+  b=H77zI1vlnxhHp4sSrCSqycW7Pxtn1iAh/0HZRDMUtdkWY3KLeM7ORrAi
+   wedsqH4sXNyZs8sbbACsy4aXlinggFuD+rCiryd5p9KymQBPWoe5ctAfA
+   IcG/sBAxGmIkRqR+LDJj9Ebap1qW7uY4fp039x4C++ulaZEaSvpxSdbOH
+   wVzVLXtzUNnfWwzN5NNw6SL7CqbQu5VztDpHmCpHZeGL1BueUzIQiGaoy
+   twUCPZ4MEsteSElFQtBKuNwN29UOGDDNNJcutL+TsBibv5o0m4IjmXvIx
+   ZPiqG1CbLiMsxNqGvf6szXHe0pv54eZSKu1qv8KOxIP3kz+0MnCHt2fq0
+   A==;
+X-CSE-ConnectionGUID: mUJ/zPmkTfWBhWFzfw8vMQ==
+X-CSE-MsgGUID: UTkY1ZkBTzqkMuf6p/Xmgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11498"; a="65851386"
+X-IronPort-AV: E=Sophos;i="6.16,328,1744095600"; 
+   d="scan'208";a="65851386"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2025 23:31:38 -0700
+X-CSE-ConnectionGUID: Rxq6+pkATSyT9KiUZ3FEPQ==
+X-CSE-MsgGUID: sItL7vTzSuKHq6RXtnRCSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,328,1744095600"; 
+   d="scan'208";a="158061177"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2025 23:31:37 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH wireless-next 0/1] wifi: mac80211: change ieee80211_gtk_rekey_add API
+Date: Mon, 21 Jul 2025 09:31:13 +0300
+Message-Id: <20250721063114.82225-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Organization: Intel Israel (74) Limited
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
 
-For broadcast frames, every interface might have to process it and
-therefore the link_id cannot be determined in the driver.
+In order to make the drivers' lives easier, change this API to receive
+only what it really needs and not an entire ieee80211_key_conf.
 
-In mac80211, when the frame is about to be forwarded to each interface,
-we can use the member "freq" in struct ieee80211_rx_status to determine
-the "link_id" for each interface.
+As the cipher (and therefore also the key length) remains the same upon
+a rekey, there is no need for the driver to send this information —
+mac80211 can infer it from the old key.
 
-Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
-Reviewed-by: Money Wang <money.wang@mediatek.com>
+This will spare the drivers from looking up the key's cipher.
+
+Note that this patch makes only the necessary changes without any
+cleanup of the drivers' code.
+Those can be done later.
+
+Miri
 ---
-v2:
-  - use frequency instead of band
----
- net/mac80211/rx.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index b414c9e6e61b..2ac8ccb838ff 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -5106,8 +5106,29 @@ static bool ieee80211_rx_for_interface(struct ieee80211_rx_data *rx,
- 		struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
- 
- 		sta = sta_info_get_bss(rx->sdata, hdr->addr2);
--		if (status->link_valid)
-+		if (status->link_valid) {
- 			link_id = status->link_id;
-+		} else if (ieee80211_vif_is_mld(&rx->sdata->vif) &&
-+			   status->freq) {
-+			struct ieee80211_link_data *link;
-+			struct ieee80211_chanctx_conf *conf;
-+			int i;
-+
-+			for_each_valid_link(&rx->sdata->wdev, i) {
-+				link = rcu_dereference(rx->sdata->link[i]);
-+				if (!link || !link->conf)
-+					continue;
-+
-+				conf = rcu_dereference(link->conf->chanctx_conf);
-+				if (!conf || !conf->def.chan)
-+					continue;
-+
-+				if (status->freq == conf->def.chan->center_freq) {
-+					link_id = i;
-+					break;
-+				}
-+			}
-+		}
- 	}
- 
- 	if (!ieee80211_rx_data_set_sta(rx, sta, link_id))
+Miri Korenblit (1):
+  wifi: mac80211: don't require cipher and keylen in gtk rekey
+
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c |  7 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 11 +++++--
+ drivers/net/wireless/realtek/rtw89/wow.c    |  7 ++--
+ include/net/mac80211.h                      |  7 ++--
+ net/mac80211/key.c                          | 36 +++++++++++++++++++--
+ 5 files changed, 58 insertions(+), 10 deletions(-)
+
 -- 
-2.25.1
+2.34.1
 
 
