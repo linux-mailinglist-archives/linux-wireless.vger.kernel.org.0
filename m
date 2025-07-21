@@ -1,187 +1,309 @@
-Return-Path: <linux-wireless+bounces-25748-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25749-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340D5B0C143
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 12:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93BC6B0C239
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 13:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DF4417EBFE
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 10:27:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92424162E1C
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 11:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F7A619DF62;
-	Mon, 21 Jul 2025 10:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B55B295520;
+	Mon, 21 Jul 2025 11:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="DAaYdNxL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R2Iwqp4D"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp11.infineon.com (smtp11.infineon.com [217.10.52.105])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A451128F524
-	for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 10:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0BB21CA0A;
+	Mon, 21 Jul 2025 11:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753093673; cv=none; b=XJWp8raMUa/so4OB9jOlCp31IUJGQOWAjqsCtlC+hBQ1f3G2O9ZJebWsErrR1kN92BITW2JJHbKloQxwvk9ojC3RpvjKhskORcR9YOKgrfYmjAMvD/XZQLPA1ZxjK7KVld8XNQS81rr30YSYo96NL5wvnlbmDl5o5p5MqcVGc6E=
+	t=1753096144; cv=none; b=V+oeRw51jYXXlginp0xb3ZBDQ2rwIjGx7mYhC8dE51u6PztI5/k/fjAWHMp9NDroV8GOsFxYpoc9lcNew5/eE0p94dlIvWKBHifuj4sxBiddYiBzopJLgs+H8OuYDfpNOyIqyQmF5xcVNVQZC3YcX+f24a8HPdc7PJgKNFWG6CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753093673; c=relaxed/simple;
-	bh=gnurhFThI9bO1nrcUeJQJ7VD/NRCVzFbmGx4//YV+vQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fPUzEfQ6f0SKX+N/siMsX/wxOybeahsmCLhqxGpImi1D+v8WuQ6+P7NBZHJxl2HZY9Kzom/n1CutVVBWxNaI2wigFffkW8Ap63/BOF6LCNOk59J2Q7iZ0QsqaqPk8Wi54Hzn8H1T7Fltas/Jo65HHQV1e8Q2q7TI+YGLgXhL2f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=DAaYdNxL; arc=none smtp.client-ip=217.10.52.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1753093670; x=1784629670;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gnurhFThI9bO1nrcUeJQJ7VD/NRCVzFbmGx4//YV+vQ=;
-  b=DAaYdNxLJXKQAYlHew2Vg+VsXDf83DLG40mmGc9NjLb+XO8J3kfV2EPJ
-   naKJ1tEUAud51cUuKOtQvZlM5i97DnWEYtBkE1n43anH99tcnWFRSxcTF
-   rY5eW0rs4UEMNfHV9QzqhKV4PF5af/+qt26xXOIRqkNovJvIEHiklbGpm
-   M=;
-X-CSE-ConnectionGUID: W6rw5kxHTACAInbbCoTBrA==
-X-CSE-MsgGUID: NNEREI/aSfqO+imulnBAsw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11498"; a="103261775"
-X-IronPort-AV: E=Sophos;i="6.16,328,1744063200"; 
-   d="scan'208";a="103261775"
-Received: from unknown (HELO MUCSE822.infineon.com) ([172.23.29.53])
-  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 12:26:40 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE822.infineon.com
- (172.23.29.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 21 Jul
- 2025 12:26:39 +0200
-Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
- MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Mon, 21 Jul 2025 12:26:37 +0200
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>, Johannes Berg
-	<johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>,
-	<wlan-kernel-dev-list@infineon.com>, Gokul Sivakumar
-	<gokulkumar.sivakumar@infineon.com>
-Subject: [PATCH wireless-next] wifi: brcmfmac: remove 43752 SDIO incorrectly labelled as a Cypress chip
-Date: Mon, 21 Jul 2025 15:56:18 +0530
-Message-ID: <20250721102618.1453-1-gokulkumar.sivakumar@infineon.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1753096144; c=relaxed/simple;
+	bh=FY4CSPRbHnGtUTrzGgop5iipKH10dKMnMwEEENK6YLM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s9OQ9eApUDisjsyZfaa5P1N7vfQs609LSxToKZsAL420KonEqpe5NexMeJK/bS4NL1i2ANk6blxVbSxhlgEiSxaadQFrlk9FbAp2kXlsIPtBPuHRfJBEiOEiN/ZfFI63ICnATMkZckrwuFOmEvGqJ6sPd3iRPurdS7HgjkHc1pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R2Iwqp4D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672E7C4CEED;
+	Mon, 21 Jul 2025 11:08:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753096143;
+	bh=FY4CSPRbHnGtUTrzGgop5iipKH10dKMnMwEEENK6YLM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R2Iwqp4D6Xy2w607ZcBfyGxUQ+ADCXiljXuOVgY7TRQ1Vtoe4yZMtV2AQI/8OfPJo
+	 hjp2e9X9Fgdp7+2qgAU6EnrFv4a7JPofRoSLC9w97/sU7nKtcRsFozt9hAiWW0uoq8
+	 PjRPmclKGh75welK99aYH7ArSh2rUncPqG8m5HDdyrO1+pGL73lOHR1VX7rtjnmDI/
+	 473hR+d7GxtA6mZR4NpRea0GldPHPu/jU/VLfqd2RiA1XyjsySOhjky93KQeFSxIaB
+	 ZwVM+dtWGuy6t74W75lOnMAnkMNKtw0+C2it4xxBL2yv/VaFMvOjl3RZtb6uvTHR0m
+	 VoO21ROhy9bBw==
+Date: Mon, 21 Jul 2025 16:38:52 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+	Jeff Johnson <jjohnson@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Nirmal Patel <nirmal.patel@linux.intel.com>, 
+	Jonathan Derrick <jonathan.derrick@linux.dev>, linux-wireless@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>, ath12k@lists.infradead.org, ath11k@lists.infradead.org, 
+	ath10k@lists.infradead.org, Bjorn Helgaas <helgaas@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, Qiang Yu <qiang.yu@oss.qualcomm.com>
+Subject: Re: [PATCH 4/6] wifi: ath12k: Use pci_{enable/disable}_link_state()
+ APIs to enable/disable ASPM states
+Message-ID: <je7sz6lgig3picksxv4ncfjcnnw2sdsp5ja6bwofqjuydhc4v6@b3kavwicxggu>
+References: <20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com>
+ <20250716-ath-aspm-fix-v1-4-dd3e62c1b692@oss.qualcomm.com>
+ <7a97d075-2e37-5f40-5247-867146938613@linux.intel.com>
+ <3q2gqo6ipzyqr7i64yhndtpg4etwep4lgffk7emxluxuhjfya5@vt7czmsgpbuw>
+ <52baf40b-41ed-2588-7817-4d8cd859e0d1@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MUCSE821.infineon.com (172.23.29.47) To
- MUCSE827.infineon.com (172.23.29.20)
+In-Reply-To: <52baf40b-41ed-2588-7817-4d8cd859e0d1@linux.intel.com>
 
-Cypress(Infineon) is not the vendor for this 43752 SDIO WLAN chip, and so
-has not officially released any firmware binary for it. It is incorrect to
-maintain this WLAN chip with firmware vendor ID as "CYW".
+On Mon, Jul 21, 2025 at 01:09:05PM GMT, Ilpo Järvinen wrote:
+> On Mon, 21 Jul 2025, Manivannan Sadhasivam wrote:
+> > On Mon, Jul 21, 2025 at 11:04:10AM GMT, Ilpo Järvinen wrote:
+> > > On Wed, 16 Jul 2025, Manivannan Sadhasivam via B4 Relay wrote:
+> > > > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > > > 
+> > > > It is not recommended to enable/disable the ASPM states on the back of the
+> > > > PCI core directly using the LNKCTL register. It will break the PCI core's
+> > > > knowledge about the device ASPM states. So use the APIs exposed by the PCI
+> > > > core to enable/disable ASPM states.
+> > > > 
+> > > > Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> > > > 
+> > > > Reported-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
+> > > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > > > ---
+> > > >  drivers/net/wireless/ath/ath.h        | 14 ++++++++++++++
+> > > >  drivers/net/wireless/ath/ath12k/pci.c | 10 ++++------
+> > > >  2 files changed, 18 insertions(+), 6 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
+> > > > index 34654f710d8a1e63f65a47d4602e2035262a4d9e..ef685123b66bf4f41428fec67c1967f242a9ef27 100644
+> > > > --- a/drivers/net/wireless/ath/ath.h
+> > > > +++ b/drivers/net/wireless/ath/ath.h
+> > > > @@ -21,6 +21,8 @@
+> > > >  #include <linux/skbuff.h>
+> > > >  #include <linux/if_ether.h>
+> > > >  #include <linux/spinlock.h>
+> > > > +#include <linux/pci.h>
+> > > > +#include <linux/pci_regs.h>
+> > > >  #include <net/mac80211.h>
+> > > >  
+> > > >  /*
+> > > > @@ -336,4 +338,16 @@ static inline const char *ath_bus_type_to_string(enum ath_bus_type bustype)
+> > > >  	return ath_bus_type_strings[bustype];
+> > > >  }
+> > > >  
+> > > > +static inline int ath_pci_aspm_state(u16 lnkctl)
+> > > > +{
+> > > > +	int state = 0;
+> > > > +
+> > > > +	if (lnkctl & PCI_EXP_LNKCTL_ASPM_L0S)
+> > > > +		state |= PCIE_LINK_STATE_L0S;
+> > > > +	if (lnkctl & PCI_EXP_LNKCTL_ASPM_L1)
+> > > > +		state |= PCIE_LINK_STATE_L1;
+> > > > +
+> > > > +	return state;
+> > > > +}
+> > > > +
+> > > >  #endif /* ATH_H */
+> > > > diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+> > > > index 489d546390fcdab8f615cc9184006a958d9f140a..a5e11509e3ab8faad6638ff78ce6a8a5e9c3cbbd 100644
+> > > > --- a/drivers/net/wireless/ath/ath12k/pci.c
+> > > > +++ b/drivers/net/wireless/ath/ath12k/pci.c
+> > > > @@ -16,6 +16,8 @@
+> > > >  #include "mhi.h"
+> > > >  #include "debug.h"
+> > > >  
+> > > > +#include "../ath.h"
+> > > > +
+> > > >  #define ATH12K_PCI_BAR_NUM		0
+> > > >  #define ATH12K_PCI_DMA_MASK		36
+> > > >  
+> > > > @@ -928,8 +930,7 @@ static void ath12k_pci_aspm_disable(struct ath12k_pci *ab_pci)
+> > > >  		   u16_get_bits(ab_pci->link_ctl, PCI_EXP_LNKCTL_ASPM_L1));
+> > > >  
+> > > >  	/* disable L0s and L1 */
+> > > > -	pcie_capability_clear_word(ab_pci->pdev, PCI_EXP_LNKCTL,
+> > > > -				   PCI_EXP_LNKCTL_ASPMC);
+> > > > +	pci_disable_link_state(ab_pci->pdev, PCIE_LINK_STATE_L0S | PCIE_LINK_STATE_L1);
+> > > 
+> > > I'd remove to comment too as the code is self-explanatory after this 
+> > > change.
+> > > 
+> > 
+> > Ack
+> > 
+> > > >  
+> > > >  	set_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags);
+> > > >  }
+> > > > @@ -958,10 +959,7 @@ static void ath12k_pci_aspm_restore(struct ath12k_pci *ab_pci)
+> > > >  {
+> > > >  	if (ab_pci->ab->hw_params->supports_aspm &&
+> > > >  	    test_and_clear_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags))
+> > > > -		pcie_capability_clear_and_set_word(ab_pci->pdev, PCI_EXP_LNKCTL,
+> > > > -						   PCI_EXP_LNKCTL_ASPMC,
+> > > > -						   ab_pci->link_ctl &
+> > > > -						   PCI_EXP_LNKCTL_ASPMC);
+> > > > +		pci_enable_link_state(ab_pci->pdev, ath_pci_aspm_state(ab_pci->link_ctl));
+> > > >  }
+> > > >  
+> > > >  static void ath12k_pci_cancel_workqueue(struct ath12k_base *ab)
+> > > 
+> > > As you now depend on ASPM driver being there, these should also add to 
+> > > Kconfig:
+> > > 
+> > > depends on PCIEASPM
+> > > 
+> > 
+> > I thought about it, but since this driver doesn't necessarily enable ASPM for
+> > all the devices it supports, I didn't add the dependency. But looking at it
+> > again, I think makes sense to add the dependency since the driver cannot work
+> > reliably without disabling ASPM (for the supported devices).
+> 
+> PCIEASPM is already default y and if EXPERT so it is not something 
+> that is expected to be disabled.
+> 
+> You also no longer need to move the ASPM link state defines LKP found out 
+> about after adding the depends on.
+> 
 
-Fixes: d2587c57ffd8 ("brcmfmac: add 43752 SDIO ids and initialization")
-Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c    | 1 -
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c      | 4 ++--
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c      | 5 +----
- .../net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h    | 1 -
- include/linux/mmc/sdio_ids.h                                 | 1 -
- 5 files changed, 3 insertions(+), 9 deletions(-)
+Yes, it will fix the reported issue, but guarding the definitions feels wrong to
+me still. Maybe that's something we can worry later.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 8ab7d1e34a6e..de4634cad461 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -999,7 +999,6 @@ static const struct sdio_device_id brcmf_sdmmc_ids[] = {
- 	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_43751, WCC),
- 	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373, CYW),
- 	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43012, CYW),
--	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43752, CYW),
- 	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_89359, CYW),
- 	CYW_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439, CYW),
- 	{ /* end: all zeroes */ }
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-index 9074ab49e806..4239f2b21e54 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-@@ -738,8 +738,8 @@ static u32 brcmf_chip_tcm_rambase(struct brcmf_chip_priv *ci)
- 	case BRCM_CC_4364_CHIP_ID:
- 	case CY_CC_4373_CHIP_ID:
- 		return 0x160000;
--	case CY_CC_43752_CHIP_ID:
- 	case BRCM_CC_43751_CHIP_ID:
-+	case BRCM_CC_43752_CHIP_ID:
- 	case BRCM_CC_4377_CHIP_ID:
- 		return 0x170000;
- 	case BRCM_CC_4378_CHIP_ID:
-@@ -1452,7 +1452,7 @@ bool brcmf_chip_sr_capable(struct brcmf_chip *pub)
- 		return (reg & CC_SR_CTL0_ENABLE_MASK) != 0;
- 	case BRCM_CC_4359_CHIP_ID:
- 	case BRCM_CC_43751_CHIP_ID:
--	case CY_CC_43752_CHIP_ID:
-+	case BRCM_CC_43752_CHIP_ID:
- 	case CY_CC_43012_CHIP_ID:
- 		addr = CORE_CC_REG(pmu->base, retention_ctl);
- 		reg = chip->ops->read32(chip->ctx, addr);
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 8a0bad5119a0..1454591cd165 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -658,7 +658,6 @@ static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
- 	BRCMF_FW_ENTRY(CY_CC_4373_CHIP_ID, 0xFFFFFFFF, 4373),
- 	BRCMF_FW_ENTRY(CY_CC_43012_CHIP_ID, 0xFFFFFFFF, 43012),
- 	BRCMF_FW_ENTRY(CY_CC_43439_CHIP_ID, 0xFFFFFFFF, 43439),
--	BRCMF_FW_ENTRY(CY_CC_43752_CHIP_ID, 0xFFFFFFFF, 43752)
- };
- 
- #define TXCTL_CREDITS	2
-@@ -3426,8 +3425,7 @@ static int brcmf_sdio_download_firmware(struct brcmf_sdio *bus,
- static bool brcmf_sdio_aos_no_decode(struct brcmf_sdio *bus)
- {
- 	if (bus->ci->chip == BRCM_CC_43751_CHIP_ID ||
--	    bus->ci->chip == CY_CC_43012_CHIP_ID ||
--	    bus->ci->chip == CY_CC_43752_CHIP_ID)
-+	    bus->ci->chip == CY_CC_43012_CHIP_ID)
- 		return true;
- 	else
- 		return false;
-@@ -4279,7 +4277,6 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
- 		switch (sdiod->func1->device) {
- 		case SDIO_DEVICE_ID_BROADCOM_43751:
- 		case SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373:
--		case SDIO_DEVICE_ID_BROADCOM_CYPRESS_43752:
- 			brcmf_dbg(INFO, "set F2 watermark to 0x%x*4 bytes\n",
- 				  CY_4373_F2_WATERMARK);
- 			brcmf_sdiod_writeb(sdiod, SBSDIO_WATERMARK,
-diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-index 6564616a57df..81d91e720076 100644
---- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-@@ -60,7 +60,6 @@
- #define CY_CC_4373_CHIP_ID		0x4373
- #define CY_CC_43012_CHIP_ID		43012
- #define CY_CC_43439_CHIP_ID		43439
--#define CY_CC_43752_CHIP_ID		43752
- 
- /* USB Device IDs */
- #define BRCM_USB_43143_DEVICE_ID	0xbd1e
-diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-index fe3d6d98f8da..9e9b54248d9f 100644
---- a/include/linux/mmc/sdio_ids.h
-+++ b/include/linux/mmc/sdio_ids.h
-@@ -77,7 +77,6 @@
- #define SDIO_DEVICE_ID_BROADCOM_43439		0xa9af
- #define SDIO_DEVICE_ID_BROADCOM_43455		0xa9bf
- #define SDIO_DEVICE_ID_BROADCOM_43751		0xaae7
--#define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43752	0xaae8
- 
- #define SDIO_VENDOR_ID_CYPRESS			0x04b4
- #define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439	0xbd3d
+> I'm a bit worried this series will regress in the cases where OS doesn't 
+> control ASPM so it might be necessary to include something along the 
+> lines of the patch below too (the earlier discussion on this is in Link 
+> tags):
+> 
 
-base-commit: 754fe848b3b297fc85ec24cd959bad22b6df8cb8
+atheros drivers didn't have such comment (why they were manually changing the
+LNKCTL register), but I agree that there is a chance that they could cause issue
+on platforms where BIOS didn't give ASPM control to the OS.
+
+But as a non-ACPI developer, I don't know what does 'ACPI doesn't give
+permission to manage ASPM' mean exactly. Does ACPI allow to disable ASPM but not
+enable it?
+
+- Mani
+
+> -----
+> From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Subject: [PATCH] PCI/ASPM: Always disable ASPM when driver requests it
+> 
+> PCI core/ASPM service driver allows controlling ASPM state through
+> pci_disable_link_state() API. It was decided earlier (see the Link
+> below), to not allow ASPM changes when OS does not have control over it
+> but only log a warning about the problem (commit 2add0ec14c25
+> ("PCI/ASPM: Warn when driver asks to disable ASPM, but we can't do
+> it")).
+> 
+> A number of drivers have added workarounds to force ASPM off with own
+> writes into the Link Control Register (some even with comments
+> explaining why PCI core does not disable it under some circumstances).
+> According to the comments, some drivers require ASPM to be off for
+> reliable operation.
+> 
+> Having custom ASPM handling in drivers is problematic because the state
+> kept in the ASPM service driver is not updated by the changes made
+> outside the link state management API.
+> 
+> As the first step to address this issue, make pci_disable_link_state()
+> to unconditionally disable ASPM so the motivation for drivers to come
+> up with custom ASPM handling code is eliminated.
+> 
+> To fully take advantage of the ASPM handling core provides, the drivers
+> that need to quirk ASPM have to be altered depend on PCIEASPM and the
+> custom ASPM code is removed. This is to be done separately. As PCIEASPM
+> is already behind EXPERT, it should be no problem to limit disabling it
+> for configurations that do not require touching ASPM.
+> 
+> Make pci_disable_link_state() function comment to comply kerneldoc
+> formatting while changing the description.
+> 
+> Link: https://lore.kernel.org/all/CANUX_P3F5YhbZX3WGU-j1AGpbXb_T9Bis2ErhvKkFMtDvzatVQ@mail.gmail.com/
+> Link: https://lore.kernel.org/all/20230511131441.45704-1-ilpo.jarvinen@linux.intel.com/
+> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> 
+> ---
+>  drivers/pci/pcie/aspm.c | 33 ++++++++++++++++++++-------------
+>  1 file changed, 20 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+> index 5721ebfdea71..11732031e342 100644
+> --- a/drivers/pci/pcie/aspm.c
+> +++ b/drivers/pci/pcie/aspm.c
+> @@ -1382,16 +1382,23 @@ static int __pci_disable_link_state(struct pci_dev *pdev, int state, bool locked
+>  		return -EINVAL;
+>  	/*
+>  	 * A driver requested that ASPM be disabled on this device, but
+> -	 * if we don't have permission to manage ASPM (e.g., on ACPI
+> +	 * if we might not have permission to manage ASPM (e.g., on ACPI
+>  	 * systems we have to observe the FADT ACPI_FADT_NO_ASPM bit and
+> -	 * the _OSC method), we can't honor that request.  Windows has
+> -	 * a similar mechanism using "PciASPMOptOut", which is also
+> -	 * ignored in this situation.
+> +	 * the _OSC method), previously we chose to not honor disable
+> +	 * request in that case. Windows has a similar mechanism using
+> +	 * "PciASPMOptOut", which is also ignored in this situation.
+> +	 *
+> +	 * Not honoring the requests to disable ASPM, however, led to
+> +	 * drivers forcing ASPM off on their own. As such changes of ASPM
+> +	 * state are not tracked by this service driver, the state kept here
+> +	 * became out of sync.
+> +	 *
+> +	 * Therefore, honor ASPM disable requests even when OS does not have
+> +	 * ASPM control. Plain disable for ASPM is assumed to be slightly
+> +	 * safer than fully managing it.
+>  	 */
+> -	if (aspm_disabled) {
+> -		pci_warn(pdev, "can't disable ASPM; OS doesn't have ASPM control\n");
+> -		return -EPERM;
+> -	}
+> +	if (aspm_disabled)
+> +		pci_warn(pdev, "OS doesn't have ASPM control, disabling ASPM anyway\n");
+>  
+>  	if (!locked)
+>  		down_read(&pci_bus_sem);
+> @@ -1418,13 +1425,13 @@ int pci_disable_link_state_locked(struct pci_dev *pdev, int state)
+>  EXPORT_SYMBOL(pci_disable_link_state_locked);
+>  
+>  /**
+> - * pci_disable_link_state - Disable device's link state, so the link will
+> - * never enter specific states.  Note that if the BIOS didn't grant ASPM
+> - * control to the OS, this does nothing because we can't touch the LNKCTL
+> - * register. Returns 0 or a negative errno.
+> - *
+> + * pci_disable_link_state - Disable device's link state
+>   * @pdev: PCI device
+>   * @state: ASPM link state to disable
+> + *
+> + * Disable device's link state so the link will never enter specific states.
+> + *
+> + * Return: 0 or a negative errno
+>   */
+>  int pci_disable_link_state(struct pci_dev *pdev, int state)
+>  {
+> 
+> -- 
+> tg: (9f4972a5d481..) aspm/disable-always (depends on: pci/set-default-comment2)
+
+
 -- 
-2.25.1
-
+மணிவண்ணன் சதாசிவம்
 
