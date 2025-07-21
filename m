@@ -1,142 +1,186 @@
-Return-Path: <linux-wireless+bounces-25743-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25744-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE2CB0BE28
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 09:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD47B0BE5E
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 10:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAD44189B3B3
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 07:55:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5E8818912E9
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 08:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED21284686;
-	Mon, 21 Jul 2025 07:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0449328315A;
+	Mon, 21 Jul 2025 08:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PDq2/vpV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E12C28032D
-	for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 07:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56625EEBA;
+	Mon, 21 Jul 2025 08:04:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753084534; cv=none; b=kD1vHxtkeCJJSbG8Not5yAUkBwG6aYdTyUYs4/H/UtnVotBoZUWeO4HUmmUSlj8ROSWkSVLIA1vZXPve5khBjhwnBjEdWTmlPmrQEGR36KIUyJ3HVDUqn0/M7Rt6FxbW9A8eUl77wY3VQWj96mf4fkz3blHHFeuEP/spaWK3NT0=
+	t=1753085062; cv=none; b=omhCY31n9sY5BnCSR3TDxAthmokbXq14tq8+LZJS0s68/CM99KheBSqI050RglIw+fgZNMCk/rA/q53z2qRuQIdxsI9f+ftZYWmXFtLDM5aNPt3svxH1kB1GfrjKU5G7WyUgPDWtkDENzWBpSEsrt0KGnN3P2ODh8KiltN406PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753084534; c=relaxed/simple;
-	bh=0lse8KOroGbQPPspT2o3Gt8TESQEfPdvvUFUEyZmqtI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=XBIXO6Z8hJT6HrZd18379q5cLoR3oANFutxfS3bqmAFx6y7nCZMvyZcXmatbfMXnfuXMJqZgtt/GW/xSC+ltgvJbYFEo4IDPvx+wUefTTVVTdvHOWckc2kdKlZi1e5kSQOqPxkOyZJeFx2q1PVr6owvpdMcV9Jf+52mQWYE0h4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-86cc7cdb86fso366483639f.1
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 00:55:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753084531; x=1753689331;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mpGtJjSTE4Hb4CxYNFdEl6s+ZrPvAdZM8nTLITHu/AU=;
-        b=kEjjuiGb3VF2PM+UeFRdNwlqFb4J8bi8hU3qWEWfgXlvEBDaQ+YXum9L/aulibwkKR
-         2GVRaovEFAo/5WndMnBCOmFwqc5uwY2Xup8l+gGYr7vU6iyv45WlXsmCDHGNRCk0uSfQ
-         gY6jB2acz6B4QBrghfvblodOWpDzAL2K4io2K2XuEM2Pj5PRSsPs9yFstp3eM09CxRtu
-         MFQxABkWEZOBMj+74frgHL0pedf2VBw9Y+ruzXK+EqF4KH3SRjGGkNVuRZ44byvGpkAE
-         BMVxerigpciG2/k2uzV1uXKijCVDHTDpQI28GS13MKXigi3pjirdm5uLwdHipSPlY3AF
-         eQ6A==
-X-Forwarded-Encrypted: i=1; AJvYcCX6gpPysZhrGqrnPj9MGWEYbCrurHnjv5CiEgYBODYZKR8q1nPa4rWzh9ULnWDpcvdkjv7b59vMZ8xCnqciLw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhkY1BXqNqHUL22bP2QAbjtatKoJTACKRyK9SNIf6PB3g/Jweo
-	hpAFCS2e9B3zquIB5mwaiTA5lFAoALWHHrrmAnjOkSDN4oQ2y3p1J9Df2vcRsQQNIUnHnaM77KS
-	PFzSst76Jq26Yp/7BHiqHyKVQB3LWURFr4Md11fyX8MoaAI5lu32jD8oTTQY=
-X-Google-Smtp-Source: AGHT+IFIii7JfNpq4baM+HOiCqn2j+ywL/ztT7mpBre9UykTQTr4wVD4CtdvbbnhWSyoT5DxFd/EvfOjyL0s3IfX+e1ASXPbA95t
+	s=arc-20240116; t=1753085062; c=relaxed/simple;
+	bh=2o9zyX3cerqp5g/7zwFTMs7Wun4Ck/BEYMqIIsd5pSI=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=jtXJzR1Kge2BNZmyMGFL4YVcS0g0A6LunENdGfTmluBNyBc9aMxrXWVfn4B6OU1EorTcGwfJ1rMTL3ZM3xLa09HUfZ5CaDoUhOEbeytJ08wbkjMi2GFSJLoZSH587KsGN/GoVL7zDNDW+HrId5Ri9jygutb5/+w7PEbVCvDgzX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PDq2/vpV; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753085061; x=1784621061;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=2o9zyX3cerqp5g/7zwFTMs7Wun4Ck/BEYMqIIsd5pSI=;
+  b=PDq2/vpV4msvoRAYA6gMK0OljYkd+TLbnHp6TMA/0ieKHPX9llPzwpPZ
+   NVTYZlaIzhZBC1/sYH/dDHiWFQld/inr2mCIsQK02loLLFJ6A8/Qt4W22
+   rARVIdsYtQ2gNrX7c4oIeUKdnW4Z2GDaSZGjwER33JICh4mZoBbpxEYmd
+   HmSzcZK+5c265SLOlC2NbSy446uVkKq+pVSF7Ybf4KZXEklSXc3m4PfOq
+   +kmY3BfTXxYmlQguBvvTEWw+BvnnL/ZMkJjTpWIUiwWd3U05sP6eiN28O
+   UuvyybUE2EqbJiG9VlSQe+VFapBCz5Tqj5dEe3ES13fWhJTfEZ9kVZuZ1
+   A==;
+X-CSE-ConnectionGUID: uqZu/BOjTzWJqNNcTZc8og==
+X-CSE-MsgGUID: pIJKFXH9RE6yphLiStge2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11498"; a="55447602"
+X-IronPort-AV: E=Sophos;i="6.16,328,1744095600"; 
+   d="scan'208";a="55447602"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 01:04:21 -0700
+X-CSE-ConnectionGUID: BWkutBHqS9af8EK7EQYPNw==
+X-CSE-MsgGUID: YTV/OCYcRgOXDZIMMaHlpg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,328,1744095600"; 
+   d="scan'208";a="158888328"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.225])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 01:04:14 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 21 Jul 2025 11:04:10 +0300 (EEST)
+To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+cc: Jeff Johnson <jjohnson@kernel.org>, 
+    Manivannan Sadhasivam <mani@kernel.org>, 
+    Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+    =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kwilczynski@kernel.org>, 
+    Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+    Nirmal Patel <nirmal.patel@linux.intel.com>, 
+    Jonathan Derrick <jonathan.derrick@linux.dev>, 
+    linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+    ath12k@lists.infradead.org, ath11k@lists.infradead.org, 
+    ath10k@lists.infradead.org, Bjorn Helgaas <helgaas@kernel.org>, 
+    linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
+    Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
+    Qiang Yu <qiang.yu@oss.qualcomm.com>
+Subject: Re: [PATCH 4/6] wifi: ath12k: Use pci_{enable/disable}_link_state()
+ APIs to enable/disable ASPM states
+In-Reply-To: <20250716-ath-aspm-fix-v1-4-dd3e62c1b692@oss.qualcomm.com>
+Message-ID: <7a97d075-2e37-5f40-5247-867146938613@linux.intel.com>
+References: <20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com> <20250716-ath-aspm-fix-v1-4-dd3e62c1b692@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:3d1:b0:875:d675:55f2 with SMTP id
- ca18e2360f4ac-879c28caec0mr2189233839f.7.1753084531607; Mon, 21 Jul 2025
- 00:55:31 -0700 (PDT)
-Date: Mon, 21 Jul 2025 00:55:31 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <687df273.a70a0220.693ce.00e5.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in cfg80211_switch_netns
-From: syzbot <syzbot+3515319a302224e081b4@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 
-Hello,
+On Wed, 16 Jul 2025, Manivannan Sadhasivam via B4 Relay wrote:
 
-syzbot found the following issue on:
+> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> 
+> It is not recommended to enable/disable the ASPM states on the back of the
+> PCI core directly using the LNKCTL register. It will break the PCI core's
+> knowledge about the device ASPM states. So use the APIs exposed by the PCI
+> core to enable/disable ASPM states.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Reported-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> ---
+>  drivers/net/wireless/ath/ath.h        | 14 ++++++++++++++
+>  drivers/net/wireless/ath/ath12k/pci.c | 10 ++++------
+>  2 files changed, 18 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
+> index 34654f710d8a1e63f65a47d4602e2035262a4d9e..ef685123b66bf4f41428fec67c1967f242a9ef27 100644
+> --- a/drivers/net/wireless/ath/ath.h
+> +++ b/drivers/net/wireless/ath/ath.h
+> @@ -21,6 +21,8 @@
+>  #include <linux/skbuff.h>
+>  #include <linux/if_ether.h>
+>  #include <linux/spinlock.h>
+> +#include <linux/pci.h>
+> +#include <linux/pci_regs.h>
+>  #include <net/mac80211.h>
+>  
+>  /*
+> @@ -336,4 +338,16 @@ static inline const char *ath_bus_type_to_string(enum ath_bus_type bustype)
+>  	return ath_bus_type_strings[bustype];
+>  }
+>  
+> +static inline int ath_pci_aspm_state(u16 lnkctl)
+> +{
+> +	int state = 0;
+> +
+> +	if (lnkctl & PCI_EXP_LNKCTL_ASPM_L0S)
+> +		state |= PCIE_LINK_STATE_L0S;
+> +	if (lnkctl & PCI_EXP_LNKCTL_ASPM_L1)
+> +		state |= PCIE_LINK_STATE_L1;
+> +
+> +	return state;
+> +}
+> +
+>  #endif /* ATH_H */
+> diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+> index 489d546390fcdab8f615cc9184006a958d9f140a..a5e11509e3ab8faad6638ff78ce6a8a5e9c3cbbd 100644
+> --- a/drivers/net/wireless/ath/ath12k/pci.c
+> +++ b/drivers/net/wireless/ath/ath12k/pci.c
+> @@ -16,6 +16,8 @@
+>  #include "mhi.h"
+>  #include "debug.h"
+>  
+> +#include "../ath.h"
+> +
+>  #define ATH12K_PCI_BAR_NUM		0
+>  #define ATH12K_PCI_DMA_MASK		36
+>  
+> @@ -928,8 +930,7 @@ static void ath12k_pci_aspm_disable(struct ath12k_pci *ab_pci)
+>  		   u16_get_bits(ab_pci->link_ctl, PCI_EXP_LNKCTL_ASPM_L1));
+>  
+>  	/* disable L0s and L1 */
+> -	pcie_capability_clear_word(ab_pci->pdev, PCI_EXP_LNKCTL,
+> -				   PCI_EXP_LNKCTL_ASPMC);
+> +	pci_disable_link_state(ab_pci->pdev, PCIE_LINK_STATE_L0S | PCIE_LINK_STATE_L1);
 
-HEAD commit:    4701ee5044fb be2net: Use correct byte order and format str..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=142f77d4580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1a940d1173246e73
-dashboard link: https://syzkaller.appspot.com/bug?extid=3515319a302224e081b4
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+I'd remove to comment too as the code is self-explanatory after this 
+change.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+>  
+>  	set_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags);
+>  }
+> @@ -958,10 +959,7 @@ static void ath12k_pci_aspm_restore(struct ath12k_pci *ab_pci)
+>  {
+>  	if (ab_pci->ab->hw_params->supports_aspm &&
+>  	    test_and_clear_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags))
+> -		pcie_capability_clear_and_set_word(ab_pci->pdev, PCI_EXP_LNKCTL,
+> -						   PCI_EXP_LNKCTL_ASPMC,
+> -						   ab_pci->link_ctl &
+> -						   PCI_EXP_LNKCTL_ASPMC);
+> +		pci_enable_link_state(ab_pci->pdev, ath_pci_aspm_state(ab_pci->link_ctl));
+>  }
+>  
+>  static void ath12k_pci_cancel_workqueue(struct ath12k_base *ab)
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/5771927b98f6/disk-4701ee50.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e9e498c37560/vmlinux-4701ee50.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/377ae84313ff/bzImage-4701ee50.xz
+As you now depend on ASPM driver being there, these should also add to 
+Kconfig:
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+3515319a302224e081b4@syzkaller.appspotmail.com
+depends on PCIEASPM
 
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 6759 at net/wireless/core.c:204 cfg80211_switch_netns+0x560/0x590 net/wireless/core.c:204
-Modules linked in:
-CPU: 1 UID: 0 PID: 6759 Comm: kworker/u8:18 Not tainted 6.16.0-rc6-syzkaller-01576-g4701ee5044fb #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Workqueue: netns cleanup_net
-RIP: 0010:cfg80211_switch_netns+0x560/0x590 net/wireless/core.c:204
-Code: e1 07 38 c1 7c 8c 4c 89 e7 e8 dc be 63 f7 eb 82 e8 45 b0 01 f7 e9 63 fe ff ff e8 3b b0 01 f7 e9 59 fe ff ff e8 31 b0 01 f7 90 <0f> 0b 90 e9 a9 fd ff ff 89 d9 80 e1 07 80 c1 03 38 c1 0f 8c cb fa
-RSP: 0018:ffffc9001ba67860 EFLAGS: 00010293
-RAX: ffffffff8abe7a1f RBX: ffff888031530d78 RCX: ffff88802a70da00
-RDX: 0000000000000000 RSI: 00000000ffffffef RDI: 0000000000000000
-RBP: 00000000ffffffef R08: ffffffff8fa22af7 R09: 1ffffffff1f4455e
-R10: dffffc0000000000 R11: fffffbfff1f4455f R12: ffff888031530700
-R13: ffff888027fc9580 R14: dffffc0000000000 R15: ffff8880315308f0
-FS:  0000000000000000(0000) GS:ffff888125d16000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007faceb4e56c0 CR3: 0000000080016000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- cfg80211_pernet_exit+0xa2/0x140 net/wireless/core.c:1671
- ops_exit_list net/core/net_namespace.c:198 [inline]
- ops_undo_list+0x497/0x990 net/core/net_namespace.c:251
- cleanup_net+0x4c5/0x800 net/core/net_namespace.c:682
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+-- 
+ i.
 
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
