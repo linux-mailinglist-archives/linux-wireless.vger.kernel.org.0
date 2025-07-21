@@ -1,145 +1,137 @@
-Return-Path: <linux-wireless+bounces-25773-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25774-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA99B0CCC5
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 23:38:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8998DB0CCD9
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 23:50:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31DC97B29DA
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 21:37:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D82376C3937
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 21:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D857324EF6B;
-	Mon, 21 Jul 2025 21:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE1E21C190;
+	Mon, 21 Jul 2025 21:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="flpSvoJQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g6fLzHBH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC362417D4
-	for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 21:37:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35406203710
+	for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 21:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753133826; cv=none; b=b1JWSnsBHQRedM2O7MC9EDhcZ4Z5FZlS932BZA4u1Tr/1oKj5bqxoN/oOIb/NKuAroPuxMCNSjgrwWSInqCy197mP1wqwRvQwwNw6MIJ5dTrrX+X3wyFmqAGoSE7N2YRxiIiwVJ2Xj8J0T4GJtNGcrxVj96HXL1seO9CLacf244=
+	t=1753134611; cv=none; b=k3orVadrRenIPGCIz0SiTxNnWoiQuVdKJEKrFtf9p2EcAllC7IoN/TeUr8pXDztF3UuvVM2DrbevDvQ5Nb9+Aa0XQ8HzCYUMDYi8Zba5Ck+RAFRrkv2Ibkm3B2lzomGSYObg2GbUkfPymFyQ1tvCv1v+GnQtpdWRliVSMlxFHIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753133826; c=relaxed/simple;
-	bh=vo1sZ07pZw88S4fU0eXJupPKC01FVjQefO9fB5OV448=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=m8gN7HyF9B5xO3vAwZJHtKcX6hQEztXkDnvaCtYQH0EdKaz+vjOotF9xL1z0kZrKp1TW8bRRQosNBnhl7R/s+VP/lSvO8y//xGB5EPVBePkfj6dBDgIXBuvUo3uHJRQOysmAhJuw+nUHVqKwdUT7R0e6rsK0pG/X9GACRvGQJvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=flpSvoJQ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56LGNBPm016286
-	for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 21:37:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	UpWXbETewfbjKdm/uesf4U6sOxQjAz10hl/r+X1ya68=; b=flpSvoJQUeUGunIB
-	A6gzfI9CR0ERvd1RfN/fPXGA8hw6hYO1uGiY+JNZyvdW5wlgFnV8Wfk7kBHMlGg8
-	Yor4m5XfY6n4KJKFGM+KmWqHfC70wCuZBR9+NZTrBD7GTj8gOUDPVXDNLJ2YKjD8
-	nuGIyCpitDDZsoXSxxmglNYQAkeLZ3x5z0oty7xZ4xmfYJWjOXmKRyvSXC2AVPJi
-	TDMthvACz2D+mD4OyMDN8EbDxh0Jtwo4MR37ac20DPQEIJpNLukoPCtvATX1W0st
-	H14PQj1Y3LJQO2mcaZAP73RTp7L6KC6SQwNyH7Snylbu18j8PSaM1d/2bxpSVKQo
-	DWu+sg==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48048ry9wp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 21:37:03 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-748d96b974cso4439407b3a.2
-        for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 14:37:03 -0700 (PDT)
+	s=arc-20240116; t=1753134611; c=relaxed/simple;
+	bh=qhtWDUO4sns6nxCpFEYKNVcTP1ZIn5b3fGq/f+Hx6uw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bwcDysUI9jop07QNG76GURkTNMT2x7PqM0CzqoTXe2aEm5V5YcyB/f2gOsWKHA/3HZebzuEZ9C76jJztDGa9ZpSvyfCBuQGuviJoTvwuTN+fglO3/iXfo34VPOFH6aeV0lCcpvFit5yyNUrdx+RVdKX0DlwUMUISdoWJYcGMBRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g6fLzHBH; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e8bd2eaf8ccso4448394276.2
+        for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 14:50:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753134609; x=1753739409; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NjSFTK7/jtmmy4Qgy5FYJA9GOyMmTJFi70ip4qLJxOM=;
+        b=g6fLzHBHl2KOaRdgG32PnepLfkhN6RyGmKvLRnHU11yfyLn26S1fhaXIyJI4PN96is
+         bVApnaClK+MchzuawM9+VK6BlSbqbHRKwcTWHYE3LSHxv8J1s93jE2NjFlFsEGz1sv/w
+         jIdWMxcN0U02bte9ODlONuqmvMbxrzZSVehG0yCVmujDYYLULhl8ktcIjjwt0rrQbRAs
+         GJCynlvyPgTE1gHmSXaX6K0tU6V1wEr2IvmZ5N3bWWsXkgxVudcjwjWJmtAToH2pWZzd
+         ViUDk+jfBft+UUHOEjCot8QM2cDe9iCOVPR6Zp0NJzcUCFZAsKo8fYqPb+ss/bqySDpM
+         WpYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753133822; x=1753738622;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UpWXbETewfbjKdm/uesf4U6sOxQjAz10hl/r+X1ya68=;
-        b=GmczEY7g5b0p5kE7xiVtNIQFFgOQCRsOOHy1QyJTXuXLFL2r9/itnUTq3PXUJNjpZw
-         pouocqdOb+XKgh+qb52M9j0YYDpRCDBiJTU+rt90ZgbqrDH47kTuK6eCCYXxv2w4nplT
-         BuzAvDFwpaJV8dH8MuBC/S1LhfXWu/wUUtk7lu/GNnHPZsSb2ZiBxNHTdK93whcMFcua
-         2v5kuUbk64foi+vbSRfLD9nADxAGr1nHFgE2GKIiI4O0dlFAbFvokkYuwXx6Sy861tae
-         tVj65iI0I2i6yGSNA/VtOpbOt8+jcXJaScj9BM3wWwgcErXdLd9hysOT4hh76wyZ5Sqn
-         XPlQ==
-X-Gm-Message-State: AOJu0YwG1lGsVmlVGfzuTiTBt30xuDdl75nrZT4QQ/lQ09OhsGOQOpE9
-	6MXztY/OpT5xKQDE+gxn2/tEJ/vTRJNYknTP3uUb7/76F7bpcwUKqS8CssB4jrX5yr5sphHcvl4
-	4X28M42YAqK38GbmJ596HdoYDinbf3rn1bLNvqQ7uuY2aOdy28Nm6hpJhzlwB9KW5V2y//R++iX
-	g7tw==
-X-Gm-Gg: ASbGncsN2JoLSUJU4/koMPK2uArWmoqAUibxXTdoXAjF88f+NgvSmzlU3aN8DPCKzaz
-	/aykgceoNYnsGcMEyK8t7xHHNi7yDHOOUZMvX0wfAnMSfgn0hRASH5jMvOwTyxfv2/NLPsB3kWf
-	l4lIkW7eN/jOTJDfZ4ItExuO2RXHQofV68jPnWSG4WxgnQDJL+pu8l9fI9cXKpQxkj6TZAESLhx
-	RiXYQOXBvr0I/E3G0R5jCrZM701UuRP4tk6ns7f3BdUE6DgpDSQoQZMG5OsflkZa/Y1h3++quwY
-	epJ2AYC3NwlkrNYQWOzlm54UayidgOKvPC/wOYLgfUG+sWhVLZ7Er9DZi6tp+WQMNenwmRJXNej
-	b
-X-Received: by 2002:a05:6a00:1410:b0:748:f41d:69d2 with SMTP id d2e1a72fcca58-756e7acfa48mr32771115b3a.4.1753133822334;
-        Mon, 21 Jul 2025 14:37:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEPUG2SMRJgY+/lzdESBOLJ/M6DzqEnQrb4E4X1LflHnB7zeYCzcFGFzGjBSw/owjRxRJ4aew==
-X-Received: by 2002:a05:6a00:1410:b0:748:f41d:69d2 with SMTP id d2e1a72fcca58-756e7acfa48mr32771086b3a.4.1753133821844;
-        Mon, 21 Jul 2025 14:37:01 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759cbc68046sm6201934b3a.151.2025.07.21.14.37.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Jul 2025 14:37:01 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: ath12k@lists.infradead.org, Sarika Sharma <quic_sarishar@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-In-Reply-To: <20250721061749.886732-1-quic_sarishar@quicinc.com>
-References: <20250721061749.886732-1-quic_sarishar@quicinc.com>
-Subject: Re: [PATCH ath-next] wifi: ath12k: Correct tid cleanup when tid
- setup fails
-Message-Id: <175313382123.971667.15852637463136449839.b4-ty@oss.qualcomm.com>
-Date: Mon, 21 Jul 2025 14:37:01 -0700
+        d=1e100.net; s=20230601; t=1753134609; x=1753739409;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NjSFTK7/jtmmy4Qgy5FYJA9GOyMmTJFi70ip4qLJxOM=;
+        b=MtVElC0Oo3vGAZxz26GbftwTsRMQytOe7bZWWq/10a7Uf8pFlrWJVr+c+66l6ntTpw
+         ArWUFGUWcWFBCDpl+loCaLLMrIfyulYJu3eJbVbTI68H6N2jPaEx2deqNMZ06X+3ExOi
+         vhN0Yq0hWCcrJgqcqi5TabQt6VNgD/0KWQeN68tKRXwQdzDi9Dtye9pjnb9Gux7NdjPP
+         Skd4b4iYrf+ay4tTYF+46If8jK8D7Cb06PkIZRKXnMlrxcRuGuricgbrlgFqW2N3z5NP
+         z692Vct+lemUIZ7NWO1pRAzaf0hyPayVJnD2dHg9F/k6TYiVkv7oVNMNi///LkRXRMn/
+         T+3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUqSPsUb230S/zrf304s6nIbIdwWHvEWnKw9hFvmhVf25HGMWq5i0lIFfnrkxqMwtDlmPhPTIvXxTOwNfEI9g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnpNC90W6afgGHHwSyAk9sjuKv3oaB3cNla+ZIfQR/wDwIDnTV
+	gqLxW4fE8WilpNgallI74zOkk79U+bFJp16N6pgWZVq1Oc9n3MO7Wu6vW+tD+aU/8gqldoSHUEN
+	jlDCAsYObvIEj6xD+tlZBfjde3OGQ7EA=
+X-Gm-Gg: ASbGncuCVsNJC1gy8/gG+7na8Hhp7fjjgTmPbgJnoo97efvZ6/E1f5GjgG0dKtEtlDX
+	xKSogZop3LyM1oTQIbMK0UEhmvWaEy3jVr0rWDZXfC5+DWkyJzM/dBkG0oBg5qf0OO4SC79sYO6
+	H+lJ9zBQLySRJ8qU36UQkSGDooGWLDm8Ptnc7GCFvbou3NobHAwHGlPFU3EYftfN0yUWmOGY57f
+	AJPxg==
+X-Google-Smtp-Source: AGHT+IHp/QbVQpP/iW3i0q+M7DawEhqXJBs3W2nF9CrWya5gk5Oil5znpkrHUlUK8ishKwyW/R30sNoCM3IK6kLc0uk=
+X-Received: by 2002:a05:6902:2289:b0:e87:982c:5524 with SMTP id
+ 3f1490d57ef6-e8c5f8ac5dbmr19834485276.24.1753134608982; Mon, 21 Jul 2025
+ 14:50:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIxMDE5MSBTYWx0ZWRfXw/I+/9XHx/dB
- 65yod8dyOVpdYSxU4zVeWl806Dya5NgWrChELAXsgJSxgZHj+SojVRbBxVWBxjkF0LV7KaMEA7i
- XDO5SMCMLIyNLkJ45YRgwkHBkBosQWFZaHvagMTRKvKrfAoOKpFOGPeMsD4nRssDZ6c9R1iSjKl
- sN0aTn4rj/XGv5QMK0Azae2cwRhLtZPXscfcx6eZa8e3anQWZTCRSqF0k/d/ytxUp7qsQ/zXekt
- 42d+5lAqtI9X5Btrl3UBJ7LFMTy2e9mMUk1BICyTAh3DZKzt8wVbS1b3WddCGapwahsizQuo67V
- T29PzLv5rXGPvfiyKHdSxS/JF/iwG+XdqRfRE7Qup0+W7oZO1DfQ63nvhYVQFb4VDVPoAeS0EBl
- xru17IjCaJkeqO509cIRizu4JUPooc9mWz03+o3jfZvhv7ddRus7uHWrNYtFqhKOt1x+m8f8
-X-Proofpoint-ORIG-GUID: fffKxCilaRhicoyJ7ub2bWkVjim6xsXY
-X-Proofpoint-GUID: fffKxCilaRhicoyJ7ub2bWkVjim6xsXY
-X-Authority-Analysis: v=2.4 cv=OPUn3TaB c=1 sm=1 tr=0 ts=687eb2ff cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=grRxx7Cr2Ne4EJ9EsKUA:9
- a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10 a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-21_05,2025-07-21_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 mlxlogscore=808 lowpriorityscore=0 suspectscore=0
- spamscore=0 mlxscore=0 bulkscore=0 priorityscore=1501 phishscore=0
- malwarescore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507210191
+References: <Z-XvFvGigpY7JYFn@debian.local> <20250716184226.GA2547862@bhelgaas>
+In-Reply-To: <20250716184226.GA2547862@bhelgaas>
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
+Date: Mon, 21 Jul 2025 22:49:58 +0100
+X-Gm-Features: Ac12FXxNXBAeAhVAwWwxwk96-aVdQChQ7gw5acnVbXB8GPPK7GVjU3cHaObwRy0
+Message-ID: <CAP-bSRZ+Ovj-MRVU9H5_nruA2wSTZ73Z1VXTbf4FFaPWVXP9dQ@mail.gmail.com>
+Subject: Re: [REGRESSION] iwlwifi: probe with driver iwlwifi failed with error -22
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "kvalo@kernel.org" <kvalo@kernel.org>, 
+	"Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>, 
+	"Berg, Johannes" <johannes.berg@intel.com>, 
+	"benjamin@sipsolutions.net" <benjamin@sipsolutions.net>, 
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 
+On Wed, 16 Jul 2025 at 19:42, Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> On Fri, Mar 28, 2025 at 12:36:38AM +0000, Chris Bainbridge wrote:
+> > Hi,
+> >
+> > Laptop: Lenovo Legion 7 16ACHg6.
+> > Wifi: Killer(R) Wi-Fi 6 AX1650x 160MHz Wireless Network Adapter (200NGW)
+> > 04:00.0 Network controller [0280]: Intel Corporation Wi-Fi 6 AX200 [8086:2723] (rev 1a)
+> >
+> > Wifi stopped working in recent kernel builds:
+> >
+> > [   20.907824] Intel(R) Wireless WiFi driver for Linux
+> > [   20.907955] iwlwifi 0000:04:00.0: enabling device (0000 -> 0002)
+> > [   20.912024] ee1004 2-0050: 512 byte EE1004-compliant SPD EEPROM, read-only
+> > [   20.913666] NET: Registered PF_BLUETOOTH protocol family
+> > [   20.913670] Bluetooth: HCI device and connection manager initialized
+> > [   20.913806] Bluetooth: HCI socket layer initialized
+> > [   20.913810] Bluetooth: L2CAP socket layer initialized
+> > [   20.913828] Bluetooth: SCO socket layer initialized
+> > [   20.917455] iwlwifi 0000:04:00.0: Detected crf-id 0x3617, cnv-id 0x100530 wfpm id 0x80000000
+> > [   20.917674] iwlwifi 0000:04:00.0: PCI dev 2723/1654, rev=0x340, rfid=0x10a100
+> > [   20.917679] iwlwifi: No config found for PCI dev 2723/1654, rev=0x340, rfid=0x10a100
+> > [   20.920126] iwlwifi 0000:04:00.0: probe with driver iwlwifi failed with error -22
+> >
+> > Bisect led to:
+> >
+> > commit 75a3313f52b7e08e7e73746f69a68c2b7c28bb2b (HEAD)
+> > Author: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+> > Date:   Wed Feb 5 14:55:42 2025 +0200
+> >
+> >     wifi: iwlwifi: make no_160 more generic
+>
+> https://git.kernel.org/linus/64dc5d5e341d ("Revert "wifi: iwlwifi:
+> make no_160 more generic"") appeared in v6.15-rc5 and reverts
+> 75a3313f52b7 ("wifi: iwlwifi: make no_160 more generic"), so it
+> *looks* like this regression should be fixed, but it still appears in
+> the tracker at https://linux-regtracking.leemhuis.info/regzbot/mainline/
+>
+> If it is resolved, can somebody send the appropriate regzbot fix
+> command?  (See https://linux-regtracking.leemhuis.info/about/#tldr)
 
-On Mon, 21 Jul 2025 11:47:49 +0530, Sarika Sharma wrote:
-> Currently, if any error occurs during ath12k_dp_rx_peer_tid_setup(),
-> the tid value is already incremented, even though the corresponding
-> TID is not actually allocated. Proceed to
-> ath12k_dp_rx_peer_tid_delete() starting from unallocated tid,
-> which might leads to freeing unallocated TID and cause potential
-> crash or out-of-bounds access.
-> 
-> [...]
+Yes, that revert fixed it.
 
-Applied, thanks!
-
-[1/1] wifi: ath12k: Correct tid cleanup when tid setup fails
-      commit: 4a2bf707270f897ab8077baee8ed5842a5321686
-
-Best regards,
--- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-
+#regzbot fix: 64dc5d5e341d
 
