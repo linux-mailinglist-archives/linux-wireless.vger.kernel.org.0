@@ -1,204 +1,313 @@
-Return-Path: <linux-wireless+bounces-25695-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25699-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867BDB0B987
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 02:20:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E03B0BA7E
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 04:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 181911896B8E
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 00:20:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 805A13AFD66
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Jul 2025 02:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081EB38DE1;
-	Mon, 21 Jul 2025 00:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IguS2frK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F8021FF39;
+	Mon, 21 Jul 2025 02:18:53 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688FA1442E8
-	for <linux-wireless@vger.kernel.org>; Mon, 21 Jul 2025 00:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0951FDE33;
+	Mon, 21 Jul 2025 02:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753057221; cv=none; b=Aa8Tyux28U137bcsa1RUePEbX0Q27oLWln3M9O+8Qumtmi90gE4MjNaVbXyXolk1td5WjvxnLen7FQ+eMRn1jyfhM6kddsnRSJNZ5xprLtIspLqNROsnPOog4RHKHi4V5cojb5bJt4qaV57rHiEJrYz0nlmlwht2+AS2p7Pb3QE=
+	t=1753064333; cv=none; b=YPP3fmp7yWDOFOn8+JwCAHyijD6KY/mq+5D0qqF3h1yPw8CJpeB4eqPTpRPd3JKmOjbjdycvcK4squnDdi5KoORLuuN1PpV5C2/Knci9G9ItNf22hPsX/v1/k5BplVSZU76tkcwlK3Slezy5rquFSvLjt3h0OmqaTEBiP9o0KeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753057221; c=relaxed/simple;
-	bh=jQPox0ZCbOjVsC+CxGE75JSUdmvEbzjD2OsTi8jUhHY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BAXwYdJSFL9H/2/eftpLyKB6/jEcRpkaWvz9bJHptSPudZPl+c9ScsCQOimZPwCGoHeOyQr8u6fma5VHJjqcmYyjXGtHi+Ji9TXPzEzvL/PnffdlsUcmnBiOIVreM+gzrAxXxsKkBdwERzxhLInfrXPSTdi6xPkbCAcfEF41xOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IguS2frK; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-747fba9f962so3318034b3a.0
-        for <linux-wireless@vger.kernel.org>; Sun, 20 Jul 2025 17:20:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753057219; x=1753662019; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ftABiFlXeHTBBY49TZEf7354wK0WmIJ/d1x1S9G0CW0=;
-        b=IguS2frKbnL45ycq+nCSgreN2zWZBLUGQ2gyVzJx1j+zM5/blaYcdJLdK/Emy6Uu4H
-         QnUGrqPcTXAmsioSyxCN2SMJlU8I1HD2d9lii5aWUhvQodSPsKL/L5ILgqQLIAfFjv15
-         017HkmNyZN/EhOFVz3lFZ15Hjf3L2uEb1ATP7uUUpOfj8rPwngmuFAg3vfDSbhllzbD8
-         VvHL+qYFHH619BWp0uenNnZTFX0pay0lvBi+VGDInTs9ARf9Q6mhW6GCX1DUpiv70dHR
-         hOJn/OxXPgQvT/h3a2G9uFyHHhZsRKcixSWeupB9IpjvsMFnSIXUY1AAgAJjFXZFWwA+
-         vsmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753057219; x=1753662019;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ftABiFlXeHTBBY49TZEf7354wK0WmIJ/d1x1S9G0CW0=;
-        b=bsh34RgV9Zpk8Du18jFEhhgP0R6HvxMO17ozIwFFooSnCrzoWxM3ZLToclI3Fv4KJG
-         K2ENBzDjMcSOm/48k3ClJ2ZOWvJrYUyNe3o3yY19vADbR4S30l2qQQHGS51yDRLJSDAn
-         gc83/DYjgd0ZCXfoTo5GejHISFOYcrZbFL48YgNChQqsvy+YPosjeEGx3dP2l3zQe08J
-         a0DEjWcJqXIwhVSy0tOrvm7VAScy7bgh5xyD1cckoeyU2605+lbJU7JbTQzvL95a6n1o
-         c0fez66OCwZp9n+nHqsb339/fBuxoXkn5ZRGgry1ytvGl9HtwCiKFxTthKIgcGvOQ2wN
-         B2FA==
-X-Gm-Message-State: AOJu0Yw2WTi60KPKEKgJuM8XpIp6F+e1XLC0FJmLcBac4M0ZCA3NJ/h7
-	E0/1iXuPP1z7F47HYnI4kNH86NYmN4uCqW4oZGyGzeWZ9ldfHU+PJTTX+yZqxB0F
-X-Gm-Gg: ASbGnctHoBn307L3cs8ZZfud1pl/5euCK3d71m0XiEgHvMPdYRFhynn9iqJhAFV/Td2
-	dnjpP+cDZiaykE7MVJQfDkl0AVum3IWfcyD39MvcuCpRB2o22C9a7I44WX+sya5VsgB1wBYYLM2
-	Zglc14aPcZNuAKmjJkqR7g4FYqlKha45WN31uVP52GjSsHL9dm72b4/eU51Mn8i53rZQ6GQdIUo
-	04KjxqH8ChlDvq50q5JP6ljJoBhrdMyO1tJBEsWtkvGU3abWQlsgQGTOlNBcoy4uEpFtftMeRU/
-	wbHHMUs0khVjMVKRmCTNCdvJgqjA2ZcQ0UkSpkEiHYtfL+lk5tc1CyI0l0OCwhna9dav8jDoTJJ
-	u2HTd9wIFiIw6Uu6D0vTnB++WawXedRfn+6r9QsFpZ6uT034FHGz97h08XJZQaMl2cJ1B+GZ2Xp
-	5k2A++Iq8MSg==
-X-Google-Smtp-Source: AGHT+IEHlP7lmnlQ3jQyw+IYNpy/BBs37yRGwsJHOsyGJ7jiHAl7dpDWl1KS2AOQD6CXCCN74b5cHA==
-X-Received: by 2002:a05:6a00:801a:b0:748:a0b9:f873 with SMTP id d2e1a72fcca58-75837b80c84mr17977540b3a.9.1753057219420;
-        Sun, 20 Jul 2025 17:20:19 -0700 (PDT)
-Received: from localhost.localdomain (syn-172-119-055-184.res.spectrum.com. [172.119.55.184])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759cb76d53fsm4661058b3a.105.2025.07.20.17.20.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Jul 2025 17:20:19 -0700 (PDT)
-From: tnguy3333 <tnguy3333@gmail.com>
-To: linux-wireless@vger.kernel.org,
+	s=arc-20240116; t=1753064333; c=relaxed/simple;
+	bh=X0I06x4aQVy03H2Q+eSR47savsMbLrp9kZFapn6lQhQ=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=A8iyLy+ej4K1pamVExVZlNp2pDMClE9Ei54RJUBCpIzTt8LkrP3lmao/v/ZRD06Xsfx76F2BE8LQD9FrC+IYxe+HanVp2O+A+7sfYX2/Z7A/KPIHUxeD0iULBlubCgGWD/SpNzR/0H6hiBewUnbfvtY+NVj5w0gUC9UcNyQGByY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-669ff7000002311f-22-687da385c1a5
+From: Byungchul Park <byungchul@sk.com>
+To: willy@infradead.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel_team@skhynix.com,
+	almasrymina@google.com,
+	ilias.apalodimas@linaro.org,
+	harry.yoo@oracle.com,
+	akpm@linux-foundation.org,
+	andrew+netdev@lunn.ch,
+	asml.silence@gmail.com,
+	toke@redhat.com,
+	david@redhat.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org,
+	vishal.moola@gmail.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	jackmanb@google.com,
+	wei.fang@nxp.com,
+	shenwei.wang@nxp.com,
+	xiaoning.wang@nxp.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	sgoutham@marvell.com,
+	gakula@marvell.com,
+	sbhatta@marvell.com,
+	hkelam@marvell.com,
+	bbhushan2@marvell.com,
+	tariqt@nvidia.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	mbloch@nvidia.com,
+	danishanwar@ti.com,
+	rogerq@kernel.org,
 	nbd@nbd.name,
 	lorenzo@kernel.org,
-	ryder.lee@mediatek.com
-Cc: shayne.chen@mediatek.com,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
 	sean.wang@mediatek.com,
-	tnguy3333 <tnguy3333@gmail.com>
-Subject: [PATCH 5/5] replace UNI add dev with EXT cmd
-Date: Sun, 20 Jul 2025 17:19:05 -0700
-Message-Id: <20250721001905.11614-6-tnguy3333@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250721001905.11614-1-tnguy3333@gmail.com>
-References: <20250721001905.11614-1-tnguy3333@gmail.com>
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	aleksander.lobakin@intel.com,
+	horms@kernel.org,
+	m-malladi@ti.com,
+	krzysztof.kozlowski@linaro.org,
+	matthias.schiffer@ew.tq-group.com,
+	robh@kernel.org,
+	imx@lists.linux.dev,
+	intel-wired-lan@lists.osuosl.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH net-next v12 00/12] Split netmem from struct page
+Date: Mon, 21 Jul 2025 11:18:23 +0900
+Message-Id: <20250721021835.63939-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUxTZxSHfe97P0ql5toZveqMSTM1MZEPP+JxIUYNWV5dXKb8tWmijdzY
+	blBJEQQjsdMqAUdlc5vAykQLSCkKaYVWVrp5QUHcEFGwagWFzAArfiENpUDXbvO/J/nlnOec
+	5CfDSolZItPqDot6nTpNxcpp+VjspTWnLXmahPPeeDDX17Fwb/wiA7bJHLj8zMVAj1WAX7sn
+	KTDXNiF4F3zCgb3Ah2G8rZ0Fy8UAhmBDEQ3mu0YaJuqnMPx1a5CDDmmGBpt9JwxUv6DBne/E
+	0DqxAgbPdrBQZAxhKO0/xUL4cYiBluBLDk64aiho+buRg+4mEwM/TFVhcBqeRVxDfQzcbzaz
+	cP/kPQT9dWEGXkgRob/Gx4HJVoZA+s3KwgnjOvA3vuPg9Y9tGAZMW2C2JBtuVSyEwB0/gidV
+	vRSE3S4OuvqvMtBW76TgwfMghsC35SwUjp1F0FvaTMEf5Q0MVN55QEXuSIG+8DQF53oqWBgy
+	DiDoaR2k4edvTAjqPV4G3rgjL4cmzeyWbaTV/woT19NKRK5ZH1FkuHiWIl5PJ0Wulz3lSIU9
+	izhqVhOLe4Qihd4eTOy1BSyxv/2eI74+N0s6SkI0cVQeJ8OOUvT5si/lSalimjZb1Mdv3i/X
+	TDX5uAzPppzuMyc5AypdU4hiZAK/XqgaHWLe80/W2/8yy68SvN4gjvICPlEYH2ynC5Fchvk/
+	Y4UWRwkVDT7gtwqucIiLMs2vEILO0yjKCn6D8DJ4nftv6XLB1vA7jg4LfH6McMN283/bYuFG
+	jZcuRnMr0JxapNTqstPV2rT1cZpcnTYn7sChdDuKNKs6b3qPC73tTpEQL0OqWEUGnadRMurs
+	zNx0CQkyrFqgIO1HNUpFqjr3qKg/tE+flSZmSmipjFYtUqwNHElV8gfVh8WvRTFD1L9PKVnM
+	EgNKXN67ccLwcWBmkWt2emRvfrnDsjfZOW/OrjflLZZPvmoeS3k0ok/qNHV6ZvqPNzWycmne
+	w92u5O+My4bLejsWOxOokmRH4/YyJqvO/cWuoh1XinfO3z666vynO157PjPsj72gjMPWyaqV
+	r851+T/czP3S5UvSbeuTCuriPoo5NhSYq6IzNerE1Vifqf4H/jYm1FUDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRzF+913w8FlSd2MjEZSRGbR69uDHvSHP4Kixx9BBbnq1sbUZFtT
+	A0ndKrJcT0NNaeJzTprMcquW1mZpb91KVpraouhh9tCkq9XaiP77HA6cc/44HKm4TMdxmnSD
+	qEtXpSoZGSXbtNKUeLQyR72gr3oOlDkaGOgarqDB/jMLagfcNPhtAtzs/ElAWX0zghGphwXn
+	iV4ShtvaGaisGCVBaiykoOypmYIfjjES3t4LsdDh/U2B3bkR+mveUeA57iLB9yMBQqc7GCg0
+	j5NQ0neUgfDLcRpuSUMs5LvrCPCV34/IT9dY6Gy20HBhrJoEV+5ApPBNNw2BG2UMBExdCPoa
+	wjS880ZaB+t6WbDYSxF4W20M5JsXweC1ERa+FrWR0G9ZC3+KjXDPOhlGHw4i6Kl+TkDY42bh
+	Sd8VGtocLgKevZZIGD1VzkDB59MInpfcIOBReSMNVQ+fEZEd26A7/IuA834rA2/M/Qj8vhAF
+	l/IsCBwtQRq+eczU2vXYN/iFxO5XVQhftb0g8PszfwgcbHlA4Oulr1hsdR7CTXVzcaXnA4EL
+	gn4SO+tPMNj5/RyLe7s9DO4oHqdwU9UR/L6pBG2O3yFbtU9M1RhFXdLqFJl6rLmXzWhZntV5
+	0sTmopLEAjSRE/jFwkXbfTrKDD9bCAYlMsqx/EJhONROFSAZR/KPY4RbTcVE1JjErxPc4XE2
+	yhSfIEiuYyjKcn6JMCRdZ/+FzhDsjbfJM4izogn1KFaTbkxTaVKXzNdr1dnpmqz5ew+mOVHk
+	NjU5v8660Ugg2Yt4Dilj5BlUjlpBq4z67DQvEjhSGSvH7YfVCvk+VfZhUXdwt+5Qqqj3omkc
+	pZwi37BdTFHwB1QGUSuKGaLuv0twE+NyUcXdXY9nDRmC1EtlZkqAdUjihKUfdmoL7x5wKeJD
+	cZqpeIuta3elI+nsaG2pPSnxqad0Ums42fugbY0jRbNV2p8HA/FHrOE7N9O08/JbJsfUZvc7
+	Z4YCyaZlrUv9088Nr9qT99mwYoXBkmksuvNdW9XlnvMxK+9rw8mYuNc+0yklpVerFs4ldXrV
+	XyhXj/QyAwAA
+X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-change add_dev_info from a UNI cmd to an EXT cmd. This fixed the timeout from the UNI cmd and allowed the card to scan networks. But I am not sure if this is the correct solution.
+Hi all,
 
-Signed-off-by: tnguy3333 <tnguy3333@gmail.com>
+The MM subsystem is trying to reduce struct page to a single pointer.
+See the following link for your information:
+
+   https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
+
+The first step towards that is splitting struct page by its individual
+users, as has already been done with folio and slab.  This patchset does
+that for page pool.
+
+Matthew Wilcox tried and stopped the same work, you can see in:
+
+   https://lore.kernel.org/linux-mm/20230111042214.907030-1-willy@infradead.org/
+
+I focused on removing the page pool members in struct page this time,
+not moving the allocation code of page pool from net to mm.  It can be
+done later if needed.
+
+The final patch that removes the page pool fields will be posted once
+all the conversions are completed.
+
+	Byungchul
 ---
- .../net/wireless/mediatek/mt76/mt7902/mac.c   |  5 +--
- .../net/wireless/mediatek/mt76/mt7902/main.c  |  5 +--
- .../net/wireless/mediatek/mt76/mt7902/mcu.c   | 41 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt7902/mt7902.h    |  3 ++
- 4 files changed, 48 insertions(+), 6 deletions(-)
+Changes from v11:
+	1. Rebase on net-next/main as of Jul 21.
+	2. Change page_pool_page_is_pp() to check for const type of
+	   page.  For now that it's called along with every
+	   pp_page_to_nmdesc() call as Pavel suggested,
+	   page_pool_page_is_pp() should also cover const type of page.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7902/mac.c b/drivers/net/wireless/mediatek/mt76/mt7902/mac.c
-index d36b3c480..eca1d314d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7902/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7902/mac.c
-@@ -635,9 +635,8 @@ mt7902_vif_connect_iter(void *priv, u8 *mac,
- 	if (vif->type == NL80211_IFTYPE_STATION)
- 		ieee80211_disconnect(vif, true);
- 
--	mt76_connac_mcu_uni_add_dev(&dev->mphy, &vif->bss_conf,
--				    &mvif->bss_conf.mt76,
--				    &mvif->sta.deflink.wcid, true);
-+	mt7902_mcu_add_dev_info(&dev->mphy, &vif->bss_conf, &mvif->bss_conf.mt76, true);
-+
- 	mt7902_mcu_set_tx(dev, vif);
- 
- 	if (vif->type == NL80211_IFTYPE_AP) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7902/main.c b/drivers/net/wireless/mediatek/mt76/mt7902/main.c
-index 841b3309a..bea0c6d85 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7902/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7902/main.c
-@@ -317,9 +317,8 @@ mt7902_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 	mvif->bss_conf.mt76.band_idx = 0;
- 	mvif->bss_conf.mt76.wmm_idx = mvif->bss_conf.mt76.idx % MT76_CONNAC_MAX_WMM_SETS;
- 
--	ret = mt76_connac_mcu_uni_add_dev(&dev->mphy, &vif->bss_conf,
--					  &mvif->bss_conf.mt76,
--					  &mvif->sta.deflink.wcid, true);
-+	ret = mt7902_mcu_add_dev_info(&dev->mphy, &vif->bss_conf, &mvif->bss_conf.mt76, true);
-+
- 	if (ret)
- 		goto out;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7902/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7902/mcu.c
-index 677c2c165..8b49834e3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7902/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7902/mcu.c
-@@ -1550,3 +1550,44 @@ int mt7902_mcu_set_rssimonitor(struct mt792x_dev *dev, struct ieee80211_vif *vif
- 	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(RSSI_MONITOR),
- 				 &data, sizeof(data), false);
- }
-+
-+int mt7902_mcu_add_dev_info(struct mt76_phy *phy,
-+			    struct ieee80211_bss_conf *bss_conf,
-+                struct mt76_vif_link *mvif, bool enable)
-+{
-+	struct mt76_dev *dev = phy->dev;
-+	struct {
-+		struct req_hdr { 
-+			u8 omac_idx;
-+			u8 band_idx;
-+			__le16 tlv_num;
-+			u8 is_tlv_append;
-+			u8 rsv[3];
-+		} __packed hdr;
-+		struct req_tlv {
-+			__le16 tag;
-+			__le16 len;
-+			u8 active;
-+			u8 band_idx;
-+			u8 omac_addr[ETH_ALEN];
-+		} __packed tlv;
-+	} data = {
-+		.hdr = {
-+			.omac_idx = mvif->omac_idx,
-+			.band_idx = mvif->band_idx,
-+			.tlv_num = cpu_to_le16(1),
-+			.is_tlv_append = 1,
-+		},
-+		.tlv = {
-+			.tag = cpu_to_le16(DEV_INFO_ACTIVE),
-+			.len = cpu_to_le16(sizeof(struct req_tlv)),
-+			.active = enable,
-+			.band_idx = mvif->band_idx,
-+		},
-+	};
-+	
-+    memcpy(data.tlv.omac_addr, bss_conf->addr, ETH_ALEN);
-+
-+	return mt76_mcu_send_msg(dev, MCU_EXT_CMD(DEV_INFO_UPDATE),
-+				 &data, sizeof(data), true);
-+}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7902/mt7902.h b/drivers/net/wireless/mediatek/mt76/mt7902/mt7902.h
-index debd18034..f93d7c14b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7902/mt7902.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7902/mt7902.h
-@@ -337,4 +337,7 @@ int mt7902_mcu_abort_roc(struct mt792x_phy *phy, struct mt792x_vif *vif,
- 			 u8 token_id);
- void mt7902_roc_abort_sync(struct mt792x_dev *dev);
- int mt7902_mcu_set_rssimonitor(struct mt792x_dev *dev, struct ieee80211_vif *vif);
-+int mt7902_mcu_add_dev_info(struct mt76_phy *phy,
-+			    struct ieee80211_bss_conf *bss_conf,
-+                struct mt76_vif_link *mvif, bool enable);
- #endif
+Changes from v10:
+	1. Introduce __netmem_to_nmdesc() and use it in
+	   __netmem_get_pp(). (feedbacked by Mina)
+	2. Fix a bug that fails on casting 'const page -> const
+	   netmem_desc', by using macros and _Generic. (feedbacked by
+	   test robot)
+	3. Add comment on pp_page_to_nmdesc() to ask for more attention
+	   before using the helper. (feedbacked by Mina)
+
+Changes from v9:
+	1. Remove the patch 'page_pool: access ->pp_magic through
+	   netmem_desc in page_pool_page_is_pp()' and decide to wait for
+	   Pavel's work of PageNetpp() to identify page type for page
+	   pool, that doesn't need to access ->pp_magic.
+	2. Rename page_to_nmdesc() to pp_page_to_nmdesc() and add
+	   DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page)) in it,
+	   just in case. (feedbacked by Pavel)
+	3. Apply just simple casting from page to netmem_desc for
+	   accessing ->pp and ->pp_ref_count, instead of full converting
+	   page to netmem_ref for network drivers e.g. mlx4, netdevsim,
+	   and mt76.
+	4. Expand the support for drivers to access ->pp and
+	   ->pp_ref_count to fec, octeontx2-pf, iavf, idpf, mlx5, ti,
+	   and xdp.
+	5. Squash each helper with its first user. (feedbacked by Mina)
+
+Changes from v8:
+	1. Rebase on net-next/main as of Jul 10.
+	2. Exclude non-controversial patches that have already been
+	   merged to net-next.
+	3. Re-add the patches that focus on removing accessing the page
+	   pool fields in struct page.
+	4. Add utility APIs e.g. casting, to use struct netmem_desc as
+	   descriptor, to support __netmem_get_pp() that has started to
+	   be used again e.g. by libeth.
+
+Changes from v7 (no actual updates):
+	1. Exclude "netmem: introduce struct netmem_desc mirroring
+	   struct page" that might be controversial.
+	2. Exclude "netmem: introduce a netmem API,
+	   virt_to_head_netmem()" since there are no users.
+
+Changes from v6 (no actual updates):
+	1. Rebase on net-next/main as of Jun 25.
+	2. Supplement a comment describing struct net_iov.
+	3. Exclude a controversial patch, "page_pool: access ->pp_magic
+	   through struct netmem_desc in page_pool_page_is_pp()".
+	4. Exclude "netmem: remove __netmem_get_pp()" since the API
+	   started to be used again by libeth.
+
+Changes from v5 (no actual updates):
+	1. Rebase on net-next/main as of Jun 20.
+	2. Add given 'Reviewed-by's and 'Acked-by's, thanks to all.
+	3. Add missing cc's.
+
+Changes from v4:
+	1. Add given 'Reviewed-by's, thanks to all.
+	2. Exclude potentially controversial patches.
+
+Changes from v3:
+	1. Relocates ->owner and ->type of net_iov out of netmem_desc
+	   and make them be net_iov specific.
+	2. Remove __force when casting struct page to struct netmem_desc.
+
+Changes from v2:
+	1. Introduce a netmem API, virt_to_head_netmem(), and use it
+	   when it's needed.
+	2. Introduce struct netmem_desc as a new struct and union'ed
+	   with the existing fields in struct net_iov.
+	3. Make page_pool_page_is_pp() access ->pp_magic through struct
+	   netmem_desc instead of struct page.
+	4. Move netmem alloc APIs from include/net/netmem.h to
+	   net/core/netmem_priv.h.
+	5. Apply trivial feedbacks, thanks to Mina, Pavel, and Toke.
+	6. Add given 'Reviewed-by's, thanks to Mina.
+
+Changes from v1:
+	1. Rebase on net-next's main as of May 26.
+	2. Check checkpatch.pl, feedbacked by SJ Park.
+	3. Add converting of page to netmem in mt76.
+	4. Revert 'mlx5: use netmem descriptor and APIs for page pool'
+	   since it's on-going by Tariq Toukan.  I will wait for his
+	   work to be done.
+	5. Revert 'page_pool: use netmem APIs to access page->pp_magic
+	   in page_pool_page_is_pp()' since we need more discussion.
+	6. Revert 'mm, netmem: remove the page pool members in struct
+	   page' since there are some prerequisite works to remove the
+	   page pool fields from struct page.  I can submit this patch
+	   separatedly later.
+	7. Cancel relocating a page pool member in struct page.
+	8. Modify static assert for offests and size of struct
+	   netmem_desc.
+
+Changes from rfc:
+	1. Rebase on net-next's main branch.
+	   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/
+	2. Fix a build error reported by kernel test robot.
+	   https://lore.kernel.org/all/202505100932.uzAMBW1y-lkp@intel.com/
+	3. Add given 'Reviewed-by's, thanks to Mina and Ilias.
+	4. Do static_assert() on the size of struct netmem_desc instead
+	   of placing place-holder in struct page, feedbacked by
+	   Matthew.
+	5. Do struct_group_tagged(netmem_desc) on struct net_iov instead
+	   of wholly renaming it to strcut netmem_desc, feedbacked by
+	   Mina and Pavel.
+
+Byungchul Park (12):
+  netmem: introduce struct netmem_desc mirroring struct page
+  netmem: use netmem_desc instead of page to access ->pp in
+    __netmem_get_pp()
+  netmem, mlx4: access ->pp_ref_count through netmem_desc instead of
+    page
+  netdevsim: access ->pp through netmem_desc instead of page
+  mt76: access ->pp through netmem_desc instead of page
+  net: fec: access ->pp through netmem_desc instead of page
+  octeontx2-pf: access ->pp through netmem_desc instead of page
+  iavf: access ->pp through netmem_desc instead of page
+  idpf: access ->pp through netmem_desc instead of page
+  mlx5: access ->pp through netmem_desc instead of page
+  net: ti: icssg-prueth: access ->pp through netmem_desc instead of page
+  libeth: xdp: access ->pp through netmem_desc instead of page
+
+ drivers/net/ethernet/freescale/fec_main.c     |  10 +-
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   2 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |   8 +-
+ .../marvell/octeontx2/nic/otx2_txrx.c         |   2 +-
+ drivers/net/ethernet/mellanox/mlx4/en_rx.c    |   4 +-
+ .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |   3 +-
+ .../net/ethernet/ti/icssg/icssg_prueth_sr1.c  |   4 +-
+ drivers/net/netdevsim/netdev.c                |   6 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |   3 +-
+ include/linux/mm.h                            |   4 +-
+ include/net/libeth/xdp.h                      |   2 +-
+ include/net/netmem.h                          | 153 +++++++++++++++---
+ 12 files changed, 161 insertions(+), 40 deletions(-)
+
+
+base-commit: 4701ee5044fb3992f1c910630a9673c2dc600ce5
 -- 
-2.39.5
+2.17.1
 
 
