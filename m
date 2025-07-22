@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-25821-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25822-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C17B0D4A1
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 10:30:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE49B0D4A2
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 10:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C11A81AA5951
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 08:30:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70DF7165CC9
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 08:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B132D94A3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835A32D63FA;
 	Tue, 22 Jul 2025 08:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U33gyWnC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iSyVOCnf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA922D3A97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5FC2D5437
 	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 08:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753172983; cv=none; b=MLoZlmfrr/xHcopErJTLsWWw9Fi9K0I2lTPo/0sdfkzQKes+A+esTpOwq+Pf2XHqgeWAxzkUbxGy9oNs6XnZViLk8osTIGqs3jQPS9kgFrZFuSoiyK4k6hwm7WD2cQwpy7DuxrrXSMe8y//x+kcdVC8+e8lGrd83FLg6rXuJZAM=
+	t=1753172983; cv=none; b=gmCUV7xJVhkydUI4goHWXS1KWtzky1dZx8TunXkKLOTqF196entinkQRrnvtbTmLGuV8LoBNILrfuj8V24j2cK0Itpxj8PIJVA727gjPhO6dp4nT0mM2n2bc07es6/SgznXnKM+Us3njyBX4Nukr518zXl8eW5fK+6Smuhbf9VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753172983; c=relaxed/simple;
-	bh=4LgHXbtObKheDq2SdSF+ueGU8ZkouyyX/UvjL/Shu78=;
+	bh=IqZZyVIeeBrID/lM2VEj8m1k6jBqjIFO2Sg27PKc/ig=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uG/wwUQi9cKW23fbgKhgKWtIGSlzT7UK3mOfheFWyu8/jXIz3hDjCOtPebz6kR7aSCm6ViOgBsENI7XyMEydRuiEqGu7xx43VvkIXqT/XxW+z8eaR9kViWabp5Rh/QhHduyL7xjhkxfqbEXTdmElAwgvl55GkryPZ2AvATVi/IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U33gyWnC; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=TBBN7dRE7DnGaaT/l5Ef+sJKZvA33wuGtq7cqofJmy2qxydwH4tHBH2k+zBAhv8SndOW1eOGJDd2xb2Y6uf/lnWEVI5V0AI95+ibPxqBTGDBJVXkAaFYeWA1KaxcVUbG9FvdFgkH9geCnMVQaychRlfeIBj43pc0/4vp31vUm6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iSyVOCnf; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,36 +36,34 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1753172982; x=1784708982;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=4LgHXbtObKheDq2SdSF+ueGU8ZkouyyX/UvjL/Shu78=;
-  b=U33gyWnCKO45vIEcvqwT8DhVf2vERyYzBqtp94ydVVE00mxx89AU7E3v
-   peqPX5I9vj5On4YcJBZUrpkPyMZLGe/NTFcdgEpNB8DTjnL7eVnUC9Fsi
-   hMXcPrhmIUqdY6Ikzga9EUT5Be33uCtXBUMLWAcLxl5BOOGgN/DDBGOPL
-   M4bDfDueXIVuwcWjZMGka49o0xLNOvQ/cSlhCO8N2v16MPHnRqZJ7DEM/
-   iYgpelRN3iXCjNwINDtr3K3JuCySFVNuu156BftKYmJXImXpdQVMmrnl2
-   wpWcK8D/s8rY8DPKUjGTE6PT56UAwvIp9k0SUOvd7yl9p6R1rVaDWtPzW
+  bh=IqZZyVIeeBrID/lM2VEj8m1k6jBqjIFO2Sg27PKc/ig=;
+  b=iSyVOCnf4VnoSuVK0REjQsncsXYAokQpB9nRrz5je5hZ8rUba21qSMhg
+   QKwzLqAq7wNrs9ljNTHXsMN67Qz/v6XgeZrUXEU9QYJuxME/OHqE6CA0q
+   TCm8iwuOzNxxvca7Ia+tRFkf41P08nWgjEhZpPJhSqmooPuoqAQqUU7eE
+   Sg4vWU6T16eeCgJww7LZH5NdggLvRfzhN3afEcJ4RypdmWKlUqOCMDXF7
+   OCI3T5qdV+Ujo9J2l61awuMKu+7cRdipWm1Db5QcWcasbpeAWFqSLLKwm
+   2KL8V2+A+bCiNEq2EVY+OJQJRUuycjGGchkDNe7+QLyObrYbi8zP/75p4
    A==;
-X-CSE-ConnectionGUID: Fq/Z+RGjRxKoDmEuYnwGuQ==
-X-CSE-MsgGUID: yxWYkMyhQpOaH4nyvVlvwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="55569860"
+X-CSE-ConnectionGUID: 9R4up0hjQdG3NGP1KWu2LA==
+X-CSE-MsgGUID: FnGbWdLIQ6S5LikuAdPryA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="55569876"
 X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
-   d="scan'208";a="55569860"
+   d="scan'208";a="55569876"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:40 -0700
-X-CSE-ConnectionGUID: LHe8OM4GRHeAmw/nfZHGXA==
-X-CSE-MsgGUID: DuuKE/03Q6+mf1sTKT8v6g==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:41 -0700
+X-CSE-ConnectionGUID: pJD3lqu3QqilRBpUf3aH0A==
+X-CSE-MsgGUID: XP8DaBW8SvGarJ2pRM7FvA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
-   d="scan'208";a="163124261"
+   d="scan'208";a="163124269"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:38 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:40 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Avraham Stern <avraham.stern@intel.com>,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 06/15] wifi: iwlwifi: mvm: avoid outdated reorder buffer head_sn
-Date: Tue, 22 Jul 2025 11:29:01 +0300
-Message-Id: <20250722112718.0b53860259d5.I9ec9a3508e7935e8d1833ea3e086066fdefee644@changeid>
+Cc: Avraham Stern <avraham.stern@intel.com>
+Subject: [PATCH iwlwifi-next 07/15] wifi: iwlwifi: mld: avoid outdated reorder buffer head_sn
+Date: Tue, 22 Jul 2025 11:29:02 +0300
+Message-Id: <20250722112718.b2c877d5cbf7.I7b57a481122074b1f40d39cd31db2e5262668eb2@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250722082910.1206370-1-miriam.rachel.korenblit@intel.com>
 References: <20250722082910.1206370-1-miriam.rachel.korenblit@intel.com>
@@ -90,18 +88,16 @@ buffer's head_sn (because of a wraparound).
 Fix it by updating the head_sn when the first frame is buffered.
 
 Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 5 +++++
+ drivers/net/wireless/intel/iwlwifi/mld/agg.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index 4b57ca56e1f6..62e76a79f621 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -905,10 +905,15 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/agg.c b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
+index 6b349270481d..3bf36f8f6874 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/agg.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
+@@ -305,10 +305,15 @@ iwl_mld_reorder(struct iwl_mld *mld, struct napi_struct *napi,
  	 * already ahead and it will be dropped.
  	 * If the last sub-frame is not on this queue - we will get frame
  	 * release notification with up to date NSSN.
@@ -110,13 +106,13 @@ index 4b57ca56e1f6..62e76a79f621 100644
 +	 * will be released when the frame release notification arrives.
  	 */
  	if (!amsdu || last_subframe)
- 		iwl_mvm_release_frames(mvm, sta, napi, baid_data,
- 				       buffer, nssn);
+ 		iwl_mld_reorder_release_frames(mld, sta, napi, baid_data,
+ 					       buffer, nssn);
 +	else if (buffer->num_stored == 1)
 +		buffer->head_sn = nssn;
  
- 	spin_unlock_bh(&buffer->lock);
- 	return true;
+ 	return IWL_MLD_BUFFERED_SKB;
+ }
 -- 
 2.34.1
 
