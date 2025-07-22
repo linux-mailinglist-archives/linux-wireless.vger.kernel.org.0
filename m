@@ -1,70 +1,77 @@
-Return-Path: <linux-wireless+bounces-25795-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25796-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341E6B0D0EE
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 06:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BF9B0D13F
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 07:32:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4031354279F
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 04:46:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 653F4542D3E
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 05:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556101ABED9;
-	Tue, 22 Jul 2025 04:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2B02882B6;
+	Tue, 22 Jul 2025 05:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="A+syiu4v"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b="JGVReFLj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp14.infineon.com (smtp14.infineon.com [217.10.52.160])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17162AE6C
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 04:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.160
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753159608; cv=none; b=aFmwXIBclosjkmdEmBLMYIugIvtc0Xf4QFmmPFVakimsabMTJwZWi6uK/v194UdrG0Ba+udQI20xBOVxOBCgUM6SIdTHwhEc60fg+T/OWBOYoAZApAxm3Z0Fo1Gyf/DgDvkyp6jggYIm9gNDiy00b7gyYiU292cwxflCyIDveyU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753159608; c=relaxed/simple;
-	bh=SYivqxCPm9LQm7dkbIeg3oRDa228+MkB+hQxas6ijuw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jUxdxS+MM7aXAqpGo6THg2w121RO+NRSIJN9h38v+13BlnYd/XdzHpwuHgULYOgV75nD/eif+hzfJImhlZE+naZ6CTCcyGOaIpUyMMj/oTta9R9+WxirSMPCjLsS1HfVxfwm5U+GvuVXngWbCn4waCzyQmdnEzBSowZEoNZEBd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=A+syiu4v; arc=none smtp.client-ip=217.10.52.160
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1753159606; x=1784695606;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=SYivqxCPm9LQm7dkbIeg3oRDa228+MkB+hQxas6ijuw=;
-  b=A+syiu4vRLAoOMDTsFzyM8VHmUmUP/Xgg6gQoedRd6fytva7ewSjw9W0
-   V2bJhZioNFVVwepJtJZK6ZGF/HjZLkqPMkTXR5c4R//b/EiMURtLX0VE7
-   OXF0Xjc9CGl4JqrqLcZOuafEKOSme4+WIebm+hGBf23nDzWQ3d80LsP+J
-   Q=;
-X-CSE-ConnectionGUID: Bt3BzFcuTZyoVAPH9Qf0rA==
-X-CSE-MsgGUID: QvG+GlO+QMC167nW9dOLQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="92249881"
-X-IronPort-AV: E=Sophos;i="6.16,330,1744063200"; 
-   d="scan'208";a="92249881"
-Received: from unknown (HELO MUCSE805.infineon.com) ([172.23.29.31])
-  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 06:45:34 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE805.infineon.com
- (172.23.29.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 22 Jul
- 2025 06:45:33 +0200
-Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
- MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 22 Jul 2025 06:45:32 +0200
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>, Johannes Berg
-	<johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>,
-	<wlan-kernel-dev-list@infineon.com>, Gokul Sivakumar
-	<gokulkumar.sivakumar@infineon.com>
-Subject: [PATCH wireless-next v3 RESEND] wifi: brcmfmac: fix EXTSAE WPA3 connection failure due to AUTH TX failure
-Date: Tue, 22 Jul 2025 10:15:15 +0530
-Message-ID: <20250722044515.2562-1-gokulkumar.sivakumar@infineon.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F67139D;
+	Tue, 22 Jul 2025 05:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753162349; cv=pass; b=Y6qErfCo5Ntl10nvGTq+PTffOKRtkNTjO8xuXe89odOGX2UPeHFeNwW8574BU53UP4z046pjdTF7ktUehrRu9tuhIMBMZLJEVUNzqQ6ZTI0Dzcisc9bMRDfTHpgLmRRhhP+8kvLTHtiLMsMgLepuFHtsC0RAX8aa8osUWaOD+OM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753162349; c=relaxed/simple;
+	bh=bUY11S13/6MVy4QS27ZozYt1jsEVGwuuCzVS1McUayM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fnUv1W6hIsXcDyboQZ4vcuOTyDzQ7pIkRAdkCyObeie6m+1WXykvXkOfkXFmTfbgdrpFwGApTEI1RXUc/1uuttphB+UhVkyanRiuZeD8MJ3+HK4HXELGJr/m/VnIMOZSVxhg6bxaLBdB3yzvpCHmIP6+z5sScmUMYAuRE4GBIXI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=usama.anjum@collabora.com header.b=JGVReFLj; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1753162307; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=C+aLutokWiTyaf0z0rekZO8jCLn04C4oWIPYFOHB0ISyfU/lZbI/sskWtL1JbXnZPvY+kV5KWM9z0DSbIEITS2O68YDWN5K7/rXJ7EaghTycqxQnUQvG8r9nxCb4+j+S39SUR9RooF6c3Qoq1gRjCihRbFwTNdPilcn4E/aT6zE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1753162307; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=5Q6iMEIwGl68fheKRd/l4+lC7AlYzE3zdk14QF/Z4a4=; 
+	b=N1rVk1mFBevE03nCoCcGTxa3Fu4H28u9t9fVFOx9cSv1zCSq7b0cwKOynyHeocdMEumKBBbreF1PGEdhwiWE6zf5lrvVTwPewLzpERwI0MQsr3I21SDmvKDgAe92STpcOV9JJmoSWntoSRfKkwWSe8NQ7XlNlbMHw4/MBACd/O4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass header.from=<usama.anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753162307;
+	s=zohomail; d=collabora.com; i=usama.anjum@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=5Q6iMEIwGl68fheKRd/l4+lC7AlYzE3zdk14QF/Z4a4=;
+	b=JGVReFLjfAi9/3RpbIEolp6ubOJtw6logedRk6OwVQVZPJs+TQbp7deuaaJtXyCJ
+	Lxr6JbUKyyyyOYl6hWHrrWy7sdB3aIw2J/vIPNMOw6Zv+fl4PmHadK5n+S+PjXvNHGW
+	GXgQrEeDpQBIWiko7B/7dyzbIJYu+3WfjYk5adxE=
+Received: by mx.zohomail.com with SMTPS id 1753162304932604.0388171987082;
+	Mon, 21 Jul 2025 22:31:44 -0700 (PDT)
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+To: Jeff Johnson <jjohnson@kernel.org>,
+	Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+	kbuild test robot <lkp@intel.com>,
+	Julia Lawall <julia.lawall@lip6.fr>,
+	Sven Eckelmann <sven@narfation.org>,
+	Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	kernel@collabora.com,
+	stable@vger.kernel.org,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Muna Sinada <quic_msinada@quicinc.com>,
+	Anilkumar Kolli <quic_akolli@quicinc.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Miles Hu <milehu@codeaurora.org>,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] wifi: ath11k: HAL SRNG: don't deinitialize and re-initialize again
+Date: Tue, 22 Jul 2025 10:31:21 +0500
+Message-Id: <20250722053121.1145001-1-usama.anjum@collabora.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -72,187 +79,92 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MUCSE812.infineon.com (172.23.29.38) To
- MUCSE827.infineon.com (172.23.29.20)
+X-ZohoMailClient: External
 
-From: Ting-Ying Li <tingying.li@cypress.com>
+Don't deinitialize and reinitialize the HAL helpers. The dma memory is
+deallocated and there is high possibility that we'll not be able to get
+the same memory allocated from dma when there is high memory pressure.
 
-For WPA3-SAE Connection in EXTSAE mode, the userspace daemon is allowed to
-generate the SAE Auth frames. The driver uses the "mgmt_frame" FW IOVAR to
-transmit this MGMT frame.
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
 
-Before sending the IOVAR, the Driver is incorrectly treating the channel
-number read from the FW as a frequency value and again attempts to convert
-this into a channel number using ieee80211_frequency_to_channel().
-
-This added an invalid channel number as part of the IOVAR request to the FW
-And some FW which strictly expects a valid channel would return BAD_CHAN
-error, while failing to transmit the driver requested SAE Auth MGMT frame.
-
-Fix this in the CYW vendor specific MGMT TX cfg80211 ops handler, by not
-treating the channel number read from the FW as frequency value and skip
-the attempt to convert it again into a channel number.
-
-Also fix this in the generic MGMT TX cfg80211 ops handler.
-
-Fixes: c2ff8cad6423 ("brcm80211: make mgmt_tx in brcmfmac accept a NULL channel")
-Fixes: 66f909308a7c ("wifi: brcmfmac: cyw: support external SAE authentication in station mode")
-Signed-off-by: Ting-Ying Li <tingying.li@cypress.com>
-Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org
+Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 ---
+Changes since v1:
+- Cc stable and fix tested on tag
+- Clear essential fields as they may have stale data
 
-v3 RESEND:
-  * Resending the same v3 patch for review reminder, after adding additional
-    mailing lists in CC.
+Changes since v2:
+- Add comment and reviewed by tag
+---
+ drivers/net/wireless/ath/ath11k/core.c |  6 +-----
+ drivers/net/wireless/ath/ath11k/hal.c  | 16 ++++++++++++++++
+ drivers/net/wireless/ath/ath11k/hal.h  |  1 +
+ 3 files changed, 18 insertions(+), 5 deletions(-)
 
-v3:
-  * Fixed the "warning: incorrect type in assignment (different base types)"
-    properly now, after kernel test robot reported it again.
-
-  * Used brcmf_fil_cmd_data_get() instead of brcmf_fil_cmd_int_get() util
-    for reading the channel number from the firmware as __le32 / __le16
-    type instead of s32 type.
-
-v2:
-  * Fixed wifibot "warning: incorrect type in assignment (different base types)"
-    in cyw/core.c file.
-
-  * Fixed >80 line length checkpatch warning by reducing variable name len
-    in cfg80211.c file.
-
-  * Handled the return value of the BRCMF_C_GET_CHANNEL IOCTL Read operation
-    in cfg80211.c & cyw/core.c files.
-
- .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 33 ++++++++++++-------
- .../broadcom/brcm80211/brcmfmac/cyw/core.c    | 29 ++++++++++------
- 2 files changed, 41 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 40a9a8177de6..54b1f0c8117e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -5544,8 +5544,8 @@ brcmf_cfg80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
- 	struct brcmf_fil_action_frame_le *action_frame;
- 	struct brcmf_fil_af_params_le *af_params;
- 	bool ack;
--	s32 chan_nr;
--	u32 freq;
-+	s32 ch;
-+	__le32 hw_ch;
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 4488e4cdc5e9e..34b27711ed00f 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -2213,14 +2213,10 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
+ 	mutex_unlock(&ab->core_lock);
  
- 	brcmf_dbg(TRACE, "Enter\n");
+ 	ath11k_dp_free(ab);
+-	ath11k_hal_srng_deinit(ab);
++	ath11k_hal_srng_clear(ab);
  
-@@ -5606,25 +5606,36 @@ brcmf_cfg80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
- 		/* Add the channel. Use the one specified as parameter if any or
- 		 * the current one (got from the firmware) otherwise
- 		 */
--		if (chan)
--			freq = chan->center_freq;
--		else
--			brcmf_fil_cmd_int_get(vif->ifp, BRCMF_C_GET_CHANNEL,
--					      &freq);
--		chan_nr = ieee80211_frequency_to_channel(freq);
--		af_params->channel = cpu_to_le32(chan_nr);
-+		if (chan) {
-+			ch = ieee80211_frequency_to_channel(chan->center_freq);
-+			af_params->channel = cpu_to_le32(ch);
-+		} else {
-+			err = brcmf_fil_cmd_data_get(vif->ifp,
-+						     BRCMF_C_GET_CHANNEL,
-+						     &hw_ch, sizeof(hw_ch));
-+			if (err) {
-+				bphy_err(drvr,
-+					 "unable to get current hw channel\n");
-+				goto free;
-+			} else {
-+				af_params->channel = hw_ch;
-+			}
-+		}
-+
- 		af_params->dwell_time = cpu_to_le32(params->wait);
- 		memcpy(action_frame->data, &buf[DOT11_MGMT_HDR_LEN],
- 		       le16_to_cpu(action_frame->len));
+ 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
  
--		brcmf_dbg(TRACE, "Action frame, cookie=%lld, len=%d, freq=%d\n",
--			  *cookie, le16_to_cpu(action_frame->len), freq);
-+		brcmf_dbg(TRACE, "Action frame, cookie=%lld, len=%d, channel=%d\n",
-+			  *cookie, le16_to_cpu(action_frame->len),
-+			  le32_to_cpu(af_params->channel));
+-	ret = ath11k_hal_srng_init(ab);
+-	if (ret)
+-		return ret;
+-
+ 	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
  
- 		ack = brcmf_p2p_send_action_frame(cfg, cfg_to_ndev(cfg),
- 						  af_params);
- 
- 		cfg80211_mgmt_tx_status(wdev, *cookie, buf, len, ack,
- 					GFP_KERNEL);
-+free:
- 		kfree(af_params);
- 	} else {
- 		brcmf_dbg(TRACE, "Unhandled, fc=%04x!!\n", mgmt->frame_control);
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-index c9537fb597ce..2cbb4a809ca7 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-@@ -112,8 +112,8 @@ int brcmf_cyw_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
- 	struct brcmf_cfg80211_vif *vif;
- 	s32 err = 0;
- 	bool ack = false;
--	s32 chan_nr;
--	u32 freq;
-+	s32 ch;
-+	__le16 hw_ch;
- 	struct brcmf_mf_params_le *mf_params;
- 	u32 mf_params_len;
- 	s32 ready;
-@@ -143,13 +143,20 @@ int brcmf_cyw_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
- 	mf_params->len = cpu_to_le16(len - DOT11_MGMT_HDR_LEN);
- 	mf_params->frame_control = mgmt->frame_control;
- 
--	if (chan)
--		freq = chan->center_freq;
--	else
--		brcmf_fil_cmd_int_get(vif->ifp, BRCMF_C_GET_CHANNEL,
--				      &freq);
--	chan_nr = ieee80211_frequency_to_channel(freq);
--	mf_params->channel = cpu_to_le16(chan_nr);
-+	if (chan) {
-+		ch = ieee80211_frequency_to_channel(chan->center_freq);
-+		mf_params->channel = cpu_to_le16(ch);
-+	} else {
-+		err = brcmf_fil_cmd_data_get(vif->ifp, BRCMF_C_GET_CHANNEL,
-+					     &hw_ch, sizeof(hw_ch));
-+		if (err) {
-+			bphy_err(drvr, "unable to get current hw channel\n");
-+			goto free;
-+		} else {
-+			mf_params->channel = hw_ch;
-+		}
-+	}
-+
- 	memcpy(&mf_params->da[0], &mgmt->da[0], ETH_ALEN);
- 	memcpy(&mf_params->bssid[0], &mgmt->bssid[0], ETH_ALEN);
- 	mf_params->packet_id = cpu_to_le32(*cookie);
-@@ -159,7 +166,8 @@ int brcmf_cyw_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
- 	brcmf_dbg(TRACE, "Auth frame, cookie=%d, fc=%04x, len=%d, channel=%d\n",
- 		  le32_to_cpu(mf_params->packet_id),
- 		  le16_to_cpu(mf_params->frame_control),
--		  le16_to_cpu(mf_params->len), chan_nr);
-+		  le16_to_cpu(mf_params->len),
-+		  le16_to_cpu(mf_params->channel));
- 
- 	vif->mgmt_tx_id = le32_to_cpu(mf_params->packet_id);
- 	set_bit(BRCMF_MGMT_TX_SEND_FRAME, &vif->mgmt_tx_status);
-@@ -185,6 +193,7 @@ int brcmf_cyw_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
- tx_status:
- 	cfg80211_mgmt_tx_status(wdev, *cookie, buf, len, ack,
- 				GFP_KERNEL);
-+free:
- 	kfree(mf_params);
- 	return err;
+ 	ret = ath11k_core_qmi_firmware_ready(ab);
+diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+index b32de563d453a..e8ebf963f195c 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -1359,6 +1359,22 @@ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
  }
-
-base-commit: 6b04716cdcac37bdbacde34def08bc6fdb5fc4e2
+ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
+ 
++void ath11k_hal_srng_clear(struct ath11k_base *ab)
++{
++	/* No need to memset rdp and wrp memory since each individual
++	 * segment would get cleared ath11k_hal_srng_src_hw_init() and
++	 * ath11k_hal_srng_dst_hw_init().
++	 */
++	memset(ab->hal.srng_list, 0,
++	       sizeof(ab->hal.srng_list));
++	memset(ab->hal.shadow_reg_addr, 0,
++	       sizeof(ab->hal.shadow_reg_addr));
++	ab->hal.avail_blk_resource = 0;
++	ab->hal.current_blk_index = 0;
++	ab->hal.num_shadow_reg_configured = 0;
++}
++EXPORT_SYMBOL(ath11k_hal_srng_clear);
++
+ void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
+ {
+ 	struct hal_srng *srng;
+diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
+index 601542410c752..839095af9267e 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.h
++++ b/drivers/net/wireless/ath/ath11k/hal.h
+@@ -965,6 +965,7 @@ int ath11k_hal_srng_setup(struct ath11k_base *ab, enum hal_ring_type type,
+ 			  struct hal_srng_params *params);
+ int ath11k_hal_srng_init(struct ath11k_base *ath11k);
+ void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
++void ath11k_hal_srng_clear(struct ath11k_base *ab);
+ void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
+ void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
+ 				       u32 **cfg, u32 *len);
 -- 
-2.43.0
+2.39.5
 
 
