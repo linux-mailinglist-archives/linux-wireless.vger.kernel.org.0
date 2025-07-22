@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-25822-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25823-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE49B0D4A2
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 10:30:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC8B4B0D4A3
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 10:30:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70DF7165CC9
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 08:30:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 157913A48EF
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 08:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835A32D63FA;
-	Tue, 22 Jul 2025 08:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289942D3A97;
+	Tue, 22 Jul 2025 08:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iSyVOCnf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="myo9LhUI"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5FC2D5437
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 08:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7D72D9793
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 08:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753172983; cv=none; b=gmCUV7xJVhkydUI4goHWXS1KWtzky1dZx8TunXkKLOTqF196entinkQRrnvtbTmLGuV8LoBNILrfuj8V24j2cK0Itpxj8PIJVA727gjPhO6dp4nT0mM2n2bc07es6/SgznXnKM+Us3njyBX4Nukr518zXl8eW5fK+6Smuhbf9VA=
+	t=1753172984; cv=none; b=obxm+1F189IoIwOPKwF6OyOIqgVk07AyZJdKp2Eald0dURlQE/detqdamYTHbc2D9GZmuOPpHehl80pyUmJWxwcET0jx1EcLMHK1K6wmSzMUbXJafPaLMZhpAmAVw8eGQ97XDNrsnpQL1dkiiegZFjNHApQy0N9kRkSOihu61VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753172983; c=relaxed/simple;
-	bh=IqZZyVIeeBrID/lM2VEj8m1k6jBqjIFO2Sg27PKc/ig=;
+	s=arc-20240116; t=1753172984; c=relaxed/simple;
+	bh=4Us21ubapp+32DxdDcJWWqTfVyMAyu0sdSYhiVarmng=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TBBN7dRE7DnGaaT/l5Ef+sJKZvA33wuGtq7cqofJmy2qxydwH4tHBH2k+zBAhv8SndOW1eOGJDd2xb2Y6uf/lnWEVI5V0AI95+ibPxqBTGDBJVXkAaFYeWA1KaxcVUbG9FvdFgkH9geCnMVQaychRlfeIBj43pc0/4vp31vUm6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iSyVOCnf; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=DLUu9z6Z/AVfGTLVMQoq3/gnErWWyonPkaNYktWs1kABFSX/irKP4F5Gz9rOYAVdo8zJDfEplm/rQ1eu7prWU9I8Wo5kMY4jMjco2nRiioQNWvMGfYY7MHWWjnxs4vIfU4qKwer4qQ00hmd4Ocq4J8f2a+VJE31we4j5EYD6+y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=myo9LhUI; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753172982; x=1784708982;
+  t=1753172983; x=1784708983;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=IqZZyVIeeBrID/lM2VEj8m1k6jBqjIFO2Sg27PKc/ig=;
-  b=iSyVOCnf4VnoSuVK0REjQsncsXYAokQpB9nRrz5je5hZ8rUba21qSMhg
-   QKwzLqAq7wNrs9ljNTHXsMN67Qz/v6XgeZrUXEU9QYJuxME/OHqE6CA0q
-   TCm8iwuOzNxxvca7Ia+tRFkf41P08nWgjEhZpPJhSqmooPuoqAQqUU7eE
-   Sg4vWU6T16eeCgJww7LZH5NdggLvRfzhN3afEcJ4RypdmWKlUqOCMDXF7
-   OCI3T5qdV+Ujo9J2l61awuMKu+7cRdipWm1Db5QcWcasbpeAWFqSLLKwm
-   2KL8V2+A+bCiNEq2EVY+OJQJRUuycjGGchkDNe7+QLyObrYbi8zP/75p4
+  bh=4Us21ubapp+32DxdDcJWWqTfVyMAyu0sdSYhiVarmng=;
+  b=myo9LhUIwhmc2qrZBlQtucmTj+sqTCqmUepeH6CHmJwVN5rEAwdfxHZq
+   ftEyi6tgJ/4/BXidxufoWxPJH3wrwpTeaAYGhPkQwrqknlIICLCDUV3uu
+   Y+dNQZWhSHAJapFFGDuYmW/7n+k5Efan0Kd7lewe6JW5a/RslTGG6+hj+
+   n1+plA2SYCpbXdWYKxUp/eFMvFWbQtaOrWBgKSrEsPYjgnVr0VIsstSDV
+   OotEWfNHgzWtmH56DlaXoC3DhpWrmK0M0RJPpn7DBFEf/baHLXm52rJ34
+   lDEIqtTpqLWF0s4I5GCnnb4Nr9keAaToibhds8Q4NKcUyu0/4CXknYs57
    A==;
-X-CSE-ConnectionGUID: 9R4up0hjQdG3NGP1KWu2LA==
-X-CSE-MsgGUID: FnGbWdLIQ6S5LikuAdPryA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="55569876"
+X-CSE-ConnectionGUID: lShF07UGSs+dXqYMeS8OGw==
+X-CSE-MsgGUID: vWz7vDQXRlCpr5cWyQruzw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="55569886"
 X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
-   d="scan'208";a="55569876"
+   d="scan'208";a="55569886"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:41 -0700
-X-CSE-ConnectionGUID: pJD3lqu3QqilRBpUf3aH0A==
-X-CSE-MsgGUID: XP8DaBW8SvGarJ2pRM7FvA==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:42 -0700
+X-CSE-ConnectionGUID: KzR3gNuTRbmzmX9OZdVKOQ==
+X-CSE-MsgGUID: Ev6KgAP/QRKfvxd7EfQZTw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
-   d="scan'208";a="163124269"
+   d="scan'208";a="163124277"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:40 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:41 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Avraham Stern <avraham.stern@intel.com>
-Subject: [PATCH iwlwifi-next 07/15] wifi: iwlwifi: mld: avoid outdated reorder buffer head_sn
-Date: Tue, 22 Jul 2025 11:29:02 +0300
-Message-Id: <20250722112718.b2c877d5cbf7.I7b57a481122074b1f40d39cd31db2e5262668eb2@changeid>
+Cc: Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH iwlwifi-next 08/15] wifi: iwlwifi: mvm: Remove NAN support
+Date: Tue, 22 Jul 2025 11:29:03 +0300
+Message-Id: <20250722112718.39d731dc2a96.I0357e383ab5df72d8b87e0dee10609a6946865b6@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250722082910.1206370-1-miriam.rachel.korenblit@intel.com>
 References: <20250722082910.1206370-1-miriam.rachel.korenblit@intel.com>
@@ -76,43 +76,109 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-If no frames are received on a queue for a while, the reorder buffer
-head_sn may be an old one. When the next frame that is received on
-that queue and buffered is a subframe of an AMSDU but not the last
-subframe, it will not update the buffer's head_sn. When the frame
-release notification arrives, it will not release the buffered frame
-because it will look like the notification's NSSN is lower than the
-buffer's head_sn (because of a wraparound).
-Fix it by updating the head_sn when the first frame is buffered.
+NAN is not officially supported on any of the MVM devices so there
+is no need to maintain it.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/agg.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 6 ------
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c  | 9 ---------
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h      | 1 -
+ drivers/net/wireless/intel/iwlwifi/mvm/power.c    | 1 -
+ 5 files changed, 1 insertion(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/agg.c b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
-index 6b349270481d..3bf36f8f6874 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/agg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/agg.c
-@@ -305,10 +305,15 @@ iwl_mld_reorder(struct iwl_mld *mld, struct napi_struct *napi,
- 	 * already ahead and it will be dropped.
- 	 * If the last sub-frame is not on this queue - we will get frame
- 	 * release notification with up to date NSSN.
-+	 * If this is the first frame that is stored in the buffer, the head_sn
-+	 * may be outdated. Update it based on the last NSSN to make sure it
-+	 * will be released when the frame release notification arrives.
- 	 */
- 	if (!amsdu || last_subframe)
- 		iwl_mld_reorder_release_frames(mld, sta, napi, baid_data,
- 					       buffer, nssn);
-+	else if (buffer->num_stored == 1)
-+		buffer->head_sn = nssn;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index 7d2b496aadc5..8805ab344895 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -301,7 +301,7 @@ int iwl_mvm_mac_ctxt_init(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
  
- 	return IWL_MLD_BUFFERED_SKB;
- }
+ 	iwl_mvm_init_link(&mvmvif->deflink);
+ 
+-	/* No need to allocate data queues to P2P Device MAC and NAN.*/
++	/* No need to allocate data queues to P2P Device MAC */
+ 	if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
+ 		return 0;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 55ae1caded53..ed19b82d14fa 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1833,12 +1833,6 @@ static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
+ 
+ 	rcu_assign_pointer(mvm->vif_id_to_mac[mvmvif->id], vif);
+ 
+-	/* Currently not much to do for NAN */
+-	if (vif->type == NL80211_IFTYPE_NAN) {
+-		ret = 0;
+-		goto out;
+-	}
+-
+ 	/*
+ 	 * The AP binding flow can be done only after the beacon
+ 	 * template is configured (which happens only in the mac80211
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+index 3f8b840871d3..2d116a41913c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+@@ -282,9 +282,6 @@ int iwl_mvm_mld_mac_ctxt_add(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	int ret;
+ 
+-	if (WARN_ON_ONCE(vif->type == NL80211_IFTYPE_NAN))
+-		return -EOPNOTSUPP;
+-
+ 	if (WARN_ONCE(mvmvif->uploaded, "Adding active MAC %pM/%d\n",
+ 		      vif->addr, ieee80211_vif_type_p2p(vif)))
+ 		return -EIO;
+@@ -307,9 +304,6 @@ int iwl_mvm_mld_mac_ctxt_changed(struct iwl_mvm *mvm,
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 
+-	if (WARN_ON_ONCE(vif->type == NL80211_IFTYPE_NAN))
+-		return -EOPNOTSUPP;
+-
+ 	if (WARN_ONCE(!mvmvif->uploaded, "Changing inactive MAC %pM/%d\n",
+ 		      vif->addr, ieee80211_vif_type_p2p(vif)))
+ 		return -EIO;
+@@ -327,9 +321,6 @@ int iwl_mvm_mld_mac_ctxt_remove(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	};
+ 	int ret;
+ 
+-	if (WARN_ON_ONCE(vif->type == NL80211_IFTYPE_NAN))
+-		return -EOPNOTSUPP;
+-
+ 	if (WARN_ONCE(!mvmvif->uploaded, "Removing inactive MAC %pM/%d\n",
+ 		      vif->addr, ieee80211_vif_type_p2p(vif)))
+ 		return -EIO;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index af73ff09d609..fdaeefa305e1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1325,7 +1325,6 @@ struct iwl_mvm {
+ 		u8 range_resp;
+ 	} cmd_ver;
+ 
+-	struct ieee80211_vif *nan_vif;
+ 	struct iwl_mvm_baid_data __rcu *baid_map[IWL_MAX_BAID];
+ 
+ 	/*
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/power.c b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
+index 0057fddf88f0..610de29b7be0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/power.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
+@@ -231,7 +231,6 @@ static void iwl_mvm_allow_uapsd_iterator(void *_data, u8 *mac,
+ 	switch (vif->type) {
+ 	case NL80211_IFTYPE_AP:
+ 	case NL80211_IFTYPE_ADHOC:
+-	case NL80211_IFTYPE_NAN:
+ 		data->allow_uapsd = false;
+ 		break;
+ 	case NL80211_IFTYPE_STATION:
 -- 
 2.34.1
 
