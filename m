@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-25788-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25789-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC915B0D075
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 05:42:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CDFB0D076
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 05:42:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E461188C8D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 03:42:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AAEB54571E
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 03:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0521D28C5CA;
-	Tue, 22 Jul 2025 03:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DA5EEDE;
+	Tue, 22 Jul 2025 03:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ahgmxbt3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TnXrsKZR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D0DEEDE
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 03:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC65E28C5CC
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 03:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753155721; cv=none; b=VzJEggOmL9BDMHY9yxutInvDl7CbvLnB7phE4egu64LC1ZuL0E+XK0FQxyTUIzGts3u3fMKMKHl2mK/sdwl6PEG98HhgIxLwdcc2Rkf9/PRtl+j3jLZzc6Os6Wnx/QZ5pdBp6N2ciXb0zH3VsM11oaxXF1gXljBRxqMfFI5fa0I=
+	t=1753155723; cv=none; b=ICY81l1SBimzGRug7zYAJMANwF89P5NUcgfn7FBlLy5NOgG6dm3xnh6UKVJp9FhOHwFllTVb+FwRCKjxrcXgxQOPVaDNn4+WYQVmvcSdF3t/dxxOqsyK3mJHxg/qaRuKWgNTfhXRDQjNiO6QZw5rM8c4KiHOgjOEO+DFA43Ch3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753155721; c=relaxed/simple;
-	bh=IBpZPTlQNBgGCAa+Q4pAO2l+/gHIqegcWz9NlHWiFL8=;
+	s=arc-20240116; t=1753155723; c=relaxed/simple;
+	bh=gAZdNU/piJ3/KXY7aD9R5kJmz3mY6BquMveBdg0I9M8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mVo2VKr6BphLqH9J9pPj3uAf6NGMeFnUKnYalh0hw7ig147BiJ2M4UQnjdb4b1EM8wM4RgTLmksaoIUGQ7j0m5q8VYe82gy0djmf34fG0XGxkWztBqC4c1oFQhcOWNv2tCUapW55eHr9Z2ROAOe+SCRjiNQkOOkRgcbVMly8dIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ahgmxbt3; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=t9dtiHsLrba1oDL5xRSsQmhtNY2rlpHwLxoU38EuvzpndgABKDTmBwasZlGBY+dgUrx7W+O692TRdUtyHZd9k24J185VYCAO4AC12qT6QIsGrC5yn3/b8VnEnY+QHZhS1djWsYO4r6YvV+OsKjVbbu1WBZLb16Kp5sOeCIlbRtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TnXrsKZR; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753155720; x=1784691720;
+  t=1753155721; x=1784691721;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=IBpZPTlQNBgGCAa+Q4pAO2l+/gHIqegcWz9NlHWiFL8=;
-  b=ahgmxbt32yOXpreyCjqGfxUj3nhKOe9Ww0ylQwoG7DRb9SjTTePDi1ak
-   LrA4geyq8MA5Wkl3YDaZGgagUcgG9qO9HmytCrRoEvJw/KirHO10VexOR
-   yRX5gD9um0ef+lz0u7xOQy+abUUhWM8bOTspR0EnrlW3ZZk6apThfGsT9
-   Vp6ighYqWiFTeLoFu31imr6RZ0Z8bbFGvPlq1D3NFjfKVJ8Xa5SOpmtpW
-   AnZ2Gxfweyspxv4m0On2jtk54PN/55nAPE/VvoNN6UmbKK7fSKBpxObBi
-   EVmn56JOvO0IiwR7bDRPwnqeWFUYGFPOnNAuijvd31r7eAIsXTUjD0Ass
+  bh=gAZdNU/piJ3/KXY7aD9R5kJmz3mY6BquMveBdg0I9M8=;
+  b=TnXrsKZRRBoXxF0g4qZTxIaTePy3VbaLhXnJpjydg2dMHiXblhwHr2N5
+   k6gRh7QIBe7ISbqQRPG425oA2eGK0zLZ/SL4t3WRYjj2ahcyBNA7f5BgG
+   FOF1kW20VN1Zh3toSVmKC6txRzpqiEefBhXKMmbp6Hc4JQHp002I/OAyH
+   zKmSiZ0YtUp2Cy680opbFmkgDLQvX0r9J99AS0tZlqlwrSLMOV3cdYwmA
+   NSx0RQyzJzyxa63tAN17PsD35+chSWQ7fBuF0zHezfB5g0XEvlhU0ihqL
+   IrnIyyfkjPPcn2IaOrgZUSrZib4F0GeLlL0VOUqcI0Kv26p6EV97+XkRB
    g==;
-X-CSE-ConnectionGUID: Jw6hXsnvSxSDLE7YzUAnqg==
-X-CSE-MsgGUID: qkMwbohdQKayJPIMz1BYOw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="43006161"
+X-CSE-ConnectionGUID: fSD/iyzdRJm/6lJeccsBFw==
+X-CSE-MsgGUID: 03aiUfckQPOQSx7FngaU9A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="43006163"
 X-IronPort-AV: E=Sophos;i="6.16,330,1744095600"; 
-   d="scan'208";a="43006161"
+   d="scan'208";a="43006163"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 20:42:00 -0700
-X-CSE-ConnectionGUID: iTLay59FRb630Zvsozn5TQ==
-X-CSE-MsgGUID: 1otdXm0uR8WEyO/zmNKVsA==
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 20:42:01 -0700
+X-CSE-ConnectionGUID: htoUcqyZSa+uALqWQJhKKA==
+X-CSE-MsgGUID: 6zsW0/atTrqr61iL6k5EbA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,330,1744095600"; 
-   d="scan'208";a="159338119"
+   d="scan'208";a="159338126"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 20:41:59 -0700
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 20:42:00 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 09/15] wifi: iwlwifi: remove SC2F firmware support
-Date: Tue, 22 Jul 2025 06:41:19 +0300
-Message-Id: <20250722063923.62bdc0dfb7e2.Iffa0a982f90a179566d85c60ccd3dbfc50e293ef@changeid>
+Subject: [PATCH iwlwifi-next 10/15] wifi: iwlwifi: stop supporting iwl_omi_send_status_notif ver 1
+Date: Tue, 22 Jul 2025 06:41:20 +0300
+Message-Id: <20250722063923.a4f8cd7ad7b3.I2a1cc4be441dbbb5566a9a3d2d330d956ff3ed38@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250722034125.1017387-1-miriam.rachel.korenblit@intel.com>
 References: <20250722034125.1017387-1-miriam.rachel.korenblit@intel.com>
@@ -76,55 +76,117 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-The only difference between SC2 and SC2F is that they use a different
-FSEQ image.
-The firmware of SC2 implements the logic of selecting the right FSEQ
-image to load, so there is no need for SC2F firmware image.
-Stop loading it, and load SC2 image instead.
+This version doesn't provide the sta id, so we need to look it up -
+assuming that no other sta exists, since one of the conditions of
+entering OMI is not having P2P/TDLS.
+
+But when we leave OMI, because of the P2P/TDLS activation, the P2P/TDLS
+sta can already exist while we receive the notification from the FW.
+This causes an error log which is incorrect.
+
+Since OMI is only supported in SC, which is not shipped yet, no one will
+use a FW with the old version.
+Remove support for it.
 
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c  | 4 ----
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 5 ++---
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ .../wireless/intel/iwlwifi/fw/api/datapath.h  |  9 -----
+ drivers/net/wireless/intel/iwlwifi/mld/link.c | 40 +++++++------------
+ .../net/wireless/intel/iwlwifi/mld/notif.c    |  1 -
+ 3 files changed, 14 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-index 7b70640abf53..6d4a3bce49b9 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-@@ -27,8 +27,6 @@
- #define IWL_SC_A_WH_A_FW_PRE		"iwlwifi-sc-a0-wh-a0"
- #define IWL_SC2_A_FM_C_FW_PRE		"iwlwifi-sc2-a0-fm-c0"
- #define IWL_SC2_A_WH_A_FW_PRE		"iwlwifi-sc2-a0-wh-a0"
--#define IWL_SC2F_A_FM_C_FW_PRE		"iwlwifi-sc2f-a0-fm-c0"
--#define IWL_SC2F_A_WH_A_FW_PRE		"iwlwifi-sc2f-a0-wh-a0"
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h b/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
+index ee822a87c42c..083136a0c456 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/datapath.h
+@@ -699,15 +699,6 @@ struct iwl_sec_key_cmd {
+ 	} __packed u; /* SEC_KEY_OPERATION_API_U_VER_1 */
+ } __packed; /* SEC_KEY_CMD_API_S_VER_1 */
  
- static const struct iwl_family_base_params iwl_sc_base = {
- 	.num_of_queues = 512,
-@@ -101,5 +99,3 @@ IWL_FW_AND_PNVM(IWL_SC_A_FM_C_FW_PRE, IWL_SC_UCODE_API_MAX);
- IWL_FW_AND_PNVM(IWL_SC_A_WH_A_FW_PRE, IWL_SC_UCODE_API_MAX);
- IWL_FW_AND_PNVM(IWL_SC2_A_FM_C_FW_PRE, IWL_SC_UCODE_API_MAX);
- IWL_FW_AND_PNVM(IWL_SC2_A_WH_A_FW_PRE, IWL_SC_UCODE_API_MAX);
--IWL_FW_AND_PNVM(IWL_SC2F_A_FM_C_FW_PRE, IWL_SC_UCODE_API_MAX);
--IWL_FW_AND_PNVM(IWL_SC2F_A_WH_A_FW_PRE, IWL_SC_UCODE_API_MAX);
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 6d983fe2ee44..28aad975434b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -236,10 +236,9 @@ const char *iwl_drv_get_fwname_pre(struct iwl_trans *trans, char *buf)
- 		mac = "sc";
- 		break;
- 	case IWL_CFG_MAC_TYPE_SC2:
--		mac = "sc2";
--		break;
-+	/* Uses the same firmware as SC2 */
- 	case IWL_CFG_MAC_TYPE_SC2F:
--		mac = "sc2f";
-+		mac = "sc2";
- 		break;
- 	case IWL_CFG_MAC_TYPE_BR:
- 		mac = "br";
+-/**
+- * struct iwl_omi_send_status_notif_v1 - OMI status notification
+- * @success: indicates that the OMI was sent successfully
+- *	(currently always set)
+- */
+-struct iwl_omi_send_status_notif_v1 {
+-	__le32 success;
+-} __packed; /* OMI_SEND_STATUS_NTFY_API_S_VER_1 */
+-
+ /**
+  * struct iwl_omi_send_status_notif - OMI status notification
+  * @success: indicates that the OMI was sent successfully
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+index c48cc3909637..9797510cab3f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+@@ -649,40 +649,28 @@ void iwl_mld_omi_ap_changed_bw(struct iwl_mld *mld,
+ void iwl_mld_handle_omi_status_notif(struct iwl_mld *mld,
+ 				     struct iwl_rx_packet *pkt)
+ {
+-	int ver = iwl_fw_lookup_notif_ver(mld->fw, DATA_PATH_GROUP,
+-					  OMI_SEND_STATUS_NOTIF, 1);
++	const struct iwl_omi_send_status_notif *notif = (const void *)pkt->data;
+ 	struct ieee80211_link_sta *link_sta;
+ 	struct iwl_mld_link *mld_link;
++	struct iwl_mld_vif *mld_vif;
+ 	struct ieee80211_vif *vif;
++	u32 sta_id;
+ 
+-	if (ver == 2) {
+-		const struct iwl_omi_send_status_notif *notif =
+-			(const void *)pkt->data;
+-		u32 sta_id = le32_to_cpu(notif->sta_id);
+-		struct iwl_mld_vif *mld_vif;
++	sta_id = le32_to_cpu(notif->sta_id);
+ 
+-		if (IWL_FW_CHECK(mld, sta_id >= mld->fw->ucode_capa.num_stations,
+-				 "Invalid station %d\n", sta_id))
+-			return;
++	if (IWL_FW_CHECK(mld, sta_id >= mld->fw->ucode_capa.num_stations,
++			 "Invalid station %d\n", sta_id))
++		return;
+ 
+-		link_sta = wiphy_dereference(mld->wiphy,
+-					     mld->fw_id_to_link_sta[sta_id]);
+-		if (IWL_FW_CHECK(mld, !link_sta, "Station does not exist\n"))
+-			return;
++	link_sta = wiphy_dereference(mld->wiphy, mld->fw_id_to_link_sta[sta_id]);
++	if (IWL_FW_CHECK(mld, !link_sta, "Station does not exist\n"))
++		return;
+ 
+-		vif = iwl_mld_sta_from_mac80211(link_sta->sta)->vif;
+-		mld_vif = iwl_mld_vif_from_mac80211(vif);
++	vif = iwl_mld_sta_from_mac80211(link_sta->sta)->vif;
++	mld_vif = iwl_mld_vif_from_mac80211(vif);
+ 
+-		mld_link = iwl_mld_link_dereference_check(mld_vif,
+-							  link_sta->link_id);
+-		if (WARN(!mld_link, "Link %d does not exist\n",
+-			 link_sta->link_id))
+-			return;
+-	} else {
+-		vif = iwl_mld_get_omi_bw_reduction_pointers(mld, &link_sta,
+-							    &mld_link);
+-	}
+-	if (IWL_FW_CHECK(mld, !vif, "unexpected OMI notification\n"))
++	mld_link = iwl_mld_link_dereference_check(mld_vif, link_sta->link_id);
++	if (WARN(!mld_link, "Link %d does not exist\n", link_sta->link_id))
+ 		return;
+ 
+ 	if (IWL_FW_CHECK(mld, !mld_link->rx_omi.bw_in_progress,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/notif.c b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
+index 3cb700a9708e..e8f10e8145f9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/notif.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
+@@ -351,7 +351,6 @@ CMD_VERSIONS(time_msmt_notif,
+ CMD_VERSIONS(time_sync_confirm_notif,
+ 	     CMD_VER_ENTRY(1, iwl_time_msmt_cfm_notify))
+ CMD_VERSIONS(omi_status_notif,
+-	     CMD_VER_ENTRY(1, iwl_omi_send_status_notif_v1)
+ 	     CMD_VER_ENTRY(2, iwl_omi_send_status_notif))
+ CMD_VERSIONS(ftm_resp_notif, CMD_VER_ENTRY(10, iwl_tof_range_rsp_ntfy))
+ CMD_VERSIONS(beacon_filter_notif, CMD_VER_ENTRY(2, iwl_beacon_filter_notif))
 -- 
 2.34.1
 
