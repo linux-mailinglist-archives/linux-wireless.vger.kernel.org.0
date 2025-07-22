@@ -1,365 +1,218 @@
-Return-Path: <linux-wireless+bounces-25800-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25802-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA316B0D26B
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 09:17:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E07AB0D2D7
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 09:26:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8A6B1AA4CE2
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 07:17:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F9D21755BB
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 07:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DE34414;
-	Tue, 22 Jul 2025 07:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493142D94AD;
+	Tue, 22 Jul 2025 07:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="KB/p2emT"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="pyn8oqxM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BDF1581F8
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 07:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1AA2D3731;
+	Tue, 22 Jul 2025 07:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753168644; cv=none; b=MgYUmu6aLjRb1q9+SeTvZDIJEI6DvVq/z4vlIzlfSnwtmmPb+RMdtQrGonJISVA8q7WNO1vN51eSzKYnRcy4svB8PuXZGPhhIDZ9eJ3qIT0t0V0hp/kjEyDP3I8BdIgp5uh9CRX+IKFX5VP6K55YtkCmotoflGA2III98neB7no=
+	t=1753169011; cv=none; b=UJb3rj+CS0GeMvKHvwIQoEgTsWMKo5ch9a6cFEjaL9f/BotCiGGV9Yewf22Hs41T1X0qwkcqvV1AHVmbLjZ2p0nmwrTAy9lNj3yzaNevfX12zOoGL58jwI7tn5wLmd2v8SzIMNcAl1s7XSWNC93KHvSKDytyRiz4yzaGHh4GZno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753168644; c=relaxed/simple;
-	bh=qSAQCKWARbQwO3fCI3Sot2sAlokrPLOIjkti1TxyFLM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4wS69ufF+ExeiPdMY59/TtL454vRsninqBORA3kZlaRqYsS7P4NJ3jSG8DiQqP7o2N4xbqbOqDdIXkn9mbwi/hKV1momAqrjc8HupY/j5p0K8lOF7kzTF2qmWepta5uucx/+2KNMnO3+6wVp+FqquXvN1isUlvxokYLyyovTE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=KB/p2emT; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b31e076f714so4349847a12.0
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 00:17:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1753168641; x=1753773441; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=20w5ScnOW3Gac/Q6fzOfqQgEuXN/A/rsd9NFbc0sR/0=;
-        b=KB/p2emTrL03Xu/TtxjTb8w1uIiS2XGqp2I4aQ62eG6tGZe6SLodbLlWEXAi+ta42V
-         M+NRtvMWvbLoWNJNpZrkH0Pon+MI7DsQe6+RtAXJ6K+3YzzpU/63qCP+TL0Kxnajqsju
-         ueG2KqXs+fVPOxjZfnXM0J/boTRoW5Qg75e15v9GwI7+vIgW+Gfq2sQVXJDQQngO7GI/
-         tQsruTyrF4cbtBe+fiVhaa/m4Hz5BMEUxFxhTmGYkgAYjTfujVw8gCRbLotnMnqMLww3
-         /651vhej/Thrsaw218K3gLwwV+pAYT8A4nk70ZWPnadnkMaM6Z+3q9WcOjt7tOXMTKFq
-         fhaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753168641; x=1753773441;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=20w5ScnOW3Gac/Q6fzOfqQgEuXN/A/rsd9NFbc0sR/0=;
-        b=w8rEYKEJBDW7D4P78SlBO7b2sM4FkFf4gD5EGtNZpRTvX1ZWlWBQ6uTpe65hvqWRaJ
-         ts//iYP9j4TPhqiShjYrQxAd8vvlyRjyrRxxMGOYVW/M5lcrQCedBE65DgdvJ+6Vv+Si
-         nRdsrVNSN7FViYaY0TCKhK2rvVbQj9LW09Dos34rc6wQbdTUe+i4k90RVWqSak/2GSix
-         jtUAxjgPoVBA6ncyQaHzJW+QW/siTn5GEXzil0wok0BfBX0D3Faybsm5pLLJ8R5opH1s
-         M3xu3F86DjPcMBZTfc3j/VfHC9JHyZRfrfhmUqWQA28EPvHhD14V1tMbhZCe1NBu0uk7
-         BE3A==
-X-Gm-Message-State: AOJu0Yx527iGPWwU59V9bfQEYyidQrAM1rR0CwPN9pcI2vyM/8B6T1gb
-	uuSc/qJULKIVUOTx7R9i1KzX3bQ8lhCWJU21oFxusBqxdnUEfGzYfkwH+V6sLrr0bdS9BQPBpR9
-	ccXB8yWc=
-X-Gm-Gg: ASbGncuy6cOxCgYfpKYFLAcpGtHXLL+J4pHr7QhX1HVXL9CNBh2kLg4rQNQ7AVYi8Xi
-	QvtJFLA+gfrNwpOzEgpI+q4PSTz1oNpcRHmZMJ2rPu0qTOR4+3P2SyN1+D/Wd1QjRgg4crwN5gX
-	vSlK+NiXuM7juHKRCkpbbnElcKv5qrfH6Z0rinDtRQQey97EMdEt1PmnDreS5IrcwOj75nvem/M
-	F/vLtnFo0IZIXJufDHEyAIc+7qN1b8Ho0ZpsgVYv5B0loNgzH5l0jgRWdl23KKtoaBF7s5wph0v
-	c5TvvtUrcO23qXBYvycj47S6K4EbjAh04gMZCk63XJbUAaBJFw1BNXYqyI2myAJ9A3Q8CATRmYg
-	iMOw1rFNrdy+UtzAt439qhHMKrUWulUnAFOfw3uefsi9rNRUbtcvovXUwbv1oceMg5zzw7XMATT
-	DeouU=
-X-Google-Smtp-Source: AGHT+IEwPgI2PMyh36TsB4cFQ6nVxGyr7VjhrmUJOuruhuGk2ewv9KZrs/y7ut/zER0wIRyQQ75R1w==
-X-Received: by 2002:a17:90b:4d0b:b0:312:dbcd:b93d with SMTP id 98e67ed59e1d1-31e3e1f0a8fmr3292875a91.14.1753168641015;
-        Tue, 22 Jul 2025 00:17:21 -0700 (PDT)
-Received: from localhost.localdomain (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c9f1fa8f1sm11099772a91.22.2025.07.22.00.17.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 00:17:20 -0700 (PDT)
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	arien.judge@morsemicro.com,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Subject: [wireless-next 2/2] wifi: mac80211: support parsing S1G TIM PVB
-Date: Tue, 22 Jul 2025 17:16:40 +1000
-Message-ID: <20250722071642.875875-3-lachlan.hodges@morsemicro.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250722071642.875875-1-lachlan.hodges@morsemicro.com>
-References: <20250722071642.875875-1-lachlan.hodges@morsemicro.com>
+	s=arc-20240116; t=1753169011; c=relaxed/simple;
+	bh=4HhP2iNixfpmY9GA50RldzfymFrP5PRb/ex2XnKjRrQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kUuVR85o9QllVSKZeiybnqBL/B5mWkoxjZMfmZ6IxpJeAEudUQ/SNlwg1h4bXJRwQg/OI91qzwZmUCvQhc/UX+ugatosuP7l4DmsoCtg8BP2rAPaZoqLPM8G2hg0KReitnnJ6oqPtfokj8CkLH9US28Udll32dgDU7iQx3E2Puo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=pyn8oqxM; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1753168997;
+	bh=4HhP2iNixfpmY9GA50RldzfymFrP5PRb/ex2XnKjRrQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=pyn8oqxMFVyi5/6u5O+odRk6o68nQVzc/WsLV6rpP1XwkSHdeghCjlBGJ8RN3lpSF
+	 K43Aw/Bx0veG9oUwOUKjGuCFBSP6OWdAIfRtQlZpIztGfODuJwBO6t8aCQlu2ogtXt
+	 FGaywg7Lu9sq115FB56KRtDlohLn9P3ayQOFCz0Y=
+X-QQ-mid: zesmtpip4t1753168943tb2aa8fc1
+X-QQ-Originating-IP: jlkPh//3cQuVzne1YV9Hj8c3k19VYTQ4PPPWu+FTW/A=
+Received: from [IPV6:240e:668:120a::212:232] ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 22 Jul 2025 15:22:18 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 3880468087656715595
+EX-QQ-RecipientCnt: 62
+Message-ID: <634BA467821D37FE+0b2ace38-07d9-4500-8bb7-5a4fa65c4b9f@uniontech.com>
+Date: Tue, 22 Jul 2025 15:22:18 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/8] serial: 8250_dw: Fix typo "notifer"
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: airlied@gmail.com, akpm@linux-foundation.org, alison.schofield@intel.com,
+ andrew+netdev@lunn.ch, andriy.shevchenko@linux.intel.com,
+ arend.vanspriel@broadcom.com, bp@alien8.de,
+ brcm80211-dev-list.pdl@broadcom.com, brcm80211@lists.linux.dev,
+ colin.i.king@gmail.com, cvam0000@gmail.com, dan.j.williams@intel.com,
+ dave.hansen@linux.intel.com, dave.jiang@intel.com, dave@stgolabs.net,
+ davem@davemloft.net, dri-devel@lists.freedesktop.org, edumazet@google.com,
+ guanwentao@uniontech.com, hpa@zytor.com, ilpo.jarvinen@linux.intel.com,
+ intel-xe@lists.freedesktop.org, ira.weiny@intel.com, j@jannau.net,
+ jeff.johnson@oss.qualcomm.com, jgross@suse.com, jirislaby@kernel.org,
+ johannes.berg@intel.com, jonathan.cameron@huawei.com, kuba@kernel.org,
+ kvalo@kernel.org, kvm@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux@treblig.org, lucas.demarchi@intel.com,
+ marcin.s.wojtas@gmail.com, ming.li@zohomail.com, mingo@kernel.org,
+ mingo@redhat.com, netdev@vger.kernel.org, niecheng1@uniontech.com,
+ oleksandr_tyshchenko@epam.com, pabeni@redhat.com, pbonzini@redhat.com,
+ quic_ramess@quicinc.com, ragazenta@gmail.com, rodrigo.vivi@intel.com,
+ seanjc@google.com, shenlichuan@vivo.com, simona@ffwll.ch,
+ sstabellini@kernel.org, tglx@linutronix.de,
+ thomas.hellstrom@linux.intel.com, vishal.l.verma@intel.com, x86@kernel.org,
+ xen-devel@lists.xenproject.org, yujiaoliang@vivo.com, zhanjun@uniontech.com
+References: <BD5C52D2838AEA48+20250715134050.539234-1-wangyuli@uniontech.com>
+ <2BF1749F02ADE664+20250715134407.540483-6-wangyuli@uniontech.com>
+ <2025071607-outbid-heat-b0ba@gregkh>
+Content-Language: en-US
+From: WangYuli <wangyuli@uniontech.com>
+Autocrypt: addr=wangyuli@uniontech.com; keydata=
+ xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSKP+nX39DN
+ IVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAxFiEEa1GMzYeuKPkg
+ qDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMBAAAKCRDF2h8wRvQL7g0UAQCH
+ 3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfPbwD/SrncJwwPAL4GiLPEC4XssV6FPUAY
+ 0rA68eNNI9cJLArOOARmgSyJEgorBgEEAZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7
+ VTL0dvPDofBTjFYDAQgHwngEGBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIb
+ DAAKCRDF2h8wRvQL7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkU
+ o9ERi7qS/hbUdUgtitI89efbY0TVetgDsyeQiwU=
+In-Reply-To: <2025071607-outbid-heat-b0ba@gregkh>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------1TBt0IFfjz321DLdIVEctMps"
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: MVMPUihGUVea5jC3xP71FloNgLs8c4GIbCy1lVegKOJGtyiH/TtMX/UO
+	5TjeFrsS0OTJUZa6dpCWlkanhO5MPxx9iMnxogCbZfODUw+ib83N47qt29EpEG8Krd6tKIR
+	FJTnraw/TquVA9OP3CmZUx8xIKgFUX4/1YZ+IJE88UcpS2W5wmhdW2//7czYTQzafSpYgxW
+	XE4xJC2ukspya/nvLIOUfxdrj54Lt4DSzPUy5xO4ylS8K3J0PkjbCTMo7dvByLIjp41vwVe
+	DsToiutuoxZEWKhrAnrG2jp4YhgVSYWEingT2tw1mTRHcCoJPIGNPlaLlczLmI4uu5vddgb
+	ZYNjWakNh0yxkNmU/0TsAflRRlVBhKjDClQosa+htxmarTLE7imj6YmEykr5fj1kGnYt2Vq
+	mqsrpEpwoES4bUcM6H1AzLAUijkizu0mUEVB+fxEVdrOB8iQe6xkDkodf2PlbQaAH3Ca/wz
+	Y2Q6VhC1L47CvMeMK5qAJ7SD473Gsc3bezOfo7WFS8Ez5lu7Gh8Elu5GsWFXdhH9eShp3L8
+	Fohcycdr8WjvxakwXIj7LupCwM2zytQQ9LqajGpKRJgJs3HVspzutijsVzwoCD1shfI+WAM
+	X0oLSTTeJjvFyELfZy8YkyJq3k6n67CMQ0vknFXTUwtgIQbk9YHI2ScEg4Xd40GovymLubn
+	bXp+aLh4o39SCjTTxt41RChCfUZHVsgVwbW6w68G9XnPojegPOe5Z6TYCvM/TVPnaZKWoeS
+	PTxWgREgrmjejdqSc5J9O+OhouoVgw5EG7RHm4hwIaCgRx2hpXIGlYjkz/3Pd0UtdJ2ryFH
+	Ytxmd2kqCiZ5PDah7j3W/oqLoD5c/YwIPRKWDWnX2hsKWo3LwBCHiOdirphtdazK64oywSy
+	GUV1D68DYcMBcagXma4UBx8o4WBHko9Mij75waKlNdehxEgDHuESjcm4rUGm5ywAnaN8fjk
+	VgOzj5ff6Wg9yxrf0dWtIcwNI6N88u0jfDrJWjyNnqbofuJAbudmmEhNphPpLfhf/zn9kPF
+	aarl2LPW/rtiHIgPqPdYfLOrFdtTVjR0Uch9gvPRRKIgRIEMafbhGxUFc2viKZvB1GA1mOc
+	ag52OeWY+km5YpVFUwDHLr0BSsN9SiKI083dmne+7JQ
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-RECHKSPAM: 0
 
-When parsing a TIM element from an S1G AP, ensure we correctly
-parse based on the S1G PPDU TIM PVB format, allowing an S1G STA
-to correctly enter/exit power save states to receive buffered
-unicast traffic. Also make sure we don't allocate over the
-mac80211 supported S1G PPDU AID count.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------1TBt0IFfjz321DLdIVEctMps
+Content-Type: multipart/mixed; boundary="------------7NzxUd2CIcc1X22DyUWciByd";
+ protected-headers="v1"
+From: WangYuli <wangyuli@uniontech.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: airlied@gmail.com, akpm@linux-foundation.org, alison.schofield@intel.com,
+ andrew+netdev@lunn.ch, andriy.shevchenko@linux.intel.com,
+ arend.vanspriel@broadcom.com, bp@alien8.de,
+ brcm80211-dev-list.pdl@broadcom.com, brcm80211@lists.linux.dev,
+ colin.i.king@gmail.com, cvam0000@gmail.com, dan.j.williams@intel.com,
+ dave.hansen@linux.intel.com, dave.jiang@intel.com, dave@stgolabs.net,
+ davem@davemloft.net, dri-devel@lists.freedesktop.org, edumazet@google.com,
+ guanwentao@uniontech.com, hpa@zytor.com, ilpo.jarvinen@linux.intel.com,
+ intel-xe@lists.freedesktop.org, ira.weiny@intel.com, j@jannau.net,
+ jeff.johnson@oss.qualcomm.com, jgross@suse.com, jirislaby@kernel.org,
+ johannes.berg@intel.com, jonathan.cameron@huawei.com, kuba@kernel.org,
+ kvalo@kernel.org, kvm@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux@treblig.org, lucas.demarchi@intel.com,
+ marcin.s.wojtas@gmail.com, ming.li@zohomail.com, mingo@kernel.org,
+ mingo@redhat.com, netdev@vger.kernel.org, niecheng1@uniontech.com,
+ oleksandr_tyshchenko@epam.com, pabeni@redhat.com, pbonzini@redhat.com,
+ quic_ramess@quicinc.com, ragazenta@gmail.com, rodrigo.vivi@intel.com,
+ seanjc@google.com, shenlichuan@vivo.com, simona@ffwll.ch,
+ sstabellini@kernel.org, tglx@linutronix.de,
+ thomas.hellstrom@linux.intel.com, vishal.l.verma@intel.com, x86@kernel.org,
+ xen-devel@lists.xenproject.org, yujiaoliang@vivo.com, zhanjun@uniontech.com
+Message-ID: <0b2ace38-07d9-4500-8bb7-5a4fa65c4b9f@uniontech.com>
+Subject: Re: [PATCH v2 6/8] serial: 8250_dw: Fix typo "notifer"
+References: <BD5C52D2838AEA48+20250715134050.539234-1-wangyuli@uniontech.com>
+ <2BF1749F02ADE664+20250715134407.540483-6-wangyuli@uniontech.com>
+ <2025071607-outbid-heat-b0ba@gregkh>
+In-Reply-To: <2025071607-outbid-heat-b0ba@gregkh>
 
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
----
- drivers/net/wireless/ath/carl9170/rx.c        |  2 +-
- drivers/net/wireless/intersil/p54/txrx.c      |  2 +-
- .../net/wireless/ralink/rt2x00/rt2x00dev.c    |  2 +-
- drivers/net/wireless/realtek/rtlwifi/ps.c     |  2 +-
- include/linux/ieee80211.h                     | 96 +++++++++++++++++--
- net/mac80211/mesh_ps.c                        |  2 +-
- net/mac80211/mlme.c                           | 15 +--
- 7 files changed, 101 insertions(+), 20 deletions(-)
+--------------7NzxUd2CIcc1X22DyUWciByd
+Content-Type: multipart/mixed; boundary="------------3ELnNhbpHyc90r6KiSkcbbdY"
 
-diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
-index 908c4c8b7f82..6833430130f4 100644
---- a/drivers/net/wireless/ath/carl9170/rx.c
-+++ b/drivers/net/wireless/ath/carl9170/rx.c
-@@ -555,7 +555,7 @@ static void carl9170_ps_beacon(struct ar9170 *ar, void *data, unsigned int len)
- 	/* Check whenever the PHY can be turned off again. */
- 
- 	/* 1. What about buffered unicast traffic for our AID? */
--	cam = ieee80211_check_tim(tim_ie, tim_len, ar->common.curaid);
-+	cam = ieee80211_check_tim(tim_ie, tim_len, ar->common.curaid, false);
- 
- 	/* 2. Maybe the AP wants to send multicast/broadcast data? */
- 	cam |= !!(tim_ie->bitmap_ctrl & 0x01);
-diff --git a/drivers/net/wireless/intersil/p54/txrx.c b/drivers/net/wireless/intersil/p54/txrx.c
-index 2deb1bb54f24..1294a1d6528e 100644
---- a/drivers/net/wireless/intersil/p54/txrx.c
-+++ b/drivers/net/wireless/intersil/p54/txrx.c
-@@ -317,7 +317,7 @@ static void p54_pspoll_workaround(struct p54_common *priv, struct sk_buff *skb)
- 	tim_len = tim[1];
- 	tim_ie = (struct ieee80211_tim_ie *) &tim[2];
- 
--	new_psm = ieee80211_check_tim(tim_ie, tim_len, priv->aid);
-+	new_psm = ieee80211_check_tim(tim_ie, tim_len, priv->aid, false);
- 	if (new_psm != priv->powersave_override) {
- 		priv->powersave_override = new_psm;
- 		p54_set_ps(priv);
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-index 432ddfac2c33..963c1e0af8b8 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-@@ -679,7 +679,7 @@ static void rt2x00lib_rxdone_check_ps(struct rt2x00_dev *rt2x00dev,
- 	/* Check whenever the PHY can be turned off again. */
- 
- 	/* 1. What about buffered unicast traffic for our AID? */
--	cam = ieee80211_check_tim(tim_ie, tim_len, rt2x00dev->aid);
-+	cam = ieee80211_check_tim(tim_ie, tim_len, rt2x00dev->aid, false);
- 
- 	/* 2. Maybe the AP wants to send multicast/broadcast data? */
- 	cam |= (tim_ie->bitmap_ctrl & 0x01);
-diff --git a/drivers/net/wireless/realtek/rtlwifi/ps.c b/drivers/net/wireless/realtek/rtlwifi/ps.c
-index 6241e4fed4f6..bcab12c3b4c1 100644
---- a/drivers/net/wireless/realtek/rtlwifi/ps.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/ps.c
-@@ -519,7 +519,7 @@ void rtl_swlps_beacon(struct ieee80211_hw *hw, void *data, unsigned int len)
- 
- 	/* 1. What about buffered unicast traffic for our AID? */
- 	u_buffed = ieee80211_check_tim(tim_ie, tim_len,
--				       rtlpriv->mac80211.assoc_id);
-+				       rtlpriv->mac80211.assoc_id, false);
- 
- 	/* 2. Maybe the AP wants to send multicast/broadcast data? */
- 	m_buffed = tim_ie->bitmap_ctrl & 0x01;
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 2a73f9e4b0ac..acf59ae631a7 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -234,6 +234,9 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
- #define IEEE80211_MAX_AID_S1G_NO_PS	1600
- #define IEEE80211_MAX_S1G_TIM_BLOCKS	25
- 
-+/* IEEE80211-2024 Block Control Encoding */
-+#define IEEE80211_S1G_TIM_ENC_MODE_BLOCK	0x00
-+
- /* Maximum size for the MA-UNITDATA primitive, 802.11 standard section
-    6.2.1.1.2.
- 
-@@ -4771,15 +4774,8 @@ static inline unsigned long ieee80211_tu_to_usec(unsigned long tu)
- 	return 1024 * tu;
- }
- 
--/**
-- * ieee80211_check_tim - check if AID bit is set in TIM
-- * @tim: the TIM IE
-- * @tim_len: length of the TIM IE
-- * @aid: the AID to look for
-- * Return: whether or not traffic is indicated in the TIM for the given AID
-- */
--static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
--				       u8 tim_len, u16 aid)
-+static inline bool __ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
-+					 u8 tim_len, u16 aid)
- {
- 	u8 mask;
- 	u8 index, indexn1, indexn2;
-@@ -4802,6 +4798,88 @@ static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
- 	return !!(tim->virtual_map[index] & mask);
- }
- 
-+/* See ieee80211_s1g_beacon_add_tim_pvb for implementation documentation. */
-+static inline bool ieee80211_s1g_check_tim(const struct ieee80211_tim_ie *tim,
-+					   u8 tim_len, u16 aid)
-+{
-+	u8 bit_idx = aid & 0x7;
-+	u8 sub_idx = (aid >> 3) & 0x7;
-+	u8 blk_idx_target = (aid >> 6) & 0x1f;
-+	u8 blk_bmap = 0;
-+	const u8 *ptr = tim->virtual_map;
-+	const u8 *end = (const u8 *)tim + tim_len + 2;
-+
-+	/*
-+	 * When an S1G AP has no buffered unicast traffic, bitmap control and
-+	 * PVB are not present.
-+	 */
-+	if (tim_len < 3)
-+		return false;
-+
-+	/*
-+	 * Enumerate each encoded block, for which we need at least block
-+	 * control and block bitmap.
-+	 */
-+	while (ptr + 2 <= end) {
-+		u8 blk_ctrl = *ptr++;
-+		u8 enc_mode = blk_ctrl & 0x3;
-+		u8 blk_idx = blk_ctrl >> 3;
-+
-+		/* If we are past our target block index, exit */
-+		if (blk_idx > blk_idx_target)
-+			break;
-+
-+		/* mac80211 only supports block bitmap encoding */
-+		if (enc_mode != IEEE80211_S1G_TIM_ENC_MODE_BLOCK)
-+			break;
-+
-+		/*
-+		 * If our target block doesn't exist within the block
-+		 * that the current encoded block represents, move to the
-+		 * next encoded block.
-+		 */
-+		blk_bmap = *ptr++;
-+		if (blk_idx < blk_idx_target) {
-+			ptr += hweight8(blk_bmap);
-+			continue;
-+		}
-+
-+		/* Ensure our subblock is present */
-+		if (!(blk_bmap & BIT(sub_idx)))
-+			break;
-+
-+		/*
-+		 * Count the number of subblocks that appear before our target
-+		 * subblock, increment ptr by number of set subblocks.
-+		 */
-+		if (sub_idx)
-+			ptr += hweight8(blk_bmap & GENMASK(sub_idx - 1, 0));
-+
-+		if (ptr >= end)
-+			break;
-+
-+		/* Check our AID is present in the subblock */
-+		return *ptr & BIT(bit_idx);
-+	}
-+
-+	return false;
-+}
-+
-+/**
-+ * ieee80211_check_tim - check if AID bit is set in TIM
-+ * @tim: the TIM IE
-+ * @tim_len: length of the TIM IE
-+ * @aid: the AID to look for
-+ * @s1g: whether the TIM is from an S1G PPDU
-+ * Return: whether or not traffic is indicated in the TIM for the given AID
-+ */
-+static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
-+				       u8 tim_len, u16 aid, bool s1g)
-+{
-+	return s1g ? ieee80211_s1g_check_tim(tim, tim_len, aid) :
-+		     __ieee80211_check_tim(tim, tim_len, aid);
-+}
-+
- /**
-  * ieee80211_get_tdls_action - get TDLS action code
-  * @skb: the skb containing the frame, length will not be checked
-diff --git a/net/mac80211/mesh_ps.c b/net/mac80211/mesh_ps.c
-index 20e022a03933..ebab1f0a0138 100644
---- a/net/mac80211/mesh_ps.c
-+++ b/net/mac80211/mesh_ps.c
-@@ -586,7 +586,7 @@ void ieee80211_mps_frame_release(struct sta_info *sta,
- 
- 	if (sta->mesh->plink_state == NL80211_PLINK_ESTAB)
- 		has_buffered = ieee80211_check_tim(elems->tim, elems->tim_len,
--						   sta->mesh->aid);
-+						   sta->mesh->aid, false);
- 
- 	if (has_buffered)
- 		mps_dbg(sta->sdata, "%pM indicates buffered frames\n",
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index b4b7ea52c65e..2f893fb6d188 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -6348,6 +6348,7 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
- 	};
- 	u8 ap_mld_addr[ETH_ALEN] __aligned(2);
- 	unsigned int link_id;
-+	u16 max_aid = IEEE80211_MAX_AID;
- 
- 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
- 
-@@ -6374,10 +6375,12 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
- 	reassoc = ieee80211_is_reassoc_resp(mgmt->frame_control);
- 	capab_info = le16_to_cpu(mgmt->u.assoc_resp.capab_info);
- 	status_code = le16_to_cpu(mgmt->u.assoc_resp.status_code);
--	if (assoc_data->s1g)
-+	if (assoc_data->s1g) {
- 		elem_start = mgmt->u.s1g_assoc_resp.variable;
--	else
-+		max_aid = IEEE80211_MAX_AID_S1G_NO_PS;
-+	} else {
- 		elem_start = mgmt->u.assoc_resp.variable;
-+	}
- 
- 	/*
- 	 * Note: this may not be perfect, AP might misbehave - if
-@@ -6401,8 +6404,6 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
- 
- 	if (elems->aid_resp)
- 		aid = le16_to_cpu(elems->aid_resp->aid);
--	else if (assoc_data->s1g)
--		aid = 0; /* TODO */
- 	else
- 		aid = le16_to_cpu(mgmt->u.assoc_resp.aid);
- 
-@@ -6447,7 +6448,7 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
- 		event.u.mlme.reason = status_code;
- 		drv_event_callback(sdata->local, sdata, &event);
- 	} else {
--		if (aid == 0 || aid > IEEE80211_MAX_AID) {
-+		if (aid == 0 || aid > max_aid) {
- 			sdata_info(sdata,
- 				   "invalid AID value %d (out of range), turn off PS\n",
- 				   aid);
-@@ -6485,6 +6486,7 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
- 		}
- 
- 		sdata->vif.cfg.aid = aid;
-+		sdata->vif.cfg.s1g = assoc_data->s1g;
- 
- 		if (!ieee80211_assoc_success(sdata, mgmt, elems,
- 					     elem_start, elem_len)) {
-@@ -7432,7 +7434,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 	ncrc = elems->crc;
- 
- 	if (ieee80211_hw_check(&local->hw, PS_NULLFUNC_STACK) &&
--	    ieee80211_check_tim(elems->tim, elems->tim_len, vif_cfg->aid)) {
-+	    ieee80211_check_tim(elems->tim, elems->tim_len, vif_cfg->aid,
-+				vif_cfg->s1g)) {
- 		if (local->hw.conf.dynamic_ps_timeout > 0) {
- 			if (local->hw.conf.flags & IEEE80211_CONF_PS) {
- 				local->hw.conf.flags &= ~IEEE80211_CONF_PS;
--- 
-2.43.0
+--------------3ELnNhbpHyc90r6KiSkcbbdY
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
+SGkgZ3JlZyBrLWgsDQoNCk9uIDIwMjUvNy8xNiAxNjowOCwgR3JlZyBLSCB3cm90ZToNCj4+
+IFNpZ25lZC1vZmYtYnk6IFdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPg0KPiBJ
+cyB5b3VyIG5hbWUgYWxsIG9uZSB3b3JkIGxpa2UgdGhhdCwgb3Igc2hvdWxkIHRoZXJlIGJl
+IGEgIiAiIGJldHdlZW4NCj4gdGhlbT8NCg0KSWYgSSB3ZXJlIHRvIGZvbGxvdyBXZXN0ZXJu
+IG5hbWluZyBjb252ZW50aW9ucywgbXkgbmFtZSB3b3VsZCBiZSB3cml0dGVuIA0KYXMgJ1l1
+bGkgV2FuZycuDQoNCkhvd2V2ZXIsIGZyYW5rbHksIEkgZmluZCBpdCB1bm5lY2Vzc2FyeSBh
+bmQgY2FuJ3QgYmUgYm90aGVyZWQgdG8gZm9sbG93IA0KdGhlaXIgY3VzdG9tcywgdW5sZXNz
+IGEgbWFpbnRhaW5lciBzdHJvbmdseSBpbnNpc3RzLiAoRm9yIGV4YW1wbGUsIHlvdSANCmNh
+biBzZWUgdGhhdCBteSBzaWduYXR1cmUgb24gY29tbWl0cyBmb3IgdGhlIExvb25nQXJjaCBz
+dWJzeXN0ZW0gaXMgDQpkaWZmZXJlbnQgZnJvbSBteSBvdGhlciBjb250cmlidXRpb25zKS4N
+Cg0KU2luY2UgQ2hpbmVzZSBuYW1lcyBhcmUgd3JpdHRlbiB3aXRob3V0IGFueSBzcGFjZXMg
+aW4gQ2hpbmVzZSANCmNoYXJhY3RlcnMsIEkgZG9uJ3QgdGhpbmsgaXQgbWF0dGVycy4NCg0K
+PiBBbHNvLCBhcyBvdGhlcnMgc2FpZCwgZG9uJ3QgbGluayB0byB5b3VyIG93biBwYXRjaC4N
+Ck9LLCBJJ2xsIHNlbmQgdGhlIHBhdGNoc2V0IHYzLg0KDQoNClRoYW5rcywNCg0KLS0gDQrn
+jovmmLHlipsNCg==
+--------------3ELnNhbpHyc90r6KiSkcbbdY
+Content-Type: application/pgp-keys; name="OpenPGP_0xC5DA1F3046F40BEE.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xC5DA1F3046F40BEE.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSK
+P+nX39DNIVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAx
+FiEEa1GMzYeuKPkgqDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMB
+AAAKCRDF2h8wRvQL7g0UAQCH3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfP
+bwD/SrncJwwPAL4GiLPEC4XssV6FPUAY0rA68eNNI9cJLArOOARmgSyJEgorBgEE
+AZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7VTL0dvPDofBTjFYDAQgHwngE
+GBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIbDAAKCRDF2h8wRvQL
+7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkUo9ERi7qS
+/hbUdUgtitI89efbY0TVetgDsyeQiwU=3D
+=3DBlkq
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------3ELnNhbpHyc90r6KiSkcbbdY--
+
+--------------7NzxUd2CIcc1X22DyUWciByd--
+
+--------------1TBt0IFfjz321DLdIVEctMps
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wnsEABYIACMWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCaH88KgUDAAAAAAAKCRDF2h8wRvQL7pms
+AP9jnuV1Ar3880YbizkuBFljgc3bOdOu/RxLmWu2LJmNBAD/S6F38qLfKIrdjJNkNGO7V3LvW7p0
+ssmAK5aDMMRZzAI=
+=fJ9f
+-----END PGP SIGNATURE-----
+
+--------------1TBt0IFfjz321DLdIVEctMps--
 
