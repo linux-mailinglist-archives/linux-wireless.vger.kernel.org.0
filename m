@@ -1,82 +1,88 @@
-Return-Path: <linux-wireless+bounces-25841-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25842-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46133B0D609
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 11:35:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2F8B0D63E
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 11:47:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A151162134
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 09:35:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDCB6AA4332
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 09:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B5F539A;
-	Tue, 22 Jul 2025 09:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D2B23F28B;
+	Tue, 22 Jul 2025 09:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="SRysRH0G"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bNmGnpZB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CD32DC33C
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 09:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E9323C4F6
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 09:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753176897; cv=none; b=N7GSr9rGF4m2kVs8J8jpqSLrkULKa1xFOBjUc3vRquQ+RRQl48bY9qL/ze4Q2FX2ySwl0Py2BWUTXrJDUZ7YycPnEElgPQgMwShgmF217iEpOMDcWM3ZvbMwi14eDL1a4WH4w52iFQMSHY/P0ZGJg7M/ExJnJnBUACKuKGhNJxk=
+	t=1753177672; cv=none; b=QOn/9zPwwpmmJN6eUmE2D95hKPPcZpGu92DWk6ttD6olnqajzK9srpB8ggaCuIPxf8lbWICEkiT01N8WtodWfuFR7vG+7WwG5pzew5+tswAzJ33evm3GQFZ8e5wjTggk5bCzzjLpZLLlehBokbW3Jyj1DPfrNix//36mezGA1ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753176897; c=relaxed/simple;
-	bh=QiXlwzeUzIfpndMvuYuw7ipBRx/tGhDIErJOX+npC2E=;
+	s=arc-20240116; t=1753177672; c=relaxed/simple;
+	bh=/A5bLX16piFxZp3C1uvq7w0g/FlmchWFhW3t4OYe1G4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uLbWOIHYkQp6mx++abUpKaPLA/as8jg/bzAouK9rtvkxJf99hcDJ/bfWnLYbLOvrCvNV4rDt3RGaba/bC2dQHAKIuOWMRemyZH//CwXOA+QIUu/wjOVWOq82vJ+j9gpc+Dnz8DCU9H2bouZrGNOlAM834265tC+kyzxkfyT77iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=SRysRH0G; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-612b34ef0c2so8977423a12.0
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 02:34:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mandelbit.com; s=google; t=1753176894; x=1753781694; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=5mRRFow74hkDzdHK2M00HN8QjhSRHwpbF0siFAmDnE0=;
-        b=SRysRH0G5+PWymFBmauX/PbZbk8a304UPLK7Zwc474fH8YBFyRNc1G9XwEX+SyrEvI
-         jG/azBkGIuO749K6VUXPdoUJJiz4k7x4kSylr2JVlAGkmVUY7tgznjob43Yv4JgKVDN+
-         tQ/YdwVnKO49R83irXAViC9jfdVf1CLxMmdjcVLJIIayd+GY6lf6vVFdmKarTAGvSmi8
-         GZ6R427fSNE1VsU4hNqJvYpAGnWk1Y7y6j7OAQEqAsbK+WTV5To+0VZGrRlcSixRgyKV
-         h80TzCgkaJuh4VcMKr20yhqh/67sMgmQO2Y6vG8O9aMcwEfoGjB1tYCPnr6et9WhKpq2
-         T6ig==
+	 In-Reply-To:Content-Type; b=SUj9JrX0cr8AZK0z8o+TXQCFG1K0HV7JilloTC8RG0YWF3ipwFLzBpGly5ywU4fPfXQwkb3RRtUhyybpjGW3uUu+CzACYGr7tIv9HEFqxQ8U+jY4XybEuTWgE8ikMgdsNlHO1V8PvG+r8mOxaDWX14lIOfIRaBUMu2O3hy+PrfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bNmGnpZB; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56M3tNvA015772
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 09:47:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	8BjM9ebfFLsQQcZe6TQ0vgUH4ajpI01hnGqNMGuQ5N4=; b=bNmGnpZBKEr/+gT+
+	Gf7YHgqDyL36SAGt8rwfkfYdw1+m84Sa/N8PyIrOktbzpow0609ipmsdR8zbGoTT
+	v20gVWNzdF5F8d1S5/4ZrXGo23r7sFMTaOlqcQKYZ91x58pk6XxlYQ7eDXQuwsF1
+	7JKMJx8KI74TlvzC4Q5kn2Z1av2o+gkjjvgJVbFV4bfPMsXv0U39DF99xGajnJrf
+	0Nq6ru8p/FDV0JMnSecEVJiSy6a2hyty7wM1416WdVdZPzOoLhxzD94KKWRXzOAo
+	XXh+LF5n5HcQL6zVRZMZKqsK54dIISctG49NJF5SEfSQFKVqzbRolryju45TWIpO
+	ABzC8w==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 480451gthu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 09:47:50 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-237e6963f70so86737585ad.2
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 02:47:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753176894; x=1753781694;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5mRRFow74hkDzdHK2M00HN8QjhSRHwpbF0siFAmDnE0=;
-        b=D/BJ3R1+M7gfUmUbyE7RqA5wxmBOy57OQLnKGD1FqMayqz2rCqYHgymOLn66FpE5Sj
-         eO/nidhcs64x27sdKDG7zD8oGedNbKoajuOLHEgg9s97bGnYmFIMsMXM1qDQ5M0OpGti
-         EKSestOrI/Q7TvqxFPNw27c11obAqBMGuoZLD37N4vDggk30Eur0ILAgeMX7CmHcdovF
-         GrlUIlz8kkIOLw6PcDSfODBrbmHCB4TXVT7MaBQkfsdEP6wBXpFZ1uxAsg0TLJ+Xgfxc
-         OgLkTZCpCUDOxW0iBWU62nBPcZ0uT9qNKC8e3+l9UIKl7s205MOTQVVdvsIM4cE+/BES
-         7pIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVRD1BZFjVXe1LKbft3F0vfuMh+WWXOl0/BiIxIlh2BaSwzN3Ytl7RTN3gYg8u9s2iWyTZuHZ9LRd1S0M/DpA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxcsh4SI/PTNzeYXORpiiWClzm5U8nT5MzYkzWAXoPYxaKD3JwC
-	toI2BlhPp9Q5CpBNDvFveBjPlIXcryXb28yoAcng3S2EAKshfZf6MBeOtwJngwm6kCnxVWWp1K9
-	1ygWczm88qg==
-X-Gm-Gg: ASbGnctn+NLCMF3ZgnXd4Yfz2awz09D4pgdldLn24nnGAHyJ9FLaZxzCs/x5xDDTkn2
-	DNAsmSkzCdxYnmWbXXsFMpbGlaUNiIM13myXzlxY6Zjrv0lCm1wGUU2D1qqNqUEAvqeBOPGhMLm
-	keR2zQDdYffJNKwvFpGsnL4518MeFTMeE4aIudv+CJ62c+AeJN84fpGCqrHYz6uDRa5SdSE+Xiu
-	eEBJI9nRVpv5NtLNmd8exggouVFbzk455LKNLeoyZO1W16W7mgzkNmrvB65HJP9DZa9eJTUpnGY
-	6cGh2wbbxpPLEJGEf/0P56t+IMDcpr7oPbME7Xim2uiweTOJC9jNTplXW+PU1LWYyj/E4axFtCh
-	/XLNAu9IfGv5H8NEfowHLr+mot60kQYBlNhmk6iC69joSRp2ha+YGfbGvsBTKvYOusteJFIA=
-X-Google-Smtp-Source: AGHT+IHtabRUfRky2fcXRw6vpi3pTz4XODqheitLXVFrSz+L8j2W4H5IwU2QA1dc8GdyMzIBYMs9SA==
-X-Received: by 2002:a50:d61c:0:b0:609:d491:8d7c with SMTP id 4fb4d7f45d1cf-612a4f7d7d6mr14483364a12.33.1753176893944;
-        Tue, 22 Jul 2025 02:34:53 -0700 (PDT)
-Received: from ?IPV6:2001:67c:2fbc:1:b6d9:6def:525:5a1b? ([2001:67c:2fbc:1:b6d9:6def:525:5a1b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c90a92c7sm6636155a12.62.2025.07.22.02.34.53
+        d=1e100.net; s=20230601; t=1753177669; x=1753782469;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8BjM9ebfFLsQQcZe6TQ0vgUH4ajpI01hnGqNMGuQ5N4=;
+        b=uGRu1DeFtgnPVqGf4N7hWUmJ07W0EMu4zFRczKgbE67O1kB2Ki+X2udbRprFDZFZhb
+         zmy7q3Xuyahdy/kU9yGv/7e4sRgBA4xaYg07hxPXfAgaD43O5pwvA0nTabj683vPONOW
+         u1PoMAEf1JhorHamE+Y8JVU54dzZOtE3H8eHk556ScpAswNUQ3bYJa6M26RMcd4WSU/D
+         LtoSob7ait1kw4SVAABgjjjnPpHz3SqXknTu1VxbHaTQAF9jNp3/Z4s4SI+x31aMSQfW
+         QcfeWsKuI/+QnDbNn0jkomHILNcms2N5bGiLumnZUbtxrvs6G/qDSqo7kvcMvBnDco4e
+         yNnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsY/lMjilyqoT9DN9DhlEDx1DBHa6rAHBRw7lTNaBxFQx2zv1OvVxtPd1ltD8LVa5vSqlzbNUyO/jnptPECA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaluO15XGrGXkuvv8jMfloLiPTCN5rdUBdDj/3Etn6ffeALI2l
+	bJ9GL6GA5tos9hjek5FMhQLwm9dY7peQxAJ3mPW7Ro2ufLEJh+MF/WobG9hipsApmWlHpNCPl25
+	JT9N8Cu+/4ij6Uzag3t9Fe9CtF6jbH9pNCsCzezTp7WMwsIC4mVij59wT5ovqOg7OvEwmdQ==
+X-Gm-Gg: ASbGncuck56xeTDK7q0oF8tbYUashyBC8JiH786/eop+hlE9R8rdT4H0RBxqPcIaiFZ
+	nDNUpUQXHULXElfaDAVUqZvgnO8cSiMn5SLoUhABFKrCbpA75GHzUq9uRsDM0iuEYcKRvc3xxzC
+	lXnNiCdnNL35OdgGcJLlvp+cOYo00BwQWY+Yp68M0opqR9PQXaPGaseDn8Y6kwcBsmIHwDNPChM
+	vIMKwZOYStSNYJsy3cFDUcoK2j3j86gbzts+OMYXPMLKl3ZdpOmvkESCVwEAPjae65mEmAS1Ke0
+	hRXtjE35rad+dJrOQT7b1DUtTJTCACS+Z5riNkVEcxL9bWr9IurCkA1O1HuNn2u3FWnYAbOXoWw
+	WfFr5/kLYl/XXOr6vUKhNKzb3w8slwuI=
+X-Received: by 2002:a17:903:2d2:b0:234:c5c1:9b84 with SMTP id d9443c01a7336-23e3035f2eamr249469225ad.37.1753177668777;
+        Tue, 22 Jul 2025 02:47:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFb4WZW5dxHh8zGqRjkvN4xW3CSAyaaR3EwQbz0e6h/H5rEz1JsDrBRAu/UMYCUGTF2EEQHYA==
+X-Received: by 2002:a17:903:2d2:b0:234:c5c1:9b84 with SMTP id d9443c01a7336-23e3035f2eamr249468855ad.37.1753177668301;
+        Tue, 22 Jul 2025 02:47:48 -0700 (PDT)
+Received: from [10.133.33.45] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b6ef9aesm72272625ad.211.2025.07.22.02.47.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Jul 2025 02:34:53 -0700 (PDT)
-Message-ID: <26781b7e-b5b5-473b-bfd6-1190536eb8fa@mandelbit.com>
-Date: Tue, 22 Jul 2025 11:34:52 +0200
+        Tue, 22 Jul 2025 02:47:47 -0700 (PDT)
+Message-ID: <1598d25d-e254-410e-ac5c-66d5450fd686@oss.qualcomm.com>
+Date: Tue, 22 Jul 2025 17:47:43 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -84,92 +90,139 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211: fix unassigned variable access
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Cc: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
-References: <20250721211736.29269-1-antonio@mandelbit.com>
- <cdfcd722e1f8527809d89e13484bcb25d3e74947.camel@sipsolutions.net>
- <2e3aa500-989b-4acf-b6f8-9ee200e67cca@mandelbit.com>
- <1db07eb608ee4345c70fe135dfbe6fc19e17cdf2.camel@sipsolutions.net>
+Subject: Re: [PATCH v3] wifi: ath11k: HAL SRNG: don't deinitialize and
+ re-initialize again
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+        kbuild test robot <lkp@intel.com>, Julia Lawall <julia.lawall@lip6.fr>,
+        Sven Eckelmann <sven@narfation.org>,
+        Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+Cc: kernel@collabora.com, stable@vger.kernel.org,
+        Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+        Muna Sinada <quic_msinada@quicinc.com>,
+        Anilkumar Kolli <quic_akolli@quicinc.com>,
+        Kalle Valo <kvalo@kernel.org>, Miles Hu <milehu@codeaurora.org>,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20250722053121.1145001-1-usama.anjum@collabora.com>
 Content-Language: en-US
-From: Antonio Quartulli <antonio@mandelbit.com>
-Autocrypt: addr=antonio@mandelbit.com; keydata=
- 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
-Organization: Mandelbit SRL
-In-Reply-To: <1db07eb608ee4345c70fe135dfbe6fc19e17cdf2.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+In-Reply-To: <20250722053121.1145001-1-usama.anjum@collabora.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=EIMG00ZC c=1 sm=1 tr=0 ts=687f5e46 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=QX4gbG5DAAAA:8 a=FO1u493g7a1ack9Z5SAA:9 a=QEXdDO2ut3YA:10
+ a=1OuFwYUASf3TG4hYMiVC:22 a=AbAUZ8qAyYyZVLSsDulk:22
+X-Proofpoint-ORIG-GUID: GPkwhJFDK-MvXHuatGQJZhqFOe5-cwXq
+X-Proofpoint-GUID: GPkwhJFDK-MvXHuatGQJZhqFOe5-cwXq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDA4MCBTYWx0ZWRfX+/RGHo2MszTe
+ HlKdhvD9tCWi7LLTmdhONIAPj2sUhAYFYZCHOIp8i3QclwqIr2AIxSy5b3QY+xEtFmyvwt1K7Yw
+ czsBI2fg4kbDigFe6sGG36SI73SLMI0Q00J1GdwPmLjtnN6DaLv4ESB9siaDlgpAx+EbhiqXirP
+ kl4x7sfX7znMiuGCe9zjEyVvXM8FliYS5fT4InbGO2CZ6UNpBovocX8JiC9bqkQBqt96Y2zzda4
+ 50T1HgWVjK3FtJ2aK+BZF+rAeVOIukOWENehIQ4Q5TIy4sA1XuuCRL+R7pV/u9ZvIdpVUfZs2Hl
+ RNbPirmTHsVCLfPyJPXluRGUVenXdNWNhE7jA4tYSs5ujkwrjHLhOzWLG7ruz+OS7AdrgJzqwN1
+ Rwy3ePRZstVhJnOIIlxXDXO5Pvtig7uEsoIFhG+4+QlOSNlu+CMqfxKzOvb3YWBmhFAXlVtw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-22_01,2025-07-21_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 mlxlogscore=999 phishscore=0 mlxscore=0 clxscore=1015
+ suspectscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507220080
 
-On 22/07/2025 11:02, Johannes Berg wrote:
-> On Tue, 2025-07-22 at 11:00 +0200, Antonio Quartulli wrote:
->>> So I think if anything we should worry about the
->>>
->>>                   if (time_is_after_jiffies(timeout) &&
->>>                       time_after(timeout, latest_timeout))
->>>                           latest_timeout = timeout;
->>>
->>> comparison, but for that just unconditionally setting it to 0 is really
->>> the wrong thing to do, since it means you compare to an arbitrary time
->>> zero here?
->>
->> We are looking for the maximum timeout, so using 0 (minimum possible
->> value) as base line should be what we want, no?
->>
->> [note: I am assuming 0 is not a possible timeout value]
+
+
+On 7/22/2025 1:31 PM, Muhammad Usama Anjum wrote:
+> Don't deinitialize and reinitialize the HAL helpers. The dma memory is
+> deallocated and there is high possibility that we'll not be able to get
+> the same memory allocated from dma when there is high memory pressure.
 > 
-> That assumption is wrong, in fact jiffies starts at a slightly negative
-> value (about 5 minutes?) so that a few minutes after boot the time goes
-> to the perfectly valid value zero. And on HZ=1000 32-bit systems, this
-> situation of course reappears every ~49.7 days.
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+> 
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Cc: stable@vger.kernel.org
+> Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+> Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
+> Changes since v1:
+> - Cc stable and fix tested on tag
+> - Clear essential fields as they may have stale data
+> 
+> Changes since v2:
+> - Add comment and reviewed by tag
+> ---
+>  drivers/net/wireless/ath/ath11k/core.c |  6 +-----
+>  drivers/net/wireless/ath/ath11k/hal.c  | 16 ++++++++++++++++
+>  drivers/net/wireless/ath/ath11k/hal.h  |  1 +
+>  3 files changed, 18 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+> index 4488e4cdc5e9e..34b27711ed00f 100644
+> --- a/drivers/net/wireless/ath/ath11k/core.c
+> +++ b/drivers/net/wireless/ath/ath11k/core.c
+> @@ -2213,14 +2213,10 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
+>  	mutex_unlock(&ab->core_lock);
+>  
+>  	ath11k_dp_free(ab);
+> -	ath11k_hal_srng_deinit(ab);
+> +	ath11k_hal_srng_clear(ab);
+>  
+>  	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS(ab))) - 1;
+>  
+> -	ret = ath11k_hal_srng_init(ab);
+> -	if (ret)
+> -		return ret;
+> -
+>  	clear_bit(ATH11K_FLAG_CRASH_FLUSH, &ab->dev_flags);
+>  
+>  	ret = ath11k_core_qmi_firmware_ready(ab);
+> diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+> index b32de563d453a..e8ebf963f195c 100644
+> --- a/drivers/net/wireless/ath/ath11k/hal.c
+> +++ b/drivers/net/wireless/ath/ath11k/hal.c
+> @@ -1359,6 +1359,22 @@ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
+>  }
+>  EXPORT_SYMBOL(ath11k_hal_srng_deinit);
+>  
+> +void ath11k_hal_srng_clear(struct ath11k_base *ab)
+> +{
+> +	/* No need to memset rdp and wrp memory since each individual
+> +	 * segment would get cleared ath11k_hal_srng_src_hw_init() and
 
-As discussed on IRC, also the caller of this function is wrongly 
-assuming that returning 0 means "no timeout planned".
+nit: s/cleared /cleared in/
 
-For this reason I'll send v2 where I will initialize latest_timeout to 
-jiffies and I will re-arrange surrounding checks accordingly (caller 
-included).
-
-
-Regards,
-
--- 
-Antonio Quartulli
-
-CEO and Co-Founder
-Mandelbit Srl
-https://www.mandelbit.com
+> +	 * ath11k_hal_srng_dst_hw_init().
+> +	 */
+> +	memset(ab->hal.srng_list, 0,
+> +	       sizeof(ab->hal.srng_list));
+> +	memset(ab->hal.shadow_reg_addr, 0,
+> +	       sizeof(ab->hal.shadow_reg_addr));
+> +	ab->hal.avail_blk_resource = 0;
+> +	ab->hal.current_blk_index = 0;
+> +	ab->hal.num_shadow_reg_configured = 0;
+> +}
+> +EXPORT_SYMBOL(ath11k_hal_srng_clear);
+> +
+>  void ath11k_hal_dump_srng_stats(struct ath11k_base *ab)
+>  {
+>  	struct hal_srng *srng;
+> diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
+> index 601542410c752..839095af9267e 100644
+> --- a/drivers/net/wireless/ath/ath11k/hal.h
+> +++ b/drivers/net/wireless/ath/ath11k/hal.h
+> @@ -965,6 +965,7 @@ int ath11k_hal_srng_setup(struct ath11k_base *ab, enum hal_ring_type type,
+>  			  struct hal_srng_params *params);
+>  int ath11k_hal_srng_init(struct ath11k_base *ath11k);
+>  void ath11k_hal_srng_deinit(struct ath11k_base *ath11k);
+> +void ath11k_hal_srng_clear(struct ath11k_base *ab);
+>  void ath11k_hal_dump_srng_stats(struct ath11k_base *ab);
+>  void ath11k_hal_srng_get_shadow_config(struct ath11k_base *ab,
+>  				       u32 **cfg, u32 *len);
 
 
