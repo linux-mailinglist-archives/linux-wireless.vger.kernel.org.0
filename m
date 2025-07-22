@@ -1,87 +1,87 @@
-Return-Path: <linux-wireless+bounces-25799-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25800-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F33FB0D26A
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 09:17:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA316B0D26B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 09:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87D043AC6CD
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 07:16:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8A6B1AA4CE2
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 07:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46111288C8F;
-	Tue, 22 Jul 2025 07:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DE34414;
+	Tue, 22 Jul 2025 07:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="1ytJ/wNl"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="KB/p2emT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A31A4414
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 07:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BDF1581F8
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 07:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753168638; cv=none; b=laEstw32iLQlCautFCLVOB4WoCYQccgJxkWFT7xExjc2nCa8XnAIiCgozctiFn2uvs+18Rc+vKyF5cwpEmkTPjHysXBld4Qg3NUmerRa8CVv72w60TgDMPkLzVD4YXFXEnD8dsfbdI8k21hnuzIf0SNFuYRCCmO/gdqxAt8Ye+0=
+	t=1753168644; cv=none; b=MgYUmu6aLjRb1q9+SeTvZDIJEI6DvVq/z4vlIzlfSnwtmmPb+RMdtQrGonJISVA8q7WNO1vN51eSzKYnRcy4svB8PuXZGPhhIDZ9eJ3qIT0t0V0hp/kjEyDP3I8BdIgp5uh9CRX+IKFX5VP6K55YtkCmotoflGA2III98neB7no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753168638; c=relaxed/simple;
-	bh=1IKgOFE61YWE4cDMOXlC6Z6vmmIbiP3HuYp747vnQgo=;
+	s=arc-20240116; t=1753168644; c=relaxed/simple;
+	bh=qSAQCKWARbQwO3fCI3Sot2sAlokrPLOIjkti1TxyFLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FnYDC1GJKrbF+ReDoCGiUeFzveOKqXKvdYUrFFYIDefmZ9viDFZkfUq3X1tgzBu2Ov/FnA9eWG7L0tggsrHcnZUnwlMLuK2xnyunWZhCF9Hb7ADuZ1+LCikjKHXBQd1DJCUaOjlfR5X2yjzEb0YVGtH2bZt6ceXWEdVVONcrv3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=1ytJ/wNl; arc=none smtp.client-ip=209.85.215.178
+	 MIME-Version; b=P4wS69ufF+ExeiPdMY59/TtL454vRsninqBORA3kZlaRqYsS7P4NJ3jSG8DiQqP7o2N4xbqbOqDdIXkn9mbwi/hKV1momAqrjc8HupY/j5p0K8lOF7kzTF2qmWepta5uucx/+2KNMnO3+6wVp+FqquXvN1isUlvxokYLyyovTE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=KB/p2emT; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b350704f506so4104572a12.0
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 00:17:16 -0700 (PDT)
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b31e076f714so4349847a12.0
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 00:17:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1753168636; x=1753773436; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1753168641; x=1753773441; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PsbAvx4iRFrikJAqCWd2Ydt39ap9zjZ1WY3Jyw76zxw=;
-        b=1ytJ/wNlgIajxzuVtPF2LTgGfK5tbosjDZOZrsz7g3ijEwr/xgwTuKJKYcLKMF9M96
-         O0VHho2z1ILtC76mulk7taQg2TBE2y6k7vBKgUPSemCaRmIoRHEDu3Is2JDuGCguNFgq
-         eWVP49eB27netFd+IUAcxI0vYvgCEzsPg9TzKWXyivFp/VpUkWekm7oF5h3jdTnQXmuf
-         2X7ru4hW9VUvg4hYv0TfkJY/W251h0HO/IRZX0oSBEq2cuvvQHVcJKYkCmVvllTc34S/
-         g5NBt/C5rvG/HY2x9m7SznZLfZkEmgiyrUKgFjMEatOxjn1+nzQ5BIlDtHrt6v9XYTdu
-         I0vw==
+        bh=20w5ScnOW3Gac/Q6fzOfqQgEuXN/A/rsd9NFbc0sR/0=;
+        b=KB/p2emTrL03Xu/TtxjTb8w1uIiS2XGqp2I4aQ62eG6tGZe6SLodbLlWEXAi+ta42V
+         M+NRtvMWvbLoWNJNpZrkH0Pon+MI7DsQe6+RtAXJ6K+3YzzpU/63qCP+TL0Kxnajqsju
+         ueG2KqXs+fVPOxjZfnXM0J/boTRoW5Qg75e15v9GwI7+vIgW+Gfq2sQVXJDQQngO7GI/
+         tQsruTyrF4cbtBe+fiVhaa/m4Hz5BMEUxFxhTmGYkgAYjTfujVw8gCRbLotnMnqMLww3
+         /651vhej/Thrsaw218K3gLwwV+pAYT8A4nk70ZWPnadnkMaM6Z+3q9WcOjt7tOXMTKFq
+         fhaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753168636; x=1753773436;
+        d=1e100.net; s=20230601; t=1753168641; x=1753773441;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PsbAvx4iRFrikJAqCWd2Ydt39ap9zjZ1WY3Jyw76zxw=;
-        b=UwXH9YaaFZ0TeNzDGpH6Kk14lb09ooZ1sATmnvmqn71VrEsfBZQzPbgabkiTHqHU+j
-         LrOw6BcCDldLgJX6OIXu9kZhtPCOZOopvtL6BCgTgBgkpdYAgRe3hF/g7faWTHu8BVWJ
-         EM2Ss4nXCJ7J/Q0sqNEjQKBWg9URZdhvJOsJNsZsUrk7hTl5ndSm4nkQ5pDA+9Otznem
-         2s7w0g6G3TbiBo6fOhYOLz2EGoCRrAGG9Q4G1bNHIL3FyrK1xxmloZQJJuevLZmQ1avQ
-         f15lrXaDQ/3ZksgXgTgkvoX1AkchR/0q85Tgoe1Wim6W/oZ6fKLzHV/t7FjD6fTxdQJ/
-         Bblw==
-X-Gm-Message-State: AOJu0YxJUXa3A7cN/ErSVef363UPTR4EB2a29ucPZpwlHyu1R/vI6N9g
-	XmbK6wBuNtUAGL023BYK8qNyEPn3iKEY/6uaWHH2jfbVmZxJPyzFK8w/5YCiMwv/JlQoJO7+Dn7
-	WUVSEJ8E=
-X-Gm-Gg: ASbGncufV5v1bqscIu9AwI+IN6hvehZUywSN9GeL3GsEQgNrDGSjS8YPEz/bv7S/kMG
-	7U/rdEa4WEagTZ7FguhtsSQtPSDYLeii5E4GGMxJOFSbEcmVqVh7EkCFUbheydEyv7dzcz+rMqs
-	S/ZFl6RB95A/+5V0Ia+k+3y/9FcrpXmqx269UFvSgv5QiPdA5jPOkhMzhpiEl5FBJN/268mXhay
-	86e064ejBgkd97WhYI4NnGiHi/eg7BCW9yOTbwvHxSv3pNsxtxQ2+9TMD2VhXhMdEw4hkp/gzQh
-	dh/31kHVvZC0K4gKlUYWOcrMjmd052HkYibE14KaqW3gF2Hikq1o9He3bDHbvjxeNa5LhZb3i9L
-	fhMspspzw2w8N4i/3maX4MSHBIktbFiGrKJn9/1XZmMeroEWACltkoIUSHLTEoEETACRuuaBEKO
-	pa02M=
-X-Google-Smtp-Source: AGHT+IG15R9DaLpo1Ld9Xxgiav5yyaPb9RltBIXcG/iezQO8FSNs4cl1fV2M1/2VKnBUYn7Zab7ETg==
-X-Received: by 2002:a17:90b:1b11:b0:312:e73e:cded with SMTP id 98e67ed59e1d1-31e3e1f6ef1mr3125732a91.16.1753168635473;
-        Tue, 22 Jul 2025 00:17:15 -0700 (PDT)
+        bh=20w5ScnOW3Gac/Q6fzOfqQgEuXN/A/rsd9NFbc0sR/0=;
+        b=w8rEYKEJBDW7D4P78SlBO7b2sM4FkFf4gD5EGtNZpRTvX1ZWlWBQ6uTpe65hvqWRaJ
+         ts//iYP9j4TPhqiShjYrQxAd8vvlyRjyrRxxMGOYVW/M5lcrQCedBE65DgdvJ+6Vv+Si
+         nRdsrVNSN7FViYaY0TCKhK2rvVbQj9LW09Dos34rc6wQbdTUe+i4k90RVWqSak/2GSix
+         jtUAxjgPoVBA6ncyQaHzJW+QW/siTn5GEXzil0wok0BfBX0D3Faybsm5pLLJ8R5opH1s
+         M3xu3F86DjPcMBZTfc3j/VfHC9JHyZRfrfhmUqWQA28EPvHhD14V1tMbhZCe1NBu0uk7
+         BE3A==
+X-Gm-Message-State: AOJu0Yx527iGPWwU59V9bfQEYyidQrAM1rR0CwPN9pcI2vyM/8B6T1gb
+	uuSc/qJULKIVUOTx7R9i1KzX3bQ8lhCWJU21oFxusBqxdnUEfGzYfkwH+V6sLrr0bdS9BQPBpR9
+	ccXB8yWc=
+X-Gm-Gg: ASbGncuy6cOxCgYfpKYFLAcpGtHXLL+J4pHr7QhX1HVXL9CNBh2kLg4rQNQ7AVYi8Xi
+	QvtJFLA+gfrNwpOzEgpI+q4PSTz1oNpcRHmZMJ2rPu0qTOR4+3P2SyN1+D/Wd1QjRgg4crwN5gX
+	vSlK+NiXuM7juHKRCkpbbnElcKv5qrfH6Z0rinDtRQQey97EMdEt1PmnDreS5IrcwOj75nvem/M
+	F/vLtnFo0IZIXJufDHEyAIc+7qN1b8Ho0ZpsgVYv5B0loNgzH5l0jgRWdl23KKtoaBF7s5wph0v
+	c5TvvtUrcO23qXBYvycj47S6K4EbjAh04gMZCk63XJbUAaBJFw1BNXYqyI2myAJ9A3Q8CATRmYg
+	iMOw1rFNrdy+UtzAt439qhHMKrUWulUnAFOfw3uefsi9rNRUbtcvovXUwbv1oceMg5zzw7XMATT
+	DeouU=
+X-Google-Smtp-Source: AGHT+IEwPgI2PMyh36TsB4cFQ6nVxGyr7VjhrmUJOuruhuGk2ewv9KZrs/y7ut/zER0wIRyQQ75R1w==
+X-Received: by 2002:a17:90b:4d0b:b0:312:dbcd:b93d with SMTP id 98e67ed59e1d1-31e3e1f0a8fmr3292875a91.14.1753168641015;
+        Tue, 22 Jul 2025 00:17:21 -0700 (PDT)
 Received: from localhost.localdomain (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c9f1fa8f1sm11099772a91.22.2025.07.22.00.17.13
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c9f1fa8f1sm11099772a91.22.2025.07.22.00.17.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 00:17:15 -0700 (PDT)
+        Tue, 22 Jul 2025 00:17:20 -0700 (PDT)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	arien.judge@morsemicro.com,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Subject: [wireless-next 1/2] wifi: mac80211: support encoding S1G TIM PVB
-Date: Tue, 22 Jul 2025 17:16:39 +1000
-Message-ID: <20250722071642.875875-2-lachlan.hodges@morsemicro.com>
+Subject: [wireless-next 2/2] wifi: mac80211: support parsing S1G TIM PVB
+Date: Tue, 22 Jul 2025 17:16:40 +1000
+Message-ID: <20250722071642.875875-3-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250722071642.875875-1-lachlan.hodges@morsemicro.com>
 References: <20250722071642.875875-1-lachlan.hodges@morsemicro.com>
@@ -91,270 +91,274 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-An S1G PPDU TIM PVB (Partial Virtual Bitmap) follows a different
-format to non-S1G PPDU's. An S1G TIM PVB breaks down the contiguous
-AID bitmap into encoded blocks and only sends an encoded block if
-there is at least one AID with buffered unicast traffic.
-
-An S1G PPDU TIM represents groups of AIDS with an array of encoded
-blocks. Each encoded block represents 64 AIDs and is only present if
-at least one AID within the group of 64 is present. Each encoded
-block can contain 0 to 8 subblocks, where each subblock represents 8
-AIDs. Similarly to the encoded blocks, sublocks are only added if there
-is at least 1 AID set within that subblock. If a subblock is present,
-the subblocks bit is set in the block bitmap which precedes the
-sublock bitmap.
-
-As page slicing is currently not supported by mac80211, we limit the
-S1G max AID to 1600. This is due to the fact that the TIM element has
-a maximum length of 255, such that we have DTIM count + DTIM period +
-bitmap control = 3 bytes, leaving us with 252 bytes for encoded
-blocks. Each encoded block has a maximum size of 10 bytes (assuming
-every AID is set) leaving us with 25 * 10 + 3 = 253 bytes.
-
-Correctly encode the S1G PPDU TIM PVB utilising the TIM bitmap.
+When parsing a TIM element from an S1G AP, ensure we correctly
+parse based on the S1G PPDU TIM PVB format, allowing an S1G STA
+to correctly enter/exit power save states to receive buffered
+unicast traffic. Also make sure we don't allocate over the
+mac80211 supported S1G PPDU AID count.
 
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- include/linux/ieee80211.h |  14 +++
- net/mac80211/tx.c         | 173 +++++++++++++++++++++++++++++++-------
- 2 files changed, 156 insertions(+), 31 deletions(-)
+ drivers/net/wireless/ath/carl9170/rx.c        |  2 +-
+ drivers/net/wireless/intersil/p54/txrx.c      |  2 +-
+ .../net/wireless/ralink/rt2x00/rt2x00dev.c    |  2 +-
+ drivers/net/wireless/realtek/rtlwifi/ps.c     |  2 +-
+ include/linux/ieee80211.h                     | 96 +++++++++++++++++--
+ net/mac80211/mesh_ps.c                        |  2 +-
+ net/mac80211/mlme.c                           | 15 +--
+ 7 files changed, 101 insertions(+), 20 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
+index 908c4c8b7f82..6833430130f4 100644
+--- a/drivers/net/wireless/ath/carl9170/rx.c
++++ b/drivers/net/wireless/ath/carl9170/rx.c
+@@ -555,7 +555,7 @@ static void carl9170_ps_beacon(struct ar9170 *ar, void *data, unsigned int len)
+ 	/* Check whenever the PHY can be turned off again. */
+ 
+ 	/* 1. What about buffered unicast traffic for our AID? */
+-	cam = ieee80211_check_tim(tim_ie, tim_len, ar->common.curaid);
++	cam = ieee80211_check_tim(tim_ie, tim_len, ar->common.curaid, false);
+ 
+ 	/* 2. Maybe the AP wants to send multicast/broadcast data? */
+ 	cam |= !!(tim_ie->bitmap_ctrl & 0x01);
+diff --git a/drivers/net/wireless/intersil/p54/txrx.c b/drivers/net/wireless/intersil/p54/txrx.c
+index 2deb1bb54f24..1294a1d6528e 100644
+--- a/drivers/net/wireless/intersil/p54/txrx.c
++++ b/drivers/net/wireless/intersil/p54/txrx.c
+@@ -317,7 +317,7 @@ static void p54_pspoll_workaround(struct p54_common *priv, struct sk_buff *skb)
+ 	tim_len = tim[1];
+ 	tim_ie = (struct ieee80211_tim_ie *) &tim[2];
+ 
+-	new_psm = ieee80211_check_tim(tim_ie, tim_len, priv->aid);
++	new_psm = ieee80211_check_tim(tim_ie, tim_len, priv->aid, false);
+ 	if (new_psm != priv->powersave_override) {
+ 		priv->powersave_override = new_psm;
+ 		p54_set_ps(priv);
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+index 432ddfac2c33..963c1e0af8b8 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+@@ -679,7 +679,7 @@ static void rt2x00lib_rxdone_check_ps(struct rt2x00_dev *rt2x00dev,
+ 	/* Check whenever the PHY can be turned off again. */
+ 
+ 	/* 1. What about buffered unicast traffic for our AID? */
+-	cam = ieee80211_check_tim(tim_ie, tim_len, rt2x00dev->aid);
++	cam = ieee80211_check_tim(tim_ie, tim_len, rt2x00dev->aid, false);
+ 
+ 	/* 2. Maybe the AP wants to send multicast/broadcast data? */
+ 	cam |= (tim_ie->bitmap_ctrl & 0x01);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/ps.c b/drivers/net/wireless/realtek/rtlwifi/ps.c
+index 6241e4fed4f6..bcab12c3b4c1 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/ps.c
++++ b/drivers/net/wireless/realtek/rtlwifi/ps.c
+@@ -519,7 +519,7 @@ void rtl_swlps_beacon(struct ieee80211_hw *hw, void *data, unsigned int len)
+ 
+ 	/* 1. What about buffered unicast traffic for our AID? */
+ 	u_buffed = ieee80211_check_tim(tim_ie, tim_len,
+-				       rtlpriv->mac80211.assoc_id);
++				       rtlpriv->mac80211.assoc_id, false);
+ 
+ 	/* 2. Maybe the AP wants to send multicast/broadcast data? */
+ 	m_buffed = tim_ie->bitmap_ctrl & 0x01;
 diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index e5a2096e022e..2a73f9e4b0ac 100644
+index 2a73f9e4b0ac..acf59ae631a7 100644
 --- a/include/linux/ieee80211.h
 +++ b/include/linux/ieee80211.h
-@@ -220,6 +220,20 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
- #define IEEE80211_MAX_AID_S1G		8191
- #define IEEE80211_MAX_TIM_LEN		251
- #define IEEE80211_MAX_MESH_PEERINGS	63
-+
-+/*
-+ * An S1G PPDU TIM PVB uses the notion of pages. Each page can reference
-+ * 2048 AIDs, however since mac80211 does not support page slicing we
-+ * are reusing the existing TIM bitmap, which supports up to 2008 AIDs.
-+ * As the TIM element has a maximum length of 255 bytes, and each encoded
-+ * block has a maximum length of 10 bytes at most we can support 25 blocks,
-+ * as 1 + 1 + 1 + 25 * 10 = 253 bytes, leaving our maximum AID count for
-+ * an S1G PPDU at 25 * 64 = 1600. If page slicing is introduced in the
-+ * future, this will need to be modified.
-+ */
-+#define IEEE80211_MAX_AID_S1G_NO_PS	1600
-+#define IEEE80211_MAX_S1G_TIM_BLOCKS	25
+@@ -234,6 +234,9 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
+ #define IEEE80211_MAX_AID_S1G_NO_PS	1600
+ #define IEEE80211_MAX_S1G_TIM_BLOCKS	25
+ 
++/* IEEE80211-2024 Block Control Encoding */
++#define IEEE80211_S1G_TIM_ENC_MODE_BLOCK	0x00
 +
  /* Maximum size for the MA-UNITDATA primitive, 802.11 standard section
     6.2.1.1.2.
  
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 00671ae45b2f..26f45d32d4a1 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4882,15 +4882,139 @@ void ieee80211_tx_pending(struct tasklet_struct *t)
+@@ -4771,15 +4774,8 @@ static inline unsigned long ieee80211_tu_to_usec(unsigned long tu)
+ 	return 1024 * tu;
+ }
  
- /* functions for drivers to get certain frames */
- 
-+static void ieee80211_beacon_add_tim_pvb(struct ps_data *ps,
-+					 struct sk_buff *skb, u8 aid0, u8 *tim)
-+{
-+	int i, n1 = 0, n2;
-+
-+	/*
-+	 * Find largest even number N1 so that bits numbered 1 through
-+	 * (N1 x 8) - 1 in the bitmap are 0 and number N2 so that bits
-+	 * (N2 + 1) x 8 through 2007 are 0.
-+	 */
-+	for (i = 0; i < IEEE80211_MAX_TIM_LEN; i++) {
-+		if (ps->tim[i]) {
-+			n1 = i & 0xfe;
-+			break;
-+		}
-+	}
-+	n2 = n1;
-+	for (i = IEEE80211_MAX_TIM_LEN - 1; i >= n1; i--) {
-+		if (ps->tim[i]) {
-+			n2 = i;
-+			break;
-+		}
-+	}
-+
-+	/* Bitmap control */
-+	skb_put_u8(skb, n1 | aid0);
-+	/* Part Virt Bitmap */
-+	skb_put_data(skb, ps->tim + n1, n2 - n1 + 1);
-+
-+	tim[1] = n2 - n1 + 4;
-+}
-+
-+/*
-+ * Unlike the non-S1G TIM, which encodes the contiguous range n_first‥n_last,
-+ * an S1G TIM transmits the bitmap as a sequence of encoded blocks. Each
-+ * encoded block contains the following:
-+ *  - one block-control byte,
-+ *  - one block-bitmap byte,
-+ *  - zero to eight sub-block bytes (one per set bit in the bitmap).
-+ *
-+ * Each encoded block covers 64 AIDs (8 * 8). mac80211 does not implement
-+ * page slicing, so we treat the whole PVB as belonging to a single page
-+ * (bitmap-control: page-slice 31, page-index 0) and support at most
-+ * 1600 AIDs (25 blocks * 64). We do this to reuse the existing bitmap
-+ * and allow for the worst case scenario where every single AID is set to
-+ * fit within the TIM maximum length of 255. If page slicing is to be added
-+ * a separate bitmap will need to be added to allow up to 8192 AIDs.
-+ *
-+ * Only encoding-mode 0 (block bitmap, non-inverse) is generated or
-+ * recognised; other encoding modes are not supported.
-+ */
-+static void ieee80211_s1g_beacon_add_tim_pvb(struct ps_data *ps,
-+					     struct sk_buff *skb, u8 aid0,
-+					     u8 *tim)
-+{
-+	int blk;
-+
-+	/*
-+	 * Emit a bitmap control block with a page slice number of 31 and a
-+	 * page index of 0 which indicates as per IEEE80211-2024 9.4.2.5.1
-+	 * that the entire page (2048 bits) indicated by the page index
-+	 * is encoded in the partial virtual bitmap.
-+	 */
-+	skb_put_u8(skb, aid0 | (31 << 1));
-+	tim[1]++;
-+
-+	/* Emit an encoded block for each non-zero sub-block */
-+	for (blk = 0; blk < IEEE80211_MAX_S1G_TIM_BLOCKS; blk++) {
-+		u8 blk_bmap = 0;
-+		int sblk, subcnt = 0;
-+
-+		for (sblk = 0; sblk < 8; sblk++) {
-+			int idx = blk * 8 + sblk;
-+
-+			if (idx >= IEEE80211_MAX_AID_S1G_NO_PS)
-+				break;
-+
-+			/*
-+			 * If the current subblock is non-zero, increase the
-+			 * number of subblocks to emit for the current block.
-+			 */
-+			if (ps->tim[idx]) {
-+				blk_bmap |= BIT(sblk);
-+				subcnt++;
-+			}
-+		}
-+
-+		/* If the current block contains no non-zero sublocks */
-+		if (!blk_bmap)
-+			continue;
-+
-+		/*
-+		 * Emit a block control byte for the current encoded block
-+		 * with an encoding mode of block bitmap (0x0), not inverse
-+		 * (0x0) and the current block offset (5 bits)
-+		 */
-+		skb_put_u8(skb, blk << 3);
-+
-+		/*
-+		 * Emit the block bitmap for the current encoded block which
-+		 * contains the present subblocks.
-+		 */
-+		skb_put_u8(skb, blk_bmap);
-+
-+		/* Emit the present subblocks */
-+		for (sblk = 0; sblk < 8; sblk++) {
-+			int idx = blk * 8 + sblk;
-+
-+			if (!(blk_bmap & BIT(sblk)))
-+				continue;
-+
-+			skb_put_u8(skb, ps->tim[idx]);
-+		}
-+
-+		/*
-+		 * Increase the tim length by the current encoded block
-+		 * length by block control + block bitmap + n_subblocks where
-+		 * n_subblocks represents the number of subblock bytes to emit
-+		 * for the current block.
-+		 */
-+		tim[1] += 1 + 1 + subcnt;
-+	}
-+}
-+
- static void __ieee80211_beacon_add_tim(struct ieee80211_sub_if_data *sdata,
- 				       struct ieee80211_link_data *link,
- 				       struct ps_data *ps, struct sk_buff *skb,
- 				       bool is_template)
+-/**
+- * ieee80211_check_tim - check if AID bit is set in TIM
+- * @tim: the TIM IE
+- * @tim_len: length of the TIM IE
+- * @aid: the AID to look for
+- * Return: whether or not traffic is indicated in the TIM for the given AID
+- */
+-static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
+-				       u8 tim_len, u16 aid)
++static inline bool __ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
++					 u8 tim_len, u16 aid)
  {
- 	u8 *pos, *tim;
--	int aid0 = 0;
--	int i, have_bits = 0, n1, n2;
-+	int aid0 = 0, have_bits = 0;
- 	struct ieee80211_bss_conf *link_conf = link->conf;
-+	bool s1g = ieee80211_get_link_sband(link)->band == NL80211_BAND_S1GHZ;
+ 	u8 mask;
+ 	u8 index, indexn1, indexn2;
+@@ -4802,6 +4798,88 @@ static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
+ 	return !!(tim->virtual_map[index] & mask);
+ }
  
- 	/* Generate bitmap for TIM only if there are any STAs in power save
- 	 * mode. */
-@@ -4906,9 +5030,10 @@ static void __ieee80211_beacon_add_tim(struct ieee80211_sub_if_data *sdata,
- 			ps->dtim_count--;
- 	}
- 
--	tim = pos = skb_put(skb, 5);
-+	pos = skb_put(skb, 4);
-+	tim = pos;
- 	*pos++ = WLAN_EID_TIM;
--	*pos++ = 3;
-+	*pos++ = 2;
- 	*pos++ = ps->dtim_count;
- 	*pos++ = link_conf->dtim_period;
- 
-@@ -4918,34 +5043,20 @@ static void __ieee80211_beacon_add_tim(struct ieee80211_sub_if_data *sdata,
- 	ps->dtim_bc_mc = aid0 == 1;
- 
- 	if (have_bits) {
--		/* Find largest even number N1 so that bits numbered 1 through
--		 * (N1 x 8) - 1 in the bitmap are 0 and number N2 so that bits
--		 * (N2 + 1) x 8 through 2007 are 0. */
--		n1 = 0;
--		for (i = 0; i < IEEE80211_MAX_TIM_LEN; i++) {
--			if (ps->tim[i]) {
--				n1 = i & 0xfe;
--				break;
--			}
--		}
--		n2 = n1;
--		for (i = IEEE80211_MAX_TIM_LEN - 1; i >= n1; i--) {
--			if (ps->tim[i]) {
--				n2 = i;
--				break;
--			}
--		}
--
--		/* Bitmap control */
--		*pos++ = n1 | aid0;
--		/* Part Virt Bitmap */
--		skb_put_data(skb, ps->tim + n1, n2 - n1 + 1);
--
--		tim[1] = n2 - n1 + 4;
-+		if (s1g)
-+			ieee80211_s1g_beacon_add_tim_pvb(ps, skb, aid0, tim);
-+		else
-+			ieee80211_beacon_add_tim_pvb(ps, skb, aid0, tim);
- 	} else {
--		*pos++ = aid0; /* Bitmap control */
--
--		if (ieee80211_get_link_sband(link)->band != NL80211_BAND_S1GHZ) {
++/* See ieee80211_s1g_beacon_add_tim_pvb for implementation documentation. */
++static inline bool ieee80211_s1g_check_tim(const struct ieee80211_tim_ie *tim,
++					   u8 tim_len, u16 aid)
++{
++	u8 bit_idx = aid & 0x7;
++	u8 sub_idx = (aid >> 3) & 0x7;
++	u8 blk_idx_target = (aid >> 6) & 0x1f;
++	u8 blk_bmap = 0;
++	const u8 *ptr = tim->virtual_map;
++	const u8 *end = (const u8 *)tim + tim_len + 2;
++
++	/*
++	 * When an S1G AP has no buffered unicast traffic, bitmap control and
++	 * PVB are not present.
++	 */
++	if (tim_len < 3)
++		return false;
++
++	/*
++	 * Enumerate each encoded block, for which we need at least block
++	 * control and block bitmap.
++	 */
++	while (ptr + 2 <= end) {
++		u8 blk_ctrl = *ptr++;
++		u8 enc_mode = blk_ctrl & 0x3;
++		u8 blk_idx = blk_ctrl >> 3;
++
++		/* If we are past our target block index, exit */
++		if (blk_idx > blk_idx_target)
++			break;
++
++		/* mac80211 only supports block bitmap encoding */
++		if (enc_mode != IEEE80211_S1G_TIM_ENC_MODE_BLOCK)
++			break;
++
 +		/*
-+		 * If there is no buffered unicast traffic for an S1G
-+		 * interface, we can exclude the bitmap control. This is in
-+		 * contrast to other phy types as they do include the bitmap
-+		 * control and pvb even when there is no buffered traffic.
++		 * If our target block doesn't exist within the block
++		 * that the current encoded block represents, move to the
++		 * next encoded block.
 +		 */
-+		if (!s1g) {
-+			/* Bitmap control */
-+			skb_put_u8(skb, aid0);
- 			tim[1] = 4;
- 			/* Part Virt Bitmap */
- 			skb_put_u8(skb, 0);
++		blk_bmap = *ptr++;
++		if (blk_idx < blk_idx_target) {
++			ptr += hweight8(blk_bmap);
++			continue;
++		}
++
++		/* Ensure our subblock is present */
++		if (!(blk_bmap & BIT(sub_idx)))
++			break;
++
++		/*
++		 * Count the number of subblocks that appear before our target
++		 * subblock, increment ptr by number of set subblocks.
++		 */
++		if (sub_idx)
++			ptr += hweight8(blk_bmap & GENMASK(sub_idx - 1, 0));
++
++		if (ptr >= end)
++			break;
++
++		/* Check our AID is present in the subblock */
++		return *ptr & BIT(bit_idx);
++	}
++
++	return false;
++}
++
++/**
++ * ieee80211_check_tim - check if AID bit is set in TIM
++ * @tim: the TIM IE
++ * @tim_len: length of the TIM IE
++ * @aid: the AID to look for
++ * @s1g: whether the TIM is from an S1G PPDU
++ * Return: whether or not traffic is indicated in the TIM for the given AID
++ */
++static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
++				       u8 tim_len, u16 aid, bool s1g)
++{
++	return s1g ? ieee80211_s1g_check_tim(tim, tim_len, aid) :
++		     __ieee80211_check_tim(tim, tim_len, aid);
++}
++
+ /**
+  * ieee80211_get_tdls_action - get TDLS action code
+  * @skb: the skb containing the frame, length will not be checked
+diff --git a/net/mac80211/mesh_ps.c b/net/mac80211/mesh_ps.c
+index 20e022a03933..ebab1f0a0138 100644
+--- a/net/mac80211/mesh_ps.c
++++ b/net/mac80211/mesh_ps.c
+@@ -586,7 +586,7 @@ void ieee80211_mps_frame_release(struct sta_info *sta,
+ 
+ 	if (sta->mesh->plink_state == NL80211_PLINK_ESTAB)
+ 		has_buffered = ieee80211_check_tim(elems->tim, elems->tim_len,
+-						   sta->mesh->aid);
++						   sta->mesh->aid, false);
+ 
+ 	if (has_buffered)
+ 		mps_dbg(sta->sdata, "%pM indicates buffered frames\n",
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index b4b7ea52c65e..2f893fb6d188 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -6348,6 +6348,7 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
+ 	};
+ 	u8 ap_mld_addr[ETH_ALEN] __aligned(2);
+ 	unsigned int link_id;
++	u16 max_aid = IEEE80211_MAX_AID;
+ 
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+ 
+@@ -6374,10 +6375,12 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
+ 	reassoc = ieee80211_is_reassoc_resp(mgmt->frame_control);
+ 	capab_info = le16_to_cpu(mgmt->u.assoc_resp.capab_info);
+ 	status_code = le16_to_cpu(mgmt->u.assoc_resp.status_code);
+-	if (assoc_data->s1g)
++	if (assoc_data->s1g) {
+ 		elem_start = mgmt->u.s1g_assoc_resp.variable;
+-	else
++		max_aid = IEEE80211_MAX_AID_S1G_NO_PS;
++	} else {
+ 		elem_start = mgmt->u.assoc_resp.variable;
++	}
+ 
+ 	/*
+ 	 * Note: this may not be perfect, AP might misbehave - if
+@@ -6401,8 +6404,6 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
+ 
+ 	if (elems->aid_resp)
+ 		aid = le16_to_cpu(elems->aid_resp->aid);
+-	else if (assoc_data->s1g)
+-		aid = 0; /* TODO */
+ 	else
+ 		aid = le16_to_cpu(mgmt->u.assoc_resp.aid);
+ 
+@@ -6447,7 +6448,7 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
+ 		event.u.mlme.reason = status_code;
+ 		drv_event_callback(sdata->local, sdata, &event);
+ 	} else {
+-		if (aid == 0 || aid > IEEE80211_MAX_AID) {
++		if (aid == 0 || aid > max_aid) {
+ 			sdata_info(sdata,
+ 				   "invalid AID value %d (out of range), turn off PS\n",
+ 				   aid);
+@@ -6485,6 +6486,7 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
+ 		}
+ 
+ 		sdata->vif.cfg.aid = aid;
++		sdata->vif.cfg.s1g = assoc_data->s1g;
+ 
+ 		if (!ieee80211_assoc_success(sdata, mgmt, elems,
+ 					     elem_start, elem_len)) {
+@@ -7432,7 +7434,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 	ncrc = elems->crc;
+ 
+ 	if (ieee80211_hw_check(&local->hw, PS_NULLFUNC_STACK) &&
+-	    ieee80211_check_tim(elems->tim, elems->tim_len, vif_cfg->aid)) {
++	    ieee80211_check_tim(elems->tim, elems->tim_len, vif_cfg->aid,
++				vif_cfg->s1g)) {
+ 		if (local->hw.conf.dynamic_ps_timeout > 0) {
+ 			if (local->hw.conf.flags & IEEE80211_CONF_PS) {
+ 				local->hw.conf.flags &= ~IEEE80211_CONF_PS;
 -- 
 2.43.0
 
