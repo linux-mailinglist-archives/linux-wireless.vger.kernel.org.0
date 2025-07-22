@@ -1,253 +1,239 @@
-Return-Path: <linux-wireless+bounces-25861-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25862-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E27EB0DAD5
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 15:30:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 113E4B0DC0D
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 15:57:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7627D7B135A
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 13:28:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00C97189596F
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 13:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4B92DFA46;
-	Tue, 22 Jul 2025 13:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAA328C039;
+	Tue, 22 Jul 2025 13:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="klrcRBVb"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ELEisUBA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C3E1DFE0B
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 13:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D23F2B9A5
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 13:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753190995; cv=none; b=cGuiVABEgBSXn8igPVoCQHmMMB+lHC9chZdU41BeYhXiGdVJRvk2ptwO7mVJltLwobBMzUTvZwlpXykfUqM2YwQQZgdvi3LYtYKgX1FQ1dNpmHTUKYdRXLoXEjYOXBxjWXcZbaYmf0nYf3owDEuCLvw5wagBaMQCJecUBvHCDgU=
+	t=1753192524; cv=none; b=ukkOz0FK75SRwgLns7iwvWPOAkNZNIaOlicv/g4HywC0/Sjq5sHNS4zz3UQgBxtCZU80LJXUBcoSn8xlakFc6h74czlcF1eeiDOpRq8I5RO6/d13MFdrsM9IisbIZtwQn6x9n2boWAPpyCXX3qZ+lj0/keq1mJhqg3dOkyoDnU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753190995; c=relaxed/simple;
-	bh=uyY460yuIUcqGCkrsqUyqABms3ymyiZnLJJvCCt3bnY=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=KRojg+TeZ8fZkVY7xP5r1ss67SoJBD2/4QDvp/ZpEl55I8rq0xFsSF7USQtC76fRDU3Q/NpVW2JgV3FfT8fKauBWgdmebCFQzQHJrnnPv9pAl+/hYcdK9V6dzBbY/9Sl8O4tSSDzqK6lhbNjkFHnlG6xQM5A6VWkoAFqRnj/MPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=klrcRBVb; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ae3ec622d2fso916349466b.1
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 06:29:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753190991; x=1753795791; darn=vger.kernel.org;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9L5eLWfpRVGDTkgGEXsNQBhY87X0Ks9hRpBU+RjKfPg=;
-        b=klrcRBVbVj/Vwga+eVH/QXlt7KN5PGECKmc4Lqru+SS3TUtluQGj3Q52JyRasANmws
-         BIyCKbaJXqSOQXxnd9b7oYVZQzkcH8q8kmXAEwdcWLDngd/uSwBerfvYczXeBBY+pKW6
-         4oz/z7D2MLdxlVAQHq0iPIW5fIJxtMpNuUpusf2kBYLpeFSGlNGzxL+Y35K2Mih9i34X
-         mEoeohQOrncI4H9JoQN50sx3LeBCDN/toYPQ3Qx0mfVmvuS2uox86RmG5/yIch+Q4DR/
-         9j0qH5Ts66UIz7iNyAXUYtNL8oXP07Ne/4FKz0bdOdk+0hzEySlhhxlxNKz5UA61Bc9t
-         JHZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753190991; x=1753795791;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9L5eLWfpRVGDTkgGEXsNQBhY87X0Ks9hRpBU+RjKfPg=;
-        b=Xl3yOVOOK8gc+t3g1neGMeKJkic4+ZcO5pDc28q8JTZxMgYybRS0aGtNm4mOrAeRVm
-         nr3+x+9d+yDqWNMZ0DI6aaTutRlydjRDsh9ZzROyvomFDAKNFc504u5ehCbilqCnuOxQ
-         m50iK8BxebSB5v+JQqqFxcA1fTJnv4nS00Mpf+wgse1tPopvgDF6Urme29Gb44PdhTvE
-         73l9hpom+GJwpw2Nv4KT8Ixs8/nrZYl9IbiFAMvc4u0Mz/1fIMw+juJFeAjKkSnOet2T
-         uD++en2hv0jwViK8CKS10VoVHlVa57yBY8Y7sUrH/r4SalmoQXwkSL7OCtyq+mk/BBVI
-         2nGw==
-X-Gm-Message-State: AOJu0YzM2OjuNJRkok+yNDJt8f2yrovDQETwIUykL5+u3sIdbbereLEm
-	QE4jAITBbnAkcbqLiXAF0/di1Mgn/tnFjLgZ9+unHzFi0x2M6YgMiUH7FFR35A==
-X-Gm-Gg: ASbGnct1q4zrcXe2qGLlmqYVOC5Riv6dvN7Hk2VnXMpzHRNmHT4o+KvZks2dGDK4+tO
-	r7Xk8iml3FpDwmBu4rsQ5cQaVYUvEoYuLsqvqiv5qQ8S9OS/PUSk12N45KyCwL5o6WJeaOVMd49
-	Y5+x5iUgAApUhzHUPfYtA2VE+HTz+Fq1TVpJo7eoAinugBC4Z5Y8M3Lyjul1k1X5ctcu+rWEqO1
-	rvswnNMe6Scv2HKIA+QmfDE80+vJBFKpExTZrisjlNgxh+7G9+pKJWKw/tRlnvm5iAZSYtWiDqA
-	+LCMA4FTbrRYozsTdqJZnIoH6So4H/V7JC/IQ+5+pfjUPGSx2qrGTZkxr0eyXBcVrdx6lnvc9Cq
-	qUrGY7PVpNL73lLFLva+TnMOZbJZA9ZuObYPbPGIFuGlgT8c4a4A0oiroh9hcL5D+/8XqZGirpm
-	F5
-X-Google-Smtp-Source: AGHT+IG6mByNAMv+sSN4YPOu8NBVlwO3lk/3SoWRcRY+/eAEnTwvFFQZwCV0fLYWG5QyxNtj+IPhhg==
-X-Received: by 2002:a17:907:2d0b:b0:ae1:f1e3:ccea with SMTP id a640c23a62f3a-ae9cdda2b2emr2512285466b.7.1753190991064;
-        Tue, 22 Jul 2025 06:29:51 -0700 (PDT)
-Received: from smtpclient.apple (89-66-237-154.dynamic.play.pl. [89.66.237.154])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c79a067sm866647766b.1.2025.07.22.06.29.50
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 22 Jul 2025 06:29:50 -0700 (PDT)
-From: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1753192524; c=relaxed/simple;
+	bh=7WAifMtPIdCthEICIIFD2Z3D9w/BKsOiSHv9eL5wK3I=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cuHmhXMR1dmoTo61VsIvIWFoQNld1ZTCqOYKipuXr/dfcEg0vLvwa93vwRW282gbo2ATR7UC1ayPw7U/vqAV6cVs8d2Pgm09KJSwt/06RSUvnm9nRcfWAK6LtpMXAiibUCh/wXlyoJHg4o8390NreW4sa/TdCX9GEDz/ySrczwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ELEisUBA; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=v6vG7ATQ29fMXm305NQvha/utHSVXGFOBtUckz7m2NI=;
+	t=1753192522; x=1754402122; b=ELEisUBAK1bMWbO1qPSP+QeidXfAKCO6TOMh6EXCy08XYio
+	Xv80p2ZPd7AusxM3ug8+CNBzGZA0FVhGj7q3EPC/KAfcFUOYy3ustvP8n3qNgw807bR2IzKo5cZ6s
+	gTIup1zdJvRt9UFlv3hkZWCXNCrBObUKXH5uRjCEL22bV9QEpP9qdlzM8jqd6/iAk/r4U7aXeKxIJ
+	XaMcjzgQYA2pOO1PQqfjQASkpmYfslxA73Hi0HUxHSc85LrZlIDznpIhS//xl9to2q/H2ccnhhUsT
+	er+sDY6tOJ+qUv7cxUkviw93BVPJPajMSJ+1qwJrITyuNYKcOGxj2sGAOE0JpMDQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1ueDSh-00000002CFu-31dE;
+	Tue, 22 Jul 2025 15:55:19 +0200
+Message-ID: <98abd0c936a6169a106682da9359c01708cf4ee9.camel@sipsolutions.net>
+Subject: Re: [wireless-next 2/2] wifi: mac80211: support parsing S1G TIM PVB
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Date: Tue, 22 Jul 2025 15:55:19 +0200
+In-Reply-To: <ksb6rptacpnyxbcep332q247agx2u62h6o3j4oqfestaal2b7x@el6snwrs4kx5> (sfid-20250722_143050_589582_7CE82ED3)
+References: <20250722071642.875875-1-lachlan.hodges@morsemicro.com>
+	 <20250722071642.875875-3-lachlan.hodges@morsemicro.com>
+	 <e60156bc1097385bceb624bac6bf55906947e6a9.camel@sipsolutions.net>
+	 <ksb6rptacpnyxbcep332q247agx2u62h6o3j4oqfestaal2b7x@el6snwrs4kx5>
+	 (sfid-20250722_143050_589582_7CE82ED3)
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf path' 
-Message-Id: <7407FAA3-F4A4-48AA-91E5-A78DA711447D@gmail.com>
-Date: Tue, 22 Jul 2025 15:29:39 +0200
-Cc: pkshih@realtek.com,
- rtl8821cerfe2@gmail.com,
- martin.blumenstingl@googlemail.com
-To: linux-wireless@vger.kernel.org
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-Guys,
+Hi Lachlan,
 
-I=E2=80=99m bringing rk3576 sbc (nanopi-r76s) to mainline linux.
+First: I missed the whole page slicing with its extra element and the
+capability when I read through it earlier. But then of course we can
+simply decide not to implement that on either side, i.e. client doesn't
+support it, and AP just doesn't take advantage of it (and thus is
+limited to fewer STAs even if some of them implement page slicing.)
 
-All works well except 8822cs wifi (m2 key module; sdio intf)
-
-my user spacce is iwd 3.9.
-linux-fw is current master.
-6.16-rc7 without any rtw88 related patches.
-
-8822cs is recognised by kernel but works ok only in 1 per 10 or so =
-boots.
-In other 9 non-working cases i=E2=80=99m getting:
-
-1. no any networks are discovered
-2. dmesg is stormed with
-
-[  106.684159] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-[  106.684667] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-[  106.685169] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-[  106.716150] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-[  106.718596] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-[  106.721630] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-[  106.722132] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-[  106.722632] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-[  106.723132] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-[  106.723683] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-[  106.730767] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-[  109.357579] rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
-
-(full dmesg: https://termbin.com/i1db )
-
-3. comparing debug output of iwd for working and non working states i =
-see:
-
-non-working=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=
-=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=
-=80=94=E2=80=94:
-
-Wiphy: 0, Name: phy0
-        Permanent Address: 70:68:71:a2:a8:0d
-        2.4GHz Band:
-                Bitrates (non-HT):
-                         1.0 Mbps
-                         2.0 Mbps
-                         5.5 Mbps
-                        11.0 Mbps
-                         6.0 Mbps
-                         9.0 Mbps
-                        12.0 Mbps
-                        18.0 Mbps
-                        24.0 Mbps
-                        36.0 Mbps
-                        48.0 Mbps
-                        54.0 Mbps
-                HT Capabilities:
-                        HT40
-                        Short GI for 20Mhz
-                        Short GI for 40Mhz
-                HT RX MCS indexes:
-                        0-7
-                        32
-        5GHz Band:
-                Bitrates (non-HT):
-                         6.0 Mbps
-                         9.0 Mbps
-                        12.0 Mbps
-                        18.0 Mbps
-                        24.0 Mbps
-                        36.0 Mbps
-                        48.0 Mbps
-                        54.0 Mbps
-                HT Capabilities:
-                        HT40
-                        Short GI for 20Mhz
-                        Short GI for 40Mhz
-                HT RX MCS indexes:
-                        0-7
-                        32
-                VHT Capabilities:
-                        Short GI for 80Mhz
-                        Max RX MCS: 0-9 for NSS: 1
-                        Max TX MCS: 0-9 for NSS: 1
-        Ciphers: BIP-CMAC-256 BIP-GMAC-256 BIP-GMAC-128 CCMP-256
-                 GCMP-256 GCMP-128 BIP-CMAC-128 CCMP-128
-                 TKIP
-        Supported iftypes: station
+(So we have dot11PageSlicingImplemented =3D false and
+dot11PageSlicingActivated =3D false as well.)
 
 
-working--------------------------:
+> > Which ... seems questionable? At least in terms of message it's not
+> > actually _invalid_ if it's out of this range, in theory S1G allows up t=
+o
+> > 8191.
+>=20
+> Yes, from a client side it is. See comments below.
 
-Wiphy: 0, Name: phy0
-        Permanent Address: 70:68:71:a2:a8:0d
-        2.4GHz Band:
-                Bitrates (non-HT):
-                         1.0 Mbps
-                         2.0 Mbps
-                         5.5 Mbps
-                        11.0 Mbps
-                         6.0 Mbps
-                         9.0 Mbps
-                        12.0 Mbps
-                        18.0 Mbps
-                        24.0 Mbps
-                        36.0 Mbps
-                        48.0 Mbps
-                        54.0 Mbps
-                HT Capabilities:
-                        HT40
-                        Short GI for 20Mhz
-                        Short GI for 40Mhz
-                HT RX MCS indexes:
-                        0-15
-                        32
-        5GHz Band:
-                Bitrates (non-HT):
-                         6.0 Mbps
-                         9.0 Mbps
-                        12.0 Mbps
-                        18.0 Mbps
-                        24.0 Mbps
-                        36.0 Mbps
-                        48.0 Mbps
-                        54.0 Mbps
-                HT Capabilities:
-                        HT40
-                        Short GI for 20Mhz
-                        Short GI for 40Mhz
-                HT RX MCS indexes:
-                        0-15
-                        32
-                VHT Capabilities:
-                        Short GI for 80Mhz
-                        Max RX MCS: 0-9 for NSS: 2
-                        Max TX MCS: 0-9 for NSS: 2
-        Ciphers: BIP-CMAC-256 BIP-GMAC-256 BIP-GMAC-128 CCMP-256
-                 GCMP-256 GCMP-128 BIP-CMAC-128 CCMP-128
-                 TKIP
-        Supported iftypes: station
+Maybe I'm confused, but what do you mean by invalid from the client
+side"? I've been looking now and didn't find any restrictions on the AID
+for STAs that e.g. don't implement page slicing, though of course an AP
+might want to e.g. reserve lower AIDs for them and always use higher
+AIDs for STAs with page slicing even if lower AIDs are free.
 
 
-As you see main diff is in HT RX MCS indexes and VHT caps.=20
+> > Also the parsing for S1G only parses a subset of the valid formats,
+> > notably the format that mac80211 can generate. That seems questionable,
+> > unless you expect there never to be another implementation (or the
+> > mac80211 one to never be extended) and you can basically make up your
+> > own standard?
+> >=20
+> > And even if you _do_ get an AID that's <1600 there's still no guarantee
+> > that the encoding will be in the bitmap format, if only two stations
+> > have traffic the AP might well decide to use the "Single AID" mode?
+> >=20
+> > So I'm overall a bit confused how all this is meant to work - even if
+> > only partially - because AID<1600 is no guarantee that you can parse th=
+e
+> > bitmap, so turning off powersave only for AID>=3D1600 will not really b=
+e
+> > sufficient?
+>=20
+> This is something we discussed internally, and in retrospect mac80211
+> should be able to parse all types, even though it may only encode a
+> single type. So actually my reasoning for this is not very good as it
+> was essentially "nobody uses the other encoding modes" but in the future
+> who knows if that will remain true...=20
 
-Working: HT RX MCS indexes: 0-15
-Non-working: HT RX MCS indexes: 0-7
+Yeah OK, that's fair, I'm really not going to push you too hard push
+into "must implement the spec faithfully" territory, and you know better
+than me what might be deployed or not matter, and lifetime of systems
+being built now possibly factors into it etc.
 
-Isn=E2=80=99t that 8-15 are for 2x2mimo?=20
-So maybe - by some reason - hw sometimes reports support for only 1x =
-mimo but receives from air 2x mimo (2 streams) and thats why I see hell =
-of "unsupported rf path"  errors from driver?  =20
+Mostly I'm asking because I didn't really understand what it was trying
+to do, so even clarifying that only part of it is implemented might be
+reasonable.
 
-My kernel is compiled with  CONFIG_RTW88_DEBUG=3Dy =
-CONFIG_RTW88_DEBUGFS=3Dy - so if there is need for any extra debug info =
-- i=E2=80=99ll be more than happy to provide=E2=80=A6.
+> After verifying with the standard and based on your feedback here is
+> what I propose:
+>=20
+> For a first implementation, we still won't support page slicing - but
+> this is fine as it is an advertised capability.
 
-If you have any ideas how to move forward with this - i=E2=80=99ll be =
-more than happy to listen.
- =20
+Right.
 
+> A new bitmap
+> should be added for S1G (as mentioned, probably a union of some sort
+> with the existing bitmap) that allows us to use the _actual_ S1G AID
+> count, this ensures correct interoperability into the future and is
+> safe due to page slicing being a discrete capabilitity.=20
+
+OK I don't even follow here ... I feel confused between the AP side and
+non-AP STA side now.
+
+If you talk about a union, do you literally mean in a struct or
+something? I'm not sure that really matters for either side? The AP side
+has the ps->tim bitmap, but that could even remain as is, even if it
+limits the # of STAs to 2008 right now. That's not a big deal, it just
+limits the AIDs to that, but that's an implementation choice. It just
+won't be able to have more STAs connected, but that's OK?
+
+(In principle, we don't even really _need_ the ps->tim bitmap as a
+bitmap, we could iterate the stations instead or something, but that's
+more expensive and so the ps->tim bitmap is an optimisation, at least I
+see it that way.)
+
+Obviously the AP side then for S1G can't just put the partial virtual
+bitmap from the ps->tim bitmap into the frame, but that's ultimately
+just a question of bit twiddling while building the frame too. So not
+sure where a union is needed for the AP side :)
+
+
+For the client side, similarly, all it has to do is be able to walk
+through the element (elements, if later implementing page slicing), and
+be able to identify whether or not its own bit is set, so it never
+really needs a holistic view of the bitmap.
+
+> So as per figure 9-214, we can still use a page slice number of 31 which
+> states that the entire page indicated by the page index is encoded in
+> the PVB, but given we now have a correctly sized AID bitmap we would
+> correctly determine the page index. On the AP side, we would encode
+> using block bitmap but correctly indicate the page index. On the STA
+> side, we'd properly decode the PVB with the ability to decode all possibl=
+e
+> formats. So this would consist of block bitmap, single AID, OLB and ADE
+> alongside their equivalent inverts.
+
+Yeah, that seems right.
+
+(And kunit tests for this parsing would probably be a good idea :) )
+
+> One concern I have is that without page slicing, we are limited to a TIM
+> of size 255. A single page represents 2048 AIDs (page index =3D 2 bits),
+> using block bitmap encoding we can overflow given worst case scenario.
+> Now the easy answer is to probably encode until we hit the maximum
+> length, allow STAs to clear their bit after the beacon and repeat.
+> Though maybe this isn't the nicest? Not sure. Obviously this is an
+> extreme case and would (hopefully) never happen in the real wordl but
+> still needs to be considered. Internally, we default to block bitmap
+> encoding and this isn't modified dynamically, same goes for most
+> (if not all) vendor implementations - but as mentioned the client needs
+> the ability to decode these other formats.
+
+If I'm reading the spec correctly, then the worst case for only encoding
+with block bitmaps would be having a large number of scattered AIDs
+indicate presence, which would require
+
+ - DTIM count [1 octet]
+ - DTIM period [1 octet]
+ - Bitmap Control [1 octet]
+    - B0 (depends on traffic)
+    - B1-B5: 31 (special page slice)
+    - B6-B7: 0b00 (page index 0)
+ - followed by a number B of blocks, numbered b=3D0..B-1, each:
+    - Block Control [1 octet]
+       - encoding mode: block bitmap
+       - inverse: 0
+       - block offset: b * 64
+    - Block Bitmap: 0xFF [1 octet, assuming worst case]
+    - subblocks [8 octets]
+
+so out of 255 octets, 3 are overhead, leaving 252 =3D 25*10+2 for up to 25
+blocks, for up to 64*25=3D1600 AIDs? I think? Which matches your 1600, so
+whew, maybe I did this right ;-)
+
+From that I'd argue the AP side should limit itself to AIDs 1..1599, I
+guess? Or actually maybe 64..1663 and use the block offset 1 higher, but
+probably not worth the added work just for 1 more AID.
+
+Once you get to/above 1600 you have a trade-off to make, you cannot
+indicate the absolute worst case without paging any more. You could hope
+that STAs will retrieve their data and then you get free blocks, some
+Block Bitmaps won't need to be 0xFF, and then you have more space, even
+without resorting to other encodings.
+
+Overall it's also an interesting optimisation problem how to best encode
+this ... if you have clustered bits then a block bitmap is better, if
+there are sparse bits then Single AID could be better. I can't easily
+discern the cases right now where OLB or ADE would be better.
+
+But I think for an initial implementation you could just leave that
+aside, limit AIDs to <1600, implement only block encoding and accept
+that it's just not optimal in many cases, but at least you won't have to
+worry about not being able to include some data?
+
+johannes
 
