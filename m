@@ -1,69 +1,71 @@
-Return-Path: <linux-wireless+bounces-25784-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25785-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F522B0D071
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 05:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C824B0D072
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 05:42:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83B743AE66E
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 03:41:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D40C3B20FB
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 03:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66D728A73F;
-	Tue, 22 Jul 2025 03:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026CA28B7C9;
+	Tue, 22 Jul 2025 03:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iAXJkJu8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UlnBaixM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADFC1DED5D
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 03:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C824B28B7E5
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 03:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753155716; cv=none; b=M4f4vLHpBeOaSWNN8GSEXVP8eWHj5qbLtF8xKBl+F8mZ/VzM5FMWO0EQhhcHsTCF8aVUsVGDNEHwCk0dxSfxxPS1xJew3moSZ2cnm45D0+lsoRoVn/xliDw6eEpWYAINO1VlfAjAH5Oe3Pc3LHj2gdVzgvWEBVZgSoFm5uoxbR8=
+	t=1753155718; cv=none; b=MQzYInxaOvIeRWTllOZYAhfcat1Q5OZ4swip+420JQm2LoNotLAiwIfXGeWjBoQzKNC8iGyW9Ia4Q7lHm1BH2c0Q8lB/gS9zEitgees04WC4+vOHbnBirHAYyQoNzM6s+q7oNcQYYN3KJsB8gVqHaFUaTzS8TepOoKil0AuA3o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753155716; c=relaxed/simple;
-	bh=fedxfWiJT3tDqebGtIpE0p+0YG+1ZfVe2AnGvAbHFdM=;
+	s=arc-20240116; t=1753155718; c=relaxed/simple;
+	bh=4LgHXbtObKheDq2SdSF+ueGU8ZkouyyX/UvjL/Shu78=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=E3Qfxmg94MYk6NODCVkckTZ7yYBhIcm64RosQQ26K6XbfrFWblXcij80jI2VByyef+Yo85bkM5271Z2e7r0R8ZB4D0cPeX+LLoWvb6owf2Sl3wyP8KrhizfqqCZ7zVD/jDabPJCNlfkqToSbAGv50F0/WocKYf+9mF2h0/j+i1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iAXJkJu8; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=Ah6ob/ldcHFQaKFKDtJgldU4VU4xczO1R2DmEcFcAShwwiu6UZN0hMtOTIgrIjF351OU2WFRtfmQBgR7gRESjc7+/HcZaLjV1KGF3MhC5fKRGst0Mt/kSxqoY6PfmNLPtCxFT/NomcPHHQIdbCD6nzw4VsioZ1JGXnZsy1HV0fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UlnBaixM; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753155714; x=1784691714;
+  t=1753155716; x=1784691716;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=fedxfWiJT3tDqebGtIpE0p+0YG+1ZfVe2AnGvAbHFdM=;
-  b=iAXJkJu8+SGx+jrBBhSlLhYdlI9La9b2ZRF2xSVYClgTi/Hkkyu2tURP
-   h6Mg/tTXXe6urZbhGPV5WrqjgQmEPk8241r19fzaWLcGQdWL933LKUAjy
-   1kQ0OFpr8KHaOapcp8/gZuCoBnLpVY/3z2bY6Ck0b7NQJo8/dQ2ZZtzOB
-   fVO23A/1gxJ3H+mQwCage5GSw/kqK1SalLftGsqyG1wZkGDy25uKF4AkP
-   SVbNa6ZVG5gijp2PYalDDY2E+HCy186pxZbArvRsJLFyl7M8pVWl4QNbP
-   1Gi1F4qZho2Yk+kUY/PLBaG++yjLj7mPLclG7BZZ17e0+6T9eiqa41+eN
-   Q==;
-X-CSE-ConnectionGUID: wYsBa2qSSdae58ki5KUPZw==
-X-CSE-MsgGUID: kbxrMGZbTRy2U6uH69doTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="43006156"
+  bh=4LgHXbtObKheDq2SdSF+ueGU8ZkouyyX/UvjL/Shu78=;
+  b=UlnBaixMzXDyaXAr6cnDf8PN2xDEBiBauHIiAZE6DCziu/YSEZan5D1F
+   FZWDsLzzQjsljJgFe7p0KUf9dJsQ/tUKKpK7QQy131w4T4NFFGTJfD9Xz
+   Kf7ffexiphpLPIldFJ+uxJY3ooXl9SBN6HXv7ODhkZa1M/fWGVyWE1Ls1
+   gIMxcw04LUj65wFbPDKDgYLpH1sSyO+ZZZ+jgnjyTFE9Elo7uixG1IYyk
+   leU5NqC1HqX2l2Llvh7jjiKJV3gSN7oXITG095sKi0TCJHLhIz5FvRoMk
+   +R5bAlNtPE8EZLSgp9zY+8Fjl5GbGf7Da2H5/AYMj+i4IVssZXiizac3K
+   g==;
+X-CSE-ConnectionGUID: i1TkZmihQGahpTa40pq76w==
+X-CSE-MsgGUID: SVG0TfdqQc2DhfrlaP4lAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="43006157"
 X-IronPort-AV: E=Sophos;i="6.16,330,1744095600"; 
-   d="scan'208";a="43006156"
+   d="scan'208";a="43006157"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 20:41:54 -0700
-X-CSE-ConnectionGUID: mcCtIfchSbuiKudsDXK74w==
-X-CSE-MsgGUID: 7gJziRbSRm2FDOSABL1SCA==
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 20:41:56 -0700
+X-CSE-ConnectionGUID: fKiPNcvJSBmZKl6K56o44g==
+X-CSE-MsgGUID: UXsp7WjsTkKPrnLvxuO3pw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,330,1744095600"; 
-   d="scan'208";a="159338085"
+   d="scan'208";a="159338096"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 20:41:53 -0700
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 20:41:54 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 05/15] wifi: iwlwifi: disable certain features for fips_enabled
-Date: Tue, 22 Jul 2025 06:41:15 +0300
-Message-Id: <20250722063923.7ca4f6e236fc.I0be27dd329643cc5fdf79a8c8b8f6d2e6fb5c175@changeid>
+Cc: Avraham Stern <avraham.stern@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi-next 06/15] wifi: iwlwifi: mvm: avoid outdated reorder buffer head_sn
+Date: Tue, 22 Jul 2025 06:41:16 +0300
+Message-Id: <20250722063923.0b53860259d5.I9ec9a3508e7935e8d1833ea3e086066fdefee644@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250722034125.1017387-1-miriam.rachel.korenblit@intel.com>
 References: <20250722034125.1017387-1-miriam.rachel.korenblit@intel.com>
@@ -76,197 +78,45 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-When fips_enabled is set, keys will not be given to the
-hardware by mac80211 since the hardware isn't certified.
-In this case, various features cannot work correctly as
-the firmware needs to handle frames, but it then cannot
-since no keys are available.
+If no frames are received on a queue for a while, the reorder buffer
+head_sn may be an old one. When the next frame that is received on
+that queue and buffered is a subframe of an AMSDU but not the last
+subframe, it will not update the buffer's head_sn. When the frame
+release notification arrives, it will not release the buffered frame
+because it will look like the notification's NSSN is lower than the
+buffer's head_sn (because of a wraparound).
+Fix it by updating the head_sn when the first frame is buffered.
 
-Disable features:
- - WoWLAN since no keys etc.
- - MFP since some frames need to be handled in firmware
- - EHT/6GHz since MFP is required
-
-Also restrict A-MSDU size since A-MSDUs cannot be split
-up by hardware and thus need to fit into the RX buffers
-in one piece.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 25 ++++++++++++++++---
- .../net/wireless/intel/iwlwifi/mld/mac80211.c | 11 +++++++-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 16 +++++++++---
- 3 files changed, 43 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 4424443d2328..a67b9572aac3 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -5,6 +5,7 @@
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
- #include <linux/types.h>
-+#include <linux/fips.h>
- #include <linux/slab.h>
- #include <linux/export.h>
- #include <linux/etherdevice.h>
-@@ -543,16 +544,22 @@ static void iwl_init_vht_hw_capab(struct iwl_trans *trans,
- 	else
- 		vht_cap->cap |= IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 4b57ca56e1f6..62e76a79f621 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -905,10 +905,15 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
+ 	 * already ahead and it will be dropped.
+ 	 * If the last sub-frame is not on this queue - we will get frame
+ 	 * release notification with up to date NSSN.
++	 * If this is the first frame that is stored in the buffer, the head_sn
++	 * may be outdated. Update it based on the last NSSN to make sure it
++	 * will be released when the frame release notification arrives.
+ 	 */
+ 	if (!amsdu || last_subframe)
+ 		iwl_mvm_release_frames(mvm, sta, napi, baid_data,
+ 				       buffer, nssn);
++	else if (buffer->num_stored == 1)
++		buffer->head_sn = nssn;
  
-+	/*
-+	 * With fips_enabled crypto is done by software, so the HW cannot
-+	 * split up A-MSDUs and the real limit that was set applies.
-+	 * Note that EHT doesn't honour this (HE copies the VHT value),
-+	 * but EHT is also entirely disabled for fips_enabled.
-+	 */
- 	switch (iwlwifi_mod_params.amsdu_size) {
- 	case IWL_AMSDU_DEF:
--		if (trans->mac_cfg->mq_rx_supported)
-+		if (trans->mac_cfg->mq_rx_supported && !fips_enabled)
- 			vht_cap->cap |=
- 				IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454;
- 		else
- 			vht_cap->cap |= IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_3895;
- 		break;
- 	case IWL_AMSDU_2K:
--		if (trans->mac_cfg->mq_rx_supported)
-+		if (trans->mac_cfg->mq_rx_supported && !fips_enabled)
- 			vht_cap->cap |=
- 				IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454;
- 		else
-@@ -909,7 +916,9 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
- 	bool slow_pcie = (!trans->mac_cfg->integrated &&
- 			  trans->info.pcie_link_speed < PCI_EXP_LNKSTA_CLS_8_0GB);
- 
--	if (!data->sku_cap_11be_enable || iwlwifi_mod_params.disable_11be)
-+	/* EHT needs WPA3/MFP so cannot do it for fips_enabled */
-+	if (!data->sku_cap_11be_enable || iwlwifi_mod_params.disable_11be ||
-+	    fips_enabled)
- 		iftype_data->eht_cap.has_eht = false;
- 
- 	/* Advertise an A-MPDU exponent extension based on
-@@ -1197,11 +1206,19 @@ static void iwl_init_sbands(struct iwl_trans *trans,
- 	n_used += iwl_init_sband_channels(data, sband, n_channels,
- 					  NL80211_BAND_6GHZ);
- 
--	if (data->sku_cap_11ax_enable && !iwlwifi_mod_params.disable_11ax)
-+	/*
-+	 * 6 GHz requires WPA3 which requires MFP, which FW cannot do
-+	 * when fips_enabled, so don't advertise any 6 GHz channels to
-+	 * avoid spending time on scanning those channels and perhaps
-+	 * even finding APs there that cannot be used.
-+	 */
-+	if (!fips_enabled && data->sku_cap_11ax_enable &&
-+	    !iwlwifi_mod_params.disable_11ax)
- 		iwl_init_he_hw_capab(trans, data, sband, tx_chains, rx_chains,
- 				     fw);
- 	else
- 		sband->n_channels = 0;
-+
- 	if (n_channels != n_used)
- 		IWL_ERR_DEV(dev, "NVM: used only %d of %d channels\n",
- 			    n_used, n_channels);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index c6e61c843f77..3ea6d4c1b779 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -4,6 +4,7 @@
-  */
- 
- #include <net/mac80211.h>
-+#include <linux/fips.h>
- #include <linux/ip.h>
- 
- #include "mld.h"
-@@ -156,6 +157,9 @@ static void iwl_mld_hw_set_security(struct iwl_mld *mld)
- 		WLAN_CIPHER_SUITE_BIP_GMAC_256
- 	};
- 
-+	if (fips_enabled)
-+		return;
-+
- 	hw->wiphy->n_cipher_suites = ARRAY_SIZE(mld_ciphers);
- 	hw->wiphy->cipher_suites = mld_ciphers;
- 
-@@ -180,6 +184,9 @@ static void iwl_mld_hw_set_pm(struct iwl_mld *mld)
- 	if (!device_can_wakeup(mld->trans->dev))
- 		return;
- 
-+	if (fips_enabled)
-+		return;
-+
- 	mld->wowlan.flags |= WIPHY_WOWLAN_MAGIC_PKT |
- 			     WIPHY_WOWLAN_DISCONNECT |
- 			     WIPHY_WOWLAN_EAP_IDENTITY_REQ |
-@@ -284,9 +291,11 @@ static void iwl_mac_hw_set_wiphy(struct iwl_mld *mld)
- 			WIPHY_FLAG_SUPPORTS_TDLS |
- 			WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK;
- 
-+	/* For fips_enabled, don't support WiFi7 due to WPA3/MFP requirements */
- 	if (mld->nvm_data->sku_cap_11be_enable &&
- 	    !iwlwifi_mod_params.disable_11ax &&
--	    !iwlwifi_mod_params.disable_11be)
-+	    !iwlwifi_mod_params.disable_11be &&
-+	    !fips_enabled)
- 		wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
- 
- 	/* the firmware uses u8 for num of iterations, but 0xff is saved for
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index fa9d5e0b6609..55ae1caded53 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -5,6 +5,7 @@
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
- #include <linux/kernel.h>
-+#include <linux/fips.h>
- #include <linux/slab.h>
- #include <linux/skbuff.h>
- #include <linux/netdevice.h>
-@@ -461,7 +462,9 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
- 		IWL_ERR(mvm,
- 			"iwlmvm doesn't allow to disable BT Coex, check bt_coex_active module parameter\n");
- 
--	ieee80211_hw_set(hw, MFP_CAPABLE);
-+	if (!fips_enabled)
-+		ieee80211_hw_set(hw, MFP_CAPABLE);
-+
- 	mvm->ciphers[hw->wiphy->n_cipher_suites] = WLAN_CIPHER_SUITE_AES_CMAC;
- 	hw->wiphy->n_cipher_suites++;
- 	if (iwl_mvm_has_new_rx_api(mvm)) {
-@@ -485,12 +488,17 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
- 		hw->wiphy->pmsr_capa = &iwl_mvm_pmsr_capa;
- 	}
- 
--	if (sec_key_ver &&
-+	/*
-+	 * beacon protection must be handled by firmware,
-+	 * so cannot be done with fips_enabled
-+	 */
-+	if (!fips_enabled && sec_key_ver &&
- 	    fw_has_capa(&mvm->fw->ucode_capa,
- 			IWL_UCODE_TLV_CAPA_BIGTK_TX_SUPPORT))
- 		wiphy_ext_feature_set(hw->wiphy,
- 				      NL80211_EXT_FEATURE_BEACON_PROTECTION);
--	else if (fw_has_capa(&mvm->fw->ucode_capa,
-+	else if (!fips_enabled &&
-+		 fw_has_capa(&mvm->fw->ucode_capa,
- 			     IWL_UCODE_TLV_CAPA_BIGTK_SUPPORT))
- 		wiphy_ext_feature_set(hw->wiphy,
- 				      NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT);
-@@ -730,7 +738,7 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
- 
- #ifdef CONFIG_PM_SLEEP
- 	if ((unified || mvm->fw->img[IWL_UCODE_WOWLAN].num_sec) &&
--	    device_can_wakeup(mvm->trans->dev)) {
-+	    device_can_wakeup(mvm->trans->dev) && !fips_enabled) {
- 		mvm->wowlan.flags |= WIPHY_WOWLAN_MAGIC_PKT |
- 				     WIPHY_WOWLAN_DISCONNECT |
- 				     WIPHY_WOWLAN_EAP_IDENTITY_REQ |
+ 	spin_unlock_bh(&buffer->lock);
+ 	return true;
 -- 
 2.34.1
 
