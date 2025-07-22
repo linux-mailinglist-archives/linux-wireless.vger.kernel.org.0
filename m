@@ -1,108 +1,199 @@
-Return-Path: <linux-wireless+bounces-25859-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25860-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EDBFB0D9D8
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 14:39:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14662B0DA79
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 15:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C5CD560BDB
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 12:39:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEDFF6C480F
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 13:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503B928C5AC;
-	Tue, 22 Jul 2025 12:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133A12DA76F;
+	Tue, 22 Jul 2025 13:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="g6zTnuQo"
+	dkim=pass (1024-bit key) header.d=fronius.com header.i=@fronius.com header.b="OipAOWrJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx01.fronius.com (mx01.fronius.com [213.33.117.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF9323ED75
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 12:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D7A2DA767;
+	Tue, 22 Jul 2025 13:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.33.117.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753187951; cv=none; b=TMn4MipFqVa09S7AEjZq5Pn44ortqtKFlTWuimfWeOJB6RTtYgS67PG15B2Qhrn2qUQeqCAMdH3h4FUPEymruexjJKQeUt8gNIbljeCntXqPbAzN36MC2obXKj9WxnU+IJ23U610Y6YfBrXWSgk9el23m4+chSnmzerA7konKAo=
+	t=1753189333; cv=none; b=WYsVJj9YGWb00+wj/pOthSG7vZdfD8E9TEXer8Y+6sd7zmifHOsu2gGU7xO8GDcKAzK59ZrxPBZqz8PKPIejIeewf+iTRrFxtSrOcCIs5TXEyf/QdRB2CuoSOgNuvqfcGz9YAFDs0KKtnX9ZEQQx4LdX3AJR3Jtz0uxiDGnA5As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753187951; c=relaxed/simple;
-	bh=rm+a646p1zody1XxGmzWQ9FJvktgnJtT/gHpXWAMGI0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gevbthF7nE4Ek5+4CEUs8PKbNxvkQmdd0RDtDHN2XHAnvYEFABOCAARhTvio5MuBTgQ9LpUgXay4R26M7cZtv+qm68Oz1dHHYXdoxAJQPdeFkOwnJqvQrdE4GX7rtR/Alc6FzUQi9pTz+YPtR3Fb3mK8TTiW2F9LSofaKJ1NkLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=g6zTnuQo; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b391ca6146eso4830527a12.3
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 05:39:09 -0700 (PDT)
+	s=arc-20240116; t=1753189333; c=relaxed/simple;
+	bh=VqMMqbK/fst5K37xnNgIoLGKG0pUcpwCFbhYyZmDf2s=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=e5MfYbeu3jX07ueHmf+x9FfHKTutR/5h8m+gDWi3nHJJBEWLAxpYwd4K3Wzhnmpid0sFKznTUH92QMqz8I0Jnjbw/nd8jB52la5szAYM8Tb1plyVTtRQrcz5kan1JL+fIFaMx3wR/4oUFpR6s3WUPMiO9ruwaW3hdP6j7inkJto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fronius.com; spf=pass smtp.mailfrom=fronius.com; dkim=pass (1024-bit key) header.d=fronius.com header.i=@fronius.com header.b=OipAOWrJ; arc=none smtp.client-ip=213.33.117.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fronius.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fronius.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1753187949; x=1753792749; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wOTLvwnvyDZ6xMR5KiMN+m3JOZsC8PXj5HrYfUvsZJg=;
-        b=g6zTnuQoYBwiT2g+Lq5J7jdb240SIFZhIbNYZ2CJxIZeM2joaZSSGR0gJUYyl1cIvF
-         oJjlaBr/8B5Rcv1brWj7iz2AB/IS5EsX2KeBoU6MAbIs/S3rqnFPdGKIt0QLrL3SnpCk
-         Qr+LVctUbzSaumY4m/s0xTFQTO3EPHNAq4cWg5ZbgQJEie+KfS5zMtPI+F2Y4i7Amnl4
-         PJqWOdXjW/H95AUDgHPYC+YqZZUxxIyOECFJxxYYQBRk9erv6EEI04rMMcJgcCnKZ3dU
-         GwtrNaD40lG6XYmnV4jEcJme3ckxRO6X5a7hJtT8hMrCC6U3rraZO87ypo7ykvNnrByX
-         /9Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753187949; x=1753792749;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wOTLvwnvyDZ6xMR5KiMN+m3JOZsC8PXj5HrYfUvsZJg=;
-        b=soHoKqL/KvzHi3JvrmKjx9P3GbFqfOTghAv9lz1PNHrRdybx5yrS9q0U5TsE6kmsym
-         7LjPL0E/rDKnCNMGoJ3EUKgftx+WpVsApXnCMiiddBpX8eg/dWwFm9g5jQ7mzjFNpT1v
-         BE7CE5vYNZWCR97R0wNF+stzAF/CA7mm3KltSKzkSx/Kx+wBRNKwa4+rSkb9jYOPGV9s
-         qmvL5mIa7WLldZA4CZDW4CGa3oZa9k5shDEvNzxmwrlnn6kBKho+HbTEFnKUWptK+rCx
-         s2alnH7K7DbUEQsrgd8eBca946xgTwlKqiozvl2hbhcVaTrBzT2JYwyda4oyazIH+89j
-         s7nA==
-X-Gm-Message-State: AOJu0YxbeAul0bNd9rzrKhX0M47VGrn96Y/hZachyJmGXgc5CSQp0zcf
-	5WK+QWc46RKGBQQ1XwIN6dK/EUPcQcdepgePeVNVa+tlQSVIGw4tGSsNBCeZmVMl+nI=
-X-Gm-Gg: ASbGnct+AnySL+KUiWzb6+jypxdlmny4znoY2PV2JA9bl8I9BEJJHzQiGXMAHB6ObbG
-	CJ4XWH0rozVfhiFb4z7tR88CjKirGWlUJkkgIQc8OpGyoir4fQwPPxWpvrZl93hvTcQuHMEP39v
-	5F+WbVmUoHWaut3+ux6ceikFd419NGtiChmnvzOP2nohYMnLDad08bhtIaZNzGWLImYISZgqBQ8
-	BMR5fGoTdKmUWhdcC6sPHl6BtGODex3R8gv8f3OvSfOMleTosvOJOcs2JkeDMndc/xq3I1BGqzk
-	9kK0tOuekeJEDUDGu0V3Tl9wb+peF6Q2CGwMVDAGp64mf7OWonhDNDEONSyvOxRszg8dVEsfl4o
-	yDYAV5knH6P3sKMX8NcKgF1RtalPsLw0=
-X-Google-Smtp-Source: AGHT+IG0ihhD4MBlBQKhPhYMYYXBP/08z0Zkw+BIvevvSH66FTXT2XM5fFkFuGO3hRZsoCLL7+Tdqw==
-X-Received: by 2002:a17:90b:2584:b0:311:df4b:4b81 with SMTP id 98e67ed59e1d1-31caf8ef446mr26087067a91.25.1753187948726;
-        Tue, 22 Jul 2025 05:39:08 -0700 (PDT)
-Received: from localhost ([101.180.88.40])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b6f2184sm75726425ad.224.2025.07.22.05.39.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 05:39:08 -0700 (PDT)
-Date: Tue, 22 Jul 2025 22:39:05 +1000
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Subject: Re: [wireless-next 0/2] wifi: support S1G TIM encoding
-Message-ID: <vyuemvg55sju7caufqymxzx33mmlm56a2atwoxfd3ho53zklf5@vdcznigys7xw>
-References: <20250722071642.875875-1-lachlan.hodges@morsemicro.com>
- <tx3gim4qbf6qmwd4u6kqspzu7n37cih42elgbnwedxogvpkxcn@vmzo7fiyrshw>
- <c116cc5f1258693d67a28b9282da4cf8c94413f5.camel@sipsolutions.net>
+  d=fronius.com; s=s1;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=lZXg7IlYCNysrBEGTDmUEgh4K7F5kJfCBni7fk6/FZA=;
+  b=OipAOWrJn+ULO+s8Wxf5YX1d3UBlcxOeVd3WdMsnP/9fmz6MnQKQO3jX
+   CspzPkFXfQdZ6VU8TiRd0IdkTUndC9Df6ITjf4FUT3wAyy2A2L/t0ydU4
+   pDhc5wvgGjWSwBzQ/daZ+tFXfzEc5/uyipEv740ohMoXDXSN1h5chZu/8
+   s=;
+X-CSE-ConnectionGUID: 4tdAo4QURf+u0PMgFJcGpw==
+X-CSE-MsgGUID: 9kacHeSvQK+XGkmIdZybFw==
+X-ThreatScanner-Verdict: Negative
+IronPort-Data: A9a23:YVjWz6vVlVeCzyAW2r9cNhAcZ+fnVPFfMUV32f8akzHdYApBsoF/q
+ tZmKTzVOfaMazHwKd9xOYuz8B5XvsSAmodiGQI//iowEi1H9ZOVVN+UEBzMMnLJJKUvbq7HA
+ +byyzXkBJppJpMJjk71atANlVEli+fQAOO6ULeVUsxIbVcMYD87jh5+kPIOjIdtgNyoayuAo
+ tqaT/f3YTdJ4BYqdDtKg06/gEk35qmq52lC5gVWic1j5zcyqVFEVPrzGonsdxMUcqEMdsamS
+ uDKyq2O/2+x138FFtO/n7/nRVYBS7jUMBLmoiI+t3+K20UqSoQai87XBdJEAatlo2zhc+NZk
+ b2hgaeNpTIBZcUgrgi/vy5wSEmSNYUekFPOCSLi4JbLlxWun3HEmp2CB2lvVWEU0rwqUDsWr
+ aRwxJngoXlvisrvqI9XRNWAiex/MMXCO98mh0tujiyBNdMpb7LIbL3VsIowMDcY3qiiHN73W
+ 480UgpRSVGZP0MQfFkND5Q/gfzujX76G9FagAvN4/BxujGVkFEZPLvFabI5fvSlTMFRn12Do
+ X6A2m3lAhAXKfSR0z2D82+3wOTImEsXXapLROPiqaYw3gz7Kmo7WR4fXnu2mueAqQ2OdNFaC
+ kAm6yAAsv1nnKCsZpynN/Gim1aGsxASHdFQHusNsSmL2rKS6AGcbkAOVD9Ibpomr9IeQywyk
+ FSOmrvBDyZuubuTTmiH96y8pjOoPi0UMGpEYjULJSML+dDlq4wohRXnQtFnG6+zj5v0BVnYw
+ TeKpS44iq47ls8TzKK/4EzGhDS34J7EUmYd4gTRQ3Lg7Q5jYoOhT5Kn5EKd7vtaKoudCF6bs
+ xAsn8mY8fBLEpCXmSiAW/4lAr6k/bCGPSfajFopGIMunxy2vX6qYI1KyClzIkh0LtwDfz75J
+ kPe0StN/4JVMz6qdq56ZcSxEMUnzYDmBcyjXffRBueiebAoLEndung3IxLNt4zwrHURfWgEE
+ c/zWa6R4bwyUsyLEBLeqz8h7IIW
+IronPort-HdrOrdr: A9a23:D57CbqqbV3QVKf2lh03c1UcaV5odeYIsimQD101hICG9Kvbo9f
+ xHnJwguSMc+wxhPU3I/urwQJVoIEmsjKKdjrNwAV7PZmPbUQiTXfpfBOnZsl7d8kTFn4Y36U
+ 4KScdD4ajLbGSS+vyV3ODXKbsdKZK8gcSVbK/lvhBQpC9RGsdd0zs=
+X-Talos-CUID: 9a23:7CdkZ2991QszpE7o9jGVvxIIFukiLkTg9nmTPheALGlHara6UUDFrQ==
+X-Talos-MUID: =?us-ascii?q?9a23=3A9jtIMg054D6me0pYiXRWpJqm6jUjsqenA2AAqos?=
+ =?us-ascii?q?/mIq0Gi91GjuvnT6ZXdpy?=
+X-IronPort-AV: E=Sophos;i="6.16,331,1744063200"; 
+   d="scan'208";a="186270269"
+X-IronPort-Outbreak-Status: No, level 0, Unknown - Unknown
+From: Gallissot Mathieu <Gallissot.Mathieu@fronius.com>
+To: "jeff.chen_1@nxp.com" <jeff.chen_1@nxp.com>
+CC: "brian.hsu@nxp.com" <brian.hsu@nxp.com>, "briannorris@chromium.org"
+	<briannorris@chromium.org>, "francesco@dolcini.it" <francesco@dolcini.it>,
+	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"tsung-hsien.hsieh@nxp.com" <tsung-hsien.hsieh@nxp.com>
+Subject: Re: [PATCH v4 00/22] wifi: nxpwifi: create nxpwifi to support iw61x
+Thread-Topic: Re: [PATCH v4 00/22] wifi: nxpwifi: create nxpwifi to support
+ iw61x
+Thread-Index: Adv7B52mU5UDxz+jT+K2qBGBtnR/zg==
+Date: Tue, 22 Jul 2025 13:00:57 +0000
+Message-ID: <cb3be497fa7a45e68d9be6f9b8bc47b5@fronius.com>
+Accept-Language: fr-FR, de-AT, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c116cc5f1258693d67a28b9282da4cf8c94413f5.camel@sipsolutions.net>
 
-On Tue, Jul 22, 2025 at 01:35:10PM +0200, Johannes Berg wrote:
-> On Tue, 2025-07-22 at 17:22 +1000, Lachlan Hodges wrote:
-> > 
-> > Something I forgot to mention (my file didn't save ._.) is that I aim to get
-> > some S1G hwsim tests up and running soon as S1G is almost fully functional
-> > within mac80211 (1 maybe 2 more patchsets left) such that there is some
-> > standardised testing utilising hwsim.
-> 
-> After reviewing the bit twiddling code here a bit I'd like to point out
-> that perhaps some testing in kunit might also be useful. Not saying you
-> _must_ do that, but I've found that even for development it helps, and
-> we could drop examples from Annex L into it too.
+Hi,
 
-Sure Ill look into it. Especially now if we are adding a variety of
-encoding types.
+I've been try to compile this patch on 6.12.33 (commit id e03ced99c437f4a79=
+92b8fa3d97d598f55453fd0), I've got the following error messages. Which vers=
+ion of kernel does this patch applies?
+
+drivers/net/wireless/nxp/nxpwifi/cmdevt.c:8:10: fatal error: asm/unaligned.=
+h: No such file or directory
+    8 | #include <asm/unaligned.h>
+      |          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+make[7]: *** [scripts/Makefile.build:287: drivers/net/wireless/nxp/nxpwifi/=
+cmdevt.o] Error 1
+make[7]: *** Waiting for unfinished jobs....
+  CC [M]  drivers/net/wireless/ti/wlcore/scan.o
+  CC [M]  drivers/net/wireless/ti/wlcore/sysfs.o
+  CC [M]  drivers/net/wireless/rsi/rsi_91x_sdio_ops.o
+  CC [M]  drivers/net/wireless/ti/wlcore/vendor_cmd.o
+drivers/net/wireless/nxp/nxpwifi/main.c: In function 'nxpwifi_unregister':
+drivers/net/wireless/nxp/nxpwifi/main.c:114:9: error: implicit declaration =
+of function 'del_timer_syn'; did you mean 'dev_mc_sync'? [-Werror=3Dimplici=
+t-function-declaration]
+  114 |         del_timer_sync(&adapter->cmd_timer);
+      |         ^~~~~~~~~~~~~~
+      |         dev_mc_sync
+  CC [M]  drivers/net/wireless/rsi/rsi_91x_usb.o
+drivers/net/wireless/nxp/nxpwifi/main.c: In function 'nxpwifi_main_process'=
+:
+drivers/net/wireless/nxp/nxpwifi/main.c:274:25: error: implicit declaration=
+ of function 'del_timer'; did you mean 'add_timer'? [-Werror=3Dimplicit-fun=
+ction-declaration]
+  274 |                         del_timer(&adapter->wakeup_timer);
+      |                         ^~~~~~~~~
+      |                         add_timer
+In file included from ./include/linux/export.h:5,
+                 from ./include/linux/linkage.h:7,
+                 from ./include/linux/preempt.h:10,
+                 from ./include/linux/spinlock.h:56,
+                 from ./include/linux/swap.h:5,
+                 from ./include/linux/suspend.h:5,
+                 from drivers/net/wireless/nxp/nxpwifi/main.c:8:
+drivers/net/wireless/nxp/nxpwifi/main.c: In function 'nxpwifi_hard_start_xm=
+it':
+drivers/net/wireless/nxp/nxpwifi/main.c:838:50: error: 'SKBTX_WIFI_STATUS' =
+undeclared (first use in this function); did you mean 'SOCK_WIFI_STATUS'?
+  838 |                      skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS =
+&&
+      |                                                  ^~~~~~~~~~~~~~~~~
+./include/linux/compiler.h:77:45: note: in definition of macro 'unlikely'
+   77 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+      |                                             ^
+drivers/net/wireless/nxp/nxpwifi/main.c:838:50: note: each undeclared ident=
+ifier is reported only once for each function it appears in
+  838 |                      skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS =
+&&
+      |                                                  ^~~~~~~~~~~~~~~~~
+./include/linux/compiler.h:77:45: note: in definition of macro 'unlikely'
+   77 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+      |                                             ^
+cc1: some warnings being treated as errors
+drivers/net/wireless/nxp/nxpwifi/init.c: In function 'wakeup_timer_fn':
+drivers/net/wireless/nxp/nxpwifi/init.c:43:43: error: implicit declaration =
+of function 'from_timer'; did you mean 'mod_timer'? [-Werror=3Dimplicit-fun=
+ction-declaration]
+   43 |         struct nxpwifi_adapter *adapter =3D from_timer(adapter, t, =
+wakeup_timer);
+      |                                           ^~~~~~~~~~
+      |                                           mod_timer
+drivers/net/wireless/nxp/nxpwifi/init.c:43:66: error: 'wakeup_timer' undecl=
+ared (first use in this function); did you mean 'wakeup_timer_fn'?
+   43 |         struct nxpwifi_adapter *adapter =3D from_timer(adapter, t, =
+wakeup_timer);
+      |                                                                  ^~=
+~~~~~~~~~~
+      |                                                                  wa=
+keup_timer_fn
+drivers/net/wireless/nxp/nxpwifi/init.c:43:66: note: each undeclared identi=
+fier is reported only once for each function it appears in
+make[7]: *** [scripts/Makefile.build:287: drivers/net/wireless/nxp/nxpwifi/=
+main.o] Error 1
+drivers/net/wireless/nxp/nxpwifi/init.c: In function 'nxpwifi_adapter_clean=
+up':
+drivers/net/wireless/nxp/nxpwifi/init.c:361:9: error: implicit declaration =
+of function 'del_timer'; did you mean 'add_timer'? [-Werror=3Dimplicit-func=
+tion-declaration]
+  361 |         del_timer(&adapter->wakeup_timer);
+      |         ^~~~~~~~~
+      |         add_timer
+  CC [M]  drivers/net/wireless/rsi/rsi_91x_usb_ops.o
+  CC [M]  drivers/net/wireless/ti/wlcore/sdio.o
+drivers/net/wireless/nxp/nxpwifi/init.c: In function 'nxpwifi_shutdown_drv'=
+:
+drivers/net/wireless/nxp/nxpwifi/init.c:577:17: error: implicit declaration=
+ of function 'del_timer_sync'; did you mean 'dev_mc_sync'? [-Werror=3Dimpli=
+cit-function-declaration]
+  577 |                 del_timer_sync(&adapter->cmd_timer);
+      |                 ^~~~~~~~~~~~~~
+      |                 dev_mc_sync
+cc1: some warnings being treated as errors
+
+Thanks,
+Mathieu
 
