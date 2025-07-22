@@ -1,184 +1,141 @@
-Return-Path: <linux-wireless+bounces-25869-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25870-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EC1B0E02A
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 17:16:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36479B0E01E
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 17:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 590DD1C8095A
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 15:10:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB8927A1D6B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 15:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080022EAB6A;
-	Tue, 22 Jul 2025 15:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D29F2EAB88;
+	Tue, 22 Jul 2025 15:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="T6uw2zIW"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CqvX0uVb";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PfzaEWuu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619712ECEB8
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 15:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACEC156228
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 15:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753196955; cv=none; b=Y1Yqt1alpNpHsbw/P4j1AI84ggjHMZ9HKesRpuI9Z+VJBE6m0Y1fRMpMlwn6B97bA0F/FSM2aWFOzNPSAwMetl9PTUaVk2Jqv2bu3cAiq17efBJBnaCP583buuBaecoCGur/2DoA7JL370jZzP7Dv3MVKkMK4xY8MWWYulRapJw=
+	t=1753197239; cv=none; b=SpB7e8Npw0dcb2x6p8XGYF4ScvVtC+jSl+sR4XkfjfiY7hGWJfetJFAzct907KvEMyD0Wek7ASNY4yzBYixyxon/p7h1RI1uYCxanKx+rT29yhf6rhqfUmBZEBiTtTh6/QrctRxk1wQ3ohhZE6TOpp/hJml57rOv+NNqsg/AHLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753196955; c=relaxed/simple;
-	bh=ZxqIm1t+ZARIiOEnKG/ARS1yjwr6g3oHzZrcSf5B7ds=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=u+eJuUUJkNpa5XOpO3Zh5owLCO6rDXxo8sBQ0R3EiMZuWVCpV+ii8xFX5wkV6DlNv07SNC8LfQoq2/nwUE0nvOp9/bSDvq5LbWXKnlQprwkc9Q0kvoGMq8WEIWcXqnXRKm635aL9CiNuzF3Giv2BOOGLy/GD4Ge38u3d3E+A/Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=T6uw2zIW; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=IVrkRJwvwO9Stjf8IK1IhWAXIF4hQK1ta2M33Nepzhg=;
-	t=1753196954; x=1754406554; b=T6uw2zIWMjKXUXqiZbQOa70tjgW/xxPhmpIJWRncMDcgNll
-	Hp+K0jaWXXTuuYeaKFNImeQvoGIi3Mhg3bU3zAmUnS+hXCyJwOcjYyaj+zMasbrnctqTNNNEgbMJU
-	yGxHBnCYhtKfT3UZLwkfH0nTAUBpINp9Iw4+cY3Lxrl1br7EG5cKdXmhnEY6c7kq0gVDEUjdW0n54
-	jJugSPXu/3cxMJRuBQLTSrK7S7LICZXFnSwn8nXMoJrEf67HzDsAe+kZsec0vl4MnOwMhCaTOlbxU
-	5E4MYewL2Ut/0inUTwf4DHLBOQ6otGOaVkzXUWYm5ozGvUYP/czlhW2OrxnNECtA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1ueEcA-00000002GZm-1vEv;
-	Tue, 22 Jul 2025 17:09:10 +0200
-Message-ID: <e60b34c3f1f7638e942dc2c42d77448349cfbc2a.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next 0/3] wifi: Preamble puncturing support for
- mesh
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>, 
-	ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Ramasamy Kaliappan
-	 <rkaliapp@qti.qualcomm.com>
-Date: Tue, 22 Jul 2025 17:09:09 +0200
-In-Reply-To: <94354e7b-1931-da3a-bec6-78e578468dd2@oss.qualcomm.com>
-References: <20250609001048.2263586-1-ramasamy.kaliappan@oss.qualcomm.com>
-	 <a8ff80ff5a811a09cf5556e20c7232eb1e201c2b.camel@sipsolutions.net>
-	 <21b7d547-b550-23a9-3bff-1f1787e307a8@oss.qualcomm.com>
-	 <61d6cdebee2c89e5d2d93d3297c94051efb70790.camel@sipsolutions.net>
-	 <94354e7b-1931-da3a-bec6-78e578468dd2@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1753197239; c=relaxed/simple;
+	bh=OmNzOMvSqXcTR2g0N6jn7tyNxctiax4/DQ/K1Z9ahL8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CAMPGbyKg72whx+VMJA5cM8vxYg50c/fcVhIY2hYUGNPdH6Mo52wfVXmuXWOV08Vjp1nJqsbLsRWy8UWKB7x5go4vZJDbWqhF3WdJA4P0vgHsKwDbyRgQDfqEIOwGXeIlr/T3oioyLHt8Nfzm+NjnXa3z3eX4JkSCJTGW9OUCdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CqvX0uVb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PfzaEWuu; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Message-ID: <76fa16a8-367e-4f05-9c50-c9ac08ee20ff@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1753197234;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oQCV0AgeysR+MnfArdCzdx+N/7m9XWaScsuREv+qwNM=;
+	b=CqvX0uVbrZqdN34sFSXAbgqAmpVm6SbpWY42hES0igroqS4jyZEoFXdOhP9OCN+MAYFXsy
+	gtygoSXPDZ+sf5O9sqwLNMDINtw2il8uvW1HnjZChiOVV0nzwla75c+k6ZtVm1V6V55KFX
+	Bb1dgdmmVm2kf2NpGJUblSairLyX12IzKErIBlJ1g4FboVgWyxDsBLB2kinT7HYbhw4X3L
+	ZFEHgUulQosUYpFO1tVEauRukakjo3v/dWQ4RaRmeFz/ApcSjwCcKi6DpyecM84WOwO6TC
+	OAnIStkdUvFsGSCXXT/2//mrKgFaMMbz1KaHtzhzf42YjR2h6bN3A+jO0VNNDw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1753197234;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oQCV0AgeysR+MnfArdCzdx+N/7m9XWaScsuREv+qwNM=;
+	b=PfzaEWuuShpzWnZzIt5Zigd7uZkUtGetrXSH2Isll8Voac4GMjYEmKrJR2HcmvEOWdeCXi
+	DhGjIHEvJYZbu6BA==
+Date: Tue, 22 Jul 2025 17:13:54 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Subject: Re: WARNING check-sdata-in-driver in
+ ieee80211_link_info_change_notify
+To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+References: <a9de62a0-28f1-4981-84df-253489da74ed@linutronix.de>
+ <f06f3b3e40e104cb9fcdb086d8f9fff146225330.camel@sipsolutions.net>
+Content-Language: de-DE
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+In-Reply-To: <f06f3b3e40e104cb9fcdb086d8f9fff146225330.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Hi Johannes,
 
-Sorry for the late reply - going through and saw I missed this.
+Am 22.07.25 um 14:11 schrieb Johannes Berg:
+> On Thu, 2025-07-10 at 09:47 +0200, Martin Kaistra wrote:
+>> Hi,
+>>
+>> when trying to use monitor mode with either rtl8xxxu or rtlwifi driver I get a
+>> "Failed check-sdata-in-driver check" warning in
+>> ieee80211_link_info_change_notify(). Aside from the warning, monitor mode seems
+>> to work fine. This might also affect other drivers, I just don't have the
+>> hardware to test.
+>>
+>> I bisected and found that the warning started with c4382d5ca1af ("wifi:
+>> mac80211: update the right link for tx power").
+>>
+>> I can make the warning go away when I add WANT_MONITOR_VIF to the driver, but
+>> the real fix should probably go in mac80211.
+> 
+> Strange, I'm not sure I see the relation with the commit you mention.
 
-On Mon, 2025-07-14 at 00:29 +0530, Ramasamy Kaliappan wrote:
-> Hmm, I originally thought the bandwidth determination would need to=20
-> happen within the driver,  since it=E2=80=99s required at the time of pac=
-ket=20
-> transmission for each mesh STA. The assumption was partly influenced by=
-=20
-> our existing firmware design.
->=20
-> But yeah, since the bandwidth doesn=E2=80=99t really change much across P=
-PDUs=20
-> for the same STA, it actually makes more sense to handle it in mac80211=
-=20
-> and drivers can use it.
+Before the mentioned commit __ieee80211_recalc_txpower() returns false and so 
+ieee80211_link_info_change_notify() doesn't get called.
 
-Well I guess a device still has two settings:
+> 
+> Either way though, given NO_VIRTUAL_MONITOR and WANT_MONITOR_VIF we
+> probably have to catch it in the code, perhaps like the below? But I'm
+> not sure it handles NO_VIRTUAL_MONITOR correctly? Hm.
 
- - per STA what it can actually transmit to that STA
- - for yourself, what BW you will receive and do CCA for
+I can confirm that with the code snippet (with an added curly brace) I don't get 
+the warning anymore.
 
-Given the CCA, obviously the per-STA channels used must be a subset of
-the ones used by the device.
+martin
 
-Which interesting because if say one STA has 80 MHz channel 36 (and
-secondaries 40/44/48) with puncturing bitmap 0x8 (i.e. using 36/40/44)
-and the other STA has the same with puncturing bitmap 0x4 (i.e. using
-36/40/48) then effectively they can only communicate on 40 MHz,
-_however_ they're both doing CCA on their respective 60 MHz. That's ...
-inefficient?
+> 
+> johannes
+> 
+> 
+> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+> index 351564360c26..bf338024b5d5 100644
+> --- a/net/mac80211/main.c
+> +++ b/net/mac80211/main.c
+> @@ -408,9 +408,20 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
+>   
+>   	WARN_ON_ONCE(changed & BSS_CHANGED_VIF_CFG_FLAGS);
+>   
+> -	if (!changed || sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+> +	if (!changed)
+>   		return;
+>   
+> +	switch (sdata->vif.type)
+> +	case NL80211_IFTYPE_AP_VLAN:
+> +		return;
+> +	case NL80211_IFTYPE_MONITOR:
+> +		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
+> +			return;
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +
+>   	if (!check_sdata_in_driver(sdata))
+>   		return;
+>   
 
-But I guess it's also unavoidable unless you only have a single STA or
-so. Or want to reduce the bandwidth when ... ohh, we have this "min_def"
-concept in mac80211, we could use that here for mesh as well? We already
-do almost precisely this for AP mode. And for client side I used it for
-OMI stuff. So I guess here we could - whenever STAs are added/removed -
-recalculate the min_def, and thereby in this case avoid doing CCA on the
-whole 80/60 MHz channel. Actually seems fairly easy.
-
-But also then that can be future optimisation. Arguably, it could
-already be done today without puncturing, when other mesh STAs are just
-not even using 80 MHz for example.
-
-> Yes that's right, the intersection and BW selection is done for every=20
-> PPDU at Firmware.
-
-Seems like one of those "we want to do more firmware" cases ;-) Intel is
-certainly not immune to that either :)
-
-> When not considering CSA scenario then the puncturing pattern is an=20
-> intersection of the local channel def and puncturing pattern advertised=
-=20
-> by peer.
-
-Right.
-
-> If the local and peer mesh are capable of EHT, the negotiated EHT=20
-> bandwidth of the peer mesh is considered first. The intersection of=20
-> puncturing patterns is then applied on top of this to derive=20
-> bandwidth=E2=80=94potentially reduced and with or without additional punc=
-turing.
->=20
-> > What happens if
-> > the bitmap changes? Why does userspace track it rather than mac80211,
->=20
-> When a channel switch is triggered by a userspace application,
-> the user space is fully aware of the bitmap changes and pass them to the=
-=20
-> mac80211 driver.
-> But when a peer mesh initiates a channel switch via CSA, the mac80211=20
-> driver on the local mesh receives bitmap changes through CSA=20
-> beacon/action frames and processes the channel changes internally.
-
-Makes sense.
-
-> However, unless the new bitmap is explicitly forwarded to userspace, the=
-=20
-> userspace component might not be aware of the bitmap changes.
-
-Does it have to? But the bitmap is part of the chandef so userspace
-should be aware of it.
-
-> I am thinking something like below for CSA with puncturing in Mesh,
-> 1. Acquire the puncturing bitmap from the peer initiating the CSA action=
-=20
-> / beacon frame.
-> 2. Validate the new channel's compatibility with the new puncturing=20
-> pattern, and apply the new channel context.
-> 3. Forward the csa beacon/CSA action.
-> 4. Reset the existing bitmap and apply the new bitmap to associated STAs.
->=20
-> I didn't take care of this in the patch series. I am planning to address=
-=20
-> this in the upcoming series
-
-Honestly I'm not completely sure how CSA works in mesh today, so I guess
-I'll just leave it to you to consider.
-
-> > Did you think about any of these questions, or are you just using me as
-> > a design tool? ;-)
-> >=20
->=20
-> No, certainly not Johannes! =F0=9F=98=8A
-
-:-)
-
-johannes
 
