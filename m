@@ -1,105 +1,179 @@
-Return-Path: <linux-wireless+bounces-25801-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25803-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91434B0D2BF
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 09:24:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B65F3B0D2FC
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 09:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A544018928D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 07:23:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21544188292A
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 07:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDACA2882C6;
-	Tue, 22 Jul 2025 07:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDAA2C158F;
+	Tue, 22 Jul 2025 07:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="Z/EBCUvN"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="SEf5Ikf3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFD72C3263
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 07:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E3F28B7CC;
+	Tue, 22 Jul 2025 07:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753168975; cv=none; b=MOwEfTroHiB9ESzKmZRTyEXsXph8Y+NCqHBtvh0Ih6o3/woNK9o9Y2OAsc96gFqdwfW53qX4IOm0o5YGlr51z4O9IfWRmAuIbq3xFnW4aNPj+BA8vCmMLLjnc44MDlvO8yvPgaQlA/bbS+9jirx0blZvFDNSQnqpfhPa1Yg3730=
+	t=1753169338; cv=none; b=XT5EyAesTKGCuGznTF+IKYZCYhOrBWbqpBIG/yQfgcgOlEitN3reiVfaylOQJiWUGjf8g8pOXY+j8V52wOiYjmjsM/N2lhoQAWBHISdKYiETf6B319zruRdjKjab/XKPCycFTvrWevra1XdRX5CVQCRFTkMk/W3rqo2R9oH1lDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753168975; c=relaxed/simple;
-	bh=mcXRABwWqNZdmXJjbCICqzNRy8yXLXDRxfl9gZqqmcM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oXh3UPQIyYkcMPN+UNJvwsAcoHZQKS4nPsqedmQCB/WAl/pC3LAYeQNst8qXhbp91fNJHyLPwHBGSWuw0cuOIoz3LtOTA57Ue4FUpaP9I3MqdbShpHfZF0JUIdCtDQf3CYDb+lg/9IvBHdoav1adlrLQ8MfkZru6f5UtOUNcnCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=Z/EBCUvN; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-749248d06faso4353511b3a.2
-        for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 00:22:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1753168973; x=1753773773; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TKT5yJs46uSUfIVt1WFlhCi21/brUWvHx1tRUNB4IoM=;
-        b=Z/EBCUvNDqQ0LC+o43fwOtU+YePEkKwTJHZM44/QSs1oguSum+tOmKvxG9njQxJmP+
-         5MtKJQbrkiUd/+tqP84gIqDdIBBqAUj3ogAt2+oSP0YqlP6eti8gw2NU6mUQMwbySoPf
-         Qk3Q9hDYNkqHylJwiyX/Gmvr4CbWla9sqnHj8QGCxJM4ZO9pP5xfqWaXRb/50OpBbwqy
-         UY50bOP6avqQnxIGn8gVo9zqR3ZquqSXpmXaQqpcJhf20ka95xu7Eib2EVw0GVTZsGc5
-         +y6V7P2c2HLBLwH15/GodIq2Fse3Fn4PZSpVZBakag2VfWDuglEinpka/B//e5g/EGJh
-         7svA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753168973; x=1753773773;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TKT5yJs46uSUfIVt1WFlhCi21/brUWvHx1tRUNB4IoM=;
-        b=SacxP/x8n0UaC0uMJKi6ch2uBoUvxA6EFFvJasHK1QdxyLxirMjfy0xHP1mOT5vN3H
-         4uGZzgEPXWwNL1wqbQuUCa4eNjVRGOviOy7X9RVZAvB47G2IkwZjKF3Gh2UgTez8Mexs
-         zf8/VKi+vVEKd7X+eJ6GnXJrI+V0t00Fs3vF/a40IMG5duXinHrWDAT64PvuEoQijdjE
-         0tXtDPagjLXQU70gwtsIJR3dbiVeK7a3AAf5tCvH/y5b3M9ePVX6k1fLNiVGZhh2df0z
-         I3IHgFCghXw2LsY/jekMlfFl5xSb5JtVIHViAHnFM3c1Vqor8LpQZmzAMsGspSyQj4ye
-         Y+Hw==
-X-Gm-Message-State: AOJu0YxnTrl3FaImXAH8lj8FpxST/DFFf+N+eSI9h/vm2m2kHxeGV65r
-	eIrFG9tJ26kREJG+9VrxfORCV/M9/bzaDXjgewHDoaDR+N8LoFN+M3+cVzYadHponis=
-X-Gm-Gg: ASbGncvzL4+ay0b8CuodpOJ9K1hMQxg7GG58fUojAUKQzFAg8myOr7Hp9sFBvkelchv
-	pmsdfoKQfdO4xm0vhBsd+QkaPet6+oNUZ28yXxacyvQCntxXQINJrzfAtzIJhHM7O/f4Oy+7xp4
-	TI2k38uJ2D/z7zgkgLEVUdmBFJ64o22u2sPj2TN2unJbLbcBmgMTi3Y0TH7qlhc5KRDzG4bUj1C
-	bzhL1vUAh3g8Dhaevbc0jD8wZgRGmABBsMut1zSR7jAs0r//e7eu7dRgX6fAxoQmuvBM+oyd2wL
-	cOzvsQJ2rnTXYPLLiiaQ+gU9iKj6uJUz1UWG5rylEuXN2cF/7KOvcIWwZda/rOmwSHuoNG4QJZD
-	lQoqqbYCJ9a+c7wwlixxvHa6rOSTBNvAVG5Rto9X9KuE7+4V+kAqOLgvogTmFR71zr9bA/Q1IWw
-	==
-X-Google-Smtp-Source: AGHT+IEQTrLvcE6O3AyIeXGrJSZY6G3IYhLbvU9LLdae60eyat+AQUbKerkY8pP6/pLAQO1d73irhA==
-X-Received: by 2002:a05:6a20:1583:b0:231:a5f3:4d0c with SMTP id adf61e73a8af0-2390dc2dc9emr26107276637.26.1753168973279;
-        Tue, 22 Jul 2025 00:22:53 -0700 (PDT)
-Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759c8eb0e98sm7032068b3a.66.2025.07.22.00.22.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 00:22:52 -0700 (PDT)
-Date: Tue, 22 Jul 2025 17:22:49 +1000
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Subject: Re: [wireless-next 0/2] wifi: support S1G TIM encoding
-Message-ID: <tx3gim4qbf6qmwd4u6kqspzu7n37cih42elgbnwedxogvpkxcn@vmzo7fiyrshw>
-References: <20250722071642.875875-1-lachlan.hodges@morsemicro.com>
+	s=arc-20240116; t=1753169338; c=relaxed/simple;
+	bh=BZK13xTTjt/5UmV5jMd6YK/1RBHQ5TbhsdLSTIR7ksA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qhK2u72/iTh72sIebQRIUoge0WjcvJULc6DQvJw/RUU4NlgOwTZlxgBRAqULScnMZqrLIa/3tEiSAh9e0IoWo8sZauI/7jjveVYdervQaMTUIXVi9QZv5mWeOcLzJFgdofeHN7ZyQb0nJH/CtpnYkOv57e9nQIoj5SFov0lYPko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=SEf5Ikf3; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1753169325;
+	bh=x+S0lLyonKMBOYVe3hwfq+3jtrctPFlVfJ/rovDXpoI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=SEf5Ikf32A4aGlE+OAr8Dh5+t8GSbdDKQOuxCFSVVn+Imhs2GtfwEQtewvKAiGXoo
+	 jA4sdSxpoTl97KN1ufZfz5feDxSF9BxvlQWAyOJE2njO1wLW+TZ1gM8x+HU964jofx
+	 ddqJk/k0JVtDK5Thug2vwxKesIwQD6GF3lEbivto=
+X-QQ-mid: zesmtpip3t1753169263t53df68e6
+X-QQ-Originating-IP: rTOvj0yplF8v1TzV+LE7s5Wipo1URwqutr9CN7Z1bPc=
+Received: from avenger-e500 ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 22 Jul 2025 15:27:37 +0800 (CST)
+X-QQ-SSF: 0002000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 4379188185935626122
+EX-QQ-RecipientCnt: 64
+From: WangYuli <wangyuli@uniontech.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	dan.j.williams@intel.com,
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	marcin.s.wojtas@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	arend.vanspriel@broadcom.com,
+	ilpo.jarvinen@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	jgross@suse.com,
+	sstabellini@kernel.org,
+	oleksandr_tyshchenko@epam.com,
+	akpm@linux-foundation.org
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	wangyuli@uniontech.com,
+	ming.li@zohomail.com,
+	linux-cxl@vger.kernel.org,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org,
+	kvalo@kernel.org,
+	johannes.berg@intel.com,
+	quic_ramess@quicinc.com,
+	ragazenta@gmail.com,
+	jeff.johnson@oss.qualcomm.com,
+	mingo@kernel.org,
+	j@jannau.net,
+	linux@treblig.org,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-serial@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	shenlichuan@vivo.com,
+	yujiaoliang@vivo.com,
+	colin.i.king@gmail.com,
+	cvam0000@gmail.com,
+	zhanjun@uniontech.com,
+	niecheng1@uniontech.com,
+	guanwentao@uniontech.com,
+	wangyuli@deepin.org
+Subject: [PATCH v3 0/8] treewide: Fix typo "notifer"
+Date: Tue, 22 Jul 2025 15:27:34 +0800
+Message-ID: <576F0D85F6853074+20250722072734.19367-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250722071642.875875-1-lachlan.hodges@morsemicro.com>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: MDWLyYWhrZ/VSgDYBpGTTfaWvBcvfP8fpLHi2v8+x+sw9UQkcllGdlmP
+	56uh4oGiAPJj/aMzs0e/cAqJ924/hfFMCSwJUNxRH4zkOuX0t9oj41+1nF75vaW5B65J973
+	V47FfialPScBVysbe4ZS4p3/zYGyES424NQck5GvbU3Ty0KCF46yGh6dPYY1YAjDtb+MDzz
+	a8EeF37kwGAjn9LdwgpO8zZeQIdrlbLPXD9oWXORt3ViHBL9W/qGJQw7TmYRXdTAZ+P0Kfm
+	2uLk7z4hrS8Df1MNm31/bh0x9tOg83p5cYcjgNsG7n+PH7KrDWNV9FGU5ejaOl1kGqipq74
+	lCyrBOUd4Jt1KUS2XJdxlGsnrLBECEQYLOB6vc3cdDdLr92D4kAt7SudKQ19nZA3fOaJnuQ
+	pOhGxyCw/FXF3+jpc6GPxaVTiAQ/DgBTu94rczoLx80/fMK1p/kFJjapEMhc++e0qv33TkS
+	CS2xwKmW1K3aymPLigfg3PBRQhfFkzf/i7i8XO1pbknRZgnvAx7im7QQ0y7sjpVkPba7RPl
+	Zit3Rn5swvh9d/KqcWDe7Ki0oF59j5EPOMDbUKm7vom/qyXYLuEr37Cu1akWPp5UrXDC+ol
+	4a5aQwZ2qE6pZ1eyMRPK7pZRyLLs5uhNAglL2Q8rDY7tDfX23dicoLn8TrSLNcmkJMMkg7Q
+	shPWfiuA6aDTmJr00ua9WIQKZ7z6Mfmqpz120cWVMGY2Vl+zH4ZrD/cwss8kqaAYBfnNzjZ
+	BoS2/yQ+75A6VMaM1yTHzrpx1qnylqHQsi/NW4aidb5RLA/FJpxECWTUWxnXqRlBfaDBxRE
+	9g2Bw5Vt7AGlhfHrx3KP/t7IhUsAhml00WWpM23ILcfKE+dhu06D4FvlzIlKX/RW+bTkLRV
+	as8vbxKDlbmEPsPgj+HW5ITAq/1SX5G5C0Xk0b+8/y5JhcGxG83WzG6I1s3kCsMU9ebkZyY
+	3X6fnVq9YWMb6l3/9fbK+CxzYNZW74mXPHzOhbx2a2tnTVnJQhWhqHvBFUAjZnF5g+oydr0
+	Q5jJ4NrpXlKa49L8006wPSquXqBTDz8ZJQjBtxHikovmWuNpC/ZuyibdcLmW97IwdgJMN9t
+	+KWEFH7n6a7cVJtco3BlVsMeOi2ol3YUQ==
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-RECHKSPAM: 0
 
-On Tue, Jul 22, 2025 at 05:16:38PM +1000, Lachlan Hodges wrote:
-> (1) I've run hwsim tests and (obviously) tested the S1G power save path,
->     but the 2 hwsim power save tests only check multicast traffic and
->     even then only 1 sta. So would be good for someone to confirm that this
->     hasn't broken non-S1G tim encoding. Even though it's only code being
->     shuffled around, that wouldn't be ideal :)
+There are some spelling mistakes of 'notifer' in comments which
+should be 'notifier'.
 
-Something I forgot to mention (my file didn't save ._.) is that I aim to get
-some S1G hwsim tests up and running soon as S1G is almost fully functional
-within mac80211 (1 maybe 2 more patchsets left) such that there is some
-standardised testing utilising hwsim.
+Fix them and add it to scripts/spelling.txt.
 
-lachlan
+WangYuli (8):
+  KVM: x86: Fix typo "notifer"
+  cxl: mce: Fix typo "notifer"
+  drm/xe: Fix typo "notifer"
+  net: mvneta: Fix typo "notifer"
+  wifi: brcmfmac: Fix typo "notifer"
+  serial: 8250_dw: Fix typo "notifer"
+  xen/xenbus: Fix typo "notifer"
+  scripts/spelling.txt: Add notifer||notifier to spelling.txt
+
+ arch/x86/kvm/i8254.c                                        | 4 ++--
+ drivers/cxl/core/mce.h                                      | 2 +-
+ drivers/gpu/drm/xe/xe_vm_types.h                            | 2 +-
+ drivers/net/ethernet/marvell/mvneta.c                       | 2 +-
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
+ drivers/tty/serial/8250/8250_dw.c                           | 2 +-
+ include/xen/xenbus.h                                        | 2 +-
+ scripts/spelling.txt                                        | 1 +
+ 8 files changed, 9 insertions(+), 8 deletions(-)
+---
+Changelog:
+ *v1->v2: Break patch v1 up into one-patch-per-subsystem.
+  v2->v3: Remove links to my patch v1 and add some "Reviewed-by" tags.
+
+-- 
+2.50.0
+
 
