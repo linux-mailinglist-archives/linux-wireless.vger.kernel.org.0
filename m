@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-25819-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25820-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2D7B0D49F
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 10:29:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF44B0D4A0
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 10:29:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51B37164B4B
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 08:29:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32B983AC98F
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Jul 2025 08:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7343A2D5A01;
-	Tue, 22 Jul 2025 08:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49EA2D3EFF;
+	Tue, 22 Jul 2025 08:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NIYwpFCM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lAqjEga+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4DA2D879C
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 08:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A632D94A3
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Jul 2025 08:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753172979; cv=none; b=Hxk+Ygco4xze+iEnEv5gQjlUIZJaemezWE/GZXXHfJByJ6/npH/v9G7XwN5Gsk75ax2Exto1xF1YaMDMXlWDitjtV4cNfInM09+Gg0RQu8I4LPf1wZRKpdnQ9sZNmcrkH/XOLndt2j4tLS99361espYwrjH4yUOXrmdsMORe54U=
+	t=1753172981; cv=none; b=qnVFeI2HdYgUwyOb0Elq1A17bBp+hOxwBtUrxNl7xN8QMbtRJtVUIcJKUwf9PzYfU0HveiUNWlZI+5M1/acDCRJ/CZmOt9nDQt5jxxwUnzc+K2C+U2ehynO9Vd70ZBM+oyy3ZFWQ33Shpb1TuXFZw7oDPncMNUvq6v3dekFl9pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753172979; c=relaxed/simple;
-	bh=ULW4w7E9WUzQF5B0WMXYpif1KnY/Kozf3twLe5XTsxE=;
+	s=arc-20240116; t=1753172981; c=relaxed/simple;
+	bh=fedxfWiJT3tDqebGtIpE0p+0YG+1ZfVe2AnGvAbHFdM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MkOjAT2e7VHvpMK9cpsG0vKpz/hn8Se/lBt6ive5Ls1y9Ixkc2Rwm11WVooa1U9qrs7zfMPQYudnZieS908tUaQNKDQ4ZRTup4pNKZzzf+U11JGNoL/1qE23jHW9DiqFbIgiRblY+7HSYKkCkJcyM0pYLLnoKFgdJJI5DY3hm8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NIYwpFCM; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=kCZJiYvMWLi4vml0VB3fIXhZjLZyJiMP0r0BTByzsuKMAwAvNK6hzZM2wCSsimyuFHJa0R0z0jtsYqEFlZWKIkRZ4gchTrKcIIY6Q++ZITEJG2yjTh7FPt2TYir/YxmOjTG7S49VyyPoKnSunaZ1kAgCvF/vOgCKhOM1SUln8L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lAqjEga+; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753172978; x=1784708978;
+  t=1753172981; x=1784708981;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ULW4w7E9WUzQF5B0WMXYpif1KnY/Kozf3twLe5XTsxE=;
-  b=NIYwpFCMgo39TkSl6ooqP4iwL6YXPD8A8kN0u3Hso2+Lje8ujqJHkEkL
-   3VRNL4NEsMvJGSG7SO+Kp2lwjJ+VJvascbQGKXEHoJgkFjLezCcgcjGle
-   sN1WD/nM/nmAI7cyPtDF80RMoMif8Df9GwTbyjtren83qLO3VcW3Hew4P
-   8XwacFPguXCTTp8Q8vhp4eifhN9C63kcMYNIzRHxo0/A28ckWyb1tAF4j
-   Heaw4XX1Yh6SI7BsB/JkGk3rCc4gtkm8BazO/KR2/4oZdjr2viKljiK0Y
-   IN+xzDaeL6N5bVdhHsRjgCXgIAYP4xNsC/Y8bakJw5AWJZ5HZCKJU0qFV
-   A==;
-X-CSE-ConnectionGUID: Zf+eew6zR5i5p6mTO2ezIA==
-X-CSE-MsgGUID: h2zBSrA/T1y7GZ+9AL9Jdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="55569839"
+  bh=fedxfWiJT3tDqebGtIpE0p+0YG+1ZfVe2AnGvAbHFdM=;
+  b=lAqjEga+hlQY68apu1y68fcxnqUSvqEZZRbHE5oblvO2ONt6Rx5yb4IT
+   lyi6DXHGjY6PK1hlB2v744QCszSfjePqXqhZDOYPUY860yCYPARirQSqu
+   1fKmFHL/N7fXJiXAeN3sM4wTweuJE4Wn/+7ZSeGfSQm8R6Nl4MB1vOGfc
+   9ZHbF/mrzj2PG8ckjaunkUu+dkYHHCMmvOIgp26WDd7GgNvguOm9qrsN2
+   5/z/EkGBb7XjEjg93bo6NFh/61q/1AVCdD85eHKHD1pQJABAFA5ZTXeCu
+   uo03tLHslKBvbLG+WVHf0jOFxhcMXrpI0z7ShOjLCsPVS6WjICaQ0ElpI
+   g==;
+X-CSE-ConnectionGUID: iNwdm3RVQ+KYpefxf3v3MQ==
+X-CSE-MsgGUID: L3+BazWiSVCZvsOcaiIoVQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="55569853"
 X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
-   d="scan'208";a="55569839"
+   d="scan'208";a="55569853"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:37 -0700
-X-CSE-ConnectionGUID: bmzU4yKVQmuMS57Bmuwmsg==
-X-CSE-MsgGUID: r98uaCd0QjqDAr2XTiOaEw==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:39 -0700
+X-CSE-ConnectionGUID: sY3x9md8RO6VADjjFyQSUg==
+X-CSE-MsgGUID: 2FSsQ4JwSy6t16MWwr9TLg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
-   d="scan'208";a="163124248"
+   d="scan'208";a="163124255"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:35 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 01:29:37 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH iwlwifi-next 04/15] wifi: iwlwifi: mld: support channel survey collection for ACS scans
-Date: Tue, 22 Jul 2025 11:28:59 +0300
-Message-Id: <20250722112718.58a3956bb54a.I24a9a0383327c231f36be170968bc7bac801f9f2@changeid>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi-next 05/15] wifi: iwlwifi: disable certain features for fips_enabled
+Date: Tue, 22 Jul 2025 11:29:00 +0300
+Message-Id: <20250722112718.7ca4f6e236fc.I0be27dd329643cc5fdf79a8c8b8f6d2e6fb5c175@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250722082910.1206370-1-miriam.rachel.korenblit@intel.com>
 References: <20250722082910.1206370-1-miriam.rachel.korenblit@intel.com>
@@ -76,365 +76,197 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-The firmware is able to collect channel statistics when doing passive
-scans. Enable the flag when doing a passive scan on an AP interface and
-collect the survey information.
+When fips_enabled is set, keys will not be given to the
+hardware by mac80211 since the hardware isn't certified.
+In this case, various features cannot work correctly as
+the firmware needs to handle frames, but it then cannot
+since no keys are available.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Disable features:
+ - WoWLAN since no keys etc.
+ - MFP since some frames need to be handled in firmware
+ - EHT/6GHz since MFP is required
+
+Also restrict A-MSDU size since A-MSDUs cannot be split
+up by hardware and thus need to fit into the RX buffers
+in one piece.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mld/mac80211.c |   1 +
- drivers/net/wireless/intel/iwlwifi/mld/mld.c  |   9 +
- drivers/net/wireless/intel/iwlwifi/mld/mld.h  |   2 +
- .../net/wireless/intel/iwlwifi/mld/notif.c    |   6 +
- drivers/net/wireless/intel/iwlwifi/mld/scan.c | 156 +++++++++++++++++-
- drivers/net/wireless/intel/iwlwifi/mld/scan.h |  37 +++++
- 6 files changed, 210 insertions(+), 1 deletion(-)
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 25 ++++++++++++++++---
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c | 11 +++++++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 16 +++++++++---
+ 3 files changed, 43 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index 4424443d2328..a67b9572aac3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -5,6 +5,7 @@
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+ #include <linux/types.h>
++#include <linux/fips.h>
+ #include <linux/slab.h>
+ #include <linux/export.h>
+ #include <linux/etherdevice.h>
+@@ -543,16 +544,22 @@ static void iwl_init_vht_hw_capab(struct iwl_trans *trans,
+ 	else
+ 		vht_cap->cap |= IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN;
+ 
++	/*
++	 * With fips_enabled crypto is done by software, so the HW cannot
++	 * split up A-MSDUs and the real limit that was set applies.
++	 * Note that EHT doesn't honour this (HE copies the VHT value),
++	 * but EHT is also entirely disabled for fips_enabled.
++	 */
+ 	switch (iwlwifi_mod_params.amsdu_size) {
+ 	case IWL_AMSDU_DEF:
+-		if (trans->mac_cfg->mq_rx_supported)
++		if (trans->mac_cfg->mq_rx_supported && !fips_enabled)
+ 			vht_cap->cap |=
+ 				IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454;
+ 		else
+ 			vht_cap->cap |= IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_3895;
+ 		break;
+ 	case IWL_AMSDU_2K:
+-		if (trans->mac_cfg->mq_rx_supported)
++		if (trans->mac_cfg->mq_rx_supported && !fips_enabled)
+ 			vht_cap->cap |=
+ 				IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454;
+ 		else
+@@ -909,7 +916,9 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
+ 	bool slow_pcie = (!trans->mac_cfg->integrated &&
+ 			  trans->info.pcie_link_speed < PCI_EXP_LNKSTA_CLS_8_0GB);
+ 
+-	if (!data->sku_cap_11be_enable || iwlwifi_mod_params.disable_11be)
++	/* EHT needs WPA3/MFP so cannot do it for fips_enabled */
++	if (!data->sku_cap_11be_enable || iwlwifi_mod_params.disable_11be ||
++	    fips_enabled)
+ 		iftype_data->eht_cap.has_eht = false;
+ 
+ 	/* Advertise an A-MPDU exponent extension based on
+@@ -1197,11 +1206,19 @@ static void iwl_init_sbands(struct iwl_trans *trans,
+ 	n_used += iwl_init_sband_channels(data, sband, n_channels,
+ 					  NL80211_BAND_6GHZ);
+ 
+-	if (data->sku_cap_11ax_enable && !iwlwifi_mod_params.disable_11ax)
++	/*
++	 * 6 GHz requires WPA3 which requires MFP, which FW cannot do
++	 * when fips_enabled, so don't advertise any 6 GHz channels to
++	 * avoid spending time on scanning those channels and perhaps
++	 * even finding APs there that cannot be used.
++	 */
++	if (!fips_enabled && data->sku_cap_11ax_enable &&
++	    !iwlwifi_mod_params.disable_11ax)
+ 		iwl_init_he_hw_capab(trans, data, sband, tx_chains, rx_chains,
+ 				     fw);
+ 	else
+ 		sband->n_channels = 0;
++
+ 	if (n_channels != n_used)
+ 		IWL_ERR_DEV(dev, "NVM: used only %d of %d channels\n",
+ 			    n_used, n_channels);
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index d929cf2e73fd..c6e61c843f77 100644
+index c6e61c843f77..3ea6d4c1b779 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -2675,6 +2675,7 @@ const struct ieee80211_ops iwl_mld_hw_ops = {
- 	.mgd_complete_tx = iwl_mld_mac_mgd_complete_tx,
- 	.sta_state = iwl_mld_mac80211_sta_state,
- 	.sta_statistics = iwl_mld_mac80211_sta_statistics,
-+	.get_survey = iwl_mld_mac80211_get_survey,
- 	.flush = iwl_mld_mac80211_flush,
- 	.flush_sta = iwl_mld_mac80211_flush_sta,
- 	.ampdu_action = iwl_mld_mac80211_ampdu_action,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index e7cbfb9009af..e78e7a4f39d1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -259,6 +259,13 @@ static const struct iwl_hcmd_names iwl_mld_data_path_names[] = {
- 	HCMD_NAME(MU_GROUP_MGMT_NOTIF),
- };
- 
-+/* Please keep this array *SORTED* by hex value.
-+ * Access is done through binary search
-+ */
-+static const struct iwl_hcmd_names iwl_mld_scan_names[] = {
-+	HCMD_NAME(CHANNEL_SURVEY_NOTIF),
-+};
-+
- /* Please keep this array *SORTED* by hex value.
-  * Access is done through binary search
+@@ -4,6 +4,7 @@
   */
-@@ -310,6 +317,7 @@ const struct iwl_hcmd_arr iwl_mld_groups[] = {
- 	[SYSTEM_GROUP] = HCMD_ARR(iwl_mld_system_names),
- 	[MAC_CONF_GROUP] = HCMD_ARR(iwl_mld_mac_conf_names),
- 	[DATA_PATH_GROUP] = HCMD_ARR(iwl_mld_data_path_names),
-+	[SCAN_GROUP] = HCMD_ARR(iwl_mld_scan_names),
- 	[LOCATION_GROUP] = HCMD_ARR(iwl_mld_location_names),
- 	[REGULATORY_AND_NVM_GROUP] = HCMD_ARR(iwl_mld_reg_and_nvm_names),
- 	[DEBUG_GROUP] = HCMD_ARR(iwl_mld_debug_names),
-@@ -507,6 +515,7 @@ iwl_op_mode_mld_stop(struct iwl_op_mode *op_mode)
  
- 	kfree(mld->nvm_data);
- 	kfree(mld->scan.cmd);
-+	kfree(mld->channel_survey);
- 	kfree(mld->error_recovery_buf);
- 	kfree(mld->mcast_filter_cmd);
+ #include <net/mac80211.h>
++#include <linux/fips.h>
+ #include <linux/ip.h>
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.h b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
-index 8bc4749599ca..94dc9da6360d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
-@@ -160,6 +160,7 @@
-  *	device
-  * @addresses: device MAC addresses.
-  * @scan: instance of the scan object
-+ * @channel_survey: channel survey information collected during scan
-  * @wowlan: WoWLAN support data.
-  * @debug_max_sleep: maximum sleep time in D3 (for debug purposes)
-  * @led: the led device
-@@ -253,6 +254,7 @@ struct iwl_mld {
- 
- 	struct mac_address addresses[IWL_MLD_MAX_ADDRESSES];
- 	struct iwl_mld_scan scan;
-+	struct iwl_mld_survey *channel_survey;
- #ifdef CONFIG_PM_SLEEP
- 	struct wiphy_wowlan_support wowlan;
- 	u32 debug_max_sleep;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/notif.c b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
-index 262d8e25e62a..3cb700a9708e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/notif.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/notif.c
-@@ -295,6 +295,8 @@ CMD_VERSIONS(scan_complete_notif,
- 	     CMD_VER_ENTRY(1, iwl_umac_scan_complete))
- CMD_VERSIONS(scan_iter_complete_notif,
- 	     CMD_VER_ENTRY(2, iwl_umac_scan_iter_complete_notif))
-+CMD_VERSIONS(channel_survey_notif,
-+	     CMD_VER_ENTRY(1, iwl_umac_scan_channel_survey_notif))
- CMD_VERSIONS(mfuart_notif,
- 	     CMD_VER_ENTRY(2, iwl_mfuart_load_notif))
- CMD_VERSIONS(update_mcc,
-@@ -415,6 +417,10 @@ const struct iwl_rx_handler iwl_mld_rx_handlers[] = {
- 	RX_HANDLER_NO_VAL(LEGACY_GROUP, MATCH_FOUND_NOTIFICATION,
- 			  match_found_notif, RX_HANDLER_SYNC)
- 
-+	RX_HANDLER_NO_OBJECT(SCAN_GROUP, CHANNEL_SURVEY_NOTIF,
-+			     channel_survey_notif,
-+			     RX_HANDLER_ASYNC)
-+
- 	RX_HANDLER_NO_OBJECT(STATISTICS_GROUP, STATISTICS_OPER_NOTIF,
- 			     stats_oper_notif, RX_HANDLER_ASYNC)
- 	RX_HANDLER_NO_OBJECT(STATISTICS_GROUP, STATISTICS_OPER_PART1_NOTIF,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.c b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-index 479a76a94aa8..62f97a18a16c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-@@ -4,6 +4,8 @@
-  */
- #include <linux/crc32.h>
- 
-+#include "iwl-utils.h"
-+
  #include "mld.h"
- #include "scan.h"
- #include "hcmd.h"
-@@ -482,7 +484,9 @@ iwl_mld_scan_get_cmd_gen_flags(struct iwl_mld *mld,
- static u8
- iwl_mld_scan_get_cmd_gen_flags2(struct iwl_mld *mld,
- 				struct iwl_mld_scan_params *params,
--				struct ieee80211_vif *vif, u16 gen_flags)
-+				struct ieee80211_vif *vif,
-+				enum iwl_mld_scan_status scan_status,
-+				u16 gen_flags)
- {
- 	u8 flags = 0;
+@@ -156,6 +157,9 @@ static void iwl_mld_hw_set_security(struct iwl_mld *mld)
+ 		WLAN_CIPHER_SUITE_BIP_GMAC_256
+ 	};
  
-@@ -494,6 +498,17 @@ iwl_mld_scan_get_cmd_gen_flags2(struct iwl_mld *mld,
- 	if (params->scan_6ghz)
- 		flags |= IWL_UMAC_SCAN_GEN_PARAMS_FLAGS2_DONT_TOGGLE_ANT;
- 
-+	/* For AP interfaces, request survey data for regular scans and if
-+	 * it is supported. For non-AP interfaces, EBS will be enabled and
-+	 * the results may be missing information for some channels.
-+	 */
-+	if (scan_status == IWL_MLD_SCAN_REGULAR &&
-+	    ieee80211_vif_type_p2p(vif) == NL80211_IFTYPE_AP &&
-+	    gen_flags & IWL_UMAC_SCAN_GEN_FLAGS_V2_FORCE_PASSIVE &&
-+	    iwl_fw_lookup_notif_ver(mld->fw, SCAN_GROUP,
-+				    CHANNEL_SURVEY_NOTIF, 0) >= 1)
-+		flags |= IWL_UMAC_SCAN_GEN_FLAGS2_COLLECT_CHANNEL_STATS;
-+
- 	return flags;
- }
- 
-@@ -544,6 +559,7 @@ iwl_mld_scan_cmd_set_gen_params(struct iwl_mld *mld,
- 	u16 gen_flags = iwl_mld_scan_get_cmd_gen_flags(mld, params, vif,
- 						       scan_status);
- 	u8 gen_flags2 = iwl_mld_scan_get_cmd_gen_flags2(mld, params, vif,
-+							scan_status,
- 							gen_flags);
- 
- 	IWL_DEBUG_SCAN(mld, "General: flags=0x%x, flags2=0x%x\n",
-@@ -1752,6 +1768,11 @@ int iwl_mld_regular_scan_start(struct iwl_mld *mld, struct ieee80211_vif *vif,
- 			       struct cfg80211_scan_request *req,
- 			       struct ieee80211_scan_ies *ies)
- {
-+	/* Clear survey data when starting the first part of a regular scan */
-+	if (req->first_part && mld->channel_survey)
-+		memset(mld->channel_survey->channels, 0,
-+		       sizeof(mld->channel_survey->channels[0]) *
-+		       mld->channel_survey->n_channels);
- 
- 	if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
- 		iwl_mld_emlsr_block_tmp_non_bss(mld);
-@@ -2025,3 +2046,136 @@ int iwl_mld_alloc_scan_cmd(struct iwl_mld *mld)
- 
- 	return 0;
- }
-+
-+static int iwl_mld_chanidx_from_phy(struct iwl_mld *mld,
-+				    enum nl80211_band band,
-+				    u16 phy_chan_num)
-+{
-+	struct ieee80211_supported_band *sband = mld->wiphy->bands[band];
-+
-+	if (WARN_ON_ONCE(!sband))
-+		return -EINVAL;
-+
-+	for (int chan_idx = 0; chan_idx < sband->n_channels; chan_idx++) {
-+		struct ieee80211_channel *channel = &sband->channels[chan_idx];
-+
-+		if (channel->hw_value == phy_chan_num)
-+			return chan_idx;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+void iwl_mld_handle_channel_survey_notif(struct iwl_mld *mld,
-+					 struct iwl_rx_packet *pkt)
-+{
-+	const struct iwl_umac_scan_channel_survey_notif *notif =
-+		(void *)pkt->data;
-+	struct iwl_mld_survey_channel *info;
-+	enum nl80211_band band;
-+	int chan_idx;
-+
-+	if (!mld->channel_survey) {
-+		size_t n_channels = 0;
-+
-+		for (band = 0; band < NUM_NL80211_BANDS; band++) {
-+			if (!mld->wiphy->bands[band])
-+				continue;
-+
-+			n_channels += mld->wiphy->bands[band]->n_channels;
-+		}
-+
-+		mld->channel_survey = kzalloc(struct_size(mld->channel_survey,
-+							  channels, n_channels),
-+							  GFP_KERNEL);
-+
-+		if (!mld->channel_survey)
-+			return;
-+
-+		mld->channel_survey->n_channels = n_channels;
-+		n_channels = 0;
-+		for (band = 0; band < NUM_NL80211_BANDS; band++) {
-+			if (!mld->wiphy->bands[band])
-+				continue;
-+
-+			mld->channel_survey->bands[band] =
-+				&mld->channel_survey->channels[n_channels];
-+			n_channels += mld->wiphy->bands[band]->n_channels;
-+		}
-+	}
-+
-+	band = iwl_mld_phy_band_to_nl80211(le32_to_cpu(notif->band));
-+	chan_idx = iwl_mld_chanidx_from_phy(mld, band,
-+					    le32_to_cpu(notif->channel));
-+	if (WARN_ON_ONCE(chan_idx < 0))
++	if (fips_enabled)
 +		return;
 +
-+	IWL_DEBUG_SCAN(mld, "channel survey received for freq %d\n",
-+		       mld->wiphy->bands[band]->channels[chan_idx].center_freq);
+ 	hw->wiphy->n_cipher_suites = ARRAY_SIZE(mld_ciphers);
+ 	hw->wiphy->cipher_suites = mld_ciphers;
+ 
+@@ -180,6 +184,9 @@ static void iwl_mld_hw_set_pm(struct iwl_mld *mld)
+ 	if (!device_can_wakeup(mld->trans->dev))
+ 		return;
+ 
++	if (fips_enabled)
++		return;
 +
-+	info = &mld->channel_survey->bands[band][chan_idx];
+ 	mld->wowlan.flags |= WIPHY_WOWLAN_MAGIC_PKT |
+ 			     WIPHY_WOWLAN_DISCONNECT |
+ 			     WIPHY_WOWLAN_EAP_IDENTITY_REQ |
+@@ -284,9 +291,11 @@ static void iwl_mac_hw_set_wiphy(struct iwl_mld *mld)
+ 			WIPHY_FLAG_SUPPORTS_TDLS |
+ 			WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK;
+ 
++	/* For fips_enabled, don't support WiFi7 due to WPA3/MFP requirements */
+ 	if (mld->nvm_data->sku_cap_11be_enable &&
+ 	    !iwlwifi_mod_params.disable_11ax &&
+-	    !iwlwifi_mod_params.disable_11be)
++	    !iwlwifi_mod_params.disable_11be &&
++	    !fips_enabled)
+ 		wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
+ 
+ 	/* the firmware uses u8 for num of iterations, but 0xff is saved for
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index fa9d5e0b6609..55ae1caded53 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -5,6 +5,7 @@
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+ #include <linux/kernel.h>
++#include <linux/fips.h>
+ #include <linux/slab.h>
+ #include <linux/skbuff.h>
+ #include <linux/netdevice.h>
+@@ -461,7 +462,9 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 		IWL_ERR(mvm,
+ 			"iwlmvm doesn't allow to disable BT Coex, check bt_coex_active module parameter\n");
+ 
+-	ieee80211_hw_set(hw, MFP_CAPABLE);
++	if (!fips_enabled)
++		ieee80211_hw_set(hw, MFP_CAPABLE);
 +
-+	/* Times are all in ms */
-+	info->time = le32_to_cpu(notif->active_time);
-+	info->time_busy = le32_to_cpu(notif->busy_time);
-+	info->noise =
-+		iwl_average_neg_dbm(notif->noise, ARRAY_SIZE(notif->noise));
-+}
-+
-+int iwl_mld_mac80211_get_survey(struct ieee80211_hw *hw, int idx,
-+				struct survey_info *survey)
-+{
-+	struct iwl_mld *mld = IWL_MAC80211_GET_MLD(hw);
-+	int curr_idx = 0;
-+
-+	if (!mld->channel_survey)
-+		return -ENOENT;
-+
-+	/* Iterate bands/channels to find the requested index.
-+	 * Logically this returns the entry with index "idx" from a flattened
-+	 * survey result array that only contains channels with information.
-+	 * The current index into this flattened array is tracked in curr_idx.
+ 	mvm->ciphers[hw->wiphy->n_cipher_suites] = WLAN_CIPHER_SUITE_AES_CMAC;
+ 	hw->wiphy->n_cipher_suites++;
+ 	if (iwl_mvm_has_new_rx_api(mvm)) {
+@@ -485,12 +488,17 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 		hw->wiphy->pmsr_capa = &iwl_mvm_pmsr_capa;
+ 	}
+ 
+-	if (sec_key_ver &&
++	/*
++	 * beacon protection must be handled by firmware,
++	 * so cannot be done with fips_enabled
 +	 */
-+	for (enum nl80211_band band = 0; band < NUM_NL80211_BANDS; band++) {
-+		struct ieee80211_supported_band *sband =
-+			mld->wiphy->bands[band];
-+
-+		if (!sband)
-+			continue;
-+
-+		for (int per_band_idx = 0;
-+		     per_band_idx < sband->n_channels;
-+		     per_band_idx++) {
-+			struct iwl_mld_survey_channel *info =
-+				&mld->channel_survey->bands[band][per_band_idx];
-+
-+			/* Skip entry entirely, it was not reported/scanned,
-+			 * do not increase curr_idx for this entry.
-+			 */
-+			if (!info->time)
-+				continue;
-+
-+			/* Search did not reach the requested entry yet,
-+			 * increment curr_idx and continue.
-+			 */
-+			if (idx != curr_idx) {
-+				curr_idx++;
-+				continue;
-+			}
-+
-+			/* Found (the next) channel to report */
-+			survey->channel = &sband->channels[per_band_idx];
-+			survey->filled = SURVEY_INFO_TIME |
-+					 SURVEY_INFO_TIME_BUSY;
-+			survey->time = info->time;
-+			survey->time_busy = info->time_busy;
-+			survey->noise = info->noise;
-+			if (survey->noise < 0)
-+				survey->filled |= SURVEY_INFO_NOISE_DBM;
-+
-+			return 0;
-+		}
-+	}
-+
-+	return -ENOENT;
-+}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.h b/drivers/net/wireless/intel/iwlwifi/mld/scan.h
-index 4044cac3f086..69110f0cfc8e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/scan.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.h
-@@ -30,6 +30,12 @@ void iwl_mld_handle_match_found_notif(struct iwl_mld *mld,
- void iwl_mld_handle_scan_complete_notif(struct iwl_mld *mld,
- 					struct iwl_rx_packet *pkt);
++	if (!fips_enabled && sec_key_ver &&
+ 	    fw_has_capa(&mvm->fw->ucode_capa,
+ 			IWL_UCODE_TLV_CAPA_BIGTK_TX_SUPPORT))
+ 		wiphy_ext_feature_set(hw->wiphy,
+ 				      NL80211_EXT_FEATURE_BEACON_PROTECTION);
+-	else if (fw_has_capa(&mvm->fw->ucode_capa,
++	else if (!fips_enabled &&
++		 fw_has_capa(&mvm->fw->ucode_capa,
+ 			     IWL_UCODE_TLV_CAPA_BIGTK_SUPPORT))
+ 		wiphy_ext_feature_set(hw->wiphy,
+ 				      NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT);
+@@ -730,7 +738,7 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
  
-+int iwl_mld_mac80211_get_survey(struct ieee80211_hw *hw, int idx,
-+				struct survey_info *survey);
-+
-+void iwl_mld_handle_channel_survey_notif(struct iwl_mld *mld,
-+					 struct iwl_rx_packet *pkt);
-+
- #define WFA_TPC_IE_LEN 9
- 
- static inline int iwl_mld_scan_max_template_size(void)
-@@ -133,4 +139,35 @@ struct iwl_mld_scan {
- 	u64 last_mlo_scan_time;
- };
- 
-+/**
-+ * struct iwl_mld_survey_channel - per-channel survey information
-+ *
-+ * Driver version of &struct survey_info with just the data we want to report.
-+ *
-+ * @time: time in ms the radio was on the channel
-+ * @time_busy: time in ms the channel was sensed busy
-+ * @noise: channel noise in dBm
-+ */
-+struct iwl_mld_survey_channel {
-+	u32 time;
-+	u32 time_busy;
-+	s8 noise;
-+};
-+
-+/**
-+ * struct iwl_mld_survey - survey information
-+ *
-+ * Survey information for all available channels.
-+ *
-+ * @bands: per-band array for per-channel survey data, points into @channels
-+ * @n_channels: Number of @channels entries that are allocated
-+ * @channels: per-channel information
-+ */
-+struct iwl_mld_survey {
-+	struct iwl_mld_survey_channel *bands[NUM_NL80211_BANDS];
-+
-+	int n_channels;
-+	struct iwl_mld_survey_channel channels[] __counted_by(n_channels);
-+};
-+
- #endif /* __iwl_mld_scan_h__ */
+ #ifdef CONFIG_PM_SLEEP
+ 	if ((unified || mvm->fw->img[IWL_UCODE_WOWLAN].num_sec) &&
+-	    device_can_wakeup(mvm->trans->dev)) {
++	    device_can_wakeup(mvm->trans->dev) && !fips_enabled) {
+ 		mvm->wowlan.flags |= WIPHY_WOWLAN_MAGIC_PKT |
+ 				     WIPHY_WOWLAN_DISCONNECT |
+ 				     WIPHY_WOWLAN_EAP_IDENTITY_REQ |
 -- 
 2.34.1
 
