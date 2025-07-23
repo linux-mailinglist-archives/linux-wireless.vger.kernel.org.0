@@ -1,148 +1,140 @@
-Return-Path: <linux-wireless+bounces-25892-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25893-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8E6B0EA41
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 07:58:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF818B0EADA
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 08:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 117067B4C56
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 05:57:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A3E8580090
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 06:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A23D248873;
-	Wed, 23 Jul 2025 05:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F9A271441;
+	Wed, 23 Jul 2025 06:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NkX4MEOc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fkc0ol6c"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA38A2594;
-	Wed, 23 Jul 2025 05:58:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E72271461
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 06:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753250315; cv=none; b=S3rxgSmv6kqYIuiKjnT7Vj4ZcL5esCUuTgDdXw//oaV/+F/sDU7Txf0+4EcsfCvGIKNZupv8Q/Y5G3bwZHhTiQLntgfkKWPHwbmWKiddXP6ZbTmQqTFMMSX+nXkU33KUY1C17yB6ncer5C2uHc/gleeE5Nb9zrQaqXelqENdzzI=
+	t=1753253139; cv=none; b=DCZQWZA6z+jtgYK91ni6DDBg/r4LiYZ2N0gBZfivnb0uSmqHH2nF5gNh9NV4J2UtHJ3eMVn/msY5l9lxbR6xBIN9jo4gliCFQ5Vug66wWn2+fWG2VlFjZFSNpvR1lMl9RLSuaGY+9bI4vEWQXZS4fWyWOBChTE9jr+JqzZrmM4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753250315; c=relaxed/simple;
-	bh=mtV6PtNaUOkVWENMgyWOyGp2r589sffVzijjl/VKBVs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uPMXzm31ucMPXrPQq3P4y0EzfIi7Ov2aG2UWucjapAAyWEi+8tKtBd7f8nQqd2snsq3nJXKNru1TBl9/t4H6z/CHg0yHcrMKVNWc/6it7QdUG+uEOJMQ0rKvIYll+xlRu4hOZLy4g9djZAYGvilKNHk2EJI5xWNaBp1LadoajFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NkX4MEOc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0797BC4CEE7;
-	Wed, 23 Jul 2025 05:58:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753250315;
-	bh=mtV6PtNaUOkVWENMgyWOyGp2r589sffVzijjl/VKBVs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NkX4MEOcrd8F/ufhbz5yVg7ZqwkIWhm2IdBoB7eJLTs7yjtVm+EmSCCnGH3XS14Lj
-	 3/9WjCMMgrrKrSg8+MtIOHljZnoQkHSgLEzuvEj2F7hBXmIhOOjBJLgrsaeLF5sQNB
-	 yDunzZkKjcRTgF3/Sh1taA11PW/6kGDhN0beVhcFkVTL7uwSegXqbFcr19QGlm+oXj
-	 LgYe4qD5x/hghTRXalnoqrChtbWJ4WWPFbXhXsqF29Dp2zA+e8DszKLxGbUcHvRwj8
-	 Ftr45gPb7jmL+m9CapBFVEOzn8hFL1+/XUgjq8hQgbnon4zv2K4hpuoOTyhmNeE/cx
-	 P14fm0njw7pyg==
-Message-ID: <25f80663-c896-4bbd-b1a5-0b5a93e047e1@kernel.org>
-Date: Wed, 23 Jul 2025 07:58:30 +0200
+	s=arc-20240116; t=1753253139; c=relaxed/simple;
+	bh=1wmzOcwANkdTKjU/EyrIj9GHEU1UYylpHCZhl9Ju/9I=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=Iq3eNVgBqTBGVJDDTKqoxDQObrkeittO3FP/HeNZsZtWZzqG+jLmLM+nXan0wrnIEC+x5s7EZJV8fwJBS0rdBEozQP8j524RGSWZM5HFXULhYfWj6bRcdj43/64P56sFIFBjxSEFVd2VAa19bAxTFX/TLmKOeeD1JctDYomq2Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fkc0ol6c; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753253137; x=1784789137;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1wmzOcwANkdTKjU/EyrIj9GHEU1UYylpHCZhl9Ju/9I=;
+  b=Fkc0ol6cX8CHq5aMMq+/zeFZ+xEEjs6TFPFSx+tK0JHBNHyGHR/M+u18
+   6SnQsmHUH64nCMOr5pVUlHM0BYcf/W1lCX+vgypG4i2s8whdv7FnNIFeS
+   wTWM7ntx/cR2MYimS1mHuEMk/ANbEvBkf0CBXZlyMk6TnTNOhorwZvVxv
+   er8ul9AJYXUjqhBXnCKC7WL/ZsL3pGJSKUmcA2Q85/r51wMfts0gkD/HL
+   /hF1j+EpGkyAK/f8DxafBProItsGtzzdyeIAfRyn2vtoEQLCP58z79wAS
+   ip7zufYyrBknYkFyUDhTUdiMw1zN6n74GtSalDeNAdX1pchrwsr95v0Zz
+   g==;
+X-CSE-ConnectionGUID: L7G7PXDKTY2/+5O9w3jbPQ==
+X-CSE-MsgGUID: JISsT9m4QBufjxzjPHOO0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="59340711"
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
+   d="scan'208";a="59340711"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 23:45:37 -0700
+X-CSE-ConnectionGUID: wpYZIMefSbSRhKCQeeXNgQ==
+X-CSE-MsgGUID: INMDYL+OR728V88GCvTNGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
+   d="scan'208";a="159918067"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 23:45:36 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH iwlwifi-next 00/14] wifi: iwlwifi: updates - 2025-07-23
+Date: Wed, 23 Jul 2025 09:45:01 +0300
+Message-Id: <20250723064515.2084903-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 wireless-next 7/7] dt-bindings: net: wireless: rt2800:
- add SOC Wifi
-To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Stanislaw Gruszka <stf_xl@wp.pl>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "moderated list:ARM/Mediatek SoC support"
- <linux-arm-kernel@lists.infradead.org>,
- "moderated list:ARM/Mediatek SoC support"
- <linux-mediatek@lists.infradead.org>
-References: <20250722212856.11343-1-rosenp@gmail.com>
- <20250722212856.11343-8-rosenp@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250722212856.11343-8-rosenp@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-On 22/07/2025 23:28, Rosen Penev wrote:
-> Add device-tree bindings for the RT2800 SOC wifi device found in older
-> Ralink/Mediatek devices.
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Hi,
 
-<form letter>
-This is a friendly reminder during the review process.
+A few features, fixes and cleanups from our internal tree.
 
-It looks like you received a tag and forgot to add it.
+Miri
+---
 
-If you do not know the process, here is a short explanation:
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
-of patchset, under or above your Signed-off-by tag, unless patch changed
-significantly (e.g. new properties added to the DT bindings). Tag is
-"received", when provided in a message replied to you on the mailing
-list. Tools like b4 can help here. However, there's no need to repost
-patches *only* to add the tags. The upstream maintainer will do that for
-tags received on the version they apply.
+Avraham Stern (2):
+  wifi: iwlwifi: mvm: avoid outdated reorder buffer head_sn
+  wifi: iwlwifi: mld: avoid outdated reorder buffer head_sn
 
-Please read:
-https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
+Benjamin Berg (2):
+  wifi: iwlwifi: mld: support channel survey collection for ACS scans
+  wifi: iwlwifi: mld: decode EOF bit for AMPDUs
 
-If a tag was not added on purpose, please state why and what changed.
-</form letter>
+Ilan Peer (1):
+  wifi: iwlwifi: mvm: Remove NAN support
 
-Best regards,
-Krzysztof
+Johannes Berg (1):
+  wifi: iwlwifi: disable certain features for fips_enabled
+
+Miri Korenblit (8):
+  wifi: iwlwifi: mld: disable RX aggregation if requested
+  wifi: iwlwifi: remove SC2F firmware support
+  wifi: iwlwifi: stop supporting iwl_omi_send_status_notif ver 1
+  wifi: iwlwifi: Remove support for rx OMI bandwidth reduction
+  wifi: iwlwifi: mld: use spec link id and not FW link id
+  wifi: iwlwifi: don't export symbols that we shouldn't
+  wifi: iwlwifi: check validity of the FW API range
+  wifi: iwlwifi: Revert "wifi: iwlwifi: remove support of several
+    iwl_ppag_table_cmd versions"
+
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |   4 -
+ .../wireless/intel/iwlwifi/fw/api/datapath.h  |  26 --
+ .../net/wireless/intel/iwlwifi/fw/api/power.h |  20 +-
+ .../wireless/intel/iwlwifi/fw/regulatory.c    |  20 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |   5 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-io.c   |   6 -
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  25 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    |  16 -
+ drivers/net/wireless/intel/iwlwifi/mld/agg.c  |   5 +
+ .../wireless/intel/iwlwifi/mld/constants.h    |   9 -
+ drivers/net/wireless/intel/iwlwifi/mld/link.c | 389 +-----------------
+ drivers/net/wireless/intel/iwlwifi/mld/link.h |  30 --
+ .../wireless/intel/iwlwifi/mld/low_latency.c  |   3 -
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c |  73 +---
+ drivers/net/wireless/intel/iwlwifi/mld/mld.c  |  10 +-
+ drivers/net/wireless/intel/iwlwifi/mld/mld.h  |   2 +
+ .../net/wireless/intel/iwlwifi/mld/notif.c    |  19 +-
+ drivers/net/wireless/intel/iwlwifi/mld/rx.c   |   9 +
+ drivers/net/wireless/intel/iwlwifi/mld/scan.c | 156 ++++++-
+ drivers/net/wireless/intel/iwlwifi/mld/scan.h |  37 ++
+ .../net/wireless/intel/iwlwifi/mld/stats.c    |   2 -
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |   2 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  22 +-
+ .../net/wireless/intel/iwlwifi/mvm/mld-mac.c  |   9 -
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   1 -
+ .../net/wireless/intel/iwlwifi/mvm/power.c    |   1 -
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |   5 +
+ .../wireless/intel/iwlwifi/tests/devinfo.c    |  28 ++
+ 28 files changed, 346 insertions(+), 588 deletions(-)
+
+-- 
+2.34.1
+
 
