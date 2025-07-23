@@ -1,239 +1,128 @@
-Return-Path: <linux-wireless+bounces-25924-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25925-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B95B0EE01
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 11:04:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51CC4B0EE0D
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 11:07:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C1885609DA
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 09:04:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DFE81C21578
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 09:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 791AD283FC2;
-	Wed, 23 Jul 2025 09:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5CE279DC2;
+	Wed, 23 Jul 2025 09:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="w0U0ITPp"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ITSjtD2z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB65281538
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 09:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70D429408
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 09:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753261481; cv=none; b=jb8ld2CAcSS/HBteKIoVgY0pwm5BPk1I6XKje9nPXj7FZBMjgC2znxXlyY9E4IYRo092WPmwG8HkgnqxiDagW+mrvFkUetgJqQn+0H98LLmGUhz/rvK3JeU4XcSiVU6EcoJRX8FlZgEkPXNC/QBQqkKrIYCFBi0BdqwnRKMCpbs=
+	t=1753261649; cv=none; b=RtotgR7D5r3PPrIK6Z7W/SHdbJkqO6Cn9sXBoqjCsu1DaMm603dX9SfnTosFPoCD1TWV6xU9jTqH+m0KspGu8IOTMpfTqMmUIMmkWnWNra0PXn6Mrqpf9aLiP98BtAlFzmRK+XWLPnefabKrZfwGRLNZzch5s2N3znxMJSzFuXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753261481; c=relaxed/simple;
-	bh=rPBgA9KDxz2jPZSyISRFwWv+nXniri2GCVZL5SwAE2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rNHHBDJRoXfOn9pID7ZIHRYXuKmIwq4ATZVWBYbtFrHMCqIYlEF2WP0LZF3aG2q/X9jInCex5GkrkYoW4Rcap1pRg2OGs4F4oMuKpS9HR4t/alVP5ES5d8E7yaPB8Q4HlVqNRP+dRtWdtpxRU4WFyxkmCz40hfMB7BmYnJmAP2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=w0U0ITPp; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b350704f506so598542a12.0
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 02:04:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1753261479; x=1753866279; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=72TmxPhZeTpaBLmimWF8FXoOOTRtZSHdK51XiztlkLk=;
-        b=w0U0ITPpRrGnz8BCPpdo5pZvVBBqrAZojKzMC46kfqfd8vP8bk6tXNHbBbigXzTtd3
-         h4mOqhPlK/IK9K0sEv6kGpTTEkTmJcAOUOm99k7lbBZm1AntZ5WYbPZxvyrinS4c57hI
-         n1agLkYHU5RNg9V8eC1FTPZDuOr6GCz5NGRK0gkEFYJwU9aGdl8DN7RW+BIJ3ZHJA/x2
-         Zu7hwt+kf9tPJ7hchoFatT7dmA8VwQtoz4hxg2X4hL+jYBoq6mHRl57/yopar3s5MSaw
-         CsbRr4t0iDhc1LVJYnFuYnmhr1tvBgfuuQA+6nIOVR9Lku6mpvXt5rzR2KL3WRV/VVXr
-         zg2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753261479; x=1753866279;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=72TmxPhZeTpaBLmimWF8FXoOOTRtZSHdK51XiztlkLk=;
-        b=Px2U12yWaeFQxEwNtSNGm8qeORGHkngWJ9KoFwwLpcWa1B5JjH4J0QDkg4zjbJcNkk
-         Clqfv549R/jyqtkJMAtduEpp9aVU8alPAlS4IPsdpBFCutjvoUdYq3uuXTbhI6HT1S9q
-         Qnwni8hm9P14mmCy6Shj8JWbe+DTeFHnEoroSP2k+871eO1ImHEMogEma9JHJ+5ISrQW
-         gPDv8vbvQH+wR0WOQsGMVmPNI50gzE561P8DnuFI9e2WxbtoJ5Nadt186bE0DrYBpEc+
-         lOIq5DhFJ1nSVmSKQa8/e3Gha2303wkJ/RKmSLbmb8GP1x5nRmL/lnnnyzG1Lla0Jfgb
-         JThQ==
-X-Gm-Message-State: AOJu0Yw+7azcA2awLlP89fbOTT/DltQqkXRP6ZY9OLmaLHM0BNJCV3u7
-	TSerANWqAyFQzCEe4jxztgynYdh/mbXBs2Yc9+MSMvlZscUc2eG5aUhYx8CBRZB0ZF+Oj6B1Tjv
-	/xDcnepE=
-X-Gm-Gg: ASbGncsKNOif0Hi5+9sIR9o9NZmz3jegW4sUCjpg8wr/PLWwdn6owlXWhP9QYoX9Huv
-	QBnENvAksWf4PbMugzge6POlvKRkmekzYUIai06496SfdpOB+s+5CmhvHfvL5vgsQuTfjQhGcNu
-	H3LnEhC73jVIxFLRYg/81Mgd9AK4tDIwIEbvb+QSG5kayiFTWnzTWLAfttvRAl8q4METKablGYv
-	9kndQgLuc23Q9gvxs5IrAvfxOeVEzqZp2jM4sPTBtM+l64Ps+zFO6ZLSaJsHFffnyj2EB56xmxs
-	Oa23oAB2+V1cabu1CfvDvvqm0eEuc6E2fg6xN2izKQrXmWDmkW5igER9SbycGCl0rjr9JilxVOP
-	vsqUN+t33FdsyoJ4qASJM1Fy2YlhrAgQ=
-X-Google-Smtp-Source: AGHT+IGGy1TdeAuk1PY0qihACnUZblKPmr+isnRuguCS+z8nJWgaQcxW0C4+Egzk+sRLbAFuAA70fw==
-X-Received: by 2002:a17:902:d2ca:b0:231:e413:986c with SMTP id d9443c01a7336-23f8ac468a5mr98416855ad.11.1753261478575;
-        Wed, 23 Jul 2025 02:04:38 -0700 (PDT)
-Received: from localhost ([101.180.88.40])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b6b4cf8sm91911475ad.107.2025.07.23.02.04.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 02:04:38 -0700 (PDT)
-Date: Wed, 23 Jul 2025 19:04:36 +1000
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Subject: Re: [wireless-next 1/2] wifi: mac80211: support encoding S1G TIM PVB
-Message-ID: <yprbgvamtyf67oqwwhqpz7csb3yfegljdasyczkrilfrou4z3e@lvitjre3rfez>
-References: <20250722071642.875875-1-lachlan.hodges@morsemicro.com>
- <20250722071642.875875-2-lachlan.hodges@morsemicro.com>
- <d97f20cff120e813b83c3a7d41bae63b151da26a.camel@sipsolutions.net>
+	s=arc-20240116; t=1753261649; c=relaxed/simple;
+	bh=DY93irpDUm0SY1rL2TC1TFopKpHTXer9b0l2uvHV7yo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qMYlaqkPd5mfKVlT8Nh1aDV3SYwHMcZBxYUNbB2fr1DkmSJX6oQsbHMvjBTGsGgPoPSmD3zJWbSseSAgADqJ9cwrl4ff9pjOB2/Z8MZb4dDE58smQaGRDEmzfxTOb8ZgpQ2X8vCluot7h5a6pXCKaB3t3LDLZBncL2/m9P5WwX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ITSjtD2z; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56N97IgmC2672320, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1753261638; bh=DY93irpDUm0SY1rL2TC1TFopKpHTXer9b0l2uvHV7yo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=ITSjtD2z+x8m7pSEqOgN2IXl1CEq323pfw2p/fmGlo23mGb0y8Z3gyN4PJXj5Js+7
+	 yJhxCjp1mj8ocsrJvixWwa5NmQ/vVobIEMebc5K42kyfYLQjcPlLrYCVvI+s2V5SlX
+	 E2y9lOelY73XkV2ty6iCrsM3vMjw5eiWYbSWAh+sHDREWA2pLvOH4pbTZO/c5X/TY6
+	 1xWv8tEwTA0wWO+nvYMThnFhKJvJphZoUepigoNOABiGpUjXHyKol2sY+rpnfCSpy1
+	 R+EcizVGuEWXWhZZ0fNUBUNu1VHkHpnUiQeqLOTz5eZjbL+FretUDBoqWp0DYOVOuB
+	 CWhzElLEMg9Rg==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56N97IgmC2672320
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Jul 2025 17:07:18 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 23 Jul 2025 17:07:18 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 23 Jul 2025 17:07:17 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47]) by
+ RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47%5]) with mapi id
+ 15.01.2507.035; Wed, 23 Jul 2025 17:07:17 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
+        "martin.blumenstingl@googlemail.com" <martin.blumenstingl@googlemail.com>
+Subject: RE: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf path'
+Thread-Topic: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf
+ path'
+Thread-Index: AQHb+wy3xJJYRq7Qhky2ZR9b8r3WqLQ+3/XA///saYCAAIk6oP//fpUAgACIU6D//4PSAAAQ6kAg
+Date: Wed, 23 Jul 2025 09:07:17 +0000
+Message-ID: <ed867462c8d945b28b2e913d1cd0c3d5@realtek.com>
+References: <7407FAA3-F4A4-48AA-91E5-A78DA711447D@gmail.com>
+ <ec5d762f3ee64a0188953a1aecbef2cc@realtek.com>
+ <AFB036A4-80C6-4880-B798-FB22C7C137FA@gmail.com>
+ <b29df36b838049a088d8298220078134@realtek.com>
+ <5CA196F3-90B4-479F-9A19-E9C71C8726D4@gmail.com>
+ <34d9c169c92540caa294095d2172b4fc@realtek.com>
+ <18989932-3578-4E45-BA8B-6C2C76FDE7FE@gmail.com>
+In-Reply-To: <18989932-3578-4E45-BA8B-6C2C76FDE7FE@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d97f20cff120e813b83c3a7d41bae63b151da26a.camel@sipsolutions.net>
 
-On Wed, Jul 23, 2025 at 10:04:06AM +0200, Johannes Berg wrote:
-Hi Johannes
-
-> On Tue, 2025-07-22 at 17:16 +1000, Lachlan Hodges wrote:
-> 
-> > +/*
-> > + * An S1G PPDU TIM PVB uses the notion of pages. Each page can reference
-> > + * 2048 AIDs, however since mac80211 does not support page slicing we
-> > + * are reusing the existing TIM bitmap, which supports up to 2008 AIDs.
-> > + * As the TIM element has a maximum length of 255 bytes, and each encoded
-> > + * block has a maximum length of 10 bytes at most we can support 25 blocks,
-> > + * as 1 + 1 + 1 + 25 * 10 = 253 bytes, leaving our maximum AID count for
-> > + * an S1G PPDU at 25 * 64 = 1600. If page slicing is introduced in the
-> > + * future, this will need to be modified.
-> > + */
-> > +#define IEEE80211_MAX_AID_S1G_NO_PS	1600
-> > +#define IEEE80211_MAX_S1G_TIM_BLOCKS	25
-> 
-> Come to think of it, neither of these really makes sense in the
-> ieee80211.h header file since they're implementation related limits due
-> to the encoding. And IEEE80211_MAX_S1G_TIM_BLOCKS is questionable too
-> (see below), spec wise the limit would maybe be 32 (you cannot encode
-> higher than block 0..31 in the 5 bit block index.)
-
-Yup you are right, since this is an implementation detail rather then
-the actual spec. Will move these somewhere else for v2.
-
-> > +static void ieee80211_beacon_add_tim_pvb(struct ps_data *ps,
-> > +					 struct sk_buff *skb, u8 aid0, u8 *tim)
-> 
-> Maybe use 'struct element' for the tim pointer? that way tim[1] = ...
-> becomes tim->datalen = ... which seems easier to understand.
-> 
-> I know the code didn't use that (it predates the existence of 'struct
-> element') but it could also originally put the WLAN_EID_TIM that way,
-> for example.
-> 
-> And maybe aid0 could be 'bool mcast_traffic' or 'bool aid0_traffic' (if
-> mcast is too specific, not sure what might get encoded there now/s1g.)
-> 
-> (mostly I'm thinking it should be bool, 'bool aid0' is also fine)
-
-Yup I guess If im shuffling this code around I should clean up the
-normal TIM function, since it definitely looks like it was written a
-long time ago :)
-
-> > +static void ieee80211_s1g_beacon_add_tim_pvb(struct ps_data *ps,
-> > +					     struct sk_buff *skb, u8 aid0,
-> > +					     u8 *tim)
-> [...]
-> > +	/* Emit an encoded block for each non-zero sub-block */
-> > +	for (blk = 0; blk < IEEE80211_MAX_S1G_TIM_BLOCKS; blk++) {
-> 
-> So this only makes sense if you actually limit the AIDs to 1600... Maybe
-> then that's what you want to do :)
-> 
-> Otherwise even if you have no traffic for AIDs 1..1000 you would still
-> never indicate the traffic for AIDs >=1600 (or so.)
-> 
-> If you don't want to limit to 1600 then I think encoding wise we're
-> limit to 2048 (but in practice to 2008 with the AID limit in nl80211),
-> but this code would then probably attempt to access 2048 so we need to
-> ensure the ps->tim bitmap is actually slightly larger. Not that I really
-> see an issue with that. Or add a check for the actual idx below, similar
-> to the one you have there, but with a subblock index of 2008/8 == 251
-> instead.
-
-As mentioned in other email, I'll stick with the 1600 limit as an
-"Implementation detail" for now. 
-
-> > +		u8 blk_bmap = 0;
-> > +		int sblk, subcnt = 0;
-> > +
-> > +		for (sblk = 0; sblk < 8; sblk++) {
-> > +			int idx = blk * 8 + sblk;
-> > +
-> > +			if (idx >= IEEE80211_MAX_AID_S1G_NO_PS)
-> > +				break;
-> 
-> I think you'll want to remove this condition. If you _do_ limit the AIDs
-> anyway it's not needed, and if you _don't_ limit the AIDs then it should
-> be replaced by some "does it fit" condition, and/or checking for the
-> 2008 value.
-
-Ah yep its redundant due to the outer loop. Will fix.
-
-> 
-> > +			/*
-> > +			 * If the current subblock is non-zero, increase the
-> > +			 * number of subblocks to emit for the current block.
-> > +			 */
-> > +			if (ps->tim[idx]) {
-> 
-> Also ... this line and the idx>= cannot simultaneously be right ... Here
-> it's basically a subblock index into the bitmap, whereas the >=MAX_AID
-> means it would be an AID, i.e. they're different units by a factor of 8.
-> 
-> It actually looks like it's a subblock index, but then the AID condition
-> makes no sense anyway.
-> 
-> Maybe rename the variable ;-)
-
-Yep will tidy this up.
-
-> > +				blk_bmap |= BIT(sblk);
-> > +				subcnt++;
-> 
-> I'd be tempted to remove the subcnt variable and use hweight8(blk_bmap)
-> in its place? I don't think it's _that_ much more expensive, and avoids
-> having to maintain the same information twice, basically?
-
-Yep I see - we can just use hweight8 rather then tracking it
-separately. I think anytime we can make these bit twiddling functions
-simpler is always good :)
-
-> > +		/*
-> > +		 * Increase the tim length by the current encoded block
-> > +		 * length by block control + block bitmap + n_subblocks where
-> > +		 * n_subblocks represents the number of subblock bytes to emit
-> > +		 * for the current block.
-> > +		 */
-> > +		tim[1] += 1 + 1 + subcnt;
-> 
-> Or you could just remove all of this tim[1] code from _both_ functions
-> in the first place, and just have the _caller_ update it:
-> 
-> struct element *tim;
-> 
-> pos = skb_put(skb, 4);
-> tim = (void *)pos;
-> // add all the stuff including PVB
-> tim->datalen = skb_tail_pointer(skb) - &tim->data;
-> 
-> or so. I could be off by one I guess :)
-> 
-> Then (going back down the stack of thoughts) you don't need the 'subcnt'
-> at all.
-
-That is probably cleaner overall, will probably do something like that
-in v2.
-
-lachlan
-
-
-
+UGlvdHIgT25pc3pjenVrIDxwaW90ci5vbmlzemN6dWtAZ21haWwuY29tPiB3cm90ZToNCj4gPiBX
+aWFkb21vxZvEhyBuYXBpc2FuYSBwcnpleiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNv
+bT4gdyBkbml1IDIzIGxpcCAyMDI1LCBvIGdvZHouIDEwOjE5Og0KPiA+DQo+ID4gd29ya2luZyBz
+dGF0ZToNCj4gPiAgIHJ0dzg4OiBydHdfY2hpcF9wYXJhbWV0ZXJfc2V0dXA6MTg1OSBoYWwtPmNo
+aXBfdmVyc2lvbj0weDQ5M2QzMGVhDQo+ID4gbm9uLXdvcmtpbmcgc3RhdGU6DQo+ID4gICBydHc4
+ODogcnR3X2NoaXBfcGFyYW1ldGVyX3NldHVwOjE4NTkgaGFsLT5jaGlwX3ZlcnNpb249MHgzMDMw
+MzBlYQ0KPiA+DQo+ID4gSSdkIHRyeSB0byByZWFkIG1vcmUgdGltZXMgdG8gc2VlIGlmIGl0IGNh
+biBiZWNvbWUgY29ycmVjdC4uLg0KPiA+IEFsc28sIEkgZm9yY2UgdG8gdXNlIGNvcnJlY3QgdmFs
+dWUgYXQgdGhlIGxhc3QgaXRlcmF0aW9uIHRvIHNlZSBpZiBpdA0KPiA+IGNhbiB3b3JrIGV2ZW4g
+aW5jb3JyZWN0IHZhbHVlIG9mIHJlZ2lzdGVyIDB4RjAuDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMgYi9kcml2ZXJzL25ldC93
+aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYw0KPiA+IGluZGV4IGZhMGVkMzljYjE5OS4uMTM3
+NDE4ZDExMDhkIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
+cnR3ODgvbWFpbi5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4
+OC9tYWluLmMNCj4gPiBAQCAtMTg1OCw5ICsxODYxLDE0IEBAIHN0YXRpYyBpbnQgcnR3X2NoaXBf
+cGFyYW1ldGVyX3NldHVwKHN0cnVjdCBydHdfZGV2ICpydHdkZXYpDQo+ID4gICAgICAgICAgICAg
+ICAgcmV0dXJuIC1FSU5WQUw7DQo+ID4gICAgICAgIH0NCj4gPg0KPiA+IC0gICAgICAgaGFsLT5j
+aGlwX3ZlcnNpb24gPSBydHdfcmVhZDMyKHJ0d2RldiwgUkVHX1NZU19DRkcxKTsNCj4gPiArICAg
+ICAgIGZvciAoaW50IGkgPSAwOyBpIDwgMjA7IGkrKykgew0KPiA+ICsgICAgICAgaGFsLT5jaGlw
+X3ZlcnNpb24gPSBpID09IDE5ID8gMHg0OTNkMzBlYSA6IHJ0d19yZWFkMzIocnR3ZGV2LCBSRUdf
+U1lTX0NGRzEpOw0KPiA+ICAgICAgICBoYWwtPmN1dF92ZXJzaW9uID0gQklUX0dFVF9DSElQX1ZF
+UihoYWwtPmNoaXBfdmVyc2lvbik7DQo+ID4gICAgICAgIGhhbC0+bXBfY2hpcCA9IChoYWwtPmNo
+aXBfdmVyc2lvbiAmIEJJVF9SVExfSUQpID8gMCA6IDE7DQo+ID4gKyAgICAgICBwcmludGsoInJ0
+dzg4OiAlczolZCBoYWwtPmNoaXBfdmVyc2lvbj0weCV4XG4iLA0KPiA+ICsgICAgICAgICAgICAg
+ICBfX2Z1bmNfXywgX19MSU5FX18sIGhhbC0+Y2hpcF92ZXJzaW9uKTsNCj4gPiArICAgICAgIG1k
+ZWxheSgxMDApOw0KPiA+ICsgICAgICAgfQ0KPiA+ICAgICAgICBpZiAoaGFsLT5jaGlwX3ZlcnNp
+b24gJiBCSVRfUkZfVFlQRV9JRCkgew0KPiA+ICAgICAgICAgICAgICAgIGhhbC0+cmZfdHlwZSA9
+IFJGXzJUMlI7DQo+ID4gICAgICAgICAgICAgICAgaGFsLT5yZl9wYXRoX251bSA9IDI7DQo+ID4N
+Cj4gPg0KPiANCj4gd2VsbCAtIHdpdGggYWJvdmUgcGF0Y2ggYWxsIHN0YXJ0cyB0byB3b3JrIHdl
+bGwgOi0pDQo+IDEwIGJvb3RzLCAxMCB3b3JraW5nIHdpZmkgd2l0aCBjb3JyZWN0IHNjYW5zLg0K
+DQpHb29kLg0KDQo+IA0KPiBkZW1zZyBmcm9tIHdvcmtpbmcgc3lzOiBodHRwczovL3Rlcm1iaW4u
+Y29tL2JoczQNCg0KVW5mb3J0dW5hdGVseSwgdGhlIGxvZyBzYWlkOg0KZmlyc3QgcmVhZDoNCiAg
+cnR3ODg6IHJ0d19jaGlwX3BhcmFtZXRlcl9zZXR1cDoxODYwIGhhbC0+Y2hpcF92ZXJzaW9uPTB4
+MzAzMDMwZWENCjJuZH4xOXRoIHJlYWQ6DQogIHJ0dzg4OiBydHdfY2hpcF9wYXJhbWV0ZXJfc2V0
+dXA6MTg2MCBoYWwtPmNoaXBfdmVyc2lvbj0weDMwMzAzMDMwDQoNCk5vdCBzdXJlIGlmIEkgY2Fu
+IHVzZSB0aGlzIHBhdHRlcm4gdG8gbWFrZSBhIHdvcmthcm91bmQuIEkgdGhpbmsgdGhlIGJldHRl
+cg0Kd2F5IHdvdWxkIGJlIHRvIHVzZSBmaXJtd2FyZSByZXBvcnQgdG8gZml4IHRoaXMuIEknbGwg
+dHJ5IHRvIG1ha2UgYSBwYXRjaA0KYW5kIGdldCBiYWNrIHRvIHlvdSBzb29uLg0KDQoNCg==
 
