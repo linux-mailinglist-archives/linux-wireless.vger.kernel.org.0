@@ -1,127 +1,188 @@
-Return-Path: <linux-wireless+bounces-25944-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25945-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D95B0F555
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 16:32:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4382FB0F6D0
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 17:18:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25C49189BB4E
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 14:32:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C0C917DC45
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 15:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3252F2C4A;
-	Wed, 23 Jul 2025 14:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC262E5B19;
+	Wed, 23 Jul 2025 15:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bi5UkJC3";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aSSR21VR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVEdQX4X"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189BD2E541F
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 14:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D6C27AC30
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 15:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753281147; cv=none; b=HbsBhIddkPJo+w0YHmMS3U4CtIAxCEozSdYTJ7p7kFllaHqDA6Tjrpups9R3rE4NA/ygqdO41IXVgEipnpbMK0ho/L9vAc2rZ3unNDJ0LPzL5G8npuigdvIvoB833RoHUr7a3rQ3zX9LxcpNFY45uqXui5Sw5MANQik/21paYm0=
+	t=1753283854; cv=none; b=ui55p+YI9ZpniA8dJAfrfnHiA2LrhIUIdQaIYvUTxsQwsm79fcmLTHKRZwEPqWbpomxXrRtUlWaPyBIFgVMUckuboTysslG3LC3IHT34WeJHjkYlqFWK00YYCduBMnsQS8WZWcn7q6Oy+2+IGrxcvdZXl/4HWhxqwWwcmS1NLR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753281147; c=relaxed/simple;
-	bh=Gg5UBb0E6xRCUZNjblK9BJZjkk4EOeqgI2QsgNo/HIA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BtZgDs0K5bwBwo1s9FQRRjVqPMoYkKEYDxlFAVXul23v65KXBNsDx1/rdENdrGLKfbY9REG+p4PFtorPdvxvb0tz8v++dPoLV/DTw1giDJyjt3+sCvw+pkqbjG7Og3yzmS/p42GpGGa0KfdJUlKrU5dk99TE4h7Rn7UviSr946Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bi5UkJC3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aSSR21VR; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Message-ID: <73fbbb72-b0f1-4521-8abd-2bc7fd0dfdab@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1753281142;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BeaXa4hzcH8z7f1zdrXl1O+KXEzJkY9IT1FCFyQMlt4=;
-	b=bi5UkJC3HM0Zg/+PiLiNe8lzgp+vDuRaK3qFPfoEThwglj40ROFx8hLnK/kDpamEYXWyZ2
-	uy1sGHiKIssk2Gw0Be1ERxdWtvRhTFiVmo/qzeSAgIN1zFAgQmHlixn0UrdZ3XyjVQnJiw
-	g5lz05OD/Ut+Hzv5EbIR3idszBFXaKbRELeA1QdJMU9GO4Rz1nsnZthoxtOxVC/Du9e6qY
-	ZGwcwRVKLlBQMQufPzBtBTqNdUa8Xv51wbXzsnJIL+oeRX3NAClTwJF5OUHjWM/m+X3+BR
-	ftdpwMa7xRfiGNzETn2fhhi4Fy5jTTcFlQ/VCOKFH5OsZCH34lkW+NRiEoMlBA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1753281142;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BeaXa4hzcH8z7f1zdrXl1O+KXEzJkY9IT1FCFyQMlt4=;
-	b=aSSR21VR94DcMOuK1zMLqpzkT8CuofzRR4wKID0UKlESjAAvDaxQozn+KmFsUYsbHFVrIC
-	JgN7dEmIfcUfq7Dg==
-Date: Wed, 23 Jul 2025 16:32:22 +0200
+	s=arc-20240116; t=1753283854; c=relaxed/simple;
+	bh=MA8ZbvE1J3PPDlcH0g2YgcyEbtX84MehRZGqOnAU60M=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Aewhlkc5hpz8Ytl5C6nMwJMk6bXITEwJG1FsDuurdO+O/vRAJ8PdKUk5LVX4N/Ubxy2pzKTZYKxmSSzsr/UN8iEG84HfOGbQyNndYSqrhiSXqmkxtE3sj7GPX3nWyclYgbKb/+exQR9+wzy+maLA1trIS8WSiYUv5ACJhnDs53Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVEdQX4X; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4562977c203so2083485e9.0
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 08:17:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753283850; x=1753888650; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QH3Bmj1nRypEnbgaEcMRD8rwjZvZ8KOcrCvcSAcVPGM=;
+        b=KVEdQX4XQy3B6s0L0yEUY3sUL6XYAUeqWZwUJgjjpEtVVodH0vQ34NicD/BCFIvPQA
+         VGPtGlMF3DA96dF6mbNHv9dF3zYN/lezHoWBmMwrcixvvAo5XkKv2as6G2WGd1PxqOjN
+         5HLVdjnrXZDX8qa5Id5dKoFYrIiLXsNpc1CfsWdyeiXpDKeUI1ii6OuI+0/W+/1OxO7r
+         NCZ2Cod6i3Tl3XPn4j34UzrKzUVGqpPivf01u+Zw6S7eW1Anf8FMyd9jd2bZauN1OhsF
+         Nov5/lUVh6mPY9X6Em+AvxF6ll2ajXQdOUW0Xi1y/ZHfbj6PHCZjRfQufYoHibi8d4VK
+         nkKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753283850; x=1753888650;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QH3Bmj1nRypEnbgaEcMRD8rwjZvZ8KOcrCvcSAcVPGM=;
+        b=S9E4CF34nGTZ+oFpwo2/bwyDSYU+0k3mdcsJVwZm0d/3IrfIpBXt9q3Xp1SG5vGWWx
+         6hDAPcjOGbC0n09xXWC2AuVss2s/dt+1sKQxcrCWVbb3ZZUEqRRt8DYXbafhcyJVLdo2
+         3NfUkLEe+36RpfbnblmYxlVg8xj6YUuWdZrFGcK0d/YiA/BDjKWt8sA4ugzsZ5anruxz
+         ipISuIUMPIyWQttaNki8dXfQQtmnuMI2eV1NDXvpqeBdIaqpx5I7HsspNBDVy1u4m09G
+         b55QI++I2IJbDytLK2BzewHfbyRzs9n3OIvgjCIhujjacLN0Co3Cv3nDcCg9KaZr4V3x
+         E5dg==
+X-Gm-Message-State: AOJu0YwM8o2wrGmw5VDMSyce7xND254ij6/vKAMJQ889NpJgZbK4R7Cd
+	xwX/yohO3e+xAoEVm9/mMlizur6S0ZuA7tNM+OSb969tsYN40rEBu1UAG+DIO2gUInI=
+X-Gm-Gg: ASbGnct5j+Y67RgMNFNOUsxgJQt0VR/k/TVqZwc2AaxNPn8hLu2VnkYyRUn5a6rHtHt
+	P3stylQR1uJ74nenewNshPUrGvhlowHwpfkpPGYG2pxSAdHedeysl1QI6rGzeC/xn2xoNLmDYZu
+	jQqBTEg5qRrYWoaGSRvRpGDcx3Ntkqhi7fyJEmHkyhh9bTLxMA6iyTJkiKZMHyycDYd+OFCEx8i
+	92rGQxKYt0ktHaoqtVijWjkMSbp2fkNMABrCcEDC45m2r9hqI1g3fCgD59rMpucDQO775H/jNur
+	LJDaURj3Uh8ec6iowrxsVIz4gdety0xncxYsDwWE5nIeQvd3OAyEh3An3vx8kE2HQVeRTASmub3
+	VQAZKgdyJhLGihWIYQyFiYTOIt+RbIsMaSf5L0B3gVfekxJDc+iioxiTnxwxF9WgaKAC5asPjng
+	==
+X-Google-Smtp-Source: AGHT+IGu3VDEGCUSGNoRSVAS+Q5HQzGqJhlH9gOWUervO+NhGT1wkA/mP6f8zpUMSp1mHfuL42FsLA==
+X-Received: by 2002:a05:600c:1c97:b0:453:76e2:5b16 with SMTP id 5b1f17b1804b1-4586a8ce60amr9372705e9.0.1753283850154;
+        Wed, 23 Jul 2025 08:17:30 -0700 (PDT)
+Received: from pop-os.localdomain (208.77.11.37.dynamic.jazztel.es. [37.11.77.208])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4586918086dsm26310805e9.6.2025.07.23.08.17.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Jul 2025 08:17:29 -0700 (PDT)
+From: =?UTF-8?q?Miguel=20Garc=C3=ADa?= <miguelgarciaroman8@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: briannorris@chromium.org,
+	johannes@sipsolutions.net,
+	=?UTF-8?q?Miguel=20Garc=C3=ADa?= <miguelgarciaroman8@gmail.com>
+Subject: Re: [PATCH v2] wifi: pcie: replace deprecated strcpy() with strscpy()
+Date: Wed, 23 Jul 2025 17:17:18 +0200
+Message-Id: <20250723151718.367623-1-miguelgarciaroman8@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <aG1lcWYjk9GARp1P@google.com>
+References: <aG1lcWYjk9GARp1P@google.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH wireless-next v2] wifi: mac80211: fix WARN_ON for monitor
- mode on some devices
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-References: <20250723071419.7081-2-johannes@sipsolutions.net>
-Content-Language: de-DE
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-In-Reply-To: <20250723071419.7081-2-johannes@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Am 23.07.25 um 09:14 schrieb Johannes Berg:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> On devices without WANT_MONITOR_VIF (and probably without
-> channel context support) we get a WARN_ON for changing the
-> per-link setting of a monitor interface.
-> 
-> Since we already skip AP_VLAN interfaces and MONITOR with
-> WANT_MONITOR_VIF and/or NO_VIRTUAL_MONITOR should update
-> the settings, catch this in the link change code instead
-> of the warning.
-> 
-> Reported-by: Martin Kaistra <martin.kaistra@linutronix.de>
-> Link: https://lore.kernel.org/r/a9de62a0-28f1-4981-84df-253489da74ed@linutronix.de/
-> Fixes: c4382d5ca1af ("wifi: mac80211: update the right link for tx power")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miguel García <miguelgarciaroman8@gmail.com>
 
-Tested-by: Martin Kaistra <martin.kaistra@linutronix.de>
+v2 fixes:
+ - Drop redundant comment line.
+ - Restore whitespace around version/magic.
+ - Use “wifi:” prefix in subject.
+---
+ drivers/net/wireless/marvell/mwifiex/pcie.c | 35 +++++++++++++++------
+ 1 file changed, 25 insertions(+), 10 deletions(-)
 
-> ---
-> v2: add missing { to fix build
-> ---
->   net/mac80211/main.c | 13 ++++++++++++-
->   1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-> index 351564360c26..9c8f18b258a6 100644
-> --- a/net/mac80211/main.c
-> +++ b/net/mac80211/main.c
-> @@ -408,9 +408,20 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
->   
->   	WARN_ON_ONCE(changed & BSS_CHANGED_VIF_CFG_FLAGS);
->   
-> -	if (!changed || sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
-> +	if (!changed)
->   		return;
->   
-> +	switch (sdata->vif.type) {
-> +	case NL80211_IFTYPE_AP_VLAN:
-> +		return;
-> +	case NL80211_IFTYPE_MONITOR:
-> +		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
-> +			return;
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
->   	if (!check_sdata_in_driver(sdata))
->   		return;
->   
+diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
+index a760de191fce..fe93f5219a6d 100644
+--- a/drivers/net/wireless/marvell/mwifiex/pcie.c
++++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
+@@ -3098,9 +3098,7 @@ static int mwifiex_pcie_request_irq(struct mwifiex_adapter *adapter)
+ }
+ 
+ /*
+- * This function gets the firmware name for downloading by revision id
+- *
+- * Read revision id register to get revision id
++ * Get firmware name for download by revision ID
+  */
+ static void mwifiex_pcie_get_fw_name(struct mwifiex_adapter *adapter)
+ {
+@@ -3110,39 +3108,56 @@ static void mwifiex_pcie_get_fw_name(struct mwifiex_adapter *adapter)
+ 
+ 	switch (card->dev->device) {
+ 	case PCIE_DEVICE_ID_MARVELL_88W8766P:
+-		strcpy(adapter->fw_name, PCIE8766_DEFAULT_FW_NAME);
++		strscpy(adapter->fw_name,
++			PCIE8766_DEFAULT_FW_NAME,
++			sizeof(adapter->fw_name));
+ 		break;
++
+ 	case PCIE_DEVICE_ID_MARVELL_88W8897:
+ 		mwifiex_write_reg(adapter, 0x0c58, 0x80c00000);
+ 		mwifiex_read_reg(adapter, 0x0c58, &revision_id);
+ 		revision_id &= 0xff00;
++
+ 		switch (revision_id) {
+ 		case PCIE8897_A0:
+-			strcpy(adapter->fw_name, PCIE8897_A0_FW_NAME);
++			strscpy(adapter->fw_name,
++				PCIE8897_A0_FW_NAME,
++				sizeof(adapter->fw_name));
+ 			break;
+ 		case PCIE8897_B0:
+-			strcpy(adapter->fw_name, PCIE8897_B0_FW_NAME);
++			strscpy(adapter->fw_name,
++				PCIE8897_B0_FW_NAME,
++				sizeof(adapter->fw_name));
+ 			break;
+ 		default:
+-			strcpy(adapter->fw_name, PCIE8897_DEFAULT_FW_NAME);
+-
++			strscpy(adapter->fw_name,
++				PCIE8897_DEFAULT_FW_NAME,
++				sizeof(adapter->fw_name));
+ 			break;
+ 		}
+ 		break;
++
+ 	case PCIE_DEVICE_ID_MARVELL_88W8997:
+ 		mwifiex_read_reg(adapter, 0x8, &revision_id);
+ 		mwifiex_read_reg(adapter, 0x0cd0, &version);
+ 		mwifiex_read_reg(adapter, 0x0cd4, &magic);
++
+ 		revision_id &= 0xff;
+ 		version &= 0x7;
+ 		magic &= 0xff;
++
+ 		if (revision_id == PCIE8997_A1 &&
+ 		    magic == CHIP_MAGIC_VALUE &&
+ 		    version == CHIP_VER_PCIEUART)
+-			strcpy(adapter->fw_name, PCIEUART8997_FW_NAME_V4);
++			strscpy(adapter->fw_name,
++				PCIEUART8997_FW_NAME_V4,
++				sizeof(adapter->fw_name));
+ 		else
+-			strcpy(adapter->fw_name, PCIEUSB8997_FW_NAME_V4);
++			strscpy(adapter->fw_name,
++				PCIEUSB8997_FW_NAME_V4,
++				sizeof(adapter->fw_name));
+ 		break;
++
+ 	default:
+ 		break;
+ 	}
+-- 
+2.34.1
 
 
