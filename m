@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-25935-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25936-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCD3B0F0F6
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 13:13:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B18A0B0F0FD
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 13:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95BBD16F877
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 11:13:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0B7C7AAA30
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 11:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12972E040A;
-	Wed, 23 Jul 2025 11:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624AB2DFA5A;
+	Wed, 23 Jul 2025 11:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Qof0X4K7"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="HforAuFO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6DB28D8FF
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 11:13:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02AB2BEFF3
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 11:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753269208; cv=none; b=NRYZ9a3tZhsBHXvQAjoQ9KHvioBrBXp7QlA9qKKFVULGeu41ztfWd9ZlGsOgrBYTNweC4a/ILYEy+EV+GFIMj2xTsAl+wdHVHwTcoyBcslZJN8gb6yYwGlwFk/jxbprqTgvLIVpi0CQhw+GSQ9aSWzv/5XlGv7YVMsZhHroDoKg=
+	t=1753269237; cv=none; b=YJ31/TdUS/qllrxL81Pp3Uqc1mcWz1HNgExrKgsXwfa+VbHBTAQZSsljsl8cT5TnNph1Er/gBAeICHPE2V3JYEQW5GwNNQxxXAEk1SwUhdwiBROKq+Uu/X0jTs3YOvRSbnJFEU5bXAaLAdy7Ms3iDJ5Leoim8ILaIMc7LFvvgkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753269208; c=relaxed/simple;
-	bh=41O+153xmJgNdu1ZJTd1Wvjw6XQRDIcFTlK5QmAzPFk=;
+	s=arc-20240116; t=1753269237; c=relaxed/simple;
+	bh=Rl5FDHcKst3rDIallQV9+lArjzP33DezoICoPNEKjPI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BQmbA2+UePB8iTh4wVQT4Ig7GTLldTR5lERijYSnKSuXiAlKoHLrH6LNyCBol779O4YT6HCLiqXx1qQ/XOoP2+garTZsf4BekcdHUjpn+NgenetcI5n8SNktbLrBHMLKCoEyQB+4RwHqBoRoE9T0vU4EH2pmUVsoqZGys06k0BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Qof0X4K7; arc=none smtp.client-ip=209.85.160.177
+	 In-Reply-To:Content-Type; b=PpXJsPeqBVKsxVSwJm0je3M2vJQEvF83ctQAo7Axndn01tgP2yzZh/WZV1Wz/6UeZ7eaZ11TK/93bzl+AwBT5SxH8MSI0wZuHCqvOVYQP5F5Ephq8w6oJyELbiy8MRbp6Qh2PIRd1OvqJPIezTRHLQm8mnXyMfEUQUElpTw1Fds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=HforAuFO; arc=none smtp.client-ip=209.85.222.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4ab5aec969eso120273681cf.3
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 04:13:26 -0700 (PDT)
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7e32c9577ddso617214885a.0
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 04:13:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1753269206; x=1753874006; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1753269235; x=1753874035; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=XvgmGBaWE2f+k/MY6pGjbltcZz4rXWd+ofntlB6TQl4=;
-        b=Qof0X4K70xjsbh9HXVhBTyAEHS1ZLk9DgGd4PQeQHjTlMsnZebMBLuURN1t2ftpBWm
-         maGTBW4K6x23oqakQsPF3DKG7YPA6oNMb1NXLXcdssHUCKIgqEgXQDJ4b+VNZ+zLBpdo
-         Wr4Z6f0HUClBsRJ+fjcHsvRH7gC8jDC90VIpU=
+        bh=9ZsZ4ceIkCMjYpv3G+hfUSNyJppKuLhKWJpjluhzw0E=;
+        b=HforAuFOriP+RYXzs0MSzeyc1unqBSijQ014tLd+mgnZ9fHtP/+bsE4g37YjGXp35J
+         NvI1sM8xUwy8zqQNBDki4tA7g/W6tpsjTOEIGOCldbArN6fOmh3Vi6O+ynW/pxJuUKHI
+         d6kS7zp83+D2jv2o1nHi+wiZAG9Gi2siMYh6I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753269206; x=1753874006;
+        d=1e100.net; s=20230601; t=1753269235; x=1753874035;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XvgmGBaWE2f+k/MY6pGjbltcZz4rXWd+ofntlB6TQl4=;
-        b=b7KFXJdobHzR01J64YBK31Fh06OWkDgXWEf2C2OkYr87DPqE7N/U4kIzGYTXE3vzXS
-         dXdn3NTKEJfWk5Ymhy41XWu0l94sb+ZiivPuFRdECra7v4gbPIZ3DnGYrg2pPKnVVg5D
-         3EXB3t5pvXmMwLBY3BWttjRagqDoTaYRRPPfCKaKXOe7FepWSMsOEQgYoku1k2sHPFKi
-         nwu8v+lyVwAXTzDR1C0M3KMXo5AN4eYFCDdJv1EV9dkb44HbXOCJw3aCUMkzlUbWmQCu
-         9iFxerTz7kTxa0mOM9x9ojcDxYXuZjIYxszuGHxUsiikg+k8jzVvBnviJyqIWnZXCkNn
-         OPtg==
-X-Forwarded-Encrypted: i=1; AJvYcCURfJSnQ9Ra3kLdlXpEGcXsUk8QBreavZtjnMoV1+JHliFif3SGQx4jsjWCMbnsccA98tVuyEo+u4n+H1fNOQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQJSyTDqT9lrGGSIUxXY2px9LVpx1362921rWFz2YonwhQXnDu
-	dBuiA/JnPlBFtg+nDcrhTmddtFfbSaCB66EDaXmlAvOsEnXZQaPBJvi9fvPw5daxVA==
-X-Gm-Gg: ASbGnctJ5+IYBsi1nc8W/de5HcX9dFn/PucF1XP9sqW54aq6OAjl0Rv11HAIvx2XKPj
-	F5KKA5XewUJzosGixRyqYurtbVYlyAEN4JfrqscCS3pNjca3RLt8C02QmZeSyefsr89/rMQIEGg
-	Y16+FLLLnBBCCOKpUMBibnteW4Ajlrd/3rFnXtS1QKRgGnsYS9FBXbR2I6FaFA9/Vd9PeXANHDv
-	qmnFtA2E3x49GuK1vy7KVv5MTvJB39yNfK84AWAFfVG8YlkGjbT+oPdcueabjzfwFRDgNE3agtt
-	K8XeW7TrAEe68vkIbvYRFiefRj4TJ7E1V605uA+WFOz3/UpHWQXnbyd/BJwOO4oTi5vD/X6FxJq
-	QUuNY18bQTX2+aez8BoJk8syd7HfRj01fFcO7YsvHkvhi5P+zE5ly5C+9QoT95DM=
-X-Google-Smtp-Source: AGHT+IGoNF17MdvxYORZ6QH6kCq+U/AOPAufEmn1e0CkaBnBRISl28TUvJZQmz4XrfJd57ecG90D8A==
-X-Received: by 2002:a05:622a:1207:b0:4ab:7e22:8553 with SMTP id d75a77b69052e-4ae6de99a0bmr29387191cf.12.1753269205859;
-        Wed, 23 Jul 2025 04:13:25 -0700 (PDT)
+        bh=9ZsZ4ceIkCMjYpv3G+hfUSNyJppKuLhKWJpjluhzw0E=;
+        b=X/nTf3fi6qIhiyEfExIf5uMzIm3ZNWekuWMVbpXpbnWQrGtChJ7EwGFi4OjOTUqcDc
+         ZkW0rzA1h1N0wSTM9Yvi7bPRnHDiImAs+GZ77jxtiwWO3kvyVp/dN502TTOIYBTx6IYI
+         zQmiVxJH2g11rEM5gHnXA/k9rBEihQ0VYiWKLcjEiLM8aDioOj42gt6k/a04MQz6FPxz
+         TM4a++mjJQqliJJJnfdIS/No+WIPLc2+kjHlp1ADenhen7fa0iLFZzG+x/8JqROoYC5z
+         pD7Ssc0wwL6DDZjXYbhN0gnxR2/Lrg/iMr3jknS0yk3rFAL8hJMQBcey/Ph69ehMJAIU
+         onBg==
+X-Forwarded-Encrypted: i=1; AJvYcCWMzOUkjbtbAF2tR1H9gBvgD8q3a/t/rq/+o6iOfFMLEARUX5X0lgY8qe5aV0LXKbUDHLMancxyYhkuQHR39w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn8KrBXcifHb7CdO/qu5BGyPyO4kiFv9FqJYLH8JgO7Sb00iM9
+	XpGbvwAqUqq7mDExGsCIElsjLs11s03d2b6a1fmWPYeXV9eC0R7g1ANgV9cZXdCIlQ==
+X-Gm-Gg: ASbGncuEj82WLqNWP7tOGePSRDWjNoXSAuGKqw5IcQm9jYhP7TNLAswibbowRHgMQkJ
+	S2shamodSunwFqAH3ehfU8wTMACw388Zx+ql8pPigwaH+rn32DeNcMWAjx6beuiMG1Xj8tpcC1/
+	SGs4lnl3uMovNtP53IJKD4FP8aCXxOOx5rmvZvYWItAJfT0sC/qTvlFTVBgyDL9Q1PnEBCrSdNR
+	ph+2QGD8dY0NdlFERJuG6wyssFTaTZ9i19B+32+r1KWewqoJsEIZLweQTvEksqTfv4/MjwjvzyS
+	UpYTBTlo3elYZ8VSyA/4i0eeYI+PUM+h9f/9HyU89yGtzHEFfYmjzCuL7vg2FqexY7bgqotQhKn
+	6aWmXjJxUnZkEojBJT/iiNiRNLjcCfZNB87Vg/7UNHgBKjrhcJw+cQwgUPhL075o=
+X-Google-Smtp-Source: AGHT+IH4t7/7bepWnmdaXVZK8YVZIBdABuEFNlaTKLC/CcssAnhPsmY0/sDAGGy3Vv1/VtD+rGPoFQ==
+X-Received: by 2002:a05:620a:458f:b0:7e3:300d:f1a with SMTP id af79cd13be357-7e62a0fde65mr324852485a.19.1753269234673;
+        Wed, 23 Jul 2025 04:13:54 -0700 (PDT)
 Received: from [10.176.2.145] ([192.19.176.250])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4abce0bbfdfsm46979931cf.9.2025.07.23.04.13.24
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e356c9155csm630107985a.95.2025.07.23.04.13.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Jul 2025 04:13:25 -0700 (PDT)
-Message-ID: <d0a74192-472c-472b-a5ca-bc8700d63003@broadcom.com>
-Date: Wed, 23 Jul 2025 13:13:22 +0200
+        Wed, 23 Jul 2025 04:13:54 -0700 (PDT)
+Message-ID: <90b48f29-59cb-489e-95df-e3ad36812185@broadcom.com>
+Date: Wed, 23 Jul 2025 13:13:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,12 +80,12 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] wifi: brcm80211: Remove more unused functions
+Subject: Re: [PATCH 3/3] wifi: brcm80211: Remove yet more unused functions
 To: linux@treblig.org, kvalo@kernel.org, linux-wireless@vger.kernel.org
 Cc: brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
  linux-kernel@vger.kernel.org
 References: <20250626140812.56700-1-linux@treblig.org>
- <20250626140812.56700-3-linux@treblig.org>
+ <20250626140812.56700-4-linux@treblig.org>
 Content-Language: en-US
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
@@ -131,11 +131,9 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <20250626140812.56700-3-linux@treblig.org>
+In-Reply-To: <20250626140812.56700-4-linux@treblig.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-
-
 
 On 6/26/2025 4:08 PM, linux@treblig.org wrote:
 > From: "Dr. David Alan Gilbert" <linux@treblig.org>
@@ -152,7 +150,8 @@ Tested on BCM4313 card.
 Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>> 
 Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 > ---
->   .../broadcom/brcm80211/brcmsmac/phy/phy_cmn.c | 186 ------------------
->   .../broadcom/brcm80211/brcmsmac/phy/phy_hal.h |  12 --
->   2 files changed, 198 deletions(-)
+>   .../broadcom/brcm80211/brcmsmac/phy/phy_cmn.c | 129 ------------------
+>   .../broadcom/brcm80211/brcmsmac/phy/phy_hal.h |   4 -
+>   .../broadcom/brcm80211/brcmsmac/phy/phy_int.h |   3 -
+>   3 files changed, 136 deletions(-)
 
