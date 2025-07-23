@@ -1,343 +1,341 @@
-Return-Path: <linux-wireless+bounces-25931-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25932-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B2BB0EFE8
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 12:33:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14744B0F028
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 12:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16DDE168B46
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 10:33:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD84F16673B
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 10:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CFD282F5;
-	Wed, 23 Jul 2025 10:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD382505A5;
+	Wed, 23 Jul 2025 10:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="m60CFsup"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BmO4y5zY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A40276036
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 10:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E35295D86
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 10:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753266795; cv=none; b=E3qg0yqjk4cYYXgzVTyOnKFE3F7iIZQ4buOYqllq1/5iNc0Etac2GvRsCPDALCHgC+RrjnnhutHzEhmhFkXXS0M7EQDRbmesOH8vvLutrR/tDNAelmgjJlnKW9lik31O4hEEm09N27hCMKelIfLgPABE5Duu7mK2pa1EAoaKJKc=
+	t=1753267388; cv=none; b=Ltmwz+0ixbcw4ylbpM34ei+haMJxR06Qq+3QqRAcjgkAV14ju2FGzFRw83GA3xnOOKHlexd9BBdsV31CFW9St1UgWNci69stZuu7I8+9FCaG1+npJRQBgc9pALDUt50WGc74Epd+12sDW/dpWACSECIGnLpQeiHUdJqJTCjlo0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753266795; c=relaxed/simple;
-	bh=fBJvd1rWqbE6od8X5L3tNBYqoVqOIDa//jOAAwrPY+o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FEVIq0K3HpcWWdrdEAoQaKir7zDQzdJwdCuUUOKWH0z4mg526mRnWMxqPNy5jsFJQw3LcRPHASAUCzhB+Am7azvCWzsfcmUayp5qz6exJx8WyW5f60lpKVxwkl5NlCmf8dYQnvFgzAEjstTn5+k76pZee6aY/1ti73n1cxlCHP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=m60CFsup; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=gBa3K+sc+FwHwIkPMuRBeiCuVDJecjqms6fuxGMFbLc=;
-	t=1753266793; x=1754476393; b=m60CFsup83UdjJtHYROU4P4hhbzhF/0omuWwKTaxgTiqqzF
-	e27lx6LSzvqWiSG182T0dCo6yU2JGBlLxK77w1MuGUgNYTp9vKuJMxScj0iRXOZpdczw+wN7JFJAm
-	4AzKDA6xK7+dnEm3aD6ZDej2soW7snQDdWOYz/y+BqbRj0q/jEXc7n87LZgQYdycAP+Bwo0LfVB4B
-	ooTTNV9hc+3jhaVgX/uT6VfVgKl0+/6AlsYVmMJGdJdi2UGvtH8nogsK7Jrdu58F1j3wUsUU0F//1
-	Z316S6je7XkjYekRE+j75qCYhFvGYSGfR03iHAlIDqwxgtY631CcMc4Yu/b1OJMA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1ueWma-00000003iAq-29aA;
-	Wed, 23 Jul 2025 12:33:08 +0200
-Message-ID: <08fee54dd5afc5c8b4966188eb3016713a3d8c8a.camel@sipsolutions.net>
-Subject: Re: [DESIGN RFC] Critical Update handling in the kernel
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, Ping-Ke Shih
-	 <pkshih@realtek.com>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee
-	 <ryder.lee@mediatek.com>
-Date: Wed, 23 Jul 2025 12:33:07 +0200
-In-Reply-To: <4a94fa66-8140-4cc8-996c-0ed097b4004a@oss.qualcomm.com>
-References: <20250717045540.27208-1-aditya.kumar.singh@oss.qualcomm.com>
-	 <1a77ca6a35ad03f839b7c997de3977b521d88edc.camel@sipsolutions.net>
-	 <4a94fa66-8140-4cc8-996c-0ed097b4004a@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1753267388; c=relaxed/simple;
+	bh=JKpDpZiMse2D5M9fAuVjCtrhFa064H3YLe7cVnhhXMY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CeIQ9tpKzj0f10ZmYEaRSU9GFlZEvxw1JqHkBLem/rltYmg5V9/4ixoQEqUSMff0FyApN7iuZmb4co6WPC/tia2KAV0VbGk8n8kiLRZEH+BpXGbXEifTaU6/D9gPEv4Nx22AK5+SuXGWtsm6Z4H5GzqSFWlqMGG/p1wvNSZj10U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BmO4y5zY; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56N8vq9Q013815
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 10:43:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	lShYL7ZMyd/pc+FPnDTj+pUS2q913Y4tFXrMgYdQFi4=; b=BmO4y5zYqfWqfcYx
+	30wMwurjal9olbK0JKUFnevj4eCMDXj25h9R2gJIqu78AM1qOQk0bR0/Ewov1OuN
+	pN9ukuc+GLUZCDyhKyZ8M+LvLBIA7uGK3BLUryhrAeUyNjsSbTJE2NR7OIebW/an
+	Io4TF0xwfsOo25jHTgo/urTfUDK49uXZiK2M/KGMzwXLYOAwj+SL1G9XVNydpgxq
+	9AgwNV90V79z+EZg7ozTkLEcLiQT5eXhrNWcFez4oE0h2w/uk6XNuMlTNP/UXCul
+	EfYuVGkZdxdNdIrBpJf+0rpoV06ksL1ByTu5BRDsTsqT4MEwb7PIDaPOTlo3t4U6
+	uWJRgA==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48048vb67a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 10:43:04 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4ab758aaaf3so243884071cf.2
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 03:43:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753267370; x=1753872170;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lShYL7ZMyd/pc+FPnDTj+pUS2q913Y4tFXrMgYdQFi4=;
+        b=BfyaoZwZvc4ir2gZ/v0s6ZuYGMOgHFysXAqia3zqaVp+amj9i2ewVl5d2spvATVoH9
+         cmUCJtb5y1wnSQcA2me0sBrq0yCXjx+Q3UnRNBZnSJcDfGN8PDDASkbq/Q7f6Ha35XJf
+         fjlrmoINn6Rn/j2eTLls742jitd5ziiumxAtYHog/eXtBFbfOAonVy7zymSPlTT+iaGG
+         OdWZRtgn3sG/4xhWSDMArJXpE3Z53iZomWP9nb1Psno2dBUS5ibZja5UiNOI+aXRnreB
+         0KraX2Apb8vmV8eudeLQMxfuowN/7i67cdpaPU/wwZxSd+ngxq6TXzFXBU1uyumI8AiZ
+         H8Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCUSC6reqvejxevbID5nsYxJvxBF2ypJ3v93Yiz7+D+yYCh/OAmcqtQwiyMgbx8XdXEtHi/rbctsQFdXvTZNhg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZrHPyT1q1FFbjf87IhKUw9ZwlHQHHz9pOk583QmMXV6IbiJ7q
+	fJEOR21Tm0YMmkhIZUUn900l0ov7TmkbqH/AtXCqtn8seid+fdnRMfDgpYcQJFvVbG5Ya0G1Xin
+	IL+J9dPHazl+YwS+tzQ0bCkBU3BMrRw07P9HM+HcrCYVPD7Itg4PsaDfLA/U+1Gd0LmMBthpxJA
+	SvZJaiYMhNF3vox8aB2dspaxKwdUFEut5G7ESrTD5FW1dP
+X-Gm-Gg: ASbGncsFe3I9IbCV6TbzkZLWtPpoe4/fbjOWHzMl7olrUfBDI8fNa3UAtm5w6DGXTP4
+	h0IjdasOUsnc4yYUQCPcMjSI8hG3q9u9jvvB1HWOniNJBmdQuIz2oXc32rFHZPgaNgJyycWObgX
+	CYJCyqa+t4xvRffeLQoulM3g==
+X-Received: by 2002:ac8:59c9:0:b0:4ab:76d2:1982 with SMTP id d75a77b69052e-4ae6de5f491mr31453001cf.2.1753267369757;
+        Wed, 23 Jul 2025 03:42:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCWcR+zHzMZYaCkssZyjftuwIjbu7hjNB9Q91wbaotDw8ZV2l/gUSxM/5/yVifA/Vhu/UGwHBAadMVZfP3QKo=
+X-Received: by 2002:ac8:59c9:0:b0:4ab:76d2:1982 with SMTP id
+ d75a77b69052e-4ae6de5f491mr31452661cf.2.1753267369182; Wed, 23 Jul 2025
+ 03:42:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+References: <Zgp0ym-MGzX2eSZdlkVYbgvjkJ0CzKItjaC5pafzQnj1AOZnVAqvCIZfYoK7nwDhUgOA0U8eNolNtaWXbExOAQ==@protonmail.internalid>
+ <DAWJQ2NIKY28.1XOG35E4A682G@linaro.org> <5df11ee4-d645-4be2-841f-715343f1b7a4@linaro.org>
+ <CAFEp6-0zwy2JdFOvRQ5ghMwD-J6b7F5YcVKNf-5R=8XdEpGDSw@mail.gmail.com>
+In-Reply-To: <CAFEp6-0zwy2JdFOvRQ5ghMwD-J6b7F5YcVKNf-5R=8XdEpGDSw@mail.gmail.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Wed, 23 Jul 2025 12:42:37 +0200
+X-Gm-Features: Ac12FXxdFEfoRoEup7njhCc4_7HGosXKamXGoITcHok5gWf4sO9R5vimfHVCyZY
+Message-ID: <CAFEp6-1wO9xwisOAtv6D__nb3Uo=8_f9rHifi-JAQ0oPD+JSVg@mail.gmail.com>
+Subject: Re: [question, bug] regularly disconnecting wifi on RB1 and RB2
+ boards, ath10
+To: Alexey Klimov <alexey.klimov@linaro.org>
+Cc: jjohnson@kernel.org, "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        jeff.johnson@oss.qualcomm.com, linux-arm-msm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: G7gF2ZFyJdOEpfxM3UoTgDyyCNbLCkjv
+X-Authority-Analysis: v=2.4 cv=SYL3duRu c=1 sm=1 tr=0 ts=6880bcb8 cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10
+ a=mUlqW7PtAAAA:8 a=EUspDBNiAAAA:8 a=KKAkSRfTAAAA:8 a=kilpmZN9Kjp5B5WS9hoA:9
+ a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22 a=scG1X_LE5o0Lo5M-1hNW:22
+ a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDA5MSBTYWx0ZWRfX6XSuHQ9CK9J8
+ G30+RC4gm4UK6g+91rvW/oqPydljaHP/99jr2Z+EzZphWwB92csUgmPIfUaulVp72onafDMAQjb
+ mx9cffITshVD7dj95iDg6dlJzPQAWQ0KbqN0eL1HlmfzjFG5d/BAfGPhMK+XfK0/etGzpLU4/6u
+ 9xA1cbwQ6+1kW7fSp49H2SmBqVZjnfcyTEONTWj6PkV5UkWBMmPJZuaPHoY3Jld5wq546bBhLsg
+ EIAnDPQYEUnpI9522JlrTviH/SvmrR9bjtgGgNBhAhNy1TLPcAyXVMmmAAOoclm6w4CsDTqUB4g
+ T1MRaIHtJN1mlUDUnCxKjMIhi5MntA+VcmvPnP2uvfbqBifJ1fhR4RiKGfR2mo1ZHrYW8dvkaMo
+ TJUcFrJLx5fF79Rdr/d6xrbODlrUylcfA3PBOnoG5k2V8s/pD1d8bDiPHPKfajU/M+IbqLq9
+X-Proofpoint-ORIG-GUID: G7gF2ZFyJdOEpfxM3UoTgDyyCNbLCkjv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-23_02,2025-07-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 malwarescore=0 spamscore=0 clxscore=1015
+ priorityscore=1501 adultscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507230091
 
-On Wed, 2025-07-23 at 10:04 +0530, Aditya Kumar Singh wrote:
-> > FWIW we also have some client side code for it already. It's probably
-> > broken ;-)
->=20
-> Yes, I=E2=80=99ve seen that. I=E2=80=99m not entirely sure if it=E2=80=99=
-s broken, but it does=20
-> seem related to CSA parsing from the link=E2=80=94there is code handling =
-that.=20
-> If anything turns out to be broken, we can fix it.
+Hi Alexey,
 
-We just never tested it well, that's why I said that. Sure, if it's
-broken we'll fix it.
+On Tue, Jul 22, 2025 at 5:53=E2=80=AFPM Loic Poulain
+<loic.poulain@oss.qualcomm.com> wrote:
+>
+> On Fri, Jun 27, 2025 at 1:09=E2=80=AFAM Bryan O'Donoghue
+> <bryan.odonoghue@linaro.org> wrote:
+> >
+> > On 26/06/2025 15:48, Alexey Klimov wrote:
+> > > Hi all,
+> > >
+> > > After a long time of testing it seems the problem narrows down to qrb=
+2210 rb1
+> > > and qrb4210 rb2 boards.
+> > >
+> > > After booting, the board connects to the wifi network and after aroun=
+d ~5-10
+> > > minutes it loses the connection (nothing in dmesg). A simple ping of =
+another
+> > > machine on the local network doesn't work. After, I guess, around 500=
+0
+> > > seconds the GROUP_KEY_HANDSHAKE_TIMEOUT message is printked:
+> > >
+> > > [ 5064.093748] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason:=
+ 16=3DGROUP_KEY_HANDSHAKE_TIMEOUT)
+> > > [ 5067.083790] wlan0: authenticate with 8c:58:72:d4:d1:8d (local addr=
+ess=3D82:95:77:b1:05:a5)
+> > > [ 5067.091971] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+> > > [ 5067.100192] wlan0: authenticated
+> > > [ 5067.104734] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+> > > [ 5067.113230] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x=
+11 status=3D0 aid=3D2)
+> > > [ 5067.193624] wlan0: associated
+> > >
+> > > and after that wireless connection works for ~5-10 minutes and then t=
+he cycle
+> > > repeats. The longer log with more info and some info with firmware ve=
+rsions,
+> > > ids, etc is at the end of this email [1]. Simple wlan0 down and wlan0=
+ up fixes
+> > > things for a few minutes.
+> > >
+> > > iw wlan0 link reports the following when wireless network is working:
+> > >
+> > > root@rb1:~# iw wlan0 link
+> > > Connected to 8c:58:72:d4:d1:8d (on wlan0)
+> > >          SSID: void
+> > >          freq: 5300
+> > >          RX: 45802 bytes (424 packets)
+> > >          TX: 71260 bytes (125 packets)
+> > >          signal: -66 dBm
+> > >          rx bitrate: 433.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 1
+> > >
+> > > bss flags:      short-slot-time
+> > > dtim period:    1
+> > > beacon int:     100
+> > >
+> > > and this when wireless connection doesn't work:
+> > >
+> > > Connected to 8c:58:72:d4:d1:8d (on wlan0)
+> > >          SSID: void
+> > >          freq: 5300
+> > >          RX: 850615 bytes (9623 packets)
+> > >          TX: 20372 bytes (247 packets)
+> > >          signal: -61 dBm
+> > >          rx bitrate: 6.0 MBit/s
+> > >
+> > >      bss flags:      short-slot-time
+> > >      dtim period:    1
+> > >      beacon int:     100
+> > >
+> > > This was tested with three different routers and different wifi netwo=
+rks.
+> > > Other devices here do not exhibit this behaviour.
+> > >
+> > > Any hints on how to debug this? Any debug switches I can toggle to de=
+bug this?
+> > > I am happy to provide more info or test changes/patches if any.
+> > >
+> > > Thanks in advance.
+> > > Best regards,
+> > > Alexey
+> > >
+> > > [1]:
+> > >
+> > > [    7.758934] ath10k_snoc c800000.wifi: qmi chip_id 0x120 chip_famil=
+y 0x4007 board_id 0xff soc_id 0x40670000
+> > > [    7.769740] ath10k_snoc c800000.wifi: qmi fw_version 0x337703a3 fw=
+_build_timestamp 2023-10-14 01:26 fw_build_id QC_IMAGE_VERSION_STRING=3DWLA=
+N.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
+> > > [   11.086123] ath10k_snoc c800000.wifi: wcn3990 hw1.0 target 0x00000=
+008 chip_id 0x00000000 sub 0000:0000
+> > > [   11.095622] ath10k_snoc c800000.wifi: kconfig debug 0 debugfs 0 tr=
+acing 0 dfs 0 testmode 0
+> > > [   11.103998] ath10k_snoc c800000.wifi: firmware ver  api 5 features=
+ wowlan,mgmt-tx-by-reference,non-bmi,single-chan-info-per-channel crc32 a79=
+c5b24
+> > > [   11.144810] ath10k_snoc c800000.wifi: htt-ver 3.128 wmi-op 4 htt-o=
+p 3 cal file max-sta 32 raw 0 hwcrypto 1
+> > > [   11.230894] ath10k_snoc c800000.wifi: invalid MAC address; choosin=
+g random
+> > > [   11.238128] ath: EEPROM regdomain: 0x0
+> > > [   11.242060] ath: EEPROM indicates default country code should be u=
+sed
+> > > [   11.248582] ath: doing EEPROM country->regdmn map search
+> > > [   11.253950] ath: country maps to regdmn code: 0x3a
+> > > [   11.258805] ath: Country alpha2 being used: US
+> > > [   11.263466] ath: Regpair used: 0x3a
+> > > [   15.355756] wlan0: authenticate with 8c:58:72:d4:d1:8d (local addr=
+ess=3D82:95:77:b1:05:a5)
+> > > [   15.363942] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+> > > [   15.372142] wlan0: authenticated
+> > > [   15.377928] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+> > > [   15.386338] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x=
+11 status=3D0 aid=3D2)
+> > > [   15.466514] wlan0: associated
+> > > [   23.167251] systemd-journald[195]: Oldest entry in /var/log/journa=
+l/ec3e0078e5e0499bac67949f3edf3fcf/system.journal is older than the configu=
+red file retention duration (1month), suggesting rotation.
+> > > [   23.185186] systemd-journald[195]: /var/log/journal/ec3e0078e5e049=
+9bac67949f3edf3fcf/system.journal: Journal header limits reached or header =
+out-of-date, rotating.
+> > > [   31.750177] l5: disabling
+> > > [   31.753382] l11: disabling
+> > > [   31.756385] l16: disabling
+> > > [ 5064.093748] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason:=
+ 16=3DGROUP_KEY_HANDSHAKE_TIMEOUT)
+> >
+> > So.
+> >
+> > I wonder what state the GTK - offload is in here.
+> >
+> >          WMI_GTK_OFFLOAD_CMDID =3D WMI_CMD_GRP(WMI_GRP_GTK_OFL),
+> >
+> > drivers/net/wireless/ath/ath10k/wmi-tlv.c:      cfg->gtk_offload_max_vd=
+ev =3D
+> > __cpu_to_le32(2);
+> >
+> > Try toggling that offload off or on and see what happens.
+> >
+> > > [ 5067.083790] wlan0: authenticate with 8c:58:72:d4:d1:8d (local addr=
+ess=3D82:95:77:b1:05:a5)
+> > > [ 5067.091971] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+> > > [ 5067.100192] wlan0: authenticated
+> > > [ 5067.104734] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+> > > [ 5067.113230] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x=
+11 status=3D0 aid=3D2)
+> > > [ 5067.193624] wlan0: associated
+> > > [10437.346541] wlan0: deauthenticated from 8c:58:72:d4:d1:8d (Reason:=
+ 16=3DGROUP_KEY_HANDSHAKE_TIMEOUT)
+> > > [10440.340111] wlan0: authenticate with 8c:58:72:d4:d1:8d (local addr=
+ess=3D82:95:77:b1:05:a5)
+> > > [10440.348408] wlan0: send auth to 8c:58:72:d4:d1:8d (try 1/3)
+> > > [10440.356698] wlan0: authenticated
+> > > [10440.361077] wlan0: associate with 8c:58:72:d4:d1:8d (try 1/3)
+> > > [10440.369516] wlan0: RX AssocResp from 8c:58:72:d4:d1:8d (capab=3D0x=
+11 status=3D0 aid=3D2)
+> > > [10440.446661] wlan0: associated
+> > >
+> > You can put another device on your WiFi network into monitor mode and
+> > sniff what is taking place.
+> >
+> > Kali Linux I've used in the past on an RPI for this purpose and it was
+> > very easy todo.
+> >
+> > https://cyberlab.pacific.edu/resources/lab-network-wireless-sniffing
+> >
+> > Another thing to try is to do this same test on an open - unencrypted l=
+ink.
+> >
+> > If we really suspect firmware here, lets try switching off firmware
+> > offload features one-by-one, starting with GTK offload.
+> >
+> > ---
+> > bod
+> >
+>
+> I configured the GTK rekey interval to one minute and encountered a
+> similar issue. It appears that something may be going wrong after the
+> GTK rekeying process completes.
+>
+> The GTK update is handled entirely by wpa_supplicant (not offloaded),
+> and while the new key seems to be installed correctly, with frames
+> still being transmitted and received (from aircap perspective), they
+> appear to be dropped or mishandled in the RX firmware path.
+>
+> This suggests there might be an issue with how the new keys are being
+> applied or interpreted by the firmware. I=E2=80=99ll continue debugging t=
+o
+> pinpoint the root cause.
+>
+> Regards,
+> Loic
 
-> > > Assumptions:
-> > > ------------
-> > > The critical update procedure is highly timing-sensitive.
-> >=20
-> > There are two aspects here that I feel maybe you're conflating a bit. O=
-n
-> > the one hand, yes, some of it needs to have the precise information for
-> > the counters. OTOH, some of it is really not _that_ timing critical,
-> > e.g. whether or not you actually get the information live at exactly th=
+Could you check if this change helps:
+
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c
+b/drivers/net/wireless/ath/ath10k/mac.c
+index c61b95a928da..4fa7dd62aeac 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -288,8 +288,10 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
+                key->flags |=3D IEEE80211_KEY_FLAG_GENERATE_IV;
+
+        if (cmd =3D=3D DISABLE_KEY) {
+-               arg.key_cipher =3D ar->wmi_key_cipher[WMI_CIPHER_NONE];
+-               arg.key_data =3D NULL;
++               /*  Not all hardware supports key deletion operations. so w=
 e
-> > right time. Though of course a frame that's transmitted after a beacon
-> > that advertised CSA should not suddenly _not_ advertise it even cross-
-> > link.
->=20
-> Absolutely! We acknowledge that achieving the ideal case may not be=20
-> possible. Keeping the logic in the kernel brings us closer to the=20
-> expected behavior, whereas shifting it to hostapd would likely result in=
-=20
-> a much larger deviation.
++                *  replace the key with a junk value to invalidate it.
++                */
++               memset(arg.key_data, 0, arg.key_len);
+        }
 
-Fully in hostapd I would agree, but not sure it should be fully in the
-kernel as you propose either? We have some middle ground for CSA today
-with just the counter updates, rather than creating the elements and all
-that. Not sure we couldn't/shouldn't replicate that?
-
-> > Wouldn't it be far simpler to have hostapd indicate the critical update=
-,
-> > and even the BPCC value? It also has to include BPCC in RNR and other
-> > fields, do we really want to _parse_ all of that and update all those
-> > values?! Seems iffy at best.
->=20
-> The challenge is that if hostapd takes on this task, it would need to=20
-> send updates for all partner links. Theoretically, this could result in=
-=20
-> up to 15 beacon NLs being transmitted. Processing these NLs and updating=
-=20
-> the beacons would already be time-consuming.
-
-Is it though? I mean, where do you see the bottleneck? Locking wise it's
-just the wiphy lock that shouldn't be contended, netlink isn't the most
-inefficient API ... sure there are roundtrips involved, but this seems a
-bit "handwavy" to me.
-
-We could also always have new per-link attributes for the beacon
-template updates for other links so it doesn't require full commands but
-just updates the beacon tail (probably only that?) of other links in the
-same operation?
-
-> On top of that, managing=20
-> the additional offsets required to update the counters adds another=20
-> layer of complexity.
->=20
-> OTOH, the proposed design just takes 1 NL update and rest it does=20
-> automatically what is needed which will be less time consuming than=20
-> multiple NL commands flow.
-
-I still don't buy the "time consuming" thing, but I agree that managing
-the counter locations would be more difficult. OTOH, that's a list of
-counters per link, so it's not _that_ much complexity?
-
-I really don't like the parsing in kernel for two reasons:
-
- 1) it's a lot of complexity that would never exist at all when hostapd
-    gives the data because it's building it, it doesn't need to parse
-
- 2) less importantly, I also think it ossifies things since the kernel
-    would need updates for even minor changes in the layout or elements
-    (this of course already being true for FW based solutions)
-
-> > >      2.2 Parse the MBSSID profile element.
-> > >          2.2.1 For each non-Tx profile:
-> > >              2.2.1.1 Extract the BSSID
-> > >              2.2.1.2 Retrieve the corresponding link sdata from BSSID
-> > >              2.2.1.3 If the critical update flag is set in link objec=
-t, set
-> > >                      the CU (Critical Update) bit in the capability e=
-lement.
-> > >              2.2.1.4 Set non_tx_update =3D true.
-> > >      2.3 Parse the multi-link element.
-> > >          2.3.1 For the self link (already known), fetch the latest BP=
-CC
-> > >                value.
-> > >          2.3.2 Update the frame with this BPCC value.
-> > >      2.4 Update the capability element in the SKB:
-> > >          2.4.1 If the critical update flag is set, set the CU bit.
-> > >          2.4.2 If non_tx_update =3D=3D true, also set the non-Tx CU b=
-it.
-> >=20
-> > How much of that can we let hostapd do?
->=20
-> hostapd forms beacon so it can do all of this. The only bottleneck is=20
-> communicating all link's beacon update sequentially via NL. And if=20
-> another update happens in the meantime - for example link A started CSA=
-=20
-> and then link B also started CSA, these will pile up the NL socket queue=
-=20
-> with beacon updates.
-
-I do wonder if this is a practical concern? And if you have seen this in
-practice then where does the bottleneck come from?
-
-But it can also be side-stepped by batching the operations and not doing
-a full update like I wrote above.
-
-So I'm not sure from a design perspective for mac80211 we should let it
-be constrained by this. That doesn't mean there aren't other reasons for
-the design to go either way, but we can work around this one (if it even
-is an issue.)
-
-> > > This mechanism sufficiently handles critical updates due to modificat=
-ions
-> > > of existing elements (elements related to the critical update which a=
-re
-> > > already present in the beacon and just one or more field is/are chang=
-ing
-> > > its value). However, in the case of new element inclusion (elements r=
-elated
-> > > to the critical update which are not alread present in the beacon, bu=
-t is
-> > > getting added from next beacon), additional handling is required.
-> > > Specifically, the newly included elements related to the critical upd=
-ate
-> > > must be added to the per-STA profile within the Basic Multi-Link Elem=
-ent
-> > > (BMLE) [3].
-
-[snip timing explanation]
-
-> You're right, but that's not quite what the original text is trying to=
-=20
-> convey.
-
-OK, sorry, I misunderstood then.
-
-> There are generally two types of critical updates:
->    1. Adding a new element, such as CSA or CCA.
->    2. Modifying an existing element, like VHT/HE/EHT Operation IE, TWT, e=
-tc.
->=20
-> In the second case, forming the beacon is relatively=20
-> straightforward=E2=80=94only the BPCC and the critical update flag need t=
-o be=20
-> set. However, in the first case, it's more complex. You need to insert=
-=20
-> the new elements (e.g., CSA IE) into the per-STA profile of the affected=
-=20
-> link within the reporting link, as shown in the earlier diagram.
-
-Right, of course.
-
-> So to handle this case (additional of new element), the below steps are=
-=20
-> additionally required on top of what was already explained above.
->=20
-> Does this make sense now?
-
-Maybe more? I really wasn't reading it well before, I thought it was
-more about when the new elements were added, rather than the fact _that_
-they need to be added.
-
-I guess to me that was really almost the same, the beacon changes.
-
-> > That kind of also seems like hostapd could just update the beacons?
->=20
-> Yes it can. Only thing is multiple NL beacon updates.
-
-OK so if you're really so worried about that, and that's the main thing,
-we can add the per-link updates into a nested element in the switching-
-link's nl80211 message :)
-
->=20
-> > > Update BPCC back to NL:
-> > > -----------------------
-> > > After the kernel increments the BPCC value, it can emit a netlink eve=
-nt
-> > > containing the updated BPCC value. This allows hostapd to receive the
-> > > latest BPCC and include it in probe/association response frames, as
-> > > required by the specification.
-> > >=20
-> > > This coordination ensures that all - beacon, probe response, and
-> > > association response frames reflect consistent BPCC values, maintaini=
-ng
-> > > compliance with spec-defined behavior for multi-link and critical upd=
-ate
-> > > handling.
-> >=20
-> > Yeah not liking this too much I guess... Why can't hostapd maintain
-> > BPCC?
->=20
-> It can only when everything is fully handled by hostapd. Otherwise=20
-> kernel should be owner of having the latest value. It can report the=20
-> latest value to hostap upon any change.
-
-When is it not fully handled by hostapd though? It always decides to do
-updates, no? Are you thinking there are cases where the driver
-(firmware?) unilaterally changes some things (say the puncturing bitmap)
-and never handshakes that with hostapd, just starts overwriting the
-beacons? Maybe we have a broader architecture discussion to be had here.
-
-
-> > > Complexities:
-> > > -------------
-> > > When adding elements in per STA profile, the element length might exc=
-eed
-> > > hence fragmentation needs to be handled properly.
-> >=20
-> > We have fragmentation but all this parsing means also we need
-> > _defragmentation_ first, which is awkward?
->=20
-> I think de-fragmentation is already supported ? If not, we will have to=
-=20
-> add it to support it.
-
-It is, generally, but it's completely separate in terms of memory
-handling etc. so it's not that simple.
-
-> > > memcmp vs hashing
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > In the section where memcmp() is used to detect changes in beacon ele=
-ments
-> > > (to determine if a critical update is needed), this logic could
-> > > alternatively be handled at the hostapd level.
-> >=20
-> > Yeah sounds better to me :P
->=20
-> Okay so only the link which is undergoing a change, hostapd will signal=
-=20
-> to kernel about critical update? Rest kernel will handled parsing and=20
-> updating the partner links as per the need?
-
-I still don't like the parsing though. Like I said above, that's a lot
-of complexity that simply doesn't even exist when hostapd controls all
-the updates.
-
-
-I really would have envisioned this much more along the lines of having
-hostapd start the channel switch (WLOG on link 1 out of links 1 and 2)
-with an nl80211 message that has:
-
- - post-switch beacon for link 1
- - during-switch beacon for link 1
-   - CSA counter offsets for CSA, eCSA, etc. elements
- - post-switch beacon for link 2 (?)
- - during-switch beacon for link 2
-   - CSA counter offsets for link 1's CSA counter
-     (for all the per-STA profile link 1 elements)
-
-isn't that pretty much it? All the BPCC is well-contained within that
-and maintained by hostapd.
-
-I'll agree that this limits to only doing a single channel switch at a
-time across the whole MLD, but maybe that's not the most problematic
-thing?
-
-
-OK I guess I'll have to think about this more ...
-
-johannes
+Regards,
+Loic
 
