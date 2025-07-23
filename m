@@ -1,138 +1,88 @@
-Return-Path: <linux-wireless+bounces-25916-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25917-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43400B0ED05
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 10:19:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDFA5B0ED1A
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 10:23:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 648831755BB
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 08:19:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4E211AA42C0
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 08:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7A727991C;
-	Wed, 23 Jul 2025 08:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E189F272E57;
+	Wed, 23 Jul 2025 08:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="mWYYRArp"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="xXQiWIQk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A14278170
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 08:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D10825743E
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 08:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753258771; cv=none; b=PMVLyLLgdQEgyt4J/fxqfM452+cW6fSXnPhlNZEjrokJKIXyqKWwFxqTDB8pfjL3VsucrGJ1QcdU0Go4Y1PZgv9+93I2mk3skYQfifWBPFceCYiEkhDKyBJx6yS9WcaXevWEyeq5IWrKiWKmyEI+rauP6PcVPMBx/jDJZB+dhac=
+	t=1753258980; cv=none; b=RnvCLf6VNd0DnRcAmtbQwly2RFZICguyAV5owOZ8nwgGp9omwBNIwvoEaMwtH50K3UayHPWKZhisC/CgLZmkg0i67jHxBs+y4X+4fN0XYaPK0GWwR5c7rDPMZ/LLSYMVM67/xRZc6v3g7dzQKbAORZGIGBDSOjMTsAUskR+XyOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753258771; c=relaxed/simple;
-	bh=mOtPtdJlslt0YoKZ+3JqzxSIR0FHWtg/Ui/XjbG40So=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=LCMlNzlsFQELXadMBPv045dQG4JhfR9hOvM6kJFKjsu+2FiBkaW6/Qc146avC0OWf6s/VfOqbGF6LJRR/b33+4Wkr2c+JENpCQ7q8oyDaNsgddJ3p1b8WUmbTFrFx68eaYMSTSR9aYzxbw01YyDwXU5O7818ybI7KOlq5xGSmXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=mWYYRArp; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56N8JL4P02610783, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1753258761; bh=mOtPtdJlslt0YoKZ+3JqzxSIR0FHWtg/Ui/XjbG40So=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=mWYYRArpg3OJ7gJsQDR25zdh8FXH+lA1PdZtb2+J8q8dRe1cRUayRoLsnxTwfSVMY
-	 0x3G/q0NRybNZlO43FNaR2Bl+fv5/lN3A7KWt+JRZKiPxDjoQNdWdHx4wpBLjqRxkm
-	 au1kFfVv2rSSnrH6cVMYvU3QIUbrcc3RSN/k2wVDYsBd/yVotk2tuFPeryq97+Cl2q
-	 2SKnUZ64d9xUXy/hWaAADCUMBGnz34AGJSmII9HCxGGMIVBA8SsOPv9gmBKvCRIgcD
-	 qOyU+5g5yrxdnGq5EoKxsakRPNBBiggND9qgJ5rtK05YvKWcyzUitq47dVyHbvELno
-	 +qslsuz+ahJgQ==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56N8JL4P02610783
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Jul 2025 16:19:21 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 23 Jul 2025 16:19:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 23 Jul 2025 16:19:20 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47]) by
- RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47%5]) with mapi id
- 15.01.2507.035; Wed, 23 Jul 2025 16:19:20 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
-        "martin.blumenstingl@googlemail.com" <martin.blumenstingl@googlemail.com>
-Subject: RE: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf path'
-Thread-Topic: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf
- path'
-Thread-Index: AQHb+wy3xJJYRq7Qhky2ZR9b8r3WqLQ+3/XA///saYCAAIk6oP//fpUAgACIU6A=
-Date: Wed, 23 Jul 2025 08:19:20 +0000
-Message-ID: <34d9c169c92540caa294095d2172b4fc@realtek.com>
-References: <7407FAA3-F4A4-48AA-91E5-A78DA711447D@gmail.com>
- <ec5d762f3ee64a0188953a1aecbef2cc@realtek.com>
- <AFB036A4-80C6-4880-B798-FB22C7C137FA@gmail.com>
- <b29df36b838049a088d8298220078134@realtek.com>
- <5CA196F3-90B4-479F-9A19-E9C71C8726D4@gmail.com>
-In-Reply-To: <5CA196F3-90B4-479F-9A19-E9C71C8726D4@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1753258980; c=relaxed/simple;
+	bh=aT+y65LX/V/C2Vtr89dl72qHWo5DugOS6VavmaNu7OA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=q403ygQ0w1SnfP/c/mwFnLP7qYR8ccwo9hdTcMlv39MBsqPE+NeLSDoSKxxKNIVRLgTYwvv5Px1iitUNeRdhAexW9S2WRmyu9gzJo7cgdPYD+jW/U2S94kemKpFSb1VNb4nToZQHq7DbYkJ0veLliBW+yh9T8qLMTZE2yUgumxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=xXQiWIQk; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=aT+y65LX/V/C2Vtr89dl72qHWo5DugOS6VavmaNu7OA=;
+	t=1753258979; x=1754468579; b=xXQiWIQkATb95QKqWHJ2I6Y/VUdc9+mJIZs/LTbhejuPSpH
+	PztGaI7hgqdvz6RVWOb6+RC2yz42Ab0K+fDIlgOZAex/b3EqGRw5vKpq/BOKhXKGhhNvWNb/BAMWD
+	qMSM/tZL7gUeBIdiFK0barNWDtZogQZIdmTLuRLPWLJ7Zb6gAb7+sJsB4mXK1HQTNEZHCdIytmYj+
+	pOXUs5rWAtl9Gd1ImwfIN1nnfd0T19iox3xMITQNZpwXebfby/zGQJVXgFxnR7aBQHImfgHdzjRK/
+	BcI4lRGZ9C2hXz6u5/i/Xmjvey2/AePi+hVNlcFLWEfQy2NN5OG/oKll+XuwiUsg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1ueUkU-00000003b48-2M76;
+	Wed, 23 Jul 2025 10:22:53 +0200
+Message-ID: <02c9972445c54b9c3077a4bdff2995c38e8efef8.camel@sipsolutions.net>
+Subject: Re: [wireless-next 1/2] wifi: mac80211: support encoding S1G TIM PVB
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Date: Wed, 23 Jul 2025 10:22:46 +0200
+In-Reply-To: <d97f20cff120e813b83c3a7d41bae63b151da26a.camel@sipsolutions.net> (sfid-20250723_100610_808413_E7D663D4)
+References: <20250722071642.875875-1-lachlan.hodges@morsemicro.com>
+		 <20250722071642.875875-2-lachlan.hodges@morsemicro.com>
+		 (sfid-20250722_091728_659585_C991C363) <d97f20cff120e813b83c3a7d41bae63b151da26a.camel@sipsolutions.net>
+	 (sfid-20250723_100610_808413_E7D663D4)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-UGlvdHIgT25pc3pjenVrIDxwaW90ci5vbmlzemN6dWtAZ21haWwuY29tPiB3cm90ZToNCj4gPiBX
-aWFkb21vxZvEhyBuYXBpc2FuYSBwcnpleiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNv
-bT4gdyBkbml1IDIzIGxpcCAyMDI1LCBvIGdvZHouIDA5OjUwOg0KPiA+DQo+ID4gVGhlIGRtc2cg
-ZmluZA0KPiA+IG5vbi13b3JraW5nIHN0YXRlOg0KPiA+ICAgcnR3ODg6IHJ0d19jaGlwX3BhcmFt
-ZXRlcl9zZXR1cDoxODcyIGhhbC0+cmZfcGh5X251bT0xIGhhbC0+cmZfcGF0aF9udW09MQ0KPiA+
-IHdvcmtpbmcgc3RhdGU6DQo+ID4gICBydHc4ODogcnR3X2NoaXBfcGFyYW1ldGVyX3NldHVwOjE4
-NzIgaGFsLT5yZl9waHlfbnVtPTIgaGFsLT5yZl9wYXRoX251bT0yDQo+ID4NCj4gPiBUaGV5IHdl
-cmUgaW5kdWNlZCBmcm9tIHJlZ2lzdGVyDQo+ID4gICNkZWZpbmUgUkVHX1NZU19DRkcxIDB4MDBG
-MA0KPiA+DQo+ID4gUGxlYXNlIGFwcGx5IGJlbG93IGNoYW5nZSBhbmQgc2hhcmUgdGhlIHdvcmtp
-bmcvbm9uLXdvcmtpbmcgc2F0ZXMuDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFs
-dGVrL3J0dzg4L21haW4uYw0KPiA+IGluZGV4IGZhMGVkMzljYjE5OS4uOTVkZWNmOTBhNDNkIDEw
-MDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5j
-DQo+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMNCj4g
-PiBAQCAtMTg2MSw2ICsxODY0LDggQEAgc3RhdGljIGludCBydHdfY2hpcF9wYXJhbWV0ZXJfc2V0
-dXAoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4gPiAgICAgICAgaGFsLT5jaGlwX3ZlcnNpb24g
-PSBydHdfcmVhZDMyKHJ0d2RldiwgUkVHX1NZU19DRkcxKTsNCj4gPiAgICAgICAgaGFsLT5jdXRf
-dmVyc2lvbiA9IEJJVF9HRVRfQ0hJUF9WRVIoaGFsLT5jaGlwX3ZlcnNpb24pOw0KPiA+ICAgICAg
-ICBoYWwtPm1wX2NoaXAgPSAoaGFsLT5jaGlwX3ZlcnNpb24gJiBCSVRfUlRMX0lEKSA/IDAgOiAx
-Ow0KPiA+ICsgICAgICAgcHJpbnRrKCJydHc4ODogJXM6JWQgaGFsLT5jaGlwX3ZlcnNpb249MHgl
-eFxuIiwNCj4gPiArICAgICAgICAgICAgICAgX19mdW5jX18sIF9fTElORV9fLCBoYWwtPmNoaXBf
-dmVyc2lvbik7DQo+ID4gICAgICAgIGlmIChoYWwtPmNoaXBfdmVyc2lvbiAmIEJJVF9SRl9UWVBF
-X0lEKSB7DQo+ID4gICAgICAgICAgICAgICAgaGFsLT5yZl90eXBlID0gUkZfMlQyUjsNCj4gPiAg
-ICAgICAgICAgICAgICBoYWwtPnJmX3BhdGhfbnVtID0gMjsNCj4gDQo+IA0KPiBoZXJlIGl0IGlz
-Og0KPiANCj4gbm9uLXdvcmtpbmc6IGh0dHBzOi8vdGVybWJpbi5jb20vN2dveg0KPiB3b3JraW5n
-OiBodHRwczovL3Rlcm1iaW4uY29tL2xwc3ENCg0KTm90IHN1cmUgd2h5IGJpdCBCSVRfUkZfVFlQ
-RV9JRCAoMjcpIGlzIGRpZmZlcmVudDogDQoNCndvcmtpbmcgc3RhdGU6DQogICBydHc4ODogcnR3
-X2NoaXBfcGFyYW1ldGVyX3NldHVwOjE4NTkgaGFsLT5jaGlwX3ZlcnNpb249MHg0OTNkMzBlYQ0K
-bm9uLXdvcmtpbmcgc3RhdGU6DQogICBydHc4ODogcnR3X2NoaXBfcGFyYW1ldGVyX3NldHVwOjE4
-NTkgaGFsLT5jaGlwX3ZlcnNpb249MHgzMDMwMzBlYQ0KDQpJJ2QgdHJ5IHRvIHJlYWQgbW9yZSB0
-aW1lcyB0byBzZWUgaWYgaXQgY2FuIGJlY29tZSBjb3JyZWN0Li4uDQpBbHNvLCBJIGZvcmNlIHRv
-IHVzZSBjb3JyZWN0IHZhbHVlIGF0IHRoZSBsYXN0IGl0ZXJhdGlvbiB0byBzZWUgaWYgaXQNCmNh
-biB3b3JrIGV2ZW4gaW5jb3JyZWN0IHZhbHVlIG9mIHJlZ2lzdGVyIDB4RjAuDQoNCmRpZmYgLS1n
-aXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYyBiL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jDQppbmRleCBmYTBlZDM5Y2IxOTkuLjEz
-NzQxOGQxMTA4ZCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
-ODgvbWFpbi5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4u
-Yw0KQEAgLTE4NTgsOSArMTg2MSwxNCBAQCBzdGF0aWMgaW50IHJ0d19jaGlwX3BhcmFtZXRlcl9z
-ZXR1cChzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2KQ0KICAgICAgICAgICAgICAgIHJldHVybiAtRUlO
-VkFMOw0KICAgICAgICB9DQoNCi0gICAgICAgaGFsLT5jaGlwX3ZlcnNpb24gPSBydHdfcmVhZDMy
-KHJ0d2RldiwgUkVHX1NZU19DRkcxKTsNCisgICAgICAgZm9yIChpbnQgaSA9IDA7IGkgPCAyMDsg
-aSsrKSB7DQorICAgICAgIGhhbC0+Y2hpcF92ZXJzaW9uID0gaSA9PSAxOSA/IDB4NDkzZDMwZWEg
-OiBydHdfcmVhZDMyKHJ0d2RldiwgUkVHX1NZU19DRkcxKTsNCiAgICAgICAgaGFsLT5jdXRfdmVy
-c2lvbiA9IEJJVF9HRVRfQ0hJUF9WRVIoaGFsLT5jaGlwX3ZlcnNpb24pOw0KICAgICAgICBoYWwt
-Pm1wX2NoaXAgPSAoaGFsLT5jaGlwX3ZlcnNpb24gJiBCSVRfUlRMX0lEKSA/IDAgOiAxOw0KKyAg
-ICAgICBwcmludGsoInJ0dzg4OiAlczolZCBoYWwtPmNoaXBfdmVyc2lvbj0weCV4XG4iLA0KKyAg
-ICAgICAgICAgICAgIF9fZnVuY19fLCBfX0xJTkVfXywgaGFsLT5jaGlwX3ZlcnNpb24pOw0KKyAg
-ICAgICBtZGVsYXkoMTAwKTsNCisgICAgICAgfQ0KICAgICAgICBpZiAoaGFsLT5jaGlwX3ZlcnNp
-b24gJiBCSVRfUkZfVFlQRV9JRCkgew0KICAgICAgICAgICAgICAgIGhhbC0+cmZfdHlwZSA9IFJG
-XzJUMlI7DQogICAgICAgICAgICAgICAgaGFsLT5yZl9wYXRoX251bSA9IDI7DQoNCg0K
+On Wed, 2025-07-23 at 10:04 +0200, Johannes Berg wrote:
+>=20
+> If you don't want to limit to 1600 then I think encoding wise we're
+> limit to 2048 (but in practice to 2008 with the AID limit in nl80211),
+
+Actually I guess without paging anyway to 2048.
+
+> struct element *tim;
+>=20
+> pos =3D skb_put(skb, 4);
+> tim =3D (void *)pos;
+> // add all the stuff including PVB
+> tim->datalen =3D skb_tail_pointer(skb) - &tim->data;
+
+tim->data is already a pointer, so the & there is wrong, sorry.
+
+johannes
 
