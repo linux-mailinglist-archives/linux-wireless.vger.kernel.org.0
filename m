@@ -1,221 +1,151 @@
-Return-Path: <linux-wireless+bounces-25929-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25930-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DEF1B0EEF5
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 11:58:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D66FB0EF95
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 12:17:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC8F8962A75
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 09:57:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B6223A61A1
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 10:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59DB288C24;
-	Wed, 23 Jul 2025 09:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08B9280A5E;
+	Wed, 23 Jul 2025 10:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="XHnHYFjK"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="H/cw2kKb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp14.infineon.com (smtp14.infineon.com [217.10.52.160])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865DF288C92
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 09:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.160
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E43286D4C
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 10:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753264648; cv=none; b=p7Gvm68qnLP4x3Vu9yYLu1SqZF+38lle1BAJHEGGSoAeqJdFDFbH3VLfTEjbxK08j1z2F/QOkUbcjgncT1cKWLWLcAzCVGmATCY0BNCNgwFTPp9RrJpWQRrQX/Pg+YbfUECmhTG4Aaq4nkdhw/wdKTcouzUhK74z09qKroT/Ads=
+	t=1753265846; cv=none; b=ca5RkOTR30hgEvONCDlBkxholCks255WhKu7kUZSiPAjUCBlxCeErZL+AHWXuXPKR8b8bRvUUrIp0vP4FxSc+9w5iihWokNPwvh3S5cScGFnrCUMLyI5zcGIu2Cipd0yIZB2rFbX1ytS79PkbL+U/XJA+z/QN6Vwzk0rE3iZw2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753264648; c=relaxed/simple;
-	bh=+XqUM7z2kOiFz565x/x4/InS3B8vZfnorSxqVKSI00I=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=myWdIIuXlK66BWQoe2fKsiB5CEBhkDvKNhjV/TqxWJzXJg9CD085MFKIBipIaCnU8VlCq4K0vnE11Qbz11IYOs89/OMkm/42YqZ8y26E6CoRJ7v7SE/XGCeOq5vMBuETYQ5G9lc2JKpi2MMtd/SR667G9edEUdM5fM8g7MX0ABM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=XHnHYFjK; arc=none smtp.client-ip=217.10.52.160
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1753264646; x=1784800646;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+XqUM7z2kOiFz565x/x4/InS3B8vZfnorSxqVKSI00I=;
-  b=XHnHYFjK/RfnfussELf327pwBrHodaezUvwvwvyrdBgXVqck2Owlw2qd
-   nObCuOhOP+NPETsR+tHS2I9WRvyMjeJ2G4VYZn/4Sr3cSfYg9FjaFj/k0
-   FX34t30zgDed5gA9xall+P0bc+UOFjExTlMR+c83nazmObFGMIo8cJKsM
-   Y=;
-X-CSE-ConnectionGUID: s8cr5nGGTSmkRtu2ED9dNQ==
-X-CSE-MsgGUID: 1gyYJeG0SG6jeBntkrncJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="92425419"
-X-IronPort-AV: E=Sophos;i="6.16,333,1744063200"; 
-   d="scan'208";a="92425419"
-Received: from unknown (HELO MUCSE822.infineon.com) ([172.23.29.53])
-  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 11:57:18 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE822.infineon.com
- (172.23.29.53) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 23 Jul
- 2025 11:57:17 +0200
-Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
- MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Wed, 23 Jul 2025 11:57:15 +0200
-Date: Wed, 23 Jul 2025 15:27:08 +0530
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>, Johannes Berg
-	<johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>,
-	<wlan-kernel-dev-list@infineon.com>, Gokul Sivakumar
-	<gokulkumar.sivakumar@infineon.com>
-Subject: Re: [PATCH wireless-next v3] wifi: brcmfmac: fix EXTSAE WPA3
- connection failure due to AUTH TX failure
-Message-ID: <aICx9J5MOf2GNp6e@ISCN5CG14747PP.infineon.com>
-References: <20250709120454.5332-1-gokulkumar.sivakumar@infineon.com>
- <faa64fa7-beaa-458a-9fc9-e6b33533f534@broadcom.com>
+	s=arc-20240116; t=1753265846; c=relaxed/simple;
+	bh=0FWkjxUMoHwv3AQfgH23fqkY7ym36SwwU2RaJykt4jA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ISFVRcBviwYwbnxpWbuvMCeVeeKbq2xNF2n120x/Byq8A22nEIKvo8xxU8DTck0UU56Ul5NekuV30Ao2pNGMaiY2uSgQESQ6D1CuNwt68lOAQA8t6UNtqtLqW34psEqWomioIHS1HnOHG/YOfijp5z4JZYEC53k7r+qCzEJjn0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=H/cw2kKb; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4ab92d06ddeso92766291cf.3
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 03:17:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1753265843; x=1753870643; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=LJfe0U+u3u72GvAm5az+oPpJij7n1bwHFfIVuB9iyks=;
+        b=H/cw2kKbL7oZUBphi1UHAXC8fXh4DLfbJuGDx3TCaPGNb7kzyuh7+EUvA+/jjvyC8A
+         WQ8FXz5c0LidIdDpEbViPv6S5gJy4EywlkosmirN3WGVvNfnD+75HENACYQAq6Pf9mNL
+         m25I296HNM6pggEYNTibdxLWXeJBt2f771wsY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753265843; x=1753870643;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LJfe0U+u3u72GvAm5az+oPpJij7n1bwHFfIVuB9iyks=;
+        b=SfeR0ZVePAbUlKzHimUQpSxh7e24KPPIzvNmz9HaqekksM0URvuVrvXun3owVczm1m
+         XJEkBmKv1MRfcQXD2bdMMivqp1eWA0qePoRM1aZRhh76QxmAzj/hQUDFf9UmJnk3mU3E
+         LK/0jUWVa84BnU2Pw0Cu8CCXkneW2AA4hsjPxusgU2eI3Xu8nIMjVqGmI5sc50ZauqEl
+         GrgwgKTOdBWKeE9Lu9w+BWmJOSiy7Vs2U/FBvdfaAl/6HdGhQxWZXpI853DOIcF1YVey
+         E0wxNmDNrVoojQQq58zKj+RdQPtvRCIRTY5tyDzhyO27Fnzwa7xPLSSrZ6xxFGJ0yrW5
+         Kv+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUTfm7THcC7SjHutjU+O/q6rLCdOuOpAzKVyp8NNY0PyLIqfJ1OeRGpPkZWz4+9UNlZoRIQMhT4DNPTj6oxcw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3RjE/YJKXq0awlofApKQ/u+xICxeUpPGiQJ2Ht/CPXkJP9Lxu
+	4ZTIb6WCZ5UuHv4k23wlfL7e/QKuWmWBWWiJsHyFgZnEXiM3AGNMH2Wl6PGcwtEqPg==
+X-Gm-Gg: ASbGncvl/ESoth/cXQzFbxr2T+KnEA3Bsv9KwTjLSdB4GJq/umkhv5yo+ySoT2Z4ej8
+	XuuKLA8W9W7/g2crrbeXK9AKxYF3Rwzay2VmbPlio2OjZ+597ePld2Oj8nEGTN8zh8xRQ8d7Fai
+	THWDJghGTITdXQ/n+YsXhGt/L01wg/BQ7101jAYsq+W1jttyTLAxQdBOi6E2stVY+mGvRRjUAjw
+	OrfnippQHidQMMBzU1G2M0uo3Wu+0Tct0rIdqs/p+rLy/ywfLn/wiFbEeAROpDLqMMkerN8FmTt
+	g2O+v09qyk1Kmyfow/jbtOztimvor0MWypvbJL6eFtbXqzGhGQvM/tmUcjV9VbO8lpQwzlOJVSj
+	ewObEBCgXltBzVwMkdaUhqWjmVbqBTFzHXTOLyBEliwJlafw6rAhU
+X-Google-Smtp-Source: AGHT+IGPC76h0wm+3k9n1XTW4Rb7SXd7kFL770EuSfku4pFTU6QqODky5+n4jn+mNVWWzLJ2wjdbZQ==
+X-Received: by 2002:ac8:5a41:0:b0:4ab:cf30:187d with SMTP id d75a77b69052e-4ae6de8696bmr37910481cf.19.1753265842520;
+        Wed, 23 Jul 2025 03:17:22 -0700 (PDT)
+Received: from [10.176.2.145] ([192.19.176.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4abb4b3106bsm65670351cf.60.2025.07.23.03.17.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Jul 2025 03:17:22 -0700 (PDT)
+Message-ID: <af4d556e-d917-498b-80a9-ee18e51a72fa@broadcom.com>
+Date: Wed, 23 Jul 2025 12:17:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <faa64fa7-beaa-458a-9fc9-e6b33533f534@broadcom.com>
-X-ClientProxiedBy: MUCSE816.infineon.com (172.23.29.42) To
- MUCSE827.infineon.com (172.23.29.20)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: brcmsmac: Use str_true_false() helper
+To: liu.xuemei1@zte.com.cn
+Cc: liu.song13@zte.com.cn, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com
+References: <20250723173004776P6QSjcW7NrlpGYLTFM-yP@zte.com.cn>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <20250723173004776P6QSjcW7NrlpGYLTFM-yP@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 07/23, Arend van Spriel wrote:
-> On 7/9/2025 2:04 PM, Gokul Sivakumar wrote:
-> > From: Ting-Ying Li <tingying.li@cypress.com>
-> > 
-> > For WPA3-SAE Connection in EXTSAE mode, the userspace daemon is allowed to
-> > generate the SAE Auth frames. The driver uses the "mgmt_frame" FW IOVAR to
-> > transmit this MGMT frame.
-> > 
-> > Before sending the IOVAR, the Driver is incorrectly treating the channel
-> > number read from the FW as a frequency value and again attempts to convert
-> > this into a channel number using ieee80211_frequency_to_channel().
-> > 
-> > This added an invalid channel number as part of the IOVAR request to the FW
-> > And some FW which strictly expects a valid channel would return BAD_CHAN
-> > error, while failing to transmit the driver requested SAE Auth MGMT frame.
-> > 
-> > Fix this in the CYW vendor specific MGMT TX cfg80211 ops handler, by not
-> > treating the channel number read from the FW as frequency value and skip
-> > the attempt to convert it again into a channel number.
-> > 
-> > Also fix this in the generic MGMT TX cfg80211 ops handler.
-> > 
-> > Fixes: c2ff8cad6423 ("brcm80211: make mgmt_tx in brcmfmac accept a NULL channel")
-> > Fixes: 66f909308a7c ("wifi: brcmfmac: cyw: support external SAE authentication in station mode")
-> > Signed-off-by: Ting-Ying Li <tingying.li@cypress.com>
-> > Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-> > ---
-> > 
-> > v3:
-> >    * Fixed the "warning: incorrect type in assignment (different base types)"
-> >      properly now, after kernel test robot reported it again.
-> > 
-> >    * Used brcmf_fil_cmd_data_get() instead of brcmf_fil_cmd_int_get() util
-> >      for reading the channel number from the firmware as __le32 / __le16
-> >      type instead of s32 type.
-> > 
-> > v2:
-> >    * Fixed wifibot "warning: incorrect type in assignment (different base types)"
-> >      in cyw/core.c file.
-> > 
-> >    * Fixed >80 line length checkpatch warning by reducing variable name len
-> >      in cfg80211.c file.
-> > 
-> >    * Handled the return value of the BRCMF_C_GET_CHANNEL IOCTL Read operation
-> >      in cfg80211.c & cyw/core.c files.
-> > 
-> >   .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 33 ++++++++++++-------
-> >   .../broadcom/brcm80211/brcmfmac/cyw/core.c    | 29 ++++++++++------
-> >   2 files changed, 41 insertions(+), 21 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> > index 40a9a8177de6..54b1f0c8117e 100644
-> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+On 7/23/2025 11:30 AM, liu.xuemei1@zte.com.cn wrote:
+> From: Liu Song <liu.song13@zte.com.cn>
 > 
-> [...]
-> 
-> > @@ -5606,25 +5606,36 @@ brcmf_cfg80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
-> >               /* Add the channel. Use the one specified as parameter if any or
-> >                * the current one (got from the firmware) otherwise
-> >                */
-> > -             if (chan)
-> > -                     freq = chan->center_freq;
-> > -             else
-> > -                     brcmf_fil_cmd_int_get(vif->ifp, BRCMF_C_GET_CHANNEL,
-> > -                                           &freq);
-> > -             chan_nr = ieee80211_frequency_to_channel(freq);
-> > -             af_params->channel = cpu_to_le32(chan_nr);
-> > +             if (chan) {
-> > +                     ch = ieee80211_frequency_to_channel(chan->center_freq);
-> > +                     af_params->channel = cpu_to_le32(ch);
-> 
-> When we have the chan instance we can simply do following instead:
-> 
->                        af_params->channel = cpu_to_le32(chan->hw_value);
-> 
-> > +             } else {
-> > +                     err = brcmf_fil_cmd_data_get(vif->ifp,
-> > +                                                  BRCMF_C_GET_CHANNEL,
-> > +                                                  &hw_ch, sizeof(hw_ch));
-> 
-> I understand the motivation to use brcmf_fil_cmd_data_get() here, but it
-> may confuse people reading the code. So how about this incorporating the
-> previous comment:
-> 
->                if (chan) {
->                        hw_ch = cpu_to_le32(chan->hw_value);
->                } else {
->                        err = brcmf_fil_cmd_data_get(vif->ifp,
->                                                     BRCMF_C_GET_CHANNEL,
->                                                     &hw_ch, sizeof(hw_ch));
+> Remove hard-coded strings by using the str_true_false() helper function.
 
-yeah, this suggestion looks clean. Also the local variable "hw_ch" can replaced
-directly with "af_params->channel".
+Fine by me. It makes me wonder though what the motivation is to have 
+these helper functions. Does it reduce the amount of string literals in 
+the kernel or is it purely cosmetic? Anyway ...
 
-> > +                     if (err) {
-> > +                             bphy_err(drvr,
-> > +                                      "unable to get current hw channel\n");
-> > +                             goto free;
-> > +                     }
-> > +             }
->                af_params->channel = hw_ch;
-
-So that the above line can be removed. Will update and send a v4 patch.
-
-> >               af_params->dwell_time = cpu_to_le32(params->wait);
-> >               memcpy(action_frame->data, &buf[DOT11_MGMT_HDR_LEN],
-> >                      le16_to_cpu(action_frame->len));
-> 
-> [...]
-> 
-> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-> > index c9537fb597ce..2cbb4a809ca7 100644
-> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-
-[...]
-
-> > +     if (chan) {
-> > +             ch = ieee80211_frequency_to_channel(chan->center_freq);
-> > +             mf_params->channel = cpu_to_le16(ch);
-> > +     } else {
-> > +             err = brcmf_fil_cmd_data_get(vif->ifp, BRCMF_C_GET_CHANNEL,
-> > +                                          &hw_ch, sizeof(hw_ch));
-> > +             if (err) {
-> > +                     bphy_err(drvr, "unable to get current hw channel\n");
-> > +                     goto free;
-> > +             } else {
-> > +                     mf_params->channel = hw_ch;
-> > +             }
-> > +     }
-> > +
-> 
-> proposing similar construct here.
-
-Will update here as well in v4 patch.
-
-Gokul
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>> 
+Signed-off-by: Liu Song <liu.song13@zte.com.cn>
+> ---
+>   .../broadcom/brcm80211/brcmsmac/mac80211_if.c | 19 ++++++++++---------
+>   1 file changed, 10 insertions(+), 9 deletions(-)
 
