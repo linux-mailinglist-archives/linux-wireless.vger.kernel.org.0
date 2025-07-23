@@ -1,147 +1,179 @@
-Return-Path: <linux-wireless+bounces-25921-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25922-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A971B0ED94
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 10:46:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123F6B0EDAA
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 10:52:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 169D73A0F67
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 08:46:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7552188C9BA
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 08:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BF427603B;
-	Wed, 23 Jul 2025 08:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD02AD23;
+	Wed, 23 Jul 2025 08:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="goFGfX31"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="XxptZiw0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B3C19C54B
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 08:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B24211A15
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 08:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753260399; cv=none; b=PMd/x9rLnz7YQudCAO2F5PKxD7RE78DviBexs0wCP/MfwokDQ4D0Wh/wbDwuyGpy2I9Kq1s5PbkSD67XZTWlIpe6xdQqOOpJCI2xIS0HW/ivWWTqQ69LmVgMS4rKYxA+HgSQtYzckMSzoKyc34lieogp0SowX1MShZJrJ8V6gFU=
+	t=1753260771; cv=none; b=pvc4o8HLiGPXoP+ifHC/Jv/SIv3PpKfTtCovbs9Xlm6B7gl7zKlh0R0gvI+Z1vYEL8GHR+zPxyGQZ8pgrGdrpPzywSBhghynPY4pvBbd33omzYK3ehI+bz5/ZVP3Yx4PkcMVYRIl4zbFBLqlE5iJR86Qh37zF+Hvqzerfy2/570=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753260399; c=relaxed/simple;
-	bh=JdUaF+f1WveJsSbo5jW++gaykCyHRcUF+LVwTjh3xqI=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=s+k8ObIGdzVWoGuq4HtOqI2p31Ekeml3vjuh8aY1qrqo063l5LGGb0xba0q/P/tqZapLLokT/kRfOyqQqYK30FVgB2FH/Akvs4efzcoxlYydVzCbhhotbNdCMX41J8T4o0wPdAJemtG9DryKGd4Sf8EzX+b70j6isCoBQ9dDF9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=goFGfX31; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ae0b2ead33cso125836766b.0
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 01:46:36 -0700 (PDT)
+	s=arc-20240116; t=1753260771; c=relaxed/simple;
+	bh=j4dlvOMpn572AAW3IhAc8DVgXwfguKWVueT3R9vI75Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nA+/rEn7K5sCiSH/SnAkSX08snyUWQ1lsl/5YjjRn/OIyqnriAp8UVtsq2jHxSj7AoE2ekSC5AHHMiPYwkaSruPwr3SSCxtvQ09iIEAjfx+3dz1gRc+yr6V3ci0mRar1AsF0YmrZtwI5TqoNs+gT4U2u9RdFrNfhBLbVu0zFs1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=XxptZiw0; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-74801bc6dc5so622736b3a.1
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 01:52:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753260395; x=1753865195; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pl0jXm8QvSBtinyJQxa8ukfTLPQE8YyGRwQWT05DQM8=;
-        b=goFGfX31QVrBwcLejCcmI6+klIq4yxDK8SVjPpMCQ3Qaw0jEAhxYZi+dEC7PYFG0Tt
-         tgVHvC8B158yg5x+YmFdQ/M17eqo33mHMexy54Zt6u1HezLKTou0SvD5eAswG7oMyBG/
-         pb2/PB6VscE8vGS2xqd35Bl4D+Oj+7kyNICtdHB6UY+mpnKIC1c/ZpDCIKQsmayaEqTC
-         1aCtbh8gkHCiLVDeG5uElmAfxfMgtBh2UkoKyLoCPcaEwSdM6txFU1lOPO0+pSrO5i7d
-         olWJzw/dRLKg7qWihAIc7DseUjb+Z/mEzb5CDPKBBSW70asaw/CFYZ1IVeiS1Htuy5o7
-         6ieA==
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1753260769; x=1753865569; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tl5/f59RFWNbIuwC780oOSk1LB1mCkdlzk2hc5hpm8s=;
+        b=XxptZiw0KQXuEe3hwndNOhgIqqUj44oyPCzeq94nDsp0VSeWtinsWxWSD+LIzgNETL
+         kHm9fT1ZOo+j5+PbEfoeNI96/G4XnYD6fbA0Ynm30YRmZYH0zHAtSj6OaWuvKLY90WX0
+         AzMQV2NcsbypdXqIAUI9E0HdCqszKBcO6OoF+fN6IhgrQ7siAlAFuxRCOS7mfD4xX1qI
+         1lB7TcGphrWdCX3BWqJ5NZfc2pgoDpZUH+6mpTw4ZspZFyA78LwUqg3xuanSuKbH5/2q
+         to6mQAEqXB4ZBGOxVfWDWIU58sr08BecrdYCI+B5MEmjb7JjkSZPA4kEgSRXYoG2OVfr
+         VDiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753260395; x=1753865195;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pl0jXm8QvSBtinyJQxa8ukfTLPQE8YyGRwQWT05DQM8=;
-        b=rXUkMYehCfgcLwpKap0txl3kE+6OcGGUKhYBawikkZx0AYsHesCL9YeKlmFJOjgDXz
-         T1pUQeur/hexe3MQEzTGjoFqBZz1QtN9lDdgEFT6VoHt32g1YjfGwLygoibCAVp4R2Iw
-         vOg63fgdq36nNgKTPlhD82Y1udI9ar1fu06o7TJnuhPIuthTMLrnshwALvgl0nXUXHtL
-         s2sS0A9uO/7t0I1ug+DgeAmRrWU7ODwac288BIpp05A2NECwJhcQBhAxHzWA1REz1FDr
-         caIg61SqrzHzedhGYpbd9eK3Fqh0ANMGvVQH0kHIdMTzvIkY/TL3Y0Axj6ol94Xqn0Kk
-         Dasg==
-X-Gm-Message-State: AOJu0Yx5RHX+u3yjV726s67XnaROnizRFCPOcJP5uRnPSCjt4h5i8Yat
-	gi6QKqHnv6pGk9LXcML2YQVmiWvb5YIPeASJRoM6b+XXeEORXEmiZpYJ
-X-Gm-Gg: ASbGncuXJ8oNZYsAaIunqdeVClRl5MKSKVPF+fPXFCKxC2kqXLPnx9slz9OSYKrqF2B
-	W8/ld7grk2lH1KDZSAzoBe0bfH1YB1PWK/kgehyuejewz72uskxrqJWwv8olFg34wpCXTG5zWqv
-	17q2les3QtMwcqGdeEPWV4d3YXW9vSsaLCyZVZTbdo8Pq/ZeuomXsuCTESzuszNih1uStxKEa2I
-	pvqVKqCUooXfTXzBj22bhvmkNPYyyeWiR5u8Aa6HvLDOfqJva7Wt5Guy5yIsy0x5QBv7glPlbRI
-	UyPz0vHG2IEcgmcSW3zdrYGPhiBspBHagWiYtnfZYq4AiS9vjr4pbujgXEE+feHgA8nym21eiA+
-	Y/SyaH07QsZM2yD9Fm8XEg+GAGXzeJNIQh+ag/DAWKk4wknLbSHfWQaTVa/X+GmDDbvw2YB1IZZ
-	IQ
-X-Google-Smtp-Source: AGHT+IHV3OTBeEu3YmWpQsSpNXcwz5P1DAMwQBYlB4nezD4ruEgdQIqeEQoGWfDpgzinGyMGpv15wQ==
-X-Received: by 2002:a17:907:6ea7:b0:ae3:c72f:6383 with SMTP id a640c23a62f3a-af2f48b0ac8mr201404466b.17.1753260394351;
-        Wed, 23 Jul 2025 01:46:34 -0700 (PDT)
-Received: from smtpclient.apple (89-66-237-154.dynamic.play.pl. [89.66.237.154])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c7d8fcasm1016040466b.68.2025.07.23.01.46.33
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 23 Jul 2025 01:46:34 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+        d=1e100.net; s=20230601; t=1753260769; x=1753865569;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Tl5/f59RFWNbIuwC780oOSk1LB1mCkdlzk2hc5hpm8s=;
+        b=Mc2pLHLatifudL4Prxk1gFviYibiwmEUt5hoQIbVbl5qt6q7LcOvEXnEBQFRXiLZoE
+         1KXgeCcwi95GpftZyIdHXcyEn3vEJq3Fr70cCA0C6Op4NYJG1V2Yu+pEnYrfpte3LB3N
+         Hkbkj0pjxzQq/ACI+RxJcZ3I4ZZwnbFEWP8dPThJciz4yJqPl1TTEqR4nm8nalxB2RTp
+         Jkdfvxqw+l6RIY9JrwroHxThwM1r7GzyDnY6dK5T90zeE1qKxxP3e+8544nt/9ZERfdx
+         QpXL5Q1G9dvrxb1Ive+rUWZlKY75Yp9/kJU0kbvAEuxZLGp9s3ppOJalWCreUPA//8ul
+         6rzA==
+X-Gm-Message-State: AOJu0YxRzUu2BJLvJl3PDBZzzfFxAItBmiSvmJHpPwAxM/9pDOB5X490
+	0hSgDlNAYRQT/KcxgItifJEteFlkU0vz7skg0+s8hSG3u2YAd6rh+8PPneHH4O+5xzc8CNhjXJk
+	WZX8OYO4=
+X-Gm-Gg: ASbGncsGy+o22uiqNG/3HCaMU689aC8PrY5lJK19lkMQi4PJdqj15gOIhi0MQFK2dRi
+	c+OpgQz+MINHeI0fiEdOAWZGbyhSVdS77vHfe0Kx9GAy20FwuxPPwx0dhsYixTw4/lfBpQkjDkB
+	cp3xkNRT6NKNx62c69SQkmP9eeByhVOz0RLP0kBdcSHz5Ebj99lQK327X6J3YpBR+uQpdu+L63N
+	vIBSljK6vuEC9l4MPvuAcM0EKE727SvliNxTOUfRYyoc5zQhVP+4fgQsAtc8zyuYosUXXiCFemH
+	C0ZiOiF/VPJhOleqpkCWR6C675lZOdWo7bHm1WRorMVWy25CjCeakGDsvYr2axmxezQ6RzqHkKW
+	eVGWG3jDfLLl4Bs47ZScxDaeM1hyhEmI=
+X-Google-Smtp-Source: AGHT+IH+VhxFB8u/vAx4FWoc0Qel2eBC3kPGmXDYSRM+D+x8GjOw2mVZhw5gegv7vSWost9W2TBBIg==
+X-Received: by 2002:a05:6a21:e92:b0:222:ca3f:199 with SMTP id adf61e73a8af0-23d48e7269bmr3323284637.18.1753260769088;
+        Wed, 23 Jul 2025 01:52:49 -0700 (PDT)
+Received: from localhost ([101.180.88.40])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759c84e2706sm9071060b3a.31.2025.07.23.01.52.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Jul 2025 01:52:48 -0700 (PDT)
+Date: Wed, 23 Jul 2025 18:52:46 +1000
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Subject: Re: [wireless-next 2/2] wifi: mac80211: support parsing S1G TIM PVB
+Message-ID: <s75ll2rbyrmeyg62sbb7nlconska6337qjinyt35skrpqcgrj5@hjayizfsrob6>
+References: <20250722071642.875875-1-lachlan.hodges@morsemicro.com>
+ <20250722071642.875875-3-lachlan.hodges@morsemicro.com>
+ <e60156bc1097385bceb624bac6bf55906947e6a9.camel@sipsolutions.net>
+ <ksb6rptacpnyxbcep332q247agx2u62h6o3j4oqfestaal2b7x@el6snwrs4kx5>
+ <98abd0c936a6169a106682da9359c01708cf4ee9.camel@sipsolutions.net>
+ <yy2mk5xsimlpnohsg7d22cl7u45n3exmu43jo5l3qmqjx5wzer@mrnzw7rax5ew>
+ <de49f2491030902d981840f36087af3dc2c9377e.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf
- path'
-From: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
-In-Reply-To: <34d9c169c92540caa294095d2172b4fc@realtek.com>
-Date: Wed, 23 Jul 2025 10:46:22 +0200
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
- "martin.blumenstingl@googlemail.com" <martin.blumenstingl@googlemail.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <18989932-3578-4E45-BA8B-6C2C76FDE7FE@gmail.com>
-References: <7407FAA3-F4A4-48AA-91E5-A78DA711447D@gmail.com>
- <ec5d762f3ee64a0188953a1aecbef2cc@realtek.com>
- <AFB036A4-80C6-4880-B798-FB22C7C137FA@gmail.com>
- <b29df36b838049a088d8298220078134@realtek.com>
- <5CA196F3-90B4-479F-9A19-E9C71C8726D4@gmail.com>
- <34d9c169c92540caa294095d2172b4fc@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <de49f2491030902d981840f36087af3dc2c9377e.camel@sipsolutions.net>
 
+On Wed, Jul 23, 2025 at 09:39:47AM +0200, Johannes Berg wrote: 
+> Yes, they just go to net/mac80211/tests/. You can put something in the
+> same patch or if you feel that gets too big into a separate patch in the
+> series, I don't really care too much.
 
+I am playing around with them now, so will include them in the next
+patchset :)
+ 
+> > whereas (and, do correct me if im
+> > wrong) on the AP side the AID is passed down from hostap via
+> > NL80211_ATTR_PEER_AID, which is then validated using the
+> > NLA_POLICY_RANGE where the max is IEEE80211_MAX_AID. So if we were to
+> > limit the AID to 1600 for S1G, we'd need some way to validate it within
+> > cfg80211. Don't think this would be too hard, since we can confirm we
+> > have an S1G station via the presence of the S1G capabilities within
+> > nl80211_set_station_tdls():
+> > 
+> > ...
+> > 	if (info->attrs[NL80211_ATTR_S1G_CAPABILITY])
+> > 		params->link_sta_params.s1g_capa =
+> > 			nla_data(info->attrs[NL80211_ATTR_S1G_CAPABILITY]);
+> > ...
+> > 
+> > where we could maybe perform some extra validation on the AID? I know
+> > its maybe not the prettiest since we aren't technically using the
+> > explicit nl80211 intrinsic validation - but I would say it gets the job
+> > done.
+> 
+> Ohh! Now I see where you're coming from, I was completely handwaving
+> away the _practicalities_ of checking the limit in my head.
+> 
+> I mean, sure, we currently use a policy ... Using the S1G_CAPABILITY
+> attribute wouldn't work if hostapd isn't including it at that time, but
+> mac80211 can always also do the validation. Worst case we can even
+> expose a new max-AID attribute, per interface type.
+> 
+> If we wanted to extend it later to up to 8191 then we'd need to remove
+> the IEEE80211_MAX_AID policy anyway since it'd be limiting to much less.
+> 
+> So I don't really see this as too much an issue, I'd probably just have
+> added a comment in nl80211.h that it's practically 1600 for S1G for now,
+> and added validation in mac80211. Then if _later_ we extend it, we can
+> add a feature flag/feature attribute for "now we support bigger AIDs for
+> S1G".
 
-> Wiadomo=C5=9B=C4=87 napisana przez Ping-Ke Shih <pkshih@realtek.com> w =
-dniu 23 lip 2025, o godz. 10:19:
->=20
-> working state:
->   rtw88: rtw_chip_parameter_setup:1859 hal->chip_version=3D0x493d30ea
-> non-working state:
->   rtw88: rtw_chip_parameter_setup:1859 hal->chip_version=3D0x303030ea
->=20
-> I'd try to read more times to see if it can become correct...
-> Also, I force to use correct value at the last iteration to see if it
-> can work even incorrect value of register 0xF0.
->=20
-> diff --git a/drivers/net/wireless/realtek/rtw88/main.c =
-b/drivers/net/wireless/realtek/rtw88/main.c
-> index fa0ed39cb199..137418d1108d 100644
-> --- a/drivers/net/wireless/realtek/rtw88/main.c
-> +++ b/drivers/net/wireless/realtek/rtw88/main.c
-> @@ -1858,9 +1861,14 @@ static int rtw_chip_parameter_setup(struct =
-rtw_dev *rtwdev)
->                return -EINVAL;
->        }
->=20
-> -       hal->chip_version =3D rtw_read32(rtwdev, REG_SYS_CFG1);
-> +       for (int i =3D 0; i < 20; i++) {
-> +       hal->chip_version =3D i =3D=3D 19 ? 0x493d30ea : =
-rtw_read32(rtwdev, REG_SYS_CFG1);
->        hal->cut_version =3D BIT_GET_CHIP_VER(hal->chip_version);
->        hal->mp_chip =3D (hal->chip_version & BIT_RTL_ID) ? 0 : 1;
-> +       printk("rtw88: %s:%d hal->chip_version=3D0x%x\n",
-> +               __func__, __LINE__, hal->chip_version);
-> +       mdelay(100);
-> +       }
->        if (hal->chip_version & BIT_RF_TYPE_ID) {
->                hal->rf_type =3D RF_2T2R;
->                hal->rf_path_num =3D 2;
->=20
->=20
+Sure
+ 
+> > I think what I'll do from here, is wait for your response to my
+> > comments, mainly on the maximum AID count and any other comments you may 
+> > have, and work on v2 which would roughly consist of the following:
+> > 
+> > 1. On the AP side, we simply support block bitmap encoding. Patch 1 
+> >    would more or less be the same (with the addition potentially of
+> >    new AID validation) though I'd add some details in there and
+> >    change some comments etc.
+> 
+> Sure. I write in a comment on the other patch that
+> IEEE80211_MAX_AID_S1G_NO_PS should probably not be in ieee80211.h, but I
+> guess with the changes to validation etc. you'd renamed that anyway and
+> put it in a different place. Or remove it.
 
-well - with above patch all starts to work well :-)
-10 boots, 10 working wifi with correct scans.
+Yep sorry I did read that (and will respond after this email).
 
-demsg from working sys: https://termbin.com/bhs4=
+> > 2. Support decoding the other encoding modes on the STA side. I think
+> >    while a bit more work upfront, worth it in the long run.
+> > 3. Add in some kunit tests to tests both the encoding of block bitmap
+> >    and also the decoding of all the formats from Annex L.
+> > 4. Fix up the AID stuff depending on what you think, If we go with the
+> >    hard limit of 1600, ensure on the AP side we perform that validation.
+> 
+> I really don't mind either way. Like I said above, it's a bit of a
+> question of complexity in the AP encoding implementation. Maybe just
+> start updating the AP encoding implementation and see how hard the TIM
+> element length validation would be to add to it, vs. a priori knowledge
+> that it'll always fit?
+
+Based on our discussion now (going to read patch #1 email after this) 
+Ill stick to 1600 limit, Ill leave that for response on patch #1 since
+seems to be more relevent there.
+
+lachlan
 
