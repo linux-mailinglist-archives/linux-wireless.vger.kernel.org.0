@@ -1,69 +1,68 @@
-Return-Path: <linux-wireless+bounces-25906-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25907-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A78B0EAE5
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 08:46:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A68E3B0EAE7
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 08:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F430188C0FD
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 06:46:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8DA95801C4
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Jul 2025 06:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C058E272E7E;
-	Wed, 23 Jul 2025 06:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D7C27146A;
+	Wed, 23 Jul 2025 06:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ddTmrlZt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iuP5QNr+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B302737EC
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 06:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C6D272E67
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 06:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753253159; cv=none; b=JYO+StSVHrUoVApJm0XzRPmy7hGUiftJLlbjUF0Nk9Vf4GioYKxufEvlYlSpmBTR8jJIeJRx3yle3JogCzNrcGjOjFVFt1QMKsU7Q/Co4i3MSMh6DqFptF8YfdsvJIMCDNN+KimkFlIFq/iP3pyLV3mUUovKtLDtSgfsBCc8pog=
+	t=1753253163; cv=none; b=DlK0U6ZmLgMCDWzqihGSLpEneo2H3VlNCNB7p45rWTjsLrDGoDSSZAfK2BWIdfztZ9hT5Ao0kJA99UW9etEXVF6wSDgGJUexfi/z1WklFvKoLbaKMbkz8OdO5RLf0VJMPC6qjxg1artMuODk1hJe9AYWzX353n/xeTLYcl8/8p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753253159; c=relaxed/simple;
-	bh=JgxjcevpNvUIv/5VxzmGMBbHHgQrXOaCeCTMtvaTI90=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FsIEP8GnCp+myYPKG59pEK3Uw4KxYLLE7lNpVEtMSczzbMjS+9PBHYYPxSpFfoV3XZ1qkxGa/T6IUAifAFauwk46ZoATMKAQiFUqTz2HDIskBXiKJ1Cd4mcO0b8N63b1Vr6FStfU0jYZb/k97owmrzo8sskPeaWBRHyzQD/3Uy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ddTmrlZt; arc=none smtp.client-ip=192.198.163.12
+	s=arc-20240116; t=1753253163; c=relaxed/simple;
+	bh=C45N6RlwdV4lfdn8ZN4+yCnCVy2dzOFewUUeudmWiI0=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=gbj+sdJlFYACAOFBls+kDa1393sqoWYj/Dh7l1i87NOLKSHee4xYtmLvAnu9IJhxMoXTj1BXgnDsmg6kLbcFra3pGsLqAw4R3sIEGNXumXGVXn5MIK225ajHfaYHeqn+hzW8OptcWK+SByVSY74Az8nWaWH1lskea1zSUTw10c0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iuP5QNr+; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753253158; x=1784789158;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=JgxjcevpNvUIv/5VxzmGMBbHHgQrXOaCeCTMtvaTI90=;
-  b=ddTmrlZtKsn85OHhfcDlVlYHN6KpBnTVkqKM99WnRUKD1gslaQZZ2op/
-   i5sY/AG3KOLW+KrTNaWjdBSd8kd8ubMoCc5aKl3oEwLdmREXVAlRutRgA
-   W3BqQKyCHg/RP0LPPearjfICaLQbeB3l3N5R9pCwXD/p92/Y5KFr54L/D
-   qM1js5W7BTGyIP9CGpokpnXE7U3ehEgbfvgoTw5xMrbku4XKrfSg8RWJj
-   jgKtdG/TuQwHIsomkAeXtbYZy+qXE5wuemC51yo+zco176wdLfIYNowUT
-   Eo1GbqXWJ93H/QMRr7zQaXOzOfUwCVLjjYlZhRe603IEocO7eTr/wUhTU
-   w==;
-X-CSE-ConnectionGUID: AvBbXx2XRqiiMiWXSUbypQ==
-X-CSE-MsgGUID: m54qKg3cQ12/yat+zwx3CA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="59340790"
+  t=1753253161; x=1784789161;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=C45N6RlwdV4lfdn8ZN4+yCnCVy2dzOFewUUeudmWiI0=;
+  b=iuP5QNr+qKrKAvK+Lo8MUYEf4wWTz+5Ba2Y71X2GzJAsPHVp7QZoA4FY
+   wnVrFwYBQCc+ZrlwXJ6m8KG5br1tJDlyjq91Jo3KwoSJfS5yAYzGUqqMK
+   88Qed8+kpq7Unue3fQKSZZrqucxCpA6Kmpgwgqo80d0tELVNfQQHCY4Wx
+   hSB35E1ZOn9UtsjRU4C+2WYqpXar+ijIoKrF4Ki12ulEsVUZqxmg0Mxx8
+   X2vxn/gSwpMkYHNzdf6B8+LmKHvwzVGKyCHg7pTYN5WK4sE8u/mCERqRW
+   XYbYqcb42qSmvbrv2pwGDAajQsSPreYJkxK2IWbMFqBiKhUdDCOa6y8VX
+   Q==;
+X-CSE-ConnectionGUID: WEZ/cUgAT+Kyc03dGvR6dg==
+X-CSE-MsgGUID: TjkXMuR0QmeBKhd8UeqYrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="59340793"
 X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="59340790"
+   d="scan'208";a="59340793"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 23:45:55 -0700
-X-CSE-ConnectionGUID: q1QgJmEZQWq4aNIcEM4vnw==
-X-CSE-MsgGUID: 3Ctmtas4T8CuOj47HMUUEw==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 23:45:58 -0700
+X-CSE-ConnectionGUID: ZeeH0jvuSL+KMNrFhyFOPg==
+X-CSE-MsgGUID: yL1odJ6SRg2mJVFzFsQXSw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="159918116"
+   d="scan'208";a="159918117"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 23:45:53 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 23:45:54 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 13/14] wifi: iwlwifi: check validity of the FW API range
-Date: Wed, 23 Jul 2025 09:45:14 +0300
-Message-Id: <20250723094230.66502f3f4345.I661f347d3bb29994d8b2ec1d3f31f3383422d68a@changeid>
+Subject: [PATCH iwlwifi-next 14/14] wifi: iwlwifi: Revert "wifi: iwlwifi: remove support of several iwl_ppag_table_cmd versions"
+Date: Wed, 23 Jul 2025 09:45:15 +0300
+Message-Id: <20250723064515.2084903-2-miriam.rachel.korenblit@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250723064515.2084903-1-miriam.rachel.korenblit@intel.com>
 References: <20250723064515.2084903-1-miriam.rachel.korenblit@intel.com>
@@ -76,62 +75,112 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-We assume that iwl_mac_cfg and iwl_rf_cfg instances has either
-both ucode_api_min and ucode_api_max set, or neither.
-Validate this assumption with a Kunit test.
+It turns out that version 6 is still needed.
+This change will be brought back once the FW that supports version 6 will no
+longer be supported.
 
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+This reverts commit 24bc49d158c7 ("wifi: iwlwifi: remove support of several
+iwl_ppag_table_cmd versions")
 ---
- .../wireless/intel/iwlwifi/tests/devinfo.c    | 28 +++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ .../net/wireless/intel/iwlwifi/fw/api/power.h | 20 +++++++++++++++----
+ .../wireless/intel/iwlwifi/fw/regulatory.c    | 20 +++++++++++++------
+ 2 files changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c b/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
-index 4d660cef3de9..c31bbd4e7a4a 100644
---- a/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
-+++ b/drivers/net/wireless/intel/iwlwifi/tests/devinfo.c
-@@ -238,6 +238,33 @@ static void devinfo_no_mac_cfg_dups(struct kunit *test)
- 	}
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
+index ab84aac6605d..786b3bf4b448 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
+@@ -571,7 +571,8 @@ enum iwl_ppag_flags {
+ /**
+  * union iwl_ppag_table_cmd - union for all versions of PPAG command
+  * @v1: command version 1 structure.
+- * @v2: command version 5 structure.
++ * @v2: command version from 2 to 6 are same structure as v2.
++ *	but has a different format of the flags bitmap
+  * @v3: command version 7 structure.
+  * @v1.flags: values from &enum iwl_ppag_flags
+  * @v1.gain: table of antenna gain values per chain and sub-band
+@@ -592,7 +593,9 @@ union iwl_ppag_table_cmd {
+ 		__le32 flags;
+ 		s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V2];
+ 		s8 reserved[2];
+-	} __packed v2; /* PER_PLAT_ANTENNA_GAIN_CMD_API_S_VER_5 */
++	} __packed v2; /* PER_PLAT_ANTENNA_GAIN_CMD_API_S_VER_2, VER3, VER4,
++			* VER5, VER6
++			*/
+ 	struct {
+ 		struct bios_value_u32 ppag_config_info;
+ 		s8 gain[IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V2];
+@@ -600,11 +603,20 @@ union iwl_ppag_table_cmd {
+ 	} __packed v3; /* PER_PLAT_ANTENNA_GAIN_CMD_API_S_VER_7 */
+ } __packed;
  
-+static void devinfo_api_range(struct kunit *test)
-+{
-+	/* Check that all iwl_mac_cfg's have either both min and max set, or neither */
-+	for (int i = 0; iwl_hw_card_ids[i].vendor; i++) {
-+		const struct iwl_mac_cfg *mac_cfg =
-+			(void *)iwl_hw_card_ids[i].driver_data;
-+		const struct iwl_family_base_params *base = mac_cfg->base;
-+
-+		KUNIT_EXPECT_EQ_MSG(test, !!base->ucode_api_min,
-+				    !!base->ucode_api_max,
-+				    "%ps: ucode_api_min (%u) and ucode_api_min (%u) should be both set or neither.\n",
-+				    base, base->ucode_api_min,
-+				    base->ucode_api_max);
-+	}
-+
-+	/* Check the same for the iwl_rf_cfg's */
-+	for (int i = 0; i < iwl_dev_info_table_size; i++) {
-+		const struct iwl_rf_cfg *rf_cfg = iwl_dev_info_table[i].cfg;
-+
-+		KUNIT_EXPECT_EQ_MSG(test, !!rf_cfg->ucode_api_min,
-+				    !!rf_cfg->ucode_api_max,
-+				    "%ps: ucode_api_min (%u) and ucode_api_min (%u) should be both set or neither.\n",
-+				    rf_cfg, rf_cfg->ucode_api_min,
-+				    rf_cfg->ucode_api_max);
-+	}
-+}
-+
- static struct kunit_case devinfo_test_cases[] = {
- 	KUNIT_CASE(devinfo_table_order),
- 	KUNIT_CASE(devinfo_discrete_match),
-@@ -248,6 +275,7 @@ static struct kunit_case devinfo_test_cases[] = {
- 	KUNIT_CASE(devinfo_check_killer_subdev),
- 	KUNIT_CASE(devinfo_pci_ids),
- 	KUNIT_CASE(devinfo_no_mac_cfg_dups),
-+	KUNIT_CASE(devinfo_api_range),
- 	{}
- };
+-#define IWL_PPAG_CMD_V1_MASK (IWL_PPAG_ETSI_MASK | IWL_PPAG_CHINA_MASK)
+-#define IWL_PPAG_CMD_V5_MASK (IWL_PPAG_CMD_V1_MASK | \
++#define IWL_PPAG_CMD_V4_MASK (IWL_PPAG_ETSI_MASK | IWL_PPAG_CHINA_MASK)
++#define IWL_PPAG_CMD_V5_MASK (IWL_PPAG_CMD_V4_MASK | \
+ 			      IWL_PPAG_ETSI_LPI_UHB_MASK | \
+ 			      IWL_PPAG_USA_LPI_UHB_MASK)
  
++#define IWL_PPAG_CMD_V6_MASK (IWL_PPAG_CMD_V5_MASK |		\
++			      IWL_PPAG_ETSI_VLP_UHB_MASK |	\
++			      IWL_PPAG_ETSI_SP_UHB_MASK |	\
++			      IWL_PPAG_USA_VLP_UHB_MASK |	\
++			      IWL_PPAG_USA_SP_UHB_MASK |	\
++			      IWL_PPAG_CANADA_LPI_UHB_MASK |	\
++			      IWL_PPAG_CANADA_VLP_UHB_MASK |	\
++			      IWL_PPAG_CANADA_SP_UHB_MASK)
++
+ #define MCC_TO_SAR_OFFSET_TABLE_ROW_SIZE	26
+ #define MCC_TO_SAR_OFFSET_TABLE_COL_SIZE	13
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
+index 80d8373fccfc..3d6d1a85bb51 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
+@@ -344,18 +344,18 @@ int iwl_fill_ppag_table(struct iwl_fw_runtime *fwrt,
+ 		num_sub_bands = IWL_NUM_SUB_BANDS_V1;
+ 		gain = cmd->v1.gain[0];
+ 		*cmd_size = sizeof(cmd->v1);
+-		cmd->v1.flags = cpu_to_le32(fwrt->ppag_flags & IWL_PPAG_CMD_V1_MASK);
++		cmd->v1.flags = cpu_to_le32(fwrt->ppag_flags);
+ 		if (fwrt->ppag_bios_rev >= 1) {
+ 			/* in this case FW supports revision 0 */
+ 			IWL_DEBUG_RADIO(fwrt,
+ 					"PPAG table rev is %d, send truncated table\n",
+ 					fwrt->ppag_bios_rev);
+ 		}
+-	} else if (cmd_ver == 5) {
++	} else if (cmd_ver >= 2 && cmd_ver <= 6) {
+ 		num_sub_bands = IWL_NUM_SUB_BANDS_V2;
+ 		gain = cmd->v2.gain[0];
+ 		*cmd_size = sizeof(cmd->v2);
+-		cmd->v2.flags = cpu_to_le32(fwrt->ppag_flags & IWL_PPAG_CMD_V5_MASK);
++		cmd->v2.flags = cpu_to_le32(fwrt->ppag_flags);
+ 		if (fwrt->ppag_bios_rev == 0) {
+ 			/* in this case FW supports revisions 1,2 or 3 */
+ 			IWL_DEBUG_RADIO(fwrt,
+@@ -378,9 +378,17 @@ int iwl_fill_ppag_table(struct iwl_fw_runtime *fwrt,
+ 			"PPAG MODE bits were read from bios: %d\n",
+ 			fwrt->ppag_flags);
+ 
+-	if (cmd_ver == 1 &&
+-	    !fw_has_capa(&fwrt->fw->ucode_capa,
+-			 IWL_UCODE_TLV_CAPA_PPAG_CHINA_BIOS_SUPPORT)) {
++	if (cmd_ver == 6)
++		cmd->v1.flags &= cpu_to_le32(IWL_PPAG_CMD_V6_MASK);
++	else if (cmd_ver == 5)
++		cmd->v1.flags &= cpu_to_le32(IWL_PPAG_CMD_V5_MASK);
++	else if (cmd_ver < 5)
++		cmd->v1.flags &= cpu_to_le32(IWL_PPAG_CMD_V4_MASK);
++
++	if ((cmd_ver == 1 &&
++	     !fw_has_capa(&fwrt->fw->ucode_capa,
++			  IWL_UCODE_TLV_CAPA_PPAG_CHINA_BIOS_SUPPORT)) ||
++	    (cmd_ver == 2 && fwrt->ppag_bios_rev >= 2)) {
+ 		cmd->v1.flags &= cpu_to_le32(IWL_PPAG_ETSI_MASK);
+ 		IWL_DEBUG_RADIO(fwrt, "masking ppag China bit\n");
+ 	} else {
 -- 
 2.34.1
 
