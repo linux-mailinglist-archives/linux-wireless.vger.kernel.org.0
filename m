@@ -1,111 +1,146 @@
-Return-Path: <linux-wireless+bounces-25981-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25972-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1772EB10291
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 10:00:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2DCB10153
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 09:07:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A42C43A4754
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 07:59:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06C51189FB88
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 07:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA492737E3;
-	Thu, 24 Jul 2025 08:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE0E221736;
+	Thu, 24 Jul 2025 07:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="DasnPGRt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SiCj5wLM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F0B272800
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 08:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E94E28F4
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 07:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753344010; cv=none; b=AKYkuhZhIL/HUGX5hRSMrDIi7Dg6qAeGt52x4VVQJHOPqCq9LZVBS2Il2VQuaNG7h2iK+tfArAoP6B93AjPw4F9YkZ4YASgo9URIxpFwqyIudviImEJzOeURoZmyL8ruF1lkxuLIheUA/SZgl9ASbcrFVuuNi07bFbzLhpDmPKA=
+	t=1753340865; cv=none; b=Qs9fr0JooW5m5nQo7SI4g33913FLGwyDphHBEpfi+DiZ//+ssBPwHGkxRmQraNBHi7lPVBFogjm4P/9g4xbPOQkWCeUUlLRpPHEkh0plnklROveI45D64cOIFXrQtALUPns+3YmP+YTLfpbttr8Ht3tFmJQAyIjiNv+JTwlkiwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753344010; c=relaxed/simple;
-	bh=1UbXuOph5hV5q+sHtNYUA0bOQLApdqNg7/Y04XQuLSI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Bzq2yXhiIbV91FRhkrM0cKW55gvzlGsWOOUQxLRd9+w7Ft7Ryh+aT6Y+ItQlpR7yXhCJhR4fKYcgiUcNV4GchYSb7xOUHioeIRfMIFny9TRsgnapOVgx/iKY7fv/3FBKjVjwDuMAeBs9KFR8l+QAb853nWHONuPRQhb9C8fdbbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=DasnPGRt; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56O7xxMfB115703, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1753343999; bh=1UbXuOph5hV5q+sHtNYUA0bOQLApdqNg7/Y04XQuLSI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=DasnPGRt6IKY2e9gV/Mrm+PkyE+Bvv8YW5s5LbVwCGk4OMDU3hobFcw2lBsJ1KKs/
-	 zbRNWrEHsp0oPRV9G/g+fhrrb1K5evW1BgfqoNEFTAdSXW8MNA+xUxl0dLPl1NISnY
-	 QSQYal4EHadLxYwk015Dz+2GI6vRR/XnqnzqpQgCi/P/GggobCvRjtAukDWWGwpPKv
-	 NcGkIe5JtWV/GDEGaU2JldM2UMIgEzWNlqrIT53jV/gixi5eJHJ+9VPwhgGu14uLRs
-	 tVQogaKDMgOf8VoaseTpLlKwmm5N5XkcUw4juI6dWZfemZvvWnbXkWU4Lrb58wpTgN
-	 Nh+rpOGDxrjaA==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56O7xxMfB115703
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Jul 2025 15:59:59 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 24 Jul 2025 15:59:59 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 24 Jul 2025 15:59:59 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47]) by
- RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47%5]) with mapi id
- 15.01.2507.035; Thu, 24 Jul 2025 15:59:59 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
-CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "martin.blumenstingl@googlemail.com" <martin.blumenstingl@googlemail.com>
-Subject: RE: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf path'
-Thread-Topic: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf
- path'
-Thread-Index: AQHb+wy3xJJYRq7Qhky2ZR9b8r3WqLQ+3/XA///saYCAAIk6oP//fpUAgACIU6D//4PSAAAQ6kAg//+iJYCAAJdrXP//ho8A//60ZiCAAog0AP//eOog
-Date: Thu, 24 Jul 2025 07:59:59 +0000
-Message-ID: <e34a045492ae454cb255aca78d2b9641@realtek.com>
-References: <7407FAA3-F4A4-48AA-91E5-A78DA711447D@gmail.com>
- <ec5d762f3ee64a0188953a1aecbef2cc@realtek.com>
- <AFB036A4-80C6-4880-B798-FB22C7C137FA@gmail.com>
- <b29df36b838049a088d8298220078134@realtek.com>
- <5CA196F3-90B4-479F-9A19-E9C71C8726D4@gmail.com>
- <34d9c169c92540caa294095d2172b4fc@realtek.com>
- <18989932-3578-4E45-BA8B-6C2C76FDE7FE@gmail.com>
- <ed867462c8d945b28b2e913d1cd0c3d5@realtek.com>
- <7dfa0377-538f-464b-b4e4-4c9daa1fb85a@gmail.com>
- <5933c3ef71914cdf83687042488800d2@realtek.com>
- <699C22B4-A3E3-4206-97D0-22AB3348EBF6@gmail.com>
- <3a93f5580be34135a5b7f942d5b6ea44@realtek.com>
- <B89A3F05-FE7E-4AE8-8F75-34DBBC285C0E@gmail.com>
-In-Reply-To: <B89A3F05-FE7E-4AE8-8F75-34DBBC285C0E@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1753340865; c=relaxed/simple;
+	bh=6NARyrueIhXuREm+TGKnU0qWS1Q4x1MSZzEehRv7RKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RpbrBbHWPZmlls3dVmI7MCqTQxdOJ7JoULVeB5YR4XKjQrd42QqflUMWR/GUb6z0UmY18qavDLXYkgicwMdoBjVvNv9f/CPgvBFIjkDVkq3gPe6bG+WzS2lSD/+NvxGeTGZ4euG7PyTq5tsX2CRJUGWlNe7t3vIGAMbvdtgSkYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SiCj5wLM; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753340863; x=1784876863;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6NARyrueIhXuREm+TGKnU0qWS1Q4x1MSZzEehRv7RKE=;
+  b=SiCj5wLM8fgybrnxB0i+AIV8eavVCdARft8xo0B625b2ht9gxP3PN0+K
+   uAIf9i3339okMAM9XY/xMJCwdZrjUjZLqSwwNfL0id8Tjw6AC/Z9QRKNu
+   +ZWMNrgoNN7wX2iWj7v1jX50wSKKGnoOLKWBL8PYkmfuDPSyHsqvR3olW
+   WTsLFx/GuMyE2S/Uu0S/cCji4yu+AyB9hsMa4HUg3r6qtyzmEDv/evMyv
+   aSkFuVSJIe3CdtqvXe4Wl/qjHU4M4DrXhhw/QGHzSBYqsCUgpnhI8T7ue
+   TizUB1EcEIskDum8cMbt05ZTdj4e2R6RaDyYmiAnc7EF/HbNLLxTzRzV8
+   g==;
+X-CSE-ConnectionGUID: 5pIOMjxXTzS7HjzhxAKvmQ==
+X-CSE-MsgGUID: 7TMUYJu2T9yxaNoXWU+I6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55732628"
+X-IronPort-AV: E=Sophos;i="6.16,336,1744095600"; 
+   d="scan'208";a="55732628"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 00:07:42 -0700
+X-CSE-ConnectionGUID: NP2Y7W44RmSEB+0oE/9dmw==
+X-CSE-MsgGUID: ZdYBngOFS56ZZRPj/mW6PQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,336,1744095600"; 
+   d="scan'208";a="165422576"
+Received: from aotchere-mobl1.ger.corp.intel.com (HELO aotchere-mobl1.intel.com) ([10.245.249.251])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 00:07:40 -0700
+From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	quic_vganneva@quicinc.com,
+	maheshkkv@google.com,
+	Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+Subject: [RFC v2 0/4] wifi: nl80211: Extend NAN APIs to allow more flexible implementations
+Date: Thu, 24 Jul 2025 13:04:53 +0300
+Message-ID: <20250724100457.181825-1-andrei.otcheretianski@intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-UGlvdHIgT25pc3pjenVrIDxwaW90ci5vbmlzemN6dWtAZ21haWwuY29tPiB3cm90ZToNCj4gPiBX
-aWFkb21vxZvEhyBuYXBpc2FuYSBwcnpleiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNv
-bT4gdyBkbml1IDI0IGxpcCAyMDI1LCBvIGdvZHouIDAyOjUyOg0KPiA+DQo+ID4gSSBzZW50IGEg
-cGF0Y2ggWzFdIHdpdGggYSBjaGFuZ2UgdGhhdCBjaGVjayBSVFdfRkxBR19QT1dFUk9OIGZsYWcg
-Zmlyc3QsDQo+ID4gc28gdGhpbmdzIHdpbGwgYmUgdGhlIHNhbWUgYXMgdGhpcyBmaW5hbCB0cnku
-IFN0aWxsIHdhbnQgeW91IHRlc3QgdGhlIHBhdGNoDQo+ID4gYWdhaW4sIGFuZCBnaXZlIG1lIGEg
-VGVzdGVkLWJ5IHRhZyB0aGVyZS4gVGhhbmtzLg0KPiA+DQo+ID4gWzFdIGh0dHBzOi8vbG9yZS5r
-ZXJuZWwub3JnL2xpbnV4LXdpcmVsZXNzLzIwMjUwNzI0MDA0ODE1LjcwNDMtMS1wa3NoaWhAcmVh
-bHRlay5jb20vVC8jdQ0KPiA+DQo+ID4NCj4gDQo+IEkgZ2l2ZSB0ZXN0IGFuZCB3aXRoIHRoaXMg
-cGF0Y2ggaXNzdWUgZGlzYXBwZWFyLg0KPiB0aHggZm9yIGZpeGluZyB0aGlzIQ0KPiANCj4gcGxh
-IGFkZA0KPiANCj4gVGVzdGVkLWJ5OiBQaW90ciBPbmlzemN6dWsgPHBpb3RyLm9uaXN6Y3p1a0Bn
-bWFpbC5jb20gPG1haWx0bzpwaW90ci5vbmlzemN6dWtAZ21haWwuY29tPj4NCg0KQ291bGQgeW91
-IHBsZWFzZSBhZGQgdGhpcyB0YWcgdG8gdGhlIHBhdGNoPyBUaGVuLCB5b3VyIFRlc3RlZC1ieSB3
-aWxsIGJlIGFkZGVkDQppbnRvIGNvbW1pdCBtZXNzYWdlIGR1cmluZyBnZXR0aW5nIG1lcmdlZC4g
-DQoNCg==
+This patch series extend exiting NAN APIs to support more
+configuration options for NAN synchronization and a user space oriented
+NAN Service Discovery implementation.
+Existing NAN APIs are very limited and not really used, resulting in
+vendors using proprietary vendor commands and a need to offload NAN
+protocol implementations to the device firmware or driver.
+In this series, additional APIs are added which allow to extend the
+configuration of the NAN Synchronization logic and support user space
+oriented NAN Service Discovery implementation.
+With this design, wireless devices/drivers are still required to
+implement NAN synchronization and cluster merging. NAN Discovery Engine,
+may be either offloaded (keep using the existing APIs) or alternatively
+implemented in user space.
+To support user space oriented NAN Discovery Engine, the device will
+notify user space with %NL80211_CMD_NAN_NEXT_DW_NOTIFICATION about the
+upcoming Discovery Window (DW). This notification should be used as a
+trigger for transmission of uncsolicited multicast SDF's (i.e.
+unsolicited publish and active subscribe). Once SDF transmission is
+requested with %NL80211_CMD_FRAME, the device shall take care of the
+actual frame transmission during the upcoming DW.
+Note, this notification may be sent before the actual DW start time.
+On DW termination, the device/driver shall flush all untransmitted NAN
+management frames. Untransmitted frames shall not be carried forward to
+the next DW.
+Note that such approach may not be appropriate for highly power
+efficient devices or scenarios that require long discovery sessions, as
+it may require the host to wake up for each DW.
+User space can in turn, turn off this notification using
+%NL80211_NAN_CONF_NOTIFY_DW configuration flag if it doesn't intend to
+send unsolicited multicast SDFs to prevent unneeded wake ups.
+
+%NL80211_CMD_NAN_CLUSTER_JOINED notification shall be sent once after
+new NAN cluster has been started or the device has joined an existing
+cluster. In addition each time, cluster merge procedure results in
+cluster merging, user space shall be notified. This is required, as
+cluster ID is used as address 3 in SDF frames. Untransmitted frames
+should be flushed, when this notification is generated in order to
+prevent transmission of SDFs with invalid address 3.
+
+This patch series goal is to provide APIs to support NAN synchronization
+and user space oriented Service Discovery. It will be further extended
+in a separate patch set to support user space implementation of NAN data
+path (NDP) and NDL schedule establishment.
+
+---
+Changes in v2:
+  - Fixed attribute types and improved documentation
+  - Generic per band configuration
+  - Using frequency instead of channel
+  - Removed excessive CHANGED_* flags
+  - Added more capabilities
+  - Sending DW notification to socket owner only
+
+Andrei Otcheretianski (4):
+  wifi: nl80211: Add more configuration options for NAN commands
+  wifi: nl80211: Add more NAN capabilities
+  wifi: nl80211: Add NAN Discovery Window (DW) notification
+  wifi: cfg80211: Add cluster joined notification API's
+
+ include/net/cfg80211.h       |  80 ++++++++
+ include/uapi/linux/nl80211.h | 181 +++++++++++++++++-
+ net/wireless/nl80211.c       | 355 +++++++++++++++++++++++++++++++----
+ net/wireless/trace.h         |  34 ++++
+ 4 files changed, 610 insertions(+), 40 deletions(-)
+
+-- 
+2.49.0
+
 
