@@ -1,88 +1,87 @@
-Return-Path: <linux-wireless+bounces-25995-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25996-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8AFB10DFB
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 16:48:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C2EB10E06
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 16:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 838A517ADAD
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 14:48:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D4FE7B2A4A
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 14:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F7C1A0BD6;
-	Thu, 24 Jul 2025 14:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06A62E92A3;
+	Thu, 24 Jul 2025 14:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="oXIjMKSC"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iIxBNV7T"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC151552FA
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 14:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA74F2D6407
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 14:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753368527; cv=none; b=UgnxMqQt2bFnIQq+f+RyQKn9M3D6SOkFw4kivW6k8mNVIwu8KFKr3e80FoAFll0kT9y2Zi1m8JqjhGF9+wwTYr/XaQn8XCq3BaYv57+BZEHEc7HX4TjI28f9AqqlnSO8g+yl3fITA9uRgmWFsHelzD2t8nLJXf/MoOMxcLw1v50=
+	t=1753368627; cv=none; b=L4o5qAgy4c9ElRHBIyI6CrBkvFom9lpOC6HJ1ELo7Vf5GOTiXU8LXUHzR6oDcOLYlsYQ4KnvuonMS3aCuFIwpFyO+vx/X5gfP3IIC3NDgnoe/o3iFWnXcgdNy7a9ltawvWr/+6+DYeSh0DlPJklPM7qtIFOa5AITcDmt30bK6rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753368527; c=relaxed/simple;
-	bh=6iBlyv0jsjVxC6Qab2jIL6laV4qezmHuNupbqQk2VKE=;
+	s=arc-20240116; t=1753368627; c=relaxed/simple;
+	bh=ZrA15r1CTGqGK3u7rONsiaIHqyMl4k0ZXQ35MKucp/8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j0XPlHqN3elz7xlmVfFwSLAaCt4fR1KawacfPCWdPMzhhlQrXyb7q8r2ObmUxm99TibZwEgiTo4KjSg0eXHcNWicQK210L1SR8ZJ4qau0tQY3xG0HSaJzxr/qICprt93fGpNUrzkLCSB2DtHSJpAitBVS3dZSYuzCPyzdLKTO7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=oXIjMKSC; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=sO6Mb9pPTnnGWzd/6X6PxDSN/w6jMIIzRMLnesLy6FKuitP2zvuqKMu/BtCaaTRewGH8QFRwnU3ZpVwHGuU4JyZ0b4j/vHjFyYGC+EpNRy4UAIs68qXXbSmo+7mN1tSNiy9k1M6FuLHL6zkPiT0D07+KUak/62nGez3vKEN8ZbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iIxBNV7T; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56O9fjld010362
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 14:48:45 GMT
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56O9XORi006573
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 14:50:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	CduzY1NxzGx9IxDeilA/pnDu0Qgs49OcUvR7vhku/HY=; b=oXIjMKSCCTvH+hI0
-	+Sll9ZKGi54iWqnIqeu3Objksy6Oqnib5/md14blY28KG4GKnqIyp6fqrtWv0ZLy
-	AmzUhTww8eCWOnRexFXyybopmZ/Bn4rTw2cieoA1U+UhH3G9V3yG9ywdxBHoJPDC
-	nBMpLsiZGK164HhiIt/nCOyJmIp6SJVANdscj7qj7VwHZh3RC+HK4CL9XXTvKB2l
-	RW7B8QIuLL7MC5eW/Ad5OfQXt65qzPeKs8zA0ra1s/TP7XKKnZg2PZ6tVyIlUnRh
-	DAj4Du0DjaItXzd08B/NcfwKoDentm1jdfAdL5VabCjTBYBE6+t0ae8pUtdjVc1o
-	Powv8Q==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 481t6waa56-1
+	YUfuLEoIdnAariUu5FlxMQ5ppIVG+Q99o1Gqqtl6aus=; b=iIxBNV7TTRgMZYbz
+	ll0LyL3FrTsl7y+RZxoH/nsd+LxeCofhyiMv6wYQ3vOeX81QTOk7JFd2avPhFlWI
+	mECZ+xdhL7Y/ubeLdnCFzimKjveI145gPOUXYjVBzBnEe9bZTB/chZ6I6BASA0cL
+	N3YcYz73aeDx3EFYFkBTppXsDgWHiBtkHNQZDZSUSEZ62CsDq2t/LN0ssm9+odpa
+	JQ6OljuNj3BasXQ4n9cf2bzjU8iT7XxMQkkYtUmW/phj0WNwKbvNLgAhdNjSyKqy
+	8q4T97p+nXzWCeZpF2W8WI+x4IH15khbBpkgGHhRJUuytwCckqOlTWqYylwVziLH
+	9GOxGw==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48047qh530-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 14:48:44 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2349fe994a9so8930115ad.1
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 07:48:44 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 14:50:24 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-74d15d8dcd1so1045518b3a.2
+        for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 07:50:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753368524; x=1753973324;
+        d=1e100.net; s=20230601; t=1753368623; x=1753973423;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CduzY1NxzGx9IxDeilA/pnDu0Qgs49OcUvR7vhku/HY=;
-        b=Rx8fGPWOVLBBF10QgC9e13ARejaDR7YpeezKSYv5ZT7yIygrM3XACc+85V0AwLD4X1
-         wk3ZXV53qRoucXuXMn0QyYPoGJe9j6im9Gm4TsC3VxxY7lFPUr8jmUXu6vAu6EqK1hPM
-         8SlP8eECwQMTYNxtPAYhZuE1Ii8z7XMF7siqYVVo3GVScNkaks13rWEuHPoqg/YmB8Ml
-         g6A22kiZR60KdlL3oSwit5ztCr9Th/QYgTgsagSw9sTM/KBS4POk/NscPhz1rkzVWAon
-         DyDAL3IL8qlb4qjZr0MAMqca04HTptUvupZ7OFDDyPTLRKx2Bq107JogVDUFwt6kVz67
-         3CHg==
-X-Gm-Message-State: AOJu0YxrF+GdOY66sgzRC+zEHXU7xwCmD/5uyEXovc3Pe4Fs/12TKY7Y
-	mslVWoJg3S120W7EIAvI5rt7hkwzn+a+SRrpT/SysJX+6A6yO63luow3Vxw5E8qHGKqL001J52O
-	gEARtlV4VbwH8arAn0ImxymMgL1a/XapMgc0dOVs3NWq+QmuKenNmaadv7i8igVJVUZt2NxyZIv
-	UK+g==
-X-Gm-Gg: ASbGncvidOvi0cwdA1wGapzNuHqJ3KaLtM2EwKfCDGPZjIb0SboyPFg+Evy2Ln2+7DP
-	M9XcINrR+fDkJiLWfGQU58c3kvIUj3mG5lCh4QFnLUwxENVwwWCYy5ET58aAjFWJS1WIc3h+8Ue
-	f7ByRAEbLfD4noL9PncbYs7wk0J1lnSjo4M/k/U/p3p51tivS7xNW2ombDQL13ZuxQkIPzuaQSl
-	nX035n7QTBvLdTvu3yW37y/6+TOysrFx7kAuFcyZpG/o9yo/K4eXCn+b1DoFCs+8WrFYV3rGqS+
-	tPtxyOq80RuEEERuMUoZXFcoHI4+NrnEtbPeEbKeYk+JPgdmmMWlRaIJAUJILpY4XEMceV7Auge
-	/pfu8HTxuyVQX
-X-Received: by 2002:a17:903:fab:b0:23c:7b65:9b08 with SMTP id d9443c01a7336-23f9813aa74mr105879685ad.1.1753368523762;
-        Thu, 24 Jul 2025 07:48:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGfwwLqMytPEHXGuRgikblICMhXyisURthwRZDZjR204cTZ/cSJkJe9/CvzBsJO5/I2Xsfc7A==
-X-Received: by 2002:a17:903:fab:b0:23c:7b65:9b08 with SMTP id d9443c01a7336-23f9813aa74mr105879395ad.1.1753368523298;
-        Thu, 24 Jul 2025 07:48:43 -0700 (PDT)
+        bh=YUfuLEoIdnAariUu5FlxMQ5ppIVG+Q99o1Gqqtl6aus=;
+        b=izAah0cbMHQPL/NHXMPP+GnqxZCky2vMmiZnjV5a1eydrdxbOO+8dIhaRIXtRfGW98
+         KYyivukl1uSQR1Zroqe0BGya8nGBTBUz9xfeAeekXTz5VPCs+cG7HvrNiwkpEjhcZolZ
+         +GklY2WZ+2jhq8YpKrAdZM8ocsBAbk+JFRZXKLhmCDprUROQLIJFZ6sfehW9rdQcWlBL
+         L+kZ+uqFgaKcbt8FraUHC8tIe13kxPgYNnorLeLb/pyjMH18+b9VbWa7WUPbLupDORsy
+         Q35bjFLkeN4w9EuUOCeYn8xIXwbIvhv0asoyh8Ff6eQEX3PPD6OoX7ubUgUcUef31A75
+         OxIw==
+X-Gm-Message-State: AOJu0Ywr7iB5qU42i49nn2ZQeecvY+OkAjg6UycBxwFs3Vz1LGohqrNm
+	rhTpE1vqYjCqtcestxgI0B5029vYpRbU1FwZCjlnSUBp5ioJEiCh0LpPuiQ8FUPXIwx2ygvSjHY
+	cj/FEwUv6We8Ytk0XalT7ljx9DawuCTUzIwmlJ9cpV58wNapp69K0oqIgAQHjzaZn7JLq6w==
+X-Gm-Gg: ASbGncuY6ApI5b5Kn4YIEz5C/q4Sdvh6Le12cwOVkvtUkEPDcahdxg6khtX6NKn8lKF
+	w5fOr3s94lj9wOgkPIOu3ifEzluR4g7QdFXrAMT3UxhGttOcbguVQQlRbdhqj6ins/7fZdXoMvz
+	vPY3F/mZE4mp9qTvDajT5rSrPg7+SdIgjRhy086lg4TcThc9aKZiNQK/3odEe+jOH+Ees3ikQPk
+	0C/4V9YS1myzdf6OEwf3d9TnNHxWrj5T4zpctrr4mC6uPSdFuzcJsIxROiSVeYOB/y3XXABW7OX
+	i05nskUs02UgM+SVcMzt2ag02rFGIGMCJEWx0K4mepAjdCy9HDGvjupDyABfyCvF4Q75YWFeO7I
+	msc0JUevpMZL7
+X-Received: by 2002:a05:6a21:a344:b0:237:b2ff:d1e9 with SMTP id adf61e73a8af0-23d48fe385bmr10442617637.5.1753368623380;
+        Thu, 24 Jul 2025 07:50:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFIx9fxxFZ30mC0lr5rlZjBmEUhtphZzqcrttRBZnGvl0JMReiDlPTpW0EzyJwjRUmfnr4q5g==
+X-Received: by 2002:a05:6a21:a344:b0:237:b2ff:d1e9 with SMTP id adf61e73a8af0-23d48fe385bmr10442586637.5.1753368623011;
+        Thu, 24 Jul 2025 07:50:23 -0700 (PDT)
 Received: from [192.168.225.142] ([157.49.197.167])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa475fc64sm17620465ad.19.2025.07.24.07.48.41
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3f6c0807aasm1611486a12.11.2025.07.24.07.50.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Jul 2025 07:48:43 -0700 (PDT)
-Message-ID: <0dab900f-6aad-0c8e-3324-e1be54d53456@oss.qualcomm.com>
-Date: Thu, 24 Jul 2025 20:18:39 +0530
+        Thu, 24 Jul 2025 07:50:22 -0700 (PDT)
+Message-ID: <bb79687c-fa7b-4a7b-80e6-abace493cfe2@oss.qualcomm.com>
+Date: Thu, 24 Jul 2025 20:20:18 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -91,64 +90,64 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH ath-next] wifi: ath12k: Add fallback for invalid channel
- number in PHY metadata
+Subject: Re: [PATCH ath-next] wifi: ath12k: Fix peer lookup in
+ ath12k_dp_mon_rx_deliver_msdu()
 Content-Language: en-US
 To: Aishwarya R <aishwarya.r@oss.qualcomm.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Sriram R <quic_srirrama@quicinc.com>,
-        Vinith Kumar R <quic_vinithku@quicinc.com>
-References: <20250723190651.699828-1-aishwarya.r@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org,
+        Hari Chandrakanthan <quic_haric@quicinc.com>
+References: <20250724040552.1170642-1-aishwarya.r@oss.qualcomm.com>
 From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-In-Reply-To: <20250723190651.699828-1-aishwarya.r@oss.qualcomm.com>
+In-Reply-To: <20250724040552.1170642-1-aishwarya.r@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=SPpCVPvH c=1 sm=1 tr=0 ts=688247cc cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=CkStrBlBBtcNoDngQR/Gdw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDExMiBTYWx0ZWRfX4+4OgTkMVakY
+ 1RBRznuNuPieSS6sks2itc4b5ouLKV8i7CAnI0Zr1bNsza/WWNkUN4qi7T6FNatnFDw9hA87l0Y
+ Md2hIKGJ2x7Sf7omRdt7/OQpA7Q12rScLJYX1SclVqXcui+5inGWCyUH0BrJ3L6TnqIYC3mBtao
+ YYYYT5mpyCrDk4nko3p31ir57EB83//1O7E5h1cPbJbNr7GDmkU+paLE/1RyeDsrt1mePoLz/Nm
+ 225Rvc4P1zTbjtbfuBiK1tqvrny5VX37jg+zugxnhYGm8W2SO9hE/9kRkCHA48uYrdUEH9t++iC
+ aYPZqnkz4nA/yIbOI2COM98pUYdgPp5H8oVKtBlCY5MOzl8ojShasdsOTslc4WjqOsvq+5cArOS
+ bWKfvfOn+NzTORf7FF6nYw6LVFB1koLmjIStRtqxltURH7FOXQiGdtwbN9KVCl883E53b4VC
+X-Proofpoint-ORIG-GUID: YUa2Yg3GKVKWsO7UJZ3qSsjbIu1_Whve
+X-Proofpoint-GUID: YUa2Yg3GKVKWsO7UJZ3qSsjbIu1_Whve
+X-Authority-Analysis: v=2.4 cv=IrMecK/g c=1 sm=1 tr=0 ts=68824830 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=CkStrBlBBtcNoDngQR/Gdw==:17
  a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=yQQfhEIX4B74JBb4vNkA:9 a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
+ a=BhMcNSPQYusP4RIe-kMA:9 a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
  a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDExMiBTYWx0ZWRfX1MAUFwUbVkrz
- Hee2lqXKwrw095rS2DX2V8D/auMX3feX38wPEFTtkorJtaoTtEAcVf2f8qb34ybM9TlPqO02w9x
- RT1E7eoWdbwJa+9TCmcOL8LNWlnT6HY6yCHR3CsWmQ4HIEwIjiROCGIYOj/O5TH6YiU89AXOIA0
- +qnWKHg8ozcr00gybN/hhcJwNTdReV/HinhF/OgHh4NGa1nwH5fbkRsvxir+oA17mONWaJFwYbV
- 8yMiVRnLTITWxFUQTKqzHnPsWSPOJtlVvTxZ2rMicaW1rsJMfSHI4chdOdCQ3UrJ6WJTaLqKfkB
- HPAqw7nsNujiLDSqoxNLfC5c20BONOPmgtEJKJSHyWCoq7wAqRVfVdD0PVrkAb/KVdDQVnsxU1G
- gNrAQxBIDEnszpbwsZqFABgYUDZsjRQC4CfTrX892Zji35hPzvaWBb+iw1R6igVYiC+2gf6+
-X-Proofpoint-ORIG-GUID: CzfLJN92Q_PRmPCh3t-dS0ZZ_kjUGC67
-X-Proofpoint-GUID: CzfLJN92Q_PRmPCh3t-dS0ZZ_kjUGC67
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-24_02,2025-07-24_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
- mlxscore=0 bulkscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 mlxlogscore=792 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507240112
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 spamscore=0 mlxscore=0 mlxlogscore=731 phishscore=0
+ impostorscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507240112
 
 
 
-On 7/24/2025 12:36 AM, Aishwarya R wrote:
-> From: Sriram R <quic_srirrama@quicinc.com>
+On 7/24/2025 9:35 AM, Aishwarya R wrote:
+> From: Hari Chandrakanthan <quic_haric@quicinc.com>
 > 
-> Currently, ath12k_dp_rx_h_ppdu() determines the band and frequency
-> based on the channel number and center frequency from the RX descriptor's
-> PHY metadata. However, in rare cases, it is observed that frequency
-> retrieved from the metadata may be invalid or unexpected especially for
-> 6 GHz frames.
-> This can result in a NULL sband, which prevents proper frequency assignment
-> in rx_status and potentially leading to incorrect RX packet classification.
+> In ath12k_dp_mon_rx_deliver_msdu(), peer lookup fails because
+> rxcb->peer_id is not updated with a valid value. This is expected
+> in monitor mode, where RX frames bypass the regular RX
+> descriptor path that typically sets rxcb->peer_id.
+> As a result, the peer is NULL, and link_id and link_valid fields
+> in the RX status are not populated. This leads to a WARN_ON in
+> mac80211 when it receives data frame from an associated station
+> with invalid link_id.
 > 
-> To fix this potential issue, add a fallback mechanism that uses
-> ar->rx_channel to populate the band and frequency when the derived
-> sband is invalid or missing.
+> Fix this potential issue by using ppduinfo->peer_id, which holds
+> the correct peer id for the received frame. This ensures that the
+> peer is correctly found and the associated link metadata is updated
+> accordingly.
 > 
 > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 > 
-> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-> Co-developed-by: Vinith Kumar R <quic_vinithku@quicinc.com>
-> Signed-off-by: Vinith Kumar R <quic_vinithku@quicinc.com>
+> Fixes: bd00cc7e8a4c ("wifi: ath12k: replace the usage of rx desc with rx_info")
+> Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
 > Signed-off-by: Aishwarya R <aishwarya.r@oss.qualcomm.com>
 
 Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
