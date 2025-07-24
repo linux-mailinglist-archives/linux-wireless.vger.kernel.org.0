@@ -1,99 +1,65 @@
-Return-Path: <linux-wireless+bounces-25964-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25965-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497A4B0FE0A
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 02:14:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0959FB0FE45
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 02:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70632965EB1
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 00:13:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC61F5A0CCE
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 00:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4670919D081;
-	Thu, 24 Jul 2025 00:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0226C2E0;
+	Thu, 24 Jul 2025 00:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TpgA/BXu"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="QxeYGqtQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB13D188000;
-	Thu, 24 Jul 2025 00:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DBEA48
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 00:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753315965; cv=none; b=CjG5yyoxHChHmInsmPFw9Qmj4QyC3MmeYSEneS4VzGYvpwD3VoBNr3/WkUA/YyR5cALRxYGr64MMb8yCrElW6niGGmdlQZd/RwBRabc6uQhbXqEj0WKciTETgpwtnweRQA7WHvC6ppKny6X3IqP+h4RARt8TxGUHW6ZTSqBgDNs=
+	t=1753318127; cv=none; b=CkE7VT5kfaIX23GFrIfIaM3SIwes6Ux+HhEsfs/jOO8DyQxaox5es1UFMU3DTewsmRSszfXmiVdLvUMxndKHfnaXE0RYzYdb/aw3Ve3i27+ji1lQzcpMfyy5ZoQUpC7WqlaQEHy6idOjuyUXj+8CGpiHPMbB65fSV8ggIQ7mMlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753315965; c=relaxed/simple;
-	bh=2SNqP/YVm1qeVbcALVDadvho7XnIdEl8InSdHK7S4jM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFGNmcXC82Nr3f9Icazn3W8Lv8BC2y/lLNyVjYno45s67pJBZyq1yRQ5S1fchlFvSCkSVYJtJ2TlQoF25gw4h/bhAtwTruL9I4Lqx0hG9wx2Jruk8fHtOtK+3UlLrdTiWxfudEVpRNkcMZIuzIhdZ71ZVacfsfnX9dc2zUtBY8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TpgA/BXu; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-23602481460so3842855ad.0;
-        Wed, 23 Jul 2025 17:12:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753315963; x=1753920763; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/cb0rNYXXcc2eHZ9hzARKN3xqFUjTVby79Ond82Ur4k=;
-        b=TpgA/BXuQqqKaZghuz2mKxbrcrGymV/MbUre6L7L8zwewOWWY95kN7/Kji4qCesTwQ
-         gfZ2m1VsYRFUHWWPMqCc2f6fV0gFRIozUv0EgBvBgEtM5NaupD6cyHdw74uhpNPgW+ZS
-         Loj1W04QUrs14buyi7rf/KNe+/FjUTC5jfJyh7DUSf+CF4HM47TQpuUgMUrJyXA2aC5v
-         FIWmz2JJlcFxo0kcC1uTehR88H1sNp6j0s2G3gvlLbU50vM1t8FlWId/Kvo8IMDLGKXh
-         SyFlMbQuBUzqz1UOiPi3ugtY26S7RgXwq/PLfFl6d+3q/icIN5F0QWhB2rsASzIAyWDk
-         /Rkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753315963; x=1753920763;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/cb0rNYXXcc2eHZ9hzARKN3xqFUjTVby79Ond82Ur4k=;
-        b=pGSXww4IB+YzcWBgrXUq1h8xPtsiAV+dcK/fDtNWMxgwdP3cqsRctSxDKKx8gWZ9T+
-         OIxVSFTpJXC3/qs5+Tz7EP3ENFPVgfk6nxiPbDisryuoN2HOMl5RKOdmMXolWlNNmAv6
-         uc1odKMjNX+E9ioPkYPJ7k5TlTFsT1rF5HbIfkQrlgcTQs7AnuppMLgWBHeofm1s8NVG
-         k5gGdwznBqKBU9WsjLLRa7QZV5Jf1AOnaThrGbzas8iVN7v4yFAndiI3GZEk6BLW5xnF
-         7ykCzXOXus5EILBIibqRoX/n8abBYAHIakSrXli3Hw/iTNYlP1AEo14rmrWxofigEd/1
-         C2NQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWtoYCg6s71HE0OoUW8E7XdGuqoYFMZAMsb7BlZ/Dw9aGPESg3fCIMwgFkRN2IX+uoViOvtKXeVCf9h@vger.kernel.org, AJvYcCWwKbnx/hqq0yhlRYC5jGWrCQdlDjTmqoOYX74afHqz37VZ3Ihl72Y/n1DKKJd1yBY6LxHu5wBLlW4p51bX@vger.kernel.org, AJvYcCWyPRethCL6xR3e2H+tE1jncQTnUBo2h+GOfeNSEHdLJ6qGpYNaMxGpGjsW920yfLYr6+8kZ/odju4Tgg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNp2udeYenkMkEUTwic6BipaBjT+gqc5PuVvCoaBHuLq8NKxK3
-	ZMPfkdwVoQIkC3J3BqbDEIgjE6Kkv408wOvrYDZe3ELWnDEAb5LP3bLbFNHb09Rc
-X-Gm-Gg: ASbGncufipab8uNJsFywtuu+cEX/51XUl6ycNxC3SgOFVD6bU/0ci8Wi2ljBNv8Amgs
-	3OgaQEVqAnH8eloCow6fHAEWyDuXW7JHmWg0i143fJA8LCrhw9oDh9Dq5RSrvPhzMrO3ZlrPDkG
-	kg7OtTCemZB+Wyg2YX1+6LWwOfkv/AP8KhvuipX08NXLDs1dlVAqNghtprEl06Yq3p7DWCpTwI6
-	HoRRYZ9VzJFCDTocS0OEPQ1bodv1jNH4/Ji2L6qzndw/gcTdJWeqkacKLHYJnBPMAWWhOoUnJ/I
-	KK1LTYOa9o4G9+b2PdoCCNUY35nzQ3DCrfBcCQEL6OayrwdunQ/spOjHC85acfHrTE8amqEb/kR
-	lPi8=
-X-Google-Smtp-Source: AGHT+IHhWQ6WIKyamNhx/uy+Z5hdXGcvTdyE4+cWZb0JiB8Ozp37ZNowpoaP/wDcsnqUdaF9o9X4ZQ==
-X-Received: by 2002:a17:902:e54e:b0:225:abd2:5e4b with SMTP id d9443c01a7336-23f98176ad5mr63109095ad.16.1753315962904;
-        Wed, 23 Jul 2025 17:12:42 -0700 (PDT)
-Received: from archlinux.lan ([2601:644:8200:dab8::1f6])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa476c131sm1872265ad.45.2025.07.23.17.12.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 17:12:42 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list),
-	linux-mips@vger.kernel.org (open list:MIPS),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Mediatek SoC support),
-	linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC support)
-Subject: [PATCHv6 wireless-next 7/7] dt-bindings: net: wireless: rt2800: add SOC Wifi
-Date: Wed, 23 Jul 2025 17:12:32 -0700
-Message-ID: <20250724001232.2275-8-rosenp@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250724001232.2275-1-rosenp@gmail.com>
-References: <20250724001232.2275-1-rosenp@gmail.com>
+	s=arc-20240116; t=1753318127; c=relaxed/simple;
+	bh=W9Bu0bmhoV9Xwtd9WfEwpg7T12x3yF2r3+tBJXlfqqw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=id1IAVEOIpSABbd8T2rFg+V8rdSV/SmD8iO91KZnkHCo+7ID70NdOj2uw86X9WUSJoQflx8jRr25DMf6wEAxBN8yAX5YT4sOgugkGtcbDXTcRl5nU/d0IA9NX+XDX8PLI7CQdQHtxvPl/zu7CX0cwXqfq/kmaFkKa226HW9IZuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=QxeYGqtQ; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56O0mdejF3797115, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1753318120; bh=civo+jiygDCDGkAiZXZ5ii+3o8qzs05cQGCQ2X2/Knc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=QxeYGqtQyBIFOTrk+qEWI34MyZFaoIdRA8BB1zY717N9al2uzt2wcplDhtj3A+Jjd
+	 zCft/EnBbj5Dq/0KKFY8dUS/uSMtzOyyA3WsOg4jT7oW9vO5walVqVZ93X851tOryU
+	 9893H56pyZE7pVhRWy2YwWQcnrccOMIa50W/5locjJdKjEenPR5nt8s6m8x7CSr+km
+	 gRvHdvBr8XyKD5nkjxRM3eip7ercIGruDkxkSrJLjbqVBdMFsLbGCGI1hjarsPfA9k
+	 ziPGNfLQKdYrM9JFHL5N+F45P8fC/fl8t9IvPSgyp6N+cnbBGDb98StLBBz4HSneiy
+	 J9joNJI5dHoyQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56O0mdejF3797115
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 24 Jul 2025 08:48:39 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 24 Jul 2025 08:48:40 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 24 Jul
+ 2025 08:48:40 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <piotr.oniszczuk@gmail.com>, <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next] wifi: rtw88: sdio: use indirect IO for device registers before power-on
+Date: Thu, 24 Jul 2025 08:48:15 +0800
+Message-ID: <20250724004815.7043-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -101,73 +67,46 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Add device-tree bindings for the RT2800 SOC wifi device found in older
-Ralink/Mediatek devices.
+The register REG_SYS_CFG1 is used to determine chip basic information
+as arguments of following flows, such as download firmware and load PHY
+parameters, so driver read the value early (before power-on).
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+However, the direct IO is disallowed before power-on, or it causes wrong
+values, which driver recognizes a chip as a wrong type RF_1T1R, but
+actually RF_2T2R, causing driver warns:
+
+  rtw88_8822cs mmc1:0001:1: unsupported rf path (1)
+
+Fix it by using indirect IO before power-on.
+
+Reported-by: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/699C22B4-A3E3-4206-97D0-22AB3348EBF6@gmail.com/T/#t
+Suggested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- .../bindings/net/wireless/ralink,rt2880.yaml  | 49 +++++++++++++++++++
- 1 file changed, 49 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml
+ drivers/net/wireless/realtek/rtw88/sdio.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml b/Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml
-new file mode 100644
-index 000000000000..04dc5bb2edcc
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/wireless/ralink,rt2880.yaml
-@@ -0,0 +1,49 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/wireless/ralink,rt2880.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index cc2d4fef3587..99d7c629eac6 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -144,6 +144,10 @@ static u32 rtw_sdio_to_io_address(struct rtw_dev *rtwdev, u32 addr,
+ 
+ static bool rtw_sdio_use_direct_io(struct rtw_dev *rtwdev, u32 addr)
+ {
++	if (!test_bit(RTW_FLAG_POWERON, rtwdev->flags) &&
++	    !rtw_sdio_is_bus_addr(addr))
++		return false;
 +
-+title: Ralink RT2880 wireless device
-+
-+maintainers:
-+  - Stanislaw Gruszka <stf_xl@wp.pl>
-+
-+description: |
-+  This node provides properties for configuring RT2880 SOC wifi devices.
-+  The node is expected to be specified as a root node of the device.
-+
-+allOf:
-+  - $ref: ieee80211.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ralink,rt2880-wifi
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - interrupts
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    wifi@110180000 {
-+      compatible = "ralink,rt2880-wifi";
-+      reg = <0x10180000 0x40000>;
-+      clocks = <&sysc 16>;
-+      interrupt-parent = <&cpuintc>;
-+      interrupts = <6>;
-+    };
+ 	return !rtw_sdio_is_sdio30_supported(rtwdev) ||
+ 		rtw_sdio_is_bus_addr(addr);
+ }
 -- 
-2.50.1
+2.25.1
 
 
