@@ -1,97 +1,73 @@
-Return-Path: <linux-wireless+bounces-25980-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25981-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D1CB1026F
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 09:55:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1772EB10291
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 10:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66457546143
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 07:55:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A42C43A4754
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 07:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62B52A1BB;
-	Thu, 24 Jul 2025 07:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA492737E3;
+	Thu, 24 Jul 2025 08:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BwGnQIJa"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="DasnPGRt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CD926FA52
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 07:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F0B272800
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 08:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753343729; cv=none; b=fNBOf8ANel+un3nDp6BZlziWlXlKwxJF8PTykYOt7BwYHh1RGtowizOinE0iFPjGCOEMZHNUDNeqm5sDFJlik43XwDiaM14BNb3yp9cl2erruBp0BCeuDAg9OWV+sCIW9oTZqHcVAs5Nq6fA3u91F/iBZPQuhHAWb64S1MBvrqs=
+	t=1753344010; cv=none; b=AKYkuhZhIL/HUGX5hRSMrDIi7Dg6qAeGt52x4VVQJHOPqCq9LZVBS2Il2VQuaNG7h2iK+tfArAoP6B93AjPw4F9YkZ4YASgo9URIxpFwqyIudviImEJzOeURoZmyL8ruF1lkxuLIheUA/SZgl9ASbcrFVuuNi07bFbzLhpDmPKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753343729; c=relaxed/simple;
-	bh=Ri6nxh+BJrlZoeEGcR3HZPDkL3/jAsjmaGepz4E9I84=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=iNLqrPBngbz4rL6P9H70XR05C8vHPtQIUtyaM4SOYRumjmmG0pvF0F+MpnbS5MhI7tS/xRZybs1bL9ZTLatVUD0FKikUbtElHAUgsyB2MNI11d458zAkP1Xf+sIsNQjiHMPe5pukqP99c5dBuaIkxLZBNob8V5Yp2a4uOedykAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BwGnQIJa; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-607ec30df2bso1430052a12.1
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 00:55:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753343726; x=1753948526; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ri6nxh+BJrlZoeEGcR3HZPDkL3/jAsjmaGepz4E9I84=;
-        b=BwGnQIJaNIZvhhV1Su/xqNmneT+Q5e1GxsVwWoxn0TpFHrbQEMlKByGCF6j95U2sIH
-         LD2TsMEMRS4A9OpixR2wEvJwhh+MwMX7Tn5zMseMuArZAcaSAZ/6V7OpcRUmaAL7A/6k
-         tn4p1JeOchJThaw9IhbICPOQx9N4yhZ5dp7qnjltZX6xR0xQx4paifhqdrzuKWaJtfv5
-         tFfVZeuiI9HQeN+mtbdvY3CvohOMSTuU/BDX/73WphZwKE3Rsu93Kbw/m93jrWNR0RgA
-         t6XgdRJjhx4ggeH7ED00detVmQYT8uk/t07+vVPGXHcJlqE0J5/KESsnXGLnnA9zNhrq
-         yXAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753343726; x=1753948526;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ri6nxh+BJrlZoeEGcR3HZPDkL3/jAsjmaGepz4E9I84=;
-        b=h3bkFR8B8gqd8decZy058FeLuYZuWd12+kNnxcdFtuy6gzt4/Z/AtJfbEGK/YEzvOr
-         RuJ5mWPvAx1XxFIRlA6pjmOsjarL5SJEMM9+af7nAjh1mfXmDOKpC5MpwnwJVsGUx8uj
-         XmctrBduYbY1q0ICLdPb4MTXFNQsO5vCg/akCmgmYzLrk3YJ8McREZUA0eEsEZXS1tAk
-         TXibzLyr7QtN/nHoLV557tt7eKH++nmk1i/gVjW/3vDRJ5Z9Pb6F8b2hxnieyav2ZzkF
-         AL+p5ZMWB9Q2qzZ4DMKATIxwTFW7gjkR+xod6HAjMS501AWjxllEUfbw2kNrOZgrIG1F
-         b7Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCX9YqXYIHsMDab6p1/nE6fNt8bDRSnNLBHO39+Y4Bcuu9M+r7mwvaHRdmRoJvpXMUlw9JXxYmhTpfDcB7QJSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqcnLckkoO/LUO7OU0kgicXp3xotS+tLzkJmgLWQx0qZXLgH87
-	RVTgOLYdoSpFGxqWksFNXkecDrJYEy49sP56ISi8NnoDI+exXJbQvJ7KIhzEtg==
-X-Gm-Gg: ASbGnctkYTB2f/PNuBD9MJYx5qo1IN0gf0GIHPPXQSkahknveLoRBcwhvKjzTm0J9ag
-	zQptLKrGKu2/jv0UDXybeZlLCfXU+gl6GE1wOhpohtDhYVaAM9gTl8LUK2e3NfLC/u1FCFuZtxX
-	AwhXh5pJZswjcSo1hm3hBzzyP6Z71rCp8Visd5BZvOvUawOjj/bJkuQqsvUak8K/t/Zn3i2lsXu
-	XLqK/FyvMxZonmh7mDI/l36e22S6dNIJOTQAwNosb88DFiZnlX/x4xnvfb2j8xtumweHZAs5OZq
-	CG0eqXWaE2GYeHioPx5WesTRuHsmRWO9f5itLK8YZzEpB+/BwMKloL/F+ZSo7Uu32liiufiTdXi
-	2bhs3RT8ckpFq5iNa9k+VdD1lf8XicUvuFiatWkmKg0Qoyank66bDNBJT4di1Vev68B3+fRPJyD
-	7l
-X-Google-Smtp-Source: AGHT+IF1hZoMN5HuSpkuZ+44y1boXP1JWuw8iObMOrQ/SVEqLH4IiufQqOCA1Cmc9+/Y2GnNiBWxIg==
-X-Received: by 2002:a05:6402:35c6:b0:60f:ea89:5128 with SMTP id 4fb4d7f45d1cf-6149b5b2ca4mr5739161a12.34.1753343725986;
-        Thu, 24 Jul 2025 00:55:25 -0700 (PDT)
-Received: from smtpclient.apple (89-66-237-154.dynamic.play.pl. [89.66.237.154])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-614cd31a0e3sm523139a12.50.2025.07.24.00.55.25
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 24 Jul 2025 00:55:25 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Precedence: bulk
-X-Mailing-List: linux-wireless@vger.kernel.org
-List-Id: <linux-wireless.vger.kernel.org>
-List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf
+	s=arc-20240116; t=1753344010; c=relaxed/simple;
+	bh=1UbXuOph5hV5q+sHtNYUA0bOQLApdqNg7/Y04XQuLSI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Bzq2yXhiIbV91FRhkrM0cKW55gvzlGsWOOUQxLRd9+w7Ft7Ryh+aT6Y+ItQlpR7yXhCJhR4fKYcgiUcNV4GchYSb7xOUHioeIRfMIFny9TRsgnapOVgx/iKY7fv/3FBKjVjwDuMAeBs9KFR8l+QAb853nWHONuPRQhb9C8fdbbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=DasnPGRt; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56O7xxMfB115703, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1753343999; bh=1UbXuOph5hV5q+sHtNYUA0bOQLApdqNg7/Y04XQuLSI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=DasnPGRt6IKY2e9gV/Mrm+PkyE+Bvv8YW5s5LbVwCGk4OMDU3hobFcw2lBsJ1KKs/
+	 zbRNWrEHsp0oPRV9G/g+fhrrb1K5evW1BgfqoNEFTAdSXW8MNA+xUxl0dLPl1NISnY
+	 QSQYal4EHadLxYwk015Dz+2GI6vRR/XnqnzqpQgCi/P/GggobCvRjtAukDWWGwpPKv
+	 NcGkIe5JtWV/GDEGaU2JldM2UMIgEzWNlqrIT53jV/gixi5eJHJ+9VPwhgGu14uLRs
+	 tVQogaKDMgOf8VoaseTpLlKwmm5N5XkcUw4juI6dWZfemZvvWnbXkWU4Lrb58wpTgN
+	 Nh+rpOGDxrjaA==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56O7xxMfB115703
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 24 Jul 2025 15:59:59 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 24 Jul 2025 15:59:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 24 Jul 2025 15:59:59 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47]) by
+ RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47%5]) with mapi id
+ 15.01.2507.035; Thu, 24 Jul 2025 15:59:59 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
+CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "martin.blumenstingl@googlemail.com" <martin.blumenstingl@googlemail.com>
+Subject: RE: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf path'
+Thread-Topic: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf
  path'
-From: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
-In-Reply-To: <3a93f5580be34135a5b7f942d5b6ea44@realtek.com>
-Date: Thu, 24 Jul 2025 09:55:14 +0200
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "martin.blumenstingl@googlemail.com" <martin.blumenstingl@googlemail.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B89A3F05-FE7E-4AE8-8F75-34DBBC285C0E@gmail.com>
+Thread-Index: AQHb+wy3xJJYRq7Qhky2ZR9b8r3WqLQ+3/XA///saYCAAIk6oP//fpUAgACIU6D//4PSAAAQ6kAg//+iJYCAAJdrXP//ho8A//60ZiCAAog0AP//eOog
+Date: Thu, 24 Jul 2025 07:59:59 +0000
+Message-ID: <e34a045492ae454cb255aca78d2b9641@realtek.com>
 References: <7407FAA3-F4A4-48AA-91E5-A78DA711447D@gmail.com>
  <ec5d762f3ee64a0188953a1aecbef2cc@realtek.com>
  <AFB036A4-80C6-4880-B798-FB22C7C137FA@gmail.com>
@@ -104,32 +80,32 @@ References: <7407FAA3-F4A4-48AA-91E5-A78DA711447D@gmail.com>
  <5933c3ef71914cdf83687042488800d2@realtek.com>
  <699C22B4-A3E3-4206-97D0-22AB3348EBF6@gmail.com>
  <3a93f5580be34135a5b7f942d5b6ea44@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
+ <B89A3F05-FE7E-4AE8-8F75-34DBBC285C0E@gmail.com>
+In-Reply-To: <B89A3F05-FE7E-4AE8-8F75-34DBBC285C0E@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Precedence: bulk
+X-Mailing-List: linux-wireless@vger.kernel.org
+List-Id: <linux-wireless.vger.kernel.org>
+List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
 
-
-
-> Wiadomo=C5=9B=C4=87 napisana przez Ping-Ke Shih <pkshih@realtek.com> w =
-dniu 24 lip 2025, o godz. 02:52:
->=20
-> I sent a patch [1] with a change that check RTW_FLAG_POWERON flag =
-first,=20
-> so things will be the same as this final try. Still want you test the =
-patch
-> again, and give me a Tested-by tag there. Thanks.
->=20
-> [1] =
-https://lore.kernel.org/linux-wireless/20250724004815.7043-1-pkshih@realte=
-k.com/T/#u
->=20
->=20
-
-I give test and with this patch issue disappear.
-thx for fixing this!
-
-pla add=20
-
-Tested-by: Piotr Oniszczuk <piotr.oniszczuk@gmail.com =
-<mailto:piotr.oniszczuk@gmail.com>>
-
+UGlvdHIgT25pc3pjenVrIDxwaW90ci5vbmlzemN6dWtAZ21haWwuY29tPiB3cm90ZToNCj4gPiBX
+aWFkb21vxZvEhyBuYXBpc2FuYSBwcnpleiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNv
+bT4gdyBkbml1IDI0IGxpcCAyMDI1LCBvIGdvZHouIDAyOjUyOg0KPiA+DQo+ID4gSSBzZW50IGEg
+cGF0Y2ggWzFdIHdpdGggYSBjaGFuZ2UgdGhhdCBjaGVjayBSVFdfRkxBR19QT1dFUk9OIGZsYWcg
+Zmlyc3QsDQo+ID4gc28gdGhpbmdzIHdpbGwgYmUgdGhlIHNhbWUgYXMgdGhpcyBmaW5hbCB0cnku
+IFN0aWxsIHdhbnQgeW91IHRlc3QgdGhlIHBhdGNoDQo+ID4gYWdhaW4sIGFuZCBnaXZlIG1lIGEg
+VGVzdGVkLWJ5IHRhZyB0aGVyZS4gVGhhbmtzLg0KPiA+DQo+ID4gWzFdIGh0dHBzOi8vbG9yZS5r
+ZXJuZWwub3JnL2xpbnV4LXdpcmVsZXNzLzIwMjUwNzI0MDA0ODE1LjcwNDMtMS1wa3NoaWhAcmVh
+bHRlay5jb20vVC8jdQ0KPiA+DQo+ID4NCj4gDQo+IEkgZ2l2ZSB0ZXN0IGFuZCB3aXRoIHRoaXMg
+cGF0Y2ggaXNzdWUgZGlzYXBwZWFyLg0KPiB0aHggZm9yIGZpeGluZyB0aGlzIQ0KPiANCj4gcGxh
+IGFkZA0KPiANCj4gVGVzdGVkLWJ5OiBQaW90ciBPbmlzemN6dWsgPHBpb3RyLm9uaXN6Y3p1a0Bn
+bWFpbC5jb20gPG1haWx0bzpwaW90ci5vbmlzemN6dWtAZ21haWwuY29tPj4NCg0KQ291bGQgeW91
+IHBsZWFzZSBhZGQgdGhpcyB0YWcgdG8gdGhlIHBhdGNoPyBUaGVuLCB5b3VyIFRlc3RlZC1ieSB3
+aWxsIGJlIGFkZGVkDQppbnRvIGNvbW1pdCBtZXNzYWdlIGR1cmluZyBnZXR0aW5nIG1lcmdlZC4g
+DQoNCg==
 
