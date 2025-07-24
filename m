@@ -1,133 +1,169 @@
-Return-Path: <linux-wireless+bounces-25966-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-25967-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B72B0FE46
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 02:52:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E71AEB0FE67
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 03:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68D8A3B5BC3
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 00:51:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEB651C279DF
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Jul 2025 01:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C3028399;
-	Thu, 24 Jul 2025 00:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F595186E2E;
+	Thu, 24 Jul 2025 01:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="vFXydtUP"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AbGqk9l7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5262CA8
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 00:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46236187332
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 01:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753318341; cv=none; b=kldCQIL2zTPOU1ANH7jvq3UhtS3OySeRIDHFPmEixeZI+drYpwd2pK+Ln9HW/GrJii1prl3p7N+rjbHHqd9383H/tFHH/67yruit1L5SopoHJJq5EL/7hZpULbwl1Wy+M4E+00+Hu1Z4XtGDVK/0yA9U68qvrFMYaJ9/zyXSWWA=
+	t=1753321311; cv=none; b=ljOCNbcDzEwq0F3Rq1sxFD9TwNUMwz45Br4R+PZL/2Z4VeYmkaUTjoH80bpDp3I3lvfS7x+rHeMmuiXfJcfmLrmQzz8U2HES2Tve2Dz6B1eYxabmB9GcsMPN901442QH6gW1FsztlQI/AmctiGCJBr2OjU6zq3BBnB4Zn2Gz1ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753318341; c=relaxed/simple;
-	bh=jj6h5RhVVrW7hHg8/i832r0EwbuI3+f8HY4RM+ka7Jw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PwUN4OUU3d5g1EJU26mHfp+TrSYQvRUOtabTGeFBvH60nA3uYPnCZd+xhQDPgxqe/8MtNi5Pz9DgORhC5DVRUSjN5BHjNNP9vN3JA7O5W9DPUdkC/x7p/F21WxDjEFHO8eVlbDuKYz3hPbNfOOhlD5aJT7zIa3zeCkP9+oELoik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=vFXydtUP; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56O0qC7M13798627, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1753318332; bh=jj6h5RhVVrW7hHg8/i832r0EwbuI3+f8HY4RM+ka7Jw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=vFXydtUPJl94K69kyqov0LLQCYWPgFhSaS8MJqrq+Eh2uJEEnaazKGYl8KxbnRY5e
-	 a8F+hkDM5g04KZV3dgu/UiFV82CYS8LxO12QileSbs08/Qd8WrFQ4y5pB6uiqGt5mA
-	 5eir+1f1scBpNMGJhfO7QbUaCfzYU09st2PzWYTl1OOYRdj0P4+mvM99H+EkXhdeCm
-	 OrQBRE5eEkcLtmYpTMhajgo1vJl3CeBeB9v8teTM1vfIJBLcKzNNfASO/TIuf8vIZy
-	 f8AVHrTEppbjW/t0dLD1uVO8y5zxFarTJHkkMu9bK1hrHFj1r+7Srfo5yiDYptCEGq
-	 L8ChYZ/iTcbrg==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56O0qC7M13798627
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Jul 2025 08:52:12 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 24 Jul 2025 08:52:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 24 Jul 2025 08:52:12 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47]) by
- RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47%5]) with mapi id
- 15.01.2507.035; Thu, 24 Jul 2025 08:52:12 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Piotr Oniszczuk <piotr.oniszczuk@gmail.com>
-CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "martin.blumenstingl@googlemail.com" <martin.blumenstingl@googlemail.com>
-Subject: RE: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf path'
-Thread-Topic: rtl8822cs, mainline 6.16-rc7: kernel reports ' unsupported rf
- path'
-Thread-Index: AQHb+wy3xJJYRq7Qhky2ZR9b8r3WqLQ+3/XA///saYCAAIk6oP//fpUAgACIU6D//4PSAAAQ6kAg//+iJYCAAJdrXP//ho8A//60ZiA=
-Date: Thu, 24 Jul 2025 00:52:12 +0000
-Message-ID: <3a93f5580be34135a5b7f942d5b6ea44@realtek.com>
-References: <7407FAA3-F4A4-48AA-91E5-A78DA711447D@gmail.com>
- <ec5d762f3ee64a0188953a1aecbef2cc@realtek.com>
- <AFB036A4-80C6-4880-B798-FB22C7C137FA@gmail.com>
- <b29df36b838049a088d8298220078134@realtek.com>
- <5CA196F3-90B4-479F-9A19-E9C71C8726D4@gmail.com>
- <34d9c169c92540caa294095d2172b4fc@realtek.com>
- <18989932-3578-4E45-BA8B-6C2C76FDE7FE@gmail.com>
- <ed867462c8d945b28b2e913d1cd0c3d5@realtek.com>
- <7dfa0377-538f-464b-b4e4-4c9daa1fb85a@gmail.com>
- <5933c3ef71914cdf83687042488800d2@realtek.com>
- <699C22B4-A3E3-4206-97D0-22AB3348EBF6@gmail.com>
-In-Reply-To: <699C22B4-A3E3-4206-97D0-22AB3348EBF6@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1753321311; c=relaxed/simple;
+	bh=tgMrZhqcs6LlFm9tZEm1ilzQvjFnP85Koztg8DHCrg4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=POKDp979MeWAi3tdD/ZHYHPQTP563aBdZNFjWUG81+5Q8YrwGuYmiFxahu34ZSKk/5l2sWsd/u6Xd+jzhJ7juBkAFh0L6cnL7/LjuKumH/8uWe24nZ2cPSRFxzsT/CVhMjiQjQyXVv+QE27ixL5dVOwRJTnGr+JuJ9RnfS2xa1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AbGqk9l7; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56NMXKCZ018046
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 01:41:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	3l5vVTkH19Z282OOXYT7AVaSkeC2Vgr99aP1Mh72ErA=; b=AbGqk9l7JyqEvtLG
+	xPu315+pSjIiJznXNvDVSuZN5drzlf/fsnaMZKwwQcpqSlz/tMOHSd0x1sFIYzOf
+	kgkL0bdLc8gR1JYnazgzgNQvlXd0muA72uIvbPBiDJqmt0grTKMCunivB16vpnMb
+	soTCx99XCWCotjSpe04Qojqt5pUIX/mlPrkmF7rIJR4ZZUyb0vFJ3K5+7/SZHacR
+	Xfk9sT1AQQ5d1WuAu33TSwpaRrznLm3yK1tfkUMmrqoF5UbPwFdaARN4fHrXUPeO
+	sgBo8ed6dK7+bpyGj3F1Xu33Ey+Vca5lyzl8Dvfbg+H/F576z7CiiBgsYTme02Aw
+	9PGGSQ==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 481qh6s6rg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Jul 2025 01:41:48 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b31f112c90aso404722a12.0
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Jul 2025 18:41:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753321306; x=1753926106;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3l5vVTkH19Z282OOXYT7AVaSkeC2Vgr99aP1Mh72ErA=;
+        b=h+hMbGld2P4oMEZ82BjBNVezuFpsSt2OhWSOBo7I5BPi/EDDH2N68EvO4yXvkYqVG/
+         x72YTZO1OyRmaQ0QDhuq4gOrqKlky1pkVJRT6zK1y70PxdNlQ7JOQ9W1ovFKBVw4A3QC
+         nDuz4/iQvyawy3MQE698aCbj+Oqt0IJzhiLphhUKjjTnGV8dv1Y8475JsBNM0/SeXPQ6
+         c7H3Q2tigFtxZQ7QTRDRjy/XaGgDAAQAgD2s5tjPAeZpMIBZ2N5dNLZXSjDZbLNmb10a
+         uyE23NInBo91+jQ3lmtgPcehlVWXpVfwQ4dpQjHqtArkSxbtczzjxL4Ozr5tsgFNvdSW
+         iZgA==
+X-Gm-Message-State: AOJu0Yx0uJkyq/FepQQxxZ7+c5hm4iFqjHHO9PjdM5/MGepFmc7877OC
+	J48izfxBDPZa6Fp88oZFvUl/vQt/oM8lHFC/EdWfPi3pT0RM4CJ9CEIGcO5UV74J7bCkrnFW6ps
+	eWfV3/Xsvi40QdEAAmu+SHm7UmaNcW6zd877hkDGrlnCo/3aWX0ukG2hBJr7g0HzQK+cZ0Z7XlU
+	M9Lg==
+X-Gm-Gg: ASbGnct56TgkpU1d+IAplVINTEWnGxvs0rlbmMakCkHMXsTi+M3ScbdsgaxluwEW/aZ
+	/VuISqjBIZUacbiLTwNI47S8vquE0lrB2zM9H4jc9cNwUr1Wjjf1XTTMRK63dyKT/Cb304S33Hn
+	8tuTf5seG4dJ0uJN71GmJa4Ys0r4t+vFR/X5G33wbCZvEBGkfWeYusCKOJhztdNvla+oQmb7A9Y
+	nuBUSgGR2mTZRiBW6Oqe++IgNOq/Rh+KJL7YbIx1qua0w/tT6s9yQft9P4QkH46SZrMJXVG+g+Q
+	MKeyMuchyOHhmMp02RykkxBvlSSMaOKLmh5ruaZEpOCvWrHOGSdNZymrPkKaWhX8T+1pCDpuYKd
+	UBlWJBCPhYMuWNON2algbsJTLXiAEi+uP
+X-Received: by 2002:a05:6a21:7182:b0:220:898b:2ca1 with SMTP id adf61e73a8af0-23d5b6d0d5bmr271127637.21.1753321306551;
+        Wed, 23 Jul 2025 18:41:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEfD+HGAkMnjB5I3dCEWR4gDruV20/UEZdN21kQ2WAho8Z9MdvKFzZRB08ebGbrhWrhU3FYaQ==
+X-Received: by 2002:a05:6a21:7182:b0:220:898b:2ca1 with SMTP id adf61e73a8af0-23d5b6d0d5bmr271093637.21.1753321306071;
+        Wed, 23 Jul 2025 18:41:46 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-761d52fe8cbsm189010b3a.111.2025.07.23.18.41.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Jul 2025 18:41:45 -0700 (PDT)
+Message-ID: <1d5f27a4-5407-4cf2-bd52-1ee75a4050ef@oss.qualcomm.com>
+Date: Wed, 23 Jul 2025 18:41:44 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] wifi: Fix typos
+To: Bjorn Helgaas <helgaas@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+References: <20250723201741.2908456-1-helgaas@kernel.org>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250723201741.2908456-1-helgaas@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=CZ4I5Krl c=1 sm=1 tr=0 ts=68818f5c cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=e70TP3dOR9hTogukJ0528Q==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=1XWaLZrsAAAA:8 a=NRXtL9kN6jlbBn24eUgA:9
+ a=QEXdDO2ut3YA:10 a=_Vgx9l1VpLgwpw_dHYaR:22
+X-Proofpoint-ORIG-GUID: wBK9LeF1aO5PACzPPTjpWjWrpNhF0EuV
+X-Proofpoint-GUID: wBK9LeF1aO5PACzPPTjpWjWrpNhF0EuV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDAwOCBTYWx0ZWRfX2qNd5J/aFh4O
+ GtGTxay3gsRZMtpUO1hdb1FbE2Ne75ax43pkEuDzzkIe2s0PQglniFafu60KJUPFQ2Oc7SFfFOZ
+ wJmOZLdGcxKM3xgGror7bvM7WFIe/XY3fUcFQPeAgTlWBRcFtnQlj+j9Q9NEyDzESVYvzu0zzwz
+ jb7+rOopxVOa8iwbHBbQhdrkbg7f4qwHTodh0iiTYPXYWcFUiZS9BQL1HvMoyHN4k0lMLOpYAGd
+ 37mlPJ/HugKDlf9Lkd53cZFzNgVpT5fQ4oyJFjdIwGvZwT+4TuXqjOGVvgpwnS7VeWaW58+3omk
+ yr9mmCtaAIJ47QoEPbl7vZm/sJLigm7JiFsDmz71cVJWKrnklhTDWLR9duulCkEIYagyGXpTzYR
+ A0LN6u6fVQpnxPwI3MJ/m0vuCQmHRYWQUaddjStYU4D0VFIIr0SwaB1qJCUABEvG/sueJ6al
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-23_03,2025-07-23_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 mlxlogscore=999 impostorscore=0
+ clxscore=1015 mlxscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
+ bulkscore=0 spamscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507240008
 
-UGlvdHIgT25pc3pjenVrIDxwaW90ci5vbmlzemN6dWtAZ21haWwuY29tPiB3cm90ZToNCj4gPiBX
-aWFkb21vxZvEhyBuYXBpc2FuYSBwcnpleiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNv
-bT4gdyBkbml1IDIzIGxpcCAyMDI1LCBvIGdvZHouIDE0OjIzOg0KPiA+DQo+ID4gVGhhbmtzIGZv
-ciB0aGUgaGludHMuIEkgdGhpbmsgaXQncyB3b3J0aCB0byB0cnk6DQo+ID4NCj4gPiBkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMgYi9kcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYw0KPiA+IGluZGV4IGZhMGVkMzljYjE5
-OS4uNWVhMTNjNzc1Nzk2IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3Jl
-YWx0ZWsvcnR3ODgvbWFpbi5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
-ay9ydHc4OC9tYWluLmMNCj4gPiBAQCAtMTg2MSw2ICsxODYxLDggQEAgc3RhdGljIGludCBydHdf
-Y2hpcF9wYXJhbWV0ZXJfc2V0dXAoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4gPiAgICAgICAg
-aGFsLT5jaGlwX3ZlcnNpb24gPSBydHdfcmVhZDMyKHJ0d2RldiwgUkVHX1NZU19DRkcxKTsNCj4g
-PiAgICAgICAgaGFsLT5jdXRfdmVyc2lvbiA9IEJJVF9HRVRfQ0hJUF9WRVIoaGFsLT5jaGlwX3Zl
-cnNpb24pOw0KPiA+ICAgICAgICBoYWwtPm1wX2NoaXAgPSAoaGFsLT5jaGlwX3ZlcnNpb24gJiBC
-SVRfUlRMX0lEKSA/IDAgOiAxOw0KPiA+ICsgICAgICAgcHJpbnRrKCJydHc4ODogJXM6JWQgaGFs
-LT5jaGlwX3ZlcnNpb249MHgleFxuIiwNCj4gPiArICAgICAgICAgICAgICAgX19mdW5jX18sIF9f
-TElORV9fLCBoYWwtPmNoaXBfdmVyc2lvbik7DQo+ID4gICAgICAgIGlmIChoYWwtPmNoaXBfdmVy
-c2lvbiAmIEJJVF9SRl9UWVBFX0lEKSB7DQo+ID4gICAgICAgICAgICAgICAgaGFsLT5yZl90eXBl
-ID0gUkZfMlQyUjsNCj4gPiAgICAgICAgICAgICAgICBoYWwtPnJmX3BhdGhfbnVtID0gMjsNCj4g
-PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9zZGlvLmMg
-Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3NkaW8uYw0KPiA+IGluZGV4IGNj
-MmQ0ZmVmMzU4Ny4uNWM5ZTdjOGNkZDdlIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL3JlYWx0ZWsvcnR3ODgvc2Rpby5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydHc4OC9zZGlvLmMNCj4gPiBAQCAtMTQ0LDYgKzE0NCwxMCBAQCBzdGF0aWMg
-dTMyIHJ0d19zZGlvX3RvX2lvX2FkZHJlc3Moc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgdTMyIGFk
-ZHIsDQo+ID4NCj4gPiBzdGF0aWMgYm9vbCBydHdfc2Rpb191c2VfZGlyZWN0X2lvKHN0cnVjdCBy
-dHdfZGV2ICpydHdkZXYsIHUzMiBhZGRyKQ0KPiA+IHsNCj4gPiArICAgICAgIGlmICghcnR3X3Nk
-aW9faXNfYnVzX2FkZHIoYWRkcikgJiYNCj4gPiArICAgICAgICAgICAhdGVzdF9iaXQoUlRXX0ZM
-QUdfUE9XRVJPTiwgcnR3ZGV2LT5mbGFncykpDQo+ID4gKyAgICAgICAgICAgICAgIHJldHVybiBm
-YWxzZTsNCj4gPiArDQo+ID4gICAgICAgIHJldHVybiAhcnR3X3NkaW9faXNfc2RpbzMwX3N1cHBv
-cnRlZChydHdkZXYpIHx8DQo+ID4gICAgICAgICAgICAgICAgcnR3X3NkaW9faXNfYnVzX2FkZHIo
-YWRkcik7DQo+ID4gfQ0KPiA+DQo+IA0KPiBXaXRoIHRoaXMgY2hhbmdlIGFsbCB3b3JrcyBvay4N
-Cj4gMTUgYm9vdHMgYW5kIGFsbCAxNSB3ZXJlIHdpdGggbmljZSB3aWZpIDotKQ0KPiANCj4gIGRt
-ZXNnIGZyb20gd29ya2luZyBzeXN0ZW06IGh0dHBzOi8vdGVybWJpbi5jb20vMDlhMQ0KDQpJIHNl
-bnQgYSBwYXRjaCBbMV0gd2l0aCBhIGNoYW5nZSB0aGF0IGNoZWNrIFJUV19GTEFHX1BPV0VST04g
-ZmxhZyBmaXJzdCwgDQpzbyB0aGluZ3Mgd2lsbCBiZSB0aGUgc2FtZSBhcyB0aGlzIGZpbmFsIHRy
-eS4gU3RpbGwgd2FudCB5b3UgdGVzdCB0aGUgcGF0Y2gNCmFnYWluLCBhbmQgZ2l2ZSBtZSBhIFRl
-c3RlZC1ieSB0YWcgdGhlcmUuIFRoYW5rcy4NCg0KWzFdIGh0dHBzOi8vbG9yZS5rZXJuZWwub3Jn
-L2xpbnV4LXdpcmVsZXNzLzIwMjUwNzI0MDA0ODE1LjcwNDMtMS1wa3NoaWhAcmVhbHRlay5jb20v
-VC8jdQ0KDQoNCg==
+On 7/23/2025 1:17 PM, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> Fix typos in comments and error messages.
+> 
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/hw.h          |  8 +++----
+>  drivers/net/wireless/ath/ath5k/reg.h          |  2 +-
+>  .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  6 ++---
+>  .../broadcom/brcm80211/brcmfmac/common.c      |  4 ++--
+>  .../broadcom/brcm80211/brcmfmac/common.h      |  4 ++--
+>  .../broadcom/brcm80211/brcmfmac/core.h        |  2 +-
+>  .../broadcom/brcm80211/brcmfmac/p2p.c         |  4 ++--
+>  .../net/wireless/intel/iwlegacy/commands.h    |  2 +-
+>  .../intel/iwlwifi/fw/api/time-event.h         |  2 +-
+>  drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |  4 ++--
+>  .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  4 ++--
+>  drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  6 ++---
+>  drivers/net/wireless/intersil/p54/p54spi.c    |  4 ++--
+>  drivers/net/wireless/marvell/libertas/cfg.c   |  4 ++--
+>  drivers/net/wireless/marvell/mwifiex/fw.h     |  4 ++--
+>  .../net/wireless/ralink/rt2x00/rt2800lib.c    |  2 +-
+>  .../net/wireless/ralink/rt2x00/rt2x00dev.c    |  4 ++--
+>  .../net/wireless/ralink/rt2x00/rt2x00queue.c  |  2 +-
+>  drivers/net/wireless/realtek/rtl8xxxu/core.c  |  2 +-
+>  .../wireless/realtek/rtlwifi/rtl8192de/rf.c   |  2 +-
+>  .../wireless/realtek/rtlwifi/rtl8192se/rf.c   |  2 +-
+>  .../wireless/realtek/rtlwifi/rtl8821ae/hw.c   | 22 +++++++++----------
+>  drivers/net/wireless/ti/wl1251/reg.h          |  6 ++---
+>  drivers/net/wireless/ti/wl12xx/reg.h          |  6 ++---
+>  drivers/net/wireless/zydas/zd1211rw/zd_usb.c  |  2 +-
+>  25 files changed, 55 insertions(+), 55 deletions(-)
+
+At a minimum it seems that this should go through wireless-next instead of
+net-next.
+
+Even better would be to split out the patches that have dedicated subordinate
+maintainer trees (such as ath.git for the ath5k and ath10k changes) unless
+Johannes wants to take this entire set.
+
+/jeff
 
