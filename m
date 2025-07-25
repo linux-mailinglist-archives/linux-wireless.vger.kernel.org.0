@@ -1,85 +1,85 @@
-Return-Path: <linux-wireless+bounces-26019-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26020-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9976BB11F4F
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jul 2025 15:22:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C44B11F50
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jul 2025 15:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B2D4AA25F2
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jul 2025 13:22:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFC9B1C84C3B
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jul 2025 13:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610BC2ED179;
-	Fri, 25 Jul 2025 13:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BBC2ED85A;
+	Fri, 25 Jul 2025 13:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="OkmzCeNS"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="eWcaqN9M"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F980246780
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Jul 2025 13:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896CD246780
+	for <linux-wireless@vger.kernel.org>; Fri, 25 Jul 2025 13:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753449769; cv=none; b=rI2NZ74FgU0+gRsb2vXeTfsVT49L1evARMtcRgfg2YSALTSIcrVS6i4AB8w4og3DbdoQHNPHSZfViRjdspuoabTGDVu+rTMex7FBCMQMMA/cXLuepmSss2BFqowfG0ls3TDVC+4RdlSzy1aZg6RSIjC9t8uIWUFtNNMJpb9Jt+8=
+	t=1753449772; cv=none; b=Lk8+v4EHUMczK94rfbGGzTQuYYRqD4SrJRJ+W6urBAGOu2naRxchxGWUWUHs3d4LQUV5ewUZJOhd2kErXM3DsTcb4qdZ2z6uQvD4KjJJ/5gHwvi88g8Brw82D23DjOrWJLQDNih50v2E/9sfEAEbONi36jdumZRaK6tJBz6+cSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753449769; c=relaxed/simple;
-	bh=2q27ldN8BIT9azq458xT5KqD+qaSxnQvCXA4PUt1JTU=;
+	s=arc-20240116; t=1753449772; c=relaxed/simple;
+	bh=oXuoab356xc8TJr+FqL6t+JnosFKXD3Iq+TGPDMyzl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZVUYJb6Ix4o6MxRAjStHYF0i4Zhnv/J4S416N6c215FUtuSvMp4GD03fGfGJZ722YmknGmEcHgNbEgjm1tumjqwOjwyvjkSh+I80ezt10g95LOhTTh/gj3+bRYHTEnhhezJOUrszObepVhH1fjzvKVGt/PLew001xrDJ5Tf05pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=OkmzCeNS; arc=none smtp.client-ip=209.85.214.176
+	 MIME-Version; b=stvlkEr49sNJxRaAaUEObDujfWULmp78QNu7jLatGtCw6p4fwQhbKFDc5o7giojWpKTeJzFnJuCCs49joBc2B0h2xXeWrPt24xP2fkwMhZixIC4NiZUKYjZJYemVKRFa+JF0fVVHVLA0a9Nho+G0ovyHB2VVL7SOgBCP65tclmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=eWcaqN9M; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-23c8a5053c2so17791365ad.1
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Jul 2025 06:22:47 -0700 (PDT)
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-879d2e419b9so1550943a12.2
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Jul 2025 06:22:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1753449766; x=1754054566; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1753449770; x=1754054570; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=90JvpcMnvkIXPxlzMSsisxS9E7Wbzy5zPAkkMIe4QnY=;
-        b=OkmzCeNSxyN/Td+hnxGTQMYSVf0SFCkY8S1YCK0dStFxkjN+uAiZ3BSqDgt/9R9omk
-         IGVALAsS4Ll+SGXKH0NpguOfc+PbCkwPalgvpv6snpltcY3tTDeZqjuiFBgNX9/J6aMT
-         Y5/AZm2FCo0JeqloXjwELIqxqU3+UyFCpwJtzeSD+XVugwiGgs1tqonf2+u5mVaOfOqc
-         qRBCNWD0a+YLvFdpFnZRaEvvhki08Cacgq2pS5mUJZ+CH45NunWjpOYvnA83CoX6mBNW
-         fx7FE97zS57BuXE7onsCS2e7nEm4KAZKRFBeCZsphUo6t0Gue/QKbw9RD0wpOtAShYX2
-         CXvQ==
+        bh=+Sl0pMDzBXIZD9MTsrYB0VFNPtGZEEUjQ0WKfsO19GE=;
+        b=eWcaqN9MKbCJvpanH9La6w0C20uVrmmOHvBVy6HdrSu26JdLaTFH9+MYJs6qYOXp8B
+         iLVAKUK4GlQIDHXK2C/LZHd5XCMR8bomDaGvjDr5Fz4WInUX7xl2RHuN8gpdi5LgOosh
+         WdPLzoZ34dpUTEHzAS9qXPYk3FqXRZ9yWcqtmQWbAZwM9dAgd/rqCOvhX7HHO6Lg7mtq
+         a4Tw4nJ2eFn9/UdZlqbT+wsy45qmh8zbfIv3LukiQ1ISpJITPxJmdQq+NDyeU+Swb9t6
+         4AfxLS/9myWcngYpTYQRJnQa2NRPOZ7Ay34vDErcZ3m1ol6OccE2yL07aS/j8DbbZfMs
+         fq4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753449766; x=1754054566;
+        d=1e100.net; s=20230601; t=1753449770; x=1754054570;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=90JvpcMnvkIXPxlzMSsisxS9E7Wbzy5zPAkkMIe4QnY=;
-        b=vFglYsqH4ti7avpJOqAPTYY2vlazrjA3HqRPI879dqu6gMwIghQhGiYMmCr+ECyzg4
-         TvHRxKfKNEtfZw4MK49qP6pKSi6jz06wayQzuVd9qVWHWDkfpvV4auI2oDrY8XRyw2QX
-         z4LFjv3nRKDhIcsKiMenT0xi+/CiJIO1nNxqP+Oe0LxZFjbB+mpApgTmOB5V83/Tsyk8
-         +GNerVEeXJiAXwPIHiYsYosGgOo5O2c1AU1U6xiSD31Fo12rlE2qgkR5SVKZi9WfeUsJ
-         w8gYYrueQ1t3noqhkwBwrUXRBnisz766gdCwhNHMowVLM+5aag/jdup01pJHD6yvQWmG
-         oMlQ==
-X-Gm-Message-State: AOJu0YwFMh8/s6BTKkU3Pm/dkWbeXCpCZI0hiMovOG+V2lGSQxSKSVnS
-	u4blSlM2ak6yxCx3wSXbXiBaAUMeukZ758GwNPJhMtFqgfFAsYmCJI96MORfZh+98rM=
-X-Gm-Gg: ASbGncvKB5FqfJCN+fPHlh+2xCZR2lFzR/StVU615btsJNXdQrkYbr6wBkmQTXYKz13
-	56jNa8XtzU0H+50Sh5c/W4lyuw+Iycd24i9CCSIQ2j8jchJW7rYN34HhkNLZNB0TU0qknHNBZVb
-	6dpbsE++40KcFqSldhU18e3L1V9oeIyFx3ksa1WSGMuY+rZIafLvDXZkfjj0u6Nk+Cfd+AVhItS
-	IiZbQaqwJl3mtA45NljX1d6s2ZhVb4+lrQ3S4FPglVkVuXvQRsMhetQZN5TXbdyrn9xkyHW/i35
-	dn6VJ1cXbRwdgSanaY8jA+ESOfL+mXDpYNj5xyG/jbSCFZw0GkeKlg9y6OPKzL2apagtZ0Jf5SZ
-	qSyVMbpeWCYxE/OWG+W+LsULmOOqt74aPsWIu68c=
-X-Google-Smtp-Source: AGHT+IFmKBGB7wzn1+Ur7w6iR74eXkc9/NX9b0IsQjlQNjMJ8v3cULhNbeNO3C0TICCUVeb+vZz1cg==
-X-Received: by 2002:a17:903:94b:b0:234:c8f6:1b03 with SMTP id d9443c01a7336-23fb317a022mr29450945ad.47.1753449766316;
-        Fri, 25 Jul 2025 06:22:46 -0700 (PDT)
+        bh=+Sl0pMDzBXIZD9MTsrYB0VFNPtGZEEUjQ0WKfsO19GE=;
+        b=TLhlOiwxW5blgQe0QLaMi2CNGGegr4P4O3dcpQSvH+hAxgiKnzLCnYgZwZ6USvfGto
+         rhLmN2F5dBt3Gs2ayZwnBaLEU/9zQFjh5stNcNnVzMt1mHrIkMFFcNKpPVNCJ/Auve7c
+         t7Gdg9yPcwNXCKYOIRZ9GSg5Qm7ttKKQ8+fKqDc6l49JyKkdpXDxqswpBxq9iy1wc4Rk
+         igHVMFgUt1hSjwQ0caq5IUA1NZ01ZWdbEbaP5yvnN3ZTCRJTpoX/F0rZ33L2OQff+srl
+         6Fph6Yj8BgeQ28N5/hT99z8xg5fJ2uRat+9UL8QFoUOUCvjpFLKYQL/w07xbkTL3u6Lf
+         dJWQ==
+X-Gm-Message-State: AOJu0YzyInkp5Fd1x3mIIYirwWTmTFbVr246jva7Ptf1CtU9CoTcMLny
+	PjoslBt7EfDBzI5vWZPisLV5MsjqLe9ma1uqaMxYdOvuYeKqYFaqITNc7wL5TrX63AY=
+X-Gm-Gg: ASbGncuFjLJZFDJXzzF76Okv7P3nYguCKR4PSWWrdlZxsnxB9tghs5QglfGc2h7ZmKE
+	B3lVZocqOZrn0+xsXGc74jI9+kMDYkFkmTegTFekpQgbYFoGQXJN/nbmuMet83gakMZeEyrmvDH
+	EgRkoC4d0sTf8b/3BQ9B5m3EIkCUw0SpRgUYjPVKxwdgd31rJohUhP2JbKJIeD1oxrgiSv2pTqR
+	HKRAyh3hDPKssUG8kZAaxUn5+kc6n6Cvq1pQt7t+vx4h7hU3UEH/X5i6wlWUezsYo1Ch8jYTGzf
+	vMyZ4uvlYOfyo4NVZ/DY7AvbqJ33ag+lHlqwTTBGAQUubqwaylL2FdndgI+hpZjo+W93YpH8XnO
+	tHxI2QzGzJhE96d01QVtivDCRaKXuGElPguDf+EquSOMNX+i/Hg==
+X-Google-Smtp-Source: AGHT+IFwG1r0MdSKbQivTzN58CRb/OBz23g73+8bzbRZjPzgcpJ0N4nKj/X/l21yTkJVv/T6nPEagg==
+X-Received: by 2002:a17:903:19c5:b0:232:1daf:6f06 with SMTP id d9443c01a7336-23fb311e3d8mr30477455ad.47.1753449769486;
+        Fri, 25 Jul 2025 06:22:49 -0700 (PDT)
 Received: from mma-H9MHD44.lan ([101.180.88.40])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa48bd625sm37117665ad.122.2025.07.25.06.22.44
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa48bd625sm37117665ad.122.2025.07.25.06.22.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jul 2025 06:22:46 -0700 (PDT)
+        Fri, 25 Jul 2025 06:22:49 -0700 (PDT)
 From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	arien.judge@morsemicro.com,
 	Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Subject: [wireless-next v2 2/3] wifi: mac80211: support parsing S1G TIM PVB
-Date: Fri, 25 Jul 2025 23:22:20 +1000
-Message-ID: <20250725132221.258217-3-lachlan.hodges@morsemicro.com>
+Subject: [wireless-next v2 3/3] wifi: mac80211: kunit: add kunit tests for S1G PVB decoding
+Date: Fri, 25 Jul 2025 23:22:21 +1000
+Message-ID: <20250725132221.258217-4-lachlan.hodges@morsemicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250725132221.258217-1-lachlan.hodges@morsemicro.com>
 References: <20250725132221.258217-1-lachlan.hodges@morsemicro.com>
@@ -91,401 +91,442 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-An S1G TIM PVB has 3 mandatory encoding modes, that being
-block bitmap, single AID and OBL alongside the ability for
-each encoding mode to be inverted. Introduce the ability to
-parse the 3 encoding formats. The implementation specification
-for the encoding formats can be found in IEEE80211-2024 9.4.2.5.
+Add support for testing the 6 examples mentioned in IEEE80211-2024
+Annex L. These tests cover the 3 mandatory decoding modes being
+block bitmap, single AID and OLB alongside their equivalent
+inverses.
 
-Signed-off-by: Arien Judge <arien.judge@morsemicro.com>
+Test output:
+
+1..6
+ s1g_tim_block_test: Block 0 (ENC=BLOCK, blk_off=0, inverse=0)
+ s1g_tim_block_test:   octet  1 (ctrl)    : 00000000 (0x00)
+ s1g_tim_block_test:   octet  2 (blk-map) : 00000101 (0x05)
+ s1g_tim_block_test:   octet  3 (SB  0)   : 01000010 (0x42)
+ s1g_tim_block_test:   octet  4 (SB  2)   : 10100000 (0xa0)
+ok 1 s1g_tim_block_test
+ s1g_tim_single_test: Block 0 (ENC=SINGLE, blk_off=0, inverse=0)
+ s1g_tim_single_test:   octet  1 (ctrl)    : 00000001 (0x01)
+ s1g_tim_single_test:   octet  2 (single)  : 00011111 (0x1f)
+ok 2 s1g_tim_single_test
+ s1g_tim_olb_test: Block 0 (ENC=OLB, blk_off=0, inverse=0)
+ s1g_tim_olb_test:   octet  1 (ctrl)    : 00000010 (0x02)
+ s1g_tim_olb_test:   octet  2 (len= 9)  : 00001001 (0x09)
+ s1g_tim_olb_test:   octet  3 (SB  0)   : 01000010 (0x42)
+ s1g_tim_olb_test:   octet  4 (SB  1)   : 10100000 (0xa0)
+ s1g_tim_olb_test:   octet  5 (SB  2)   : 01000010 (0x42)
+ s1g_tim_olb_test:   octet  6 (SB  3)   : 10100000 (0xa0)
+ s1g_tim_olb_test:   octet  7 (SB  4)   : 01000010 (0x42)
+ s1g_tim_olb_test:   octet  8 (SB  5)   : 10100000 (0xa0)
+ s1g_tim_olb_test:   octet  9 (SB  6)   : 01000010 (0x42)
+ s1g_tim_olb_test:   octet 10 (SB  7)   : 10100000 (0xa0)
+ s1g_tim_olb_test:   octet 11 (SB  8)   : 01000010 (0x42)
+ok 3 s1g_tim_olb_test
+ s1g_tim_inverse_block_test: Block 0 (ENC=BLOCK, blk_off=0, inverse=1)
+ s1g_tim_inverse_block_test:   octet  1 (ctrl)    : 00000100 (0x04)
+ s1g_tim_inverse_block_test:   octet  2 (blk-map) : 00000101 (0x05)
+ s1g_tim_inverse_block_test:   octet  3 (SB  0)   : 01000010 (0x42)
+ s1g_tim_inverse_block_test:   octet  4 (SB  2)   : 10100000 (0xa0)
+ok 4 s1g_tim_inverse_block_test
+ s1g_tim_inverse_single_test: Block 0 (ENC=SINGLE, blk_off=0, inverse=1)
+ s1g_tim_inverse_single_test:   octet  1 (ctrl)    : 00000101 (0x05)
+ s1g_tim_inverse_single_test:   octet  2 (single)  : 00011111 (0x1f)
+ok 5 s1g_tim_inverse_single_test
+ s1g_tim_inverse_olb_test: Block 0 (ENC=OLB, blk_off=0, inverse=1)
+ s1g_tim_inverse_olb_test:   octet  1 (ctrl)    : 00000110 (0x06)
+ s1g_tim_inverse_olb_test:   octet  2 (len= 9)  : 00001001 (0x09)
+ s1g_tim_inverse_olb_test:   octet  3 (SB  0)   : 01000010 (0x42)
+ s1g_tim_inverse_olb_test:   octet  4 (SB  1)   : 10100000 (0xa0)
+ s1g_tim_inverse_olb_test:   octet  5 (SB  2)   : 01000010 (0x42)
+ s1g_tim_inverse_olb_test:   octet  6 (SB  3)   : 10100000 (0xa0)
+ s1g_tim_inverse_olb_test:   octet  7 (SB  4)   : 01000010 (0x42)
+ s1g_tim_inverse_olb_test:   octet  8 (SB  5)   : 10100000 (0xa0)
+ s1g_tim_inverse_olb_test:   octet  9 (SB  6)   : 01000010 (0x42)
+ s1g_tim_inverse_olb_test:   octet 10 (SB  7)   : 10100000 (0xa0)
+ s1g_tim_inverse_olb_test:   octet 11 (SB  8)   : 01000010 (0x42)
+ok 6 s1g_tim_inverse_olb_test
+ mac80211-s1g-tim: pass:6 fail:0 skip:0 total:6
+ Totals: pass:6 fail:0 skip:0 total:6
+
 Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
+ net/mac80211/tests/Makefile  |   2 +-
+ net/mac80211/tests/s1g_tim.c | 357 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 358 insertions(+), 1 deletion(-)
+ create mode 100644 net/mac80211/tests/s1g_tim.c
 
-v1 -> v2:
-
-- Implement the other 2 non-optional encoding modes, single AID
-  and OLB. This also meant some code refactoring was done in the
-  block bitmap mode code from v1.
-
----
- drivers/net/wireless/ath/carl9170/rx.c        |   2 +-
- drivers/net/wireless/intersil/p54/txrx.c      |   2 +-
- .../net/wireless/ralink/rt2x00/rt2x00dev.c    |   2 +-
- drivers/net/wireless/realtek/rtlwifi/ps.c     |   2 +-
- include/linux/ieee80211.h                     | 265 +++++++++++++++++-
- net/mac80211/mesh_ps.c                        |   2 +-
- net/mac80211/mlme.c                           |   3 +-
- 7 files changed, 263 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
-index 908c4c8b7f82..6833430130f4 100644
---- a/drivers/net/wireless/ath/carl9170/rx.c
-+++ b/drivers/net/wireless/ath/carl9170/rx.c
-@@ -555,7 +555,7 @@ static void carl9170_ps_beacon(struct ar9170 *ar, void *data, unsigned int len)
- 	/* Check whenever the PHY can be turned off again. */
+diff --git a/net/mac80211/tests/Makefile b/net/mac80211/tests/Makefile
+index 3b0c08356fc5..3c7f874e5c41 100644
+--- a/net/mac80211/tests/Makefile
++++ b/net/mac80211/tests/Makefile
+@@ -1,3 +1,3 @@
+-mac80211-tests-y += module.o util.o elems.o mfp.o tpe.o chan-mode.o
++mac80211-tests-y += module.o util.o elems.o mfp.o tpe.o chan-mode.o s1g_tim.o
  
- 	/* 1. What about buffered unicast traffic for our AID? */
--	cam = ieee80211_check_tim(tim_ie, tim_len, ar->common.curaid);
-+	cam = ieee80211_check_tim(tim_ie, tim_len, ar->common.curaid, false);
- 
- 	/* 2. Maybe the AP wants to send multicast/broadcast data? */
- 	cam |= !!(tim_ie->bitmap_ctrl & 0x01);
-diff --git a/drivers/net/wireless/intersil/p54/txrx.c b/drivers/net/wireless/intersil/p54/txrx.c
-index 2deb1bb54f24..1294a1d6528e 100644
---- a/drivers/net/wireless/intersil/p54/txrx.c
-+++ b/drivers/net/wireless/intersil/p54/txrx.c
-@@ -317,7 +317,7 @@ static void p54_pspoll_workaround(struct p54_common *priv, struct sk_buff *skb)
- 	tim_len = tim[1];
- 	tim_ie = (struct ieee80211_tim_ie *) &tim[2];
- 
--	new_psm = ieee80211_check_tim(tim_ie, tim_len, priv->aid);
-+	new_psm = ieee80211_check_tim(tim_ie, tim_len, priv->aid, false);
- 	if (new_psm != priv->powersave_override) {
- 		priv->powersave_override = new_psm;
- 		p54_set_ps(priv);
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-index 432ddfac2c33..963c1e0af8b8 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-@@ -679,7 +679,7 @@ static void rt2x00lib_rxdone_check_ps(struct rt2x00_dev *rt2x00dev,
- 	/* Check whenever the PHY can be turned off again. */
- 
- 	/* 1. What about buffered unicast traffic for our AID? */
--	cam = ieee80211_check_tim(tim_ie, tim_len, rt2x00dev->aid);
-+	cam = ieee80211_check_tim(tim_ie, tim_len, rt2x00dev->aid, false);
- 
- 	/* 2. Maybe the AP wants to send multicast/broadcast data? */
- 	cam |= (tim_ie->bitmap_ctrl & 0x01);
-diff --git a/drivers/net/wireless/realtek/rtlwifi/ps.c b/drivers/net/wireless/realtek/rtlwifi/ps.c
-index 6241e4fed4f6..bcab12c3b4c1 100644
---- a/drivers/net/wireless/realtek/rtlwifi/ps.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/ps.c
-@@ -519,7 +519,7 @@ void rtl_swlps_beacon(struct ieee80211_hw *hw, void *data, unsigned int len)
- 
- 	/* 1. What about buffered unicast traffic for our AID? */
- 	u_buffed = ieee80211_check_tim(tim_ie, tim_len,
--				       rtlpriv->mac80211.assoc_id);
-+				       rtlpriv->mac80211.assoc_id, false);
- 
- 	/* 2. Maybe the AP wants to send multicast/broadcast data? */
- 	m_buffed = tim_ie->bitmap_ctrl & 0x01;
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 32c34b8ed583..ba1fa7e14b2e 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -220,6 +220,12 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
- #define IEEE80211_MAX_AID_S1G		8191
- #define IEEE80211_MAX_TIM_LEN		251
- #define IEEE80211_MAX_MESH_PEERINGS	63
-+
-+/* S1G encoding types */
-+#define IEEE80211_S1G_TIM_ENC_MODE_BLOCK	0
-+#define IEEE80211_S1G_TIM_ENC_MODE_SINGLE	1
-+#define IEEE80211_S1G_TIM_ENC_MODE_OLB		2
-+
- /* Maximum size for the MA-UNITDATA primitive, 802.11 standard section
-    6.2.1.1.2.
- 
-@@ -4758,15 +4764,8 @@ static inline unsigned long ieee80211_tu_to_usec(unsigned long tu)
- 	return 1024 * tu;
- }
- 
--/**
-- * ieee80211_check_tim - check if AID bit is set in TIM
-- * @tim: the TIM IE
-- * @tim_len: length of the TIM IE
-- * @aid: the AID to look for
-- * Return: whether or not traffic is indicated in the TIM for the given AID
-- */
--static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
--				       u8 tim_len, u16 aid)
-+static inline bool __ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
-+					 u8 tim_len, u16 aid)
- {
- 	u8 mask;
- 	u8 index, indexn1, indexn2;
-@@ -4789,6 +4788,254 @@ static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
- 	return !!(tim->virtual_map[index] & mask);
- }
- 
-+struct s1g_tim_aid {
-+	u16 aid;
-+	u8 target_blk; /* Target block index */
-+	u8 target_subblk; /* Target subblock index */
-+	u8 target_subblk_bit; /* Target subblock bit */
-+};
-+
-+struct s1g_tim_enc_block {
-+	u8 enc_mode;
-+	bool inverse;
-+	const u8 *ptr;
-+	u8 len;
-+
-+	/*
-+	 * For an OLB encoded block that spans multiple blocks, this
-+	 * is the offset into the span described by that encoded block.
-+	 */
-+	u8 olb_blk_offset;
-+};
-+
+ obj-$(CONFIG_MAC80211_KUNIT_TEST) += mac80211-tests.o
+diff --git a/net/mac80211/tests/s1g_tim.c b/net/mac80211/tests/s1g_tim.c
+new file mode 100644
+index 000000000000..d7352abdeb52
+--- /dev/null
++++ b/net/mac80211/tests/s1g_tim.c
+@@ -0,0 +1,357 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Helper routines to quickly extract the length of an encoded block. Validation
-+ * is also performed to ensure the length extracted lies within the TIM.
++ * KUnit tests for S1G TIM PVB decoding. This test suite covers
++ * IEEE80211-2024 Annex L figures 8, 9, 10, 12, 13, 14. ADE mode
++ * is not covered as it is an optional encoding format and is not
++ * currently supported by mac80211.
++ *
++ * Copyright (C) 2025 Morse Micro
 + */
++#include <linux/ieee80211.h>
++#include <kunit/test.h>
++#include <kunit/test-bug.h>
 +
-+static inline int ieee80211_s1g_len_bitmap(const u8 *ptr, const u8 *end)
++#define MAX_AID 128
++
++#define BC(enc_mode, inverse, blk_off)                          \
++	((((blk_off) & 0x1f) << 3) | ((inverse) ? BIT(2) : 0) | \
++	 ((enc_mode) & 0x3))
++
++static void byte_to_bitstr(u8 v, char *out)
 +{
-+	u8 blkmap;
-+	u8 n_subblks;
-+
-+	if (ptr >= end)
-+		return -EINVAL;
-+
-+	blkmap = *ptr;
-+	n_subblks = hweight8(blkmap);
-+
-+	if (ptr + 1 + n_subblks > end)
-+		return -EINVAL;
-+
-+	return 1 + n_subblks;
++	for (int b = 7; b >= 0; b--)
++		*out++ = (v & BIT(b)) ? '1' : '0';
++	*out = '\0';
 +}
 +
-+static inline int ieee80211_s1g_len_single(const u8 *ptr, const u8 *end)
++static void dump_tim_bits(struct kunit *test,
++			  const struct ieee80211_tim_ie *tim, u8 tim_len)
 +{
-+	return (ptr + 1 > end) ? -EINVAL : 1;
-+}
++	const u8 *ptr = tim->virtual_map;
++	const u8 *end = (const u8 *)tim + tim_len;
++	unsigned int oct = 1;
++	unsigned int blk = 0;
++	char bits[9];
 +
-+static inline int ieee80211_s1g_len_olb(const u8 *ptr, const u8 *end)
-+{
-+	if (ptr >= end)
-+		return -EINVAL;
-+
-+	return (ptr + 1 + *ptr > end) ? -EINVAL : 1 + *ptr;
-+}
-+
-+/*
-+ * Enumerate all encoded blocks until we find the encoded block that describes
-+ * our target AID. OLB is a special case as a single encoded block can describe
-+ * multiple blocks as a single encoded block.
-+ */
-+static inline int ieee80211_s1g_find_target_block(struct s1g_tim_enc_block *enc,
-+						  const struct s1g_tim_aid *aid,
-+						  const u8 *ptr, const u8 *end)
-+{
-+	/* need at least block-control octet */
-+	while (ptr + 1 <= end) {
++	while (ptr < end) {
 +		u8 ctrl = *ptr++;
 +		u8 mode = ctrl & 0x03;
-+		bool contains, inverse = ctrl & BIT(2);
-+		u8 span, blk_off = ctrl >> 3;
-+		int len;
++		bool inverse = ctrl & BIT(2);
++		u8 blk_off = ctrl >> 3;
++
++		kunit_info(
++			test, "Block %u (ENC=%s, blk_off=%u, inverse=%u)", blk,
++			(mode == IEEE80211_S1G_TIM_ENC_MODE_BLOCK)  ? "BLOCK" :
++			(mode == IEEE80211_S1G_TIM_ENC_MODE_SINGLE) ? "SINGLE" :
++								      "OLB",
++			blk_off, inverse);
++
++		byte_to_bitstr(ctrl, bits);
++		kunit_info(test, "  octet %2u (ctrl)    : %s (0x%02x)", oct,
++			   bits, ctrl);
++		++oct;
 +
 +		switch (mode) {
-+		case IEEE80211_S1G_TIM_ENC_MODE_BLOCK:
-+			len = ieee80211_s1g_len_bitmap(ptr, end);
-+			contains = blk_off == aid->target_blk;
-+			break;
-+		case IEEE80211_S1G_TIM_ENC_MODE_SINGLE:
-+			len = ieee80211_s1g_len_single(ptr, end);
-+			contains = blk_off == aid->target_blk;
-+			break;
-+		case IEEE80211_S1G_TIM_ENC_MODE_OLB:
-+			len = ieee80211_s1g_len_olb(ptr, end);
-+			/*
-+			 * An OLB encoded block can describe more then one
-+			 * block, meaning an encoded OLB block can span more
-+			 * then a single block.
-+			 */
-+			if (len > 0) {
-+				/* Minus one for the length octet */
-+				span = DIV_ROUND_UP(len - 1, 8);
-+				/*
-+				 * Check if our target block lies within the
-+				 * block span described by this encoded block.
-+				 */
-+				contains = (aid->target_blk >= blk_off) &&
-+					   (aid->target_blk < blk_off + span);
++		case IEEE80211_S1G_TIM_ENC_MODE_BLOCK: {
++			u8 blkmap = *ptr++;
++
++			byte_to_bitstr(blkmap, bits);
++			kunit_info(test, "  octet %2u (blk-map) : %s (0x%02x)",
++				   oct, bits, blkmap);
++			++oct;
++
++			for (u8 sb = 0; sb < 8; sb++) {
++				if (!(blkmap & BIT(sb)))
++					continue;
++				u8 sub = *ptr++;
++
++				byte_to_bitstr(sub, bits);
++				kunit_info(
++					test,
++					"  octet %2u (SB %2u)   : %s (0x%02x)",
++					oct, sb, bits, sub);
++				++oct;
 +			}
 +			break;
++		}
++		case IEEE80211_S1G_TIM_ENC_MODE_SINGLE: {
++			u8 single = *ptr++;
++
++			byte_to_bitstr(single, bits);
++			kunit_info(test, "  octet %2u (single)  : %s (0x%02x)",
++				   oct, bits, single);
++			++oct;
++			break;
++		}
++		case IEEE80211_S1G_TIM_ENC_MODE_OLB: {
++			u8 len = *ptr++;
++
++			byte_to_bitstr(len, bits);
++			kunit_info(test, "  octet %2u (len=%2u)  : %s (0x%02x)",
++				   oct, len, bits, len);
++			++oct;
++
++			for (u8 i = 0; i < len && ptr < end; i++) {
++				u8 sub = *ptr++;
++
++				byte_to_bitstr(sub, bits);
++				kunit_info(
++					test,
++					"  octet %2u (SB %2u)   : %s (0x%02x)",
++					oct, i, bits, sub);
++				++oct;
++			}
++			break;
++		}
 +		default:
-+			return -EOPNOTSUPP;
++			kunit_info(test, "  ** unknown encoding 0x%x **", mode);
++			return;
 +		}
-+
-+		if (len < 0)
-+			return len;
-+
-+		if (contains) {
-+			enc->enc_mode = mode;
-+			enc->inverse = inverse;
-+			enc->ptr = ptr;
-+			enc->len = (u8)len;
-+			enc->olb_blk_offset = blk_off;
-+			return 0;
-+		}
-+
-+		ptr += len;
-+	}
-+
-+	return -ENOENT;
-+}
-+
-+static inline bool ieee80211_s1g_parse_bitmap(struct s1g_tim_enc_block *enc,
-+					      struct s1g_tim_aid *aid)
-+{
-+	const u8 *ptr = enc->ptr;
-+	u8 blkmap = *ptr++;
-+
-+	/*
-+	 * If our block bitmap does not contain a set bit that corresponds
-+	 * to our AID, it could mean a variety of things depending on if
-+	 * the encoding mode is inverted or not.
-+	 *
-+	 * 1. If inverted, it means the entire subblock is present and hence
-+	 *    our AID has been set.
-+	 * 2. If not inverted, it means our subblock is not present and hence
-+	 *    it is all zero meaning our AID is not set.
-+	 */
-+	if (!(blkmap & BIT(aid->target_subblk)))
-+		return enc->inverse;
-+
-+	/*
-+	 * Increment ptr by the number of set subblocks that appear before our
-+	 * target subblock. If our target subblock is 0, do nothing as ptr
-+	 * already points to our target subblock.
-+	 */
-+	if (aid->target_subblk)
-+		ptr += hweight8(blkmap & GENMASK(aid->target_subblk - 1, 0));
-+
-+	return !!(*ptr & BIT(aid->target_subblk_bit)) ^ enc->inverse;
-+}
-+
-+static inline bool ieee80211_s1g_parse_single(struct s1g_tim_enc_block *enc,
-+					      struct s1g_tim_aid *aid)
-+{
-+	/*
-+	 * Single AID mode describes, as the name suggests, a single AID
-+	 * within the block described by the encoded block. The octet
-+	 * contains the 6 LSBs of the AID described in the block. The other
-+	 * 2 bits are reserved. When inversed, every single AID described
-+	 * by the current block have buffered traffic except for the AID
-+	 * described in the single AID octet.
-+	 */
-+	return ((*enc->ptr & 0x3f) == (aid->aid & 0x3f)) ^ enc->inverse;
-+}
-+
-+static inline bool ieee80211_s1g_parse_olb(struct s1g_tim_enc_block *enc,
-+					   struct s1g_tim_aid *aid)
-+{
-+	const u8 *ptr = enc->ptr;
-+	u8 blk_len = *ptr++;
-+	/*
-+	 * Given an OLB encoded block that describes multiple blocks,
-+	 * calculate the offset into the span. Then calculate the
-+	 * subblock location normally.
-+	 */
-+	u16 span_offset = aid->target_blk - enc->olb_blk_offset;
-+	u16 subblk_idx = span_offset * 8 + aid->target_subblk;
-+
-+	if (subblk_idx >= blk_len)
-+		return enc->inverse;
-+
-+	return !!(ptr[subblk_idx] & BIT(aid->target_subblk_bit)) ^ enc->inverse;
-+}
-+
-+/*
-+ * An S1G PVB has 3 non optional encoding types, each that can be inverted.
-+ * An S1G PVB is constructed with zero or more encoded block subfields. Each
-+ * encoded block represents a single "block" of AIDs (64), and each encoded
-+ * block can contain one of the 3 encoding types alongside a single bit for
-+ * whether the bits should be inverted.
-+ *
-+ * As the standard makes no guarantee about the ordering of encoded blocks,
-+ * we must parse every encoded block in the worst case scenario given an
-+ * AID that lies within the last block.
-+ */
-+static inline bool ieee80211_s1g_check_tim(const struct ieee80211_tim_ie *tim,
-+					   u8 tim_len, u16 aid)
-+{
-+	int err;
-+	struct s1g_tim_aid target_aid;
-+	struct s1g_tim_enc_block enc_blk;
-+
-+	if (tim_len < 3)
-+		return false;
-+
-+	target_aid.aid = aid;
-+	target_aid.target_blk = (aid >> 6) & 0x1f;
-+	target_aid.target_subblk = (aid >> 3) & 0x7;
-+	target_aid.target_subblk_bit = aid & 0x7;
-+
-+	/*
-+	 * Find our AIDs target encoded block and fill &enc_blk with the
-+	 * encoded blocks information. If no entry is found or an error
-+	 * occurs return false.
-+	 */
-+	err = ieee80211_s1g_find_target_block(&enc_blk, &target_aid,
-+					      tim->virtual_map,
-+					      (const u8 *)tim + tim_len + 2);
-+	if (err)
-+		return false;
-+
-+	switch (enc_blk.enc_mode) {
-+	case IEEE80211_S1G_TIM_ENC_MODE_BLOCK:
-+		return ieee80211_s1g_parse_bitmap(&enc_blk, &target_aid);
-+	case IEEE80211_S1G_TIM_ENC_MODE_SINGLE:
-+		return ieee80211_s1g_parse_single(&enc_blk, &target_aid);
-+	case IEEE80211_S1G_TIM_ENC_MODE_OLB:
-+		return ieee80211_s1g_parse_olb(&enc_blk, &target_aid);
-+	default:
-+		return false;
++		blk++;
 +	}
 +}
 +
-+/**
-+ * ieee80211_check_tim - check if AID bit is set in TIM
-+ * @tim: the TIM IE
-+ * @tim_len: length of the TIM IE
-+ * @aid: the AID to look for
-+ * @s1g: whether the TIM is from an S1G PPDU
-+ * Return: whether or not traffic is indicated in the TIM for the given AID
-+ */
-+static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
-+				       u8 tim_len, u16 aid, bool s1g)
++static inline u8 *tim_push(u8 **p, u8 v)
 +{
-+	return s1g ? ieee80211_s1g_check_tim(tim, tim_len, aid) :
-+		     __ieee80211_check_tim(tim, tim_len, aid);
++	*(*p)++ = v;
++	return *p;
 +}
 +
- /**
-  * ieee80211_get_tdls_action - get TDLS action code
-  * @skb: the skb containing the frame, length will not be checked
-diff --git a/net/mac80211/mesh_ps.c b/net/mac80211/mesh_ps.c
-index 20e022a03933..ebab1f0a0138 100644
---- a/net/mac80211/mesh_ps.c
-+++ b/net/mac80211/mesh_ps.c
-@@ -586,7 +586,7 @@ void ieee80211_mps_frame_release(struct sta_info *sta,
- 
- 	if (sta->mesh->plink_state == NL80211_PLINK_ESTAB)
- 		has_buffered = ieee80211_check_tim(elems->tim, elems->tim_len,
--						   sta->mesh->aid);
-+						   sta->mesh->aid, false);
- 
- 	if (has_buffered)
- 		mps_dbg(sta->sdata, "%pM indicates buffered frames\n",
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 107a0aaf0a9d..eee842b36bec 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7436,7 +7436,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 	ncrc = elems->crc;
- 
- 	if (ieee80211_hw_check(&local->hw, PS_NULLFUNC_STACK) &&
--	    ieee80211_check_tim(elems->tim, elems->tim_len, vif_cfg->aid)) {
-+	    ieee80211_check_tim(elems->tim, elems->tim_len, vif_cfg->aid,
-+				vif_cfg->s1g)) {
- 		if (local->hw.conf.dynamic_ps_timeout > 0) {
- 			if (local->hw.conf.flags & IEEE80211_CONF_PS) {
- 				local->hw.conf.flags &= ~IEEE80211_CONF_PS;
++static void tim_begin(struct ieee80211_tim_ie *tim, u8 **p)
++{
++	tim->dtim_count = 0;
++	tim->dtim_period = 1;
++	tim->bitmap_ctrl = 0;
++	*p = tim->virtual_map;
++}
++
++static u8 tim_end(struct ieee80211_tim_ie *tim, u8 *tail)
++{
++	return tail - (u8 *)tim;
++}
++
++static void pvb_add_block_bitmap(u8 **p, u8 blk_off, bool inverse, u8 blk_bmap,
++				 const u8 *subblocks)
++{
++	u8 enc = IEEE80211_S1G_TIM_ENC_MODE_BLOCK;
++	u8 n = hweight8(blk_bmap);
++
++	tim_push(p, BC(enc, inverse, blk_off));
++	tim_push(p, blk_bmap);
++
++	for (u8 i = 0; i < n; i++)
++		tim_push(p, subblocks[i]);
++}
++
++static void pvb_add_single_aid(u8 **p, u8 blk_off, bool inverse, u8 single6)
++{
++	u8 enc = IEEE80211_S1G_TIM_ENC_MODE_SINGLE;
++
++	tim_push(p, BC(enc, inverse, blk_off));
++	tim_push(p, single6 & GENMASK(5, 0));
++}
++
++static void pvb_add_olb(u8 **p, u8 blk_off, bool inverse, const u8 *subblocks,
++			u8 len)
++{
++	u8 enc = IEEE80211_S1G_TIM_ENC_MODE_OLB;
++
++	tim_push(p, BC(enc, inverse, blk_off));
++	tim_push(p, len);
++	for (u8 i = 0; i < len; i++)
++		tim_push(p, subblocks[i]);
++}
++
++static void check_all_aids(struct kunit *test,
++			   const struct ieee80211_tim_ie *tim, u8 tim_len,
++			   const unsigned long *expected)
++{
++	for (u16 aid = 1; aid <= MAX_AID; aid++) {
++		bool want = test_bit(aid, expected);
++		bool got = ieee80211_s1g_check_tim(tim, tim_len, aid);
++
++		KUNIT_ASSERT_EQ_MSG(test, got, want,
++				    "AID %u mismatch (got=%d want=%d)", aid,
++				    got, want);
++	}
++}
++
++static void fill_bitmap(unsigned long *bm, const u16 *list, size_t n)
++{
++	size_t i;
++
++	bitmap_zero(bm, MAX_AID + 1);
++	for (i = 0; i < n; i++)
++		__set_bit(list[i], bm);
++}
++
++static void fill_bitmap_inverse(unsigned long *bm, u16 max_aid,
++				const u16 *except, size_t n_except)
++{
++	bitmap_zero(bm, MAX_AID + 1);
++	for (u16 aid = 1; aid <= max_aid; aid++)
++		__set_bit(aid, bm);
++
++	for (size_t i = 0; i < n_except; i++)
++		if (except[i] <= max_aid)
++			__clear_bit(except[i], bm);
++}
++
++static void s1g_tim_block_test(struct kunit *test)
++{
++	u8 buf[256] = {};
++	struct ieee80211_tim_ie *tim = (void *)buf;
++	u8 *p, tim_len;
++	static const u8 subblocks[] = {
++		0x42, /* SB m=0: AIDs 1,6 */
++		0xA0, /* SB m=2: AIDs 21,23 */
++	};
++	u8 blk_bmap = 0x05; /* bits 0 and 2 set */
++	bool inverse = false;
++	static const u16 set_list[] = { 1, 6, 21, 23 };
++	DECLARE_BITMAP(exp, MAX_AID + 1);
++
++	tim_begin(tim, &p);
++	pvb_add_block_bitmap(&p, 0, inverse, blk_bmap, subblocks);
++	tim_len = tim_end(tim, p);
++
++	fill_bitmap(exp, set_list, ARRAY_SIZE(set_list));
++
++	dump_tim_bits(test, tim, tim_len);
++	check_all_aids(test, tim, tim_len, exp);
++}
++
++static void s1g_tim_single_test(struct kunit *test)
++{
++	u8 buf[256] = {};
++	struct ieee80211_tim_ie *tim = (void *)buf;
++	u8 *p, tim_len;
++	bool inverse = false;
++	u8 blk_off = 0;
++	u8 single6 = 0x1f; /* 31 */
++	static const u16 set_list[] = { 31 };
++	DECLARE_BITMAP(exp, MAX_AID + 1);
++
++	tim_begin(tim, &p);
++	pvb_add_single_aid(&p, blk_off, inverse, single6);
++	tim_len = tim_end(tim, p);
++
++	fill_bitmap(exp, set_list, ARRAY_SIZE(set_list));
++
++	dump_tim_bits(test, tim, tim_len);
++	check_all_aids(test, tim, tim_len, exp);
++}
++
++static void s1g_tim_olb_test(struct kunit *test)
++{
++	u8 buf[256] = {};
++	struct ieee80211_tim_ie *tim = (void *)buf;
++	u8 *p, tim_len;
++	bool inverse = false;
++	u8 blk_off = 0;
++	static const u16 set_list[] = { 1,  6,	13, 15, 17, 22, 29, 31, 33,
++					38, 45, 47, 49, 54, 61, 63, 65, 70 };
++	static const u8 subblocks[] = { 0x42, 0xA0, 0x42, 0xA0, 0x42,
++					0xA0, 0x42, 0xA0, 0x42 };
++	u8 len = ARRAY_SIZE(subblocks);
++	DECLARE_BITMAP(exp, MAX_AID + 1);
++
++	tim_begin(tim, &p);
++	pvb_add_olb(&p, blk_off, inverse, subblocks, len);
++	tim_len = tim_end(tim, p);
++
++	fill_bitmap(exp, set_list, ARRAY_SIZE(set_list));
++
++	dump_tim_bits(test, tim, tim_len);
++	check_all_aids(test, tim, tim_len, exp);
++}
++
++static void s1g_tim_inverse_block_test(struct kunit *test)
++{
++	u8 buf[256] = {};
++	struct ieee80211_tim_ie *tim = (void *)buf;
++	u8 *p, tim_len;
++	/* Same sub-block content as Figure L-8, but inverse = true */
++	static const u8 subblocks[] = {
++		0x42, /* SB m=0: AIDs 1,6 */
++		0xA0, /* SB m=2: AIDs 21,23 */
++	};
++	u8 blk_bmap = 0x05;
++	bool inverse = true;
++	/*  All AIDs except 1,6,21,23 are set */
++	static const u16 except[] = { 1, 6, 21, 23 };
++	DECLARE_BITMAP(exp, MAX_AID + 1);
++
++	tim_begin(tim, &p);
++	pvb_add_block_bitmap(&p, 0, inverse, blk_bmap, subblocks);
++	tim_len = tim_end(tim, p);
++
++	fill_bitmap_inverse(exp, 63, except, ARRAY_SIZE(except));
++
++	dump_tim_bits(test, tim, tim_len);
++	check_all_aids(test, tim, tim_len, exp);
++}
++
++static void s1g_tim_inverse_single_test(struct kunit *test)
++{
++	u8 buf[256] = {};
++	struct ieee80211_tim_ie *tim = (void *)buf;
++	u8 *p, tim_len;
++	bool inverse = true;
++	u8 blk_off = 0;
++	u8 single6 = 0x1f; /* 31 */
++	/*  All AIDs except 31 are set */
++	static const u16 except[] = { 31 };
++	DECLARE_BITMAP(exp, MAX_AID + 1);
++
++	tim_begin(tim, &p);
++	pvb_add_single_aid(&p, blk_off, inverse, single6);
++	tim_len = tim_end(tim, p);
++
++	fill_bitmap_inverse(exp, 63, except, ARRAY_SIZE(except));
++
++	dump_tim_bits(test, tim, tim_len);
++	check_all_aids(test, tim, tim_len, exp);
++}
++
++static void s1g_tim_inverse_olb_test(struct kunit *test)
++{
++	u8 buf[256] = {};
++	struct ieee80211_tim_ie *tim = (void *)buf;
++	u8 *p, tim_len;
++	bool inverse = true;
++	u8 blk_off = 0, len;
++	/*  All AIDs except the list below are set */
++	static const u16 except[] = { 1,  6,  13, 15, 17, 22, 29, 31, 33,
++				      38, 45, 47, 49, 54, 61, 63, 65, 70 };
++	static const u8 subblocks[] = { 0x42, 0xA0, 0x42, 0xA0, 0x42,
++					0xA0, 0x42, 0xA0, 0x42 };
++	len = ARRAY_SIZE(subblocks);
++	DECLARE_BITMAP(exp, MAX_AID + 1);
++
++	tim_begin(tim, &p);
++	pvb_add_olb(&p, blk_off, inverse, subblocks, len);
++	tim_len = tim_end(tim, p);
++
++	fill_bitmap_inverse(exp, 127, except, ARRAY_SIZE(except));
++
++	dump_tim_bits(test, tim, tim_len);
++	check_all_aids(test, tim, tim_len, exp);
++}
++
++static struct kunit_case s1g_tim_test_cases[] = {
++	KUNIT_CASE(s1g_tim_block_test),
++	KUNIT_CASE(s1g_tim_single_test),
++	KUNIT_CASE(s1g_tim_olb_test),
++	KUNIT_CASE(s1g_tim_inverse_block_test),
++	KUNIT_CASE(s1g_tim_inverse_single_test),
++	KUNIT_CASE(s1g_tim_inverse_olb_test),
++	{}
++};
++
++static struct kunit_suite s1g_tim = {
++	.name = "mac80211-s1g-tim",
++	.test_cases = s1g_tim_test_cases,
++};
++
++kunit_test_suite(s1g_tim);
 -- 
 2.43.0
 
