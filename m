@@ -1,219 +1,175 @@
-Return-Path: <linux-wireless+bounces-26022-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26023-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB99DB120C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jul 2025 17:24:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4830CB123C1
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jul 2025 20:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A19FA3AD162
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jul 2025 15:23:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 669BC1CE15AD
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Jul 2025 18:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E3C1A840A;
-	Fri, 25 Jul 2025 15:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vZXJqSVU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="D66vXu2V"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14862243367;
+	Fri, 25 Jul 2025 18:28:37 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5991C1B3935;
-	Fri, 25 Jul 2025 15:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C9F24729F
+	for <linux-wireless@vger.kernel.org>; Fri, 25 Jul 2025 18:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753457042; cv=none; b=S6BHMXmzeVlZn66ACDyn8CM1um9G5U5S14+NYOHmJLDnSpuN2Qy3tc9DT+Ht4BnsFGipj4VeHS1BJvPXKvOnluhQ50mr+QzxXYz1DP6hy4kEpwQ8ZRC7mjs8fAsPmYqXCmzdKTlWD+vHtU8+tT/qorW3HUNL791QzBbNsSaua48=
+	t=1753468117; cv=none; b=gL+Crd4wINHWJsXfjhJ5E+RLRyMn7ZPWLJ21Y+JYeStg/SLrNef58BQ92BhZbtQd6fMgSjovBoW1BUR/TaBHGUmC6KJPp8En6wVRR1HwSrHxZZdOlYcTc+UcZj+0azzJMGfvALwBYf4Ki31zIaumWGz+VCFl8gsYOzgmBTVJNgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753457042; c=relaxed/simple;
-	bh=cJFU6jOYUc17uE+N/ES9iSQARpEgOPMQRhzgJpU7CT4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UmS1Yvw9Gs4FZRcuLrnoezLrdyGE2Rccs09OH4+jiW9SvFhoG348Inj4tDKLfj37PAgJ1/TOLwDL6hK/Zm9hbONMC7rX3hf++qOa0XTukak80y+E4k9SeTcOxCCwHU7tb4HU5ILr+wYhkeoqi6bLaMdAZGduTo3RldgLz/NLlz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vZXJqSVU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=D66vXu2V; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1753457038;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n4lgC9NmRKNeaBQPMcoCW1/ucdzcGe8uTJ4NlyutYKc=;
-	b=vZXJqSVUZfM1pX/rwmeRLGnrktS3wxy0JvFCpRnVFt7Cdu6U6O/Rjo+BwZoksVp9h8Bea9
-	bxhVW9EnhK2g4hitBX+CdKmErhbcVZRl0jH200eaFLqpXWD7ZF+eWxljZbBunyqjNiHI9L
-	mWFWqRjMYMatfvlQtsVPgQsKbEV953Gf4baRiL7BydhCT/YJStdJWzt0tNTKxCr/X0kV5+
-	hqGbEhGoB+EzckhQrRDgUgktxSsz4kg6CycPJMZB/hO9A9fyQqVNjb/eMxmwKpLh0vA8kh
-	1Knf4nfhoI6XpiBL1lQle1XIPANcGcvKypEIKCXkUrS/mDkS9ZYb+PADjyUKuQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1753457038;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n4lgC9NmRKNeaBQPMcoCW1/ucdzcGe8uTJ4NlyutYKc=;
-	b=D66vXu2Vg2czKBIoUludNgY3zG/U9BxGsgTZO1nNa2pvIJDRQ/kNUeSWIRz/1Cey+Gh3J7
-	DrIcDUVLtDfMzkDQ==
-To: Waiman Long <llong@redhat.com>, Pavel Machek <pavel@ucw.cz>
-Cc: kernel list <linux-kernel@vger.kernel.org>, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- peterz@infradead.org, will@kernel.org, miriam.rachel.korenblit@intel.com,
- linux-wireless@vger.kernel.org, Petr Mladek <pmladek@suse.com>, John
- Ogness <jogness@linutronix.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, Tejun Heo
- <tj@kernel.org>, Simona Vetter <simona@ffwll.ch>, Thierry Reding
- <thierry.reding@gmail.com>
-Subject: Re: locking problems in iwlwifi? was Re: 6.16-rcX: crashing way too
- often on thinkpad X220
-In-Reply-To: <877bzxqo39.ffs@tglx>
-References: <aH/L1PCwtwe8Y1+a@duo.ucw.cz> <aID6XPLXuGo+ViTm@duo.ucw.cz>
- <aIEC4t2EICdgomZV@duo.ucw.cz> <874iv2stk3.ffs@tglx> <87zfcurexx.ffs@tglx>
- <aIJqC/0ZPhgaNdkf@duo.ucw.cz>
- <71548e22-9f3c-469e-a59d-f921da59d927@redhat.com>
- <dd50a074-0988-4a4d-a78f-7862e87dbab0@redhat.com> <877bzxqo39.ffs@tglx>
-Date: Fri, 25 Jul 2025 17:23:56 +0200
-Message-ID: <87v7ngpa43.ffs@tglx>
+	s=arc-20240116; t=1753468117; c=relaxed/simple;
+	bh=ouzsgk+19QmaRO9pKjJbgZ+UqbuwEfzKidBzOU/dHWo=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=rrPEnK9tTVbPp3tJNyMCMqQG4cHEVF5Nd0DM1e0fRDZMMmLcLqJclHrcrzM1BY/62sAi+6J6M3sRMvpXz3PhNQvr2PUvr/WLTLUKNKNp2wyjWHyL0yZiIEW3caHhyW9uVmn67AjcI3ATn202B6L5NUPOeX0O+5Ks4Z5iLkJaEWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-87c24b196cbso251827539f.2
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Jul 2025 11:28:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753468114; x=1754072914;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pipXtIEWEhRvtnHJ7xlpV/XMoRV9BNZ+hdAoR8pES7Y=;
+        b=cUp1Bw+DfOt6LeintrPDtDp60o70DHR00pEDVvXSQds7t8ergk41G9HMGpiysEPOGg
+         PUHkYHFRHWy6/dP0QNkxfwtWRFnVVmYh9rmQnSlN8LwWJH5LrkxNem13yKWV2Swwq5+V
+         giOX7kSgMK4dshVFwJHXsHCpvzbdfox8jK1wd6Hp3//zylj7CPPw4aL6zNp82L7xtUtm
+         r/DF1bCVb2Phbe8Rha4+RIQHWU1j5Po3oeCJ0/jXHkj546lngNqw9ywudttlCT12aVgN
+         pBbqTURUoqABp0N04bLHUtpLWTqaY54UvV+vwU9zdY/FDZSLbIe+X9ywBtVEJDRgIwqU
+         pbKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUG6E6DGyK80L0Z9mUCpVcB2AzYGpdoVJGKFUWGFhJFrCWuODa/oMRhtNlCzEWtbCwFR0ALQ5iq3JSmDIwmoQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2Ckvv3hMLJivnoUtf0egoKwlsjU6b9dPITVTWHnCE1R1HKtaG
+	Y9rL6jLv05Ko/mKk3UVl74BFFvg0kQ1qpzoKORQjnvUT9qOiw8Ybuz2B+AACmAPDyKxcHkImNHS
+	hZbnQVUD2x3J7P6+dIZ6l+VJnlMCJohps1T9T+cweB3wYQw1wDbg/kJaAQlo=
+X-Google-Smtp-Source: AGHT+IH0x+8018duqbyYiMeiRij8Fur/WaLqmHTXNy2m65q2EWKw8XSHg002KZNgmzWMNe02inHWp8hIfNTBxg3rmRMJeyJQfyKK
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a05:6602:1494:b0:87c:538b:2a3c with SMTP id
+ ca18e2360f4ac-880229b13d5mr427236839f.14.1753468114452; Fri, 25 Jul 2025
+ 11:28:34 -0700 (PDT)
+Date: Fri, 25 Jul 2025 11:28:34 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6883ccd2.a00a0220.2f88df.0056.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in ieee80211_ocb_rx_no_sta
+From: syzbot <syzbot+a06b95a67a174af018cf@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jul 24 2025 at 23:24, Thomas Gleixner wrote:
-> On Thu, Jul 24 2025 at 13:55, Waiman Long wrote:
-> So lets look at that call chain further
->
->    vt_console_print()
->      hide_cursor()
->       vc->vc_sw->con_cursor(vc, false); --> fbcon_cursor()
->
->       fbcon_cursor()
->         if (vc->vc_cursor_type & CUR_SW)
->            fbcon_del_cursor_work(info)
->              cancel_delayed_work_sync(&ops->cursor_work);
->
-> Here we are.
+Hello,
 
-It's actually very simple to reproduce in a VM. No wireless, no
-suspend/resume, no special hardware required.
+syzbot found the following issue on:
 
-Enable framebuffer and framebuffer console. Add console=tty0 to the
-kernel command line.
+HEAD commit:    89be9a83ccf1 Linux 6.16-rc7
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17798fd4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9f175a9275d2cdd7
+dashboard link: https://syzkaller.appspot.com/bug?extid=a06b95a67a174af018cf
+compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
 
-Log into FB console and do
+Unfortunately, I don't have any reproducer for this issue yet.
 
-#  echo -e '\033[?17;0;64c'
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/34b3f6e5e365/disk-89be9a83.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/55356b071589/vmlinux-89be9a83.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/5daf2522b291/bzImage-89be9a83.xz
 
-which enables the software cursor, which in turn enables the above
-conditional invocation of fbcon_del_cursor_work(). Then force a printk
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+a06b95a67a174af018cf@syzkaller.appspotmail.com
 
-# echo h >/proc/sysrq-trigger
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 9078 at net/mac80211/ocb.c:63 ieee80211_ocb_rx_no_sta+0x583/0x710 net/mac80211/ocb.c:63
+Modules linked in:
+CPU: 0 UID: 0 PID: 9078 Comm: syz.1.959 Not tainted 6.16.0-rc7-syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+RIP: 0010:ieee80211_ocb_rx_no_sta+0x583/0x710 net/mac80211/ocb.c:63
+Code: 48 c7 c2 80 c5 08 8d be 65 03 00 00 48 c7 c7 a0 c4 08 8d c6 05 4b b5 78 05 01 e8 c8 63 7f f6 e9 0b fc ff ff e8 ce 12 a3 f6 90 <0f> 0b 90 e8 25 ac 6d 00 31 ff 89 c3 89 c6 e8 fa 0d a3 f6 85 db 75
+RSP: 0018:ffffc90000007a08 EFLAGS: 00010283
+RAX: 000000000000022a RBX: ffff888056a7cd80 RCX: ffffc90002181000
+RDX: 0000000000040000 RSI: ffffffff8b18d5a2 RDI: 0000000000000005
+RBP: ffff888025e9e40a R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffff888030e40e40
+R13: 0000000000000001 R14: 0000000000000000 R15: ffff888033a44500
+FS:  00007f8e60a7d6c0(0000) GS:ffff888124720000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000110c3a8d5a CR3: 00000000343fa000 CR4: 00000000003526f0
+Call Trace:
+ <IRQ>
+ ieee80211_accept_frame net/mac80211/rx.c:4445 [inline]
+ ieee80211_prepare_and_rx_handle+0x55a1/0x77a0 net/mac80211/rx.c:4999
+ ieee80211_rx_for_interface+0x10a/0x1f0 net/mac80211/rx.c:5129
+ __ieee80211_rx_handle_packet net/mac80211/rx.c:5285 [inline]
+ ieee80211_rx_list+0x10d7/0x2980 net/mac80211/rx.c:5420
+ ieee80211_rx_napi+0xdc/0x410 net/mac80211/rx.c:5443
+ ieee80211_rx include/net/mac80211.h:5185 [inline]
+ ieee80211_handle_queued_frames+0xd5/0x130 net/mac80211/main.c:441
+ tasklet_action_common+0x281/0x400 kernel/softirq.c:829
+ handle_softirqs+0x219/0x8e0 kernel/softirq.c:579
+ do_softirq kernel/softirq.c:480 [inline]
+ do_softirq+0xb2/0xf0 kernel/softirq.c:467
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0x100/0x120 kernel/softirq.c:407
+ ieee80211_tx_skb_tid+0x176/0x4f0 net/mac80211/tx.c:6131
+ ieee80211_mgmt_tx+0x14d2/0x2310 net/mac80211/offchannel.c:1023
+ rdev_mgmt_tx net/wireless/rdev-ops.h:762 [inline]
+ cfg80211_mlme_mgmt_tx+0x7d5/0x1660 net/wireless/mlme.c:938
+ nl80211_tx_mgmt+0x9f9/0xd60 net/wireless/nl80211.c:12921
+ genl_family_rcv_msg_doit+0x206/0x2f0 net/netlink/genetlink.c:1115
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0x55c/0x800 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x155/0x420 net/netlink/af_netlink.c:2552
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+ netlink_unicast+0x58d/0x850 net/netlink/af_netlink.c:1346
+ netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1896
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg net/socket.c:727 [inline]
+ ____sys_sendmsg+0xa95/0xc70 net/socket.c:2566
+ ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
+ __sys_sendmsg+0x16d/0x220 net/socket.c:2652
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f8e5fb8e9a9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f8e60a7d038 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f8e5fdb5fa0 RCX: 00007f8e5fb8e9a9
+RDX: 0000000000000000 RSI: 0000200000000080 RDI: 0000000000000003
+RBP: 00007f8e5fc10d69 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007f8e5fdb5fa0 R15: 00007ffd54948378
+ </TASK>
 
-and watch the show.
 
-[ 1406.245343] BUG: sleeping function called from invalid context at kernel/workqueue.c:4359
-[ 1406.245345] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1819, name: bash
-[ 1406.245346] preempt_count: 2, expected: 0
-[ 1406.245347] RCU nest depth: 1, expected: 0
-[ 1406.245348] 7 locks held by bash/1819:
-[ 1406.245349]  #0: ffff9a730c4ba428 (sb_writers#4){.+.+}-{0:0}, at: ksys_write+0x73/0xf0
-[ 1406.245444]  #1: ffffffffa7ade120 (rcu_read_lock){....}-{1:3}, at: __handle_sysrq+0x3d/0x270
-[ 1406.245457]  #2: ffffffffa7adb500 (console_lock){+.+.}-{0:0}, at: _printk+0x63/0x80
-[ 1406.245464]  #3: ffffffffa7adb550 (console_srcu){....}-{0:0}, at: console_flush_all+0x3c/0x530
-[ 1406.245470]  #4: ffffffffa7a6b140 (console_owner){....}-{0:0}, at: console_lock_spinning_enable+0x42/0x70
-[ 1406.245475]  #5: ffffffffa7a6b0c0 (printk_legacy_map-wait-type-override){....}-{4:4}, at: console_flush_all+0x2fe/0x530
-[ 1406.245480]  #6: ffffffffa7b8e4d8 (printing_lock){....}-{3:3}, at: vt_console_print+0x5b/0x490
-[ 1406.245487] irq event stamp: 92690
-[ 1406.245488] hardirqs last  enabled at (92689): [<ffffffffa656edef>] console_flush_all+0x49f/0x530
-[ 1406.245491] hardirqs last disabled at (92690): [<ffffffffa656edff>] console_flush_all+0x4af/0x530
-[ 1406.245493] softirqs last  enabled at (91822): [<ffffffffa6455166>] __fpu_restore_sig+0x206/0x6a0
-[ 1406.245497] softirqs last disabled at (91820): [<ffffffffa6455088>] __fpu_restore_sig+0x128/0x6a0
-[ 1406.245499] Preemption disabled at:
-[ 1406.245499] [<ffffffffa6570211>] vprintk_emit+0x1f1/0x430
-[ 1406.245505] CPU: 46 UID: 0 PID: 1819 Comm: bash Not tainted 6.16.0-rc7+ #446 PREEMPT(voluntary)
-[ 1406.245508] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[ 1406.245510] Call Trace:
-[ 1406.245514]  <TASK>
-[ 1406.245519]  dump_stack_lvl+0x77/0xb0
-[ 1406.245526]  __might_resched+0x1b2/0x2d0
-[ 1406.245539]  cancel_delayed_work_sync+0x57/0x90
-[ 1406.245548]  fbcon_cursor+0xb2/0x140
-[ 1406.245558]  hide_cursor+0x24/0xb0
-[ 1406.245562]  vt_console_print+0x471/0x490
-[ 1406.245565]  ? __pfx_vt_console_print+0x10/0x10
-[ 1406.245575]  console_flush_all+0x32b/0x530
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-As I've enabled CONFIG_DEBUG_ATOMIC_SLEEP I get the splat immediately
-even when there is no work queued. (I misread that code yesterday with
-my tried brain and thought the might_sleep() would be too late).
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-And clearly this is invoked with interrupts disabled:
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-[ 1406.245345] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1819, name: bash
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-Now if there would be work executed at that moment then the lockdep
-splat _AND_ the subsequent 'irqs already enabled' splat would
-materialize.
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-I can't be bothered to figure out how to make the work executed because
-the above is already a clear prove of the theory :)
-
-It requires that the software cursor is enabled. That's probably rare,
-so that explains why this went unnoticed for so long.
-
-Contrary to all the halluzinations about the printk locking and lockdep
-correctness, this is a crystal clear bug in the framebuffer console code
-and has absolutely nothing to do with the printk() core code.
-
-The workqueue issue got introduced with commit 3b0fb6ab25dd ("fbcon: Use
-delayed work for cursor") in 5.19, but that replaced a del_timer_sync(),
-which had a similar problem because del_timer_sync() cannot be invoked
-in hard interrupt context, but printk() can ...
-
-That del_timer_sync() was conditional up to 4.2, where it became
-unconditional in commit 2a17d7e80f1d ("fbcon: unconditionally initialize
-cursor blink interval") just to be "fixed" shortly before 4.2-rc1 by
-moving the conditional back in commit a5edce421848 ("fbcon: Avoid
-deleting a timer in IRQ context").
-
-That conditional did not fix anything as it just pushed the delete into
-the rarely executed path, therefore hiding the bug, which existed from
-the very beginning when this cursor blinking muck was introduced with
-commit acba9cd01974 ("fbcon: cursor blink control") in 2.6.23.
-
-So this software cursor code path was never tested with printk() and
-actually the splat which led to commit a5edce421848 ("fbcon: Avoid
-deleting a timer in IRQ context") should have made it crystal clear that
-this code path is broken:
-
- ------------[ cut here ]------------
- WARNING: CPU: 0 PID: 0 at ../kernel/time/timer.c:1098 del_timer_sync+0x4c/0x54()
- Modules linked in:
- CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.1.0-rc4-next-20150519 #1
- Hardware name: SAMSUNG EXYNOS (Flattened Device Tree)
- [] (warn_slowpath_null) from [] (del_timer_sync+0x4c/0x54)
- [] (del_timer_sync) from [] (fbcon_del_cursor_timer+0x2c/0x40)
- [] (fbcon_del_cursor_timer) from [] (fbcon_cursor+0x9c/0x180)
- [] (fbcon_cursor) from [] (hide_cursor+0x30/0x98)
- [] (hide_cursor) from [] (vt_console_print+0x2a8/0x340)
- [] (vt_console_print) from [] (call_console_drivers.constprop.23+0xc8/0xec)
- [] (call_console_drivers.constprop.23) from [] (console_unlock+0x498/0x4f0)
- [] (console_unlock) from [] (vprintk_emit+0x1f0/0x508)
- [] (vprintk_emit) from [] (vprintk_default+0x24/0x2c)
- [] (vprintk_default) from [] (printk+0x70/0x88)
- 
-But no, hiding it behind a rarely true conditional without actually
-testing it, is way better. Seriously?
-
-The changelog should have been:
-
-    This commit papers over the underlying problem by restoring the
-    condition...
-
-I leave it as an exercise to the framebuffer people how to fix this
-trainwreck for real.
-
-Thanks,
-
-        tglx
+If you want to undo deduplication, reply with:
+#syz undup
 
