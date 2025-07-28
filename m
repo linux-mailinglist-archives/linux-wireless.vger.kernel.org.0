@@ -1,103 +1,113 @@
-Return-Path: <linux-wireless+bounces-26032-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26033-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B717B1304D
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Jul 2025 18:12:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA33B13423
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jul 2025 07:26:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D54063B832B
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Jul 2025 16:12:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DC577A346D
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Jul 2025 05:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010B721B9CF;
-	Sun, 27 Jul 2025 16:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02FCF218821;
+	Mon, 28 Jul 2025 05:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EMLZr7ia"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="BZX3gSUT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573937080D
-	for <linux-wireless@vger.kernel.org>; Sun, 27 Jul 2025 16:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925011E5710;
+	Mon, 28 Jul 2025 05:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753632768; cv=none; b=aH1w87l/+F7/TTe8VF+qF8nVpX+mh2xQkwTHgeD2vuaTLWU2vWSDxQ7miE10UrSckTyA1xElAIfpNOFUGY5r10QTyJrB9yUTb1p2/mKlkxKMt2YPA8pqK/i6jtEgi4DRRrsS7nrD06v2SaRJPp4RxmEjNjmYPxBRq4I9V/HwM1I=
+	t=1753680384; cv=none; b=nhb3A7h+HD2zBdRI5ez8Ww12fiGFm97SdGzuEHJQ0g4J4ugIsO8OJ8bezaKwzggwUTtrmtD2BBMXhcTSQu+4j/oL4w2cyvTP1ED+gx5/4RfX6DvyqxdhnC2gmSlen8QlJxe8md7VlblgLhv9IDd7YJpIDyT1Ack28YHQoUKFniU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753632768; c=relaxed/simple;
-	bh=DFOzUj9K5sz2AyUXU0YQv0swbqE5NNAXVR7EWOuA31c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LJN/pwo8Fm49TsVNhiYZY+mamfS/VMcMaPi9Uy5553k0Lx10+4x/T3ty9iWOKeFJe9fcR5CdmjBMb0hQNi8mHYwjJ4nR3VE5vi/0VQQTfvo1YRS5G6dopCpRJeBG5kBIUoe7und0/jbDe1LaAjIKZw4KSep7I5a7zAnwYa9OR0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EMLZr7ia; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ae0b2ead33cso662553566b.0
-        for <linux-wireless@vger.kernel.org>; Sun, 27 Jul 2025 09:12:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753632764; x=1754237564; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DFOzUj9K5sz2AyUXU0YQv0swbqE5NNAXVR7EWOuA31c=;
-        b=EMLZr7iacD8EDUHo8Ky55eWb6I8kNxiIQie2kmOE2Q3oKjMoOK9iqH+cJXTuNDa4EF
-         6UgTkiUE5TPZ7SATI/Vp0UprkSgtiNW3B2EjE+nw7PLrEwLDDjaBloelmcCZxjBkh8Gj
-         XV0G7w8FIns412oqInTWJ0YC6Z1kGIuguQ/Xc7RN96IurBfpHeIjY+ZqSmAnrQa5c9ro
-         GtVspvT1DXuUdoLlQjR33di5/wDsPRucJbVa/a+C2YzVNXGIKtWM8x+xwTmu7SNO1+hA
-         1rM0oKvhaszLGDMUv1ASRYZvoRAFO4QKlpM4yDm1Im46gvjR3KPn4YQVivLOa9f6P5R/
-         /3TA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753632764; x=1754237564;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DFOzUj9K5sz2AyUXU0YQv0swbqE5NNAXVR7EWOuA31c=;
-        b=S4bnqezZwwC4bDPr2WP12mdlSaPPk6rtyiEPHfsBuvaDASmUmZY7KnmsRC79zGpHkq
-         /RzLVYzUfYBo1yZz8jVnMkHL+o4Tfker237T1ccJrGF7C14CrZ2qBxQhW+Ypn0/UJu2n
-         fl8lsnEHFmWrxV60i20rJNn7HoT+kGpLMuTZ4CXsxdWzFIh1+k4HSalJ682J3d3zAjQu
-         yR8I8ley6XO5AsVytbjerKpnabsfm9hb/dXRBxeQaEHz6j7oTwnHMpGhwwzX4beoE9H0
-         2dKgBBIs0ZAuc4IiDQ634ckmQ6FFINoCrXR8H/g6pkuYKw6iL94KyiunJrrhf15jbydx
-         ly4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXaWXTQMSPVXnasp9v9VERtW0CPGcJMDy49Bu/E0zVWr9JTSenAZ+bhfxEdQzr5A4tWDRYYGFaBM4IQJlyGSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXf0el8vmSzoYlT+EXDkMyrYc6YNNIbkU1nGgZkx+JZNViwxbd
-	tib8fkYbhher5e5tojEoFQiZ/DdLHvlJxawwiLTBCGDqw5woXgsLeffLMjCO7NNHS1Tnjp1PMzt
-	0AI+ud+1xASeSPiVfzVm/x8VQqc0nqmE=
-X-Gm-Gg: ASbGncvn85dZeJW3a1awgMqCAUkOzXw/tiQPJFI1tA0jxTQ8kLXNRPlF4QIt11o8uo2
-	5RNnLxGcWTKhzGYniby3V9+NlqO1iFkjnypUgOqKy/9GRn5v08boG/BtK8GnUJm4dHmHJler00E
-	QSuLU+sufoPPexNfCsS2GrKcaBkNKx6PuclnqgjqmWc2s7vp55RTcSWY5HRAVCb9sJxfUFXg8N8
-	bA/Zg==
-X-Google-Smtp-Source: AGHT+IGm5oJzXS1VTNxMFbpMraezq4mknIPV6KXIGvaUrUwahRYJxZJl9clULU2n4xwGWn/Ra+UYw+5hvCzryqbbQYc=
-X-Received: by 2002:a17:907:9623:b0:ae3:c777:6e5e with SMTP id
- a640c23a62f3a-af61df52d26mr1030351566b.19.1753632764316; Sun, 27 Jul 2025
- 09:12:44 -0700 (PDT)
+	s=arc-20240116; t=1753680384; c=relaxed/simple;
+	bh=vUl/CVWv6EUDsCfDYrlsj8rEGl3mxFXEsozAp04Z+tY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=npGI8RXU1CEbxySxdfCfuhKK2IDITL1aHaKF7RjZZ1uBiJyrmpobD9n9GJk+hsr2vyzyHfo6hg5znhvn96zKlX6Y8MorvD6u072Z2LEpNy3qJojDytpTcI6fC0vRGOdCP7zgZpkpE6C6xmPU7qtc0PHK2+8KcWU/f9psUGudx4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=BZX3gSUT; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 622046c06b7311f08b7dc59d57013e23-20250728
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=eZVS2PwB+Mr65V20wx54kFs6lWX/dKmPF5dZD709224=;
+	b=BZX3gSUTk6jNK3nTFbNGeyhv0cP1up+Hkv2/jT1rtn6zxnCqjxAQwPYQJIhMJ6BvHR+hBLI4GQissT0hPxNHV3t4s6exIxmVtEUpHKmjZuzwbWV/t4sBb1b1QK3XvRioBrP+8a6a/yW6O2NsOdBTeCCovGwes+q71mjJESPVyU8=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.2,REQID:a2c91b1e-9983-4394-9357-86a964114229,IP:0,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:25
+X-CID-META: VersionHash:9eb4ff7,CLOUDID:80c5559a-32fc-44a3-90ac-aa371853f23f,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|15|50,EDM:5,IP:
+	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
+	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 622046c06b7311f08b7dc59d57013e23-20250728
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1469528766; Mon, 28 Jul 2025 13:26:16 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Mon, 28 Jul 2025 13:26:12 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Mon, 28 Jul 2025 13:26:12 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
+Subject: [PATCH] wifi: mt76: mt7925: fix the wrong bss cleanup for SAP
+Date: Mon, 28 Jul 2025 13:26:12 +0800
+Message-ID: <20250728052612.39751-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPDiVH8gaBH6o_OY-zUWYpDbj5mhiqmofKGb71gLgHOi4vA=Vw@mail.gmail.com>
- <0ba2176e-3339-4a8b-850a-ca5643939c8b@oss.qualcomm.com> <fd3bd8b1-4108-445a-b65f-4769d73e6e63@arm.com>
- <4a13d862-1bbb-4a98-bc1d-219bf78f7c0d@amd.com> <CAPDiVH-kVCUY8DKexT9OqAZsvkZ5_CGo8d8nENYA-kD=s_x8wA@mail.gmail.com>
- <e008afed-819d-43eb-8895-2c7aaf24ec13@oss.qualcomm.com> <CAPDiVH-xPDmx-KQx7YJY=7+kwJNbGY-rEu-w+cz18p=kjnKFsw@mail.gmail.com>
- <979be2a9-9d0b-4382-8519-2f6fbcac5375@oss.qualcomm.com> <CAPDiVH9Fi3Rw4K4npHMAEcOPMj=iFMEJOyhn5cRaq3+9kBYNZA@mail.gmail.com>
-In-Reply-To: <CAPDiVH9Fi3Rw4K4npHMAEcOPMj=iFMEJOyhn5cRaq3+9kBYNZA@mail.gmail.com>
-From: Matt Mower <mowerm@gmail.com>
-Date: Sun, 27 Jul 2025 09:12:32 -0700
-X-Gm-Features: Ac12FXwBICgNG1gWDdZiWG0w1xg4GvfxWwSPgdsBoA9_Nhz0K07_JUa8-TYNFHU
-Message-ID: <CAPDiVH_-=DzPjyjDo34-0HG20feiGfrM4eOpkPt6bavrw2qWaA@mail.gmail.com>
-Subject: Re: ath12k_pci errors and loss of connectivity in 6.12.y branch
-To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Cc: Vasant Hegde <vasant.hegde@amd.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Jeff Johnson <jjohnson@kernel.org>, will@kernel.org, joro@8bytes.org, 
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
-	1107521@bugs.debian.org, iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
-Baochen - aside from finding a commit where stability disappears (from
-my last message, stability is achieved when I cherry pick "wifi:
-ath12k: modify ath12k_mac_op_bss_info_changed() for MLO"), is there
-any other debugging information I can provide? You mentioned that
-firmware is a likely culprit; would it help to get a dump from the
-ATH12K_COREDUMP feature (commit "wifi: ath12k: Add firmware coredump
-collection support")? If so, could you give me a hint about how to
-generate the dump and where to find it?
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+
+When in SAP mode, if a STA disconnect, the SAP's BSS
+should not be cleared.
+
+Fixes: 0ebb60da8416 ("wifi: mt76: mt7925: adjust rm BSS flow to prevent next connection failure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 37fe1363f990..36a1c4a4b135 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1192,6 +1192,9 @@ mt7925_mac_sta_remove_links(struct mt792x_dev *dev, struct ieee80211_vif *vif,
+ 		struct mt792x_bss_conf *mconf;
+ 		struct mt792x_link_sta *mlink;
+ 
++		if (vif->type == NL80211_IFTYPE_AP)
++			break;
++
+ 		link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
+ 		if (!link_sta)
+ 			continue;
+-- 
+2.34.1
+
 
