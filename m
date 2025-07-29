@@ -1,128 +1,113 @@
-Return-Path: <linux-wireless+bounces-26046-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26047-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709A7B15225
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 19:35:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33585B152D0
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 20:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CDCB3BC4B7
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 17:34:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E458E7A760F
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 18:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1E0293462;
-	Tue, 29 Jul 2025 17:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACF11DE4C3;
+	Tue, 29 Jul 2025 18:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OKVoOatt"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="k9PnZBDz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0B2149C6F;
-	Tue, 29 Jul 2025 17:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557BF23496F
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Jul 2025 18:28:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753810509; cv=none; b=q2HpkhZ0Mm0T1JR2Z3LYBRrpqaIJ5Xgid//xPxTfYBg4VWZHwRWm2NAgfXHttoRt+/Q6xiRrRQWJidxXFyL9df44a5/DkXC+RI1mSOYUq3xhmWRJzTCBeDbiDafASlJPO6ivw4PLAXgAoW+dL2hRzHTSUlbLtTtGOZGrFekJfSc=
+	t=1753813695; cv=none; b=B1KQL08MtnqiREAU0GIpq/guj8sbyXEwF8OZrTPEjyQqXUbYInctUGxsHkDD8lNKWUNkiQzkDG8ufUbRp+eIdKdikwJ1hGsakS/yuQbsKgMGCowpCd9m6Cut2taYBob66puiugZ+J+nUWl8u+UxDpv+zsEltbrP72Q317rjyX4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753810509; c=relaxed/simple;
-	bh=3NmNtZa5VeYSHqANC2TqiMMYhQFfpOOqO+8oQm71evE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=N2hFpI09BASGkTMFl5o6+XYs+J20/Xg8k/GVoOaDx9fD3pjJT2AVlTMOUih4/I/5d55nq4J76k8CaTpvvmmYzr7uUuMqbyFMPr/Z0my6QfsgUwiWVJf6Up5VsatDeRKwk0O3I7h1ypa5+PK8WPFiTqwvCiFYeFzTYdIpvPg9APY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OKVoOatt; arc=none smtp.client-ip=209.85.210.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-74b50c71b0aso3471917b3a.0;
-        Tue, 29 Jul 2025 10:35:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753810507; x=1754415307; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HwA1RlZ6wO9TlQ9boahv87HHJljaAP2dy/gW/a+blhQ=;
-        b=OKVoOatt+tzq5lY0BrURCTUkMNcN7G1Z6UANtnd499ZWuptdoHKHBcJpE/RrVsWANc
-         66dLn/MLhW9euvzm7yrZEV4TjWe2z6agpbiibriOxdLN9eO7+JT9WUxWiPYVlvSXkVLd
-         3GLjczCsPxkD2uRcc7PPPdsM+U3Ha3xG8y0iotfDwhIBu8KxsyGkbZlQvM9uqabmBNyZ
-         t2BUb7lz830Tso/Wl8Ilkh7ttVHAgBi70ZF3p0U0E1EW1Mau2IDj2OCOVufSRw4Dl49m
-         qUXTqEmVYq2PKIbYPCsKX3u4bK2WcVDVRyTzQBdmjO++qnpjqycHl11iUi0qgLa2XY2r
-         tJ0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753810507; x=1754415307;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HwA1RlZ6wO9TlQ9boahv87HHJljaAP2dy/gW/a+blhQ=;
-        b=Jr1dqqrjd64mrNNg7erPESayOd9UC5NB45Pn9+dZIm0RwTZjA/ZLzfzqCmYMJNk+Vl
-         dmRe5bOxSrfSBxX/kaFLQyUM9nwLp6S+h+wsZT5ihQjUJSQisxmZBTWRmUvQJaWycVbu
-         tO2gObg6QTINrscy9ibdfqjI93enn3j8v4KJIS1+sFug0tLNByV6ykfTIFPw/O8L7Q65
-         gLydnCyAhNKcF0tIugYxbR0TjV0zTb6gS68GZi0m9CbDiRgmTTjT3Mfs6oswePN45xap
-         QCTDfXemWp3AhV5s0zz5hKObuy71Ppn02yHSVicKvMd9BYz3vTWTdlJei0bGQbZh75zM
-         XQnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUe6x4NIlASrmfBEGhGBrUOHmxyu4Pwsl2w1z8EwyjfeNsxAfn4zw83VHDdzOBaCd+AgSj7vj17TXeH@vger.kernel.org, AJvYcCWWKiCoGpZivlyTjUAXO4x6fYXCoTG0Tf9ry662CoYZ8nbZmrPoLTAniTCWGH8kdijVEANLeWI7vX75soOmVwM=@vger.kernel.org, AJvYcCXRbGO2cjPMCSuO4IgyA30X32J6G4LjQynzxI/ubM/4O53WEjgsCEYTZQXKvcmAKWUvS0QfEacp@vger.kernel.org, AJvYcCXpzYwA/YFlj6SfoaM2ezE68It3g4HUvhDE5KA0PSb2AVuNxarNj7bZGb2gP82yoK4i4VYkW5supAmd@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsIS7ibmLSQW4bqHlc8OIzzlTXz81WgwmLgdG4VsJl4mwxkYm2
-	YnK3Qq5g0v3S9fUhSECcbSJ/pGhznLd/lkhnHc6FKdO/tOQYALzJ2Uy1
-X-Gm-Gg: ASbGnctGwClGYMHNordS+AKuY8yUtOOuRSM4xSiSQhOt7zC4nlZxr38euuxDIEnlgKI
-	2GiT5ZlyH4bPutCI1z3WX/UIDrS3viHb5doP0c5vGLvJp8z/UeFfWfpQaX/AdfC5otf1HRresRy
-	xTPEY096KmWhmlto+/RnTmSuHk3mWonSVhKBC4rya3DsHIzxIFkde/9pg93bgXZaEYyrjIuBfc8
-	WiBmFmmXNPbOZHRt29EwJqQwSw16p1k3tmJOFMsEnbCrTygVzYmOHogOg2aEy2LsQjX+OHRdGSI
-	8brdlJO8RbB+fY8elfk41bjmdWJIVbHhc/nPAOtWuN6d7S1aST9XTh6RJPt+VfoGK9o7ZzNbBDm
-	MHjCqYd/Q/Pc9cTzNWxO1DpWDbq6Cu7KnI9SPOdl0E0iK2cODH5HpCUs=
-X-Google-Smtp-Source: AGHT+IE1dmaZoFNOYX+Gigetj57fT95zLeVxN+Drcy30z0zJ7kHrKOg7qJ05QcxUEd5gYQTYuwqFlQ==
-X-Received: by 2002:a05:6a20:7346:b0:237:de39:7ebb with SMTP id adf61e73a8af0-23dc0d32203mr451871637.6.1753810507358;
-        Tue, 29 Jul 2025 10:35:07 -0700 (PDT)
-Received: from [192.168.0.119] ([115.187.48.187])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b41fda7b737sm5233638a12.66.2025.07.29.10.35.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Jul 2025 10:35:07 -0700 (PDT)
-Message-ID: <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
-Date: Tue, 29 Jul 2025 23:05:02 +0530
+	s=arc-20240116; t=1753813695; c=relaxed/simple;
+	bh=lMOnLS0VwxtEidxWiWAWCVrcvx0yHEOJ14h47dL6mgk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ltu8RMUXkTp1zQXATMuHqaBWulT/LBB+M5pfSb0jmg6tmvqoBhOb9J7uG9jEdBZ2Jh4jHn0azDaoVs34xQMzzHjNtyOwaPWlvo5JfzNnewKyfa6CgjlWawfm2sh7tPL9rc/M2apZnFEr+5xnITv2tV0Poz884iu6CZ1CrAtZ9J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=k9PnZBDz; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753813681;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DOaP5vz8UTvnvKSp2Fkp0F+QZjKjpVri0xMUDcS+yUw=;
+	b=k9PnZBDzaEgmOO9Ef6FzSoZb4H6Lbl6FunJ/LLbTqGJI3DxhWChomAK2ZTzsTv2MmPeuUF
+	Wg3e3gq5drKt3rUAK+HHZaYXETgkLgu48yaXXQPcVSpPuFi10huce0WQ17xkMPeu3GJFfe
+	h9EJd/cEtJIb1w12bP4Wad4VYmfuKdw=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Sean Anderson <sean.anderson@linux.dev>
+Subject: [PATCH] wifi: rtw89: Print only once for unsupported c2h classes
+Date: Tue, 29 Jul 2025 14:27:43 -0400
+Message-Id: <20250729182743.114733-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being
- disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
- Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
- linux-wireless@vger.kernel.org, stable@vger.kernel.org
-References: <FB546B0D-2209-4FA0-9DC9-A75C0BC9FA4F@gmail.com>
- <20250711163645.GA2294895@bhelgaas>
- <CAEmM+QiSZBoJV2n6944tYU7fcrzKRTUgsKRdqwDEkKkZiPVCMw@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CAEmM+QiSZBoJV2n6944tYU7fcrzKRTUgsKRdqwDEkKkZiPVCMw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hello everyone,
+There are more unsupported functions than just LOWRT_RTY. Improve on
+commit 3b66519b023b ("wifi: rtw89: phy: add dummy c2h handler to avoid
+warning message") by printing a message just once when we first
+encounter an unsupported class. This prevents messages like
 
-I hope this email finds you all in good health.
+rtw89_8922ae 0000:81:00.0: PHY c2h class 2 not support
 
-This short email is being made as a humble request to look at the logs I 
-sent previously, and if anything can be done to them.
+from filling up dmesg.
 
-Thanks,
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+---
 
-Bandhan Pramanik
+ drivers/net/wireless/realtek/rtw89/phy.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-বন্ধন প্রামাণিক
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index f4eee642e5ce..5280ffd77b39 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -3535,6 +3535,7 @@ void rtw89_phy_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
+ {
+ 	void (*handler)(struct rtw89_dev *rtwdev,
+ 			struct sk_buff *c2h, u32 len) = NULL;
++	static DECLARE_BITMAP(printed_support, U8_MAX);
+ 
+ 	switch (class) {
+ 	case RTW89_PHY_C2H_CLASS_RA:
+@@ -3549,17 +3550,15 @@ void rtw89_phy_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
+ 		if (func < ARRAY_SIZE(rtw89_phy_c2h_rfk_report_handler))
+ 			handler = rtw89_phy_c2h_rfk_report_handler[func];
+ 		break;
+-	case RTW89_PHY_C2H_CLASS_DM:
+-		if (func == RTW89_PHY_C2H_DM_FUNC_LOWRT_RTY)
+-			return;
+-		fallthrough;
+ 	default:
+-		rtw89_info(rtwdev, "PHY c2h class %d not support\n", class);
++		if (!test_and_set_bit(class, printed_support))
++			rtw89_info(rtwdev, "PHY c2h class %d not supported\n",
++				   class);
+ 		return;
+ 	}
+ 	if (!handler) {
+-		rtw89_info(rtwdev, "PHY c2h class %d func %d not support\n", class,
+-			   func);
++		rtw89_info(rtwdev, "PHY c2h class %d func %d not supported\n",
++			   class, func);
+ 		return;
+ 	}
+ 	handler(rtwdev, skb, len);
+-- 
+2.35.1.1320.gc452695387.dirty
 
-
-On 7/12/25 12:18 PM, Bandhan Pramanik wrote:
-> Compiled the usual way: the bzImage compiled within 4-5 minutes
-> (compared to 1 hour previously), and the modules compiled within 1
-> hour (compared to 8 hours previously). Also, the congestion strangely
-> didn't happen. It was instead silently followed by "No Internet".
->
-> Didn't add the kernel-level journalctl because I'm sure that the
-> normal journalctl includes the kernel-level stuff too:
-> https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/07b34aa3fa19da5afa4bb161454e3cb2081b9880/journalctl%2520v6.16-rc4-PATCH1
->
-> Please let me know what you think of the logs.
->
-> Bandhan
 
