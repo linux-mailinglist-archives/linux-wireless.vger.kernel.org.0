@@ -1,92 +1,101 @@
-Return-Path: <linux-wireless+bounces-26043-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26044-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA32B1501E
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 17:22:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4030B1502E
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 17:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1174E3A7C45
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 15:21:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D3A1179195
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 15:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B25C1EF397;
-	Tue, 29 Jul 2025 15:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329EA293B63;
+	Tue, 29 Jul 2025 15:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Un/VKBoO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Keg0jCtj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B1D1F956
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Jul 2025 15:21:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092EA293B5A;
+	Tue, 29 Jul 2025 15:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753802520; cv=none; b=rYoCJ2t+QMbNOykhkkNtY/E2OIPsKJZE4uQZTcy8KjzDjV6SAEFMtqX02YU98mVn2iE6vXhaEfJiCInbQ/hkfjN2fnnZj+A7VKevn8K2I9ub69bkzduN5EkpeJBXSsKT1ZgqsTlGbVxXhQUdYSJf9Qs9hXQ02thI+Jqn+3oZ36U=
+	t=1753802969; cv=none; b=gQ40IlKSYSOYCTVFAnIN3TWNRKey8/g6BSXE7EO7PQY1VZdYr45XM5DSZ4qQnhegsHo9M4cb2171OYnVg5Ge0DVSi/rHJmeKG/hIRA7fJLeztnQ9DqvMejaYUeO4DH3pW0giTviXFfZRsNoyVVybRbK3qlRowGrj7PdvkXDfxsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753802520; c=relaxed/simple;
-	bh=xwIqT8dae6nKNdgzvc4/e0tGWL+Q+iccPdK30+Bg/2s=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=NY8U2Q69nYVBR4TVeRLFYn9gokzTnH1FtAXjIBroO5cmIyQuNW7yHsPBvrt2RUX1KmU+QO5uyUcAbmhBe+sy40z01/i5QVV7gZOsSIPBx0HdSfssRTwk31T3af/pMgys0FX5s7LN2X0psKXU9fgkoNio3j2Ig9vQmp28oW1IK4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Un/VKBoO; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-605b9488c28so9741403a12.2
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Jul 2025 08:21:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753802516; x=1754407316; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xwIqT8dae6nKNdgzvc4/e0tGWL+Q+iccPdK30+Bg/2s=;
-        b=Un/VKBoO8l7TIMAmozRbziKzA3tCihFRTU1IMWlxOVEjRBgt+zXdFQharuv20UPaJY
-         IVxgCFowEIby0bM5FVzIWg/tcwvKX90HnLX/saZPpgvXBJzlspU9s2Ejw7FurrelYrXS
-         YcdTs3DGl5Ur1eMHmRdNUnA0h7P+5vJv4mnY6e1OrwB8s3G90j9bcr5IWPrg8LAi2Zhv
-         Es/Ta1SNUNsS16ReYocfImAXvhcac0jsf02Mwe6dINFhFuYCvATzudTTgIH5ODLqWIDv
-         N3Tw3NsIHNYmTk46OBOEN8fWScmDQ24AEXvDOUUD+sjAJfVh9WsreNrKEGSSO64EPbth
-         PWHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753802516; x=1754407316;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xwIqT8dae6nKNdgzvc4/e0tGWL+Q+iccPdK30+Bg/2s=;
-        b=RjxNa8O0mxK0qHREQusMNzBvnZXyhxYhb6j/+InRAMNfkCp3xjvfgzAARmgCiP5aNy
-         rdNzHEFPm5uc/z67i5HSXfBoE6BLi+0ccumpsmdO7DhCZbETQkkknaShkjHBacpoDg33
-         Mv0z/GP8KZycWqQOpR5Jno3uw4P4hj0ZwlzoasPAvSwE8ZIDmvzB3m5dxcOJHzsdc8wW
-         eD4qmynbmx6M8fjlv411XDPVobJoAKrJcDETZJJgSHUx3rnerCIDuw2ntEhvdzaNDkFI
-         9qdPqQHyjSs6kNmRXv2TRi3dBmKOOdTsobqEVnOKLQz6nUSFrVdfu0EA3xBwZPuqP78z
-         xxXg==
-X-Gm-Message-State: AOJu0Yx6jvj3/nZ3IVj5YbNuCKRNHyY5HcthEJ2h7lAKtI7e2eKUMyAF
-	VOCl83PaEEXzMM/qDGa20LaUwCSD1zoNJsAQz8dTbVtluOMhEl2+gPFsAouhvIWZTb/vl/Gbdm+
-	qMSWsOAmIWptbxfnCh7BePNjkAp+T9kKRig==
-X-Gm-Gg: ASbGncs16XyZ/aZHGXQHduulzXxhhllHLH/rgNJTOIVpQzTlaJCpJPVXGDANPdBRx/X
-	SMMvcu4Os8YAky90kFsfkYgkQcoT6gVYjFGhb92lI7xGLf8crfFpTmIZAuzLaIX/lG1ZOcNgWK2
-	JTXk7xoCA8qH4nvG7pvGxJE8mAsCUYGhyVKy63cHSL+O9mDID+EiU9QQnMMAfQGLWsG+w8x+Ca+
-	Q1bTBCzVK+rWVVvbA==
-X-Google-Smtp-Source: AGHT+IHtMHVG1yuo5WrHWknJSkh8/RaWI7h+PyOYFdaMTUDUyK461ffDCcmvy/OWgD/OAnUiDjn4V6aUKpYQX9nLZNw=
-X-Received: by 2002:a05:6402:26cb:b0:615:4c9f:f7cd with SMTP id
- 4fb4d7f45d1cf-6154ca005b9mr6559280a12.7.1753802516318; Tue, 29 Jul 2025
- 08:21:56 -0700 (PDT)
+	s=arc-20240116; t=1753802969; c=relaxed/simple;
+	bh=4BPEAfBs2HDQWDziJ0BtleRUDaRqmEd894j5fAAT2qQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jpG7KX2lVydY9k7w89hBj/N3b/PUrDdSuS5KWep/zXNNsCJnZePZHQnnLIr5d3nK4GeGt3M3xhVqWN97uqizyNYsdjnpoOKaqAYkTSs9rV8pM2C2yiNEad9xSWoFKMRMqVCO878n/IfXfVOhQeuI9izJqET3BwkJC2jDbbjTFSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Keg0jCtj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4A7C4CEEF;
+	Tue, 29 Jul 2025 15:29:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753802968;
+	bh=4BPEAfBs2HDQWDziJ0BtleRUDaRqmEd894j5fAAT2qQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Keg0jCtjOfGpZYsB6aE/MpjVQc+UDe3v2berqUEq6LBg1aiWH1r2LL3wK2CzacBDl
+	 RZSCtz3ipuFHeAH9o7Hf0GakIAG8P4qnGkbvaUt86jj21RgkMiU/vK/9cyv2THjqqE
+	 UosDXZNO0oJcgfDn9xkimErPst8FIErjuiMBdol3iTXE8qV3wOPB6vzm8kufThbqi8
+	 YzI7kGHIahXl5y9znRdwYhki5dG3nd+UJ22wGtApnQv9ZvzudmcDVovMvA/E3poqpT
+	 hG4WjtZhoYZK679bMDYerI0l+G2HW4RrAW60xoRK4evO7pBfWFOtOzse6maWQ67E8g
+	 ku+p7BeHVuXCA==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Stanislaw Gruszka <stf_xl@wp.pl>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: rt2800: select CONFIG_RT2X00_LIB as needed
+Date: Tue, 29 Jul 2025 17:29:21 +0200
+Message-Id: <20250729152924.2462423-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Castiel You <hujy652@gmail.com>
-Date: Tue, 29 Jul 2025 23:21:45 +0800
-X-Gm-Features: Ac12FXwCX_6MTWGR4X9xbcst7mxoD6yQ2g12kOm1VG5P6UAjZhxDlJ_OEgtR6hQ
-Message-ID: <CAHGaMk-S4SZgcLczH1ntBvYJCk1vxJBfxzN_FSpGANC+-P0p1A@mail.gmail.com>
-Subject: Question about flush_sta()
-To: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+From: Arnd Bergmann <arnd@arndb.de>
 
-I have a question about flush_sta() behaviour.
-From reading iwlwifi which is the only driver implemented flush_sta(),
-it looks similar to flush() with drop set to true.
+The rt2800 specific code requires the more general library code:
 
-Is it correct to assume flush_sta() acts more like drop?
+ERROR: modpost: "rt2x00queue_get_entry" [drivers/net/wireless/ralink/rt2x00/rt2x00mmio.ko] undefined!
+ERROR: modpost: "rt2x00lib_dmastart" [drivers/net/wireless/ralink/rt2x00/rt2x00mmio.ko] undefined!
+ERROR: modpost: "rt2x00lib_dmadone" [drivers/net/wireless/ralink/rt2x00/rt2x00mmio.ko] undefined!
+ERROR: modpost: "rt2x00lib_rxdone" [drivers/net/wireless/ralink/rt2x00/rt2x00mmio.ko] undefined!
+ERROR: modpost: "rt2x00lib_txdone_nomatch" [drivers/net/wireless/ralink/rt2x00/rt2800lib.ko] undefined!
+ERROR: modpost: "rt2x00lib_txdone" [drivers/net/wireless/ralink/rt2x00/rt2800lib.ko] undefined!
+ERROR: modpost: "rt2x00queue_get_entry" [drivers/net/wireless/ralink/rt2x00/rt2800lib.ko] undefined!
+ERROR: modpost: "rt2x00lib_get_bssidx" [drivers/net/wireless/ralink/rt2x00/rt2800lib.ko] undefined!
+ERROR: modpost: "rt2x00mac_conf_tx" [drivers/net/wireless/ralink/rt2x00/rt2800lib.ko] undefined!
+ERROR: modpost: "rt2x00lib_txdone_noinfo" [drivers/net/wireless/ralink/rt2x00/rt2800lib.ko] undefined!
 
-Best regards,
-Zhi-Jun You
+Select the symbol to avoid this build failure.
+
+Fixes: 7f6109086c9e ("wifi: rt2800: move 2x00soc to 2800soc")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/ralink/rt2x00/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/ralink/rt2x00/Kconfig b/drivers/net/wireless/ralink/rt2x00/Kconfig
+index 4d98b7723c56..d66fc839c3ce 100644
+--- a/drivers/net/wireless/ralink/rt2x00/Kconfig
++++ b/drivers/net/wireless/ralink/rt2x00/Kconfig
+@@ -225,6 +225,7 @@ config RT2800_LIB_MMIO
+ 
+ config RT2X00_LIB_MMIO
+ 	tristate
++	select RT2X00_LIB
+ 
+ config RT2X00_LIB_PCI
+ 	tristate
+-- 
+2.39.5
+
 
