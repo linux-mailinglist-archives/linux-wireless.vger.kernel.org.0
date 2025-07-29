@@ -1,150 +1,172 @@
-Return-Path: <linux-wireless+bounces-26039-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26040-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E4DB14A2F
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 10:36:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD578B14A6E
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 10:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EE9117E200
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 08:36:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11D531887017
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Jul 2025 08:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CFB284B57;
-	Tue, 29 Jul 2025 08:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E69678F34;
+	Tue, 29 Jul 2025 08:49:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="C8iio1i5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3478F2690DB
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Jul 2025 08:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4F3283121
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Jul 2025 08:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753778194; cv=none; b=eNoNjLbcfoLBi0Nnt3h40bz7S3HSdMf/OvkWxKaYMGM8bUgXnPWabe1P7RbCHDkiHcGg6BEiaBd3l4+DazKs1fMPIMbm5NS5sRYL1AyxzBCAe31HI1Q0eOck1K/Vh8PmqKsu9q5jwZS8s5zls5QVlJti2gEfg+Tq0yw3u2OHvn4=
+	t=1753778986; cv=none; b=pMDb6ObCzxaDWnlT6yUU3RAJ8P+nZvY/ZVNPLvGUHbWiMuZ2/FTohsU9BlrmU3emGfEVEpxuhxgTkfNFF/2b0cfpbkRgY2JZ78rv7Dl/gkfIgoi/3ZJKBjAcsvqn56YshwpOlStTs0d6YXq/1Utp8FCL2Eurv9OHUad5lgGHFhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753778194; c=relaxed/simple;
-	bh=uCrJ+Iqbg5bbX+oCl5/x8BkXkWH6MwITKwrKsxfuTA8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=HZ7GaDNg4cjIf4hSMHy6Tp6vkIEYJBpj49rxp6TDLJkMbGqCjv2L5vhoYoY7bmbG84xILFSHgu0Vq45Vu2qy/9K9bE0P+peceeAncV6xASco3n2SBFxoLMlUrMMeV/A31ZJ3drbvIH9cW2kTu+u2rXn8CpclVUI7d8uNw8CuDtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3e3e6bd9e7eso10489895ab.0
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Jul 2025 01:36:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753778192; x=1754382992;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WzeBGpjHSeszF/CW4rczNpxcYtUulLTjlrinCLimUgo=;
-        b=LK67MFQ20yB0hWMbnn4GHQkCLxHJnLqtUJ6FwYwi+s5ZWBMu27S45AJHkadVU8f4Yw
-         G653ueMzbCavxKu5M4O/qN/0+AQ3cStsZpPj5t/s/6LRgMb47E/kJTt4qKUwcm1/j9Dy
-         eCM7Vc5uJXLGruy3pQGIJH4TzlxHoNNcJp6VwyD3oCbKTqno6ACqiIjUO8x6iSJwlwH3
-         xY76vGngRWlq40lMiTsXU9RABnPemJIZZTzSgRTLd9JDifjIVvh9lkIl5V9ql5EIWGDL
-         0d8jUPYHYxP2gY2kJVKRbtGIUcz89v0hm6zwRQOAvCTIrzCL5GBk+xiHKdusye1HtCOy
-         UaTA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1JFmo8/AFJPmC22bvKNRdUrx9XWdeBwt/PEH0+5Wk6emb0w/idICbDEDnlynh8A9ioL6mcko/LNAfxpAZJA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCNDgVWY6wZUmMgpx4Pa9lTz3pP6uetJD98N8Y5/abt/c4Pj14
-	QnClNbqeALQJQD2+h8Fl+w0shxLYzpA1KtbW9h9veAUz46DgcRI2uJClFCcuZSQ3tNhqBud9Xvk
-	DpOl89tzbW6NBFdHVs+h7ng3iU92GdauVE/H6A4o6T90BExg5hvZZKT7Rs50=
-X-Google-Smtp-Source: AGHT+IFhMAyYMoR3RdUP8l3Zi5v8mT3oE9q+69ki7bK73e+G54JA13PhrfXiFN/Ae6VgEeIlazaqNYY/dKIxqWUCL5kHonGwdr5W
+	s=arc-20240116; t=1753778986; c=relaxed/simple;
+	bh=ITdH2sFZS20UTmy7e69V0OA+feZjS6jkzaAC5DDDRVg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pims7lgsAzgDgA0Axo8qEVg55mHdq7atFxWFwnas+J1+CUKrgWAveQKNPKJ+SzLmfLsAcvJnwUbUTPgRDFSDrbRLmW/T07JABcG73q3/n67cjNl4LONKU17dfYt71mGfzvJTHWF1tukbwJqxF6AZkKjWENezRYeLVKsoPVIWwOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=C8iio1i5; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: f55daf646c5811f08b7dc59d57013e23-20250729
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=2Y5w5r6aryaXhlJ7UqlVhhct1/3KeD8bUu52PUC3sHI=;
+	b=C8iio1i5iCZJahVyZQb8OtltZa4jCpzqp6PJ9BWVYen6NrP0EljmtirFa/tBzYP83s+MNPmce2AH/D/m5ZDGnwt3EqLOcD/DOURAB2DmCH2tW7ZS6JGObtwiVQeiuSwKM+ofJKZnndEuGIF2kWJ/lOFD97AIqAbhIRbPdWQ+GFU=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.2,REQID:e4ebdd44-e45d-4d81-a905-fc8ea5705e8b,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:9eb4ff7,CLOUDID:97c75c50-93b9-417a-b51d-915a29f1620f,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|15|50,EDM:-3,IP
+	:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,
+	LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: f55daf646c5811f08b7dc59d57013e23-20250729
+Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw01.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 158823384; Tue, 29 Jul 2025 16:49:37 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Tue, 29 Jul 2025 16:49:35 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Tue, 29 Jul 2025 16:49:35 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7925: add MBSSID support
+Date: Tue, 29 Jul 2025 16:49:32 +0800
+Message-ID: <20250729084932.264155-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1789:b0:3e3:d63c:3a35 with SMTP id
- e9e14a558f8ab-3e3d63c3f36mr161172835ab.22.1753778192366; Tue, 29 Jul 2025
- 01:36:32 -0700 (PDT)
-Date: Tue, 29 Jul 2025 01:36:32 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68888810.a00a0220.34d93b.0001.GAE@google.com>
-Subject: [syzbot] [wireless?] INFO: task hung in wiphy_register (2)
-From: syzbot <syzbot+e79f3349c93df8969402@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
-Hello,
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-syzbot found the following issue on:
+Enable MBSSID support for MT7925 by setting the
+appropriate capability to the firmware.
 
-HEAD commit:    94ce1ac2c9b4 Merge tag 'pci-v6.16-fixes-4' of git://git.ke..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14127b82580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8adfe52da0de2761
-dashboard link: https://syzkaller.appspot.com/bug?extid=e79f3349c93df8969402
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12127b82580000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-94ce1ac2.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2cc0fa87aefd/vmlinux-94ce1ac2.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/48c3cfe50b21/bzImage-94ce1ac2.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e79f3349c93df8969402@syzkaller.appspotmail.com
-
-INFO: task syz-executor:5486 blocked for more than 143 seconds.
-      Not tainted 6.16.0-rc7-syzkaller-00093-g94ce1ac2c9b4 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor    state:D stack:21640 pid:5486  tgid:5486  ppid:1      task_flags:0x400140 flags:0x00004006
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5397 [inline]
- __schedule+0x16fd/0x4cf0 kernel/sched/core.c:6786
- __schedule_loop kernel/sched/core.c:6864 [inline]
- schedule+0x165/0x360 kernel/sched/core.c:6879
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:6936
- __mutex_lock_common kernel/locking/mutex.c:679 [inline]
- __mutex_lock+0x724/0xe80 kernel/locking/mutex.c:747
- wiphy_register+0x1980/0x26b0 net/wireless/core.c:1003
- ieee80211_register_hw+0x33e1/0x4120 net/mac80211/main.c:1589
- mac80211_hwsim_new_radio+0x2f0e/0x5340 drivers/net/wireless/virtual/mac80211_hwsim.c:5565
- hwsim_new_radio_nl+0xea4/0x1b10 drivers/net/wireless/virtual/mac80211_hwsim.c:6249
- genl_family_rcv_msg_doit+0x212/0x300 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
- netlink_unicast+0x759/0x8e0 net/netlink/af_netlink.c:1346
- netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg+0x219/0x270 net/socket.c:727
- __sys_sendto+0x3bd/0x520 net/socket.c:2180
- __do_sys_sendto net/socket.c:2187 [inline]
- __se_sys_sendto net/socket.c:2183 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2183
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f7c09d9083c
-
-
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ .../net/wireless/mediatek/mt76/mt7925/main.c  |  1 +
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 23 ++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt792x_core.c  |  7 +++++-
+ 3 files changed, 29 insertions(+), 2 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index d79efc8aa919..eed8d5ffaab0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -244,6 +244,7 @@ int mt7925_init_mlo_caps(struct mt792x_phy *phy)
+ {
+ 	struct wiphy *wiphy = phy->mt76->hw->wiphy;
+ 	static const u8 ext_capa_sta[] = {
++		[2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
+ 		[7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
+ 	};
+ 	static struct wiphy_iftype_ext_capab ext_capab[] = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 4fe67ef62cd7..7c7b6f066d53 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2879,6 +2879,25 @@ mt7925_mcu_bss_qos_tlv(struct sk_buff *skb, struct ieee80211_bss_conf *link_conf
+ 	qos->qos = link_conf->qos;
+ }
+ 
++static void
++mt7925_mcu_bss_mbssid_tlv(struct sk_buff *skb, struct ieee80211_bss_conf *link_conf,
++			  bool enable)
++{
++	struct bss_info_uni_mbssid *mbssid;
++	struct tlv *tlv;
++
++	if (!enable && !link_conf->bssid_indicator)
++		return;
++
++	tlv = mt76_connac_mcu_add_tlv(skb, UNI_BSS_INFO_11V_MBSSID,
++				      sizeof(*mbssid));
++
++	mbssid = (struct bss_info_uni_mbssid *)tlv;
++	mbssid->max_indicator = link_conf->bssid_indicator;
++	mbssid->mbss_idx = link_conf->bssid_index;
++	mbssid->tx_bss_omac_idx = 0;
++}
++
+ static void
+ mt7925_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_bss_conf *link_conf,
+ 		      struct mt792x_phy *phy)
+@@ -3045,8 +3064,10 @@ int mt7925_mcu_add_bss_info(struct mt792x_phy *phy,
+ 		mt7925_mcu_bss_color_tlv(skb, link_conf, enable);
+ 	}
+ 
+-	if (enable)
++	if (enable) {
+ 		mt7925_mcu_bss_rlm_tlv(skb, phy->mt76, link_conf, ctx);
++		mt7925_mcu_bss_mbssid_tlv(skb, link_conf, enable);
++	}
+ 
+ 	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
+ 				     MCU_UNI_CMD(BSS_INFO_UPDATE), true);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+index 81ab7b20aa64..eb4099021fcb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -697,8 +697,13 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
+ 	ieee80211_hw_set(hw, CONNECTION_MONITOR);
+ 	ieee80211_hw_set(hw, NO_VIRTUAL_MONITOR);
+-	if (is_mt7921(&dev->mt76))
++
++	if (is_mt7921(&dev->mt76)) {
+ 		ieee80211_hw_set(hw, CHANCTX_STA_CSA);
++	} else {
++		ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
++		ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
++	}
+ 
+ 	if (dev->pm.enable)
+ 		ieee80211_hw_set(hw, CONNECTION_MONITOR);
+-- 
+2.34.1
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
