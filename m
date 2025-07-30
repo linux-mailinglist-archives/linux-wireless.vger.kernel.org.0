@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-26053-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26054-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D51DB15A04
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jul 2025 09:52:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8B9B15ADC
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jul 2025 10:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18A147B1BA7
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jul 2025 07:50:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C859B18C01BE
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jul 2025 08:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3502A1F1537;
-	Wed, 30 Jul 2025 07:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3853C26529E;
+	Wed, 30 Jul 2025 08:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PalwN3RM"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bzFWRwQJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B21A1F12F4
-	for <linux-wireless@vger.kernel.org>; Wed, 30 Jul 2025 07:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAF41DF244
+	for <linux-wireless@vger.kernel.org>; Wed, 30 Jul 2025 08:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753861941; cv=none; b=u2Cen8N07XmZZBGXEsYamjlk7+SObmkofkibIZwRoR38j+OiRMO+U8iJhCxv4guBbRnSskXtKqWjcZ7QxlKD18Iy7yvz21NUT6OqZQ7tkvcT3BAkPRRQuHgCtrdt4WHVVAYbUx1WZ7g1s2vcMN7ONER0lMvzHBU9MsN6xHnBprA=
+	t=1753865159; cv=none; b=VVyv7bkSvHWVT7mpZUMasJuLbA2VQvu7/9XTPpxBdyF6qPS/bzS5kRiF5KQv/QYvlGgo3n74iv6zOpbU86JszCxkK2k9JpztXVE8kiLI654iRFbij4xsvISgvTPgwjY8uEks2m8uroUCOEiy7BhK8Xb674ieZo5EMefSnTmJnnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753861941; c=relaxed/simple;
-	bh=6l1gAO/UvA1KSMRC0e4WN8jJW7JgF3A+xKhsibHchD0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=C2ZuXGQmuI9z/KdPNMBBVvu2q/0jawJG2S7suPWwtIFFwW4Vzk0rsCe4UH35yDvEPA13lNuXNQWI06MsKC880Xx3XfcH/0WVuKyjBIsqOke/MlYWybDmBNwkE9l+2hSjP99p1/K3nLt3Zj4w4r4fCJhfIPoRto5lmZyGDnzuuPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PalwN3RM; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3b77b8750acso419857f8f.0
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Jul 2025 00:52:19 -0700 (PDT)
+	s=arc-20240116; t=1753865159; c=relaxed/simple;
+	bh=wXb9mb3IJA/sRlDOiaVm4qMN6vs2/7p445YfZx+J7zE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=EnH0x6q/z5SGNFsktxaW9v3A1t6+xM7gNzrwUxWqcFuK6V8ca+LiSfWoB0kGmOCJvZ2CjmGPWkODQZg87gkztIIkuug6HCef6bBV57sp+EKJJcCofZZ1V+ALmm1crrRK0++AkG+75LsbmKP9yPUgUOsZg34MKrRTcubLY7bf+G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bzFWRwQJ; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3b786421e36so370660f8f.3
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Jul 2025 01:45:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753861938; x=1754466738; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=linaro.org; s=google; t=1753865156; x=1754469956; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6l1gAO/UvA1KSMRC0e4WN8jJW7JgF3A+xKhsibHchD0=;
-        b=PalwN3RMJNjM8sDhG9Wxb8ARgZlum0Qv/0GJ0SpfdziWSxYsjQPwu+412wbHrhp/dv
-         S4MWtV4hVXZ3hT9gPLHRVw15DDnB0bVTRFjn0lgcftlE83LKtOnkZCORVnuvEZJlUrzJ
-         WpUvIMIH+OheS2yurrnWiPT7FuVPHsWRwDsXE+FpSXxhZAsJm1VXCE3t7IBJaMseIpgt
-         Dft1y99APNOGDsc1xE5ctRkem1+oI1EIajPgZMq6h6Yqfm9zhMhz7OeAKX0Q9H4KqWhM
-         nrMWqtIyzk9ceB2kUJuJpkZ1QiG1Id660NXc5fKGnge/BYq6vpsbqFYRdUmK7sWig4z9
-         Mq0A==
+        bh=vouVbFy9H2IeEfXvCQei0Ugeqqqv+KVoaiQc9t39ZLw=;
+        b=bzFWRwQJyztthkRC7vu9NDgBYokwB4cXpagl+uXMeu7iu42iijXgFFtufbZYjx9YzQ
+         L3TytIjLHNvbDDBEKXN273AOyMNFk8u85VgJR/dswrRj/oRbAgChwZwZTZmyD5GAJ9Aq
+         1MDEW6S4hQ7WRqyx2eZEzuAUCxq2oVNMFzd1AHshC4dUZymIGnHIUtsWiiMnrT62bUNY
+         4aL+efQaDq5n8IlsEDT2KzcekNJUzrxfoMpNBTP2IpYTJ8vBfD8+5v4Z2IaETOv3Io6H
+         FJAxlE1GG6945PFFmuols9dZMCU15T9egQUqH5oe3JwSd/bng1yTCw2U7qfGTkf2eeC5
+         5pYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753861938; x=1754466738;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20230601; t=1753865156; x=1754469956;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=6l1gAO/UvA1KSMRC0e4WN8jJW7JgF3A+xKhsibHchD0=;
-        b=XanvBiAoApzFrOy7wh5waU/VEwPYYwQQ2MO7ta4ZGzaDJC9YXgrTrTUMX2gKF2ZJ03
-         /BTwSZjIXLekmGZ9vrwluv8dLZywUfQvEjqLRgy5ftFcVOogeir601qngEdrSlK41N17
-         qH1jvFWYVV5PjT6GFUrQUlME6tMvqY5dWc3sYQEdFIdFmMVEHsRnT3oPE4pA2zyGREkz
-         CV3MXZWRSjbHNBbX1sBZEUwWFIMstErrmcTZ/77x9O+/4IzJp0bITCmz9ArcReCCxYLv
-         V/Ks/CV0VPAuzIe0y/6UQ60l+Jdg16qiJzg5oID/Rld/jvcYttrQqcgcKFXIFlz53iKd
-         QrdA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeOXpUyVzgqL/WMWUCfVciKlzeMI+X6KvgbEnkcHNiRt7XXFVkFqfEwgFQRPpla5zNz+a+ebPu77Lv6vQUsQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1FK7+WchjHNAC+3tHhbW7KHmctMqyd7AbA0AAqdUlVzQ1dPVw
-	mHrIjxeOLyY3L4dO5XbPGzSXcUZgDI5Cf7VCRMepRmmm3doQilcTr9aT
-X-Gm-Gg: ASbGncvxZMhhdIVoJTYOpeTMfFRKfmTSWOpVwGCJjayLFo/nh9DilAOv8I/ZbtSCh5j
-	9Hu8lc1sHotTPS67pLzzljlaJY9ZCaqTyFrHVShrfwn6Yokwb9Xu8Da9UsSweJnM4S4dw9nPN0y
-	xXwWCfL57NleqCS316dBnNR+s41WnSpcPO6CajSEwyyamDCFvqZtmv2lQDM5w/WN6WUWN3G5gub
-	Q3ZfsOEmac8y6YC1OFg/njZLGae+eyc0Q4mFV+cYL6qIoD0qhCPixzfO58fOPj9UBPMY4aB3KTf
-	6ArGt3MargQAbYpL1a6YHJYZRPIv2aLzk4otK/rSm3IJ0aomM71uNmvFQTpXIwQYovGp60pwMDS
-	KrAzoohTViBOOtlmQueZlmp+Plxsw9l4KB9G5nF+U
-X-Google-Smtp-Source: AGHT+IEpfcshaEmI74+FRPGDA4WifzJapnTiLXEYiP3DH31K2fBVogP/EMh4TPJeVT8GPBF/IKYPlA==
-X-Received: by 2002:a5d:588c:0:b0:3b7:8842:89f5 with SMTP id ffacd0b85a97d-3b78e3d5a20mr5041589f8f.1.1753861937650;
-        Wed, 30 Jul 2025 00:52:17 -0700 (PDT)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b778f0c1b8sm14750871f8f.56.2025.07.30.00.52.16
+        bh=vouVbFy9H2IeEfXvCQei0Ugeqqqv+KVoaiQc9t39ZLw=;
+        b=cDPDnqKym6EYBMqTAOajulcbT+KLqnHhETGDJRtV0Z/+rJxwfVxw7qLtKxZZFNaGYT
+         n5aYW9w+KF0qIye9u5D2SWOp/7MoxMXwx0mYQhEbLHUwQOtG4JtWd+mbDCpWmD6sSY+N
+         7yUgcDkj3Ap8pMVjjaX+7vK5NmkVU5rqp5ClZUOJlhitQYv5+s2F0XQ+BFEI3q2N/dO2
+         8potasN+Zi8YIpOVPI2hWLJN/rv8nn5K0PE7G5VYUF+00ecPsfODT0kTjtqGs5kS+af7
+         dtWe1eFOo5hrrWzpCwrNVB/uBw3+ES9oAQNEVNhJjkq72claHhZSdOGIqnGRQzEbs/Sw
+         0YOg==
+X-Forwarded-Encrypted: i=1; AJvYcCXXVIAteJra+SWFqavocJDAjavIIrTXS1yVOvLj0Avg83nfoTr4ZL2d/5dGqa7M6X4I/e0n6hxZBo3N7seMOg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwN8/hDQJRW9HsR9buyWXFVK2kZVzjv7b/XEgsJcd7DCtikjtSh
+	CV/4ua46dvge5jewy+LqLkhOJu721U0h1NLQpMptutJaS1tySkIOTEXFAlcjVjpNqNg=
+X-Gm-Gg: ASbGnct4JiJ9qSDB86vTrzthXOxbYqup4/yEnw8w6lcbLlQjKOZbfhWP7WNweeXlZaS
+	4ox36aJPHSQUJb8DPwYEIia6JfjMcYZzbifr4eDffE7zq5UdZAlj7q0s04GjlM3+STWdmeeX4zD
+	FRGv+6epiWdo16CCtTRcwzoumQzGdc6sJUXO+1Du8Ve4+7Ejm7s+hTr9YWh1bemsKz768Q3Zz89
+	6eX+6xybjFxVlAvP2n+2HtiXogr4VJQ02dKv5BF+T2oNvuuHrik+Jyf710cGd1mw+GeEpZE8lj5
+	NZ5/BikfGQGZf/Dsmp3jUJrjAErFwJDE2MRWUS48SohB5eONq2GAm3B2r/E6xjSxWM5AFNfzM3t
+	nDpFuCwC/NsS2+FlFURXqZ+WktA4DcfwKrq6CZA==
+X-Google-Smtp-Source: AGHT+IEsUJXHb9Fu+wIAFpOOr9CxkUbkz4FbUxP1vAkQqZyqMp+yCtAvMXAxm0CSLECgSmHegl1DYQ==
+X-Received: by 2002:a5d:69d0:0:b0:3b7:899c:e88b with SMTP id ffacd0b85a97d-3b794fe4da0mr1639575f8f.11.1753865155466;
+        Wed, 30 Jul 2025 01:45:55 -0700 (PDT)
+Received: from localhost ([2a02:c7c:7259:a00:2e51:f80e:a7b5:16f7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4589aefaa44sm9422155e9.20.2025.07.30.01.45.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Jul 2025 00:52:17 -0700 (PDT)
+        Wed, 30 Jul 2025 01:45:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,60 +81,62 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Jul 2025 09:52:16 +0200
-Message-Id: <DBP862N3JBT3.2NRSJ8BECF0YI@gmail.com>
-Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: Missing BEACON_LOSS event
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Alexander Wilhelm" <alexander.wilhelm@westermo.com>, "Jeff Johnson"
- <jjohnson@kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <aIjGvT+yQkZf8/Xs@FUE-ALEWI-WINX>
-In-Reply-To: <aIjGvT+yQkZf8/Xs@FUE-ALEWI-WINX>
+Date: Wed, 30 Jul 2025 09:45:54 +0100
+Message-Id: <DBP9B4ZMXOMK.1QLITVTW393YI@linaro.org>
+From: "Alexey Klimov" <alexey.klimov@linaro.org>
+To: "Loic Poulain" <loic.poulain@oss.qualcomm.com>
+Cc: <jjohnson@kernel.org>, "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
+ <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ <jeff.johnson@oss.qualcomm.com>, <linux-arm-msm@vger.kernel.org>
+Subject: Re: [question, bug] regularly disconnecting wifi on RB1 and RB2
+ boards, ath10
+X-Mailer: aerc 0.20.0
+References: <Zgp0ym-MGzX2eSZdlkVYbgvjkJ0CzKItjaC5pafzQnj1AOZnVAqvCIZfYoK7nwDhUgOA0U8eNolNtaWXbExOAQ==@protonmail.internalid> <DAWJQ2NIKY28.1XOG35E4A682G@linaro.org> <5df11ee4-d645-4be2-841f-715343f1b7a4@linaro.org> <CAFEp6-0zwy2JdFOvRQ5ghMwD-J6b7F5YcVKNf-5R=8XdEpGDSw@mail.gmail.com> <CAFEp6-1wO9xwisOAtv6D__nb3Uo=8_f9rHifi-JAQ0oPD+JSVg@mail.gmail.com> <DBKDAXJ0V9U0.10YYX5H5HAJBT@linaro.org>
+In-Reply-To: <DBKDAXJ0V9U0.10YYX5H5HAJBT@linaro.org>
 
-On Tue Jul 29, 2025 at 3:03 PM CEST, Alexander Wilhelm wrote:
-> Hello devs,
+On Thu Jul 24, 2025 at 3:50 PM BST, Alexey Klimov wrote:
+> Hi Loic,
 >
-> can someone help with the following issue?
->
-> I'm using a QCN9074-based device in STA mode, connected to an access poin=
-t. When
-> the AP is powered off (without sending a deauthentication frame), the cli=
-ent
-> remains indefinitely associated. There is no disconnect, no beacon loss e=
-vent,
-> and the RSSI remains stuck at the last known value.
-[...]
-> From what I can tell, the function `ath11k_mac_handle_beacon_miss()` exis=
-ts and
-> is wired up via `ath11k_roam_event()`, but the firmware never seems to se=
-nd
-> `WMI_ROAM_EVENTID`, so the handler is never triggered.
->
-> Is this expected behavior? Does the firmware need to be configured differ=
-ently
-> to enable beacon miss detection in STA mode? Or is this a known limitatio=
-n? Any
-> help or clarification would be appreciated.
+> On Wed Jul 23, 2025 at 11:42 AM BST, Loic Poulain wrote:
+>> Hi Alexey,
+>>
 
-Hello,
+[..]
 
-I've brought this up already on the ath11k/ath12k list:
-https://lore.kernel.org/ath12k/CZA2NS7J83D4.18SU6W9R96KPY@gmail.com/
-To my knowlege, nothing upstream has been posted so far by QCA.
+>> Could you check if this change helps:
+>>
+>> diff --git a/drivers/net/wireless/ath/ath10k/mac.c
+>> b/drivers/net/wireless/ath/ath10k/mac.c
+>> index c61b95a928da..4fa7dd62aeac 100644
+>> --- a/drivers/net/wireless/ath/ath10k/mac.c
+>> +++ b/drivers/net/wireless/ath/ath10k/mac.c
+>> @@ -288,8 +288,10 @@ static int ath10k_send_key(struct ath10k_vif *arvif=
+,
+>>                 key->flags |=3D IEEE80211_KEY_FLAG_GENERATE_IV;
+>>
+>>         if (cmd =3D=3D DISABLE_KEY) {
+>> -               arg.key_cipher =3D ar->wmi_key_cipher[WMI_CIPHER_NONE];
+>> -               arg.key_data =3D NULL;
+>> +               /*  Not all hardware supports key deletion operations. s=
+o we
+>> +                *  replace the key with a junk value to invalidate it.
+>> +                */
+>> +               memset(arg.key_data, 0, arg.key_len);
+>>         }
 
-In non mainline sources there is a patch to support ath12k:
-https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/blob/win.w=
-lan_host_opensource.3.0/patches/ath12k/897-wifi-ath12k-Add-support-for-STA-=
-mode-to-trigger.patch
-My guess is that ath11k works the same way.
+So far looks good.
 
-It would be great if QCA people could mainline this, it seems like a small
-enough and isolated feature that could be pushed without side effects.=20
+I didn't see any kind of GROUP_KEY_HANDSHAKE_TIMEOUT messages and long wifi
+outages leaving the RB1, for instance, overnight.
 
->
->
-> Best regards
-> Alexander Wilhelm
+I do observe some packet loss while pinging the board for a while --
+around 0.1..0.6% packet loss but that might be because of my wifi network
+and absence of external antenna and it is still much much better than
+default behaviour.
+
+Could you please add me to C/c when you're going to send it over?
+
+Thank you for looking into this,
+Alexey
 
 
