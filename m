@@ -1,194 +1,140 @@
-Return-Path: <linux-wireless+bounces-26052-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26053-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE6DB157EF
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jul 2025 05:42:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D51DB15A04
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jul 2025 09:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05DB518936CD
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jul 2025 03:42:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18A147B1BA7
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jul 2025 07:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8522D77111;
-	Wed, 30 Jul 2025 03:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3502A1F1537;
+	Wed, 30 Jul 2025 07:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="liSVPyQs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PalwN3RM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F24C4A32;
-	Wed, 30 Jul 2025 03:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B21A1F12F4
+	for <linux-wireless@vger.kernel.org>; Wed, 30 Jul 2025 07:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753846955; cv=none; b=OPyPgC4Bi+nlwAEbAQOtXhVZrcMgmvKi3kVvBMh187dr2u+C7iYyScCKzfeDm43RGHkhxeOToVF9ttVk4b4aM7Cf9VEuQWGv1fR02/NuuR9JO9+AVs+08e4HPDfheUkAY9WhOQqDELXdzuv2rVAJvWuLLZelAIrx9qnTJJMhdW8=
+	t=1753861941; cv=none; b=u2Cen8N07XmZZBGXEsYamjlk7+SObmkofkibIZwRoR38j+OiRMO+U8iJhCxv4guBbRnSskXtKqWjcZ7QxlKD18Iy7yvz21NUT6OqZQ7tkvcT3BAkPRRQuHgCtrdt4WHVVAYbUx1WZ7g1s2vcMN7ONER0lMvzHBU9MsN6xHnBprA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753846955; c=relaxed/simple;
-	bh=y7A+Cbj306d1WCA4eZFH5mlwMJjPjUpIqFI600wJ9VQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:Content-Type:
-	 MIME-Version; b=CeK77C3lIQeFm3HhwJQyS7h6Z+A4o6l/aHYF5kFjrDsbiBD9hnaTQWwJeEL8YXfIz3RHJ+2/liqj7n4z78e9UUkTj2RvsAcInK8hyoQPhsXtjhIH4HfbSToAS954BqmCiNtCllKA1rFzKI6Tdlpv15Rdr9EjqwDAb69buxM3nGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=liSVPyQs; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56U3gFRs93000309, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1753846936; bh=emXP3TU+KkAxNPKlWl+x3MVQSf2hHwYEGXZb4YFAAPc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	b=liSVPyQs5lt8bpbBjhC5BDWkHz5m04YaWMKr++QMi1OVK0fhPzdWQrR68peBPbNjv
-	 1rvdixGt0K7u+TWDlvslLUpXmYfNWOAhSpzfwbZwYNkRt8bM7YNY6YmAP6tCf44Jhl
-	 q5PIcuf9ez9xrXuV1d3g64gENG0WTNwUuxu4h20BKBh72cIJSrfFixISRaLLDwNhXT
-	 lE0vh2/164qIBBj3OOUYavY9ybazEyekMfm9XW2JKWz9GDGtiJYc7lL/G3xOxpaM4Y
-	 eFhOZOjKftXMhis3IhrY9y3elwo1lATqO4GFB/ENcmkqgKh5VBx9loZ2fwcPp5Pjco
-	 vVbFNNHfSOyRw==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56U3gFRs93000309
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 30 Jul 2025 11:42:15 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 30 Jul 2025 11:42:16 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 30 Jul 2025 11:42:15 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47]) by
- RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47%5]) with mapi id
- 15.01.2507.035; Wed, 30 Jul 2025 11:42:15 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Sean Anderson <sean.anderson@linux.dev>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Bitterblue
- Smith" <rtl8821cerfe2@gmail.com>
-Subject: RE: [PATCH v2] wifi: rtw89: Print just once for unknown C2H classes
-Thread-Topic: [PATCH v2] wifi: rtw89: Print just once for unknown C2H classes
-Thread-Index: AQHcANxb3F/NWj2ltUS/9AXHQ44SQ7RJzkeggAA2TWA=
-Date: Wed, 30 Jul 2025 03:42:15 +0000
-Message-ID: <e8e68a94bb9940509233153f9764c397@realtek.com>
-References: <d2d62793-046c-4b55-93ed-1d1f43cff7f2@gmail.com>
- <20250729204437.164320-1-sean.anderson@linux.dev> 
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1753861941; c=relaxed/simple;
+	bh=6l1gAO/UvA1KSMRC0e4WN8jJW7JgF3A+xKhsibHchD0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=C2ZuXGQmuI9z/KdPNMBBVvu2q/0jawJG2S7suPWwtIFFwW4Vzk0rsCe4UH35yDvEPA13lNuXNQWI06MsKC880Xx3XfcH/0WVuKyjBIsqOke/MlYWybDmBNwkE9l+2hSjP99p1/K3nLt3Zj4w4r4fCJhfIPoRto5lmZyGDnzuuPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PalwN3RM; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3b77b8750acso419857f8f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Jul 2025 00:52:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753861938; x=1754466738; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6l1gAO/UvA1KSMRC0e4WN8jJW7JgF3A+xKhsibHchD0=;
+        b=PalwN3RMJNjM8sDhG9Wxb8ARgZlum0Qv/0GJ0SpfdziWSxYsjQPwu+412wbHrhp/dv
+         S4MWtV4hVXZ3hT9gPLHRVw15DDnB0bVTRFjn0lgcftlE83LKtOnkZCORVnuvEZJlUrzJ
+         WpUvIMIH+OheS2yurrnWiPT7FuVPHsWRwDsXE+FpSXxhZAsJm1VXCE3t7IBJaMseIpgt
+         Dft1y99APNOGDsc1xE5ctRkem1+oI1EIajPgZMq6h6Yqfm9zhMhz7OeAKX0Q9H4KqWhM
+         nrMWqtIyzk9ceB2kUJuJpkZ1QiG1Id660NXc5fKGnge/BYq6vpsbqFYRdUmK7sWig4z9
+         Mq0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753861938; x=1754466738;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6l1gAO/UvA1KSMRC0e4WN8jJW7JgF3A+xKhsibHchD0=;
+        b=XanvBiAoApzFrOy7wh5waU/VEwPYYwQQ2MO7ta4ZGzaDJC9YXgrTrTUMX2gKF2ZJ03
+         /BTwSZjIXLekmGZ9vrwluv8dLZywUfQvEjqLRgy5ftFcVOogeir601qngEdrSlK41N17
+         qH1jvFWYVV5PjT6GFUrQUlME6tMvqY5dWc3sYQEdFIdFmMVEHsRnT3oPE4pA2zyGREkz
+         CV3MXZWRSjbHNBbX1sBZEUwWFIMstErrmcTZ/77x9O+/4IzJp0bITCmz9ArcReCCxYLv
+         V/Ks/CV0VPAuzIe0y/6UQ60l+Jdg16qiJzg5oID/Rld/jvcYttrQqcgcKFXIFlz53iKd
+         QrdA==
+X-Forwarded-Encrypted: i=1; AJvYcCUeOXpUyVzgqL/WMWUCfVciKlzeMI+X6KvgbEnkcHNiRt7XXFVkFqfEwgFQRPpla5zNz+a+ebPu77Lv6vQUsQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1FK7+WchjHNAC+3tHhbW7KHmctMqyd7AbA0AAqdUlVzQ1dPVw
+	mHrIjxeOLyY3L4dO5XbPGzSXcUZgDI5Cf7VCRMepRmmm3doQilcTr9aT
+X-Gm-Gg: ASbGncvxZMhhdIVoJTYOpeTMfFRKfmTSWOpVwGCJjayLFo/nh9DilAOv8I/ZbtSCh5j
+	9Hu8lc1sHotTPS67pLzzljlaJY9ZCaqTyFrHVShrfwn6Yokwb9Xu8Da9UsSweJnM4S4dw9nPN0y
+	xXwWCfL57NleqCS316dBnNR+s41WnSpcPO6CajSEwyyamDCFvqZtmv2lQDM5w/WN6WUWN3G5gub
+	Q3ZfsOEmac8y6YC1OFg/njZLGae+eyc0Q4mFV+cYL6qIoD0qhCPixzfO58fOPj9UBPMY4aB3KTf
+	6ArGt3MargQAbYpL1a6YHJYZRPIv2aLzk4otK/rSm3IJ0aomM71uNmvFQTpXIwQYovGp60pwMDS
+	KrAzoohTViBOOtlmQueZlmp+Plxsw9l4KB9G5nF+U
+X-Google-Smtp-Source: AGHT+IEpfcshaEmI74+FRPGDA4WifzJapnTiLXEYiP3DH31K2fBVogP/EMh4TPJeVT8GPBF/IKYPlA==
+X-Received: by 2002:a5d:588c:0:b0:3b7:8842:89f5 with SMTP id ffacd0b85a97d-3b78e3d5a20mr5041589f8f.1.1753861937650;
+        Wed, 30 Jul 2025 00:52:17 -0700 (PDT)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b778f0c1b8sm14750871f8f.56.2025.07.30.00.52.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Jul 2025 00:52:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 30 Jul 2025 09:52:16 +0200
+Message-Id: <DBP862N3JBT3.2NRSJ8BECF0YI@gmail.com>
+Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: Missing BEACON_LOSS event
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Alexander Wilhelm" <alexander.wilhelm@westermo.com>, "Jeff Johnson"
+ <jjohnson@kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <aIjGvT+yQkZf8/Xs@FUE-ALEWI-WINX>
+In-Reply-To: <aIjGvT+yQkZf8/Xs@FUE-ALEWI-WINX>
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
-> Sean Anderson <sean.anderson@linux.dev> wrote:
-> > There are more unsupported functions than just LOWRT_RTY. Improve on
-> > commit 3b66519b023b ("wifi: rtw89: phy: add dummy c2h handler to avoid
-> > warning message") by printing a message just once when we first
-> > encounter an unsupported class.
->=20
-> Once I encounter an unsupported class/func, I'll check firmware team if t=
-he
-> C2H events can be ignored. If so, I add a dummy function to avoid the mes=
-sage.
-> If not, I should add code to handle the event.
->=20
-> Do you want to see the message even though it only appears once?
->=20
-> > Do the same for each unsupported func of
-> > the supported classes. This prevents messages like
-> >
-> > rtw89_8922ae 0000:81:00.0: PHY c2h class 2 not support
+On Tue Jul 29, 2025 at 3:03 PM CEST, Alexander Wilhelm wrote:
+> Hello devs,
+>
+> can someone help with the following issue?
+>
+> I'm using a QCN9074-based device in STA mode, connected to an access poin=
+t. When
+> the AP is powered off (without sending a deauthentication frame), the cli=
+ent
+> remains indefinitely associated. There is no disconnect, no beacon loss e=
+vent,
+> and the RSSI remains stuck at the last known value.
+[...]
+> From what I can tell, the function `ath11k_mac_handle_beacon_miss()` exis=
+ts and
+> is wired up via `ath11k_roam_event()`, but the firmware never seems to se=
+nd
+> `WMI_ROAM_EVENTID`, so the handler is never triggered.
+>
+> Is this expected behavior? Does the firmware need to be configured differ=
+ently
+> to enable beacon miss detection in STA mode? Or is this a known limitatio=
+n? Any
+> help or clarification would be appreciated.
 
-Is this a real example? We have handled class 2 (RTW89_PHY_C2H_CLASS_DM), n=
-o?
+Hello,
 
-Please point out the class / func you encountered. Then I can look up vendo=
-r
-driver or contact internal firmware team to know if we should implement or
-just add a dummy function.
+I've brought this up already on the ath11k/ath12k list:
+https://lore.kernel.org/ath12k/CZA2NS7J83D4.18SU6W9R96KPY@gmail.com/
+To my knowlege, nothing upstream has been posted so far by QCA.
 
-If we defer it, I don't know when we can do it.=20
+In non mainline sources there is a patch to support ath12k:
+https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/blob/win.w=
+lan_host_opensource.3.0/patches/ath12k/897-wifi-ath12k-Add-support-for-STA-=
+mode-to-trigger.patch
+My guess is that ath11k works the same way.
 
-> >
-> > from filling up dmesg.
-> >
-> > Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-> > ---
-> >
-> > Changes in v2:
-> > - Also suppress unsupported func messages
-> >
-> >  drivers/net/wireless/realtek/rtw89/phy.c | 18 +++++++++++++++---
-> >  1 file changed, 15 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wir=
-eless/realtek/rtw89/phy.c
-> > index f4eee642e5ce..9484d80eea9b 100644
-> > --- a/drivers/net/wireless/realtek/rtw89/phy.c
-> > +++ b/drivers/net/wireless/realtek/rtw89/phy.c
-> > @@ -3535,17 +3535,25 @@ void rtw89_phy_c2h_handle(struct rtw89_dev *rtw=
-dev, struct sk_buff *skb,
-> >  {
-> >         void (*handler)(struct rtw89_dev *rtwdev,
-> >                         struct sk_buff *c2h, u32 len) =3D NULL;
-> > +       static DECLARE_BITMAP(printed_ra, U8_MAX);
-> > +       static DECLARE_BITMAP(printed_rfk_log, U8_MAX);
-> > +       static DECLARE_BITMAP(printed_rfk_report, U8_MAX);
-> > +       static DECLARE_BITMAP(printed_class, U8_MAX);
-> > +       unsigned long *printed;
-> >
-> >         switch (class) {
-> >         case RTW89_PHY_C2H_CLASS_RA:
-> > +               printed =3D printed_ra;
-> >                 if (func < RTW89_PHY_C2H_FUNC_RA_MAX)
-> >                         handler =3D rtw89_phy_c2h_ra_handler[func];
-> >                 break;
-> >         case RTW89_PHY_C2H_RFK_LOG:
-> > +               printed =3D printed_rfk_log;
-> >                 if (func < ARRAY_SIZE(rtw89_phy_c2h_rfk_log_handler))
-> >                         handler =3D rtw89_phy_c2h_rfk_log_handler[func]=
-;
-> >                 break;
-> >         case RTW89_PHY_C2H_RFK_REPORT:
-> > +               printed =3D printed_rfk_report;
-> >                 if (func < ARRAY_SIZE(rtw89_phy_c2h_rfk_report_handler)=
-)
-> >                         handler =3D rtw89_phy_c2h_rfk_report_handler[fu=
-nc];
-> >                 break;
-> > @@ -3554,12 +3562,16 @@ void rtw89_phy_c2h_handle(struct rtw89_dev *rtw=
-dev, struct sk_buff *skb,
-> >                         return;
-> >                 fallthrough;
-> >         default:
-> > -               rtw89_info(rtwdev, "PHY c2h class %d not support\n", cl=
-ass);
-> > +               if (!test_and_set_bit(class, printed_class))
-> > +                       rtw89_info(rtwdev, "PHY c2h class %d not suppor=
-ted\n",
-> > +                                  class);
-> >                 return;
-> >         }
-> >         if (!handler) {
-> > -               rtw89_info(rtwdev, "PHY c2h class %d func %d not suppor=
-t\n", class,
-> > -                          func);
-> > +               if (!test_and_set_bit(func, printed))
-> > +                       rtw89_info(rtwdev,
-> > +                                  "PHY c2h class %d func %d not suppor=
-ted\n",
-> > +                                  class, func);
-> >                 return;
-> >         }
-> >         handler(rtwdev, skb, len);
-> > --
-> > 2.35.1.1320.gc452695387.dirty
+It would be great if QCA people could mainline this, it seems like a small
+enough and isolated feature that could be pushed without side effects.=20
+
+>
+>
+> Best regards
+> Alexander Wilhelm
 
 
