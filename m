@@ -1,117 +1,123 @@
-Return-Path: <linux-wireless+bounces-26059-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26060-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB99B161B3
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jul 2025 15:43:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2EDB16A38
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Jul 2025 03:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D27331893375
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Jul 2025 13:43:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CE841AA26DD
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Jul 2025 01:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25B22D6406;
-	Wed, 30 Jul 2025 13:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D0815442A;
+	Thu, 31 Jul 2025 01:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M9wOsd3R"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="el3XsFnS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F91F2D3ED9
-	for <linux-wireless@vger.kernel.org>; Wed, 30 Jul 2025 13:43:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183082D023;
+	Thu, 31 Jul 2025 01:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753882992; cv=none; b=BvZIhlje5cblQN/1y7suO23LdvxRAaxmuQnm93wrVUnlz3Q6scdspqXHIkOPqDvllALDmyjxM56qiAFLdpvbzJ05X4I7kmwz4T2ot3uydim0QJLYJA+xT3CvfACIK5ubT0HWVB5Q2dTQpyjdfanfaiUzKCZfSm9zA+7JF+CIR2w=
+	t=1753926301; cv=none; b=QpuQsyG9249Nm+1xoR9wadmAPWmwXUaRLi+h47KWnBIbRTK6PTiz8ruBnQcWWy5mDLuiVTSo2FaZvbEvyRgu3MUbnsWcBLHd+COl6Vb3nhiQFyzAXWH9NBheB2OBBioRnNhlTIXHCaS0GnXFh6ohc4GWiXoSMb7rsJL9ykMy92k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753882992; c=relaxed/simple;
-	bh=xBoRp0SChLZCXFGFEHaZwUjrEDvia350fk+vxlo53EU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=bRSihOGoeDaoE2EO5Y9gxvtN1UqiYWV9w9oQL96+p2lZgojH3Ai704bT5TU29OwkY7rc8qVwe+DoqPbSnqqKwftIPE4k6OfiJK6Oa1BxdOUxHrZVCy+9C7TXx3aFfK6Nm8pE5e2QvPykBL+P2fWQdWZJPdyy9KFUoWbeLzHwiyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M9wOsd3R; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ae0e0271d82so1281869966b.3
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Jul 2025 06:43:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753882989; x=1754487789; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xBoRp0SChLZCXFGFEHaZwUjrEDvia350fk+vxlo53EU=;
-        b=M9wOsd3RAQgu97UCATbG1V6fC6j7LkZog4Dn4yUg1M0GnqqwCn6kvYkizU37aygIgm
-         A0B51n1uRWLpT/b+4B8bxN0R9LMqaf/0BLMV3QDXwLGD5gKKOlHjv1sYbuUSAAoGA5kA
-         cB1BCM2bEtyyJdq6JaSolaH+k9NbxBpI4efcfmgUenfU0wuMRW9UnmGJ4ZPHPUasZSLO
-         N81CDAWneWEaNcjUc9xFXN47oXqVpMJnzB66Z/FbnisDHZuMsmeqfRAtCdmEMJ/STN2Z
-         MtlWEi+2t9LSKkpiyxrCov4L/JyT2y4e8upZPjwh/p31dMsn58xi/wSj9/9GLRIW4KuT
-         rpmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753882989; x=1754487789;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xBoRp0SChLZCXFGFEHaZwUjrEDvia350fk+vxlo53EU=;
-        b=CsWoUXmiYifC3htvopk1UcbBYjj/KD/pOtf6NCY07Urs26FX+OPHlE048SvcnTHpzy
-         Kpar6iQG8grPQ9SNET3Rxp3rz8XmlnhKtkBRi9D5OxJ/gFKpg0ftqq44SpR8gLXofOLU
-         iPdKHeY5dPk2MyH5IG7uRn9yN0hFN+NoSuCu/4+tHIxTHdLGvhkFXlcPpQ0fHUPOJzVS
-         omGIxk3GmDuyQXwlGUMCHuO/0nId0HjJDGbJ57D4NIGrZeIxSZs0mB+4Hqfnnw+o/gAT
-         j4JoQ2O8x7zQMkbl2AL/+8sfwQCyUlJX7YDmHzIafwty0cRJHR7cBueXgyjv6mk7J6ZX
-         l+mQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7c9HhWgEPpAXNNCwoPHQlyQZCMpgGh7UFGG2GNYtM8tINpSKOaya/YRvivaIF2T7DnUgpkL/QIU1CO7qHtQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxg9epZ26mbrMLFafrL6L9+DpLlli9E/Mfs4J5QF4PSGZifD3v3
-	3OYWy2z/1yhQ17pEFBY0HQ4t50aH10uMhMJZCvEdEFaCRsXaJSTqtKf4YaJ0idqhWTOsSEswJeD
-	6YmwVYqIR72raUBGFf/acvapmvqEPe34=
-X-Gm-Gg: ASbGnctlh1ZRtnOQ6h8LQx8oeFSNGVfyjPIlY7WAERBu7Mqq2pKNes+0KKDHsrKzcHK
-	PpVwdBeWCpU9m/l/V5Yfh7jaaXMC6y7lBQybQS3COXv5aFBo6vf+qhYN0tDOPYLhv3bZC1rFnXv
-	7pApqDiJ6gmvzktMWbUY+/0UF/gqvIbH+OJhfaPEA+R/1otCG5CuByiXNiVcMQmgctjNKxZR+v4
-	8tkkOw=
-X-Google-Smtp-Source: AGHT+IF2uKFJr5JGCokIm2/mPtbEjeJlskOZ000LCEx19oKBb6NdVkOI6CRy+VZ+SjtDN52qfYlA2WzAEtzWkaoz2Lg=
-X-Received: by 2002:a17:907:6d11:b0:ae9:928d:f285 with SMTP id
- a640c23a62f3a-af8fda83de2mr470966466b.55.1753882989068; Wed, 30 Jul 2025
- 06:43:09 -0700 (PDT)
+	s=arc-20240116; t=1753926301; c=relaxed/simple;
+	bh=8ycMzanKfn/v4u/ZyldJ7ds/EqsMVt4f1HAFoiLHzpA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bq4Q9xbb02pe0ftGObaLgQGywzE0lEnMy6W3u9q9kMCMQF0WjzYSs5V8jQ1F3MJ7aRj+J2jxjYtFdNxEkltAy/NkEQgm8wf6weVcUBZdAstwwtXNVaZpfqK33g2ZT5rrD2R1DIetYJ2XHIjSStpM0QYdPST4nKDUxmR1JiBxUKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=el3XsFnS; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56V1idgS7305146, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1753926279; bh=8g+895L8WsXPGFnFkTfb3gD9nWQbADrUMkgjo2Bh2+4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=el3XsFnSLp9zdA7iZT8JrB9MKGF57b6MpIqCStKqbQ2yP2HB/hRELqLyG6jm7WSOo
+	 uT4LJOc7AYfyVY+z2VOsgwwNs8ZYvZjwZo1iTjI8na3jJzAgdoyqUZJI6kv30neP2x
+	 2aVgv/O5cEMuvvilH0fZHSJwsyKoZumiQoKdIsGWy2IpX43lVvoSCFKhloXPn9Ejgl
+	 H3BS4LQ9WwD/Jp+RRnjY2ch+wkF50/n6CYPwr6CQV1fNrVYMpIusfpQLquA9P7GMSQ
+	 KnEqqpd5pBbW67AMgmA60aB/+dZXpG/YB4C5JTUs6cUEYZ3oQ4TE1OBasOC9/QndXh
+	 y1YgnoQ3jPprg==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56V1idgS7305146
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 31 Jul 2025 09:44:39 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 31 Jul 2025 09:44:39 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 31 Jul 2025 09:44:37 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47]) by
+ RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47%5]) with mapi id
+ 15.01.2507.035; Thu, 31 Jul 2025 09:44:37 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Mande Imran Ahmed <immu.ahmed1905@gmail.com>,
+        "johannes@sipsolutions.net"
+	<johannes@sipsolutions.net>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] net/mac80211: replace scnprintf() with sysfs_emit() for sysfs output
+Thread-Topic: [PATCH] net/mac80211: replace scnprintf() with sysfs_emit() for
+ sysfs output
+Thread-Index: AQHcATh5GvqFiHspD06BS3uK8zvoH7RLdJIA
+Date: Thu, 31 Jul 2025 01:44:37 +0000
+Message-ID: <5b63288d487547f1a4e6df426432ea0b@realtek.com>
+References: <20250730095634.3754-1-immu.ahmed1905@gmail.com>
+In-Reply-To: <20250730095634.3754-1-immu.ahmed1905@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAHGaMk-S4SZgcLczH1ntBvYJCk1vxJBfxzN_FSpGANC+-P0p1A@mail.gmail.com>
- <3c90ae9c1234f19f8506cb277b7e09bdce5b477e.camel@sipsolutions.net>
-In-Reply-To: <3c90ae9c1234f19f8506cb277b7e09bdce5b477e.camel@sipsolutions.net>
-From: Zhi-Jun You <hujy652@gmail.com>
-Date: Wed, 30 Jul 2025 21:42:59 +0800
-X-Gm-Features: Ac12FXwfoiIqWVfJy6EHz0M_BMUO11C--MnCGMp5x6kCWC2uFSw-3keIao39hQo
-Message-ID: <CAHGaMk_ySctq4zHrhsfxDrtUBDe7dp=ecm-tBJDRzHND11hCzQ@mail.gmail.com>
-Subject: Re: Question about flush_sta()
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 30, 2025 at 1:15=E2=80=AFAM Johannes Berg <johannes@sipsolution=
-s.net> wrote:
->
-> On Tue, 2025-07-29 at 23:21 +0800, Castiel You wrote:
-> > Hello,
-> >
-> > I have a question about flush_sta() behaviour.
-> > From reading iwlwifi which is the only driver implemented flush_sta(),
-> > it looks similar to flush() with drop set to true.
-> >
-> > Is it correct to assume flush_sta() acts more like drop?
->
-> It doesn't really matter, but dropping the packets is faster and this is
-> during disconnection, so there isn't really much of an expectation that
-> they might go out, and in fact the connection might not really be viable
-> any more anyway.
->
-> We'll probably need to rework some of this for UHR though.
->
-> johannes
+> --- a/net/mac80211/debugfs.c
+> +++ b/net/mac80211/debugfs.c
 
-Hi Johannes,
+[...]
 
-I see. Thanks for the explanation.
+> @@ -152,16 +152,15 @@ static ssize_t airtime_flags_read(struct file *file=
+,
+>                                   size_t count, loff_t *ppos)
+>  {
+>         struct ieee80211_local *local =3D file->private_data;
+> -       char buf[128] =3D {}, *pos, *end;
+> +       char buf[128] =3D {}, *pos;
 
-Best regards,
-Zhi-Jun
+The assumption of buffer size in sysfs_emit() is PAGE_SIZE, but obviously
+here is 128. Also, this is not sysfs.
+
+Maybe, I'd ignore this patch since I have commented this in your patch that
+changes similar stuff in rtw89 driver. Just share some information for
+other reviewers.
+
+>=20
+>         pos =3D buf;
+> -       end =3D pos + sizeof(buf) - 1;
+>=20
+>         if (local->airtime_flags & AIRTIME_USE_TX)
+> -               pos +=3D scnprintf(pos, end - pos, "AIRTIME_TX\t(%lx)\n",
+> +               pos +=3D sysfs_emit(pos, "AIRTIME_TX\t(%lx)\n",
+>                                  AIRTIME_USE_TX);
+>         if (local->airtime_flags & AIRTIME_USE_RX)
+> -               pos +=3D scnprintf(pos, end - pos, "AIRTIME_RX\t(%lx)\n",
+> +               pos +=3D sysfs_emit(pos, "AIRTIME_RX\t(%lx)\n",
+>                                  AIRTIME_USE_RX);
+>=20
+>         return simple_read_from_buffer(user_buf, count, ppos, buf,
+
+
+[...]
+
 
