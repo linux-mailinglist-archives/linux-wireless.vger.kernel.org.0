@@ -1,79 +1,79 @@
-Return-Path: <linux-wireless+bounces-26100-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26101-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017D4B18879
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 23:03:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B1FB1887E
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 23:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B046C3ADE11
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 21:03:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF3D31C84FF5
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 21:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816A228DF2B;
-	Fri,  1 Aug 2025 21:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9999028DB7E;
+	Fri,  1 Aug 2025 21:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SJLuW6Wd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ERPkxicJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444F626C391
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Aug 2025 21:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA96E2147F9
+	for <linux-wireless@vger.kernel.org>; Fri,  1 Aug 2025 21:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754082195; cv=none; b=goYGfy50PU2qUB48SjM+Kvoqwlt7jWuHWRil4oZtZMaBfD8OkmwXV0wJ8rVxoUl2B/u2JbahdtZFvWjN8EEYg8yM8AHvRwuJk86sjyVCY7WbHnXsa9PQ1UsNHqTYbmlRCz9+spZtbmxUDWw+aZP5q4dNz1X89qGsBoEB6B8RBEw=
+	t=1754082224; cv=none; b=mqJqA8mNgVzIzGOf+xrOp/H4dE3HvN1i7X6WOBl0qIxS6kC+DB8NF2GNFnQEYJt1gzg5suVlVPoFTMdP9q2ZLP+pFJeK9Z6INd4xgsK1uY+Z0N+NaSLmXL5wVCXD3zOir93oLcKe1uxqYWx62KzMWd4ioL7SfLO39bpy3gq43eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754082195; c=relaxed/simple;
-	bh=VJECzcG410dWGjJix8ZDE6ExCJ+49udJ388vR532xuI=;
+	s=arc-20240116; t=1754082224; c=relaxed/simple;
+	bh=2aj4M95A9L/jTmkvFhVsXNZxzCYlk2RAf3wE5TQPy+A=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=fkvGuVfPA5lzBHewP4yqRYkMArgFvuaK4ns5KbKTTstHiJG46KlCIxcOHEJDmhc4PjgzHSlhIdO6h3E15Cx3VelTDYaLmye9riDW8sp4gnj1PoOFsqNESjoXc2VrLxD7B/N14d6VVUIRzKSBcEwX/5JAOTfkaM1C63pSWR9wDoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SJLuW6Wd; arc=none smtp.client-ip=209.85.208.49
+	 In-Reply-To:Content-Type; b=jiYi4gVEZXnmR+iMDTJDkJV5ir1vxlWmRGopCP6QRcSpX6PgygwIAkvN14wHo1og4bQMejx3q8d7m3OrSwV0kB3DF6YkK9y4frPhMaT2V9ySR02dgaIsBva/qYEwGVxlaMJIThoVQZJRKT+iiwwUckSBGlKA60bYF9LZ45eTuVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ERPkxicJ; arc=none smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-61564c06e0dso2434303a12.3
-        for <linux-wireless@vger.kernel.org>; Fri, 01 Aug 2025 14:03:12 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-615c29fc31eso3450953a12.0
+        for <linux-wireless@vger.kernel.org>; Fri, 01 Aug 2025 14:03:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754082191; x=1754686991; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754082221; x=1754687021; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=NBFYhmIo7e3p+Htzf+EMrxsBcbPVFQ8okN07lxV36/o=;
-        b=SJLuW6WdkyY5Goed756iddyh3mAySHeRGAIiWj4tfmZMKIFfswMe+iDq+ukZvNG3mz
-         W+lWu9ugT/wc9BB8sxI3iiiIsBBFK3ffaBEOZNAx7AjmPaRAXiuyzTNNO0ry/An9qvE+
-         3o7cj9Lz9D+jT4epMjd4xqSTOOBVct+/kPAogM17OgcOPNmU7LyQjb0+LHAGw6dMhbu7
-         Z+xWr+PMzrZHMArGRmpNQ4CyDJr0vvybdDWrjaBKM/UA/5592F/INfoFBhGeGnxBMv21
-         +YaKCmcAZfbq+7FKBMy40Je8cDeLzZJ0Q2InhDUE3Qxvuf7vm9NrsT0lBS7Akqp3e3SP
-         vsgg==
+        bh=zMJTpctO46Y7ie4B8RaYA95CCFU0Fk8ojjxA7PKJtys=;
+        b=ERPkxicJJXEXRvV8TfK0QSb5pRqAWMuXCCGwjJITLbgqLtIbMBXQrNaX9ofBQbSHS9
+         MgvQLhLoNZxsXk69nEaqOtOv4rVqOow5WUyZK6dlkG06X1dUDr2RemYIBmGOw9tpQkhn
+         4hyXpV0H9iNAKsaV/J6XWLgx05WztGDwl8E9EBj2ffRRh6FgCATMWEGQsjqmHYJiXQhM
+         A2DOlhElF9Guo0COUjtEeZMxavdNcKV/98W/q+BPgMfTgfGBB0qFP5bXG+49d3DNQYC6
+         6kau7f8O+xKTM91HQHsJ+Kvbzv3+7nu/NYsADU8TlQCODaApvzp8xagM3OFYcfqQBhW6
+         oflA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754082191; x=1754686991;
+        d=1e100.net; s=20230601; t=1754082221; x=1754687021;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NBFYhmIo7e3p+Htzf+EMrxsBcbPVFQ8okN07lxV36/o=;
-        b=drOmvKriq1uYdIB0biFWy4LGoQGBR4dB3C1thVxPWJ1ztOIZN9FaU2WV6mx+YQ95ae
-         Qlbo/UWSWmhVsl+CauJvBUCbvaWdmcKO4IOM9fk+UA4tb5EMqIZcU3RPcsFo0J27AMx8
-         JFACg8tqW9xcRVENTNKCBMuqjtoVEXo795x0oiN7FZQ/bC+FZ8v5LXgDdI5+ngQ1jR+x
-         hTdF0GY+ZR1SjKAUSvPi3Mj8/7KmEO0tjUG8GtwWvutL1BrN67hWEBXqfVNx+6/KdGq3
-         LzKvd5ygHAbKKTJ+ZZZenOcC9lbKfnU3K7YhbN4w8QHofS/VqzUpu4DUnAnhCHiw1l1W
-         vwNQ==
-X-Gm-Message-State: AOJu0YylLIpiEg9VYgDqoTLcbT9rX8H21u3VPziTC0ybeBmpTX/NLwJv
-	FZ8RAD1KGwyUluoRY7FdE2wL+ly8KFl6xwFYN0AtR+sGG1TFMq9A7t4R/QLo4g==
-X-Gm-Gg: ASbGncsuF/OdvK8abASVcWt+viPpEOxMI9ocfYHgualbQDlENkHjOcBKQcM22GoJ8fP
-	m34Hn9USyTeZ5Yb3bIbTCpfJZ/ZtvBjtgYWNOwnvPusi0YvDMqKBcH7uWCdWXEoQXhNbK9p5p7F
-	naPQE/gR38wtDmWh/e+2mcRItPgRDqwpfn/py0G6azlOeshR96ZOEpOaWubqQACqNh4woATGRHf
-	QTZ7eth+aM5zM5qFp80Li9IWw91xNzJriJrqdE1ARkCC6huSRxzPavXY5HtOwU6j0TZOXNApwYU
-	cXkPgvJTuxFUnTaTBesgPsa8uEJ0YcRHr9wXUey9RM5LD0ApySk+vVmXZqs7JvWgKZun+nLE/oV
-	5O6a6t/IPznE4vgfPEpcYUhJi1eqxVw==
-X-Google-Smtp-Source: AGHT+IEXXBoNN8GaAQw2wXlKzVgoaFcEefRh9eU3UNB+X097675Qt0Xytpbs699nXTa6oUvTYHVXvQ==
-X-Received: by 2002:a05:6402:5203:b0:615:9830:b408 with SMTP id 4fb4d7f45d1cf-615e7186f34mr594079a12.16.1754082191412;
-        Fri, 01 Aug 2025 14:03:11 -0700 (PDT)
+        bh=zMJTpctO46Y7ie4B8RaYA95CCFU0Fk8ojjxA7PKJtys=;
+        b=tVYe2xVlw9RI5hJJ/GFYXVZmqSFEioWbYvQSvA1C1WGFejkC8Q8+lsfQ50AkWv/zeM
+         knIE5nHablAU7xpuHcMy2JxZatXOEheJ/fbMzHroi/i3M9fGvaAUmGFdUtZo10pRcSXl
+         DOYip9Pq+7fwsa0g8AjvYeY+VIy3CXQUQnwqcjfuqQuYss8W6c3Mj+VEPQKUIV6Y54d/
+         +meOBp5aVXvY1moJzXB1VrH9GGaWt2PSPnPygl47RS8Tr2L+S1lxFFaaDj5XMQqRQylm
+         Ep9myF4Qxm5ORhWBzz/K3qoMFNnv0HXbVpdH0/csVUUWoHgOF45s/q51FMiymFF/OkTb
+         idMQ==
+X-Gm-Message-State: AOJu0YxcIXVVbfpJhgRYuj/dKJmH9+mZ3FJyg31o5XoJESepgDtme5Hz
+	AcBmK/Yqqzhipb1ZiZZEsOzQ7MJsw0ybn4+wvighgt8gXDUKgayvcZYLWPpNnA==
+X-Gm-Gg: ASbGncsTuuyCjLOlSJpsra5HSSfEVoWGtXth6rKF1TlsgoDNkW6GzjjZ+yWKuR3DkCw
+	r6VxyoxjVLGnV8etkZqu5IOTCZk93QCy7cbSM87UN4JvLHZfEJNnrZDI0NTUFZQk8mMc+Wb8K71
+	twlwr7x0zFVjZ3s5E6OA7fsYG3kpaUSJvdUZB6lzW7KHPSztIVz4FfaZxooBAU7gx9dXgxgQe2e
+	whnnBTSZryQNT1rOTFhkBJWfl862zJiKlgnmDUSz+5iLnT2FaGArD5yUZQsb3oiukkQu0+7N8il
+	BQwLFjfeEZd/qlkHJxFThJdLcfOSsnIQu+HKwsc/tWjg3dSKu0R1sriaSraU7GUNH2U+7wM+LYQ
+	tRHcJrVlB29GdmKbV0vW+yvWYaTBodQ==
+X-Google-Smtp-Source: AGHT+IGsHO0U3MeKv2ptX/A0rLeS7lBEwf26q5drPtGGlNjqPQLhc9M7M3UD57T2vE5sopLpM9xg5g==
+X-Received: by 2002:a05:6402:35c9:b0:615:9fe5:f9b4 with SMTP id 4fb4d7f45d1cf-615e6f51419mr609788a12.20.1754082221024;
+        Fri, 01 Aug 2025 14:03:41 -0700 (PDT)
 Received: from [192.168.0.50] ([81.196.40.253])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8eff596sm3248845a12.5.2025.08.01.14.03.10
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615c57f9fd0sm2204378a12.11.2025.08.01.14.03.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Aug 2025 14:03:11 -0700 (PDT)
-Message-ID: <4781c181-cc13-413c-b9b6-287d57643d86@gmail.com>
-Date: Sat, 2 Aug 2025 00:03:09 +0300
+        Fri, 01 Aug 2025 14:03:40 -0700 (PDT)
+Message-ID: <99456c92-b544-44ed-a5dc-b0ee8994ea92@gmail.com>
+Date: Sat, 2 Aug 2025 00:03:39 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,7 +81,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH rtw-next v2 07/11] wifi: rtw89: Add rtw8852c_dle_mem_usb{2,3}
+Subject: [PATCH rtw-next v2 08/11] wifi: rtw89: Add rtw8852c_hfc_param_ini_usb
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
@@ -91,210 +91,81 @@ In-Reply-To: <f4a7a1c4-3d64-4af3-bc77-b12d7c1320e7@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Add rtw8852c_dle_mem_usb2 and rtw8852c_dle_mem_usb3 and their various
-quotas and sizes in struct rtw89_mac_size_set.
-
-"dle" could be "Data Link Engine" or "Double Link Engine". These are
-some parameters needed for RTL8852CU.
+"hfc" means "hci fc" which is "Host Control Interface Flow Control".
+These are some parameters needed for RTL8852CU.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
 v2:
  - No change, messed up sending v1.
 ---
- drivers/net/wireless/realtek/rtw89/mac.c      | 20 ++++++++++++
- drivers/net/wireless/realtek/rtw89/mac.h      | 10 ++++++
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 31 ++++++++++++++++++-
- 3 files changed, 60 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 46 ++++++++++++++++++-
+ 1 file changed, 45 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 2d473f1bb66c..1a1ab9c58158 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1659,6 +1659,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	.wde_size7 = {RTW89_WDE_PG_64, 510, 2,},
- 	/* DLFW */
- 	.wde_size9 = {RTW89_WDE_PG_64, 0, 1024,},
-+	/* 8852C USB3.0 */
-+	.wde_size17 = {RTW89_WDE_PG_64, 354, 30,},
- 	/* 8852C DLFW */
- 	.wde_size18 = {RTW89_WDE_PG_64, 0, 2048,},
- 	/* 8852C PCIE SCC */
-@@ -1666,6 +1668,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	.wde_size23 = {RTW89_WDE_PG_64, 1022, 2,},
- 	/* 8852B USB2.0/USB3.0 SCC */
- 	.wde_size25 = {RTW89_WDE_PG_64, 162, 94,},
-+	/* 8852C USB2.0 */
-+	.wde_size31 = {RTW89_WDE_PG_64, 384, 0,},
- 	/* PCIE */
- 	.ple_size0 = {RTW89_PLE_PG_128, 1520, 16,},
- 	.ple_size0_v1 = {RTW89_PLE_PG_128, 2688, 240, 212992,},
-@@ -1677,6 +1681,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	/* DLFW */
- 	.ple_size8 = {RTW89_PLE_PG_128, 64, 960,},
- 	.ple_size9 = {RTW89_PLE_PG_128, 2288, 16,},
-+	/* 8852C USB */
-+	.ple_size17 = {RTW89_PLE_PG_128, 3368, 24,},
- 	/* 8852C DLFW */
- 	.ple_size18 = {RTW89_PLE_PG_128, 2544, 16,},
- 	/* 8852C PCIE SCC */
-@@ -1685,6 +1691,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	.ple_size32 = {RTW89_PLE_PG_128, 620, 20,},
- 	/* 8852B USB3.0 SCC */
- 	.ple_size33 = {RTW89_PLE_PG_128, 632, 8,},
-+	/* 8852C USB2.0 */
-+	.ple_size34 = {RTW89_PLE_PG_128, 3374, 18,},
- 	/* PCIE 64 */
- 	.wde_qt0 = {3792, 196, 0, 107,},
- 	.wde_qt0_v1 = {3302, 6, 0, 20,},
-@@ -1694,6 +1702,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	.wde_qt6 = {448, 48, 0, 16,},
- 	/* 8852B PCIE SCC */
- 	.wde_qt7 = {446, 48, 0, 16,},
-+	/* 8852C USB3.0 */
-+	.wde_qt16 = {344, 2, 0, 8,},
- 	/* 8852C DLFW */
- 	.wde_qt17 = {0, 0, 0,  0,},
- 	/* 8852C PCIE SCC */
-@@ -1701,6 +1711,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	.wde_qt23 = {958, 48, 0, 16,},
- 	/* 8852B USB2.0/USB3.0 SCC */
- 	.wde_qt25 = {152, 2, 0, 8,},
-+	/* 8852C USB2.0 */
-+	.wde_qt31 = {338, 6, 0, 40,},
- 	.ple_qt0 = {320, 320, 32, 16, 13, 13, 292, 292, 64, 18, 1, 4, 0,},
- 	.ple_qt1 = {320, 320, 32, 16, 1316, 1316, 1595, 1595, 1367, 1321, 1, 1307, 0,},
- 	/* PCIE SCC */
-@@ -1712,6 +1724,10 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	.ple_qt13 = {0, 0, 16, 48, 0, 0, 0, 0, 0, 0, 0,},
- 	/* PCIE 64 */
- 	.ple_qt18 = {147, 0, 16, 20, 17, 13, 89, 0, 32, 14, 8, 0,},
-+	/* USB 52C USB3.0 */
-+	.ple_qt42 = {1068, 0, 16, 48, 4, 13, 178, 0, 16, 1, 8, 16, 0,},
-+	/* USB 52C USB3.0 */
-+	.ple_qt43 = {3068, 0, 32, 48, 4, 13, 178, 0, 16, 1, 8, 16, 0,},
- 	/* DLFW 52C */
- 	.ple_qt44 = {0, 0, 16, 256, 0, 0, 0, 0, 0, 0, 0, 0,},
- 	/* DLFW 52C */
-@@ -1731,6 +1747,10 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	/* USB3.0 52B 92K */
- 	.ple_qt74 = {286, 0, 16, 48, 4, 13, 178, 0, 32, 14, 8, 0, 0,},
- 	.ple_qt75 = {286, 0, 32, 48, 37, 13, 211, 0, 65, 14, 24, 0, 0,},
-+	/* USB2.0 52C */
-+	.ple_qt78 = {1560, 0, 16, 48, 13, 13, 390, 0, 32, 38, 8, 16, 0,},
-+	/* USB2.0 52C */
-+	.ple_qt79 = {1560, 0, 32, 48, 1253, 13, 1630, 0, 1272, 38, 120, 1256, 0,},
- 	/* 8852A PCIE WOW */
- 	.ple_qt_52a_wow = {264, 0, 32, 20, 64, 13, 1005, 0, 64, 128, 120,},
- 	/* 8852B PCIE WOW */
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 134734dbb231..675cd05e0b49 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -923,10 +923,12 @@ struct rtw89_mac_size_set {
- 	const struct rtw89_dle_size wde_size6;
- 	const struct rtw89_dle_size wde_size7;
- 	const struct rtw89_dle_size wde_size9;
-+	const struct rtw89_dle_size wde_size17;
- 	const struct rtw89_dle_size wde_size18;
- 	const struct rtw89_dle_size wde_size19;
- 	const struct rtw89_dle_size wde_size23;
- 	const struct rtw89_dle_size wde_size25;
-+	const struct rtw89_dle_size wde_size31;
- 	const struct rtw89_dle_size ple_size0;
- 	const struct rtw89_dle_size ple_size0_v1;
- 	const struct rtw89_dle_size ple_size3_v1;
-@@ -934,19 +936,23 @@ struct rtw89_mac_size_set {
- 	const struct rtw89_dle_size ple_size6;
- 	const struct rtw89_dle_size ple_size8;
- 	const struct rtw89_dle_size ple_size9;
-+	const struct rtw89_dle_size ple_size17;
- 	const struct rtw89_dle_size ple_size18;
- 	const struct rtw89_dle_size ple_size19;
- 	const struct rtw89_dle_size ple_size32;
- 	const struct rtw89_dle_size ple_size33;
-+	const struct rtw89_dle_size ple_size34;
- 	const struct rtw89_wde_quota wde_qt0;
- 	const struct rtw89_wde_quota wde_qt0_v1;
- 	const struct rtw89_wde_quota wde_qt4;
- 	const struct rtw89_wde_quota wde_qt6;
- 	const struct rtw89_wde_quota wde_qt7;
-+	const struct rtw89_wde_quota wde_qt16;
- 	const struct rtw89_wde_quota wde_qt17;
- 	const struct rtw89_wde_quota wde_qt18;
- 	const struct rtw89_wde_quota wde_qt23;
- 	const struct rtw89_wde_quota wde_qt25;
-+	const struct rtw89_wde_quota wde_qt31;
- 	const struct rtw89_ple_quota ple_qt0;
- 	const struct rtw89_ple_quota ple_qt1;
- 	const struct rtw89_ple_quota ple_qt4;
-@@ -954,6 +960,8 @@ struct rtw89_mac_size_set {
- 	const struct rtw89_ple_quota ple_qt9;
- 	const struct rtw89_ple_quota ple_qt13;
- 	const struct rtw89_ple_quota ple_qt18;
-+	const struct rtw89_ple_quota ple_qt42;
-+	const struct rtw89_ple_quota ple_qt43;
- 	const struct rtw89_ple_quota ple_qt44;
- 	const struct rtw89_ple_quota ple_qt45;
- 	const struct rtw89_ple_quota ple_qt46;
-@@ -965,6 +973,8 @@ struct rtw89_mac_size_set {
- 	const struct rtw89_ple_quota ple_qt73;
- 	const struct rtw89_ple_quota ple_qt74;
- 	const struct rtw89_ple_quota ple_qt75;
-+	const struct rtw89_ple_quota ple_qt78;
-+	const struct rtw89_ple_quota ple_qt79;
- 	const struct rtw89_ple_quota ple_qt_52a_wow;
- 	const struct rtw89_ple_quota ple_qt_52b_wow;
- 	const struct rtw89_ple_quota ple_qt_52bt_wow;
 diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 49fdcb9aebb5..5e58bab5d39f 100644
+index 5e58bab5d39f..4a1405ba3567 100644
 --- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
 +++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -64,6 +64,32 @@ static const struct rtw89_dle_mem rtw8852c_dle_mem_pcie[] = {
- 			       NULL},
+@@ -51,6 +51,48 @@ static const struct rtw89_hfc_param_ini rtw8852c_hfc_param_ini_pcie[] = {
+ 	[RTW89_QTA_INVALID] = {NULL},
  };
  
-+static const struct rtw89_dle_mem rtw8852c_dle_mem_usb2[] = {
-+	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size31,
-+			   &rtw89_mac_size.ple_size34, &rtw89_mac_size.wde_qt31,
-+			   &rtw89_mac_size.wde_qt31, &rtw89_mac_size.ple_qt78,
-+			   &rtw89_mac_size.ple_qt79},
-+	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &rtw89_mac_size.wde_size18,
-+			    &rtw89_mac_size.ple_size18, &rtw89_mac_size.wde_qt17,
-+			    &rtw89_mac_size.wde_qt17, &rtw89_mac_size.ple_qt44,
-+			    &rtw89_mac_size.ple_qt45},
-+	[RTW89_QTA_INVALID] = {RTW89_QTA_INVALID, NULL, NULL, NULL, NULL, NULL,
-+			       NULL},
++static const struct rtw89_hfc_ch_cfg rtw8852c_hfc_chcfg_usb[] = {
++	{18, 344, grp_0}, /* ACH 0 */
++	{0, 0, grp_0}, /* ACH 1 */
++	{18, 344, grp_0}, /* ACH 2 */
++	{0, 0, grp_0}, /* ACH 3 */
++	{18, 344, grp_0}, /* ACH 4 */
++	{0, 0, grp_0}, /* ACH 5 */
++	{18, 344, grp_0}, /* ACH 6 */
++	{0, 0, grp_0}, /* ACH 7 */
++	{18, 344, grp_0}, /* B0MGQ */
++	{0, 0, grp_0}, /* B0HIQ */
++	{18, 344, grp_0}, /* B1MGQ */
++	{0, 0, grp_0}, /* B1HIQ */
++	{0, 0, 0} /* FWCMDQ */
 +};
 +
-+static const struct rtw89_dle_mem rtw8852c_dle_mem_usb3[] = {
-+	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size17,
-+			   &rtw89_mac_size.ple_size17, &rtw89_mac_size.wde_qt16,
-+			   &rtw89_mac_size.wde_qt16, &rtw89_mac_size.ple_qt42,
-+			   &rtw89_mac_size.ple_qt43},
-+	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &rtw89_mac_size.wde_size18,
-+			    &rtw89_mac_size.ple_size18, &rtw89_mac_size.wde_qt17,
-+			    &rtw89_mac_size.wde_qt17, &rtw89_mac_size.ple_qt44,
-+			    &rtw89_mac_size.ple_qt45},
-+	[RTW89_QTA_INVALID] = {RTW89_QTA_INVALID, NULL, NULL, NULL, NULL, NULL,
-+			       NULL},
++static const struct rtw89_hfc_pub_cfg rtw8852c_hfc_pubcfg_usb = {
++	344, /* Group 0 */
++	0, /* Group 1 */
++	344, /* Public Max */
++	0 /* WP threshold */
 +};
 +
- static const u32 rtw8852c_h2c_regs[RTW89_H2CREG_MAX] = {
- 	R_AX_H2CREG_DATA0_V1, R_AX_H2CREG_DATA1_V1, R_AX_H2CREG_DATA2_V1,
- 	R_AX_H2CREG_DATA3_V1
-@@ -3023,7 +3049,10 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
++static const struct rtw89_hfc_prec_cfg rtw8852c_hfc_preccfg_usb = {
++	9, /* CH 0-11 pre-cost */
++	32, /* H2C pre-cost */
++	48, /* WP CH 0-7 pre-cost */
++	48, /* WP CH 8-11 pre-cost */
++	1, /* CH 0-11 full condition */
++	1, /* H2C full condition */
++	1, /* WP CH 0-7 full condition */
++	1, /* WP CH 8-11 full condition */
++};
++
++static const struct rtw89_hfc_param_ini rtw8852c_hfc_param_ini_usb[] = {
++	[RTW89_QTA_SCC] = {rtw8852c_hfc_chcfg_usb, &rtw8852c_hfc_pubcfg_usb,
++			   &rtw8852c_hfc_preccfg_usb, RTW89_HCIFC_STF},
++	[RTW89_QTA_DLFW] = {NULL, NULL,
++			    &rtw8852c_hfc_preccfg_usb, RTW89_HCIFC_STF},
++	[RTW89_QTA_INVALID] = {NULL},
++};
++
+ static const struct rtw89_dle_mem rtw8852c_dle_mem_pcie[] = {
+ 	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size19,
+ 			   &rtw89_mac_size.ple_size19, &rtw89_mac_size.wde_qt18,
+@@ -3048,7 +3090,9 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
+ 	.max_amsdu_limit	= 8000,
  	.dis_2g_40m_ul_ofdma	= false,
  	.rsvd_ple_ofst		= 0x6f800,
- 	.hfc_param_ini		= {rtw8852c_hfc_param_ini_pcie, NULL, NULL},
--	.dle_mem		= {rtw8852c_dle_mem_pcie, NULL, NULL, NULL},
-+	.dle_mem		= {rtw8852c_dle_mem_pcie,
-+				   rtw8852c_dle_mem_usb2,
-+				   rtw8852c_dle_mem_usb3,
+-	.hfc_param_ini		= {rtw8852c_hfc_param_ini_pcie, NULL, NULL},
++	.hfc_param_ini		= {rtw8852c_hfc_param_ini_pcie,
++				   rtw8852c_hfc_param_ini_usb,
 +				   NULL},
- 	.wde_qempty_acq_grpnum	= 16,
- 	.wde_qempty_mgq_grpsel	= 16,
- 	.rf_base_addr		= {0xe000, 0xf000},
+ 	.dle_mem		= {rtw8852c_dle_mem_pcie,
+ 				   rtw8852c_dle_mem_usb2,
+ 				   rtw8852c_dle_mem_usb3,
 -- 
 2.50.0
 
