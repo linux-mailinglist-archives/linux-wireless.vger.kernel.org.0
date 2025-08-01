@@ -1,77 +1,86 @@
-Return-Path: <linux-wireless+bounces-26075-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26076-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FCDB17B6D
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 05:32:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48527B17C4D
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 07:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0650C16EFB5
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 03:32:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A6C917BB0D
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 05:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2EE158520;
-	Fri,  1 Aug 2025 03:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722C229CEB;
+	Fri,  1 Aug 2025 05:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ew5zeEih"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="SmTnoT3z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F026130E58;
-	Fri,  1 Aug 2025 03:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CF2139D
+	for <linux-wireless@vger.kernel.org>; Fri,  1 Aug 2025 05:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754019153; cv=none; b=feJLKW6QeZvnH+NOilmHn6tX+rzwgMWPKsI5dh68PNI5ulQK3tEQc8vAPnoENrrox/UD286u4FLtVHCy8Y5W2PHOPw0JpYAG0GFFwKdkxEPuMGQ6jv6f7EFQqep0NrglhlFvAmZDvEgjBPIi1w38H4F9syGAuzvkw7gr4K2DnyM=
+	t=1754025069; cv=none; b=ghDsdawoc1fXXK/aV+vU4XC9QQOylEBDtkVcPdPxQ7Et4pyKo8lbvxrXWbgaoZ8yZUYd2YtKXMGycu0UnGdb6/y38VM8+BXvIl/qQDKm9lN64Scyft7GRn+J759FfrzvFo6IImBg3KbvUnoUS8ME+1CTJqYWkIHeBn3OvOIWsnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754019153; c=relaxed/simple;
-	bh=jYfcOJqAuO0i33bt9vqtlgulefjYaY1STntvoeHlzt8=;
+	s=arc-20240116; t=1754025069; c=relaxed/simple;
+	bh=JsMqroGehOkOyuNnrH4QGrZvZZ25ct9mnGd8d+EcSQU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PIBIKlhNsPNe6+OkxKBbYQBG0IAvfiPMTkgNnUXxyRA3F7FLvXT/hrwyZw0xGwDHfdHHpKeQF629TNURBTwIDg7/sRAfT37n4nqs7UQ/QQ+W3MD8TM1qkKm2tGMB9Bd051nJ0tKrZ4bzyuKFLnXrjfpMkHweNvgAUNaVNa1jQq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ew5zeEih; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754019152; x=1785555152;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jYfcOJqAuO0i33bt9vqtlgulefjYaY1STntvoeHlzt8=;
-  b=Ew5zeEihhXIx32eHiFMhoR9UK5Cg3NSvMweOrKwACp+a+l7VHemkawTb
-   fCuDGn+39h+/9hUoOaTEI8kDTLtZx+Rq/FDuMJTz1F2y8hIFUG8Rte9lD
-   gFajohmDV5oHba2hZMT/W37oQaCYTjBgTNIhowx89fWaNzosr5jcNlRYd
-   4fak07ZTPIWSGiN33W+Rige9pYbtiYwfgm25awJWe+0uPNY0l19T8d45O
-   xJqKmNd4BswJGJ07oEBEly0ME6kMz8tZjODm4xVYGBZZbbt++8+Qe6BXf
-   vJIlMCTkaSpYYyj51Sq/9Q0QnmlQPlQ1VWAl1Fsc7oXoaSCNdh2zwESTm
-   A==;
-X-CSE-ConnectionGUID: +yMgehHWR0ywQl4A+pwArA==
-X-CSE-MsgGUID: vxdt+niXTYquZp1HfCspYg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="56296057"
-X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
-   d="scan'208";a="56296057"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 20:32:19 -0700
-X-CSE-ConnectionGUID: McsSIpXMS7OMV6CVFiHKIQ==
-X-CSE-MsgGUID: 6q0hKUuiRNeeIjE5DROETQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
-   d="scan'208";a="163009834"
-Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 31 Jul 2025 20:32:17 -0700
-Received: from kbuild by 160750d4a34c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uhgVD-0004KO-16;
-	Fri, 01 Aug 2025 03:32:15 +0000
-Date: Fri, 1 Aug 2025 11:32:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mande Imran Ahmed <immu.ahmed1905@gmail.com>, johannes@sipsolutions.net
-Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mande Imran Ahmed <immu.ahmed1905@gmail.com>
-Subject: Re: [PATCH] net/mac80211: replace scnprintf() with sysfs_emit() for
- sysfs output
-Message-ID: <202508011121.dDTSwRyY-lkp@intel.com>
-References: <20250730095634.3754-1-immu.ahmed1905@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DhMPo80W18BkY8E3IXPrp0hKGw88HSxjdOz/88xnx5iTUPpDsPmuGnGdq6gtUsfTZvwYVhJr4nuJz3esiLZ1EOgp6PFClDahbvCnQ/b4gRQAhMFJAxxT9AP7EiJV6ZEEC6eVDX/th4wrd5oz0UbP2Ndu0aqL7np2gbNkUHMVOK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=SmTnoT3z; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-23fc5aedaf0so9563115ad.2
+        for <linux-wireless@vger.kernel.org>; Thu, 31 Jul 2025 22:11:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1754025066; x=1754629866; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/xCRzom0SFHLKHEZcXJu/rKhQccbjcV6ehAV3P1yUQY=;
+        b=SmTnoT3z/e4Q4sW0StelOC9qVSAkVqix4cs9aOEPPal30CSzsIZWzRXuWggS7V1zAJ
+         qU3k3y+31SvwZ/dKYw4GWoWtU0t5zoGD+7X2cZmB1vsvywDJYavETtI82DIksBjA6y5A
+         2/TkYvqpv0vtvggMBg9bCD2rVVVrGlGmAl6oace4YaX8/oE+4cyZ537ogUC6RLyAaeS5
+         DLxAWX8DMrsaKAv0JrfKFBFqsM1Fr2e7+btRV1R/6VVRoBKUvyNXJ9UDEGTYXfBv/9sa
+         jzMLXdV18rts6QRnmLX8Ab+uu7iYE/1jFvYQPstR2SGBj4+lBg3xN++O8Pgv/ItuH7Ed
+         0cIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754025066; x=1754629866;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/xCRzom0SFHLKHEZcXJu/rKhQccbjcV6ehAV3P1yUQY=;
+        b=qpr5N88Ecf5LToIXq06PCEWveRZfJ6NZL+ltFe6RFEL9LDSNqBrWtt9Nk18YXiMs9c
+         QwnfScAy+M/IfOwTEcWcUZCwSz2KM9GBSKN68P5Dyn/CKBlUTIm/7e9t0hFzyIfFqfmF
+         fsetHUk5nmkBHEDIXwPFgh4IhHbQGP0z/+2H4Du7u7ifmXt+H+TdxAA3/PQpI6U6b4BT
+         8Li4wdo0RjGM9M1GNcnEC9QmdLg6Y1pHhn4kyRWZSd/bSTPT7zmYxBAOLlH7HDfCfnl+
+         J2HGrJFLSG0iz5m6qRSR8MDy7quaU+HHuX/kXswZPt2PROEmr10q84iOkZ8WZFYemgCE
+         VV6g==
+X-Gm-Message-State: AOJu0YzG4bC+3xW1BsshFJuevLxAAR0u7y/zDkT3kzPLWWc37ICfj/2K
+	9In5AwoaBfD+0IQILkP7+nSyTXwz9LCnJUkcTBTplE8tThBLErkX6dWZfQsbuQpqGic=
+X-Gm-Gg: ASbGnctHOHosiMRkcaIrgF6iOeLdEnSaFpdL0ldalCG8HoI+lY1v/nv9Hb1E6Uv2fkW
+	NBqIC1VHVuSQBa/GULy9Gy2AXWqwvC+g61A2b4PrNz7eOMv6MSkbNwhVPKWYwQtRFfCVDC+xLZS
+	CV0aCZjhxY5zQMfdKFyI1SSDAiSRIB1NQArHCrKfgN8kmw9niXHEcpUxCflEgksc5oxvDM9kfF3
+	2w3yDAeHkSa1bkt+bPlhRr80etdy7IU0nfps70xLT6SWhDDHECOnS5SVofviMMY1lZtcIpozhUv
+	/YPiW6bcnPCNbVs+9/B3lcun61FBjYCPn3d0eGWenuhw5dCXWQaWE5tCabXgq9wXCL/yp12QzUz
+	AopRSmZp5GPhzsLu0zX0QHluKG2CS8orf04EqG8f4Nw==
+X-Google-Smtp-Source: AGHT+IGQTG8B1K0M5OG3eJVHo5BK2UREmMRU/URvF5vKpnziwLUbEDHg7tl6pLDshuDnK5+02+5Z9Q==
+X-Received: by 2002:a17:902:e849:b0:240:3dbb:761c with SMTP id d9443c01a7336-2422a699be0mr23145085ad.32.1754025066376;
+        Thu, 31 Jul 2025 22:11:06 -0700 (PDT)
+Received: from localhost ([101.180.88.40])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8aaab44sm32738555ad.155.2025.07.31.22.11.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Jul 2025 22:11:05 -0700 (PDT)
+Date: Fri, 1 Aug 2025 15:11:01 +1000
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Subject: Re: [wireless-next v2 3/3] wifi: mac80211: kunit: add kunit tests
+ for S1G PVB decoding
+Message-ID: <e4j5rbffwxgrqafkwyuezl2q3z4mgdn5lxrkxjxaphmn66movm@d743xb4xbdrc>
+References: <20250725132221.258217-1-lachlan.hodges@morsemicro.com>
+ <20250725132221.258217-4-lachlan.hodges@morsemicro.com>
+ <65411d6ba7516e01920ccf39627269fc2f71dd56.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,80 +89,28 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250730095634.3754-1-immu.ahmed1905@gmail.com>
+In-Reply-To: <65411d6ba7516e01920ccf39627269fc2f71dd56.camel@sipsolutions.net>
 
-Hi Mande,
+On Thu, Jul 31, 2025 at 09:56:56PM +0200, Johannes Berg wrote:
+> On Fri, 2025-07-25 at 23:22 +1000, Lachlan Hodges wrote:
+> > 
+> > +static inline u8 *tim_push(u8 **p, u8 v)
+> > +{
+> > +	*(*p)++ = v;
+> > +	return *p;
+> > +}
+> 
+> The robot complains about this, there should (normally) not be inline in
+> C files.
+> 
+> Also, looks like you don't need the return value?
+> 
+> Anyway, it's the middle of the merge windows, so I guess it'll be a
+> while before I apply things.
 
-kernel test robot noticed the following build warnings:
+That's fine - I can submit a v3 once the merge window closes with these
+minor fixups, no rush from our end. Plus its always good getting the
+dopamine hit from seeing all green :)
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main linus/master v6.16 next-20250731]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Mande-Imran-Ahmed/net-mac80211-replace-scnprintf-with-sysfs_emit-for-sysfs-output/20250730-180128
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20250730095634.3754-1-immu.ahmed1905%40gmail.com
-patch subject: [PATCH] net/mac80211: replace scnprintf() with sysfs_emit() for sysfs output
-config: powerpc-randconfig-001-20250801 (https://download.01.org/0day-ci/archive/20250801/202508011121.dDTSwRyY-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 13.4.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250801/202508011121.dDTSwRyY-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508011121.dDTSwRyY-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   net/mac80211/debugfs_sta.c: In function 'sta_flags_read':
->> net/mac80211/debugfs_sta.c:99:16: warning: 'buf' is used uninitialized [-Wuninitialized]
-      99 |         return simple_read_from_buffer(userbuf, count, ppos, buf, strlen(buf));
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   In file included from include/linux/string.h:65,
-                    from include/linux/bitmap.h:13,
-                    from include/linux/cpumask.h:12,
-                    from include/linux/smp.h:13,
-                    from include/linux/lockdep.h:14,
-                    from include/linux/spinlock.h:63,
-                    from include/linux/wait.h:9,
-                    from include/linux/wait_bit.h:8,
-                    from include/linux/fs.h:7,
-                    from include/linux/debugfs.h:15,
-                    from net/mac80211/debugfs_sta.c:11:
-   arch/powerpc/include/asm/string.h:22:24: note: by argument 1 of type 'const char *' to 'strlen' declared here
-      22 | extern __kernel_size_t strlen(const char *);
-         |                        ^~~~~~
-   net/mac80211/debugfs_sta.c:87:14: note: 'buf' declared here
-      87 |         char buf[16 * NUM_WLAN_STA_FLAGS], *pos = buf;
-         |              ^~~
-
-
-vim +/buf +99 net/mac80211/debugfs_sta.c
-
-c84387d2f2c83d Johannes Berg     2016-03-17   83  
-e9f207f0ff90bf Jiri Benc         2007-05-05   84  static ssize_t sta_flags_read(struct file *file, char __user *userbuf,
-e9f207f0ff90bf Jiri Benc         2007-05-05   85  			      size_t count, loff_t *ppos)
-e9f207f0ff90bf Jiri Benc         2007-05-05   86  {
-c84387d2f2c83d Johannes Berg     2016-03-17   87  	char buf[16 * NUM_WLAN_STA_FLAGS], *pos = buf;
-e9f207f0ff90bf Jiri Benc         2007-05-05   88  	struct sta_info *sta = file->private_data;
-c84387d2f2c83d Johannes Berg     2016-03-17   89  	unsigned int flg;
-c84387d2f2c83d Johannes Berg     2016-03-17   90  
-c84387d2f2c83d Johannes Berg     2016-03-17   91  	BUILD_BUG_ON(ARRAY_SIZE(sta_flag_names) != NUM_WLAN_STA_FLAGS);
-c2c98fdeb5c897 Johannes Berg     2011-09-29   92  
-c84387d2f2c83d Johannes Berg     2016-03-17   93  	for (flg = 0; flg < NUM_WLAN_STA_FLAGS; flg++) {
-c84387d2f2c83d Johannes Berg     2016-03-17   94  		if (test_sta_flag(sta, flg))
-ec95570844b7a6 Mande Imran Ahmed 2025-07-30   95  			pos += sysfs_emit(pos, "%s\n",
-c84387d2f2c83d Johannes Berg     2016-03-17   96  					 sta_flag_names[flg]);
-c84387d2f2c83d Johannes Berg     2016-03-17   97  	}
-5bade101eceedb Johannes Berg     2011-09-29   98  
-c84387d2f2c83d Johannes Berg     2016-03-17  @99  	return simple_read_from_buffer(userbuf, count, ppos, buf, strlen(buf));
-e9f207f0ff90bf Jiri Benc         2007-05-05  100  }
-e9f207f0ff90bf Jiri Benc         2007-05-05  101  STA_OPS(flags);
-e9f207f0ff90bf Jiri Benc         2007-05-05  102  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+lachlan
 
