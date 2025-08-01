@@ -1,86 +1,60 @@
-Return-Path: <linux-wireless+bounces-26076-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26077-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48527B17C4D
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 07:11:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56DEEB18057
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 12:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A6C917BB0D
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 05:11:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 828357B1BD6
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Aug 2025 10:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722C229CEB;
-	Fri,  1 Aug 2025 05:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC1B2367A8;
+	Fri,  1 Aug 2025 10:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="SmTnoT3z"
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="1VmYqi3x"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CF2139D
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Aug 2025 05:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BB923536A
+	for <linux-wireless@vger.kernel.org>; Fri,  1 Aug 2025 10:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754025069; cv=none; b=ghDsdawoc1fXXK/aV+vU4XC9QQOylEBDtkVcPdPxQ7Et4pyKo8lbvxrXWbgaoZ8yZUYd2YtKXMGycu0UnGdb6/y38VM8+BXvIl/qQDKm9lN64Scyft7GRn+J759FfrzvFo6IImBg3KbvUnoUS8ME+1CTJqYWkIHeBn3OvOIWsnA=
+	t=1754044998; cv=none; b=erbwi7xlG/3kOqNYwzTpVlLDkyzcW+BFsStDT88LuhORusUeFHFcsUQ8HXUv9isF/On91K0X7BY3zLCHY2WiV8Wpy7bCUAKahSsxswrrFVnClKd5HUGs36yI39h7/xh15FNj1DHSqYdKHH45Lj20em/UpfEPQEz8TYx7TWfbDJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754025069; c=relaxed/simple;
-	bh=JsMqroGehOkOyuNnrH4QGrZvZZ25ct9mnGd8d+EcSQU=;
+	s=arc-20240116; t=1754044998; c=relaxed/simple;
+	bh=vdGghAuRqFh9v9OKtYjOGn/D80mvNRjAfBd2IBvyKbs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DhMPo80W18BkY8E3IXPrp0hKGw88HSxjdOz/88xnx5iTUPpDsPmuGnGdq6gtUsfTZvwYVhJr4nuJz3esiLZ1EOgp6PFClDahbvCnQ/b4gRQAhMFJAxxT9AP7EiJV6ZEEC6eVDX/th4wrd5oz0UbP2Ndu0aqL7np2gbNkUHMVOK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=SmTnoT3z; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-23fc5aedaf0so9563115ad.2
-        for <linux-wireless@vger.kernel.org>; Thu, 31 Jul 2025 22:11:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1754025066; x=1754629866; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/xCRzom0SFHLKHEZcXJu/rKhQccbjcV6ehAV3P1yUQY=;
-        b=SmTnoT3z/e4Q4sW0StelOC9qVSAkVqix4cs9aOEPPal30CSzsIZWzRXuWggS7V1zAJ
-         qU3k3y+31SvwZ/dKYw4GWoWtU0t5zoGD+7X2cZmB1vsvywDJYavETtI82DIksBjA6y5A
-         2/TkYvqpv0vtvggMBg9bCD2rVVVrGlGmAl6oace4YaX8/oE+4cyZ537ogUC6RLyAaeS5
-         DLxAWX8DMrsaKAv0JrfKFBFqsM1Fr2e7+btRV1R/6VVRoBKUvyNXJ9UDEGTYXfBv/9sa
-         jzMLXdV18rts6QRnmLX8Ab+uu7iYE/1jFvYQPstR2SGBj4+lBg3xN++O8Pgv/ItuH7Ed
-         0cIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754025066; x=1754629866;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/xCRzom0SFHLKHEZcXJu/rKhQccbjcV6ehAV3P1yUQY=;
-        b=qpr5N88Ecf5LToIXq06PCEWveRZfJ6NZL+ltFe6RFEL9LDSNqBrWtt9Nk18YXiMs9c
-         QwnfScAy+M/IfOwTEcWcUZCwSz2KM9GBSKN68P5Dyn/CKBlUTIm/7e9t0hFzyIfFqfmF
-         fsetHUk5nmkBHEDIXwPFgh4IhHbQGP0z/+2H4Du7u7ifmXt+H+TdxAA3/PQpI6U6b4BT
-         8Li4wdo0RjGM9M1GNcnEC9QmdLg6Y1pHhn4kyRWZSd/bSTPT7zmYxBAOLlH7HDfCfnl+
-         J2HGrJFLSG0iz5m6qRSR8MDy7quaU+HHuX/kXswZPt2PROEmr10q84iOkZ8WZFYemgCE
-         VV6g==
-X-Gm-Message-State: AOJu0YzG4bC+3xW1BsshFJuevLxAAR0u7y/zDkT3kzPLWWc37ICfj/2K
-	9In5AwoaBfD+0IQILkP7+nSyTXwz9LCnJUkcTBTplE8tThBLErkX6dWZfQsbuQpqGic=
-X-Gm-Gg: ASbGnctHOHosiMRkcaIrgF6iOeLdEnSaFpdL0ldalCG8HoI+lY1v/nv9Hb1E6Uv2fkW
-	NBqIC1VHVuSQBa/GULy9Gy2AXWqwvC+g61A2b4PrNz7eOMv6MSkbNwhVPKWYwQtRFfCVDC+xLZS
-	CV0aCZjhxY5zQMfdKFyI1SSDAiSRIB1NQArHCrKfgN8kmw9niXHEcpUxCflEgksc5oxvDM9kfF3
-	2w3yDAeHkSa1bkt+bPlhRr80etdy7IU0nfps70xLT6SWhDDHECOnS5SVofviMMY1lZtcIpozhUv
-	/YPiW6bcnPCNbVs+9/B3lcun61FBjYCPn3d0eGWenuhw5dCXWQaWE5tCabXgq9wXCL/yp12QzUz
-	AopRSmZp5GPhzsLu0zX0QHluKG2CS8orf04EqG8f4Nw==
-X-Google-Smtp-Source: AGHT+IGQTG8B1K0M5OG3eJVHo5BK2UREmMRU/URvF5vKpnziwLUbEDHg7tl6pLDshuDnK5+02+5Z9Q==
-X-Received: by 2002:a17:902:e849:b0:240:3dbb:761c with SMTP id d9443c01a7336-2422a699be0mr23145085ad.32.1754025066376;
-        Thu, 31 Jul 2025 22:11:06 -0700 (PDT)
-Received: from localhost ([101.180.88.40])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8aaab44sm32738555ad.155.2025.07.31.22.11.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Jul 2025 22:11:05 -0700 (PDT)
-Date: Fri, 1 Aug 2025 15:11:01 +1000
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Subject: Re: [wireless-next v2 3/3] wifi: mac80211: kunit: add kunit tests
- for S1G PVB decoding
-Message-ID: <e4j5rbffwxgrqafkwyuezl2q3z4mgdn5lxrkxjxaphmn66movm@d743xb4xbdrc>
-References: <20250725132221.258217-1-lachlan.hodges@morsemicro.com>
- <20250725132221.258217-4-lachlan.hodges@morsemicro.com>
- <65411d6ba7516e01920ccf39627269fc2f71dd56.camel@sipsolutions.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=OQ4qSpanzsHKxnK1lQnquaPRuQlVg08YECEBI09EymWMak95LwxJrqeJrzPJ6r/EhJItCZEnU6D8+Jo4KWqgh0FudWuoXsMH3ZNRcOuBgEh95AcqnxP5yssZ/qYE6kt9FmYovi+LqpDxo+BXlR3zgzwgPt/fkM3Bs278kbdyXCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=1VmYqi3x; arc=none smtp.client-ip=212.77.101.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Received: (wp-smtpd smtp.wp.pl 44112 invoked from network); 1 Aug 2025 12:43:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1754044985; bh=S8Xh4dwltKo48ODYTlU5bLdmTB5/mPSV+B2vDyT/wTg=;
+          h=From:To:Cc:Subject;
+          b=1VmYqi3xIM+gs+DDDQ3Vcx6jGfXAwH/D9iz4hnq5A3xEnbPOjQhJouvOzTJQLBCow
+           /Noa5yMFh7ySZEkxlRM3dbtGsJ/i1obMfDxwnJWvdbWDuwaqzV7jFmpyD+jEp62nsC
+           hhfyjr1IbLtSa8A+vjWKjqLKWk0sbxlPhiLShPjUA2sVzrx7vHeI6nKUpFg/+d4iYO
+           76Qr0qHA0VtbPzqAmwcO9vufmPujoFK8rONfogZFwhkfo4ToMwu3HpemYt/DDzninp
+           sEuTq7Q507woM2uFtykEFEiBsA5/XeyP4hflwYs40gBAiYQoPbndzPkeHEnUMd47Ak
+           UiER5HasZZ8QQ==
+Received: from 89-64-3-229.dynamic.play.pl (HELO localhost) (stf_xl@wp.pl@[89.64.3.229])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <arnd@kernel.org>; 1 Aug 2025 12:43:05 +0200
+Date: Fri, 1 Aug 2025 12:43:04 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Rosen Penev <rosenp@gmail.com>, Johannes Berg <johannes.berg@intel.com>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: wireless: rt2x00: fix CRC_CCITT dependency
+Message-ID: <20250801104304.GA120216@wp.pl>
+References: <20250731075837.1969136-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,28 +63,59 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <65411d6ba7516e01920ccf39627269fc2f71dd56.camel@sipsolutions.net>
+In-Reply-To: <20250731075837.1969136-1-arnd@kernel.org>
+X-WP-MailID: 59c87c2862a208fdaded71fd867ec669
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [UZMB]                               
 
-On Thu, Jul 31, 2025 at 09:56:56PM +0200, Johannes Berg wrote:
-> On Fri, 2025-07-25 at 23:22 +1000, Lachlan Hodges wrote:
-> > 
-> > +static inline u8 *tim_push(u8 **p, u8 v)
-> > +{
-> > +	*(*p)++ = v;
-> > +	return *p;
-> > +}
+On Thu, Jul 31, 2025 at 09:58:33AM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> The robot complains about this, there should (normally) not be inline in
-> C files.
+> Compile-testing this driver on Arm platforms shows a link failure
+> when the CRC functions are not part of the kernel:
 > 
-> Also, looks like you don't need the return value?
+> x86_64-linux-ld: drivers/net/wireless/ralink/rt2x00/rt2800lib.o: in function `rt2800_check_firmware':
+> rt2800lib.c:(.text+0x20e5): undefined reference to `crc_ccitt'
 > 
-> Anyway, it's the middle of the merge windows, so I guess it'll be a
-> while before I apply things.
-
-That's fine - I can submit a v3 once the merge window closes with these
-minor fixups, no rush from our end. Plus its always good getting the
-dopamine hit from seeing all green :)
-
-lachlan
+> Move the select statement to the correct Kconfig symbol to match
+> the call site.
+> 
+> Fixes: 311b05e235cf ("wifi: rt2x00: add COMPILE_TEST")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+> ---
+>  drivers/net/wireless/ralink/rt2x00/Kconfig | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ralink/rt2x00/Kconfig b/drivers/net/wireless/ralink/rt2x00/Kconfig
+> index d66fc839c3ce..17f063fc0b57 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/Kconfig
+> +++ b/drivers/net/wireless/ralink/rt2x00/Kconfig
+> @@ -66,7 +66,6 @@ config RT2800PCI
+>  	select RT2X00_LIB_PCI
+>  	select RT2X00_LIB_FIRMWARE
+>  	select RT2X00_LIB_CRYPTO
+> -	select CRC_CCITT
+>  	select EEPROM_93CX6
+>  	help
+>  	  This adds support for rt27xx/rt28xx/rt30xx wireless chipset family.
+> @@ -142,7 +141,6 @@ config RT2800USB
+>  	select RT2X00_LIB_USB
+>  	select RT2X00_LIB_FIRMWARE
+>  	select RT2X00_LIB_CRYPTO
+> -	select CRC_CCITT
+>  	help
+>  	  This adds support for rt27xx/rt28xx/rt30xx wireless chipset family.
+>  	  Supported chips: RT2770, RT2870 & RT3070, RT3071 & RT3072
+> @@ -217,6 +215,7 @@ config RT2800SOC
+>  
+>  config RT2800_LIB
+>  	tristate
+> +	select CRC_CCITT
+>  
+>  config RT2800_LIB_MMIO
+>  	tristate
+> -- 
+> 2.39.5
+> 
 
