@@ -1,153 +1,129 @@
-Return-Path: <linux-wireless+bounces-26109-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26111-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3C7EB199D0
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 03:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB03B199DC
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 03:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EEAE3B07B1
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 01:23:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AED13B36AF
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 01:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC291EB5DD;
-	Mon,  4 Aug 2025 01:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3D83BBC9;
+	Mon,  4 Aug 2025 01:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="VyTRaM/s"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="YEtBxdH/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89841B532F
-	for <linux-wireless@vger.kernel.org>; Mon,  4 Aug 2025 01:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5559B2E36EB;
+	Mon,  4 Aug 2025 01:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754270626; cv=none; b=r1zzvNIgiWrcbKoMeoBxVAjxYUa5MQaLJRxKC5nZyHH1So/6MsrT1y9ADv7hqF4IQ9fHpPaDLE0N8SnabMrkMYgVKggSfBiieYRwca/Jg8CdyAq3sO4HqhGAEV+uspuDxQhvUdyMVcEleJfqqAq1fq2lLCELb423Pgflk7hroRM=
+	t=1754271102; cv=none; b=Xzic4PEj7DmukAXFCNvAAiJ4Kw4t10/j0I7BpyFbLIU3Jxz5yVhO6WPFcRHOhvSutRmuyAKo014I7US5KWnXqhe9IycNBPoY+hmAnJ3d/1C9ze3/7KJn1CocRSSWupnHauJSEbEADfvaZVAiOG8kgdEgoFjsEqW2eXnEJwJUEJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754270626; c=relaxed/simple;
-	bh=vBHRwyHm8mIWjVPWMBpz3SeuV3Hi/EgXV8hnJFeTAHc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vFzPcDfNdXIiVeLJ2/GXMBdEFmfGdrQ811T87MD2mn/5qN9tUAPO0xsXYfjMfh0j2zazRhw+Z7s+PsZ2XlVf4t5s0SOvJ7i9vIMzZ8ybTlUs145SoaxFXhQQZUJ1b7TKnu4lccZc/rKX0CoWBJ5TOVS2MpdEuYS1K1Nq6w95N08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=VyTRaM/s; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1754271102; c=relaxed/simple;
+	bh=2fJypLNpuBGCefgA+I2qla/IoTGIEsxZufI5buVScBw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=D1vt0LHZiY9lTVeyFBy8L6qcL1pbQ/khD1jx/ZNozaQSccc+IWRD/Y7jXl4afKLIn+vBVS1oiLZKbUkrmC5OxEUJ9FRIudQzSjMPBRrUMb9DNbOyqv6OQM6sTgktpJiQKREhebDR5p3b+l3HPO21LZKrF71PH3d0DAPpBrcll7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=YEtBxdH/; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5741NN9Z03190118, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5741VVFT03195138, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1754270603; bh=Lxo9/fWdj7nvZNyGneVBKtrQ1uQhkz0cZ83LzUaUAQA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=VyTRaM/skcct0q3VOgAq1VsKX6L+ph51rillltkfL9FKKaYcaMDdJ7FOd5LqPP/RD
-	 kffOzE8PC3Npj2zDEVaD0npK9JYXSxBigEL/4H4oVM1HIS3IdWBXLqGT1zH7c193R6
-	 ma+s//7AkEYdlubIzMfMPqCZTjnR3LCDeVbZbG9m2PCzq8T0cDSh4RdTxw/sFwzmwE
-	 uPeH4BIfRUQoMOHUgkKsQBO3bPNaRTo5Gb3pLRWzDQalxwpSkEBFkpmL/uPiucO6mX
-	 tq0rhA/0Apm8bbYYBedHIJtWB4IAHv7poLiNpKMBGnGcCHaLHivKXleuNHNhcnq612
-	 vZF2e4gFp+sQA==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 5741NN9Z03190118
+	t=1754271091; bh=2fJypLNpuBGCefgA+I2qla/IoTGIEsxZufI5buVScBw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=YEtBxdH/XLmguBMg5pZYUqGxjtsX+PK4pft7AU1GDctGJbUfGYrBfHlQKT5wW2ufV
+	 Ke+XVmUpTi1/4j5QnM5g0Yb+/tNljd6tvM662jnOkGWUEkkPsyf/N/82ve9rKCCWvO
+	 ou8PgSaUkw5cZzZGtKQ/K4hOX5hwAvmrev9SHN5ubzbYvRZH+nCFtYZfGfIKBEfy5E
+	 kGECWs1tGq8Oh79MaEy24DvI/LSjQlyrpUmDDzXrQkX3DXzMimhkA3A6TU/PK4iBlZ
+	 vXrkHSYTXGLf5zzqI66jVMSb4R1oW2m8K8VI3GkaCU6Jp91Y7tYHWb4JA4DS5ujxj2
+	 0s+LYInl+G2vA==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 5741VVFT03195138
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 4 Aug 2025 09:23:23 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+	Mon, 4 Aug 2025 09:31:31 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 4 Aug 2025 09:23:24 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS06.realtek.com.tw
- (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 4 Aug
- 2025 09:23:24 +0800
+ 15.2.1544.11; Mon, 4 Aug 2025 09:31:32 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 4 Aug 2025 09:31:31 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::9617:3fd6:3830:25cc]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::9617:3fd6:3830:25cc%10]) with mapi id
+ 15.02.1544.011; Mon, 4 Aug 2025 09:31:31 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <rtl8821cerfe2@gmail.com>, <sean.anderson@linux.dev>
-Subject: [PATCH rtw-next 2/2] wifi: rtw89: add dummy C2H handlers for BCN resend and update done
-Date: Mon, 4 Aug 2025 09:22:34 +0800
-Message-ID: <20250804012234.8913-3-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250804012234.8913-1-pkshih@realtek.com>
-References: <20250804012234.8913-1-pkshih@realtek.com>
+To: Sean Anderson <sean.anderson@linux.dev>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Bitterblue
+ Smith" <rtl8821cerfe2@gmail.com>
+Subject: RE: [PATCH v2] wifi: rtw89: Print just once for unknown C2H classes
+Thread-Topic: [PATCH v2] wifi: rtw89: Print just once for unknown C2H classes
+Thread-Index: AQHcANxb3F/NWj2ltUS/9AXHQ44SQ7RJzkeggAJapQCAAMhRwIAAayaAgARfuIA=
+Date: Mon, 4 Aug 2025 01:31:31 +0000
+Message-ID: <639b56c577a0433cb49c85ce0abd5dca@realtek.com>
+References: <d2d62793-046c-4b55-93ed-1d1f43cff7f2@gmail.com>
+ <20250729204437.164320-1-sean.anderson@linux.dev>
+ <c034d5cc40784bfa859f918806c567de@realtek.com>
+ <7865d95f-a92e-405d-bc71-f1e1382ad24c@linux.dev>
+ <d0f6162ab34440cab0c11667be092609@realtek.com>
+ <198e2e23-5e75-4223-8d85-fba255bc7fd2@linux.dev>
+In-Reply-To: <198e2e23-5e75-4223-8d85-fba255bc7fd2@linux.dev>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTKEXHMBS06.realtek.com.tw (10.21.1.56)
 
-Two C2H events are not listed, and driver throws
-
-  MAC c2h class 0 func 6 not support
-  MAC c2h class 1 func 3 not support
-
-Since the implementation in vendor driver does nothing, add two dummy
-functions for them.
-
-Reported-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Closes: https://lore.kernel.org/linux-wireless/d2d62793-046c-4b55-93ed-1d1f43cff7f2@gmail.com/
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/mac.c | 13 ++++++++++++-
- drivers/net/wireless/realtek/rtw89/mac.h |  1 +
- 2 files changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index ef17a307b770..33a7dd9d6f0e 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -5235,6 +5235,11 @@ rtw89_mac_c2h_bcn_cnt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
- {
- }
- 
-+static void
-+rtw89_mac_c2h_bcn_upd_done(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
-+{
-+}
-+
- static void
- rtw89_mac_c2h_pkt_ofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *skb_c2h,
- 			   u32 len)
-@@ -5257,6 +5262,11 @@ rtw89_mac_c2h_pkt_ofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *skb_c2h,
- 	rtw89_complete_cond(wait, cond, &data);
- }
- 
-+static void
-+rtw89_mac_c2h_bcn_resend(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
-+{
-+}
-+
- static void
- rtw89_mac_c2h_tx_duty_rpt(struct rtw89_dev *rtwdev, struct sk_buff *skb_c2h, u32 len)
- {
-@@ -5646,7 +5656,7 @@ void (* const rtw89_mac_c2h_ofld_handler[])(struct rtw89_dev *rtwdev,
- 	[RTW89_MAC_C2H_FUNC_EFUSE_DUMP] = NULL,
- 	[RTW89_MAC_C2H_FUNC_READ_RSP] = NULL,
- 	[RTW89_MAC_C2H_FUNC_PKT_OFLD_RSP] = rtw89_mac_c2h_pkt_ofld_rsp,
--	[RTW89_MAC_C2H_FUNC_BCN_RESEND] = NULL,
-+	[RTW89_MAC_C2H_FUNC_BCN_RESEND] = rtw89_mac_c2h_bcn_resend,
- 	[RTW89_MAC_C2H_FUNC_MACID_PAUSE] = rtw89_mac_c2h_macid_pause,
- 	[RTW89_MAC_C2H_FUNC_SCANOFLD_RSP] = rtw89_mac_c2h_scanofld_rsp,
- 	[RTW89_MAC_C2H_FUNC_TX_DUTY_RPT] = rtw89_mac_c2h_tx_duty_rpt,
-@@ -5661,6 +5671,7 @@ void (* const rtw89_mac_c2h_info_handler[])(struct rtw89_dev *rtwdev,
- 	[RTW89_MAC_C2H_FUNC_DONE_ACK] = rtw89_mac_c2h_done_ack,
- 	[RTW89_MAC_C2H_FUNC_C2H_LOG] = rtw89_mac_c2h_log,
- 	[RTW89_MAC_C2H_FUNC_BCN_CNT] = rtw89_mac_c2h_bcn_cnt,
-+	[RTW89_MAC_C2H_FUNC_BCN_UPD_DONE] = rtw89_mac_c2h_bcn_upd_done,
- };
- 
- static
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index 241e89983c4a..25fe5e5c8a97 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -419,6 +419,7 @@ enum rtw89_mac_c2h_info_func {
- 	RTW89_MAC_C2H_FUNC_DONE_ACK,
- 	RTW89_MAC_C2H_FUNC_C2H_LOG,
- 	RTW89_MAC_C2H_FUNC_BCN_CNT,
-+	RTW89_MAC_C2H_FUNC_BCN_UPD_DONE = 0x06,
- 	RTW89_MAC_C2H_FUNC_INFO_MAX,
- };
- 
--- 
-2.25.1
-
+U2VhbiBBbmRlcnNvbiA8c2Vhbi5hbmRlcnNvbkBsaW51eC5kZXY+IHdyb3RlOg0KPiBPbiA3LzMx
+LzI1IDIwOjMwLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4gU2VhbiBBbmRlcnNvbiA8c2Vhbi5h
+bmRlcnNvbkBsaW51eC5kZXY+IHdyb3RlOg0KPiA+PiBPbiA3LzI5LzI1IDIwOjM2LCBQaW5nLUtl
+IFNoaWggd3JvdGU6DQo+ID4+ID4gU2VhbiBBbmRlcnNvbiA8c2Vhbi5hbmRlcnNvbkBsaW51eC5k
+ZXY+IHdyb3RlOg0KPiA+PiA+PiBUaGVyZSBhcmUgbW9yZSB1bnN1cHBvcnRlZCBmdW5jdGlvbnMg
+dGhhbiBqdXN0IExPV1JUX1JUWS4gSW1wcm92ZSBvbg0KPiA+PiA+PiBjb21taXQgM2I2NjUxOWIw
+MjNiICgid2lmaTogcnR3ODk6IHBoeTogYWRkIGR1bW15IGMyaCBoYW5kbGVyIHRvIGF2b2lkDQo+
+ID4+ID4+IHdhcm5pbmcgbWVzc2FnZSIpIGJ5IHByaW50aW5nIGEgbWVzc2FnZSBqdXN0IG9uY2Ug
+d2hlbiB3ZSBmaXJzdA0KPiA+PiA+PiBlbmNvdW50ZXIgYW4gdW5zdXBwb3J0ZWQgY2xhc3MuDQo+
+ID4+ID4NCj4gPj4gPiBPbmNlIEkgZW5jb3VudGVyIGFuIHVuc3VwcG9ydGVkIGNsYXNzL2Z1bmMs
+IEknbGwgY2hlY2sgZmlybXdhcmUgdGVhbSBpZiB0aGUNCj4gPj4gPiBDMkggZXZlbnRzIGNhbiBi
+ZSBpZ25vcmVkLiBJZiBzbywgSSBhZGQgYSBkdW1teSBmdW5jdGlvbiB0byBhdm9pZCB0aGUgbWVz
+c2FnZS4NCj4gPj4gPiBJZiBub3QsIEkgc2hvdWxkIGFkZCBjb2RlIHRvIGhhbmRsZSB0aGUgZXZl
+bnQuDQo+ID4+ID4NCj4gPj4gPiBEbyB5b3Ugd2FudCB0byBzZWUgdGhlIG1lc3NhZ2UgZXZlbiB0
+aG91Z2ggaXQgb25seSBhcHBlYXJzIG9uY2U/DQo+ID4+DQo+ID4+IEkgbWVhbiwgbWF5YmUgaXQg
+c2hvdWxkIGp1c3QgYmUgYSBkZWJ1Zz8gQXJlIHRoZXNlIG1lc3NhZ2VzIHVzZWZ1bCBmb3IgYW55
+b25lDQo+ID4+IG90aGVyIHRoYW4gdGhlIGRldmVsb3BlcnM/DQo+ID4NCj4gPiBZZXMsIHRoaXMg
+Y291bGQganVzdCBiZSBhIGRlYnVnLiBIb3dldmVyLCBkZXZlbG9wZXJzIG5vcm1hbGx5IGRvbid0
+IHR1cm4gb24NCj4gPiBkZWJ1ZyBtYXNrLCBzbyB1c2luZyBydHc4OV9pbmZvIGlzIHRvIGNsZWFy
+bHkgcmVtaW5kIGRldmVsb3BlcnMgdG8gcGF5DQo+ID4gYXR0ZW50aW9uIG9uIHRoaXMgbGFjayBv
+ZiBDMkggaGFuZGxlci4gQW5kLCBJIHN1cHBvc2UgZGV2ZWxvcGVycyBtdXN0IGhhbmRsZQ0KPiA+
+IHRoaXMgd2hlbiB0aGV5IHNlZSBmbG9vZGluZyBtZXNzYWdlcy4NCj4gDQo+IFdlbGwsIHJlZ3Vs
+YXIgdXNlcnMgZ2V0IHRoaXMgdG9vLiBJdCBpcyByZWFsbHkgdW5uZWNlc3NhcnkgdG8gcHJpbnQN
+Cj4gdGhvdXNhbmRzIG9mIG1lc3NhZ2VzIHdoZW4gdGhleSBhcmUgY29tcGxldGVseSBiZW5pZ24u
+DQo+IA0KPiA+Pg0KPiA+PiBNYXliZSB3ZSBzaG91bGQganVzdCBwcmludCBvbmx5IHRoZSB2ZXJ5
+IGZpcnN0IHVuc3VwcG9ydGVkIG1lc3NhZ2UgYXQgaW5mbyBsZXZlbA0KPiA+PiBhbmQgcHJpbnQg
+dGhlIHJlc3QgYXQgZGVidWcuDQo+ID4NCj4gPiBJJ20gYWZyYWlkIGRldmVsb3BlcnMgd2lsbCBp
+Z25vcmUgb3IgbWlzcyB0aGUgbWVzc2FnZXMuIFRvIHJlZHVjZSBtZXNzYWdlcw0KPiA+IGlzIGZp
+bmUgdG8gbWUgLCBidXQgbW9yZSBpbXBvcnRhbnQgaXMgdG8gbG9vayB1cCB2ZW5kb3IgZHJpdmVy
+IHRvIHNlZSBpZg0KPiA+IHRoZSBDMkggaGFuZGxlciBpcyBuZWNlc3NhcnkuDQo+IA0KPiBPSywg
+c28gd2Ugc2hvdWxkIHByaW50IGV4YWN0bHkgb25jZSBmb3IgZWFjaCBjbGFzcy9mdW5jLg0KPiAN
+Cg0KSSBzZW50IGEgcGF0Y2hzZXQgWzFdIHRvIHByaW50IGV4YWN0bHkgb25jZSwgYnV0IEkgZG9u
+J3QgYWRkIGJpdG1hcCBmb3IgZXZlcnkNCnByaW50ZWQgY2xhc3MvZnVuYywgYmVjYXVzZSBpdCBz
+ZWVtcyB0byBiZSB1bm5lY2Vzc2FyeSB0byBhZGQgbXVjaCBjb2RlIHRvIA0KaGFuZGxlIHRoZSBj
+YXNlIHdoaWNoIHNob3VsZCBiZSBoYW5kbGVkIGR1cmluZyBkZXZlbG9wbWVudC4gDQoNClBsZWFz
+ZSBoZWxwIHRvIHRyeSBpZiB0aGlzIHBhdGNoc2V0IGNhbiByZXNvbHZlIHRob3VzYW5kcyBvZiBt
+ZXNzYWdlIGluIHlvdXINCnNpZGUuIA0KDQpbMV0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGlu
+dXgtd2lyZWxlc3MvMjAyNTA4MDQwMTIyMzQuODkxMy0xLXBrc2hpaEByZWFsdGVrLmNvbS9ULyN0
+DQoNCg==
 
