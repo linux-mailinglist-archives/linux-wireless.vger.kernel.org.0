@@ -1,212 +1,248 @@
-Return-Path: <linux-wireless+bounces-26116-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26117-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD53B19A5B
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 05:03:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 903FAB19BFA
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 09:11:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 837D53BA4C9
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 03:03:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A92B1161404
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 07:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00484221FB2;
-	Mon,  4 Aug 2025 03:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E381230BD2;
+	Mon,  4 Aug 2025 07:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GxaFGpnF"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="JKmgMYdU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5ED221F11
-	for <linux-wireless@vger.kernel.org>; Mon,  4 Aug 2025 03:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8907F1DFE0B
+	for <linux-wireless@vger.kernel.org>; Mon,  4 Aug 2025 07:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754276615; cv=none; b=Ex4T3tuBJnkMi/mSCRno4dmqYMdcE6Y5Wyqnh/+UiOEPzQDLZzd4NodgdBie3j7xAnXD28IQxdzQeXnmGT2ii6+I4HnvzV17SFuGvL92xmSSPVC9AVkSaxLl0R+nicwLKf2gq+84cXC3nkuXHlaHtF6oyma899zStzh2sneJRy4=
+	t=1754291501; cv=none; b=cbZ4NXC2KTbbXqRrvJxFgzOWFJCneZWzcUIHT4dJNbKfc+xWEsxNds0czkFoav4k60jc6BovF7AwaK95A1ih8zp9KK2vskg09RIG11M4VNsQ1Sz4yaV6UhqQ+Pzmii8L355gI1ORBeQBsIwoqWcWrPdz+nHpsL861ao3bQvTvis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754276615; c=relaxed/simple;
-	bh=qjiG41H690nP9mB3xq6Z0RT6CrVbRj7u7Wnkix2PW9w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=D9ccE3K1n/a1LXHN/qbv7p2uSI10ECmHccmf9hRaEvIPgNm5r+Y9XicX6/Q+90/yRVyJE5tPzBZZQWAp6PNGDrY0H9CCcjyua9FsxrjOdlY9uy6MnjPNMZ25wVdflBIdA1mYi4VmgPQP/ktyjBVNLzTTFw6NnwzAvtjq3qD0DV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GxaFGpnF; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 573HS23i025591
-	for <linux-wireless@vger.kernel.org>; Mon, 4 Aug 2025 03:03:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	kugaIG05z6TB8lU/3AG4HIpKbvmdeKqgwRzdGMse6is=; b=GxaFGpnFpjSf+FAN
-	ymIONS7/Jzrr90nV1sY4hOOnufocbaJ8B1oSxmaltbNtjlwAxBEWtsU4VWVI1T20
-	Eq0cF79novVLJ5G1qDojD7CseKI7Ow7+Pd6EoAWMfcGKwKFAKCKSwp0YNQGJh+hZ
-	8qVQLpC721k56v1+ISRVoBSljwWGVhkmh0F5EdzCJUpOyfi31kLISHgM4kf04r4A
-	KZJHLcQMg+1Lx8kzjz1+dgKh9MZzMnp1ho5yig6PSJwWZ90WBiD8ive7ysqP1hpX
-	KCnrJLmvna610rSoNCgrCoEEkm7j7mQXKNqmu3dOPI/3Lo9/+HZ2hcYPQbAwe4yA
-	4ScncQ==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 489aw739y4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 04 Aug 2025 03:03:33 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3132c1942a1so5255237a91.2
-        for <linux-wireless@vger.kernel.org>; Sun, 03 Aug 2025 20:03:33 -0700 (PDT)
+	s=arc-20240116; t=1754291501; c=relaxed/simple;
+	bh=uKJnuFC4T7pT0n1j5poBirFmn/TwVD/VRkxHc16rmQQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=UjhStDKwQM1BwHIIWDMd8iOUpTlB/LeIK+G6xxtccGK9fi44eNf2MUREAS8Iu/sEU8M30PrvA1Hws4ROcML26pnmQ8jyRNy9+m28DVE/UMEKsCV9Gyv2UhPnvanb94Hm8zzDlKXce8KlPIpD/GSO0QI3GR55aOWy7DysjxLzBh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=JKmgMYdU; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76b8d289f73so2692110b3a.1
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Aug 2025 00:11:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1754291499; x=1754896299; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y+h6yBC75t0ZFIs2o0xr4fDGCp+qHxzg7XoFol//ZlM=;
+        b=JKmgMYdUPQ93kbisu0X8CV/9AbNlk9n7Swc/a+eodOo5VGf6Eq1MvScEp6G+kRQyQ5
+         +6KPbrJcq2vvk8XsYIB2Sp+XwusEcxD2JHZuUOpJdm5pu/6ZqublnLy29bQ5aOa8lJkX
+         nLKC+nKcRI4kv6YDR7mJWCK2OmmCIGhKjR8DBoL16QACIT7XDCji4cJRg4oNYvpRCNyZ
+         SegeHfF73kwtj2P5Keqp80YvdWrkoTPMGt53IVCAMrViUawK23/TY+dr0Gy0LgrwsIuM
+         7IciDfSpHwyNGqnnPqUGT+PfB1V6DGGo+ivxhee6QKYx+p7rRQ3PfFHaOiw021ZmRhN3
+         Ne+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754276612; x=1754881412;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kugaIG05z6TB8lU/3AG4HIpKbvmdeKqgwRzdGMse6is=;
-        b=CpaLeaHaydiaLhWTE0j4NPPGhSYxzF1lXhL1J/U+HUoMKRyh0jGZhigFCKyOqStmVt
-         Er17kiI3VcRc0YHMWd6ceZFHM9eB2wfiytZSMvYdLWTRBjZUDOmjP/N7F8uY4zo0W0DF
-         nODSTCrK/TISH00ikQ3ryopKm5HjVM/gi9EmrvVAr46nc3polk76VBXBYldG+2URl/4f
-         5uT2BaZab+2URIt+iKPSI6QhdW3KIkZ+fYwYV0z51TueF1bsHSRlEtMBQFrG09BMk5Dk
-         HNFXMfKPpOzG227BIijZMcnW8ogF0lGM0MVPmVlRsxAUuGu69OMgb3Izr8Udmy0uoxSA
-         iZ6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUcU6m79zF1Sw0UthCwYGZB+5JZT3mu+3SyFpML5h82NvN4NqfmcyWPuHYFQtoLqznYZDWgLoGn7Jlq7CLe+Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3jKeXchUxQ9LGE5rgneyIbqeteB7mUTbdP533ljxv6kF1eFv5
-	0FQZs8BvoLwfToDh5oClHJnqpw/oo7f7pHB4PyC6LtRLzEibDQOcSBHYuXUceplC/IVfl4Kb6JK
-	GGMalrMOs18vqWPF+ksZ3tLjrrbsjXl0FZaPXbjwxVevad/01YujvUDmyNd7m52Urc4DF7g==
-X-Gm-Gg: ASbGncuw+MQvqHV/RYn4aiytwbJN/CV4N1m3yVXUMmvhT4+lwgUhouTr8WHEYMnHbK3
-	OPjlVYH3xMmTZ93A9BZZ2JoSTywS5ol/SEQCW47eYuE/O26igsK1I1mVQ/TQKID3VXglg8PpfPZ
-	Ho8syHEVscRR+pMPULyhEqrkLkFh/8ZgMAxUWlH8hV0m7pLQf2AcKfRUnNXDsUHxlxXlI80Q8Af
-	IPz+kLfG6cDcuFGNJ4op1QUspwF4Hek93z7hwt5OHSBN6aZcgPCUf45v13XBa0/3HbHgMfokZQV
-	IbKf7gmXnoUiaIF3CXu8dCDUHwespLLznFdkWdCAW67lVCY2lssyYhByqH3CgsAqSgrJ7pnv/O/
-	lc1CXqV9PNOK3PQ1+uQ==
-X-Received: by 2002:a05:6a20:3ca3:b0:240:dc9:71cf with SMTP id adf61e73a8af0-2400dc976eemr2467494637.38.1754276612430;
-        Sun, 03 Aug 2025 20:03:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHQ8hpq8FcFPIUvqKGjKzFf0aD9aYMfmslygFO5EjJQ8zoEQ0LW0hIkkoaNDD9j549pSh6i1w==
-X-Received: by 2002:a05:6a20:3ca3:b0:240:dc9:71cf with SMTP id adf61e73a8af0-2400dc976eemr2467453637.38.1754276611989;
-        Sun, 03 Aug 2025 20:03:31 -0700 (PDT)
-Received: from [127.0.1.1] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3207ebc0e79sm10489000a91.10.2025.08.03.20.03.29
+        d=1e100.net; s=20230601; t=1754291499; x=1754896299;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y+h6yBC75t0ZFIs2o0xr4fDGCp+qHxzg7XoFol//ZlM=;
+        b=REUL3KKWA6as1c1aLtygBGwyMjYvnadUmetzj9minK/UajvA+hfP8oeVkwnyVgMyIb
+         vPSYUuzeE28jwhbs5oT6/BEZEBo3M5fMIJb5qiG9wkXQEp3Y6el3NXU8KdunLsMfZaKN
+         79TqlQQZfIalBfN3mI6N1Rmzj4S7TMjy1+eDmvynCFKM8xEV/865NV3iceV7rCe2X6HF
+         XpkX2y5PpdF5dIPaIbBC2c5NsDeq79L9ESEnjVPZdqRdqSbWNy6HTkeIg0OF1KoJbLrR
+         L77EPKt0Gc3dzElJpt+CP8Zi872UxLQ8ZstbUrMGJOgLHXwiLmyml28S+wT3Qb6AECPu
+         /ang==
+X-Gm-Message-State: AOJu0YxVnlHbdx3F4ItddRecISNQPaqKweAXlckeVw6euOah+pGmBxuU
+	6jy3Cx1lcTQ05Whf34gcU3aDch63DgE6P/0jbKtTrJtZyr8cngt09nWEsH0J0QwsvwQ=
+X-Gm-Gg: ASbGnctu4AtUshUwW3Peb2t5s2tu3+wHZX+gRoavA82LdVlOYeOW5rDhTkMoRq27Zo+
+	Yu85oUpRVZxZnCqvBX8CzpeY67v6mfHKp6B6SRrPmt/bS1ClibbxHLDWtPqmd7JgbngMf9xvGaB
+	VihKpBnJWEO+KdPNMckw7pVCRAEnUpfcDkRNMeA6pCSUIk7b0NXUshRWgYO9UTbwLR73tqFoTHv
+	7e/H5W6PqnF7/Q/jeNYBfcQFikTmbEIQTqB41lLpu/1j8vT7vD1YAQzW0b27bzJI9hXcu4tIcpK
+	J9wfAapGjEhjSVuJIeS3MF+mFEGiK6MYyHcGqViaD4k89LUTOg8DMOVs/0mGeiJAd4PdPjzStrg
+	ORUo8Og9o/oUPTgCUvMHVIVcXKUyV9l0uQRqNAlPtdZzKASwaRSNFJ5AVh7AlGRk=
+X-Google-Smtp-Source: AGHT+IGcYjKSQveFUC8pYtYAbTpRoHjRsN/jbcdfI+jdN7PVI1XLAKVdyLRdzge2SRvZvFDy/b6Qgw==
+X-Received: by 2002:a05:6a00:a85:b0:736:3ea8:4805 with SMTP id d2e1a72fcca58-76bec314c7dmr9852962b3a.7.1754291498622;
+        Mon, 04 Aug 2025 00:11:38 -0700 (PDT)
+Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bdbda5f23sm7506981b3a.112.2025.08.04.00.11.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Aug 2025 20:03:31 -0700 (PDT)
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Date: Mon, 04 Aug 2025 11:03:11 +0800
-Subject: [PATCH ath-next 2/2] wifi: ath12k: fix overflow warning on
- num_pwr_levels
+        Mon, 04 Aug 2025 00:11:38 -0700 (PDT)
+Date: Mon, 4 Aug 2025 17:11:36 +1000
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Subject: [PROPOSAL RFC] S1G Primary Channel Implementation Proposal
+Message-ID: <xu4ftmpdwwpokw6exaprrv6wleptq7ggleiluiu6x2dzqbqfhv@6s4m3okiohzw>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250804-ath12k-fix-smatch-warning-on-6g-vlp-v1-2-56f1e54152ab@oss.qualcomm.com>
-References: <20250804-ath12k-fix-smatch-warning-on-6g-vlp-v1-0-56f1e54152ab@oss.qualcomm.com>
-In-Reply-To: <20250804-ath12k-fix-smatch-warning-on-6g-vlp-v1-0-56f1e54152ab@oss.qualcomm.com>
-To: Jeff Johnson <jjohnson@kernel.org>,
-        Baochen Qiang <quic_bqiang@quicinc.com>,
-        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-        kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: PvmYyImb6Rg62TUZwIROfT-WvjFIuUbB
-X-Proofpoint-ORIG-GUID: PvmYyImb6Rg62TUZwIROfT-WvjFIuUbB
-X-Authority-Analysis: v=2.4 cv=MrZS63ae c=1 sm=1 tr=0 ts=68902305 cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
- a=COk6AnOGAAAA:8 a=KKAkSRfTAAAA:8 a=eeRMwnN673tcwiIEPYQA:9 a=QEXdDO2ut3YA:10
- a=uKXjsCUrEbL0IQVhDsJ9:22 a=TjNXssC_j7lpFel5tvFf:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDAxNCBTYWx0ZWRfX6ErlLXiu+W+5
- yUfiTGowWj9SMcaenfSsGYl7UhsP+TXkRK0Dm9Ndnu83h8CVJsrswmJ3BIY/nNNoJbqVjp6tNg9
- hheQXm5ykNbBbThGN/jhIG6bMxe33HmGi82W41li+e8Ef26w9dyBIl3tFgT6pfVob3AMwczy994
- 9VQoJ5yYOOHngKOHQBhoNZg0PMsjShg8EXFvs2xixyE3QnuTShmTy40UrFlJiBekKvV1p1NMcE1
- Xbzmpk6+Dzet7PAfZ3CfCNWiVgefMfUYIRqjP5WfAFaIiOH4lLv1iIr2j1z9gDiKoNjxJNUUL60
- wCea6sEctEvoalUhSMyfE6idNND3STYeByFK6IlD/Rh/8fVTZREZ+6LzcKZviVs+cg1gHPOy1uB
- oSku+19L1KPWZ5tOiNMg3xvjjzQS8D6k6JilSQh423i6mvNRmU3taLw7/IcAo/GkmB0Rejhc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-04_01,2025-08-01_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
- impostorscore=0 bulkscore=0 phishscore=0 mlxlogscore=831 priorityscore=1501
- malwarescore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2508040014
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+Hi Johannes, Wireless,
 
-In ath12k_mac_parse_tx_pwr_env(), for the non-PSD case num_pwr_levels is
-limited by ATH12K_NUM_PWR_LEVELS which is 16:
+One of the last remaining pieces within cfg80211/mac80211 to enable
+complete S1G functionality is primary channel support. We've identified
+a couple of potential implementation specific issues and would like
+maintainer input prior to developing the patchset as it may be
+mildly contentious.
 
-	if (tpc_info->num_pwr_levels > ATH12K_NUM_PWR_LEVELS)
-		tpc_info->num_pwr_levels = ATH12K_NUM_PWR_LEVELS;
+Background
+----------
 
-Then it is used to iterate entries in local_non_psd->power[] and
-reg_non_psd->power[]:
+The channelisation of an S1G PHY consists of two components, a center
+frequency and a primary center frequency as per IEEE80211-2024 23.3.14.
+The center frequency is equivalent to other PHY types, being the center
+operating frequency for the operating channel and the primary center
+frequency being the center frequency for the primary channel.
 
-	for (i = 0; i < tpc_info->num_pwr_levels; i++) {
-		tpc_info->tpe[i] = min(local_non_psd->power[i],
-				       reg_non_psd->power[i]) / 2;
+When an S1G PHY changes channel, it requires both the operating channel
+and the primary channel parameters. The implementation of this will be
+briefly mentioned at the end of this email.
 
-Since the two array are of size 5, Smatch warns:
+S1G Channel Structure
+---------------------
 
-drivers/net/wireless/ath/ath12k/mac.c:9812
-ath12k_mac_parse_tx_pwr_env() error: buffer overflow 'local_non_psd->power' 5 <= 15
-drivers/net/wireless/ath/ath12k/mac.c:9812
-ath12k_mac_parse_tx_pwr_env() error: buffer overflow 'reg_non_psd->power' 5 <= 15
+S1G has a hierarchical channel structure. Below is a snippet from the
+IEEE80211-2020 Australian/US S1G band. The righthand side |*|
+represents the FCC band edge. Above the == line are the designated
+channel numbers and on the left column their respective bandwidths.
 
-This is a false positive as there is already implicit limitation:
+   |------|---------------------------------------------|*|
+ c | 8MHz |  |                  44                   |  |*|
+ h |------|---------------------------------------------|*|
+ a | 4MHz |  |        40         |        48         |  |*|
+ n |------|---------------------------------------------|*|
+ n | 2MHz |  |   38    |   42    |   46    |   50    |  |*|
+ e |------|---------------------------------------------|*|
+ l | 1MHz |  | 37 | 39 | 41 | 43 | 45 | 47 | 49 | 51 |  |*|
+   |======|=============================================|*|
+   |******| 920  921  922  923  924  925  926  927  928 |*|
+   |******|---------------------------------------------|*|
+                           frequency (MHz)
 
-	tpc_info->num_pwr_levels = max(local_non_psd->count,
-				       reg_non_psd->count);
+S1G Channel Selection Example
+-----------------------------
 
-meaning it won't exceed 5.
+An example channel configuration would be an operating channel of 44 and
+a primary channel of 37. The primary channel must be a 1MHz or 2MHz channel
+and must exist as a primary subchannel within the operating channels band.
+Using the sample above, operating channel 44 can have a 1MHz primary of
+37, 39, 41, 43, 45, 47, 49 or 51 and same goes for the 2MHz channels. Whereas
+an operating channel of 40 may only have primary 1MHz channels of 37, 39,
+41 and 43.
 
-However, to make robot happy, add explicit limit there.
+Regulatory Emission Challenges
+------------------------------
 
-Also add the same to the PSD case, although no warning due to
-ATH12K_NUM_PWR_LEVELS equals IEEE80211_TPE_PSD_ENTRIES_320MHZ.
+To control RF emissions during FCC compliance testing, hardware vendors
+disable edge-band primary channels to meet emission requirements. [1], [2]
+and [3] show 1MHz and 2MHz primary channels on band edges disabled. This,
+however, does not prevent the operating channel from being used. This is due
+to the OFDM envelope peaking near band centre, providing enough spectrum
+roll-off to satisfy emission limits.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+Using [3] as an example, primary channels 51, 50 and 49 are disabled during
+testing, but operating channels 48 and 44 are still tested (both of which contain
+the disabled primary channels). These configurations all passed FCC requirements.
 
-Fixes: cccbb9d0dd6a ("wifi: ath12k: add parse of transmit power envelope element")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202505180703.Kr9OfQRP-lkp@intel.com/
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+Proposed Solution
+-----------------
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 8295480e8b1eeaa3e69cca823e6745733ade50e0..57c81ba988ad3c7c3037286c6c093cef4c4f8116 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -11435,8 +11435,10 @@ static void ath12k_mac_parse_tx_pwr_env(struct ath12k *ar,
- 
- 		tpc_info->num_pwr_levels = max(local_psd->count,
- 					       reg_psd->count);
--		if (tpc_info->num_pwr_levels > ATH12K_NUM_PWR_LEVELS)
--			tpc_info->num_pwr_levels = ATH12K_NUM_PWR_LEVELS;
-+		tpc_info->num_pwr_levels =
-+				min3(tpc_info->num_pwr_levels,
-+				     IEEE80211_TPE_PSD_ENTRIES_320MHZ,
-+				     ATH12K_NUM_PWR_LEVELS);
- 
- 		for (i = 0; i < tpc_info->num_pwr_levels; i++) {
- 			tpc_info->tpe[i] = min(local_psd->power[i],
-@@ -11451,8 +11453,10 @@ static void ath12k_mac_parse_tx_pwr_env(struct ath12k *ar,
- 
- 		tpc_info->num_pwr_levels = max(local_non_psd->count,
- 					       reg_non_psd->count);
--		if (tpc_info->num_pwr_levels > ATH12K_NUM_PWR_LEVELS)
--			tpc_info->num_pwr_levels = ATH12K_NUM_PWR_LEVELS;
-+		tpc_info->num_pwr_levels =
-+				min3(tpc_info->num_pwr_levels,
-+				     IEEE80211_TPE_EIRP_ENTRIES_320MHZ,
-+				     ATH12K_NUM_PWR_LEVELS);
- 
- 		for (i = 0; i < tpc_info->num_pwr_levels; i++) {
- 			tpc_info->tpe[i] = min(local_non_psd->power[i],
+We propose a new flag within struct ieee80211_channel_flags called
+IEEE80211_CHAN_S1G_NO_PRIMARY or something similar that tells the
+wireless subsystem that this channel cannot be used as a primary channel,
+but is not disabled. This is an important distinction as during subchannel
+validation, if a single subchannel is disabled that operating channel cannot
+be used (similar to VHT and other PHY types) but an operating channel can
+be used if an edgeband 1MHz channel has the NO_PRIMARY flag but is _not_
+disabled.
 
--- 
-2.25.1
+NB: While the existing for_each_subchan macro doesn't work for S1G channels
+    given its fixed step size of 20MHz, this will be updated during
+    the implementation.
 
+It's also important to note that this can only apply to edgeband primary
+channels for the current regdom. This validation will be performed upon
+advertisement by the driver of the available channels for the S1G band.
+Additionally, puncturing is not supported for S1G.
+
+This will be an implementation detail, as this is not explicitly described
+by the standard, but rather used by vendors to ensure FCC compliance.
+
+Primary Channel Representation
+------------------------------
+
+One potential challenge with actually implementing primary channel support
+is how and where the primary channel is described. Initially it was thought
+that a channel definition could contain a separate struct ieee80211_channel
+like such:
+
+struct cfg80211_chan_def {
+        struct ieee80211_channel *chan;
+        [...]
+        struct ieee80211_channel *s1g_pri_chan;
+};
+
+The obvious problem with this is that now a channel definition describes two
+channels, though you could argue that to correctly describe an S1G channel
+you require both components - which in some regards makes sense to put them
+both in the channel definition. It does, however, require various API changes,
+with the biggest one being cfg80211_chandef_create() to accept the new primary
+channel parameter. An alternative is to create an S1G specific chandef creation
+function which can then call the generic form.
+
+Additionally, we can reuse cfg80211_chandef_valid() to perform validation as
+both the operating channel and primary channel exist within the same
+channel definition. By extension, many of the function that operate on a
+chandef have access to both the primary channel and operating channel.
+Definitely something to consider.
+
+The second option is to treat them as two separate channel definitions. This
+is probably more "correct" as after all a primary channel is a separate channel.
+While this approach doesn't require many major API changes like the previous
+method, it still has some negatives. Firstly, the need to carry a separate
+channel definition in various places. Taking struct ieee80211_chanctx_conf as
+an example:
+
+struct ieee80211_chanctx_conf {
+        struct cfg80211_chan_def def;
+        [...]
+        struct cfg80211_chan_def s1g_pri_def;
+};
+
+When building this new channel definition, we probably don't want to be using
+_nl80211_parse_chandef() as it relies on the NL80211_ATTR_WIPHY_FREQ to find
+the channel, where the primary channel center frequency will rely on a separate
+attribute. Now we could, of course, add in another branch to handle this case,
+but the function seems fairly overloaded as is and would be good to keep the
+S1G specific case separate.
+
+With all that said, we will obviously send up an initial patchset (probably
+as an RFC and only once the TIM patchset has been accepted) but since we are
+inquiring with regards to the new flag thought it couldn't hurt to get some
+preliminary thoughts.
+
+References
+----------
+
+[1] AsiaRF MM610X-001 FCC Radio Test Report
+    Section 1.1.1
+    https://fccid.io/TKZMM610X-001/Test-Report/TKZMM610X-001-Test-Rpt-6686112.pdf
+
+[2] Silex Technology SX-NEWAH FCC Radio Test Report
+    Section 2.2
+    https://fccid.io/N6C-SXNEWAH/Test-Report/03-FCC-Test-Report-DTS-4734386.pdf
+
+[3] Morse Micro MM6108-MF08651-US Electromagnetic Emissions Compliance Report
+    Page 35
+    https://fccid.io/2A74O-DB3F2B/Test-Report/TR-TERF2406001545E2-902-928MHz-s03-part-1-7640840
+
+lachlan
 
