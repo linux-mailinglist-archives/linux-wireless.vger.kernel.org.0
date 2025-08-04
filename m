@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-26110-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26109-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA86AB199D1
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 03:23:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C7EB199D0
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 03:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C9621892490
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 01:24:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EEAE3B07B1
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Aug 2025 01:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEAA1EDA2B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC291EB5DD;
 	Mon,  4 Aug 2025 01:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="QqFi7QEe"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="VyTRaM/s"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DBF1E9B31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89841B532F
 	for <linux-wireless@vger.kernel.org>; Mon,  4 Aug 2025 01:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754270626; cv=none; b=X5v63VL1XlQ58CQ3crJ2z/Vewdu8skOz6/oogL6/FVyI/kgu5g/wbMRxL1c2pq83eHH7ZodDHebTggWCK4qJLK/pDWvNrjt/qTbk/uPeuX2VvnOwnZ3Z45pWbvzzLGCHyL03cu5oVc3Ji5ELMmP1YtCw51Epr5iR+eZl8i8gqYQ=
+	t=1754270626; cv=none; b=r1zzvNIgiWrcbKoMeoBxVAjxYUa5MQaLJRxKC5nZyHH1So/6MsrT1y9ADv7hqF4IQ9fHpPaDLE0N8SnabMrkMYgVKggSfBiieYRwca/Jg8CdyAq3sO4HqhGAEV+uspuDxQhvUdyMVcEleJfqqAq1fq2lLCELb423Pgflk7hroRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1754270626; c=relaxed/simple;
-	bh=0QXGOWQSEJjwD+TtLLCb+Nil5prlf20p1Kkx5FhbjYc=;
+	bh=vBHRwyHm8mIWjVPWMBpz3SeuV3Hi/EgXV8hnJFeTAHc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XrA/NeEaQO5DUlZ2v7FFbWDsw6DbgTpU4yyIbbDbbeI8T/a/bpQZqtOq4G+kOfvfQiNlfPqLr1mRhUcx3oz1QkvPADQl+CkW1s0HvZyrX8NYOWITDMcJmNEw2vhlAb90hngK6YHrbxQSK6QeJRaJeOWAw75SGDLnAf+g9K6+bAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=QqFi7QEe; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=vFzPcDfNdXIiVeLJ2/GXMBdEFmfGdrQ811T87MD2mn/5qN9tUAPO0xsXYfjMfh0j2zazRhw+Z7s+PsZ2XlVf4t5s0SOvJ7i9vIMzZ8ybTlUs145SoaxFXhQQZUJ1b7TKnu4lccZc/rKX0CoWBJ5TOVS2MpdEuYS1K1Nq6w95N08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=VyTRaM/s; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5741NKJY03190088, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5741NN9Z03190118, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1754270600; bh=3TswCnP1jBCWLVM66OwgtUc0qkOS0YO8suAQL9RtR+Y=;
+	t=1754270603; bh=Lxo9/fWdj7nvZNyGneVBKtrQ1uQhkz0cZ83LzUaUAQA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=QqFi7QEeuO/35qTcB1DuZ55Vj6mLsvyFJI7KDfEhgUUzjJWoD/TYD4OJZUpJ3o6M7
-	 HL1ZtScUiWXUDeexqNS+GwZ+m4toOlJI/h594mOi99FOEtasC76bIKGfM7dvl8xj13
-	 bXcCUPXTJPyiKqeySQ3S4aEaQYywVLy7dVa9PLvtlmwBOjy8Clj+kIUVAc8sRBG/hg
-	 fcJdbXnU7oCJmf0uvMdwEXAA6r1X9IKTidjq9HYFc2n/1VffaY33V7bUQZyiNCTey5
-	 fKZog39soCUA+LC11riwHUL5GBoYZ+Y0EYr/hWE7Ii2+000A4kWqpJNSGLNrVT8yzL
-	 xgZ6LE/3Uj7/A==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 5741NKJY03190088
+	b=VyTRaM/skcct0q3VOgAq1VsKX6L+ph51rillltkfL9FKKaYcaMDdJ7FOd5LqPP/RD
+	 kffOzE8PC3Npj2zDEVaD0npK9JYXSxBigEL/4H4oVM1HIS3IdWBXLqGT1zH7c193R6
+	 ma+s//7AkEYdlubIzMfMPqCZTjnR3LCDeVbZbG9m2PCzq8T0cDSh4RdTxw/sFwzmwE
+	 uPeH4BIfRUQoMOHUgkKsQBO3bPNaRTo5Gb3pLRWzDQalxwpSkEBFkpmL/uPiucO6mX
+	 tq0rhA/0Apm8bbYYBedHIJtWB4IAHv7poLiNpKMBGnGcCHaLHivKXleuNHNhcnq612
+	 vZF2e4gFp+sQA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 5741NN9Z03190118
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 4 Aug 2025 09:23:20 +0800
+	Mon, 4 Aug 2025 09:23:23 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 4 Aug 2025 09:23:21 +0800
+ 15.2.1544.11; Mon, 4 Aug 2025 09:23:24 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 4 Aug
- 2025 09:23:20 +0800
+ 2025 09:23:24 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <rtl8821cerfe2@gmail.com>, <sean.anderson@linux.dev>
-Subject: [PATCH rtw-next 1/2] wifi: rtw89: print just once for unknown C2H events
-Date: Mon, 4 Aug 2025 09:22:33 +0800
-Message-ID: <20250804012234.8913-2-pkshih@realtek.com>
+Subject: [PATCH rtw-next 2/2] wifi: rtw89: add dummy C2H handlers for BCN resend and update done
+Date: Mon, 4 Aug 2025 09:22:34 +0800
+Message-ID: <20250804012234.8913-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250804012234.8913-1-pkshih@realtek.com>
 References: <20250804012234.8913-1-pkshih@realtek.com>
@@ -74,75 +74,79 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTKEXHMBS06.realtek.com.tw (10.21.1.56)
 
-When driver receives new or unknown C2H events, it print out messages
-repeatedly once events are received, like
+Two C2H events are not listed, and driver throws
 
-  rtw89_8922ae 0000:81:00.0: PHY c2h class 2 not support
+  MAC c2h class 0 func 6 not support
+  MAC c2h class 1 func 3 not support
 
-To avoid the thousands of messages, use rtw89_info_once() instead. Also,
-print out class/func for unknown (undefined) class.
+Since the implementation in vendor driver does nothing, add two dummy
+functions for them.
 
-Reported-by: Sean Anderson <sean.anderson@linux.dev>
-Closes: https://lore.kernel.org/linux-wireless/20250729204437.164320-1-sean.anderson@linux.dev/
+Reported-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/d2d62793-046c-4b55-93ed-1d1f43cff7f2@gmail.com/
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/debug.h | 1 +
- drivers/net/wireless/realtek/rtw89/mac.c   | 7 +++----
- drivers/net/wireless/realtek/rtw89/phy.c   | 7 +++----
- 3 files changed, 7 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac.c | 13 ++++++++++++-
+ drivers/net/wireless/realtek/rtw89/mac.h |  1 +
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.h b/drivers/net/wireless/realtek/rtw89/debug.h
-index fc690f7c55dc..a364e7adb079 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.h
-+++ b/drivers/net/wireless/realtek/rtw89/debug.h
-@@ -56,6 +56,7 @@ static inline void rtw89_debugfs_deinit(struct rtw89_dev *rtwdev) {}
- #endif
- 
- #define rtw89_info(rtwdev, a...) dev_info((rtwdev)->dev, ##a)
-+#define rtw89_info_once(rtwdev, a...) dev_info_once((rtwdev)->dev, ##a)
- #define rtw89_warn(rtwdev, a...) dev_warn((rtwdev)->dev, ##a)
- #define rtw89_err(rtwdev, a...) dev_err((rtwdev)->dev, ##a)
- 
 diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 5a5da9d9c0c5..ef17a307b770 100644
+index ef17a307b770..33a7dd9d6f0e 100644
 --- a/drivers/net/wireless/realtek/rtw89/mac.c
 +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -5813,12 +5813,11 @@ void rtw89_mac_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 	case RTW89_MAC_C2H_CLASS_ROLE:
- 		return;
- 	default:
--		rtw89_info(rtwdev, "MAC c2h class %d not support\n", class);
--		return;
-+		break;
- 	}
- 	if (!handler) {
--		rtw89_info(rtwdev, "MAC c2h class %d func %d not support\n", class,
--			   func);
-+		rtw89_info_once(rtwdev, "MAC c2h class %d func %d not support\n",
-+				class, func);
- 		return;
- 	}
- 	handler(rtwdev, skb, len);
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index d607577b353c..01a03d2de3ff 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -3626,12 +3626,11 @@ void rtw89_phy_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 			handler = rtw89_phy_c2h_dm_handler[func];
- 		break;
- 	default:
--		rtw89_info(rtwdev, "PHY c2h class %d not support\n", class);
--		return;
-+		break;
- 	}
- 	if (!handler) {
--		rtw89_info(rtwdev, "PHY c2h class %d func %d not support\n", class,
--			   func);
-+		rtw89_info_once(rtwdev, "PHY c2h class %d func %d not support\n",
-+				class, func);
- 		return;
- 	}
- 	handler(rtwdev, skb, len);
+@@ -5235,6 +5235,11 @@ rtw89_mac_c2h_bcn_cnt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
+ {
+ }
+ 
++static void
++rtw89_mac_c2h_bcn_upd_done(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++{
++}
++
+ static void
+ rtw89_mac_c2h_pkt_ofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *skb_c2h,
+ 			   u32 len)
+@@ -5257,6 +5262,11 @@ rtw89_mac_c2h_pkt_ofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *skb_c2h,
+ 	rtw89_complete_cond(wait, cond, &data);
+ }
+ 
++static void
++rtw89_mac_c2h_bcn_resend(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++{
++}
++
+ static void
+ rtw89_mac_c2h_tx_duty_rpt(struct rtw89_dev *rtwdev, struct sk_buff *skb_c2h, u32 len)
+ {
+@@ -5646,7 +5656,7 @@ void (* const rtw89_mac_c2h_ofld_handler[])(struct rtw89_dev *rtwdev,
+ 	[RTW89_MAC_C2H_FUNC_EFUSE_DUMP] = NULL,
+ 	[RTW89_MAC_C2H_FUNC_READ_RSP] = NULL,
+ 	[RTW89_MAC_C2H_FUNC_PKT_OFLD_RSP] = rtw89_mac_c2h_pkt_ofld_rsp,
+-	[RTW89_MAC_C2H_FUNC_BCN_RESEND] = NULL,
++	[RTW89_MAC_C2H_FUNC_BCN_RESEND] = rtw89_mac_c2h_bcn_resend,
+ 	[RTW89_MAC_C2H_FUNC_MACID_PAUSE] = rtw89_mac_c2h_macid_pause,
+ 	[RTW89_MAC_C2H_FUNC_SCANOFLD_RSP] = rtw89_mac_c2h_scanofld_rsp,
+ 	[RTW89_MAC_C2H_FUNC_TX_DUTY_RPT] = rtw89_mac_c2h_tx_duty_rpt,
+@@ -5661,6 +5671,7 @@ void (* const rtw89_mac_c2h_info_handler[])(struct rtw89_dev *rtwdev,
+ 	[RTW89_MAC_C2H_FUNC_DONE_ACK] = rtw89_mac_c2h_done_ack,
+ 	[RTW89_MAC_C2H_FUNC_C2H_LOG] = rtw89_mac_c2h_log,
+ 	[RTW89_MAC_C2H_FUNC_BCN_CNT] = rtw89_mac_c2h_bcn_cnt,
++	[RTW89_MAC_C2H_FUNC_BCN_UPD_DONE] = rtw89_mac_c2h_bcn_upd_done,
+ };
+ 
+ static
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 241e89983c4a..25fe5e5c8a97 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -419,6 +419,7 @@ enum rtw89_mac_c2h_info_func {
+ 	RTW89_MAC_C2H_FUNC_DONE_ACK,
+ 	RTW89_MAC_C2H_FUNC_C2H_LOG,
+ 	RTW89_MAC_C2H_FUNC_BCN_CNT,
++	RTW89_MAC_C2H_FUNC_BCN_UPD_DONE = 0x06,
+ 	RTW89_MAC_C2H_FUNC_INFO_MAX,
+ };
+ 
 -- 
 2.25.1
 
