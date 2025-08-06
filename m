@@ -1,78 +1,77 @@
-Return-Path: <linux-wireless+bounces-26187-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26188-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70BAB1CC6C
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Aug 2025 21:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 174AFB1CD2E
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Aug 2025 22:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 815E2627086
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Aug 2025 19:19:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93DDB6227DC
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Aug 2025 20:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE2C482EB;
-	Wed,  6 Aug 2025 19:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F0D2C0327;
+	Wed,  6 Aug 2025 20:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JtTn6aD4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qp+CeLOy"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB37846C
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Aug 2025 19:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10F92C08A2
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Aug 2025 20:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754507939; cv=none; b=Gx+mMgVKq7Q/AvuyYe0KlubVdvYyuEFDBhBcDiYsXC7F+lfA3uoVylzBDJV/+9kqYDogRAFnqjVBY6krXyl6YGbmFllK8mr2cHjwGREQKD703qAyc5R9rDTue4XgR06jvksfcmt1jSZK789YLHETD4R9sxI0DlxmkcoN3J5XbGE=
+	t=1754510554; cv=none; b=ghzK6xiUOmkbD5uZdDCWH5HSHEDMlk+xAM00o2hNTbutOC7mKZ6rW8Be5JBF0Ac9B2IRU02k3lrJhxOS+WX62Z3viFa3q0Xz+VeIuERDCPojI1pjyWXRTkyWP66zthz/Z8z6h3TS8KrEwItOG4bGnH2RT1hNdloCZJuC3+meLow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754507939; c=relaxed/simple;
-	bh=GzGjuxWtKqcqG7Rp7vG/TfgqQxO5U6u2y+XzK2NJAO0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=b2iGa0soWmgggu34HJZmuhwNP5WH6gTqCk/PTYnLojdONC3f51vl4BugigihoQU68TORZ+OQ228lvwxDwEd6XVp/M6CG4vLcQvu0i9KeqMZl0rymqK6PaKPHfOHxQZBWi616QzZ6fiZIiYb7W+FEp/8sIyhIlUfi9BwwI1efWL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JtTn6aD4; arc=none smtp.client-ip=209.85.128.50
+	s=arc-20240116; t=1754510554; c=relaxed/simple;
+	bh=SFkKIGdJvhjOnT27q+Zj3UdEmh3wehAbPU30mAMtZwE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=XwOvRF1trc3SoEpE5c/NCtclz5e6nM2kTiTV08+OAJpDb00jw4lAHKCy2ogExr62cIr8Q1yJ+R7F8/TocRZf/jhMQ+vC8CC8kuAO1Arr7Ck5aDIbAL59clUrUQL8fXaEHmzZ/pHwan4Up53AIJMt6UpB86XY/kcHD+VW2wdNl38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qp+CeLOy; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-459eb4ae596so2433585e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Aug 2025 12:18:56 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-458aee6e86aso1704235e9.3
+        for <linux-wireless@vger.kernel.org>; Wed, 06 Aug 2025 13:02:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754507935; x=1755112735; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=gmail.com; s=20230601; t=1754510550; x=1755115350; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GzGjuxWtKqcqG7Rp7vG/TfgqQxO5U6u2y+XzK2NJAO0=;
-        b=JtTn6aD4VnZCP5GDl7ug8cqW95bHAr5N93gCyr/3I3hlRzOqTZ2DEos6a5ryHKaM5t
-         N9U/63UCrY8ZcKQ6BhT930UKIvfAry63/5jwu2oS2cRe7x1aPPLKy6hSdmulMOItREPg
-         kAR2wOdeawxeRsvYG0dP+9JfPjYT44Mii5koU82k7Y7zbl1v7Ai2h9mhEDPv+CES0xqC
-         KZpJ0Drks/Gjg9GsN7AyXyBWEgMWiepZnzuNMkTokMuiMpx73WQc8SXATqZ6pNWFeyIq
-         y1JZLVO2baDjOskRF1HhBiWLgCaS7udzXtq/CrG/RQI2zLp+MxvhAej8T7qn+VxIPNgl
-         aNcA==
+        bh=QwHQj2S4iE5W8V5r1sARLF//FzzcxejJevd8ib6r6Bk=;
+        b=Qp+CeLOyH3D+wZm42pEw6FKMju9rl6a2FBrIQmCEbssDMYqLIR0jEhLOzvkJP6G9KT
+         hqH8GL17amfdup637GrLgmfKia0ro+OSg1AiTt+t+fzAzLE2FmEnLsPjrccKFgTBIcpg
+         2iNakJ4H3TUveU672g8aFWim7H1zVF2b0FE9vOGboOfqGYHdpKB2q7DvDHozmQKuS2ps
+         AbdaEoiCT/RJZaUpFuatuItPQJSqZeURlMA9YuuIwaanmR3kJwIUxkRPhhS9Ci2huge+
+         DfBMzHS6z6NKq09wSx3bBAz1Z5vqfUaevQNmXXdJ1BjpQwVT9laj6PuWjfaynIhXc1a6
+         /c5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754507935; x=1755112735;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20230601; t=1754510550; x=1755115350;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=GzGjuxWtKqcqG7Rp7vG/TfgqQxO5U6u2y+XzK2NJAO0=;
-        b=bBLSYGQlwKlASTd1rmZZoukX6dXSeNk1nRo2M03Lndq3msR4a9CyFYfRJ42m1yCkns
-         0Zk2i/2MvwH2cnY3BZmUBJ6Qyie8ih86qIgceDgu/3JQzaPFEvTdAZaE6lGp1kRHmxD8
-         FJWjqUHa8PQu1ryEK8Rehh6+cNWo+/8h/fR/HKU1t8+4L85dHD+PlDf2ZayDYulp7V+K
-         0KeFiNbjDcx2wc6jTAw3St7keLw7wjJRgralPDsVBpYSxsUI74q2IbbX0sjxgb/5pRH+
-         jIXZzlcjkWWrUQaFAr35OEfUhr3nuOa2rHQc+d02wrf8MyUlt5QbS58fh7c2E+gw0vJU
-         +J7g==
-X-Forwarded-Encrypted: i=1; AJvYcCW1uaerQeWRF+iTe0RLa15uglNgiTSxL1ofgUzTUR1QFxlx73n9t9Ia1mLOty0gbB1oktafeT8aG1AODPKRGg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6siV6vGKGsB6nac44C1bX500v/jZ3shQ2Gf6EZh2rMsL01nA0
-	aDTgGiO4T3uV9KHlGH/PN79Aby6OnVWzIHR/80cCogB+6O5DQeth0DlX
-X-Gm-Gg: ASbGnctN0Y8VbHxRWH7ufGfrvP7AA1y9XCoPjFg2zChbLS5rtVzzsDuHeeMbCyY6/lV
-	aRuzMGCIe6n4r95peqitLElSugEy8DhxY0WNjgHmzECMTlzljtU4UvIE7Mkehn8AswpQ4Pu5ZAk
-	T6mAleMLdi7q3uOFMhZsj2CIq6t13IX9K/wvfjEoU9WV7kiMhOUNiugByhxewEd+kILcXGv50Mk
-	h4EMkfiTxPeNNNFvLU41yr5yi6jzuf0iboMG4Bvdlw6PuQaBjelJ9ocobm+5iw5xJMiu55CVNyz
-	xE3IpQpQkq1CmZn7VFr06ricHxSqpA70Atub6lg+bc2ZwCz8CAX0NzunMCveaG6gkTWHFaJrcLf
-	26v29GjRAkmtf+o0kQ5XwsLVnvWxYHcZMeuODroT9
-X-Google-Smtp-Source: AGHT+IHxvW57SiNdcyvgwfl2jMzjM6r+hMeiGssjjfrnWxRobn0puQ2J2xbPfNosoXmndruPed/DSg==
-X-Received: by 2002:a05:600c:840f:b0:456:25aa:e9b0 with SMTP id 5b1f17b1804b1-459e745c61amr42860255e9.16.1754507934546;
-        Wed, 06 Aug 2025 12:18:54 -0700 (PDT)
+        bh=QwHQj2S4iE5W8V5r1sARLF//FzzcxejJevd8ib6r6Bk=;
+        b=OPG4oAhB4rtY13VPdpiZmYCM5LTM75i+ZSginoBk19jMWhxe798DVfB+V6UbSz54ih
+         KIHFnZARmreds+T9+SCAKE2SbQRN50YDy+Ynq9CVsAz7euNCPsc44PvQU0DqRhQW6f2w
+         vj3AOi9XzxNKboU4/PXjMafAnRjw8bz4NyuNEKfp2q/3R3QdQcZKuJvyi3V6ZjxbzAuW
+         6lboCvCxb9bJpE7h+dwQD+BMPxSsoemWjTxmCwFreYR+a4WA9xvRvfC1sl1XbLCc1pIy
+         NWclDuT0amK1Sp/gg5kH0cnyx3jOWQzQ/GFHmmrVOfd+Oki5PZl0UpC+5pKlNtaSEqyi
+         NnfA==
+X-Gm-Message-State: AOJu0YzKOPTSxWeBIejn0ehbntWzLZGaU8P4w83Rh+8WEKxJQM4DIgri
+	GGz+JqQ/GEOQnJVFotTeWNSYSQFp1nyEt2AQ7OqfDEgdx4Z5Fhfgnn6seOm36A==
+X-Gm-Gg: ASbGncubM1zfRZN38vKvpo8kMpVO0meeXpgfy/qBWsDhBrWtuzlPN48fKL9gOVpzGID
+	8CysyF8kEO2u6OSX3QuxfwrWKEJc3lA0UNGPQ42UjTJuEVNu3uNu1lktUDLWZ6LcJke8MzLIi2A
+	VZ0vUopKPb6TR4fAT0wB0unfsABak99ajSZPda862HNKqGZPUHfRtRJOASBlaINanYgBIUzX+eP
+	MtI607HqXPqmGVGDO4r7jRdgxBr4VRWhBZ+JAfdlAE4P2hJ9mMCTKYLOr3ugsaHdqsobApsXyRT
+	RdSt4+fyE0d+6XoD+I5f9T1q87o/JbffAn9Ppfb1JDj/bP5NH7pwV/pffb2+GVpc2X7OiXzE7RU
+	KAmj6aV6C1XIUAnl+4y+qpvyfptpLkbMoIsAnPFn6
+X-Google-Smtp-Source: AGHT+IHtL9F719IgiXDejNDTx8YGjo5svHsCY0ACzaMi+/cqLe1D3DEUC4gd6a7hIVYKxpfLhuyzCg==
+X-Received: by 2002:a05:600c:4f4c:b0:450:d37d:7c with SMTP id 5b1f17b1804b1-459e95af955mr26598505e9.21.1754510549796;
+        Wed, 06 Aug 2025 13:02:29 -0700 (PDT)
 Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c453d6esm24091921f8f.37.2025.08.06.12.18.53
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459ee17535bsm7889325e9.16.2025.08.06.13.02.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Aug 2025 12:18:54 -0700 (PDT)
+        Wed, 06 Aug 2025 13:02:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,103 +80,85 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 06 Aug 2025 21:18:53 +0200
-Message-Id: <DBVL5LLQ6PN7.3UAL98HQ7TMIU@gmail.com>
-Cc: <jjohnson@kernel.org>, "Remi Pommarel" <repk@triplefau.lt>,
- <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>, "Loic
- Poulain" <loic.poulain@oss.qualcomm.com>
-Subject: Re: [RFC PATCH] wifi: ath10k: support flush_sta method
+Date: Wed, 06 Aug 2025 22:02:28 +0200
+Message-Id: <DBVM2YZDTS15.1WAPW69YQ5XOA@gmail.com>
+To: "Nithyanantham Paramasivam"
+ <nithyanantham.paramasivam@oss.qualcomm.com>, <ath12k@lists.infradead.org>
+Cc: <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH ath-current 0/7] wifi: ath12k: Fix Issues in REO RX
+ Queue Updates
 From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Zhi-Jun You" <hujy652@gmail.com>, "Jeff Johnson"
- <jeff.johnson@oss.qualcomm.com>
 X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250806070005.1429-1-hujy652@gmail.com>
- <29ef8aab-06a3-48e2-a370-86b1b2107143@oss.qualcomm.com>
- <CAHGaMk_rMCoWDzKtxgsg9GkH0s-U540zYq_AOC9HpBo_JF7qJg@mail.gmail.com>
-In-Reply-To: <CAHGaMk_rMCoWDzKtxgsg9GkH0s-U540zYq_AOC9HpBo_JF7qJg@mail.gmail.com>
+References: <20250806111750.3214584-1-nithyanantham.paramasivam@oss.qualcomm.com>
+In-Reply-To: <20250806111750.3214584-1-nithyanantham.paramasivam@oss.qualcomm.com>
 
-On Wed Aug 6, 2025 at 5:51 PM CEST, Zhi-Jun You wrote:
-> On Wed, Aug 6, 2025 at 10:23=E2=80=AFPM Jeff Johnson
-> <jeff.johnson@oss.qualcomm.com> wrote:
->>
->> On 8/6/2025 12:00 AM, Zhi-Jun You wrote:
->> > When a STA is marked as no longer authorized, if the driver doesn't
->> > implement flush_sta(), mac80211 calls ieee80211_flush_queues() to
->> > flush hardware queues to avoid sending unencrypted frames.
->> >
->> > This has became a problem for ath10k because ieee80211_flush_queues()
->> > will stop all traffic and call ath10k_flush, which waits until the
->> > whole HW queue is empty. In a busy environment this will trigger a
->> > timeout warning and stalls other STAs.
->> >
->> > Fix this by implementing flush_sta method using WMI command to flush
->> > frames of a specific STA.
->> > Flushed frames will be marked as discard in tx complete indication.
->> >
->> > ops->flush_sta will be set to NULL if htt.disable_tx_comp is set to
->> > true.
->> >
->> > Tested-on: QCA9984 hw1.0 PCI 10.4-3.9.0.2-00157
->> >
->> > Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
->> > ---
->>
->> There is already a patch from Remi pending for this, see:
->> https://msgid.link/cover.1732293922.git.repk@triplefau.lt
->>
->> Please see if that series addresses your needs.
->>
->> First Kalle, and then I, held this back due to lack of internal validati=
-on
->> across supported platforms, but it is actually still on my TODO list:
->> https://patchwork.kernel.org/project/linux-wireless/list/?series=3D91185=
-1
->>
->> Let me make one more validation request internally since I know there is=
- at
->> least one ath10k-based project with active development.
->>
->> /jeff
+On Wed Aug 6, 2025 at 1:17 PM CEST, Nithyanantham Paramasivam wrote:
+> During stress test scenarios, when the REO command ring becomes full,
+> the RX queue update command issued during peer deletion fails due to
+> insufficient space. In response, the host performs a dma_unmap and
+> frees the associated memory. However, the hardware still retains a
+> reference to the same memory address. If the kernel later reallocates
+> this address, unaware that the hardware is still using it, it can
+> lead to memory corruption-since the host might access or modify
+> memory that is still actively referenced by the hardware.
 >
-> Hi Jeff,
+> Implement a retry mechanism for the HAL_REO_CMD_UPDATE_RX_QUEUE
+> command during TID deletion to prevent memory corruption. Introduce
+> a new list, reo_cmd_update_rx_queue_list, in the dp structure to
+> track pending RX queue updates. Protect this list with
+> reo_rxq_flush_lock, which also ensures synchronized access to
+> reo_cmd_cache_flush_list. Defer memory release until hardware
+> confirms the virtual address is no longer in use, avoiding immediate
+> deallocation on command failure. Release memory for pending RX queue
+> updates via ath12k_dp_rx_reo_cmd_list_cleanup() on system reset
+> if hardware confirmation is not received.
 >
-> I am aware of the series and glad to know it's still on the list.
-> I did test with it but the warning can still be triggered easily with
-> the instructions in Remi's series.
-> And according to other people's reports it can still block sometimes. [0]
-
-Well that's to be expected with this implementation and the use case descri=
-bed
-by remi. You have a station that is out of range or powered down without te=
-lling
-the ap, and you wait for the firmware to tell you that it did managed to
-transmit to the sta or that it has given up transmitting. So clearly you wi=
-ll
-have the warning.
-
-The goal was to not block trafic pending for other STA when that happens.
-
-What I recall, and sorry if this is vague it was quite a few years ago, is
-that when issuing the WMI command to the firmware to drop all frames for th=
-e STA
-it just did not, and it was still trying to transmit them (checked with ota
-capture at that time). But I do not recall if the firmware tried to send fr=
-ames
-encrypted or not (as we would remove the key right after the wmi command an=
-d
-before the firmware had given up on transmitting the frames) which was one =
-of
-the reason .flush_sta() was added in the first place I believe.
-
+> Additionally, increase DP_REO_CMD_RING_SIZE to 256 to reduce the
+> likelihood of ring exhaustion. Use a 1KB cache flush command for
+> QoS TID descriptors to improve efficiency.
 >
-> drv_flush_sta() is called before clearing the keys and Remi's approach
-> still waits for the frames to be sent which imo isn't enough in this
-> situation.
->
-> [0]: https://github.com/openwrt/openwrt/pull/19427#issuecomment-310279479=
-3
->
-> Best regards,
-> Zhi-Jun You
 
+Hello,
+
+I'm not sure I fully understand so please correct where I'm wrong but from =
+what
+I got looking at the code:
+  - you increase the ring size for reo cmd
+  - you enable releasing multiple tid buffer at once
+  - as soon as you allocate the tid you create an entry in the list flaggin=
+g it
+    as active
+  - when you need to clean up a tid
+    - you mark it as inactive in the list, then
+    - try to process the whole list by
+      - sending the reo command to release it
+      - if it succeed you release it and remove the entry from the list
+  - on core exit, you re process the list
+
+What is bothering me with this is that when a vdev which has multiple sta g=
+oes
+down, you will have a lot of those entries to push to the firmware at once:
+
+  - So increasing the ring size / being able to release multiple entries at=
+ once
+    in one reo cmd may or may not be enough to handle the burst. It seems
+    that increasing those is just band aids on the underlying problem but I
+    understand it's just to be on the safe side.
+  - If entries do not get send/accepted by the firmware, we will need to wa=
+it
+    for another station removal before retrying, which could be a wile.
+  - Or in the worst case (one vdev going down and needing to release tid of
+    all its stations) the more entries we have in the list the less likely =
+we
+    will be to be able to push the delete of all stations + the ones still =
+in
+    queue
+
+So, on station removal, why not make just things completely async. Push the=
+ tid
+deletes in a list and wake a workqueue that tries to push those to the firm=
+ware.
+If the ring is full, retry periodically.
+
+Thanks
 
