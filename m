@@ -1,151 +1,183 @@
-Return-Path: <linux-wireless+bounces-26186-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26187-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF3AB1CC49
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Aug 2025 21:07:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D70BAB1CC6C
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Aug 2025 21:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 299F87B0CEC
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Aug 2025 19:05:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 815E2627086
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Aug 2025 19:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E25329C335;
-	Wed,  6 Aug 2025 19:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE2C482EB;
+	Wed,  6 Aug 2025 19:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JeWbuwM7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JtTn6aD4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DD628C5C6
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Aug 2025 19:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB37846C
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Aug 2025 19:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754507232; cv=none; b=PBfXHwAZjkV3LuLpANbXC2TKdfV/uNjHUluPztne2EZ+r7WvsSRe4vXQYMZxEP/RiiD9gBxXs5wbzJaYFVy9/N3VktH/AkROg1EUkKPHrATpHHjSzbHat/HSmnuVXx/URiIsHiDIzkC3tGbmRgzsWBaUOJGlyPnbpVXxv/qWDok=
+	t=1754507939; cv=none; b=Gx+mMgVKq7Q/AvuyYe0KlubVdvYyuEFDBhBcDiYsXC7F+lfA3uoVylzBDJV/+9kqYDogRAFnqjVBY6krXyl6YGbmFllK8mr2cHjwGREQKD703qAyc5R9rDTue4XgR06jvksfcmt1jSZK789YLHETD4R9sxI0DlxmkcoN3J5XbGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754507232; c=relaxed/simple;
-	bh=D2fRxsjumskahvRxe7m7fBnGGGqxjZOKk26cSPbI7OY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dXOM65ATPyq50eWS8cnhYNS9sHFOdMwfarHuLfxHjUNMkklHH2IwZqWzbGXGnC9T0TrTSTfJMSlzN1/pmraHsAc9CkH790aIsq/JRzn3eU+TZ19o65y2n1RRqSsZ2FBS+6iCWaR8bc0awhmgy/pk/oxEkzjBfb5qoT2D6ay8fNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JeWbuwM7; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 576C1wrp020382
-	for <linux-wireless@vger.kernel.org>; Wed, 6 Aug 2025 19:07:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pLFDFgtgIMICdEJ792w168OyKixfYM5BYvfWCMHrn0A=; b=JeWbuwM7PL0zAmGW
-	+VETreTAUCzm2n053JSNWrko8eWL6LoLI1ezrYAhMJtsVrM+wRZeh3pnIl5k8OV0
-	IdE5Y4F2MyaevZLKAcQ5sd9PyxGj8JmMvTgHFxoCGMdr6uUrLo2EfuBT6qdkmKYn
-	k3+ifV38vlVJr9NPx6atLCZtMVPbTRo4uzBIFc5v56+rn5NAkjd8IoUV+x4CjQJy
-	3baZtNqsShLgsD5rEk8GJMOSGW/wvI4FMys+cNtla66buSDnWRjtmeOMbIKleOfw
-	k7X1v0BMLkW/ynYrT1WYBtUCTdbD+D157ShPCNbrdk71zyvtHVbk19hHLzU9mLHs
-	4P91jg==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48bpw1bt3j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 06 Aug 2025 19:07:09 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-242aa2e4887so3763975ad.3
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Aug 2025 12:07:09 -0700 (PDT)
+	s=arc-20240116; t=1754507939; c=relaxed/simple;
+	bh=GzGjuxWtKqcqG7Rp7vG/TfgqQxO5U6u2y+XzK2NJAO0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=b2iGa0soWmgggu34HJZmuhwNP5WH6gTqCk/PTYnLojdONC3f51vl4BugigihoQU68TORZ+OQ228lvwxDwEd6XVp/M6CG4vLcQvu0i9KeqMZl0rymqK6PaKPHfOHxQZBWi616QzZ6fiZIiYb7W+FEp/8sIyhIlUfi9BwwI1efWL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JtTn6aD4; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-459eb4ae596so2433585e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 06 Aug 2025 12:18:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754507935; x=1755112735; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GzGjuxWtKqcqG7Rp7vG/TfgqQxO5U6u2y+XzK2NJAO0=;
+        b=JtTn6aD4VnZCP5GDl7ug8cqW95bHAr5N93gCyr/3I3hlRzOqTZ2DEos6a5ryHKaM5t
+         N9U/63UCrY8ZcKQ6BhT930UKIvfAry63/5jwu2oS2cRe7x1aPPLKy6hSdmulMOItREPg
+         kAR2wOdeawxeRsvYG0dP+9JfPjYT44Mii5koU82k7Y7zbl1v7Ai2h9mhEDPv+CES0xqC
+         KZpJ0Drks/Gjg9GsN7AyXyBWEgMWiepZnzuNMkTokMuiMpx73WQc8SXATqZ6pNWFeyIq
+         y1JZLVO2baDjOskRF1HhBiWLgCaS7udzXtq/CrG/RQI2zLp+MxvhAej8T7qn+VxIPNgl
+         aNcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754507228; x=1755112028;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pLFDFgtgIMICdEJ792w168OyKixfYM5BYvfWCMHrn0A=;
-        b=sBp0rEnQCBUK8/zJKkXLOfK3lDC0POtJevebtBlx8hfKJXAjMTbNDc09FeZrab1mA2
-         S+pkTwr2Bbn6quMPOZA1SZqEybi5eCg/ASxr9joDOOqk0bAkHZ3gVxsj8HMXTtwH7V92
-         Irw3kKU9v/ppsbdEdG9EMIISDbiTOJoncCb6koYDp+u9DumMAvjTC18Bm2nqUPfumqfm
-         4fNZbvaqYUd3cZpO7ikhIZM2TCm3WUvGTfDvrVyPjyVfjsfDVPcLvUX5ylxXPQ8/G/GA
-         geTmv3+BVTvXChJ+I/eCCa6I476cIa4JP19n6ipPr7naQX8b6J7lEDhvx9VZT8y4QeRx
-         uCoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW9DfVl1ZFZE+bG4luqZ2S+gnm2uZgJjReyWZ5Y5EtaxAP7H4lks4Yj/t65SY8ZzP4xK5ZR0l6xLM2dC+nsmQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpwXZDJCw2p3Rod73mrnajLgD1i5m9uaPnh6URaZby5qThvPBe
-	daOWM6mXaEsoz69xYxfszYkZegWWSHI4wEV7dIGhd34RYMEVg9Qw4ZvFxnobT22nf121OUSKaim
-	OvyYIsUKFlgqA9VCMGBj57M3OOeAon7ckd3VgKVglPtrcSbtS3P5wsiAuGOHa/Ga890DfzQ==
-X-Gm-Gg: ASbGncu7xwxv0I6IANa80Ey0B3LfnDwRNPixkL8gQxQjkaonjC7vzveBhyKH6x0oe5d
-	7VrZsKsVxVi3GKjPDxN0gycfGxI1aaCALWl7VhlHUqJ2pqFpFrgvY56/kb0IEMCZZUdGNzRyPJG
-	ivJpLwryZPDHw+G11/aBXFk49T/DA0E35eJgH2WW4ZyzScuGI/BSvDSBAnIRqpscjBetHrSKMZ/
-	EZmIkvwo6T5Qto5S41OcYJ9QAi1cPKFm+p0UVArroHpuZ9oFj8sSQ4UgAx/+wwvHX9xslw78vFC
-	A+lf44rWVf4sOZHgp6TotPlJ4oNXqqgKpWrdWa7Pi/3M9R4eogYvBHz3IuulKkux3qwCUGz0QqB
-	xZOSxmmgtBtNk+MnMd0am9y2yTzAuiRmj
-X-Received: by 2002:a17:902:f612:b0:240:469d:beb0 with SMTP id d9443c01a7336-242a0b6fc4cmr58557415ad.31.1754507228310;
-        Wed, 06 Aug 2025 12:07:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHw/V0KLHuGmmP97g4XfNxYYUiYQuA+Las853A79Nu5Cd7FLuHDuerRqAPRejldbNHXAC6rXA==
-X-Received: by 2002:a17:902:f612:b0:240:469d:beb0 with SMTP id d9443c01a7336-242a0b6fc4cmr58556965ad.31.1754507227919;
-        Wed, 06 Aug 2025 12:07:07 -0700 (PDT)
-Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef75bdsm164814515ad.11.2025.08.06.12.07.06
+        d=1e100.net; s=20230601; t=1754507935; x=1755112735;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GzGjuxWtKqcqG7Rp7vG/TfgqQxO5U6u2y+XzK2NJAO0=;
+        b=bBLSYGQlwKlASTd1rmZZoukX6dXSeNk1nRo2M03Lndq3msR4a9CyFYfRJ42m1yCkns
+         0Zk2i/2MvwH2cnY3BZmUBJ6Qyie8ih86qIgceDgu/3JQzaPFEvTdAZaE6lGp1kRHmxD8
+         FJWjqUHa8PQu1ryEK8Rehh6+cNWo+/8h/fR/HKU1t8+4L85dHD+PlDf2ZayDYulp7V+K
+         0KeFiNbjDcx2wc6jTAw3St7keLw7wjJRgralPDsVBpYSxsUI74q2IbbX0sjxgb/5pRH+
+         jIXZzlcjkWWrUQaFAr35OEfUhr3nuOa2rHQc+d02wrf8MyUlt5QbS58fh7c2E+gw0vJU
+         +J7g==
+X-Forwarded-Encrypted: i=1; AJvYcCW1uaerQeWRF+iTe0RLa15uglNgiTSxL1ofgUzTUR1QFxlx73n9t9Ia1mLOty0gbB1oktafeT8aG1AODPKRGg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6siV6vGKGsB6nac44C1bX500v/jZ3shQ2Gf6EZh2rMsL01nA0
+	aDTgGiO4T3uV9KHlGH/PN79Aby6OnVWzIHR/80cCogB+6O5DQeth0DlX
+X-Gm-Gg: ASbGnctN0Y8VbHxRWH7ufGfrvP7AA1y9XCoPjFg2zChbLS5rtVzzsDuHeeMbCyY6/lV
+	aRuzMGCIe6n4r95peqitLElSugEy8DhxY0WNjgHmzECMTlzljtU4UvIE7Mkehn8AswpQ4Pu5ZAk
+	T6mAleMLdi7q3uOFMhZsj2CIq6t13IX9K/wvfjEoU9WV7kiMhOUNiugByhxewEd+kILcXGv50Mk
+	h4EMkfiTxPeNNNFvLU41yr5yi6jzuf0iboMG4Bvdlw6PuQaBjelJ9ocobm+5iw5xJMiu55CVNyz
+	xE3IpQpQkq1CmZn7VFr06ricHxSqpA70Atub6lg+bc2ZwCz8CAX0NzunMCveaG6gkTWHFaJrcLf
+	26v29GjRAkmtf+o0kQ5XwsLVnvWxYHcZMeuODroT9
+X-Google-Smtp-Source: AGHT+IHxvW57SiNdcyvgwfl2jMzjM6r+hMeiGssjjfrnWxRobn0puQ2J2xbPfNosoXmndruPed/DSg==
+X-Received: by 2002:a05:600c:840f:b0:456:25aa:e9b0 with SMTP id 5b1f17b1804b1-459e745c61amr42860255e9.16.1754507934546;
+        Wed, 06 Aug 2025 12:18:54 -0700 (PDT)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c453d6esm24091921f8f.37.2025.08.06.12.18.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Aug 2025 12:07:07 -0700 (PDT)
-Message-ID: <c9d761a2-7121-4ce6-84c7-232a6c4ce976@oss.qualcomm.com>
-Date: Wed, 6 Aug 2025 12:07:05 -0700
+        Wed, 06 Aug 2025 12:18:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] soc: qcom: mdt_loader: Remove pas id parameter
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-        Vikash Garodia <quic_vgarodia@quicinc.com>,
-        Dikshita Agarwal <quic_dikshita@quicinc.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath12k@lists.infradead.org, linux-remoteproc@vger.kernel.org
-References: <20250806172531.1865088-1-mukesh.ojha@oss.qualcomm.com>
- <20250806172531.1865088-3-mukesh.ojha@oss.qualcomm.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20250806172531.1865088-3-mukesh.ojha@oss.qualcomm.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA2MDAwOSBTYWx0ZWRfX2/Nsw+PECmZz
- 6+pE0NTtQqkZ1XmWO1Fsok5/Rel/fua5nlsv1W8XHecIGDHo1EGTisZv3fVzloMRT2lgIpgAfr2
- ZxC1ArlIDHXGuk89YFtPHw7820WwwBvGID6BUjYhdNvf9SOm47Dtdp/18DVBkMueo0JGFxH1Phm
- FL+/06H2P6wL3tnIr7dofk6kzgmEPJ0wQjl/I/pWELarVt5z1rmcLxJxHPsvqjyaWLkVuRihVl4
- MFbFrwceX91EIsJZrcD84ll6tQ1qO+9rZQGD/tNIAb0rRMyv9JGQQMfgUwGAGRLVTkpHMAuz84N
- Tf/oIQpH9Zh5ndjH0K4rptVPdKDJVPf2WxAHQxC8Q85eJsmG0tYf+NPTtYyayHO+stim3SiSMxl
- ZtgOesky
-X-Authority-Analysis: v=2.4 cv=Ha4UTjE8 c=1 sm=1 tr=0 ts=6893a7dd cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=e70TP3dOR9hTogukJ0528Q==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=IDvrs2r2PCma8_SM7s4A:9
- a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-ORIG-GUID: U9tb3-rVqEQcdCniYVkBOBFItcC59zcP
-X-Proofpoint-GUID: U9tb3-rVqEQcdCniYVkBOBFItcC59zcP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-06_04,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
- bulkscore=0 adultscore=0 suspectscore=0 spamscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508060009
+Date: Wed, 06 Aug 2025 21:18:53 +0200
+Message-Id: <DBVL5LLQ6PN7.3UAL98HQ7TMIU@gmail.com>
+Cc: <jjohnson@kernel.org>, "Remi Pommarel" <repk@triplefau.lt>,
+ <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>, "Loic
+ Poulain" <loic.poulain@oss.qualcomm.com>
+Subject: Re: [RFC PATCH] wifi: ath10k: support flush_sta method
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Zhi-Jun You" <hujy652@gmail.com>, "Jeff Johnson"
+ <jeff.johnson@oss.qualcomm.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250806070005.1429-1-hujy652@gmail.com>
+ <29ef8aab-06a3-48e2-a370-86b1b2107143@oss.qualcomm.com>
+ <CAHGaMk_rMCoWDzKtxgsg9GkH0s-U540zYq_AOC9HpBo_JF7qJg@mail.gmail.com>
+In-Reply-To: <CAHGaMk_rMCoWDzKtxgsg9GkH0s-U540zYq_AOC9HpBo_JF7qJg@mail.gmail.com>
 
-On 8/6/2025 10:25 AM, Mukesh Ojha wrote:
-> pas id is not used in qcom_mdt_load_no_init() and it should not
-> be used as it is non-PAS specific function and has no relation
-> to PAS specific mechanism.
-...> @@ -353,7 +353,7 @@ static int __qcom_mdt_load(struct device *dev, const
-struct firmware *fw,
->  	if (!mdt_header_valid(fw))
->  		return -EINVAL;
->  
-> -	is_split = qcom_mdt_bins_are_split(fw, fw_name);
-> +	is_split = qcom_mdt_bins_are_split(fw);
+On Wed Aug 6, 2025 at 5:51 PM CEST, Zhi-Jun You wrote:
+> On Wed, Aug 6, 2025 at 10:23=E2=80=AFPM Jeff Johnson
+> <jeff.johnson@oss.qualcomm.com> wrote:
+>>
+>> On 8/6/2025 12:00 AM, Zhi-Jun You wrote:
+>> > When a STA is marked as no longer authorized, if the driver doesn't
+>> > implement flush_sta(), mac80211 calls ieee80211_flush_queues() to
+>> > flush hardware queues to avoid sending unencrypted frames.
+>> >
+>> > This has became a problem for ath10k because ieee80211_flush_queues()
+>> > will stop all traffic and call ath10k_flush, which waits until the
+>> > whole HW queue is empty. In a busy environment this will trigger a
+>> > timeout warning and stalls other STAs.
+>> >
+>> > Fix this by implementing flush_sta method using WMI command to flush
+>> > frames of a specific STA.
+>> > Flushed frames will be marked as discard in tx complete indication.
+>> >
+>> > ops->flush_sta will be set to NULL if htt.disable_tx_comp is set to
+>> > true.
+>> >
+>> > Tested-on: QCA9984 hw1.0 PCI 10.4-3.9.0.2-00157
+>> >
+>> > Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
+>> > ---
+>>
+>> There is already a patch from Remi pending for this, see:
+>> https://msgid.link/cover.1732293922.git.repk@triplefau.lt
+>>
+>> Please see if that series addresses your needs.
+>>
+>> First Kalle, and then I, held this back due to lack of internal validati=
+on
+>> across supported platforms, but it is actually still on my TODO list:
+>> https://patchwork.kernel.org/project/linux-wireless/list/?series=3D91185=
+1
+>>
+>> Let me make one more validation request internally since I know there is=
+ at
+>> least one ath10k-based project with active development.
+>>
+>> /jeff
+>
+> Hi Jeff,
+>
+> I am aware of the series and glad to know it's still on the list.
+> I did test with it but the warning can still be triggered easily with
+> the instructions in Remi's series.
+> And according to other people's reports it can still block sometimes. [0]
 
-this should be in the 4/4 patch
+Well that's to be expected with this implementation and the use case descri=
+bed
+by remi. You have a station that is out of range or powered down without te=
+lling
+the ap, and you wait for the firmware to tell you that it did managed to
+transmit to the sta or that it has given up transmitting. So clearly you wi=
+ll
+have the warning.
+
+The goal was to not block trafic pending for other STA when that happens.
+
+What I recall, and sorry if this is vague it was quite a few years ago, is
+that when issuing the WMI command to the firmware to drop all frames for th=
+e STA
+it just did not, and it was still trying to transmit them (checked with ota
+capture at that time). But I do not recall if the firmware tried to send fr=
+ames
+encrypted or not (as we would remove the key right after the wmi command an=
+d
+before the firmware had given up on transmitting the frames) which was one =
+of
+the reason .flush_sta() was added in the first place I believe.
+
+>
+> drv_flush_sta() is called before clearing the keys and Remi's approach
+> still waits for the frames to be sent which imo isn't enough in this
+> situation.
+>
+> [0]: https://github.com/openwrt/openwrt/pull/19427#issuecomment-310279479=
+3
+>
+> Best regards,
+> Zhi-Jun You
 
 
