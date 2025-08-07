@@ -1,238 +1,149 @@
-Return-Path: <linux-wireless+bounces-26203-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26204-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1BFDB1D7E4
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Aug 2025 14:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66C4B1D855
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Aug 2025 14:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 785A13B3C72
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Aug 2025 12:31:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DC8E722E7A
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Aug 2025 12:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518D91E48A;
-	Thu,  7 Aug 2025 12:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0702561D1;
+	Thu,  7 Aug 2025 12:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="KKb+e7L8"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XZ5kBhJB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43F14A0A
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Aug 2025 12:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8E12550AD
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Aug 2025 12:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754569892; cv=none; b=nuEF/uUxf8tlcuGXPJN2RIjQ8Vc9LKZUGkDA8GfLkYEAONzZOOdlkcvKb9UNDR+XUR+4tOK6jzhLKJX1shtHiBIVUtTciaF+JF9suZ7uBKID2mDWZfxNGVfjmqmTJXbIEqdxhK19wqCahgqf7pvmD5FE4Sd1ZYq42LC3kc2vvGo=
+	t=1754571359; cv=none; b=rry/FrpDlWCeeMaIoUaeS8EnfninDYMS/+2tUJ4U66FW0ymgdinLGFGQ/swteiQmZ079R49B3E5kJuD9l4FXFXr0ItMSAGQOjciOyoyXL29o/c4jdSZlcwr/NYHne/Cf2B1BrfocTqm1U6IOTp3vjsR4T2YSe39UmuRTNGk1tjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754569892; c=relaxed/simple;
-	bh=5VRr0yi2SjlT5jW7kr6gpTIwT8EepAd+fbkWm2i6ccM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XUrgTURfVIo4He3ZJUecjeEr+4A8dfF+FLiHXWFJc0X0+cswRvhGc5xiGpP9c9jO6EVuYjq3fXUC2ayj/Nz6IbSy7/FUoSaeFwbxMEcDtA/F3hp/JPmg5MT6fO+MEkFtUXKiXXplXxopE9VybjgXE+0TgA2HSw7jbOl00s9gCYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KKb+e7L8; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1754571359; c=relaxed/simple;
+	bh=cmLTJCu08IZdkIuuU/IBxWNBdqB/J5DZTkvRxpPHoTU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j5AgJxDi/DgaSNNPOW6ttVsyo49Z4F/Ry8bNdK03ds74EFboNOly9TSnW92kc6xu+fW2T+j6yEvQj+5xPMIroEwgQ8yWqRZaItbbXqz1+lEH+vwXA20Q4e4RRZ8nnwcLt91rME5eyaYQ9oTxuNPrZrgtVqhmzp6AigGy+KAxao0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XZ5kBhJB; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5779CtIj022425
-	for <linux-wireless@vger.kernel.org>; Thu, 7 Aug 2025 12:31:29 GMT
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5779D4XD007961
+	for <linux-wireless@vger.kernel.org>; Thu, 7 Aug 2025 12:55:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	9Hzj89PdCGcQ2wYW8aWZx1cGKAdeJLsUTERFjJ58HFE=; b=KKb+e7L8Cb0PRsOS
-	piH2sBvAB8hRhWnjREO2lVB90TEPV7deEjyUF0YZO3IJxYQ9TzvznlfOavuwQMFp
-	nrWTLKNhMTMwiu9Gg76z3/AVdvOQkOwAAscXc4OH8OPXULcP+xpabyupb0uRSIu1
-	bGgebQTrGq4j200oPI+nWkdbca7xeixZCV2MU+BxyG+DNm9qwSolrzkJdRc3teDI
-	K3ZJM4fxkjey22KQJi/IlqtntljY/GLG1Hyp2+JxQNXMeczsxi/K85HSvaSOxMq0
-	7ZRT5AShb5Ez5BSKRIpBuLWkodaLy2CNnAFngyi+/V3EMq0anb6U29cAM6xT3/7j
-	RIgD4Q==
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48cs5n8h76-1
+	D4bMHXUEWO9j3LsN7dUEww8s9G0HlpeNdFt7tEVo1/4=; b=XZ5kBhJBZCEgPH7H
+	gzINhwRyPPxJbU7Yw1GDvZN1Puxr6n2Pe7YVYSr2JdeBee2FkZugEuQLwjZXBKax
+	u8LoQ8Lulo2l+7gPreA7Jw8hhyY3dOaP1F++R+jQJKZWGHapg9p8uvayZoo9x8TK
+	9tRWYPFfz4jZhlbe5heY6sg/BhURBbvPL0WjlVJNeumEa54aq6qlN5HWLt99bhra
+	Ref7HJ52p5OkSb7wpZ2p2ZgZgElLIaggwfEmqq7Hv2Zgnpz46GLiYaKmigC5q1/t
+	Y/Ek0jhNN2PKwd/gqITedJLJVqwp+JeVVjj//SUAg/R4xxzUDpkgjzash2QNRtnT
+	mWtjbA==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48bpy6xaf8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 07 Aug 2025 12:31:29 +0000 (GMT)
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-881855cd566so87785139f.2
-        for <linux-wireless@vger.kernel.org>; Thu, 07 Aug 2025 05:31:29 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Thu, 07 Aug 2025 12:55:57 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4abc1e8bd11so3325051cf.3
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Aug 2025 05:55:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754569888; x=1755174688;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9Hzj89PdCGcQ2wYW8aWZx1cGKAdeJLsUTERFjJ58HFE=;
-        b=p9XcT3bvQFclgrfIFPPRiH89gHsON84Tj+iNE0mJQENEq/afdH8BQce3FTK7Q0eH/Y
-         5PcUrNXK5P7FjuBZYclVjEoRlvGa5A3DeL8qN4DARaLdAxIIU08F2cqh/+uchUZnuTPV
-         0WIPxtZq1w47RxTYgKAKyNGwkAVeDv12aOnS/n1Awib7c3LlHOBWQQaX7LorRJ6GlAgN
-         kj9xEm8SBM//dF0poAVqvb6eENh+Le9qtxF1Rfgpp8lFnlqviddMkY8b+PWKHn3RHRGv
-         OPivkKd2AyKL/ToGyeWwzrzNkN39LqVvfIariZws+6lVwHibxzQjFnxpBIjkcN6QciNz
-         wnvg==
-X-Forwarded-Encrypted: i=1; AJvYcCVx6YIc57VswJOZCJq/sZLGX5N7cb4fEKIo/9FfTxGwUaViBiiGc1bXMPQ+8TWKpyg+kGSYiz5vKx+NjJ2pQg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5fcu0tH/eP3WZ6AusbaWJLd0hVoagg6LL6C1nAo3f5e/QNmkF
-	Y0AdWSCIIxFQfGvwSFjKElHUGGbt/z39vOM/LpCbTJxnhN59wYykzpljt/piZU2J0kvl2pNUwB0
-	qSWZSyDP4j9cun3dSkBXgKii+wGVTD5WtL1O4Mywzf/GSn1uTDR85GTFUIvG2cHZEnXJWQuYRdC
-	84TAldFy3fL+8cA0QWMq5/s4KtIMzY4l1POEF+GKqbSOTxOS8rwgovNcI=
-X-Gm-Gg: ASbGncu/7ZSzGr7pU7qdWoJtfUdCTejZSiF4Gf6WUKGRcq6FgGaX1kif1W3hvJqx/Fz
-	Dw1krpBgEYyYiTYlgcCHxQvN/zgzWTOcTSosbCz/WrJN3MP1wYzB09/bNMIqKonS9dTJsMuEjD1
-	llTYLMWknCw69B8aHld+s94w==
-X-Received: by 2002:a05:6e02:2404:b0:3e3:e78e:4dfd with SMTP id e9e14a558f8ab-3e51b88ab9cmr104910845ab.4.1754569888217;
-        Thu, 07 Aug 2025 05:31:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGGMeg2RbCRlLoxf95o8RhoJYbqKFVf1VIyCayu9nBMd4pCGtxYa5ziSlxaKAz/GRJ50on9FwpajCExPjQ2H0E=
-X-Received: by 2002:a05:6e02:2404:b0:3e3:e78e:4dfd with SMTP id
- e9e14a558f8ab-3e51b88ab9cmr104910435ab.4.1754569887749; Thu, 07 Aug 2025
- 05:31:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754571356; x=1755176156;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D4bMHXUEWO9j3LsN7dUEww8s9G0HlpeNdFt7tEVo1/4=;
+        b=oNJgORPMX460BtODX4o1fS/2i+KrBcVj2/37swUKgO1tCwjZDkzyvGmlLQQpDNsIeA
+         r/b6k7N0EcPVKdeu4CGsAurJHiY/0xgowvhlpwGWEjqUM3c5ttPTqYgbhWbEKsOWKrkN
+         CziYv2183O8GluMWy6jA6Y8nCpiqeD5mv/RKCwB5TMIX8zKMBMVQ+cwtqpsETECtMkDv
+         QwfkZN5M2v/4F1Uqxf0WQOd1dQ6EeaeiDHNB5g1YvhbnOFM5uuncR5wf+odfd5kC6anf
+         QAgwddtz87eUGUh+o84RfnJZfM2nDPA8xzso+7m4iyI8fDJxHMghtqijS4QRSR9N/reV
+         VD8g==
+X-Forwarded-Encrypted: i=1; AJvYcCWaHQYmVRshxVom5BklUmEb6LpVkcpfximov+eD5Yj/8Oh1aM4PqRPNgiFuQiTv3JsWIftAQ6ufXl931VQ5Pw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy38PAVVqHuA10d+FZp3gWX7/Wmj3Gjvzb2sdg4MxydWP2V4tGS
+	7/GqRxOKwQbU4KdGEdvAvMEmzQWVvGkZTGu/6gvElEuCYbTKztl76/ROhDdSX3IdaHNRA2Aim4h
+	OFVY3jaYGAEfVniyQAXhAhtCi9B4y6tocCa77OoWd+4Fvt7HIGvI37h33Z12PWA5dCYOPEQ==
+X-Gm-Gg: ASbGncsrxz1NktE7WPzzanVKShRVkyqwY9ngZu0j+Z7hSTthkaIxnDRahc6IZgVmQLe
+	rQLf3aGwW+O32yfzDW2DSe58e5wzTJ5Bb6R1VpNthionXJYs6rfoSvB+0TXwhoq+yxmZpA5dw2q
+	j8WZp25f7yuFcME6WZyEGGSpzf60bK4KMz/NcV2oidl8G52GqR1P/NlMXchWEqM54ObNv9o89Mf
+	yAIkePp7gmAaAEGhJoy5hca51BQ/3LGiULziJ6LxpTY1H90tZYahQFBUffQgG40t6w9jh71e2Ml
+	qO/4VrqMPBQ9aS2170WIXaYyNIFTSg6TCqZei0yLyD0e1vmRlJVy+lv6jhoRcIjWb0bsWPIdmxa
+	eDxHpWR0P13vdoq1bWw==
+X-Received: by 2002:a05:622a:1aa3:b0:4ae:73dc:3896 with SMTP id d75a77b69052e-4b0915d7c31mr41550121cf.12.1754571356138;
+        Thu, 07 Aug 2025 05:55:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwbcsceg5/p61lAf2t1TB1KGC8pzQd5z817hJbPD8siowrxZQPY7hCXLhIuHIXx+wUv8hceQ==
+X-Received: by 2002:a05:622a:1aa3:b0:4ae:73dc:3896 with SMTP id d75a77b69052e-4b0915d7c31mr41549941cf.12.1754571355647;
+        Thu, 07 Aug 2025 05:55:55 -0700 (PDT)
+Received: from [192.168.43.16] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a21c0afsm1298236866b.117.2025.08.07.05.55.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Aug 2025 05:55:55 -0700 (PDT)
+Message-ID: <38534c32-7e37-445c-893d-3624bb59981b@oss.qualcomm.com>
+Date: Thu, 7 Aug 2025 14:55:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250806111750.3214584-1-nithyanantham.paramasivam@oss.qualcomm.com>
- <DBVM2YZDTS15.1WAPW69YQ5XOA@gmail.com>
-In-Reply-To: <DBVM2YZDTS15.1WAPW69YQ5XOA@gmail.com>
-From: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
-Date: Thu, 7 Aug 2025 18:01:16 +0530
-X-Gm-Features: Ac12FXz3aDMv-msx9dizo560OwJfZvCBsrsu7JYp0aSZyUQh3pu-jcKaiLSQY8Y
-Message-ID: <CAD1Z1J+jXWng4ma9_BPJh4N8b7AhTvRKtJ=tg1dTyk8E3wqupA@mail.gmail.com>
-Subject: Re: [PATCH ath-current 0/7] wifi: ath12k: Fix Issues in REO RX Queue Updates
-To: Nicolas Escande <nico.escande@gmail.com>
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Authority-Analysis: v=2.4 cv=Q+XS452a c=1 sm=1 tr=0 ts=68949ca1 cx=c_pps
- a=WjJghted8nQMc6PJgwfwjA==:117 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10
- a=pGLkceISAAAA:8 a=DzQ5D1QIoQUFvDlUu2IA:9 a=QEXdDO2ut3YA:10
- a=CtjknkDrmJZAHT7xvMyn:22
-X-Proofpoint-GUID: 5QlMk3qqO8gUeOWLwbDSKI2DQJ6C4--D
-X-Proofpoint-ORIG-GUID: 5QlMk3qqO8gUeOWLwbDSKI2DQJ6C4--D
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA3MDA2OSBTYWx0ZWRfXyIhEunwx6aB0
- 8zsJdMAYiLDGwTgXv0MiCffoZnUgQ3ejQdg+5J9k9E0YgBZ5ySWXG0k9bpn9iRlTzToFloREqYJ
- dmkO4dMXfhegKQqqrXW1iTLLYzfwofxyq9JU4NomC/DTnT1zLrz16VFb7+t53O/NEIDSAV02KWt
- 554cPBjZO011NFwVHcYRXfyojFPUTWcEXc6EePxm8vy86uF5zU9PXV0+fUE50yxM4YbQGdcVlch
- pu5u6+Zi3UJxVh1YM++T/JRQFGYmmHyo18cB+auDOIYH0qtRMpygKTLDXTAnBeUSZw8SatfHD76
- xDFwCy0/v5xr+rWwk81GN3TJ+F3LdIWc9grQtE37mqy+lxwYHAFyzz/e+Mqmy5KuUDW+Nv+HOl5
- 9rfel9jA
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v3 2/3] soc: qcom: mdt_loader: Remove pas id parameter
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+        Vikash Garodia <quic_vgarodia@quicinc.com>,
+        Dikshita Agarwal <quic_dikshita@quicinc.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, linux-media@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-remoteproc@vger.kernel.org
+References: <20250807074311.2381713-1-mukesh.ojha@oss.qualcomm.com>
+ <20250807074311.2381713-2-mukesh.ojha@oss.qualcomm.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250807074311.2381713-2-mukesh.ojha@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: LscLec1psxonInIH9rehUkDvDokdxSOI
+X-Proofpoint-GUID: LscLec1psxonInIH9rehUkDvDokdxSOI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA2MDAwOSBTYWx0ZWRfX8aPmp8FocgQX
+ OKyE83VSk8pYnuHMfRLf1u1FlYfrROE9KLQcedw3RjliNE0zmQMcIqMjq0a4s6l5Wv62PxxYg4X
+ CnxoTf0HwVchTGBtpg1kNJpevVQ+5dnrOmRc/0XF7N9wl5QRiolSKl3vTVHGW9cE2LibB0RFDTB
+ 893WArjm8k1/oaNwM/AbbtSItCtQgBCko/Tjq/cjeqbAw+QFsrrFMlyq6nrMoa9mpWdclVHBvBX
+ nYamHXnSUJ3WFxl6VuGpeJAHW5cTs5LctfUbGC+ygffmpkp7cqcVv+p+OEJdi3dE8ylaU2/4sWl
+ Yr4z4+Fi2vh+B6db5UK7cptN7ki2kJRXYS2anvJCyYrJZvoXFw41EF7st/wdri/2u1RS9HoHXkI
+ AtUdXnPY
+X-Authority-Analysis: v=2.4 cv=LNVmQIW9 c=1 sm=1 tr=0 ts=6894a25d cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=COk6AnOGAAAA:8 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=IDvrs2r2PCma8_SM7s4A:9 a=QEXdDO2ut3YA:10
+ a=a_PwQJl-kcHnX1M80qC6:22 a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-07_02,2025-08-06_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 suspectscore=0 malwarescore=0 spamscore=0
- impostorscore=0 phishscore=0 priorityscore=1501 adultscore=0
+ spamscore=0 bulkscore=0 clxscore=1015 malwarescore=0 adultscore=0
+ phishscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508070069
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508060009
 
-On Thu, Aug 7, 2025 at 1:32=E2=80=AFAM Nicolas Escande <nico.escande@gmail.=
-com> wrote:
->
-> On Wed Aug 6, 2025 at 1:17 PM CEST, Nithyanantham Paramasivam wrote:
-> > During stress test scenarios, when the REO command ring becomes full,
-> > the RX queue update command issued during peer deletion fails due to
-> > insufficient space. In response, the host performs a dma_unmap and
-> > frees the associated memory. However, the hardware still retains a
-> > reference to the same memory address. If the kernel later reallocates
-> > this address, unaware that the hardware is still using it, it can
-> > lead to memory corruption-since the host might access or modify
-> > memory that is still actively referenced by the hardware.
-> >
-> > Implement a retry mechanism for the HAL_REO_CMD_UPDATE_RX_QUEUE
-> > command during TID deletion to prevent memory corruption. Introduce
-> > a new list, reo_cmd_update_rx_queue_list, in the dp structure to
-> > track pending RX queue updates. Protect this list with
-> > reo_rxq_flush_lock, which also ensures synchronized access to
-> > reo_cmd_cache_flush_list. Defer memory release until hardware
-> > confirms the virtual address is no longer in use, avoiding immediate
-> > deallocation on command failure. Release memory for pending RX queue
-> > updates via ath12k_dp_rx_reo_cmd_list_cleanup() on system reset
-> > if hardware confirmation is not received.
-> >
-> > Additionally, increase DP_REO_CMD_RING_SIZE to 256 to reduce the
-> > likelihood of ring exhaustion. Use a 1KB cache flush command for
-> > QoS TID descriptors to improve efficiency.
-> >
->
-> Hello,
->
-> I'm not sure I fully understand so please correct where I'm wrong but fro=
-m what
-> I got looking at the code:
->   - you increase the ring size for reo cmd
->   - you enable releasing multiple tid buffer at once
->   - as soon as you allocate the tid you create an entry in the list flagg=
-ing it
->     as active
->   - when you need to clean up a tid
->     - you mark it as inactive in the list, then
->     - try to process the whole list by
->       - sending the reo command to release it
->       - if it succeed you release it and remove the entry from the list
->   - on core exit, you re process the list
->
-> What is bothering me with this is that when a vdev which has multiple sta=
- goes
-> down, you will have a lot of those entries to push to the firmware at onc=
-e:
->
->   - So increasing the ring size / being able to release multiple entries =
-at once
->     in one reo cmd may or may not be enough to handle the burst. It seems
->     that increasing those is just band aids on the underlying problem but=
- I
->     understand it's just to be on the safe side.
->   - If entries do not get send/accepted by the firmware, we will need to =
-wait
->     for another station removal before retrying, which could be a wile.
->   - Or in the worst case (one vdev going down and needing to release tid =
-of
->     all its stations) the more entries we have in the list the less likel=
-y we
->     will be to be able to push the delete of all stations + the ones stil=
-l in
->     queue
->
-> So, on station removal, why not make just things completely async. Push t=
-he tid
-> deletes in a list and wake a workqueue that tries to push those to the fi=
-rmware.
-> If the ring is full, retry periodically.
->
-> Thanks
+On 8/7/25 9:43 AM, Mukesh Ojha wrote:
+> pas id is not used in qcom_mdt_load_no_init() and it should not
+> be used as it is non-PAS specific function and has no relation
+> to PAS specific mechanism.
+> 
+> Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+> Acked-by: Jeff Johnson <jjohnson@kernel.org> # drivers/net/wireless/ath/ath12k/ahb.c
+> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+> ---
 
-Hi Nicolas,
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-Thanks for the detailed observations and suggestions.
-
-You're right in your understanding of the flow. To clarify further:
-
-When the host fails to obtain a buffer from the hardware to send a
-command=E2=80=94due to the REO command ring being full
-(ath12k_hal_reo_cmd_send returning -ENOBUFS)=E2=80=94we treat it as a comma=
-nd
-send failure and avoid deleting the corresponding entry immediately.
-
-This situation typically arises in the flow:
-
-ath12k_dp_rx_process_reo_cmd_update_rx_queue_list =E2=86=92
-ath12k_dp_rx_tid_delete_handler =E2=86=92 returns -ENOBUFS
-
-Given the command ring size is 256, and each peer generally has 16
-TIDs, each TID sends 2 commands (RXQ update and cache flush). So,
-deleting one peer involves up to 32 commands. This means we can delete
-up to 8 peers (8 =C3=97 32 =3D 256 commands) before hitting the ring limit.
-
-From the 9th peer onward, we may encounter ring exhaustion. However,
-we handle retries in the REO command callback
-(ath12k_dp_rx_tid_del_func). If commands fail to send, they remain in
-the pending list and can be retried via the success callback of
-earlier commands.
-
-Do we foresee any issue with this ?
-
-Regarding your suggestion to make the deletion process fully
-asynchronous via a workqueue, that=E2=80=99s a valid point. Workqueue-based
-handling is a good idea, but we need to account for potential delays
-if the worker thread isn=E2=80=99t scheduled promptly. We also need to
-consider timeout-based rescheduling, especially during command
-failures, to ensure retries happen in a timely manner. We=E2=80=99ll evalua=
-te
-this suggestion further and get back to you.
-
-Thanks again for the insightful feedback!
-
-Best Regards,
-Nithy
+Konrad
 
