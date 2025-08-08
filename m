@@ -1,122 +1,95 @@
-Return-Path: <linux-wireless+bounces-26225-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26226-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C2CB1E7A4
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Aug 2025 13:46:15 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9F3B1E93B
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Aug 2025 15:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AFDE166B7E
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Aug 2025 11:46:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B45C84E3AF8
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Aug 2025 13:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9819E26FA4E;
-	Fri,  8 Aug 2025 11:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E7D27EFE9;
+	Fri,  8 Aug 2025 13:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I8NYN2fm"
+	dkim=pass (2048-bit key) header.d=monroe.io header.i=@monroe.io header.b="T1OGgHpv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E6A256C73
-	for <linux-wireless@vger.kernel.org>; Fri,  8 Aug 2025 11:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67DC27E079
+	for <linux-wireless@vger.kernel.org>; Fri,  8 Aug 2025 13:30:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754653561; cv=none; b=ASZCTlO/WPbR+u/jkDfy5xXH3sem0bR1oTNWJOzTtbfPr5rThd3AqKX14eUKwZLvgpt5nyonwleIUt6UKs5kuKBexG/NrOLlPLq4EpXn9n1RdIA+fBNFJ8IWxBFGe4c+3CXfmEkIuIzePWJv0iWe3vOKPgS7bQ4HgHLCIx5tVOw=
+	t=1754659807; cv=none; b=Uxo2vR15tBTEiyvaLaTvekhINxeNQhq5VeqY+GCe7JS1gw0tOW4RtzlMofnqTsVhe1cK7rm8WntWzyU8nKyrVdmCFqwSbJtrFpE8HWssxvEsEUwIR9s3LMwDxuCKbV9kmStCvLWZm5KUudNZm9RbOxg2PRWtdq2CJ7zaKPG8d4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754653561; c=relaxed/simple;
-	bh=YwgJ4W0yz/3U7CZDEb+pmN3xlnIzTMSoc9qyKFnxOfQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kLCP2MIp2WUS8R+csobMcXCN3IB1qXmJXrYQFX/EDDepkQgb79UAV89CodGNwBhhUGo9YnrI9lZJUXcvhl1It6AXdsU/7p1MXhqg1rb95qGuMAqPSzDjxhyiAFdcSlZJjV0qxcavXA1u3IIVDk7lFB8dCHvkC8luB6kg+ZeW7D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I8NYN2fm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B55CC4CEF1
-	for <linux-wireless@vger.kernel.org>; Fri,  8 Aug 2025 11:46:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754653561;
-	bh=YwgJ4W0yz/3U7CZDEb+pmN3xlnIzTMSoc9qyKFnxOfQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=I8NYN2fmgNFMtr67TFvKJS81k2mk4lRbgU/aLVNCBloZ2ky0dgUaPt59EWfC6HdGY
-	 myj+Ny8SRdQfBSuW9xdKj3MHfkI+zOIT/rbEWpUNuj0Y7PwuRIj36Azdu9oXi8wvEt
-	 5UxHWDlt1PcTiWrVuA8Vlva7f0c+6JtujG8hGEfqB9XvzClEgqhzS0RH/10PdwOZ1l
-	 wsKWRh4lygemJzHFP+jP2/7+eILqVqe/I5wlwLQZzx/mNPu2OiZWxy1bo/ELAVWW3m
-	 pJP/DhM9fsPVUIHTyToHxm5xGI4vCkWHgQ4YYee0NaWE+YkQwLnCnMrgqzJMEBVD5i
-	 9/8PJa2xRkxgw==
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-71bd9e38af7so19874487b3.1
-        for <linux-wireless@vger.kernel.org>; Fri, 08 Aug 2025 04:46:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUvw2p56K06YbhcO8dTgbKtTL8V3q0NiVyrDGpOKUO743so+KGKKX+c4mKKn9xNcpcT/img4pnXex8MPGnQaA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+b6rktlMQEbuLB4FTv6VeC09eaqPJoytvX3xDzxRWV4XO9GZr
-	V1kHp1pWC50AlIFGDK+PZFBSA7ElMFZHb6qC9+lVO/gVoQ69/dAXt9IGRiNJQBtR9hVfbn+WkXp
-	qhs5Aj1ef3om0QdXQf78mXJ/uo9PUqDE=
-X-Google-Smtp-Source: AGHT+IFFl8Yogl/jKz3XpUVYcblZSE0Vjd1MxzRMkjBSnZJloREpmQubm0b1JY7EOyr/OXIxMNRYZLiJ0sdD+ACvgdI=
-X-Received: by 2002:a05:690c:4989:b0:71b:6c7b:c802 with SMTP id
- 00721157ae682-71bf0cddb9fmr32662157b3.6.1754653560280; Fri, 08 Aug 2025
- 04:46:00 -0700 (PDT)
+	s=arc-20240116; t=1754659807; c=relaxed/simple;
+	bh=wF0xbMG8tZTBUrc1y/ZPV7ibruodGcB6nZNxjIP218A=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=qqj11J5ReU0kncaya1oHvttcRrbHzfTNIBOG4HPI1BF02yWl7EZ3HM0gfuNcMeztDZ6OwqA/4jfKYoqIkBSFgs3k5qxk3EcVILcjf1NvroOgryDurbepfrsLEHPAWxlZMoIgXHf6rRXhw0riS4AqbGJZpeN3CF6+ltwQS182RU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=monroe.io; spf=pass smtp.mailfrom=monroe.io; dkim=pass (2048-bit key) header.d=monroe.io header.i=@monroe.io header.b=T1OGgHpv; arc=none smtp.client-ip=51.77.79.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=monroe.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=monroe.io
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=monroe.io;
+	s=protonmail2; t=1754659792; x=1754918992;
+	bh=JgWMhkvaWwS7Ic7D5DggHNFRz1ZgfJ1G5+UNUzTR8XY=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=T1OGgHpv+b0XwOon7ODNAb0S8+p9z7r90wmwjkMyOPT0kDuAF0zTdLq+MR8DVqDsV
+	 6H70kDSW772CyWVs0xYuzKkj8a1m/z2u2s98tURcysDfX8WbtKXKRa0RkO15lFXG4G
+	 KB9tq4eD8v6/3NUDEpFB8ERQquxmJPioHSAMdAYRLSaMaRdg5xqyB7qVNeBb2AKm3t
+	 ERwC4wCyQ8a1+KVMrf3va7y/i0y1Yax0y2N+GdZkaXg8wQouQRT9bJ9h8NHuUc52hu
+	 If/cGAqBCT7AzZ9iGNFAy0fBA36XMCqk+duKwHkwtRD2q4RoxmM26b3hr18WeXrpAO
+	 eEbCukqRaj6Sg==
+Date: Fri, 08 Aug 2025 13:29:48 +0000
+To: Felix Fietkau <nbd@nbd.name>, Johannes Berg <johannes.berg@intel.com>
+From: Chad Monroe <chad@monroe.io>
+Cc: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, Shayne Chen <shayne.chen@mediatek.com>, Evelyn Tsai <evelyn.tsai@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>, linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, Chad Monroe <chad@monroe.io>
+Subject: [PATCH] wifi: mt76: mt7996: use the correct vif link for scanning/roc
+Message-ID: <180fffd409aa57f535a3d2c1951e41ae398ce09e.1754659732.git.chad@monroe.io>
+Feedback-ID: 9731019:user:proton
+X-Pm-Message-ID: cfdb5118aa7660394b7ca1f4b8bfb9e76b2779f1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6e3e8199-814d-4969-a951-d6b60f60257d@oss.qualcomm.com>
-In-Reply-To: <6e3e8199-814d-4969-a951-d6b60f60257d@oss.qualcomm.com>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Fri, 8 Aug 2025 07:45:49 -0400
-X-Gmail-Original-Message-ID: <CA+5PVA7RqfOjP612_Miy-JTp-56oi24utAV7pBtpjvejqw0aqw@mail.gmail.com>
-X-Gm-Features: Ac12FXxkFAZR0HWfVSFeG8aD6tgL6AjCIDf1XZqFSufHmaZxsq5D_8VEwNwvaAU
-Message-ID: <CA+5PVA7RqfOjP612_Miy-JTp-56oi24utAV7pBtpjvejqw0aqw@mail.gmail.com>
-Subject: Re: [PULL linux-firmware] ath11k and ath12k firmware ath-20250807
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org, 
-	ath10k@lists.infradead.org, ath11k@lists.infradead.org, 
-	ath12k@lists.infradead.org, jjohnson@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 7, 2025 at 5:43=E2=80=AFPM Jeff Johnson
-<jeff.johnson@oss.qualcomm.com> wrote:
->
-> The following changes since commit d30c7b425f6d9c9e9f54bcafa99b375342b3a7=
-74:
->
->   Merge branch 'robot/pr-22-1754588181' into 'main' (2025-08-07 17:52:32 =
-+0000)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/ath/linux-firmware.git at=
-h-20250807
+restore fix which was dropped during MLO rework
 
-Merged and pushed out.
+Fixes: f0b0b239b8f3 ("wifi: mt76: mt7996: rework mt7996_mac_write_txwi() fo=
+r MLO support")
+Signed-off-by: Chad Monroe <chad@monroe.io>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/640
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/=
+wireless/mediatek/mt76/mt7996/mac.c
+index 226534490792..6333a064c4f7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -903,8 +903,12 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __l=
+e32 *txwi,
+ =09=09=09=09       IEEE80211_TX_CTRL_MLO_LINK);
+=20
+ =09mvif =3D vif ? (struct mt7996_vif *)vif->drv_priv : NULL;
+-=09if (mvif)
+-=09=09mlink =3D rcu_dereference(mvif->mt76.link[link_id]);
++=09if (mvif) {
++=09=09if (wcid->offchannel)
++=09=09=09mlink =3D rcu_dereference(mvif->mt76.offchannel_link);
++=09=09if (!mlink)
++=09=09=09mlink =3D rcu_dereference(mvif->mt76.link[link_id]);
++=09}
+=20
+ =09if (mlink) {
+ =09=09omac_idx =3D mlink->omac_idx;
+--=20
+2.47.2
 
-josh
 
->
-> for you to fetch changes up to 35abebaa15c1ff1a141b7c24d79220ef70f48548:
->
->   ath12k: WCN7850 hw2.0: update to WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_=
-V2.0_SILICONZ-1.115823.3 (2025-08-07 14:32:02 -0700)
->
-> ----------------------------------------------------------------
-> Jeff Johnson (6):
->       ath11k: QCA2066 hw2.1: update board-2.bin
->       ath11k: QCA2066 hw2.1: update to WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V=
-2_SILICONZ_CE-2.52297.9
->       ath11k: QCA6698AQ hw2.1: update to WLAN.HSP.1.1-04650-QCAHSPSWPL_V1=
-_V2_SILICONZ_IOE-2
->       ath11k: WCN6855 hw2.0: update board-2.bin
->       ath12k: QCN9274 hw2.0: update to WLAN.WBE.1.5-01651-QCAHKSWPL_SILIC=
-ONZ-1
->       ath12k: WCN7850 hw2.0: update to WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V=
-1.0_V2.0_SILICONZ-1.115823.3
->
->  WHENCE                              |   8 ++++----
->  ath11k/QCA2066/hw2.1/amss.bin       | Bin 5349376 -> 5349376 bytes
->  ath11k/QCA2066/hw2.1/board-2.bin    | Bin 685144 -> 745408 bytes
->  ath11k/QCA6698AQ/hw2.1/amss.bin     | Bin 5140480 -> 5005312 bytes
->  ath11k/WCN6855/hw2.0/board-2.bin    | Bin 6429240 -> 7056532 bytes
->  ath12k/QCN9274/hw2.0/firmware-2.bin | Bin 15392824 -> 15183928 bytes
->  ath12k/WCN7850/hw2.0/amss.bin       | Bin 6078528 -> 6082624 bytes
->  7 files changed, 4 insertions(+), 4 deletions(-)
 
