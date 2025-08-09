@@ -1,129 +1,157 @@
-Return-Path: <linux-wireless+bounces-26230-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26231-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C0A3B1F1FD
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Aug 2025 05:15:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94273B1F309
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Aug 2025 10:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189605861E9
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Aug 2025 03:15:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70052584217
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Aug 2025 08:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD6627703D;
-	Sat,  9 Aug 2025 03:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E90cnf+v"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A765527D77D;
+	Sat,  9 Aug 2025 08:08:33 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840FA1ADFE4;
-	Sat,  9 Aug 2025 03:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071AC225409
+	for <linux-wireless@vger.kernel.org>; Sat,  9 Aug 2025 08:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754709322; cv=none; b=fBsZGguIbrg5ZZCYsNjg42yMcf5eMjBaNXZKoyK6ZKCYS/oDKfR0j/MBOHoYmCBTBFvceAqCbThdYrsm6nSzjgFzcUTcl5FJ7Z+R98A0Do8yTvcug3WT81NkuKHNMgfGBjMAivEL9XbQVCAYRZdH0gWxKi8REOFn2HvZOb97qRY=
+	t=1754726913; cv=none; b=TWUITiBJP+3uCv9xpnsIXIFXlMi/b7bCRp0Ab7FnqRmTKARJ7PZaEY3ud4hqR4Uj0svwEGUOue3jADOTeZMfVmgZfImb+sl52qfqSy4fWiWN125uSR3gBXOLWrTd9+9XrHp09wO5d8CAVdaSiofT0F4F6Hfr6vVI06RHpn4pSxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754709322; c=relaxed/simple;
-	bh=BZCnahdOzz0JjUUcOzlAmKtlk4BlFWU9nBcRAZVJw7c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fgnYys4KFnvtmpoLAvtTj0+1vzSMcaGYaJeRA+hzNLm5nZ070mkRr84HTGLD/4N+s7fNiN2rT5BFNyaEl/E9MwMwllEb4OqxTnpXKIScD8gRGgB1nDVO8wvJczIK+6stNou9Hnr7FkJjGKG8ZOv8E0QrlMJDBPjgEKE4bXxksLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E90cnf+v; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-23fd3fe0d81so25979885ad.3;
-        Fri, 08 Aug 2025 20:15:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754709320; x=1755314120; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=46P9Qe+V3mlrJsYmvr/FTUH9c45AThc9QMz5HU6zoKA=;
-        b=E90cnf+vGvPl9MIaEP49Kywf9lBC0ZIfljk76kdckYx5DnQn36SDwbG+VFRxllv1mB
-         KXSVQfsErigUucR/EBy6NVeYqd4DdfWEYMltiyS7qLH7Hr9Uc2CnDfMElMdbNo6S+myj
-         veytCIi/1xY3lc25wbDJPJgf17j7S3hjvzDKL3742ikZONmDwmlIwzS7uSBfFdgTlQKW
-         gjUcQySCyLYFsOJgJ2JQo6R0F/Fs0a2VUINu4jIGYZsG0KJgmFhzQo8pNeGYdqJ9u464
-         lMv/HrcGP9HleEPVIMmrkc4voPb7fe6Vz8DHoWGTuJ+sLsGEQzRHBuW6RfQz8hEZShW8
-         2i/Q==
+	s=arc-20240116; t=1754726913; c=relaxed/simple;
+	bh=gxhJv3M6LTgsTm9Y7kg+WT4sO+pHU5IOfXqCVEzQPeI=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=IV5l69mh+5FEg6t2GlU+atgCHwUaR93zndLWexdZXcPf4m4colNAH0Vra+CD/SiXAoG5UInYkKpa4vxn0+99kEzNIr/y7auuSj9S6VMrUthw5zjvPej19yggS8dk6g0OzHGmPsTgf6Bw6CN6ljpy7s1rOolovJknzySEgj2vRew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-87b2a58a4c0so336358939f.0
+        for <linux-wireless@vger.kernel.org>; Sat, 09 Aug 2025 01:08:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754709320; x=1755314120;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=46P9Qe+V3mlrJsYmvr/FTUH9c45AThc9QMz5HU6zoKA=;
-        b=VyRGPfnlndwJFC4KuHssynVgWyGrXSQpHMCf03We8ZQUK8jf+K8V2kEVPXxJGSSrbk
-         Mpt5MsrvdrMY7wse5pg5V3Klj5laKCdXKKTLbpkpIm3yF2yF5vykWgsFetdJGZMNrVc2
-         kzA+Vnz+jAlZrzdRbW9PMnyhF2W3lrnNS6HNAk3XIUNZCqK5wBEp5de/0IQeuMtDrOsK
-         Xs1gLyCvkrz0ALqKh32ZlCsjNJHIMCrI8wgbSxBbP5VTIvH0TimOgyrd1NHVKlX9wwEO
-         ZXX/TPIt4O/TcEyTva9R+AzHB2M3IGHN6vTs2fQ2Fe1GZJf+wvRZeGSI6hRBiEklSE5J
-         6Fcw==
-X-Forwarded-Encrypted: i=1; AJvYcCVCO8TTbBRNZPeYFg3/xYu5jbVD4m5JuwodbRVF1APH9o8UMSWu1SJqibXjrcxxlyUQAEUpSg4qggINqyg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yza4ZfYBtG6gNPTsK1MUGB8eLlkKWOQBQ/+bjziK9LkoOXe1grO
-	BZaWIk3cTAljJh/CHYoNytwUXD03o+23Tdu4LcwJpfl2qZqFFfuHmBPjiy5rSA==
-X-Gm-Gg: ASbGnctgsEQHxF8x3sjj/eUlfPH3imZLKFSVB0bV+YQnCMpZByznPziX1Bl+fUpp8TW
-	7M8crq+YM7b/kQwhsIvchAWFp6OfB3aT9ivdTltrOcvD2X2PiZjBbpE3osCZVjser5QzjE55KPI
-	P4Ap/xgjPJvUht+xUzNZvOWCyMJLmPWYpX5X75ZTx5245RDEMyzfv4DkhOJVJeGPNm3yBz2bAGx
-	ll3qDCv+YsYBon1vJdtMVLqpd3rXLGR8mB1jY0rLzFEaVCQKEvHhYgKpLnN+qe+bn/rD2WZFMQU
-	3TYp26XFpoQ+h84LbiLaicl/Vl0EcT0Jlw5WaGzBF7b28/dl3UCcKqAwcxTmvLra6WuHN4xbrDE
-	EjoE=
-X-Google-Smtp-Source: AGHT+IFeprYnDuXSMUyQMFUHnCT0gO21hf/Our67h1VwLYgFg/XReIWO4NavPTRMFt2wlcZJOH4kBQ==
-X-Received: by 2002:a17:903:11c7:b0:240:80f:a4b6 with SMTP id d9443c01a7336-242c2070712mr78197865ad.4.1754709319578;
-        Fri, 08 Aug 2025 20:15:19 -0700 (PDT)
-Received: from archlinux.lan ([2601:644:8200:dab8::1f6])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-242460ffab3sm174741215ad.50.2025.08.08.20.15.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Aug 2025 20:15:19 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Jeff Johnson <jjohnson@kernel.org>,
-	ath10k@lists.infradead.org (open list:QUALCOMM ATHEROS ATH10K WIRELESS DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH ath-next] wifi: ath10k: switch to of_get_mac_address
-Date: Fri,  8 Aug 2025 20:15:17 -0700
-Message-ID: <20250809031517.5535-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20230601; t=1754726910; x=1755331710;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Bb9JiR6xp3nJjHaWZta3Yh54N0h9tCnSUrjA3nNswFg=;
+        b=WvQCQPFnLKYVpMEGZ06fj/hoSAjWLx/W+FyAyk+v2UOKEk7e6hBYgTaxlOTx0jYtvo
+         hAeQgZMfWljPKIiRdTwXBgNTeg/dch9YFuCpHkhGCCPGlMl3b1JyRdxWpeyJCamY84FI
+         BeH/1fA8RQvqFoHyZ/gTLI+jvzeuxUisik6XlmjTrzFoyWE+2ajl1tl9ytMyGoaEp8Lc
+         N9gV2jBhWldKSweYEAJ+bEu6Sndjae0X/HzFqJIym36TEFywPf4Z/3w0oF2Acr0xAC3E
+         GFuqT9PCMvh8Fu9MAAv4/c7mmDY4YkR/c/Id4WhI7nV5zbp4Ae6oO5OZi8sE64qsk4BR
+         k0Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFineTufuvH2lLHwzQR/GO3PtREdKriFR7HhCpCSu8QufhoQ1bN0jmk3h6cg6yyhVKk3/ebslMVH1wjQKObw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjYuuxYXZkp9Bc5R5ryVq8eK/ZXGlKuTNcghDAUSfEsr8yQIqx
+	cj8PqHUHxeFJSxdLRyCAybucs5SgT3b07weufshIK71U6hLVQfyPIQyTcSZufHDKEPs3YdP7kLJ
+	EFSIX1BqEBuwSsGZCKkaeUo5ryiW9tMi/jWWEcUNjljMrUZoelcmS64kAFpQ=
+X-Google-Smtp-Source: AGHT+IFRJ0gQJJTCyilBOiHjVnsBnC4TBMAhvaWvlqiSt+fL7dpw6KWbz+K2NDmVSPmUAlTnH9dcggAsMRc4PAKPZYEKmeMH1/wD
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:1546:b0:3e3:cc1b:2b5e with SMTP id
+ e9e14a558f8ab-3e533159919mr101574425ab.15.1754726910075; Sat, 09 Aug 2025
+ 01:08:30 -0700 (PDT)
+Date: Sat, 09 Aug 2025 01:08:30 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <689701fe.a70a0220.7865.0030.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in ieee80211_link_info_change_notify (3)
+From: syzbot <syzbot+4b9a40c62f9a80195a4f@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-In 9d5804662ce1f9bdde0a14c3c40940acbbf09538 , device_get_mac_address was
-introduced as a generic way to get MAC addresses from anywhere.
-Unfortunately since then, the landscape has changed and the OF version
-is required for NVMEM support. The second problem is that with NVMEM
-it's possible that it loads after ath10k. For that reason, check for
-deferred errors and exit out of probe in such a case.
+Hello,
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
+syzbot found the following issue on:
+
+HEAD commit:    7e161a991ea7 Merge tag 'i2c-for-6.17-rc1-part2' of git://g..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13f07aa2580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a1bb6a60e53533c7
+dashboard link: https://syzkaller.appspot.com/bug?extid=4b9a40c62f9a80195a4f
+compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/c830eae67136/disk-7e161a99.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/cbc8fc9ead36/vmlinux-7e161a99.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/db1e8c2fe140/bzImage-7e161a99.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+4b9a40c62f9a80195a4f@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+wlan1: Failed check-sdata-in-driver check, flags: 0x0
+WARNING: CPU: 0 PID: 14825 at net/mac80211/main.c:425 ieee80211_link_info_change_notify+0x349/0x3f0 net/mac80211/main.c:425
+Modules linked in:
+CPU: 0 UID: 0 PID: 14825 Comm: syz.4.1907 Not tainted 6.16.0-syzkaller-11699-g7e161a991ea7 #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:ieee80211_link_info_change_notify+0x349/0x3f0 net/mac80211/main.c:425
+Code: 74 24 08 48 81 c6 20 01 00 00 48 89 74 24 08 e8 fd f8 bc f6 8b 54 24 04 48 8b 74 24 08 48 c7 c7 c0 42 08 8d e8 48 97 7b f6 90 <0f> 0b 90 90 e9 0b fe ff ff e8 d9 f8 bc f6 90 0f 0b 90 e9 21 fd ff
+RSP: 0018:ffffc90003c6fb30 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff88805ab04d80 RCX: ffffc9000e0ef000
+RDX: 0000000000080000 RSI: ffffffff817a3315 RDI: 0000000000000001
+RBP: 0000000000040000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffff88805ab05728
+R13: ffff88805ab06500 R14: 0000000000000000 R15: ffff88805abe8e40
+FS:  00007fb6b366a6c0(0000) GS:ffff8881246c6000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fdb6ffb5f40 CR3: 000000005f61b000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ ieee80211_recalc_txpower+0xe4/0x110 net/mac80211/iface.c:81
+ ieee80211_set_tx_power+0x2b8/0x10d0 net/mac80211/cfg.c:3263
+ rdev_set_tx_power net/wireless/rdev-ops.h:600 [inline]
+ cfg80211_wext_siwtxpower+0x30e/0x680 net/wireless/wext-compat.c:893
+ ioctl_standard_call+0xb5/0x1d0 net/wireless/wext-core.c:1043
+ wireless_process_ioctl.constprop.0+0x291/0x3d0 net/wireless/wext-core.c:981
+ wext_ioctl_dispatch net/wireless/wext-core.c:1014 [inline]
+ wext_ioctl_dispatch net/wireless/wext-core.c:1002 [inline]
+ wext_handle_ioctl+0x226/0x2a0 net/wireless/wext-core.c:1075
+ sock_ioctl+0x3a1/0x6b0 net/socket.c:1291
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:598 [inline]
+ __se_sys_ioctl fs/ioctl.c:584 [inline]
+ __x64_sys_ioctl+0x18b/0x210 fs/ioctl.c:584
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fb6b278eb69
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fb6b366a038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fb6b29b6080 RCX: 00007fb6b278eb69
+RDX: 0000200000000040 RSI: 0000000000008b26 RDI: 0000000000000006
+RBP: 00007fb6b2811df1 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007fb6b29b6080 R15: 00007fffe088baf8
+ </TASK>
+
+
 ---
- drivers/net/wireless/ath/ath10k/core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 6f78f1752cd6..76747eb0925b 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -11,6 +11,7 @@
- #include <linux/module.h>
- #include <linux/firmware.h>
- #include <linux/of.h>
-+#include <linux/of_net.h>
- #include <linux/property.h>
- #include <linux/dmi.h>
- #include <linux/ctype.h>
-@@ -3456,7 +3457,9 @@ static int ath10k_core_probe_fw(struct ath10k *ar)
- 		ath10k_debug_print_board_info(ar);
- 	}
- 
--	device_get_mac_address(ar->dev, ar->mac_addr);
-+	ret = of_get_mac_address(ar->dev->of_node, ar->mac_addr);
-+	if (ret == -EPROBE_DEFER)
-+		goto err_free_firmware_files;
- 
- 	ret = ath10k_core_init_firmware_features(ar);
- 	if (ret) {
--- 
-2.50.1
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
