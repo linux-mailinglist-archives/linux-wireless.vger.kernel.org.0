@@ -1,80 +1,80 @@
-Return-Path: <linux-wireless+bounces-26237-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26238-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BDCB1FC79
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 Aug 2025 23:58:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E67B1FC91
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 00:06:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 260657A2417
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 Aug 2025 21:57:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02F9C18959D7
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Aug 2025 22:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5B228643F;
-	Sun, 10 Aug 2025 21:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA43F195B1A;
+	Sun, 10 Aug 2025 22:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hiCf10+a"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zl8gwrD7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5B7213248
-	for <linux-wireless@vger.kernel.org>; Sun, 10 Aug 2025 21:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0376014AD2D
+	for <linux-wireless@vger.kernel.org>; Sun, 10 Aug 2025 22:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754863131; cv=none; b=o1uRJggCiSGzkxgukHTlvX0Gdy6Jl9358LhN9IfMUls9PF89lhr/xu9pWV495G1yvjNyX+0FxstM89nCj0h0Es49yni+YxzhkomLseJJSmph++dzXzpxuiSWtPqmlGW9+c63ZAAqVrj6TO3HeSH64mKmbd9QEw2p0YjzU3b/AJw=
+	t=1754863578; cv=none; b=cJpdx7WfGF2afLm97u5aL8S/kJ8oHqPFrpi7N3kNDQYkMylPB/Sdhu5AvZ3VBCHOq81X1HehMrcze/q8e19rqgonXJPdtq1aTw4w1Cp/D+EBiFDK/nW3uLDc0nNbPIvnFQ+ZK6Qap4E0f/3vXhkBnAcS+uggEL+WuSi6sVnW9D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754863131; c=relaxed/simple;
-	bh=k0ld4mOK0AWGko5ZoWaFuIobyaLgTVPVLHqdLl9Bl+U=;
+	s=arc-20240116; t=1754863578; c=relaxed/simple;
+	bh=ORpQMRd/SBrivAgZnOmWLxkH/cK9Ku7hrQG70D8s4ek=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=WbVfJTYhN8EpIkRwVjvIWSatX1+ElCO6TedCZkF1l1PHgDynWcE5aEjQs+xAQntKsyu03qZPFcr8sVGlb94B4H5AdVUxzz/7fg+W60BCSOEBtCGAD4dYiSt7WXdN2Akc78576vpATVoHZgq0Kr+6TloTcj35qus28qw9uB4FIz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hiCf10+a; arc=none smtp.client-ip=209.85.221.47
+	 In-Reply-To:Content-Type; b=RnP+8L3oWmW5HVZIBYUaiiTWrhuZ3mLMYDDR0LtkJInuHHO1Ui7zLbfJQFv+XBBQsBVK66HeFbgNUe2E70Xj9jDFdPy92zOMfpsF/w9P6Sqwsv7gT2c6vlmMpPrlQwyF1pOEiD1z9ItzoDQT/JOWCuHtmJHlgMXtXj2qNKXZZw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zl8gwrD7; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3b785a69454so2045204f8f.2
-        for <linux-wireless@vger.kernel.org>; Sun, 10 Aug 2025 14:58:49 -0700 (PDT)
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3b7886bee77so2862745f8f.0
+        for <linux-wireless@vger.kernel.org>; Sun, 10 Aug 2025 15:06:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754863128; x=1755467928; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754863575; x=1755468375; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Y1VXwaCfO9pAso/DdzzrAqugX5Ft61DWSe3sRMUZEF4=;
-        b=hiCf10+azm3RAkGhZ85I9/qeaMsbv1c8/WuPmhUsBWTvM+Bh/pl9mCItR2GTJzVfZ7
-         AiSQ8wJxjejfZh5/GJrXgene5fEhzZDESpHUwPqbX1470k81f9VJ2SXLJBRnq90cgJQG
-         1khlYv6akkMUtwyVjnfUyxNohrLOFOvFDWzq3wbDWN/cK9CAkRxKFNPRvHlWpGT7Lzcp
-         Tl2IBHA4hx1duyyudLXSKNT7C2UEuxahvfgozLycghYYZJPk6VenLegouuB+zxxIKWcJ
-         2CdRLtU4fnGSDftw8wY1zFvgLRufurBpWtrkYzEn0pbiQL+FAjh8d5Gm2hzehQKl1gr8
-         EPPw==
+        bh=DWha2fh8KRgBXeWsgpB6nWV4uBd2rsE5HLBzUWxgB08=;
+        b=Zl8gwrD79NcoUWBUGQiCCZXXzXXJgquXvvsH85tZX55ue7PI3SE8XfvquYZvOTXIhF
+         wnarWm6FoRH5IyTjclpC/tq6IkGyYbf9XOk6qXgwG4YaHjR4J4fX51vis3IcY90aY0N9
+         fXC/U/0hBm8WlYbXahd1GyLPbkSOxLtYrOGxIFyKebjXSN/9u6Qk6d2ksmT9DbvM5JEl
+         2ZuKp5jNO2SJARdbYtHHZzYlKWIlVLva1JRzUmi1p6jWr9BPJ3uvF2eO55UXRMTu8jFM
+         aZi0rst01AWPHofg3odjpEBltH6bZLMH9d0IbWFMUkbWb3X4xGl8ClLZXUgQ2tdYTWJU
+         Ktuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754863128; x=1755467928;
+        d=1e100.net; s=20230601; t=1754863575; x=1755468375;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y1VXwaCfO9pAso/DdzzrAqugX5Ft61DWSe3sRMUZEF4=;
-        b=qp+WExAV/CUUd0fxc2zBtnscIQh/BRj1ac6geU/PWY+jx0fQVGgaxuYaX1nLKZYPQ3
-         4EPGh+tDoKQftdmjV1J4Y7qOJVOUohUJ4PFPXOS2ofMb3Nl1K7NGJ/hXH3mYNbKWSPNB
-         S3Vzb2VRPvyeD4b9OWvEzxUyNOAYQmrclJgoNA756y8vdg0/mlsTTx1d1+oJZ2zirXE/
-         /fXbgz9MwC8F7diOnpAyCPdVNhejT4RPLT2Uyw57E5fdhvyJXYJtQDDwpN8Q4sG93VkP
-         9R5xsju8yJzjcUKl/FqqC/fssSRTuNzgPQ+CyGYssGeE/XSqLyIyjZRV1/GWkYqvD03q
-         1fxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKM+zOmT5yo6bxo7ngtd1eWfMabUV/MnE2SfSR8e4pX4SdYGiGQuNniBNyyjSiQhc9e5YWiczv2R1qVI0Kmw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl2Tb+tB1Souph/g9nyeOO1qqILZphrWuUBILW1IjhmHD/ob/f
-	ZU1XSIf3xJFGp8vzesc1o1BIwM3zoZIdMqHXxJ1Ovg8KDtNFXYcx4SUu9hVumg==
-X-Gm-Gg: ASbGncuOmnHTOp1NIL0KSWLSrxNVjmqC02uFbVuxWtx2mfCEtJXZnjZPrUkxckAC7xC
-	hB9zJqxSURtbP90fGAIRBxwUM3NpEIpn9rkOekwZ+vveDzU0m3XNtyRi0CxLtf989Z4avufIcQI
-	5bpz71jJwQ/0FUtDlFkcG8MDceT/YPqq1sJgQUe/Np7FhrBP0Hb0GhmftE6GDBtvXfpo2Z4Zjwc
-	CqZUUuWEdTu/79aqocZ9Az2eMhcjxHKM9kEK/pVr0P0R7fZ8is4WDkt/uatfTyf0PrBWoAPqbFK
-	7NRUMkYs0ATHDdsFbnRovUj1DJdVGXqNooMKLyPScS80SFp5jw2hFp3Qqx8DSI6nQpqtlqK8H2T
-	WEJk+iGF/Nwmg4/Nu7BUdmvJ6ck82EA==
-X-Google-Smtp-Source: AGHT+IFrMuBuiTfTaHYpU7iB6wOaAI50FMfYkCYBNCoUo+5DfMOdbQF6wj+5QpP/RywBKUoffUkPvA==
-X-Received: by 2002:a05:6000:220e:b0:3b8:f925:8d4 with SMTP id ffacd0b85a97d-3b900b35c4dmr9028746f8f.26.1754863128167;
-        Sun, 10 Aug 2025 14:58:48 -0700 (PDT)
+        bh=DWha2fh8KRgBXeWsgpB6nWV4uBd2rsE5HLBzUWxgB08=;
+        b=wTAe/rQLsMX7fmNiUbY+/O0IgvDG1/thRrCxPphOBu2Eyd0Mi9NtsCIDI32Q0RGe5J
+         M6l5X4/hLnidqWElychTdE/9sl5WkQNWncYZz/gvzkwEhFXXL4LR4nryV8szxmBWPkVs
+         P6BFjptP4bwKNh4JU7eSO3I10Q80QROAnsDfYQyXGAA/0PrMIDw63BpBGhEpglNIJo4k
+         eRMD96uOypIa7vr0QPvybSIFoBPGSPrA59UBDQ20dRGxnqPuqjfY+mHYhZFkBaB/2d1Y
+         jGP8b7HNOUPjGpLmzxphaaDg0M09JMcoI5tdVYMMfcEy3E7PbxqaeRNRozC+CKJMEewF
+         BPsg==
+X-Forwarded-Encrypted: i=1; AJvYcCUUSTY5iD5EVNsjl8A7sWeVl35f5NNwkmp0dEHVfV+Sx0kN1olAK/Tbd43dRNZ6kGifFMMngdY+6Oky8k8CSA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy74RA2m4O6Xh/Ha/MYgyHwm8qGsqm8Q4hpqLdXEiNOv8GImUmw
+	V/4yPfEvr+M0/0ElPeTy0UzQ5BvinrFA6DmP/0oVa5K272XP20krZCDW
+X-Gm-Gg: ASbGnct9kMWg+hRfydl9I4kxte19LAFg7gxGXAuaGucSuukyKYd71bEX0d54Umo/S5i
+	UZHa06BBljRgji8uylR1ZWKpydV71l0YQyKz5XXIgUfugD390jhALly8jXxlF1daOQlbZgHtmW1
+	kMGzkWHtckszGCJPoUm2t3eUrn08nf/8BDx/AOqSBT95aap/7DKXkCUcPZWP/ETv2XJkehStfLA
+	OfMZaeDo0yTWY4t4TuxMoIYHcOPq5bOUnS7DI/Q3LqjIshPyl3fZV+31mC7E75ljSgK04bfjNDz
+	Fu3OdRuTi2JOR0ypKLagTDfFHAOk/O1loVj/CUEj+68ajpv1ogrCt2ejA9KqDRMmkhstrRv06bB
+	SSOg2EQmmdAI/ZBDmQvfqSZyjQhFZ3w==
+X-Google-Smtp-Source: AGHT+IGR4MQGmaAoAIL2cWPTrj9HIaxQLlhe3AljYTi+cMlIwISRIvAHMmazx2CuH/B1VeCgZjYZhw==
+X-Received: by 2002:a05:6000:1ac7:b0:3b7:8892:ed8d with SMTP id ffacd0b85a97d-3b900b4bcc1mr7545968f8f.6.1754863575075;
+        Sun, 10 Aug 2025 15:06:15 -0700 (PDT)
 Received: from [192.168.1.50] ([81.196.40.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c4533f1sm38651352f8f.42.2025.08.10.14.58.46
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e5873c43sm245713855e9.22.2025.08.10.15.06.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 10 Aug 2025 14:58:47 -0700 (PDT)
-Message-ID: <75148ebf-6c81-4c2a-a626-a56701a0ee6e@gmail.com>
-Date: Mon, 11 Aug 2025 00:58:45 +0300
+        Sun, 10 Aug 2025 15:06:14 -0700 (PDT)
+Message-ID: <6ccee1c7-612d-49c8-9002-934488a20337@gmail.com>
+Date: Mon, 11 Aug 2025 01:06:13 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,126 +82,48 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next v2 02/11] wifi: rtw89: usb: Fix
- rtw89_usb_get_bulkout_id() for RTL8852CU
+Subject: Re: rtw89: RTL8832CU loses the connection
 To: Ping-Ke Shih <pkshih@realtek.com>,
  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 References: <f4a7a1c4-3d64-4af3-bc77-b12d7c1320e7@gmail.com>
- <3fcb3d66-4c01-4396-84b1-268bf4f0d2f6@gmail.com>
- <6e8f5326d25046fea5f2033bc6c9c5cb@realtek.com>
+ <2bc07f15-c551-467e-b9e6-2cc65b874e8a@gmail.com>
+ <ddeb37fb73b24e35b7f37494fa3c6bf0@realtek.com>
 Content-Language: en-US
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <6e8f5326d25046fea5f2033bc6c9c5cb@realtek.com>
+In-Reply-To: <ddeb37fb73b24e35b7f37494fa3c6bf0@realtek.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 08/08/2025 08:54, Ping-Ke Shih wrote:
+On 08/08/2025 09:21, Ping-Ke Shih wrote:
 > Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> Sent: Saturday, August 2, 2025 4:53 AM
->> RTL8852CU can work in two bands at the same time, thus some USB bulk
->> out endpoints are dedicated to one band, others to the other band.
+>> On 01/08/2025 23:49, Bitterblue Smith wrote:
+>>> Add support for RTL8852CU. It works well but sometimes it loses the
+>>> connection:
+>>>
+>>> Jul 04 16:05:56 ideapad2 kernel: wlp3s0f3u4: Connection to AP ... lost
+>>> Jul 14 13:45:26 ideapad2 kernel: wlp3s0f3u4: Connection to AP ... lost
+>>> Jul 15 17:51:28 ideapad2 kernel: wlp3s0f3u4: Connection to AP ... lost
+>>> Jul 18 14:43:30 ideapad2 kernel: wlp3s0f3u4: Connection to AP ... lost
+>>> Jul 24 14:58:07 ideapad2 kernel: wlp3s0f3u4: Connection to AP ... lost
+>>>
+>>> When that happens it reconnects immediately.
+>>>
+>> It's easy to reproduce with "iperf3 -c 192.168.0.1 -t 3000". Usually it
+>> takes 10-12 minutes transmitting at ~1 Gbps.
 >>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> ---
->> v2:
->>  - No change, messed up sending v1.
->> ---
->>  drivers/net/wireless/realtek/rtw89/usb.c | 64 +++++++++++++++++-------
->>  1 file changed, 46 insertions(+), 18 deletions(-)
->>
->> diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
->> index 6cf89aee252e..eb9978a60d04 100644
->> --- a/drivers/net/wireless/realtek/rtw89/usb.c
->> +++ b/drivers/net/wireless/realtek/rtw89/usb.c
->> @@ -167,24 +167,52 @@ rtw89_usb_ops_check_and_reclaim_tx_resource(struct rtw89_dev *rtwdev,
->>         return 42; /* TODO some kind of calculation? */
->>  }
->>
->> -static u8 rtw89_usb_get_bulkout_id(u8 ch_dma)
->> +static u8 rtw89_usb_get_bulkout_id(struct rtw89_dev *rtwdev, u8 ch_dma)
->>  {
->> -       switch (ch_dma) {
->> -       case RTW89_DMA_ACH0:
->> -               return 3;
->> -       case RTW89_DMA_ACH1:
->> -               return 4;
->> -       case RTW89_DMA_ACH2:
->> -               return 5;
->> -       case RTW89_DMA_ACH3:
->> -               return 6;
->> -       default:
->> -       case RTW89_DMA_B0MG:
->> -               return 0;
->> -       case RTW89_DMA_B0HI:
->> -               return 1;
->> -       case RTW89_DMA_H2C:
->> -               return 2;
->> +       if (rtwdev->chip->chip_id == RTL8852C) {
 > 
-> Not sure if you like a rtw89_usb_info similar to rtw89_pci_info, so that
-> the you can describe the difference between chips. Even make a mapping
-> table. 
+> I have contacted internal expert to see if they can help.
 > 
-
-Yes, that can work.
-
->> +               switch (ch_dma) {
->> +               case RTW89_DMA_ACH0:
->> +                       return 3;
->> +               case RTW89_DMA_ACH2:
->> +                       return 5;
->> +               case RTW89_DMA_ACH4:
->> +                       return 4;
->> +               case RTW89_DMA_ACH6:
->> +                       return 6;
->> +               default:
->> +                       rtw89_warn(rtwdev, "unexpected TX channel %d\n",
->> +                                  ch_dma);
->> +                       fallthrough;
->> +               case RTW89_DMA_B0MG:
->> +               case RTW89_DMA_B0HI:
->> +                       return 0;
->> +               case RTW89_DMA_B1MG:
->> +               case RTW89_DMA_B1HI:
->> +                       return 1;
->> +               case RTW89_DMA_H2C:
->> +                       return 2;
->> +               }
->> +       } else {
->> +               switch (ch_dma) {
->> +               case RTW89_DMA_ACH0:
->> +                       return 3;
->> +               case RTW89_DMA_ACH1:
->> +                       return 4;
->> +               case RTW89_DMA_ACH2:
->> +                       return 5;
->> +               case RTW89_DMA_ACH3:
->> +                       return 6;
->> +               default:
->> +                       rtw89_warn(rtwdev, "unexpected TX channel %d\n",
->> +                                  ch_dma);
->> +                       fallthrough;
->> +               case RTW89_DMA_B0MG:
->> +                       return 0;
->> +               case RTW89_DMA_B0HI:
->> +                       return 1;
->> +               case RTW89_DMA_H2C:
->> +                       return 2;
->> +               }
->>         }
->>  }
->>
->> @@ -251,7 +279,7 @@ static int rtw89_usb_write_port(struct rtw89_dev *rtwdev, u8 ch_dma,
->>         struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
->>         struct usb_device *usbd = rtwusb->udev;
->>         struct urb *urb;
->> -       u8 bulkout_id = rtw89_usb_get_bulkout_id(ch_dma);
->> +       u8 bulkout_id = rtw89_usb_get_bulkout_id(rtwdev, ch_dma);
->>         unsigned int pipe;
->>         int ret;
->>
->> --
->> 2.50.0
+> This is first problem that disconnected from AP happens 10-12 minutes. 
+> Since second problem happens immediately, we would like to check the
+> second one firstly.
 > 
-
+>>
+>> This runs once per second. Now I get this instead of the connection loss:
+>>
+> 
+> We are preparing a debug patch. I'll send you next week.
+> 
+> 
+Thank you.
 
