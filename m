@@ -1,152 +1,99 @@
-Return-Path: <linux-wireless+bounces-26232-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26233-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C34B1F40B
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Aug 2025 12:09:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58EF3B1FAB8
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Aug 2025 17:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D726A566CE5
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Aug 2025 10:09:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A47447AB850
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Aug 2025 15:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27953248F75;
-	Sat,  9 Aug 2025 10:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01FE205E3B;
+	Sun, 10 Aug 2025 15:22:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/jbHh5X"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7824622258E
-	for <linux-wireless@vger.kernel.org>; Sat,  9 Aug 2025 10:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8720F1A314F
+	for <linux-wireless@vger.kernel.org>; Sun, 10 Aug 2025 15:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754734169; cv=none; b=VXm4unvFCv7lOMDbVmThQi4Ykc6gJQ6mp9NJRFIUgOFJ+z4mndCc9yxXx5CSqXgfFp6njqMjP2Su4+9agaGCAq6wY6E9AnBMoZdRRNExWkr8jDrDGVLVVxS+e3vGF2kzepEQyd/OKyGWhRVlwz1E5LQzxlO7t9DimX6Gb+8m0+A=
+	t=1754839332; cv=none; b=FE267nq4JTC0xZtw3cZT/UY7uiiIcCLbOaIIJDsB1EWQ/pxTiENP3/aDb+POFjMEQ8W5FAXv+Byv731k5iErDk6P3d84DsagtQk+QRza2PNjB3LdLo/BcBIzPL9nmLX6uErP6ST533zHK6WSqUSNm+GFFoFtkWyTCI8cbVE4UYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754734169; c=relaxed/simple;
-	bh=UfVDSP4tIy+sLTTalushrExNwVMUpip9xKfPEYvuhfo=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=RbAWk8XT3XexsLcXoQTX8vM5wSOTXWdoEmhpzkf1soJRb6f86FJwr5il0gsHGW+IkVTDqlOAfJ3KPl2yJ3HmG0NaLjuqsTUkMd2D4UBrzhnOvyqO7H90N0NdNIbIZa4ZHLGg5TJwjy0BtxlzwNjZ83ypyD6ng/8dpcVGZrfkbLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3e53c0bfa8bso8487515ab.2
-        for <linux-wireless@vger.kernel.org>; Sat, 09 Aug 2025 03:09:27 -0700 (PDT)
+	s=arc-20240116; t=1754839332; c=relaxed/simple;
+	bh=8W2+3sXRai0m/G+QZY3uT/+3187z71vxN1yuhkzJSvI=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=pkdrl5eSnFavvhKDbXwOXHsLNZl0VhT/23845tJGYJqswmwBKbzKAnhGGNdv0BCQ45hIBUp7L+TMNXRt/CGxVj/PKKCNQ4C0h8AbDoUU8a77NB9cm3JLy33DhAW8aVyC1vljpuU8CqjoFiX5ZX0spGU9IJChuc9OZuAptng8j90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/jbHh5X; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-31f017262d9so2770827a91.1
+        for <linux-wireless@vger.kernel.org>; Sun, 10 Aug 2025 08:22:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754839331; x=1755444131; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8W2+3sXRai0m/G+QZY3uT/+3187z71vxN1yuhkzJSvI=;
+        b=J/jbHh5X3rz+zAAVeWhsG7tcDSQwHzR1pV6zPvHWFIkCxTsbCaEleL1arHDmK7eQQF
+         NWer55dK94vp8b6nF16Q730GiEgCD1WbAcU5SuJjoUEYveSqMTsOQ4uEEkzb6UJ27tyP
+         0VkZQnaPMwkncamrsGPHk/TIevwSq2RMt7hGGE4O6edDdWMGjdXjiOrPCAILQm/TCUA5
+         HtaNiF3ToJpnKgZcVVkYnBbaarQcE15OpofdaSe4wsoP51d64SdX+Zh/G8DgPbrS6ATR
+         gWV8CcpovszOb4YdFUMKXGLYMeaqMk2ffVCK8sw2MGTeVWHbWTZVjbpbz1T1v5y/+AjT
+         eQTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754734166; x=1755338966;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+        d=1e100.net; s=20230601; t=1754839331; x=1755444131;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=t51EWKdiMX8nQRomsdgyFHzvsopLtn3pV7NsndEVukY=;
-        b=V3E4fYjQbZvWJabJvDcc+NaUlKaZUd9D0Jnbu87vjUO6SQDnBIU5TztAtxyyNT/v+p
-         uz+3nzrK3kSaBLzJbzQ4VYcQAWl+Z1NBI0yID3kmYxE7VsDLwQrZAt72c6eUPCYj94oq
-         L/diAwNSASjmU22qDYrnhA/fqmpQkepCduftL5f/bQk/vDS0J/Qs6MrMKhF9eEvI18C0
-         7tPG9s7rauQ/r/dC5lItnlWw0Oly0oPbyLF28AwqdfUcy4rD9koWycJAulY16ZXiRbNF
-         5LQrBg+BxN7JMLsbF3cBEzeieaIdXXdLbHQEsRh/QsevCLv0aIdH1vy5X8FtXSnQPr5D
-         BdGg==
-X-Forwarded-Encrypted: i=1; AJvYcCVFOEcXK6pr5XV0RpZRRSl25SueKcPCpOxC3h/m/oWUruv+K11rMfw31uX9wA47oL3GPg7QkDPTBbA/l8NTdA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yydy0gD91a33JqCEMtDaQtQw3ue97KqYytl4pHj0byUdJOL9tO7
-	61RJMCNKxTuX8viHeOiY8Kgn5yLFU9UtK/J8KN6JJl2XCw6lKiE3eY852iATmHFnH4rt4bAaqQ/
-	a0zU/Y3gFnCV0Thorq73nh5/U8mwrC1gFZkA/Td18fc7LSeRyYz8SutlXbuA=
-X-Google-Smtp-Source: AGHT+IGjJNcZOEDHQQseb3CPm4CzDqqSikXlC+huCp9wdB3KnMfVdDqcLNqnUzd1KP0JNZFs++TQ2wlXBLHuOr+oV/byGlYd5fmJ
+        bh=8W2+3sXRai0m/G+QZY3uT/+3187z71vxN1yuhkzJSvI=;
+        b=U96p8aE4/dmMlegaxRIY2kb5cuP5x1y2PBvKFDr1MS+QcauQsDKDU+PYlfW07pbAxO
+         W2gpj26DJhv+qLh3SxZn12ZWHTWLs306sF58pfWj3xe9RPnXgcWhfCQM/ZR0sCJHpHMc
+         w2gJs0YrFYmw0ybnlFsvlcH0I0fUjCyAgEQbaHWxQsVXLPMf6g6+MGFsxCi+w35M9MJL
+         G4C5WT9p3BJVNACyJ47/UGIihsReFqXQdMFdHGm77VTuNRXQfnLcR05xsrfeP82wX3Hk
+         mgkvewnfjAigE/gG5x6y2DDjepROjupnpkQkebgOpjjlu1lweM/aVb2kZyr4yv0yZiqd
+         tKfg==
+X-Gm-Message-State: AOJu0Ywzi6C+wRhhJNXd0sh7Pg/5tiOTq7iItS0xmMufUqK6ZzT3MlGh
+	t0t0peBIS17oSyxboEnJ1G0/IONMctsiDmYwx076Z0CwL01sYTgv1r+10nj69BUiUYcobUv4clD
+	Ghn52JW7eMLlPu86BS2ZE4WA1p0gcXN2Qc3LReD8=
+X-Gm-Gg: ASbGnctkBFo7u8R4sfhZJM3JfxGXmNG46+ZAgXWwuv9v/pEdVYj67szmNbbNBcUgXgv
+	O8d7OCtAfUmjxHRh5mRWCCA+ePWMJuWIF7kVyRNYf8xqUyleSNRkYgrD3f6gaMTnJtnfZ0lyXdk
+	6hhtDhXNp73MBzehim84nVkkUHBg8q0ew5AHtHZPms97f5hEGZ2Xw6J7i3eN3AuivfG+BFOp+CD
+	dzc7VsCnkOLmy7a
+X-Google-Smtp-Source: AGHT+IEz31ZTrJ6ErQJb4rG4IVX8VjRPFt8rWePM+cN2YiMdqd7toIr/ZJ4dxQE3Xfojgi6N1N4pak3POIbWLGyyIKU=
+X-Received: by 2002:a17:90b:280e:b0:31f:30a6:56ff with SMTP id
+ 98e67ed59e1d1-32183b3f52dmr14594158a91.19.1754839330590; Sun, 10 Aug 2025
+ 08:22:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1789:b0:3e3:d7e9:f305 with SMTP id
- e9e14a558f8ab-3e5331e7a5amr123556025ab.21.1754734166615; Sat, 09 Aug 2025
- 03:09:26 -0700 (PDT)
-Date: Sat, 09 Aug 2025 03:09:26 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68971e56.a70a0220.7865.0031.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_free_keys (2)
-From: syzbot <syzbot+de3ee5362db09487ea37@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
+From: =?UTF-8?Q?Marcin_W=C3=B3jcik?= <wojcikmarcin49@gmail.com>
+Date: Sun, 10 Aug 2025 17:21:59 +0200
+X-Gm-Features: Ac12FXwJsEENdIn-9vUirCBARWoR85ZGfvIrhA3P4wK3Jb0uVseieaApfUVgXNw
+Message-ID: <CAE3x6Qi8Nku26B4aWE+jtJmHb=hO8C743_myNrrBzUAGyuUw9A@mail.gmail.com>
+Subject: Suspending problem on fedora 42 with realtek wifi card
+To: linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Good morning,
+I was asked to email you about my problem with wifi card connectivity
+after suspending:
+https://github.com/morrownr/rtw89/issues/18#issuecomment-3083784268
 
-syzbot found the following issue on:
+I managed to solve that problem after writing 0 to
+/sys/bus/pci/devices/0000:39:00.0/d3cold_allowed
 
-HEAD commit:    d2eedaa3909b Merge tag 'rtc-6.17' of git://git.kernel.org/..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=178886a2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=75e522434dc68cb9
-dashboard link: https://syzkaller.appspot.com/bug?extid=de3ee5362db09487ea37
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+That's my wifi card:
+marcin@fedora:~$ lspci | grep Realtek
+39:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8852BE
+PCIe 802.11ax Wireless Network Controller
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Is there any chance to solve this problem without needing to write 0
+to sys files?
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/73ccac85e612/disk-d2eedaa3.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/33b13def715b/vmlinux-d2eedaa3.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/930b192c99ba/bzImage-d2eedaa3.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+de3ee5362db09487ea37@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 12058 at net/mac80211/key.c:1163 ieee80211_free_keys+0x536/0x650 net/mac80211/key.c:1162
-Modules linked in:
-CPU: 0 UID: 0 PID: 12058 Comm: kworker/u8:17 Not tainted 6.16.0-syzkaller-11489-gd2eedaa3909b #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-Workqueue: netns cleanup_net
-RIP: 0010:ieee80211_free_keys+0x536/0x650 net/mac80211/key.c:1162
-Code: 00 00 48 8d 65 d8 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc e8 f9 3c c7 f6 90 0f 0b 90 e9 46 fc ff ff e8 eb 3c c7 f6 90 <0f> 0b 90 4c 8b 24 24 e9 7c fe ff ff e8 d9 3c c7 f6 e9 2f fe ff ff
-RSP: 0000:ffffc90004aff040 EFLAGS: 00010293
-RAX: ffffffff8af86d55 RBX: dffffc0000000000 RCX: ffff88802bd2da00
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000002
-RBP: ffffc90004aff0f0 R08: ffffc90004afede7 R09: 1ffff9200095fdbc
-R10: dffffc0000000000 R11: fffff5200095fdbd R12: 0000000000000002
-R13: ffff8880534569d0 R14: 1ffff1100a68ad3a R15: 0000000000000001
-FS:  0000000000000000(0000) GS:ffff888125c28000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fcb75946040 CR3: 000000007e27c000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- ieee80211_do_stop+0xf47/0x1fb0 net/mac80211/iface.c:584
- ieee80211_stop+0x1b1/0x240 net/mac80211/iface.c:814
- __dev_close_many+0x361/0x6f0 net/core/dev.c:1755
- netif_close_many+0x225/0x410 net/core/dev.c:1780
- netif_close+0x158/0x210 net/core/dev.c:1797
- dev_close+0x10a/0x220 net/core/dev_api.c:220
- cfg80211_shutdown_all_interfaces+0xd4/0x220 net/wireless/core.c:277
- ieee80211_remove_interfaces+0x109/0x6e0 net/mac80211/iface.c:2364
- ieee80211_unregister_hw+0x5d/0x2c0 net/mac80211/main.c:1664
- mac80211_hwsim_del_radio+0x275/0x460 drivers/net/wireless/virtual/mac80211_hwsim.c:5674
- hwsim_exit_net+0x584/0x640 drivers/net/wireless/virtual/mac80211_hwsim.c:6554
- ops_exit_list net/core/net_namespace.c:198 [inline]
- ops_undo_list+0x497/0x990 net/core/net_namespace.c:251
- cleanup_net+0x4c5/0x800 net/core/net_namespace.c:682
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3f9/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+All regards
 
