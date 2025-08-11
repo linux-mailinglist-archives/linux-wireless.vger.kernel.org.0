@@ -1,153 +1,148 @@
-Return-Path: <linux-wireless+bounces-26278-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26279-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482E3B216D9
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 23:01:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 746CAB21972
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 01:35:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9188B1A214EB
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 21:01:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D3253AF001
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 23:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB2A2E2DF1;
-	Mon, 11 Aug 2025 21:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7F41D61BC;
+	Mon, 11 Aug 2025 23:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UfYdKDzC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B11829E113
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 21:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D2C1F4297
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 23:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754946035; cv=none; b=De1SwadhiQ8wa/vrn4UVNFaAhSIHgCZ8qEwK8ZPidZX4xio8U/QLknvre3cMOCyJ35YmMF1l2MKwRs4PfSfKl7j9H84mDD/c2EYiWvYEC67Bsq8ZVa6hHp4S4cOhtcEX0bbsQwDG0Asok1CXFM64trvNnHbMD/YuLYFpSVtj8yA=
+	t=1754955297; cv=none; b=BBJWSID/lofTOZS4vsrmRG3NnsP3ahit+98A0TbyNRui6xci+Kbcjvg6mUYzoA9YYyZDu6ESErw/XrVN3BhHGhZKZRz9isnYGyOlfvXp4lop3Ko0AzvBVwSjPVXUPp1JfkUnMwqnPZjJqIRLX1XsehRZOVuUVFZOMJbj0Lfr0eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754946035; c=relaxed/simple;
-	bh=BliJ/aFMsVsObj1bAaT4rhb6IYqJd4MzzlzzAnewbOg=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=BH+blZkf07GNRD4oIriavq6iJBZnel8+ejolIk2kOEGRCjXxdgv8cTg5bTzR1nuPU6v09tCor/ZNN2xHLA89HZXfI7F6jvzFtMHHaCr92jROQ5qKM0msXOMaKpeyp1u9MfDUpxUB10oGDrKIBfnd7FKRDUDa9/NjFDEOtfanFJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-87c73351935so517098639f.0
-        for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 14:00:32 -0700 (PDT)
+	s=arc-20240116; t=1754955297; c=relaxed/simple;
+	bh=Sd0n99XhVVD6HmJrir4qoWLGZpM1P0+XkKs7NuY8Cgk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F6D2HVgXwd6wc2B5lnxkIQyl0mVznV5nHYuCzNvCIaHVYmGXw35ajuirqRRyvV/q0xstbiNQWLrr3BweBTCOQZGc5zwhO3VuD3hSHCLpC9rbvQfFM3cb8BiqaVcGPzHZXDqjGUcN/VW7lXCj2OOjVWWigugfJVHkCvS3dcpcHtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UfYdKDzC; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57BGvkPF029237
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 23:34:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	dGsgGPBgImInUSa/S/a/bgy2SN3F+qWPRbzs8M9qZRg=; b=UfYdKDzCVDorIY0f
+	xZNFXRoF5OdEb2TIZvoEbG+JXGHeCs8yC3cGXVZjXV/DkqNoQxnzv65xisMCazu3
+	2qPgnQNf5jWSzy77dWrYzEdtuOgsKksWeSQ1loWAER/fS3KbPbe2SAWupUEmpoc0
+	rcHpjsbhZdutypSSa7OaAV8C8JeLMuD06levYT6geCAsouvg0yYI/WYMJ0qCSRgh
+	joZBpsG7HQYGOeORFuNv57+esVD9V0VkWogsU7tlLSXRv10RjK1UEkkeMbz8lRHz
+	cHPFU37LyUZcUZSfca6WlCsJDLQKkwNa04q8bWlfqxIQ+l4gIXh7gXc9wBRRv6lF
+	ukYgaQ==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48dygme2b0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 23:34:55 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-76bf2f8ba3aso3964379b3a.1
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 16:34:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754946031; x=1755550831;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pXFzaeKPl7+ctt3lbtfJdopbGgowMVL1yAGROD7siBA=;
-        b=jiuGYDfTBd3Y8z9T1us4SrwTs9vWbdsb3oJPI3z5982XB7b1Qc3cQkflX/nllHPzOi
-         eVxc/9d+VGGmqH2aLZNsx7bppYEc8U7eQwMey/Wlo2+ikGXbI5tylS8jnWFS+17ujIy6
-         AMzctyUKFtrPXj5qP+GDe+rkXByB6PtC/oz/sXhsvMA+yUdPCcjeZeI7akmw44b389sr
-         HmfEzAYV/JKYTe8V0ZxL3NRTLEmQX4xqd3YeeL8gFK87aIqqACLSep4Gp8EyH8nddSIG
-         guqZCGt0XBU6ND/4w15PTCMv2sKA+xTCsM8ar46oIBWdgozV0/wpL3kNp4+5q2i6xeRo
-         lGuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXkPxG4ydyFB33krAC2hIa7qP31B+S2whQ/zCxGv65JT0PlzGgLR0/9zWqW96rPBxR5hPudbcPQs5XE2WNlJQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YznGV1WuZgggR7kL6IZKGpKnkaFHxI7iOTvu6rNVgSC0+OahX9Z
-	4vnEAYqtCR0t+vSS/ba20st5CIR7dj2RjCMekKWQuUk6sbHzHtaR1A/yLFsfto6d2ETvVzFY6+9
-	6xqRJJ3onFvMrnI64tZ3wc/4zRoTXLfpmRJQa0qUWDk8g6pAxbj7ftfHRDJs=
-X-Google-Smtp-Source: AGHT+IEqaQ6ThhXPMjKJO3iwlVj68PUka5EQw4Hm1CDaAUSRkIk+Vl3lnL+omIB/QmXBUSfd+Jh/JBA367CtP1U19f3aZe+IWq2K
+        d=1e100.net; s=20230601; t=1754955294; x=1755560094;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dGsgGPBgImInUSa/S/a/bgy2SN3F+qWPRbzs8M9qZRg=;
+        b=UJXS+WAX/hrfPHvYRWhvKMwUZlRadraMTgI0ByhjWv9dX4jgmsGwlVakzca8UCyBsY
+         OpJayePPWu7EuVtzVPXtjf6rGNLJUS71oOXvHq5zpFnWvluBRaG4NVf1i7vwmnzYvddA
+         S2i3V9FS7yAayOs5Qi8EDoBl4UDde4zcr3SbsUuuTZOoWDygmUCp+qrSL9UsR6c2vRWF
+         g9VOZ3gJLuBd20/6+QgafhoepHvrrQh179xezwDq7Q8LOPV98frks6ULrK3x4eYPbh5m
+         0Zly69XtNO+nXT6Vh5u6dyjrxOa5NErFUH+gkr2URBtN2HBizNu/KHHpHzkMeSe/GloL
+         QOTQ==
+X-Gm-Message-State: AOJu0YyNPoBsFZS6w+rxRz3KoLPQJkZ1heE/4cJ0Vj3CUrO+5ov8w/yi
+	J0gOLaW1NQ6tm9l/gXS9r0jNJd9nlPc3pqwaWakrTlLMXHu+adp+GkAGnV464ictfdPmioRDnVu
+	iWSPPkvUx+lb6WO8HCOt/jpLrWKgRiwd7ZFYKjTI9a6+jMoOFTvuW6jBV+andv65KsAqs9g==
+X-Gm-Gg: ASbGnctH5wSlJwrLKVxf8KyL+2ZbH0IW3AymgUG6URHiYEfkVLiPLOZsmTWlVT7/08k
+	4+sildNeCu+KTP/yTROReUltdomUtEUTCwXkHdIxnXjBxhgcC9zzunKZzvZb0gb5/HB3pzdxgGx
+	hLQNY7/9T9tAlXTGQEXMXKIY7nOxMFyh+8qXg0Ur4VhBPUUnwvh4L7T/JPDX/ylsm/JdjxtpB9Z
+	AeC17IMooqPxuPdJD3dP2/D4vQ1/sg1ZQMx2gElSeZZ3UXnIdmPSZTOQE9TPus4O5bJ2IY5/6T1
+	vRLK0CjCrXl5KfVDL+mHMIvBk0b42ppNKLz7nD7PXu3UWvu6gm/KywNyJDoPQdiEzb5+RHNfswl
+	Nr+n0YsqbjWjZ7h3PTnIc7GnX2RRxhUcr
+X-Received: by 2002:a17:903:2392:b0:237:e3bc:7691 with SMTP id d9443c01a7336-242fc351ad6mr23924405ad.13.1754955294204;
+        Mon, 11 Aug 2025 16:34:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFcAf6wG5Jrq1BlaBArK3/b+PZCCmoqHFiS1lwy/yi8xLa5GpCpUXgaZCTQAjPMSBzhPwNRzA==
+X-Received: by 2002:a17:903:2392:b0:237:e3bc:7691 with SMTP id d9443c01a7336-242fc351ad6mr23924115ad.13.1754955293808;
+        Mon, 11 Aug 2025 16:34:53 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1ef674bsm281745595ad.17.2025.08.11.16.34.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Aug 2025 16:34:52 -0700 (PDT)
+Message-ID: <5b769b75-df2a-4dba-a41b-198851b61b9c@oss.qualcomm.com>
+Date: Mon, 11 Aug 2025 16:34:51 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a5e:cb04:0:b0:881:8bc8:b02f with SMTP id
- ca18e2360f4ac-8841c29c334mr205685439f.2.1754946031506; Mon, 11 Aug 2025
- 14:00:31 -0700 (PDT)
-Date: Mon, 11 Aug 2025 14:00:31 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <689a59ef.050a0220.51d73.00a3.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_tx_monitor (2)
-From: syzbot <syzbot+e069674d5df1b877c490@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "ath11k: clear the keys properly via DISABLE_KEY"
+To: Nicolas Escande <nico.escande@gmail.com>, ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Steffen Moser <lists@steffen-moser.de>
+References: <20250117191455.3395145-1-nico.escande@gmail.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250117191455.3395145-1-nico.escande@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA5MDAzNSBTYWx0ZWRfX0OOafVwFGph3
+ M7c3FjHZ0i7U9TxR/lt8aJdezTZqA0tSeG0uZ1GYIc2N2OfByfCIYf5HGrgN/TgUqBKAlfnxBre
+ nKgKKTlZbiV6fYjnsgTEzpFSuoIYoUoi3cPyvu8vl+MMODF7llw8bn4MLlhafzuSJH3vKS8ER+K
+ 6NZRcTQiRCAFycvs6Tvpglju8BumXKlDfnyot7j60GohvyNmGXEOJnEjQtvD6ESj3G9vLuX576u
+ 3NTdyyrDtrtnRXaCxsOhTocfvEf89p3V71/DSlv5+AKK9ll8amB30kpCBEI15o1kJKa7QGwf1ui
+ KNIQ6p2U0gqGlehbouFs8NvSdl0M8rX+B6WQzXbdpDADwKjQYq/LAeRcmPeuNoHBl+rN7c6bM6g
+ HY4i7qfs
+X-Authority-Analysis: v=2.4 cv=FvMF/3rq c=1 sm=1 tr=0 ts=689a7e1f cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=e70TP3dOR9hTogukJ0528Q==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=qC_FGOx9AAAA:8
+ a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=pGLkceISAAAA:8 a=WobwCshsJSUAwqENw7MA:9
+ a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22 a=fsdK_YakeE02zTmptMdW:22
+ a=FO4_E8m0qiDe52t0p3_H:22
+X-Proofpoint-GUID: ZZiVTZfZMZRgRvlBzl0oUYNrzqLzwx-K
+X-Proofpoint-ORIG-GUID: ZZiVTZfZMZRgRvlBzl0oUYNrzqLzwx-K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-11_05,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 suspectscore=0 phishscore=0
+ clxscore=1015 impostorscore=0 spamscore=0 adultscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508090035
 
-Hello,
+On 1/17/2025 11:14 AM, Nicolas Escande wrote:
+> This reverts commit 436a4e88659842a7cf634d7cc088c8f2cc94ebf5.
+> 
+> This as been reported by multiple people [0] that with this commit,
+> broadcast packets were not being delivered after GTK exchange.
+> Qualcomm seems to have a similar patch [1] confirming the issue.
+> 
+> [0] https://lore.kernel.org/linux-wireless/Z2Q9POuV-6MIdzRf@pilgrim/
+> [1] https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/blob/win.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-keys-properly-when-DISABLE_K.patch
+> 
+> Fixes: 436a4e886598 ("ath11k: clear the keys properly via DISABLE_KEY")
+> Reported-by: Steffen Moser <lists@steffen-moser.de>
+> Closes: https://lore.kernel.org/linux-wireless/c6366409-9928-4dd7-bf7b-ba7fcf20eabf@steffen-moser.de
+> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+> ---
 
-syzbot found the following issue on:
+Can you please check if this alternative addresses the issue:
+[PATCH ath-current v4] wifi: ath11k: fix group data packet drops during rekey
+https://msgid.link/20250810170018.1124014-1-rameshkumar.sundaram@oss.qualcomm.com
 
-HEAD commit:    6e64f4580381 Merge tag 'input-for-v6.17-rc0' of git://git...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=15aae434580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7c81a94587811e52
-dashboard link: https://syzkaller.appspot.com/bug?extid=e069674d5df1b877c490
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+Any Tested-on/Tested-by tags would be appreciated!
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-6e64f458.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/cefe2e59409f/vmlinux-6e64f458.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/b76a96a3deca/bzImage-6e64f458.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e069674d5df1b877c490@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 2 PID: 54 at net/mac80211/status.c:908 ieee80211_tx_monitor+0x2017/0x2510 net/mac80211/status.c:908
-Modules linked in:
-CPU: 2 UID: 0 PID: 54 Comm: kworker/u32:3 Not tainted 6.16.0-syzkaller-11952-g6e64f4580381 #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: events_unbound cfg80211_wiphy_work
-RIP: 0010:ieee80211_tx_monitor+0x2017/0x2510 net/mac80211/status.c:908
-Code: 0f 9e c2 84 c0 0f 95 c0 84 c2 0f 84 ab eb ff ff 48 8b 7c 24 18 be 02 00 00 00 e8 04 c7 22 f7 e9 97 eb ff ff e8 ba 6f bc f6 90 <0f> 0b 90 48 c7 c7 40 69 08 8d e8 3a 19 9b f6 4c 89 ff e8 92 82 68
-RSP: 0018:ffffc90000648c88 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 000000000000000d RCX: ffffffff8aff0fdd
-RDX: ffff88801cfd2440 RSI: ffffffff8aff2366 RDI: 0000000000000004
-RBP: ffffc90000648e00 R08: 0000000000000004 R09: 0000000000000000
-R10: 000000000000000d R11: 0000000000000000 R12: ffff88805ecf7930
-R13: 0000000000000000 R14: 000000000000000d R15: ffff88805ecf7900
-FS:  0000000000000000(0000) GS:ffff8880d68c4000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005555859de808 CR3: 0000000029c8d000 CR4: 0000000000352ef0
-Call Trace:
- <IRQ>
- __ieee80211_tx_status net/mac80211/status.c:1093 [inline]
- ieee80211_tx_status_ext+0x1e9b/0x2ad0 net/mac80211/status.c:1218
- ieee80211_tx_status_skb+0x132/0x2c0 net/mac80211/status.c:1116
- ieee80211_handle_queued_frames+0xf1/0x130 net/mac80211/main.c:457
- tasklet_action_common+0x281/0x400 kernel/softirq.c:829
- handle_softirqs+0x216/0x8e0 kernel/softirq.c:579
- do_softirq kernel/softirq.c:480 [inline]
- do_softirq+0xb2/0xf0 kernel/softirq.c:467
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0x100/0x120 kernel/softirq.c:407
- spin_unlock_bh include/linux/spinlock.h:396 [inline]
- ieee80211_ibss_work+0x382/0x1480 net/mac80211/ibss.c:1658
- ieee80211_iface_work+0xe6d/0x1360 net/mac80211/iface.c:1775
- cfg80211_wiphy_work+0x2c7/0x580 net/wireless/core.c:435
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3236
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c5/0x780 kernel/kthread.c:463
- ret_from_fork+0x5d4/0x6f0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+/jeff
 
