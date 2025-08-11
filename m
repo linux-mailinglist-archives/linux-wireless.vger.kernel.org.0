@@ -1,293 +1,190 @@
-Return-Path: <linux-wireless+bounces-26274-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26275-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DADB2150A
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 21:00:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 500E7B215FC
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 21:55:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B30419013A0
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 19:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E9AA463EB0
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 19:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCAE2E2EF9;
-	Mon, 11 Aug 2025 18:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B3F2D6E41;
+	Mon, 11 Aug 2025 19:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="C0X5jfK9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f80.google.com (mail-io1-f80.google.com [209.85.166.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2CC2E2DE5
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 18:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30ADC2C21E5
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 19:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754938773; cv=none; b=B5bFl+3OTmqmjBocj+BQe6rDxAB+c5EJXyJtdffsZsUCohH/Q1qtrsc2kHFuuPwWScj7J+iKMwsG2R5PRsRDdky/cf5mpQqjGCo2zI55ZhT5TEodSeWMVpayNTrk8nsEGMNdxGJaBajnY+moc4pxPaszlwmSKQ2Pq0iKXtOuqCI=
+	t=1754942126; cv=none; b=hexiEDXAoYpIJdmircCYHBZflqwYT+J/boOCy7C321e4WWMjMo2uObVNdMkno6g9bHa42ecIHwnIdKNf/ldXfax66fPE+xIcHe16hTDibGoclpO5z2cVgfkG1nh6ib5Q+z/iRpsy48DJtAZR0eAILT3P4V+KU5qOvcUmgqs28Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754938773; c=relaxed/simple;
-	bh=RR4RY40LyLGxuzencW3otpe4uq9XZ8ze/HFu7iwBnUI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=V8WD+/4OmA/j694vrovxbQtnJpvumN4mY0A9PGT0hprz9Ltx7FRmlKkWZdOUxYMaYevZoDFx2buoiJfoNs38QV8bPwfAhYrtHNPCb+LWpXZSW9eWA/oDS2fwuOcSzounAmT3bUSSHTBW0Rbrhm3roikRpMR71PXUSXG8FBmrVT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f80.google.com with SMTP id ca18e2360f4ac-86463467dddso474184139f.3
-        for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 11:59:31 -0700 (PDT)
+	s=arc-20240116; t=1754942126; c=relaxed/simple;
+	bh=T+GB+I4OfLAbw7FJdc0ZrPxn+zmusdPSRN2RBW1r/IM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JekW1u4gCa0TCB3spNaQUpl6h1jcIKJsmLVNDfZUIHY8DkD18r2DzdqQc9s9b2ZWRlsczCLkidWqf/JNIa8W4WtpURvNXykyrvQ5dX/gpmVcZ+5obOn0qqsRLVLvBD2HGd6pnPt6s35DG1suVxBv3pKxJhLpaFLczIm1puqNq54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=C0X5jfK9; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57BGw04R023741
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 19:55:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	0LyObyJu5M8r8WD3EJOUXcSgt7esHUFIRa8rhjMc6H8=; b=C0X5jfK9p5DHUYm2
+	jERnPVuiMH8ir+xFmkZAalINrfa0PH+uP7P+Xj5n9d2mTZ+TFG4NvXTQHfoQ0S6t
+	lcNpvo3VpmOOUxIri+LPgWjgkBfgIHckjLXw8f1A2Y+hgoXBU7X1y3HpQa6monZJ
+	IUg57JIhZx0bfmD686tRAO7OTqPOjUrtJYoaeUMdlyvjjcES+BeKPA7fe4DPTUed
+	m+Bb62BcByoyeOLGWtQAC7xj7p6MrmXgtDfPXl06muu15wLsKSTK8Pg5rznLZxdy
+	5e70ce2+E0nW7UsecUOMjHxK+T2khM39RNsdT48aYeQg4efG07dOkFt8lk1thnMA
+	P8fb4g==
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48fem49q0j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 19:55:24 +0000 (GMT)
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b3f38d3cabeso3706836a12.3
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 12:55:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754938771; x=1755543571;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=F6xFbPZe0HwWc3ZbGjhMq/NmNbdAPZ6NGa5AYygBZvY=;
-        b=NvCNrofuFFzvX7KZVj3uqY1BfdE3v24h0gIuWwOj/QVMPjrYiLvZGUc8EHzdUz0gWb
-         mIojpulsIDzB/m2os6cCECDw9qeQAqsoS2PqqjlmZXYLuiNvIYz1RIXdYrtHByYWJCnn
-         keA9Cb0kCehuRBb28d5NEoDMkYXto4571YpAprpx8I8tR6d2/m40lQNVxrNiIgEfPcro
-         hWWXl20DKb2gCSRA0CD8TMdj8RDmR3w0r1KyNM0n5aPERt4bHdPlNdWtY/lJ2atgiOl9
-         z+VbhRCCwU38SXh5Wo8FAX2DtF+eRWIpN8SrQp1tU1EUhYACOMzS3Q5o8tj1C/cLaAJN
-         jUlA==
-X-Forwarded-Encrypted: i=1; AJvYcCWLp3tyDrohsTr1bhU2AgOkOpJ6mcsslhhH+PfdgxPl/ihFAlESRMcQOxGtndbNtbH0ttyeLD8WLEfdApQ52Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCBeTkBELpTHlifWsrRzFkkI6sllIj8Rm4LozuudcMw37xtRYi
-	23rPkLqZVkAYuxnKHxMh5SNQpnD2z/ixrhrscH52ox/PX96O3SiujH9PjSv8gZLQxOGLNO78+gL
-	HtSxIBUjnpmffv63Cas13SBB5TUgBzGephNWXTrk+cMLDLhfR2Lm9EMhJvgM=
-X-Google-Smtp-Source: AGHT+IFo1XhCxFqcaHX4jHSPGgaJJoUardHybCOGuV2MX1kF5Upkq0zoLt9HashddZTU58m2I9Vd/4+pA6ZkdDvEGOSs5IEHJBQA
+        d=1e100.net; s=20230601; t=1754942123; x=1755546923;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0LyObyJu5M8r8WD3EJOUXcSgt7esHUFIRa8rhjMc6H8=;
+        b=FOf6xCUAO+iVIVJ4m4H2CkFQ9zBYITlKVw5K9pCFtHnru8Tuo12XarNt7JGjndzbGC
+         ki4E2RgRoxU0Tb6g0oJkt3ZswhxwdqA7ICLwzdO2eupmYuQNf1vFNRLZx3VFH72Zsv7o
+         g1jum6WVTGgWPOfztDVAC336+/p6KMQZJNgYm32GvuyqvOBUB5LsaWrwzWzr6t0ib+uH
+         Hsp+AOeKFuQ/VPOgKly36fTCLau9rA8bRmvhx1qt21IH/KUgR+IY2kBoEkcwoMANlvHv
+         QHYBfK5rLLCJNskS6VTt3kZDCnVyKHhd5eNnV44e61uFMSyLHWXl6gY61s3P1h81rQhq
+         gghg==
+X-Forwarded-Encrypted: i=1; AJvYcCUwrHTI5Nm0kni0tMt1zxEiVabKA15EngO2IEUBLYo0LPQGbS8J6q0G9gosO6FYaqk9u7L55uCWCQAsXU3QNA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMMskT6jVGd/Q3Cgmigx4U7DU1g5OXsThzAnBJTsyoFIpVvrgC
+	2mEAebo+EY7bj9VlKKmCveLSNYtApOt+bUCQ7tYByLeweYcF9j8a+oKmT5k3Dyv+i+Cd/WyeZZC
+	zyF7P04ebwuT7H/OrIop01vAHn5bAnWuD1+1oHApWGzhsNSc8Z1+Ph9C+3EiDu5yLXbtMMQ==
+X-Gm-Gg: ASbGnctk5cBsIAWF1Cp2kgiBQvJVBpE/vEYBE2tGj5DP7WshSZvrQV0LOyIXgodeLEX
+	a/QneIzjXyQAijRMjLzJZ+U77MjoUZ6b2sWTK+w/t5V/SeEGoTHDa9Q3gVsORPkvACdoISmZzlC
+	YYlux04jApLErRKc8H7Xsgvk2Tp1bxMVqJ6iodv12kdbBlZBPYMQADvel1WcnVlAyOY8G6YzNBQ
+	QQoxDZ0nB1KQcVSEBoxpZOWWYMaOrBHYjJlbibX7A9fgTROQ62QTNwUvsCyBoaP59FvBFQY7+7H
+	kaAF3weAp4DKSajdtjTaH3LGDvftYylqu3gsZip4JYy1vrv81PlSxuora9uugh06OplKXR0dTev
+	XTjOnvwjKLKxFj3B66WHFq+l67RMAzs7D
+X-Received: by 2002:a17:902:ec91:b0:240:4d5b:29b4 with SMTP id d9443c01a7336-242fc1063f7mr12498805ad.0.1754942122705;
+        Mon, 11 Aug 2025 12:55:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3Qx8bYK+rncQZ56MU1IG7eUy3lnzmit6zpPxPUFBpmw94BfCZtlGwBUH68DnPgSdEAGBLeQ==
+X-Received: by 2002:a17:902:ec91:b0:240:4d5b:29b4 with SMTP id d9443c01a7336-242fc1063f7mr12498525ad.0.1754942122260;
+        Mon, 11 Aug 2025 12:55:22 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b422bac12d4sm23720118a12.32.2025.08.11.12.55.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Aug 2025 12:55:21 -0700 (PDT)
+Message-ID: <adf6d126-1f80-4590-a9f6-171b7feaf656@oss.qualcomm.com>
+Date: Mon, 11 Aug 2025 12:55:20 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:2cc4:b0:86c:f3aa:8199 with SMTP id
- ca18e2360f4ac-883f1260345mr2592913239f.11.1754938771037; Mon, 11 Aug 2025
- 11:59:31 -0700 (PDT)
-Date: Mon, 11 Aug 2025 11:59:31 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <689a3d93.050a0220.7f033.0100.GAE@google.com>
-Subject: [syzbot] [wireless?] KASAN: slab-use-after-free Read in cmp_bss
-From: syzbot <syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next] wifi: ath10k: switch to of_get_mac_address
+To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+        "open list:QUALCOMM ATHEROS ATH10K WIRELESS DRIVER"
+ <ath10k@lists.infradead.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20250809031517.5535-1-rosenp@gmail.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250809031517.5535-1-rosenp@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: KW8PySJ7PVwzaJT58pkmfmLDv6kGjrTr
+X-Proofpoint-ORIG-GUID: KW8PySJ7PVwzaJT58pkmfmLDv6kGjrTr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDA2OCBTYWx0ZWRfX41FTVXQ8faeG
+ MnMCVLko4KnvRas1gkAat3Z+nYq+PgrzcmH4jqVaHOoK7GIHj1Ut7+HfykT686ZZIFAlbjBtI+n
+ 3+IaigzkQga7IpAFfCKW4jLLsGSztrZAncC4jv+42cH7ty02+lbxKho7da5HilVsRglJFAkuYNr
+ fDIjpI95MrFB1bRI/ljzWV76GiVQbjpk5Bf8msM2kNBKQUbLCayCUNlqGNcoJ9ACWRqZH1ik3R4
+ xx69ZqpsZ38+/G1+Kko8U53iqZNq+gBAWdhiai+HRU/t/3LEQMbBXxihV/K3Jc7SPXXMaCiJaCh
+ 3oQCuaSQKYK0w6g2P6/Twvc+1KUDIvDeazbEsA6Cyx2P9AwJYDKaoPWmppvAm+/dvDAB/iEmgp7
+ 6ad7E82P
+X-Authority-Analysis: v=2.4 cv=YMafyQGx c=1 sm=1 tr=0 ts=689a4aac cx=c_pps
+ a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=e70TP3dOR9hTogukJ0528Q==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=bC-a23v3AAAA:8
+ a=EUspDBNiAAAA:8 a=pGLkceISAAAA:8 a=3-rGAEJhA9dDIXXEWvYA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=D0TqAXdIGyEA:10 a=xa8LZTUigIcA:10
+ a=x9snwWr2DeNwDh03kgHS:22 a=FO4_E8m0qiDe52t0p3_H:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-11_04,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 priorityscore=1501 spamscore=0 suspectscore=0
+ adultscore=0 impostorscore=0 malwarescore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508110068
 
-Hello,
+On 8/8/2025 8:15 PM, Rosen Penev wrote:
+> In 9d5804662ce1f9bdde0a14c3c40940acbbf09538 , device_get_mac_address was
 
-syzbot found the following issue on:
+see
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
 
-HEAD commit:    c30a13538d9f Merge tag 'bpf-fixes' of git://git.kernel.org..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17840842580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e143c1cd9dadd720
-dashboard link: https://syzkaller.appspot.com/bug?extid=30754ca335e6fb7e3092
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1766fea2580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15e709a2580000
+specifically: If you want to refer to a specific commit, don’t just refer to
+the SHA-1 ID of the commit. Please also include the oneline summary of the
+commit, to make it easier for reviewers to know what it is about.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-c30a1353.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/8cefa7e1536e/vmlinux-c30a1353.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/68b8ee3da77f/bzImage-c30a1353.xz
+So in this case:
+9d5804662ce1 ("ath10k: retrieve MAC address from system firmware if provided")
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com
+> introduced as a generic way to get MAC addresses from anywhere.
+> Unfortunately since then, the landscape has changed and the OF version
 
-==================================================================
-BUG: KASAN: slab-use-after-free in cmp_bss+0xd4d/0xe80 net/wireless/scan.c:1504
-Read of size 4 at addr ffff88804b2de518 by task kworker/u4:3/38
+when did the landscape change? if using device_get_mac_address() is breaking
+folks, it would be nice to know which versions of the kernel have the bad
+behavior so that the patch can be backported to any broken LTS kernels.
 
-CPU: 0 UID: 0 PID: 38 Comm: kworker/u4:3 Not tainted 6.16.0-syzkaller-12250-gc30a13538d9f #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: events_unbound cfg80211_wiphy_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xca/0x240 mm/kasan/report.c:482
- kasan_report+0x118/0x150 mm/kasan/report.c:595
- cmp_bss+0xd4d/0xe80 net/wireless/scan.c:1504
- rb_find_bss net/wireless/scan.c:1693 [inline]
- __cfg80211_bss_update+0xdb/0x2120 net/wireless/scan.c:1980
- cfg80211_inform_single_bss_data+0xba9/0x1ac0 net/wireless/scan.c:2375
- cfg80211_inform_bss_data+0x1fb/0x3b30 net/wireless/scan.c:3234
- cfg80211_inform_bss_frame_data+0x3d7/0x730 net/wireless/scan.c:3325
- ieee80211_bss_info_update+0x746/0x9e0 net/mac80211/scan.c:226
- ieee80211_rx_bss_info+0x176/0x280 net/mac80211/mlme.c:6564
- ieee80211_rx_mgmt_probe_resp net/mac80211/mlme.c:6607 [inline]
- ieee80211_sta_rx_queued_mgmt+0x1294/0x4470 net/mac80211/mlme.c:8089
- ieee80211_iface_process_skb net/mac80211/iface.c:1696 [inline]
- ieee80211_iface_work+0x652/0x12d0 net/mac80211/iface.c:1753
- cfg80211_wiphy_work+0x2b8/0x470 net/wireless/core.c:435
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x70e/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+> is required for NVMEM support. The second problem is that with NVMEM
+> it's possible that it loads after ath10k. For that reason, check for
+> deferred errors and exit out of probe in such a case.
+> 
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/core.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+> index 6f78f1752cd6..76747eb0925b 100644
+> --- a/drivers/net/wireless/ath/ath10k/core.c
+> +++ b/drivers/net/wireless/ath/ath10k/core.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/module.h>
+>  #include <linux/firmware.h>
+>  #include <linux/of.h>
+> +#include <linux/of_net.h>
+>  #include <linux/property.h>
+>  #include <linux/dmi.h>
+>  #include <linux/ctype.h>
+> @@ -3456,7 +3457,9 @@ static int ath10k_core_probe_fw(struct ath10k *ar)
+>  		ath10k_debug_print_board_info(ar);
+>  	}
+>  
+> -	device_get_mac_address(ar->dev, ar->mac_addr);
+> +	ret = of_get_mac_address(ar->dev->of_node, ar->mac_addr);
+> +	if (ret == -EPROBE_DEFER)
+> +		goto err_free_firmware_files;
 
-Allocated by task 3103:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:388 [inline]
- __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:405
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4365 [inline]
- __kmalloc_noprof+0x27a/0x4f0 mm/slub.c:4377
- kmalloc_noprof include/linux/slab.h:909 [inline]
- kzalloc_noprof include/linux/slab.h:1039 [inline]
- cfg80211_inform_single_bss_data+0x905/0x1ac0 net/wireless/scan.c:2351
- cfg80211_inform_bss_data+0x1fb/0x3b30 net/wireless/scan.c:3234
- cfg80211_inform_bss_frame_data+0x3d7/0x730 net/wireless/scan.c:3325
- ieee80211_bss_info_update+0x746/0x9e0 net/mac80211/scan.c:226
- ieee80211_rx_bss_info+0x176/0x280 net/mac80211/mlme.c:6564
- ieee80211_rx_mgmt_beacon+0x197d/0x2cd0 net/mac80211/mlme.c:7513
- ieee80211_sta_rx_queued_mgmt+0x4ed/0x4470 net/mac80211/mlme.c:8085
- ieee80211_iface_process_skb net/mac80211/iface.c:1696 [inline]
- ieee80211_iface_work+0x652/0x12d0 net/mac80211/iface.c:1753
- cfg80211_wiphy_work+0x2b8/0x470 net/wireless/core.c:435
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x70e/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+Note a similar proposal for ath11k was deferred since it seems to break x86
+attachment when there isn't a device tree node:
+https://msgid.link/ec974dc0-962b-f611-7bbb-c07a3872f70f@oss.qualcomm.com
 
-Freed by task 38:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:243 [inline]
- __kasan_slab_free+0x5b/0x80 mm/kasan/common.c:275
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2417 [inline]
- slab_free_freelist_hook mm/slub.c:2446 [inline]
- slab_free_bulk mm/slub.c:4704 [inline]
- kmem_cache_free_bulk+0x2d1/0x520 mm/slub.c:5283
- kfree_bulk include/linux/slab.h:794 [inline]
- kvfree_rcu_bulk+0xe5/0x1f0 mm/slab_common.c:1516
- kfree_rcu_work+0xed/0x170 mm/slab_common.c:1594
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x70e/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+I'd have the same concerns here.
+(but I didn't dig into how the fwnode items are set if there isn't a DT)
 
-Last potentially related work creation:
- kasan_save_stack+0x3e/0x60 mm/kasan/common.c:47
- kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:548
- kvfree_call_rcu+0xbb/0x410 mm/slab_common.c:1962
- cfg80211_update_known_bss+0x454/0x1330 net/wireless/scan.c:1919
- cfg80211_update_assoc_bss_entry+0x4ba/0x6a0 net/wireless/scan.c:3454
- cfg80211_ch_switch_notify+0x3c1/0x780 net/wireless/nl80211.c:20398
- ieee80211_sta_process_chanswitch+0xad4/0x2870 net/mac80211/mlme.c:-1
- ieee80211_rx_mgmt_beacon+0x19c7/0x2cd0 net/mac80211/mlme.c:7515
- ieee80211_sta_rx_queued_mgmt+0x4ed/0x4470 net/mac80211/mlme.c:8085
- ieee80211_iface_process_skb net/mac80211/iface.c:1696 [inline]
- ieee80211_iface_work+0x652/0x12d0 net/mac80211/iface.c:1753
- cfg80211_wiphy_work+0x2b8/0x470 net/wireless/core.c:435
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x70e/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>  
+>  	ret = ath10k_core_init_firmware_features(ar);
+>  	if (ret) {
 
-The buggy address belongs to the object at ffff88804b2de500
- which belongs to the cache kmalloc-96 of size 96
-The buggy address is located 24 bytes inside of
- freed 96-byte region [ffff88804b2de500, ffff88804b2de560)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4b2de
-anon flags: 0x4fff00000000000(node=1|zone=1|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 04fff00000000000 ffff88801a441280 ffffea00010fab80 dead000000000005
-raw: 0000000000000000 0000000000200020 00000000f5000000 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0x252800(GFP_NOWAIT|__GFP_NORETRY|__GFP_COMP|__GFP_THISNODE), pid 3103, tgid 3103 (kworker/u4:12), ts 130328667868, free_ts 130314026448
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1851
- prep_new_page mm/page_alloc.c:1859 [inline]
- get_page_from_freelist+0x21e4/0x22c0 mm/page_alloc.c:3858
- __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5148
- alloc_slab_page mm/slub.c:2489 [inline]
- allocate_slab+0x65/0x370 mm/slub.c:2655
- new_slab mm/slub.c:2709 [inline]
- ___slab_alloc+0xbeb/0x1410 mm/slub.c:3891
- __slab_alloc mm/slub.c:3981 [inline]
- __slab_alloc_node mm/slub.c:4056 [inline]
- slab_alloc_node mm/slub.c:4217 [inline]
- __do_kmalloc_node mm/slub.c:4364 [inline]
- __kmalloc_node_noprof+0x2fd/0x4e0 mm/slub.c:4371
- kmalloc_array_node_noprof include/linux/slab.h:1020 [inline]
- alloc_slab_obj_exts mm/slub.c:2028 [inline]
- account_slab mm/slub.c:2614 [inline]
- allocate_slab+0x16a/0x370 mm/slub.c:2674
- new_slab mm/slub.c:2709 [inline]
- ___slab_alloc+0xbeb/0x1410 mm/slub.c:3891
- __slab_alloc mm/slub.c:3981 [inline]
- __slab_alloc_node mm/slub.c:4056 [inline]
- slab_alloc_node mm/slub.c:4217 [inline]
- kmem_cache_alloc_noprof+0x283/0x3c0 mm/slub.c:4236
- dst_alloc+0x105/0x170 net/core/dst.c:89
- ip6_dst_alloc net/ipv6/route.c:342 [inline]
- icmp6_dst_alloc+0x75/0x420 net/ipv6/route.c:3324
- ndisc_send_skb+0x41f/0x1440 net/ipv6/ndisc.c:491
- addrconf_dad_completed+0x7ae/0xd60 net/ipv6/addrconf.c:4360
- addrconf_dad_work+0xc36/0x14b0 net/ipv6/addrconf.c:-1
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
-page last free pid 5457 tgid 5457 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- free_pages_prepare mm/page_alloc.c:1395 [inline]
- __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2895
- tlb_batch_list_free mm/mmu_gather.c:159 [inline]
- tlb_finish_mmu+0x112/0x1d0 mm/mmu_gather.c:500
- exit_mmap+0x44c/0xb50 mm/mmap.c:1293
- __mmput+0x118/0x430 kernel/fork.c:1129
- exit_mm+0x1da/0x2c0 kernel/exit.c:582
- do_exit+0x648/0x2300 kernel/exit.c:949
- do_group_exit+0x21c/0x2d0 kernel/exit.c:1102
- get_signal+0x1286/0x1340 kernel/signal.c:3034
- arch_do_signal_or_restart+0x9a/0x750 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop+0x75/0x110 kernel/entry/common.c:40
- exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
- do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Memory state around the buggy address:
- ffff88804b2de400: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
- ffff88804b2de480: 00 00 00 00 00 00 00 00 00 fc fc fc fc fc fc fc
->ffff88804b2de500: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-                            ^
- ffff88804b2de580: 00 00 00 00 00 00 00 00 00 fc fc fc fc fc fc fc
- ffff88804b2de600: 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc fc
-==================================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
