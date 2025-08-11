@@ -1,80 +1,87 @@
-Return-Path: <linux-wireless+bounces-26239-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26240-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B49B1FCA3
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 00:12:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC82B1FE35
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 05:39:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C69DC3B6B5B
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 Aug 2025 22:12:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1C7817719D
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 03:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1AC2C3268;
-	Sun, 10 Aug 2025 22:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B7818CC13;
+	Mon, 11 Aug 2025 03:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F26lLuFU"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WC/qE3sm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441112C3261
-	for <linux-wireless@vger.kernel.org>; Sun, 10 Aug 2025 22:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60DF3FE7
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 03:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754863954; cv=none; b=gS6eTxyFFX4/2Paeo5KfT0e1tbcSMjYHWaoBIIQ9yY1+FRtCcWfBOj5n+qe3gJJRy3679bwDtfjdRk7A8YBgYmTk/Ni6Gsiy8hoPUe1OJXMqa7oBkH2Q2znGCIy5SDzsm+vhVGnigsVPbFQ2aJw5bUiq6mHBaNRe06qvWSkmoSg=
+	t=1754883547; cv=none; b=Mln9qrlJ6pWBClQAHxr6utjVdLNWiJh2N7mbE7vUlwQ7JNB9UtXsbyXB8do7LSjcxGOuX8yNZLC7Y3M0iBMQSohjkuaEE/hlI4uKLTdtOhb8Rn9sc3Rq4dGvljA1i98Zg2tVdpdXhtImn3dcSrUVxI5WYOzFfgY8or2BwuvPDZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754863954; c=relaxed/simple;
-	bh=o28l5PMWA788ICHV/wlCvqfXgrXCXQSpxNkVDhKZsp4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=CAa/IQvZc+P4X49fSPoWQVKL2hi+aMQGOMFY4EXZveIZtF1AEvqfm8D4Rpk0NHC8cxtV0qd9FJBHHvrdr2KCuD+dU6z06R7rWz2omZ5E9jrTIIvublv0kaqNU+GwsfskiFlCGPU1xbonYmcpF0t3Xo939M0wQ3bmN1aNN0xlXNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F26lLuFU; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-459e210bd2dso13464315e9.1
-        for <linux-wireless@vger.kernel.org>; Sun, 10 Aug 2025 15:12:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754863951; x=1755468751; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iWDqeurjOnoEIiR7QU7iOvFvcHziveqTFO86uqG6yBU=;
-        b=F26lLuFUNkFrN8+bu2nXK/yVGdk+hl2Zw+IE1wI2pgMpv3rkjNy1rF/mW0agVfyjh4
-         RONLlzAHP+LoYALih8awJQEmoRO4v9bi+qPl6nhqzsdU0hUEZh5USippcbpOZODnbWLs
-         XeQ1DaNhAo2y9Iw72Ao0UZ3I9/QC8fpaqwKjCK30MsqGXh0LCEvstfN0/82NY1bFhroC
-         fKc1sdy8cbHztxFEGOxnvGzN3/As92C96cAv+nQVD03+CctJmstr4F0iVpdiHKu7lpFM
-         xOng2xZv+4xqXC/NDwJErKY2JDPkAWWdN1b4At/pquC+mjl+2Let8w7JUcYI/V1lsoAm
-         Ot3g==
+	s=arc-20240116; t=1754883547; c=relaxed/simple;
+	bh=UKXIMrT2Im5is+rCn4dnrZDMosC6fGU2BCT6Wq0lgPI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t2k8mmSpRu8WnF4jFPBy6/aCAbWi1YgbpOAqvC5e4mfr9T081BNkxOUfXy1NO5kFzjb53+eGXaUUCj8fiBKcyl8/AJH9tjQmBA5Wsb02puz1EdzT+Jqax6W9a/r+1V+od3qVAqWZS9GAgo59BaEkI0Ljirjk9Z2WBmr0YzWSnTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WC/qE3sm; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57ADHKJP013685
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 03:39:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	xDApZTk2nZE28clF+a8J2J6VpLUbqhxAq5BNgHbqkVQ=; b=WC/qE3sm/sFHSjfM
+	Eq1frOQdIz3EYmhZ/Rt+FViEcfWEgdAeMTwPSnPbL/VqwNyR5jhuunseF/GN9Huq
+	GPy79k0grjX9xI1Cdz7+J2tDjgmVxiPasq5QMmkrKOyrF4XwjKaAterf4BUe9fVF
+	VJltC44rz6NCghASUn0WxQHi+uYetcrzDOWwOK0TkVBdfr+dWRy3xy+naMiK67Rd
+	XMWPuPS63gAqfTKpagrsDZNt6fCossLsL0I+uZpgYMoNYI9a+NWT7P3522VB3Ljf
+	qu5gSVAeVzJmZFQHt01QfkbfzCp9HZzehFQ4+qV57AhlKi1q8SvSy0yruPqnSSMP
+	I/LuOA==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48dygmaxbe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 03:39:05 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3132c1942a1so8720730a91.2
+        for <linux-wireless@vger.kernel.org>; Sun, 10 Aug 2025 20:39:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754863951; x=1755468751;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1754883544; x=1755488344;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iWDqeurjOnoEIiR7QU7iOvFvcHziveqTFO86uqG6yBU=;
-        b=uUZ2REDNKkJjnAMiIvUfaDdL1lrPYN0NmwFNhnX5RHNm0hcSiw0ZCMRw5F9kWu4WMq
-         JUnMQRCOvfTyQD4qG6SjmhqFQ5k/xMXgebM6vDIRdDICzap9FeT2gNIuTCp4rvNlt5wj
-         ZwIKdShrmGr4ob3LzTWqhz7LgTjLv+vg4+bXsAMC5CCAXXsVKKNFyt8iVCsjEIataNxm
-         HZXkGUlem3sOoCMvKW1+OpVgEjcwDQ48ZIZNis9AYRfHd0qrua7Nv/PYatoN+h96qZFY
-         1tj9JAzNZnDSucRiu2DD3cUEXLoQcrHtUO21y12b/Ch3MzUt2ua5bPoKKOy3H05eyh3t
-         dcgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUlFT3gRCS9SRb/qJzh6Ji3StVYLnoXMPUtWJ2+ZKcCnZd2q23U2L+iFsPvNBfw93edjwI/EVlJ/tDo6J3aWQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydrXg/1wc/jdmxsuRoQlx/ymdnPtDvuYIIaiBTBsDUjyMkAXQ/
-	Rzto8vUsa+behN32QumWZaHItbF9uB+NzDjy1XgqGz/Zrd+I8vh7+c9f
-X-Gm-Gg: ASbGncs0hwsmhGkL6L8YlgpAorvx4wYugt1cZgcj2NCUKX8BCEHxghRQGaIWSFaiYUR
-	J0Iuj5gIN1zNAvmrRDt52oA3WZ+e9awh8uTgphquD5adWmdpxMAS//gG/BP3XufUzrq9lYGNO91
-	YNCcl5S+apb+gMfjyVDp+a0jR1om2Iqup3Jbxlrs5YP2NeM1j+Bdfm2TRLBhrN0lKbYpw/Vf1Yg
-	ws0zxl20q9uavWOU2hL2CiR+TslSZyxQy/43H3gQuM0xM0uQvfV+gqrOQfv3guQP427G8F62aWB
-	vTNboQ3wyGYlK7e7f+9Z/wLAXmBCcbypp8xtUukktlOuCNarhDkGhao7ijT0SQrS81oo2rJGRUf
-	En82T0g7aKxhFTyyYLc95WsJXj3Caog==
-X-Google-Smtp-Source: AGHT+IH/PxptJG+JOiMGledePF8BdQB1tm5RRBPuAcd45Yz+KbUBlLWrhO7X31YCGGeLWAq9fN3FJw==
-X-Received: by 2002:a05:6000:4308:b0:3b7:915c:5fa3 with SMTP id ffacd0b85a97d-3b900fe7e69mr10225832f8f.24.1754863951443;
-        Sun, 10 Aug 2025 15:12:31 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b8e0bfc79fsm27820976f8f.56.2025.08.10.15.12.30
+        bh=xDApZTk2nZE28clF+a8J2J6VpLUbqhxAq5BNgHbqkVQ=;
+        b=JAfT8qoP/46IO0Muj2oL19jHLSF+6oYsaBnCHp0+y43BzXw8rPcHUCYOmEx2pX6BtV
+         2NaMHiM1nRqvTwyKJscmPrTVvqw8wPT1ysX6fS5AO7owRY4jiJaVcpZd1S0a6iB3wuhc
+         gl/ht2A3lwgSZ2wpAZd9I7DqANtCJBrY3qjAz2+qGCqeV7A2XbE3Hkl5caW9lqVRwksm
+         n4uu/8ul/U0CxY3l5P1Vh9KylkBngpvwd8cZsPwK9I6BcAnauVUQGuP61Z/NbPxWBGq4
+         8sqU8bqQO9OSLOeLMSzi/hw3mLIIpW7AO90vQiGUaRbPneUgg/Fe3SIbekRVvvS9bCc0
+         OX1A==
+X-Gm-Message-State: AOJu0YzO+HPiurGt63GjSYzSV1YCcnV/9A+cE/2LjgGR+QmskzBoOVOq
+	p5PHo5GPhwBq3yZEfzbMDnvs8YdPTAZf4yadIrt1sVTrp1nCmI5po5ZME9dHuf0mkKxjoWbAK/7
+	2OKE/0U1kj0+G4J2qliWHbztk6nhf5yem9S0EYikfoGdSOYuDgngvvBWnRarcRBoNeeKZcA==
+X-Gm-Gg: ASbGncu1PUtWxSfmOcrMzDDkOwq82nlrbI/cjAgWhCYaQ/O2FwWy2RO9UbZ05T02siv
+	f/VFP+DtABzmjkCc0ReWHdTT7lFwZ3hHGYogkcINwkwCzpOP6oa9r6NvI5/tiAVK417g76L8qiS
+	Kp36tGCltnXuMKwAEWpU6NtG9Sir5F4WN+4bn//jTeHZMyf45rgOzxELYuTQBYqTeBrepx6/v7Z
+	df36vPd8138Cj2MGvRwRW9wgJqNlxOSNsHC22movvYcBRR9Mwyqnz6erLgq729/9MZn+d3kRUaX
+	K00fQ7RLndSWQUKyCOdZTFcLIMQBIP/2aVxzOHy2GhvMBeINyv3Td40Qa+MaBCit0S5ivJ/7SzN
+	s3Ute/7KZnSuK3usUj2yk4JyW2pMaQ6Y=
+X-Received: by 2002:a17:90b:3846:b0:321:a2cf:9da9 with SMTP id 98e67ed59e1d1-321a2cf9f2emr7030255a91.15.1754883544151;
+        Sun, 10 Aug 2025 20:39:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHzovdnuZMOGoG7rJstD57pdUxuFXM7ZTxP1dKosD3H+FktIX9xerVzG52tcd1z3eHsTxfakA==
+X-Received: by 2002:a17:90b:3846:b0:321:a2cf:9da9 with SMTP id 98e67ed59e1d1-321a2cf9f2emr7030228a91.15.1754883543728;
+        Sun, 10 Aug 2025 20:39:03 -0700 (PDT)
+Received: from [10.133.33.19] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b43c54fbce4sm3786625a12.55.2025.08.10.20.39.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 10 Aug 2025 15:12:31 -0700 (PDT)
-Message-ID: <015e5657-d21e-4214-9854-975c32b1990f@gmail.com>
-Date: Mon, 11 Aug 2025 01:12:29 +0300
+        Sun, 10 Aug 2025 20:39:03 -0700 (PDT)
+Message-ID: <d52c8078-7416-45c9-8b5e-e3a80ef6ed1d@oss.qualcomm.com>
+Date: Mon, 11 Aug 2025 11:38:57 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,79 +89,75 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: RTL8188S WLAN Adapter failure
-To: Helge Deller <deller@gmx.de>, Jes.Sorensen@gmail.com,
- Ping-Ke Shih <pkshih@realtek.com>,
- linux-wireless <linux-wireless@vger.kernel.org>
-References: <ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de>
+Subject: Re: [PATCH ath-next 0/2] wifi: ath12k: fix 2 instances of Smatch
+ warnings
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Baochen Qiang <quic_bqiang@quicinc.com>,
+        Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>
+References: <20250804-ath12k-fix-smatch-warning-on-6g-vlp-v1-0-56f1e54152ab@oss.qualcomm.com>
+ <81440d36-9729-4eb5-aa30-d94d0f85b7a1@oss.qualcomm.com>
 Content-Language: en-US
-In-Reply-To: <ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+In-Reply-To: <81440d36-9729-4eb5-aa30-d94d0f85b7a1@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA5MDAzNSBTYWx0ZWRfX0rATbqcNNDAQ
+ li2h13xhzSkhMiCRGtXGiM+QDlFoIqYcORvUjNpF8Wj9racY1G0EVh1PCw0onBQemgFTNs3pN2f
+ tGyyxeRrYwSF1yzH5YUT96vx9qsTHMU0B2QYjZ9bAAv4Po9eST2uiV15G+N83EkRPckmj7Q3XU9
+ KP3ol0Eij5MVGZgWl5BPA4kZDTcQQCbdctq23OUX71JzDAjn0JevI++3qiwvX4QrgBtFfceM8O+
+ IO+BDBZWBvdqwdgjLBMmP46DrADv/VJTRLsNfljvC4oHiwcSSvVow0gVULZdVRLy3wcX761T8Oy
+ 5o3J+jKw6EPIu0Fsq38jIwutYnAqJ2RB6CulXdiqC0CDSomEAnS7DvPgaGMPnzfEp46lgQe7k56
+ IyeRE7VI
+X-Authority-Analysis: v=2.4 cv=FvMF/3rq c=1 sm=1 tr=0 ts=689965d9 cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=4rEXVySGOu1P5TZAaAMA:9
+ a=QEXdDO2ut3YA:10 a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-GUID: RqGv7KDPxPqr7dA1YjoYWz_OWEagozAo
+X-Proofpoint-ORIG-GUID: RqGv7KDPxPqr7dA1YjoYWz_OWEagozAo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-10_06,2025-08-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 suspectscore=0 phishscore=0
+ clxscore=1015 impostorscore=0 spamscore=0 adultscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508090035
 
-On 10/08/2025 23:36, Helge Deller wrote:
-> The USB dongle which came with my DreamBox DM7020HD years ago seems to fail now.
-> Any idea or suggestion what I should try?
+
+
+On 8/6/2025 10:10 PM, Jeff Johnson wrote:
+> On 8/3/2025 8:03 PM, Baochen Qiang wrote:
+>> Fix below two Smatch warnings:
+>>
+>> 1#
+>> drivers/net/wireless/ath/ath12k/mac.c:10069
+>> ath12k_mac_fill_reg_tpc_info() error: uninitialized symbol 'eirp_power'.
+>>
+>> 2#
+>> drivers/net/wireless/ath/ath12k/mac.c:9812
+>> ath12k_mac_parse_tx_pwr_env() error: buffer overflow 'local_non_psd->power' 5 <= 15
+>> drivers/net/wireless/ath/ath12k/mac.c:9812
+>> ath12k_mac_parse_tx_pwr_env() error: buffer overflow 'reg_non_psd->power' 5 <= 15
+>>
+>> Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+>> ---
+>> Baochen Qiang (2):
+>>       wifi: ath12k: initialize eirp_power before use
+>>       wifi: ath12k: fix overflow warning on num_pwr_levels
+>>
+>>  drivers/net/wireless/ath/ath12k/mac.c | 16 ++++++++++------
+>>  1 file changed, 10 insertions(+), 6 deletions(-)
 > 
-> [427792.562049] usb 3-7: new high-speed USB device number 56 using xhci_hcd
-> [427792.689358] usb 3-7: New USB device found, idVendor=07b8, idProduct=8188, bcdDevice= 2.00
-> [427792.689376] usb 3-7: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-> [427792.689381] usb 3-7: Product: RTL8188S WLAN Adapter
-> [427792.689385] usb 3-7: Manufacturer: Manufacturer Realtek
-> [427792.689388] usb 3-7: SerialNumber: 00e04c000001
-> [427792.695145] usb 3-7: This Realtek USB WiFi dongle (0x07b8:0x8188) is untested!
-> [427792.695151] usb 3-7: Please report results to Jes.Sorensen@gmail.com
-> [427792.934142] usb 3-7: Dumping efuse for RTL8188CU (0x200 bytes):
-> [427792.934151] 00000000: 29 81 00 00 a9 16 00 00 b8 07 88 81 90 85 62 9c  ).............b.
-> [427792.934155] 00000010: 06 00 ec f0 0e 16 44 3f 17 03 4d 61 6e 75 66 61  ......D?..Manufa
-> [427792.934157] 00000020: 63 74 75 72 65 72 20 52 65 61 6c 74 65 6b 20 18  cturer Realtek .
-> [427792.934159] 00000030: 03 52 54 4c 38 31 38 38 53 20 57 4c 41 4e 20 41  .RTL8188S WLAN A
-> [427792.934160] 00000040: 64 61 70 74 65 72 20 00 00 00 00 00 00 00 00 00  dapter .........
-> [427792.934162] 00000050: 06 02 00 00 00 24 24 24 00 00 00 26 26 26 00 00  .....$$$...&&&..
-> [427792.934163] 00000060: 00 00 00 00 00 00 00 00 12 00 00 09 0d 00 00 00  ................
-> [427792.934164] 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-> [427792.934166] 00000080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934167] 00000090: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934168] 000000a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934170] 000000b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934171] 000000c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934172] 000000d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934174] 000000e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934175] 000000f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934176] 00000100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934178] 00000110: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934179] 00000120: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934180] 00000130: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934182] 00000140: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934183] 00000150: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934184] 00000160: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934186] 00000170: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934187] 00000180: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934188] 00000190: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934190] 000001a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934191] 000001b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934192] 000001c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934193] 000001d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934195] 000001e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934196] 000001f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-> [427792.934198] usb 3-7: RTL8188CU rev A (TSMC) romver 0, 1T1R, TX queues 3, WiFi=1, BT=0, GPS=0, HI PA=0
-> [427792.934203] usb 3-7: RTL8188CU MAC: 44:3f:17:03:4d:61
-> [427792.934206] usb 3-7: rtl8xxxu: Loading firmware rtlwifi/rtl8192cufw_TMSC.bin
-> [427792.938371] usb 3-7: Firmware revision 88.2 (signature 0x88c1)
-> [427792.939417] rtl8192cu_power_on: Enabling LDOV12D (24)
-> [427793.115145] rtl8192cu_power_on: FSMCO_MAC_ENABLE poll failed
-> [427793.115156] usb 3-7: rtl8xxxu_init_device: Failed power on
-> [427793.116003] rtl8xxxu 3-7:1.0: probe with driver rtl8xxxu failed with error -16
+> Since this is fixing smatch issues I plan on taking this through ath-current
+> instead of ath-next.
+
+Sure, fine with me.
+
 > 
+> /jeff
 
-Your dongle has the RTL8188SU chip inside. rtl8xxxu and rtl8192cu
-are not the right drivers.
-
-The right driver is r8712u, but it was removed in kernel 6.13.
-You can use kernel 6.12. Or you can compile r8712u for your current
-kernel. Maybe r8712u could even be accepted back in the kernel if
-you convert it to use mac80211/cfg80211.
-
-https://lore.kernel.org/linux-staging/20241020144933.10956-1-philipp.g.hortmann@gmail.com/
 
