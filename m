@@ -1,185 +1,147 @@
-Return-Path: <linux-wireless+bounces-26262-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26263-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB826B2096B
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 14:56:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 239A4B209B0
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 15:10:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ADD218A5089
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 12:56:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4804423A42
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 13:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685092D3ECE;
-	Mon, 11 Aug 2025 12:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609622DAFA0;
+	Mon, 11 Aug 2025 13:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DkeUW0is"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ojjnhV8s"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB9E171D2
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 12:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDCC2D837F
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 13:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754916967; cv=none; b=m0w9zjmgggaaFrbOSMgSLCHoKXIA31vu/cnLLy0cGf88pajNNqB8ZpBSGEMPI+Y8WlsRWgKU4S4Le970wpvpitksa4IlQP4IFHI4EyvfDkDpZFT6mo+/B6nBQX9RhX68868FPbIyFbgESdHxfQs5HpN+jYv72DbVCtvuM0j42n0=
+	t=1754917840; cv=none; b=HzH9+FaKnIct3VupysKDeVoDjxwlJqOfydHv3pvMPxmR3hEqaf/p1Mjef38l+aPI8f58ARt1KthO+2gyueZReGNjIjK99Ta/cW5DweedafVI82ijXaYYDx4ofd8V7vLlW/t8clt6mVdDyUADOZYDYBmKix6J5wYzv1F28PJyB/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754916967; c=relaxed/simple;
-	bh=t/oSwQAYhyK1o8La4kkyv/XwhU9KE4xln07TmrJvpH0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Abl41uSZfd3s98vedFIqrNxgjM1dWlnAOM5J68a1w4KWpTDUNruMUC673xPXPNH9cooYyook3ZdFY2UYheDAm2zsq7+kus2dzKY7zo025PQooRFe+ASvTxqftbIpVl/yhS3tuqzAXiJLD0xU2ZekDnb+qKIyIu9CQ1kmn2FIEf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DkeUW0is; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-458bdde7dedso29142355e9.0
-        for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 05:56:05 -0700 (PDT)
+	s=arc-20240116; t=1754917840; c=relaxed/simple;
+	bh=YdcvZYKwitUcECgcbI2UhLZ6metpTwEak9n/5y6m0SA=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AqOT7HU0VumjmdCQaM+EM6ACssesCkWsNTQS7GnDAk8drgTHw0iUCP/pQEIbi5Odpb1c3OocF2z/Bx8ZbVrxMg8etiXQayis6mSlcVg9BJX140yP2vnpqaOH+RTdX+Dm7/+fw8YBXVsIDQtASUfLWXtg4yf4fQw1yGCB4ZOhgkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ojjnhV8s; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-76bd041c431so3681559b3a.2
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 06:10:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754916963; x=1755521763; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NMWzX+9y7BUx4BPnll+4VDgcpm9So3eJPyfbV44hLqs=;
-        b=DkeUW0isAHtlR+poqNHBr83MlIgCwZp4OoLU5nocYYf8FxgtDda1LMDUHUnVVVBoAu
-         Prz0i4/DbOaoUNGFUVxWwSQy54sWSEJngPCgvFkF0Etn1xAFP+SD4XoauRFLuwgEqf6D
-         SiTS6RNVIl2Que2ml6LfpZzPhxQeTAGDOSOwKprPJPwUxkSp/kEM4KyHAxqgCzoMeg9w
-         222k7UQ1BgBvE9OZ676+0vv/N8OMoMcNwgNZ+yDkeKNcurFB4LSsYCUgttseqxlbTCM8
-         Ux02aX5q40S9DE2nk+9u7l2M3KSJNhYc1Jq3SVOGP2BDmm4PCUZTw3zfe/vtLnuxQlpD
-         7SLg==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1754917837; x=1755522637; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:references:mime-version:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YdcvZYKwitUcECgcbI2UhLZ6metpTwEak9n/5y6m0SA=;
+        b=ojjnhV8sG5RePBCOlfNn+HKKrpovehYP/8l1sr0vNYpFHhYyNj9xWMV43bJeaTo+kp
+         pGJmmwo0JTwJGp+EMoH+TiRmSHHwCWtSKYf/ADQ+n41Fq7MLbvF4puoYKzMZIfAb5Yr5
+         rfyUeS8+hBywvWWe45et8EVilsYHrox7Ct03tWZtWfpes3F5MB7MSmpvGYu3l/KMy0Lm
+         Xz5nZcHYvM5pMpkmNGOifNAmrO7N485x8Dy3qu1/BQr+p2mpzG31DunBz5mKNnrnKK8W
+         RdKVIPz8XNIoKoiGQOe1wq9OXTmtM2HvY5MHwnIuZgNfLGAMI4k+PY6m2DfBQiYd+C7+
+         Xhsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754916963; x=1755521763;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NMWzX+9y7BUx4BPnll+4VDgcpm9So3eJPyfbV44hLqs=;
-        b=xTMnoMWkTS/g85lqRVNq8ox9cp65qAwAVCLFpRLoacwAes0JlINCyyj762nQqOTu/D
-         B8cHfKRI8Lro3kSRCtRZaYKlY/aOlgjjrYX3avUqr5yvWEJRSIrIv+K6U8H1j79UGG/W
-         6HpL+dmgiuizA/vfNOoU0jxFcCwoBS3chS0aKZl3st7aQsyxZXRQjYHqrV8M2UBSdCOu
-         INlCTxIcXMs7tuL/f1bSHKewXb070EkbaBrcv/L3Ng3g6lODETegdkZupIZr1gT/jrSt
-         NE0Np8PCtMaTB17t5pZaqGo24VWMgwyPBs85QAo6YG31rB518lS90exyX+nj2CTtkmL4
-         i2yA==
-X-Forwarded-Encrypted: i=1; AJvYcCXoQ9X73ZLtkKKIhZltgBmhAaNGnyCU6+x5MYKYyinjDm/yJ/hV7Al1pV/8mwO58q574HbkVozNBVmwCU7dZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcwmzsPr7Bidi2Jb1PLGokNsJZkSN8cxtBikBVLL6I2KCcZXEd
-	nMqCkoHFJ3Bwk+LukNAj2YvQFPQgdxv5Ma5kTVWUH/3qo1di50yzAUjfLqRyng==
-X-Gm-Gg: ASbGnctNQFUAYyF6E8+Yxz3u4Xn04Git9q9wt3kNybN14fejRvzkH+DV7L8TPAPXL6f
-	j0sI2f3x+a6Uy0tIv3cEME8CYYP0+MPIpawCegXJIAmEOECFMBiuyAN1YX3OEzmMz3W+xRrYdEu
-	NwdkXINRPoeyivNXWZG2EIGjVYZTUcNMKmAxKtBSv5u8vvaqQ63LFzjLRHCmc1OH7eyYoVaJRhT
-	fj8FxNxsFmjsiWZjTOacjVQJTdVGQ1Cz54suaOGLaPW+LHJS5ncueJKorGizfVm9RMfut2Po2Sw
-	zKbZCJF4A85tgWuQ2byZl2Sl5tk7RdNG+qdFE/0ZIzxoWmkrfeq9FlEqkwytCESYIgyopZ14PCv
-	Nj4hl88TA3iLV605q/13Z2Wc/OJ74yQ==
-X-Google-Smtp-Source: AGHT+IEysF2v8pm587z/XR5lNtCO1yU/TLWezNz/qOOjRLyUVODEMN/fFAjE7OwhJWnPoJbQZoIWyg==
-X-Received: by 2002:a05:600c:4746:b0:453:23fe:ca86 with SMTP id 5b1f17b1804b1-459f4ea0f2dmr118866765e9.4.1754916963299;
-        Mon, 11 Aug 2025 05:56:03 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e5843021sm274596055e9.3.2025.08.11.05.56.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 05:56:02 -0700 (PDT)
-Message-ID: <aed4c8cb-b265-444d-a17c-eb464cf4dd78@gmail.com>
-Date: Mon, 11 Aug 2025 15:56:01 +0300
+        d=1e100.net; s=20230601; t=1754917837; x=1755522637;
+        h=cc:to:subject:message-id:date:references:mime-version:in-reply-to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YdcvZYKwitUcECgcbI2UhLZ6metpTwEak9n/5y6m0SA=;
+        b=IrmoiWazs/HadNqvoPpkcFAxOJsV3H6ZD6tU/9RMpoYdDI881FJ2kF6DYE891a2YAS
+         IwJl3q33WTJsn80nlK/Yk24bGq9p33mt8dFHdHmLBqTP9U3+wWsKhHFfLOgUgRMK5rMo
+         tsPm17JAtrj+bHI0TJIRS+U5IQyCoeIF1UNh0i5ePtR78ZWIG0dZWa0DNZBU3NytmTmG
+         v5AV2yhfzxYWFvk+W9FQK5F1qpImeU6rptU+Pmu6Y/pAwgsAU0MYu+y+yVCmbzUeqdJq
+         LFQrSKhZYTqXSevGlKPF1rU04GaxzZKqYOf2qOeSHpaiwG0UqmiuIVPITW3L3uA7t8nC
+         hKqA==
+X-Forwarded-Encrypted: i=1; AJvYcCXVanS/YGf14I3k4uyaiVv+DXqhfAtl6E1HVwYPWHTtBONg4KH3eW6cQcn85+5LQ5hTBsdPGHR1+ERfOpaxew==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyf0Pqn7vF/iygSAUxiyD6jp7BhElh36CmCJUHZzvIPVmmze/4g
+	bGQyOgdBMNqxe+CSpyljOrg0ptji7oVbuDaLqz0MEhGTze5wIc/Iy1FUFSGmRlXXcPEriPeeaTi
+	OhXRNTjBVn5az92jXSbaiLFKnEqbLWADQiKG8E7PmRw==
+X-Gm-Gg: ASbGnct3VcjKZS1Enygs+pms+iLeV8GD5iJeKMCBHW57rk011OZr/x2s0ncBZ9QnYnr
+	B4GWam4izbW4NAzKOa0UZ0EtyZgOjVfmuFKwBbfxCcG7xfeeEugxtA2+4Njd5Xb/7ScZrgFATiq
+	lCoe/iSTxYPxF7meVqJujDGWDRWrND4kfAjrnxhy2ZQxAH5I0yx4g9IPUFskpZTPXE82KfSBXHx
+	3e+F1t79YPeaIlFV7NHXapTczVTu58xWIRAJsY=
+X-Google-Smtp-Source: AGHT+IEgMvtsNpCEbzm+bQO3Dq6oVeggGu7qnt+f1HYUPfLnzNmxpfjIx2ohdBUK5XJ+fhQGIjFsq0lNMPvywZaOZwE=
+X-Received: by 2002:a17:903:32cb:b0:240:96a:b812 with SMTP id
+ d9443c01a7336-242c203d030mr203994295ad.24.1754917837398; Mon, 11 Aug 2025
+ 06:10:37 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 11 Aug 2025 06:10:31 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 11 Aug 2025 06:10:31 -0700
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+In-Reply-To: <20250808151822.536879-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: RTL8188S WLAN Adapter failure
-To: Helge Deller <deller@gmx.de>, Jes.Sorensen@gmail.com,
- Ping-Ke Shih <pkshih@realtek.com>,
- linux-wireless <linux-wireless@vger.kernel.org>
-References: <ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de>
- <015e5657-d21e-4214-9854-975c32b1990f@gmail.com>
- <34e345ed-a114-494a-b3f7-72dfab6b628a@gmx.de>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <34e345ed-a114-494a-b3f7-72dfab6b628a@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250808151822.536879-1-arnd@kernel.org>
+Date: Mon, 11 Aug 2025 06:10:31 -0700
+X-Gm-Features: Ac12FXxi-t7kK_6HIDwsxWJsHZcp5BcOM26Y8X32Zi2av6pcVu6UuipKim4OtEQ
+Message-ID: <CAMRc=MeyW8gtG_hsLWytCpufQRmg3s5QZenxCvP3MNGmaoo2cA@mail.gmail.com>
+Subject: Re: [PATCH 00/21] gpiolib: fence off legacy interfaces
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Andrew Lunn <andrew@lunn.ch>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+	Gregory Clement <gregory.clement@bootlin.com>, Russell King <linux@armlinux.org.uk>, 
+	Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
+	Robert Jarzmik <robert.jarzmik@free.fr>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Lee Jones <lee@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Matti Vaittinen <mazziesaccount@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Jeff Johnson <jjohnson@kernel.org>, Hans de Goede <hansg@kernel.org>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	"Dr. David Alan Gilbert" <linux@treblig.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-sh@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-leds@vger.kernel.org, linux-media@vger.kernel.org, 
+	patches@opensource.cirrus.com, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+	platform-driver-x86@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-sound@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/08/2025 14:46, Helge Deller wrote:
-> On 8/11/25 00:12, Bitterblue Smith wrote:
->> On 10/08/2025 23:36, Helge Deller wrote:
->>> The USB dongle which came with my DreamBox DM7020HD years ago seems to fail now.
->>> Any idea or suggestion what I should try?
->>>
->>> [427792.562049] usb 3-7: new high-speed USB device number 56 using xhci_hcd
->>> [427792.689358] usb 3-7: New USB device found, idVendor=07b8, idProduct=8188, bcdDevice= 2.00
->>> [427792.689376] usb 3-7: New USB device strings: Mfr=1, Product=2, SerialNumber=3
->>> [427792.689381] usb 3-7: Product: RTL8188S WLAN Adapter
->>> [427792.689385] usb 3-7: Manufacturer: Manufacturer Realtek
->>> [427792.689388] usb 3-7: SerialNumber: 00e04c000001
->>> [427792.695145] usb 3-7: This Realtek USB WiFi dongle (0x07b8:0x8188) is untested!
->>> [427792.695151] usb 3-7: Please report results to Jes.Sorensen@gmail.com
->>> [427792.934142] usb 3-7: Dumping efuse for RTL8188CU (0x200 bytes):
->>> [427792.934151] 00000000: 29 81 00 00 a9 16 00 00 b8 07 88 81 90 85 62 9c  ).............b.
->>> [427792.934155] 00000010: 06 00 ec f0 0e 16 44 3f 17 03 4d 61 6e 75 66 61  ......D?..Manufa
->>> [427792.934157] 00000020: 63 74 75 72 65 72 20 52 65 61 6c 74 65 6b 20 18  cturer Realtek .
->>> [427792.934159] 00000030: 03 52 54 4c 38 31 38 38 53 20 57 4c 41 4e 20 41  .RTL8188S WLAN A
->>> [427792.934160] 00000040: 64 61 70 74 65 72 20 00 00 00 00 00 00 00 00 00  dapter .........
->>> [427792.934162] 00000050: 06 02 00 00 00 24 24 24 00 00 00 26 26 26 00 00  .....$$$...&&&..
->>> [427792.934163] 00000060: 00 00 00 00 00 00 00 00 12 00 00 09 0d 00 00 00  ................
->>> [427792.934164] 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->>> [427792.934166] 00000080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934167] 00000090: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934168] 000000a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934170] 000000b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934171] 000000c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934172] 000000d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934174] 000000e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934175] 000000f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934176] 00000100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934178] 00000110: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934179] 00000120: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934180] 00000130: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934182] 00000140: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934183] 00000150: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934184] 00000160: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934186] 00000170: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934187] 00000180: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934188] 00000190: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934190] 000001a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934191] 000001b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934192] 000001c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934193] 000001d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934195] 000001e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934196] 000001f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
->>> [427792.934198] usb 3-7: RTL8188CU rev A (TSMC) romver 0, 1T1R, TX queues 3, WiFi=1, BT=0, GPS=0, HI PA=0
->>> [427792.934203] usb 3-7: RTL8188CU MAC: 44:3f:17:03:4d:61
->>> [427792.934206] usb 3-7: rtl8xxxu: Loading firmware rtlwifi/rtl8192cufw_TMSC.bin
->>> [427792.938371] usb 3-7: Firmware revision 88.2 (signature 0x88c1)
->>> [427792.939417] rtl8192cu_power_on: Enabling LDOV12D (24)
->>> [427793.115145] rtl8192cu_power_on: FSMCO_MAC_ENABLE poll failed
->>> [427793.115156] usb 3-7: rtl8xxxu_init_device: Failed power on
->>> [427793.116003] rtl8xxxu 3-7:1.0: probe with driver rtl8xxxu failed with error -16
->>>
->>
->> Your dongle has the RTL8188SU chip inside. rtl8xxxu and rtl8192cu
->> are not the right drivers.
->>
->> The right driver is r8712u, but it was removed in kernel 6.13.
-> 
-> Ah, ok.
-> 
->> You can use kernel 6.12. Or you can compile r8712u for your current
->> kernel. Maybe r8712u could even be accepted back in the kernel if
->> you convert it to use mac80211/cfg80211.
->> https://lore.kernel.org/linux-staging/20241020144933.10956-1-philipp.g.hortmann@gmail.com/
-> 
-> According to that commit message, a replacement with MAC80211 support
-> is available at https://github.com/chunkeey/rtl8192su
-> But development on it seems to have stopped some years ago.
-> Is there any specific reason for this?
+On Fri, 8 Aug 2025 17:17:44 +0200, Arnd Bergmann <arnd@kernel.org> said:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> Commit 678bae2eaa81 ("gpiolib: make legacy interfaces optional") was
+> merged for linux-6.17, so now it is possible to use the legacy interfaces
+> conditionally and eventually have the support left out of the kernel
+> whenever it is not needed.
+>
+> I created six patches to force-enable CONFIG_GPIOLIB_LEGACY on the
+> few (mostly ancient) platforms that still require this, plus a set of
+> patches to either add the corresponding Kconfig dependencies that make
+> the device drivers conditional on that symbol, or change them to no
+> longer require it.
+>
+> The final patch ends up turning the Kconfig symbol off by default,
+> which of course depends on everything else getting merged first to avoid
+> build errors.
+>
+> I would suggest that patches 1-20 can just get merged through the
+> respective maintainer trees independently when they are deemed ready,
+> and the final patch can wait another merge window.
+>
 
-I think the people working on it ran into some problems with the
-driver/firmware and also didn't have time for it anymore:
+Oh, not at all, I'm fine sending a second PR late into the merge window to
+get that done in a single cycle.
 
-https://lore.kernel.org/linux-wireless/3717687.FpcDfXaOEr@debian64/
+Thanks for doing this, awesome work!
 
-> I have no clue on wireless development, so if I'm willing to test this
-> driver and provide feedback, would someone be interested and may help to bring
-> it upstream? Or doesn't it make sense to invest the time in that?
-> 
-> Helge
-
-The work has to be done by someone who has the hardware. That makes
-you the best candidate for the job.
+Bartosz
 
