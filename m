@@ -1,199 +1,185 @@
-Return-Path: <linux-wireless+bounces-26261-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26262-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23156B2090B
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 14:41:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB826B2096B
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 14:56:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61A1318A391F
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 12:41:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ADD218A5089
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 12:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0AA145A05;
-	Mon, 11 Aug 2025 12:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685092D3ECE;
+	Mon, 11 Aug 2025 12:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="pQlLkDgZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DkeUW0is"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE45323B613
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 12:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB9E171D2
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 12:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754916047; cv=none; b=iwCt5wjK5XdxtM7bunhMvF0dUQMC43IU501k82k4l1ZfMWR2I1BP7cnu/JObhgJJC0BV5aYBBxsf+MoJDCHSaD8QRHSKST4cEhOp6gYb+RZ8voM2yOHh3goUeBpMje7jGdrwkmTBJH6pK3fd+9M21x68p5HzysHoeldAaRm0Hak=
+	t=1754916967; cv=none; b=m0w9zjmgggaaFrbOSMgSLCHoKXIA31vu/cnLLy0cGf88pajNNqB8ZpBSGEMPI+Y8WlsRWgKU4S4Le970wpvpitksa4IlQP4IFHI4EyvfDkDpZFT6mo+/B6nBQX9RhX68868FPbIyFbgESdHxfQs5HpN+jYv72DbVCtvuM0j42n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754916047; c=relaxed/simple;
-	bh=ce+Vnm3Tzh2kHxwjGx5B54u4Rqr5tZjL5YNBMtMefOM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y5ukaPPae7DHzTftYcf+rO8f51U0nEioQAVL3k7XEHGDn++Ycy/mJ2WXI56f00xo0C/PI8MaoOoOkWRCXSvGrBo7lc269TtpLATfqxIxG2TkswTJVDgW5YtRbcvXQzVyufA5beaXi7F5Y7QYXI6WLEc6ttJqtllxj6kUtw20Puw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=pQlLkDgZ; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57BCegJ23074079, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1754916042; bh=ivTc7yBaajPd3y53cT5OCTV5wI9kQv1j4lyXH/ZdFJo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=pQlLkDgZuVpW+c5myFA9/wnOVOA4H/FCDSPZKy0kaJn8zJLaCWwwB7yHYIlRhMMyc
-	 zLsTStAiA1fv5dT0XMz5jIlfzk5ScCVbsshcuW+GvyDX64BMg5zDsxdW+v6QJ+SlNO
-	 1GQjmykzbUtPeQSRjYgtxh/Fxqa4UIuJrE8x7RAUmDm0kYZgM6Oxwxqrwux4qBRLs9
-	 CEL0AtP/zi2vTH6lM06r7Oxfu/RxB47U88EWUr5hFHNcFxDUkao284tRQqeO5d+Btq
-	 6sx3tSPdndknpeWq7YSzkNH/sE8dE4b1gmBT5UTQfI+PP8bNYZnhDP55wAqcQw2GKP
-	 uIiJsC6fiBHYA==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57BCegJ23074079
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 20:40:42 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 11 Aug 2025 20:40:42 +0800
-Received: from [127.0.1.1] (10.22.225.179) by RTKEXHMBS06.realtek.com.tw
- (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 11 Aug
- 2025 20:40:41 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <gary.chang@realtek.com>, <damon.chen@realtek.com>
-Subject: [PATCH rtw-next 8/8] wifi: rtw89: fix group frames loss when connected to non-transmitted BSSID
-Date: Mon, 11 Aug 2025 20:40:01 +0800
-Message-ID: <20250811124001.15774-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250811123744.15361-1-pkshih@realtek.com>
-References: <20250811123744.15361-1-pkshih@realtek.com>
+	s=arc-20240116; t=1754916967; c=relaxed/simple;
+	bh=t/oSwQAYhyK1o8La4kkyv/XwhU9KE4xln07TmrJvpH0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Abl41uSZfd3s98vedFIqrNxgjM1dWlnAOM5J68a1w4KWpTDUNruMUC673xPXPNH9cooYyook3ZdFY2UYheDAm2zsq7+kus2dzKY7zo025PQooRFe+ASvTxqftbIpVl/yhS3tuqzAXiJLD0xU2ZekDnb+qKIyIu9CQ1kmn2FIEf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DkeUW0is; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-458bdde7dedso29142355e9.0
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Aug 2025 05:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754916963; x=1755521763; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NMWzX+9y7BUx4BPnll+4VDgcpm9So3eJPyfbV44hLqs=;
+        b=DkeUW0isAHtlR+poqNHBr83MlIgCwZp4OoLU5nocYYf8FxgtDda1LMDUHUnVVVBoAu
+         Prz0i4/DbOaoUNGFUVxWwSQy54sWSEJngPCgvFkF0Etn1xAFP+SD4XoauRFLuwgEqf6D
+         SiTS6RNVIl2Que2ml6LfpZzPhxQeTAGDOSOwKprPJPwUxkSp/kEM4KyHAxqgCzoMeg9w
+         222k7UQ1BgBvE9OZ676+0vv/N8OMoMcNwgNZ+yDkeKNcurFB4LSsYCUgttseqxlbTCM8
+         Ux02aX5q40S9DE2nk+9u7l2M3KSJNhYc1Jq3SVOGP2BDmm4PCUZTw3zfe/vtLnuxQlpD
+         7SLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754916963; x=1755521763;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NMWzX+9y7BUx4BPnll+4VDgcpm9So3eJPyfbV44hLqs=;
+        b=xTMnoMWkTS/g85lqRVNq8ox9cp65qAwAVCLFpRLoacwAes0JlINCyyj762nQqOTu/D
+         B8cHfKRI8Lro3kSRCtRZaYKlY/aOlgjjrYX3avUqr5yvWEJRSIrIv+K6U8H1j79UGG/W
+         6HpL+dmgiuizA/vfNOoU0jxFcCwoBS3chS0aKZl3st7aQsyxZXRQjYHqrV8M2UBSdCOu
+         INlCTxIcXMs7tuL/f1bSHKewXb070EkbaBrcv/L3Ng3g6lODETegdkZupIZr1gT/jrSt
+         NE0Np8PCtMaTB17t5pZaqGo24VWMgwyPBs85QAo6YG31rB518lS90exyX+nj2CTtkmL4
+         i2yA==
+X-Forwarded-Encrypted: i=1; AJvYcCXoQ9X73ZLtkKKIhZltgBmhAaNGnyCU6+x5MYKYyinjDm/yJ/hV7Al1pV/8mwO58q574HbkVozNBVmwCU7dZw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcwmzsPr7Bidi2Jb1PLGokNsJZkSN8cxtBikBVLL6I2KCcZXEd
+	nMqCkoHFJ3Bwk+LukNAj2YvQFPQgdxv5Ma5kTVWUH/3qo1di50yzAUjfLqRyng==
+X-Gm-Gg: ASbGnctNQFUAYyF6E8+Yxz3u4Xn04Git9q9wt3kNybN14fejRvzkH+DV7L8TPAPXL6f
+	j0sI2f3x+a6Uy0tIv3cEME8CYYP0+MPIpawCegXJIAmEOECFMBiuyAN1YX3OEzmMz3W+xRrYdEu
+	NwdkXINRPoeyivNXWZG2EIGjVYZTUcNMKmAxKtBSv5u8vvaqQ63LFzjLRHCmc1OH7eyYoVaJRhT
+	fj8FxNxsFmjsiWZjTOacjVQJTdVGQ1Cz54suaOGLaPW+LHJS5ncueJKorGizfVm9RMfut2Po2Sw
+	zKbZCJF4A85tgWuQ2byZl2Sl5tk7RdNG+qdFE/0ZIzxoWmkrfeq9FlEqkwytCESYIgyopZ14PCv
+	Nj4hl88TA3iLV605q/13Z2Wc/OJ74yQ==
+X-Google-Smtp-Source: AGHT+IEysF2v8pm587z/XR5lNtCO1yU/TLWezNz/qOOjRLyUVODEMN/fFAjE7OwhJWnPoJbQZoIWyg==
+X-Received: by 2002:a05:600c:4746:b0:453:23fe:ca86 with SMTP id 5b1f17b1804b1-459f4ea0f2dmr118866765e9.4.1754916963299;
+        Mon, 11 Aug 2025 05:56:03 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e5843021sm274596055e9.3.2025.08.11.05.56.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Aug 2025 05:56:02 -0700 (PDT)
+Message-ID: <aed4c8cb-b265-444d-a17c-eb464cf4dd78@gmail.com>
+Date: Mon, 11 Aug 2025 15:56:01 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: RTL8188S WLAN Adapter failure
+To: Helge Deller <deller@gmx.de>, Jes.Sorensen@gmail.com,
+ Ping-Ke Shih <pkshih@realtek.com>,
+ linux-wireless <linux-wireless@vger.kernel.org>
+References: <ee0acfef-a753-4f90-87df-15f8eaa9c3a8@gmx.de>
+ <015e5657-d21e-4214-9854-975c32b1990f@gmail.com>
+ <34e345ed-a114-494a-b3f7-72dfab6b628a@gmx.de>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <34e345ed-a114-494a-b3f7-72dfab6b628a@gmx.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTKEXHMBS06.realtek.com.tw (10.21.1.56)
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+On 11/08/2025 14:46, Helge Deller wrote:
+> On 8/11/25 00:12, Bitterblue Smith wrote:
+>> On 10/08/2025 23:36, Helge Deller wrote:
+>>> The USB dongle which came with my DreamBox DM7020HD years ago seems to fail now.
+>>> Any idea or suggestion what I should try?
+>>>
+>>> [427792.562049] usb 3-7: new high-speed USB device number 56 using xhci_hcd
+>>> [427792.689358] usb 3-7: New USB device found, idVendor=07b8, idProduct=8188, bcdDevice= 2.00
+>>> [427792.689376] usb 3-7: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+>>> [427792.689381] usb 3-7: Product: RTL8188S WLAN Adapter
+>>> [427792.689385] usb 3-7: Manufacturer: Manufacturer Realtek
+>>> [427792.689388] usb 3-7: SerialNumber: 00e04c000001
+>>> [427792.695145] usb 3-7: This Realtek USB WiFi dongle (0x07b8:0x8188) is untested!
+>>> [427792.695151] usb 3-7: Please report results to Jes.Sorensen@gmail.com
+>>> [427792.934142] usb 3-7: Dumping efuse for RTL8188CU (0x200 bytes):
+>>> [427792.934151] 00000000: 29 81 00 00 a9 16 00 00 b8 07 88 81 90 85 62 9c  ).............b.
+>>> [427792.934155] 00000010: 06 00 ec f0 0e 16 44 3f 17 03 4d 61 6e 75 66 61  ......D?..Manufa
+>>> [427792.934157] 00000020: 63 74 75 72 65 72 20 52 65 61 6c 74 65 6b 20 18  cturer Realtek .
+>>> [427792.934159] 00000030: 03 52 54 4c 38 31 38 38 53 20 57 4c 41 4e 20 41  .RTL8188S WLAN A
+>>> [427792.934160] 00000040: 64 61 70 74 65 72 20 00 00 00 00 00 00 00 00 00  dapter .........
+>>> [427792.934162] 00000050: 06 02 00 00 00 24 24 24 00 00 00 26 26 26 00 00  .....$$$...&&&..
+>>> [427792.934163] 00000060: 00 00 00 00 00 00 00 00 12 00 00 09 0d 00 00 00  ................
+>>> [427792.934164] 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>>> [427792.934166] 00000080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934167] 00000090: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934168] 000000a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934170] 000000b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934171] 000000c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934172] 000000d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934174] 000000e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934175] 000000f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934176] 00000100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934178] 00000110: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934179] 00000120: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934180] 00000130: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934182] 00000140: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934183] 00000150: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934184] 00000160: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934186] 00000170: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934187] 00000180: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934188] 00000190: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934190] 000001a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934191] 000001b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934192] 000001c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934193] 000001d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934195] 000001e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934196] 000001f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+>>> [427792.934198] usb 3-7: RTL8188CU rev A (TSMC) romver 0, 1T1R, TX queues 3, WiFi=1, BT=0, GPS=0, HI PA=0
+>>> [427792.934203] usb 3-7: RTL8188CU MAC: 44:3f:17:03:4d:61
+>>> [427792.934206] usb 3-7: rtl8xxxu: Loading firmware rtlwifi/rtl8192cufw_TMSC.bin
+>>> [427792.938371] usb 3-7: Firmware revision 88.2 (signature 0x88c1)
+>>> [427792.939417] rtl8192cu_power_on: Enabling LDOV12D (24)
+>>> [427793.115145] rtl8192cu_power_on: FSMCO_MAC_ENABLE poll failed
+>>> [427793.115156] usb 3-7: rtl8xxxu_init_device: Failed power on
+>>> [427793.116003] rtl8xxxu 3-7:1.0: probe with driver rtl8xxxu failed with error -16
+>>>
+>>
+>> Your dongle has the RTL8188SU chip inside. rtl8xxxu and rtl8192cu
+>> are not the right drivers.
+>>
+>> The right driver is r8712u, but it was removed in kernel 6.13.
+> 
+> Ah, ok.
+> 
+>> You can use kernel 6.12. Or you can compile r8712u for your current
+>> kernel. Maybe r8712u could even be accepted back in the kernel if
+>> you convert it to use mac80211/cfg80211.
+>> https://lore.kernel.org/linux-staging/20241020144933.10956-1-philipp.g.hortmann@gmail.com/
+> 
+> According to that commit message, a replacement with MAC80211 support
+> is available at https://github.com/chunkeey/rtl8192su
+> But development on it seems to have stopped some years ago.
+> Is there any specific reason for this?
 
-When STA connects to AP with dot11MultiBSSIDImplemented set to true,
-the layout of the TIM element's Partial Virtual Bitmap changes. Bits
-1 to (2^n - 1) are used to indicate buffered group addressed frames
-(e.g., broadcast/multicast) for non-transmitted BSSIDs. Fix the
-interpretation of this field to ensure group addressed frames
-are correctly received.
+I think the people working on it ran into some problems with the
+driver/firmware and also didn't have time for it anymore:
 
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.h   |  1 +
- drivers/net/wireless/realtek/rtw89/mac.c    | 26 +++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/mac_be.c |  1 +
- drivers/net/wireless/realtek/rtw89/reg.h    |  8 +++++++
- 4 files changed, 36 insertions(+)
+https://lore.kernel.org/linux-wireless/3717687.FpcDfXaOEr@debian64/
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index ca48426c577f..d8c40ce3ec61 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -1011,6 +1011,7 @@ struct rtw89_port_reg {
- 	u32 ptcl_dbg;
- 	u32 ptcl_dbg_info;
- 	u32 bcn_drop_all;
-+	u32 bcn_psr_rpt;
- 	u32 hiq_win[RTW89_PORT_NUM];
- };
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index d7aa279b9f7c..f99cfa2680e8 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -4197,6 +4197,7 @@ static const struct rtw89_port_reg rtw89_port_base_ax = {
- 	.ptcl_dbg = R_AX_PTCL_DBG,
- 	.ptcl_dbg_info = R_AX_PTCL_DBG_INFO,
- 	.bcn_drop_all = R_AX_BCN_DROP_ALL0,
-+	.bcn_psr_rpt = R_AX_BCN_PSR_RPT_P0,
- 	.hiq_win = {R_AX_P0MB_HGQ_WINDOW_CFG_0, R_AX_PORT_HGQ_WINDOW_CFG,
- 		    R_AX_PORT_HGQ_WINDOW_CFG + 1, R_AX_PORT_HGQ_WINDOW_CFG + 2,
- 		    R_AX_PORT_HGQ_WINDOW_CFG + 3},
-@@ -4649,6 +4650,30 @@ static void rtw89_mac_port_cfg_bcn_early(struct rtw89_dev *rtwdev,
- 				BCN_ERLY_DEF);
- }
- 
-+static void rtw89_mac_port_cfg_bcn_psr_rpt(struct rtw89_dev *rtwdev,
-+					   struct rtw89_vif_link *rtwvif_link)
-+{
-+	const struct rtw89_mac_gen_def *mac = rtwdev->chip->mac_def;
-+	const struct rtw89_port_reg *p = mac->port_base;
-+	struct ieee80211_bss_conf *bss_conf;
-+	u8 bssid_index;
-+	u32 reg;
-+
-+	rcu_read_lock();
-+
-+	bss_conf = rtw89_vif_rcu_dereference_link(rtwvif_link, true);
-+	if (bss_conf->nontransmitted)
-+		bssid_index = bss_conf->bssid_index;
-+	else
-+		bssid_index = 0;
-+
-+	rcu_read_unlock();
-+
-+	reg = rtw89_mac_reg_by_idx(rtwdev, p->bcn_psr_rpt + rtwvif_link->port * 4,
-+				   rtwvif_link->mac_idx);
-+	rtw89_write32_mask(rtwdev, reg, B_AX_BCAID_P0_MASK, bssid_index);
-+}
-+
- void rtw89_mac_port_tsf_sync(struct rtw89_dev *rtwdev,
- 			     struct rtw89_vif_link *rtwvif_link,
- 			     struct rtw89_vif_link *rtwvif_src,
-@@ -4805,6 +4830,7 @@ int rtw89_mac_port_update(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rtwvi
- 	rtw89_mac_port_tsf_resync_all(rtwdev);
- 	fsleep(BCN_ERLY_SET_DLY);
- 	rtw89_mac_port_cfg_bcn_early(rtwdev, rtwvif_link);
-+	rtw89_mac_port_cfg_bcn_psr_rpt(rtwdev, rtwvif_link);
- 
- 	return 0;
- }
-diff --git a/drivers/net/wireless/realtek/rtw89/mac_be.c b/drivers/net/wireless/realtek/rtw89/mac_be.c
-index 0078080b3999..ef69672b6862 100644
---- a/drivers/net/wireless/realtek/rtw89/mac_be.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac_be.c
-@@ -56,6 +56,7 @@ static const struct rtw89_port_reg rtw89_port_base_be = {
- 	.ptcl_dbg = R_BE_PTCL_DBG,
- 	.ptcl_dbg_info = R_BE_PTCL_DBG_INFO,
- 	.bcn_drop_all = R_BE_BCN_DROP_ALL0,
-+	.bcn_psr_rpt = R_BE_BCN_PSR_RPT_P0,
- 	.hiq_win = {R_BE_P0MB_HGQ_WINDOW_CFG_0, R_BE_PORT_HGQ_WINDOW_CFG,
- 		    R_BE_PORT_HGQ_WINDOW_CFG + 1, R_BE_PORT_HGQ_WINDOW_CFG + 2,
- 		    R_BE_PORT_HGQ_WINDOW_CFG + 3},
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 0aad9dc91736..bfed0bbcfb7e 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -3370,6 +3370,10 @@
- #define B_AX_CSIPRT_HESU_AID_EN BIT(25)
- #define B_AX_CSIPRT_VHTSU_AID_EN BIT(24)
- 
-+#define R_AX_BCN_PSR_RPT_P0 0xCE84
-+#define R_AX_BCN_PSR_RPT_P0_C1 0xEE84
-+#define B_AX_BCAID_P0_MASK GENMASK(10, 0)
-+
- #define R_AX_RX_STATE_MONITOR 0xCEF0
- #define R_AX_RX_STATE_MONITOR_C1 0xEEF0
- #define B_AX_RX_STATE_MONITOR_MASK GENMASK(31, 0)
-@@ -7494,6 +7498,10 @@
- #define R_BE_DRV_INFO_OPTION_C1 0x15470
- #define B_BE_DRV_INFO_PHYRPT_EN BIT(0)
- 
-+#define R_BE_BCN_PSR_RPT_P0 0x11484
-+#define R_BE_BCN_PSR_RPT_P0_C1 0x15484
-+#define B_BE_BCAID_P0_MASK GENMASK(10, 0)
-+
- #define R_BE_RX_ERR_ISR 0x114F4
- #define R_BE_RX_ERR_ISR_C1 0x154F4
- #define B_BE_RX_ERR_TRIG_ACT_TO BIT(9)
--- 
-2.25.1
+> I have no clue on wireless development, so if I'm willing to test this
+> driver and provide feedback, would someone be interested and may help to bring
+> it upstream? Or doesn't it make sense to invest the time in that?
+> 
+> Helge
 
+The work has to be done by someone who has the hardware. That makes
+you the best candidate for the job.
 
