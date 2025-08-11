@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-26267-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26266-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EDB6B20D58
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 17:18:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED84B20D4F
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 17:17:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C72E17CFA8
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 15:17:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09D067A4C89
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Aug 2025 15:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1638D242D78;
-	Mon, 11 Aug 2025 15:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913DA1E501C;
+	Mon, 11 Aug 2025 15:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PHXoMbBH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="paIs/L4N"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7A71E501C;
-	Mon, 11 Aug 2025 15:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6759517C220;
+	Mon, 11 Aug 2025 15:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754925455; cv=none; b=RB2FyeqcUiQcOsZhxXVPAodZX3GMN4690V6K6Dye/LPxah7LkHASsFs+F+bnedtJ1R4S6E4BMRIbuirlHZfHZ+XsqylMLdfnwcE0DBhnRLvtRW6QzEysT2S1b3GpoAyflyuGwd+gQ+uu4vRFHtYzaZpvoaBox2abdqf+teHr3qk=
+	t=1754925444; cv=none; b=t3v46H65bepkJkF1bx3ewycAl7onxMCcv0bV3NbYnDEWdXNf/GFG+nqG/mhaD0UoT39jCr+XwnD9uFFAQ4WGZPjJ1kiD/jLuY66Yzly//kmGpCQ9u0HhF8ncPD4LXUfxyFYOFWJIkGnkj/SMVnRFqSjZQemXgrgf91aXoDGGP2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754925455; c=relaxed/simple;
+	s=arc-20240116; t=1754925444; c=relaxed/simple;
 	bh=oThR9g2icfJGdLraqN6epyKlvrTrIwhnXHmwgyj+e4U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jcvC2Nx4Pf+zFTK9zrLreNnZJR1l2LqxfbJZH8O10IpzdZkiLBxrmFRWdsjOEkd01iGuTM1XgCn6UM6frQo9UwKrO3SEGekrBblJuMB5dQcnEehiPUficfXUKm5iQ0+8gSv6u1pw6ZDx+p20RFFBbFWr/xySmQEPOIjqWzYcZNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PHXoMbBH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660DDC4CEED;
-	Mon, 11 Aug 2025 15:17:31 +0000 (UTC)
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=H5cpSOrEEXvoNH49W6pPph9kWckw6NBpa1FfPM6ySO8z4b/BEPwnVuPctuQPlJFxxbXMEZaKxV6gjmtz5fMEVMF46YuMMnrkQOoqH9i04yHdm8QPxv742o6G/jwWmMzR+CcEX94CdyT6UBPMWjCg8CdgXWwMEiYNK9+KDVJ/LEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=paIs/L4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42324C4CEED;
+	Mon, 11 Aug 2025 15:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754925454;
+	s=k20201202; t=1754925443;
 	bh=oThR9g2icfJGdLraqN6epyKlvrTrIwhnXHmwgyj+e4U=;
 	h=From:Date:Subject:To:Cc:From;
-	b=PHXoMbBHrxsj90+ujDv/fhsjbKSmZPTpIFG/oVpmVca6mzPEuzcaIa5AVbwjqxXHS
-	 aacHADV2B53n1o22TH+TQsStq8ve4TeSzawrJtR6Pn13DGTxDHf/W4pPVjk0bn6XYl
-	 JptMlAMWlNzh9dGldvwtzMSX6ia8sleg7al4DwN9NelQGW9hJULLbRS9XusvnAm6Ni
-	 H6fupFzH8wQSPjiqld4Mo9sbE4EBvpN4jR5LB0RVP1o792EmVYsm0Z1XzbVulddnaf
-	 gvA75phT6Ko+hY5i3ltOMNqFg+DP2QMF+WxiFvB7RvRCtJ+V7w03KunGVcU3wPvDv+
-	 f4GIUKLjuaf3Q==
+	b=paIs/L4N2hHs8WcBBgNRALH0iGMetf2rTx4ne3KmbhWFTDZ8eDlna1n9f8qtMiNWM
+	 tNTZyS5EimP+v6FMt20IOOIweyGyaJaL8pm3L+VJ5tPB9CaL/Ir02p+vfIZMv3XVuN
+	 HWgTqYq1HRxsRaPxi2wPD/+fBiQ3hmqywuqmzgrbdk686ETut97AlZfMrebnjdcQHr
+	 03hvE92zIGp69uXez9bK4O9DTYgwt6fGSrSLjkz8T1UsjHe4gSYBfABK1MseqQhcJb
+	 cWrPHo7MSuDppny+0GnL+wcsPfEYK3O8GDGRaLxAdwn+zhCGKh33Cjgolt/XUXyHWY
+	 mvVxRCSyR+mZQ==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Mon, 11 Aug 2025 17:14:42 +0200
+Date: Mon, 11 Aug 2025 17:17:02 +0200
 Subject: [PATCH net-next v2] net: mediatek: wed: Introduce MT7992 WED
  support to MT7988 SoC
 Precedence: bulk
@@ -52,8 +52,8 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250811-mt7992-wed-support-v2-1-e43024c05305@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAOEImmgC/22NQQ6CMBBFr0Jm7RjaUAuuuIdh0dABGpWSKVYN6
+Message-Id: <20250811-mt7992-wed-support-v2-1-b3955963d959@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAG0JmmgC/22NQQ6CMBBFr0Jm7RjaUAuuuIdh0dABGpWSKVYN6
  d2txKXL95L//gaB2FGAc7EBU3TB+TmDPBTQT2YeCZ3NDLKUqtSixvuqm0bikyyGx7J4XrFSJ6N
  Kq8RQC8jDhWlwrz166TJPLqye3/tHFF/7y0n9LxcFCjTGamsq29dat1fimW5HzyN0KaUPjeEV2
  rUAAAA=
