@@ -1,186 +1,213 @@
-Return-Path: <linux-wireless+bounces-26325-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26326-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF8CB22E2E
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 18:50:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1724CB22EB1
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 19:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41C5D188BB34
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 16:45:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E034E1A25ECA
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 17:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9B92FD1C5;
-	Tue, 12 Aug 2025 16:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B5A2BEC2F;
+	Tue, 12 Aug 2025 17:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bs7GHP/z"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kcx5xD/K"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555B4305E08;
-	Tue, 12 Aug 2025 16:43:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83252FAC07
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Aug 2025 17:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755017037; cv=none; b=F4VeiSfjskYPSZguINa/I4Qg7ABEZWfds0DWMmunrMM23B34iMeFqo9hAxU98ZeH2W/ijW9n7s8A5qibQXfeUQQjt7h1Sk3qP29aOaGYwbin824M1Ub2nCrzyG2t1yqM1mM3W5hv1YRFXYdtMQ7t6TzcX2Z8oOzhOsgWAdokcH4=
+	t=1755018760; cv=none; b=gRP8p7nWrWK+RRUEOCuo48EoxxEiF2823USSFyfzMgPpisRvjq91NSJK3bcfBrZQGJ0zoHuxVuVt6lt9Eups4wmZS9aufl9nT/nmtCjLEN4HKuYW7fRcucfUg/MEIgxvCLcaCEyZ6qsoxTUlIE8lETMqAqNy5/N008RmiIIRnTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755017037; c=relaxed/simple;
-	bh=AAG3OKaWicsbt/OyMFmGSnBXL0juwmhtawXjWSgR1/8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i5HC4eQfXDWACvGcfCq/q8d8iC0Hiuz/bfBD5x5/qI96iQJm0QHPRSxnIsVQxkv4JHObQrVVXl0Ul/VnXQG8/bJOlxK7Mv7KZcWgbpxlA4Kbor8OL0vdcDGLPdENK0Ms2nVEvngHI0ZpdZz2NjM0Hh8q4vlf1povECHo7SzMy38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bs7GHP/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6B1C4CEF1;
-	Tue, 12 Aug 2025 16:43:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755017037;
-	bh=AAG3OKaWicsbt/OyMFmGSnBXL0juwmhtawXjWSgR1/8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bs7GHP/zuzsqtlCcIJpSXRwExwMr58CJ+BMrS0SN2juA30n2B8IU/NRqaOSx/zEiy
-	 2N1nVGTyAmMu9AWE0aE95H/h2irS3N1uLmDWRAH3rEb/flh0lHTC0MEC4GFRZPxz2l
-	 ansDfnZAh/jcIqQFfb/yKJOkOuvzylC0FCVnSRkMI7ZBmqsccbMwSOGG9tfsBJb3vE
-	 rJenh0FjLvkiGm7857w0+yyk+D8OuQRUmCs9jR03c03Vn6uQZkIcO37b0+1/tSiQdi
-	 3gu/EUHclTSMGe97NJTOREJlk9icMeaShCJzRUDGmUKIY4jF844xcufsUKfyQ0zedw
-	 RRvwtlgZXQksA==
-Date: Tue, 12 Aug 2025 22:13:45 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Jingoo Han <jingoohan1@gmail.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	mhi@lists.linux.dev, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
-	qiang.yu@oss.qualcomm.com, quic_vbadigan@quicinc.com, quic_vpernami@quicinc.com, 
-	quic_mrana@quicinc.com, Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: Re: [PATCH v4 02/11] PCI/bwctrl: Add support to scale bandwidth
- before & after link re-training
-Message-ID: <ycbh6zfwae3q4s6lfxepmxoq32jaqu5i7csa2ayuqaanwbvzvi@id4prmhl3yvh>
-References: <20250711213602.GA2307197@bhelgaas>
- <55fc3ae6-ba04-4739-9b89-0356c3e0930c@oss.qualcomm.com>
- <d4078b6c-1921-4195-9022-755845cdb432@oss.qualcomm.com>
- <68a78904-e2c7-4d4d-853d-d9cd6413760e@oss.qualcomm.com>
+	s=arc-20240116; t=1755018760; c=relaxed/simple;
+	bh=jhZB4udDGfRa540uoN5tnmGBAb8Dy/LJcUUb+BgCtDc=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=SyFYyW6k07gB4JqxFsHw27jdvv+bW/wsMSIJrfnZ14yNnM9BUCpWU9yadYiM/hhCzXjeWRyDN7zglZ1lmUktcCmYiCGWgEFne9+lpbMWriXbid8uOJXh42QrzRio2I/sAYD08AUluchtPgRAmyqux0s+st3RVjI87Q5of1k4FwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kcx5xD/K; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CH6UQb010804;
+	Tue, 12 Aug 2025 17:12:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=c4GTwShWUYy0uuN4WMoUAU
+	veoiRhxQ7tbF2xPnkuxDU=; b=kcx5xD/KnvfDD/qkK9Xlqt91L2btkUPgcN4vYF
+	jxyeLeLhN1wbYa59v9z+FBwlicjlkttsPx/5BFVYDIQqIYQhyTWtMuzg7BIODMsq
+	IKhbd9N0XixO80E6XVuB33hzB7D9EaTXYRz+xuBC1CB5OlBtclM68qkw/qPIUer2
+	O5avBsKfFR8vEif0gGTutIJ3bCwYfiUicq4sLIHfo+O4WQckY9jPQMllvkEJW2Px
+	JY098KkF5JTKmsYvKHsIXpFbFrIgE1Q3n2FJOq66vdQ5SjIzc6syWWNsn01cGbRb
+	keo6qvd0VYMSOwFN79dIGjwdIINdcHRR8f/U8yiiB7Id2MFA==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48g9q9r0gq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Aug 2025 17:12:35 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57CHCYRg010243
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Aug 2025 17:12:34 GMT
+Received: from hu-kiranv-blr.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Tue, 12 Aug 2025 10:12:33 -0700
+From: Kiran Venkatappa <quic_kiranv@quicinc.com>
+Subject: [PATCH ath12k-ng 00/13] wifi: ath12k: Ath12k modularization
+ changes
+Date: Tue, 12 Aug 2025 22:39:26 +0530
+Message-ID: <20250812-ath12k-mod-v1-0-8c9b0eb9335d@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <68a78904-e2c7-4d4d-853d-d9cd6413760e@oss.qualcomm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEZ1m2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDC0Mj3cSSDEOjbN3c/BTdpBQDA0NTs5Q0oKQSUENBUWpaZgXYsGglqLq
+ 8dKXY2loAvipOVmcAAAA=
+X-Change-ID: 20250812-ath12k-mod-bd00156df202
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+X-Mailer: b4 0.15-dev-1b0d6
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=CNMqXQrD c=1 sm=1 tr=0 ts=689b7603 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10
+ a=ULihl7S45PbkGyYbBi0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: xKqW3gbTLEbGZBOgst_e6HAWJcnWoKRU
+X-Proofpoint-ORIG-GUID: xKqW3gbTLEbGZBOgst_e6HAWJcnWoKRU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE2NCBTYWx0ZWRfX8KT922IAQ7gh
+ ZMSVczKQ6a2gPWhdvqbi00BC14ALTzu1b0Z6hAN39Hjk5dSOQAVDYSFuCfiau+y7nWqzGhkwfyi
+ d1mZPQeqAkvEm1tGezH/wTpPb13VEv2YBTDlLCPvuKNFRET9cTXra33s0OaruplolyprsJXJA/D
+ C4LtAybjUTk8nadHv+x9qebDQBfm1gfwoAfReykcfqazk++Tvx4M2XRnyvKDXd6WgPggII/i/lB
+ dxj7TA3x5XHC30WzCRkIh7C1w6Op9JKysPE/8nyLZkXvKIcwhutxRNq+wHAdlKIYlpqSDxszrJh
+ 845kyUutwdw1/Sv/xsaecOHhLv0+EAo60+PClLfP3u/EoOrQ4E9Z4CsSxPFHcJhI0I01J1FPYz9
+ bvgPm2Zg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 phishscore=0 bulkscore=0 clxscore=1011
+ malwarescore=0 impostorscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508120164
 
-On Tue, Aug 12, 2025 at 09:35:46AM GMT, Krishna Chaitanya Chundru wrote:
-> 
-> 
-> On 7/22/2025 4:33 PM, Krishna Chaitanya Chundru wrote:
-> > 
-> > 
-> > On 7/12/2025 4:36 AM, Krishna Chaitanya Chundru wrote:
-> > > 
-> > > 
-> > > On 7/12/2025 3:06 AM, Bjorn Helgaas wrote:
-> > > > On Mon, Jun 09, 2025 at 04:21:23PM +0530, Krishna Chaitanya
-> > > > Chundru wrote:
-> > > > > If the driver wants to move to higher data rate/speed than
-> > > > > the current data
-> > > > > rate then the controller driver may need to change certain
-> > > > > votes so that
-> > > > > link may come up at requested data rate/speed like QCOM PCIe
-> > > > > controllers
-> > > > > need to change their RPMh (Resource Power Manager-hardened) state. Once
-> > > > > link retraining is done controller drivers needs to adjust their votes
-> > > > > based on the final data rate.
-> > > > > 
-> > > > > Some controllers also may need to update their bandwidth voting like
-> > > > > ICC BW votings etc.
-> > > > > 
-> > > > > So, add pre_link_speed_change() & post_link_speed_change() op to call
-> > > > > before & after the link re-train. There is no explicit
-> > > > > locking mechanisms
-> > > > > as these are called by a single client Endpoint driver.
-> > > > > 
-> > > > > In case of PCIe switch, if there is a request to change
-> > > > > target speed for a
-> > > > > downstream port then no need to call these function ops as these are
-> > > > > outside the scope of the controller drivers.
-> > > > 
-> > > > > +++ b/include/linux/pci.h
-> > > > > @@ -599,6 +599,24 @@ struct pci_host_bridge {
-> > > > >       void (*release_fn)(struct pci_host_bridge *);
-> > > > >       int (*enable_device)(struct pci_host_bridge *bridge,
-> > > > > struct pci_dev *dev);
-> > > > >       void (*disable_device)(struct pci_host_bridge *bridge,
-> > > > > struct pci_dev *dev);
-> > > > > +    /*
-> > > > > +     * Callback to the host bridge drivers to update ICC BW
-> > > > > votes, clock
-> > > > > +     * frequencies etc.. for the link re-train to come up
-> > > > > in targeted speed.
-> > > > > +     * These are intended to be called by devices directly
-> > > > > attached to the
-> > > > > +     * Root Port. These are called by a single client
-> > > > > Endpoint driver, so
-> > > > > +     * there is no need for explicit locking mechanisms.
-> > > > > +     */
-> > > > > +    int (*pre_link_speed_change)(struct pci_host_bridge *bridge,
-> > > > > +                     struct pci_dev *dev, int speed);
-> > > > > +    /*
-> > > > > +     * Callback to the host bridge drivers to adjust ICC BW
-> > > > > votes, clock
-> > > > > +     * frequencies etc.. to the updated speed after link
-> > > > > re-train. These
-> > > > > +     * are intended to be called by devices directly attached to the
-> > > > > +     * Root Port. These are called by a single client Endpoint driver,
-> > > > > +     * so there is no need for explicit locking mechanisms.
-> > > > 
-> > > > No need to repeat the entire comment.  s/.././
-> > > > 
-> > > > These pointers feel awfully specific for being in struct
-> > > > pci_host_bridge, since we only need them for a questionable QCOM
-> > > > controller.  I think this needs to be pushed down into qcom somehow as
-> > > > some kind of quirk.
-> > > > 
-> > > Currently these are needed by QCOM controllers, but it may also needed
-> > > by other controllers may also need these for updating ICC votes, any
-> > > system level votes, clock frequencies etc.
-> > > QCOM controllers is also doing one extra step in these functions to
-> > > disable and enable ASPM only as it cannot link speed change support
-> > > with ASPM enabled.
-> > > 
-> > Bjorn, can you check this.
-> > 
-> > For QCOM devices we need to update the RPMh vote i.e a power source
-> > votes for the link to come up in required speed. and also we need
-> > to update interconnect votes also. This will be applicable for
-> > other vendors also.
-> > 
-> > If this is not correct place I can add them in the pci_ops.
-> Bjorn,
-> 
-> Can you please comment on this.
-> 
-> Is this fine to move these to the pci_ops of the bridge.
-> Again these are not specific to QCOM, any controller driver which
-> needs to change their clock rates, ICC bw votes etc needs to have
-> these.
-> 
+Current ath drivers have separate implementations for different
+classes of devices. For example, ath11k supports WiFi-6 devices,
+while ath12k supports Wi-Fi 7 devices. However, there is significant
+common functionality across these generations due to shared firmware
+and hardware architecture. In the existing driver code, this leverage
+is achieved through code duplication. As a result, when a new driver
+is introduced, many features are missed, and new additions require
+porting across different generation drivers.
 
-No, moving to 'pci_ops' is terrible than having it in 'pci_host_bridge' IMO. If
-we want to get rid of these ops, we can introduce a quirk flag in
-'pci_host_bridge' and when set, the bwctrl code can disable/enable ASPM
-before/after link retrain. This clearly states that the controller is quirky and
-we need to disable/enable ASPM.
+To improve reuse and maintainability, ath12k should be split into common
+and device-specific modules. Common code can be shared across multiple
+architectures, enabling better leverage for future hardware generations.
+generation drivers.
 
-For setting OPP, you can have a separate callback in 'pci_host_bridge' that just
-allows setting OPP *after* retrain, like 'pci_host_bridge:link_change_notify()'.
-I don't think you really need to set OPP before retrain though. As even if you
-do it pre and post link retrain, there is still a small window where the link
-will operate without adequate vote.
+Firmware interfaces and core initialization sequences are typically common
+across different device families. In contrast, hardware register offsets, copy
+engine mappings, and HAL configurations are usually hardware-specific.
 
-- Mani
+Common components include:
+      - mac80211 interface: Control path operations are mostly common across
+        different ATH hardware and will be shared as much as possible.
+      - Firmware interface (WMI, HTT, HTC, QMI): Firmware messaging and
+        sequences are common and maintained with backward/forward compatibility
+        using TLVs.
+      - Datapath: Data path files are also separated similarly. More information
+        will be provided in later patches.
+      - Core initialization, reset, and recovery sequences: These will be part
+        of the shared code.
 
--- 
-மணிவண்ணன் சதாசிவம்
+Device-specific code includes:
+      - Hardware capabilities, configurations, HAL, and other
+        architecture-specific logic.
+
+The original ath12k.ko is split into these two modules as depicted below.
+
+                                      +-----------------+
+                                      |                 |
+                                      |   ath12k.ko     |
+                                      |    (common)     |
+    +---------------+                 |                 |
+    |               |                 +-----------------+
+    |   ath12k.ko   | ===========>
+    |               |                 +------------------+
+    +---------------+                 |                  |
+                                      | ath12k_wifi7.ko  |
+                                      | (wifi7 family)   |
+                                      |                  |
+                                      +------------------+
+
+The ath12k.ko module will serve as the common component, while ath12k_wifi7.ko
+will be the architecture-specific module for WiFi-7 devices.
+
+After this modular separation, adding support for a new device will
+primarily involve implementing device-specific code, while reusing the
+majority of the shared common components.
+
+---
+Kiran Venkatappa (13):
+      wifi: ath12k: Restructure PCI code to common and Wi-Fi 7 specific logic
+      wifi: ath12k: Move Copy Engine configuration to Wi-Fi 7 specific file
+      wifi: ath12k: Move Wi-Fi 7 WMI configuration to dedicated file
+      wifi: ath12k: Move Wi-Fi 7 MHI configuration to dedicated file
+      wifi: ath12k: Rename hw.c to Wi-Fi 7 specific implementation file
+      wifi: ath12k: Rename ahb_hif_ops to reflect generic usage
+      wifi: ath12k: Restructure ahb.c into common and Wi-Fi 7 specific modules
+      wifi: ath12k: Move Wi-Fi 7 specific init routines to dedicated file
+      wifi: ath12k: Move hw_init invocation to target-specific probe
+      wifi: ath12k: Modularize driver into common and Wi-Fi 7 specific components
+      wifi: ath12k: Rename ath12k_* symbols to ath12k_wifi7_* for clarity
+      wifi: ath12k: Remove HAL defines from shared PCI code
+      wifi: ath12k: Remove HAL define dependencies from shared AHB code
+ 
+ drivers/net/wireless/ath/ath12k/Makefile         |   4 +-
+ drivers/net/wireless/ath/ath12k/ahb.c            | 139 ++--
+ drivers/net/wireless/ath/ath12k/ahb.h            |  27 +-
+ drivers/net/wireless/ath/ath12k/ce.c             | 301 -------
+ drivers/net/wireless/ath/ath12k/ce.h             |   5 +-
+ drivers/net/wireless/ath/ath12k/core.c           |  38 +-
+ drivers/net/wireless/ath/ath12k/core.h           |   7 +
+ drivers/net/wireless/ath/ath12k/debug.c          |   4 +
+ drivers/net/wireless/ath/ath12k/dp_rx.c          |   3 +
+ drivers/net/wireless/ath/ath12k/hal.c            |   4 +
+ drivers/net/wireless/ath/ath12k/htc.c            |   2 +
+ drivers/net/wireless/ath/ath12k/hw.h             |   2 -
+ drivers/net/wireless/ath/ath12k/mhi.c            | 130 ---
+ drivers/net/wireless/ath/ath12k/mhi.h            |   4 +-
+ drivers/net/wireless/ath/ath12k/pci.c            | 215 ++---
+ drivers/net/wireless/ath/ath12k/pci.h            |  28 +-
+ drivers/net/wireless/ath/ath12k/peer.c           |   2 +
+ drivers/net/wireless/ath/ath12k/wifi7/Makefile   |  10 +
+ drivers/net/wireless/ath/ath12k/wifi7/ahb.c      |  71 ++
+ drivers/net/wireless/ath/ath12k/wifi7/ahb.h      |  20 +
+ drivers/net/wireless/ath/ath12k/wifi7/ce.c       | 973 +++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wifi7/ce.h       |  22 +
+ drivers/net/wireless/ath/ath12k/wifi7/core.c     |  44 +
+ drivers/net/wireless/ath/ath12k/{ => wifi7}/hw.c | 798 +++----------------
+ drivers/net/wireless/ath/ath12k/wifi7/hw.h       |  13 +
+ drivers/net/wireless/ath/ath12k/wifi7/mhi.c      | 138 ++++
+ drivers/net/wireless/ath/ath12k/wifi7/mhi.h      |  11 +
+ drivers/net/wireless/ath/ath12k/wifi7/pci.c      | 188 +++++
+ drivers/net/wireless/ath/ath12k/wifi7/pci.h      |  12 +
+ drivers/net/wireless/ath/ath12k/wifi7/wmi.c      | 105 +++
+ drivers/net/wireless/ath/ath12k/wifi7/wmi.h      |  15 +
+ drivers/net/wireless/ath/ath12k/wmi.c            |  97 ---
+ drivers/net/wireless/ath/ath12k/wmi.h            |   4 -
+ 33 files changed, 1956 insertions(+), 1480 deletions(-)
+---
+base-commit: d9104cec3e8fe4b458b74709853231385779001f
+change-id: 20250812-ath12k-mod-bd00156df202
+
 
