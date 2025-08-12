@@ -1,111 +1,267 @@
-Return-Path: <linux-wireless+bounces-26287-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26288-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5787B21C4F
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 06:51:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83666B21C72
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 06:57:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B4B1685757
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 04:48:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F03D1907A3F
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 04:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD7A2E03E0;
-	Tue, 12 Aug 2025 04:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53AF2D97BF;
+	Tue, 12 Aug 2025 04:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t14BuTRS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXedLaic"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640D629405;
-	Tue, 12 Aug 2025 04:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EC52D948C;
+	Tue, 12 Aug 2025 04:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754974083; cv=none; b=JSVqW1ZbdRQTWafgDkRlS4EZG9IxFBIGLRnEAcetoGvfeui0sjbELvTbZIDLS5oqYC/imQkk0cYlTtlUSHLpn/4jbVE1aoFEMMrNs/aXer8ipWGmYN3CfCQJaV5CO2cTXjqO+IfqokRO6ZdlPCnTeB2H88xF6ZHhS3ZAETuzx+o=
+	t=1754974674; cv=none; b=WJ0dZNhZigjckBv5AHyiHmO45QJHS8OYO/BZ23AXgr5w4Tv7wu4gKiCnRR6NAsnMWfdCJjjDNDPItmflldhb/ftOSiPGfvOXoJpW3so/iJ77sEJiXq+9Qsq0YB/gqsojZw2NiU9ydQNv58m0Zu8Onh3J4RG43E1MS+cEOW7HyWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754974083; c=relaxed/simple;
-	bh=L8L/AG5G7UAoXL1PYS/u6Nnpj1wCsKju5KEwMHdal5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b1jCrqFGswuNgxhdTZCwYWltO6HRnz6nY3JTB1A2/f4vlCq5IE6tv5qPgkAN4O3Jk6U/u2RA5Pe9IOe5Xk/b9YbblQLXN99svuqbNPBZ/1C1hYiKUV7c+X9EToDN6fdw7V5Ab6Ev4ZKvw9oUDclm7C4in6Sg5ZLIvHBt0StJzmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t14BuTRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578E4C4CEF5;
-	Tue, 12 Aug 2025 04:48:01 +0000 (UTC)
+	s=arc-20240116; t=1754974674; c=relaxed/simple;
+	bh=70iXDSsLOBL8789maTo7Y86kI/oswUmM4+UtHFYgEso=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Qgg257XVtt4k/HRE4tk3Ved+fc4iyJcwcCp7GghQ6bFNHBAJG+7VJUHbIti6PTq+5Q1cRGoMv950/LKKil5VfKN58aU4NSroFaAo7FUED6athf6s4u08gTF6/qSb5PtZvWULcTK/XYvcuZkUwyhMU1RxQmnZfFz6rB7kTa6472o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXedLaic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805EAC4CEF0;
+	Tue, 12 Aug 2025 04:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754974081;
-	bh=L8L/AG5G7UAoXL1PYS/u6Nnpj1wCsKju5KEwMHdal5k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t14BuTRSKl7Vt728N9usBcoblwvlD2/EKJKXoCuYFngh0woOOWAanrRi9rKD2m7zA
-	 oggmfQDUn9MAKQ9frbyl2aUe+Ahz38AU85z9QIUvDlinAgkVgvZAdJcv3e7DTuHrXO
-	 7lwb/cMnclDw1apnuZZPNJQF5lHA/R3MiMUXaF5NUqTxm2XOdtuQ0h6tH5tK1hb3C6
-	 bRLXHjBtpqXDKMiDqVyGt2BPFRG8ErTumatjseTugpO05MpP90Q+It0EiD58FKS8L0
-	 DI84EiQMM3wkLk9uDUp8rtLxms6LjgdR7S2evdjDfO2NTOcm7lOG8IwPsLifmZGTNG
-	 S42SlpPaDbYNw==
-Date: Tue, 12 Aug 2025 06:47:57 +0200
+	s=k20201202; t=1754974674;
+	bh=70iXDSsLOBL8789maTo7Y86kI/oswUmM4+UtHFYgEso=;
+	h=From:Date:Subject:To:Cc:From;
+	b=aXedLaic+LJw7p88aP0+O4vTs5o35X9KeLpUQtIbwy35JHNux0kwghicwRtkPRGi7
+	 rSjNuOJGvcoLnoE35784tjoegvzFuuNIXx6l1qopyk5jDo+3biWIe+slM2m7bbiUtb
+	 rF0DeaS6frNG5L75MkPh9HibzHcweCsA2mqZ4ISt+SXkTJbfQrUh0ZNqbsQCl4JHZ0
+	 /Ewuqy39dR9czJW/XqAXS6t8tzHNjxPIFpLTswAKuqC1ATfFKLnUBCsZtZ/w+3PJmx
+	 sNgJPhP+/8MZJ7Qy+Awcc4iaoYQprnTCpc9jIzdNUMQTDmM7PSivQQFvbeQdouZ9Gf
+	 966Uh5QzxNYMw==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
-	Rex Lu <rex.lu@mediatek.com>
-Subject: Re: [PATCH net-next v2] net: mediatek: wed: Introduce MT7992 WED
+Date: Tue, 12 Aug 2025 06:57:23 +0200
+Subject: [PATCH net-next v3] net: mediatek: wed: Introduce MT7992 WED
  support to MT7988 SoC
-Message-ID: <aJrHfUo5QFs-MmM7@lore-rh-laptop>
-References: <20250811-mt7992-wed-support-v2-1-e43024c05305@kernel.org>
- <aJoK7e4aEKR96V4h@lore-rh-laptop>
- <20250811084414.6089720d@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="N1vBIlflFVXeQRN6"
-Content-Disposition: inline
-In-Reply-To: <20250811084414.6089720d@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250812-mt7992-wed-support-v3-1-9ada78a819a4@kernel.org>
+X-B4-Tracking: v=1; b=H4sIALLJmmgC/23N0Q6CIBTG8VdxXEfzoAh01Xu0LkiOyipxYFRzv
+ nvo2lqbl/9vO78zkYDeYiCHbCIeow3W9SmKXUbqTvctUmtSE5YznguQ9D4KpRh9oqHhMQzOj7T
+ klea54dBIIOlw8NjY14qezqk7G0bn3+uPCMv65ZjY4iJQoFobYXRpainE8Yq+x9ve+ZYsXmQ/Q
+ wJsGiwZl0JxrqrCKK7+jHmeP5mehjv5AAAA
+X-Change-ID: 20250718-mt7992-wed-support-456a50d51f81
+To: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ Rex Lu <rex.lu@mediatek.com>
+X-Mailer: b4 0.14.2
 
+Introduce the second WDMA RX ring in WED driver for MT7988 SoC since the
+Mediatek MT7992 WiFi chipset supports two separated WDMA rings.
+Add missing MT7988 configurations to properly support WED for MT7992 in
+MT76 driver.
 
---N1vBIlflFVXeQRN6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Co-developed-by: Rex Lu <rex.lu@mediatek.com>
+Signed-off-by: Rex Lu <rex.lu@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes in v3:
+- Rebase on top of net-next main branch
+- Link to v2: https://lore.kernel.org/r/20250811-mt7992-wed-support-v2-1-b3955963d959@kernel.org
 
-> On Mon, 11 Aug 2025 17:23:25 +0200 Lorenzo Bianconi wrote:
-> > > Introduce the second WDMA RX ring in WED driver for MT7988 SoC since =
-the
-> > > Mediatek MT7992 WiFi chipset supports two separated WDMA rings.
-> > > Add missing MT7988 configurations to properly support WED for MT7992 =
-in
-> > > MT76 driver. =20
-> >=20
-> > I sent this email twice wrongly. Please ignore this one.
->=20
-> patchwork decided to ignore the other one.
-> Are they identical?
+Changes in v2:
+- Fix commit log
+- Rebase on top of net-next main branch
+- Link to v1: https://lore.kernel.org/r/20250727-mt7992-wed-support-v1-1-aad7da4dc877@kernel.org
+---
+ drivers/net/ethernet/mediatek/mtk_wed.c          | 33 +++++++++++++++++++-----
+ drivers/net/ethernet/mediatek/mtk_wed.h          |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mmio.c |  6 ++---
+ drivers/net/wireless/mediatek/mt76/mt7996/mmio.c | 12 ++++-----
+ include/linux/soc/mediatek/mtk_wed.h             |  2 +-
+ 5 files changed, 38 insertions(+), 17 deletions(-)
 
-Yes, they are identical. I will repost v3.
+diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+index 0a80d8f8cff7f415a60b0cd68c0c9c07e2c88f36..3dbb113b792cf00fb4f89ab20f7e7fa72ecac260 100644
+--- a/drivers/net/ethernet/mediatek/mtk_wed.c
++++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+@@ -59,7 +59,9 @@ struct mtk_wed_flow_block_priv {
+ static const struct mtk_wed_soc_data mt7622_data = {
+ 	.regmap = {
+ 		.tx_bm_tkid		= 0x088,
+-		.wpdma_rx_ring0		= 0x770,
++		.wpdma_rx_ring = {
++			0x770,
++		},
+ 		.reset_idx_tx_mask	= GENMASK(3, 0),
+ 		.reset_idx_rx_mask	= GENMASK(17, 16),
+ 	},
+@@ -70,7 +72,9 @@ static const struct mtk_wed_soc_data mt7622_data = {
+ static const struct mtk_wed_soc_data mt7986_data = {
+ 	.regmap = {
+ 		.tx_bm_tkid		= 0x0c8,
+-		.wpdma_rx_ring0		= 0x770,
++		.wpdma_rx_ring = {
++			0x770,
++		},
+ 		.reset_idx_tx_mask	= GENMASK(1, 0),
+ 		.reset_idx_rx_mask	= GENMASK(7, 6),
+ 	},
+@@ -81,7 +85,10 @@ static const struct mtk_wed_soc_data mt7986_data = {
+ static const struct mtk_wed_soc_data mt7988_data = {
+ 	.regmap = {
+ 		.tx_bm_tkid		= 0x0c8,
+-		.wpdma_rx_ring0		= 0x7d0,
++		.wpdma_rx_ring = {
++			0x7d0,
++			0x7d8,
++		},
+ 		.reset_idx_tx_mask	= GENMASK(1, 0),
+ 		.reset_idx_rx_mask	= GENMASK(7, 6),
+ 	},
+@@ -621,8 +628,8 @@ mtk_wed_amsdu_init(struct mtk_wed_device *dev)
+ 		return ret;
+ 	}
+ 
+-	/* eagle E1 PCIE1 tx ring 22 flow control issue */
+-	if (dev->wlan.id == 0x7991)
++	/* Kite and Eagle E1 PCIE1 tx ring 22 flow control issue */
++	if (dev->wlan.id == 0x7991 || dev->wlan.id == 0x7992)
+ 		wed_clr(dev, MTK_WED_AMSDU_FIFO, MTK_WED_AMSDU_IS_PRIOR0_RING);
+ 
+ 	wed_set(dev, MTK_WED_CTRL, MTK_WED_CTRL_TX_AMSDU_EN);
+@@ -1239,7 +1246,11 @@ mtk_wed_set_wpdma(struct mtk_wed_device *dev)
+ 		return;
+ 
+ 	wed_w32(dev, MTK_WED_WPDMA_RX_GLO_CFG, dev->wlan.wpdma_rx_glo);
+-	wed_w32(dev, dev->hw->soc->regmap.wpdma_rx_ring0, dev->wlan.wpdma_rx);
++	wed_w32(dev, dev->hw->soc->regmap.wpdma_rx_ring[0],
++		dev->wlan.wpdma_rx[0]);
++	if (mtk_wed_is_v3_or_greater(dev->hw))
++		wed_w32(dev, dev->hw->soc->regmap.wpdma_rx_ring[1],
++			dev->wlan.wpdma_rx[1]);
+ 
+ 	if (!dev->wlan.hw_rro)
+ 		return;
+@@ -2323,6 +2334,16 @@ mtk_wed_start(struct mtk_wed_device *dev, u32 irq_mask)
+ 		if (!dev->rx_wdma[i].desc)
+ 			mtk_wed_wdma_rx_ring_setup(dev, i, 16, false);
+ 
++	if (dev->wlan.hw_rro) {
++		for (i = 0; i < MTK_WED_RX_PAGE_QUEUES; i++) {
++			u32 addr = MTK_WED_RRO_MSDU_PG_CTRL0(i) +
++				   MTK_WED_RING_OFS_COUNT;
++
++			if (!wed_r32(dev, addr))
++				wed_w32(dev, addr, 1);
++		}
++	}
++
+ 	mtk_wed_hw_init(dev);
+ 	mtk_wed_configure_irq(dev, irq_mask);
+ 
+diff --git a/drivers/net/ethernet/mediatek/mtk_wed.h b/drivers/net/ethernet/mediatek/mtk_wed.h
+index c1f0479d7a7182919e77c40efc30ade37abfad58..b49aee9a8b65156310e4f66a17921e5320b3077c 100644
+--- a/drivers/net/ethernet/mediatek/mtk_wed.h
++++ b/drivers/net/ethernet/mediatek/mtk_wed.h
+@@ -17,7 +17,7 @@ struct mtk_wed_wo;
+ struct mtk_wed_soc_data {
+ 	struct {
+ 		u32 tx_bm_tkid;
+-		u32 wpdma_rx_ring0;
++		u32 wpdma_rx_ring[MTK_WED_RX_QUEUES];
+ 		u32 reset_idx_tx_mask;
+ 		u32 reset_idx_rx_mask;
+ 	} regmap;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index 4a82f8e4c118061fc76459dc0e38f7ee27e25a3a..36488aa6cc20117de4f5b76b80beca149015e055 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -664,8 +664,8 @@ int mt7915_mmio_wed_init(struct mt7915_dev *dev, void *pdev_ptr,
+ 					 MT_RXQ_WED_RING_BASE;
+ 		wed->wlan.wpdma_rx_glo = pci_resource_start(pci_dev, 0) +
+ 					 MT_WPDMA_GLO_CFG;
+-		wed->wlan.wpdma_rx = pci_resource_start(pci_dev, 0) +
+-				     MT_RXQ_WED_DATA_RING_BASE;
++		wed->wlan.wpdma_rx[0] = pci_resource_start(pci_dev, 0) +
++					MT_RXQ_WED_DATA_RING_BASE;
+ 	} else {
+ 		struct platform_device *plat_dev = pdev_ptr;
+ 		struct resource *res;
+@@ -687,7 +687,7 @@ int mt7915_mmio_wed_init(struct mt7915_dev *dev, void *pdev_ptr,
+ 		wed->wlan.wpdma_tx = res->start + MT_TXQ_WED_RING_BASE;
+ 		wed->wlan.wpdma_txfree = res->start + MT_RXQ_WED_RING_BASE;
+ 		wed->wlan.wpdma_rx_glo = res->start + MT_WPDMA_GLO_CFG;
+-		wed->wlan.wpdma_rx = res->start + MT_RXQ_WED_DATA_RING_BASE;
++		wed->wlan.wpdma_rx[0] = res->start + MT_RXQ_WED_DATA_RING_BASE;
+ 	}
+ 	wed->wlan.nbuf = MT7915_HW_TOKEN_SIZE;
+ 	wed->wlan.tx_tbit[0] = is_mt7915(&dev->mt76) ? 4 : 30;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+index 30b40f4a91be81d429d11f15036167396756d2dc..fb2428a9b877899a0a6fb879aba84e1f6e7840f2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+@@ -503,9 +503,9 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
+ 		}
+ 
+ 		wed->wlan.wpdma_rx_glo = wed->wlan.phy_base + hif1_ofs + MT_WFDMA0_GLO_CFG;
+-		wed->wlan.wpdma_rx = wed->wlan.phy_base + hif1_ofs +
+-				     MT_RXQ_RING_BASE(MT7996_RXQ_BAND0) +
+-				     MT7996_RXQ_BAND0 * MT_RING_SIZE;
++		wed->wlan.wpdma_rx[0] = wed->wlan.phy_base + hif1_ofs +
++					MT_RXQ_RING_BASE(MT7996_RXQ_BAND0) +
++					MT7996_RXQ_BAND0 * MT_RING_SIZE;
+ 
+ 		wed->wlan.id = MT7996_DEVICE_ID_2;
+ 		wed->wlan.tx_tbit[0] = ffs(MT_INT_TX_DONE_BAND2) - 1;
+@@ -518,9 +518,9 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
+ 
+ 		wed->wlan.wpdma_rx_glo = wed->wlan.phy_base + MT_WFDMA0_GLO_CFG;
+ 
+-		wed->wlan.wpdma_rx = wed->wlan.phy_base +
+-				     MT_RXQ_RING_BASE(MT7996_RXQ_BAND0) +
+-				     MT7996_RXQ_BAND0 * MT_RING_SIZE;
++		wed->wlan.wpdma_rx[0] = wed->wlan.phy_base +
++					MT_RXQ_RING_BASE(MT7996_RXQ_BAND0) +
++					MT7996_RXQ_BAND0 * MT_RING_SIZE;
+ 
+ 		wed->wlan.wpdma_rx_rro[0] = wed->wlan.phy_base +
+ 					    MT_RXQ_RING_BASE(MT7996_RXQ_RRO_BAND0) +
+diff --git a/include/linux/soc/mediatek/mtk_wed.h b/include/linux/soc/mediatek/mtk_wed.h
+index d8949a4ed0dc9d41b3364e85a21e15d258519c45..c4ff6bab176db1f51cd94ac4198df0caeb557df2 100644
+--- a/include/linux/soc/mediatek/mtk_wed.h
++++ b/include/linux/soc/mediatek/mtk_wed.h
+@@ -147,7 +147,7 @@ struct mtk_wed_device {
+ 		u32 wpdma_tx;
+ 		u32 wpdma_txfree;
+ 		u32 wpdma_rx_glo;
+-		u32 wpdma_rx;
++		u32 wpdma_rx[MTK_WED_RX_QUEUES];
+ 		u32 wpdma_rx_rro[MTK_WED_RX_QUEUES];
+ 		u32 wpdma_rx_pg;
+ 
 
-Regards,
-Lorenzo
+---
+base-commit: bc4c0a48bdad7f225740b8e750fdc1da6d85e1eb
+change-id: 20250718-mt7992-wed-support-456a50d51f81
 
---N1vBIlflFVXeQRN6
-Content-Type: application/pgp-signature; name=signature.asc
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaJrHegAKCRA6cBh0uS2t
-rAn9AP0bWrDJy2M1CQQq6ydQl8W40coUDAJ2wAj0bRJ3LjVQZQD/Skw/G0OSM9++
-iqiVRAF7bNmVxGzHSAF1T0D3HNVL1gk=
-=PIXt
------END PGP SIGNATURE-----
-
---N1vBIlflFVXeQRN6--
 
