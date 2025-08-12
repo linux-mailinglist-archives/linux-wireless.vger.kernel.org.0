@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-26337-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26339-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59CDB22EC8
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 19:16:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5145EB22EB8
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 19:15:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86E11682C34
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 17:13:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F0CF5630D0
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Aug 2025 17:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E538B2FE570;
-	Tue, 12 Aug 2025 17:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB77021D596;
+	Tue, 12 Aug 2025 17:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fYtFuyPs"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Vk0QoXdf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582252FD1A4
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Aug 2025 17:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670C22FE584
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Aug 2025 17:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755018773; cv=none; b=K7VHw0JpMTEuv0nBKmMT5W5BGCVxSdrm1k7Rvm8BMO8tezgQE16r+85E9PyYvV4mNMMWn5HSex6GM7tHJbe55AessuUyy88rFPN/LmqxphmCL4TbK5aCU8qkONKzqmX0Ay4+yAIzSiavPBMWu3AS8ufzsFH0zhGAdTK3HmZLfPk=
+	t=1755018777; cv=none; b=e3RYLD0rUf2yV5C9g9pjykaNcmy1gun3bGalhp5RlY+0Qj3gYss9ZzhjnTkWQBOst7ENzTg4X5464E/TjezpcfdZuI8e0ECNoIvSLFHl1MSbxUUoe0cvDFNkiKmF1uCzjvQx0b8tWdkIgtgC1vTez8eAjEdeQ6UGS2VPAyBb+x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755018773; c=relaxed/simple;
-	bh=lv5VEjjadHPk0lceAg/1ugrQ0jFE5k/o9BMH+X8tWZM=;
+	s=arc-20240116; t=1755018777; c=relaxed/simple;
+	bh=Fv4xRqvIkYXFRIgJ3SsnqjrtxSER/hgpZyjDUitVez0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=kAok5exn0FCAikuS9s6e/nLENBQEsEBqRcmU8tpUY7GqlFIoWtGuygt/+KlWWsw+bu7dO5kqt0/lYjM/ZuKa5OAZUIC/ooMqnME8QT6tbgugEp8UnT4z1zqgIwRX2fQFcV0szwYYTGs0dimUnWB8oCgLHZr9caXGhcG4NG1MiX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fYtFuyPs; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:To:CC; b=A4i3qYiycR5jFqUxbUxQBzmvLJ/JA5TNCzxFBf00VnGv5xNkRLesxODb5XNuvP1BgOH6UggYfkAM7p4RqqFHp4EAx5wUY/VO+nRyM4+LV/Ix94Ctk/rHmluVWK75lpHjYpv+LFdY76O9+EUVIlld5zbYVv5UHTavVY42ASGjwrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Vk0QoXdf; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CAvonf029782;
-	Tue, 12 Aug 2025 17:12:50 GMT
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CH6eri011485;
+	Tue, 12 Aug 2025 17:12:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	PvDWRKsB93euhELcNiy7exdUlcSWVbo3RCdpLDI4fmg=; b=fYtFuyPsVfw+nrD6
-	1tolp1fKoRdsOHIfPW+ufzsYu5gqLTiih6kCzhb/OfvUVBTnKHsG+haqKHtBGGZV
-	oV6fcGTWKfaZ6gnV67b5mH3JEzsE5P1fK8Rj3SS6ToqTf2w7Fj9dMv7ixocV+67f
-	NEgI0uEvyWU+w6wkr/JOHd/E2YKsADjY4HarXXg/GmCIJlorPypolTzDqEIbv0Aq
-	7rPWgtSJO3M2vt7aIsYF9v9p3YBkAPfKRXgYhWmV28w5yLZfUyerYnOzE2/D9S2m
-	sCKB/SmqfoVX1eiNNovwAOZC71G9lDZ2otV2cSkatw5BZt0l6SRrZhfymjvFrfYl
-	98HbSg==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48dy3g8x49-1
+	TFw2Lff6Tq2J7srX4n7Fk4zpUfnygl/Mr+Iyqr9K5Jw=; b=Vk0QoXdfN4q9Fy1B
+	lcPVacl6lJ//HTtf5Hs4WhZVbcEUu4+elLQ4uIgVxFEJjyoX2ULAy9E2ufDSRzo7
+	yqBEGaMWX/tGmIGh44QpZvqiemceaoswtQc2rid/963ndA2I/UjGM15EelTav9u/
+	0RnMkUOGB0bxpaGRNqljY5Q1BqutzvphVx3XcOSMkIzjqba+IlO3oIKLSkRfkQb9
+	1grzC3QU9wVvt+O7G3fpNWighEPefKUmixGEfBlT1RY6DkZfUUChh1vaev76vcXz
+	YCzkUAnYi3wecO3EuHzhDtyzFWsIjDI28fXQpASQ2HXRZusTXCsjYfwsOckCx2Oh
+	leWNNA==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48g9q9r0hq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Aug 2025 17:12:50 +0000 (GMT)
+	Tue, 12 Aug 2025 17:12:51 +0000 (GMT)
 Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57CHCn8V008415
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57CHCoqE026492
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Aug 2025 17:12:49 GMT
+	Tue, 12 Aug 2025 17:12:50 GMT
 Received: from hu-kiranv-blr.qualcomm.com (10.80.80.8) by
  nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Tue, 12 Aug 2025 10:12:48 -0700
+ 15.2.1748.10; Tue, 12 Aug 2025 10:12:49 -0700
 From: Kiran Venkatappa <quic_kiranv@quicinc.com>
-Date: Tue, 12 Aug 2025 22:39:38 +0530
-Subject: [PATCH ath12k-ng 12/13] wifi: ath12k: Remove HAL defines from
- shared PCI code
+Date: Tue, 12 Aug 2025 22:39:39 +0530
+Subject: [PATCH ath12k-ng 13/13] wifi: ath12k: Remove HAL define
+ dependencies from shared AHB code
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250812-ath12k-mod-v1-12-8c9b0eb9335d@quicinc.com>
+Message-ID: <20250812-ath12k-mod-v1-13-8c9b0eb9335d@quicinc.com>
 References: <20250812-ath12k-mod-v1-0-8c9b0eb9335d@quicinc.com>
 In-Reply-To: <20250812-ath12k-mod-v1-0-8c9b0eb9335d@quicinc.com>
 To: <ath12k@lists.infradead.org>
@@ -78,141 +78,114 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nasanex01c.na.qualcomm.com (10.45.79.139)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=X4lSKHTe c=1 sm=1 tr=0 ts=689b7612 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=CNMqXQrD c=1 sm=1 tr=0 ts=689b7613 cx=c_pps
  a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
  a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=COk6AnOGAAAA:8
- a=J4BUbrmoJvxzxEsK8LsA:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA5MDAzMSBTYWx0ZWRfX1FFBZQXtaAtp
- REL9yJ2SKzx7Q1W1LWuoMTR8mkc2Ik0GXBQXg7Azdmj6AsxiEzmPpvgBaghDmGrAmPxmNyWyhWf
- j9h+2vdyYuhnx9lTQbOvi38wx2MqMPVN4gnRwi1JY9REBRA0/JOi3iF84Voa6GK6FNOHAXOnMpI
- doij6ALnStDZ1fs/GnIRqj/jCo7w4z2EoPVy17lt9edOUE8hW8dCd8A42viQupKy2VObSCAEeO6
- NC/R5iZSso8uqaeXTaOE8Yn+SBdjyZiiLohjELHGhW+gWXeMluGlFP+bzfSCx0LFSeFerIHNj/q
- 3v8oozETpp9Rot8q9eIXL1jeYzpLOuGPO1Tu00T2j+kMECqc3ljR6Aia2WBCeJq4rF2eBKPCDYW
- 9AOJESUO
-X-Proofpoint-GUID: wgwSOtBhcuGgO8e4mql6TMbiuh6iKApQ
-X-Proofpoint-ORIG-GUID: wgwSOtBhcuGgO8e4mql6TMbiuh6iKApQ
+ a=jfDO2W7Yx6m_jtC0e_MA:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: YnNuQO-7O1l2v4M5YFa1uGghmqc-RSP4
+X-Proofpoint-ORIG-GUID: YnNuQO-7O1l2v4M5YFa1uGghmqc-RSP4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE2NCBTYWx0ZWRfX88wRY8iv4Xos
+ trMdonYTZxtQ5UDgAfrBdpWmdtiHICmWiFRcXOr+znytb3vIuM62YVb3Sg0Oqev8sjg3mj0Lp2a
+ 0czc2kXKgEHvKuejeU7Cx9/hc+AabFLrDR1QLXgDp1pAQlEcpjIjnoj2SwTFvcZjKEt+bCnPaHf
+ vn/plOiUDxquD9EzgF8Ibf0msEKBODgwIsmOwgoSbuecPMKQsV/5NQmr2cBrb5C8h8OZNAHCTiH
+ 4SeI2538HTOuSCxn6s1pU0o3JasVX05ZACyRhfsEuiJ4bw7YyW+PduM5O/nDTfmc4iighBDgGmR
+ guIEmuzqJBzzxn1p7wwS/CTtuELpwXr1Kumd17pUJ2iGP2d7pJjtM6wltUqH5LGQcA/+GWbbrEB
+ 1XHyBFQJ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 adultscore=0
- spamscore=0 bulkscore=0 suspectscore=0 impostorscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508090031
+ spamscore=0 adultscore=0 phishscore=0 bulkscore=0 clxscore=1011
+ malwarescore=0 impostorscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508120164
 
-Eliminate use of HAL-specific defines in the shared PCI implementation.
-Pass required register offsets during PCI registration and store them in
-the PCI context structure. Access offsets directly from the context to
-improve modularity and remove hardware-specific dependencies in the
-common code path.
+Eliminate HAL-specific defines from the shared AHB implementation.
+Store the WFSS register base-already available in hw_params via the
+ce_remap structure-in the AHB context and access it directly.
+Add the CMEM offset to the ce_remap structure and use it consistently in
+shared code. Improve modularity by removing hardware abstraction layer
+dependencies from common code paths and enable cleaner separation of
+target-specific logic
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Kiran Venkatappa <quic_kiranv@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/pci.c       | 12 ++++++++----
- drivers/net/wireless/ath/ath12k/pci.h       |  7 +++++++
- drivers/net/wireless/ath/ath12k/wifi7/pci.c |  6 ++++++
- 3 files changed, 21 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/ahb.c      | 7 ++++---
+ drivers/net/wireless/ath/ath12k/ce.h       | 1 +
+ drivers/net/wireless/ath/ath12k/core.h     | 1 +
+ drivers/net/wireless/ath/ath12k/wifi7/hw.c | 1 +
+ 4 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index fbe6359ec74cf121d2d08d94297585eaa423d5ad..72bcaab6f5420945d79bc2bf2adc8afe57b563ac 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -132,10 +132,12 @@ static void ath12k_pci_select_window(struct ath12k_pci *ab_pci, u32 offset)
+diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
+index 41ef5170556e9255337b26ec3565ab25f50adc65..efb0ef609dcfab307b942798b901fb7f2b85e7d7 100644
+--- a/drivers/net/wireless/ath/ath12k/ahb.c
++++ b/drivers/net/wireless/ath/ath12k/ahb.c
+@@ -123,7 +123,7 @@ enum ext_irq_num {
  
- static void ath12k_pci_select_static_window(struct ath12k_pci *ab_pci)
+ static u32 ath12k_ahb_read32(struct ath12k_base *ab, u32 offset)
  {
--	u32 umac_window = u32_get_bits(HAL_SEQ_WCSS_UMAC_OFFSET, WINDOW_VALUE_MASK);
--	u32 ce_window = u32_get_bits(HAL_CE_WFSS_CE_REG_BASE, WINDOW_VALUE_MASK);
-+	u32 umac_window;
-+	u32 ce_window;
- 	u32 window;
- 
-+	umac_window = u32_get_bits(ab_pci->reg_base->umac_base, WINDOW_VALUE_MASK);
-+	ce_window = u32_get_bits(ab_pci->reg_base->ce_reg_base, WINDOW_VALUE_MASK);
- 	window = (umac_window << 12) | (ce_window << 6);
- 
- 	spin_lock_bh(&ab_pci->window_lock);
-@@ -148,13 +150,14 @@ static void ath12k_pci_select_static_window(struct ath12k_pci *ab_pci)
- static u32 ath12k_pci_get_window_start(struct ath12k_base *ab,
- 				       u32 offset)
- {
-+	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
- 	u32 window_start;
- 
- 	/* If offset lies within DP register range, use 3rd window */
--	if ((offset ^ HAL_SEQ_WCSS_UMAC_OFFSET) < WINDOW_RANGE_MASK)
-+	if ((offset ^ ab_pci->reg_base->umac_base) < WINDOW_RANGE_MASK)
- 		window_start = 3 * WINDOW_START;
- 	/* If offset lies within CE register range, use 2nd window */
--	else if ((offset ^ HAL_CE_WFSS_CE_REG_BASE) < WINDOW_RANGE_MASK)
-+	else if ((offset ^ ab_pci->reg_base->ce_reg_base) < WINDOW_RANGE_MASK)
- 		window_start = 2 * WINDOW_START;
- 	else
- 		window_start = WINDOW_START;
-@@ -1553,6 +1556,7 @@ static int ath12k_pci_probe(struct pci_dev *pdev,
- 	ath12k_dbg(ab, ATH12K_DBG_PCI, "PCI device family id: %d\n", device_id);
- 
- 	ab_pci->device_family_ops = &ath12k_pci_family_drivers[device_id]->ops;
-+	ab_pci->reg_base = ath12k_pci_family_drivers[device_id]->reg_base;
- 
- 	/* Call device specific probe. This is the callback that can
- 	 * be used to override any ops in future
-diff --git a/drivers/net/wireless/ath/ath12k/pci.h b/drivers/net/wireless/ath/ath12k/pci.h
-index 1b7ecc329a017cafa84780f3f6e634163ead59bb..5af33e5deacfd8acfc62afc17cb9e63d74df23d5 100644
---- a/drivers/net/wireless/ath/ath12k/pci.h
-+++ b/drivers/net/wireless/ath/ath12k/pci.h
-@@ -99,6 +99,11 @@ struct ath12k_pci_device_family_ops {
- 	int (*probe)(struct pci_dev *pdev, const struct pci_device_id *pci_dev);
- };
- 
-+struct ath12k_pci_reg_base {
-+	u32 umac_base;
-+	u32 ce_reg_base;
-+};
-+
- struct ath12k_pci {
- 	struct pci_dev *pdev;
- 	struct ath12k_base *ab;
-@@ -122,6 +127,7 @@ struct ath12k_pci {
- 	u32 qmi_instance;
- 	u64 dma_mask;
- 	const struct ath12k_pci_device_family_ops *device_family_ops;
-+	const struct ath12k_pci_reg_base *reg_base;
- };
- 
- struct ath12k_pci_driver {
-@@ -129,6 +135,7 @@ struct ath12k_pci_driver {
- 	const struct pci_device_id *id_table;
- 	struct ath12k_pci_device_family_ops ops;
- 	struct pci_driver driver;
-+	const struct ath12k_pci_reg_base *reg_base;
- };
- 
- static inline struct ath12k_pci *ath12k_pci_priv(struct ath12k_base *ab)
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/pci.c b/drivers/net/wireless/ath/ath12k/wifi7/pci.c
-index 608669a83ea7561b9a464f44b8dae14500d0a1d9..9b1acf6c7aa3121a53358a72a51aa21ead572a09 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/pci.c
-@@ -155,10 +155,16 @@ static int ath12k_wifi7_pci_probe(struct pci_dev *pdev,
- 	return 0;
+-	if (ab->ce_remap && offset < HAL_SEQ_WCSS_CMEM_OFFSET)
++	if (ab->ce_remap && offset < ab->cmem_offset)
+ 		return ioread32(ab->mem_ce + offset);
+ 	return ioread32(ab->mem + offset);
  }
+@@ -131,7 +131,7 @@ static u32 ath12k_ahb_read32(struct ath12k_base *ab, u32 offset)
+ static void ath12k_ahb_write32(struct ath12k_base *ab, u32 offset,
+ 			       u32 value)
+ {
+-	if (ab->ce_remap && offset < HAL_SEQ_WCSS_CMEM_OFFSET)
++	if (ab->ce_remap && offset < ab->cmem_offset)
+ 		iowrite32(value, ab->mem_ce + offset);
+ 	else
+ 		iowrite32(value, ab->mem + offset);
+@@ -928,7 +928,8 @@ static int ath12k_ahb_resource_init(struct ath12k_base *ab)
+ 			goto err_mem_unmap;
+ 		}
+ 		ab->ce_remap = true;
+-		ab->ce_remap_base_addr = HAL_IPQ5332_CE_WFSS_REG_BASE;
++		ab->cmem_offset = ce_remap->cmem_offset;
++		ab->ce_remap_base_addr = ce_remap->base;
+ 	}
  
-+static const struct ath12k_pci_reg_base ath12k_wifi7_reg_base = {
-+	.umac_base = HAL_SEQ_WCSS_UMAC_OFFSET,
-+	.ce_reg_base = HAL_CE_WFSS_CE_REG_BASE,
-+};
-+
- static struct ath12k_pci_driver ath12k_wifi7_pci_driver = {
- 	.name = "ath12k_wifi7_pci",
- 	.id_table = ath12k_wifi7_pci_id_table,
- 	.ops.probe = ath12k_wifi7_pci_probe,
-+	.reg_base = &ath12k_wifi7_reg_base,
+ 	ab_ahb->xo_clk = devm_clk_get(ab->dev, "xo");
+diff --git a/drivers/net/wireless/ath/ath12k/ce.h b/drivers/net/wireless/ath/ath12k/ce.h
+index f44ce2244bcfdb60d505d51096ed70b3965952c9..38f986ea1cd2bf6e7739ca939a3db66644c4ac77 100644
+--- a/drivers/net/wireless/ath/ath12k/ce.h
++++ b/drivers/net/wireless/ath/ath12k/ce.h
+@@ -85,6 +85,7 @@ struct ce_ie_addr {
+ struct ce_remap {
+ 	u32 base;
+ 	u32 size;
++	u32 cmem_offset;
  };
  
- int ath12k_wifi7_pci_init(void)
+ struct ce_attr {
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index fa04aaa836fcba9d647b2127651cb366046e2e73..3c4a8f834b70ffe1005e761aabbb966c30cb8ff0 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -1060,6 +1060,7 @@ struct ath12k_base {
+ 
+ 	void __iomem *mem_ce;
+ 	u32 ce_remap_base_addr;
++	u32 cmem_offset;
+ 	bool ce_remap;
+ 
+ 	struct {
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hw.c b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
+index 9995eccd32d39f69191f0308b67d35ed3501ebf9..82b4f5b9f570076e3ca64dec7b866e1d88787789 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/hw.c
++++ b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
+@@ -695,6 +695,7 @@ static const struct ce_ie_addr ath12k_wifi7_ce_ie_addr_ipq5332 = {
+ static const struct ce_remap ath12k_wifi7_ce_remap_ipq5332 = {
+ 	.base = HAL_IPQ5332_CE_WFSS_REG_BASE,
+ 	.size = HAL_IPQ5332_CE_SIZE,
++	.cmem_offset = HAL_SEQ_WCSS_CMEM_OFFSET,
+ };
+ 
+ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
 
 -- 
 2.34.1
