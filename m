@@ -1,118 +1,237 @@
-Return-Path: <linux-wireless+bounces-26366-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26361-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA415B24BBB
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 16:18:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF2BB24940
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 14:11:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23B581AA67B8
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 14:17:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CCED567AC2
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 12:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FD22EA74B;
-	Wed, 13 Aug 2025 14:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3132F5323;
+	Wed, 13 Aug 2025 12:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EHlZ6nh3"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="C+5Pxxih"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nbd.name (nbd.name [46.4.11.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963582ED14F
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Aug 2025 14:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D818F2F746C
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Aug 2025 12:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755094644; cv=none; b=q48clO+ozAiD/LZc2M7PzjAUwwPfNXUIYcVArX4vovcgwFMQD2tWcq6NHcp6Y6oKXxXdZHb4408PdUM5A24m/dObjHxz08Ki0n7sGlHOF7zEeGYp88m5QRl4uqxu3SObA0vsSc2ewh7Dv0xHmwRFycbUDAO3U15eoDWeL8wF95c=
+	t=1755087077; cv=none; b=c1XoYFmNNADEUAoq4NFAfl+pYKm97tO7cXfj7AlwsWCrFmOy6X/K2bYSGJ8YGBMB2RTuwBR7gn64ymmkbg+PBnmpIlbbeeo0HFPG7/DIN8upD877L0ec/eWbY0+WROLkCt+aOhVFiV0EPmQ3Ld5jibb4SbRXlKWF7QiqWb7DAfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755094644; c=relaxed/simple;
-	bh=gDv6k/cnVGC+5pFIfduOvzEvsIzZnvrVOea6R+TSr5g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sA71ioi0CqyiqKlUhLuvlbMrayLyeVFklAJW+X+XtcoSpaYJsjlS2v+PC9UJ3u6oEuaNkb1fhndsk4UqT1b63f+DGWEKC86AgGBxpAi7482CHi7GZc+w0aOZiPzjjwFtq9OxkJ81QGNCNQx1rYl4PhBejM+p+7gKzwNfuIjWPrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EHlZ6nh3; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3b790dbb112so4082349f8f.3
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Aug 2025 07:17:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755094641; x=1755699441; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1gxZeZj9Dcst0lTsMevYg/T988h0HVKmw8rmMSy1LdM=;
-        b=EHlZ6nh3CsWx+3VQQeijLdRwIIK6Dguvs/Vsvpslqo2bWFQnr1gc/dbKBrgYIw7PPK
-         1Te+kNcVBDt8MbRlP4hyxTQNX5KJD8iwI63WXp5+xNvpJ2sOiyclQnyUAJnwe2KQ4vRe
-         h8dfR6nKbnkbTY2WF6L0zORdPb5syjdCUb9RPJhgQrLsMACDAbhHQuwOWidtER3nB0oA
-         YAzALgTWLDIn4N0o5Ud6EESfn9gQ86/1AateuipbLTlJkbIHykbQb4okwR4UEawmgdCk
-         F2Zk0asAPhTmzEWUa4bb6232SJ4+pxFTd178QDArnf3LrxUl9Dk8/1xOdb/5lCgL0G7J
-         Qgvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755094641; x=1755699441;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1gxZeZj9Dcst0lTsMevYg/T988h0HVKmw8rmMSy1LdM=;
-        b=opYu6cnNNvFMRl7GH6iQhZ7XK2gM5hEzNNwv9+71a5uqFImDmQsHQBo5QEJtaU2Pk+
-         8nmHqNM8t/iprnDuXFJAYTMTcyTGrMkCfDyu93b9RT1Qn6IweN5dI9ceD51ykhfi1aMv
-         /6Lij3f+eKd8xhupKPsuLTqQ7J613d45bixWRdwCUGiOX33gLN3okuDcc2MldNv8ofIB
-         fgSiyu3xYrI4/zqPdWs4O7/xfPl5BseoQxvxTibY0Wvv5TQNq7BX0Oxyx4uqB8eN7zTa
-         fqJMn8Qd0GdQI2Yys1DIibbdqHvYETwpUd7VzKnEoLmOHHIc29+ZRLOcnFBnja2kp7LS
-         ZaUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWsK6O7ftIQUkBCsvMMcU3CBYVKujnH6NQ8ptIdXRuWncGgMy53N9hRSvW2fMJuXLia4Ir5KpThGtDOaxEI8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbtEEiUn+lx0ZAlsz8Q+rAz4bwnlRxtBQv0P+ynX7hjzn0CK0I
-	ny/OxTBKq1ocFR6vID5NDVT8AcJbXTc5kex5V/W2axAhjHYD7U4YScTbsMmiNptvMCs=
-X-Gm-Gg: ASbGncuXqkeBd9iVE5RdomZ1BazfmBVIokUXP++JsMx/+mhvvR4g3bzbcdP5JsvqYPW
-	ZTmjGzIDFsUnOBBMyVX7902b1fQPpUn0jXlu4vA7bodLBspJj1K+6+cYDjPtCpQmpGIV99UjIxz
-	QfmtJ85P1UIJNHFc8EOKHoYw89CDyjf9gctijLWH+pzDQ55bBENltMqjxA5Rhm1HPjF5Up5Tw5b
-	5NoP9ExGIBcn5S1tHGPjdgYCXfxH3JpPzSXwSs+CqN1WfP832xUQHnNK3WyaBYCltfMjb6niYs/
-	3e2GAc2WnALLAiLMOPSTN3jXyegQX9SX8M3adDZjj0/H96eC5BUbSIQaYciyw3mlCYIp3C1KFkG
-	Z1JS9PvRuGgctUoDmSLGhWtS7p8ejeciPd6NVrgwceQkqxBTZ+YuCUg==
-X-Google-Smtp-Source: AGHT+IFFIHDxH0gsvcBbrdg0jzQCZ8KJ5WFgRavMcUV7EUAlo72yyL5x+kSMwqYLcMH3lxjUWM8oPA==
-X-Received: by 2002:a05:6000:4305:b0:3b7:7cb3:1124 with SMTP id ffacd0b85a97d-3b917d2af6dmr3043536f8f.11.1755094640701;
-        Wed, 13 Aug 2025 07:17:20 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3ac158sm48762592f8f.4.2025.08.13.07.17.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 07:17:20 -0700 (PDT)
-Date: Wed, 13 Aug 2025 12:25:27 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Qianfeng Rong <rongqianfeng@vivo.com>
-Cc: Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Kalle Valo <kvalo@kernel.org>,
-	Aditya Kumar Singh <quic_adisi@quicinc.com>,
-	Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-	Roopni Devanathan <quic_rdevanat@quicinc.com>,
-	"open list:MARVELL MWIFIEX WIRELESS DRIVER" <linux-wireless@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 5/5] wifi: mwifiex: use vmalloc_array() to simplify code
-Message-ID: <aJxaBzZYr4d5-XUv@stanley.mountain>
-References: <20250812133226.258318-1-rongqianfeng@vivo.com>
- <20250812133226.258318-6-rongqianfeng@vivo.com>
- <aJtGSxkRztAsy92h@stanley.mountain>
- <e66eb22f-5565-4f33-b523-f93dc81a1210@vivo.com>
- <aJtQS-Tpzw90Hqtl@stanley.mountain>
- <c330d0f3-d3cd-4981-8bb5-3ff5761647dc@vivo.com>
+	s=arc-20240116; t=1755087077; c=relaxed/simple;
+	bh=JYHZrFpT8fjrbjai2cyJpv5L3/EToj9LbUsSiAxA6fI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=RL5DOjFXray4gbpIvEuh80v8dl09a7/h7XQUi15h2SWAlSAomrjS0Bhwr0Rbo4T3nU5UxwPStGCjvVm/yklzoYFCe32n705CCIfiqf/XoM4xajvP1E7IldxEtvfpTrg0OBodNSaKn/aq0D9eIojROYZ2fDLLlx+roGXxI+uwiaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=C+5Pxxih; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=PQX4zwe2mkvFP+go8Q2YWvHW4f0Sjau2b/jsTDUzatM=; b=C+5PxxihGITEQbRlSYx0wzTgUa
+	KMpmUgc98oDV+KBPAkBFfFB/PKPZov08+pWLbtsELCeZL/v9TNixi4eTaGzEVjF3R11xh8lrEavtQ
+	rF+aY7oyq4BadJERbiybTz4lXSC1Hpx+NCXnE6+OFicx+JhtgWwGmNIFkvdvyUIcD/58=;
+Received: from p5b206816.dip0.t-ipconnect.de ([91.32.104.22] helo=localhost.localdomain)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1umAJu-009tKb-2F
+	for linux-wireless@vger.kernel.org;
+	Wed, 13 Aug 2025 14:11:06 +0200
+From: Felix Fietkau <nbd@nbd.name>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH 1/2] wifi: mt76: mt7996: disable beacons when going offchannel
+Date: Wed, 13 Aug 2025 14:11:05 +0200
+Message-ID: <20250813121106.81559-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c330d0f3-d3cd-4981-8bb5-3ff5761647dc@vivo.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 13, 2025 at 02:52:51PM +0800, Qianfeng Rong wrote:
-> > 
-> > I really think we should zero this memory, so lets allocate it
-> > with kcalloc().
-> I agree with you, I will try to do this in the next version.
+Avoid leaking beacons on unrelated channels during scanning/roc
 
-Thanks.  When you resend it make sure to add a Fixes tag and CC stable.
-Forgetting to zero the memory is a sort of security issue.
+Fixes: c56d6edebc1f ("wifi: mt76: mt7996: use emulated hardware scan support")
+Reported-by: Chad Monroe <chad.monroe@adtran.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 46 +++++++++++--------
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  5 ++
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 11 +++--
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |  1 +
+ 4 files changed, 42 insertions(+), 21 deletions(-)
 
-regards,
-dan carpenter
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 6333a064c4f7..d3d3b96f7dd2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1698,17 +1698,37 @@ mt7996_wait_reset_state(struct mt7996_dev *dev, u32 state)
+ static void
+ mt7996_update_vif_beacon(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ {
+-	struct ieee80211_hw *hw = priv;
++	struct ieee80211_bss_conf *link_conf;
++	struct mt7996_phy *phy = priv;
++	struct mt7996_dev *dev = phy->dev;
++	unsigned int link_id;
++
+ 
+ 	switch (vif->type) {
+ 	case NL80211_IFTYPE_MESH_POINT:
+ 	case NL80211_IFTYPE_ADHOC:
+ 	case NL80211_IFTYPE_AP:
+-		mt7996_mcu_add_beacon(hw, vif, &vif->bss_conf);
+ 		break;
+ 	default:
+-		break;
++		return;
+ 	}
++
++	for_each_vif_active_link(vif, link_conf, link_id) {
++		struct mt7996_vif_link *link;
++
++		link = mt7996_vif_link(dev, vif, link_id);
++		if (link->phy != phy)
++			continue;
++
++		mt7996_mcu_add_beacon(dev->mt76.hw, vif, link_conf);
++	}
++}
++
++void mt7996_mac_update_beacons(struct mt7996_phy *phy)
++{
++	ieee80211_iterate_active_interfaces(phy->mt76->hw,
++					    IEEE80211_IFACE_ITER_RESUME_ALL,
++					    mt7996_update_vif_beacon, phy);
+ }
+ 
+ static void
+@@ -1716,25 +1736,15 @@ mt7996_update_beacons(struct mt7996_dev *dev)
+ {
+ 	struct mt76_phy *phy2, *phy3;
+ 
+-	ieee80211_iterate_active_interfaces(dev->mt76.hw,
+-					    IEEE80211_IFACE_ITER_RESUME_ALL,
+-					    mt7996_update_vif_beacon, dev->mt76.hw);
++	mt7996_mac_update_beacons(&dev->phy);
+ 
+ 	phy2 = dev->mt76.phys[MT_BAND1];
+-	if (!phy2)
+-		return;
+-
+-	ieee80211_iterate_active_interfaces(phy2->hw,
+-					    IEEE80211_IFACE_ITER_RESUME_ALL,
+-					    mt7996_update_vif_beacon, phy2->hw);
++	if (phy2)
++		mt7996_mac_update_beacons(phy2->priv);
+ 
+ 	phy3 = dev->mt76.phys[MT_BAND2];
+-	if (!phy3)
+-		return;
+-
+-	ieee80211_iterate_active_interfaces(phy3->hw,
+-					    IEEE80211_IFACE_ITER_RESUME_ALL,
+-					    mt7996_update_vif_beacon, phy3->hw);
++	if (phy3)
++		mt7996_mac_update_beacons(phy3->priv);
+ }
+ 
+ void mt7996_tx_token_put(struct mt7996_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 3d5ba568243b..38d15963ec58 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -558,6 +558,9 @@ int mt7996_set_channel(struct mt76_phy *mphy)
+ 	struct mt7996_phy *phy = mphy->priv;
+ 	int ret;
+ 
++	if (mphy->offchannel)
++		mt7996_mac_update_beacons(phy);
++
+ 	ret = mt7996_mcu_set_chan_info(phy, UNI_CHANNEL_SWITCH);
+ 	if (ret)
+ 		goto out;
+@@ -575,6 +578,8 @@ int mt7996_set_channel(struct mt76_phy *mphy)
+ 
+ 	mt7996_mac_reset_counters(phy);
+ 	phy->noise = 0;
++	if (!mphy->offchannel)
++		mt7996_mac_update_beacons(phy);
+ 
+ out:
+ 	ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index a6cd82ccf5e4..64ac45920509 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2770,13 +2770,15 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			  struct ieee80211_bss_conf *link_conf)
+ {
+ 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+-	struct mt76_vif_link *mlink = mt76_vif_conf_link(&dev->mt76, vif, link_conf);
++	struct mt7996_vif_link *link = mt7996_vif_conf_link(dev, vif, link_conf);
++	struct mt76_vif_link *mlink = link ? &link->mt76 : NULL;
+ 	struct ieee80211_mutable_offsets offs;
+ 	struct ieee80211_tx_info *info;
+ 	struct sk_buff *skb, *rskb;
+ 	struct tlv *tlv;
+ 	struct bss_bcn_content_tlv *bcn;
+ 	int len, extra_len = 0;
++	bool enabled = link_conf->enable_beacon;
+ 
+ 	if (link_conf->nontransmitted)
+ 		return 0;
+@@ -2784,13 +2786,16 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	if (!mlink)
+ 		return -EINVAL;
+ 
++	if (link->phy && link->phy->mt76->offchannel)
++		enabled = false;
++
+ 	rskb = __mt7996_mcu_alloc_bss_req(&dev->mt76, mlink,
+ 					  MT7996_MAX_BSS_OFFLOAD_SIZE);
+ 	if (IS_ERR(rskb))
+ 		return PTR_ERR(rskb);
+ 
+ 	skb = ieee80211_beacon_get_template(hw, vif, &offs, link_conf->link_id);
+-	if (link_conf->enable_beacon && !skb) {
++	if (enabled && !skb) {
+ 		dev_kfree_skb(rskb);
+ 		return -EINVAL;
+ 	}
+@@ -2809,7 +2814,7 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	len = ALIGN(sizeof(*bcn) + MT_TXD_SIZE + extra_len, 4);
+ 	tlv = mt7996_mcu_add_uni_tlv(rskb, UNI_BSS_INFO_BCN_CONTENT, len);
+ 	bcn = (struct bss_bcn_content_tlv *)tlv;
+-	bcn->enable = link_conf->enable_beacon;
++	bcn->enable = enabled;
+ 	if (!bcn->enable)
+ 		goto out;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index a7b6f328af39..b98cfe6e5be8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -741,6 +741,7 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 			   struct sk_buff *skb, struct mt76_wcid *wcid,
+ 			   struct ieee80211_key_conf *key, int pid,
+ 			   enum mt76_txq_id qid, u32 changed);
++void mt7996_mac_update_beacons(struct mt7996_phy *phy);
+ void mt7996_mac_set_coverage_class(struct mt7996_phy *phy);
+ void mt7996_mac_work(struct work_struct *work);
+ void mt7996_mac_reset_work(struct work_struct *work);
+-- 
+2.50.1
 
 
