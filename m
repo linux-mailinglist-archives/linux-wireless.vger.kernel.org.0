@@ -1,88 +1,88 @@
-Return-Path: <linux-wireless+bounces-26377-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26378-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B79EDB25721
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Aug 2025 01:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7785B2572F
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Aug 2025 01:04:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03F9D9A583F
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 23:00:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FDDD72845F
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 23:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE1A30148B;
-	Wed, 13 Aug 2025 22:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1422D2F3C27;
+	Wed, 13 Aug 2025 23:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HfteWLM6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KkpyQYqp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99B4301482;
-	Wed, 13 Aug 2025 22:59:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046E02D46A2;
+	Wed, 13 Aug 2025 23:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755125984; cv=none; b=RrYXg9XC6jUNWPr8xVqQuR8nFZLW9tA8LdPkPOIfrIYyIxbo56dMxYiDXl/6kzUR6BuIn7XHrSgzTYmAQZdQEA5i/JRSr8hMiTFqV6HsXmAhna4y6bv1EZ0jbI0sI3Za01+CyJQX3GZtGTaMFbhtu3C5AzxkZ9BEIhYBIV/vuQE=
+	t=1755126283; cv=none; b=VPiFuMqBXFz20W3AU+MZobmoks1r53/+yroUxP0eiIULvDRe6mMxl870GB7pxkjd2mF7rMNqAdyuBm5O6tQy8fFmi41E5+lbNRrb5OI8yYOZLdpLwbiR3Niqprwb0xqoXOthJC3QljY9PHZ+f2+hYuQ0NwdZefISXsIlo/v7lLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755125984; c=relaxed/simple;
-	bh=TdSADy9WSIwy8LeBdw/Py9AwRdV3n6oC1LxiSY3ePo0=;
+	s=arc-20240116; t=1755126283; c=relaxed/simple;
+	bh=u77HgcnqZUI0DyTMAuYCiDcC5lkLJPB0fBe76X83Ga0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NlpngHJvxyB8r/mgw1HBQTwr4/xXGqFGQmLg2673KXn+9gN61ygXhWwRapGZac0xHCbpdhWg5g/+QvAgfLX4dzOmVnYsyF3q5ynvhr1LqFOdOM9dImyufRMzfyS7/WzPgCJJCSGc5JaMayEtyJrDzuHIMIpJnaMerOiXpCEO82w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HfteWLM6; arc=none smtp.client-ip=209.85.219.178
+	 To:Cc:Content-Type; b=iB7W8v9U/fUqrhqVWmI6oMhca0e9iDOSu5Twjww+55se32Xi03gi8GfTB/GxqKyQm4fnpE8d4gJhFDfz1EOCfYTP1OZIOgqvL60MugY7V+dObieUYTCSaoquJ2UPOc8b7cwU/KXDJwiNw4w6WBCOKlNdUGxg7Lb+HTV/EZ2CEtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KkpyQYqp; arc=none smtp.client-ip=209.85.219.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e931cad1fd8so411912276.1;
-        Wed, 13 Aug 2025 15:59:42 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e931cddb0e2so328261276.3;
+        Wed, 13 Aug 2025 16:04:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755125981; x=1755730781; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755126279; x=1755731079; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QtTnM1+CJ+t+7tyle0R4QX3bifvSoN3Opl9NJd4e/Wc=;
-        b=HfteWLM6QHCmK6WApONAYYNSUsFWXq46t36QlpZokvUecDyT6Asda92xdGc3NeHMVJ
-         Bzhly+WdgkMqxRTjYWR3FDxKxTcClGCsugl2eh/8iKswpwjvnmOOeI8gQ/2cVWbrJs/b
-         l1Lf3isWhnFEM7VuhfLqIjOBLogxaoTzWF8YZR94Tdfl7+TtdfqQ68TRZORpYdFioSUz
-         foDyUSuTra7nOc7GlS4qbFGi6saCRllw5nvBLCygewua2gz1eeQHKZ9Uruw8qEDnDbJT
-         qBkB86GnEDMYBNOZDuUtDOYnTA2YEngmtqv3OpxWdf39ANMIN26IMsZlZH7GlMkjvXXa
-         X1xA==
+        bh=Pr9Kj1G07sBFKVdkwu1EeIztDNfpAGMBwPb2yvwQO3w=;
+        b=KkpyQYqp/ltXTtI0h0sg4NA5oLpKj4Bja8frcNEWptyVSBGwU2FcHuk4fleLIbcxW7
+         hILs/4UdlHHIyXVqzPLplE6YZ9YSD55szEd4tebLYD2cUSpWWRTswIRNcKMN36AZltoq
+         IwAFWCipMYr4pbTbIdB/ka/bZNsdqOLXtxnlNgQ6r2E/dVRIfYo8b0PpaAV1Zo4NmuXD
+         wCjR5d3GMc/MyUkrePh8YFL1su4NjCnecxukHPbSKMgw7wFotlQzeTc/6buPb9xn6Uk/
+         rxkaIt61xTVlaLOH9nFppnTOUjA5X0bzwYkTxpi1vtTZO6oaH1U9VEMwk237p40wCoW/
+         bQDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755125981; x=1755730781;
+        d=1e100.net; s=20230601; t=1755126279; x=1755731079;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QtTnM1+CJ+t+7tyle0R4QX3bifvSoN3Opl9NJd4e/Wc=;
-        b=ViPyCuX8CK68YjdMZhZVIpsFf5D2caAiyZaoeTnQSQiLpJsujokvsmmzys+K6KK2AG
-         iEZVBMFw9OFP1Z7OCLlZH8gPwLU5aWwSuw0tQZhpfD5Qn696mKJ3HC0wT+js2UAITZuz
-         97ABZvIWB0hfCeJHkpvc36FJ3Z9DuIPp6b4vJSfTXShQwqpQ0/z31ZiWASpA3JI+A1xP
-         fOA8pJvaeBYz86t2+PuCvZ2pFlgaKCKn9UDLdOqaRhZkjDOa1pW+UU/3cgl/YSESSu8S
-         EFzTzHgU4n2NeEG3TURT7X75GVMlMYbGGsZsTtTAMg16tczqVH3QkzYS4CWpFf+RUxMi
-         5IbA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFLrvjrQCYmbf04auJA/K8fvG/FgOpKbXemvdd5DEmtCYwruNNFSMBaoL0uw5tK8mt+UaJuhEz/NDn@vger.kernel.org, AJvYcCW2iWypR+68983sQVtusp+a8PHzhDd2KZa95cO4fs/tdL0nWKqskw0T0rQsW73ofbsG2QyaOS30V2tzsokQ@vger.kernel.org, AJvYcCXJcHAm8tgKQbxQrvpiRmBNWpoDcTUnJLruiQLWUVTw6XIGaWFc6cKuqY8Avro0llD/pJwXpnoAXDz0VA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJyZbexxDrYIULeQ0LhO5+lk9bFVzf85PVBXmFNt0m/PHarGOI
-	rP+cQHuj/jY/AHUdjDouf1IYuvmweA7O+aK8ZSk6cxS2744Hxc3R2IxcSk25ak+beWUbuVdq4dM
-	sJwwmikBG7NsUEFtvn2GUN45XJCfBBA0=
-X-Gm-Gg: ASbGnctwFVBOQYln6Z+aL9T8EKHgEGeoIMTGVl+P4weFrltVVPiwmnVLwLELjyfJr2A
-	gp8X4IH8qTpKsoWb1OsCgOSv+KDoWJyOptQZGfwcbgsjTZqpDE9YKs48PJkzv1FRBU/y0vHDGvK
-	UHhP2A8HnlZMfTqKUSh0vg/0NGM+RWEog6PTsRILUReYdi5e7iviQOTNUqQsJwkj0iaVCTM8zJV
-	d2t/AILMczq4PmNKHjb
-X-Google-Smtp-Source: AGHT+IHz6cMdKoBKos1cjzDtvv0n4P3nLNY03qBHg5Te/w/fGQ2cqg9xOl/zHfAh47QzVnBW5MfyXVGk2B8a5Jg+1qU=
-X-Received: by 2002:a05:6902:1147:b0:e93:cbf:d6a3 with SMTP id
- 3f1490d57ef6-e931e29a974mr1068859276.45.1755125981503; Wed, 13 Aug 2025
- 15:59:41 -0700 (PDT)
+        bh=Pr9Kj1G07sBFKVdkwu1EeIztDNfpAGMBwPb2yvwQO3w=;
+        b=oHy0H8HycN9vF5jeoIYcQ6kKK094jPZ92/tRCfTV1yFhtimx86M9L+2UzTpqbqDjXU
+         HLNbmONMFaVJdZpLoZ4y3QlN4+jZ+XlNQitGlYDcFI7hRGZEAVhYTTACktLGJDbfbsuV
+         KpjUOvq5oRjUltKlGbEGm0/pVZZHf5MBzgb7RO9GAk10VQIboYe7/LfRyVJLELqmac8E
+         2GKdnPQQnCKAejLU3PKcBYC1UBdSm6KWfzyp+c6LLYpZ0QWAD2GyKS/DQmDVUMMYD5b8
+         WQu/4EOIIm5IlzyKL1sApAKSuO4s1oGAYMs/3IEcJEK2sAXD0s9E1a9qjSoyZgqyFnff
+         s6TQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUxm89yjjEsz76S9uwHglaYwkFpApYGmPY4OcufF3YrxoLDeiA9A7d2tk6ZeGXdAS8pimJZ3QA9tZR2N8T8@vger.kernel.org, AJvYcCWcrIaz+oCLKmbF8DRkEKx2rEpnhdV6A1AaTMWUsomtwy3s5rHTU16XkJ5W70+Mbz6z6UJsbs/xMtyfdQ==@vger.kernel.org, AJvYcCXO6tz7l1mQ1p2a+OlyICkeLBRiMz4K5ma64bmoTyB7NKnLdttWGSrBB+JEKtQQdrFBO5x8bWiVLc8z@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIVhr+4ZGBq4183R0Il32cTIY3eMQdslnZ80gkRGyjGsLN6wAH
+	tTa1I5mOf2TD/6b5zKynLGeo4tcBiX68uLXGAd+O4KWW/22Q/+U2laCNNzZwnTNhe5CornQ6/Q+
+	9gfv9W7QnmdBbA+3OtqOspeAPnJH48ik=
+X-Gm-Gg: ASbGnctYKP4ZRhY7sGhOkYqz8FAlIqZTS5DvLrYRW7/IVcFS6BbQDruAJsXG7suIgjK
+	OeNaI0uv3uRMlGAa/IPxakmyDdebRyMA8UBW61vpE7YwlkGa3nUtjHf+rmZ1HdvGgzobSwBc/V6
+	eiznqGfco7Wt28xnUfk1a+Kdx1KmuomqIcMTXOJh6n41WAypYaqP4L46tNJBNs/st01LtyKwiWi
+	Tvap8SO+W5bCtpsQoH9
+X-Google-Smtp-Source: AGHT+IG7lFQGkxo260R40BXsMXP2dO7WlFpphAJUK3E5r/amKiJyMYB2CNZKh93w2y97cKZYxB75AvRAwHVMH60IMsc=
+X-Received: by 2002:a05:6902:26ca:b0:e90:6a88:eac0 with SMTP id
+ 3f1490d57ef6-e931e24f7eamr1050134276.38.1755126279152; Wed, 13 Aug 2025
+ 16:04:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812192334.11651-1-rosenp@gmail.com> <20250812192334.11651-3-rosenp@gmail.com>
- <74d5ccda-89f7-4ddc-9574-ba7e8d4a2488@kernel.org>
-In-Reply-To: <74d5ccda-89f7-4ddc-9574-ba7e8d4a2488@kernel.org>
+References: <20250812192334.11651-1-rosenp@gmail.com> <20250812192334.11651-2-rosenp@gmail.com>
+ <14f0cb76-1694-4330-899a-7565af0dfdfc@kernel.org>
+In-Reply-To: <14f0cb76-1694-4330-899a-7565af0dfdfc@kernel.org>
 From: Rosen Penev <rosenp@gmail.com>
-Date: Wed, 13 Aug 2025 15:59:30 -0700
-X-Gm-Features: Ac12FXwuaGBEmons1V4bomDQpdmTS3Bsmn8qcg9GPzJP08kaQ7GBvYpHfCMDzn0
-Message-ID: <CAKxU2N91q=d_c===x=AL+pwXkz8K1B8eXj8ePfm6dK_4cAk9Gg@mail.gmail.com>
-Subject: Re: [PATCHv2 2/3] wifi: ath9k: ahb: add led pin OF support
+Date: Wed, 13 Aug 2025 16:04:27 -0700
+X-Gm-Features: Ac12FXyys9GBy4gP4fGG0TS-5bObcQEdpHAmr6F9oGDkOu-nkxxKBO0SLtnWMho
+Message-ID: <CAKxU2N_vo9NThjGaiX1Fq5jet0vdw390ZYpVct4=XPa5gwj-Kg@mail.gmail.com>
+Subject: Re: [PATCHv2 1/3] dt-bindings: net: wireless: ath9k: add led bindings
 To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: linux-wireless@vger.kernel.org, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
 	Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>, 
@@ -93,58 +93,76 @@ Cc: linux-wireless@vger.kernel.org, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?=
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 13, 2025 at 1:20=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
+On Wed, Aug 13, 2025 at 1:16=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
 g> wrote:
 >
 > On 12/08/2025 21:23, Rosen Penev wrote:
-> > The old and removed platform code had support for assigning a value for
-> > the LED pin for when the default is not correct. Effectively a fix for =
-a
-> > non working LED.
+> > The ath9k driver has various pin GPIO numbers for different chipsets
+> > which are not always correct for every device.
 > >
-> > For setting an LED to active high, a negation of led-active-low is used=
-,
-> > as two drivers currently use that and no drivers use led-active-high or
-> > something similar.
+> > Add bindings to specify the correct number and if it should be
+> > active-low.
 > >
 > > Signed-off-by: Rosen Penev <rosenp@gmail.com>
 > > ---
-> >  drivers/net/wireless/ath/ath9k/init.c | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
+> >  .../bindings/net/wireless/qca,ath9k.yaml           | 14 ++++++++++++++
+> >  1 file changed, 14 insertions(+)
 > >
-> > diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wirele=
-ss/ath/ath9k/init.c
-> > index c911b178dcc2..7826b113235d 100644
-> > --- a/drivers/net/wireless/ath/ath9k/init.c
-> > +++ b/drivers/net/wireless/ath/ath9k/init.c
-> > @@ -662,6 +662,17 @@ static int ath9k_of_init(struct ath_softc *sc)
-> >       if (ret =3D=3D -EPROBE_DEFER)
-> >               return ret;
+> > diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.y=
+aml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > index d16ca8e0a25d..e701046146f2 100644
+> > --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > @@ -50,6 +50,17 @@ properties:
 > >
-> > +     np =3D of_get_child_by_name(np, "led");
-> > +     if (np && of_device_is_available(np)) {
+> >    ieee80211-freq-limit: true
+> >
+> > +  led:
+> > +    type: object
 >
-> You are open-coding of_get_available_child_by_name().
-Will fix.
+> Each node must end with additional/unevaluatedProperties: false. See
+> example schema and writing schema.
 >
-> > +             u32 led_pin;
-> > +
-> > +             if (!of_property_read_u32(np, "reg", &led_pin))
-> > +                     ah->led_pin =3D led_pin;
-> > +
-> > +             ah->config.led_active_high =3D !of_property_read_bool(np,=
- "led-active-low");
-> > +             of_node_put(np);
-> > +     }
->
-> Leaking OF node.
+> That will probably lead you to missing LED common binding.
 
-Not following here.
 >
+> > +    properties:
+> > +      reg:
+> > +        maxItems: 1
 > > +
-> >       return 0;
-> >  }
-> >
+> > +      led-active-low:
+> > +        description:
+> > +          LED is enabled with ground signal.
+>
+> Aren't you redefining existing properties?
+I don't think led-active-low is specified in any central location:
+
+Documentation/devicetree/bindings/leds/irled/ir-spi-led.yaml:  led-active-l=
+ow:
+Documentation/devicetree/bindings/leds/irled/ir-spi-led.yaml:
+  led-active-low;
+Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml:
+ led-active-low:
+Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml:
+led-active-low:
+Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml:
+ led-active-low;
+>
+> > +        type: boolean
+> > +
+> >    qca,no-eeprom:
+> >      $ref: /schemas/types.yaml#/definitions/flag
+> >      description:
+> > @@ -102,5 +113,8 @@ examples:
+> >          compatible =3D "qca,ar9130-wifi";
+> >          reg =3D <0x180c0000 0x230000>;
+> >          interrupts =3D <2>;
+> > +        led {
+> > +          led-sources =3D <0>;
+>
+> Totally confusing with schema. active-low in one place, different
+> property in the example and no source for that property at all :/
+Ah right. Will fix.
 >
 >
 > Best regards,
