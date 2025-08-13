@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-26353-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26354-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111A1B24406
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 10:18:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA4AB2442C
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 10:22:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B3661B66AA5
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 08:18:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B63A3882D79
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 08:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3E92EFDB8;
-	Wed, 13 Aug 2025 08:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6462D3733;
+	Wed, 13 Aug 2025 08:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KBMdV8wx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KUjDkWBb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5742EFD9A;
-	Wed, 13 Aug 2025 08:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C42B2D060C;
+	Wed, 13 Aug 2025 08:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755073014; cv=none; b=D54RWzmydB6MtLeyAe+OvbYYzc+F+6Kyv6x2JGmoVqkGO1eQqXGYClAFxgXLuaaiJr1wCfFB4vZ62Ez1xI9XO7rq+t06w+mB4AEqtwkS8L3dqW87Ejvcsi46P/oGnBnDxDlxAlvhLCglqbDi2Eqs0l3Bn6lupbRCubBLhPxQw8c=
+	t=1755073119; cv=none; b=KtFn2SIlX3Qy0Vsgoz7UgEsrjEgKMDzV4xm7nApFwspVSQD3o2c9GV1rQXUYBTmb5prfSOSPA9nv6zyrK+7h7//fALzP3Xj+Utlv5QqQXiwhAVf2XgsRTIXTu1L52GjDkHpCpAFTGRI9dnlAFxw9LF/AswtpqLx4pGsVNMxnVf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755073014; c=relaxed/simple;
-	bh=0hQarWGUv4kXBkAuD2fr8zp4l4oUpUPDha61vydcCo8=;
+	s=arc-20240116; t=1755073119; c=relaxed/simple;
+	bh=fyq36rGZ1pAbVcCq/kvLp20N/s5G7qGL0YI912ZNFv0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NqlHCrcIxqKACZ5dg+msU7QI3qZhd21OAhErMze9gboI089cbD4cTCLLkGctMZABfQ7uyGcwRDb2KKAWzBQXuwhPHY1OWEnIRVAIgoTi8UkmLTk47htamsguj/aNsjaJ+qv+SkOoRtLYzp4DGbBJUzNM1vc+e/sFuXLzftisMys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KBMdV8wx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A81AC4CEEB;
-	Wed, 13 Aug 2025 08:16:51 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=ibPKWHzWnW1LGGsb/saez6mjVuHao0ibwHE/FfGpKZf/xI37EQEP55YhQYjpWu7mYN+FHguGJJ7g+z91SzRAtJGxADvPq+GI1Q+RibW4Uik1w2w+Jqstndc2UyQeR00GRT9jUrw71UEc71IUpgcMCxK+xquFFRn/J0UTWa07hJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KUjDkWBb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96845C4CEEB;
+	Wed, 13 Aug 2025 08:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755073014;
-	bh=0hQarWGUv4kXBkAuD2fr8zp4l4oUpUPDha61vydcCo8=;
+	s=k20201202; t=1755073115;
+	bh=fyq36rGZ1pAbVcCq/kvLp20N/s5G7qGL0YI912ZNFv0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KBMdV8wxVxw8iS0k4/iphEt9ffndrFnD/bHhDuGUvUbCsoo4o/ytG2YYgtIsUoE6L
-	 8Uci78zqLVBp7ajrsGnvRH9wYtbZmY3NZaEfpqPRmyYl66f72o771jgHJmXIj6FLJH
-	 aKlu59FGmhUxaplXh9+8u1feYDGj13CjOUHeCQ30ILaBKbdQbSyVbrHKlco+6AU0Um
-	 Yq9qk+LCy7Jm2Pd/G2oVQnPIJCIW2DMdfnuilgY6XFV5mFZn6ZE5IEcyjdKp1sLOeg
-	 DPqMTyVhdNH8dw1lTGh4jx1J+cPXoXkza8wLMaGFORUUbPKcrIQeJ6bzeY3rRGC/yK
-	 4+UXKPFeiyCkA==
-Message-ID: <14f0cb76-1694-4330-899a-7565af0dfdfc@kernel.org>
-Date: Wed, 13 Aug 2025 10:16:49 +0200
+	b=KUjDkWBbM+1bhFlaGQObmBUSwFeFC6KQ/IJkyxL6B51Xkc7oeD5e0OIN4SkMvHEeW
+	 BeknCILn5QeK/8QbEz0LMegz7L6tjPmITYPMbtQv9nWKUzDQJjkFLZYppL2ZYI4RJD
+	 39C94Z4KCOUaIX2+/L4TFxaBzIPq+cvca9a9uldreyluhnb57N8iAGoqkMklK5TTlL
+	 e9rLEGSKIfFOyr/GlGHQq0WN+HlFyvI9RHHnMuGo54Zu5IWEoVNLqeqTC9Gj7ruB7S
+	 NK7xUBJ0RjVRNMYlfzTlSASBMocgk7rat13kxLTix7tXlccElIyElW41s3vZrDXV/N
+	 Q/mFfgn4zhMBg==
+Message-ID: <eab44630-79b8-471f-8dc1-8c191290d6cf@kernel.org>
+Date: Wed, 13 Aug 2025 10:18:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 1/3] dt-bindings: net: wireless: ath9k: add led bindings
+Subject: Re: [PATCHv2 0/3] wifi: ath9k: ahb: add OF LED support
 To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
 Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
  Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
@@ -60,7 +60,6 @@ Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
  <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
  "open list:MIPS" <linux-mips@vger.kernel.org>
 References: <20250812192334.11651-1-rosenp@gmail.com>
- <20250812192334.11651-2-rosenp@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,63 +105,18 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250812192334.11651-2-rosenp@gmail.com>
+In-Reply-To: <20250812192334.11651-1-rosenp@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 12/08/2025 21:23, Rosen Penev wrote:
-> The ath9k driver has various pin GPIO numbers for different chipsets
-> which are not always correct for every device.
+> A port of the prior platform code to use OF.
 > 
-> Add bindings to specify the correct number and if it should be
-> active-low.
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->  .../bindings/net/wireless/qca,ath9k.yaml           | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-> index d16ca8e0a25d..e701046146f2 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-> @@ -50,6 +50,17 @@ properties:
->  
->    ieee80211-freq-limit: true
->  
-> +  led:
-> +    type: object
+> v2: use reg instead of led-sources
 
-Each node must end with additional/unevaluatedProperties: false. See
-example schema and writing schema.
-
-That will probably lead you to missing LED common binding.
-
-> +    properties:
-> +      reg:
-> +        maxItems: 1
-> +
-> +      led-active-low:
-> +        description:
-> +          LED is enabled with ground signal.
-
-Aren't you redefining existing properties?
-
-> +        type: boolean
-> +
->    qca,no-eeprom:
->      $ref: /schemas/types.yaml#/definitions/flag
->      description:
-> @@ -102,5 +113,8 @@ examples:
->          compatible = "qca,ar9130-wifi";
->          reg = <0x180c0000 0x230000>;
->          interrupts = <2>;
-> +        led {
-> +          led-sources = <0>;
-
-Totally confusing with schema. active-low in one place, different
-property in the example and no source for that property at all :/
-
+Where? Really, where? There is no reg in the binding at all. There is
+led-sources, though. Also many other things got changed, the binding is
+completely different and nothing in changelog explains that.
 
 Best regards,
 Krzysztof
