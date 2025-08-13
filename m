@@ -1,124 +1,207 @@
-Return-Path: <linux-wireless+bounces-26350-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26351-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B5CB240BC
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 07:55:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D46B241DC
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 08:49:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 338741651F8
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 05:52:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0FE5627A9E
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 06:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12F623D7CF;
-	Wed, 13 Aug 2025 05:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC90C2D0617;
+	Wed, 13 Aug 2025 06:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unUXaVGA"
+	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="J3A5Pumv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11013027.outbound.protection.outlook.com [40.107.44.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD9623D7C8
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Aug 2025 05:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755064366; cv=none; b=MafJ6MtoZc2/GIB0/e5SJi4GmFnRGCrd43y3Hsd5YgVeEHpOCGfeThENTvS4Ls/HQfFJxCpXRXWpIp0QcyDXLRp7owQfvFH82RdH4StZbJ4gJJgdY9kqsY0w6o7oYHd46rwcmEEU2T3pXEes0YZIpEJfhTq5TailxD1v/6C16KQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755064366; c=relaxed/simple;
-	bh=lbdi9jIdmR916fJ3/R1yfkEiakV7VpA1HISdRxd3adY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZhecMgz/4NOeIdxDQo5Xrrx1r6aGVUZJGkdDUTnO81a1FxPmR3GM1FVskxaryhRakJjA7ur5zszZMiqXCBXNKFvaAtdqOei88Dw3GrAGyNROM0ILW0ZbAX1/dClRqzfZXezs9kLJxsefJa/U+VMqP3hKJMBBITdY0fmy1cevBjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unUXaVGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA40C4CEEB;
-	Wed, 13 Aug 2025 05:52:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755064366;
-	bh=lbdi9jIdmR916fJ3/R1yfkEiakV7VpA1HISdRxd3adY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=unUXaVGAdazZTyDdg7qOHOpqvAnveCS+F1rTvEcmp1YKazDUIEY5HO1hlyqgPgVm/
-	 NUB9H/ytPUp0/JKTO7cw816vdzLJIldfVOKOTCrwmZsqBFowdbLQe4BXpJdofyWJyx
-	 owyHSzoFA4uhtQ6mIGfjC+zbku3QOtmSCPJuxsJLeyDntuMaOSZDQ4VLX8UtKcBlaG
-	 nP5lZTbT8n8f553MjAQmAmUAj/GgRjUBo6imlLVatW59wnu3JSoKmvvwq88kEmgRm2
-	 NDIJT6i5iCZcv1URpKMgCbLjaW3VC6J3hPEhGquVazem3WtQt55KjD5q/72KXosvAI
-	 M9am0EYYU11kA==
-Message-ID: <687fce38-b02c-4836-88cf-330e58d06f61@kernel.org>
-Date: Wed, 13 Aug 2025 07:52:43 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254D88462;
+	Wed, 13 Aug 2025 06:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.44.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755067776; cv=fail; b=CP2yK3qtzcFHGDw9KDb5Xyg9T1YKyIXEh1nFvauOd5u0xemUIBMAdbI/4OZftnTO8buWZqw7178noBr37USHVZuNlK7rSO/uuBXD1ivUYwOOXAVgEOBD7U67nGnQHokBUPRgdEqTkbmexde5mi8fc7uDqkTMJlNjUC4l4rHNGVo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755067776; c=relaxed/simple;
+	bh=H3MJ7apaBhoYi4kWuVh2G8qckyOa/bX01FUUiR2Fluw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ih+xs9uaH/cZ8zvc4ybjIISlgyuTtl/iL5sTf5TnwVqmnfY8udTBtCvxis1lOcshY2pJMHnIWs9Rad+FxyG4vo8LMf9q+IaacJpsORr9yL9FBE6QMhRSvlZCn8q4+wf1A7lE4O1BOctuQFeowyAd+qWsdNvMDhI9PNMHnIKYVdk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=J3A5Pumv; arc=fail smtp.client-ip=40.107.44.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ot/re4OS5mn6N3blz/T/mQWQpfVGshWfBxTFlhOy4d1LSPBEcEzxreUuVegsCYURQ17Kz5mG+eZs56+0Y4fMJOtlBGuD8bhMlBjaSpL3m1ouOqTz4UJCEF3IsIjHMUj6bEF/UkynpgbjQIX/SpdeScH/sbPO9A+M5YP8ecFAaKaxMfj43+vCDph2X/tL26ApJUVVBIeyJ3mXeHiGUFrUO6eccnqREor9uiaRgZq59FhFkn2RnSAjmeQdZK4LTzfblc3MSMSe6foz2qk2gc6p+XecWszU/tOIVaDID1SHaVW0WRj8cmqTmRrFeuyUvGoJMRdcpS8l9ZOcwSwj36aeQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H3MJ7apaBhoYi4kWuVh2G8qckyOa/bX01FUUiR2Fluw=;
+ b=gT2/Optm1ufC6tBt2uR6qx0kWzrz+KZDi+ubqUEz3NBKIrUga+wW0QMpCoAcITPysRugvbNJ5EYTqJ3GqJ6rAm4+eyl+IJK2Y/S+6d4L/TmDFXgksgV5AmhAbpxQ+7gwHeJsGuZw+iN0B6u2L2J52V7S+oFUsggQHF2TRU60Nnhuny8Dtfxzq83pW2C9LFbueOwzpiQMi2FnwU2bCeJVLtZObOXzq6rubU51ukPqbjVRBAnGc0PVlj2V7rXorPamKlY6SSZdy2hxvlMhdTJbPS8xMCkLC+9pXRu9jP//i24amC7lv6Vu78HNaN6z3Scl3ORsG162Z/V20rjk2oTHWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=H3MJ7apaBhoYi4kWuVh2G8qckyOa/bX01FUUiR2Fluw=;
+ b=J3A5PumvzThSlDkfYEnDnnijxem87pUKn5hqCWRxBWrcdcT/8it9uqSeH7RnP4ottam9MpT6X9BsEioUrw5v6jLQ5VGh5NmDlWhE9dCBuoYACP1QEaFbmhBYpKcGJvJRdnfRo+EELM37amPYGgUoZS4YU9CPXR5Tuw5bYhOOK3JBlZW2byI0MEKugayVYtqYiTL2T3LYv/AdyCag/8i1e487eTBOpDv22+daXZnLMWy2EC28aNdOn8TjGHvj/ZYU31VNQZQZGYmnlAdLFRzs2LsvFoUByFxoqlyIsQqohfbMo7V9R7feSI27Cpad8VmwoLQIJBahOJlnJS6wSyLhLw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from SI2PR06MB5140.apcprd06.prod.outlook.com (2603:1096:4:1af::9) by
+ TYUPR06MB6080.apcprd06.prod.outlook.com (2603:1096:400:344::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9009.21; Wed, 13 Aug 2025 06:49:29 +0000
+Received: from SI2PR06MB5140.apcprd06.prod.outlook.com
+ ([fe80::468a:88be:bec:666]) by SI2PR06MB5140.apcprd06.prod.outlook.com
+ ([fe80::468a:88be:bec:666%4]) with mapi id 15.20.9009.018; Wed, 13 Aug 2025
+ 06:49:29 +0000
+Message-ID: <98c6c93e-e370-4fd9-b47e-19ba4182e5cf@vivo.com>
+Date: Wed, 13 Aug 2025 14:49:22 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] net: use vmalloc_array() to simplify code
+Content-Language: en-US
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Nick Kossifidis <mickflemm@gmail.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Brian Norris
+ <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Johannes Berg
+ <johannes.berg@intel.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Kalle Valo <kvalo@kernel.org>, Aditya Kumar Singh <quic_adisi@quicinc.com>,
+ Roopni Devanathan <quic_rdevanat@quicinc.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>,
+ "moderated list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>,
+ "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:NETRONOME ETHERNET DRIVERS" <oss-drivers@corigine.com>,
+ "open list:ATHEROS ATH5K WIRELESS DRIVER" <linux-wireless@vger.kernel.org>,
+ "open list:XDP (eXpress Data Path):Keyword:(?:b|_)xdp(?:b|_)"
+ <bpf@vger.kernel.org>
+References: <20250812133226.258318-1-rongqianfeng@vivo.com>
+ <20250812134812.298c7d97@kernel.org>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
+In-Reply-To: <20250812134812.298c7d97@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG2PR01CA0187.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:189::12) To SI2PR06MB5140.apcprd06.prod.outlook.com
+ (2603:1096:4:1af::9)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath12k-ng 04/13] wifi: ath12k: Move Wi-Fi 7 MHI
- configuration to dedicated file
-To: Kiran Venkatappa <quic_kiranv@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250812-ath12k-mod-v1-0-8c9b0eb9335d@quicinc.com>
- <20250812-ath12k-mod-v1-4-8c9b0eb9335d@quicinc.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250812-ath12k-mod-v1-4-8c9b0eb9335d@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SI2PR06MB5140:EE_|TYUPR06MB6080:EE_
+X-MS-Office365-Filtering-Correlation-Id: e505c040-1f3b-4ca8-60ff-08ddda358d2f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Qm5MeUJ6ZEhaTjJVZnRrWC8rZSsvTFpIMitXZG4xWTdWdkpBeWZneXhDZWpm?=
+ =?utf-8?B?cHoxMmg1ancyNXRlNmlZM0tLcEd1RVlKVTQ0c0JUUjhjSTJHNkxmcU12czkr?=
+ =?utf-8?B?WXhPaE9mVHhBNGZzYUgzcmZZczAvSkdnTytqSnpyUWRXeVpZVENtRXJhTUpX?=
+ =?utf-8?B?b0lqaW5oWU1YY05zWGovakd2cVY1NWVZd0NyaS9GRUcvdUhqVzFxYWlsVVlN?=
+ =?utf-8?B?ZFl1NzJMN0UwaDN0czlUYXBnZ296TTJmM2J4MXVSZ1ZicnJ3RXlNY3ZEU3Rt?=
+ =?utf-8?B?Nk9tSnQwMU5TcGdkai9sdjMwUHhzN1ViUVZkaVlEbnkyTTBHbm1FQVFVdFRv?=
+ =?utf-8?B?dzJHcW5nWHhyZXdWVEhPS2gxZ3hET3ZORkV5Q0FNOFdtVk9yeWFuOFJ5QmpP?=
+ =?utf-8?B?RTJ6Z2JWbGtwRklIbitvY0ZSMzNIT3pvQ0U3UEZDOElqNlVkQXkra1RyYkwz?=
+ =?utf-8?B?NHBIOU9tRmhjRlFPZ3pnb2paMm5UMHZ0L1VDb0tuQXZ5d1NSZi9NR3BEOXNM?=
+ =?utf-8?B?R0tDU1RMamljV3hrb1RXRGM1TEFjQk5VekpDTGhlNG1qc2pQQXhaa0RwNDI2?=
+ =?utf-8?B?c3o1SHVzekhYYThXckw5czhvdm5HU05iTWg0Q29kOStBcDV2dkpQOEVNNlph?=
+ =?utf-8?B?SVFlUjMxeksydURyT1pOUXFEcE1HMXFITVhNZ3RTNmhYaGt6YXJ2R3M5ZzZu?=
+ =?utf-8?B?c2lkM3FwUlRMOVpJd0w4TlZYSHRmNWZnajVSZHQ1TmduZXdUaWl6SW5qNmNt?=
+ =?utf-8?B?ak1qUWgrUkJZNG1PVFFHT2ZjeW5XRnFiSGFnLzJza1NSVTNOekpRSnVlTkJ2?=
+ =?utf-8?B?dnVZbHBjUjduamdUOGY2TWo5Vjg3a0xHT1k0MXRHM2Myc25MNGVBVWZ0SU9S?=
+ =?utf-8?B?MlEybXpUYkpIaStWa0NBcVdJc1ZzWXFVa0F5L29kVER3c2l5WitjWkNqcE9Z?=
+ =?utf-8?B?bWlKNHNaZ1JUVGJiZitad2ErVng0bGZpZlBNeld2aFR5dEVvVWY1OWkwbGRz?=
+ =?utf-8?B?K3ZHcGFsajJKemtkY1k3RFhDZjNXa3Fmand2OHFJYmVwZnlDS0F0UURqSTBZ?=
+ =?utf-8?B?OVpSSXRHRVphNTljZzZQdVJmMDRZZnh6b1pWK1U1ajdPVDYyclN2VVZxZXZX?=
+ =?utf-8?B?UC9rU0pmaXRwRHB0aEt3Wlo3UDBROU90RWg0U1hPWCthOGtwZE9ZS3hPakk5?=
+ =?utf-8?B?a0NzV3hTcVgwU1NIRjlTR096UjVIYytmcUQwTllCMmxDTk9KRC9xYU13MHAx?=
+ =?utf-8?B?dStPNXFFd1ErZDFYWk1BN0FkZzUwYWZpa3Bwb3MvME9uVkcvMHc1eGdWZEI3?=
+ =?utf-8?B?cVBvR0p0ZlNEMDFVSld1Wm1EMUt1b2llcFJtNFpiOVV4bDZ2VDY5U3JBalF3?=
+ =?utf-8?B?dVp2WDhKalNMUjBQOEpDT1NnM0RJWW5hVFBONUZVRXQ5RWx4MXB6N1FsbEpa?=
+ =?utf-8?B?MlhNOWFsQkh3OHR6NmQ0TW95OGJEVFA1ZFczRWx1NFdPb0hBV3o5UVRuQ2oz?=
+ =?utf-8?B?Q1E0QWE1ZXJPaC9XSG5RL2tHRHpVM0JuT3UxR29TdFo4S1ZleEZRUUY5VENF?=
+ =?utf-8?B?YVUrRVJQZU9idU5wNGFEb2NTSXNkVmcvRGtTNjBNU2JLcTBqOXRRa2hNNEEx?=
+ =?utf-8?B?R1lBc1cyOXFZMkdFcDJmSzdMdVVnYXZYanhocnRxMy81SmZFUFZIYmU1SWJM?=
+ =?utf-8?B?VkVldncraGptT3U2Z3ZWS1ZZc3V4dkNNYWFZMFN5b0dvMVRxQnNxc1htSjlm?=
+ =?utf-8?B?Q1V4REorU1JZZm0zUDV3ckVRSTBHMHB4d1NqdW4xQmpYck9FY01sZ2lST085?=
+ =?utf-8?B?VXByZXQzdGtTZHh6M1ZFTm5kRHlBZGZ1cU5UaCtjZ01NUmRzajkzOGNyQnQ3?=
+ =?utf-8?B?b1NLQmh6eEtaWnF0eDR0WDQwY2c0WDZyNFBVUy9zUXZXVHc9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR06MB5140.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cjkxNWhJTVdjNldITUZKdmJZMXpMSit2QWdSTEpLREVtVllDMHRKSjZnTExC?=
+ =?utf-8?B?OVBmNE81NW51R3hyWTRNQm1TNmlDQVA2UnorOS8xSEsrRzFjdWJPN2FQL1A0?=
+ =?utf-8?B?SVZmc2lwOFBZTlhEdm1CTkhNSk10akdneXo1Q0FWWDdRdE5VWHliTEVXNW1K?=
+ =?utf-8?B?MWNVTXloSkVGekRGblV5OVhTOWlubnVaL1NRK1pUbGxiK2R5REhpV3NsUFZ1?=
+ =?utf-8?B?WW5Na3Z1OGxONnlUaDBkMG5tVUllSTNaVFkzTjZjNGZUb29uNlZDSitPaEhx?=
+ =?utf-8?B?L01oeUNGZURZWjhMMW1VUUpaYjhFMlM5RXZuTUoyaEQ3eXhpNmRoMkorVWpI?=
+ =?utf-8?B?R29rR0JjK2F1UGRtOE82SVl6eTlrU2lnRzYwK2dRTUF4ekNoWnJpS3lQWkNu?=
+ =?utf-8?B?WWRWYzhDb1o1ZHNtZ0cwUldBc0d0R1VVdGl3dmp2V1FFWUVpRmlveTlrbXM5?=
+ =?utf-8?B?dlh2akNWUUdIeDhRRythK2t1Rk16aVo4Z21TaE9QM0JqYkJLSC9JazhLenlu?=
+ =?utf-8?B?OEI0aUFrUGsyemdYQlp3Ti9LWWp2bkw2Q1VWOWRGMTllQk93VXdmWWhmQ0lX?=
+ =?utf-8?B?UVhPZUpIWGhaSGlsVVVid1FKVGxoampQeVZOc2RuZXJsN0NGVXkvVlVta0kw?=
+ =?utf-8?B?N2JtV0paSFlyZ1k5WXNjcGZXZmhVM0JDeEZJcFkrWnNYM0g4eC9rVVRPMDBk?=
+ =?utf-8?B?ZGp2NkFnSkQyNFhGWDk2NU9UalhRL21TUzlMaXNKM25SY21RTlhKTDNDdGxN?=
+ =?utf-8?B?RngvWDhCNUIzdjhCRlViRW44dnFIRllLenlHdkJJY2V0WVJzQ3pabGJsbU9U?=
+ =?utf-8?B?WDE0MzlzK0JibzlSUmJZV1lpaEt6R2JqZ3RBaHJVZ2Z4R1NTYTNVVkJPUmxS?=
+ =?utf-8?B?YnNkZGtCS1VzUWxXM2pETHNyNlU4eTN5QWdIaFBuNlZoeDY1WElyRVdoVHRo?=
+ =?utf-8?B?Z3J1L3E2RmFDUVBUT1RRRk1rZDZpT1p2ZU85dXN5dFlqVWRmWFBCY0Q3eWM3?=
+ =?utf-8?B?T3VOQm1ROTNEd0N3QVd3Mlg5NFJkZ0xzRlJLaEZYWnVVS2duRFFYRDBsRW9w?=
+ =?utf-8?B?Uk9mNVRodS9mZDB1aHN6RGdERWFBWTcxbHZHeGxQbk1rQjdEMVdKS2c3VC9W?=
+ =?utf-8?B?V3cwZHpHZGltU0JLZ243bUo2d2dKZFJUN2dVdWszeGZQYVZEeDFHRE95UnJB?=
+ =?utf-8?B?VkFnZWlFOFlPQ1ZZNmRjNVZMZ09vZUJMMVhJZlZKM1UrWFhBbXowS3Arbm95?=
+ =?utf-8?B?dWRwWUpPZnI2UzJGdEcrL1JZMEdUQTZNempLNExZdFBPUGZLOERLVkNJajhq?=
+ =?utf-8?B?encrUFNMWGFvdGltSjQzQzZtMVluYVRGZS8zT2JZM0l3Zk92Mk5lS1VYeEl3?=
+ =?utf-8?B?Q2pZL2l5MjNRMFJuVko5eFRGMytYVjViaUgzanFyMURIMFhBRG00Um02Tlhi?=
+ =?utf-8?B?SzBSYjVuSUFvc0sxdnlOUkh4MjdhMG85NDFqUDlicUc5U2hTVis1Ym80ZkVL?=
+ =?utf-8?B?T3dTdWl2NFNWWVVzYjFka3NsTlozVTFENmMvRDkrbUJhMHE1b0h0R29FSkp2?=
+ =?utf-8?B?MkI5VGZ4SnFhNGtHLzN3eGZsZ3JZdjN2Zmo4QU1pMDk3NFdXcTFkSmI5am1m?=
+ =?utf-8?B?bGp0MGhNT1Q3UnBTWlAvZ20wY0dxYzB6UGhzZVFia1U1WkdjbjJsVGtQaFBO?=
+ =?utf-8?B?WkFKS3RmWWJMRzc4YXM3Q1V0K3Y0b1JmdXdkVTQyTmZFM3NoMVlhUGVNWDdu?=
+ =?utf-8?B?NjFwYThrWi95b2l6dVFTeHZmcXozT2FnS2J1NDU5ZlZoNnU1V2owekNaZDJh?=
+ =?utf-8?B?cVV0RnA4QTR6UDVlL1ZKdU1NNzNQNzBiWi92UTZDbkhROFB4a290TFRZTmdn?=
+ =?utf-8?B?bEFpZXJ0UWFPS0NIclBNb3pJL0pZeUl1STZkeVF4b0NOREN6RUhCRGdNOWhT?=
+ =?utf-8?B?YXc2aTFjbWhuamprTTFWRWhFWUZnUmlrZ2VzR2ZPNVQ5OWVWOFdVNmJWVkI1?=
+ =?utf-8?B?TmhhblQ1R3dHcmdETUlOZHJxbHBnbFhjNk1uSTd2Vmp0YlBlT1d0blFHM1RD?=
+ =?utf-8?B?L3JBQ1FIaTMrQ0JKZlRIK0tmL2IvZGs2Y3Nrd1VlaGdacitOMksxbUFWejBR?=
+ =?utf-8?Q?AYpjhY6g8AOGStSeLjbin59xw?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e505c040-1f3b-4ca8-60ff-08ddda358d2f
+X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5140.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 06:49:29.5600
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lwlxHwYLrN1TyY+GhlQizc9qnxrn0tqRBdxvWFfhdA1lfhYzZMgZ5IKGB6gX8yiYjcbI7SlKUK23mRVCdfB7UQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYUPR06MB6080
 
-On 12/08/2025 19:09, Kiran Venkatappa wrote:
-> diff --git a/drivers/net/wireless/ath/ath12k/mhi_wifi7.c b/drivers/net/wireless/ath/ath12k/mhi_wifi7.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..be74df152f6f88c1c723459a1cdea21f45b0d15b
-> --- /dev/null
-> +++ b/drivers/net/wireless/ath/ath12k/mhi_wifi7.c
-> @@ -0,0 +1,138 @@
-> +// SPDX-License-Identifier: BSD-3-Clause-Clear
-> +/*
-> + * Copyright (c) 2020-2021 The Linux Foundation. All rights reserved.
-> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 
-Stop rewriting copyrights when you move EXISTING code!
+在 2025/8/13 4:48, Jakub Kicinski 写道:
+> On Tue, 12 Aug 2025 21:32:13 +0800 Qianfeng Rong wrote:
+>> Remove array_size() calls and replace vmalloc() with vmalloc_array() to
+>> simplify the code and maintain consistency with existing kmalloc_array()
+>> usage.
+> You need to submit the first 3 as a separate series.
+> They get applied to a different tree than wireless patches.
+
+Ok，Will do in the next version.
 
 Best regards,
-Krzysztof
+Qianfeng
+
 
