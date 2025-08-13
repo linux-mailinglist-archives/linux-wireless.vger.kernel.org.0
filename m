@@ -1,60 +1,58 @@
-Return-Path: <linux-wireless+bounces-26362-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26363-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B29AB24941
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 14:11:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A28B24B4B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 15:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF2D62A4D98
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 12:11:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D216178B83
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 13:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3882F7441;
-	Wed, 13 Aug 2025 12:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEA42EAB8A;
+	Wed, 13 Aug 2025 13:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="mJu2R9Du"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="YXEmoMAC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82072F83A5
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Aug 2025 12:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1202A2EA491
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Aug 2025 13:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755087077; cv=none; b=bkBdrzvDZxI728w6Ma1NI4jRDZPvmaTKedleTYX1PTqCbWwMB/kVUu1a/bBM0tLSns6aMecwMkCY5kpVBQProNf8rz5IhsM6DTXSiVqMPyHgPTphZ/sId8Vfq8kZBpWeIm+d3jHctHWnbX4kSag+TeK8TxxqG6vTd604RYua8dg=
+	t=1755093180; cv=none; b=X+ThETBxSHFvklL3eag/HfFa+wEx6B5Q9CjRuuyMba4SFe4t8t/m77zej5lvc7XdTtookqCBTMIAP4sKqb5Bca+1JsSKZSamukMw39X2OdzupfbEAJPf6W20HPhVQWHcJLSO4UyMx1JMcgRtJ3GIUDRQWyXop6onnY4oJmpApNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755087077; c=relaxed/simple;
-	bh=cyDBYouQfnIbvudTeqvFQUNxb82Xs3rtH3lT+rSDozU=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdmzTiLLV+I3Di3d0SLCm3FsrDBA1fUoEziC6s4JqDlJy0k5mR+X4cG+jUf6iAwsyqbSQIPbASQbYiJ6WTZWL8mmg6kzfwIHDMcF8gkQyT9GQWPP5DYE2dmI+oCtt8vhvX+V0SLvrYU+RAXDS+5ecmkry7N4TuRLmrKabLwXOkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=mJu2R9Du; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=lRQIsznxPmUpRMmevDu0GcJ21dOlPtmGFoNxlZGuzsI=; b=mJu2R9Duy4RiZlTn+GaZCZQXj/
-	JvRS1/KmvAjDXRi3GOFq17c+NQbJL3iRp/8+cfHxFIv7amblqRC1ZK82cr+FB/E8O2M9XXDmCTBq5
-	tl5SkiYF3KKyfWjBcLdQHDCsNAlOFW/UwB1IMdK0I0Op22UcYocUooFvoRQVBxLLos/c=;
-Received: from p5b206816.dip0.t-ipconnect.de ([91.32.104.22] helo=localhost.localdomain)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1umAJu-009tKb-2x
-	for linux-wireless@vger.kernel.org;
-	Wed, 13 Aug 2025 14:11:07 +0200
-From: Felix Fietkau <nbd@nbd.name>
-To: linux-wireless@vger.kernel.org
-Subject: [PATCH 2/2] wifi: mt76: prevent non-offchannel mgmt tx during scan/roc
-Date: Wed, 13 Aug 2025 14:11:06 +0200
-Message-ID: <20250813121106.81559-2-nbd@nbd.name>
+	s=arc-20240116; t=1755093180; c=relaxed/simple;
+	bh=okGcF5Jic6BdI3ahXj66my1733y/uXDcLf/Jh3IeJuM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O9vA1x4MaeoFN4qhhNWOLFLmxQs+gziqECFGrDRsOz+kUMYApZabgb7pcwas0gQ4vnsn56ilwxepTK3aoxMCJM8B6uZySLw8Yn754WxYw0O5sjS6in8wAmfcl/x3xJWRWJFVKfQPcWNMge/VtMOtkTaEobmPaeC/vd934f8peLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=YXEmoMAC; arc=none smtp.client-ip=178.154.239.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:4880:0:640:22e4:0])
+	by forward102a.mail.yandex.net (Yandex) with ESMTPS id 50AA3C0081;
+	Wed, 13 Aug 2025 16:52:53 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id pqLWRk0MxmI0-g1hduy1f;
+	Wed, 13 Aug 2025 16:52:52 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1755093172; bh=Tguy+85sR/wbBHQZcS7jQozj/S+oBlBU+wXUq/cTLCo=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=YXEmoMACLuV0BT+0BT3cN0ndJDUjSxMNKaJNvRCs8IkgqmVcoGmRLIPMYcHaTzRoO
+	 AHYDd9h86wE9L6LV8fN7BpkVReZU3tNY02vnyRpaOqoH1kJXbpYxk9/MV9Lxqibp5n
+	 sEmKlAjVxLteIe5JUQM6XrIfpElD0CatLqFrzvV4=
+Authentication-Results: mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>,
+	linux-wireless@vger.kernel.org,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com
+Subject: [PATCH] cfg80211: fix use-after-free in cmp_bss()
+Date: Wed, 13 Aug 2025 16:52:36 +0300
+Message-ID: <20250813135236.799384-1-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250813121106.81559-1-nbd@nbd.name>
-References: <20250813121106.81559-1-nbd@nbd.name>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -63,39 +61,34 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Only put probe request packets in the offchannel queue if
-IEEE80211_TX_CTRL_DONT_USE_RATE_MASK is set and IEEE80211_TX_CTL_TX_OFFCHAN
-is unset.
+Following bss_free() qurik introduced in commit 776b3580178f
+("cfg80211: track hidden SSID networks properly"), adjust
+cfg80211_update_known_bss() to free the last beacon frame
+elements only if they're not shared via the corresponding
+'hidden_beacon_bss' pointer.
 
-Fixes: 0b3be9d1d34e ("wifi: mt76: add separate tx scheduling queue for off-channel tx")
-Reported-by: Chad Monroe <chad.monroe@adtran.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reported-by: syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=30754ca335e6fb7e3092
+Fixes: 3ab8227d3e7d ("cfg80211: refactor cfg80211_bss_update")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
- drivers/net/wireless/mediatek/mt76/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/wireless/scan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index e6cf16706667..03b042fdf997 100644
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -332,6 +332,7 @@ mt76_tx(struct mt76_phy *phy, struct ieee80211_sta *sta,
- 	struct mt76_wcid *wcid, struct sk_buff *skb)
- {
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-+	struct ieee80211_hdr *hdr = (void *)skb->data;
- 	struct sk_buff_head *head;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index a8339ed52404..6c7b7c3828a4 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1916,7 +1916,8 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ 			 */
  
- 	if (mt76_testmode_enabled(phy)) {
-@@ -349,7 +350,8 @@ mt76_tx(struct mt76_phy *phy, struct ieee80211_sta *sta,
- 	info->hw_queue |= FIELD_PREP(MT_TX_HW_QUEUE_PHY, phy->band_idx);
+ 			f = rcu_access_pointer(new->pub.beacon_ies);
+-			kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
++			if (!new->pub.hidden_beacon_bss)
++				kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
+ 			return false;
+ 		}
  
- 	if ((info->flags & IEEE80211_TX_CTL_TX_OFFCHAN) ||
--	    (info->control.flags & IEEE80211_TX_CTRL_DONT_USE_RATE_MASK))
-+	    ((info->control.flags & IEEE80211_TX_CTRL_DONT_USE_RATE_MASK) &&
-+	     ieee80211_is_probe_req(hdr->frame_control)))
- 		head = &wcid->tx_offchannel;
- 	else
- 		head = &wcid->tx_pending;
 -- 
 2.50.1
 
