@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-26349-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26350-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F08DB240BB
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 07:55:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B5CB240BC
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 07:55:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71FE31BC21FD
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 05:52:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 338741651F8
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 05:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63535241C89;
-	Wed, 13 Aug 2025 05:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12F623D7CF;
+	Wed, 13 Aug 2025 05:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOnW++6T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unUXaVGA"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3387D23D7CF
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Aug 2025 05:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD9623D7C8
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Aug 2025 05:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755064340; cv=none; b=PQEoOj+OhMwQMFyy5TMCIc3dyrhVy0jKz3/+xAbtp6Ioad/F/42BNomtaO0VazmcCR1k+SlmfhDzZXmiVk25k89qNvDPlqMtM1Q3XpCBwKjFDln1CMYYIWgrN3golOdpNmdNnRBpx33nWHEX8HCcRi1OUv9qqfu+qeDrWcaOw38=
+	t=1755064366; cv=none; b=MafJ6MtoZc2/GIB0/e5SJi4GmFnRGCrd43y3Hsd5YgVeEHpOCGfeThENTvS4Ls/HQfFJxCpXRXWpIp0QcyDXLRp7owQfvFH82RdH4StZbJ4gJJgdY9kqsY0w6o7oYHd46rwcmEEU2T3pXEes0YZIpEJfhTq5TailxD1v/6C16KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755064340; c=relaxed/simple;
-	bh=0LH42O/Q33/mOKw5CPb2wtIPYoPUc7vtLbmoHkL8pbw=;
+	s=arc-20240116; t=1755064366; c=relaxed/simple;
+	bh=lbdi9jIdmR916fJ3/R1yfkEiakV7VpA1HISdRxd3adY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L9HVT36A59wTIyADvwwa8vEvmetuL1qn96vNH+VJWJhlHXIfH+LK5KIpXDXDz+8PR6X5Ruoz32OWWUFe7oIDY+HOU8Djw/7ssBkrBJELM1qtfAN/WaSI8OLY+FsuT68md/x+PQNTs3q3+iy/B7cy5Jjw10RnAQ74Nr0ZycdhNdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOnW++6T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B418BC4CEEB;
-	Wed, 13 Aug 2025 05:52:18 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=ZhecMgz/4NOeIdxDQo5Xrrx1r6aGVUZJGkdDUTnO81a1FxPmR3GM1FVskxaryhRakJjA7ur5zszZMiqXCBXNKFvaAtdqOei88Dw3GrAGyNROM0ILW0ZbAX1/dClRqzfZXezs9kLJxsefJa/U+VMqP3hKJMBBITdY0fmy1cevBjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unUXaVGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA40C4CEEB;
+	Wed, 13 Aug 2025 05:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755064339;
-	bh=0LH42O/Q33/mOKw5CPb2wtIPYoPUc7vtLbmoHkL8pbw=;
+	s=k20201202; t=1755064366;
+	bh=lbdi9jIdmR916fJ3/R1yfkEiakV7VpA1HISdRxd3adY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rOnW++6TVkSFbDmAKHChs12r/pcXOsfkWNWlIV7AR/IJVdYPxifMMuSn+FFtHfmrR
-	 j56oX6BkqK3rfcnybyYg8gNxXVc9jAZuka/LJcFQpHD1oBeSaU6JCT3M4GHhLUoaVV
-	 AvJGUQTs7V0SDt+oazjWSCHxLy8WsIN1ksWb53DOzHch9W0LWjHIsQ77uzXs+fo9d2
-	 Q49R0nmvnebYwYboq/4sHjp7TvwMPR0dyIpGUZ8Uy/qoUPFCCfvna0r/Oi/F2doZvw
-	 5QU9usJBnmF3ETLu23+0MYUAgs6VdAwZmHMg7UxGP7IUUeHPS6cmU/qSs+8Ra5/dmN
-	 3fSiHkOsrNb+A==
-Message-ID: <00a72188-8ac7-4527-8128-352d0882754f@kernel.org>
-Date: Wed, 13 Aug 2025 07:52:17 +0200
+	b=unUXaVGAdazZTyDdg7qOHOpqvAnveCS+F1rTvEcmp1YKazDUIEY5HO1hlyqgPgVm/
+	 NUB9H/ytPUp0/JKTO7cw816vdzLJIldfVOKOTCrwmZsqBFowdbLQe4BXpJdofyWJyx
+	 owyHSzoFA4uhtQ6mIGfjC+zbku3QOtmSCPJuxsJLeyDntuMaOSZDQ4VLX8UtKcBlaG
+	 nP5lZTbT8n8f553MjAQmAmUAj/GgRjUBo6imlLVatW59wnu3JSoKmvvwq88kEmgRm2
+	 NDIJT6i5iCZcv1URpKMgCbLjaW3VC6J3hPEhGquVazem3WtQt55KjD5q/72KXosvAI
+	 M9am0EYYU11kA==
+Message-ID: <687fce38-b02c-4836-88cf-330e58d06f61@kernel.org>
+Date: Wed, 13 Aug 2025 07:52:43 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath12k-ng 03/13] wifi: ath12k: Move Wi-Fi 7 WMI
+Subject: Re: [PATCH ath12k-ng 04/13] wifi: ath12k: Move Wi-Fi 7 MHI
  configuration to dedicated file
 To: Kiran Venkatappa <quic_kiranv@quicinc.com>, ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
 References: <20250812-ath12k-mod-v1-0-8c9b0eb9335d@quicinc.com>
- <20250812-ath12k-mod-v1-3-8c9b0eb9335d@quicinc.com>
+ <20250812-ath12k-mod-v1-4-8c9b0eb9335d@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -101,29 +101,23 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250812-ath12k-mod-v1-3-8c9b0eb9335d@quicinc.com>
+In-Reply-To: <20250812-ath12k-mod-v1-4-8c9b0eb9335d@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 12/08/2025 19:09, Kiran Venkatappa wrote:
-> +}
-> diff --git a/drivers/net/wireless/ath/ath12k/wmi_wifi7.h b/drivers/net/wireless/ath/ath12k/wmi_wifi7.h
+> diff --git a/drivers/net/wireless/ath/ath12k/mhi_wifi7.c b/drivers/net/wireless/ath/ath12k/mhi_wifi7.c
 > new file mode 100644
-> index 0000000000000000000000000000000000000000..1514e3e8d4cb65d3d95d95a1c1593a7b66abcf58
+> index 0000000000000000000000000000000000000000..be74df152f6f88c1c723459a1cdea21f45b0d15b
 > --- /dev/null
-> +++ b/drivers/net/wireless/ath/ath12k/wmi_wifi7.h
-> @@ -0,0 +1,15 @@
-> +/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+> +++ b/drivers/net/wireless/ath/ath12k/mhi_wifi7.c
+> @@ -0,0 +1,138 @@
+> +// SPDX-License-Identifier: BSD-3-Clause-Clear
 > +/*
-> + * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+> + * Copyright (c) 2020-2021 The Linux Foundation. All rights reserved.
 > + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 
-Don't rewrite the copyrights. Original file had different one. GPL FAQ
-also EXPLICITLY asks for date in copyrights and does not allow one
-without the date.
-
-(and before you bring internal qcom regulations, let me remind that they
-do not matter. we discussed this in other thread)
+Stop rewriting copyrights when you move EXISTING code!
 
 Best regards,
 Krzysztof
