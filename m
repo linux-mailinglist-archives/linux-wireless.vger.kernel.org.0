@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-26354-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26355-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA4AB2442C
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 10:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 665A2B24434
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 10:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B63A3882D79
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 08:19:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4B548839F1
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Aug 2025 08:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6462D3733;
-	Wed, 13 Aug 2025 08:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E6C2DE1F0;
+	Wed, 13 Aug 2025 08:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KUjDkWBb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+VtKx5j"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C42B2D060C;
-	Wed, 13 Aug 2025 08:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DA21E0DE2;
+	Wed, 13 Aug 2025 08:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755073119; cv=none; b=KtFn2SIlX3Qy0Vsgoz7UgEsrjEgKMDzV4xm7nApFwspVSQD3o2c9GV1rQXUYBTmb5prfSOSPA9nv6zyrK+7h7//fALzP3Xj+Utlv5QqQXiwhAVf2XgsRTIXTu1L52GjDkHpCpAFTGRI9dnlAFxw9LF/AswtpqLx4pGsVNMxnVf0=
+	t=1755073249; cv=none; b=DE68JYpFI2OksLeqhgqSVH3Qlz4HcVCVC8tBy2+FLsVlBIufdHoY3s+AIWaOMquKi6QgWDCdtYvSpb8Ctbf1RvYEXXQNNBuZPx5fOYX22/hzSbrQY9AmF2sRiZF6V+Kz9u4VDZpq+8fBuxRPMP8m+7Uk/b279qLLlwc65obVQHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755073119; c=relaxed/simple;
-	bh=fyq36rGZ1pAbVcCq/kvLp20N/s5G7qGL0YI912ZNFv0=;
+	s=arc-20240116; t=1755073249; c=relaxed/simple;
+	bh=3+Pkagji7KiXRDhcskdDWN3ot9FimhMco02Y8P1KNKU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ibPKWHzWnW1LGGsb/saez6mjVuHao0ibwHE/FfGpKZf/xI37EQEP55YhQYjpWu7mYN+FHguGJJ7g+z91SzRAtJGxADvPq+GI1Q+RibW4Uik1w2w+Jqstndc2UyQeR00GRT9jUrw71UEc71IUpgcMCxK+xquFFRn/J0UTWa07hJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KUjDkWBb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96845C4CEEB;
-	Wed, 13 Aug 2025 08:18:32 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=RUIYkC3J1z9cDYbxMXVv6xVfjyzr9NAFMUF8sMgcLGr+fYOf7005qU2ZyjmDwDQcnePUz2p3cMTY2vang0vuYEROPr5Cx5AOVCWVEGMOwao/TpP4eE0JNshvm2WJUpaChkm3Ic4DrxkRYm6sxAioGCI7DI7oHrJVY0g84VDXEUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+VtKx5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCBCC4CEEB;
+	Wed, 13 Aug 2025 08:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755073115;
-	bh=fyq36rGZ1pAbVcCq/kvLp20N/s5G7qGL0YI912ZNFv0=;
+	s=k20201202; t=1755073249;
+	bh=3+Pkagji7KiXRDhcskdDWN3ot9FimhMco02Y8P1KNKU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KUjDkWBbM+1bhFlaGQObmBUSwFeFC6KQ/IJkyxL6B51Xkc7oeD5e0OIN4SkMvHEeW
-	 BeknCILn5QeK/8QbEz0LMegz7L6tjPmITYPMbtQv9nWKUzDQJjkFLZYppL2ZYI4RJD
-	 39C94Z4KCOUaIX2+/L4TFxaBzIPq+cvca9a9uldreyluhnb57N8iAGoqkMklK5TTlL
-	 e9rLEGSKIfFOyr/GlGHQq0WN+HlFyvI9RHHnMuGo54Zu5IWEoVNLqeqTC9Gj7ruB7S
-	 NK7xUBJ0RjVRNMYlfzTlSASBMocgk7rat13kxLTix7tXlccElIyElW41s3vZrDXV/N
-	 Q/mFfgn4zhMBg==
-Message-ID: <eab44630-79b8-471f-8dc1-8c191290d6cf@kernel.org>
-Date: Wed, 13 Aug 2025 10:18:31 +0200
+	b=S+VtKx5jsOlVHiS3ochX2wtQCu3VLX3xwDHol0sQtnAGdoiYNT4vCxh3VdyTSSj4e
+	 wbxxwMcdxvA+WdQBw3dhRW2njksixM69Ub0HhX2Jw+ccrDKh9g6pMtjyckWtcqYX4B
+	 Z2dlAFvHFaxKMTrlyag0r/DyOcvmEisz4Eubc3/fkQTi1zDQekYjS+vgO8wL2Om+qa
+	 Go4f/yDJ9y05aEi9qaE9f0Bn5mF2Mab9+r0NCHFi51gTL+ZLFgZj3hLsA3wjamvfl/
+	 EOXwiFcaQ3VcuoMHmP26Fszxp9Ur1F/pcHixU85+Pq9drAieUqGJjvTPXJHus2tMHr
+	 /x0Wy5UmwVTjQ==
+Message-ID: <74d5ccda-89f7-4ddc-9574-ba7e8d4a2488@kernel.org>
+Date: Wed, 13 Aug 2025 10:20:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 0/3] wifi: ath9k: ahb: add OF LED support
+Subject: Re: [PATCHv2 2/3] wifi: ath9k: ahb: add led pin OF support
 To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
 Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
  Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
@@ -60,6 +60,7 @@ Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
  <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
  "open list:MIPS" <linux-mips@vger.kernel.org>
 References: <20250812192334.11651-1-rosenp@gmail.com>
+ <20250812192334.11651-3-rosenp@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -105,18 +106,53 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250812192334.11651-1-rosenp@gmail.com>
+In-Reply-To: <20250812192334.11651-3-rosenp@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 12/08/2025 21:23, Rosen Penev wrote:
-> A port of the prior platform code to use OF.
+> The old and removed platform code had support for assigning a value for
+> the LED pin for when the default is not correct. Effectively a fix for a
+> non working LED.
 > 
-> v2: use reg instead of led-sources
+> For setting an LED to active high, a negation of led-active-low is used,
+> as two drivers currently use that and no drivers use led-active-high or
+> something similar.
+> 
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath9k/init.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+> index c911b178dcc2..7826b113235d 100644
+> --- a/drivers/net/wireless/ath/ath9k/init.c
+> +++ b/drivers/net/wireless/ath/ath9k/init.c
+> @@ -662,6 +662,17 @@ static int ath9k_of_init(struct ath_softc *sc)
+>  	if (ret == -EPROBE_DEFER)
+>  		return ret;
+>  
+> +	np = of_get_child_by_name(np, "led");
+> +	if (np && of_device_is_available(np)) {
 
-Where? Really, where? There is no reg in the binding at all. There is
-led-sources, though. Also many other things got changed, the binding is
-completely different and nothing in changelog explains that.
+You are open-coding of_get_available_child_by_name().
+
+> +		u32 led_pin;
+> +
+> +		if (!of_property_read_u32(np, "reg", &led_pin))
+> +			ah->led_pin = led_pin;
+> +
+> +		ah->config.led_active_high = !of_property_read_bool(np, "led-active-low");
+> +		of_node_put(np);
+> +	}
+
+Leaking OF node.
+
+> +
+>  	return 0;
+>  }
+>  
+
 
 Best regards,
 Krzysztof
