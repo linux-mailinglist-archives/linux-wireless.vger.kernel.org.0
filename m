@@ -1,144 +1,122 @@
-Return-Path: <linux-wireless+bounces-26383-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26384-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732C6B25BC0
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Aug 2025 08:24:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE759B2609D
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Aug 2025 11:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1861C6224D5
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Aug 2025 06:24:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A9851CC3D1A
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Aug 2025 09:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF41242938;
-	Thu, 14 Aug 2025 06:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08282ECD31;
+	Thu, 14 Aug 2025 09:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="U/M7YKy0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p2LR4MNA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813CD241679
-	for <linux-wireless@vger.kernel.org>; Thu, 14 Aug 2025 06:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0032EAB90;
+	Thu, 14 Aug 2025 09:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755152685; cv=none; b=iEfA83fnCmpEAm8iafK6B0VPctz+8t02mJ+GIFzPGv+RrRLKFwkc6cYH43PUrclY35nbiqDyZK0XBHoYaC8K6SyZShWU7Hex0SkSTgy9BS3Bz1jkseEg/AkwOYXOMrljKOHw9MkKqKe9zDSaV7Vva1ogVOQ2HSEQdqdXfAjLOIU=
+	t=1755162719; cv=none; b=f+V7L9oJslkUcfe/K848Tf+CF6WtKwmGu/TfY2BCJ/3Rgs/R0LYu3rhnT1fF2dp8jNuNUV4xh9f/fWSN8zidRchnclX+ksF+cd33HAlvTjpV3FRBM1CrGGoiuYUEN3QeyAYJxUm54LgNnLZFSRcuwbbLe+EcAxz3Hx1MubZmIMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755152685; c=relaxed/simple;
-	bh=qZNGyMPtpCLM6EfQifGMbXKiGpwjX+bjskdpMhwc3zo=;
+	s=arc-20240116; t=1755162719; c=relaxed/simple;
+	bh=KpPt0fkcfW+EkmwbLOQPg8tnnnTCZmXxVb8az3l0UWo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P2oZufJEzq3VYNNyA47fB9DGyIV7YrFL0GCOyTZvy6i3bupKhyKs3iZKM+BPsUo6FVN0m7u8HVoT2KDuct0h1pQzP4pQtu0F5B1Gfq0L9PCUDZu2kx45eJNXwEQy+s1ZlhmFitp0VtRDDKoElKXFg7zMKsv28bn5MGC4pX9TL7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=U/M7YKy0; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45a1b04f8b5so2589235e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Aug 2025 23:24:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755152682; x=1755757482; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2V662DeXltqYKqnizy5mT9VDX//IKEiaMN/OlCmjlaM=;
-        b=U/M7YKy06GluTnYSmp4bQVBh9JZnoQZFwWjG5NmENbweDWRpBbFumTu7kNMJXELm2I
-         iatZpZ1Nd5jNiWpt8WS2bOUHyk9WDNj6jlBexvPZnFITDGkZNpLOmsQmeblW46q2xPKl
-         XlIUbnXry9D3VK5DFj985JxpXJqXlwP2aMsBoMr1ARRBtRrLTjwSkcoRYhdSnDzTLyMo
-         yZd0OQ8lHrqaEc8hWBe/6qK3a2hT+WcpFGAJstENTzAnMexHYyi9JW1eRGW1PCPydA2U
-         PL5Z8pGuj8amaJh86kADmh6crujyKAkc8psgl2ubm1uqHRGkfspLGcxXNSeRnMUMWQqN
-         EqNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755152682; x=1755757482;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2V662DeXltqYKqnizy5mT9VDX//IKEiaMN/OlCmjlaM=;
-        b=cRuURo/2lit0GcYKV1l5wCRK9zgZ7G6h64mPKt4XLHPu6Hf6RTNhGJnLhMvR1m1VvB
-         qd8CldLjBJgGCxZ2o3ICeejV7vSYN0ZSkNtk5XU0qph7Tc/aw1N9Dfxk2UFt2IX4o4yG
-         cMWtArwiLzXdLKI0BHTC7jXGkvqL+1Md/WsngIBvWox79ITNyLQyxirxqrGa+nOCsK+Y
-         rYBptkGL3t2meGumkvm+qyf9k/Rl03NMXeIB8jrXOiXUtXe7mlM75yvVpJDeuzA+6L+Q
-         wWMoTUTfLMmpoLiuh+4O31OKJKlo5mA477yX/g5hc6QLgIKoCPqK0cr8lCcxiD1ZR5Gi
-         wbAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUlFdVfayjXP0qx/bhWfuO3UlHB+eAP29ME/BfTAXq446eOQtPMnce2bsIanWlZEKIrazqWRYRN71nUA3qzMQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydZqMATrl0hzDQ38JT08o70loTkbDscsKJCUTFO3YyDqyvKAan
-	IC13vPgLwv1ozwocaLpRmtuDFX801zRcd5CFR7PNyQl2opnp/fG3f5924s+7hjvPOO8=
-X-Gm-Gg: ASbGncvq1aUSvwFvr7fgNAtngHXHd8xAR9xDMDMzWYQxFDeaL7bURUwJDQtgWHlnRNF
-	8WfONk2klJLSkQPV79tfVq5H/sB4tbvlgJNCRvTmVE4lE+/zdZDnzJvGq78oybTU85JvNCWhPql
-	cfYJfCDyKKb1oBR+BDj8IvV2iNshUIMt2TfHv4acf+HHtm0GV+VzeUt5ox7/Tp8+8kfkNf4YELe
-	KDkEjQ+yAxFQibYZva46teaCSvQGP8WwxHfBivEzIj7vVZ/GmGOmUyU2w38cGfmGAA7aPkQ8fOG
-	AY8ul0vcUlZk/Vb/lb6TJyKa8I6OflmmETl/SaMV7iVPQNifETImtHkGEe1LQXkFlHwJMGMFPFr
-	HGJCaPni6WHpqfewZ20LeBfCAoXlKhUcFJOeKPGRBHkOcFoiO25HdxQ==
-X-Google-Smtp-Source: AGHT+IEf+EdlTte75NZBvFy8FZziO62jRtYq3j83EMroZ09yzmhGTqWD2sPpyKuBoUMWeKXskigG5A==
-X-Received: by 2002:a05:600c:46cb:b0:459:e06b:afb4 with SMTP id 5b1f17b1804b1-45a1b602f28mr12689675e9.4.1755152681744;
-        Wed, 13 Aug 2025 23:24:41 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45a1c6fcd32sm8872795e9.22.2025.08.13.23.24.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 23:24:41 -0700 (PDT)
-Date: Thu, 14 Aug 2025 09:24:36 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: Qianfeng Rong <rongqianfeng@vivo.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Kalle Valo <kvalo@kernel.org>,
-	Aditya Kumar Singh <quic_adisi@quicinc.com>,
-	Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-	Roopni Devanathan <quic_rdevanat@quicinc.com>,
-	"open list:MARVELL MWIFIEX WIRELESS DRIVER" <linux-wireless@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 5/5] wifi: mwifiex: use vmalloc_array() to simplify code
-Message-ID: <aJ2BJKAnFuJ-xIjs@stanley.mountain>
-References: <20250812133226.258318-1-rongqianfeng@vivo.com>
- <20250812133226.258318-6-rongqianfeng@vivo.com>
- <aJtGSxkRztAsy92h@stanley.mountain>
- <272c9a0f-1e95-4c7c-9b84-a6b564d9e2bd@oss.qualcomm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=fWQG6eA7po+buycmojPcOPgl/40uwpBjaf2ZjkAcPSGVNVbVwscHYnOJPkGozzRcEEvqoAU1m1pqXkxc+9xdB7Ve7endIVv+gJjO1VrQSBr0BbdiNg3Lv+5G2mGJoNcjCt34eLGg0bJKBoSdP1Vhf1XiC45nwOeh9ePqiqVWToY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p2LR4MNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAE0C4CEED;
+	Thu, 14 Aug 2025 09:11:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755162719;
+	bh=KpPt0fkcfW+EkmwbLOQPg8tnnnTCZmXxVb8az3l0UWo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p2LR4MNAJtYja39bXuF6NPDdvuiX3a0LgHExroY+OLXuR7DaBbg04P8zyIRZYShg1
+	 pM5wdlIWjMw4ExrGN2JxXvuntQOs6MsH/NKnEskujnZsK3HpI6rMHx1fTUNgvLTihu
+	 Ht/v6gec/Mak8UJCiAGVcbzWz7gDaC68lHWR8geteWEZKPD0bEQzck2/HlxTvtOZmY
+	 nUx9cz+jBCeXWkU4K1oHh3BNOAFVzD1g6X2eoAvwtUZ5fJxl2uaVxjk1GDjxtEXg21
+	 iyCFuJnCPNc6XG/ISzi2Tj4dr5V3qfjU2ru6qXI/xDiboCWp8gZdprsr+iR2nK4WnL
+	 Jy5BAUDILqJcg==
+Date: Thu, 14 Aug 2025 11:11:56 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-wireless@vger.kernel.org, 
+	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, Johannes Berg <johannes@sipsolutions.net>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:MIPS" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCHv2 1/3] dt-bindings: net: wireless: ath9k: add led bindings
+Message-ID: <20250814-dramatic-glorious-dugong-eecfae@kuoka>
+References: <20250812192334.11651-1-rosenp@gmail.com>
+ <20250812192334.11651-2-rosenp@gmail.com>
+ <14f0cb76-1694-4330-899a-7565af0dfdfc@kernel.org>
+ <CAKxU2N_vo9NThjGaiX1Fq5jet0vdw390ZYpVct4=XPa5gwj-Kg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <272c9a0f-1e95-4c7c-9b84-a6b564d9e2bd@oss.qualcomm.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAKxU2N_vo9NThjGaiX1Fq5jet0vdw390ZYpVct4=XPa5gwj-Kg@mail.gmail.com>
 
-On Wed, Aug 13, 2025 at 11:35:45AM -0700, Jeff Johnson wrote:
-> On 8/12/2025 6:48 AM, Dan Carpenter wrote:
-> > On Tue, Aug 12, 2025 at 09:32:18PM +0800, Qianfeng Rong wrote:
-> >> Remove array_size() calls and replace vmalloc() with vmalloc_array() to
-> >> simplify the code.
-> >>
-> >> Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-> >> ---
-> >>  drivers/net/wireless/marvell/mwifiex/cfg80211.c | 4 ++--
-> >>  1 file changed, 2 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> >> index 3498743d5ec0..fb4183ff02a9 100644
-> >> --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> >> +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> >> @@ -4673,8 +4673,8 @@ int mwifiex_init_channel_scan_gap(struct mwifiex_adapter *adapter)
-> >>  	 * additional active scan request for hidden SSIDs on passive channels.
-> >>  	 */
-> >>  	adapter->num_in_chan_stats = 2 * (n_channels_bg + n_channels_a);
-> >> -	adapter->chan_stats = vmalloc(array_size(sizeof(*adapter->chan_stats),
-> >> -						 adapter->num_in_chan_stats));
-> >> +	adapter->chan_stats = vmalloc_array(adapter->num_in_chan_stats,
-> >> +					    sizeof(*adapter->chan_stats));
-> > 
-> > n_channels_bg is 14
-> > n_channels_a is either 0 or 31 depending on if we're using BAND_A.
-> > sizeof(*adapter->chan_stats) is 10.
-> > 
-> > So we're either allocating 280 or 900 bytes, which is quite small.  We
-> > should just use kmalloc_array() instead of vmalloc_array().
-> 
-> Should transition from v*() to k*() be separate from transition from *malloc()
-> to *malloc_array()?
+On Wed, Aug 13, 2025 at 04:04:27PM -0700, Rosen Penev wrote:
+> On Wed, Aug 13, 2025 at 1:16=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.=
+org> wrote:
+> >
+> > On 12/08/2025 21:23, Rosen Penev wrote:
+> > > The ath9k driver has various pin GPIO numbers for different chipsets
+> > > which are not always correct for every device.
+> > >
+> > > Add bindings to specify the correct number and if it should be
+> > > active-low.
+> > >
+> > > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > > ---
+> > >  .../bindings/net/wireless/qca,ath9k.yaml           | 14 ++++++++++++=
+++
+> > >  1 file changed, 14 insertions(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k=
+=2Eyaml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > > index d16ca8e0a25d..e701046146f2 100644
+> > > --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > > +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > > @@ -50,6 +50,17 @@ properties:
+> > >
+> > >    ieee80211-freq-limit: true
+> > >
+> > > +  led:
+> > > +    type: object
+> >
+> > Each node must end with additional/unevaluatedProperties: false. See
+> > example schema and writing schema.
+> >
+> > That will probably lead you to missing LED common binding.
+>=20
+> >
+> > > +    properties:
+> > > +      reg:
+> > > +        maxItems: 1
+> > > +
+> > > +      led-active-low:
+> > > +        description:
+> > > +          LED is enabled with ground signal.
+> >
+> > Aren't you redefining existing properties?
+> I don't think led-active-low is specified in any central location:
 
-It doesn't make sense to split this up.  The right thing is kcalloc().
+True, because it is active-low which you could easily find if you opened
+and read the LED binding you were already referencing here.
 
-regards,
-dan carpenter
+Best regards,
+Krzysztof
 
 
