@@ -1,230 +1,159 @@
-Return-Path: <linux-wireless+bounces-26386-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26387-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AA5B266AF
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Aug 2025 15:16:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3FAAB269CD
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Aug 2025 16:43:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A831D3ABDF2
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Aug 2025 13:15:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B929E1BC36BD
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Aug 2025 14:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D08724293B;
-	Thu, 14 Aug 2025 13:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857B21C831A;
+	Thu, 14 Aug 2025 14:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="IUZKNeLx"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="DaYRtAmf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11013041.outbound.protection.outlook.com [52.101.127.41])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE641339B1;
-	Thu, 14 Aug 2025 13:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.127.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755177356; cv=fail; b=iGKjkbCoX6H/+QQBC+V9ic4Ge90HS4hHjjU36P5r3tTkjEm9vbgcIVseytZFe8Q2LvOB6k+5qzJALEe1bw95s+VSWjQFR6XxZ9oSFnPDwin1tp0LWrTlJT/8fkmyD7b95dzlcGTJUkJ5FxOH/EPr51r059IV1e8M8pc9UZx66oM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755177356; c=relaxed/simple;
-	bh=nP80jqJ2w/GhA3VuTftqU9WSHEU4ffJsx/wkDa5PE+Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=pqbLhO+88znlYznQ298QD8gpbGLEdtendapsx4zIGM5i9/PPAKbIsc1PcVzgo1JWVKnBq6wVI19wuHDX8mcNzdGhbsFp8jYEHv6g1rDQUMvxVMK2RtyG9zzvVI738aAKxVvyo+9iRR9pUhmfj8btuK3svQ1IIknkT3FlFJd2cVE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=IUZKNeLx; arc=fail smtp.client-ip=52.101.127.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rUF5imz7bqZzJZpEPp/cGothLGZDdwa/lGP8OgV4zATl4vjhy91zdB7rM3kfWJSdHDg45qjUWKNk1hskcv1RCRVp2Q30K9ktxapo5XQCy1hEBDY0Am5ZPrI3qUKpOp+2sEx2huDRQnYmAfvHw83KKdlzswP8pWy8ALzX1Lg5Tp1TQj4yoo+ss3gol9l8BPPzjO/DI1TpHW/5dDokBG6sCtZDTj5JmTRLAczUWdPiro5vGdWl4xiBv9ugoaoAcP4VNavNdlTdhjFIjhKwL5V75oFZemkuJJfviDG8IVEm9g0BQsUNpRPoYUMzpmqK7LUWHqZscd9k4n/RagF5fw4FYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kbOO1/wVXyxI2Armrx9vcmuHsMi4zDu2gYxzSRBhQ1Q=;
- b=iIBC/9ToLEBPGtzTbjN+dtYCihrg/RbnkplxAvu1v5QrcmWgEDfmfmIloSIIsbUF4K98KDhCpzA4R9+23r0Wl+Aqaj0muwJQTN3pBKJk6ep4YO+3uL9hOOtQog9oPvGcdrgX1ODBatw2llfJ53xxQWBQV0NDGzR4nBhZMKYTF4IRkmgf3T1RfEQ7beNS75m36CDLJafsHXRrlEDzRdG0pI7B51m02tFaOadjZp6326AeIRjV15pFDsKkTG7bXvKKLS4nN4uVbeRARc0D2NCPMvMWb3t0VEeiH0UCYil9EmblMyxN96q2P+ZACxh0mIKXJV65rvuYIjNVkO8SWqgbBw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kbOO1/wVXyxI2Armrx9vcmuHsMi4zDu2gYxzSRBhQ1Q=;
- b=IUZKNeLxzowevpWWsU6cHDsr5km42R9y3nRY4WkxCHBAp7LEPRChNUyzm7smNG+OPBeYNtHi2dYA77vsGH8AIXl78Is7k3VhovU5h1RBdk1Ily/OD8mengyd7O98M1SMB7sHYf6R1JLoN0p4XRdRfyKUMMsYuxGu8W3KGx/NYDuH4KyNaUsRMC9aSvCPsD7OAwn9LCUh9+gzIhcEW+SX0WRZMNLzb4gVOHCz6DMU7OGz8/BBlJpQvEuPGb03cCaOHQKUHTr8+vujQqWq6kbiZicYzODIeUnRrXrtFRONrObLGzZ62cJ6qbXqeJjBy6VkgDE0Oo6WhPGrgzZ8KRE8NA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SI2PR06MB5140.apcprd06.prod.outlook.com (2603:1096:4:1af::9) by
- SE1PPF01F59DA76.apcprd06.prod.outlook.com (2603:1096:108:1::406) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Thu, 14 Aug
- 2025 13:15:49 +0000
-Received: from SI2PR06MB5140.apcprd06.prod.outlook.com
- ([fe80::468a:88be:bec:666]) by SI2PR06MB5140.apcprd06.prod.outlook.com
- ([fe80::468a:88be:bec:666%5]) with mapi id 15.20.9031.014; Thu, 14 Aug 2025
- 13:15:49 +0000
-From: Qianfeng Rong <rongqianfeng@vivo.com>
-To: Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Kalle Valo <kvalo@kernel.org>,
-	Aditya Kumar Singh <quic_adisi@quicinc.com>,
-	Roopni Devanathan <quic_rdevanat@quicinc.com>,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jeff Chen <jeff.chen_1@nxp.con>,
-	Bert Karwatzki <spasswolf@web.de>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	Cathy Luo <cluo@marvell.com>,
-	Xinmin Hu <huxm@marvell.com>,
-	Avinash Patil <patila@marvell.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH v2] wifi: mwifiex: use kcalloc to apply for chan_stats
-Date: Thu, 14 Aug 2025 21:15:31 +0800
-Message-Id: <20250814131536.231945-1-rongqianfeng@vivo.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYCP286CA0310.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:38b::7) To SI2PR06MB5140.apcprd06.prod.outlook.com
- (2603:1096:4:1af::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EADE13635E;
+	Thu, 14 Aug 2025 14:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755182096; cv=none; b=Uc4sfn2X1CYXltROKVw4j8XgnMx6Ij63d9p5YCKzgQ29KJV/3BaZ+kCUSaT06LryPqTBjN8TS0e4LVfc2ZSgLNYdLxFPpuudguc/rETnRHOFkQjuKEus9/wKSz96IVuDDh2UYbCS4GLgdb6npoRI2vn22QnSBUbNUKQKpM4aljo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755182096; c=relaxed/simple;
+	bh=gLPFzn9OolcrgPXYRJ7TVBHptwhq1Oeyd3JeBirZwuU=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=cMhlzzQhBTzYJ44qgPs/JrWOEAEM3gPnbmgx6WV7JRUjdxCiRqlI+I7fXQ/wiQYG5KuLJr3cutZuzOhFBSk3AcsK8BL0usfJe4b2mgXs6r9UoCDfsoXkl+w6gDquI5AyRHO2ebVR0SfV2JjKNVPYgeuq8hCVCZ8AG0RxlUZcU6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=DaYRtAmf; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1755182023; x=1755786823; i=markus.elfring@web.de;
+	bh=gLPFzn9OolcrgPXYRJ7TVBHptwhq1Oeyd3JeBirZwuU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=DaYRtAmfz5dP/W50kg//YetP1AOBovJOvQh9aK3fxZyffOZ2bSGUFvrPRZAa6TFS
+	 OExlO5e/ro2EUEcTo6wmsiA5E9o44ZxrLOojJMRRFx3/Cie+cvps8148GSc7ijIv0
+	 wsaYKQLo82zVCiSUeKr/H77vprIQ8yW04FR16STPRySY1+QMcUzmryjhmV70kfkV0
+	 j25jgd8hdb/BLWwgJvpaqpnw1d6nnqTHglIr7aVSIGSw3MFS3RDJPhbvICoDwolzK
+	 6Vvwow1m5y3NOyWoQHx38UndRSSNu+h1LmOYSi79qxx2rx0kyb8MDw+klSXh4gtek
+	 EikaLJPEsnQO0HvD4w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.92.224]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MXXN7-1v5QXA0ST9-00YWw9; Thu, 14
+ Aug 2025 16:33:43 +0200
+Message-ID: <486183c0-0086-4168-bc90-1df92bfbc1d3@web.de>
+Date: Thu, 14 Aug 2025 16:33:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SI2PR06MB5140:EE_|SE1PPF01F59DA76:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe23ab0b-9e07-4b9a-8b51-08dddb34affa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?n08oGs1eLiEk6XYZIObFjOpTYd9l1ujLZ+1jSBSbF22xt68roPIZ7wOKun4t?=
- =?us-ascii?Q?hFFwyT/F9QyqqDeXVRu6jpA5HzeMjz+wVVb5Dl/UOIV6PV9plsLvQZA37HSs?=
- =?us-ascii?Q?7RT4h0cPEFU5YPm7DKbkl5iPvKdFS5LlYYRKeprffHH39tgerGl4uj5vkn0+?=
- =?us-ascii?Q?WSOBU4fMyNfh+Twucf/OVArMg0SYNYN+aH0PBFFft1ro0sXbI6UDl/y34T8R?=
- =?us-ascii?Q?0Dhehzqo0HBp4qeXcgmF442wd5DeVmwmyQ2XLo1+HbQKBDI6/QNAiN1W7ZQX?=
- =?us-ascii?Q?djso7n2R2PNTAEc2hnT2P0/INmddIuiZsPDY96pD51I/2+rMUjblZmKXnWCi?=
- =?us-ascii?Q?ut9r9Nk09WqfiGc5kfMlRneyCufvIK5LJB+gNzAQx2cWmLoyPuznWr20BSay?=
- =?us-ascii?Q?P6E4XEPugJTUnr2itk6IlzE3JvLNdGOsy4MdV+OWdi+TmnQXijYQbXNeKAjQ?=
- =?us-ascii?Q?OcmDT8uNxpFcCQlWZwl5hgJULWBznJi04qEMJHYV/1b3iSNSsalp0I+8jw2j?=
- =?us-ascii?Q?RXI8FOM6AB6MaURnKJBF6ti567mRcBv1YoMn5mH6mE2iYoj9m5NPfP6E0Ud0?=
- =?us-ascii?Q?GuYHRbo86shsUc2c4XxFNmABPjKhoonLeNm45K+HUfByNPgcpPSQj/ws30vY?=
- =?us-ascii?Q?xC/a4wThapRgD0iyXMtsJb1JdyXGfcQr2xjOkfiedBR6EEARP6Pl2mVtJDCi?=
- =?us-ascii?Q?xpEQhQoZz1xfdyA09UFVLCR2gekfWxHqq3440WhxxuPMZjE6wtiP3OGfY5Hm?=
- =?us-ascii?Q?2lirKV3nK11AklUc5jOv3cLhr7a66TycQTHjJFaeqZyBeAForZwjJWhCLr6t?=
- =?us-ascii?Q?2bSy8s7j3D+av9oek9LLwOAtmYjk5OpIPMABOCGHtgbJdHA4Blx7Ik03M6B9?=
- =?us-ascii?Q?3UCCUU2TlRbFmLEqoTFzw47dPkuogMMIHVDZ6OYsuf9XHgLzpQ68H8ChDehV?=
- =?us-ascii?Q?Wxg1uv1gkLUE5mS7IQs0bSNb32K9bng3VsczGFCtBGP9yQ6vgBFn9XXhjyQ4?=
- =?us-ascii?Q?nUMq9T0RQ+DDAKHQGNRxd5x9PeJwpF/UwlI5Wux1ff1JyOo/SD7qxQ4sDx8S?=
- =?us-ascii?Q?4gRFQcugOQJo4DgcploxDxCizIHYGSOID/XWRltD+2caU1Wa6fww4UQAheOA?=
- =?us-ascii?Q?6Ms8N+P6I8c4lWIzUHAlYt+R4hVsg7LDqKyivpxdgLNsUfMcV9j6mokgMZOe?=
- =?us-ascii?Q?FdxqMEEYlEi+eTwEvmANqNUYSMYLGbhP+baEz1YKbuCwgu+/SGdMQiYeOmWb?=
- =?us-ascii?Q?CtWClIF+UxspuR81JzIOmSZ0wi8AP8kQK8sY9uEG5FaJUflL4d6WQCIRRqNS?=
- =?us-ascii?Q?DnaAobm2ylJW7gVvvoYtARKrN3ZFLyp3M9cBhnnCm24Og90Bg1v69V63BphA?=
- =?us-ascii?Q?esuKOMyWpSe5XNbX4+WL3w3Asrvx0/0d4oYdv+zBi405hAsOduwldQD+zHzM?=
- =?us-ascii?Q?6ARD3//pXm2rZbJyVxlhHydNlw/kr2KdWslakoxCD+2EbiS+iEBKolJiITr+?=
- =?us-ascii?Q?HCtRKfVwvQ1zBks=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR06MB5140.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DVSqGLUN7ZMXmcwVO4wXqOQlpl4vepMoyyBCJVoXUgsNrcYs8X9ekCrMVJyy?=
- =?us-ascii?Q?6lQF83EBjVeRobYmZP623SGgwEcw4K9yPXE7dBM/4jYjchxeOQDh4pKtiH9J?=
- =?us-ascii?Q?EvUwwAKaIqAuxJCnHKoL3HsWed1uX5qoFCXqg22ALWKg9dtJDykXwondUodF?=
- =?us-ascii?Q?UedDhPegqjfsmzXPTupaC7oYjYPeib0cHoFVUn4LXvRIohZTsYrch6Tpu7CP?=
- =?us-ascii?Q?BGkBU0qfhvVP4j0MqCr/DvJlp931U/iR/xhwMA8SdrsBcyM1q4MjiEklbTyJ?=
- =?us-ascii?Q?ghToAotPBK9qZ4UMZBgNBwwcXioSe1wCR7MFuW2ayHMxb+9e2svWbaDFAt68?=
- =?us-ascii?Q?VRlg3HqpMHq8XGg4P/Xthve+KlfIAgVJJfPqPSbGIY8NGXZlZIm5gNJgWxRI?=
- =?us-ascii?Q?uNJW8GPGe1UsDDhNnD8q3IdYuguWcpXupjuyUxE2bLsQ415V6r+sxP5rlyAc?=
- =?us-ascii?Q?PYSO1w6+Yly0uGblfae7tqoNbngKnxluIXtJQntp0bfQPOLENlt+eXNhy9Xa?=
- =?us-ascii?Q?uEl62S20obYlZBmF0Sc1FdLM2mfirDdw/vjzyNSNrJuUaSMG+pohF9KVAs/X?=
- =?us-ascii?Q?Uy2TbdbyXAJUiYOMAW6wMzEpvIfNaNinWp+yqEPc4yqnzJEpHECyLrL24cIs?=
- =?us-ascii?Q?cb7lllo4AF0SQ7fDEOJAhVvb6EzBVnBeLO3DbTNunz74RVKNA6qycSFb0bPV?=
- =?us-ascii?Q?9HrYgsQnKCYW0zFJ/DjKBZt0/G2qVcnSNvlCLTT8Zfrc6muVk80ti4yg5SlH?=
- =?us-ascii?Q?F3p203NF5Tpsv1m+Zg1Rzet/4L63LWv0vQP38dbysvS+9h/NeIJek3w/91Ya?=
- =?us-ascii?Q?eeXPoHXygDJr+panSEUvSAVYyEZFBV5usY49TQNX89lPfujtHcW1JaGsSU3U?=
- =?us-ascii?Q?5ZkaSmoYlfG0ya3LCETNRAM+hqbjts6IE9jqtMTMZJ0/+vLQf72TD4HzKqhV?=
- =?us-ascii?Q?pjnpEF4mATqgFd+ZnkhAQWlqX9oE7Ti5/7yfFikwlUxLUi7Wdkj2IK7WbUEO?=
- =?us-ascii?Q?zTG07oC8uSEcOWxP1UXuQTJdCgyeS7P6fl61x16gBcTSHLYIPgLjY3wbEtah?=
- =?us-ascii?Q?9z8CGlV5daGhF5cNjd2z883PFL/RHiwYVG3Re/DJpVGREavUDNArxUJf7V19?=
- =?us-ascii?Q?nybFV3lBqZ1jTTbn88zdVxNjtaPaNFXBsFyyfjWs19bBQtgvktG24sC1dQ09?=
- =?us-ascii?Q?ZFXSOgqiOJnB3L8f4ODNXTTVkLw13avsmCtgRnn4J+bvtRG+ihBRJX3OUf+F?=
- =?us-ascii?Q?S45JE3/R57bZXjW7d0Z7IIoE5scATo+09NHKUP6qZqOE28uVbNMb7+t5g1fU?=
- =?us-ascii?Q?ZznNbRFJNRP7/UCtt7YdFtCVrLagm5PqJbwLo70Iw2THkl7ePtCYBD0OyFIK?=
- =?us-ascii?Q?S4SyL+BwReIpOfDXgM4AV8IX+UqVw06vhO4UZvmg3PO66MNQmlRNci+dTaDF?=
- =?us-ascii?Q?TqmQOMvCMU2OBDIBSi0MIEKmm/wVTXg4G5KFcedjD4ZICzZFz3hbaJv77LWS?=
- =?us-ascii?Q?Je9Xv2M3FUAgKtCN/IN3vdMQGgDYsnPQeV7YllilNCaycXo7cyvd8rAe3KOo?=
- =?us-ascii?Q?Ezkxd8rmmmpe9AZjO754C/98jpYWQkukeM0vvz3c?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe23ab0b-9e07-4b9a-8b51-08dddb34affa
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5140.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 13:15:49.5542
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3OrBiW0CWfdPPk1Lv6liBHw3tUjua+feXKHHM9kI7hnqcDaT3sOP8a6BEpN9IMf3FP6wA13V8FL9Q+SLpfrHBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SE1PPF01F59DA76
+User-Agent: Mozilla Thunderbird
+To: Qianfeng Rong <rongqianfeng@vivo.com>, linux-wireless@vger.kernel.org,
+ Aditya Kumar Singh <quic_adisi@quicinc.com>,
+ Avinash Patil <patila@marvell.com>, Bert Karwatzki <spasswolf@web.de>,
+ Brian Norris <briannorris@chromium.org>, Cathy Luo <cluo@marvell.com>,
+ Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+ Francesco Dolcini <francesco@dolcini.it>,
+ Jason Xing <kerneljasonxing@gmail.com>, Jinjie Ruan <ruanjinjie@huawei.com>,
+ Johannes Berg <johannes.berg@intel.com>,
+ "John W. Linville" <linville@tuxdriver.com>, Kalle Valo <kvalo@kernel.org>,
+ Rameshkumar Sundaram <quic_ramess@quicinc.com>,
+ Roopni Devanathan <quic_rdevanat@quicinc.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Xinmin Hu <huxm@marvell.com>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Dan Carpenter <dan.carpenter@linaro.org>
+References: <20250814131536.231945-1-rongqianfeng@vivo.com>
+Subject: Re: [PATCH v2] wifi: mwifiex: use kcalloc to apply for chan_stats
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250814131536.231945-1-rongqianfeng@vivo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:TxP2DwNQDKpjzer7tcAWDwxXCi+dXQn5I1XtBkZoE4ctNclfz9m
+ qCfQHonXP4nMyuQbpbkpj0Ai5YWLEz6brJ+D5ZzUsNPzu6WBbaMnT65+RcDM8UPRFGeqYCz
+ ir/i0eNTFZk7x6ZWpAglBMWn/jyAvZGTfQgFpDntC3hdPBtGX19CVORjBbbXvRykwM+cVop
+ Wp7tZpvL6UAMtTT8eomTw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:SOXsr76CAHQ=;xpbSp5k+UQJe9muxB89dpI6KxEl
+ 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
 
-Use kcalloc to allocate 'adapter->chan_stats' memory (max 900 bytes)
-instead of vmalloc for efficiency and zero-initialize it for security
-per Dan Carpenter's suggestion.
+> Use kcalloc to allocate 'adapter->chan_stats' memory =E2=80=A6
 
-Cc: stable@vger.kernel.org
-Fixes: bf35443314ac ("mwifiex: channel statistics support for mwifiex")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
----
-v2: Change vmalloc_array/vfree to kcalloc/kfree.
----
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 5 +++--
- drivers/net/wireless/marvell/mwifiex/main.c     | 4 ++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+I find the summary phrase and change description improvable.
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index 3498743d5ec0..4c8c7a5fdf23 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4673,8 +4673,9 @@ int mwifiex_init_channel_scan_gap(struct mwifiex_adapter *adapter)
- 	 * additional active scan request for hidden SSIDs on passive channels.
- 	 */
- 	adapter->num_in_chan_stats = 2 * (n_channels_bg + n_channels_a);
--	adapter->chan_stats = vmalloc(array_size(sizeof(*adapter->chan_stats),
--						 adapter->num_in_chan_stats));
-+	adapter->chan_stats = kcalloc(adapter->num_in_chan_stats,
-+				      sizeof(*adapter->chan_stats),
-+				      GFP_KERNEL);
- 
- 	if (!adapter->chan_stats)
- 		return -ENOMEM;
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-index 7b50a88a18e5..1ec069bc8ea1 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -642,7 +642,7 @@ static int _mwifiex_fw_dpc(const struct firmware *firmware, void *context)
- 	goto done;
- 
- err_add_intf:
--	vfree(adapter->chan_stats);
-+	kfree(adapter->chan_stats);
- err_init_chan_scan:
- 	wiphy_unregister(adapter->wiphy);
- 	wiphy_free(adapter->wiphy);
-@@ -1485,7 +1485,7 @@ static void mwifiex_uninit_sw(struct mwifiex_adapter *adapter)
- 	wiphy_free(adapter->wiphy);
- 	adapter->wiphy = NULL;
- 
--	vfree(adapter->chan_stats);
-+	kfree(adapter->chan_stats);
- 	mwifiex_free_cmd_buffers(adapter);
- }
- 
--- 
-2.34.1
-
+Regards,
+Markus
 
