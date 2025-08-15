@@ -1,251 +1,565 @@
-Return-Path: <linux-wireless+bounces-26404-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26405-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B3DB27FAF
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Aug 2025 14:05:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40354B287B6
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Aug 2025 23:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FE1C3A9E1B
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Aug 2025 12:05:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E36BDAE846D
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Aug 2025 21:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A07327FD44;
-	Fri, 15 Aug 2025 12:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D108CB665;
+	Fri, 15 Aug 2025 21:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="NyV2Vvr3";
-	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="M2Of3CH7"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jcDA7y/t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx08-0057a101.pphosted.com (mx08-0057a101.pphosted.com [185.183.31.45])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580591F1513;
-	Fri, 15 Aug 2025 12:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.183.31.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755259517; cv=fail; b=OJ3SobAYYjlmaHkazHiy8efjxMurV/ufQDr3lBzX7sKaTzhzEm4wZWrkPVngtp4wZOxrbkvNptd9tvutiRCdJ3Kf+ZUo6cNdXs2iD8cV4MAZknicCLEFpFEciXwVStZgO4p7gxzTRIPomHY4XlbxHxCdebfCPtEGLe+KH4n2yNI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755259517; c=relaxed/simple;
-	bh=heeq3WX7EszElDv+9eBqJ8s3zNPTFCiYBvtrXRd0eRk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=RS/vvGv/Elv0EfcZqlCKHrnM11mruRv6Qhf0BO1RkWL0yfkeXwlbmfPQU/90PSHdVeGESfwi2SHZwbGVtl1jYSk4HJZnNoJDb3dGVX/tOnLq80n6smBEojmEtkjlECA8LUlCoaG7q/UMTOKceLJNaRgF8WmOVvQiHQ4EM7f3Fp0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=NyV2Vvr3; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=M2Of3CH7; arc=fail smtp.client-ip=185.183.31.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=westermo.com
-Received: from pps.filterd (m0214196.ppops.net [127.0.0.1])
-	by mx07-0057a101.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 57F5slE72735284;
-	Fri, 15 Aug 2025 14:05:05 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=270620241; bh=
-	heeq3WX7EszElDv+9eBqJ8s3zNPTFCiYBvtrXRd0eRk=; b=NyV2Vvr3PUklv3Mi
-	qFR9NsFAwtockP+JuwjBIMRqA9JHW6hpf7BRX9qFpti1l3us0ZHs8z2gk62eKJsi
-	hucI12W83HdgE1ocdRDujiyEMoSd3YONwG0Ak7XT2U3oyvpSUcTQOzUhcIsZmDHw
-	fRYdIC4Css/oEEaWrbBvya4PNNjzUgDKAEnUhBdEz6WNtAWw9lvyDVk+j2pjz4aS
-	fWKasxphrufzGovMON/Zgxj7Sm5lj0nnQclleAbX713qoIjucbgAJoFyQ0IFBYT8
-	ikhyoCPkzcnNOV0t/Uozt4FDoHGlenJft3PdTcZCgjPKKwo6jPuLpxXRCcVM1M2p
-	xeSEkQ==
-Received: from eur05-db8-obe.outbound.protection.outlook.com (mail-db8eur05on2114.outbound.protection.outlook.com [40.107.20.114])
-	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 48hhu3gtug-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 15 Aug 2025 14:05:05 +0200 (MEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qXZYaEwMycRr6+SGpl8n7grrzeXwwbc3BL9tj/Tmx3dFvnH9Mjaf/NyiNBs4/rU3zlXHLlTgqWslXbtBHR2UL6aOq6MlkjAtzNracmj1griEm0JbdJ/pYyqDmTBf+8E5w6jiaWyN05IhrpnjIxkT5GobEIcZeGLxVttXfvJL2bDBv24pbCSVQHQ7yvMUaw2u1vkADpYwdCo8Y81TjiQ+Db/zERoIAarvkfyt9ETH+XkpbZnRJfGtz+ykMxTE/ra+GXKsvyX96GOTPPhDzVDUDyMQDbPMVWoR2IwtBBtMXQb1YleYBvt5gpFufrZ7won6QieAPDiGZhg/fRX4WyrZDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=heeq3WX7EszElDv+9eBqJ8s3zNPTFCiYBvtrXRd0eRk=;
- b=YsTEGrFg1JWTNsCX+cTBQrAxVY+LgqyZnV8Ny1W4bCXZJ66cyjXAqZvWAvKn5D1bQ76/K0Ir5rk+htHZAhNmxtXVPKRVkpcimizjx4nCziIyEd6eXNOLFWp8UecyKVvcEVdG426OriVTQWI3AkdlJhH+vWCfBDY3ec5m0o0hJ6GhFMX/t+ecXIk4HIY3vbpQUkyc9863Du50iv1g0batHNOaME3mRDT0RPnUcEknP0TxkNW3kvLUUYvOnpcPrFivEiAmNO89gR5Ph9bfhjVb4rIEQAXhXMaJ5Z26uL0OgIFD3ichzgELry/DFmou01SuJJDTp1upn8H+qd8KkO82wA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
- dkim=pass header.d=westermo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=beijerelectronicsab.onmicrosoft.com;
- s=selector1-beijerelectronicsab-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=heeq3WX7EszElDv+9eBqJ8s3zNPTFCiYBvtrXRd0eRk=;
- b=M2Of3CH7DhLYJu6cANT2L7xMKQPL4O5Rcj+x3V6a8eK3pNHKPy+9xbgvADTWtuNoCHnO8ldyEtojrZ5Kj8Fl7gLDXu3ACykIv69zTKHF0SnWdXCXAJCjgpXkPdf9fFE1ZD27myuGGN5anEUume47Rj8v/hGta6A53lju8+ENWx8=
-Received: from FRWP192MB2997.EURP192.PROD.OUTLOOK.COM (2603:10a6:d10:17c::10)
- by AM7P192MB0658.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:176::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.17; Fri, 15 Aug
- 2025 12:00:03 +0000
-Received: from FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
- ([fe80::8e66:c97e:57a6:c2b0]) by FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
- ([fe80::8e66:c97e:57a6:c2b0%5]) with mapi id 15.20.9031.014; Fri, 15 Aug 2025
- 12:00:03 +0000
-Date: Fri, 15 Aug 2025 14:00:00 +0200
-From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-To: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>, ath12k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: ath12k: REO status on PPC does not work
-Message-ID: <aJ8hQKnlboOLFSkh@FUE-ALEWI-WINX>
-References: <aJ7sDOoWmf4jLpjo@FUE-ALEWI-WINX>
- <573c76a8-c2a0-4b9c-b5a8-762b8d094b81@dd-wrt.com>
- <aJ8LYj+NGaX8cwge@FUE-ALEWI-WINX>
- <5ce28473-0fab-4fbe-9668-0042ff7d86c4@dd-wrt.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5ce28473-0fab-4fbe-9668-0042ff7d86c4@dd-wrt.com>
-User-Agent: Mutt/2.1.4 (2021-12-11)
-X-ClientProxiedBy: GV2PEPF000045C2.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::449) To FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:d10:17c::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC8527713
+	for <linux-wireless@vger.kernel.org>; Fri, 15 Aug 2025 21:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755293424; cv=none; b=Rt1xlnThqXD/ffGRKmqKcUUQTh/bSsc0MZNDiqTcCm/k9p4u0ApNT0tohqO91TEs3qJWIXDMWk9j1OKsapxkFPnVjv9DbDxeJrZ/+qJ+uvowYTU8V86ruGexmPFBJ6X2Gaarh8/ONJVvtUPqZ7VO//5GdG82a8FdF7Qf/zF5uLc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755293424; c=relaxed/simple;
+	bh=DrxjSjJfQoJ1isVaF2cPLMUEjSOMWvSrjbq9T9Rh3ZU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YnMsawj5HIpNWR1LSrvOwJ6zh0K7SuJX0qqfatYpTsjdgc365aiC6Irp+YV1Hs8s5/k3ghu9khnbMHWCW1ccCo1L6IWOk88tUp/yStDreYlImY0WYVP67FUt65iitUycQubCPTZVjmRZN/ZY55qHJZrszSqFWQJmgvElbCpL+UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jcDA7y/t; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57FJKmwB014962
+	for <linux-wireless@vger.kernel.org>; Fri, 15 Aug 2025 21:30:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=jlNhRjcA6G3gUz7SrPAykcZK2ncntR50pn8
+	WgjDJUzg=; b=jcDA7y/tbEbjbt9L0owiIrV9wDCKmwFEDPlbVewoW6hodCafod5
+	UoXZ+0Ijj/YLXu4iJ9avUpnaepdERMjXLLpVYmTNCTKrAMOT8af5B4gIMs1V4pCr
+	qJFiZJU9wpccunmCEt/kZe7OL1Df0fnpO0pZMqRV/Lg1wrz84R7GwuRLIuMP0z/s
+	wb9skDAr9ByovtZeq2d5WLeT5cG717UvBAF9A4OBzKXxogrG5q5x9q81fo7qR778
+	2yoIr6gwqBotaUIXmORGDL95lYnkaKovE4TQv8l7G6/Efp47+F0euXF9DMbwb/2Z
+	KJFJcybthxa4OJLAwFaf9nri7IBDHYuv5kA==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48g5hmm6n7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 15 Aug 2025 21:30:21 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-24458264c5aso22734275ad.3
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Aug 2025 14:30:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755293420; x=1755898220;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jlNhRjcA6G3gUz7SrPAykcZK2ncntR50pn8WgjDJUzg=;
+        b=cahT9LCnBrXAcTF7L+TGLUWTPC5+96wtK22KCWCR7WCFYVifk0iqjDnWg0Dhg4uUUS
+         CgIhAJq3TQnk6ZMAgFm4ntAsmwtt4hFF6cAAJKAFIQugkWvnZ0itjd3eTIy8oGzOrz5u
+         gfNpaDdjHdI1kDi21sl5gfVR6TM6Psvn1QdftuWAqKxxIOvdTUX9YXJMgNPCNo0YxzIK
+         vFv0x8t1mPRwYcSoSWsLmNU9p+f5vqVphiQNG1M0eS2UjTuhUflxb10A9fjm48oUtZte
+         SNqPtYzzvr51SJ5hbFZ9V6FcDZXDr2sGNJGVx9a7gHXwIhaWzOdxrvvEQiZUpKo+Bj4n
+         YPgQ==
+X-Gm-Message-State: AOJu0YwjpY0m6RClkPcfs3xs3AoCqXquFt4M1HvZxX+c5/Ay1YXKW+2l
+	HbNnZeLpfkgn8B3YiScb0O4/RrgKyN7y1E8zzu4UrSId/gOvFD/yuZtW2iyTb1TgG/iGKaosVeZ
+	+1njqYKUNOnPZ8CzDJaZiuL9/sXYEA1W0vb527UVUDeChp8J7V9Zbnn/y/pb51WjxTIZ1dQ==
+X-Gm-Gg: ASbGncsquKuC7IfbrFDX0cyImeSKhJphEecA1CUK6DmAxgR4kf0gZbZmRHpZMzVhNtP
+	Uj3+8R5cpMhXKB0TUmzXY4bvktea78XOvmfDK3raDanjQ34eLlM2unk37eJalkVPxnJBM0lRSmG
+	mp/3OW3w3t+b2MC/uHm7kbwHQIrZc50hDdvZ5Z5QuM190iT4xZ99RPQVjXZbQFZb5IcmlegZY5U
+	IyZhzge8veeHDFZ1fSRXBOTYkjHPDfMpj2odemacMDlXWrQ1xJzLnafLS68fBOfY7DiNsqmp4fb
+	UWbB0iEb1WRR9eBmpyGQpjWOFWLpQfstEYhwX5H+5kRnZVZooa4lP72qfC4ni7nXmC9lIh49SlG
+	sSUnLLewHjsuc01W+ZD1d
+X-Received: by 2002:a17:902:d488:b0:234:a139:11fb with SMTP id d9443c01a7336-2446d8b1f78mr47492465ad.27.1755293419854;
+        Fri, 15 Aug 2025 14:30:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6MWeFMxxnZMreEI4LoNe0bDHWpPN4X1kS8KyACPY173PhXCYN6QoB3A/vo1x8P8PZF4xBLQ==
+X-Received: by 2002:a17:902:d488:b0:234:a139:11fb with SMTP id d9443c01a7336-2446d8b1f78mr47492145ad.27.1755293419314;
+        Fri, 15 Aug 2025 14:30:19 -0700 (PDT)
+Received: from msinada-linux.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446ca9d05csm21333705ad.30.2025.08.15.14.30.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Aug 2025 14:30:18 -0700 (PDT)
+From: Muna Sinada <muna.sinada@oss.qualcomm.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org, Muna Sinada <muna.sinada@oss.qualcomm.com>,
+        Aloka Dixit <aloka.dixit@oss.qualcomm.com>
+Subject: [PATCH wireless-next v2] wifi: nl80211: Add EHT fixed Tx rate support
+Date: Fri, 15 Aug 2025 14:30:11 -0700
+Message-Id: <20250815213011.2704803-1-muna.sinada@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: FRWP192MB2997:EE_|AM7P192MB0658:EE_
-X-MS-Office365-Filtering-Correlation-Id: 36db9ccb-9444-4846-8524-08dddbf344a7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QWFXWGtVZGNXdW5XNVVxY0dIb0RZaE9hQUphQXg4VmJUcWx6U1J6NzN1QjJm?=
- =?utf-8?B?RytqblAzM2txWElpVGUzNDJhWkplZk95dzkvR1hWdWdUd0dYYTBib05kNDNI?=
- =?utf-8?B?c2owOUlGTXZSeGZSbC96ME5RWEdBZzFmRlNWdld6UEgra29vZU1Dcnc4T1FD?=
- =?utf-8?B?SUtaOFAybndOY3RUaHFUTUJLd084K2dDcHgrUkZJYnNadWhBaFdKdkI1dW94?=
- =?utf-8?B?OStLNFg1Sm5ZYTFRQXdmN3dKNEhVb3FlVXZmdnpkVFpFRUljYVB3YkNtY1Zu?=
- =?utf-8?B?MGQ1UlduTG5jTmJZcm1jMENsMWFXSVVxOGJDNlVCVCtpdmJQNHpQUEVUelNx?=
- =?utf-8?B?ekYxMGIvTHdkMWxKbWdGNnBOc0tDakJNV1ByOFJXVElVblN4ZTRrbmpTSDZ2?=
- =?utf-8?B?QVdYTjZQSDB2TkpWQ242elRiakNJRm9HNHpFS2lDWDh2Y2JaRVVMaDMweTBx?=
- =?utf-8?B?THZMOGx5VlAxL2NTcVBFdmh4emdHWTZoK2tPQnZXUEtOK2dQYXhMZVo5emJT?=
- =?utf-8?B?RnRZUjFDVUpKUmJ6d1h1Mk8yUFVZQkc3K3lFb21sOFgvWStOSVJxWTFGSlZw?=
- =?utf-8?B?TjVSSXFnL1Y3S1UybEpjNUFMLy96VFp5TDgwNk9sK2RDOHVkdlRXaWRaMkN0?=
- =?utf-8?B?ekdHRFdqSENLbjE4dVNHaUxwMDh6a3BlRlkzNmZwdGM1eUdFZG9UT2VVTnda?=
- =?utf-8?B?bmJlOW1tVXZzZDEydlNMUHdva0xZVDd0YnNGUjFTblMvaHVhejZZTStnclo3?=
- =?utf-8?B?TmZtRFVqSTVLbjdLdXF1Qy83RWNRNjNYQzdnM3JHN1NlUEhjenl3SXpSOWNt?=
- =?utf-8?B?cjJhUVZRUi9WUnhyUVJCdEJTVTU3b1VXLzVlakptV3hmbFBlVTllcWJ0ZWI4?=
- =?utf-8?B?aUN3Z2xSaWdkb0pnNzlCWnN1L0M4MXp5SFVNRnRPRzErVUh0bHRBNmQrenFa?=
- =?utf-8?B?VkwxemNiRFpxMTNESTExbjRrd2dNK2dTK0pHdURHNU8ybHdYUnlsY1V5SkJr?=
- =?utf-8?B?RSs2SnBpNEV0Z3hMNEs5K0YyR21NS2FEWG82U1hkbWs1RHd5ejhNWFU4UThM?=
- =?utf-8?B?NVkwQkt1Z2ZMemJvMzVrVnFKaGVEZjVsZ0NZcHRyZEk1bXZ6V01seCtsa0pS?=
- =?utf-8?B?VEQ3Y2tkTEh6SEJuYlBzZmdDSUZySGZ6dEoyYlNIVjYva1ZPM3Zzc01wWnM5?=
- =?utf-8?B?MWFpN3NBS1BIV3hhc2ZBbVdrWE53RG1sdG85WGd3dW93eVJ0Tml4Ykp5U2sx?=
- =?utf-8?B?ZktQeWJTRmU5RnVJeWVRKy9IQSs2Wmo2aEljRFY2dlNFNTRaeERPM2FjMUkr?=
- =?utf-8?B?TUhIYWFhLzFlR3ZGVmM3Q1pTOW1XUlJTeWZUVGRMbXFib0czaUZMenJQYStF?=
- =?utf-8?B?aTU2R2htOHNOTWlkdnBtRUdXWkhDc0xZSDVaWDFLWjNxMGYrOURkRjFFNnNZ?=
- =?utf-8?B?Q21OS2l4RWM0dFNzL1Y2WXBHRzRJeWR4VVNnQmdVdDYvUnFKNmVEZUdTOGhW?=
- =?utf-8?B?U212MzVHQ3JoamxQOUh1UFFWSytsaEVUM29Jby80TFR3OEl0bkJzb0pkbnRJ?=
- =?utf-8?B?Zy9GNGpTczlrSXJoSEhsS1dhTlVqczZWdjVVNVMrYXlDVHVTWW5NcnFBWi9k?=
- =?utf-8?B?Sms0TmorY3FhVnB3Vys1V1ovMU5IOVB1NituUm9JSktDYnpBdWhjeVRVbE5v?=
- =?utf-8?B?Q2YySXA3V0xZZkFIdlhBOEFjY0pPeGFEbWVDQzdWZE9FMmUvSUxuVHg4TTBx?=
- =?utf-8?B?Y1JqWUIvalJzd2tGRHp4VzRCc0ZQUFUyeUVBakloQ3ZLRllVRWNwMzJqWmo4?=
- =?utf-8?B?Y2pXRm9uS2NrMFFXLzJhNHNGZzhWVU96UmhGYlFaaUJOZktQRS9hOHJaTEI1?=
- =?utf-8?B?TnczMTEzQ1JnMy9QclNmT3NSTG9LaHNrYkpIWUc4Zm9tbm83eUozY0oxT1Va?=
- =?utf-8?Q?h3tnBb2Hv3Q=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FRWP192MB2997.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K1ZaTGZLbHMrdW41dXcyZWViUkVvYWNxL0NYMWIwTW1YaDVwMHk0ME9ZTlBS?=
- =?utf-8?B?S2Vrbmw0T2QwYndwQVRSTGpTanM5Z1lkbkJ0T01SdDlpbzV6QUFYWk9SQUpo?=
- =?utf-8?B?NVlEYmtCS2QzL3d4WXJvN3N2L1ZuaGc2cDN5MVpCSXpDYUx4Q1VrZmFNdGx1?=
- =?utf-8?B?SE1KK2dZTXVtMEpJWHFPZ21wQ1dubC8wZjA4ZVYvSXg1ei9YQWFybDZKbEZW?=
- =?utf-8?B?QXpUL3FBU05Zem5KMXpEZlUveHNLeElxZG52VnpoakRmWlo0cXRJamZiSnA5?=
- =?utf-8?B?SnNZaE43K2RoYzczeGxrTkduZy9FTDN4NEthTmNjM0NMWEQyZG1HK04yWTJR?=
- =?utf-8?B?SHBzWm95aEIra0EwL3dNc0FIdkhQYnBoL1Z4eVlaRDZzK0cva1NUWmcvVmtt?=
- =?utf-8?B?UUkvZ0hqK0N6Q3FuZ3FrOXJEeFFoRlRwbnVHNzAyc0w3MW9IRjhzYTlWclBv?=
- =?utf-8?B?eEh1V2dCRXdleXFVdDVlZThFeW1mdlorK2xOUkxTNDRvV0lNbDhkKy9oZ2Iv?=
- =?utf-8?B?OHBqRUdTbmhOdk14WGhDekd1UU8xQVh1ekxQU2lsREhVM3hmV3ZqS0tDRXhi?=
- =?utf-8?B?SkZETW1sb1FBY2xGUGUzamFiZUs1VWZuQnBIeGdQbVpuQ0cyZzByczJRUWNl?=
- =?utf-8?B?TS9Ra0Rldi9GMWUzV1Mvb21TZXIwcVhUTjhzV2Rnd3R1Q2VXaDVoQ3luNktY?=
- =?utf-8?B?anhURVJjTmZZVXpjRUV1enh1V0FaK2dVaWVwYnMzSE8zcE5QSm9hZHhidG5l?=
- =?utf-8?B?bTVwV1loOEdFZjNUYkU2ME5RbjZja0dNVHgybXlrV2dpR3pvNzJvRDc3Z2tZ?=
- =?utf-8?B?WDBybWNJR0FDaEVMeEg1Wmg5TnlnTzFYZEQvbXkra0YzOHFFU1dpbjVSM0Mv?=
- =?utf-8?B?U0lKMWUyT2FRTHFPVnhvRDlDNUVzeVVwNHRiYnNjRlNqVW82Vmt6V3VFeCtz?=
- =?utf-8?B?NGRxZStmcW1IRVVHSW1pNzRZVUM0cHgrOFZ0eXJZVGMzZHNkb0QveStsRXk4?=
- =?utf-8?B?MWhsQjNydjdtZnJCalY3eUp1RlJLRStGR0dNVnhOYkE2MW14azlPQ2tEVThD?=
- =?utf-8?B?eHI1VjlzK3Y4c0VtWCtMVDlXcFBOVGVMeWlwbkdLWms1aHhhelRFcmt4azI5?=
- =?utf-8?B?bUxnUjlFcTRHdDNoMmZrbW54VE44dzQ3bXFVS1hGWTdSM2dGZUI4VWNBVDRF?=
- =?utf-8?B?MmZFellOVmRtZWhUbUFVdjdlMklSTCtvdXlyM0J5aFcvK0U5ZVpyeUFrdFFn?=
- =?utf-8?B?WDFpQ3BqNnFOTitqbUZ2THBSN1c2Zk5Cd0VicEFoSGRkd21odkxRQmQyYWZL?=
- =?utf-8?B?NnJBcVNIY29NYnJKa2hsMHN3ZFduMzJBQ2JzdlRWcVBLRU00anJhbzV5MENi?=
- =?utf-8?B?TXFLVDNtWnN6QTFwTmRxaHJaOU9vTU9vYWh2d1lKTC9UMmVpYnB1dWowY0Zp?=
- =?utf-8?B?NGFTNzJaUzlFeG9ONURvazU2KzI0UkZqLzB2SjdxZWdyRGNjNGxQYnRMWVp6?=
- =?utf-8?B?bUJ1Ym9YR25EK2FmcXgwcnZkY0RvS1RjMWJjRlBhTzBpMDlacXJyUHphcFZC?=
- =?utf-8?B?T1NHMmVmc0kzQm82eEIxZ2hNRDJOYk1MVURaL2J6ZlBUSHpZQWlNbzJaM0hR?=
- =?utf-8?B?NUl3cUdMNjZWalBkcFdVMmpVK1hmNlhHZ1VMUGRPeEUxeDRScTFDeVdkQW9t?=
- =?utf-8?B?K2J1Y2JHcEpFRFBtY3JXNHo1dHRTWW5od2gxcDlicnhGcHJWWlVKNHp0VWlP?=
- =?utf-8?B?QzlJdHcyRGxPQUxYOXJuRlJwOHorNXA4Y3FpTVFmY2NxNG9EV1hzSFM5b21E?=
- =?utf-8?B?eGhLWlNLS1JuT3lnVmJLSG5sTlNZRytpSXpYa1lrT0lSRHFHTEtCMSs3Z0dN?=
- =?utf-8?B?dUdVcEdLaUxmMDk5b2lmRUFRK0xONmdUdmIrWEROWEF1YUREd3diTlp1RHF0?=
- =?utf-8?B?SWdPUFg3SlNDVTZHZ21GcUg2eWpqc1FoK3JkaGVUckJlci8vbDg1OU5MWTlD?=
- =?utf-8?B?djZEUGVZZHVEWXMxcDJscEJyT3ZXejhOdjhQSXFxanhwbkQrTFpicExoc2RP?=
- =?utf-8?B?clRoQ2NoYncxbTZHcFhDUTZsVlFMWXdVQjZnZmYwTk5EUWVuNUdTWUJreXAx?=
- =?utf-8?Q?gMC8LRXyUwMkAqfR50jL4NMfC?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	KNJ6EcIbWu3pOIGcYTqZbGjYjhJRFevYg86DjFUa0OgXIj40jgEqcNtaCAVN9EenL2JQQg8nXTosjhN701cttbF2nDFrrA2qMMvzx03odXeeYVVQjUlSk+PgRbtFkRMuzlSFgNlbXjD33BfzaDCaSBFc1rqAz2Zf3GmKloKfZm7vwinNBxHxs6sYxLELqe3PcfRU/xTmJDQsHVupzTlHnTW5M64aBtcN2igE4eOAs6/NiYsQWl8eoGy7VNnVIh0zyf6SH7FEaNrxKgKjPnNhXK6giNUXC+xl4VMsiKRgMc0m6aMDGrl8zLq39RSoGwqah39/N+tJbYeXH2HXpnyTBSEYwIYIiG4NzJmX1OD30Ra5AoFAZ83DvenyMWpesO+EjBNIKo+hTr9rrYmfx3/SSjgZz8O0CXOkO/UK0n1q9qM1Eub6yAsAlpPMiaqe9wv5sfZTJbIyD4K4HLplwB7FZ0756t2hAg3Gj7kwRCtGhzTZywXSwJ9uenQeTZEaAptmh9dwBh6SUjeJcpmvpn58ybG/eO4t40YrJP07mjDDEJE1vhPDPgZiicJY7n0OihZ2VpH/ONwqgzm7/a73UoGEtJnnOiLZn9piGwncA+q/bfJ3IZOzBsxR0USJJ9Y1PXbB
-X-OriginatorOrg: westermo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 36db9ccb-9444-4846-8524-08dddbf344a7
-X-MS-Exchange-CrossTenant-AuthSource: FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2025 12:00:03.2438
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +M1xvPmwlxmQta9KNpizayGVj/dUUSoDf3QY+0oV0ckH42XHN6t3Sj0zgqU16MgBlsL9XgTP/8epopIPXevaPA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7P192MB0658
-X-MS-Exchange-CrossPremises-AuthSource: FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossPremises-AuthAs: Internal
-X-MS-Exchange-CrossPremises-AuthMechanism: 14
-X-MS-Exchange-CrossPremises-Mapi-Admin-Submission:
-X-MS-Exchange-CrossPremises-MessageSource: StoreDriver
-X-MS-Exchange-CrossPremises-BCC:
-X-MS-Exchange-CrossPremises-OriginalClientIPAddress: 104.151.95.196
-X-MS-Exchange-CrossPremises-TransportTrafficType: Email
-X-MS-Exchange-CrossPremises-Antispam-ScanContext:
-	DIR:Originating;SFV:NSPM;SKIP:0;
-X-MS-Exchange-CrossPremises-SCL: 1
-X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
-X-OrganizationHeadersPreserved: AM7P192MB0658.EURP192.PROD.OUTLOOK.COM
-X-Authority-Analysis: v=2.4 cv=ceOLbnDM c=1 sm=1 tr=0 ts=689f2271 cx=c_pps
- a=Iy8XcT5hUYZTIqWYt96TUg==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=8gLI3H-aZtYA:10
- a=RmOkW0f0sXjMcqtWxUkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 6sVlpOBsTpuk_lvohPLi7XaX4JAYIAlr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE1MDA5OSBTYWx0ZWRfX8r3obVB5AdE/
- zQWjT2MYR47xm4ibp0Z8cP0bBT19LUMT1P9dKV9GHnwbng3gN6X1jl6EBLvHYsCVVhb/pvgbMqH
- jnr4rsrkJH27oU41wDjg0SLpmKUqdBQtqyS4OJ1t5ccVPmooywWcROhcEV/+gTfiWdqbRwMEprS
- 8kU9Jj2PotLtcrAOGS8wymAj3izZEZsLaYdliH/ifZ7ZlPKSNp2yhG/VC/JxYZ3GT9xy7oBUW4P
- r4iaonBR+bpe8FpEf1LdaJqVBAWTYuUVuZbJ1HkITdIt5T0eoDBJAQ+PeBOqASmjxBItper0tRv
- 9T9x5DXVdGDJCLei6k+9IzGbnRNNoVkAYPsOvXJ2VvDUpzXgV+dz5+fjXoD+vl5be//bNxmObSD
- MQ5SCjz7X9c1HOyhM83K0SduYxZRNA==
-X-Proofpoint-ORIG-GUID: 6sVlpOBsTpuk_lvohPLi7XaX4JAYIAlr
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDExOSBTYWx0ZWRfXxIYM4uBVkuSP
+ tIilCE540MaYSjHzkTevn+v9daxifNqSWBu1wyN9YLMxH8fhbx1Vu++iPK5U1EmAftnp0iaH8Fi
+ Y0sEso94/l3/Zlvx0CppkwDs/s8qDTzUa+ec+VCNb9dVuiNDKNxSlXtZFKveheqH9d09/1dAChR
+ 2qCbZ0GWdOYAGUnVBGEtFvCHMXvHnkvmOOdvawD04FIRWAn0glm2KnycaDTlWNlWfsuHgvUSAsr
+ xt5I1a2VAzpHj7J4ew/RQyn566nVfSSDYfwYdmwBiHfWNOslT+gmYzjSiFwgq8EHPN/oiyJj4Cw
+ +UZ5iPisdSJoPAcbv9De/1U9Zl4gVFvZ+lCv9V1E24O+o5fhM6VePuLt1lXmsABd9r0bHc3T0zY
+ u+OXgFxE
+X-Proofpoint-GUID: RncZXwsJSyQkKMessPTFzvaNcIrT3ugr
+X-Proofpoint-ORIG-GUID: RncZXwsJSyQkKMessPTFzvaNcIrT3ugr
+X-Authority-Analysis: v=2.4 cv=d4b1yQjE c=1 sm=1 tr=0 ts=689fa6ed cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=0_fGfNMFXauCpGQD5kIA:9
+ a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-15_07,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0 spamscore=0 phishscore=0 adultscore=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508120119
 
-Am Fri, Aug 15, 2025 at 12:50:00PM +0200 schrieb Sebastian Gottschall:
-> i just can say. the changes i had to make for ath11k to get big endian
-> somwhat working where massive. alot of endian handling in ath11k is simply
-> not considered. the firmware is little endian and alot of fields must be
-> converted to host endian order. but at end end i struggled with dma
-> transactions and gave up since it was not resolvable. the patch i made for
-> ath11k was massive at the end and ath12k is not much different
-> technically ath11k and ath12k can be merged at the end. i dont know why
-> there are 2 drivers maintained which are technically very similar at the
-> end. alot of patches for ath12k can be applied to ath11k which i do
-> sometimes if its a usefull patch. but ath11k itself is abadoned for
-> maintainance as it seems (at least if you look for qualcomm supplied
-> patches)
+Add new attributes to support EHT MCS/NSS Tx rates and EHT GI/LTF.
+Parse EHT fixed MCS/NSS Tx rates and EHT GI/LTF values passed by the
+userspace, validate and add as part of cfg80211_bitrate_mask.
 
-Regarding the ath11k driver, sure, if the firmware doesn't handle the swap
-correctly, it should be disabled and managed directly in the driver. I’ve
-already have a patch for this, spanning over 10K lines, which I plan to
-upstream at some point.
+MCS mask is constructed by new function, eht_build_mcs_mask(). Max NSS
+supported for MCS rates of 7, 9, 11 and 13 is utilized to set MCS
+bitmask for each NSS. MCS rates 14, and 15 if supported, are set only
+for NSS = 0.
 
-In contrast, the ath12k driver performs the swap internally from the beginning.
-I only had to make a few minor changes to get a working ping. Some patches are
-already in the queue, and others have already been merged upstream.
+Co-developed-by: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
+Signed-off-by: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
+Signed-off-by: Muna Sinada <muna.sinada@oss.qualcomm.com>
 
+---
+v2:
+- Added necessary EHT additions to validate_beacon_tx_rate()
+- Added new Enum for EHT beacon rate:
+  NL80211_EXT_FEATURE_BEACON_RATE_EHT
+- Removed MCS 15 checks as that is only for MRUs
+- Moved setting MCS 14 and 15 outside of NSS loop since it is only
+  applicable for NSS 0
+- Moved checks out of eht_build_mcs_mask() in order to have no
+  possible errors for this function.
 
-Best regards
-Alexander Wilhelm
+---
+ include/net/cfg80211.h       |   3 +
+ include/uapi/linux/nl80211.h |  41 ++++++-
+ net/wireless/nl80211.c       | 229 ++++++++++++++++++++++++++++++++++-
+ 3 files changed, 266 insertions(+), 7 deletions(-)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 406626ff6cc8..8f80b163b98b 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -841,9 +841,12 @@ struct cfg80211_bitrate_mask {
+ 		u8 ht_mcs[IEEE80211_HT_MCS_MASK_LEN];
+ 		u16 vht_mcs[NL80211_VHT_NSS_MAX];
+ 		u16 he_mcs[NL80211_HE_NSS_MAX];
++		u16 eht_mcs[NL80211_EHT_NSS_MAX];
+ 		enum nl80211_txrate_gi gi;
+ 		enum nl80211_he_gi he_gi;
++		enum nl80211_eht_gi eht_gi;
+ 		enum nl80211_he_ltf he_ltf;
++		enum nl80211_eht_ltf eht_ltf;
+ 	} control[NUM_NL80211_BANDS];
+ };
+ 
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index d1a14f2892d9..455d5fad44d4 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -1943,8 +1943,9 @@ enum nl80211_commands {
+  *	The driver must also specify support for this with the extended
+  *	features NL80211_EXT_FEATURE_BEACON_RATE_LEGACY,
+  *	NL80211_EXT_FEATURE_BEACON_RATE_HT,
+- *	NL80211_EXT_FEATURE_BEACON_RATE_VHT and
+- *	NL80211_EXT_FEATURE_BEACON_RATE_HE.
++ *	NL80211_EXT_FEATURE_BEACON_RATE_VHT,
++ *	NL80211_EXT_FEATURE_BEACON_RATE_HE and
++ *	NL80211_EXT_FEATURE_BEACON_RATE_EHT.
+  *
+  * @NL80211_ATTR_FRAME_MATCH: A binary attribute which typically must contain
+  *	at least one byte, currently used with @NL80211_CMD_REGISTER_FRAME.
+@@ -3735,6 +3736,22 @@ enum nl80211_eht_gi {
+ 	NL80211_RATE_INFO_EHT_GI_3_2,
+ };
+ 
++/**
++ * enum nl80211_eht_ltf - EHT long training field
++ * @NL80211_RATE_INFO_EHT_1XLTF: 3.2 usec
++ * @NL80211_RATE_INFO_EHT_2XLTF: 6.4 usec
++ * @NL80211_RATE_INFO_EHT_4XLTF: 12.8 usec
++ * @NL80211_RATE_INFO_EHT_6XLTF: 19.2 usec
++ * @NL80211_RATE_INFO_EHT_8XLTF: 25.6 usec
++ */
++enum nl80211_eht_ltf {
++	NL80211_RATE_INFO_EHT_1XLTF,
++	NL80211_RATE_INFO_EHT_2XLTF,
++	NL80211_RATE_INFO_EHT_4XLTF,
++	NL80211_RATE_INFO_EHT_6XLTF,
++	NL80211_RATE_INFO_EHT_8XLTF,
++};
++
+ /**
+  * enum nl80211_eht_ru_alloc - EHT RU allocation values
+  * @NL80211_RATE_INFO_EHT_RU_ALLOC_26: 26-tone RU allocation
+@@ -5481,6 +5498,10 @@ enum nl80211_key_attributes {
+  *	see &struct nl80211_txrate_he
+  * @NL80211_TXRATE_HE_GI: configure HE GI, 0.8us, 1.6us and 3.2us.
+  * @NL80211_TXRATE_HE_LTF: configure HE LTF, 1XLTF, 2XLTF and 4XLTF.
++ * @NL80211_TXRATE_EHT: EHT rates allowed for TX rate selection,
++ *	see &struct nl80211_txrate_eht
++ * @NL80211_TXRATE_EHT_GI: configure EHT GI, (u8, see &enum nl80211_eht_gi)
++ * @NL80211_TXRATE_EHT_LTF: configure EHT LTF, (u8, see &enum nl80211_eht_ltf)
+  * @__NL80211_TXRATE_AFTER_LAST: internal
+  * @NL80211_TXRATE_MAX: highest TX rate attribute
+  */
+@@ -5493,6 +5514,9 @@ enum nl80211_tx_rate_attributes {
+ 	NL80211_TXRATE_HE,
+ 	NL80211_TXRATE_HE_GI,
+ 	NL80211_TXRATE_HE_LTF,
++	NL80211_TXRATE_EHT,
++	NL80211_TXRATE_EHT_GI,
++	NL80211_TXRATE_EHT_LTF,
+ 
+ 	/* keep last */
+ 	__NL80211_TXRATE_AFTER_LAST,
+@@ -5525,6 +5549,15 @@ enum nl80211_txrate_gi {
+ 	NL80211_TXRATE_FORCE_LGI,
+ };
+ 
++#define NL80211_EHT_NSS_MAX             16
++/**
++ * struct nl80211_txrate_eht - EHT MCS/NSS txrate bitmap
++ * @mcs: MCS bitmap table for each NSS (array index 0 for 1 stream, etc.)
++ */
++struct nl80211_txrate_eht {
++	__u16 mcs[NL80211_EHT_NSS_MAX];
++};
++
+ /**
+  * enum nl80211_band - Frequency band
+  * @NL80211_BAND_2GHZ: 2.4 GHz ISM band
+@@ -6649,6 +6682,9 @@ enum nl80211_feature_flags {
+  *	(signaling and payload protected) A-MSDUs and this shall be advertised
+  *	in the RSNXE.
+  *
++ * @NL80211_EXT_FEATURE_BEACON_RATE_EHT: Driver supports beacon rate
++ *	configuration (AP/mesh) with EHT rates.
++ *
+  * @NUM_NL80211_EXT_FEATURES: number of extended features.
+  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
+  */
+@@ -6724,6 +6760,7 @@ enum nl80211_ext_feature_index {
+ 	NL80211_EXT_FEATURE_OWE_OFFLOAD_AP,
+ 	NL80211_EXT_FEATURE_DFS_CONCURRENT,
+ 	NL80211_EXT_FEATURE_SPP_AMSDU_SUPPORT,
++	NL80211_EXT_FEATURE_BEACON_RATE_EHT,
+ 
+ 	/* add new features before the definition below */
+ 	NUM_NL80211_EXT_FEATURES,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 89519aa52893..364d83fb9992 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -411,6 +411,14 @@ static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
+ 	[NL80211_TXRATE_HE_LTF] = NLA_POLICY_RANGE(NLA_U8,
+ 						   NL80211_RATE_INFO_HE_1XLTF,
+ 						   NL80211_RATE_INFO_HE_4XLTF),
++	[NL80211_TXRATE_EHT] = NLA_POLICY_EXACT_LEN(sizeof(struct nl80211_txrate_eht)),
++	[NL80211_TXRATE_EHT_GI] =  NLA_POLICY_RANGE(NLA_U8,
++						   NL80211_RATE_INFO_EHT_GI_0_8,
++						   NL80211_RATE_INFO_EHT_GI_3_2),
++	[NL80211_TXRATE_EHT_LTF] = NLA_POLICY_RANGE(NLA_U8,
++						   NL80211_RATE_INFO_EHT_1XLTF,
++						   NL80211_RATE_INFO_EHT_8XLTF),
++
+ };
+ 
+ static const struct nla_policy
+@@ -5393,6 +5401,164 @@ static bool he_set_mcs_mask(struct genl_info *info,
+ 	return true;
+ }
+ 
++static void eht_build_mcs_mask(struct genl_info *info,
++			       const struct ieee80211_sta_eht_cap *eht_cap,
++			       u8 mcs_nss_len, u16 *mcs_mask)
++{
++	struct net_device *dev = info->user_ptr[1];
++	struct wireless_dev *wdev = dev->ieee80211_ptr;
++	u8 nss, mcs_7 = 0, mcs_9 = 0, mcs_11 = 0, mcs_13 = 0;
++	unsigned int link_id = nl80211_link_id(info->attrs);
++
++	if (mcs_nss_len == 4) {
++		const struct ieee80211_eht_mcs_nss_supp_20mhz_only *mcs =
++					&eht_cap->eht_mcs_nss_supp.only_20mhz;
++
++		mcs_7 = u8_get_bits(mcs->rx_tx_mcs7_max_nss,
++				    IEEE80211_EHT_MCS_NSS_TX);
++		mcs_9 = u8_get_bits(mcs->rx_tx_mcs9_max_nss,
++				    IEEE80211_EHT_MCS_NSS_TX);
++		mcs_11 = u8_get_bits(mcs->rx_tx_mcs11_max_nss,
++				     IEEE80211_EHT_MCS_NSS_TX);
++		mcs_13 = u8_get_bits(mcs->rx_tx_mcs13_max_nss,
++				     IEEE80211_EHT_MCS_NSS_TX);
++
++	} else {
++		const struct ieee80211_eht_mcs_nss_supp_bw *mcs;
++		enum nl80211_chan_width width;
++
++		switch (wdev->iftype) {
++		case NL80211_IFTYPE_ADHOC:
++			width = wdev->u.ibss.chandef.width;
++			break;
++		case NL80211_IFTYPE_MESH_POINT:
++			width = wdev->u.mesh.chandef.width;
++			break;
++		case NL80211_IFTYPE_OCB:
++			width = wdev->u.ocb.chandef.width;
++			break;
++		default:
++			if (wdev->valid_links)
++				width = wdev->links[link_id].ap.chandef.width;
++			else
++				width = wdev->u.ap.preset_chandef.width;
++			break;
++		}
++
++		switch (width) {
++		case NL80211_CHAN_WIDTH_320:
++			mcs = &eht_cap->eht_mcs_nss_supp.bw._320;
++			break;
++		case NL80211_CHAN_WIDTH_160:
++			mcs = &eht_cap->eht_mcs_nss_supp.bw._160;
++			break;
++		default:
++			mcs = &eht_cap->eht_mcs_nss_supp.bw._80;
++			break;
++		}
++
++		mcs_7 = u8_get_bits(mcs->rx_tx_mcs9_max_nss,
++				    IEEE80211_EHT_MCS_NSS_TX);
++		mcs_9 = u8_get_bits(mcs->rx_tx_mcs9_max_nss,
++				    IEEE80211_EHT_MCS_NSS_TX);
++		mcs_11 = u8_get_bits(mcs->rx_tx_mcs11_max_nss,
++				     IEEE80211_EHT_MCS_NSS_TX);
++		mcs_13 = u8_get_bits(mcs->rx_tx_mcs13_max_nss,
++				     IEEE80211_EHT_MCS_NSS_TX);
++	}
++
++	/* Enable MCS 14 for NSS 0 */
++	if (eht_cap->eht_cap_elem.phy_cap_info[6] &
++	    IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP)
++		mcs_mask[0] |= 0x4000;
++
++	/* Enable MCS 15 for NSS 0 */
++	mcs_mask[0] |= 0x8000;
++
++	for (nss = 0; nss < NL80211_EHT_NSS_MAX; nss++) {
++		if (!mcs_7)
++			continue;
++		mcs_mask[nss] |= 0x00FF;
++		mcs_7--;
++
++		if (!mcs_9)
++			continue;
++		mcs_mask[nss] |= 0x0300;
++		mcs_9--;
++
++		if (!mcs_11)
++			continue;
++		mcs_mask[nss] |= 0x0C00;
++		mcs_11--;
++
++		if (!mcs_13)
++			continue;
++		mcs_mask[nss] |= 0x3000;
++		mcs_13--;
++	}
++}
++
++static bool eht_set_mcs_mask(struct genl_info *info, struct wireless_dev *wdev,
++			     struct ieee80211_supported_band *sband,
++			     struct nl80211_txrate_eht *txrate,
++			     u16 mcs[NL80211_EHT_NSS_MAX])
++{
++	const struct ieee80211_sta_he_cap *he_cap;
++	const struct ieee80211_sta_eht_cap *eht_cap;
++	u16 tx_mcs_mask[NL80211_EHT_NSS_MAX] = { 0 };
++	u8 i, mcs_nss_len;
++
++	he_cap = ieee80211_get_he_iftype_cap(sband, wdev->iftype);
++	if (!he_cap)
++		return false;
++
++	eht_cap = ieee80211_get_eht_iftype_cap(sband, wdev->iftype);
++	if (!eht_cap)
++		return false;
++
++	/* Checks for MCS 14 */
++	if (txrate->mcs[0] & 0x4000) {
++		if (sband->band != NL80211_BAND_6GHZ)
++			return false;
++
++		if (!(eht_cap->eht_cap_elem.phy_cap_info[6] &
++		      IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP))
++			return false;
++	}
++
++	mcs_nss_len = ieee80211_eht_mcs_nss_size(&he_cap->he_cap_elem,
++						 &eht_cap->eht_cap_elem,
++						 wdev->iftype ==
++							NL80211_IFTYPE_STATION);
++
++	if (mcs_nss_len == 3) {
++		/* Supported iftypes for setting non-20 MHZ only EHT MCS */
++		switch (wdev->iftype) {
++		case NL80211_IFTYPE_ADHOC:
++		case NL80211_IFTYPE_AP:
++		case NL80211_IFTYPE_P2P_GO:
++		case NL80211_IFTYPE_MESH_POINT:
++		case NL80211_IFTYPE_OCB:
++			break;
++		default:
++			return false;
++		}
++	}
++
++	/* Build eht_mcs_mask from EHT and HE capabilities */
++	eht_build_mcs_mask(info, eht_cap, mcs_nss_len, tx_mcs_mask);
++
++	memset(mcs, 0, sizeof(u16) * NL80211_EHT_NSS_MAX);
++	for (i = 0; i < NL80211_EHT_NSS_MAX; i++) {
++		if ((tx_mcs_mask[i] & txrate->mcs[i]) == txrate->mcs[i])
++			mcs[i] = txrate->mcs[i];
++		else
++			return false;
++	}
++
++	return true;
++}
++
+ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 					 struct nlattr *attrs[],
+ 					 enum nl80211_attrs attr,
+@@ -5413,6 +5579,8 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 	/* Default to all rates enabled */
+ 	for (i = 0; i < NUM_NL80211_BANDS; i++) {
+ 		const struct ieee80211_sta_he_cap *he_cap;
++		const struct ieee80211_sta_eht_cap *eht_cap;
++		u8 mcs_nss_len;
+ 
+ 		if (!default_all_enabled)
+ 			break;
+@@ -5441,6 +5609,21 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 
+ 		mask->control[i].he_gi = 0xFF;
+ 		mask->control[i].he_ltf = 0xFF;
++
++		eht_cap = ieee80211_get_eht_iftype_cap(sband, wdev->iftype);
++		if (!eht_cap)
++			continue;
++
++		mcs_nss_len = ieee80211_eht_mcs_nss_size(&he_cap->he_cap_elem,
++							 &eht_cap->eht_cap_elem,
++							 wdev->iftype ==
++							 NL80211_IFTYPE_STATION);
++
++		eht_build_mcs_mask(info, eht_cap, mcs_nss_len,
++				   mask->control[i].eht_mcs);
++
++		mask->control[i].eht_gi = 0xFF;
++		mask->control[i].eht_ltf = 0xFF;
+ 	}
+ 
+ 	/* if no rates are given set it back to the defaults */
+@@ -5512,13 +5695,27 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 			mask->control[band].he_ltf =
+ 				nla_get_u8(tb[NL80211_TXRATE_HE_LTF]);
+ 
++		if (tb[NL80211_TXRATE_EHT] &&
++		    !eht_set_mcs_mask(info, wdev, sband,
++				      nla_data(tb[NL80211_TXRATE_EHT]),
++				      mask->control[band].eht_mcs))
++			return -EINVAL;
++
++		if (tb[NL80211_TXRATE_EHT_GI])
++			mask->control[band].eht_gi =
++				nla_get_u8(tb[NL80211_TXRATE_EHT_GI]);
++		if (tb[NL80211_TXRATE_EHT_LTF])
++			mask->control[band].eht_ltf =
++				nla_get_u8(tb[NL80211_TXRATE_EHT_LTF]);
++
+ 		if (mask->control[band].legacy == 0) {
+-			/* don't allow empty legacy rates if HT, VHT or HE
++			/* don't allow empty legacy rates if HT, VHT, HE or EHT
+ 			 * are not even supported.
+ 			 */
+ 			if (!(rdev->wiphy.bands[band]->ht_cap.ht_supported ||
+ 			      rdev->wiphy.bands[band]->vht_cap.vht_supported ||
+-			      ieee80211_get_he_iftype_cap(sband, wdev->iftype)))
++			      ieee80211_get_he_iftype_cap(sband, wdev->iftype) ||
++			      ieee80211_get_eht_iftype_cap(sband, wdev->iftype)))
+ 				return -EINVAL;
+ 
+ 			for (i = 0; i < IEEE80211_HT_MCS_MASK_LEN; i++)
+@@ -5533,6 +5730,10 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 				if (mask->control[band].he_mcs[i])
+ 					goto out;
+ 
++			for (i = 0; i < NL80211_EHT_NSS_MAX; i++)
++				if (mask->control[band].eht_mcs[i])
++					goto out;
++
+ 			/* legacy and mcs rates may not be both empty */
+ 			return -EINVAL;
+ 		}
+@@ -5546,7 +5747,7 @@ static int validate_beacon_tx_rate(struct cfg80211_registered_device *rdev,
+ 				   enum nl80211_band band,
+ 				   struct cfg80211_bitrate_mask *beacon_rate)
+ {
+-	u32 count_ht, count_vht, count_he, i;
++	u32 count_ht, count_vht, count_he, count_eht, i;
+ 	u32 rate = beacon_rate->control[band].legacy;
+ 
+ 	/* Allow only one rate */
+@@ -5592,8 +5793,21 @@ static int validate_beacon_tx_rate(struct cfg80211_registered_device *rdev,
+ 			return -EINVAL;
+ 	}
+ 
+-	if ((count_ht && count_vht && count_he) ||
+-	    (!rate && !count_ht && !count_vht && !count_he))
++	count_eht = 0;
++	for (i = 0; i < NL80211_EHT_NSS_MAX; i++) {
++		if (hweight16(beacon_rate->control[band].eht_mcs[i]) > 1) {
++			return -EINVAL;
++		} else if (beacon_rate->control[band].eht_mcs[i]) {
++			count_eht++;
++			if (count_eht > 1)
++				return -EINVAL;
++		}
++		if (count_eht && rate)
++			return -EINVAL;
++	}
++
++	if ((count_ht && count_vht && count_he && count_eht) ||
++	    (!rate && !count_ht && !count_vht && !count_he && !count_eht))
+ 		return -EINVAL;
+ 
+ 	if (rate &&
+@@ -5613,6 +5827,11 @@ static int validate_beacon_tx_rate(struct cfg80211_registered_device *rdev,
+ 				     NL80211_EXT_FEATURE_BEACON_RATE_HE))
+ 		return -EINVAL;
+ 
++	if (count_eht &&
++	    !wiphy_ext_feature_isset(&rdev->wiphy,
++				     NL80211_EXT_FEATURE_BEACON_RATE_EHT))
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
+
+base-commit: d9104cec3e8fe4b458b74709853231385779001f
+-- 
+2.34.1
+
 
