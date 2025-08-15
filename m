@@ -1,89 +1,89 @@
-Return-Path: <linux-wireless+bounces-26391-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26392-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483FDB274D3
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Aug 2025 03:45:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F48B274D7
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Aug 2025 03:46:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BBA6568190
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Aug 2025 01:45:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8DA07B8A21
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Aug 2025 01:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FE82877CA;
-	Fri, 15 Aug 2025 01:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4EE288C35;
+	Fri, 15 Aug 2025 01:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="M93puMou"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="EgSM5PxS"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805D52877F3
-	for <linux-wireless@vger.kernel.org>; Fri, 15 Aug 2025 01:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A459191
+	for <linux-wireless@vger.kernel.org>; Fri, 15 Aug 2025 01:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755222322; cv=none; b=MCocNCGY1DY7c/6yQ7CPgx7fXajx5q+x9kkfWIRDzQt66hzc1IcTPCQf02SmfU0sFImnL/iA5C30PiLRZp0yePN7FlJNGANGxMUdbF0Jrv6pmw5ePnGpQ+cqsls4tUx1usz01rkRfoqYYd+34IRqVbcwXK1ExMulSv7FwS+zNd4=
+	t=1755222325; cv=none; b=OXn0GY2wMaJLmNRHYDw+4mYPHKOKSGjT5xeZytMYu7Z4eh9uFL3WFygFd/8PEN07du3yOnGQR0GZSzewjRRnz8SYFSJyDPcBwCfCaar1hpVE/9+eLnIYqb60vtLuxSBiIpOSR9VEQ+nDTOPobbDI0K8eEf1zP80NdzWcHjDvsYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755222322; c=relaxed/simple;
-	bh=Ooh4F6PH697oKIemfVheQzHdNaYpbQC31p+1w2jl4Jc=;
+	s=arc-20240116; t=1755222325; c=relaxed/simple;
+	bh=Ddu7QujtO4Q6hfp1GuZr8ES+Bm9lIQeS5W0/PaWsaOE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GAs7lQcubs9fZY5SWU+O7Syoh32krPQRNlNg3TG4+0/qxs+3NmJJWgSyL1qhwbfXsQ+9T2dhvGPbruiDoTusAV9IoK32gdSzrHp7ItgthIxAkVVm3FaxXNGDXdpmKQtm60Iy5dwiRY77Qp043Q9+BBcvyKwb6WUD1D/4O3o/Dts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=M93puMou; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:To:Cc; b=OMc9PmxO4AFmVqLybH0e3+zzoUGXCn4MS/WPQefm1HjnFftMlRjkhu9BfyUf4NSbh6rRBo7AQu67b4aU8NKaltSkMV+z0Dg/n90jIjKhEY5z9tfDmfNt3wXMJ6VgMHF4zuUiqlHiZ6EA7LUpOkkhV5ksDuD+gjK4Ia7G/9RC2Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EgSM5PxS; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57EIYn9Q012279
-	for <linux-wireless@vger.kernel.org>; Fri, 15 Aug 2025 01:45:19 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57EI60Is012828
+	for <linux-wireless@vger.kernel.org>; Fri, 15 Aug 2025 01:45:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	f2JJpNn1stvDlteeqX4h1Cq06+aEkFey/378SB+Go3s=; b=M93puMouYWldia7v
-	EGGfEOnkU6CZm+O1LhdzImwJn4mzZXeXy4wdHj64ihFoeVzxkLcISt/fmFFnKoUM
-	o96Nr1JYaVHXX3glaEpkJ0U3WZnvioThOyLjoyn15F1/XoRFmRasElUdYqLlLm+9
-	ZQQaBKsM3lyB9HjQJgNC5EFae/qBbfdXIL24RIMsLNzip97RH94XiZshcquLqxRH
-	aiSGoxFRqcp9802s0pNkKHFbpGHuVQDXWAMAhpaj/JfohpCmGDIAqgPHJjzXud0s
-	7w0ioKn0iVPZfGi+DKslCpwYvv5bmsnKGgE1CK4fOKqF/sBt/ssj9vPJvqu4FO7i
-	7mAEMA==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48eqhxftxr-1
+	kxYCF6nACau5/iqJnJgpcLYWSFZCwi7it4PbOasdPHM=; b=EgSM5PxS9S52676e
+	gr39z/Y+zJqcax4+6Mu1IB5gYTTb30zEpnXeH/97wK9CWV9UrxxC2wNIhtVhHUet
+	MReBct0n4WQlCksmNam2iwpdckpnjTH7QN2b9AfyhcTfh1tvE19Z5fYLwuC94rzO
+	lBaRSxDcpXDwALplPpCYMcxFKojrTwycsK7tq5iCYuOVtpS0mflrBe33M/+UyL13
+	TqOkJjiH3XmxJQp5Pz3l/84Ncl8Lq5sefQSgwN1dR0yu4Tg+HBg46Ln9MAQ7IcrV
+	hSN4GnUHqfq6DR8gF8eA6MWUyOxACkeI5RH3OiKy1oPwTasHxDkFHLHGwwsC8tQ6
+	R7Tiuw==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48eqhxfty4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 15 Aug 2025 01:45:19 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-323266d8396so1558335a91.0
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Aug 2025 18:45:19 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Fri, 15 Aug 2025 01:45:22 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-323266dcf3bso1504746a91.0
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Aug 2025 18:45:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755222318; x=1755827118;
+        d=1e100.net; s=20230601; t=1755222322; x=1755827122;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=f2JJpNn1stvDlteeqX4h1Cq06+aEkFey/378SB+Go3s=;
-        b=oYzi3y4BsXAN9mOkkGMyrgEM5LsffOxVDYWXAdITAHIlQLMPGUMBPqoajUTHYriFRO
-         RgyNSqf1Hc2V2HP0051KCMbaP4MQphGEP4rBXTeHqic3p+tAGz441/xqkfBaagGGsPBk
-         GKGklFTeh2hjaW0uqFH5FHBQifzW7j7jn6CuTAirk3WdOhln0Zij39qBQ+JgqwIUbxOw
-         dlkAzU1978vZDvjC9Kvg2AzA3JDRzMamTaZDD61hR6Vb8MTASRrrBapMnp7/urxKmGCX
-         O3++QQCs/DQPawYw9M8ZkG30WNoX3ApOkKZ+oLln2Zj+/Do0P9BAPERyPAN8FEP42BC7
-         mmDg==
-X-Gm-Message-State: AOJu0Yyt/4njlR/Y0caN9M307akJUhasqULkn2mlQIanYeMClZ7UX+lM
-	3eqRm2lp+ceBWFlwm2uUE6zc98y91X9bdfniQrfGWk3u0+ICEarT9bTSHD1qWTTB6Lc/csiUIq+
-	uDDxZFcP72qx9Yo6MAAPMLjIoNDVO+Io7kIwaIxPE/VsCvd2TyKNPN0XIL66lDKcETIIemQ==
-X-Gm-Gg: ASbGncu6xbRw+hbM8kFjcNg6A9w0EDOfFzDtA9cjgz8hM8E7oVfsy98IjvOKbHPGmYc
-	Rrkd+wJ3pSDqdDsoecSACv3xLqbTGX6kAmP6W2FiMIjctS45+7beYYn0+QOm1WS+Qs2Br0AIXf7
-	chKK3ZofvZucQL7c+ZqhIlRlCbdYu+C7VzFw6XsngC4oWmJ6UHziwbB6UruVMOYSi1UpLGp+QYS
-	6VjzaI7cSKYXjU7dd/IrkYmobKbIPz2pGzVuWfcb74ie9Nd5UnQx4SOSnyLyh5sczcRhIUQzAhp
-	EMPiiRXgc3JvLOQufPJpugcT4iIq3UZRDDUy8jxxzNUR2v1DQU/A90cK3E5DIH4DBSan0O4BN7C
-	pokvSjHP0XDyRaFTH
-X-Received: by 2002:a17:90b:180d:b0:321:7a2f:985d with SMTP id 98e67ed59e1d1-3234216190bmr588161a91.25.1755222318010;
-        Thu, 14 Aug 2025 18:45:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHTATHglsejKDU1aURWUA2qjKt/Z9C08Zt0r1OWZF/vn9I1mLXPEpEoSQOPZtYki1JSB3Pf3w==
-X-Received: by 2002:a17:90b:180d:b0:321:7a2f:985d with SMTP id 98e67ed59e1d1-3234216190bmr588123a91.25.1755222317407;
-        Thu, 14 Aug 2025 18:45:17 -0700 (PDT)
+        bh=kxYCF6nACau5/iqJnJgpcLYWSFZCwi7it4PbOasdPHM=;
+        b=VJuGJ4d6xCPsr3waoibIXJNCkw+4NaRll0GPGAy61BNMB6DVfd4J6J+uB7395ptYjg
+         OtI5IEMoWcWbzWy1H394nnaW+Vlr0WTe1ouw/iQ5jeEQP7XbVjXvesks0oa3rdxcL2x4
+         3fb563hbTuNheeJ/ebK8SqfVID2ML+m3WmNh/kWoqKUd3dFKnNAcJrs7W1W8FWNfLdUA
+         otRgLFmgLNyOO4LfgxVFthNJe9J66983hCjGJlkyhfpE32sSsgrF0KPC1OF0kTVweRcR
+         TSvrDTThkSWFN3fjyH2ST41Qu2lB3ai6RbfEtp/jQtzhcCVB4/+LAILdgd/yciKdxyke
+         TX5w==
+X-Gm-Message-State: AOJu0YyH9B8FMYtsWBXqMt3dqNMRpTYTYL7SXtYvU173gRFiPlXTK7A5
+	ArGJMDvRiBcAJPwnzZlMcecUcGRhq/5l89PVBRiRyitOuwxi0nVjF8DCHNz/mRthnUkz7izaLoS
+	5BXLvVcAPsROwRMSKwPCWBlM1UteYPOdcsTv2L/T7gunBmwTI5NTbQHr5jci9J5vVJT/pag==
+X-Gm-Gg: ASbGncvhzTcPfcA0bi5U5MyM1sjPQME15DwxtitcgiiQ1giagLu8aWcEkVy8X3pCzK+
+	4V+pz4I5us9Klqyb81kLK+7te37os2mRseRNJiG8uF99/de0yVogRc+J4I8htKp+I4jCPzEleEj
+	aZS/DvNDivpMUSuRWmntSAZ+5m4UKrw63fhe+pWAudBJPVn4xYgJzAw53NTCJmTLLhTSEUclZ3Y
+	PK0vexNUbJBuDgKDuPzY9ix/yXUd1XPujuTAJJJSSNutDprbxGs/G9NvkFqu8m4N8gAvr0NHEvG
+	6z8GVDA8AtEqEb3T63Z0ksQ9q8rIh42KzuNv6eTP0pwf8KIzCyGPw+GkQ1CDrsTdn02Iek+gUut
+	x1WUahK+Rhy8Ml2Fc
+X-Received: by 2002:a17:90b:2542:b0:31f:150:e045 with SMTP id 98e67ed59e1d1-3234224bd01mr480285a91.32.1755222321562;
+        Thu, 14 Aug 2025 18:45:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHp4WB24m89Yhcn0ioUDH1nUmYAvdRLnZOaTdAnGSAHnM7xxPbWq3Z6LhNQhmBtmQrugKO+wg==
+X-Received: by 2002:a17:90b:2542:b0:31f:150:e045 with SMTP id 98e67ed59e1d1-3234224bd01mr480246a91.32.1755222321004;
+        Thu, 14 Aug 2025 18:45:21 -0700 (PDT)
 Received: from [127.0.1.1] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b472d7735f4sm20273a12.48.2025.08.14.18.45.14
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b472d7735f4sm20273a12.48.2025.08.14.18.45.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 18:45:17 -0700 (PDT)
+        Thu, 14 Aug 2025 18:45:20 -0700 (PDT)
 From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Date: Fri, 15 Aug 2025 09:44:56 +0800
-Subject: [PATCH ath-next 1/3] wifi: ath11k: downgrade log level for CE
- buffer enqueue failure
+Date: Fri, 15 Aug 2025 09:44:57 +0800
+Subject: [PATCH ath-next 2/3] wifi: ath12k: fix wrong logging ID used for
+ CE
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -92,7 +92,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250815-ath-dont-warn-on-ce-enqueue-fail-v1-1-f955ddc3ba7a@oss.qualcomm.com>
+Message-Id: <20250815-ath-dont-warn-on-ce-enqueue-fail-v1-2-f955ddc3ba7a@oss.qualcomm.com>
 References: <20250815-ath-dont-warn-on-ce-enqueue-fail-v1-0-f955ddc3ba7a@oss.qualcomm.com>
 In-Reply-To: <20250815-ath-dont-warn-on-ce-enqueue-fail-v1-0-f955ddc3ba7a@oss.qualcomm.com>
 To: Jeff Johnson <jjohnson@kernel.org>, Kalle Valo <kvalo@kernel.org>,
@@ -108,19 +108,19 @@ Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
         ath12k@lists.infradead.org,
         Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 X-Mailer: b4 0.14.2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEwMDA1NyBTYWx0ZWRfX/2ShCHr4ESWx
- mmJbjAq9xJKfacBmUe8kAFJvCWvuSI0VfA+iCazrzRMZgM5DVMc5i5mL/JVbGGTfdsR9L6B82i6
- t6UP2oLp5b/mxvsRi1THMBMkVjN/jC7wgVlIevweKm3EIo1qwPyWqdXUt85UYuIfT6ols8sF1Gm
- EkNhpIMhYg/0vL795lNTX5ln9j1PdCyj1VrebgMxiY5HyrD4AucfCeASWI9Pz84HD4x63zr0qUZ
- eF8glK9kdH1mhiPqqUoPdg/CdBkMRDUmX4WbINnoTMD0qBhi5XDFdPJ4+m7xaBuMaawK8F7J3uS
- AfD4HbbX4FqKQv7OwPirI0BWxTglnuVOv235kzBfISCGEj6DY6bXr767fFqLJstCDx9C0bNkFYq
- Lzk6zWPF
-X-Proofpoint-GUID: vDlYHMPorsKoYEaVz7lNL_giJaG_Oalg
-X-Authority-Analysis: v=2.4 cv=aYNhnQot c=1 sm=1 tr=0 ts=689e912f cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=4avV6w9vhD41MOPHW_EA:9 a=QEXdDO2ut3YA:10 a=uKXjsCUrEbL0IQVhDsJ9:22
-X-Proofpoint-ORIG-GUID: vDlYHMPorsKoYEaVz7lNL_giJaG_Oalg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEwMDA1NyBTYWx0ZWRfX5LLPk6zzX0eQ
+ lcq9UBeJQbbV5ey5HjgXNRyGAa0W9pAD5wu2fgAEaA/PcmsasV7XqZ3oDK1WwAM6RRVa7CtAGUg
+ 9aokNtvNY+aLzORaHrjeSBUggGrWb1OLYhS+gb48xSAfAYu+rC8KNq1jSsuhfi56802S9LqMscF
+ HzuXBjGtobHpL8CjjOduVYUkEXmvf/wKwBoHHuinfzotrZlQGq1aXkQ41LEj9I/XFo/pDHipTp1
+ 9Ojz0TJUYMop7Lq3lzfjW9vkGcSxujHgtdkXJFz0hY3g81GMtTRJ02pRIA/AmywwdqKpEwcw76s
+ qk/VrRyfpBeKo781FLht10n5Ucbxfrpg8Hzjr32n45a+rXRGQKNLfbuqzf7fS0JKD+KO3tSDHhv
+ wP/1dapg
+X-Proofpoint-GUID: iBNROIZsYmJrYTPzFhMLbveTohjFDos8
+X-Authority-Analysis: v=2.4 cv=aYNhnQot c=1 sm=1 tr=0 ts=689e9133 cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=fHvqFdtNKkU2r1BsT3EA:9
+ a=QEXdDO2ut3YA:10 a=rl5im9kqc5Lf4LNbBjHf:22
+X-Proofpoint-ORIG-GUID: iBNROIZsYmJrYTPzFhMLbveTohjFDos8
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-15_01,2025-08-14_01,2025-03-28_01
@@ -130,53 +130,43 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508100057
 
-There are two rings involved in the Copy Engine (CE) receive path
-handling, the CE status (STS) ring and the CE destination (DST) ring.
-Each time CE hardware needs to send an event (e.g. WMI event) to host,
-CE hardware finds a buffer (to which the tail pointer (TP) points) in
-DST ring and fills it with payload, then hardware fills meta data in
-STS ring and fires interrupt to host. Please note the TP of DST ring is
-expected to be advanced by CE hardware before interrupting host. While
-handling the interrupt, host finds that DST ring buffers are used hence
-increases rx_buf_needed to record the number of buffers to be replenished.
-Note before that, host compares TP and head pointer (HP) of DST ring to
-see if there is available space. Normally rx_buf_needed simply equals
-available space. But sometimes CE hardware doesn't (for whatever reason)
-update TP timely, making the comparison fails, then enqueue is cancelled
-and a warning is logged:
-
-	ath11k_pci 0000:02:00.0: failed to enqueue rx buf: -28
-
-However even enqueue fails this time, rx_buf_needed still records the
-numbers of needed buffers. Later when TP gets updated correctly, the
-missing buffer will be eventually replenished. And there is no doubt on
-the late update, it always comes (or lots of such warnings should be seen).
-
-Since this won't cause any functional issue, downgrade logging level to
-avoid misleading.
+ATH12K_DBG_AHB is used for CE logging which is not proper. Add
+ATH12K_DBG_CE and replace ATH12K_DBG_AHB with it.
 
 Compile tested only.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220269
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
 Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 ---
- drivers/net/wireless/ath/ath11k/ce.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/ce.c    | 2 +-
+ drivers/net/wireless/ath/ath12k/debug.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/ath/ath11k/ce.c
-index c65fc9fb539ef10ba44f1c1d5571462b40fa098d..a7a163621b21067ba5a4f96131aafdccfbda3d03 100644
---- a/drivers/net/wireless/ath/ath11k/ce.c
-+++ b/drivers/net/wireless/ath/ath11k/ce.c
-@@ -354,7 +354,8 @@ static int ath11k_ce_rx_post_pipe(struct ath11k_ce_pipe *pipe)
- 		ret = ath11k_ce_rx_buf_enqueue_pipe(pipe, skb, paddr);
+diff --git a/drivers/net/wireless/ath/ath12k/ce.c b/drivers/net/wireless/ath/ath12k/ce.c
+index f93a419abf65ec6e9b31e22c78c8c2cdd7bdbc76..c5aadbc6367ce0d18080bb0e15a88d3ddf2e34ff 100644
+--- a/drivers/net/wireless/ath/ath12k/ce.c
++++ b/drivers/net/wireless/ath/ath12k/ce.c
+@@ -478,7 +478,7 @@ static void ath12k_ce_recv_process_cb(struct ath12k_ce_pipe *pipe)
+ 	}
  
- 		if (ret) {
--			ath11k_warn(ab, "failed to enqueue rx buf: %d\n", ret);
-+			ath11k_dbg(ab, ATH11K_DBG_CE, "failed to enqueue rx buf: %d\n",
-+				   ret);
- 			dma_unmap_single(ab->dev, paddr,
- 					 skb->len + skb_tailroom(skb),
- 					 DMA_FROM_DEVICE);
+ 	while ((skb = __skb_dequeue(&list))) {
+-		ath12k_dbg(ab, ATH12K_DBG_AHB, "rx ce pipe %d len %d\n",
++		ath12k_dbg(ab, ATH12K_DBG_CE, "rx ce pipe %d len %d\n",
+ 			   pipe->pipe_num, skb->len);
+ 		pipe->recv_cb(ab, skb);
+ 	}
+diff --git a/drivers/net/wireless/ath/ath12k/debug.h b/drivers/net/wireless/ath/ath12k/debug.h
+index 48916e4e1f6014055bbd56d5c71ef9182c78f3b6..bf254e43a68d08f97171d9baffd0ebc3aabfb3e4 100644
+--- a/drivers/net/wireless/ath/ath12k/debug.h
++++ b/drivers/net/wireless/ath/ath12k/debug.h
+@@ -26,6 +26,7 @@ enum ath12k_debug_mask {
+ 	ATH12K_DBG_DP_TX	= 0x00002000,
+ 	ATH12K_DBG_DP_RX	= 0x00004000,
+ 	ATH12K_DBG_WOW		= 0x00008000,
++	ATH12K_DBG_CE		= 0x00010000,
+ 	ATH12K_DBG_ANY		= 0xffffffff,
+ };
+ 
 
 -- 
 2.25.1
