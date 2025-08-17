@@ -1,159 +1,140 @@
-Return-Path: <linux-wireless+bounces-26406-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26407-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF70B28B6B
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Aug 2025 09:29:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B4D8B29273
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Aug 2025 11:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14D565C6589
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Aug 2025 07:28:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C23611B213F3
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Aug 2025 09:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E5322A4DB;
-	Sat, 16 Aug 2025 07:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B9E221F26;
+	Sun, 17 Aug 2025 09:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDJk5aZ7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f80.google.com (mail-io1-f80.google.com [209.85.166.80])
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F90227EB9
-	for <linux-wireless@vger.kernel.org>; Sat, 16 Aug 2025 07:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992D71D6BB;
+	Sun, 17 Aug 2025 09:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755329315; cv=none; b=tPfo9VC2XXkNXEmGAHtr1Bn4PR0RUe6/jbL9g52nbkn8gXHtqfPycafQVAmvCxIMQeQAiSdb2MCSyKDXTe6ZmEKp2bhMb1/q2nejDwLMWfXyYeJuNJRvwKKZ3wFnTwJkezR5qlYPGPOqxmypO7n7Rqc5nurZTuHY1g2Oxmg0QT4=
+	t=1755423515; cv=none; b=MS82D4PSnb9uDmfjXtJVxSpDRpisWHa6n2EIfWVrEK8keYDO/N6w7rNubeGiUrAErz9U/4JzQWMn27B39sZ5SXsiVRriC3EQVqOAg6LnMBE91wDgEYyo5vwyGTYbZhtgwFDcyxSFTPBF3aV0aL+Jkmo/kUdPvbo+5HC7wnRPD78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755329315; c=relaxed/simple;
-	bh=JrB5cSg+IpZYdHhFkUFjjmDDAEPGVnUgwy59mGK2wy0=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=KIaR3byRddb0giPbrxcn8rkG+J9gQL04Rus0DM3gpgsbZ7RRUhIPdEisWDhBjvDJKCumjqxKttK07IjnbI/8Pnl/SnDxKzaa62rmrh7twWoxIvcvDy0mn2tixTeqWJDvz+/RDxHLLdgbqWb42IjsjRIHCAelpWJo6zXNnCJWG40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f80.google.com with SMTP id ca18e2360f4ac-88432e33c84so634595539f.2
-        for <linux-wireless@vger.kernel.org>; Sat, 16 Aug 2025 00:28:33 -0700 (PDT)
+	s=arc-20240116; t=1755423515; c=relaxed/simple;
+	bh=c8YRrckfoSfijJ8+9Yeqa5yV4ks/1VCihLQAEoIt5LM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=aW06BeHyPzutQrv7+SuAF9gpmAqwSZACcamvXOZAYYXWr7b3P/+7vGilkWeJ2g8B9RVPWYDEGcQ89/tbpPqlnROvmwoNXJ1D1kUNQb4mXA+FY/riM0HFZwFeXkXT6Cf9nF+XT5l5wJ0/WaEhKoWdr1saAvyRSc3sfFBXW4Ix0GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FDJk5aZ7; arc=none smtp.client-ip=209.85.214.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-24456f3f669so31185495ad.1;
+        Sun, 17 Aug 2025 02:38:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755423513; x=1756028313; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=V+glvcUxBNLETyj4EbzaF6Mcl14MmSj24IXXGqr4BWU=;
+        b=FDJk5aZ7IDQGla/M8atFp6I2vlUA25wSdhpURbZp0L39pDptwxJAqMqFMQ7PF74RfV
+         txBTx5SPrP/yoslhdlGQRhk1xG9ALUOXkisNlXaHqg5CaY/+Oac0ifcEvuPbV01PwhKc
+         fFZtjguOcXRr+tWo8141HDd945eEMKMML3cfYr9v/BlfKASTlaOefjRYn4FBvDMlLUgT
+         g8Ldsk5AoXe0uuT7uzDGuACieCxToFMiIUw/Y15NkwqTXYVx2IYCAfDtoFC5xjDKjxGK
+         ryegQ/o2Hz2T33hS2d0gwhdV4IpRCFALNI0m0LlE+t5jnL9waJTgZHxrlIgHl16R/vJB
+         ofyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755329313; x=1755934113;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9h/w0PHHXlYPVWDRA7UJ7b2X9Ic0+ZisyHghCWLnk+U=;
-        b=D8BnFDW5ty7l2eGsCFwrZF7t3coRfsUk1sBQ32WCeP6mPWIOVcblY7ceft1iZV6lmu
-         0Dhcw7A+TgqcUW5yfETjoFpw/iZpOfCIwyr2Fq8ak1Nz/EyyMr1PudmIRuhQYTLKZ4qO
-         T8eKNj8ryVnqTQ3spRihMuTdLCG5C+wLeNYAw1mkwT7V10JvSL6upMcajdUff307FgIX
-         hb4SsDzAu076bPn3ixTzwVpjTO68Wbi5j+Dsx9hmp7yLKGXajTZ1BtkoTaO34SCH6DS9
-         UyBH3pWPVFJOs2Uw0G28S3zGXQnfO2QezTmt5xXMiFy4xVWPySxbKiCQYrme32ek/wsC
-         T0wQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXDSwM81Y6nTqTrYwc/zeGQFds4Mkl6rJMOV0k1FeJtM6bOG/q/hRzvlMjqjIca/5Yev5ljaNgWPV8xNWV/nA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz88ilmHjeYxuCCfqwpX0GJ3pIq8RcojGwkzZGLZmAKtiWlX/PT
-	ALu8BAjdhSOsOaT2cVg0HCgAjLf2/tcdx1q9hILAsAykoHoeYcJD6nG8PE+zmyh/t5lLa/Wa0I3
-	pDpXzryzrk5pWrX+xHEtIyH2O3vhlk9NLKuiy+msW6BO4G10YL2UXA3mtbwk=
-X-Google-Smtp-Source: AGHT+IGGVfZ/cSBX7xevD4EgqL66lj5U0cKpIgKn0q98EKvNleK+tpRh4KatIlNYl/ohq+ZWEzOAbW1baqpHZgQKNE51iQy+TW/Q
+        d=1e100.net; s=20230601; t=1755423513; x=1756028313;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V+glvcUxBNLETyj4EbzaF6Mcl14MmSj24IXXGqr4BWU=;
+        b=gyouzOTv0w5uiDLU9QrjdgaSi84h8Cguf7kxnBWVrvO9EGclDEb8gRuKCNEu1W+9jV
+         NTDPo86CAoOcpq2yru2dMVAb5nAnI3iOpvSrNXZaP007/7u/kFj7RGTDuNmOmAOvA52f
+         yp48DnjE6NyDkbh1ZRkPl4zOpPB6LIZwmu+rEuTh03xU4yz1Nb9hrNMc+6Hm7fz0f6oM
+         3erZ1ennEwyaP9qWNlNVdgUlxWX9kUi1KHtCmpWNuMAqH38dN/Tu/T0DgDHqd+2GT9HE
+         rNUavvj2dxlF0DAHq5J2IWwXLIrKwJcu1vFo3RP8u1//U8m/KW6Jdl0X/l9PyOMA2FGr
+         tGjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUb1nqblZsT2oYBOpwa8L+nJhS3jOUmrxNfslkZk3VpcfyeLLcwfuakEtzAWPb2LYFUchz/jfqA@vger.kernel.org, AJvYcCVoc40OAZFBxXqoC4TKM1vvAo0SF72V4LGcECkgDgYu1h+GbYelMHDeTjfAHWa+vdtZiGACWAJdBWVylKp95b8=@vger.kernel.org, AJvYcCXkPWLBN0RweAs1hCW1RbiNkPEw/U+ALCFBXBKlNOvCXXIDNwL2dVpz5AfEz5FoL2cBLNCNCcgImYj4@vger.kernel.org, AJvYcCXs5tW9MxIb60DdceIphpFwtn9WrMLbC2T68VZL5lyGhtp1zL8NKOsPtfwTVCgbZHJONeTmSscXeEEL@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmbfdiP9KxQZodKPnfo/dBaDrzKz9HMl2XoKUO3RAb18dNaMD0
+	uaGhctPXTCW3htiwfWpkW4NUMl+7swauSMjsNHhXdL4ns9xZjZ/8DOTLcsfOVGrbnH8=
+X-Gm-Gg: ASbGncv7q/aBqq98QQQGozmt9Ffi72XeasehPZODvUl7vziOqxL1+F6Op/dxJz/vWJC
+	owZX8Frm9Mc7VyPsJhIT86V11xu5p3YEeB6Q53R4xUe1geNt2HxG1lizuW6pu1WoU4sAMmLjcmU
+	uCQeGBn0dtW6GJhHq+JlwzgfG1zSzwesXQFBmYdhsx6uCkq7jJmgKKIN/rK4UNjTv39hdx++vHZ
+	Cp+vngYJekk3tqcklfpgDLRUmheYnJZAWwR8m9H7Tt8SEbDT/afU80zxzJYl/jOK11v/tRENDb0
+	PIJPFJhnu9Hr6P77Edg9dVCScGWKsKFZuZYf+AVUs0ZbxuWKAoKtxNk1l5hl1DrTYhPNRYiOCMC
+	x0ZoddmeV079vWbu4UyblpAi6yLVUpp/sPw1lmOrZXteANewAZylPBIL4
+X-Google-Smtp-Source: AGHT+IHkGdbvw5mBqyT/2JEfiXA/xt9ZKA48sqXHZkrOlalPiagbZZCBEljY1VqxFuyOzhpXRp8Wcw==
+X-Received: by 2002:a17:902:da82:b0:242:b138:8119 with SMTP id d9443c01a7336-2445988787emr180301885ad.26.1755423512654;
+        Sun, 17 Aug 2025 02:38:32 -0700 (PDT)
+Received: from [192.168.0.218] ([116.206.223.216])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446ca9d02csm51916845ad.7.2025.08.17.02.38.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 17 Aug 2025 02:38:32 -0700 (PDT)
+Message-ID: <db9749a0-9c6a-4781-b5fd-82eb129a9c36@gmail.com>
+Date: Sun, 17 Aug 2025 15:08:27 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1889:b0:3e5:6313:4562 with SMTP id
- e9e14a558f8ab-3e57e8a7d35mr83025195ab.14.1755329313307; Sat, 16 Aug 2025
- 00:28:33 -0700 (PDT)
-Date: Sat, 16 Aug 2025 00:28:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68a03321.050a0220.e29e5.0040.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING: ODEBUG bug in bss_free
-From: syzbot <syzbot+266cecacfaabc2ca17d0@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH TEST] ath10k: Testing Mani's ASPM patch (QCA9377, v6.16-rc1)
+From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
+ linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, stable@vger.kernel.org
+References: <FB546B0D-2209-4FA0-9DC9-A75C0BC9FA4F@gmail.com>
+ <20250711163645.GA2294895@bhelgaas>
+ <CAEmM+QiSZBoJV2n6944tYU7fcrzKRTUgsKRdqwDEkKkZiPVCMw@mail.gmail.com>
+ <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
+Content-Language: en-US
+In-Reply-To: <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Hello everyone,
 
-syzbot found the following issue on:
+I was actually trying to build a kernel for someone else using build 
+automation scripts. They still didn't compile. (Here's the relevant 
+thread I'm referring to: 
+https://lore.kernel.org/ath10k/176B76BC-6801-4C3F-A774-9611B43ED4AF@gmail.com/T/#t) 
 
-HEAD commit:    8f5ae30d69d7 Linux 6.17-rc1
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=12be85a2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=412ee2f8b704a5e6
-dashboard link: https://syzkaller.appspot.com/bug?extid=266cecacfaabc2ca17d0
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-userspace arch: i386
+Regardless, I tested the patches by Mani 
+(https://lore.kernel.org/r/20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com).
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Here are the logs:
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/005a27f2fde5/disk-8f5ae30d.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/eedc3e5b0288/vmlinux-8f5ae30d.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/400079450339/bzImage-8f5ae30d.xz
+Without pcie_aspm=off (did not work): 
+https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/84edf89740919e3cba2ac33e567110b14e2d3627/patch-dmesg
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+266cecacfaabc2ca17d0@syzkaller.appspotmail.com
+With pcie_aspm=off (worked, no issues observed): 
+https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/84edf89740919e3cba2ac33e567110b14e2d3627/patch-dmesg-pcie_aspm_off
 
-------------[ cut here ]------------
-ODEBUG: activate active (active state 1) object: ffff888057456e00 object type: rcu_head hint: 0x0
-WARNING: CPU: 0 PID: 11283 at lib/debugobjects.c:615 debug_print_object+0x16b/0x1e0 lib/debugobjects.c:612
-Modules linked in:
-CPU: 0 UID: 0 PID: 11283 Comm: kworker/u8:13 Not tainted 6.17.0-rc1-syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-Workqueue: netns cleanup_net
-RIP: 0010:debug_print_object+0x16b/0x1e0 lib/debugobjects.c:612
-Code: 4c 89 ff e8 57 19 53 fd 4d 8b 0f 48 c7 c7 a0 3c e3 8b 48 8b 34 24 4c 89 ea 89 e9 4d 89 f0 41 54 e8 8a 4a b3 fc 48 83 c4 08 90 <0f> 0b 90 90 ff 05 c7 af d3 0a 48 83 c4 08 5b 41 5c 41 5d 41 5e 41
-RSP: 0018:ffffc9000b7674f8 EFLAGS: 00010282
-RAX: 109ab45e96de0500 RBX: dffffc0000000000 RCX: ffff88806a35bc00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000002
-RBP: 0000000000000001 R08: 0000000000000003 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffffbfff1bfa1ec R12: 0000000000000000
-R13: ffffffff8be33e20 R14: ffff888057456e00 R15: ffffffff8b8bd3c0
-FS:  0000000000000000(0000) GS:ffff888125c1c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000080186000 CR3: 0000000078eae000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 00000000e08e800c DR6: 00000000ffff0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- debug_object_activate+0x26a/0x420 lib/debugobjects.c:842
- debug_rcu_head_queue kernel/rcu/rcu.h:236 [inline]
- kvfree_call_rcu+0x4f/0x410 mm/slab_common.c:1953
- bss_free+0xb9/0x250 net/wireless/scan.c:89
- bss_ref_put net/wireless/scan.c:143 [inline]
- cfg80211_put_bss+0x1e2/0x230 net/wireless/scan.c:3353
- cfg80211_dev_free+0x257/0x2d0 net/wireless/core.c:1226
- device_release+0x99/0x1c0 drivers/base/core.c:-1
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x22b/0x480 lib/kobject.c:737
- mac80211_hwsim_del_radio+0x2de/0x460 drivers/net/wireless/virtual/mac80211_hwsim.c:5677
- hwsim_exit_net+0x584/0x640 drivers/net/wireless/virtual/mac80211_hwsim.c:6554
- ops_exit_list net/core/net_namespace.c:198 [inline]
- ops_undo_list+0x497/0x990 net/core/net_namespace.c:251
- cleanup_net+0x4c5/0x800 net/core/net_namespace.c:682
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x70e/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3f9/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+I'm not fully sure what the logs imply, but thanks, it did work even 
+after playing YouTube videos for two hours (might not even work in the 
+future, cannot be certain). Earlier, my laptop had its Wi-Fi turning off 
+within minutes because of IRQ #16 being flooded, in every kernel I 
+tested so far. Now, it does work.
+
+There can be seen certain stuff in the second log, where it took some 
+time to connect to Wi-Fi, but I think it is mostly fine.
+
+Thanks to those who have prepared the patches and those who did bear 
+with me, but there's one request I still need to make.
+
+For anyone who has built patched kernels for Ubuntu and exported in DEB 
+files, I would appreciate any guidance or pointers on how to do the 
+same, as my efforts to use "make deb-pkg" have been futile: 
+https://github.com/BandhanPramanik/ath10k-patched-kernel-ppa/actions/runs/16975573959/job/48123563881
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Bandhan Pramanik
+বন্ধন প্রামাণিক
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
