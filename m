@@ -1,140 +1,119 @@
-Return-Path: <linux-wireless+bounces-26407-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26408-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4D8B29273
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Aug 2025 11:38:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33291B29279
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Aug 2025 11:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C23611B213F3
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Aug 2025 09:38:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DB697B0E8B
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Aug 2025 09:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B9E221F26;
-	Sun, 17 Aug 2025 09:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1365C2248B0;
+	Sun, 17 Aug 2025 09:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDJk5aZ7"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WKxxMhxC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992D71D6BB;
-	Sun, 17 Aug 2025 09:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717151ADC83
+	for <linux-wireless@vger.kernel.org>; Sun, 17 Aug 2025 09:41:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755423515; cv=none; b=MS82D4PSnb9uDmfjXtJVxSpDRpisWHa6n2EIfWVrEK8keYDO/N6w7rNubeGiUrAErz9U/4JzQWMn27B39sZ5SXsiVRriC3EQVqOAg6LnMBE91wDgEYyo5vwyGTYbZhtgwFDcyxSFTPBF3aV0aL+Jkmo/kUdPvbo+5HC7wnRPD78=
+	t=1755423677; cv=none; b=Pvw0xTQRnX6GMP6DHgqzPm2/gTYzH2P6cORBbyt/vfywtVkCJUf22BelUOo05kuyf06t6PAYtVYz435R1ed+cUNKkBAhyHo+nh8WuebwnieOhGaJZpi4YY4bNDp/VQodDGfVjx+hdJOBVd18x1FQ86cHhiVzwLYrDx/sgnOWeIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755423515; c=relaxed/simple;
-	bh=c8YRrckfoSfijJ8+9Yeqa5yV4ks/1VCihLQAEoIt5LM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=aW06BeHyPzutQrv7+SuAF9gpmAqwSZACcamvXOZAYYXWr7b3P/+7vGilkWeJ2g8B9RVPWYDEGcQ89/tbpPqlnROvmwoNXJ1D1kUNQb4mXA+FY/riM0HFZwFeXkXT6Cf9nF+XT5l5wJ0/WaEhKoWdr1saAvyRSc3sfFBXW4Ix0GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FDJk5aZ7; arc=none smtp.client-ip=209.85.214.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-24456f3f669so31185495ad.1;
-        Sun, 17 Aug 2025 02:38:33 -0700 (PDT)
+	s=arc-20240116; t=1755423677; c=relaxed/simple;
+	bh=tYVHe9Aemop4I8tQPMkluI1puokuZbTfjk2Bink7Slc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ri+UqyZZF+A5m5wInCoa0Wdd6JorynZTgHK93N729lIrGSjXk7MYSqdTSHNJepWL/+pitAlVJM/kkUXDW5/1DEchIz/ENgIxpBg2di9nu9whmV1l8NZs+8xvzRfCKMYkhDlRrRZzQKFCpRw62HSmW5O08/Z/LJktGfoxPjiqRrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WKxxMhxC; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-70a88dd062eso30126306d6.0
+        for <linux-wireless@vger.kernel.org>; Sun, 17 Aug 2025 02:41:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755423513; x=1756028313; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=V+glvcUxBNLETyj4EbzaF6Mcl14MmSj24IXXGqr4BWU=;
-        b=FDJk5aZ7IDQGla/M8atFp6I2vlUA25wSdhpURbZp0L39pDptwxJAqMqFMQ7PF74RfV
-         txBTx5SPrP/yoslhdlGQRhk1xG9ALUOXkisNlXaHqg5CaY/+Oac0ifcEvuPbV01PwhKc
-         fFZtjguOcXRr+tWo8141HDd945eEMKMML3cfYr9v/BlfKASTlaOefjRYn4FBvDMlLUgT
-         g8Ldsk5AoXe0uuT7uzDGuACieCxToFMiIUw/Y15NkwqTXYVx2IYCAfDtoFC5xjDKjxGK
-         ryegQ/o2Hz2T33hS2d0gwhdV4IpRCFALNI0m0LlE+t5jnL9waJTgZHxrlIgHl16R/vJB
-         ofyg==
+        d=broadcom.com; s=google; t=1755423674; x=1756028474; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IOf6nM9z/FNgdzr+RRXAWsT29ZV2aI9xwsVeixOlN4U=;
+        b=WKxxMhxCzm40gprSCL0W5hj2zfNkiP83h/mjklk9TEeRoNvaIv5ZTXd1G6wAZ7j35y
+         efTQlc0fXMMc7h5Zt3Ebha2/ldrgq5EjxQyrsasYKxITjhicThuNYNlmem7lwHVoHkOE
+         O+HGTB09Q4EN+r7OxoJtet0wQjC1UmEgAEYfg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755423513; x=1756028313;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V+glvcUxBNLETyj4EbzaF6Mcl14MmSj24IXXGqr4BWU=;
-        b=gyouzOTv0w5uiDLU9QrjdgaSi84h8Cguf7kxnBWVrvO9EGclDEb8gRuKCNEu1W+9jV
-         NTDPo86CAoOcpq2yru2dMVAb5nAnI3iOpvSrNXZaP007/7u/kFj7RGTDuNmOmAOvA52f
-         yp48DnjE6NyDkbh1ZRkPl4zOpPB6LIZwmu+rEuTh03xU4yz1Nb9hrNMc+6Hm7fz0f6oM
-         3erZ1ennEwyaP9qWNlNVdgUlxWX9kUi1KHtCmpWNuMAqH38dN/Tu/T0DgDHqd+2GT9HE
-         rNUavvj2dxlF0DAHq5J2IWwXLIrKwJcu1vFo3RP8u1//U8m/KW6Jdl0X/l9PyOMA2FGr
-         tGjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUb1nqblZsT2oYBOpwa8L+nJhS3jOUmrxNfslkZk3VpcfyeLLcwfuakEtzAWPb2LYFUchz/jfqA@vger.kernel.org, AJvYcCVoc40OAZFBxXqoC4TKM1vvAo0SF72V4LGcECkgDgYu1h+GbYelMHDeTjfAHWa+vdtZiGACWAJdBWVylKp95b8=@vger.kernel.org, AJvYcCXkPWLBN0RweAs1hCW1RbiNkPEw/U+ALCFBXBKlNOvCXXIDNwL2dVpz5AfEz5FoL2cBLNCNCcgImYj4@vger.kernel.org, AJvYcCXs5tW9MxIb60DdceIphpFwtn9WrMLbC2T68VZL5lyGhtp1zL8NKOsPtfwTVCgbZHJONeTmSscXeEEL@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmbfdiP9KxQZodKPnfo/dBaDrzKz9HMl2XoKUO3RAb18dNaMD0
-	uaGhctPXTCW3htiwfWpkW4NUMl+7swauSMjsNHhXdL4ns9xZjZ/8DOTLcsfOVGrbnH8=
-X-Gm-Gg: ASbGncv7q/aBqq98QQQGozmt9Ffi72XeasehPZODvUl7vziOqxL1+F6Op/dxJz/vWJC
-	owZX8Frm9Mc7VyPsJhIT86V11xu5p3YEeB6Q53R4xUe1geNt2HxG1lizuW6pu1WoU4sAMmLjcmU
-	uCQeGBn0dtW6GJhHq+JlwzgfG1zSzwesXQFBmYdhsx6uCkq7jJmgKKIN/rK4UNjTv39hdx++vHZ
-	Cp+vngYJekk3tqcklfpgDLRUmheYnJZAWwR8m9H7Tt8SEbDT/afU80zxzJYl/jOK11v/tRENDb0
-	PIJPFJhnu9Hr6P77Edg9dVCScGWKsKFZuZYf+AVUs0ZbxuWKAoKtxNk1l5hl1DrTYhPNRYiOCMC
-	x0ZoddmeV079vWbu4UyblpAi6yLVUpp/sPw1lmOrZXteANewAZylPBIL4
-X-Google-Smtp-Source: AGHT+IHkGdbvw5mBqyT/2JEfiXA/xt9ZKA48sqXHZkrOlalPiagbZZCBEljY1VqxFuyOzhpXRp8Wcw==
-X-Received: by 2002:a17:902:da82:b0:242:b138:8119 with SMTP id d9443c01a7336-2445988787emr180301885ad.26.1755423512654;
-        Sun, 17 Aug 2025 02:38:32 -0700 (PDT)
-Received: from [192.168.0.218] ([116.206.223.216])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446ca9d02csm51916845ad.7.2025.08.17.02.38.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 Aug 2025 02:38:32 -0700 (PDT)
-Message-ID: <db9749a0-9c6a-4781-b5fd-82eb129a9c36@gmail.com>
-Date: Sun, 17 Aug 2025 15:08:27 +0530
+        d=1e100.net; s=20230601; t=1755423674; x=1756028474;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IOf6nM9z/FNgdzr+RRXAWsT29ZV2aI9xwsVeixOlN4U=;
+        b=pXdzI03vB2ZPchOcIkF1PZ2ddkmJuSL+RbVQqTe3XHgn386AJn2nSSLoQmL5wz9t06
+         nmS+IqL1v1gzfwvreuT3AxHu2PwQ7gi093ls7U+ouF6GpufHqzsws2mqGMKgmv9RWqAK
+         /jUQlbmPO/Xcufby7TSvq/exZR74QsffR1VbwwumLvqXvsYaRn+65ae1u5eaVP4IGMQg
+         dwfpZTXRAG8gpdfk+svQ1KpPHNHeaGMNmQGCWbHEJkCGiTq9NQurDmh/vjUXDfOgcH8m
+         i1c1+e4Y2tmVqnZuWZZLwM8ivljuFowWX5r1dIfPiCcqVY1SE+f5SHy++6buDnP4II40
+         2NFw==
+X-Gm-Message-State: AOJu0YxKMT2qHIml5rARwgsoRSiS3rYTQaCcw382Yo6Ix5pyHdFramjY
+	lJCI/nYI3aANh+IGmPFjfPwjfLcCe06Lthyl3M4cxdRttw8CRLS8MUr86CaNIxPh/Q==
+X-Gm-Gg: ASbGncviugpkrRhsHBF9ddlVIl0HvVtsE+wleulNGhHcbsqtcNEa5zYNrVkMnePZVCf
+	tbI2Ei++S8yJOoojcLWIc7UtTl+wUd2xi9EgoTS9o52JTqU+0AgaKecZfzWzywldL2nMbBLPzUH
+	Zl86XSiVoVCKse809EgZqEQsSr6mx02nYb/FPcyVWtU/kNj9vFNs3KsrlhRYy92iJju4b7oqvcX
+	IADaONKbjNcesNobFuATgEaVIlIeLZ3zBzVjznb8D2OmEqhkpo+KhJC/Yn+e8IKLmzlcEZlzz+H
+	PMDJjcIzrPyYKFNBOAHusbIrMWU7kkiNsX5NoT+pDB/hXygEISg/1SlBcSbaT7cOAVHWSKAFGki
+	8eWpXeuLx060h3wMQXdVtT0MMnXQTXFQ6RqJVlVquuCgty4YFq5OlBBM1vf3B0Ln3Ir1rWG4Mnk
+	pGYNs1XA==
+X-Google-Smtp-Source: AGHT+IE4FSCfSlwTloizbtYnAgm9CSWMGk5sSYOkkx4tW7xHYf656/W6IVjSDrkvU4sbTajRgcQChw==
+X-Received: by 2002:a05:6214:3003:b0:704:9239:bdf3 with SMTP id 6a1803df08f44-70ba7c8446bmr88003936d6.40.1755423674285;
+        Sun, 17 Aug 2025 02:41:14 -0700 (PDT)
+Received: from bld-bun-02.bun.broadcom.net ([192.19.176.227])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70ba902f819sm35706346d6.9.2025.08.17.02.41.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Aug 2025 02:41:13 -0700 (PDT)
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: [PATCH wl-next 0/4] wifi: changes for NL80211_CMD_SET_BSS support
+Date: Sun, 17 Aug 2025 11:40:59 +0200
+Message-ID: <20250817094103.941090-1-arend.vanspriel@broadcom.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH TEST] ath10k: Testing Mani's ASPM patch (QCA9377, v6.16-rc1)
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
- Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
- linux-wireless@vger.kernel.org, stable@vger.kernel.org
-References: <FB546B0D-2209-4FA0-9DC9-A75C0BC9FA4F@gmail.com>
- <20250711163645.GA2294895@bhelgaas>
- <CAEmM+QiSZBoJV2n6944tYU7fcrzKRTUgsKRdqwDEkKkZiPVCMw@mail.gmail.com>
- <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
-Content-Language: en-US
-In-Reply-To: <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hello everyone,
+Here a series with my idea on how to solve the fact that drivers may not
+support or handle all parameters contained in NL80211_CMD_SET_BSS message
+as sent by user-space. The driver can announce in the wiphy info which
+parameters it supports and user-space can indicate that the kernel may
+enforce strict checking for the NL80211_CMD_SET_BSS.
 
-I was actually trying to build a kernel for someone else using build 
-automation scripts. They still didn't compile. (Here's the relevant 
-thread I'm referring to: 
-https://lore.kernel.org/ath10k/176B76BC-6801-4C3F-A774-9611B43ED4AF@gmail.com/T/#t) 
+Arend van Spriel (3):
+  wifi: nl80211: allow drivers to support subset of NL80211_CMD_SET_BSS
+  wifi: drivers; indicate support for attributes in NL80211_CMD_SET_BSS
+  wifi: nl80211: strict checking attributes for NL80211_CMD_SET_BSS
 
-Regardless, I tested the patches by Mani 
-(https://lore.kernel.org/r/20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com).
+Wright Feng (1):
+  wifi: brcmfmac: support AP isolation to restrict reachability between
+    stations
 
-Here are the logs:
-
-Without pcie_aspm=off (did not work): 
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/84edf89740919e3cba2ac33e567110b14e2d3627/patch-dmesg
-
-With pcie_aspm=off (worked, no issues observed): 
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/84edf89740919e3cba2ac33e567110b14e2d3627/patch-dmesg-pcie_aspm_off
-
-I'm not fully sure what the logs imply, but thanks, it did work even 
-after playing YouTube videos for two hours (might not even work in the 
-future, cannot be certain). Earlier, my laptop had its Wi-Fi turning off 
-within minutes because of IRQ #16 being flooded, in every kernel I 
-tested so far. Now, it does work.
-
-There can be seen certain stuff in the second log, where it took some 
-time to connect to Wi-Fi, but I think it is mostly fine.
-
-Thanks to those who have prepared the patches and those who did bear 
-with me, but there's one request I still need to make.
-
-For anyone who has built patched kernels for Ubuntu and exported in DEB 
-files, I would appreciate any guidance or pointers on how to do the 
-same, as my efforts to use "make deb-pkg" have been futile: 
-https://github.com/BandhanPramanik/ath10k-patched-kernel-ppa/actions/runs/16975573959/job/48123563881
+ drivers/net/wireless/ath/wil6210/cfg80211.c   |  1 +
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 24 +++++
+ .../wireless/microchip/wilc1000/cfg80211.c    |  9 +-
+ .../staging/rtl8723bs/os_dep/ioctl_cfg80211.c |  8 --
+ include/net/cfg80211.h                        | 29 ++++++
+ include/uapi/linux/nl80211.h                  |  7 ++
+ net/mac80211/main.c                           |  8 ++
+ net/wireless/core.c                           |  9 ++
+ net/wireless/nl80211.c                        | 91 +++++++++++++++++--
+ 9 files changed, 160 insertions(+), 26 deletions(-)
 
 
-Bandhan Pramanik
-বন্ধন প্রামাণিক
+base-commit: d9104cec3e8fe4b458b74709853231385779001f
+-- 
+2.43.5
 
 
