@@ -1,116 +1,121 @@
-Return-Path: <linux-wireless+bounces-26436-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26437-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17EAB2AE97
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Aug 2025 18:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD717B2B1C4
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Aug 2025 21:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 177A71771E7
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Aug 2025 16:56:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95A1F520C6D
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Aug 2025 19:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081F927B358;
-	Mon, 18 Aug 2025 16:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB797259C93;
+	Mon, 18 Aug 2025 19:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a1rQdexb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDE21F9F47;
-	Mon, 18 Aug 2025 16:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD51253356;
+	Mon, 18 Aug 2025 19:37:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755536167; cv=none; b=rScWxgKaN2ZmJ4ESyjd5SvPMYLKxL5fs1QZAGctdqUaL0tqjVpm7pKEZcsATOz7c5lnUqOKJalHOKZzbgjZo9SEj7RJI1xs6XXD2KKDFPcn6ltRSVa63vTHi8hPyc1NarRD/5QN+yyKmKBrC4z2hkj5t3/oxNR4UbYncYXO/Gg4=
+	t=1755545868; cv=none; b=QX2roxZ7aJxsXonCeCwRIw1iPLFSEHclnyVHTV1AvkMEqfIr7zURjqIegOdrjw/iS5+PAs4EcVc3mWmok2DUPnM4s8K+nylmQmeR1EicdMM7C86zpfFD+6zwxXTZqVh0/Zsxs9828sFOmfneFuaeOoSlvVJdP523yLXSI7a9ZkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755536167; c=relaxed/simple;
-	bh=IFg0D4g6Egie7/QmgFZH3hnlqMPxOHmfSJD63T/Ug0M=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=MKu57J326Q8TaRBSJ/L6RvnAQPYCYDXuXClI03jfRtxUOPnD50FyEe4JwJCQprJ+H1bEcSBtLelDxeEQNcoZORk8p7agb331LQaBC9dt8FqZ6B5SgjWWie4zXD3fVEB2ztDDKqEsfajw676rDJtcEvkDtbFK/7d4LSbFs2WOByU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com
+	s=arc-20240116; t=1755545868; c=relaxed/simple;
+	bh=ktOu78aHsWSo59gN17VXEbxyhPJvlM+QPeofMZU+xyo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uhTs6hmseEWo0+2IBYs3FWSO0xgtOCC9RKRq/EK+Mg+R4r2/OZhCYXFgZLJ1NBiYH1MEatFc8mRg5/+NzZAv8QL4rKpR71fUKWDPS7Ird7Vbcc0ZJu/RilVQsVZJmMZV6KQQhqwnRM9bZMTIGScfhBQyFfiNCUI0o4XvjZiCAoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a1rQdexb; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-244580692f3so4647275ad.1;
-        Mon, 18 Aug 2025 09:56:06 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e9455cfb9d1so1382149276.0;
+        Mon, 18 Aug 2025 12:37:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755545866; x=1756150666; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vRxQ1/CDtECtJO0YvGSZjNXb6lpF9CLCjzuN6DRYqKM=;
+        b=a1rQdexb7bCHk5DQXuKbZUEDkHrPtR4FDGORwRFOpE2mluR2JCWSsD8ZNEcMhs+G6/
+         k86NC3VH10ki4Xq6dvaH4IIlZaG8rfVu1tfJL926F7S5uwwj48tYYRxY3wFH3I2rgXG2
+         c6EOkI9tDBeT33JzGWzfVc139Dj4nGF8N1I1vWUNWRxOP1ivUFsGKZiPTVX7xYfCkAYO
+         1frhXEgKgnVivEk13t8TJfTAm2JGRuMiszSnbJhbqYqUZh4M0J5PBsgqH9/YDcPDXHqU
+         Bptc8KNX44lgcIo97n0mpyzqs8SS1GUUtMyu5CssrssOnHIiZucYAFRzldLDQcziD8SH
+         VMAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755536166; x=1756140966;
-        h=content-transfer-encoding:organization:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zcw7UQVd8NcuUoJtmjMZ4xGFWAzLft8voRj5P/6UCyA=;
-        b=MhjN6XgAtyyJ3f9BlFko52UEvvZDC/2C9msJl68sKheiyBtZ9aX+mgam5yWv+7iWjx
-         HL7zVoIBi/15SgCW/MBD0xgChPFr7aUmZjgZ+/UVCVI0G3kZqsGJfSPKaF3FeT3ZFrvP
-         Ki4tOTWlIern2+3cY/agu5YdyXJVYij+7CZr2re00yvykQkEfU6gQLIUd6tQHuHrNNDd
-         YhW6EFPkEcWkx7ChwyHtuMCT/6eCg8JZUJKuBdjvXvaC1r7FqOkMtDMRjdAApEiLj7H8
-         aTdHSZUhtrzbLBlXHjdol422KCC0wX3mR404xIgLWxk/8Q02FVQmBlw9MS6ocfpkClYO
-         WevA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBxBP2S23IlxLDqnmEJj72NFNLYtJrB8G+mdZ76wrbDsjfH9k9eWG5hUgbRWF75qDPNzBCyMZ/Fjz+m0cfh1A=@vger.kernel.org, AJvYcCW+UNZM+aYiYYP+c//0RC4v7yLRrXGPnflUQhYO5oQsMiBhQfNUSR6a0uHftnZur5KdKzZVsnBwAe0r7DM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWkYCpPGoS1jgVYyBtp7nXTDWjncsgorTwx2RnccMwPbYk5pz5
-	5BwEcOcNtjvIZffTq4QYnyoPo6Hg2/7Kxo0JQOLKQHysYUmRhF7TjZsN
-X-Gm-Gg: ASbGncuvz7/2fwb98FkZSSrhyCx9Tg+NjPBGHWV5VbO00xwkkI1qCzHgCPbAiwz0nv3
-	tBf0+7JsigiDSV4VmIQ5TaIXfExZ2CWnzxgDrCv8OnWd0m1zEKpEUJfhzvxlssD8Iwu0HlbPqMV
-	31ATbvAVTXNktSIr5Ktmo7gILyMu8CL3dlr7ROspmwOnMGGtNHDwBs6hCf/uBvZB8Hss8QjNVjz
-	PB0AaotQ0EBCZBefUfSGna7rP/XG7l43xEKR8VxKT3PLWQazgoKMa5l/X/UNJjkWpk8uM/DLftC
-	rK9zIJhaHWpGpph7YoClA+m67emPXfVXU9AImlCiGtndanCf/gJouvZggK5mN77mdaSrnN9NlXS
-	FEfuQsNtnZCsDozse+LV8fzl/bt2y+db/
-X-Google-Smtp-Source: AGHT+IGnVrA59DmOzJy5E4sN18kKqIy9b2FRTAzN1UkHFYriAbF897/ODgMzzWDNmt9+Bqs94Fa7gg==
-X-Received: by 2002:a17:902:d4c1:b0:234:df51:d190 with SMTP id d9443c01a7336-2446d756119mr88110485ad.4.1755536165478;
-        Mon, 18 Aug 2025 09:56:05 -0700 (PDT)
-Received: from [192.168.50.136] ([118.32.98.101])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446cb09ff8sm85254045ad.50.2025.08.18.09.56.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Aug 2025 09:56:05 -0700 (PDT)
-Message-ID: <c15a819a-51de-467c-93fd-c321dd2e8ec9@kzalloc.com>
-Date: Tue, 19 Aug 2025 01:56:00 +0900
+        d=1e100.net; s=20230601; t=1755545866; x=1756150666;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vRxQ1/CDtECtJO0YvGSZjNXb6lpF9CLCjzuN6DRYqKM=;
+        b=iF3yhIEOV7NouVIz090PapVtL0HVg4NO+r36GMsQdiYw4vcU9gMPKPPjwrDqZ4yrk8
+         4W1rRW2TxXIUK6hfEfRX8fKrjAi1FHbv1Chdz+aIwegGbhgh6lui6+HVN8QAL66V3khQ
+         gEv18A0Vi+jE7I+p6r0dDhYhhn7VMbBxcVmeGcjfB8iUL9eN+qdsETTeZkXu9JXsRygm
+         O1JsNAV2NYwc5IMEaTEW/DUV8qM+0DTUfJyr76ojYk9nyRaoEF9C536tvRzuVzGF7l1l
+         YvjRmLmgRp//h3mY3wo4O1fFASjRk9Vk+0eJi37I5Su0W943ZlLsEz0SgoDf474coJal
+         L9HA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwNASbNb5PkavnIEq9oL+7QoRDUjlXBH7uQDgX+GvwUo5sORAJ1P3KxJqIgHNgNHoRodKKzxgS2/81T+A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydZKw6Ur/PKTt4gmZsI2stC2ImQuT0kkANePKGTHDVZo86lk6w
+	OEW2R60l8ahVJbBBWJ5OweQmSrTawK6gZXCF3SdhRgQDoXVm2JjL0iJMv8NW0FZu2gvphXakdyA
+	VsJ0cZiRJbUzof16kiVe7rcv2L7kgscg=
+X-Gm-Gg: ASbGncu9HuGXpiKjQia13zZ+xQ0gzPMXfr39DCEf+1QGNmVWWIQWEJvUXdC+2xj/mJA
+	i+8K/VcJB8hKvvSwmNYY5pqUX8rwYRKjd6Ch+o34JxE6SSy1pCf5/1WSDZYXWw6oiUM7dRB1o/5
+	IkCE6Sy2hB3yVTk+1nFfHm4lGdp6DeHCOt44hRgvJYOyyLffaM9c1OKaHi7rJtMCK0bBka3rwXZ
+	ZYZi0HYyFmlpUEvZYdu
+X-Google-Smtp-Source: AGHT+IFNd7VbHgSP40jC4g66ujH/qNSd8MS2y9wOHpdY850RLVLYxKsxREchSBRe+HKck66t1xqpLic7wRbyMZr5HpY=
+X-Received: by 2002:a25:d38c:0:b0:e90:69d8:ca5d with SMTP id
+ 3f1490d57ef6-e94e3b4949amr753135276.19.1755545865965; Mon, 18 Aug 2025
+ 12:37:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Jiri Kosina <jkosina@suse.cz>, Aaron Hill <aa1ronham@gmail.com>,
- Lukas Redlinger <rel+kernel@agilox.net>, Oleksii Shevchuk
- <alxchk@gmail.com>, =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?=
- <toke@redhat.com>, linux-wireless@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>
-From: Yunseong Kim <ysk@kzalloc.com>
-Subject: [RFC] mac80211: Potential sleep in atomic context in
- __ieee80211_wake_txqs
-Organization: kzalloc
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250811203451.3763-1-rosenp@gmail.com> <87tt2512nn.fsf@bootlin.com>
+In-Reply-To: <87tt2512nn.fsf@bootlin.com>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Mon, 18 Aug 2025 12:37:35 -0700
+X-Gm-Features: Ac12FXwZZyyUDn8oKNNWYN6q0laLklRESzEvvBU_ig6gkBOpa6H22KVKeJSdOXY
+Message-ID: <CAKxU2N-5gFSHsyO-1UJ-6TPbn1YZ-zPU3yry9ZNcwYeOrEvZHg@mail.gmail.com>
+Subject: Re: [PATCHv2 ath-next] wifi: ath10k: add nvmem support for mac address
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: linux-wireless@vger.kernel.org, Jeff Johnson <jjohnson@kernel.org>, 
+	"open list:QUALCOMM ATHEROS ATH10K WIRELESS DRIVER" <ath10k@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Mon, Aug 18, 2025 at 12:59=E2=80=AFAM Miquel Raynal
+<miquel.raynal@bootlin.com> wrote:
+>
+> Hi Rosen,
+>
+> On 11/08/2025 at 13:34:51 -07, Rosen Penev <rosenp@gmail.com> wrote:
+>
+> > device_get_mac_address is a generic way to get the MAC address which
+> > lacks NVMEM support, which tends to be used on embedded platforms.
+> >
+> > In case device_get_mac_address fails, try of_get_mac_address_nvmem and
+> > handle EPROBE_DEFER to wait for the nvmem driver to initialize.
+> >
+> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > ---
+> >  v2: keep device_get_mac_address and use of_get_mac_address_nvmem
+> >  added Miquel to CC. Maybe he has insight.
+>
+> LGTM. I guess it is not possible to make this fallback "the default" in
+> device_get_mac_address()? In this case doing it in your driver seems
+> fine if it's used on embedded systems with NVMEM cells described to
+> store MAC addresses.
+In retrospect, it probably makes sense to just switch to of_get_mac_address=
+.
 
-I found a potential PREEMPT_RT issue I noticed in __ieee80211_wake_txqs()
-
- static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
- {
-     ...
-     local_bh_disable();
-     spin_lock(&fq->lock);
-     ...
- }
-
-This sequence of local_bh_disable() followed by spin_lock(). On an 
-RT-enabled system, spin_lock() is converted to a sleeping lock. Calling it
-immediately after local_bh_disable() creates a situation where a sleeping
-function is called from an atomic context, which will lead to a sleep in
-atomic context if the lock is contended.
-
-The conventional fix for this pattern is to replace the two lines with a
-single, RT-safe call to spin_lock_bh(&fq->lock).
-
-I wanted to bring this up for discussion before preparing a patch. Is this
-a valid concern, and would a patch to correct this locking be the right
-approach?
-
-Thank you for your time and consideration.
-
-
-Best regards,
-Yunseong Kim
+The prior assertion that this could break ACPI embedded systems seems
+false. ath10k is too new for that.
+>
+> Cheers,
+> Miqu=C3=A8l
 
