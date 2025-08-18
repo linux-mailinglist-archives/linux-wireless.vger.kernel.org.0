@@ -1,181 +1,206 @@
-Return-Path: <linux-wireless+bounces-26426-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26427-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7FFB299EE
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Aug 2025 08:44:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E541CB29A90
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Aug 2025 09:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E58113B6D18
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Aug 2025 06:42:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8B7A189FC62
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Aug 2025 07:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A691A274FDF;
-	Mon, 18 Aug 2025 06:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7A127876E;
+	Mon, 18 Aug 2025 07:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="TGbdLwmm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W32LT4To"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11012023.outbound.protection.outlook.com [40.107.75.23])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFF2209F43;
-	Mon, 18 Aug 2025 06:42:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.75.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755499354; cv=fail; b=ER9PjTLmSp77XXMFJIxL3iCKazf22mvgvF1eHxGgsdS8XFRYFYAnUQYRWEIfK/0RfobaFmf+G9fW0iUqc+xBQn7fUVxg+lSp2MtCLah6HUI9CaylClrGq2E5uzRwGuhm/tsFFF0j6ckfsGE5yxwrwsck7g2G4w+7YVmWUxll0uY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755499354; c=relaxed/simple;
-	bh=VK4OE7P59g5wnTR3xZb4TWZQgvSy944I2XxxHwXE+Zc=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=cKXjUjfWyq9cHmtxoT9yLL7JcamsBjaLLNdF5G0eYNdVeHPWZcLyv1JI12q0IDdaB05Iw1cgHXckcbN5kRnioLULue1PT7r0kFIuxks847xhZs0Ta5ownpTddKRYGTQEDG70C3T+bfHU+OePb9+17i6aE5cAbfc9uOqPpXVeu8k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=TGbdLwmm; arc=fail smtp.client-ip=40.107.75.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bZ6LDIZCWVXmKW4a8geDDN1CHdUJDeT3BT7rBH2tQSjqAs77S3vku/spiBYiRvYnGhdhEvjcGvYCpQrzb6tTBmqQrGsxG5Xo9+2RihM9iOmxDM6RapkGP34w8NNvkqIfhPLrYlUcNIFIjua7uGMj2/HQhFSGRCilx/V2aUT5uNHQfX/he6wLL62GuZPg68ckCY/ekcfKQA8BALthqlUz/4Ur2GDXwZmHEy9c5xh9gJViken+afs45/6URlx9w4T1AgvMnDSnZcnr/oGDwBkD2rolKcg4jhgPe+aMUl7Nx8YdN2POOtsGNT4PZZyZl09pDBuYKMX1wnz3SD4DKKufxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mRnmAu2jEa+7O53URsW4h4DobXrryB0Fp/cCxgCgtKM=;
- b=s8o0NEFA+ze+56gS6fl+QGf+JqNSM3+HaspDxzYFSz+BFIBOz9LwZwCs/lz2aTnlAbPmmxH3jj4KM0KBwNXp7/D+hJ9VkLQz5i+Jg/ubdFOS6H1AbraqGSgs+IUdmv9vuwV7VL8CXSJ3nkSaKGjOxC+FTL9rmfihpI1hGf8/3o5Ly+G++ckWr9exdFB/ahlE8h84z7jrll5A3++HK3hMmdpBtJC9B03lqXx/5lIYbRMc9qmbrEUdUy5+X0LmEKSvCLPq/VpiH4ShWKf9CHFN3xwO7mu4i4jR3NR5G3Z11I/JLtZhEGD6cz5LcT80OM0rP/RExi4iScmeViEU8iLhBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mRnmAu2jEa+7O53URsW4h4DobXrryB0Fp/cCxgCgtKM=;
- b=TGbdLwmm3P0TtyMevGxfk9dFumeCO83RtGNLlegu3jira1zNfp50ThZJB4jB6N+FnxUa+9SIZT2EgaI7zGsQSg8xPDtakUPfu1XraRk/ViCXkiUcWDCCsACo5IcnoBZJIqPVfxNgoFmJ6e9/4ShxaA9oz5JinSGyx7R+fXFNGybMyCtAg12ERV4iGd/ygkQOGjQ8kZ9u8HjAudasIklzVNa4AoIhzyp4419BgJQqiLyEKUfI/ygVgwXeNno3v+EqJZ8hy3aP8Y4+qiTc0ERzbARh0SxrRmN/YW+fjogl975qb01kCvfzyjRUylN1vPAKHakV/bIZneOtspF5L+QzBw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SEZPR06MB5576.apcprd06.prod.outlook.com (2603:1096:101:c9::14)
- by TYSPR06MB7157.apcprd06.prod.outlook.com (2603:1096:405:8b::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Mon, 18 Aug
- 2025 06:42:30 +0000
-Received: from SEZPR06MB5576.apcprd06.prod.outlook.com
- ([fe80::5c0a:2748:6a72:99b6]) by SEZPR06MB5576.apcprd06.prod.outlook.com
- ([fe80::5c0a:2748:6a72:99b6%5]) with mapi id 15.20.9031.023; Mon, 18 Aug 2025
- 06:42:30 +0000
-From: Liao Yuanhong <liaoyuanhong@vivo.com>
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	linux-wireless@vger.kernel.org (open list:REALTEK WIRELESS DRIVER (rtw89)),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Liao Yuanhong <liaoyuanhong@vivo.com>
-Subject: [PATCH] wifi: rtw89: 8852bt: Simplify unnecessary if-else conditions
-Date: Mon, 18 Aug 2025 14:42:19 +0800
-Message-Id: <20250818064219.448066-1-liaoyuanhong@vivo.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TY2PR02CA0011.apcprd02.prod.outlook.com
- (2603:1096:404:56::23) To SEZPR06MB5576.apcprd06.prod.outlook.com
- (2603:1096:101:c9::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EDE277CB1;
+	Mon, 18 Aug 2025 07:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755500996; cv=none; b=EQ6jH3qianblVMizRgmhiGT8ACai0SYggZmiIrgXBwB4li4RworEpiDZSkGsdOTKIYx/Q5KI3jDKkf9SvNaO42zqCw0Ny6PfmIQ0NkKDGAQUj3y7UjzMc0DeCqWN0/+AsVHtp9XqMZrOyRRQpQydIrbebQ6SDrY5qc0IrOQQvJ4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755500996; c=relaxed/simple;
+	bh=XvgFub5eWHK2y36TAgRUO9tAFUs63v+IadSoFQ/DpsU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ImNPB6fIGxC+k41tEK5SF908PLeIKYq6AmnSyz9jYocpDIdudV3x/OQDGENdxTXnXqlMeHcVaQ0a5GAUu6LahAdT3HvutvwGhLhrHPNDIzWgUiPfeERBcKpKt7PyUXJqXGBRVwJSPc5ZH8KWniI0rAv5QaHYZnCT492izLwctwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W32LT4To; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87486C4CEED;
+	Mon, 18 Aug 2025 07:09:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755500995;
+	bh=XvgFub5eWHK2y36TAgRUO9tAFUs63v+IadSoFQ/DpsU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W32LT4Tosdsx+2NXw2u1isMpVYDjyZqPlCxbxMEXJ2WiHtGJNx+6Dl4kNSSzgtt9O
+	 UKIIpqaXhWbtd1vaKSTyL4WYFy3CEJpqR7Z8fiTLy/dgNr8UDaz/4eeH9gUs4KS7CN
+	 pGIaPa6ONNgBsB8FtUUotkdv/dWGXdEGMmu15YRxBZJFDMXc/HEy8Jbrc3gDjKv/Zu
+	 u8yM0YaWBeCUZ5Xr5voXpvcn3ohs4GlilhyzXggY80rtNjpGUAVWgFhBAIqXRJPQbD
+	 zlP5Gd2KtgRLxAsV7sp71gXi/U1/ERE2mkBDLDuvfELhqWRwg/UGtIh36+eO+nkUu7
+	 Atgtpqo8BIU2g==
+Date: Mon, 18 Aug 2025 12:39:43 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
+	Jingoo Han <jingoohan1@gmail.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	mhi@lists.linux.dev, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	qiang.yu@oss.qualcomm.com, quic_vbadigan@quicinc.com, quic_vpernami@quicinc.com, 
+	quic_mrana@quicinc.com, Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: Re: [PATCH v4 02/11] PCI/bwctrl: Add support to scale bandwidth
+ before & after link re-training
+Message-ID: <mrsdwtzz7x6uuoakjr6kymqccfxs3lndplols7j33apbru7jii@tjdljisgaqny>
+References: <20250711213602.GA2307197@bhelgaas>
+ <55fc3ae6-ba04-4739-9b89-0356c3e0930c@oss.qualcomm.com>
+ <d4078b6c-1921-4195-9022-755845cdb432@oss.qualcomm.com>
+ <68a78904-e2c7-4d4d-853d-d9cd6413760e@oss.qualcomm.com>
+ <ycbh6zfwae3q4s6lfxepmxoq32jaqu5i7csa2ayuqaanwbvzvi@id4prmhl3yvh>
+ <ec0e3b33-76f4-4ad5-8497-5c8c8b42f67e@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SEZPR06MB5576:EE_|TYSPR06MB7157:EE_
-X-MS-Office365-Filtering-Correlation-Id: 277b16ba-5f5b-44e9-ca3b-08ddde22675e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kH2mhNZt7HTa3z82FND84XXh3ATag1aKU7lXQzqrrXReaXZMS8DXaLckX35k?=
- =?us-ascii?Q?YWXACC7u+nVALVgKssGLl9mnpSertFYg0Er64Vku6QBSK8W3zZ+X8c1ePm8+?=
- =?us-ascii?Q?yvFM+XSkE+hBW3Y5xVZFE3MNsm77muqhORA+0Q8yV7w41oRXYjp7BKn83cD3?=
- =?us-ascii?Q?uwx9ehVNBjJcji5mBfSz33IdSTMup2RNPvSBXL5mfFkLfE5KbZThkaYuDW2+?=
- =?us-ascii?Q?wwoyBfm/pyJ/8POLARxlVPlpQ1RecoV/YQHON62vcLW/fxqh9QoETF0zW7eb?=
- =?us-ascii?Q?UOH/ih8fgZknWLXg4by4TLMm6egLO9JT7YsM6YsIeri2QmQ6syfENGwBmpgv?=
- =?us-ascii?Q?BJs98L6SqgZTFd6Ykqvyg+Evxp97XHpXL/YqupdgLusqId1cBXdBWUL+/nGH?=
- =?us-ascii?Q?fG5Rx8ypwcApoZizFt8XHrMDiUCPVjKw1vIjt6X/TRsIPUdA+LROwDaNkoy8?=
- =?us-ascii?Q?PIYT5DB2qZMTpc1Wwt9NF2SSSaDTdzdNbueneh+j+7OetvkLaoiAQdg0eXmJ?=
- =?us-ascii?Q?1FClwDF3kTClgvSwlYVLWLDtWpYzOWoYrGolsrFfnLnf3n3pxMZgBe8rxQyI?=
- =?us-ascii?Q?fB+d9p98S3lJ7IfDiDmkrMplFfuTvXauvY3syxgA1WfHtAWq2x9cpXL06lFt?=
- =?us-ascii?Q?W9/qCE210F204XuScyyul3oB0DhFOEy9nF120pw91Y93QtJACQX/skJTQ9WY?=
- =?us-ascii?Q?FEbx8iBn5Ys6GntvqeyiJ+eBavm9uaV/N7PCFPMn3XwMJavXWeJ6MQi7VclD?=
- =?us-ascii?Q?9vyt8mY7SGwQ23V7FgwFS6pMwlSUVUe+0hZ4WwC08H2tEKTTYmJxw7hYqhuX?=
- =?us-ascii?Q?KXW9gZ8z64VipV+LfDrZ9KdKS0FKK1L7JGuPx00l7Wy996X4majOzwxLjP1M?=
- =?us-ascii?Q?ZZafpUmfgvpim7622jHFitWaWt2d1PbvSGcCvLFhmXlQHT6UUFg7aKGqiIf/?=
- =?us-ascii?Q?UcHiFYFYLtKvDtcPycPYcYVJTn6XkN5NEd8Zb+nsgp1zNn2ualJ6tMAt02wK?=
- =?us-ascii?Q?bQZi5l7gKGfVKWpPrYSOIvpGNDAcBnptLh6MmulkcHnoUuz4wXAoqDKiZT/j?=
- =?us-ascii?Q?QEAlYGIwnmbgcZQHAKHJkb0CcoY7aImCyPfOjjtXr8rSFi7vkme3I+Ua7rDG?=
- =?us-ascii?Q?i0vROChUn+/yzhgKYqoZvoU+Kcx+jROhnsZjnsTHXcQMZ5/8EUbkuZzWyK8b?=
- =?us-ascii?Q?5dxttTLVUJCELyyaJ031vbmiqdo8l+Ms0sb4xjTniC5c6UP0xAsN9BNh9Rly?=
- =?us-ascii?Q?Uzphuc9b5QIl5eoVqusnecAKmFWfvKCUf+jCZ8W6SCixubL28WZZtb9TUY8s?=
- =?us-ascii?Q?6/M/45NkMz4ReUG72B1qRU4zSyPoHqEc+5HOzfUhBl3O6fuDlHK2ry7F9s4L?=
- =?us-ascii?Q?pUAapRzTx8y13P08YH5fiLSgcILr3tCRmx9sr3BdZcifFtaDVyzpdU5TwuUg?=
- =?us-ascii?Q?TuZ4TE2MPmvz9cUTltSm9pQ/LkFChp/8rTfacfXwmd774R5y3NLQuA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5576.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/DmBoNT0aU72pTOnQtDAFK94Qs//7CdttBcZcTVVVdcvPKnN+FRkS6T2Hf6G?=
- =?us-ascii?Q?okegIBOspQWnfRaWYnrDDjFivbSGfWFe0ByDTJXwyQzrTtUlnJhxtJYeBHLy?=
- =?us-ascii?Q?eWFa8imUj5k0kbGyNVsnMi77M79YwDwV5jUhCf3xTwqThd53SWWhtO7Fov2F?=
- =?us-ascii?Q?WIqOfSFMCQKkulbye6uIP9eGg7jX3QDk0DzML+q2dqw/Fje0SxdHz0uRt3ec?=
- =?us-ascii?Q?zBb8ieqzm8PH3EgkY3NTPctAqswq+Thx2+0PfGOjG8nL9vNS8i73XfQ/GSpN?=
- =?us-ascii?Q?PeVNyixPvQYYguiYYlQ6r5k9vo+HPDBNM01wPhVXvFgZp4YCFDRA9ni1gXx9?=
- =?us-ascii?Q?HKxyli6EYT72sY0dxeAoABXNBiIrkn6Fi7/0ma1J37CikHT44PvhYleYQlWR?=
- =?us-ascii?Q?Wxm+ZGZqL8mM9Bknb3eIXJJk/Dn0fxeozFjcJUP1ZZNOYQftYILiOkCymzwz?=
- =?us-ascii?Q?19o+ZAOaal94U0jJfFAHbjARhf+vD2xCnFh+fQ3LaX+Nh8J+LfA0xKivKnuT?=
- =?us-ascii?Q?9fhg393SgHXNCK0KbyCA0oDnZ0P5OAWWdbLbEqfsjxZWVLZCyxJ73PY7WttV?=
- =?us-ascii?Q?And8dzQqAprK47/tgLFZGQ9bMZJjstAmLThUo+TJsDJaPrxxQBLrkxwJ7RmE?=
- =?us-ascii?Q?OP2wd4GxBShonjq41jgaPTcPBglV/IDsVbUFB/tK4QyBjdptgqQpZYqfYV2P?=
- =?us-ascii?Q?wCsF/rBFfjl5Re/WEmgAeGKURrzS1r3jRNgIeDS0HDZPUdIBRh5p+yjDhb+e?=
- =?us-ascii?Q?IBnTZEoAaMxyLexv6dNpBsLj2lmMm3GqA69hTjQKQfFlOeoJ485snssA6r+1?=
- =?us-ascii?Q?erHns5IJV363c2vfaBSQfx5A2kR/v5qchvjZY8cTx9iBrcousxyrAg6h3x/3?=
- =?us-ascii?Q?/iWoCaMWfWZOAsQ0m3vZsq6s2sTFuT4w4ivmPCrfQEiMBJChS3eRi4UP4HHH?=
- =?us-ascii?Q?RLjlbcpZ4Yt4QSHUkR0GzOmap+/NnB0KVw+PoenmDSu5LxBrCYnKOTLcDU+5?=
- =?us-ascii?Q?eExgWIzgtd5VrOefhwBt7MgJFCaXXmEQbzGHcsGl1E3QAWru9UP+uN5xYLY0?=
- =?us-ascii?Q?XEyxsg9T8TO8oaPsPgO2zn6q7Hwxv6RDM6DQWy+oYUanbf/Hmg/LUKKaF2ha?=
- =?us-ascii?Q?H/VASQWOtknAUWky0i+MqQ0Rw0sV1nXxtnPvu+ZEIuYbEZ/i6gfzSFFL7o/w?=
- =?us-ascii?Q?9QbpdyexNzHaNFEfaqaCfM+dAfaWSF5IbOjeVA8dDuLuWuKJidqstO1e/DjF?=
- =?us-ascii?Q?E5qV4pEQdJwbBTVT9ndkCt1Ml/phPz2rOAKHvewoOtYp7ZX0dySrnJXobzNc?=
- =?us-ascii?Q?NwR1l4QK8YTmW6bZO8MyuY5n5uUuUlHoyNXhGIUwTbfCskWRWiiY0Fi8prDH?=
- =?us-ascii?Q?C1J1V3uhvoh2PtSPKkjDwV1t5cLrj4uIQ4f2czl9Nr92VNQjz5xb7Q0CQnAU?=
- =?us-ascii?Q?MnazWSJ/CurtEqcqFPVIRMI41A14fJ4EjuUrVY9BPJQLeVcVnS/np2WxRIes?=
- =?us-ascii?Q?B6vBRFhYmrMRFiBKOZmzGopuwU6JtUo7a/byKXxPDNrvjXP3M+9OWVsXhIH4?=
- =?us-ascii?Q?uARatI1ki6u4osLL1Tta6gH9UTGGzAwJNG562RN9?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 277b16ba-5f5b-44e9-ca3b-08ddde22675e
-X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5576.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 06:42:30.3243
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dJHfcG87AUK6E8wsLlIJzBC3m+hDio0PQn3MFr85K9aSVqncK+SfbQHj8/n5vFwRaFUyZXB6kqo0f77I0p4+GQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYSPR06MB7157
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ec0e3b33-76f4-4ad5-8497-5c8c8b42f67e@oss.qualcomm.com>
 
-Some simple if-else logic can be simplified using the ! operator to improve
-code readability.
+On Wed, Aug 13, 2025 at 09:25:03AM GMT, Krishna Chaitanya Chundru wrote:
+> 
+> 
+> On 8/12/2025 10:13 PM, Manivannan Sadhasivam wrote:
+> > On Tue, Aug 12, 2025 at 09:35:46AM GMT, Krishna Chaitanya Chundru wrote:
+> > > 
+> > > 
+> > > On 7/22/2025 4:33 PM, Krishna Chaitanya Chundru wrote:
+> > > > 
+> > > > 
+> > > > On 7/12/2025 4:36 AM, Krishna Chaitanya Chundru wrote:
+> > > > > 
+> > > > > 
+> > > > > On 7/12/2025 3:06 AM, Bjorn Helgaas wrote:
+> > > > > > On Mon, Jun 09, 2025 at 04:21:23PM +0530, Krishna Chaitanya
+> > > > > > Chundru wrote:
+> > > > > > > If the driver wants to move to higher data rate/speed than
+> > > > > > > the current data
+> > > > > > > rate then the controller driver may need to change certain
+> > > > > > > votes so that
+> > > > > > > link may come up at requested data rate/speed like QCOM PCIe
+> > > > > > > controllers
+> > > > > > > need to change their RPMh (Resource Power Manager-hardened) state. Once
+> > > > > > > link retraining is done controller drivers needs to adjust their votes
+> > > > > > > based on the final data rate.
+> > > > > > > 
+> > > > > > > Some controllers also may need to update their bandwidth voting like
+> > > > > > > ICC BW votings etc.
+> > > > > > > 
+> > > > > > > So, add pre_link_speed_change() & post_link_speed_change() op to call
+> > > > > > > before & after the link re-train. There is no explicit
+> > > > > > > locking mechanisms
+> > > > > > > as these are called by a single client Endpoint driver.
+> > > > > > > 
+> > > > > > > In case of PCIe switch, if there is a request to change
+> > > > > > > target speed for a
+> > > > > > > downstream port then no need to call these function ops as these are
+> > > > > > > outside the scope of the controller drivers.
+> > > > > > 
+> > > > > > > +++ b/include/linux/pci.h
+> > > > > > > @@ -599,6 +599,24 @@ struct pci_host_bridge {
+> > > > > > >        void (*release_fn)(struct pci_host_bridge *);
+> > > > > > >        int (*enable_device)(struct pci_host_bridge *bridge,
+> > > > > > > struct pci_dev *dev);
+> > > > > > >        void (*disable_device)(struct pci_host_bridge *bridge,
+> > > > > > > struct pci_dev *dev);
+> > > > > > > +    /*
+> > > > > > > +     * Callback to the host bridge drivers to update ICC BW
+> > > > > > > votes, clock
+> > > > > > > +     * frequencies etc.. for the link re-train to come up
+> > > > > > > in targeted speed.
+> > > > > > > +     * These are intended to be called by devices directly
+> > > > > > > attached to the
+> > > > > > > +     * Root Port. These are called by a single client
+> > > > > > > Endpoint driver, so
+> > > > > > > +     * there is no need for explicit locking mechanisms.
+> > > > > > > +     */
+> > > > > > > +    int (*pre_link_speed_change)(struct pci_host_bridge *bridge,
+> > > > > > > +                     struct pci_dev *dev, int speed);
+> > > > > > > +    /*
+> > > > > > > +     * Callback to the host bridge drivers to adjust ICC BW
+> > > > > > > votes, clock
+> > > > > > > +     * frequencies etc.. to the updated speed after link
+> > > > > > > re-train. These
+> > > > > > > +     * are intended to be called by devices directly attached to the
+> > > > > > > +     * Root Port. These are called by a single client Endpoint driver,
+> > > > > > > +     * so there is no need for explicit locking mechanisms.
+> > > > > > 
+> > > > > > No need to repeat the entire comment.  s/.././
+> > > > > > 
+> > > > > > These pointers feel awfully specific for being in struct
+> > > > > > pci_host_bridge, since we only need them for a questionable QCOM
+> > > > > > controller.  I think this needs to be pushed down into qcom somehow as
+> > > > > > some kind of quirk.
+> > > > > > 
+> > > > > Currently these are needed by QCOM controllers, but it may also needed
+> > > > > by other controllers may also need these for updating ICC votes, any
+> > > > > system level votes, clock frequencies etc.
+> > > > > QCOM controllers is also doing one extra step in these functions to
+> > > > > disable and enable ASPM only as it cannot link speed change support
+> > > > > with ASPM enabled.
+> > > > > 
+> > > > Bjorn, can you check this.
+> > > > 
+> > > > For QCOM devices we need to update the RPMh vote i.e a power source
+> > > > votes for the link to come up in required speed. and also we need
+> > > > to update interconnect votes also. This will be applicable for
+> > > > other vendors also.
+> > > > 
+> > > > If this is not correct place I can add them in the pci_ops.
+> > > Bjorn,
+> > > 
+> > > Can you please comment on this.
+> > > 
+> > > Is this fine to move these to the pci_ops of the bridge.
+> > > Again these are not specific to QCOM, any controller driver which
+> > > needs to change their clock rates, ICC bw votes etc needs to have
+> > > these.
+> > > 
+> > 
+> > No, moving to 'pci_ops' is terrible than having it in 'pci_host_bridge' IMO. If
+> > we want to get rid of these ops, we can introduce a quirk flag in
+> > 'pci_host_bridge' and when set, the bwctrl code can disable/enable ASPM
+> > before/after link retrain. This clearly states that the controller is quirky and
+> > we need to disable/enable ASPM.
+> > 
+> > For setting OPP, you can have a separate callback in 'pci_host_bridge' that just
+> > allows setting OPP *after* retrain, like 'pci_host_bridge:link_change_notify()'.
+> > I don't think you really need to set OPP before retrain though. As even if you
+> > do it pre and post link retrain, there is still a small window where the link
+> > will operate without adequate vote.
+> > 
+> Hi Mani,
+> 
+> we need to update the OPP votes before link retrain, for example if
+> there is request  to change data rate from 5 GT/s to 8 GT/s on some
+> platforms we need to update RPMh votes from low_svs to NOM corner
+> without this clocks will not scale for data rates 8 GT/s and link
+> retrain will fail. For that reason we are trying to add pre and post
+> callbacks.
+> 
 
-Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
----
- drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+If we are targetting OPP only, then can't we do direct OPP setting from the
+bwctrl driver itself? Or we also need to set ICC votes directly also (in the
+non-opp case)?
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-index d0e299803225..164ee0fde03b 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-@@ -1803,10 +1803,7 @@ static void _dpk_onoff(struct rtw89_dev *rtwdev, enum rtw89_rf_path path, bool o
- 
- 	val = dpk->is_dpk_enable && !off && dpk->bp[path][kidx].path_ok;
- 
--	if (off)
--		off_reverse = false;
--	else
--		off_reverse = true;
-+	off_reverse = !off;
- 
- 	val = dpk->is_dpk_enable & off_reverse & dpk->bp[path][kidx].path_ok;
- 
+- Mani
+
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
 
