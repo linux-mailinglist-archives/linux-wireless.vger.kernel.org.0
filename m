@@ -1,163 +1,117 @@
-Return-Path: <linux-wireless+bounces-26421-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26422-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFBBB29522
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Aug 2025 23:16:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D8DB296B3
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Aug 2025 04:04:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88272196312B
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Aug 2025 21:16:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 685FA3BBE9F
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Aug 2025 02:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642951FDE22;
-	Sun, 17 Aug 2025 21:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC68723F40C;
+	Mon, 18 Aug 2025 02:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="XEn+tF/W"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80AE1D5AB7
-	for <linux-wireless@vger.kernel.org>; Sun, 17 Aug 2025 21:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26F2154BF5;
+	Mon, 18 Aug 2025 02:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755465392; cv=none; b=AqCVN4t3dyKPv+uR2BSKToqyjBfLBub/oDJxpjOyqGfwxzomMju4XQmSBYqkhs7taTHVV1HFNSGvVexRM6DK8fcYGGbjnZAc402n7jRKMQ63Wd0BXoQNvii9rJcInyDJHQeE2wKQkCliuUacjTspRpxKQDKi7GMe/84OPbbs8+g=
+	t=1755482539; cv=none; b=ZKS3h+jrnHp1LTeWUPR2QSAJdEnApmZPJjvk8tPMIAqSAZPqFZQW5nhDUg7r8mnpTi40KKnjkjJIjYRq8qUaET/oj4KaRsGkTWAqr0wTZKpNWrFlS6QpqHFrQn3l0YzP5SBecTelosoSZwZYaS2KDAyNcTUtRkQ3CHyTK2iUh4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755465392; c=relaxed/simple;
-	bh=cELf/5hBA7ty2DgyXFWFsQALXI6RcXSejzmDa9bZDS4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=KNxSOzLdMUi3OZND7TE03lcegQrxHD7R4rzEj3jgSYzMVoeMhr+bMY4IhnE68Fp6S51D8nA7VQPVg/MuRdk2KcrXF5EBIXUYySFBRW42AtgXoDA9vweyLlmApwKWbruyQ62T3MpbtRl6fcPXWWW3ThueH1CJ070kfa9EUtXMXXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-88432da036bso420992839f.1
-        for <linux-wireless@vger.kernel.org>; Sun, 17 Aug 2025 14:16:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755465390; x=1756070190;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9xOFL93V9ybpTTQzlx6ceA1J0+rEZ162D18Jclq7jEg=;
-        b=e1q4TxwS6aOENwjoCudp6BP0DEzhnVoiJ3FscPJG7vEKBYdDbaUGBnXNSaMq6MAGrr
-         z6XJB2elHmRABw9g+dvcSly4a2Rx0dWytcnqVFtko6UitTO1KwxTp7cRNTM1Nv/4FlLQ
-         mxHObTPOCF/S+y22qOWGkKSgIZJuSAWt8fi6yUnNPQAFxmewj2y2AvdLHVI9aCNI9I+/
-         EgD5m8yW0H84U/ZSog0QycWJPFzZ8L7zBN0D7qS121FiGNucw9jKXj86j4fbvlJSxhE5
-         CO/j7seJasBvU+bk6Msifqs+gLY3imNoh+g0gZffDEVDCUlKwjR4I3vFu2WUt94CzRVj
-         5AeA==
-X-Forwarded-Encrypted: i=1; AJvYcCWdd5oug1OxNjOK0henL32Pz9O07kz7hWG9Uj3L8O0Co5zHR14Q+/kjXb2LrvMfHROCT6kgmV/EnoIOgbv5Zw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBDsMGMDaPrI2cLHYTsAMBvY8uaHmbtLBsD0CLLrcoI3bhNQPc
-	hHlGjtnAcZG7cUapEdSspz6kzG4mQ3b1Ps+7flqlg6Fbc2PfTu/XHgrNoAjx8lYU/lV+YS76snI
-	Xpn4CG2VlzQUnT5WbRXvaNz/fbyIVWYV2AM1WppGfgsCk1/vBVAgKDSiznxE=
-X-Google-Smtp-Source: AGHT+IHUgIuGZ+mDB66y6V5ZCmackd0V6NXkrgXQ9lX0LiJJCZZTnfZRx5rCfFfCq17djZrCFyamEyqBJlpZd9B+mF/ZD+O1xtmk
+	s=arc-20240116; t=1755482539; c=relaxed/simple;
+	bh=KbAPvFy3yOa5mpKEKQZZkXdc+i1XjlBVD2xuGruXVi4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r7B3FL0mYYMMdKMJ44zj3EJr4CIOS2UTmWJrgdDusnGTTuy31Ssbuuanjvm7vbkAv6xpiu8Sl/u9Twfp7juwbSEvHneifU0U6CYc+3KLq8uh7EunS08LRCK6vpHyhqSojaF/k2KokbcKpYSjDE0ogg0hHUT7UDyQw4JYyBQo8Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=XEn+tF/W; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 57bf1b1a7bd711f08729452bf625a8b4-20250818
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=YkZHmregPQROpYq8q9E+uWoRTz/1D56haXN9OBQbttM=;
+	b=XEn+tF/Wpqmyf9mS/Ffdzk3Q3JQdqYoug3FPu7dOK/MTGOq4ULbO27HCirhEhi5+JIqJqEXlk3tXIIiceKlQ1rrdl3uMBJCuv6BvrinznjgDtAD0q/L38CtVbxsKgbNBk1+JiMg2fn3dEgKvTVtgV4d4w7T4aV/YYMwIHa9d37w=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.3,REQID:37139702-84ed-4f37-893f-6281f1de6ae6,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:f1326cf,CLOUDID:78cd06f4-66cd-4ff9-9728-6a6f64661009,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:-5,Content:0|15|50,EDM:-3,IP:
+	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
+	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 57bf1b1a7bd711f08729452bf625a8b4-20250818
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 624222462; Mon, 18 Aug 2025 10:02:06 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Mon, 18 Aug 2025 10:01:58 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Mon, 18 Aug 2025 10:02:04 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>, Nick Morrow
+	<morrownr@gmail.com>
+Subject: [PATCH] wifi: mt76: mt7925u: use connac3 tx aggr check in tx complete
+Date: Mon, 18 Aug 2025 10:02:03 +0800
+Message-ID: <20250818020203.992338-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:6d86:b0:883:f01a:5d55 with SMTP id
- ca18e2360f4ac-8843e3b9d76mr1687416939f.5.1755465389864; Sun, 17 Aug 2025
- 14:16:29 -0700 (PDT)
-Date: Sun, 17 Aug 2025 14:16:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68a246ad.050a0220.e29e5.0077.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_tx_skb_tid
-From: syzbot <syzbot+8bd4574e8c52c48c2595@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
-Hello,
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-syzbot found the following issue on:
+MT7925 is a connac3 device; using the connac2 helper mis-parses
+TXWI and breaks AMPDU/BA accounting. Use the connac3-specific
+helper mt7925_tx_check_aggr() instead,
 
-HEAD commit:    91325f31afc1 Merge tag 'mm-hotfixes-stable-2025-08-12-20-5..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11fecda2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=412ee2f8b704a5e6
-dashboard link: https://syzkaller.appspot.com/bug?extid=8bd4574e8c52c48c2595
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/8c83f4baf60f/disk-91325f31.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/be959267627a/vmlinux-91325f31.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/68dffaf16c63/bzImage-91325f31.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8bd4574e8c52c48c2595@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 11866 at net/mac80211/tx.c:6202 ieee80211_tx_skb_tid+0x380/0x420 net/mac80211/tx.c:6202
-Modules linked in:
-CPU: 0 UID: 0 PID: 11866 Comm: syz.1.2132 Not tainted 6.17.0-rc1-syzkaller-00029-g91325f31afc1 #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:ieee80211_tx_skb_tid+0x380/0x420 net/mac80211/tx.c:6202
-Code: 9e a4 f6 e9 b1 fe ff ff e8 ed c3 c6 f6 90 0f 0b 90 e9 1f fe ff ff e8 df c3 c6 f6 90 0f 0b 90 e9 2a fe ff ff e8 d1 c3 c6 f6 90 <0f> 0b 90 e8 58 e2 fd ff 31 ff 48 8b 34 24 ba 02 00 00 00 48 83 c4
-RSP: 0018:ffffc9000b697478 EFLAGS: 00010287
-RAX: ffffffff8af8e7df RBX: ffffffff8af8e48f RCX: 0000000000080000
-RDX: ffffc9000b7d9000 RSI: 000000000000298a RDI: 000000000000298b
-RBP: 00000000ffffffff R08: 0000000000000000 R09: ffffffff8af8e48f
-R10: dffffc0000000000 R11: ffffed100ebe1146 R12: ffff888054e94d80
-R13: 0000000000000000 R14: 0000000000000001 R15: dffffc0000000000
-FS:  00007f5035e4d6c0(0000) GS:ffff888125c1c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f53e6e5ed58 CR3: 000000007d2fc000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- ieee80211_tx_skb net/mac80211/ieee80211_i.h:2409 [inline]
- mesh_plink_frame_tx+0x734/0xc10 net/mac80211/mesh_plink.c:354
- mesh_plink_deactivate+0x18e/0x2f0 net/mac80211/mesh_plink.c:410
- mesh_sta_cleanup+0x42/0x150 net/mac80211/mesh.c:171
- __cleanup_single_sta net/mac80211/sta_info.c:167 [inline]
- cleanup_single_sta+0x40f/0x660 net/mac80211/sta_info.c:192
- __sta_info_flush+0x5e4/0x710 net/mac80211/sta_info.c:1683
- sta_info_flush net/mac80211/sta_info.h:970 [inline]
- ieee80211_do_stop+0x399/0x1fb0 net/mac80211/iface.c:509
- ieee80211_stop+0x1b1/0x240 net/mac80211/iface.c:814
- __dev_close_many+0x361/0x6f0 net/core/dev.c:1755
- __dev_close net/core/dev.c:1767 [inline]
- __dev_change_flags+0x2c7/0x6d0 net/core/dev.c:9530
- netif_change_flags+0x88/0x1a0 net/core/dev.c:9595
- dev_change_flags+0x130/0x260 net/core/dev_api.c:68
- dev_ioctl+0x7b4/0x1150 net/core/dev_ioctl.c:824
- sock_do_ioctl+0x22c/0x300 net/socket.c:1252
- sock_ioctl+0x576/0x790 net/socket.c:1359
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:598 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:584
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f5034f8ebe9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f5035e4d038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f50351b5fa0 RCX: 00007f5034f8ebe9
-RDX: 0000200000000000 RSI: 0000000000008914 RDI: 0000000000000004
-RBP: 00007f5035011e19 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f50351b6038 R14: 00007f50351b5fa0 R15: 00007f50352dfa28
- </TASK>
-
-
+Cc: stable@vger.kernel.org
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Reported-by: Nick Morrow <morrownr@gmail.com>
+Tested-by: Nick Morrow <morrownr@gmail.com>
+Tested-on: Netgear A9000 USB WiFi adapter
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index 7854d0a796ea..173a23d01b27 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -1463,7 +1463,7 @@ void mt7925_usb_sdio_tx_complete_skb(struct mt76_dev *mdev,
+ 	sta = wcid_to_sta(wcid);
+ 
+ 	if (sta && likely(e->skb->protocol != cpu_to_be16(ETH_P_PAE)))
+-		mt76_connac2_tx_check_aggr(sta, txwi);
++		mt7925_tx_check_aggr(sta, e->skb, wcid);
+ 
+ 	skb_pull(e->skb, headroom);
+ 	mt76_tx_complete_skb(mdev, e->wcid, e->skb);
+-- 
+2.34.1
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
