@@ -1,130 +1,158 @@
-Return-Path: <linux-wireless+bounces-26447-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26448-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E15B2B7E9
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 05:45:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5720B2B9B8
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 08:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D049F175B23
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 03:45:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 862885801A4
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 06:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E46F23741;
-	Tue, 19 Aug 2025 03:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DE31B87EB;
+	Tue, 19 Aug 2025 06:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="MUs0Lock"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cXBx3+Gk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4BE2AD3E
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Aug 2025 03:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9817D19D8A8
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Aug 2025 06:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755575149; cv=none; b=BQ5zBDVxm3dDOMOjcCafEdQf2HQcml4gESJRc8H0toAMoA+YOoJV17BECAoQDHG94uYr3OkFdBJLdZrpT8d01o3uCcJ0BS5USqCTXNl1WvDt6nlXjrqD/pUdbyA7Hee/9CJ30/WrH1vRrFlyUZ4iPE3maazGvHTK/ShU8fUFDbI=
+	t=1755585526; cv=none; b=tbJlXi4CeKh7ibiy05GlG2qbcthDhZOdTEKzh6jX5LmfxlgQde8j3eGuomz7xp+aJTA2vp6TYT5m9yfZcfpUVkc/sXOJfXoXrvoptF25t7qDTnf9LpNoQU2kouU0MTED+9jMpPjn19OiUrfj6CtDR6P2xcMLs/4GgkYtk2aJc50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755575149; c=relaxed/simple;
-	bh=mcI05iVILUNbfm+DKgfhnO5cQwChC9MH0Fm9CwczqMQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ho1UZs2bAbk2A+R41Pj5nVIdj+aHd3oJHF4wqyJ1jIGTMHDbtfdt+IInr2hDKhadcU1Yk+vCrTc7VMazh/z/ASZWgkAictzS4/lLEe2/c/rqJ9hwADe6/ZoOcx7erdmHGmB2wng7WZvlgMr+/W+ILHF7r6Lw1fLcoHwMgdwXvMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=MUs0Lock; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57J3jjtlF2064834, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1755575145; bh=ABxQDROgB7WkDjwEihmw/Vj64RHx7Gwyh3Dqn+/SZmo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=MUs0Locki3i0a8oQy5HhNnMFxz7lcaow90r5jeps1+vH6yOgflEVv9th9HGKIUD2H
-	 EJUf+AO5Rhl0yMqqG/CDAY5ZIqK/Ov82bXaQhxXd3J5GDGZJ6gH0QW0AFzmcGzg9nJ
-	 FC21fNnduFJm/zZ0tHkzNZcKrEA8gqhNbr/b4mOTCleui3DcyI9V7CiujDmkDAMlj0
-	 rwGfdxHQBleShfeaW1cyuIJbcCBHrY2jjTJjg4nAiHQNH+++/m4ztbXXzA+S1kYl6F
-	 m2M2v0VUeWeOxYbcA0Ju1iGtvAjITZp585fCR9LMn07ZXsUD5mC/8RdRiwyxip9uLc
-	 bKqsj9Or4lz8Q==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57J3jjtlF2064834
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Aug 2025 11:45:45 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 19 Aug 2025 11:45:45 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS06.realtek.com.tw
- (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 19 Aug
- 2025 11:45:44 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <ku920601@realtek.com>, <phhuang@realtek.com>
-Subject: [PATCH rtw-next 4/4] wifi: rtw89: coex: Limit Wi-Fi scan slot cost to avoid A2DP glitch
-Date: Tue, 19 Aug 2025 11:44:28 +0800
-Message-ID: <20250819034428.26307-5-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250819034428.26307-1-pkshih@realtek.com>
-References: <20250819034428.26307-1-pkshih@realtek.com>
+	s=arc-20240116; t=1755585526; c=relaxed/simple;
+	bh=pAoLF6OgU9nexvhoGoHay7FSSnOOjGhiFZBRNoQFC2I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n798WJT9v7tvE2F1YhrrU7Oi2HGRu5Y1fpZ47Od2Di5zi6kHmqI7EA/V6y6FRYWMZMF5ejB+dl+KhQfw1OTSRXy49JoglB3Oj6zcY5vvi4rLpeqwMSgfnHNZuUgdI+n6gNKULa9SrVFHMi89XtFLWSQb3wth6SYa9Dn6fYHL/fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cXBx3+Gk; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57J2RD3u025345
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Aug 2025 06:38:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	+Qq/aMBe6WA4icgWdgRmHu9HjfiTSjioB8bzv4f37ps=; b=cXBx3+GkykVB2H/+
+	rclAvJg00+PXYq+P1x17sgD1TMbD5Mr0kkctnu068m/FosJuNT7d0BALR5K22p0a
+	/dUdXAemP0M4HkqjYkI9pWZik0RToD2Iv6sdHhSVijNoFQvovqmzTvOyF9uv0kvO
+	Qv6bfJXiJenCa3GzevEUxRLdm0ZrUsewskNeNI0Xj0+58rWumfk29GUeFnUd23DM
+	Wu5weD7jy5HoFyCR3TEPHsWf4FO5d59MAwbKXoEn1lsRODVAYEShrbe4mRZMsw2r
+	Kbpps1z79DH3QdawTiOKd+UOn6H+YzATOxP1fmz9ox+2sI0WyBmvG/Exex3xXRM9
+	Qge4fQ==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48m71cj6dw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Aug 2025 06:38:44 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b4716fb7f2aso4028525a12.0
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Aug 2025 23:38:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755585524; x=1756190324;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+Qq/aMBe6WA4icgWdgRmHu9HjfiTSjioB8bzv4f37ps=;
+        b=UlmcHsFu1LaYN/UdgbnXJxx11v7x5+cI5ilmIGR6U6nBlRSOn7PiQRPRLbbrC0RvHy
+         Q1ZOZ34+aFM+BnRRxNq2doQOTI+tu27Crje5yeVxyji6e8SAmW1XCjoj2lTyEulSCX8T
+         L9bOAzN7H9ndZRMYSuroQmcTfDVTkNvqisRfdigtBH8zdAV0lN7qBPTiGfNo+z1knAsR
+         Xypop2toOEHFOsb1JC5JGtOl4XFq/Z5fx9wy/OYDJE0ha8/LC783FkXQN3JzjTjn4Cub
+         SynYbBJpbDpMFjMzzRO6KyOM9GSg1W8qzLTgLEXdL9AhKSEI//FZJPHnS67Pzh/VnbnC
+         FoPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUce9i5rqg3YSJ/gIDyBLv0ixlorXH1/yeVQHTLUlDDletYooRlfeEFQDIb9mHH1dOj/kILHYkzD3WY6pyIwA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+o7SIbY6BM3xXNCFPZ+lY6X8U3b19LTLBZlOc5LzIEBB72iQj
+	JTwb+npmCYNrkEAtDDHTaHa/uYMVSARhrjS8e9M9P6GVET9OHgsHUNa+pboh2jjfyDpL8bEtYg0
+	DDAq/tm0EfGshomlClQlpwL58vSXYP1wnebB7bfpwWYJ3V0o28Z+3kUe/O1isIx9bfm5KXQ==
+X-Gm-Gg: ASbGncuQCmq9yOiQaXO5Y4n35umIkydv1xPeMefgCSTLsX0Rfsj0ioTMvKvA4gDhweB
+	iYRxdkNk5jshdzZv4wRE30JYEiljQVPlI5/Dq/8c61x+fpNCSZiQyyxrXkBH7rcwkLJcZbUWSjD
+	40dl7gOBjnDFPZwLDqdQIVsvyQn9aBtTkCghK/PqFWH3qXZXXUCHUNdDFFspVMLIhoefHXIWdXF
+	E0Qcwx6iiDeacu5rr1cUYsYMqfbcdAOPyOyhw7xHyvWGTOpm1lVXcv8/u4O2btJIJdHW+wCTfXS
+	ZgGIge+qElxSCBdDE3p02ZVRRZ3JpOaV/vIQOCM0sLr8le0T/Q2Zt7Iso7THj1UFU3CpK2GOCdB
+	fmzNOE/RHG/nlOUpkGsYTQSaYrCP0hjf+dHdz
+X-Received: by 2002:a17:90b:5746:b0:31f:1744:e7fd with SMTP id 98e67ed59e1d1-32476aa1cdfmr1843075a91.31.1755585523819;
+        Mon, 18 Aug 2025 23:38:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQYE9o0BkXEZqqGhwXwAEvO5q7mg3A9ZGePOqkdZyzZsjwzpO4oWulSOZ4lo2KN9r2OZ7z5w==
+X-Received: by 2002:a17:90b:5746:b0:31f:1744:e7fd with SMTP id 98e67ed59e1d1-32476aa1cdfmr1843053a91.31.1755585523326;
+        Mon, 18 Aug 2025 23:38:43 -0700 (PDT)
+Received: from [10.133.33.94] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b472d76f9d5sm9646108a12.45.2025.08.18.23.38.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Aug 2025 23:38:43 -0700 (PDT)
+Message-ID: <d6f0b64f-1764-41cd-a7c5-fb34d034ace2@oss.qualcomm.com>
+Date: Tue, 19 Aug 2025 14:38:38 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath12k: REO status on PPC does not work
+To: Alexander Wilhelm <alexander.wilhelm@westermo.com>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <aJ7sDOoWmf4jLpjo@FUE-ALEWI-WINX>
+Content-Language: en-US
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+In-Reply-To: <aJ7sDOoWmf4jLpjo@FUE-ALEWI-WINX>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTKEXHMBS06.realtek.com.tw (10.21.1.56)
+X-Proofpoint-ORIG-GUID: NAC2RAEkHJrhDr7rX8iaOqZ6ZRjqlnNi
+X-Proofpoint-GUID: NAC2RAEkHJrhDr7rX8iaOqZ6ZRjqlnNi
+X-Authority-Analysis: v=2.4 cv=IvQecK/g c=1 sm=1 tr=0 ts=68a41bf4 cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=HThdk4v1ZfnwiNzKKCMA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=3WC7DwWrALyhR5TkjVHa:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE4MDE0NyBTYWx0ZWRfXyGRyInIWPiRt
+ AftkC4cghq8DZa+9QQrROspzY7IERMM0jR/NgK1rfZEgqFcytHb6gbyJbzB5Bb5FMAWk3PfToo/
+ /z49mHKU6oPjosqU9KIgDUWSJbSXYvYRWHQ8sO4zbbtycU3gFWvnwtMyJenyiZBGHOTc7evlmpT
+ j1uyDQQiWzfCcaIyFiIcXVcrTxtQq60lP11bSseudZIXUYUaaYnfhbAwKFa5e3FPZ29cbzpU+8F
+ S579R4Fqmd6xZEg9CuxKOpMNtCLsk3gNstzLi8LNmnbP/e9yBirzRcPQQAfhaSIcKKjfwPnD3r9
+ gzU/wZ1mTdWDk9yzwFddwLyW+ju+D7s5rJ7vMJNUIUtFqPa1EBMJP1PzlCh+VDjIJAepsI92N5j
+ atdCfD3x
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-19_01,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0 malwarescore=0 priorityscore=1501 clxscore=1015
+ phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508180147
 
-From: Ching-Te Ku <ku920601@realtek.com>
 
-When Wi-Fi is scanning at 2.4GHz, PTA will abort almost all the BT request.
-Once the Wi-Fi slot stay too long, BT audio device can not get enough data,
-audio glitch will happened. This patch limit 2.4Ghz Wi-Fi slot to 80ms
-while Wi-Fi is scanning to avoid audio glitch.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/coex.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+On 8/15/2025 4:13 PM, Alexander Wilhelm wrote:
+> Hello devs,
+> 
+> I'm currently working on getting the 'ath12k' driver running on a big endian
+> PowerPC platform and have encountered the following issue.
+> 
+> In the function 'ath12k_dp_rx_process_reo_status', the REO status is determined
+> by inspecting memory that the hardware has previously written via DMA.
+> Specifically, during the call to 'ath12k_hal_srng_access_begin', the driver
+> reads the value of 'hp_addr' for the destination ring (in my case, always with
+> ID 21). On the big endian platform, this value is consistently 0, which prevents
+> the REO status from being updated.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index e4e6daf51a1b..0f7ae572ef91 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -93,7 +93,7 @@ static const struct rtw89_btc_fbtc_slot s_def[] = {
- 	[CXST_E2G]	= __DEF_FBTC_SLOT(5,   0xea5a5a5a, SLOT_MIX),
- 	[CXST_E5G]	= __DEF_FBTC_SLOT(5,   0xffffffff, SLOT_ISO),
- 	[CXST_EBT]	= __DEF_FBTC_SLOT(5,   0xe5555555, SLOT_MIX),
--	[CXST_ENULL]	= __DEF_FBTC_SLOT(5,   0xaaaaaaaa, SLOT_ISO),
-+	[CXST_ENULL]	= __DEF_FBTC_SLOT(5,   0x55555555, SLOT_MIX),
- 	[CXST_WLK]	= __DEF_FBTC_SLOT(250, 0xea5a5a5a, SLOT_MIX),
- 	[CXST_W1FDD]	= __DEF_FBTC_SLOT(50,  0xffffffff, SLOT_ISO),
- 	[CXST_B1FDD]	= __DEF_FBTC_SLOT(50,  0xffffdfff, SLOT_ISO),
-@@ -4153,6 +4153,7 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
- 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
- 			_slot_set_le(btc, CXST_ENULL, s_def[CXST_ENULL].dur,
- 				     s_def[CXST_ENULL].cxtbl, s_def[CXST_ENULL].cxtype);
-+			_slot_set_dur(btc, CXST_EBT, dur_2);
- 			break;
- 		case BTC_CXP_OFFE_DEF2:
- 			_slot_set(btc, CXST_E2G, 20, cxtbl[1], SLOT_ISO);
-@@ -4162,6 +4163,7 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
- 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
- 			_slot_set_le(btc, CXST_ENULL, s_def[CXST_ENULL].dur,
- 				     s_def[CXST_ENULL].cxtbl, s_def[CXST_ENULL].cxtype);
-+			_slot_set_dur(btc, CXST_EBT, dur_2);
- 			break;
- 		case BTC_CXP_OFFE_2GBWMIXB:
- 			if (a2dp->exist)
-@@ -4170,6 +4172,7 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
- 				_slot_set(btc, CXST_E2G, 5, tbl_w1, SLOT_MIX);
- 			_slot_set_le(btc, CXST_EBT, cpu_to_le16(40),
- 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
-+			_slot_set_dur(btc, CXST_EBT, dur_2);
- 			break;
- 		case BTC_CXP_OFFE_WL: /* for 4-way */
- 			_slot_set(btc, CXST_E2G, 5, cxtbl[1], SLOT_MIX);
--- 
-2.25.1
+This does not seem an endian issue to me, because either of them we should get a value
+other than 0.
+
+> 
+> Interestingly, DMA read/write accesses work fine for other rings, just not for
+> this one. What makes the REO status ring so special? I couldn’t find anything in
+> the initialization routine that would explain the difference.
+> 
+> Could anyone give me a hint on what I should be looking for?
+> 
+> 
+What hardware are you using? WCN7850 or QCN9274?
+
+> Best regards
+> Alexander Wilhelm
+>
 
 
