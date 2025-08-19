@@ -1,91 +1,111 @@
-Return-Path: <linux-wireless+bounces-26442-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26443-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8424BB2B5FC
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 03:30:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC46B2B7EA
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 05:46:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD0F35270DC
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 01:30:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D0273A797D
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 03:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B65116DEB1;
-	Tue, 19 Aug 2025 01:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3816023741;
+	Tue, 19 Aug 2025 03:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="AXXcABDs"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="HiBiODR9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006391E47BA;
-	Tue, 19 Aug 2025 01:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF19BA4A
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Aug 2025 03:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755567017; cv=none; b=NTyEah9MT01KBkosJCNtmKEVQJ/6+XRSLtI+etoBVt+Tj8nGsnn3ZcEQo9wt8ZFsOaWwOwMZr5NIwpvKLpoWH1l5mvqG/y5di0MW9rnGbhnF6r5f5LEXyZd4R0uSwS15UJZKw/Qu2UlpGka3pCCRAK0FAJ+xoPAXyUB88VUz9G8=
+	t=1755575132; cv=none; b=CameLvwpiJMp+mRflDRDd5OibKNMGwAvC70Oe2UnfyxIZ+5qiqTqDvmczuYCSUYNo/CMuqnh6TQqyVNZ9L1X89cWX/zi7jOlv/fiL9BMqsDD4PPl5gvI+QkU1yuoKy+wfqQHGOT/eSXG76WYWXAztF75Sr42ejt4Lwh8LS9XDl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755567017; c=relaxed/simple;
-	bh=KrhjKHWaskiquIZeVdoF1Nx4OCf1G6OqoI6qRcTp4yY=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=vFn/xufF17XXNU6fA/mCbpiHZs1i8nbrAR+Rfd8iAuA58oIKLoyReLrL3QwtQgzltnJ9eS0pQ9PtNqXzw0HiAvj8QwsDjDq0OVkAfuOrVTmAhBXX7cM80WFr51Pfkg8wPkbKVhWdXJGYdqgxK4NAHNF35arO4syT3gtUT5FeVHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=AXXcABDs; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1755575132; c=relaxed/simple;
+	bh=5KNuYX1suTC/zQllKE6yro0Gr/TMZBNaBcq1o7WZjRs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qhU0t480DmWz4BYpD7nsUfGo1BpE57rGHINa02eM/omXlqBFaYJgSktuP9gB30CxsFPZWpyHNt03v1ICWUrmBEEue8vN30VDX+n8yUHVY/DN+kLgjvl0gjnWrXxNiMIsNErasoi/ybFU5tu8MfB3dtzvucj50TpyB3Uds3PKYVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=HiBiODR9; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57J1UBuI41863213, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57J3jP9t92064790, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1755567011; bh=7CVQ5zTljnh9TMNtumXoAl/dBzTmJgMU/Okh09Nc/Ac=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date;
-	b=AXXcABDs9m0kCxO87gXRPgiaWDD+m/0nxErieAPuPuXRG+vAKoEhHW373VCUfxwAp
-	 MMjrMKabTb/N+C51M4ibBJnglKL2DKroAJfMv4++RTcJQB7HnfmHnKQyOD/vJMparg
-	 lni6uQ84xot626jFIE1WWtOiEX4PZDUFPWPmuQbcjLjTAsAQUqgWqBF3b3AajHCdXo
-	 062gObV7JM8DCWd3CwCIyEDDrk7zJbAZYNg2yEiSYDAzEqa3/BQrkq/kG8WcX2tmPH
-	 83ZbduEUa0Ha0Xo2HkLHrkj72akT5gsVEgHU5h2kPgMmp3hVeRRPlClRMYjwishHbR
-	 VEF6L3LQfyNgg==
+	t=1755575125; bh=cK1FReMMxURuhNYbLrKTEri6773dGyB2GmTXh4sQDp8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=HiBiODR9sFPEffoQ4e32IpU5PVXnWHO581v1EnVzpgHvsVKqrsRnXli11VSoFTU5t
+	 uujbwDZRAJtVCVjUwpbXhQh59/7Ar0HxWsuHSPrvM39dMt0B72yd1eZFnwkLCVWwaW
+	 lkeU7jWntnitNLDINrhk/T9kytN+tTsi3TqrDXwLJdTxZ/AhZ2+Ol49TI6M4IkPCVx
+	 NKRfucy+6yf84uGz7HonrXiBbPGJpqJ5I0jtgbBZY8gLU8pRisOQoM8tuzwSk/dOt+
+	 Ck+B9DdEk3shWZGrbqxv6lwnfV0dtI/P3m1BqZpmMLP4UZNcD2LPcdH9rqU3xCKQML
+	 la/2GZX9YL3Uw==
 Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57J1UBuI41863213
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 Aug 2025 09:30:11 +0800
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57J3jP9t92064790
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Aug 2025 11:45:25 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 19 Aug 2025 09:30:12 +0800
+ 15.2.1544.11; Tue, 19 Aug 2025 11:45:26 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 19 Aug
- 2025 09:30:12 +0800
+ 2025 11:45:25 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Liao Yuanhong <liaoyuanhong@vivo.com>, Ping-Ke Shih <pkshih@realtek.com>,
-        "open list:REALTEK WIRELESS DRIVER (rtw89)" <linux-wireless@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-CC: Liao Yuanhong <liaoyuanhong@vivo.com>
-Subject: Re: [PATCH] wifi: rtw89: 8852bt: Simplify unnecessary if-else conditions
-In-Reply-To: <20250818064219.448066-1-liaoyuanhong@vivo.com>
-References: <20250818064219.448066-1-liaoyuanhong@vivo.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <ku920601@realtek.com>, <phhuang@realtek.com>
+Subject: [PATCH rtw-next 0/4] wifi: rtw89: report per-channel noise level to get better user experience
+Date: Tue, 19 Aug 2025 11:44:24 +0800
+Message-ID: <20250819034428.26307-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Message-ID: <92d7b814-5f0e-4fc7-8a0d-d3d2daa244bb@RTKEXHMBS06.realtek.com.tw>
-Date: Tue, 19 Aug 2025 09:30:12 +0800
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTKEXHMBS06.realtek.com.tw (10.21.1.56)
 
-Liao Yuanhong <liaoyuanhong@vivo.com> wrote:
+First two patches are to add feature of reporting noise level, so
+supplicant has more clues to make decision when doing roaming.
 
-> Some simple if-else logic can be simplified using the ! operator to improve
-> code readability.
-> 
-> Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
+Third and forth patches are to update firmware feature and BT coexistence
+parameters by the way.
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+Ching-Te Ku (1):
+  wifi: rtw89: coex: Limit Wi-Fi scan slot cost to avoid A2DP glitch
 
-33319e8fd7ac wifi: rtw89: 8852bt: Simplify unnecessary if-else conditions in _dpk_onoff()
+Ping-Ke Shih (1):
+  wifi: rtw89: 8852c: update firmware crash trigger type for newer
+    firmware
 
----
-https://github.com/pkshih/rtw.git
+Po-Hao Huang (2):
+  wifi: rtw89: 8852a: report per-channel noise level by get_survey ops
+  wifi: rtw89: 8852a: report average RSSI to avoid unnecessary scanning
+
+ drivers/net/wireless/realtek/rtw89/coex.c     |   5 +-
+ drivers/net/wireless/realtek/rtw89/core.c     |   4 +
+ drivers/net/wireless/realtek/rtw89/core.h     |  22 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       |   1 +
+ drivers/net/wireless/realtek/rtw89/mac.c      |   4 +
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  35 ++
+ drivers/net/wireless/realtek/rtw89/phy.c      | 306 +++++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/phy.h      |  20 ++
+ drivers/net/wireless/realtek/rtw89/phy_be.c   |   9 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |  42 +++
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   3 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  45 ++-
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |   3 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |   3 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |   3 +
+ 15 files changed, 497 insertions(+), 8 deletions(-)
+
+-- 
+2.25.1
 
 
