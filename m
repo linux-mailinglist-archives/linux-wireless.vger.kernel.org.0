@@ -1,145 +1,115 @@
-Return-Path: <linux-wireless+bounces-26462-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26463-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B3DB2CAB5
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 19:36:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A63B2CB33
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 19:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DED483AB259
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 17:36:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29AAB7B8769
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Aug 2025 17:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5E02E22BC;
-	Tue, 19 Aug 2025 17:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D41A30F7F7;
+	Tue, 19 Aug 2025 17:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="pmPTEtxL"
+	dkim=pass (2048-bit key) header.d=comcast.net header.i=@comcast.net header.b="iLSI0kSq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from resqmta-h2p-567037.sys.comcast.net (resqmta-h2p-567037.sys.comcast.net [96.102.200.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CAB304989
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Aug 2025 17:36:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFCC34AAFD
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Aug 2025 17:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.102.200.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755624987; cv=none; b=pLUhEGBz3b60iBJ6fncHfyZYJm5V598O40FiBJTTX/UH9gW1nCvG9jihDA5RD6LW3Nu4Eu81WHRxtmC8YBDXZzGLfHvfNxzxcTG/JGmGg4TXzdB6NH2AsN6OPuwGFLfUgOCY+omIfUKTbbUVYoZUg2dKZRvLzciyRdGBdKonwD8=
+	t=1755625160; cv=none; b=aiJlzNVST/GHsByTfDfUEkJroJgpCrM/r04dzax5QuG19PHOcVbgf9CeuVucjZVAZdRcgo1vYSEHrgc+Kcu11bJLifWiWj5ySAt1pPQO8Ea1iw2Lp6gEMOz4EzjYGtL2r3Esxr/LOCSUnGnqfcimPF8kW4pWZ+hsdcpwuEXtwTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755624987; c=relaxed/simple;
-	bh=TP/uoNmKlWXTjZyXBaYgURRMp+6Qq/d+fBBO3uHTfEk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=pkiUzCsSUwMuwrprUgw+SjJP17CZUj/49gfl7RtpPTpfOGOCadcQPec7sKPN/bsi1dsrIr+/NnSNa9Y+fV32TOqJAhfrovMDwfgrFuQCvXmYSwqVuT5ohEkNUIDtt+88Y478sqGwSh59D1zQIUpdctxDkASBC9Lx9i4ZugSq+Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=pmPTEtxL; arc=none smtp.client-ip=67.231.154.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A268D30868B
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Aug 2025 17:27:39 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 635B32400C1;
-	Tue, 19 Aug 2025 17:27:31 +0000 (UTC)
-Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 97CD013C2B0;
-	Tue, 19 Aug 2025 10:27:30 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 97CD013C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1755624450;
-	bh=TP/uoNmKlWXTjZyXBaYgURRMp+6Qq/d+fBBO3uHTfEk=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=pmPTEtxLAgpImCQwciH4htnj5pvscaXALlgsPER3it4G369V+16VZzvxPBkxSmKu6
-	 PqIenOVv6/45PlMMXPCW7dSU2HWpgBqLU/vJTARyEctyzvt8iT004J84JaBEbIHhMn
-	 hHCqDkC8MmPw4APcm0CQ601SDtihbuaI5cQSYgQc=
-Message-ID: <08f86ed0-32d8-5a8f-2beb-d885dba40232@candelatech.com>
-Date: Tue, 19 Aug 2025 10:27:30 -0700
+	s=arc-20240116; t=1755625160; c=relaxed/simple;
+	bh=KkdjP+xkKFxvCc4AqsmRbpDrphwVii66/2aadOjXg0Y=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=BWep1znODk9qbWLJIJE2jtM/liWywnoOcwtyvSRDcOQVOr1Fq7jFCGu5k30J78rjBz6nExZlFQzzhRUAQGXU38kTtGfoS/XFphaXPMOwb0VJiYEOmQ0V+LhDzXSbNqNSk2LFz9HO8KCTok+9vhvqFOXGpsONT0gsnEwVdZ9DpKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=comcast.net; spf=pass smtp.mailfrom=comcast.net; dkim=pass (2048-bit key) header.d=comcast.net header.i=@comcast.net header.b=iLSI0kSq; arc=none smtp.client-ip=96.102.200.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=comcast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=comcast.net
+Received: from resomta-h2p-555359.sys.comcast.net ([96.102.179.201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 256/256 bits)
+	(Client did not present a certificate)
+	by resqmta-h2p-567037.sys.comcast.net with ESMTPS
+	id oORLuaAPe6tT4oQGGuWZPR; Tue, 19 Aug 2025 17:36:40 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+	s=20190202a; t=1755625000;
+	bh=KkdjP+xkKFxvCc4AqsmRbpDrphwVii66/2aadOjXg0Y=;
+	h=Received:Received:Date:From:To:Message-ID:Subject:MIME-Version:
+	 Content-Type:Xfinity-Spam-Result;
+	b=iLSI0kSqEC8gmtuOtJcXCJIsNSKFQDiDaBM1tZqUk98vkyHvUcqiP9KvfYriiteIJ
+	 F7BxdfMAuxOWW9yAXb/O2VcMfHwfCQtm8aAkBC0UHSx8rey4rCQnJeeM5inb7FJere
+	 xNxWkewgi923uKYi4cnBZrjyj97ZJzp5hz2Q1uu2wwbdRsLygoxRFMuqUWDApOI3W/
+	 zrO0HU+s+gyOqd8faRP8ulOBas97ojYJEPs4qaCUQiW2ei9w1n7LRvlLvyfvwXiZE7
+	 Pwtb8+K/+sQrhg6jZnZt41MI+o9SbZJCN2Vl0RfsI2Gs/2PcvyuqaTsFKaYhyVBIW7
+	 XO7F8jMku/P5g==
+Received: from boobie.home ([73.69.89.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 256/256 bits)
+	(Client did not present a certificate)
+	by resomta-h2p-555359.sys.comcast.net with ESMTPSA
+	id oQGCuwULGARtkoQGEuxiPw; Tue, 19 Aug 2025 17:36:40 +0000
+Date: Tue, 19 Aug 2025 13:36:38 -0400 (EDT)
+From: Ameer Antar <ameerantar@comcast.net>
+To: Balsam Chihi <balsam.chihi@moment.tech>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+	jjohnson@kernel.org
+Message-ID: <1321153053.0.1755624998195@boobie.home>
+In-Reply-To: <CAONkfw58jcGRxotm2zJasQd56oDR-h0b3Z0Yi+pE8hdrmN=Ucg@mail.gmail.com>
+References: <20250611164004.38580-1-balsam.chihi@moment.tech>
+	<91fa8b1d-7bd0-4beb-80ef-eb65d2562f17@oss.qualcomm.com> <CAONkfw5Xyk8CGmVDpWZfkWnuCcFq6400jUkqyeMDtS0UNSh9vg@mail.gmail.com>
+	<ecab2156-b234-4fba-a2ad-13a2d9b4693f@oss.qualcomm.com> <CAONkfw4hkDQtJyOj4RVsR3V=FJDJYKnjtmqzD=jBMy1ax=tC_A@mail.gmail.com>
+	<0dfe48fc-085f-4dce-933d-e0f132d2ff9c@oss.qualcomm.com> <CAONkfw4p1AuE-MhGiZNMmi-PXR+CjoY63K2Yx_dmv2vnjo-Eyg@mail.gmail.com>
+	<CAONkfw58jcGRxotm2zJasQd56oDR-h0b3Z0Yi+pE8hdrmN=Ucg@mail.gmail.com>
+Subject: Re: [PATCH] ath11k: pci: avoid unsafe register access during
+ shutdown
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 1/2] wifi: mt76: mt7996: disable beacons when going
- offchannel
-To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-References: <20250813121106.81559-1-nbd@nbd.name>
-Content-Language: en-US
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <20250813121106.81559-1-nbd@nbd.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1755624452-4jiqhcHHD6zE
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;at1;1755624452;4jiqhcHHD6zE;<greearb@candelatech.com>;340f598122f25443170ac9d27e6a82df
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-CMAE-Envelope: MS4xfNRExL+WcnRtJHrQ+U/4CjUMmGo271K+AGvdIzEKIYIvoIe5010ScJCPoxAyx48TkXsb+RrGktvJ934s07EF2MPTEkl8Rm+uzcBcxnfcDQsePeZ/ymDd
+ X7LA8pS+IAiCpNOs4aDW8o4quHpG+RcQEmgDY/27D/URLkW0ql7tOF3b5pSilynEVmEPnB9sqzyZqeT2mxuD3s1e8d9LusXW4q3Ece+BmpjJQ+AZt9vuJnyf
+ Jq1ys2pyxfQlelPhFl9WOrKkEGmJ5G5qD5wA340oAGnyZ3mivTEEolF8Ueemi3HKUmqbGPtkh0KA3fBjjpADEyENbPGpt/7stfJuDD5wi0lYs7RjOYTQet4m
+ jHh2vDyA
 
-On 8/13/25 05:11, Felix Fietkau wrote:
-> Avoid leaking beacons on unrelated channels during scanning/roc
-> 
-> Fixes: c56d6edebc1f ("wifi: mt76: mt7996: use emulated hardware scan support")
-> Reported-by: Chad Monroe <chad.monroe@adtran.com>
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> ---
->   .../net/wireless/mediatek/mt76/mt7996/mac.c   | 46 +++++++++++--------
->   .../net/wireless/mediatek/mt76/mt7996/main.c  |  5 ++
->   .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 11 +++--
->   .../wireless/mediatek/mt76/mt7996/mt7996.h    |  1 +
->   4 files changed, 42 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-> index 6333a064c4f7..d3d3b96f7dd2 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-> @@ -1698,17 +1698,37 @@ mt7996_wait_reset_state(struct mt7996_dev *dev, u32 state)
->   static void
->   mt7996_update_vif_beacon(void *priv, u8 *mac, struct ieee80211_vif *vif)
->   {
-> -	struct ieee80211_hw *hw = priv;
-> +	struct ieee80211_bss_conf *link_conf;
-> +	struct mt7996_phy *phy = priv;
-> +	struct mt7996_dev *dev = phy->dev;
-> +	unsigned int link_id;
-> +
->   
->   	switch (vif->type) {
->   	case NL80211_IFTYPE_MESH_POINT:
->   	case NL80211_IFTYPE_ADHOC:
->   	case NL80211_IFTYPE_AP:
-> -		mt7996_mcu_add_beacon(hw, vif, &vif->bss_conf);
->   		break;
->   	default:
-> -		break;
-> +		return;
->   	}
-> +
-> +	for_each_vif_active_link(vif, link_conf, link_id) {
-> +		struct mt7996_vif_link *link;
-> +
-> +		link = mt7996_vif_link(dev, vif, link_id);
-> +		if (link->phy != phy)
-> +			continue;
-> +
-> +		mt7996_mcu_add_beacon(dev->mt76.hw, vif, link_conf);
-> +	}
+Balsam, do you have a patch for this? I also have cards that require differ=
+ent
+bin files for each band. I haven't been able to figure out how to do this v=
+ia
+configuration rather than rebuilding drivers.
 
-Hello Felix,
+Thanks.
+-Ameer
 
-We attempted to backport this into our tree, and we found that 'link'
-in the code above is NULL sometimes and we were seeing crashes.  Adding
-a check for null seems to have fixed it.
+----- Original Message -----
+From: Balsam Chihi <balsam.chihi@moment.tech>
+To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+jjohnson@kernel.org
+Subject: Re: [PATCH] ath11k: pci: avoid unsafe register access during shutd=
+own
+Date: 8/19/25 4:50:47 AM
 
-Possibly this does not happen in upstream code, so just FYI.
-
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
-
+>Hello,
+>I Have a question on the same subject but not related to the bug.
+>I have many identical PCIe WiFi cards on the system and I need to load
+>a different board-2.bin on each one (1 adapter per frequency band).
+>Is there any kernel built-in solution for that?
+>I could not find any, so I had to create a patch that loads a
+>different board-2.bin for each card based on the pci device address.
+>I patched ath11k's core.c file so that it reads a string from a text
+>file in the rootfs (board-2.bin path per wifi card).
+>If the text file is not found, the driver loads the default file
+>provided by linux-firmware for all cards, the original behaviour.
+>Please let me know if there is a better solution for that.
+>Best regards.
+>Balsam
 
