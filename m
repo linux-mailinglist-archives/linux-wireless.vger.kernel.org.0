@@ -1,111 +1,145 @@
-Return-Path: <linux-wireless+bounces-26469-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26470-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FACB2D4AA
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 09:16:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BF5B2D59C
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 10:04:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 26D354E2199
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 07:16:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48B9D162ED1
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 08:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC5C2D375C;
-	Wed, 20 Aug 2025 07:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B370E283FC3;
+	Wed, 20 Aug 2025 08:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QxBZUq5s"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BF5Kq+K/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A8C2D372A
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 07:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D5B24A047
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 08:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755674172; cv=none; b=poQ10NbNdxulYzJz2C8SXbgo4tnO9QIhBqICN4un+RhDDXsfeTcIsO+El0IlrckY8cEkp/bhqHzdokKMx5VdriKKrlp8peQ9tzJM+XB+zTZpIgLzKxllSMZZarnDA1fDMianq3uBjqBz80iIZf3zomqggbTIkf7upIJE4VMSwQ4=
+	t=1755676990; cv=none; b=sUiEzwMILCbF1pnNETLWijcQIeeUvJ5rCBpMR6Wv87LO21Sji8HJS6YkcOCdb+QJpMceYacH8/iu5tScyYHSz5XqWbTR6r4jnuOz6cY7uwtymukT42b0AD5nUXaWoxZz1g58WdzS5IherItQmtn4nWMu4o+8+YqW4+pNAC7Sf7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755674172; c=relaxed/simple;
-	bh=Pvqkz74cwAWAKqDGTppM7rfBCsXyshd6IRokMHYnDGY=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=gclgT6tFg04eB8yLOA36B4reORFiq+x/YPsdk+Y9sfIFjs4S8+u0S35sA0EiJSWAR3+nfFfxV+NGb9YcjIA5fJi1adtMrkcXhgJr1kLrISZq/blVpnJvcm5yZFalcwG5iWHn3Z+hmvjtDx5Khbkr+qN31IHnvnOAZlXFntQYrPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QxBZUq5s; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-71d60504db9so50665827b3.2
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 00:16:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755674169; x=1756278969; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=M0dHzTUGhmzSN3DWQWYi7y2ZIHyg1zgtk80aOoWvnlY=;
-        b=QxBZUq5sGXURJ1bB7Qnu8jaiajPXOn6ZULz1s4Vo3jRVK0AlkS2j3UL+jvcTP45sr+
-         +KdMyjnD8wbIIfkoyF8wKriqooSUkPdWsyuOEeftqW8X+FU7pl7BA07qrsuzy7RwF4DE
-         mJ9KU1LS91LlOs6eTYhi3d6NdtXwyjnk+9klngN27KV8hyq8AbvIJNfSDxfnzIUI89oO
-         puCqTGnXlMOf0aecWqt2XzHajz2VEudP/1MoMK6IptTlqkfC79h9R7HMFq9dwQJF6AN5
-         Yvt4HJZ3Q1vUl/2KaxgbTm18VWvDMZ/vI49j+qaJmdyvloGp6VwjxE/zti55WLgp4sku
-         Nj+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755674169; x=1756278969;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=M0dHzTUGhmzSN3DWQWYi7y2ZIHyg1zgtk80aOoWvnlY=;
-        b=rq4Pxp4KrW9Ea6XeiUo8pDqSw5BSleALBP/FEeI25S597nFUuukGneE+DtFAPmMJOQ
-         Bna32HSPebo4+wEXQZxpZnIQm/MrKS/C1CYzSIhRGAsDp7mmba/dvYSjRBmGh/RJMNQY
-         dRBNM2+ghRDwgka531nneFuCoFwaiF7Wu2m3OT9hXh00u8IvyLeHcUrBn/t7Om1yqSnU
-         H+Zq/3d4gB8L829j10lCennajax3ZeCWG9IxDyU6J/Jv6ckVVPOVSSGNjhSud0VmbLSR
-         2061oui4tLRFbCZfwbIS6LHV2qqP10Xtqg43aVSL1egvzUyernBaw62NtY7oVprmL70N
-         bglg==
-X-Gm-Message-State: AOJu0Yy3ZstlJF1ZUiG5gHdTeFMSr5fGYDkiXgdib98XmiRTK81yS4dD
-	dtZ318QuzUFkLuQhPa5xcGtUQqZ/kYYmIJuFRo1Ld/alb8l+r1VhtB4mW1cBa7uc3BOCNvOGp3u
-	R3h/GXLu7Jqv/HMMI7yjyhJ6kYevc8GLIWkml
-X-Gm-Gg: ASbGncsrcpH3yiwREs8354Cy2bPDPwsNNLBLcP1kcrPHo3KbP5xXMR2Kq2DZHA8ftZc
-	RzeI141rpPdLBIGWwoBzdQAMLijqMdmjj4Uye1L1FCyakPgBKL88bjDPbodipcF4DJi0zckN8dz
-	yfLeuzqmVhlEmaZJlvB0vPxedccGkzCxDdmYb+DCXDO/LUtGXxmMA4KMSeHIQNoIVGcQWzMpT3d
-	FuQu1rgcSHRg7+EKA==
-X-Google-Smtp-Source: AGHT+IFH6ou42T9Jpv+Z7NsUTyDlplcdXnkt52KU3iS4FxWlJ/WRvvhx5WnFhI9otgK8KeBQQmgUKZxlA8HWsOOH0pU=
-X-Received: by 2002:a05:690c:708d:b0:71e:6f13:976 with SMTP id
- 00721157ae682-71fb30c9772mr19227967b3.6.1755674169430; Wed, 20 Aug 2025
- 00:16:09 -0700 (PDT)
+	s=arc-20240116; t=1755676990; c=relaxed/simple;
+	bh=CggaYe6pO3ch61TJ0T9xRaJDiCd1exJq8Ey1hm2BEBY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UIsl55HZn3nI1qFYhWRar0gqM0wF8KhZZ9MKFphtl4bbE2kS/1w1MzUVefU8WVrhaPkcen9dt20K2+klqOT7AtMl5hwz0F1/rmR9SeGOj8vPMs7qVkWspED1BFUsMJl1/+OMydV4c/cz+x/Hc4FRi7PI+/5blTPcj5OGvABQw2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BF5Kq+K/; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57K1oexx025306;
+	Wed, 20 Aug 2025 08:03:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	xPQ251smWtJsbj5fDFVaalU6xEJ8NszNtoU+cNd16w0=; b=BF5Kq+K/U6Gg9Nk7
+	tKeoDg8qSISaOBedwwXerb7n9NCt8EL1QEF1c9AXKEgalQpcsdd1WXViFFkYokaP
+	Ddeks8+0Fm2L90r9sLcHoaAtnlxYUpMRFHtX4iJHmSFTg6+1DjV+MQDY1JiV00VP
+	XL+5hIJ8G7WVYdn+g+Ol4ha40ylg7CwBjRDnJma95MChis5h7R5rrAEZT3dV8dsl
+	IRDI5GXTU/84+2owqNtu/d1NLFGqla5IxZtY04GdKsl6b1BD+icqehzy9U3biXa+
+	M1kk1QTi2pH7LP0DsaxBpc6RvXE0DMp53A00EqGQOuC1aYyAH6qmccO8wT3G52Kt
+	R5EUFA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48n52a8wrs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 Aug 2025 08:03:03 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57K832fZ031587
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 Aug 2025 08:03:02 GMT
+Received: from [10.216.47.136] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 20 Aug
+ 2025 01:02:59 -0700
+Message-ID: <69f3fef9-017d-86fa-8fbb-2ac2a1df8ae4@quicinc.com>
+Date: Wed, 20 Aug 2025 13:32:55 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: XiaoYan Li <lxy.lixiaoyan@gmail.com>
-Date: Wed, 20 Aug 2025 15:15:57 +0800
-X-Gm-Features: Ac12FXwHoIVMjM3L2-8R-orwQ4Y1luOmrjakthVW7uDq-L2osEXWRzq_M9zZ8KI
-Message-ID: <CAH3TfsRyY1Rr9_y-v3ZcJvUzBt0y10x5i3nV43U0h6dkmUp5yA@mail.gmail.com>
-Subject: [Bug] mt7925e: cannot resume from suspend
-To: linux-wireless@vger.kernel.org
-Cc: "nbd@nbd.name" <nbd@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] ath11k: pci: avoid unsafe register access during shutdown
+Content-Language: en-US
+To: Balsam Chihi <balsam.chihi@moment.tech>,
+        Baochen Qiang
+	<baochen.qiang@oss.qualcomm.com>
+CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
+        <jjohnson@kernel.org>
+References: <20250611164004.38580-1-balsam.chihi@moment.tech>
+ <91fa8b1d-7bd0-4beb-80ef-eb65d2562f17@oss.qualcomm.com>
+ <CAONkfw5Xyk8CGmVDpWZfkWnuCcFq6400jUkqyeMDtS0UNSh9vg@mail.gmail.com>
+ <ecab2156-b234-4fba-a2ad-13a2d9b4693f@oss.qualcomm.com>
+ <CAONkfw4hkDQtJyOj4RVsR3V=FJDJYKnjtmqzD=jBMy1ax=tC_A@mail.gmail.com>
+ <0dfe48fc-085f-4dce-933d-e0f132d2ff9c@oss.qualcomm.com>
+ <CAONkfw4p1AuE-MhGiZNMmi-PXR+CjoY63K2Yx_dmv2vnjo-Eyg@mail.gmail.com>
+ <CAONkfw58jcGRxotm2zJasQd56oDR-h0b3Z0Yi+pE8hdrmN=Ucg@mail.gmail.com>
+From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+In-Reply-To: <CAONkfw58jcGRxotm2zJasQd56oDR-h0b3Z0Yi+pE8hdrmN=Ucg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 4gAtr6cl3EjhUhTzG5gal5JCiX3pzuTH
+X-Authority-Analysis: v=2.4 cv=B83gEOtM c=1 sm=1 tr=0 ts=68a58137 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8
+ a=NEAV23lmAAAA:8 a=3cWLWNXYlCYREKE2kekA:9 a=QEXdDO2ut3YA:10
+ a=HhbK4dLum7pmb74im6QT:22
+X-Proofpoint-GUID: 4gAtr6cl3EjhUhTzG5gal5JCiX3pzuTH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIwMDAxMyBTYWx0ZWRfX+fU6JEEftabF
+ sm4QHgXdap2Mo1V5xMXaSN14zGKu3tgK4BoSqCnsWtJEeyAscb34+h2YCAIDJyZkxHKmYaF0VP4
+ gYVH2GyGEQjeFjzUr8Nxzu/08KpWdmOQZ7NxmSyX5sURkLw9nJdyQ+jIevIg9pFas0tnzsaWUve
+ 3Z6pFXqLv/PxOwHSAIIc2tgaxj3qNfW6Uc0UNKDAghrIWl+vZ0cc80SRrDIptcKwYCRSwpT21K4
+ pnt9InpCN8sZyJc5UZXyG7eHxSmO2UoNzTf6hI9OJgoGGz4rkxZt2odEz6gpJBY2TwhBHErRK/g
+ V5Gqjluhvyxmxq7WCM69p5Bnohy4UHGsKDR/hLWezSOuw8B2bsyR6FjCzoyjSAoAfaBUT0sKOlv
+ afZxcYqa8bVXATKJ7Kx+os1ycVJBAw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-20_03,2025-08-20_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 impostorscore=0 clxscore=1015 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2508110000 definitions=main-2508200013
 
-* Originally reported at https://bugzilla.kernel.org/show_bug.cgi?id=220395
 
-Hi,
 
-I recently upgraded my laptop's network card to MT7925 and discovered
-an issue with the new network card when system suspending
-(s2idle/s0ix). I can no longer resume my laptop from suspend; the
-screen remains dark. After forcefully rebooting, I can see that the
-dmesg of the previous boot ends with those two lines.
+On 8/19/2025 2:20 PM, Balsam Chihi wrote:
+> Hello,
+> I Have a question on the same subject but not related to the bug.
+> I have many identical PCIe WiFi cards on the system and I need to load
+> a different board-2.bin on each one (1 adapter per frequency band).
 
-  kernel: PM: suspend entry (s2idle)
-  kernel: Filesystems sync: 0.010 seconds
+So you are using multiple pcie devices at the same time in a system
+with ath11k? Wondering if you are using any private patches to address
+QRTR instance id clash issue [1][2].
 
-After running `sudo rmmod mt7925e`, the problem disappeared. I'm not
-sure if it's a regression.
+> Is there any kernel built-in solution for that?
+> I could not find any, so I had to create a patch that loads a
+> different board-2.bin for each card based on the pci device address.
 
-Detailed informations:
+Current board data selection for QCN from board-2.bin is based on pci+chip-id+board-id
+combination, not based on pci device address. You can find the chip-id and board-id in the
+debug during QMI boot stage. Then you can use ath11k-bdencoder [3] to encode those
+board data binaries into board-2.bin. This way you can package all the needed board
+specific binaries for a hardware into a single board-2.bin. Ath11k board data file
+load logic uses chip-id and board-id to download the right board data for the given
+hardware variant.
 
-  Distro: Fedora 42 (Silverblue)
-  Kernel: 6.15.8-200.fc42.x86_64 (Firmware: 20250708)
-  Device: Yoga ASP9 (Laptop)
-  Processor: AMD Ryzen AI 9 365
-  Network Card: MT7925
+Vasanth
 
-Please let me know if any further information is needed.
-
-Thanks,
-Xiaoyan Li
+[1] https://patchwork.kernel.org/project/linux-wireless/list/?series=692423&state=*&order=date
+[2] https://lore.kernel.org/all/20230111170033.32454-1-kvalo@kernel.org/
+[3] 
+https://github.com/qca/qca-swiss-army-knife/blob/master/tools/scripts/ath11k/ath11k-bdencoder
 
