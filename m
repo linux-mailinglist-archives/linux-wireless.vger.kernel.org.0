@@ -1,135 +1,236 @@
-Return-Path: <linux-wireless+bounces-26466-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26467-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF95B2D0AC
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 02:26:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D3EB2D32C
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 06:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A89E1895363
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 00:27:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D14352A1B85
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 04:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5061F35337B;
-	Wed, 20 Aug 2025 00:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF802343C0;
+	Wed, 20 Aug 2025 04:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="gU8C8olQ"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Dfi4XGWf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E11353372
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 00:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC94D220F38
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 04:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755649613; cv=none; b=ZRB/YTq31kt1YIGNbftPNWlXkszwfiYYUJXLeYPt27EJKHpq9fvTqcO3AjcnjlBFpRbUPmXkaZbyeyFzFq11aWpslycg4bk/SAqR1CEXC0TLz+36PBkZcWLoEoB2YQifh/xkuh9zFeG5nKvcxvtpUD2laPX4oQ+IDF62ekGkuXM=
+	t=1755665425; cv=none; b=DGB5RqZk8PxnDT++zwORBrk96FMtsIiMZydLiJvimcJUC8pi/MVQfFx2GeperJPFYbsIztGiJ855R9x3N5UjZhr0Rg4RoRsUMbqxq7GX94rLnyGK2PKAqFqHyiCkZ9TcpKxhJ5G6LlN87V0OrVOKYjyiVFbpPk5jidlcmf64suY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755649613; c=relaxed/simple;
-	bh=xq4xoCPolxoj4HP9Jo5B5dl476eXo0gTQTquCg8jDNg=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YBBVakmUveJlHwvuyVV1SYVHy3PlcXNnuXuSfsgciJaqnAn2VBDJThiR+CIb6TkWMfVeFsdYwKPMNvP8cenoR0yb60FnnYCCkrvLMNjMelND6YgH9+Z1aFHD8Yk0qCVpjXKGXVkOI5a8rzcbodsFjeFqyIMuZkNpMWhq/hp3F+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=gU8C8olQ; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57K0QjBsA3614059, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1755649605; bh=xq4xoCPolxoj4HP9Jo5B5dl476eXo0gTQTquCg8jDNg=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=gU8C8olQn5+tOP13fl1yCy4bbag7fSxwWXOnxXi0yFNR8RvG/y19OcPGW7hVor7ek
-	 OTzX9C/SfZuOgtz1ogXgzQFLbYig30+NrKiYPkKL9AGeDpzvf/9PBeeUhu8rgU1yF0
-	 Ct9ZCFSmt0SoOK1PGTG0Der+WaX7zh95Rx31SQdndbigBlHL62P6pXsyNIZ3A2Nfom
-	 vJV4nLc/iQRhjYueGVKUKkeML+/d2ZtEOkwwrOksK1zqcvtUQELzLWxgTwV85nntHq
-	 zKdgynlztNHPibjt2Y0yYiWCKaVN+ms77zP92PGUvlRSxMOzocHqW120CiROtv5E4/
-	 N+T2aRW58PAXQ==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57K0QjBsA3614059
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Aug 2025 08:26:45 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 20 Aug 2025 08:26:45 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::9617:3fd6:3830:25cc]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::9617:3fd6:3830:25cc%10]) with mapi id
- 15.02.1544.011; Wed, 20 Aug 2025 08:26:45 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next] wifi: rtw88: Use led->brightness_set_blocking for PCI too
-Thread-Topic: [PATCH rtw-next] wifi: rtw88: Use led->brightness_set_blocking
- for PCI too
-Thread-Index: AQHcETmIv+aZT9I26ke2y0xZfWH+qLRqrHEA
-Date: Wed, 20 Aug 2025 00:26:45 +0000
-Message-ID: <aba7583da5fc48bca933d4b5d2fae6aa@realtek.com>
-References: <ad8a49ef-4f2d-4a61-8292-952db9c4eb65@gmail.com>
-In-Reply-To: <ad8a49ef-4f2d-4a61-8292-952db9c4eb65@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1755665425; c=relaxed/simple;
+	bh=J7aLxptPdAHoKwvJG7I9ECgnt1g8HKEMrF5XFFZI/HY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l2tt2EduJArEydGexTqLUA2804r6jfTbceWTujoD3O5bPmnblxhrsQStk8l+4oFT9ICB4ALCwUUe8HevkaNTxKW//r6vPS9vI2mCBDGylLaZUXhMEwhBqGWrqVDPe08DnclTXuaP1KR3q8ArldzNNxZR2FKwGGaH5cvvUQFc0K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Dfi4XGWf; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57K1q5RB026721
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 04:50:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	0Kc49WKRfQ4kJFiTDPrjxF5cfNocY22jjwu3rJcPr9o=; b=Dfi4XGWfJgkBaS8L
+	1MHQ2yR7KWpV5xia3dkv3XT1KEPFLiH5+DN8ItE+QSzngi1GE2UKxBqTQxQCdN61
+	z2XdE7OYhkE8Hqwq6bz2MrqrfEDh1tEgjEk35O7lxZJ21jGggKM36OG3FPdhhw6H
+	lGu7ndg9nO6OfmAyjYorKd6SWrHZnXMXnyBOZnKn+B7l6acC+9JF81XHi0D/0PmE
+	vYU9Z7glBHBaM0RCUzBt/iqv00nfqyhlXJJIrE6u5kBiB/faFMNrxHSeNauO/T9v
+	EP33Ow+4zw45ZXrCk27NiUkjgVGG8uT5iIG4VSZ6h0wfBkPoGYtEMerldnkd9dGw
+	se1d+Q==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48n5290djm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 04:50:22 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-323267858edso6135038a91.1
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Aug 2025 21:50:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755665422; x=1756270222;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Kc49WKRfQ4kJFiTDPrjxF5cfNocY22jjwu3rJcPr9o=;
+        b=QTdVRgR6mOc2orNDYwIRsEiPTqOYveIUBwsiedzezYdPDdViMxPRT0mk2s/YxnqBsD
+         dqKPGVFhA5ZHDaxje4i6Iu2d8rAOUn+C7/SEG7KUJUrYJYXkn/SVceJio0gvGHsJk2Zm
+         AN2/8lEWdjT02Ur8+mUW6ikh1HuhvDRyE/Sh0ijAuslBQp2KUWcYIVDX7jLEiHR2NqA+
+         T/6/eiyc7LWxoEEUW3QUUOyYkd6wolmiekd8IyEE/rQ3jsGi+Qn0fklu+YwZzK6SXEjF
+         Tzy50jb+Vo2punA6/8Lt7lNh+gE2HgY8bd2O3t9V8g9vvcFGSIaMVE33IXcytQ9gaVEB
+         vvCw==
+X-Gm-Message-State: AOJu0YwaFDQxUHEZC/FqGXysWqCYshlMzJ6DBj51WE3/ievASULanJRz
+	qNOljByE1Lm9QUN4bxe3WE8QLV57MjezKyNTgTrNAHd/9p1Gd6aT6ssirFTSdebCkfgrYk1SHOb
+	UWJjm8DZxGDK1JkhsCQb/j1EwjwIfATGfcKDXIUEOLJqfNGYHYVSpfGHVE0q4rqRSpG2bww==
+X-Gm-Gg: ASbGncvcg6XOHeP9HR+hlGrOiZMsZHgU8oKpHdjcWkDZvQZJWWm95k1iHHPjRPL2DC1
+	LATAaoQooCgUziv5LPzpV7FCbtczglc0XYDcLS5d+utlwX1o2JKDYBlVaqtgdbCw4Og06phJkKn
+	JNFm8MH9H2+jImsbHuKEqWsl440K1zy7847ZcnnodKpj3Q8fnVoQbccqvAg9EC6xz/GfFt490i3
+	UIfVS4Yc3GQ/TeG07aNMHtwyeJJDVA5lWX92lbQA58/a6RwURSr4kh+h5FqxGIWGi8cBTMuTmni
+	+MgmE8WfgG4FWgQPzcfe3xOjKXWg1YfD9w3C/MApGqWROTSkfE1nFrNuBg+E9AuV27KXds9vlDb
+	HPGFOjzqzVMw=
+X-Received: by 2002:a17:90b:544b:b0:321:c53c:4e70 with SMTP id 98e67ed59e1d1-324e13ad075mr2012971a91.9.1755665421904;
+        Tue, 19 Aug 2025 21:50:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHXwTl3vuHw5N7Y7UmHDVAzbnaYw56yh4QKooZ0Q9HtRnfRB72ym+zdhguStg8z/KgZ+gRMQ==
+X-Received: by 2002:a17:90b:544b:b0:321:c53c:4e70 with SMTP id 98e67ed59e1d1-324e13ad075mr2012951a91.9.1755665421347;
+        Tue, 19 Aug 2025 21:50:21 -0700 (PDT)
+Received: from [192.168.225.142] ([157.49.248.25])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b47640afb33sm1135052a12.38.2025.08.19.21.50.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Aug 2025 21:50:20 -0700 (PDT)
+Message-ID: <b9a45766-2034-b444-1348-57d360aa70b5@oss.qualcomm.com>
+Date: Wed, 20 Aug 2025 10:20:17 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH ath12k-ng 00/13] wifi: ath12k: Ath12k modularization
+ changes
+Content-Language: en-US
+To: Kiran Venkatappa <quic_kiranv@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250812-ath12k-mod-v1-0-8c9b0eb9335d@quicinc.com>
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20250812-ath12k-mod-v1-0-8c9b0eb9335d@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=ZJKOWX7b c=1 sm=1 tr=0 ts=68a5540e cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=pagehsHO18wfKU6DcLw+7w==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=S4ZghseuWT4aJn0Jpu0A:9
+ a=QEXdDO2ut3YA:10 a=rl5im9kqc5Lf4LNbBjHf:22
+X-Proofpoint-ORIG-GUID: y-cpheMgfAtX7MedP8RofIPIx21JV-hl
+X-Proofpoint-GUID: y-cpheMgfAtX7MedP8RofIPIx21JV-hl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIwMDAxMyBTYWx0ZWRfX+7RC8uA93szN
+ S4OVbQNASEoaWxagLT4NX/o5mjB7tT3oECq9DfEU8lChsFbeno3HVVjoy6f5t1YLZsH/Ea6m83m
+ yOjb64z//niiyUYZsVndBMk5SYSVocd1Yo7nTI3X0ETcDJkM83+XhZNi3howVw1uwUNthV8BVjX
+ 5KkoSaAidnZjBqBZEXsImH0l8RrrLUDPnJa1J0aj4ZlQp8BeGzg3EWkO+m7b0IbLOXMv5VbkmPD
+ Wy8wI1Bc3YgIPtCpU2mTmXNxiM+teEmBRRVNGbODf4ZKvTzjM2CzOq6wyfq07CgHZtQC1O0f7MV
+ jPM1HiXmRKOfaC9D21VMnYjE8dXe9S60RNvwh7ymEhIgwGZfYaeu5DZkWqMKPgFeGnWOH+wMRYF
+ 0k5IQtjGCHCisgaR1ljRCDrCHM76JA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-20_02,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 malwarescore=0 adultscore=0 suspectscore=0
+ lowpriorityscore=0 impostorscore=0 phishscore=0 clxscore=1015 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2508110000 definitions=main-2508200013
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBDb21t
-aXQgMjZhOGJmOTc4YWU5ICgid2lmaTogcnR3ODg6IExvY2sgcnR3ZGV2LT5tdXRleCBiZWZvcmUg
-c2V0dGluZw0KPiB0aGUgTEVEIikgbWFkZSBydHdfbGVkX3NldCgpIHNsZWVwLCBidXQgdGhhdCdz
-IG5vdCBhbGxvd2VkLiBGaXggaXQgYnkNCj4gdXNpbmcgdGhlIGJyaWdodG5lc3Nfc2V0X2Jsb2Nr
-aW5nIG1lbWJlciBvZiBzdHJ1Y3QgbGVkX2NsYXNzZGV2IGZvcg0KPiBQQ0kgZGV2aWNlcyB0b28u
-IFRoaXMgb25lIGlzIGFsbG93ZWQgdG8gc2xlZXAuDQo+IA0KPiBiYWQ6IHNjaGVkdWxpbmcgZnJv
-bSB0aGUgaWRsZSB0aHJlYWQhDQo+IG5peCBrZXJuZWw6IENQVTogNyBVSUQ6IDAgUElEOiAwIENv
-bW06IHN3YXBwZXIvNyBUYWludGVkOiBHICAgICAgICBXICBPICAgICAgICA2LjE2LjAgIzEtTml4
-T1MNCj4gUFJFRU1QVCh2b2x1bnRhcnkpDQo+IG5peCBrZXJuZWw6IFRhaW50ZWQ6IFtXXT1XQVJO
-LCBbT109T09UX01PRFVMRQ0KPiBuaXgga2VybmVsOiBIYXJkd2FyZSBuYW1lOiBbUkVEQUNURURd
-DQo+IG5peCBrZXJuZWw6IENhbGwgVHJhY2U6DQo+IG5peCBrZXJuZWw6ICA8SVJRPg0KPiBuaXgg
-a2VybmVsOiAgZHVtcF9zdGFja19sdmwrMHg2My8weDkwDQo+IG5peCBrZXJuZWw6ICBkZXF1ZXVl
-X3Rhc2tfaWRsZSsweDJkLzB4NTANCj4gbml4IGtlcm5lbDogIF9fc2NoZWR1bGUrMHgxOTEvMHgx
-MzEwDQo+IG5peCBrZXJuZWw6ICA/IHhhc19sb2FkKzB4MTEvMHhkMA0KPiBuaXgga2VybmVsOiAg
-c2NoZWR1bGUrMHgyYi8weGUwDQo+IG5peCBrZXJuZWw6ICBzY2hlZHVsZV9wcmVlbXB0X2Rpc2Fi
-bGVkKzB4MTkvMHgzMA0KPiBuaXgga2VybmVsOiAgX19tdXRleF9sb2NrLmNvbnN0cHJvcC4wKzB4
-M2ZkLzB4N2QwDQo+IG5peCBrZXJuZWw6ICBydHdfbGVkX3NldCsweDI3LzB4NjAgW3J0d19jb3Jl
-XQ0KPiBuaXgga2VybmVsOiAgbGVkX2JsaW5rX3NldF9ub3NsZWVwKzB4NTYvMHhiMA0KPiBuaXgg
-a2VybmVsOiAgbGVkX3RyaWdnZXJfYmxpbmsrMHg0OS8weDgwDQo+IG5peCBrZXJuZWw6ICA/IF9f
-cGZ4X3RwdF90cmlnX3RpbWVyKzB4MTAvMHgxMCBbbWFjODAyMTFdDQo+IG5peCBrZXJuZWw6ICBj
-YWxsX3RpbWVyX2ZuKzB4MmYvMHgxNDANCj4gbml4IGtlcm5lbDogID8gX19wZnhfdHB0X3RyaWdf
-dGltZXIrMHgxMC8weDEwIFttYWM4MDIxMV0NCj4gbml4IGtlcm5lbDogIF9fcnVuX3RpbWVycysw
-eDIxYS8weDJiMA0KPiBuaXgga2VybmVsOiAgcnVuX3RpbWVyX3NvZnRpcnErMHg4ZS8weDEwMA0K
-PiBuaXgga2VybmVsOiAgaGFuZGxlX3NvZnRpcnFzKzB4ZWEvMHgyYzANCj4gbml4IGtlcm5lbDog
-ID8gc3Jzb19hbGlhc19yZXR1cm5fdGh1bmsrMHg1LzB4ZmJlZjUNCj4gbml4IGtlcm5lbDogIF9f
-aXJxX2V4aXRfcmN1KzB4ZGMvMHgxMDANCj4gbml4IGtlcm5lbDogIHN5c3ZlY19hcGljX3RpbWVy
-X2ludGVycnVwdCsweDdjLzB4OTANCj4gbml4IGtlcm5lbDogIDwvSVJRPg0KPiBuaXgga2VybmVs
-OiAgPFRBU0s+DQo+IG5peCBrZXJuZWw6ICBhc21fc3lzdmVjX2FwaWNfdGltZXJfaW50ZXJydXB0
-KzB4MWEvMHgyMA0KPiBuaXgga2VybmVsOiBSSVA6IDAwMTA6Y3B1aWRsZV9lbnRlcl9zdGF0ZSsw
-eGNjLzB4NDUwDQo+IG5peCBrZXJuZWw6IENvZGU6IDAwIGU4IDA4IDdjIDJlIGZmIGU4IGQzIGVl
-IGZmIGZmIDQ5IDg5IGM2IDBmIDFmIDQ0IDAwIDAwIDMxIGZmIGU4IGM0IGQxIDJjIGZmIDgwIDdk
-IGQ3DQo+IDAwIDBmIDg1IDVkIDAyIDAwIDAwIGZiIDBmIDFmIDQ0IDAwIDAwIDw0NT4gODUgZmYg
-MGYgODggYTAgMDEgMDAgMDAgNDkgNjMgZjcgNGMgODkgZjIgNDggOGQgMD4NCj4gbml4IGtlcm5l
-bDogUlNQOiAwMDE4OmZmZmZkNTc5ODAxYzdlNjggRUZMQUdTOiAwMDAwMDI0Ng0KPiBuaXgga2Vy
-bmVsOiBSQVg6IDAwMDAwMDAwMDAwMDAwMDAgUkJYOiAwMDAwMDAwMDAwMDAwMDAzIFJDWDogMDAw
-MDAwMDAwMDAwMDAwMA0KPiBuaXgga2VybmVsOiBSRFg6IDAwMDAwMDAwMDAwMDAwMDAgUlNJOiAw
-MDAwMDAwMDAwMDAwMDAwIFJESTogMDAwMDAwMDAwMDAwMDAwMA0KPiBuaXgga2VybmVsOiBSQlA6
-IGZmZmZkNTc5ODAxYzdlYTAgUjA4OiAwMDAwMDAwMDAwMDAwMDAwIFIwOTogMDAwMDAwMDAwMDAw
-MDAwMA0KPiBuaXgga2VybmVsOiBSMTA6IDAwMDAwMDAwMDAwMDAwMDAgUjExOiAwMDAwMDAwMDAw
-MDAwMDAwIFIxMjogZmZmZjhlYWIwNDYyYTQwMA0KPiBuaXgga2VybmVsOiBSMTM6IGZmZmZmZmZm
-OWE3ZDdhMjAgUjE0OiAwMDAwMDAwM2FlYmU3NTFkIFIxNTogMDAwMDAwMDAwMDAwMDAwMw0KPiBu
-aXgga2VybmVsOiAgPyBjcHVpZGxlX2VudGVyX3N0YXRlKzB4YmMvMHg0NTANCj4gbml4IGtlcm5l
-bDogIGNwdWlkbGVfZW50ZXIrMHgzMi8weDUwDQo+IG5peCBrZXJuZWw6ICBkb19pZGxlKzB4MWIx
-LzB4MjEwDQo+IG5peCBrZXJuZWw6ICBjcHVfc3RhcnR1cF9lbnRyeSsweDJkLzB4MzANCj4gbml4
-IGtlcm5lbDogIHN0YXJ0X3NlY29uZGFyeSsweDExOC8weDE0MA0KPiBuaXgga2VybmVsOiAgY29t
-bW9uX3N0YXJ0dXBfNjQrMHgxM2UvMHgxNDENCj4gbml4IGtlcm5lbDogIDwvVEFTSz4NCj4gDQo+
-IEZpeGVzOiAyNmE4YmY5NzhhZTkgKCJ3aWZpOiBydHc4ODogTG9jayBydHdkZXYtPm11dGV4IGJl
-Zm9yZSBzZXR0aW5nIHRoZSBMRUQiKQ0KDQpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KDQo+
-IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29t
-Pg0KDQpBY2tlZC1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQoNCj4gLS0t
-DQo+IEknbSBub3Qgc3VyZSBpZiB0aGUgY29tbWl0IGhhc2ggd2lsbCBiZSBjb3JyZWN0IGJ5IHRo
-ZSB0aW1lIHRoYXQNCj4gY29tbWl0IG1ha2VzIGl0IGludG8gbWFpbmxpbmU/DQoNCldlIGFsd2F5
-cyBnbyB2aWEgd2lyZWxlc3MgLyB3aXJlbGVzcy1uZXh0IHRyZWUsIHNvIHRoZSBjb21taXQgbXVz
-dCBiZSB0aGVyZQ0KYWxyZWFkeS4gT25seSBxdWVzdGlvbiBpcyB0aGF0IHlvdSB3YW50IDYuMTcg
-KGN1cnJlbnRseSAtcmMyKSBvciA2LjE4IChuZXh0KT8NCkkgdGhpbmsgdGhpcyBzaG91bGQgYmUg
-Ni4xNywgc28gdHJlZSBzZWxlY3Rpb24gb2Ygc3ViamVjdCB0YWcgc2hvdWxkIGJlDQoicnR3IiBp
-bnN0ZWFkIG9mICJydHctbmV4dCIuIA0KDQoNCg==
+
+
+On 8/12/2025 10:39 PM, Kiran Venkatappa wrote:
+> Current ath drivers have separate implementations for different
+> classes of devices. For example, ath11k supports WiFi-6 devices,
+> while ath12k supports Wi-Fi 7 devices. However, there is significant
+> common functionality across these generations due to shared firmware
+> and hardware architecture. In the existing driver code, this leverage
+> is achieved through code duplication. As a result, when a new driver
+> is introduced, many features are missed, and new additions require
+> porting across different generation drivers.
+> 
+> To improve reuse and maintainability, ath12k should be split into common
+> and device-specific modules. Common code can be shared across multiple
+> architectures, enabling better leverage for future hardware generations.
+> generation drivers.
+> 
+> Firmware interfaces and core initialization sequences are typically common
+> across different device families. In contrast, hardware register offsets, copy
+> engine mappings, and HAL configurations are usually hardware-specific.
+> 
+> Common components include:
+>        - mac80211 interface: Control path operations are mostly common across
+>          different ATH hardware and will be shared as much as possible.
+>        - Firmware interface (WMI, HTT, HTC, QMI): Firmware messaging and
+>          sequences are common and maintained with backward/forward compatibility
+>          using TLVs.
+>        - Datapath: Data path files are also separated similarly. More information
+>          will be provided in later patches.
+>        - Core initialization, reset, and recovery sequences: These will be part
+>          of the shared code.
+> 
+> Device-specific code includes:
+>        - Hardware capabilities, configurations, HAL, and other
+>          architecture-specific logic.
+> 
+> The original ath12k.ko is split into these two modules as depicted below.
+> 
+>                                        +-----------------+
+>                                        |                 |
+>                                        |   ath12k.ko     |
+>                                        |    (common)     |
+>      +---------------+                 |                 |
+>      |               |                 +-----------------+
+>      |   ath12k.ko   | ===========>
+>      |               |                 +------------------+
+>      +---------------+                 |                  |
+>                                        | ath12k_wifi7.ko  |
+>                                        | (wifi7 family)   |
+>                                        |                  |
+>                                        +------------------+
+> 
+> The ath12k.ko module will serve as the common component, while ath12k_wifi7.ko
+> will be the architecture-specific module for WiFi-7 devices.
+> 
+> After this modular separation, adding support for a new device will
+> primarily involve implementing device-specific code, while reusing the
+> majority of the shared common components.
+> 
+> ---
+> Kiran Venkatappa (13):
+>        wifi: ath12k: Restructure PCI code to common and Wi-Fi 7 specific logic
+>        wifi: ath12k: Move Copy Engine configuration to Wi-Fi 7 specific file
+>        wifi: ath12k: Move Wi-Fi 7 WMI configuration to dedicated file
+>        wifi: ath12k: Move Wi-Fi 7 MHI configuration to dedicated file
+>        wifi: ath12k: Rename hw.c to Wi-Fi 7 specific implementation file
+>        wifi: ath12k: Rename ahb_hif_ops to reflect generic usage
+>        wifi: ath12k: Restructure ahb.c into common and Wi-Fi 7 specific modules
+>        wifi: ath12k: Move Wi-Fi 7 specific init routines to dedicated file
+>        wifi: ath12k: Move hw_init invocation to target-specific probe
+>        wifi: ath12k: Modularize driver into common and Wi-Fi 7 specific components
+>        wifi: ath12k: Rename ath12k_* symbols to ath12k_wifi7_* for clarity
+>        wifi: ath12k: Remove HAL defines from shared PCI code
+>        wifi: ath12k: Remove HAL define dependencies from shared AHB code
+>   
+>   drivers/net/wireless/ath/ath12k/Makefile         |   4 +-
+>   drivers/net/wireless/ath/ath12k/ahb.c            | 139 ++--
+>   drivers/net/wireless/ath/ath12k/ahb.h            |  27 +-
+>   drivers/net/wireless/ath/ath12k/ce.c             | 301 -------
+>   drivers/net/wireless/ath/ath12k/ce.h             |   5 +-
+>   drivers/net/wireless/ath/ath12k/core.c           |  38 +-
+>   drivers/net/wireless/ath/ath12k/core.h           |   7 +
+>   drivers/net/wireless/ath/ath12k/debug.c          |   4 +
+>   drivers/net/wireless/ath/ath12k/dp_rx.c          |   3 +
+>   drivers/net/wireless/ath/ath12k/hal.c            |   4 +
+>   drivers/net/wireless/ath/ath12k/htc.c            |   2 +
+>   drivers/net/wireless/ath/ath12k/hw.h             |   2 -
+>   drivers/net/wireless/ath/ath12k/mhi.c            | 130 ---
+>   drivers/net/wireless/ath/ath12k/mhi.h            |   4 +-
+>   drivers/net/wireless/ath/ath12k/pci.c            | 215 ++---
+>   drivers/net/wireless/ath/ath12k/pci.h            |  28 +-
+>   drivers/net/wireless/ath/ath12k/peer.c           |   2 +
+>   drivers/net/wireless/ath/ath12k/wifi7/Makefile   |  10 +
+>   drivers/net/wireless/ath/ath12k/wifi7/ahb.c      |  71 ++
+>   drivers/net/wireless/ath/ath12k/wifi7/ahb.h      |  20 +
+>   drivers/net/wireless/ath/ath12k/wifi7/ce.c       | 973 +++++++++++++++++++++++
+>   drivers/net/wireless/ath/ath12k/wifi7/ce.h       |  22 +
+>   drivers/net/wireless/ath/ath12k/wifi7/core.c     |  44 +
+>   drivers/net/wireless/ath/ath12k/{ => wifi7}/hw.c | 798 +++----------------
+>   drivers/net/wireless/ath/ath12k/wifi7/hw.h       |  13 +
+>   drivers/net/wireless/ath/ath12k/wifi7/mhi.c      | 138 ++++
+>   drivers/net/wireless/ath/ath12k/wifi7/mhi.h      |  11 +
+>   drivers/net/wireless/ath/ath12k/wifi7/pci.c      | 188 +++++
+>   drivers/net/wireless/ath/ath12k/wifi7/pci.h      |  12 +
+>   drivers/net/wireless/ath/ath12k/wifi7/wmi.c      | 105 +++
+>   drivers/net/wireless/ath/ath12k/wifi7/wmi.h      |  15 +
+>   drivers/net/wireless/ath/ath12k/wmi.c            |  97 ---
+>   drivers/net/wireless/ath/ath12k/wmi.h            |   4 -
+>   33 files changed, 1956 insertions(+), 1480 deletions(-)
+
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
