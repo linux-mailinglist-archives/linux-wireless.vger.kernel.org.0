@@ -1,240 +1,111 @@
-Return-Path: <linux-wireless+bounces-26468-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26469-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A023B2D487
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 09:11:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FACB2D4AA
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 09:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00863621CBA
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 07:11:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 26D354E2199
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 07:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E61277C80;
-	Wed, 20 Aug 2025 07:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC5C2D375C;
+	Wed, 20 Aug 2025 07:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iGf7/PdB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QxBZUq5s"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286F02D24AA
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 07:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A8C2D372A
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 07:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755673900; cv=none; b=Cv8bO3LKX2MY97HxqWfDaLrKPcGFxFLYqZFeHGOLDV02aq3D58bLCUOKMokFkQa69Tp1RoDG5bdmT0ij808SMMTEK1bTtUjjpOlgTfzsGQWk9j2UXUqTjENpSkZxhkYiuNVDHX7yAeF01Q/q8c2XRyB9ssvgFQst0WgTPJADD5c=
+	t=1755674172; cv=none; b=poQ10NbNdxulYzJz2C8SXbgo4tnO9QIhBqICN4un+RhDDXsfeTcIsO+El0IlrckY8cEkp/bhqHzdokKMx5VdriKKrlp8peQ9tzJM+XB+zTZpIgLzKxllSMZZarnDA1fDMianq3uBjqBz80iIZf3zomqggbTIkf7upIJE4VMSwQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755673900; c=relaxed/simple;
-	bh=5ReA4GnAlQGR60KFDddq7Ff9WakOJ5ug8NAQHcp+sp8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KWnSinHI1v5g89dSlG9/nk0Q3bKmewCbRL0pcK2RStC3IwrWokAP1pJvQNwjv+LKy65od7dIWLsqRHlmviN/Oi/OaO9NRSBvawaSlMplkFNqYdy+o6mpOa9FVSj9av7SnETaXKAQKwGYLEFpkNgqtFHRJWXPAgP3PZiO1tW830s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iGf7/PdB; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57K1oVqc001993
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 07:11:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	zXzEOnV+cDeHlGbV6CuI7MA2Sg53isAp+SimUKmE4U4=; b=iGf7/PdBddYaULYM
-	2jl+tlsatPcTmWdUCob5SOP4/fbnoEiYH6ztf2zE3Gbiu95CkLK+C2YyFLez/ASu
-	232mh9Ni2xuUdl89Zk5VgYSJKpKNO5RcOoyM3Wr0Ro0lgZ/34EhqOVSN8QCmLU44
-	LGWpYZ9GVJzJAcEGuckhm8U8N6kz6dttv95j3RJ3mWOksADQ1N8CBMzmkA+rYfrx
-	Qj4eQBZv0xprz+X/DNNnEX9+R2fQ58lMsqxu4PX7SMmVH+vaRw+KDzvFahmqvaNI
-	q+tTeQKRWNwhnqoOpYF8A4qGezOThLUzfoOTzQf5fvqq8eiN+hWkSNwjmxT2kjkJ
-	158WWA==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48n528rrbh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 07:11:35 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-323266a1e87so6527536a91.0
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 00:11:35 -0700 (PDT)
+	s=arc-20240116; t=1755674172; c=relaxed/simple;
+	bh=Pvqkz74cwAWAKqDGTppM7rfBCsXyshd6IRokMHYnDGY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=gclgT6tFg04eB8yLOA36B4reORFiq+x/YPsdk+Y9sfIFjs4S8+u0S35sA0EiJSWAR3+nfFfxV+NGb9YcjIA5fJi1adtMrkcXhgJr1kLrISZq/blVpnJvcm5yZFalcwG5iWHn3Z+hmvjtDx5Khbkr+qN31IHnvnOAZlXFntQYrPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QxBZUq5s; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-71d60504db9so50665827b3.2
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 00:16:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755674169; x=1756278969; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=M0dHzTUGhmzSN3DWQWYi7y2ZIHyg1zgtk80aOoWvnlY=;
+        b=QxBZUq5sGXURJ1bB7Qnu8jaiajPXOn6ZULz1s4Vo3jRVK0AlkS2j3UL+jvcTP45sr+
+         +KdMyjnD8wbIIfkoyF8wKriqooSUkPdWsyuOEeftqW8X+FU7pl7BA07qrsuzy7RwF4DE
+         mJ9KU1LS91LlOs6eTYhi3d6NdtXwyjnk+9klngN27KV8hyq8AbvIJNfSDxfnzIUI89oO
+         puCqTGnXlMOf0aecWqt2XzHajz2VEudP/1MoMK6IptTlqkfC79h9R7HMFq9dwQJF6AN5
+         Yvt4HJZ3Q1vUl/2KaxgbTm18VWvDMZ/vI49j+qaJmdyvloGp6VwjxE/zti55WLgp4sku
+         Nj+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755673894; x=1756278694;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zXzEOnV+cDeHlGbV6CuI7MA2Sg53isAp+SimUKmE4U4=;
-        b=YQ6qgZXlUlT8c1yu73b9JrgeqtNc98YSBbo7QHwJexHRB/hBUAAoxJvQ5Sm4g3vnK/
-         A4cIrRFUxG1A5Cg11NzeWf+8soo60H8FKNG6prJnPTDqsKm1z3FxDNsrqc5JOoykAr6i
-         t392g/eCWYjaROxgARTSdGLFuyWD6Pjq5bNUcFggTbWu3Tt1U49fR0wqPy9x+If5+Lq2
-         JOEPoztMvL7HQNxRLIj2/bqJO0nNuH6xBpK/RIZy0CzUDpzh6dp0GjiJUUNkf1MyCBJF
-         tHhP5uI55AXxThMtSYfvdfTVBe8jU05CTyswfBT9MDdKNN1Zr49egxIv1ABod/piG4w9
-         XEYQ==
-X-Gm-Message-State: AOJu0YzrPY7WCOkNegXUgg7IRh+tT260++RcRx0ixwJqi7iCTNr88GcA
-	lbCA0CJ6qFLtZHZeW6k4JrWzfxSH+lLmsRkLZOk80m+lL7a7RzPqWvJJCyt/HMZAAHnMrnqw/zi
-	T2lu6HqwJDFjcQ8YBmC3ZbQ8+54df41gqsBzU+rEkwphyS6qLZPnc/irOFHz1LwEqXfR7dg==
-X-Gm-Gg: ASbGncu/XH3Jc+1L5cHjXb7/vk/VjzFc0cHlpC8Ui6eOHEpCpAYWky+H2mIGWT6xjEX
-	jX/tLXwHo0e65UWaL8hJM/YSfTRrIl331wU1rP8S4qWa16pxQuU+0Fm1OljYrm67npqsVtdAm5s
-	/ffXA3uoUHlIaI4CtldkGR5PbVtlS9QOl0Zy9M0+dWEr3AIX4Og/S4s4KZyRItoqaCnzWYddu8h
-	yEyO4NVzPEUa7eUY3gx6DrkIMjTg2SC02D2tUcYtunaWwXTK0kS3Gkg+FwQ6lFD9HG30h/HiXS5
-	mk/wBVbuUWnuxefuDZF06r2jaPayD5xXKk/XvjxSh11zzOShLisv697V+gwg9jCGgJjqidKdrtH
-	rpqKa3GsWGUeyAyySt6/mTOKWFl8O+wEYFK06
-X-Received: by 2002:a17:90b:57c5:b0:31e:cee1:c5e1 with SMTP id 98e67ed59e1d1-324e1408994mr2595860a91.30.1755673894369;
-        Wed, 20 Aug 2025 00:11:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEU+wrtOzR0AAC0rbw6K+R2q4waLhIbFFCTghUtyPLxEoNyigaKo7hvTjikhXZt8YxCZ7hy9Q==
-X-Received: by 2002:a17:90b:57c5:b0:31e:cee1:c5e1 with SMTP id 98e67ed59e1d1-324e1408994mr2595824a91.30.1755673893873;
-        Wed, 20 Aug 2025 00:11:33 -0700 (PDT)
-Received: from [10.133.33.94] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-324e26259b6sm1324377a91.17.2025.08.20.00.11.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Aug 2025 00:11:33 -0700 (PDT)
-Message-ID: <110b6e64-7a9c-4a8f-9b1c-830251d6c733@oss.qualcomm.com>
-Date: Wed, 20 Aug 2025 15:11:28 +0800
+        d=1e100.net; s=20230601; t=1755674169; x=1756278969;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M0dHzTUGhmzSN3DWQWYi7y2ZIHyg1zgtk80aOoWvnlY=;
+        b=rq4Pxp4KrW9Ea6XeiUo8pDqSw5BSleALBP/FEeI25S597nFUuukGneE+DtFAPmMJOQ
+         Bna32HSPebo4+wEXQZxpZnIQm/MrKS/C1CYzSIhRGAsDp7mmba/dvYSjRBmGh/RJMNQY
+         dRBNM2+ghRDwgka531nneFuCoFwaiF7Wu2m3OT9hXh00u8IvyLeHcUrBn/t7Om1yqSnU
+         H+Zq/3d4gB8L829j10lCennajax3ZeCWG9IxDyU6J/Jv6ckVVPOVSSGNjhSud0VmbLSR
+         2061oui4tLRFbCZfwbIS6LHV2qqP10Xtqg43aVSL1egvzUyernBaw62NtY7oVprmL70N
+         bglg==
+X-Gm-Message-State: AOJu0Yy3ZstlJF1ZUiG5gHdTeFMSr5fGYDkiXgdib98XmiRTK81yS4dD
+	dtZ318QuzUFkLuQhPa5xcGtUQqZ/kYYmIJuFRo1Ld/alb8l+r1VhtB4mW1cBa7uc3BOCNvOGp3u
+	R3h/GXLu7Jqv/HMMI7yjyhJ6kYevc8GLIWkml
+X-Gm-Gg: ASbGncsrcpH3yiwREs8354Cy2bPDPwsNNLBLcP1kcrPHo3KbP5xXMR2Kq2DZHA8ftZc
+	RzeI141rpPdLBIGWwoBzdQAMLijqMdmjj4Uye1L1FCyakPgBKL88bjDPbodipcF4DJi0zckN8dz
+	yfLeuzqmVhlEmaZJlvB0vPxedccGkzCxDdmYb+DCXDO/LUtGXxmMA4KMSeHIQNoIVGcQWzMpT3d
+	FuQu1rgcSHRg7+EKA==
+X-Google-Smtp-Source: AGHT+IFH6ou42T9Jpv+Z7NsUTyDlplcdXnkt52KU3iS4FxWlJ/WRvvhx5WnFhI9otgK8KeBQQmgUKZxlA8HWsOOH0pU=
+X-Received: by 2002:a05:690c:708d:b0:71e:6f13:976 with SMTP id
+ 00721157ae682-71fb30c9772mr19227967b3.6.1755674169430; Wed, 20 Aug 2025
+ 00:16:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath12k-ng 00/13] wifi: ath12k: Ath12k modularization
- changes
-To: Kiran Venkatappa <quic_kiranv@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250812-ath12k-mod-v1-0-8c9b0eb9335d@quicinc.com>
-Content-Language: en-US
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-In-Reply-To: <20250812-ath12k-mod-v1-0-8c9b0eb9335d@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=fpOFpF4f c=1 sm=1 tr=0 ts=68a57527 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=FANxXbjX70Gmbhvze2IA:9
- a=QEXdDO2ut3YA:10 a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-GUID: zN0wiIYL1dMxr3yGbALKuYvke1pWSG2O
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIwMDAxMyBTYWx0ZWRfX2LWYyfqKOk0D
- DDV5AcaOVUX1p5Hbcx6WATWsdrufe+Bsi09riL81Xy/kVqCo78da6bd3oWzUBmRHlsGDrW7IhQj
- u3BO5rijDWmOPImR0zfB5QnzS/WhkEwk/E7PIbjMNyHTVv4+2qeRy4V5MQLXQfINlk6iBH8HL7g
- VpBd0Mc6rZBRoXYH/69Kf6luUlvacEV+wAgYBpopPWTMOwtg0hvFxnD7pN5Q7XhVDomkF//LMpC
- tmOs4D7wXg539plx44TYDUtYToVmKEVr99R0jmR+M+0c7ZrNgCxgIk2FyJR2vLbdBPM+gDoA9Yj
- cN72YZJNEz1EgQk9NTCCbR1gqZsvtMmY9Hcv5EGtv8W3opbYjYZFHJNLI6AhLsEFp1XnyB74k4f
- E/r36T235Ynh4IvO1xtL/7ol7FBKww==
-X-Proofpoint-ORIG-GUID: zN0wiIYL1dMxr3yGbALKuYvke1pWSG2O
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-20_03,2025-08-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 spamscore=0 clxscore=1015 adultscore=0
- suspectscore=0 bulkscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2508110000 definitions=main-2508200013
+From: XiaoYan Li <lxy.lixiaoyan@gmail.com>
+Date: Wed, 20 Aug 2025 15:15:57 +0800
+X-Gm-Features: Ac12FXwHoIVMjM3L2-8R-orwQ4Y1luOmrjakthVW7uDq-L2osEXWRzq_M9zZ8KI
+Message-ID: <CAH3TfsRyY1Rr9_y-v3ZcJvUzBt0y10x5i3nV43U0h6dkmUp5yA@mail.gmail.com>
+Subject: [Bug] mt7925e: cannot resume from suspend
+To: linux-wireless@vger.kernel.org
+Cc: "nbd@nbd.name" <nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
 
+* Originally reported at https://bugzilla.kernel.org/show_bug.cgi?id=220395
 
+Hi,
 
-On 8/13/2025 1:09 AM, Kiran Venkatappa wrote:
-> Current ath drivers have separate implementations for different
-> classes of devices. For example, ath11k supports WiFi-6 devices,
-> while ath12k supports Wi-Fi 7 devices. However, there is significant
-> common functionality across these generations due to shared firmware
-> and hardware architecture. In the existing driver code, this leverage
-> is achieved through code duplication. As a result, when a new driver
-> is introduced, many features are missed, and new additions require
-> porting across different generation drivers.
-> 
-> To improve reuse and maintainability, ath12k should be split into common
-> and device-specific modules. Common code can be shared across multiple
-> architectures, enabling better leverage for future hardware generations.
-> generation drivers.
-> 
-> Firmware interfaces and core initialization sequences are typically common
-> across different device families. In contrast, hardware register offsets, copy
-> engine mappings, and HAL configurations are usually hardware-specific.
-> 
-> Common components include:
->       - mac80211 interface: Control path operations are mostly common across
->         different ATH hardware and will be shared as much as possible.
->       - Firmware interface (WMI, HTT, HTC, QMI): Firmware messaging and
->         sequences are common and maintained with backward/forward compatibility
->         using TLVs.
->       - Datapath: Data path files are also separated similarly. More information
->         will be provided in later patches.
->       - Core initialization, reset, and recovery sequences: These will be part
->         of the shared code.
-> 
-> Device-specific code includes:
->       - Hardware capabilities, configurations, HAL, and other
->         architecture-specific logic.
-> 
-> The original ath12k.ko is split into these two modules as depicted below.
-> 
->                                       +-----------------+
->                                       |                 |
->                                       |   ath12k.ko     |
->                                       |    (common)     |
->     +---------------+                 |                 |
->     |               |                 +-----------------+
->     |   ath12k.ko   | ===========>
->     |               |                 +------------------+
->     +---------------+                 |                  |
->                                       | ath12k_wifi7.ko  |
->                                       | (wifi7 family)   |
->                                       |                  |
->                                       +------------------+
-> 
-> The ath12k.ko module will serve as the common component, while ath12k_wifi7.ko
-> will be the architecture-specific module for WiFi-7 devices.
-> 
-> After this modular separation, adding support for a new device will
-> primarily involve implementing device-specific code, while reusing the
-> majority of the shared common components.
-> 
-> ---
-> Kiran Venkatappa (13):
->       wifi: ath12k: Restructure PCI code to common and Wi-Fi 7 specific logic
->       wifi: ath12k: Move Copy Engine configuration to Wi-Fi 7 specific file
->       wifi: ath12k: Move Wi-Fi 7 WMI configuration to dedicated file
->       wifi: ath12k: Move Wi-Fi 7 MHI configuration to dedicated file
->       wifi: ath12k: Rename hw.c to Wi-Fi 7 specific implementation file
->       wifi: ath12k: Rename ahb_hif_ops to reflect generic usage
->       wifi: ath12k: Restructure ahb.c into common and Wi-Fi 7 specific modules
->       wifi: ath12k: Move Wi-Fi 7 specific init routines to dedicated file
->       wifi: ath12k: Move hw_init invocation to target-specific probe
->       wifi: ath12k: Modularize driver into common and Wi-Fi 7 specific components
->       wifi: ath12k: Rename ath12k_* symbols to ath12k_wifi7_* for clarity
->       wifi: ath12k: Remove HAL defines from shared PCI code
->       wifi: ath12k: Remove HAL define dependencies from shared AHB code
->  
->  drivers/net/wireless/ath/ath12k/Makefile         |   4 +-
->  drivers/net/wireless/ath/ath12k/ahb.c            | 139 ++--
->  drivers/net/wireless/ath/ath12k/ahb.h            |  27 +-
->  drivers/net/wireless/ath/ath12k/ce.c             | 301 -------
->  drivers/net/wireless/ath/ath12k/ce.h             |   5 +-
->  drivers/net/wireless/ath/ath12k/core.c           |  38 +-
->  drivers/net/wireless/ath/ath12k/core.h           |   7 +
->  drivers/net/wireless/ath/ath12k/debug.c          |   4 +
->  drivers/net/wireless/ath/ath12k/dp_rx.c          |   3 +
->  drivers/net/wireless/ath/ath12k/hal.c            |   4 +
->  drivers/net/wireless/ath/ath12k/htc.c            |   2 +
->  drivers/net/wireless/ath/ath12k/hw.h             |   2 -
->  drivers/net/wireless/ath/ath12k/mhi.c            | 130 ---
->  drivers/net/wireless/ath/ath12k/mhi.h            |   4 +-
->  drivers/net/wireless/ath/ath12k/pci.c            | 215 ++---
->  drivers/net/wireless/ath/ath12k/pci.h            |  28 +-
->  drivers/net/wireless/ath/ath12k/peer.c           |   2 +
->  drivers/net/wireless/ath/ath12k/wifi7/Makefile   |  10 +
->  drivers/net/wireless/ath/ath12k/wifi7/ahb.c      |  71 ++
->  drivers/net/wireless/ath/ath12k/wifi7/ahb.h      |  20 +
->  drivers/net/wireless/ath/ath12k/wifi7/ce.c       | 973 +++++++++++++++++++++++
->  drivers/net/wireless/ath/ath12k/wifi7/ce.h       |  22 +
->  drivers/net/wireless/ath/ath12k/wifi7/core.c     |  44 +
->  drivers/net/wireless/ath/ath12k/{ => wifi7}/hw.c | 798 +++----------------
->  drivers/net/wireless/ath/ath12k/wifi7/hw.h       |  13 +
->  drivers/net/wireless/ath/ath12k/wifi7/mhi.c      | 138 ++++
->  drivers/net/wireless/ath/ath12k/wifi7/mhi.h      |  11 +
->  drivers/net/wireless/ath/ath12k/wifi7/pci.c      | 188 +++++
->  drivers/net/wireless/ath/ath12k/wifi7/pci.h      |  12 +
->  drivers/net/wireless/ath/ath12k/wifi7/wmi.c      | 105 +++
->  drivers/net/wireless/ath/ath12k/wifi7/wmi.h      |  15 +
->  drivers/net/wireless/ath/ath12k/wmi.c            |  97 ---
->  drivers/net/wireless/ath/ath12k/wmi.h            |   4 -
->  33 files changed, 1956 insertions(+), 1480 deletions(-)
-> ---
-> base-commit: d9104cec3e8fe4b458b74709853231385779001f
-> change-id: 20250812-ath12k-mod-bd00156df202
-> 
+I recently upgraded my laptop's network card to MT7925 and discovered
+an issue with the new network card when system suspending
+(s2idle/s0ix). I can no longer resume my laptop from suspend; the
+screen remains dark. After forcefully rebooting, I can see that the
+dmesg of the previous boot ends with those two lines.
 
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>>
+  kernel: PM: suspend entry (s2idle)
+  kernel: Filesystems sync: 0.010 seconds
 
+After running `sudo rmmod mt7925e`, the problem disappeared. I'm not
+sure if it's a regression.
+
+Detailed informations:
+
+  Distro: Fedora 42 (Silverblue)
+  Kernel: 6.15.8-200.fc42.x86_64 (Firmware: 20250708)
+  Device: Yoga ASP9 (Laptop)
+  Processor: AMD Ryzen AI 9 365
+  Network Card: MT7925
+
+Please let me know if any further information is needed.
+
+Thanks,
+Xiaoyan Li
 
