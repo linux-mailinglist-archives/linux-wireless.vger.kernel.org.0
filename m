@@ -1,127 +1,129 @@
-Return-Path: <linux-wireless+bounces-26480-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26481-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DD1B2E22A
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 18:19:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB743B2E517
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 20:39:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6880188AE37
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 16:17:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55921A2751F
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Aug 2025 18:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7AD327785;
-	Wed, 20 Aug 2025 16:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BBF274B3C;
+	Wed, 20 Aug 2025 18:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="paPpanP+"
+	dkim=pass (2048-bit key) header.d=comcast.net header.i=@comcast.net header.b="ZSOgbLWk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from resdmta-c2p-566137.sys.comcast.net (resdmta-c2p-566137.sys.comcast.net [96.102.19.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0863F326D7F
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 16:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B735D28E0F
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 18:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.102.19.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755706643; cv=none; b=aB+9XBJG4ALQ3FQ6TkB+ybGWgnm0/P7rMM4HqBFA3LI7w+8zJQax9NNMt1ZjE5QUbVnLcO6pDU0p1fmY3gGi77T7dPvjn2lPz8Vmlo/uCxxQBUGggbf2a0XhHPfqAmANT5lljaPkJChFr31EIrd278yteGjjjRJCf/ldT3EmY1g=
+	t=1755715156; cv=none; b=FkSNd1Gf36wUt6R7ilXvaST4VgDpfgMl6xpPG6wV2+ac6GFkgZG8JO4+q9EAXBpCqxOC67gX/u2jsVrI5sDuGP0yRhIRBK1jhOwp26msE/X8rxb6GEJxqvpaO7oIDpS8ynAtS03Mjh8Fw7RqBX9rF3o+eIqFHiV8jhTKtddCvcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755706643; c=relaxed/simple;
-	bh=t+ycOb5iNlE3oQujrJjZp9WkbI6MVMq0bnMqM9b7LRo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fBGdu42duHCmgv8YaOvCoTn6jasNJec/EnDmDCFuyjQ0OsGSxA0q4Gk04PB2HeFKTXLBfDaCZ9h3IvdsQyhnzKb2ZGBB3MEXDp/bM9Xfjy304xH5euPsv9Rbs9tPBEMbxw1jqK38l/TNyRe9HRAJ4GBoZV3I/qX6T+bVINfaE+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=paPpanP+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F925C113CF
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 16:17:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755706641;
-	bh=t+ycOb5iNlE3oQujrJjZp9WkbI6MVMq0bnMqM9b7LRo=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=paPpanP+6j6Id2XAQw+l1Ns/fBw8uqCODHLS07VZOP4anZjsKxmN9dCWD++x+wraI
-	 RYDwIyP3j9cxaeNkR521mN0qJcD7jLGEpNYitPxmFVbm7RLysSjhliawQcwHVtff40
-	 1LsKtml83GDX1A1EdsY8erWB9VID5hlrpMKHhjljHz0B1RVHkvAqWSDLkD/AUURw97
-	 3m2pGfFJfSNLfrDMujwok/XYtuGJL/n90ZgHyPOqeG7ru74CaB0A8jG30BA3rF7EZr
-	 mjjmfEh4z/HujqX4+vJ9osqb9BpxqR6uOh+y/SH0Bw2nVi78qHT7pXZAFkDZmCLRFM
-	 4Z8m9E+9k/SEg==
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e94e6c6150eso35586276.3
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Aug 2025 09:17:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXAuUNeXcmQQWF6y3TLk76EpDLuvzschAeN8B9kWIGByqvkUMa3W7ovjwKZKmS4VYvqWP5Yz9UKUgfcudIkOA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzG+V8clBTdYsSt2yhTL37auELJyPW1teEp1q2cMuSoh97gqxpZ
-	wKKClV38dD+E1JJ69M9ntY1+DMAuFOy6NUsRY9snn2IQR2ejl3p8Z0KtIidKCwmWEws/XhYmtoK
-	6qHHSFOuITO5dCaf0T9KaR9dbG3S50w0=
-X-Google-Smtp-Source: AGHT+IEIvxy4pkBjmIrsNlC8iA7B1npTls4qyfPoYOP3dde7/lkDCFEZHzVAICwtTDSEfLDZEszUUaKvJvkzNr8ObbM=
-X-Received: by 2002:a05:6902:430c:b0:e94:e1e5:37f4 with SMTP id
- 3f1490d57ef6-e94f6707983mr3154446276.50.1755706640799; Wed, 20 Aug 2025
- 09:17:20 -0700 (PDT)
+	s=arc-20240116; t=1755715156; c=relaxed/simple;
+	bh=yx9tDzVnt2UCcod+hBGleC6/LhT/OguWs/OKq8aq0Wc=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=fB+fpSpIHoLt9zSL3a+hwDoRvWXVS0hmGiENyEJiEHHf7yeIjmj3vAa+VwEp1jrxBWEXBNG0f0b0IzQWZsmX36I6ftneq93KZaUKOmmpfFt8NjffxuFI0A7JXqnaNlXt37PrGgcugEvkE/ZJCd1H3q2ahlFoDVEo1Tg88Y/AIcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=comcast.net; spf=pass smtp.mailfrom=comcast.net; dkim=pass (2048-bit key) header.d=comcast.net header.i=@comcast.net header.b=ZSOgbLWk; arc=none smtp.client-ip=96.102.19.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=comcast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=comcast.net
+Received: from resomta-c2p-555955.sys.comcast.net ([96.102.18.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 256/256 bits)
+	(Client did not present a certificate)
+	by resdmta-c2p-566137.sys.comcast.net with ESMTPS
+	id okNtu5Qu0fRqsonfqulgAH; Wed, 20 Aug 2025 18:36:38 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=comcast.net;
+	s=20190202a; t=1755714998;
+	bh=yx9tDzVnt2UCcod+hBGleC6/LhT/OguWs/OKq8aq0Wc=;
+	h=Received:Received:Date:From:To:Message-ID:Subject:MIME-Version:
+	 Content-Type:Xfinity-Spam-Result;
+	b=ZSOgbLWkFB+FYpDhPwrSLYO29ezHJ+ANjmKhHEAbKA8XoeeorbdfQH5Mihj4JHIWR
+	 7EalSfywpAMpqXxJE/AyVrcm6fHM40GbsV5X/IfDWem9wH+OHokU1s25GYu5XNFi5h
+	 +xATWSgUaNyIKPGDPEKQreuuvRMBq71nmLhYP0Gmxv/Im5KEeUA3xthSJkCle8hJXG
+	 bX9C+/ZHjwUb+wiKVFHJZwko/sWNPJ5YA8a6uDBFc4L0d8wXafJH11fc70I1Vd4R0I
+	 C6oSN/zwdpTeqtA6ys5ejbRcYSoPc1WlNzB9l90PF/+nTlrvpCPq1/Y8dCEwyH9ZXO
+	 P/EODtqBuNzRA==
+Received: from boobie.home ([73.69.89.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 256/256 bits)
+	(Client did not present a certificate)
+	by resomta-c2p-555955.sys.comcast.net with ESMTPSA
+	id onfnu9te9lltSonfnu6YiG; Wed, 20 Aug 2025 18:36:37 +0000
+Date: Wed, 20 Aug 2025 14:36:35 -0400 (EDT)
+From: Ameer Antar <ameerantar@comcast.net>
+To: Balsam Chihi <balsam.chihi@moment.tech>
+Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+	jjohnson@kernel.org
+Message-ID: <1664582047.0.1755714995989@boobie.home>
+In-Reply-To: <CAONkfw452N+cOrLo4p7KXOE_W6p=CFHanBReDdnenXrgEY6Cww@mail.gmail.com>
+References: <20250611164004.38580-1-balsam.chihi@moment.tech>
+	<91fa8b1d-7bd0-4beb-80ef-eb65d2562f17@oss.qualcomm.com> <CAONkfw5Xyk8CGmVDpWZfkWnuCcFq6400jUkqyeMDtS0UNSh9vg@mail.gmail.com>
+	<ecab2156-b234-4fba-a2ad-13a2d9b4693f@oss.qualcomm.com> <CAONkfw4hkDQtJyOj4RVsR3V=FJDJYKnjtmqzD=jBMy1ax=tC_A@mail.gmail.com>
+	<0dfe48fc-085f-4dce-933d-e0f132d2ff9c@oss.qualcomm.com> <CAONkfw4p1AuE-MhGiZNMmi-PXR+CjoY63K2Yx_dmv2vnjo-Eyg@mail.gmail.com>
+	<CAONkfw58jcGRxotm2zJasQd56oDR-h0b3Z0Yi+pE8hdrmN=Ucg@mail.gmail.com> <1321153053.0.1755624998195@boobie.home>
+	<CAONkfw452N+cOrLo4p7KXOE_W6p=CFHanBReDdnenXrgEY6Cww@mail.gmail.com>
+Subject: Re: [PATCH] ath11k: pci: avoid unsafe register access during
+ shutdown
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <323382be-397d-4df6-976a-89319fe97202@oss.qualcomm.com>
-In-Reply-To: <323382be-397d-4df6-976a-89319fe97202@oss.qualcomm.com>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Wed, 20 Aug 2025 12:17:09 -0400
-X-Gmail-Original-Message-ID: <CA+5PVA53_O+TmvHcJM-7xLaE5wwtELJE-oX8f=WZFnA+ZZSRGA@mail.gmail.com>
-X-Gm-Features: Ac12FXzHSnPFBjD5SgC0DQxSz5oP68mLKNVoc6XNbXGuiE3XiYL4ENWc4kWi5wk
-Message-ID: <CA+5PVA53_O+TmvHcJM-7xLaE5wwtELJE-oX8f=WZFnA+ZZSRGA@mail.gmail.com>
-Subject: Re: [PULL linux-firmware] ath11k firmware ath-20250820
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org, 
-	ath11k@lists.infradead.org, jjohnson@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-CMAE-Envelope: MS4xfKe8auRrZYTHKBGgeCQqUdjSZxZZVltNgukOtPQwSJS35J/eX45Pu99AK0J46AHJ79ZC7FwZoCOnYxq/SJhQu5mNnkCXYjPuNpFEh53O26OQKsjW3o7L
+ mQF2Ga4/Jsj0dof2fbkcxWR0xgfeqkKedKm0YldXPvQt1tisuEkYuR+tON4RZdGeQ44zuF1ERqQ5dUOvEei3PIDiIr530DDsBBdQMQsRCibX1vWW2BCEJNvI
+ 70E6vm6lsAa1zxLMOSXhwC71O12YgpQNx+bR2ipHMrFXJVmssDJMFE720n6C0d65P6fOqWDNJWrYyRz1QHXWlmGGLorUzHEY9OOZ7jpza02cFrtf7qys9Vzh
+ 1HJwrHIh
 
-On Wed, Aug 20, 2025 at 11:24=E2=80=AFAM Jeff Johnson
-<jeff.johnson@oss.qualcomm.com> wrote:
->
-> Hi,
-> Here is a new pull request for ath11k firmware.
->
-> This adds an alternative firmware for WCN6855 that is part of NFA765,
-> optimized for IoT applications.
->
-> Please let me know if there are any problems.
->
-> Thanks,
-> /jeff
->
-> ---
->
-> The following changes since commit 5dcaa87d4035f437acb9d8817d88b269322698=
-63:
->
->   Merge branch 'robot/pr-0-1755692386' into 'main' (2025-08-20 13:19:30 +=
-0000)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/ath/linux-firmware.git at=
-h-20250820
+----- Original Message -----
+From: Balsam Chihi <balsam.chihi@moment.tech>
+To: Ameer Antar <ameerantar@comcast.net>
+Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+, linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+jjohnson@kernel.org
+Subject: Re: [PATCH] ath11k: pci: avoid unsafe register access during shutd=
+own
+Date: 8/20/25 4:14:11 AM
 
-Merged and pushed out.
+>On Tue, Aug 19, 2025 at 7:36=E2=80=AFPM Ameer Antar <ameerantar@comcast.ne=
+t>
+>wrote:
+>>
+>> Balsam, do you have a patch for this? I also have cards that require
+different
+>> bin files for each band. I haven't been able to figure out how to do thi=
+s via
+>> configuration rather than rebuilding drivers.
+>>
+>
+>Hello Ameer,
+>
+>Yes, indeed we have to rebuild ath11k but once with the patched
+>core.c, not each time we add a card.
+>Then you can add text files named with the pci device address and the
+>path to your board-2.bin inside,
+>for each instance of the driver.
+>That way we avoid building the driver or the kernel each time we add a
+>wifi card.
+>I'm cleaning up the patch and I will send it to the mailing list if
+>you are interested.
+>
+>Best regards,
+>Balsam
+>
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/656
+Hi Balsam, yes that would be great to have as all of my cards use 0xFF for =
+the
+board id and I have been unable to use any multi-band setup using the same
+driver. I'm sure there are others on the list with similar setups that woul=
+d
+appreciate that as well.
 
-josh
-
->
-> for you to fetch changes up to 71b945d2190cbaf6bebe8c1a8b0b41a71d65ec31:
->
->   ath11k: WCN6855 hw2.0@nfa765: add to WLAN.HSP.1.1-04685-QCAHSPSWPL_V1_V=
-2_SILICONZ_IOE-1 (2025-08-20 08:01:38 -0700)
->
-> ----------------------------------------------------------------
-> Jeff Johnson (1):
->       ath11k: WCN6855 hw2.0@nfa765: add to WLAN.HSP.1.1-04685-QCAHSPSWPL_=
-V1_V2_SILICONZ_IOE-1
->
->  WHENCE                                 |    4 +
->  ath11k/WCN6855/hw2.0/nfa765/Notice.txt | 3658 ++++++++++++++++++++++++++=
-++++++
->  ath11k/WCN6855/hw2.0/nfa765/amss.bin   |  Bin 0 -> 5005312 bytes
->  ath11k/WCN6855/hw2.0/nfa765/m3.bin     |  Bin 0 -> 266684 bytes
->  4 files changed, 3662 insertions(+)
->  create mode 100644 ath11k/WCN6855/hw2.0/nfa765/Notice.txt
->  create mode 100644 ath11k/WCN6855/hw2.0/nfa765/amss.bin
->  create mode 100644 ath11k/WCN6855/hw2.0/nfa765/m3.bin
+-Ameer
 
