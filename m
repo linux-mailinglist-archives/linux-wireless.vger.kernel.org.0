@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-26539-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26540-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991DCB3016D
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 19:49:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 104ACB30175
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 19:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C5C21CC82CE
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 17:49:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A282620A22
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 17:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBD7343D7B;
-	Thu, 21 Aug 2025 17:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BB7343D8C;
+	Thu, 21 Aug 2025 17:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mFcCmBnN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XzQW/7PH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF3A343D8C
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Aug 2025 17:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67CD341AAE
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Aug 2025 17:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755798488; cv=none; b=D9oHzZQkShV/y4/rf81KrPleoBZuLO2YXC1HGmZteKcRK4Ndnsr0TVRv/jvAsE2g+F3crG2CnrBv8gHZzDhsRMyRiEk4LUt8ELmFqkxbxo5XMph7tlXhoVZ+shomqvyRMNrw8hKiGBje7+tDFaqUCK3KPs6C2TZoNsaNmTMQuJM=
+	t=1755798489; cv=none; b=TJi1aZsy24x3IQpDSzYci8oChg1N9MF7nyXN6hZ2O0hh/W+Fy/ZDvBY1YN7IL8XV7vrZzDgExViP+O+Iln5Uj49A2ap5TqjVcB/259TUoDSLZJsdgur3zU00RgZFaqxSNw3VIxRfb872iQlWLz5GG5laerAUraS9X1oFXD1myYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755798488; c=relaxed/simple;
-	bh=UGviCGI/KIA+e1AdCW/yUWxGW/aWc07W1pIlc3QAvds=;
+	s=arc-20240116; t=1755798489; c=relaxed/simple;
+	bh=VMWwaggfSjxj8tIl43s/7ne5H6zn/zZJv7pVzqMNPg0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eIWkvr/mtCwxHfzDTyrfxR4UyCFo1hKyYtWtfSiD3QNDq+K8SEj74escMYZlSACKx0EWdGiPngeOGSqLErRWantpOyLet5IPcyX4M2oNLQHhuWaKjuaPb/lmdLGrLC74+UUyD7TDWBp7G5NeIk5E4dkb4mH2NNU2yoNaeD/dxrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mFcCmBnN; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=PN3vNIZHDr7FOJVvtcVtLB1nBZ+Av/MnnmuLvIQBB67C0z0E2J6IqjKg5qfCs4p7Klz6RDohQDBC73iZNLr/1/3KlfyZeb4jmY3VnKzhLWpok5bWHkA7iS958Upg1VII6iiANMkk0RmcL5QnI5PI2zJSyLijJDAaaiU49tkqsQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XzQW/7PH; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755798487; x=1787334487;
+  t=1755798488; x=1787334488;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UGviCGI/KIA+e1AdCW/yUWxGW/aWc07W1pIlc3QAvds=;
-  b=mFcCmBnNnZeZlGoAS7l3P0S2m5zf1OPt6OFbRPSvnVLWTHr7UDD9qoXK
-   jBkLg64wK3oNU5xkaN9X02LVW5f+eNcaBvg2MsZ4b/HoO1Fe+y2ikk0w4
-   S/0YbLbJm/J7D8MdpDvXiB3LoH5t3/gI6qh3k5O3Ui037617gqGnGu8Bw
-   XHa4Yi3ibHQ4Dz79c0CqXzT1SoglUr2RIc8vWYaiWZxvInqqtOaOnqcgh
-   s5y61nb2U5svrr7yETbPU9W7onyJ4Ook0RXbhyS6eJ/KX4hFsczQpWLvG
-   WMzm+luHZmiAx0NQo42vNTAbgVJkweuM4bCEpZwgM+TmVgxds11ujXF9P
+  bh=VMWwaggfSjxj8tIl43s/7ne5H6zn/zZJv7pVzqMNPg0=;
+  b=XzQW/7PHvEdoxzgIhvcGW7FRAKHYHSN/iGCsdX/kRFIf3d19Q0ptuRet
+   QHV0AzQnmgooqu9CaD1Vm7KjTJEJdxWtZPgIzG4ZBpWW0FnPaBLfUrGSl
+   lp+v6rHY5u8WzbzmwvzCnZff51j3tkHfA2uSV4/pXAYopE+omtmAmTrl2
+   RYy9W8xNGEtj/GH93k7TiV1l7RZndgmJDheM0wADtrzDY0RfYqRbqX80z
+   HpFfnbZ+3aLkcLI71dBbyT1koko4oJTf2mJ/XLLKhv2M0SYxAun/Trg6a
+   Cg48puJdqt5phNnHc95FwH785vN3jNIlo5AJJqLr8uu4uAeAjHVc5ablY
    g==;
-X-CSE-ConnectionGUID: Op3v+e/QQdiNJlvOV1hF3A==
-X-CSE-MsgGUID: jYDo7YOPRYSreuAdm8js2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="68806086"
+X-CSE-ConnectionGUID: VZy+occFTUiOrREd5/m4yg==
+X-CSE-MsgGUID: 927ECOn2Rl+3A6Vz02KVBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="68806091"
 X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="68806086"
+   d="scan'208";a="68806091"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:48:07 -0700
-X-CSE-ConnectionGUID: REvlSa3oSd6jhceatoZyhg==
-X-CSE-MsgGUID: HSdKnQIhS8C/71SXGQEtpA==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:48:08 -0700
+X-CSE-ConnectionGUID: EJis86wMQAKZ/XU84UIg4A==
+X-CSE-MsgGUID: ckOAL8gpT9iQxXjbJRgDjA==
 X-ExtLoop1: 1
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:48:06 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:48:07 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Subject: [PATCH v2 iwlwifi-next 12/15] wifi: iwlwifi: mld: don't consider old versions of PPAG
-Date: Thu, 21 Aug 2025 20:47:23 +0300
-Message-Id: <20250821204455.35698eb46b67.Ie77dc9c3ee8275d1c2e4eafa27f1c7899c2660ce@changeid>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH v2 iwlwifi-next 13/15] wifi: iwlwifi: mld: refactor iwl_mld_add_all_rekeys
+Date: Thu, 21 Aug 2025 20:47:24 +0300
+Message-Id: <20250821204455.1d12ab0b5699.I201044d175b979520970090153de4d622652f86d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250821174726.2425334-1-miriam.rachel.korenblit@intel.com>
 References: <20250821174726.2425334-1-miriam.rachel.korenblit@intel.com>
@@ -74,78 +74,58 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-There is a utility function, iwl_fill_ppag_table, to fill the PPAG table
-according the version of the FW API and on of the BIOS table.
-But this function handles really old APIs that iwlmld will not support.
-Also, iwlmvm will no longer have new APIs of PPAG (because it is loaded
-on frozen devices only). So in the next versions we might introdue
-regressions to iwlmvm.
-Simply fill the PPAG table separately in iwlmld code, without using this
-utility.
+This receives iwl_mld_resume_key_iter_data, but it really only needs the
+mld object. Pass that instead.
 
-Reviewed-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/regulatory.c    |  1 +
- .../wireless/intel/iwlwifi/mld/regulatory.c   | 28 ++++++++++++++-----
- 2 files changed, 22 insertions(+), 7 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-index 00921f86286a..6e98ac341997 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.c
-@@ -305,6 +305,7 @@ static bool iwl_ppag_value_valid(struct iwl_fw_runtime *fwrt, int chain,
- 	return true;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+index 86bb3a7a9f7f..db0c83a425fa 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+@@ -831,24 +831,21 @@ iwl_mld_add_mcast_rekey(struct ieee80211_vif *vif,
  }
  
-+/* Utility function for iwlmvm and iwlxvt */
- int iwl_fill_ppag_table(struct iwl_fw_runtime *fwrt,
- 			union iwl_ppag_table_cmd *cmd, int *cmd_size)
+ static void
+-iwl_mld_add_all_rekeys(struct ieee80211_vif *vif,
++iwl_mld_add_all_rekeys(struct iwl_mld *mld,
++		       struct ieee80211_vif *vif,
+ 		       struct iwl_mld_wowlan_status *wowlan_status,
+-		       struct iwl_mld_resume_key_iter_data *key_iter_data,
+ 		       struct ieee80211_bss_conf *link_conf)
  {
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
-index 75d2f5cb23a7..40571125b3ab 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/regulatory.c
-@@ -163,18 +163,32 @@ int iwl_mld_init_sgom(struct iwl_mld *mld)
+ 	int i;
  
- static int iwl_mld_ppag_send_cmd(struct iwl_mld *mld)
- {
--	union iwl_ppag_table_cmd cmd = {};
--	int ret, len;
-+	struct iwl_fw_runtime *fwrt = &mld->fwrt;
-+	union iwl_ppag_table_cmd cmd = {
-+		.v7.ppag_config_info.table_source = fwrt->ppag_bios_source,
-+		.v7.ppag_config_info.table_revision = fwrt->ppag_bios_rev,
-+		.v7.ppag_config_info.value = cpu_to_le32(fwrt->ppag_flags),
-+	};
-+	int ret;
+ 	for (i = 0; i < ARRAY_SIZE(wowlan_status->gtk); i++)
+-		iwl_mld_add_mcast_rekey(vif, key_iter_data->mld,
+-					&wowlan_status->gtk[i],
++		iwl_mld_add_mcast_rekey(vif, mld, &wowlan_status->gtk[i],
+ 					link_conf);
  
--	ret = iwl_fill_ppag_table(&mld->fwrt, &cmd, &len);
--	/* Not supporting PPAG table is a valid scenario */
--	if (ret < 0)
--		return 0;
-+	IWL_DEBUG_RADIO(fwrt,
-+			"PPAG MODE bits going to be sent: %d\n",
-+			fwrt->ppag_flags);
-+
-+	for (int chain = 0; chain < IWL_NUM_CHAIN_LIMITS; chain++) {
-+		for (int subband = 0; subband < IWL_NUM_SUB_BANDS_V2; subband++) {
-+			cmd.v7.gain[chain][subband] =
-+				fwrt->ppag_chains[chain].subbands[subband];
-+			IWL_DEBUG_RADIO(fwrt,
-+					"PPAG table: chain[%d] band[%d]: gain = %d\n",
-+					chain, subband, cmd.v7.gain[chain][subband]);
-+		}
-+	}
+-	iwl_mld_add_mcast_rekey(vif, key_iter_data->mld,
+-				&wowlan_status->igtk, link_conf);
++	iwl_mld_add_mcast_rekey(vif, mld, &wowlan_status->igtk, link_conf);
  
- 	IWL_DEBUG_RADIO(mld, "Sending PER_PLATFORM_ANT_GAIN_CMD\n");
- 	ret = iwl_mld_send_cmd_pdu(mld, WIDE_ID(PHY_OPS_GROUP,
- 						PER_PLATFORM_ANT_GAIN_CMD),
--				   &cmd, len);
-+				   &cmd, sizeof(cmd.v7));
- 	if (ret < 0)
- 		IWL_ERR(mld, "failed to send PER_PLATFORM_ANT_GAIN_CMD (%d)\n",
- 			ret);
+ 	for (i = 0; i < ARRAY_SIZE(wowlan_status->bigtk); i++)
+-		iwl_mld_add_mcast_rekey(vif, key_iter_data->mld,
+-					&wowlan_status->bigtk[i],
++		iwl_mld_add_mcast_rekey(vif, mld, &wowlan_status->bigtk[i],
+ 					link_conf);
+ }
+ 
+@@ -934,7 +931,7 @@ iwl_mld_update_sec_keys(struct iwl_mld *mld,
+ 	if (!key_iter_data.num_keys || !wowlan_status->num_of_gtk_rekeys)
+ 		return true;
+ 
+-	iwl_mld_add_all_rekeys(vif, wowlan_status, &key_iter_data,
++	iwl_mld_add_all_rekeys(mld, vif, wowlan_status,
+ 			       link_conf);
+ 
+ 	iwl_mld_mlo_rekey(mld, wowlan_status, vif);
 -- 
 2.34.1
 
