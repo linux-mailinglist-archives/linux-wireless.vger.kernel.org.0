@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-26541-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26542-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD9AB30176
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 19:50:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF8DB30177
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 19:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9349CA08265
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 17:48:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF333A08754
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 17:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CF9341AAE;
-	Thu, 21 Aug 2025 17:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07789341AD4;
+	Thu, 21 Aug 2025 17:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Oz7lhNUe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hliq3py8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229B2341AD4
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Aug 2025 17:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800423451C9
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Aug 2025 17:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755798490; cv=none; b=udegsmm/yEmAFImVTXT850RCOrCFNNipaLT7QEVF+yGDTpg1x+9LnSvk+MwhNSlhTZL4sRVWoxkSGDBpeImyADZJmIvxyTnNKb0hNCWudIYRdpETot+12R5fpxLGgNbY3/+OB0KwYevzQ0YYwRBzYH1TwPlyUxxrtkhJI6ext+k=
+	t=1755798491; cv=none; b=SBbbu5lyaLOm9/6LY51+c4C02aGfY+b6+/tKLl4yCBPqJ6bj/pxlB7mp1t52He9LU4Eix8vdlboBantqEqzTclsvnyfp+rfnMjL6+mIPnaKDsN9GfDD2mrUv/lA4gs9yOEspeASPWytM3wW1NktcshC5D98FozNi/w9tAoqMxmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755798490; c=relaxed/simple;
-	bh=60MIe90YO2J1AnPxOb3ycDAwOCRAzfrMK6Fh6ffV50Q=;
+	s=arc-20240116; t=1755798491; c=relaxed/simple;
+	bh=CH1yhMYjIYz7YrhlXGs7CZ1tiTcUSkOJSa4cyh163sk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Y9wTvCGGZnIUnZDda3In8tgD1JPJq5voRRAcj0WLb8dwvB8B/8UzHIbHRq1994lANtE2PahgmAlhGDxEp6gwXK01Sz99cd2XP0YDmQPxGUaMMlQ7lqK8kTAEXhS8xs4dqrbne9ULvCPxeo38y7/b8uDjaZOimbFsf9WsmXhfAH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Oz7lhNUe; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=ER/N7ttcSqU2iZFNjyKI6zfd7vwz1dKiwiEMpB4SgsmQL7/B5NMlC6A7jGh0gPAjml9vXr62RGaRktDjpVKd77v58AZnPPmmJyIUy35BI6UYq9oyF0Mfl53WK3L0Ga5z7fIn0YtlxnJo0Tfm82Rg7vsixA8mTd0buzYZsGromv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hliq3py8; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755798489; x=1787334489;
+  t=1755798491; x=1787334491;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=60MIe90YO2J1AnPxOb3ycDAwOCRAzfrMK6Fh6ffV50Q=;
-  b=Oz7lhNUegBzBV5rcR5lE8qEmVbEMKaDdmpRWLISPmfXxVTts8cBW2T0A
-   HSdEVkVKXicgZ+iZJNJZWEi6mmxthUnlaZ+MINss+GqXTnrj3qzMWTs3Z
-   KkxlKVkJX1XnPQtZeTvYNc+fd8DR6E00Vnmi2ABEZPuz/sTpA6n2LEjLJ
-   7c1ti2JfRyqJeWSqYtTtGkdNfn5O1M+BrSctvZ6CZsgflpn7xKxjqiUET
-   BU41mKr0hLmZBWPLUq5KpPpUxChvigtSMBsNoSg+PGIkL7PVY9Hu6Xu7e
-   XgWu75aloqVoQqB5pZUE5uyqXAGrKv+YwmEYOx268Hvn7B7aPLQVfgj6F
-   Q==;
-X-CSE-ConnectionGUID: rJK6yHEiQmepVLrVb3e5mg==
-X-CSE-MsgGUID: 0UvAC17ZRRK0PTN+Izi8JA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="68806093"
+  bh=CH1yhMYjIYz7YrhlXGs7CZ1tiTcUSkOJSa4cyh163sk=;
+  b=hliq3py8EamvqsCvLhu0DWbKMh5M5tvCDzVJyNMzIl7fzhZLWuqgmrYA
+   mVnk7AwQ8oYJrStoV+yuZ40TdXAFW9478+o5V2KpDKfSnCsHTh4ZHDWQf
+   OgU/Zc8TV0i3eimwYvNFTNT6UtyEEIxnKnTavHAhcnkf2J+76LOruBL/X
+   DI6/LvOg0DocgLCU3m+0UrLLcCDMUaUrPICZOXAKdS7JHn6KaBJeOl37D
+   poozA8XM6OMgrp2ByePXN6hhIgjIwTuOGm95OgouIbvOcKYocoTJedDFF
+   L5QfzuAE40cZvy9wxRlnLdWt9F/oiuJf68+Bu3hDoJpjl40w9agv007b5
+   g==;
+X-CSE-ConnectionGUID: gZkNQBRAR7WSnRllQ/NmFA==
+X-CSE-MsgGUID: qKFtifIPQmuJ+na383+HYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="68806104"
 X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="68806093"
+   d="scan'208";a="68806104"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:48:09 -0700
-X-CSE-ConnectionGUID: 3iBVY2uZSOiI5Bbfj8gZEA==
-X-CSE-MsgGUID: kDcmRi9YSha6xJx5+wVOiQ==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:48:10 -0700
+X-CSE-ConnectionGUID: xak4uI8lRiC8c10JFqcuGQ==
+X-CSE-MsgGUID: b5kKYjYLQZOUfFSlDZdexw==
 X-ExtLoop1: 1
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:48:08 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:48:09 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 iwlwifi-next 14/15] wifi: iwlwifi: mld: rename iwl_mld_set_key_rx_seq
-Date: Thu, 21 Aug 2025 20:47:25 +0300
-Message-Id: <20250821204455.ebf93a07905a.I8380b5cf9f6095b3a0b35fe4b7d56c544b921600@changeid>
+Subject: [PATCH v2 iwlwifi-next 15/15] wifi: iwlwifi: mld: don't validate keys state on resume
+Date: Thu, 21 Aug 2025 20:47:26 +0300
+Message-Id: <20250821204455.fb7e3bd4a967.I7eb24756ee27ad7b6731c0fb5dce5acb5d986694@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250821174726.2425334-1-miriam.rachel.korenblit@intel.com>
 References: <20250821174726.2425334-1-miriam.rachel.korenblit@intel.com>
@@ -74,64 +74,81 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-This function should only be used for group keys. For pairwise keys we
-have iwl_mld_update_ptk_rx_seq. Make that clear from the name.
+When resuming, we iterate over all the (installed) keys to update the
+PNs. If we find a key with an unexpected cipher we disconnect.
+But there is no reason for us to validate the internal key state
+specifically on resume, it should be the same as it was before the
+suspend.
+Remove the 'unhandled_cipher' from the iteration data.
+
+Also remove the num_keys indication as it is not really needed.
+If no keys were installed before the suspend, we will have
+num_of_gtk_rekeys = 0 and we will return early anyway.
 
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/d3.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c | 22 ++-------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-index db0c83a425fa..b27b874b3e84 100644
+index b27b874b3e84..6a32aa22ffb8 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-@@ -679,8 +679,8 @@ iwl_mld_set_key_rx_seq_tids(struct ieee80211_key_conf *key,
+@@ -41,8 +41,6 @@ enum iwl_mld_d3_notif {
+ struct iwl_mld_resume_key_iter_data {
+ 	struct iwl_mld *mld;
+ 	struct iwl_mld_wowlan_status *wowlan_status;
+-	u32 num_keys;
+-	bool unhandled_cipher;
+ };
+ 
+ struct iwl_mld_suspend_key_iter_data {
+@@ -747,14 +745,7 @@ iwl_mld_resume_keys_iter(struct ieee80211_hw *hw,
+ 	struct iwl_mld_wowlan_status *wowlan_status = data->wowlan_status;
+ 	u8 status_idx;
+ 
+-	if (data->unhandled_cipher)
+-		return;
+-
+ 	switch (key->cipher) {
+-	case WLAN_CIPHER_SUITE_WEP40:
+-	case WLAN_CIPHER_SUITE_WEP104:
+-		/* ignore WEP completely, nothing to do */
+-		return;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 	case WLAN_CIPHER_SUITE_GCMP:
+ 	case WLAN_CIPHER_SUITE_GCMP_256:
+@@ -785,11 +776,7 @@ iwl_mld_resume_keys_iter(struct ieee80211_hw *hw,
+ 						    &wowlan_status->bigtk[status_idx]);
+ 		}
+ 		break;
+-	default:
+-		data->unhandled_cipher = true;
+-		return;
+ 	}
+-	data->num_keys++;
  }
  
  static void
--iwl_mld_set_key_rx_seq(struct ieee80211_key_conf *key,
--		       struct iwl_mld_mcast_key_data *key_data)
-+iwl_mld_update_mcast_rx_seq(struct ieee80211_key_conf *key,
-+			    struct iwl_mld_mcast_key_data *key_data)
- {
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_CCMP:
-@@ -768,7 +768,7 @@ iwl_mld_resume_keys_iter(struct ieee80211_hw *hw,
- 		}
+@@ -922,15 +909,10 @@ iwl_mld_update_sec_keys(struct iwl_mld *mld,
+ 	ieee80211_iter_keys(mld->hw, vif, iwl_mld_resume_keys_iter,
+ 			    &key_iter_data);
  
- 		status_idx = key->keyidx == wowlan_status->gtk[1].id;
--		iwl_mld_set_key_rx_seq(key, &wowlan_status->gtk[status_idx]);
-+		iwl_mld_update_mcast_rx_seq(key, &wowlan_status->gtk[status_idx]);
- 		break;
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
-@@ -776,11 +776,13 @@ iwl_mld_resume_keys_iter(struct ieee80211_hw *hw,
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
- 		if (key->keyidx == 4 || key->keyidx == 5) {
- 			if (key->keyidx == wowlan_status->igtk.id)
--				iwl_mld_set_key_rx_seq(key, &wowlan_status->igtk);
-+				iwl_mld_update_mcast_rx_seq(key,
-+							    &wowlan_status->igtk);
- 		}
- 		if (key->keyidx == 6 || key->keyidx == 7) {
- 			status_idx = key->keyidx == wowlan_status->bigtk[1].id;
--			iwl_mld_set_key_rx_seq(key, &wowlan_status->bigtk[status_idx]);
-+			iwl_mld_update_mcast_rx_seq(key,
-+						    &wowlan_status->bigtk[status_idx]);
- 		}
- 		break;
- 	default:
-@@ -807,7 +809,7 @@ iwl_mld_add_mcast_rekey(struct ieee80211_vif *vif,
- 	if (IS_ERR(key_config))
- 		return;
+-	if (key_iter_data.unhandled_cipher)
+-		return false;
+-
+-	IWL_DEBUG_WOWLAN(mld,
+-			 "Number of installed keys: %d, Number of rekeys: %d\n",
+-			 key_iter_data.num_keys,
++	IWL_DEBUG_WOWLAN(mld, "Number of rekeys: %d\n",
+ 			 wowlan_status->num_of_gtk_rekeys);
  
--	iwl_mld_set_key_rx_seq(key_config, key_data);
-+	iwl_mld_update_mcast_rx_seq(key_config, key_data);
+-	if (!key_iter_data.num_keys || !wowlan_status->num_of_gtk_rekeys)
++	if (!wowlan_status->num_of_gtk_rekeys)
+ 		return true;
  
- 	/* The FW holds only one igtk so we keep track of the valid one */
- 	if (key_config->keyidx == 4 || key_config->keyidx == 5) {
+ 	iwl_mld_add_all_rekeys(mld, vif, wowlan_status,
 -- 
 2.34.1
 
