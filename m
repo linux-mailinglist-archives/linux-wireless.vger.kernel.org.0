@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-26532-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26533-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF90EB30167
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 19:48:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0658B30171
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 19:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AA801BA87AC
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 17:48:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 685C2601F45
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 17:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29813431F2;
-	Thu, 21 Aug 2025 17:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD5634166B;
+	Thu, 21 Aug 2025 17:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WiRyig5P"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ISZ1aC2T"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F853341AA9
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Aug 2025 17:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B335E341AA4
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Aug 2025 17:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755798480; cv=none; b=QYsisve1FE257297pduQJUxVsW9SgqJ8QM6uChoc3ONYsTCxfQrVdd1oalY3EQSBm08RCGh0sY+UI4+GEqWInDGdLwkLM1Lc1V4nrw7vxbq2b2DLH1IsHO/8jDSrYF+MHSM1yGETyAyxDGnZBQ/SCwgW12i+ymbZos41aCIECUA=
+	t=1755798482; cv=none; b=fS2UdrNSLdRA0T8B5iCK+p/upJZ3JPIxnwFUmJEt/+JPwsfZJrfzL0BGR0B1TfXNoP2AgJI/ijqXvZ/Ptafvl+ojeEQr8Wcd9ibDr/42dqCQqfpcOQ/FamWjn7jKROYPoTyksVGeZfXRdRfQ10c9Reh3WG2NBgpOhJmDOAZDa6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755798480; c=relaxed/simple;
-	bh=IuWMIZNwe8RGKyVihcZ3FjTk/+4UEbjQhuBJVX2lH28=;
+	s=arc-20240116; t=1755798482; c=relaxed/simple;
+	bh=EFJoisswneMjSQdWwubdNCs1NA5n3hD9HJ4E8uB1HWc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EsAgFaJwEEQOMZCBpSFM6+LqgBnV+DCIXRwtGE4E5Q+9hqjP5/HZo9/4CkeAqmAyMHOF/miyy1KvqIa43hOyW9LphfZ/sm0JHO4Ykfb3lBQGRXjQewpndoKLhi9OBIm0CfF8XqmipcxAVZUonp54QvzeKqYunEGySAaTftcUK9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WiRyig5P; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=uF9+eyVE/xo4eDmiY6TA+8X1p/vnpiGO5xg4fEE8PDIQq5ZguL/kT1F6DjgPi8tiWbogo9HvT1WygKNyi9SkguOo1D4raPm6uhPHlc31ZiyjIB3B1o4RRS4z/1svVF+FeGcSqx/RwKSYTgNRdfrjtPXPhrRmnb5BUBPpFLfMDbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ISZ1aC2T; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755798479; x=1787334479;
+  t=1755798481; x=1787334481;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=IuWMIZNwe8RGKyVihcZ3FjTk/+4UEbjQhuBJVX2lH28=;
-  b=WiRyig5PVB5iX0GyRMWfM9/Wg2iuM+9NpWpRd5oGaA7TSbGfBsXMD8YK
-   5/4HS5aYcceURxTmyki1z+ZZ91Lf4rnALmm+CMWxk8OpnbR2ikkXtAWPP
-   IDAL/ldTydW/aPbg6dh5bubkfTlQDIKL4UMbA2TJTp5mkUzJQr8bi7WMy
-   g0e5jEYWyZeyqyWcQTzGDCGR/YJSmU8yhecZ7xb9gWWYcHi8h0WQFQOk3
-   SHirTJ9F1lGjrvq9ZIBhA8Red64QmrJ1R7yk3FhfYRUMfRZqVX9x0LPRk
-   UUO8a5Jg8qFcPHy4qlSUlyFCKkJ6jAkA1uUppmXj5j9IR6gxTi+oDJiFS
-   A==;
-X-CSE-ConnectionGUID: nwIem8J+TpCUrxaA1wusRQ==
-X-CSE-MsgGUID: 1F3dPEuMTte5kFTlHWxnVw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="68806066"
+  bh=EFJoisswneMjSQdWwubdNCs1NA5n3hD9HJ4E8uB1HWc=;
+  b=ISZ1aC2Tf5glEuFy4CBQfO+g+EezT5NQTMq9xkPcFx4b82GKB8RDEafb
+   ut4fKE8CangTiPMYz/GRPpt8xwMs6ByuKmPKctXyqmExIoC/BNCT0shad
+   XIqSgKhPpm4TFxF0Skx6L0IqUSASelyY8U3t2TZzIQo17WP6tlPl4knRt
+   oq6SKWxlWPc2LIhHF+/y60GvQZlyk/DIK1luJigq4HG2Y69Rxs8LigLMr
+   SluTrTY/aV1gRZj1uespdZIo71L5sZhX8MyWi9NNBXWmTUpT2tmLprToY
+   ZIPn1k0udr7CIpMveoos9dtei7dfzzTTp7gi+GMotAYVXOsw++laZQcNe
+   w==;
+X-CSE-ConnectionGUID: tlF8RpPsT3aZUZWP69krmQ==
+X-CSE-MsgGUID: WFiP/MQpSZyrlZHBKJ9f0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="68806068"
 X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="68806066"
+   d="scan'208";a="68806068"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:47:59 -0700
-X-CSE-ConnectionGUID: D3z1uZeGSsOR9FJKTopkWw==
-X-CSE-MsgGUID: W+uAUD03TJKeElc9dZlEJg==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:48:00 -0700
+X-CSE-ConnectionGUID: LUcjfTQeT12Afq88dcGTfQ==
+X-CSE-MsgGUID: 1Wb4lJiES/6wghHgJyJjRw==
 X-ExtLoop1: 1
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:47:58 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:47:59 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 iwlwifi-next 05/15] wifi: iwlwifi: mld: track BIGTK per link
-Date: Thu, 21 Aug 2025 20:47:16 +0300
-Message-Id: <20250821204455.0392769d3abb.I5d8e232d663e3ca8fc23de12dd8534cb076cabb9@changeid>
+Subject: [PATCH v2 iwlwifi-next 06/15] wifi: iwlwifi: mvm/mld: correctly retrieve the keyidx from the beacon
+Date: Thu, 21 Aug 2025 20:47:17 +0300
+Message-Id: <20250821204455.e0aea411cd2a.I4220348147541a1478b02389475426047ecf84bc@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250821174726.2425334-1-miriam.rachel.korenblit@intel.com>
 References: <20250821174726.2425334-1-miriam.rachel.korenblit@intel.com>
@@ -74,213 +74,91 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-We track the BIGTKs installed for beacon protection purposes.
-But in MLO we will have a different BIGTK per link.
-Track the BIGTK per-link and not per-vif.
+key->icv_len already includes the pn length and the keyidx length.
+In fact it is the size of the MMIE, so subtracting it from the overall
+length will actually bring us to the beggining of the MMIE and not of
+the keyidx inside it.
+Also, we also need to consider a 16 byte long MIC.
+
+Fix the code to correctly retrieve the keyidx.
 
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/d3.c   |  9 +++----
- .../net/wireless/intel/iwlwifi/mld/iface.h    |  3 ---
- drivers/net/wireless/intel/iwlwifi/mld/key.c  | 26 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/key.h  |  4 +++
- drivers/net/wireless/intel/iwlwifi/mld/link.h |  2 ++
- .../net/wireless/intel/iwlwifi/mld/mac80211.c | 10 +++----
- drivers/net/wireless/intel/iwlwifi/mld/rx.c   | 13 +++++++---
- 7 files changed, 49 insertions(+), 18 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/rx.c   | 13 ++++++++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  9 +++++++--
+ 2 files changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-index 0ac6ceddb44f..da621fe11d62 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-@@ -11,6 +11,7 @@
- #include "mcc.h"
- #include "sta.h"
- #include "mlo.h"
-+#include "key.h"
- 
- #include "fw/api/d3.h"
- #include "fw/api/offload.h"
-@@ -825,12 +826,8 @@ iwl_mld_add_mcast_rekey(struct ieee80211_vif *vif,
- 	}
- 
- 	/* Also keep track of the new BIGTK */
--	if ((key_config->keyidx == 6 || key_config->keyidx == 7) &&
--	    vif->type == NL80211_IFTYPE_STATION) {
--		struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
--
--		rcu_assign_pointer(mld_vif->bigtks[key_config->keyidx - 6], key_config);
--	}
-+	if (key_config->keyidx == 6 || key_config->keyidx == 7)
-+		iwl_mld_track_bigtk(mld, vif, key_config, true);
- }
- 
- static void
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.h b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
-index 05dcb63701b1..38e10e279153 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/iface.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
-@@ -125,8 +125,6 @@ struct iwl_mld_emlsr {
-  * @ap_sta: pointer to AP sta, for easier access to it.
-  *	Relevant only for STA vifs.
-  * @authorized: indicates the AP station was set to authorized
-- * @bigtks: BIGTKs of the AP, for beacon protection.
-- *	Only valid for STA. (FIXME: needs to be per link)
-  * @num_associated_stas: number of associated STAs. Relevant only for AP mode.
-  * @ap_ibss_active: whether the AP/IBSS was started
-  * @cca_40mhz_workaround: When we are connected in 2.4 GHz and 40 MHz, and the
-@@ -158,7 +156,6 @@ struct iwl_mld_vif {
- 		struct iwl_mld_session_protect session_protect;
- 		struct ieee80211_sta *ap_sta;
- 		bool authorized;
--		struct ieee80211_key_conf __rcu *bigtks[2];
- 		u8 num_associated_stas;
- 		bool ap_ibss_active;
- 		enum iwl_mld_cca_40mhz_wa_status cca_40mhz_workaround;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/key.c b/drivers/net/wireless/intel/iwlwifi/mld/key.c
-index 13462a5ad79a..a90477971c72 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/key.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/key.c
-@@ -368,3 +368,29 @@ int iwl_mld_update_sta_keys(struct iwl_mld *mld,
- 			    &data);
- 	return data.err;
- }
-+
-+void iwl_mld_track_bigtk(struct iwl_mld *mld,
-+			 struct ieee80211_vif *vif,
-+			 struct ieee80211_key_conf *key, bool add)
-+{
-+	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
-+	struct iwl_mld_link *link;
-+
-+	if (vif->type != NL80211_IFTYPE_STATION)
-+		return;
-+
-+	if (WARN_ON(key->keyidx < 6 || key->keyidx > 7))
-+		return;
-+
-+	if (WARN_ON(key->link_id < 0))
-+		return;
-+
-+	link = iwl_mld_link_dereference_check(mld_vif, key->link_id);
-+	if (WARN_ON(!link))
-+		return;
-+
-+	if (add)
-+		rcu_assign_pointer(link->bigtks[key->keyidx - 6], key);
-+	else
-+		RCU_INIT_POINTER(link->bigtks[key->keyidx - 6], NULL);
-+}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/key.h b/drivers/net/wireless/intel/iwlwifi/mld/key.h
-index a68ea48913be..63de3469270a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/key.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/key.h
-@@ -36,4 +36,8 @@ iwl_mld_cleanup_keys_iter(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	key->hw_key_idx = STA_KEY_IDX_INVALID;
- }
- 
-+void iwl_mld_track_bigtk(struct iwl_mld *mld,
-+			 struct ieee80211_vif *vif,
-+			 struct ieee80211_key_conf *key, bool add);
-+
- #endif /* __iwl_mld_key_h__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.h b/drivers/net/wireless/intel/iwlwifi/mld/link.h
-index cad2c9426349..9e4da8e4de93 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/link.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/link.h
-@@ -36,6 +36,7 @@ struct iwl_probe_resp_data {
-  * @he_ru_2mhz_block: 26-tone RU OFDMA transmissions should be blocked.
-  * @igtk: fw can only have one IGTK at a time, whereas mac80211 can have two.
-  *	This tracks the one IGTK that currently exists in FW.
-+ * @bigtks: BIGTKs of the AP. Only valid for STA mode.
-  * @bcast_sta: station used for broadcast packets. Used in AP, GO and IBSS.
-  * @mcast_sta: station used for multicast packets. Used in AP, GO and IBSS.
-  * @mon_sta: station used for TX injection in monitor interface.
-@@ -59,6 +60,7 @@ struct iwl_mld_link {
- 		struct ieee80211_chanctx_conf __rcu *chan_ctx;
- 		bool he_ru_2mhz_block;
- 		struct ieee80211_key_conf *igtk;
-+		struct ieee80211_key_conf __rcu *bigtks[2];
- 	);
- 	/* And here fields that survive a fw restart */
- 	struct iwl_mld_int_sta bcast_sta;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index b0bd01914a91..f434012b03a6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -2065,9 +2065,8 @@ static int iwl_mld_set_key_add(struct iwl_mld *mld,
- 		return -EOPNOTSUPP;
- 	}
- 
--	if (vif->type == NL80211_IFTYPE_STATION &&
--	    (keyidx == 6 || keyidx == 7))
--		rcu_assign_pointer(mld_vif->bigtks[keyidx - 6], key);
-+	if (keyidx == 6 || keyidx == 7)
-+		iwl_mld_track_bigtk(mld, vif, key, true);
- 
- 	/* After exiting from RFKILL, hostapd configures GTK/ITGK before the
- 	 * AP is started, but those keys can't be sent to the FW before the
-@@ -2116,9 +2115,8 @@ static void iwl_mld_set_key_remove(struct iwl_mld *mld,
- 		sta ? iwl_mld_sta_from_mac80211(sta) : NULL;
- 	int keyidx = key->keyidx;
- 
--	if (vif->type == NL80211_IFTYPE_STATION &&
--	    (keyidx == 6 || keyidx == 7))
--		RCU_INIT_POINTER(mld_vif->bigtks[keyidx - 6], NULL);
-+	if (keyidx == 6 || keyidx == 7)
-+		iwl_mld_track_bigtk(mld, vif, key, false);
- 
- 	if (mld_sta && key->flags & IEEE80211_KEY_FLAG_PAIRWISE &&
- 	    (key->cipher == WLAN_CIPHER_SUITE_CCMP ||
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/rx.c b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
-index b6dedd1ecd4d..53cac9d8018c 100644
+index 53cac9d8018c..20d866dd92c2 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/rx.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/rx.c
-@@ -1619,12 +1619,14 @@ static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
- 				u32 mpdu_status,
- 				u32 mpdu_len)
- {
-+	struct iwl_mld_link *link;
- 	struct wireless_dev *wdev;
- 	struct iwl_mld_sta *mld_sta;
- 	struct iwl_mld_vif *mld_vif;
+@@ -1611,8 +1611,6 @@ iwl_mld_rx_with_sta(struct iwl_mld *mld, struct ieee80211_hdr *hdr,
+ 	return sta;
+ }
+ 
+-#define KEY_IDX_LEN 2
+-
+ static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
+ 				struct ieee80211_hdr *hdr,
+ 				struct ieee80211_rx_status *rx_status,
+@@ -1626,6 +1624,7 @@ static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
  	u8 keyidx;
  	struct ieee80211_key_conf *key;
  	const u8 *frame = (void *)hdr;
-+	u8 link_id;
++	const u8 *mmie;
+ 	u8 link_id;
  
  	if ((mpdu_status & IWL_RX_MPDU_STATUS_SEC_MASK) ==
- 	     IWL_RX_MPDU_STATUS_SEC_NONE)
-@@ -1657,12 +1659,17 @@ static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
- 		return 0;
+@@ -1674,11 +1673,15 @@ static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
+ 			goto report;
  	}
  
-+	link_id = rx_status->link_valid ? rx_status->link_id : 0;
-+	link = rcu_dereference(mld_vif->link[link_id]);
-+	if (WARN_ON_ONCE(!link))
-+		return -1;
+-	if (mpdu_len < key->icv_len + IEEE80211_GMAC_PN_LEN + KEY_IDX_LEN)
++	/* get the real key ID */
++	if (mpdu_len < key->icv_len)
+ 		goto report;
+ 
+-	/* get the real key ID */
+-	keyidx = frame[mpdu_len - key->icv_len - IEEE80211_GMAC_PN_LEN - KEY_IDX_LEN];
++	mmie = frame + (mpdu_len - key->icv_len);
 +
- 	/* both keys will have the same cipher and MIC length, use
- 	 * whichever one is available
- 	 */
--	key = rcu_dereference(mld_vif->bigtks[0]);
-+	key = rcu_dereference(link->bigtks[0]);
- 	if (!key) {
--		key = rcu_dereference(mld_vif->bigtks[1]);
-+		key = rcu_dereference(link->bigtks[1]);
- 		if (!key)
- 			goto report;
- 	}
-@@ -1680,7 +1687,7 @@ static int iwl_mld_rx_mgmt_prot(struct ieee80211_sta *sta,
- 		if (keyidx != 6 && keyidx != 7)
- 			return -1;
++	/* the position of the key_id in ieee80211_mmie_16 is the same */
++	keyidx = le16_to_cpu(((const struct ieee80211_mmie *) mmie)->key_id);
++
+ 	/* and if that's the other key, look it up */
+ 	if (keyidx != key->keyidx) {
+ 		/* shouldn't happen since firmware checked, but be safe
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index d8be2f6124c1..d35c63a673b6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -332,6 +332,7 @@ static int iwl_mvm_rx_mgmt_prot(struct ieee80211_sta *sta,
+ 	struct ieee80211_key_conf *key;
+ 	u32 len = le16_to_cpu(desc->mpdu_len);
+ 	const u8 *frame = (void *)hdr;
++	const u8 *mmie;
  
--		key = rcu_dereference(mld_vif->bigtks[keyidx - 6]);
-+		key = rcu_dereference(link->bigtks[keyidx - 6]);
- 		if (!key)
+ 	if ((status & IWL_RX_MPDU_STATUS_SEC_MASK) == IWL_RX_MPDU_STATUS_SEC_NONE)
+ 		return 0;
+@@ -375,11 +376,15 @@ static int iwl_mvm_rx_mgmt_prot(struct ieee80211_sta *sta,
  			goto report;
  	}
+ 
+-	if (len < key->icv_len + IEEE80211_GMAC_PN_LEN + 2)
++	if (len < key->icv_len)
+ 		goto report;
+ 
+ 	/* get the real key ID */
+-	keyid = frame[len - key->icv_len - IEEE80211_GMAC_PN_LEN - 2];
++	mmie = frame + (len - key->icv_len);
++
++	/* the position of the key_id in ieee80211_mmie_16 is the same */
++	keyid = le16_to_cpu(((const struct ieee80211_mmie *) mmie)->key_id);
++
+ 	/* and if that's the other key, look it up */
+ 	if (keyid != key->keyidx) {
+ 		/*
 -- 
 2.34.1
 
