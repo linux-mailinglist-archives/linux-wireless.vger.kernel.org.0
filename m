@@ -1,151 +1,146 @@
-Return-Path: <linux-wireless+bounces-26494-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26495-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D20BB2F379
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 11:14:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 887F3B2F8D6
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 14:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EAC21CE05A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 09:14:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C39621CE2F3C
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 12:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41E72E9EBB;
-	Thu, 21 Aug 2025 09:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D917E31E105;
+	Thu, 21 Aug 2025 12:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="NoLftIDx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YQiZBLZQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA28B2D3ED1;
-	Thu, 21 Aug 2025 09:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402F7320399
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Aug 2025 12:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755767522; cv=none; b=VW1hWM+DMrdIzr41dEkhqo5+U4OtgIl8B07eOqNuclAT8eELimMLyR8Qa9VOitzF1CvppiF5YWOD0esWJzHyg+V1Ar6lCtgY8bOodEHFntbXgGhHBTDcRmYkCqPEGjhAeipsbuTzmsk2pnemBriGXE/mGoTGZmRwnsnKBr2Kaxc=
+	t=1755780301; cv=none; b=pGdllrDKPhD5Rpd/i42YG5WHyWVgkMfGgu0iTYU8FyLat/IFwtPlasv4Xr92YVypACLUB43Oo6wugmHGKKT7GV9+63ow4AHtzfmP7Hc5sEtRpc8ra+fvVzwnxlXbJvVuP9I5ZhBXDgvHpFabSBg/vPBzlXO1OwT1J6+IYDRa4Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755767522; c=relaxed/simple;
-	bh=g59s4/Qwtwv1YpMSQzMuBoZHeETrJWRYPs4pguuzfhM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=at7djwTqFIm2Vj7NgFSP0qFztEgSd2kAJicLzLni9TStzQMNjNyqU5OUDWrcD//lqE/DureU/2BnoRNruncqHia/o/wVxQC0VQtE3lGUMi4acbol+guFEdUCGX1cw+oj/OgwNb7TM7Vw5DGGvZzqTsn77Z+G6UZ1ixzYrI3Oy9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=NoLftIDx; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost (unknown [5.228.116.177])
-	by mail.ispras.ru (Postfix) with UTF8SMTPSA id D91C140D3C55;
-	Thu, 21 Aug 2025 09:11:49 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru D91C140D3C55
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1755767509;
-	bh=sCzSseHm8aXWfxStb92YtXd+xaCSsUO+vJVCCr4NWHs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NoLftIDxC/fj9s5CSXp5WL5ycPNK32f7Nuy6sF+8HHelNi1usU9rlnCUktMomw6ak
-	 sgU+ks5Popmg2Oc6+n9noaaCwkActjlyUXLKrFl8EsRSrVE+jEQYXd8n+9pPlQoHot
-	 QXJixOXEj1YplJICZ8ao+lUxI7D7bwQ7Lp2r74ag=
-Date: Thu, 21 Aug 2025 12:11:49 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Zong-Zhe Yang <kevin_yang@realtek.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Bernie Huang <phhuang@realtek.com>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH rtw-next 1/2] wifi: rtw89: fix use-after-free in
- rtw89_core_tx_kick_off_and_wait()
-Message-ID: <20250821113341-4d93a84ec8bcd73321acd2b7-pchelkin@ispras>
-References: <20250820141441.106156-1-pchelkin@ispras.ru>
- <20250820141441.106156-2-pchelkin@ispras.ru>
- <b4ec58864e544b0295ddb02ed408199b@realtek.com>
+	s=arc-20240116; t=1755780301; c=relaxed/simple;
+	bh=98GnZLFXMeVpOERzDdNxqtbZvU8alxp8DYu3h4T4wQ4=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=D6vhsRFJs0CdbThGZIpXeTntHa2N+rLeLe1obWQHrwWzWrsBEzFRYyeyjPNDXwA/88dSMziZ8oUGjQ2aqui2U+wmnFRWoYg43TE7hRQy6VsS/bROZMt71O/F9zR+IG7iVAqvDi0/w7XmDdWiT2zkab/7lUTlSKJ76HFIchyaJAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YQiZBLZQ; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755780300; x=1787316300;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=98GnZLFXMeVpOERzDdNxqtbZvU8alxp8DYu3h4T4wQ4=;
+  b=YQiZBLZQOZbR1poktwbod+8SmH2yNw0Fi0TTcNbX61y91/tR733STiwb
+   fVTLBc0Wslh4fw534GmEvbpmrmMpzgolHfDwWkpdoHNEVBHCsg8ToR+sW
+   5IISX0x/UAX7n6+0i9Vg5n8oqOc7iMyZglDIzBW4O7F52o7EwMherTZzL
+   FP1Om41epEf6OAayRXvgk4jSOpJWU8XnDuaKtbITg3J00JLPzxYdfTYcQ
+   IxYErMfTRRm2gZnSIIMIrMUxmL6Qi8L0zbPtugLJPmRnx7YRJ9wDkgzCO
+   CVxyTYR5+vXwuKPu9pcBFRWQwiwkLeoCVm5Aeq6W7jHJt/yGXq6NXSDtT
+   A==;
+X-CSE-ConnectionGUID: 6BiKo373QzGqAJj5ZWVxhw==
+X-CSE-MsgGUID: r98cXxxuQva8Jr/sQ8Aspg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="61895723"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="61895723"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 05:44:59 -0700
+X-CSE-ConnectionGUID: DljJRyweSK+kqE+6Mhv8YA==
+X-CSE-MsgGUID: PK+PkIO0QkKT78I9iUa7Ug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="172622095"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 05:44:59 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH iwlwifi-next 00/15] wifi: iwlwifi: updates - 2025-08-21
+Date: Thu, 21 Aug 2025 15:44:18 +0300
+Message-Id: <20250821124433.2234183-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <b4ec58864e544b0295ddb02ed408199b@realtek.com>
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-Thanks for the feedback, Zong-Zhe!
+Hi,
 
-On Thu, 21. Aug 04:01, Zong-Zhe Yang wrote:
-> Fedor Pchelkin <pchelkin@ispras.ru> wrote:
-> > Though one solution that _works_ currently is to get rid of 'struct rtw89_tx_wait_info' and
-> > replace it with the only field it is used for - 'bool tx_done'.  Then it can be stored at 'struct
-> > ieee80211_tx_info::status::status_driver_data' directly without the need for allocating an
-> > extra dynamic object and tracking its lifecycle.
-> > I didn't post this since then the structure won't be expandable for new fields and that's
-> > probably the reason for why it wasn't done in this manner initially.
-> 
-> With a busy waiting on tx waiting side ?
-> If so, it would be unacceptable.
+A few features, cleanups and fixes from our internal tree.
 
-Ohh, I forgot about the need for async completion here. Nevermind that
-solution, sorry.
+Thanks,
+Miri
+---
 
-> 
-> > 
-> >  drivers/net/wireless/realtek/rtw89/core.c | 15 ++++++++---
-> > drivers/net/wireless/realtek/rtw89/core.h | 32 ++++++++++++++---------
-> > drivers/net/wireless/realtek/rtw89/pci.c  |  6 +++--
-> >  3 files changed, 36 insertions(+), 17 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/realtek/rtw89/core.c
-> > b/drivers/net/wireless/realtek/rtw89/core.c
-> > index 57590f5577a3..826540319027 100644
-> > --- a/drivers/net/wireless/realtek/rtw89/core.c
-> > +++ b/drivers/net/wireless/realtek/rtw89/core.c
-> > @@ -1088,6 +1088,7 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev,
-> > struct sk_buff *sk
-> >         struct rtw89_tx_skb_data *skb_data = RTW89_TX_SKB_CB(skb);
-> >         struct rtw89_tx_wait_info *wait;
-> >         unsigned long time_left;
-> > +       bool free_wait = true;
-> >         int ret = 0;
-> > 
-> >         wait = kzalloc(sizeof(*wait), GFP_KERNEL); @@ -1097,7 +1098,8 @@ int
-> > rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *sk
-> >         }
-> > 
-> >         init_completion(&wait->completion);
-> > -       rcu_assign_pointer(skb_data->wait, wait);
-> > +       spin_lock_init(&wait->owner_lock);
-> > +       skb_data->wait = wait;
-> > 
-> >         rtw89_core_tx_kick_off(rtwdev, qsel);
-> >         time_left = wait_for_completion_timeout(&wait->completion,
-> > @@ -1107,8 +1109,15 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev,
-> > struct sk_buff *sk
-> >         else if (!wait->tx_done)
-> >                 ret = -EAGAIN;
-> > 
-> > -       rcu_assign_pointer(skb_data->wait, NULL);
-> > -       kfree_rcu(wait, rcu_head);
-> 
-> Please consider the following.
-> (moving "rcu_assign_pointer(skb_data->wait, NULL)" to be under "if (time_left == 0)")
-> 
+Miri Korenblit (14):
+  wifi: iwlwifi: mld: cleanup cipher lookup in resume
+  wifi: iwlwifi: mvm: cleanup cipher lookup in resume
+  wifi: iwlwifi: mld: support MLO rekey on resume
+  wifi: iwlwifi: mld: track BIGTK per link
+  wifi: iwlwifi: mvm/mld: correctly retrieve the keyidx from the beacon
+  wifi: iwlwifi: mld/mvm: set beacon protection capability in wowlan
+    config
+  wifi: iwlwifi: mvm: remove a function declaration
+  wifi: iwlwifi: bump MIN API in HR/GF/BZ/SC/DR
+  Reapply "wifi: iwlwifi: remove support of several iwl_ppag_table_cmd
+    versions"
+  wifi: iwlwifi: make ppag versioning clear
+  wifi: iwlwifi: mld: don't consider old versions of PPAG
+  wifi: iwlwifi: mld: refactor iwl_mld_add_all_rekeys
+  wifi: iwlwifi: mld: rename iwl_mld_set_key_rx_seq
+  wifi: iwlwifi: mld: don't validate keys state on resume
 
-There is still a tiny race window. Suppose wait_for_completion_timeout()
-exits with a timeout, so time_left is 0. If completing side goes on in
-parallel just after that, it has a chance to proceed and free skb_data
-before the below if (time_left == 0) fragment is executed.
+Pagadala Yesu Anjaneyulu (1):
+  wifi: iwlwifi: mvm: remove MLO code
 
->     if (time_left == 0) {
->         rcu_assign_pointer(skb_data->wait, NULL);
->         ret = -ETIMEDOUT;
->     } else if (!wait->tx_done) {
->         ret = -EAGAIN;
->     }
-> 
->     kfree_rcu(wait, rcu_head);
-> 
-> If completing side does run as expected (potential racing mentioned in this patch),
-> there is no real need to assign NULL back.
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |   2 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/dr.c   |   2 +-
+ .../net/wireless/intel/iwlwifi/cfg/rf-gf.c    |   2 +-
+ .../net/wireless/intel/iwlwifi/cfg/rf-hr.c    |   2 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |   2 +-
+ .../net/wireless/intel/iwlwifi/fw/api/d3.h    |   1 +
+ .../net/wireless/intel/iwlwifi/fw/api/power.h |  34 +-
+ .../wireless/intel/iwlwifi/fw/regulatory.c    |  39 +-
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c   | 271 +++---
+ .../net/wireless/intel/iwlwifi/mld/iface.h    |   3 -
+ drivers/net/wireless/intel/iwlwifi/mld/key.c  |  38 +
+ drivers/net/wireless/intel/iwlwifi/mld/key.h  |   7 +
+ drivers/net/wireless/intel/iwlwifi/mld/link.h |   2 +
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c |  10 +-
+ .../wireless/intel/iwlwifi/mld/regulatory.c   |  28 +-
+ drivers/net/wireless/intel/iwlwifi/mld/rx.c   |  26 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/coex.c | 131 ---
+ .../wireless/intel/iwlwifi/mvm/constants.h    |  20 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 175 +---
+ .../wireless/intel/iwlwifi/mvm/debugfs-vif.c  |  94 --
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c | 809 ------------------
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  34 -
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 124 +--
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 138 +--
+ .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  |   2 -
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 133 +--
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  53 --
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 133 ---
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  23 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 101 ---
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  89 --
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  24 -
+ .../wireless/intel/iwlwifi/mvm/tests/Makefile |   2 +-
+ .../wireless/intel/iwlwifi/mvm/tests/links.c  | 433 ----------
+ .../wireless/intel/iwlwifi/mvm/time-event.c   |   3 -
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   8 +-
+ 36 files changed, 314 insertions(+), 2684 deletions(-)
+ delete mode 100644 drivers/net/wireless/intel/iwlwifi/mvm/tests/links.c
 
-Actually the race happens regardless of wait_for_completion_timeout() exit
-status, it's briefly mentioned in the race diagram inside commit message
-(but the diagram can show only one possible concurrency scenario). I agree
-this may be improved and described more explicitly though.
+-- 
+2.34.1
 
-As for the patch itself, currently I can't see another way of fixing that
-other than introducing locks on both waiting and completing side.
 
