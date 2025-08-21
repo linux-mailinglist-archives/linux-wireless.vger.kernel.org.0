@@ -1,305 +1,139 @@
-Return-Path: <linux-wireless+bounces-26488-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26489-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906EFB2EC87
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 06:02:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A108DB2ED0C
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 06:40:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5B3A7BF023
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 04:00:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1576016C062
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 04:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0382469D;
-	Thu, 21 Aug 2025 04:01:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="PMi0jtq1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4AE2BE650;
+	Thu, 21 Aug 2025 04:32:51 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137C2111A8;
-	Thu, 21 Aug 2025 04:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684FA25392D;
+	Thu, 21 Aug 2025 04:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755748911; cv=none; b=rVHFhhQkuyqSMmd3ZSNx2KH8eJMb1Nc+lR/BAGIrYTmHNFsqJAoxE8awR6oRjtlkVMZf+1nIDOV7hFR+3VfKouzVRjeQs1FtTkf7G7VvwL0GxlFD1ZtBGM+dz1/jZy+KMKt0QekNbafaR4rpN//aNT0AiFm4CVuNidaed6C7SHA=
+	t=1755750771; cv=none; b=O5rmcsqrifvxhCwy5PRUec4Xd4dS9nVTLHfchBi5+soBNs/KZWY+2vhI4xY7GsIdzALMFcVmll7JN5VDdADvEc0U3hzuGSfCi/DG3IdnfEp+TIK8T1GV8wEz9MtJp81+h1MmJByO26upV9pj4sgP6L062VwisDmFIXQklYABtWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755748911; c=relaxed/simple;
-	bh=hq6BmYJKUGrsbZPK4lPRsFbIo7hndZQGkUXL3NsnNTE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=DYzrhvBF7Zbz/vYUAFYY5kR4Vua/ycCY6uXj00obzwO8tvtiKv1hBFhepEEuaK04TLuyjmlBEIGpFq/Bdt1D4dUPVZB4fJZKmvqnSBpQi81WI/EZwTFCrHWT38uNJ/+Ok7dVj1frSPqERUiO1iLKvw/rD0ylhOIZkBxAT+zACYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=PMi0jtq1; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57L41LpQ41400304, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1755748881; bh=uR/6QHusaHtBAfpIVj55/WMIiB+GPeYFJmtAnm//QFo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=PMi0jtq1KlrqxxiXPTBRYsbe07EV96KjwoJY6BsYQU4vmkt0F/dCEMIp+KVKCcFir
-	 tZbaNKRTSwwtFKeBYDVSAQn0bAB1smK02r9uUKp4D+v/InVbnijeu3BKBSukT8C1OH
-	 +bjd7ZBW7Vx0LXb+Z5T4/TC8mmbVCLrBL4n+PL2fc75nxPo75NEX8oUyrVyYCOVVlm
-	 L5ps27tSMDqFrBSAL2H0YvRAVctM0qNFdLAfjRdMt0222sABduwsSxW5RP9t1jnqIP
-	 lEYpF2bGFa8uM2sjW44Rt0sV9VcN72Z5ftZE7JJfXxw+X+h9B/HCxpjvbh1ltqaV9N
-	 BTaUit6jVrnvA==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57L41LpQ41400304
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 Aug 2025 12:01:21 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 21 Aug 2025 12:01:21 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 21 Aug 2025 12:01:21 +0800
-Received: from RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d]) by
- RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d%2]) with mapi id
- 15.01.2507.035; Thu, 21 Aug 2025 12:01:21 +0800
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
-To: Fedor Pchelkin <pchelkin@ispras.ru>, Ping-Ke Shih <pkshih@realtek.com>
-CC: Bernie Huang <phhuang@realtek.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH rtw-next 1/2] wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()
-Thread-Topic: [PATCH rtw-next 1/2] wifi: rtw89: fix use-after-free in
- rtw89_core_tx_kick_off_and_wait()
-Thread-Index: AQHcEd2TXgTNv1RIp0yyOkAvjkku2rRsb/bQ
-Date: Thu, 21 Aug 2025 04:01:21 +0000
-Message-ID: <b4ec58864e544b0295ddb02ed408199b@realtek.com>
-References: <20250820141441.106156-1-pchelkin@ispras.ru>
- <20250820141441.106156-2-pchelkin@ispras.ru>
-In-Reply-To: <20250820141441.106156-2-pchelkin@ispras.ru>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1755750771; c=relaxed/simple;
+	bh=wudxfahAkG91oksJkB2hKaFuZIUSOFCQvcfN5AMdmsM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kIWAyZlNO2Vfko/p5x7YYBWLfFPOCcXuyNLt0BBTtUIazVGb1dNwotRGdctHm4zAItFywAC7CzUHW4oKHvEQl0tsQuTXaqWXrH8oge0zvtqr8jyqKQTkiMQa6phGL8lHBm9j3P4XHatB+tR0Ne5E8mjxQSighT+erhpbcY937Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=206.189.21.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [218.12.18.46])
+	by mtasvr (Coremail) with SMTP id _____wD34GpMoaZoH5xwAQ--.19131S3;
+	Thu, 21 Aug 2025 12:32:13 +0800 (CST)
+Received: from ubuntu.localdomain (unknown [218.12.18.46])
+	by mail-app2 (Coremail) with SMTP id zC_KCgB3RDZFoaZo+ldfAQ--.29576S2;
+	Thu, 21 Aug 2025 12:32:11 +0800 (CST)
+From: Duoming Zhou <duoming@zju.edu.cn>
+To: brcm80211@lists.linux.dev
+Cc: brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	mingo@kernel.org,
+	tglx@linutronix.de,
+	arend.vanspriel@broadcom.com,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH] brcmfmac: btcoex: Fix use-after-free when rescheduling brcmf_btcoex_info work
+Date: Thu, 21 Aug 2025 12:32:02 +0800
+Message-Id: <20250821043202.21263-1-duoming@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zC_KCgB3RDZFoaZo+ldfAQ--.29576S2
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwAFAWimJPgB2QBGsL
+X-CM-DELIVERINFO: =?B?DtiifAXKKxbFmtjJiESix3B1w3uoVhYI+vyen2ZzBEkOnu5chDpkB+ZdGnv/zQ0PbP
+	CR1x+P/0SGdmHLgiraX9IMEJhemD36L/3z5dEROEpufn5xEJEOZxQeXyfLvW+ICf4T82FG
+	GVC4lAYirsvrmktc4zr5u/MkoErypH07V0iWcVNZJhzhoKg0FpbtyDr9+TYt3w==
+X-Coremail-Antispam: 1Uk129KBj93XoW7Cr1fAr48CrWkAF4kGw4rWFX_yoW8Kr1Dpa
+	93G34ayryjvw43KrWDJF1kXFyrKa9rG3Wqyr48AFZxuFn2qr1IqF48KFyagFW7CF4Ivay2
+	yF4Fqrn8JrnxtFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvvb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
+	AKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I
+	3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxV
+	WUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8I
+	cVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
+	AFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuY
+	vjxU7xwIDUUUU
 
-Fedor Pchelkin <pchelkin@ispras.ru> wrote:
->=20
-> There is a bug observed when rtw89_core_tx_kick_off_and_wait() tries to a=
-ccess already
-> freed skb_data:
->=20
->  BUG: KFENCE: use-after-free write in rtw89_core_tx_kick_off_and_wait
-> drivers/net/wireless/realtek/rtw89/core.c:1110
->=20
->  CPU: 6 UID: 0 PID: 41377 Comm: kworker/u64:24 Not tainted  6.17.0-rc1+ #=
-1 PREEMPT(lazy)
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS edk2-20250523=
--14.fc42
-> 05/23/2025
->  Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
->=20
->  Use-after-free write at 0x0000000020309d9d (in kfence-#251):
->  rtw89_core_tx_kick_off_and_wait drivers/net/wireless/realtek/rtw89/core.=
-c:1110
->  rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
->  rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
->  rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
->  rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.h:141
->  rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
->  rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
->  rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
->  process_one_work kernel/workqueue.c:3241  worker_thread kernel/workqueue=
-.c:3400
-> kthread kernel/kthread.c:463  ret_from_fork arch/x86/kernel/process.c:154
-> ret_from_fork_asm arch/x86/entry/entry_64.S:258
->=20
->  kfence-#251: 0x0000000056e2393d-0x000000009943cb62, size=3D232,
-> cache=3Dskbuff_head_cache
->=20
->  allocated by task 41377 on cpu 6 at 77869.159548s (0.009551s ago):
->  __alloc_skb net/core/skbuff.c:659
->  __netdev_alloc_skb net/core/skbuff.c:734  ieee80211_nullfunc_get
-> net/mac80211/tx.c:5844  rtw89_core_send_nullfunc
-> drivers/net/wireless/realtek/rtw89/core.c:3431
->  rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
->  rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
->  rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
->  rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.c:3194
->  rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
->  rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
->  rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
->  process_one_work kernel/workqueue.c:3241  worker_thread kernel/workqueue=
-.c:3400
-> kthread kernel/kthread.c:463  ret_from_fork arch/x86/kernel/process.c:154
-> ret_from_fork_asm arch/x86/entry/entry_64.S:258
->=20
->  freed by task 1045 on cpu 9 at 77869.168393s (0.001557s ago):
->  ieee80211_tx_status_skb net/mac80211/status.c:1117  rtw89_pci_release_tx=
-wd_skb
-> drivers/net/wireless/realtek/rtw89/pci.c:564
->  rtw89_pci_release_tx_skbs.isra.0 drivers/net/wireless/realtek/rtw89/pci.=
-c:651
->  rtw89_pci_release_tx drivers/net/wireless/realtek/rtw89/pci.c:676
->  rtw89_pci_napi_poll drivers/net/wireless/realtek/rtw89/pci.c:4238
->  __napi_poll net/core/dev.c:7495
->  net_rx_action net/core/dev.c:7557 net/core/dev.c:7684  handle_softirqs
-> kernel/softirq.c:580
->  do_softirq.part.0 kernel/softirq.c:480
->  __local_bh_enable_ip kernel/softirq.c:407  rtw89_pci_interrupt_threadfn
-> drivers/net/wireless/realtek/rtw89/pci.c:927
->  irq_thread_fn kernel/irq/manage.c:1133
->  irq_thread kernel/irq/manage.c:1257
->  kthread kernel/kthread.c:463
->  ret_from_fork arch/x86/kernel/process.c:154  ret_from_fork_asm
-> arch/x86/entry/entry_64.S:258
->=20
-> It is a consequence of a race between the waiting and the signalling side=
- of the completion:
->=20
->             Thread 1                                    Thread 2
-> rtw89_core_tx_kick_off_and_wait()
->   rcu_assign_pointer(skb_data->wait, wait)
->   /* start waiting */
->   wait_for_completion_timeout()
->                                                 rtw89_pci_tx_status()
->                                                   rtw89_core_tx_wait_comp=
-lete()
->                                                     rcu_read_lock()
->                                                     /* signals completion=
- and
->                                                      * proceeds further
->                                                      */
->=20
-> complete(&wait->completion)
->                                                     rcu_read_unlock()
->                                                   ...
->                                                   /* frees skb_data */
->                                                   ieee80211_tx_status_ni(=
-)
->   /* returns (exit status doesn't matter) */
->   wait_for_completion_timeout()
->   ...
->   /* accesses the already freed skb_data */
->   rcu_assign_pointer(skb_data->wait, NULL)
->=20
-> The signalling side might proceed and free the underlying skb even before=
- the waiting side is
-> fully awoken and run to execution.
->=20
-> RCU synchronization here would work well if the signalling side didn't go=
- on and release skb
-> on its own.  Thus the waiting side should be told somehow about what is h=
-appening on the
-> completion side.
+The brcmf_btcoex_detach() only shuts down the btcoex timer, if the
+flag timer_on is false. However, the brcmf_btcoex_timerfunc(), which
+runs as timer handler, sets timer_on to false. This creates a critical
+race condition:
 
-I reread the flow and am thinking about it a bit.
-Actually, only when signaling side doesn't run on time, waiting side should=
- update skb_data->wait.
-(see code comments below)
+1.If brcmf_btcoex_detach() is called while brcmf_btcoex_timerfunc()
+is executing, it may observe timer_on as false and skip the call to
+timer_shutdown_sync().
 
->=20
-> It seems the only correct way is to use standard locking primitives with =
-owner tracking, like
-> was originally published in one [1] of the versions of the patch mentione=
-d in Fixes.
->=20
-> [1]: https://lore.kernel.org/linux-wireless/20230404025259.15503-3-pkshih=
-@realtek.com/
->=20
-> Found by Linux Verification Center (linuxtesting.org).
->=20
-> Fixes: 1ae5ca615285 ("wifi: rtw89: add function to wait for completion of=
- TX skbs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> ---
->=20
-> The bug is tricky because the waiter-completer interaction isn't simple h=
-ere.  I've tried to
-> come up with something that wouldn't require taking additional locks at
-> rtw89_core_tx_wait_complete() but these ideas don't eliminate the possibl=
-e race entirely, to
-> my mind.
+2.The brcmf_btcoex_timerfunc() may then reschedule the brcmf_btcoex_info
+worker after the cancel_work_sync() has been executed.
 
-Thank you for finding the potential race condition.
+3.Subsequently, the brcmf_btcoex_info structure is freed.
 
->=20
-> Though one solution that _works_ currently is to get rid of 'struct rtw89=
-_tx_wait_info' and
-> replace it with the only field it is used for - 'bool tx_done'.  Then it =
-can be stored at 'struct
-> ieee80211_tx_info::status::status_driver_data' directly without the need =
-for allocating an
-> extra dynamic object and tracking its lifecycle.
-> I didn't post this since then the structure won't be expandable for new f=
-ields and that's
-> probably the reason for why it wasn't done in this manner initially.
+4.Finally, the rescheduled worker attempts to execute, leading to
+use-after-free bugs by accessing the freed brcmf_btcoex_info object.
 
-With a busy waiting on tx waiting side ?
-If so, it would be unacceptable.
+The following diagram illustrates this sequence of events:
 
->=20
->  drivers/net/wireless/realtek/rtw89/core.c | 15 ++++++++---
-> drivers/net/wireless/realtek/rtw89/core.h | 32 ++++++++++++++---------
-> drivers/net/wireless/realtek/rtw89/pci.c  |  6 +++--
->  3 files changed, 36 insertions(+), 17 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/realtek/rtw89/core.c
-> b/drivers/net/wireless/realtek/rtw89/core.c
-> index 57590f5577a3..826540319027 100644
-> --- a/drivers/net/wireless/realtek/rtw89/core.c
-> +++ b/drivers/net/wireless/realtek/rtw89/core.c
-> @@ -1088,6 +1088,7 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_de=
-v *rtwdev,
-> struct sk_buff *sk
->         struct rtw89_tx_skb_data *skb_data =3D RTW89_TX_SKB_CB(skb);
->         struct rtw89_tx_wait_info *wait;
->         unsigned long time_left;
-> +       bool free_wait =3D true;
->         int ret =3D 0;
->=20
->         wait =3D kzalloc(sizeof(*wait), GFP_KERNEL); @@ -1097,7 +1098,8 @=
-@ int
-> rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff =
-*sk
->         }
->=20
->         init_completion(&wait->completion);
-> -       rcu_assign_pointer(skb_data->wait, wait);
-> +       spin_lock_init(&wait->owner_lock);
-> +       skb_data->wait =3D wait;
->=20
->         rtw89_core_tx_kick_off(rtwdev, qsel);
->         time_left =3D wait_for_completion_timeout(&wait->completion,
-> @@ -1107,8 +1109,15 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_d=
-ev *rtwdev,
-> struct sk_buff *sk
->         else if (!wait->tx_done)
->                 ret =3D -EAGAIN;
->=20
-> -       rcu_assign_pointer(skb_data->wait, NULL);
-> -       kfree_rcu(wait, rcu_head);
+cpu0                            cpu1
+brcmf_btcoex_detach          |  brcmf_btcoex_timerfunc
+                             |    bt_local->timer_on = false;
+  if (cfg->btcoex->timer_on) |
+    ...                      |
+  cancel_work_sync();        |
+  ...                        |    schedule_work() //reschedule
+  kfree(cfg->btcoex);//free  |
+                             |    brcmf_btcoex_handler() //worker
+                             |    btci-> //use
 
-Please consider the following.
-(moving "rcu_assign_pointer(skb_data->wait, NULL)" to be under "if (time_le=
-ft =3D=3D 0)")
+To resolve this race condition, drop the conditional check and call
+timer_shutdown_sync() directly. It can deactivate the timer reliably,
+regardless of its current state. Once stopped, the timer_on state is
+then set to false.
 
-    if (time_left =3D=3D 0) {
-        rcu_assign_pointer(skb_data->wait, NULL);
-        ret =3D -ETIMEDOUT;
-    } else if (!wait->tx_done) {
-        ret =3D -EAGAIN;
-    }
+Fixes: 61730d4dfffc ("brcmfmac: support critical protocol API for DHCP")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-    kfree_rcu(wait, rcu_head);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
+index 69ef8cf203d2..67c0c5a92f99 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
+@@ -393,10 +393,8 @@ void brcmf_btcoex_detach(struct brcmf_cfg80211_info *cfg)
+ 	if (!cfg->btcoex)
+ 		return;
+ 
+-	if (cfg->btcoex->timer_on) {
+-		cfg->btcoex->timer_on = false;
+-		timer_shutdown_sync(&cfg->btcoex->timer);
+-	}
++	timer_shutdown_sync(&cfg->btcoex->timer);
++	cfg->btcoex->timer_on = false;
+ 
+ 	cancel_work_sync(&cfg->btcoex->work);
+ 
+-- 
+2.34.1
 
-If completing side does run as expected (potential racing mentioned in this=
- patch),
-there is no real need to assign NULL back.
 
