@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-26530-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26531-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6EAB30174
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 19:49:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF8AB30165
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 19:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55FE33BDF20
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 17:48:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8BC51BA8374
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Aug 2025 17:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146FA341AAA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D170342CA7;
 	Thu, 21 Aug 2025 17:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G6fhh3Tn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RtdEKzVB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B49341673
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Aug 2025 17:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4B0341AA4
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Aug 2025 17:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755798479; cv=none; b=oupUeBp6AjzbcubEkIqVIpUKEugboTlyKuQHdKVARJk03Or5XBam5WjiBPITnoPLYrictWPLemUW1kX63CaKNa/0qRA071JEbmTTInPMGlsaPFzgarc3ofVTNMuM8GenhzILxoThN7qONAKv1ocWEbueV7YDhzZzaNJA8EmMNlo=
+	t=1755798479; cv=none; b=kF+H111qmw3/QSSPeJdSkmdZSvV8uOR2VmbtVGHryyqmR3Ms2B06fw5RoX+rGU4EgTb1H+egdh+cQDc5OYxjQjPZaPXQTkg9CEklfQEy+xRK3YtHC+VJ/uAAEI7vXQp1+TkHT7eikK0CdjK7sVd3EXegHTGPjjvHcBMMxDewlcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755798479; c=relaxed/simple;
-	bh=AUlYbGMKji7DnKbX6KgtfJqYj5973BmzYYBMakC4CYk=;
+	bh=ZAWqsUNgGWBDBfAwTtTDYNOkzOiI29QaEuvfeqlhl/M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hihnb0TFBHwsAl0dC1lxpdykbamIxM+DYuPlcU4ZZm3uJo3jnwO0YiHmxu5S15AZaDlDN4eYS85rZ2FACxFmzPwV4eeJR0vjIkVnakvk9v9+Y62olKpiQwdPT3nb/ds7d5mEAkOIN+VEljvm3jP/bzprdsdjabrU4byiwh5LviM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G6fhh3Tn; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=jlmux5P+tnQzVu5TttqZ/lwG4f8KOwloRsWVm8ZnD9xYnRP0k1e4+Xf/K0NGp7S0pRL0iaA4maFRoVm4pujIn69IZd/puzqgJZ+blR5jOCpOZvipWbNKIkqPUpt86VB3flgkDx1wWPO5b8UcvBEI6DSPJLr3iql3uPZeLGL/5lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RtdEKzVB; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755798477; x=1787334477;
+  t=1755798478; x=1787334478;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AUlYbGMKji7DnKbX6KgtfJqYj5973BmzYYBMakC4CYk=;
-  b=G6fhh3TnhD8zmwzbAr9NuPh4PZ8GqIYNGKgXv4V3dWgA7EtQSeFdQtJw
-   0xOwW89NBVvZ6uOtLgC82EsFml1D74q7lVRkH7Sibd5FN+4zhNVz9ZXoP
-   9F7t2VxcayTsWA76BPrzDZpnuqXbrrEx/mff2FR5zvZPTeMDdCWDkO/ea
-   ItBV/6oeFizsbp6hoGbmraRSMti3ecTiDZV+SWYNqOwJ0SWC6VTT+bgKk
-   D/QRhbF7HXB/cAeGd3xiwUfr4PKfMgqKojtqxtSSPkEBJUEyGHYVli+Hc
-   wfWD39fB36s34pbMrG/UevdcPzZb46FwFWaOjMdPcEfmlIHJh4LD35dZT
-   Q==;
-X-CSE-ConnectionGUID: jBZPoB3FSWOUUndZNHmFXw==
-X-CSE-MsgGUID: 6g9WdrYUQ7mkg+YJBzrqWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="68806060"
+  bh=ZAWqsUNgGWBDBfAwTtTDYNOkzOiI29QaEuvfeqlhl/M=;
+  b=RtdEKzVBSXGik2TgLoGkbG9+PFtGnCEld069vJP+Lxi3rd+2LQszn50z
+   ol4wvXyhOPYVqPoizTdXa59L8lE5q8NME4LKNvS+xXBp327/I5Oy2IV+L
+   Wx1e/4FR0JEl/VgP8LZoSUXH7bOWFAA2Kz0DhXIYzDHd/3+HnfVpGdBAD
+   kZNVUTLePJCmf85ohTB+3hJUoH9VVPVHgmt0LVwx84sn/wbh+cldD+QdS
+   k3zpjugVXG/buJ8RIVufe/S4F5Nusx/3U586o56SwvdIlexNC9BgWGW6h
+   dzRv9lhljHrJabmQKp8/h1xUl/E6E3xUcZQYFq8ewjf97jgIScqq/ZGz3
+   g==;
+X-CSE-ConnectionGUID: LEKAPbvhTpaIMXyPpK5FZw==
+X-CSE-MsgGUID: 3Ci8fs0cQDKOsMTWmyjXew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="68806062"
 X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="68806060"
+   d="scan'208";a="68806062"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:47:56 -0700
-X-CSE-ConnectionGUID: gsiESPvIQyGjV1iV9TN/JA==
-X-CSE-MsgGUID: j8IzQEhLR2qrTmWvmGor9Q==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:47:58 -0700
+X-CSE-ConnectionGUID: Udtuc5/aT/G+Wd2x/UgF3w==
+X-CSE-MsgGUID: JMHtp3dETCy7IaRPY34Drw==
 X-ExtLoop1: 1
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:47:55 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 10:47:57 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 iwlwifi-next 03/15] wifi: iwlwifi: mvm: cleanup cipher lookup in resume
-Date: Thu, 21 Aug 2025 20:47:14 +0300
-Message-Id: <20250821204455.937cbf5fd26e.I5d92258a9d63a39ee3acb02a72a2af9984993018@changeid>
+Subject: [PATCH v2 iwlwifi-next 04/15] wifi: iwlwifi: mld: support MLO rekey on resume
+Date: Thu, 21 Aug 2025 20:47:15 +0300
+Message-Id: <20250821204455.fae2b42fbbfc.I7fcba97b6424577e49f7295f0c40b7d294ab56d8@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250821174726.2425334-1-miriam.rachel.korenblit@intel.com>
 References: <20250821174726.2425334-1-miriam.rachel.korenblit@intel.com>
@@ -74,269 +74,212 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-We used to lookup the ciphers of the mcast keys, but this was beacuse it
-was required for ieee80211_get_rekey_add. Now as this API no longer
-needs the cipher as an argument, we can remove the cipher lookups.
+When resuming from wowlan, update mac80211 on rekeys of MLO group keys
+and set the PN for those keys.
 
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 165 ++------------------
- 1 file changed, 14 insertions(+), 151 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c | 126 ++++++++++++++++++--
+ 1 file changed, 118 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index a4090db00d0b..a31bc2af5300 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -1790,63 +1790,8 @@ static void iwl_mvm_set_key_rx_seq(struct ieee80211_key_conf *key,
- struct iwl_mvm_d3_gtk_iter_data {
- 	struct iwl_mvm *mvm;
- 	struct iwl_wowlan_status_data *status;
--	u32 gtk_cipher, igtk_cipher, bigtk_cipher;
--	bool unhandled_cipher, igtk_support, bigtk_support;
--	int num_keys;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+index daa01fe62f84..0ac6ceddb44f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+@@ -71,6 +71,12 @@ struct iwl_mld_mcast_key_data {
+ 
  };
  
--static void iwl_mvm_d3_find_last_keys(struct ieee80211_hw *hw,
--				      struct ieee80211_vif *vif,
--				      struct ieee80211_sta *sta,
--				      struct ieee80211_key_conf *key,
--				      void *_data)
--{
--	struct iwl_mvm_d3_gtk_iter_data *data = _data;
--	int link_id = vif->active_links ? __ffs(vif->active_links) : -1;
--
--	if (link_id >= 0 && key->link_id >= 0 && link_id != key->link_id)
--		return;
--
--	if (data->unhandled_cipher)
--		return;
--
--	switch (key->cipher) {
--	case WLAN_CIPHER_SUITE_WEP40:
--	case WLAN_CIPHER_SUITE_WEP104:
--		/* ignore WEP completely, nothing to do */
--		return;
--	case WLAN_CIPHER_SUITE_CCMP:
--	case WLAN_CIPHER_SUITE_GCMP:
--	case WLAN_CIPHER_SUITE_GCMP_256:
--	case WLAN_CIPHER_SUITE_TKIP:
--		/* we support these */
--		data->gtk_cipher = key->cipher;
--		break;
--	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
--	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
--	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
--	case WLAN_CIPHER_SUITE_AES_CMAC:
--		/* we support these */
--		if (data->igtk_support &&
--		    (key->keyidx == 4 || key->keyidx == 5)) {
--			data->igtk_cipher = key->cipher;
--		} else if (data->bigtk_support &&
--			   (key->keyidx == 6 || key->keyidx == 7)) {
--			data->bigtk_cipher = key->cipher;
--		} else {
--			data->unhandled_cipher = true;
--			return;
--		}
--		break;
--	default:
--		/* everything else - disconnect from AP */
--		data->unhandled_cipher = true;
--		return;
--	}
--
--	data->num_keys++;
--}
--
- static void
- iwl_mvm_d3_set_igtk_bigtk_ipn(const struct iwl_multicast_key_data *key,
- 			      struct ieee80211_key_seq *seq, u32 cipher)
-@@ -1892,9 +1837,6 @@ static void iwl_mvm_d3_update_keys(struct ieee80211_hw *hw,
- 	if (link_id >= 0 && key->link_id >= 0 && link_id != key->link_id)
- 		return;
- 
--	if (data->unhandled_cipher)
--		return;
--
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_WEP40:
- 	case WLAN_CIPHER_SUITE_WEP104:
-@@ -1943,52 +1885,24 @@ static void iwl_mvm_d3_update_keys(struct ieee80211_hw *hw,
- 
- static bool iwl_mvm_gtk_rekey(struct iwl_wowlan_status_data *status,
- 			      struct ieee80211_vif *vif,
--			      struct iwl_mvm *mvm, u32 gtk_cipher)
-+			      struct iwl_mvm *mvm)
- {
- 	int i, j;
- 	struct ieee80211_key_conf *key;
--	DEFINE_RAW_FLEX(struct ieee80211_key_conf, conf, key,
--			WOWLAN_KEY_MAX_SIZE);
- 	int link_id = vif->active_links ? __ffs(vif->active_links) : -1;
--	u8 key_data[WOWLAN_KEY_MAX_SIZE];
--
--	conf->cipher = gtk_cipher;
--
--	BUILD_BUG_ON(WLAN_KEY_LEN_CCMP != WLAN_KEY_LEN_GCMP);
--	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < WLAN_KEY_LEN_CCMP);
--	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < WLAN_KEY_LEN_GCMP_256);
--	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < WLAN_KEY_LEN_TKIP);
--	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < sizeof(status->gtk[0].key));
--
--	switch (gtk_cipher) {
--	case WLAN_CIPHER_SUITE_CCMP:
--	case WLAN_CIPHER_SUITE_GCMP:
--		conf->keylen = WLAN_KEY_LEN_CCMP;
--		break;
--	case WLAN_CIPHER_SUITE_GCMP_256:
--		conf->keylen = WLAN_KEY_LEN_GCMP_256;
--		break;
--	case WLAN_CIPHER_SUITE_TKIP:
--		conf->keylen = WLAN_KEY_LEN_TKIP;
--		break;
--	default:
--		WARN_ON(1);
--	}
- 
- 	for (i = 0; i < ARRAY_SIZE(status->gtk); i++) {
- 		if (!status->gtk[i].len)
- 			continue;
- 
--		conf->keyidx = status->gtk[i].id;
- 		IWL_DEBUG_WOWLAN(mvm,
--				 "Received from FW GTK cipher %d, key index %d\n",
--				 conf->cipher, conf->keyidx);
--		memcpy(conf->key, status->gtk[i].key,
--		       sizeof(status->gtk[i].key));
--		memcpy(key_data, status->gtk[i].key, sizeof(status->gtk[i].key));
--
--		key = ieee80211_gtk_rekey_add(vif, status->gtk[i].id, key_data,
--					      sizeof(key_data), link_id);
-+				 "Received from FW GTK: key index %d\n",
-+				 status->gtk[i].id);
++struct iwl_mld_wowlan_mlo_key {
++	u8 key[WOWLAN_KEY_MAX_SIZE];
++	u8 idx, type, link_id;
++	u8 pn[6];
++};
 +
-+		key = ieee80211_gtk_rekey_add(vif, status->gtk[i].id,
-+					      status->gtk[i].key,
-+					      sizeof(status->gtk[i].key),
-+					      link_id);
- 		if (IS_ERR(key)) {
- 			/* FW may send also the old keys */
- 			if (PTR_ERR(key) == -EALREADY)
-@@ -2011,53 +1925,26 @@ static bool iwl_mvm_gtk_rekey(struct iwl_wowlan_status_data *status,
+ /**
+  * struct iwl_mld_wowlan_status - contains wowlan status data from
+  * all wowlan notifications
+@@ -89,6 +95,8 @@ struct iwl_mld_mcast_key_data {
+  * @bigtk: data of the last two used gtk's by the FW upon resume
+  * @ptk: last seq numbers per tid passed by the FW,
+  *	holds both in tkip and aes formats
++ * @num_mlo_keys: number of &struct iwl_mld_wowlan_mlo_key structs
++ * @mlo_keys: array of MLO keys
+  */
+ struct iwl_mld_wowlan_status {
+ 	u32 wakeup_reasons;
+@@ -108,6 +116,9 @@ struct iwl_mld_wowlan_status {
+ 		struct ieee80211_key_seq tkip_seq[IWL_MAX_TID_COUNT];
  
+ 	} ptk;
++
++	int num_mlo_keys;
++	struct iwl_mld_wowlan_mlo_key mlo_keys[WOWLAN_MAX_MLO_KEYS];
+ };
+ 
+ #define NETDETECT_QUERY_BUF_LEN \
+@@ -407,19 +418,65 @@ iwl_mld_convert_bigtk_resume_data(struct iwl_mld_wowlan_status *wowlan_status,
+ 	}
+ }
+ 
++static void
++iwl_mld_convert_mlo_keys(struct iwl_mld *mld,
++			 const struct iwl_wowlan_info_notif *notif,
++			 struct iwl_mld_wowlan_status *wowlan_status)
++{
++	if (!notif->num_mlo_link_keys)
++		return;
++
++	wowlan_status->num_mlo_keys = notif->num_mlo_link_keys;
++
++	if (IWL_FW_CHECK(mld, wowlan_status->num_mlo_keys > WOWLAN_MAX_MLO_KEYS,
++			 "Too many MLO keys: %d, max %d\n",
++			 wowlan_status->num_mlo_keys, WOWLAN_MAX_MLO_KEYS))
++		wowlan_status->num_mlo_keys = WOWLAN_MAX_MLO_KEYS;
++
++	for (int i = 0; i < wowlan_status->num_mlo_keys; i++) {
++		const struct iwl_wowlan_mlo_gtk *fw_mlo_key = &notif->mlo_gtks[i];
++		struct iwl_mld_wowlan_mlo_key *driver_mlo_key =
++			&wowlan_status->mlo_keys[i];
++		u16 flags = le16_to_cpu(fw_mlo_key->flags);
++
++		driver_mlo_key->link_id =
++			u16_get_bits(flags, WOWLAN_MLO_GTK_FLAG_LINK_ID_MSK);
++		driver_mlo_key->type =
++			u16_get_bits(flags, WOWLAN_MLO_GTK_FLAG_KEY_TYPE_MSK);
++		driver_mlo_key->idx =
++			u16_get_bits(flags, WOWLAN_MLO_GTK_FLAG_KEY_ID_MSK);
++
++		BUILD_BUG_ON(sizeof(driver_mlo_key->key) != sizeof(fw_mlo_key->key));
++		BUILD_BUG_ON(sizeof(driver_mlo_key->pn) != sizeof(fw_mlo_key->pn));
++
++		memcpy(driver_mlo_key->key, fw_mlo_key->key, sizeof(fw_mlo_key->key));
++		memcpy(driver_mlo_key->pn, fw_mlo_key->pn, sizeof(fw_mlo_key->pn));
++	}
++}
++
  static bool
- iwl_mvm_d3_igtk_bigtk_rekey_add(struct iwl_wowlan_status_data *status,
--				struct ieee80211_vif *vif, u32 cipher,
-+				struct ieee80211_vif *vif,
- 				struct iwl_multicast_key_data *key_data)
+ iwl_mld_handle_wowlan_info_notif(struct iwl_mld *mld,
+ 				 struct iwl_mld_wowlan_status *wowlan_status,
+ 				 struct iwl_rx_packet *pkt)
  {
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
--	DEFINE_RAW_FLEX(struct ieee80211_key_conf, conf, key,
--			WOWLAN_KEY_MAX_SIZE);
- 	struct ieee80211_key_conf *key_config;
- 	struct ieee80211_key_seq seq;
- 	int link_id = vif->active_links ? __ffs(vif->active_links) : -1;
--	u8 key[WOWLAN_KEY_MAX_SIZE];
- 	s8 keyidx = key_data->id;
+ 	const struct iwl_wowlan_info_notif *notif = (void *)pkt->data;
+-	u32 expected_len, len = iwl_rx_packet_payload_len(pkt);
++	u32 len = iwl_rx_packet_payload_len(pkt);
++	u32 len_with_mlo_keys;
  
--	conf->cipher = cipher;
--	conf->keyidx = keyidx;
--
- 	if (!key_data->len)
+-	expected_len = sizeof(*notif);
++	if (IWL_FW_CHECK(mld, len < sizeof(*notif),
++			 "Invalid wowlan_info_notif (expected=%zu got=%u)\n",
++			 sizeof(*notif), len))
++		return true;
+ 
+-	if (IWL_FW_CHECK(mld, len < expected_len,
+-			 "Invalid wowlan_info_notif (expected=%ud got=%ud)\n",
+-			 expected_len, len))
++	/* Now that we know that we have at least sizeof(notif),
++	 * check also the variable length part
++	 */
++	len_with_mlo_keys = sizeof(*notif) +
++		notif->num_mlo_link_keys * sizeof(notif->mlo_gtks[0]);
++
++	if (IWL_FW_CHECK(mld, len < len_with_mlo_keys,
++			 "Invalid wowlan_info_notif (expected=%ud got=%u)\n",
++			 len_with_mlo_keys, len))
  		return true;
  
--	iwl_mvm_d3_set_igtk_bigtk_ipn(key_data, &seq, conf->cipher);
--
--	switch (cipher) {
--	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
--		conf->keylen = WLAN_KEY_LEN_BIP_GMAC_128;
--		break;
--	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
--		conf->keylen = WLAN_KEY_LEN_BIP_GMAC_256;
--		break;
--	case WLAN_CIPHER_SUITE_AES_CMAC:
--		conf->keylen = WLAN_KEY_LEN_AES_CMAC;
--		break;
--	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
--		conf->keylen = WLAN_KEY_LEN_BIP_CMAC_256;
--		break;
--	default:
--		WARN_ON(1);
--	}
--	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < sizeof(key_data->key));
--	memcpy(conf->key, key_data->key, conf->keylen);
--
--	memcpy(key, key_data->key, sizeof(key_data->key));
--
--	key_config = ieee80211_gtk_rekey_add(vif, keyidx, key, sizeof(key),
--					     link_id);
-+	key_config = ieee80211_gtk_rekey_add(vif, keyidx, key_data->key,
-+					     sizeof(key_data->key), link_id);
- 	if (IS_ERR(key_config)) {
- 		/* FW may send also the old keys */
- 		return PTR_ERR(key_config) == -EALREADY;
- 	}
+ 	if (IWL_FW_CHECK(mld, notif->tid_offloaded_tx != IWL_WOWLAN_OFFLOAD_TID,
+@@ -442,8 +499,10 @@ iwl_mld_handle_wowlan_info_notif(struct iwl_mld *mld,
+ 	wowlan_status->num_of_gtk_rekeys =
+ 		le32_to_cpu(notif->num_of_gtk_rekeys);
+ 	wowlan_status->wakeup_reasons = le32_to_cpu(notif->wakeup_reasons);
 +
-+	iwl_mvm_d3_set_igtk_bigtk_ipn(key_data, &seq, key_config->cipher);
- 	ieee80211_set_key_rx_seq(key_config, 0, &seq);
++	iwl_mld_convert_mlo_keys(mld, notif, wowlan_status);
++
+ 	return false;
+-	/* TODO: mlo_links (task=MLO)*/
+ }
  
- 	if (keyidx == 4 || keyidx == 5) {
-@@ -2111,27 +1998,6 @@ static bool iwl_mvm_setup_connection_keep(struct iwl_mvm *mvm,
+ static bool
+@@ -687,7 +746,6 @@ iwl_mld_resume_keys_iter(struct ieee80211_hw *hw,
+ 	struct iwl_mld_wowlan_status *wowlan_status = data->wowlan_status;
+ 	u8 status_idx;
  
- 	if (!status || !vif->bss_conf.bssid)
- 		return false;
--
--	if (iwl_mvm_lookup_wowlan_status_ver(mvm) > 6 ||
--	    iwl_fw_lookup_notif_ver(mvm->fw, PROT_OFFLOAD_GROUP,
--				    WOWLAN_INFO_NOTIFICATION,
--				    0))
--		gtkdata.igtk_support = true;
--
--	if (iwl_fw_lookup_notif_ver(mvm->fw, PROT_OFFLOAD_GROUP,
--				    WOWLAN_INFO_NOTIFICATION,
--				    0) >= 3)
--		gtkdata.bigtk_support = true;
--
--	/* find last GTK that we used initially, if any */
--	ieee80211_iter_keys(mvm->hw, vif,
--			    iwl_mvm_d3_find_last_keys, &gtkdata);
--	/* not trying to keep connections with MFP/unhandled ciphers */
--	if (gtkdata.unhandled_cipher)
--		return false;
--	if (!gtkdata.num_keys)
--		goto out;
--
- 	/*
- 	 * invalidate all other GTKs that might still exist and update
- 	 * the one that we used
-@@ -2145,17 +2011,15 @@ static bool iwl_mvm_setup_connection_keep(struct iwl_mvm *mvm,
- 		IWL_DEBUG_WOWLAN(mvm, "num of GTK rekeying %d\n",
- 				 status->num_of_gtk_rekeys);
+-	/* TODO: check key link id (task=MLO) */
+ 	if (data->unhandled_cipher)
+ 		return;
  
--		if (!iwl_mvm_gtk_rekey(status, vif, mvm, gtkdata.gtk_cipher))
-+		if (!iwl_mvm_gtk_rekey(status, vif, mvm))
- 			return false;
+@@ -797,6 +855,57 @@ iwl_mld_add_all_rekeys(struct ieee80211_vif *vif,
+ 					link_conf);
+ }
  
- 		if (!iwl_mvm_d3_igtk_bigtk_rekey_add(status, vif,
--						     gtkdata.igtk_cipher,
- 						     &status->igtk))
- 			return false;
++static void iwl_mld_mlo_rekey(struct iwl_mld *mld,
++			      struct iwl_mld_wowlan_status *wowlan_status,
++			      struct ieee80211_vif *vif)
++{
++	struct iwl_mld_old_mlo_keys *old_keys __free(kfree) = NULL;
++
++	IWL_DEBUG_WOWLAN(mld, "Num of MLO Keys: %d\n", wowlan_status->num_mlo_keys);
++
++	if (!wowlan_status->num_mlo_keys)
++		return;
++
++	for (int i = 0; i < wowlan_status->num_mlo_keys; i++) {
++		struct iwl_mld_wowlan_mlo_key *mlo_key = &wowlan_status->mlo_keys[i];
++		struct ieee80211_key_conf *key;
++		struct ieee80211_key_seq seq;
++		u8 link_id = mlo_key->link_id;
++
++		if (IWL_FW_CHECK(mld, mlo_key->link_id >= IEEE80211_MLD_MAX_NUM_LINKS ||
++				      mlo_key->idx >= 8 ||
++				      mlo_key->type >= WOWLAN_MLO_GTK_KEY_NUM_TYPES,
++				      "Invalid MLO key link_id %d, idx %d, type %d\n",
++				      mlo_key->link_id, mlo_key->idx, mlo_key->type))
++			continue;
++
++		if (!(vif->valid_links & BIT(link_id)) ||
++		    (vif->active_links & BIT(link_id)))
++			continue;
++
++		IWL_DEBUG_WOWLAN(mld, "Add MLO key id %d, link id %d\n",
++				 mlo_key->idx, link_id);
++
++		key = ieee80211_gtk_rekey_add(vif, mlo_key->idx, mlo_key->key,
++					      sizeof(mlo_key->key), link_id);
++
++		if (IS_ERR(key))
++			continue;
++
++		/*
++		 * mac80211 expects the PN in big-endian
++		 * also note that seq is a union of all cipher types
++		 * (ccmp, gcmp, cmac, gmac), and they all have the same
++		 * pn field (of length 6) so just copy it to ccmp.pn.
++		 */
++		for (int j = 5; j >= 0; j--)
++			seq.ccmp.pn[5 - j] = mlo_key->pn[j];
++
++		/* group keys are non-QoS and use TID 0 */
++		ieee80211_set_key_rx_seq(key, 0, &seq);
++	}
++}
++
+ static bool
+ iwl_mld_update_sec_keys(struct iwl_mld *mld,
+ 			struct ieee80211_vif *vif,
+@@ -831,9 +940,10 @@ iwl_mld_update_sec_keys(struct iwl_mld *mld,
+ 	iwl_mld_add_all_rekeys(vif, wowlan_status, &key_iter_data,
+ 			       link_conf);
  
- 		for (i = 0; i < ARRAY_SIZE(status->bigtk); i++) {
- 			if (!iwl_mvm_d3_igtk_bigtk_rekey_add(status, vif,
--							     gtkdata.bigtk_cipher,
- 							     &status->bigtk[i]))
- 				return false;
- 		}
-@@ -2164,7 +2028,6 @@ static bool iwl_mvm_setup_connection_keep(struct iwl_mvm *mvm,
- 					   (void *)&replay_ctr, GFP_KERNEL);
- 	}
++	iwl_mld_mlo_rekey(mld, wowlan_status, vif);
++
+ 	ieee80211_gtk_rekey_notify(vif, link_conf->bssid,
+ 				   (void *)&replay_ctr, GFP_KERNEL);
+-	/* TODO: MLO rekey (task=MLO) */
+ 	return true;
+ }
  
--out:
- 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP,
- 				    WOWLAN_GET_STATUSES,
- 				    IWL_FW_CMD_VER_UNKNOWN) < 10) {
 -- 
 2.34.1
 
