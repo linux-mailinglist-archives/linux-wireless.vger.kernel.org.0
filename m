@@ -1,164 +1,264 @@
-Return-Path: <linux-wireless+bounces-26548-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26549-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C06B30D74
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 06:17:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E18B30DBD
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 06:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C10A51CC8C5A
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 04:16:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1180556797F
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 04:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846DC285C9C;
-	Fri, 22 Aug 2025 04:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1492580CF;
+	Fri, 22 Aug 2025 04:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RGYjDpVe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from zg8tmty1ljiyny4xntuumtyw.icoremail.net (zg8tmty1ljiyny4xntuumtyw.icoremail.net [165.227.155.160])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC2018C031;
-	Fri, 22 Aug 2025 04:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=165.227.155.160
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4788517F4F6
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Aug 2025 04:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755836158; cv=none; b=Vl+GnWDsIJU+2DniBib80634xA39sW9mx9qODPIG2wjLhs6Pk7jnkRxnsQaReBiS0Ccx7y74Fo55unkCfEPZCUDiCiOjyKtB90xCEEpFK59Bs6xPr2jsYlqJrbCUK2GvscDcgFd4WFZTfaRcDK4OUGFpITgxLJE8YrFpQvDbNbA=
+	t=1755838425; cv=none; b=WnuQj+R94VjiXW4u+edqppbbpRfS78o+E+5BRRpYM/ERWOVqdOYlv2bgtxbkbaoS0AW/BNq8MZ2fueJPaJdaTJd4OBnOqMfZ3UqUZrLaCDhAww9ILno6sbnPTycPsvDab01k4RjDLaaHbVNF3srQM6y2F3CWN3q2UhvpOipW8F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755836158; c=relaxed/simple;
-	bh=yHZW6QAYcecxeMX4vd5Y5vERSVULekZvJqL0CUduSSY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=ewsPFTEzxO656S6ZP8TE9uwccCc38/JDpaR73QiHyDvh9OEJHycG9eOzzK+RtC5d+iVeR8mts7C8B2c7wrnjWVncivxgNrTyPMv0DhK7y4QyestFSCHOrgF77yr60HgZXy6OETFQKbuIL8INN2qJumsiW+4FE33T5qfSgOzlIys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=165.227.155.160
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [218.12.21.37])
-	by mtasvr (Coremail) with SMTP id _____wAX4mnV7qdoDAV6AQ--.6421S3;
-	Fri, 22 Aug 2025 12:15:18 +0800 (CST)
-Received: from duoming$zju.edu.cn ( [218.12.21.37] ) by
- ajax-webmail-mail-app3 (Coremail) ; Fri, 22 Aug 2025 12:15:16 +0800
- (GMT+08:00)
-Date: Fri, 22 Aug 2025 12:15:16 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: duoming@zju.edu.cn
-To: "Arend van Spriel" <arend.vanspriel@broadcom.com>
-Cc: brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-	mingo@kernel.org, tglx@linutronix.de
-Subject: Re: [PATCH] brcmfmac: btcoex: Fix use-after-free when rescheduling
- brcmf_btcoex_info work
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
- 20250620(94335109) Copyright (c) 2002-2025 www.mailtech.cn zju.edu.cn
-In-Reply-To: <d071faf8-e800-4169-a670-8971d57b6997@broadcom.com>
-References: <20250821043202.21263-1-duoming@zju.edu.cn>
- <d071faf8-e800-4169-a670-8971d57b6997@broadcom.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1755838425; c=relaxed/simple;
+	bh=R1gc75tjP80WAxQ4wu3rFVtfPOqmH37kjZXjfWhfC/A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KaECquLftBiqpx6Q2Ql3THy9j9EKd+cjdGn2+yI3k6FYvr76Nj34PUxZ55MRBxamrkywYL3tT5PnUUiQYrFVqIAscFAVyTBXoX3LiezdLUIHNdkcokAD2tHB8f/JVclg7lEtzPaexD55BVnwaMPtb1rQ5km3cgdy35tZWyuE83Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RGYjDpVe; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57LI9OtF002961
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Aug 2025 04:53:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	PdSWT3gYgOt4OIy+2Lw7uk7WcpKN/yt+BewlbQw7y0g=; b=RGYjDpVehOmnXb/h
+	+t3WD9wcwUu3e+YjzHD4+JS0Kl16DPJON28Dl27vGNXgL2hK1D852XFRgR5Vg9P4
+	6PYC3DtR4MVlgINvCV8BgsbN5VBE9nbm8hhKl5aNxpxxNMPvIhi+eSABUYk1ezZn
+	mrRAcdvj8EqACUxFHIWejy2QgvP6fQIbzpDEqZW+FMqrX6lbfN+9EHdtaEsMw0pL
+	WvxgRfqBAw3Z0RcyZo+eNNO5dw2QMDmilySLNJ7dDWqvHx0DTPdvh7225YH4V1LX
+	WC6II+IYqGDZR9QozNhENEGIuHpfkn9jKMmZU1dz/N3L6SmiIYqZxcgriZHa/CMm
+	dMGX/Q==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ngtdnp8g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Aug 2025 04:53:42 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-76e2e614889so1728581b3a.0
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Aug 2025 21:53:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755838421; x=1756443221;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PdSWT3gYgOt4OIy+2Lw7uk7WcpKN/yt+BewlbQw7y0g=;
+        b=PVTxtndGnOpzeLdS3QGdBxusRbmpmTUAHAdC+3KECQah/V2v7xKNNhnO1aAuguAvU+
+         MKKCwT5EZwojrbLvwo5FR/Z1tlzkcDuC+l1v1a94f8xklFUAQ9UrrqYqhJjy7Q6j9yeV
+         ESd47F/hsgui0UgnGwLyJEEi+I8Gy6AKmaK1nYA5xHunDrrqiJFPzod2YT+uSDgw+WX2
+         Ly/xEhr3VUNnkqyDCgIu1rcgkjUyeNvjgi23/hqeSF304Fcs20O9gsazPEaTYCVqyDwH
+         174pU9ltIZJT+evHIat/m091WWwEqbAW3oS217sHci+yYInSkpRyLSLVivTPL/1TbIxU
+         JMXQ==
+X-Gm-Message-State: AOJu0Yy5XzvkVAVYohRNSAw8hWq8pg7sjLyBfpZcPtbnzXmt1kW6Amqn
+	ooFDXZYrtZASGVHpiy8odCpRkeDg6g6hzpWGXiO2vPBbN0Rabm0almKoFdiM8Q5b4i2Kkt6XPAW
+	DZVJ3Kp+HYBi6ksg/GOoen9jaTiB/HKgVCFVLP2W6iTZmcJz5rf4f4G0684mwRJQ9BZMHkcokXL
+	0bjQ==
+X-Gm-Gg: ASbGnctmdwWqTg3NY0uYoYeVx3LQH6OWrRE5W2qIt1d2uOVbYD3Ef/jwCSUghavjMMT
+	fJUTvFinYUDJRWG+CuvzmV0strW//V6NWO/tQPIje6Njj0/HfkPx2c5FqrGSu1D5tLnX7UVHoMx
+	QZ/EXHFq6DnuAcGDyBeWfqbCf0XrcS4dRRtvwjC+AoPG2hfIS5xTBgqPoIMqlV97t2wxgIxfml5
+	yxhHrL7UlOJxtnf+HKR4MC+AjP8LtafAn/H34Q2NLuA70r0KNOKHtFniClz7AJTVdTyTeAIZDa5
+	pUzMOPsfkZTQv4J/SBHKoeNifOH6qk94cV2Agn6QX5wbll4H+a3Sl4uQuwMHphurzGyDRF6C5D+
+	bHtI=
+X-Received: by 2002:a05:6a00:9295:b0:76e:9f28:ad56 with SMTP id d2e1a72fcca58-7702fa664camr2571561b3a.14.1755838421336;
+        Thu, 21 Aug 2025 21:53:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6u2ikUXUVBUECwrNR1ag6wNqTPXlRsLEuZ68v4REo6NV6FKg5x+PpgePlDfd8KhPT2WYleQ==
+X-Received: by 2002:a05:6a00:9295:b0:76e:9f28:ad56 with SMTP id d2e1a72fcca58-7702fa664camr2571534b3a.14.1755838420822;
+        Thu, 21 Aug 2025 21:53:40 -0700 (PDT)
+Received: from [192.168.29.88] ([49.43.250.122])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7f0b4f34sm9444661b3a.92.2025.08.21.21.53.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Aug 2025 21:53:40 -0700 (PDT)
+Message-ID: <c7e383a9-c291-426b-a7f1-7845fabbaeeb@oss.qualcomm.com>
+Date: Fri, 22 Aug 2025 10:23:36 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <5c6b3d94.1a56d.198cffcee28.Coremail.duoming@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:zS_KCgA3N2rV7qdoXHfcAQ--.33238W
-X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwcGAWindnkDHwABse
-X-CM-DELIVERINFO: =?B?5vsP6AXKKxbFmtjJiESix3B1w3uoVhYI+vyen2ZzBEkOnu5chDpkB+ZdGnv/zQ0PbP
-	CR1+zuF684oMJgko7VNBv0xCqybbqAGDzvdPubGTDTDeKon0hvnfTSJoXn8JLOYbgBWidP
-	Q67ZDg0KXq4zAMyK1BVyjQfHArfj8LgopAbg/4K1qnuLrCoaw9QcDzIskPmDXA==
-X-Coremail-Antispam: 1Uk129KBj93XoWxXF48GF47Zr4kXFy8ZF4DZFc_yoWrGFW8pF
-	W3Ja43trWkt3yakrsrJFn3Xry5KwsrGF1qyrn5Wr43urZIqF4xtFW8trn09ay7CF10v3WI
-	yF4Fvay3trs0yFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUmvb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
-	AKI48G6xCjnVAKz4kxM4xvF2IEb7IF0Fy264kE64k0F24lFcxC0VAYjxAxZF0Ex2IqxwAK
-	zVCY07xG64k0F24l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
-	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r12
-	6r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
-	kF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AK
-	xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UMVCEFcxC0VAYjxAxZFUvcSsGvf
-	C2KfnxnUUI43ZEXa7IU848BUUUUUU==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [DESIGN RFC] Critical Update handling in the kernel
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+References: <20250717045540.27208-1-aditya.kumar.singh@oss.qualcomm.com>
+ <1a77ca6a35ad03f839b7c997de3977b521d88edc.camel@sipsolutions.net>
+ <4a94fa66-8140-4cc8-996c-0ed097b4004a@oss.qualcomm.com>
+ <08fee54dd5afc5c8b4966188eb3016713a3d8c8a.camel@sipsolutions.net>
+Content-Language: en-US
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+In-Reply-To: <08fee54dd5afc5c8b4966188eb3016713a3d8c8a.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=LexlKjfi c=1 sm=1 tr=0 ts=68a7f7d6 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=ZEbenvCwA/jsp6YF92WlZw==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=Iw58rL21pA4ktbaB5ZcA:9
+ a=Dzz9079OjwPXSBvo:21 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-GUID: hquj7tuZdcVI4cpQqIWRzGGFexsF3m_P
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIwMDEzNSBTYWx0ZWRfX0CufGr+fxPDd
+ BeHhK1HLedJ8N2B9voKyKUN+3umaDFd1wltVWeV3rxNRKfFLhGvwDNUkOOHchH+9tNVGTGSLXjc
+ mJvhtG+5DXyQMcwozVMOQHsGZAxDDAKlwty7UJ1UaXaQrCVPLq412R8qrMafJ2VxZ6WgM4tueFN
+ US4AjpFAyH2QXyqFe4DG5DDSHYkL+aQ3FwTTNtI7VwxCtNHsHX6Co2pb0trcf9t+VSMHyrRi9Mj
+ tT2aMiqbEwvKcjLwfkA/SQLXkA9TD3K7i/eWXB7iRZ/+FoWH6ATMZePjieshfuQN44h8HbCKBAo
+ ppd0bAHBC6l4JFGUzryqjGRa+A3U7ankWTJQ83Jvhar49hwMVPnSc3zMrdhHyObsT/tZLqCmaUE
+ et+tmYQM+8uLoVlDoJPR62RZ+myS6w==
+X-Proofpoint-ORIG-GUID: hquj7tuZdcVI4cpQqIWRzGGFexsF3m_P
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-22_01,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0 malwarescore=0
+ spamscore=0 priorityscore=1501 suspectscore=0 clxscore=1015 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2508110000 definitions=main-2508200135
 
-T24gVGh1LCAyMSBBdWcgMjAyNSAyMDo0NDoyMSArMDIwMCBBcmVuZCB2YW4gU3ByaWVsIHdyb3Rl
-Ogo+ID4gVGhlIGJyY21mX2J0Y29leF9kZXRhY2goKSBvbmx5IHNodXRzIGRvd24gdGhlIGJ0Y29l
-eCB0aW1lciwgaWYgdGhlCj4gPiBmbGFnIHRpbWVyX29uIGlzIGZhbHNlLiBIb3dldmVyLCB0aGUg
-YnJjbWZfYnRjb2V4X3RpbWVyZnVuYygpLCB3aGljaAo+ID4gcnVucyBhcyB0aW1lciBoYW5kbGVy
-LCBzZXRzIHRpbWVyX29uIHRvIGZhbHNlLiBUaGlzIGNyZWF0ZXMgYSBjcml0aWNhbAo+ID4gcmFj
-ZSBjb25kaXRpb246Cj4gPiAKPiA+IDEuSWYgYnJjbWZfYnRjb2V4X2RldGFjaCgpIGlzIGNhbGxl
-ZCB3aGlsZSBicmNtZl9idGNvZXhfdGltZXJmdW5jKCkKPiA+IGlzIGV4ZWN1dGluZywgaXQgbWF5
-IG9ic2VydmUgdGltZXJfb24gYXMgZmFsc2UgYW5kIHNraXAgdGhlIGNhbGwgdG8KPiA+IHRpbWVy
-X3NodXRkb3duX3N5bmMoKS4KPiA+IAo+ID4gMi5UaGUgYnJjbWZfYnRjb2V4X3RpbWVyZnVuYygp
-IG1heSB0aGVuIHJlc2NoZWR1bGUgdGhlIGJyY21mX2J0Y29leF9pbmZvCj4gPiB3b3JrZXIgYWZ0
-ZXIgdGhlIGNhbmNlbF93b3JrX3N5bmMoKSBoYXMgYmVlbiBleGVjdXRlZC4KPiA+IAo+ID4gMy5T
-dWJzZXF1ZW50bHksIHRoZSBicmNtZl9idGNvZXhfaW5mbyBzdHJ1Y3R1cmUgaXMgZnJlZWQuCj4g
-PiAKPiA+IDQuRmluYWxseSwgdGhlIHJlc2NoZWR1bGVkIHdvcmtlciBhdHRlbXB0cyB0byBleGVj
-dXRlLCBsZWFkaW5nIHRvCj4gPiB1c2UtYWZ0ZXItZnJlZSBidWdzIGJ5IGFjY2Vzc2luZyB0aGUg
-ZnJlZWQgYnJjbWZfYnRjb2V4X2luZm8gb2JqZWN0Lgo+IAo+IFRoYW5rcyBmb3IgdGhlIHBhdGNo
-LiBCZWluZyBhIG5pdCBwaWNrZXIganVzdCB3YW50ZWQgdG8gZGF5IHRoYXQgdGhlIAo+IHVzZS1h
-ZnRlci1mcmVlIGhhcHBlbnMgYSBiaXQgZWFybGllciBhcyB0aGUgd29ya2VyIGl0c2VsZiBpcyBj
-b250YWluZWQgCj4gaW4gc3RydWN0IGJyY21mX2J0Y29leF9pbmZvLiBBbHNvIHRoZSBkaWFncmFt
-IGJlbG93IGRvZXMgbm90IGFkZCBtdWNoIAo+IG1vcmUgdGhhbiB0aGUgdGV4dHVhbCBkZXNjcmlw
-dGlvbiBhYm92ZS4KClRoYW5rIHlvdSB2ZXJ5IG11Y2ggZm9yIHlvdXIgZ3VpZGFuY2UuCgpUaGUg
-dXNlLWFmdGVyLWZyZWUgYnVncyBvY2N1ciBpbiB0d28gZGlzdGluY3Qgc2NlbmFyaW9zLCBkZXBl
-bmRpbmcgb24gCnRoZSB0aW1pbmcgb2Ygd2hlbiB0aGXCoGJyY21mX2J0Y29leF9pbmZvwqBzdHJ1
-Y3QgaXMgZnJlZWQgcmVsYXRpdmUgdG8gCnRoZSBleGVjdXRpb24gb2YgaXRzIHdvcmtlciB0aHJl
-YWQuCgpTY2VuYXJpbyAxOiBGcmVlZCBiZWZvcmUgdGhlIHdvcmtlciBpcyBzY2hlZHVsZWQKClRo
-ZcKgYnJjbWZfYnRjb2V4X2luZm8gaXMgZGVhbGxvY2F0ZWTCoGJlZm9yZcKgdGhlIHdvcmtlciBp
-cyBzY2hlZHVsZWQuIApBIHJhY2UgY29uZGl0aW9uIGNhbiBvY2N1ciB3aGVuwqBzY2hlZHVsZV93
-b3JrKCZidF9sb2NhbC0+d29yaynCoGlzIApjYWxsZWQgYWZ0ZXIgdGhlIHRhcmdldCBtZW1vcnkg
-aGFzIGJlZW4gZnJlZWQuIFRoZSBzZXF1ZW5jZSBvZiBldmVudHMgCmlzIGRldGFpbGVkIGJlbG93
-OgoKQ1BVMCAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgQ1BVMQpicmNtZl9idGNvZXhfZGV0
-YWNoICAgICAgICAgICAgfCBicmNtZl9idGNvZXhfdGltZXJmdW5jCiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAgYnRfbG9jYWwtPnRpbWVyX29uID0gZmFsc2U7CiAgaWYgKGNmZy0+
-YnRjb2V4LT50aW1lcl9vbikgICB8CiAgICAuLi4gICAgICAgICAgICAgICAgICAgICAgICB8CiAg
-Y2FuY2VsX3dvcmtfc3luYygpOyAgICAgICAgICB8CiAgLi4uICAgICAgICAgICAgICAgICAgICAg
-ICAgICB8CiAga2ZyZWUoY2ZnLT5idGNvZXgpOyAvLyBGUkVFICB8CiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAgc2NoZWR1bGVfd29yaygmYnRfbG9jYWwtPndvcmspOyAvLyBVU0UK
-ClNjZW5hcmlvIDI6IEZyZWVkIGFmdGVyIHRoZSB3b3JrZXIgaXMgc2NoZWR1bGVkCgpUaGXCoGJy
-Y21mX2J0Y29leF9pbmZvIGlzIGZyZWVkwqBhZnRlcsKgdGhlIHdvcmtlciBoYXMgYmVlbiBzY2hl
-ZHVsZWQgCmJ1dMKgYmVmb3JlwqBvcsKgZHVyaW5nwqBpdHMgZXhlY3V0aW9uLiBJbiB0aGlzIGNh
-c2UsIHN0YXRlbWVudHMgd2l0aGluIAp0aGXCoGJyY21mX2J0Y29leF9oYW5kbGVyKCnCoHdvcmtl
-ciDigJQgc3VjaCBhcyB0aGXCoGNvbnRhaW5lcl9vZsKgbWFjcm8gCmFuZCBzdWJzZXF1ZW50IGRl
-cmVmZXJlbmNlcyBvZiB0aGXCoGJyY21mX2J0Y29leF9pbmZvwqBvYmplY3Qgd2lsbCAKY2F1c2Ug
-YSB1c2UtYWZ0ZXItZnJlZSBhY2Nlc3MuIFRoZSBmb2xsb3dpbmcgdGltZWxpbmUgaWxsdXN0cmF0
-ZXMKdGhpcyBzY2VuYXJpbzoKCkNQVTAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCBDUFUx
-CmJyY21mX2J0Y29leF9kZXRhY2ggICAgICAgICAgICAgfCBicmNtZl9idGNvZXhfdGltZXJmdW5j
-CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIGJ0X2xvY2FsLT50aW1lcl9vbiA9
-IGZhbHNlOwogIGlmIChjZmctPmJ0Y29leC0+dGltZXJfb24pICAgIHwKICAgIC4uLiAgICAgICAg
-ICAgICAgICAgICAgICAgICB8CiAgY2FuY2VsX3dvcmtfc3luYygpOyAgICAgICAgICAgfAogIC4u
-LiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICBzY2hlZHVsZV93b3JrKCZidF9sb2NhbC0+
-d29yayk7IC8vIFJlc2NoZWR1bGUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CiAg
-a2ZyZWUoY2ZnLT5idGNvZXgpOyAvLyBGUkVFICAgfCAgIGJyY21mX2J0Y29leF9oYW5kbGVyKCkg
-Ly8gV29ya2VyCiAgLyogICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgYnRjaSA9IGNv
-bnRhaW5lcl9vZiguLi4uKTsgLy8gVVNFCiAgIFRoZSBrZnJlZSgpIGFib3ZlIGNvdWxkICAgICAg
-fCAgICAgLi4uCiAgIGFsc28gb2NjdXIgYXQgYW55IHBvaW50ICAgICAgfCAgICAgYnRjaS0+dmlm
-OyAvLyBVU0UKICAgZHVyaW5nIHRoZSB3b3JrZXIncyBleGVjdXRpb258IAogICAqLyAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwKCkkgd291bGQgbGlrZSB0byBzdWJtaXQgYSB2MiBwYXRjaCB0
-byBtYWtlIHRoZSBkZXNjcmlwdGlvbiBjbGVhcmVyLgoKPiA+IFRoZSBmb2xsb3dpbmcgZGlhZ3Jh
-bSBpbGx1c3RyYXRlcyB0aGlzIHNlcXVlbmNlIG9mIGV2ZW50czoKPiA+IAo+ID4gY3B1MCAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBjcHUxCj4gPiBicmNtZl9idGNvZXhfZGV0YWNoICAgICAg
-ICAgIHwgIGJyY21mX2J0Y29leF90aW1lcmZ1bmMKPiA+ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgICAgYnRfbG9jYWwtPnRpbWVyX29uID0gZmFsc2U7Cj4gPiAgICBpZiAoY2ZnLT5i
-dGNvZXgtPnRpbWVyX29uKSB8Cj4gPiAgICAgIC4uLiAgICAgICAgICAgICAgICAgICAgICB8Cj4g
-PiAgICBjYW5jZWxfd29ya19zeW5jKCk7ICAgICAgICB8Cj4gPiAgICAuLi4gICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAgIHNjaGVkdWxlX3dvcmsoKSAvL3Jlc2NoZWR1bGUKPiA+ICAgIGtmcmVl
-KGNmZy0+YnRjb2V4KTsvL2ZyZWUgIHwKPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgICAgYnJjbWZfYnRjb2V4X2hhbmRsZXIoKSAvL3dvcmtlcgo+ID4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgfCAgICBidGNpLT4gLy91c2UKPiA+IAo+ID4gVG8gcmVzb2x2ZSB0aGlz
-IHJhY2UgY29uZGl0aW9uLCBkcm9wIHRoZSBjb25kaXRpb25hbCBjaGVjayBhbmQgY2FsbAo+ID4g
-dGltZXJfc2h1dGRvd25fc3luYygpIGRpcmVjdGx5LiBJdCBjYW4gZGVhY3RpdmF0ZSB0aGUgdGlt
-ZXIgcmVsaWFibHksCj4gPiByZWdhcmRsZXNzIG9mIGl0cyBjdXJyZW50IHN0YXRlLiBPbmNlIHN0
-b3BwZWQsIHRoZSB0aW1lcl9vbiBzdGF0ZSBpcwo+ID4gdGhlbiBzZXQgdG8gZmFsc2UuCj4gCj4g
-SG93ZXZlciwgbm8gcmVhc29uIHRvIHN0b3AgdGhpcyBwYXRjaCBmcm9tIGdvaW5nIGluIHNvLi4u
-Cj4gCj4gQWNrZWQtYnk6IEFyZW5kIHZhbiBTcHJpZWwgPGFyZW5kLnZhbnNwcmllbEBicm9hZGNv
-bS5jb20+Cj4gCj4gPiBGaXhlczogNjE3MzBkNGRmZmZjICgiYnJjbWZtYWM6IHN1cHBvcnQgY3Jp
-dGljYWwgcHJvdG9jb2wgQVBJIGZvciBESENQIikKPiA+IFNpZ25lZC1vZmYtYnk6IER1b21pbmcg
-WmhvdSA8ZHVvbWluZ0B6anUuZWR1LmNuPgo+ID4gLS0tCj4gPiAgIGRyaXZlcnMvbmV0L3dpcmVs
-ZXNzL2Jyb2FkY29tL2JyY204MDIxMS9icmNtZm1hYy9idGNvZXguYyB8IDYgKystLS0tCj4gPiAg
-IDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpCZXN0IHJl
-Z2FyZHMsCkR1b21pbmcgWmhvdQo=
+[snip]
 
+> 
+> I still don't like the parsing though. Like I said above, that's a lot
+> of complexity that simply doesn't even exist when hostapd controls all
+> the updates.
+> 
+> 
+> I really would have envisioned this much more along the lines of having
+> hostapd start the channel switch (WLOG on link 1 out of links 1 and 2)
+> with an nl80211 message that has:
+> 
+>   - post-switch beacon for link 1
+>   - during-switch beacon for link 1
+>     - CSA counter offsets for CSA, eCSA, etc. elements
+>   - post-switch beacon for link 2 (?)
+>   - during-switch beacon for link 2
+>     - CSA counter offsets for link 1's CSA counter
+>       (for all the per-STA profile link 1 elements)
+> 
+> isn't that pretty much it? All the BPCC is well-contained within that
+> and maintained by hostapd.
+> 
+> I'll agree that this limits to only doing a single channel switch at a
+> time across the whole MLD, but maybe that's not the most problematic
+> thing?
+> 
+> 
+> OK I guess I'll have to think about this more ...
+
+I've also spent some time thinking through the idea of handling frame 
+formation at the hostapd level and simply notifying the kernel. Here are 
+the key points I arrived at:
+
+1. Using a single Netlink (NL) command:
+----------------------------------------
+The average beacon size is around 500 bytes. During Channel Switch 
+Announcement (CSA), we need to send two beacons—one for CSA and one 
+post-CSA resulting in approximately 1000 bytes per link. If we apply 
+this across all 14 additional links (MLD can have max 15 links), the 
+total data sent via NL becomes roughly 15,000 bytes. This is quite large 
+and may exceed what the NL socket buffer can reasonably handle.
+
+
+2. Using multiple NL command for each link:
+-------------------------------------------
+In the case of a 3-link AP MLD, where Link 1 initiates a Channel Switch 
+Announcement (CSA), the sequence would look like this:
+
+Link 1 starts CSA via NL command:
+     * csa_beacon
+         * CSA and ECSA offsets
+     * after_beacon
+
+Link 2 beacon update via NL:
+     * Beacon data
+         * Partner offsets
+             * CSA and ECSA offsets
+Link 3 beacon update via NL:
+     * Beacon data
+         * Partner offsets
+             * CSA and ECSA offsets
+
+
+Once CSA is completed on Link 1, both Link 2 and Link 3 will require 
+another beacon update via NL to reflect the new state.
+
+The complexity increases when, during Link 1’s ongoing CSA, either Link 
+2 or Link 3 initiates a CSA or a Color Change Announcement (CCA). In 
+such cases, Link 1 must update its beacon to include elements from Link 
+2 or Link 3’s per-STA profile. However, since Link 1 is already 
+undergoing CSA, it cannot perform a beacon update at that time, leading 
+to a conflict in update handling.
+
+To keep things simple, one might suggest allowing only one Channel 
+Switch Announcement (CSA) at a time within an MLD. However, this 
+approach isn't feasible. For instance, consider a 5 GHz link that's part 
+of an MLD. If another link is performing a CSA and the 5 GHz link 
+detects radar, it must immediately initiate its own CSA and vacate the 
+radar channel. In such scenarios, enforcing a single CSA per MLD is 
+impractical and could lead to regulatory non-compliance or operational 
+issues.
+
+
+Even if we somehow manage to address the earlier issues, a new challenge 
+arises with managing moving offsets and tracking which offset 
+corresponds to which link relative to the reporting link.
+
+For example, consider an AP MLD with three links. Suppose Link 3 
+initiates a CSA. As a result, Link 2 receives a beacon update that 
+includes a CSA element in Link 3’s per-STA profile. Let’s assume the 
+counter offset for this CSA is at position 200.
+
+Now, if Link 1 also starts a CSA, the next time Link 2’s beacon is 
+updated, it will iterate through all partner links from Link 0 to the 
+maximum. Since Link 1 comes before Link 3, its CSA element will be added 
+first, followed by Link 3’s. This causes Link 3’s CSA element to shift 
+down in the beacon, and its counter offset may now move to position 400.
+
+This dynamic shifting of offsets makes it difficult to reliably track 
+which offset belongs to which link, especially when multiple CSAs are 
+active and beacon contents are updated frequently.
+
+Another challenge with handling multiple NL (non-link-specific) beacon 
+updates is the need to wait until all beacon updates are received by the 
+kernel. This requires implementing a "wait for completion" mechanism.
+
+However, since waiting indefinitely isn't practical, there must be a 
+timeout or fallback threshold. This introduces a few critical questions:
+   * What happens if one of the links fails to send its beacon update 
+within the timeout?
+   * Should the CSA proceed with the updates received so far, or should 
+the entire CSA process be aborted?
+
+These decisions are non-trivial. Continuing the CSA without all updates 
+might lead to inconsistent behavior across links, while aborting the CSA 
+could delay critical operations like radar avoidance. A well-defined 
+policy or fallback strategy is essential to handle such partial update 
+scenarios gracefully.
+
+-------------
+
+Considering all the challenges discussed, I still believe that handling 
+beacon manipulation at the kernel level is the most effective approach 
+especially for critical updates. This method offers the best possible 
+way to manage the critical update feature purely through software, 
+ensuring reliability and consistency across links.
+
+Let me know your thoughts on this?
+
+
+-- 
+Aditya
 
