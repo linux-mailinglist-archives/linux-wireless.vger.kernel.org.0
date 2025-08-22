@@ -1,67 +1,49 @@
-Return-Path: <linux-wireless+bounces-26550-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26551-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C4EB30DCE
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 07:02:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C34B30DD1
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 07:09:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41B1E5E7977
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 05:02:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C61A029D9
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 05:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6A7150997;
-	Fri, 22 Aug 2025 05:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ju9ehLqc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659B728934F;
+	Fri, 22 Aug 2025 05:09:04 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216AD29CEB
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Aug 2025 05:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+Received: from zg8tmty1ljiyny4xntuumtyw.icoremail.net (zg8tmty1ljiyny4xntuumtyw.icoremail.net [165.227.155.160])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05198266B67;
+	Fri, 22 Aug 2025 05:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=165.227.155.160
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755838952; cv=none; b=o7Z2MzfY2n1L5zatmJWpK214ogMAy/LsQYo5yZmFz2VY3CEsEoCD+FpNQFGJeYUZzwXxB/a33vNb3fBirqVCewXlAQ9vlQaOca10P26JNEP3qa1HKCDTgehPkN15og9EeC48d8D4NaSilN/eUmRIrAFODNtmh+NEn6SR1I6GXVQ=
+	t=1755839344; cv=none; b=EzZ4fSa1Tf9Pqf6gm6NO2PKf/DPpA3uxnlMjTp8A1S3zvMb1vnX+9MSCjuBtqhfQAxznjjVgswZWaQy50uawiSMPEc65vZH6kHKFxerFngWISsCtqVsLXQiRtzejdUl2/wtH0yhs37NshYTs8Zxb9//hrPVTF3CLs5zlqOERCSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755838952; c=relaxed/simple;
-	bh=Z5WG72TmzxaH59DiiRQq6a/CdXVP47XSWLC21+Wyjyo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uK9H05+JZc45+0045EfKiy81iUfw6rZJz/NwvNi0AJvCLq7C6nRoeyLMgPJ9luQ4Jj0lceTnvjIrUlPieoe34jvHyOd3EoKPgjB/XJXfU6AeOKyi7CpwIIH0bWTf92B65h8qaVXMkbs+tpzkOcjY4OGVGdBzW0ECG7kQ3w44Gww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ju9ehLqc; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57LI9Ou9002961;
-	Fri, 22 Aug 2025 05:02:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=q63FUOEhTErn/sTKAU4Tav
-	VmuYnMZhfjEktpdLdicYY=; b=ju9ehLqc9se94nEpke5qsMWK/Nr5BUHYhF/Yy9
-	8ZC+KQP4rrAAAdIeE3ZReU5APkyP3aG8Lwq8Ltct5ANrC5hUVvMEwgg+OaZwZwBh
-	kuLwWDzAZHMw7OIOShl+pU0HynQnzNDuJiro/Zvh9KMuBMqFAqFu/koj0FoG4Qz/
-	uEddGA43qNy5JxEz5EYDbbswu8A08xTKwtqrhwvRNbkdk47kKdkKeDPaqA0x3NhJ
-	l9Or9KfRtLlnsjp+FsdEfCs+94Eg1dNIuJMP5VigNheycGouExVLcQUasYw0q0wc
-	YhQqvEl0yghQWW8Ap5bGca9pl6hSfulQpmpe2a/D+QrVTyUQ==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ngtdnq01-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Aug 2025 05:02:23 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57M52Ms0016962
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Aug 2025 05:02:22 GMT
-Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
- nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Thu, 21 Aug 2025 22:02:21 -0700
-From: Sarika Sharma <quic_sarishar@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Sarika Sharma
-	<quic_sarishar@quicinc.com>
-Subject: [PATCH wireless-next] wifi: cfg80211: Increase netlink buffer size to 4096 bytes in nl80211_get_station()
-Date: Fri, 22 Aug 2025 10:32:04 +0530
-Message-ID: <20250822050204.476919-1-quic_sarishar@quicinc.com>
+	s=arc-20240116; t=1755839344; c=relaxed/simple;
+	bh=ImzbWSeUVNC5unK6e2Xdbt/EPWZNXA1qmCgfG7zJiXk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=GEHbwQ8LhekoeakM4+W18jS+Kym3wjcMW7ZwxnDyP2laE1drwI5niP35XTsrpAGWO//keNCjILt7BnF7z1+OlsuxdUfOMhn/eirYl+i2MvWpX6zwJs+xa6aiJKDWJDHEkvEnM7sVoNycNrocIObWQhtRMFrb324vyCPS34yfsWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=165.227.155.160
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [218.12.21.37])
+	by mtasvr (Coremail) with SMTP id _____wCHJGlf+6doK096AQ--.18128S3;
+	Fri, 22 Aug 2025 13:08:48 +0800 (CST)
+Received: from ubuntu.localdomain (unknown [218.12.21.37])
+	by mail-app1 (Coremail) with SMTP id yy_KCgDHHNha+6doUlRxAQ--.48590S2;
+	Fri, 22 Aug 2025 13:08:46 +0800 (CST)
+From: Duoming Zhou <duoming@zju.edu.cn>
+To: brcm80211@lists.linux.dev
+Cc: brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	mingo@kernel.org,
+	tglx@linutronix.de,
+	arend.vanspriel@broadcom.com,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH v2] brcmfmac: btcoex: Fix use-after-free when rescheduling brcmf_btcoex_info work
+Date: Fri, 22 Aug 2025 13:08:39 +0800
+Message-Id: <20250822050839.4413-1-duoming@zju.edu.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -69,78 +51,121 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=LexlKjfi c=1 sm=1 tr=0 ts=68a7f9df cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=2OwXVqhp2XgA:10 a=COk6AnOGAAAA:8 a=lozDUKNB1K4zCaANDOEA:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: pmSswkvxnZm1siHC9x0VCUwglpCxkmrv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIwMDEzNSBTYWx0ZWRfX6P3Nu7wnv9jv
- RGh63s7L4JyWNa585ar7MFfXyGMMrVzMErkkPQuOtIJi933bYR6gS+Okku3Kh/9cMjS6lVzCD7a
- q5+85/RptiNux2Gc1MTEEV9gccgGvEAWJ6WKeJZPAjA2TX1Fl/OdPMIO9evAriS6WsP6He6m7eK
- n8qHFksE5RcduoMx58TDPX6SLU5/peXSMOp9TlU4DDnEuhu8QfPteQ79H62jaCLqjk41YZ5bBcb
- MvWtcoDxJgPg9otA96N6IGImih9Jl84LtvNo8WkkK65hUgA2i8aGDRu0GptvMqaOkrur9cWrtAi
- utCAdOKu0nCogTofVHJKJ+i7BCbQTfFwEE8gKJUTFAPpCOpgF0X/pS79Y7V0HEQ0f/O6DhNezzB
- pJc4Esxkm3iTnHCDnWLZavzzVvCTBw==
-X-Proofpoint-ORIG-GUID: pmSswkvxnZm1siHC9x0VCUwglpCxkmrv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-22_01,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0 malwarescore=0
- spamscore=0 priorityscore=1501 suspectscore=0 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2508110000 definitions=main-2508200135
+X-CM-TRANSID:yy_KCgDHHNha+6doUlRxAQ--.48590S2
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwAGAWindnkDJAALso
+X-CM-DELIVERINFO: =?B?XBWk/gXKKxbFmtjJiESix3B1w3uoVhYI+vyen2ZzBEkOnu5chDpkB+ZdGnv/zQ0PbP
+	CR1+FKPRRHSLOk9dZ6tUQqRhJiqWo8QcKJNUBNPSN6B4l5UJbmYI+M+3mlBheizaJvNRuQ
+	3dECz0taxrGnZuv6MqtMe5xQh6TzeVOiyZZ44+8EP+AOCOuPfhje8WtXyKsysQ==
+X-Coremail-Antispam: 1Uk129KBj93XoWxJw1ktFWrCrykWFyfCr17Arc_yoW5tryfpa
+	93J34ayry0qrW3KrWkJr1kZFy5KanrG3Wqyr48CF43uFsIqr4xtF40yF12gFW7CFWI9ay2
+	yF4FqFy3Jrs8tFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvmb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
+	AKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I
+	3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxV
+	WUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8I
+	cVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
+	AFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZE
+	Xa7IU801v3UUUUU==
 
-Currently, the buffer size allocated for the get_station command in
-nl80211_get_station is NLMSG_DEFAULT_SIZE, which, in some cases, is
-insufficient to send complete output to user space and results in
-"no buffer space available" error. This is especially evident in
-setups with 3 links, where the amount of station info exceeds the
-default allocation, leading to underflows and incomplete netlink
-messages.
+The brcmf_btcoex_detach() only shuts down the btcoex timer, if the
+flag timer_on is false. However, the brcmf_btcoex_timerfunc(), which
+runs as timer handler, sets timer_on to false. This creates critical
+race conditions:
 
-To fix this, increase the buffer size to 4096 bytes. This ensures
-that the nl80211_get_station() command can return complete station
-information for up to 3 links without allocation failure.
+1.If brcmf_btcoex_detach() is called while brcmf_btcoex_timerfunc()
+is executing, it may observe timer_on as false and skip the call to
+timer_shutdown_sync().
 
-Fixes: 82d7f841d9bd ("wifi: cfg80211: extend to embed link level statistics in NL message")
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+2.The brcmf_btcoex_timerfunc() may then reschedule the brcmf_btcoex_info
+worker after the cancel_work_sync() has been executed, resulting in
+use-after-free bugs.
+
+The use-after-free bugs occur in two distinct scenarios, depending on
+the timing of when the brcmf_btcoex_info struct is freed relative to
+the execution of its worker thread.
+
+Scenario 1: Freed before the worker is scheduled
+
+The brcmf_btcoex_info is deallocated before the worker is scheduled.
+A race condition can occur when schedule_work(&bt_local->work) is
+called after the target memory has been freed. The sequence of events
+is detailed below:
+
+CPU0                           | CPU1
+brcmf_btcoex_detach            | brcmf_btcoex_timerfunc
+                               |   bt_local->timer_on = false;
+  if (cfg->btcoex->timer_on)   |
+    ...                        |
+  cancel_work_sync();          |
+  ...                          |
+  kfree(cfg->btcoex); // FREE  |
+                               |   schedule_work(&bt_local->work); // USE
+
+Scenario 2: Freed after the worker is scheduled
+
+The brcmf_btcoex_info is freed after the worker has been scheduled
+but before or during its execution. In this case, statements within
+the brcmf_btcoex_handler() — such as the container_of macro and
+subsequent dereferences of the brcmf_btcoex_info object will cause
+a use-after-free access. The following timeline illustrates this
+scenario:
+
+CPU0                            | CPU1
+brcmf_btcoex_detach             | brcmf_btcoex_timerfunc
+                                |   bt_local->timer_on = false;
+  if (cfg->btcoex->timer_on)    |
+    ...                         |
+  cancel_work_sync();           |
+  ...                           |   schedule_work(); // Reschedule
+                                |
+  kfree(cfg->btcoex); // FREE   |   brcmf_btcoex_handler() // Worker
+  /*                            |     btci = container_of(....); // USE
+   The kfree() above could      |     ...
+   also occur at any point      |     btci-> // USE
+   during the worker's execution|
+   */                           |
+
+To resolve the race conditions, drop the conditional check and call
+timer_shutdown_sync() directly. It can deactivate the timer reliably,
+regardless of its current state. Once stopped, the timer_on state is
+then set to false.
+
+Fixes: 61730d4dfffc ("brcmfmac: support critical protocol API for DHCP")
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
 ---
-While this static increase is a practical short-term solution, it is
-not scalable for configurations with more than 3 links. To address
-this, planning to introduce a mechanism where user space can
-optionally pass a specific link ID to request link-level statistics.
-If no link ID is provided, only MLD-level (Multi-Link devices)
-statistics will be returned. If user space requires data for
-multiple links, it can invoke the get_station command multiple times,
-each time specifying a different link ID. This approach keeps
-individual message sizes manageable, avoids excessive memory
-allocation, and provides fine-grained control over the data retrieved.
----
- net/wireless/nl80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+  - Make the description clearer.
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 89519aa52893..042cfff78bb3 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -7624,7 +7624,7 @@ static int nl80211_get_station(struct sk_buff *skb, struct genl_info *info)
- 		return err;
- 	}
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
+index 69ef8cf203d2..67c0c5a92f99 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
+@@ -393,10 +393,8 @@ void brcmf_btcoex_detach(struct brcmf_cfg80211_info *cfg)
+ 	if (!cfg->btcoex)
+ 		return;
  
--	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	msg = nlmsg_new(4096, GFP_KERNEL);
- 	if (!msg) {
- 		cfg80211_sinfo_release_content(&sinfo);
- 		return -ENOMEM;
-
-base-commit: d9104cec3e8fe4b458b74709853231385779001f
+-	if (cfg->btcoex->timer_on) {
+-		cfg->btcoex->timer_on = false;
+-		timer_shutdown_sync(&cfg->btcoex->timer);
+-	}
++	timer_shutdown_sync(&cfg->btcoex->timer);
++	cfg->btcoex->timer_on = false;
+ 
+ 	cancel_work_sync(&cfg->btcoex->work);
+ 
 -- 
 2.34.1
 
