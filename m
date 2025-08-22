@@ -1,49 +1,68 @@
-Return-Path: <linux-wireless+bounces-26551-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26552-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C34B30DD1
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 07:09:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42643B30DF1
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 07:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C61A029D9
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 05:09:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ECD617BC96
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 05:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659B728934F;
-	Fri, 22 Aug 2025 05:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5496728D83E;
+	Fri, 22 Aug 2025 05:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TpHlWq3V"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from zg8tmty1ljiyny4xntuumtyw.icoremail.net (zg8tmty1ljiyny4xntuumtyw.icoremail.net [165.227.155.160])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05198266B67;
-	Fri, 22 Aug 2025 05:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=165.227.155.160
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B877D28505F
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Aug 2025 05:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755839344; cv=none; b=EzZ4fSa1Tf9Pqf6gm6NO2PKf/DPpA3uxnlMjTp8A1S3zvMb1vnX+9MSCjuBtqhfQAxznjjVgswZWaQy50uawiSMPEc65vZH6kHKFxerFngWISsCtqVsLXQiRtzejdUl2/wtH0yhs37NshYTs8Zxb9//hrPVTF3CLs5zlqOERCSA=
+	t=1755840096; cv=none; b=tkFLSEB9ziUbVOvx6vUk1cdQCc7tI19CnVvvP8L0a1dTe6rLOP1mG2wvomVF32KH7wzo1l4LNYzqYL+5IY2bF7ZNMIuNmRnVIE3CnMpr3jsSe0Mi57mG22x4yepa9OpKJfdePNRn+YAymQIzLXmFMiAX9/L35/ZFE65Emc0eA5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755839344; c=relaxed/simple;
-	bh=ImzbWSeUVNC5unK6e2Xdbt/EPWZNXA1qmCgfG7zJiXk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=GEHbwQ8LhekoeakM4+W18jS+Kym3wjcMW7ZwxnDyP2laE1drwI5niP35XTsrpAGWO//keNCjILt7BnF7z1+OlsuxdUfOMhn/eirYl+i2MvWpX6zwJs+xa6aiJKDWJDHEkvEnM7sVoNycNrocIObWQhtRMFrb324vyCPS34yfsWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=165.227.155.160
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [218.12.21.37])
-	by mtasvr (Coremail) with SMTP id _____wCHJGlf+6doK096AQ--.18128S3;
-	Fri, 22 Aug 2025 13:08:48 +0800 (CST)
-Received: from ubuntu.localdomain (unknown [218.12.21.37])
-	by mail-app1 (Coremail) with SMTP id yy_KCgDHHNha+6doUlRxAQ--.48590S2;
-	Fri, 22 Aug 2025 13:08:46 +0800 (CST)
-From: Duoming Zhou <duoming@zju.edu.cn>
-To: brcm80211@lists.linux.dev
-Cc: brcm80211-dev-list.pdl@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	mingo@kernel.org,
-	tglx@linutronix.de,
-	arend.vanspriel@broadcom.com,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH v2] brcmfmac: btcoex: Fix use-after-free when rescheduling brcmf_btcoex_info work
-Date: Fri, 22 Aug 2025 13:08:39 +0800
-Message-Id: <20250822050839.4413-1-duoming@zju.edu.cn>
+	s=arc-20240116; t=1755840096; c=relaxed/simple;
+	bh=mSSnI5TByVTB/01yuYbSFJ6RT/gAxqR1cclh0ors0A8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DywUhsb6rdN9L8/H5uignhGaeD/ALnlVHgY8kwa4aih8reWcHJnu6VxAiZ9MAOuGNQTWCOyOJWBY7TUvU0fdoNggS00gKlFc3LHe5DRKGSIkzlkXMEQsNuTKox7a893u9E+hOM9etauxK7aF/c4AKENBvOxJf+H37Egs4vsf6Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TpHlWq3V; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57LI9JLN022911;
+	Fri, 22 Aug 2025 05:21:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=N+PGl87Yl4jeN4wnyyzokE
+	gAAPtcw7SWg8MNXN01qMQ=; b=TpHlWq3V4GS6XTqWoOh13N48EFLbFqwBYcoqoh
+	6YQbF+pUYu6jkwTksZWszCYyRrh+jkSCL8tb1kYXkYEPIJh/bBoLztOctbZM0ZZ4
+	bwZAs+5CekKsresct5WP5W2o1EMqot5VIn4dAfnsrQCI652biWLeDV5MD2KqZa7b
+	YkpAFkwDuz7qZO4520rFU4HiY3hiJ8fE7E1SxEsnrEa/wE2MmEp+DuksH0DccjZx
+	UcovcesIIWeaaDFF85rux7GXY4Q/4e7X7Ck2yhbp6zz6OsyJVp3Nec7Uz+7Afu7C
+	77Bg+PKnjCqy57aays2oWjVvBzv6It2TSXF96Ko9SHxJSwuw==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48n52afxkx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Aug 2025 05:21:28 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57M5LRdZ031205
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Aug 2025 05:21:27 GMT
+Received: from hu-sarishar-blr.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 21 Aug 2025 22:21:25 -0700
+From: Sarika Sharma <quic_sarishar@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>,
+        Sarika Sharma
+	<quic_sarishar@quicinc.com>,
+        Hari Chandrakanthan <quic_haric@quicinc.com>
+Subject: [PATCH wireless-next] wifi: mac80211: add tx_handlers_drop statistics to ethtool
+Date: Fri, 22 Aug 2025 10:51:10 +0530
+Message-ID: <20250822052110.513804-1-quic_sarishar@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -51,121 +70,159 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yy_KCgDHHNha+6doUlRxAQ--.48590S2
-X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwAGAWindnkDJAALso
-X-CM-DELIVERINFO: =?B?XBWk/gXKKxbFmtjJiESix3B1w3uoVhYI+vyen2ZzBEkOnu5chDpkB+ZdGnv/zQ0PbP
-	CR1+FKPRRHSLOk9dZ6tUQqRhJiqWo8QcKJNUBNPSN6B4l5UJbmYI+M+3mlBheizaJvNRuQ
-	3dECz0taxrGnZuv6MqtMe5xQh6TzeVOiyZZ44+8EP+AOCOuPfhje8WtXyKsysQ==
-X-Coremail-Antispam: 1Uk129KBj93XoWxJw1ktFWrCrykWFyfCr17Arc_yoW5tryfpa
-	93J34ayry0qrW3KrWkJr1kZFy5KanrG3Wqyr48CF43uFsIqr4xtF40yF12gFW7CFWI9ay2
-	yF4FqFy3Jrs8tFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvmb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
-	AKI48G6xCjnVAKz4kxMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I
-	3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxV
-	WUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8I
-	cVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
-	AFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZE
-	Xa7IU801v3UUUUU==
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: IaVk1F26eWqirkV7AjdmolLVbyy7QCbw
+X-Authority-Analysis: v=2.4 cv=B83gEOtM c=1 sm=1 tr=0 ts=68a7fe58 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=2OwXVqhp2XgA:10 a=COk6AnOGAAAA:8 a=az_UEyvAFAIfud0NVgkA:9
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: IaVk1F26eWqirkV7AjdmolLVbyy7QCbw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIwMDAxMyBTYWx0ZWRfX6WqiwHrh8KQi
+ 3xvT/zXLZAl13tEB2cudQQccTeC6sALB7IDsQWuwvSZ7Qr+eyoPc910ek/Vx1MB7PLDmqZ3Vcba
+ p/sJMtMrwH9s1xxNsXL4GS9KxH7Zh4CdksJCqhCN2ZOiLSFUJfxklU8yPSdY7lAI0CeInuk36qZ
+ /rvcllPRBTC57Nc03cZ+YcAjCsZ57Erxc9LYcP8uVw2G17jubD+ExbOeQfhLFE/U+i3XdUyUXGj
+ BHnYe4NOP6uKv7m4jd4f/MdTSq7AzRtsJRfcti5pcF2mCatR2SZYJmyLJTn2y01TqAshOg5htUZ
+ cojhoqVSvM9UMJMR5X29qSXjo+JUt6IsViARtqBsrEe2XKI0C0C0unQ5R0O1Ii9EXkIl89Vq1+Q
+ VdsYwqccDwmeHzJnFXHZyznY6j6KAA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-22_01,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 impostorscore=0 clxscore=1015 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2508110000 definitions=main-2508200013
 
-The brcmf_btcoex_detach() only shuts down the btcoex timer, if the
-flag timer_on is false. However, the brcmf_btcoex_timerfunc(), which
-runs as timer handler, sets timer_on to false. This creates critical
-race conditions:
+Currently tx_handlers_drop statistics are handled only for slow TX
+path and only at radio level. This also requires
+CONFIG_MAC80211_DEBUG_COUNTERS to be enabled to account the dropped
+packets. There is no way to check these stats for fast TX,
+at interface level and monitor without enabling the debug configuration.
 
-1.If brcmf_btcoex_detach() is called while brcmf_btcoex_timerfunc()
-is executing, it may observe timer_on as false and skip the call to
-timer_shutdown_sync().
+Hence, add a new counter at the sdata level to track packets dropped
+with reason as TX_DROP during transmission for fast path, slow path
+and other tx management packets. Expose this via ethtool statistics,
+to improve visibility into transmission failures at interface level
+and aid debugging and performance monitoring.
 
-2.The brcmf_btcoex_timerfunc() may then reschedule the brcmf_btcoex_info
-worker after the cancel_work_sync() has been executed, resulting in
-use-after-free bugs.
+Place the counter in ethtool with other available tx_* stats for
+better readability and accurate tracking.
 
-The use-after-free bugs occur in two distinct scenarios, depending on
-the timing of when the brcmf_btcoex_info struct is freed relative to
-the execution of its worker thread.
+Sample output:
+root@buildroot:~# ethtool -S wlan0
+NIC statistics:
+     rx_packets: 5904
+     rx_bytes: 508122
+     rx_duplicates: 12
+     rx_fragments: 5900
+     rx_dropped: 12
+     tx_packets: 391487
+     tx_bytes: 600423383
+     tx_filtered: 0
+     tx_retry_failed: 10332
+     tx_retries: 1548
+     tx_handlers_drop: 4
+     ....
 
-Scenario 1: Freed before the worker is scheduled
-
-The brcmf_btcoex_info is deallocated before the worker is scheduled.
-A race condition can occur when schedule_work(&bt_local->work) is
-called after the target memory has been freed. The sequence of events
-is detailed below:
-
-CPU0                           | CPU1
-brcmf_btcoex_detach            | brcmf_btcoex_timerfunc
-                               |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)   |
-    ...                        |
-  cancel_work_sync();          |
-  ...                          |
-  kfree(cfg->btcoex); // FREE  |
-                               |   schedule_work(&bt_local->work); // USE
-
-Scenario 2: Freed after the worker is scheduled
-
-The brcmf_btcoex_info is freed after the worker has been scheduled
-but before or during its execution. In this case, statements within
-the brcmf_btcoex_handler() — such as the container_of macro and
-subsequent dereferences of the brcmf_btcoex_info object will cause
-a use-after-free access. The following timeline illustrates this
-scenario:
-
-CPU0                            | CPU1
-brcmf_btcoex_detach             | brcmf_btcoex_timerfunc
-                                |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)    |
-    ...                         |
-  cancel_work_sync();           |
-  ...                           |   schedule_work(); // Reschedule
-                                |
-  kfree(cfg->btcoex); // FREE   |   brcmf_btcoex_handler() // Worker
-  /*                            |     btci = container_of(....); // USE
-   The kfree() above could      |     ...
-   also occur at any point      |     btci-> // USE
-   during the worker's execution|
-   */                           |
-
-To resolve the race conditions, drop the conditional check and call
-timer_shutdown_sync() directly. It can deactivate the timer reliably,
-regardless of its current state. Once stopped, the timer_on state is
-then set to false.
-
-Fixes: 61730d4dfffc ("brcmfmac: support critical protocol API for DHCP")
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Co-developed-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
 ---
-Changes in v2:
-  - Make the description clearer.
+ net/mac80211/ethtool.c     | 6 ++++--
+ net/mac80211/ieee80211_i.h | 1 +
+ net/mac80211/tx.c          | 7 ++++++-
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
+index 0397755a3bd1..3d365626faa4 100644
+--- a/net/mac80211/ethtool.c
++++ b/net/mac80211/ethtool.c
+@@ -48,8 +48,8 @@ static const char ieee80211_gstrings_sta_stats[][ETH_GSTRING_LEN] = {
+ 	"rx_duplicates", "rx_fragments", "rx_dropped",
+ 	"tx_packets", "tx_bytes",
+ 	"tx_filtered", "tx_retry_failed", "tx_retries",
+-	"sta_state", "txrate", "rxrate", "signal",
+-	"channel", "noise", "ch_time", "ch_time_busy",
++	"tx_handlers_drop", "sta_state", "txrate", "rxrate",
++	"signal", "channel", "noise", "ch_time", "ch_time_busy",
+ 	"ch_time_ext_busy", "ch_time_rx", "ch_time_tx"
+ };
+ #define STA_STATS_LEN	ARRAY_SIZE(ieee80211_gstrings_sta_stats)
+@@ -120,6 +120,7 @@ static void ieee80211_get_stats(struct net_device *dev,
+ 		i = 0;
+ 		ADD_STA_STATS(&sta->deflink);
+ 
++		data[i++] = sdata->tx_handlers_drop;
+ 		data[i++] = sta->sta_state;
+ 
+ 
+@@ -145,6 +146,7 @@ static void ieee80211_get_stats(struct net_device *dev,
+ 			sta_set_sinfo(sta, &sinfo, false);
+ 			i = 0;
+ 			ADD_STA_STATS(&sta->deflink);
++			data[i++] = sdata->tx_handlers_drop;
+ 		}
+ 	}
+ 
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 8afa2404eaa8..f44f7d14689b 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1210,6 +1210,7 @@ struct ieee80211_sub_if_data {
+ 	} debugfs;
+ #endif
+ 
++	u32 tx_handlers_drop;
+ 	/* must be last, dynamically sized area in this! */
+ 	struct ieee80211_vif vif;
+ };
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 00671ae45b2f..53114568a79d 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1814,6 +1814,7 @@ static int invoke_tx_handlers_early(struct ieee80211_tx_data *tx)
+ 
+  txh_done:
+ 	if (unlikely(res == TX_DROP)) {
++		tx->sdata->tx_handlers_drop++;
+ 		I802_DEBUG_INC(tx->local->tx_handlers_drop);
+ 		if (tx->skb)
+ 			ieee80211_free_txskb(&tx->local->hw, tx->skb);
+@@ -1858,6 +1859,7 @@ static int invoke_tx_handlers_late(struct ieee80211_tx_data *tx)
+ 
+  txh_done:
+ 	if (unlikely(res == TX_DROP)) {
++		tx->sdata->tx_handlers_drop++;
+ 		I802_DEBUG_INC(tx->local->tx_handlers_drop);
+ 		if (tx->skb)
+ 			ieee80211_free_txskb(&tx->local->hw, tx->skb);
+@@ -1942,6 +1944,7 @@ static bool ieee80211_tx(struct ieee80211_sub_if_data *sdata,
+ 
+ 	if (unlikely(res_prepare == TX_DROP)) {
+ 		ieee80211_free_txskb(&local->hw, skb);
++		tx.sdata->tx_handlers_drop++;
+ 		return true;
+ 	} else if (unlikely(res_prepare == TX_QUEUED)) {
+ 		return true;
+@@ -3728,8 +3731,10 @@ void __ieee80211_xmit_fast(struct ieee80211_sub_if_data *sdata,
+ 	r = ieee80211_xmit_fast_finish(sdata, sta, fast_tx->pn_offs,
+ 				       fast_tx->key, &tx);
+ 	tx.skb = NULL;
+-	if (r == TX_DROP)
++	if (r == TX_DROP) {
++		tx.sdata->tx_handlers_drop++;
+ 		goto free;
++	}
+ 
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+ 		sdata = container_of(sdata->bss,
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-index 69ef8cf203d2..67c0c5a92f99 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-@@ -393,10 +393,8 @@ void brcmf_btcoex_detach(struct brcmf_cfg80211_info *cfg)
- 	if (!cfg->btcoex)
- 		return;
- 
--	if (cfg->btcoex->timer_on) {
--		cfg->btcoex->timer_on = false;
--		timer_shutdown_sync(&cfg->btcoex->timer);
--	}
-+	timer_shutdown_sync(&cfg->btcoex->timer);
-+	cfg->btcoex->timer_on = false;
- 
- 	cancel_work_sync(&cfg->btcoex->work);
- 
+base-commit: d9104cec3e8fe4b458b74709853231385779001f
 -- 
 2.34.1
 
