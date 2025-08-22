@@ -1,102 +1,97 @@
-Return-Path: <linux-wireless+bounces-26559-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26560-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0D9B31443
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 11:54:27 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 764D8B322C5
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 21:24:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B56B7AEC56
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 09:50:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DFEFE4E02D5
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Aug 2025 19:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1F52EE608;
-	Fri, 22 Aug 2025 09:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4939A2D0608;
+	Fri, 22 Aug 2025 19:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l5ud3sh0"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="F0BNBUYT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6C62882CA
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Aug 2025 09:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B8E233712
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Aug 2025 19:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755855998; cv=none; b=j0l4iedSRWCyJgz2ojGJnXCGJp+OCthJBClCxS2nNzNavFJnxFuVakwalGSjv2OSi1oJbaCSoZ8BJy0THP/AHhXLFuvAkBFSb3rjfQUw7JCEJuyYWoJ5JjlgnePzBM3/2TlFVhN+3vbwp43M4QG/jvxLNvbqgLewDMFAtLZrL40=
+	t=1755890665; cv=none; b=F3q8RKkFeuPW45ErrrmNOPAwYd3c5OqQwUIUouPBz3M2a1QhfrlbssnGdZ4C/QuiZMkNr01jNbYDaFbC+cCLlDxCtebxKb384rXell9105YH2ySoJBeRj+lVT3rEyWJWmzf6EXLqt+WSoiuWh4Eu/wUNcc1/+1vVW7aurYeYcVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755855998; c=relaxed/simple;
-	bh=9nZ1dfmu8OqljtQuyItgouikVaIU+A0T3hqGAizlse0=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=WZxLF3fXeuw1zLfQrGAhtZBb2OCTbFalxeNfURnX5iJH/hdu2hh8/Hd3+f0ECupmTlE7BqNtOl2OWQV3QTTzGWCHPM2oaliTWz7hTGiZEuRpb7kszLJgo7fqKy0mCO7XD83WcZfVajJzSm/F2ROCdTIH7CHPfzkfqhkWydot3Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l5ud3sh0; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-71d6059fb47so15658237b3.3
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Aug 2025 02:46:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755855995; x=1756460795; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=2ptTcae9P3h/a0ej2AadQcW1KzQN8gBNuyAZ2cnowOM=;
-        b=l5ud3sh0CVqR5dY+g8p8GmZhX9CBGMG6ktADdzFcSbChZrQEcvJ80Glm+TvQWBZKWZ
-         zRDqSwOEk4kSQyByVqOpkGxLH3CnM0KDad8o5XpPGyG1ynqE0PKqJ21zSaiBepT/7t02
-         bC20eXjAWGSv37YIT13ceFhjP4nFTW0Rx9aT9+RQ3ew8YACSPNV8IvBY+2uWpcEe5/+S
-         I955+7WA2E6AFgbjFOXnGSOXXM05QmlzPL8A19r5GHflgMlY8VdQk0DkXNJCZCuiwHsR
-         g44kUIJrC53IplmQyIE+PNv0CL2pIw25V7RiX0zfSNiyOVFzicVJfrLPI8sDqOOXn8A9
-         coiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755855995; x=1756460795;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2ptTcae9P3h/a0ej2AadQcW1KzQN8gBNuyAZ2cnowOM=;
-        b=YtyZaQzRB9zepD0a5UEMOZNaYAlFmuzPgI7ZZmY/KgOamwLazNZuZx7lZvk0P4kpmo
-         vRGE27mUXhGWVyO5/eigZo+ii/HbvfaDBX18qmxGoPcyD9HgcdY3s9HkGXXpSWTTMBmr
-         3BGaKF4Tdfkb6lKukmBZGRHd/4MClC2GVzvlJtFOG5k+xWZ4g7W1zusCPKjph52+MIhu
-         6qM976ndRjtc8W7+8H2afZpYNt6jI8mdnml30Q+VH9GSiovLDqxVHcplK4Qk0Pzbr5Ph
-         U5kkeOEG9ouEIph/C2OTfq7ZXG1VkYTld2efCvotCtEYPCDs5GCqT48ZWitLewl4n984
-         YtSg==
-X-Gm-Message-State: AOJu0YwN6Lq3jg+bLZulExkdK+G0eKB7yK/+qVc0ZHx+bZg1f5kjsjh4
-	Ejm6YrIRnXTafWCnpxP1MdGzuwvbWETZGvvhmIec3YzCcdbD3l9Yc6+mc5WPU3/p3Fgp4W4qYXv
-	ZVoM/b3usxbeOC/IRYrEYNVZvED92hbs5x32t
-X-Gm-Gg: ASbGnctqlPjn/ktoUNp8v9qRGLBrVJ4EWmt85BjPsnTF9tqeAB/ulj6QcoVTqfEG/MV
-	ojhngmSPzxtC6ebV/VonZpxgrdEJwSLrntXKc66D0AP/l0xPhrbYH4fodKwCPxMFteFqS9Bvh6Y
-	7wxirSHf6dfhtIFld81oRZqr4FPoH6IdpKuz/hThRELH3z271950JT/ZtM52pJiPiEB05UdJXs4
-	xy+LE4d
-X-Google-Smtp-Source: AGHT+IFgiELg1gu6vxlymrRmde9m/9IOvjLyX1wmR5F3JNa6SZDsvsY/4qjYfxvE9lB6h/sEbkAf/T7BYjywoT15+C0=
-X-Received: by 2002:a05:690c:708f:b0:71f:b0b6:c32 with SMTP id
- 00721157ae682-71fdc31b308mr23610357b3.23.1755855995603; Fri, 22 Aug 2025
- 02:46:35 -0700 (PDT)
+	s=arc-20240116; t=1755890665; c=relaxed/simple;
+	bh=rfPq/J7l2T+JDVXyO9nKv5RoHQJOiNzGNitpLYhet5k=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=gp/7LZzWKHoyxGyK66qjyQ8C49dOVk6AKU52FT37u188mAmM+y9SYKfY6L1eQ1ER7uAc4yFqvhfNamUmvZEer7Yeh3hE09aqZ298lNioUuTv7vIfO6/yBOwDAAdaZBVqJAyyOabosBN6/ojKOgAEJ8fiKAc/JchZWBp+ynHUoTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=F0BNBUYT; arc=none smtp.client-ip=148.163.129.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5E13C2CE7EE
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Aug 2025 19:16:36 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 4F66BA800BD;
+	Fri, 22 Aug 2025 19:16:28 +0000 (UTC)
+Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id B991F13C2B0;
+	Fri, 22 Aug 2025 12:16:27 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B991F13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1755890187;
+	bh=rfPq/J7l2T+JDVXyO9nKv5RoHQJOiNzGNitpLYhet5k=;
+	h=Date:To:From:Subject:From;
+	b=F0BNBUYTXGM2njkomPRQuWlstBLkGXM29xwS2xnyTqilGubRH0FTqzF4S0Q+sAlcH
+	 p/Dv6jY+0iqqVZlh61n6a21Z2QeKAsZSyfW7HDoqYH0Om9LhIQ7bjipOb7wACVyC6P
+	 TzGojQLxDXkxANLu4m5t7G6jecOD4UQ142q1t0nE=
+Message-ID: <39bf5755-254b-e7b8-cc15-500be99d0a6b@candelatech.com>
+Date: Fri, 22 Aug 2025 12:16:27 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: =?UTF-8?B?0JDQu9C10LrRgdC10Lkg0KHQvNC40YDQvdC+0LI=?= <debugger94@gmail.com>
-Date: Fri, 22 Aug 2025 12:46:24 +0300
-X-Gm-Features: Ac12FXyCCbwQxeiRHmry5D6jekG2gMZ0AVY1MPLElJEbvvAOpHCyh4aMbGHU5EE
-Message-ID: <CAAN7eZ7QKEeQgNHEBuZKy4Gqg3oqpGi6BUdOVBOxPN7dedhVJQ@mail.gmail.com>
-Subject: Remove TL-WN722N V2 from untested devices
-To: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Content-Language: en-US
+To: David Ahern <dsahern@kernel.org>,
+ linux-wireless <linux-wireless@vger.kernel.org>
+From: Ben Greear <greearb@candelatech.com>
+Subject: VRF and UDP broadcast frames
+Organization: Candela Technologies
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1755890189-baLc69HsIe27
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;ut7;1755890189;baLc69HsIe27;<greearb@candelatech.com>;abcb0bc45f5ce597c813a23c027ae4ed
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-I have been using this Wi-Fi dongle for many years now and have had no
-problems with it. The device is quite old and known, dumping its efuse to
-the log and asking the user to send the results to Jes.Sorensen@gmail.com
-on every boot makes little sense. Please apply:
+Hello,
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index 831b5025c634..113e01df0902 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -7815,7 +7815,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
-                        untested = 0;
-                break;
-        case 0x2357:
--               if (id->idProduct == 0x0109 || id->idProduct == 0x0135)
-+               if (id->idProduct == 0x0109 || id->idProduct == 0x010c
-|| id->idProduct == 0x0135)
-                        untested = 0;
-                break;
-        case 0x0b05:
+Assume I have a network interface assigned to a VRF (wifi AP interface is what I'm testing now).
+I would like to have it be able to send and receive UDP broadcast frames.  I am binding the socket
+to the AP netdev with SO_BINDTODEVICE.  From what I can tell, the socket at least cannot receive
+UDP broadcasts sent to it.  I do see the broadcast arriving on the AP interface if I run tshark.
+
+Is there any particular issue with UDP broadcast sockets in VRF?  Do I have to instead
+bind to the vrf netdev instead of the ap netdev?
+
+And always possible I doing something wrong in my socket code, my current test setup
+is quite complicated.
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
 
