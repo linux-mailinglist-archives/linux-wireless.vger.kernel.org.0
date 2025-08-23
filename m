@@ -1,165 +1,146 @@
-Return-Path: <linux-wireless+bounces-26566-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26567-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E95B32BF1
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Aug 2025 22:22:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1163B32C54
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Aug 2025 00:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46E871BA82A6
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Aug 2025 20:23:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75AF9A01765
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Aug 2025 22:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E3522F177;
-	Sat, 23 Aug 2025 20:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nD1+HR54"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19021F4CAF;
+	Sat, 23 Aug 2025 22:36:38 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF761F463F;
-	Sat, 23 Aug 2025 20:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC93393DC5
+	for <linux-wireless@vger.kernel.org>; Sat, 23 Aug 2025 22:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755980553; cv=none; b=hlBSKxpQiEQgKm5Ca5ixJ0LtWewB17dRcLmjmFshP5R5a9hVzi8b6Dei572t/f4aSvThV+osba7mO51NtTCvhLoXEUNzIMa9Ek2ImrxCMEW8xLQPzgCYktYJ+XmQr5PGkaqbiACcLbVJuAeAO4U2fMxSJBImkXbdPt+uMrUFX2I=
+	t=1755988598; cv=none; b=VmfBVGN8bgoG31I3B9FCirb2rzGJZLUuTNepnvLOOI3Y6R3GRP7hfo0fSYupub+6Q6Nw+2B1MMmwei1baxbGQfEkr2USxAxDJ3urx/covS6RXGozIDJ6W7Gu02Dq4dD0GkNi/Eo+UhVKKqyNaPmgSHilGSdKYwZLdDJm0ybXr3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755980553; c=relaxed/simple;
-	bh=FQccn/mnCuKMjzy32KODULbWn9j7n+6MgtLwkBtBSUQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KkXa8nCJXv+/fqPxZJLzFUjXAv7V5bIPgZMa3pH3G0CrfLsLla0/SAbwHBHEIycGevXdnqkwLL2iKZ2jR8RpIIZ/ieIaFMQymobIuzp1pln7u9TaJgAHtLTkVg0CjJSERlYv+ifJRNzADGDaBiNn5P5RF0etIs1zh/YgDwRjA7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nD1+HR54; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55ce4d3b746so3575379e87.1;
-        Sat, 23 Aug 2025 13:22:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755980548; x=1756585348; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KkaVXvGmGwTwhyRFOa6DDpH5NmVfdKNvcReIU8TQCxM=;
-        b=nD1+HR54UAAvhlDAOo0XoUZeHlv+fDgeA4kMk1rSnMIm7WI2RUEt/pSC4oVWRr54Ba
-         GxbWVJ0lBJCUd5TBOAztMWpQVxj/W6YAwoxsYi+4jxB36/kLhvnpcNUR22A8Tny36ddd
-         k3NKld0A7nj4hg8ZFwH2Xi96+KkNVPMWyMbSQM6mZf61jvqg5vP3KapNNyeXV5XCXYH7
-         tXLjDnOguXclOvxkmv7sTCjn+wmIbXy29fgs8sfsbE3lsCmmzNzKjESyjyZ3LqsUfBg3
-         8CGEszujihqinYawZDY6s8dB06iZ2f0ZBj52mGpbhftWh1jqm/ouIl9pZwqq2Izr1SrV
-         id2A==
+	s=arc-20240116; t=1755988598; c=relaxed/simple;
+	bh=4vZvK+dCmANA/RFO7QkzaPe0zgL9xeR5G3FAgTORd9Y=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=sI0b7oS6WHDn4i7qYSkPfiT7ybkQNeLtuw0AbykEev1SaWDU+VnNOmu59+RyOxlBeL3SaTWwIRH8S5EJWx0LKsm3MVFQc+7uP/W0lbHLExrjutwPaySUpXa3BqkqxMtP2mD5ZYeQugCHhCgQP3ieJ9av/4s5lfy+MgMdrXE4bm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3e6e61caefeso86341805ab.1
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Aug 2025 15:36:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755980548; x=1756585348;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KkaVXvGmGwTwhyRFOa6DDpH5NmVfdKNvcReIU8TQCxM=;
-        b=ed8f6+HKB87m4gxy+gZ/FCQgHe5fD27+4OEybut6L4uTKC79BUUOoY1kcYAw+/H8pa
-         jMW7gHBHVmUI6cIXUkbRSlrTl7wPBpWMaAS6wum9QdYZAEbTffse9ugYOaGPoGLWtOay
-         e83yftIheMz5v8hO3svBfdwpEXgxFa94VkgCpnK6Gk6dY+whRIOB7VesQIZTQeYsV5Yk
-         jZP5AewBzGulBqZrLqV+ZqfasCVHuU3AzLopG7cCTdO816P0NGwOZJWQbVEp38nKohSA
-         EToEoA6ecCQ0OLtJZpD8eXxiGK6bJOQgLxVgLK/RtcFube/lYb9RcROaAjxs9iqmYa/T
-         npKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUCDf3qr7lxu3NxjpVrYrJnkxNzf73nWn6/epmF7fcThyu7QxKYPz55JUH39sLFYncDuxOg1+0NxbbBm08=@vger.kernel.org, AJvYcCWffwZMYCLaEP6bOo4ny35ErIzwTKv2BEiyBJ1vq+1ULhnifYUUo849dPcllHgUT5se+NsJg7iDSaiOl3yjO7o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5MR6wuW+bIJq2mLhC2++P9Trs9N2SFV8rgXRQMlGRhIZO11/I
-	v6HguECNKX4vfTURlW6GJzJKf/ZAOgS1UtfDiVDcbIvbzumqNmaD2SjyB1ZHcdmDcTo=
-X-Gm-Gg: ASbGnctJpwGq+G9If6S94ZAW1qjVyJqB60jOFbnjDIIMEPrz8Fp2kTaQOPtXLevUhni
-	92y50nIuTS6SGTwcxHYX3atheHj4u7ndvalpC5MigPJKtDpLeJF0ukx8Q6b7FhGZYQv+m6kgBUH
-	qMIqJvEmx+A3p4/J3tpsHYvhxv/7qC8nnDcjfME4Zr59iqE6JJ48H4NriP/EGJNar4Rp9jyKmDZ
-	9fvrvA6OS1rzoGYzLD/CzWV9BuEt2xZkl8+93/jRC9m7F4mAUi2eV5ge6+6+RJeC7wlOzsHg8Tw
-	SiCep6ulSHyVbgrQRHgJLgkuOYASyvxmlY9tmSTvFEbfGFFv0wVc1rbFPC5iK9sJWcUm9GevBxM
-	f2ClPxg+2z7ir/XCZIn8vw5Y+UdpLHAiC1yX/jSSapg62EvTh3fn57oHy0PE3GEklVI48xAk5UC
-	zqXk4eQvLOC7DK0zxeBHUm
-X-Google-Smtp-Source: AGHT+IHT5OiJrgOGVSNUQDNc7iv/jwpAb+TzHRjYVDlMIt2lEi03MK6Ye96jnRvqifCPUN5ywys4Og==
-X-Received: by 2002:a05:6512:3ca6:b0:55f:3f00:a833 with SMTP id 2adb3069b0e04-55f3f00ac62mr364421e87.8.1755980548333;
-        Sat, 23 Aug 2025 13:22:28 -0700 (PDT)
-Received: from uuba.fritz.box (2001-14ba-6e-3100-e1f1-3f10-2a0d-f34f.rev.dnainternet.fi. [2001:14ba:6e:3100:e1f1:3f10:2a0d:f34f])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f35c99e65sm677901e87.109.2025.08.23.13.22.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Aug 2025 13:22:26 -0700 (PDT)
-From: =?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
-To: stable@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	shaul.triebitz@intel.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
-Subject: [PATCH 6.1.y 2/2] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
-Date: Sat, 23 Aug 2025 23:22:08 +0300
-Message-ID: <20250823202208.43086-2-hannelotta@gmail.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250823202208.43086-1-hannelotta@gmail.com>
-References: <20250823202208.43086-1-hannelotta@gmail.com>
+        d=1e100.net; s=20230601; t=1755988596; x=1756593396;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NGwLocbnTDAXfm5VG1sZW4oHyeZ0bJWUIcJzJBTSFY0=;
+        b=PixPBJeVSrn+wLWQbuuQCHGOIwl1eGCtvhZZ2zb7j2N/swo9LE42tjEc+6K+Bht+1y
+         gqRoO898Ltjjrs4UugvPytW3xkny6jmfO/yKC6XGbDjGgCmq/lNm0yIiOLFjr3+gWe2i
+         9wJIbLtgfNSoL1eKw1j5GoEaDbivpZp8zk9CM2qA1kiMwkRMdJa4Y81Xw8YFL9FCrkUq
+         zO3hoXUSKdoZVQtr/dKqwcQGbK/hD3NArLkK/vg/nZ+TbV4LbpGiyfQQxcjd1ARlpx/o
+         0AyL92V8eKOWtot0nX6B+BwJg6dHy2VQj0cjsnPBFtwFTyY7LrPfglK58OhG/ZRYnt+J
+         yzvw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8hWwYdsyYAXXtC09n+a3dy/FpbOye+tm3q3mf39HYiLd1KJbQUOQXdmFWJFNE0bwzEKYx1uK1idxioVE2Fg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgJb2VDVGt36bIJ3nKPD4x5hf4qlmaZ/euo5xySjtUgh8qahJh
+	BpxV574mxAOfmkc/FU+ufwbqLTQa3VRSCHeEepxowLClx6qSAHqjF6iahby88JOG45nfkDI7exP
+	iv37opMAIJJf35bFJW/3Jv6tEIsbNhn24SLMQxQtCyAuX+AEyYr/fdoRdE28=
+X-Google-Smtp-Source: AGHT+IEVSRCkgjphjsoFwRrDqgtFP+NSFEK2+JqlkQKo0P6FrozDfloNFRLvI373a8BRXjG+K1ac5jTraz7SrTE/f0nHs1+eIcKK
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:3087:b0:3e9:8a9f:ba7a with SMTP id
+ e9e14a558f8ab-3e98a9fbb99mr83546825ab.21.1755988596443; Sat, 23 Aug 2025
+ 15:36:36 -0700 (PDT)
+Date: Sat, 23 Aug 2025 15:36:36 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68aa4274.a00a0220.33401d.03a0.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in ieee80211_do_stop (3)
+From: syzbot <syzbot+e9989956db9dfeabc44c@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Mikhail Lobanov <m.lobanov@rosa.ru>
+Hello,
 
-[ Upstream commit 16ee3ea8faef8ff042acc15867a6c458c573de61 ]
+syzbot found the following issue on:
 
-When userspace sets supported rates for a new station via
-NL80211_CMD_NEW_STATION, it might send a list that's empty
-or contains only invalid values. Currently, we process these
-values in sta_link_apply_parameters() without checking the result of
-ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
+HEAD commit:    da114122b831 net: ethernet: stmmac: dwmac-rk: Make the clk..
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=106aa6f0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5b2fdcd062d798f6
+dashboard link: https://syzkaller.appspot.com/bug?extid=e9989956db9dfeabc44c
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
 
-A similar issue was addressed for NL80211_CMD_SET_BSS in commit
-ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
-This patch applies the same approach in sta_link_apply_parameters()
-for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
-rate by inspecting the result of ieee80211_parse_bitrates().
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/944cb9a1ee86/disk-da114122.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c92fb70ac1fc/vmlinux-da114122.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1e6dc0d53003/bzImage-da114122.xz
 
-[ Summary of conflict resolutions:
-  - The function ieee80211_parse_bitrates() takes channel width as
-    its first parameter, and the chandef struct has been refactored
-    in kernel version 6.9, in commit
-    6092077ad09ce880c61735c314060f0bd79ae4aa so that the width is
-    contained in chanreq.oper.width. In kernel version 6.1 the
-    width parameter is defined directly in the chandef struct. ]
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+e9989956db9dfeabc44c@syzkaller.appspotmail.com
 
-Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
-Link: https://patch.msgid.link/20250317103139.17625-1-m.lobanov@rosa.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 9 at net/mac80211/iface.c:510 ieee80211_do_stop+0x1a36/0x1fb0 net/mac80211/iface.c:510
+Modules linked in:
+CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+Workqueue: events cfg80211_rfkill_block_work
+RIP: 0010:ieee80211_do_stop+0x1a36/0x1fb0 net/mac80211/iface.c:510
+Code: 48 c1 e8 03 42 0f b6 04 28 84 c0 0f 85 27 05 00 00 41 ff 0c 24 e9 49 f5 ff ff e8 55 a1 d0 f6 e9 3f f5 ff ff e8 4b a1 d0 f6 90 <0f> 0b 90 e9 a3 e9 ff ff e8 3d a1 d0 f6 90 43 0f b6 04 2f 84 c0 0f
+RSP: 0018:ffffc900000e7520 EFLAGS: 00010293
+RAX: ffffffff8aef0ae5 RBX: 0000000000000001 RCX: ffff88801ce90000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffffc900000e7730 R08: 0000000000000000 R09: ffffffff8ae88b42
+R10: 0000096c00000000 R11: ffff88807acfb338 R12: ffffc900000e7690
+R13: dffffc0000000000 R14: 0000000000000001 R15: ffff888053b6a9d0
+FS:  0000000000000000(0000) GS:ffff888125c1c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f4e87977e9c CR3: 0000000075150000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ ieee80211_stop+0x1b1/0x240 net/mac80211/iface.c:814
+ __dev_close_many+0x364/0x6f0 net/core/dev.c:1755
+ netif_close_many+0x225/0x410 net/core/dev.c:1780
+ netif_close+0x158/0x210 net/core/dev.c:1797
+ dev_close+0x10a/0x220 net/core/dev_api.c:220
+ cfg80211_shutdown_all_interfaces+0xd4/0x220 net/wireless/core.c:277
+ cfg80211_rfkill_set_block net/wireless/core.c:307 [inline]
+ cfg80211_rfkill_block_work+0x21/0x30 net/wireless/core.c:319
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3319
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
+ kthread+0x711/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x3f9/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
 ---
- net/mac80211/cfg.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index be48d3f7ffcd..b42eb781d7f7 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1735,12 +1735,12 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 	}
- 
- 	if (params->supported_rates &&
--	    params->supported_rates_len) {
--		ieee80211_parse_bitrates(link->conf->chandef.width,
--					 sband, params->supported_rates,
--					 params->supported_rates_len,
--					 &link_sta->pub->supp_rates[sband->band]);
--	}
-+	    params->supported_rates_len &&
-+	    !ieee80211_parse_bitrates(link->conf->chandef.width,
-+				      sband, params->supported_rates,
-+				      params->supported_rates_len,
-+				      &link_sta->pub->supp_rates[sband->band]))
-+		return -EINVAL;
- 
- 	if (params->ht_capa)
- 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
--- 
-2.50.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
