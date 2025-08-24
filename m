@@ -1,146 +1,140 @@
-Return-Path: <linux-wireless+bounces-26567-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26568-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1163B32C54
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Aug 2025 00:36:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D85B6B32CBB
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Aug 2025 02:39:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75AF9A01765
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Aug 2025 22:36:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADD4A208561
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Aug 2025 00:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19021F4CAF;
-	Sat, 23 Aug 2025 22:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDB53D544;
+	Sun, 24 Aug 2025 00:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m/kxiQue"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC93393DC5
-	for <linux-wireless@vger.kernel.org>; Sat, 23 Aug 2025 22:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C11DB640;
+	Sun, 24 Aug 2025 00:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755988598; cv=none; b=VmfBVGN8bgoG31I3B9FCirb2rzGJZLUuTNepnvLOOI3Y6R3GRP7hfo0fSYupub+6Q6Nw+2B1MMmwei1baxbGQfEkr2USxAxDJ3urx/covS6RXGozIDJ6W7Gu02Dq4dD0GkNi/Eo+UhVKKqyNaPmgSHilGSdKYwZLdDJm0ybXr3Y=
+	t=1755995954; cv=none; b=XIE5t8RK8IxBeFWLYYfBPWdhKse9oOwNkucni57ASd+W2Dv01xIpjjONpJdlBZJbUQAk51DTFb3gjRUvmebT+rk0vC5uIjPmuQD4gahnVXwuDqplAA7NWU5kvgAhZYE+dNnsXkq+p/Jtrqk5FRKFlQm9e3qbRxh4JctO180NAso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755988598; c=relaxed/simple;
-	bh=4vZvK+dCmANA/RFO7QkzaPe0zgL9xeR5G3FAgTORd9Y=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=sI0b7oS6WHDn4i7qYSkPfiT7ybkQNeLtuw0AbykEev1SaWDU+VnNOmu59+RyOxlBeL3SaTWwIRH8S5EJWx0LKsm3MVFQc+7uP/W0lbHLExrjutwPaySUpXa3BqkqxMtP2mD5ZYeQugCHhCgQP3ieJ9av/4s5lfy+MgMdrXE4bm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3e6e61caefeso86341805ab.1
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Aug 2025 15:36:36 -0700 (PDT)
+	s=arc-20240116; t=1755995954; c=relaxed/simple;
+	bh=s0McLWvdCDqPd8Y/u1GnS5m0WP0uNIXZ1VLr+nTsM2c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Sbfi/fkH+j1y+0XknV/y4+LzuRlaxwTIt6eK5a110XxnoGtY0OcnS8e7YPrrOkYZS8OTH8Gjr2p1X90sEbcovNdC14XGNZ6SASjQM3ypAi3wWX+ihT0WjOQntIpftkkG8KrgTe5L2SfkbEcRLHWogNSeovjZqcztXNllxbVA9bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m/kxiQue; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-70d9eb2eb55so8997736d6.2;
+        Sat, 23 Aug 2025 17:39:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755995952; x=1756600752; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tNY0okVFoLgY416XV42hmNIfwC6IRW0OVeBGVW5QbSw=;
+        b=m/kxiQuebwZxFmBM49+i8xuq1lr3ZpPGs1qMnkE3zABf5B0x7gFfM0193+qNwKELLz
+         9cq2mB0S4aEATxjMPN0ClAl9bM8UJ0T2pTLbUC0BnQK0i+qqCEWTZ58UDfdPz/mJpaNY
+         Bruh5uOJI2G79N/ZyfkV4YdyJ6ZadLC+tqA6Bx/AlU3YPJo4Pv088UC7Kz+m+8CoOiWz
+         1k75taCWpz9+c2NjHJt4VUZDbKgURRp/FLtadRS0Ij35MICBJAUT/rp0f67NcXv3LJi5
+         jld9yfPHMGdZOoZ6+sleTdQ2ZLXpATWZNuuetXz3IjZrVeiklmM4E/etaQioZvbHrwZR
+         JyXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755988596; x=1756593396;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NGwLocbnTDAXfm5VG1sZW4oHyeZ0bJWUIcJzJBTSFY0=;
-        b=PixPBJeVSrn+wLWQbuuQCHGOIwl1eGCtvhZZ2zb7j2N/swo9LE42tjEc+6K+Bht+1y
-         gqRoO898Ltjjrs4UugvPytW3xkny6jmfO/yKC6XGbDjGgCmq/lNm0yIiOLFjr3+gWe2i
-         9wJIbLtgfNSoL1eKw1j5GoEaDbivpZp8zk9CM2qA1kiMwkRMdJa4Y81Xw8YFL9FCrkUq
-         zO3hoXUSKdoZVQtr/dKqwcQGbK/hD3NArLkK/vg/nZ+TbV4LbpGiyfQQxcjd1ARlpx/o
-         0AyL92V8eKOWtot0nX6B+BwJg6dHy2VQj0cjsnPBFtwFTyY7LrPfglK58OhG/ZRYnt+J
-         yzvw==
-X-Forwarded-Encrypted: i=1; AJvYcCU8hWwYdsyYAXXtC09n+a3dy/FpbOye+tm3q3mf39HYiLd1KJbQUOQXdmFWJFNE0bwzEKYx1uK1idxioVE2Fg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgJb2VDVGt36bIJ3nKPD4x5hf4qlmaZ/euo5xySjtUgh8qahJh
-	BpxV574mxAOfmkc/FU+ufwbqLTQa3VRSCHeEepxowLClx6qSAHqjF6iahby88JOG45nfkDI7exP
-	iv37opMAIJJf35bFJW/3Jv6tEIsbNhn24SLMQxQtCyAuX+AEyYr/fdoRdE28=
-X-Google-Smtp-Source: AGHT+IEVSRCkgjphjsoFwRrDqgtFP+NSFEK2+JqlkQKo0P6FrozDfloNFRLvI373a8BRXjG+K1ac5jTraz7SrTE/f0nHs1+eIcKK
+        d=1e100.net; s=20230601; t=1755995952; x=1756600752;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tNY0okVFoLgY416XV42hmNIfwC6IRW0OVeBGVW5QbSw=;
+        b=a9SBWTm2k8dImYnGtnt0uf6mm9eDnCog1+TTpSr0eBmHzCtyHcwq3HGwHFNMVgeQrr
+         pFjmGibIY97MbkKvp9iKGPNanK7O7CBufnx7MFWbo2tl6ThhoR8zu+HYSwgoJ16i/3ZN
+         T7jxI0qbbtyUET2uyjSPPl7G8X+mXAmGljLl2kiRva/I9xCsZY2HwDHNzPIJB1sqvBuy
+         6V+E5TBcgM8Ob5o32PLWdxyM8oPL0NDwjEdzSiUv2STaB/pHqLZuzJAakfNcjP7kV8Ss
+         R22bGRbGVMxL1rM5kwUPk8TAKB0dBoohDgUjHV0dYDEOxfr/RDbPx/lNVU2DVm+YN1Qc
+         QHcw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5HPRstxfIfRYsFmlZ2Zv+6BGOqMI2d7koQMftYT0zFLvVOtbq67AhoI11h8FjH1JkZs2FOY4O4/VF3eI=@vger.kernel.org, AJvYcCVzQnbL8ygoWMwdE1CsCrT1GH2Kt/y5/hKbXi1JDFyvSvonjAS2CrEUF4ln/437YWhPfWPFAtbnA++ku4oiooE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLh0yeuWGhoPCX8DGfZtzVjERZG4eIPJFhFfavN1oz1GWHFUPM
+	6dq4xUm/uO6u2gViq01KiH5O85j/eIbL5mp49Qnk8mIcfXVRyIj6bQlGfKXUE1lXZCmBtDJEcrA
+	7mS5cMpJPSw/7B2US90pi+uysmrCqMHl0fQ==
+X-Gm-Gg: ASbGncufL024z0B0PDIINgD29gVJqkbTCy2JtL8FPjT8pGvcBeAzPqLW304M7WMQSCf
+	J2hxcKdPciD27eX50HM6R/JNPrNVelJLUudW3ZMKq1uwNNuMxugkToMg0FDzw3pHZs572+6fdyt
+	zT9VQKHOI7cnvcMQZjhmJjbS5knGjnsWbtULmKNVe5Snzc21Fgw7qbDRQBOZRRxH0ACgdrmkkiR
+	owZkok=
+X-Google-Smtp-Source: AGHT+IGJvweRY3TWUs9ZYabzrqlFqNGB8yJrDgWrKt8gjCB06kXkz/Eg19enAOqUFnXtnYwJBFfXomyAC0EIwhNpPNs=
+X-Received: by 2002:a05:6214:d6a:b0:70d:b3de:ced3 with SMTP id
+ 6a1803df08f44-70db3dedb2amr18691696d6.25.1755995952022; Sat, 23 Aug 2025
+ 17:39:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:3087:b0:3e9:8a9f:ba7a with SMTP id
- e9e14a558f8ab-3e98a9fbb99mr83546825ab.21.1755988596443; Sat, 23 Aug 2025
- 15:36:36 -0700 (PDT)
-Date: Sat, 23 Aug 2025 15:36:36 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68aa4274.a00a0220.33401d.03a0.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_do_stop (3)
-From: syzbot <syzbot+e9989956db9dfeabc44c@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
+References: <20250818064219.448066-1-liaoyuanhong@vivo.com>
+In-Reply-To: <20250818064219.448066-1-liaoyuanhong@vivo.com>
+From: Julian Calaby <julian.calaby@gmail.com>
+Date: Sun, 24 Aug 2025 10:39:00 +1000
+X-Gm-Features: Ac12FXyu98_t-IJGPtHlzpUXh7AxDD1gzGG7IFvp3mKcGlBrc1qVK-4PS5y9upg
+Message-ID: <CAGRGNgVzKyyG=Ld_eK60Ry=AQ7KpGx_ZKw908CAXoA3a2CVX4g@mail.gmail.com>
+Subject: Re: [PATCH] wifi: rtw89: 8852bt: Simplify unnecessary if-else conditions
+To: Liao Yuanhong <liaoyuanhong@vivo.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, 
+	"open list:REALTEK WIRELESS DRIVER (rtw89)" <linux-wireless@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+Hi Liao,
 
-syzbot found the following issue on:
+On Mon, Aug 18, 2025 at 4:44=E2=80=AFPM Liao Yuanhong <liaoyuanhong@vivo.co=
+m> wrote:
+>
+> Some simple if-else logic can be simplified using the ! operator to impro=
+ve
+> code readability.
+>
+> Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
+> ---
+>  drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+>
+> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c b/drivers=
+/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
+> index d0e299803225..164ee0fde03b 100644
+> --- a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
+> +++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
+> @@ -1803,10 +1803,7 @@ static void _dpk_onoff(struct rtw89_dev *rtwdev, e=
+num rtw89_rf_path path, bool o
+>
+>         val =3D dpk->is_dpk_enable && !off && dpk->bp[path][kidx].path_ok=
+;
 
-HEAD commit:    da114122b831 net: ethernet: stmmac: dwmac-rk: Make the clk..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=106aa6f0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5b2fdcd062d798f6
-dashboard link: https://syzkaller.appspot.com/bug?extid=e9989956db9dfeabc44c
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+Is this line ^^^
 
-Unfortunately, I don't have any reproducer for this issue yet.
+>
+> -       if (off)
+> -               off_reverse =3D false;
+> -       else
+> -               off_reverse =3D true;
+> +       off_reverse =3D !off;
+>
+>         val =3D dpk->is_dpk_enable & off_reverse & dpk->bp[path][kidx].pa=
+th_ok;
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/944cb9a1ee86/disk-da114122.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c92fb70ac1fc/vmlinux-da114122.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1e6dc0d53003/bzImage-da114122.xz
+The same as this line ^^^
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e9989956db9dfeabc44c@syzkaller.appspotmail.com
+and if so, can we just delete the second one? Also, can we also then
+delete the "off_reverse" variable?
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 9 at net/mac80211/iface.c:510 ieee80211_do_stop+0x1a36/0x1fb0 net/mac80211/iface.c:510
-Modules linked in:
-CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-Workqueue: events cfg80211_rfkill_block_work
-RIP: 0010:ieee80211_do_stop+0x1a36/0x1fb0 net/mac80211/iface.c:510
-Code: 48 c1 e8 03 42 0f b6 04 28 84 c0 0f 85 27 05 00 00 41 ff 0c 24 e9 49 f5 ff ff e8 55 a1 d0 f6 e9 3f f5 ff ff e8 4b a1 d0 f6 90 <0f> 0b 90 e9 a3 e9 ff ff e8 3d a1 d0 f6 90 43 0f b6 04 2f 84 c0 0f
-RSP: 0018:ffffc900000e7520 EFLAGS: 00010293
-RAX: ffffffff8aef0ae5 RBX: 0000000000000001 RCX: ffff88801ce90000
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffffc900000e7730 R08: 0000000000000000 R09: ffffffff8ae88b42
-R10: 0000096c00000000 R11: ffff88807acfb338 R12: ffffc900000e7690
-R13: dffffc0000000000 R14: 0000000000000001 R15: ffff888053b6a9d0
-FS:  0000000000000000(0000) GS:ffff888125c1c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f4e87977e9c CR3: 0000000075150000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- ieee80211_stop+0x1b1/0x240 net/mac80211/iface.c:814
- __dev_close_many+0x364/0x6f0 net/core/dev.c:1755
- netif_close_many+0x225/0x410 net/core/dev.c:1780
- netif_close+0x158/0x210 net/core/dev.c:1797
- dev_close+0x10a/0x220 net/core/dev_api.c:220
- cfg80211_shutdown_all_interfaces+0xd4/0x220 net/wireless/core.c:277
- cfg80211_rfkill_set_block net/wireless/core.c:307 [inline]
- cfg80211_rfkill_block_work+0x21/0x30 net/wireless/core.c:319
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3f9/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+Thanks,
 
+--=20
+Julian Calaby
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
 
