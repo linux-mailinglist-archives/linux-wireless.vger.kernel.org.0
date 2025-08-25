@@ -1,61 +1,58 @@
-Return-Path: <linux-wireless+bounces-26580-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26581-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B77B3389A
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Aug 2025 10:20:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 967F2B33C18
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Aug 2025 12:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 249CB4E2623
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Aug 2025 08:20:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6237F170FA5
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Aug 2025 10:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F47E2877E5;
-	Mon, 25 Aug 2025 08:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AC72D3EDD;
+	Mon, 25 Aug 2025 10:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="N7RZjF+9"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ATngMvQD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF787225A59;
-	Mon, 25 Aug 2025 08:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FAE2D29C8
+	for <linux-wireless@vger.kernel.org>; Mon, 25 Aug 2025 10:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756110016; cv=none; b=OCUZMoF8mfQ1Czwtiq1OR1c7IqLxmPtEJmAl2vaZAr778/nGeFVGclfoFdZnQXVkzAyn+8wxPQ81uutphEca2Y/4LfC3dmRCcGwfIuTOCCzJd41eVAUoG3LI7GSBNcLTr6uP2cfxS3hJFR0i7YRZCJYaV4uUzuIDBOiyAPBYcFs=
+	t=1756116218; cv=none; b=VwPPts9QY9lUEqR8mL564Pnsn2wB1MhqVAKppNDyjF+TX/1W8qxGSAjt6ojX4+6UCIYiFuh/y0OOh++qy2EXW5cJIXrFmVNBSRUf444zfureKCXzwOdekkwNj9brQA5sjGG+vF75OMKJOweWrWaxqJ2XFulP7ui/3DtKDEDPGxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756110016; c=relaxed/simple;
-	bh=EbzhpPOjLi3kH55G5+vHCGUnZrR8M1xHYP6BhMDkE2w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RIsQJdnqDFrZ3FgABBgY+VGmzltX1BpZzzy9pPGavu04KvcBNv6Eca7RskH5cH+uhprWhB8YXagCwAmANMw9do9kEq7Of18ZXlkPFjHaoelT51+t6k8fwBKme/q0GHCj6/9XEVdUvzWKROHMI58ZIs1qARCy6itVJg1dLxK0DH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=N7RZjF+9; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1756116218; c=relaxed/simple;
+	bh=Mtydi351DaRo+ygr02w39zgqzzwVfUrmg5ZUQizzQ3A=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mpR9g2sT5HaebKmtJQSr2zSc0C19fykkA0BZWCgdewtIeGMdObFqsyv4jEQ61eBuggnoSYzmW5rYhm5JPEumPeBER2iBTfwhEmrvplj1JnayIInyL0ZU3Mf+tsv8lMhh0/RAnznJMrqVdy/FcKhQ+8YFmNMVubkjy746xDqZwac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ATngMvQD; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=JjdTDWtQIxrGilIZgCVBGVSdcEmwWIR6irdMFSFg1uA=;
-	t=1756110014; x=1757319614; b=N7RZjF+921Doygr3G4eYSHhs3U7/Yg+dVZSqvIHNrPnrhIj
-	OFHDkTIx2v1tD7BPSlhbaJTBq+haH+OipyArxV8pLgNuC0KzlyO4AiyJgtyzVo1nsQ1M21Axzudgg
-	kYY1rbUmIqcMINaO5yWzcvxi9vg3/A4TW+edqBUR1C9ErG5NHS8QYen3oaeCClXY2oJV83qWzL7iR
-	uA052HvoMIpJEwCoQVYLPN3/Y0PUT6vOOWPAPI30/p0K8E8nuikL/C75dkSYlS29gBZh9/MvoqODi
-	mRSZeKwtvtX4YE6kkSpUH5fPDO9F6yucifFVv9a0BNopvN8WiDPName3sUGt+1Mg==;
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=dWFc5uhRdhxiVFAu3Bmt0otoXJTB1z/7tsayK3nmoE0=;
+	t=1756116216; x=1757325816; b=ATngMvQDe5D89F01tUaxkrGbhSWOjmAFAWCLV0vqpmpE9g5
+	i6WZXTZcKZhAKJ97FEWDwkvjxmRbqxPLpXYWpo5R3jsZ8ybpTjcWfCerkATwPGwNnHA3Kky0H+Lii
+	wRPOgWqV9s9GKAigV3n88nTSHCxYlV8KdenWcH3k2rzT2cYaEq+sE0POw5LSVIrgul/XWyXZ5rZxg
+	aDjStkP8aPykCTZIrIzxVKfyhc6HEXEyri8SDENFXSMtUyfv8Ddbrdhz4KBgFUqiQPxYwbRTT61Bi
+	ZIAz3/UZL1OUMdm8zJHfXZJQT2LSf28TSI+zzyKXyqKwOGhT5CTBl7dgtvurHYFA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uqSR0-00000001bsE-26fm;
-	Mon, 25 Aug 2025 10:20:10 +0200
-Message-ID: <4f8037dc97958e06dfb08d75fce982c1e4e36068.camel@sipsolutions.net>
-Subject: Re: [RFC] wifi: iwlwifi: mei: Remove unused flexible-array member
- in struct iwl_sap_hdr?
+	id 1uqU33-00000001i0f-0hYv;
+	Mon, 25 Aug 2025 12:03:33 +0200
+Message-ID: <c9c43ed6bda02ead41773cadb41d9bb303db9444.camel@sipsolutions.net>
+Subject: Re: Recent versions broke Wireless-N 1030 BGN
 From: Johannes Berg <johannes@sipsolutions.net>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, Miri Korenblit
-	 <miriam.rachel.korenblit@intel.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 25 Aug 2025 10:20:09 +0200
-In-Reply-To: <fbc03dee-273a-4c75-a8bb-fbc6ae48d26d@embeddedor.com>
-References: <fbc03dee-273a-4c75-a8bb-fbc6ae48d26d@embeddedor.com>
+To: Ingolf Gehrhardt <gehingo@freenet.de>, linux-wireless@vger.kernel.org
+Date: Mon, 25 Aug 2025 12:03:32 +0200
+In-Reply-To: <c086f53df499061f069bf4c49ab7232b8e75d9a8.camel@freenet.de>
+References: <c086f53df499061f069bf4c49ab7232b8e75d9a8.camel@freenet.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
@@ -67,39 +64,42 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Mon, 2025-08-11 at 17:23 +0900, Gustavo A. R. Silva wrote:
-> Hi all,
+On Sat, 2025-08-23 at 09:23 +0200, Ingolf Gehrhardt wrote:
 >=20
-> At first sight, it seems that the flexible-array member `payload`
-> in the struct below it's not being used:
+> I think this might be because of:
 >=20
-> drivers/net/wireless/intel/iwlwifi/mei/sap.h:
-> 298 /**
-> 299  * struct iwl_sap_hdr - prefixes any SAP message
-> 300  * @type: See &enum iwl_sap_msg.
-> 301  * @len: The length of the message (header not included).
-> 302  * @seq_num: For debug.
-> 303  * @payload: The payload of the message.
-> 304  */
-> 305 struct iwl_sap_hdr {
-> 306         __le16 type;
-> 307         __le16 len;
-> 308         __le32 seq_num;
-> 309         u8 payload[];
-> 310 };
->=20
-> If we remove it, we'd get rid of 14 of the following type of warnings:
->=20
-> drivers/net/wireless/intel/iwlwifi/mei/sap.h:318:28: warning: structure c=
-ontaining a flexible array member is not at the end of another structure=
-=20
-> [-Wflex-array-member-not-at-end]
->=20
-> Is there any case where this array is actually used that I might
-> be missing?
+> [   31.404357] iwlwifi 0000:05:00.0: Detected Intel(R) Centrino(R)
+> Wireless-N 1030 BGN
+> [   31.506140] iwlwifi 0000:05:00.0: loaded firmware version 18.168.6.1
+> 6000g2b-6.ucode op_mode iwldvm
+> [   32.002851] iwlwifi 0000:05:00.0: CONFIG_IWLWIFI_DEBUG enabled
+> [   32.002925] iwlwifi 0000:05:00.0: CONFIG_IWLWIFI_DEBUGFS enabled
+> [   32.002937] iwlwifi 0000:05:00.0: CONFIG_IWLWIFI_DEVICE_TRACING
+> enabled
+> [   32.002949] iwlwifi 0000:05:00.0: Detected Intel(R) Centrino(R)
+> Wireless-N 1030 BGN, REV=3D0xB0
+> [   32.093060] iwlwifi 0000:05:00.0: Failing on timeout while stopping
+> DMA channel 8 [0xa5a5a5a2]
+> [   32.111342] WARNING: CPU: 1 PID: 467 at
+> drivers/net/wireless/intel/iwlwifi/dvm/eeprom.c:212
+> iwl_parse_eeprom_data+0x5ba/0xe20 [iwldvm]
 
-Check if it builds? But I don't see it used in our internal (and
-possibly more recent) version of this either.
+Probably, assuming you didn't see that WARN_ON before? Just making sure.
+
+It's almost certainly with the config rework, and the only thing I can
+imagine is that the EEPROM size is now wrong, but I don't see why that
+would be the case.
+
+Could you change it to print the offset, address and eeprom_size when
+this happens? Or maybe even print them both with the older kernel too
+when it succeeds.
+
+Or maybe you can even bisect it?
+
+There's a somewhat related bug
+https://bugzilla.kernel.org/show_bug.cgi?id=3D220477
+but that just misses the entries which was easy to fix. That doesn't
+seem to be the case here since the firmware is loaded.
 
 johannes
 
