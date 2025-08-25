@@ -1,60 +1,72 @@
-Return-Path: <linux-wireless+bounces-26579-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26577-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A1FB33890
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Aug 2025 10:17:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 974BEB3386E
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Aug 2025 10:04:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CF433ACD4B
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Aug 2025 08:17:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F40F17F3D1
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Aug 2025 08:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C5533985;
-	Mon, 25 Aug 2025 08:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439DF280325;
+	Mon, 25 Aug 2025 08:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VfqVeWxe"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Iox7DYui"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5931FB3;
-	Mon, 25 Aug 2025 08:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C77D1FB3;
+	Mon, 25 Aug 2025 08:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756109855; cv=none; b=f81ckliawl1FheoevfsoUWopI1zmfQVz7lEkS4eaKQIUK67qdYqsSiTDbEf+G4CXai8fS54YuHmZk6ZcDbzUBH4Muc6Ynx1HgawswqXYmuD9DG8nmU3YPyqjQV6u47NdjK6DjlobZzIlrSX+AGbukGZ/1Ghxy2JUKUv5Zo/5vfI=
+	t=1756109075; cv=none; b=opn0tbl4Uxo6hbgn2zIbQFrmp3OekvnGux90z6idaknoAFFyufo6pqR+mYEERyBfK5mzaZ0zBzqUs6R052c0GmekPueujAYXUoQpQa8RmjwQZuPLZKxhm9pScWnFCyInhlC6WSP6f9MYYqF/419cKaFaKiAyIGPwSlZBcwniDPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756109855; c=relaxed/simple;
-	bh=hIW8XQU7RMPPW8XOZu7gtjXi/XwCLs4jNR5j1dUryRA=;
+	s=arc-20240116; t=1756109075; c=relaxed/simple;
+	bh=peNwNNw8JLZDy471vYW8nsDvVgGNgANo6uUwXbjULo4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LN60A5qfJiGPbJzAmawI+GK3Hkg4+s27kNhkZ3wRqfQAXcqYXahhJXW54Ut+P1QFvAZVJKHLiee3sj7NwBoGaKE5aiWt+sE8gc9N5NSW+Q0lgaNWX+FD5y7say5ybyrdcXMmhqIeVSCMx/qwdlLffYKqzhhZDAk8E80p3KTeq/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VfqVeWxe; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=oOvuEOek+YWga9DpZjFoOj/31ki01ygLxYJ6zELeh79WZ7STuTdKZ2ieLUSW9W8DX9HK4HujZHd+l6WZpmKWRBJSGeQayzoE1ecVQ1xxqXQ4t8cQ+U6HkL4+jnf9YDXqplGx0ut8dgME0fNjp5MT1F82/HrM/qOUxWQ23Tvy81U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Iox7DYui; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=hIW8XQU7RMPPW8XOZu7gtjXi/XwCLs4jNR5j1dUryRA=;
-	t=1756109854; x=1757319454; b=VfqVeWxe2hOrzSUriVrsNFJ6YVz74LrorjzHUmbkT3HpC4i
-	+jnjX4jSqzeSRDWGPCVjIlrxDmgmZGCIm5+j8t3QKIFLzJWIiHCsyEwvLp4GzsaEdl19wKOlTmesX
-	+LYrmRZbXpDlqv2UVo5/+S9Bl0ptsekY7H7vYEaKtp/LHZV47bNLVbmZdtsN1pwy0V9k64ejUuwA9
-	pTK6ciDkhzrIyGxOQTFKm72fPU1ZiIo43kG0OzNr7wm4107Mm3EWlNjHdsOcRiTnExRcyzBUYxltR
-	/QHdnDZs1Ww0KRIBCSz23UMJ1H2h6Qk4cAX5ULFq5Us0wl9tpvuxSHWfJvpjCvqg==;
+	Resent-Cc:Resent-Message-ID; bh=peNwNNw8JLZDy471vYW8nsDvVgGNgANo6uUwXbjULo4=;
+	t=1756109073; x=1757318673; b=Iox7DYuiHcSOFj5pRibSvYMTDqpRjUO9BRqcR4l77l3t1Uq
+	J6H8cfm/ffPwaIZ9buc043YS29mKKFfeXdvfoBOWLGWeQtld6zbiJUTKdT1VXbQ6XGbfzo65dYlag
+	r+Z3g6vSLPKdj5YVUA56mWF2F+1sgePS91NdnfnwN9v2L3AD1eemP6KtMoCnOtT7av+t51XCzrHGr
+	uzjsGkGtSfK0x+4QtCDxh4EYqvkLHR7OAUFJ0FLkchZ5xIhA1JX42jgPeyjTbArf2iwNn04Iu5LBn
+	IZu4SMlf1YgKBk1iiS4DGKhlU8MktprDxeoVC2oDtJ3kqtB1dw5hS7CeRErdbU1Q==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uqRhk-00000001ZI0-2TX8;
-	Mon, 25 Aug 2025 09:33:25 +0200
-Message-ID: <da586793e06d68e51af8f691e9aac82441d3808b.camel@sipsolutions.net>
-Subject: Re: [PATCH v1] wifi: wext: propagate metadata on -E2BIG for GET
- ioctls
+	id 1uqSBX-00000001avw-1ago;
+	Mon, 25 Aug 2025 10:04:11 +0200
+Message-ID: <3a7022fcd18fdaf98044f8a3a21b09a2f7cba914.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] wifi: mwifiex: use kcalloc to apply for chan_stats
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Callan Huang <luvings@qq.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 25 Aug 2025 09:33:22 +0200
-In-Reply-To: <tencent_FE21EA217C7FF6B3CEAB5749F98F0267EC0A@qq.com>
-References: <tencent_FE21EA217C7FF6B3CEAB5749F98F0267EC0A@qq.com>
+To: Markus Elfring <Markus.Elfring@web.de>, Qianfeng Rong	
+ <rongqianfeng@vivo.com>, linux-wireless@vger.kernel.org, Aditya Kumar Singh
+	 <quic_adisi@quicinc.com>, Avinash Patil <patila@marvell.com>, Bert
+ Karwatzki	 <spasswolf@web.de>, Brian Norris <briannorris@chromium.org>,
+ Cathy Luo	 <cluo@marvell.com>, Christophe Jaillet
+ <christophe.jaillet@wanadoo.fr>,  Francesco Dolcini <francesco@dolcini.it>,
+ Jason Xing <kerneljasonxing@gmail.com>, Jinjie Ruan
+ <ruanjinjie@huawei.com>,  "John W. Linville" <linville@tuxdriver.com>,
+ Kalle Valo <kvalo@kernel.org>, Rameshkumar Sundaram
+ <quic_ramess@quicinc.com>,  Roopni Devanathan <quic_rdevanat@quicinc.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Thomas Gleixner	
+ <tglx@linutronix.de>, Xinmin Hu <huxm@marvell.com>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, Dan
+ Carpenter	 <dan.carpenter@linaro.org>
+Date: Mon, 25 Aug 2025 10:04:09 +0200
+In-Reply-To: <486183c0-0086-4168-bc90-1df92bfbc1d3@web.de>
+References: <20250814131536.231945-1-rongqianfeng@vivo.com>
+	 <486183c0-0086-4168-bc90-1df92bfbc1d3@web.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
@@ -66,19 +78,13 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Thu, 2025-08-07 at 21:10 +0800, Callan Huang wrote:
-> When GET ioctls encounter insufficient buffer (-E2BIG),
-> preserve u.data.length metadata in iwreq structure for size detection
+On Thu, 2025-08-14 at 16:33 +0200, Markus Elfring wrote:
+> > Use kcalloc to allocate 'adapter->chan_stats' memory =E2=80=A6
 >=20
-> Typical usage in userspace tools like 'iwlist wlan0 scanning':
-> - Detect required buffer size via u.data.length
-> - Implement retry logic with proper allocation
+> I find the summary phrase and change description improvable.
 
-If you'd sent this patch 15 years ago I probably would've taken it, but
-honestly, at this point ... no. Just use nl80211, or large buffers in
-the userspace to start with. There's a very small buffer limit _anyway_,
-so that getting the full scan list in busy environments is actually
-impossible with wext.
+We all find your behaviour improvable. Go away and leave the wireless
+list alone.
 
 johannes
 
