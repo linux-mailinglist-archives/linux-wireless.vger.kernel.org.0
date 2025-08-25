@@ -1,140 +1,161 @@
-Return-Path: <linux-wireless+bounces-26568-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26569-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85B6B32CBB
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Aug 2025 02:39:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4C8B333AD
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Aug 2025 03:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADD4A208561
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Aug 2025 00:39:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03A151673A1
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Aug 2025 01:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDB53D544;
-	Sun, 24 Aug 2025 00:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1451F37DA;
+	Mon, 25 Aug 2025 01:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m/kxiQue"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bynNWUrj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C11DB640;
-	Sun, 24 Aug 2025 00:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1311B1684B0
+	for <linux-wireless@vger.kernel.org>; Mon, 25 Aug 2025 01:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755995954; cv=none; b=XIE5t8RK8IxBeFWLYYfBPWdhKse9oOwNkucni57ASd+W2Dv01xIpjjONpJdlBZJbUQAk51DTFb3gjRUvmebT+rk0vC5uIjPmuQD4gahnVXwuDqplAA7NWU5kvgAhZYE+dNnsXkq+p/Jtrqk5FRKFlQm9e3qbRxh4JctO180NAso=
+	t=1756086494; cv=none; b=FsBf3gk8n5tX3pq9cegJsCO0Bs689/6OWYXfVIqgb0fusHoBUv3Dz3IgQ+yuHoQh9rMT33WrBTEwa5ZwaspJUse2HTCfNl2IIAr3Tmh18ZTTn6nENaE569nA5CdEAsEUAYKMSkYemOkRWNWEvAXcFUG5QYhurAtGElShUnTJ9f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755995954; c=relaxed/simple;
-	bh=s0McLWvdCDqPd8Y/u1GnS5m0WP0uNIXZ1VLr+nTsM2c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sbfi/fkH+j1y+0XknV/y4+LzuRlaxwTIt6eK5a110XxnoGtY0OcnS8e7YPrrOkYZS8OTH8Gjr2p1X90sEbcovNdC14XGNZ6SASjQM3ypAi3wWX+ihT0WjOQntIpftkkG8KrgTe5L2SfkbEcRLHWogNSeovjZqcztXNllxbVA9bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m/kxiQue; arc=none smtp.client-ip=209.85.219.52
+	s=arc-20240116; t=1756086494; c=relaxed/simple;
+	bh=xyt/DByFGw7AI6XJ3W9ZxGKagv9Tl5rvvpMEW5XuAyo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jpCUnCtMyT4DLnltMbhalOzjXTfHT0If3i+qgYxBBQunFW8u2NzJPSpuahCJclYlTZT2T3LEDzDJNUaymcey7+lRmTtqNsPyAMfqFlkH9ZrYfkPWrFFdo3iWwHaw7JxKe1TZHg3s4Q9aNsQNH8sUSfJkJNAqAnyxXOI3myD0tNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bynNWUrj; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-70d9eb2eb55so8997736d6.2;
-        Sat, 23 Aug 2025 17:39:12 -0700 (PDT)
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3252589a4afso1866812a91.0
+        for <linux-wireless@vger.kernel.org>; Sun, 24 Aug 2025 18:48:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755995952; x=1756600752; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tNY0okVFoLgY416XV42hmNIfwC6IRW0OVeBGVW5QbSw=;
-        b=m/kxiQuebwZxFmBM49+i8xuq1lr3ZpPGs1qMnkE3zABf5B0x7gFfM0193+qNwKELLz
-         9cq2mB0S4aEATxjMPN0ClAl9bM8UJ0T2pTLbUC0BnQK0i+qqCEWTZ58UDfdPz/mJpaNY
-         Bruh5uOJI2G79N/ZyfkV4YdyJ6ZadLC+tqA6Bx/AlU3YPJo4Pv088UC7Kz+m+8CoOiWz
-         1k75taCWpz9+c2NjHJt4VUZDbKgURRp/FLtadRS0Ij35MICBJAUT/rp0f67NcXv3LJi5
-         jld9yfPHMGdZOoZ6+sleTdQ2ZLXpATWZNuuetXz3IjZrVeiklmM4E/etaQioZvbHrwZR
-         JyXw==
+        d=gmail.com; s=20230601; t=1756086492; x=1756691292; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VKTKi30DzOZxoemkQY+g9NWqObH7qRITcl76FpX3784=;
+        b=bynNWUrjGNuAjTm14mIrq1V26DBEBTYTNukoW2Bf5Rjv4WB9o8Tqt6A7MxDrLbBOZ5
+         KyPbBwDslo92XfKYonG0G4Qzi9prxtrG6Sem8miS5RzkXru3f+KKlTjzxPEHftm06mfT
+         5HE+nySx8hazS6gu2T/vUfjYmtEl/sklGTvWSVVvlLsPhqB3SAPV1M3Q4xMILA54swfI
+         fK6tzRsSZ7UXw5FFRx1gh9UvGhpaLSuHYmBck/oZdYFsLC2pA8oDs5qaIzS6/uQMMPfN
+         k3gMJcktTLv4fynE91NWONMrwDtPcAKNwBnCPvJcwxE4wcv2FZqQ42Byzgp3GfC+rPxv
+         OKaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755995952; x=1756600752;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tNY0okVFoLgY416XV42hmNIfwC6IRW0OVeBGVW5QbSw=;
-        b=a9SBWTm2k8dImYnGtnt0uf6mm9eDnCog1+TTpSr0eBmHzCtyHcwq3HGwHFNMVgeQrr
-         pFjmGibIY97MbkKvp9iKGPNanK7O7CBufnx7MFWbo2tl6ThhoR8zu+HYSwgoJ16i/3ZN
-         T7jxI0qbbtyUET2uyjSPPl7G8X+mXAmGljLl2kiRva/I9xCsZY2HwDHNzPIJB1sqvBuy
-         6V+E5TBcgM8Ob5o32PLWdxyM8oPL0NDwjEdzSiUv2STaB/pHqLZuzJAakfNcjP7kV8Ss
-         R22bGRbGVMxL1rM5kwUPk8TAKB0dBoohDgUjHV0dYDEOxfr/RDbPx/lNVU2DVm+YN1Qc
-         QHcw==
-X-Forwarded-Encrypted: i=1; AJvYcCV5HPRstxfIfRYsFmlZ2Zv+6BGOqMI2d7koQMftYT0zFLvVOtbq67AhoI11h8FjH1JkZs2FOY4O4/VF3eI=@vger.kernel.org, AJvYcCVzQnbL8ygoWMwdE1CsCrT1GH2Kt/y5/hKbXi1JDFyvSvonjAS2CrEUF4ln/437YWhPfWPFAtbnA++ku4oiooE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLh0yeuWGhoPCX8DGfZtzVjERZG4eIPJFhFfavN1oz1GWHFUPM
-	6dq4xUm/uO6u2gViq01KiH5O85j/eIbL5mp49Qnk8mIcfXVRyIj6bQlGfKXUE1lXZCmBtDJEcrA
-	7mS5cMpJPSw/7B2US90pi+uysmrCqMHl0fQ==
-X-Gm-Gg: ASbGncufL024z0B0PDIINgD29gVJqkbTCy2JtL8FPjT8pGvcBeAzPqLW304M7WMQSCf
-	J2hxcKdPciD27eX50HM6R/JNPrNVelJLUudW3ZMKq1uwNNuMxugkToMg0FDzw3pHZs572+6fdyt
-	zT9VQKHOI7cnvcMQZjhmJjbS5knGjnsWbtULmKNVe5Snzc21Fgw7qbDRQBOZRRxH0ACgdrmkkiR
-	owZkok=
-X-Google-Smtp-Source: AGHT+IGJvweRY3TWUs9ZYabzrqlFqNGB8yJrDgWrKt8gjCB06kXkz/Eg19enAOqUFnXtnYwJBFfXomyAC0EIwhNpPNs=
-X-Received: by 2002:a05:6214:d6a:b0:70d:b3de:ced3 with SMTP id
- 6a1803df08f44-70db3dedb2amr18691696d6.25.1755995952022; Sat, 23 Aug 2025
- 17:39:12 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756086492; x=1756691292;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VKTKi30DzOZxoemkQY+g9NWqObH7qRITcl76FpX3784=;
+        b=J+9glPVb0tF4VxPIhgFcR+Hrvx4OkV3WDYdfJN16FW2x5GqE/khHjRbcVoPai411pl
+         DNX+4C6SEV0eghdopWWyxCUbaDO7PwtdniAnzNU4NKwLRlC8TpGl2fpAwjRPC+m0VTDg
+         y/dq7sgUEXjk3VDSTi5uBQqWeDMQ6UeYJDL1ATjwRActnWQYweWFpar9HrlOeC12J7wp
+         D/b/mNv0g9aNvcSfXpR9h85KZtfhCHFpPAiALSCYYnYuKHCiMUGgK7txDuihB1Ej8nNO
+         bDa56M7BcsjVC4oGLUh0A55OpLcbVJRymhbNBleI0pDDd/EzkDXONW7dIxgWrpT2uhYh
+         Mn5g==
+X-Gm-Message-State: AOJu0YwPO1Q/qKiQQTEPrnLXV8WrHWEEGRKQyVBdIYxPi+R3+B4XzD9C
+	IayC01puG2EVuUHpvjUZZ0l79B+IZNJprDwIzbdpmHTcAQOX0LxKHohjINudbRzGpLk=
+X-Gm-Gg: ASbGncvRbRgspmAwm0EpXO42cfEe+hapUl3VXF4SLwqb6QJWzRkGEIeE0wVhoeiL6pI
+	Wd8wuqhVPk5K6WjIqh8XUFhzlg8YTlYHIF20CRUfHL12SuLxdf2aIpn9AtsJiE7LNZ22hCI/slg
+	VKgyi96IhOIxS5Yx75ZdkfjsrP97lXnqbL4Yrvc5KMMnBXKEPcSnYD22IMPOZ8Bxm9Z2mOjE2I4
+	qf8CBi2dh6qmGbWyKUTIX2FEiy+q2gsj1pz35JPce1T4yd1+mRruY7e26jP7Jzl79zVw7qjdSEM
+	/18pMfaEPZ0/jqDMlYipQ3M/fQBrXqMrVra2dxbDX/J+0Nv8PVYDB3UpgcOup2AI5idWiY79obb
+	QNeBClcY+jePmvJmMz5OQZVflDZ4UR2cx72lq5WHhfGqyW55l4cwjoNI4M9OIKdX/Aw1OU3Tyd3
+	g=
+X-Google-Smtp-Source: AGHT+IFb4fUzJWnsSa7UyXkT3dofO3Y9E3ucTpYZIFVhZwVbL1/ONgAto1/5K0FJSDJo5h88H65KHA==
+X-Received: by 2002:a17:90b:3a8c:b0:311:df4b:4b7a with SMTP id 98e67ed59e1d1-32515ebff7emr14727424a91.29.1756086492159;
+        Sun, 24 Aug 2025 18:48:12 -0700 (PDT)
+Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-3254aa4f9e6sm5547282a91.16.2025.08.24.18.48.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Aug 2025 18:48:11 -0700 (PDT)
+From: Ping-Ke Shih <pkshih@gmail.com>
+To: wens@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	wireless-regdb@lists.infradead.org,
+	avalon.vargas.centeno@est.una.ac.cr
+Subject: [PATCH] wireless-regdb: Update regulatory info including bandwidth for Costa Rica (CR) for 2023
+Date: Mon, 25 Aug 2025 09:47:17 +0800
+Message-Id: <20250825014717.6771-1-pkshih@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250818064219.448066-1-liaoyuanhong@vivo.com>
-In-Reply-To: <20250818064219.448066-1-liaoyuanhong@vivo.com>
-From: Julian Calaby <julian.calaby@gmail.com>
-Date: Sun, 24 Aug 2025 10:39:00 +1000
-X-Gm-Features: Ac12FXyu98_t-IJGPtHlzpUXh7AxDD1gzGG7IFvp3mKcGlBrc1qVK-4PS5y9upg
-Message-ID: <CAGRGNgVzKyyG=Ld_eK60Ry=AQ7KpGx_ZKw908CAXoA3a2CVX4g@mail.gmail.com>
-Subject: Re: [PATCH] wifi: rtw89: 8852bt: Simplify unnecessary if-else conditions
-To: Liao Yuanhong <liaoyuanhong@vivo.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, 
-	"open list:REALTEK WIRELESS DRIVER (rtw89)" <linux-wireless@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Liao,
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-On Mon, Aug 18, 2025 at 4:44=E2=80=AFPM Liao Yuanhong <liaoyuanhong@vivo.co=
-m> wrote:
->
-> Some simple if-else logic can be simplified using the ! operator to impro=
-ve
-> code readability.
->
-> Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
-> ---
->  drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c b/drivers=
-/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-> index d0e299803225..164ee0fde03b 100644
-> --- a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-> +++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-> @@ -1803,10 +1803,7 @@ static void _dpk_onoff(struct rtw89_dev *rtwdev, e=
-num rtw89_rf_path path, bool o
->
->         val =3D dpk->is_dpk_enable && !off && dpk->bp[path][kidx].path_ok=
-;
+THE PRESIDENT OF THE REPUBLIC AND THE MINISTER OF SCIENCE, INNOVATION,
+TECHNOLOGY AND TELECOMMUNICATIONS released National Frequency Allocation
+Plan (PNAF) No. 44010-MICITT [1], and effective date from 05/31/2023.
+The table 22 shows maximum power permitted for the frequency bands:
 
-Is this line ^^^
+- 2400 to 2500
+  36
+- 5150 to 5350
+  30
+  DFS on 5250-5350
+- 5470 to 5725
+  30
+  DFS on 5470-5730 (take 5MHz from next entry)
+- 5725 to 5850
+  36
+- 5850 to 5895
+  36
+- 5895 to 5925
+  30
+- 5925 to 7125
+  30, LPI, indoor only
+  14, VLP, indoor and outdoor
+- 57,000 to 71,000
+  43
 
->
-> -       if (off)
-> -               off_reverse =3D false;
-> -       else
-> -               off_reverse =3D true;
-> +       off_reverse =3D !off;
->
->         val =3D dpk->is_dpk_enable & off_reverse & dpk->bp[path][kidx].pa=
-th_ok;
+Avalon reported the bandwidth limitation of 20MHz causing lower throughput
+than what he set country to US, and he reached PNAF about the bandwidth
+limitation, resulting in no limitation currently [2].
 
-The same as this line ^^^
+[1] https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_texto_completo.aspx?param1=NRTC&nValor1=1&nValor2=99551&nValor3=144158&strTipM=TC
+[2] https://lore.kernel.org/linux-wireless/7bfa8257d34642d7a1e35b3705720357@realtek.com/#t
 
-and if so, can we just delete the second one? Also, can we also then
-delete the "off_reverse" variable?
+Reported-by: Avalon Vargas Centeno <avalon.vargas.centeno@est.una.ac.cr>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ db.txt | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-Thanks,
+diff --git a/db.txt b/db.txt
+index 2a2946f8d1bb..b29e719710f4 100644
+--- a/db.txt
++++ b/db.txt
+@@ -476,14 +476,17 @@ country CO: DFS-FCC
+ 
+ # Source:
+ # https://storage.googleapis.com/eleoscompliance1.appspot.com/public/PNAF%20modificaci%C3%B3n%20ALCA87_30_04_2021.pdf
++# https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_texto_completo.aspx?param1=NRTC&nValor1=1&nValor2=99551&nValor3=144158&strTipM=TC
+ country CR: DFS-FCC
+ 	(2402 - 2482 @ 40), (36)
+-	(5170 - 5250 @ 20), (30)
+-	(5250 - 5330 @ 20), (30), DFS
+-	(5490 - 5730 @ 20), (30), DFS
+-	(5735 - 5835 @ 20), (36)
+-	(5875 - 5925 @ 20), (30)
++	(5150 - 5250 @ 80), (30), AUTO-BW
++	(5250 - 5350 @ 80), (30), DFS, AUTO-BW
++	(5470 - 5730 @ 160), (30), DFS
++	(5730 - 5850 @ 80), (36), AUTO-BW
++	(5850 - 5895 @ 40), (36), AUTO-BW
++	(5895 - 5925 @ 20), (30), AUTO-BW
+ 	(5925 - 7125 @ 320), (30), NO-OUTDOOR
++	(57000 - 71000 @ 2160), (43)
+ 
+ # Source:
+ # https://www.mincom.gob.cu/es/marco-legal
+-- 
+2.25.1
 
---=20
-Julian Calaby
-
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
 
