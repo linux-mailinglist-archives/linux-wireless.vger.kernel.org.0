@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-26646-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26647-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809A5B36F39
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 18:02:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1834DB36F12
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 17:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1440B1BC0890
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 15:58:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F5517ABE67
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 15:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1834C34A32E;
-	Tue, 26 Aug 2025 15:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3E0350D54;
+	Tue, 26 Aug 2025 15:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E+umM57U"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FpqsN8Kh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004152FF175
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 15:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589C23164DB
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 15:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756223752; cv=none; b=WZZyC2awJZt66PIWqArNVN25QD5ZGdYt+TApeye2fjrp6R9Nh4PM1RyOsAWphyOIVd8O+zSpNZTNvzJne8NFlT/3StJ5Xcb+ORwlcCV1mzAaF71QTHTzNFHNhPQ2ok0WLon6McnphT/OTqFqzHy8noRd9jMyKs56bgrlAaUTHpQ=
+	t=1756223753; cv=none; b=uktxaPLyTR2y1lzJVKD2lP+ixJ/bqNcWoIYVRPzdooXDa4hR2OaIiHvXj/XxXfStJOrHFNB2UpmTZi/m8mub2sruXAgNPvP6hD+KIw2bREr0mpYAJWAR7036LAyp50fJ/Y2LujYKH0EOXf5rHaBRNF66xX0a9g2g2Q54r68RNQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756223752; c=relaxed/simple;
-	bh=l7sBgB7ZAXD3f+grTrMUvYhTaBvJbKn1C2ZlcyMaYZw=;
+	s=arc-20240116; t=1756223753; c=relaxed/simple;
+	bh=rkkSSYEZvJSnFZJVM568BkeOcRndW6Sr31YrMhIH1FA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eFauYJCsav1Zachrwc5V7fmKLgTBT1dSv5cKojJ28qh2vj8ff/d48FqCpZg9zjlVGSZORlo3A8G4EE0ulCEp29wOctuCivwt9dY3vwgmGubzzk+cIkTUi6dR5zfE2SUQTH4eZftEynISqZp8s2dH7RSdwBWPXtTVvWjNFI6FP2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E+umM57U; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=ADiBHjabp+dSNqwb9xKNht3DQTnw/SbdH806ohIbKOV1n5Q+vmEr0SHlO5eMVV/0nzueJsICDgoGg/HKRSwywz1vHD+lpMTjztVj6dw4BMA4q7bWIqdigfI9NmKkVmiRfYfyc7zy8Xy7WrO3AZ6BgCxRsrogdRPCfEdm4NzFr40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FpqsN8Kh; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756223750; x=1787759750;
+  t=1756223751; x=1787759751;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=l7sBgB7ZAXD3f+grTrMUvYhTaBvJbKn1C2ZlcyMaYZw=;
-  b=E+umM57UeXj6el20wEHJ5wRFKToqjDRAp/h2n7VYZUY4juYcRdvsXsot
-   lpn8ES2HrzMDWEMUmGlezCV2ic56zfnFYUbGPNgh2YSZQsyk8ADNk9Q1U
-   FfwO0MkayOl5b+fW7HZBoL2EkJOrfq3d8v7nUuB4FDgaItCJU0Tggi2DX
-   wqnSlSQTrDjGwkmFhvcENUHOu1aAtgksFmZhzUMEdAZkL76C8o0kQY23n
-   gkJESN3uNblGdDnKl7Texpc//RpRT/FAAjuNjii9k9WL3Q/AxtnhLO5Kb
-   MWbiXnKQ4778O5FhjhOHkrPbA0IwnxnKqX4RgQ4gKZ7mvtzYC/imIFRBv
+  bh=rkkSSYEZvJSnFZJVM568BkeOcRndW6Sr31YrMhIH1FA=;
+  b=FpqsN8KhgwVXopu4zn1tFQ8sdnhU4Q04+7vTWAPT42ATE4k2YX1zIvgP
+   n1OsQYD7FYA18/ShkLSDyTCfJURcg0CZoi+IyQiyhDSpAUGvWFvGnD9Z4
+   xNp0Z3/fDsVlLfYJ6Juvk21vN/bcVTIBzhN3OtVgciF87+TcxpXwiQ4P4
+   ECqgkhKaq+uetv2Kxge5Jz+1k/CtS3HTE3fDA5lIhyFRxDsF/8P7VB/mO
+   9Spk7bFdOwW66adIa8IKWrluqoJk0Ke4DKwB+Kcdo/L8SZOgFRRicGzjc
+   jXaodIOA+WZRoHlPSHOO6DIyuKLQj8kIJ8Wa8oBzOLXmIgunYP6JysimN
    g==;
-X-CSE-ConnectionGUID: EVfCMbnDQNmF1inlvAq7yQ==
-X-CSE-MsgGUID: N/Ne3LwlQ+e5Oa9xFUmFxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="62108427"
+X-CSE-ConnectionGUID: wMJM572QQMKz1vfu4UR8xw==
+X-CSE-MsgGUID: 9HoIwfQPSKum8vQGvgik4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="62108428"
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="62108427"
+   d="scan'208";a="62108428"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 08:55:42 -0700
-X-CSE-ConnectionGUID: kybWpDGfQza/lcKVxu0TgA==
-X-CSE-MsgGUID: 2VuGHreEQ7mr/milMRl5wg==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 08:55:43 -0700
+X-CSE-ConnectionGUID: o5FMwvbvTomKOugS/egJ9Q==
+X-CSE-MsgGUID: BMjHOX1cSYuYsV57W+a+oA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="169218295"
+   d="scan'208";a="169218310"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 08:55:41 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 08:55:43 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 09/15] wifi: iwlwifi: remove dump file name extension support
-Date: Tue, 26 Aug 2025 18:54:58 +0300
-Message-Id: <20250826184046.d97f93fd1147.I7d0b056b6f9c38cafc53a0f29e0cf1236e2d2e8c@changeid>
+Subject: [PATCH iwlwifi-next 10/15] wifi: iwlwifi: trans: remove d3 test code
+Date: Tue, 26 Aug 2025 18:54:59 +0300
+Message-Id: <20250826184046.4742846b17ed.I08c70ac544364d68baae03f830b1e01ce702b06d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250826155504.2982930-1-miriam.rachel.korenblit@intel.com>
 References: <20250826155504.2982930-1-miriam.rachel.korenblit@intel.com>
@@ -76,245 +76,249 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-The options to configure a dump file name extension was added for 2
-cases:
-1. if we dump because of a missed beacon, we added the mac id and type
-   to the filename.
-2. to add the error id of the LMAC/UMAC/TCM/RCM error id to the file
-   name.
-
-For 1, there is a bug: in cases in which missed beacon will not trigger
-a dump (for example in the default preset), and a missed beacon occurred,
-and eventually there is a dump for a different reason,
-the dump file name will contain the mac type and id even thought the
-dump has nothing to do with a missed beacon.
-
-Anyway, both cases are no longer required. Remove the code.
+This is no longer needed. Remove it.
 
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 31 -----------
- drivers/net/wireless/intel/iwlwifi/fw/dump.c  | 52 -------------------
- .../net/wireless/intel/iwlwifi/fw/runtime.h   |  2 -
- .../net/wireless/intel/iwlwifi/iwl-trans.h    |  4 --
- drivers/net/wireless/intel/iwlwifi/mld/link.c |  5 --
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  4 --
- 6 files changed, 98 deletions(-)
+ .../net/wireless/intel/iwlwifi/dvm/mac80211.c |  4 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    |  8 ++--
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  4 +-
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c   |  4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |  6 +--
+ .../intel/iwlwifi/pcie/gen1_2/internal.h      |  4 +-
+ .../intel/iwlwifi/pcie/gen1_2/trans.c         | 37 +++++--------------
+ 7 files changed, 25 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 2879be4b8fcb..09e8c93293e5 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -2478,36 +2478,6 @@ static u32 iwl_dump_ini_info(struct iwl_fw_runtime *fwrt,
- 	return entry->size;
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
+index 0771a46bd552..f1a39169eb4d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/mac80211.c
+@@ -378,7 +378,7 @@ static int iwlagn_mac_suspend(struct ieee80211_hw *hw,
+ 	iwl_write32(priv->trans, CSR_UCODE_DRV_GP1_SET,
+ 		    CSR_UCODE_DRV_GP1_BIT_D3_CFG_COMPLETE);
+ 
+-	iwl_trans_d3_suspend(priv->trans, false, true);
++	iwl_trans_d3_suspend(priv->trans, true);
+ 
+ 	goto out;
+ 
+@@ -451,7 +451,7 @@ static int iwlagn_mac_resume(struct ieee80211_hw *hw)
+ 	/* we'll clear ctx->vif during iwlagn_prepare_restart() */
+ 	vif = ctx->vif;
+ 
+-	ret = iwl_trans_d3_resume(priv->trans, &d3_status, false, true);
++	ret = iwl_trans_d3_resume(priv->trans, &d3_status, true);
+ 	if (ret)
+ 		goto out_unlock;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+index 3694b41d6621..c5944e9fa6c3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+@@ -507,13 +507,13 @@ iwl_trans_dump_data(struct iwl_trans *trans, u32 dump_mask,
+ 					sanitize_ops, sanitize_ctx);
  }
  
--static u32 iwl_dump_ini_file_name_info(struct iwl_fw_runtime *fwrt,
--				       struct list_head *list)
--{
--	struct iwl_fw_ini_dump_entry *entry;
--	struct iwl_dump_file_name_info *tlv;
--	u32 len = strnlen(fwrt->trans->dbg.dump_file_name_ext,
--			  IWL_FW_INI_MAX_NAME);
--
--	if (!fwrt->trans->dbg.dump_file_name_ext_valid)
--		return 0;
--
--	entry = vzalloc(sizeof(*entry) + sizeof(*tlv) + len);
--	if (!entry)
--		return 0;
--
--	entry->size = sizeof(*tlv) + len;
--
--	tlv = (void *)entry->data;
--	tlv->type = cpu_to_le32(IWL_INI_DUMP_NAME_TYPE);
--	tlv->len = cpu_to_le32(len);
--	memcpy(tlv->data, fwrt->trans->dbg.dump_file_name_ext, len);
--
--	/* add the dump file name extension tlv to the list */
--	list_add_tail(&entry->list, list);
--
--	fwrt->trans->dbg.dump_file_name_ext_valid = false;
--
--	return entry->size;
--}
--
- static const struct iwl_dump_ini_mem_ops iwl_dump_ini_region_ops[] = {
- 	[IWL_FW_INI_REGION_INVALID] = {},
- 	[IWL_FW_INI_REGION_INTERNAL_BUFFER] = {
-@@ -2764,7 +2734,6 @@ static u32 iwl_dump_ini_trigger(struct iwl_fw_runtime *fwrt,
- 					 &iwl_dump_ini_region_ops[IWL_FW_INI_REGION_DRAM_IMR]);
- 
- 	if (size) {
--		size += iwl_dump_ini_file_name_info(fwrt, list);
- 		size += iwl_dump_ini_info(fwrt, trigger, list);
- 	}
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dump.c b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-index f633124979ab..a39c038db08e 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-@@ -14,13 +14,6 @@
- #include "iwl-csr.h"
- #include "pnvm.h"
- 
--#define FW_ASSERT_LMAC_FATAL			0x70
--#define FW_ASSERT_LMAC2_FATAL			0x72
--#define FW_ASSERT_UMAC_FATAL			0x71
--#define UMAC_RT_NMI_LMAC2_FATAL			0x72
--#define RT_NMI_INTERRUPT_OTHER_LMAC_FATAL	0x73
--#define FW_ASSERT_NMI_UNKNOWN			0x84
--
- /*
-  * Note: This structure is read from the device with IO accesses,
-  * and the reading already does the endian conversion. As it is
-@@ -103,17 +96,6 @@ struct iwl_umac_error_event_table {
- #define ERROR_START_OFFSET  (1 * sizeof(u32))
- #define ERROR_ELEM_SIZE     (7 * sizeof(u32))
- 
--static bool iwl_fwrt_if_errorid_other_cpu(u32 err_id)
--{
--	err_id &= 0xFF;
--
--	if ((err_id >= FW_ASSERT_LMAC_FATAL &&
--	     err_id <= RT_NMI_INTERRUPT_OTHER_LMAC_FATAL) ||
--	    err_id == FW_ASSERT_NMI_UNKNOWN)
--		return  true;
--	return false;
--}
--
- static void iwl_fwrt_dump_umac_error_log(struct iwl_fw_runtime *fwrt)
+-int iwl_trans_d3_suspend(struct iwl_trans *trans, bool test, bool reset)
++int iwl_trans_d3_suspend(struct iwl_trans *trans, bool reset)
  {
- 	struct iwl_trans *trans = fwrt->trans;
-@@ -131,13 +113,6 @@ static void iwl_fwrt_dump_umac_error_log(struct iwl_fw_runtime *fwrt)
- 	if (table.valid)
- 		fwrt->dump.umac_err_id = table.error_id;
+ 	int err;
  
--	if (!iwl_fwrt_if_errorid_other_cpu(fwrt->dump.umac_err_id) &&
--	    !fwrt->trans->dbg.dump_file_name_ext_valid) {
--		fwrt->trans->dbg.dump_file_name_ext_valid = true;
--		snprintf(fwrt->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
--			 "0x%x", fwrt->dump.umac_err_id);
--	}
--
- 	if (ERROR_START_OFFSET <= table.valid * ERROR_ELEM_SIZE) {
- 		IWL_ERR(trans, "Start IWL Error Log Dump:\n");
- 		IWL_ERR(trans, "Transport status: 0x%08lX, valid: %d\n",
-@@ -213,13 +188,6 @@ static void iwl_fwrt_dump_lmac_error_log(struct iwl_fw_runtime *fwrt, u8 lmac_nu
- 	if (table.valid)
- 		fwrt->dump.lmac_err_id[lmac_num] = table.error_id;
+ 	might_sleep();
  
--	if (!iwl_fwrt_if_errorid_other_cpu(fwrt->dump.lmac_err_id[lmac_num]) &&
--	    !fwrt->trans->dbg.dump_file_name_ext_valid) {
--		fwrt->trans->dbg.dump_file_name_ext_valid = true;
--		snprintf(fwrt->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
--			 "0x%x", fwrt->dump.lmac_err_id[lmac_num]);
--	}
--
- 	if (ERROR_START_OFFSET <= table.valid * ERROR_ELEM_SIZE) {
- 		IWL_ERR(trans, "Start IWL Error Log Dump:\n");
- 		IWL_ERR(trans, "Transport status: 0x%08lX, valid: %d\n",
-@@ -305,16 +273,6 @@ static void iwl_fwrt_dump_tcm_error_log(struct iwl_fw_runtime *fwrt, int idx)
+-	err = iwl_trans_pcie_d3_suspend(trans, test, reset);
++	err = iwl_trans_pcie_d3_suspend(trans, reset);
  
- 	iwl_trans_read_mem_bytes(trans, base, &table, sizeof(table));
+ 	if (!err)
+ 		set_bit(STATUS_SUSPENDED, &trans->status);
+@@ -523,13 +523,13 @@ int iwl_trans_d3_suspend(struct iwl_trans *trans, bool test, bool reset)
+ IWL_EXPORT_SYMBOL(iwl_trans_d3_suspend);
  
--	if (table.valid)
--		fwrt->dump.tcm_err_id[idx] = table.error_id;
--
--	if (!iwl_fwrt_if_errorid_other_cpu(fwrt->dump.tcm_err_id[idx]) &&
--	    !fwrt->trans->dbg.dump_file_name_ext_valid) {
--		fwrt->trans->dbg.dump_file_name_ext_valid = true;
--		snprintf(fwrt->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
--			 "0x%x", fwrt->dump.tcm_err_id[idx]);
--	}
--
- 	IWL_ERR(fwrt, "TCM%d status:\n", idx + 1);
- 	IWL_ERR(fwrt, "0x%08X | error ID\n", table.error_id);
- 	IWL_ERR(fwrt, "0x%08X | tcm branchlink2\n", table.blink2);
-@@ -378,16 +336,6 @@ static void iwl_fwrt_dump_rcm_error_log(struct iwl_fw_runtime *fwrt, int idx)
+ int iwl_trans_d3_resume(struct iwl_trans *trans, enum iwl_d3_status *status,
+-			bool test, bool reset)
++			bool reset)
+ {
+ 	int err;
  
- 	iwl_trans_read_mem_bytes(trans, base, &table, sizeof(table));
+ 	might_sleep();
  
--	if (table.valid)
--		fwrt->dump.rcm_err_id[idx] = table.error_id;
--
--	if (!iwl_fwrt_if_errorid_other_cpu(fwrt->dump.rcm_err_id[idx]) &&
--	    !fwrt->trans->dbg.dump_file_name_ext_valid) {
--		fwrt->trans->dbg.dump_file_name_ext_valid = true;
--		snprintf(fwrt->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
--			 "0x%x", fwrt->dump.rcm_err_id[idx]);
--	}
--
- 	IWL_ERR(fwrt, "RCM%d status:\n", idx + 1);
- 	IWL_ERR(fwrt, "0x%08X | error ID\n", table.error_id);
- 	IWL_ERR(fwrt, "0x%08X | rcm branchlink2\n", table.blink2);
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index 0444a736c2b2..9b116fa1d5d1 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -146,8 +146,6 @@ struct iwl_fw_runtime {
- 		unsigned long non_collect_ts_start[IWL_FW_INI_TIME_POINT_NUM];
- 		u32 *d3_debug_data;
- 		u32 lmac_err_id[MAX_NUM_LMAC];
--		u32 tcm_err_id[MAX_NUM_TCM];
--		u32 rcm_err_id[MAX_NUM_RCM];
- 		u32 umac_err_id;
+-	err = iwl_trans_pcie_d3_resume(trans, status, test, reset);
++	err = iwl_trans_pcie_d3_resume(trans, status, reset);
  
- 		struct iwl_txf_iter_data txf_iter_data;
+ 	clear_bit(STATUS_SUSPENDED, &trans->status);
+ 
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index d0e658801c2e..52f4a09c740f 100644
+index 52f4a09c740f..b7e2355ece30 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -658,8 +658,6 @@ struct iwl_pc_data {
-  * @restart_required: indicates debug restart is required
-  * @last_tp_resetfw: last handling of reset during debug timepoint
-  * @imr_data: IMR debug data allocation
-- * @dump_file_name_ext: dump file name extension
-- * @dump_file_name_ext_valid: dump file name extension if valid or not
-  * @num_pc: number of program counter for cpu
-  * @pc_data: details of the program counter
-  * @yoyo_bin_loaded: tells if a yoyo debug file has been loaded
-@@ -698,8 +696,6 @@ struct iwl_trans_debug {
- 	bool restart_required;
- 	u32 last_tp_resetfw;
- 	struct iwl_imr_data imr_data;
--	u8 dump_file_name_ext[IWL_FW_INI_MAX_NAME];
--	bool dump_file_name_ext_valid;
- 	u32 num_pc;
- 	struct iwl_pc_data *pc_data;
- 	bool yoyo_bin_loaded;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-index 6135da34a9c1..738f80fe0c50 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-@@ -551,11 +551,6 @@ void iwl_mld_handle_missed_beacon_notif(struct iwl_mld *mld,
- 	if (WARN_ON(!vif))
- 		return;
+@@ -952,10 +952,10 @@ int iwl_trans_start_fw(struct iwl_trans *trans, const struct iwl_fw *fw,
  
--	mld->trans->dbg.dump_file_name_ext_valid = true;
--	snprintf(mld->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
--		 "LinkId_%d_MacType_%d", fw_link_id,
--		 iwl_mld_mac80211_iftype_to_fw(vif));
+ void iwl_trans_stop_device(struct iwl_trans *trans);
+ 
+-int iwl_trans_d3_suspend(struct iwl_trans *trans, bool test, bool reset);
++int iwl_trans_d3_suspend(struct iwl_trans *trans, bool reset);
+ 
+ int iwl_trans_d3_resume(struct iwl_trans *trans, enum iwl_d3_status *status,
+-			bool test, bool reset);
++			bool reset);
+ 
+ struct iwl_trans_dump_data *
+ iwl_trans_dump_data(struct iwl_trans *trans, u32 dump_mask,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+index dd8764029581..aad944f8ab02 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+@@ -1211,7 +1211,7 @@ static int iwl_mld_wait_d3_notif(struct iwl_mld *mld,
+ 					   iwl_mld_handle_d3_notif,
+ 					   resume_data);
+ 
+-	ret = iwl_trans_d3_resume(mld->trans, &d3_status, false, false);
++	ret = iwl_trans_d3_resume(mld->trans, &d3_status, false);
+ 	if (ret || d3_status != IWL_D3_STATUS_ALIVE) {
+ 		if (d3_status != IWL_D3_STATUS_ALIVE) {
+ 			IWL_INFO(mld, "Device was reset during suspend\n");
+@@ -1272,7 +1272,7 @@ int iwl_mld_no_wowlan_suspend(struct iwl_mld *mld)
+ 		goto out;
+ 	}
+ 
+-	ret = iwl_trans_d3_suspend(mld->trans, false, false);
++	ret = iwl_trans_d3_suspend(mld->trans, false);
+ 	if (ret) {
+ 		IWL_ERR(mld, "d3 suspend: trans_d3_suspend failed %d\n", ret);
+ 	} else {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 9b1e96f1767f..d22ee06ff2c9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -1361,7 +1361,7 @@ static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
+ 
+ 	clear_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status);
+ 
+-	ret = iwl_trans_d3_suspend(mvm->trans, false, !unified_image);
++	ret = iwl_trans_d3_suspend(mvm->trans, !unified_image);
+  out:
+ 	if (ret < 0) {
+ 		iwl_mvm_free_nd(mvm);
+@@ -2992,7 +2992,7 @@ static int iwl_mvm_resume_firmware(struct iwl_mvm *mvm)
+ 	bool reset = fw_has_capa(&mvm->fw->ucode_capa,
+ 				 IWL_UCODE_TLV_CAPA_CNSLDTD_D3_D0_IMG);
+ 
+-	ret = iwl_trans_d3_resume(mvm->trans, &d3_status, false, !reset);
++	ret = iwl_trans_d3_resume(mvm->trans, &d3_status, !reset);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -3255,7 +3255,7 @@ void iwl_mvm_fast_suspend(struct iwl_mvm *mvm)
+ 		IWL_ERR(mvm,
+ 			"fast suspend: couldn't send D3_CONFIG_CMD %d\n", ret);
+ 
+-	ret = iwl_trans_d3_suspend(mvm->trans, false, false);
++	ret = iwl_trans_d3_suspend(mvm->trans, false);
+ 	if (ret)
+ 		IWL_ERR(mvm, "fast suspend: trans_d3_suspend failed %d\n", ret);
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
+index eca524c6a9f3..b6ff9d62fab7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
+@@ -1065,8 +1065,8 @@ iwl_trans_pcie_dump_data(struct iwl_trans *trans, u32 dump_mask,
+ 			 void *sanitize_ctx);
+ int iwl_trans_pcie_d3_resume(struct iwl_trans *trans,
+ 			     enum iwl_d3_status *status,
+-			     bool test,  bool reset);
+-int iwl_trans_pcie_d3_suspend(struct iwl_trans *trans, bool test, bool reset);
++			     bool reset);
++int iwl_trans_pcie_d3_suspend(struct iwl_trans *trans, bool reset);
+ void iwl_trans_pci_interrupts(struct iwl_trans *trans, bool enable);
+ void iwl_trans_pcie_sync_nmi(struct iwl_trans *trans);
+ void iwl_trans_pcie_set_bits_mask(struct iwl_trans *trans, u32 reg,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
+index 3e50a935e1d0..ff0979d0b8b0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
+@@ -1437,17 +1437,10 @@ void iwl_trans_pcie_rf_kill(struct iwl_trans *trans, bool state, bool from_irq)
+ }
+ 
+ static void iwl_pcie_d3_complete_suspend(struct iwl_trans *trans,
+-					 bool test, bool reset)
++					 bool reset)
+ {
+ 	iwl_disable_interrupts(trans);
+ 
+-	/*
+-	 * in testing mode, the host stays awake and the
+-	 * hardware won't be reset (not even partially)
+-	 */
+-	if (test)
+-		return;
 -
- 	iwl_dbg_tlv_time_point(&mld->fwrt,
- 			       IWL_FW_INI_TIME_POINT_MISSED_BEACONS, &tp_data);
+ 	iwl_pcie_disable_ict(trans);
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index 7d84ac26949c..9c9e0e1c6e1d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -1619,10 +1619,6 @@ iwl_mvm_handle_missed_beacons_notif(struct iwl_mvm *mvm,
+ 	iwl_pcie_synchronize_irqs(trans);
+@@ -1518,7 +1511,7 @@ static int iwl_pcie_d3_handshake(struct iwl_trans *trans, bool suspend)
+ 	return ret;
+ }
  
- 	IWL_DEBUG_INFO(mvm, "missed beacon mac_type=%u,\n", mac_type);
+-int iwl_trans_pcie_d3_suspend(struct iwl_trans *trans, bool test, bool reset)
++int iwl_trans_pcie_d3_suspend(struct iwl_trans *trans, bool reset)
+ {
+ 	int ret;
  
--	mvm->trans->dbg.dump_file_name_ext_valid = true;
--	snprintf(mvm->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
--		 "MacId_%d_MacType_%d", id, mac_type);
+@@ -1531,26 +1524,19 @@ int iwl_trans_pcie_d3_suspend(struct iwl_trans *trans, bool test, bool reset)
+ 	if (ret)
+ 		return ret;
+ 
+-	iwl_pcie_d3_complete_suspend(trans, test, reset);
++	iwl_pcie_d3_complete_suspend(trans, reset);
+ 
+ 	return 0;
+ }
+ 
+ int iwl_trans_pcie_d3_resume(struct iwl_trans *trans,
+ 			     enum iwl_d3_status *status,
+-			     bool test,  bool reset)
++			     bool reset)
+ {
+ 	struct iwl_trans_pcie *trans_pcie =  IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	u32 val;
+ 	int ret;
+ 
+-	if (test) {
+-		iwl_enable_interrupts(trans);
+-		*status = IWL_D3_STATUS_ALIVE;
+-		ret = 0;
+-		goto out;
+-	}
 -
- 	rx_missed_bcon = le32_to_cpu(mb->consec_missed_beacons);
- 	rx_missed_bcon_since_rx =
- 		le32_to_cpu(mb->consec_missed_beacons_since_last_rx);
+ 	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_BZ)
+ 		iwl_set_bit(trans, CSR_GP_CNTRL,
+ 			    CSR_GP_CNTRL_REG_FLAG_BZ_MAC_ACCESS_REQ);
+@@ -1594,18 +1580,15 @@ int iwl_trans_pcie_d3_resume(struct iwl_trans *trans,
+ 			iwl_read_umac_prph(trans, WFPM_GP2));
+ 
+ 	val = iwl_read32(trans, CSR_RESET);
+-	if (val & CSR_RESET_REG_FLAG_NEVO_RESET)
++	if (val & CSR_RESET_REG_FLAG_NEVO_RESET) {
+ 		*status = IWL_D3_STATUS_RESET;
+-	else
+-		*status = IWL_D3_STATUS_ALIVE;
+-
+-out:
+-	if (*status == IWL_D3_STATUS_ALIVE)
+-		ret = iwl_pcie_d3_handshake(trans, false);
+-	else
+ 		trans->state = IWL_TRANS_NO_FW;
++	} else {
++		*status = IWL_D3_STATUS_ALIVE;
++		return iwl_pcie_d3_handshake(trans, false);
++	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static void
 -- 
 2.34.1
 
