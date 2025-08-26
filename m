@@ -1,138 +1,156 @@
-Return-Path: <linux-wireless+bounces-26603-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26604-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F6FB350FB
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 03:26:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CACC3B35148
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 03:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 065B25E3352
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 01:26:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AC6C3BC327
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 01:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A8B223338;
-	Tue, 26 Aug 2025 01:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83501FDE19;
+	Tue, 26 Aug 2025 01:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Q1P1ARQR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TzKbUsYx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBB814A8B
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 01:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451F2BA34;
+	Tue, 26 Aug 2025 01:57:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756171585; cv=none; b=tXBacvecF9L61Xyeq94Gj8QNpBBE3Q5GNl4ov36qiZhymtXs3eMbaKzGyBGJgXbq/ZfNO1l9zmIEzyU2bJtjymr63pX5VqR0NlYZtmJj5NjSg09Gh6U+3KBoF2DFHyfdf+YJiUk82eDaczwDW2AX/b8oRvM6P6soLRCho0WtCps=
+	t=1756173478; cv=none; b=Xw4/AiNVXDEKjkPKaVzKBm5A0Or/FBFOoU7tvSuqDbN788nUsy0WmIm4vEOjyonUH8wqb/aSAvQhkPRhvxNLkspF+ucFbGI/BFmgrrAfEk3sn3KaseW15jrowZeMb4bY3cZAKImj7drVr2H7nSW14FJem1Vp+c4CHarexSpztfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756171585; c=relaxed/simple;
-	bh=kjKDYrWMqflIMKFz4YXvNgD31IbMEySv+12wmTjaWJk=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=rDd24Ohdis8aXN8T2W4z/lp/mSmwo9Jk1rp4cPSD3ENrcWToKiIaRKxB3+6X1dgoJf8hmVwM/1t+VB0BDJk+dXQV/s+bY3X++h3y/3iDUtbWdfZtqRspD268ahl1TbiMUkH/ZwZL5MHKL4uNczwt+2xub3BCdiqv+/xG8YizpS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Q1P1ARQR; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57Q1QIhpC708775, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1756171578; bh=EqaiXGlICgy11fHyRn0mhEHSHh04BSF4NBvw2giJJ8Y=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date;
-	b=Q1P1ARQRe73KK2eOp5Rn2QK9AYEquiXG6txmyd0i6yfz4mOe4LygCk+OLSqtA51Gu
-	 tBMifbWcYeaAtLGFRVNhR0pkblgDEfPGMn+fDKhO4BEmaUybz2OwLnFVIajpUQ+kSO
-	 lZjG+1iXDjkI6gRTRwLJWwCwsJHDWjUBNWdJmf2hZVaEsEqKhOANr6i+8r7WvPTduR
-	 720sYXIPk3R/svabECGs3VxgWksPHpwbBHJP7C1TwVlhLJrUgdOetMYLpxORqRhpeQ
-	 FhnVqU2lFOHIVpd7a3EG8aIF/W7RQXZpeP2g8l/XoX8gDdd+TXcC0z3i2rzobXvQjo
-	 8VZHL9pGNV4qA==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57Q1QIhpC708775
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 26 Aug 2025 09:26:18 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 26 Aug 2025 09:26:18 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS06.realtek.com.tw
- (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27; Tue, 26 Aug
- 2025 09:26:18 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [PATCH rtw-next] wifi: rtw88: Use led->brightness_set_blocking for PCI too
-In-Reply-To: <ad8a49ef-4f2d-4a61-8292-952db9c4eb65@gmail.com>
-References: <ad8a49ef-4f2d-4a61-8292-952db9c4eb65@gmail.com>
+	s=arc-20240116; t=1756173478; c=relaxed/simple;
+	bh=KOSGvM2wr2KyAD8w0lLgrFelRa0BX8NcqdyrgZ4XNjs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rLNvY6nfXsRW/ucLw4kc0vDeYaBzNAF0+TOZpV6APO0xiGXM4U16LzDs/YdfcZAatsPgQW7Zi02PiJXvVlLOr4DMvbXFBEFpmiUrHKy7Qcnz71bSVHvd3DKV6+PxBzRI6qquzZ+HuwGst3BChTDI3jSHYBU6A/vCWttx3fav7DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TzKbUsYx; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e96c77b8dc1so1194695276.1;
+        Mon, 25 Aug 2025 18:57:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756173476; x=1756778276; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WGzUuOtgiIDZGYqyc4niKfZa1KTffiDbn6vc4yrAiuI=;
+        b=TzKbUsYxt/rSc/TjsMcJDD4zjheF0q+Xmhiw9GpDUeIyiRDkFAvg2ZUOPeh0980QvR
+         2ZXBLGfPtbioil6eVNvT1T9LMAm41aJ0gpRfu8gcMAqLlI2CpODHGnds6211rtr7pLzp
+         KtVa5qR4UA4mbrkywdv7NMEfmHkkV/VABEuTyTjAsNC2gWIVZvI/kIa6htGvU+d7ryhX
+         ROv2vYpg8q41oLvyzXwdPH8qUH7Y+W2uN9AIeCiZTkjR8m1wItcledvSS75LUnMR5UAV
+         dsItDqWdRdJppRucbd9ERPzSPVC/TSz2DgCMr5v+UGlX2ZAxoOFYvcslfU88cCHDSKzD
+         sZpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756173476; x=1756778276;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WGzUuOtgiIDZGYqyc4niKfZa1KTffiDbn6vc4yrAiuI=;
+        b=jD8Q9P+veIGN1xwrw+P+knkuHmKO+dHQs2+mWjSM4gvYaRT29xY1MyWBLdwRpKGrUE
+         DLg4FxMPzXIsZwvpek88MxepC/MclE6T3bpCe//B0y2ENUYNNN/Thnh6KuNLjaBkz8DJ
+         x42fkjDh7mnU9yO+9289sCiaJ4HTn/kP+OraLhbzjWuxKi/W7g4k7S6qt/Utdm7Kh8wX
+         yZ6P7z1q2rMy3P4SZA7YHkC9j1+1MXB+6OVzoUXAxwULRljV8sPwdXINRJPiiEuNv0+r
+         A71QVtLWXEmEt8+5L2qzqxLYLLCpcUUrh7VYvZnCCWi3bRWVfxcgHGOn8aZfh1hjGzd8
+         hpnA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDIAiDHd95k8UuaN8mGq6UGWdlahCCxIIX4wXEoFioUwABsU9/oWHI7BVCC3UQrMchasIlVw7bci63SiPZ@vger.kernel.org, AJvYcCWP49lS6IesarWV3friy/dInzvsMJFDfZjCDDaZYE6vye3tNu3K2FeuDkhpzOaI9H5RxZZ3Bn2g38RJcA==@vger.kernel.org, AJvYcCXWOjU1NGTDIXpSyy22jY1luaBW+3NbEmRHOhb3k0X0yNz6PrFGQmNaBuW2R8dJif57pgAyvjWUBMgF@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0sqyGYUcNpCGhP4Ob97HPAlIksgUxh5j2fl91TWJLQSqNZNu7
+	+6lkvR+k/oFxxCE9nazezJVwrASktvGGDKwLpy562UGdUY6cn8jWm3LX/w928ghzBOwJ3hrO015
+	0Gk5P8vFqd7EXdGCXKLaBLtKD7v9no3hVWg==
+X-Gm-Gg: ASbGncvqWA6nSRGke12DQdF1aBQfo/f1LXtQurRLFOgfWeOTbICxf2Sa0e/K7uWkNAZ
+	F9UjaHUaCa+I31aqRIs5RiaTOG41HoMbhpruwPa3kIPVNOVe6LJKQfYfcNoDyX/4zOfF0tuxC4V
+	JAM7nCx67WhTsp5soACJJisnn3YN1A9ZO+rxkIEKVcrqYVi1Cw1OBLSg8kz7F/fSBKHsWcz2nGL
+	UolNyxyvG4Hmwi3ZPbUzvDfSOLFU2/ENbc51bXJ++qFNcV4CKYxCppqQtm2F2cNhVZhonI19EZ/
+	4Aeisg==
+X-Google-Smtp-Source: AGHT+IFfyuSfKOrinrXKhXAscdQLNk2jhywIHMg8w6Be6P0uEmW6nfWxCJ0lVEYWuVzh3vDojbOberGKMV91mQSrLXo=
+X-Received: by 2002:a05:6902:600b:b0:e95:2d88:513a with SMTP id
+ 3f1490d57ef6-e952d8852fcmr9666163276.36.1756173476124; Mon, 25 Aug 2025
+ 18:57:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <908dfa8e-30df-4b33-9c52-d9a2c6cfcff7@RTKEXHMBS06.realtek.com.tw>
-Date: Tue, 26 Aug 2025 09:26:18 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTKEXHMBS06.realtek.com.tw (10.21.1.56)
+References: <20250825044812.1575524-1-rosenp@gmail.com> <20250825044812.1575524-2-rosenp@gmail.com>
+ <20250825-clobber-disdain-9e50d85ab1df@spud>
+In-Reply-To: <20250825-clobber-disdain-9e50d85ab1df@spud>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Mon, 25 Aug 2025 18:57:38 -0700
+X-Gm-Features: Ac12FXyRhTW5a8l2A5nZHymS4qhy8hJOYEjTo51J0bZ-dMOqKSbdtxy2kV2Vc_o
+Message-ID: <CAKxU2N9y-2eG2nz-ng9afuv-rT=agBt3rE7P3dFfybcHzhndWQ@mail.gmail.com>
+Subject: Re: [PATCHv3 1/3] dt-bindings: net: wireless: ath9k: add led bindings
+To: Conor Dooley <conor@kernel.org>
+Cc: linux-wireless@vger.kernel.org, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
+	Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:MIPS" <linux-mips@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
-
-> Commit 26a8bf978ae9 ("wifi: rtw88: Lock rtwdev->mutex before setting
-> the LED") made rtw_led_set() sleep, but that's not allowed. Fix it by
-> using the brightness_set_blocking member of struct led_classdev for
-> PCI devices too. This one is allowed to sleep.
-> 
-> bad: scheduling from the idle thread!
-> nix kernel: CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Tainted: G        W  O        6.16.0 #1-NixOS PREEMPT(voluntary)
-> nix kernel: Tainted: [W]=WARN, [O]=OOT_MODULE
-> nix kernel: Hardware name: [REDACTED]
-> nix kernel: Call Trace:
-> nix kernel:  <IRQ>
-> nix kernel:  dump_stack_lvl+0x63/0x90
-> nix kernel:  dequeue_task_idle+0x2d/0x50
-> nix kernel:  __schedule+0x191/0x1310
-> nix kernel:  ? xas_load+0x11/0xd0
-> nix kernel:  schedule+0x2b/0xe0
-> nix kernel:  schedule_preempt_disabled+0x19/0x30
-> nix kernel:  __mutex_lock.constprop.0+0x3fd/0x7d0
-> nix kernel:  rtw_led_set+0x27/0x60 [rtw_core]
-> nix kernel:  led_blink_set_nosleep+0x56/0xb0
-> nix kernel:  led_trigger_blink+0x49/0x80
-> nix kernel:  ? __pfx_tpt_trig_timer+0x10/0x10 [mac80211]
-> nix kernel:  call_timer_fn+0x2f/0x140
-> nix kernel:  ? __pfx_tpt_trig_timer+0x10/0x10 [mac80211]
-> nix kernel:  __run_timers+0x21a/0x2b0
-> nix kernel:  run_timer_softirq+0x8e/0x100
-> nix kernel:  handle_softirqs+0xea/0x2c0
-> nix kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
-> nix kernel:  __irq_exit_rcu+0xdc/0x100
-> nix kernel:  sysvec_apic_timer_interrupt+0x7c/0x90
-> nix kernel:  </IRQ>
-> nix kernel:  <TASK>
-> nix kernel:  asm_sysvec_apic_timer_interrupt+0x1a/0x20
-> nix kernel: RIP: 0010:cpuidle_enter_state+0xcc/0x450
-> nix kernel: Code: 00 e8 08 7c 2e ff e8 d3 ee ff ff 49 89 c6 0f 1f 44 00 00 31 ff e8 c4 d1 2c ff 80 7d d7 00 0f 85 5d 02 00 00 fb 0f 1f 44 00 00 <45> 85 ff 0f 88 a0 01 00 00 49 63 f7 4c 89 f2 48 8d 0>
-> nix kernel: RSP: 0018:ffffd579801c7e68 EFLAGS: 00000246
-> nix kernel: RAX: 0000000000000000 RBX: 0000000000000003 RCX: 0000000000000000
-> nix kernel: RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-> nix kernel: RBP: ffffd579801c7ea0 R08: 0000000000000000 R09: 0000000000000000
-> nix kernel: R10: 0000000000000000 R11: 0000000000000000 R12: ffff8eab0462a400
-> nix kernel: R13: ffffffff9a7d7a20 R14: 00000003aebe751d R15: 0000000000000003
-> nix kernel:  ? cpuidle_enter_state+0xbc/0x450
-> nix kernel:  cpuidle_enter+0x32/0x50
-> nix kernel:  do_idle+0x1b1/0x210
-> nix kernel:  cpu_startup_entry+0x2d/0x30
-> nix kernel:  start_secondary+0x118/0x140
-> nix kernel:  common_startup_64+0x13e/0x141
-> nix kernel:  </TASK>
-> 
-> Fixes: 26a8bf978ae9 ("wifi: rtw88: Lock rtwdev->mutex before setting the LED")
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
-
-fce6fee0817b wifi: rtw88: Use led->brightness_set_blocking for PCI too
-
----
-https://github.com/pkshih/rtw.git
-
+On Mon, Aug 25, 2025 at 9:38=E2=80=AFAM Conor Dooley <conor@kernel.org> wro=
+te:
+>
+> On Sun, Aug 24, 2025 at 09:48:10PM -0700, Rosen Penev wrote:
+> > The ath9k driver has various pin GPIO numbers for different chipsets
+> > which are not always correct for every device.
+> >
+> > Add bindings to specify the correct number and if it should be
+> > active-low.
+> >
+> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > ---
+> >  .../bindings/net/wireless/qca,ath9k.yaml         | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.y=
+aml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > index d16ca8e0a25d..bbac017d34d0 100644
+> > --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > @@ -50,6 +50,18 @@ properties:
+> >
+> >    ieee80211-freq-limit: true
+> >
+> > +  led:
+> > +    type: object
+> > +    additionalProperties: false
+> > +    properties:
+> > +      reg:
+> > +        maxItems: 1
+> > +
+> > +      led-active-low:
+>
+> How come you are not including leds/common.yaml and making use of the
+> active-low property defined there? Seems to be in use by mediatek,mt76.ya=
+ml
+Probably makes more sense to use active-high instead. Will do so in next se=
+ries.
+>
+> > +        description:
+> > +          LED is enabled with ground signal.
+> > +        type: boolean
+> > +
+> >    qca,no-eeprom:
+> >      $ref: /schemas/types.yaml#/definitions/flag
+> >      description:
+> > @@ -102,5 +114,9 @@ examples:
+> >          compatible =3D "qca,ar9130-wifi";
+> >          reg =3D <0x180c0000 0x230000>;
+> >          interrupts =3D <2>;
+> > +        led {
+> > +          reg =3D <0>;
+> > +          led-active-low;
+> > +        };
+> >        };
+> >      };
+> > --
+> > 2.50.1
+> >
 
