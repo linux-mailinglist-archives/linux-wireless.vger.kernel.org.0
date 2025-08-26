@@ -1,85 +1,63 @@
-Return-Path: <linux-wireless+bounces-26624-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26626-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF02B357B7
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 10:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2207FB357C3
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 11:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 969661B245E9
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 08:55:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F5CD1B6572B
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 09:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9322FE054;
-	Tue, 26 Aug 2025 08:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC622FCC12;
+	Tue, 26 Aug 2025 09:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="pH0MB6EV"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="m8JJDlw2";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="n8oyBmfJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5152FD7AD
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 08:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6375129ACDB
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 09:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756198514; cv=none; b=DDIpWj2c98NJcmBIVbbDV0X6ljfYQN10ZkMpGLLwsDrihdjFGmeF5VXVazsKhA4K9Yo7FpBDUi1v/LZsXDCCeXr6iiOijGnDQ4RYZsHqCpRwE/NrGPmkRIRCT0UMrqE1umcRwnA82Ltpzg4yJEKIcdhLreMkqo4Ccxp/JUbJ7/g=
+	t=1756198824; cv=none; b=O/d/yGfEIF1rTdxZe2iPqdQ40xCvSxAecYawFzQSZt2TrxVM26Xd63Jx0UETdwmzdEuJUU1QnJZgG/e4c9c9/JVoepO3TeGGk1IWTUxfZStCw9m3itQ2YFCwmchV62rAQLwTti+3yKA0Jiggn8AgQe7dtDpBgQRTWtClIlhRrw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756198514; c=relaxed/simple;
-	bh=sc595x+KtFvGk9YlBS9LWyg+0OJ5im06kYQTJjPAztA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OJQXuVACAOJ8HJ4onUALn94MPr2UaEByhkgi6bMUBa9MqLZePLKhOC+6yhDwzla1DPkAJzu8ckQMQbVH+JDffMzvOcJlwGB8/f/jPBbVBjQX5ZGCTquF4rEAHJT84E+Ihpk0QTQozhftyYQ1l/vIbVq4SV1NDGS4QSKZ6yKcKKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=pH0MB6EV; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-76e4fc419a9so4800882b3a.0
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 01:55:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1756198512; x=1756803312; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mXl4IFqxe5m0wPFaUIkM3rluTFeqSx2cm1kXGo2k5x8=;
-        b=pH0MB6EVfPdtpb7PNIsCOiBW0VsSmLVVWq1mLkI/CdTz3rjFz70WsUpSNudVq8IOu9
-         8fB5A0rNgp9DEyJXfNJcGQ+Si65u3Ur/1QnTQZ0LCsT2f1uJ9gQnBb+Bn5NKKLyLA8Dr
-         TfbIN97uzAnMUzoUejqa4iMWfQHch5tsARcnFTPZPnOps0rV/p8uU1feHgNvS3n0L5Hs
-         y3UFYFxe6i1XDd29y8Smz4JSxxATPvvEMy3+wHsIQ8gG8ZcWQLYy/0gLSmsT9p9ay1/R
-         Xurb1cpxb8u7vxUl/tkLO8JjKQ9kc9hYvzZdiE4ZCLwbbGLrtD6e+D65gdfmhjxl7ojV
-         /7JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756198512; x=1756803312;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mXl4IFqxe5m0wPFaUIkM3rluTFeqSx2cm1kXGo2k5x8=;
-        b=DXpXOiDTCNZu4qHbLjU3V4OPFjOOM+sgcXR0iFWVbYb4jrXOXhKQvm376yO5gJ4ulB
-         zNkZtpXwAHeF0ilGuz+GUGCLcdLmvrTNnB2S8awhSZf6/mwLGcpudGGoMJi5OBqzwU+/
-         VcuAuLJtQsw/jOpAKdwqTHUS9S0tHdFI9zYhvzoo+lj5Ijq8B3SEHS+jNtyTfmP8+Yn9
-         vYLPA5tW9irLpu3fh+C/6uwEzBK2AgC4Jf+mS/JRfHsFjdT5slhqNVwvY+qfmFkej1ny
-         yr5sLbuGfEbTLv4f+0QquVT9zvymNvYBYzhV/mNNfCxyrGQzLr0mNDIVayo+3rMjJ2XD
-         5Z4Q==
-X-Gm-Message-State: AOJu0Yzhq9osxhCSZpXGxo7bXqOlXxK5NJJ+G+Jn0x7fE3ynybdJgfCa
-	Qcd29ANZOthh6M/e4LDlItpQuauz1L5XopHNBqdHx45nfuu+FAPkdziiDbL9szGp4SI=
-X-Gm-Gg: ASbGncv1QPh+x4USvop0oXM7/aEmBXI99fZkSlAVk8sCTqPYLOCaiYFCYuwj8OfniaK
-	+0qJ8/x87IEKNgVH1dsx8mamVNRoXVx4F+gQo3Zl5IfopA4kR8K+5DJ+oKThfPnXdlWQP040KlI
-	eRVnxh2iyfchAvXRmCRM+Aw/UX0891nAkiOWUD4nQG3wbbX91ikCDsz/Zw/cWPX6cABgo4HC1WF
-	36g5zHiMdwjCQjZG9IANRLkQtU5Xybi4t7w2uDA5hvKBSeUOVIPVarPLuUipTpjy96gTUkSJYyq
-	F3P+OhFbbKRcPX2skfm2hpllR3OUXnnvkhJ9vNFdu8RBv1+T0iG021hYXWoqGyQ4kPCW8S4p4kY
-	qs5XN9mTGTcWVhJ4+mzF2aRUsvKj61MLO010QpcKEdcss7HkPDdDgQV6wPb8o4ao8hPTRFMogqZ
-	68e7rh0Pc0XXOPxi2CmHfIO/A5ag==
-X-Google-Smtp-Source: AGHT+IGiCq5661jX9TFbM5C4rfplQwWVHi+AWQUnioD8R+ffZZBQysh5HrtZq/LgGncGx8F5iJUJoA==
-X-Received: by 2002:a05:6a20:1585:b0:232:7c7b:1c7b with SMTP id adf61e73a8af0-24340c429e2mr24666358637.14.1756198511827;
-        Tue, 26 Aug 2025 01:55:11 -0700 (PDT)
-Received: from localhost.localdomain ([60.227.224.187])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-771e814cbccsm4285416b3a.35.2025.08.26.01.55.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 01:55:11 -0700 (PDT)
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	arien.judge@morsemicro.com,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Subject: [PATCH wireless v3] wifi: mac80211: increase scan_ies_len for S1G
-Date: Tue, 26 Aug 2025 18:54:37 +1000
-Message-ID: <20250826085437.3493-1-lachlan.hodges@morsemicro.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1756198824; c=relaxed/simple;
+	bh=lUDVpX47GJ5krunG6B7HPBqcnHmlaFky/nVoT70LOA8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nNcDtQbyCAN0SosEtmZ0pQ8qhYD8Q0zgHLXOAN92ySHzDWYzyfRTo4Jdumglqzm6XOccxEBYIFf5o6D53WS9zeGl58XFYyeClJ/q+t4UnadI226fwcHyo+xWpRTdmdJeg8lJ5C4ofyfQ/u531AW9TFhgtuxwaXYQRnIHNHPeM3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=m8JJDlw2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=n8oyBmfJ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1756198821;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gq7eF/8AMTqmWrEqZ4QOBhXBx+dUaUlrxR8GPHeaZDw=;
+	b=m8JJDlw2cBZv57VzVp8Rhe34o2QwprLD9Moa0RE/wTzrBEoYYMaD2FjLOb+paTCle23ag/
+	Mpmx/4zTo7O4GazqkHWNOrlo0My+IH9oSeK3huaVnulldKFaMi/HxlnY+5/a8mZyDdDbwM
+	Svp2lg4wPRdeOGjsCf4+XskQe6CcPhgX6wcPQhdD3fgEk+AFhEqgUGENTJjwj7ruJtWELG
+	jd3RAaq7lRcCIj92fSujWRY9RQ4Jt6DThaFPyyoSWRONmcou9rBrMjeYDTBFtHZs1cj1mW
+	gnOBpFXKthD27YVyrG5y0kxcNJNJJRyfA+AGMmy13CHiWZ/LFZxxNsRc5UdmNw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1756198821;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gq7eF/8AMTqmWrEqZ4QOBhXBx+dUaUlrxR8GPHeaZDw=;
+	b=n8oyBmfJ/rhmnpEyihZ9p9M6myKkTods7znJhO9xZVm43hrUuK9SNWmBW2JlYpdSt0agHv
+	I5fFYtncDTxoObBg==
+To: linux-wireless@vger.kernel.org
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next] wifi: rtl8xxxu: expose efuse via debugfs
+Date: Tue, 26 Aug 2025 11:00:15 +0200
+Message-Id: <20250826090015.1552939-1-martin.kaistra@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,64 +66,60 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently the S1G capability element is not taken into account
-for the scan_ies_len, which leads to a buffer length validation
-failure in ieee80211_prep_hw_scan() and subsequent WARN in
-__ieee80211_start_scan(). This prevents hw scanning from functioning.
-To fix ensure we accommodate for the S1G capability length.
+The efuse contains the mac address and calibration data. During
+manufacturing and testing it can be necessary to read and check this
+data.
 
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Add a debugfs interface to make it available to userspace.
+
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
 ---
-v2 -> v3: don't include kernel test robot for a new patch...
+ drivers/net/wireless/realtek/rtl8xxxu/core.c | 24 ++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-Again, targetted wireless.. but not really sure if this qualifies
-as a "bug"... I gave my reasoning in the reply to the first patch:
-
-https://lore.kernel.org/linux-wireless/3j7kkqznavkxt23iopacl626xkppzcitiactxz43axqorucrvu@6gaixffy7zaj/
----
- net/mac80211/main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 9c8f18b258a6..3ae6104e5cb2 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1111,7 +1111,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	int result, i;
- 	enum nl80211_band band;
- 	int channels, max_bitrates;
--	bool supp_ht, supp_vht, supp_he, supp_eht;
-+	bool supp_ht, supp_vht, supp_he, supp_eht, supp_s1g;
- 	struct cfg80211_chan_def dflt_chandef = {};
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+index 831b5025c6349..b45010c93ad72 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -1901,6 +1901,29 @@ static void rtl8xxxu_dump_efuse(struct rtl8xxxu_priv *priv)
+ 		       priv->efuse_wifi.raw, EFUSE_MAP_LEN, true);
+ }
  
- 	if (ieee80211_hw_check(hw, QUEUE_CONTROL) &&
-@@ -1227,6 +1227,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	supp_vht = false;
- 	supp_he = false;
- 	supp_eht = false;
-+	supp_s1g = false;
- 	for (band = 0; band < NUM_NL80211_BANDS; band++) {
- 		const struct ieee80211_sband_iftype_data *iftd;
- 		struct ieee80211_supported_band *sband;
-@@ -1274,6 +1275,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 			max_bitrates = sband->n_bitrates;
- 		supp_ht = supp_ht || sband->ht_cap.ht_supported;
- 		supp_vht = supp_vht || sband->vht_cap.vht_supported;
-+		supp_s1g = supp_s1g || sband->s1g_cap.s1g;
- 
- 		for_each_sband_iftype_data(sband, i, iftd) {
- 			u8 he_40_mhz_cap;
-@@ -1406,6 +1408,9 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 		local->scan_ies_len +=
- 			2 + sizeof(struct ieee80211_vht_cap);
- 
-+	if (supp_s1g)
-+		local->scan_ies_len += 2 + sizeof(struct ieee80211_s1g_cap);
++/* debugfs: efuse */
++static ssize_t read_file_efuse(struct file *file, char __user *user_buf,
++			       size_t count, loff_t *ppos)
++{
++	struct rtl8xxxu_priv *priv = file_inode(file)->i_private;
 +
- 	/*
- 	 * HE cap element is variable in size - set len to allow max size */
- 	if (supp_he) {
++	return simple_read_from_buffer(user_buf, count, ppos,
++				       priv->efuse_wifi.raw, EFUSE_MAP_LEN);
++}
++
++static const struct file_operations fops_efuse = {
++	.read = read_file_efuse,
++	.owner = THIS_MODULE,
++};
++
++static void rtl8xxxu_debugfs_init(struct rtl8xxxu_priv *priv)
++{
++	struct dentry *phydir;
++
++	phydir = debugfs_create_dir("rtl8xxxu", priv->hw->wiphy->debugfsdir);
++	debugfs_create_file("efuse", 0400, phydir, priv, &fops_efuse);
++}
++
+ void rtl8xxxu_reset_8051(struct rtl8xxxu_priv *priv)
+ {
+ 	u8 val8;
+@@ -7974,6 +7997,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+ 	}
+ 
+ 	rtl8xxxu_init_led(priv);
++	rtl8xxxu_debugfs_init(priv);
+ 
+ 	return 0;
+ 
 -- 
-2.43.0
+2.39.5
 
 
