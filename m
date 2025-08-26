@@ -1,87 +1,84 @@
-Return-Path: <linux-wireless+bounces-26600-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26601-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D80FB3506B
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 02:42:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4544B35075
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 02:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6FCD3B3A06
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 00:42:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E674D1898E26
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 00:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871961E51FA;
-	Tue, 26 Aug 2025 00:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CA326E712;
+	Tue, 26 Aug 2025 00:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="ALbSh1wP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XJ2peyw4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E618253355
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 00:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DD026AA83
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 00:44:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756168959; cv=none; b=qWgOV57udFUWjcr1BWZVG8hX7OnVJzEQ8jIns0hY/cfqfsOnAiOjeaA44AiYlxkkdWzoY0tJwicFDeEoEZgbmbN4jxg9ZKyDLWdHz8Ld19pcqUHcBETuu83B+6P8KGzibI66J34K61Gwm2ooGjB+IlLPgDxHqnc4f/v2ci0P99g=
+	t=1756169079; cv=none; b=jptZhOuDhDr73dY00Nq05aZcwqFyyghihjCrEupKP2TKs9OEwenlzgwP/vf4xGdGoQCPVz7M7gFb59i4gPdSO+PMMTehXW0LvbHkoqglAb+isaWtpn/akQ5XwQeVAR0KqR10xbXw53vFtzRPCbzKhKcLaG7NEnJie+/Vn5qwpx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756168959; c=relaxed/simple;
-	bh=OCN70bHDBV8cGIOwE+S1zjgmmo62Su2gKoLrfKvw994=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L4755CZkraEGLRw9TKHwmK6KIQqJq5HxSI8pvR1vN4JkphwhDZKqgc+bm/KWOpyiJMnOA3Pke4JZXwrWzDrQsTmF+cgKtWD//KtJTZ1yU4Y/AWnL0xvlxb6RDoE1wTHbb0Y2HkDCCyGaUTtAOC/UX5C1qi4WXH25mKEaLVMS0YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=ALbSh1wP; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-771e4378263so1298825b3a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Aug 2025 17:42:37 -0700 (PDT)
+	s=arc-20240116; t=1756169079; c=relaxed/simple;
+	bh=DdKtdrsF35lC69OY5hugpNnV+Y0b2MXd2WEeMETdJiI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JWhxxP3NF3EcPkAXKiFijuXBzRgOjhxXYalhEbKaAD631mbnL/vwC+cwUXYqeYjOCLET1bya9cSvSm/5tx9ntl9s7qy3ZycJ6iLtk137nKUH1L5/cZ2DQdKyRFjUYJGyqewh3ZOu+m1hVgBenuCa0yrgym700dwTgqn0s6KOsP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XJ2peyw4; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-323266cdf64so3683525a91.0
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Aug 2025 17:44:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1756168957; x=1756773757; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756169077; x=1756773877; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=eFHNv/IFnNiJH0GMVK6BxV/ZFN+wKdQbSCU9eXdcYbk=;
-        b=ALbSh1wP9iVUwT2zRqLBP0QuK00HvXsrm+/mu4maA77WtnZx9RMt64lT1hnIMdfVXQ
-         aVpMX0YRLZ/hG4qMD7rDwml0htDS3w6QQCCvWorFhRAzHCcab7AbHSYRbzK+PcAOXOCY
-         YertLDwmrES7z8ZPOJjkLPIW2A8wzTvtATQjBjljyrjeyfMbbTi728+01qxpWZlWquAI
-         zzJr1Izmz0P6aa8hSKuVPzR+vEyD6qsIX7SJyziyITK/6d2K5CMPGbWD/5sSsQr6rFyW
-         sLTdJu+ICGm4jldYrjpZWjwzZv1swJwzpKJf2IzWK+kxSF0hYH2IwojF8hWDUd3k2Oh6
-         cGyg==
+        bh=sfoEmh4Uuip6ADGAXS4EdiQ5FAWw3Abck/YKH3Nu1NU=;
+        b=XJ2peyw4mLgiqK7cBgEwdYanat+8vzJVcRg8BcD1yD7LLdTUv7lfZ4Rdz4vuNvehui
+         CqWhJN6qpH9o/VOXyNV0ZeUAs3GWDaM9dirSig+ns9MZy4oLRVAf4vfyjRQlhMP6qxPp
+         +0jsDXFnl8lloXK1qVTfprvt4wsG9JAiEHZs85iNUvmhiKet3J4VJOb33t5fvww7bDJo
+         K1l+bfY7Y6A9N3JdoI+AZETaLJpsQKawZ0Q6KvwG70dmlAHgWtXACUuoQAdfe5vIAHYD
+         VMDq83Jv9+f5kGHwyNSkM5uk2Joo0pvXSJvGfvAl7PbrMTGGqnwMOvfkhVnXEQrHnAqZ
+         E3aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756168957; x=1756773757;
+        d=1e100.net; s=20230601; t=1756169077; x=1756773877;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=eFHNv/IFnNiJH0GMVK6BxV/ZFN+wKdQbSCU9eXdcYbk=;
-        b=qdAXl559k0AxzHPOM0KsSG120tthIUgPeplJgD4jDSl21XvYkZoYQudmqV8W1Ne2Rg
-         s0ENyv0FHyrDEVwteYlOEfVOhMiR9wGYoJpIlXvs8tN9fN1nIbDFwwBwTbDRfbq16VgN
-         VVWQ8dLXWT7u8bLcBHhHvVLoSiwOabfx2bv6RAeJn64u03kw+Z6CyjjyO4d6RXJcdUoJ
-         ptO9A/iSkH6ZKd7VltpVhZd9YHhoLQfXVh4m0DLlBZ3KBuaPpSaNRpBNW/XBjhBjMtOa
-         6e/uvLC7sDbNy/RRwvgfvGJQdaKU+nXYuLMaJy5eJ5UobS0/NNntqmgiztUuukpUJ7dB
-         LlSQ==
-X-Gm-Message-State: AOJu0YydzuzAOB95mQm68PO7EqAbnJQKYlw8D9BfQ83tZgZ8yfU3tXlL
-	kAZsbaD9EgGWM05xrcqyXwiGL9Jyr0F/dzYkDBYKMr/ogVuwmW7Qwv0ND8YkuOWJfk4=
-X-Gm-Gg: ASbGncuEfmBSUCVX0p3TukFe/2KSjymLSVb65436Zy8PsBKJUmgaTGlAvQLMmvfXEH4
-	lTIF0Y2B+Kga8aBNgZwfUjC7y8U/4gOOOxir28f9r7RlZsNVJlwPeFss4jqbcOLGw8ak1VL31ZZ
-	hUq1aUhovJqOFDMUQKKtWWsNDvpGjLBEvsAMsyN3SXL9DR4280/+rlxhA9kxCoMZaiYhp5fEAp9
-	cMp2vqXYDZFAHbG4Jrx0YjWZ9JkBofOXJlRgLerQ80vEO8fBeskK1K0V9znL5+PcspQOxSt+n4v
-	kZ4WChRWOs/f7BhnTIE7tjgl76LJxWcdA2uQkjdu4pW1QsrOa9lmVsGdyOf2Dqg1ylnyuFGyEe8
-	wPVODQDYbemMfsyN8Oa0zccdF4zDVrJ9dDrRIXQiii+oa/q1QN+61hXYhVPgbppMNontVFODhK4
-	vbIM1fiU6oUe7NYx2TLCoWDGEQnG4=
-X-Google-Smtp-Source: AGHT+IHQQMwNOYvdw11PvPvRVpEhRBN2VbFgVLbCx25r3VtlXU2Hx7vi4CpD+66pUQ4GORGDz7t51Q==
-X-Received: by 2002:a05:6a00:2e92:b0:770:cde2:d18a with SMTP id d2e1a72fcca58-770cde2d2famr7354035b3a.12.1756168956783;
-        Mon, 25 Aug 2025 17:42:36 -0700 (PDT)
-Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7703ffb4742sm8825475b3a.5.2025.08.25.17.42.33
+        bh=sfoEmh4Uuip6ADGAXS4EdiQ5FAWw3Abck/YKH3Nu1NU=;
+        b=qxx/3dCKKDBE75dMGJC2RBpSk3k3Uux8VbEt3GAahXMuE3ch8hWUEUJeZElufzQ7XA
+         eSCo7G7pYaLIuiOuPNnW0YHJCXSikxgzgY8pE3Lux/2XAD99ZshV0JZZZu48aJCqcRxI
+         IJYoaUrhkmCeCjKDJJpMnwCJCvR5+PF1xGttkA03qrBIB6WFc0SRwbUQ31p+T3RseZQO
+         Si+PfKJVxOwAMqVe1+Z1kY+sNTnlgjQ0vN5Q8LFi3xD+PPSXf33wadW1OyHrLRdqQTyN
+         327R/pK8pqVKipCrVynFZtSK17LKjxbkZDcJKAEASpdkahgTZS1D8cZJo4kAPZBb43uX
+         bl+w==
+X-Gm-Message-State: AOJu0YxtYYlnoEAawvCjIyUhVlwn8yGyR8le5DHOUdTHaLP6X214IOhi
+	QsHkYlfxsQvNmedktw1RMp3G4TVdtFg9GBBxR0Mlli97C30fFzLB4ic6l0ndMSl7/TM=
+X-Gm-Gg: ASbGncvEVTaRe6GbnOFYcxgnYl8zRIX7DgoEHZmkEOpunOzb+ispdJ7wmevyUrUXXg7
+	vmW9+z5Q/uKAPzrGqFJ13yNYr5fu4blqDaGtvZTnrg6Z3G5H8OHT3ZcUoGHXl8ZuKHfWjlpSbl3
+	zTOBJDuEjU2WzKqWj4z/kt2tHAuonFH3r+hQYvLmsS6ihNAG2bA514x5uHz0kXWh2aadP970ZXy
+	gq7jjYttfVSMEU5gEdko+Ja3M1+ko3zrhFe0fhgDF9mIlrhpwR/3609bm+t2Tw8YFPqpoL/5K1J
+	yLr+VQL9lsWSRlTYXbyxBIxMgYBgdkqsuwq+ZdLld8DYY3NoXTdOex50g55rnESozM/Pfzo5qXR
+	xsa6I0ebb06yPNiCsq9dUCXJC0/+LVYOChQ7MnLh4v4iu3f2iOjI2WiUN6LcJAKDJ
+X-Google-Smtp-Source: AGHT+IEngbdobYXfg9n7+S7+eZStNJFF7/84NzqToW8wvN1e1HOQwGgY/5ULJOk+/J1zITuKLapwMA==
+X-Received: by 2002:a17:90b:384c:b0:31e:d9f0:9b96 with SMTP id 98e67ed59e1d1-32515ef8acbmr18373192a91.14.1756169077177;
+        Mon, 25 Aug 2025 17:44:37 -0700 (PDT)
+Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-3254af4c347sm8131553a91.18.2025.08.25.17.44.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 17:42:36 -0700 (PDT)
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: johannes@sipsolutions.net
+        Mon, 25 Aug 2025 17:44:36 -0700 (PDT)
+From: Ping-Ke Shih <pkshih@gmail.com>
+To: wens@kernel.org
 Cc: linux-wireless@vger.kernel.org,
-	arien.judge@morsemicro.com,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH wireless v2] wifi: mac80211: increase scan_ies_len for S1G
-Date: Tue, 26 Aug 2025 10:42:29 +1000
-Message-ID: <20250826004229.16372-1-lachlan.hodges@morsemicro.com>
-X-Mailer: git-send-email 2.43.0
+	wireless-regdb@lists.infradead.org,
+	avalon.vargas.centeno@est.una.ac.cr
+Subject: [PATCH v2] wireless-regdb: Update regulatory info including bandwidth for Costa Rica (CR) for 2023
+Date: Tue, 26 Aug 2025 08:43:42 +0800
+Message-Id: <20250826004342.5363-1-pkshih@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,67 +87,77 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently the S1G capability element is not taken into account
-for the scan_ies_len, which leads to a buffer length validation
-failure in ieee80211_prep_hw_scan() and subsequent WARN in
-__ieee80211_start_scan(). This prevents hw scanning from functioning.
-To fix ensure we accommodate for the S1G capability length.
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202508251233.r1IFboEm-lkp@intel.com/
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+THE PRESIDENT OF THE REPUBLIC AND THE MINISTER OF SCIENCE, INNOVATION,
+TECHNOLOGY AND TELECOMMUNICATIONS released National Frequency Allocation
+Plan (PNAF) No. 44010-MICITT [1], and effective date from 05/31/2023.
+The table 22 shows maximum power permitted for the frequency bands:
+
+- 2400 to 2500 MHz
+  36 dBm
+- 5150 to 5350 MHz
+  30 dBm
+  DFS on 5250-5350 MHz
+- 5470 to 5725 MHz
+  30 dBm
+  DFS on 5470-5730 MHz (take 5MHz from next entry)
+- 5725 to 5850 MHz
+  36 dBm
+- 5850 to 5895 MHz
+  36 dBm
+- 5895 to 5925 MHz
+  30 dBm
+- 5925 to 7125 MHz
+  30 dBm, LPI, indoor only
+  14 dBm, VLP, indoor and outdoor
+- 57,000 to 71,000 MHz
+  43 dBm
+
+Avalon reported the bandwidth limitation of 20MHz causing lower throughput
+than what he set country to US, and he reached PNAF about the bandwidth
+limitation, resulting in no limitation currently [2].
+
+[1] https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_texto_completo.aspx?param1=NRTC&nValor1=1&nValor2=99551&nValor3=144158&strTipM=TC
+[2] https://lore.kernel.org/linux-wireless/7bfa8257d34642d7a1e35b3705720357@realtek.com/#t
+
+Reported-by: Avalon Vargas Centeno <avalon.vargas.centeno@est.una.ac.cr>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
-v1 -> v2: initialise supp_s1g
-
-Again, targetted wireless.. but not really sure if this qualifies
-as a "bug"... I gave my reasoning in the reply to the first patch:
-
-https://lore.kernel.org/linux-wireless/3j7kkqznavkxt23iopacl626xkppzcitiactxz43axqorucrvu@6gaixffy7zaj/
+v2:
+  - add units of MHz and dBm in commit message.
 ---
- net/mac80211/main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ db.txt | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 9c8f18b258a6..3ae6104e5cb2 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1111,7 +1111,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	int result, i;
- 	enum nl80211_band band;
- 	int channels, max_bitrates;
--	bool supp_ht, supp_vht, supp_he, supp_eht;
-+	bool supp_ht, supp_vht, supp_he, supp_eht, supp_s1g;
- 	struct cfg80211_chan_def dflt_chandef = {};
+diff --git a/db.txt b/db.txt
+index 2a2946f8d1bb..b29e719710f4 100644
+--- a/db.txt
++++ b/db.txt
+@@ -476,14 +476,17 @@ country CO: DFS-FCC
  
- 	if (ieee80211_hw_check(hw, QUEUE_CONTROL) &&
-@@ -1227,6 +1227,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	supp_vht = false;
- 	supp_he = false;
- 	supp_eht = false;
-+	supp_s1g = false;
- 	for (band = 0; band < NUM_NL80211_BANDS; band++) {
- 		const struct ieee80211_sband_iftype_data *iftd;
- 		struct ieee80211_supported_band *sband;
-@@ -1274,6 +1275,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 			max_bitrates = sband->n_bitrates;
- 		supp_ht = supp_ht || sband->ht_cap.ht_supported;
- 		supp_vht = supp_vht || sband->vht_cap.vht_supported;
-+		supp_s1g = supp_s1g || sband->s1g_cap.s1g;
+ # Source:
+ # https://storage.googleapis.com/eleoscompliance1.appspot.com/public/PNAF%20modificaci%C3%B3n%20ALCA87_30_04_2021.pdf
++# https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_texto_completo.aspx?param1=NRTC&nValor1=1&nValor2=99551&nValor3=144158&strTipM=TC
+ country CR: DFS-FCC
+ 	(2402 - 2482 @ 40), (36)
+-	(5170 - 5250 @ 20), (30)
+-	(5250 - 5330 @ 20), (30), DFS
+-	(5490 - 5730 @ 20), (30), DFS
+-	(5735 - 5835 @ 20), (36)
+-	(5875 - 5925 @ 20), (30)
++	(5150 - 5250 @ 80), (30), AUTO-BW
++	(5250 - 5350 @ 80), (30), DFS, AUTO-BW
++	(5470 - 5730 @ 160), (30), DFS
++	(5730 - 5850 @ 80), (36), AUTO-BW
++	(5850 - 5895 @ 40), (36), AUTO-BW
++	(5895 - 5925 @ 20), (30), AUTO-BW
+ 	(5925 - 7125 @ 320), (30), NO-OUTDOOR
++	(57000 - 71000 @ 2160), (43)
  
- 		for_each_sband_iftype_data(sband, i, iftd) {
- 			u8 he_40_mhz_cap;
-@@ -1406,6 +1408,9 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 		local->scan_ies_len +=
- 			2 + sizeof(struct ieee80211_vht_cap);
- 
-+	if (supp_s1g)
-+		local->scan_ies_len += 2 + sizeof(struct ieee80211_s1g_cap);
-+
- 	/*
- 	 * HE cap element is variable in size - set len to allow max size */
- 	if (supp_he) {
+ # Source:
+ # https://www.mincom.gob.cu/es/marco-legal
 -- 
-2.43.0
+2.25.1
 
 
