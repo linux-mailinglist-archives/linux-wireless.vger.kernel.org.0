@@ -1,125 +1,102 @@
-Return-Path: <linux-wireless+bounces-26626-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26627-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2207FB357C3
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 11:00:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB43B357C5
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 11:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F5CD1B6572B
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 09:00:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F116820464F
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 09:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC622FCC12;
-	Tue, 26 Aug 2025 09:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94DC2356B9;
+	Tue, 26 Aug 2025 09:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="m8JJDlw2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="n8oyBmfJ"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="mrnXkfOI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6375129ACDB
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 09:00:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2778122E406
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 09:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756198824; cv=none; b=O/d/yGfEIF1rTdxZe2iPqdQ40xCvSxAecYawFzQSZt2TrxVM26Xd63Jx0UETdwmzdEuJUU1QnJZgG/e4c9c9/JVoepO3TeGGk1IWTUxfZStCw9m3itQ2YFCwmchV62rAQLwTti+3yKA0Jiggn8AgQe7dtDpBgQRTWtClIlhRrw4=
+	t=1756198837; cv=none; b=YxnRQH7BIRL4CZMy5u1ieKMlt1oBkwsGC/6CXdm9nYrS8/Q8dcZtSHN6PjiG7Po/Gvee3BKmp/s73HOKV+Fe/Bi0u2WQGWbKLmKAHtV4691NwwvGbSBRxdST0cCcjXtc3EKQjT1AlwNdJ2Aun4fc4v5aTN1jWzV6DYl58rZx5EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756198824; c=relaxed/simple;
-	bh=lUDVpX47GJ5krunG6B7HPBqcnHmlaFky/nVoT70LOA8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nNcDtQbyCAN0SosEtmZ0pQ8qhYD8Q0zgHLXOAN92ySHzDWYzyfRTo4Jdumglqzm6XOccxEBYIFf5o6D53WS9zeGl58XFYyeClJ/q+t4UnadI226fwcHyo+xWpRTdmdJeg8lJ5C4ofyfQ/u531AW9TFhgtuxwaXYQRnIHNHPeM3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=m8JJDlw2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=n8oyBmfJ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1756198821;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gq7eF/8AMTqmWrEqZ4QOBhXBx+dUaUlrxR8GPHeaZDw=;
-	b=m8JJDlw2cBZv57VzVp8Rhe34o2QwprLD9Moa0RE/wTzrBEoYYMaD2FjLOb+paTCle23ag/
-	Mpmx/4zTo7O4GazqkHWNOrlo0My+IH9oSeK3huaVnulldKFaMi/HxlnY+5/a8mZyDdDbwM
-	Svp2lg4wPRdeOGjsCf4+XskQe6CcPhgX6wcPQhdD3fgEk+AFhEqgUGENTJjwj7ruJtWELG
-	jd3RAaq7lRcCIj92fSujWRY9RQ4Jt6DThaFPyyoSWRONmcou9rBrMjeYDTBFtHZs1cj1mW
-	gnOBpFXKthD27YVyrG5y0kxcNJNJJRyfA+AGMmy13CHiWZ/LFZxxNsRc5UdmNw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1756198821;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gq7eF/8AMTqmWrEqZ4QOBhXBx+dUaUlrxR8GPHeaZDw=;
-	b=n8oyBmfJ/rhmnpEyihZ9p9M6myKkTods7znJhO9xZVm43hrUuK9SNWmBW2JlYpdSt0agHv
-	I5fFYtncDTxoObBg==
-To: linux-wireless@vger.kernel.org
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH rtw-next] wifi: rtl8xxxu: expose efuse via debugfs
-Date: Tue, 26 Aug 2025 11:00:15 +0200
-Message-Id: <20250826090015.1552939-1-martin.kaistra@linutronix.de>
+	s=arc-20240116; t=1756198837; c=relaxed/simple;
+	bh=OP6X2mwp6Ki0VhRbI4xSpTNI5SzIs2DxLmREL4P2Doc=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=jOtIrgyEbjz72+4Ndbs09UtOTlfRYlAW/Axnoo4Dd4qU6D0jfrMwCqquFbOeh4G01at7OnltnfjfB7AA7zIF1N/jIo7YiZ3CHm2FvWRyNDxTXrHDYM0obYkWmUEk9CPHZiKssBKLX1bMZY5Rm2HSiH042ZHH3DUAbozS6EvUPp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=mrnXkfOI; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57Q90UJS01269590, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1756198831; bh=OP6X2mwp6Ki0VhRbI4xSpTNI5SzIs2DxLmREL4P2Doc=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=mrnXkfOIzcIFK4480vkITiiI5bJQZfv2K027io7kpTUQI/eXGdq7mXaoGPODlwWNI
+	 iqYk1raCYyh800Hji2jiRxWVN/1D2eMHSV1uzcGzsHoygFExAfGod8oSnR/TMUfptM
+	 bpGW0VNoBsT9/P3BSU0cx+KnnN/z40r+PtfXCeAngOjBU1S5u29XFxzNYanXhYN/5/
+	 AgMq72J9VEyCit7QcxByhqlkCIrUN4VltDCi1sXiKDY+pqe5BR9rOenSSviDN8Vz0b
+	 ZVBtp85t+mZMbQwRsJIyN9stwxPvJERqQo725fYq4jfk116DbyocqWNym3L4y89Z7h
+	 kFdbIZEgHam8g==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57Q90UJS01269590
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 Aug 2025 17:00:30 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Tue, 26 Aug 2025 17:00:29 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
+ 15.02.1544.027; Tue, 26 Aug 2025 17:00:30 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH rtw-next v2 01/11] wifi: rtw89: Fix rtw89_core_get_ch_dma() for RTL8852CU
+Thread-Topic: [PATCH rtw-next v2 01/11] wifi: rtw89: Fix
+ rtw89_core_get_ch_dma() for RTL8852CU
+Thread-Index: AQHcAyYgFh0777fe60moSIXGnadVn7RSUziAgADjWSCACLr7AIAY1yRg
+Date: Tue, 26 Aug 2025 09:00:30 +0000
+Message-ID: <3ae0e8e7efbc4b6189ce9416c3a890eb@realtek.com>
+References: <f4a7a1c4-3d64-4af3-bc77-b12d7c1320e7@gmail.com>
+ <5b1210f3-499d-44d8-9433-7beac2a2800d@gmail.com>
+ <11f3e864-7509-4e5f-86ed-997f8a9b63e9@gmail.com>
+ <4203c4ab09df4975be85e341f5e24264@realtek.com>
+ <de899380-fe3c-4b9e-86cf-3677fb0b4f92@gmail.com>
+In-Reply-To: <de899380-fe3c-4b9e-86cf-3677fb0b4f92@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The efuse contains the mac address and calibration data. During
-manufacturing and testing it can be necessary to read and check this
-data.
-
-Add a debugfs interface to make it available to userspace.
-
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
----
- drivers/net/wireless/realtek/rtl8xxxu/core.c | 24 ++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index 831b5025c6349..b45010c93ad72 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -1901,6 +1901,29 @@ static void rtl8xxxu_dump_efuse(struct rtl8xxxu_priv *priv)
- 		       priv->efuse_wifi.raw, EFUSE_MAP_LEN, true);
- }
- 
-+/* debugfs: efuse */
-+static ssize_t read_file_efuse(struct file *file, char __user *user_buf,
-+			       size_t count, loff_t *ppos)
-+{
-+	struct rtl8xxxu_priv *priv = file_inode(file)->i_private;
-+
-+	return simple_read_from_buffer(user_buf, count, ppos,
-+				       priv->efuse_wifi.raw, EFUSE_MAP_LEN);
-+}
-+
-+static const struct file_operations fops_efuse = {
-+	.read = read_file_efuse,
-+	.owner = THIS_MODULE,
-+};
-+
-+static void rtl8xxxu_debugfs_init(struct rtl8xxxu_priv *priv)
-+{
-+	struct dentry *phydir;
-+
-+	phydir = debugfs_create_dir("rtl8xxxu", priv->hw->wiphy->debugfsdir);
-+	debugfs_create_file("efuse", 0400, phydir, priv, &fops_efuse);
-+}
-+
- void rtl8xxxu_reset_8051(struct rtl8xxxu_priv *priv)
- {
- 	u8 val8;
-@@ -7974,6 +7997,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 	}
- 
- 	rtl8xxxu_init_led(priv);
-+	rtl8xxxu_debugfs_init(priv);
- 
- 	return 0;
- 
--- 
-2.39.5
-
+PiA+DQo+ID4gK3N0YXRpYyBpbmxpbmUNCj4gPiArdTggcnR3ODlfY2hpcF9nZXRfY2hfZG1hKHN0
+cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwgdTggcXNlbCkNCj4gPiArew0KPiA+ICsgICAgICAgY29u
+c3Qgc3RydWN0IHJ0dzg5X2NoaXBfaW5mbyAqY2hpcCA9IHJ0d2Rldi0+Y2hpcDsNCj4gPiArDQo+
+ID4gKyAgICAgICByZXR1cm4gY2hpcC0+b3BzLT5nZXRfY2hfZG1hKHJ0d2RldiwgcXNlbCk7DQo+
+ID4gK30NCj4gPiArDQo+ID4gIHN0YXRpYyBpbmxpbmUNCj4gPiAgdm9pZCBydHc4OV9jaGlwX21h
+Y19jZmdfZ250KHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwNCj4gPiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgY29uc3Qgc3RydWN0IHJ0dzg5X21hY19heF9jb2V4X2dudCAqZ250X2NmZykN
+Cj4gPg0KPiA+IEFsc28gdGhlIHJ0dzg5X2NvcmVfZ2V0X2NoX2RtYSgpIGlzIG1vdmVkIHRvIGNv
+cmUuYywgYW5kIGFkZA0KPiA+IHJ0dzg5X2NvcmVfZ2V0X2NoX2RtYV92MSgpIGZvciBSVEw4OTIy
+REUuDQo+ID4NCj4gPiBIb3dldmVyLCBVU0IgY2FuIHVzZSBkaWZmZXJlbnQgbWFwcGluZyBydWxl
+LCBzbyB3ZSBzaG91bGQgZXh0ZW5kIHRoZSBzaXplDQo+ID4gdG8gUlRXODlfSENJX1RZUEVfTlVN
+LiBUaGVuLA0KPiA+DQo+ID4gICByZXR1cm4gY2hpcC0+b3BzLT5nZXRfY2hfZG1hW3J0d2Rldi0+
+aGNpLnR5cGVdKHJ0d2RldiwgcXNlbCk7DQo+ID4NCj4gPiBJZiB5b3Ugd2FudCBteSBwYXRjaCBh
+cyBmaXJzdCBwYXRjaCBvZiB0aGlzIHBhdGNoc2V0LCBJIGNhbiBzaGFyZSBpdCBhcyBSRkMuDQo+
+ID4NCj4gDQo+IFllcywgdGhhdCB3b3VsZCBiZSBnb29kLg0KDQpGaW5hbGx5LCBJIGRlY2lkZSB0
+byBzZW5kIGEgZm9ybWFsIHBhdGNoIHdpdGhpbiBwYXRjaHNldCBmb3IgY29taW5nIFdpRmkgNyBj
+aGlwLg0KIltQQVRDSCBydHctbmV4dCAwOS8xMF0gd2lmaTogcnR3ODk6IGFic3RyYWN0IGdldHRp
+bmcgZnVuY3Rpb24gb2YgRE1BIGNoYW5uZWwiDQoNClsxXSBodHRwczovL2xvcmUua2VybmVsLm9y
+Zy9saW51eC13aXJlbGVzcy8yMDI1MDgyNjA4NTMzOS4yODUxMi0xLXBrc2hpaEByZWFsdGVrLmNv
+bS9ULyN1DQoNCg0K
 
