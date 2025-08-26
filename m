@@ -1,64 +1,64 @@
-Return-Path: <linux-wireless+bounces-26616-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26617-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C9AB357AC
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 10:53:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8E0B357AD
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 10:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61204175AC6
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 08:53:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B14934E3EFC
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 08:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E8E2FE065;
-	Tue, 26 Aug 2025 08:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD5F1BC3F;
+	Tue, 26 Aug 2025 08:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="KhVyDgZB"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="pe4Nqx9x"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D549A2FF145
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 08:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776CA1B6D08
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 08:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756198390; cv=none; b=AZ6y43o9dItR1L3MpVNKsOJuHWHe8XJFDzfgw+bXRLwAJMN3TFCDdHVco4dw9zS70OEH1d286sEfDtFyxv4c8zcNQajGwF3Fsd7Kr/YXyjEEwaJlm+kcKtWoJ6p8y5oxhdyeX5VOMvzzX0JdztI6mONAngSHDzCqEGjl1ppCDeQ=
+	t=1756198396; cv=none; b=g7huQWkeHEkHpSPRobP2HwqLQnalvUCiSVP82y5Z4k3hITaJ+E1pRo9AHCL5PgjhrB+QhfMUuPxDknNV5mxhylrF0ei5Duabs0XDlEhpQBQ4FCFUbqEGWTw3wrQFNkvDDGFhXauKmyVXxA9R+NLQcUfFhxfZ9o+NIVi9gYWLfSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756198390; c=relaxed/simple;
-	bh=MCxK7vkJ/2zAnOA6YkIo0RmU4vE1FC+rHsgqfi20g+U=;
+	s=arc-20240116; t=1756198396; c=relaxed/simple;
+	bh=+37raBK0nSA/Xhlw/E9XBvf2DRgrEPeoSHHCo9IfkQ0=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hb/so5+KyYkiPIlC55/Qg/JX/6pfAyWzZX9EpZyOhXJa0U38xOOIh9uVPAG2DRZMhHXJuVlBI6LU6XDLPUIkXwAHSbVipXVDloZZsOUWvK/Z4gG+MW5DTsBNfV36IFyTelVyaYo4dTKC9MRmNKZZKo6SCp4F8bj2E4G/zZME7A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=KhVyDgZB; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=J8C25fuRVuuj+IIYmpXAFdLqIuDg4y8vKe9OifeXoWNrZRZi5t3td+BkAz7TNRLsRrCMu6b79Y5J3AOB+ZbbASUK06zSWXmZdmL4t5aND106lT+r3n01YJYGOv4n2bARx5RyNq8AGZP4nAYpOwZ4Djlj+xm5RERPAldG2kaDt6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=pe4Nqx9x; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57Q8r4I211261944, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57Q8rBq651261956, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1756198385; bh=PJ0scRzS9YidLRea3twanunIY/zxlaWy6T0EICMlqYQ=;
+	t=1756198392; bh=TLGJ5m3AxHrth9jacVedbx7mwHNxFO5fk+slPcXcR+I=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=KhVyDgZBgrZzlYNqIY6HR8MOHySHTDURNZ7o3C2mwqpVdE/6U9BfyOt1jvCw2NvdO
-	 2HDn7ne0CtCoEgJZq9/VlilG2hve7g+0XREuWZfCHukJc+B63dl7TDrXBg5ZRR3ggX
-	 QIoGJ51Q3m3rkCZRi91jdFi75mVbAiGnrlA7+ofQUYr6JLeUUr5E91d0jynpqxFhDw
-	 AFMzTWRZ+pVKY820WIleUXPiVAAagV8qiwFsj3dLT9PZAhZ0JN0hLukI/37JRsup0M
-	 08L1gMkwUWqM3ARjfXDRjcEmx1oz5KyQqTt4S85AzDRuK+AbidQ97HsL3xlUPGg1eI
-	 9Knvhg0ekA/cA==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57Q8r4I211261944
+	b=pe4Nqx9xswuD1ElLhANBbc13zlzEzfL56ceQg6xlGPbahl6DXDAvPa2S4g9Lf/h5I
+	 qAsL5r1I9UFLRqOwTaPFFt1o+7piyihAJaxlwPJ84Kdc5q3+li0e8nSu5Ad7aT34X6
+	 5K3o4dHRn3aDAROsNve07yUQDZADAXcgRskVWt7wKL76b5wBZgpK3ODVhkV2Ky5p3U
+	 FyLODHQP8SykKkv5gvfD+amP5bflJqDTk6K/0K6+w216LDCCmpcXbGqUo9J6a3gPEo
+	 7dqSf7DkpR4nUGRG5noZNAPQuV6HY0j9oq1NEeud9z49XTugmuSDWz6XYsUdxb6pMH
+	 ooTguqTh+KMJA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57Q8rBq651261956
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 16:53:05 +0800
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 16:53:11 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 26 Aug 2025 16:53:05 +0800
+ 15.2.1544.27; Tue, 26 Aug 2025 16:53:11 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27; Tue, 26 Aug
- 2025 16:53:04 +0800
+ 2025 16:53:10 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH rtw-next 02/10] wifi: rtw89: pci: prepare interrupt related registers and functions for 8922DE
-Date: Tue, 26 Aug 2025 16:51:44 +0800
-Message-ID: <20250826085152.28164-3-pkshih@realtek.com>
+Subject: [PATCH rtw-next 03/10] wifi: rtw89: pci: use RDU status of R_BE_PCIE_DMA_IMR_0_V1 instead for 8922DE
+Date: Tue, 26 Aug 2025 16:51:45 +0800
+Message-ID: <20250826085152.28164-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250826085152.28164-1-pkshih@realtek.com>
 References: <20250826085152.28164-1-pkshih@realtek.com>
@@ -73,214 +73,139 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTKEXHMBS06.realtek.com.tw (10.21.1.56)
 
-The 8922DE is very similar to 8922AE except to RDU (RX desc unavailable)
-registers. The following patch will adjust to read this status from
-another register to reduce one reading IO, so create a set of functions
-ahead.
+The original RDU status of R_BE_HAXI_HIMR00 needs additional IO to get
+the status. The new WiFi 7 8922DE add the status to R_BE_PCIE_DMA_IMR_0_V1
+which is read already, so we can reduce one reading IO.
+
+After the changes, interrupt behavior of RTL8922DE in low power mode is
+the same as normal mode, so remove the configuration function for low
+power mode.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c    | 85 +++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/pci.h    | 15 ++++
- drivers/net/wireless/realtek/rtw89/pci_be.c |  9 +++
- 3 files changed, 109 insertions(+)
+ drivers/net/wireless/realtek/rtw89/pci.c    | 33 +++++++--------------
+ drivers/net/wireless/realtek/rtw89/pci.h    | 16 ++++++++++
+ drivers/net/wireless/realtek/rtw89/pci_be.c |  2 +-
+ 3 files changed, 27 insertions(+), 24 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 162075882fa4..0153977d4cf2 100644
+index 0153977d4cf2..e3fbe43a95ea 100644
 --- a/drivers/net/wireless/realtek/rtw89/pci.c
 +++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -797,6 +797,27 @@ void rtw89_pci_recognize_intrs_v2(struct rtw89_dev *rtwdev,
- }
- EXPORT_SYMBOL(rtw89_pci_recognize_intrs_v2);
+@@ -804,14 +804,16 @@ void rtw89_pci_recognize_intrs_v3(struct rtw89_dev *rtwdev,
+ 	isrs->ind_isrs = rtw89_read32(rtwdev, R_BE_PCIE_HISR) & rtwpci->ind_intrs;
+ 	isrs->halt_c2h_isrs = isrs->ind_isrs & B_BE_HS0ISR_IND_INT ?
+ 			      rtw89_read32(rtwdev, R_BE_HISR0) & rtwpci->halt_c2h_intrs : 0;
+-	isrs->isrs[0] = isrs->ind_isrs & B_BE_HCI_AXIDMA_INT ?
+-			rtw89_read32(rtwdev, R_BE_HAXI_HISR00) & rtwpci->intrs[0] : 0;
+ 	isrs->isrs[1] = rtw89_read32(rtwdev, R_BE_PCIE_DMA_ISR) & rtwpci->intrs[1];
  
-+void rtw89_pci_recognize_intrs_v3(struct rtw89_dev *rtwdev,
-+				  struct rtw89_pci *rtwpci,
-+				  struct rtw89_pci_isrs *isrs)
-+{
-+	isrs->ind_isrs = rtw89_read32(rtwdev, R_BE_PCIE_HISR) & rtwpci->ind_intrs;
-+	isrs->halt_c2h_isrs = isrs->ind_isrs & B_BE_HS0ISR_IND_INT ?
-+			      rtw89_read32(rtwdev, R_BE_HISR0) & rtwpci->halt_c2h_intrs : 0;
-+	isrs->isrs[0] = isrs->ind_isrs & B_BE_HCI_AXIDMA_INT ?
-+			rtw89_read32(rtwdev, R_BE_HAXI_HISR00) & rtwpci->intrs[0] : 0;
-+	isrs->isrs[1] = rtw89_read32(rtwdev, R_BE_PCIE_DMA_ISR) & rtwpci->intrs[1];
++	/* isrs[0] is not used, so borrow to store RDU status to share common
++	 * flow in rtw89_pci_interrupt_threadfn().
++	 */
++	isrs->isrs[0] = isrs->isrs[1] & (B_BE_PCIE_RDU_CH1_INT |
++					 B_BE_PCIE_RDU_CH0_INT);
 +
-+	if (isrs->halt_c2h_isrs)
-+		rtw89_write32(rtwdev, R_BE_HISR0, isrs->halt_c2h_isrs);
-+	if (isrs->isrs[0])
-+		rtw89_write32(rtwdev, R_BE_HAXI_HISR00, isrs->isrs[0]);
-+	if (isrs->isrs[1])
-+		rtw89_write32(rtwdev, R_BE_PCIE_DMA_ISR, isrs->isrs[1]);
-+	rtw89_write32(rtwdev, R_BE_PCIE_HISR, isrs->ind_isrs);
-+}
-+EXPORT_SYMBOL(rtw89_pci_recognize_intrs_v3);
-+
- void rtw89_pci_enable_intr(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci)
+ 	if (isrs->halt_c2h_isrs)
+ 		rtw89_write32(rtwdev, R_BE_HISR0, isrs->halt_c2h_isrs);
+-	if (isrs->isrs[0])
+-		rtw89_write32(rtwdev, R_BE_HAXI_HISR00, isrs->isrs[0]);
+ 	if (isrs->isrs[1])
+ 		rtw89_write32(rtwdev, R_BE_PCIE_DMA_ISR, isrs->isrs[1]);
+ 	rtw89_write32(rtwdev, R_BE_PCIE_HISR, isrs->ind_isrs);
+@@ -868,7 +870,6 @@ EXPORT_SYMBOL(rtw89_pci_disable_intr_v2);
+ void rtw89_pci_enable_intr_v3(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci)
  {
- 	rtw89_write32(rtwdev, R_AX_HIMR0, rtwpci->halt_c2h_intrs);
-@@ -844,6 +865,22 @@ void rtw89_pci_disable_intr_v2(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpc
+ 	rtw89_write32(rtwdev, R_BE_HIMR0, rtwpci->halt_c2h_intrs);
+-	rtw89_write32(rtwdev, R_BE_HAXI_HIMR00, rtwpci->intrs[0]);
+ 	rtw89_write32(rtwdev, R_BE_PCIE_DMA_IMR_0_V1, rtwpci->intrs[1]);
+ 	rtw89_write32(rtwdev, R_BE_PCIE_HIMR0, rtwpci->ind_intrs);
  }
- EXPORT_SYMBOL(rtw89_pci_disable_intr_v2);
- 
-+void rtw89_pci_enable_intr_v3(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci)
-+{
-+	rtw89_write32(rtwdev, R_BE_HIMR0, rtwpci->halt_c2h_intrs);
-+	rtw89_write32(rtwdev, R_BE_HAXI_HIMR00, rtwpci->intrs[0]);
-+	rtw89_write32(rtwdev, R_BE_PCIE_DMA_IMR_0_V1, rtwpci->intrs[1]);
-+	rtw89_write32(rtwdev, R_BE_PCIE_HIMR0, rtwpci->ind_intrs);
-+}
-+EXPORT_SYMBOL(rtw89_pci_enable_intr_v3);
-+
-+void rtw89_pci_disable_intr_v3(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci)
-+{
-+	rtw89_write32(rtwdev, R_BE_PCIE_HIMR0, 0);
-+	rtw89_write32(rtwdev, R_BE_PCIE_DMA_IMR_0_V1, 0);
-+}
-+EXPORT_SYMBOL(rtw89_pci_disable_intr_v3);
-+
- static void rtw89_pci_ops_recovery_start(struct rtw89_dev *rtwdev)
+@@ -3827,24 +3828,12 @@ static void rtw89_pci_default_intr_mask_v3(struct rtw89_dev *rtwdev)
  {
  	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
-@@ -3776,6 +3813,54 @@ void rtw89_pci_config_intr_mask_v2(struct rtw89_dev *rtwdev)
- }
- EXPORT_SYMBOL(rtw89_pci_config_intr_mask_v2);
  
-+static void rtw89_pci_recovery_intr_mask_v3(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
-+
+-	rtwpci->ind_intrs = B_BE_HCI_AXIDMA_INT_EN0 |
+-			    B_BE_HS0_IND_INT_EN0;
+-	rtwpci->halt_c2h_intrs = B_BE_HALT_C2H_INT_EN | B_BE_WDT_TIMEOUT_INT_EN;
+-	rtwpci->intrs[0] = B_BE_RDU_CH1_INT_EN_V2 |
+-			   B_BE_RDU_CH0_INT_EN_V2;
+-	rtwpci->intrs[1] = B_BE_PCIE_RX_RX0P2_IMR0_V1 |
+-			   B_BE_PCIE_RX_RPQ0_IMR0_V1;
+-}
+-
+-static void rtw89_pci_low_power_intr_mask_v3(struct rtw89_dev *rtwdev)
+-{
+-	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
+-
+-	rtwpci->ind_intrs = B_BE_HS0_IND_INT_EN0 |
+-			    B_BE_HS1_IND_INT_EN0;
 +	rtwpci->ind_intrs = B_BE_HS0_IND_INT_EN0;
-+	rtwpci->halt_c2h_intrs = B_BE_HALT_C2H_INT_EN | B_BE_WDT_TIMEOUT_INT_EN;
-+	rtwpci->intrs[0] = 0;
-+	rtwpci->intrs[1] = 0;
-+}
-+
-+static void rtw89_pci_default_intr_mask_v3(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
-+
-+	rtwpci->ind_intrs = B_BE_HCI_AXIDMA_INT_EN0 |
-+			    B_BE_HS0_IND_INT_EN0;
-+	rtwpci->halt_c2h_intrs = B_BE_HALT_C2H_INT_EN | B_BE_WDT_TIMEOUT_INT_EN;
-+	rtwpci->intrs[0] = B_BE_RDU_CH1_INT_EN_V2 |
-+			   B_BE_RDU_CH0_INT_EN_V2;
-+	rtwpci->intrs[1] = B_BE_PCIE_RX_RX0P2_IMR0_V1 |
-+			   B_BE_PCIE_RX_RPQ0_IMR0_V1;
-+}
-+
-+static void rtw89_pci_low_power_intr_mask_v3(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
-+
-+	rtwpci->ind_intrs = B_BE_HS0_IND_INT_EN0 |
-+			    B_BE_HS1_IND_INT_EN0;
-+	rtwpci->halt_c2h_intrs = B_BE_HALT_C2H_INT_EN | B_BE_WDT_TIMEOUT_INT_EN;
-+	rtwpci->intrs[0] = 0;
-+	rtwpci->intrs[1] = B_BE_PCIE_RX_RX0P2_IMR0_V1 |
-+			   B_BE_PCIE_RX_RPQ0_IMR0_V1;
-+}
-+
-+void rtw89_pci_config_intr_mask_v3(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
-+
-+	if (rtwpci->under_recovery)
-+		rtw89_pci_recovery_intr_mask_v3(rtwdev);
-+	else if (rtwpci->low_power)
-+		rtw89_pci_low_power_intr_mask_v3(rtwdev);
-+	else
-+		rtw89_pci_default_intr_mask_v3(rtwdev);
-+}
-+EXPORT_SYMBOL(rtw89_pci_config_intr_mask_v3);
-+
- static int rtw89_pci_request_irq(struct rtw89_dev *rtwdev,
- 				 struct pci_dev *pdev)
- {
+ 	rtwpci->halt_c2h_intrs = B_BE_HALT_C2H_INT_EN | B_BE_WDT_TIMEOUT_INT_EN;
+ 	rtwpci->intrs[0] = 0;
+-	rtwpci->intrs[1] = B_BE_PCIE_RX_RX0P2_IMR0_V1 |
++	rtwpci->intrs[1] = B_BE_PCIE_RDU_CH1_IMR |
++			   B_BE_PCIE_RDU_CH0_IMR |
++			   B_BE_PCIE_RX_RX0P2_IMR0_V1 |
+ 			   B_BE_PCIE_RX_RPQ0_IMR0_V1;
+ }
+ 
+@@ -3854,8 +3843,6 @@ void rtw89_pci_config_intr_mask_v3(struct rtw89_dev *rtwdev)
+ 
+ 	if (rtwpci->under_recovery)
+ 		rtw89_pci_recovery_intr_mask_v3(rtwdev);
+-	else if (rtwpci->low_power)
+-		rtw89_pci_low_power_intr_mask_v3(rtwdev);
+ 	else
+ 		rtw89_pci_default_intr_mask_v3(rtwdev);
+ }
 diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
-index 14b1d388d46b..95da43627608 100644
+index 95da43627608..6558f60ec914 100644
 --- a/drivers/net/wireless/realtek/rtw89/pci.h
 +++ b/drivers/net/wireless/realtek/rtw89/pci.h
-@@ -426,9 +426,13 @@
- #define B_BE_RDU_CH4_INT_IMR_V1 BIT(29)
- #define B_BE_RDU_CH3_INT_IMR_V1 BIT(28)
- #define B_BE_RDU_CH2_INT_IMR_V1 BIT(27)
-+#define B_BE_RDU_CH1_INT_EN_V2 BIT(27)
- #define B_BE_RDU_CH1_INT_IMR_V1 BIT(26)
-+#define B_BE_RDU_CH0_INT_EN_V2 BIT(26)
- #define B_BE_RDU_CH0_INT_IMR_V1 BIT(25)
-+#define B_BE_RXDMA_STUCK_INT_EN_V2 BIT(25)
- #define B_BE_RXDMA_STUCK_INT_EN_V1 BIT(24)
-+#define B_BE_TXDMA_STUCK_INT_EN_V2 BIT(24)
- #define B_BE_TXDMA_STUCK_INT_EN_V1 BIT(23)
- #define B_BE_TXDMA_CH14_INT_EN_V1 BIT(22)
- #define B_BE_TXDMA_CH13_INT_EN_V1 BIT(21)
-@@ -459,9 +463,13 @@
- #define B_BE_RDU_CH4_INT_V1 BIT(29)
- #define B_BE_RDU_CH3_INT_V1 BIT(28)
- #define B_BE_RDU_CH2_INT_V1 BIT(27)
-+#define B_BE_RDU_CH1_INT_V2 BIT(27)
- #define B_BE_RDU_CH1_INT_V1 BIT(26)
-+#define B_BE_RDU_CH0_INT_V2 BIT(26)
- #define B_BE_RDU_CH0_INT_V1 BIT(25)
-+#define B_BE_RXDMA_STUCK_INT_V2 BIT(25)
- #define B_BE_RXDMA_STUCK_INT_V1 BIT(24)
-+#define B_BE_TXDMA_STUCK_INT_V2 BIT(24)
- #define B_BE_TXDMA_STUCK_INT_V1 BIT(23)
- #define B_BE_TXDMA_CH14_INT_V1 BIT(22)
- #define B_BE_TXDMA_CH13_INT_V1 BIT(21)
-@@ -1633,6 +1641,7 @@ extern const struct rtw89_pci_bd_ram rtw89_bd_ram_table_dual[RTW89_TXCH_NUM];
- extern const struct rtw89_pci_bd_ram rtw89_bd_ram_table_single[RTW89_TXCH_NUM];
- extern const struct rtw89_pci_isr_def rtw89_pci_isr_ax;
- extern const struct rtw89_pci_isr_def rtw89_pci_isr_be;
-+extern const struct rtw89_pci_isr_def rtw89_pci_isr_be_v1;
- extern const struct rtw89_pci_gen_def rtw89_pci_gen_ax;
- extern const struct rtw89_pci_gen_def rtw89_pci_gen_be;
+@@ -372,6 +372,14 @@
+ #define B_BE_HS0ISR_IND_INT BIT(0)
  
-@@ -1655,12 +1664,15 @@ void rtw89_pci_ctrl_dma_all(struct rtw89_dev *rtwdev, bool enable);
- void rtw89_pci_config_intr_mask(struct rtw89_dev *rtwdev);
- void rtw89_pci_config_intr_mask_v1(struct rtw89_dev *rtwdev);
- void rtw89_pci_config_intr_mask_v2(struct rtw89_dev *rtwdev);
-+void rtw89_pci_config_intr_mask_v3(struct rtw89_dev *rtwdev);
- void rtw89_pci_enable_intr(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci);
- void rtw89_pci_disable_intr(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci);
- void rtw89_pci_enable_intr_v1(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci);
- void rtw89_pci_disable_intr_v1(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci);
- void rtw89_pci_enable_intr_v2(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci);
- void rtw89_pci_disable_intr_v2(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci);
-+void rtw89_pci_enable_intr_v3(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci);
-+void rtw89_pci_disable_intr_v3(struct rtw89_dev *rtwdev, struct rtw89_pci *rtwpci);
- void rtw89_pci_recognize_intrs(struct rtw89_dev *rtwdev,
- 			       struct rtw89_pci *rtwpci,
- 			       struct rtw89_pci_isrs *isrs);
-@@ -1670,6 +1682,9 @@ void rtw89_pci_recognize_intrs_v1(struct rtw89_dev *rtwdev,
- void rtw89_pci_recognize_intrs_v2(struct rtw89_dev *rtwdev,
- 				  struct rtw89_pci *rtwpci,
- 				  struct rtw89_pci_isrs *isrs);
-+void rtw89_pci_recognize_intrs_v3(struct rtw89_dev *rtwdev,
-+				  struct rtw89_pci *rtwpci,
-+				  struct rtw89_pci_isrs *isrs);
+ #define R_BE_PCIE_DMA_IMR_0_V1 0x30B8
++#define B_BE_PCIE_RDU_CH7_IMR BIT(31)
++#define B_BE_PCIE_RDU_CH6_IMR BIT(30)
++#define B_BE_PCIE_RDU_CH5_IMR BIT(29)
++#define B_BE_PCIE_RDU_CH4_IMR BIT(28)
++#define B_BE_PCIE_RDU_CH3_IMR BIT(27)
++#define B_BE_PCIE_RDU_CH2_IMR BIT(26)
++#define B_BE_PCIE_RDU_CH1_IMR BIT(25)
++#define B_BE_PCIE_RDU_CH0_IMR BIT(24)
+ #define B_BE_PCIE_RX_RX1P1_IMR0_V1 BIT(23)
+ #define B_BE_PCIE_RX_RX0P1_IMR0_V1 BIT(22)
+ #define B_BE_PCIE_RX_ROQ1_IMR0_V1 BIT(21)
+@@ -397,6 +405,14 @@
+ #define B_BE_PCIE_TX_CH0_IMR0 BIT(0)
  
- static inline
- u32 rtw89_chip_fill_txaddr_info(struct rtw89_dev *rtwdev,
+ #define R_BE_PCIE_DMA_ISR 0x30BC
++#define B_BE_PCIE_RDU_CH7_INT BIT(31)
++#define B_BE_PCIE_RDU_CH6_INT BIT(30)
++#define B_BE_PCIE_RDU_CH5_INT BIT(29)
++#define B_BE_PCIE_RDU_CH4_INT BIT(28)
++#define B_BE_PCIE_RDU_CH3_INT BIT(27)
++#define B_BE_PCIE_RDU_CH2_INT BIT(26)
++#define B_BE_PCIE_RDU_CH1_INT BIT(25)
++#define B_BE_PCIE_RDU_CH0_INT BIT(24)
+ #define B_BE_PCIE_RX_RX1P1_ISR_V1 BIT(23)
+ #define B_BE_PCIE_RX_RX0P1_ISR_V1 BIT(22)
+ #define B_BE_PCIE_RX_ROQ1_ISR_V1 BIT(21)
 diff --git a/drivers/net/wireless/realtek/rtw89/pci_be.c b/drivers/net/wireless/realtek/rtw89/pci_be.c
-index 29ca58b86085..f4b9c98e4eb4 100644
+index f4b9c98e4eb4..ecfe1b60e847 100644
 --- a/drivers/net/wireless/realtek/rtw89/pci_be.c
 +++ b/drivers/net/wireless/realtek/rtw89/pci_be.c
-@@ -674,6 +674,15 @@ const struct rtw89_pci_isr_def rtw89_pci_isr_be = {
- };
+@@ -675,7 +675,7 @@ const struct rtw89_pci_isr_def rtw89_pci_isr_be = {
  EXPORT_SYMBOL(rtw89_pci_isr_be);
  
-+const struct rtw89_pci_isr_def rtw89_pci_isr_be_v1 = {
-+	.isr_rdu = B_BE_RDU_CH1_INT_V2 | B_BE_RDU_CH0_INT_V2,
-+	.isr_halt_c2h = B_BE_HALT_C2H_INT,
-+	.isr_wdt_timeout = B_BE_WDT_TIMEOUT_INT,
-+	.isr_clear_rpq = {R_BE_PCIE_DMA_ISR, B_BE_PCIE_RX_RPQ0_ISR_V1},
-+	.isr_clear_rxq = {R_BE_PCIE_DMA_ISR, B_BE_PCIE_RX_RX0P2_ISR_V1},
-+};
-+EXPORT_SYMBOL(rtw89_pci_isr_be_v1);
-+
- const struct rtw89_pci_gen_def rtw89_pci_gen_be = {
- 	.mac_pre_init = rtw89_pci_ops_mac_pre_init_be,
- 	.mac_pre_deinit = rtw89_pci_ops_mac_pre_deinit_be,
+ const struct rtw89_pci_isr_def rtw89_pci_isr_be_v1 = {
+-	.isr_rdu = B_BE_RDU_CH1_INT_V2 | B_BE_RDU_CH0_INT_V2,
++	.isr_rdu = B_BE_PCIE_RDU_CH1_INT | B_BE_PCIE_RDU_CH0_INT,
+ 	.isr_halt_c2h = B_BE_HALT_C2H_INT,
+ 	.isr_wdt_timeout = B_BE_WDT_TIMEOUT_INT,
+ 	.isr_clear_rpq = {R_BE_PCIE_DMA_ISR, B_BE_PCIE_RX_RPQ0_ISR_V1},
 -- 
 2.25.1
 
