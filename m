@@ -1,200 +1,326 @@
-Return-Path: <linux-wireless+bounces-26657-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26658-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69302B37151
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 19:26:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B04FB372AE
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 20:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64DDF1BA675E
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 17:26:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BABB63B5873
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 18:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3042E371D;
-	Tue, 26 Aug 2025 17:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096F71A76B1;
+	Tue, 26 Aug 2025 18:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VrLOQLsS"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ar2/j8aZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B81238C0B;
-	Tue, 26 Aug 2025 17:26:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CAEE2F6597
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 18:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756229192; cv=none; b=SYnTZseTxzjarJpC1ys7TvX3qjdifdnuShWOy7KDlKndxqNxbppoYcmt3MTSP+jIfSUvFgBYXc9S9mNHiFWcmvliYVz0pStHJY2+xlLDhCKkkS9mLWnpLX6KzQQd42BNrv0g6cjwOUVEMGUiUKOl0wT/KoLkMv3CXvS32eM0fLI=
+	t=1756234586; cv=none; b=XLNY5Tr1Bznq4kek5SW67HsL32nDzfnbkp9gHiH6NJMA1Y6ZDXAk5clHHKxbc7u7lwJzCeLzfYPb8wfzlYXUdJIKYtvhJ5cDSKA24H9ps3KCZzaTLhEkG4gXvugKzCoAfvlBWiroaELNdzT3jZm4nVtYtXuKL0C2a6JIgTgdUMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756229192; c=relaxed/simple;
-	bh=lbOtxM0j44twxV2tyNB4EQyXXixJAdCX6fiPFWLl1R4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TykUe12YHWlXjxKxpmkKdTGLBod+PSwqg6WoB5LcwC/Ow+FfDU8MlqLVS7P+K95xvPWSWGNBRUZQ44nkRKAYuh9TeDGEK5ZZIEFnA6Z5/oS95R7ktEJtsSZOyLxGGphwRlA8wPFPFYOXxSArqpbX7NNkE6E53v0SzNUQAguCPC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VrLOQLsS; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756229190; x=1787765190;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=lbOtxM0j44twxV2tyNB4EQyXXixJAdCX6fiPFWLl1R4=;
-  b=VrLOQLsSPnNSSIR0VsCrImeUqXNwTMuuMZPGUJ1bnKf9DQjbh/rA26sJ
-   TxvjFe2h5nT+HowdrYHok9mTqCKme9gvAZ8xHZsXRYCWsDwcgbXArSiPx
-   qBeyGsZk4NbY5JkEAo2DaJq8fpGIHf7C7eM8BH3FndAUD02beGU2rCRbs
-   QIGChpriLYJm8eweOhvxH5A8/AbdZS0S33A0HOCVdbWNHG5m02itd6DHU
-   3DgE6Rpff0qm38L/TMox+zdQPb6M1tG6WGVwwhelW+iH71T5AF4MeFlY3
-   w4fCu5RFPVuKhrs6z2hDRpg/FhvePf97N2w+Vpd59WeFtti1Gek+L24cD
-   g==;
-X-CSE-ConnectionGUID: xUGaRR7rRcqlEF9d5a+ehA==
-X-CSE-MsgGUID: +Bb6VK16QXyLSxVUEJVD0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="57675231"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="57675231"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 10:26:28 -0700
-X-CSE-ConnectionGUID: C3Z8/anXSBCmJy5gyUM7Bg==
-X-CSE-MsgGUID: nnBLE3O/Tl6gR/IMS1XbNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="170452017"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 10:26:26 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>,
-	stable@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless] wifi: mac80211: do not permit 40 MHz EHT operation on 5/6 GHz
-Date: Tue, 26 Aug 2025 20:26:01 +0300
-Message-Id: <20250826202553.a6582f3abf57.Ic670429dc7127f68c818b4290d950ebfb5a0b9e1@changeid>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1756234586; c=relaxed/simple;
+	bh=FD5LbJaZre76+NqyE2z9QGSfpYc5+jSzJIvptI7v1Ao=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WBQJYPdrRBpiylWAOn9DmVwX3+49MEDtuu+YRDpkXg86TQ58Rn+YLXxA2M4SGbiuEYH210/yST4FFBElD55ElQkuNF5B8ShHzq9I+2BKJiyUmQVU0Zc32363BMHiI7B0EU38GL3pxnQfZUxx2fnezm+NrUwXTWEgAxVhLBw/ntk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ar2/j8aZ; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=xxA9AXkwa7x00rKajLdGfPrqCO6VuyNdHQkTwVNJL8c=;
+	t=1756234585; x=1757444185; b=ar2/j8aZx5bhEpwSt6iqS7ktVf7RD3jkCqWdAY+r1POA4IG
+	nhId0SZuhe4/vBq8MAMZ1xV960jhT5BA1BxtJ4nWsiuHSzudrxlzRfiPmpmg3YQbOYfzvgat0IYeD
+	9CFcd5GG0PmVgGsf94I3qyDXjRKyG0gMK834ri7otUMsfEVQkr5fgMX9rgnA87gCrKIT3LJHJ2W6Y
+	yc6fbKSvsll3FGyS6MhX7iBWKsHrgQhft1V5ys7RJ9+Zbq2O3H82w/IGKlUom6e3gzY0ekLPCNuQf
+	dCexUmIDvPsBFsbefwacm2xULSL0xi7vE8UoV5eITCTvIh2BnPAfGnXtVFwyVukw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uqyqE-00000004427-1zmT;
+	Tue, 26 Aug 2025 20:56:22 +0200
+Message-ID: <75245df8edd5bbaa8f9cdfd12bab37720473d93d.camel@sipsolutions.net>
+Subject: Re: [PROPOSAL RFC] S1G Primary Channel Implementation Proposal
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Date: Tue, 26 Aug 2025 20:56:21 +0200
+In-Reply-To: <xu4ftmpdwwpokw6exaprrv6wleptq7ggleiluiu6x2dzqbqfhv@6s4m3okiohzw> (sfid-20250804_091154_355712_2B65336A)
+References: 
+	<xu4ftmpdwwpokw6exaprrv6wleptq7ggleiluiu6x2dzqbqfhv@6s4m3okiohzw>
+	 (sfid-20250804_091154_355712_2B65336A)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+On Mon, 2025-08-04 at 17:11 +1000, Lachlan Hodges wrote:
+> Hi Johannes, Wireless,
+>=20
+> One of the last remaining pieces within cfg80211/mac80211 to enable
+> complete S1G functionality is primary channel support. We've identified
+> a couple of potential implementation specific issues and would like
+> maintainer input prior to developing the patchset as it may be
+> mildly contentious.
+>=20
+> Background
+> ----------
+>=20
+> The channelisation of an S1G PHY consists of two components, a center
+> frequency and a primary center frequency as per IEEE80211-2024 23.3.14.
+> The center frequency is equivalent to other PHY types, being the center
+> operating frequency for the operating channel and the primary center
+> frequency being the center frequency for the primary channel.
+>=20
+> When an S1G PHY changes channel, it requires both the operating channel
+> and the primary channel parameters. The implementation of this will be
+> briefly mentioned at the end of this email.
 
-The EHT PHY requirements state that 80 MHz must be supported on the 5
-and 6 GHz bands unless the STA is 20 MHz only. So if the channel width
-is limited to 40 MHz on a band other than 2.4 GHz, then disable EHT and
-downgrade to HE.
+How is the primary channel in S1G different from the primary channel in
+2.4/5/6 GHz bands? The widths are multiples of 20 MHz rather than
+multiples of 1 MHz, but it seems pretty similar otherwise?
 
-The primary case where this can happen is if the hardware disables
-puncturing using IEEE80211_HW_DISALLOW_PUNCTURING.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- net/mac80211/mlme.c            |  8 ++++++++
- net/mac80211/tests/chan-mode.c | 30 +++++++++++++++++++++++++-----
- 2 files changed, 33 insertions(+), 5 deletions(-)
+> S1G Channel Structure
+> ---------------------
+>=20
+> S1G has a hierarchical channel structure. Below is a snippet from the
+> IEEE80211-2020 Australian/US S1G band. The righthand side |*|
+> represents the FCC band edge. Above the =3D=3D line are the designated
+> channel numbers and on the left column their respective bandwidths.
+>=20
+>    |------|---------------------------------------------|*|
+>  c | 8MHz |  |                  44                   |  |*|
+>  h |------|---------------------------------------------|*|
+>  a | 4MHz |  |        40         |        48         |  |*|
+>  n |------|---------------------------------------------|*|
+>  n | 2MHz |  |   38    |   42    |   46    |   50    |  |*|
+>  e |------|---------------------------------------------|*|
+>  l | 1MHz |  | 37 | 39 | 41 | 43 | 45 | 47 | 49 | 51 |  |*|
+>    |=3D=3D=3D=3D=3D=3D|=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D|*|
+>    |******| 920  921  922  923  924  925  926  927  928 |*|
+>    |******|---------------------------------------------|*|
+>                            frequency (MHz)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 1008eb8e9b13..dd650a127a31 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1189,6 +1189,14 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
- 			     "required MCSes not supported, disabling EHT\n");
- 	}
- 
-+	if (conn->mode >= IEEE80211_CONN_MODE_EHT &&
-+	    channel->band != NL80211_BAND_2GHZ &&
-+	    conn->bw_limit == IEEE80211_CONN_BW_LIMIT_40) {
-+		conn->mode = IEEE80211_CONN_MODE_HE;
-+		link_id_info(sdata, link_id,
-+			     "required bandwidth not supported, disabling EHT\n");
-+	}
-+
- 	/* the mode can only decrease, so this must terminate */
- 	if (ap_mode != conn->mode) {
- 		kfree(elems);
-diff --git a/net/mac80211/tests/chan-mode.c b/net/mac80211/tests/chan-mode.c
-index 96c7b3ab2744..adc069065e73 100644
---- a/net/mac80211/tests/chan-mode.c
-+++ b/net/mac80211/tests/chan-mode.c
-@@ -2,7 +2,7 @@
- /*
-  * KUnit tests for channel mode functions
-  *
-- * Copyright (C) 2024 Intel Corporation
-+ * Copyright (C) 2024-2025 Intel Corporation
-  */
- #include <net/cfg80211.h>
- #include <kunit/test.h>
-@@ -28,6 +28,10 @@ static const struct determine_chan_mode_case {
- 	u8 vht_basic_mcs_1_4, vht_basic_mcs_5_8;
- 	u8 he_basic_mcs_1_4, he_basic_mcs_5_8;
- 	u8 eht_mcs7_min_nss;
-+	u16 eht_disabled_subchannels;
-+	u8 eht_bw;
-+	enum ieee80211_conn_bw_limit conn_bw_limit;
-+	enum ieee80211_conn_bw_limit expected_bw_limit;
- 	int error;
- } determine_chan_mode_cases[] = {
- 	{
-@@ -128,6 +132,14 @@ static const struct determine_chan_mode_case {
- 		.conn_mode = IEEE80211_CONN_MODE_EHT,
- 		.eht_mcs7_min_nss = 0x15,
- 		.error = EINVAL,
-+	}, {
-+		.desc = "80 MHz EHT is downgraded to 40 MHz HE due to puncturing",
-+		.conn_mode = IEEE80211_CONN_MODE_EHT,
-+		.expected_mode = IEEE80211_CONN_MODE_HE,
-+		.conn_bw_limit = IEEE80211_CONN_BW_LIMIT_80,
-+		.expected_bw_limit = IEEE80211_CONN_BW_LIMIT_40,
-+		.eht_disabled_subchannels = 0x08,
-+		.eht_bw = IEEE80211_EHT_OPER_CHAN_WIDTH_80MHZ,
- 	}
- };
- KUNIT_ARRAY_PARAM_DESC(determine_chan_mode, determine_chan_mode_cases, desc)
-@@ -138,7 +150,7 @@ static void test_determine_chan_mode(struct kunit *test)
- 	struct t_sdata *t_sdata = T_SDATA(test);
- 	struct ieee80211_conn_settings conn = {
- 		.mode = params->conn_mode,
--		.bw_limit = IEEE80211_CONN_BW_LIMIT_20,
-+		.bw_limit = params->conn_bw_limit,
- 	};
- 	struct cfg80211_bss cbss = {
- 		.channel = &t_sdata->band_5ghz.channels[0],
-@@ -191,14 +203,21 @@ static void test_determine_chan_mode(struct kunit *test)
- 		0x7f, 0x01, 0x00, 0x88, 0x88, 0x88, 0x00, 0x00,
- 		0x00,
- 		/* EHT Operation */
--		WLAN_EID_EXTENSION, 0x09, WLAN_EID_EXT_EHT_OPERATION,
--		0x01, params->eht_mcs7_min_nss ? params->eht_mcs7_min_nss : 0x11,
--		0x00, 0x00, 0x00, 0x00, 0x24, 0x00,
-+		WLAN_EID_EXTENSION, 0x0b, WLAN_EID_EXT_EHT_OPERATION,
-+		0x03, params->eht_mcs7_min_nss ? params->eht_mcs7_min_nss : 0x11,
-+		0x00, 0x00, 0x00, params->eht_bw,
-+		params->eht_bw == IEEE80211_EHT_OPER_CHAN_WIDTH_80MHZ ? 42 : 36,
-+		0x00,
-+		u16_get_bits(params->eht_disabled_subchannels, 0xff),
-+		u16_get_bits(params->eht_disabled_subchannels, 0xff00),
- 	};
- 	struct ieee80211_chan_req chanreq = {};
- 	struct cfg80211_chan_def ap_chandef = {};
- 	struct ieee802_11_elems *elems;
- 
-+	/* To force EHT downgrade to HE on punctured 80 MHz downgraded to 40 MHz */
-+	set_bit(IEEE80211_HW_DISALLOW_PUNCTURING, t_sdata->local.hw.flags);
-+
- 	if (params->strict)
- 		set_bit(IEEE80211_HW_STRICT, t_sdata->local.hw.flags);
- 	else
-@@ -237,6 +256,7 @@ static void test_determine_chan_mode(struct kunit *test)
- 	} else {
- 		KUNIT_ASSERT_NOT_ERR_OR_NULL(test, elems);
- 		KUNIT_ASSERT_EQ(test, conn.mode, params->expected_mode);
-+		KUNIT_ASSERT_EQ(test, conn.bw_limit, params->expected_bw_limit);
- 	}
- }
- 
--- 
-2.34.1
+Yeah ... I mean if you replace 1 MHz by 20 MHz, 2 by 40 etc. then it
+looks pretty much the same as for EHT with up to 320 MHz? Except the
+frequencies and channels?
 
+> S1G Channel Selection Example
+> -----------------------------
+>=20
+> An example channel configuration would be an operating channel of 44 and
+> a primary channel of 37. The primary channel must be a 1MHz or 2MHz chann=
+el
+
+OK that's different I guess, the primary channel in HT/... would always
+be 20, not 40, like here where you can have both 1 and 2?
+
+But I'm still not sure I'd think about it so completely differently?
+
+> and must exist as a primary subchannel within the operating channels band=
+.
+> Using the sample above, operating channel 44 can have a 1MHz primary of
+> 37, 39, 41, 43, 45, 47, 49 or 51 and same goes for the 2MHz channels. Whe=
+reas
+> an operating channel of 40 may only have primary 1MHz channels of 37, 39,
+> 41 and 43.
+
+Again, very similar to HT etc., which is all captured well by the
+chandef today.
+
+
+> Regulatory Emission Challenges
+> ------------------------------
+>=20
+> To control RF emissions during FCC compliance testing, hardware vendors
+> disable edge-band primary channels to meet emission requirements. [1], [2=
+]
+> and [3] show 1MHz and 2MHz primary channels on band edges disabled. This,
+> however, does not prevent the operating channel from being used. This is =
+due
+> to the OFDM envelope peaking near band centre, providing enough spectrum
+> roll-off to satisfy emission limits.
+>=20
+> Using [3] as an example, primary channels 51, 50 and 49 are disabled duri=
+ng
+> testing, but operating channels 48 and 44 are still tested (both of which=
+ contain
+> the disabled primary channels). These configurations all passed FCC requi=
+rements.
+
+OK, that seems a bit annoying, but not really all that problematic.
+
+> Proposed Solution
+> -----------------
+>=20
+> We propose a new flag within struct ieee80211_channel_flags called
+> IEEE80211_CHAN_S1G_NO_PRIMARY or something similar that tells the
+> wireless subsystem that this channel cannot be used as a primary channel,
+> but is not disabled. This is an important distinction as during subchanne=
+l
+> validation, if a single subchannel is disabled that operating channel can=
+not
+> be used (similar to VHT and other PHY types) but an operating channel can
+> be used if an edgeband 1MHz channel has the NO_PRIMARY flag but is _not_
+> disabled.
+>=20
+> NB: While the existing for_each_subchan macro doesn't work for S1G channe=
+ls
+>     given its fixed step size of 20MHz, this will be updated during
+>     the implementation.
+>=20
+> It's also important to note that this can only apply to edgeband primary
+> channels for the current regdom. This validation will be performed upon
+> advertisement by the driver of the available channels for the S1G band.
+> Additionally, puncturing is not supported for S1G.
+>=20
+> This will be an implementation detail, as this is not explicitly describe=
+d
+> by the standard, but rather used by vendors to ensure FCC compliance.
+
+Hmm. So first I wanted to say that this totally makes sense to me. But
+actually I'm not so sure. I mean, get the restriction and why it's
+needed and all that, however, we have to consider interplay of various
+factors here.
+
+Consider the difference between AU and US in the regdb (the only
+countries currently listed with S1G support):
+
+country AU: DFS-ETSI
+        (915 - 920 @ 4), (1000 mW)
+        (920 - 928 @ 8), (1000 mW)
+
+country US: DFS-FCC
+        (902 - 904 @ 2), (30)
+        (904 - 920 @ 16), (30)
+        (920 - 928 @ 8), (30)
+
+I'm not sure which operating class you're applying to get those channel
+numbers in your figure above, so I'm going to have to handwave a bit.
+But assuming such a restriction also applies on the lower band edge
+(OFDM is symmetric, so it probably should) then you'd have to disable
+different channels in AU and US regdomains, since one starts at 902 MHz
+and the other only at 915 MHz. So for a channel that's between 915/916
+MHz (which according to your figure I guess would be channel 27?) you'd
+probably have to disable it in AU but not disable it in the US?
+
+So I'm not sure statically disabling the channels from the driver works
+unless you assume there's no regulatory domain involved or anything?
+
+If I'm right about this, then perhaps it should be expressed as a
+(wiphy-specific) "primary channel band edge distance"?
+
+> Primary Channel Representation
+> ------------------------------
+>=20
+> One potential challenge with actually implementing primary channel suppor=
+t
+> is how and where the primary channel is described. Initially it was thoug=
+ht
+> that a channel definition could contain a separate struct ieee80211_chann=
+el
+> like such:
+>=20
+> struct cfg80211_chan_def {
+>         struct ieee80211_channel *chan;
+>         [...]
+>         struct ieee80211_channel *s1g_pri_chan;
+> };
+
+Just off-hand, that seems awkward.
+
+> The obvious problem with this is that now a channel definition describes =
+two
+> channels, though you could argue that to correctly describe an S1G channe=
+l
+> you require both components - which in some regards makes sense to put th=
+em
+> both in the channel definition. It does, however, require various API cha=
+nges,
+> with the biggest one being cfg80211_chandef_create() to accept the new pr=
+imary
+> channel parameter. An alternative is to create an S1G specific chandef cr=
+eation
+> function which can then call the generic form.
+
+Yeah, but not even just technically awkward.
+
+It's also a complete deviation from how anything else works, and you'd
+actually have to have different channel structs for all those
+'aggregate' channels like 44, which we certainly don't do for EHT. If
+this is the wrong way to think about it in EHT, why would it be the
+right way to do it in S1G? Even in EHT the whole channel is "44" (to
+stay in your numbering scheme), but the full channel is expressed as the
+overall width/center_freq1, and the control/primary channel is the
+pointer to the channel struct, and channel structs only exist for the 20
+MHz channels.
+
+> Additionally, we can reuse cfg80211_chandef_valid() to perform validation=
+ as
+> both the operating channel and primary channel exist within the same
+> channel definition. By extension, many of the function that operate on a
+> chandef have access to both the primary channel and operating channel.
+> Definitely something to consider.
+>=20
+> The second option is to treat them as two separate channel definitions. T=
+his
+> is probably more "correct" as after all a primary channel is a separate c=
+hannel.
+> While this approach doesn't require many major API changes like the previ=
+ous
+> method, it still has some negatives. Firstly, the need to carry a separat=
+e
+> channel definition in various places. Taking struct ieee80211_chanctx_con=
+f as
+> an example:
+>=20
+> struct ieee80211_chanctx_conf {
+>         struct cfg80211_chan_def def;
+>         [...]
+>         struct cfg80211_chan_def s1g_pri_def;
+> };
+>=20
+> When building this new channel definition, we probably don't want to be u=
+sing
+> _nl80211_parse_chandef() as it relies on the NL80211_ATTR_WIPHY_FREQ to f=
+ind
+> the channel, where the primary channel center frequency will rely on a se=
+parate
+> attribute. Now we could, of course, add in another branch to handle this =
+case,
+> but the function seems fairly overloaded as is and would be good to keep =
+the
+> S1G specific case separate.
+
+I'm not really sure this is all that much better?
+
+Why not do it similar to what HT/VHT/HE/EHT does, and have:
+
+ * ->chan points to the primary 1 MHz channel
+ * ->width is 1, 2, 4 or 8 - which already exist
+ * ->center_freq1/->freq1_offset is the center frequency of the entire
+   channel (e.g. 924 for channel 44 8MHz, or 921.5 for channel 39 1MHz)
+
+This doesn't capture the fact that the primary channel could be 2 MHz
+wide, either we add that as a separate channel struct (not sure?) or we
+just add a flag or something? TBH with how this was done I always
+assumed the primary channel was _always_ 1 MHz wide.
+
+johannes
 
