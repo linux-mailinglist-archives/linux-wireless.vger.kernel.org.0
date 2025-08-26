@@ -1,254 +1,299 @@
-Return-Path: <linux-wireless+bounces-26632-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26633-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2AB1B3604E
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 14:59:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D261DB36488
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 15:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 605EF1BA5574
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 12:56:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA2B2466E47
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 13:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C40420E328;
-	Tue, 26 Aug 2025 12:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D9A14B950;
+	Tue, 26 Aug 2025 13:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lBxPNHbZ"
+	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="H/pvYz14"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11012061.outbound.protection.outlook.com [52.101.126.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FF01EB9F2;
-	Tue, 26 Aug 2025 12:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756212955; cv=none; b=CPTfdkLLiYAwonuc5EfEA6emA0VJs324nP84E6TuuLTX57CZPog1Pj2YIeLmD/7sCK0kNEydX588paaparx3n3tRWHYl+HdQiXWah62un98YG6cLejkRa7swyLS56Di7pdVagM6p0UwSat7Iq9wsG31iaI2q5kEE+N0o+TyKxKA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756212955; c=relaxed/simple;
-	bh=R4iU1jfyixe8o3Lo4PGR4XGLQyegIIrVAMccWj8FMcM=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=qHe0JwpRQSdaC1WmgYLEiQfa8WanAilnvZTRl2phrjwizOLHLQdd5QDoBabESbza0kdTKtW85b+70O4MDeR5xNAijabeF/hNJv3t7XUSIlaujD/aKcY2hGoRBOrtNzjhh5lBNtLq3tpWewKtcjB83c5rxbldgkrplvnWJARSp1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lBxPNHbZ; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756212954; x=1787748954;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=R4iU1jfyixe8o3Lo4PGR4XGLQyegIIrVAMccWj8FMcM=;
-  b=lBxPNHbZi6luuGmdMBVp+xWKYwCA17hjKPbfm6mLYbIywgk2+d/aemzx
-   X2z9F2k+svnMkoWEQ9a0d8wNPCn8ehUh8WjuKNd+Glai8GY89BWS4s7kx
-   ItHg56FZ5eU0KX6FJRC9VGvOOfaZ5lU3Zd7Q9WuvTZeO/8+nU7vJK3pYy
-   hAlXSdPWm7HPgVc+LcuQGS2P6u3xI1IXypRJqdMeCOWhnz59mdmlU92Lk
-   PnAebwJWM/T9pywa4CA5RX5jCAEEYpV0XQsbL9+s9g2Eq4F57j/LQAjVN
-   Ac8JPCzyWBPfmLoseb+hKaKZlAsRp30z2cwTUfi4L+R3ByzW6JJZEiAj6
-   g==;
-X-CSE-ConnectionGUID: Xy+l5tuITeeChhUapWtAng==
-X-CSE-MsgGUID: C+/6LF5xTm+A4cu4N22uBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="69814749"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="69814749"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 05:55:53 -0700
-X-CSE-ConnectionGUID: auHUum6tRHS2IljYMCxSQg==
-X-CSE-MsgGUID: o1h+Y04mS+OxNUWKpynnLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="206733326"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.4])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 05:55:46 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 26 Aug 2025 15:55:42 +0300 (EEST)
-To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
-    David Box <david.e.box@linux.intel.com>
-cc: Bjorn Helgaas <bhelgaas@google.com>, 
-    Manivannan Sadhasivam <mani@kernel.org>, 
-    Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-    =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kwilczynski@kernel.org>, 
-    Rob Herring <robh@kernel.org>, Nirmal Patel <nirmal.patel@linux.intel.com>, 
-    Jonathan Derrick <jonathan.derrick@linux.dev>, 
-    Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>, linux-arm-msm@vger.kernel.org, 
-    linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
-    ath11k@lists.infradead.org, ath10k@lists.infradead.org, 
-    Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
-    "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2 2/8] PCI/ASPM: Fix the behavior of pci_enable_link_state*()
- APIs
-In-Reply-To: <20250825-ath-aspm-fix-v2-2-61b2f2db7d89@oss.qualcomm.com>
-Message-ID: <f644fc83-31cc-1f0e-58cf-7c007e6173e4@linux.intel.com>
-References: <20250825-ath-aspm-fix-v2-0-61b2f2db7d89@oss.qualcomm.com> <20250825-ath-aspm-fix-v2-2-61b2f2db7d89@oss.qualcomm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10ABE29D28A;
+	Tue, 26 Aug 2025 13:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.126.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756214965; cv=fail; b=oI4MaSN8HVEnOjbcKWWGNO0INoxv9wj4HmtcfPLxyjOOrZQAXSauK+rvXgb+vMjLJeR0vzLYd3QKre4/ps3vnVuMGfe6BQu/UkM5X8RzT051QsbxPjpk20PyJ1/DuNv828Xz4aDPMtSKX8VIcDZTOhxo96iNxYZ8WCy0EY8jYfM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756214965; c=relaxed/simple;
+	bh=Si/uhF07+Uyj2P967RXELWIC6adp3YASMXtqebDuIkY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Teixa3hXhSKk02hOP7C6H1y4ffHji7vp2Oipyd9kaW5ux/2XjRb2M8AP7hIDy7VyN6ChvxtFi1Illr+zedegjAtaHn8wFw34UCITGlsKzhVNrqsZOXOqn4opVduoZovJSVi3Lggq0dNCHPTUUCx6eLsl6Rupnirv8yJpY4voxwY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=H/pvYz14; arc=fail smtp.client-ip=52.101.126.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JvmVhALFoS8Fd69YRhKEw5cpLnrS5PzIBXolhpfFPGEiequxwFvQmsMpogVYmzNiXphV7mw4v3d8ZpLgt6Sz0q8gFT8p6w7lwjdv1N/jeUcN3uLUXam3nlu09QEtHWaO5kV8eFf46zd5NNNgL+LbkW3TvfZMIomFxQwbhFUaCSL2/JlearMoWQCpLgLvO3lWfjXBt94U9eqVGr4O2SpeUo+cqpYeXCMUKLketnyX18ac00Np36wvTTCxBGqNnZL2R6QnCHK9V3aiOtPNQCh988PyRF7BdZVDOqTF7aDmKGWM0eVyf9AnaTHqi4ADfACzatlo+sDv32etGTURcRMDvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HuTDTVemiwezxFSlMYn1VUizDXjHZql8bOBvb4qRtRg=;
+ b=dTTq9MkS7/KV/UkTEwXZBZ6WUYSbyPVDX/+agxaJgqiZnK2q94j1Nvli0jFDCLWfKHiHPQgr5njUXOb64cnt8zEyHFcB3V41OGYTE8OrHA3+buzI+tHp2IHKm/rDx80qOBN4Xa1O0OBuINfXaV66BPFbjlagUW/rRQ5R0mPeApYmMLiSjmD4MhdpRvoiisnaRKl1XLxIgLx7V8wBmNPnwwC8LFVVR4Sj7um7Zc7OOrBSwVBhV2S3wGIFBDPWZBVRRY64a5uOrU4w1XhRrm1Kvpo6VMJDHhKdtkjbvWPLSRjMdKzlpCQ5Lsj7CK++bGWkYs0AVqM9pQlaGYPB4IE7Zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HuTDTVemiwezxFSlMYn1VUizDXjHZql8bOBvb4qRtRg=;
+ b=H/pvYz14HEFQAEzyGBqM9UFrhSh0oxYRtekoDdvO6ASLjEDPi51xjqAT1CAlMRYoWBozYlX+bSMAAqMgcxYE9iI18DwraJMxI/ROEhSdOV7K7gQxZxaqep+VE8guRtQuA6Io+8hwPrb0tfXQ72jbLN/4Hqjzp/+ONvQbi8nSmITJNg2QcrM97PA7LaL99AJhdebzGbHgKNpE1JznHnnh27StStvRGuZdSg7DqulqAsWMdO9/Y2jtQaDOp8sMQCzJQDl2Gx2+I9/us+T6fTa966jhN1yyG5RUR4eleQsHHAdv7jCMUpMxU93rQdy2bxIkT8Knn9sD5gZhWQ7pLfiX6A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from SI2PR06MB5140.apcprd06.prod.outlook.com (2603:1096:4:1af::9) by
+ SEYPR06MB5158.apcprd06.prod.outlook.com (2603:1096:101:5a::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9052.21; Tue, 26 Aug 2025 13:29:18 +0000
+Received: from SI2PR06MB5140.apcprd06.prod.outlook.com
+ ([fe80::468a:88be:bec:666]) by SI2PR06MB5140.apcprd06.prod.outlook.com
+ ([fe80::468a:88be:bec:666%5]) with mapi id 15.20.9052.019; Tue, 26 Aug 2025
+ 13:29:17 +0000
+From: Qianfeng Rong <rongqianfeng@vivo.com>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Qianfeng Rong <rongqianfeng@vivo.com>
+Subject: [PATCH] wifi: rtw89: use int type to store negative error codes
+Date: Tue, 26 Aug 2025 21:29:04 +0800
+Message-Id: <20250826132905.501755-1-rongqianfeng@vivo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYBP286CA0023.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:404:ce::35) To SI2PR06MB5140.apcprd06.prod.outlook.com
+ (2603:1096:4:1af::9)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-846575285-1756206986=:934"
-Content-ID: <ed51a60b-2da2-8824-e685-a71851c626aa@linux.intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SI2PR06MB5140:EE_|SEYPR06MB5158:EE_
+X-MS-Office365-Filtering-Correlation-Id: c68c8ed9-9b26-43db-33b8-08dde4a48ea3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|52116014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ijOOPTm3Z8DAm92IJdp7VYuh/F8F4AurkaGpLFA/rYoQBXQyLjIDmnznybG8?=
+ =?us-ascii?Q?pqzGCSRp3taiT6+eptDWJPp4cazqAmBrjlG4YLv/0g+4MsoSNgVGZWl8xL8V?=
+ =?us-ascii?Q?hWsCQq77SMJz08QBIxUxZ9S68NXkZZZdn80GUaFRFGYNrcuHYMG8TmYG9CC6?=
+ =?us-ascii?Q?Z/MfAj89MVmhM58+8kzBAqCNeTopecfClgYtzcA9ofSLka0cl+p/AVG+64d0?=
+ =?us-ascii?Q?b+AkSmQggt/2PTILGmiwIBsHjXeYU4CqOjFpr2wKH4Gc1hM3TlJL1KMnu51e?=
+ =?us-ascii?Q?ujJTFpSR/GJWb9qdrnfRqZoD6DbC7p/WyrfvOY2lJ97WAZX19fdEGTAr7ecJ?=
+ =?us-ascii?Q?p/ik/nAhYqdouGSap1OprJzNgW1lZJyRq1+YBcKhSNvLBH6ji5i72kb/o4EB?=
+ =?us-ascii?Q?UrU8MKoj1Zo1zPR/9czkC/Lvggq7ec9pacQJSKNjuZ+kG+joDwResFyoe9/J?=
+ =?us-ascii?Q?SBVE3DM+RiINs3lOp7kT0H14XYPc3REdTvCttFTps+UzVd/nqKMcmuwX1CzE?=
+ =?us-ascii?Q?2zfewSzO3yyh8jN0bfM9S9gLT+KGzGSrkeJRQe52mNnFLbBys472CF+JFT/b?=
+ =?us-ascii?Q?kJ3gMphSMQp5e6DoP6SzWOvjkVOKimz9W4bsIMKMBF1RffI9mG41hDl0Rawt?=
+ =?us-ascii?Q?ZWugEN99OY2SRp/aijBPTEDwljR1TzUOp52JacGQraIn99AISJPeEnKgY+3k?=
+ =?us-ascii?Q?iYRZV9qkn4ps+QfssbTr1s9gvap8ezfBUaRngGjRSEJpqMckrmGLLJwUBfmI?=
+ =?us-ascii?Q?kHMfXuswfdgTisPWrwFVHEK6ggahUHbT/w50HZHyCq3KyajyRsyu4JtVgQwV?=
+ =?us-ascii?Q?0KpbYvdGPFe1rK9gl/O/NnOBrEdXCKL5/rXp5JqVtVTK25Iz8E/xJV6LLBfN?=
+ =?us-ascii?Q?Z6qtf8IrOcHZwQZhgRyrIMyUzkvn++zpIkbLAsHmPj8zKV6lpgh6jxjuNZUX?=
+ =?us-ascii?Q?D4OaSKN7w/1KIbYvGhJ9uer0Q4hKVPq7tYNoltJI5HOJHFEmSjF7eo8nubIR?=
+ =?us-ascii?Q?80pk1nPCtDlQqkfta5FE7Ba6a9PjO2T8vmhcUOeY7fjkda1SB9HCCHUA3bRv?=
+ =?us-ascii?Q?JzLCQcDMbVGVCV+Atg7DiMm1s3YmIAYnpSee23EXZ60fSLsRBox7gsapkiYy?=
+ =?us-ascii?Q?IDOAt2vgPdKrcHvuavJexXPprQqN66uZplriP9jPDknqXpSdwiWc7/Dr5SFh?=
+ =?us-ascii?Q?vqVO7vzehpUxchWMYaWp6Z8RVD42/du5xVAh6/BifkG5GSKIpjLcbCR2h7uq?=
+ =?us-ascii?Q?n8BiRCGYW6qEy8pOjd7ky5pYFJMu5tpI+kKqSRE/G9W00n4cl76xPs0fTU9y?=
+ =?us-ascii?Q?zMWfN3rSQByn7Qwg+RitlpGPqBPyN2ryp/beBAEYyP7dSkfokdNT7A1Psgtf?=
+ =?us-ascii?Q?IRpC8Zhqx96btbteYNy3VVK+DHvY5SYQ5qiyTCJ7Mg+DOIGNWpxmq0pHmrcJ?=
+ =?us-ascii?Q?Iakx9BPXLAkM2MpMdACMyRQQbGtHZ6c9gRkm3fUCyCik8jk5etQ2bQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR06MB5140.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9lvXcZZD3ZvYfkrWrRZac02KMvN0bb0MnT+lCiLmSGM0dzaWfEg9G58dysP6?=
+ =?us-ascii?Q?5GscUe4jt3O46fnp/UP2AYmNbkzRi2geApE5mrdjqaWA+jD+ElWp1NnbFLcF?=
+ =?us-ascii?Q?rntzQqd5ldzKj+XwFhGCHCi94gOHra4QvdvJEq+wkJR6ZgTB1KYSHzUoPuuC?=
+ =?us-ascii?Q?TOQhNG4hy+Zcj4p1tFqB3bPVkFj03HwqbEa3A6nfY9bBwPo0qFo7IObK5mYG?=
+ =?us-ascii?Q?f/U7O21yd0Et14eSsS6ZDhGg/4c87vl7en1zLe/3/N4+xU7GAUZ5nAaTuE+m?=
+ =?us-ascii?Q?+xLE4OpWXAfWJEvd/WIg+xA+NLDs2xJsid9Z/Ae2JZOxH+N2q1zD9zwQVeJR?=
+ =?us-ascii?Q?o/QwT+7MWtQYMNUZl8jG0mWLpRtlqf/1r+y7nfJBy6bgcHtGRwPXW7s1r+25?=
+ =?us-ascii?Q?BjWZMg5+5a5t/QJtXiYu3ZjBZJVgMbdaDpERKtHdKnAfr6OmFQkTzLeqpP9M?=
+ =?us-ascii?Q?x0Dy41jq96NigRumngmV+XSGIihbO1tDnBkLQuOnhkhbhp1hMoSlh8R2rtru?=
+ =?us-ascii?Q?62aXEtKtyxzFVTs8mhozi6VRhjXFFMfU6swCIJwjlgY6q8v/TwkdLKumGAqv?=
+ =?us-ascii?Q?6xrkEq004P+snLEM2s0jVOmwYzLfxl/9vGCoitXmZDWSk1OpksL5GNoNlWSq?=
+ =?us-ascii?Q?dcKxqBPP5BmVSoWFn0p3KcNnRZL6234Fm5tk70ekJygYS3bU9wO4iZC6qPqP?=
+ =?us-ascii?Q?sokiqpqiaf/eFi9QwB76ZaY6iue0WVYH4wkVTym9mXCtmYjQMizLENFgW3X8?=
+ =?us-ascii?Q?HgsfkKnNyjuZVgAb2uE4cYe7nYMDLE6e1YSnqLeNPvnbn+a3Nt2Fb4v9BjLb?=
+ =?us-ascii?Q?/pxbO6qi+48qOxPt7r/xah6pTUsBPga9AwYL0wAYi3yd69ep2p5XKHR30lKU?=
+ =?us-ascii?Q?oIXHURbvr7qoxK4aTTZVn935X3sxQQU/9FBG6pamvj1DinVsAwE5DPtrqIE9?=
+ =?us-ascii?Q?EuWnk0QXXITP1X0abaZ6sxtPZxHZyr8SZ2ngy0PI4LCJpAEvSpkxHJZgobcr?=
+ =?us-ascii?Q?pVaN6FoYg4EeYUjdIj/7RhvyimapHgcGTX4i0js22NNJJ61RC6njTQnCrdTQ?=
+ =?us-ascii?Q?m/slcTZbElIXqD8TGh8wry1VEucb0/xOP1zfek+zd5XGCxz5kdU3d/mcNMn3?=
+ =?us-ascii?Q?nznnoVpAcYxJJPfmMyHlimUyP7XnanmshPwT8HM+Fjywy2UYqHusEuLmzCjG?=
+ =?us-ascii?Q?wRctCAuQYjlLzIA7BKqW2Ocoudg5ZpUZYTqDGQqEu09UD8N9NahgoqCWjM06?=
+ =?us-ascii?Q?c8muREZIObo6Prci4aGVoLZAXD2AJ2d011gw+nkUfFf/ScW+LPgIB3nmRSM+?=
+ =?us-ascii?Q?ryzNJQGzpl6G+Noco7caFX+HgAdZ1CjrhdKfC8lDkehiNkAOdo0h1IDRLN+q?=
+ =?us-ascii?Q?lGMbWO9jtmkacmhEI9C4Zy+2HGdIejeJyycplBmsI8z2X41tSaCeql7rM8Z/?=
+ =?us-ascii?Q?PoOVGHezKponea+txqbPRqJ+Ey+IIH1oWxNWkpd4dkqI4j61PZO8PPV3mdGR?=
+ =?us-ascii?Q?NWtUWYrP4jl1lGzRHEqLfCf/8Z2gQWzhcCWPwMbM0Sdii+kXwzW013sjKrVm?=
+ =?us-ascii?Q?Vcbr2xEwLMox3iJp3eDCT881TgnkWn7xkBUi+XWc?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c68c8ed9-9b26-43db-33b8-08dde4a48ea3
+X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5140.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 13:29:17.7480
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1oylNjDP40sKYqTd50BfKO3m+PJVswdf4yNm/jLrocEDX7VaLFobA8oG4mBktebhCxuK0VHpcMRGBqiNDlX+wQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB5158
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+The 'ret' variable stores returns from other functions, which return
+either zero on success or negative error codes on failure.  Storing
+error codes in u32 (an unsigned type) causes no runtime issues but is
+stylistically inconsistent and very ugly.  Change 'ret' from u32 to
+int - this has no runtime impact.
 
---8323328-846575285-1756206986=:934
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <96a2aa14-031e-f827-2cad-088a1b047808@linux.intel.com>
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+---
+ drivers/net/wireless/realtek/rtw89/fw.c  |  7 ++++---
+ drivers/net/wireless/realtek/rtw89/mac.c | 16 ++++++++--------
+ drivers/net/wireless/realtek/rtw89/pci.c |  4 ++--
+ 3 files changed, 14 insertions(+), 13 deletions(-)
 
-+David
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 16e59a4a486e..01d53f7c142d 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -1537,7 +1537,7 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev,
+ 	struct rtw89_fw_hdr *fw_hdr;
+ 	struct sk_buff *skb;
+ 	u32 truncated;
+-	u32 ret = 0;
++	int ret = 0;
+ 
+ 	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
+ 	if (!skb) {
+@@ -6826,7 +6826,8 @@ static int rtw89_fw_read_c2h_reg(struct rtw89_dev *rtwdev,
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	struct rtw89_fw_info *fw_info = &rtwdev->fw;
+ 	const u32 *c2h_reg = chip->c2h_regs;
+-	u32 ret, timeout;
++	u32 timeout;
++	int ret;
+ 	u8 i, val;
+ 
+ 	info->id = RTW89_FWCMD_C2HREG_FUNC_NULL;
+@@ -6865,7 +6866,7 @@ int rtw89_fw_msg_reg(struct rtw89_dev *rtwdev,
+ 		     struct rtw89_mac_h2c_info *h2c_info,
+ 		     struct rtw89_mac_c2h_info *c2h_info)
+ {
+-	u32 ret;
++	int ret;
+ 
+ 	if (h2c_info && h2c_info->id != RTW89_FWCMD_H2CREG_FUNC_GET_FEATURE)
+ 		lockdep_assert_wiphy(rtwdev->hw->wiphy);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 5a5da9d9c0c5..9e4d666f15f7 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -177,7 +177,7 @@ int rtw89_mac_dle_dfi_qempty_cfg(struct rtw89_dev *rtwdev,
+ 				 struct rtw89_mac_dle_dfi_qempty *qempty)
+ {
+ 	struct rtw89_mac_dle_dfi_ctrl ctrl;
+-	u32 ret;
++	int ret;
+ 
+ 	ctrl.type = qempty->dle_type;
+ 	ctrl.target = DLE_DFI_TYPE_QEMPTY;
+@@ -985,7 +985,7 @@ static int hfc_upd_ch_info(struct rtw89_dev *rtwdev, u8 ch)
+ 	struct rtw89_hfc_ch_info *info = param->ch_info;
+ 	const struct rtw89_hfc_ch_cfg *cfg = param->ch_cfg;
+ 	u32 val;
+-	u32 ret;
++	int ret;
+ 
+ 	ret = rtw89_mac_check_mac_en(rtwdev, RTW89_MAC_0, RTW89_DMAC_SEL);
+ 	if (ret)
+@@ -1177,7 +1177,7 @@ int rtw89_mac_hfc_init(struct rtw89_dev *rtwdev, bool reset, bool en, bool h2c_e
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	u32 dma_ch_mask = chip->dma_ch_mask;
+ 	u8 ch;
+-	u32 ret = 0;
++	int ret = 0;
+ 
+ 	if (reset)
+ 		ret = hfc_reset_param(rtwdev);
+@@ -2413,7 +2413,7 @@ static int addr_cam_init_ax(struct rtw89_dev *rtwdev, u8 mac_idx)
+ 
+ static int scheduler_init_ax(struct rtw89_dev *rtwdev, u8 mac_idx)
+ {
+-	u32 ret;
++	int ret;
+ 	u32 reg;
+ 	u32 val;
+ 
+@@ -2954,7 +2954,7 @@ static int rtw89_mac_read_phycap(struct rtw89_dev *rtwdev,
+ 	struct rtw89_mac_h2c_info h2c_info = {};
+ 	enum rtw89_mac_c2h_type c2h_type;
+ 	u8 content_len;
+-	u32 ret;
++	int ret;
+ 
+ 	if (chip->chip_gen == RTW89_CHIP_AX)
+ 		content_len = 0;
+@@ -3105,7 +3105,7 @@ int rtw89_mac_setup_phycap(struct rtw89_dev *rtwdev)
+ static int rtw89_hw_sch_tx_en_h2c(struct rtw89_dev *rtwdev, u8 band,
+ 				  u16 tx_en_u16, u16 mask_u16)
+ {
+-	u32 ret;
++	int ret;
+ 	struct rtw89_mac_c2h_info c2h_info = {0};
+ 	struct rtw89_mac_h2c_info h2c_info = {0};
+ 	struct rtw89_h2creg_sch_tx_en *sch_tx_en = &h2c_info.u.sch_tx_en;
+@@ -6720,7 +6720,7 @@ int rtw89_mac_set_hw_muedca_ctrl(struct rtw89_dev *rtwdev,
+ 	u8 mac_idx = rtwvif_link->mac_idx;
+ 	u16 set = mac->muedca_ctrl.mask;
+ 	u32 reg;
+-	u32 ret;
++	int ret;
+ 
+ 	ret = rtw89_mac_check_mac_en(rtwdev, mac_idx, RTW89_CMAC_SEL);
+ 	if (ret)
+@@ -6862,7 +6862,7 @@ int rtw89_mac_cpu_io_rx(struct rtw89_dev *rtwdev, bool wow_enable)
+ {
+ 	struct rtw89_mac_h2c_info h2c_info = {};
+ 	struct rtw89_mac_c2h_info c2h_info = {};
+-	u32 ret;
++	int ret;
+ 
+ 	if (RTW89_CHK_FW_FEATURE(NO_WOW_CPU_IO_RX, &rtwdev->fw))
+ 		return 0;
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index a669f2f843aa..5f58a954ccc7 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -2725,7 +2725,7 @@ static int rtw89_pci_poll_rxdma_ch_idle_ax(struct rtw89_dev *rtwdev)
+ 
+ static int rtw89_pci_poll_dma_all_idle(struct rtw89_dev *rtwdev)
+ {
+-	u32 ret;
++	int ret;
+ 
+ 	ret = rtw89_pci_poll_txdma_ch_idle_ax(rtwdev);
+ 	if (ret) {
+@@ -4158,7 +4158,7 @@ static int rtw89_pci_lv1rst_stop_dma_ax(struct rtw89_dev *rtwdev)
+ 
+ static int rtw89_pci_lv1rst_start_dma_ax(struct rtw89_dev *rtwdev)
+ {
+-	u32 ret;
++	int ret;
+ 
+ 	if (rtwdev->chip->chip_id == RTL8852C)
+ 		return 0;
+-- 
+2.34.1
 
-On Mon, 25 Aug 2025, Manivannan Sadhasivam via B4 Relay wrote:
-
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
->=20
-> pci_enable_link_state() and pci_enable_link_state_locked() APIs are
-> supposed to be symmectric with pci_disable_link_state() and
-> pci_disable_link_state_locked() APIs.
->=20
-> But unfortunately, they are not symmetric. This behavior was mentioned in
-> the kernel-doc of these APIs:
->=20
-> " Clear and set the default device link state..."
->=20
-> and
->=20
-> "Also note that this does not enable states disabled by
-> pci_disable_link_state()"
->=20
-> These APIs won't enable all the states specified by the 'state' parameter=
-,
-> but only enable the ones not previously disabled by the
-> pci_disable_link_state*() APIs. But this behavior doesn't align with the
-> naming of these APIs, as they give the impression that these APIs will
-> enable all the specified states.
->=20
-> To resolve this ambiguity, allow these APIs to enable the specified state=
-s,
-> regardeless of whether they were previously disabled or not. This is
-> accomplished by clearing the previously disabled states from the
-> 'link::aspm_disable' parameter in __pci_enable_link_state() helper. Also,
-> reword the kernel-doc to reflect this behavior.
->=20
-> The current callers of pci_enable_link_state_locked() APIs (vmd and
-> pcie-qcom) did not disable the ASPM states before calling this API. So it
-> is evident that they do not depend on the previous behavior of this API a=
-nd
-> intend to enable all the specified states.
-
-While it might be "safe" in the sense that ->aspm_disable is not set by=20
-anything, I'm still not sure if overloading this function for two=20
-different use cases is a good idea.
-
-I'd like to hear David's opinion on this as he grasps the ->aspm_default=20
-vs ->aspm_disable thing much better than I do.
-
-> And the other API, pci_enable_link_state() doesn't have a caller for now,
-> but will be used by the 'atheros' WLAN drivers in the subsequent commits.
->=20
-> Suggested-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
-
-This tag sound like I'm endorsing this approach which is not the case. I'd=
-=20
-prefer separate functions for each use case, setting aspm_default and=20
-another for the enable state.
-
---=20
- i.
-
-> Co-developed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.=
-com>
-> Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.co=
-m>
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.=
-com>
-> ---
->  drivers/pci/pcie/aspm.c | 33 ++++++++++++++++++---------------
->  1 file changed, 18 insertions(+), 15 deletions(-)
->=20
-> diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-> index be9bd272057c3472f3e31dc9568340b19d52012a..fac46113a90c7fac6c97125e6=
-a7e385045780005 100644
-> --- a/drivers/pci/pcie/aspm.c
-> +++ b/drivers/pci/pcie/aspm.c
-> @@ -1459,6 +1459,7 @@ static int __pci_enable_link_state(struct pci_dev *=
-pdev, int state, bool locked)
->  =09=09down_read(&pci_bus_sem);
->  =09mutex_lock(&aspm_lock);
->  =09link->aspm_default =3D pci_calc_aspm_enable_mask(state);
-> +=09link->aspm_disable &=3D ~state;
->  =09pcie_config_aspm_link(link, policy_to_aspm_state(link));
-> =20
->  =09link->clkpm_default =3D (state & PCIE_LINK_STATE_CLKPM) ? 1 : 0;
-> @@ -1471,17 +1472,18 @@ static int __pci_enable_link_state(struct pci_dev=
- *pdev, int state, bool locked)
->  }
-> =20
->  /**
-> - * pci_enable_link_state - Clear and set the default device link state s=
-o that
-> - * the link may be allowed to enter the specified states. Note that if t=
-he
-> - * BIOS didn't grant ASPM control to the OS, this does nothing because w=
-e can't
-> - * touch the LNKCTL register. Also note that this does not enable states
-> - * disabled by pci_disable_link_state(). Return 0 or a negative errno.
-> + * pci_enable_link_state - Enable device's link state
-> + * @pdev: PCI device
-> + * @state: Mask of ASPM link states to enable
-> + *
-> + * Enable device's link state, so the link will enter the specified stat=
-es.
-> + * Note that if the BIOS didn't grant ASPM control to the OS, this does
-> + * nothing because we can't touch the LNKCTL register.
->   *
->   * Note: Ensure devices are in D0 before enabling PCI-PM L1 PM Substates=
-, per
->   * PCIe r6.0, sec 5.5.4.
->   *
-> - * @pdev: PCI device
-> - * @state: Mask of ASPM link states to enable
-> + * Return: 0 on success, a negative errno otherwise.
->   */
->  int pci_enable_link_state(struct pci_dev *pdev, int state)
->  {
-> @@ -1490,19 +1492,20 @@ int pci_enable_link_state(struct pci_dev *pdev, i=
-nt state)
->  EXPORT_SYMBOL(pci_enable_link_state);
-> =20
->  /**
-> - * pci_enable_link_state_locked - Clear and set the default device link =
-state
-> - * so that the link may be allowed to enter the specified states. Note t=
-hat if
-> - * the BIOS didn't grant ASPM control to the OS, this does nothing becau=
-se we
-> - * can't touch the LNKCTL register. Also note that this does not enable =
-states
-> - * disabled by pci_disable_link_state(). Return 0 or a negative errno.
-> + * pci_enable_link_state_locked - Enable device's link state
-> + * @pdev: PCI device
-> + * @state: Mask of ASPM link states to enable
-> + *
-> + * Enable device's link state, so the link will enter the specified stat=
-es.
-> + * Note that if the BIOS didn't grant ASPM control to the OS, this does
-> + * nothing because we can't touch the LNKCTL register.
->   *
->   * Note: Ensure devices are in D0 before enabling PCI-PM L1 PM Substates=
-, per
->   * PCIe r6.0, sec 5.5.4.
->   *
-> - * @pdev: PCI device
-> - * @state: Mask of ASPM link states to enable
-> - *
->   * Context: Caller holds pci_bus_sem read lock.
-> + *
-> + * Return: 0 on success, a negative errno otherwise.
->   */
->  int pci_enable_link_state_locked(struct pci_dev *pdev, int state)
->  {
->=20
->=20
---8323328-846575285-1756206986=:934--
 
