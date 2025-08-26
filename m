@@ -1,80 +1,88 @@
-Return-Path: <linux-wireless+bounces-26654-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26655-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF51B370A4
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 18:39:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C40C5B370AB
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 18:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F09917DFA9
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 16:39:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 758DE3B23D8
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 16:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254FE2D1F72;
-	Tue, 26 Aug 2025 16:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E301F2BEFF6;
+	Tue, 26 Aug 2025 16:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mCYe+u1q"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="G58DRmbu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F6531A578
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 16:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE65D293C44
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 16:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756226321; cv=none; b=aDmFGJXAQVUzP/NY6cByli2zuLscX1za9JBuCKWV01btzxWDS4thyFHhQxjdlf5gSbLgCto8t5+BJVyctcfbbhAqxhSAQKL6jcSiBQ72N6uPFiQ9Vty1o1LvLUEmo/8RkEGbOcCDmzegfFfdoICX/+c5DP1QQRhPNedaIyJcNoQ=
+	t=1756226443; cv=none; b=WeeuDz1rl2qQHFf4uiUTHF05T9U+8MxXoUzWmhwnPkzthw0bO/hARaEsQOrdc0+5w7YxY7u4ifG9GroU93Ahrp+61LPfCl+BcoQ+aIGZGx7fvu1g5ub7KVgbKkJfGlsQiJ37L0nG9ydBguXxyFtGUnmH/zx7E+0bCSi1Q7gbtGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756226321; c=relaxed/simple;
-	bh=L+xoK2PJecbnNWKj4Lfk2DjxrPVGXAKzyeZz2tlkoh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=u2/WsMXkNFqD+/2HqI9Tje0IPbwISwXdz1cEBCDGooYBj6A52PSZ8uTtKnyNid4qgyzIo9xzFd+A0X4J8aXBuaSQ+D7BacEl9sdfhSX4r0FaOu3CgzjiUfemU8P9EMmf/HlxJbRRbJoB411NwFu2Tu7fcZyfsRmuvsGrD+L2cA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mCYe+u1q; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3c7edd71bbfso3146869f8f.0
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 09:38:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756226318; x=1756831118; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VwpHDjTylI9V8p0qKMa+tVz57PA/udqM2gso1kls55g=;
-        b=mCYe+u1qjqfPU5rYyZu6WvTCgTmYBAXJNCkBYatBW2j0so0iaraVSwiyQzDe6b6uyC
-         v+0JSc9+0Cyd6AmXLMsqFzYZvOmDSjtu2QQmNmoDDZYS8bqj0sxaQeb7ae+SLvjiCp6T
-         jx5Q7pmrZ5h7Xi+1bKSN374WP4g5UJazVX2+jqaxZSIc9dHQh4zgssNzn/ehpbTJbFEb
-         FN3oAJ8DzsGdX8k3vsfUeD7OFHRMRnQ9d4OVAvaRJy99kHL7l15+U6klUei7aBQw7hEI
-         HpRq3LvKhyv/BfSjwI6RLWreTmmYCyVKMfAjIlDq3lztS1LK7EGzCQOUTdGHZfAHBd1j
-         q4rw==
+	s=arc-20240116; t=1756226443; c=relaxed/simple;
+	bh=J56EJimurRukl3HtUzV6/w+RvxdfQC5smmvRwJRThGk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eZ3H+T2wW42A1CyfPRDYALNCXRzcwuEjKB+t/IrF9SgOXdEv4GtXRsRz+uczuGUqhYiNoL7L8LbIFiZN8Q8QLNwUkKnHJJw3yBprygbtRjN2x35WCAQCLfW458E2MIkC1m4J3EVvDN2GCGOmt13CO45yMTM2YtoGHsZ+KhK5QhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=G58DRmbu; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57QFrexb004390
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 16:40:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	D8Cf1CJKboWxP5q6R9op8Umbt3K2i/Dw/P1MbHCzwOI=; b=G58DRmbuwEUS4o2h
+	8tV3cbWxBlhGZysuRweeh60AncgOaM3rPSQVPCZoBEAdLGxK60cKoGCIOuJEcL7m
+	Q9mNEve5xv+EfeCXpqc3lWz+dr/U9cV+wYYyO1mPltRPWf2NarpdBrziynk4lUsz
+	NeFX+VrObpy/5frnVlzvuOKGstYpF33J3323wdw/xDs9NC6GxCFqOLKk3aG9gaF/
+	vX/DA3S0beVvqKryKMVJ+L5EZe/2ZKps8tdsnIKx7+EwA68MhxdGvLDSWLRz3R6x
+	YAiQoB857POlABA/DuetPtzzqDFQ7rzMPHPm2rA5kM1xdzqfeXjPaA/ca0Jx3Ly/
+	ju7H9g==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5we1gcs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 16:40:40 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-246164c4743so106317385ad.3
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 09:40:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756226318; x=1756831118;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1756226439; x=1756831239;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VwpHDjTylI9V8p0qKMa+tVz57PA/udqM2gso1kls55g=;
-        b=tMAAX4cthKqlkQzT+oZpJ6kId3WF3S0FZwD8W/dvgGj/lWUyD4VdYfwlqqMCJmz5OQ
-         xah4XHOG5d4fKFPFqebiPjrYbGAXmlJalzWJHsEe2IW15H6yJ+mzBAvOq+rfZnp6yV/4
-         L/FILeCZcMkvKvSQYQW2pAbi9nkcSmbUfYcABMgEPgPwuGhFxOLJp5yv4Nj7f8J+BdUN
-         /7rv8nTAKfD4ORr9Ajvx4Xf+IpAlbLpiyLCOb/8celrtl8Wjkrfvp6WyNkPjl0tqcdIV
-         ZFCfcWHpz1BdZQD6WA6wCXKU7Fi4+aGw2o0iJxppkMuLGNpFwBXeLTnBCgyuHjCmWK1S
-         YNMA==
-X-Forwarded-Encrypted: i=1; AJvYcCV70xazuuqrq4MjkZvr4hTXekvTxSWidUqqXFdhG9KLoPEg+ZS5kkB4LGMWUVDsmcJ/5QN19HbXCwnD3w0WPA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWR3vGh5zenUyyrdqHc7xk75h8Q7hoDi8oBzlS63KDWuw82knX
-	f0qQto+xGQKfAbYHftA/MmFIhNBeb7MvnkYmutW4xG5j78dsm0w3hYk9M3kdUA==
-X-Gm-Gg: ASbGnctqoqmOdfRQMB3omrmbrOZZH+alk5gxuvKTBfLuo5/2QgsYAcjEYgG3Jp4qEQB
-	ah/7KwMWESOep5CEcvLfZRx1pTdFt4bfOErpklOWhN29itceh8G4/xgzrzc5IW9bELBC6ttTmjz
-	tbc/dlcDjx+QOTVZgV3byPpR+Qmtfe3ECZm7THg0CMLwpENcDIQetN6Arbh8Q4X3Fbxh3wNcqSf
-	ze99NV1vWHTcQxNBVXFkQUYi4T4Y+1+PphBlNp/GlLF0rOLQRoj7pdReA7KuCbNgO7HJFs5Rkhm
-	LI+I7u8Flno+uvd5xExD48ZlLnfoZlC/fpPAl8QyLgFEWEuuZDolzVxNCi4rwhylOHcJDBhCBSp
-	nx2Sf7ITBWSzDW2FFhjB0lXLQQp7yrA==
-X-Google-Smtp-Source: AGHT+IGmpVaM7V9gp1CAjrI8uXyXgRKuIPrvyDHqomaUNl1CiLV1luyHwyVKXQPHsqsKMuulkAFDew==
-X-Received: by 2002:a05:6000:2482:b0:3c8:d063:de6d with SMTP id ffacd0b85a97d-3c8d063e64emr7017734f8f.0.1756226317469;
-        Tue, 26 Aug 2025 09:38:37 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6b1bb9fbsm2293865e9.1.2025.08.26.09.38.36
+        bh=D8Cf1CJKboWxP5q6R9op8Umbt3K2i/Dw/P1MbHCzwOI=;
+        b=h0Trb0Ijkb1aWNH1yW/y5ZkSoRdMamU5iQOW3F/rFbjDIxVNlmD42Vx9f+Kxakn4hw
+         V0j7QYcRwM/R2rupcEVml5NTctPMFwlyXlyRLNal7DobJwOx/qiMz8zFmpPh5cWSax8J
+         DUySSUC65aRUWgcFmTiBgjL9smPeq7Eu40Oqhn+Yyvw1JfFHqUUUO8mu/kjcn42065pg
+         dUQT92WyMgRH9K52KxWHeyOHe66hVleeDucFAp/OelUqoVxtaKWEzuON1X9T4Fthx8aw
+         sywEzMjL7cVnHaGPMo/iNTOHA4q2zzfsWFGiJ7sK2+6SLjDKfQ6h9STkmQzI/8cVu7AY
+         QW3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX9KzUdbybRZepVQjlQyc2gcXoYPuOrLDim2G3MM7sm/HCe0+HI/HtSZbMFkw+54okUe3PFiUo0wW5O8gvb7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRri5nqi6pw2pt0yhxKICiqsvaj6iG4E6EQLPjXRj6mAAL6M7D
+	TAo4gWwu45m3yYKMhK+dnlKJxj4fjhm2jwqmcV/Gmk3aIphUVRCVCt4WwSjASdIJGs5W3ceVOsn
+	wOxpPoSsJ4OF2Wcs6w83XtalDydtH4/5KjpevfP8hGMDNYITgmTpr3hrpE07Psl/Uvw9b9Q==
+X-Gm-Gg: ASbGncvSGEVbsyOreupncpUH9O+076Qsuf++G8F8QSpUypvTutmQDn3/7aTn5Zs4LQy
+	a7/CpBflzEN/QjRnP7WefzCXbjGcpmPYGTwdthBRY3FW5iRD8S3pKI+g0RxXe9zs1F7xAi6OXTr
+	uThdHwB0LYp0v/yyosOCcenBhuOHNZRb63jXluekUolo2+M73ZTFDO8ZAuGTNKVJkVFNd9Ps5Jx
+	rgCuEAGzGOl5qktKWEUd7ihpmlfsIE0yTJdketzXCZZd0/BVl4MjA6VEaCrljYWi4UFoUlZvrkd
+	dbmGnGv6JWTWjvbZa496VOn9Tj/8wtrgaqJmAC0s1dE+PMotIlyRq4M6nIDapP2OnGhsKG6kJwj
+	a0EcI7VdGrN5sUYhjhrY=
+X-Received: by 2002:a17:903:187:b0:235:ec11:f0ee with SMTP id d9443c01a7336-2462eded8bbmr208960615ad.14.1756226439421;
+        Tue, 26 Aug 2025 09:40:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkvFu2SKqaYn2g8jSdQZR+kEMDsbfiuYDSgXyjcnbv8H+hGCJesN+r1R0F9BmVI7ktbx+DaA==
+X-Received: by 2002:a17:903:187:b0:235:ec11:f0ee with SMTP id d9443c01a7336-2462eded8bbmr208960165ad.14.1756226438902;
+        Tue, 26 Aug 2025 09:40:38 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24668864a4fsm100775575ad.91.2025.08.26.09.40.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Aug 2025 09:38:37 -0700 (PDT)
-Message-ID: <19e4debd-589c-43b6-95ac-1b6e94ad8c90@gmail.com>
-Date: Tue, 26 Aug 2025 19:38:35 +0300
+        Tue, 26 Aug 2025 09:40:38 -0700 (PDT)
+Message-ID: <e4178055-f3a6-4cb3-8c86-731130c6f25a@oss.qualcomm.com>
+Date: Tue, 26 Aug 2025 09:40:35 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,55 +90,96 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next v2 01/11] wifi: rtw89: Fix
- rtw89_core_get_ch_dma() for RTL8852CU
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <f4a7a1c4-3d64-4af3-bc77-b12d7c1320e7@gmail.com>
- <5b1210f3-499d-44d8-9433-7beac2a2800d@gmail.com>
- <11f3e864-7509-4e5f-86ed-997f8a9b63e9@gmail.com>
- <4203c4ab09df4975be85e341f5e24264@realtek.com>
- <de899380-fe3c-4b9e-86cf-3677fb0b4f92@gmail.com>
- <3ae0e8e7efbc4b6189ce9416c3a890eb@realtek.com>
+Subject: Re: [PATCH v2 6/8] wifi: ath12k: Use
+ pci_{enable/disable}_link_state() APIs to enable/disable ASPM states
+To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: manivannan.sadhasivam@oss.qualcomm.com,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Manivannan Sadhasivam
+ <mani@kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Nirmal Patel <nirmal.patel@linux.intel.com>,
+        Jonathan Derrick <jonathan.derrick@linux.dev>,
+        Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        ath11k@lists.infradead.org, ath10k@lists.infradead.org,
+        Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Qiang Yu <qiang.yu@oss.qualcomm.com>
+References: <20250825-ath-aspm-fix-v2-0-61b2f2db7d89@oss.qualcomm.com>
+ <20250825-ath-aspm-fix-v2-6-61b2f2db7d89@oss.qualcomm.com>
+ <2fab10a7-8758-4a5c-95ff-2bb9a6dea6bf@oss.qualcomm.com>
+ <705a4fe5-658e-25ac-9e4d-6b8089abca46@linux.intel.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <3ae0e8e7efbc4b6189ce9416c3a890eb@realtek.com>
+In-Reply-To: <705a4fe5-658e-25ac-9e4d-6b8089abca46@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: eN-H0hxdbyW32mgYgQpWFmQsKgiqwBtC
+X-Proofpoint-ORIG-GUID: eN-H0hxdbyW32mgYgQpWFmQsKgiqwBtC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMyBTYWx0ZWRfX7rNwAAlQoAFH
+ Yy+pafK0rG2LdttG5eUVrblYzAxpphVuSxWfIKIxnX3aHMIJJIVwPkfUOoylrXYb0YLVoejZgPz
+ /t6MvYLM1GV/suwWiM5Tn+Lk1RrlJNRyLFMjAeeO/lBLGO17QfEuZgkO/f+UKyOwE6iIhmahELK
+ XQ14I3B688qU56H/QCLaCjXZwuVQ9FYj7BfxbGib4q8mkUG5AeO+R0ZJZeRyBT1xpapHyBuYkNp
+ jiHAUWhKiT8/8E47ySNDFN7QeQt5rByjB/YivYhgF+PLIx1n8O3u0ZzBYwnNm9h0r+xseuToCE1
+ ZjZtJGiKqswhCJO7cxwZhMDYE5yQ8DN+UlNpC2WPQ8epN6MJbmhtAhSMbPYAjdyqOQyeGCkeeHA
+ rSKlbpbh
+X-Authority-Analysis: v=2.4 cv=BJazrEQG c=1 sm=1 tr=0 ts=68ade388 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=8JU3Fd4Pt_mHVKaqA_UA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-26_02,2025-08-26_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 priorityscore=1501 clxscore=1015 impostorscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 spamscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508230033
 
-On 26/08/2025 12:00, Ping-Ke Shih wrote:
->>>
->>> +static inline
->>> +u8 rtw89_chip_get_ch_dma(struct rtw89_dev *rtwdev, u8 qsel)
->>> +{
->>> +       const struct rtw89_chip_info *chip = rtwdev->chip;
->>> +
->>> +       return chip->ops->get_ch_dma(rtwdev, qsel);
->>> +}
->>> +
->>>  static inline
->>>  void rtw89_chip_mac_cfg_gnt(struct rtw89_dev *rtwdev,
->>>                             const struct rtw89_mac_ax_coex_gnt *gnt_cfg)
->>>
->>> Also the rtw89_core_get_ch_dma() is moved to core.c, and add
->>> rtw89_core_get_ch_dma_v1() for RTL8922DE.
->>>
->>> However, USB can use different mapping rule, so we should extend the size
->>> to RTW89_HCI_TYPE_NUM. Then,
->>>
->>>   return chip->ops->get_ch_dma[rtwdev->hci.type](rtwdev, qsel);
->>>
->>> If you want my patch as first patch of this patchset, I can share it as RFC.
->>>
+On 8/26/2025 9:00 AM, Ilpo Järvinen wrote:
+> On Tue, 26 Aug 2025, Jeff Johnson wrote:
+> 
+>> On 8/25/2025 10:44 AM, Manivannan Sadhasivam via B4 Relay wrote:
+>>> --- a/drivers/net/wireless/ath/ath12k/Kconfig
+>>> +++ b/drivers/net/wireless/ath/ath12k/Kconfig
+>>> @@ -1,7 +1,7 @@
+>>>  # SPDX-License-Identifier: BSD-3-Clause-Clear
+>>>  config ATH12K
+>>>  	tristate "Qualcomm Technologies Wi-Fi 7 support (ath12k)"
+>>> -	depends on MAC80211 && HAS_DMA && PCI
+>>> +	depends on MAC80211 && HAS_DMA && PCI && PCIEASPM
 >>
->> Yes, that would be good.
+>> As you point out in patch 1/8, PCIEASPM is protected by EXPERT.
+>>
+>> Won't this prevent the driver from being built (or even showing up in
+>> menuconfig) if EXPERT is not enabled?
 > 
-> Finally, I decide to send a formal patch within patchset for coming WiFi 7 chip.
-> "[PATCH rtw-next 09/10] wifi: rtw89: abstract getting function of DMA channel"
+> It doesn't work that way, PCIEASPM defaults to y:
 > 
-> [1] https://lore.kernel.org/linux-wireless/20250826085339.28512-1-pkshih@realtek.com/T/#u
+> $ sed -i -e 's|CONFIG_PCIEASPM=y|CONFIG_PCIEASPM=n|g' .config && make oldconfig && grep -e 'CONFIG_EXPERT ' -e 'CONFIG_PCIEASPM=' .config
+> #
+> # configuration written to .config
+> #
+> # CONFIG_EXPERT is not set
+> CONFIG_PCIEASPM=y
 > 
+>> Should we consider having a separate CONFIG item that is used to protect just
+>> the PCI ASPM interfaces? And then we could split out the ath12k_pci_aspm
+>> functions into a separate file that is conditionally built based upon that
+>> config item?
+>>
+>> Or am I too paranoid since everyone enables EXPERT?
+> 
+> One just cannot control PCIEASPM value if EXPERT is not set. ASPM is 
+> expected to be enabled, or "experts" get to keep the pieces.
 > 
 
-That's great, I will prepare v3 then.
+Thanks for the clarification. I now have no issues with the ath driver patches.
+
+/jeff
+
 
