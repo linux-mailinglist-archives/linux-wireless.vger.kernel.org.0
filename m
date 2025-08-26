@@ -1,160 +1,131 @@
-Return-Path: <linux-wireless+bounces-26652-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26653-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E27D3B36F41
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 18:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCF2B36F55
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 18:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 564EB1BC1830
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 15:58:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0DA31BC296B
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 16:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F2C369329;
-	Tue, 26 Aug 2025 15:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0E83164C9;
+	Tue, 26 Aug 2025 16:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JNNtg4xa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q9ZTeb6I"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA4F34F48B
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 15:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C280E30FC3E;
+	Tue, 26 Aug 2025 16:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756223755; cv=none; b=qjFaC+9k4q1TRoY7zg8rgWTKde7pZjp3HxGXPBjcE2YMlo5gD00V3nB2GGXFxJGGRRemx2skydAtbVvM1mM2MTIQPDBm/ABLoyV8nfDVOLl1TuZq1q554nu1MuTE5qSAM9Pb+iVlOnNn1PQMHPtbUl9CWtT8zBVKGt5Ku4GW6xA=
+	t=1756224043; cv=none; b=MpQUUb1fe3y+/OljInHVGhHEEwYqBt4LVpBp6OKXGMERH+AfzT+i7OvYM2/zPlEY2STBND2Z5KzzkFOoifdwVSyNKfMB+yfPYNXgeexLaoG+FbvG7zKPer1A63oz4P3Ui4CZX04TtwCuT21LZqVktWyER2u2chDexxweyoXhK4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756223755; c=relaxed/simple;
-	bh=XeyKL21a6UDLoCNSkBQF1hXE3FEaxQxszMY+sQ9YEFQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XUh2pjy1SCA6e7yOisXTJPj0TxFdmGddUKL02Xs+t7KvshlllFVu2gnmOYiC3MR5IScoa1TgbuouG9g/U1uWJqgj+5MSxeGMHSFawcfXkgbSlUS7wmnb7yTDOljJQiT3GpNjVXb96TGpMslPz/wZcvRG8EXsYjkwn9kOe7FGcL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JNNtg4xa; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1756224043; c=relaxed/simple;
+	bh=MvazfRK55Y+YfphRl006UAxhYW9WAxvC/vVYPiYdSR4=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=GvdFX+DOaYgRbmzCYdqjIesPaXJtCcJ7Z7ciZSMMEoXwRig/jp3ZvPEW5IadoGtqPcWqvvO89cwVLdRKse09Aacx+cOWVc84zb8JaVDzK2vcQvaINrCBpjwJMuOLo+w6oXDGKa8cD70DBfYw1NaPmjd+1uE2rVx2zj6JejA8S3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q9ZTeb6I; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756223754; x=1787759754;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=XeyKL21a6UDLoCNSkBQF1hXE3FEaxQxszMY+sQ9YEFQ=;
-  b=JNNtg4xaQNjOjl+fqFgOp4NRa5NYIDJty9JtnZquQCyF1CoOFkummuTG
-   EjcVXbK7UUHN//wxSNCA5XU5k54Bcrv3rEbQsc2gRFsdyTBsx5Gb97RLB
-   2UAgaaXP6dDwwIi1WTBSDyZ7So+srgAQ/2yqxwEd4sJQvZ/UzQ6aK83cC
-   NBcBsJiTBMrLZOLagXiVJB8zZUEI4nKubtorQcyAewiO+Fflw77yxtvFq
-   SI3pazoyw9TxgC6VGabuo/fEumwudx4AVNdFUR5PIGt1pG965BEO4q2X2
-   Y/AGLY+4RdAnzSTwQfVWTbywze0ywrYzxXOYqrQSn/0hKds5MbssuUsvI
+  t=1756224042; x=1787760042;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=MvazfRK55Y+YfphRl006UAxhYW9WAxvC/vVYPiYdSR4=;
+  b=Q9ZTeb6I4ya61jsZXZMsSmBKNN0A0HE5a5ywSSr6VIvkca3zjazxIJ3P
+   rE6rLRec7H0IQ8aPj9Wrx2nRG2d3tNFz691DT4uHfpyGgNwYas1gjrlJ9
+   dkrNdYn5w1B2QKXiD/ctOya6aZH/c9Wvp2DfHoN/BZ6tUv6mXxA/9Pkvd
+   aMTrr5fZru/1L8/iuKB79LYfUFiVKlJScA5cwrq8rP5n3zHZB186ebPAj
+   taCHqWCTXRJ5sxPxZ41J/YQ6Rq1aTm86L0XN0nItrMQGPdnMxIDGQkDO7
+   B8X17gb52tSzEP/2MeNJlqbGd3UGioBlWlsT1ySGNpWj633TAS3HE417V
    w==;
-X-CSE-ConnectionGUID: /gDhdpWjQV+2LTG0JFDpUg==
-X-CSE-MsgGUID: +oMPGAdhRXWlzjNpPpZXOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="62108441"
+X-CSE-ConnectionGUID: MO0TTCxlT/uRxa7XDxz2vw==
+X-CSE-MsgGUID: pv8PHRpeTQKqBBvtIaaJ7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="61099302"
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="62108441"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 08:55:49 -0700
-X-CSE-ConnectionGUID: reSsXqdiRgqioSUeAEtxSQ==
-X-CSE-MsgGUID: Ifo2wQXRSriDXCHp0ZJmqQ==
+   d="scan'208";a="61099302"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 09:00:41 -0700
+X-CSE-ConnectionGUID: zv1x8OSWQXeJW9G/Mr2ptw==
+X-CSE-MsgGUID: saIygWOLRJWUlK7H39/AOA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="169218382"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 08:55:49 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH iwlwifi-next 15/15] wifi: iwlwifi: refactor iwl_pnvm_get_from_fs
-Date: Tue, 26 Aug 2025 18:55:04 +0300
-Message-Id: <20250826184046.c752988eb0d1.I7b3a9a4f6a8d23663838a1e232f8bfad57c596ce@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250826155504.2982930-1-miriam.rachel.korenblit@intel.com>
-References: <20250826155504.2982930-1-miriam.rachel.korenblit@intel.com>
+   d="scan'208";a="169519770"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.4])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 09:00:29 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 26 Aug 2025 19:00:25 +0300 (EEST)
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+cc: manivannan.sadhasivam@oss.qualcomm.com, 
+    Bjorn Helgaas <bhelgaas@google.com>, 
+    Manivannan Sadhasivam <mani@kernel.org>, 
+    Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+    =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kwilczynski@kernel.org>, 
+    Rob Herring <robh@kernel.org>, Nirmal Patel <nirmal.patel@linux.intel.com>, 
+    Jonathan Derrick <jonathan.derrick@linux.dev>, 
+    Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, linux-arm-msm@vger.kernel.org, 
+    linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
+    ath11k@lists.infradead.org, ath10k@lists.infradead.org, 
+    =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+    Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
+    "Rafael J. Wysocki" <rafael@kernel.org>, 
+    Qiang Yu <qiang.yu@oss.qualcomm.com>
+Subject: Re: [PATCH v2 6/8] wifi: ath12k: Use pci_{enable/disable}_link_state()
+ APIs to enable/disable ASPM states
+In-Reply-To: <2fab10a7-8758-4a5c-95ff-2bb9a6dea6bf@oss.qualcomm.com>
+Message-ID: <705a4fe5-658e-25ac-9e4d-6b8089abca46@linux.intel.com>
+References: <20250825-ath-aspm-fix-v2-0-61b2f2db7d89@oss.qualcomm.com> <20250825-ath-aspm-fix-v2-6-61b2f2db7d89@oss.qualcomm.com> <2fab10a7-8758-4a5c-95ff-2bb9a6dea6bf@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-Instead of having an error code or 0 as a return value and passing a
-pointer to a pointer to be set by this function, change it to return a
-pointer, and use NULL as an error indication.
+On Tue, 26 Aug 2025, Jeff Johnson wrote:
 
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/pnvm.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+> On 8/25/2025 10:44 AM, Manivannan Sadhasivam via B4 Relay wrote:
+> > --- a/drivers/net/wireless/ath/ath12k/Kconfig
+> > +++ b/drivers/net/wireless/ath/ath12k/Kconfig
+> > @@ -1,7 +1,7 @@
+> >  # SPDX-License-Identifier: BSD-3-Clause-Clear
+> >  config ATH12K
+> >  	tristate "Qualcomm Technologies Wi-Fi 7 support (ath12k)"
+> > -	depends on MAC80211 && HAS_DMA && PCI
+> > +	depends on MAC80211 && HAS_DMA && PCI && PCIEASPM
+> 
+> As you point out in patch 1/8, PCIEASPM is protected by EXPERT.
+> 
+> Won't this prevent the driver from being built (or even showing up in
+> menuconfig) if EXPERT is not enabled?
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-index 4d91ae065c8d..0421a84a44a8 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/pnvm.c
-@@ -237,11 +237,12 @@ static int iwl_pnvm_parse(struct iwl_trans *trans, const u8 *data,
- 	return -ENOENT;
- }
- 
--static int iwl_pnvm_get_from_fs(struct iwl_trans *trans, u8 **data, size_t *len)
-+static u8 *iwl_pnvm_get_from_fs(struct iwl_trans *trans, size_t *len)
- {
- 	const struct firmware *pnvm;
- 	char pnvm_name[MAX_PNVM_NAME];
- 	size_t new_len;
-+	u8 *data;
- 	int ret;
- 
- 	iwl_pnvm_get_fs_name(trans, pnvm_name, sizeof(pnvm_name));
-@@ -250,31 +251,32 @@ static int iwl_pnvm_get_from_fs(struct iwl_trans *trans, u8 **data, size_t *len)
- 	if (ret) {
- 		IWL_DEBUG_FW(trans, "PNVM file %s not found %d\n",
- 			     pnvm_name, ret);
--		return ret;
-+		return NULL;
- 	}
- 
- 	new_len = pnvm->size;
--	*data = kvmemdup(pnvm->data, pnvm->size, GFP_KERNEL);
-+	data = kvmemdup(pnvm->data, pnvm->size, GFP_KERNEL);
- 	release_firmware(pnvm);
- 
--	if (!*data)
--		return -ENOMEM;
-+	if (!data)
-+		return NULL;
- 
- 	*len = new_len;
- 
--	return 0;
-+	return data;
- }
- 
- static const u8 *iwl_get_pnvm_image(struct iwl_trans *trans_p, size_t *len,
- 				    __le32 sku_id[3], const struct iwl_fw *fw)
- {
- 	struct pnvm_sku_package *package;
--	u8 *image = NULL;
- 
- 	/* Get PNVM from BIOS for non-Intel SKU */
- 	if (sku_id[2]) {
- 		package = iwl_uefi_get_pnvm(trans_p, len);
- 		if (!IS_ERR_OR_NULL(package)) {
-+			u8 *image = NULL;
-+
- 			if (*len >= sizeof(*package)) {
- 				/* we need only the data */
- 				*len -= sizeof(*package);
-@@ -298,9 +300,7 @@ static const u8 *iwl_get_pnvm_image(struct iwl_trans *trans_p, size_t *len,
- 	}
- 
- 	/* If it's not available, or for Intel SKU, try from the filesystem */
--	if (iwl_pnvm_get_from_fs(trans_p, &image, len))
--		return NULL;
--	return image;
-+	return iwl_pnvm_get_from_fs(trans_p, len);
- }
- 
- static void
+It doesn't work that way, PCIEASPM defaults to y:
+
+$ sed -i -e 's|CONFIG_PCIEASPM=y|CONFIG_PCIEASPM=n|g' .config && make oldconfig && grep -e 'CONFIG_EXPERT ' -e 'CONFIG_PCIEASPM=' .config
+#
+# configuration written to .config
+#
+# CONFIG_EXPERT is not set
+CONFIG_PCIEASPM=y
+
+> Should we consider having a separate CONFIG item that is used to protect just
+> the PCI ASPM interfaces? And then we could split out the ath12k_pci_aspm
+> functions into a separate file that is conditionally built based upon that
+> config item?
+> 
+> Or am I too paranoid since everyone enables EXPERT?
+
+One just cannot control PCIEASPM value if EXPERT is not set. ASPM is 
+expected to be enabled, or "experts" get to keep the pieces.
+
 -- 
-2.34.1
+ i.
 
 
