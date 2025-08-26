@@ -1,98 +1,105 @@
-Return-Path: <linux-wireless+bounces-26630-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26631-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA567B35E0A
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 13:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7617DB35E41
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 13:55:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AA8E3A63A6
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 11:50:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB0A53A6179
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 11:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77E1283FDF;
-	Tue, 26 Aug 2025 11:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B89A29D26A;
+	Tue, 26 Aug 2025 11:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="RcqgSMxX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2kSN88Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5A3285CA9
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 11:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A4A8635C
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 11:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208996; cv=none; b=D4/mfMh/G7Acn+1uLmSOJA+IHsR/K/xVnJGp0Kj0sdhWDODjuMe4VE5kiO57kt9zUHFE7NrYxaJCO5LhfgTlX4bUZNZi1tkh8eZMA/GwFy77P3Vdd8+3kHiBXUNAHvmFiq6Xq2Ubv+5wyMttejpiuSkd+aXFoUgPYWKmqH77AHY=
+	t=1756209294; cv=none; b=ul1X3io+6mzUgAyVdvqX0xaeeGXR8/UDwb/p36ROqEPusXo9WBLAXfxhGcBCNQWrloFV7ohNccCS9Uph7u1RXO9srWtSztAt+xQW0W5IzXTgacJ6gOOV61rtit5V9qnD8EHVpN6VxrrSHqkGTpMfv0hCTWceksSLkdaxT/kqcI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208996; c=relaxed/simple;
-	bh=Er2kVmbQlx5pzj5cb2Ho+SDL4DXCfvohnUvguQxoEPQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=E0WRpbb1B4FA7Zmqyqu6VENRftixG+P5QAlSXJmmas9nbo7/ldDrr/3IYKuol/IQPOoLA0uKPjmp7tyh5tgpXe+1j+40XqSQe/ep2PgyPoHhSs7wvTiuUd4UkDYHZIR1p0NbnFCrciaeJr2AKcuact+VYJEQwvg1ps4YAblOU50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=RcqgSMxX; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Er2kVmbQlx5pzj5cb2Ho+SDL4DXCfvohnUvguQxoEPQ=;
-	t=1756208995; x=1757418595; b=RcqgSMxXu5EGSicXNqBJLKMMrgFO8EPmpmDXQP3JNpTGRgS
-	aURi3oJo63mIgjWNJJzMHjCmEcT0y8WCvi0b72lMfLg1fEsFdJWCDimdA5m5lu02DPXMmK1abKtGR
-	itbcon6YWer3EWPi8JpDgX2i4m4kE6IATOqYDJvlAHe0YIncNMPHr4CuT0oFQYjPsgL6VsnWID+93
-	SyNN5qrIsUBlQN9aQHC5qlput9lPVW6mf/qBo4B+IeJhLm6RWZ9e9wCngtBYRCJoeFY3/X94IZdAn
-	p95Phm/NMlPt50DLs+eQUkJixPJ8J+oPuKz6tiRgwK7sbu8wqHLaYQGWIzdgP6XQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uqsBU-00000003afv-1zPO;
-	Tue, 26 Aug 2025 13:49:52 +0200
-Message-ID: <b813a59f1e1e6b38517a12f3c0c4e512c07ebefb.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless v3] wifi: mac80211: increase scan_ies_len for
- S1G
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Date: Tue, 26 Aug 2025 13:49:51 +0200
-In-Reply-To: <20250826085437.3493-1-lachlan.hodges@morsemicro.com> (sfid-20250826_105515_346282_6B119689)
-References: <20250826085437.3493-1-lachlan.hodges@morsemicro.com>
-	 (sfid-20250826_105515_346282_6B119689)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1756209294; c=relaxed/simple;
+	bh=zMl59GGpc7VGfGxTapbkAveEn+2bbxe0Gn1LV1wL5K8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=euGBXhBoE1Oa4W5purc901l6dMh9dKun3vHoYSH1JcrjGi+ssHaywcM+09GI2+HQcdlILqCfytZ35ZzHLe9mlpXGMn9TMXXmxTJscLVPGOEDTvnYiLzWEjEU4BAr1CqzwkO9H3PxzliIumgIdTMWPoU1YWz10vxSUu9yOh04nfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2kSN88Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C5AC4CEF1;
+	Tue, 26 Aug 2025 11:54:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756209292;
+	bh=zMl59GGpc7VGfGxTapbkAveEn+2bbxe0Gn1LV1wL5K8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=e2kSN88ZiZEPdtBOKTW/A4JNIo/Ijnfo+8w5ewrZTIk+48TE9hXIxeRztzTgMA+7R
+	 J+N21242YYR6iAfrsR1ArsXL8vxlcik7X9vsQLG0+/9d4k+UvgpchBHdE4xPkP99Kj
+	 yiLZ9MLMWwv7ktIzO35pxrYotm3htErYAi/Pp9k+MztSihz9boghRBmd+8gd9s6vFM
+	 skP9u1usxTCffJOQ1478B7Ra9y77nvoKUCBo2p1Tk6+XaXp5kB1UE5JuPZCKCJ3ZUa
+	 NAj3KYOWzY6moMQhxZU/jffuIY6DhbpThfUhsR8elPiVFWxIpCUHBlcKGx9GQhnd2b
+	 Sei8foRb03XVA==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Tue, 26 Aug 2025 13:54:31 +0200
+Subject: [PATCH wireless-next v2] wifi: mac80211: Make CONNECTION_MONITOR
+ optional for MLO sta
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250826-remove-conn-mon-check-ieee80211_register_hw-v2-1-5a1e2f038245@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAHagrWgC/52NWw6CMBQFt2L67TW0ykO/3IchBMqBNkhrbk3VE
+ PZuZQl+zsnJzCIC2CKIy24RjGiD9S6B2u+ENq0bQbZPLFSm8qxSBTFmH0HaO0ezd6QN9EQWQJU
+ pKRvGaMMT3JgXDSX68lQdu3OhRTI+GIN9b7Vbndikp+fPFo/yt/7XiZIkZb0uO0jZ6jy/TmCH+
+ 8HzKOp1Xb9MJwIs5wAAAA==
+X-Change-ID: 20250826-remove-conn-mon-check-ieee80211_register_hw-f7ed7483b96c
+To: Johannes Berg <johannes@sipsolutions.net>, 
+ Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+Cc: Johannes Berg <johannes.berg@intel.com>, linux-wireless@vger.kernel.org, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.2
 
-On Tue, 2025-08-26 at 18:54 +1000, Lachlan Hodges wrote:
-> Currently the S1G capability element is not taken into account
-> for the scan_ies_len, which leads to a buffer length validation
-> failure in ieee80211_prep_hw_scan() and subsequent WARN in
-> __ieee80211_start_scan(). This prevents hw scanning from functioning.
-> To fix ensure we accommodate for the S1G capability length.
->=20
-> Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-> ---
-> v2 -> v3: don't include kernel test robot for a new patch...
->=20
-> Again, targetted wireless.. but not really sure if this qualifies
-> as a "bug"... I gave my reasoning in the reply to the first patch:
->=20
-> https://lore.kernel.org/linux-wireless/3j7kkqznavkxt23iopacl626xkppzcitia=
-ctxz43axqorucrvu@6gaixffy7zaj/
+Since commit '1bc892d76a6f ("wifi: mac80211: extend connection
+monitoring for MLO")' mac80211 supports connection monitor for MLO
+client interfaces. Remove the CONNECTION_MONITOR requirement in
+ieee80211_register_hw routine.
 
-I'm happy with it to go to wireless, and will just do that at this
-stage, but I'm also curious how it would matter at all there?
+Fixes: 1bc892d76a6f ("wifi: mac80211: extend connection monitoring for MLO")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes in v2:
+- Fix subject line in the commit log
+- Link to v1: https://lore.kernel.org/r/20250826-remove-conn-mon-check-ieee80211_register_hw-v1-1-0dc7be11ac55@kernel.org
+---
+ net/mac80211/main.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-The only driver with S1G right now is hwsim, I believe, which always has
-also other bands and HT/VHT/etc., so wouldn't it allocate more than
-enough space anyway?
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 9c8f18b258a68c2c92981aaab68032931c6144b9..beee51354931165cac9e0d864c5ca2babaaf92b9 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -1164,9 +1164,6 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 		if (WARN_ON(!ieee80211_hw_check(hw, MFP_CAPABLE)))
+ 			return -EINVAL;
+ 
+-		if (WARN_ON(!ieee80211_hw_check(hw, CONNECTION_MONITOR)))
+-			return -EINVAL;
+-
+ 		if (WARN_ON(ieee80211_hw_check(hw, NEED_DTIM_BEFORE_ASSOC)))
+ 			return -EINVAL;
+ 
 
-Feels like you should only be able to run into this with a driver that
-only has S1G, and no such driver exists upstream? Or am I confused?
+---
+base-commit: ee6960bdbb74499516261b84eadb19acc01cb361
+change-id: 20250826-remove-conn-mon-check-ieee80211_register_hw-f7ed7483b96c
 
-johannes
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
+
 
