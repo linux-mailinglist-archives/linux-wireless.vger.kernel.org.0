@@ -1,161 +1,88 @@
-Return-Path: <linux-wireless+bounces-26605-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26606-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33621B3521D
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 05:14:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BD4B35226
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 05:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10AAA1A83420
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 03:14:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09F9917C410
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Aug 2025 03:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A6C29B8E0;
-	Tue, 26 Aug 2025 03:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QK/gka2D"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81C42594B7;
+	Tue, 26 Aug 2025 03:17:08 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DFA14EC46;
-	Tue, 26 Aug 2025 03:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FD71F4165;
+	Tue, 26 Aug 2025 03:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756178047; cv=none; b=R+RVhnMOnL6mCTQe5MQ4jYIqNrDaqODFEiA9Ru+58FBALAACTe38FrGqnRWrC+s6jJlDevsRi5d/lQwW3k33UilB7Op/fp8Vzs2HaOMmg4C1x2KO15MlwaN2Da8//QMUVgF8AjfSxUOMBXdLrI8ypfI+wRo0jKEqs9xAtavg4CY=
+	t=1756178228; cv=none; b=YNbGRxfUlUbJrzHDnYV5Wjv3TYyK9PmygAWieuzhA2TGcX6nnkS5ucak/W06msfKnXmhy5S9PcS5sw8oXUf9MAihDzFXp+afWAZcEM3H/tjRG/lA+fLGZlydgvoi6lzwFRq03SkR5gUV+4d0QC7aOh/fKEsj/tlRo7MBZHMu4uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756178047; c=relaxed/simple;
-	bh=5YN6O6GC9zj2w2gyr2C02jpCaY11GyipQ674DFoTk6o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kfoMUMg8bagp7pUL7hXghqrkWc75y7RYvEPOzbMJQTMDsfWCRiTITbu0lLIGQhZ5h/Oxq0fWW2i/618fG0Pm4BV1MXxMSu96Q7MiPXO5Sr1lFoFen/lEqfFe7SgmJ3YerOugyld1NUrb5LaEImCQOB4w2hynE7YrH+aE6SkkEKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QK/gka2D; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55ce5243f6dso5457943e87.2;
-        Mon, 25 Aug 2025 20:14:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756178043; x=1756782843; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=haEGMgQWYPiavHeip3qnO9dXl3bo4enC7b6lrk3mafQ=;
-        b=QK/gka2D7BE34DCMSLDKcbuSHpgVwlYXR6UQwLTaOjf0ruYLV4XlU7SyrT3pBZPZrW
-         lUPuBp1f7s80CnEfv1E5dnBMCyDbWkyvyzGQ8iR8viDzFc3tyIDoM1MLJXa8MQlsgQRU
-         Yk2n6ncEKQ1mJqGt4r6u8Cghn/9xb/nvxBkxmkpMa73vx6pKe09DWeofTRH5eCoUiVxG
-         BgUf8oy4o2HEmsyWfmV47BwuahNOyr3EkSN7/NQmTrBdxZUS7Po3oLduBESAS4ReSXR6
-         P3j7lGWApv4LbW3Hjnb6XjdZleHmvPtQm3sdCu28CvqApmR8vdN980jahgXpAlTvtMyV
-         o32A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756178043; x=1756782843;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=haEGMgQWYPiavHeip3qnO9dXl3bo4enC7b6lrk3mafQ=;
-        b=PssGWj6edxtDrCVtpwLXwwM9PfrT1+7doBEOvjaZPA34i2R8VJ6Vz6eq+B+CDza0yh
-         Qjk3WysDhPcQ1uEFINnPXzaM0Pblcm9mXPkKPFZqJkygI1YjijDbH4gdjXgb5a3Kc0tA
-         s/BU2cucB3n9sZ1KJgqoERa8ti+LV8TeHkBvtHq6uuRhGeP8Ul34y28Klv2AvLBGVWMf
-         nax++fmHAjqbECQODZ29YkpRRFamlnjEw5+p4oh1OUUNeMEl1ZsG7knQYOKxBmOk+Pb/
-         Hh20N04dX4dma2xJVC8Zh2J1cH/qLBMwic804kYsG68h6Ey6zYVXTuiuvc5PNhZX+AGn
-         9z+g==
-X-Forwarded-Encrypted: i=1; AJvYcCX3xPfKS7l95402IdrXBvye3H9qXnl9WsAR2/QaBGALvgPmkFGDnGHTvK6Y4iO3bb4KO9Tr8B5DMwqNBhg=@vger.kernel.org, AJvYcCXs6mwJbwkU5xax3LpGjEqunnxcV2hEBRrKYjSNzm0yRNARBvr5P2xZXoU3Yz/61ue9dCFpW6mVaV7XuYq+iXk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzovBGl6em4172Karbr4CFTHzdZVx9vo21634nL0V+2dT5PG5cG
-	4JCFwGtFfywUbRzGaaaL8RSgG+toee4aWIC8XVpZTz365+L1YtaMMOkLdAOC9F0VlpE=
-X-Gm-Gg: ASbGncvusNeaxEL6BfEnvd8Lgxq21Zkh0en8bveWdGoGmcU8040Utp7fxLM7XFVwuqp
-	hBu7bV+7l0EklWEbSUSqS/3gDNElXUN79z6bIkTZzzKxMTi2Ru+MwjrcndXyhZoGlcS2YtieuBO
-	2iY0JGndDsJopj3vkbA/IRAbPI0ccdq4XBB5DvLtHR9asO2sRmpW3E5DHk8k80JOWwSQ8Xcqkob
-	IZ+TF+7sUaP/CDLZWcXFJlH0MZEbEx6BENUt0n+jKf3KwbwG3KqGX7TZZGFpKFzvGRAyz/yEIbZ
-	CuwK7zHvADEAUzZ+Kp4s1tWW1iqQjD2Z+6lR1xhc4NgHHfy2LHYE74XwDKEIW3R/HtSa0nSYgrn
-	J9DKidm/5Na7fpSRRWd1Vn8NJzyrFuaEUS40IFbD2IDNJMCm5EGwIC6QWRGi+UaPQRfkhzQwOW8
-	VFew7ytm+W/DZrcO3Fgw==
-X-Google-Smtp-Source: AGHT+IG2uTbsT5FvN5W8j68SQ4oNq78+Q+UaUZ0b0Isc15lY0SLDiJWQZ60TgwVz89K1MIlLZzkIWw==
-X-Received: by 2002:a05:6512:124a:b0:55f:4107:ac4d with SMTP id 2adb3069b0e04-55f4107b076mr2811906e87.32.1756178042760;
-        Mon, 25 Aug 2025 20:14:02 -0700 (PDT)
-Received: from uuba.fritz.box (2001-14ba-6e-3100-af6-b340-a13b-482e.rev.dnainternet.fi. [2001:14ba:6e:3100:af6:b340:a13b:482e])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f3d4d1afasm1706832e87.58.2025.08.25.20.14.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 20:14:00 -0700 (PDT)
-From: =?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
-To: stable@vger.kernel.org
+	s=arc-20240116; t=1756178228; c=relaxed/simple;
+	bh=rZZS7XxvYff8UplxWngQ5EOMk9dIwfeqcUkMFXg8E5I=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=M5ZaWjLhpBlddI84P3SrXG6O9NKyKCL2OdeTB21NQ3cYpNmcDiJie3lW0h2XnI4bF2XnutKZSo+TXOJU8bnTOpljkV/IOMPZZwW9cXz4eO5LSszRkBRHS9ihWHD8zPS/xWCBhmncfZgYbD/3cxOg6Ie3VyhHqXFyW/N08wgtaGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 1d7e8f9e822b11f0b29709d653e92f7d-20250826
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:a4c2def1-cbd4-4832-8dc3-a9dcabd11ea7,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6493067,CLOUDID:27ec317d6c360ade35356f733918c402,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|83|102|850,TC:nil,Content:0|50,EDM
+	:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
+	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 1d7e8f9e822b11f0b29709d653e92f7d-20250826
+Received: from node4.com.cn [(10.44.16.170)] by mailgw.kylinos.cn
+	(envelope-from <tanzheng@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 710774536; Tue, 26 Aug 2025 11:16:53 +0800
+Received: from node4.com.cn (localhost [127.0.0.1])
+	by node4.com.cn (NSMail) with SMTP id A735C160038C0;
+	Tue, 26 Aug 2025 11:16:53 +0800 (CST)
+X-ns-mid: postfix-68AD2725-464022963
+Received: from localhost.localdomain (unknown [10.42.20.101])
+	by node4.com.cn (NSMail) with ESMTPA id EC81516001A03;
+	Tue, 26 Aug 2025 03:16:52 +0000 (UTC)
+From: tanzheng <tanzheng@kylinos.cn>
+To: arend.vanspriel@broadcom.com
 Cc: johannes@sipsolutions.net,
-	shaul.triebitz@intel.com,
-	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
-Subject: [PATCH 5.15.y] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
-Date: Tue, 26 Aug 2025 06:13:52 +0300
-Message-ID: <20250826031352.510675-1-hannelotta@gmail.com>
-X-Mailer: git-send-email 2.50.0
+	linux-wireless@vger.kernel.org,
+	tanzheng@kylinos.cn
+Subject: Re: [PATCH v1] wifi: cfg80211: simplify the code
+Date: Tue, 26 Aug 2025 11:16:52 +0800
+Message-Id: <20250826031652.454464-1-tanzheng@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <11546959-3090-4070-93fa-349bc64f3bdd@broadcom.com>
+References: <11546959-3090-4070-93fa-349bc64f3bdd@broadcom.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-From: Mikhail Lobanov <m.lobanov@rosa.ru>
+Hi Arend,
 
-[ Upstream commit 16ee3ea8faef8ff042acc15867a6c458c573de61 ]
+This is my mistake. Here I confused driver name and device name.After you=
+=20
+reviewed the code, I tested it and found that it was wrong.=20
 
-When userspace sets supported rates for a new station via
-NL80211_CMD_NEW_STATION, it might send a list that's empty
-or contains only invalid values. Currently, we process these
-values in sta_link_apply_parameters() without checking the result of
-ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
+Thank you for your correction.I will remove the wrongly modified code and=
+=20
+submit a new patch for modification.
 
-A similar issue was addressed for NL80211_CMD_SET_BSS in commit
-ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
-This patch applies the same approach in sta_link_apply_parameters()
-for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
-rate by inspecting the result of ieee80211_parse_bitrates().
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
-Link: https://patch.msgid.link/20250317103139.17625-1-m.lobanov@rosa.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ Summary of conflict resolutions:
-  - Function ieee80211_parse_bitrates() takes channel width as its
-    first parameter in mainline kernel version. In v5.15 the function
-    takes the whole chandef struct as its first parameter.
-  - The same function takes link station parameters as its last
-    parameter, and in v5.15 they are in a struct called sta,
-    instead of a struct called link_sta. ]
-Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
----
- net/mac80211/cfg.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 2b77cb290788..706ff67f4254 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1658,12 +1658,13 @@ static int sta_apply_parameters(struct ieee80211_local *local,
- 			return ret;
- 	}
- 
--	if (params->supported_rates && params->supported_rates_len) {
--		ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
--					 sband, params->supported_rates,
--					 params->supported_rates_len,
--					 &sta->sta.supp_rates[sband->band]);
--	}
-+	if (params->supported_rates &&
-+	    params->supported_rates_len &&
-+	    !ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
-+				      sband, params->supported_rates,
-+				      params->supported_rates_len,
-+				      &sta->sta.supp_rates[sband->band]))
-+		return -EINVAL;
- 
- 	if (params->ht_capa)
- 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
--- 
-2.50.0
-
+Best regards,
+Zheng tan
 
