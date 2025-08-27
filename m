@@ -1,126 +1,142 @@
-Return-Path: <linux-wireless+bounces-26706-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26707-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4294AB387DC
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 18:40:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE6EB387FE
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 18:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BA384632DD
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 16:40:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C3A6685EFA
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 16:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5852D5C89;
-	Wed, 27 Aug 2025 16:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59672D192B;
+	Wed, 27 Aug 2025 16:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="kM3dwbtq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kSlfR7rz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE8D26A095
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 16:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206E62C3250
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 16:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756312812; cv=none; b=dM5h02rOsim3JwOx1pP3i96J1r+xiYpH4qxOUedhPscVcF4yf7wXtyW0yUZmL4Z47d/+AfrKYWQ1o9byRVh8BlGXyYVc88T1TmH8WA8kkSJHET4HWgFOjyF0noiNxDngAyo4qu+CaDoUwtJ+QUcONVgB4zXD64lyM/hjgQRLwjI=
+	t=1756313294; cv=none; b=QxD6oJPYs4FVQhQOCTlpRd7iMaF59zKQjqNo0ggHe2ODV8HMsOh8xw62uoW7AEY1XKnN8SmEDLhLT3ELWfGNkplleO6T3weJTNak587sNodnCueRfEeBhCthkaao1E5zbKIbX1ZeqKk7Z/gHQ5T881YnvsY/WO0almNxjivWn4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756312812; c=relaxed/simple;
-	bh=GFO9IgTAK+O7G/VSxtzxZebQJUgzwX4U2IYb2z7YTW4=;
-	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=BJRQL5pG1Uw7PSliAZT7VNffY9XR72ZzP5Urif4GybKAnUmaZmRlQ8tXQ2vuM7q0JavPSDCg95CHIb7KIipvqzLvcdI6TtczncWMyJt395g5Z7QLwqpRi2/+gNN6OFSyiCMMrT7FA8YEjOA80QYi7pnkKzv8p71Kau4uIjv/PrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=kM3dwbtq; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=fJOh5Jrw7XLK22JMtsuDSAHmFbvrzPOnZ/Uw0xUIbeI=; t=1756312810; x=1757522410; 
-	b=kM3dwbtqENz6D3XAl/fZixgltzJdQuMUOC+QFCfw9D21+nvOPymck8lMmQqInCQfahdrA6VEuh5
-	+wfnKbPBAmcyozmyDM+01m+BA9E1V6yPOZjG94s0Fx6IEq7bwP1eWlwCbKUmG2GF63LfubT/o1R4d
-	E1sD3aPm1xocWcBU33EdPrfrpFVSF69ydC1uq7BrFyy1txsaFJScoHaiyLnsjyRoy4IeBWckDEcvF
-	8MUcPrt1EMyLe4Ceqra96h/Vd0jTPEeBDQvT8FPu0yINZUI7/rQdhYfbdIogbJ29XQ3hGwr4Lz/cH
-	rO8CwZCHtax3pR3wxDSojjgFEGKLK8wAy8IA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1urJBq-00000005ngl-1idu
-	for linux-wireless@vger.kernel.org;
-	Wed, 27 Aug 2025 18:40:02 +0200
-Message-ID: <f071f05beba11fe51f5517f3cc9890dc379273f5.camel@sipsolutions.net>
-Subject: NPCA/DSO configuration
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Date: Wed, 27 Aug 2025 18:40:01 +0200
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1756313294; c=relaxed/simple;
+	bh=ZEt5sQACmcmGj6HYsmE+C754Q1U3gyns2aMeNjk6ID8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=HA9gT7CuqnvApxZI6gbc2qzAwD8Jldz6Gbfduv0nprytGFl9SPZ2xcy96QKuPd/uvRd5jDJMtSuBGD4vUv987+LQ41XSbvHwSL+kjnmoWM1e9RenYaSXUn+L413EjprWeKaDiTLQIUl6Fk+tFfBjlxWJvNcPnN5kJsZHb3n5bwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kSlfR7rz; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3c7ba0f6983so51878f8f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 09:48:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756313291; x=1756918091; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QpwITSA8/LyvLGQhYgV8c0xvdP5oPyCopUJtWYhldGs=;
+        b=kSlfR7rzPJcOVVxesNwyKIOLFBKdMhS0FIpgBk/Ci5GTosENhHucg99lnVRfjW6uHe
+         Pv2jUji/lOePPx8G7pblzseSeO+kMqv0GdPLm7KQZHnKhrMh9WXaqjnCoTZyWFlQC3DF
+         EpS05dFQdkzv+Af0ITlRatzbKjcIZBpR+dliZvvwDzzRkH9ODn1mE6ZApVVu8fI2DZ4x
+         iBIUvgPcf3JB2DjxtYhgAd3KUJ1rwPS8kh9SdeQ4em49up9oOwbYXpdkoRey4ZmPWned
+         v4Ia/5DFpG+j15436Z1jXCZzP/bWO/0csKttTlXmYm2axUfLceIcfMbbt/wo3M09QheZ
+         iIBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756313291; x=1756918091;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=QpwITSA8/LyvLGQhYgV8c0xvdP5oPyCopUJtWYhldGs=;
+        b=lH+gbDMSeLseDRkfnM+c2LqFvUcMPYZvLRjMFPMGxLdPoqhY1M/2ohHa4nI8cQR7Zq
+         QK6FvypfNqd8EE94KcAC+U09M3vGvokARa7UOXikD9bJQGZngSuLivldTDTCOoFZiLrw
+         KLh8JO/ptuqdzbgGMdoiI/1WwQwHXN9bvPnkiuOhkUPKLECN4iKMqzrr3GA4RCLlpgib
+         cr0UQN44JB4Xdf8AN8OgNV3DtY3fZVnxliGj8imJXQI3FJYxeu1XUiLyrE5v1fDAwmXR
+         OHHtQNH2lIcBZWah81SbwAcZAKpm6eClFmfy0o4Ny8BrtRUL2QCN1s1l8gTwN2e0zwGJ
+         dq8Q==
+X-Gm-Message-State: AOJu0Yx0NcUVzRBR8y16yavDWw5PeaCGcClsguvtvOrlZN3/cSCaOwcJ
+	g3aSjDMSJmvX+Oom4ppA2pgzgK30TzCuXnnUf42DPpl1KWpB2YZO/YzsOsXsPQ==
+X-Gm-Gg: ASbGnctyAfutqwB1jnK/0MZ7x84a/eI2Evxmm9ClcCi5eJeUCNto44n7F83FAfb60M/
+	960hKmyV/XHHHtWaU6G8GlPAIperH7KbJa9/JvHTiaM/4pRDcuRIicM1aRGRt6lEPT7iMY1DoIY
+	Y17W6U+zPJWhyV8fWU3KZr/edvWt+8oS2BrAEDnqAo9Avnf1rK38fnPOldRo0976RZoUU5+KHQD
+	tRTgFHalljsc9NR/vkVdg4LvEb08UCSc21Z+Re8ls2gmIAB/LiyqoaLVTu3B7J8m+TbQtIul5Vq
+	SabuqL/w79ku8BCRb6TKukoP2m0WkW88ol/aafOv5Hr+nqE2rIStDGAxeq+fvWlcZxJU3H1Mz1x
+	sn3zUH1QBGVDbmebHVF3Uj9PQbtfevg==
+X-Google-Smtp-Source: AGHT+IFKGzo8D9UPt0eVOSRbjn5VyH5KLADItHCpw8VfakcuC/MLqhT9c1+D0j/lKO6ai188NZR/UQ==
+X-Received: by 2002:a05:6000:3107:b0:3c6:4cab:4935 with SMTP id ffacd0b85a97d-3cbb15c94demr4974009f8f.30.1756313291104;
+        Wed, 27 Aug 2025 09:48:11 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cbf1f5fc1bsm6202346f8f.54.2025.08.27.09.48.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Aug 2025 09:48:10 -0700 (PDT)
+Message-ID: <fac0abab-2334-4ae2-9a80-f3fd7808e392@gmail.com>
+Date: Wed, 27 Aug 2025 19:48:08 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next v3 00/11] wifi: rtw89: Add support for RTL8852CU
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Add support for RTL8852CU. It works well but sometimes it loses the
+connection:
 
-So I'm looking at UHR NPCA and DSO, mostly wrt. the configuration in
-mac80211 (and perhaps to some extent cfg80211, for sniffer.)
+Jul 04 16:05:56 ideapad2 kernel: wlp3s0f3u4: Connection to AP ... lost
+Jul 14 13:45:26 ideapad2 kernel: wlp3s0f3u4: Connection to AP ... lost
+Jul 15 17:51:28 ideapad2 kernel: wlp3s0f3u4: Connection to AP ... lost
+Jul 18 14:43:30 ideapad2 kernel: wlp3s0f3u4: Connection to AP ... lost
+Jul 24 14:58:07 ideapad2 kernel: wlp3s0f3u4: Connection to AP ... lost
 
-Let me look at NPCA first. For NPCA with a device that's capable of
-supporting the full channel width (e.g. 320 MHz with non-primary 160 MHz
-being used in that case, or non-primary 80 MHz out of overall 160 MHz)
-this seems fairly straight-forward:
- - the chandef or chanreq can simply contain a value/pointer for the
-   non-primary control channel location, if any
- - the channel context in mac80211 cannot be shared any more, since
-   transmissions on the other vif would be seen as OBSS for NCPA
-   purposes, and the AP might try to use NPCA with the station that's
-   actually doing the OBSS transmission on the other vif
+When that happens it reconnects immediately.
 
-That's about it for the simple case? Not sure if it should be in the
-chandef like puncturing or in the chanreq like the full AP channel for
-EHT triggering, what does the AP side for NPCA look like in terms of
-configuration? Seems like probably it would be configured via hostapd
-and then it should be in the chandef?
+These patches depend on another set:
+https://lore.kernel.org/linux-wireless/20250826085152.28164-1-pkshih@realtek.com/T/#t
 
-However, there's another case, say you have a device that only supports
-160 MHz, but then connects to an AP with 320 MHz. In this case, it's
-meant to still support NPCA. This is not relevant for an AP, I believe.
-But this case is more tricky:
- - Should we set the chandef to 320 MHz, but indicate somehow separately
-   that only the two 160 MHz channels are really used, since the HW is
-   incapable of 320 MHz? That seems ... strange.
- - Should instead the chandef be for 160 MHz, and the non-primary
-   control channel is actually outside the 160 MHz channel? That's
-   somewhat plausible, but hard to decode?
- - Intel firmware is going to require two PHY contexts, but should that
-   really be reflected in mac80211 as two channel contexts? Right now my
-   gut feeling is no, and the second channel context also couldn't be
-   shared with other vifs since the device really isn't active there.
+Bitterblue Smith (11):
+  wifi: rtw89: Add rtw89_core_get_ch_dma_v2()
+  wifi: rtw89: usb: Move bulk out map to new struct rtw89_usb_info
+  wifi: rtw89: usb: Prepare rtw89_usb_ops_mac_pre_init() for RTL8852CU
+  wifi: rtw89: usb: Prepare rtw89_usb_ops_mac_post_init() for RTL8852CU
+  wifi: rtw89: Fix rtw89_mac_dmac_func_pre_en_ax() for USB/SDIO
+  wifi: rtw89: 8852c: Fix rtw8852c_pwr_{on,off}_func() for USB
+  wifi: rtw89: Add rtw8852c_dle_mem_usb{2,3}
+  wifi: rtw89: Add rtw8852c_hfc_param_ini_usb
+  wifi: rtw89: 8852c: Accept USB devices and load their MAC address
+  wifi: rtw89: Add rtw8852cu.c
+  wifi: rtw89: Enable the new rtw89_8852cu module
 
-Or maybe in this case we only put the non-primary control channel into
-the *AP* chandef inside the chanreq (struct ieee80211_chan_req::ap) and
-not into struct ieee80211_chan_req::oper, since that actually reflects
-the full 320 MHz, and let the driver figure out the rest? I think right
-now I'd probably consider this option most sane, since this case doesn't
-apply to AP mode? And in the "easy" case above obviously the non-primary
-control channel would be in both then in the channel request.
+ drivers/net/wireless/realtek/rtw89/Kconfig    |  11 ++
+ drivers/net/wireless/realtek/rtw89/Makefile   |   3 +
+ drivers/net/wireless/realtek/rtw89/core.c     |  19 +++
+ drivers/net/wireless/realtek/rtw89/core.h     |   7 +-
+ drivers/net/wireless/realtek/rtw89/mac.c      |  31 ++++-
+ drivers/net/wireless/realtek/rtw89/mac.h      |  10 ++
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   4 +-
+ .../net/wireless/realtek/rtw89/rtw8851bu.c    |  22 +++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |   4 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |   4 +-
+ .../net/wireless/realtek/rtw89/rtw8852bt.c    |   4 +-
+ .../net/wireless/realtek/rtw89/rtw8852bu.c    |  22 +++
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 128 +++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/rtw8852c.h |   2 +-
+ .../net/wireless/realtek/rtw89/rtw8852cu.c    |  69 ++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |   4 +-
+ drivers/net/wireless/realtek/rtw89/usb.c      |  45 ++----
+ drivers/net/wireless/realtek/rtw89/usb.h      |  11 ++
+ 18 files changed, 341 insertions(+), 59 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852cu.c
 
-As for DSO, that's only relevant for the second kind of device (which
-connects to an AP with a higher bandwidth than it can support), so maybe
-if the struct ieee80211_chan_req::ap gives the information, the driver
-can sort it out just like I was outlining in the previous paragraph for
-NPCA?
+-- 
+2.50.1
 
-
-For sniffer also I guess it's just part of the chandef, which might also
-require configuring/tracking the BSS color. Even if the sniffer could
-listen on both control channels it'd still have to decide which to
-decode, unless it's actually fully dual-channel.
-
-Anyone have any other thoughts?
-
-johannes
 
