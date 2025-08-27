@@ -1,75 +1,71 @@
-Return-Path: <linux-wireless+bounces-26662-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26663-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16465B37616
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 02:26:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72FC6B3762A
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 02:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 277A21B6845E
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 00:26:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65F2F189E99E
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 00:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85409145A1F;
-	Wed, 27 Aug 2025 00:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBD314F9FB;
+	Wed, 27 Aug 2025 00:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="E/N5qCSw"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="CeRtCxN4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFB6219EB
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 00:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD5AEACE;
+	Wed, 27 Aug 2025 00:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756254360; cv=none; b=MUqJkJcO5WbQlfUQxvdsuhqTWJanbhh9GDTfh/lYYRCBsSQdexDWNWmxZkLJYA2fvMJccFepG73f3rBsUH2hNRRPSZUM2rro1ratFGKhtLXMmDSfm02JORuc1LlRFtglzsZfxdxMrxPXLPlAUjyLC+48ovpDxGsjn2Edu745e80=
+	t=1756255332; cv=none; b=fNdw/CEBDFMpdwEbqbnC6Xk0ydg9QTsa6xH9G/NmHelX/91BJwvM+JLJFZJw2ZluNiiDyHjFs1hHtB4qWcnL5CGI0PAJfPk7ytLbr4BXbKxiBbIqAGjLfw1plWDsk9xp8jwjiA0ta2+5wR0z9kOoB98RJwUvmPBMI1pSq32oGTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756254360; c=relaxed/simple;
-	bh=SMoAw0ac/dn2eVF7kkxUqB6DveHrGsMC4Z62LWwJ7gc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YJ4WB1L8Ia/5v+cBRnmBiJ1wzPwvjMrcTJ/IXtQsG7/PP0BPW25NZn8Ev7iU2XGqU5C6F+ebL4ByzIRAmCweaYAmV8OnDFFhVkU0YP0/Lgwkyd3mfHHiK+E2aIvImFdFqghWiFF5O6eB648QqcVIh7b+TTJKEKZwjT1St4bjKRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=E/N5qCSw; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1756255332; c=relaxed/simple;
+	bh=aWrkSc0EvEUTVz7uCJDC5DoUaqvbLy75eSYZVCTHbLI=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QcYCAiHb5kxVu3+oi2ppPjCRbwBLHZNxuBaxJJhCuFSKNkg6eXtAdh2LeVbIuLkOBpB3/HxmdHzLyu+wb7w2imWbXWhrs/dXHhyTqAI9T+HloyjEFWynXEsb70doZapupb3zPYWfoqWjiTYiPEh1VcdFE+s7A1Fx9rIHjg3Kp2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=CeRtCxN4; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57R0PQN402549311, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57R0g5fB52564623, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1756254326; bh=zqxYZ4rsNm4rUpJCOPD1IoE0uI3Ar2MZ1mx/R16KzlI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	t=1756255326; bh=A1zkMaBL6G6zKXwe6drFmbj8wp4GlsPTwl9smSGEmic=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=E/N5qCSw8TKb3Y0FWUkyiaZJrDpRv/9wC2HZNTuVH0CxBgBKY/dFKvDkiNaS6vpV1
-	 31GDT4/ZdYXYT62ijgwldKw9WExWp6aGHPAU+LKwRggUj/NPUtxSOWwnSCcyhCl+1w
-	 l8K8Q3FfDksxQ9ZmVX9Rqy+wNBvgRpoPfuxc5BhuAyhevL8IavNfwB4t0EknN4iIcA
-	 Dxi3BIwJGJEkiFZsTjoN1hu1DC61bm7b/UXiiIFEOYW3JOE0unyCpmt7VN2zce+vys
-	 6eUIfaEkk7BA43tBAlCBldlUGBX3YHyFz4CEP/OrAb2Q6bHSOIzSx2dO1DfGGPIeku
-	 vtbHpWfXvDD5w==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57R0PQN402549311
+	b=CeRtCxN4FUynvKN2OHau+NvGiX8m673tFu2uzrwiz4kBuDyiX3B0hJmKeUVtrcR+F
+	 T4dssHqoHk2QrtnfHYFTcL8gN5Zd1IImWKJiTAnakvde49Qm0Scbxok8fbgQZ8ULQl
+	 lHlIWamcFNtp/zwzsM1lDrA0enSm9/QdL4GkU9mD6XeTF86PqqSv7AI8acZRcHx+2q
+	 /Zi1gJrL6HYzuIUdV1Lsl6TGGGaT8Tch8Ipj24sawsTwSpjgHkSkJjIbw2sbIHNOiT
+	 07mm9Ufl3c4xzelpULKDGJFx0XMdazxQYA/24P2KsBb1qC//I39lay8UuzuaVd+Iru
+	 CNY4INJ6LObzg==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57R0g5fB52564623
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 27 Aug 2025 08:25:26 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Wed, 27 Aug 2025 08:25:25 +0800
+	Wed, 27 Aug 2025 08:42:06 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Wed, 27 Aug 2025 08:25:25 +0800
+ 15.2.1544.27; Wed, 27 Aug 2025 08:42:06 +0800
 Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
  RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
- 15.02.1544.027; Wed, 27 Aug 2025 08:25:25 +0800
+ 15.02.1544.027; Wed, 27 Aug 2025 08:42:06 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Martin Kaistra <martin.kaistra@linutronix.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Bitterblue Smith
-	<rtl8821cerfe2@gmail.com>
-Subject: RE: [PATCH rtw-next] wifi: rtl8xxxu: expose efuse via debugfs
-Thread-Topic: [PATCH rtw-next] wifi: rtl8xxxu: expose efuse via debugfs
-Thread-Index: AQHcFmfebQOziZeAkUu/Xp6RP/ccI7R1pKxA
-Date: Wed, 27 Aug 2025 00:25:24 +0000
-Message-ID: <b51c0383511d4bcca88a12029ac441e2@realtek.com>
-References: <20250826090015.1552939-1-martin.kaistra@linutronix.de>
-In-Reply-To: <20250826090015.1552939-1-martin.kaistra@linutronix.de>
+To: Qianfeng Rong <rongqianfeng@vivo.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtw89: use int type to store negative error codes
+Thread-Topic: [PATCH] wifi: rtw89: use int type to store negative error codes
+Thread-Index: AQHcFo1wpnnDoE003EKhdLe9btN+vLR1pnvQ
+Date: Wed, 27 Aug 2025 00:42:06 +0000
+Message-ID: <b1f89b89906a4573bb8a916ed33763b5@realtek.com>
+References: <20250826132905.501755-1-rongqianfeng@vivo.com>
+In-Reply-To: <20250826132905.501755-1-rongqianfeng@vivo.com>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 Content-Type: text/plain; charset="us-ascii"
@@ -81,73 +77,98 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Martin Kaistra <martin.kaistra@linutronix.de> wrote:
-> The efuse contains the mac address and calibration data. During
-> manufacturing and testing it can be necessary to read and check this
-> data.
+Qianfeng Rong <rongqianfeng@vivo.com> wrote:
+> The 'ret' variable stores returns from other functions, which return
+> either zero on success or negative error codes on failure.  Storing
+> error codes in u32 (an unsigned type) causes no runtime issues but is
+> stylistically inconsistent and very ugly.  Change 'ret' from u32 to
+> int - this has no runtime impact.
 >=20
-> Add a debugfs interface to make it available to userspace.
->=20
-> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+> Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
 > ---
->  drivers/net/wireless/realtek/rtl8xxxu/core.c | 24 ++++++++++++++++++++
->  1 file changed, 24 insertions(+)
+>  drivers/net/wireless/realtek/rtw89/fw.c  |  7 ++++---
+>  drivers/net/wireless/realtek/rtw89/mac.c | 16 ++++++++--------
+>  drivers/net/wireless/realtek/rtw89/pci.c |  4 ++--
+>  3 files changed, 14 insertions(+), 13 deletions(-)
 >=20
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> index 831b5025c6349..b45010c93ad72 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> @@ -1901,6 +1901,29 @@ static void rtl8xxxu_dump_efuse(struct rtl8xxxu_pr=
-iv *priv)
->                        priv->efuse_wifi.raw, EFUSE_MAP_LEN, true);
->  }
+> diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wirele=
+ss/realtek/rtw89/fw.c
+> index 16e59a4a486e..01d53f7c142d 100644
+> --- a/drivers/net/wireless/realtek/rtw89/fw.c
+> +++ b/drivers/net/wireless/realtek/rtw89/fw.c
+> @@ -1537,7 +1537,7 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev=
+ *rtwdev,
+>         struct rtw89_fw_hdr *fw_hdr;
+>         struct sk_buff *skb;
+>         u32 truncated;
+> -       u32 ret =3D 0;
+> +       int ret =3D 0;
+
+Initializer is not necessary, by the way.=20
+
 >=20
-> +/* debugfs: efuse */
+>         skb =3D rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
+>         if (!skb) {
+> @@ -6826,7 +6826,8 @@ static int rtw89_fw_read_c2h_reg(struct rtw89_dev *=
+rtwdev,
+>         const struct rtw89_chip_info *chip =3D rtwdev->chip;
+>         struct rtw89_fw_info *fw_info =3D &rtwdev->fw;
+>         const u32 *c2h_reg =3D chip->c2h_regs;
+> -       u32 ret, timeout;
+> +       u32 timeout;
+> +       int ret;
+>         u8 i, val;
 
-Not sure if this comment is worth? If you want to emphasize 'debugfs', just
-add it to function name.
+Keep it in reverse X'mas tree order.
 
-> +static ssize_t read_file_efuse(struct file *file, char __user *user_buf,
-> +                              size_t count, loff_t *ppos)
-> +{
-> +       struct rtl8xxxu_priv *priv =3D file_inode(file)->i_private;
-> +
-> +       return simple_read_from_buffer(user_buf, count, ppos,
-> +                                      priv->efuse_wifi.raw, EFUSE_MAP_LE=
-N);
-> +}
-> +
-> +static const struct file_operations fops_efuse =3D {
-
-Use debugfs_short_fops to save spaces.=20
-
-> +       .read =3D read_file_efuse,
-> +       .owner =3D THIS_MODULE,
-> +};
-> +
-> +static void rtl8xxxu_debugfs_init(struct rtl8xxxu_priv *priv)
-> +{
-> +       struct dentry *phydir;
-> +
-> +       phydir =3D debugfs_create_dir("rtl8xxxu", priv->hw->wiphy->debugf=
-sdir);
-> +       debugfs_create_file("efuse", 0400, phydir, priv, &fops_efuse);
-> +}
-> +
->  void rtl8xxxu_reset_8051(struct rtl8xxxu_priv *priv)
+>=20
+>         info->id =3D RTW89_FWCMD_C2HREG_FUNC_NULL;
+> @@ -6865,7 +6866,7 @@ int rtw89_fw_msg_reg(struct rtw89_dev *rtwdev,
+>                      struct rtw89_mac_h2c_info *h2c_info,
+>                      struct rtw89_mac_c2h_info *c2h_info)
 >  {
->         u8 val8;
-> @@ -7974,6 +7997,7 @@ static int rtl8xxxu_probe(struct usb_interface *int=
-erface,
->         }
+> -       u32 ret;
+> +       int ret;
 >=20
->         rtl8xxxu_init_led(priv);
-> +       rtl8xxxu_debugfs_init(priv);
+>         if (h2c_info && h2c_info->id !=3D RTW89_FWCMD_H2CREG_FUNC_GET_FEA=
+TURE)
+>                 lockdep_assert_wiphy(rtwdev->hw->wiphy);
+
+[...]
+
+> @@ -3105,7 +3105,7 @@ int rtw89_mac_setup_phycap(struct rtw89_dev *rtwdev=
+)
+>  static int rtw89_hw_sch_tx_en_h2c(struct rtw89_dev *rtwdev, u8 band,
+>                                   u16 tx_en_u16, u16 mask_u16)
+>  {
+> -       u32 ret;
+> +       int ret;
+
+Please move below to be reverse X'mas tree order.
+
+>         struct rtw89_mac_c2h_info c2h_info =3D {0};
+>         struct rtw89_mac_h2c_info h2c_info =3D {0};
+>         struct rtw89_h2creg_sch_tx_en *sch_tx_en =3D &h2c_info.u.sch_tx_e=
+n;
+
+(move here)
+
+[...]
+
+> @@ -4158,7 +4158,7 @@ static int rtw89_pci_lv1rst_stop_dma_ax(struct rtw8=
+9_dev *rtwdev)
 >=20
->         return 0;
+>  static int rtw89_pci_lv1rst_start_dma_ax(struct rtw89_dev *rtwdev)
+>  {
+> -       u32 ret;
+> +       int ret;
 >=20
-> --
-> 2.39.5
+>         if (rtwdev->chip->chip_id =3D=3D RTL8852C)
+>                 return 0;
+
+
+The last statement of this function is 'return ret;', but actually it can
+just be 'return 0;'. Please change it by the way.=20
+
 
 
