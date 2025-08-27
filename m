@@ -1,126 +1,130 @@
-Return-Path: <linux-wireless+bounces-26679-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26680-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4034BB37AC7
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 08:50:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85977B37CAD
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 10:01:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E74734E3746
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 06:50:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB3F71B2138B
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 08:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479681E9B12;
-	Wed, 27 Aug 2025 06:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E00021B9C8;
+	Wed, 27 Aug 2025 08:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="ua5lA62Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fUWbZQf6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F646241696
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 06:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487F430CDBA
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 08:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756277419; cv=none; b=WA7wSvRbBRAIdVHdd7lmJR4+CArkWhfxwFEAgOOkIxI3PpMqvORSiZd2+1zTMUl8pQMCivECUCNEs0Lh8+SZgLFnfaDv7pGN1SDXppUW6V8B/p6WNytZCTzg4Rawq5WG+zoAQ9/WIGlRYwm1KcqvfTihsigw75kvF+GqGSx0Em4=
+	t=1756281682; cv=none; b=LbPj7LU/MF3Gf6EwV3mqosDQs359+IRVnZF4c+bEj8TRQPeuzAS/hEzQsAUCtEoYjxN79jJXI9vM39eDtznrOT860l3cLkflYE1/51BojsQ7AMwSddwAWzJ7KP40lcXEHEMG4LXVumQwLOoTFaMN74OGPgHhijWn1dp5sDxoKBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756277419; c=relaxed/simple;
-	bh=NkC+GwvEas2XR0AbvIuP85lnoDLc+qj84ioC+bL/TQI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eh0Ghb+AifPInVMRyxps5rLqyUj0rdIJQhh0SWQnnPFj5kGKh4zcOSfFkT9h8sCgqcY+h1Lv6abjh6giip2SiDeX89cse3AAXVI+os1u1OFtTSrpyskfwv8Hvt2w+xAr8X2TMWDlEBNHjz0qnitrq/tNC07V1PO+aAXrQSWAVi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=ua5lA62Z; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32326e5f058so4432284a91.3
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Aug 2025 23:50:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1756277415; x=1756882215; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MgUwLSwQ2M3USUMCbVvlZaH7p0NKbMR1fk2OIuXsXY8=;
-        b=ua5lA62ZK6XBuJzfz4Y1iDu/n1sqLhs0fbFJAsOL0JHc/7p7I5ZusOeRS+A9j5kfdm
-         KpdC2BkllciX97BKXebiZdYlVRPQt5VT6wxXsC3LJQPp2jeTNKcoE9Ntj7MRSPvJVDUm
-         pFsmJ0haVo6+duf2RIrwBaUNqenR1hZVgA9hMD1Ca51MEywAAN+w4a9YiL3YPdcWjyaz
-         T5TO9xWmGHn29Lj1YbN8fDpHf3aLLHnNGX9F5+DTh+Jgc85mD6X1PQTUS3gjSOZ+IRZ7
-         M5yoEC0KT8BQTEQTHyduVu3rksERABcjpyChps7+GntjEbStmA2uLcbBeUfZgtVmP+5H
-         rQ1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756277415; x=1756882215;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MgUwLSwQ2M3USUMCbVvlZaH7p0NKbMR1fk2OIuXsXY8=;
-        b=kop049OcssHMlr5e5hBsrG8qyXcwlz0qNYPG9AOO3Att9jApxScOSaDGeOd8FJnAfQ
-         aRjLybF1TpTwFBPNfK3at3l8jnyZKWOkgXy69UC+KrD01wuIexIXJa9WzMH1/IRwjd0P
-         fpWC3aMUN63QfvmfPMO6K8XJT8uoER6EQDjeTBy2A5K01dybpsfqdtYKvwWTQRi594i9
-         8G3qkKwffIuG2Bad3vyfyRhberNX4G5dRB8FQR98v0A+rJSQIp3PyGQw3rE0/PHTGVNF
-         upJjDgQXyT7OhwgmndKZLiF16fpRqX4pYRR/PmypGWgSqtjSPH66IJyTNToHY4LNwWRN
-         lMpA==
-X-Gm-Message-State: AOJu0YzI3Uh9T9/ZaU0tZyFYriKj01Tt1WNRxb7z1NoTeS4e6+eeY7Rl
-	vMxmqgY+nqbg+GebKiRvoNc3cfVlETI8iM6cu2BJMmm4Gb3ORClcJM3IxaTq8cbLh4V4aP2nAwg
-	VgeJA
-X-Gm-Gg: ASbGncupnULqs+KeCop+PEnHpl3tmh0mCkAMyN8K6hvOCzLeEU9Dq4Gnjs1S6WFke2a
-	7R0ObsfuZ1RZHQfAYjYIaFgLHeaNthwVqYTHBvPCFxzOIMKxJDotPPltOsJti+kDa9wHMZ/SL/q
-	vRerlO9zHQGIm3AEeAofJaB/esnRer71Kyb7/bs1aWDM+uaNWNP2OF1Um4rOgkOijAtVPpEJyQS
-	dCqYTEj1kF+ztt4kjmjuDQCdFxZgtrN7BuC7Pb/kj7PjdzG5j1dMDFzTIQmP5dme+BGoeTEXbLD
-	hL6Q6F9y+BEdypLM/sP7Q+yc1hPskfBxrKOXYPgd7WM0QmydDkxSGFdEKutxhQeOoer7AML2G6O
-	1O8rODJItrvGDoPNWUNO0HbUw9zdrZ8DICpRE64Fp8Q8ailpca9IDUPOxmN3QE/u7Nke9+Ry43u
-	c=
-X-Google-Smtp-Source: AGHT+IFICHYnH3kocB0ng9xRYLD9gjP4CaSDEKVkPnZ9/vYYSf6OzOY/d4SOkIWGDU3UZNFI6Iv44Q==
-X-Received: by 2002:a17:90b:4e87:b0:327:734a:ae8c with SMTP id 98e67ed59e1d1-327734aafacmr1273480a91.10.1756277415354;
-        Tue, 26 Aug 2025 23:50:15 -0700 (PDT)
-Received: from localhost ([60.227.224.187])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3276f9cba6dsm1148239a91.22.2025.08.26.23.50.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 23:50:15 -0700 (PDT)
-Date: Wed, 27 Aug 2025 16:50:11 +1000
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Subject: Re: [PATCH wireless v3] wifi: mac80211: increase scan_ies_len for S1G
-Message-ID: <wrloz5uxqofvizjipq6jza4g3arsssplpyz6gixwm437kpreph@k7bgibao7u42>
-References: <20250826085437.3493-1-lachlan.hodges@morsemicro.com>
- <b813a59f1e1e6b38517a12f3c0c4e512c07ebefb.camel@sipsolutions.net>
+	s=arc-20240116; t=1756281682; c=relaxed/simple;
+	bh=Nw7JExH/BxnTMttSxUeig+mm8bvREsbFmHsG7msCRWU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=vAnYxsx7EEVMANtVCCoL3ipWXSo+Hw+z7ihxZ6cv+wCdI+tg6Pz+PTMdDBfBWiYI5v/lqWjemKWLagJVnk+3Fuwo5/izz+aKj1ooZzxMJPcSaIIcIHDU6Icf9fIdLhuPe0K0s+4n6DU8Ua2E0RuVBMFMAXsw5UN5jIMHcWvLNbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUWbZQf6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BD2C19423;
+	Wed, 27 Aug 2025 08:01:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756281680;
+	bh=Nw7JExH/BxnTMttSxUeig+mm8bvREsbFmHsG7msCRWU=;
+	h=From:Date:Subject:To:Cc:From;
+	b=fUWbZQf6BTh45TtW9SnQDPvRvz1ZrsIj0ybgAJZg/94MJJIyoH5VUd8EhWV9IrXrL
+	 8tfTk9AQAOfuW3D2ehGFWMmcYTB/HLHihB6ycrOpasAnuZ3sMPCu6ucS790oEy0Oma
+	 Gs8PWt/U37CqW0g8ih4br4TayvqbiziZOwAJUFkt47fnelHbwKShovqG2PnmKZ6mrA
+	 NxbRfElpaDvVaYMlPyk3VJyvD4xay7pbOVbcRS+QqykSHsuPUlANEjG+HLUJBBU0Ea
+	 D1jZ3eLlCdorc5hnr5WpkBPdPHwTTGPyvoafDmpNE+DGyefi9Syaa5QfGIrILi0mr5
+	 f9zHBnae9AjxA==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Wed, 27 Aug 2025 10:01:02 +0200
+Subject: [PATCH mt76] wifi: mt76: mt7996: Export MLO AP capabilities to
+ mac80211
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b813a59f1e1e6b38517a12f3c0c4e512c07ebefb.camel@sipsolutions.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250827-mt7996-mlo-ap-capa-v1-1-b5cfbcafa25f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAD27rmgC/x3MSwqAMAwA0atI1gZqUateRVykNWrAT2lFBPHuF
+ pdvMfNA5CAcocseCHxJlGNPKPIM3EL7zChjMmilK9Vog9tp2rbGbT2QPDryhKRK66zhprQVpNA
+ HnuT+p/3wvh+oqyF0ZAAAAA==
+X-Change-ID: 20250827-mt7996-mlo-ap-capa-a04bcb7e84b5
+To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.2
 
-On Tue, Aug 26, 2025 at 01:49:51PM +0200, Johannes Berg wrote:
-> On Tue, 2025-08-26 at 18:54 +1000, Lachlan Hodges wrote:
-> > Currently the S1G capability element is not taken into account
-> > for the scan_ies_len, which leads to a buffer length validation
-> > failure in ieee80211_prep_hw_scan() and subsequent WARN in
-> > __ieee80211_start_scan(). This prevents hw scanning from functioning.
-> > To fix ensure we accommodate for the S1G capability length.
-> > 
-> > Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-> > ---
-> > v2 -> v3: don't include kernel test robot for a new patch...
-> > 
-> > Again, targetted wireless.. but not really sure if this qualifies
-> > as a "bug"... I gave my reasoning in the reply to the first patch:
-> > 
-> > https://lore.kernel.org/linux-wireless/3j7kkqznavkxt23iopacl626xkppzcitiactxz43axqorucrvu@6gaixffy7zaj/
-> 
-> I'm happy with it to go to wireless, and will just do that at this
-> stage, but I'm also curious how it would matter at all there?
-> 
-> The only driver with S1G right now is hwsim, I believe, which always has
-> also other bands and HT/VHT/etc., so wouldn't it allocate more than
-> enough space anyway?
-> 
-> Feels like you should only be able to run into this with a driver that
-> only has S1G, and no such driver exists upstream? Or am I confused?
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-Thanks Johannes, and no you are not confused. In retrospect I should've
-just targeted wireless-next since the "bug" didn't affect anything
-upstream anyway (since hwsim used the other lengths as mentioned).
+Report MT7996 MLO AP capabilities to mac80211 stack.
 
-lachlan
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index a9599c286328eb2b1ff24504109d25a9d916e044..29e0cf966bcac5ab805b927fd73b7a23d15877ec 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -63,6 +63,24 @@ static const struct ieee80211_iface_combination if_comb = {
+ 	.beacon_int_min_gcd = 100,
+ };
+ 
++static const u8 if_types_ext_capa_ap[] = {
++	[0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
++	[2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
++	[7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
++};
++
++static const struct wiphy_iftype_ext_capab iftypes_ext_capa[] = {
++	{
++		.iftype = NL80211_IFTYPE_AP,
++		.extended_capabilities = if_types_ext_capa_ap,
++		.extended_capabilities_mask = if_types_ext_capa_ap,
++		.extended_capabilities_len = sizeof(if_types_ext_capa_ap),
++		.mld_capa_and_ops =
++			FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS,
++					 MT7996_MAX_RADIOS - 1),
++	},
++};
++
+ static ssize_t mt7996_thermal_temp_show(struct device *dev,
+ 					struct device_attribute *attr,
+ 					char *buf)
+@@ -463,8 +481,11 @@ mt7996_init_wiphy(struct ieee80211_hw *hw, struct mtk_wed_device *wed)
+ 	wiphy->radio = dev->radios;
+ 
+ 	wiphy->reg_notifier = mt7996_regd_notifier;
+-	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
++	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH |
++			WIPHY_FLAG_SUPPORTS_MLO;
+ 	wiphy->mbssid_max_interfaces = 16;
++	wiphy->iftype_ext_capab = iftypes_ext_capa;
++	wiphy->num_iftype_ext_capab = ARRAY_SIZE(iftypes_ext_capa);
+ 
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BSS_COLOR);
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
+
+---
+base-commit: a7cc1aa151e3a9c0314b995f06102f7763d3bd71
+change-id: 20250827-mt7996-mlo-ap-capa-a04bcb7e84b5
+
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
+
 
