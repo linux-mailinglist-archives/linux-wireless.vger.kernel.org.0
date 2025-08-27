@@ -1,241 +1,185 @@
-Return-Path: <linux-wireless+bounces-26702-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26703-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795BAB383C5
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 15:38:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3A3B38553
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 16:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77ADE189EB20
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 13:38:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B25BE7C0C3C
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 14:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190641DB12E;
-	Wed, 27 Aug 2025 13:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741611B4224;
+	Wed, 27 Aug 2025 14:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=moment-tech.20230601.gappssmtp.com header.i=@moment-tech.20230601.gappssmtp.com header.b="o3I1B/hx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LlSfuiwD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D35303C91
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 13:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B786F21C16A;
+	Wed, 27 Aug 2025 14:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756301901; cv=none; b=Jv5EW3UFnNsjFg0puQvSYnZ1/qKcx27KJu60Vtdh925Jc4Q8slG6qx5WCi/shQj6hH9WkqHwhcyIZLt7siWus3KVtvGdM7Eo73E42RabokPN+1tHEs/M0C8s5zJV2c9iNr5RbT9fehkUUX+CW2F2ZpX8g33T5J+bSjV6yOzGdXQ=
+	t=1756305941; cv=none; b=FF3I3akm8L/ceeXafZ9lSdz+bb0hpk4hcu+agRP0eJTluq8b30o+AkzKNBybN2tNgpquEWe3Aex8x8c+f6c88SeEY7KXfhyLQt5FKLg7sHhncvYZbQ2m4Go0sjWGMmGQOZlNCv1WnuE98GElpkgo2pF02oqpPQG5A3iF2h77664=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756301901; c=relaxed/simple;
-	bh=KE7wb2ebz3aytmTHU9Nm2QadMUrN0mtKT6nbctYdj4g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IussZqWi4fK9vsWJXly71oxmJmKtDUclGsKMbloxuFGfwhq4Blzqr4qw3/sEGDc4FxssiI9/+w733g/WVx4UaAif9zyhdAcinieOWO7Muj23KHVkRFXhSxLyp6OWl9/zVwUCqKhjkmo3xPAI3j6RSN6hGun7g7LylTB8SlNlAtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moment.tech; spf=pass smtp.mailfrom=moment.tech; dkim=pass (2048-bit key) header.d=moment-tech.20230601.gappssmtp.com header.i=@moment-tech.20230601.gappssmtp.com header.b=o3I1B/hx; arc=none smtp.client-ip=209.85.217.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moment.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=moment.tech
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-527348b392eso411108137.1
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 06:38:17 -0700 (PDT)
+	s=arc-20240116; t=1756305941; c=relaxed/simple;
+	bh=2fc+CeWMb52QC2P9N2MN4jA6tAwD2+LiKdNqWrJ8Ha8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bflx9RvNLOm6TYm7JierKT1iVOySYUmIqGv7cv15jCeYOZ4eK4JHY8IDgYdGYPGdZks5J7SprC4g/nYsGlQSWyyZI6vsL15MDvQ5RLcLFgH1XWXbePgMksJhthC5gAiqKTryP4GU/HaneO4gNIwDf9saDJHI7lPM10OAaVcAH4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LlSfuiwD; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-771f3f89952so889995b3a.0;
+        Wed, 27 Aug 2025 07:45:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=moment-tech.20230601.gappssmtp.com; s=20230601; t=1756301897; x=1756906697; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KE7wb2ebz3aytmTHU9Nm2QadMUrN0mtKT6nbctYdj4g=;
-        b=o3I1B/hxdN+aYAHZ2uKYzYq5j2lOfgGsfQaxuDGx632E4Iiq4RBpGkOPLZEIIR2Iqf
-         +6503HwHlnBpw6zOKba3OXg503aaTToOMkpr0Dh6Wls5FLRlgEpRhL6N0v9/GPuI2s7M
-         EOZ6ZMUtyEO7ouZ0AXU23h8dzwpnVCwbdrt4/jWwL7CqEDTWO+tl9oUWZhEuO6ROvTxR
-         Ft30BzgkDGDKy82LgIKTI1p4BW5yuTicH7esNEIqoMJvcK8wQRt+6hNLArYJLdfvRNuS
-         co9NNjuYVRA9LSxxeKJp95bCh2pLgZGisAlTQ5LBaTX1Y8Z613P/KoECa/vlET0IH2/Q
-         dTNQ==
+        d=gmail.com; s=20230601; t=1756305939; x=1756910739; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/RH34VGXdU115jG2W9dmDFfXiy30TmSIHuSiiLtyS1Q=;
+        b=LlSfuiwDt2ZkS+kpv8KD0oBDEo9Fzfcx8reQL2DEVC/6tC8YWe0xH+4aYJRAZAVnvY
+         ImKP1/6C8+wrqfc6ni2QiY1EMnv3qemea8hwMBHU0t4/JQ2p1tsOF25+lzokgwu9gyIg
+         yysBzT5R25K7mm7Jlh60l15vDfSJzMi2ew9xCSsk/A0kTIzyG7whIzoFxRgp6HPyrHMt
+         b3KLIVA4aCGRThdTwcPy1+dZJtPKl03R2EmruD5+FiLgXUiVngZ8z3ouX6vHWiLkLxKz
+         QfN1Q1vVp/8uvA9i/nOvD2h7R5W5jodkMHl5ILfumHX5QKeMipOpRNZ9mqnseqjEeDsy
+         w1ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756301897; x=1756906697;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KE7wb2ebz3aytmTHU9Nm2QadMUrN0mtKT6nbctYdj4g=;
-        b=KJIbiqzkw1TRoV501n+YwyOYCUX4/3kMjseSMQN+OkpFoRbtGRHhXbp3gLDaR2dGcJ
-         NQgRVdqk6dwpGlBoS4F++azW9/2ulUATQ605qH6lzGE3CYoV+7S4fvn7s7J11ONfOHc2
-         rWkwS+VP9EpLYflIx7thMtvxoIx24vgO18FygAF2ZgZohp4fAZbEUh5IV1ye0OjKaxxa
-         OAVtagwUU/hT1s1otaZ8w0SROSNjsLIvYleqUCH70kcBV94J0igWxrcx9KgffQeO8yfG
-         HmzQmcvrMMXxvN84PgJZt4MByBXo97o5ltjl2ddHCM09FXtNyFx89Jj74Jff3215dDXt
-         Z3BQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWvuDuHCKNw2SQLaAADdZhMdAS3T7O4XFTDAq3tkAGUD+czMqxopsoECex/8lPzd0FjPoXDKTnIPQba4totvg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPmqUL8U5LIUT3IEdeXKpxM63ibtAgv3TD2QE5KzsMFdgBEsks
-	YQ4mGBZlJA8Phod8bcgI6I6M5NRXr1OuRci0uQ6yTafBwOezSv2ISv9DAiY5rKLss5MQCwEWXt7
-	hDqkTtFrztjjxWMYmowlEzmI7VwgpnkXtCJiRPa3GgA0CPMAGeJpFhWqzmQ==
-X-Gm-Gg: ASbGncvhMvVoJIGYJX0QTkiVC1I+yTNquoAiAhe/COkwdhggcoSVjlTXWJkNKVM0YR2
-	iKzFP7eazWzxPGIHucakm/IgAdcrYVrOibO3iYRM+dQSZJRH1iXu1lh32/vHr4zm9OQUaCB5ncH
-	LqLYQOP9DvNBo0Ho7QqZqUnel7wJTUhZTuHie6zuYFuKDAdtf2ez0lMERamF7xScNEuNQM/we0C
-	eIFrm315Q4wzeGZ0Jru
-X-Google-Smtp-Source: AGHT+IHOqDXgOE/03CQt8aIYD8DKGk5dbif04xDsPj/PX5VTOIQqUQbqqsUc9xOX07v23ZYhz582V6jq78kP1LQp7Ck=
-X-Received: by 2002:a05:6102:3e19:b0:4fa:e005:cb20 with SMTP id
- ada2fe7eead31-51d0c8d7a21mr6967682137.3.1756301896706; Wed, 27 Aug 2025
- 06:38:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756305939; x=1756910739;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/RH34VGXdU115jG2W9dmDFfXiy30TmSIHuSiiLtyS1Q=;
+        b=QKkok7DrlDl4T5sNeIbo4leQno5hIukUSe1siSTSx6cAwytPZ4Bw9KkQdEiaf3RwCI
+         E2nsHGaco4QvqLkVjlTOjzJtd3nOJ5FUOkSNo0ioFKRNnhq3pqHF+o5UPWihvsFAxmOY
+         CkKqlAfJV4Xxf189nymhyZb5Xz4ybVt2RfEhkOyNilwyCAvWp+LC99LuXPfX0GekS4Aq
+         KgHrfwL2QRA+ok22C4/Hsh5XP+lUsD/L1OH3U7XxmhYUEKKfqIvcujeelm/4pBewYI2N
+         hoYW1qr63V50672HGGacqSVSE/uuvkKcOzdd8mUOcp7GssrCGhWAS3nm4DcD4ZaZHdjs
+         RU7w==
+X-Forwarded-Encrypted: i=1; AJvYcCX5qlFVnli6E0mVoXae71pNXh1A0SNPVPErsvBQ1OH7z5YzYkhunmyHyPvYkhfdCsVQtEAsoQDQnV3CoJ+WQQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7WU0Ma+/Tz/YpnRxgF2Aw4eU7/hxbapKR/z6tfll+emOJ+exb
+	UB0iObm3jPluIaDQV1pXH4tUVXmHKGSzcnXUQMBctWIv8d8vIsm0yAK9ty2C73fOzQ2Xnw==
+X-Gm-Gg: ASbGnctgaJtS1z+t1L6LCaLxDvccikB73my8blzDkIPnhjKC6Ezd5RfWfVGv5XKesbC
+	zJJaKJ1b2JA9wZ1OVSTricyFZZ8a4KjTpeNA+L/zEyTUv1TtmJAMjLtPUK/+DkAV5XN807N8CDX
+	vsGqThd8P+T9KXhhnerhhtJJHhdIUPhu6fxs2r89MIcUrpfjcO3r2GzAvWrFMdwSKHWzOt1RyvE
+	B9C+mlcg+/Ap9bVtNu90jym57DaitICMFBSuNc9wOoBTI1cLJrn+VpBpHzuva4jFNwh7q9j/uuz
+	3+Ahw5sXS69DVDNJdoPGQhPxOvoMDUXTXDDY+JPHibG0xQQu/ewNmHkJ46HsFBOLJe3XvR62dvx
+	nb44jeybu920Cf+FoggnlW8RyNNuM/L/Fr6zJEieH
+X-Google-Smtp-Source: AGHT+IHEhIAAk5p/pFSBziDI0r9fSzNIQiDENmSphi60QByoM5ehPK4/lk3XHtQYeUwiOFBCQFq5ng==
+X-Received: by 2002:aa7:9908:0:b0:76e:7ab9:a237 with SMTP id d2e1a72fcca58-771fc2942edmr4689280b3a.14.1756305938564;
+        Wed, 27 Aug 2025 07:45:38 -0700 (PDT)
+Received: from localhost.localdomain ([154.16.27.177])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-771f9f289c3sm4789794b3a.19.2025.08.27.07.45.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Aug 2025 07:45:38 -0700 (PDT)
+From: Alexander Wetzel <lifangxu22@gmail.com>
+X-Google-Original-From: Alexander Wetzel <Alexander@wetzel-home.de>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org,
+	lifangxu@kylinos.cn,
+	Alexander Wetzel <Alexander@wetzel-home.de>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.4.y] wifi: cfg80211: Add missing lock in cfg80211_check_and_end_cac()
+Date: Wed, 27 Aug 2025 22:45:02 +0800
+Message-ID: <20250827144502.1401-1-Alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250611164004.38580-1-balsam.chihi@moment.tech>
- <91fa8b1d-7bd0-4beb-80ef-eb65d2562f17@oss.qualcomm.com> <CAONkfw5Xyk8CGmVDpWZfkWnuCcFq6400jUkqyeMDtS0UNSh9vg@mail.gmail.com>
- <ecab2156-b234-4fba-a2ad-13a2d9b4693f@oss.qualcomm.com> <CAONkfw4hkDQtJyOj4RVsR3V=FJDJYKnjtmqzD=jBMy1ax=tC_A@mail.gmail.com>
- <0dfe48fc-085f-4dce-933d-e0f132d2ff9c@oss.qualcomm.com> <CAONkfw4p1AuE-MhGiZNMmi-PXR+CjoY63K2Yx_dmv2vnjo-Eyg@mail.gmail.com>
- <CAONkfw58jcGRxotm2zJasQd56oDR-h0b3Z0Yi+pE8hdrmN=Ucg@mail.gmail.com>
- <69f3fef9-017d-86fa-8fbb-2ac2a1df8ae4@quicinc.com> <CAONkfw4cQktTqR6e3PGfVhGQPsqPctwjwLSPjdiAvm45tq5qEw@mail.gmail.com>
- <127cb2e9-5371-21fa-1f09-586e6770afcc@oss.qualcomm.com>
-In-Reply-To: <127cb2e9-5371-21fa-1f09-586e6770afcc@oss.qualcomm.com>
-From: Balsam Chihi <balsam.chihi@moment.tech>
-Date: Wed, 27 Aug 2025 15:37:40 +0200
-X-Gm-Features: Ac12FXw1c-muGuOM_3hKorxmv6uk4EtkGN7FstlOP0GT4t_5hZAfRXFl3AYDogU
-Message-ID: <CAONkfw5K0v7UJ1R8NmW1jVnukF9zsS38JAaV==j0_YXB3RynBA@mail.gmail.com>
-Subject: Re: [PATCH] ath11k: pci: avoid unsafe register access during shutdown
-To: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Cc: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>, 
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>, linux-wireless@vger.kernel.org, 
-	ath11k@lists.infradead.org, jjohnson@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 20, 2025 at 12:29=E2=80=AFPM Vasanthakumar Thiagarajan
-<vasanthakumar.thiagarajan@oss.qualcomm.com> wrote:
->
->
->
-> On 8/20/2025 2:03 PM, Balsam Chihi wrote:
-> > On Wed, Aug 20, 2025 at 10:03=E2=80=AFAM Vasanthakumar Thiagarajan
-> > <quic_vthiagar@quicinc.com> wrote:
-> >>
-> >>
-> >>
-> >> On 8/19/2025 2:20 PM, Balsam Chihi wrote:
-> >>> Hello,
-> >>> I Have a question on the same subject but not related to the bug.
-> >>> I have many identical PCIe WiFi cards on the system and I need to loa=
-d
-> >>> a different board-2.bin on each one (1 adapter per frequency band).
-> >>
-> >> So you are using multiple pcie devices at the same time in a system
-> >> with ath11k? Wondering if you are using any private patches to address
-> >> QRTR instance id clash issue [1][2].
-> >>
-> >
-> > I'm not aware of any issue of QRTR instance id clash.
->
+[ Upstream commit 2c5dee15239f3f3e31aa5c8808f18996c039e2c1 ]
 
-To clarify: my setup is based on an NXP LS1088A SoC hosting QCN9074
-PCIe cards, using the ath11k_pci driver.
-The cards communicate directly over PCIe, and QRTR/QMI infrastructure
-is not used or enabled in my system.
-Therefore, QRTR instance ID clashes are not applicable in my context.
-Maybe QRTR is only applicable for SoC AHB based integrated WiFi IPs?
-And I did not use any of the patches [1] and [2].
+Callers of wdev_chandef() must hold the wiphy mutex.
 
-> Then better take [1] for proper functioning with multiple pcie devices.
-> The other one requires a new firmware feature flag.
->
-> >
-> >>> Is there any kernel built-in solution for that?
-> >>> I could not find any, so I had to create a patch that loads a
-> >>> different board-2.bin for each card based on the pci device address.
-> >>
-> >> Current board data selection for QCN from board-2.bin is based on pci+=
-chip-id+board-id
-> >> combination, not based on pci device address. You can find the chip-id=
- and board-id in the
-> >> debug during QMI boot stage. Then you can use ath11k-bdencoder [3] to =
-encode those
-> >> board data binaries into board-2.bin. This way you can package all the=
- needed board
-> >> specific binaries for a hardware into a single board-2.bin. Ath11k boa=
-rd data file
-> >> load logic uses chip-id and board-id to download the right board data =
-for the given
-> >> hardware variant.
-> >
-> > I have multiple PCIe WiFi adapters based on QCN9074 from different
-> > manufacturers.
-> > The problem is that I could not distinguish between them at the system =
-level.
-> > All have 0xFF as board ID.
->
-> Hmmm, ideally it should have a valid board-id other than 0xff.
->
+But the worker cfg80211_propagate_cac_done_wk() never takes the lock.
+Which triggers the warning below with the mesh_peer_connected_dfs
+test from hostapd and not (yet) released mac80211 code changes:
 
-I asked the manufacturers about it and they said that all their pcie
-wifi cards are with
-board_id=3D0xFF and I have to use the provided board-2.bin because of
-the calibration data,
-regulatory date, band capability and many other reasons...
-That's why I had the need to write the patch.
+WARNING: CPU: 0 PID: 495 at net/wireless/chan.c:1552 wdev_chandef+0x60/0x165
+Modules linked in:
+CPU: 0 UID: 0 PID: 495 Comm: kworker/u4:2 Not tainted 6.14.0-rc5-wt-g03960e6f9d47 #33 13c287eeabfe1efea01c0bcc863723ab082e17cf
+Workqueue: cfg80211 cfg80211_propagate_cac_done_wk
+Stack:
+ 00000000 00000001 ffffff00 6093267c
+ 00000000 6002ec30 6d577c50 60037608
+ 00000000 67e8d108 6063717b 00000000
+Call Trace:
+ [<6002ec30>] ? _printk+0x0/0x98
+ [<6003c2b3>] show_stack+0x10e/0x11a
+ [<6002ec30>] ? _printk+0x0/0x98
+ [<60037608>] dump_stack_lvl+0x71/0xb8
+ [<6063717b>] ? wdev_chandef+0x60/0x165
+ [<6003766d>] dump_stack+0x1e/0x20
+ [<6005d1b7>] __warn+0x101/0x20f
+ [<6005d3a8>] warn_slowpath_fmt+0xe3/0x15d
+ [<600b0c5c>] ? mark_lock.part.0+0x0/0x4ec
+ [<60751191>] ? __this_cpu_preempt_check+0x0/0x16
+ [<600b11a2>] ? mark_held_locks+0x5a/0x6e
+ [<6005d2c5>] ? warn_slowpath_fmt+0x0/0x15d
+ [<60052e53>] ? unblock_signals+0x3a/0xe7
+ [<60052f2d>] ? um_set_signals+0x2d/0x43
+ [<60751191>] ? __this_cpu_preempt_check+0x0/0x16
+ [<607508b2>] ? lock_is_held_type+0x207/0x21f
+ [<6063717b>] wdev_chandef+0x60/0x165
+ [<605f89b4>] regulatory_propagate_dfs_state+0x247/0x43f
+ [<60052f00>] ? um_set_signals+0x0/0x43
+ [<605e6bfd>] cfg80211_propagate_cac_done_wk+0x3a/0x4a
+ [<6007e460>] process_scheduled_works+0x3bc/0x60e
+ [<6007d0ec>] ? move_linked_works+0x4d/0x81
+ [<6007d120>] ? assign_work+0x0/0xaa
+ [<6007f81f>] worker_thread+0x220/0x2dc
+ [<600786ef>] ? set_pf_worker+0x0/0x57
+ [<60087c96>] ? to_kthread+0x0/0x43
+ [<6008ab3c>] kthread+0x2d3/0x2e2
+ [<6007f5ff>] ? worker_thread+0x0/0x2dc
+ [<6006c05b>] ? calculate_sigpending+0x0/0x56
+ [<6003b37d>] new_thread_handler+0x4a/0x64
+irq event stamp: 614611
+hardirqs last  enabled at (614621): [<00000000600bc96b>] __up_console_sem+0x82/0xaf
+hardirqs last disabled at (614630): [<00000000600bc92c>] __up_console_sem+0x43/0xaf
+softirqs last  enabled at (614268): [<00000000606c55c6>] __ieee80211_wake_queue+0x933/0x985
+softirqs last disabled at (614266): [<00000000606c52d6>] __ieee80211_wake_queue+0x643/0x985
 
-> > So, when loading the default board-2.bin they behave the same way.
-> > When I contacted the manufacturers they sent me board-2.bin for each
-> > configuration :
-> > 2x2, 4x4, 2.4Ghz, 5GHz... (maybe calibration data and more?)
-> > The default board-2.bin for board ID 0xFF does not support all bands.
-> > My requirement is to have 2.4Ghz band on slot 1 and 5Ghz band on slot 2=
-.
->
-> I can not think of the cleaner solution when board-id is not programmed.
-> If you can make changes to ath11k driver and your system has device-tree,
-> may be you can add a hack to pass board-id/chip-id through dt (new dt pro=
-perties)
-> to driver. In any case, you need to encode all your board data binaries i=
-nto
-> one board-2.bin to enable auto download of the right board data into firm=
-ware.
->
+Fixes: 26ec17a1dc5e ("cfg80211: Fix radar event during another phy CAC")
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+Link: https://patch.msgid.link/20250717162547.94582-1-Alexander@wetzel-home.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-Adding DT properties will require patching the driver too to be able
-to read them.
-So, I already patched it. Without the need to change the DTS.
-And as you just said the board id is not programmed...
+Conflicts:
+	net/wireless/reg.c
+Signed-off-by: lifangxu <lifangxu@kylinos.cn>
+---
+ net/wireless/reg.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> > So the patch reads from rootfs a text file named with the pci device ad=
-dress,
-> > the path to the custom board-2.bin.
-> >
-> > P.S. : qca-swiss-army-knife did not succeed in decoding the custom
-> > board-2.bin files.
->
-> I that encoded binary with TLV for each board data or it is board data
-> binary itself. You can run ath11k-bdencoder -i <board-2.bin> to
-> get the information about the board-2.bin. You can use ath11k-bdencoder -=
-e <board-2.bin>
-> to extract the board binaries and json used to package the board-2.bin
->
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 213655aa6e48..950bf146227e 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -3906,6 +3906,9 @@ EXPORT_SYMBOL(regulatory_pre_cac_allowed);
+ static void cfg80211_check_and_end_cac(struct cfg80211_registered_device *rdev)
+ {
+ 	struct wireless_dev *wdev;
++
++	wdev_lock(wdev);
++
+ 	/* If we finished CAC or received radar, we should end any
+ 	 * CAC running on the same channels.
+ 	 * the check !cfg80211_chandef_dfs_usable contain 2 options:
+@@ -3920,6 +3923,7 @@ static void cfg80211_check_and_end_cac(struct cfg80211_registered_device *rdev)
+ 		    !cfg80211_chandef_dfs_usable(&rdev->wiphy, &wdev->chandef))
+ 			rdev_end_cac(rdev, wdev->netdev);
+ 	}
++	wdev_unlock(wdev);
+ }
+ 
+ void regulatory_propagate_dfs_state(struct wiphy *wiphy,
+-- 
+2.43.0
 
-ath11k-bdencoder -i <board-2.bin> and ath11k-bdencoder -e <board-2.bin>
-did work for the public board-2.bin file and i was able to extract a
-bin file per board id :
-bus=3Dpci,qmi-chip-id=3D0,qmi-board-id=3D160.bin created size: 131072
-bus=3Dpci,qmi-chip-id=3D0,qmi-board-id=3D161.bin created size: 131072
-bus=3Dpci,qmi-chip-id=3D0,qmi-board-id=3D162.bin created size: 131072
-bus=3Dpci,qmi-chip-id=3D0,qmi-board-id=3D255.bin created size: 131072
-bus=3Dpci,qmi-chip-id=3D0,qmi-board-id=3D163.bin created size: 131072
-bus=3Dpci,qmi-chip-id=3D0,qmi-board-id=3D164.bin created size: 131072
-
-but the commands did not work for board-2.bin from WiFi card manufacturers.
-i noticed that their board-2.bin have the same size as the extracted ones.
-I tried to run the commands on the extcraced ones and i've got the same err=
-or :
-invalid signature found.
-This means that their board-2.bin could be integrated to the public board-2=
-.bin.
-but in my case it is not the solution because of the board_id=3D0xFF.
-So, the PCI device address is used to decide which slot will do 2GHz or 5GH=
-z,
-even if I swap the cards and it's quite useful for me like that.
-
->
-> Vasanth
->
-> >>
-> >> [1] https://patchwork.kernel.org/project/linux-wireless/list/?series=
-=3D692423&state=3D*&order=3Ddate
-> >> [2] https://lore.kernel.org/all/20230111170033.32454-1-kvalo@kernel.or=
-g/
-> >> [3]
-> >> https://github.com/qca/qca-swiss-army-knife/blob/master/tools/scripts/=
-ath11k/ath11k-bdencoder
-> >
 
