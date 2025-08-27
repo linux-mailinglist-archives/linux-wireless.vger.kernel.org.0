@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-26665-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26666-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 008B2B37651
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 02:57:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C8AB37655
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 02:57:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4C055E5475
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 00:57:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73F87204A8C
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 00:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7922F1E832A;
-	Wed, 27 Aug 2025 00:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512F61DE2C9;
+	Wed, 27 Aug 2025 00:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e6tl88tU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E/7z0vIF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CB31D7E42;
-	Wed, 27 Aug 2025 00:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4F21D7995;
+	Wed, 27 Aug 2025 00:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756256225; cv=none; b=P5mUCYCOfz+Q3YhWQFQCknqABPAAik3ogCqWgwdiLNNIa2Xzsu91nYBSVJiQaOwGEIPkH0JiWe2mhRNHAnvC0otfACyg1FNjMuoBt1hBNMCMbPKzH0S8o2CxLwOKETGqeVA70vEcDFNY5TfDVjb7EDljxWSy2XGF+qcQdSyuLxg=
+	t=1756256232; cv=none; b=EvddletREJloyit4lOdI0HCRsaw44dstBA4ZEI2A+oivW3wtrYT+tqsHcUW3Se9qSusYTjbiCRKz38//TKCRIm46R72bhbriU7YVMrItZsMsEq5accHRScmE9Z4kaBctcTNSNQmJ4BEzZ3q5Bll4QR4XChC/eabqvOSJZGlE2JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756256225; c=relaxed/simple;
-	bh=fUbTTbgDKo3K1yqi2GG9Mxx9Vh9yM7A/cXQIM9BKCzg=;
+	s=arc-20240116; t=1756256232; c=relaxed/simple;
+	bh=l4jUTg6p7HBlcYpJhzJqH9tmNAYtnzPZ44a8SZWk/PI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YUYxK/giaoZbAxkgePSHSJVIDyV0QtEMRR1oBRP3QCsD7a/l6uQdzOprDApY8wss6bLM1NHJydG43KgfJLRFRpQpzEoJeCZ8OnDNJv9WndA6us5KU9JPwif3Gjy5zEBgyRuJISI04XAAanULF++ca5DAgNU/fZimvN4bs/PrVck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e6tl88tU; arc=none smtp.client-ip=209.85.210.169
+	 MIME-Version; b=euwpRcf3I+O0clcispbmHELePlgJcB8Plkjl6QXS0BAFG75NZO1q0V6lZBvSqRoK59KJUzVis4R1EDATuXv+BPj/tOsU7wc2mYW8wyRusNFT1k7uIrMcf5/QkwNGtMu2zXUwOebFhS0LXZIqhzRpdbEgaNBJzVQ6miMbwdp1kYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E/7z0vIF; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-76e2e88c6a6so5560575b3a.1;
-        Tue, 26 Aug 2025 17:57:03 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-770522b34d1so371353b3a.1;
+        Tue, 26 Aug 2025 17:57:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756256223; x=1756861023; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756256230; x=1756861030; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CdakSql3qU5efOEl9+kZloTxQ/ZWsyJO1tVUdW1CxEk=;
-        b=e6tl88tUWAfJDyFEjdYma9w8HXaWwc2VF7jvDJFPL/Lb9SXctQKO8DqVWM715YEdap
-         j3MLMKjZESoPexfUDwYltXWgyWBS72xuzQk2pSgFOujMJrewyuvpjvcJoi10KeYUYgLn
-         X3jbJf+BcQJi/sYXuq5GS+yvH4ROZf/rbGC53y8iy0eRnB/lVc0JhOudNB0jDKs5AcuO
-         ga8txc1n9IIDJALNmoYVY2gTND0RGkZf/jeDWswxPur//bidVzutPl9hXzLErqU049Xq
-         bBEt9tixSWN/ch0GDvpfc8LZlFbtyhUiVLZFoQOI9f9ANGokddpYg+4rqEIwq22k3nkm
-         xK6w==
+        bh=Uig5QGYbBAPt36WlJrR3rx9Jswl0P7cFjJcvLjeekMk=;
+        b=E/7z0vIFdWPGGs/qXwzw6KQEAEDGQfwUjw8EpJjT0fRrUtXcULKKxpylUETD114vD1
+         D2tILaDKmbuGV4ZCfqy2s6oHHC1QZRopZsGWcMAAjWnVo++bkSDpDMzeCH2LmX+7Ch/Q
+         UkJ0GsFDf4MdfRNmjARBX+w96EesWEYjcnwvYVqZ4cEwFqlwfi6BF94/WAycsRg34ztB
+         t5a0tAdx8Tfu91AAz4P9f/wIyNqBbeWj0BwdLmwk4MfZv7no5kHNkTNN2DB9xZjl8Pdb
+         jm1/cVpodcMVlZ4Pk05RmIh6kJ71ZtYU3+KHX40N166f7znYSz5e18TlrzyGWhokTfgz
+         rD9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756256223; x=1756861023;
+        d=1e100.net; s=20230601; t=1756256230; x=1756861030;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CdakSql3qU5efOEl9+kZloTxQ/ZWsyJO1tVUdW1CxEk=;
-        b=aWiDFIoKos9XGYa7u3c27AWXMaKQdp9GKuJVXre/JBdseABqXvmgP27tJ1E7CJ+Rwe
-         c6UARW6rGyRui88xNwPSN+GgfPw8h2SMEk2x96gJiALn44NHMqyBWGb1w7NEaUReXqLv
-         bRpl1nuKdksWuteBgzu76lcuuJ2lSgmgofp2flFq+OzZyX4wQvxAyr7bXJBUcnobKqJB
-         lyxkkYRy5yZx1aMfBj5L91I3xl2Gojq9QvbQRs5nju/CAY12y0proHP6TPjhEu3xMOd/
-         MGK7WzGnY4KjfG05d8jz8R/MHBu+typSFYje7FY9MLhYgonNhR43e46vu/05v3aQTuhu
-         h49Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVPJCUZV5xEe4R0vlrNMve4LcZA5tjAl/6XapNqRQhdc5Ad2oHoelwC7190e4x8c6RXGCkFzTR1wNQHwm+G@vger.kernel.org, AJvYcCVkuc6JFfJ+2ZtSO/Pt9NdAezwmrprkUszIHgDxKIZsFPGv3SxaVtitneAqvFzkL+LsFuJWLOiBEQd+@vger.kernel.org, AJvYcCWJaebs9pOFeKY9NC3HwHp2DryfXC19/fvWYMMMSmb7//VxvPSKdIakorbGL/PHPAEz0+8O569FvKev7Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHmQeOjmqNebQEX2mv8o/4syRMKcwsxt5EEjupjQYiHXMoyjaC
-	fGALCKIBgQotBN+dybND/6SeVSvX/DZDNi6jGXOHUV/gG+H5kfBkkiHGN63Sew==
-X-Gm-Gg: ASbGncv6SmVnKmj9kW8RQPa4rLmhD7Q/9z2tfAGEmGvOnsbtKvTh9gU3Vi50v5aaxWP
-	bmhjuiEg1arX6D9Lf3kLGTlTMYVmVFeiYyvzYFxlw40cLYRpTwNgdXTNx0g/P+S0s2MRudaYB/O
-	0+NQPXLaLiaDE1fCTliEEjdk93icDhnt+hJt681ER3L1Q7Umu32RkHrUxq8Tm6pvLujwz9FQsAO
-	ruiVABKhv5+Ggqd+h/6N1dt4fvRs9flgsv+YfpeWHhqsl6HOC0+odSxPHkgj1N1C7mRbZ71pLPL
-	VuHu2+gUTDvYtCupIOwTMCCpGXHOz+KdHL7DYc2A+UW16JnjwXWXx0qX6AN36FMf2KSNPQNa0JW
-	AP+y4g/vmytFpNgsdoSZV4KrcCDKa/852v1qvk8QVpIyArLvaNvtOC2e+DUMz0zm37w==
-X-Google-Smtp-Source: AGHT+IE9iRIApvQNMNdVNlNiGyduLYfGXxEyCxaVyvRJmZ86g/aEAUJYInpRx0pmTsYLL7pmvxTPEA==
-X-Received: by 2002:a05:6a00:1149:b0:76b:f6ef:9729 with SMTP id d2e1a72fcca58-7702fc1c608mr21796038b3a.21.1756256222867;
-        Tue, 26 Aug 2025 17:57:02 -0700 (PDT)
+        bh=Uig5QGYbBAPt36WlJrR3rx9Jswl0P7cFjJcvLjeekMk=;
+        b=jZHcBdCfSkJd6jjP4Tq177pL18v7HTKLJ7vqBIscrcUnUClnr0crrm2gPplxWcKDvk
+         XnBUD1F+m14jeAdgNOd1xuSNWQfcXiePetJxswKjWXimK3yAT34du/ZzL1gqDW3ao0jm
+         1e7b2NCZkGS+RnmgzmhBQeRt1qi1htZ7efg7fUASlbprk2k+Mb1o/KN5n5zU6MblzRhB
+         VMTJUnC7c6L9RG6FFbzubs/JNGDPWgChE4X8FENP7k4eLCEkic+IbdGpHE6u8GZBEjpK
+         MJ4v0nM+eVVlYzBXFCc+RwpHQBzBQwPTPceQB+nZ11bB0++0LsEcHahtKxhEvAigwOoV
+         YjRw==
+X-Forwarded-Encrypted: i=1; AJvYcCVPHlDLQUa6v9+5dUVkQnpXWY12DMcOw96K6eDtmmC6+ZXiURmjZJaoA2g3wZZdzkUT9oHSyBeCQjJu@vger.kernel.org, AJvYcCWfWybD/o8z3bCBb8uppXUCXEZT+21n7GsM/CCEgjRRhkqzsJYjJPqbfaCxsdSP/0NNga2m10v8fTp1ciSD@vger.kernel.org, AJvYcCXSFB5v66+M3Z0k1Y6EERcTqm9h+k8/CGfDaUTwbFaL3tllTooTT/ey32M7pkbIEp0WOHxrYHMLL17SSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrEihpiRKYW7kAUGAvDu7U16RbpHBKdAPuCNKhyAWynCEgUL+g
+	/FcSYkRGKDeG+M0T2tgjlAVUd1UX/rZWSrMB3zoZNlQlAjXJGBKExGJO/7iOTA==
+X-Gm-Gg: ASbGncudaSX61nfhR4bZtZ9DNRL21J2WsOhPnbhfwv/r3GSSMhpJskkx5toLl+wW9cQ
+	4nePBQPL13x3W6jE6y+lG2lfYriisx22p5YUMC1tMGg6oGza23ej+LMiUjCw9pAM/xTGzeWoVUu
+	xvy0lMC9YAWBY2ivChR70cy8pNOTspw+UMW5rFwMIAA0Eqh/OoqJWYjUA04SX59ibRDXGD7Kj7D
+	UaE8sSiocegRMbpvOVF/LtvqDkfa0votzgqmf3OWjP76JJYLIBSdy9A+UZZ5b2h8e2Y7iqnXs+e
+	hFcwoFdq6THd0WsYIwCFx9ndHSwo+y4AFKSOWqPGbKScptnXVMsoNAhFTc1b87V9LNUJg7Bq6NL
+	ajZpzNvYz3T5AIdLVAaUan0wldgU2j6Zcz6ONmuSMG8wax4nqsWlTOMJIG5/Xns5Z1Q==
+X-Google-Smtp-Source: AGHT+IEfhku8InrNBI82wuo6rWD5je0/uHfbrxMpVx3ppR37JPI3MK6npdjBPX4jleIPQmyOYuV23g==
+X-Received: by 2002:a05:6a20:3d20:b0:240:7ed:4018 with SMTP id adf61e73a8af0-2438fad29b8mr4913916637.15.1756256229869;
+        Tue, 26 Aug 2025 17:57:09 -0700 (PDT)
 Received: from archlinux.lan ([2601:644:8200:acc7::1f6])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77057368ca0sm8382515b3a.58.2025.08.26.17.57.01
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77057368ca0sm8382515b3a.58.2025.08.26.17.57.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 17:57:02 -0700 (PDT)
+        Tue, 26 Aug 2025 17:57:09 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
@@ -84,9 +84,9 @@ Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
 	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	linux-kernel@vger.kernel.org (open list),
 	linux-mips@vger.kernel.org (open list:MIPS)
-Subject: [PATCHv4 1/3] dt-bindings: net: wireless: ath9k: add led bindings
-Date: Tue, 26 Aug 2025 17:56:56 -0700
-Message-ID: <20250827005658.3464-2-rosenp@gmail.com>
+Subject: [PATCHv4 2/3] wifi: ath9k: ahb: add led pin OF support
+Date: Tue, 26 Aug 2025 17:56:57 -0700
+Message-ID: <20250827005658.3464-3-rosenp@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250827005658.3464-1-rosenp@gmail.com>
 References: <20250827005658.3464-1-rosenp@gmail.com>
@@ -98,51 +98,39 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ath9k driver has various pin GPIO numbers for different chipsets
-which are not always correct for every device.
+The old and removed platform code had support for assigning a value for
+the LED pin for when the default is not correct. Effectively a fix for a
+non working LED.
 
-Add bindings to specify the correct number and if it should be
-active-high.
+Added led-active-high to set the LED to active high.
 
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- .../bindings/net/wireless/qca,ath9k.yaml        | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/wireless/ath/ath9k/init.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-index d16ca8e0a25d..9318024831ad 100644
---- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-@@ -50,6 +50,19 @@ properties:
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index c911b178dcc2..28dc6c0e27aa 100644
+--- a/drivers/net/wireless/ath/ath9k/init.c
++++ b/drivers/net/wireless/ath/ath9k/init.c
+@@ -662,6 +662,17 @@ static int ath9k_of_init(struct ath_softc *sc)
+ 	if (ret == -EPROBE_DEFER)
+ 		return ret;
  
-   ieee80211-freq-limit: true
++	np = of_get_child_by_name(np, "led");
++	if (np) {
++		u32 led_pin;
++
++		if (!of_property_read_u32(np, "reg", &led_pin))
++			ah->led_pin = led_pin;
++
++		ah->config.led_active_high = of_property_read_bool(np, "led-active-high");
++		of_node_put(np);
++	}
++
+ 	return 0;
+ }
  
-+  led:
-+    type: object
-+    $ref: /schemas/leds/common.yaml#
-+    additionalProperties: false
-+    properties:
-+      reg:
-+        maxItems: 1
-+
-+      led-active-high:
-+        description:
-+          LED is enabled without ground signal.
-+        type: boolean
-+
-   qca,no-eeprom:
-     $ref: /schemas/types.yaml#/definitions/flag
-     description:
-@@ -102,5 +115,9 @@ examples:
-         compatible = "qca,ar9130-wifi";
-         reg = <0x180c0000 0x230000>;
-         interrupts = <2>;
-+        led {
-+          reg = <0>;
-+          led-active-high;
-+        };
-       };
-     };
 -- 
 2.50.1
 
