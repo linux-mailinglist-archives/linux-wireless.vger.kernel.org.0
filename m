@@ -1,112 +1,85 @@
-Return-Path: <linux-wireless+bounces-26695-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26700-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535A6B3805E
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 12:55:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BFBB381FB
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 14:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EE835E7ADF
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 10:55:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A41D360BDF
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 12:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5E4301014;
-	Wed, 27 Aug 2025 10:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B822D2486;
+	Wed, 27 Aug 2025 12:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LDPObG5E"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="dScKtqKy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C09634AAFF
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 10:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2110A36D;
+	Wed, 27 Aug 2025 12:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756292124; cv=none; b=an5Pzx49AC2QlUeseRAP4FQ1bJ8BXlf36Kmt/clBcxcjKjEpzGXcRPc9nDiyeBpEp8qa9aUvznfrtjSNBsi3oZqLnU0W0mS2paYmcSZT8x3TYw8wrapeaTqHkg4991iVDz+YHvGKa50fTHQhUFECD9+VrHGBghZeWlbs+zwjnX8=
+	t=1756296751; cv=none; b=hQjfI1m433Q4RBVS2qC3YjayebqsRdaRduuP5nfx30xyDpu1ZOMb3GqDpYVmSdYictJPcrqX3ER4/WZE7TRZpQnmi7YZcMLYyTyK4CUq4Ns+3hn4R/QnXN5qMevzPeaS5Wr6cqCJ/sxS4412KlyahsLG5Yt58UvJww8EmxGE3xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756292124; c=relaxed/simple;
-	bh=QTo1/mVPm+Zihnmk5+PtXRkwzqT27Mgwm+SpBFN9hZo=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XtfrBPM0wAgAO/r03kU4l7tL9oaReSPIT02Zd3iEglTnaSS+u4U79MJqLdk7iY+7V+TOA1b26xPrBJds6oJ4F4MOmvZnknIkWS3fQMDlTqzx8JIf2h7+o9JnmsDQGaqGbnlAanfa1gDjMFZeW6WM0i0yGSXSxJ+ezUHsY+3SqUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LDPObG5E; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=SR2ipSUrndMI+cYMrpTCqz2KHSJ+LgIZXJ6346+NbOo=;
-	t=1756292122; x=1757501722; b=LDPObG5Eyj2tWgB5OIxiSZu5SOJVdgA/e1MVV7kXOjKF/HJ
-	2sFH2lWM55fEjLdJIX46i2+W4Unp/Wzp+6UlBkLqAf3hmRoc090xDpOd2saS9ZxMZTBR88DNs3lTB
-	bVg+wlZkZg4biP5DGFogSiu1o5vnKcPcrYO1SRfXuOzcF6PS4qrT6UWdq88BAsvn3jxMSPuHCvbri
-	hXCfKkwMMSJhg0D3BSJjxFk/MTqDFgJYV/YRPewdBanG5mJPuT+whn0m+mYxyQhkc0xbUouQ2o2yj
-	MrS35VDDTFItMwcPBQ0Wp3/k99JGD5EW+OsamOKn7aZsVmPUGFe+3yg0YCL0qWww==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1urDoF-00000005QsG-47UE;
-	Wed, 27 Aug 2025 12:55:20 +0200
-Message-ID: <1fc3e3505501e5107f47507e84c69093e79c7aad.camel@sipsolutions.net>
-Subject: Re: Recent versions broke Wireless-N 1030 BGN
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ingolf Gehrhardt <gehingo@freenet.de>, linux-wireless@vger.kernel.org
-Date: Wed, 27 Aug 2025 12:55:19 +0200
-In-Reply-To: <c9c43ed6bda02ead41773cadb41d9bb303db9444.camel@sipsolutions.net>
-References: <c086f53df499061f069bf4c49ab7232b8e75d9a8.camel@freenet.de>
-	 <c9c43ed6bda02ead41773cadb41d9bb303db9444.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1756296751; c=relaxed/simple;
+	bh=7E4a4GzpPjW7/FpaJ1H8vDNBJxrlwJc/Hj4acZE89oc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VHRDi92VSTHjj1C2XdgRcP98XvdGVYzY7X54UiZc0r0X24Z3eJfI7GfGXN5TASLqLL8zz9LbBoqlpur4/X83THJBtDN/Mg4sRI4x/MMNDlxfPtgpDrPC2ZAETlgXyjzl3H/+OYizJrA9WAxLr6lKjGr6wfJFSjBWJ/EwgR5t7fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=dScKtqKy; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from debian (unknown [5.228.116.177])
+	by mail.ispras.ru (Postfix) with ESMTPSA id F089E406B369;
+	Wed, 27 Aug 2025 12:06:35 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru F089E406B369
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1756296396;
+	bh=/gA22ldtxshW49IcS4YUPTSM4DWOpcWELFtKZT++Qds=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dScKtqKyqSWA7ROBjwbyxRUdw7j3q2CyuNJVI/hIKD23qSmwUUWXX7Jrr7ph9TbRd
+	 7hQjMvyqsIOibMYxv02zXvxsjTPiKXqhaCFs/JBWVGSVSjprA+gLld4fsa4+/dfdUA
+	 pSufv+Brtu0JfHiqtO2wBsaVsfVG6qt/OsTWi9qU=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Po-Hao Huang <phhuang@realtek.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH rtw v2 0/4] fixes for rtw89
+Date: Wed, 27 Aug 2025 15:05:13 +0300
+Message-ID: <20250827120603.723548-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2025-08-25 at 12:03 +0200, Johannes Berg wrote:
-> On Sat, 2025-08-23 at 09:23 +0200, Ingolf Gehrhardt wrote:
-> >=20
-> > I think this might be because of:
-> >=20
-> > [   31.404357] iwlwifi 0000:05:00.0: Detected Intel(R) Centrino(R)
-> > Wireless-N 1030 BGN
-> > [   31.506140] iwlwifi 0000:05:00.0: loaded firmware version 18.168.6.1
-> > 6000g2b-6.ucode op_mode iwldvm
-> > [   32.002851] iwlwifi 0000:05:00.0: CONFIG_IWLWIFI_DEBUG enabled
-> > [   32.002925] iwlwifi 0000:05:00.0: CONFIG_IWLWIFI_DEBUGFS enabled
-> > [   32.002937] iwlwifi 0000:05:00.0: CONFIG_IWLWIFI_DEVICE_TRACING
-> > enabled
-> > [   32.002949] iwlwifi 0000:05:00.0: Detected Intel(R) Centrino(R)
-> > Wireless-N 1030 BGN, REV=3D0xB0
-> > [   32.093060] iwlwifi 0000:05:00.0: Failing on timeout while stopping
-> > DMA channel 8 [0xa5a5a5a2]
-> > [   32.111342] WARNING: CPU: 1 PID: 467 at
-> > drivers/net/wireless/intel/iwlwifi/dvm/eeprom.c:212
-> > iwl_parse_eeprom_data+0x5ba/0xe20 [iwldvm]
->=20
-> Probably, assuming you didn't see that WARN_ON before? Just making sure.
->=20
-> It's almost certainly with the config rework, and the only thing I can
-> imagine is that the EEPROM size is now wrong, but I don't see why that
-> would be the case.
->=20
-> Could you change it to print the offset, address and eeprom_size when
-> this happens? Or maybe even print them both with the older kernel too
-> when it succeeds.
->=20
-> Or maybe you can even bisect it?
->=20
-> There's a somewhat related bug
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D220477
-> but that just misses the entries which was easy to fix. That doesn't
-> seem to be the case here since the firmware is loaded.
+v2: - rework fix for use-after-free in rtw89_core_tx_kick_off_and_wait() (Zong-Zhe)
+    - add patches 2/4 and 3/4 for another issues discovered while reworking
+    - use rtw tree instead of rtw-next
 
-Actually there's a ticket [1] with precisely this issue too, so it may
-be better to handle everything there.
+v1: https://lore.kernel.org/linux-wireless/20250820141441.106156-1-pchelkin@ispras.ru/  
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=3D220472
+Fedor Pchelkin (4):
+  wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()
+  wifi: rtw89: fix tx_wait initialization race
+  wifi: rtw89: fix leak in rtw89_core_send_nullfunc()
+  wifi: rtw89: avoid circular locking dependency in ser_state_run()
 
-johannes
+ drivers/net/wireless/realtek/rtw89/core.c | 82 ++++++++++++++++-------
+ drivers/net/wireless/realtek/rtw89/core.h | 22 +++---
+ drivers/net/wireless/realtek/rtw89/pci.c  |  9 ++-
+ drivers/net/wireless/realtek/rtw89/ser.c  |  3 +-
+ 4 files changed, 77 insertions(+), 39 deletions(-)
+
+-- 
+2.50.1
+
 
