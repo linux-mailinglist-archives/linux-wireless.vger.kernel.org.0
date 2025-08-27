@@ -1,42 +1,66 @@
-Return-Path: <linux-wireless+bounces-26684-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26685-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03380B37E41
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 11:02:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CABB37EBF
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 11:25:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E08557B1AB0
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 09:00:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 258F7365122
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 09:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C29319867;
-	Wed, 27 Aug 2025 09:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5AD32C30F;
+	Wed, 27 Aug 2025 09:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="yqU6RZhX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1397A280318;
-	Wed, 27 Aug 2025 09:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06DA278768
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 09:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756285332; cv=none; b=I70opw6EDsXjQLmxfn7H1uGqBndabz+Lkf8s40K8xCWsh8kNIWVuF30NcFZS3KNbo2B4rZfz5XkouAj77OBzY1CtcGHGWNunDjOfIud1PApeceBZ3otQ5/uw1kCrGEC2wy8k4j4N43lVghBCMbtTv3H0xdou/IBFYkCSOjN5xFk=
+	t=1756286737; cv=none; b=PJqmO1SZGVpr8GEGVWemloLOLAm8rXDslNWyhFaIXeGpu2PJj4GzTE8iUnF273JQ+E+8lD71UPiCc+J9b/1e1AZkdxQrATvY+kqrFPRIsA1dTim0x/qTw1gSFtI9164vJsL5WJhQ6AKoCwqBiLGSMm01cnS3BC5USCNTpH1vD0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756285332; c=relaxed/simple;
-	bh=gyXdV3Fm6tpbgHLCfqzHabPrfXgMpFMGZN1AVphxpcE=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=PtZQuWh+nEM39tE+KnbWjmOb1AAHSl6VGxOhQH8s3E8zghytfxlpHi6bTdLNMlWJocjyeXvKhCJflNEVzn8rRI1FBsG37da1XSjdH09xLKLsCCYJZeBPi/NDQGXTA2Ln7EvUvx/kLRTkQ+NOlxQlTtv+Rt/OMQNvSZGZ1yKKaMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.2.202] (p5b13a549.dip0.t-ipconnect.de [91.19.165.73])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id A622660288271;
-	Wed, 27 Aug 2025 11:01:42 +0200 (CEST)
-Message-ID: <52be19a8-2ae5-4a8e-bcdc-4ff646def208@molgen.mpg.de>
-Date: Wed, 27 Aug 2025 11:01:40 +0200
+	s=arc-20240116; t=1756286737; c=relaxed/simple;
+	bh=oMi0UWQ+TOt6JL8ZYf2QKRNR+60rZGf59phnokJPm48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rxpxMTKb8SVb/8u44zikOQxNJG2hXXiRIp7DA8JbEUBkTNAYNpVn0cGc6WR4eoJrD3coBr91XADQ6B62MsTLxwpzlNZv9gVCLh0Pk3QRygphJwIXQ6iEFZdJwieLoi0N1w0DXVO7smubQvNFGDDqiSlXzbd1jWjylnXJMmGMTPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=yqU6RZhX; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-5003b.ext.cloudfilter.net ([10.0.29.155])
+	by cmsmtp with ESMTPS
+	id rBfmuIOrmav9lrCPOukhhs; Wed, 27 Aug 2025 09:25:34 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id rCPNuHLntE5uDrCPOuofFD; Wed, 27 Aug 2025 09:25:34 +0000
+X-Authority-Analysis: v=2.4 cv=dtDbC0g4 c=1 sm=1 tr=0 ts=68aecf0e
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=DR2cKC/DEnBA9KqqjaPhpA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
+ a=EQ2wRRerX22KNVu84O0A:9 a=QEXdDO2ut3YA:10 a=xYX6OU9JNrHFPr8prv8u:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=QKXC/+BbZZkDCTwUOx2ABG7PtIdtlD0aC6xcaPGqrKc=; b=yqU6RZhXp/xD+WohzkCZ6Tp6jj
+	wryf1jbLDHn4ylufsEKINPRbBuS/rBP1XH7816YtP6xS49B6ofxGmQYT9AIT4b/NgYEwKQBHmUEGp
+	FUvP6GKAJ4DeqXxgLjDe0oabrisMLNds/b4Qd6Gv5qi3jG53F05wLIsNe3lkIS5gyoCC0vOojTU5s
+	9Uht93L5O7NaqJXWwQ9DRgESj7ZcxdU8ufave6CZde2GZkuF3gZ13FqH1t1RUumYlCvq0s5X7RRoo
+	RbUco1dvaM4BJ9tQzhlsy5OkvqEqNE7BvKTrBn75wi35GYq7dNSryT8+3+oT10a41Gz5zyRJUyhPG
+	AisQyeQw==;
+Received: from static-243-216-117-93.thenetworkfactory.nl ([93.117.216.243]:44652 helo=[10.94.27.44])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1urCPM-00000002geJ-3JG4;
+	Wed, 27 Aug 2025 04:25:33 -0500
+Message-ID: <e0aeda2d-931c-49c6-b0d4-dd097e87eae6@embeddedor.com>
+Date: Wed, 27 Aug 2025 11:25:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -44,190 +68,90 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iwlegacy: Remove unused structs and avoid
+ -Wflex-array-member-not-at-end warnings
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Stanislaw Gruszka <stf_xl@wp.pl>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+References: <aJl7TxeWgLdEKWhg@kspp>
 Content-Language: en-US
-To: Jeff Johnson <jjohnson@kernel.org>,
- Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: =?UTF-8?Q?Andrea_Pierr=C3=A9?= <andrea_pierre@brown.edu>,
- James Prestwood <prestwoj@gmail.com>, linux-wireless@vger.kernel.org,
- ath10k@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: qca6174: wmi command 90124 timeout, restarting hardware/failed to
- receive initialized event from target: 00000000
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <aJl7TxeWgLdEKWhg@kspp>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 93.117.216.243
+X-Source-L: No
+X-Exim-ID: 1urCPM-00000002geJ-3JG4
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: static-243-216-117-93.thenetworkfactory.nl ([10.94.27.44]) [93.117.216.243]:44652
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 8
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfBFH2MAMOzZd99gLToGKBGJrp6kQQeaKpTC0UQXy7ms1dtmBoZxcuiwChnDCnYhR3yFEPWRjQqO8NsLWxttfgBrJlwwqMN/VEKeJdgLy0aRdnwdfB4/9
+ RwRv55jmG93UnMohvhOg4V1lPCrgS5IJd/hyGoVjUDT7h0GajalCFtk6UFvAfhXRDQvQYsbxzpWt4j3gM8H8hfF/5hCjSyRl1elyNEjSh/xXbfRwzretQs52
 
-Dear Linux folks,
+Hi all,
 
+Friendly ping: who can take this, please? :)
 
-Yesterday, on my Intel Kaby Lake laptop Dell XPS 13 9360, the Wi-Fi 
-stopped working again. Looking at the logs, the driver claimed, that the 
-reset/recovery was successful, but – although NetworkManager showed an 
-established Wi-Fi connection – it didn’t work. I worked around it by 
-disabling Wi-Fi over the function keys (rfkill), and enabling it again. 
-Then it started working. This time no firmware crash was recorded 
-beforehand.
+Thanks!
+-Gustavo
 
-```
-[    0.000000] Linux version 6.17.0-rc3 
-(build@bohemianrhapsody.molgen.mpg.de) (gcc (Debian 14.3.0-5) 14.3.0, 
-GNU ld (GNU Binutils for Debian) 2.45) #122 SMP PREEMPT_DYNAMIC Mon Aug 
-25 08:27:23 CEST 2025
-[…]
-[   46.308531] ath10k_pci 0000:3a:00.0: qca6174 hw3.2 target 0x05030000 
-chip_id 0x00340aff sub 1a56:1535
-[   46.308538] ath10k_pci 0000:3a:00.0: kconfig debug 0 debugfs 0 
-tracing 0 dfs 0 testmode 0
-[   46.308637] ath10k_pci 0000:3a:00.0: firmware ver 
-WLAN.RM.4.4.1-00309- api 6 features wowlan,ignore-otp,mfp crc32 0793bcf2
-[   46.387972] ath10k_pci 0000:3a:00.0: board_file api 2 bmi_id N/A 
-crc32 d2863f91
-[…]
-[33027.934900] wlp58s0: Limiting TX power to 20 (20 - 0) dBm as 
-advertised by 1e:49:bc:44:95:52
-[33312.525898] ath10k_pci 0000:3a:00.0: timed out waiting peer stats info
-[33318.669751] ath10k_pci 0000:3a:00.0: timed out waiting peer stats info
-[33324.561674] ath10k_pci 0000:3a:00.0: wmi command 90124 timeout, 
-restarting hardware
-[33324.561705] ath10k_pci 0000:3a:00.0: could not request peer stats 
-info: -11
-[33327.600837] ath10k_pci 0000:3a:00.0: failed to receive initialized 
-event from target: 00000000
-[33330.616356] ath10k_pci 0000:3a:00.0: failed to receive initialized 
-event from target: 00000000
-[33330.616370] ath10k_pci 0000:3a:00.0: failed to wait for target init: -110
-[33330.618779] ieee80211 phy0: Hardware restart was requested
-[33330.618923] ath10k_pci 0000:3a:00.0: failed to start hw scan: -108
-[33330.942314] ath10k_pci 0000:3a:00.0: device successfully recovered
-[33441.598552] wlp58s0: deauthenticating from 1e:49:bc:44:95:52 by local 
-choice (Reason: 3=DEAUTH_LEAVING)
+On 11/08/25 07:10, Gustavo A. R. Silva wrote:
+> Remove unused structures and avoid the following
+> -Wflex-array-member-not-at-end warnings:
+> 
+> drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h:68:39: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h:60:39: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> ---
+>   .../wireless/intel/iwlegacy/iwl-spectrum.h    | 24 -------------------
+>   1 file changed, 24 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h b/drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h
+> index 1e8ab704dbfb..f00eb878b94b 100644
+> --- a/drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h
+> +++ b/drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h
+> @@ -50,28 +50,4 @@ struct ieee80211_measurement_params {
+>   	__le16 duration;
+>   } __packed;
+>   
+> -struct ieee80211_info_element {
+> -	u8 id;
+> -	u8 len;
+> -	u8 data[];
+> -} __packed;
+> -
+> -struct ieee80211_measurement_request {
+> -	struct ieee80211_info_element ie;
+> -	u8 token;
+> -	u8 mode;
+> -	u8 type;
+> -	struct ieee80211_measurement_params params[];
+> -} __packed;
+> -
+> -struct ieee80211_measurement_report {
+> -	struct ieee80211_info_element ie;
+> -	u8 token;
+> -	u8 mode;
+> -	u8 type;
+> -	union {
+> -		struct ieee80211_basic_report basic[0];
+> -	} u;
+> -} __packed;
+> -
+>   #endif
 
-Aug 26 17:56:26 abreu wpa_supplicant[683]: rfkill: WLAN soft blocked
-Aug 26 17:56:26 abreu wpa_supplicant[683]: rfkill: WLAN soft blocked
-
-[33448.628415] wlp58s0: authenticate with 1e:49:bc:44:95:52 (local 
-address=9c:b6:d0:d1:6a:b1)
-[33448.628425] wlp58s0: send auth to 1e:49:bc:44:95:52 (try 1/3)
-[33448.744099] wlp58s0: authenticate with 1e:49:bc:44:95:52 (local 
-address=9c:b6:d0:d1:6a:b1)
-[33448.744108] wlp58s0: send auth to 1e:49:bc:44:95:52 (try 1/3)
-[33448.783610] wlp58s0: authenticated
-[33448.787382] wlp58s0: associate with 1e:49:bc:44:95:52 (try 1/3)
-[33448.793745] wlp58s0: RX AssocResp from 1e:49:bc:44:95:52 
-(capab=0x1431 status=0 aid=132)
-[33448.797057] wlp58s0: associated
-[33448.982505] wlp58s0: Limiting TX power to 20 (20 - 0) dBm as 
-advertised by 1e:49:bc:44:95:52
-```
-
-Looking through the logs since November 26th, 2024, this has happened in 
-the past. Sometimes without the error `failed to receive initialized 
-event from target`.
-
-```
-Mär 20 07:52:48 abreu kernel: Linux version 
-6.14.0-rc7-00074-ga7f2e10ecd8f (build@bohemianrhapsody.molgen.mpg.de) 
-(gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44) 
-#110 SMP PREEMPT_DYNAMIC Thu Mar 20 00:43:24 CET 2025
-[…]
-Mär 21 10:12:04 abreu kernel: ath10k_pci 0000:3a:00.0: timed out waiting 
-peer stats info
-Mär 21 10:12:10 abreu kernel: ath10k_pci 0000:3a:00.0: timed out waiting 
-peer stats info
-Mär 21 10:12:16 abreu kernel: ath10k_pci 0000:3a:00.0: wmi command 90124 
-timeout, restarting hardware
-Mär 21 10:12:16 abreu kernel: ath10k_pci 0000:3a:00.0: could not request 
-peer stats info: -11
-Mär 21 10:12:19 abreu kernel: ath10k_pci 0000:3a:00.0: failed to receive 
-initialized event from target: 00000000
-Mär 21 10:12:22 abreu kernel: ath10k_pci 0000:3a:00.0: failed to receive 
-initialized event from target: 00000000
-Mär 21 10:12:22 abreu kernel: ath10k_pci 0000:3a:00.0: failed to wait 
-for target init: -110
-Mär 21 10:12:22 abreu kernel: ieee80211 phy0: Hardware restart was requested
-Mär 21 10:12:23 abreu kernel: ath10k_pci 0000:3a:00.0: device 
-successfully recovered
-Mär 21 10:12:23 abreu kernel: wlp58s0: deauthenticated from 
-5c:b1:2e:5f:19:00 (Reason: 7=CLASS3_FRAME_FROM_NONASSOC_STA)
-```
-
-```
-Jun 05 08:46:30 abreu kernel: Linux version 6.15.0-11980-g16b70698aa3a 
-(build@bohemianrhapsody.molgen.mpg.de) (gcc (Debian 14.2.0-19) 14.2.0, 
-GNU ld (GNU Binutils for Debian) 2.44) #62 SMP PREEMPT_DYNAMIC Wed Jun 
-4 23:51:52 CEST 2025
-[…]
-Jun 05 12:31:50 abreu kernel: ath10k_pci 0000:3a:00.0: timed out waiting 
-peer stats info
-Jun 05 12:31:56 abreu kernel: ath10k_pci 0000:3a:00.0: timed out waiting 
-peer stats info
-Jun 05 12:32:02 abreu kernel: ath10k_pci 0000:3a:00.0: wmi command 90124 
-timeout, restarting hardware
-Jun 05 12:32:02 abreu kernel: ath10k_pci 0000:3a:00.0: could not request 
-peer stats info: -11
-Jun 05 12:32:05 abreu kernel: ath10k_pci 0000:3a:00.0: failed to receive 
-initialized event from target: 00000000
-Jun 05 12:32:08 abreu kernel: ath10k_pci 0000:3a:00.0: failed to receive 
-initialized event from target: 00000000
-Jun 05 12:32:08 abreu kernel: ath10k_pci 0000:3a:00.0: failed to wait 
-for target init: -110
-Jun 05 12:32:08 abreu kernel: ieee80211 phy0: Hardware restart was requested
-Jun 05 12:32:08 abreu kernel: ath10k_pci 0000:3a:00.0: device 
-successfully recovered
-```
-
-```
-Jun 30 15:19:54 abreu kernel: Linux version 
-6.16.0-rc4-00004-g30643e084e03 (build@bohemianrhapsody.molgen.mpg.de) 
-(gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44) 
-#82 SMP PREEMPT_DYNAMIC Mon Jun 30 11:01:16 CEST 2025
-[…]
-Jun 30 15:31:48 abreu kernel: ath10k_pci 0000:3a:00.0: timed out waiting 
-peer stats info
-Jun 30 15:31:54 abreu kernel: ath10k_pci 0000:3a:00.0: timed out waiting 
-peer stats info
-Jun 30 15:32:00 abreu kernel: ath10k_pci 0000:3a:00.0: wmi command 90124 
-timeout, restarting hardware
-Jun 30 15:32:00 abreu kernel: ath10k_pci 0000:3a:00.0: could not request 
-peer stats info: -11
-Jun 30 15:32:00 abreu kernel: ieee80211 phy0: Hardware restart was requested
-Jun 30 15:32:00 abreu kernel: ath10k_pci 0000:3a:00.0: device 
-successfully recovered
-```
-
-```
-Aug 14 06:36:18 abreu kernel: Linux version 
-6.17.0-rc1-00016-g8742b2d8935f (build@bohemianrhapsody.molgen.mpg.de) 
-(gcc (Debian 14.3.0-5) 14.3.0, GNU ld (GNU Binutils for Debian) 2.45) 
-#112 SMP PREEMPT_DYNAMIC Wed Aug 13 14:29:07 CEST 2025
-[…]
-Aug 15 13:59:05 abreu kernel: ath10k_pci 0000:3a:00.0: timed out waiting 
-peer stats info
-Aug 15 13:59:11 abreu kernel: ath10k_pci 0000:3a:00.0: timed out waiting 
-peer stats info
-Aug 15 13:59:17 abreu kernel: ath10k_pci 0000:3a:00.0: wmi command 90124 
-timeout, restarting hardware
-Aug 15 13:59:17 abreu kernel: ath10k_pci 0000:3a:00.0: could not request 
-peer stats info: -11
-Aug 15 13:59:17 abreu kernel: ieee80211 phy0: Hardware restart was requested
-Aug 15 13:59:18 abreu kernel: ath10k_pci 0000:3a:00.0: device 
-successfully recovered
-Aug 15 13:59:29 abreu kernel: wlp58s0: deauthenticated from 
-98:9d:5d:4b:e4:40 (Reason: 7=CLASS3_FRAME_FROM_NONASSOC_STA)
-```
-
-James, Andrea (added because of report in 2024 [1]), do you see these 
-things in your logs? Should you use systemd-journald you could run 
-`journalctl -g 'failed to receive initialized event from target:'.`
-
-Jeff, Baochen, is Qualcomm aware of such issues? Do I need to run the 
-driver always in full debug mode to get you more information for debugging?
-
-
-Kind regards,
-
-Paul
-
-
-[1]: 
-https://lore.kernel.org/all/4ade6459-bfe3-4180-8586-9e4d7b8e5825@brown.edu/
 
