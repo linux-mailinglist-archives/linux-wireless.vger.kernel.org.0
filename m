@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-26666-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26667-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C8AB37655
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 02:57:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4EDB37659
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 02:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73F87204A8C
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 00:57:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 881295E4D6F
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 00:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512F61DE2C9;
-	Wed, 27 Aug 2025 00:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23631212B2F;
+	Wed, 27 Aug 2025 00:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E/7z0vIF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TxdeAdor"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4F21D7995;
-	Wed, 27 Aug 2025 00:57:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A9820ADF8;
+	Wed, 27 Aug 2025 00:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756256232; cv=none; b=EvddletREJloyit4lOdI0HCRsaw44dstBA4ZEI2A+oivW3wtrYT+tqsHcUW3Se9qSusYTjbiCRKz38//TKCRIm46R72bhbriU7YVMrItZsMsEq5accHRScmE9Z4kaBctcTNSNQmJ4BEzZ3q5Bll4QR4XChC/eabqvOSJZGlE2JU=
+	t=1756256234; cv=none; b=OoOCnGBz1OZo6PZx4zB40biCVw/oAOrvA3ocmGJNXMmhIcrf1Vzq0YlhwJpK8ygWAQqVmuL1+C6ie791NGPqVVVF33OSYoahCZysHPFn9Jslt8dr1ZJ9PH9bmUcp6W1uqdY/YAEtz9Vv9+D3dN0ftNflMQ2WYMNaaOShLZvHtzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756256232; c=relaxed/simple;
-	bh=l4jUTg6p7HBlcYpJhzJqH9tmNAYtnzPZ44a8SZWk/PI=;
+	s=arc-20240116; t=1756256234; c=relaxed/simple;
+	bh=aSiHJJ9WXzlVv9knT6/I6iHouh299Sae5FDjQsAQAKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=euwpRcf3I+O0clcispbmHELePlgJcB8Plkjl6QXS0BAFG75NZO1q0V6lZBvSqRoK59KJUzVis4R1EDATuXv+BPj/tOsU7wc2mYW8wyRusNFT1k7uIrMcf5/QkwNGtMu2zXUwOebFhS0LXZIqhzRpdbEgaNBJzVQ6miMbwdp1kYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E/7z0vIF; arc=none smtp.client-ip=209.85.210.173
+	 MIME-Version; b=KaXusKdqbbyQ+PPdnAhhU9+cboaW2SbEFaDU7TxMFXonpH2Dcr4AbO+0gw9VBOU+Tkg4uh7RWRIT7O8+EnQ/h/nUJg4HZt6nWTi7MHLFQccO7h6Wn3ZoLoEiAJzaxci0k+vwsLM2f1kYBFROrc2j0hFK0Tab3N/hhoHzbnwFpiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TxdeAdor; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-770522b34d1so371353b3a.1;
-        Tue, 26 Aug 2025 17:57:10 -0700 (PDT)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-771e4378263so2432287b3a.0;
+        Tue, 26 Aug 2025 17:57:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756256230; x=1756861030; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756256232; x=1756861032; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Uig5QGYbBAPt36WlJrR3rx9Jswl0P7cFjJcvLjeekMk=;
-        b=E/7z0vIFdWPGGs/qXwzw6KQEAEDGQfwUjw8EpJjT0fRrUtXcULKKxpylUETD114vD1
-         D2tILaDKmbuGV4ZCfqy2s6oHHC1QZRopZsGWcMAAjWnVo++bkSDpDMzeCH2LmX+7Ch/Q
-         UkJ0GsFDf4MdfRNmjARBX+w96EesWEYjcnwvYVqZ4cEwFqlwfi6BF94/WAycsRg34ztB
-         t5a0tAdx8Tfu91AAz4P9f/wIyNqBbeWj0BwdLmwk4MfZv7no5kHNkTNN2DB9xZjl8Pdb
-         jm1/cVpodcMVlZ4Pk05RmIh6kJ71ZtYU3+KHX40N166f7znYSz5e18TlrzyGWhokTfgz
-         rD9Q==
+        bh=e+mQsn5nOVfRc5NpRhiJTO0agCV0nYMAh0ExZWY5vJw=;
+        b=TxdeAdorlzs7XLcdGjkIfdbQKOGmOCAUYBapv78lG1ded6ZJUkDwrvIkHJ1X0rw2W0
+         XqMC6JwMZw/XqSuc/5rXmYhBolBztYIonshJLMPmMBeAg+D9fTXBeDwuMgltZ1Znf5C4
+         lkaGmzbEhbAfQN0J5bpjqXnpjuWDFNAm9AVriTdOfsxfVZaaRVV3h0fJVdUjscIShIUb
+         vJKkC763E3aflz34zUNlz7XxSLYX7EdzJgKQi7yEicMirALZACs8or6zW1bOnTu/g5km
+         5qad9ucbdu/7t+1z8VNQVwUENeAvS6RM7C7HyOSLrbsD+ZsBt+0SCwsHzClYp3S1Rcik
+         2zYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756256230; x=1756861030;
+        d=1e100.net; s=20230601; t=1756256232; x=1756861032;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Uig5QGYbBAPt36WlJrR3rx9Jswl0P7cFjJcvLjeekMk=;
-        b=jZHcBdCfSkJd6jjP4Tq177pL18v7HTKLJ7vqBIscrcUnUClnr0crrm2gPplxWcKDvk
-         XnBUD1F+m14jeAdgNOd1xuSNWQfcXiePetJxswKjWXimK3yAT34du/ZzL1gqDW3ao0jm
-         1e7b2NCZkGS+RnmgzmhBQeRt1qi1htZ7efg7fUASlbprk2k+Mb1o/KN5n5zU6MblzRhB
-         VMTJUnC7c6L9RG6FFbzubs/JNGDPWgChE4X8FENP7k4eLCEkic+IbdGpHE6u8GZBEjpK
-         MJ4v0nM+eVVlYzBXFCc+RwpHQBzBQwPTPceQB+nZ11bB0++0LsEcHahtKxhEvAigwOoV
-         YjRw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPHlDLQUa6v9+5dUVkQnpXWY12DMcOw96K6eDtmmC6+ZXiURmjZJaoA2g3wZZdzkUT9oHSyBeCQjJu@vger.kernel.org, AJvYcCWfWybD/o8z3bCBb8uppXUCXEZT+21n7GsM/CCEgjRRhkqzsJYjJPqbfaCxsdSP/0NNga2m10v8fTp1ciSD@vger.kernel.org, AJvYcCXSFB5v66+M3Z0k1Y6EERcTqm9h+k8/CGfDaUTwbFaL3tllTooTT/ey32M7pkbIEp0WOHxrYHMLL17SSw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrEihpiRKYW7kAUGAvDu7U16RbpHBKdAPuCNKhyAWynCEgUL+g
-	/FcSYkRGKDeG+M0T2tgjlAVUd1UX/rZWSrMB3zoZNlQlAjXJGBKExGJO/7iOTA==
-X-Gm-Gg: ASbGncudaSX61nfhR4bZtZ9DNRL21J2WsOhPnbhfwv/r3GSSMhpJskkx5toLl+wW9cQ
-	4nePBQPL13x3W6jE6y+lG2lfYriisx22p5YUMC1tMGg6oGza23ej+LMiUjCw9pAM/xTGzeWoVUu
-	xvy0lMC9YAWBY2ivChR70cy8pNOTspw+UMW5rFwMIAA0Eqh/OoqJWYjUA04SX59ibRDXGD7Kj7D
-	UaE8sSiocegRMbpvOVF/LtvqDkfa0votzgqmf3OWjP76JJYLIBSdy9A+UZZ5b2h8e2Y7iqnXs+e
-	hFcwoFdq6THd0WsYIwCFx9ndHSwo+y4AFKSOWqPGbKScptnXVMsoNAhFTc1b87V9LNUJg7Bq6NL
-	ajZpzNvYz3T5AIdLVAaUan0wldgU2j6Zcz6ONmuSMG8wax4nqsWlTOMJIG5/Xns5Z1Q==
-X-Google-Smtp-Source: AGHT+IEfhku8InrNBI82wuo6rWD5je0/uHfbrxMpVx3ppR37JPI3MK6npdjBPX4jleIPQmyOYuV23g==
-X-Received: by 2002:a05:6a20:3d20:b0:240:7ed:4018 with SMTP id adf61e73a8af0-2438fad29b8mr4913916637.15.1756256229869;
-        Tue, 26 Aug 2025 17:57:09 -0700 (PDT)
+        bh=e+mQsn5nOVfRc5NpRhiJTO0agCV0nYMAh0ExZWY5vJw=;
+        b=t3Im2grPvcb6dk43G8QvYWxpQgwYObDCIXM17JbkKnrEfFyPlKrpB5MsoaqDvIxLOU
+         BQG+ZOZGSVB4g9hOF05txy9Mc7+U0637rqM/KolCEhA6UcW54gqdelI2pBM85meLy9BV
+         ejnndhnCVg8xriuQZvojn5AIvocikRfYLoFSs7Ik381COYEFA8j0Du3lPBa9gU4nfm8F
+         tl1h05mL9IBwiifl7zAvMlqJBxpyNtLWPdn80tmLQbgywWosxL6cBKs0pYSI43Z33DhF
+         6iwt/jji5/2CA3xQpDjIlkJjnavxhPIkJae/hac5rJ009R2W7VznzlFdd61HO4TJlfxS
+         5XmA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyIjIxn4FvTP5AZ+g4ffE2gqCDu4N1tqA2uBW4tCu+P/voOXDuzLyFjTf4ts1z0NRbjhnwDmfF1rmtfA==@vger.kernel.org, AJvYcCWp9/OqCty3NgbN7pygN3MTGCt2N7LiCqTKFMcTOG+9DCvNq5X6psbadiW1Z2qvkdWIp1CIJtbNZ8Yd7yOq@vger.kernel.org, AJvYcCXcbjKeJ+1ueQPWW2GyYsJa7wcMojPGKwwTCdJCt52iJVRaYscl2IwHdQUJ6kJg3ZaElsIsAjLQ09ej@vger.kernel.org
+X-Gm-Message-State: AOJu0YzN/WBRmLs9TCjVbL/YhRklnyz4RgX9Pqq3D6gGopA74zoCp2vi
+	yS+Ta5JRMz51/rJcqGNKPDSlfSyrehRDBt2+gxBkXsNcUk4k65KAlAEP4OFVBQ==
+X-Gm-Gg: ASbGnctORtzEBvpmfKlqm+xDFg6RM3WEEnNAyUN1EFpBNGtxUw6gkUL7wMIp8ThX9UB
+	pHQ5ze2EXjOqGOjBAhmR9LTpyb75zvlCQiC6HEtEJ/75VD8Gv3IMvnIsRTdshikX5ac4mHwowf0
+	DY9AjurTyMHniXEfS7jhztsgbC2XrlN9zmzY6z6zTcjg9jRk1ZtaE62y4+CEOvyDeMtBmoi946F
+	Oc7oPdGti7uaIA+SftpQn9OGgKaFhUgbJ3YR/DfoNNJKKH9c9o7FWbfM5M0/dkWNHbDOF6DObaR
+	XZeKmOFb5VmrhyUZxO47RSoha5ML90eoRvsumVOQK/EnXBnKqpK05vevMTs7L0+hIgae9yf0dyn
+	hXp1TkqCsDi1H34L/YkVa0ZuQ39PVCIRxjk0TyPQfPlSIF9vlbS0k4BoNIxlhMI37qg==
+X-Google-Smtp-Source: AGHT+IH9ISDmR2/0VTrTeaTdohaSBjoHB1/bbyP2/lhVXGYdlZJrIcYDkB7uxf31eltgLCrGZP+UDw==
+X-Received: by 2002:a05:6a00:2189:b0:76e:885a:c332 with SMTP id d2e1a72fcca58-7702fc8b7d5mr24500402b3a.32.1756256231552;
+        Tue, 26 Aug 2025 17:57:11 -0700 (PDT)
 Received: from archlinux.lan ([2601:644:8200:acc7::1f6])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77057368ca0sm8382515b3a.58.2025.08.26.17.57.03
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77057368ca0sm8382515b3a.58.2025.08.26.17.57.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 17:57:09 -0700 (PDT)
+        Tue, 26 Aug 2025 17:57:10 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
@@ -84,9 +84,9 @@ Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
 	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	linux-kernel@vger.kernel.org (open list),
 	linux-mips@vger.kernel.org (open list:MIPS)
-Subject: [PATCHv4 2/3] wifi: ath9k: ahb: add led pin OF support
-Date: Tue, 26 Aug 2025 17:56:57 -0700
-Message-ID: <20250827005658.3464-3-rosenp@gmail.com>
+Subject: [PATCHv4 3/3] mips: qca: specify WMAC LED directly
+Date: Tue, 26 Aug 2025 17:56:58 -0700
+Message-ID: <20250827005658.3464-4-rosenp@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250827005658.3464-1-rosenp@gmail.com>
 References: <20250827005658.3464-1-rosenp@gmail.com>
@@ -98,39 +98,96 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The old and removed platform code had support for assigning a value for
-the LED pin for when the default is not correct. Effectively a fix for a
-non working LED.
-
-Added led-active-high to set the LED to active high.
+The ath9k driver creates an LED unconditionally being driven with
+sometimes the wrong pin. Not only that, the current dts definitions have
+LEDs for the WMAC that do not behave in response to it. Fix both issues.
 
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- drivers/net/wireless/ath/ath9k/init.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts |  9 ++++-----
+ arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts   | 11 +++++------
+ arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts      | 11 +++++------
+ 3 files changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
-index c911b178dcc2..28dc6c0e27aa 100644
---- a/drivers/net/wireless/ath/ath9k/init.c
-+++ b/drivers/net/wireless/ath/ath9k/init.c
-@@ -662,6 +662,17 @@ static int ath9k_of_init(struct ath_softc *sc)
- 	if (ret == -EPROBE_DEFER)
- 		return ret;
+diff --git a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+index a7901bb040ce..0e813c38c31c 100644
+--- a/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
++++ b/arch/mips/boot/dts/qca/ar9132_tl_wr1043nd_v1.dts
+@@ -56,11 +56,6 @@ led-2 {
+ 			label = "tp-link:green:qss";
+ 			gpios = <&gpio 5 GPIO_ACTIVE_HIGH>;
+ 		};
+-
+-		led-3 {
+-			label = "tp-link:green:wlan";
+-			gpios = <&gpio 9 GPIO_ACTIVE_LOW>;
+-		};
+ 	};
+ };
  
-+	np = of_get_child_by_name(np, "led");
-+	if (np) {
-+		u32 led_pin;
-+
-+		if (!of_property_read_u32(np, "reg", &led_pin))
-+			ah->led_pin = led_pin;
-+
-+		ah->config.led_active_high = of_property_read_bool(np, "led-active-high");
-+		of_node_put(np);
-+	}
-+
- 	return 0;
- }
+@@ -111,4 +106,8 @@ partition@2 {
  
+ &wifi {
+ 	status = "okay";
++
++	led {
++		reg = <9>;
++	};
+ };
+diff --git a/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts b/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts
+index 37a74aabe4b4..19d72a0fdd8d 100644
+--- a/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts
++++ b/arch/mips/boot/dts/qca/ar9331_dragino_ms14.dts
+@@ -22,12 +22,6 @@ memory@0 {
+ 	leds {
+ 		compatible = "gpio-leds";
+ 
+-		led-wlan {
+-			label = "dragino2:red:wlan";
+-			gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
+-			default-state = "off";
+-		};
+-
+ 		led-lan {
+ 			label = "dragino2:red:lan";
+ 			gpios = <&gpio 13 GPIO_ACTIVE_LOW>;
+@@ -101,4 +95,9 @@ spiflash: w25q128@0 {
+ 
+ &wifi {
+ 	status = "okay";
++
++	led {
++		reg = <0>;
++		led-active-high;
++	};
+ };
+diff --git a/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts b/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts
+index a7108c803eb3..c12dd4a72772 100644
+--- a/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts
++++ b/arch/mips/boot/dts/qca/ar9331_tl_mr3020.dts
+@@ -22,12 +22,6 @@ memory@0 {
+ 	leds {
+ 		compatible = "gpio-leds";
+ 
+-		led-wlan {
+-			label = "tp-link:green:wlan";
+-			gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
+-			default-state = "off";
+-		};
+-
+ 		led-lan {
+ 			label = "tp-link:green:lan";
+ 			gpios = <&gpio 17 GPIO_ACTIVE_LOW>;
+@@ -117,4 +111,9 @@ spiflash: s25sl032p@0 {
+ 
+ &wifi {
+ 	status = "okay";
++
++	led {
++		reg = <0>;
++		led-active-high;
++	};
+ };
 -- 
 2.50.1
 
