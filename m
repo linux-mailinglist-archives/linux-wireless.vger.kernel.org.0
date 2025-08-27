@@ -1,66 +1,52 @@
-Return-Path: <linux-wireless+bounces-26685-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26692-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56CABB37EBF
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 11:25:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCBFB37EEF
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 11:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 258F7365122
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 09:25:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA7BE1BA4745
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 09:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5AD32C30F;
-	Wed, 27 Aug 2025 09:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777102FE045;
+	Wed, 27 Aug 2025 09:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="yqU6RZhX"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="Hk0RKfZ8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06DA278768
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 09:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5AD279324
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 09:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756286737; cv=none; b=PJqmO1SZGVpr8GEGVWemloLOLAm8rXDslNWyhFaIXeGpu2PJj4GzTE8iUnF273JQ+E+8lD71UPiCc+J9b/1e1AZkdxQrATvY+kqrFPRIsA1dTim0x/qTw1gSFtI9164vJsL5WJhQ6AKoCwqBiLGSMm01cnS3BC5USCNTpH1vD0g=
+	t=1756287331; cv=none; b=FFNslPGVKiN4Lt/GhIeYiUwiHdbGf1XNz9gGWXwG1e5KVNjqvg5EQn2RAcxzWXspZnQPTFM6BA0Wirco8tCdYQ41K4/E4aIXO4kkcryR77MYZdsrxoZ+ANrMbCI8kI3U/M9ZBSJtERrRgPuGgYNJLTHqjnRP1AqLmsRgrF0KDpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756286737; c=relaxed/simple;
-	bh=oMi0UWQ+TOt6JL8ZYf2QKRNR+60rZGf59phnokJPm48=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rxpxMTKb8SVb/8u44zikOQxNJG2hXXiRIp7DA8JbEUBkTNAYNpVn0cGc6WR4eoJrD3coBr91XADQ6B62MsTLxwpzlNZv9gVCLh0Pk3QRygphJwIXQ6iEFZdJwieLoi0N1w0DXVO7smubQvNFGDDqiSlXzbd1jWjylnXJMmGMTPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=yqU6RZhX; arc=none smtp.client-ip=44.202.169.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-5003b.ext.cloudfilter.net ([10.0.29.155])
-	by cmsmtp with ESMTPS
-	id rBfmuIOrmav9lrCPOukhhs; Wed, 27 Aug 2025 09:25:34 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id rCPNuHLntE5uDrCPOuofFD; Wed, 27 Aug 2025 09:25:34 +0000
-X-Authority-Analysis: v=2.4 cv=dtDbC0g4 c=1 sm=1 tr=0 ts=68aecf0e
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=DR2cKC/DEnBA9KqqjaPhpA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
- a=EQ2wRRerX22KNVu84O0A:9 a=QEXdDO2ut3YA:10 a=xYX6OU9JNrHFPr8prv8u:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=QKXC/+BbZZkDCTwUOx2ABG7PtIdtlD0aC6xcaPGqrKc=; b=yqU6RZhXp/xD+WohzkCZ6Tp6jj
-	wryf1jbLDHn4ylufsEKINPRbBuS/rBP1XH7816YtP6xS49B6ofxGmQYT9AIT4b/NgYEwKQBHmUEGp
-	FUvP6GKAJ4DeqXxgLjDe0oabrisMLNds/b4Qd6Gv5qi3jG53F05wLIsNe3lkIS5gyoCC0vOojTU5s
-	9Uht93L5O7NaqJXWwQ9DRgESj7ZcxdU8ufave6CZde2GZkuF3gZ13FqH1t1RUumYlCvq0s5X7RRoo
-	RbUco1dvaM4BJ9tQzhlsy5OkvqEqNE7BvKTrBn75wi35GYq7dNSryT8+3+oT10a41Gz5zyRJUyhPG
-	AisQyeQw==;
-Received: from static-243-216-117-93.thenetworkfactory.nl ([93.117.216.243]:44652 helo=[10.94.27.44])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1urCPM-00000002geJ-3JG4;
-	Wed, 27 Aug 2025 04:25:33 -0500
-Message-ID: <e0aeda2d-931c-49c6-b0d4-dd097e87eae6@embeddedor.com>
-Date: Wed, 27 Aug 2025 11:25:26 +0200
+	s=arc-20240116; t=1756287331; c=relaxed/simple;
+	bh=S8nZ3htfzU43CyIrQCMrWtXjaO7WOwDi9s2ubwak7Wc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=CLB6G4o+0xuXrPb2GnyuibSsoLrAsyisCKxlTvNZjIJbSG8wHB1Uuh2rWznKVITwg9KILiL8hkWnlKoYCIv1QYQbvnsVCR+qNrl2H4Y+AvlLeOmC/X8Xgt8Cd7Iba6SquVewvqRMuuSqs23F8t06HEEXfXCtAndKgb5kBSYDHS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=Hk0RKfZ8; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
+	MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=cntDFRZB1hJzk98b1mcycz4sGo5xylc6X8gowbVsaxM=; b=Hk0RKfZ8SPhqy8WRfoTCT82inp
+	711vHuDPNNwm8ao6Q1lrGy5201ODzVbPgnHlzHhzsEJElGpMv/dQiQq/6tIpFCDNY1PWbpoqYamp9
+	p6C57ULiHZs9Uimki176R9FroAFhH56+jBP2OhUQiUhjQt3hXqGhl9DZLasg0vAE1pmk=;
+Received: from tmo-087-176.customers.d1-online.com ([80.187.87.176] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1urCYx-00Fncz-1u;
+	Wed, 27 Aug 2025 11:35:27 +0200
+Message-ID: <c545b939-183e-4f28-9f79-6cfcf0c24c3d@nbd.name>
+Date: Wed, 27 Aug 2025 11:35:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,90 +54,102 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iwlegacy: Remove unused structs and avoid
- -Wflex-array-member-not-at-end warnings
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-References: <aJl7TxeWgLdEKWhg@kspp>
+From: Felix Fietkau <nbd@nbd.name>
+Subject: pull request: mt76-fixes 2025-08-27
+To: linux-wireless <linux-wireless@vger.kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>
 Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <aJl7TxeWgLdEKWhg@kspp>
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 93.117.216.243
-X-Source-L: No
-X-Exim-ID: 1urCPM-00000002geJ-3JG4
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: static-243-216-117-93.thenetworkfactory.nl ([10.94.27.44]) [93.117.216.243]:44652
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 8
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfBFH2MAMOzZd99gLToGKBGJrp6kQQeaKpTC0UQXy7ms1dtmBoZxcuiwChnDCnYhR3yFEPWRjQqO8NsLWxttfgBrJlwwqMN/VEKeJdgLy0aRdnwdfB4/9
- RwRv55jmG93UnMohvhOg4V1lPCrgS5IJd/hyGoVjUDT7h0GajalCFtk6UFvAfhXRDQvQYsbxzpWt4j3gM8H8hfF/5hCjSyRl1elyNEjSh/xXbfRwzretQs52
 
-Hi all,
+Hi,
 
-Friendly ping: who can take this, please? :)
+Here's my mt76-fixes pull request for 6.17
 
-Thanks!
--Gustavo
+- Felix
 
-On 11/08/25 07:10, Gustavo A. R. Silva wrote:
-> Remove unused structures and avoid the following
-> -Wflex-array-member-not-at-end warnings:
-> 
-> drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h:68:39: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h:60:39: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> ---
->   .../wireless/intel/iwlegacy/iwl-spectrum.h    | 24 -------------------
->   1 file changed, 24 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h b/drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h
-> index 1e8ab704dbfb..f00eb878b94b 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h
-> +++ b/drivers/net/wireless/intel/iwlegacy/iwl-spectrum.h
-> @@ -50,28 +50,4 @@ struct ieee80211_measurement_params {
->   	__le16 duration;
->   } __packed;
->   
-> -struct ieee80211_info_element {
-> -	u8 id;
-> -	u8 len;
-> -	u8 data[];
-> -} __packed;
-> -
-> -struct ieee80211_measurement_request {
-> -	struct ieee80211_info_element ie;
-> -	u8 token;
-> -	u8 mode;
-> -	u8 type;
-> -	struct ieee80211_measurement_params params[];
-> -} __packed;
-> -
-> -struct ieee80211_measurement_report {
-> -	struct ieee80211_info_element ie;
-> -	u8 token;
-> -	u8 mode;
-> -	u8 type;
-> -	union {
-> -		struct ieee80211_basic_report basic[0];
-> -	} u;
-> -} __packed;
-> -
->   #endif
+The following changes since commit 7e2f3213e85eba00acb4cfe6d71647892d63c3a1:
 
+   wifi: mac80211: increase scan_ies_len for S1G (2025-08-26 13:47:21 +0200)
+
+are available in the Git repository at:
+
+   https://github.com/nbd168/wireless tags/mt76-fixes-2025-08-27
+
+for you to fetch changes up to 49fba87205bec14a0f6bd997635bf3968408161e:
+
+   wifi: mt76: fix linked list corruption (2025-08-27 11:27:57 +0200)
+
+----------------------------------------------------------------
+mt76 fixes for 6.17
+
+- fix regressions from mt7996 MLO support rework
+- fix offchannel handling issues on mt7996
+- mt792x fixes
+- fix multiple wcid linked list corruption issues
+
+----------------------------------------------------------------
+Chad Monroe (1):
+       wifi: mt76: mt7996: use the correct vif link for scanning/roc
+
+Felix Fietkau (8):
+       wifi: mt76: prevent non-offchannel mgmt tx during scan/roc
+       wifi: mt76: mt7996: disable beacons when going offchannel
+       wifi: mt76: mt7996: fix crash on some tx status reports
+       wifi: mt76: do not add non-sta wcid entries to the poll list
+       wifi: mt76: mt7996: add missing check for rx wcid entries
+       wifi: mt76: mt7915: fix list corruption after hardware restart
+       wifi: mt76: free pending offchannel tx frames on wcid cleanup
+       wifi: mt76: fix linked list corruption
+
+Harshit Mogalapalli (1):
+       wifi: mt76: mt7925: fix locking in mt7925_change_vif_links()
+
+Janusz Dziedzic (1):
+       wifi: mt76: mt7921: don't disconnect when CSA to DFS chan
+
+Ming Yen Hsieh (3):
+       wifi: mt76: mt7925: fix the wrong bss cleanup for SAP
+       wifi: mt76: mt7925u: use connac3 tx aggr check in tx complete
+       wifi: mt76: mt7925: skip EHT MLD TLV on non-MLD and pass conn_state for sta_cmd
+
+Nathan Chancellor (1):
+       wifi: mt76: mt7996: Initialize hdr before passing to skb_put_data()
+
+  drivers/net/wireless/mediatek/mt76/mac80211.c      | 43 ++++++++++++++++++++++++++++++++++++++++++-
+  drivers/net/wireless/mediatek/mt76/mt76.h          |  1 +
+  drivers/net/wireless/mediatek/mt76/mt7915/mac.c    | 12 +++++-------
+  drivers/net/wireless/mediatek/mt76/mt7921/main.c   |  5 +----
+  drivers/net/wireless/mediatek/mt76/mt7925/mac.c    |  2 +-
+  drivers/net/wireless/mediatek/mt76/mt7925/main.c   |  7 ++++++-
+  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c    | 12 ++++++++----
+  drivers/net/wireless/mediatek/mt76/mt7996/mac.c    | 60 ++++++++++++++++++++++++++++++++++++++----------------------
+  drivers/net/wireless/mediatek/mt76/mt7996/main.c   |  5 +++++
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 15 ++++++++++-----
+  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  1 +
+  drivers/net/wireless/mediatek/mt76/tx.c            | 12 ++++++------
+  12 files changed, 124 insertions(+), 51 deletions(-)
 
