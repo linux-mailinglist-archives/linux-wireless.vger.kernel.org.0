@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-26689-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26690-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4219B37EC9
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 11:26:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 710FBB37ECA
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 11:26:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E3C47AC851
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 09:24:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 202AE7C6CFB
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Aug 2025 09:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9646345747;
-	Wed, 27 Aug 2025 09:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62AE278768;
+	Wed, 27 Aug 2025 09:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="k32W/tb4"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="FGhFSP2U"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A5C343D7E
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 09:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF7B343D7E
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Aug 2025 09:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756286767; cv=none; b=RORyOOgPoyncj9PGTAIZ4ZIU93nwWqFebE1zBvmHL5zV46rFYMDlln1dXCVv7JUlabnVSVg9a26IO1iTte3T8+NRufX1eG7ykAq+cxbb2LEvOgWAVcQ3lKbXTKRghUBlpRF82R14jk8ILKbVgW5wCtwsHhbNTJtFHVFep5GLW98=
+	t=1756286771; cv=none; b=HCF2nfUaH87dAc2Vt3wU2cMaDhltrRqUnJ0jRS0IATzxyA4xOtNrL3kxVfJpNbos+CJ+OEP+jSZCL/nS3xfTQAlytw9eGKFSvEI7lZXDYfbpBdaDHGyZjMG16T+DZFUIPaD/2cFMpYKAruOAgM4p5JkxcEfCmyGSwx+8jASCoLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756286767; c=relaxed/simple;
-	bh=8gnDW77ryAIJLGL7rtFqnzIhfO01V9Eh1Pav/Q1v0j4=;
+	s=arc-20240116; t=1756286771; c=relaxed/simple;
+	bh=mfnmNsYV9rgZKWmuURIEwHl1Kyn4AxnHAen9i8vCKkE=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BlUSFcwz6cJuuRUI1q7prTlpReROFUcfxtpwDYtCo+E28J7KKTavsdzUFQHLBpeQ12sUAuiWUjekpteLgrfBFxdGInm9+EhcP+1qUzkz5ZnMm2RD2hQIj2MoJBovQweW60+XZ0uugdtpg0CubPeWgq5TioXauW4X9UC6WFbxNZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=k32W/tb4; arc=none smtp.client-ip=46.4.11.11
+	 MIME-Version; b=O3A3VswX6tKHHjQoVf1B/p0jxvpWPFHo8T6kugizry1MWBP9IYa4jbaCuHuhdaHyq4D0xZ22RKW4KI6XYv7bnyaPkrIkjvfLPW8Bwl1iGrKTo0PKnzQqu7RR0OM0mOIyDlwY576X7FbXN1lo8TyVb/oahGa4fMHs8PZGMtwYOqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=FGhFSP2U; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -37,21 +37,21 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=RbCJDO5qhfijMdOH4Xwb2AsALsAtJaU8RB9a6jtuHf0=; b=k32W/tb4gTPQHQ6HUWefQFW0lA
-	anbDH5515Nfke6pvUKByTBdvRVyiFua5OdzhFHgHfaRa2KbYotvzYq9M5H7MK5uDUhr2wg5G+TiiY
-	VuXvBlXHkfKyEKYi0J9eTK05oOyWsS/Rom1RYv7ctS8gc2ReRXJ7rE/1GTosoTsFPjeA=;
+	bh=UETIllKK/f2wxmiOz/VwXAhouQ8ZQBSVr9VsXMwoRA0=; b=FGhFSP2UDAzDknlyCdbtw1k7Ce
+	Zes+/9P/mn1rwhH1PV6EOrmXYe530CIRpbM12jgv4mk6601Hu+CWwN8dBvSUzZQ37JCx5h6FwUAli
+	oivr01z7VSqYUhwPvp03+xQ7tlUp42hZyf3kJQv/pEHmUJzO6yyAY3tZKUk0/bRNlh+g=;
 Received: from tmo-087-176.customers.d1-online.com ([80.187.87.176] helo=localhost.localdomain)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1urBum-00Fn6z-0M
+	id 1urBum-00Fn6z-1O
 	for linux-wireless@vger.kernel.org;
 	Wed, 27 Aug 2025 10:53:56 +0200
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH 4/6] wifi: mt76: mt7915: fix list corruption after hardware restart
-Date: Wed, 27 Aug 2025 10:53:50 +0200
-Message-ID: <20250827085352.51636-4-nbd@nbd.name>
+Subject: [PATCH 5/6] wifi: mt76: free pending offchannel tx frames on wcid cleanup
+Date: Wed, 27 Aug 2025 10:53:51 +0200
+Message-ID: <20250827085352.51636-5-nbd@nbd.name>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250827085352.51636-1-nbd@nbd.name>
 References: <20250827085352.51636-1-nbd@nbd.name>
@@ -63,106 +63,29 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since stations are recreated from scratch, all lists that wcids are added
-to must be cleared before calling ieee80211_restart_hw.
-Set wcid->sta = 0 for each wcid entry in order to ensure that they are
-not added again before they are ready.
+Avoid leaking them or keeping the wcid on the tx list
 
-Fixes: 8a55712d124f ("wifi: mt76: mt7915: enable full system reset support")
+Fixes: 0b3be9d1d34e ("wifi: mt76: add separate tx scheduling queue for off-channel tx")
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/mediatek/mt76/mac80211.c | 37 +++++++++++++++++++
- drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 12 +++---
- 3 files changed, 43 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 6b2641a9ae9a..0e0d7b3bfe42 100644
+index 0e0d7b3bfe42..59adf3312617 100644
 --- a/drivers/net/wireless/mediatek/mt76/mac80211.c
 +++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -818,6 +818,43 @@ void mt76_free_device(struct mt76_dev *dev)
- }
- EXPORT_SYMBOL_GPL(mt76_free_device);
+@@ -1716,6 +1716,10 @@ void mt76_wcid_cleanup(struct mt76_dev *dev, struct mt76_wcid *wcid)
+ 	skb_queue_splice_tail_init(&wcid->tx_pending, &list);
+ 	spin_unlock(&wcid->tx_pending.lock);
  
-+static void mt76_reset_phy(struct mt76_phy *phy)
-+{
-+	if (!phy)
-+		return;
++	spin_lock(&wcid->tx_offchannel.lock);
++	skb_queue_splice_tail_init(&wcid->tx_offchannel, &list);
++	spin_unlock(&wcid->tx_offchannel.lock);
 +
-+	INIT_LIST_HEAD(&phy->tx_list);
-+}
-+
-+void mt76_reset_device(struct mt76_dev *dev)
-+{
-+	int i;
-+
-+	rcu_read_lock();
-+	for (i = 0; i < ARRAY_SIZE(dev->wcid); i++) {
-+		struct mt76_wcid *wcid;
-+
-+		wcid = rcu_dereference(dev->wcid[i]);
-+		if (!wcid)
-+			continue;
-+
-+		wcid->sta = 0;
-+		mt76_wcid_cleanup(dev, wcid);
-+		rcu_assign_pointer(dev->wcid[i], NULL);
-+	}
-+	rcu_read_unlock();
-+
-+	INIT_LIST_HEAD(&dev->wcid_list);
-+	INIT_LIST_HEAD(&dev->sta_poll_list);
-+	dev->vif_mask = 0;
-+	memset(dev->wcid_mask, 0, sizeof(dev->wcid_mask));
-+
-+	mt76_reset_phy(&dev->phy);
-+	for (i = 0; i < ARRAY_SIZE(dev->phys); i++)
-+		mt76_reset_phy(dev->phys[i]);
-+}
-+EXPORT_SYMBOL_GPL(mt76_reset_device);
-+
- struct mt76_phy *mt76_vif_phy(struct ieee80211_hw *hw,
- 			      struct ieee80211_vif *vif)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index febe1dcb8d19..5c71226c8607 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1247,6 +1247,7 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
- 			 struct ieee80211_rate *rates, int n_rates);
- void mt76_unregister_device(struct mt76_dev *dev);
- void mt76_free_device(struct mt76_dev *dev);
-+void mt76_reset_device(struct mt76_dev *dev);
- void mt76_unregister_phy(struct mt76_phy *phy);
+ 	spin_unlock_bh(&phy->tx_lock);
  
- struct mt76_phy *mt76_alloc_radio_phy(struct mt76_dev *dev, unsigned int size,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 09c92e4ae129..5da7bb90e209 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1460,17 +1460,15 @@ mt7915_mac_full_reset(struct mt7915_dev *dev)
- 	if (i == 10)
- 		dev_err(dev->mt76.dev, "chip full reset failed\n");
- 
--	spin_lock_bh(&dev->mt76.sta_poll_lock);
--	while (!list_empty(&dev->mt76.sta_poll_list))
--		list_del_init(dev->mt76.sta_poll_list.next);
--	spin_unlock_bh(&dev->mt76.sta_poll_lock);
--
--	memset(dev->mt76.wcid_mask, 0, sizeof(dev->mt76.wcid_mask));
--	dev->mt76.vif_mask = 0;
- 	dev->phy.omac_mask = 0;
- 	if (phy2)
- 		phy2->omac_mask = 0;
- 
-+	mt76_reset_device(&dev->mt76);
-+
-+	INIT_LIST_HEAD(&dev->sta_rc_list);
-+	INIT_LIST_HEAD(&dev->twt_list);
-+
- 	i = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA);
- 	dev->mt76.global_wcid.idx = i;
- 	dev->recovery.hw_full_reset = false;
+ 	while ((skb = __skb_dequeue(&list)) != NULL) {
 -- 
 2.51.0
 
