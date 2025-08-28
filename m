@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-26830-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26832-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3399B3A851
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 19:37:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB0EB3A853
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 19:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83B782049C0
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 17:37:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F49A1BA5521
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 17:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59976341AC4;
-	Thu, 28 Aug 2025 17:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44B3342C8C;
+	Thu, 28 Aug 2025 17:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VqntAi7L"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="AyF185HS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA60338F22
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Aug 2025 17:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8BC338F36
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Aug 2025 17:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756402606; cv=none; b=hylv7gc5VxuxBswWLznJZg92Qwx3NYDtIeUyRQYb+4f9P3H+39pBM76iH4V/UXbArVcbpcB4+qtLv09OZNWygzNe5AeyMJsDRxje05frB/sd2l2Fv/hT+U7JT8xpq0d/LQCXxSGDIEwAQ1HLOhNCrwfU0li9xeFy5k+qqLVFTVI=
+	t=1756402607; cv=none; b=U3NAUkFYbOFKZTVroHvSmcumlgKVOIM9nsTti0ac3JJ4VV4Av6f/Tjkmcm/7NCcCgg2ov4uKKWp7guMPl2L5+Me2gIT8ByY3KcIC+TXryXXOzvBT8rp5DM3red2gJnrzTziZmkFAmcijZpg3MBRWAftvQJel2WnuhxmoVT55es4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756402606; c=relaxed/simple;
-	bh=e7ot/6k3kyJhXEZchsxpQLzPkorkoivPPPwzjKidv0o=;
+	s=arc-20240116; t=1756402607; c=relaxed/simple;
+	bh=k53/bN4W7P+GK4USswOpUi/CZAEWFXgWpzaHumUvK7A=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pudz+txQqb7t7pQ0cOB+6DdHN/KVYVxfeHscCzztXOX3MHghB+8aMZK1mmq7std1SQSaA60vKwvXw/jp8YfaMmea1qk5mj+8yu7LjjsmycsWksUQvmjq6XRaq7oVjsZqW6H6guKJch64BvPUTD9Mfp0s4ghYpsBQPwiPEqTPgkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VqntAi7L; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=uaWk//vqW8WA0TMGtF2TH88JvQuaoNwIARHUabz/bqsvvgyjLRiqBWCnK0iKQIvoLL+PBezQhIFOk2dcbz7etMF6M4LZz7Hen6dJCs0b+2gLpTPugjkDLx+tOgl0oF2ekqiELLs3hA1ThkF83XPjuEXuvbsWdZQfWNwyMJProm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=AyF185HS; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57SBL4DP028921;
-	Thu, 28 Aug 2025 17:36:39 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57SF3wb5014817;
+	Thu, 28 Aug 2025 17:36:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	tkkqsTHXvSqK1KMgNDnSTOISU1tfG62VR7tx6QnegCc=; b=VqntAi7LbAXCAdub
-	7vXtARGJcynXf6vqrFqxM4nPJET4bs2VogP3yqpT4j2CIjFRWlgjLHlNBzWH9/7E
-	SUnqitk6jnXPBhRHUELZkop/1SdMTHWzZWJW0ncDn+cAOSmqesuSM3prcwd+9h5w
-	azZA5LGwFssYRBkdl1Mss6UXolJsXyT2Iolgz0leGN9XoBaz2tbWsTFdSxVPG32h
-	EFnLm8M/hf4F1tpuBaKzWCAkTTotVWXKIbf/wzaKp8dAJye46R7d7kb5H/IlMtpQ
-	n3+BnMS5cTLhOS6gSlFr5O/FeC8zAVLlN/1OL1q/q2f9TxfT8DtIdoeNBmve8FYj
-	C4Twbg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48tp5k13ku-1
+	qzF9Mk2c/twbxa1WfF4vWNStPn6SWQ/+EgS4WUIQpgc=; b=AyF185HStjw3CdkD
+	0CgCQMvoLi2S+HieQxDlJ7OSnCTFK5EWi10HRv6O/SjMXZbPP0eo++z3bnRK4P55
+	1Ne4zPSTJXeN4z4qOWQ1XBz0tVCXTX+Thhk3baWH59ZFnqbkSnvm041dah6/zMBt
+	s6+vRp4XM8bDkBxOZjur5dlboV+iz5jih0WXUXIBtBEcwWUUMftMruM5WQEbuMRG
+	u8op6Dyjs922D5xGEf6eDHsadAfnhAGljh7B/nunE0/RXxI2EUjdASPPfeZ0P9ZM
+	z8Eo/7/6NZLKVGQXt3Bw3ebvTtGXmHFIXJy1KSPwUM3LM2OQxlR9JoJwrFJrQQkW
+	e1uwYQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5we8usr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 17:36:38 +0000 (GMT)
+	Thu, 28 Aug 2025 17:36:40 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57SHab5o019780
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57SHadrW014416
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 17:36:37 GMT
+	Thu, 28 Aug 2025 17:36:39 GMT
 Received: from hu-rdeuri-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.24; Thu, 28 Aug 2025 10:36:36 -0700
+ 15.2.1748.24; Thu, 28 Aug 2025 10:36:37 -0700
 From: Ripan Deuri <quic_rdeuri@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH ath12k-ng 18/20] wifi: ath12k: Move HTT Rx specific code to newly introduced files
-Date: Thu, 28 Aug 2025 23:05:51 +0530
-Message-ID: <20250828173553.3341351-19-quic_rdeuri@quicinc.com>
+Subject: [PATCH ath12k-ng 19/20] wifi: ath12k: Move HTT Tx specific code to newly introduced files
+Date: Thu, 28 Aug 2025 23:05:52 +0530
+Message-ID: <20250828173553.3341351-20-quic_rdeuri@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250828173553.3341351-1-quic_rdeuri@quicinc.com>
 References: <20250828173553.3341351-1-quic_rdeuri@quicinc.com>
@@ -77,40 +77,36 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=V9F90fni c=1 sm=1 tr=0 ts=68b093a6 cx=c_pps
+X-Proofpoint-GUID: PDZ7CPVMJ3lao8Lut7orM-O2qLOpIn9b
+X-Proofpoint-ORIG-GUID: PDZ7CPVMJ3lao8Lut7orM-O2qLOpIn9b
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMyBTYWx0ZWRfX3Js+N5vdMt0M
+ JwWSHKsDLVnGNf4iskcdrsWQE8kU+D6SFTUEQifIaHiAN2j4FcR0QEC3t8EiZTAXVQtD9s27ZZ9
+ b3fO9HcPsxKnEZy19t95sbpEa+xItLM2kR1i70h/JJs/MvQg73ROtFqBejyAFa2c5RqWgAufd7+
+ cwD5PexRswSwUI/PoE4Z50Pmh505CGeJfwg59mKxC9CX8xUQ1Gx+Hns6DABxmDV1jqQad6B3eLh
+ ujvFuGJ+iMsNZdqwdjF8VbQqMU+AfyTb2C6Gn2O7BCt/7tcpERbvRdE8JMRo93kfu3gr4E36RYG
+ noclhWs5Zh8PfRs7gVOrdvXAwEuZ7J7GR/aMAB7H3HpMfkoLQubrnCcKGX0M9oq9OK4W35xcXKz
+ a9v9QhuV
+X-Authority-Analysis: v=2.4 cv=BJazrEQG c=1 sm=1 tr=0 ts=68b093a8 cx=c_pps
  a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=2OwXVqhp2XgA:10 a=COk6AnOGAAAA:8 a=CSDw-C9IAAAA:8
- a=kwDPPlEwAAAA:8 a=Iwk81yimAAAA:8 a=vjkW6uPWAAAA:8 a=D_sfj51gmBRu9ZHEztoA:9
- a=TjNXssC_j7lpFel5tvFf:22 a=wzwtrm5WU4lM03trS8pa:22 a=ewAuKO2E3cdpfbwcMUDL:22
- a=PqBb7rsBcpu_OT3Qf5tX:22 a=FTqP262Ndm71lHIshRHN:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI4MDA5NSBTYWx0ZWRfX9TDROPqaoaGv
- GdSw2rPhaDHjAPBo5FSfBmA8BmswzYHIRvkWC4V85fSDsh3ZshyPCIc5/t1ZJpcglcramr/6+mU
- yLx42LV6vib6sp4jYDnSEm801MiHqYdt5RCNY6LSUMuXUC8JdP4e/CgId2q1gF2m51mdZrACEp7
- E2msdbmjzNTmb7qreDAEyd57bvqEpWQTwXkA2vDIZJTXi3g9R/cYVMZHC/D8EmSTA/kyRtT72wF
- mo2nMvX9q6Chok3Burz3i4nbSEKaZx1EeICorbP9MKNd9QZpHFeug/NdOQqKXa7BQ1cltpkp2JE
- G2gONsRA1z978RoWOpzenWrmHusAqZvHrv49tNLV0Su4YieuiwRoyG+MkME8Bk5+6f7J4khS1US
- r+MLPVSq
-X-Proofpoint-ORIG-GUID: 3UR-9Gq3jSm9pq6hlPwLXw9vs8AzuZ1V
-X-Proofpoint-GUID: 3UR-9Gq3jSm9pq6hlPwLXw9vs8AzuZ1V
+ a=GEpy-HfZoHoA:10 a=2OwXVqhp2XgA:10 a=COk6AnOGAAAA:8 a=BwPTALo8mlevupKbmjwA:9
+ a=TjNXssC_j7lpFel5tvFf:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-28_04,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 spamscore=0 clxscore=1015 suspectscore=0
- phishscore=0 malwarescore=0 adultscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508280095
+ malwarescore=0 adultscore=0 priorityscore=1501 clxscore=1015 impostorscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 spamscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508230033
 
 From: Harsh Kumar Bijlani <quic_hbijlani@quicinc.com>
 
 WLAN Host driver interacts with the Firmware and vice versa using
 Host-To-Target (HTT) interface.
 
-HTT interface code is spread across multiple files (ex dp_tx.c, dp_rx.c
-etc) and this interface is independent of the underlying architecture Tx
-and Rx. Relocate HTT specific code from dp_rx.c to newly introduced file
-dp_htt.c for HTT interface. This new file is compiled as part of the
-common module ath12k.ko.
+Relocate HTT specific code from dp_tx.c to dp_htt.c introduced for
+HTT interface. These code is compiled as part of the common module
+ath12k.ko.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
@@ -118,1359 +114,1481 @@ Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ
 Signed-off-by: Harsh Kumar Bijlani <quic_hbijlani@quicinc.com>
 Signed-off-by: Ripan Deuri <quic_rdeuri@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/Makefile |   1 +
- drivers/net/wireless/ath/ath12k/dp_htt.c | 644 +++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/dp_htt.h |   6 +
- drivers/net/wireless/ath/ath12k/dp_rx.c  | 633 ----------------------
- drivers/net/wireless/ath/ath12k/dp_rx.h  |   6 -
- 5 files changed, 651 insertions(+), 639 deletions(-)
- create mode 100644 drivers/net/wireless/ath/ath12k/dp_htt.c
+ drivers/net/wireless/ath/ath12k/dp.h     |   2 -
+ drivers/net/wireless/ath/ath12k/dp_htt.c | 683 +++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/dp_htt.h |  24 +-
+ drivers/net/wireless/ath/ath12k/dp_tx.c  | 682 ----------------------
+ drivers/net/wireless/ath/ath12k/dp_tx.h  |  18 -
+ 5 files changed, 705 insertions(+), 704 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/Makefile b/drivers/net/wireless/ath/ath12k/Makefile
-index e72b52d5af6d..70d4daa48c90 100644
---- a/drivers/net/wireless/ath/ath12k/Makefile
-+++ b/drivers/net/wireless/ath/ath12k/Makefile
-@@ -10,6 +10,7 @@ ath12k-y += core.o \
- 	    dp.o  \
- 	    dp_tx.o \
- 	    dp_rx.o \
-+	    dp_htt.o \
- 	    debug.o \
- 	    ce.o \
- 	    peer.o \
+diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
+index 45d569e19534..ad93e63e3344 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.h
++++ b/drivers/net/wireless/ath/ath12k/dp.h
+@@ -441,8 +441,6 @@ void ath12k_dp_partner_cc_init(struct ath12k_base *ab);
+ int ath12k_dp_pdev_alloc(struct ath12k_base *ab);
+ void ath12k_dp_pdev_pre_alloc(struct ath12k *ar);
+ void ath12k_dp_pdev_free(struct ath12k_base *ab);
+-int ath12k_dp_tx_htt_srng_setup(struct ath12k_base *ab, u32 ring_id,
+-				int mac_id, enum hal_ring_type ring_type);
+ int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr);
+ void ath12k_dp_peer_cleanup(struct ath12k *ar, int vdev_id, const u8 *addr);
+ void ath12k_dp_srng_cleanup(struct ath12k_base *ab, struct dp_srng *ring);
 diff --git a/drivers/net/wireless/ath/ath12k/dp_htt.c b/drivers/net/wireless/ath/ath12k/dp_htt.c
-new file mode 100644
-index 000000000000..00847d579b95
---- /dev/null
+index 00847d579b95..45aa8ae86a14 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_htt.c
 +++ b/drivers/net/wireless/ath/ath12k/dp_htt.c
-@@ -0,0 +1,644 @@
-+// SPDX-License-Identifier: BSD-3-Clause-Clear
-+/*
-+ * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-+ */
+@@ -9,6 +9,7 @@
+ #include "htc.h"
+ #include "dp_htt.h"
+ #include "debugfs_htt_stats.h"
++#include "debugfs.h"
+ 
+ static int ath12k_get_ppdu_user_index(struct htt_ppdu_stats *ppdu_stats,
+ 				      u16 peer_id)
+@@ -642,3 +643,685 @@ void ath12k_dp_htt_htc_t2h_msg_handler(struct ath12k_base *ab,
+ 	dev_kfree_skb_any(skb);
+ }
+ EXPORT_SYMBOL(ath12k_dp_htt_htc_t2h_msg_handler);
 +
-+#include "core.h"
-+#include "peer.h"
-+#include "htc.h"
-+#include "dp_htt.h"
-+#include "debugfs_htt_stats.h"
-+
-+static int ath12k_get_ppdu_user_index(struct htt_ppdu_stats *ppdu_stats,
-+				      u16 peer_id)
++static int
++ath12k_dp_tx_get_ring_id_type(struct ath12k_base *ab,
++			      int mac_id, u32 ring_id,
++			      enum hal_ring_type ring_type,
++			      enum htt_srng_ring_type *htt_ring_type,
++			      enum htt_srng_ring_id *htt_ring_id)
 +{
-+	int i;
++	int ret = 0;
 +
-+	for (i = 0; i < HTT_PPDU_STATS_MAX_USERS - 1; i++) {
-+		if (ppdu_stats->user_stats[i].is_valid_peer_id) {
-+			if (peer_id == ppdu_stats->user_stats[i].peer_id)
-+				return i;
++	switch (ring_type) {
++	case HAL_RXDMA_BUF:
++		/* for some targets, host fills rx buffer to fw and fw fills to
++		 * rxbuf ring for each rxdma
++		 */
++		if (!ab->hw_params->rx_mac_buf_ring) {
++			if (!(ring_id == HAL_SRNG_SW2RXDMA_BUF0 ||
++			      ring_id == HAL_SRNG_SW2RXDMA_BUF1)) {
++				ret = -EINVAL;
++			}
++			*htt_ring_id = HTT_RXDMA_HOST_BUF_RING;
++			*htt_ring_type = HTT_SW_TO_HW_RING;
 +		} else {
-+			return i;
++			if (ring_id == HAL_SRNG_SW2RXDMA_BUF0) {
++				*htt_ring_id = HTT_HOST1_TO_FW_RXBUF_RING;
++				*htt_ring_type = HTT_SW_TO_SW_RING;
++			} else {
++				*htt_ring_id = HTT_RXDMA_HOST_BUF_RING;
++				*htt_ring_type = HTT_SW_TO_HW_RING;
++			}
 +		}
++		break;
++	case HAL_RXDMA_DST:
++		*htt_ring_id = HTT_RXDMA_NON_MONITOR_DEST_RING;
++		*htt_ring_type = HTT_HW_TO_SW_RING;
++		break;
++	case HAL_RXDMA_MONITOR_BUF:
++		*htt_ring_id = HTT_RX_MON_HOST2MON_BUF_RING;
++		*htt_ring_type = HTT_SW_TO_HW_RING;
++		break;
++	case HAL_RXDMA_MONITOR_STATUS:
++		*htt_ring_id = HTT_RXDMA_MONITOR_STATUS_RING;
++		*htt_ring_type = HTT_SW_TO_HW_RING;
++		break;
++	case HAL_RXDMA_MONITOR_DST:
++		*htt_ring_id = HTT_RX_MON_MON2HOST_DEST_RING;
++		*htt_ring_type = HTT_HW_TO_SW_RING;
++		break;
++	case HAL_RXDMA_MONITOR_DESC:
++		*htt_ring_id = HTT_RXDMA_MONITOR_DESC_RING;
++		*htt_ring_type = HTT_SW_TO_HW_RING;
++		break;
++	default:
++		ath12k_warn(ab, "Unsupported ring type in DP :%d\n", ring_type);
++		ret = -EINVAL;
 +	}
-+
-+	return -EINVAL;
++	return ret;
 +}
 +
-+static int ath12k_htt_tlv_ppdu_stats_parse(struct ath12k_base *ab,
-+					   u16 tag, u16 len, const void *ptr,
-+					   void *data)
++int ath12k_dp_tx_htt_srng_setup(struct ath12k_base *ab, u32 ring_id,
++				int mac_id, enum hal_ring_type ring_type)
 +{
-+	const struct htt_ppdu_stats_usr_cmpltn_ack_ba_status *ba_status;
-+	const struct htt_ppdu_stats_usr_cmpltn_cmn *cmplt_cmn;
-+	const struct htt_ppdu_stats_user_rate *user_rate;
-+	struct htt_ppdu_stats_info *ppdu_info;
-+	struct htt_ppdu_user_stats *user_stats;
-+	int cur_user;
-+	u16 peer_id;
-+
-+	ppdu_info = data;
-+
-+	switch (tag) {
-+	case HTT_PPDU_STATS_TAG_COMMON:
-+		if (len < sizeof(struct htt_ppdu_stats_common)) {
-+			ath12k_warn(ab, "Invalid len %d for the tag 0x%x\n",
-+				    len, tag);
-+			return -EINVAL;
-+		}
-+		memcpy(&ppdu_info->ppdu_stats.common, ptr,
-+		       sizeof(struct htt_ppdu_stats_common));
-+		break;
-+	case HTT_PPDU_STATS_TAG_USR_RATE:
-+		if (len < sizeof(struct htt_ppdu_stats_user_rate)) {
-+			ath12k_warn(ab, "Invalid len %d for the tag 0x%x\n",
-+				    len, tag);
-+			return -EINVAL;
-+		}
-+		user_rate = ptr;
-+		peer_id = le16_to_cpu(user_rate->sw_peer_id);
-+		cur_user = ath12k_get_ppdu_user_index(&ppdu_info->ppdu_stats,
-+						      peer_id);
-+		if (cur_user < 0)
-+			return -EINVAL;
-+		user_stats = &ppdu_info->ppdu_stats.user_stats[cur_user];
-+		user_stats->peer_id = peer_id;
-+		user_stats->is_valid_peer_id = true;
-+		memcpy(&user_stats->rate, ptr,
-+		       sizeof(struct htt_ppdu_stats_user_rate));
-+		user_stats->tlv_flags |= BIT(tag);
-+		break;
-+	case HTT_PPDU_STATS_TAG_USR_COMPLTN_COMMON:
-+		if (len < sizeof(struct htt_ppdu_stats_usr_cmpltn_cmn)) {
-+			ath12k_warn(ab, "Invalid len %d for the tag 0x%x\n",
-+				    len, tag);
-+			return -EINVAL;
-+		}
-+
-+		cmplt_cmn = ptr;
-+		peer_id = le16_to_cpu(cmplt_cmn->sw_peer_id);
-+		cur_user = ath12k_get_ppdu_user_index(&ppdu_info->ppdu_stats,
-+						      peer_id);
-+		if (cur_user < 0)
-+			return -EINVAL;
-+		user_stats = &ppdu_info->ppdu_stats.user_stats[cur_user];
-+		user_stats->peer_id = peer_id;
-+		user_stats->is_valid_peer_id = true;
-+		memcpy(&user_stats->cmpltn_cmn, ptr,
-+		       sizeof(struct htt_ppdu_stats_usr_cmpltn_cmn));
-+		user_stats->tlv_flags |= BIT(tag);
-+		break;
-+	case HTT_PPDU_STATS_TAG_USR_COMPLTN_ACK_BA_STATUS:
-+		if (len <
-+		    sizeof(struct htt_ppdu_stats_usr_cmpltn_ack_ba_status)) {
-+			ath12k_warn(ab, "Invalid len %d for the tag 0x%x\n",
-+				    len, tag);
-+			return -EINVAL;
-+		}
-+
-+		ba_status = ptr;
-+		peer_id = le16_to_cpu(ba_status->sw_peer_id);
-+		cur_user = ath12k_get_ppdu_user_index(&ppdu_info->ppdu_stats,
-+						      peer_id);
-+		if (cur_user < 0)
-+			return -EINVAL;
-+		user_stats = &ppdu_info->ppdu_stats.user_stats[cur_user];
-+		user_stats->peer_id = peer_id;
-+		user_stats->is_valid_peer_id = true;
-+		memcpy(&user_stats->ack_ba, ptr,
-+		       sizeof(struct htt_ppdu_stats_usr_cmpltn_ack_ba_status));
-+		user_stats->tlv_flags |= BIT(tag);
-+		break;
-+	}
-+	return 0;
-+}
-+
-+int ath12k_dp_htt_tlv_iter(struct ath12k_base *ab, const void *ptr, size_t len,
-+			   int (*iter)(struct ath12k_base *ar, u16 tag, u16 len,
-+				       const void *ptr, void *data),
-+			   void *data)
-+{
-+	const struct htt_tlv *tlv;
-+	const void *begin = ptr;
-+	u16 tlv_tag, tlv_len;
-+	int ret = -EINVAL;
-+
-+	while (len > 0) {
-+		if (len < sizeof(*tlv)) {
-+			ath12k_err(ab, "htt tlv parse failure at byte %zd (%zu bytes left, %zu expected)\n",
-+				   ptr - begin, len, sizeof(*tlv));
-+			return -EINVAL;
-+		}
-+		tlv = (struct htt_tlv *)ptr;
-+		tlv_tag = le32_get_bits(tlv->header, HTT_TLV_TAG);
-+		tlv_len = le32_get_bits(tlv->header, HTT_TLV_LEN);
-+		ptr += sizeof(*tlv);
-+		len -= sizeof(*tlv);
-+
-+		if (tlv_len > len) {
-+			ath12k_err(ab, "htt tlv parse failure of tag %u at byte %zd (%zu bytes left, %u expected)\n",
-+				   tlv_tag, ptr - begin, len, tlv_len);
-+			return -EINVAL;
-+		}
-+		ret = iter(ab, tlv_tag, tlv_len, ptr, data);
-+		if (ret == -ENOMEM)
-+			return ret;
-+
-+		ptr += tlv_len;
-+		len -= tlv_len;
-+	}
-+	return 0;
-+}
-+
-+static void
-+ath12k_update_per_peer_tx_stats(struct ath12k *ar,
-+				struct htt_ppdu_stats *ppdu_stats, u8 user)
-+{
-+	struct ath12k_base *ab = ar->ab;
-+	struct ath12k_peer *peer;
-+	struct ath12k_link_sta *arsta;
-+	struct htt_ppdu_stats_user_rate *user_rate;
-+	struct ath12k_per_peer_tx_stats *peer_stats = &ar->peer_tx_stats;
-+	struct htt_ppdu_user_stats *usr_stats = &ppdu_stats->user_stats[user];
-+	struct htt_ppdu_stats_common *common = &ppdu_stats->common;
++	struct htt_srng_setup_cmd *cmd;
++	struct hal_srng *srng = &ab->hal.srng_list[ring_id];
++	struct hal_srng_params params;
++	struct sk_buff *skb;
++	u32 ring_entry_sz;
++	int len = sizeof(*cmd);
++	dma_addr_t hp_addr, tp_addr;
++	enum htt_srng_ring_type htt_ring_type;
++	enum htt_srng_ring_id htt_ring_id;
 +	int ret;
-+	u8 flags, mcs, nss, bw, sgi, dcm, ppdu_type, rate_idx = 0;
-+	u32 v, succ_bytes = 0;
-+	u16 tones, rate = 0, succ_pkts = 0;
-+	u32 tx_duration = 0;
-+	u8 tid = HTT_PPDU_STATS_NON_QOS_TID;
-+	u16 tx_retry_failed = 0, tx_retry_count = 0;
-+	bool is_ampdu = false, is_ofdma;
 +
-+	if (!(usr_stats->tlv_flags & BIT(HTT_PPDU_STATS_TAG_USR_RATE)))
-+		return;
++	skb = ath12k_htc_alloc_skb(ab, len);
++	if (!skb)
++		return -ENOMEM;
 +
-+	if (usr_stats->tlv_flags & BIT(HTT_PPDU_STATS_TAG_USR_COMPLTN_COMMON)) {
-+		is_ampdu =
-+			HTT_USR_CMPLTN_IS_AMPDU(usr_stats->cmpltn_cmn.flags);
-+		tx_retry_failed =
-+			__le16_to_cpu(usr_stats->cmpltn_cmn.mpdu_tried) -
-+			__le16_to_cpu(usr_stats->cmpltn_cmn.mpdu_success);
-+		tx_retry_count =
-+			HTT_USR_CMPLTN_LONG_RETRY(usr_stats->cmpltn_cmn.flags) +
-+			HTT_USR_CMPLTN_SHORT_RETRY(usr_stats->cmpltn_cmn.flags);
++	memset(&params, 0, sizeof(params));
++	ath12k_hal_srng_get_params(ab, srng, &params);
++
++	hp_addr = ath12k_hal_srng_get_hp_addr(ab, srng);
++	tp_addr = ath12k_hal_srng_get_tp_addr(ab, srng);
++
++	ret = ath12k_dp_tx_get_ring_id_type(ab, mac_id, ring_id,
++					    ring_type, &htt_ring_type,
++					    &htt_ring_id);
++	if (ret)
++		goto err_free;
++
++	skb_put(skb, len);
++	cmd = (struct htt_srng_setup_cmd *)skb->data;
++	cmd->info0 = le32_encode_bits(HTT_H2T_MSG_TYPE_SRING_SETUP,
++				      HTT_SRNG_SETUP_CMD_INFO0_MSG_TYPE);
++	if (htt_ring_type == HTT_SW_TO_HW_RING ||
++	    htt_ring_type == HTT_HW_TO_SW_RING)
++		cmd->info0 |= le32_encode_bits(DP_SW2HW_MACID(mac_id),
++					       HTT_SRNG_SETUP_CMD_INFO0_PDEV_ID);
++	else
++		cmd->info0 |= le32_encode_bits(mac_id,
++					       HTT_SRNG_SETUP_CMD_INFO0_PDEV_ID);
++	cmd->info0 |= le32_encode_bits(htt_ring_type,
++				       HTT_SRNG_SETUP_CMD_INFO0_RING_TYPE);
++	cmd->info0 |= le32_encode_bits(htt_ring_id,
++				       HTT_SRNG_SETUP_CMD_INFO0_RING_ID);
++
++	cmd->ring_base_addr_lo = cpu_to_le32(params.ring_base_paddr &
++					     HAL_ADDR_LSB_REG_MASK);
++
++	cmd->ring_base_addr_hi = cpu_to_le32((u64)params.ring_base_paddr >>
++					     HAL_ADDR_MSB_REG_SHIFT);
++
++	ret = ath12k_hal_srng_get_entrysize(ab, ring_type);
++	if (ret < 0)
++		goto err_free;
++
++	ring_entry_sz = ret;
++
++	ring_entry_sz >>= 2;
++	cmd->info1 = le32_encode_bits(ring_entry_sz,
++				      HTT_SRNG_SETUP_CMD_INFO1_RING_ENTRY_SIZE);
++	cmd->info1 |= le32_encode_bits(params.num_entries * ring_entry_sz,
++				       HTT_SRNG_SETUP_CMD_INFO1_RING_SIZE);
++	cmd->info1 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_MSI_SWAP),
++				       HTT_SRNG_SETUP_CMD_INFO1_RING_FLAGS_MSI_SWAP);
++	cmd->info1 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_DATA_TLV_SWAP),
++				       HTT_SRNG_SETUP_CMD_INFO1_RING_FLAGS_TLV_SWAP);
++	cmd->info1 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_RING_PTR_SWAP),
++				       HTT_SRNG_SETUP_CMD_INFO1_RING_FLAGS_HOST_FW_SWAP);
++	if (htt_ring_type == HTT_SW_TO_HW_RING)
++		cmd->info1 |= cpu_to_le32(HTT_SRNG_SETUP_CMD_INFO1_RING_LOOP_CNT_DIS);
++
++	cmd->ring_head_off32_remote_addr_lo = cpu_to_le32(lower_32_bits(hp_addr));
++	cmd->ring_head_off32_remote_addr_hi = cpu_to_le32(upper_32_bits(hp_addr));
++
++	cmd->ring_tail_off32_remote_addr_lo = cpu_to_le32(lower_32_bits(tp_addr));
++	cmd->ring_tail_off32_remote_addr_hi = cpu_to_le32(upper_32_bits(tp_addr));
++
++	cmd->ring_msi_addr_lo = cpu_to_le32(lower_32_bits(params.msi_addr));
++	cmd->ring_msi_addr_hi = cpu_to_le32(upper_32_bits(params.msi_addr));
++	cmd->msi_data = cpu_to_le32(params.msi_data);
++
++	cmd->intr_info =
++		le32_encode_bits(params.intr_batch_cntr_thres_entries * ring_entry_sz,
++				 HTT_SRNG_SETUP_CMD_INTR_INFO_BATCH_COUNTER_THRESH);
++	cmd->intr_info |=
++		le32_encode_bits(params.intr_timer_thres_us >> 3,
++				 HTT_SRNG_SETUP_CMD_INTR_INFO_INTR_TIMER_THRESH);
++
++	cmd->info2 = 0;
++	if (params.flags & HAL_SRNG_FLAGS_LOW_THRESH_INTR_EN) {
++		cmd->info2 = le32_encode_bits(params.low_threshold,
++					      HTT_SRNG_SETUP_CMD_INFO2_INTR_LOW_THRESH);
 +	}
 +
-+	if (usr_stats->tlv_flags &
-+	    BIT(HTT_PPDU_STATS_TAG_USR_COMPLTN_ACK_BA_STATUS)) {
-+		succ_bytes = le32_to_cpu(usr_stats->ack_ba.success_bytes);
-+		succ_pkts = le32_get_bits(usr_stats->ack_ba.info,
-+					  HTT_PPDU_STATS_ACK_BA_INFO_NUM_MSDU_M);
-+		tid = le32_get_bits(usr_stats->ack_ba.info,
-+				    HTT_PPDU_STATS_ACK_BA_INFO_TID_NUM);
-+	}
++	ath12k_dbg(ab, ATH12K_DBG_HAL,
++		   "%s msi_addr_lo:0x%x, msi_addr_hi:0x%x, msi_data:0x%x\n",
++		   __func__, cmd->ring_msi_addr_lo, cmd->ring_msi_addr_hi,
++		   cmd->msi_data);
 +
-+	if (common->fes_duration_us)
-+		tx_duration = le32_to_cpu(common->fes_duration_us);
++	ath12k_dbg(ab, ATH12K_DBG_HAL,
++		   "ring_id:%d, ring_type:%d, intr_info:0x%x, flags:0x%x\n",
++		   ring_id, ring_type, cmd->intr_info, cmd->info2);
 +
-+	user_rate = &usr_stats->rate;
-+	flags = HTT_USR_RATE_PREAMBLE(user_rate->rate_flags);
-+	bw = HTT_USR_RATE_BW(user_rate->rate_flags) - 2;
-+	nss = HTT_USR_RATE_NSS(user_rate->rate_flags) + 1;
-+	mcs = HTT_USR_RATE_MCS(user_rate->rate_flags);
-+	sgi = HTT_USR_RATE_GI(user_rate->rate_flags);
-+	dcm = HTT_USR_RATE_DCM(user_rate->rate_flags);
++	ret = ath12k_htc_send(&ab->htc, ab->dp.eid, skb);
++	if (ret)
++		goto err_free;
 +
-+	ppdu_type = HTT_USR_RATE_PPDU_TYPE(user_rate->info1);
-+	is_ofdma = (ppdu_type == HTT_PPDU_STATS_PPDU_TYPE_MU_OFDMA) ||
-+		   (ppdu_type == HTT_PPDU_STATS_PPDU_TYPE_MU_MIMO_OFDMA);
++	return 0;
 +
-+	/* Note: If host configured fixed rates and in some other special
-+	 * cases, the broadcast/management frames are sent in different rates.
-+	 * Firmware rate's control to be skipped for this?
-+	 */
-+
-+	if (flags == WMI_RATE_PREAMBLE_HE && mcs > ATH12K_HE_MCS_MAX) {
-+		ath12k_warn(ab, "Invalid HE mcs %d peer stats",  mcs);
-+		return;
-+	}
-+
-+	if (flags == WMI_RATE_PREAMBLE_VHT && mcs > ATH12K_VHT_MCS_MAX) {
-+		ath12k_warn(ab, "Invalid VHT mcs %d peer stats",  mcs);
-+		return;
-+	}
-+
-+	if (flags == WMI_RATE_PREAMBLE_HT && (mcs > ATH12K_HT_MCS_MAX || nss < 1)) {
-+		ath12k_warn(ab, "Invalid HT mcs %d nss %d peer stats",
-+			    mcs, nss);
-+		return;
-+	}
-+
-+	if (flags == WMI_RATE_PREAMBLE_CCK || flags == WMI_RATE_PREAMBLE_OFDM) {
-+		ret = ath12k_mac_hw_ratecode_to_legacy_rate(mcs,
-+							    flags,
-+							    &rate_idx,
-+							    &rate);
-+		if (ret < 0)
-+			return;
-+	}
-+
-+	rcu_read_lock();
-+	spin_lock_bh(&ab->base_lock);
-+	peer = ath12k_peer_find_by_id(ab, usr_stats->peer_id);
-+
-+	if (!peer || !peer->sta) {
-+		spin_unlock_bh(&ab->base_lock);
-+		rcu_read_unlock();
-+		return;
-+	}
-+
-+	arsta = ath12k_peer_get_link_sta(ab, peer);
-+	if (!arsta) {
-+		spin_unlock_bh(&ab->base_lock);
-+		rcu_read_unlock();
-+		return;
-+	}
-+
-+	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
-+
-+	arsta->txrate.bw = ath12k_mac_bw_to_mac80211_bw(bw);
-+
-+	switch (flags) {
-+	case WMI_RATE_PREAMBLE_OFDM:
-+		arsta->txrate.legacy = rate;
-+		break;
-+	case WMI_RATE_PREAMBLE_CCK:
-+		arsta->txrate.legacy = rate;
-+		break;
-+	case WMI_RATE_PREAMBLE_HT:
-+		arsta->txrate.mcs = mcs + 8 * (nss - 1);
-+		arsta->txrate.flags = RATE_INFO_FLAGS_MCS;
-+		if (sgi)
-+			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
-+		break;
-+	case WMI_RATE_PREAMBLE_VHT:
-+		arsta->txrate.mcs = mcs;
-+		arsta->txrate.flags = RATE_INFO_FLAGS_VHT_MCS;
-+		if (sgi)
-+			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
-+		break;
-+	case WMI_RATE_PREAMBLE_HE:
-+		arsta->txrate.mcs = mcs;
-+		arsta->txrate.flags = RATE_INFO_FLAGS_HE_MCS;
-+		arsta->txrate.he_dcm = dcm;
-+		arsta->txrate.he_gi = ath12k_he_gi_to_nl80211_he_gi(sgi);
-+		tones = le16_to_cpu(user_rate->ru_end) -
-+			le16_to_cpu(user_rate->ru_start) + 1;
-+		v = ath12k_he_ru_tones_to_nl80211_he_ru_alloc(tones);
-+		arsta->txrate.he_ru_alloc = v;
-+		if (is_ofdma)
-+			arsta->txrate.bw = RATE_INFO_BW_HE_RU;
-+		break;
-+	case WMI_RATE_PREAMBLE_EHT:
-+		arsta->txrate.mcs = mcs;
-+		arsta->txrate.flags = RATE_INFO_FLAGS_EHT_MCS;
-+		arsta->txrate.he_dcm = dcm;
-+		arsta->txrate.eht_gi = ath12k_mac_eht_gi_to_nl80211_eht_gi(sgi);
-+		tones = le16_to_cpu(user_rate->ru_end) -
-+			le16_to_cpu(user_rate->ru_start) + 1;
-+		v = ath12k_mac_eht_ru_tones_to_nl80211_eht_ru_alloc(tones);
-+		arsta->txrate.eht_ru_alloc = v;
-+		if (is_ofdma)
-+			arsta->txrate.bw = RATE_INFO_BW_EHT_RU;
-+		break;
-+	}
-+
-+	arsta->tx_retry_failed += tx_retry_failed;
-+	arsta->tx_retry_count += tx_retry_count;
-+	arsta->txrate.nss = nss;
-+	arsta->tx_duration += tx_duration;
-+	memcpy(&arsta->last_txrate, &arsta->txrate, sizeof(struct rate_info));
-+
-+	/* PPDU stats reported for mgmt packet doesn't have valid tx bytes.
-+	 * So skip peer stats update for mgmt packets.
-+	 */
-+	if (tid < HTT_PPDU_STATS_NON_QOS_TID) {
-+		memset(peer_stats, 0, sizeof(*peer_stats));
-+		peer_stats->succ_pkts = succ_pkts;
-+		peer_stats->succ_bytes = succ_bytes;
-+		peer_stats->is_ampdu = is_ampdu;
-+		peer_stats->duration = tx_duration;
-+		peer_stats->ba_fails =
-+			HTT_USR_CMPLTN_LONG_RETRY(usr_stats->cmpltn_cmn.flags) +
-+			HTT_USR_CMPLTN_SHORT_RETRY(usr_stats->cmpltn_cmn.flags);
-+	}
-+
-+	spin_unlock_bh(&ab->base_lock);
-+	rcu_read_unlock();
-+}
-+
-+static void ath12k_htt_update_ppdu_stats(struct ath12k *ar,
-+					 struct htt_ppdu_stats *ppdu_stats)
-+{
-+	u8 user;
-+
-+	for (user = 0; user < HTT_PPDU_STATS_MAX_USERS - 1; user++)
-+		ath12k_update_per_peer_tx_stats(ar, ppdu_stats, user);
-+}
-+
-+static
-+struct htt_ppdu_stats_info *ath12k_dp_htt_get_ppdu_desc(struct ath12k *ar,
-+							u32 ppdu_id)
-+{
-+	struct htt_ppdu_stats_info *ppdu_info;
-+
-+	lockdep_assert_held(&ar->data_lock);
-+	if (!list_empty(&ar->ppdu_stats_info)) {
-+		list_for_each_entry(ppdu_info, &ar->ppdu_stats_info, list) {
-+			if (ppdu_info->ppdu_id == ppdu_id)
-+				return ppdu_info;
-+		}
-+
-+		if (ar->ppdu_stat_list_depth > HTT_PPDU_DESC_MAX_DEPTH) {
-+			ppdu_info = list_first_entry(&ar->ppdu_stats_info,
-+						     typeof(*ppdu_info), list);
-+			list_del(&ppdu_info->list);
-+			ar->ppdu_stat_list_depth--;
-+			ath12k_htt_update_ppdu_stats(ar, &ppdu_info->ppdu_stats);
-+			kfree(ppdu_info);
-+		}
-+	}
-+
-+	ppdu_info = kzalloc(sizeof(*ppdu_info), GFP_ATOMIC);
-+	if (!ppdu_info)
-+		return NULL;
-+
-+	list_add_tail(&ppdu_info->list, &ar->ppdu_stats_info);
-+	ar->ppdu_stat_list_depth++;
-+
-+	return ppdu_info;
-+}
-+
-+static void ath12k_copy_to_delay_stats(struct ath12k_peer *peer,
-+				       struct htt_ppdu_user_stats *usr_stats)
-+{
-+	peer->ppdu_stats_delayba.sw_peer_id = le16_to_cpu(usr_stats->rate.sw_peer_id);
-+	peer->ppdu_stats_delayba.info0 = le32_to_cpu(usr_stats->rate.info0);
-+	peer->ppdu_stats_delayba.ru_end = le16_to_cpu(usr_stats->rate.ru_end);
-+	peer->ppdu_stats_delayba.ru_start = le16_to_cpu(usr_stats->rate.ru_start);
-+	peer->ppdu_stats_delayba.info1 = le32_to_cpu(usr_stats->rate.info1);
-+	peer->ppdu_stats_delayba.rate_flags = le32_to_cpu(usr_stats->rate.rate_flags);
-+	peer->ppdu_stats_delayba.resp_rate_flags =
-+		le32_to_cpu(usr_stats->rate.resp_rate_flags);
-+
-+	peer->delayba_flag = true;
-+}
-+
-+static void ath12k_copy_to_bar(struct ath12k_peer *peer,
-+			       struct htt_ppdu_user_stats *usr_stats)
-+{
-+	usr_stats->rate.sw_peer_id = cpu_to_le16(peer->ppdu_stats_delayba.sw_peer_id);
-+	usr_stats->rate.info0 = cpu_to_le32(peer->ppdu_stats_delayba.info0);
-+	usr_stats->rate.ru_end = cpu_to_le16(peer->ppdu_stats_delayba.ru_end);
-+	usr_stats->rate.ru_start = cpu_to_le16(peer->ppdu_stats_delayba.ru_start);
-+	usr_stats->rate.info1 = cpu_to_le32(peer->ppdu_stats_delayba.info1);
-+	usr_stats->rate.rate_flags = cpu_to_le32(peer->ppdu_stats_delayba.rate_flags);
-+	usr_stats->rate.resp_rate_flags =
-+		cpu_to_le32(peer->ppdu_stats_delayba.resp_rate_flags);
-+
-+	peer->delayba_flag = false;
-+}
-+
-+static int ath12k_htt_pull_ppdu_stats(struct ath12k_base *ab,
-+				      struct sk_buff *skb)
-+{
-+	struct ath12k_htt_ppdu_stats_msg *msg;
-+	struct htt_ppdu_stats_info *ppdu_info;
-+	struct ath12k_peer *peer = NULL;
-+	struct htt_ppdu_user_stats *usr_stats = NULL;
-+	u32 peer_id = 0;
-+	struct ath12k *ar;
-+	int ret, i;
-+	u8 pdev_id;
-+	u32 ppdu_id, len;
-+
-+	msg = (struct ath12k_htt_ppdu_stats_msg *)skb->data;
-+	len = le32_get_bits(msg->info, HTT_T2H_PPDU_STATS_INFO_PAYLOAD_SIZE);
-+	if (len > (skb->len - struct_size(msg, data, 0))) {
-+		ath12k_warn(ab,
-+			    "HTT PPDU STATS event has unexpected payload size %u, should be smaller than %u\n",
-+			    len, skb->len);
-+		return -EINVAL;
-+	}
-+
-+	pdev_id = le32_get_bits(msg->info, HTT_T2H_PPDU_STATS_INFO_PDEV_ID);
-+	ppdu_id = le32_to_cpu(msg->ppdu_id);
-+
-+	rcu_read_lock();
-+	ar = ath12k_mac_get_ar_by_pdev_id(ab, pdev_id);
-+	if (!ar) {
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
-+	spin_lock_bh(&ar->data_lock);
-+	ppdu_info = ath12k_dp_htt_get_ppdu_desc(ar, ppdu_id);
-+	if (!ppdu_info) {
-+		spin_unlock_bh(&ar->data_lock);
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
-+	ppdu_info->ppdu_id = ppdu_id;
-+	ret = ath12k_dp_htt_tlv_iter(ab, msg->data, len,
-+				     ath12k_htt_tlv_ppdu_stats_parse,
-+				     (void *)ppdu_info);
-+	if (ret) {
-+		spin_unlock_bh(&ar->data_lock);
-+		ath12k_warn(ab, "Failed to parse tlv %d\n", ret);
-+		goto exit;
-+	}
-+
-+	if (ppdu_info->ppdu_stats.common.num_users >= HTT_PPDU_STATS_MAX_USERS) {
-+		spin_unlock_bh(&ar->data_lock);
-+		ath12k_warn(ab,
-+			    "HTT PPDU STATS event has unexpected num_users %u, should be smaller than %u\n",
-+			    ppdu_info->ppdu_stats.common.num_users,
-+			    HTT_PPDU_STATS_MAX_USERS);
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
-+	/* back up data rate tlv for all peers */
-+	if (ppdu_info->frame_type == HTT_STATS_PPDU_FTYPE_DATA &&
-+	    (ppdu_info->tlv_bitmap & (1 << HTT_PPDU_STATS_TAG_USR_COMMON)) &&
-+	    ppdu_info->delay_ba) {
-+		for (i = 0; i < ppdu_info->ppdu_stats.common.num_users; i++) {
-+			peer_id = ppdu_info->ppdu_stats.user_stats[i].peer_id;
-+			spin_lock_bh(&ab->base_lock);
-+			peer = ath12k_peer_find_by_id(ab, peer_id);
-+			if (!peer) {
-+				spin_unlock_bh(&ab->base_lock);
-+				continue;
-+			}
-+
-+			usr_stats = &ppdu_info->ppdu_stats.user_stats[i];
-+			if (usr_stats->delay_ba)
-+				ath12k_copy_to_delay_stats(peer, usr_stats);
-+			spin_unlock_bh(&ab->base_lock);
-+		}
-+	}
-+
-+	/* restore all peers' data rate tlv to mu-bar tlv */
-+	if (ppdu_info->frame_type == HTT_STATS_PPDU_FTYPE_BAR &&
-+	    (ppdu_info->tlv_bitmap & (1 << HTT_PPDU_STATS_TAG_USR_COMMON))) {
-+		for (i = 0; i < ppdu_info->bar_num_users; i++) {
-+			peer_id = ppdu_info->ppdu_stats.user_stats[i].peer_id;
-+			spin_lock_bh(&ab->base_lock);
-+			peer = ath12k_peer_find_by_id(ab, peer_id);
-+			if (!peer) {
-+				spin_unlock_bh(&ab->base_lock);
-+				continue;
-+			}
-+
-+			usr_stats = &ppdu_info->ppdu_stats.user_stats[i];
-+			if (peer->delayba_flag)
-+				ath12k_copy_to_bar(peer, usr_stats);
-+			spin_unlock_bh(&ab->base_lock);
-+		}
-+	}
-+
-+	spin_unlock_bh(&ar->data_lock);
-+
-+exit:
-+	rcu_read_unlock();
++err_free:
++	dev_kfree_skb_any(skb);
 +
 +	return ret;
 +}
 +
-+static void ath12k_htt_mlo_offset_event_handler(struct ath12k_base *ab,
-+						struct sk_buff *skb)
-+{
-+	struct ath12k_htt_mlo_offset_msg *msg;
-+	struct ath12k_pdev *pdev;
-+	struct ath12k *ar;
-+	u8 pdev_id;
++#define HTT_TARGET_VERSION_TIMEOUT_HZ (3 * HZ)
 +
-+	msg = (struct ath12k_htt_mlo_offset_msg *)skb->data;
-+	pdev_id = u32_get_bits(__le32_to_cpu(msg->info),
-+			       HTT_T2H_MLO_OFFSET_INFO_PDEV_ID);
-+
-+	rcu_read_lock();
-+	ar = ath12k_mac_get_ar_by_pdev_id(ab, pdev_id);
-+	if (!ar) {
-+		/* It is possible that the ar is not yet active (started).
-+		 * The above function will only look for the active pdev
-+		 * and hence %NULL return is possible. Just silently
-+		 * discard this message
-+		 */
-+		goto exit;
-+	}
-+
-+	spin_lock_bh(&ar->data_lock);
-+	pdev = ar->pdev;
-+
-+	pdev->timestamp.info = __le32_to_cpu(msg->info);
-+	pdev->timestamp.sync_timestamp_lo_us = __le32_to_cpu(msg->sync_timestamp_lo_us);
-+	pdev->timestamp.sync_timestamp_hi_us = __le32_to_cpu(msg->sync_timestamp_hi_us);
-+	pdev->timestamp.mlo_offset_lo = __le32_to_cpu(msg->mlo_offset_lo);
-+	pdev->timestamp.mlo_offset_hi = __le32_to_cpu(msg->mlo_offset_hi);
-+	pdev->timestamp.mlo_offset_clks = __le32_to_cpu(msg->mlo_offset_clks);
-+	pdev->timestamp.mlo_comp_clks = __le32_to_cpu(msg->mlo_comp_clks);
-+	pdev->timestamp.mlo_comp_timer = __le32_to_cpu(msg->mlo_comp_timer);
-+
-+	spin_unlock_bh(&ar->data_lock);
-+exit:
-+	rcu_read_unlock();
-+}
-+
-+void ath12k_dp_htt_htc_t2h_msg_handler(struct ath12k_base *ab,
-+				       struct sk_buff *skb)
++int ath12k_dp_tx_htt_h2t_ver_req_msg(struct ath12k_base *ab)
 +{
 +	struct ath12k_dp *dp = &ab->dp;
-+	struct htt_resp_msg *resp = (struct htt_resp_msg *)skb->data;
-+	enum htt_t2h_msg_type type;
-+	u16 peer_id;
-+	u8 vdev_id;
-+	u8 mac_addr[ETH_ALEN];
-+	u16 peer_mac_h16;
-+	u16 ast_hash = 0;
-+	u16 hw_peer_id;
++	struct sk_buff *skb;
++	struct htt_ver_req_cmd *cmd;
++	int len = sizeof(*cmd);
++	u32 metadata_version;
++	int ret;
 +
-+	type = le32_get_bits(resp->version_msg.version, HTT_T2H_MSG_TYPE);
++	init_completion(&dp->htt_tgt_version_received);
 +
-+	ath12k_dbg(ab, ATH12K_DBG_DP_HTT, "dp_htt rx msg type :0x%0x\n", type);
++	skb = ath12k_htc_alloc_skb(ab, len);
++	if (!skb)
++		return -ENOMEM;
 +
-+	switch (type) {
-+	case HTT_T2H_MSG_TYPE_VERSION_CONF:
-+		dp->htt_tgt_ver_major = le32_get_bits(resp->version_msg.version,
-+						      HTT_T2H_VERSION_CONF_MAJOR);
-+		dp->htt_tgt_ver_minor = le32_get_bits(resp->version_msg.version,
-+						      HTT_T2H_VERSION_CONF_MINOR);
-+		complete(&dp->htt_tgt_version_received);
-+		break;
-+	/* TODO: remove unused peer map versions after testing */
-+	case HTT_T2H_MSG_TYPE_PEER_MAP:
-+		vdev_id = le32_get_bits(resp->peer_map_ev.info,
-+					HTT_T2H_PEER_MAP_INFO_VDEV_ID);
-+		peer_id = le32_get_bits(resp->peer_map_ev.info,
-+					HTT_T2H_PEER_MAP_INFO_PEER_ID);
-+		peer_mac_h16 = le32_get_bits(resp->peer_map_ev.info1,
-+					     HTT_T2H_PEER_MAP_INFO1_MAC_ADDR_H16);
-+		ath12k_dp_get_mac_addr(le32_to_cpu(resp->peer_map_ev.mac_addr_l32),
-+				       peer_mac_h16, mac_addr);
-+		ath12k_peer_map_event(ab, vdev_id, peer_id, mac_addr, 0, 0);
-+		break;
-+	case HTT_T2H_MSG_TYPE_PEER_MAP2:
-+		vdev_id = le32_get_bits(resp->peer_map_ev.info,
-+					HTT_T2H_PEER_MAP_INFO_VDEV_ID);
-+		peer_id = le32_get_bits(resp->peer_map_ev.info,
-+					HTT_T2H_PEER_MAP_INFO_PEER_ID);
-+		peer_mac_h16 = le32_get_bits(resp->peer_map_ev.info1,
-+					     HTT_T2H_PEER_MAP_INFO1_MAC_ADDR_H16);
-+		ath12k_dp_get_mac_addr(le32_to_cpu(resp->peer_map_ev.mac_addr_l32),
-+				       peer_mac_h16, mac_addr);
-+		ast_hash = le32_get_bits(resp->peer_map_ev.info2,
-+					 HTT_T2H_PEER_MAP_INFO2_AST_HASH_VAL);
-+		hw_peer_id = le32_get_bits(resp->peer_map_ev.info1,
-+					   HTT_T2H_PEER_MAP_INFO1_HW_PEER_ID);
-+		ath12k_peer_map_event(ab, vdev_id, peer_id, mac_addr, ast_hash,
-+				      hw_peer_id);
-+		break;
-+	case HTT_T2H_MSG_TYPE_PEER_MAP3:
-+		vdev_id = le32_get_bits(resp->peer_map_ev.info,
-+					HTT_T2H_PEER_MAP_INFO_VDEV_ID);
-+		peer_id = le32_get_bits(resp->peer_map_ev.info,
-+					HTT_T2H_PEER_MAP_INFO_PEER_ID);
-+		peer_mac_h16 = le32_get_bits(resp->peer_map_ev.info1,
-+					     HTT_T2H_PEER_MAP_INFO1_MAC_ADDR_H16);
-+		ath12k_dp_get_mac_addr(le32_to_cpu(resp->peer_map_ev.mac_addr_l32),
-+				       peer_mac_h16, mac_addr);
-+		ast_hash = le32_get_bits(resp->peer_map_ev.info2,
-+					 HTT_T2H_PEER_MAP3_INFO2_AST_HASH_VAL);
-+		hw_peer_id = le32_get_bits(resp->peer_map_ev.info2,
-+					   HTT_T2H_PEER_MAP3_INFO2_HW_PEER_ID);
-+		ath12k_peer_map_event(ab, vdev_id, peer_id, mac_addr, ast_hash,
-+				      hw_peer_id);
-+		break;
-+	case HTT_T2H_MSG_TYPE_PEER_UNMAP:
-+	case HTT_T2H_MSG_TYPE_PEER_UNMAP2:
-+		peer_id = le32_get_bits(resp->peer_unmap_ev.info,
-+					HTT_T2H_PEER_UNMAP_INFO_PEER_ID);
-+		ath12k_peer_unmap_event(ab, peer_id);
-+		break;
-+	case HTT_T2H_MSG_TYPE_PPDU_STATS_IND:
-+		ath12k_htt_pull_ppdu_stats(ab, skb);
-+		break;
-+	case HTT_T2H_MSG_TYPE_EXT_STATS_CONF:
-+		ath12k_debugfs_htt_ext_stats_handler(ab, skb);
-+		break;
-+	case HTT_T2H_MSG_TYPE_MLO_TIMESTAMP_OFFSET_IND:
-+		ath12k_htt_mlo_offset_event_handler(ab, skb);
-+		break;
-+	default:
-+		ath12k_dbg(ab, ATH12K_DBG_DP_HTT, "dp_htt event %d not handled\n",
-+			   type);
-+		break;
++	skb_put(skb, len);
++	cmd = (struct htt_ver_req_cmd *)skb->data;
++	cmd->ver_reg_info = le32_encode_bits(HTT_H2T_MSG_TYPE_VERSION_REQ,
++					     HTT_OPTION_TAG);
++	metadata_version = ath12k_ftm_mode ? HTT_OPTION_TCL_METADATA_VER_V1 :
++			   HTT_OPTION_TCL_METADATA_VER_V2;
++
++	cmd->tcl_metadata_version = le32_encode_bits(HTT_TAG_TCL_METADATA_VERSION,
++						     HTT_OPTION_TAG) |
++				    le32_encode_bits(HTT_TCL_METADATA_VER_SZ,
++						     HTT_OPTION_LEN) |
++				    le32_encode_bits(metadata_version,
++						     HTT_OPTION_VALUE);
++
++	ret = ath12k_htc_send(&ab->htc, dp->eid, skb);
++	if (ret) {
++		dev_kfree_skb_any(skb);
++		return ret;
 +	}
 +
-+	dev_kfree_skb_any(skb);
++	ret = wait_for_completion_timeout(&dp->htt_tgt_version_received,
++					  HTT_TARGET_VERSION_TIMEOUT_HZ);
++	if (ret == 0) {
++		ath12k_warn(ab, "htt target version request timed out\n");
++		return -ETIMEDOUT;
++	}
++
++	if (dp->htt_tgt_ver_major != HTT_TARGET_VERSION_MAJOR) {
++		ath12k_err(ab, "unsupported htt major version %d supported version is %d\n",
++			   dp->htt_tgt_ver_major, HTT_TARGET_VERSION_MAJOR);
++		return -EOPNOTSUPP;
++	}
++
++	return 0;
 +}
-+EXPORT_SYMBOL(ath12k_dp_htt_htc_t2h_msg_handler);
++
++int ath12k_dp_tx_htt_h2t_ppdu_stats_req(struct ath12k *ar, u32 mask)
++{
++	struct ath12k_base *ab = ar->ab;
++	struct ath12k_dp *dp = &ab->dp;
++	struct sk_buff *skb;
++	struct htt_ppdu_stats_cfg_cmd *cmd;
++	int len = sizeof(*cmd);
++	u8 pdev_mask;
++	int ret;
++	int i;
++
++	for (i = 0; i < ab->hw_params->num_rxdma_per_pdev; i++) {
++		skb = ath12k_htc_alloc_skb(ab, len);
++		if (!skb)
++			return -ENOMEM;
++
++		skb_put(skb, len);
++		cmd = (struct htt_ppdu_stats_cfg_cmd *)skb->data;
++		cmd->msg = le32_encode_bits(HTT_H2T_MSG_TYPE_PPDU_STATS_CFG,
++					    HTT_PPDU_STATS_CFG_MSG_TYPE);
++
++		pdev_mask = 1 << (i + ar->pdev_idx);
++		cmd->msg |= le32_encode_bits(pdev_mask, HTT_PPDU_STATS_CFG_PDEV_ID);
++		cmd->msg |= le32_encode_bits(mask, HTT_PPDU_STATS_CFG_TLV_TYPE_BITMASK);
++
++		ret = ath12k_htc_send(&ab->htc, dp->eid, skb);
++		if (ret) {
++			dev_kfree_skb_any(skb);
++			return ret;
++		}
++	}
++
++	return 0;
++}
++
++int ath12k_dp_tx_htt_rx_filter_setup(struct ath12k_base *ab, u32 ring_id,
++				     int mac_id, enum hal_ring_type ring_type,
++				     int rx_buf_size,
++				     struct htt_rx_ring_tlv_filter *tlv_filter)
++{
++	struct htt_rx_ring_selection_cfg_cmd *cmd;
++	struct hal_srng *srng = &ab->hal.srng_list[ring_id];
++	struct hal_srng_params params;
++	struct sk_buff *skb;
++	int len = sizeof(*cmd);
++	enum htt_srng_ring_type htt_ring_type;
++	enum htt_srng_ring_id htt_ring_id;
++	int ret;
++
++	skb = ath12k_htc_alloc_skb(ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	memset(&params, 0, sizeof(params));
++	ath12k_hal_srng_get_params(ab, srng, &params);
++
++	ret = ath12k_dp_tx_get_ring_id_type(ab, mac_id, ring_id,
++					    ring_type, &htt_ring_type,
++					    &htt_ring_id);
++	if (ret)
++		goto err_free;
++
++	skb_put(skb, len);
++	cmd = (struct htt_rx_ring_selection_cfg_cmd *)skb->data;
++	cmd->info0 = le32_encode_bits(HTT_H2T_MSG_TYPE_RX_RING_SELECTION_CFG,
++				      HTT_RX_RING_SELECTION_CFG_CMD_INFO0_MSG_TYPE);
++	if (htt_ring_type == HTT_SW_TO_HW_RING ||
++	    htt_ring_type == HTT_HW_TO_SW_RING)
++		cmd->info0 |=
++			le32_encode_bits(DP_SW2HW_MACID(mac_id),
++					 HTT_RX_RING_SELECTION_CFG_CMD_INFO0_PDEV_ID);
++	else
++		cmd->info0 |=
++			le32_encode_bits(mac_id,
++					 HTT_RX_RING_SELECTION_CFG_CMD_INFO0_PDEV_ID);
++	cmd->info0 |= le32_encode_bits(htt_ring_id,
++				       HTT_RX_RING_SELECTION_CFG_CMD_INFO0_RING_ID);
++	cmd->info0 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_MSI_SWAP),
++				       HTT_RX_RING_SELECTION_CFG_CMD_INFO0_SS);
++	cmd->info0 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_DATA_TLV_SWAP),
++				       HTT_RX_RING_SELECTION_CFG_CMD_INFO0_PS);
++	cmd->info0 |= le32_encode_bits(tlv_filter->offset_valid,
++				       HTT_RX_RING_SELECTION_CFG_CMD_INFO0_OFFSET_VALID);
++	cmd->info0 |=
++		le32_encode_bits(tlv_filter->drop_threshold_valid,
++				 HTT_RX_RING_SELECTION_CFG_CMD_INFO0_DROP_THRES_VAL);
++	cmd->info0 |= le32_encode_bits(!tlv_filter->rxmon_disable,
++				       HTT_RX_RING_SELECTION_CFG_CMD_INFO0_EN_RXMON);
++
++	cmd->info1 = le32_encode_bits(rx_buf_size,
++				      HTT_RX_RING_SELECTION_CFG_CMD_INFO1_BUF_SIZE);
++	cmd->info1 |= le32_encode_bits(tlv_filter->conf_len_mgmt,
++				       HTT_RX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_MGMT);
++	cmd->info1 |= le32_encode_bits(tlv_filter->conf_len_ctrl,
++				       HTT_RX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_CTRL);
++	cmd->info1 |= le32_encode_bits(tlv_filter->conf_len_data,
++				       HTT_RX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_DATA);
++	cmd->pkt_type_en_flags0 = cpu_to_le32(tlv_filter->pkt_filter_flags0);
++	cmd->pkt_type_en_flags1 = cpu_to_le32(tlv_filter->pkt_filter_flags1);
++	cmd->pkt_type_en_flags2 = cpu_to_le32(tlv_filter->pkt_filter_flags2);
++	cmd->pkt_type_en_flags3 = cpu_to_le32(tlv_filter->pkt_filter_flags3);
++	cmd->rx_filter_tlv = cpu_to_le32(tlv_filter->rx_filter);
++
++	cmd->info2 = le32_encode_bits(tlv_filter->rx_drop_threshold,
++				      HTT_RX_RING_SELECTION_CFG_CMD_INFO2_DROP_THRESHOLD);
++	cmd->info2 |=
++		le32_encode_bits(tlv_filter->enable_log_mgmt_type,
++				 HTT_RX_RING_SELECTION_CFG_CMD_INFO2_EN_LOG_MGMT_TYPE);
++	cmd->info2 |=
++		le32_encode_bits(tlv_filter->enable_log_ctrl_type,
++				 HTT_RX_RING_SELECTION_CFG_CMD_INFO2_EN_CTRL_TYPE);
++	cmd->info2 |=
++		le32_encode_bits(tlv_filter->enable_log_data_type,
++				 HTT_RX_RING_SELECTION_CFG_CMD_INFO2_EN_LOG_DATA_TYPE);
++
++	cmd->info3 =
++		le32_encode_bits(tlv_filter->enable_rx_tlv_offset,
++				 HTT_RX_RING_SELECTION_CFG_CMD_INFO3_EN_TLV_PKT_OFFSET);
++	cmd->info3 |=
++		le32_encode_bits(tlv_filter->rx_tlv_offset,
++				 HTT_RX_RING_SELECTION_CFG_CMD_INFO3_PKT_TLV_OFFSET);
++
++	if (tlv_filter->offset_valid) {
++		cmd->rx_packet_offset =
++			le32_encode_bits(tlv_filter->rx_packet_offset,
++					 HTT_RX_RING_SELECTION_CFG_RX_PACKET_OFFSET);
++
++		cmd->rx_packet_offset |=
++			le32_encode_bits(tlv_filter->rx_header_offset,
++					 HTT_RX_RING_SELECTION_CFG_RX_HEADER_OFFSET);
++
++		cmd->rx_mpdu_offset =
++			le32_encode_bits(tlv_filter->rx_mpdu_end_offset,
++					 HTT_RX_RING_SELECTION_CFG_RX_MPDU_END_OFFSET);
++
++		cmd->rx_mpdu_offset |=
++			le32_encode_bits(tlv_filter->rx_mpdu_start_offset,
++					 HTT_RX_RING_SELECTION_CFG_RX_MPDU_START_OFFSET);
++
++		cmd->rx_msdu_offset =
++			le32_encode_bits(tlv_filter->rx_msdu_end_offset,
++					 HTT_RX_RING_SELECTION_CFG_RX_MSDU_END_OFFSET);
++
++		cmd->rx_msdu_offset |=
++			le32_encode_bits(tlv_filter->rx_msdu_start_offset,
++					 HTT_RX_RING_SELECTION_CFG_RX_MSDU_START_OFFSET);
++
++		cmd->rx_attn_offset =
++			le32_encode_bits(tlv_filter->rx_attn_offset,
++					 HTT_RX_RING_SELECTION_CFG_RX_ATTENTION_OFFSET);
++	}
++
++	if (tlv_filter->rx_mpdu_start_wmask > 0 &&
++	    tlv_filter->rx_msdu_end_wmask > 0) {
++		cmd->info2 |=
++			le32_encode_bits(true,
++					 HTT_RX_RING_SELECTION_CFG_WORD_MASK_COMPACT_SET);
++		cmd->rx_mpdu_start_end_mask =
++			le32_encode_bits(tlv_filter->rx_mpdu_start_wmask,
++					 HTT_RX_RING_SELECTION_CFG_RX_MPDU_START_MASK);
++		/* mpdu_end is not used for any hardwares so far
++		 * please assign it in future if any chip is
++		 * using through hal ops
++		 */
++		cmd->rx_mpdu_start_end_mask |=
++			le32_encode_bits(tlv_filter->rx_mpdu_end_wmask,
++					 HTT_RX_RING_SELECTION_CFG_RX_MPDU_END_MASK);
++		cmd->rx_msdu_end_word_mask =
++			le32_encode_bits(tlv_filter->rx_msdu_end_wmask,
++					 HTT_RX_RING_SELECTION_CFG_RX_MSDU_END_MASK);
++	}
++
++	ret = ath12k_htc_send(&ab->htc, ab->dp.eid, skb);
++	if (ret)
++		goto err_free;
++
++	return 0;
++
++err_free:
++	dev_kfree_skb_any(skb);
++
++	return ret;
++}
++
++int
++ath12k_dp_tx_htt_h2t_ext_stats_req(struct ath12k *ar, u8 type,
++				   struct htt_ext_stats_cfg_params *cfg_params,
++				   u64 cookie)
++{
++	struct ath12k_base *ab = ar->ab;
++	struct ath12k_dp *dp = &ab->dp;
++	struct sk_buff *skb;
++	struct htt_ext_stats_cfg_cmd *cmd;
++	int len = sizeof(*cmd);
++	int ret;
++	u32 pdev_id;
++
++	skb = ath12k_htc_alloc_skb(ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	skb_put(skb, len);
++
++	cmd = (struct htt_ext_stats_cfg_cmd *)skb->data;
++	memset(cmd, 0, sizeof(*cmd));
++	cmd->hdr.msg_type = HTT_H2T_MSG_TYPE_EXT_STATS_CFG;
++
++	pdev_id = ath12k_mac_get_target_pdev_id(ar);
++	cmd->hdr.pdev_mask = 1 << pdev_id;
++
++	cmd->hdr.stats_type = type;
++	cmd->cfg_param0 = cpu_to_le32(cfg_params->cfg0);
++	cmd->cfg_param1 = cpu_to_le32(cfg_params->cfg1);
++	cmd->cfg_param2 = cpu_to_le32(cfg_params->cfg2);
++	cmd->cfg_param3 = cpu_to_le32(cfg_params->cfg3);
++	cmd->cookie_lsb = cpu_to_le32(lower_32_bits(cookie));
++	cmd->cookie_msb = cpu_to_le32(upper_32_bits(cookie));
++
++	ret = ath12k_htc_send(&ab->htc, dp->eid, skb);
++	if (ret) {
++		ath12k_warn(ab, "failed to send htt type stats request: %d",
++			    ret);
++		dev_kfree_skb_any(skb);
++		return ret;
++	}
++
++	return 0;
++}
++
++int ath12k_dp_tx_htt_monitor_mode_ring_config(struct ath12k *ar, bool reset)
++{
++	struct ath12k_base *ab = ar->ab;
++	int ret;
++
++	ret = ath12k_dp_tx_htt_rx_monitor_mode_ring_config(ar, reset);
++	if (ret) {
++		ath12k_err(ab, "failed to setup rx monitor filter %d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
++int ath12k_dp_tx_htt_rx_monitor_mode_ring_config(struct ath12k *ar, bool reset)
++{
++	struct ath12k_base *ab = ar->ab;
++	struct htt_rx_ring_tlv_filter tlv_filter = {};
++	int ret, ring_id, i;
++
++	tlv_filter.offset_valid = false;
++
++	if (!reset) {
++		tlv_filter.rx_filter = HTT_RX_MON_FILTER_TLV_FLAGS_MON_DEST_RING;
++
++		tlv_filter.drop_threshold_valid = true;
++		tlv_filter.rx_drop_threshold = HTT_RX_RING_TLV_DROP_THRESHOLD_VALUE;
++
++		tlv_filter.enable_log_mgmt_type = true;
++		tlv_filter.enable_log_ctrl_type = true;
++		tlv_filter.enable_log_data_type = true;
++
++		tlv_filter.conf_len_ctrl = HTT_RX_RING_DEFAULT_DMA_LENGTH;
++		tlv_filter.conf_len_mgmt = HTT_RX_RING_DEFAULT_DMA_LENGTH;
++		tlv_filter.conf_len_data = HTT_RX_RING_DEFAULT_DMA_LENGTH;
++
++		tlv_filter.enable_rx_tlv_offset = true;
++		tlv_filter.rx_tlv_offset = HTT_RX_RING_PKT_TLV_OFFSET;
++
++		tlv_filter.pkt_filter_flags0 =
++					HTT_RX_MON_FP_MGMT_FILTER_FLAGS0 |
++					HTT_RX_MON_MO_MGMT_FILTER_FLAGS0;
++		tlv_filter.pkt_filter_flags1 =
++					HTT_RX_MON_FP_MGMT_FILTER_FLAGS1 |
++					HTT_RX_MON_MO_MGMT_FILTER_FLAGS1;
++		tlv_filter.pkt_filter_flags2 =
++					HTT_RX_MON_FP_CTRL_FILTER_FLASG2 |
++					HTT_RX_MON_MO_CTRL_FILTER_FLASG2;
++		tlv_filter.pkt_filter_flags3 =
++					HTT_RX_MON_FP_CTRL_FILTER_FLASG3 |
++					HTT_RX_MON_MO_CTRL_FILTER_FLASG3 |
++					HTT_RX_MON_FP_DATA_FILTER_FLASG3 |
++					HTT_RX_MON_MO_DATA_FILTER_FLASG3;
++	} else {
++		tlv_filter = ath12k_mac_mon_status_filter_default;
++
++		if (ath12k_debugfs_is_extd_rx_stats_enabled(ar))
++			tlv_filter.rx_filter = ath12k_debugfs_rx_filter(ar);
++	}
++
++	if (ab->hw_params->rxdma1_enable) {
++		for (i = 0; i < ab->hw_params->num_rxdma_per_pdev; i++) {
++			ring_id = ar->dp.rxdma_mon_dst_ring[i].ring_id;
++			ret = ath12k_dp_tx_htt_rx_filter_setup(ar->ab, ring_id,
++							       ar->dp.mac_id + i,
++							       HAL_RXDMA_MONITOR_DST,
++							       DP_RXDMA_REFILL_RING_SIZE,
++							       &tlv_filter);
++			if (ret) {
++				ath12k_err(ab,
++					   "failed to setup filter for monitor buf %d\n",
++					   ret);
++				return ret;
++			}
++		}
++		return 0;
++	}
++
++	if (!reset) {
++		for (i = 0; i < ab->hw_params->num_rxdma_per_pdev; i++) {
++			ring_id = ab->dp.rx_mac_buf_ring[i].ring_id;
++			ret = ath12k_dp_tx_htt_rx_filter_setup(ar->ab, ring_id,
++							       i,
++							       HAL_RXDMA_BUF,
++							       DP_RXDMA_REFILL_RING_SIZE,
++							       &tlv_filter);
++			if (ret) {
++				ath12k_err(ab,
++					   "failed to setup filter for mon rx buf %d\n",
++					   ret);
++				return ret;
++			}
++		}
++	}
++
++	for (i = 0; i < ab->hw_params->num_rxdma_per_pdev; i++) {
++		ring_id = ab->dp.rx_mon_status_refill_ring[i].refill_buf_ring.ring_id;
++		if (!reset) {
++			tlv_filter.rx_filter =
++				HTT_RX_MON_FILTER_TLV_FLAGS_MON_STATUS_RING;
++		}
++
++		ret = ath12k_dp_tx_htt_rx_filter_setup(ab, ring_id,
++						       i,
++						       HAL_RXDMA_MONITOR_STATUS,
++						       RX_MON_STATUS_BUF_SIZE,
++						       &tlv_filter);
++		if (ret) {
++			ath12k_err(ab,
++				   "failed to setup filter for mon status buf %d\n",
++				   ret);
++			return ret;
++		}
++	}
++
++	return 0;
++}
++
++int ath12k_dp_tx_htt_tx_filter_setup(struct ath12k_base *ab, u32 ring_id,
++				     int mac_id, enum hal_ring_type ring_type,
++				     int tx_buf_size,
++				     struct htt_tx_ring_tlv_filter *htt_tlv_filter)
++{
++	struct htt_tx_ring_selection_cfg_cmd *cmd;
++	struct hal_srng *srng = &ab->hal.srng_list[ring_id];
++	struct hal_srng_params params;
++	struct sk_buff *skb;
++	int len = sizeof(*cmd);
++	enum htt_srng_ring_type htt_ring_type;
++	enum htt_srng_ring_id htt_ring_id;
++	int ret;
++
++	skb = ath12k_htc_alloc_skb(ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	memset(&params, 0, sizeof(params));
++	ath12k_hal_srng_get_params(ab, srng, &params);
++
++	ret = ath12k_dp_tx_get_ring_id_type(ab, mac_id, ring_id,
++					    ring_type, &htt_ring_type,
++					    &htt_ring_id);
++
++	if (ret)
++		goto err_free;
++
++	skb_put(skb, len);
++	cmd = (struct htt_tx_ring_selection_cfg_cmd *)skb->data;
++	cmd->info0 = le32_encode_bits(HTT_H2T_MSG_TYPE_TX_MONITOR_CFG,
++				      HTT_TX_RING_SELECTION_CFG_CMD_INFO0_MSG_TYPE);
++	if (htt_ring_type == HTT_SW_TO_HW_RING ||
++	    htt_ring_type == HTT_HW_TO_SW_RING)
++		cmd->info0 |=
++			le32_encode_bits(DP_SW2HW_MACID(mac_id),
++					 HTT_TX_RING_SELECTION_CFG_CMD_INFO0_PDEV_ID);
++	else
++		cmd->info0 |=
++			le32_encode_bits(mac_id,
++					 HTT_TX_RING_SELECTION_CFG_CMD_INFO0_PDEV_ID);
++	cmd->info0 |= le32_encode_bits(htt_ring_id,
++				       HTT_TX_RING_SELECTION_CFG_CMD_INFO0_RING_ID);
++	cmd->info0 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_MSI_SWAP),
++				       HTT_TX_RING_SELECTION_CFG_CMD_INFO0_SS);
++	cmd->info0 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_DATA_TLV_SWAP),
++				       HTT_TX_RING_SELECTION_CFG_CMD_INFO0_PS);
++
++	cmd->info1 |=
++		le32_encode_bits(tx_buf_size,
++				 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_RING_BUFF_SIZE);
++
++	if (htt_tlv_filter->tx_mon_mgmt_filter) {
++		cmd->info1 |=
++			le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_MGMT,
++					 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_PKT_TYPE);
++		cmd->info1 |=
++		le32_encode_bits(htt_tlv_filter->tx_mon_pkt_dma_len,
++				 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_MGMT);
++		cmd->info2 |=
++		le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_MGMT,
++				 HTT_TX_RING_SELECTION_CFG_CMD_INFO2_PKT_TYPE_EN_FLAG);
++	}
++
++	if (htt_tlv_filter->tx_mon_data_filter) {
++		cmd->info1 |=
++			le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_CTRL,
++					 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_PKT_TYPE);
++		cmd->info1 |=
++		le32_encode_bits(htt_tlv_filter->tx_mon_pkt_dma_len,
++				 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_CTRL);
++		cmd->info2 |=
++		le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_CTRL,
++				 HTT_TX_RING_SELECTION_CFG_CMD_INFO2_PKT_TYPE_EN_FLAG);
++	}
++
++	if (htt_tlv_filter->tx_mon_ctrl_filter) {
++		cmd->info1 |=
++			le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_DATA,
++					 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_PKT_TYPE);
++		cmd->info1 |=
++		le32_encode_bits(htt_tlv_filter->tx_mon_pkt_dma_len,
++				 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_DATA);
++		cmd->info2 |=
++		le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_DATA,
++				 HTT_TX_RING_SELECTION_CFG_CMD_INFO2_PKT_TYPE_EN_FLAG);
++	}
++
++	cmd->tlv_filter_mask_in0 =
++		cpu_to_le32(htt_tlv_filter->tx_mon_downstream_tlv_flags);
++	cmd->tlv_filter_mask_in1 =
++		cpu_to_le32(htt_tlv_filter->tx_mon_upstream_tlv_flags0);
++	cmd->tlv_filter_mask_in2 =
++		cpu_to_le32(htt_tlv_filter->tx_mon_upstream_tlv_flags1);
++	cmd->tlv_filter_mask_in3 =
++		cpu_to_le32(htt_tlv_filter->tx_mon_upstream_tlv_flags2);
++
++	ret = ath12k_htc_send(&ab->htc, ab->dp.eid, skb);
++	if (ret)
++		goto err_free;
++
++	return 0;
++
++err_free:
++	dev_kfree_skb_any(skb);
++	return ret;
++}
 diff --git a/drivers/net/wireless/ath/ath12k/dp_htt.h b/drivers/net/wireless/ath/ath12k/dp_htt.h
-index ce9064628d34..9ae3a750f608 100644
+index 9ae3a750f608..b13af1c69253 100644
 --- a/drivers/net/wireless/ath/ath12k/dp_htt.h
 +++ b/drivers/net/wireless/ath/ath12k/dp_htt.h
-@@ -1514,4 +1514,10 @@ struct htt_mac_addr {
+@@ -1514,10 +1514,30 @@ struct htt_mac_addr {
  	__le32 mac_addr_h16;
  } __packed;
  
-+int ath12k_dp_htt_tlv_iter(struct ath12k_base *ab, const void *ptr, size_t len,
-+			   int (*iter)(struct ath12k_base *ar, u16 tag, u16 len,
-+				       const void *ptr, void *data),
-+				       void *data);
++int ath12k_dp_tx_htt_srng_setup(struct ath12k_base *ab, u32 ring_id,
++				int mac_id, enum hal_ring_type ring_type);
++
 +void ath12k_dp_htt_htc_t2h_msg_handler(struct ath12k_base *ab,
 +				       struct sk_buff *skb);
+ int ath12k_dp_htt_tlv_iter(struct ath12k_base *ab, const void *ptr, size_t len,
+ 			   int (*iter)(struct ath12k_base *ar, u16 tag, u16 len,
+ 				       const void *ptr, void *data),
+ 				       void *data);
+-void ath12k_dp_htt_htc_t2h_msg_handler(struct ath12k_base *ab,
+-				       struct sk_buff *skb);
++int ath12k_dp_tx_htt_h2t_ver_req_msg(struct ath12k_base *ab);
++int ath12k_dp_tx_htt_h2t_ppdu_stats_req(struct ath12k *ar, u32 mask);
++int
++ath12k_dp_tx_htt_h2t_ext_stats_req(struct ath12k *ar, u8 type,
++				   struct htt_ext_stats_cfg_params *cfg_params,
++				   u64 cookie);
++int ath12k_dp_tx_htt_rx_monitor_mode_ring_config(struct ath12k *ar, bool reset);
++
++int ath12k_dp_tx_htt_rx_filter_setup(struct ath12k_base *ab, u32 ring_id,
++				     int mac_id, enum hal_ring_type ring_type,
++				     int rx_buf_size,
++				     struct htt_rx_ring_tlv_filter *tlv_filter);
++int ath12k_dp_tx_htt_tx_filter_setup(struct ath12k_base *ab, u32 ring_id,
++				     int mac_id, enum hal_ring_type ring_type,
++				     int tx_buf_size,
++				     struct htt_tx_ring_tlv_filter *htt_tlv_filter);
++int ath12k_dp_tx_htt_monitor_mode_ring_config(struct ath12k *ar, bool reset);
  #endif
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index d735eee9efee..e1a2f5f54adb 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -719,639 +719,6 @@ int ath12k_dp_rx_peer_pn_replay_config(struct ath12k_link_vif *arvif,
- 	return ret;
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index c7b0fc22c1a7..8d5e10781377 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -200,685 +200,3 @@ void ath12k_dp_tx_free_txbuf(struct ath12k_base *ab,
+ 	if (atomic_dec_and_test(&ar->dp.num_tx_pending))
+ 		wake_up(&ar->dp.tx_empty_waitq);
  }
- 
--static int ath12k_get_ppdu_user_index(struct htt_ppdu_stats *ppdu_stats,
--				      u16 peer_id)
--{
--	int i;
 -
--	for (i = 0; i < HTT_PPDU_STATS_MAX_USERS - 1; i++) {
--		if (ppdu_stats->user_stats[i].is_valid_peer_id) {
--			if (peer_id == ppdu_stats->user_stats[i].peer_id)
--				return i;
+-static int
+-ath12k_dp_tx_get_ring_id_type(struct ath12k_base *ab,
+-			      int mac_id, u32 ring_id,
+-			      enum hal_ring_type ring_type,
+-			      enum htt_srng_ring_type *htt_ring_type,
+-			      enum htt_srng_ring_id *htt_ring_id)
+-{
+-	int ret = 0;
+-
+-	switch (ring_type) {
+-	case HAL_RXDMA_BUF:
+-		/* for some targets, host fills rx buffer to fw and fw fills to
+-		 * rxbuf ring for each rxdma
+-		 */
+-		if (!ab->hw_params->rx_mac_buf_ring) {
+-			if (!(ring_id == HAL_SRNG_SW2RXDMA_BUF0 ||
+-			      ring_id == HAL_SRNG_SW2RXDMA_BUF1)) {
+-				ret = -EINVAL;
+-			}
+-			*htt_ring_id = HTT_RXDMA_HOST_BUF_RING;
+-			*htt_ring_type = HTT_SW_TO_HW_RING;
 -		} else {
--			return i;
+-			if (ring_id == HAL_SRNG_SW2RXDMA_BUF0) {
+-				*htt_ring_id = HTT_HOST1_TO_FW_RXBUF_RING;
+-				*htt_ring_type = HTT_SW_TO_SW_RING;
+-			} else {
+-				*htt_ring_id = HTT_RXDMA_HOST_BUF_RING;
+-				*htt_ring_type = HTT_SW_TO_HW_RING;
+-			}
 -		}
+-		break;
+-	case HAL_RXDMA_DST:
+-		*htt_ring_id = HTT_RXDMA_NON_MONITOR_DEST_RING;
+-		*htt_ring_type = HTT_HW_TO_SW_RING;
+-		break;
+-	case HAL_RXDMA_MONITOR_BUF:
+-		*htt_ring_id = HTT_RX_MON_HOST2MON_BUF_RING;
+-		*htt_ring_type = HTT_SW_TO_HW_RING;
+-		break;
+-	case HAL_RXDMA_MONITOR_STATUS:
+-		*htt_ring_id = HTT_RXDMA_MONITOR_STATUS_RING;
+-		*htt_ring_type = HTT_SW_TO_HW_RING;
+-		break;
+-	case HAL_RXDMA_MONITOR_DST:
+-		*htt_ring_id = HTT_RX_MON_MON2HOST_DEST_RING;
+-		*htt_ring_type = HTT_HW_TO_SW_RING;
+-		break;
+-	case HAL_RXDMA_MONITOR_DESC:
+-		*htt_ring_id = HTT_RXDMA_MONITOR_DESC_RING;
+-		*htt_ring_type = HTT_SW_TO_HW_RING;
+-		break;
+-	default:
+-		ath12k_warn(ab, "Unsupported ring type in DP :%d\n", ring_type);
+-		ret = -EINVAL;
 -	}
--
--	return -EINVAL;
+-	return ret;
 -}
 -
--static int ath12k_htt_tlv_ppdu_stats_parse(struct ath12k_base *ab,
--					   u16 tag, u16 len, const void *ptr,
--					   void *data)
+-int ath12k_dp_tx_htt_srng_setup(struct ath12k_base *ab, u32 ring_id,
+-				int mac_id, enum hal_ring_type ring_type)
 -{
--	const struct htt_ppdu_stats_usr_cmpltn_ack_ba_status *ba_status;
--	const struct htt_ppdu_stats_usr_cmpltn_cmn *cmplt_cmn;
--	const struct htt_ppdu_stats_user_rate *user_rate;
--	struct htt_ppdu_stats_info *ppdu_info;
--	struct htt_ppdu_user_stats *user_stats;
--	int cur_user;
--	u16 peer_id;
--
--	ppdu_info = data;
--
--	switch (tag) {
--	case HTT_PPDU_STATS_TAG_COMMON:
--		if (len < sizeof(struct htt_ppdu_stats_common)) {
--			ath12k_warn(ab, "Invalid len %d for the tag 0x%x\n",
--				    len, tag);
--			return -EINVAL;
--		}
--		memcpy(&ppdu_info->ppdu_stats.common, ptr,
--		       sizeof(struct htt_ppdu_stats_common));
--		break;
--	case HTT_PPDU_STATS_TAG_USR_RATE:
--		if (len < sizeof(struct htt_ppdu_stats_user_rate)) {
--			ath12k_warn(ab, "Invalid len %d for the tag 0x%x\n",
--				    len, tag);
--			return -EINVAL;
--		}
--		user_rate = ptr;
--		peer_id = le16_to_cpu(user_rate->sw_peer_id);
--		cur_user = ath12k_get_ppdu_user_index(&ppdu_info->ppdu_stats,
--						      peer_id);
--		if (cur_user < 0)
--			return -EINVAL;
--		user_stats = &ppdu_info->ppdu_stats.user_stats[cur_user];
--		user_stats->peer_id = peer_id;
--		user_stats->is_valid_peer_id = true;
--		memcpy(&user_stats->rate, ptr,
--		       sizeof(struct htt_ppdu_stats_user_rate));
--		user_stats->tlv_flags |= BIT(tag);
--		break;
--	case HTT_PPDU_STATS_TAG_USR_COMPLTN_COMMON:
--		if (len < sizeof(struct htt_ppdu_stats_usr_cmpltn_cmn)) {
--			ath12k_warn(ab, "Invalid len %d for the tag 0x%x\n",
--				    len, tag);
--			return -EINVAL;
--		}
--
--		cmplt_cmn = ptr;
--		peer_id = le16_to_cpu(cmplt_cmn->sw_peer_id);
--		cur_user = ath12k_get_ppdu_user_index(&ppdu_info->ppdu_stats,
--						      peer_id);
--		if (cur_user < 0)
--			return -EINVAL;
--		user_stats = &ppdu_info->ppdu_stats.user_stats[cur_user];
--		user_stats->peer_id = peer_id;
--		user_stats->is_valid_peer_id = true;
--		memcpy(&user_stats->cmpltn_cmn, ptr,
--		       sizeof(struct htt_ppdu_stats_usr_cmpltn_cmn));
--		user_stats->tlv_flags |= BIT(tag);
--		break;
--	case HTT_PPDU_STATS_TAG_USR_COMPLTN_ACK_BA_STATUS:
--		if (len <
--		    sizeof(struct htt_ppdu_stats_usr_cmpltn_ack_ba_status)) {
--			ath12k_warn(ab, "Invalid len %d for the tag 0x%x\n",
--				    len, tag);
--			return -EINVAL;
--		}
--
--		ba_status = ptr;
--		peer_id = le16_to_cpu(ba_status->sw_peer_id);
--		cur_user = ath12k_get_ppdu_user_index(&ppdu_info->ppdu_stats,
--						      peer_id);
--		if (cur_user < 0)
--			return -EINVAL;
--		user_stats = &ppdu_info->ppdu_stats.user_stats[cur_user];
--		user_stats->peer_id = peer_id;
--		user_stats->is_valid_peer_id = true;
--		memcpy(&user_stats->ack_ba, ptr,
--		       sizeof(struct htt_ppdu_stats_usr_cmpltn_ack_ba_status));
--		user_stats->tlv_flags |= BIT(tag);
--		break;
--	}
--	return 0;
--}
--
--int ath12k_dp_htt_tlv_iter(struct ath12k_base *ab, const void *ptr, size_t len,
--			   int (*iter)(struct ath12k_base *ar, u16 tag, u16 len,
--				       const void *ptr, void *data),
--			   void *data)
--{
--	const struct htt_tlv *tlv;
--	const void *begin = ptr;
--	u16 tlv_tag, tlv_len;
--	int ret = -EINVAL;
--
--	while (len > 0) {
--		if (len < sizeof(*tlv)) {
--			ath12k_err(ab, "htt tlv parse failure at byte %zd (%zu bytes left, %zu expected)\n",
--				   ptr - begin, len, sizeof(*tlv));
--			return -EINVAL;
--		}
--		tlv = (struct htt_tlv *)ptr;
--		tlv_tag = le32_get_bits(tlv->header, HTT_TLV_TAG);
--		tlv_len = le32_get_bits(tlv->header, HTT_TLV_LEN);
--		ptr += sizeof(*tlv);
--		len -= sizeof(*tlv);
--
--		if (tlv_len > len) {
--			ath12k_err(ab, "htt tlv parse failure of tag %u at byte %zd (%zu bytes left, %u expected)\n",
--				   tlv_tag, ptr - begin, len, tlv_len);
--			return -EINVAL;
--		}
--		ret = iter(ab, tlv_tag, tlv_len, ptr, data);
--		if (ret == -ENOMEM)
--			return ret;
--
--		ptr += tlv_len;
--		len -= tlv_len;
--	}
--	return 0;
--}
--
--static void
--ath12k_update_per_peer_tx_stats(struct ath12k *ar,
--				struct htt_ppdu_stats *ppdu_stats, u8 user)
--{
--	struct ath12k_base *ab = ar->ab;
--	struct ath12k_peer *peer;
--	struct ath12k_link_sta *arsta;
--	struct htt_ppdu_stats_user_rate *user_rate;
--	struct ath12k_per_peer_tx_stats *peer_stats = &ar->peer_tx_stats;
--	struct htt_ppdu_user_stats *usr_stats = &ppdu_stats->user_stats[user];
--	struct htt_ppdu_stats_common *common = &ppdu_stats->common;
+-	struct htt_srng_setup_cmd *cmd;
+-	struct hal_srng *srng = &ab->hal.srng_list[ring_id];
+-	struct hal_srng_params params;
+-	struct sk_buff *skb;
+-	u32 ring_entry_sz;
+-	int len = sizeof(*cmd);
+-	dma_addr_t hp_addr, tp_addr;
+-	enum htt_srng_ring_type htt_ring_type;
+-	enum htt_srng_ring_id htt_ring_id;
 -	int ret;
--	u8 flags, mcs, nss, bw, sgi, dcm, ppdu_type, rate_idx = 0;
--	u32 v, succ_bytes = 0;
--	u16 tones, rate = 0, succ_pkts = 0;
--	u32 tx_duration = 0;
--	u8 tid = HTT_PPDU_STATS_NON_QOS_TID;
--	u16 tx_retry_failed = 0, tx_retry_count = 0;
--	bool is_ampdu = false, is_ofdma;
 -
--	if (!(usr_stats->tlv_flags & BIT(HTT_PPDU_STATS_TAG_USR_RATE)))
--		return;
+-	skb = ath12k_htc_alloc_skb(ab, len);
+-	if (!skb)
+-		return -ENOMEM;
 -
--	if (usr_stats->tlv_flags & BIT(HTT_PPDU_STATS_TAG_USR_COMPLTN_COMMON)) {
--		is_ampdu =
--			HTT_USR_CMPLTN_IS_AMPDU(usr_stats->cmpltn_cmn.flags);
--		tx_retry_failed =
--			__le16_to_cpu(usr_stats->cmpltn_cmn.mpdu_tried) -
--			__le16_to_cpu(usr_stats->cmpltn_cmn.mpdu_success);
--		tx_retry_count =
--			HTT_USR_CMPLTN_LONG_RETRY(usr_stats->cmpltn_cmn.flags) +
--			HTT_USR_CMPLTN_SHORT_RETRY(usr_stats->cmpltn_cmn.flags);
+-	memset(&params, 0, sizeof(params));
+-	ath12k_hal_srng_get_params(ab, srng, &params);
+-
+-	hp_addr = ath12k_hal_srng_get_hp_addr(ab, srng);
+-	tp_addr = ath12k_hal_srng_get_tp_addr(ab, srng);
+-
+-	ret = ath12k_dp_tx_get_ring_id_type(ab, mac_id, ring_id,
+-					    ring_type, &htt_ring_type,
+-					    &htt_ring_id);
+-	if (ret)
+-		goto err_free;
+-
+-	skb_put(skb, len);
+-	cmd = (struct htt_srng_setup_cmd *)skb->data;
+-	cmd->info0 = le32_encode_bits(HTT_H2T_MSG_TYPE_SRING_SETUP,
+-				      HTT_SRNG_SETUP_CMD_INFO0_MSG_TYPE);
+-	if (htt_ring_type == HTT_SW_TO_HW_RING ||
+-	    htt_ring_type == HTT_HW_TO_SW_RING)
+-		cmd->info0 |= le32_encode_bits(DP_SW2HW_MACID(mac_id),
+-					       HTT_SRNG_SETUP_CMD_INFO0_PDEV_ID);
+-	else
+-		cmd->info0 |= le32_encode_bits(mac_id,
+-					       HTT_SRNG_SETUP_CMD_INFO0_PDEV_ID);
+-	cmd->info0 |= le32_encode_bits(htt_ring_type,
+-				       HTT_SRNG_SETUP_CMD_INFO0_RING_TYPE);
+-	cmd->info0 |= le32_encode_bits(htt_ring_id,
+-				       HTT_SRNG_SETUP_CMD_INFO0_RING_ID);
+-
+-	cmd->ring_base_addr_lo = cpu_to_le32(params.ring_base_paddr &
+-					     HAL_ADDR_LSB_REG_MASK);
+-
+-	cmd->ring_base_addr_hi = cpu_to_le32((u64)params.ring_base_paddr >>
+-					     HAL_ADDR_MSB_REG_SHIFT);
+-
+-	ret = ath12k_hal_srng_get_entrysize(ab, ring_type);
+-	if (ret < 0)
+-		goto err_free;
+-
+-	ring_entry_sz = ret;
+-
+-	ring_entry_sz >>= 2;
+-	cmd->info1 = le32_encode_bits(ring_entry_sz,
+-				      HTT_SRNG_SETUP_CMD_INFO1_RING_ENTRY_SIZE);
+-	cmd->info1 |= le32_encode_bits(params.num_entries * ring_entry_sz,
+-				       HTT_SRNG_SETUP_CMD_INFO1_RING_SIZE);
+-	cmd->info1 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_MSI_SWAP),
+-				       HTT_SRNG_SETUP_CMD_INFO1_RING_FLAGS_MSI_SWAP);
+-	cmd->info1 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_DATA_TLV_SWAP),
+-				       HTT_SRNG_SETUP_CMD_INFO1_RING_FLAGS_TLV_SWAP);
+-	cmd->info1 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_RING_PTR_SWAP),
+-				       HTT_SRNG_SETUP_CMD_INFO1_RING_FLAGS_HOST_FW_SWAP);
+-	if (htt_ring_type == HTT_SW_TO_HW_RING)
+-		cmd->info1 |= cpu_to_le32(HTT_SRNG_SETUP_CMD_INFO1_RING_LOOP_CNT_DIS);
+-
+-	cmd->ring_head_off32_remote_addr_lo = cpu_to_le32(lower_32_bits(hp_addr));
+-	cmd->ring_head_off32_remote_addr_hi = cpu_to_le32(upper_32_bits(hp_addr));
+-
+-	cmd->ring_tail_off32_remote_addr_lo = cpu_to_le32(lower_32_bits(tp_addr));
+-	cmd->ring_tail_off32_remote_addr_hi = cpu_to_le32(upper_32_bits(tp_addr));
+-
+-	cmd->ring_msi_addr_lo = cpu_to_le32(lower_32_bits(params.msi_addr));
+-	cmd->ring_msi_addr_hi = cpu_to_le32(upper_32_bits(params.msi_addr));
+-	cmd->msi_data = cpu_to_le32(params.msi_data);
+-
+-	cmd->intr_info =
+-		le32_encode_bits(params.intr_batch_cntr_thres_entries * ring_entry_sz,
+-				 HTT_SRNG_SETUP_CMD_INTR_INFO_BATCH_COUNTER_THRESH);
+-	cmd->intr_info |=
+-		le32_encode_bits(params.intr_timer_thres_us >> 3,
+-				 HTT_SRNG_SETUP_CMD_INTR_INFO_INTR_TIMER_THRESH);
+-
+-	cmd->info2 = 0;
+-	if (params.flags & HAL_SRNG_FLAGS_LOW_THRESH_INTR_EN) {
+-		cmd->info2 = le32_encode_bits(params.low_threshold,
+-					      HTT_SRNG_SETUP_CMD_INFO2_INTR_LOW_THRESH);
 -	}
 -
--	if (usr_stats->tlv_flags &
--	    BIT(HTT_PPDU_STATS_TAG_USR_COMPLTN_ACK_BA_STATUS)) {
--		succ_bytes = le32_to_cpu(usr_stats->ack_ba.success_bytes);
--		succ_pkts = le32_get_bits(usr_stats->ack_ba.info,
--					  HTT_PPDU_STATS_ACK_BA_INFO_NUM_MSDU_M);
--		tid = le32_get_bits(usr_stats->ack_ba.info,
--				    HTT_PPDU_STATS_ACK_BA_INFO_TID_NUM);
--	}
+-	ath12k_dbg(ab, ATH12K_DBG_HAL,
+-		   "%s msi_addr_lo:0x%x, msi_addr_hi:0x%x, msi_data:0x%x\n",
+-		   __func__, cmd->ring_msi_addr_lo, cmd->ring_msi_addr_hi,
+-		   cmd->msi_data);
 -
--	if (common->fes_duration_us)
--		tx_duration = le32_to_cpu(common->fes_duration_us);
+-	ath12k_dbg(ab, ATH12K_DBG_HAL,
+-		   "ring_id:%d, ring_type:%d, intr_info:0x%x, flags:0x%x\n",
+-		   ring_id, ring_type, cmd->intr_info, cmd->info2);
 -
--	user_rate = &usr_stats->rate;
--	flags = HTT_USR_RATE_PREAMBLE(user_rate->rate_flags);
--	bw = HTT_USR_RATE_BW(user_rate->rate_flags) - 2;
--	nss = HTT_USR_RATE_NSS(user_rate->rate_flags) + 1;
--	mcs = HTT_USR_RATE_MCS(user_rate->rate_flags);
--	sgi = HTT_USR_RATE_GI(user_rate->rate_flags);
--	dcm = HTT_USR_RATE_DCM(user_rate->rate_flags);
+-	ret = ath12k_htc_send(&ab->htc, ab->dp.eid, skb);
+-	if (ret)
+-		goto err_free;
 -
--	ppdu_type = HTT_USR_RATE_PPDU_TYPE(user_rate->info1);
--	is_ofdma = (ppdu_type == HTT_PPDU_STATS_PPDU_TYPE_MU_OFDMA) ||
--		   (ppdu_type == HTT_PPDU_STATS_PPDU_TYPE_MU_MIMO_OFDMA);
+-	return 0;
 -
--	/* Note: If host configured fixed rates and in some other special
--	 * cases, the broadcast/management frames are sent in different rates.
--	 * Firmware rate's control to be skipped for this?
--	 */
--
--	if (flags == WMI_RATE_PREAMBLE_HE && mcs > ATH12K_HE_MCS_MAX) {
--		ath12k_warn(ab, "Invalid HE mcs %d peer stats",  mcs);
--		return;
--	}
--
--	if (flags == WMI_RATE_PREAMBLE_VHT && mcs > ATH12K_VHT_MCS_MAX) {
--		ath12k_warn(ab, "Invalid VHT mcs %d peer stats",  mcs);
--		return;
--	}
--
--	if (flags == WMI_RATE_PREAMBLE_HT && (mcs > ATH12K_HT_MCS_MAX || nss < 1)) {
--		ath12k_warn(ab, "Invalid HT mcs %d nss %d peer stats",
--			    mcs, nss);
--		return;
--	}
--
--	if (flags == WMI_RATE_PREAMBLE_CCK || flags == WMI_RATE_PREAMBLE_OFDM) {
--		ret = ath12k_mac_hw_ratecode_to_legacy_rate(mcs,
--							    flags,
--							    &rate_idx,
--							    &rate);
--		if (ret < 0)
--			return;
--	}
--
--	rcu_read_lock();
--	spin_lock_bh(&ab->base_lock);
--	peer = ath12k_peer_find_by_id(ab, usr_stats->peer_id);
--
--	if (!peer || !peer->sta) {
--		spin_unlock_bh(&ab->base_lock);
--		rcu_read_unlock();
--		return;
--	}
--
--	arsta = ath12k_peer_get_link_sta(ab, peer);
--	if (!arsta) {
--		spin_unlock_bh(&ab->base_lock);
--		rcu_read_unlock();
--		return;
--	}
--
--	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
--
--	arsta->txrate.bw = ath12k_mac_bw_to_mac80211_bw(bw);
--
--	switch (flags) {
--	case WMI_RATE_PREAMBLE_OFDM:
--		arsta->txrate.legacy = rate;
--		break;
--	case WMI_RATE_PREAMBLE_CCK:
--		arsta->txrate.legacy = rate;
--		break;
--	case WMI_RATE_PREAMBLE_HT:
--		arsta->txrate.mcs = mcs + 8 * (nss - 1);
--		arsta->txrate.flags = RATE_INFO_FLAGS_MCS;
--		if (sgi)
--			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
--		break;
--	case WMI_RATE_PREAMBLE_VHT:
--		arsta->txrate.mcs = mcs;
--		arsta->txrate.flags = RATE_INFO_FLAGS_VHT_MCS;
--		if (sgi)
--			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
--		break;
--	case WMI_RATE_PREAMBLE_HE:
--		arsta->txrate.mcs = mcs;
--		arsta->txrate.flags = RATE_INFO_FLAGS_HE_MCS;
--		arsta->txrate.he_dcm = dcm;
--		arsta->txrate.he_gi = ath12k_he_gi_to_nl80211_he_gi(sgi);
--		tones = le16_to_cpu(user_rate->ru_end) -
--			le16_to_cpu(user_rate->ru_start) + 1;
--		v = ath12k_he_ru_tones_to_nl80211_he_ru_alloc(tones);
--		arsta->txrate.he_ru_alloc = v;
--		if (is_ofdma)
--			arsta->txrate.bw = RATE_INFO_BW_HE_RU;
--		break;
--	case WMI_RATE_PREAMBLE_EHT:
--		arsta->txrate.mcs = mcs;
--		arsta->txrate.flags = RATE_INFO_FLAGS_EHT_MCS;
--		arsta->txrate.he_dcm = dcm;
--		arsta->txrate.eht_gi = ath12k_mac_eht_gi_to_nl80211_eht_gi(sgi);
--		tones = le16_to_cpu(user_rate->ru_end) -
--			le16_to_cpu(user_rate->ru_start) + 1;
--		v = ath12k_mac_eht_ru_tones_to_nl80211_eht_ru_alloc(tones);
--		arsta->txrate.eht_ru_alloc = v;
--		if (is_ofdma)
--			arsta->txrate.bw = RATE_INFO_BW_EHT_RU;
--		break;
--	}
--
--	arsta->tx_retry_failed += tx_retry_failed;
--	arsta->tx_retry_count += tx_retry_count;
--	arsta->txrate.nss = nss;
--	arsta->tx_duration += tx_duration;
--	memcpy(&arsta->last_txrate, &arsta->txrate, sizeof(struct rate_info));
--
--	/* PPDU stats reported for mgmt packet doesn't have valid tx bytes.
--	 * So skip peer stats update for mgmt packets.
--	 */
--	if (tid < HTT_PPDU_STATS_NON_QOS_TID) {
--		memset(peer_stats, 0, sizeof(*peer_stats));
--		peer_stats->succ_pkts = succ_pkts;
--		peer_stats->succ_bytes = succ_bytes;
--		peer_stats->is_ampdu = is_ampdu;
--		peer_stats->duration = tx_duration;
--		peer_stats->ba_fails =
--			HTT_USR_CMPLTN_LONG_RETRY(usr_stats->cmpltn_cmn.flags) +
--			HTT_USR_CMPLTN_SHORT_RETRY(usr_stats->cmpltn_cmn.flags);
--	}
--
--	spin_unlock_bh(&ab->base_lock);
--	rcu_read_unlock();
--}
--
--static void ath12k_htt_update_ppdu_stats(struct ath12k *ar,
--					 struct htt_ppdu_stats *ppdu_stats)
--{
--	u8 user;
--
--	for (user = 0; user < HTT_PPDU_STATS_MAX_USERS - 1; user++)
--		ath12k_update_per_peer_tx_stats(ar, ppdu_stats, user);
--}
--
--static
--struct htt_ppdu_stats_info *ath12k_dp_htt_get_ppdu_desc(struct ath12k *ar,
--							u32 ppdu_id)
--{
--	struct htt_ppdu_stats_info *ppdu_info;
--
--	lockdep_assert_held(&ar->data_lock);
--	if (!list_empty(&ar->ppdu_stats_info)) {
--		list_for_each_entry(ppdu_info, &ar->ppdu_stats_info, list) {
--			if (ppdu_info->ppdu_id == ppdu_id)
--				return ppdu_info;
--		}
--
--		if (ar->ppdu_stat_list_depth > HTT_PPDU_DESC_MAX_DEPTH) {
--			ppdu_info = list_first_entry(&ar->ppdu_stats_info,
--						     typeof(*ppdu_info), list);
--			list_del(&ppdu_info->list);
--			ar->ppdu_stat_list_depth--;
--			ath12k_htt_update_ppdu_stats(ar, &ppdu_info->ppdu_stats);
--			kfree(ppdu_info);
--		}
--	}
--
--	ppdu_info = kzalloc(sizeof(*ppdu_info), GFP_ATOMIC);
--	if (!ppdu_info)
--		return NULL;
--
--	list_add_tail(&ppdu_info->list, &ar->ppdu_stats_info);
--	ar->ppdu_stat_list_depth++;
--
--	return ppdu_info;
--}
--
--static void ath12k_copy_to_delay_stats(struct ath12k_peer *peer,
--				       struct htt_ppdu_user_stats *usr_stats)
--{
--	peer->ppdu_stats_delayba.sw_peer_id = le16_to_cpu(usr_stats->rate.sw_peer_id);
--	peer->ppdu_stats_delayba.info0 = le32_to_cpu(usr_stats->rate.info0);
--	peer->ppdu_stats_delayba.ru_end = le16_to_cpu(usr_stats->rate.ru_end);
--	peer->ppdu_stats_delayba.ru_start = le16_to_cpu(usr_stats->rate.ru_start);
--	peer->ppdu_stats_delayba.info1 = le32_to_cpu(usr_stats->rate.info1);
--	peer->ppdu_stats_delayba.rate_flags = le32_to_cpu(usr_stats->rate.rate_flags);
--	peer->ppdu_stats_delayba.resp_rate_flags =
--		le32_to_cpu(usr_stats->rate.resp_rate_flags);
--
--	peer->delayba_flag = true;
--}
--
--static void ath12k_copy_to_bar(struct ath12k_peer *peer,
--			       struct htt_ppdu_user_stats *usr_stats)
--{
--	usr_stats->rate.sw_peer_id = cpu_to_le16(peer->ppdu_stats_delayba.sw_peer_id);
--	usr_stats->rate.info0 = cpu_to_le32(peer->ppdu_stats_delayba.info0);
--	usr_stats->rate.ru_end = cpu_to_le16(peer->ppdu_stats_delayba.ru_end);
--	usr_stats->rate.ru_start = cpu_to_le16(peer->ppdu_stats_delayba.ru_start);
--	usr_stats->rate.info1 = cpu_to_le32(peer->ppdu_stats_delayba.info1);
--	usr_stats->rate.rate_flags = cpu_to_le32(peer->ppdu_stats_delayba.rate_flags);
--	usr_stats->rate.resp_rate_flags =
--		cpu_to_le32(peer->ppdu_stats_delayba.resp_rate_flags);
--
--	peer->delayba_flag = false;
--}
--
--static int ath12k_htt_pull_ppdu_stats(struct ath12k_base *ab,
--				      struct sk_buff *skb)
--{
--	struct ath12k_htt_ppdu_stats_msg *msg;
--	struct htt_ppdu_stats_info *ppdu_info;
--	struct ath12k_peer *peer = NULL;
--	struct htt_ppdu_user_stats *usr_stats = NULL;
--	u32 peer_id = 0;
--	struct ath12k *ar;
--	int ret, i;
--	u8 pdev_id;
--	u32 ppdu_id, len;
--
--	msg = (struct ath12k_htt_ppdu_stats_msg *)skb->data;
--	len = le32_get_bits(msg->info, HTT_T2H_PPDU_STATS_INFO_PAYLOAD_SIZE);
--	if (len > (skb->len - struct_size(msg, data, 0))) {
--		ath12k_warn(ab,
--			    "HTT PPDU STATS event has unexpected payload size %u, should be smaller than %u\n",
--			    len, skb->len);
--		return -EINVAL;
--	}
--
--	pdev_id = le32_get_bits(msg->info, HTT_T2H_PPDU_STATS_INFO_PDEV_ID);
--	ppdu_id = le32_to_cpu(msg->ppdu_id);
--
--	rcu_read_lock();
--	ar = ath12k_mac_get_ar_by_pdev_id(ab, pdev_id);
--	if (!ar) {
--		ret = -EINVAL;
--		goto exit;
--	}
--
--	spin_lock_bh(&ar->data_lock);
--	ppdu_info = ath12k_dp_htt_get_ppdu_desc(ar, ppdu_id);
--	if (!ppdu_info) {
--		spin_unlock_bh(&ar->data_lock);
--		ret = -EINVAL;
--		goto exit;
--	}
--
--	ppdu_info->ppdu_id = ppdu_id;
--	ret = ath12k_dp_htt_tlv_iter(ab, msg->data, len,
--				     ath12k_htt_tlv_ppdu_stats_parse,
--				     (void *)ppdu_info);
--	if (ret) {
--		spin_unlock_bh(&ar->data_lock);
--		ath12k_warn(ab, "Failed to parse tlv %d\n", ret);
--		goto exit;
--	}
--
--	if (ppdu_info->ppdu_stats.common.num_users >= HTT_PPDU_STATS_MAX_USERS) {
--		spin_unlock_bh(&ar->data_lock);
--		ath12k_warn(ab,
--			    "HTT PPDU STATS event has unexpected num_users %u, should be smaller than %u\n",
--			    ppdu_info->ppdu_stats.common.num_users,
--			    HTT_PPDU_STATS_MAX_USERS);
--		ret = -EINVAL;
--		goto exit;
--	}
--
--	/* back up data rate tlv for all peers */
--	if (ppdu_info->frame_type == HTT_STATS_PPDU_FTYPE_DATA &&
--	    (ppdu_info->tlv_bitmap & (1 << HTT_PPDU_STATS_TAG_USR_COMMON)) &&
--	    ppdu_info->delay_ba) {
--		for (i = 0; i < ppdu_info->ppdu_stats.common.num_users; i++) {
--			peer_id = ppdu_info->ppdu_stats.user_stats[i].peer_id;
--			spin_lock_bh(&ab->base_lock);
--			peer = ath12k_peer_find_by_id(ab, peer_id);
--			if (!peer) {
--				spin_unlock_bh(&ab->base_lock);
--				continue;
--			}
--
--			usr_stats = &ppdu_info->ppdu_stats.user_stats[i];
--			if (usr_stats->delay_ba)
--				ath12k_copy_to_delay_stats(peer, usr_stats);
--			spin_unlock_bh(&ab->base_lock);
--		}
--	}
--
--	/* restore all peers' data rate tlv to mu-bar tlv */
--	if (ppdu_info->frame_type == HTT_STATS_PPDU_FTYPE_BAR &&
--	    (ppdu_info->tlv_bitmap & (1 << HTT_PPDU_STATS_TAG_USR_COMMON))) {
--		for (i = 0; i < ppdu_info->bar_num_users; i++) {
--			peer_id = ppdu_info->ppdu_stats.user_stats[i].peer_id;
--			spin_lock_bh(&ab->base_lock);
--			peer = ath12k_peer_find_by_id(ab, peer_id);
--			if (!peer) {
--				spin_unlock_bh(&ab->base_lock);
--				continue;
--			}
--
--			usr_stats = &ppdu_info->ppdu_stats.user_stats[i];
--			if (peer->delayba_flag)
--				ath12k_copy_to_bar(peer, usr_stats);
--			spin_unlock_bh(&ab->base_lock);
--		}
--	}
--
--	spin_unlock_bh(&ar->data_lock);
--
--exit:
--	rcu_read_unlock();
+-err_free:
+-	dev_kfree_skb_any(skb);
 -
 -	return ret;
 -}
 -
--static void ath12k_htt_mlo_offset_event_handler(struct ath12k_base *ab,
--						struct sk_buff *skb)
--{
--	struct ath12k_htt_mlo_offset_msg *msg;
--	struct ath12k_pdev *pdev;
--	struct ath12k *ar;
--	u8 pdev_id;
+-#define HTT_TARGET_VERSION_TIMEOUT_HZ (3 * HZ)
 -
--	msg = (struct ath12k_htt_mlo_offset_msg *)skb->data;
--	pdev_id = u32_get_bits(__le32_to_cpu(msg->info),
--			       HTT_T2H_MLO_OFFSET_INFO_PDEV_ID);
--
--	rcu_read_lock();
--	ar = ath12k_mac_get_ar_by_pdev_id(ab, pdev_id);
--	if (!ar) {
--		/* It is possible that the ar is not yet active (started).
--		 * The above function will only look for the active pdev
--		 * and hence %NULL return is possible. Just silently
--		 * discard this message
--		 */
--		goto exit;
--	}
--
--	spin_lock_bh(&ar->data_lock);
--	pdev = ar->pdev;
--
--	pdev->timestamp.info = __le32_to_cpu(msg->info);
--	pdev->timestamp.sync_timestamp_lo_us = __le32_to_cpu(msg->sync_timestamp_lo_us);
--	pdev->timestamp.sync_timestamp_hi_us = __le32_to_cpu(msg->sync_timestamp_hi_us);
--	pdev->timestamp.mlo_offset_lo = __le32_to_cpu(msg->mlo_offset_lo);
--	pdev->timestamp.mlo_offset_hi = __le32_to_cpu(msg->mlo_offset_hi);
--	pdev->timestamp.mlo_offset_clks = __le32_to_cpu(msg->mlo_offset_clks);
--	pdev->timestamp.mlo_comp_clks = __le32_to_cpu(msg->mlo_comp_clks);
--	pdev->timestamp.mlo_comp_timer = __le32_to_cpu(msg->mlo_comp_timer);
--
--	spin_unlock_bh(&ar->data_lock);
--exit:
--	rcu_read_unlock();
--}
--
--void ath12k_dp_htt_htc_t2h_msg_handler(struct ath12k_base *ab,
--				       struct sk_buff *skb)
+-int ath12k_dp_tx_htt_h2t_ver_req_msg(struct ath12k_base *ab)
 -{
 -	struct ath12k_dp *dp = &ab->dp;
--	struct htt_resp_msg *resp = (struct htt_resp_msg *)skb->data;
--	enum htt_t2h_msg_type type;
--	u16 peer_id;
--	u8 vdev_id;
--	u8 mac_addr[ETH_ALEN];
--	u16 peer_mac_h16;
--	u16 ast_hash = 0;
--	u16 hw_peer_id;
+-	struct sk_buff *skb;
+-	struct htt_ver_req_cmd *cmd;
+-	int len = sizeof(*cmd);
+-	u32 metadata_version;
+-	int ret;
 -
--	type = le32_get_bits(resp->version_msg.version, HTT_T2H_MSG_TYPE);
+-	init_completion(&dp->htt_tgt_version_received);
 -
--	ath12k_dbg(ab, ATH12K_DBG_DP_HTT, "dp_htt rx msg type :0x%0x\n", type);
+-	skb = ath12k_htc_alloc_skb(ab, len);
+-	if (!skb)
+-		return -ENOMEM;
 -
--	switch (type) {
--	case HTT_T2H_MSG_TYPE_VERSION_CONF:
--		dp->htt_tgt_ver_major = le32_get_bits(resp->version_msg.version,
--						      HTT_T2H_VERSION_CONF_MAJOR);
--		dp->htt_tgt_ver_minor = le32_get_bits(resp->version_msg.version,
--						      HTT_T2H_VERSION_CONF_MINOR);
--		complete(&dp->htt_tgt_version_received);
--		break;
--	/* TODO: remove unused peer map versions after testing */
--	case HTT_T2H_MSG_TYPE_PEER_MAP:
--		vdev_id = le32_get_bits(resp->peer_map_ev.info,
--					HTT_T2H_PEER_MAP_INFO_VDEV_ID);
--		peer_id = le32_get_bits(resp->peer_map_ev.info,
--					HTT_T2H_PEER_MAP_INFO_PEER_ID);
--		peer_mac_h16 = le32_get_bits(resp->peer_map_ev.info1,
--					     HTT_T2H_PEER_MAP_INFO1_MAC_ADDR_H16);
--		ath12k_dp_get_mac_addr(le32_to_cpu(resp->peer_map_ev.mac_addr_l32),
--				       peer_mac_h16, mac_addr);
--		ath12k_peer_map_event(ab, vdev_id, peer_id, mac_addr, 0, 0);
--		break;
--	case HTT_T2H_MSG_TYPE_PEER_MAP2:
--		vdev_id = le32_get_bits(resp->peer_map_ev.info,
--					HTT_T2H_PEER_MAP_INFO_VDEV_ID);
--		peer_id = le32_get_bits(resp->peer_map_ev.info,
--					HTT_T2H_PEER_MAP_INFO_PEER_ID);
--		peer_mac_h16 = le32_get_bits(resp->peer_map_ev.info1,
--					     HTT_T2H_PEER_MAP_INFO1_MAC_ADDR_H16);
--		ath12k_dp_get_mac_addr(le32_to_cpu(resp->peer_map_ev.mac_addr_l32),
--				       peer_mac_h16, mac_addr);
--		ast_hash = le32_get_bits(resp->peer_map_ev.info2,
--					 HTT_T2H_PEER_MAP_INFO2_AST_HASH_VAL);
--		hw_peer_id = le32_get_bits(resp->peer_map_ev.info1,
--					   HTT_T2H_PEER_MAP_INFO1_HW_PEER_ID);
--		ath12k_peer_map_event(ab, vdev_id, peer_id, mac_addr, ast_hash,
--				      hw_peer_id);
--		break;
--	case HTT_T2H_MSG_TYPE_PEER_MAP3:
--		vdev_id = le32_get_bits(resp->peer_map_ev.info,
--					HTT_T2H_PEER_MAP_INFO_VDEV_ID);
--		peer_id = le32_get_bits(resp->peer_map_ev.info,
--					HTT_T2H_PEER_MAP_INFO_PEER_ID);
--		peer_mac_h16 = le32_get_bits(resp->peer_map_ev.info1,
--					     HTT_T2H_PEER_MAP_INFO1_MAC_ADDR_H16);
--		ath12k_dp_get_mac_addr(le32_to_cpu(resp->peer_map_ev.mac_addr_l32),
--				       peer_mac_h16, mac_addr);
--		ast_hash = le32_get_bits(resp->peer_map_ev.info2,
--					 HTT_T2H_PEER_MAP3_INFO2_AST_HASH_VAL);
--		hw_peer_id = le32_get_bits(resp->peer_map_ev.info2,
--					   HTT_T2H_PEER_MAP3_INFO2_HW_PEER_ID);
--		ath12k_peer_map_event(ab, vdev_id, peer_id, mac_addr, ast_hash,
--				      hw_peer_id);
--		break;
--	case HTT_T2H_MSG_TYPE_PEER_UNMAP:
--	case HTT_T2H_MSG_TYPE_PEER_UNMAP2:
--		peer_id = le32_get_bits(resp->peer_unmap_ev.info,
--					HTT_T2H_PEER_UNMAP_INFO_PEER_ID);
--		ath12k_peer_unmap_event(ab, peer_id);
--		break;
--	case HTT_T2H_MSG_TYPE_PPDU_STATS_IND:
--		ath12k_htt_pull_ppdu_stats(ab, skb);
--		break;
--	case HTT_T2H_MSG_TYPE_EXT_STATS_CONF:
--		ath12k_debugfs_htt_ext_stats_handler(ab, skb);
--		break;
--	case HTT_T2H_MSG_TYPE_MLO_TIMESTAMP_OFFSET_IND:
--		ath12k_htt_mlo_offset_event_handler(ab, skb);
--		break;
--	default:
--		ath12k_dbg(ab, ATH12K_DBG_DP_HTT, "dp_htt event %d not handled\n",
--			   type);
--		break;
+-	skb_put(skb, len);
+-	cmd = (struct htt_ver_req_cmd *)skb->data;
+-	cmd->ver_reg_info = le32_encode_bits(HTT_H2T_MSG_TYPE_VERSION_REQ,
+-					     HTT_OPTION_TAG);
+-	metadata_version = ath12k_ftm_mode ? HTT_OPTION_TCL_METADATA_VER_V1 :
+-			   HTT_OPTION_TCL_METADATA_VER_V2;
+-
+-	cmd->tcl_metadata_version = le32_encode_bits(HTT_TAG_TCL_METADATA_VERSION,
+-						     HTT_OPTION_TAG) |
+-				    le32_encode_bits(HTT_TCL_METADATA_VER_SZ,
+-						     HTT_OPTION_LEN) |
+-				    le32_encode_bits(metadata_version,
+-						     HTT_OPTION_VALUE);
+-
+-	ret = ath12k_htc_send(&ab->htc, dp->eid, skb);
+-	if (ret) {
+-		dev_kfree_skb_any(skb);
+-		return ret;
 -	}
 -
--	dev_kfree_skb_any(skb);
--}
--EXPORT_SYMBOL(ath12k_dp_htt_htc_t2h_msg_handler);
+-	ret = wait_for_completion_timeout(&dp->htt_tgt_version_received,
+-					  HTT_TARGET_VERSION_TIMEOUT_HZ);
+-	if (ret == 0) {
+-		ath12k_warn(ab, "htt target version request timed out\n");
+-		return -ETIMEDOUT;
+-	}
 -
- struct sk_buff *ath12k_dp_rx_get_msdu_last_buf(struct sk_buff_head *msdu_list,
- 					       struct sk_buff *first)
- {
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.h b/drivers/net/wireless/ath/ath12k/dp_rx.h
-index 7bf70cef4365..6f56a56db097 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.h
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.h
-@@ -384,8 +384,6 @@ void ath12k_dp_rx_peer_tid_delete(struct ath12k *ar,
- int ath12k_dp_rx_peer_tid_setup(struct ath12k *ar, const u8 *peer_mac, int vdev_id,
- 				u8 tid, u32 ba_win_sz, u16 ssn,
- 				enum hal_pn_type pn_type);
--void ath12k_dp_htt_htc_t2h_msg_handler(struct ath12k_base *ab,
--				       struct sk_buff *skb);
- int ath12k_dp_rx_pdev_reo_setup(struct ath12k_base *ab);
- void ath12k_dp_rx_pdev_reo_cleanup(struct ath12k_base *ab);
- int ath12k_dp_rx_htt_setup(struct ath12k_base *ab);
-@@ -410,10 +408,6 @@ u8 ath12k_dp_rx_h_decap_type(struct ath12k_base *ab,
- 			     struct hal_rx_desc *desc);
- u32 ath12k_dp_rx_h_mpdu_err(struct ath12k_base *ab,
- 			    struct hal_rx_desc *desc);
--int ath12k_dp_htt_tlv_iter(struct ath12k_base *ab, const void *ptr, size_t len,
--			   int (*iter)(struct ath12k_base *ar, u16 tag, u16 len,
--				       const void *ptr, void *data),
--			   void *data);
- void ath12k_dp_rx_h_fetch_info(struct ath12k_base *ab,  struct hal_rx_desc *rx_desc,
- 			       struct ath12k_dp_rx_info *rx_info);
+-	if (dp->htt_tgt_ver_major != HTT_TARGET_VERSION_MAJOR) {
+-		ath12k_err(ab, "unsupported htt major version %d supported version is %d\n",
+-			   dp->htt_tgt_ver_major, HTT_TARGET_VERSION_MAJOR);
+-		return -EOPNOTSUPP;
+-	}
+-
+-	return 0;
+-}
+-
+-int ath12k_dp_tx_htt_h2t_ppdu_stats_req(struct ath12k *ar, u32 mask)
+-{
+-	struct ath12k_base *ab = ar->ab;
+-	struct ath12k_dp *dp = &ab->dp;
+-	struct sk_buff *skb;
+-	struct htt_ppdu_stats_cfg_cmd *cmd;
+-	int len = sizeof(*cmd);
+-	u8 pdev_mask;
+-	int ret;
+-	int i;
+-
+-	for (i = 0; i < ab->hw_params->num_rxdma_per_pdev; i++) {
+-		skb = ath12k_htc_alloc_skb(ab, len);
+-		if (!skb)
+-			return -ENOMEM;
+-
+-		skb_put(skb, len);
+-		cmd = (struct htt_ppdu_stats_cfg_cmd *)skb->data;
+-		cmd->msg = le32_encode_bits(HTT_H2T_MSG_TYPE_PPDU_STATS_CFG,
+-					    HTT_PPDU_STATS_CFG_MSG_TYPE);
+-
+-		pdev_mask = 1 << (i + ar->pdev_idx);
+-		cmd->msg |= le32_encode_bits(pdev_mask, HTT_PPDU_STATS_CFG_PDEV_ID);
+-		cmd->msg |= le32_encode_bits(mask, HTT_PPDU_STATS_CFG_TLV_TYPE_BITMASK);
+-
+-		ret = ath12k_htc_send(&ab->htc, dp->eid, skb);
+-		if (ret) {
+-			dev_kfree_skb_any(skb);
+-			return ret;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-int ath12k_dp_tx_htt_rx_filter_setup(struct ath12k_base *ab, u32 ring_id,
+-				     int mac_id, enum hal_ring_type ring_type,
+-				     int rx_buf_size,
+-				     struct htt_rx_ring_tlv_filter *tlv_filter)
+-{
+-	struct htt_rx_ring_selection_cfg_cmd *cmd;
+-	struct hal_srng *srng = &ab->hal.srng_list[ring_id];
+-	struct hal_srng_params params;
+-	struct sk_buff *skb;
+-	int len = sizeof(*cmd);
+-	enum htt_srng_ring_type htt_ring_type;
+-	enum htt_srng_ring_id htt_ring_id;
+-	int ret;
+-
+-	skb = ath12k_htc_alloc_skb(ab, len);
+-	if (!skb)
+-		return -ENOMEM;
+-
+-	memset(&params, 0, sizeof(params));
+-	ath12k_hal_srng_get_params(ab, srng, &params);
+-
+-	ret = ath12k_dp_tx_get_ring_id_type(ab, mac_id, ring_id,
+-					    ring_type, &htt_ring_type,
+-					    &htt_ring_id);
+-	if (ret)
+-		goto err_free;
+-
+-	skb_put(skb, len);
+-	cmd = (struct htt_rx_ring_selection_cfg_cmd *)skb->data;
+-	cmd->info0 = le32_encode_bits(HTT_H2T_MSG_TYPE_RX_RING_SELECTION_CFG,
+-				      HTT_RX_RING_SELECTION_CFG_CMD_INFO0_MSG_TYPE);
+-	if (htt_ring_type == HTT_SW_TO_HW_RING ||
+-	    htt_ring_type == HTT_HW_TO_SW_RING)
+-		cmd->info0 |=
+-			le32_encode_bits(DP_SW2HW_MACID(mac_id),
+-					 HTT_RX_RING_SELECTION_CFG_CMD_INFO0_PDEV_ID);
+-	else
+-		cmd->info0 |=
+-			le32_encode_bits(mac_id,
+-					 HTT_RX_RING_SELECTION_CFG_CMD_INFO0_PDEV_ID);
+-	cmd->info0 |= le32_encode_bits(htt_ring_id,
+-				       HTT_RX_RING_SELECTION_CFG_CMD_INFO0_RING_ID);
+-	cmd->info0 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_MSI_SWAP),
+-				       HTT_RX_RING_SELECTION_CFG_CMD_INFO0_SS);
+-	cmd->info0 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_DATA_TLV_SWAP),
+-				       HTT_RX_RING_SELECTION_CFG_CMD_INFO0_PS);
+-	cmd->info0 |= le32_encode_bits(tlv_filter->offset_valid,
+-				       HTT_RX_RING_SELECTION_CFG_CMD_INFO0_OFFSET_VALID);
+-	cmd->info0 |=
+-		le32_encode_bits(tlv_filter->drop_threshold_valid,
+-				 HTT_RX_RING_SELECTION_CFG_CMD_INFO0_DROP_THRES_VAL);
+-	cmd->info0 |= le32_encode_bits(!tlv_filter->rxmon_disable,
+-				       HTT_RX_RING_SELECTION_CFG_CMD_INFO0_EN_RXMON);
+-
+-	cmd->info1 = le32_encode_bits(rx_buf_size,
+-				      HTT_RX_RING_SELECTION_CFG_CMD_INFO1_BUF_SIZE);
+-	cmd->info1 |= le32_encode_bits(tlv_filter->conf_len_mgmt,
+-				       HTT_RX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_MGMT);
+-	cmd->info1 |= le32_encode_bits(tlv_filter->conf_len_ctrl,
+-				       HTT_RX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_CTRL);
+-	cmd->info1 |= le32_encode_bits(tlv_filter->conf_len_data,
+-				       HTT_RX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_DATA);
+-	cmd->pkt_type_en_flags0 = cpu_to_le32(tlv_filter->pkt_filter_flags0);
+-	cmd->pkt_type_en_flags1 = cpu_to_le32(tlv_filter->pkt_filter_flags1);
+-	cmd->pkt_type_en_flags2 = cpu_to_le32(tlv_filter->pkt_filter_flags2);
+-	cmd->pkt_type_en_flags3 = cpu_to_le32(tlv_filter->pkt_filter_flags3);
+-	cmd->rx_filter_tlv = cpu_to_le32(tlv_filter->rx_filter);
+-
+-	cmd->info2 = le32_encode_bits(tlv_filter->rx_drop_threshold,
+-				      HTT_RX_RING_SELECTION_CFG_CMD_INFO2_DROP_THRESHOLD);
+-	cmd->info2 |=
+-		le32_encode_bits(tlv_filter->enable_log_mgmt_type,
+-				 HTT_RX_RING_SELECTION_CFG_CMD_INFO2_EN_LOG_MGMT_TYPE);
+-	cmd->info2 |=
+-		le32_encode_bits(tlv_filter->enable_log_ctrl_type,
+-				 HTT_RX_RING_SELECTION_CFG_CMD_INFO2_EN_CTRL_TYPE);
+-	cmd->info2 |=
+-		le32_encode_bits(tlv_filter->enable_log_data_type,
+-				 HTT_RX_RING_SELECTION_CFG_CMD_INFO2_EN_LOG_DATA_TYPE);
+-
+-	cmd->info3 =
+-		le32_encode_bits(tlv_filter->enable_rx_tlv_offset,
+-				 HTT_RX_RING_SELECTION_CFG_CMD_INFO3_EN_TLV_PKT_OFFSET);
+-	cmd->info3 |=
+-		le32_encode_bits(tlv_filter->rx_tlv_offset,
+-				 HTT_RX_RING_SELECTION_CFG_CMD_INFO3_PKT_TLV_OFFSET);
+-
+-	if (tlv_filter->offset_valid) {
+-		cmd->rx_packet_offset =
+-			le32_encode_bits(tlv_filter->rx_packet_offset,
+-					 HTT_RX_RING_SELECTION_CFG_RX_PACKET_OFFSET);
+-
+-		cmd->rx_packet_offset |=
+-			le32_encode_bits(tlv_filter->rx_header_offset,
+-					 HTT_RX_RING_SELECTION_CFG_RX_HEADER_OFFSET);
+-
+-		cmd->rx_mpdu_offset =
+-			le32_encode_bits(tlv_filter->rx_mpdu_end_offset,
+-					 HTT_RX_RING_SELECTION_CFG_RX_MPDU_END_OFFSET);
+-
+-		cmd->rx_mpdu_offset |=
+-			le32_encode_bits(tlv_filter->rx_mpdu_start_offset,
+-					 HTT_RX_RING_SELECTION_CFG_RX_MPDU_START_OFFSET);
+-
+-		cmd->rx_msdu_offset =
+-			le32_encode_bits(tlv_filter->rx_msdu_end_offset,
+-					 HTT_RX_RING_SELECTION_CFG_RX_MSDU_END_OFFSET);
+-
+-		cmd->rx_msdu_offset |=
+-			le32_encode_bits(tlv_filter->rx_msdu_start_offset,
+-					 HTT_RX_RING_SELECTION_CFG_RX_MSDU_START_OFFSET);
+-
+-		cmd->rx_attn_offset =
+-			le32_encode_bits(tlv_filter->rx_attn_offset,
+-					 HTT_RX_RING_SELECTION_CFG_RX_ATTENTION_OFFSET);
+-	}
+-
+-	if (tlv_filter->rx_mpdu_start_wmask > 0 &&
+-	    tlv_filter->rx_msdu_end_wmask > 0) {
+-		cmd->info2 |=
+-			le32_encode_bits(true,
+-					 HTT_RX_RING_SELECTION_CFG_WORD_MASK_COMPACT_SET);
+-		cmd->rx_mpdu_start_end_mask =
+-			le32_encode_bits(tlv_filter->rx_mpdu_start_wmask,
+-					 HTT_RX_RING_SELECTION_CFG_RX_MPDU_START_MASK);
+-		/* mpdu_end is not used for any hardwares so far
+-		 * please assign it in future if any chip is
+-		 * using through hal ops
+-		 */
+-		cmd->rx_mpdu_start_end_mask |=
+-			le32_encode_bits(tlv_filter->rx_mpdu_end_wmask,
+-					 HTT_RX_RING_SELECTION_CFG_RX_MPDU_END_MASK);
+-		cmd->rx_msdu_end_word_mask =
+-			le32_encode_bits(tlv_filter->rx_msdu_end_wmask,
+-					 HTT_RX_RING_SELECTION_CFG_RX_MSDU_END_MASK);
+-	}
+-
+-	ret = ath12k_htc_send(&ab->htc, ab->dp.eid, skb);
+-	if (ret)
+-		goto err_free;
+-
+-	return 0;
+-
+-err_free:
+-	dev_kfree_skb_any(skb);
+-
+-	return ret;
+-}
+-
+-int
+-ath12k_dp_tx_htt_h2t_ext_stats_req(struct ath12k *ar, u8 type,
+-				   struct htt_ext_stats_cfg_params *cfg_params,
+-				   u64 cookie)
+-{
+-	struct ath12k_base *ab = ar->ab;
+-	struct ath12k_dp *dp = &ab->dp;
+-	struct sk_buff *skb;
+-	struct htt_ext_stats_cfg_cmd *cmd;
+-	int len = sizeof(*cmd);
+-	int ret;
+-	u32 pdev_id;
+-
+-	skb = ath12k_htc_alloc_skb(ab, len);
+-	if (!skb)
+-		return -ENOMEM;
+-
+-	skb_put(skb, len);
+-
+-	cmd = (struct htt_ext_stats_cfg_cmd *)skb->data;
+-	memset(cmd, 0, sizeof(*cmd));
+-	cmd->hdr.msg_type = HTT_H2T_MSG_TYPE_EXT_STATS_CFG;
+-
+-	pdev_id = ath12k_mac_get_target_pdev_id(ar);
+-	cmd->hdr.pdev_mask = 1 << pdev_id;
+-
+-	cmd->hdr.stats_type = type;
+-	cmd->cfg_param0 = cpu_to_le32(cfg_params->cfg0);
+-	cmd->cfg_param1 = cpu_to_le32(cfg_params->cfg1);
+-	cmd->cfg_param2 = cpu_to_le32(cfg_params->cfg2);
+-	cmd->cfg_param3 = cpu_to_le32(cfg_params->cfg3);
+-	cmd->cookie_lsb = cpu_to_le32(lower_32_bits(cookie));
+-	cmd->cookie_msb = cpu_to_le32(upper_32_bits(cookie));
+-
+-	ret = ath12k_htc_send(&ab->htc, dp->eid, skb);
+-	if (ret) {
+-		ath12k_warn(ab, "failed to send htt type stats request: %d",
+-			    ret);
+-		dev_kfree_skb_any(skb);
+-		return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-int ath12k_dp_tx_htt_monitor_mode_ring_config(struct ath12k *ar, bool reset)
+-{
+-	struct ath12k_base *ab = ar->ab;
+-	int ret;
+-
+-	ret = ath12k_dp_tx_htt_rx_monitor_mode_ring_config(ar, reset);
+-	if (ret) {
+-		ath12k_err(ab, "failed to setup rx monitor filter %d\n", ret);
+-		return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-int ath12k_dp_tx_htt_rx_monitor_mode_ring_config(struct ath12k *ar, bool reset)
+-{
+-	struct ath12k_base *ab = ar->ab;
+-	struct htt_rx_ring_tlv_filter tlv_filter = {};
+-	int ret, ring_id, i;
+-
+-	tlv_filter.offset_valid = false;
+-
+-	if (!reset) {
+-		tlv_filter.rx_filter = HTT_RX_MON_FILTER_TLV_FLAGS_MON_DEST_RING;
+-
+-		tlv_filter.drop_threshold_valid = true;
+-		tlv_filter.rx_drop_threshold = HTT_RX_RING_TLV_DROP_THRESHOLD_VALUE;
+-
+-		tlv_filter.enable_log_mgmt_type = true;
+-		tlv_filter.enable_log_ctrl_type = true;
+-		tlv_filter.enable_log_data_type = true;
+-
+-		tlv_filter.conf_len_ctrl = HTT_RX_RING_DEFAULT_DMA_LENGTH;
+-		tlv_filter.conf_len_mgmt = HTT_RX_RING_DEFAULT_DMA_LENGTH;
+-		tlv_filter.conf_len_data = HTT_RX_RING_DEFAULT_DMA_LENGTH;
+-
+-		tlv_filter.enable_rx_tlv_offset = true;
+-		tlv_filter.rx_tlv_offset = HTT_RX_RING_PKT_TLV_OFFSET;
+-
+-		tlv_filter.pkt_filter_flags0 =
+-					HTT_RX_MON_FP_MGMT_FILTER_FLAGS0 |
+-					HTT_RX_MON_MO_MGMT_FILTER_FLAGS0;
+-		tlv_filter.pkt_filter_flags1 =
+-					HTT_RX_MON_FP_MGMT_FILTER_FLAGS1 |
+-					HTT_RX_MON_MO_MGMT_FILTER_FLAGS1;
+-		tlv_filter.pkt_filter_flags2 =
+-					HTT_RX_MON_FP_CTRL_FILTER_FLASG2 |
+-					HTT_RX_MON_MO_CTRL_FILTER_FLASG2;
+-		tlv_filter.pkt_filter_flags3 =
+-					HTT_RX_MON_FP_CTRL_FILTER_FLASG3 |
+-					HTT_RX_MON_MO_CTRL_FILTER_FLASG3 |
+-					HTT_RX_MON_FP_DATA_FILTER_FLASG3 |
+-					HTT_RX_MON_MO_DATA_FILTER_FLASG3;
+-	} else {
+-		tlv_filter = ath12k_mac_mon_status_filter_default;
+-
+-		if (ath12k_debugfs_is_extd_rx_stats_enabled(ar))
+-			tlv_filter.rx_filter = ath12k_debugfs_rx_filter(ar);
+-	}
+-
+-	if (ab->hw_params->rxdma1_enable) {
+-		for (i = 0; i < ab->hw_params->num_rxdma_per_pdev; i++) {
+-			ring_id = ar->dp.rxdma_mon_dst_ring[i].ring_id;
+-			ret = ath12k_dp_tx_htt_rx_filter_setup(ar->ab, ring_id,
+-							       ar->dp.mac_id + i,
+-							       HAL_RXDMA_MONITOR_DST,
+-							       DP_RXDMA_REFILL_RING_SIZE,
+-							       &tlv_filter);
+-			if (ret) {
+-				ath12k_err(ab,
+-					   "failed to setup filter for monitor buf %d\n",
+-					   ret);
+-				return ret;
+-			}
+-		}
+-		return 0;
+-	}
+-
+-	if (!reset) {
+-		for (i = 0; i < ab->hw_params->num_rxdma_per_pdev; i++) {
+-			ring_id = ab->dp.rx_mac_buf_ring[i].ring_id;
+-			ret = ath12k_dp_tx_htt_rx_filter_setup(ar->ab, ring_id,
+-							       i,
+-							       HAL_RXDMA_BUF,
+-							       DP_RXDMA_REFILL_RING_SIZE,
+-							       &tlv_filter);
+-			if (ret) {
+-				ath12k_err(ab,
+-					   "failed to setup filter for mon rx buf %d\n",
+-					   ret);
+-				return ret;
+-			}
+-		}
+-	}
+-
+-	for (i = 0; i < ab->hw_params->num_rxdma_per_pdev; i++) {
+-		ring_id = ab->dp.rx_mon_status_refill_ring[i].refill_buf_ring.ring_id;
+-		if (!reset) {
+-			tlv_filter.rx_filter =
+-				HTT_RX_MON_FILTER_TLV_FLAGS_MON_STATUS_RING;
+-		}
+-
+-		ret = ath12k_dp_tx_htt_rx_filter_setup(ab, ring_id,
+-						       i,
+-						       HAL_RXDMA_MONITOR_STATUS,
+-						       RX_MON_STATUS_BUF_SIZE,
+-						       &tlv_filter);
+-		if (ret) {
+-			ath12k_err(ab,
+-				   "failed to setup filter for mon status buf %d\n",
+-				   ret);
+-			return ret;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-int ath12k_dp_tx_htt_tx_filter_setup(struct ath12k_base *ab, u32 ring_id,
+-				     int mac_id, enum hal_ring_type ring_type,
+-				     int tx_buf_size,
+-				     struct htt_tx_ring_tlv_filter *htt_tlv_filter)
+-{
+-	struct htt_tx_ring_selection_cfg_cmd *cmd;
+-	struct hal_srng *srng = &ab->hal.srng_list[ring_id];
+-	struct hal_srng_params params;
+-	struct sk_buff *skb;
+-	int len = sizeof(*cmd);
+-	enum htt_srng_ring_type htt_ring_type;
+-	enum htt_srng_ring_id htt_ring_id;
+-	int ret;
+-
+-	skb = ath12k_htc_alloc_skb(ab, len);
+-	if (!skb)
+-		return -ENOMEM;
+-
+-	memset(&params, 0, sizeof(params));
+-	ath12k_hal_srng_get_params(ab, srng, &params);
+-
+-	ret = ath12k_dp_tx_get_ring_id_type(ab, mac_id, ring_id,
+-					    ring_type, &htt_ring_type,
+-					    &htt_ring_id);
+-
+-	if (ret)
+-		goto err_free;
+-
+-	skb_put(skb, len);
+-	cmd = (struct htt_tx_ring_selection_cfg_cmd *)skb->data;
+-	cmd->info0 = le32_encode_bits(HTT_H2T_MSG_TYPE_TX_MONITOR_CFG,
+-				      HTT_TX_RING_SELECTION_CFG_CMD_INFO0_MSG_TYPE);
+-	if (htt_ring_type == HTT_SW_TO_HW_RING ||
+-	    htt_ring_type == HTT_HW_TO_SW_RING)
+-		cmd->info0 |=
+-			le32_encode_bits(DP_SW2HW_MACID(mac_id),
+-					 HTT_TX_RING_SELECTION_CFG_CMD_INFO0_PDEV_ID);
+-	else
+-		cmd->info0 |=
+-			le32_encode_bits(mac_id,
+-					 HTT_TX_RING_SELECTION_CFG_CMD_INFO0_PDEV_ID);
+-	cmd->info0 |= le32_encode_bits(htt_ring_id,
+-				       HTT_TX_RING_SELECTION_CFG_CMD_INFO0_RING_ID);
+-	cmd->info0 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_MSI_SWAP),
+-				       HTT_TX_RING_SELECTION_CFG_CMD_INFO0_SS);
+-	cmd->info0 |= le32_encode_bits(!!(params.flags & HAL_SRNG_FLAGS_DATA_TLV_SWAP),
+-				       HTT_TX_RING_SELECTION_CFG_CMD_INFO0_PS);
+-
+-	cmd->info1 |=
+-		le32_encode_bits(tx_buf_size,
+-				 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_RING_BUFF_SIZE);
+-
+-	if (htt_tlv_filter->tx_mon_mgmt_filter) {
+-		cmd->info1 |=
+-			le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_MGMT,
+-					 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_PKT_TYPE);
+-		cmd->info1 |=
+-		le32_encode_bits(htt_tlv_filter->tx_mon_pkt_dma_len,
+-				 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_MGMT);
+-		cmd->info2 |=
+-		le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_MGMT,
+-				 HTT_TX_RING_SELECTION_CFG_CMD_INFO2_PKT_TYPE_EN_FLAG);
+-	}
+-
+-	if (htt_tlv_filter->tx_mon_data_filter) {
+-		cmd->info1 |=
+-			le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_CTRL,
+-					 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_PKT_TYPE);
+-		cmd->info1 |=
+-		le32_encode_bits(htt_tlv_filter->tx_mon_pkt_dma_len,
+-				 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_CTRL);
+-		cmd->info2 |=
+-		le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_CTRL,
+-				 HTT_TX_RING_SELECTION_CFG_CMD_INFO2_PKT_TYPE_EN_FLAG);
+-	}
+-
+-	if (htt_tlv_filter->tx_mon_ctrl_filter) {
+-		cmd->info1 |=
+-			le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_DATA,
+-					 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_PKT_TYPE);
+-		cmd->info1 |=
+-		le32_encode_bits(htt_tlv_filter->tx_mon_pkt_dma_len,
+-				 HTT_TX_RING_SELECTION_CFG_CMD_INFO1_CONF_LEN_DATA);
+-		cmd->info2 |=
+-		le32_encode_bits(HTT_STATS_FRAME_CTRL_TYPE_DATA,
+-				 HTT_TX_RING_SELECTION_CFG_CMD_INFO2_PKT_TYPE_EN_FLAG);
+-	}
+-
+-	cmd->tlv_filter_mask_in0 =
+-		cpu_to_le32(htt_tlv_filter->tx_mon_downstream_tlv_flags);
+-	cmd->tlv_filter_mask_in1 =
+-		cpu_to_le32(htt_tlv_filter->tx_mon_upstream_tlv_flags0);
+-	cmd->tlv_filter_mask_in2 =
+-		cpu_to_le32(htt_tlv_filter->tx_mon_upstream_tlv_flags1);
+-	cmd->tlv_filter_mask_in3 =
+-		cpu_to_le32(htt_tlv_filter->tx_mon_upstream_tlv_flags2);
+-
+-	ret = ath12k_htc_send(&ab->htc, ab->dp.eid, skb);
+-	if (ret)
+-		goto err_free;
+-
+-	return 0;
+-
+-err_free:
+-	dev_kfree_skb_any(skb);
+-	return ret;
+-}
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.h b/drivers/net/wireless/ath/ath12k/dp_tx.h
+index 8405a0baf95b..5b8fe280c32a 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.h
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.h
+@@ -15,25 +15,7 @@ struct ath12k_dp_htt_wbm_tx_status {
+ 	s8 ack_rssi;
+ };
  
+-int ath12k_dp_tx_htt_h2t_ver_req_msg(struct ath12k_base *ab);
+-int ath12k_dp_tx_htt_h2t_ppdu_stats_req(struct ath12k *ar, u32 mask);
+-int
+-ath12k_dp_tx_htt_h2t_ext_stats_req(struct ath12k *ar, u8 type,
+-				   struct htt_ext_stats_cfg_params *cfg_params,
+-				   u64 cookie);
+-int ath12k_dp_tx_htt_rx_monitor_mode_ring_config(struct ath12k *ar, bool reset);
+-
+-int ath12k_dp_tx_htt_rx_filter_setup(struct ath12k_base *ab, u32 ring_id,
+-				     int mac_id, enum hal_ring_type ring_type,
+-				     int rx_buf_size,
+-				     struct htt_rx_ring_tlv_filter *tlv_filter);
+ void ath12k_dp_tx_put_bank_profile(struct ath12k_dp *dp, u8 bank_id);
+-int ath12k_dp_tx_htt_tx_filter_setup(struct ath12k_base *ab, u32 ring_id,
+-				     int mac_id, enum hal_ring_type ring_type,
+-				     int tx_buf_size,
+-				     struct htt_tx_ring_tlv_filter *htt_tlv_filter);
+-int ath12k_dp_tx_htt_monitor_mode_ring_config(struct ath12k *ar, bool reset);
+-
+ enum hal_tcl_encap_type
+ ath12k_dp_tx_get_encap_type(struct ath12k_base *ab, struct sk_buff *skb);
+ void ath12k_dp_tx_encap_nwifi(struct sk_buff *skb);
 -- 
 2.34.1
 
