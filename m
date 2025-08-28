@@ -1,78 +1,59 @@
-Return-Path: <linux-wireless+bounces-26757-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26758-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932D7B39D7E
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 14:40:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BE3B39E2B
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 15:07:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CE9B174458
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 12:40:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2327568427D
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 13:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FC130F7FF;
-	Thu, 28 Aug 2025 12:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D5F30F937;
+	Thu, 28 Aug 2025 13:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Yfe+R8iz"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="caTlX08Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0BD30FC1D
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Aug 2025 12:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4723213C9C4
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Aug 2025 13:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756384827; cv=none; b=WFPje+whfRhmU4kUf5J5hAl8Z87y0bierO6kE7nHpYMKFC2xtiPev1bSMhurkwQqujJi4DlBvoJS2Tld9e88oO1FSeu3TF9BOVnZtajfQSIubWfqMvvdQqG7cl4xo9Ow9/nZcYu/xGPdfvIov2rPlO6GsquGRKe0DOhwN24vCKQ=
+	t=1756386399; cv=none; b=Tl0TWVLzNUZUTAdEPcDON2I2noqFCK2lS21KnE/2emKcNL30gkY4XjessMZzgUgpzj+7I67eVxGylZ0OvsZRcbd2ed+6klxP+2hq/Ap2ZHRj/QvLx+WMqJkrVLKRK9AQlpLZf/753Z6U/dSIZUOJqEvwnLFmVazS5G1eB8Qr+oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756384827; c=relaxed/simple;
-	bh=gitZwA9Rdi0mZYFEncSCbKq4GcOxNdWWGBBc2X3Ejp8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Bpqv6ioBK7mxfY5m4/seLdAeBz9F3cOIATqNU9BNH5U+PZUIndNsoLQM2QmxPI74JJpDKcvcVtNRTowN/9YkgSoOAU3unkFY/c7Ump0LMVsccaMQbcP0UHnsL689dNk1W3sP2iBlMU+JOagNZ+HG9fbdMNj83Q6AuWKAN7frb2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Yfe+R8iz; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 23534404840c11f0bd5779446731db89-20250828
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=m2xtex3FijByy/xNVP17j+I3+wkiVmNm0DOFRB7Mm1g=;
-	b=Yfe+R8izLOnhmeWYWdqXd6EOjADnas9jd8/SJRhrD+VXMu64lpcUzbB1Sej9J+fE5eDpybBVj0RZl6Mgkg8AhCqNUEkSNnzVSOIt49bKfjQEouUcfN6/oiUQLQKrFnCK95c12ABWd+pVYliQZ8lS7FtMPB4kSxoeGGiIzo0tEnU=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.3,REQID:63a07ef8-c656-433f-8bcc-dccca383f17e,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:f1326cf,CLOUDID:c066f56b-8443-424b-b119-dc42e68239b0,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:-5,Content:0|15|50,EDM:-3,IP:
-	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
-	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 23534404840c11f0bd5779446731db89-20250828
-Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
-	(envelope-from <quan.zhou@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1884910126; Thu, 28 Aug 2025 20:40:11 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Thu, 28 Aug 2025 20:40:05 +0800
-Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Thu, 28 Aug 2025 20:40:04 +0800
-From: Quan Zhou <quan.zhou@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC: Sean Wang <sean.wang@mediatek.com>, Deren Wu <Deren.Wu@mediatek.com>,
-	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
-	Leon Yen <Leon.Yen@mediatek.com>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, Allan Wang <allan.wang@mediatek.com>, KM Lin
-	<km.lin@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, Shengxi Xu
-	<shengxi.xu@mediatek.com>, Eric-SY Chang <Eric-SY.Chang@mediatek.com>, CH Yeh
-	<ch.yeh@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, linux-wireless
-	<linux-wireless@vger.kernel.org>, linux-mediatek
-	<linux-mediatek@lists.infradead.org>, Quan Zhou <quan.zhou@mediatek.com>
-Subject: [patch] wifi: mt76: mt7921: Add 160MHz beamformee capability for mt7922 device
-Date: Thu, 28 Aug 2025 20:39:42 +0800
-Message-ID: <ae637afaffed387018fdc43709470ef65898ff0b.1756383627.git.quan.zhou@mediatek.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1756386399; c=relaxed/simple;
+	bh=YEHYvX6w3ji79C97ortc44BdLf1fAHx9M8Mf60WyRAQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EcgWkndMWvn1OrktVy9y30Vz3XkjMkKjtW2hLxNXM5pKsqfA8C9Y8LyBgV9f4Jp3dSLtjw7EVFWplr80BeiugVB7+cr0qDMz13p9NvvtdOig7t8ojC9BPBGaitV7RcmS4cGoA9CECPO//NCs0HZ/Ysx5WaR29DCYAOKu/ZXCTgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=caTlX08Z; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=FDM8az0RI/E2zwjYDMMJvd0qydO1t0IhrXrob3Sp/Q8=; t=1756386398; x=1757595998; 
+	b=caTlX08ZGVqzoByR3CZUM2TjqQp8CucrtVK31sNMjXJe27qWFEmzFahWLQkry2Jt5ahYPkXl+5t
+	vVMBJT0cKuvtwutiHWNyrb82b9+c/EL0xBziWNuKfVLtSyQ34J34AQyJrdqILaluwWAaT5b25zK2N
+	t2P+uDqmALu5XWsZBxtV2ewQq3Pc7T26zDCPxN2QofP1VFs+SmU6TXuj2pWaqKgNYXlf5FqmWS9FS
+	Db87QQjFakcjqx8uaBUztIwO/NjuFpBRqGhbWnlXMIahBgZeSFRGEuytYLTesGhLdOnoyFJ7QUMX7
+	Pzhw9cZYwvtRnsmKOSYi0EPQoatJHfH1IYEw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1urcKp-00000007aQm-0Luf;
+	Thu, 28 Aug 2025 15:06:35 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>
+Subject: [PATCH] iw: don't set stupid socket buffer size
+Date: Thu, 28 Aug 2025 15:06:33 +0200
+Message-ID: <20250828130632.1170501-2-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,37 +61,47 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
 
-Enable 160MHz beamformee support on mt7922 by updating HE capability
-element configuration. Previously, only 160MHz channel width was set,
-but beamformee for 160MHz was not properly advertised. This patch
-adds BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4 capability to allow devices
-to utilize 160MHz BW for beamforming.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Tested by connecting to 160MHz-bandwidth beamforming AP and verified
-HE capability.
+Setting the socket buffer size to 8KiB is completely stupid.
+It seems I originally though it'd be smaller by default for
+some reason, the real issue there was something else but we
+never got rid of this setting. Remove it.
 
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ iw.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 40954e64c7fc..8818fb1916ad 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -135,6 +135,8 @@ mt7921_init_he_caps(struct mt792x_phy *phy, enum nl80211_band band,
- 			if (is_mt7922(phy->mt76->dev)) {
- 				he_cap_elem->phy_cap_info[0] |=
- 					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G;
-+				he_cap_elem->phy_cap_info[4] |=
-+					IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4;
- 				he_cap_elem->phy_cap_info[8] |=
- 					IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
- 					IEEE80211_HE_PHY_CAP8_80MHZ_IN_160MHZ_HE_PPDU;
+diff --git a/iw.c b/iw.c
+index c99edb1292e7..6a4a9ad2c5fb 100644
+--- a/iw.c
++++ b/iw.c
+@@ -35,12 +35,6 @@ static inline void nl_socket_free(struct nl_sock *h)
+ {
+ 	nl_handle_destroy(h);
+ }
+-
+-static inline int nl_socket_set_buffer_size(struct nl_sock *sk,
+-					    int rxbuf, int txbuf)
+-{
+-	return nl_set_buffer_size(sk, rxbuf, txbuf);
+-}
+ #endif /* CONFIG_LIBNL20 && CONFIG_LIBNL30 */
+ 
+ int iw_debug = 0;
+@@ -61,8 +55,6 @@ static int nl80211_init(struct nl80211_state *state)
+ 		goto out_handle_destroy;
+ 	}
+ 
+-	nl_socket_set_buffer_size(state->nl_sock, 8192, 8192);
+-
+ 	/* try to set NETLINK_EXT_ACK to 1, ignoring errors */
+ 	err = 1;
+ 	setsockopt(nl_socket_get_fd(state->nl_sock), SOL_NETLINK,
 -- 
-2.46.0
+2.51.0
 
 
