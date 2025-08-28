@@ -1,110 +1,116 @@
-Return-Path: <linux-wireless+bounces-26756-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26757-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1029B39D68
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 14:36:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932D7B39D7E
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 14:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 143FC1C2543B
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 12:36:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CE9B174458
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 12:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F06C23A9A0;
-	Thu, 28 Aug 2025 12:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FC130F7FF;
+	Thu, 28 Aug 2025 12:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="jytrgjlh"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Yfe+R8iz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A361730C605
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Aug 2025 12:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0BD30FC1D
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Aug 2025 12:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756384578; cv=none; b=nha53e6N5mgdqsY7J6a0sRX1LPKoWoI/fe5qLG0RVeMeTm2lsWm5bIO610VA8lNvXWFsK5ZgjIwdcXrYBawfSiZ+hRtnfkhDGczAHxD0I44g2fLTH49eMMpVb0F7vcD3yyV7WSrFD8KDWBrIrtvaYaNqXJopg8OMrTMm52Qgg1U=
+	t=1756384827; cv=none; b=WFPje+whfRhmU4kUf5J5hAl8Z87y0bierO6kE7nHpYMKFC2xtiPev1bSMhurkwQqujJi4DlBvoJS2Tld9e88oO1FSeu3TF9BOVnZtajfQSIubWfqMvvdQqG7cl4xo9Ow9/nZcYu/xGPdfvIov2rPlO6GsquGRKe0DOhwN24vCKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756384578; c=relaxed/simple;
-	bh=DXv0HUkSKm1iz9gXO/5nZqNdAc3UY3D4lny9Q02cFw8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tH1flHg1XkkiHfi2dhzj+a+jRXhARy0KoKGz0/On2gboKhD86s7HFxPv35aSBZVbQcur9QC8dTDfRE9luWC0rMlUQSkSkWnMqE1D7ZWY+9ue5vBznOBb168cseRftQbBwvV2k53kiS0DUmN7ZzXt8ADIQK/eCIg6bM11FYaeDTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=jytrgjlh; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=DXv0HUkSKm1iz9gXO/5nZqNdAc3UY3D4lny9Q02cFw8=;
-	t=1756384576; x=1757594176; b=jytrgjlhaSvTbtaft3KUpBiy5c3QkJjgyunqJ5A5hfqfLFx
-	3qAFMx5Vy+oVwAQEGIkPi9MpyNdsZjp8bN3TAOtN1Wju2hQjd8vVm0CxXmqRMWqJxGnJdouq15nEa
-	eT5zaBQ8DX0Rjc2Pj8o6mjcJFwlO+QRY7ruHsM6mFbH7vnixGMHUtm88vZDL9eY+IMrSQx4QqE7uZ
-	2DsjSdXFcsrIdvmqKpg0ito/yQLbgnRjXazAI9UiqNqOT/5gfB88dKe1EKqk8Y5z9ceS55mbyIEzF
-	uT1xXmTKaSVMPK1gvj+rpRsSUTqOsiNn86xGqrh+jeAfHP3aiCMCjs7A44LPNbug==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1urbrS-00000007YVJ-1S7Z
-	for linux-wireless@vger.kernel.org;
-	Thu, 28 Aug 2025 14:36:14 +0200
-Message-ID: <a8bd9c4e520e0665a778c89282303431b4abadec.camel@sipsolutions.net>
-Subject: Re: NPCA/DSO configuration
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Date: Thu, 28 Aug 2025 14:36:13 +0200
-In-Reply-To: <f071f05beba11fe51f5517f3cc9890dc379273f5.camel@sipsolutions.net>
-References: 
-	<f071f05beba11fe51f5517f3cc9890dc379273f5.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1756384827; c=relaxed/simple;
+	bh=gitZwA9Rdi0mZYFEncSCbKq4GcOxNdWWGBBc2X3Ejp8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Bpqv6ioBK7mxfY5m4/seLdAeBz9F3cOIATqNU9BNH5U+PZUIndNsoLQM2QmxPI74JJpDKcvcVtNRTowN/9YkgSoOAU3unkFY/c7Ump0LMVsccaMQbcP0UHnsL689dNk1W3sP2iBlMU+JOagNZ+HG9fbdMNj83Q6AuWKAN7frb2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Yfe+R8iz; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 23534404840c11f0bd5779446731db89-20250828
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=m2xtex3FijByy/xNVP17j+I3+wkiVmNm0DOFRB7Mm1g=;
+	b=Yfe+R8izLOnhmeWYWdqXd6EOjADnas9jd8/SJRhrD+VXMu64lpcUzbB1Sej9J+fE5eDpybBVj0RZl6Mgkg8AhCqNUEkSNnzVSOIt49bKfjQEouUcfN6/oiUQLQKrFnCK95c12ABWd+pVYliQZ8lS7FtMPB4kSxoeGGiIzo0tEnU=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.3,REQID:63a07ef8-c656-433f-8bcc-dccca383f17e,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:f1326cf,CLOUDID:c066f56b-8443-424b-b119-dc42e68239b0,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:-5,Content:0|15|50,EDM:-3,IP:
+	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
+	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 23534404840c11f0bd5779446731db89-20250828
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
+	(envelope-from <quan.zhou@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1884910126; Thu, 28 Aug 2025 20:40:11 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Thu, 28 Aug 2025 20:40:05 +0800
+Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Thu, 28 Aug 2025 20:40:04 +0800
+From: Quan Zhou <quan.zhou@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC: Sean Wang <sean.wang@mediatek.com>, Deren Wu <Deren.Wu@mediatek.com>,
+	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+	Leon Yen <Leon.Yen@mediatek.com>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, Allan Wang <allan.wang@mediatek.com>, KM Lin
+	<km.lin@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, Shengxi Xu
+	<shengxi.xu@mediatek.com>, Eric-SY Chang <Eric-SY.Chang@mediatek.com>, CH Yeh
+	<ch.yeh@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, linux-wireless
+	<linux-wireless@vger.kernel.org>, linux-mediatek
+	<linux-mediatek@lists.infradead.org>, Quan Zhou <quan.zhou@mediatek.com>
+Subject: [patch] wifi: mt76: mt7921: Add 160MHz beamformee capability for mt7922 device
+Date: Thu, 28 Aug 2025 20:39:42 +0800
+Message-ID: <ae637afaffed387018fdc43709470ef65898ff0b.1756383627.git.quan.zhou@mediatek.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
-On Wed, 2025-08-27 at 18:40 +0200, Johannes Berg wrote:
-> For sniffer also I guess it's just part of the chandef, which might also
-> require configuring/tracking the BSS color. Even if the sniffer could
-> listen on both control channels it'd still have to decide which to
-> decode, unless it's actually fully dual-channel.
+Enable 160MHz beamformee support on mt7922 by updating HE capability
+element configuration. Previously, only 160MHz channel width was set,
+but beamformee for 160MHz was not properly advertised. This patch
+adds BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4 capability to allow devices
+to utilize 160MHz BW for beamforming.
 
-To elaborate a bit on this: To do sniffer the same way client does it,
-you need the BSS color and NPCA non-primary control channel. The latter
-is given by the chandef according the the rest of my proposal, but the
-BSS color isn't. Also, the BSS color can change, so what should be
-responsible for configuring it? And then maybe it shouldn't be a BSS
-color but BSSID instead? Etc.
+Tested by connecting to 160MHz-bandwidth beamforming AP and verified
+HE capability.
 
-I mostly feel that this then isn't quite appropriate to put into the
-nl80211/cfg80211 API for sniffer configuration, since it might vary.
-We're probably going to implement it via just the BSS color in iwlwifi
-and assume it doesn't change, but maybe that should just remain in
-debugfs just like our AID configuration for multi-user sniffer?
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Another potential sniffer might even have more hardware (or synchronize
-two sniffer NICs) and be able to simultaneously receive on both the
-primary and non-primary control channels, seeing more frames and also
-the OBSS ones. For actually testing NPCA, this is probably required.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 40954e64c7fc..8818fb1916ad 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -135,6 +135,8 @@ mt7921_init_he_caps(struct mt792x_phy *phy, enum nl80211_band band,
+ 			if (is_mt7922(phy->mt76->dev)) {
+ 				he_cap_elem->phy_cap_info[0] |=
+ 					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G;
++				he_cap_elem->phy_cap_info[4] |=
++					IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4;
+ 				he_cap_elem->phy_cap_info[8] |=
+ 					IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
+ 					IEEE80211_HE_PHY_CAP8_80MHZ_IN_160MHZ_HE_PPDU;
+-- 
+2.46.0
 
-Another possible hardware implementation might have enough hardware
-(chains) to do signal acquisition on both the primary and non-primary
-control channels simultaneously, but would then have to decide which one
-(# of chains and all that) which transmission to receive data, so it'd
-need the BSS color again?
-
-So I'm mostly tending towards just not having this in the sniffer for
-cfg80211 level and doing something in debugfs if we need it.
-
-However, the flip side is that two UHR stations communicating on a 320
-MHz channel might send data via NPCA that even a sniffer configured to
-the same 320 MHz channel couldn't see. But without BSS color
-configuration it's impossible for it to see that anyway, so you'd have
-to decide which stations you want to see unless there are effectively
-separate sniffers ...
-
-johannes
 
