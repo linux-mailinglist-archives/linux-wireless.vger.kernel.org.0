@@ -1,254 +1,133 @@
-Return-Path: <linux-wireless+bounces-26831-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26833-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F647B3A852
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 19:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E4DB3AC26
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 23:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F0B31BA5DB1
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 17:38:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E52B1896624
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Aug 2025 21:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778F1338F22;
-	Thu, 28 Aug 2025 17:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A49F2BE65E;
+	Thu, 28 Aug 2025 20:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="P8yHxVMN"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ma0UHEbi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E67341AC3
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Aug 2025 17:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C84329AAF7
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Aug 2025 20:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756402607; cv=none; b=LdKq9CH7JDVtyqTy+/mdHQ6xGb+2uNprWiBlboq5UtquGS3gQGRNJ8PljBD5y8n4YXCeFzTyDTzHjCRNUtIccSDCslwJopcTw2eDG8XRyQqWe13Hg1DgxJQb9y/6rTzYDKpINYlVLz/cjqfMKNPMcgoMS/i75RFCEUauwOjKMoI=
+	t=1756414778; cv=none; b=OuJdiYa/+/GzIuyl9vjGhCDRWj5Vfs96IZAxUcuWSE8J0Ck6ybatvJHp+KJiYtN0fP8sxBgZvfazRwUuQSaddu1vfhhiTOGoCA9HSRnq+p4/IwcO4aWLj+7lVc3GhmE4ktp6ygJcdlAya0Vh5JgRyFUHnbkGsxgepYkU1Lr+Feg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756402607; c=relaxed/simple;
-	bh=opI6JTY+sJc/khml81O6k6mLxniu2k8inzG//G/q6Ro=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sNjkEBcj03TlURPYTHVqhLiqBidPEhmdRQex1ik6TN1QgzUO6oo//nqENBMIg9oWYWPH8HAzsLc0t+BrabkTitfFKzLgG8qkYezYZQknSjyT4ONpXH3yGU92ymPKS5MZSuhNw1Bx1p/yTl7VW+Kw0LXLvpFnZyL2GXgb8nB0EIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=P8yHxVMN; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57SAE6Cw007255;
-	Thu, 28 Aug 2025 17:36:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	SEh0ICVJiF553mOHqN8i1M4Oxb/v9J4HYMLs5wY5Tic=; b=P8yHxVMNMEoNR75z
-	dUupBNh2dXNC5m7VQM2Y5nTl6h/EJsPEOo4I/8/pCqI1c37mRLoK3RqvVu8HDLT+
-	rHm1ApgW8yXrcPSQkEDS1HErsGWpNJ2r1meDctF3pOfT9B1odyRDj6nRg/i/kF+5
-	i3BJmT1MV6CSmuY3KS32TjPQrz8O5PLcE+QFud0iC06zEfoxIoP9RG3/IRi4QlgE
-	MguHDL61InGnvrYl4uW/ltq3MJMEezqzcTGgyKJmoyxG4OqD8zOPP2Ovzkkzjg9j
-	wU2t8VHgHSnPhBjmsLanG86ARIy0sbNP+KCuYvpq31z/COh8kQ+MIbAisfq2Sfua
-	ieS7fA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48tn67h9hh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 17:36:41 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57SHaeJj019806
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 17:36:40 GMT
-Received: from hu-rdeuri-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.24; Thu, 28 Aug 2025 10:36:39 -0700
-From: Ripan Deuri <quic_rdeuri@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH ath12k-ng 20/20] wifi: ath12k: Move HTT specific code from dp.c to newly introduced files
-Date: Thu, 28 Aug 2025 23:05:53 +0530
-Message-ID: <20250828173553.3341351-21-quic_rdeuri@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250828173553.3341351-1-quic_rdeuri@quicinc.com>
-References: <20250828173553.3341351-1-quic_rdeuri@quicinc.com>
+	s=arc-20240116; t=1756414778; c=relaxed/simple;
+	bh=nhUyagpznBFRZ9pdGyujL8snMtRV7AxzIDv/2iWCkkM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X4IumSWb0kowzZOY7qE7tpxRxVc7ACdqz5L42UBgnOxvDYsTzOCtFIHxDhbmLmgaij1QgQZwA0c001xOxnj/ZWdTosj1rtJb9hZzvmrA+tFB1B1cP03jnXZXn2CX/qigvzLUnxoNbFMhLM9YuPkRBE4k+vntvyljoEv+mFB3nhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ma0UHEbi; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-55f6507bd53so846039e87.3
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Aug 2025 13:59:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756414773; x=1757019573; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nhUyagpznBFRZ9pdGyujL8snMtRV7AxzIDv/2iWCkkM=;
+        b=ma0UHEbiqECEh1ErdOJKkoTyNFYpeCWAacmYShnvRQtRoLZw0bgzRlsCjg9W4G05n9
+         +tZq90pA8y2W96oo9gJz3DFMyIbReffSe0GCsxR7W4QNpvMQMajQS11gI9WjHmlS5/Mc
+         PVErZ3LQQg0yK71YfAMF89IX6GMDptM56tP2AKp+h7SkBnQ1TWOPdQw9Sv7C0qcWdwEi
+         45VtKF2ccAVKTJMbuQSGsqXuKZLPWwCdxAxB742/7pA7mmvOtBPkvL4cTNMwOKQRVi+z
+         1x0asfo3p0mDwZxQTQa+qVxw1A+GwnJGx7QDVH9uk/k80sBixcSfQgo1INWRs/KflI72
+         hnGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756414773; x=1757019573;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nhUyagpznBFRZ9pdGyujL8snMtRV7AxzIDv/2iWCkkM=;
+        b=FenEWY9WXmfMKnwQqJpbWokUcb9S1nwmldqelkxK5qlYubv0OXCrkGAjwIXrCjGRup
+         N+k99W8u2q7wC3pQboMQdZT74xkBELwG0JtzIG+xuV9+w3MoG+URYVW6Gm4PnsickZwD
+         tQwlcjoTCc9gXbuE8NWfB1ODCuZ3QwS1yaodSZRH3lo9IdeRMrpBQhtTcw4S25gKTdF6
+         yGGkr/iXjkUIsrD4shzAbF9RMIqXHgLNIY/r+eDKJt6W9FPmSjKXwQeiEu0GlIiBmRbc
+         MHV0swe2naf0BhZTINHkphGeSLABAoz5caNijkh8Xz4vtkxtjXyh/+uJA2irLmUsgL7z
+         VKog==
+X-Forwarded-Encrypted: i=1; AJvYcCWMR+/iAQW7agy7GthFZt1WshQq62iwyjoZID2KiqEcn9OudXISvZXtjyQZA7MZG3tHkjxeQw5ClfaoqK4Aag==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZwWuTK+vbHYKI8Fyzw68qrjF8UqG4KUHyLsuphZsoK0QwltL+
+	iTNlPXBY/1CZRMbYlx+vcVm5U6l8nar6Rki3kn+U2vMt7/VfCzp92qhtyqLEvixyqBwAAyDGswJ
+	eDWRVWy9zlssQXD56rfm+OONleXkfmzDs6kdzH2O+pg==
+X-Gm-Gg: ASbGnct3YgGOS6pSnGL29kLAao6AErDRuJnuj49A/PD/0YaF52oQLVL5jqjOoUVPWf1
+	roTdGcjoIFP2y4ST7z1d4+gYx1LeuTEGhoTa3MkBheaDYfvBiwmmB/07U6uzrX1Xytm/m9oFHA/
+	P1WVGI2disGZ2dZCZzL1G4u5thKMmuVnZ9Z08T60+4J8lOKR3j1HIPIUn4uG1t6otnXsKvBLkch
+	PiG7wk=
+X-Google-Smtp-Source: AGHT+IGkAeRfSepttrAWspST3WxeFhzvmsQkOJn8zGWgyydoFU7mfe7dFpmDKHnPoU/jmN1MyfkA6699WvyfKPSV4Ms=
+X-Received: by 2002:a05:6512:6301:b0:55f:503c:d322 with SMTP id
+ 2adb3069b0e04-55f503cd585mr2344975e87.40.1756414773211; Thu, 28 Aug 2025
+ 13:59:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI4MDA4NSBTYWx0ZWRfXwDChspDqwpEy
- lqRhEdjwkdhcRPIMeKWP+AEektYVfyDjlQ7qMOHYfgiF8JxPGMx/YbujDAhaaoxBcf/QuF2pLrA
- toxabUjPjDZnvMu+08eDRWuHUhSCo/WJympVwYo8AvhpVyc/eQbJqwv3yEA5AJKQ5lgxTO90y+u
- /v1aNPNh4I8LRhIOQU+kSctH36eVkspOiUoUmZh9T3i1DoHj/X8Ittnt0mGxhd91pmF2qtMxaXt
- tOmZIAabOqKhjPrHldh9Bka3YAKSQMipxC0msKGXjk8sOAWkULmObroebGYKBvCFzpx0H7L0LDi
- /a2rXzl+eDtPqcI1YKcovJiWLfObyadvpf/wujWbX/FS5qch0tknIDNHXn6l1e2QWE3PfCExKtE
- nsktwLFh
-X-Proofpoint-GUID: Spcc2L0IOAUYKGTBvNsHXkdSy3CnL1To
-X-Proofpoint-ORIG-GUID: Spcc2L0IOAUYKGTBvNsHXkdSy3CnL1To
-X-Authority-Analysis: v=2.4 cv=P7c6hjAu c=1 sm=1 tr=0 ts=68b093a9 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=2OwXVqhp2XgA:10 a=COk6AnOGAAAA:8 a=KFaOQ6OXsHnzEyzz7ZwA:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-28_04,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
- adultscore=0 phishscore=0 malwarescore=0 spamscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508280085
+References: <20250828-dt-apple-t6020-v1-0-507ba4c4b98e@jannau.net> <20250828-dt-apple-t6020-v1-8-507ba4c4b98e@jannau.net>
+In-Reply-To: <20250828-dt-apple-t6020-v1-8-507ba4c4b98e@jannau.net>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 28 Aug 2025 22:59:22 +0200
+X-Gm-Features: Ac12FXwdi56r5WxKQlnuWh0e5CWqxbReZCdYkWbkMywpfjpFF5zgYMlMEAzYzgg
+Message-ID: <CACRpkdbvLhTQ8EujGg9QMbuGVRDnH9ApVxVt1NdmSmPw77QXdA@mail.gmail.com>
+Subject: Re: [PATCH 08/37] pinctrl: apple: Add "apple,t8103-pinctrl" as compatible
+To: Janne Grunau <j@jannau.net>
+Cc: Sven Peter <sven@kernel.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, Neal Gompa <neal@gompa.dev>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Hector Martin <marcan@marcan.st>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Mark Kettenis <kettenis@openbsd.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Jassi Brar <jassisinghbrar@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Sasha Finkelstein <fnkl.kernel@gmail.com>, Marcel Holtmann <marcel@holtmann.org>, 
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	van Spriel <arend@broadcom.com>, Lee Jones <lee@kernel.org>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, Wim Van Sebroeck <wim@linux-watchdog.org>, 
+	Guenter Roeck <linux@roeck-us.net>, Michael Turquette <mturquette@baylibre.com>, 
+	=?UTF-8?Q?Martin_Povi=C5=A1er?= <povik+lin@cutebit.org>, 
+	Vinod Koul <vkoul@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, Keith Busch <kbusch@kernel.org>, 
+	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, asahi@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-bluetooth@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org, 
+	dmaengine@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-nvme@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Harsh Kumar Bijlani <quic_hbijlani@quicinc.com>
+On Thu, Aug 28, 2025 at 4:02=E2=80=AFPM Janne Grunau <j@jannau.net> wrote:
 
-WLAN Host driver interacts with the Firmware and vice versa using
-Host-To-Target (HTT) interface.
+> After discussion with the devicetree maintainers we agreed to not extend
+> lists with the generic compatible "apple,pinctrl" anymore [1]. Use
+> "apple,t8103-pinctrl" as fallback compatible as it is the SoC the driver
+> and bindings were written for.
+>
+> [1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@k=
+ernel.org/
+>
+> Signed-off-by: Janne Grunau <j@jannau.net>
 
-Relocate HTT specific code from dp.c to newly introduced file dp_htt.c
-for HTT interface.
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Harsh Kumar Bijlani <quic_hbijlani@quicinc.com>
-Signed-off-by: Ripan Deuri <quic_rdeuri@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/dp.c     | 29 ----------------------
- drivers/net/wireless/ath/ath12k/dp.h     |  1 -
- drivers/net/wireless/ath/ath12k/dp_htt.c | 31 ++++++++++++++++++++++--
- drivers/net/wireless/ath/ath12k/dp_htt.h |  3 +++
- 4 files changed, 32 insertions(+), 32 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index d0bdf058633f..8909415df2e2 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -19,12 +19,6 @@ enum ath12k_dp_desc_type {
- 	ATH12K_DP_RX_DESC,
- };
- 
--static void ath12k_dp_htt_htc_tx_complete(struct ath12k_base *ab,
--					  struct sk_buff *skb)
--{
--	dev_kfree_skb_any(skb);
--}
--
- void ath12k_dp_peer_cleanup(struct ath12k *ar, int vdev_id, const u8 *addr)
- {
- 	struct ath12k_base *ab = ar->ab;
-@@ -957,29 +951,6 @@ int ath12k_dp_pdev_alloc(struct ath12k_base *ab)
- 	return ret;
- }
- 
--int ath12k_dp_htt_connect(struct ath12k_dp *dp)
--{
--	struct ath12k_htc_svc_conn_req conn_req = {};
--	struct ath12k_htc_svc_conn_resp conn_resp = {};
--	int status;
--
--	conn_req.ep_ops.ep_tx_complete = ath12k_dp_htt_htc_tx_complete;
--	conn_req.ep_ops.ep_rx_complete = ath12k_dp_htt_htc_t2h_msg_handler;
--
--	/* connect to control service */
--	conn_req.service_id = ATH12K_HTC_SVC_ID_HTT_DATA_MSG;
--
--	status = ath12k_htc_connect_service(&dp->ab->htc, &conn_req,
--					    &conn_resp);
--
--	if (status)
--		return status;
--
--	dp->eid = conn_resp.eid;
--
--	return 0;
--}
--
- static void ath12k_dp_update_vdev_search(struct ath12k_link_vif *arvif)
- {
- 	switch (arvif->ahvif->vdev_type) {
-diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
-index ad93e63e3344..18a3287945b7 100644
---- a/drivers/net/wireless/ath/ath12k/dp.h
-+++ b/drivers/net/wireless/ath/ath12k/dp.h
-@@ -432,7 +432,6 @@ static inline void ath12k_dp_get_mac_addr(u32 addr_l32, u16 addr_h16, u8 *addr)
- 	memcpy(addr + 4, &addr_h16, ETH_ALEN - 4);
- }
- 
--int ath12k_dp_htt_connect(struct ath12k_dp *dp);
- void ath12k_dp_vdev_tx_attach(struct ath12k *ar, struct ath12k_link_vif *arvif);
- void ath12k_dp_free(struct ath12k_base *ab);
- int ath12k_dp_alloc(struct ath12k_base *ab);
-diff --git a/drivers/net/wireless/ath/ath12k/dp_htt.c b/drivers/net/wireless/ath/ath12k/dp_htt.c
-index 45aa8ae86a14..6ab5b2d8aac9 100644
---- a/drivers/net/wireless/ath/ath12k/dp_htt.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_htt.c
-@@ -11,6 +11,35 @@
- #include "debugfs_htt_stats.h"
- #include "debugfs.h"
- 
-+static void ath12k_dp_htt_htc_tx_complete(struct ath12k_base *ab,
-+					  struct sk_buff *skb)
-+{
-+	dev_kfree_skb_any(skb);
-+}
-+
-+int ath12k_dp_htt_connect(struct ath12k_dp *dp)
-+{
-+	struct ath12k_htc_svc_conn_req conn_req = {};
-+	struct ath12k_htc_svc_conn_resp conn_resp = {};
-+	int status;
-+
-+	conn_req.ep_ops.ep_tx_complete = ath12k_dp_htt_htc_tx_complete;
-+	conn_req.ep_ops.ep_rx_complete = ath12k_dp_htt_htc_t2h_msg_handler;
-+
-+	/* connect to control service */
-+	conn_req.service_id = ATH12K_HTC_SVC_ID_HTT_DATA_MSG;
-+
-+	status = ath12k_htc_connect_service(&dp->ab->htc, &conn_req,
-+					    &conn_resp);
-+
-+	if (status)
-+		return status;
-+
-+	dp->eid = conn_resp.eid;
-+
-+	return 0;
-+}
-+
- static int ath12k_get_ppdu_user_index(struct htt_ppdu_stats *ppdu_stats,
- 				      u16 peer_id)
- {
-@@ -818,8 +847,6 @@ int ath12k_dp_tx_htt_srng_setup(struct ath12k_base *ab, u32 ring_id,
- 	return ret;
- }
- 
--#define HTT_TARGET_VERSION_TIMEOUT_HZ (3 * HZ)
--
- int ath12k_dp_tx_htt_h2t_ver_req_msg(struct ath12k_base *ab)
- {
- 	struct ath12k_dp *dp = &ab->dp;
-diff --git a/drivers/net/wireless/ath/ath12k/dp_htt.h b/drivers/net/wireless/ath/ath12k/dp_htt.h
-index b13af1c69253..6020e632f74e 100644
---- a/drivers/net/wireless/ath/ath12k/dp_htt.h
-+++ b/drivers/net/wireless/ath/ath12k/dp_htt.h
-@@ -36,6 +36,8 @@ struct ath12k_dp;
- 
- #define HTT_TX_WBM_COMP_INFO2_ACK_RSSI		GENMASK(31, 24)
- 
-+#define HTT_TARGET_VERSION_TIMEOUT_HZ (3 * HZ)
-+
- struct htt_tx_wbm_completion {
- 	__le32 rsvd0[2];
- 	__le32 info0;
-@@ -1514,6 +1516,7 @@ struct htt_mac_addr {
- 	__le32 mac_addr_h16;
- } __packed;
- 
-+int ath12k_dp_htt_connect(struct ath12k_dp *dp);
- int ath12k_dp_tx_htt_srng_setup(struct ath12k_base *ab, u32 ring_id,
- 				int mac_id, enum hal_ring_type ring_type);
- 
--- 
-2.34.1
-
+Yours,
+Linus Walleij
 
