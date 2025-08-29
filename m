@@ -1,85 +1,97 @@
-Return-Path: <linux-wireless+bounces-26871-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26872-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195FFB3C338
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 21:41:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7EB8B3C357
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 21:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 494E61C81498
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 19:40:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EF6716CE5D
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 19:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8251B242D63;
-	Fri, 29 Aug 2025 19:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664E2239E75;
+	Fri, 29 Aug 2025 19:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="w4/Ht3rs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uPYEnPUU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B52242D6A
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Aug 2025 19:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D68224B09;
+	Fri, 29 Aug 2025 19:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756496412; cv=none; b=KjDbsBOHqYDeBu73NsY+0PwnRyXMkPO/uLOA7VNGaOYk6iBsFzteSw+G5QxUyAtUsnUJ+vWZ9SU3PO590OH0IFI2HHw3GA4RDpF2f7doiUi0R7b8idK8e1hKgmbPpkkX7bXMBr8omvKkTMbczzJJQswA+ZZjoROc4jUKKfhLEbo=
+	t=1756497084; cv=none; b=I4P70kSM/UbuEPJGCwvWVZTRmf7sNrLXJa/F0QKIaAhPuiG8DubsD/C9agQ3S+ZRu+yJ3Huj+5I2d3HUrLvpOnNfkEl9Z3BhMCURd09D66U5iIbaxtPsXX++qmGBNnpqn3gqIcqfc2bI6zRIxTBrUEsWUcAdKhZ13ZtkbGQ2R54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756496412; c=relaxed/simple;
-	bh=ciPI4Xq2NM39tbgjQejg2mPzVCVXgCwQKQdBW9bwO1g=;
+	s=arc-20240116; t=1756497084; c=relaxed/simple;
+	bh=iE1fOPe+H/DOT9l+qqw7zhT3aTQ0dSMmo1kdS8d+f20=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X4lMyuTQ5IDJEm5y1MjZVlGBBMNvJBOxy6DyoUPyfWD6Mh1cS+J5xSsDjHReudXfuaaOD+q/OWehrqIFvGZ4obmGJCYQsgs5QzWjSqzRqZtofN0UiLeFmBsZjV6ULBTzWWm3+NNUiG5/gWBZr1qeNYkv3z4MhO2BI5hw8JOCHec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=w4/Ht3rs; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ceb9c3d98cso1028434f8f.0
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Aug 2025 12:40:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756496408; x=1757101208; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bI4cdjbqUB9owljH6EP9LE5/l7cblwmGjSeJXJAhNWc=;
-        b=w4/Ht3rsya6vvBe1zjTq6W70Y9b4gwQ6s63QfDfZJzew39/fxiiEDfxcHpbn8JiMxe
-         vkTCsmkbROhmYDt83HKI5CXOyMV+haY+0rQ5MB7geYkHBtS6U0D0GKoUWr+f1oY2uUx/
-         MUFb/KQ44ElnvPhWVFmxetG2Fx0sdOuNBFS8Nnwx4bM29bgTkrgvkyOSTlYOhxPq3HtW
-         LlKsBPLL45tn4ZWgKkrdj8xb1jJGwA5DaHi5vgVqKhMvluMvH1xxesbQFj8MzhB/dMrt
-         JRHCBh4uGM144QYytZuOcm+bO7cmtn0ekQ/aGBP9PXn7Gz0jOoKHpNG8zY6nskl+oR04
-         Q50A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756496408; x=1757101208;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bI4cdjbqUB9owljH6EP9LE5/l7cblwmGjSeJXJAhNWc=;
-        b=Ix1bAAXfhIjIZe1xHFyv1oAjdjdu8V8lg7kMlonY/qKAwTrklrsgTX39Q3IMEBxxzq
-         dt/xW8O7fBnU9Mhuz0Plm7xU4XIcCHME5rQtB3v8367yblLLXZFJmUeinniFrGDkH7lH
-         jNgRkj0ByVL4zrdlwMlcS81SMhUqwFNPBEaCi0WT+m7bbmGvSISo89cVBydSDEH51Llf
-         uDric3YIbPj0cRfWRCWnAdzVtMKwXcfG5OBAGj0ydql58FQvlYu0uEd5wX2WZgxSNUph
-         cLUCiAFtBB8p670pbhRdzD61/hTa48h7AEVwH1Vh1UigWeKkDa3Ui/nhPYf+8sqHr3sw
-         sshA==
-X-Gm-Message-State: AOJu0YwbRPlsEpW11L30wJw3WH/htNkjbu52BLqdE1s24cQM/kTG7F4I
-	ZU7w4u0dGR6idECF3SYHAPakyb44KDOOfwOBv3wgJoQj6AO8k6vsGYntmC0BgIKvCFE0yT4ChKS
-	S0zZ7
-X-Gm-Gg: ASbGnctAo8pONTGAs5bBvbdzOKJvrv55bMbwZooDHhCAnE3qQcrud0qX8JKw1op7XPW
-	7yLADxrD3Caz5wuaSwFE19XxnKuYAJ35t0VGIvN9Jqo5eBsQWHUrxDTz64df9u4LD7ooo1wyqkf
-	LN4UOsUppj8GiVafhAJcKJ1aA1GsNpGiubz3R7XJlAIF4p8ezpko8LTv+AFgv7tqjnWwAJPnqCs
-	lwvmIpwCFnOfU/8VmE/zEjdzyy4hYhpjs3wH0VN5HU7I2b4vx/5nsEdNB2JnHApoffLruwfvucR
-	b849+H3nBHkeptMZNO/5nc12r50jz8t+b/p+FSBX8o3WOAGEfDjsIO41tyYQranzWXkJy2jyVFe
-	gaCf8Faopxa4BDjGJnv+PxnEczqG+D7WHICfrzg==
-X-Google-Smtp-Source: AGHT+IF1j3VqMExTi0nHRpO4a1bTpjOhkuQODL74IgkV2OOEPrj/3kzp/SS3AjNSsm6y7giDOx4IEA==
-X-Received: by 2002:a05:6000:25c1:b0:3ce:f0a5:d59b with SMTP id ffacd0b85a97d-3cef0a5dbaemr3696988f8f.12.1756496408566;
-        Fri, 29 Aug 2025 12:40:08 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3cf274dde69sm4454918f8f.14.2025.08.29.12.40.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 12:40:08 -0700 (PDT)
-Date: Fri, 29 Aug 2025 22:40:04 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Ajay.Kathat@microchip.com
-Cc: linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: wilc1000: avoid buffer overflow in WID string
- configuration
-Message-ID: <aLICFFa8EG7EGXcG@stanley.mountain>
-References: <20250829182241.45150-1-ajay.kathat@microchip.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FVoFiEY1/cOidwb5l7UbAnM/1QTc+m0Y7YN/xOXHOdRctYzwsNfS7hnUsAKBHvkXvCYayeo7cea5hHIWUJXK3zcXvhmP3Sr9eTLPQ7u1OIVF83kOvmXuo+mBEaRN2g12kJkIXRIGdCzrY1zXvXEkhf15h9XTeQQE+5677mu/DNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uPYEnPUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346BBC4CEF0;
+	Fri, 29 Aug 2025 19:51:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756497082;
+	bh=iE1fOPe+H/DOT9l+qqw7zhT3aTQ0dSMmo1kdS8d+f20=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uPYEnPUUg4/LuQVFtqhOOS0tGS/0OVJpM+KchdKwqnpfkH0/J3whjo1E0NBxW4gpi
+	 uJDXfPT2+7W9SvWuvKxITtr+9wgDa0PLPjlOlPveFqy+zGxeJXRW3bmLtv6e6tXZkm
+	 Lt0jKmNEbrsoJG57fd3KAzrHhMHII+VJCvAN8o9yIncXsE2LjVvdVRlbplw8VmHBsq
+	 nEieoqr4Hd58x1XnW+1xWPl9IbBCsaBFlrOtBOQRsS5iKDBvoMcj7GYIAOBvWu/48K
+	 9ZUoI9CDe2TXQXinfy+0J0W3S8zuoPtSs1TE+Ci/Y2CLPC2Ymd1DL36wGlg46kmRHz
+	 JZChNYlMpZoRQ==
+Date: Fri, 29 Aug 2025 14:51:19 -0500
+From: Rob Herring <robh@kernel.org>
+To: Janne Grunau <j@jannau.net>
+Cc: Sven Peter <sven@kernel.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Neal Gompa <neal@gompa.dev>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Hector Martin <marcan@marcan.st>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Kettenis <kettenis@openbsd.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Sasha Finkelstein <fnkl.kernel@gmail.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	van Spriel <arend@broadcom.com>, Lee Jones <lee@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Martin =?utf-8?Q?Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Vinod Koul <vkoul@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org, iommu@lists.linux.dev,
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-bluetooth@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-pwm@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-nvme@lists.infradead.org
+Subject: Re: [PATCH 00/37] arm64: Add initial device trees for Apple M2
+ Pro/Max/Ultra devices
+Message-ID: <20250829195119.GA1206685-robh@kernel.org>
+References: <20250828-dt-apple-t6020-v1-0-507ba4c4b98e@jannau.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,31 +100,74 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250829182241.45150-1-ajay.kathat@microchip.com>
+In-Reply-To: <20250828-dt-apple-t6020-v1-0-507ba4c4b98e@jannau.net>
 
-On Fri, Aug 29, 2025 at 06:22:44PM +0000, Ajay.Kathat@microchip.com wrote:
-> Fix the following copy overflow warning identified by Smatch static checker.
+On Thu, Aug 28, 2025 at 04:01:19PM +0200, Janne Grunau wrote:
+> This series adds device trees for Apple's M2 Pro, Max and Ultra based
+> devices. The M2 Pro (t6020), M2 Max (t6021) and M2 Ultra (t6022) SoCs
+> follow design of the t600x family so copy the structure of SoC *.dtsi
+> files.
 > 
->  drivers/net/wireless/microchip/wilc1000/wlan_cfg.c:184 wilc_wlan_parse_response_frame()
->         error: '__memcpy()' 'cfg->s[i]->str' copy overflow (512 vs 65537)
+> t6020 is a cut-down version of t6021, so the former just includes the
+> latter and disables the missing bits.
 > 
-> This patch introduces size check before accessing the memory buffer.
-> The checks are base on the WID type of received data from the firmware.
-> For WID string configuration, the size limit is determined by the maximum
-> element size in 'struct wilc_cfg_str_vals'. Therefore, WILC_MAX_CFG_STR_SIZE
-> macro is added to configure this size.
+> t6022 is two connected t6021 dies. The implementation seems to use
+> t6021 and disables blocks based on whether it is useful to carry
+> multiple instances. The disabled blocks are mostly on the second die.
+> MMIO addresses on the second die have a constant offset. The interrupt
+> controller is multi-die aware. This setup can be represented in the
+> device tree with two top level "soc" nodes. The MMIO offset is applied
+> via "ranges" and devices are included with preprocessor macros to make
+> the node labels unique and to specify the die number for the interrupt
+> definition.
 > 
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/linux-wireless/aLFbr9Yu9j_TQTey@stanley.mountain
-> Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
-> ---
+> The devices itself are very similar to their M1 Pro, M1 Max and M1 Ultra
+> counterparts. The existing device templates are SoC agnostic so the new
+> devices can reuse them and include their t602{0,1,2}.dtsi file. The
+> minor differences in pinctrl and gpio numbers can be easily adjusted.
+> 
+> With the t602x SoC family Apple introduced two new devices:
+> 
+> The M2 Pro Mac mini is similar to the larger M1 and M2 Max Mac Studio. The
+> missing SDHCI card reader and two front USB3.1 type-c ports and their
+> internal USB hub can be easily deleted.
+> 
+> The M2 Ultra Mac Pro (tower and rack-mount cases) differs from all other
+> devices but may share some bits with the M2 Ultra Mac Studio. The PCIe
+> implementation on the M2 Ultra in the Mac Pro differs slightly. Apple
+> calls the PCIe controller "apcie-ge" in their device tree. The
+> implementation seems to be mostly compatible with the base t6020 PCIe
+> controller. The main difference is that there is only a single port with
+> with 8 or 16 PCIe Gen4 lanes. These ports connect to a Microchip
+> Switchtec PCIe switch with 100 lanes to which all internal PCIe devices
+> and PCIe slots connect too.
+> 
+> This series does not include PCIe support for the Mac Pro for two
+> reasons:
+> - the linux switchtec driver fails to probe and the downstream PCIe
+>   connections come up as PCIe Gen1
+> - some of the internal devices require PERST# and power control to come
+>   up. Since the device are connected via the PCIe switch the PCIe
+>   controller can not do this. The PCI slot pwrctrl can be utilized for
+>   power control but misses integration with PERST# as proposed in [1].
+> 
+> This series depends on "[PATCH v2 0/5] Apple device tree sync from
+> downstream kernel" [2] due to the reuse of the t600x device templates
+> (patch dependencies and DT compilation) and 4 page table level support
+> in apple-dart and io-pgtable-dart [3] since the dart instances report
+> 42-bit IAS (IOMMU device attach fails without the series).
+> 
+> After discussion with the devicetree maintainers we agreed to not extend
+> lists with the generic compatibles anymore [1]. Instead either the first
+> compatible SoC or t8103 is used as fallback compatible supported by the
+> drivers. t8103 is used as default since most drivers and bindings were
+> initially written for M1 based devices.
 
-Thanks so much!
+An issue here is any OS without the compatibles added to the drivers 
+won't work. Does that matter here? Soon as you need any new drivers or 
+significant driver changes it won't. The compatible additions could be 
+backported to stable. They aren't really any different than new PCI IDs 
+which get backported.
 
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-
-regards,
-dan carpenter
-
+Rob
 
