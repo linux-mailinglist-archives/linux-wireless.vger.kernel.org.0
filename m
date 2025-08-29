@@ -1,145 +1,124 @@
-Return-Path: <linux-wireless+bounces-26845-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26846-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A2BB3B114
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 04:42:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2BDB3B149
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 05:03:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DB95A02587
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 02:42:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CCB79806DB
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 03:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C9E219301;
-	Fri, 29 Aug 2025 02:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597061EF39F;
+	Fri, 29 Aug 2025 03:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="qMV+dOkE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D89211479
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Aug 2025 02:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A25D515;
+	Fri, 29 Aug 2025 03:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756435354; cv=none; b=YoXMJlEj96kn3GNTFBBR/h6Z6qvSxNhAESommLmBx8ZhtktDbP0z3wIOuFMNntq97RZWY8XxfVOLOGcmhMW0B11K1MjhoXT7UDoCULHwgfRRRpn41Fl7scktAs+QNYLjN8owqj/GTAzVH68mUGpa3TjbJwUXtqM8/GdT1MrZAfQ=
+	t=1756436592; cv=none; b=JIV0EEc0Ru7NXFE9yLBu2Xcrs0KYX6FeTv5siUc6A/0H1XJBv8yGZ3zH+WAOnh2QQjOfQXsxaFosAcfG4npJJm65E7pW+QnWHGaQYPc9qfoMKNOE8baXQwk+XrtJ82X4MMpdvgJq2KjiNzhdsmC9IMnza8zs27R+VzSSI/TtceE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756435354; c=relaxed/simple;
-	bh=xWJxueguMQhLsIKve4bRq5Qf69S8f3sgzGYw4AsUJ5w=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=b2VwrxyrNVWNXtLRqsv/KPKffsjrjvuQMF6A/u5mHekASFwp7QHJll6qACeHyExKhOm8u0fIebPe+t6P50VmEH00QkkfTOJjBRdTf4zH3pbwyVhvqCP8gIxY+9y6gRAwTYHgdeNQVeLvNHRx/SoZZMeF79c3n3tbD8ilxL66FhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3eefbb2da62so42134735ab.3
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Aug 2025 19:42:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756435352; x=1757040152;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AteGbOaa6uA4s6skh8lWv95EhDpwAW/b1BRdwjUpNto=;
-        b=mJCyPq9BR88f9MVcp58sJVDIXAfPsfwEJWzGChiulQ/W+dwYHYfw9KdVeAM7wQFs0d
-         u6JsuBzm4mmedT6idlhCRstwmwBCdJAlDkLJTd6Xr9bBWVtXXBXA5uTT6Rlzx2BwD28H
-         oYJnQdcr4bfv9Tt+nGoJwY2zImxXCvvaA0+6Pnjt3hVWKOVKV/Uol0tzdPNhGQfhCsXr
-         UarvnMzUzTrvTQwdg+d0jPVzaMYl0TpKL0Z1IKv0fuAYh1PMPbC2j3YoSSKtWTaGkMSy
-         hTO5/ecPAKx2iCjlfFSeX1jsLapjfHLM15FLA4t3+kqboTrmksBjrclGDoNPUynLFNOi
-         xgbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUnxmUR+gYme2xcl6CHR+O53VQSGSo/0Uoo7OaiSN05QzmesCvNvxJgI1vOJ3AzrAcjjmV0sGRjzJLW3NSevQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3o4LfZ8y8e4ugxrYVn4I6UPHmiOJHBDOSIrCxV3Gw20JTaHWm
-	TO4BoWb1fRC2d6TfBc9abX7VMMWAwCbSK9GWOQUgubrYivA57Bwb3XsSRPlVjOthToTaWXsPfou
-	j2XGuDSzR8tSsOaXU7pbLgekDnIapIP8ROkPnlHjFuO03U6sxjW/oFRdC1DI=
-X-Google-Smtp-Source: AGHT+IFHUDxcHt1W98GIx6uHtmlsHUoWE8sKnOp8w7L0brcyKlravuX4LDKbCjUWObDHJGr678saE301vFPnor16vv+dl5/D6rRd
+	s=arc-20240116; t=1756436592; c=relaxed/simple;
+	bh=kkasfrkELPKuOakCSboKuy0RiMRSQMgjog1NH65PKxA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=BOLArpDT8/Q4qjvOsxC6ZWvIvo2nHeFSQVpPVA7cApKmBFyiwvMIvtx7xAjJ2rD7InET4IAyo6urs08eG6iROg3i7ZS7BFVuWfEwxtq1EIhTMUE18I3ewQvcYFmuXOqyzs17FsCuHC7tdLUaLj/72NEuV6m6w5loQjMiwpnGir4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=qMV+dOkE; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57T32ltR62929369, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1756436567; bh=kkasfrkELPKuOakCSboKuy0RiMRSQMgjog1NH65PKxA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=qMV+dOkE7aTAgqj6pCa+XfGXLJoPSe+4tX54P1Y5FkIEtOiL/uaPEoecb7hfijRrn
+	 Hv7pv/2La8+DjhpWdQRM7fYa7I9EpM674wW85pAhGuce3/ZPmAr7tMI/7qxID7TgtQ
+	 GNLQlK5bWirNXtqWzmgfhdySTP+qB9TCjVYTylUphrXXfU2lmZLnPDgn7ElQ8EuD9e
+	 mTvYnbIrlWRZuq9Np8y/uEN0CwDeYB5QtN78N5o/I9Esd1OismRLEVVDFSZBzJ3mCq
+	 /7ZsozjGKxnL3zjAdEaDHre5XxTDPTXtlw6VVScEpIIHhu0Y2kjaoclOykEq1uZzah
+	 SoaJdM+M9Rewg==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57T32ltR62929369
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 29 Aug 2025 11:02:47 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Fri, 29 Aug 2025 11:02:47 +0800
+Received: from RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d]) by
+ RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d%2]) with mapi id
+ 15.01.2507.035; Fri, 29 Aug 2025 11:02:47 +0800
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
+To: "pchelkin@ispras.ru" <pchelkin@ispras.ru>
+CC: Ping-Ke Shih <pkshih@realtek.com>, Bernie Huang <phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH rtw v2 1/4] wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()
+Thread-Topic: [PATCH rtw v2 1/4] wifi: rtw89: fix use-after-free in
+ rtw89_core_tx_kick_off_and_wait()
+Thread-Index: AQHcF8icTIlJtwQk2kOn9fej8NWkdbR3L+cQgAA6HQCAAX51UA==
+Date: Fri, 29 Aug 2025 03:02:47 +0000
+Message-ID: <da4e555fb0e6404386a5b18f17dbc296@realtek.com>
+References: <20250827120603.723548-2-pchelkin@ispras.ru>
+ <87693651fe394065b421d8d8fe171f89@realtek.com>
+ <20250828140912-171fa800b314416241936137-pchelkin@ispras>
+In-Reply-To: <20250828140912-171fa800b314416241936137-pchelkin@ispras>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:3a06:b0:3f2:99cc:5247 with SMTP id
- e9e14a558f8ab-3f299cc5789mr21993645ab.14.1756435352468; Thu, 28 Aug 2025
- 19:42:32 -0700 (PDT)
-Date: Thu, 28 Aug 2025 19:42:32 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68b11398.a00a0220.1337b0.0012.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_set_active_links (2)
-From: syzbot <syzbot+ab36888b82c02205065e@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
 
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    69fd6b99b8f8 Merge tag 'perf_urgent_for_v6.17_rc3' of git:..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=167a6c42580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=fecbb496f75d3d61
-dashboard link: https://syzkaller.appspot.com/bug?extid=ab36888b82c02205065e
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/0010173ae06b/disk-69fd6b99.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/015ec9f0bead/vmlinux-69fd6b99.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/402b824d5994/bzImage-69fd6b99.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ab36888b82c02205065e@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-wlan0: Failed check-sdata-in-driver check, flags: 0x0
-WARNING: CPU: 0 PID: 21522 at net/mac80211/driver-ops.h:1723 drv_can_activate_links net/mac80211/driver-ops.h:1723 [inline]
-WARNING: CPU: 0 PID: 21522 at net/mac80211/driver-ops.h:1723 ieee80211_set_active_links+0x2d5/0x9d0 net/mac80211/link.c:600
-Modules linked in:
-CPU: 0 UID: 0 PID: 21522 Comm: kworker/u10:0 Tainted: G     U              syzkaller #0 PREEMPT(full) 
-Tainted: [U]=USER
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-Workqueue: events_unbound cfg80211_wiphy_work
-RIP: 0010:drv_can_activate_links net/mac80211/driver-ops.h:1723 [inline]
-RIP: 0010:ieee80211_set_active_links+0x2d5/0x9d0 net/mac80211/link.c:600
-Code: 74 24 08 48 81 c6 20 01 00 00 48 89 74 24 08 e8 91 13 b5 f6 8b 54 24 04 48 8b 74 24 08 48 c7 c7 20 eb 08 8d e8 0c 0c 74 f6 90 <0f> 0b 90 90 e8 72 13 b5 f6 4c 89 e2 48 b8 00 00 00 00 00 fc ff df
-RSP: 0018:ffffc90003c3fb00 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff888143bda9d0 RCX: ffffffff817a02c8
-RDX: ffff888079fa3c00 RSI: ffffffff817a02d5 RDI: 0000000000000001
-RBP: 000000000000000a R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: fffffffffffdf818 R12: ffff888143bd9728
-R13: 0000000000000000 R14: ffff8880280e0e40 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff8881246c3000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00002000001f2000 CR3: 0000000056f24000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- ieee80211_if_parse_active_links+0xbb/0x120 net/mac80211/debugfs_netdev.c:733
- wiphy_locked_debugfs_write_work+0xe6/0x1c0 net/wireless/debugfs.c:215
- cfg80211_wiphy_work+0x2c7/0x580 net/wireless/core.c:435
- process_one_work+0x9cf/0x1b70 kernel/workqueue.c:3236
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c5/0x780 kernel/kthread.c:463
- ret_from_fork+0x5d4/0x6f0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+RmVkb3IgUGNoZWxraW4gPHBjaGVsa2luQGlzcHJhcy5ydT4gd3JvdGU6DQo+IA0KPiBUaGFua3Mh
+IEkgYWdyZWUgd2l0aCBhbGwgYWZvcmVtZW50aW9uZWQgY29tbWVudHMgYnV0IHdvbmRlciBhYm91
+dCB0aGlzIG9uZToNCj4gDQo+IE9uIFRodSwgMjguIEF1ZyAwODowNywgWm9uZy1aaGUgWWFuZyB3
+cm90ZToNCj4gPiBGZWRvciBQY2hlbGtpbiA8cGNoZWxraW5AaXNwcmFzLnJ1PiB3cm90ZToNCj4g
+PiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcGNpLmMNCj4gPiA+
+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcGNpLmMNCj4gPiA+IEBA
+IC00NjQsMTAgKzQ2NCw3IEBAIHN0YXRpYyB2b2lkIHJ0dzg5X3BjaV90eF9zdGF0dXMoc3RydWN0
+IHJ0dzg5X2RldiAqcnR3ZGV2LA0KPiA+ID4gICAgIHN0cnVjdCBydHc4OV90eF9za2JfZGF0YSAq
+c2tiX2RhdGEgPSBSVFc4OV9UWF9TS0JfQ0Ioc2tiKTsNCj4gPiA+ICAgICBzdHJ1Y3QgaWVlZTgw
+MjExX3R4X2luZm8gKmluZm87DQo+ID4gPg0KPiA+ID4gLSAgIHJ0dzg5X2NvcmVfdHhfd2FpdF9j
+b21wbGV0ZShydHdkZXYsIHNrYl9kYXRhLCB0eF9zdGF0dXMgPT0gUlRXODlfVFhfRE9ORSk7DQo+
+ID4gPiAtDQo+ID4gPiAgICAgaW5mbyA9IElFRUU4MDIxMV9TS0JfQ0Ioc2tiKTsNCj4gPiA+IC0g
+ICBpZWVlODAyMTFfdHhfaW5mb19jbGVhcl9zdGF0dXMoaW5mbyk7DQo+ID4gPg0KPiA+ID4gICAg
+IGlmIChpbmZvLT5mbGFncyAmIElFRUU4MDIxMV9UWF9DVExfTk9fQUNLKQ0KPiA+ID4gICAgICAg
+ICAgICAgaW5mby0+ZmxhZ3MgfD0gSUVFRTgwMjExX1RYX1NUQVRfTk9BQ0tfVFJBTlNNSVRURUQ7
+DQo+ID4gPiBAQCAtNDk0LDYgKzQ5MSwxMCBAQCBzdGF0aWMgdm9pZCBydHc4OV9wY2lfdHhfc3Rh
+dHVzKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwNCj4gPiA+ICAgICAgICAgICAgIH0NCj4gPiA+
+ICAgICB9DQo+ID4gPg0KPiA+ID4gKyAgIGlmIChydHc4OV9jb3JlX3R4X3dhaXRfY29tcGxldGUo
+cnR3ZGV2LCBza2JfZGF0YSwgdHhfc3RhdHVzID09IFJUVzg5X1RYX0RPTkUpKQ0KPiA+ID4gKyAg
+ICAgICAgICAgcmV0dXJuOw0KPiA+ID4gKw0KPiA+ID4gKyAgIGllZWU4MDIxMV90eF9pbmZvX2Ns
+ZWFyX3N0YXR1cyhpbmZvKTsNCj4gPg0KPiA+IERvbid0IGNoYW5nZSBvcmRlciBvZiB0aGVzZSBj
+YWxscy4NCj4gPiAoaXQncyB3cm9uZyBmb3Igbm9ybWFsIHBrdCBiZWNhdXNlIHRoZWlyIHR4X2lu
+Zm8gYXJlIGNsZWFyZWQgYWZ0ZXINCj4gPiBmaWxsZWQpDQo+ID4NCj4gDQo+IGllZWU4MDIxMV90
+eF9pbmZvX2NsZWFyX3N0YXR1cygpIGNsZWFycyBvbmx5IFRYIHN0YXR1cyBwYXJ0IG9mIHRoZSBp
+ZWVlODAyMTFfdHhfaW5mby4gSXQNCj4gZG9lc24ndCB0b3VjaCAnZmxhZ3MnIGZpZWxkIC0gdGhl
+IG9ubHkgb25lIGZpbGxlZCBoZXJlIGJ5IHJ0dzg5X3BjaV90eF9zdGF0dXMoKS4gSXQgc2hvdWxk
+bid0IGJlDQo+IHdyb25nIGZvciBub3JtYWwgcGFja2V0cy4NCj4gDQoNCkkgZG91YmxlIGNoZWNr
+ZWQgaXQgYWdhaW4gYW5kIHRoaW5rIHlvdSBhcmUgcmlnaHQuDQpJIG1pc3JlYWQgdHhfaW5mby0+
+ZmxhZ3MgYWdhaW5zdCB0eF9pbmZvLT5zdGF0dXMuZmxhZ3MuDQpTb3JyeS4NCg0KPiBUaGUgcmVh
+c29uIGZvciBjaGFuZ2luZyB0aGUgb3JkZXIgb2YgdGhvc2UgY2FsbHMgaXMgdG8gaGF2ZSBhIGNo
+YW5jZSB0byB1cGRhdGUgdHhfcmluZw0KPiBzdGF0aXN0aWNzIGJlZm9yZSBmYXN0IHJldHVybiBm
+cm9tIHJ0dzg5X3BjaV90eF9zdGF0dXMoKSBpbiBjYXNlIG9mIHR4X3dhaXQgcGFja2V0cy4NCj4g
+DQo+IEJ1dCwgZXJnaCwgSSBjYW4ndCBmaW5kIHRob3NlIHN0YXRzIHJlcG9ydGVkIGFueXdoZXJl
+IGluIHRoZSBkcml2ZXIgc28gaXQgbG9va3MgbGlrZSBqdXN0IG5vdCBhIHJlYWwNCj4gaXNzdWUg
+Y3VycmVudGx5IGFuZCBJJ2QgcmF0aGVyIG5vdCBjaGFuZ2UgdGhlIG9yZGVyLCBva2F5Lg0KPiAN
+Cg0KVGhlc2Ugc3RhdGlzdGljcyBhcmUgdXNlZCB3aGVuIGRlYnVnZ2luZyBub3JtYWwgcGFja2V0
+cyBmcm9tIHN0YWNrLg0KRm9yIGRyaXZlciBwYWNrZXRzICh3aXRoIHR4IHdhaXQpLCBJIHRoaW5r
+IHRvcCBjYWxsZXJzLCBlLmcuIHJ0dzg5X2NvcmVfc2VuZF9udWxsZnVuYywNCndpbGwgd2FybnMg
+d2hlbiB0eCBmYWlsZWQuIFNvLCBkb24ndCBjYXJlIHRoZXNlIHN0YXRpc3RpY3MuDQoNCj4gPiA+
+ICAgICBpZWVlODAyMTFfdHhfc3RhdHVzX25pKHJ0d2Rldi0+aHcsIHNrYik7ICB9DQo+ID4gPg0K
 
