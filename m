@@ -1,167 +1,163 @@
-Return-Path: <linux-wireless+bounces-26843-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26844-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CAC0B3B096
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 03:48:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84CC6B3B0D0
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 04:18:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F09BD468665
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 01:48:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B6B7460D20
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 02:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376F319F43A;
-	Fri, 29 Aug 2025 01:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DTdTT8xX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C09821FF3E;
+	Fri, 29 Aug 2025 02:18:11 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAB3282F1;
-	Fri, 29 Aug 2025 01:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99C31E32BE;
+	Fri, 29 Aug 2025 02:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756432083; cv=none; b=N10EwUuMwY/k019pKNRNDnEiXCoziFLbn8FyLlcXPxqyqf06zUbGHXwSiwedPClNNJtG64k/xbODqVaqPQ+XOnNba/7+LhAkTPWQ2UVi97Cit6J6TyZyY5Nzv4ZTa0EO7T6Jz7ny0EyBrJhzNQq91Hop1PKZN9W3r9xztAnpZx8=
+	t=1756433891; cv=none; b=qupyXHLlS7hQxvTvFr4gRJ0jqGLWPYKa5imY2NFopP5TEgH8CXHu7nQYdhiXO3U+CuOY9QRsuykIwhFLtet4x+koYstGEKfcs7EbbRHrcb8Fxwkiwl16wXUWrwNg9y/LzCFRjIn/rt1lSDv7BCDu0AFf8lEgHr3uQE/ENlyaecE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756432083; c=relaxed/simple;
-	bh=m+73NuZ98uHxV1ACn3ixYRd/uju6S+4m7HnGvSX2Rl4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YNKhv6zil2D3scYr3etxPAdjRiSHjwnip6Iaqde8gwhdyMhYNlgmuZv8uXJJc+PNiQnNQr/DecZK/pNmrvqjK/CC1peca/92XX1004GvSSH1DOmhwfe3DjwYtnC4NUVg/g0SoRrx52cF5ITpGIhPbEO6ZvoTlbpAkDuB/QolOWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DTdTT8xX; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-71d5fb5e34cso15501257b3.0;
-        Thu, 28 Aug 2025 18:48:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756432080; x=1757036880; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eAbrzldm0WGdVoskxN34NZRa6TWzFG46zDfioa5p624=;
-        b=DTdTT8xXgCrBmev0bUW3bPaAODnzX9ULBUf6QIa7fE4wpoCXYzhBTt3wtXdG38b6MZ
-         exFoyf/sBHezP81FTr4TDU4ASE26j4l2tfMSCDGQ4k5vQ6CpdRe+h8e57v0zlbWkx2Ay
-         lCY+B8z1WQEpVVa1MK+TeXr5E9FvoFj0CTW6/e+ptOXZCv7zuUS3YG80+C0pRGR6bDL6
-         MeXmUk+WmtcFQk/mhPR6MnK9DuhibcenL5/FRUb4l1xliQ3v/v1KGDSkLVSDrilwDMGg
-         Am91jcnVTks0BFKGUcXCXHMkp/bg8GENBT8Iz+lpqJa+9Fv5ukC4QQzaBO6C8K+d17l/
-         KFBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756432080; x=1757036880;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eAbrzldm0WGdVoskxN34NZRa6TWzFG46zDfioa5p624=;
-        b=CNex3/qA+7edoq9iTbb0z7asylIUXAvZAZfeaflQs9gxprgx3iTR4RQhXXYdR2UGbz
-         1/JGFwZ4rb3nzY/Fp3D3fZu5tuDfZnASZaBx1hWUy9BSFIosvGTod3YrFIDp4RT+MxWC
-         sQfG1TArfcOcdTNcDVPzt8KZ0LBXbW4RXFeOfd7yZck3LRIzNuLEdWM+BkkXXkCRBqvk
-         Ddj8NoJY2Xh3Hs9+Oo0RLK4Dm4i/qsEm4+9loROEkI4VgptsmrAiWP8RYIwYLadxsV4N
-         89mHx7wSfBF13/0JxHuc8NmkNpnQPQWNVu9w4/GE/zNoZjVjaIT2oDommsg1wftgZlNE
-         o/jA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPQHpPUu8CDJ7Nd6a/BS6x72F9mWdBBQXHKo/HHykUwPVI7OAHh7/95f7OmW7U5JvjbRmmdnRNgkxwyF59@vger.kernel.org, AJvYcCVHgSTtKEGZPh8ZiRZGmuVlOnNJosUOKqBnUnemf7bKY+6zClRLRktIA2fV3k3UwEr4RqwsilbIAVKJ+Z4qJaM=@vger.kernel.org, AJvYcCVZzwGU1lq3zQMBuydHtXQpMKDMVN7UyzX2q7qkq58BjXHl6iUK94othnucdjgDLNf3V5lL9C+Qx2hJ@vger.kernel.org, AJvYcCXj7vus1OgE44sAoCB8Nk52EjyrfHMsR4ND9PTClx6t7MkgvikzzUzZ/GRe0mAFRA95gsxMxFsBOMVTgQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsqrNBAjRg8FbRGc87gZ53FiEguCAgw2ItthYYAGsz8TK69+vB
-	L4P/rrMWL7vSkptaevbYl4/pl7CJ1eg8OGgdlVAGaTkk3b6tWSOqoXALcU9TD3rEZmTCtBb+PG/
-	cGrtGJegC4QxKIKA6h/TUJmM2/+OgGuu24g==
-X-Gm-Gg: ASbGnctGSn5v/ZyvThxuQw57fDIK4y7ua+p9ijvnxUqPtOKrkjV4RSo/nyBraQ5MaXE
-	HaLUz/KXzqEuZifWGjl7iwo1I4WGMZu+XdIqKHq1vU2YFbhykR9zf5UG6EtTGRcuTM4YSbfPwi/
-	CznFrOBaHvvia9+L4DFVakYd0ZJz8tJ6gPvotjxbX9QuxK4tqzB/StUchmqAz78Xmctu0aCcT1r
-	EVAOGs9THHBmqnai3Fsb8WK7Ahoi+EOer41Nmx4LlJx2bsbMejCAZN2GsIECimw+2NNrHJxLq8s
-	HaizbUKpEzGZeB5e
-X-Google-Smtp-Source: AGHT+IGMTIxu4kuEAWCsjAG+nc++zNM6b7g28X8nqakbNWRy0uEGr3uqKYuDslHnMVWeT5ZH0ZAgF0UrA4MuoRiCKLw=
-X-Received: by 2002:a05:690c:91:b0:71f:9a36:d330 with SMTP id
- 00721157ae682-72132cd7b92mr157296177b3.25.1756432080506; Thu, 28 Aug 2025
- 18:48:00 -0700 (PDT)
+	s=arc-20240116; t=1756433891; c=relaxed/simple;
+	bh=zPImQ+S2+bHhXt3/ANQ8J2V6d3n857iAaQD+q/4oskw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=JCjLnuXSllFRicaWXpzgJ/7Rz69B17OK02wXnp5IxR1vEd2SlcPFVwY0MLOJumJ7sCBzNvgcc6/E1gj7LSpxP4+TwxOzjSGsEj699KEt5fv0KSJ9gMpIwnL9AkdPp3QJnnZUEclmOUTe1PGxBQZLWIDV7mxyrDc6/dG7aUMZF3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 68A861192D6;
+	Fri, 29 Aug 2025 02:18:02 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf17.hostedemail.com (Postfix) with ESMTPA id A458F19;
+	Fri, 29 Aug 2025 02:18:00 +0000 (UTC)
+Date: Thu, 28 Aug 2025 22:17:59 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: LKML <linux-kernel@vger.kernel.org>, Linux trace kernel
+ <linux-trace-kernel@vger.kernel.org>, linux-wireless@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Johannes Berg <johannes@sipsolutions.net>
+Subject: [PATCH] cfg80211: Remove unused tracepoints
+Message-ID: <20250828221759.131160ee@batman.local.home>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250827005658.3464-1-rosenp@gmail.com> <20250827005658.3464-2-rosenp@gmail.com>
- <175638709817.1370637.10754263567298002001.robh@kernel.org>
-In-Reply-To: <175638709817.1370637.10754263567298002001.robh@kernel.org>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Thu, 28 Aug 2025 18:47:49 -0700
-X-Gm-Features: Ac12FXz7dQN4Xh9ONcujdNNl25kFFY4GR9Z_8gx4a4ibzUsLaZYZWLH9f8kDwiI
-Message-ID: <CAKxU2N-Zfme=84rqxQ=uJro1YMeFGorveT-uRhx6_HpJmB-fxA@mail.gmail.com>
-Subject: Re: [PATCHv4 1/3] dt-bindings: net: wireless: ath9k: add led bindings
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>, devicetree@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
-	linux-mips@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	=?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: dksocuffydty3ausz59s7nha8f7q8jnf
+X-Rspamd-Server: rspamout05
+X-Rspamd-Queue-Id: A458F19
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+VFm/Vr4/2aUDNPbM/CaHBykL/3/sP+EY=
+X-HE-Tag: 1756433880-90718
+X-HE-Meta: U2FsdGVkX19djLNOA9fsDBdUBzRNk8elZK/ZlmS2qU4kZ+A/uafVQnZHNU/JujwdOswNiCKHl6AjZ5sM86iKUMmsNCkzldmtBe398xRS0SwK8XPQmnK+gXOsKB45OrTEkcoQGSu20P6drrkNw/RKbTl8bi+iUsDWz/rdwKJ0k/54+VN//yAN9eljtmNL2MEWyadJQyM1xq8oXvm5q1xJxo2EBJbH/Qp6V8PCnQeR5nmW4pi3dDZNYDR+AMA0TcUIMaAFLO0tbYR+3lNg3+LqEOVecufWA4/CDpJILdMCX/6bWeWOeao8wFJKhxNglJ6y+yuNV0HJ9UKLqQMGQ/A7WNXN1ke/piT4i+pRLBmFyswtL0R3Ae8VgPxJfr/Zdovi
 
-On Thu, Aug 28, 2025 at 6:30=E2=80=AFAM Rob Herring (Arm) <robh@kernel.org>=
- wrote:
->
->
-> On Tue, 26 Aug 2025 17:56:56 -0700, Rosen Penev wrote:
-> > The ath9k driver has various pin GPIO numbers for different chipsets
-> > which are not always correct for every device.
-> >
-> > Add bindings to specify the correct number and if it should be
-> > active-high.
-> >
-> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> > ---
-> >  .../bindings/net/wireless/qca,ath9k.yaml        | 17 +++++++++++++++++
-> >  1 file changed, 17 insertions(+)
-> >
->
-> My bot found errors running 'make dt_binding_check' on your patch:
->
-> yamllint warnings/errors:
->
-> dtschema/dtc warnings/errors:
-> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dts:92.1=
-5-25: Warning (reg_format): /example-2/ahb/wifi@180c0000/led:reg: property =
-has invalid length (4 bytes) (#address-cells =3D=3D 2, #size-cells =3D=3D 1=
-)
-> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dts:91.1=
-7-94.15: Warning (unit_address_vs_reg): /example-2/ahb/wifi@180c0000/led: n=
-ode has a reg or ranges property, but no unit name
-> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb: War=
-ning (pci_device_reg): Failed prerequisite 'reg_format'
-> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb: War=
-ning (pci_device_bus_num): Failed prerequisite 'reg_format'
-> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb: War=
-ning (simple_bus_reg): Failed prerequisite 'reg_format'
-> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb: War=
-ning (i2c_bus_reg): Failed prerequisite 'reg_format'
-> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb: War=
-ning (spi_bus_reg): Failed prerequisite 'reg_format'
-> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dts:91.1=
-7-94.15: Warning (avoid_default_addr_size): /example-2/ahb/wifi@180c0000/le=
-d: Relying on default #address-cells value
-> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dts:91.1=
-7-94.15: Warning (avoid_default_addr_size): /example-2/ahb/wifi@180c0000/le=
-d: Relying on default #size-cells value
-> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb: War=
-ning (unique_unit_address_if_enabled): Failed prerequisite 'avoid_default_a=
-ddr_size'
->
-> doc reference errors (make refcheckdocs):
->
-> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/202508=
-27005658.3464-2-rosenp@gmail.com
-FFS. These reviews were garbage. The next series will effectively be
-the same as the initial.
->
-> The base for the series is generally the latest rc1. A different dependen=
-cy
-> should be noted in *this* patch.
->
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
->
-> pip3 install dtschema --upgrade
->
-> Please check and re-submit after running the above command yourself. Note
-> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-> your schema. However, it must be unset to test all examples with your sch=
-ema.
->
+From: Steven Rostedt <rostedt@goodmis.org>
+
+Tracepoints that are defined take up around 5K each, even if they are not
+used. If they are defined and not used, then they waste memory for unused
+code. Soon unused tracepoints will cause warnings.
+
+Remove the unused tracepoints of the cfg80211 subsystem. They are:
+
+cfg80211_chandef_dfs_required
+cfg80211_return_u32
+cfg80211_return_uint
+cfg80211_send_rx_auth
+
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ net/wireless/trace.h | 56 --------------------------------------------
+ 1 file changed, 56 deletions(-)
+
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 34c584a215e5..9b6074155d59 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -3137,23 +3137,6 @@ DEFINE_EVENT(cfg80211_netdev_mac_evt, cfg80211_notify_new_peer_candidate,
+ 	TP_ARGS(netdev, macaddr)
+ );
+ 
+-DECLARE_EVENT_CLASS(netdev_evt_only,
+-	TP_PROTO(struct net_device *netdev),
+-	TP_ARGS(netdev),
+-	TP_STRUCT__entry(
+-		NETDEV_ENTRY
+-	),
+-	TP_fast_assign(
+-		NETDEV_ASSIGN;
+-	),
+-	TP_printk(NETDEV_PR_FMT , NETDEV_PR_ARG)
+-);
+-
+-DEFINE_EVENT(netdev_evt_only, cfg80211_send_rx_auth,
+-	TP_PROTO(struct net_device *netdev),
+-	TP_ARGS(netdev)
+-);
+-
+ TRACE_EVENT(cfg80211_send_rx_assoc,
+ 	TP_PROTO(struct net_device *netdev,
+ 		 const struct cfg80211_rx_assoc_resp_data *data),
+@@ -3480,21 +3463,6 @@ TRACE_EVENT(cfg80211_reg_can_beacon,
+ 		  __entry->prohibited_flags, __entry->permitting_flags)
+ );
+ 
+-TRACE_EVENT(cfg80211_chandef_dfs_required,
+-	TP_PROTO(struct wiphy *wiphy, struct cfg80211_chan_def *chandef),
+-	TP_ARGS(wiphy, chandef),
+-	TP_STRUCT__entry(
+-		WIPHY_ENTRY
+-		CHAN_DEF_ENTRY
+-	),
+-	TP_fast_assign(
+-		WIPHY_ASSIGN;
+-		CHAN_DEF_ASSIGN(chandef);
+-	),
+-	TP_printk(WIPHY_PR_FMT ", " CHAN_DEF_PR_FMT,
+-		  WIPHY_PR_ARG, CHAN_DEF_PR_ARG)
+-);
+-
+ TRACE_EVENT(cfg80211_ch_switch_notify,
+ 	TP_PROTO(struct net_device *netdev,
+ 		 struct cfg80211_chan_def *chandef,
+@@ -3862,30 +3830,6 @@ DEFINE_EVENT(cfg80211_bss_evt, cfg80211_return_bss,
+ 	TP_ARGS(pub)
+ );
+ 
+-TRACE_EVENT(cfg80211_return_uint,
+-	TP_PROTO(unsigned int ret),
+-	TP_ARGS(ret),
+-	TP_STRUCT__entry(
+-		__field(unsigned int, ret)
+-	),
+-	TP_fast_assign(
+-		__entry->ret = ret;
+-	),
+-	TP_printk("ret: %d", __entry->ret)
+-);
+-
+-TRACE_EVENT(cfg80211_return_u32,
+-	TP_PROTO(u32 ret),
+-	TP_ARGS(ret),
+-	TP_STRUCT__entry(
+-		__field(u32, ret)
+-	),
+-	TP_fast_assign(
+-		__entry->ret = ret;
+-	),
+-	TP_printk("ret: %u", __entry->ret)
+-);
+-
+ TRACE_EVENT(cfg80211_report_wowlan_wakeup,
+ 	TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 		 struct cfg80211_wowlan_wakeup *wakeup),
+-- 
+2.50.1
+
 
