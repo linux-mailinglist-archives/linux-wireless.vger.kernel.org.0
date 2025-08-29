@@ -1,96 +1,133 @@
-Return-Path: <linux-wireless+bounces-26857-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26858-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ECA4B3B34D
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 08:23:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5019AB3B36A
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 08:31:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18864685C7C
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 06:23:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4848D4E32A9
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 06:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B7721C194;
-	Fri, 29 Aug 2025 06:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72622309B9;
+	Fri, 29 Aug 2025 06:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="JaXC6RxM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZNIfukHf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7C37404E
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Aug 2025 06:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE94220F2C;
+	Fri, 29 Aug 2025 06:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756448597; cv=none; b=gZXOsPo71zc7/sPh3AjDl5+YfIKEgxxONV45TxSQyhQ0VuEeHnweFPfW3zfbSFL/VEWsTnBvfPKTS4kst9IBNU62J2cnBo0ZdB1DM7jvKTW8q28yIXhUTpMLOc7epAPVOwNPef3sY80DC4G7ArLz3cQxwTaHOZQu0U817jvyoBA=
+	t=1756449059; cv=none; b=tVUbF4nHj/UL1XBCtKIEKUeqnal5vb5OPmcpLR28XyQo1FNWXMY+6UeJ1TJw6jHY2Pzhe9uLuA3FWS1aHi/9W78qnBFC/zKgP5lj04WX0bT3J0Jz6wYfGb7RZ2YUEFmVtcxEcmcX9VJoKKTPrhSBNLKsUKFZKAKaOPB/Oam+gi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756448597; c=relaxed/simple;
-	bh=8YCa5+prd3vwlR37AXdSwzxIqUeggn0QDHv04PXAl9Y=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ThCkG94vE8YnIJMHOIKa7GWTzekj5FUL5D3cPAHzAeAjb/N0AaKAYG9OTGOcO1xu0/fXndlIB4+2VKGrjrqgR2ohopDC1LgyCTu2hdo9smXXe+qsieqlKIRLSGsXBF1O71P4LCLXmIexr4DHzA/w0W6iH0URraS0lnQhU1Xo1Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=JaXC6RxM; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57T6NBM703127002, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1756448591; bh=8YCa5+prd3vwlR37AXdSwzxIqUeggn0QDHv04PXAl9Y=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=JaXC6RxMuvIyrEqSJC0RhL8iNMxk+9IRlGkF74Sh04FQziq+r63zB0sWV7JJegRNb
-	 KqOddQzMa0TaeUWJYVEJ4knT9dAAY/lM8iA3uyCPjHfCJenvOwxgsdGpMlzfH31G/M
-	 /W5jnVJkxGUgK3tpf7DUj0OwtO+slnLnsZ4m5VTVj2wv/ly1iRW8vQa64dOrGs4BxA
-	 6eHCtJltNvcsk3uVwFUC+HU3pMlHkcr8PRKvMn2gVFCyU0wJm0tsdq86ZsJjFLB6Nj
-	 rn8jLmyerhOIF84jxUcOx+4ABo8vRX+O237iunuS5suSZhGDElePUImEzSwlgbjtCZ
-	 mfNxVqRJZE2IA==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57T6NBM703127002
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 Aug 2025 14:23:11 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Fri, 29 Aug 2025 14:23:11 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
- 15.02.1544.027; Fri, 29 Aug 2025 14:23:11 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH rtw-next v3 00/11] wifi: rtw89: Add support for RTL8852CU
-Thread-Topic: [PATCH rtw-next v3 00/11] wifi: rtw89: Add support for RTL8852CU
-Thread-Index: AQHcF3JiHh9TMEvBrkmiQiJfPugsk7R5KnRg
-Date: Fri, 29 Aug 2025 06:23:11 +0000
-Message-ID: <a81f6725b183401d8973bc648c3ecbc2@realtek.com>
-References: <fac0abab-2334-4ae2-9a80-f3fd7808e392@gmail.com>
-In-Reply-To: <fac0abab-2334-4ae2-9a80-f3fd7808e392@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1756449059; c=relaxed/simple;
+	bh=T8H1V3HWZLD2UtEQdd13m1QTiyyAs7ME8QUVDUN+OqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j/UbgWTXhx4n2Uz+3DsScUuNPJazKDya9Qr2oLYjj/Z/q4WaQjIuDGCgrSzMGtGSbeQYQaR7FhPuZ8lL2KLDQxj+dl/AxH1hE+4Nbs8sKcdRARuwnDd/e25joiTolVjedGUM0wncbxlW2gTCuqYKOveoBDlW73P9zovwBlo8148=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNIfukHf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C94C4CEF0;
+	Fri, 29 Aug 2025 06:30:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756449059;
+	bh=T8H1V3HWZLD2UtEQdd13m1QTiyyAs7ME8QUVDUN+OqE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZNIfukHf7wXRrcE8vYPt7yyz8qghc+VlBtHbCYwEDVlVRuOOS9VYmFyWQ15KFnbpp
+	 NVXzs+bhPibRXbP/jAKjTL4ibk3C2vI/llVOWCK2U9oF7tWQSktIRtAvy37Zf/HDbj
+	 ML5HwKFtETCdAIIDPk/XWD869xIGHDwEGJRX8Zp4mYLvWhQrOWHnIbr9IapG+KXpTU
+	 CDvQwo0RwlZjlPvKEeWNOsg6eGq5RP+qj5J2JGysceWgae47hxUYQA7dSULZ5Fv7rY
+	 Ae6kRKDwJjvgqxyhDsY4K2pWQgbhgWgu9yLUgmAhIWiM7Rq9urGsaoq2BKXBmrPkms
+	 xLqb7R0ZPRHgw==
+Date: Fri, 29 Aug 2025 08:30:56 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: "Rob Herring (Arm)" <robh@kernel.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, devicetree@vger.kernel.org, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-mips@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Subject: Re: [PATCHv4 1/3] dt-bindings: net: wireless: ath9k: add led bindings
+Message-ID: <20250829-sophisticated-macho-corgi-a27cf3@kuoka>
+References: <20250827005658.3464-1-rosenp@gmail.com>
+ <20250827005658.3464-2-rosenp@gmail.com>
+ <175638709817.1370637.10754263567298002001.robh@kernel.org>
+ <CAKxU2N-Zfme=84rqxQ=uJro1YMeFGorveT-uRhx6_HpJmB-fxA@mail.gmail.com>
+ <9208c440-f9e3-4289-9c33-81bb35383d53@kernel.org>
+ <CAKxU2N9o_jJd7mfVQE2yab5xX+-gKa8qB8hLkKJPqZq+YmzE4Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAKxU2N9o_jJd7mfVQE2yab5xX+-gKa8qB8hLkKJPqZq+YmzE4Q@mail.gmail.com>
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBBZGQg
-c3VwcG9ydCBmb3IgUlRMODg1MkNVLiBJdCB3b3JrcyB3ZWxsIGJ1dCBzb21ldGltZXMgaXQgbG9z
-ZXMgdGhlDQo+IGNvbm5lY3Rpb246DQo+IA0KPiBKdWwgMDQgMTY6MDU6NTYgaWRlYXBhZDIga2Vy
-bmVsOiB3bHAzczBmM3U0OiBDb25uZWN0aW9uIHRvIEFQIC4uLiBsb3N0DQo+IEp1bCAxNCAxMzo0
-NToyNiBpZGVhcGFkMiBrZXJuZWw6IHdscDNzMGYzdTQ6IENvbm5lY3Rpb24gdG8gQVAgLi4uIGxv
-c3QNCj4gSnVsIDE1IDE3OjUxOjI4IGlkZWFwYWQyIGtlcm5lbDogd2xwM3MwZjN1NDogQ29ubmVj
-dGlvbiB0byBBUCAuLi4gbG9zdA0KPiBKdWwgMTggMTQ6NDM6MzAgaWRlYXBhZDIga2VybmVsOiB3
-bHAzczBmM3U0OiBDb25uZWN0aW9uIHRvIEFQIC4uLiBsb3N0DQo+IEp1bCAyNCAxNDo1ODowNyBp
-ZGVhcGFkMiBrZXJuZWw6IHdscDNzMGYzdTQ6IENvbm5lY3Rpb24gdG8gQVAgLi4uIGxvc3QNCj4g
-DQo+IFdoZW4gdGhhdCBoYXBwZW5zIGl0IHJlY29ubmVjdHMgaW1tZWRpYXRlbHkuDQoNCkludGVy
-bmFsIGV4cGVydHMgdG9sZCBtZSB0aGV5IG5lZWQgbW9yZSBkYXRhIHRvIGFuYWx5emUgdGhlIHBy
-b2JsZW0sIEknbGwNCnNoYXJlIHlvdSBhIGRlYnVnIHBhdGNoIGxhdGVyLiBCZWZvcmUgdGhhdCwg
-cGxlYXNlIHJlYWQgNCBieXRlcyBvZiAweEYwIHJlZ2lzdGVyDQp2aWEgZGVidWdmcy4gaS5lLiAn
-ZWNobyAweEYwIDQgPiByZWFkX3JlZzsgY2F0IHJlYWRfcmVnJy4NCg0KQW5vdGhlciB0aGluZyBp
-cyB3b3VsZCB5b3UgbGlrZSBtZSBtZXJnZSB0aGlzIHBhdGNoc2V0IGJlZm9yZSB0aGUgcHJvYmxl
-bQ0KZ2V0IHJlc29sdmVkPyBJZiBzbywgZW5kIHVzZXJzIG1pZ2h0IHJlcG9ydCBwcm9ibGVtcyBm
-cmVxdWVudGx5LiBNYXliZSwgd2UNCmNhbiBqdXN0IG1lcmdlIG1vc3QgcGF0Y2hlcywgYnV0IG5v
-dCBhY3R1YWxseSBlbmFibGUgUlRMODg1MkNVIGJ5IHRoZSBsYXN0DQpwYXRjaC4gUGxlYXNlIGxl
-dCBtZSBrbm93IHdoYXQgeW91IHRoaW5rLg0KDQo=
+On Thu, Aug 28, 2025 at 11:12:51PM -0700, Rosen Penev wrote:
+> On Thu, Aug 28, 2025 at 11:02=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel=
+=2Eorg> wrote:
+> >
+> > On 29/08/2025 03:47, Rosen Penev wrote:
+> > >> dtschema/dtc warnings/errors:
+> > >> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dts=
+:92.15-25: Warning (reg_format): /example-2/ahb/wifi@180c0000/led:reg: prop=
+erty has invalid length (4 bytes) (#address-cells =3D=3D 2, #size-cells =3D=
+=3D 1)
+> > >> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dts=
+:91.17-94.15: Warning (unit_address_vs_reg): /example-2/ahb/wifi@180c0000/l=
+ed: node has a reg or ranges property, but no unit name
+> > >> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb=
+: Warning (pci_device_reg): Failed prerequisite 'reg_format'
+> > >> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb=
+: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+> > >> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb=
+: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
+> > >> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb=
+: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+> > >> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb=
+: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+> > >> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dts=
+:91.17-94.15: Warning (avoid_default_addr_size): /example-2/ahb/wifi@180c00=
+00/led: Relying on default #address-cells value
+> > >> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dts=
+:91.17-94.15: Warning (avoid_default_addr_size): /example-2/ahb/wifi@180c00=
+00/led: Relying on default #size-cells value
+> > >> Documentation/devicetree/bindings/net/wireless/qca,ath9k.example.dtb=
+: Warning (unique_unit_address_if_enabled): Failed prerequisite 'avoid_defa=
+ult_addr_size'
+> > >>
+> > >> doc reference errors (make refcheckdocs):
+> > >>
+> > >> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/2=
+0250827005658.3464-2-rosenp@gmail.com
+> > > FFS. These reviews were garbage. The next series will effectively be
+> >
+> > What? My and Conor reviews were garbage?
+> I was specifically referring to replacing led-sources with reg. The
+
+You sent untested, broken code and you complain that reviews were
+garbage?
+
+
+> latter needs address and size-cells specified which is verbose for no
+> good reason.
+>=20
+> Meaning the initial patchset was almost ideal. Just
+> of_device_is_available needed to be fixed.
+>=20
+> I'm irritated as this will be up to v5 when it should have been up to v2.
+
+Start testing your patches finally!
+
+That's your job, not our infrastructure!
+
+I think every damn patch from you was completely broken, because you did
+not bother to test, but you call reviews of others "garbage".
+
+That's not acceptable.
 
