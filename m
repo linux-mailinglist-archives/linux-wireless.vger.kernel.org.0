@@ -1,296 +1,113 @@
-Return-Path: <linux-wireless+bounces-26862-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26863-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88983B3B79B
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 11:41:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4FBB3BB97
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 14:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DF5168212B
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 09:41:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3B1516F7A2
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Aug 2025 12:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6212F0680;
-	Fri, 29 Aug 2025 09:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D5A2C235A;
+	Fri, 29 Aug 2025 12:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="w2wzKJQZ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mT0Qxt13"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B193043B8;
-	Fri, 29 Aug 2025 09:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E932A33F3
+	for <linux-wireless@vger.kernel.org>; Fri, 29 Aug 2025 12:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756460483; cv=none; b=P+LeIsiKFWcLErlyjA2d7JSo4PS1ZHweAbTquBpKRC3gSZPzYtUMmAhrqw0UWRXXR+hLp4FrqwBQml05VDRKV9iPdEE+J9K11FWku6EQNDOj9jV0913uscjEheeRG/LXPVkkt2NXolm+lPSL3IiwEkBv/KJ1V13U3h5I8JU69q4=
+	t=1756471710; cv=none; b=DMgsWDcjlTHq3IKcP7Vzmwn3yRKi/kvcZDrvs53p4/P48116fEReg3fHYzbb/Fqqii8JxSvTT6ZqbTtBMT/X7Bal5+acHZP9al8H4OR+BwkatvDVxg5d4CZ3/G31Fbn7VDNgfRHEHXiRgv9NHzSGAw3eVO51i8quHTMLjMil69c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756460483; c=relaxed/simple;
-	bh=CkSf9nDgRBzfKl3t2CBt/uXviW28S25xi5AxQQDIpZA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YKbQBAvRGkVBenkpOuWciHFlpIoqPORyTYTV/sTYmdnqMtoGQsgvaudAPTtnyw3mlxzh4cT1c/l/4clEX3+ZfBXRcUci3u+5DqnKHszAELVWsG69N3rQVtJx3zfoUJUg1gCiMeLoMJpBps5bMW/4sOPHTpPJ14KedgMBwdkR3Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=w2wzKJQZ; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57T9evOF33335886, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1756460457; bh=4moyHNWba+bebLk0dnMJdhTozC/x1rqIuMhlvLYSABU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=w2wzKJQZSaO+lwXJZ90eud0if16WJE2DlOnS4WMcUX/TFg9qlAJqkML8vqF7weVFT
-	 RyibEtmDeWOnIBEjtqjzW8RTwplg6Cm5gzZjrhCyvWAHWAh+dS0ZhHf8f+xY30hsWU
-	 rK9OkV5F7cwkPkAQZ3LXqeKc9uuvZRlqKfU2zwWxNEjS+PxNf3tLH/CncX085W8got
-	 AtIyhokWGtC8jlawNvjOjZ7KwSz2oWApk3KgvWsYPjQ6e6ds/kgA7so2HXBafGPcDc
-	 mo4pfHs8DygKOVUzYQPRM9Gs6YFjlOJOlomtgPaDI9+Z6Xob9rrvovNmkL+uV8OwnB
-	 uSHkWgapgbKRQ==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57T9evOF33335886
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 Aug 2025 17:40:57 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Fri, 29 Aug 2025 17:40:57 +0800
-Received: from RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d]) by
- RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d%2]) with mapi id
- 15.01.2507.035; Fri, 29 Aug 2025 17:40:57 +0800
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
-To: Fedor Pchelkin <pchelkin@ispras.ru>, Ping-Ke Shih <pkshih@realtek.com>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>
-CC: Bernie Huang <phhuang@realtek.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH rtw v3 2/5] wifi: rtw89: fix tx_wait initialization race
-Thread-Topic: [PATCH rtw v3 2/5] wifi: rtw89: fix tx_wait initialization race
-Thread-Index: AQHcGGCjH5eSvzlnzk+EPaGXQpbFnLR5Tksw
-Date: Fri, 29 Aug 2025 09:40:57 +0000
-Message-ID: <99e8d23ce3314a76a2a50db1e7d386f3@realtek.com>
-References: <20250828211245.178843-1-pchelkin@ispras.ru>
- <20250828211245.178843-3-pchelkin@ispras.ru>
-In-Reply-To: <20250828211245.178843-3-pchelkin@ispras.ru>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1756471710; c=relaxed/simple;
+	bh=s0Y1Z5NRmIswO1bXuLmTtrvgrV4SkjVpWswCBrXNYuQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=q76N2f1+voQ7V0/ww6DbCkRV/xsuOT2F9S6S+RddG+TAYpuFPwbPDiYeQomii4qd+bNE7+vXFf8MCXPD6ovBz1SuXX/yWil1wqo0tl56R2fCueppjFkAnX4xZMAgCyosfghf+CJePhG9FQNDawJ+9yhCzT2Wx8A8SCbt91LMPUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mT0Qxt13; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45b83ae1734so679315e9.0
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Aug 2025 05:48:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756471706; x=1757076506; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y1TiY7ysjOZKRPS0v/GfCN7RvRXXI4uCIgolqPESgxk=;
+        b=mT0Qxt13CfTHbqi/4KcL3oGnvLvJFHPnFiqtzAueflzKko/BozHXlp1ZkYvdRGCqhR
+         qwuwgLgo0DDjgy3X33jKvDhekv6LnAJjbwgqYxwkDCeJdo3JzKkJSLQsNxi981T5Xlgk
+         xlfme0zuxdHzr54ojBcLXD4qlL0fkA1ALINuJWqY2q2BeEaAe6uZtqAV3Whyhywx95/T
+         6NoGirhRpA/k9cFwyjYh2hYHv7CznihRzdNK7O59JSSRpuZvuHa+FQUUcFFr/4C5COSr
+         gm9xd23r020aLKyXodwbtaZihGGeJznkZ4GT69UpvrimmpK+kkGhXzRYQVQbJAOq4bKb
+         0xQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756471706; x=1757076506;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y1TiY7ysjOZKRPS0v/GfCN7RvRXXI4uCIgolqPESgxk=;
+        b=qQHQJ0kJ62RInevtp6IAq9TRJki5GsHjmq/hEuoBpMXkzg+W0TIZGPoIA/fIyjfSYM
+         bnDDT4pQaOFJ5EvH1z6yDZDbN0cPUuu9LdzfGmDmBl9kFI/KfBtZSFacjjRWvqEvVIi7
+         DSTI6jrP1B6JrulBaXwiecgTWvq1Q63/crI7RMEcZ+BZJS82FjR7nOxRFy/X18TXcVcb
+         73IiYBKTIzrwMItwVM6igOcsiU9oVU/ATgchHrtDLYOUQ2JhdSJ5NFCTzg/cdPI6L2D6
+         hUs1WqBnEyqHtBA9U6yZ5SYcwEIdkpjvjXmB5fDozyZIef+q82T/veOW08/3JYtvtm2b
+         fAXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDLkxUUF5TOFipS4Q3dhlGojUCyJYmbOn0voaca8OosYwZk7ygB/q05qKjJFJwSVPLEdPeBo93gb5cWjEPyQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmlMZrXouqE1759IwHXTkr9kyx00M5bPsDs8gkljCuqSNbcOrt
+	LsakJQnk7NDhYrPoHl12VEV4+dWW4vWfbACOcLP2Cytb7Oha74OeGn52jVPNMZTTL94=
+X-Gm-Gg: ASbGnctfJ4BFwgTByYrGbYRQZsd7mMvGHYk5J+Zx28EF0QpwNVGh2mkH750HfT/fsrv
+	0knAo7h7pkIIhyIfsfX6vfgjhCj63sDcvNbFI7EcwD7JJypc7maaldEgYgGApe80N+Fp4d72QoV
+	S5nij4pwH3QFtG3TMgrCsvrA1CverFYMOv34H66czMIbO7GFzuDrOWdFmDHgTx19fhyJAFoVv+X
+	hxhOcq08uMYL80gHQUi3NzHpVtA6dmzWbEDLJ7QlK1wuVbxxUDB279iIJjT4rhOHn0ToGoJuMsZ
+	/ujREH+acbOgyBIMyKqnxlaNhuN6mRqBptymwAUaBTQPnEzucnIZ5RxJqnymypKzrj5LeezL1ff
+	rmEu+OjHoEvKDDQTaOwBP8wgh38CH5bbcjsq5Tw==
+X-Google-Smtp-Source: AGHT+IG5ZyAiHuK1O/1CVyBhFH7yFbM7hahLKw5Q/RCW2h1UrGvO45lEpWadjzIhQtCVo+X7CY44ZQ==
+X-Received: by 2002:a05:600c:2ad3:b0:45b:79fd:cb45 with SMTP id 5b1f17b1804b1-45b79fdcc32mr37397295e9.29.1756471706168;
+        Fri, 29 Aug 2025 05:48:26 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b6f4aa8a0sm118810715e9.12.2025.08.29.05.48.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Aug 2025 05:48:25 -0700 (PDT)
+Date: Fri, 29 Aug 2025 15:48:22 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Marc Bornand <dev.mbornand@systemb.ch>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	"John W. Linville" <linville@tuxdriver.com>,
+	libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	Roopni Devanathan <quic_rdevanat@quicinc.com>,
+	Solomon Peachy <pizza@shaftnet.org>
+Subject: [PATCH 0/3] wifi: cap a few SSID lengths
+Message-ID: <cover.1756456951.git.dan.carpenter@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fedor Pchelkin <pchelkin@ispras.ru> wrote:
-> Now that nullfunc skbs are recycled in a separate work item in the driver=
-, the following race
-> during initialization and processing of those skbs might lead to noticeab=
-le bugs:
->=20
->       Waiting thread                          Completing thread
->=20
-> rtw89_core_send_nullfunc()
->   rtw89_core_tx_write_link()
->     ...
->     rtw89_pci_txwd_submit()
->       skb_data->wait =3D NULL
->       /* add skb to the queue */
->       skb_queue_tail(&txwd->queue, skb)
->                                             rtw89_pci_napi_poll()
->                                             ...
->                                               rtw89_pci_release_txwd_skb(=
-)
->                                                 /* get skb from the queue=
- */
->                                                 skb_unlink(skb, &txwd->qu=
-eue)
->                                                 rtw89_pci_tx_status()
->                                                   rtw89_core_tx_wait_comp=
-lete()
->                                                   /* use incorrect skb_da=
-ta->wait
-> */
->   rtw89_core_tx_kick_off_and_wait()
->   /* assign skb_data->wait but too late */
->=20
-> The value of skb_data->wait indicates whether skb is passed on to the cor=
-e ieee80211 stack
-> or released by the driver itself.  So assure that by the time skb is adde=
-d to txwd queue and
-> becomes visible to the completing side, it has already allocated tx_wait-=
-related data (in case
-> it's needed).
->=20
-> Found by Linux Verification Center (linuxtesting.org).
->=20
-> Fixes: 1ae5ca615285 ("wifi: rtw89: add function to wait for completion of=
- TX skbs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> ---
->  drivers/net/wireless/realtek/rtw89/core.c | 30 ++++++++++++++---------
-> drivers/net/wireless/realtek/rtw89/pci.c  |  2 --
->  2 files changed, 18 insertions(+), 14 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/realtek/rtw89/core.c
-> b/drivers/net/wireless/realtek/rtw89/core.c
-> index 5c964283cd67..57f20559dfde 100644
-> --- a/drivers/net/wireless/realtek/rtw89/core.c
-> +++ b/drivers/net/wireless/realtek/rtw89/core.c
-> @@ -1094,20 +1094,12 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_=
-dev *rtwdev,
-> struct sk_buff *sk
->                                     int qsel, unsigned int timeout)  {
->         struct rtw89_tx_skb_data *skb_data =3D RTW89_TX_SKB_CB(skb);
-> -       struct rtw89_tx_wait_info *wait;
-> +       struct rtw89_tx_wait_info *wait =3D skb_data->wait;
+These patches are based on static analysis and review.  The other places
+which get the ssid from ieee80211_bss_get_ie() do bounds checking to
+ensure that the ssid length isn't more than IEEE80211_MAX_SSID_LEN (32).
 
-wiphy_dereference(rtwdev->hw->wiphy, skb_data->wait)
+Dan Carpenter (3):
+  wifi: cw1200: cap SSID length in cw1200_do_join()
+  wifi: libertas: cap SSID len in lbs_associate()
+  wifi: cfg80211: sme: capp SSID length in __cfg80211_connect_result()
 
->         unsigned long time_left;
->         int ret =3D 0;
->=20
->         lockdep_assert_wiphy(rtwdev->hw->wiphy);
->=20
-> -       wait =3D kzalloc(sizeof(*wait), GFP_KERNEL);
-> -       if (!wait) {
-> -               rtw89_core_tx_kick_off(rtwdev, qsel);
-> -               return 0;
-> -       }
-> -
-> -       init_completion(&wait->completion);
-> -       rcu_assign_pointer(skb_data->wait, wait);
->         wait->skb =3D skb;
+ drivers/net/wireless/marvell/libertas/cfg.c | 9 ++++++---
+ drivers/net/wireless/st/cw1200/sta.c        | 2 +-
+ net/wireless/sme.c                          | 5 ++++-
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
-Also, move "wait->skb =3D skb" to where wait is initialized.
-
->=20
->         rtw89_core_tx_kick_off(rtwdev, qsel); @@ -1172,10 +1164,12 @@ int
-> rtw89_h2c_tx(struct rtw89_dev *rtwdev,  static int rtw89_core_tx_write_li=
-nk(struct
-> rtw89_dev *rtwdev,
->                                     struct rtw89_vif_link *rtwvif_link,
->                                     struct rtw89_sta_link *rtwsta_link,
-> -                                   struct sk_buff *skb, int *qsel, bool =
-sw_mld)
-> +                                   struct sk_buff *skb, int *qsel, bool =
-sw_mld,
-> +                                   struct rtw89_tx_wait_info *wait)
->  {
->         struct ieee80211_sta *sta =3D rtwsta_link_to_sta_safe(rtwsta_link=
-);
->         struct ieee80211_vif *vif =3D rtwvif_link_to_vif(rtwvif_link);
-> +       struct rtw89_tx_skb_data *skb_data =3D RTW89_TX_SKB_CB(skb);
->         struct rtw89_vif *rtwvif =3D rtwvif_link->rtwvif;
->         struct rtw89_core_tx_request tx_req =3D {};
->         int ret;
-> @@ -1192,6 +1186,8 @@ static int rtw89_core_tx_write_link(struct rtw89_de=
-v *rtwdev,
->         rtw89_core_tx_update_desc_info(rtwdev, &tx_req);
->         rtw89_core_tx_wake(rtwdev, &tx_req);
->=20
-> +       rcu_assign_pointer(skb_data->wait, wait);
-> +
->         ret =3D rtw89_hci_tx_write(rtwdev, &tx_req);
->         if (ret) {
->                 rtw89_err(rtwdev, "failed to transmit skb to HCI\n"); @@ =
--1228,7 +1224,8
-> @@ int rtw89_core_tx_write(struct rtw89_dev *rtwdev, struct ieee80211_vif=
- *vif,
->                 }
->         }
->=20
-> -       return rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link,=
- skb, qsel, false);
-> +       return rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link,=
- skb, qsel, false,
-> +                                       NULL);
->  }
->=20
->  static __le32 rtw89_build_txwd_body0(struct rtw89_tx_desc_info *desc_inf=
-o) @@ -3426,6
-> +3423,7 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwdev, struct =
-rtw89_vif_link
-> *rt
->         struct ieee80211_vif *vif =3D rtwvif_link_to_vif(rtwvif_link);
->         int link_id =3D ieee80211_vif_is_mld(vif) ? rtwvif_link->link_id =
-: -1;
->         struct rtw89_sta_link *rtwsta_link;
-> +       struct rtw89_tx_wait_info *wait;
->         struct ieee80211_sta *sta;
->         struct ieee80211_hdr *hdr;
->         struct rtw89_sta *rtwsta;
-> @@ -3435,6 +3433,12 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtw=
-dev, struct
-> rtw89_vif_link *rt
->         if (vif->type !=3D NL80211_IFTYPE_STATION || !vif->cfg.assoc)
->                 return 0;
->=20
-> +       wait =3D kzalloc(sizeof(*wait), GFP_KERNEL);
-> +       if (!wait)
-> +               return -ENOMEM;
-> +
-> +       init_completion(&wait->completion);
-> +
->         rcu_read_lock();
->         sta =3D ieee80211_find_sta(vif, vif->cfg.ap_addr);
->         if (!sta) {
-> @@ -3459,7 +3463,8 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwd=
-ev, struct
-> rtw89_vif_link *rt
->                 goto out;
->         }
->=20
-
-Fill wait->skb as mentioned above.
-
-> -       ret =3D rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link=
-, skb, &qsel, true);
-> +       ret =3D rtw89_core_tx_write_link(rtwdev, rtwvif_link, rtwsta_link=
-, skb, &qsel, true,
-> +                                      wait);
->         if (ret) {
->                 rtw89_warn(rtwdev, "nullfunc transmit failed: %d\n", ret)=
-;
->                 dev_kfree_skb_any(skb);
-> @@ -3472,6 +3477,7 @@ int rtw89_core_send_nullfunc(struct rtw89_dev *rtwd=
-ev, struct
-> rtw89_vif_link *rt
->                                                timeout);
->  out:
->         rcu_read_unlock();
-> +       kfree(wait);
->=20
->         return ret;
->  }
-> diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wirel=
-ess/realtek/rtw89/pci.c
-> index 4e3034b44f56..cb9682f306a6 100644
-> --- a/drivers/net/wireless/realtek/rtw89/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw89/pci.c
-> @@ -1372,7 +1372,6 @@ static int rtw89_pci_txwd_submit(struct rtw89_dev *=
-rtwdev,
->         struct pci_dev *pdev =3D rtwpci->pdev;
->         struct sk_buff *skb =3D tx_req->skb;
->         struct rtw89_pci_tx_data *tx_data =3D RTW89_PCI_TX_SKB_CB(skb);
-> -       struct rtw89_tx_skb_data *skb_data =3D RTW89_TX_SKB_CB(skb);
->         bool en_wd_info =3D desc_info->en_wd_info;
->         u32 txwd_len;
->         u32 txwp_len;
-> @@ -1388,7 +1387,6 @@ static int rtw89_pci_txwd_submit(struct rtw89_dev *=
-rtwdev,
->         }
->=20
->         tx_data->dma =3D dma;
-> -       rcu_assign_pointer(skb_data->wait, NULL);
->=20
->         txwp_len =3D sizeof(*txwp_info);
->         txwd_len =3D chip->txwd_body_size;
-> --
-> 2.51.0
->=20
+-- 
+2.47.2
 
 
