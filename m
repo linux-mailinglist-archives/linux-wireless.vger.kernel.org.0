@@ -1,169 +1,108 @@
-Return-Path: <linux-wireless+bounces-26880-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26881-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F44B3D58A
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Sep 2025 00:15:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9121EB3D68F
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Sep 2025 04:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F390018985ED
-	for <lists+linux-wireless@lfdr.de>; Sun, 31 Aug 2025 22:15:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E8213BC885
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Sep 2025 02:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB8B22F76F;
-	Sun, 31 Aug 2025 22:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40A9202997;
+	Mon,  1 Sep 2025 02:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sxz1Y0SD"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="nD49Cw2x"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDF24A04
-	for <linux-wireless@vger.kernel.org>; Sun, 31 Aug 2025 22:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DEF207A32
+	for <linux-wireless@vger.kernel.org>; Mon,  1 Sep 2025 02:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756678496; cv=none; b=B1zqbJ46T29kk3jMgCKtizqH6MTKlD/dN9uBo4aEA32dp56OmAqcPclWnW766f9D8z6V2QGPT+BMJOFuEqKH3s0/xMkIkGUNPj54Ex0yPsz4Yk4HAfBcfeT8JGJAn/PQxv1OsHBZ+yAtWnnOA/ky+35jALv1YuKP4dY01Hdd8S8=
+	t=1756692588; cv=none; b=hi22+u/NyUxUielo/M6YtT2wWtfwM6ANv41O7va15KRoGZDnCo8J2FpjskwWu1PE8t1RQaxZcCvGAp9akNrop7y/NweOrN7+XjqwHiJFZ3CSoMVFd+bA9d6FYfjaUTDLq11np8i39uYYYRXwiFJkE4toNa/q0D08G7/uQqAkx2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756678496; c=relaxed/simple;
-	bh=3Xss2Co3He96uRMaXnCLjMQL0IkTNyb4K4s+G1NFEY8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=n7igsw2I+ntYpg0pxOsq/jPxBulfB/OGZVWMgnriLJQNyRjFrx3vPPBRMalbo0oUYVxHxBvx+maiVXiyK0mgwgrl4jFTklIIr9rj/FtqiEepgPAfkBxxtKXrxKvODTf3F6pSWwbDD6jKZ/vJnubXs4tLc+USuj8kSC73j5S7+RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sxz1Y0SD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA38C4CEED;
-	Sun, 31 Aug 2025 22:14:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756678496;
-	bh=3Xss2Co3He96uRMaXnCLjMQL0IkTNyb4K4s+G1NFEY8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=sxz1Y0SDU6qOkz8svjCRGFQhGoKXfbodfvAE42iVSDCQFREY0WK89E3wE01hjtyhd
-	 OcoT4LPn+y1pV2o2H/GGHDioCq9NBBa5vmENZ6jteFJWhsU4Woz2R6oWYEUu6g1XNY
-	 kHDfDtApSKifk/oWHXALG3q05tT5fcG8HEzCAV7UU3RJYtumkpnjobO3DYP9qkybMc
-	 ypBn1hvE+I6DJdis3TSmGnJALGEPLAv8fKP86VlHbifBE05Y3nuneUcqc0ZfAHPaQw
-	 HozvhyFowbj1AC08V73yPEqYWH5yZvLO7VZXn2zWkka+fslrA7c1PwG/YHwALtg3x7
-	 U4mrqkGqThWzA==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Mon, 01 Sep 2025 00:14:37 +0200
-Subject: [PATCH mt76] wifi: mt76: mt7996: Use proper link_id in
- link_sta_rc_update callback
+	s=arc-20240116; t=1756692588; c=relaxed/simple;
+	bh=uUqQwrwehOzh2whsFxTT8T5uxEPhzosS6F1SztdaAJU=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rRjn7Lotyl8xz+SdpR/BgIpFNSpBjFunT3ESIOgxCirAxFVUKOkH8/G5sy/M5ZWc9HieOImRX+vCoMNpSnNkFKk0Jftc6A4WUiZ6e7OkTnbe+eXvgCgVZ4yKhlidSmdHH92A3pMUb8GfZ11YCTk2sQ1adtSbJozM8e4uKyzLZTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=nD49Cw2x; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58129eylE114715, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1756692580; bh=uUqQwrwehOzh2whsFxTT8T5uxEPhzosS6F1SztdaAJU=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=nD49Cw2x+24OLfsyJymwPkF4NMj/GcHAsPdisA3PyCJ3isHgr7AdSunCbwTc+Y1nT
+	 DJOQzm0hBcz+krZRVXG55s1voJhggLQp4XOFXuiBD2D4HCd3q0FGViFBkCtSvsUOLI
+	 FvBQkNnH6YwfJRQuIAjmjlOl83VEw0udxhxUWU/ycLwPjknPsep1SphyHLPF5bO1Yu
+	 bb1k+37eZSok0L3OIIGEyhUz1HJynIXUJHkRPNwDNuZvYJ+e3ZHp7r/FBz5nWPiuug
+	 Yc0+A4TU8h3zXYWfMy1fnimUfTY5Yh+ddZJ4jOo0SLXw7oYr3EXfzulMemPsfIjuRQ
+	 7AXgIopzBhAUQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58129eylE114715
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 1 Sep 2025 10:09:40 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Mon, 1 Sep 2025 10:09:40 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
+ 15.02.1544.027; Mon, 1 Sep 2025 10:09:40 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH rtw-next v3 00/11] wifi: rtw89: Add support for RTL8852CU
+Thread-Topic: [PATCH rtw-next v3 00/11] wifi: rtw89: Add support for RTL8852CU
+Thread-Index: AQHcF3JiHh9TMEvBrkmiQiJfPugsk7R5KnRggAB9WACAA/F8wA==
+Date: Mon, 1 Sep 2025 02:09:40 +0000
+Message-ID: <1d0424c351804afaa482633bf43cab69@realtek.com>
+References: <fac0abab-2334-4ae2-9a80-f3fd7808e392@gmail.com>
+ <a81f6725b183401d8973bc648c3ecbc2@realtek.com>
+ <c59ed20f-8af9-4712-b9f5-8509b5665420@gmail.com>
+In-Reply-To: <c59ed20f-8af9-4712-b9f5-8509b5665420@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250901-mt7996-fix-link_sta_rc_update-callback-v1-1-e24caf196222@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAEzJtGgC/x2NQQ7CIBAAv9Ls2U2gxFr8ijFkgVU3RWwAjUnTv
- 0s8zmFmNqhchCuchw0Kf6TKK3fQhwHCg/KdUWJnGNV4VLPR+Gwnaye8yReT5MXVRq4E914jNcZ
- AKXkKC8aZlDFWs/cT9NhauCv/0eW67z+bvBSJeAAAAA==
-X-Change-ID: 20250831-mt7996-fix-link_sta_rc_update-callback-d8a03391ebb6
-To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Bo Jiao <Bo.Jiao@mediatek.com>, Peter Chiu <chui-hao.chiu@mediatek.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org
-X-Mailer: b4 0.14.2
 
-Do not always use deflink_id in link_sta_rc_update mac80211
-callback but use the proper link_id provided by mac80211.
-
-Fixes: 0762bdd30279f ("wifi: mt76: mt7996: rework mt7996_mac_sta_rc_work to support MLO")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 43 +++++++++++++++---------
- 1 file changed, 28 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 7f3a117c52bd3438b6bb41a068bbf11658dfba42..21d290cad4f49b06c8dc8d3fc103da7ccaca99b6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1662,19 +1662,13 @@ static void mt7996_sta_statistics(struct ieee80211_hw *hw,
- 	}
- }
- 
--static void mt7996_link_rate_ctrl_update(void *data, struct ieee80211_sta *sta)
-+static void mt7996_link_rate_ctrl_update(void *data,
-+					 struct mt7996_sta_link *msta_link)
- {
--	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
-+	struct mt7996_sta *msta = msta_link->sta;
- 	struct mt7996_dev *dev = msta->vif->deflink.phy->dev;
--	struct mt7996_sta_link *msta_link;
- 	u32 *changed = data;
- 
--	rcu_read_lock();
--
--	msta_link = rcu_dereference(msta->link[msta->deflink_id]);
--	if (!msta_link)
--		goto out;
--
- 	spin_lock_bh(&dev->mt76.sta_poll_lock);
- 
- 	msta_link->changed |= *changed;
-@@ -1682,8 +1676,6 @@ static void mt7996_link_rate_ctrl_update(void *data, struct ieee80211_sta *sta)
- 		list_add_tail(&msta_link->rc_list, &dev->sta_rc_list);
- 
- 	spin_unlock_bh(&dev->mt76.sta_poll_lock);
--out:
--	rcu_read_unlock();
- }
- 
- static void mt7996_link_sta_rc_update(struct ieee80211_hw *hw,
-@@ -1691,11 +1683,32 @@ static void mt7996_link_sta_rc_update(struct ieee80211_hw *hw,
- 				      struct ieee80211_link_sta *link_sta,
- 				      u32 changed)
- {
--	struct mt7996_dev *dev = mt7996_hw_dev(hw);
- 	struct ieee80211_sta *sta = link_sta->sta;
-+	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
-+	struct mt7996_sta_link *msta_link;
- 
--	mt7996_link_rate_ctrl_update(&changed, sta);
--	ieee80211_queue_work(hw, &dev->rc_work);
-+	rcu_read_lock();
-+
-+	msta_link = rcu_dereference(msta->link[link_sta->link_id]);
-+	if (msta_link) {
-+		struct mt7996_dev *dev = mt7996_hw_dev(hw);
-+
-+		mt7996_link_rate_ctrl_update(&changed, msta_link);
-+		ieee80211_queue_work(hw, &dev->rc_work);
-+	}
-+
-+	rcu_read_unlock();
-+}
-+
-+static void mt7996_sta_rate_ctrl_update(void *data, struct ieee80211_sta *sta)
-+{
-+	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
-+	struct mt7996_sta_link *msta_link;
-+	u32 *changed = data;
-+
-+	msta_link = rcu_dereference(msta->link[msta->deflink_id]);
-+	if (msta_link)
-+		mt7996_link_rate_ctrl_update(&changed, msta_link);
- }
- 
- static int
-@@ -1716,7 +1729,7 @@ mt7996_set_bitrate_mask(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	 * - multiple rates: if it's not in range format i.e 0-{7,8,9} for VHT
- 	 * then multiple MCS setting (MCS 4,5,6) is not supported.
- 	 */
--	ieee80211_iterate_stations_atomic(hw, mt7996_link_rate_ctrl_update,
-+	ieee80211_iterate_stations_atomic(hw, mt7996_sta_rate_ctrl_update,
- 					  &changed);
- 	ieee80211_queue_work(hw, &dev->rc_work);
- 
-
----
-base-commit: 035ba65d13516fa2afa78203ba3ef54fd70584af
-change-id: 20250831-mt7996-fix-link_sta_rc_update-callback-d8a03391ebb6
-
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo@kernel.org>
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBPbiAy
+OS8wOC8yMDI1IDA5OjIzLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4gQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiA+PiBBZGQgc3VwcG9ydCBmb3Ig
+UlRMODg1MkNVLiBJdCB3b3JrcyB3ZWxsIGJ1dCBzb21ldGltZXMgaXQgbG9zZXMgdGhlDQo+ID4+
+IGNvbm5lY3Rpb246DQo+ID4+DQo+ID4+IEp1bCAwNCAxNjowNTo1NiBpZGVhcGFkMiBrZXJuZWw6
+IHdscDNzMGYzdTQ6IENvbm5lY3Rpb24gdG8gQVAgLi4uIGxvc3QNCj4gPj4gSnVsIDE0IDEzOjQ1
+OjI2IGlkZWFwYWQyIGtlcm5lbDogd2xwM3MwZjN1NDogQ29ubmVjdGlvbiB0byBBUCAuLi4gbG9z
+dA0KPiA+PiBKdWwgMTUgMTc6NTE6MjggaWRlYXBhZDIga2VybmVsOiB3bHAzczBmM3U0OiBDb25u
+ZWN0aW9uIHRvIEFQIC4uLiBsb3N0DQo+ID4+IEp1bCAxOCAxNDo0MzozMCBpZGVhcGFkMiBrZXJu
+ZWw6IHdscDNzMGYzdTQ6IENvbm5lY3Rpb24gdG8gQVAgLi4uIGxvc3QNCj4gPj4gSnVsIDI0IDE0
+OjU4OjA3IGlkZWFwYWQyIGtlcm5lbDogd2xwM3MwZjN1NDogQ29ubmVjdGlvbiB0byBBUCAuLi4g
+bG9zdA0KPiA+Pg0KPiA+PiBXaGVuIHRoYXQgaGFwcGVucyBpdCByZWNvbm5lY3RzIGltbWVkaWF0
+ZWx5Lg0KPiA+DQo+ID4gSW50ZXJuYWwgZXhwZXJ0cyB0b2xkIG1lIHRoZXkgbmVlZCBtb3JlIGRh
+dGEgdG8gYW5hbHl6ZSB0aGUgcHJvYmxlbSwgSSdsbA0KPiA+IHNoYXJlIHlvdSBhIGRlYnVnIHBh
+dGNoIGxhdGVyLiBCZWZvcmUgdGhhdCwgcGxlYXNlIHJlYWQgNCBieXRlcyBvZiAweEYwIHJlZ2lz
+dGVyDQo+ID4gdmlhIGRlYnVnZnMuIGkuZS4gJ2VjaG8gMHhGMCA0ID4gcmVhZF9yZWc7IGNhdCBy
+ZWFkX3JlZycuDQo+ID4NCj4gPiBBbm90aGVyIHRoaW5nIGlzIHdvdWxkIHlvdSBsaWtlIG1lIG1l
+cmdlIHRoaXMgcGF0Y2hzZXQgYmVmb3JlIHRoZSBwcm9ibGVtDQo+ID4gZ2V0IHJlc29sdmVkPyBJ
+ZiBzbywgZW5kIHVzZXJzIG1pZ2h0IHJlcG9ydCBwcm9ibGVtcyBmcmVxdWVudGx5LiBNYXliZSwg
+d2UNCj4gPiBjYW4ganVzdCBtZXJnZSBtb3N0IHBhdGNoZXMsIGJ1dCBub3QgYWN0dWFsbHkgZW5h
+YmxlIFJUTDg4NTJDVSBieSB0aGUgbGFzdA0KPiA+IHBhdGNoLiBQbGVhc2UgbGV0IG1lIGtub3cg
+d2hhdCB5b3UgdGhpbmsuDQo+ID4NCj4gDQo+IFBlcnNvbmFsbHksIEkgZG9uJ3QgbWluZCB1c2Vy
+cyByZXBvcnRpbmcgcHJvYmxlbXMuIEJ1dCBsZWF2aW5nIHRoZSBsYXN0DQo+IHBhdGNoIGZvciBs
+YXRlciBpcyBmaW5lIHRvby4NCg0KSSdkIHRha2UgdGhpcyB3aG9sZSBwYXRjaHNldCB0aGVuLiBC
+dXQgYWRkICIoRVhQRVJJTUVOVEFMKSIgdG8gS2NvbmZpZw0KaXRlbSBhcw0KDQoiUmVhbHRlayA4
+ODUyQ1UgVVNCIHdpcmVsZXNzIG5ldHdvcmsgKFdpLUZpIDZFKSBhZGFwdGVyIChFWFBFUklNRU5U
+QUwpIg0KDQphbmQgZGVzY3JpYmUgc29tZXRoaW5nIGluIEtjb25maWcgaGVscCB0ZXh0Lg0KDQpJ
+ZiB5b3Ugd2FudCwgd2UgY2FuIGFkZCBhIHdhcm5pbmcgbWVzc2FnZSBhdCB1c2IgcHJvYmUgdG8g
+bm90ZSBwZW9wbGUNClJUTDg4NTJDVSBpc24ndCBmdWxseSBjb21wbGV0ZS4NCg0KDQo=
 
