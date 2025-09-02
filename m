@@ -1,50 +1,50 @@
-Return-Path: <linux-wireless+bounces-26939-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26940-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E48B40DBB
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 21:18:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C47DB40DBC
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 21:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E3303A9359
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 19:18:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3405547D32
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 19:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15A933EB17;
-	Tue,  2 Sep 2025 19:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FB235084D;
+	Tue,  2 Sep 2025 19:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hDfO+Jq+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dSFgrJnG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB17B2F83D0
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Sep 2025 19:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9365135082F
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Sep 2025 19:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756840688; cv=none; b=rXY0J9PogN3XuoUCJALzh/sc0OlIzlPA2Yd2Mt60XA5bd1DJiyEEl1EA07ZLo68iQ2yw0RksZxHEAz2iRPIuyP3z73QoPJIsZl4TuQIapTOjsswmUIclUjNk7TrX7apcd+C6xoLRmV3FetsAE+RFLH0UwH5dbc916MV9ZzG/wc0=
+	t=1756840690; cv=none; b=YDx7KQknkvnVMWQy/mc/2+h5Orax14QS+hkI9bWtP/UywKegxANnDXjb4EcmU9viqQcbwh5+Tg/IGJcsFArxmZYpVFqroUau05Xi60xJRBDXZB0t7eyJhAQZTy8IxhAZ6x6SbCKVb+vJ3pgdsvzibfPdMrru53Bl+ooqLPYHe98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756840688; c=relaxed/simple;
-	bh=ck3/Ptu01yBjH4i4YdJ++OB47FDKG2zMtAy7fwoHRYk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OzGhmi0Fnlq8dqupQpa6MAYSzGK0wi3Y096vh7phOW+pgNkMLM1o9P2/O5OOROmiW0/YtpiR3oICVshQzYhhVXSRK/MMAoaW6NBTH1uCAOHs8CMlZ0G/sfN52k5LR4VmiP7hQgUnJZYqPhfaCWpmttfSd8NA2SJip6LaDa9pQHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hDfO+Jq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24C0C4CEF7;
-	Tue,  2 Sep 2025 19:18:06 +0000 (UTC)
+	s=arc-20240116; t=1756840690; c=relaxed/simple;
+	bh=Qa+QGrBL38NAhpR4eNP1ahLdeQEyPJIqSr/n9x+uvyk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ASgyvnziFxO0uAa0fDscCa1ZVyFKtSa70y5TbIP1zND9dfYJiWHlCQrhBCkm/XyeZkwQKrox0lqzAIMNUAQ589JJnCxsqDbCPSjq4dRqUf+vxiniVSlLMOBK2lJs3RWWuw85mtSR9ttdRKhdBOEHqY7hDulnHgeRdb75AjPC6ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dSFgrJnG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5752C4CEED;
+	Tue,  2 Sep 2025 19:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756840687;
-	bh=ck3/Ptu01yBjH4i4YdJ++OB47FDKG2zMtAy7fwoHRYk=;
-	h=From:Subject:Date:To:Cc:From;
-	b=hDfO+Jq+R3j/5cTzFy6+tt0efObUX8DEVs73EXYGOMva30PuK2whyRRWK19sWUFXj
-	 0L0D0DQElFeji/CEBZHMJ7BAUbvqfGVE9+44PIfoa6mAXxyxvkfz/Yj7u+NNsVEhFq
-	 8LSeExjGaXVIu6DDALjm8grhcnhUv6GXyx5f4lXl/I+y8E5G3CL6KgCv9RZMjkcneR
-	 TvVkbQyu32In3Yt0kXBeu2COv1jHcrOSjtiRWo9p8vFa8yUwblDyFmewHOxwwKlcRx
-	 xWfygV35KlC35kSTZWqMwo3Z5WHddSxQm3/4DntFz/q6K6IPyEfexkSqi3xUxEvgzB
-	 kO1XR3ml0UQXg==
+	s=k20201202; t=1756840690;
+	bh=Qa+QGrBL38NAhpR4eNP1ahLdeQEyPJIqSr/n9x+uvyk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=dSFgrJnGpnUzSVfwGu3mlVjessW0I3TFFx4lbNnAluEEL/mxbkMBBNAaPIcUsLIjd
+	 JKNbcoU9WfIQ3QxmrqviP3GrFgQR2kKZbb6XUgUwgt/Dh5M2r2N3iccfVKzoW/oYF+
+	 OaTd5+8/U9kRsPkJlqNnEYJVTdpeBamz00Qj+hdgCAUw1BC2CedbPU2we5nMxCRR1I
+	 FnZPnKQPpvC4T7VU8nyIychy0+EUezDYB7dFKfP08plwPuOvd9PzXClKq6bNzRBTVi
+	 T0WGjrK3K1HdR8ojGRr27fvuMxd/QZRsRLv7PVIWw36iqkbOpX+3ptS7j2NizRW5rQ
+	 G7S5uogYZ5sOw==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH mt76 v3 00/15] wifi: mt76: mt7996: Decouple RRO logic from
- WED support
-Date: Tue, 02 Sep 2025 21:17:50 +0200
-Message-Id: <20250902-mt7996-rro-rework-v3-0-8f813890959e@kernel.org>
+Date: Tue, 02 Sep 2025 21:17:51 +0200
+Subject: [PATCH mt76 v3 01/15] wifi: mt76: Add reset_idx to reset_q
+ mt76_queue_ops signature.
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,11 +53,9 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAN5Ct2gC/33NQQ6CMBCF4auQrq1pKxSGlfcwLpBOoUGpmZKqI
- dzdwsaYGJf/JPO9mQUkh4HV2cwIowvOjykOu4y1fTN2yJ1JzZRQhaiU5LepBNCcyHPCh6eBqxx
- EiyisMBVLf3dC656beTqn7l2YPL22iSjX6z8tSi64bqu8LBsDGuxxQBrxuvfUsZWL6kOA+EmoR
- EgLaUJfCmnkF7EsyxsIPk/H9gAAAA==
-X-Change-ID: 20250821-mt7996-rro-rework-2490cee0f0d8
+Message-Id: <20250902-mt7996-rro-rework-v3-1-8f813890959e@kernel.org>
+References: <20250902-mt7996-rro-rework-v3-0-8f813890959e@kernel.org>
+In-Reply-To: <20250902-mt7996-rro-rework-v3-0-8f813890959e@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
  Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
  Matthias Brugger <matthias.bgg@gmail.com>, 
@@ -69,64 +67,203 @@ Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  Benjamin Lin <benjamin-jw.lin@mediatek.com>
 X-Mailer: b4 0.14.2
 
-Decouple RRO logic (v3.0 and v3.1) from WED support in MT7996 driver in
-order to reuse it when WED module is not available.
-Introduce WED offload support for MT7992 chipset in MT7996 driver.
+Remove __mt76_dma_queue_reset routine and use mt76_dma_queue_reset
+directly instead in mt76_queue_ops struct.
+This is a preliminary patch to enable WED support for MT7992 Kite
+chipset supported by MT7996 driver.
 
+Co-developed-by: Rex Lu <rex.lu@mediatek.com>
+Signed-off-by: Rex Lu <rex.lu@mediatek.com>
+Co-developed-by: Sujuan Chen <sujuan.chen@mediatek.com>
+Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
+Co-developed-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-Changes in v3:
-- Fix compilation warnings
-- Rebase on top of mt76 main branch
-- Split patch 4/14
-- Link to v2: https://lore.kernel.org/r/20250901-mt7996-rro-rework-v2-0-1f95086b51d1@kernel.org
+ drivers/net/wireless/mediatek/mt76/dma.c        | 11 +++--------
+ drivers/net/wireless/mediatek/mt76/dma.h        |  7 +++----
+ drivers/net/wireless/mediatek/mt76/mt76.h       |  3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7915/dma.c |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt792x_dma.c |  6 +++---
+ drivers/net/wireless/mediatek/mt76/mt7996/dma.c |  4 ++--
+ drivers/net/wireless/mediatek/mt76/wed.c        |  8 ++++----
+ 7 files changed, 19 insertions(+), 24 deletions(-)
 
-Changes in v2:
-- Fix SER when Wireless Ethernet Dispatcher (WED) is disabled
-- Rebase on top of mt76 main branch
-- Link to v1: https://lore.kernel.org/r/20250821-mt7996-rro-rework-v1-0-6c8477ad969f@kernel.org
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 87f531297f8513b0caee2d034184ddd8fa3b6a21..25c26ff8c8e24352f2bb31c6e185e628a56f609b 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -197,8 +197,8 @@ mt76_dma_sync_idx(struct mt76_dev *dev, struct mt76_queue *q)
+ 	q->tail = q->head;
+ }
+ 
+-void __mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q,
+-			    bool reset_idx)
++void mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q,
++			  bool reset_idx)
+ {
+ 	if (!q || !q->ndesc)
+ 		return;
+@@ -218,11 +218,6 @@ void __mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q,
+ 	mt76_dma_sync_idx(dev, q);
+ }
+ 
+-void mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q)
+-{
+-	__mt76_dma_queue_reset(dev, q, true);
+-}
+-
+ static int
+ mt76_dma_add_rx_buf(struct mt76_dev *dev, struct mt76_queue *q,
+ 		    struct mt76_queue_buf *buf, void *data)
+@@ -740,7 +735,7 @@ mt76_dma_alloc_queue(struct mt76_dev *dev, struct mt76_queue *q,
+ 			return 0;
+ 	}
+ 
+-	mt76_dma_queue_reset(dev, q);
++	mt76_dma_queue_reset(dev, q, true);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.h b/drivers/net/wireless/mediatek/mt76/dma.h
+index e3ddc7a837579c0835a704ab8944099d276c6222..320d2cbbbd4559db146139a50e579b9b57282557 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.h
++++ b/drivers/net/wireless/mediatek/mt76/dma.h
+@@ -81,14 +81,13 @@ void mt76_dma_attach(struct mt76_dev *dev);
+ void mt76_dma_cleanup(struct mt76_dev *dev);
+ int mt76_dma_rx_fill(struct mt76_dev *dev, struct mt76_queue *q,
+ 		     bool allow_direct);
+-void __mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q,
+-			    bool reset_idx);
+-void mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q);
++void mt76_dma_queue_reset(struct mt76_dev *dev, struct mt76_queue *q,
++			  bool reset_idx);
+ 
+ static inline void
+ mt76_dma_reset_tx_queue(struct mt76_dev *dev, struct mt76_queue *q)
+ {
+-	dev->queue_ops->reset_q(dev, q);
++	dev->queue_ops->reset_q(dev, q, true);
+ 	if (mtk_wed_device_active(&dev->mmio.wed))
+ 		mt76_wed_dma_setup(dev, q, true);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index d518a5441418bce5ae477e7f15dde56b6cb5b87d..314221fec512c99cc15b942b7ef7ccecfd1d987e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -290,7 +290,8 @@ struct mt76_queue_ops {
+ 
+ 	void (*kick)(struct mt76_dev *dev, struct mt76_queue *q);
+ 
+-	void (*reset_q)(struct mt76_dev *dev, struct mt76_queue *q);
++	void (*reset_q)(struct mt76_dev *dev, struct mt76_queue *q,
++			bool reset_idx);
+ };
+ 
+ enum mt76_phy_type {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+index 0c62272fe7d03552c8c260b3971a62fb143895c1..009ef713f437983a0676ed5d4d951a9efcb305e8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+@@ -624,13 +624,13 @@ int mt7915_dma_reset(struct mt7915_dev *dev, bool force)
+ 	}
+ 
+ 	for (i = 0; i < __MT_MCUQ_MAX; i++)
+-		mt76_queue_reset(dev, dev->mt76.q_mcu[i]);
++		mt76_queue_reset(dev, dev->mt76.q_mcu[i], true);
+ 
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		if (mt76_queue_is_wed_tx_free(&dev->mt76.q_rx[i]))
+ 			continue;
+ 
+-		mt76_queue_reset(dev, &dev->mt76.q_rx[i]);
++		mt76_queue_reset(dev, &dev->mt76.q_rx[i], true);
+ 	}
+ 
+ 	mt76_tx_status_check(&dev->mt76, true);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_dma.c b/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
+index 6f9db782338e6e405de49dd07fefae1a1de09f93..69217ce911307b3408a56d0a210b39ac3bc75e8c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
+@@ -181,13 +181,13 @@ mt792x_dma_reset(struct mt792x_dev *dev, bool force)
+ 
+ 	/* reset hw queues */
+ 	for (i = 0; i < __MT_TXQ_MAX; i++)
+-		mt76_queue_reset(dev, dev->mphy.q_tx[i]);
++		mt76_queue_reset(dev, dev->mphy.q_tx[i], true);
+ 
+ 	for (i = 0; i < __MT_MCUQ_MAX; i++)
+-		mt76_queue_reset(dev, dev->mt76.q_mcu[i]);
++		mt76_queue_reset(dev, dev->mt76.q_mcu[i], true);
+ 
+ 	mt76_for_each_q_rx(&dev->mt76, i)
+-		mt76_queue_reset(dev, &dev->mt76.q_rx[i]);
++		mt76_queue_reset(dev, &dev->mt76.q_rx[i], true);
+ 
+ 	mt76_tx_status_check(&dev->mt76, true);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+index c8bef0b2a14445224689efb4c0fee6c80387a7fa..c77e619070d34ddbf281a5d90c6c96cbd1bb2283 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+@@ -775,7 +775,7 @@ void mt7996_dma_reset(struct mt7996_dev *dev, bool force)
+ 	}
+ 
+ 	for (i = 0; i < __MT_MCUQ_MAX; i++)
+-		mt76_queue_reset(dev, dev->mt76.q_mcu[i]);
++		mt76_queue_reset(dev, dev->mt76.q_mcu[i], true);
+ 
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		if (mtk_wed_device_active(&dev->mt76.mmio.wed))
+@@ -783,7 +783,7 @@ void mt7996_dma_reset(struct mt7996_dev *dev, bool force)
+ 			    mt76_queue_is_wed_tx_free(&dev->mt76.q_rx[i]))
+ 				continue;
+ 
+-		mt76_queue_reset(dev, &dev->mt76.q_rx[i]);
++		mt76_queue_reset(dev, &dev->mt76.q_rx[i], true);
+ 	}
+ 
+ 	mt76_tx_status_check(&dev->mt76, true);
+diff --git a/drivers/net/wireless/mediatek/mt76/wed.c b/drivers/net/wireless/mediatek/mt76/wed.c
+index 63f69e152b1cbb5bc0170a44976be1c7c52f21dc..907a8e43e72ad1f2a68d097c4a06df4506c4b039 100644
+--- a/drivers/net/wireless/mediatek/mt76/wed.c
++++ b/drivers/net/wireless/mediatek/mt76/wed.c
+@@ -118,7 +118,7 @@ int mt76_wed_dma_setup(struct mt76_dev *dev, struct mt76_queue *q, bool reset)
+ 	case MT76_WED_Q_TXFREE:
+ 		/* WED txfree queue needs ring to be initialized before setup */
+ 		q->flags = 0;
+-		mt76_dma_queue_reset(dev, q);
++		mt76_dma_queue_reset(dev, q, true);
+ 		mt76_dma_rx_fill(dev, q, false);
+ 
+ 		ret = mtk_wed_device_txfree_ring_setup(q->wed, q->regs);
+@@ -133,21 +133,21 @@ int mt76_wed_dma_setup(struct mt76_dev *dev, struct mt76_queue *q, bool reset)
+ 		break;
+ 	case MT76_WED_RRO_Q_DATA:
+ 		q->flags &= ~MT_QFLAG_WED;
+-		__mt76_dma_queue_reset(dev, q, false);
++		mt76_dma_queue_reset(dev, q, false);
+ 		mtk_wed_device_rro_rx_ring_setup(q->wed, ring, q->regs);
+ 		q->head = q->ndesc - 1;
+ 		q->queued = q->head;
+ 		break;
+ 	case MT76_WED_RRO_Q_MSDU_PG:
+ 		q->flags &= ~MT_QFLAG_WED;
+-		__mt76_dma_queue_reset(dev, q, false);
++		mt76_dma_queue_reset(dev, q, false);
+ 		mtk_wed_device_msdu_pg_rx_ring_setup(q->wed, ring, q->regs);
+ 		q->head = q->ndesc - 1;
+ 		q->queued = q->head;
+ 		break;
+ 	case MT76_WED_RRO_Q_IND:
+ 		q->flags &= ~MT_QFLAG_WED;
+-		mt76_dma_queue_reset(dev, q);
++		mt76_dma_queue_reset(dev, q, true);
+ 		mt76_dma_rx_fill(dev, q, false);
+ 		mtk_wed_device_ind_rx_ring_setup(q->wed, q->regs);
+ 		break;
 
----
-Lorenzo Bianconi (7):
-      wifi: mt76: Add reset_idx to reset_q mt76_queue_ops signature.
-      wifi: mt76: Remove q->ndesc check in mt76_dma_rx_fill()
-      wifi: mt76: Do not always enable NAPIs for WED RRO queues
-      wifi: mt76: mt7996: Fix tx-queues initialization for second phy on mt7996
-      wifi: mt76: mt7996: Fix RX packets configuration for primary WED device
-      wifi: mt76: Add rx_queue_init callback
-      wifi: mt76: Add mt76_dma_get_rxdmad_c_buf utility routione
-
-Rex Lu (8):
-      wifi: mt76: Differentiate between RRO data and RRO MSDU queues
-      wifi: mt76: mt7996: Initial DMA configuration for MT7992 WED support
-      wifi: mt76: mt7996: Enable HW RRO for MT7992 chipset
-      wifi: mt76: mt7996: Introduce the capability to reset MT7992 WED device
-      wifi: mt76: mt7996: Enable WED for MT7992 chipset
-      wifi: mt76: mt7996: Introduce RRO MSDU callbacks
-      wifi: mt76: mt7996: Decouple RRO logic from WED support
-      wifi: mt76: mt7996: Add SW path for HW-RRO v3.1
-
- drivers/net/wireless/mediatek/mt76/dma.c           | 215 +++++++++---
- drivers/net/wireless/mediatek/mt76/dma.h           |  47 ++-
- drivers/net/wireless/mediatek/mt76/mt76.h          |  54 ++-
- drivers/net/wireless/mediatek/mt76/mt7915/dma.c    |   4 +-
- drivers/net/wireless/mediatek/mt76/mt792x_dma.c    |   6 +-
- drivers/net/wireless/mediatek/mt76/mt7996/dma.c    | 326 ++++++++++++++----
- drivers/net/wireless/mediatek/mt76/mt7996/init.c   | 310 ++++++++++++-----
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c    | 365 ++++++++++++++++++++-
- drivers/net/wireless/mediatek/mt76/mt7996/main.c   |  19 +-
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    |   4 +-
- drivers/net/wireless/mediatek/mt76/mt7996/mmio.c   |  89 +++--
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  91 ++++-
- drivers/net/wireless/mediatek/mt76/mt7996/pci.c    |   3 +-
- drivers/net/wireless/mediatek/mt76/mt7996/regs.h   |  32 +-
- drivers/net/wireless/mediatek/mt76/wed.c           |   8 +-
- 15 files changed, 1304 insertions(+), 269 deletions(-)
----
-base-commit: 8680a5406aa6348943da4e739483870a865c343a
-change-id: 20250821-mt7996-rro-rework-2490cee0f0d8
-
-Best regards,
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.50.1
 
 
