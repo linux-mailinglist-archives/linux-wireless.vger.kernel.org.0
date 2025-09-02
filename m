@@ -1,141 +1,132 @@
-Return-Path: <linux-wireless+bounces-26918-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26919-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B6CB3F333
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 06:02:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF700B3F36E
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 06:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E7073B3637
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 04:02:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FEDC1883373
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 04:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01AD1DE2A0;
-	Tue,  2 Sep 2025 04:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7590271448;
+	Tue,  2 Sep 2025 04:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hPKOZ810"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CTiOXP7A"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E4719F12A
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Sep 2025 04:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E34D33991;
+	Tue,  2 Sep 2025 04:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756785717; cv=none; b=j4sQiQITZFXuWqVltsYkZUbAK+IOC63I1OvWcZUdHYVJlk9Qm0vZXVOPu/Fxt7hoVpBdfSjL/eVr2OM56DuZH8kuj2ido09kxY4JXkgDCV2Ds5xzt4TI8WuEtXBf2Y7b0sC4Ft58oV+bkBxY4t6OGSL24rVL14v4LZnJn8dtVNE=
+	t=1756786213; cv=none; b=BeOkGrWWxQyDMNFA/Zx1X1noYOtOqY16G3Y7iJG9pkRSbjmcpUbLJD9DTmrDVUU6uGhL1dYRGxzZP0MDE93GdQiNSFwkskvlRx3nqS7/pLn2Y6G7q0DDZfVBDv2MP4qg4aJNAoMcMgfHUqb+S61/e+lKjCXHdUvD0ZsaQPd3DIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756785717; c=relaxed/simple;
-	bh=eEqRzl5XlhU9r4YCmqxOg9THtqXxKYKkfhTdRtd2VHs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iPET/SORWeTSovGxUwLkx56me2F7icIMWb7OeuqTjMzRdkafS3TT8wmrvIz+AzRfoJublhfcmKhMxozDY3mhyiSRjkn4+UyAqjJEcCgBKesWT/q7xj2nqlFe14k6xy3fJOQegVpl//n0Ndwmejd19lnSjFJyNKUI9sQHWoYb0Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hPKOZ810; arc=none smtp.client-ip=209.85.210.178
+	s=arc-20240116; t=1756786213; c=relaxed/simple;
+	bh=vpfYScOjakMNy+nGuXLIrD0EA6DhL55xUbZ8RW8gSgI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g8MbUoXWhUmx7X2uJT8hRUDkZce5bKFw40RdCnxFMG7MEWyseTikX5YyBzvnb0LvDWo/UCYnbslc2fc13Qwd9j42YkNTg35byMDGnLMPy6BDOLk71dqir2ZCH/sd3Ez025ZDmcZsEBQnLaQF1oU0HYalm6Su6G8Cwvf2OIH5XsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CTiOXP7A; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7723cf6e4b6so1831234b3a.3
-        for <linux-wireless@vger.kernel.org>; Mon, 01 Sep 2025 21:01:55 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24b13313b1bso2795705ad.2;
+        Mon, 01 Sep 2025 21:10:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756785715; x=1757390515; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vU5mSJkJ1IrLUxmS3Cfr7izqKpmNPsl8zw2WUwHBhD4=;
-        b=hPKOZ810EMhXOLCCuhjHoNQkR2lfiX9El7GEvM/kJc6Gl0/GgtBTY0Z+PBwRDiaR91
-         FsdY2CDz0Fyz0vezcPz3pnZqCzpQyU8Gu/3Nv8IK52TjsxZU9ZQrJYaE+LJR0HLTfWfA
-         wqpvgQXzfkmKjAW6RQkRLxoaC8bExU354pSqyiL9bzovYXBah9CDnksiBTaZkrlLtvLU
-         wd/VW9nj0QWyYuCXNxzjVGxvshMSzNMHeiclv+ebipurHhyigq8iLKr6zxa7J8yS4NAH
-         NKZ9Xz83d+kGZZIcLLbd7xUH+kXKceyANgyfyN9qjOxTmctn11QcpDCSOFTT2sllAzu4
-         C7KQ==
+        d=gmail.com; s=20230601; t=1756786212; x=1757391012; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=19JVbPSSMfi36C+z91aIsE+9NN7e/Je8JVocDDvdxI8=;
+        b=CTiOXP7A4gDhvWCJ++L/CCx2fT6sPbN7zuHm1pylic6CIKgKwTgQV6P49TeT424q6d
+         tIsWoy9CaB5oLZWFCdBdLZAWDClcX2VUC11fbph7HE7CIbfSBklMeRIm1Qg9jV4YoVAJ
+         96g87IvhoRLvdodPWZ/HWip050/68apOpOR3gwSNdSsy3uR/fpRx9ZF+TW1pmx62vEul
+         0ItoM40QlfGCs66CVJRSSKpu8HpZBsqoR2tzB8FSbr90jWTP28msTSUF3lr4RV5jYz9P
+         OKIb+sziRWnAFI1Sv55iDI/1n1rJiY/zGdPtSzbyD3Q7sImPQ90nervno26L3VAnu5y0
+         2wGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756785715; x=1757390515;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vU5mSJkJ1IrLUxmS3Cfr7izqKpmNPsl8zw2WUwHBhD4=;
-        b=F9p2M1lO8qXZ67WNs9u8SVV6danxFRywrSSMkM73Z2XLId6YdA8d/BcrDGUv75m1cm
-         ahiQhMG0CxHQjilCumNEyCnkOeENWGXfWjWjhbm2SC2xaNKzCVhWKq8ivcSZ66SUUrmH
-         DHHDMeayGq25wBJSTKB1fM16bIU8ZEUQr24rLXjg4umuqLC0kYhGm6505NqN6bTCQl7j
-         mAcDIlhbeTfwbInxlFXRBCVr8IMPKyCqu5OFIZYLWDIgOlBCMGdQE1uIxTd+6oJICr4R
-         QfU/mx30Fhvz7+eS/Utd9xYRU1dJqllrmuuSyowHqNL5shsMrHJFcLx7RydUYlou9f2L
-         4spQ==
-X-Gm-Message-State: AOJu0Ywp7eQE5zqHHW7JyUV2Cp4mtzncTvTcre/q6gmfiZrRHr9VYhem
-	J9zvoJp/9lBA6uQvKtZPvZ5ofKouuEdUnoOmtqIrzJcvkIumZ+merfLi
-X-Gm-Gg: ASbGncsUSv83icG12fuHBVfioCp6E6OPrU7h08c2bth+b1tgTsNYjseHNuTw01Ohk/w
-	NtYho69ymTkaZYpWan0pv0ekW6hkbxP+W4kTl3b/xqaAPJ4RbW6ZZlbw+S/ycuji1toIUODioqu
-	fvrkUG3L4ENqXsc6/99bZUM9BnofPQ/mv4c9/KIaOTbUx7z1AC3r8RwvBpuWODJU56ElkTVWohT
-	WXDS+bdS95u5MtxX26BkBB62y5RGT5fzF+/AfAB9+DedvtzO56lwoX4CxPSI2YF2frV5YRmIxZx
-	yuFCCOkKOnQEF9uzFrb4jUQCuxuburR2fRUev6GUyA6emzPkuhgBRtcwVvqBw4SlrT7K5yH08Eg
-	sVnWYebTIntPTmSNCK3DhdHu3D6XVUm/wFpzPiv22D1dJduQHrrQC3NIRdkZN5Jo=
-X-Google-Smtp-Source: AGHT+IHE1uESZQrCiJsG5fwPP9/uhqI+dT2ZueyTNk8z2M91R8ZHumjYnbhqha8yzBPLTsdgHSDkBw==
-X-Received: by 2002:a05:6a00:a0a:b0:770:374c:6c55 with SMTP id d2e1a72fcca58-7723e3d24f2mr12839153b3a.31.1756785715082;
-        Mon, 01 Sep 2025 21:01:55 -0700 (PDT)
-Received: from BM5220 (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7722a2da9c6sm12004301b3a.42.2025.09.01.21.01.53
+        d=1e100.net; s=20230601; t=1756786212; x=1757391012;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=19JVbPSSMfi36C+z91aIsE+9NN7e/Je8JVocDDvdxI8=;
+        b=KRZedel0oof2n4y52MciTQ5o8qJ9q+Oe5KsdZX9f9czY63W2QYldiPl400V3dI/zgK
+         OzokEmIVf4siwDDtMvQA0Vx518fNn2M7KRM8wnB9+1D9et6bYo+wYe195V1fDF0PI/EQ
+         PQZjIr1SsjQo4pyHn8wb4hPzbqpGO5yuGDn6KpCZER9d82+YXA9HRSgK4qDmLwTC6WPt
+         DrTqwDPZYn+Ec6stbgs8O14yeF//f/6Y+JovKi/I7UAB6Tqkhv/v2E7H1TOCAiiilyRY
+         vuEwECA+ctGW0GrMrb/pkiKRWYk5fbmytjoGEr2gS2YE964ZspqNMPpgn7XUAozZ/UaR
+         g6sA==
+X-Forwarded-Encrypted: i=1; AJvYcCULVNztYoUvsqRqeK3nbZJYQ++ZK1NKF0WA1L6PxiRbm1whTn+ME4WaRdqz8whJzHHITWFyoTKeCtwVnfh25hE=@vger.kernel.org, AJvYcCW7ES5MpvAasPNbR1EkODpMEB7y7MNfXXwjQ0na8wk8nKGjrsehxg7eid5KBuz9yy59P8lSgCms@vger.kernel.org, AJvYcCWNqOeOAOgHam9OawGYZ3BP4dvxyHdPgcaVopnIwRuzrGEOSiIKopdHY+EGf2oRarvl2NgUUk8cLPVOFc8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCNuoflz8DqeN7phNjbLhNEjb9HxbUBByk7Cy/vYe9UAChDMcY
+	9vrif80ad78SGaWXQ28ywcENqNiPT8fYF6p2KdV6bqC1S7vIGW/Gn5m9
+X-Gm-Gg: ASbGncsL9GBXi3l/2/gOfy3PZaxsfXwIOkv+gRBrVVx0urw+/QoXCxfR86KTWhcNm0e
+	4ICyCIkZO/PLY7lRmFFmxealEtxwr/YfSBnNrTTnLEiWzP3a5q9ncM+ni6LHBDF8Ai9DgxD4Z8D
+	i6choaN6VQE3XWzyUoKDVdVOXRXUbgEWRP07K0nquFiGinR8YDcqN7jnVFm/LkY4+pnRlQQya01
+	jOxBuEyjdfFWI/NNJQVpBEfdoOdoir5fz62PjrADTCNSW2FyF1Q1/V7PDUjFc46CvZ2OzYp6Ytg
+	1C9N+KH7gjVgLGnkrFwppTWZg1N/ZWEdQIp6fqdazWc7P6PubHNzfg5yRyhZuzrDjrZBoAj4kII
+	4soFAM7E5J90J7H4dwfWYzT4Jd0MHdXFvxSf1QpbisJr/IotUAtOdpo6gelZIyA1bb2DJ8Qnalb
+	JC2kkF1SrTXhWPAPZm1uW2eYwdI/b+4kkgo1uPk49RuGZt1YvSMtbNa1M=
+X-Google-Smtp-Source: AGHT+IHqWZSv9fVE2o9FpNUE/zchbO0kWXsmmJcbNEZcGV9RobrVJC1W6rztHbdML4czeSNJPdZUSQ==
+X-Received: by 2002:a17:902:e745:b0:246:e1f3:77b2 with SMTP id d9443c01a7336-24944b65071mr121741105ad.53.1756786211765;
+        Mon, 01 Sep 2025 21:10:11 -0700 (PDT)
+Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.22.11.165])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24af84de7a4sm21250635ad.7.2025.09.01.21.10.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 21:01:54 -0700 (PDT)
-From: Zenm Chen <zenmchen@gmail.com>
-To: pkshih@realtek.com
-Cc: linux-wireless@vger.kernel.org,
-	rtl8821cerfe2@gmail.com,
-	usbwifi2024@gmail.com,
-	zenmchen@gmail.com
-Subject: RE: [PATCH rtw-next] wifi: rtw89: Add USB ID 2001:332a for D-Link AX9U
-Date: Tue,  2 Sep 2025 12:01:48 +0800
-Message-ID: <20250902040151.1969575-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <26fa101f2f5240dfb3babbc7c2864e1c@realtek.com>
-References: <26fa101f2f5240dfb3babbc7c2864e1c@realtek.com>
+        Mon, 01 Sep 2025 21:10:11 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Rotem Kerem <rotem.kerem@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: iwlwifi: Fix dentry reference leak in iwl_mld_add_link_debugfs
+Date: Tue,  2 Sep 2025 12:09:49 +0800
+Message-Id: <20250902040955.2362472-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.35.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Ping-Ke Shih <pkshih@realtek.com> 於 2025年9月2日 週二 上午11:30寫道：
->
-> Zenm Chen <zenmchen@gmail.com> wrote:
-> > Add USB ID 2001:332a for D-Link AX9U rev. A1 which is a RTL8851BU-based
-> > Wi-Fi adapter.
-> >
-> > Only managed mode and AP mode are tested and it works in both.
-> >
-> > Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-> > ---
-> > Although it works, but it disconnects occasionally and Bitterblue is working on it.
-> >
-> > https://github.com/morrownr/rtw89/issues/11
->
-> Thank you all for working on this.
->
-> > ---
-> >  drivers/net/wireless/realtek/rtw89/rtw8851bu.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-> > b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-> > index c3722547c..510d124a4 100644
-> > --- a/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-> > +++ b/drivers/net/wireless/realtek/rtw89/rtw8851bu.c
-> > @@ -19,6 +19,9 @@ static const struct usb_device_id rtw_8851bu_id_table[] = {
-> >         /* TP-Link Archer TX10UB Nano */
-> >         { USB_DEVICE_AND_INTERFACE_INFO(0x3625, 0x010b, 0xff, 0xff, 0xff),
-> >           .driver_info = (kernel_ulong_t)&rtw89_8851bu_info },
-> > +       /* D-Link AX9U rev. A1 */
-> > +       { USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x332a, 0xff, 0xff, 0xff),
->
-> What is the rule you put this entry here? Can they be in increasing order
-> of VID/PID?
+The debugfs_lookup() function increases the dentry reference count.
+Add missing dput() call to release the reference when the "iwlmld"
+directory already exists.
 
-Sorry about this, just fixed it in v2.
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mld/debugfs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
->
-> > +         .driver_info = (kernel_ulong_t)&rtw89_8851bu_info },
-> >         /* Edimax EW-7611UXB */
-> >         { USB_DEVICE_AND_INTERFACE_INFO(0x7392, 0xe611, 0xff, 0xff, 0xff),
-> >           .driver_info = (kernel_ulong_t)&rtw89_8851bu_info },
-> > --
-> > 2.51.0
->
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+index cc052b0aa53f..372204bf8452 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+@@ -1001,8 +1001,12 @@ void iwl_mld_add_link_debugfs(struct ieee80211_hw *hw,
+ 	 * If not, this is a per-link dir of a MLO vif, add in it the iwlmld
+ 	 * dir.
+ 	 */
+-	if (!mld_link_dir)
++	if (!mld_link_dir) {
+ 		mld_link_dir = debugfs_create_dir("iwlmld", dir);
++	} else {
++		/* Release the reference from debugfs_lookup */
++		dput(mld_link_dir);
++	}
+ }
+ 
+ static ssize_t _iwl_dbgfs_fixed_rate_write(struct iwl_mld *mld, char *buf,
+-- 
+2.35.1
 
