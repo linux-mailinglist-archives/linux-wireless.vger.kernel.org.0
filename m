@@ -1,165 +1,119 @@
-Return-Path: <linux-wireless+bounces-26935-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26936-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 955A6B3FDE3
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 13:36:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E82B401C1
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 15:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D9461B2474E
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 11:36:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 501BC2C5822
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 12:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651102F6176;
-	Tue,  2 Sep 2025 11:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD332DA750;
+	Tue,  2 Sep 2025 12:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="lb9Fmp6M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pwazNMHJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB6F1CAA6C
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Sep 2025 11:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7272D5C95;
+	Tue,  2 Sep 2025 12:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756812967; cv=none; b=iLypbqJlF7pHmaXW2ge/6vfIDWB1UJNkEwzKUstw+potAuLkGVrHamRM2lpZsW6DyBbepj0Vl126s9/XHGAIW0YwH6JPXXOx9m47rBiJ2QPe/dPI3pOb0+Bh0ASlVpT25W+E6KlNuuDw0etjDFBMbLicsykiY+cuVrEO4N6DBeE=
+	t=1756817774; cv=none; b=OflUV30N9gXKLZY2hp1scbAjUj1nG7/F7KbOGURtB9TKkMiYSECYRchaPr+iogtlSvc0M3LDgz+FL4yizQttHuOfFP4CCFOnGUcufEgK+5v8aovMvDfMsQmQGbHUPGGCFhnaPGC4Wuqs26I/xM+E9Z44vn1YgwlaY6H4MBQhDP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756812967; c=relaxed/simple;
-	bh=Qy08QyzoP2M8P1LwDKGKnN61gAFgMAFEa7XlX6dYzLk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lqWdaClbvmBY4fVzFrgGG8gHBN0JpQmDYB5PU0ko804bjpvq/5+sFSdTvlCWvTklVYpeSKsHZtSCwjGCyOzQf9HgZAmu502gR+Kjl6I/KLrVxGKHMcUndZRZBKT3ULE09KlKJRytuLqZM4E3yKOgbRZM3/5TDnLln0w9ttWbo6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=lb9Fmp6M; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=BCA9M7aVKOugoRFra5D31KzPo1/saOm5iQj48HeXtaU=;
-	t=1756812965; x=1758022565; b=lb9Fmp6MPCNKYlkXQPlfwDcKv4c4XokyheF2XagXgXkv0kE
-	PcIRj4q+AfDldb7ukEnNmQ4ScQWM7dAkwle3/f5wcLtlBp8cYj633jJJ8gK1FDcu7ab/UZpxUYowQ
-	UeoG1XRsWidvzeYTuglJx310bYm6FtvollknnbrO6cEWLIanBcYKcSlgtSJ/5tdoCzUt6WcTtJAWq
-	O09cE0r7+vrwX+ioJH2mSugvDzOIlzIL6fbXnYx3Qm63L65wa+yyUtrga9zp1hMM6LhSrR2PWnE0S
-	050onjJKMTBeXNbtr9QoEMIjKL6K1Yqf4C1k/52Q4/ao+pkvAjdfJ5GeLcNGPcLw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1utPIw-00000008p44-3qXh;
-	Tue, 02 Sep 2025 13:36:03 +0200
-Message-ID: <ab4ea03131cec7847b31eb548881ef79da4ae1c5.camel@sipsolutions.net>
-Subject: Re: [PROPOSAL RFC] S1G Primary Channel Implementation Proposal
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Date: Tue, 02 Sep 2025 13:36:02 +0200
-In-Reply-To: <9363e3a700565a34145be7268deb0a8623f659ba.camel@sipsolutions.net>
-References: 
-	<xu4ftmpdwwpokw6exaprrv6wleptq7ggleiluiu6x2dzqbqfhv@6s4m3okiohzw>
-		 <75245df8edd5bbaa8f9cdfd12bab37720473d93d.camel@sipsolutions.net>
-		 <czhftz5pdqx4edw4xr73svcr5cxfzzwa2r547p52tmsgywsb34@k5ooo5iw5mcu>
-		 (sfid-20250827_080037_104246_E84172B0) <9363e3a700565a34145be7268deb0a8623f659ba.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1756817774; c=relaxed/simple;
+	bh=6fXt4bhKhGQeDgocLc+VTGxwmm9hlaSYbwbrhqO4eo4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=lucBmrwg++jHdYRdZCeDdEewQV8yTkO9VH8r6aYoCyLEEhM0cDDeEv8/AIXY67ZL3LWYQcVHHiNWJD5xn5U+4WUcSIpBx3RR4JXNSxUZLX+nXr1non7c0csbBC4IV4YCXN7SAqCKcTorBGJl/TCEpKSfyYL+WcrC63s32vPSHTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pwazNMHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F86C4CEF4;
+	Tue,  2 Sep 2025 12:56:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756817774;
+	bh=6fXt4bhKhGQeDgocLc+VTGxwmm9hlaSYbwbrhqO4eo4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=pwazNMHJ405xvwddvksWXCvf2Bzxx2noy2IUYDoxR08pNT70eoYJ6avMGFl9/Brfy
+	 djIhKc4IwsWYRDzf4ckgbuj4YCoKw+9YxQrmPP2zcN5BTWN72msT/8L7gG1b4AnNXA
+	 H4LLv6NBYhzDqxK03/Bs/TmEL+LOYNY+NS+YPvoSxcEaL2K4fCDy8dQcwcD1Yoj3r7
+	 9WeAzZMLfWuw825r0YE0Jvdw3d0z5Gpm6BLaVjSBhLdAAnUEwVxIWvjvouZoMk16IB
+	 vPb54RivBXsgQ9vEkrWC7YCee6GXl108+ujfuPj+LCZ1l3MNDksA1EisuEfyh34BqK
+	 8exw6nerb4i/Q==
+From: Lee Jones <lee@kernel.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>, 
+ Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
+ Arnd Bergmann <arnd@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Andrew Lunn <andrew@lunn.ch>, 
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+ Gregory Clement <gregory.clement@bootlin.com>, 
+ Russell King <linux@armlinux.org.uk>, Daniel Mack <daniel@zonque.org>, 
+ Haojian Zhuang <haojian.zhuang@gmail.com>, 
+ Robert Jarzmik <robert.jarzmik@free.fr>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Lee Jones <lee@kernel.org>, 
+ Pavel Machek <pavel@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Jeff Johnson <jjohnson@kernel.org>, Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ "Dr. David Alan Gilbert" <linux@treblig.org>, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-mips@vger.kernel.org, linux-sh@vger.kernel.org, 
+ linux-input@vger.kernel.org, linux-leds@vger.kernel.org, 
+ linux-media@vger.kernel.org, patches@opensource.cirrus.com, 
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ ath10k@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+ linux-usb@vger.kernel.org, linux-sound@vger.kernel.org
+In-Reply-To: <20250808151822.536879-1-arnd@kernel.org>
+References: <20250808151822.536879-1-arnd@kernel.org>
+Subject: Re: (subset) [PATCH 00/21] gpiolib: fence off legacy interfaces
+Message-Id: <175681776381.2341743.17892612215782644085.b4-ty@kernel.org>
+Date: Tue, 02 Sep 2025 13:56:03 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-c81fc
 
-To maybe describe where I'm confused more clearly:
+On Fri, 08 Aug 2025 17:17:44 +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Commit 678bae2eaa81 ("gpiolib: make legacy interfaces optional") was
+> merged for linux-6.17, so now it is possible to use the legacy interfaces
+> conditionally and eventually have the support left out of the kernel
+> whenever it is not needed.
+> 
+> [...]
 
-> > * ->chan points to the primary 1MHz or 2MHz channel
+Applied, thanks!
 
-This was based on something I said. When I first read it it, I thought
-this was because 2 MHz primary channel was a completely independent mode
-of operation of the two 1 MHz frequency ranges that make up this 2 MHz
-range.
+[12/21] mfd: arizona: make legacy gpiolib interface optional
+        commit: 12f6c0afc8987d72017a3ecf7c1183cb951b0d24
+[13/21] mfd: si476x: add GPIOLIB_LEGACY dependency
+        commit: 1ae250257e43b3fba225e4f8ea7d87125dc861ae
+[14/21] mfd: aat2870: add GPIOLIB_LEGACY dependency
+        commit: 3144986f37911f131f373743f294b2941a8ef37c
 
-But maybe that was wrong? Because you also said this:
+--
+Lee Jones [李琼斯]
 
-> > As mentioned, the one difference is that S1G primary channels can be 2M=
-Hz.
-> > The standard (and by extension, the S1G Operation element) uses the not=
-ion of
-> > primary channel location. When we have a 2MHz primary channel, the AP m=
-ust
-> > specify which 1MHz subchannel _within_ this 2MHz primary channel is use=
-d.
-
-So this seems to indicate the primary channel is always 1 MHz?
-
-Looking at the spec, the S1G operation says you have _both_:
- - the primary width [B0]
- - the overall width 1/2/4/8/16 MHz [B1-B4]
- - the location of the 1 MHz primary inside the 2 MHz primary [B5]
- - the overall channel center frequency (as a channel number)
-
-So something like Channel 44/8MHz with 1 MHz primary in the upper half
-of the primary 2 MHz would be
-
- - primary 1 MHz	width B0 =3D=3D 0
- - 8 MHz		width B1-B4 =3D=3D 7
-			(? Table 10-41 S1G BSS operation channel width)
- - primary channel num	38
- - channel center freq	44
-
-
-But I don't think we necessarily have to capture this the same way in
-our chandef.
-
-We could also say that the 'control' channel pointer always points to
-the primary 1 MHz. Then, we only need a single flag in the *chandef* to
-capture the whole definition, in this example:
-
- - chan: pointer to struct ieee80211_channel for channel 37
- - width: 8 MHz
- - center_freq1: 925 Mhz (=3D=3D channel 44)
- - s1g_primary_2mhz: true
-
-All the locations automatically follow, you just need a little bit of a
-helper to calculate the "primary channel num" for the S1G operating
-element, since that's now no longer obvious - but basically just
-
-  if (!chandef->s1g_primary_2mhz)
-       return channel_number(chandef->chan);
-  BUG_ON(chandef->width =3D=3D 1MHz);
-
-  ... depends on width and distance between chandef->center_freq1
-      and=C2=A0chandef->chan->center_freq but I'm too lazy to write it down
-      since that also depends on the _khz bits. something like
-
-  diff =3D 1000 * chandef->center_freq1 + chandef->center_freq1_offset
-       - 1000 * chandef->chan->center_freq
-       -        chandef->chan->center_freq_offset;
-  diff =3D abs(diff)
-
-and then take the figure you had before into account:
-
->    |------|---------------------------------------------|*|
->  c | 8MHz |  |                  44                   |  |*|
->  h |------|---------------------------------------------|*|
->  a | 4MHz |  |        40         |        48         |  |*|
->  n |------|---------------------------------------------|*|
->  n | 2MHz |  |   38    |   42    |   46    |   50    |  |*|
->  e |------|---------------------------------------------|*|
->  l | 1MHz |  | 37 | 39 | 41 | 43 | 45 | 47 | 49 | 51 |  |*|
->    |=3D=3D=3D=3D=3D=3D|=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D|*|
->    |******| 920  921  922  923  924  925  926  927  928 |*|
->    |******|---------------------------------------------|*|
->                            frequency (MHz)
-
-
-That should work?
-
-
-Then we also only need struct ieee80211_channel for each 1 MHz channel,
-your thing with the regulatory "non-primary flag" also works more
-easily?
-
-johannes
 
