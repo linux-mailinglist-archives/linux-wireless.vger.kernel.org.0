@@ -1,201 +1,148 @@
-Return-Path: <linux-wireless+bounces-26955-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26956-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F86B40E2E
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 21:54:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C72D4B41047
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Sep 2025 00:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 003661882E17
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 19:55:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DDBC3A2493
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 22:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6659A350D42;
-	Tue,  2 Sep 2025 19:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F66263C7F;
+	Tue,  2 Sep 2025 22:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZrJeisJC"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mlf/Ws90"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0E326C3A5;
-	Tue,  2 Sep 2025 19:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0D81EE02F
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Sep 2025 22:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756842876; cv=none; b=sxRAoAAyEtZFev17KptWrqIyb3VrWDDAQbtK8iU9j7bSroojv9MyRUn/3J5RbjZBCkIAYNBDmAE1yYKK5Sbl2dK54YM2FVurwbYDzVjF49M3FHYbzgHi52CaHQ9e5uqCfk5vhV6CKe8t931QZgpauCB97yTeCkSY8Myt3wCoO4Y=
+	t=1756853217; cv=none; b=YFHFkPNqOQQSATtMB6RatYKCK3dJoQ8amdo2z0K1po6ovcPXaz2XsttF7Hwop6szBe83Q+hLi1KfNIxaXyzC14vhh3vgF9JgeBWKMAWTP4cEm8XiYyiVSOwOBYbi9mLOXsfeDIg6nKj0DSOfdA709oGeN3s+awv2VMafwlZ2ctM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756842876; c=relaxed/simple;
-	bh=oJOLNYG2Y3DXMCSgbwODVJA8SAuDYi5Dbvsh+hG6M4Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pTeAwe3H0ZfTbDJRRZWdM2xfd7eeEpnNtL9F+QPxdolsSSKSGVg2KssdqxuJvRFGlI5KGDCu5vrRtsKYB7eKris3kTBG9bP51RP8Q3AaoEHEOpuKMIM8oWx/tcTVmXEbAotzkNR8T4NOFEuVAdNms1mXBJiFmjXY3v5zT96bZJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZrJeisJC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D07CC4CEED;
-	Tue,  2 Sep 2025 19:54:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756842875;
-	bh=oJOLNYG2Y3DXMCSgbwODVJA8SAuDYi5Dbvsh+hG6M4Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZrJeisJCeZBLdRd9piYISWxH6ectOKfLkCBAI45oB9yskyvBJx+HrHbj0QupA23QY
-	 HMwYW+4SpxkS1Px4DFX1y0PnsLKuIvMupIqIiKRi5+/yisqqzHEEZpEI+OC+GPQMt+
-	 Ih9UPZZxLrikazCJPDm6WovmTyFRm0ulZKF/oPzplGj21mx5CKCfRPvb9oo4xKL1nz
-	 Qojwko0xFxCfGWgdvCBAYT8/hAuaZcNeMu33YO6xDjk/8M8E6xVx4H6De8eZjysot9
-	 apZ9PSugbHYcTWyIOnwbJIoCz8GthLjCfl1K6nrT8bke0E+1MO5eocgkH5TUTef2/d
-	 X7vBDpLUcS7MA==
-Date: Tue, 2 Sep 2025 14:54:34 -0500
-From: Rob Herring <robh@kernel.org>
-To: Janne Grunau <j@jannau.net>
-Cc: Sven Peter <sven@kernel.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Neal Gompa <neal@gompa.dev>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Hector Martin <marcan@marcan.st>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Kettenis <kettenis@openbsd.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Sasha Finkelstein <fnkl.kernel@gmail.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	van Spriel <arend@broadcom.com>, Lee Jones <lee@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Martin =?utf-8?Q?Povi=C5=A1er?= <povik+lin@cutebit.org>,
-	Vinod Koul <vkoul@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org, iommu@lists.linux.dev,
-	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-bluetooth@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-pwm@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-sound@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-nvme@lists.infradead.org
-Subject: Re: [PATCH 00/37] arm64: Add initial device trees for Apple M2
- Pro/Max/Ultra devices
-Message-ID: <20250902194528.GA1014943-robh@kernel.org>
-References: <20250828-dt-apple-t6020-v1-0-507ba4c4b98e@jannau.net>
- <20250829195119.GA1206685-robh@kernel.org>
- <20250830071620.GD204299@robin.jannau.net>
+	s=arc-20240116; t=1756853217; c=relaxed/simple;
+	bh=RfK9TpGo1l+qY2IbxeI/rjdNTtq3tgpsUNfPqqsu8B8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=GOPxV1u9y9I+i3SL9tmYZgi4lwPL7sAy9VRk2NLWw6rNjkQY6mY+lllmbRg0aUH576hi6Wx9EkjCf+PeXmH3DJfPNZtLkT3Bntova3iICty/I6xRaaQSJZzGUfDsiQ1seRoRjs/07b1PfezBbhsiqiu41VSqQAhRMtH+7ZWwdMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mlf/Ws90; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 582EqLZE010204
+	for <linux-wireless@vger.kernel.org>; Tue, 2 Sep 2025 22:46:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Xys+TN3UvtXkU8j0YAUEEAdyFeTetjbhha1tMZwRS4c=; b=mlf/Ws90qxSd+3Oo
+	lIYJhk4+Z99sfe1ZmBJ/tTEvBkBeEX5Rsn+KkyiU+YI2wewZNbyU6eFEfnrpaPFU
+	lTzUJ10FtG1PR8eRSdfNcONsm0O8mykHhAERcc9WQq374DUoeyv/5Ptt8J67A7Ch
+	mQDarlCNRcOrZ7FXubzdg8l3Jb8KCt5vDUIsdAQU3o7sqVUc79vcJni5SO2IwFFj
+	4SQXszIg5zDdl2gb0s30A6gDf/R95sHo8kepEeiek1DJcP+qyp/VEXtK2vBu3r/n
+	o+yeKsFib3nEebr4YQ6RsxvyUNyHlQ44VfuzED3fzX5CnRSqjcqJ5WjYxBQ7uj5L
+	BSt9uQ==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48uq0ehkey-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 02 Sep 2025 22:46:55 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7724487d2a8so5095676b3a.1
+        for <linux-wireless@vger.kernel.org>; Tue, 02 Sep 2025 15:46:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756853214; x=1757458014;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Xys+TN3UvtXkU8j0YAUEEAdyFeTetjbhha1tMZwRS4c=;
+        b=iipy87Cg1So81UmY0UyKOoE9O6Q1Sh/BY/IEweEhk/L5PNal3PH9JuXOgfXAvAzAYV
+         /w5uyNpT9O521yKjdQpoXEcAJKgsn6WEBewdQHAe4rR4Js9xFx7aSCe/H1eR4ANABu1s
+         nsbxWenCmhbIqmBQP35cu8yg6sGRi+23L2YliRpaaLcbCvupkxEj5G0EJnYiuOpdclSo
+         7loCENzDui/GtoQWMmlD+IR5OGyPrbYCp0uYBQTeRLQSJak/Qwr7SJZfLVid51V9o09l
+         V0EyojTW8tw/A0KrbB9RlBIUNSpW8qa+QcmOiM0zvQSD5/IPeqy9rA3Y8EpqJB3T4uyH
+         WzDw==
+X-Gm-Message-State: AOJu0YzszUxhj/FtlqdAhwlAyN4x27tvFm9Uhxy53zVQMHaIlrggSaZm
+	TI2gtHgCbViJt2weNw7TTJ6yup210LjCEQMmxNsKwh/LKxlUoLp21eFbPgpgrHfWMBI6lqhX7cR
+	w1GSpFX+I/ARXtTV0UeBJRL2amEjqX9tYOxbxHwhO/xA6DJcDgWvQbinLrfgHQh1OEl6Yiw==
+X-Gm-Gg: ASbGncsqiSxyZVyeMZCdso18LVjRD7W+S6LnP5UmC9/vyMV1G0cD0C+pFn7DtfnpkVL
+	Q3ai7tppYUC2MA9QemJlU6z7uAdY2NPcphh8rFxKCLKtDxPkAcIinpPjIiDzLSp/WJsLVDXBoih
+	2paW8LEI/2kXdzWPEVKh6lK72kfv8ugdU93QwQdQY9hPkpoA1dg51Um5nNftgxL1kpz0CfuDOJ3
+	PDRCAVrbazvWcJxzN/8e81eOHXDo0pCnEuBR1b+ENeXsRKDvbqTLmbdE0AGWvP7c14LhhLCEQNJ
+	VXDtkLZ1pKARVk3G0B8zoxGForWgz4l3feWyYmh3yyRC9kVapsffmnH4kJlmyEtGRApOEBl292o
+	o
+X-Received: by 2002:a05:6a00:4b56:b0:76b:f7af:c47d with SMTP id d2e1a72fcca58-7723e21f31bmr19473704b3a.4.1756853214251;
+        Tue, 02 Sep 2025 15:46:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkIImkkPU6MxGr4gP6bIaLDKYFv2y3TCkwY7POopojn7hgisj16D0UfF1OYID2SsHnX63+ow==
+X-Received: by 2002:a05:6a00:4b56:b0:76b:f7af:c47d with SMTP id d2e1a72fcca58-7723e21f31bmr19473686b3a.4.1756853213830;
+        Tue, 02 Sep 2025 15:46:53 -0700 (PDT)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7723f4858e6sm11129947b3a.4.2025.09.02.15.46.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 15:46:53 -0700 (PDT)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: ath12k@lists.infradead.org,
+        Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org,
+        Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+In-Reply-To: <20250801104920.3326352-1-rameshkumar.sundaram@oss.qualcomm.com>
+References: <20250801104920.3326352-1-rameshkumar.sundaram@oss.qualcomm.com>
+Subject: Re: [PATCH ath-current] wifi: ath12k: Set EMLSR support flag in
+ MLO flags for EML-capable stations
+Message-Id: <175685321312.3902096.17261701476797887312.b4-ty@oss.qualcomm.com>
+Date: Tue, 02 Sep 2025 15:46:53 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250830071620.GD204299@robin.jannau.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
+X-Proofpoint-GUID: 8e4J73p1ZqvCqth7owcDc6nBrQgY2lf_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAwNCBTYWx0ZWRfX5VUhIm0OgXi3
+ yrt+CIcV+BMmv3ruX5B0OjFQva3Hcs0WiqNJmAr//cLvabX3tjZBoisKwb5aVKGmObjEw9Ma/60
+ JAFAKfh+JDc53TbGQkb6f6nNsUo6y38A3KadzyQTDI8EwMlY+WN+wjYjZdKYdY65HpsG8c42WP6
+ 1ClfZGpGQHVj925hEceXcts4XphVT7fH7ZY4wxk5NlgrOyqI1m+19bEaOI8hUGCCoCReRm2dWF3
+ haiZn4l5EyHvSlUfc0e/dq4VKCWQ00pmEtvSHZDQukBi2QZ3IC+7YR6L8pxqdGLWimzBfDrxBNx
+ v8YMbucE4tKcSfCF0jlaoOi3xK0WLy2kPRmYAzK1jA9B+N8cFt4i7I70hpI3kmzTTB/2d6HGy+p
+ yaIx33lG
+X-Proofpoint-ORIG-GUID: 8e4J73p1ZqvCqth7owcDc6nBrQgY2lf_
+X-Authority-Analysis: v=2.4 cv=ea09f6EH c=1 sm=1 tr=0 ts=68b773df cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=ff3wTCdbfDm941fWPPIA:9
+ a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-02_08,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0 phishscore=0
+ bulkscore=0 spamscore=0 priorityscore=1501 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300004
 
-On Sat, Aug 30, 2025 at 09:16:20AM +0200, Janne Grunau wrote:
-> On Fri, Aug 29, 2025 at 02:51:19PM -0500, Rob Herring wrote:
-> > On Thu, Aug 28, 2025 at 04:01:19PM +0200, Janne Grunau wrote:
-> > > This series adds device trees for Apple's M2 Pro, Max and Ultra based
-> > > devices. The M2 Pro (t6020), M2 Max (t6021) and M2 Ultra (t6022) SoCs
-> > > follow design of the t600x family so copy the structure of SoC *.dtsi
-> > > files.
-> > > 
-> > > t6020 is a cut-down version of t6021, so the former just includes the
-> > > latter and disables the missing bits.
-> > > 
-> > > t6022 is two connected t6021 dies. The implementation seems to use
-> > > t6021 and disables blocks based on whether it is useful to carry
-> > > multiple instances. The disabled blocks are mostly on the second die.
-> > > MMIO addresses on the second die have a constant offset. The interrupt
-> > > controller is multi-die aware. This setup can be represented in the
-> > > device tree with two top level "soc" nodes. The MMIO offset is applied
-> > > via "ranges" and devices are included with preprocessor macros to make
-> > > the node labels unique and to specify the die number for the interrupt
-> > > definition.
-> > > 
-> > > The devices itself are very similar to their M1 Pro, M1 Max and M1 Ultra
-> > > counterparts. The existing device templates are SoC agnostic so the new
-> > > devices can reuse them and include their t602{0,1,2}.dtsi file. The
-> > > minor differences in pinctrl and gpio numbers can be easily adjusted.
-> > > 
-> > > With the t602x SoC family Apple introduced two new devices:
-> > > 
-> > > The M2 Pro Mac mini is similar to the larger M1 and M2 Max Mac Studio. The
-> > > missing SDHCI card reader and two front USB3.1 type-c ports and their
-> > > internal USB hub can be easily deleted.
-> > > 
-> > > The M2 Ultra Mac Pro (tower and rack-mount cases) differs from all other
-> > > devices but may share some bits with the M2 Ultra Mac Studio. The PCIe
-> > > implementation on the M2 Ultra in the Mac Pro differs slightly. Apple
-> > > calls the PCIe controller "apcie-ge" in their device tree. The
-> > > implementation seems to be mostly compatible with the base t6020 PCIe
-> > > controller. The main difference is that there is only a single port with
-> > > with 8 or 16 PCIe Gen4 lanes. These ports connect to a Microchip
-> > > Switchtec PCIe switch with 100 lanes to which all internal PCIe devices
-> > > and PCIe slots connect too.
-> > > 
-> > > This series does not include PCIe support for the Mac Pro for two
-> > > reasons:
-> > > - the linux switchtec driver fails to probe and the downstream PCIe
-> > >   connections come up as PCIe Gen1
-> > > - some of the internal devices require PERST# and power control to come
-> > >   up. Since the device are connected via the PCIe switch the PCIe
-> > >   controller can not do this. The PCI slot pwrctrl can be utilized for
-> > >   power control but misses integration with PERST# as proposed in [1].
-> > > 
-> > > This series depends on "[PATCH v2 0/5] Apple device tree sync from
-> > > downstream kernel" [2] due to the reuse of the t600x device templates
-> > > (patch dependencies and DT compilation) and 4 page table level support
-> > > in apple-dart and io-pgtable-dart [3] since the dart instances report
-> > > 42-bit IAS (IOMMU device attach fails without the series).
-> > > 
-> > > After discussion with the devicetree maintainers we agreed to not extend
-> > > lists with the generic compatibles anymore [1]. Instead either the first
-> > > compatible SoC or t8103 is used as fallback compatible supported by the
-> > > drivers. t8103 is used as default since most drivers and bindings were
-> > > initially written for M1 based devices.
-> > 
-> > An issue here is any OS without the compatibles added to the drivers 
-> > won't work. Does that matter here? Soon as you need any new drivers or 
-> > significant driver changes it won't. The compatible additions could be 
-> > backported to stable. They aren't really any different than new PCI IDs 
-> > which get backported.
+
+On Fri, 01 Aug 2025 16:19:20 +0530, Rameshkumar Sundaram wrote:
+> Currently, when updating EMLSR capabilities of a multi-link (ML) station,
+> only the EMLSR parameters (e.g., padding delay, transition delay, and
+> timeout) are sent to firmware. However, firmware also requires the
+> EMLSR support flag to be set in the MLO flags of the peer assoc WMI
+> command to properly handle EML operating mode notification frames.
 > 
-> I don't think backporting the driver compatible additions to stable
-> linux is very useful. It is only relevant for t602x devices and the only
-> way to interact with them is the serial console. The T602x PCIe support
-> added in v6.16 requires dart changes (the posted 4th level io page table
-> support) to be useful. After that PCIe ethernet works so there is a
-> practical way to interact with t602x systems. So there are probably zero
-> user of upstream linux on those devices 
-> I'm more concerned about other projects already supporting t602x
-> devices. At least u-boot and OpenBSD will be affected by this. As short
-> term solution m1n1 will add the generic compatibles [1] temporarily.
-> I think keeping this roughly for a year should allow to add the
-> compatibles and wait for "fixed" releases of those projects.
-> I'll send fixes for u-boot once the binding changes are reviewed.
+> Set the ATH12K_WMI_FLAG_MLO_EMLSR_SUPPORT flag in the peer assoc WMI
+> command when the ML station is EMLSR-capable, so that the firmware can
+> respond to EHT EML action frames from associated stations.
+> 
+> [...]
 
-Honestly, at least in the cases where the generic compatible works for 
-every chip so far, I'd just stick with it. The issue with generic 
-compatibles is more that you don't really know if things are going to be 
-the same or not. And most of the time, the h/w ends up changing.
+Applied, thanks!
 
-If you want to keep it like this since you've already done it, then for 
-all the binding patches:
+[1/1] wifi: ath12k: Set EMLSR support flag in MLO flags for EML-capable stations
+      commit: 22c55fb9eb92395d999b8404d73e58540d11bdd8
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Best regards,
+-- 
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
-Rob
 
