@@ -1,149 +1,151 @@
-Return-Path: <linux-wireless+bounces-26957-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26958-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4DFFB41048
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Sep 2025 00:47:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2D4B4113C
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Sep 2025 02:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A0E724E2312
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Sep 2025 22:47:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA002202676
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Sep 2025 00:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A76A1EE02F;
-	Tue,  2 Sep 2025 22:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8AF8134CB;
+	Wed,  3 Sep 2025 00:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pnadynPg"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Qw25cgHA"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAB9258EED
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Sep 2025 22:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538C6134BD
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Sep 2025 00:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756853219; cv=none; b=eZGr8kzpW+laV1FgSKMbhhZXmaf0Aa0sWXNxLNVIAfylk2sxacK2WNGtYALBLy4Apzq86M3uivG7WHKmj5R5IYrzv19XzHBXuZolON3c30Xr+U4QKDjAJoAM68GexWntCxsWu7GKdPGgtZ7k0sFMaRRC0G/Yd7GLsKb1XHdFdYg=
+	t=1756858677; cv=none; b=kB8QmtuPEWgJUhLvEMANpuMVfqq+LCGM9BVBBYXFucxTg/86u3dWUC09ZK3/yzwupuyi1d1YJlwOoR7xRN0Tx2pDCC+cB/BFhwL3ib6HOP8Niq7dtkqTmf8msv/bb32McRdidBQzpUixau9F5PfekkbfZ+Xjw7xEN3/MfezoX7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756853219; c=relaxed/simple;
-	bh=pmYcw7uYuyFMPWGymWggproQ5V5rREITB1dvjPpfKtk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=nn8giAKjBJsiQCixAkWn+ETlC3wgpM7olhWBXoly4ejCLahOALRmAG8h+6xJHib2pxMCQu5mg/iExoukXL6Ju4/uH5DvtV4EC7WfLtzoqf5hXjCnQ5TiRk9cZR+JpFhjHII54GI45cB0ExkLkx6IvJwUDMwBncPalw9xPjuRcPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pnadynPg; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1756858677; c=relaxed/simple;
+	bh=53AF5Em8rx5jKn3u9PAXC2kYGObLU+AcGM4SHvUJ7NQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:Subject:From:Content-Type; b=PWAAxNvFvOisieF6NSeTGCv7AvdKvZpLl95xVTiOIj+zl64khhMS7Z+huTH3sDDSzhXzbZDH0NiyYAZ+EBQRS+a8PEwCBkA6l7L1n+ZuWmJtB9dAhD51vZbeXlId+FoM06hRY2SGA/Krku6KMtLJRk0WziUIX0mn+Crt8dCNkUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Qw25cgHA; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 582EqDBK025377
-	for <linux-wireless@vger.kernel.org>; Tue, 2 Sep 2025 22:46:56 GMT
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 582EqCaq019584
+	for <linux-wireless@vger.kernel.org>; Wed, 3 Sep 2025 00:17:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	zucT71ouAiCeaIb77mSjfcSNqEy3XsFXZs+bwZ11Org=; b=pnadynPgi9HiP4Oi
-	DzZxir6erC8e3hW/qN+rZuE3MPi5ZFvK4TYyNT8qDGK1nso4SEwLKx1zrhScwJ7G
-	urBsL8r/KxWKQiBVh2mJrLs0yDMxg1gQQ+MzwhruqYims6//1mRvbPrVwOlinkdY
-	49ytk3zQdPMsAc6/New17WPj7JHtWh4L9bfef1t/q1nCOaGyDZbWAFXQg8kaAmlc
-	/cpq6FZ8xa4Gg1u0pH8hwub9GE8d1cGhQagf4cBh9hO1hvc1dVBPp4MdzI2mTFpK
-	EQ/am7fcn1DFPO7Lhx2P719u/aJCjouhMgQelA06WjhxQ+p0XV0nnendbeTjtCLB
-	LE7qDw==
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48uscv1hfv-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=cTlL3s3wU08p/sYLbsbZNw
+	CeQ/WfCrG0UOH18y1enxY=; b=Qw25cgHAnBYpc2vYAjDlzDvnXCGfa9sQcSorDj
+	iyWVdZBQyPq92VAedW3V4p01QufZ4y/qYw9gnfBHAx3arm66gkKMe5xaVNlYM9ms
+	nRrNnLIER/DpYNN5L8rcH6GBQ03pQXF3WQwmdRXZUtlFla98ePghyjIIGhOuxkq9
+	Bx8fx9Ljn8/oNA6RR9NvWtyox83LHosH+uRR3otVCBTsugTDpRpkzh1on2n6mHky
+	B34AgdwNZCAYAaSP5Bn6OYzvTxvB/F/Y0O7t4AFLZUqtwih4CPX7u3el3S0KaP02
+	CcAAaPuhgK6UYazKptefvx1rGAWu7BWoB/9fD3cZ6MLtizpQ==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48urw01ns8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 02 Sep 2025 22:46:56 +0000 (GMT)
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-7726280f7d0so2340101b3a.1
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Sep 2025 15:46:56 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Wed, 03 Sep 2025 00:17:55 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b47174c667aso4818760a12.2
+        for <linux-wireless@vger.kernel.org>; Tue, 02 Sep 2025 17:17:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756853215; x=1757458015;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zucT71ouAiCeaIb77mSjfcSNqEy3XsFXZs+bwZ11Org=;
-        b=lHO00z9gXqJzDMCjnHvU7jEiXvLQ+/EKcMBvwMKGgrUDW7vymKdwojyWWdVCzb1ntA
-         6U5mAtozcshHRtAPzoTuH2ehI++RW16pU+rLyGZgn9s+pkocW/s1S6pIQhC/N2p3aV+q
-         uxCt7wrG4ObO325180f9OmdlD6UeJuu728IdWTMqVJcUAyyKtLjyemaYq2AgroCK29qd
-         IN+sNQz/3Rjt4ZtpCy0FbItYcf2F4dvuyqVeNaUqhV9LGjGpHSWOuAFiNeqelU7OBR1c
-         IP6cqtoLFrFLk19xttj4jJW8UofmuNLIMenesEKr8vpVCYVkyl7gflesJsLR8n3+nvjZ
-         af0A==
-X-Gm-Message-State: AOJu0Yzp4tiKGiR7IZS861FqPP9yU1Ptp8Pkhy7gh3W5kSp1nCMFLXQd
-	WszEd4NE7jGzBQx35KPm8w12Gk5PzugG8p6g2DWMu78Y2V8giOlJguJFXucKaYlWtQ7QBVCTvlw
-	wkub+Tj7py3x27v1QXueBSMgO4HDRRvugLb+1tTk06gM6cTMBttKmucOUUFhiKiFPdK9J8A==
-X-Gm-Gg: ASbGncvdFHJ/6lrChwy2X5u1Rj2iE50Xam7aNTFiE39zGM3e/OzD2U1GJd/AsaYA1+O
-	bXmWZ74PDBb+7szg0Qtx4XyIA5wSZsmPyJ7nOJFPDyuKS4hmPJT9vsrBQhqx8+mhFUZfKHPht3G
-	KDJIkyuwSC/JueOuZ/24U08N2ypuINNzx04W62UbVxjx5rR5rbcIRn4X99JCbUZ9To0fGKryA85
-	5ScuK0gcR+oN7h2IgCUlZR3k49aDqLauUgoZLq9XWhj8Ih29+QR0KFJ1xMs1xSZaIGgIjR4mlsO
-	z7IJuKtxxLl23xdoNKTmNbY5e8slaFKTI6iISUCa5tF9kdWgkZWeXbHWUtHnj867+1OxOcjGNBP
-	P
-X-Received: by 2002:a05:6a00:1a8f:b0:772:4759:e433 with SMTP id d2e1a72fcca58-7724759e59emr15320129b3a.2.1756853215201;
-        Tue, 02 Sep 2025 15:46:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGB9qv0eFVzvl5nEblgwwyWD57ltVYbxlrH1yVZyYs108Q6uR+ONxW2OmtRwVKSH4m6/Xuycg==
-X-Received: by 2002:a05:6a00:1a8f:b0:772:4759:e433 with SMTP id d2e1a72fcca58-7724759e59emr15320108b3a.2.1756853214691;
-        Tue, 02 Sep 2025 15:46:54 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7723f4858e6sm11129947b3a.4.2025.09.02.15.46.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 15:46:54 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: ath11k@lists.infradead.org,
-        Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, Steffen Moser <lists@steffen-moser.de>
-In-Reply-To: <20250810170018.1124014-1-rameshkumar.sundaram@oss.qualcomm.com>
-References: <20250810170018.1124014-1-rameshkumar.sundaram@oss.qualcomm.com>
-Subject: Re: [PATCH ath-current v4] wifi: ath11k: fix group data packet
- drops during rekey
-Message-Id: <175685321400.3902096.17516915412398086477.b4-ty@oss.qualcomm.com>
-Date: Tue, 02 Sep 2025 15:46:54 -0700
+        d=1e100.net; s=20230601; t=1756858674; x=1757463474;
+        h=content-transfer-encoding:from:content-language:subject:cc:to
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cTlL3s3wU08p/sYLbsbZNwCeQ/WfCrG0UOH18y1enxY=;
+        b=OOC52oeLoO6wmgG8ekMBZOUlSv35b2kFTMgqv+34m5bQ3EnycoBx66YOOlQxP/TVZv
+         0II00pr2+qsRYsye4JKD0PS0ElG27OI+nX36YyUnexLb045xqic9fB6nEKIbH7BjskHO
+         cgzCSIGGRXfK53KHbUqiG+Y/AdWWe13u+PEUFKpYS1Vsof9471QFp7Z0JETJs847Ldl0
+         8eiq8w0VaSXvfG5CduNaq6B+XnRHJnT3JX8im89CSIBEFYJU6ks6szTX0VXJ3gz8ogIP
+         T2OiibI+KxdAYUWLCYkitGgyHgnqodyaOj+Jygms3CBb3xhzwFQML6qfFPPcslRKEf4B
+         o06w==
+X-Gm-Message-State: AOJu0YwIXeO2llFV9C+91lvdcfBiYotuzvEVfWGeO8p7REzywsv5djOB
+	50fb0R0V5NTt3B8nnOoG/oI5X4nKrWvmgqXTWrMLRFopO4KQ04oldrh3WQowJ1DvPN/StTj3AUB
+	IL2tC3oy+85bKcHC6ALYY824bijU3OqHcNZilfbN0h0XNhxvVv3oK3lIwtNZhGRaq1iZ2sDUDc4
+	VVCg==
+X-Gm-Gg: ASbGncsv9rIhxVAblPb++FB3L0PONUuh3Q9yvQQHwOhH+wwItaNHiNTGyCOsxsLD1XQ
+	u1IrOD4DSzmhSwZ1xzCTwQlTf5kIcde1N5UgU8aNRso0GNe0EeT+Nt7w27sPX7VDRyGJt7J0WQi
+	L/GtPHp6SskoaZ10wF3H2zQ7gPC3pCbSu+o6YhAiZwYgir5Gmh9Gbict6BLbAn1fd64X+bYyTaj
+	/9cqjFrmzhpHT53fi7HL+4mmbrogxginP2xjbXCBxK0elgewcvIq95E/coHdWH0J8KoVV4p7pC6
+	itEBgpnNzI33n1ud58fPtTS4xV9ERRxSufpgfTHOs+8GGucFSkDB4DSZfQPqUuecm+X3aMX7uPm
+	t
+X-Received: by 2002:a05:6a20:3d8b:b0:243:b190:d148 with SMTP id adf61e73a8af0-243d6f02580mr19232375637.37.1756858673674;
+        Tue, 02 Sep 2025 17:17:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHFoBDXowFfmFVh9kvrykyPsnoguSqtBdlEPxuL91LPUOIVWBRu7O6kvVYOnwcBKK7zunER1w==
+X-Received: by 2002:a05:6a20:3d8b:b0:243:b190:d148 with SMTP id adf61e73a8af0-243d6f02580mr19232345637.37.1756858673229;
+        Tue, 02 Sep 2025 17:17:53 -0700 (PDT)
+Received: from [10.81.24.74] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-772466e629asm10148491b3a.31.2025.09.02.17.17.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Sep 2025 17:17:52 -0700 (PDT)
+Message-ID: <8fb26b97-f483-4155-af6b-493b2bd16442@oss.qualcomm.com>
+Date: Tue, 2 Sep 2025 17:17:51 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.14.2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMSBTYWx0ZWRfXykduTrH5Ycez
- /Sg9+78TKmltqPzLtTjU+W9KCBZlqPs4wCpdPi60ryfnFVR2PuihScAjUw0QwwdSaWtb5kKjMUT
- epe/Jl7hmkG9Y9uZibilLXKQXDCUVIzEEd3Z/EMRibf1Ewwo3W28VMN1BRgECPWhq206TSKXCam
- ZvXsDNr2FARIAt6Hp58R3B641rhWLOYnh3jl9YNsnISlhSXQFsfPLUuH04+a0Jx6XH1lZD/p7N7
- X8b1H2v9b5FA2wvJzwIPYT7pL960NuidOkZCqT46W51EYUyfYgOZOAuxw1a9vjKxMeRV8vgw2Zi
- njFXOY68PIPSytMvRK8slOkQak9h7X0vM7kbkjLz9SEju+Iq6yTXiOAMCbjZllDad9gPrcO1D0Z
- EJz3BFZY
-X-Authority-Analysis: v=2.4 cv=A8xsP7WG c=1 sm=1 tr=0 ts=68b773e0 cx=c_pps
- a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=TGNEUY_dwaX08I1wFI8A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
-X-Proofpoint-ORIG-GUID: 13yPTPXydw1wzoaJjw0dHD8SSjkBUyaX
-X-Proofpoint-GUID: 13yPTPXydw1wzoaJjw0dHD8SSjkBUyaX
+User-Agent: Mozilla Thunderbird
+To: linux-wireless@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>
+Cc: ath10k@lists.infradead.org, ath11k@lists.infradead.org,
+        ath12k@lists.infradead.org, jjohnson@kernel.org
+Subject: pull-request: ath-current-20250902
+Content-Language: en-US
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: N1y2pY8NpnHfmwurxEwKgy-QtmSHrCV9
+X-Proofpoint-ORIG-GUID: N1y2pY8NpnHfmwurxEwKgy-QtmSHrCV9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyNyBTYWx0ZWRfX0hLpHAnM2Baq
+ Ikv5NXN0MmhuD7nv+8aq5VYRrOWTLotO5Z9ACH4XzvQb18RfKnwo8E+2iDxnJSRGEX9iBes/8GK
+ iYYI0G7TJW5dVGCPG0bxARDDvSmwgrSOFrLHfsIvN5uhygmZs6BGCeYiIpzKUxV3CCtsDob2Mi5
+ m60phn/n3uNC5Va7vqdkRDBXuu6eGM2f7W+S91S3CpD29g85NmGnrx/neMQta6+vexRoHrb25aa
+ 5SnIpVhsctMpla9uadWkE1YzRgkgLBk5UwJBj6PRNKqzZvSsUl4avg0eqntk7nv+RfprQn+O7fy
+ q+FN/7+mhOfOTLWRg1CG6DLcZmIPxMnZctICXtITFhrViMkicEUdcG09SZi/o86qE5Rf/D6NZUf
+ aXySDQku
+X-Authority-Analysis: v=2.4 cv=NrDRc9dJ c=1 sm=1 tr=0 ts=68b78933 cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=ETpNzpHT8A4ojKDL548A:9
+ a=QEXdDO2ut3YA:10 a=3WC7DwWrALyhR5TkjVHa:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-02_08,2025-08-28_01,2025-03-28_01
+ definitions=2025-09-02_09,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0 impostorscore=0 bulkscore=0 clxscore=1015
- suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300031
+ clxscore=1015 suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
+ impostorscore=0 spamscore=0 bulkscore=0 adultscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508300027
 
+The following changes since commit 2c72c8d356db40178be558bbbd43a1d0b5bd0c27:
 
-On Sun, 10 Aug 2025 22:30:18 +0530, Rameshkumar Sundaram wrote:
-> During GTK rekey, mac80211 issues a clear key (if the old key exists)
-> followed by an install key operation in the same context. This causes
-> ath11k to send two WMI commands in quick succession: one to clear the
-> old key and another to install the new key in the same slot.
-> 
-> Under certain conditions—especially under high load or time sensitive
-> scenarios, firmware may process these commands asynchronously in a way
-> that firmware assumes the key is cleared whereas hardware has a valid key.
-> This inconsistency between hardware and firmware leads to group addressed
-> packet drops. Only setting the same key again can restore a valid key in
-> firmware and allow packets to be transmitted.
-> 
-> [...]
+  Merge tag 'iwlwifi-fixes-2025-08-28' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next (2025-08-28 14:03:32 +0200)
 
-Applied, thanks!
+are available in the Git repository at:
 
-[1/1] wifi: ath11k: fix group data packet drops during rekey
-      commit: 97acb0259cc9cbfbd7ab689e25684f3d8ce10e26
+  git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git tags/ath-current-20250902
 
-Best regards,
--- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+for you to fetch changes up to 97acb0259cc9cbfbd7ab689e25684f3d8ce10e26:
 
+  wifi: ath11k: fix group data packet drops during rekey (2025-09-02 15:43:16 -0700)
+
+----------------------------------------------------------------
+ath.git update for v6.17-rc5
+
+Fix a long-standing issue with ath11k dropping group data packets
+during GTK rekey, and fix an omission in the ath12k multi-link EMLSR
+support introduced in v6.16.
+
+----------------------------------------------------------------
+Rameshkumar Sundaram (1):
+      wifi: ath11k: fix group data packet drops during rekey
+
+Ramya Gnanasekar (1):
+      wifi: ath12k: Set EMLSR support flag in MLO flags for EML-capable stations
+
+ drivers/net/wireless/ath/ath11k/core.h |   2 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 111 ++++++++++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath12k/wmi.c  |   1 +
+ 3 files changed, 105 insertions(+), 9 deletions(-)
 
