@@ -1,151 +1,208 @@
-Return-Path: <linux-wireless+bounces-26958-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26959-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2D4B4113C
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Sep 2025 02:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15568B41261
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Sep 2025 04:33:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA002202676
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Sep 2025 00:18:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9698207A53
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Sep 2025 02:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8AF8134CB;
-	Wed,  3 Sep 2025 00:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C953D12CD8B;
+	Wed,  3 Sep 2025 02:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Qw25cgHA"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="rTwocrew"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538C6134BD
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Sep 2025 00:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F85C16FF37
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Sep 2025 02:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756858677; cv=none; b=kB8QmtuPEWgJUhLvEMANpuMVfqq+LCGM9BVBBYXFucxTg/86u3dWUC09ZK3/yzwupuyi1d1YJlwOoR7xRN0Tx2pDCC+cB/BFhwL3ib6HOP8Niq7dtkqTmf8msv/bb32McRdidBQzpUixau9F5PfekkbfZ+Xjw7xEN3/MfezoX7w=
+	t=1756866816; cv=none; b=gCNu7kmWNT+VBjexXUrVs8S0QsShojpqJi8j8yVd+YUpvl5z2613LjsK2cu9GRIY1zu0El9NPZreJszpqtXX+m5yhUYGu0cvNUHiWBnm1f9qCHMVd8pHT3879oCv07s0xnPrkIAadIfwZzb+dRKpm1jIxgglw9exbqccuYF/MpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756858677; c=relaxed/simple;
-	bh=53AF5Em8rx5jKn3u9PAXC2kYGObLU+AcGM4SHvUJ7NQ=;
-	h=Message-ID:Date:MIME-Version:To:Cc:Subject:From:Content-Type; b=PWAAxNvFvOisieF6NSeTGCv7AvdKvZpLl95xVTiOIj+zl64khhMS7Z+huTH3sDDSzhXzbZDH0NiyYAZ+EBQRS+a8PEwCBkA6l7L1n+ZuWmJtB9dAhD51vZbeXlId+FoM06hRY2SGA/Krku6KMtLJRk0WziUIX0mn+Crt8dCNkUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Qw25cgHA; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 582EqCaq019584
-	for <linux-wireless@vger.kernel.org>; Wed, 3 Sep 2025 00:17:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=cTlL3s3wU08p/sYLbsbZNw
-	CeQ/WfCrG0UOH18y1enxY=; b=Qw25cgHAnBYpc2vYAjDlzDvnXCGfa9sQcSorDj
-	iyWVdZBQyPq92VAedW3V4p01QufZ4y/qYw9gnfBHAx3arm66gkKMe5xaVNlYM9ms
-	nRrNnLIER/DpYNN5L8rcH6GBQ03pQXF3WQwmdRXZUtlFla98ePghyjIIGhOuxkq9
-	Bx8fx9Ljn8/oNA6RR9NvWtyox83LHosH+uRR3otVCBTsugTDpRpkzh1on2n6mHky
-	B34AgdwNZCAYAaSP5Bn6OYzvTxvB/F/Y0O7t4AFLZUqtwih4CPX7u3el3S0KaP02
-	CcAAaPuhgK6UYazKptefvx1rGAWu7BWoB/9fD3cZ6MLtizpQ==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48urw01ns8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 03 Sep 2025 00:17:55 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b47174c667aso4818760a12.2
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Sep 2025 17:17:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756858674; x=1757463474;
-        h=content-transfer-encoding:from:content-language:subject:cc:to
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+	s=arc-20240116; t=1756866816; c=relaxed/simple;
+	bh=YQ/9MwHKqNWSWsrgMZiuoWgsJIZpDS4D0B6rZato/lU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QRsz3OxOs62/QMKcRfxjy8b11BzXIoBOvg0EBkZviyzZDcJnFW0mLXYF3LZYEmr1TlceJhs1LInq3KAZYvUowUFn993vxe48JIChx4jAnYGyfo+E50F/SV+Y9St8fKNbnt3Ry5TKNs7wZyw3e8xaMMer+nDfihAkIsWUXfgjSEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=rTwocrew; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-327e5b65e2cso4012989a91.2
+        for <linux-wireless@vger.kernel.org>; Tue, 02 Sep 2025 19:33:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1756866814; x=1757471614; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=cTlL3s3wU08p/sYLbsbZNwCeQ/WfCrG0UOH18y1enxY=;
-        b=OOC52oeLoO6wmgG8ekMBZOUlSv35b2kFTMgqv+34m5bQ3EnycoBx66YOOlQxP/TVZv
-         0II00pr2+qsRYsye4JKD0PS0ElG27OI+nX36YyUnexLb045xqic9fB6nEKIbH7BjskHO
-         cgzCSIGGRXfK53KHbUqiG+Y/AdWWe13u+PEUFKpYS1Vsof9471QFp7Z0JETJs847Ldl0
-         8eiq8w0VaSXvfG5CduNaq6B+XnRHJnT3JX8im89CSIBEFYJU6ks6szTX0VXJ3gz8ogIP
-         T2OiibI+KxdAYUWLCYkitGgyHgnqodyaOj+Jygms3CBb3xhzwFQML6qfFPPcslRKEf4B
-         o06w==
-X-Gm-Message-State: AOJu0YwIXeO2llFV9C+91lvdcfBiYotuzvEVfWGeO8p7REzywsv5djOB
-	50fb0R0V5NTt3B8nnOoG/oI5X4nKrWvmgqXTWrMLRFopO4KQ04oldrh3WQowJ1DvPN/StTj3AUB
-	IL2tC3oy+85bKcHC6ALYY824bijU3OqHcNZilfbN0h0XNhxvVv3oK3lIwtNZhGRaq1iZ2sDUDc4
-	VVCg==
-X-Gm-Gg: ASbGncsv9rIhxVAblPb++FB3L0PONUuh3Q9yvQQHwOhH+wwItaNHiNTGyCOsxsLD1XQ
-	u1IrOD4DSzmhSwZ1xzCTwQlTf5kIcde1N5UgU8aNRso0GNe0EeT+Nt7w27sPX7VDRyGJt7J0WQi
-	L/GtPHp6SskoaZ10wF3H2zQ7gPC3pCbSu+o6YhAiZwYgir5Gmh9Gbict6BLbAn1fd64X+bYyTaj
-	/9cqjFrmzhpHT53fi7HL+4mmbrogxginP2xjbXCBxK0elgewcvIq95E/coHdWH0J8KoVV4p7pC6
-	itEBgpnNzI33n1ud58fPtTS4xV9ERRxSufpgfTHOs+8GGucFSkDB4DSZfQPqUuecm+X3aMX7uPm
-	t
-X-Received: by 2002:a05:6a20:3d8b:b0:243:b190:d148 with SMTP id adf61e73a8af0-243d6f02580mr19232375637.37.1756858673674;
-        Tue, 02 Sep 2025 17:17:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHFoBDXowFfmFVh9kvrykyPsnoguSqtBdlEPxuL91LPUOIVWBRu7O6kvVYOnwcBKK7zunER1w==
-X-Received: by 2002:a05:6a20:3d8b:b0:243:b190:d148 with SMTP id adf61e73a8af0-243d6f02580mr19232345637.37.1756858673229;
-        Tue, 02 Sep 2025 17:17:53 -0700 (PDT)
-Received: from [10.81.24.74] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-772466e629asm10148491b3a.31.2025.09.02.17.17.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 17:17:52 -0700 (PDT)
-Message-ID: <8fb26b97-f483-4155-af6b-493b2bd16442@oss.qualcomm.com>
-Date: Tue, 2 Sep 2025 17:17:51 -0700
+        bh=LdrmIOMJu7DyOFq6sPxM83Va4V/PzAz8GEAErTubVYw=;
+        b=rTwocrew90RW5+Osk2m9CUoLtU29MLTuUmWY9rYgBgQAqYVSeVgV9Zzh3Msu4pDX9N
+         gqsDJnhHZj89AWPu/1GF7k1i5yjwAvQ/w/AvWFj4HKf6m2S5zPYohknbZY6cfZUGOiGz
+         7WCyJFpbuKyTziW/joSE/TgPMOKMia20/jpD3DeqbsUvdJ28YDYZbcU3uE0fD88mNN1r
+         rtDSA35FE9FOpgvt3vjEXglxjvyyPmOL3VwoTJe5mFRpZHepaYgfxdS0m/2Rr0KdTsVJ
+         dTjlP1QhMSzl03VEmkbGOiLXMFggU1GD7uC+ZW0XVsiLJI70GwbsWYWdPQbi036Lmeuo
+         ZvRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756866814; x=1757471614;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LdrmIOMJu7DyOFq6sPxM83Va4V/PzAz8GEAErTubVYw=;
+        b=L8b4SJxLjnDQa1yrZqY9jbhsO32HXh9CIZ0iDBXnSpgpUxWMCTz4f5+uW+xDFhiGWR
+         tl+HFGzLjVq/UQeisOcy/nOV+rLruOY3krwjwBZqJDjD4nVkLEUlLEHGJvNhTrHcd/P6
+         41eE76de09wWMiJvCpE5HtxjIPF4fuTfbXIqyVn+cSdHhzeayTS749c+73kXcqa7cRZs
+         LDEHVSRxceofkkt7Q/OsL/nLHrooYWG0tT02h9fvOneSrHMxCzFnSRM/vOPz2cNMZ+Z2
+         PA0wuX5jPhR4CeApmGluTmrmQpP3m7Rye31NhcvGBQs1kI5kKLAbsirgUBegK5rBP5ZC
+         j7FA==
+X-Gm-Message-State: AOJu0YyXCH+Piim5icTnxJfC2kpC2ut7iGk+mICmky2w+vFfJcAvIVdC
+	K4p1jogsJD9N0W+5yOBOTfnoc83FCXKe7Awl/0jAteyhdy5dMvQWNWvRzQ/jhp5stUw=
+X-Gm-Gg: ASbGncsLs8cuwGpBwcK0Kamv3Yl4/xTHB1Qcak/+upgYEIeFBKgqG7+cHGFaqEdHpMN
+	m6OOQrvqrOL3t+N6Gx1zNDoDyx1m2ittI83y5PjPdybIrc94kC6wan2+LA//8yW3CWdii52QBFg
+	uGSYMFP4uisj+NEpWZNLf/qPiK8j9GjOtJ79Rl8Pz3MrJRHirIJT8D4ZsCeZnn/JM3UaripHuCK
+	hVOazGN/18kW4BwX9MLdKGAxMgVBvz+Ijbj4H+7RZgapbu11Kt1LdFS8KPB3+DbxImRU9OmsUab
+	++M3DbBVvHSK2BX0oA9O9bywzLUih+tAEnmfLiwE7nAh23BkqbCZFS4Es+7HxUJhGerHbflOZWR
+	qN/6EXWy0MefYAofEK5LZGA8Vuw4PVI8txhdMGXx/gSkk0nlVZee1xJdGilUMEc/HNyDYtSE4zd
+	g9UfkkCjc8mfD2ubpqERg=
+X-Google-Smtp-Source: AGHT+IElSHoMvLtU2UHE0Ui+93FZF1UBbtJQ0yxn75uj77ORX6i9QTBqmCq5J1KhgT2zFxIsO6vHTA==
+X-Received: by 2002:a17:90b:1649:b0:327:a665:da89 with SMTP id 98e67ed59e1d1-328156b83b2mr19566234a91.18.1756866813681;
+        Tue, 02 Sep 2025 19:33:33 -0700 (PDT)
+Received: from localhost (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3276fcd33c1sm20662785a91.17.2025.09.02.19.33.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 19:33:33 -0700 (PDT)
+Date: Wed, 3 Sep 2025 12:33:29 +1000
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Subject: Re: [PROPOSAL RFC] S1G Primary Channel Implementation Proposal
+Message-ID: <byajqzqa2qqxh7l6kul7pxzt5rn74hiwln3rpkcfytqq6fw2ml@wszpdqibci4t>
+References: <xu4ftmpdwwpokw6exaprrv6wleptq7ggleiluiu6x2dzqbqfhv@6s4m3okiohzw>
+ <75245df8edd5bbaa8f9cdfd12bab37720473d93d.camel@sipsolutions.net>
+ <czhftz5pdqx4edw4xr73svcr5cxfzzwa2r547p52tmsgywsb34@k5ooo5iw5mcu>
+ <9363e3a700565a34145be7268deb0a8623f659ba.camel@sipsolutions.net>
+ <ab4ea03131cec7847b31eb548881ef79da4ae1c5.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: linux-wireless@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>
-Cc: ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, jjohnson@kernel.org
-Subject: pull-request: ath-current-20250902
-Content-Language: en-US
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: N1y2pY8NpnHfmwurxEwKgy-QtmSHrCV9
-X-Proofpoint-ORIG-GUID: N1y2pY8NpnHfmwurxEwKgy-QtmSHrCV9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyNyBTYWx0ZWRfX0hLpHAnM2Baq
- Ikv5NXN0MmhuD7nv+8aq5VYRrOWTLotO5Z9ACH4XzvQb18RfKnwo8E+2iDxnJSRGEX9iBes/8GK
- iYYI0G7TJW5dVGCPG0bxARDDvSmwgrSOFrLHfsIvN5uhygmZs6BGCeYiIpzKUxV3CCtsDob2Mi5
- m60phn/n3uNC5Va7vqdkRDBXuu6eGM2f7W+S91S3CpD29g85NmGnrx/neMQta6+vexRoHrb25aa
- 5SnIpVhsctMpla9uadWkE1YzRgkgLBk5UwJBj6PRNKqzZvSsUl4avg0eqntk7nv+RfprQn+O7fy
- q+FN/7+mhOfOTLWRg1CG6DLcZmIPxMnZctICXtITFhrViMkicEUdcG09SZi/o86qE5Rf/D6NZUf
- aXySDQku
-X-Authority-Analysis: v=2.4 cv=NrDRc9dJ c=1 sm=1 tr=0 ts=68b78933 cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=ETpNzpHT8A4ojKDL548A:9
- a=QEXdDO2ut3YA:10 a=3WC7DwWrALyhR5TkjVHa:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-02_09,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- impostorscore=0 spamscore=0 bulkscore=0 adultscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508300027
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ab4ea03131cec7847b31eb548881ef79da4ae1c5.camel@sipsolutions.net>
 
-The following changes since commit 2c72c8d356db40178be558bbbd43a1d0b5bd0c27:
+On Tue, Sep 02, 2025 at 01:36:02PM +0200, Johannes Berg wrote:
+> To maybe describe where I'm confused more clearly:
+> 
+> > > * ->chan points to the primary 1MHz or 2MHz channel
+> 
+> This was based on something I said. When I first read it it, I thought
+> this was because 2 MHz primary channel was a completely independent mode
+> of operation of the two 1 MHz frequency ranges that make up this 2 MHz
+> range.
+> 
+> But maybe that was wrong? Because you also said this:
+> 
+> > > As mentioned, the one difference is that S1G primary channels can be 2MHz.
+> > > The standard (and by extension, the S1G Operation element) uses the notion of
+> > > primary channel location. When we have a 2MHz primary channel, the AP must
+> > > specify which 1MHz subchannel _within_ this 2MHz primary channel is used.
+> 
+> So this seems to indicate the primary channel is always 1 MHz?
 
-  Merge tag 'iwlwifi-fixes-2025-08-28' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next (2025-08-28 14:03:32 +0200)
+Not necessarily, in fact most cases we use a 2MHz primary when possible.
+In cases like this, beacons are transmitted on the center frequency of the
+2MHz primary channel (And I realise Im just saying "channel" again). This is
+a composite of 2 1MHz subchannels and we then specify the location of the
+1MHz subchannel and advertise this to STAs (This is done in hostapd anyway,
+so not really a concern here). With the flag you suggested below, this is fine
+though.
+ 
+> Looking at the spec, the S1G operation says you have _both_:
+>  - the primary width [B0]
+>  - the overall width 1/2/4/8/16 MHz [B1-B4]
+>  - the location of the 1 MHz primary inside the 2 MHz primary [B5]
+>  - the overall channel center frequency (as a channel number)
+> 
+> So something like Channel 44/8MHz with 1 MHz primary in the upper half
+> of the primary 2 MHz would be
+> 
+>  - primary 1 MHz	width B0 == 0
+>  - 8 MHz		width B1-B4 == 7
+> 			(? Table 10-41 S1G BSS operation channel width)
+>  - primary channel num	38
+>  - channel center freq	44
+> 
+> 
+> But I don't think we necessarily have to capture this the same way in
+> our chandef.
+> 
+> We could also say that the 'control' channel pointer always points to
+> the primary 1 MHz. Then, we only need a single flag in the *chandef* to
+> capture the whole definition, in this example:
+> 
+>  - chan: pointer to struct ieee80211_channel for channel 37
+>  - width: 8 MHz
+>  - center_freq1: 925 Mhz (== channel 44)
+>  - s1g_primary_2mhz: true
 
-are available in the Git repository at:
+This makes sense to me. One misunderstanding I had (that you brought up in
+the email before this one) was that only 20MHz control channels are advertised,
+for example, with VHT. I think I better now understand the structure of the
+chandef (hopefully) such that now the driver would advertise _only_ 1MHz
+control channels. Then the flag can indicate if we have a 2MHz primary and then
+the actual chandef fields can describe the wider operating channel.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git tags/ath-current-20250902
+> All the locations automatically follow, you just need a little bit of a
+> helper to calculate the "primary channel num" for the S1G operating
+> element, since that's now no longer obvious - but basically just
+> 
+>   if (!chandef->s1g_primary_2mhz)
+>        return channel_number(chandef->chan);
+>   BUG_ON(chandef->width == 1MHz);
+> 
+>   ... depends on width and distance between chandef->center_freq1
+>       and chandef->chan->center_freq but I'm too lazy to write it down
+>       since that also depends on the _khz bits. something like
+> 
+>   diff = 1000 * chandef->center_freq1 + chandef->center_freq1_offset
+>        - 1000 * chandef->chan->center_freq
+>        -        chandef->chan->center_freq_offset;
+>   diff = abs(diff)
+> 
+> and then take the figure you had before into account:
+> 
+> >    |------|---------------------------------------------|*|
+> >  c | 8MHz |  |                  44                   |  |*|
+> >  h |------|---------------------------------------------|*|
+> >  a | 4MHz |  |        40         |        48         |  |*|
+> >  n |------|---------------------------------------------|*|
+> >  n | 2MHz |  |   38    |   42    |   46    |   50    |  |*|
+> >  e |------|---------------------------------------------|*|
+> >  l | 1MHz |  | 37 | 39 | 41 | 43 | 45 | 47 | 49 | 51 |  |*|
+> >    |======|=============================================|*|
+> >    |******| 920  921  922  923  924  925  926  927  928 |*|
+> >    |******|---------------------------------------------|*|
+> >                            frequency (MHz)
+> 
+> 
+> That should work?
+> 
+> 
+> Then we also only need struct ieee80211_channel for each 1 MHz channel,
+> your thing with the regulatory "non-primary flag" also works more
+> easily?
 
-for you to fetch changes up to 97acb0259cc9cbfbd7ab689e25684f3d8ce10e26:
+Yes this works. If we have the s1g_primary_2mhz set to true we'd need to do
+some validation that both 1Mhz subchannels dont contain the NO_PRIMARY flag,
+but that should be fairly straightforward.
 
-  wifi: ath11k: fix group data packet drops during rekey (2025-09-02 15:43:16 -0700)
+These emails have been very helpful, will go ahead and draft the patchset then
+probably send sometime next week for RFC.
 
-----------------------------------------------------------------
-ath.git update for v6.17-rc5
-
-Fix a long-standing issue with ath11k dropping group data packets
-during GTK rekey, and fix an omission in the ath12k multi-link EMLSR
-support introduced in v6.16.
-
-----------------------------------------------------------------
-Rameshkumar Sundaram (1):
-      wifi: ath11k: fix group data packet drops during rekey
-
-Ramya Gnanasekar (1):
-      wifi: ath12k: Set EMLSR support flag in MLO flags for EML-capable stations
-
- drivers/net/wireless/ath/ath11k/core.h |   2 +
- drivers/net/wireless/ath/ath11k/mac.c  | 111 ++++++++++++++++++++++++++++++---
- drivers/net/wireless/ath/ath12k/wmi.c  |   1 +
- 3 files changed, 105 insertions(+), 9 deletions(-)
+lachlan
 
