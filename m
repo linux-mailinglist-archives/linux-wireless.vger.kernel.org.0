@@ -1,120 +1,93 @@
-Return-Path: <linux-wireless+bounces-26988-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26989-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9845B4303D
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 05:07:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC28B434C5
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 09:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0EA27A641A
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 03:06:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C73304E11A6
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 07:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A894283CAF;
-	Thu,  4 Sep 2025 03:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7069D242D92;
+	Thu,  4 Sep 2025 07:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="ieLtGw+5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPne19rh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F310728000C
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 03:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBF532F775
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 07:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756955242; cv=none; b=qI8lHqYPcoH/TFIT4eDkJfMAeAy1iyMR8tdJjXkNRFjJuQSVl//dKALDo3i9i8Ef4iTBIafRh9NzFMehnnr8xEEmPDHV5BEgwkJPPPFHuSzMLu3t3Tu/iNDLQnhV75CI1TLbb5tjkE3cmrH0ZTXkTxyL4uIhHQR4m+Bx0iiHeqk=
+	t=1756972634; cv=none; b=Sg3vPCajeaQVBPUAGoheN9oh9sYUoz0yrKuF8KJ05rZs5IpUwHWolUGxNpfIaAlb4P3Fpi7/065Bzw8ba/VVlVzH1FOTf11wuP5Z6nW9zjefGcu2XoNft1EjKR7CirUnCeTa1Esvsmpnvj2kRkBfx69V65yhtbQozObsMv/LWiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756955242; c=relaxed/simple;
-	bh=bOK0yienoaFmvbSqDtCubKkdQXLGNJeNKoDlPvQvhvs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OAR6c89nXq5Pp1jVxrH3OmQ8WK0XH/pv707U0otSs+D/l9nTfh/K77G5TTshuw3HgHzP6dVpHY9fy0OjRJLiX+Z4r5YlgSevGGjGC8YQFFilKQgfSX0lGTapDQE/5pX0dx7H36YxbjhWIdHblUR1S1xQfLmcV5+/uqIFzexDH6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=ieLtGw+5; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 3d512a1c893c11f0b33aeb1e7f16c2b6-20250904
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=kcP4m8Fa4tEnKK0jwOE7jEMLI/2pU3xNxf7xy+UlxFY=;
-	b=ieLtGw+5vg7tke8ZttG312jH1WQkOWsy/9NmtD6WtYtaMFkhlORsPY5T81+bL1vBCa2M7HWsaw1zHrKRkzymDRofy9qFpN+g9s+fSeK84PdjkkOZrEp3IGaMtOB/vwxW+5FoJdYOvjtEx5nxXrJrNN5SCJQG4VFiwFGtDGdls64=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.3,REQID:f5c6a93b-76b3-4cce-99f0-c2241d128c0b,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:f1326cf,CLOUDID:b8e9ecf7-ebfe-43c9-88c9-80cb93f22ca4,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:-5,Content:0|15|50,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 3d512a1c893c11f0b33aeb1e7f16c2b6-20250904
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 472244268; Thu, 04 Sep 2025 11:07:06 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Thu, 4 Sep 2025 11:07:04 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Thu, 4 Sep 2025 11:07:04 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>
-Subject: [PATCH 4/4] wifi: mt76: connac: synchronize token_count access in mt76_connac_skip_fw_pmctrl
-Date: Thu, 4 Sep 2025 11:06:49 +0800
-Message-ID: <20250904030649.655436-5-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250904030649.655436-1-mingyen.hsieh@mediatek.com>
-References: <20250904030649.655436-1-mingyen.hsieh@mediatek.com>
+	s=arc-20240116; t=1756972634; c=relaxed/simple;
+	bh=PrHRyzcSKzKMyEeBhSvkydnyJ262xjKrBuA8xcLVjq8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oWHW6XXqWdhf2LPMJ5vvDd3MMLoIXwc16zbMD6VNZlTbjVxdbuboWIAekUHUUmSxYQkssZN4Ah3hNN1jUOu1C0Z5t7x8fnz4Pz9rL1utYT2NUyHp6HTsPj8UbT2f9SMbOTXbCqVktExdWwM/hRscV+aZG1XSmqVwKiTc6dj4pDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPne19rh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FD7C4CEF0;
+	Thu,  4 Sep 2025 07:57:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756972632;
+	bh=PrHRyzcSKzKMyEeBhSvkydnyJ262xjKrBuA8xcLVjq8=;
+	h=From:Subject:Date:To:Cc:From;
+	b=UPne19rhYUcLZyR6q5sKNVyxPvwYs7xivNv7T+ELHs7UfCy51CAldtOxdRGxYUKEX
+	 viFwu7fFUO5iufbUXQqwTgffDQ014izUNdufRZhFmx9AF0OFIe0v70IuvV3CqPAlPm
+	 0WErKPbiJqi1BmZyKcohz+818odTr6VsaPvl2E3pVwerfY5amS33O45CmpXKAbCcfY
+	 zldI0LKkj31/5xbcM9CX6c6Qmkua7xP8WgHS7Sdok/HXmxo4jY8qAeC6/yjZOi0Zb5
+	 hu4b1x7M9U4KHowGqXWyuTBLOedifg4vWmLMJfZQ5hQkoKozMKfnPcdfqKIcCovgpN
+	 p7plIUK6ItpZQ==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH mt76 0/4] wifi: mt76: Some more MLO fixes for MT7996 driver
+Date: Thu, 04 Sep 2025 09:56:38 +0200
+Message-Id: <20250904-mt7996-mlo-more-fixes-v1-0-89d8fed67f20@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADZGuWgC/x3LQQqAIBBA0avErBuwgVK7SrSQGmsgMzQiiO6et
+ Hx8/gOZk3CGvnog8SVZ4l7Q1BVMq9sXRpmLgRS1yirCcGprOwxbxBATo5ebM2oyqjHkvO4Yyns
+ k/kNZh/F9P5y9gnBnAAAA
+X-Change-ID: 20250902-mt7996-mlo-more-fixes-7280182af76e
+To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, Bo Jiao <Bo.Jiao@mediatek.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, 
+ Benjamin Lin <benjamin-jw.lin@mediatek.com>
+X-Mailer: b4 0.14.2
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Add some missing fixes for MLO in MT7996 driver.
 
-Read dev->token_count under token_lock to prevent race conditions with
-concurrent token updates, ensuring accurate power management decisions.
-
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Benjamin Lin (1):
+      wifi: mt76: mt7996: Temporarily disable EPCS
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index 93e5d36206e8..756719ce0e48 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -383,9 +383,14 @@ static inline bool
- mt76_connac_skip_fw_pmctrl(struct mt76_phy *phy, struct mt76_connac_pm *pm)
- {
- 	struct mt76_dev *dev = phy->dev;
-+	u16 token_count = 0;
- 	bool ret;
- 
--	if (dev->token_count)
-+	spin_lock_bh(&dev->token_lock);
-+	token_count = dev->token_count;
-+	spin_unlock_bh(&dev->token_lock);
-+
-+	if (token_count)
- 		return true;
- 
- 	spin_lock_bh(&pm->wake.lock);
+Lorenzo Bianconi (1):
+      wifi: mt76: mt7996: Add all active links to poll list in mt7996_mac_tx_free()
+
+Shayne Chen (2):
+      wifi: mt76: mt7996: Fix mt7996_reverse_frag0_hdr_trans for MLO
+      wifi: mt76: mt7996: Implement MLD address translation for EAPOL
+
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c |  1 -
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c  | 62 ++++++++++++++++++++++--
+ 2 files changed, 57 insertions(+), 6 deletions(-)
+---
+base-commit: 12cce7624371dc68245356ae390bde93f84aed3a
+change-id: 20250902-mt7996-mlo-more-fixes-7280182af76e
+
+Best regards,
 -- 
-2.34.1
+Lorenzo Bianconi <lorenzo@kernel.org>
 
 
