@@ -1,50 +1,50 @@
-Return-Path: <linux-wireless+bounces-26990-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26991-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C18B434C7
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 09:57:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A16BB434C9
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 09:57:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 769A85656E9
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 07:57:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED3C358213C
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 07:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E862BE059;
-	Thu,  4 Sep 2025 07:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E8E242D92;
+	Thu,  4 Sep 2025 07:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2PEC7P7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yo9XcH+j"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112FA32F775
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 07:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D9332F775
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 07:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756972636; cv=none; b=JMLsj/+48aqj00jUE0KN9vavKs5IrRL2df98SLTihzPKDIYMP2BfA3cygf3NXtQfBTcAFA8uYr7yFEtUH6h9zh1yqbbLJIGZpoPs+nqQh7JFRzPFW5m3LLzB/rDh5klDemaCTQrtgGu6mARZI44oDKe8IayCaMjTavD5Oyu8cs8=
+	t=1756972639; cv=none; b=LxttWWULabHAkfzWsexWjBJutZPC8DJzHInJXvKI0AQhkVweiLd+b+HQ4vKVqlvHQjUyyFIo6vwKhLJoaihLfhFk15/bLkVWIBkYrM56iBJA9m/Os7zygbfh/wTD4BcClIAlNOflpfO9WMETapME+Hr3/papmt/S+Zdm6UxCr54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756972636; c=relaxed/simple;
-	bh=nH1eMkt9+F83fYnXjSaQxEn/zpIxbfy/fTkLBMIxBic=;
+	s=arc-20240116; t=1756972639; c=relaxed/simple;
+	bh=uOT9augq1THTn6rcZNU8gbe4Sm3lAPpWzSXT4I6JDmg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fyrbLxSXhbVg1FHes87IQMc1uuCHQyAfyqolFYORXBSVQAY31C2sLDEiwdQgdPz+WOGl2guNB0MGhlcMWPnKu0xnAjsWtvjItzfkQrf4+flZhXESg6Nv7dAVusDryMRHDSiX32D7VCPNZ4S0t4ai+wepX4hPHlUySDygjKB9Ajw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2PEC7P7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6AEC4CEF0;
-	Thu,  4 Sep 2025 07:57:15 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=iAfvr8MXLxcX/pt1v+K3gIzeoP28NuxhDSkfzYGOssm4jEVvfEXlvPhKKvQGW/oCpc/tbhgJ6orGGbhJoK+Irdxemme3BKTuwf+N82DPzA+QVwMdHMnQKyY8cwcAnmWYjLDJZLPO9EsWHYbcuUveBAhiQRBpFbfAGSbA/uXNmd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yo9XcH+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4975BC4CEF0;
+	Thu,  4 Sep 2025 07:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756972635;
-	bh=nH1eMkt9+F83fYnXjSaQxEn/zpIxbfy/fTkLBMIxBic=;
+	s=k20201202; t=1756972638;
+	bh=uOT9augq1THTn6rcZNU8gbe4Sm3lAPpWzSXT4I6JDmg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=F2PEC7P7PfI5B1Dttu09Dy3C+hMeE9l9PrulUsn+Yqs4HUe1VQaXNcOjTPXvZcIev
-	 vQq75jfjCk8hq8czRGbCcsHt0p730fKi7KOEJjYkrmY1+8Az9+hbMQwiBr+qOCGpQH
-	 FUg+LBDYS0UyNuO86PzMFzj/S06EEFvDNBPbY/VDYBIXJR+tjvdrho4pMMewWYhgFS
-	 9kzhaWAQMzFdWEViVCa92gdXPuvgApcTOD4euW8AVDEeXW8A0Afxi9HAfdkRQFaw+q
-	 pZ99Le7B5gGJBoELZot/b8+J85xp2lru3lQlVtVI7FZVnNpnsJbPmGhvFLxpIPJpD8
-	 03yEUhmaupDMA==
+	b=Yo9XcH+jSTIKxb91KKSGPv0SvyekPECqA3ocn8SMlKENyNd7YyKocl5495pLgDr1W
+	 DfTJ+riG9k8J12pC6g9p7vnqCucjMl/J7vdWWB7djfYCZx4JdH0qJ4YMMLU9zjPOti
+	 TsMR/YtJWW59qefg41gvuvLYb4G3T3TtBS3glEXtP7Vaiv+we6RfnlYqXKHJXs/nJv
+	 ii8VHxDd2xp3OQeP3QXOPVbywFezGI4Lmh4zioWuvsSgInOMZluIXg66U6SaK33BXo
+	 kFVUtMf+zcwNo06Q68GDmL4DIRBNoFzbrP7i04cNE6E1IVmil5eLysIiDWIPHFE6TM
+	 TS228ay70UEXQ==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 04 Sep 2025 09:56:39 +0200
-Subject: [PATCH mt76 1/4] wifi: mt76: mt7996: Fix
- mt7996_reverse_frag0_hdr_trans for MLO
+Date: Thu, 04 Sep 2025 09:56:40 +0200
+Subject: [PATCH mt76 2/4] wifi: mt76: mt7996: Add all active links to poll
+ list in mt7996_mac_tx_free()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250904-mt7996-mlo-more-fixes-v1-1-89d8fed67f20@kernel.org>
+Message-Id: <20250904-mt7996-mlo-more-fixes-v1-2-89d8fed67f20@kernel.org>
 References: <20250904-mt7996-mlo-more-fixes-v1-0-89d8fed67f20@kernel.org>
 In-Reply-To: <20250904-mt7996-mlo-more-fixes-v1-0-89d8fed67f20@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
@@ -65,56 +65,55 @@ Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  Lorenzo Bianconi <lorenzo@kernel.org>
 X-Mailer: b4 0.14.2
 
-From: Shayne Chen <shayne.chen@mediatek.com>
-
-Update mt7996_reverse_frag0_hdr_trans routine to support MLO.
+Add all valid links to poll list for Airtime Fairness/AQL accounting when
+tx-free event occurs.
 
 Co-developed-by: Bo Jiao <Bo.Jiao@mediatek.com>
 Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index c525fe68897d5ba5412dabb8c1341a5ce55205d8..646c6f2f72918bbbdceddb5321c862f326d803b0 100644
+index 646c6f2f72918bbbdceddb5321c862f326d803b0..33eb05dc5fc4826b5752fcee923213e051107074 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -229,7 +229,9 @@ static int mt7996_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
- {
- 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
- 	struct ethhdr *eth_hdr = (struct ethhdr *)(skb->data + hdr_gap);
--	struct mt7996_sta *msta = (struct mt7996_sta *)status->wcid;
-+	struct mt7996_sta_link *msta_link = (void *)status->wcid;
-+	struct mt7996_sta *msta = msta_link->sta;
-+	struct ieee80211_bss_conf *link_conf;
- 	__le32 *rxd = (__le32 *)skb->data;
- 	struct ieee80211_sta *sta;
- 	struct ieee80211_vif *vif;
-@@ -246,8 +248,11 @@ static int mt7996_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
- 	if (!msta || !msta->vif)
- 		return -EINVAL;
+@@ -1249,6 +1249,9 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
+ 		info = le32_to_cpu(*cur_info);
+ 		if (info & MT_TXFREE_INFO_PAIR) {
+ 			struct ieee80211_sta *sta;
++			unsigned long valid_links;
++			struct mt7996_sta *msta;
++			unsigned int id;
+ 			u16 idx;
  
--	sta = container_of((void *)msta, struct ieee80211_sta, drv_priv);
-+	sta = wcid_to_sta(status->wcid);
- 	vif = container_of((void *)msta->vif, struct ieee80211_vif, drv_priv);
-+	link_conf = rcu_dereference(vif->link_conf[msta_link->wcid.link_id]);
-+	if (!link_conf)
-+		return -EINVAL;
+ 			idx = FIELD_GET(MT_TXFREE_INFO_WLAN_ID, info);
+@@ -1261,7 +1264,21 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
+ 			if (!link_sta)
+ 				goto next;
  
- 	/* store the info from RXD and ethhdr to avoid being overridden */
- 	frame_control = le32_get_bits(rxd[8], MT_RXD8_FRAME_CONTROL);
-@@ -260,7 +265,7 @@ static int mt7996_reverse_frag0_hdr_trans(struct sk_buff *skb, u16 hdr_gap)
- 	switch (frame_control & (IEEE80211_FCTL_TODS |
- 				 IEEE80211_FCTL_FROMDS)) {
- 	case 0:
--		ether_addr_copy(hdr.addr3, vif->bss_conf.bssid);
-+		ether_addr_copy(hdr.addr3, link_conf->bssid);
- 		break;
- 	case IEEE80211_FCTL_FROMDS:
- 		ether_addr_copy(hdr.addr3, eth_hdr->h_source);
+-			mt76_wcid_add_poll(&dev->mt76, wcid);
++			msta = (struct mt7996_sta *)sta->drv_priv;
++			valid_links = sta->valid_links ?: BIT(0);
++
++			/* For MLD STA, add all link's wcid to sta_poll_list */
++			for_each_set_bit(id, &valid_links,
++					 IEEE80211_MLD_MAX_NUM_LINKS) {
++				struct mt7996_sta_link *msta_link;
++
++				msta_link = rcu_dereference(msta->link[id]);
++				if (!msta_link)
++					continue;
++
++				mt76_wcid_add_poll(&dev->mt76,
++						   &msta_link->wcid);
++			}
+ next:
+ 			/* ver 7 has a new DW with pair = 1, skip it */
+ 			if (ver == 7 && ((void *)(cur_info + 1) < end) &&
 
 -- 
 2.50.1
