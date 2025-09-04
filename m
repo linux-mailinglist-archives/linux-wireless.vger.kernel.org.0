@@ -1,96 +1,144 @@
-Return-Path: <linux-wireless+bounces-27002-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27003-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D3FB437BA
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 11:58:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F214B438A0
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 12:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06F6E3B1D01
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 09:58:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F252D162A6C
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 10:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E0A2F60DD;
-	Thu,  4 Sep 2025 09:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB161A76BB;
+	Thu,  4 Sep 2025 10:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="fCs/Lvoj"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="P7G8r9pF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BD32D12E3
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 09:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0846022E3E9
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 10:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756979923; cv=none; b=O9n6HyYy7OWMiG2yzQPiuz+D9amufSDxJaAoupxhpzHLZbfN1QAovqKdeGAcQ4YOxtLsmI4qFgwTl3pRVea/7kQziEB0A65OERlmy3hlSUI1QF620++F7DlSrP1q5QgcwGAyWlnZs96TAHSiNJYBlY3PPZsY00nXOKuOA4KtHSY=
+	t=1756981457; cv=none; b=d9iAMZ+PNiseiBgLay7oDcFViIfUw7huKowlotcLcpqVCUzxAw3T0DhR4StJt4arFvFBST/nnLTeHzTbB7Mz669jaqG6XdsnU7RhULO1xEU1wx3QvP4kUtP5ZltzPfv0Y893j4PbVKoTRvlu/F9oC2jYYAIE/eucB1qrZVR4GjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756979923; c=relaxed/simple;
-	bh=6pJbKPp0RV9xRwbPhJm/R90vkNPUFnyKZn4K9ZdJvO4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BLWc/mu/cOuv5O8PlJPiWbsX4Qam156Q9b/rtRj9114aB8c5rSmzJ+mUD5pgd3n+a2tlQcrWqAgUHihnG4F53K72zfKzOH3q6G/M+aU42Zr+ZhKYer98u7GC5iW+DM3f+IQC/lkt+E3TGlkQMPMj9kjHoIxlDs0lDe7fFO30CTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=fCs/Lvoj; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=r6QVmDYan9jQCwzg/fbX2Wh+ZKncbhIOrcbTvb2FWSc=;
-	t=1756979921; x=1758189521; b=fCs/LvojtO7n8yw4EMiKFfvnlTYK4nQIWzNfBJ9jVNfOGpa
-	DJ6JEN5kLyohFkuRzVXqEwwU4S/qxOkJLGyq47HOmE7BAbf5s5QZKoMDIrKO9m8v40h0kz2qjv6S2
-	o3JPAh3Hc2aKRc1RvlfkmSBn3RMXimUiiV1tzGORj0kHlD7iCuIgRGLUwjj0oAkbJyLHxA567Kbc/
-	rrmDyVlNGpfMFlHiyi0Y+BD8Gs4B26kRV6fOZSycJheJeKI2Jy+UpYF1VBKpMemA481ewPnc011pW
-	Kon7eAujhHQskPPMKkvdydEZWkYEW/PYVNE+GKiPpFdH1Mvhh1ZN6OQ22cUge48g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uu6ji-0000000DyFw-1o1w;
-	Thu, 04 Sep 2025 11:58:35 +0200
-Message-ID: <83b5c2e55c7ad55851b9877c5c085a57b6414ad9.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next 1/3] wifi: cfg80211: add support to handle
- incumbent signal detected event from mac80211/driver
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Amith A <quic_amitajit@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, Hari Chandrakanthan
- <quic_haric@quicinc.com>
-Date: Thu, 04 Sep 2025 11:58:30 +0200
-In-Reply-To: <20250818101947.2464612-2-quic_amitajit@quicinc.com>
-References: <20250818101947.2464612-1-quic_amitajit@quicinc.com>
-	 <20250818101947.2464612-2-quic_amitajit@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1756981457; c=relaxed/simple;
+	bh=u+WzvRHx8wYrMhhnqP+v2bfajFxkKTIbpKs+QdcP4Q0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=gDRdHETjn59H3/IDQ5kh48O6TgRNkEa0ItCjVBWAgkJNcLwXUXAgmcddgvsWqmVSvg8dKGnn2B1rKfuvVvmOOLMb1vSsk+p27NRe2/GS3FET/JKN1yBEGiEYE8Qj0wo0Y6YeTFPBiobkezZX/LyGkq1v/mtv2z7ujP63efrd700=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=P7G8r9pF; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5849X7bO012111;
+	Thu, 4 Sep 2025 10:24:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	uiHPjJUBmUu3NouL+v0ViHJ3nqdo23fLDgBTDDBOhOk=; b=P7G8r9pFyZtwebYB
+	LHZBpvnEXBTLzwZE/ooM8hA2eJDX+N9Xjd+7o42+ARxCZqWqrHo/avQ8q4dxZWRd
+	/reZpR3uVMzK+/78ZXpj3Oa+31AZiBnNLEXMVjpDsHIX/DxpKcMWsyqqNCRPjS5C
+	x9R56yyd+nGe2Ayn/qlvsd7ooc2DuTRx1DHx9oUyYSNT7PxUV7bNyjWr7quHWNAp
+	yx8BTI54S9qN2AqngzmKyQCvu08i9G8ZkYqBHpUNEviU6IfVbp60Cpxqf5kF3lyP
+	CBbWFGKFfN4wb8ktcAO0HCJF8G6EV1wmXkywV5Dyx9y+lPPhkuAqrqf0Z6wKwG4g
+	V4P3ww==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48xmxj3nuq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 10:24:10 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 584AOA2o022496
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 4 Sep 2025 10:24:10 GMT
+Received: from [10.50.62.147] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.24; Thu, 4 Sep
+ 2025 03:24:08 -0700
+Message-ID: <f1bb82aa-539a-4a91-8786-d6926ae404d4@quicinc.com>
+Date: Thu, 4 Sep 2025 15:54:04 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next] wifi: mac80211: fix reporting of all valid
+ links in sta_set_sinfo()
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson
+	<jeff.johnson@oss.qualcomm.com>
+CC: <linux-wireless@vger.kernel.org>
+References: <20250822053229.519836-1-quic_sarishar@quicinc.com>
+ <b8eb835bb73e348c331e008408159a8026d28870.camel@sipsolutions.net>
+ <c3312127-0b87-4825-bf73-05351f8eb55e@oss.qualcomm.com>
+ <6644d4195e003b5d4c7c1cfaf61c55c7e3d3c942.camel@sipsolutions.net>
+Content-Language: en-US
+From: Sarika Sharma <quic_sarishar@quicinc.com>
+In-Reply-To: <6644d4195e003b5d4c7c1cfaf61c55c7e3d3c942.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAzMDExNyBTYWx0ZWRfX1ZRHWBIpfn8G
+ EyPDjypF+pnd7QyRXqdKtE07RDkSklOP/7aKyvO4UI7ZyyaWUigrrqx4DVzykPER6NSRKOyEjkf
+ +hk22b8XUFRwNBVUcxmhf+S9FfF01GNpBgUwnTbBtn74/OehlnTPt33oW+7VSN14km3kXNC5iYE
+ OtCBcRnVfYpH+5K1Z3xpz2C9ezNBudQRjI8xLb0Ncki2/RLXQ86Uno2RaEzauJPXqk0s5evDXBT
+ J5OYJJ+aoSuMxYvmY5FJ6F+xlckAKDKGeTmRLwoXTiDnYm9Blyi4LIAHEXyTNODHW9ZwGRhND+a
+ 4mqi1Ii0wcdxQi9+l1GKXLCTPpE/yD1Hka44v71dE9U6FadNB44+CV71V2vlBcSA45QanvF7DXp
+ l9Dls/jp
+X-Authority-Analysis: v=2.4 cv=a5cw9VSF c=1 sm=1 tr=0 ts=68b968ca cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10
+ a=SkCZGkUBNUiyBjf3SQ4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: XZqfnwgN2xCvbCjMwVSRbA64V-L4pJsl
+X-Proofpoint-ORIG-GUID: XZqfnwgN2xCvbCjMwVSRbA64V-L4pJsl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-04_03,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 clxscore=1015 bulkscore=0 priorityscore=1501
+ phishscore=0 impostorscore=0 adultscore=0 spamscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509030117
 
-On Mon, 2025-08-18 at 15:49 +0530, Amith A wrote:
->=20
-> + * @NL80211_ATTR_INCUMBENT_SIGNAL_INTERFERENCE_BITMAP: u32 attribute spe=
-cifying
-> + *	the signal interference bitmap detected on the operating bandwidth fo=
-r
-> + *	%NL80211_CMD_INCUMBENT_SIGNAL_DETECT. Each bit represents a 20 MHz
-> + *	segment, lowest bit corresponds to the lowest 20 MHz segment, in the
-> + *	operating bandwidth where the interference is detected.
+On 9/3/2025 8:27 PM, Johannes Berg wrote:
+> On Wed, 2025-09-03 at 07:22 -0700, Jeff Johnson wrote:
+>> On 9/3/2025 1:01 AM, Johannes Berg wrote:
+>>> On Fri, 2025-08-22 at 11:02 +0530, Sarika Sharma wrote:
+>>>> Currently, sta_set_sinfo() fails to populate link-level station info
+>>>> when sinfo->valid_links is initially 0 and sta->sta.valid_links has
+>>>> bits set for links other than link 0. This typically occurs when
+>>>> association happens on a non-zero link or link 0 deleted dynamically.
+>>>> In such cases, the for_each_valid_link(sinfo, link_id) loop only
+>>>> executes for link 0 and terminates early, since sinfo->valid_links
+>>>> remains 0. As a result, only MLD-level information is reported to
+>>>> userspace.
+>>>>
+>>>> Hence to fix, initialize sinfo->valid_links with sta->sta.valid_links
+>>>> before entering the loop to ensure loop executes for each valid link.
+>>>> During iteration, mask out invalid links from sinfo->valid_links if
+>>>> any of sta->link[link_id], sdata->link[link_id], or sinfo->links[link_id]
+>>>> are not present, to report only valid link information.
+>>>>
+>>>> Fixes: 505991fba9ec ("wifi: mac80211: extend support to fill link level sinfo structure")
+>>>
+>>> With a Fixes: tag for a commit in 6.17-rc, why should this not also go
+>>> to wireless for 6.17?
+>>
+>> Concur this should go through wireless instead of wireless-next. That was a
+>> miss on my part during internal review.
+> 
+> Sounds good. Hopefully I'll remember when I apply patches after wireless
+> gets pulled, maybe resend if you want to make sure :)
 
-I think you should clarify how this interacts with puncturing.
+Sure, let me resend for wireless.
 
-Are disabled subchannels not considered part of the chandef, so if e.g.
-you have an 80 MHz channel with one disabled subchannel, only the lowest
-_three_ bits are taken into account, rather than the usual four for an
-80 MHz chandef?
+> 
+> johannes
 
-Or, perhaps more easily, are disabled subchannels part of the bitmap and
-then must be zero since there cannot be incumbent signal on them that
-matters, since we don't even use them? Should the code perhaps then
-check that those bits are indeed zero?
-
-Or something else entirely?
-
-johannes
 
