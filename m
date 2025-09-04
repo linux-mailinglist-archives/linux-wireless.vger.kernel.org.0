@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-27006-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27007-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60479B439F4
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 13:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1237B43A54
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 13:37:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D79F5A39D9
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 11:25:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 681FC545D6C
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 11:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718B32C21D3;
-	Thu,  4 Sep 2025 11:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A762D3A6A;
+	Thu,  4 Sep 2025 11:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FC7ObpRL"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="RLhbYEg5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75052F39CB;
-	Thu,  4 Sep 2025 11:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025942BE7B5;
+	Thu,  4 Sep 2025 11:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756984952; cv=none; b=Yc0MV+ObYL6b+1a9trTFXi+DY5ui3xVX2IJWYU97mPqGay/9PdsqfSHF3yhsx9WAFPHPAXfQ8efolEF+6o9TKO6xbwCaapALOswfKf7dXgKKVXp6izTSSG2KsPgp4LRuoOFOqNBeIDFysCIW9kdByytkhGE+lLhJtfYgVwnu4v0=
+	t=1756985845; cv=none; b=NG7gMYsMVGvohXppFtQwt5dkm1oseZ6rRZc9Ymj/Kmcz+BBK149lnZif0a8asXwiYnGq56vZzL+cmXTlOa1SfUUrMy3dXP0oqIHA6DrNGafaoPZjQ/ZG7Yeiupe0pdNeOqipHHGHabDcrdlnuGDuirWbh1KT7i1g6uckhLVuS3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756984952; c=relaxed/simple;
-	bh=nb2w5PO/UakpEL4PsZ67h0/YfPhTc/JuAdrospcVW8E=;
+	s=arc-20240116; t=1756985845; c=relaxed/simple;
+	bh=Q4jfgD20x2B7lfwTG+nsjBkx74xKusKlr1NJe4tcKs4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ja7NqyYRJj1kEGZgQoTsJQJAnIXfEW0jyrEgacgTeN9D6GXaz3fJsnzw1udgelR2+yFKz8fwxvJL4iihmkihLe5P5v2VyetirjwjFMsILmrTfRXyaqoKXwKZQUTz7qgo/8nLjEilrhnIUCHGA3/kBbG8hF8fOBi3IEUMmXIN3SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FC7ObpRL; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=A7V9tjqVKcIqDEE7dILTJMytSyPRUhdJMx30T9Xy2prh3jlCIYalDgCq+YWZkxCgCDR3Ssi3PrePUdOCGL/Yq33L3xoT4CDIy873b1c0vs9JtSELfJeICAPD2+1DgezAChUvJC7h3eyr5mSRTJQwm1DRdUsK6Py5CISfEUeXosQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=RLhbYEg5; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=JNhPkhYLjZGM2xHwZlcrLuFikmcX09zLHGx0YNWKfO0=;
-	t=1756984950; x=1758194550; b=FC7ObpRLnGlhKnxr4MTjzANNt3focQqBM3V3qOvrxuCHtiU
-	RbA+cwwzIP+IYoQfsGigKTh0hdzvKAB/J9NVms5/CtUG+KWFKHRnCYnuIsNZVF/M09MbGV/jYse2j
-	rSjAks1oGkkxA9KTsjkNl03pbgLDkxyri3Z35O6SIAjQJlgamr4BCc5EMTp6eJqR3/I4DKcJGX2Yp
-	C+PJj9Au7QBesAdnMwp8ZZXwDg3DQWWO6fJltQl/yN6ym2KbnY+ALvvBSP5POSmkzn5I1qn4JLNHi
-	IedezwWVn5YZ779KGTxq914YIk4k3t21O11ezOSsh91tvgg1utD6cSGKgE6Bcs+Q==;
+	Resent-Cc:Resent-Message-ID; bh=brpPuPKsHj0xYX7qb+mIRu4ZZuWxnZaYaYuDlNzAyxY=;
+	t=1756985844; x=1758195444; b=RLhbYEg5FtzaoVXzHxZgL514N1ehKGwiNU94fISciey/kmG
+	jd0ZT3eMZQTIF8lBhHlhiWBMxX8yD7WyoGXkFyIWisve7B9L/MMlL15mlXRmhdRr0peQ7mdayoc17
+	JAZJ3nyrw7jfSysZbu8OvAeC19uti4nTUsQcIhHBfPdBo0jdLWxBHhLDfuRu5CW0NIEqxkpojOpmo
+	hpVshZw3z9dsS3nilOzM4td9C3BQlRwVhUqYFQB61PZkp7PvZeb+5/yrp+lB7FsH/7RZjiDBIaaN3
+	3ayHwI63pw/Esb4vVuPdW9ugdtLn9Co94BiJZI9LJGEc04W1cuLzGc+Z2INS/2KA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uu82n-0000000E5mY-453d;
-	Thu, 04 Sep 2025 13:22:22 +0200
-Message-ID: <88809ae495005b8295d0c46261041c73a225359f.camel@sipsolutions.net>
-Subject: Re: [PATCH v5 01/22] wifi: nxpwifi: add 802.11n files
+	id 1uu8HJ-0000000E710-1tvs;
+	Thu, 04 Sep 2025 13:37:21 +0200
+Message-ID: <6b8ff5139bb9c361468840046b757dfa5ebe1aba.camel@sipsolutions.net>
+Subject: Re: [PATCH v5 18/22] wifi: nxpwifi: add core files
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Jeff Chen <jeff.chen_1@nxp.com>, linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, briannorris@chromium.org, 
 	francesco@dolcini.it, tsung-hsien.hsieh@nxp.com, s.hauer@pengutronix.de, 
 	brian.hsu@nxp.com
-Date: Thu, 04 Sep 2025 13:22:21 +0200
-In-Reply-To: <20250804154018.3563834-2-jeff.chen_1@nxp.com>
+Date: Thu, 04 Sep 2025 13:37:20 +0200
+In-Reply-To: <20250804154018.3563834-19-jeff.chen_1@nxp.com>
 References: <20250804154018.3563834-1-jeff.chen_1@nxp.com>
-	 <20250804154018.3563834-2-jeff.chen_1@nxp.com>
+	 <20250804154018.3563834-19-jeff.chen_1@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
@@ -68,214 +68,88 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Mon, 2025-08-04 at 23:39 +0800, Jeff Chen wrote:
-> +static bool
-> +nxpwifi_is_tx_ba_stream_ptr_valid(struct nxpwifi_private *priv,
-> +				  struct nxpwifi_tx_ba_stream_tbl *tx_tbl_ptr)
+On Mon, 2025-08-04 at 23:40 +0800, Jeff Chen wrote:
+>=20
+> +/* The main process.
+> + *
+> + * This function is the main procedure of the driver and handles various=
+ driver
+> + * operations. It runs in a loop and provides the core functionalities.
+> + *
+> + * The main responsibilities of this function are -
+> + *      - Ensure concurrency control
+> + *      - Handle pending interrupts and call interrupt handlers
+> + *      - Wake up the card if required
+> + *      - Handle command responses and call response handlers
+> + *      - Handle events and call event handlers
+> + *      - Execute pending commands
+> + *      - Transmit pending data packets
+> + */
+> +void nxpwifi_main_process(struct nxpwifi_adapter *adapter)
 > +{
-> +	struct nxpwifi_tx_ba_stream_tbl *tx_ba_tsr_tbl;
-> +	bool ret =3D false;
-> +	int tid;
+> +	unsigned long flags;
 > +
-> +	tid =3D tx_tbl_ptr->tid;
-> +	rcu_read_lock();
-> +	list_for_each_entry_rcu(tx_ba_tsr_tbl, &priv->tx_ba_stream_tbl_ptr[tid]=
-, list) {
-> +		if (tx_ba_tsr_tbl =3D=3D tx_tbl_ptr) {
-> +			ret =3D true;
+> +	spin_lock_irqsave(&adapter->main_proc_lock, flags);
+> +
+> +	/* Check if already processing */
+> +	if (adapter->nxpwifi_processing || adapter->main_locked) {
+> +		adapter->more_task_flag =3D true;
+> +		spin_unlock_irqrestore(&adapter->main_proc_lock, flags);
+> +		return;
+> +	}
+> +
+> +	adapter->nxpwifi_processing =3D true;
+> +	spin_unlock_irqrestore(&adapter->main_proc_lock, flags);
+
+
+This makes me very nervous, it at least means it's super hard to
+understand when this may or may not be running ... It's also the sort of
+custom locking that's kind of frowned upon.
+
+Could this not be with wiphy mutex and be very clear? Though maybe you
+wouldn't want TX to go through that ... and maybe it can't since sdio
+calls it? But that seems odd, why is it both a worker and called for
+every interrupt? Should it even be a single function for those two
+cases?
+
+Also it sets more_task_flag when it's entered while already running, but
+that's just weird? Should other work coming in really get processed by
+the SDIO interrupt processing?
+
+It seems to me this is one of those awful design things inherited by
+mwifiex that just happens to work? Can you document it well? If so maybe
+do that and that can say why it really needs to be this way. If not, you
+should probably change it completely and redesign it from first
+principles, i.e. figure out what it has to do and build it accordingly?
+
+The whole function is also everything and the kitchen sink, could use
+some serious refactoring?
+
+> +		if (adapter->delay_null_pkt && !adapter->cmd_sent &&
+> +		    !adapter->curr_cmd && !is_command_pending(adapter) &&
+> +		    (nxpwifi_wmm_lists_empty(adapter) &&
+> +		     nxpwifi_bypass_txlist_empty(adapter) &&
+> +		     skb_queue_empty(&adapter->tx_data_q))) {
+> +			if (!nxpwifi_send_null_packet
+> +			    (nxpwifi_get_priv(adapter, NXPWIFI_BSS_ROLE_STA),
+> +			     NXPWIFI_TxPD_POWER_MGMT_NULL_PACKET |
+> +			     NXPWIFI_TxPD_POWER_MGMT_LAST_PACKET)) {
+> +				adapter->delay_null_pkt =3D false;
+> +				adapter->ps_state =3D PS_STATE_SLEEP;
+> +			}
 > +			break;
 > +		}
-> +	}
-> +	rcu_read_unlock();
-> +	return ret;
-
-that might be nicer with guard(rcu)() :)
+> +	} while (true);
 
 
-> +/* This function returns the pointer to an entry in BA Stream
-> + * table which matches the given RA/TID pair.
-> + */
-> +struct nxpwifi_tx_ba_stream_tbl *
-> +nxpwifi_get_ba_tbl(struct nxpwifi_private *priv, int tid, u8 *ra)
-> +{
-> +	struct nxpwifi_tx_ba_stream_tbl *tx_ba_tsr_tbl, *found =3D NULL;
-> +
-> +	list_for_each_entry_rcu(tx_ba_tsr_tbl, &priv->tx_ba_stream_tbl_ptr[tid]=
-, list) {
-> +		if (ether_addr_equal_unaligned(tx_ba_tsr_tbl->ra, ra) &&
-> +		    tx_ba_tsr_tbl->tid =3D=3D tid) {
-> +			found =3D tx_ba_tsr_tbl;
-> +			break;
-> +		}
-> +	}
-> +	return found;
-> +}
+Sao that ... those conditions are awful? If this were a separate
+function at least you could write it in multiple lines with return
+true/false there.
 
-and this could just return directly out of the loop, and not need the
-'found' variable?
+> +/* CFG802.11
 
-> +	/* We don't wait for the response of this command */
-> +	ret =3D nxpwifi_send_cmd(priv, HOST_CMD_11N_ADDBA_REQ,
-> +			       0, 0, &add_ba_req, false);
-> +
-> +	return ret;
-
-doesn't need 'ret' either
-
-
-> +int nxpwifi_send_delba(struct nxpwifi_private *priv, int tid, u8 *peer_m=
-ac,
-> +		       int initiator)
-> +{
-> +	struct host_cmd_ds_11n_delba delba;
-> +	int ret;
-> +	u16 del_ba_param_set;
-> +
-> +	memset(&delba, 0, sizeof(delba));
-> +
-> +	del_ba_param_set =3D tid << DELBA_TID_POS;
-> +
-> +	if (initiator)
-> +		del_ba_param_set |=3D IEEE80211_DELBA_PARAM_INITIATOR_MASK;
-> +	else
-> +		del_ba_param_set &=3D ~IEEE80211_DELBA_PARAM_INITIATOR_MASK;
-> +
-> +	delba.del_ba_param_set =3D cpu_to_le16(del_ba_param_set);
-> +	memcpy(&delba.peer_mac_addr, peer_mac, ETH_ALEN);
-> +
-> +	/* We don't wait for the response of this command */
-> +	ret =3D nxpwifi_send_cmd(priv, HOST_CMD_11N_DELBA,
-> +			       HOST_ACT_GEN_SET, 0, &delba, false);
-> +
-> +	return ret;
-
-same here
-
-> +/* This function sends delba to specific tid
-> + */
-> +void nxpwifi_11n_delba(struct nxpwifi_private *priv, int tid)
-> +{
-> +	struct nxpwifi_rx_reorder_tbl *rx_reor_tbl_ptr;
-> +
-> +	rcu_read_lock();
-> +	list_for_each_entry_rcu(rx_reor_tbl_ptr, &priv->rx_reorder_tbl_ptr[tid]=
-, list) {
-> +		if (rx_reor_tbl_ptr->tid =3D=3D tid) {
-> +			dev_dbg(priv->adapter->dev,
-> +				"Send delba to tid=3D%d, %pM\n",
-> +				tid, rx_reor_tbl_ptr->ta);
-> +			nxpwifi_send_delba(priv, tid, rx_reor_tbl_ptr->ta, 0);
-> +			goto exit;
-> +		}
-> +	}
-> +exit:
-> +	rcu_read_unlock();
-
-guard() is nice to not have such patterns
-
-> +static inline u8
-> +nxpwifi_is_station_ampdu_allowed(struct nxpwifi_private *priv,
-> +				 struct nxpwifi_ra_list_tbl *ptr, int tid)
-> +{
-> +	struct nxpwifi_sta_node *node;
-> +	u8 ret;
-> +
-> +	rcu_read_lock();
-> +	node =3D nxpwifi_get_sta_entry(priv, ptr->ra);
-> +	if (unlikely(!node))
-> +		ret =3D false;
-> +	else
-> +		ret =3D (node->ampdu_sta[tid] !=3D BA_STREAM_NOT_ALLOWED) ? true : fal=
-se;
-> +	rcu_read_unlock();
-> +	return ret;
-
-
-also here with guard() you don't need the variable and it's probably
-easier to read/understand since it could just be
-
-guard(rcu)();
-node =3D ...;
-if (!node) return false;
-if (node->... =3D=3D NOT_ALLOWED) return false;
-return true;
-
-(modulo whitespace, obviously)
-
-> +}
-> +
-> +/* This function checks whether AMPDU is allowed or not for a particular=
- TID. */
-> +static inline u8
-> +nxpwifi_is_ampdu_allowed(struct nxpwifi_private *priv,
-> +			 struct nxpwifi_ra_list_tbl *ptr, int tid)
-
-"is allowed" sounds boolean, the function returns boolean, but is
-declared as returning u8.
-
-> +/* This function checks whether AMSDU is allowed or not for a particular=
- TID.
-> + */
-> +static inline u8
-> +nxpwifi_is_amsdu_allowed(struct nxpwifi_private *priv, int tid)
-
-
-same
-
-> +{
-> +	return (((priv->aggr_prio_tbl[tid].amsdu !=3D BA_STREAM_NOT_ALLOWED) &&
-> +		 (priv->is_data_rate_auto || !(priv->bitmap_rates[2] & 0x03)))
-> +		? true : false);
-
-might be nice to write that with multiple if statements perhaps, less
-obfuscated ;-)
-
-> +}
-> +
-> +/* This function checks whether a space is available for new BA stream o=
-r not.
-> + */
-> +static inline u8
-> +nxpwifi_space_avail_for_new_ba_stream(struct nxpwifi_adapter *adapter)
-
-same, since it doesn't return how much space is available, just bool
-
-> +/* This function checks whether associated station is 11n enabled
-> + */
-> +static inline int nxpwifi_is_sta_11n_enabled(struct nxpwifi_private *pri=
-v,
-> +					     struct nxpwifi_sta_node *node)
-
-
-and here it's int, which is probably not much better than u8 for what
-should be bool
-
-(I'd almost think you could even instruct an LLM to find these so I'm
-going to stop looking for them.)
-
-
-Side note on the comment style: we removed quite a while ago the special
-networking requirement for
-
- /* long ...
-  * comment
-  */
-
-so feel free to
-
- /*
-  * long ...
-  * comment
-  */
-
-as everywhere else in the kernel.
-
-
-But again I'm just briefly scanning through this (and will continue),
-I'm not going to really review it in depth.
-
-(One thing I also noticed is some misspellings of "MHz" as "Mhz", not
-sure where though.)
+(side note: there's really no such thing as "CFG802.11" FWIW, it was
+always just called "cfg80211")
 
 johannes
 
