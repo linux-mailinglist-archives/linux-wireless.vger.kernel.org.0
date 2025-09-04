@@ -1,64 +1,61 @@
-Return-Path: <linux-wireless+bounces-26995-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26996-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A79F8B4364B
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 10:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA9BB43663
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 10:59:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 635CC3A4A9C
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 08:52:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D03705E7D72
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 08:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4D924167F;
-	Thu,  4 Sep 2025 08:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3EC24167F;
+	Thu,  4 Sep 2025 08:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VzXTlZnG"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Pt231lEf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAE12264B1
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 08:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAAD29DB6A
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 08:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756975946; cv=none; b=HiRoVMDY0N+vqj6nmYVreJBVgbCkHLItpG98BKVtNFGYvMWK+Fo5VQtd36iIMKO3MwRbRJdfYhOSytphJk8sIDaO+ELcVIo+xtmsfTR5p8CO6EPOguoLvwhxl4s9ZK1NPIy8lR/VoyKcYweD8u8Jjy6B48q0Ag1C9u9NzHKVIkI=
+	t=1756976344; cv=none; b=Fetk5v/EpCEsrRCcOUpe5Y0p4X8uPjAh97gwi3qWiNPbyGorBWge9woqyXbgW0CvbQ++YLL8Iix5c+1+MbVEaNQevv0NelpWu//LRWBAcp9Gg7a2l142hKBATSwAM/CbWM6loiu0Y8Ial7FVX052h7lHMiBlT8kjHINiQM6Z4Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756975946; c=relaxed/simple;
-	bh=8BkLV9X1wIlosMoB5KA6pRId7ZihXMPPKv1kiuLhqlI=;
+	s=arc-20240116; t=1756976344; c=relaxed/simple;
+	bh=Y95PtDJFrRYeRZ4xKUY1T8W1CTtBEx+hqwx9wMQESqc=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aFyiCXgdfm26Pyx2ibBEdjoMVMfTYzfAM1lbGh39YTzUfPII7zRuk0nGcKJYN7uF2TqYwBw8udVP9Dn+BKyLPrmzmAe2hYQwj1BtoRMwegs4CR50hmUiv2oRKLvRYcr7ZalAd+dyRFN62KSjfo9Q7p9tU3OqRVIMZoTkPgpxmPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VzXTlZnG; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=R0GddvswIqiDLEH5jPlDbWDUKnBpc7CilXE7ibOP683sswsv43ZsvMJI8FA/LTc8ZuXmpCpqEMyOawa/N3t5/XW0TnvXlVBvDgqP0txx+1Ep1Gf5lCFhZFNaY3ujW+OZRcXI8kNh46jShqrDgVH7t6YYc72MLtW9ywJsld+4TV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Pt231lEf; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=8BkLV9X1wIlosMoB5KA6pRId7ZihXMPPKv1kiuLhqlI=;
-	t=1756975944; x=1758185544; b=VzXTlZnGsI9vanJiL4WkPoO1ngkbvafCEVqot21pYxlW1Fl
-	znMjJOqHlcYZmjP9bfLH9HfI2Df/9VFIPRJlt63Sle0H8cWormaYx80+lalH/1Re7KbyFv8wGlcqw
-	s6hkOu4aaONPGSAgueMJSI1MJTSLwU5L5wYdgNDkv4mxXwiy6YzuGdyY76QEhEXmDFHh6moSfSlaj
-	dhvSzVsXYwdERRg+XP9XwOX9F8Kckj9y1+g7eqknqpCEZuy4nX7xi4oOJwoRIo7Fa/yHb2h+pF1Wr
-	SvXRxvVhOHTXhPjnrdVb9k/kQJacidkERXb8vj/0qd0w+f5e2oDwI2O1A4/yarwA==;
+	Resent-Cc:Resent-Message-ID; bh=Y95PtDJFrRYeRZ4xKUY1T8W1CTtBEx+hqwx9wMQESqc=;
+	t=1756976343; x=1758185943; b=Pt231lEftn4+bfWt/vJRdjcqQmCJMHOSY0M0AMfz9w7v0nl
+	8IIlM4ILx8EDNW930xesCtYWm0W/4Kr6QLcqZDStVMXSiKa5McV/7JGpWUwb+zulO4c1+5rE8K1CC
+	YKPGHHJ1DRpMckpAVZ07kpXrASqH1eQ4H8MSjTsDYTzBrszmS644MdnthjDOGMapfzkKvZwzNUx9l
+	+1cAPp0aXCzaLsX1ymig+lUWziFjV3akQb7iuQ6Z/ig8qK//pVASJfPBGab5gHT24FXkodFNQ2hwL
+	ns94wcsPjpp3c+PtprS4aj0y/L5lOfTeEcyT07HXO900QcHdnsUJLZSTYQkuNLIw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uu5he-0000000DrvW-0zp9;
-	Thu, 04 Sep 2025 10:52:22 +0200
-Message-ID: <78645f03a5b61371ee9f95544695ffe86bd1ed8e.camel@sipsolutions.net>
-Subject: Re: [wireless-next v2 3/3] wifi: mac80211: kunit: add kunit tests
- for S1G PVB decoding
+	id 1uu5o3-0000000DsXC-39DM;
+	Thu, 04 Sep 2025 10:58:59 +0200
+Message-ID: <89df15828ef732a32b0681a3a7a2308170d80386.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v2 1/2] wifi: nl80211/cfg80211: Add
+ last_beacon_seen in station info
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Date: Thu, 04 Sep 2025 10:52:21 +0200
-In-Reply-To: <e4j5rbffwxgrqafkwyuezl2q3z4mgdn5lxrkxjxaphmn66movm@d743xb4xbdrc> (sfid-20250801_071111_882172_4E0E8E2B)
-References: <20250725132221.258217-1-lachlan.hodges@morsemicro.com>
-	 <20250725132221.258217-4-lachlan.hodges@morsemicro.com>
-	 <65411d6ba7516e01920ccf39627269fc2f71dd56.camel@sipsolutions.net>
-	 <e4j5rbffwxgrqafkwyuezl2q3z4mgdn5lxrkxjxaphmn66movm@d743xb4xbdrc>
-	 (sfid-20250801_071111_882172_4E0E8E2B)
+To: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Thu, 04 Sep 2025 10:58:59 +0200
+In-Reply-To: <20250812114029.23538-2-maharaja.kennadyrajan@oss.qualcomm.com>
+References: <20250812114029.23538-1-maharaja.kennadyrajan@oss.qualcomm.com>
+	 <20250812114029.23538-2-maharaja.kennadyrajan@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
@@ -70,19 +67,32 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Fri, 2025-08-01 at 15:11 +1000, Lachlan Hodges wrote:
-> > Anyway, it's the middle of the merge windows, so I guess it'll be a
-> > while before I apply things.
+On Tue, 2025-08-12 at 17:10 +0530, Maharaja Kennadyrajan wrote:
+> Report the time since last beacon was received for each beaconing peer to
+> userspace. In MLO, this information is reported per link and additionally=
+,
+> it is reported at the MLD level, the timestamp of the most recently
+> received beacon across all affiliated links to give a unified view of
+> beacon reception status.
 
-I'm finally getting to merging things to wireless-next, so it ended up
-being quite a while indeed.
+Is this really appropriate? We already have NL80211_BSS_SEEN_MS_AGO,
+which is updated per BSS/link and could be used. Perhaps it needs to be
+split over multiple values for probe response/beacon, but I'm not sure
+that's critical?
 
-> That's fine - I can submit a v3 once the merge window closes with these
-> minor fixups, no rush from our end. Plus its always good getting the
-> dopamine hit from seeing all green :)
+Also, I'd say really that "seen X ms ago" is not a good value to give,
+and even in the BSS we later added NL80211_BSS_LAST_SEEN_BOOTTIME which
+is far better to use since it isn't subject to drifting between "when
+the value was taken" vs. "when the value was used" and such issues. For
+this reason alone I'm going to reject this proposal, but I'm also not
+convinced that something like "LAST_SEEN_BEACON" should be part of STA
+info, when the stated purpose could be achieved with the BSS info?
 
-Did you want to do that? As I said, I can also just fix it up, but maybe
-you also had other changes in mind.
+> This allows applications to detect potential beacon misses and make
+> informed decisions.
+
+Also, this really calls for extending CQM instead and having signals on
+beacon loss, rather than userspace _polling_ for this information.
 
 johannes
 
