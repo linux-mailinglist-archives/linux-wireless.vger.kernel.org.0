@@ -1,146 +1,92 @@
-Return-Path: <linux-wireless+bounces-27000-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27001-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B18B436F7
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 11:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E626B43710
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 11:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F4C71C271EA
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 09:23:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 372661C2631A
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 09:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D032EF643;
-	Thu,  4 Sep 2025 09:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D1713D2B2;
+	Thu,  4 Sep 2025 09:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pq0rgn7J"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="u5LrCuE1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3522EF65A
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 09:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6E02F39C8
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 09:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756977793; cv=none; b=t2d9tZ/tJNaRGB85HxzeqAqHrkdZRPEp/uL+AkudGZ2x4wHPX09Btjng5pBzKSRWqYgjW/wFIn99OSbp0cctkRYXxW6uQK2nC7O0H32VlrLwmKfIMHsMmgRcZsx6XS41fuVODpzimpIXf1a9R/iE1rfuSDmeBigGZ72cf84S+/Y=
+	t=1756978024; cv=none; b=uJ/qg49PPiwMIeBVWNicFVozlesPekzzQryr5DiwBrdzcNUkU+9w9kF1mYhEFi1FM7asV3MCOKwTcy4SJjl1L1/tRZwU0j0tXQWzea2InFsJEgNT3tmgsTY3HkPZdd1a3fZqaBqeStPwGmzRNCNCEGeXY+wK+XO6zHdwkF8ctKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756977793; c=relaxed/simple;
-	bh=7V4JK1T+TM14aaVL4s82TwxFYw6Snnv3+YNVGDwaoFI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=osTEINfJ63AyruvIeRh8xd3DdW6riHL07QT7WyCaZlRETaGEq0vK9ZcH2esPF0fzfmhylbQyoxfJzsh0LfBlwRPfRrGLc1+rh7PhZDP/BFnhvrH4hlTKNBPvRtxNrwKjqPdsyfm3xP3+sAB7LQNSUSL9GwSpx/LPwW6FrGILwdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pq0rgn7J; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45cb6180b60so5245475e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Sep 2025 02:23:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756977790; x=1757582590; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zx83lTm+FDte02e3FppN05MIMP6Z5zqC3JMzyNUwq3E=;
-        b=pq0rgn7Jg9uhktQiUZlLVS7IKeb1thixJBBYnOwgnoS9zkF+i6gsqI27l7TookROSP
-         0oyWKhdV4cUht6XhzoYIFyl3LE3gH+IVNo3U74vOLEoe9vyF1RA7wW5BNA3AWju+twBj
-         P/q2h8EgOSz+lXpE9LSlyt61zLn+UD6p0c4AH86ik2Xd3Uk0OvaGOBXusgVVeeD772lC
-         5Ee2IXDofmc5H/gSHkXD8iQhbx0CI6UlRSBpxY1t4EB+1vx81UshKO/VjGtSWo+sBgq+
-         tIDWFK/VXg5H8IFcSm8F9vUyLwOK5Iia6eox5ASDEVfkYO3kjQIU9Bj2nsm7NGHNMZgb
-         xS9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756977790; x=1757582590;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zx83lTm+FDte02e3FppN05MIMP6Z5zqC3JMzyNUwq3E=;
-        b=Coiu4Z5vN436jqZUje+7NJcEZpn1rulonoFb1naeL+AezOomZr0u1TyTWkYAOOpUw5
-         YOq0Zuwcky1xmT2COQjKcJVkRfej36xpzemPGMsghRiqmyuambnj1SnVy7LOYvVa/sGA
-         YEGojqY0yWmpLzRekxAHvbRRzSwiKyTmCr0syYwkQxSsR0nViJfcpk5qbuzz/bCe0CSh
-         fsWnM9+HnIyhWK+Z4GVnP+hqkNoTqXc0gGjCYcRmsSJXudNx8CpovWzTWAd0aBhITg3s
-         G249+6sC97vdg5f6L4aWVxUX80gxyBQUTSe4G2DEBjejH6mtpsXw4VSW636zMH21RsLK
-         ONGw==
-X-Gm-Message-State: AOJu0YyU9TKFR/fAP9i6HtIVGCs2k2E8pquiLLVUPyuJr2U4fgFkic3h
-	aICqwkp6P9X7Q5PqyzS+gBAeghWX268fVPBA+zcH0p55XZodjzgUVbHnHUTlVZcvh4c=
-X-Gm-Gg: ASbGncuuQaRN/Xnr+8nkcERxCooTXAP+fa/Sl5nq0yVohaPwlOHBKfTrMvS+x2l5aUR
-	Hd6wGLgoDORIzHRkhZRuP/lK2zPuCHAIRP1de6pYJHe9YPCAVgR3yTlC89tw60Rg7F1Q0v6pjng
-	W100TUIRzFeiOOaWcsZBw5pW2kp4m0jzWwhQRkEkOQabs39nS8jMlIC2+02oSZJ8v1w8Q10s7UH
-	hxYdtcDrDMnx/BNKtm6AZL9xSpfwueYwfF2Nq8hHwghLxfIBOPJ2TLV5926ReObl+tzqWbmzRGf
-	UtuAncH6q4Dx71XkMvZuE+22ZRbe8DhQlj3tytyVEFYicZlY4RK55/pvIlQFvXr0F2uX1ZNcyP2
-	1T1tKqBrMbTZbO2N/oJO/iEqPL6lj46cG35Ww+w==
-X-Google-Smtp-Source: AGHT+IHbDgBpEVih0OWeNYjBFHGh3HVRMCoCH7tpGwiuk6sZz3Nfar/dPjqC5tXVM9a9iz2RPe9XBQ==
-X-Received: by 2002:a05:600c:19ce:b0:45d:84ca:8a7 with SMTP id 5b1f17b1804b1-45da74cf485mr25153155e9.14.1756977789645;
-        Thu, 04 Sep 2025 02:23:09 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45c6faad9cfsm87635225e9.0.2025.09.04.02.23.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 02:23:09 -0700 (PDT)
-Date: Thu, 4 Sep 2025 12:23:06 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: [bug report] wifi: ath11k: fix group data packet drops during rekey
-Message-ID: <aLlaetkalDvWcB7b@stanley.mountain>
+	s=arc-20240116; t=1756978024; c=relaxed/simple;
+	bh=7WoVLXe/6QPeuGjWCSIeIoy4AsAfSO2x6JGqKyYuHUI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mVE9iDpcQ/6e6TjXyetLtK7zOzLHdWbn1OYztOZgKhPqa1S3n60Z2dUvbVdTNrYs5l6kfBQtM2el6iZNdtRhaqYubpWzNDR4CEe0rY97R6sJcfmoPULdAyUnv+RY3HzaUGVij0E4oiEwU9yYyg1Suz986hpn9etdaX2+FlQyMyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=u5LrCuE1; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=7WoVLXe/6QPeuGjWCSIeIoy4AsAfSO2x6JGqKyYuHUI=;
+	t=1756978023; x=1758187623; b=u5LrCuE1A8LgqF/EczPy7KkYrpQBner6WTlWRKH1pE1rqDu
+	RshE6tzz9mN/LDwJ3W3S8YYLTvLD+8CL5aFJaDBMwc3YhZLDqeZT3eg7NGM5N3jD1vjrrvjYUhNat
+	rnb4V9+EEds4GlH4f4BRSO3da44lJFFrwfoQ1O7oR4fYqGqUjpsTZVk8dtCb2w5goGgtFRA6VIfQa
+	DE/Om7Ka40znN+TRrEHwI+HRfGep08yuiVp9U1M9U02OKQFQ3zSczECBoT5/p+++kEuse66EDa91z
+	K1DymmWAOj51sDAhVCtgTHqjAq17Eu+WPjvOQjLV4s/1kDGYlXjLJkWVxoXeoqhg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uu6F9-0000000Dv97-3RmT;
+	Thu, 04 Sep 2025 11:27:00 +0200
+Message-ID: <ce5f2bd899caa2de32f36ce554d9cada073979c0.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next] wifi: mac80211: add tx_handlers_drop
+ statistics to ethtool
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Sarika Sharma <quic_sarishar@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, Hari Chandrakanthan
+ <quic_haric@quicinc.com>
+Date: Thu, 04 Sep 2025 11:26:58 +0200
+In-Reply-To: <20250822052110.513804-1-quic_sarishar@quicinc.com>
+References: <20250822052110.513804-1-quic_sarishar@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-Hello Rameshkumar Sundaram,
+On Fri, 2025-08-22 at 10:51 +0530, Sarika Sharma wrote:
+> Currently tx_handlers_drop statistics are handled only for slow TX
+> path and only at radio level. This also requires
+> CONFIG_MAC80211_DEBUG_COUNTERS to be enabled to account the dropped
+> packets. There is no way to check these stats for fast TX,
+> at interface level and monitor without enabling the debug configuration.
+>=20
+> Hence, add a new counter at the sdata level to track packets dropped
+> with reason as TX_DROP during transmission for fast path, slow path
+> and other tx management packets. Expose this via ethtool statistics,
+> to improve visibility into transmission failures at interface level
+> and aid debugging and performance monitoring.
+>=20
+> Place the counter in ethtool with other available tx_* stats for
+> better readability and accurate tracking.
 
-Commit 97acb0259cc9 ("wifi: ath11k: fix group data packet drops
-during rekey") from Aug 10, 2025 (linux-next), leads to the following
-Smatch static checker warning:
+As much as I don't like ethtool for wifi, I guess you found a use where
+it's actually the right thing to use even in wifi ;-)
 
-	drivers/net/wireless/ath/ath11k/mac.c:4459 ath11k_mac_op_set_key()
-	warn: bitwise AND condition is false here
+But why not remove the old debug statistic, you have a superset now?
 
-drivers/net/wireless/ath/ath11k/mac.c
-    4428 
-    4429         /* Allow group key clearing only in AP mode when no stations are
-    4430          * associated. There is a known race condition in firmware where
-    4431          * group addressed packets may be dropped if the key is cleared
-    4432          * and immediately set again during rekey.
-    4433          *
-    4434          * During GTK rekey, mac80211 issues a clear key (if the old key
-    4435          * exists) followed by an install key operation for same key
-    4436          * index. This causes ath11k to send two WMI commands in quick
-    4437          * succession: one to clear the old key and another to install the
-    4438          * new key in the same slot.
-    4439          *
-    4440          * Under certain conditions—especially under high load or time
-    4441          * sensitive scenarios, firmware may process these commands
-    4442          * asynchronously in a way that firmware assumes the key is
-    4443          * cleared whereas hardware has a valid key. This inconsistency
-    4444          * between hardware and firmware leads to group addressed packet
-    4445          * drops after rekey.
-    4446          * Only setting the same key again can restore a valid key in
-    4447          * firmware and allow packets to be transmitted.
-    4448          *
-    4449          * There is a use case where an AP can transition from Secure mode
-    4450          * to open mode without a vdev restart by just deleting all
-    4451          * associated peers and clearing key, Hence allow clear key for
-    4452          * that case alone. Mark arvif->reinstall_group_keys in such cases
-    4453          * and reinstall the same key when the first peer is added,
-    4454          * allowing firmware to recover from the race if it had occurred.
-    4455          */
-    4456 
-    4457         is_ap_with_no_sta = (vif->type == NL80211_IFTYPE_AP &&
-    4458                              !arvif->num_stations);
---> 4459         if ((flags & WMI_KEY_PAIRWISE) || cmd == SET_KEY || is_ap_with_no_sta) {
-                              ^^^^^^^^^^^^^^^^
-WMI_KEY_PAIRWISE is zero so this is false.
-
-I should probably write a static checker warning for code that does:
-
-	flags |= WMI_KEY_PAIRWISE;
-
-    4460                 ret = ath11k_install_key(arvif, key, cmd, peer_addr, flags);
-    4461                 if (ret) {
-    4462                         ath11k_warn(ab, "ath11k_install_key failed (%d)\n", ret);
-
-regards,
-dan carpenter
+johannes
 
