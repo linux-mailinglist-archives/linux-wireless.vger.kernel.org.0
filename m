@@ -1,50 +1,49 @@
-Return-Path: <linux-wireless+bounces-26992-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-26993-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3BAB434CA
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 09:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 876A4B434CB
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 09:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB9C5E8268
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 07:57:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 409435E828D
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Sep 2025 07:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CBB2BDC05;
-	Thu,  4 Sep 2025 07:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3E12BE635;
+	Thu,  4 Sep 2025 07:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fXBluWIy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DmKytEVg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5230732F775
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 07:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDD42BE622
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Sep 2025 07:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756972641; cv=none; b=lSHguoPEChsuBhVKXnUturmVz9nH+Uy1Cv6Ne7lk7z0ywC8+anC10bCc+mYH4ZcKQiNiFGWOGQem1N+2GjCU/Lb77gOYrmj/FoWIYUyvibiR8HBV2Rk1002BlCtqxdf6/hoB/h4ttb0DPntrYc1u6ZjvOfgjrZ7jsMdu3q9U1O8=
+	t=1756972644; cv=none; b=LYe3HuJwKfeI2hxbQzlFF16JINiPZCDyRz5c58d7CsfjmffIZPTXolwzkNW5+zTTmZ7NEDgAVPDC9o1O5wjiPz59pRN3tokGwHbnat76B7gCA1sR6JNtRPds35wPFy8aL3Zd2A7CTKSO8czKS48sOZURpXF4sF9WHTQ+R2gFTOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756972641; c=relaxed/simple;
-	bh=c57YH64GVVAeKyKzS1CU5NHKdgxvqrYzn8ZtqROVA0Q=;
+	s=arc-20240116; t=1756972644; c=relaxed/simple;
+	bh=pvJsvoWdlUTvC290n9suVtfKhZuifPF5wPtJPHfxArI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=C+sGYAZhOlfmwpAJlm90ItFd3XYYqmr5R+k4k1E1GVGCXV9tP3GBk+D773bVAiVNHbkNntJrP54S3A1HDQ0o8ZMsuCsEFM5OWWv2EbrWgmQ2kk/BDL5/LSHrpjyZRBhjLBPxHxYd/AvTywNhIJmS+z6+pLwEtPILp4/ZM6GgqWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fXBluWIy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E98C4CEF0;
-	Thu,  4 Sep 2025 07:57:20 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=kxHU/EwxbXBtg8KM54m3QzODdoiEkqrQ3NwW3R3u8PNaGH2dh/7/NbBsrpqAvDBj7UVK360lwBHKrfDFYLD5zmoyZQymF83QBuxPBAMfkhwO/gTUEj/y50vS7BDGw0HQR0vn8CvKprk7v63B/A5IalvsbYBHKiP1iP9+0fSXepI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DmKytEVg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC2FC4CEF0;
+	Thu,  4 Sep 2025 07:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756972641;
-	bh=c57YH64GVVAeKyKzS1CU5NHKdgxvqrYzn8ZtqROVA0Q=;
+	s=k20201202; t=1756972643;
+	bh=pvJsvoWdlUTvC290n9suVtfKhZuifPF5wPtJPHfxArI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fXBluWIykJ2uls6NGRZjd9d6LuD/afp5QlqIKv+8/dGw3zWGC1kOVlGY43OeDmc9e
-	 ZSjrUHMgtoGnYrPnlgwba+5GnEZrn1Qcc7A4gBLXRcJecBO1vgyqop4TInKy4Ijeht
-	 j3HYQmj/vJmSYuoWRqiqyM3c3Ti2CiEMe9074cjjgD63qWWuPpfK7hbUJxnv3sCZG2
-	 OqzxWtj3+JBAWIuCQ7ILSFG5i/8iPnwRfgIaY4zVOk1wPdO1KjO3RKXA+Ik6RYog3A
-	 zDg2N/Q6+G5m/IkCHgRrY2HlYQDujmIb3YRRECwSQw1bcES0ilHi1aUtiWqYZ1l7qS
-	 vEr3d5K2LowYw==
+	b=DmKytEVgFvKUkYzq1imcCKcI1zp/r25292wZFTV+c2vUUHNgeB4MooczeAOgIkbi9
+	 WyWOFY53frLOZediouAeCMZgkYOu5hIKeE94meIQNumgMpgUbdnH65IuGZe9kBBuGA
+	 2UJrY74cmuQtWLiApp8AMekdIn+lNgVkMeau2Ruh9kZcmx/ujJG7c3FCx/6H9Mejh0
+	 dx0wGfkAWrZugjCGc57RBCPAvWOT1XPANmkZIzQOC6sAjTNKPxggWy8BoDiKwoJbLp
+	 GbCv8eXtPyq63GDTSKzHKnBiPKU8kH7yuT+agZjDk7hgBz4WAGZ3XSiJjDO8IXOUHr
+	 9nQNIHM8rormw==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 04 Sep 2025 09:56:41 +0200
-Subject: [PATCH mt76 3/4] wifi: mt76: mt7996: Implement MLD address
- translation for EAPOL
+Date: Thu, 04 Sep 2025 09:56:42 +0200
+Subject: [PATCH mt76 4/4] wifi: mt76: mt7996: Temporarily disable EPCS
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,7 +52,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250904-mt7996-mlo-more-fixes-v1-3-89d8fed67f20@kernel.org>
+Message-Id: <20250904-mt7996-mlo-more-fixes-v1-4-89d8fed67f20@kernel.org>
 References: <20250904-mt7996-mlo-more-fixes-v1-0-89d8fed67f20@kernel.org>
 In-Reply-To: <20250904-mt7996-mlo-more-fixes-v1-0-89d8fed67f20@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
@@ -61,70 +60,34 @@ To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
  Matthias Brugger <matthias.bgg@gmail.com>, 
  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, Lorenzo Bianconi <lorenzo@kernel.org>
+ linux-mediatek@lists.infradead.org, 
+ Benjamin Lin <benjamin-jw.lin@mediatek.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
 X-Mailer: b4 0.14.2
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
 
-Do the MLD to link address translation for EAPOL frames in driver.
+EPCS is not yet ready, so do not claim to support it.
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
 Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 32 ++++++++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 33eb05dc5fc4826b5752fcee923213e051107074..588f4aed31eda30aa48eeb06cfcbf36a0e147682 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -962,7 +962,8 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 	txwi[5] = cpu_to_le32(val);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index bce128bcb8be7dea64db42f4dd9984ba0b9f4ba1..21ac618d1c836aa997b12769cdbe386265b2b276 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -1351,7 +1351,6 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
+ 	eht_cap->has_eht = true;
  
- 	val = MT_TXD6_DAS;
--	if (q_idx >= MT_LMAC_ALTX0 && q_idx <= MT_LMAC_BCN0)
-+	if ((q_idx >= MT_LMAC_ALTX0 && q_idx <= MT_LMAC_BCN0) ||
-+	    skb->protocol == cpu_to_be16(ETH_P_PAE))
- 		val |= MT_TXD6_DIS_MAT;
- 
- 	if (is_mt7996(&dev->mt76))
-@@ -1049,6 +1050,35 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	if (id < 0)
- 		return id;
- 
-+	/* Since the rules of HW MLD address translation are not fully
-+	 * compatible with 802.11 EAPOL frame, we do the translation by
-+	 * software
-+	 */
-+	if (tx_info->skb->protocol == cpu_to_be16(ETH_P_PAE) && sta->mlo) {
-+		struct ieee80211_hdr *hdr = (void *)tx_info->skb->data;
-+		struct ieee80211_bss_conf *link_conf;
-+		struct ieee80211_link_sta *link_sta;
-+
-+		link_conf = rcu_dereference(vif->link_conf[wcid->link_id]);
-+		if (!link_conf)
-+			return -EINVAL;
-+
-+		link_sta = rcu_dereference(sta->link[wcid->link_id]);
-+		if (!link_sta)
-+			return -EINVAL;
-+
-+		memcpy(hdr->addr1, link_sta->addr, ETH_ALEN);
-+		memcpy(hdr->addr2, link_conf->addr, ETH_ALEN);
-+		if (ieee80211_has_a4(hdr->frame_control)) {
-+			memcpy(hdr->addr3, sta->addr, ETH_ALEN);
-+			memcpy(hdr->addr4, vif->addr, ETH_ALEN);
-+		} else if (ieee80211_has_tods(hdr->frame_control)) {
-+			memcpy(hdr->addr3, sta->addr, ETH_ALEN);
-+		} else if (ieee80211_has_fromds(hdr->frame_control)) {
-+			memcpy(hdr->addr3, vif->addr, ETH_ALEN);
-+		}
-+	}
-+
- 	pid = mt76_tx_status_skb_add(mdev, wcid, tx_info->skb);
- 	memset(txwi_ptr, 0, MT_TXD_SIZE);
- 	/* Transmit non qos data by 802.11 header and need to fill txd by host*/
+ 	eht_cap_elem->mac_cap_info[0] =
+-		IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
+ 		IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
+ 		u8_encode_bits(IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454,
+ 			       IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_MASK);
 
 -- 
 2.50.1
