@@ -1,126 +1,83 @@
-Return-Path: <linux-wireless+bounces-27037-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27038-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45406B450F3
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 10:11:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C5FB4519C
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 10:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 005CC3BC5E5
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 08:11:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 248527A9731
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 08:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E6F2FCC13;
-	Fri,  5 Sep 2025 08:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2720030506C;
+	Fri,  5 Sep 2025 08:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Jms7BAhN"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="WDkOKG57"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC842045B7
-	for <linux-wireless@vger.kernel.org>; Fri,  5 Sep 2025 08:11:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227B927F171;
+	Fri,  5 Sep 2025 08:32:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757059907; cv=none; b=qpTWoIhL9nLQFdguWAO8pPG6ZS73P6rdLvG9lEws4/QQoco15yNTQqPuDw98lTsoKObOeIifpJXM6zr3yN9kBTEe+N/EY1qg3NI1/ysMpioEWl64wu1Ba4mPoQWIB+Kdg3zXE9DKJGI2z9ZGVdrLx4AVRVYPknZ5NMGxMh9jrqs=
+	t=1757061163; cv=none; b=drspvWGvIOe1h72MoR08Xea45MnFQwu/TL6Lnw6wY8p16X61f3vQ+uvkmOnrMqkK7QByzD5v5XIywV6qvG2FSMOIWrVkh2q0JEJ/ez6OkKUSZGDNi+eYqe1vh00uC9H6ED16cnUFyU83Ztd7DJGsZN6K8GuebKhoFeJ0si5r0uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757059907; c=relaxed/simple;
-	bh=4df6tmqvUy2l5KKNSXB3MQ1JiHxa1dRJM6mu5uTinHI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ix7FFoCisFWcLF6Sf1j34He5ZPRMF2/Po1PoPYBwIAeaHckIXtvR23tGtZN7si/qV1YoJykP+fAZOeMXNdJa1ER/reILABmZPxYbT3m8qvGud+wn+GtO12wwQu6t5unnWsq643755behDqA0uOBo42nMhVqkeXZ3W6XNoQQLTaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Jms7BAhN; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=4df6tmqvUy2l5KKNSXB3MQ1JiHxa1dRJM6mu5uTinHI=;
-	t=1757059906; x=1758269506; b=Jms7BAhNmvwiwgHv4N+NQcIDom5QyA3Sobb5Gej5n+bMZWw
-	Z7O4lJWqyI6rIjb0uU8AYGMdVB/th23XdZ818O3+FpXZLyynpGN6Z3zx4p3qHzAvR/oRVydG9WdVQ
-	V487F48esfQkf7DUeVLbVhvLskf/4+c3BKtrLi/KckBUf8P+DcC87Xcfey2hrltqcwd+Pr36+rYJC
-	6ln1T8pHxEKPfC67+9CsAbaMdvwBBTrilGo0TkI3nNbhKxqpvTaR+g5smT1y8LVXBzlTdvGkOJeb+
-	uPXJDwO7p8Lp1b6si//TImiqwhiCTlNaBQvczUqboMnrnN9yDR/UTflYNwr45NWQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uuRXn-0000000GHd0-3GD9;
-	Fri, 05 Sep 2025 10:11:40 +0200
-Message-ID: <148507332947544aee0557f9d3bb9f4f77608c5d.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: cfg80211: fix bss rbn double erase issue
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jiazi Li <jqqlijiazi@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski	 <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Jiazi Li	 <jiazi.li@transsion.com>,
- linux-wireless@vger.kernel.org
-Date: Fri, 05 Sep 2025 10:11:39 +0200
-In-Reply-To: <20231215102144.GA2946@Jiazi.Li>
-References: <20231025103304.22082-1-jiazi.li@transsion.com>
-	 <b1358d256500d5bb6b3bbc312673c24b54b3674e.camel@sipsolutions.net>
-	 <20231026013528.GA24122@Jiazi.Li>
-	 <9d2e0cc7ec292a7a1ea26c43ada305f40bc22829.camel@sipsolutions.net>
-	 <20231215102144.GA2946@Jiazi.Li>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1757061163; c=relaxed/simple;
+	bh=gdgo98UBu9tnVI+LdlIj+s28S38NIHJ8D93VYEcJTIo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gUeoFE4JdikKreSDxpVWqzWfnBggyWnNP3R+ys7T9l78gBm/6rcS13kOHc5en7yc4cRj7NY4B+l0uU+77s9tVjxbqhSCATww9Bl0o6lGk3gu6vyLgH+WH2EhbqowWbxOZGWbLB/HxMta9yGeijSgxUR66o9tjxetEdtywknJLt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=WDkOKG57; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id CCDA724598;
+	Fri,  5 Sep 2025 10:32:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1757061157;
+	bh=zBvxlXtecnfYqqxLnxD2HAlJrXPLBmw6QuB6xtPx9c0=;
+	h=Received:From:To:Subject;
+	b=WDkOKG576lqakNyGGdvYPd7Wgj1TvBIZmr+04CzAEn5RFeqDFStNUslf5NNXhbY4o
+	 P3n//MPtCGruVAHoUJZACvVo8KGGXLBGz41h+uh1yELtDw+lYKh/cLeXW4qX02kxLQ
+	 PbrMWllYzL4yjI8TPJDDG5LK2Qth9fW4v1heYp+qGvPSl7JSkoHVu/qhpCQhbMbiLj
+	 /41XCSIDOimwqQMA2Xfz/64+3oJo/MBWAesTPEddKhPHl5InLioto1oqp/Sx0EZFYW
+	 l5S5hS8iNlKI/UmPpLrwR0z3/KH+MXbgCvDDz+0BMjlNaNZ5PxB84CYJY77OPkQXMM
+	 U733ImH1Wm9IA==
+Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
+	id 2E22C7F8D7; Fri,  5 Sep 2025 10:32:37 +0200 (CEST)
+Date: Fri, 5 Sep 2025 10:32:37 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>,
+	Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Jeff Chen <jeff.chen_1@nxp.com>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH next] wifi: mwifiex: fix double free in
+ mwifiex_send_rgpower_table()
+Message-ID: <aLqgJQP1M-YHbEpT@gaggiata.pivistrello.it>
+References: <aLqZBh5_dSHUb4AE@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLqZBh5_dSHUb4AE@stanley.mountain>
 
-On Fri, 2023-12-15 at 18:21 +0800, Jiazi Li wrote:
-> On Thu, Dec 14, 2023 at 02:13:38PM +0100, Johannes Berg wrote:
-> > > >=20
-> > > > Ok that's bad - so you hit the WARN_ON there? How that? We should f=
-ix
-> > > > that too?
-> > > >=20
-> > > Yes, hit this WARN_ON in the test of direct connection between mobile
-> > > phones and PC. Here is the log:
-> > > [ 2741.982362] -----------[ cut here ]-----------
-> > > [ 2741.982446] WARNING: CPU: 6 PID: 2175 at net/wireless/scan.c:1496 =
-cfg80211_update_assoc_bss_entry+0x350/0x378 [cfg80211]
-> >=20
-> > Right, so you can reproduce that - can you find a fix for it?
-> >=20
->=20
-> I am responsible for kernel stability and I am not very familiar with wir=
-eless code.
-> The colleague in charge of the WiFi module also couldn't find the root ca=
-use, so we
-> used the workaround solution I mentioned earlier to address this issue.
+On Fri, Sep 05, 2025 at 11:02:14AM +0300, Dan Carpenter wrote:
+> The "hostcmd" is freed using cleanup.h, so calling kfree() will lead to
+> a double free.  Delete the kfree().
+> 
+> Fixes: 7b6f16a25806 ("wifi: mwifiex: add rgpower table loading support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 
-So you're going to have to fix it after all ;-)
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Syzbot ran into the same problem [1], but I'm pretty convinced that with
-a well-behaved driver, this should be practically impossible unless the
-AP is also doing something weird. Your (non-upstream!) driver is likely
-messing around with the BSS / scan reporting in weird ways while the AP
-is doing CSA.
-
-[1] https://syzkaller.appspot.com/bug?extid=3Ddc6f4dce0d707900cdea
-
-
-Ultimately it comes down to the cfg80211 code tracking BSSes by the
-(BSSID, channel) tuple rather than just BSSID, so if
-
- - you see a BSS (BSSID-x, 1)
- - you see a BSS (BSSID-x, 11)
- - you connect to e.g. the channel 11 one
- - then it channel switches to channel 1
-
-you run into this issue.
-
-I guess we must handle it _somehow_ if only to prevent attackers
-triggering this, but right now I don't have a good idea. However, in
-practice, it shouldn't happen since actual APs using the same BSSID on
-different channels are extremely rare (if not never happening) these
-days, chances are the driver is just reporting the duplicate BSSes in a
-weird way.
-
-johannes
+Francesco
 
