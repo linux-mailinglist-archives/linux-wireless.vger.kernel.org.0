@@ -1,80 +1,124 @@
-Return-Path: <linux-wireless+bounces-27034-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27035-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0486B44F31
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 09:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66763B450CA
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 10:04:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42D4C1C8791A
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 07:22:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2ADA1BC2674
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 08:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5512D46B7;
-	Fri,  5 Sep 2025 07:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8736D3002D5;
+	Fri,  5 Sep 2025 08:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ZEUQbb3Y"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Mrc+hBEi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3032D59EF;
-	Fri,  5 Sep 2025 07:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428F52FF168
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Sep 2025 08:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757056584; cv=none; b=KTBXAdnorC03ppTUN6+0zA58mCGOcObF3743S6t4pIP5aOfo1V52xg2vvMFAIFCIYFXXQpt4syQAO5L81b4+7V+c8+JhLqPZ/n4AZYHiy9rxwQffIp4P6F84Q+w/VKb5NQHDaj6wap+rDyletfjVhpvkE0UjrxKNRMAfpKNcTMA=
+	t=1757059342; cv=none; b=sIJ5EYDD0o4ixRxdJCP08fnzwJnsxUWYeBUaiXbrJVrb6o0V0wyD7K/EHeEsLy/vUJuKr6kqblJDDOeXqWSgMLxM/wrU20KJZg+FYYn18bViPGEWHjuauaB/KzMHEPghmJcBAOUTLPVMqkrALDYJ0f+RT50i1pvdk7S9CPidewg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757056584; c=relaxed/simple;
-	bh=+EJwsud1rgTat+Y4GCZMiC6IThHQFwuKXd3PJh5RPIY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=k5V90I4ZDruZthaPNMW1xd7X1dd4fjlkKkej14V5cqocsOVk9xIZMJPm/RKzYYE9c6Vw2yfO/KkFspTsJu0b8rpTP+8/FRV0ujMRoPscQSKcfJdGFk2Qm5nLGj8eT5IpSWkkf4W2Wunl1lPDJBzjBVcy4EBq/ppFSNga/mJACYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ZEUQbb3Y; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=+EJwsud1rgTat+Y4GCZMiC6IThHQFwuKXd3PJh5RPIY=;
-	t=1757056579; x=1758266179; b=ZEUQbb3YhzN9Wc717LRLQlL/0Fmw4GPV3hPQoZeWlYzMF4J
-	8nA5ZtAHaAkqVI1JZK3daL+4ex7cGI4goXmra3942MhSXCbkVmiXLQUCjcFLOOpRvnfmbZPQNH+qx
-	3lN9F54w9vqiZuUK8GJ4FQs9fEqt2SHA+WPB3ESVtii4KvS/xaefS0XgNgKn9aEQZUAYeFxJ3c3aX
-	ZzMdD8gcB/XUim44xGHbNbfyWBB28S35YeGca0Tql5d4bIJjJijA5jzbGRyWJ0ElBLOYEtUJgarTj
-	4EB7NANazeA8YC6y0opIaLipE2sm9mwbfSUuDtQm2pb+S3oiRRPDxSQDdQ7yxe/A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uuQgB-0000000GBoz-2vRR;
-	Fri, 05 Sep 2025 09:16:15 +0200
-Message-ID: <e02385300c075395346ccf70b46a648698a66a3d.camel@sipsolutions.net>
-Subject: Re: [PATCH v3] wifi: cfg80211: Remove the redundant wiphy_dev
-From: Johannes Berg <johannes@sipsolutions.net>
-To: tanzheng <tanzheng@kylinos.cn>
-Cc: arend.vanspriel@broadcom.com, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org
-Date: Fri, 05 Sep 2025 09:16:14 +0200
-In-Reply-To: <20250905063923.1170764-1-tanzheng@kylinos.cn>
-References: <20250905063923.1170764-1-tanzheng@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1757059342; c=relaxed/simple;
+	bh=tMuqMy9KNqQl8d8FLz0h9ghs2eY5SyYIDshjqoFiulg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=hAdznT1oZVhoHcVk0CJJ8jwxZUKwFiNBOh4i1MUPtPKDjy+H1Hi1ObLC0KLWs47mnN4+mewp+S3BoR6GBj7Cg6g++urj5Rdh7yWLEdo4iV89sIdoxwmseqLx32cNab1gaES8AIIKjZaHWNawbyIAMVJqpe//6ypt3BEY4najGhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Mrc+hBEi; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45b9814efbcso20762895e9.0
+        for <linux-wireless@vger.kernel.org>; Fri, 05 Sep 2025 01:02:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757059338; x=1757664138; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=o68AReBijMNMDf41J3JdN/+EDwW+zsISsfZcVm5zD3Y=;
+        b=Mrc+hBEiG74vKaynjbz8krYMALHTRR60CijT/+LLbnr7QO/XrQ8LiLGjmXMc6PS2hT
+         jmMkR6rc2gm5p8S/ZtIVZyFcb8UIT22QO4LK6l1iseybtCGpSc6FCeAAFkS1vP3U3t5n
+         NGeaLl7jGqZHapKgTycAGx7m+baDVF5pZSLkjflaZ4JgqSDMOAyeN6A8VbOTbnEKhIKw
+         615v5RXlb6yPl3hwtiKSFlDh8/OgTtgmCgZ00Htv591QlQw2Rn5FX7F+wOKtXa4eMmar
+         H+l9/4z/YVJPpessGNH2kcuy+uJFZ1dMu8RstX8RxnLZhd22Q4IZLkSmTJyAJIHUfNcg
+         6l6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757059338; x=1757664138;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o68AReBijMNMDf41J3JdN/+EDwW+zsISsfZcVm5zD3Y=;
+        b=CgA0RD3hz7OeiME2PFAmFnllQLiTGHP8fMm+6NeqKWAx6b0Xm52BHnv7z4giOa+QMV
+         t4e5eYDHaOt7oQXlCWzyeLVAlrChBUlFgtuand9yjGrcH+UurdM9owC7i/Md362bb9Cw
+         HumDJ1paYvtlmulvHqviqUUbrwG7h2tOQwtlkoDLFlvEFdA7FsiPV8n+/CjgqrqNfCKo
+         81hNXdCo1NJtx/tOygCmbuekBHGeTy5kLFa54ZU6nowOUcjLZmX+NQSxIvbBRhy4PTsd
+         /iRqoXX8d2QSR/mvW9ZaXZzZgpqTGPEDRC/tD1jLI3UcrO14SbA1FTG9Z1FRw7iXgO/4
+         rRsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWiMm07tQQeAg4Mc4QC2jnlo1Rk00LodLjxhW8AStQZ/TdPgx9R3kUxlFamh2QVYpzdCPKU5aeiOAtHbSqBYw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3bQ8R+8NSkfNpE28lUTTQ9Ay4pCfwbfN2GYdtcqcf4Bi6kbgn
+	xBEthX0haNa08BjlcMyqRFMbuZkJDvKG4F/UPMWOVRhBYHk4guX7eWa2C5kTmgWHRpw=
+X-Gm-Gg: ASbGncuqJSuvWbXLdYslh7vfwdHCJFxKy/YL9+s6SS7K0RQe/zvY4lqohhQAUaEYOEK
+	gdsXg6n8yXKwLfkxqRKfQmNlXaQDOxXL+79XoMRO8WVC/3/fpkpqJ5PugQ/9lCZpne6eMvzrQMc
+	7CZB3vKSqrqmALise6fv1dyDEixD6ENqwImh2Xbaa+OJAdL2INR5HHTpcR/7e2BTXGZW7Y2GEnr
+	H/VBNaam4g0Zae1uLdjAu3HrAFBwvTbRuS8KnbfnWAg+Y6ddJinFzvKGoP6ru6PY6jWtd2VDcvu
+	n5hkanB2710reGuwvP4g+FO44i/b7pDHDh9vNrcHQ/4APo1MHXSlKNmRyyqCtjjUTkENZaUI1aO
+	PO59bRSt/jTSZOfVW+psn8z3qq3JEnR88VFYqNQ==
+X-Google-Smtp-Source: AGHT+IEUmVHJbjR7C3oIB7RSAsoVRqWkfah8MYKFJmKmkTEM7dD+VYHIgQjg9wCazj41X3C/wF8/tA==
+X-Received: by 2002:a05:6000:4285:b0:3d4:13c4:af73 with SMTP id ffacd0b85a97d-3e301d1807bmr1931877f8f.12.1757059338196;
+        Fri, 05 Sep 2025 01:02:18 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3cf34494776sm30331604f8f.61.2025.09.05.01.02.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Sep 2025 01:02:17 -0700 (PDT)
+Date: Fri, 5 Sep 2025 11:02:14 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Jeff Chen <jeff.chen_1@nxp.com>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH next] wifi: mwifiex: fix double free in
+ mwifiex_send_rgpower_table()
+Message-ID: <aLqZBh5_dSHUb4AE@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-On Fri, 2025-09-05 at 14:39 +0800, tanzheng wrote:
-> There is no need to call wiphy_dev again.Simplifying the
-> code makes it more readable.
->=20
-> Signed-off-by: Zheng tan <tanzheng@kylinos.cn>
->=20
+The "hostcmd" is freed using cleanup.h, so calling kfree() will lead to
+a double free.  Delete the kfree().
 
-The bot complains this doesn't match your From: line, is that
-intentional?
+Fixes: 7b6f16a25806 ("wifi: mwifiex: add rgpower table loading support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/net/wireless/marvell/mwifiex/sta_cmd.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-johannes
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+index 6d9e2af29a69..91d5098081e8 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
+@@ -1521,10 +1521,8 @@ int mwifiex_send_rgpower_table(struct mwifiex_private *priv, const u8 *data,
+ 		return -ENOMEM;
+ 
+ 	_data = kmemdup(data, size, GFP_KERNEL);
+-	if (!_data) {
+-		kfree(hostcmd);
++	if (!_data)
+ 		return -ENOMEM;
+-	}
+ 
+ 	pos = _data;
+ 	ptr = hostcmd->cmd;
+-- 
+2.47.2
+
 
