@@ -1,217 +1,236 @@
-Return-Path: <linux-wireless+bounces-27040-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27041-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D8B5B45826
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 14:48:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF524B45C77
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 17:25:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEF475A4311
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 12:48:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 927E1162EED
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Sep 2025 15:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEF8350D48;
-	Fri,  5 Sep 2025 12:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7885D1EFF80;
+	Fri,  5 Sep 2025 15:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BATH75HE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mdoOSdYG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222C934AB0A
-	for <linux-wireless@vger.kernel.org>; Fri,  5 Sep 2025 12:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88E0220696
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Sep 2025 15:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757076490; cv=none; b=sfMooamrqZH/l5tekuXq/KQ+hKhJGcn6qoxL2zcTX+LqLAopwHyX/o1nu4PJH5Yhfu5eXntQjUPXX+SLbI/wiHNakqxwZmhvkYrfZTf1k0ECx92yYBQhXd/QzxFyKgeYLIcZTgaB4o3ToJKelAhR5I/Hn3BpiWrN4v/LNupwwf0=
+	t=1757085794; cv=none; b=u/rpctNiedlGgTrKyuBQgghN9k4Xc5CPRaEojtgsE4ZFu3E8RLNQw39WzL1l9yxANxowfvRI5n7WUDVZRWmwGjM2Vx6bsQwLrVr41v6VWhSnTqoJ4u1ecm1Hdvxqhz8el98gzIR168/on0wxDoCw8H21pwrLfSwDVfoVSR1UF2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757076490; c=relaxed/simple;
-	bh=J082ip8oI4BcuJZyRNdgradhNpOj828tOBWuf64+xgo=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=i8yOuIQ4wAjptkXQSzZT5uDXvTs7ArplStz3ZQ+hMwNbJGScgv2i1mPebLcN+B/NhrhHkT8jNdbBe/UMjz/IQ20fyZVPXUwPhIqILRB0z7sO/n+kRyAA+P6Od0j4JOi2DL82KTHpjSRKp0vhlowRxmZqOND82tGXJ0WnDrgeAJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BATH75HE; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5857EDpd007551
-	for <linux-wireless@vger.kernel.org>; Fri, 5 Sep 2025 12:48:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:date:from:message-id:subject:to; s=qcppdkim1; bh=PnoEsGdxqqq+
-	FIZVH7OYFnVpR36GWf1rMYPBcU3Bqhs=; b=BATH75HEm8CTPalJQ4riPPDYX3+H
-	jSl8HtQINeJeXLPTOjXnhoSApfx5oRIZMxYSm8fMH2nhqT7mjZ3K8lXgYidylMl5
-	XL4PNQex3YN0ioS9BMvRJT6Il+y9Z7c1zE8k4K/gfpDecv5KMipsmxe7+87avECp
-	yfuLdRZgbG6zHjYaeYT03dVUUTlbjGL9hYiCbhH980W/EmX+jxtL+g/YIPDkAiK2
-	neOu69gTuShF6ii3gE+78zy8aA1CmPV5T1CbRulmjZFca4fNRyIDXT65xPm/fkS7
-	0xODZuCC5P4xiULRaOydDlXgwUVgJKJqnr5CkPXY6JmW4LPPFdIITcL8Ag==
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ura931hn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 05 Sep 2025 12:48:08 +0000 (GMT)
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-77278d3789cso4015141b3a.1
-        for <linux-wireless@vger.kernel.org>; Fri, 05 Sep 2025 05:48:07 -0700 (PDT)
+	s=arc-20240116; t=1757085794; c=relaxed/simple;
+	bh=8p0bMP3iIV0GWjf7xhijZJc9pA+Pyafoefq8TMC0esc=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=lIDmnKxIXpkKyzF6B90yopdRnxcsEOAQXeIIaF2sVjtbXLw+agf8Rtka4Jps2WBEdEiJQW6H++jABIp8dJRfowIXyjMBGmunKcwHHXTxnCm9KzFa3do/0qXxWMsUwd2oSZXx0fucax7RYulYpZE3xRYlC2gzpZuctEFKPDHBWDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mdoOSdYG; arc=none smtp.client-ip=209.85.222.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-89607b19f71so664586241.1
+        for <linux-wireless@vger.kernel.org>; Fri, 05 Sep 2025 08:23:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757085790; x=1757690590; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7yFFUHnGZW0JHhoBdZKegiawGGy/RzVeOJmX0hlyIhA=;
+        b=mdoOSdYGn2BsAj4HURWxO4yAZ3QMOoMwjxf1gE+/HN+aI4jxw6rOeDe+isl3tbR0TC
+         4aANQuB9A+syBgd+bInrL7gqhhGccXbAdEkxRKcp6sOpnnTvmSPGlYRcwBhCMIVDUyv7
+         F3RnoET/FjPbtk1eNqdKdlxhzakebuNZU4N5zSz08kzSK+ES1/4TZ3+LYhIeZUxtVV0x
+         aJ2/kNBZDf1mNSG8uHEnQywrKlW7/fNUF/RYRY69U5ppHzm4f4dinoGFsw6tYE+LhiIi
+         RJV8XnOHncIQ47myu4Zt5EADXuxZAMGZjNz/CbycN7jTc/Ytgac0bgD8eqro8bwdsYL0
+         j6vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757076486; x=1757681286;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PnoEsGdxqqq+FIZVH7OYFnVpR36GWf1rMYPBcU3Bqhs=;
-        b=vhs277toSuQGEGukfDeu2wcIiNcsQ67C3UXpK07qCj301WIKe7POwrK/PWuFsYicmj
-         iAItd7u11lXpo96uYsJLKg6s/Y3ek594RjW03INGQ+YdBKpUO9vRoXt3C31mzk1J9SRE
-         PJ/dh0gkOPepSr32vrjxsM58cSZ/Hztip30MgEtGaDaYmaTWcquPmL8S6MBlcCmkUqj3
-         8cnRbvq/oO9A2uhg3ND7xOG21RwkbIme1R9DvQNIl6uE/wJg561QU+q6pE85Z8wvsB7/
-         vZ6I9QZwevozmQoDA1dHZgP63E+5Zqc1lvXbQlkfHHnQ4Ts+DZ0mCbL4eIAqA+g/J2tI
-         ovEg==
-X-Gm-Message-State: AOJu0Yykdq2mdhiRkPnReNEG/bVOeJ9ugNuYUtAbGdv2Rl4uGUeOElok
-	au48L9EofJoKwgsJg9OSc0hugB7OcJN08W3zW5whqqArnNABBAk3o51aFmLC9OSWvEuxe2igTjK
-	8lpkzGcVymekBnCF13ejRMEcwl9wLwu09XlJErE57ytlf0ftAXuUyfp8yRpkQFG1/udFmpS+Jk1
-	qMdA==
-X-Gm-Gg: ASbGncshK4+3Oo2yU60b7XCHDdI6AfLv28Yxv50pgg5dkanUEA5WkVr9aCczedMa8J5
-	nnd5OVKL4JMckV6KoUALIeJtQ/CcPjQerpeiBhwyEdV8KDtk5iEvL6SA+Qpg0GRaxdVc00+nWTu
-	z9+eBsJVngZ8H+cPXCfKK3dx22OC0qMHrCHVOO2J3qqmq1vD2uK+37Oal2wHLSC1LSxnFi5GqkU
-	wyODm7EuG406r6cnCaZTPGqNQ/3M4F+LXdGTZr4QIAeT/BN/QutIcpoDlFXShxq8hsCXqSgJY3c
-	7+tR6PSWtr44SrXuLHPPsvOLhGI3i4xpMHFizKhjza1HLhcz8wJmqO0XyDxEWypq3pxS3ofnDvX
-	DL+KluC8RaCbToSgw+Li/aLXDc6KWvVJ/2k+vCzr1cTuCajLcQvkvq6Tfb3P++4hH74qe43+JkQ
-	==
-X-Received: by 2002:a05:6a20:1594:b0:248:4d59:93d5 with SMTP id adf61e73a8af0-2484d599525mr14294961637.55.1757076486486;
-        Fri, 05 Sep 2025 05:48:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH+bGBfGl7Fsr54Xy6h/copErhPkUt2t6Lw+VQUe8R0kU2Adw8e1CrcQx0dQhU4gHL6WYqFwg==
-X-Received: by 2002:a05:6a20:1594:b0:248:4d59:93d5 with SMTP id adf61e73a8af0-2484d599525mr14294926637.55.1757076485970;
-        Fri, 05 Sep 2025 05:48:05 -0700 (PDT)
-Received: from hu-nithp-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4d96829a66sm18041851a12.6.2025.09.05.05.48.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 05:48:05 -0700 (PDT)
-From: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
-Subject: [PATCH wireless] wifi: cfg80211: Fix "no buffer space available" error in nl80211_get_station() for MLO
-Date: Fri,  5 Sep 2025 18:18:00 +0530
-Message-Id: <20250905124800.1448493-1-nithyanantham.paramasivam@oss.qualcomm.com>
-X-Mailer: git-send-email 2.17.1
-X-Proofpoint-ORIG-GUID: nwdYuNfT1fJEERpAnkjmfJ4VtH_mhXI3
-X-Proofpoint-GUID: nwdYuNfT1fJEERpAnkjmfJ4VtH_mhXI3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyMCBTYWx0ZWRfX+p/FVFWEGd1n
- ItqecoqvTGsuFEEefiaDbQb1aF3x4YSaH79y20fgjuK966u/ZGwcSsViW1XCY29NYENKNZV4ST1
- qUz0k4nJuxOqUUz5R+VMBaiZiKMEzJtNWy8fXG0OauDJsAZncSES/3nKewC7jSbqrKpMQFM9ANq
- r7+BeNhW1heP8O2ZDYzamdrpQ2nZ0au/12rpuPteZxPy6uEAxVB2B4geNv63Zef7vFe0ni4vlHB
- gbnOFs4Q5T15MFJXLd3cUSkxGmo0jF7uY+K+oZVMP1NAQYYgjXRRlpOWjck7YqsMoE+3ExmUtI8
- 9SSJfb8e6dN0NmXixOLyvuPJ/PqpweK7w/bNWe/gk9DVGJ6mKSD7RPbwYyTLQvg8BBRjOjtPMXq
- rMwEaGYG
-X-Authority-Analysis: v=2.4 cv=VNndn8PX c=1 sm=1 tr=0 ts=68badc08 cx=c_pps
- a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=kD4sTvn9sZURAWMP:21 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8
- a=gXmUh3uitkxkngZH5WgA:9 a=OpyuDcXvxspvyRM73sMx:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-05_04,2025-09-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 adultscore=0 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300020
+        d=1e100.net; s=20230601; t=1757085790; x=1757690590;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7yFFUHnGZW0JHhoBdZKegiawGGy/RzVeOJmX0hlyIhA=;
+        b=h10B6Yb2LrrRE1r3Qd1MRnjesb0QleQsP27bGTz+BxaiesgQqgd9yODKZlyn8aq7BD
+         oV7F41n89Bcaq54fy8S7oFPChqREHfLPoteZKn72UP38q/VLLz9IYyacpMDtD/+fZiBb
+         Y4WoY1tGLSoCcRAQTIUIjnl1dDtLq1kjviEEcyblF7rEq84DwPGx836d3YicNoOHulR0
+         fi5yk0GgkZm5rfyYgBTRqcYDGC4dJ+o7Bs5a6hTPcy8uKGI7pzgpPyY85Ui947pfjVZK
+         gVQ47/EDiUTqpDyWtsxtrz5P9J8O1jehG++2niRK6m9OQZ+CFKNmzqQl4F0DtG7x5WE9
+         RfHA==
+X-Gm-Message-State: AOJu0Yz77/8Vvb3EjBTmc7F7xyQCGtM7fZhtuHxlsheQukOdBbiRcL66
+	fupUUN1aNjNEbenBrjaQ95xxX4XE4T2dlv9fvCXLvhln5j1yWDVUyK2Ude6a8PmhhKidAwhyCNp
+	8L+SYghi1+qrcjSB+n+lfGM3EkNO4/5XDMk3Er6Y=
+X-Gm-Gg: ASbGncvAJ1qG19D62kcfJR+eY8VLvIyXj+uojcVMnWrVTOjOxoIbSEX1BKHAklbxkgr
+	3dSq3a5SYCA+mq4WxTsPIQhLSumfdpDH9AKJCccoPWJdfKW/v6MPaXNVNxyoC9uoYXIh1hvKPAS
+	3RQHDqDR9BILUJvUKFYJTRbXfu9/JV4fNEurWpaSThb33tNl9hpN9VuaVeYz5L3faksY2Vs9hLi
+	aNRpDuWJKBmlQYMPGlD1NSnVkqFcIpQvViJhhlKnMt5/JxCpUoT1JF+MOClrg==
+X-Google-Smtp-Source: AGHT+IEN4MZSbqBM4PoTjnF2nHn0zCh/uuRuZAhrdQG4W9Y8NKAf76jFyb2UY4c2AVpWqOqypP848icg0GjlV0OKRus=
+X-Received: by 2002:a05:6102:6b0a:b0:4f9:69a9:4ec4 with SMTP id
+ ada2fe7eead31-52b1c14d260mr7635378137.26.1757085789994; Fri, 05 Sep 2025
+ 08:23:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+From: Nader Ben Ammar <nader.ben.ammar@gmail.com>
+Date: Fri, 5 Sep 2025 16:22:59 +0100
+X-Gm-Features: Ac12FXw8Jb8nkvpAELirwGljNK-cml9jH_5cCJ_V9DsekRi66P-Et4uzC9I6Lyk
+Message-ID: <CAN1oh1qev4bBBGABpBX5bqga1RzTaYayVAYoJqKPeashQhY+=A@mail.gmail.com>
+Subject: Bug Report] wifi: rtw89: RTL8852BE fails to resume from suspend on
+ kernel 6.14
+To: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Currently, nl80211_get_station() allocates a fixed buffer size using
-NLMSG_DEFAULT_SIZE. In multi-link scenarios - particularly when the
-number of links exceeds two - this buffer size is often insufficient
-to accommodate complete station statistics, resulting in "no buffer
-space available" errors.
+Hi,
 
-To address this, modify nl80211_get_station() to return only
-accumulated station statistics and exclude per link stats.
+I'm reporting a bug with the rtw89 driver for Realtek RTL8852BE PCIe
+WiFi on kernel 6.14.0-29-generic. The WiFi fails to resume from
+suspend, requiring a reboot to regain connectivity.
 
-Pass a new flag (link_stats) to nl80211_send_station() to control
-the inclusion of per link statistics. This allows retaining
-detailed output with per link data in dump commands, while
-excluding it from other commands where it is not needed.
+Hardware:
+- Device: Realtek Semiconductor Co., Ltd. RTL8852BE PCIe 802.11ax
+Wireless Network Controller
+- Subsystem: Hewlett-Packard Company RTL8852BE PCIe 802.11ax Wireless
+Network Controller
+- PCI ID: 01:00.0
 
-This change modifies the handling of per link stats introduced in
-commit 82d7f841d9bd ("wifi: cfg80211: extend to embed link level
-statistics in NL message") to enable them only for
-nl80211_dump_station().
+Kernel Version:
+Linux HP-Laptop 6.14.0-29-generic #29~24.04.1-Ubuntu SMP
+PREEMPT_DYNAMIC Thu Aug 14 16:52:50 UTC 2 x86_64 x86_64 x86_64
+GNU/Linux
 
-Apply the same fix to cfg80211_del_sta_sinfo() by skipping per link
-stats to avoid buffer issues. cfg80211_new_sta() doesn't include
-stats and is therefore not impacted.
+Driver:
+- Out-of-tree rtw89 driver from https://github.com/morrownr/rtw89
+- Module: rtw89_8852be_git
+- Firmware: rtw89/rtw8852b_fw-1.bin (version 0.29.128.0)
 
-Fixes: 82d7f841d9bd ("wifi: cfg80211: extend to embed link level statistics in NL message")
-Signed-off-by: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
----
-Note:
-- Planning to re-enable MLO station statistics in
-  nl80211_get_station() at a later stage with the
-  following option.
-    1) Consider extending nl80211_dump_station() to support MAC
-       address filtering, enabling targeted station statistics dumping.
----
----
- net/wireless/nl80211.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+Steps to Reproduce:
+1. Connect to a WiFi network.
+2. Suspend the system: `systemctl suspend`
+3. Resume the system.
+4. WiFi is disconnected and does not reconnect automatically. Manual
+reconnection fails until reboot.
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 89519aa52893..f2f7424e930c 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -7062,7 +7062,8 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
- 				u32 seq, int flags,
- 				struct cfg80211_registered_device *rdev,
- 				struct net_device *dev,
--				const u8 *mac_addr, struct station_info *sinfo)
-+				const u8 *mac_addr, struct station_info *sinfo,
-+				bool link_stats)
- {
- 	void *hdr;
- 	struct nlattr *sinfoattr, *bss_param;
-@@ -7283,7 +7284,7 @@ static int nl80211_send_station(struct sk_buff *msg, u32 cmd, u32 portid,
- 			goto nla_put_failure;
- 	}
- 
--	if (sinfo->valid_links) {
-+	if (link_stats && sinfo->valid_links) {
- 		links = nla_nest_start(msg, NL80211_ATTR_MLO_LINKS);
- 		if (!links)
- 			goto nla_put_failure;
-@@ -7574,7 +7575,7 @@ static int nl80211_dump_station(struct sk_buff *skb,
- 				NETLINK_CB(cb->skb).portid,
- 				cb->nlh->nlmsg_seq, NLM_F_MULTI,
- 				rdev, wdev->netdev, mac_addr,
--				&sinfo) < 0)
-+				&sinfo, true) < 0)
- 			goto out;
- 
- 		sta_idx++;
-@@ -7635,7 +7636,7 @@ static int nl80211_get_station(struct sk_buff *skb, struct genl_info *info)
- 
- 	if (nl80211_send_station(msg, NL80211_CMD_NEW_STATION,
- 				 info->snd_portid, info->snd_seq, 0,
--				 rdev, dev, mac_addr, &sinfo) < 0) {
-+				 rdev, dev, mac_addr, &sinfo, false) < 0) {
- 		nlmsg_free(msg);
- 		return -ENOBUFS;
- 	}
-@@ -19680,7 +19681,7 @@ void cfg80211_new_sta(struct net_device *dev, const u8 *mac_addr,
- 		return;
- 
- 	if (nl80211_send_station(msg, NL80211_CMD_NEW_STATION, 0, 0, 0,
--				 rdev, dev, mac_addr, sinfo) < 0) {
-+				 rdev, dev, mac_addr, sinfo, false) < 0) {
- 		nlmsg_free(msg);
- 		return;
- 	}
-@@ -19710,7 +19711,7 @@ void cfg80211_del_sta_sinfo(struct net_device *dev, const u8 *mac_addr,
- 	}
- 
- 	if (nl80211_send_station(msg, NL80211_CMD_DEL_STATION, 0, 0, 0,
--				 rdev, dev, mac_addr, sinfo) < 0) {
-+				 rdev, dev, mac_addr, sinfo, false) < 0) {
- 		nlmsg_free(msg);
- 		return;
- 	}
+Expected Behavior:
+WiFi should reconnect after resume.
 
-base-commit: c5142df58d5a19a0615414037f256cd5ca39f7c5
--- 
-2.17.1
+Actual Behavior:
+WiFi remains disconnected. `iwconfig` or `nmcli` shows no connection.
+Logs show no errors on resume, but the device is unresponsive.
 
+Kernel Command Line:
+BOOT_IMAGE=/boot/vmlinuz-6.14.0-29-generic
+root=UUID=95dcee12-84fe-4ab6-a174-0de1f81679bc ro quiet splash
+mem_sleep_default=deep pcie_aspm=off pci=noaer pci_port_pm=off
+acpi_osi=Linux rtw89.disable_ps_mode=1 pci=noaer pcie_aspm=off
+rtw89.debug_mask=0x0001 vt.handoff=7
+
+Driver Config (/etc/modprobe.d/rtw89.conf):
+#
+# Configuration file for the out-of-kernel rtw89 drivers
+#
+# Link: https://github.com/morrownr/rtw89
+#
+
+options rtw89_core_git debug_mask=0x0
+options rtw89_core_git disable_ps_mode=y
+
+options rtw89_pci_git disable_clkreq=y
+options rtw89_pci_git disable_aspm_l1=y
+options rtw89_pci_git disable_aspm_l1ss=y
+
+# Blacklist the in-kernel rtw89 drivers
+blacklist rtw89_8851bu
+blacklist rtw89_8851be
+blacklist rtw89_8851b
+blacklist rtw89_8852au
+blacklist rtw89_8852ae
+blacklist rtw89_8852a
+blacklist rtw89_8852b_common
+blacklist rtw89_8852bu
+blacklist rtw89_8852be
+blacklist rtw89_8852b
+blacklist rtw89_8852bte
+blacklist rtw89_8852bt
+blacklist rtw89_8852cu
+blacklist rtw89_8852ce
+blacklist rtw89_8852c
+blacklist rtw89_8922au
+blacklist rtw89_8922ae
+blacklist rtw89_8922a
+blacklist rtw89_core
+blacklist rtw89_usb
+blacklist rtw89_pci
+
+# Blacklist Larry's rtw89 drivers
+blacklist rtw89core
+blacklist rtw89pci
+blacklist rtw_8851b
+blacklist rtw_8851be
+blacklist rtw_8852a
+blacklist rtw_8852ae
+blacklist rtw_8852b
+blacklist rtw_8852be
+blacklist rtw_8852c
+blacklist rtw_8852ce
+blacklist rtw_8922a
+
+lspci -vvv Output for 01:00.0:
+01:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8852BE
+PCIe 802.11ax Wireless Network Controller
+        DeviceName: Realtek PCIe GBE Family Controller
+        Subsystem: Hewlett-Packard Company RTL8852BE PCIe 802.11ax
+Wireless Network Controller
+        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop-
+ParErr- Stepping- SERR- FastB2B- DisINTx+
+        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort-
+<TAbort- <MAbort- >SERR- <PERR- INTx-
+        Latency: 0, Cache Line Size: 64 bytes
+        Interrupt: pin A routed to IRQ 145
+        IOMMU group: 12
+        Region 0: I/O ports at 3000 [size=256]
+        Region 2: Memory at 80500000 (64-bit, non-prefetchable) [size=1M]
+        Capabilities: <access denied>
+        Kernel driver in use: rtw89_8852be_git
+        Kernel modules: rtw89_8852be, rtw89_8852be_git
+
+dmesg | grep -i rtw89 Output:
+[    0.000000] Command line:
+BOOT_IMAGE=/boot/vmlinuz-6.14.0-29-generic
+root=UUID=95dcee12-84fe-4ab6-a174-0de1f81679bc ro quiet splash
+mem_sleep_default=deep pcie_aspm=off pci=noaer pci_port_pm=off
+acpi_osi=Linux rtw89.disable_ps_mode=1 pci=noaer pcie_aspm=off
+rtw89.debug_mask=0x0001 vt.handoff=7
+[    0.033699] Kernel command line:
+BOOT_IMAGE=/boot/vmlinuz-6.14.0-29-generic
+root=UUID=95dcee12-84fe-4ab6-a174-0de1f81679bc ro quiet splash
+mem_sleep_default=deep pcie_aspm=off pci=noaer pci_port_pm=off
+acpi_osi=Linux rtw89.disable_ps_mode=1 pci=noaer pcie_aspm=off
+rtw89.debug_mask=0x0001 vt.handoff=7
+[    3.261978] rtw89_core_git: loading out-of-tree module taints kernel.
+[    3.261986] rtw89_core_git: module verification failed: signature
+and/or required key missing - tainting kernel
+[    3.716552] rtw89_8852be_git 0000:01:00.0: loaded firmware
+rtw89/rtw8852b_fw-1.bin
+[    3.716635] rtw89_8852be_git 0000:01:00.0: enabling device (0000 -> 0003)
+[    3.718487] rtw89_8852be_git 0000:01:00.0: git commit
+[    3.724889] rtw89_8852be_git 0000:01:00.0: Firmware version
+0.29.128.0 (418a672d), cmd version 0, type 5
+[    3.724901] rtw89_8852be_git 0000:01:00.0: Firmware version
+0.29.128.0 (418a672d), cmd version 0, type 3
+[    4.017001] rtw89_8852be_git 0000:01:00.0: chip rfe_type is 1
+[    4.046776] rtw89_8852be_git 0000:01:00.0: rfkill hardware state
+changed to enable
+[    4.079934] rtw89_8852be_git 0000:01:00.0 wlo1: renamed from wlan0
+
+Additional Notes:
+- This issue appears to have started with kernel 6.6+ due to changes
+in PCIe power management.
+- Disabling power save mode and ASPM in the driver config did not resolve it.
+- The out-of-tree driver is used to avoid issues with the in-kernel version.
+- Tested on kernels 6.5 and 6.14 with the same result.
+
+Please investigate and provide a fix. Let me know if you need more information.
+
+Thanks,
+Nader
 
