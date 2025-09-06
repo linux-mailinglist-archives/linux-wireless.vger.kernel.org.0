@@ -1,136 +1,137 @@
-Return-Path: <linux-wireless+bounces-27042-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27043-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BDA2B46AB2
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Sep 2025 11:43:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EED14B47184
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Sep 2025 16:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07A001BC651A
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Sep 2025 09:43:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAEB73B31C6
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Sep 2025 14:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB9B2C032C;
-	Sat,  6 Sep 2025 09:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA7B1DB127;
+	Sat,  6 Sep 2025 14:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EBqDCaiM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754EF315D4A
-	for <linux-wireless@vger.kernel.org>; Sat,  6 Sep 2025 09:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B573FBB3;
+	Sat,  6 Sep 2025 14:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757151775; cv=none; b=Ilos9Nif5W/DdWb9dn1kzrYJ9P7WmvFZhyCsD2r14cmZvc+ZltWje2nVPvl2OprOqp8lojL+H+uj2h7qOWbHiKsGzydxoDGP+Wc9UYGNBGA5srl7X05brNYNv1AKi3vsoJuVdIMFrcfBUxU0xUlMoOoAY6CfASNet6zmYtOnA50=
+	t=1757170443; cv=none; b=uDgp7qUaYt9vqKCXLT31H4jbkxl7dCYeaLYcvarGXb1pjMQDuNbxlHWnY5F3CH//KLuTGUiocb7S5INaos0jwrXYuI0K7FWbZNSE9kFihGfz0UbOlVlHPQIqjZs1tDlkMibXD5M56msUbGd2bIoFwqIOtRp+NGhvEgRTcmcFnwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757151775; c=relaxed/simple;
-	bh=WwmeFPN0P9lMslONo+33s81pcN6Blgc7kKJ8CknvZBg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d1i8Q1/zEp74N6z38Rhz4Ygg+D6WuZP5rXI0i8RWX0WsDTbAM2tIhndo27FFJF51uQn+uRhDRWkgLm0RWCHh0elA4i9Imxdew4gYR1UKV/1nwOlFzlS9a4rxYwuQKxKKVc044nyYhjN1z+ImNCqEtCCVmzcH5YqUFKThAAp0rLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iie.ac.cn; spf=pass smtp.mailfrom=iie.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iie.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iie.ac.cn
-Received: from localhost.localdomain (unknown [159.226.95.28])
-	by APP-05 (Coremail) with SMTP id zQCowAAHqRITArxo2s8KAQ--.48009S2;
-	Sat, 06 Sep 2025 17:42:45 +0800 (CST)
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
-To: stf_xl@wp.pl
-Cc: linux-wireless@vger.kernel.org,
-	Chen Yufeng <chenyufeng@iie.ac.cn>
-Subject: [PATCH] iwlegacy: Sanity check for sta_id
-Date: Sat,  6 Sep 2025 17:42:32 +0800
-Message-ID: <20250906094232.1580-1-chenyufeng@iie.ac.cn>
-X-Mailer: git-send-email 2.43.0.windows.1
+	s=arc-20240116; t=1757170443; c=relaxed/simple;
+	bh=9lGK3si2C+6VrnNOpedp6M1LTDiz7pJw+iJuj1mVc8U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JmXJcv4Yr76Nxj7i6H2UlgVL6nnhQVj052Qj6QETY1b0PYubhOq12mvAZm5vOPPkA1RpHQGVY1NoX7xwvb/DBEZIzPoJmHGksqa21I4jmnWKuXXNjy8+2pGOZweJxGh452WOtnOwrFTMQkL0CqMV8kfYJytFkfnNx9zk7PRwLZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EBqDCaiM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B723BC4CEE7;
+	Sat,  6 Sep 2025 14:53:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757170442;
+	bh=9lGK3si2C+6VrnNOpedp6M1LTDiz7pJw+iJuj1mVc8U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EBqDCaiM+rFCZzSGqiDnmVRE5l5WyyF/DHEzciVNr/+bl+7y+3ROTm1DIid5X6XWE
+	 JNcs+Sxe6Sx4K2TZvwxjwudbYI1vZAtGqWhfddeLmJzfU3LZY8qhq4CCiUat7vJGnU
+	 v3ieSDu/GoiJa4ADqLsCBvxtlsVwPPSXGHJmbEubiQ1CjC0ov0D2OBdZjzVd0We51C
+	 1RRpZgNzawJHLL9Mw4Vs68S+ecZiWFdKw9whXF/kwuR6aSqhx9HyQefRp/SPDngL2s
+	 6BLhEyMeKox4EghELP1m7+16dIRBauBkcm9+C+SKCCdm13+wpg2e69GbYKwqnljL/3
+	 9y/cMWMF7/4Bg==
+Date: Sat, 6 Sep 2025 20:23:52 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+	David Box <david.e.box@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Nirmal Patel <nirmal.patel@linux.intel.com>, 
+	Jonathan Derrick <jonathan.derrick@linux.dev>, Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>, linux-arm-msm@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	ath12k@lists.infradead.org, ath11k@lists.infradead.org, ath10k@lists.infradead.org, 
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH v2 2/8] PCI/ASPM: Fix the behavior of
+ pci_enable_link_state*() APIs
+Message-ID: <67274gnjp4qy4h3bcawey2edmjiuufdbm262q2qxgcc76dwlic@hdjxqczr54nt>
+References: <20250825-ath-aspm-fix-v2-0-61b2f2db7d89@oss.qualcomm.com>
+ <20250825-ath-aspm-fix-v2-2-61b2f2db7d89@oss.qualcomm.com>
+ <f644fc83-31cc-1f0e-58cf-7c007e6173e4@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAHqRITArxo2s8KAQ--.48009S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXFy8Gw17XrW8Gr4xKry8Krg_yoW5GF48pr
-	1UGw1jka48JF4kuayDJF4xAFy5C3Z7tw47GF9Ykw10vrsrJw4Yvw1Y9a429ay5GrZ8XF12
-	vF1qqw1fCF4jyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkq14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
-	6r4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVAFwVW8
-	uwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r
-	1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij
-	64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr
-	0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF
-	0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUjItC5UUUUU==
-X-CM-SenderInfo: xfkh05xxih0wo6llvhldfou0/1tbiBwoREmi7k07PyQAAsG
+In-Reply-To: <f644fc83-31cc-1f0e-58cf-7c007e6173e4@linux.intel.com>
 
-This patch is similar to 2da424b0773c("iwlwifi: Sanity check for sta_id").
-`2da424b0773c` introduced a sanity check to prevent potential memory 
-corruption in function `iwl_sta_ucode_activate`.
+On Tue, Aug 26, 2025 at 03:55:42PM GMT, Ilpo Järvinen wrote:
+> +David
+> 
+> On Mon, 25 Aug 2025, Manivannan Sadhasivam via B4 Relay wrote:
+> 
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> > 
+> > pci_enable_link_state() and pci_enable_link_state_locked() APIs are
+> > supposed to be symmectric with pci_disable_link_state() and
+> > pci_disable_link_state_locked() APIs.
+> > 
+> > But unfortunately, they are not symmetric. This behavior was mentioned in
+> > the kernel-doc of these APIs:
+> > 
+> > " Clear and set the default device link state..."
+> > 
+> > and
+> > 
+> > "Also note that this does not enable states disabled by
+> > pci_disable_link_state()"
+> > 
+> > These APIs won't enable all the states specified by the 'state' parameter,
+> > but only enable the ones not previously disabled by the
+> > pci_disable_link_state*() APIs. But this behavior doesn't align with the
+> > naming of these APIs, as they give the impression that these APIs will
+> > enable all the specified states.
+> > 
+> > To resolve this ambiguity, allow these APIs to enable the specified states,
+> > regardeless of whether they were previously disabled or not. This is
+> > accomplished by clearing the previously disabled states from the
+> > 'link::aspm_disable' parameter in __pci_enable_link_state() helper. Also,
+> > reword the kernel-doc to reflect this behavior.
+> > 
+> > The current callers of pci_enable_link_state_locked() APIs (vmd and
+> > pcie-qcom) did not disable the ASPM states before calling this API. So it
+> > is evident that they do not depend on the previous behavior of this API and
+> > intend to enable all the specified states.
+> 
+> While it might be "safe" in the sense that ->aspm_disable is not set by 
+> anything, I'm still not sure if overloading this function for two 
+> different use cases is a good idea.
+> 
 
-In the iwlegacy driver, the function `il_sta_ucode_activate` shares 
-a similar logic with the `iwl_sta_ucode_activate` function in iwlwifi. 
-Initial observations suggest that the function may not adequately 
-validate the range of the `sta_id` parameter. If `sta_id` exceeds 
-the expected range, it could result in memory corruption or crash.
+Why? I thought your concern was with the callers of this API. Since that is
+taken care, do you have any other concerns?
 
-Although there is no confirmation of a similar vulnerability in the 
-iwlegacy driver, it is recommended to adopt a preventive approach 
-by adding range checks for `sta_id` in the `il_sta_ucode_activate` 
-function. For example:
-```
-if (sta_id >= IL_STATION_COUNT) {
-    IL_ERR(il, "invalid sta_id %u", sta_id);
-    return -EINVAL;
-}
-```
-Adding such boundary checks can effectively mitigate potential 
-memory corruption issues.
+> I'd like to hear David's opinion on this as he grasps the ->aspm_default 
+> vs ->aspm_disable thing much better than I do.
+> 
+> > And the other API, pci_enable_link_state() doesn't have a caller for now,
+> > but will be used by the 'atheros' WLAN drivers in the subsequent commits.
+> > 
+> > Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> 
+> This tag sound like I'm endorsing this approach which is not the case. I'd 
+> prefer separate functions for each use case, setting aspm_default and 
+> another for the enable state.
+> 
 
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
----
- drivers/net/wireless/intel/iwlegacy/common.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+Sorry, I misunderstood then. I'll drop this tag.
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
-index b7bd3ec4cc50..a3bcf9d9ffa2 100644
---- a/drivers/net/wireless/intel/iwlegacy/common.c
-+++ b/drivers/net/wireless/intel/iwlegacy/common.c
-@@ -1735,10 +1735,13 @@ il_cancel_scan_deferred_work(struct il_priv *il)
- EXPORT_SYMBOL(il_cancel_scan_deferred_work);
- 
- /* il->sta_lock must be held */
--static void
-+static int
- il_sta_ucode_activate(struct il_priv *il, u8 sta_id)
- {
--
-+	if (sta_id >= IL_STATION_COUNT) {
-+		IL_ERR(il, "invalid sta_id %u", sta_id);
-+		return -EINVAL;
-+	}
- 	if (!(il->stations[sta_id].used & IL_STA_DRIVER_ACTIVE))
- 		IL_ERR("ACTIVATE a non DRIVER active station id %u addr %pM\n",
- 		       sta_id, il->stations[sta_id].sta.sta.addr);
-@@ -1752,6 +1755,7 @@ il_sta_ucode_activate(struct il_priv *il, u8 sta_id)
- 		D_ASSOC("Added STA id %u addr %pM to uCode\n", sta_id,
- 			il->stations[sta_id].sta.sta.addr);
- 	}
-+	return 0;
- }
- 
- static int
-@@ -1774,8 +1778,7 @@ il_process_add_sta_resp(struct il_priv *il, struct il_addsta_cmd *addsta,
- 	switch (pkt->u.add_sta.status) {
- 	case ADD_STA_SUCCESS_MSK:
- 		D_INFO("C_ADD_STA PASSED\n");
--		il_sta_ucode_activate(il, sta_id);
--		ret = 0;
-+		ret = il_sta_ucode_activate(il, sta_id);
- 		break;
- 	case ADD_STA_NO_ROOM_IN_TBL:
- 		IL_ERR("Adding station %d failed, no room in table.\n", sta_id);
+- Mani
+
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
 
