@@ -1,145 +1,190 @@
-Return-Path: <linux-wireless+bounces-27044-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27045-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CE3B47215
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Sep 2025 17:38:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC88B47615
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Sep 2025 20:30:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8353CA01BC0
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Sep 2025 15:37:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E970C3AC803
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Sep 2025 18:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C1920F09C;
-	Sat,  6 Sep 2025 15:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0482036FA;
+	Sat,  6 Sep 2025 18:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKYW6YY4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e406+lbV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED5C139D1B;
-	Sat,  6 Sep 2025 15:37:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C66EEBB
+	for <linux-wireless@vger.kernel.org>; Sat,  6 Sep 2025 18:30:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757173074; cv=none; b=nHZ7AXT9GKtETbu0qGPjSo0hwHKv6FQpSF7AFrYZI7h3FtkC0M8VMyYwCzvkMJK4bwrxJssmaY66NKWBJFH3cgUfh+lwnnK6dK5h0gqV/A8wCDwyNSwrCk10kqCtqcnbfB9DBcumEDlHkZHHC9XM2RzHXh7ia7MdKo9mOIPGDEM=
+	t=1757183416; cv=none; b=LCaxBgCfm0gjRISqG9VYf5XaVSVJOL3lrNMouoMdeFsWjC9XamUJ7i0xMyTVHd0Dv5a9MtdxEf/1BC2xawdi3tStVxt+LrCNgzz6hCs3OiSttOX5GNiv8+tiQn3eM1ptalueJ0U3PdMBT0Da26RpS9yhd93q+WpNDuqX/JQUNeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757173074; c=relaxed/simple;
-	bh=eXqndn9A8d2Q3IcwKZULqQ6qeZg1mGIiF7oNPpimTcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ha1wdfJ6g4mqEpx+YsEzt7AdhR86UJQMFCCMWb2aZWoLO1KePEC5gWohv63liQWlAL6un/95jaEgw+PRTTXQF4NQa+0MeN//RNsVc7cmg1LYbINnEQ0Mdbt89DOonGKrehnp3nJ6gMsNNQAKQzgwFEYc+TJ/HiBG4kxwKP2q7FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKYW6YY4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A68CC4CEE7;
-	Sat,  6 Sep 2025 15:37:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757173074;
-	bh=eXqndn9A8d2Q3IcwKZULqQ6qeZg1mGIiF7oNPpimTcA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YKYW6YY4tPWJv/ZQnUeI7fcMKU9JzBDQphos9U2d7sKnANJLDyHq1ldi0w9Sjku4e
-	 Fz2M1qvzLf/EtldVTmcS/gO521zho7kqkI8nmM05fkADBS3yqKloP687Nfn+FFs4tm
-	 YqQcQbRcNiObYnSfl7OzCPDmmGgl/FWo+9KNXB29m9GpEOkCWLbkA93+t6471MbOSO
-	 Op7z7I+xx8muUcjETfDWg+qSseX9cMYIBraD6Q1C52jHzbYzF3l4nqhw8cWYnM6A//
-	 cp2+xaeBLuh1ozk1JXv/5knstboMxTQKUkAzEEOAl+5w3CsrB9uDv/GJmIHzrOFeIE
-	 ruveltpRtbCtg==
-Date: Sat, 6 Sep 2025 21:07:41 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: David Box <david.e.box@linux.intel.com>
-Cc: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Nirmal Patel <nirmal.patel@linux.intel.com>, 
-	Jonathan Derrick <jonathan.derrick@linux.dev>, Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>, linux-arm-msm@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	ath12k@lists.infradead.org, ath11k@lists.infradead.org, ath10k@lists.infradead.org, 
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2 2/8] PCI/ASPM: Fix the behavior of
- pci_enable_link_state*() APIs
-Message-ID: <rci6ku374tvbco2leey3ccyjf4r6bfa6mdksasn2c26v2a5ydc@xqbccsco3x5o>
-References: <20250825-ath-aspm-fix-v2-0-61b2f2db7d89@oss.qualcomm.com>
- <20250825-ath-aspm-fix-v2-2-61b2f2db7d89@oss.qualcomm.com>
- <f644fc83-31cc-1f0e-58cf-7c007e6173e4@linux.intel.com>
- <qfw7nv53hmy6whxnf4zqfdtvjzkdxkvxn7eghuxzuuojmvxl34@sxw2jvxze4wm>
+	s=arc-20240116; t=1757183416; c=relaxed/simple;
+	bh=8e8lB1Z9fUFRPA8lkEG2JyqSmoO5MXL3MDzqyPHIBVk=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=bZqRe5AhlUjr69ieYWLX3G1SGSDgq1+TCA24Hvtio0QUhpPekQ7btLwOJKi0T5XDpwEsheMiWEWzyITHNqly02h1fF57KegfEzEH3SMkCSB7X3AI30QX3bRnvZzmQvGAPmeWbJrQ6tkx2qQV1Ns2ipwrdrfA4w8Vaq1P5BIbosY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e406+lbV; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757183415; x=1788719415;
+  h=date:from:to:cc:subject:message-id;
+  bh=8e8lB1Z9fUFRPA8lkEG2JyqSmoO5MXL3MDzqyPHIBVk=;
+  b=e406+lbV3zjhvPkouoPx+J8PWeQGiI5i6S67ilgzww6B2+GiNsCXFAb8
+   Qi7koMoqIy4R5SM6rpJywnkHaH5XFBDo7PicKks1aDI0AELUjsxUqJvDY
+   y8qjibjxgnDE7VGJbIimskW2CL2mTOMv4OHB24K6TZ04rbBe8VW5bOE65
+   IKzR5EUv9jXhK9PUheOWp/TmDKKp/x79P2ewuEiw2wMjC2DI676ceSrqk
+   ll251vdGboaDNlDssN8ld/NoEDEyTrUWkAz6uKd+haIzQegn7zl2o4Udk
+   aui2CrD2MkwOFFSJ5OhagfbSWbkdlvDs3e2phQk1ITIi6DmzuNqGkCVdv
+   Q==;
+X-CSE-ConnectionGUID: eTAW19ZHSTWNOPRiNvRQRA==
+X-CSE-MsgGUID: Seg6gHy1QgyeIYrlAogfqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59425643"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="59425643"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2025 11:30:14 -0700
+X-CSE-ConnectionGUID: wDn8Q48xSkmvkyEyBQ6i/A==
+X-CSE-MsgGUID: abV1GFLXTzCKS1yttmSFBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,244,1751266800"; 
+   d="scan'208";a="203369267"
+Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 06 Sep 2025 11:30:13 -0700
+Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uuxfu-0001jk-32;
+	Sat, 06 Sep 2025 18:30:10 +0000
+Date: Sun, 07 Sep 2025 02:30:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ e3ac93e9d916ebae0711a42f524429dad89c4887
+Message-ID: <202509070202.6PP9IgWK-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <qfw7nv53hmy6whxnf4zqfdtvjzkdxkvxn7eghuxzuuojmvxl34@sxw2jvxze4wm>
 
-On Tue, Aug 26, 2025 at 02:24:05PM GMT, David Box wrote:
-> On Tue, Aug 26, 2025 at 03:55:42PM +0300, Ilpo Järvinen wrote:
-> > +David
-> > 
-> > On Mon, 25 Aug 2025, Manivannan Sadhasivam via B4 Relay wrote:
-> > 
-> > > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > > 
-> > > pci_enable_link_state() and pci_enable_link_state_locked() APIs are
-> > > supposed to be symmectric with pci_disable_link_state() and
-> > > pci_disable_link_state_locked() APIs.
-> > > 
-> > > But unfortunately, they are not symmetric. This behavior was mentioned in
-> > > the kernel-doc of these APIs:
-> > > 
-> > > " Clear and set the default device link state..."
-> > > 
-> > > and
-> > > 
-> > > "Also note that this does not enable states disabled by
-> > > pci_disable_link_state()"
-> > > 
-> > > These APIs won't enable all the states specified by the 'state' parameter,
-> > > but only enable the ones not previously disabled by the
-> > > pci_disable_link_state*() APIs. But this behavior doesn't align with the
-> > > naming of these APIs, as they give the impression that these APIs will
-> > > enable all the specified states.
-> > > 
-> > > To resolve this ambiguity, allow these APIs to enable the specified states,
-> > > regardeless of whether they were previously disabled or not. This is
-> > > accomplished by clearing the previously disabled states from the
-> > > 'link::aspm_disable' parameter in __pci_enable_link_state() helper. Also,
-> > > reword the kernel-doc to reflect this behavior.
-> > > 
-> > > The current callers of pci_enable_link_state_locked() APIs (vmd and
-> > > pcie-qcom) did not disable the ASPM states before calling this API. So it
-> > > is evident that they do not depend on the previous behavior of this API and
-> > > intend to enable all the specified states.
-> > 
-> > While it might be "safe" in the sense that ->aspm_disable is not set by 
-> > anything, I'm still not sure if overloading this function for two 
-> > different use cases is a good idea.
-> > 
-> > I'd like to hear David's opinion on this as he grasps the ->aspm_default 
-> > vs ->aspm_disable thing much better than I do.
-> 
-> The concern I see is that this would override the init-time blacklist which is
-> set in pcie_aspm_sanity_check() and only consulted during initialization.
-> __pci_disable_link_state() doesn't do this. It ORs in bits to aspm_disable.  By
-> contrast, this change would clear bits from aspm_disable in the enable path,
-> which allows ASPM to be enabled on links that pcie_aspm_sanity_check()
-> determined should be disabled.
-> 
-> But I noticed the sysfs path, aspm_attr_store_common(), already permits this
-> override. That may be unintentional though since the comment in
-> pcie_aspm_sanity_check() implies the blacklist can only be overridden with
-> pcie_aspm=force. At minimum, that needs to be clarified.
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: e3ac93e9d916ebae0711a42f524429dad89c4887  wifi: mwifiex: fix double free in mwifiex_send_rgpower_table()
 
-Thanks for pointing out the blacklist devices issue. I have no concerns with
-pcie-qcom as we are going to drop the pci_enable_link_state_locked() API anyway
-from it. But I'm not sure about VMD as one may still connect pre 1.1 device to
-it and observe issues.
+elapsed time: 2016m
 
-So I'll create a separate API for this new behavior and use it with ath drivers
-only since they know what kind of devices they are dealing with and since they
-were changing the LNKCTL manually, there shouldn't be any issue.
+configs tested: 97
+configs skipped: 3
 
-- Mani
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
--- 
-மணிவண்ணன் சதாசிவம்
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                   randconfig-001-20250905    gcc-11.5.0
+arc                   randconfig-002-20250905    gcc-13.4.0
+arm                               allnoconfig    clang-22
+arm                   randconfig-001-20250905    clang-22
+arm                   randconfig-002-20250905    clang-22
+arm                   randconfig-003-20250905    clang-16
+arm                   randconfig-004-20250905    gcc-14.3.0
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20250905    clang-22
+arm64                 randconfig-002-20250905    clang-17
+arm64                 randconfig-003-20250905    clang-17
+arm64                 randconfig-004-20250905    clang-22
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20250905    gcc-15.1.0
+csky                  randconfig-002-20250905    gcc-13.4.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-22
+hexagon               randconfig-001-20250905    clang-22
+hexagon               randconfig-002-20250905    clang-22
+i386                             allmodconfig    gcc-13
+i386                              allnoconfig    gcc-13
+i386                             allyesconfig    gcc-13
+i386        buildonly-randconfig-001-20250905    clang-20
+i386        buildonly-randconfig-002-20250905    clang-20
+i386        buildonly-randconfig-003-20250905    clang-20
+i386        buildonly-randconfig-004-20250905    gcc-13
+i386        buildonly-randconfig-005-20250905    clang-20
+i386        buildonly-randconfig-006-20250905    clang-20
+i386                                defconfig    clang-20
+loongarch                         allnoconfig    clang-22
+loongarch             randconfig-001-20250905    clang-18
+loongarch             randconfig-002-20250905    clang-18
+m68k                              allnoconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20250905    gcc-10.5.0
+nios2                 randconfig-002-20250905    gcc-11.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250905    gcc-15.1.0
+parisc                randconfig-002-20250905    gcc-8.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc               randconfig-001-20250905    gcc-8.5.0
+powerpc               randconfig-002-20250905    clang-22
+powerpc               randconfig-003-20250905    gcc-8.5.0
+powerpc64             randconfig-001-20250905    clang-22
+powerpc64             randconfig-002-20250905    clang-22
+powerpc64             randconfig-003-20250905    gcc-14.3.0
+riscv                             allnoconfig    gcc-15.1.0
+riscv                 randconfig-001-20250905    gcc-14.3.0
+riscv                 randconfig-002-20250905    clang-22
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                  randconfig-001-20250905    gcc-9.5.0
+s390                  randconfig-002-20250905    clang-22
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                    randconfig-001-20250905    gcc-15.1.0
+sh                    randconfig-002-20250905    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250905    gcc-8.5.0
+sparc                 randconfig-002-20250905    gcc-15.1.0
+sparc64               randconfig-001-20250905    gcc-8.5.0
+sparc64               randconfig-002-20250905    clang-22
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-13
+um                    randconfig-001-20250905    clang-22
+um                    randconfig-002-20250905    gcc-13
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250905    clang-20
+x86_64      buildonly-randconfig-002-20250905    clang-20
+x86_64      buildonly-randconfig-003-20250905    gcc-13
+x86_64      buildonly-randconfig-004-20250905    clang-20
+x86_64      buildonly-randconfig-005-20250905    clang-20
+x86_64      buildonly-randconfig-006-20250905    gcc-13
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250905    gcc-8.5.0
+xtensa                randconfig-002-20250905    gcc-8.5.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
