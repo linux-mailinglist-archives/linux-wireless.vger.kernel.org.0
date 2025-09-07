@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-27057-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27058-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2806B479A5
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Sep 2025 10:31:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15CC0B479A6
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Sep 2025 10:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E62811B22AFC
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Sep 2025 08:31:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4220167E06
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Sep 2025 08:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5EA2192E4;
-	Sun,  7 Sep 2025 08:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F5D221545;
+	Sun,  7 Sep 2025 08:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JUFN9oAX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sn7XK745"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D2D17A31E
-	for <linux-wireless@vger.kernel.org>; Sun,  7 Sep 2025 08:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF08B221264
+	for <linux-wireless@vger.kernel.org>; Sun,  7 Sep 2025 08:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757233867; cv=none; b=bTTnjv8bW4lB/iULDd6VFicbW36+bNZTfZHKgrCq6STsycKBKl2WxO35swetYhRphFexB7KikQsCxTXpEvFs7Alpb2Lrpy2MNuomVZmF0S9KDsYTNL362ayYMKIfLJQtIh2dBJhMivFTNCnFfbL5B516KCr9iI5MBI5H0EnwRDU=
+	t=1757233868; cv=none; b=TM3xDouTXU3Haxfk35X/jkcjSeOrSyfyprOeYp9FtOHBSG+Y9nRnik4Fg8/whT4eyxQRoF8aHzHzySrwrWx2KE2Q9DWUto+xIPyfvBEd/x3CvJDD81T7rqS574E7q6hT2INQMYWZCH534dwpboIEoeGdY3Kyb3NgrMc/0BQcjy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757233867; c=relaxed/simple;
-	bh=T7yb95q8W9Jda7mRUS7HdLhLBmojiiZcnADDQOFpLYU=;
+	s=arc-20240116; t=1757233868; c=relaxed/simple;
+	bh=Ho9LEZHpZqP6C/oc5XnvzH8TmKDljxJRzq8aUrutt30=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NgXnBKvt9tOLYfnOH1C3P6nuspOQNoYax0VVgkuHm9VWw3sfJix1Pa0vsIDsx+HH7m4L4AWE860BUKZdhK9feZ0gt5Sjc3aPcRgC+1zZWhDsMSfkYw01sMUIurIkumgJIgP5fly1uW8jYgE25IuGR9KoIdtihfh5LSbyzyN7gzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JUFN9oAX; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=EyYlIMwKu1d/E7BTcrDjdGahpsZhVtgARVc03JCxR/XtxcwS2wfR0LalrqW0nnA9pP24NSBx+2QrnyAclnOIwkGkyfAvLht5U4J1O1hJKhMB0lkeHdqsV2lPCYRaQNEqfQyHaTB4PkrmPMvQMO3mU9lfqB6SMl2qGlNzyCmAR1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sn7XK745; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757233865; x=1788769865;
+  t=1757233867; x=1788769867;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=T7yb95q8W9Jda7mRUS7HdLhLBmojiiZcnADDQOFpLYU=;
-  b=JUFN9oAXOpgqNWoTeJzRF5kNH2s2fFxa9fkxlDpast1bm5P9mw5O652M
-   KE+XEre+Did0oOv7kZ00nVBY22IfwHG86gTw4hKpekbysp5iEHNr/jexc
-   mIFv58K7z4edG51esI6IMfDtcakvfx6Co/PJPXAostEvWWSFuhLHBjToM
-   N9S6Ew+fM7O+HuEKDk7Tl9aAl/LkUghKlhEw+Px4sE3K0mvGnUFih4tEB
-   qryWrkqATQhX40qPSfM/dGV/+TeCCrlEcBgY76rGQucxUHnbJbDcgmrCo
-   ryRscBta7P/3OEnCLIjbD8st6dQq0NadUyuBWLkXfv4vdM9/a4a8XUX/O
-   g==;
-X-CSE-ConnectionGUID: 1zr8eYZVRze0zBOF751vGw==
-X-CSE-MsgGUID: /rClx00XQLOq9d6hHsEmoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11545"; a="76973618"
+  bh=Ho9LEZHpZqP6C/oc5XnvzH8TmKDljxJRzq8aUrutt30=;
+  b=Sn7XK745zAzkA4FvezB3wDCx9mSWWax6fS5Vu7d4Sv6DLedrAmvgY0Ea
+   NQy9u1xocy0Hc8ew/rvGkoDRu7LCtOa/mDOyCTwIDqHQkmzGWC5W9IF9D
+   YUdTzuHfraagXGLUIwImb4xzyloJeVKpCQFSBOuQX9hkdBw/t5Mkwzx5G
+   BEkTboYal3fOgTXWavwwAxKpK9d68TuUBI6c/6sKoQsxNI1aMiRY0ePvt
+   oh7Ws6GvT+eJq/GQtAzzY6AFfX++DKxlAm9iefRmqeW38SZZAqQRXwQ79
+   Yb97i5PytkO6ddXbiIwgkW+f3qZdsLriWkuhskgeYiCDDIVhvMxUCDJLk
+   A==;
+X-CSE-ConnectionGUID: d0zzH27MSzSj6GLwug3Aug==
+X-CSE-MsgGUID: fWXB36ZhR4qVE35taYR05Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11545"; a="76973620"
 X-IronPort-AV: E=Sophos;i="6.18,246,1751266800"; 
-   d="scan'208";a="76973618"
+   d="scan'208";a="76973620"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2025 01:31:05 -0700
-X-CSE-ConnectionGUID: Ohz4HL6RS5imqL7gQvEBgQ==
-X-CSE-MsgGUID: M+dUU0QoSiSKVABukhEk1g==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2025 01:31:06 -0700
+X-CSE-ConnectionGUID: M7+brTPLT6u04GzorjC9gw==
+X-CSE-MsgGUID: /yfXSASASBWtz80PDZ+rKQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,246,1751266800"; 
-   d="scan'208";a="171790068"
+   d="scan'208";a="171790072"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2025 01:31:04 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2025 01:31:05 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-next 10/15] wifi: iwlwifi: mld: don't consider phy cmd version 5
-Date: Sun,  7 Sep 2025 11:30:09 +0300
-Message-Id: <20250907112757.48d2be5d41b8.I207ff53d259cc90781a0082320e2646b35925e5f@changeid>
+Subject: [PATCH iwlwifi-next 11/15] wifi: iwlwifi: mld: remove support of mac cmd ver 2
+Date: Sun,  7 Sep 2025 11:30:10 +0300
+Message-Id: <20250907112757.5ff2f6b5f482.Ie1e93654ce9ee52e6ae3fda9bc898d611456ec41@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250907083014.1439961-1-miriam.rachel.korenblit@intel.com>
 References: <20250907083014.1439961-1-miriam.rachel.korenblit@intel.com>
@@ -76,29 +76,79 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-It was planed that iwlmld will be loaded also for HR and GF, which has
-versions < 6. But eventually it was decided to keep use iwlmvm for those
-devices, so iwlmld doesn't need to support those versions.
+The last FW API that supported ver 2 is API 99 (core 96)
+Since we no longer support it in any device that loads iwlmld, we can
+remove support of it.
 
 Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/mac80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/wireless/intel/iwlwifi/mld/iface.c    | 30 +++++--------------
+ 1 file changed, 8 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index debfb986a387..5725104a53bf 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -626,7 +626,7 @@ int iwl_mld_mac80211_add_interface(struct ieee80211_hw *hw,
- 					     IEEE80211_VIF_SUPPORTS_CQM_RSSI;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.c b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+index c4738400ee11..ed379825a923 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/iface.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.c
+@@ -115,20 +115,12 @@ static bool iwl_mld_is_nic_ack_enabled(struct iwl_mld *mld,
+ 
+ static void iwl_mld_set_he_support(struct iwl_mld *mld,
+ 				   struct ieee80211_vif *vif,
+-				   struct iwl_mac_config_cmd *cmd,
+-				   int cmd_ver)
++				   struct iwl_mac_config_cmd *cmd)
+ {
+-	if (vif->type == NL80211_IFTYPE_AP) {
+-		if (cmd_ver == 2)
+-			cmd->wifi_gen_v2.he_ap_support = cpu_to_le16(1);
+-		else
+-			cmd->wifi_gen.he_ap_support = 1;
+-	} else {
+-		if (cmd_ver == 2)
+-			cmd->wifi_gen_v2.he_support = cpu_to_le16(1);
+-		else
+-			cmd->wifi_gen.he_support = 1;
+-	}
++	if (vif->type == NL80211_IFTYPE_AP)
++		cmd->wifi_gen.he_ap_support = 1;
++	else
++		cmd->wifi_gen.he_support = 1;
+ }
+ 
+ /* fill the common part for all interface types */
+@@ -140,9 +132,6 @@ static void iwl_mld_mac_cmd_fill_common(struct iwl_mld *mld,
+ 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(vif);
+ 	struct ieee80211_bss_conf *link_conf;
+ 	unsigned int link_id;
+-	int cmd_ver = iwl_fw_lookup_cmd_ver(mld->fw,
+-					    WIDE_ID(MAC_CONF_GROUP,
+-						    MAC_CONFIG_CMD), 0);
+ 
+ 	lockdep_assert_wiphy(mld->wiphy);
+ 
+@@ -169,11 +158,8 @@ static void iwl_mld_mac_cmd_fill_common(struct iwl_mld *mld,
+ 	 * and enable both when we have MLO.
+ 	 */
+ 	if (ieee80211_vif_is_mld(vif)) {
+-		iwl_mld_set_he_support(mld, vif, cmd, cmd_ver);
+-		if (cmd_ver == 2)
+-			cmd->wifi_gen_v2.eht_support = cpu_to_le32(1);
+-		else
+-			cmd->wifi_gen.eht_support = 1;
++		iwl_mld_set_he_support(mld, vif, cmd);
++		cmd->wifi_gen.eht_support = 1;
+ 		return;
  	}
  
--	if (vif->p2p || iwl_fw_lookup_cmd_ver(mld->fw, PHY_CONTEXT_CMD, 0) < 5)
-+	if (vif->p2p)
- 		vif->driver_flags |= IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW;
+@@ -181,7 +167,7 @@ static void iwl_mld_mac_cmd_fill_common(struct iwl_mld *mld,
+ 		if (!link_conf->he_support)
+ 			continue;
  
- 	/*
+-		iwl_mld_set_he_support(mld, vif, cmd, cmd_ver);
++		iwl_mld_set_he_support(mld, vif, cmd);
+ 
+ 		/* EHT, if supported, was already set above */
+ 		break;
 -- 
 2.34.1
 
