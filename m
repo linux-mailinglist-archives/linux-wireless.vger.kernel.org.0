@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-27050-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27051-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDE7B4799E
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Sep 2025 10:31:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 407D2B4799F
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Sep 2025 10:31:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56F2617B7D9
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Sep 2025 08:31:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16D641B22C61
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Sep 2025 08:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BC121CC58;
-	Sun,  7 Sep 2025 08:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94E921D3EA;
+	Sun,  7 Sep 2025 08:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VCY17dM2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N7Wq5OLb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D9521B19D
-	for <linux-wireless@vger.kernel.org>; Sun,  7 Sep 2025 08:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E154321CC49
+	for <linux-wireless@vger.kernel.org>; Sun,  7 Sep 2025 08:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757233857; cv=none; b=b250MrZd5ctvmijWJm8AnLJm3xf2jpas4pZzN3rYNHb4mBBtnyW4utGVQxtuzCS5ot/DZ6gtdJID7FmjEUMHToVC0gNHaBGMgBcfLyHrZaKZ2zuaj/98O3cd2Gezgb9hfgSa8xhWElyfEMJ+PezOmDbH8v5iDvwHwT3D+VRPicU=
+	t=1757233858; cv=none; b=gx6oE659sCztukBoZ2ttc+UZgQyZXcb5+feZFR4J/wCmX92t6AsRwpYUwSWZaaE4CCBCtELkrS2dUwKWucMawLrT2RGcYcrAfh+QaFk6NftLuGRlkbE/HC6onDjBAnAPgbFgWOtMGvKWkMcMaBTmr8HrCtP/MOZqzgLA5/AcILQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757233857; c=relaxed/simple;
-	bh=8rXW4t9BQGhqcnPdpwoD05X8ItVcOm9AQwXYfCcanQo=;
+	s=arc-20240116; t=1757233858; c=relaxed/simple;
+	bh=6+z9WDZKDdEtaDXp/Yq7cAEHfa9eAArgh8EdDEAJ/sQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZYbOAbV9as78BqxlEjzz/d1zLFSwcEiYQX4WIuS7q52nxkxgm13ftTIaDi52OjrCNDsTcubvnWf1wTWgRrkuwwGOzBZh4u87tBHTeevSPR/nqkzb9Z0xiAtoXtfCNQ53aiw6HQSwofheKy5e6qGxVac1M/MZSz39WJkd34+lf38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VCY17dM2; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=fHexWNkvtweo+MCdHzuqtxBjL3gMbHH4I/YhV+twdX8BQ5awULhA+8pHk39/8+Qh3GUarB/tCGlsXuZ3YbfI9oMAiBSureZRibj+N2Pm37Mz79NU0Gb+MEkLzEgnG1H6dKyY47lAMal+NoUuAAXkcRiojIB4XN71GiTEExBlpF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N7Wq5OLb; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757233856; x=1788769856;
+  t=1757233857; x=1788769857;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8rXW4t9BQGhqcnPdpwoD05X8ItVcOm9AQwXYfCcanQo=;
-  b=VCY17dM2G+zZy4FC7rR3wUt7BIJvaiJFGe2fIXtLCdruwH4h3tdbtQaE
-   PoGmGgNw8CHPvhKu86ozVJHgpFOYPJoSDcUsJgQNsB8EGkYt9oRshDFlW
-   E0OeKXCqdq05sayBgU7xi4Q5QzuMvJv9hwJ459rEHxp6SgLF8rVDfm7fU
-   eq7iEE+ME2Np4eSOiMxSqe0F8BD8OEiWQflZG9zH/VqL1CzkDJvreYwJQ
-   bEIT70aYDSfsY09p2II0vzEZrswM/A93O+AXwe3/0k8SGf9okzGmo6es+
-   aLHVgll5BYYeV4J85rWgeDnBDOHoEU1xew9Ks6/DwiFj/ULxDzLUiEmpt
-   Q==;
-X-CSE-ConnectionGUID: ktth1cKZRESn5tQVijjwIw==
-X-CSE-MsgGUID: Xd57Y3rmT5CCIqLVIFmAXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11545"; a="76973607"
+  bh=6+z9WDZKDdEtaDXp/Yq7cAEHfa9eAArgh8EdDEAJ/sQ=;
+  b=N7Wq5OLbDOCguHLNq5TY8yoXmsCXfHZLEcZ7GOs9s9fayowX4YNx6NFB
+   yjs9oFdxNTy55JWnMoYDp6vub3pwNuUg/ArSPtc0TF2ZjHADqm+t48Fdc
+   eKslvrZC7Qq7+Ypp4b+MfSEIXyEds+2hzuX2lV9eb7UL1JE8lbGiNM5Li
+   nsMtojA0d+M/sVODD9KWeIEuYGwXSKHgVuXNLUytjndCtxmqr9UPrgSjQ
+   r4HsXLk0Ys/SM4bzbrl86kXn063fDR+lwWZxQww5f/GyvhDAWHobJYHWJ
+   e2w9fPrNRB8XcIchmiUg0dwz/MHd2rrg7FafJ/QuQzLYgOzBBU0SUUByL
+   A==;
+X-CSE-ConnectionGUID: rV/GdV3UQgCTJdcBBss0WA==
+X-CSE-MsgGUID: gdu774efRRyLXzbaF+3HrA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11545"; a="76973608"
 X-IronPort-AV: E=Sophos;i="6.18,246,1751266800"; 
-   d="scan'208";a="76973607"
+   d="scan'208";a="76973608"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2025 01:30:56 -0700
-X-CSE-ConnectionGUID: MCfQ4AdsSHuv6dbisGyMsw==
-X-CSE-MsgGUID: lLFJ63doSxyGECYVlsJBwg==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2025 01:30:57 -0700
+X-CSE-ConnectionGUID: VFLIOQe9SKmiLCmwXZDPDQ==
+X-CSE-MsgGUID: HIDDyrqmTqie+pmUQ6zY6Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,246,1751266800"; 
-   d="scan'208";a="171790026"
+   d="scan'208";a="171790035"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2025 01:30:55 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2025 01:30:56 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-next 03/15] wifi: iwlwifi: rename iwl_finish_nic_init
-Date: Sun,  7 Sep 2025 11:30:02 +0300
-Message-Id: <20250907112757.a1de688e574b.Ibd41b0c8f7fbae77026e76dbbc085df3eecec538@changeid>
+Subject: [PATCH iwlwifi-next 04/15] wifi: iwlwifi: pcie: move pm_support to the specific transport
+Date: Sun,  7 Sep 2025 11:30:03 +0300
+Message-Id: <20250907112757.997193cabd04.Ic6648f040430c94150d0fa11601f50a6a630b862@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250907083014.1439961-1-miriam.rachel.korenblit@intel.com>
 References: <20250907083014.1439961-1-miriam.rachel.korenblit@intel.com>
@@ -76,181 +76,123 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-The function is called so because for older devices it sets a bit called
-"init_done". But for the latest devices it sets a different bit,
-"mac_init". Since this name is not clear anyway, rename it such that it
-indicates the logic of the newer devices.
-Also add the 'trans' prefix so iw will be clear from the name that this
-is a transport API.
+Currently it is under iwl_trans, which is the bus agnostic part of the
+transport. But really it is relevant for pcie only, so move it to the
+iwl_trans_pcie and export it via an API to the opmode.
 
 Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/eeprom.c      |  2 +-
- drivers/net/wireless/intel/iwlwifi/fw/dump.c         |  2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-io.c          |  6 +++---
- drivers/net/wireless/intel/iwlwifi/iwl-io.h          |  2 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c        |  2 +-
- .../wireless/intel/iwlwifi/pcie/gen1_2/internal.h    |  2 +-
- .../wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c  |  2 +-
- .../net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c   | 12 ++++++------
- 8 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/power.c         |  2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.c         |  9 +++++++++
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h         |  4 ++--
+ .../net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h  | 10 ++++++++++
+ drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c |  2 +-
+ 5 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/eeprom.c b/drivers/net/wireless/intel/iwlwifi/dvm/eeprom.c
-index 9f8cdb027839..d337ab543eb0 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/eeprom.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/eeprom.c
-@@ -766,7 +766,7 @@ static int iwl_init_otp_access(struct iwl_trans *trans)
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/power.c b/drivers/net/wireless/intel/iwlwifi/dvm/power.c
+index 6b42d6e5f30f..e7dbba7134f7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/power.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/power.c
+@@ -368,7 +368,7 @@ int iwl_power_update_mode(struct iwl_priv *priv, bool force)
+ /* initialize to default */
+ void iwl_power_initialize(struct iwl_priv *priv)
  {
- 	int ret;
+-	priv->power_data.bus_pm = priv->trans->pm_support;
++	priv->power_data.bus_pm = iwl_trans_is_pm_supported(priv->trans);
  
--	ret = iwl_finish_nic_init(trans);
-+	ret = iwl_trans_activate_nic(trans);
- 	if (ret)
- 		return ret;
+ 	priv->power_data.debug_sleep_level_override = -1;
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dump.c b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-index a39c038db08e..ddd714cff2f4 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-@@ -178,7 +178,7 @@ static void iwl_fwrt_dump_lmac_error_log(struct iwl_fw_runtime *fwrt, u8 lmac_nu
- 		if (err)
- 			return;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+index 26aafaf19eda..b428cb522d0d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+@@ -807,3 +807,12 @@ void iwl_trans_set_reduce_power(struct iwl_trans *trans,
+ {
+ 	iwl_trans_pcie_ctx_info_v2_set_reduce_power(trans, capa);
+ }
++
++bool iwl_trans_is_pm_supported(struct iwl_trans *trans)
++{
++	if (WARN_ON(trans->mac_cfg->gen2))
++		return false;
++
++	return iwl_pcie_gen1_is_pm_supported(trans);
++}
++IWL_EXPORT_SYMBOL(iwl_trans_is_pm_supported);
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index 3d5b47aaa4dc..e5d38b3bd76a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -844,7 +844,6 @@ struct iwl_trans_info {
+  * @dev: pointer to struct device * that represents the device
+  * @info: device information for use by other layers
+  * @pnvm_loaded: indicates PNVM was loaded
+- * @pm_support: set to true in start_hw if link pm is supported
+  * @ltr_enabled: set to true if the LTR is enabled
+  * @suppress_cmd_error_once: suppress "FW error in SYNC CMD" once,
+  *	e.g. for testing
+@@ -884,7 +883,6 @@ struct iwl_trans {
+ 	bool step_urm;
+ 	bool suppress_cmd_error_once;
  
--		err = iwl_finish_nic_init(trans);
-+		err = iwl_trans_activate_nic(trans);
- 		if (err)
- 			return;
- 	}
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-io.c b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
-index fb645dafea38..b1944584c693 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-io.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
-@@ -396,11 +396,11 @@ int iwl_dump_fh(struct iwl_trans *trans, char **buf)
- 	return 0;
+-	bool pm_support;
+ 	bool ltr_enabled;
+ 	u8 pnvm_loaded:1;
+ 	u8 fail_to_parse_pnvm_image:1;
+@@ -1262,4 +1260,6 @@ static inline u16 iwl_trans_get_device_id(struct iwl_trans *trans)
+ 	return u32_get_bits(trans->info.hw_id, GENMASK(31, 16));
  }
  
--int iwl_finish_nic_init(struct iwl_trans *trans)
-+int iwl_trans_activate_nic(struct iwl_trans *trans)
- {
--	return iwl_pcie_gen1_2_finish_nic_init(trans);
-+	return iwl_pcie_gen1_2_activate_nic(trans);
- }
--IWL_EXPORT_SYMBOL(iwl_finish_nic_init);
-+IWL_EXPORT_SYMBOL(iwl_trans_activate_nic);
- 
- void iwl_trans_sync_nmi_with_addr(struct iwl_trans *trans, u32 inta_addr,
- 				  u32 sw_err_bit)
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-io.h b/drivers/net/wireless/intel/iwlwifi/iwl-io.h
-index 731cda1a4e66..5bcec239ffc4 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-io.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-io.h
-@@ -57,7 +57,7 @@ void iwl_set_bits_mask_prph(struct iwl_trans *trans, u32 ofs,
- void iwl_clear_bits_prph(struct iwl_trans *trans, u32 ofs, u32 mask);
- void iwl_force_nmi(struct iwl_trans *trans);
- 
--int iwl_finish_nic_init(struct iwl_trans *trans);
-+int iwl_trans_activate_nic(struct iwl_trans *trans);
- 
- /* Error handling */
- int iwl_dump_fh(struct iwl_trans *trans, char **buf);
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 5cb0b519e762..e68dce21df64 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1243,7 +1243,7 @@ static int _iwl_pci_resume(struct device *device, bool restore)
- 		 * won't really know how to recover.
- 		 */
- 		iwl_pcie_prepare_card_hw(trans);
--		iwl_finish_nic_init(trans);
-+		iwl_trans_activate_nic(trans);
- 		iwl_op_mode_device_powered_off(trans->op_mode);
- 	}
- 
++bool iwl_trans_is_pm_supported(struct iwl_trans *trans);
++
+ #endif /* __iwl_trans_h__ */
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
-index 79893e2d2701..36fe5863f735 100644
+index 36fe5863f735..2ee3bf4869d2 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/internal.h
-@@ -1131,7 +1131,7 @@ int iwl_pcie_alloc_dma_ptr(struct iwl_trans *trans,
- 			   struct iwl_dma_ptr *ptr, size_t size);
- void iwl_pcie_free_dma_ptr(struct iwl_trans *trans, struct iwl_dma_ptr *ptr);
- void iwl_pcie_apply_destination(struct iwl_trans *trans);
--int iwl_pcie_gen1_2_finish_nic_init(struct iwl_trans *trans);
-+int iwl_pcie_gen1_2_activate_nic(struct iwl_trans *trans);
+@@ -403,6 +403,7 @@ struct iwl_pcie_txqs {
+  * @dev_cmd_pool: pool for Tx cmd allocation - for internal use only.
+  *	The user should use iwl_trans_{alloc,free}_tx_cmd.
+  * @dev_cmd_pool_name: name for the TX command allocation pool
++ * @pm_support: set to true in start_hw if link pm is supported
+  */
+ struct iwl_trans_pcie {
+ 	struct iwl_rxq *rxq;
+@@ -512,6 +513,8 @@ struct iwl_trans_pcie {
  
- /* transport gen 2 exported functions */
- int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
-index 1951be3a30b7..b15c5d486527 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans-gen2.c
-@@ -47,7 +47,7 @@ int iwl_pcie_gen2_apm_init(struct iwl_trans *trans)
+ 	struct kmem_cache *dev_cmd_pool;
+ 	char dev_cmd_pool_name[50];
++
++	bool pm_support;
+ };
  
- 	iwl_pcie_apm_config(trans);
+ static inline struct iwl_trans_pcie *
+@@ -1151,4 +1154,11 @@ int iwl_trans_pcie_copy_imr(struct iwl_trans *trans,
+ int iwl_trans_pcie_rxq_dma_data(struct iwl_trans *trans, int queue,
+ 				struct iwl_trans_rxq_dma_data *data);
  
--	ret = iwl_finish_nic_init(trans);
-+	ret = iwl_trans_activate_nic(trans);
- 	if (ret)
- 		return ret;
- 
++static inline bool iwl_pcie_gen1_is_pm_supported(struct iwl_trans *trans)
++{
++	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
++
++	return trans_pcie->pm_support;
++}
++
+ #endif /* __iwl_trans_int_pcie_h__ */
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
-index f281d91475b4..922397408138 100644
+index 922397408138..c1fe87fb64c6 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/trans.c
-@@ -267,7 +267,7 @@ static int iwl_pcie_apm_init(struct iwl_trans *trans)
- 	if (trans->mac_cfg->base->pll_cfg)
- 		iwl_set_bit(trans, CSR_ANA_PLL_CFG, CSR50_ANA_PLL_CFG_VAL);
+@@ -214,7 +214,7 @@ void iwl_pcie_apm_config(struct iwl_trans *trans)
+ 	iwl_set_bit(trans, CSR_GIO_REG, CSR_GIO_REG_VAL_L0S_DISABLED);
  
--	ret = iwl_finish_nic_init(trans);
-+	ret = iwl_trans_activate_nic(trans);
- 	if (ret)
- 		return ret;
+ 	pcie_capability_read_word(trans_pcie->pci_dev, PCI_EXP_LNKCTL, &lctl);
+-	trans->pm_support = !(lctl & PCI_EXP_LNKCTL_ASPM_L0S);
++	trans_pcie->pm_support = !(lctl & PCI_EXP_LNKCTL_ASPM_L0S);
  
-@@ -340,7 +340,7 @@ static void iwl_pcie_apm_lp_xtal_enable(struct iwl_trans *trans)
- 	ret = iwl_trans_pcie_sw_reset(trans, true);
- 
- 	if (!ret)
--		ret = iwl_finish_nic_init(trans);
-+		ret = iwl_trans_activate_nic(trans);
- 
- 	if (WARN_ON(ret)) {
- 		/* Release XTAL ON request */
-@@ -1542,7 +1542,7 @@ int iwl_trans_pcie_d3_resume(struct iwl_trans *trans,
- 		iwl_set_bit(trans, CSR_GP_CNTRL,
- 			    CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
- 
--	ret = iwl_finish_nic_init(trans);
-+	ret = iwl_trans_activate_nic(trans);
- 	if (ret) {
- 		IWL_ERR(trans, "Failed to init nic upon resume. err = %d\n",
- 			ret);
-@@ -1766,7 +1766,7 @@ static int iwl_pcie_gen2_force_power_gating(struct iwl_trans *trans)
- {
- 	int ret;
- 
--	ret = iwl_finish_nic_init(trans);
-+	ret = iwl_trans_activate_nic(trans);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -4188,7 +4188,7 @@ int iwl_pci_gen1_2_probe(struct pci_dev *pdev,
- 	 */
- 	ret = iwl_pcie_prepare_card_hw(iwl_trans);
- 	if (!ret) {
--		ret = iwl_finish_nic_init(iwl_trans);
-+		ret = iwl_trans_activate_nic(iwl_trans);
- 		if (ret)
- 			goto out_free_trans;
- 		if (iwl_trans_grab_nic_access(iwl_trans)) {
-@@ -4308,7 +4308,7 @@ void iwl_pcie_gen1_2_remove(struct iwl_trans *trans)
- 	iwl_trans_pcie_free(trans);
- }
- 
--int iwl_pcie_gen1_2_finish_nic_init(struct iwl_trans *trans)
-+int iwl_pcie_gen1_2_activate_nic(struct iwl_trans *trans)
- {
- 	const struct iwl_mac_cfg *mac_cfg = trans->mac_cfg;
- 	u32 poll_ready;
+ 	pcie_capability_read_word(trans_pcie->pci_dev, PCI_EXP_DEVCTL2, &cap);
+ 	trans->ltr_enabled = cap & PCI_EXP_DEVCTL2_LTR_EN;
 -- 
 2.34.1
 
