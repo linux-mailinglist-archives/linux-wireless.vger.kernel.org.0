@@ -1,68 +1,72 @@
-Return-Path: <linux-wireless+bounces-27082-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27083-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62349B48BCE
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 13:17:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0B6B48BCF
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 13:17:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606831B26F36
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 11:17:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BE141B26F1B
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 11:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023F52FABFE;
-	Mon,  8 Sep 2025 11:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A9F2FD1A3;
+	Mon,  8 Sep 2025 11:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K1QjCgnS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EBHIZ9zH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B0C2FC869
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Sep 2025 11:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8872F90DC
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Sep 2025 11:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757330019; cv=none; b=BxeHn5cDzY+0fMymGVsmXWNxEuuOjYQvcSrgdyu9NGEyz3hIBIzHNPsEFS33WHYXamnwkDM3g0Y3xoKZkVwqQircXzZqyi2Z8zjdktnm0G3vDlDNGG5Oi/hOzKJ5yDkmsrLpb4gEPYZv1J8Gp45HkC8peuBoFuWBIrGZCWcUwmA=
+	t=1757330022; cv=none; b=dsxBB+eufl7NyWgUIErsGjXmTNtd9OJxIqDFpd4NOEr3IoZBUJAdLFL06p4Fv9DenqaK5l+6ud/Hm69lVKxv51ay91UlQ0aUBNRN75OgfCHrq42Gn65ryQBirIz5ayHOANAVEoIPuZawHJ6Wxu/xU4gAqc8Su4EKBtiMCzsCuXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757330019; c=relaxed/simple;
-	bh=ZCFcLN7D2p40AqAV8Af91QF9rKpBGnERtx3avRyuK9M=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=PIKO12IpqTvdxH0IU3h9gq/GZeqVO/fidZdOVDsgAMQQqRE4eUqUoqnbiDirftdakszaHbWpV+yO8WqGxCmWrjW6nBfrloqHnMcSY4pmR16O9Z2LnXWJ/DG6/eQcKFKPuhHC7cG2PQ1PeDBPX861miQgHKU27cLO0QyiuSuUwFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K1QjCgnS; arc=none smtp.client-ip=198.175.65.10
+	s=arc-20240116; t=1757330022; c=relaxed/simple;
+	bh=wM3sumGRtc0nUzSrHcD61sgdQwZD4eVpRqhUVigb9R4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=XUC5Jx2KUieUnzUq94E7fjcSa0oHd9Ru58WeXCzG2ZlOwpNEJzjDMSFqgEBDFVQvqXyfPtCl93q7CdXFA+Qfqpr82eqmA+HnBJS1BmSIX2EdErfDMsRXTHpS0w39Wvvr8xmpgYG5f1TOiXsoVB3GWd+Feny5G4vHpiPMlSMhkic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EBHIZ9zH; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757330018; x=1788866018;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ZCFcLN7D2p40AqAV8Af91QF9rKpBGnERtx3avRyuK9M=;
-  b=K1QjCgnS045SuDO08nMNgfbsCe+ezfYkY/tGDjYTdYmmuSLCaTs+aoGR
-   So/Noc2UiQJ7iCGoG8lCan1RkMYkyvxO5kjHufptUvUhCtj//nDJP6hTn
-   9jDxFfgzhtGAPXxXkNKg/SM7SU1IIhEaXKI/wQCH3xLnCJ/Icqfb1akri
-   i37YBF1424Y9U7z1xAn2qyANpP9mlTCRYroXThnd+tdOs0JBwwvpG34f3
-   B564B0w0Fx99tYuKrhNCiDIxp81yMdCYx4A2jeJAKx7+Nhy6oCwAfykwK
-   9EDl+kOyNQw1r8V0BzE/6w0FYkQuGP54mLe5kp4DnFaQnNEIiO2iK5U5Y
-   A==;
-X-CSE-ConnectionGUID: SzjLGadpSwmoG6QwaXcDNw==
-X-CSE-MsgGUID: lpI2HVj9QDSl+xOFGGQlcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11546"; a="77037872"
+  t=1757330020; x=1788866020;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=wM3sumGRtc0nUzSrHcD61sgdQwZD4eVpRqhUVigb9R4=;
+  b=EBHIZ9zH4V4x7JDtAdcUuYX78mYJCLhHoagJZSXPavHrvx6T+JuaYp4j
+   5lzc05nWsqWOI9r2dUL8DDj4rDHfjeYdf3xrybGNeQ+np961HUgl5uCe1
+   s0z7cgSxSFe4pswQWYg4NzrdkPJ7O8VxuzjJugG48+gyw/MthrSdw2WxM
+   SykkOXfiCtxgFh13RFjS/0E3kLDRGhnbJwsYVKwjSn5EMJ/KBR4Yy7Q4b
+   v6P0c8RA1i1RAucM3uMZO6v9mkbAM8Cw79MQNoovcfs8JJYvG/ra+xLKu
+   Bgjq3besm5QvNzZ46noTUCOp8u3QTk385dYhU+CYifG1SbIjvQoAhLUgM
+   Q==;
+X-CSE-ConnectionGUID: 5TkZgCHJTlicryKhgWLg+Q==
+X-CSE-MsgGUID: xS1UEtIGQJy2I66sR5yDWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11546"; a="77037875"
 X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="77037872"
+   d="scan'208";a="77037875"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 04:13:37 -0700
-X-CSE-ConnectionGUID: Ld2t78wYTDCwTw6KVEAA7g==
-X-CSE-MsgGUID: iztRmTlPSTWukcZHahEYRw==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 04:13:39 -0700
+X-CSE-ConnectionGUID: wjAenv3yTC2EmpgKgQsNHw==
+X-CSE-MsgGUID: 5qRUG7yERHWX+MuHlP7dJg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="173126554"
+   d="scan'208";a="173126559"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 04:13:37 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 04:13:38 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH wireless-next 00/14] wifi: nl80211/cfg80211/mac80211: Add support for NAN discovery
-Date: Mon,  8 Sep 2025 14:12:54 +0300
-Message-Id: <20250908111308.2688889-1-miriam.rachel.korenblit@intel.com>
+Cc: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+Subject: [PATCH wireless-next 01/14] wifi: nl80211: Add more configuration options for NAN commands
+Date: Mon,  8 Sep 2025 14:12:55 +0300
+Message-Id: <20250908140015.a4779492bf8e.I375feb919bd72358173766b9fe10010c40796b33@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250908111308.2688889-1-miriam.rachel.korenblit@intel.com>
+References: <20250908111308.2688889-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -72,60 +76,620 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
 
-This series contains patches that enable the NAN basic functionality:
-discovery and join clusters, serivces dicovery.
+Current NAN APIs have only basic configuration for master
+preference and operating bands. Add and parse additional parameters
+which provide more control over NAN synchronization. The newly added
+attributes allow to publish additional NAN attributes and vendor
+elements in NAN beacons, control scan and discovery beacons
+periodicity, enable/disable DW notifications etc.
 
-- Publishing specific NAN capabilities
-- Configuring and managing NAN interface
-- Notification to user space about joining a cluster
-- Notification to user spcae about the end of a DW
-- Enablement of Tx/Rx of NAN specifc frames
-- Some simulation code in hwsim
-
-Thanks,
-Miri
+Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+tested: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
+ include/net/cfg80211.h       |  60 +++++++
+ include/uapi/linux/nl80211.h | 110 ++++++++++++-
+ net/wireless/nl80211.c       | 298 +++++++++++++++++++++++++++++++----
+ 3 files changed, 431 insertions(+), 37 deletions(-)
 
-Andrei Otcheretianski (4):
-  wifi: nl80211: Add more configuration options for NAN commands
-  wifi: nl80211: Add NAN Discovery Window (DW) notification
-  wifi: cfg80211: Add cluster joined notification APIs
-  wifi: nl80211: Add more NAN capabilities
-
-Ilan Peer (10):
-  wifi: cfg80211: Advertise supported NAN capabilities
-  wifi: cfg80211: Support Tx/Rx of action frame for NAN
-  wifi: cfg80211: Store the NAN cluster ID
-  wifi: mac80211: Support Tx of action frame for NAN
-  wifi: mac80211: Accept management frames on NAN interface
-  wifi: mac80211: Track NAN interface start/stop
-  wifi: mac80211: Get the correct interface for non-netdev skb status
-  wifi: mac80211: Export an API to check if NAN is started
-  wifi: mac80211: Extend support for changing NAN configuration
-  wifi: mac80211_hwsim: Add simulation support for NAN device
-
- drivers/net/wireless/virtual/mac80211_hwsim.c | 259 ++++++++++-
- drivers/net/wireless/virtual/mac80211_hwsim.h |   4 +-
- include/linux/ieee80211.h                     |  17 +
- include/net/cfg80211.h                        | 127 +++++
- include/net/mac80211.h                        |  10 +
- include/uapi/linux/nl80211.h                  | 189 +++++++-
- net/mac80211/cfg.c                            | 140 +++++-
- net/mac80211/ieee80211_i.h                    |   4 +-
- net/mac80211/iface.c                          |  25 +-
- net/mac80211/main.c                           |   5 +
- net/mac80211/offchannel.c                     |   5 +-
- net/mac80211/rate.c                           |  11 +-
- net/mac80211/rx.c                             |  12 +-
- net/mac80211/status.c                         |  21 +-
- net/mac80211/tx.c                             |  12 +-
- net/mac80211/util.c                           |   8 +
- net/wireless/nl80211.c                        | 435 ++++++++++++++++--
- net/wireless/trace.h                          |  35 ++
- 18 files changed, 1230 insertions(+), 89 deletions(-)
-
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 4072a67c9cc9..e2f4ca500ea3 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -3912,6 +3912,38 @@ struct cfg80211_qos_map {
+ 	struct cfg80211_dscp_range up[8];
+ };
+ 
++/**
++ * struct cfg80211_nan_band_config - NAN band specific configuration
++ *
++ * @chan: Pointer to the IEEE 802.11 channel structure. The channel to be used
++ *	for NAN operations on this band. For 2.4 GHz band, this is always
++ *	channel 6. For 5 GHz band, the channel is either 44 or 149, according
++ *	to the regulatory constraints. If chan pointer is NULL the entire band
++ *	configuration entry is considered invalid and should not be used.
++ * @rssi_close: RSSI close threshold used for NAN state transition algorithm
++ *	as described in chapters 3.3.6 and 3.3.7 "NAN Device Role and State
++ *	Transition" of Wi-Fi Aware Specification v4.0. If not
++ *	specified (set to 0), default device value is used. The value should
++ *	be greater than -60 dBm.
++ * @rssi_middle: RSSI middle threshold used for NAN state transition algorithm.
++ *	as described in chapters 3.3.6 and 3.3.7 "NAN Device Role and State
++ *	Transition" of Wi-Fi Aware Specification v4.0. If not
++ *	specified (set to 0), default device value is used. The value should be
++ *	greater than -75 dBm and less than rssi_close.
++ * @awake_dw_interval: Committed DW interval. Valid values range: 0-5. 0
++ *	indicates no wakeup for DW and can't be used on 2.4GHz band, otherwise
++ *	2^(n-1).
++ * @disable_scan: If true, the device will not scan this band for cluster
++ *	 merge. Disabling scan on 2.4 GHz band is not allowed.
++ */
++struct cfg80211_nan_band_config {
++	struct ieee80211_channel *chan;
++	s8 rssi_close;
++	s8 rssi_middle;
++	u8 awake_dw_interval;
++	bool disable_scan;
++};
++
+ /**
+  * struct cfg80211_nan_conf - NAN configuration
+  *
+@@ -3921,10 +3953,31 @@ struct cfg80211_qos_map {
+  * @bands: operating bands, a bitmap of &enum nl80211_band values.
+  *	For instance, for NL80211_BAND_2GHZ, bit 0 would be set
+  *	(i.e. BIT(NL80211_BAND_2GHZ)).
++ * @cluster_id: cluster ID used for NAN synchronization. This is a MAC address
++ *	that can take a value from 50-6F-9A-01-00-00 to 50-6F-9A-01-FF-FF.
++ *	If NULL, the device will pick a random Cluster ID.
++ * @scan_period: period (in seconds) between NAN scans.
++ * @scan_dwell_time: dwell time (in milliseconds) for NAN scans.
++ * @discovery_beacon_interval: interval (in TUs) for discovery beacons.
++ * @band_cfgs: array of band specific configurations, indexed by
++ *	&enum nl80211_band values.
++ * @extra_nan_attrs: pointer to additional NAN attributes.
++ * @extra_nan_attrs_len: length of the additional NAN attributes.
++ * @vendor_elems: pointer to vendor-specific elements.
++ * @vendor_elems_len: length of the vendor-specific elements.
+  */
+ struct cfg80211_nan_conf {
+ 	u8 master_pref;
+ 	u8 bands;
++	const u8 *cluster_id;
++	u16 scan_period;
++	u16 scan_dwell_time;
++	u8 discovery_beacon_interval;
++	struct cfg80211_nan_band_config band_cfgs[NUM_NL80211_BANDS];
++	const u8 *extra_nan_attrs;
++	u16 extra_nan_attrs_len;
++	const u8 *vendor_elems;
++	u16 vendor_elems_len;
+ };
+ 
+ /**
+@@ -3933,10 +3986,17 @@ struct cfg80211_nan_conf {
+  *
+  * @CFG80211_NAN_CONF_CHANGED_PREF: master preference
+  * @CFG80211_NAN_CONF_CHANGED_BANDS: operating bands
++ * @CFG80211_NAN_CONF_CHANGED_CONFIG: changed additional configuration.
++ *	When this flag is set, it indicates that some additional attribute(s)
++ *	(other then master_pref and bands) have been changed. In this case,
++ *	all the unchanged attributes will be properly configured to their
++ *	previous values. The driver doesn't need to store any
++ *	previous configuration besides master_pref and bands.
+  */
+ enum cfg80211_nan_conf_changes {
+ 	CFG80211_NAN_CONF_CHANGED_PREF = BIT(0),
+ 	CFG80211_NAN_CONF_CHANGED_BANDS = BIT(1),
++	CFG80211_NAN_CONF_CHANGED_CONFIG = BIT(2),
+ };
+ 
+ /**
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index aed0b4c5d5e8..20b8202a3d58 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -1085,8 +1085,9 @@
+  *	%NL80211_ATTR_NAN_MASTER_PREF attribute and optional
+  *	%NL80211_ATTR_BANDS attributes.  If %NL80211_ATTR_BANDS is
+  *	omitted or set to 0, it means don't-care and the device will
+- *	decide what to use.  After this command NAN functions can be
+- *	added.
++ *	decide what to use. Additional cluster configuration may be
++ *	optionally provided with %NL80211_ATTR_NAN_CONFIG.
++ *	After this command NAN functions can be added.
+  * @NL80211_CMD_STOP_NAN: Stop the NAN operation, identified by
+  *	its %NL80211_ATTR_WDEV interface.
+  * @NL80211_CMD_ADD_NAN_FUNCTION: Add a NAN function. The function is defined
+@@ -1115,6 +1116,10 @@
+  *	current configuration is not changed.  If it is present but
+  *	set to zero, the configuration is changed to don't-care
+  *	(i.e. the device can decide what to do).
++ *	Additional parameters may be provided with
++ *	%NL80211_ATTR_NAN_CONFIG. User space should provide all previously
++ *	configured nested attributes under %NL80211_ATTR_NAN_CONFIG, even if
++ *	only a subset was changed.
+  * @NL80211_CMD_NAN_MATCH: Notification sent when a match is reported.
+  *	This will contain a %NL80211_ATTR_NAN_MATCH nested attribute and
+  *	%NL80211_ATTR_COOKIE.
+@@ -2936,6 +2941,12 @@ enum nl80211_commands {
+  *	indicate that it wants strict checking on the BSS parameters to be
+  *	modified.
+  *
++ * @NL80211_ATTR_NAN_CONFIG: Nested attribute for
++ *	extended NAN cluster configuration. This is used with
++ *	%NL80211_CMD_START_NAN and %NL80211_CMD_CHANGE_NAN_CONFIG.
++ *	See &enum nl80211_nan_conf_attributes for details.
++ *	This attribute is optional.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3498,6 +3509,7 @@ enum nl80211_attrs {
+ 	NL80211_ATTR_S1G_LONG_BEACON_PERIOD,
+ 	NL80211_ATTR_S1G_SHORT_BEACON,
+ 	NL80211_ATTR_BSS_PARAM,
++	NL80211_ATTR_NAN_CONFIG,
+ 
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+@@ -7323,6 +7335,100 @@ enum nl80211_nan_match_attributes {
+ 	NL80211_NAN_MATCH_ATTR_MAX = NUM_NL80211_NAN_MATCH_ATTR - 1
+ };
+ 
++/**
++ * enum nl80211_nan_band_conf_attributes - NAN band configuration attributes
++ * @__NL80211_NAN_BAND_CONF_INVALID: Invalid.
++ * @NL80211_NAN_BAND_CONF_BAND: Band for which the configuration is
++ *	being set. The value is according to &enum nl80211_band (u8).
++ * @NL80211_NAN_BAND_CONF_FREQ: Discovery frequency. This attribute shall not
++ *	be present on 2.4 GHZ band. On 5 GHz band its presence is optional.
++ *	The allowed values are 5220 (channel 44) or 5745 (channel 149).
++ *	If not present, channel 149 is used if allowed, otherwise channel 44
++ *	will be selected. The value is in MHz (u16).
++ * @NL80211_NAN_BAND_CONF_RSSI_CLOSE: RSSI close threshold used for NAN state
++ *	transition algorithm as described in chapters 3.3.6 and 3.3.7 "NAN
++ *	Device Role and State Transition" of Wi-Fi Aware (TM) Specification
++ *	v4.0. If not specified, default device value is used. The value should
++ *	be greater than -60 dBm (s8).
++ * @NL80211_NAN_BAND_CONF_RSSI_MIDDLE: RSSI middle threshold used for NAN state
++ *	transition algorithm as described in chapters 3.3.6 and 3.3.7 "NAN
++ *	Device Role and State Transition" of Wi-Fi Aware (TM) Specification
++ *	v4.0. If not present, default device value is used. The value should be
++ *	greater than -75 dBm and less than %NL80211_NAN_BAND_CONF_RSSI_CLOSE
++ *	(s8).
++ * @NL80211_NAN_BAND_CONF_WAKE_DW: Committed DW information (values 0-5).
++ *	Value 0 means that the device will not wake up during the
++ *	discovery window. Values 1-5 mean that the device will wake up
++ *	during each 2^(n - 1) discovery window, where n is the value of
++ *	this attribute. Setting this attribute to 0 is not allowed on
++ *	2.4 GHz band (u8). This is an optional parameter (default is 1).
++ * @NL80211_NAN_BAND_CONF_DISABLE_SCAN: Optional flag attribute to disable
++ *	scanning (for cluster merge) on the band. If set, the device will not
++ *	scan on this band anymore. Disabling scanning on 2.4 GHz band is not
++ *	allowed.
++ * @NUM_NL80211_NAN_BAND_CONF_ATTR: Internal.
++ * @NL80211_NAN_BAND_CONF_ATTR_MAX: Highest NAN band configuration attribute.
++ *
++ * These attributes are used to configure NAN band-specific parameters. Note,
++ * that both RSSI attributes should be configured (or both left unset).
++ */
++enum nl80211_nan_band_conf_attributes {
++	__NL80211_NAN_BAND_CONF_INVALID,
++	NL80211_NAN_BAND_CONF_BAND,
++	NL80211_NAN_BAND_CONF_FREQ,
++	NL80211_NAN_BAND_CONF_RSSI_CLOSE,
++	NL80211_NAN_BAND_CONF_RSSI_MIDDLE,
++	NL80211_NAN_BAND_CONF_WAKE_DW,
++	NL80211_NAN_BAND_CONF_DISABLE_SCAN,
++
++	/* keep last */
++	NUM_NL80211_NAN_BAND_CONF_ATTR,
++	NL80211_NAN_BAND_CONF_ATTR_MAX = NUM_NL80211_NAN_BAND_CONF_ATTR - 1,
++};
++
++/**
++ * enum nl80211_nan_conf_attributes - NAN configuration attributes
++ * @__NL80211_NAN_CONF_INVALID: Invalid attribute, used for validation.
++ * @NL80211_NAN_CONF_CLUSTER_ID: ID for the NAN cluster. This is a MAC
++ *	address that can take values from 50-6F-9A-01-00-00 to
++ *	50-6F-9A-01-FF-FF. This attribute is optional. If not present,
++ *	a random Cluster ID will be chosen.
++ * @NL80211_NAN_CONF_EXTRA_ATTRS: Additional NAN attributes to be
++ *	published in the beacons. This is an optional byte array.
++ * @NL80211_NAN_CONF_VENDOR_ELEMS: Vendor-specific elements that will
++ *	be published in the beacons. This is an optional byte array.
++ * @NL80211_NAN_CONF_BAND_CONFIGS: This is a nested array attribute,
++ *	containing multiple entries for each supported band. Each band
++ *	configuration consists of &enum nl80211_nan_band_conf_attributes.
++ * @NL80211_NAN_CONF_SCAN_PERIOD: Scan period in seconds. If not configured,
++ *	device default is used. Zero value will disable scanning.
++ *	This is u16 (optional).
++ * @NL80211_NAN_CONF_SCAN_DWELL_TIME: Scan dwell time in TUs per channel.
++ *	Only non-zero values are valid. If not configured the device default
++ *	value is used. This is u16 (optional)
++ * @NL80211_NAN_CONF_DISCOVERY_BEACON_INTERVAL: Discovery beacon interval
++ *	in TUs. Valid range is 50-200 TUs. If not configured the device default
++ *	value is used. This is u8 (optional)
++ * @NUM_NL80211_NAN_CONF_ATTR: Internal.
++ * @NL80211_NAN_CONF_ATTR_MAX: Highest NAN configuration attribute.
++ *
++ * These attributes are used to configure NAN-specific parameters.
++ */
++enum nl80211_nan_conf_attributes {
++	__NL80211_NAN_CONF_INVALID,
++	NL80211_NAN_CONF_CLUSTER_ID,
++	NL80211_NAN_CONF_EXTRA_ATTRS,
++	NL80211_NAN_CONF_VENDOR_ELEMS,
++	NL80211_NAN_CONF_BAND_CONFIGS,
++	NL80211_NAN_CONF_SCAN_PERIOD,
++	NL80211_NAN_CONF_SCAN_DWELL_TIME,
++	NL80211_NAN_CONF_DISCOVERY_BEACON_INTERVAL,
++
++	/* keep last */
++	NUM_NL80211_NAN_CONF_ATTR,
++	NL80211_NAN_CONF_ATTR_MAX = NUM_NL80211_NAN_CONF_ATTR - 1,
++};
++
+ /**
+  * enum nl80211_external_auth_action - Action to perform with external
+  *     authentication request. Used by NL80211_ATTR_EXTERNAL_AUTH_ACTION.
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 99e2aadc65f7..da8bd3f19a79 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -312,6 +312,26 @@ static int validate_supported_selectors(const struct nlattr *attr,
+ 	return 0;
+ }
+ 
++static int validate_nan_cluster_id(const struct nlattr *attr,
++				   struct netlink_ext_ack *extack)
++{
++	const u8 *data = nla_data(attr);
++	unsigned int len = nla_len(attr);
++	static const u8 cluster_id_prefix[4] = {0x50, 0x6f, 0x9a, 0x1};
++
++	if (len != ETH_ALEN) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "bad cluster id length");
++		return -EINVAL;
++	}
++
++	if (memcmp(data, cluster_id_prefix, sizeof(cluster_id_prefix))) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "invalid cluster id prefix");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ /* policy for the attributes */
+ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR];
+ 
+@@ -500,6 +520,35 @@ nl80211_s1g_short_beacon[NL80211_S1G_SHORT_BEACON_ATTR_MAX + 1] = {
+ 				       IEEE80211_MAX_DATA_LEN),
+ };
+ 
++static const struct nla_policy
++nl80211_nan_band_conf_policy[NL80211_NAN_BAND_CONF_ATTR_MAX + 1] = {
++	[NL80211_NAN_BAND_CONF_BAND] = NLA_POLICY_MAX(NLA_U8,
++						      NUM_NL80211_BANDS - 1),
++	[NL80211_NAN_BAND_CONF_FREQ] = { .type = NLA_U16 },
++	[NL80211_NAN_BAND_CONF_RSSI_CLOSE] = NLA_POLICY_MIN(NLA_S8, -59),
++	[NL80211_NAN_BAND_CONF_RSSI_MIDDLE] = NLA_POLICY_MIN(NLA_S8, -74),
++	[NL80211_NAN_BAND_CONF_WAKE_DW] = NLA_POLICY_MAX(NLA_U8, 5),
++	[NL80211_NAN_BAND_CONF_DISABLE_SCAN] = { .type = NLA_FLAG },
++};
++
++static const struct nla_policy
++nl80211_nan_conf_policy[NL80211_NAN_CONF_ATTR_MAX + 1] = {
++	[NL80211_NAN_CONF_CLUSTER_ID] =
++		NLA_POLICY_VALIDATE_FN(NLA_BINARY, validate_nan_cluster_id,
++				       ETH_ALEN),
++	[NL80211_NAN_CONF_EXTRA_ATTRS] = { .type = NLA_BINARY,
++					   .len = IEEE80211_MAX_DATA_LEN},
++	[NL80211_NAN_CONF_VENDOR_ELEMS] =
++		NLA_POLICY_VALIDATE_FN(NLA_BINARY, validate_ie_attr,
++				       IEEE80211_MAX_DATA_LEN),
++	[NL80211_NAN_CONF_BAND_CONFIGS] =
++		NLA_POLICY_NESTED_ARRAY(nl80211_nan_band_conf_policy),
++	[NL80211_NAN_CONF_SCAN_PERIOD] = { .type = NLA_U16 },
++	[NL80211_NAN_CONF_SCAN_DWELL_TIME] = NLA_POLICY_RANGE(NLA_U16, 50, 512),
++	[NL80211_NAN_CONF_DISCOVERY_BEACON_INTERVAL] =
++		NLA_POLICY_RANGE(NLA_U8, 50, 200),
++};
++
+ static const struct netlink_range_validation nl80211_punct_bitmap_range = {
+ 	.min = 0,
+ 	.max = 0xffff,
+@@ -769,6 +818,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MU_MIMO_FOLLOW_MAC_ADDR] = NLA_POLICY_EXACT_LEN_WARN(ETH_ALEN),
+ 	[NL80211_ATTR_NAN_MASTER_PREF] = NLA_POLICY_MIN(NLA_U8, 1),
+ 	[NL80211_ATTR_BANDS] = { .type = NLA_U32 },
++	[NL80211_ATTR_NAN_CONFIG] = NLA_POLICY_NESTED(nl80211_nan_conf_policy),
+ 	[NL80211_ATTR_NAN_FUNC] = { .type = NLA_NESTED },
+ 	[NL80211_ATTR_FILS_KEK] = { .type = NLA_BINARY,
+ 				    .len = FILS_MAX_KEK_LEN },
+@@ -15397,6 +15447,211 @@ static int nl80211_stop_p2p_device(struct sk_buff *skb, struct genl_info *info)
+ 	return 0;
+ }
+ 
++static struct ieee80211_channel *nl80211_get_nan_channel(struct wiphy *wiphy,
++							 int freq)
++{
++	struct ieee80211_channel *chan;
++	struct cfg80211_chan_def def;
++
++	/* Check if the frequency is valid for NAN */
++	if (freq != 5220 && freq != 5745 && freq != 2437)
++		return NULL;
++
++	chan = ieee80211_get_channel(wiphy, freq);
++	if (!chan)
++		return NULL;
++
++	cfg80211_chandef_create(&def, chan, NL80211_CHAN_NO_HT);
++
++	/* Check if the channel is allowed */
++	if (cfg80211_reg_can_beacon(wiphy, &def, NL80211_IFTYPE_NAN))
++		return chan;
++
++	return NULL;
++}
++
++static int nl80211_parse_nan_band_config(struct wiphy *wiphy,
++					 struct nlattr **tb,
++					 struct cfg80211_nan_band_config *cfg,
++					 enum nl80211_band band)
++{
++	if (BIT(band) & ~(u32)wiphy->nan_supported_bands)
++		return -EINVAL;
++
++	if (tb[NL80211_NAN_BAND_CONF_FREQ]) {
++		u16 freq = nla_get_u16(tb[NL80211_NAN_BAND_CONF_FREQ]);
++
++		if (band != NL80211_BAND_5GHZ)
++			return -EINVAL;
++
++		cfg->chan = nl80211_get_nan_channel(wiphy, freq);
++		if (!cfg->chan)
++			return -EINVAL;
++	}
++
++	if (tb[NL80211_NAN_BAND_CONF_RSSI_CLOSE]) {
++		cfg->rssi_close =
++			nla_get_s8(tb[NL80211_NAN_BAND_CONF_RSSI_CLOSE]);
++		if (!tb[NL80211_NAN_BAND_CONF_RSSI_MIDDLE])
++			return -EINVAL;
++	}
++
++	if (tb[NL80211_NAN_BAND_CONF_RSSI_MIDDLE]) {
++		cfg->rssi_middle =
++			nla_get_s8(tb[NL80211_NAN_BAND_CONF_RSSI_MIDDLE]);
++		if (!cfg->rssi_close || cfg->rssi_middle >= cfg->rssi_close)
++			return -EINVAL;
++	}
++
++	if (tb[NL80211_NAN_BAND_CONF_WAKE_DW]) {
++		cfg->awake_dw_interval =
++			nla_get_u8(tb[NL80211_NAN_BAND_CONF_WAKE_DW]);
++
++		if (band == NL80211_BAND_2GHZ && cfg->awake_dw_interval == 0)
++			return -EINVAL;
++	}
++
++	cfg->disable_scan =
++		nla_get_flag(tb[NL80211_NAN_BAND_CONF_DISABLE_SCAN]);
++	return 0;
++}
++
++static int nl80211_parse_nan_conf(struct wiphy *wiphy,
++				  struct genl_info *info,
++				  struct cfg80211_nan_conf *conf,
++				  u32 *changed_flags)
++{
++	struct nlattr *attrs[NL80211_NAN_CONF_ATTR_MAX + 1];
++	int err, rem;
++	u32 changed = 0;
++	struct nlattr *band_config;
++
++	if (info->attrs[NL80211_ATTR_NAN_MASTER_PREF]) {
++		conf->master_pref =
++			nla_get_u8(info->attrs[NL80211_ATTR_NAN_MASTER_PREF]);
++
++		changed |= CFG80211_NAN_CONF_CHANGED_PREF;
++	}
++
++	if (info->attrs[NL80211_ATTR_BANDS]) {
++		u32 bands = nla_get_u32(info->attrs[NL80211_ATTR_BANDS]);
++
++		if (bands & ~(u32)wiphy->nan_supported_bands)
++			return -EOPNOTSUPP;
++
++		if (bands && !(bands & BIT(NL80211_BAND_2GHZ)))
++			return -EINVAL;
++
++		conf->bands = bands;
++		changed |= CFG80211_NAN_CONF_CHANGED_BANDS;
++	}
++
++	conf->band_cfgs[NL80211_BAND_2GHZ].awake_dw_interval = 1;
++	if (conf->bands & BIT(NL80211_BAND_5GHZ) || !conf->bands)
++		conf->band_cfgs[NL80211_BAND_5GHZ].awake_dw_interval = 1;
++
++	/* On 2.4 GHz band use channel 6 */
++	conf->band_cfgs[NL80211_BAND_2GHZ].chan =
++		nl80211_get_nan_channel(wiphy, 2437);
++	if (!conf->band_cfgs[NL80211_BAND_2GHZ].chan)
++		return -EINVAL;
++
++	if (!info->attrs[NL80211_ATTR_NAN_CONFIG])
++		goto out;
++
++	err = nla_parse_nested(attrs, NL80211_NAN_CONF_ATTR_MAX,
++			       info->attrs[NL80211_ATTR_NAN_CONFIG], NULL,
++			       info->extack);
++	if (err)
++		return err;
++
++	changed |= CFG80211_NAN_CONF_CHANGED_CONFIG;
++	if (attrs[NL80211_NAN_CONF_CLUSTER_ID])
++		conf->cluster_id =
++			nla_data(attrs[NL80211_NAN_CONF_CLUSTER_ID]);
++
++	if (attrs[NL80211_NAN_CONF_EXTRA_ATTRS]) {
++		conf->extra_nan_attrs =
++			nla_data(attrs[NL80211_NAN_CONF_EXTRA_ATTRS]);
++		conf->extra_nan_attrs_len =
++			nla_len(attrs[NL80211_NAN_CONF_EXTRA_ATTRS]);
++	}
++
++	if (attrs[NL80211_NAN_CONF_VENDOR_ELEMS]) {
++		conf->vendor_elems =
++			nla_data(attrs[NL80211_NAN_CONF_VENDOR_ELEMS]);
++		conf->vendor_elems_len =
++			nla_len(attrs[NL80211_NAN_CONF_VENDOR_ELEMS]);
++	}
++
++	if (attrs[NL80211_NAN_CONF_BAND_CONFIGS]) {
++		nla_for_each_nested(band_config,
++				    attrs[NL80211_NAN_CONF_BAND_CONFIGS],
++				    rem) {
++			enum nl80211_band band;
++			struct cfg80211_nan_band_config *cfg;
++			struct nlattr *tb[NL80211_NAN_BAND_CONF_ATTR_MAX + 1];
++
++			err = nla_parse_nested(tb,
++					       NL80211_NAN_BAND_CONF_ATTR_MAX,
++					       band_config, NULL,
++					       info->extack);
++			if (err)
++				return err;
++
++			if (!tb[NL80211_NAN_BAND_CONF_BAND])
++				return -EINVAL;
++
++			band = nla_get_u8(tb[NL80211_NAN_BAND_CONF_BAND]);
++			if (conf->bands && !(conf->bands & BIT(band)))
++				return -EINVAL;
++
++			cfg = &conf->band_cfgs[band];
++
++			err = nl80211_parse_nan_band_config(wiphy, tb, cfg,
++							    band);
++			if (err)
++				return err;
++		}
++	}
++
++	if (attrs[NL80211_NAN_CONF_SCAN_PERIOD])
++		conf->scan_period =
++			nla_get_u16(attrs[NL80211_NAN_CONF_SCAN_PERIOD]);
++
++	if (attrs[NL80211_NAN_CONF_SCAN_DWELL_TIME])
++		conf->scan_dwell_time =
++			nla_get_u16(attrs[NL80211_NAN_CONF_SCAN_DWELL_TIME]);
++
++	if (attrs[NL80211_NAN_CONF_DISCOVERY_BEACON_INTERVAL])
++		conf->discovery_beacon_interval =
++			nla_get_u8(attrs[NL80211_NAN_CONF_DISCOVERY_BEACON_INTERVAL]);
++out:
++	if (!conf->band_cfgs[NL80211_BAND_5GHZ].chan &&
++	    (!conf->bands || conf->bands & BIT(NL80211_BAND_5GHZ))) {
++		/* If no 5GHz channel is specified use default, if possible */
++		conf->band_cfgs[NL80211_BAND_5GHZ].chan =
++				nl80211_get_nan_channel(wiphy, 5745);
++		if (!conf->band_cfgs[NL80211_BAND_5GHZ].chan)
++			conf->band_cfgs[NL80211_BAND_5GHZ].chan =
++					nl80211_get_nan_channel(wiphy, 5220);
++
++		/* Return error if user space asked explicitly for 5 GHz */
++		if (!conf->band_cfgs[NL80211_BAND_5GHZ].chan &&
++		    conf->bands & BIT(NL80211_BAND_5GHZ)) {
++			NL_SET_ERR_MSG_ATTR(info->extack,
++					    info->attrs[NL80211_ATTR_BANDS],
++					    "5 GHz band operation is not allowed");
++			return -EINVAL;
++		}
++	}
++
++	if (changed_flags)
++		*changed_flags = changed;
++
++	return 0;
++}
++
+ static int nl80211_start_nan(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+@@ -15413,23 +15668,13 @@ static int nl80211_start_nan(struct sk_buff *skb, struct genl_info *info)
+ 	if (rfkill_blocked(rdev->wiphy.rfkill))
+ 		return -ERFKILL;
+ 
++	/* Master preference is mandatory for START_NAN */
+ 	if (!info->attrs[NL80211_ATTR_NAN_MASTER_PREF])
+ 		return -EINVAL;
+ 
+-	conf.master_pref =
+-		nla_get_u8(info->attrs[NL80211_ATTR_NAN_MASTER_PREF]);
+-
+-	if (info->attrs[NL80211_ATTR_BANDS]) {
+-		u32 bands = nla_get_u32(info->attrs[NL80211_ATTR_BANDS]);
+-
+-		if (bands & ~(u32)wdev->wiphy->nan_supported_bands)
+-			return -EOPNOTSUPP;
+-
+-		if (bands && !(bands & BIT(NL80211_BAND_2GHZ)))
+-			return -EINVAL;
+-
+-		conf.bands = bands;
+-	}
++	err = nl80211_parse_nan_conf(&rdev->wiphy, info, &conf, NULL);
++	if (err)
++		return err;
+ 
+ 	err = rdev_start_nan(rdev, wdev, &conf);
+ 	if (err)
+@@ -15785,6 +16030,7 @@ static int nl80211_nan_change_config(struct sk_buff *skb,
+ 	struct wireless_dev *wdev = info->user_ptr[1];
+ 	struct cfg80211_nan_conf conf = {};
+ 	u32 changed = 0;
++	int err;
+ 
+ 	if (wdev->iftype != NL80211_IFTYPE_NAN)
+ 		return -EOPNOTSUPP;
+@@ -15792,27 +16038,9 @@ static int nl80211_nan_change_config(struct sk_buff *skb,
+ 	if (!wdev_running(wdev))
+ 		return -ENOTCONN;
+ 
+-	if (info->attrs[NL80211_ATTR_NAN_MASTER_PREF]) {
+-		conf.master_pref =
+-			nla_get_u8(info->attrs[NL80211_ATTR_NAN_MASTER_PREF]);
+-		if (conf.master_pref <= 1 || conf.master_pref == 255)
+-			return -EINVAL;
+-
+-		changed |= CFG80211_NAN_CONF_CHANGED_PREF;
+-	}
+-
+-	if (info->attrs[NL80211_ATTR_BANDS]) {
+-		u32 bands = nla_get_u32(info->attrs[NL80211_ATTR_BANDS]);
+-
+-		if (bands & ~(u32)wdev->wiphy->nan_supported_bands)
+-			return -EOPNOTSUPP;
+-
+-		if (bands && !(bands & BIT(NL80211_BAND_2GHZ)))
+-			return -EINVAL;
+-
+-		conf.bands = bands;
+-		changed |= CFG80211_NAN_CONF_CHANGED_BANDS;
+-	}
++	err = nl80211_parse_nan_conf(&rdev->wiphy, info, &conf, &changed);
++	if (err)
++		return err;
+ 
+ 	if (!changed)
+ 		return -EINVAL;
 -- 
 2.34.1
 
