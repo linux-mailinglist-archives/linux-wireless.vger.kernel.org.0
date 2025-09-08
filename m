@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-27088-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27089-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4BBB48BD4
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 13:17:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D02FB48BE3
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 13:18:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18E07188D30D
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 11:18:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AE1F3C8112
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 11:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFA6301480;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEC2301482;
 	Mon,  8 Sep 2025 11:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LYzUaqRY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YhJyY0eD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B753009F7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CA8301011
 	for <linux-wireless@vger.kernel.org>; Mon,  8 Sep 2025 11:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757330028; cv=none; b=qocP7W9tL25VVlyt62Uxx76ivYe4oKZqEARVEjY3z7TNjiKiG0HFKPpEQPBWPs+fziDVPt4CtAhsIGtEPXuUEOEhPb0mx+LlwcR8BViGSXjvheDfE1S1mM4Yd4enyJaA/cctWt1ByWVcfwL3apqINCL3kjJUdHUoJpYa0htRdZ8=
+	t=1757330029; cv=none; b=A1P+j8R4SbXp9fjk6qQn/Em9Mj52enGpbf20HQ0J2XWBDPA8FcOOeC3xlndEBjHS/9Odoa0Ka5nVVE5hlK8Q3wJdIaodAUedDVfoHaZLbmJXOUl29fCCDXtdkqLDcxlu5jmRElK/HZIYTU4OdUMoy/kt3r9NcEBSuoNxkXPjY0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757330028; c=relaxed/simple;
-	bh=eunlzDci36JtWFeN2/xadOaBn7LGoweEoPESb4+N+xg=;
+	s=arc-20240116; t=1757330029; c=relaxed/simple;
+	bh=3LoFXeyKOtxqPSws/LblNQMhBFUQ/WzZ18lKeMZznzk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MeGsaJm5mfseRrE+QaEpHFdf7HWMyiagEVbMPEDs1M9H2IXKYglqEUXrfyrM136iR7zkZjKDHkYhlmKCUUhbpkbQv3mUnHPfC3rWj8193bl4DHED1R1+4R1DV3AHbaDkxnZ2aJtekFIi8sl78L7rJW9FypQpgZPA4VxPZ6NnuC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LYzUaqRY; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=Bziji/6azsEM8HWhwdBfIYb6mnJzkuKm1Xco9grsqsnK2gnrEytDhgObRf/a4zcbGMjYxo4SkrM+hhpL69plyURXI2T2+nGbO4TEEgAeQB1FvO0upxaINtraSRCfaSe6go1hERrG3+C2rA0NDV1lGXaM8Uk3+JSEhWrQ+1vtOYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YhJyY0eD; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,34 +36,34 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1757330027; x=1788866027;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=eunlzDci36JtWFeN2/xadOaBn7LGoweEoPESb4+N+xg=;
-  b=LYzUaqRYq+flmnUuLYCZMOkYqzY8LwVduqPVjgvhz328/9Bx6kEKa3M/
-   Q7l7UB1LqnpUUNWxawkMsZI9x78YEUqYKP+FW5JUTzbOnLAjpLgX1LDZS
-   ASAIt78EH7pdmVAIbBubWoxQJnhNQC4d2gaRj8HB4nl0hge2wJ/r32GMo
-   CIIZukFzYDv+SGyLtuahOhRYNeHt97QImq4VKC1zvXg4AyBbD9kTuI3Yj
-   upwwSPZPR5EKFvDBuSBHZ+sZ1WtPV7HKukTpa8DpnInRFlVQ+mXCay3nP
-   0TNEwdYzXXEtkZWVCZGbabaX1RKfzKYskvKNv/d+vu21K2/j8KKG7R8hr
-   Q==;
-X-CSE-ConnectionGUID: +VhE2KK0Qc+zpn8tvwWEkA==
-X-CSE-MsgGUID: NuNavCkNSKeIZ8VV8V1quw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11546"; a="77037897"
+  bh=3LoFXeyKOtxqPSws/LblNQMhBFUQ/WzZ18lKeMZznzk=;
+  b=YhJyY0eDfZA+MWMYI0RldH5avyU+Hm6+/7frAyK+zgTd2fYQ2ae43pFs
+   qq5b7IdCl/BcGlVT9ZH+MCLhbgMHy9/bBGiCz3UO4/dv/Fh49wim8HaNy
+   KKp9ubIefSlT4P/019gZdNMrewS1RCzOljvAqVpoOlucFEDhrXQwZEIHy
+   GFKxqL18uwHXt1Dc3UwManq8/qx5CebGCeO3LJu7H6QlVHCBL+mqBgZ6Z
+   iOzochKW+u/q1iKuG9btPr28+D6v71wcRH+89sHmv9DM32L8LsCGtRcqz
+   g1zWku42L3fpJ+AsKBo7Pj4ycOj7HVzrJ/T1CBMxcbutYQ4Pvyg9ZHyFk
+   g==;
+X-CSE-ConnectionGUID: Zhsy5o5zRnqV5wbr5cRXAA==
+X-CSE-MsgGUID: 53iRvsdgS8uHbYPKfs2Luw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11546"; a="77037900"
 X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="77037897"
+   d="scan'208";a="77037900"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 04:13:45 -0700
-X-CSE-ConnectionGUID: 7We6rr8KRcqUDQJXcO6pDw==
-X-CSE-MsgGUID: MoJyIvZNS+K0XCPc+Hqukg==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 04:13:46 -0700
+X-CSE-ConnectionGUID: 0zzm96sxRsiEbq3AJtbGjw==
+X-CSE-MsgGUID: 0lJgarzNTla8GmZpW98wfg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="173126574"
+   d="scan'208";a="173126586"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 04:13:44 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 04:13:45 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH wireless-next 06/14] wifi: cfg80211: Support Tx/Rx of action frame for NAN
-Date: Mon,  8 Sep 2025 14:13:00 +0300
-Message-Id: <20250908140015.71da2b062929.I0166d51dcf14393f628cd5da366c21114f518618@changeid>
+Subject: [PATCH wireless-next 07/14] wifi: cfg80211: Store the NAN cluster ID
+Date: Mon,  8 Sep 2025 14:13:01 +0300
+Message-Id: <20250908140015.63e9fef2a3aa.I6c858185c9e71f84bd2c5174d7ee45902b4391c3@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250908111308.2688889-1-miriam.rachel.korenblit@intel.com>
 References: <20250908111308.2688889-1-miriam.rachel.korenblit@intel.com>
@@ -78,60 +78,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Ilan Peer <ilan.peer@intel.com>
 
-Add support for sending and receiving action frames over a NAN Device
-interface:
-
-- For Synchronized NAN operation NAN Service Discovery
-  Frames (SDFs) and NAN Action Frames (NAFs) transmissions
-  over a NAN Device interface, a channel parameter is not
-  mandatory as the frame can be transmitted based on the NAN
-  Device schedule.
-- For Unsynchronized NAN Discovery (USD) operation the
-  SDFs and NAFs could be transmitted using NL80211_CMD_FRAME
-  where a specific channel and dwell time are configured.
-
-As Synchronized NAN Operation and USD can be done concurrently,
-both modes need to be supported. Thus, allow sending NAN action
-frames when user space handles the NAN Discovery Engine (DE) with
-and without providing a channel as a parameter.
-
-To support reception of NAN Action frames and Authentication
-frames (used for NAN paring and verification) allow to
-register for management frame reception of NAN Device interface
-when user space handles the NAN DE.
+When the driver indicates that the device has joined
+a cluster, store the cluster ID. This is needed for data
+path operations, e.g., filtering received frames etc.
 
 Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/wireless/nl80211.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/net/cfg80211.h | 3 +++
+ net/wireless/nl80211.c | 2 ++
+ 2 files changed, 5 insertions(+)
 
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index e30c1886c530..26fd42e189ce 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -6681,6 +6681,9 @@ struct wireless_dev {
+ 		struct {
+ 			struct cfg80211_chan_def chandef;
+ 		} ocb;
++		struct {
++			u8 cluster_id[ETH_ALEN] __aligned(2);
++		} nan;
+ 	} u;
+ 
+ 	struct {
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 0e246e166f74..4d0f37962cf4 100644
+index 4d0f37962cf4..eb96d3709287 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -13781,7 +13781,9 @@ static int nl80211_register_mgmt(struct sk_buff *skb, struct genl_info *info)
- 		break;
- 	case NL80211_IFTYPE_NAN:
- 		if (!wiphy_ext_feature_isset(wdev->wiphy,
--					     NL80211_EXT_FEATURE_SECURE_NAN))
-+					     NL80211_EXT_FEATURE_SECURE_NAN) &&
-+		    !(wdev->wiphy->nan_capa.flags &
-+		      WIPHY_NAN_FLAGS_USERSPACE_DE))
- 			return -EOPNOTSUPP;
- 		break;
- 	default:
-@@ -13842,7 +13844,9 @@ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
- 		break;
- 	case NL80211_IFTYPE_NAN:
- 		if (!wiphy_ext_feature_isset(wdev->wiphy,
--					     NL80211_EXT_FEATURE_SECURE_NAN))
-+					     NL80211_EXT_FEATURE_SECURE_NAN) &&
-+		    !(wdev->wiphy->nan_capa.flags &
-+		      WIPHY_NAN_FLAGS_USERSPACE_DE))
- 			return -EOPNOTSUPP;
- 		break;
- 	default:
+@@ -21864,6 +21864,8 @@ void cfg80211_nan_cluster_joined(struct wireless_dev *wdev,
+ 
+ 	trace_cfg80211_nan_cluster_joined(wdev, cluster_id, new_cluster);
+ 
++	memcpy(wdev->u.nan.cluster_id, cluster_id, ETH_ALEN);
++
+ 	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, gfp);
+ 	if (!msg)
+ 		return;
 -- 
 2.34.1
 
