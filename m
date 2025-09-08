@@ -1,137 +1,164 @@
-Return-Path: <linux-wireless+bounces-27099-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27100-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4335B49486
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 17:58:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39908B49535
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 18:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49CF916771D
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 15:58:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22EC31899031
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 16:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD8A30F942;
-	Mon,  8 Sep 2025 15:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C8C2F7AA9;
+	Mon,  8 Sep 2025 16:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="D3ZeYQq9"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cGwOF3M5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D956330F93D
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Sep 2025 15:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259C722256F
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Sep 2025 16:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757346973; cv=none; b=QFJFNlit3FRMHSsX9fJJdJpE2bWZ3VSljwnua0jxg2Qjr71ewLXCdr0ES2kkPOZ+6Yx9Tk2+AuSybxCPrQeD9aDQOUFTHmcDCGsqhCXBaasRDEsDKwH6X4+XO0Cdh3JDvn6JDlJGK01LLS/3q0cCCCCvDmp8fqW8QpuEwKblErY=
+	t=1757348907; cv=none; b=km2x0Wrbba483//G7U9lrDe7SqvrAtmfmT9oIj3iVEaB6+qXfccWp5TosjbAEYHadAoMfoXq6c2FD7oDdrdlMRPIN+eOZQ2mf2yUcAdzI/WzPUNYhDaEtjh2fXY4zOISP9e2FytjGARG4lhnTclvA/bBOXnb2o4SMrJuclFY/dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757346973; c=relaxed/simple;
-	bh=YBGJpJYntt9Zv6bZxG35AOveW6CNOJcYMWnp1L2HuIE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=P43p5wlmk7KMee3oGBkXf+/pFLMxCXQIFDmjfmN0EB8Mdmn7qW94byrm+pIECZjczyp1l9rjUq8SJPwj1jJA0tKshRJCJaOBobTB1goz5Wk70nQQUwQNronDXJ+JATLS/q1b8d3lsVZxpP+dEEneNoxw1FCs2Y12zOQYrbNgxpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=D3ZeYQq9; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1757348907; c=relaxed/simple;
+	bh=gzqYdjUasSzhZ5t9Aa8dDpAFvupBN/0Kc5DeXCAtbHc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MPaIDLXXyJ4NlngsT7ab+rbad6Te+kXa3oTYi8wcJnhH2O23ydcE4z8aiNomRVbfNqk35n7uWtMoq33BstfLmvSjfcuhX71Pw6z49kFf3Mmgc7IFCCBSX7HPO//5tpmig82sTlbdZ8hWdnIHrDbEfYdc1ECH/DFGaL2VK0BUvvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=cGwOF3M5; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588DGdNl004820;
-	Mon, 8 Sep 2025 15:56:07 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588GICTi022845;
+	Mon, 8 Sep 2025 16:28:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	lxpfKEjS92+QJS4vHNDHsliX03fKedtJ0eKC4KlnlrU=; b=D3ZeYQq9CDR/zZG/
-	9eLDKbacxEYEk/JuvShVd6DsZIsex/fE7Pm73cV4KfudKkOcgL5R+BJXflI7s6Bf
-	FssRji6OC8Ec6HN9WAUa/O5zw8I56mqDTmA+IBwPay7at5Kikz5v3fI8utWJ0iLp
-	OTxrd/2YhlNNFEPBFAo6VXNj6qcyIQuGXK1hlXEE2eCuDPsqZv8CS2YQ/iHoGfAd
-	gVemQ71aZpMJwidvM45cWxud03Q+toTcs1huhKMDuwYyww1Fv0qsKhC5sDe9Yizj
-	jFcV4aulvKHtDcyeuXTXu1ixfsrXkI4rwWBFMNfqnWbqfEonkztXX0Z+YzkFZ0sq
-	OBLFAw==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 491t37sk0x-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=UIyZecrc9q1u+B01XKRPD2
+	3/KXVZAKIngYp1w7xP5G4=; b=cGwOF3M5+CzDSolVsKjP/PbuT1jrfPb0DCwpCi
+	bz/FM5OpGjDZ1VmPaWLF1tvS0U0+bk//Zs5Zg2mgVJkBJgxN43/P5u6ENTwDIE4G
+	p/KuUJl38ew9h4DcjJ83nBmBytBxoLF4R1+vsGgvUSFUvDtltN/dtL2Dd5faLUma
+	5e9gpnZZNTwRf2VMgK/t1F4IJhwDILmhQGrc24pNcpJZQoe858pAfG3JoRy47SMC
+	ac/L9XfzFJzfKEOfgOiM3MwVyikJn911LtE+iEkIrNOUhXXOT3ze0zZktBkdVNDJ
+	4+xSumImBk+UWecbN/YMY2M1qJrx1ink/OFdlgdU3BRbheaw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 490c9j5ct6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Sep 2025 15:56:06 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 588Fu5u5019456
+	Mon, 08 Sep 2025 16:28:21 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 588GSKmI019892
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 8 Sep 2025 15:56:05 GMT
-Received: from [10.50.31.164] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.24; Mon, 8 Sep
- 2025 08:56:03 -0700
-Message-ID: <f220c991-f17b-498c-a0a6-68ead97b2e44@quicinc.com>
-Date: Mon, 8 Sep 2025 21:25:50 +0530
+	Mon, 8 Sep 2025 16:28:20 GMT
+Received: from hu-rdeuri-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.24; Mon, 8 Sep 2025 09:28:18 -0700
+From: Ripan Deuri <quic_rdeuri@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+Subject: [PATCH ath12k-ng 0/8] wifi: ath12k: Improve hal APIs usage in rx path
+Date: Mon, 8 Sep 2025 21:57:49 +0530
+Message-ID: <20250908162757.2938849-1-quic_rdeuri@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next] wifi: mac80211: add tx_handlers_drop
- statistics to ethtool
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Hari Chandrakanthan
-	<quic_haric@quicinc.com>
-References: <20250822052110.513804-1-quic_sarishar@quicinc.com>
- <ce5f2bd899caa2de32f36ce554d9cada073979c0.camel@sipsolutions.net>
-Content-Language: en-US
-From: Sarika Sharma <quic_sarishar@quicinc.com>
-In-Reply-To: <ce5f2bd899caa2de32f36ce554d9cada073979c0.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: MMLwuD15p_0QN8UsuDpkbOKOB7XJDG-9
-X-Proofpoint-GUID: MMLwuD15p_0QN8UsuDpkbOKOB7XJDG-9
-X-Authority-Analysis: v=2.4 cv=NdLm13D4 c=1 sm=1 tr=0 ts=68befc96 cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10
- a=ImDLBaF-EJqdgGKenVwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDA2NiBTYWx0ZWRfXzwIFRB1ROKyd
- GIAgda67cRvwQUem3ymfSoBViuf2eNKQAVOrXgMAtC0jpBunoIRwrcNCH2U86EW7EaLI5Writ/n
- UdAJE1v/MbJ05OAB7SnBVCBk7kVsRmq8k0IM07kR5IPZTKPUy/41ViRrdJG5Yufmvn8vVqOj1HT
- kQj/KSqNfhPsO18JbkTMYR5db4cg5G0mYVlghaxIVE20PeWrPkHy5lbegbg5zsH8bfaN2UFOR2l
- ndB/jys5K+gzyX9W1VK7d71QtTM3zvZ0y0I7x+J/SRYb1wSW6uzHYfOdmFY05rLIQW2SsbYgFqQ
- CeLs9ba9/IDCIB62Qr0uxbvB0JxwbeiNJYxntUg/zkE4nMW9N48htliUeyHy7yd3duR/Voa0PID
- NfANJpIq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyMiBTYWx0ZWRfX8KBBPL8IsPpt
+ ZSyO7307llyv2YCZaUA5WRMrVhuBuyE5OetHMwRzD+cAxstcnDUBrqTyxAJl1MOeWVNIpSVMMin
+ LPaMDssrkxgZC2QLGlTGbBawsXTz5IruowX4tMVdulkdflwNpbdZ6uqX1Q1dyfOeM3GfngL0Fbf
+ +BVtW6M8C5rSoy81ur3SxTmpaj/ebAM6SefceQKPkOgFU+TUj6JnFl0DVwSyCtrsXsVuCG1jJN0
+ B99NgZCsMZBbH8LhriXFVL63FqPpyvFBhgS7XV2gpW+xjtM7x/pigKuaFFaHgA10L5eTkcqAg44
+ XQDbvWkAra53Z5hArSLKBlVZ8tRk+VF2oG1QHLEgRMmjcTPjD1ublIpDiJIdK7hCaxYTNY7jrbt
+ bMfCxv+U
+X-Proofpoint-ORIG-GUID: WFgAu491kHbgf2FY-TE2UDotPlxOGlXA
+X-Authority-Analysis: v=2.4 cv=PpOTbxM3 c=1 sm=1 tr=0 ts=68bf0425 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=yJojWOMRYYMA:10 a=rgJ7dQ7m1Pf861PDhsMA:9
+X-Proofpoint-GUID: WFgAu491kHbgf2FY-TE2UDotPlxOGlXA
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-08_05,2025-09-08_01,2025-03-28_01
+ definitions=2025-09-08_06,2025-09-08_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
- clxscore=1015 impostorscore=0 spamscore=0 priorityscore=1501
+ suspectscore=0 phishscore=0 spamscore=0 bulkscore=0 clxscore=1015
+ malwarescore=0 adultscore=0 impostorscore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509080066
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060022
 
-On 9/4/2025 2:56 PM, Johannes Berg wrote:
-> On Fri, 2025-08-22 at 10:51 +0530, Sarika Sharma wrote:
->> Currently tx_handlers_drop statistics are handled only for slow TX
->> path and only at radio level. This also requires
->> CONFIG_MAC80211_DEBUG_COUNTERS to be enabled to account the dropped
->> packets. There is no way to check these stats for fast TX,
->> at interface level and monitor without enabling the debug configuration.
->>
->> Hence, add a new counter at the sdata level to track packets dropped
->> with reason as TX_DROP during transmission for fast path, slow path
->> and other tx management packets. Expose this via ethtool statistics,
->> to improve visibility into transmission failures at interface level
->> and aid debugging and performance monitoring.
->>
->> Place the counter in ethtool with other available tx_* stats for
->> better readability and accurate tracking.
-> 
-> As much as I don't like ethtool for wifi, I guess you found a use where
-> it's actually the right thing to use even in wifi ;-)
-> 
-> But why not remove the old debug statistic, you have a superset now?
+The existing usage of rx_ops to reach the hal_apis at multiple places uses
+function pointer indirections. In order to avoid such multiple function
+pointer indirection, extract the required hal parameters in the rx path
+right at the beginning and store them in a structure which is then
+leveraged by the rest of the rx path.
 
-I believe you're referring to removing TX_DROP_HANDLER from the 
-DEBUG-enabled statistics as part of cleaning up the old debug entries.
+Move remaining rx_ops APIs to hal_ops to simplify hal API usage.
 
-If that's the case, I’ll go ahead and send a follow-up patch to remove it?
+Also, make compact tlvs as default mode and remove the non-compact tlvs
+as they are unused. Since there is no need to maintain multiple versions
+of tlv extraction APIs, move the rx_ops callbacks to hal_ops.
 
-> 
-> johannes
+----
+
+Pavankumar Nandeshwar (5):
+  wifi: ath12k: Remove non-compact TLV support from QCN
+  wifi: ath12k: Replace ops with direct calls for rxdma ring mask
+  wifi: ath12k: Move hal_rx_ops callbacks to hal_ops
+  wifi: ath12k: Add new infra for the rx path
+  wifi: ath12k: Change the API prefixes to ath12k_wifi7 in tx/rx
+
+Ripan Deuri (3):
+  wifi: ath12k: Move the hal APIs to hardware specific files
+  wifi: ath12k: unify HAL ops naming across chips
+  wifi: ath12k: Remove hal_rx_ops and merge into hal_ops
+
+ drivers/net/wireless/ath/ath12k/Makefile      |    4 +-
+ drivers/net/wireless/ath/ath12k/ahb.c         |    2 +-
+ drivers/net/wireless/ath/ath12k/core.c        |    2 +-
+ drivers/net/wireless/ath/ath12k/core.h        |    2 -
+ drivers/net/wireless/ath/ath12k/dbring.c      |    5 +-
+ drivers/net/wireless/ath/ath12k/dp.c          |   31 +-
+ drivers/net/wireless/ath/ath12k/dp.h          |    1 -
+ drivers/net/wireless/ath/ath12k/dp_mon.c      |   36 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c       |  128 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.h       |  204 +---
+ drivers/net/wireless/ath/ath12k/hal.c         | 1048 +----------------
+ drivers/net/wireless/ath/ath12k/hal.h         |  106 +-
+ drivers/net/wireless/ath/ath12k/mac.c         |    6 +-
+ drivers/net/wireless/ath/ath12k/pci.c         |    2 +-
+ drivers/net/wireless/ath/ath12k/wifi7/dp.c    |   19 +-
+ drivers/net/wireless/ath/ath12k/wifi7/dp.h    |    5 +-
+ drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c |  501 ++++----
+ drivers/net/wireless/ath/ath12k/wifi7/dp_rx.h |   74 +-
+ drivers/net/wireless/ath/ath12k/wifi7/dp_tx.c |   49 +-
+ drivers/net/wireless/ath/ath12k/wifi7/dp_tx.h |    8 +-
+ .../wireless/ath/ath12k/wifi7/hal_qcn9274.c   |  369 ++++++
+ .../wireless/ath/ath12k/wifi7/hal_qcn9274.h   |   35 +
+ .../net/wireless/ath/ath12k/wifi7/hal_rx.c    |  161 +--
+ .../net/wireless/ath/ath12k/wifi7/hal_rx.h    |   82 +-
+ .../wireless/ath/ath12k/wifi7/hal_rx_desc.h   |    7 -
+ .../net/wireless/ath/ath12k/wifi7/hal_tx.c    |   13 +-
+ .../net/wireless/ath/ath12k/wifi7/hal_tx.h    |   18 +-
+ .../wireless/ath/ath12k/wifi7/hal_wcn7850.c   |  364 ++++++
+ .../wireless/ath/ath12k/wifi7/hal_wcn7850.h   |   32 +
+ drivers/net/wireless/ath/ath12k/wifi7/pci.c   |    2 -
+ 30 files changed, 1452 insertions(+), 1864 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.h
+ create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.h
+
+
+base-commit: d637c58a29475d646f8decfbbc1d27fae999a449
+-- 
+2.34.1
 
 
