@@ -1,188 +1,132 @@
-Return-Path: <linux-wireless+bounces-27081-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27082-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E77DB48A1A
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 12:24:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62349B48BCE
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 13:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AD8B34255B
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 10:24:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606831B26F36
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 11:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDE12F3621;
-	Mon,  8 Sep 2025 10:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023F52FABFE;
+	Mon,  8 Sep 2025 11:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LHz1ADtk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K1QjCgnS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4C7136358;
-	Mon,  8 Sep 2025 10:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B0C2FC869
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Sep 2025 11:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757327088; cv=none; b=g6nk/L7da9ONahI+RUYqhh4zyjk0bTIW+3JzO13ak8xw3KsBq2GDaxCyzlgitkdAl0Q/YvOlFkG3TjXWNztRHZ9P5YHotbRHN31A+TR5TTm//mH+5qPh1El/BnIHooaFL7MffM6gptckg8o1JSBfc4+V0VPRXjZyb8oLpM65C7E=
+	t=1757330019; cv=none; b=BxeHn5cDzY+0fMymGVsmXWNxEuuOjYQvcSrgdyu9NGEyz3hIBIzHNPsEFS33WHYXamnwkDM3g0Y3xoKZkVwqQircXzZqyi2Z8zjdktnm0G3vDlDNGG5Oi/hOzKJ5yDkmsrLpb4gEPYZv1J8Gp45HkC8peuBoFuWBIrGZCWcUwmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757327088; c=relaxed/simple;
-	bh=3c4d46dbwYhFkAIji9CnButKaWApe47Fg8Mn2cBmfHg=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=UMvkLUy3Eg9sbJLEMp/shZyhOO2ejNs3crBbDNQ1z0mInqbEYhiJMI1a7qG8d3GqnfeqjI27ek/1aNzJJq4FSkHpIbUta9QXxi9Z5M21YblMEdrZGrEHUHGgy0FDcZ6RT/MjKO0coprbir9LKo4TzU2eVxl7drL0VZH4vv3Ovns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LHz1ADtk; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1757330019; c=relaxed/simple;
+	bh=ZCFcLN7D2p40AqAV8Af91QF9rKpBGnERtx3avRyuK9M=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=PIKO12IpqTvdxH0IU3h9gq/GZeqVO/fidZdOVDsgAMQQqRE4eUqUoqnbiDirftdakszaHbWpV+yO8WqGxCmWrjW6nBfrloqHnMcSY4pmR16O9Z2LnXWJ/DG6/eQcKFKPuhHC7cG2PQ1PeDBPX861miQgHKU27cLO0QyiuSuUwFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K1QjCgnS; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757327087; x=1788863087;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=3c4d46dbwYhFkAIji9CnButKaWApe47Fg8Mn2cBmfHg=;
-  b=LHz1ADtkFSQu+lucmUA3HCQo1eo6Ic71+5h7B4LJwTB2CF8yM/KqL2kB
-   KS70hCtzBb4TFGRqC67flVKbnU9+ewrXkzNW5KhNvK7ArivurHSrQWPZ1
-   B3rpoLASCvC1SMoCjCg9+3lGsH1enCwx1/lkVIS8GySzEYg0+UE7fFRoP
-   QfPdb4vha8r5FlVGE9ZijOUvNII8InTI/k+/1+05Nq/EQVwzkcsEOjiRY
-   lRY9Wp0qHGeimhUXbY4cccuOIY/EZShAtmAlpStN8KaG0qSq3fKS5USQ9
-   yagOmWc1lSb0snymmZgL2gcbfZPRuVmoBvbtw4joiRpQ9far7qfWyTi5x
-   Q==;
-X-CSE-ConnectionGUID: LFYvIZzwRoaJ0WV6dyV7aw==
-X-CSE-MsgGUID: qJ6cFAkTQ/G7bCex7kiDHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11546"; a="69832941"
+  t=1757330018; x=1788866018;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZCFcLN7D2p40AqAV8Af91QF9rKpBGnERtx3avRyuK9M=;
+  b=K1QjCgnS045SuDO08nMNgfbsCe+ezfYkY/tGDjYTdYmmuSLCaTs+aoGR
+   So/Noc2UiQJ7iCGoG8lCan1RkMYkyvxO5kjHufptUvUhCtj//nDJP6hTn
+   9jDxFfgzhtGAPXxXkNKg/SM7SU1IIhEaXKI/wQCH3xLnCJ/Icqfb1akri
+   i37YBF1424Y9U7z1xAn2qyANpP9mlTCRYroXThnd+tdOs0JBwwvpG34f3
+   B564B0w0Fx99tYuKrhNCiDIxp81yMdCYx4A2jeJAKx7+Nhy6oCwAfykwK
+   9EDl+kOyNQw1r8V0BzE/6w0FYkQuGP54mLe5kp4DnFaQnNEIiO2iK5U5Y
+   A==;
+X-CSE-ConnectionGUID: SzjLGadpSwmoG6QwaXcDNw==
+X-CSE-MsgGUID: lpI2HVj9QDSl+xOFGGQlcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11546"; a="77037872"
 X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="69832941"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 03:24:46 -0700
-X-CSE-ConnectionGUID: whEKi/v8TFudb7tIU+AjHA==
-X-CSE-MsgGUID: U/YpIi0KRGSt2P0AfeFMvQ==
+   d="scan'208";a="77037872"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 04:13:37 -0700
+X-CSE-ConnectionGUID: Ld2t78wYTDCwTw6KVEAA7g==
+X-CSE-MsgGUID: iztRmTlPSTWukcZHahEYRw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="172875576"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.11])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 03:24:40 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 8 Sep 2025 13:24:35 +0300 (EEST)
-To: Manivannan Sadhasivam <mani@kernel.org>
-cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
-    David Box <david.e.box@linux.intel.com>, 
-    Bjorn Helgaas <bhelgaas@google.com>, 
-    Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-    =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kwilczynski@kernel.org>, 
-    Rob Herring <robh@kernel.org>, Nirmal Patel <nirmal.patel@linux.intel.com>, 
-    Jonathan Derrick <jonathan.derrick@linux.dev>, 
-    Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>, linux-arm-msm@vger.kernel.org, 
-    linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
-    ath11k@lists.infradead.org, ath10k@lists.infradead.org, 
-    Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
-    "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2 2/8] PCI/ASPM: Fix the behavior of pci_enable_link_state*()
- APIs
-In-Reply-To: <67274gnjp4qy4h3bcawey2edmjiuufdbm262q2qxgcc76dwlic@hdjxqczr54nt>
-Message-ID: <df354ae2-03bd-d17c-4e3a-9e62b248cc2a@linux.intel.com>
-References: <20250825-ath-aspm-fix-v2-0-61b2f2db7d89@oss.qualcomm.com> <20250825-ath-aspm-fix-v2-2-61b2f2db7d89@oss.qualcomm.com> <f644fc83-31cc-1f0e-58cf-7c007e6173e4@linux.intel.com> <67274gnjp4qy4h3bcawey2edmjiuufdbm262q2qxgcc76dwlic@hdjxqczr54nt>
+   d="scan'208";a="173126554"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 04:13:37 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH wireless-next 00/14] wifi: nl80211/cfg80211/mac80211: Add support for NAN discovery
+Date: Mon,  8 Sep 2025 14:12:54 +0300
+Message-Id: <20250908111308.2688889-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1505528149-1757327075=:938"
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi,
 
---8323328-1505528149-1757327075=:938
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+This series contains patches that enable the NAN basic functionality:
+discovery and join clusters, serivces dicovery.
 
-On Sat, 6 Sep 2025, Manivannan Sadhasivam wrote:
+- Publishing specific NAN capabilities
+- Configuring and managing NAN interface
+- Notification to user space about joining a cluster
+- Notification to user spcae about the end of a DW
+- Enablement of Tx/Rx of NAN specifc frames
+- Some simulation code in hwsim
 
-> On Tue, Aug 26, 2025 at 03:55:42PM GMT, Ilpo J=C3=A4rvinen wrote:
-> > +David
-> >=20
-> > On Mon, 25 Aug 2025, Manivannan Sadhasivam via B4 Relay wrote:
-> >=20
-> > > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > >=20
-> > > pci_enable_link_state() and pci_enable_link_state_locked() APIs are
-> > > supposed to be symmectric with pci_disable_link_state() and
-> > > pci_disable_link_state_locked() APIs.
-> > >=20
-> > > But unfortunately, they are not symmetric. This behavior was mentione=
-d in
-> > > the kernel-doc of these APIs:
-> > >=20
-> > > " Clear and set the default device link state..."
-> > >=20
-> > > and
-> > >=20
-> > > "Also note that this does not enable states disabled by
-> > > pci_disable_link_state()"
-> > >=20
-> > > These APIs won't enable all the states specified by the 'state' param=
-eter,
-> > > but only enable the ones not previously disabled by the
-> > > pci_disable_link_state*() APIs. But this behavior doesn't align with =
-the
-> > > naming of these APIs, as they give the impression that these APIs wil=
-l
-> > > enable all the specified states.
-> > >=20
-> > > To resolve this ambiguity, allow these APIs to enable the specified s=
-tates,
-> > > regardeless of whether they were previously disabled or not. This is
-> > > accomplished by clearing the previously disabled states from the
-> > > 'link::aspm_disable' parameter in __pci_enable_link_state() helper. A=
-lso,
-> > > reword the kernel-doc to reflect this behavior.
-> > >=20
-> > > The current callers of pci_enable_link_state_locked() APIs (vmd and
-> > > pcie-qcom) did not disable the ASPM states before calling this API. S=
-o it
-> > > is evident that they do not depend on the previous behavior of this A=
-PI and
-> > > intend to enable all the specified states.
-> >=20
-> > While it might be "safe" in the sense that ->aspm_disable is not set by=
-=20
-> > anything, I'm still not sure if overloading this function for two=20
-> > different use cases is a good idea.
-> >=20
->=20
-> Why? I thought your concern was with the callers of this API. Since that =
-is
-> taken care, do you have any other concerns?
+Thanks,
+Miri
+---
 
-I don't think it really matters anymore as it looks the vmd one is going=20
-to be removed by the David's patch and the qcom one is removed by your patc=
-h
-so no users remain.
+Andrei Otcheretianski (4):
+  wifi: nl80211: Add more configuration options for NAN commands
+  wifi: nl80211: Add NAN Discovery Window (DW) notification
+  wifi: cfg80211: Add cluster joined notification APIs
+  wifi: nl80211: Add more NAN capabilities
 
-> > I'd like to hear David's opinion on this as he grasps the ->aspm_defaul=
-t=20
-> > vs ->aspm_disable thing much better than I do.
-> >=20
-> > > And the other API, pci_enable_link_state() doesn't have a caller for =
-now,
-> > > but will be used by the 'atheros' WLAN drivers in the subsequent comm=
-its.
-> > >=20
-> > > Suggested-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-> >=20
-> > This tag sound like I'm endorsing this approach which is not the case. =
-I'd=20
-> > prefer separate functions for each use case, setting aspm_default and=
-=20
-> > another for the enable state.
-> >=20
->=20
-> Sorry, I misunderstood then. I'll drop this tag.
->=20
-> - Mani
->=20
->=20
+Ilan Peer (10):
+  wifi: cfg80211: Advertise supported NAN capabilities
+  wifi: cfg80211: Support Tx/Rx of action frame for NAN
+  wifi: cfg80211: Store the NAN cluster ID
+  wifi: mac80211: Support Tx of action frame for NAN
+  wifi: mac80211: Accept management frames on NAN interface
+  wifi: mac80211: Track NAN interface start/stop
+  wifi: mac80211: Get the correct interface for non-netdev skb status
+  wifi: mac80211: Export an API to check if NAN is started
+  wifi: mac80211: Extend support for changing NAN configuration
+  wifi: mac80211_hwsim: Add simulation support for NAN device
 
---=20
- i.
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 259 ++++++++++-
+ drivers/net/wireless/virtual/mac80211_hwsim.h |   4 +-
+ include/linux/ieee80211.h                     |  17 +
+ include/net/cfg80211.h                        | 127 +++++
+ include/net/mac80211.h                        |  10 +
+ include/uapi/linux/nl80211.h                  | 189 +++++++-
+ net/mac80211/cfg.c                            | 140 +++++-
+ net/mac80211/ieee80211_i.h                    |   4 +-
+ net/mac80211/iface.c                          |  25 +-
+ net/mac80211/main.c                           |   5 +
+ net/mac80211/offchannel.c                     |   5 +-
+ net/mac80211/rate.c                           |  11 +-
+ net/mac80211/rx.c                             |  12 +-
+ net/mac80211/status.c                         |  21 +-
+ net/mac80211/tx.c                             |  12 +-
+ net/mac80211/util.c                           |   8 +
+ net/wireless/nl80211.c                        | 435 ++++++++++++++++--
+ net/wireless/trace.h                          |  35 ++
+ 18 files changed, 1230 insertions(+), 89 deletions(-)
 
---8323328-1505528149-1757327075=:938--
+-- 
+2.34.1
+
 
