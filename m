@@ -1,102 +1,81 @@
-Return-Path: <linux-wireless+bounces-27097-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27098-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2764BB491F8
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 16:47:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE1E4B49216
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 16:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9B271715EA
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 14:47:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AE9D3AB93E
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 14:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443C415853B;
-	Mon,  8 Sep 2025 14:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AAC2EFD86;
+	Mon,  8 Sep 2025 14:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="E/CNag0H"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1706235BE8
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Sep 2025 14:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855FBF4F1
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Sep 2025 14:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757342853; cv=none; b=lKWZBwTsyooYKhtrx44AnXWDsYb3jmo0Mjv0erMuIE8kU9oW14P1bpKxOj6nrKbcbepO4511upxBVE1UU5BZAF4VBR6RZ4q9skLbbK46DvPVgezIsofrX0P6SDyqSY1a1Ti7h9Rjbpmi1VwFQpiiP+JvkWJf4SadzaJ3qYOZ4MU=
+	t=1757343129; cv=none; b=UnoFFy6Y3lRMW2LAuvFdqkC+IEnfVIV0ygKFbv+e0zotLPzGxSw8Ax/atcpmfk2eJ+CDWBVCIiAFLw/RiRr+/MCaOFqb114PDu+qFhS79T6gaakRF6N8vKXXIMq9UhpFT2aU/KEJclgSvagwarXTVQ8usnCTuK4k2dHxEhAiRI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757342853; c=relaxed/simple;
-	bh=qRY+E0C0Z/W/uyD3swNPH1GCA7zUrDFtCYBHclgDLVA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sqLhtqLkAVb/WJ2ad4wp4BPQ/BRRdPbTk8TmiW9F2KrgEWUFjQm4llONB1fNqDGZdG8u+FwhqYOsbhuE9THsDWY0TR9+VpsoKK6Zux/jdDCb1DdIcsRtORT+gA9tnzSFtQDZIGGjPaDLQB2sPnd/KbEz9sX30fOuSd6IWPvvZ3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iie.ac.cn; spf=pass smtp.mailfrom=iie.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iie.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iie.ac.cn
-Received: from localhost.localdomain (unknown [159.226.95.28])
-	by APP-01 (Coremail) with SMTP id qwCowAAXbqB57L5ojYOuAQ--.49720S2;
-	Mon, 08 Sep 2025 22:47:21 +0800 (CST)
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Chen Yufeng <chenyufeng@iie.ac.cn>
-Subject: [PATCH] wifi: mac80211: fix RCU use in ieee80211_build_hdr
-Date: Mon,  8 Sep 2025 22:47:09 +0800
-Message-ID: <20250908144709.1122-1-chenyufeng@iie.ac.cn>
-X-Mailer: git-send-email 2.43.0.windows.1
+	s=arc-20240116; t=1757343129; c=relaxed/simple;
+	bh=ydfXV7lSWNE+uEQHTlIdPGO61opkTimWY74x8UtNIos=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=D36a8X0UsGpgtBlWT4xQ8KTopqdOnEx0eg2SS/8j8O3kEM+SSr63V1lI3T008JAem3lJirhrZyd/yC0y83g4f7NKighXM3QmkfrqnAZ+j9+hlrwuT2ulF4L9biiB6yy9RpKXYMdV4hyg4S50LAG0YQ+p9MEgg26dMn5vF09/Z4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=E/CNag0H; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=I0G8AiY0UPXvKowwSLSS7qMnyWQVPJh6DsaKle6M4rU=;
+	t=1757343127; x=1758552727; b=E/CNag0HgDoIOtKE6cik5Sdl5hZnggSXKcrjAr14GDl9pkE
+	f2OJ2ZC0xrhdCLZFXndszl4W4/luWmNTP7PS+OltxDGsmzydyHZq7/ldRy7UrfO+wgTST1XxmQUll
+	yl4jy6Pq66yHyjWnmeorc/Opb5q+JdFMY6TVlXz1//NsS4DyrJy3kUD7zjkHzfHWvXnnBwZmifk7X
+	Jux8Ia8lTHM/126z0rk3B1UiO1VpbmGV0Q/Opq9aJ7Vfp2vWVI00Um1srSrTKMtPyqQ84w4nBWv04
+	XUwZ1gyn51O78AHtkqjpP9RZQ0laf7w+wVAjANN0w4tvDPL02eNbuTOz/WoBh76g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uvdDu-00000007m59-350v;
+	Mon, 08 Sep 2025 16:52:03 +0200
+Message-ID: <34607f53a5e68e4c9e306188738b001db8d42a52.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: fix RCU use in ieee80211_build_hdr
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Chen Yufeng <chenyufeng@iie.ac.cn>
+Cc: linux-wireless@vger.kernel.org
+Date: Mon, 08 Sep 2025 16:52:02 +0200
+In-Reply-To: <20250908144709.1122-1-chenyufeng@iie.ac.cn>
+References: <20250908144709.1122-1-chenyufeng@iie.ac.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAXbqB57L5ojYOuAQ--.49720S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Gw4rCFyfXF4fCFyktF4rAFb_yoWkArg_X3
-	Z7Xas5JF45t3W3Ar17Ar4fJr4Fkr9xtFW8Kw42ya93AF98tay0vFnagrW5ZrZ7Gay7u3W3
-	Crn8K34rKwn2qjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb2AFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
-	Gr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVAFwVW5XwCF
-	04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r
-	18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vI
-	r41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr
-	1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
-	x4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU6WlgUUUUU=
-X-CM-SenderInfo: xfkh05xxih0wo6llvhldfou0/1tbiDAgTEmi+slWqNwAAsp
+X-malware-bazaar: not-scanned
 
-The variable link is accessed under RCU protection, but isn't guaranteed to
-actually have protection. So add rcu_read_lock() and rcu_read_unlock() to
-ensure RCU protection.
+On Mon, 2025-09-08 at 22:47 +0800, Chen Yufeng wrote:
+> The variable link is accessed under RCU protection, but isn't guaranteed =
+to
+> actually have protection. So add rcu_read_lock() and rcu_read_unlock() to
+> ensure RCU protection.
+>=20
+> This is similar to the commit 9480adfe4e0f("wifi: mac80211: fix RCU=20
+>  use in TDLS fast-xmit").
 
-This is similar to the commit 9480adfe4e0f("wifi: mac80211: fix RCU 
- use in TDLS fast-xmit").
+Please don't submit patches that are "like" other patches you don't
+understand. There's no bug.
 
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
----
- net/mac80211/tx.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 00671ae45b2f..94ac7f954cb8 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2773,12 +2773,15 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
- 			/* DA SA BSSID */
- 			memcpy(hdr.addr1, skb->data, ETH_ALEN);
- 			memcpy(hdr.addr2, skb->data + ETH_ALEN, ETH_ALEN);
-+			rcu_read_lock();
- 			link = rcu_dereference(sdata->link[tdls_link_id]);
- 			if (WARN_ON_ONCE(!link)) {
- 				ret = -EINVAL;
-+				rcu_read_unlock();
- 				goto free;
- 			}
- 			memcpy(hdr.addr3, link->u.mgd.bssid, ETH_ALEN);
-+			rcu_read_unlock();
- 			hdrlen = 24;
- 		}  else if (sdata->u.mgd.use_4addr &&
- 			    cpu_to_be16(ethertype) != sdata->control_port_protocol) {
--- 
-2.34.1
-
+johannes
 
