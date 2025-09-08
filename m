@@ -1,112 +1,154 @@
-Return-Path: <linux-wireless+bounces-27075-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27076-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B25B48516
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 09:25:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 398C1B487AE
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 10:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08A5C17774D
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 07:25:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F26A317EF62
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Sep 2025 08:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02AB0137932;
-	Mon,  8 Sep 2025 07:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97939224891;
+	Mon,  8 Sep 2025 08:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="GjtJDYMx"
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="m5vi9rUk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E2D13B5A9;
-	Mon,  8 Sep 2025 07:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942401F8EEC
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Sep 2025 08:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757316338; cv=none; b=bFtmS38zvoxiaiB8kKIqNj+OU8p3NXcymOorz47VInxIDWXya4A8CSlQxOv6TM+2u1gbuxvL4ViK6vkNOykUNhy8NNZ058BVygtkspNqm0wBGoG2M/daUuXUirDH9onBGM/UvnYC1+efhTzWFzO2tnuek8ELPG8zuu3m+KTzH5U=
+	t=1757321967; cv=none; b=EZyOijxzRBy8ahK6xi/ShyDkRzHwrJ3U3aRBkyslsb+pTRWT9nhIxW8uG3EjvSYgXpLLbp1pETiDuPgglMj+l7hv8JnF96SPocdcPq0dUWb4iQu+Ur7jD6n5h/NV9g8b95XPfjP23ABZbMKX+FGv8FDEohB+kXUHuMYA9jKYc9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757316338; c=relaxed/simple;
-	bh=vXLhg4p2HJ/hAKMDRlchZwNn6+waVINrGjrM8ypMtrs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qXF51F2ZDLz436wPfbyM042okwjNML6Y4qnd9pe1NB+nStkeFDQtes84LmQjsN4HBqQV6OlJu7DrV3RaHZ8Qq8NAnLm8laH0T6REBFmV1VUbdBmdmXOITlxcWMEdCXma8Uwkpax/9I5/JtZwjf8k3qaDd/SDCb/ZOUQxClWBKsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=GjtJDYMx; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: ff5bd6fc8c8411f0b33aeb1e7f16c2b6-20250908
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=JzvTKSBojOyOHfeUH4od6Fjnx/Xmw/ekzsIFLVMxL68=;
-	b=GjtJDYMxCzfz8SN1+4kUj70+uZAPIxs9twzRV1h6hOdE9EbpxXPIW2ZB890iWnhszSKfGoRsfd9DGbKHfFC04zhBvywrZT2eKcHuLVtmtrKDpFRlAcJfxNU1ejgzNRa4ZM3W4Ll4EeEgAs4af/9+/cYD5jRNN+bAQKF8yRiqD/g=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.3,REQID:598e7c82-80ee-48b2-b154-06b01b45c306,IP:0,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-5
-X-CID-META: VersionHash:f1326cf,CLOUDID:bde10ef8-ebfe-43c9-88c9-80cb93f22ca4,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:-5,Content:0|15|50,EDM:-3,IP:
-	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
-	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: ff5bd6fc8c8411f0b33aeb1e7f16c2b6-20250908
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 988733491; Mon, 08 Sep 2025 15:25:29 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Mon, 8 Sep 2025 15:25:27 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Mon, 8 Sep 2025 15:25:27 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
-Subject: [PATCH] wifi: mt76: mt7925: fix incorrect length field in txpower command
-Date: Mon, 8 Sep 2025 15:25:26 +0800
-Message-ID: <20250908072526.1833938-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1757321967; c=relaxed/simple;
+	bh=qNzObxZi/gNdE+dTe84NJjTLXQrxRZ9athBl9Pcwxc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HpeTlAktWWcVVewXW7thYkSHewRWfyP7i0flecpsf2exU+5lk5FmsWbewV8QfPpw+6M7jc2E1QjbShhthrUGUPeND4AliM3oytuhAbpSfIK7sF3tHkXPJEGNTqSUoJ76Cjbw6pRmf5oMbfhwaTIPoEq3uU/KdBe0uuyEHcXMv2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=m5vi9rUk; arc=none smtp.client-ip=212.77.101.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Received: (wp-smtpd smtp.wp.pl 19985 invoked from network); 8 Sep 2025 10:59:08 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1757321949; bh=aZ+QUE32FwPhsQLyMAfBkawYsAuN48cp1oFyusK9M+w=;
+          h=From:To:Cc:Subject;
+          b=m5vi9rUkJMJmX6cez2tm5J+TxTVb2nMnS3d+Ql2pWM4Kp7Ucf4asOnv54JdNnHAcL
+           +7BR+j/CQQMNzbXfeqHSBiXaGbdq7Rlb/9QmrMxp1zboXxdTkLI4uTzuAMu0V9m8l1
+           6wj0o1JRrMnrcgp9qSC8CPD2hZOu4eKLDTw+O1m7PB/dsMYTna6X9tD7x5gBSoIH+Q
+           2OWAYCBpEpkOvyqRjwp1gNxcCPEuKFwfUQGp5fHVM/OMC+g+q4P4S2RYsmvjjv6WFD
+           4bXEfEcWeDKzTgTTXgbqCgb+CZpDsntBQ5fV2J5jA6gIZ0tOi2UgbWHm/ViYC75f1c
+           tkKRPk5SE/KMw==
+Received: from 89-64-9-45.dynamic.play.pl (HELO localhost) (stf_xl@wp.pl@[89.64.9.45])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <chenyufeng@iie.ac.cn>; 8 Sep 2025 10:59:08 +0200
+Date: Mon, 8 Sep 2025 10:59:08 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Chen Yufeng <chenyufeng@iie.ac.cn>
+Cc: linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] iwlegacy: Sanity check for sta_id
+Message-ID: <20250908085908.GA7864@wp.pl>
+References: <20250906094232.1580-1-chenyufeng@iie.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250906094232.1580-1-chenyufeng@iie.ac.cn>
+X-WP-MailID: 777d5367fe4f5f3d2000ecdc16a6e23f
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [gWMR]                               
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Hi,
 
-Set `tx_power_tlv->len` to `msg_len` instead of `sizeof(*tx_power_tlv)`
-to ensure the correct message length is sent to firmware.
+On Sat, Sep 06, 2025 at 05:42:32PM +0800, Chen Yufeng wrote:
+> This patch is similar to 2da424b0773c("iwlwifi: Sanity check for sta_id").
+> `2da424b0773c` introduced a sanity check to prevent potential memory 
+> corruption in function `iwl_sta_ucode_activate`.
+> 
+> In the iwlegacy driver, the function `il_sta_ucode_activate` shares 
+> a similar logic with the `iwl_sta_ucode_activate` function in iwlwifi. 
+> Initial observations suggest that the function may not adequately 
+> validate the range of the `sta_id` parameter. If `sta_id` exceeds 
+> the expected range, it could result in memory corruption or crash.
+> 
+> Although there is no confirmation of a similar vulnerability in the 
+> iwlegacy driver, it is recommended to adopt a preventive approach 
+> by adding range checks for `sta_id` in the `il_sta_ucode_activate` 
+> function. For example:
 
-Cc: stable@vger.kernel.org
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 484bf11070c9..930a8cb83701 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -3940,7 +3940,7 @@ mt7925_mcu_rate_txpower_band(struct mt76_phy *phy,
- 		memcpy(tx_power_tlv->alpha2, dev->alpha2, sizeof(dev->alpha2));
- 		tx_power_tlv->n_chan = num_ch;
- 		tx_power_tlv->tag = cpu_to_le16(0x1);
--		tx_power_tlv->len = cpu_to_le16(sizeof(*tx_power_tlv));
-+		tx_power_tlv->len = cpu_to_le16(msg_len);
- 
- 		switch (band) {
- 		case NL80211_BAND_2GHZ:
--- 
-2.34.1
+> ```
+> if (sta_id >= IL_STATION_COUNT) {
+>     IL_ERR(il, "invalid sta_id %u", sta_id);
+>     return -EINVAL;
+> }
+> ```
+> Adding such boundary checks can effectively mitigate potential 
+> memory corruption issues.
 
+Ask your LLM to write a simple changelog instead of marketing fluff.
+Something like: 'Add sanity check for il->stations[] array index.'.
+It would be sufficient.
+
+> Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
+> ---
+>  drivers/net/wireless/intel/iwlegacy/common.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
+> index b7bd3ec4cc50..a3bcf9d9ffa2 100644
+> --- a/drivers/net/wireless/intel/iwlegacy/common.c
+> +++ b/drivers/net/wireless/intel/iwlegacy/common.c
+> @@ -1735,10 +1735,13 @@ il_cancel_scan_deferred_work(struct il_priv *il)
+>  EXPORT_SYMBOL(il_cancel_scan_deferred_work);
+>  
+>  /* il->sta_lock must be held */
+> -static void
+> +static int
+>  il_sta_ucode_activate(struct il_priv *il, u8 sta_id)
+>  {
+> -
+> +	if (sta_id >= IL_STATION_COUNT) {
+> +		IL_ERR(il, "invalid sta_id %u", sta_id);
+Please compile check your changes.
+
+> +		return -EINVAL;
+> +	}
+>  	if (!(il->stations[sta_id].used & IL_STA_DRIVER_ACTIVE))
+>  		IL_ERR("ACTIVATE a non DRIVER active station id %u addr %pM\n",
+>  		       sta_id, il->stations[sta_id].sta.sta.addr);
+> @@ -1752,6 +1755,7 @@ il_sta_ucode_activate(struct il_priv *il, u8 sta_id)
+>  		D_ASSOC("Added STA id %u addr %pM to uCode\n", sta_id,
+>  			il->stations[sta_id].sta.sta.addr);
+>  	}
+> +	return 0;
+>  }
+>  
+>  static int
+> @@ -1774,8 +1778,7 @@ il_process_add_sta_resp(struct il_priv *il, struct il_addsta_cmd *addsta,
+
+This check should be done here, in il_process_add_sta_resp() since we
+dereference il->stations[sta_id] in other places in this function.
+
+Regards
+Stanislaw
+>  	switch (pkt->u.add_sta.status) {
+>  	case ADD_STA_SUCCESS_MSK:
+>  		D_INFO("C_ADD_STA PASSED\n");
+> -		il_sta_ucode_activate(il, sta_id);
+> -		ret = 0;
+> +		ret = il_sta_ucode_activate(il, sta_id);
+>  		break;
+>  	case ADD_STA_NO_ROOM_IN_TBL:
+>  		IL_ERR("Adding station %d failed, no room in table.\n", sta_id);
+> -- 
+> 2.34.1
+> 
 
