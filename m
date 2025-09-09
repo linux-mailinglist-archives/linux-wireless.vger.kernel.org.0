@@ -1,63 +1,53 @@
-Return-Path: <linux-wireless+bounces-27139-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27140-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A85B4A11E
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 07:10:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A1AB4A130
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 07:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 100E3189FB91
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 05:10:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C877E3AFA5B
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 05:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB16E217F24;
-	Tue,  9 Sep 2025 05:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F120F45945;
+	Tue,  9 Sep 2025 05:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="H8M3B/Lk"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="aOBMaUep"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5BCF9C1
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 05:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AF119A288
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 05:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757394614; cv=none; b=NP9241rBCPeNl+XDmFXhQuG2Eqm+PSdRzJ1YaV7hnH7lizUlbbp6zUHRlUUFbO5ee6TzsdK29LdZdlPk+ZpFffNWOu7AXA9I0GThJEY9cdpVwzRvNOEAGuTG9MrHJEOOVQ8h+W1FdFT+hhKybkfOU7Z+YavxaVQurljH6iHkOTA=
+	t=1757394925; cv=none; b=LEES/QNdVOLAgYmpl/ZhaJ9yU2WoSdTsYEtnsrlbLblZ1hLbC4831FgpIzUTKyf4Ceyl6iQgEYIg2AXrhqKYIGh3+0B7t3XXaaKIzAPXdog7wtJtfdFLPcxEPoTfrWB+I4Ytsfl0VzM2y+jQ0rQ2qWDX3Odlibx8oIUBneLXL9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757394614; c=relaxed/simple;
-	bh=MzyU4z4ieNko6Vsflzyq/th7QJ/5oCp3gdzfA5JBgPs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ONrBBCY/WXXcH0kOK3aowVr/y1MYFxX41pwFNWantdgwJJIfNFmmX3yHEEWClx6fQ0D5qgHxljXftTK9DiK5+VrHCIQYgdQKbW1Y/ICmYnLq9wMlwlE4wO3DA6JFXlYTQsh+ujvpjpz1hs3mO24zOswaC5OsKCWUDSrITeWDqwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=H8M3B/Lk; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5894cjiN009418;
-	Tue, 9 Sep 2025 05:10:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	xeSyk29U2KKujsKXj7VeQx0C0U8g7bH5VfuOyDv9I5o=; b=H8M3B/LkIwx5CegU
-	CbwYR3RA7SB5LJ8tqgyd0xuDrH7mVUH7dV1gPK36QT0Gr3919T5FgVKujZ4Dvf5q
-	sIEV5R5SDE50Axv/1mvx+cD5lGeDiC5jcng0m2K5NuprH/lENCpW+sOcocom4uP2
-	xyWaZCg2QKGob40HsKaXvVREqNJh7nHMzvsFk05kJLl2SECBtgho98ieLWdTPJy6
-	LAFanEiP8gIM3J8lMGGncoOlIErS/1MCcvl8KnHkJGZ7kQI8aQ/3iR9Sk9LskCfJ
-	eEbXRkKWnpzmdAeJa3w3JwWn7M7bgvWNC6lQBfRWXXqAGhd5XcU4BE+6zOA+iS7J
-	X/uaYg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 490aapf86q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 05:10:07 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5895A6D5028521
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 9 Sep 2025 05:10:07 GMT
-Received: from [10.79.198.37] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.24; Mon, 8 Sep
- 2025 22:10:05 -0700
-Message-ID: <f59d7f7d-6b57-4ffa-9679-de1c32b0c1bd@quicinc.com>
-Date: Tue, 9 Sep 2025 10:39:47 +0530
+	s=arc-20240116; t=1757394925; c=relaxed/simple;
+	bh=DEQdKJILjGiYhOcEPBdnJo35taG9ZVjvIQrw4k++e6o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sn8/Pu8N4h8RnU3xSEBcEbx2TTVKW/VCw3KEOuAU8sqqzQfcplfgOUrALEk2uTJJgrZS7GgLY5PvmyQluS9Cmbfhzk3kpQrvr8AtDW198631EIJOvGK/sPexE2oJBRogziytFlhjdKRlxHowG/7/hsH6d3et4PYkdQeFlgp0phA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=aOBMaUep; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=YI1lEa2m79R1su/rEIpWAFyrO+Jezkd3/oRpZDuRj5I=; b=aOBMaUepJhS809k1fkV1TvIkz3
+	hv/b5KNKIldk1O0E7tHLgLCCjz1A4ECEJbU70y+UGav+EQBVgtpeikPfGS7Z+ysEi6oNUU+U6m+zQ
+	koUHhtZ3ejC07JXMozHVNAJT8GSIHbwAmsWO36YayCqFE+Kzu9wfWUl2BFB/mZC92YFc=;
+Received: from p5b206816.dip0.t-ipconnect.de ([91.32.104.22] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1uvqhJ-004E0x-1l;
+	Tue, 09 Sep 2025 07:15:17 +0200
+Message-ID: <c64c1a73-17b4-43e1-9188-03a2ce3ec8b1@nbd.name>
+Date: Tue, 9 Sep 2025 07:15:16 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,73 +55,57 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next 1/3] wifi: cfg80211: add support to handle
- incumbent signal detected event from mac80211/driver
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Hari Chandrakanthan
-	<quic_haric@quicinc.com>
-References: <20250818101947.2464612-1-quic_amitajit@quicinc.com>
- <20250818101947.2464612-2-quic_amitajit@quicinc.com>
- <83b5c2e55c7ad55851b9877c5c085a57b6414ad9.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/4] wifi: mt76: mt792x: protect state->cc_* counters with
+ cc_lock
+To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, lorenzo@kernel.org
+Cc: deren.wu@mediatek.com, Sean.Wang@mediatek.com, Leon.Yen@mediatek.com,
+ Michael.Lo@mediatek.com, allan.wang@mediatek.com,
+ Eric-SY.Chang@mediatek.com, km.lin@mediatek.com, Quan.Zhou@mediatek.com,
+ Ryder.Lee@mediatek.com, Shayne.Chen@mediatek.com,
+ linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+References: <20250904030649.655436-1-mingyen.hsieh@mediatek.com>
+ <20250904030649.655436-2-mingyen.hsieh@mediatek.com>
 Content-Language: en-US
-From: Amith A <quic_amitajit@quicinc.com>
-In-Reply-To: <83b5c2e55c7ad55851b9877c5c085a57b6414ad9.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <20250904030649.655436-2-mingyen.hsieh@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=eMETjGp1 c=1 sm=1 tr=0 ts=68bfb6af cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10
- a=dTsDST_KAKpKjHVxWTgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: dV6QfWzRxuuPtGYeVTmXuPletE-MnyqV
-X-Proofpoint-ORIG-GUID: dV6QfWzRxuuPtGYeVTmXuPletE-MnyqV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAwMCBTYWx0ZWRfX1vAtZtQ7m4hy
- Wme4T/KXp9rMMs69e0IrghhveMhBbo0LDjeiPwanieOVApYvhYiaTSF4WfUEhJm9f7BhAXDPxGX
- 92pGZcsnp716mX3LQ8E21dEZ2n3CvKPH2myrwgXU0e3STjz/Y0fDHou/mRTEchQkwKsQf7b6YYE
- IuphMtvMEN6Vs2y/VBJFZCMFGSjoren8/xxQYtGQLFe9U1xBL3qE7lc/Rovjjp4cW9DDbUl2m7Y
- +E4JwEzV6XR0YgFGcf3N5B8NBkOxAK6KSOLvzkMW/qIKr4KAlDPFnwzPdu8cfDTzuh4NwQao8Da
- vmFrYgWELiFYnmIWDPRg8xWOgySujFnHaXzvsxzQZxCya1fEmMe/c7E1VneCltRU1gzcTZ6sibf
- /crZsiBY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-08_06,2025-09-08_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 adultscore=0
- bulkscore=0 phishscore=0 spamscore=0 suspectscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509060000
 
+On 04.09.25 05:06, Mingyen Hsieh wrote:
+> From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+> 
+> The updates to state->cc_* (cc_busy, cc_tx, etc.) lack synchronization,
+> risking race conditions and inconsistent statistics.
+> 
+> Add cc_lock protection to ensure atomic updates.
+> 
+> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
+I don't see any race conditions here. Those counters are only updated 
+and accessed with dev->mutex held.
 
-On 9/4/2025 3:28 PM, Johannes Berg wrote:
-> On Mon, 2025-08-18 at 15:49 +0530, Amith A wrote:
->> + * @NL80211_ATTR_INCUMBENT_SIGNAL_INTERFERENCE_BITMAP: u32 attribute specifying
->> + *	the signal interference bitmap detected on the operating bandwidth for
->> + *	%NL80211_CMD_INCUMBENT_SIGNAL_DETECT. Each bit represents a 20 MHz
->> + *	segment, lowest bit corresponds to the lowest 20 MHz segment, in the
->> + *	operating bandwidth where the interference is detected.
-> I think you should clarify how this interacts with puncturing.
->
-> Are disabled subchannels not considered part of the chandef, so if e.g.
-> you have an 80 MHz channel with one disabled subchannel, only the lowest
-> _three_ bits are taken into account, rather than the usual four for an
-> 80 MHz chandef?
->
-> Or, perhaps more easily, are disabled subchannels part of the bitmap and
-> then must be zero since there cannot be incumbent signal on them that
-> matters, since we don't even use them? Should the code perhaps then
-> check that those bits are indeed zero?
->
-> Or something else entirely?
->
-> johannes
-Punctured sub-channels are excluded from interference detection logic 
-and are
-typically not represented in the interference bitmap. Their 
-corresponding bits
-remain unset (zero).
+- Felix
 
