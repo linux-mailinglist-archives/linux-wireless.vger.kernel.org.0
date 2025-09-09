@@ -1,140 +1,172 @@
-Return-Path: <linux-wireless+bounces-27154-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27155-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F61B4A801
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 11:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F109B4A80C
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 11:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C57DB1C61497
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 09:29:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9EA6188295D
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 09:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F1629B8F8;
-	Tue,  9 Sep 2025 09:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5B2274FD3;
+	Tue,  9 Sep 2025 09:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nFUVy3sy"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="o8yugTiS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4F2285C9F;
-	Tue,  9 Sep 2025 09:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C299A1946AA
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 09:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757409485; cv=none; b=uAlA5W+2hvW9QiMH56rW2D3wbiDOc3aEW0f5P5P+mUm8jLL7/hAQAEIzpnBVAgZ/6UfgOmTFA4z/2MnW4uhPEI1u879FHUuEcBPK5iRkFbGwsK3CFWy0+hvPOz94BgZlnUmKhBH0nBAEePho/bFxRDaXgqIuSckRx5AXne2yxMc=
+	t=1757409656; cv=none; b=tQGfwW2PMYQ7fyRUg1iJ6roPDZH8vn2eYqejeuc9hfOXH7fEopJkSHnUViJxvZCtUTnuo+9R1nD4Mue6h0l7p32/mC8TTL2IW9HYBKIQ3LM/laruHW30FA+qhzXKJLgaj2Cil7We5NU/4QKywPrYDi0URaevB2OLOUvWOIotLcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757409485; c=relaxed/simple;
-	bh=CU91bXNdN1IkMGBsQW0jgZTzv5C9aSTraFaZ1oVTurw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ODaQqU5XZr0t6+kkz4MeyjJ1GcADdqrLFVq/eYAhHMm3OFGsWd5B774QPr1/Tp0W5cMoH+ripwo4tbfL01I3QBgPMPK6bS/O5nQdYwKCW1KWJOKDfq9nJaeh3eKUOP3Z4Le7Y9+zwGp7ERKUx9C+9uk8v7R4lsnHpyiNvLhXsdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nFUVy3sy; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757409484; x=1788945484;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=CU91bXNdN1IkMGBsQW0jgZTzv5C9aSTraFaZ1oVTurw=;
-  b=nFUVy3syc6J8rwt1QFSaOXsjNOqf/uIN0M8ZWZLuWGnTqoLolc9J/UDK
-   apBHYi4bjoiRFCdfm8joM+BD/FBWwlcwHJmzqiYO0CGP2qjyterpJFoi9
-   EsKEm0CItT9jL0tpDtkjbDCbxKT5PIv8stih8Z2axxRXEfTXIJHO7foPw
-   Bqe2W6YbRSSBa5gnHb+rH7IG/Zfn5VMO7kuP2zVsb+MKVF/d9RU9Xz0Af
-   4UnwMY4VdAxvqmR7aZZUgg8M4sXh7R68zout7d4jDy3Lfwr+obF/ZeYe8
-   3DeYM4wWWQ5J/4fag+VXIYAzIanHynFQ01PZGaI0A4tVhYzL4/OJeKlEG
-   w==;
-X-CSE-ConnectionGUID: zsdNWLaZRlmt45WVzRf2Bw==
-X-CSE-MsgGUID: ZajDO/wRR9+cxG3JQBj8IQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="71104159"
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
-   d="scan'208";a="71104159"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 02:18:03 -0700
-X-CSE-ConnectionGUID: ORwDCc2cQDujUSNWKpusxg==
-X-CSE-MsgGUID: WJDu20uDQGO2TqRCPRtObQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
-   d="scan'208";a="173500726"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 02:18:01 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH iwlwifi-fixes] wifi: iwlwifi: fix 130/1030 configs
-Date: Tue,  9 Sep 2025 12:17:34 +0300
-Message-Id: <20250909121728.8e4911f12528.I3aa7194012a4b584fbd5ddaa3a77e483280f1de4@changeid>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1757409656; c=relaxed/simple;
+	bh=bWWKrnXdXI9cEtyPHbuB57Ixq3V4jtXswb9Ip9oXKNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KP7LX9DSzAEt+stZv3Cr90HVeFJPy2VoBXWppjsqOVh1wui0eGe5wT8J9LZ4aeWbXFQyVP6rdefcAj2i1SdPGcmyfKkync1x9fGZgwogjYXC2WjJQTc/o0ORQQifKJYtTtjN/3H81THm859rOP72Sx4KSFPln3FZuBgGjeVB4pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=o8yugTiS; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b4d1e7d5036so3425007a12.1
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Sep 2025 02:20:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1757409653; x=1758014453; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eU4HIVk7YPXfWuIuhfgxMl+8gsfgVTC8SC7Ljb9INLg=;
+        b=o8yugTiSddXnWFB4G8R+dVesowl2OrrFcWcDynirmG9qzFCAgJLnhIhTHxCrXw2b3v
+         KbWoahU9MxGxkr/lMyuWMRGYwp6d/YGUuu8MKiVaOh/FYg94NRi1ktW4SF034kISqOBo
+         4PrOJc557W4sUc5x5kxtOlF8gqxJ617sh+6OLRUMnwyW7t/0BEqopducNSkj/jCCHjCT
+         wW70GNEDTcJlitJjxZGczaUASKU7JbaAzkVmHP41H64iqGGYNBs0Mur06h5Wxq5GeQ83
+         mI7WlFE5tmuI5urr8c+dJHfx+h/LbuhZm5hpDjsVT7gBKLTV7uLM0XkXzDNqVy6vcEtA
+         gM3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757409653; x=1758014453;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eU4HIVk7YPXfWuIuhfgxMl+8gsfgVTC8SC7Ljb9INLg=;
+        b=YBl//E3brwVJxwzHk2VfolJbfkUVD53p4vBVmeEQkJIBEg38ioLea1JyjVGUeLf9mq
+         mjTdMyjjL/X2EmCAXaQLCSWAWDoTYooT+puo5pHcPwOfd/qR69s7+RYW8g26mHSSJiES
+         /+4kLVnWY3RbqNEpwhzJZSjGT+r6r8vTfyMBAF9zhgXx5pulpokMiGsyNHJH5YHmUqIi
+         fmqneYCEogGRJUxGbK1bgEQFlzueOAeDzMYgaZ1/BIQmBcXdlU2ibGKRDixMJMJ3KGCW
+         VBlKBFmx3EJfC/6NKDM0i5v4dkyHi34x1HQt72Yoc0v8XHpIhY7Iua8027JHei+QL3LH
+         q2qA==
+X-Gm-Message-State: AOJu0YyrprDHp3vEXSAOvFEWpEbToEJEyHOS8hxMpz1m78vED9t2C2/0
+	B+a0rNfTvdPY4HjbH3lYRhln20d7w63hC9kHAR8bm3gBFtfdyLpRRfxUOt76W/PiTLriZb++rI9
+	sHV9cx+k=
+X-Gm-Gg: ASbGncvRC+aqhQYMgpd560vCYn/sRG3yaiDi8LjJGtsU1IZpFjIj5YGd8SXHiNOUaGu
+	yQHIIPeaO+Zqn7lX4BaxetTfPpvksi+wTIrQAPCsM2MlmvdYisne2NWx0b0jKwQLCp+na0URQCU
+	v2HGjitlYdgVwL9sQ/oxPvmL0Dtbzr3uACWdvgDBjoY9UH9UijLfuX3JsNI3bISnV6Kfgz8XSx5
+	w8x6zd8y/afle46GQFgYM2KKh2OUgpHX+w6kGSKzUHV5cM7NMeE2IR9LV19b7RcWI5CW9Rdj9Ed
+	LHTu60sBX6V31Gwh0lPsubB9QzVffhVzM0Uj1yQcsD4Paa/+gM+ujz5FioNcuoPRiA8p6kj+Ie9
+	4uJXtLpqWOMsDX8w3FvZBgGNC45L5Fzy9Vj+4hSvPDAPqGmfWZ34ApVThAUYuK797
+X-Google-Smtp-Source: AGHT+IF7dhHsyOjSSoqlMwMDM5iXGci1bzkkUMwUpOBhxW50u5LrI8WGAdIqorQjUcl0SrTrHmWwzw==
+X-Received: by 2002:a17:902:d089:b0:224:10a2:cae7 with SMTP id d9443c01a7336-25174373d5cmr90893965ad.40.1757409652902;
+        Tue, 09 Sep 2025 02:20:52 -0700 (PDT)
+Received: from localhost ([60.227.224.187])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32b988eed84sm15129475a91.8.2025.09.09.02.20.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Sep 2025 02:20:52 -0700 (PDT)
+Date: Tue, 9 Sep 2025 19:20:40 +1000
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
+Subject: Re: [RFC wireless-next 2/3] wifi: mac80211: correctly initialise S1G
+ chandef for STA
+Message-ID: <o2yyd6azqrxglw4i4ffpvgygxp2vorlpfbxjv3yktfv4p4cewx@edmpgi7bhy2d>
+References: <20250909080758.1004956-1-lachlan.hodges@morsemicro.com>
+ <20250909080758.1004956-3-lachlan.hodges@morsemicro.com>
+ <a70b8e474d097275267458e5bbc8c96ed2cb5955.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a70b8e474d097275267458e5bbc8c96ed2cb5955.camel@sipsolutions.net>
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Tue, Sep 09, 2025 at 10:51:42AM +0200, Johannes Berg wrote:
+> On Tue, 2025-09-09 at 18:07 +1000, Lachlan Hodges wrote:
+> > 
+> > +++ b/net/mac80211/mlme.c
+> > @@ -180,11 +180,9 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
+> >  
+> >  	/* get special S1G case out of the way */
+> >  	if (sband->band == NL80211_BAND_S1GHZ) {
+> > -		if (!ieee80211_chandef_s1g_oper(elems->s1g_oper, chandef)) {
+> > -			sdata_info(sdata,
+> > -				   "Missing S1G Operation Element? Trying operating == primary\n");
+> > -			chandef->width = ieee80211_s1g_channel_width(channel);
+> > -		}
+> > +		if (!ieee80211_chandef_s1g_oper(sdata->local, elems->s1g_oper,
+> > +						chandef))
+> > +			WARN_ON(1);
+> 
+> We generally don't want WARN_ON() if the AP is broken/wrong/stupid, so
+> should probably do something like that had before? Or just not connect?
+> 
+> 
+> (and if we did accept WARN_ON, you'd want WARN_ON(!...) here)
 
-The 130/1030 devices are really derivatives of 6030,
-with some small differences not pertaining to the MAC,
-so they must use the 6030 MAC config.
+I was meant to leave a comment saying how do we gracefully handle the error..
+but I've just had another look and I guess I missed it because, as you
+suggest, we can just do something like:
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220472
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220517
-Fixes: 35ac275ebe0c ("wifi: iwlwifi: cfg: finish config split")
-Cc: stable@vger.kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 26 +++++++++----------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+if (sband->band == NL80211_BAND_S1GHZ) {
+	if (!ieee80211_chandef_s1g_oper(sdata->local, elems->s1g_oper,
+					chandef)) {
+		/* Fallback to default 1MHz */
+		chandef->width = NL80211_CHAN_WIDTH_1;
+		chandef->s1g_primary_2mhz = false;
+	}
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index f9e2095d6490..7e56e4ff7642 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -124,13 +124,13 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x0082, 0x1304, iwl6005_mac_cfg)},/* low 5GHz active */
- 	{IWL_PCI_DEVICE(0x0082, 0x1305, iwl6005_mac_cfg)},/* high 5GHz active */
+	return IEEE80211_CONN_MODE_S1G;
+}
+
+> 
+> > @@ -3227,12 +3228,36 @@ bool ieee80211_chandef_s1g_oper(const struct ieee80211_s1g_oper_ie *oper,
+> >  		return false;
+> >  	}
+> >  
+> > -	oper_freq = ieee80211_channel_to_freq_khz(oper->oper_ch,
+> > -						  NL80211_BAND_S1GHZ);
+> > -	chandef->center_freq1 = KHZ_TO_MHZ(oper_freq);
+> > -	chandef->freq1_offset = oper_freq % 1000;
+> > +	chandef->s1g_primary_2mhz = false;
+> >  
+> > -	return true;
+> > +	switch (FIELD_GET(S1G_OPER_CH_WIDTH_PRIMARY, oper->ch_width)) {
+> 
+> nit: I tend to prefer u8_get_bits(oper->ch_width, S1G_OPER...) although
+> that mostly applies for fields wider than u8 since then you can use
+> le16_get_bits() etc. Might be nicer to be consistent and use the newer
+> helpers in newer code.
+> 
+> (But I don't feel very strongly about it, so if you feel strongly this
+> is better, feel free.)
+> 
+> > +	case IEEE80211_S1G_PRI_CHANWIDTH_1MHZ:
+> > +		pri_1mhz_khz = ieee80211_channel_to_freq_khz(
+> > +			oper->primary_ch, NL80211_BAND_S1GHZ);
+> > +		break;
+> > +	case IEEE80211_S1G_PRI_CHANWIDTH_2MHZ:
+> > +		chandef->s1g_primary_2mhz = true;
+> > +		pri_2mhz_khz = ieee80211_channel_to_freq_khz(
+> > +			oper->primary_ch, NL80211_BAND_S1GHZ);
+> > +
+> > +		if (FIELD_GET(S1G_OPER_CH_PRIMARY_LOCATION, oper->ch_width) ==
+> > +		    S1G_2M_PRIMARY_LOCATION_LOWER)
+> 
+> same here
  
--/* 6x30 Series */
--	{IWL_PCI_DEVICE(0x008A, 0x5305, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x008A, 0x5307, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x008A, 0x5325, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x008A, 0x5327, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x008B, 0x5315, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x008B, 0x5317, iwl1000_mac_cfg)},
-+/* 1030/6x30 Series */
-+	{IWL_PCI_DEVICE(0x008A, 0x5305, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x008A, 0x5307, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x008A, 0x5325, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x008A, 0x5327, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x008B, 0x5315, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x008B, 0x5317, iwl6030_mac_cfg)},
- 	{IWL_PCI_DEVICE(0x0090, 0x5211, iwl6030_mac_cfg)},
- 	{IWL_PCI_DEVICE(0x0090, 0x5215, iwl6030_mac_cfg)},
- 	{IWL_PCI_DEVICE(0x0090, 0x5216, iwl6030_mac_cfg)},
-@@ -181,12 +181,12 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x08AE, 0x1027, iwl1000_mac_cfg)},
- 
- /* 130 Series WiFi */
--	{IWL_PCI_DEVICE(0x0896, 0x5005, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x0896, 0x5007, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x0897, 0x5015, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x0897, 0x5017, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x0896, 0x5025, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x0896, 0x5027, iwl1000_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0896, 0x5005, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0896, 0x5007, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0897, 0x5015, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0897, 0x5017, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0896, 0x5025, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0896, 0x5027, iwl6030_mac_cfg)},
- 
- /* 2x00 Series */
- 	{IWL_PCI_DEVICE(0x0890, 0x4022, iwl2000_mac_cfg)},
--- 
-2.34.1
+Sure, I can make use of u8_get_bits() instead.
 
+lachlan
 
