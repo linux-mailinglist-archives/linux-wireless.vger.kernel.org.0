@@ -1,134 +1,163 @@
-Return-Path: <linux-wireless+bounces-27141-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27142-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C85B4A1D2
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 08:13:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D5DB4A254
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 08:34:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADCFB7B01FC
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 06:11:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0CDE1890012
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 06:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A45D2F3616;
-	Tue,  9 Sep 2025 06:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9A0303A3D;
+	Tue,  9 Sep 2025 06:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JdA+YKmS"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="GhxE7zhS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AF42D8791
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 06:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898D03019B1;
+	Tue,  9 Sep 2025 06:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757398379; cv=none; b=K+JVtR+6zT4Mr/ePfpTGzi56q2uEx6yD/tO5lOz735bbkBQMuAJOc8Q2TFn9BAh3b0HLruVRiJnNYOhZ6I1nh7NgixSDQkOV7pln7KEmLpBIvjSRFkoPJ7N0OSXqSvinja0Dr60ZSLFpRYB8p2OgT6o+p6H5x55SqN3dRPjJTpI=
+	t=1757399640; cv=none; b=qP0TFj+1gcOa1yk7PHNs0J47W9Kge/XLHjObz16YJ9c4Vd901N+qnLACUlO2ArbW0w4XpBYa69JH6mZRoffz4UULrqeK20HTJopkJOd8z6DE9SFkgFjj59RUt38+zOccouDXYQtBDDgok+2zJgmZBUIP0fd0q9qsrlyjf/fY3Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757398379; c=relaxed/simple;
-	bh=IhTfS0JUckoliWKeRxLgJ1fRKb93Z2PXLWdC7vce1Po=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hohB26f0b0qLIwzVhI55DIYggUj6o5Mj5oCwlkF+ljbfZKUGavE/7NA9o4pcLtIhgQBLTdsizsYvq5D7c5rc6LS9Ku7KQhO9xcVg2geC2uKA3hEdms+lNjdzwCouoihDp9D3MWA1X11ulg1Nah1RWh66YrsJsvOdoSWCwK4NTOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JdA+YKmS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953DAC4CEFD
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 06:12:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757398377;
-	bh=IhTfS0JUckoliWKeRxLgJ1fRKb93Z2PXLWdC7vce1Po=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=JdA+YKmS48rFY08CB//OrLRHr3sTmavZttnDpnvkb4VsDVNix8RAfpT78unHOJgIc
-	 impKvBxXqOPkB1RMFr9HwNz8Y1jZwUvsIjMQYcbPbH8vqGdwKyOMbc2OMIHyBJyFG4
-	 eE9JcArDL3pJA3VjoUuNHi+1lQatxLiaXcojD+cT4G3uEJtA89TmMQSAkOsucg19UT
-	 fs5Xd0Wo0HccMnHOt4QdbWZmLS8iMYMNCA7l2P/HrmV4VTUXxK6APfT9uNZKKqDGNf
-	 3KeYbhs4twwliFs6C5g87wUTY6xQcliw1c0Uly1JgVvR9LULUoo7DbYp9f8nDBtQJd
-	 JnOwbcckhs3kA==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-336a85b8fc5so38494331fa.3
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Sep 2025 23:12:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUfHzaxeWJug44p+JXU4A7mjqnp4F+pvnOl2VOk4MzX1feMzjVzlsY2VjkPrTxLK9R2o+x8IaxzfUuii18+ZA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQKxkrMb3pHjmYQ9TsU7fl9pZKbhCbNTGzQDUAPoUW/xBzH10E
-	1AVB6OUIz8D+NpwGbfs81IJ9pU19CAWh1lDy9pT4q5a3O7ZUBgjJLFRhX37xb6b4SCPDlNyAupz
-	JqlrmhdekRA3se5z/V1/MfvArrg+g/Ek=
-X-Google-Smtp-Source: AGHT+IHmIWEsCknZu3Jqd201RYpsXCgaqRpOm4m1rhu2IqOFqpBjyfEfmvoPDAL7Tq+q9yrHWoLwflm6Ly6nv45/NMk=
-X-Received: by 2002:a05:651c:23d2:20b0:338:735:8a79 with SMTP id
- 38308e7fff4ca-33b4b230a20mr25793411fa.1.1757398375874; Mon, 08 Sep 2025
- 23:12:55 -0700 (PDT)
+	s=arc-20240116; t=1757399640; c=relaxed/simple;
+	bh=Ogqp4XpuBL7zJJTDs42HXfHEo3R5sIvtQqrPOh+C3Os=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BaTxhIke5Ntv4LwZfYXiDPWtCU0rNwjjiR/ER5kSHv8LWfwxklLWxdAEhk9zi/xkI4kS/h+T/cVM0OcONh+P6CqKkowyQCxBzfYNP3zSgLniqTDWERdkzkUbQm4G7e3SUCTrqWu3rZoI93PFaQJg5C+MBI0lLHJDKqq1mGHNHsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=GhxE7zhS; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=0i
+	bI9vEsP3MNEc9wHQ+cBn0xW5pSKNT6VjhUISVbHXA=; b=GhxE7zhS5WGBgpfF/t
+	Ip6eSVueZdpc5689jRbQ/JkWIdRHAzG7pweO4rijIyJVeFuJXRxt5c3JCdMNHF+A
+	eBDZKdoo9vfMk/TolmpXpEoVFXbLr6bnlLp5kFkHhljI82xS9hRecPLkiAmBGnNm
+	WAYRln6qdb5dRjpwnZBz6eyQA=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wCHKMY4yr9ohNkqHw--.60047S2;
+	Tue, 09 Sep 2025 14:33:29 +0800 (CST)
+From: James Guan <guan_yufei@163.com>
+To: johannes@sipsolutions.net
+Cc: kuba@kernel.org,
+	kuniyu@google.com,
+	shaw.leon@gmail.com,
+	kees@kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	James Guan <guan_yufei@163.com>
+Subject: [PATCH] wifi: cfg80211: Fix page fault in __cfg80211_connect_result()
+Date: Tue,  9 Sep 2025 14:32:13 +0800
+Message-Id: <20250909063213.1055024-1-guan_yufei@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <000201db8822$98f28da0$cad7a8e0$@gmail.com> <CAGb2v65490c1m3W_1RkxJ-E7Q=3V_K8xqS2jmd6awcOdzWHXzQ@mail.gmail.com>
- <ff6ad414457e4b1cb68e834978a553c3@realtek.com> <CAPRryQobXZe5OwR=F-X0KHYyfBwUpFsi=Y5pKnENcUXTN42xAA@mail.gmail.com>
- <002d01db8da7$daf2ed50$90d8c7f0$@gmail.com> <CAGb2v66Y+rTsuKfQDgv-qwRTOorOucM+qfBOia-gY5sPCJp5qQ@mail.gmail.com>
- <319c9de5-e26f-45c0-9200-747c86bce303@green-communications.fr>
- <001a01db8ddc$019e8890$04db99b0$@gmail.com> <CAGb2v6689=CmxqOk9rCSXPctg8iCZzOUgcaxdNeB9uHSHzk39Q@mail.gmail.com>
- <14ab2a58e7603047354a17b2c980c143992a6782.camel@sipsolutions.net>
-In-Reply-To: <14ab2a58e7603047354a17b2c980c143992a6782.camel@sipsolutions.net>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Tue, 9 Sep 2025 14:12:43 +0800
-X-Gmail-Original-Message-ID: <CAGb2v66aOHxeHEEKO_XaBfufWPnjJk6RkTBo8e9D1T9ET4S1Fg@mail.gmail.com>
-X-Gm-Features: Ac12FXx4shXnbeVWSvaDVdt1XgyWGOKPO6XkNJGCmVmG-O_vnFWduYdKw68XKJw
-Message-ID: <CAGb2v66aOHxeHEEKO_XaBfufWPnjJk6RkTBo8e9D1T9ET4S1Fg@mail.gmail.com>
-Subject: Re: wireless-regdb: Allow 6ghz in the US
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: rmandrad@gmail.com, 
-	Nicolas Cavallari <nicolas.cavallari@green-communications.fr>, 
-	Dennis Bland <dennis@dbperformance.com>, Ping-Ke Shih <pkshih@realtek.com>, 
-	linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCHKMY4yr9ohNkqHw--.60047S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3JFW3uFWUCr1xCF1ftr18Zrb_yoW7Xw4Dpr
+	yxtFZ8Gr4kJryUXr1UAF4UJr17ZanrAF1UXryIvr1rZa4UWw1DJryUGFW7Jry5Jr1DX3Wx
+	Jr1kJw48t348GaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEgAwsUUUUU=
+X-CM-SenderInfo: xjxd0s51xivxi6rwjhhfrp/1tbiJxzDS2i-wRhhzgABsT
 
-Hi,
+When I attempted to connect to a virt_wifi device using iw on 6.17-rc5,
+a page fault occurred in __cfg80211_connect_result(), preventing successful
+connection.
 
-On Thu, Mar 6, 2025 at 4:02=E2=80=AFPM Johannes Berg <johannes@sipsolutions=
-.net> wrote:
->
-> Uh, this is a complex discussion. I do believe that we simply do not
-> have a way to capture the complexity of the rules in the database today.
->
-> Skimming the documentation, it seems that:
->
->  * Paragraph 56: For AP operation, it is allowed to operate an LPI AP
->    (indoors, obviously) - we could capture that with NO_OUTDOOR and
->    that's what the rule has now.
->  * Paragraph 122: For client operation, passive scanning is required,
->    presumably because clients are assumed to be mobile and thus also
->    present outdoors, where they will also scan.
->    This can only be captured with NO_IR today.
->  * There are additional spectral density power limits in paragraph 59,
->    which cannot be captured by the database today.
->
-> However, the combination of these really cannot be captured - NO_IR will
-> also prevent AP operation, which I think is the issue discussed in this
-> thread, but removing NO_IR will make clients break Paragraph 122.
->
-> I'll note that in general scanning on the 6/7 GHz band, by 802.11 spec,
-> is only active on the few Preferred Scanning Channels (PSCs), however,
-> that'd _still_ break Paragraph 122.
->
->
-> Unfortunately, it's also hard to fix - we cannot remove NO_IR because
-> that's used by older kernels, so I think the only way to fix it would be
-> to add a flag a la NL80211_RRF_ALLOW_6GHZ_VLP_AP (which translates to
-> IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP) which overrides NO_IR for this
-> specific case.
->
-> We also have reg_rule->psd internally already, I guess we just never
-> added a way to convey it from userspace? Not sure what it even does
-> though.
+The page fault is triggered because virt_wifi_connect_complete() sets
+requested_bss to NULL when no BSSID is specified.
 
-I wonder if it is worth bringing up this topic in the networking track
-at Plumbers this year? It would be about the various limitation of
-wireless-regdb today, such as:
-- lack of PSD
-- only one rule per band, preventing things such as
-  - AP on 6 GHz in the US, as this thread mentions
-  - very low power outdoor usage vs higher power but indoor-only usage
+This patch fixes the bug by adding a check for a NULL connected_addr
+before calling ether_addr_copy() in __cfg80211_connect_result().
 
-That said, I'm not in a position to implement anything to improve the
-status quo.
+Reproduction:
+	root@host:~# modprobe virt_wifi
+	root@host:~# ip tuntap add tap0 mode tap
+	root@host:~# ip link set tap0 up
+	root@host:~# ip link add link tap0 name wlan0 type virt_wifi
+	root@host:~# iw dev wlan0 scan
+	root@host:~# iw dev wlan0 connect "VirtWifi"
 
+Kernel panic occurred after running the connect command.
+Below is panic messages from kernel:
 
-ChenYu
+[  150.197544] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[  150.199333] #PF: supervisor read access in kernel mode
+[  150.199787] #PF: error_code(0x0000) - not-present page
+[  150.200148] PGD 0 P4D 0
+[  150.200339] Oops: Oops: 0000 [#1] SMP NOPTI
+[  150.200641] CPU: 0 UID: 0 PID: 78 Comm: kworker/u4:5 Not tainted 6.17.0-rc5 #5 PREEMPT(voluntary)
+[  150.201264] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[  150.202056] Workqueue: cfg80211 cfg80211_event_work [cfg80211]
+[  150.202528] RIP: 0010:__cfg80211_connect_result+0x35d/0xa40 [cfg80211]
+[  150.203032] Code: 8d 14 db 49 89 84 d6 00 04 00 00 41 0f b7 44 24 68 41 83 c5 01 44 89 eb 66 85 c0 75 b6 48 85 db 74 c0 41 80 8e a4 00 00 00 01 <41> 8b 07c
+[  150.204305] RSP: 0018:ffffc9000069bd10 EFLAGS: 00010202
+[  150.204670] RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
+[  150.205169] RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff888110e1f830
+[  150.205666] RBP: ffffc9000069bd90 R08: ffffffff0000afd4 R09: 0000000000000003
+[  150.206169] R10: 0000000000000001 R11: 0000000000000000 R12: ffff8881065e4c18
+[  150.206670] R13: 0000000000000001 R14: ffff888110e1f000 R15: 0000000000000000
+[  150.207165] FS:  0000000000000000(0000) GS:ffff8881f7c3e000(0000) knlGS:0000000000000000
+[  150.207723] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  150.208129] CR2: 0000000000000000 CR3: 000000010577d004 CR4: 0000000000372ef0
+[  150.208627] Call Trace:
+[  150.208811]  <TASK>
+[  150.208972]  ? wakeup_preempt+0x74/0x80
+[  150.209262]  cfg80211_process_wdev_events+0x13c/0x1b0 [cfg80211]
+[  150.209738]  ? cfg80211_process_wdev_events+0x13c/0x1b0 [cfg80211]
+[  150.210219]  cfg80211_process_rdev_events+0x2f/0x50 [cfg80211]
+[  150.210766]  cfg80211_event_work+0x3a/0x60 [cfg80211]
+[  150.211323]  process_scheduled_works+0xa3/0x420
+[  150.211806]  worker_thread+0x12a/0x270
+[  150.212170]  kthread+0x10d/0x230
+[  150.212460]  ? __pfx_worker_thread+0x10/0x10
+[  150.212770]  ? __pfx_kthread+0x10/0x10
+[  150.213043]  ret_from_fork+0x8c/0x100
+[  150.213322]  ? __pfx_kthread+0x10/0x10
+[  150.213595]  ret_from_fork_asm+0x1a/0x30
+[  150.213911]  </TASK>
+[  150.214076] Modules linked in: virt_wifi cfg80211 intel_rapl_msr intel_rapl_common intel_uncore_frequency_common kvm_intel kvm bochs drm_client_lib drm_sh4
+[  150.216925] CR2: 0000000000000000
+[  150.217176] ---[ end trace 0000000000000000 ]---
+[  150.217526] RIP: 0010:__cfg80211_connect_result+0x35d/0xa40 [cfg80211]
+[  150.218120] Code: 8d 14 db 49 89 84 d6 00 04 00 00 41 0f b7 44 24 68 41 83 c5 01 44 89 eb 66 85 c0 75 b6 48 85 db 74 c0 41 80 8e a4 00 00 00 01 <41> 8b 07c
+[  150.219483] RSP: 0018:ffffc9000069bd10 EFLAGS: 00010202
+[  150.219863] RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
+[  150.220372] RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff888110e1f830
+[  150.220874] RBP: ffffc9000069bd90 R08: ffffffff0000afd4 R09: 0000000000000003
+[  150.221379] R10: 0000000000000001 R11: 0000000000000000 R12: ffff8881065e4c18
+[  150.221899] R13: 0000000000000001 R14: ffff888110e1f000 R15: 0000000000000000
+[  150.222433] FS:  0000000000000000(0000) GS:ffff8881f7c3e000(0000) knlGS:0000000000000000
+[  150.223192] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  150.223728] CR2: 0000000000000000 CR3: 000000010577d004 CR4: 0000000000372ef0
+[  150.224373] note: kworker/u4:5[78] exited with irqs disabled
+
+Signed-off-by: James Guan <guan_yufei@163.com>
+---
+ net/wireless/sme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 3a028ff287fb..6014d71d2845 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -863,7 +863,8 @@ void __cfg80211_connect_result(struct net_device *dev,
+ 		wdev->links[link].client.current_bss =
+ 			bss_from_pub(cr->links[link].bss);
+ 	wdev->connected = true;
+-	ether_addr_copy(wdev->u.client.connected_addr, connected_addr);
++	if (connected_addr)
++		ether_addr_copy(wdev->u.client.connected_addr, connected_addr);
+ 	if (cr->valid_links) {
+ 		for_each_valid_link(cr, link)
+ 			memcpy(wdev->links[link].addr, cr->links[link].addr,
+-- 
+2.25.1
+
 
