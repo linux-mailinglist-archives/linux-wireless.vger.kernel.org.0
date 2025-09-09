@@ -1,250 +1,308 @@
-Return-Path: <linux-wireless+bounces-27144-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27145-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424C4B4A43D
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 09:53:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54318B4A48C
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 10:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF65F1886A73
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 07:53:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B051E7AC386
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 08:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5A323ED75;
-	Tue,  9 Sep 2025 07:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAF0DDC5;
+	Tue,  9 Sep 2025 08:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xZhGnT81"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="1wnxYrmm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86E623C4F3
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 07:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FE427453
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 08:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757404377; cv=none; b=fvD71ez4L4GrU61sD1dy2xeHLOQisQkBvCuXjdaaQ3BkxqBvjnqUhNgwky63Jn4hbpkE9rrvrCsj/2MTHdtZQ638hrr2C01mw45WsSWYT+bKbij74kvMihOMVvU057aGSFEs5xIuPnSCAMFIca6Dc8SzXV+B8bxyvDNj+jJyrEk=
+	t=1757405287; cv=none; b=uUho6QZSA1SXZgDGVCSXw6GNnPEluYGQhLRG/IKDok0VsN4SaZ5lP48Ra+L9/MEML5Ve9VOOFAFuSciAkeMKcQFcI/nhjNnPj5nG+DExSIGn3yKvI7+1g/IUUn1Ubpdxwk0vACfw66ipHUFDJGYjqA8MdMGZvvsOR74QA+wRZYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757404377; c=relaxed/simple;
-	bh=inPUrZMsfA2VY/R1OZIP0EMwvOmiWnfNcCAy3+3kvw0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L3Jq2dFj4WhkdbftHovaXoSgVn+Os3i8MJAfjc0lkpLS2062K5IawzexPnvtkh8StH3Sn8cpB309ntPARoZNMdZ93OQid1CWJ5zMYStK1FrpK7WZ5UjItsX8qyizb537lduzAMl1njDlboE+0qoi9nGzDntoMyHv9iYJAtmclGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xZhGnT81; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-24457f581aeso47996925ad.0
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Sep 2025 00:52:55 -0700 (PDT)
+	s=arc-20240116; t=1757405287; c=relaxed/simple;
+	bh=IUZFNUFLYV7fQMuV/eNlju4vxC/cGD/FENv6hzGMjEw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=B569JiKjaJJnCVg26HlUBtRP6kwdxViiRFBWkvy15X3Z7ZBo+32xjB6AMLtS88YQ8170dhmjv5rvqvw0/QNhbEQ9Iq9fzgrxpKUfntGZnKk5q73PggNqPxKdrW0K8HjK6adjKlwk135DPJEV2/MM29nQVerq+iAXdrSkWLcTWXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=1wnxYrmm; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-24b1622788dso36492185ad.2
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Sep 2025 01:08:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757404375; x=1758009175; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MMOBMpJlH1unyBv3NyBv5FS3WF4ll7Y30j2iPvk3MmY=;
-        b=xZhGnT81gRho+ch111bsRWXyfdkyXY89aVz9ek+5u9Ah3AkIdx4p08pHJVuc4T/is9
-         vyh9/Y0D/eQ9wdkkNbH1MVBmkqlLUriV3tURE076a7MA1QgH4hpUQuWX4XPirBrcI6ON
-         uwKwH/qgH6SQEusfePwePT7W5N5spe3Nx2hXd1RLjGjWfla4jT5eGPu0uU4VrnZfYjTV
-         9xbE8fF9mm7vo6pDDElTAquWFt+867VcY8BUGtFKBnQUPnPizgmMPaiiLwWY9jwB9q3j
-         0nivVqzjo2BKetROVjMib8U82oZOtJXndKhAb7rh4NPUVhBFh22qctrvE7w4MxrPJrK1
-         W67Q==
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1757405285; x=1758010085; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2+qeoFqZXY75zPM53sejuU+6C5I9KBHKuSJQApHjAyY=;
+        b=1wnxYrmmQi82tFYmOagAiLBEA8uhw9AqzHZMj2fxjxWEEHxaYJwf/fEfTHUZMm8Euv
+         CZQpq+c8s00Ifw3NXvbKFKDbC44RM6jOzMkPtoqzYEmTPpIrItmBBAM3Ma1sr9tsDd2E
+         J6Q5F6UbeB1RAl8Bv7g0t5TFe7WG+kgo7bDtCAvQROHwFeYtobVf7WYCkQQ5ak3dsTgZ
+         5wjcC6bCg+LcH+pKBgwhSRNeC+mVLZBy8r4cGi0qXHg4WasWGBzNlHQLjcmbr+p+a4ba
+         wwfD7ic0HxWLhMUtaPbCZIrnvdTsW/FxsABWsYozsCgFYdS9/eOF2WPCB9RU4hDunK+4
+         BQSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757404375; x=1758009175;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MMOBMpJlH1unyBv3NyBv5FS3WF4ll7Y30j2iPvk3MmY=;
-        b=CuMWSNFLU766Qr9PV/KT7xRJhMOY3D42/08RSttECgTMPX3wqex8roiiwh56Lp58Zh
-         Ob74ma7Cf80/4vytEvxtGWpZIbENOd0EyNZCpBVYCOFLE0YFkPAznrEhESALF0uoaUlC
-         FXOZlZYLkKgfwqSjQivYBRZkHgYlTyNejgkZegyrLomPZki/AYzCmPb6ctvHSvidgwrJ
-         wnyfu2hSBTF4rjvvqXztVNCKNCnuRW/RSR91OW6Weci6eJ0z/pY7WGzcuCD9w3h9C0Z5
-         6RVFT9JyO87117Fq4oFGxGz5vJH5eH1IjKmPw9gcD4KQR1UtIfMUif1tpZOajxRwCssO
-         s2+A==
-X-Forwarded-Encrypted: i=1; AJvYcCW6at70lRTiBXqpWMF3vwQr9YQLd1CreXlnhWpbw6vpvRpWdzjw/kIc6LJpthKPQDMWGoHL5FKZmxcDvJJsNg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUH6YgeB5FJME4XOMftHZruKLk9okDWUW5tXuolWPjbZj8uHZy
-	3+D/z1opZ/kZgYJIUYlZ0NdvNvtd52j/jPyZSHeWK8r1UdiafLosVu2ex58IclL/Z1z0bpMdBsN
-	Y6sBcTL8Em6WCWPiAWcdm4987PeYiulsHhY9JgJH85g==
-X-Gm-Gg: ASbGncuxhmVx8It9AOzGUVHI4UF/j9KXDXBgRJ2LGRPL8CnKQfRJ+fW1B1u9kDuRxCP
-	aG6lloYfMynTTt+pTpsfu4sA/x5N+jRwPn2Crsk+UknNSTGntyq/MUfJCLkPV4twQzAgQARSQjm
-	EJJC8tf1x9I+c3o6n7IYW2sWoYZR/vvvHfOsUgIbYED7iRWQnUynXDG/NXZ+jImCOTHpM0TDqgT
-	Kwt/w9kMTq/ko98isnxu4bF/JWPETIyx2pz+HImG/8HH6G1xCBkySNaVye/80+HGqx3EBo=
-X-Google-Smtp-Source: AGHT+IHKMwwuJuV9mWv+A5szEpOumIuvlZcVWUqldPFr6JIn3jDsrrgM3BJF5KeyNQI945RkqqnfgQuc2lOpuPGqW0g=
-X-Received: by 2002:a17:902:d2c7:b0:24c:e6a6:9e50 with SMTP id
- d9443c01a7336-25174a2e860mr141006125ad.45.1757404373705; Tue, 09 Sep 2025
- 00:52:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757405285; x=1758010085;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2+qeoFqZXY75zPM53sejuU+6C5I9KBHKuSJQApHjAyY=;
+        b=TY/hZi+CJHyeL2+JNBv1Ay0+f48xZqi09k0+sdfrZByGyAjsd4DKXkZtAGkyH4vJb5
+         /EF2ktkQeRGSOdP87VVN90u5DAKwv2aUSt1KwCQMO150jSg7QjtcBaofhTcHVjxSSR8R
+         ihBa++faZFet9Bg2TtZNceSC2WLj/nV131krs72nMMqDqyX8hCVuc1BV6h28q4fukmcK
+         j9pAFPnEuMfoPe8/3IzRZAAPMyESW/L6Gvt63dada29zzwjCmh6bB9JjfM6xW0UWib+J
+         MwQtkNZ5CkX+1ACmsSSOdmDDJm7PGilI5AuWp19G61iI4YCGlc5JcSazZYGMmXlTR4SX
+         cdyg==
+X-Gm-Message-State: AOJu0YyABBohZsuESWKzHYj68QMw+cnZ8FRPvhwmppIa2AdZhmmLzVVz
+	rqf+NnxKcu3FdCaAYx0iBhgWfKieIW8Q71fRp1UI5U0rIaaEE64zCoxi1aWUjC0/UqUj1iCS3ua
+	+nZfxQdE=
+X-Gm-Gg: ASbGncsKjH0PtsJhgg2qU0dHw64Hx0vDZXi0Dn0kuFT5c8O3dpBHg2GUBUEKlSSGyHF
+	DbmrnGwNWCDN3QnAY5vFww59QIF98ugmibHjOxwxtfvkX0KTNQRjjYG3bTDUoRm0caqhGHT7q2f
+	ShdvY9bzuHNFuQJVYTZRuUZ5wso/V5C3/DMhGdFaz4c1AE93hBndQjJE3iV5kDcl90xGQe//0OZ
+	3MGhFluMBWZl8G9LL1sN06UzA/Qo7++gA+JPpZbDwyte4C+o8lBW14lNWfe41ltppiGyC5RgtoL
+	+JPnz//4Ty/Wunv2YgcPmJak/XQpTkQM+V8+A2WGwPHOou8WWLprL85J8saH4zezu5tnx/uE4a2
+	fMAUyAL1tu/ReC6iGo5/c37PHq1+iGx0CbCEznFDiU2zRi7Zfj3oMKINm4QjkFSq+ae6NAQR7u5
+	KIQTe3gus6WNejOdBvaEvktXKCgXs=
+X-Google-Smtp-Source: AGHT+IEzmKPZV9DXuTlhrjjpuI2A46bk45J1/rmh0zcoBqcaqcAsNiZX3rs5NWmV6slCtsJDFCDGag==
+X-Received: by 2002:a17:902:d2c2:b0:24d:3ae4:1175 with SMTP id d9443c01a7336-2516c895b06mr175243985ad.5.1757405285105;
+        Tue, 09 Sep 2025 01:08:05 -0700 (PDT)
+Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24cb28e33d7sm148882995ad.89.2025.09.09.01.08.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Sep 2025 01:08:04 -0700 (PDT)
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	arien.judge@morsemicro.com,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Subject: [RFC wireless-next 0/3] wifi: correctly represent S1G channels
+Date: Tue,  9 Sep 2025 18:07:47 +1000
+Message-ID: <20250909080758.1004956-1-lachlan.hodges@morsemicro.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250907195600.953058118@linuxfoundation.org>
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 9 Sep 2025 13:22:42 +0530
-X-Gm-Features: AS18NWB51GMfdNxH5F_7y6R9Phs7xYbSJja9zt2vDLfRVbapihqj_C3CM63O-h0
-Message-ID: <CA+G9fYt3xc6DmR+EYZD1cAiBSf0VxH6jqbdf0PK-8uGPivw8ew@mail.gmail.com>
-Subject: Re: [PATCH 5.4 00/45] 5.4.299-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org, Netdev <netdev@vger.kernel.org>, 
-	linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 8 Sept 2025 at 01:40, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.4.299 release.
-> There are 45 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.4.299-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+This patchset adds support for correctly implementing S1G channelisation.
 
+The email chain linked [1] provides some preliminary discussion regarding
+the implementation of this patchset aswell as discussion of the NO_PRIMARY
+flag which is an S1G specific flag that will be introduced.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+S1G Primary Channel Overview
+============================
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+An S1G PHY's channelisation comprises of two components, the primary channel
+(also known as the "control" channel) and the operating channel. The primary
+channel is either a 1MHz or 2MHz channel. The 1MHz channels are the building
+blocks that make up both the 2MHz primary (if configured) and the wider
+operating channel described by the chandef. While the S1G PHY is very similar
+to the VHT PHY with 1/10th clock rate, the introduction of 1MHz channels is
+unique. This enables the aforementioned 1MHz or 2MHz primary channel which
+is the main deviation from the VHT PHY (atleast that we care about here).
 
-NOTE:
-Following list of new build warnings noticed on arm build with gcc-12 and c=
-lang.
+Implementation
+==============
 
-drivers/net/wireless/marvell/libertas/cfg.c: In function 'lbs_associate':
-include/linux/kernel.h:843:43: warning: comparison of distinct pointer
-types lacks a cast
-  843 |                 (!!(sizeof((typeof(x) *)1 =3D=3D (typeof(y) *)1)))
-      |                                           ^~
+Channel Reporting
+-----------------
 
-drivers/net/wireless/st/cw1200/sta.c:1292:20: warning: comparison of
-distinct pointer types ('typeof (ssidie[1]) *' (aka 'const unsigned
-char *') and 'typeof (32) *' (aka 'int *'))
-[-Wcompare-distinct-pointer-types]
- 1292 |                         join.ssid_len =3D min(ssidie[1],
-IEEE80211_MAX_SSID_LEN);
-      |
-^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+An S1G driver is expected to advertise the list of 1MHz channels it supports
+such that it is inline with the other PHY types. An example using the AU
+2020 channels:
 
-drivers/net/wireless/marvell/libertas/cfg.c:1106:18: warning:
-comparison of distinct pointer types ('typeof (ssid_eid[1]) *' (aka
-'const unsigned char *') and 'typeof (32) *' (aka 'int *'))
-[-Wcompare-distinct-pointer-types]
- 1106 |                 u32 ssid_len =3D min(ssid_eid[1], IEEE80211_MAX_SSI=
-D_LEN);
-      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-~~~~
+#define CHANS1G(channel, freq, freq_offset, flags)
+[...]
 
-## Build
-* kernel: 5.4.299-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: f858bf5484295b4f9ee720b49c5348ce54eceae3
-* git describe: v5.4.297-70-gf858bf548429
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
-97-70-gf858bf548429
+static struct ieee80211_channel s1g_channels[] = {
+        CHANS1G(27, 915, 500, 0),
+        CHANS1G(29, 916, 500, 0),
+        CHANS1G(31, 917, 500, 0),
+        CHANS1G(33, 918, 500, 0),
+        CHANS1G(35, 919, 500, 0),
+        CHANS1G(37, 920, 500, 0),
+        CHANS1G(39, 921, 500, 0),
+        CHANS1G(41, 922, 500, 0),
+        CHANS1G(43, 923, 500, 0),
+        CHANS1G(45, 924, 500, 0),
+        CHANS1G(47, 925, 500, 0),
+        CHANS1G(49, 926, 500, 0),
+        CHANS1G(51, 927, 500, 0),
+};
 
-## Test Regressions (compared to v5.4.297-24-g79c1b3cebd7a)
+This list makes up the 1MHz primary channels that will be used both by the
+chandef to describe the primary channel and reported to usermode for various
+operations such as scanning.
 
-## Metric Regressions (compared to v5.4.297-24-g79c1b3cebd7a)
+Chandef Representation
+----------------------
 
-## Test Fixes (compared to v5.4.297-24-g79c1b3cebd7a)
+As mentioned previously, an S1G interface can be configured such that the
+primary channel is a 2MHz channel which consists of 2 1MHz subchannels. When
+configured as such, beacons are transmitted on the center frequency of the 2
+bonded subchannels. However, when operating on a 2MHz primary channel, there
+must always exist a 1MHz subchannel that can be used and advertised to STAs
+that are configured to use 1MHz channels during association. How this 1MHz
+subchannel is advertised to STAs is known as the primary channel location.
 
-## Metric Fixes (compared to v5.4.297-24-g79c1b3cebd7a)
+When an AP is beaconing on a 2MHz primary, the S1G Operation element will
+advertise the 2MHz primary channel number. However, it also uses a single bit
+to describe where the 1MHz primary subchannel lies within this 2MHz primary.
+This is described in IEEE80211-2024 9.4.2.211, Table 9-363:
 
-## Test result summary
-total: 39701, pass: 30356, fail: 2171, skip: 7026, xfail: 148
+        Bitmap of B0–B4 indicates the primary channel width, and
+        the operating channel widths, 1/2/4/8/16 MHz.
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 131 total, 131 passed, 0 failed
-* arm64: 31 total, 29 passed, 2 failed
-* i386: 18 total, 13 passed, 5 failed
-* mips: 25 total, 25 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 26 total, 26 passed, 0 failed
-* riscv: 9 total, 3 passed, 6 failed
-* s390: 6 total, 6 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 27 total, 27 passed, 0 failed
+        The Primary Channel Width subfield, located in B0 of this
+        field, and the BSS Operating Channel Width subfield,
+        located in B1–B4 of this field, are defined in Table 10-39.
+        B5 indicates the location of 1 MHz primary
+        channel within the 2 MHz primary channel
 
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-exec
-* kselftest-fpu
-* kselftest-futex
-* kselftest-intel_pstate
-* kselftest-kcmp
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* lava
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
+                — B5 is set to 0 to indicate that is located at the lower
+                  side of 2 MHz primary channel.
+                — B5 is set to 1 to indicate that is located at the upper
+                  side of 2 MHz primary channel.
 
---
-Linaro LKFT
-https://lkft.linaro.org
+To store this information within the chandef, we introduce a new variable -
+s1g_primary_2mhz which indicates that the chandef::chan points to the 1MHz
+subchannel denoted by the primary channel location, yet the AP is configured
+with a 2MHz primary. However, this means we have no direct access to the
+adjacent 1MHz channel that makes up the other bonded channel for the 2MHz
+primary, we use the notion of "sibling" channel to describe this channel.
+This will be described in more detail shortly.
+
+When bringing up an S1G interface, we also expose a new netlink attribute,
+NL80211_ATTR_S1G_PRIMARY_2MHZ which allows for configuring an AP such that
+it is using a 2MHz primary channel.
+
+1MHz Primary Sibling Channel
+----------------------------
+
+As mentioned above, since we only hold a single pointer to the 1MHz primary
+subchannel, we still need to be able to extract the sibling 1MHz channel for
+two reasons:
+
+1. To perform validation that, indeed, the 2MHz primary can be used. As in order
+   for the 2MHz primary to be used - both 1MHz subchannels that make up the 2MHz
+   primary must be valid. The validation criteria will be described shortly.
+2. When receiving a beacon from a 2MHz primary, we need to be able to calculate
+   the center frequency of the 2MHz primary, this requires us to first determine
+   the sibling channel as we have no frame of reference to the location of the
+   1MHz channel within chandef::chan.
+
+To accomplish this, we introduce a new helper routine,
+cfg80211_s1g_get_primary_sibling() which works by calculating the current 1MHz
+index into the wider operating channel described by the chandef, and
+returning the sibling 1MHz channel.
+
+NO_PRIMARY Flag
+---------------
+
+The singular notion that the S1G PHY specification was designed around
+unlicensed 'Sub 1GHz' spectrum means that varying adjacent spectrum
+restrictions and hardware limitations require, in some circumstances, edgeband
+primary channels to be disabled. However, this does not prevent the wider
+operating channel described by the chandef from being used. It's also
+important to note that you cannot assume this to be symmetric. This was
+discussed in more detail in email chain linked above [1], so I don't believe
+it worth going into detail again.
+
+The important takeaway for this patchset, is that when performing validation
+on a primary channel, we need to ensure that the channel does not contain the
+IEEE80211_CHAN_S1G_NO_PRIMARY flag, and in the case of a 2MHz primary channel,
+we need to ensure both 1MHz subchannels that make up this 2MHz primary do
+not contain the flag. This was mentioned above as one of the reasons for
+needing the cfg80211_s1g_get_primary_sibling() helper function.
+
+Chandef Validation
+------------------
+
+Now that its implied that S1G drivers advertise 1MHz channels, we can correctly
+perform subchannel validation. We introduce some new helper routines:
+
+cfg80211_s1g_get_start_freq_khz(const struct cfg80211_chan_def *chandef)
+cfg80211_s1g_get_end_freq_khz(const struct cfg80211_chan_def *chandef)
+#define for_each_s1g_subchan(chandef, freq_khz)
+
+which allow us to enumerate all subchannels described by chandef::center_freq1
++= chandef::freq_offset and chandef::width. This process is very similar to
+other PHY types, where the following things are validated:
+
+1. The primary channel 'chan' exists as a subchannel
+2. The subchannels can operate on the desired bandwidth
+3. There are no disabled subchannels
+4. The primary channel (whether that being the 1MHz primary or both 1MHz
+   primaries when using a 2MHz primary) does not contain the
+   IEEE80211_CHAN_S1G_NO_PRIMARY flag.
+
+However, there are also some unique scenarios to S1G that require extra
+validation. The first one being the sibling 1MHz must also exist as a
+subchannel when using a 2MHz primary alongside not being disabled.
+
+Flag Removal
+------------
+
+This patchset removes the IEEE80211_CHAN_1/2/4/... flags and replaces them
+with the more familiar IEEE80211_CHAN_NO_4/8/16MHz flags. These flags are
+identical to their VHT counterparts, where 1MHz and 2MHz channels are
+_required_ to be supported as per the standard. This allows us to perform
+the regulatory and chandef validation in the exact same way, just at
+1/10th the clock rate.
+
+Since these flags are ABI and usermode programs rely on the ordering, maybe
+its worth just inserting the new flags at the end and leaving them there for
+now? I'm not sure, some clarification would be appreciated.
+
+Notes
+=====
+
+1. I zero out one of the functions to keep the patchset incrementally
+   buildable and then remove it in the last patchset, but maybe not the
+   nicest?
+
+Testing
+=======
+
+This patchset has been tested on the following configurations:
+
+1. Real Morse Micro hardware
+2. mac80211_hwsim AP + STA
+3. hostap mac80211_hwsim test suite was run to ensure no regression
+   along non-S1G paths.
+
+References
+==========
+
+[1] https://lore.kernel.org/linux-wireless/xu4ftmpdwwpokw6exaprrv6wleptq7ggleiluiu6x2dzqbqfhv@6s4m3okiohzw/
+
+Lachlan Hodges (3):
+  wifi: cfg80211: correctly implement and validate S1G chandef
+  wifi: mac80211: correctly initialise S1G chandef for STA
+  wifi: cfg80211: remove ieee80211_s1g_channel_width
+
+ include/linux/ieee80211.h    |  18 +++++-
+ include/net/cfg80211.h       | 118 ++++++++++++++++++++++++++++-------
+ include/uapi/linux/nl80211.h |  23 ++++---
+ net/mac80211/ieee80211_i.h   |   3 +-
+ net/mac80211/main.c          |   6 +-
+ net/mac80211/mlme.c          |  52 ++++++++++++---
+ net/mac80211/scan.c          |  13 ++--
+ net/mac80211/util.c          |  39 +++++++++---
+ net/wireless/chan.c          | 102 ++++++++++++++++++++----------
+ net/wireless/nl80211.c       |  47 ++++++--------
+ net/wireless/reg.c           |  82 ++++++++----------------
+ net/wireless/util.c          |  27 --------
+ 12 files changed, 329 insertions(+), 201 deletions(-)
+
+-- 
+2.43.0
+
 
