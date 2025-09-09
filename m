@@ -1,50 +1,50 @@
-Return-Path: <linux-wireless+bounces-27168-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27169-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64876B4A8CF
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 11:52:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC313B4A8D3
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 11:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED3BC7BDAFE
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 09:48:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDDAA1885557
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 09:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE19D3101D8;
-	Tue,  9 Sep 2025 09:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F282D0C97;
+	Tue,  9 Sep 2025 09:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VXuEKjic"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fmYn9oaw"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81402BF01E
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 09:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402492BF01E
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 09:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757411150; cv=none; b=j/BYn/ckqz3ZQNabh0F+syOSaipmh7lJm37dFJuMTDG12uEYG28cC1zRMDH7Zvc6vXoPb/SAz0xFOs11wAMteLY6zgyHwUo0Wg5dRluAcIbt0Kj08BngBGTANjDbQBM0LjyKCD3mPDHvDqeqqjcCX1stUtvSwhfZaxUA1JnMqnA=
+	t=1757411153; cv=none; b=o3Of+7hRRisHHCzZ+e6QFwDSv3bQMo67PV6zGhbEPIl6orsh0OgQjvkFvaWcYlzFE6svFO6MmI3QkHloPR9f8U/cwWutEmHdNhHzzZRkQ0JGkd5TrwLvHJheKJVrTC2xZ/qrb41eBiE9zoJ1IzXAnRfkbjK2ftxziiGdmPVPtZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757411150; c=relaxed/simple;
-	bh=1YXrD5QoRPg1/OeRkwH75BpekrtskUZuV1imQa0mK+8=;
+	s=arc-20240116; t=1757411153; c=relaxed/simple;
+	bh=1Vav5//DSHKxmGTaOnbQqVFRjxjXuYDhPgQlOA2KQrc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KB/Ait1hY98wPTiT7cel6Rv5ZRvBPycUk8cvHDnjQsMXt1OWY92PxVNP5VfftOXSL+nyF9MNJlL+PfJ+PYUR72tTK5BmVfcpjJaf/8CNgvraIgOk/22sO9Yfir5//7Qi1tgoIj9BY4QpFS4p4cXyBsqxdYWDLTHZJK4Y6V/vLWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VXuEKjic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303ECC4CEF4;
-	Tue,  9 Sep 2025 09:45:50 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=GyECrbKvr187/L9N1XwFskMRIZtI9KhSUDaSAgT2yNJRqWIzsO/jZ+85/K13N+/oLTPCUjHxh6K2X8Mxcbg9YGBGSS85W+w7MJMjsrnNJvh5Gde1Sum1cnpmeBRRzexS7KdpbSmvn9MhkVaORWOMs+uWxHl+CljE8+2eTeyYiss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fmYn9oaw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5084C4CEF5;
+	Tue,  9 Sep 2025 09:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757411150;
-	bh=1YXrD5QoRPg1/OeRkwH75BpekrtskUZuV1imQa0mK+8=;
+	s=k20201202; t=1757411153;
+	bh=1Vav5//DSHKxmGTaOnbQqVFRjxjXuYDhPgQlOA2KQrc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=VXuEKjic7AMH9Wfxcz0j1Bc74/IzneRenMhlgOxvGiyjr2I1fuHreWN9f09w3VxHf
-	 ZBpv2iFLPMfqcbLyjiD98j58TE+YBe58lzDV5AUgEsqFB78946mcMs/fVKNS1invzd
-	 +7P/2P/QsvzpZ5p6HZTP2GdjxOlceuTbEFAiMF6LmhPJmhZq5gNvjWay66SxP2VbTC
-	 p6hcl7gfvhEIUdeeiZMTdiXXB0kwt6jatzGrm7brboEC5bxRkUybNsV2txyAxiE5nI
-	 jieR1YE69DODO/+Dp7GqQFFyvFnPHfaw3Oi9gD92ueqaWYvsKAdIYh8sDjxpYfBegB
-	 H44xf8H1wJdGg==
+	b=fmYn9oaw1haf/I1D6dB5JgOqe1RvR052o+vz9sTVcZadbeEO2BDoWRB323tN3Q0vO
+	 AZUkcPWvxA6Fqf95DTlCMLKR+Ic9CqS2QTKkiDnaBBBTPhvNp6au8B4n1nko2pyk2J
+	 +mGnnVN8wRYqnqf7ZzEz1zA53AxN6OHFxfNJSG76wydZophoDtC/K2u+oflzQt/TLD
+	 pG5cAjynO2SR/nXaYbfMX8TQj1Kvx7DRz8Q2IMT/EM1lGNX96NoXZ5X5urbtwfwfJD
+	 b01KI27Ezss6KeZJI0+YHwra+Cc8Gs2s5Jqjpb9vUJ2jDCZiNqhW4p2Pnqvd3A0Jv9
+	 uLHLRcfiCQC1w==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Tue, 09 Sep 2025 11:45:18 +0200
-Subject: [PATCH mt76 v5 10/16] wifi: mt76: mt7996: Enable WED for MT7992
- chipset
+Date: Tue, 09 Sep 2025 11:45:19 +0200
+Subject: [PATCH mt76 v5 11/16] wifi: mt76: mt7996: Convert
+ mt7996_wed_rro_addr to LE
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250909-mt7996-rro-rework-v5-10-7d66f6eb7795@kernel.org>
+Message-Id: <20250909-mt7996-rro-rework-v5-11-7d66f6eb7795@kernel.org>
 References: <20250909-mt7996-rro-rework-v5-0-7d66f6eb7795@kernel.org>
 In-Reply-To: <20250909-mt7996-rro-rework-v5-0-7d66f6eb7795@kernel.org>
 To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
@@ -63,334 +63,89 @@ To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
  Sujuan Chen <sujuan.chen@mediatek.com>, 
  Lorenzo Bianconi <lorenzo@kernel.org>, Bo Jiao <Bo.Jiao@mediatek.com>
 Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, Rex Lu <rex.lu@mediatek.com>, 
- Benjamin Lin <benjamin-jw.lin@mediatek.com>
+ linux-mediatek@lists.infradead.org
 X-Mailer: b4 0.14.2
 
-From: Rex Lu <rex.lu@mediatek.com>
+Do not use bitmask in mt7996_wed_rro_addr DMA descriptor in order to not
+break endianness
 
-Introduce WED offload support for MT7992 chipset in MT7996 driver.
-
-Co-developed-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
-Co-developed-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Signed-off-by: Rex Lu <rex.lu@mediatek.com>
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Fixes: 950d0abb5cd94 ("wifi: mt76: mt7996: add wed rx support")
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/dma.c    | 26 +++++++-
- drivers/net/wireless/mediatek/mt76/mt7996/init.c   | 11 ++--
- drivers/net/wireless/mediatek/mt76/mt7996/main.c   | 17 +++--
- drivers/net/wireless/mediatek/mt76/mt7996/mmio.c   | 72 ++++++++++++++++------
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  3 +
- drivers/net/wireless/mediatek/mt76/mt7996/pci.c    |  1 +
- drivers/net/wireless/mediatek/mt76/mt7996/regs.h   |  4 ++
- 7 files changed, 100 insertions(+), 34 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c   |  8 +++++---
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 11 +++++------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
-index b3665bb0a433ae4cdbf02fa647d644961509d7aa..c5fd25acf9a1a60d4aaffe8ba6d2cf2aafe4fd87 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
-@@ -17,7 +17,7 @@ int mt7996_init_tx_queues(struct mt7996_phy *phy, int idx, int n_desc,
- 		ring_base += MT_TXQ_ID(0) * MT_RING_SIZE;
- 		idx -= MT_TXQ_ID(0);
- 
--		if (phy->mt76->band_idx == MT_BAND2)
-+		if (wed == &dev->mt76.mmio.wed_hif2)
- 			flags = MT_WED_Q_TX(0);
- 		else
- 			flags = MT_WED_Q_TX(idx);
-@@ -429,6 +429,30 @@ static void mt7996_dma_enable(struct mt7996_dev *dev, bool reset)
- 		mt76_rmw(dev, MT_WFDMA_AXI_R2A_CTRL,
- 			 MT_WFDMA_AXI_R2A_CTRL_OUTSTAND_MASK, 0x14);
- 
-+		if (dev->hif2->speed < PCIE_SPEED_5_0GT ||
-+		    (dev->hif2->speed == PCIE_SPEED_5_0GT &&
-+		     dev->hif2->width < PCIE_LNK_X2)) {
-+			mt76_rmw(dev, WF_WFDMA0_GLO_CFG_EXT0 + hif1_ofs,
-+				 WF_WFDMA0_GLO_CFG_EXT0_OUTSTAND_MASK,
-+				 FIELD_PREP(WF_WFDMA0_GLO_CFG_EXT0_OUTSTAND_MASK,
-+					    0x1));
-+			mt76_rmw(dev, MT_WFDMA_AXI_R2A_CTRL2,
-+				 MT_WFDMA_AXI_R2A_CTRL2_OUTSTAND_MASK,
-+				 FIELD_PREP(MT_WFDMA_AXI_R2A_CTRL2_OUTSTAND_MASK,
-+					    0x1));
-+		} else if (dev->hif2->speed < PCIE_SPEED_8_0GT ||
-+			   (dev->hif2->speed == PCIE_SPEED_8_0GT &&
-+			    dev->hif2->width < PCIE_LNK_X2)) {
-+			mt76_rmw(dev, WF_WFDMA0_GLO_CFG_EXT0 + hif1_ofs,
-+				 WF_WFDMA0_GLO_CFG_EXT0_OUTSTAND_MASK,
-+				 FIELD_PREP(WF_WFDMA0_GLO_CFG_EXT0_OUTSTAND_MASK,
-+					    0x2));
-+			mt76_rmw(dev, MT_WFDMA_AXI_R2A_CTRL2,
-+				 MT_WFDMA_AXI_R2A_CTRL2_OUTSTAND_MASK,
-+				 FIELD_PREP(MT_WFDMA_AXI_R2A_CTRL2_OUTSTAND_MASK,
-+					    0x2));
-+		}
-+
- 		/* WFDMA rx threshold */
- 		mt76_wr(dev, MT_WFDMA0_PAUSE_RX_Q_45_TH + hif1_ofs, 0xc000c);
- 		mt76_wr(dev, MT_WFDMA0_PAUSE_RX_Q_67_TH + hif1_ofs, 0x10008);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index a472c9bd4fd8ae88a5213bda8225c91716423f6d..0104b50ce3f6d52d762dc2f87e5caa5d36ce69b8 100644
+index 0104b50ce3f6d52d762dc2f87e5caa5d36ce69b8..f70e24d989cbd0454fa4f9273c87057258ded0f9 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -666,7 +666,9 @@ static int mt7996_register_phy(struct mt7996_dev *dev, enum mt76_band_id band)
- 	if (!mt7996_band_valid(dev, band))
- 		return 0;
- 
--	if (is_mt7996(&dev->mt76) && band == MT_BAND2 && dev->hif2) {
-+	if (dev->hif2 &&
-+	    ((is_mt7996(&dev->mt76) && band == MT_BAND2) ||
-+	     (is_mt7992(&dev->mt76) && band == MT_BAND1))) {
- 		hif1_ofs = MT_WFDMA0_PCIE1(0) - MT_WFDMA0(0);
- 		wed = &dev->mt76.mmio.wed_hif2;
- 	}
-@@ -724,10 +726,9 @@ static int mt7996_register_phy(struct mt7996_dev *dev, enum mt76_band_id band)
- 		goto error;
- 
- 	if (wed == &dev->mt76.mmio.wed_hif2 && mtk_wed_device_active(wed)) {
--		u32 irq_mask = dev->mt76.mmio.irqmask | MT_INT_TX_DONE_BAND2;
--
--		mt76_wr(dev, MT_INT1_MASK_CSR, irq_mask);
--		mtk_wed_device_start(&dev->mt76.mmio.wed_hif2, irq_mask);
-+		mt76_wr(dev, MT_INT_PCIE1_MASK_CSR, MT_INT_TX_RX_DONE_EXT);
-+		mtk_wed_device_start(&dev->mt76.mmio.wed_hif2,
-+				     MT_INT_TX_RX_DONE_EXT);
- 	}
- 
- 	return 0;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 82b9059b21fec50e19760f932c7a7f742da3d000..bf2930a19993c4bd85348c037b93b7e917c4f63b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -2158,9 +2158,7 @@ mt7996_net_fill_forward_path(struct ieee80211_hw *hw,
- 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
- 	struct mtk_wed_device *wed = &dev->mt76.mmio.wed;
- 	struct mt7996_sta_link *msta_link;
--	struct mt7996_vif_link *link;
- 	struct mt76_vif_link *mlink;
--	struct mt7996_phy *phy;
- 
- 	mlink = rcu_dereference(mvif->mt76.link[msta->deflink_id]);
- 	if (!mlink)
-@@ -2173,12 +2171,9 @@ mt7996_net_fill_forward_path(struct ieee80211_hw *hw,
- 	if (!msta_link->wcid.sta || msta_link->wcid.idx > MT7996_WTBL_STA)
- 		return -EIO;
- 
--	link = (struct mt7996_vif_link *)mlink;
--	phy = mt7996_vif_link_phy(link);
--	if (!phy)
--		return -ENODEV;
--
--	if (phy != &dev->phy && phy->mt76->band_idx == MT_BAND2)
-+	if (dev->hif2 &&
-+	    ((is_mt7996(&dev->mt76) && msta_link->wcid.phy_idx == MT_BAND2) ||
-+	     (is_mt7992(&dev->mt76) && msta_link->wcid.phy_idx == MT_BAND1)))
- 		wed = &dev->mt76.mmio.wed_hif2;
- 
- 	if (!mtk_wed_device_active(wed))
-@@ -2191,7 +2186,11 @@ mt7996_net_fill_forward_path(struct ieee80211_hw *hw,
- 	path->mtk_wdma.queue = 0;
- 	path->mtk_wdma.wcid = msta_link->wcid.idx;
- 
--	path->mtk_wdma.amsdu = mtk_wed_is_amsdu_supported(wed);
-+	if (ieee80211_hw_check(hw, SUPPORTS_AMSDU_IN_AMPDU) &&
-+	    mtk_wed_is_amsdu_supported(wed))
-+		path->mtk_wdma.amsdu = msta_link->wcid.amsdu;
-+	else
-+		path->mtk_wdma.amsdu = 0;
- 	ctx->dev = NULL;
- 
- 	return 0;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-index a8b4ef433c2bfdbbf79ae7f6aa54f33a5d5254ff..aa70e5fce98f005ef5c3f588203f61e179ff04e8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-@@ -459,14 +459,14 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
+@@ -852,6 +852,7 @@ void mt7996_rro_hw_init(struct mt7996_dev *dev)
+ static int mt7996_wed_rro_init(struct mt7996_dev *dev)
+ {
  #ifdef CONFIG_NET_MEDIATEK_SOC_WED
++	u32 val = FIELD_PREP(WED_RRO_ADDR_SIGNATURE_MASK, 0xff);
  	struct mtk_wed_device *wed = &dev->mt76.mmio.wed;
- 	struct pci_dev *pci_dev = pdev_ptr;
--	u32 hif1_ofs = 0;
-+	u32 hif1_ofs;
+ 	struct mt7996_wed_rro_addr *addr;
+ 	void *ptr;
+@@ -890,7 +891,7 @@ static int mt7996_wed_rro_init(struct mt7996_dev *dev)
  
- 	if (!wed_enable)
- 		return 0;
- 
- 	dev->has_rro = true;
- 
--	hif1_ofs = MT_WFDMA0_PCIE1(0) - MT_WFDMA0(0);
-+	hif1_ofs = dev->hif2 ? MT_WFDMA0_PCIE1(0) - MT_WFDMA0(0) : 0;
- 
- 	if (hif2)
- 		wed = &dev->mt76.mmio.wed_hif2;
-@@ -491,10 +491,17 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
- 					     MT_TXQ_RING_BASE(0) +
- 					     MT7996_TXQ_BAND2 * MT_RING_SIZE;
- 		if (dev->has_rro) {
--			wed->wlan.wpdma_txfree = wed->wlan.phy_base + hif1_ofs +
--						 MT_RXQ_RING_BASE(0) +
--						 MT7996_RXQ_TXFREE2 * MT_RING_SIZE;
--			wed->wlan.txfree_tbit = ffs(MT_INT_RX_TXFREE_EXT) - 1;
-+			if (is_mt7996(&dev->mt76)) {
-+				wed->wlan.txfree_tbit = ffs(MT_INT_RX_TXFREE_EXT) - 1;
-+				wed->wlan.wpdma_txfree = wed->wlan.phy_base + hif1_ofs +
-+							 MT_RXQ_RING_BASE(0) +
-+							 MT7996_RXQ_TXFREE2 * MT_RING_SIZE;
-+			} else {
-+				wed->wlan.txfree_tbit = ffs(MT_INT_RX_TXFREE_BAND1_EXT) - 1;
-+				wed->wlan.wpdma_txfree = wed->wlan.phy_base + hif1_ofs +
-+							 MT_RXQ_RING_BASE(0) +
-+							 MT7996_RXQ_MCU_WA_EXT * MT_RING_SIZE;
-+			}
- 		} else {
- 			wed->wlan.wpdma_txfree = wed->wlan.phy_base + hif1_ofs +
- 						 MT_RXQ_RING_BASE(0) +
-@@ -504,8 +511,8 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
- 
- 		wed->wlan.wpdma_rx_glo = wed->wlan.phy_base + hif1_ofs + MT_WFDMA0_GLO_CFG;
- 		wed->wlan.wpdma_rx[0] = wed->wlan.phy_base + hif1_ofs +
--					MT_RXQ_RING_BASE(MT7996_RXQ_BAND0) +
--					MT7996_RXQ_BAND0 * MT_RING_SIZE;
-+					MT_RXQ_RING_BASE(MT7996_RXQ_BAND2) +
-+					MT7996_RXQ_BAND2 * MT_RING_SIZE;
- 
- 		wed->wlan.id = MT7996_DEVICE_ID_2;
- 		wed->wlan.tx_tbit[0] = ffs(MT_INT_TX_DONE_BAND2) - 1;
-@@ -525,9 +532,19 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
- 		wed->wlan.wpdma_rx_rro[0] = wed->wlan.phy_base +
- 					    MT_RXQ_RING_BASE(MT7996_RXQ_RRO_BAND0) +
- 					    MT7996_RXQ_RRO_BAND0 * MT_RING_SIZE;
--		wed->wlan.wpdma_rx_rro[1] = wed->wlan.phy_base + hif1_ofs +
--					    MT_RXQ_RING_BASE(MT7996_RXQ_RRO_BAND2) +
--					    MT7996_RXQ_RRO_BAND2 * MT_RING_SIZE;
-+		if (is_mt7996(&dev->mt76)) {
-+			wed->wlan.wpdma_rx_rro[1] = wed->wlan.phy_base + hif1_ofs +
-+						    MT_RXQ_RING_BASE(MT7996_RXQ_RRO_BAND2) +
-+						    MT7996_RXQ_RRO_BAND2 * MT_RING_SIZE;
-+		} else {
-+			wed->wlan.wpdma_rx_rro[1] = wed->wlan.phy_base + hif1_ofs +
-+						    MT_RXQ_RING_BASE(MT7996_RXQ_RRO_BAND1) +
-+						    MT7996_RXQ_RRO_BAND1 * MT_RING_SIZE;
-+			wed->wlan.wpdma_rx[1] = wed->wlan.phy_base + hif1_ofs +
-+						MT_RXQ_RING_BASE(MT7996_RXQ_BAND1) +
-+						MT7996_RXQ_BAND1 * MT_RING_SIZE;
-+		}
-+
- 		wed->wlan.wpdma_rx_pg = wed->wlan.phy_base +
- 					MT_RXQ_RING_BASE(MT7996_RXQ_MSDU_PG_BAND0) +
- 					MT7996_RXQ_MSDU_PG_BAND0 * MT_RING_SIZE;
-@@ -537,10 +554,14 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
- 		wed->wlan.rx_size = SKB_WITH_OVERHEAD(MT_RX_BUF_SIZE);
- 
- 		wed->wlan.rx_tbit[0] = ffs(MT_INT_RX_DONE_BAND0) - 1;
--		wed->wlan.rx_tbit[1] = ffs(MT_INT_RX_DONE_BAND2) - 1;
--
- 		wed->wlan.rro_rx_tbit[0] = ffs(MT_INT_RX_DONE_RRO_BAND0) - 1;
--		wed->wlan.rro_rx_tbit[1] = ffs(MT_INT_RX_DONE_RRO_BAND2) - 1;
-+		if (is_mt7996(&dev->mt76)) {
-+			wed->wlan.rx_tbit[1] = ffs(MT_INT_RX_DONE_BAND2) - 1;
-+			wed->wlan.rro_rx_tbit[1] = ffs(MT_INT_RX_DONE_RRO_BAND2) - 1;
-+		} else {
-+			wed->wlan.rx_tbit[1] = ffs(MT_INT_RX_DONE_BAND1) - 1;
-+			wed->wlan.rro_rx_tbit[1] = ffs(MT_INT_RX_DONE_RRO_BAND1) - 1;
-+		}
- 
- 		wed->wlan.rx_pg_tbit[0] = ffs(MT_INT_RX_DONE_MSDU_PG_BAND0) - 1;
- 		wed->wlan.rx_pg_tbit[1] = ffs(MT_INT_RX_DONE_MSDU_PG_BAND1) - 1;
-@@ -548,16 +569,27 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
- 
- 		wed->wlan.tx_tbit[0] = ffs(MT_INT_TX_DONE_BAND0) - 1;
- 		wed->wlan.tx_tbit[1] = ffs(MT_INT_TX_DONE_BAND1) - 1;
--		if (dev->has_rro) {
--			wed->wlan.wpdma_txfree = wed->wlan.phy_base + MT_RXQ_RING_BASE(0) +
--						 MT7996_RXQ_TXFREE0 * MT_RING_SIZE;
--			wed->wlan.txfree_tbit = ffs(MT_INT_RX_TXFREE_MAIN) - 1;
-+		if (is_mt7996(&dev->mt76)) {
-+			if (dev->has_rro) {
-+				wed->wlan.wpdma_txfree = wed->wlan.phy_base +
-+							 MT_RXQ_RING_BASE(0) +
-+							 MT7996_RXQ_TXFREE0 * MT_RING_SIZE;
-+				wed->wlan.txfree_tbit = ffs(MT_INT_RX_TXFREE_MAIN) - 1;
-+			} else {
-+				wed->wlan.wpdma_txfree = wed->wlan.phy_base +
-+							 MT_RXQ_RING_BASE(0) +
-+							 MT7996_RXQ_MCU_WA_MAIN * MT_RING_SIZE;
-+				wed->wlan.txfree_tbit = ffs(MT_INT_RX_DONE_WA_MAIN) - 1;
-+			}
- 		} else {
- 			wed->wlan.txfree_tbit = ffs(MT_INT_RX_DONE_WA_MAIN) - 1;
- 			wed->wlan.wpdma_txfree = wed->wlan.phy_base + MT_RXQ_RING_BASE(0) +
- 						  MT7996_RXQ_MCU_WA_MAIN * MT_RING_SIZE;
+ 		addr = dev->wed_rro.addr_elem[i].ptr;
+ 		for (j = 0; j < MT7996_RRO_WINDOW_MAX_SIZE; j++) {
+-			addr->signature = 0xff;
++			addr->data = cpu_to_le32(val);
+ 			addr++;
  		}
- 		dev->mt76.rx_token_size = MT7996_TOKEN_SIZE + wed->wlan.rx_npkt;
-+
-+		if (dev->hif2 && is_mt7992(&dev->mt76))
-+			wed->wlan.id = 0x7992;
+ 
+@@ -922,7 +923,7 @@ static int mt7996_wed_rro_init(struct mt7996_dev *dev)
+ 	dev->wed_rro.session.ptr = ptr;
+ 	addr = dev->wed_rro.session.ptr;
+ 	for (i = 0; i < MT7996_RRO_WINDOW_MAX_LEN; i++) {
+-		addr->signature = 0xff;
++		addr->data = cpu_to_le32(val);
+ 		addr++;
  	}
  
- 	wed->wlan.nbuf = MT7996_HW_TOKEN_SIZE;
-@@ -576,8 +608,10 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
- 		wed->wlan.reset_complete = mt76_wed_reset_complete;
- 	}
+@@ -990,6 +991,7 @@ static void mt7996_wed_rro_free(struct mt7996_dev *dev)
+ static void mt7996_wed_rro_work(struct work_struct *work)
+ {
+ #ifdef CONFIG_NET_MEDIATEK_SOC_WED
++	u32 val = FIELD_PREP(WED_RRO_ADDR_SIGNATURE_MASK, 0xff);
+ 	struct mt7996_dev *dev;
+ 	LIST_HEAD(list);
  
--	if (mtk_wed_device_attach(wed))
-+	if (mtk_wed_device_attach(wed)) {
-+		dev->has_rro = false;
- 		return 0;
-+	}
- 
- 	*irq = wed->irq;
- 	dev->mt76.dma_dev = wed->dev;
+@@ -1026,7 +1028,7 @@ static void mt7996_wed_rro_work(struct work_struct *work)
+ 				MT7996_RRO_WINDOW_MAX_LEN;
+ reset:
+ 			elem = ptr + elem_id * sizeof(*elem);
+-			elem->signature = 0xff;
++			elem->data |= cpu_to_le32(val);
+ 		}
+ 		mt7996_mcu_wed_rro_reset_sessions(dev, e->id);
+ out:
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 9af3382003bcfecd2eed5d1384d57bdf65af7f82..f6dfd36a44c0bf587d3ac85a5a9d38e24deb14d4 100644
+index f6dfd36a44c0bf587d3ac85a5a9d38e24deb14d4..313f6923d071a71152cadceaaf09dfd80b005287 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -280,6 +280,9 @@ struct mt7996_hif {
- 	struct device *dev;
- 	void __iomem *regs;
- 	int irq;
-+
-+	enum pci_bus_speed speed;
-+	enum pcie_link_width width;
+@@ -285,13 +285,12 @@ struct mt7996_hif {
+ 	enum pcie_link_width width;
  };
  
++#define WED_RRO_ADDR_SIGNATURE_MASK	GENMASK(31, 24)
++#define WED_RRO_ADDR_COUNT_MASK		GENMASK(14, 4)
++#define WED_RRO_ADDR_HEAD_HIGH_MASK	GENMASK(3, 0)
  struct mt7996_wed_rro_addr {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-index f5ce50056ee94e2915fd189419905acc8cebd853..3f49bbbba3b9ccd100267f54775838ddef634766 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-@@ -87,6 +87,7 @@ static int mt7996_pci_hif2_probe(struct pci_dev *pdev)
- 	hif->dev = &pdev->dev;
- 	hif->regs = pcim_iomap_table(pdev)[0];
- 	hif->irq = pdev->irq;
-+	pcie_bandwidth_available(pdev, NULL, &hif->speed, &hif->width);
- 	spin_lock_bh(&hif_lock);
- 	list_add(&hif->list, &hif_list);
- 	spin_unlock_bh(&hif_lock);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-index 070cdebcd19d7713ebae1d74fdf0c6062eb7c925..d239fa3f375f5e86f9cf650fda713a4e1e4b2f96 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-@@ -442,6 +442,7 @@ enum offs_rev {
- #define MT_WFDMA0_PAUSE_RX_Q_RRO_TH		MT_WFDMA0(0x27c)
+-	u32 head_low;
+-	u32 head_high : 4;
+-	u32 count: 11;
+-	u32 oor: 1;
+-	u32 rsv : 8;
+-	u32 signature : 8;
++	__le32 head_low;
++	__le32 data;
+ };
  
- #define WF_WFDMA0_GLO_CFG_EXT0			MT_WFDMA0(0x2b0)
-+#define WF_WFDMA0_GLO_CFG_EXT0_OUTSTAND_MASK	GENMASK(27, 24)
- #define WF_WFDMA0_GLO_CFG_EXT0_RX_WB_RXD	BIT(18)
- #define WF_WFDMA0_GLO_CFG_EXT0_WED_MERGE_MODE	BIT(14)
- 
-@@ -473,6 +474,9 @@ enum offs_rev {
- #define MT_WFDMA_AXI_R2A_CTRL			MT_WFDMA_EXT_CSR(0x500)
- #define MT_WFDMA_AXI_R2A_CTRL_OUTSTAND_MASK	GENMASK(4, 0)
- 
-+#define MT_WFDMA_AXI_R2A_CTRL2			MT_WFDMA_EXT_CSR(0x508)
-+#define MT_WFDMA_AXI_R2A_CTRL2_OUTSTAND_MASK	GENMASK(31, 28)
-+
- #define MT_PCIE_RECOG_ID			0xd7090
- #define MT_PCIE_RECOG_ID_MASK			GENMASK(30, 0)
- #define MT_PCIE_RECOG_ID_SEM			BIT(31)
+ struct mt7996_wed_rro_session_id {
 
 -- 
 2.51.0
