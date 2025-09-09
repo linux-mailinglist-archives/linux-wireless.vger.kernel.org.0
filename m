@@ -1,64 +1,62 @@
-Return-Path: <linux-wireless+bounces-27182-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27183-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7226AB4B0AA
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 14:06:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E4CB4B5E3
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 14:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E68C3AD7C8
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 12:06:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04FAC165138
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 12:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE792E11DC;
-	Tue,  9 Sep 2025 12:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72D82DAFBA;
+	Tue,  9 Sep 2025 12:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="KCKJEBmU"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="GBlkzjj9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0846423D28B
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 12:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076763019CD;
+	Tue,  9 Sep 2025 12:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757419567; cv=none; b=o4a5Z/bWI+6rhcCym41UN3RZCi5vVfEGgTBaMonslS90YdfowUM9H3mTxndTBa+z6kp577qlSHbw47LUc01J2KarwKRnsKp0IB6ElRV0HqL6VN3SAtirTfKZLXA8/TMJXVXGGNFpdIfi7yMagrK6N4KWO+IqNplUYbfoVlG37Mw=
+	t=1757419620; cv=none; b=p/kQsjQRKgJYDOKoyvIp5NnXs2H9sabir3QeiS8ZFRNsrsyITu8Z2O6iXY7sP4X8owTqo4OiUe0s8F3+dOaUIjv1CQLzXr5YrfGW6IMDzPrbS1fTDHAbQ7Gt2NHvjNxHCqviv89sCbS4sYemTrFm4z9zEYvzHJ+yay4r6vsUjmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757419567; c=relaxed/simple;
-	bh=JNhKuQSFoju1Durn/c1IgAPE5zwIi5gdNjqjB442Zeo=;
+	s=arc-20240116; t=1757419620; c=relaxed/simple;
+	bh=PAKA1wCGbeX/jloc+RXWCoaOOIQehe0BvPsRlLQy0ZI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HlAki6xCyiC2qCe2C0eUl5eSKzggcQFxcKMhxxm1dVNby+pc6SkVZ1tQ4NsyxOL4uom4tlLjFn1q0IlGyeTbBnJJ568FsJBiy1tLm10dwjmsEwsdfa3EP7JbutFik/R8bK9DJ7ezvEbTvCE7IKFzcwB2MJUUdG7D8L3FsUSCn0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=KCKJEBmU; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=nabwRUBiVyTiiqtjBo+YztxkSY+wup2ZkpK82AP9/lGNoBsdiaboyrPVi2b+ZFto9MlL2tkxFQtf/GGKAmm9yAGbhL0pOF3s1A2R4D0kxpcKMacSoMkQwWYTjuVss6r78jwxh9IQZSfyOINIZX26EAuLlIbBVl0seXcM5LQCN58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=GBlkzjj9; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=JNhKuQSFoju1Durn/c1IgAPE5zwIi5gdNjqjB442Zeo=;
-	t=1757419563; x=1758629163; b=KCKJEBmUIukpMhqg//jjtLfANz91/uOG5UsKCC92fBBhioh
-	EynO1h3mJKeiwFSFJnSdfE3Ki/maRLq8p3lRQqOg2no/nj/vWKE2UrbKaBQXGrd63FcV4oJnSPaiE
-	ajeSrse+iEFFXPegZsuEB1eotL65/H1P7e58Knr0553nBCnaQySUNrqQhh5Yvj9MPtJj+romcxCLo
-	qHWeJ+QhR52Aa3XYKHqy99+G8PClpfAefaovsSPFBWcmcKSa1mts9zbKl/8g2DfydDnfFuP+coqXj
-	OY+C/qzk5dnKcEIXlhrj8PAMR2dFojCtWRayJ2xt5LlOPFrIo806EeC3IqCluTpA==;
+	Resent-Cc:Resent-Message-ID; bh=PAKA1wCGbeX/jloc+RXWCoaOOIQehe0BvPsRlLQy0ZI=;
+	t=1757419619; x=1758629219; b=GBlkzjj91fms8i7EnWSqm6lVNFD2RgtTv99b7QaUuy6LsfE
+	xDnYLq4UgoenUpJBVRWflMmHH77/1Q8NHdCD5gKX6CtADUiK8F39P7hgXY1gIGkretTZNE9ufkN9w
+	ggDqGx4f36zunKwKKXp3VaFGg4XMMqq6wNtRZP+0441Dh+f8qEG8nSjkp5Hm7xPoxvXkBuJ9CDzXu
+	tV9jBhQpw2MESYTDdikH3tvNY88hGiXuPoCUrNMgoRva0+YvnZZMUPMJSimUTERkdlwCXYI/Q3p6w
+	5Gq4erbs8JupcqGYHh8oaYFFEmN4H9weYf5qRoUwB2Bx7oUZEFV512bRex/amn1g==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uvx6l-0000000AF19-2ybI;
-	Tue, 09 Sep 2025 14:05:59 +0200
-Message-ID: <2f368979a682e47f1d40d7ac7357c70e9e87f66d.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next 1/3] wifi: cfg80211: add support to handle
- incumbent signal detected event from mac80211/driver
+	id 1uvx7f-0000000AF7J-3HSl;
+	Tue, 09 Sep 2025 14:06:55 +0200
+Message-ID: <2363d0a432d280cc2e374cce6603300868780592.camel@sipsolutions.net>
+Subject: Re: [PATCH v3] wifi: cfg80211: Remove the redundant wiphy_dev
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Amith A <quic_amitajit@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, Hari Chandrakanthan
- <quic_haric@quicinc.com>
-Date: Tue, 09 Sep 2025 14:05:59 +0200
-In-Reply-To: <f59d7f7d-6b57-4ffa-9679-de1c32b0c1bd@quicinc.com>
-References: <20250818101947.2464612-1-quic_amitajit@quicinc.com>
-	 <20250818101947.2464612-2-quic_amitajit@quicinc.com>
-	 <83b5c2e55c7ad55851b9877c5c085a57b6414ad9.camel@sipsolutions.net>
-	 <f59d7f7d-6b57-4ffa-9679-de1c32b0c1bd@quicinc.com>
+To: tanzheng <tanzheng@kylinos.cn>
+Cc: arend.vanspriel@broadcom.com, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org
+Date: Tue, 09 Sep 2025 14:06:55 +0200
+In-Reply-To: <20250909011444.86314-1-tanzheng@kylinos.cn>
+References: 
+	<67bca659b2e5d3f1625d6d92c9652618f29a6195.camel@sipsolutions.net>
+	 <20250909011444.86314-1-tanzheng@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
@@ -70,22 +68,32 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Tue, 2025-09-09 at 10:39 +0530, Amith A wrote:
+On Tue, 2025-09-09 at 09:14 +0800, tanzheng wrote:
+> > > > > There is no need to call wiphy_dev again.Simplifying the
+> > > > > code makes it more readable.
+> > > > >=20
+> > > > > Signed-off-by: Zheng tan <tanzheng@kylinos.cn>
+> > > > >=20
+> > > >=20
+> > > > The bot complains this doesn't match your From: line, is that
+> > > intentional?
+> > >=20
+> > > Yes, I set it up this way on purpose. Sorry, I don't know=20
+> > > this rule. I'll modify Signed-off-by. Thank you for your comment.
+> >=20
+> > Oh. I wasn't really thinking you _need_ to change it - actually I was
+> > wondering if you _want_ to change it since I thought maybe "Zheng tan"
+> > was your preferred spelling, and your email client just used the
+> > localpart (before the @) instead of your name spelled out by accident.
+> >=20
+> > So either way I'm fine. Let me know what you prefer.
 >=20
-> Punctured sub-channels are excluded from interference detection logic=20
-> and are
-> typically not represented in the interference bitmap. Their=20
-> corresponding bits
-> remain unset (zero).
+> In that case, perhaps I prefer "Zheng tan".
 
-So I find "not represented" and "corresponding bits remain unset (zero)"
-to be somewhat conflicting ... if you don't represent something it
-doesn't even _have_ a bit to set to zero?
-
-Anyway ... you can decide either way "not represented" (as in "there are
-no bits") or "those bits must be set to zero", but please just document
-it accordingly. It's obviously easy to convert from one to the other if
-needed. Setting the bits to zero is probably easier in most cases.
+Ideally you could resend with your From: line adjusted, or even an extra
+From: line thrown into the body of the mail, but I suppose I can try to
+adjust the From: line as well on the other mail you sent, assuming I
+remember :)
 
 johannes
 
