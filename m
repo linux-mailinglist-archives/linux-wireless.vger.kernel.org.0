@@ -1,57 +1,87 @@
-Return-Path: <linux-wireless+bounces-27142-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27143-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D5DB4A254
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 08:34:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F09B4A29B
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 08:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0CDE1890012
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 06:34:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D240D188F9DB
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 06:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9A0303A3D;
-	Tue,  9 Sep 2025 06:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C621A83F8;
+	Tue,  9 Sep 2025 06:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="GhxE7zhS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nOCeyQF6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898D03019B1;
-	Tue,  9 Sep 2025 06:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F307263E
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 06:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757399640; cv=none; b=qP0TFj+1gcOa1yk7PHNs0J47W9Kge/XLHjObz16YJ9c4Vd901N+qnLACUlO2ArbW0w4XpBYa69JH6mZRoffz4UULrqeK20HTJopkJOd8z6DE9SFkgFjj59RUt38+zOccouDXYQtBDDgok+2zJgmZBUIP0fd0q9qsrlyjf/fY3Kk=
+	t=1757400514; cv=none; b=qVDE55EFmB0TmCgrbmiFHB5A+dGGrdOePnCgrnRPTraVV8tAkBFmSzeGgcsN/YlRIEDKCe6YxhJts8xASr8NCTwBwPuuFRSTFCxWVo12eAdDLSeNrReV7YpNNTM3K34GkCD+F8GgkiflmK05WnT7U/MOnp1ROOWw7PSyEkKjD44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757399640; c=relaxed/simple;
-	bh=Ogqp4XpuBL7zJJTDs42HXfHEo3R5sIvtQqrPOh+C3Os=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BaTxhIke5Ntv4LwZfYXiDPWtCU0rNwjjiR/ER5kSHv8LWfwxklLWxdAEhk9zi/xkI4kS/h+T/cVM0OcONh+P6CqKkowyQCxBzfYNP3zSgLniqTDWERdkzkUbQm4G7e3SUCTrqWu3rZoI93PFaQJg5C+MBI0lLHJDKqq1mGHNHsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=GhxE7zhS; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=0i
-	bI9vEsP3MNEc9wHQ+cBn0xW5pSKNT6VjhUISVbHXA=; b=GhxE7zhS5WGBgpfF/t
-	Ip6eSVueZdpc5689jRbQ/JkWIdRHAzG7pweO4rijIyJVeFuJXRxt5c3JCdMNHF+A
-	eBDZKdoo9vfMk/TolmpXpEoVFXbLr6bnlLp5kFkHhljI82xS9hRecPLkiAmBGnNm
-	WAYRln6qdb5dRjpwnZBz6eyQA=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wCHKMY4yr9ohNkqHw--.60047S2;
-	Tue, 09 Sep 2025 14:33:29 +0800 (CST)
-From: James Guan <guan_yufei@163.com>
-To: johannes@sipsolutions.net
-Cc: kuba@kernel.org,
-	kuniyu@google.com,
-	shaw.leon@gmail.com,
-	kees@kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	James Guan <guan_yufei@163.com>
-Subject: [PATCH] wifi: cfg80211: Fix page fault in __cfg80211_connect_result()
-Date: Tue,  9 Sep 2025 14:32:13 +0800
-Message-Id: <20250909063213.1055024-1-guan_yufei@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1757400514; c=relaxed/simple;
+	bh=rtlTMZC7g2rsew+11SvO0UaDW+5JK8T8oQscLBSyq9I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mopq4+NXxQsCqnXQsfTYMIhYzt60rdD9iJgj+Dj3SVa/ffbUUZkTtvaIgUPDXYfj5MZA0RPd5RggDoncQ6FmCv0M3rQV57IGZLhVQ08TbT3NqWIYvzUoSvEfLvMo1Y9P9NifA6YNdl+G2ZddqfK0gnPh5UKRetOb15s3nIHRNWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nOCeyQF6; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-772679eb358so4830496b3a.1
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Sep 2025 23:48:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757400511; x=1758005311; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yau1y0MdDuPzs89TtMwlXdIWtqiW1xkaw2fGUY4rbgM=;
+        b=nOCeyQF6a0CRXH+KcFyR6pzg4dlK6cXiR6VwCYmmToRTK4Fkep+oGV5JpUetwPGpwB
+         Bh5uZoCMx0H1VDcqK+Y5EZbEgBif69gblwZLw21Dyg6MbANhiYFK5zxixvcfAsrGTtsh
+         69PeAkiyNtUFdXo294vnSiZtID8lMt5SBPGvL4VhGbD7sQL8PQRQeEfhsKcMbhr+oXL3
+         z9F6tzZ29pR0POhnkvROp634ahxOhxRHREABSltj+wxEOkcl9XbJX7oANe8MPEGvkX4c
+         hqe8xDlLRMvstbUzsEyWCAhtUeG9Etfdzk1Q0xLtYJJETFMl5DhQ8G5L+Wz4rOAlq0xp
+         NzgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757400511; x=1758005311;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yau1y0MdDuPzs89TtMwlXdIWtqiW1xkaw2fGUY4rbgM=;
+        b=uL3aFstZwbvvT8CDlopJFHcFuM+50yNV5lAXLvEsgG0kYivElA4N2V2ZNvdbpv3FkW
+         3s6yr9TVGk4A3I6G7HBhBttt8JdDMYGTX5y6R75wUCmCW6gj6YgOezLPPRVlkh8JqPKw
+         jbS02V7VVyBvJ1bIvV8BimYFT2TlKygalHa0d9D1Um/Gv+h0JN9mMsotHaJBtCZok974
+         M+KVCr1ujiRjUZzK87VldmHb98IM0dpvrcWsyJ526IPH+8ldMgQmgHoVtUdncMY6LZ+m
+         q44MNp+yJAUCsS3oOGyAgNsvhBlr27ROZiu4uoeNMtayLJQK7UbIlTxpqR+vGMJvo4/k
+         AD8Q==
+X-Gm-Message-State: AOJu0YyI6Z/yJApUKu4qjsWW0ipe8kb0xrsU7c503LBwPI4i6/OweHYG
+	UkgCDc9XFeFzpNp1NDChDbJOXRHvsrpFV4FuTigm924rvSwypF0t8HAs
+X-Gm-Gg: ASbGnctCDCEko2CuYTdhrilHGistqkEnjTkWGyBh2fDASw/Ft2arQUKiFijVDfS+9x9
+	3hV/Nor0+14LxJF6wfPfP3oZvtTYRvBxMQOw2KC2P6QdsFs84ogFhGvRBDN3EGB4WPXqNkbaaKw
+	5g4II7GfSNbzlK+g74BVZEm4Q2OgQooLV7RXKufZPneal1xvSq9JUYgLPwcTJLqzW7aGkzhR/2k
+	CVmoVPBl+gBRcK41EjqCKyRNATKsZavoXuycgG0LDWfg929EkxxY7ZLaeMgBwN1CkG3+cEBvWY7
+	MTUrO+a7DUF1Je3RR+iUDMZkA9TYHsoThmsv1syPmHeetO17sEXU8Xd/+aWTVJLcYsIXay9JLz9
+	hghCCp9bKum7mPAyi5x2KEb8ApWPsvldDQujq0NnxvKCo/ZIlGyWRN26dt9Heyyz6Z9eRchk=
+X-Google-Smtp-Source: AGHT+IGBDN203Gma71lTgp8v2B/LKOSU5soZLdWZpX8IfKq7S4JtiR7EzzwQ+71f+wyWTnoP3TTo4w==
+X-Received: by 2002:a05:6a20:12cb:b0:243:6f4e:fba2 with SMTP id adf61e73a8af0-2533e18c6f0mr14496693637.2.1757400511043;
+        Mon, 08 Sep 2025 23:48:31 -0700 (PDT)
+Received: from NT123328-PC02.ZyXEL.com (114-33-191-187.hinet-ip.hinet.net. [114.33.191.187])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7746628fb5bsm993603b3a.48.2025.09.08.23.48.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 23:48:30 -0700 (PDT)
+From: Zhi-Jun You <hujy652@gmail.com>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com
+Cc: linux-wireless@vger.kernel.org,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	Zhi-Jun You <hujy652@gmail.com>
+Subject: [PATCH mt76 v2] wifi: mt76: mt7915: fix mt7981 pre-calibration
+Date: Tue,  9 Sep 2025 14:48:24 +0800
+Message-ID: <20250909064824.16847-1-hujy652@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -59,105 +89,132 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCHKMY4yr9ohNkqHw--.60047S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3JFW3uFWUCr1xCF1ftr18Zrb_yoW7Xw4Dpr
-	yxtFZ8Gr4kJryUXr1UAF4UJr17ZanrAF1UXryIvr1rZa4UWw1DJryUGFW7Jry5Jr1DX3Wx
-	Jr1kJw48t348GaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEgAwsUUUUU=
-X-CM-SenderInfo: xjxd0s51xivxi6rwjhhfrp/1tbiJxzDS2i-wRhhzgABsT
 
-When I attempted to connect to a virt_wifi device using iw on 6.17-rc5,
-a page fault occurred in __cfg80211_connect_result(), preventing successful
-connection.
+In vendor driver, size of group cal and dpd cal for mt7981 includes 6G
+although the chip doesn't support it.
 
-The page fault is triggered because virt_wifi_connect_complete() sets
-requested_bss to NULL when no BSSID is specified.
+mt76 doesn't take this into account which results in reading from the
+incorrect offset.
 
-This patch fixes the bug by adding a check for a NULL connected_addr
-before calling ether_addr_copy() in __cfg80211_connect_result().
+For devices with precal, this would lead to lower bitrate.
 
-Reproduction:
-	root@host:~# modprobe virt_wifi
-	root@host:~# ip tuntap add tap0 mode tap
-	root@host:~# ip link set tap0 up
-	root@host:~# ip link add link tap0 name wlan0 type virt_wifi
-	root@host:~# iw dev wlan0 scan
-	root@host:~# iw dev wlan0 connect "VirtWifi"
+Fix this by aligning groupcal size with vendor driver and switch to
+freq_list_v2 in mt7915_dpd_freq_idx in order to get the correct offset.
 
-Kernel panic occurred after running the connect command.
-Below is panic messages from kernel:
+Below are iwinfo of the test device with two clients connected
+(iPhone 16, Intel AX210).
+Before :
+	Mode: Master  Channel: 36 (5.180 GHz)  HT Mode: HE80
+	Center Channel 1: 42 2: unknown
+	Tx-Power: 23 dBm  Link Quality: 43/70
+	Signal: -67 dBm  Noise: -92 dBm
+	Bit Rate: 612.4 MBit/s
+	Encryption: WPA3 SAE (CCMP)
+	Type: nl80211  HW Mode(s): 802.11ac/ax/n
+	Hardware: embedded [MediaTek MT7981]
 
-[  150.197544] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[  150.199333] #PF: supervisor read access in kernel mode
-[  150.199787] #PF: error_code(0x0000) - not-present page
-[  150.200148] PGD 0 P4D 0
-[  150.200339] Oops: Oops: 0000 [#1] SMP NOPTI
-[  150.200641] CPU: 0 UID: 0 PID: 78 Comm: kworker/u4:5 Not tainted 6.17.0-rc5 #5 PREEMPT(voluntary)
-[  150.201264] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[  150.202056] Workqueue: cfg80211 cfg80211_event_work [cfg80211]
-[  150.202528] RIP: 0010:__cfg80211_connect_result+0x35d/0xa40 [cfg80211]
-[  150.203032] Code: 8d 14 db 49 89 84 d6 00 04 00 00 41 0f b7 44 24 68 41 83 c5 01 44 89 eb 66 85 c0 75 b6 48 85 db 74 c0 41 80 8e a4 00 00 00 01 <41> 8b 07c
-[  150.204305] RSP: 0018:ffffc9000069bd10 EFLAGS: 00010202
-[  150.204670] RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-[  150.205169] RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff888110e1f830
-[  150.205666] RBP: ffffc9000069bd90 R08: ffffffff0000afd4 R09: 0000000000000003
-[  150.206169] R10: 0000000000000001 R11: 0000000000000000 R12: ffff8881065e4c18
-[  150.206670] R13: 0000000000000001 R14: ffff888110e1f000 R15: 0000000000000000
-[  150.207165] FS:  0000000000000000(0000) GS:ffff8881f7c3e000(0000) knlGS:0000000000000000
-[  150.207723] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  150.208129] CR2: 0000000000000000 CR3: 000000010577d004 CR4: 0000000000372ef0
-[  150.208627] Call Trace:
-[  150.208811]  <TASK>
-[  150.208972]  ? wakeup_preempt+0x74/0x80
-[  150.209262]  cfg80211_process_wdev_events+0x13c/0x1b0 [cfg80211]
-[  150.209738]  ? cfg80211_process_wdev_events+0x13c/0x1b0 [cfg80211]
-[  150.210219]  cfg80211_process_rdev_events+0x2f/0x50 [cfg80211]
-[  150.210766]  cfg80211_event_work+0x3a/0x60 [cfg80211]
-[  150.211323]  process_scheduled_works+0xa3/0x420
-[  150.211806]  worker_thread+0x12a/0x270
-[  150.212170]  kthread+0x10d/0x230
-[  150.212460]  ? __pfx_worker_thread+0x10/0x10
-[  150.212770]  ? __pfx_kthread+0x10/0x10
-[  150.213043]  ret_from_fork+0x8c/0x100
-[  150.213322]  ? __pfx_kthread+0x10/0x10
-[  150.213595]  ret_from_fork_asm+0x1a/0x30
-[  150.213911]  </TASK>
-[  150.214076] Modules linked in: virt_wifi cfg80211 intel_rapl_msr intel_rapl_common intel_uncore_frequency_common kvm_intel kvm bochs drm_client_lib drm_sh4
-[  150.216925] CR2: 0000000000000000
-[  150.217176] ---[ end trace 0000000000000000 ]---
-[  150.217526] RIP: 0010:__cfg80211_connect_result+0x35d/0xa40 [cfg80211]
-[  150.218120] Code: 8d 14 db 49 89 84 d6 00 04 00 00 41 0f b7 44 24 68 41 83 c5 01 44 89 eb 66 85 c0 75 b6 48 85 db 74 c0 41 80 8e a4 00 00 00 01 <41> 8b 07c
-[  150.219483] RSP: 0018:ffffc9000069bd10 EFLAGS: 00010202
-[  150.219863] RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-[  150.220372] RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff888110e1f830
-[  150.220874] RBP: ffffc9000069bd90 R08: ffffffff0000afd4 R09: 0000000000000003
-[  150.221379] R10: 0000000000000001 R11: 0000000000000000 R12: ffff8881065e4c18
-[  150.221899] R13: 0000000000000001 R14: ffff888110e1f000 R15: 0000000000000000
-[  150.222433] FS:  0000000000000000(0000) GS:ffff8881f7c3e000(0000) knlGS:0000000000000000
-[  150.223192] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  150.223728] CR2: 0000000000000000 CR3: 000000010577d004 CR4: 0000000000372ef0
-[  150.224373] note: kworker/u4:5[78] exited with irqs disabled
+After:
+	Mode: Master  Channel: 36 (5.180 GHz)  HT Mode: HE80
+	Center Channel 1: 42 2: unknown
+	Tx-Power: 23 dBm  Link Quality: 43/70
+	Signal: -67 dBm  Noise: -92 dBm
+	Bit Rate: 900.6 MBit/s
+	Encryption: WPA3 SAE (CCMP)
+	Type: nl80211  HW Mode(s): 802.11ac/ax/n
+	Hardware: embedded [MediaTek MT7981]
 
-Signed-off-by: James Guan <guan_yufei@163.com>
+Tested-on: mt7981 20240823
+
+Fixes: 19a954edec63 ("wifi: mt76: mt7915: add mt7986, mt7916 and mt7981 pre-calibration")
+Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
 ---
- net/wireless/sme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Changes in v2
+- Reword commit subject and message.
+- Use freq_list_v2 for mt7981.
+- Add iwinfo output.
+- Add Tested-on tag.
+- Link to v1: https://lore.kernel.org/all/20250827052916.9333-1-hujy652@gmail.com
+---
+ .../wireless/mediatek/mt76/mt7915/eeprom.h    |  6 ++--
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 29 +++++--------------
+ 2 files changed, 10 insertions(+), 25 deletions(-)
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 3a028ff287fb..6014d71d2845 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -863,7 +863,8 @@ void __cfg80211_connect_result(struct net_device *dev,
- 		wdev->links[link].client.current_bss =
- 			bss_from_pub(cr->links[link].bss);
- 	wdev->connected = true;
--	ether_addr_copy(wdev->u.client.connected_addr, connected_addr);
-+	if (connected_addr)
-+		ether_addr_copy(wdev->u.client.connected_addr, connected_addr);
- 	if (cr->valid_links) {
- 		for_each_valid_link(cr, link)
- 			memcpy(wdev->links[link].addr, cr->links[link].addr,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
+index 31aec0f40232..73611c9d26e1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
+@@ -50,9 +50,9 @@ enum mt7915_eeprom_field {
+ #define MT_EE_CAL_GROUP_SIZE_7975		(54 * MT_EE_CAL_UNIT + 16)
+ #define MT_EE_CAL_GROUP_SIZE_7976		(94 * MT_EE_CAL_UNIT + 16)
+ #define MT_EE_CAL_GROUP_SIZE_7916_6G		(94 * MT_EE_CAL_UNIT + 16)
++#define MT_EE_CAL_GROUP_SIZE_7981		(144 * MT_EE_CAL_UNIT + 16)
+ #define MT_EE_CAL_DPD_SIZE_V1			(54 * MT_EE_CAL_UNIT)
+ #define MT_EE_CAL_DPD_SIZE_V2			(300 * MT_EE_CAL_UNIT)
+-#define MT_EE_CAL_DPD_SIZE_V2_7981		(102 * MT_EE_CAL_UNIT)	/* no 6g dpd data */
+ 
+ #define MT_EE_WIFI_CONF0_TX_PATH		GENMASK(2, 0)
+ #define MT_EE_WIFI_CONF0_RX_PATH		GENMASK(5, 3)
+@@ -180,6 +180,8 @@ mt7915_get_cal_group_size(struct mt7915_dev *dev)
+ 		val = FIELD_GET(MT_EE_WIFI_CONF0_BAND_SEL, val);
+ 		return (val == MT_EE_V2_BAND_SEL_6GHZ) ? MT_EE_CAL_GROUP_SIZE_7916_6G :
+ 							 MT_EE_CAL_GROUP_SIZE_7916;
++	} else if (is_mt7981(&dev->mt76)) {
++		return MT_EE_CAL_GROUP_SIZE_7981;
+ 	} else if (mt7915_check_adie(dev, false)) {
+ 		return MT_EE_CAL_GROUP_SIZE_7976;
+ 	} else {
+@@ -192,8 +194,6 @@ mt7915_get_cal_dpd_size(struct mt7915_dev *dev)
+ {
+ 	if (is_mt7915(&dev->mt76))
+ 		return MT_EE_CAL_DPD_SIZE_V1;
+-	else if (is_mt7981(&dev->mt76))
+-		return MT_EE_CAL_DPD_SIZE_V2_7981;
+ 	else
+ 		return MT_EE_CAL_DPD_SIZE_V2;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 2928e75b2397..c1fdd3c4f1ba 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3052,30 +3052,15 @@ static int mt7915_dpd_freq_idx(struct mt7915_dev *dev, u16 freq, u8 bw)
+ 		/* 5G BW160 */
+ 		5250, 5570, 5815
+ 	};
+-	static const u16 freq_list_v2_7981[] = {
+-		/* 5G BW20 */
+-		5180, 5200, 5220, 5240,
+-		5260, 5280, 5300, 5320,
+-		5500, 5520, 5540, 5560,
+-		5580, 5600, 5620, 5640,
+-		5660, 5680, 5700, 5720,
+-		5745, 5765, 5785, 5805,
+-		5825, 5845, 5865, 5885,
+-		/* 5G BW160 */
+-		5250, 5570, 5815
+-	};
+-	const u16 *freq_list = freq_list_v1;
+-	int n_freqs = ARRAY_SIZE(freq_list_v1);
+-	int idx;
++	const u16 *freq_list;
++	int idx, n_freqs;
+ 
+ 	if (!is_mt7915(&dev->mt76)) {
+-		if (is_mt7981(&dev->mt76)) {
+-			freq_list = freq_list_v2_7981;
+-			n_freqs = ARRAY_SIZE(freq_list_v2_7981);
+-		} else {
+-			freq_list = freq_list_v2;
+-			n_freqs = ARRAY_SIZE(freq_list_v2);
+-		}
++		freq_list = freq_list_v2;
++		n_freqs = ARRAY_SIZE(freq_list_v2);
++	} else {
++		freq_list = freq_list_v1;
++		n_freqs = ARRAY_SIZE(freq_list_v1);
+ 	}
+ 
+ 	if (freq < 4000) {
 -- 
-2.25.1
+2.50.1
 
 
