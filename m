@@ -1,220 +1,250 @@
-Return-Path: <linux-wireless+bounces-27143-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27144-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F09B4A29B
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 08:48:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 424C4B4A43D
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 09:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D240D188F9DB
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 06:48:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF65F1886A73
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 07:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C621A83F8;
-	Tue,  9 Sep 2025 06:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5A323ED75;
+	Tue,  9 Sep 2025 07:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nOCeyQF6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xZhGnT81"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F307263E
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 06:48:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86E623C4F3
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 07:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757400514; cv=none; b=qVDE55EFmB0TmCgrbmiFHB5A+dGGrdOePnCgrnRPTraVV8tAkBFmSzeGgcsN/YlRIEDKCe6YxhJts8xASr8NCTwBwPuuFRSTFCxWVo12eAdDLSeNrReV7YpNNTM3K34GkCD+F8GgkiflmK05WnT7U/MOnp1ROOWw7PSyEkKjD44=
+	t=1757404377; cv=none; b=fvD71ez4L4GrU61sD1dy2xeHLOQisQkBvCuXjdaaQ3BkxqBvjnqUhNgwky63Jn4hbpkE9rrvrCsj/2MTHdtZQ638hrr2C01mw45WsSWYT+bKbij74kvMihOMVvU057aGSFEs5xIuPnSCAMFIca6Dc8SzXV+B8bxyvDNj+jJyrEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757400514; c=relaxed/simple;
-	bh=rtlTMZC7g2rsew+11SvO0UaDW+5JK8T8oQscLBSyq9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mopq4+NXxQsCqnXQsfTYMIhYzt60rdD9iJgj+Dj3SVa/ffbUUZkTtvaIgUPDXYfj5MZA0RPd5RggDoncQ6FmCv0M3rQV57IGZLhVQ08TbT3NqWIYvzUoSvEfLvMo1Y9P9NifA6YNdl+G2ZddqfK0gnPh5UKRetOb15s3nIHRNWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nOCeyQF6; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-772679eb358so4830496b3a.1
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Sep 2025 23:48:31 -0700 (PDT)
+	s=arc-20240116; t=1757404377; c=relaxed/simple;
+	bh=inPUrZMsfA2VY/R1OZIP0EMwvOmiWnfNcCAy3+3kvw0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L3Jq2dFj4WhkdbftHovaXoSgVn+Os3i8MJAfjc0lkpLS2062K5IawzexPnvtkh8StH3Sn8cpB309ntPARoZNMdZ93OQid1CWJ5zMYStK1FrpK7WZ5UjItsX8qyizb537lduzAMl1njDlboE+0qoi9nGzDntoMyHv9iYJAtmclGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xZhGnT81; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-24457f581aeso47996925ad.0
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Sep 2025 00:52:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757400511; x=1758005311; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yau1y0MdDuPzs89TtMwlXdIWtqiW1xkaw2fGUY4rbgM=;
-        b=nOCeyQF6a0CRXH+KcFyR6pzg4dlK6cXiR6VwCYmmToRTK4Fkep+oGV5JpUetwPGpwB
-         Bh5uZoCMx0H1VDcqK+Y5EZbEgBif69gblwZLw21Dyg6MbANhiYFK5zxixvcfAsrGTtsh
-         69PeAkiyNtUFdXo294vnSiZtID8lMt5SBPGvL4VhGbD7sQL8PQRQeEfhsKcMbhr+oXL3
-         z9F6tzZ29pR0POhnkvROp634ahxOhxRHREABSltj+wxEOkcl9XbJX7oANe8MPEGvkX4c
-         hqe8xDlLRMvstbUzsEyWCAhtUeG9Etfdzk1Q0xLtYJJETFMl5DhQ8G5L+Wz4rOAlq0xp
-         NzgQ==
+        d=linaro.org; s=google; t=1757404375; x=1758009175; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MMOBMpJlH1unyBv3NyBv5FS3WF4ll7Y30j2iPvk3MmY=;
+        b=xZhGnT81gRho+ch111bsRWXyfdkyXY89aVz9ek+5u9Ah3AkIdx4p08pHJVuc4T/is9
+         vyh9/Y0D/eQ9wdkkNbH1MVBmkqlLUriV3tURE076a7MA1QgH4hpUQuWX4XPirBrcI6ON
+         uwKwH/qgH6SQEusfePwePT7W5N5spe3Nx2hXd1RLjGjWfla4jT5eGPu0uU4VrnZfYjTV
+         9xbE8fF9mm7vo6pDDElTAquWFt+867VcY8BUGtFKBnQUPnPizgmMPaiiLwWY9jwB9q3j
+         0nivVqzjo2BKetROVjMib8U82oZOtJXndKhAb7rh4NPUVhBFh22qctrvE7w4MxrPJrK1
+         W67Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757400511; x=1758005311;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yau1y0MdDuPzs89TtMwlXdIWtqiW1xkaw2fGUY4rbgM=;
-        b=uL3aFstZwbvvT8CDlopJFHcFuM+50yNV5lAXLvEsgG0kYivElA4N2V2ZNvdbpv3FkW
-         3s6yr9TVGk4A3I6G7HBhBttt8JdDMYGTX5y6R75wUCmCW6gj6YgOezLPPRVlkh8JqPKw
-         jbS02V7VVyBvJ1bIvV8BimYFT2TlKygalHa0d9D1Um/Gv+h0JN9mMsotHaJBtCZok974
-         M+KVCr1ujiRjUZzK87VldmHb98IM0dpvrcWsyJ526IPH+8ldMgQmgHoVtUdncMY6LZ+m
-         q44MNp+yJAUCsS3oOGyAgNsvhBlr27ROZiu4uoeNMtayLJQK7UbIlTxpqR+vGMJvo4/k
-         AD8Q==
-X-Gm-Message-State: AOJu0YyI6Z/yJApUKu4qjsWW0ipe8kb0xrsU7c503LBwPI4i6/OweHYG
-	UkgCDc9XFeFzpNp1NDChDbJOXRHvsrpFV4FuTigm924rvSwypF0t8HAs
-X-Gm-Gg: ASbGnctCDCEko2CuYTdhrilHGistqkEnjTkWGyBh2fDASw/Ft2arQUKiFijVDfS+9x9
-	3hV/Nor0+14LxJF6wfPfP3oZvtTYRvBxMQOw2KC2P6QdsFs84ogFhGvRBDN3EGB4WPXqNkbaaKw
-	5g4II7GfSNbzlK+g74BVZEm4Q2OgQooLV7RXKufZPneal1xvSq9JUYgLPwcTJLqzW7aGkzhR/2k
-	CVmoVPBl+gBRcK41EjqCKyRNATKsZavoXuycgG0LDWfg929EkxxY7ZLaeMgBwN1CkG3+cEBvWY7
-	MTUrO+a7DUF1Je3RR+iUDMZkA9TYHsoThmsv1syPmHeetO17sEXU8Xd/+aWTVJLcYsIXay9JLz9
-	hghCCp9bKum7mPAyi5x2KEb8ApWPsvldDQujq0NnxvKCo/ZIlGyWRN26dt9Heyyz6Z9eRchk=
-X-Google-Smtp-Source: AGHT+IGBDN203Gma71lTgp8v2B/LKOSU5soZLdWZpX8IfKq7S4JtiR7EzzwQ+71f+wyWTnoP3TTo4w==
-X-Received: by 2002:a05:6a20:12cb:b0:243:6f4e:fba2 with SMTP id adf61e73a8af0-2533e18c6f0mr14496693637.2.1757400511043;
-        Mon, 08 Sep 2025 23:48:31 -0700 (PDT)
-Received: from NT123328-PC02.ZyXEL.com (114-33-191-187.hinet-ip.hinet.net. [114.33.191.187])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7746628fb5bsm993603b3a.48.2025.09.08.23.48.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 23:48:30 -0700 (PDT)
-From: Zhi-Jun You <hujy652@gmail.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com
-Cc: linux-wireless@vger.kernel.org,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	Zhi-Jun You <hujy652@gmail.com>
-Subject: [PATCH mt76 v2] wifi: mt76: mt7915: fix mt7981 pre-calibration
-Date: Tue,  9 Sep 2025 14:48:24 +0800
-Message-ID: <20250909064824.16847-1-hujy652@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20230601; t=1757404375; x=1758009175;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MMOBMpJlH1unyBv3NyBv5FS3WF4ll7Y30j2iPvk3MmY=;
+        b=CuMWSNFLU766Qr9PV/KT7xRJhMOY3D42/08RSttECgTMPX3wqex8roiiwh56Lp58Zh
+         Ob74ma7Cf80/4vytEvxtGWpZIbENOd0EyNZCpBVYCOFLE0YFkPAznrEhESALF0uoaUlC
+         FXOZlZYLkKgfwqSjQivYBRZkHgYlTyNejgkZegyrLomPZki/AYzCmPb6ctvHSvidgwrJ
+         wnyfu2hSBTF4rjvvqXztVNCKNCnuRW/RSR91OW6Weci6eJ0z/pY7WGzcuCD9w3h9C0Z5
+         6RVFT9JyO87117Fq4oFGxGz5vJH5eH1IjKmPw9gcD4KQR1UtIfMUif1tpZOajxRwCssO
+         s2+A==
+X-Forwarded-Encrypted: i=1; AJvYcCW6at70lRTiBXqpWMF3vwQr9YQLd1CreXlnhWpbw6vpvRpWdzjw/kIc6LJpthKPQDMWGoHL5FKZmxcDvJJsNg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUH6YgeB5FJME4XOMftHZruKLk9okDWUW5tXuolWPjbZj8uHZy
+	3+D/z1opZ/kZgYJIUYlZ0NdvNvtd52j/jPyZSHeWK8r1UdiafLosVu2ex58IclL/Z1z0bpMdBsN
+	Y6sBcTL8Em6WCWPiAWcdm4987PeYiulsHhY9JgJH85g==
+X-Gm-Gg: ASbGncuxhmVx8It9AOzGUVHI4UF/j9KXDXBgRJ2LGRPL8CnKQfRJ+fW1B1u9kDuRxCP
+	aG6lloYfMynTTt+pTpsfu4sA/x5N+jRwPn2Crsk+UknNSTGntyq/MUfJCLkPV4twQzAgQARSQjm
+	EJJC8tf1x9I+c3o6n7IYW2sWoYZR/vvvHfOsUgIbYED7iRWQnUynXDG/NXZ+jImCOTHpM0TDqgT
+	Kwt/w9kMTq/ko98isnxu4bF/JWPETIyx2pz+HImG/8HH6G1xCBkySNaVye/80+HGqx3EBo=
+X-Google-Smtp-Source: AGHT+IHKMwwuJuV9mWv+A5szEpOumIuvlZcVWUqldPFr6JIn3jDsrrgM3BJF5KeyNQI945RkqqnfgQuc2lOpuPGqW0g=
+X-Received: by 2002:a17:902:d2c7:b0:24c:e6a6:9e50 with SMTP id
+ d9443c01a7336-25174a2e860mr141006125ad.45.1757404373705; Tue, 09 Sep 2025
+ 00:52:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 9 Sep 2025 13:22:42 +0530
+X-Gm-Features: AS18NWB51GMfdNxH5F_7y6R9Phs7xYbSJja9zt2vDLfRVbapihqj_C3CM63O-h0
+Message-ID: <CA+G9fYt3xc6DmR+EYZD1cAiBSf0VxH6jqbdf0PK-8uGPivw8ew@mail.gmail.com>
+Subject: Re: [PATCH 5.4 00/45] 5.4.299-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org, Netdev <netdev@vger.kernel.org>, 
+	linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In vendor driver, size of group cal and dpd cal for mt7981 includes 6G
-although the chip doesn't support it.
+On Mon, 8 Sept 2025 at 01:40, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.4.299 release.
+> There are 45 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.4.299-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-mt76 doesn't take this into account which results in reading from the
-incorrect offset.
 
-For devices with precal, this would lead to lower bitrate.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Fix this by aligning groupcal size with vendor driver and switch to
-freq_list_v2 in mt7915_dpd_freq_idx in order to get the correct offset.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Below are iwinfo of the test device with two clients connected
-(iPhone 16, Intel AX210).
-Before :
-	Mode: Master  Channel: 36 (5.180 GHz)  HT Mode: HE80
-	Center Channel 1: 42 2: unknown
-	Tx-Power: 23 dBm  Link Quality: 43/70
-	Signal: -67 dBm  Noise: -92 dBm
-	Bit Rate: 612.4 MBit/s
-	Encryption: WPA3 SAE (CCMP)
-	Type: nl80211  HW Mode(s): 802.11ac/ax/n
-	Hardware: embedded [MediaTek MT7981]
+NOTE:
+Following list of new build warnings noticed on arm build with gcc-12 and c=
+lang.
 
-After:
-	Mode: Master  Channel: 36 (5.180 GHz)  HT Mode: HE80
-	Center Channel 1: 42 2: unknown
-	Tx-Power: 23 dBm  Link Quality: 43/70
-	Signal: -67 dBm  Noise: -92 dBm
-	Bit Rate: 900.6 MBit/s
-	Encryption: WPA3 SAE (CCMP)
-	Type: nl80211  HW Mode(s): 802.11ac/ax/n
-	Hardware: embedded [MediaTek MT7981]
+drivers/net/wireless/marvell/libertas/cfg.c: In function 'lbs_associate':
+include/linux/kernel.h:843:43: warning: comparison of distinct pointer
+types lacks a cast
+  843 |                 (!!(sizeof((typeof(x) *)1 =3D=3D (typeof(y) *)1)))
+      |                                           ^~
 
-Tested-on: mt7981 20240823
+drivers/net/wireless/st/cw1200/sta.c:1292:20: warning: comparison of
+distinct pointer types ('typeof (ssidie[1]) *' (aka 'const unsigned
+char *') and 'typeof (32) *' (aka 'int *'))
+[-Wcompare-distinct-pointer-types]
+ 1292 |                         join.ssid_len =3D min(ssidie[1],
+IEEE80211_MAX_SSID_LEN);
+      |
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fixes: 19a954edec63 ("wifi: mt76: mt7915: add mt7986, mt7916 and mt7981 pre-calibration")
-Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
----
-Changes in v2
-- Reword commit subject and message.
-- Use freq_list_v2 for mt7981.
-- Add iwinfo output.
-- Add Tested-on tag.
-- Link to v1: https://lore.kernel.org/all/20250827052916.9333-1-hujy652@gmail.com
----
- .../wireless/mediatek/mt76/mt7915/eeprom.h    |  6 ++--
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 29 +++++--------------
- 2 files changed, 10 insertions(+), 25 deletions(-)
+drivers/net/wireless/marvell/libertas/cfg.c:1106:18: warning:
+comparison of distinct pointer types ('typeof (ssid_eid[1]) *' (aka
+'const unsigned char *') and 'typeof (32) *' (aka 'int *'))
+[-Wcompare-distinct-pointer-types]
+ 1106 |                 u32 ssid_len =3D min(ssid_eid[1], IEEE80211_MAX_SSI=
+D_LEN);
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-index 31aec0f40232..73611c9d26e1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-@@ -50,9 +50,9 @@ enum mt7915_eeprom_field {
- #define MT_EE_CAL_GROUP_SIZE_7975		(54 * MT_EE_CAL_UNIT + 16)
- #define MT_EE_CAL_GROUP_SIZE_7976		(94 * MT_EE_CAL_UNIT + 16)
- #define MT_EE_CAL_GROUP_SIZE_7916_6G		(94 * MT_EE_CAL_UNIT + 16)
-+#define MT_EE_CAL_GROUP_SIZE_7981		(144 * MT_EE_CAL_UNIT + 16)
- #define MT_EE_CAL_DPD_SIZE_V1			(54 * MT_EE_CAL_UNIT)
- #define MT_EE_CAL_DPD_SIZE_V2			(300 * MT_EE_CAL_UNIT)
--#define MT_EE_CAL_DPD_SIZE_V2_7981		(102 * MT_EE_CAL_UNIT)	/* no 6g dpd data */
- 
- #define MT_EE_WIFI_CONF0_TX_PATH		GENMASK(2, 0)
- #define MT_EE_WIFI_CONF0_RX_PATH		GENMASK(5, 3)
-@@ -180,6 +180,8 @@ mt7915_get_cal_group_size(struct mt7915_dev *dev)
- 		val = FIELD_GET(MT_EE_WIFI_CONF0_BAND_SEL, val);
- 		return (val == MT_EE_V2_BAND_SEL_6GHZ) ? MT_EE_CAL_GROUP_SIZE_7916_6G :
- 							 MT_EE_CAL_GROUP_SIZE_7916;
-+	} else if (is_mt7981(&dev->mt76)) {
-+		return MT_EE_CAL_GROUP_SIZE_7981;
- 	} else if (mt7915_check_adie(dev, false)) {
- 		return MT_EE_CAL_GROUP_SIZE_7976;
- 	} else {
-@@ -192,8 +194,6 @@ mt7915_get_cal_dpd_size(struct mt7915_dev *dev)
- {
- 	if (is_mt7915(&dev->mt76))
- 		return MT_EE_CAL_DPD_SIZE_V1;
--	else if (is_mt7981(&dev->mt76))
--		return MT_EE_CAL_DPD_SIZE_V2_7981;
- 	else
- 		return MT_EE_CAL_DPD_SIZE_V2;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 2928e75b2397..c1fdd3c4f1ba 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3052,30 +3052,15 @@ static int mt7915_dpd_freq_idx(struct mt7915_dev *dev, u16 freq, u8 bw)
- 		/* 5G BW160 */
- 		5250, 5570, 5815
- 	};
--	static const u16 freq_list_v2_7981[] = {
--		/* 5G BW20 */
--		5180, 5200, 5220, 5240,
--		5260, 5280, 5300, 5320,
--		5500, 5520, 5540, 5560,
--		5580, 5600, 5620, 5640,
--		5660, 5680, 5700, 5720,
--		5745, 5765, 5785, 5805,
--		5825, 5845, 5865, 5885,
--		/* 5G BW160 */
--		5250, 5570, 5815
--	};
--	const u16 *freq_list = freq_list_v1;
--	int n_freqs = ARRAY_SIZE(freq_list_v1);
--	int idx;
-+	const u16 *freq_list;
-+	int idx, n_freqs;
- 
- 	if (!is_mt7915(&dev->mt76)) {
--		if (is_mt7981(&dev->mt76)) {
--			freq_list = freq_list_v2_7981;
--			n_freqs = ARRAY_SIZE(freq_list_v2_7981);
--		} else {
--			freq_list = freq_list_v2;
--			n_freqs = ARRAY_SIZE(freq_list_v2);
--		}
-+		freq_list = freq_list_v2;
-+		n_freqs = ARRAY_SIZE(freq_list_v2);
-+	} else {
-+		freq_list = freq_list_v1;
-+		n_freqs = ARRAY_SIZE(freq_list_v1);
- 	}
- 
- 	if (freq < 4000) {
--- 
-2.50.1
+## Build
+* kernel: 5.4.299-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: f858bf5484295b4f9ee720b49c5348ce54eceae3
+* git describe: v5.4.297-70-gf858bf548429
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
+97-70-gf858bf548429
 
+## Test Regressions (compared to v5.4.297-24-g79c1b3cebd7a)
+
+## Metric Regressions (compared to v5.4.297-24-g79c1b3cebd7a)
+
+## Test Fixes (compared to v5.4.297-24-g79c1b3cebd7a)
+
+## Metric Fixes (compared to v5.4.297-24-g79c1b3cebd7a)
+
+## Test result summary
+total: 39701, pass: 30356, fail: 2171, skip: 7026, xfail: 148
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 131 total, 131 passed, 0 failed
+* arm64: 31 total, 29 passed, 2 failed
+* i386: 18 total, 13 passed, 5 failed
+* mips: 25 total, 25 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 26 total, 26 passed, 0 failed
+* riscv: 9 total, 3 passed, 6 failed
+* s390: 6 total, 6 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 27 total, 27 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-exec
+* kselftest-fpu
+* kselftest-futex
+* kselftest-intel_pstate
+* kselftest-kcmp
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* lava
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
