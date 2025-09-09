@@ -1,170 +1,181 @@
-Return-Path: <linux-wireless+bounces-27193-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27195-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF93DB507F6
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 23:17:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F35B50925
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 01:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E84ED5E44B2
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 21:17:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 083294E12F9
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Sep 2025 23:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A970250BEC;
-	Tue,  9 Sep 2025 21:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B4926D4C3;
+	Tue,  9 Sep 2025 23:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OXU+R5JK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cEind0MD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBCB31D389
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 21:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998EF257858
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Sep 2025 23:20:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757452655; cv=none; b=QXgPfhAy9fkkBfMn4vgO6+QsV/jYMWpo05cis3qAYmkXPxwAp/xxNOo83AhOYpcCEhcWATuCyGnPbfSw5pz0ysL2nUnwsXLtg7JxM+SCpgjYNoUTwsOzuq2PS+94COo24hHWjJWBFb8682P/fWV/U9s83L4iy2ZZv9WgjSNkT74=
+	t=1757460011; cv=none; b=bX8HYY18nL4RM4C8cF15Qx0df710dDs7ld86ymzbWKwTIuuzqavq3Z+3qHYq5ZUvZFNT4wpWZ/RC1VvUQSeLnU5y89Pq4FhdZ9ymR4D11uHuTzqf4IbPkdVS13Byth8qGk+9EZ2x2SWwFQkjnfg09aY8kFGferzqd7b4IWDE0HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757452655; c=relaxed/simple;
-	bh=HqYbrFUFeibsZnZKsMf9FgZ9s/maKdF08mAaV92ILmY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=bt6aCUQibOxMyxcDo6JFZRC78a5I+y2efgRUSJh/yUMtkX7BpDUkcw10ag3+XW5psvSeTN/aAtFFQYNPAiDK/MPccDLWTumQn+F9V7r3CPFgYmshsrwfFGNwf1U0qXOYdnemOJ59RQEZ5638vxBRJSfT/jMjeagOzV3FC6GQJo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OXU+R5JK; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-45df7cb7f6bso611085e9.3
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Sep 2025 14:17:33 -0700 (PDT)
+	s=arc-20240116; t=1757460011; c=relaxed/simple;
+	bh=DUCwg/Yil3WGhQ9dwgdsol7pMjoTgxDoiglFXQNxeGA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ap4q+BGu1yAmoMnrZNLoVuEHoPEhYjwEnVqxNSrUgyPvF4k4G+ZkySP+Cj9uewl1QxIsNCes4V8yYyj3pWpt7Gm2VcwKmn0i/CDz8dJobWiq/dO0YbrRDdCEtteFTgHAc+VYR7LZcWlqzyJSqIX0VzpYxo4C1yiOZup703ONhto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cEind0MD; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45dd7b15a64so799155e9.0
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Sep 2025 16:20:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757452652; x=1758057452; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1757460008; x=1758064808; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0N1NCIdRK4PVMotSCtjNyyl/LP3BVDUFyoGUcQcV1nU=;
-        b=OXU+R5JKJCIPIgq3vU6oaf28l+4Q8BrC2mqKiprF2BIPhsStdF+nyMi/OstgDrjrhJ
-         Mn27jczsEfdUqpTtXRlljAE4ShnSfETnFiXjAGGeUt0Z27ts5QrzeVbFkHt2IcVna14b
-         fcmtV6alWLAGsQnYZSHVud5IYmU8Ul0G2ED91VNmjXZB1YcNHQRPaQ9JSLa8rF5uZ7Jv
-         Dmc3abjLtBNnbFSIgxTSJT+bXcykoIfJ29Qu8DmSmEl1nqXuIfRtpatFN9hTiAeVOj5+
-         6o7fb24yJHTZh51UYPPTiriW7PrkAUnHOolFIQPUDMryp7zrIQoVFUWjxXjdYUV5Zjc0
-         l/1A==
+        bh=DUCwg/Yil3WGhQ9dwgdsol7pMjoTgxDoiglFXQNxeGA=;
+        b=cEind0MDdQPq2JEpp/8voeUN7Ryb5gaev5LRONALo0wGe2LlwYrG+Q54wxVBxnRSRk
+         J4RhWdXD08Rrn9ycRcAIwttylTy7FTGD3H+oGAiZ6CfvB5eWRtyxrky3w8ZKa4ohqbLY
+         edQexUZz//4E+mDjCgqToui2Afsp7EUV1fDf80X6sNeSeipOivwd9DDU2ECijdi481iT
+         fzSVJjz0okKJkfUKdwWIC8PwPGSVSzsQsQSA/AxuxKSDgUnmzrbqRkuIYOs4xeHE2ZfZ
+         65z/iKCYNJ2hWRPlN4n3ApxkqkUU/d9iK4WhHp7E9vQEysxFlTf0QB7nSwToMgjcf80K
+         Zc0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757452652; x=1758057452;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0N1NCIdRK4PVMotSCtjNyyl/LP3BVDUFyoGUcQcV1nU=;
-        b=FOCUhEkz0ZMgfYcmwcD6AlXAlTmrByLL4Z5hykjL1wxTqH3JtuxJsfLSGaDz1qtev6
-         Uj+L4VbfXx0R6oioMR5r8Eco+eL6MS1r7BRT2fb8RrkFs5pItlGcMJ2MGKWLtepKK+GA
-         9QsleJHteXODCc5wy1IO96+3gv6ZHZ+Kt+GGcDlzyATga08WtnH7wHONm6e0IvPt8W6q
-         G/sFPvhOwaECI7n/Steozz5O939+eA5WEZBR/bzKRdGdn2PPRe5q0Gkbf6Ki2+canvc7
-         nqLMdaJ/Pv7L1qUwLDnJCrYKywU61EJhJzE2EVxV9hyROhgeRbeTTtmzNI+ad3A/rSX4
-         Hl3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVDu933n7LbDEAU1eQ+8Q3Hn8S6IiPGrBTyegF9hpwUSucQcF15hgJLXIwWve1fCigLB0QU24abgumplkKrTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzSfu/CtQWmt4Dc15gDanC1+1FdKN/YSUjMSlSpemaX2g6LjS1
-	H9r/Tsy1MziNq2YIilx1VP7PxK8sQC7xv+Zf5g03QF3FDhzqhEjozlNYUh8pCJAgjNI=
-X-Gm-Gg: ASbGncu7j2XWzygGTs96SsTsmqj2yvQb0bsEDwIc4vEbe5BLOlM/aLc6emosLw6liYX
-	SqRRIdnS805uJGHN1bpZA3EzLG9kfzHuWfd2ATQInYSB3TqGjPw7jtclPUlBsa92+qRrxEKqn4w
-	MG7pAl6uKyjNc14yFL0OaEW2LUH76czQftpVhVpTRbTBJBoXpevLbEgiU2/pVPnWH1/u/RCl12j
-	XC9Om+4LUQe7OkFyRjrTbscUV2zD9+0Zq4OC5q+iqI6ISBtEfSjdWWp6bS2plYSx0J4s89nsTJn
-	VxyL+XbDDQLGMRQkRqxJRgtZ59ar74fJY++CzrrWtx7iQZzd5yKfbOKB+5nWuSbTb2B83Lct+DR
-	47LumIyWZ5UcwoFhS1iMJcdYMxNM=
-X-Google-Smtp-Source: AGHT+IFfPqt52sJ2bwTn8g9bFD7BIz/dicnzT8ODVk1qTowYr0C9FHz83+RjHbYNDSjICY3IUGu4cA==
-X-Received: by 2002:a05:600c:8010:b0:45b:9912:9f1e with SMTP id 5b1f17b1804b1-45df0e619afmr31135875e9.3.1757452652352;
-        Tue, 09 Sep 2025 14:17:32 -0700 (PDT)
-Received: from localhost ([2a02:c7c:7259:a00:c21d:84a2:1410:7b31])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45df81cbd13sm1712005e9.4.2025.09.09.14.17.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Sep 2025 14:17:31 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757460008; x=1758064808;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DUCwg/Yil3WGhQ9dwgdsol7pMjoTgxDoiglFXQNxeGA=;
+        b=d/JuT1505tuwdgZc25GXo2ABnBt6tUnQZnrYL4hhLCIcdfm3S4j3RKotXBTVW2qxi6
+         SGKff+WiFKfnukwPbEvnSgdkESqcJ3R0ukw0fH7tJZehh73YwJ30Y0A7ixpHeJiorDot
+         Hm5yvOBtbkvuspBfHc5z3ZqGPODzTtVqJ4eaVSJUEMY9eivWT4JbioXc049N6JIrGqUS
+         mb05FJet03GsfuZPqvv9+NfXD06Pp/r4SNSKiUxTywhhpMfKxXV+KurRHtXxsodN50Sw
+         zW0BUVxfHHUlsOiwj47gJqt3FFSbJDGwxykrirIOShfdmycA8diE47byY3+BoQj0SdZa
+         v19w==
+X-Gm-Message-State: AOJu0YwLgngvcOkuoKmadaANJXekDoR7Fog02lRKZ+fU+QxRKkaF/sGh
+	w8jRPMaFC2ccjCzTXNThf3XIR7qVdoMSrecDLSabxJCNXsj+M6LC9y9zxDZJlPKLoeTRLb0HUmU
+	sBdk9THSKALtRmn1BwwqpKghr/tfJeaKdMJx2vxo=
+X-Gm-Gg: ASbGncvzNn01fl6K52zOgIHI5hs59bcf9ESNgdCmFf2q2uYSk5KeMjGzGdHr2g0DEP2
+	KBCbdx6DKJ/loEHjMfCJbaV+KlwvjmA9XAWrlZNijJgvRBAWw5iRnvSMJBRZ1dSxgBFBJoZzLUT
+	Oy4sxDsJ0xIgTr+e2c6TJM3aQfHfQe1BYo2nnCh1/FNsJCAwuULlD573VGNi6krsjqTvK2pqcae
+	dmKjBkX7KM+yshNJYdKE6kKcqGME8ZdBWr/yNG+QV7rCibc9pU=
+X-Google-Smtp-Source: AGHT+IEur1a5d0wT+eXYzML1QrDSJwGuhIqCgQIyqY2U5khoCQ8fsuPJOJkoTjIAyXn+4QoQuJ5J2fvwXkPZdgrNMqI=
+X-Received: by 2002:a05:600c:c0c5:b0:45d:e531:99df with SMTP id
+ 5b1f17b1804b1-45de64869d9mr66199105e9.3.1757460007513; Tue, 09 Sep 2025
+ 16:20:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250909135510.757750-1-scaasiffej@gmail.com> <8d5d8339f1dd568f43d97c4ed60817df1838fc13.camel@sipsolutions.net>
+In-Reply-To: <8d5d8339f1dd568f43d97c4ed60817df1838fc13.camel@sipsolutions.net>
+From: Jeff Isaacs <scaasiffej@gmail.com>
+Date: Tue, 9 Sep 2025 19:19:56 -0400
+X-Gm-Features: AS18NWDDDMesKVZz2rb9nmoJPPHpKyX9VFD0MXDdgogdEgee25XCbp3sARAe-lk
+Message-ID: <CAOYMkPqAt-ETcwL7ZzUUB=0YO-ML+Mh60cB_-8MZj6zcp_-Cxg@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mac80211: always mark 6 GHz BSS as QoS/EDCA capable
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 09 Sep 2025 22:17:31 +0100
-Message-Id: <DCOKYY8GG7IP.1ABNFNTEIME4F@linaro.org>
-Subject: Re: [PATCH ath-current v2] wifi: ath10k: Fix connection after GTK
- rekeying
-From: "Alexey Klimov" <alexey.klimov@linaro.org>
-To: "Loic Poulain" <loic.poulain@oss.qualcomm.com>, <jjohnson@kernel.org>
-Cc: <stable@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
- <ath10k@lists.infradead.org>, <johannes@sipsolutions.net>
-X-Mailer: aerc 0.20.0
-References: <20250902143225.837487-1-loic.poulain@oss.qualcomm.com>
-In-Reply-To: <20250902143225.837487-1-loic.poulain@oss.qualcomm.com>
 
-(add stable into c/c)
+Ok yeah I should have included a bit more info to begin with. First, I will
+defend my assertion, then I will give more details on the motivation behind
+this patch.
 
+802.11ax-2021 =C2=A726.17.2.1 -
+"A STA that supports operation in the 6 GHz band sets
+dot11HE6GOptionImplemented to true."
+"A STA 6G shall not transmit an HT Capabilities element, VHT Capabilities
+element, HT Operation element, VHT Operation element, or an HE Operation
+element that contains a VHT Operation Information field."
+"A STA 6G shall not transmit an HT PPDU."
+"A STA 6G shall not transmit a VHT PPDU."
 
-On Tue Sep 2, 2025 at 3:32 PM BST, Loic Poulain wrote:
-> It appears that not all hardware/firmware implementations support
-> group key deletion correctly, which can lead to connection hangs
-> and deauthentication following GTK rekeying (delete and install).
+In other words, 6GHz is for HE and EHT operation only. Legacy operation is
+not permitted.
+
+802.11ax-2021 =C2=A726.17.1 -
+"An HE STA operating in the 6 GHz band is a VHT STA, except that it is
+exempt from following VHT and HT functionalities and/or requirements that
+are not applicable or that are superseded by equivalent HE functionalities
+and/or requirements (see Clause 26 and Clause 27) and except that it shall
+use the HE format instead of the VHT, HT_GF, or HT_MF format for PPDUs
+transmitted in the 6 GHz band. Additional HE functionalities and/or
+requirements for the 6 GHz band are defined in 26.17.2."
+
+Likewise, a VHT STA is an HT STA, and an HT STA is a QoS STA.
+In 2.4 / 5 GHz, WiFi is fully backward compatible with legacy standards.
+When a beacon frame is captured in the lower spectrum that is missing the
+WMM IE, authentication / association can still proceed, but communication
+will be limited to non-HT rates.
+
+In 6 GHz, the chain of backwards compatibility is broken. WiFi devices
+operating in 6 GHz must at minimum support HE. And all HE STA must
+support WMM/QoS.
+
+So the current logic in mac80211 to downgrade to legacy in absence of
+the WMM IE is flawed when the beacon is captured on 6 GHz, because
+any STA operating in 6 GHz must be at least implement HE and all of its
+required features.
+
+One more supporting item from the spec.
+
+802.11-2020 =C2=A710.2.3.2 -
+"The QoS AP shall announce the EDCA parameters in selected Beacon
+frames and in all Probe Response and (Re)Association Response frames
+by the inclusion of the EDCA Parameter Set element using the information
+from the MIB entries in dot11EDCATable. If no such element has been
+received (e.g., prior to association in an infrastructure BSS), a non-AP
+QoS STA shall use the default values for the parameters."
+
+So it is explicitly stated that it is possible that a beacon frame can be
+received from a QoS AP without the EDCA parameters included. And
+since a non-AP STA cannot initiate a probe request with a wildcard for
+the SSID in 6 GHz, it has no choice but to use the default parameter
+values outlined in the spec until the QoS AP instructs otherwise.
+
+Now for my motivation for introducing this patch. I have observed that the
+WMM element is not present in beacon frames in the 6 GHz spectrum on
+the Ruckus R770 when multiple BSSs are packed together using the
+MBSSID feature. The WMM IE is included in the top-level profile, but not
+in the non-Tx profiles defined within the MBSSID element. I am in contact
+with support, but the initial response I got from Ruckus is that this is
+intentional.
+
+And well it makes sense I guess. If the spec defines default values, and
+the whole point behind MBSSID is to save airtime for data transmission,
+then why repeat the same unchanged default QoS values for every BSS.
+I also figured that they had to go through a lot to get the WiFi 7
+certification. If this is truly an error, I would be surprised if I'm
+the first to
+notice it, given that the R770 shipped out beginning in 2023 :)
+
+So I dug through the spec, and ended up with this chain of reasoning for
+why the WMM IE is not required in 6 GHz.
+
+Jeff
+
+On Tue, Sep 9, 2025 at 9:57=E2=80=AFAM Johannes Berg <johannes@sipsolutions=
+.net> wrote:
 >
-> To avoid this issue, instead of attempting to delete the key using
-> the special WMI_CIPHER_NONE value, we now replace the key with an
-> invalid (random) value.
+> On Tue, 2025-09-09 at 09:55 -0400, Jeff Isaacs wrote:
+> > In 6 GHz, QoS/EDCA operation is mandatory as per IEEE 802.11ax/802.11be=
+.
+> > APs are not required to include a WMM Information or WMM Parameter
+> > element in Beacon or Probe Response frames, unlike in 2.4/5 GHz.
+> > Instead, stations must assume that QoS is always enabled and use EDCA
+> > (default EDCA parameters apply if no explicit EDCA Parameter Set is
+> > present).
 >
-> This behavior has been observed with WCN39xx chipsets.
+> What? You really need to back up that assertion.
 >
-> Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
-> Reported-by: "Alexey Klimov" <alexey.klimov@linaro.org>
-> Closes: https://lore.kernel.org/all/DAWJQ2NIKY28.1XOG35E4A682G@linaro.org
-> Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-
-The fix works great on RB1 board. Thank you.
-
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # QRB2210 RB1
-
-Difficult to say when this issue appeared initially. I'd say that around 6.=
-6
-it worked fine probably.
-But latest few kernel releases like 6.16, 6.15, 6.14 definetely had this is=
-sue.
-Maybe makes sense to add something like that:
-
-Cc: stable@vger.kernel.org # v6.14
-
-> ---
->  v2: use random value instead of predictable zero value for key
->      Add Tested-on tag
->
->  drivers/net/wireless/ath/ath10k/mac.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless=
-/ath/ath10k/mac.c
-> index 24dd794e31ea..154ac7a70982 100644
-> --- a/drivers/net/wireless/ath/ath10k/mac.c
-> +++ b/drivers/net/wireless/ath/ath10k/mac.c
-> @@ -16,6 +16,7 @@
->  #include <linux/acpi.h>
->  #include <linux/of.h>
->  #include <linux/bitfield.h>
-> +#include <linux/random.h>
-> =20
->  #include "hif.h"
->  #include "core.h"
-> @@ -290,8 +291,15 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
->  		key->flags |=3D IEEE80211_KEY_FLAG_GENERATE_IV;
-> =20
->  	if (cmd =3D=3D DISABLE_KEY) {
-> -		arg.key_cipher =3D ar->wmi_key_cipher[WMI_CIPHER_NONE];
-> -		arg.key_data =3D NULL;
-> +		if (flags & WMI_KEY_GROUP) {
-> +			/* Not all hardware handles group-key deletion operation
-> +			 * correctly. Replace the key with a junk value to invalidate it.
-> +			 */
-> +			get_random_bytes(key->key, key->keylen);
-> +		} else {
-> +			arg.key_cipher =3D ar->wmi_key_cipher[WMI_CIPHER_NONE];
-> +			arg.key_data =3D NULL;
-> +		}
->  	}
-> =20
->  	return ath10k_wmi_vdev_install_key(arvif->ar, &arg);
-
-
-Best regards,
-Alexey
+> johannes
 
