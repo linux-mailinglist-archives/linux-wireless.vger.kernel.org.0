@@ -1,103 +1,80 @@
-Return-Path: <linux-wireless+bounces-27214-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27215-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978E9B517AE
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 15:12:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8739BB51954
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 16:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B5301C8549D
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 13:11:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77D4E3BB6FA
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 14:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC3C1F2BA4;
-	Wed, 10 Sep 2025 13:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E435E32A3D7;
+	Wed, 10 Sep 2025 14:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="e2lpHrw8"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="jNPRAyq5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008482877FE
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Sep 2025 13:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609F31E5B70;
+	Wed, 10 Sep 2025 14:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757509888; cv=none; b=M4spy5R1AZ9et66jmXnN9x7gVCEhM99A4XmxCEz6genNwMHorblTLc26E7A2c8E1mulAcx4OI+DP5cAFUa81C4JN4FYN3iNlP7bsx+lojPGhxo865y+67cjVDmeQpFLW9H5NfhhsNM4OzRsOsKf6fsVKhhSR8Sel6bqsZ2nJdMw=
+	t=1757514474; cv=none; b=qEjt1eBwbkChhIoTBbu/9vMPOIQP0eaBoJfHWsD9DfESA3lfFPEDbY7jz0v/kFdKCPi1+R/bryDDhYK1bea3fDMnA3V5A3V+kxA3kEOgwnK/iS2p75tpcmmY+x3EGynuzxuMNgKaEB01VWnqmnM5Da+gHMEmlkfvi2AGTJJH5uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757509888; c=relaxed/simple;
-	bh=v9PSXHWVO6JNQXp/vXchh029dy3zIog6zrw6Jmi5zNw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pyXpwG5q6Z77+RVZ0aQFgt+Vwai5OlUZbHgMzsuslU8URxCoT+q72G7kTyeRdn1mvZT7uNywVu3FhcN6iBsIB24A4Kk5PNTp08rndYR2l3YXa5cKSEDSD0e1g/SdpSgSbmRqhpLCs0RC3x0KcjPPB+K4c9R8/FtuIH4ip4ZMq8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=e2lpHrw8; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=UspXaPy4TejC9qphVDxefE/uHMbadkItdKBe5hkGgMI=; t=1757509887; x=1758719487; 
-	b=e2lpHrw8Qj+5Jc0QMQ06uouq3406fBcglRw26H2+ID+nX1IHgbDIeLVipdOH+qrC+UZ8u8m5eij
-	vkxAj5cltusDrOzwwXc4AwD92NAjhN3qmXPvJQjEuOer7GDBgc4xF5hDh8TjBR73wPHbqsg6iUrym
-	X2whOLuLc6DnZ87kth45mx4VH0PhfUyCS9qRekdPJel3IFnQTYYwhVXLWqfp4GSPXVouwzsEXvQUs
-	08erV8rI/9QxXR0S12A+MLCeUzb2cJ8KyMNr/94+Dawf2RXmkga1HP/jTlgwWUmPHH/EZKslWlJPu
-	SZ/DeXlGCbP+HxopLJpqSZBegAun658e3Xsg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uwKbc-0000000CtiZ-0OYr;
-	Wed, 10 Sep 2025 15:11:24 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless v2] wifi: nl80211: completely disable per-link stats for now
-Date: Wed, 10 Sep 2025 15:11:21 +0200
-Message-ID: <20250910131121.33909-2-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1757514474; c=relaxed/simple;
+	bh=8okyQkExgyyexDlNGmfq4CqyItome90K5wufQ6qthqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=svoJ8PLqOofkUUtlDnecvMzcbuRBNOcYBNwDHeDnerZjVaBJ3P8YEq/qvFn22qZ2uzYurl8v4S1MIjOhFzlRBMyybPO1D1E/IrIQTukMToPHs2BySWRhJfZBC2++SxRcDGw/NtRG/JIw3nEHmb36aLyFQ0UGk2Fg6z9cK6Pp2RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=jNPRAyq5; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 8F0681FD38;
+	Wed, 10 Sep 2025 16:27:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1757514462;
+	bh=z5+cnXGo/HFRyM+iIluhGe0ybgQ91z40QrTwNYLkdDE=; h=From:To:Subject;
+	b=jNPRAyq5E6mGNa7vwQl4hNZud7A3+NwkNwXX3fjWzMjPI5tM+kk9wjtl2VL9oOXkP
+	 GNlZyLRZEKXbOoxRABkLaI6AyS9Kh6uDY4p6FaUem14HYE2g6jO3dQhD+FLJ+fvus8
+	 0vvYc/Lhwzl/dJhivGx+DCG1KdZROhuP54yfPZyXLASfEH4loTSmCHdZtXMHX/nzRm
+	 s6qaAyk+6z3vk0O3MDDkh5yFiEdP4tPOS7DByRpUb6+YgrnNDJTQBcnIiIPL5ku9fx
+	 Ogjfqyf2jb/k23UO/JjLnwCqMdib6e/jeT1AvNE4ukWbwg5YBH31C/97PMSWObvTww
+	 55er70eR6iZYw==
+Date: Wed, 10 Sep 2025 16:27:41 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: mwifiex: fix endianness handling in
+ mwifiex_send_rgpower_table
+Message-ID: <20250910142741.GB41850@francesco-nb>
+References: <20250910-for-next-v1-1-3ee311706231@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910-for-next-v1-1-3ee311706231@pengutronix.de>
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Wed, Sep 10, 2025 at 03:03:32PM +0200, Stefan Kerkmann wrote:
+> The length of the host command is a u16 stored in little endian byte
+> order, which needs byte order conversion to work correctly on big endian
+> systems.
+> 
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/linux-wireless/aLqZI4FfOI4iJZtf@stanley.mountain
+> Fixes: 7b6f16a25806 ("wifi: mwifiex: add rgpower table loading support")
+> Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 
-After commit 8cc71fc3b82b ("wifi: cfg80211: Fix "no buffer
-space available" error in nl80211_get_station() for MLO"),
-the per-link data is only included in station dumps, where
-the size limit is somewhat less of an issue. However, it's
-still an issue, depending on how many links a station has
-and how much per-link data there is. Thus, for now, disable
-per-link statistics entirely.
-
-A complete fix will need to take this into account, make it
-opt-in by userspace, and change the dump format to be able
-to split a single station's data across multiple netlink
-dump messages, which all together is too much development
-for a fix.
-
-Fixes: 82d7f841d9bd ("wifi: cfg80211: extend to embed link level statistics in NL message")
-Link: https://patch.msgid.link/20250910103824.e63765f59b2d.Ibb2f3663109922148a8f0067f56ef919039c5409@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/nl80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index f2f7424e930c..852573423e52 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -7575,7 +7575,7 @@ static int nl80211_dump_station(struct sk_buff *skb,
- 				NETLINK_CB(cb->skb).portid,
- 				cb->nlh->nlmsg_seq, NLM_F_MULTI,
- 				rdev, wdev->netdev, mac_addr,
--				&sinfo, true) < 0)
-+				&sinfo, false) < 0)
- 			goto out;
- 
- 		sta_idx++;
--- 
-2.51.0
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
 
