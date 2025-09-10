@@ -1,110 +1,77 @@
-Return-Path: <linux-wireless+bounces-27211-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27212-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487E6B5178A
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 15:03:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6240DB51797
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 15:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E98C3465D62
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 13:03:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39C37486527
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 13:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFF4149C41;
-	Wed, 10 Sep 2025 13:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717CF31A54A;
+	Wed, 10 Sep 2025 13:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="fAd+ueeQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DA41A9FB5
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Sep 2025 13:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB79531A070;
+	Wed, 10 Sep 2025 13:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757509420; cv=none; b=JAqMKlDTJFChAzEH4UBjh3sk6ubUw9nytS7AJFPaHEv5QE/VcqhOCUC/SVNHIJGRUW84H4YNQEIAA1tr/q+Y8sLvx01eslOXh1imq2J5lNbhzu6ngK3kZ+hUCqigKGOEEMZduT319XNcatShH3j2UYEOQ4Uj3pSRazmSyGllBtI=
+	t=1757509685; cv=none; b=O1L2aiOhfbiwRnjDhZmisae+uAJKeJxuuTkBEwiZfQEu/tsLrfG3pqr+f457PVwFYzibkmhli/ZWobwkkAOpnFOttyA/10zGEayzNChtsJLG1DrjMv/MYFTxC023Oyffjs9lduVPVK+uvMe7TTiwU4En/RaZ14Q6IK9bFkj2N1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757509420; c=relaxed/simple;
-	bh=UXhJw5qdqqlSnkCfF7xwIE+zNV5//HXyiaD7wKDHFPU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PSnEjrCRH8izIm+kNK4dm+A90OvfxxFFY8XZV7j00Y6X69p4NIo+SxA8Azr7D7BHPPQVesCkWtHAQlYbjgEaGRA9H7jBoX/JW7J4TM4ZZy+JRH3vhxt9VGDotBSyveWVKH3/o8QMY3h89T7yhwJSj3buBzNk2Jr861cPq85Bwe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1uwKU2-0005of-7F; Wed, 10 Sep 2025 15:03:34 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1uwKU1-000auH-0t;
-	Wed, 10 Sep 2025 15:03:33 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1uwKU1-00000000poj-0snf;
-	Wed, 10 Sep 2025 15:03:33 +0200
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Wed, 10 Sep 2025 15:03:32 +0200
-Subject: [PATCH] wifi: mwifiex: fix endianness handling in
- mwifiex_send_rgpower_table
+	s=arc-20240116; t=1757509685; c=relaxed/simple;
+	bh=aUghY/cNdvYBjwgly52UnFeOS0MQvDwnhjms1Piw60M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=s+Fq01F2jgkeWInZaxwRGrYivovPEf3IacZedSKGOipLiK1U/YiKe6dnyRw11LKrN0utV+pwKan5gy46xsw3jJ3EQFO01lzrXk6ONqHckVWtaIjNh/Mf+mmz7SJnouXHMRcNLMziK62FnXq+oOTDnbJ9CdvCHB8Ik/pb3bKqahw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=fAd+ueeQ; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=aUghY/cNdvYBjwgly52UnFeOS0MQvDwnhjms1Piw60M=;
+	t=1757509683; x=1758719283; b=fAd+ueeQJK5baRwoUTrG70R3LIJiv5H+v1VZaqZZv5zyjDI
+	cx2HrnJ/Quk2VoQBOTUHIufQ8mcTBzlA4uNSljUpjAGqk/7n+7Sd6389XZd7Y4mM2l/466VT7nqUX
+	EtLBbnp0NpbiQWQt3AAEBOHQjFnwZsbelnKShKiY8jkNckVRLKlDAdZpOwX/MGHXShhkUb1Q+97tc
+	jo4cstrDr0mYwb0BB1NLfmkRnvEcyUXJSKW8rcSTrKs+2VW3TIFljOK56m9WdPTUOoqXlR/B7iOB6
+	PmJAQSBpPAgGCBmrG7an/O+sjsZIatO04VTeNs1W3tR0hjxUQjc5Gv8dqCG40CIQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uwKYI-0000000CtKZ-4BfI;
+	Wed, 10 Sep 2025 15:07:59 +0200
+Message-ID: <555b2d44403b08cb01d200eb00544e12b473cff9.camel@sipsolutions.net>
+Subject: Re: [PATCH v5] wifi: cfg80211: Remove the redundant wiphy_dev
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Zheng tan <tanzheng@kylinos.cn>
+Cc: arend.vanspriel@broadcom.com, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org
+Date: Wed, 10 Sep 2025 15:07:58 +0200
+In-Reply-To: <20250910015556.219298-1-tanzheng@kylinos.cn>
+References: <20250910015556.219298-1-tanzheng@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250910-for-next-v1-1-3ee311706231@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIACN3wWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDS0MD3bT8It281IoSXQMDi9QUi1SLRHOTVCWg8oKi1LTMCrBR0bG1tQA
- /w7uOWgAAAA==
-X-Change-ID: 20250910-for-next-008ed8e8a74e
-To: Brian Norris <briannorris@chromium.org>, 
- Francesco Dolcini <francesco@dolcini.it>, 
- Johannes Berg <johannes.berg@intel.com>, 
- Dan Carpenter <dan.carpenter@linaro.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Stefan Kerkmann <s.kerkmann@pengutronix.de>
-X-Mailer: b4 0.14.2
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: s.kerkmann@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-malware-bazaar: not-scanned
 
-The length of the host command is a u16 stored in little endian byte
-order, which needs byte order conversion to work correctly on big endian
-systems.
+On Wed, 2025-09-10 at 09:55 +0800, Zheng tan wrote:
+>=20
+> Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-wireless/aLqZI4FfOI4iJZtf@stanley.mountain
-Fixes: 7b6f16a25806 ("wifi: mwifiex: add rgpower table loading support")
-Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
----
- drivers/net/wireless/marvell/mwifiex/sta_cmd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'm going to remove that for you this time, but for the record: please
+don't ever add tags that weren't _explicitly_ provided to you in email.
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-index 91d5098081e8b97420322484a229654c026e4618..dcca71158fc682902c0bd3376da32e81f8f6561f 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-@@ -1537,7 +1537,7 @@ int mwifiex_send_rgpower_table(struct mwifiex_private *priv, const u8 *data,
- 		}
- 
- 		if (*pos == '}' && start_raw) {
--			memcpy(&hostcmd->len, &hostcmd->cmd[2], sizeof(u16));
-+			hostcmd->len = get_unaligned_le16(&hostcmd->cmd[2]);
- 			ret = mwifiex_send_cmd(priv, 0, 0, 0, hostcmd, false);
- 			if (ret) {
- 				mwifiex_dbg(adapter, ERROR,
-
----
-base-commit: e3ac93e9d916ebae0711a42f524429dad89c4887
-change-id: 20250910-for-next-008ed8e8a74e
-
-Best regards,
--- 
-Stefan Kerkmann <s.kerkmann@pengutronix.de>
-
+johannes
 
