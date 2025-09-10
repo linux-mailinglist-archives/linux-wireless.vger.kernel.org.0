@@ -1,108 +1,103 @@
-Return-Path: <linux-wireless+bounces-27213-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27214-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8217EB517A7
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 15:11:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 978E9B517AE
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 15:12:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 352974660C6
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 13:11:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B5301C8549D
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 13:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11D831C57E;
-	Wed, 10 Sep 2025 13:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC3C1F2BA4;
+	Wed, 10 Sep 2025 13:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="e2lpHrw8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C61136347
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Sep 2025 13:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008482877FE
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Sep 2025 13:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757509854; cv=none; b=TXSZopEOZDfuKdAwOFYKr1fV2EvV5K4bZWS9Gil4Xn4pvQZeHCk2Xziu9mhJ/vv1O/g/KXmYpZRHhuoaSdSXitYwcS9mjYx1TX25Xys/cDWcucoVWgATKlLQ45UO+17UZFvTBE+m+WweEHHqav+aJmqEKLx+GMh32dSnPw9cnNU=
+	t=1757509888; cv=none; b=M4spy5R1AZ9et66jmXnN9x7gVCEhM99A4XmxCEz6genNwMHorblTLc26E7A2c8E1mulAcx4OI+DP5cAFUa81C4JN4FYN3iNlP7bsx+lojPGhxo865y+67cjVDmeQpFLW9H5NfhhsNM4OzRsOsKf6fsVKhhSR8Sel6bqsZ2nJdMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757509854; c=relaxed/simple;
-	bh=gO2Ks0VHsePKcc510DSGBUvhSSCMEAo5Wf85gCZL4zA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zg2nJrFwruFm1yIbIwFb9zjHEXUHB8nNlvI0+v+thQOrQG510WqVOCGyLSQRYQCH64gnCD2/7ROLo0mReAqgWu9CPMA7u6f2kQk/eiq/GH+Qny9dKvCoPypoVuwfqtXYXkzPPBV4+N4F4ai6vmj8wK385ZivyswzlnGR39qweSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	(Exim 4.92)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1uwKb0-0006er-EU; Wed, 10 Sep 2025 15:10:46 +0200
-Message-ID: <c3f3370f-1f2c-4e35-81a4-4303aed2d438@pengutronix.de>
-Date: Wed, 10 Sep 2025 15:10:44 +0200
+	s=arc-20240116; t=1757509888; c=relaxed/simple;
+	bh=v9PSXHWVO6JNQXp/vXchh029dy3zIog6zrw6Jmi5zNw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pyXpwG5q6Z77+RVZ0aQFgt+Vwai5OlUZbHgMzsuslU8URxCoT+q72G7kTyeRdn1mvZT7uNywVu3FhcN6iBsIB24A4Kk5PNTp08rndYR2l3YXa5cKSEDSD0e1g/SdpSgSbmRqhpLCs0RC3x0KcjPPB+K4c9R8/FtuIH4ip4ZMq8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=e2lpHrw8; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=UspXaPy4TejC9qphVDxefE/uHMbadkItdKBe5hkGgMI=; t=1757509887; x=1758719487; 
+	b=e2lpHrw8Qj+5Jc0QMQ06uouq3406fBcglRw26H2+ID+nX1IHgbDIeLVipdOH+qrC+UZ8u8m5eij
+	vkxAj5cltusDrOzwwXc4AwD92NAjhN3qmXPvJQjEuOer7GDBgc4xF5hDh8TjBR73wPHbqsg6iUrym
+	X2whOLuLc6DnZ87kth45mx4VH0PhfUyCS9qRekdPJel3IFnQTYYwhVXLWqfp4GSPXVouwzsEXvQUs
+	08erV8rI/9QxXR0S12A+MLCeUzb2cJ8KyMNr/94+Dawf2RXmkga1HP/jTlgwWUmPHH/EZKslWlJPu
+	SZ/DeXlGCbP+HxopLJpqSZBegAun658e3Xsg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uwKbc-0000000CtiZ-0OYr;
+	Wed, 10 Sep 2025 15:11:24 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless v2] wifi: nl80211: completely disable per-link stats for now
+Date: Wed, 10 Sep 2025 15:11:21 +0200
+Message-ID: <20250910131121.33909-2-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH next] wifi: mwifiex: fix double free in
- mwifiex_send_rgpower_table()
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Brian Norris <briannorris@chromium.org>,
- Francesco Dolcini <francesco@dolcini.it>,
- Johannes Berg <johannes.berg@intel.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Jeff Chen <jeff.chen_1@nxp.com>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
-References: <aLqZBh5_dSHUb4AE@stanley.mountain>
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Content-Language: en-US, de-DE
-In-Reply-To: <aLqZBh5_dSHUb4AE@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: s.kerkmann@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 
-Hi Dan,
+From: Johannes Berg <johannes.berg@intel.com>
 
-thanks for spotting and fixing the double free error. I converted the 
-code to use the cleanup helper late in the dev process and forgot to 
-remove the call. I sent a patch for the endianness bug as well.
+After commit 8cc71fc3b82b ("wifi: cfg80211: Fix "no buffer
+space available" error in nl80211_get_station() for MLO"),
+the per-link data is only included in station dumps, where
+the size limit is somewhat less of an issue. However, it's
+still an issue, depending on how many links a station has
+and how much per-link data there is. Thus, for now, disable
+per-link statistics entirely.
 
-On 05.09.25 10:02, Dan Carpenter wrote:
-> The "hostcmd" is freed using cleanup.h, so calling kfree() will lead to
-> a double free.  Delete the kfree().
-> 
-> Fixes: 7b6f16a25806 ("wifi: mwifiex: add rgpower table loading support")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> ---
->   drivers/net/wireless/marvell/mwifiex/sta_cmd.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-> index 6d9e2af29a69..91d5098081e8 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/sta_cmd.c
-> @@ -1521,10 +1521,8 @@ int mwifiex_send_rgpower_table(struct mwifiex_private *priv, const u8 *data,
->   		return -ENOMEM;
->   
->   	_data = kmemdup(data, size, GFP_KERNEL);
-> -	if (!_data) {
-> -		kfree(hostcmd);
-> +	if (!_data)
->   		return -ENOMEM;
-> -	}
->   
->   	pos = _data;
->   	ptr = hostcmd->cmd;
+A complete fix will need to take this into account, make it
+opt-in by userspace, and change the dump format to be able
+to split a single station's data across multiple netlink
+dump messages, which all together is too much development
+for a fix.
 
-Thank you,
-Stefan
+Fixes: 82d7f841d9bd ("wifi: cfg80211: extend to embed link level statistics in NL message")
+Link: https://patch.msgid.link/20250910103824.e63765f59b2d.Ibb2f3663109922148a8f0067f56ef919039c5409@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/nl80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index f2f7424e930c..852573423e52 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -7575,7 +7575,7 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ 				NETLINK_CB(cb->skb).portid,
+ 				cb->nlh->nlmsg_seq, NLM_F_MULTI,
+ 				rdev, wdev->netdev, mac_addr,
+-				&sinfo, true) < 0)
++				&sinfo, false) < 0)
+ 			goto out;
+ 
+ 		sta_idx++;
 -- 
-Pengutronix e.K.                       | Stefan Kerkmann             |
-Steuerwalder Str. 21                   | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany              | Phone: +49-5121-206917-128  |
-Amtsgericht Hildesheim, HRA 2686       | Fax:   +49-5121-206917-9    |
+2.51.0
 
 
