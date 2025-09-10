@@ -1,102 +1,102 @@
-Return-Path: <linux-wireless+bounces-27203-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27204-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DE1B51165
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 10:34:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CB2B51193
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 10:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 316971C822E7
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 08:34:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFF6B3A4BDF
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 08:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F74230F558;
-	Wed, 10 Sep 2025 08:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37D62BE620;
+	Wed, 10 Sep 2025 08:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ge842IhJ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="sDA5obzQ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBBC30FC2A
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Sep 2025 08:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649A424BCE8
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Sep 2025 08:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757493244; cv=none; b=VpNKze2xvUBAhuLfrbbCip+5bBbxYJtTlH4CJdkobqSKzxr1jAzjY3kulG30DrtOuOhA1k7y6MIOqoVjNqd/8dBkIc443jL5c+siBPlQS+DH0PJTTTuRP1oW1b7WLI3kEtM+rw1o0rm1vwQ+BfM0XEARp3MrZm0L1EvFZ/u1+0s=
+	t=1757493513; cv=none; b=ZYeYfgjmXPTy60ZrWA9YzMxWD2qEYr6rqONjHiib5P6CA/pC3U5Fn8kDcDE8Vf/4KrzyCob8kEuyq2AuNpJ/XwkSKqgW5pQGoPbyG3MjhYMSDWYAjqRMK7NhsnEsEDV8mUfSnFroTFT1nL6eYMtkHY4wI7dPZLRjFva5FHTL6ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757493244; c=relaxed/simple;
-	bh=toOUaxdVoGEs/B7DmV3qAM0y9m2553dykhQBsmjvKOU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JLr7BNMlyD+BGTyj5Oveg0fX13FXUMTZCP/NlbfYEJbhqYKSBDPgxsqKNHvg1GPL9CMbOAjIWHFlXWtGYdHSBYfI5CWsE0NWJE637tyf8/u33b/dEQwaB8kZO3Bjy6XkF7Uo5DIpv3WSZ0pc5jtGmSzzUJC7B9aEK0EvQEkZmGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ge842IhJ; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1757493513; c=relaxed/simple;
+	bh=pb3mjzoOqnMGsoW7T6XOBkHS505uhKchvYW9M2ALRNM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fku7R9k3o1sx6i8wy3BcRIEjM1GMPcVKaGhpLiS14djbWrAJsDsBqwp07qrpPlGkqTvfXbTKnSBHydIrEuEGIShK+MAfuud5kftlv1sCM0sSWWcg6RVj9BkS9JpfZE/0JQq70PG9orsPxSUsQM1khVrS+op5bOCRlyi0iXg+oeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=sDA5obzQ; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=toOUaxdVoGEs/B7DmV3qAM0y9m2553dykhQBsmjvKOU=;
-	t=1757493242; x=1758702842; b=ge842IhJcUxpwvyVzD0FohYaLzpYeU24XeUUUYlV7mORW6B
-	oIGQfDjMAcrZbwb23DjTk8Ns1hWf2I8eKXjXOMVx51AlRtwFI5qU4UWrpxwwMjeDDyD9CUlWswZz+
-	1JjTpTLu6FrZavPgiESp1kjkteG5gh/hPHvbu777qiZVFJWPYHX6Ckxy0KGijJKbKET+HC6Hu7BHg
-	TArmkKgxor84paQ87hbqjGo0cdxuY1PRNqO1pnqfCqCJ6G38ZEQ3+8uEgCGWU6sYXeSgpVHQ3HObK
-	VCg3zqjzMxgK2jFB0MP2vfG1wogmsgAbDYXnoWHUvT1ECZYB1vIh/kaJv8zpP/qg==;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=hnkCX/rPw0MYu1sVbgfBaWXkK3iLM1IC4s3zFxP1Wj0=; t=1757493512; x=1758703112; 
+	b=sDA5obzQAVXpoN8bZmOKWLqvIezsWOnn5GDe664D+YMFWuNOn9YsOSk+WkJYwRl5tM3rNpYlTfA
+	H0RKt2Gz6blDZi8u03UQ/9yNZjyvfE05ABI0AZCNsTaV4PibS2h7RQWcyDR6q3LszA7tiGjNCeP77
+	tvPEVtoRrEaBUbYIXBVrZV+ewEzaluYbrBUJB17krt37FnQ/cUqOLO6LsVWRlff1R7aY/3T1mSlBf
+	O12qtQFzoziirfyqxAZykfuIhouEzlhtu1E/63/0COToNB6CF7otCcXgDOgGdNZKSvWVpjifBhjA2
+	LL7g5Pz7s0+e8sZMhmFGUU9mOGi/aqd4djWg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uwGH9-0000000CSys-0CJF;
-	Wed, 10 Sep 2025 10:33:59 +0200
-Message-ID: <a83d883d0f251c08de7dfe7f2b3e7ab890a9b1df.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless] wifi: cfg80211: Fix "no buffer space
- available" error in nl80211_get_station() for MLO
+	id 1uwGLT-0000000CTRc-0NdH;
+	Wed, 10 Sep 2025 10:38:27 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org
-Date: Wed, 10 Sep 2025 10:33:58 +0200
-In-Reply-To: <20250905124800.1448493-1-nithyanantham.paramasivam@oss.qualcomm.com>
-References: 
-	<20250905124800.1448493-1-nithyanantham.paramasivam@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH wireless] wifi: nl80211: completely disable per-link stats for now
+Date: Wed, 10 Sep 2025 10:38:24 +0200
+Message-ID: <20250910103824.e63765f59b2d.Ibb2f3663109922148a8f0067f56ef919039c5409@changeid>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2025-09-05 at 18:18 +0530, Nithyanantham Paramasivam wrote:
-> Currently, nl80211_get_station() allocates a fixed buffer size using
-> NLMSG_DEFAULT_SIZE. In multi-link scenarios - particularly when the
-> number of links exceeds two - this buffer size is often insufficient
-> to accommodate complete station statistics, resulting in "no buffer
-> space available" errors.
->=20
-> To address this, modify nl80211_get_station() to return only
-> accumulated station statistics and exclude per link stats.
->=20
-> Pass a new flag (link_stats) to nl80211_send_station() to control
-> the inclusion of per link statistics. This allows retaining
-> detailed output with per link data in dump commands, while
-> excluding it from other commands where it is not needed.
+From: Johannes Berg <johannes.berg@intel.com>
 
-I guess I'll apply the patch for now since it makes things _better_, but
-I'm really not convinced that it's actually sufficient, and I'm very
-tempted to throw in another patch to make it always false for 6.17.
-Convince me not to? I'll reason below:
+After commit 8cc71fc3b82b ("wifi: cfg80211: Fix "no buffer
+space available" error in nl80211_get_station() for MLO"),
+the per-link data is only included in station dumps, where
+the size limit is somewhat less of an issue. However, it's
+still an issue, depending on how many links a station has
+and how much per-link data there is. Thus, for now, disable
+per-link statistics entirely.
 
-It seems to me that with many links, even for dump you could easily need
-more space than the size available for a single dump message just like
-with get, since there's no fundamental difference between the two. So it
-seems to me that not only should it be opt-in from userspace to retrieve
-the data during dump, but also there should be the ability to split the
-dump not only on a per-STA basis but also per-link within the STA, which
-requires some logic adjustments on both sides (hence the opt-in.)
+A complete fix will need to take this into account, make it
+opt-in by userspace, and change the dump format to be able
+to split a single station's data across multiple netlink
+dump messages, which all together is too much development
+for a fix.
 
-Especially if we start seeing more links and/or more data for each link,
-this will otherwise become an issue even in dumps.
+Fixes: 82d7f841d9bd ("wifi: cfg80211: extend to embed link level statistics in NL message")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/nl80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-johannes
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index f2f7424e930c..852573423e52 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -7575,7 +7575,7 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ 				NETLINK_CB(cb->skb).portid,
+ 				cb->nlh->nlmsg_seq, NLM_F_MULTI,
+ 				rdev, wdev->netdev, mac_addr,
+-				&sinfo, true) < 0)
++				&sinfo, false) < 0)
+ 			goto out;
+ 
+ 		sta_idx++;
+-- 
+2.51.0
+
 
