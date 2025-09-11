@@ -1,212 +1,196 @@
-Return-Path: <linux-wireless+bounces-27234-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27235-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4A9B526A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Sep 2025 04:46:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B616B52754
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Sep 2025 05:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 202821B23CEB
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Sep 2025 02:46:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08B887BCC74
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Sep 2025 03:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8787D1684A4;
-	Thu, 11 Sep 2025 02:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB4E231830;
+	Thu, 11 Sep 2025 03:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ctfDIAAc"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nLuZjxG/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6C34AEE2;
-	Thu, 11 Sep 2025 02:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8D62376FC
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Sep 2025 03:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757558792; cv=none; b=oWXofbcl4fKAHLQ6ZM7iUOA+uK3mycf8HwYHYZxhqfcKyIQQeJpU8+nObQp9h7BCc+d96BJOaGh5L5yX/B9SXn+KvXn4YNnNaDSm28iT4MJdSR5YrOoUiQsi7P14WcLCR5ooDA7a1o0moneGwofWmZK7KL+ySBDYBzSwnW0TD1c=
+	t=1757562199; cv=none; b=Ap5GSNE0Ip6soJh7/CyuwbOHko6/V0byTXJzZnwVCtI5YAafSVk9L04lneVlKmV7jaBWjKh757wZ8ajOesu6ViY3Wpj69BLHPXrB/1J/RrZMr1WR3JsJjqhSYx09yBFIGWzycnu30rw0yJAYo6rPyVQoWKVpYYlX5pE+Yvt2Drs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757558792; c=relaxed/simple;
-	bh=JkdLAlhDoh+UYJt5diTKmVE6itrkbxBgdBOxKOSSeeE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dha+nmnnzLx8JlRN5aKK95RfdI36CKBeuZ9ET/3eFvd29VmEEjNtqEKbkip+xNv7bNQxIMbmQHbirpws6FixokkVKY1W3paSCWVPuTgAnqdC2jSRR+022JYa4IJen2QAh5ckfgAoScD8vVOnB37EWeXRqdGdDrOaplz349far1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ctfDIAAc; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58B2kK6l92381329, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1757558781; bh=JkdLAlhDoh+UYJt5diTKmVE6itrkbxBgdBOxKOSSeeE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ctfDIAAcGHBJenkt5eD2WBtBPJDKJxT2BK1QSPxPhawQv+sOaPcwrT0A9B2Sze0ZK
-	 aHlhWB4q3uBlCITld0n5YpgYoT9x30YTbVGCLqFqxwCDraF+00oJJVciOkTLUXjln+
-	 zrv7fPUHhrLyaCB/rLx1giK9zu2ltxnL4asN7IIgAJls91RMRWZzHUHGfGu645KYpt
-	 8WCUiT+DUxKLOJE1nG6K9al1UTd5abzFeGaR/hlBZrjoOsJ5jU4abZzv63Ghncnyuc
-	 kTDpwZ1cxtZOr6LcYHYbWVS3Z2wsMgOKoev4ePpWPdReXUW+rbDoIIi8nC94w1SLHy
-	 Y0khwb5vgpMWg==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58B2kK6l92381329
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Sep 2025 10:46:21 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 11 Sep 2025 10:46:20 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
- 15.02.1544.027; Thu, 11 Sep 2025 10:46:20 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: =?utf-8?B?T25kxZllaiBKaXJtYW4=?= <megi@xff.cz>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open
- list:REALTEK WIRELESS DRIVER (rtw89)" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH] net: wireless: rtw89: Sleep while waiting for firmware init
-Thread-Topic: [PATCH] net: wireless: rtw89: Sleep while waiting for firmware
- init
-Thread-Index: AQHcIc+fk+Cu8K8WX0+hNcR/3x+wJ7SLkeewgAAGW4CAAZqnUA==
-Date: Thu, 11 Sep 2025 02:46:19 +0000
-Message-ID: <3aaea04ef3ec4a7287bfd5962ce57cc2@realtek.com>
-References: <20250909211255.1486851-1-megi@xff.cz>
- <4a3f6b40a0064de1acd80f4eeb1cdd0f@realtek.com>
- <mcf6zmdhmqlg3xbar2yxa7bnvvnlxbttveug7k6u23tc6yigq6@exm5imy6aob4>
-In-Reply-To: <mcf6zmdhmqlg3xbar2yxa7bnvvnlxbttveug7k6u23tc6yigq6@exm5imy6aob4>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1757562199; c=relaxed/simple;
+	bh=ngU7VQf8+g3DiCBCTuhxe5mu1iW+R/TLmOiLpgZYJaE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dxdTk3b84jDMXx+G2682HQJWXZdYro8NSNNFbN8jdBP9FTM82VFxZQTkWWEXRwzIBiGh6mtitQHGGItT4cTFC3haa+NZLflCQgepV9VvueN/Zh+zWyP3WgShO3pBVbSL76YIoOhSEoEd9sMhDA85VPB94dVCKVIu+CFFfXSecJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nLuZjxG/; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58B2Ioh3006957
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Sep 2025 03:43:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	+9R+iVaTiIoWbj/VWEXbxWnh0hqwQQZCdTzJNbtwrUc=; b=nLuZjxG/fu6BcwLj
+	KYfK4JCAgrOQxBViHMb2nLg4l6SrPYJf2cHGOHHfhAPgg8mNNDvGc2ddkL6md88h
+	EJZ4Rco1Un1k/3Srpo4lxerAl/SU0CY0pezkDlbastH4yD2XC4VY9fPiLZ4WhUxX
+	se2NPOdZr8tidDRmXw2mNfVXapDibQVCCCjNgqz4HZSanuVfYCN1ZVQMe9QLBHuM
+	ueDj+zMCb2IjxUfEN5HJht+boLUfzlsY7w6n8CYgpBJ+0g7M+wqJSqQfih5YwUeG
+	UkEGFe16OozZLTb032WxUCiPtSJITXWHl/DTejUGIDyE4nUs1YMxATAZOn35xRSH
+	x79ATA==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 490e8ae3m5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Sep 2025 03:43:16 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-252afdfafe1so3056585ad.0
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Sep 2025 20:43:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757562196; x=1758166996;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+9R+iVaTiIoWbj/VWEXbxWnh0hqwQQZCdTzJNbtwrUc=;
+        b=TrorxTIjAUqqpX7PmgxUcXcaBVcM1GBJSZCrb/0sxvrHF+4azKIif3ajtRSulp7E2m
+         r8PPJtok7DsjDDxyTVuoNHqqWpVFP6HFokdbdEw+TkbAQfeWh6AIdjzJVHhw1/e+VwdK
+         pRlubhNdUqF6M0Wq9eYskrnYTtRxynUGY2p9/JqNbhYqldDymjlSKMSuxmxIeEVwEDSg
+         wVsgNCwhpoowAD9nbBg/u5U2uh9t67o1ExK4GjhoqhgaDRy2D1cAHPwXlde7jEwdzrXP
+         8l6RKlaxkc4qIgW9YUbm3ui+3vRZ95rhGHZ1BHzUB+pYroK1JHIS8L+N3A+KE6PeguTn
+         5HsQ==
+X-Gm-Message-State: AOJu0YwZYbouplVu3xTFD/yNX2AshTSqmUY3yhQUf8/wPpbTCfv3Yfif
+	axuCdYCfmAGS1Ercjl3O0DS+M2ElbjBw6d7qSdHo11l8G2zVf2MRAua1Ts7r3FnSWn7T+GzVWWC
+	t7ks/cruaKCTmt4wSiAHRt/NJbt49sqJXVdtalNj9sRh9D3hG559WpMxOYvvG1gpXUbhVzqzdn/
+	wwyQ==
+X-Gm-Gg: ASbGncua8Kz6qFvV7F5lJR3z92OG94bxgB6VVVvVYxt/trHTFOYGc8J21mGHf5EUvED
+	eUQYYPO55/pZV4eGSDzEeNwyBnGKi+NkkR1XVpWl85M2It4EynnaqEXVaUq4OjxoRWsdWT2uqpk
+	XmDecfQqH2jqUX+pQj90tbqBbsKnWPpxMdlsQKcTABkgBQh3zIGuwEdpWrPw/LXwFNEjKXx/xTR
+	2ulS2ga0C0cr1qutc8R9I6Duraf8ddRzs22v8NhvdEk+WiLFUEZol6dx2zPJY2fCQ4Ia8QxVJRt
+	HZK8fEfZJUnH14CZI4PvfgTHop2HBSC+4J5BJyUgJzmfQTGXiPAkffKAsNmqcsnUatQKMamQtoo
+	XkRV+Xw==
+X-Received: by 2002:a17:903:3d0e:b0:24e:8118:cc1e with SMTP id d9443c01a7336-25172483d47mr258421285ad.45.1757562195697;
+        Wed, 10 Sep 2025 20:43:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEVQRs3ibxOwoAiwmu6gZL6Gl3YffwQrSmQLb85j3TEkiuKeqOreHsGB6ocbzV5kysvQklbXA==
+X-Received: by 2002:a17:903:3d0e:b0:24e:8118:cc1e with SMTP id d9443c01a7336-25172483d47mr258421075ad.45.1757562195199;
+        Wed, 10 Sep 2025 20:43:15 -0700 (PDT)
+Received: from [10.152.204.0] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25c3ae293cdsm3057935ad.114.2025.09.10.20.43.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Sep 2025 20:43:14 -0700 (PDT)
+Message-ID: <958e1af5-b528-a157-0314-f81e20209845@oss.qualcomm.com>
+Date: Thu, 11 Sep 2025 09:13:11 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH ath12k-ng v2 0/8] wifi: ath12k: Improve hal APIs usage in
+ rx path
+Content-Language: en-US
+To: Ripan Deuri <quic_rdeuri@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250910181414.2062280-1-quic_rdeuri@quicinc.com>
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20250910181414.2062280-1-quic_rdeuri@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=H7Dbw/Yi c=1 sm=1 tr=0 ts=68c24554 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=nnDDZHBImGbq5RFmGnAA:9
+ a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-GUID: IuoO08WwAJuZAWs7NQpLrfu505gRsS-J
+X-Proofpoint-ORIG-GUID: IuoO08WwAJuZAWs7NQpLrfu505gRsS-J
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAzOSBTYWx0ZWRfXx3j7Nw6M7xZP
+ L+ZR4r6lZTZCuZDC6GD3ENOM+PjAa0dHZUgjnnkmxg4a9TC86RW+Ar9M28G0RaFIdN43mW3eeGS
+ fvzy/xp89u8X2BJJlO9IBoU+r/02E0nsbtBey7JxH/0v7Esacy+zNZmKyGMGu9uTa06H5hSWHNZ
+ xsb3kNMDX+szLK6x1fsaQGxyrfmegj84abpe6ocoA0oSgpF2/Eyk3Rp+nEOhm7TpbwUH3+K+AZj
+ ndEMGRtDL6WoyDlRtMP8GoVO8jU2pc9XDJqLaPSa5oYnu6DGYwpGR2Fhb5i8waN96TEWNDQb9DS
+ JsBou0I+040PPZgJj4J7qMOGUqC2TdP8w3ks3jrThp6v+OiogSoHqnnHCi2YxzQyCpsKKfZXyde
+ SYC7iMXo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-10_04,2025-09-10_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 impostorscore=0 adultscore=0 phishscore=0
+ clxscore=1015 suspectscore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060039
 
-T25kxZllaiBKaXJtYW4gPG1lZ2lAeGZmLmN6PiB3cm90ZToNCj4gT24gV2VkLCBTZXAgMTAsIDIw
-MjUgYXQgMTI6Mzc6NTRBTSArMDAwMCwgUGluZy1LZSBTaGloIHdyb3RlOg0KPiA+IE9uZMWZZWog
-SmlybWFuIDxtZWdpQHhmZi5jej4gd3JvdGU6DQo+ID4gPiBGcm9tOiBPbmRyZWogSmlybWFuIDxt
-ZWdpQHhmZi5jej4NCj4gPiA+DQo+ID4gPiBUaGlzIGF2b2lkcyBSQ1Ugc3RhbGxzIGNhdXNlZCBi
-eSB3YWl0aW5nIHVwIHRvIDQwMG1zIGZvciBmaXJtd2FyZSBpbml0Lg0KPiA+ID4NCj4gPiA+IFNp
-Z25lZC1vZmYtYnk6IE9uZHJlaiBKaXJtYW4gPG1lZ2lAeGZmLmN6Pg0KPiA+ID4gLS0tDQo+ID4g
-PiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jIHwgNiArKystLS0NCj4g
-PiA+ICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPiA+
-ID4NCj4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5
-L2Z3LmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2Z3LmMNCj4gPiA+IGlu
-ZGV4IDE2ZTU5YTRhNDg2ZS4uMmMwMzRiNzY0YTBhIDEwMDY0NA0KPiA+ID4gLS0tIGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jDQo+ID4gPiArKysgYi9kcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2Z3LmMNCj4gPiA+IEBAIC0xMDksOSArMTA5LDkgQEAg
-aW50IHJ0dzg5X2Z3X2NoZWNrX3JkeShzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYsIGVudW0gcnR3
-ODlfZndkbF9jaGVja190eXBlIHR5cGUNCj4gPiA+ICAgICAgICAgdTggdmFsOw0KPiA+ID4gICAg
-ICAgICBpbnQgcmV0Ow0KPiA+ID4NCj4gPiA+IC0gICAgICAgcmV0ID0gcmVhZF9wb2xsX3RpbWVv
-dXRfYXRvbWljKG1hYy0+ZndkbF9nZXRfc3RhdHVzLCB2YWwsDQo+ID4gPiAtICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICB2YWwgPT0gUlRXODlfRldETF9XQ1BVX0ZXX0lOSVRf
-UkRZLA0KPiA+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMSwgRldE
-TF9XQUlUX0NOVCwgZmFsc2UsIHJ0d2RldiwgdHlwZSk7DQo+ID4gPiArICAgICAgIHJldCA9IHJl
-YWRfcG9sbF90aW1lb3V0KG1hYy0+ZndkbF9nZXRfc3RhdHVzLCB2YWwsDQo+ID4gPiArICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHZhbCA9PSBSVFc4OV9GV0RMX1dDUFVfRldfSU5JVF9S
-RFksDQo+ID4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDEsIEZXRExfV0FJVF9D
-TlQsIGZhbHNlLCBydHdkZXYsIHR5cGUpOw0KPiA+DQo+ID4gQXMgSSBrbm93LCBzbGVlcGluZyB3
-aGlsZSBSQ1UgbG9jayBpcyBub3QgYWxsb3dlZC4gUGxlYXNlIHNoYXJlIGtlcm5lbCBsb2cNCj4g
-PiBhYm91dCB0aGUgUkNVIHN0YWxsIGFuZCB5b3VyIHBlcnNwZWN0aXZlLg0KPiANCj4gTXkgcGVy
-c3BlY3RpdmUgaXMgdGhhdCBidXN5IGxvb3BpbmcgdmlhIHJlYWRfcG9sbF90aW1lb3V0X2F0b21p
-YygpIG9uIGEgQ1BVIGZvcg0KPiB1cCB0byA0MDBtcyAoRldETF9XQUlUX0NOVCBpcyA0MDBfMDAw
-KSBpcyBub3Qgb3B0aW1hbA0KDQpUaGUgcG9sbGluZyB0aW1lIGp1c3QgY29tZXMgZnJvbSB2ZW5k
-b3IgZHJpdmVyLCBidXQgYWN0dWFsbHkgaXQgc3BlbmRzIGFib3V0DQo1bXMgaW4gbXkgUEMuIEkg
-dGhpbmsgbWF4aW11bSBwb2xsaW5nIHRpbWUgNDAwbXMgd2lsbCBub3QgaGFwcGVuIGZvciB1c2Vy
-cyAoDQpwb3NzaWJseSBoYXBwZW4gZHVyaW5nIGRldmVsb3BtZW50KSwgc28gaXQgaXMgZmluZS4N
-Cg0KPiBhbmQgdGhhdCBydHcgZHJpdmVyIGlzIGZvcg0KPiBzb21lIHJlYXNvbiBhIG1ham9yIHVz
-ZXIgb2YgKl9hdG9taWMgdmVyc2lvbiBvZiByZWFkX3BvbGwgZnVuY3Rpb24sIHdoaWNoIGlzDQo+
-IEkgZ3Vlc3MgZmluZSBpZiB5b3UganVzdCBuZWVkIHRvIHdhaXQgZm9yIGEgZmV3IG1pY3Jvc2Vj
-b25kcywgYW5kIHdhbnQNCj4gYSBwcmVkaWN0YWJseSB0aW1lZCBleGl0IGZyb20gcG9sbGluZy4g
-QnV0IGZpcm13YXJlIGxvYWQgcmVhZHkgY2hlY2sgZG9lc24ndA0KPiBzZWVtIHRvIGJlIHRoaXMg
-Y2FzZS4NCj4gDQo+IERvZXMgdGhlIGRyaXZlciByZWFsbHkgbmVlZCBleGl0IGZyb20gcG9sbGlu
-ZyB0aGUgbW9tZW50IGZpcm13YXJlIHNpZ25hbHMgcmVhZHkNCj4gc3RhdHVzIGhlcmUgKGFuZCBz
-aW1pbGFybHkgaW4gbWFueSBvdGhlciBwbGFjZXMpPw0KPiANCj4gTW9yZSB0aGFuIDUwJSBvZiB1
-c2VzIG9mIHRoaXMgZnVuY3Rpb24gYWNyb3NzIGFsbCBvZiBrZXJuZWwgY29tZXMgZnJvbSBydHcN
-Cj4gZHJpdmVyOg0KPiANCj4gICBodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni4x
-Ni41L0MvaWRlbnQvcmVhZF9wb2xsX3RpbWVvdXRfYXRvbWljDQoNCkp1c3QgYmVjYXVzZSBSZWFs
-dGVrIFdpRmkgZG9lcyBJTyBpbiBkcml2ZXIsIHNvIG5lZWQgcG9sbGluZyBoYXJkd2FyZSByZWFk
-eS4gDQpVc2luZyBhdG9taWMgdmVyc2lvbiBpcyBiZWNhdXNlIHNtYWxsIGRlbGF5IGludGVydmFs
-ICgxdXMpIGlzIGFkb3B0ZWQgaW4gdGhpcw0KY2FzZS4NCg0KPiANCj4gTXkgdW5kZXJzdGFuZGlu
-ZyBpcyB0aGF0IGluIG5vbi1wcmVlbXRpYmxlIGtlcm5lbCB0aGlzIHdpbGwgcHJldmVudCBhbnl0
-aGluZw0KPiBmcm9tIGV4ZWN1dGluZyBvbiBzYWlkIENQVSBmb3IgdXAgdG8gdGhhdCBhbW91bnQg
-b2YgdGltZSwgd2hpY2ggaXMgd2hhdCB0aGUNCj4ga2VybmVsIGNvbXBsYWlucyBhYm91dCAoNi4x
-Ni42KToNCg0KSXQgc2VlbXMgbGlrZSBhIHRocmVhZCBzaG91bGQgY2FsbCBtaWdodF9zbGVlcCBm
-dW5jdGlvbnMgdG8gc2NoZWR1bGUgQ1BVIHRvDQpwcmV2ZW50IHRoYXQgUkNVIGRldGVjdGVkIENQ
-VSBzdGFsbD8gSWYgc28sIHRoaXMgcGF0Y2ggc2VlbXMgdG8gYmUgYSByYW5kb20NCmNob2ljZSB3
-aXRoIGhpZ2hlciBwb2xsaW5nIHRpbWUuDQoNCk1vcmUsIGRvZXMgaXQgbWVhbnMgdGhlIHdhcm5p
-bmcgb2YgUkNVIHN0YWxsIGRpc2FwcGVhcnMgaWYgeW91IHR1cm4gb24gDQpwcmVlbXRpYmxlIGtl
-cm5lbD8NCg0KPiANCj4gWyAgICA4LjAyODk5N10gcmN1OiBJTkZPOiByY3Vfc2NoZWQgZGV0ZWN0
-ZWQgZXhwZWRpdGVkIHN0YWxscyBvbiBDUFVzL3Rhc2tzOiB7IDEtLi4uLiB9IDYgamlmZmllcyBz
-OiA3MDkNCj4gcm9vdDogMHgyLy4NCj4gWyAgICA4LjAyOTgxOV0gcmN1OiBibG9ja2luZyByY3Vf
-bm9kZSBzdHJ1Y3R1cmVzIChpbnRlcm5hbCBSQ1UgZGVidWcpOg0KPiBbICAgIDguMDMwMjYxXSBT
-ZW5kaW5nIE5NSSBmcm9tIENQVSAzIHRvIENQVXMgMToNCj4gWyAgICA4LjAzMDI4MF0gTk1JIGJh
-Y2t0cmFjZSBmb3IgY3B1IDENCj4gWyAgICA4LjAzMDI5NV0gQ1BVOiAxIFVJRDogMCBQSUQ6IDM2
-NiBDb21tOiBob3N0YXBkIE5vdCB0YWludGVkIDYuMTYuNi0wMDUzMS1nZWZjYzA5OTE5Y2I5ICMx
-NyBWT0xVTlRBUlkNCj4gWyAgICA4LjAzMDMwNF0gSGFyZHdhcmUgbmFtZTogUGluZTY0IFF1YXJ0
-ejY0IE1vZGVsIEEgKERUKQ0KPiBbICAgIDguMDMwMzA3XSBwc3RhdGU6IDgwNDAwMDA5IChOemN2
-IGRhaWYgK1BBTiAtVUFPIC1UQ08gLURJVCAtU1NCUyBCVFlQRT0tLSkNCj4gWyAgICA4LjAzMDMx
-M10gcGMgOiBhcmNoX2NvdW50ZXJfZ2V0X2NudHBjdCsweDgvMHgyMA0KPiBbICAgIDguMDMwMzI2
-XSBsciA6IF9fZGVsYXkrMHg5MC8weGU4DQo+IFsgICAgOC4wMzAzMzJdIHNwIDogZmZmZjgwMDA4
-NTljMzRhMA0KPiBbICAgIDguMDMwMzM0XSB4Mjk6IGZmZmY4MDAwODU5YzM0YTAgeDI4OiBmZmZm
-MDAwMTA3NGRlMTgwIHgyNzogZmZmZjAwMDEwMDExNzA4MA0KPiBbICAgIDguMDMwMzQyXSB4MjY6
-IGZmZmYwMDAxMDQyMDAzYzAgeDI1OiBmZmZmMDAwMTA0MjAyNGU4IHgyNDogMDAwMDAwMDAwMDAw
-MDAwMA0KPiBbICAgIDguMDMwMzQ3XSB4MjM6IDAwMDAwMDAwMDAwMDAwMDAgeDIyOiBmZmZmZmZm
-ZmVjODU5ZjgxIHgyMTogMDAwMDAwMDAxMzdhNjlkZg0KPiBbICAgIDguMDMwMzUyXSB4MjA6IDAw
-MDAwMDAwMDAwMDAwMTggeDE5OiBmZmZmODAwMDgyYWY3MTU4IHgxODogMDAwMDAwMDAwMDAwMDdm
-NA0KPiBbICAgIDguMDMwMzU3XSB4MTc6IDAwMDAwMDA4MDAwMDAwMDAgeDE2OiA0MTAwM2QzODIw
-MjFiMDAwIHgxNTogZmZmZjAwMDEwMGY2ODA4OA0KPiBbICAgIDguMDMwMzYyXSB4MTQ6IDAwMDAw
-MDAwMDAwMDAwMDAgeDEzOiAwMDAwMDAwMDAwMDAwMDAwIHgxMjogMDAwMDAwMDAwMDAwMDNkMA0K
-PiBbICAgIDguMDMwMzY3XSB4MTE6IDAwMDAwMDAwMDAwMDAwMDEgeDEwOiBmZmZmMDAwMTAwZjY4
-MGM4IHg5IDogMDAwMDAwMDEzYzYyNGE4MA0KPiBbICAgIDguMDMwMzcyXSB4OCA6IGZmZmYwMDAx
-M2M2MjRhOTAgeDcgOiAwMDAwMDAwMDAwMDAwMDAwIHg2IDogMDAwMDAwMDEzYzYyNGE4MA0KPiBb
-ICAgIDguMDMwMzc3XSB4NSA6IGZmZmY4MDAwODBkZGVhZTAgeDQgOiBmZmZmMDAwMTA0MjBkZmY0
-IHgzIDogMDAwMDAwMDBmZmZmNDFlMA0KPiBbICAgIDguMDMwMzgxXSB4MiA6IDAwMDAwMDAwMDAw
-MDAwMDEgeDEgOiBmZmZmODAwMDg1OWMzNGEwIHgwIDogMDAwMDAwMDAxMzdhNjllZA0KPiBbICAg
-IDguMDMwMzg4XSBDYWxsIHRyYWNlOg0KPiBbICAgIDguMDMwMzkwXSAgYXJjaF9jb3VudGVyX2dl
-dF9jbnRwY3QrMHg4LzB4MjAgKFApDQo+IFsgICAgOC4wMzAzOTddICBfX2NvbnN0X3VkZWxheSsw
-eDI4LzB4MzgNCj4gWyAgICA4LjAzMDQwMl0gIHJ0dzg5X2Z3X2NoZWNrX3JkeSsweDNjLzB4MTM0
-DQo+IFsgICAgOC4wMzA0MTJdICBydHc4OV9md19kb3dubG9hZCsweDFiNC8weDFkMA0KPiBbICAg
-IDguMDMwNDE3XSAgcnR3ODlfbWFjX3BhcnRpYWxfaW5pdCsweGNjLzB4MTU4DQo+IFsgICAgOC4w
-MzA0MjRdICBydHc4OV9tYWNfaW5pdCsweDQwLzB4MTZjDQo+IFsgICAgOC4wMzA0MjldICBydHc4
-OV9jb3JlX3N0YXJ0KzB4MTQvMHgyNjgNCj4gWyAgICA4LjAzMDQzM10gIHJ0dzg5X2xlYXZlX2lw
-cysweDI0LzB4ZTgNCj4gWyAgICA4LjAzMDQ0MF0gIHJ0dzg5X29wc19hZGRfaW50ZXJmYWNlKzB4
-MWM0LzB4MjQ0DQo+IFsgICAgOC4wMzA0NDVdICBydHc4OV9vcHNfY2hhbmdlX2ludGVyZmFjZSsw
-eDg0LzB4MTIwDQo+IFsgICAgOC4wMzA0NDldICBkcnZfY2hhbmdlX2ludGVyZmFjZSsweDU4LzB4
-ZDANCj4gWyAgICA4LjAzMDQ1N10gIGllZWU4MDIxMV9pZl9jaGFuZ2VfdHlwZSsweDE5OC8weDNj
-OA0KPiBbICAgIDguMDMwNDY1XSAgaWVlZTgwMjExX2NoYW5nZV9pZmFjZSsweDM4LzB4MjBjDQo+
-IFsgICAgOC4wMzA0NzFdICBjZmc4MDIxMV9jaGFuZ2VfaWZhY2UrMHgxNzAvMHgyYmMNCj4gWyAg
-ICA4LjAzMDQ3N10gIG5sODAyMTFfc2V0X2ludGVyZmFjZSsweDI0OC8weDI3NA0KPiBbICAgIDgu
-MDMwNDg0XSAgZ2VubF9mYW1pbHlfcmN2X21zZ19kb2l0KzB4YjgvMHgxMTANCj4gWyAgICA4LjAz
-MDQ5NF0gIGdlbmxfcmN2X21zZysweDFhYy8weDI0NA0KPiBbICAgIDguMDMwNDk5XSAgbmV0bGlu
-a19yY3Zfc2tiKzB4NDQvMHhmOA0KPiBbICAgIDguMDMwNTA0XSAgZ2VubF9yY3YrMHgzMC8weDQ0
-DQo+IFsgICAgOC4wMzA1MDldICBuZXRsaW5rX3VuaWNhc3QrMHgyZDgvMHgzNGMNCj4gWyAgICA4
-LjAzMDUxNF0gIG5ldGxpbmtfc2VuZG1zZysweDE3MC8weDNkOA0KPiBbICAgIDguMDMwNTE4XSAg
-X19zb2NrX3NlbmRtc2crMHg0OC8weDU0DQo+IFsgICAgOC4wMzA1MjZdICBfX19fc3lzX3NlbmRt
-c2crMHgyNGMvMHgyNjQNCj4gWyAgICA4LjAzMDUzMV0gIF9fX3N5c19zZW5kbXNnKzB4NmMvMHhi
-MA0KPiBbICAgIDguMDMwNTM2XSAgX19zeXNfc2VuZG1zZysweDZjLzB4YjgNCj4gWyAgICA4LjAz
-MDU0MF0gIF9fYXJtNjRfc3lzX3NlbmRtc2crMHgxYy8weDI0DQo+IFsgICAgOC4wMzA1NDVdICBp
-bnZva2Vfc3lzY2FsbC5jb25zdHByb3AuMCsweDNjLzB4ZTQNCj4gWyAgICA4LjAzMDU1M10gIGVs
-MF9zdmNfY29tbW9uLmNvbnN0cHJvcC4wKzB4MzQvMHhjYw0KPiBbICAgIDguMDMwNTU5XSAgZG9f
-ZWwwX3N2YysweDE4LzB4MjANCj4gWyAgICA4LjAzMDU2NF0gIGVsMF9zdmMrMHgyMC8weDVjDQo+
-IFsgICAgOC4wMzA1NzBdICBlbDB0XzY0X3N5bmNfaGFuZGxlcisweDEwNC8weDEzMA0KPiBbICAg
-IDguMDMwNTc0XSAgZWwwdF82NF9zeW5jKzB4MTU0LzB4MTU4DQo+IA0KPiBUaGUga2VybmVsIGJ1
-aWxkIGhhcyBDT05GSUdfSFpfMjUwPXkgc28gNiBqaWZmaWVzIGlzIDI0IG1zLiBOb3QgYSBsb3Qs
-IG5vdA0KPiBhIHNtYWxsIGFtb3VudCBlaXRoZXIuDQo+IA0KPiBJIGFsc28gZ2V0IHRoaXMgb24g
-Ni4xNy1yYzU6DQo+IA0KPiBTZWVtcyB0byBjb21lIGZyb20NCj4gaHR0cHM6Ly9lbGl4aXIuYm9v
-dGxpbi5jb20vbGludXgvdjYuMTYuNS9zb3VyY2UvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
-ay9ydHc4OS9lZnVzZS5jI0wxNzQNCj4gDQo+IFdoaWNoIGlzIGFub3RoZXIgcGxhY2UgdGhhdCBz
-ZWVtaW5nbHkgZG9lc24ndCBuZWVkIHVkZWxheSgpIGJhc2VkIHBvbGxpbmcsDQo+IGJlY2F1c2Ug
-dGhlIGZ1bmN0aW9uIGlzIG9ubHkgY2FsbGVkIGZyb20gZHJpdmVyIHByb2JlLg0KDQpZZXMsIGl0
-IGxvb2tzIGxpa2UgdGhhdC4NCg0KTXkgY29uY2VybiBpcyB0aGF0IHRoZSBtZWFuaW5nIG9mIHBv
-bGxpbmcgdGltZW91dCBiZXR3ZWVuIA0KcmVhZF9wb2xsX3RpbWVvdXRfYXRvbWljKCkgYW5kIHJl
-YWRfcG9sbF90aW1lb3V0KCkgaXMgZGlmZmVyZW5jZS4gVGhlDQpub24tYXRvbWljIHZlcnNpb24g
-aXMgd2FsbCBjbG9jayB0aW1lLCBidXQgYXRvbWljIHZlcnNpb24gaXMgdG90YWwNCnBvbGxpbmcg
-dGltZSBleGNsdWRpbmcgSU8gdGltZS4gSG93ZXZlciwgVVNCIGRldmljZXMgc3BlbmQgbXVjaCBt
-b3JlDQp0aW1lIHRoYW4gUENJRSBkZXZpY2VzLCBzbyB0aGUgY2hhbmdlIG1pZ2h0IGNhdXNlIFVT
-QiBkZXZpY2VzIHJlZ3Jlc3Npb24uDQoNCkFub3RoZXIsIG5vbi1hdG9taWMgdmVyc2lvbiBjYW4n
-dCB3b3JrIGluIFJDVS9zcGlubG9jayBjcml0aWNhbCBzZWN0aW9uLg0KV2UgYWxzbyBuZWVkIHRv
-IGNvbnNpZGVyIHRoaXMgY2FyZWZ1bGx5Lg0KDQo+IA0KPiBUaGlzIHRpbWUgaXQgc3RhbGxlZCBm
-b3IgY29tYmluZWQgdGltZSBvZiAyNis2IGppZmZpZXMsIHdoaWNoIGlzIDEyOG1zLiBUaGF0J3MN
-Cj4gYSBsb3QgKHByb2JhYmx5IGEgY29tYmluZWQgdGltZSBvZiBsb29waW5nIG92ZXIgYWxsIGVm
-dXNlIGFkZHJlc3Nlcywgd2hpbGUgYnVzeQ0KPiBwb2xsaW5nIGZvciBlYWNoIGFjY2Vzcywgd2l0
-aG91dCBhbGxvd2luZyB0aGUgQ1BVIHRvIHNjaGVkdWxlIG90aGVyIHRhc2tzKS4NCj4gDQoNClsu
-Li5dDQoNCg==
+
+
+On 9/10/2025 11:44 PM, Ripan Deuri wrote:
+> The existing usage of rx_ops to reach the hal_apis at multiple places uses
+> function pointer indirections. In order to avoid such multiple function
+> pointer indirection, extract the required hal parameters in the rx path
+> right at the beginning and store them in a structure which is then
+> leveraged by the rest of the rx path.
+> 
+> Move remaining rx_ops APIs to hal_ops to simplify hal API usage.
+> 
+> Also, make compact tlvs as default mode and remove the non-compact tlvs
+> as they are unused. Since there is no need to maintain multiple versions
+> of tlv extraction APIs, move the rx_ops callbacks to hal_ops.
+> 
+> ----
+> Changes in v2:
+>       - Update commit messages in patch 1/8 and 7/8
+> ----
+> 
+> Pavankumar Nandeshwar (5):
+>    wifi: ath12k: Remove non-compact TLV support from QCN
+>    wifi: ath12k: Replace ops with direct calls for rxdma ring mask
+>    wifi: ath12k: Move hal_rx_ops callbacks to hal_ops
+>    wifi: ath12k: Add new infra for the rx path
+>    wifi: ath12k: Change the API prefixes to ath12k_wifi7 in tx/rx
+> 
+> Ripan Deuri (3):
+>    wifi: ath12k: Move the hal APIs to hardware specific files
+>    wifi: ath12k: unify HAL ops naming across chips
+>    wifi: ath12k: Remove hal_rx_ops and merge into hal_ops
+> 
+>   drivers/net/wireless/ath/ath12k/Makefile      |    4 +-
+>   drivers/net/wireless/ath/ath12k/ahb.c         |    2 +-
+>   drivers/net/wireless/ath/ath12k/core.c        |    2 +-
+>   drivers/net/wireless/ath/ath12k/core.h        |    2 -
+>   drivers/net/wireless/ath/ath12k/dbring.c      |    5 +-
+>   drivers/net/wireless/ath/ath12k/dp.c          |   31 +-
+>   drivers/net/wireless/ath/ath12k/dp.h          |    1 -
+>   drivers/net/wireless/ath/ath12k/dp_mon.c      |   36 +-
+>   drivers/net/wireless/ath/ath12k/dp_rx.c       |  128 +-
+>   drivers/net/wireless/ath/ath12k/dp_rx.h       |  204 +---
+>   drivers/net/wireless/ath/ath12k/hal.c         | 1048 +----------------
+>   drivers/net/wireless/ath/ath12k/hal.h         |  106 +-
+>   drivers/net/wireless/ath/ath12k/mac.c         |    6 +-
+>   drivers/net/wireless/ath/ath12k/pci.c         |    2 +-
+>   drivers/net/wireless/ath/ath12k/wifi7/dp.c    |   19 +-
+>   drivers/net/wireless/ath/ath12k/wifi7/dp.h    |    5 +-
+>   drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c |  501 ++++----
+>   drivers/net/wireless/ath/ath12k/wifi7/dp_rx.h |   74 +-
+>   drivers/net/wireless/ath/ath12k/wifi7/dp_tx.c |   49 +-
+>   drivers/net/wireless/ath/ath12k/wifi7/dp_tx.h |    8 +-
+>   .../wireless/ath/ath12k/wifi7/hal_qcn9274.c   |  369 ++++++
+>   .../wireless/ath/ath12k/wifi7/hal_qcn9274.h   |   35 +
+>   .../net/wireless/ath/ath12k/wifi7/hal_rx.c    |  161 +--
+>   .../net/wireless/ath/ath12k/wifi7/hal_rx.h    |   82 +-
+>   .../wireless/ath/ath12k/wifi7/hal_rx_desc.h   |    7 -
+>   .../net/wireless/ath/ath12k/wifi7/hal_tx.c    |   13 +-
+>   .../net/wireless/ath/ath12k/wifi7/hal_tx.h    |   18 +-
+>   .../wireless/ath/ath12k/wifi7/hal_wcn7850.c   |  364 ++++++
+>   .../wireless/ath/ath12k/wifi7/hal_wcn7850.h   |   32 +
+>   drivers/net/wireless/ath/ath12k/wifi7/pci.c   |    2 -
+>   30 files changed, 1452 insertions(+), 1864 deletions(-)
+>   create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c
+>   create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.h
+>   create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
+>   create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.h
+> 
+
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
