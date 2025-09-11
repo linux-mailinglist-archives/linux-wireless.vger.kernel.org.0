@@ -1,60 +1,59 @@
-Return-Path: <linux-wireless+bounces-27245-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27247-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440D5B535A7
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Sep 2025 16:36:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E158B539D2
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Sep 2025 19:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC3A55A7A50
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Sep 2025 14:36:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4200BAA054D
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Sep 2025 17:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B7826A1BE;
-	Thu, 11 Sep 2025 14:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A002521019C;
+	Thu, 11 Sep 2025 17:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="P9fMD42S"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="kfrV26PX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B51219301
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Sep 2025 14:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F114D31D757;
+	Thu, 11 Sep 2025 17:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757601284; cv=none; b=mbySBtHzk+n3LHDwWwmSQ1ZlzstO/qP2l+cGHcwdedrxQldDABJuTQ9yCwW+J2lL3hIr610v4FZ7U9qcxPw6whMIVPdWrIeVEIVloEePaxQRVsjicAjxkFQnYBnMSuX8JezYa9II1qc7LL9CiUusxVmvmIjMwECI04rxkuMONDI=
+	t=1757610104; cv=none; b=ow+5p5OunhxaGK5sCP/wijcCOAWCrby3XFE2wImQys04J//mLZh3tzu78JlX66W39xieTJyC5+grrSnOv2PefHuZEgnyMjDl2k9JJGexMzjU2pcPbzAxbv9nEk8najFLDlZJ22F58m4/y1x6vMntqcX0xG4KhwslF1AXGt0KHNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757601284; c=relaxed/simple;
-	bh=ZtX3QaZ7wuqWxawW0K+S5/F7I5J12WueBoqqQ1KKYVo=;
+	s=arc-20240116; t=1757610104; c=relaxed/simple;
+	bh=nwoalD03XPDUyFyFgtYtWKIblQ9hGe8r6/ATfDBnpA0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SsfmzBdAPsJk/71Gh9yTsqoDmSCNUcUdhGv44uvH8nEI6Wvjr7B/GiEowiPmYCIWVwe7UKSAnm05tQ4pSWgcrwWpkCHDj+4JcSE62a+vEBu2P250fklT3C1VloW3zMpAuFOLWY39dGFZjpM6S5S9Vjnojjo3+uJCUZxrNEyb4PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=P9fMD42S; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=o7H8M4bYUYU62syHdpa4Wawi6QXRbPcXTi6E7esmuNevkrms81mYGL5/NweoySJWDx5OFKNLmntO6mfESIJ5LKSO5urF5V7vH65Rc2uUf1Z2F4SH/z/1w4fKlJL3kzKiudtkFUcSEVJsEI3eMD5nZt2CVMG7KHP6v3+lR6kgGYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=kfrV26PX; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=ZtX3QaZ7wuqWxawW0K+S5/F7I5J12WueBoqqQ1KKYVo=;
-	t=1757601282; x=1758810882; b=P9fMD42SaYvpp8qusCd1pqvlerLXDjfgt90g30CO6jp1GMh
-	CIu9AWuTCYjKmMQFno3auuQKk7xQwCF5ByLIyyQcfdE+FTQVjtLxB+nVoMmSJD1wU4NQVP8Kv+C8C
-	pe7C2Ev2Ua/j8zV1dpnXOcKD3JtcsgcDjhJcK9VEvSIjp1prM2BcXS8bTnHs3RpbDI6e5kZlAUo2Q
-	UO+eUIa2DQH8VVRwsM0SdBrUgne1gX1wJIAdROJXnKi6nDjNnycONyjLkaRK3oKBnDDFTy0OTmdDZ
-	tF1rTOiY3LxgO/lQhBYN2VYdNJum8JLrVNc4iBdb1iss4BC+48ayRkqdathyB18Q==;
+	Resent-Cc:Resent-Message-ID; bh=nwoalD03XPDUyFyFgtYtWKIblQ9hGe8r6/ATfDBnpA0=;
+	t=1757610103; x=1758819703; b=kfrV26PXgRMFq/XEXrfMDd+G1rNofugoIGN3/29zWTls/KY
+	ZycTsW4zMUkj29se27A0x70CW9gFgPMbatXuc+TdASiFWN0M5ngTHzgjERAMOG53tZ9yPVTJevGXI
+	mVt+O+vXkKHyebybf2MtoFuLIPMjJdRbED52aiqAWZ1qWo7KhOyOWfrCQy2EcCWH/cwf+agwWr9vD
+	2Wi8a2BKjGcAVmrQfMxgPg9V06y6OPbhggxZCdsA8oQxvj/tsfINWwnrLVTaDCqLiRGjpOnGsNAsU
+	sSl0GhF9ulpruCEs2hzGLZ2IIMK3WjIvFfCIvnmRs8GiIiN0iZOS2l02Ljr6+YIA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uwiNj-0000000FRuo-2eYz;
-	Thu, 11 Sep 2025 16:34:39 +0200
-Message-ID: <634a2226282c6789dda27a7140612a9a1dc6ac2b.camel@sipsolutions.net>
-Subject: Re: [PATCH v3] iwlegacy: Add sanity check for il->stations[] array
- index
+	id 1uwkfz-0000000Fcoj-3pOR;
+	Thu, 11 Sep 2025 19:01:40 +0200
+Message-ID: <2da9103af3f341f05bc8c42e4425ec15231498e5.camel@sipsolutions.net>
+Subject: Re: [GIT PULL] wireless-next-2025-09-11
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Chen Yufeng <chenyufeng@iie.ac.cn>, stf_xl@wp.pl
+To: netdev@vger.kernel.org
 Cc: linux-wireless@vger.kernel.org
-Date: Thu, 11 Sep 2025 16:34:38 +0200
-In-Reply-To: <20250911142910.1277-1-chenyufeng@iie.ac.cn>
-References: <20250911142910.1277-1-chenyufeng@iie.ac.cn>
+Date: Thu, 11 Sep 2025 19:01:39 +0200
+In-Reply-To: <20250911100854.20445-3-johannes@sipsolutions.net>
+References: <20250911100854.20445-3-johannes@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
@@ -66,19 +65,24 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Thu, 2025-09-11 at 22:29 +0800, Chen Yufeng wrote:
->=20
-> Fixes: 0cdc21363cc2 ("iwlegacy: merge common .c files")
->=20
-> Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
+On Thu, 2025-09-11 at 12:08 +0200, Johannes Berg wrote:
+> Please pull and let us know if there's any problem.
 
-There also shouldn't be a blank line between those.
+Speaking of problems ... we've kept adding Link: tags. If you're going
+to insist we remove them then please just say so explicitly, reject this
+pull request as well if you like, and save everyone the discussion.
 
-And it doesn't build:
-http://wifibot.sipsolutions.net/results/1001358/14227313/build_32bit/stderr
+I do truly believe Linus to be wrong on this: assuming a patch has no
+need for any identification/correlation whatsoever before it goes into
+his (or a feeder) tree (and gets a stable sha1) is akin to assuming it
+has no life before it actually ends up there, which I think is
+completely out of touch with reality. But he does ultimately get to
+reject pull requests, so...
 
-But please don't use the bots for patch validation ... make sure you
-build your own patch _before_ you submit.
+Maybe I should make the links go to patchwork, because there you have
+the CI results ... maybe that could be construed as useful information
+in the "Linus sense" (phrased that way because to me the mailing list
+posting is already useful information)?
 
 johannes
 
