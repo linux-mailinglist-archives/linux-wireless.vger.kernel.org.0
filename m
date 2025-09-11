@@ -1,263 +1,197 @@
-Return-Path: <linux-wireless+bounces-27232-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27233-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D0FB5232C
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 23:05:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A55B52616
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Sep 2025 03:52:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F6947BA83F
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Sep 2025 21:03:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26CCF17DB4E
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Sep 2025 01:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41492F0661;
-	Wed, 10 Sep 2025 21:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F2D16DC28;
+	Thu, 11 Sep 2025 01:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eQshznS2"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UEYAt3ZE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB031204F99
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Sep 2025 21:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63C71C01
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Sep 2025 01:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757538308; cv=none; b=Er6I+YFaeiivbondliyZndiGTwrg+hMiGvbYB42nLOxwNvcYWyeK2qI5p/y89UxpiAm6LtkuQSIJ2+hL3vKwigEmsBewaWQdG80KFnV57dOzXq8k7CCgoKSxlzDo8gtZBgTq1y5peVmTSlcvPxIRkMfxAGUdBCRIXdGGswujtms=
+	t=1757555529; cv=none; b=B8U2XGALg8TS3tf9mIrylo85zCv+8F++3zvgVQfX4KiqBh0Ne3AQT3BAYuKdMrZsauTYmMutNMHNFH+jPt3s+4vYwVAORBnm+JhhEvsrirQSIErytai7gF9ZkHLJH8blU/lQSxuYd0FgcUugMsT3zegisazdEcso1my5Z7qoL0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757538308; c=relaxed/simple;
-	bh=F7ZcfIvsrTeYa84UyohEvC0AY6Ptsz2ykU70MB1Fe8Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xn7mC6igid3EQZUQ2wuT5x7BkJesXm8h+yd1ppxdzBrTvYbQsSJiK04lkpXGY6tLtHTqhGYHu6nI1pEbBMjaqiCOGBkDJCRBD+eC1yAxskHjbWFc+wTz6KTsMklZ1WdOYxzY1sQmb72bWdnD8mBbriDnW4mySCLpmebQUqrCEWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eQshznS2; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45dfe95bbb7so470335e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Sep 2025 14:05:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757538305; x=1758143105; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F7ZcfIvsrTeYa84UyohEvC0AY6Ptsz2ykU70MB1Fe8Q=;
-        b=eQshznS2UmxQF0wwmRH3P0U3E//o0cH9efWCNbces5ZpcYxLyUVBwprzc8sCvC7+DJ
-         s8g5W30xCjhbaH3x7lfYfm2xC+K1gyofycW6KybozEWtSPcMw0KfUzDvhKzC7SEJzVHs
-         Il/wc+iNIKTV6CvY0PkBT+hlsSqgFqDkpY4Z2nQ8HwZoYe2vMiQ+NWkz5C6dogpziBna
-         ssTB1I7PbG8ghd508NfFY07j/wImnTDsdZCJ8y2Ri0aUiptZtn9uyUy0q6dveHowyLIH
-         DvZYbSViYz9xZ/lL5fKK12yx4Ipk9S6bVMvytllOLdLtO3RgiQcKUGgYs8fgbbEbj1DA
-         0vew==
+	s=arc-20240116; t=1757555529; c=relaxed/simple;
+	bh=Q59qeucLTh6z2g9kKjUKuodTcmmEz8Ds85mKc+BCmN4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YKnr1JWReTsgcH+xOioQzEEMF6SZWhmmYNtus+oGEWW1fHwvs3AG6GbQu70a/KMp2sQNP9nmviyVic+rzpKLHRV1aBS8nvEuxtq4EPiGrVdww4VLPpIQd8zYTe8Rc/18n3iEyJ1z36+ORuAFfQjNG5xN6Zroy0xU3Wy3FokVPaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UEYAt3ZE; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58B1hr6T012081
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Sep 2025 01:52:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	lcCH8ZFtJMRB/ZNu25jxmFYingDIGeN/jFSZffgZcb0=; b=UEYAt3ZEaGjC0aJa
+	kc44RMQ1R9Ns2ZJCbqX6EHPl6/LAW3XcqCLhu2DgSDXd9xkR3ePjI+6taRIB7Fqe
+	cdMFjKCprEFQEmSMTxZqmRT5uQwTRjUy6kZwT2iK3Ss1lavbHLQ0slsDUTW+enpw
+	3sI3CmgbQj3g5MVAqaJe2dlaGKGNICQYMpukj3XpPpitxaPzw7RYX2t7NxzE4lkc
+	JaqQHcj/WUw4Cg03XNhRtXnWB7x9Vh+136OUPuORHno9zutOSwkV4X6FCuSkQZXj
+	BLJ6zln3TjA9CRE83GUyLjbo7StECACKdfWXVCMpDpoblI/wvuk9pBO90o8q6CmW
+	A/GVTw==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 490e4m5s1t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Sep 2025 01:52:06 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-77243618babso210572b3a.0
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Sep 2025 18:52:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757538305; x=1758143105;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F7ZcfIvsrTeYa84UyohEvC0AY6Ptsz2ykU70MB1Fe8Q=;
-        b=KbefLu6xS3nGNC2xCxE83koj0f8JzvXW0M9OKThAtwx9pHusUCZSpuy2IecZ4TxHaW
-         pAkdeqUlf6IAd5JA1qe765UUJPv0Ne97JONXJGMUu9pPPO4kBsMtuzrrl21Q6tl/99GC
-         ls5d0JmUfp6Z5pQ9qar4nP2eL/TzVV6aRlQ/eyuRshjZv1t4l/WfKF7x2VT0DpGiaFis
-         JOxy3oO0eFGtQgmvO861EmQRTW4tqY6ngUXAgJjBPeOIGdXcj8cXl35fmCM29EfE7XpX
-         DDy2VVRChBs465Wx2GxnotgL6IxbjgmHiXK97Wkah7eSDkMhkzvnCdI/2sshrlnQmAWa
-         yRBg==
-X-Gm-Message-State: AOJu0Yx9yGwespe45NghFqC2XtWc8H4f/kGFSK/v+RZyWU0CtoXsCxqp
-	OBJzUiMnQYzLJ6OmC9CDc3CJlCY9c0nfz0MupX9yxMPs0peuB8l5h3v6SESY1Wjqy/OkeSPU2hx
-	HeycW2jK6AOZdJR88PjKu1txsUVSJo45zwoWgEexH8A==
-X-Gm-Gg: ASbGncsh77cv9V97NVT/GTXBrDbfxgClyFlM5q+IZk6p3whX3V1Q504M4QgIpogt6Pt
-	Z40Aaq46NXWrHp0QpqXl47tWQFzC7MyAeRDMuA06oRfcL5J3mAE9+MFwXLVQrAUP8aGfxRlgHQa
-	qpbbKtL5W6c/Na89CafuCjh0XrfB1X/dxyugOeg4bAyBqqQtAqeX9Q4QkQx5PEKBnmAmG0Wos83
-	ALi0VZxP4Q79xqt/DlO3v2kOOlZdTxCR2DfyWDy
-X-Google-Smtp-Source: AGHT+IEtNk4I5wapbKR4HHPhJwnTtYIyLG/UV+uPVat38UsiMj8bpWLGCgoHPSjUufDl1Ne6bIdneo/4QABRiWpDEVk=
-X-Received: by 2002:a05:600c:4fc1:b0:456:f1e:205c with SMTP id
- 5b1f17b1804b1-45ddde6a4a7mr155434175e9.4.1757538304703; Wed, 10 Sep 2025
- 14:05:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757555526; x=1758160326;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lcCH8ZFtJMRB/ZNu25jxmFYingDIGeN/jFSZffgZcb0=;
+        b=BJMV46diJUZ/UYSgQdlTigg5D6sG6bw5lGyZ6Gd6+a2wGQ8EIABfc2dnlgXL8UGxVt
+         ky6w50lYEPgmxE4SQMeMxgGaDRNkeMLoTwbphhBJgbSvesNe3pLSgquUl7cS1+NIi86S
+         1IZsnflf3k0EMBWQG1XQ8mY9XTki1riwQg//TfjkAhKxwcnK73ng40C9w17iX+ogZS7A
+         fcxOFUojGGsmsmut6Y4rcCVUstD8ZfriDhh4hF7wgTjR27XPvwHx6ccutT7M7vd+r6Sq
+         4s8y4BoBgKLRpmp6eNb2iX/4LWhw2Jw//B5Fon5DZQiYi+pNSTYW0Hq1TVFxRglAHwyU
+         AMkw==
+X-Gm-Message-State: AOJu0YwfHkpnb8IOLegB3P9XltJEiTWLCgiTIWFGAFr/Mv3KhQwxlpZp
+	SblnP42cb5xDhilqlGw0kjEQoN0vvafovTSTDJbbyb27oUfGkP2qir7BE2LuAuHEgMWEBmVSp9P
+	9yAmm1o6b7CbULIV3VBuTusp4t6Ca9xY8wwJhhWIWxWK/m3w6WK63K+1rBbvzV1oBOqgHYw==
+X-Gm-Gg: ASbGncskpiSMIa135yIuknyyb/QSJ5QSQkXka5okaF98J5znx53ypoHfgLHIHmhZATs
+	3/15uci5gKhlDG8dbMGhzRTXedwarbMY1as1z09f1pqMCVHCBOwGxUWvM6bxRBXWt16qMitxzJY
+	sEh4FXhrpn40ItuSCZ+bdsFOt5tLLqssgtZA5Dt1p0j5N8kA8UQUsklmuq/VVzya+Scfbge+nGJ
+	tJvjijJz13d5WBal+O4z9154n/a3DZnMqFgJB7GcuQS9UDFSse8iAKvdBSBwFACre+e7df+0h9Z
+	Z8gtM916sfjYPMXcF6mhdmu+cnasGHua/pahLNayGLj61QMRaYqSsWqOQiMPxQTeEN3Spo+1lrP
+	xT/Y3DjLojpPvxPli2CDdARMcnHKuEYNMpBDNyQ==
+X-Received: by 2002:a05:6a00:18a0:b0:772:8dd7:f55f with SMTP id d2e1a72fcca58-7742de3fc5amr22247971b3a.25.1757555525788;
+        Wed, 10 Sep 2025 18:52:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0sxY7aOgILMDdCsSOiqoLkHnh7icX8tiTp5J9HTZFVHeKmZ8n2U0m9CT1HcGEi6OdXTMh4w==
+X-Received: by 2002:a05:6a00:18a0:b0:772:8dd7:f55f with SMTP id d2e1a72fcca58-7742de3fc5amr22247949b3a.25.1757555525271;
+        Wed, 10 Sep 2025 18:52:05 -0700 (PDT)
+Received: from [10.133.33.160] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77607a4746dsm223331b3a.29.2025.09.10.18.52.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Sep 2025 18:52:04 -0700 (PDT)
+Message-ID: <2522a3bf-e56f-4fc7-ac42-d0abf9908418@oss.qualcomm.com>
+Date: Thu, 11 Sep 2025 09:51:59 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250909135510.757750-1-scaasiffej@gmail.com> <8d5d8339f1dd568f43d97c4ed60817df1838fc13.camel@sipsolutions.net>
- <CAOYMkPqAt-ETcwL7ZzUUB=0YO-ML+Mh60cB_-8MZj6zcp_-Cxg@mail.gmail.com> <2735aec6379159923299d6cfb916a2bf03aecf18.camel@sipsolutions.net>
-In-Reply-To: <2735aec6379159923299d6cfb916a2bf03aecf18.camel@sipsolutions.net>
-From: Jeff Isaacs <scaasiffej@gmail.com>
-Date: Wed, 10 Sep 2025 17:04:52 -0400
-X-Gm-Features: AS18NWBIV93O1H5D1t_hZ3zJcf51o7cWdO6R6dDTgFWZHxz9nNeF6d2PZg64PwM
-Message-ID: <CAOYMkPpsLa9dBeAwrS7o3--0D9O4is7D8qU_OAjLyh9hwJpBLA@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mac80211: always mark 6 GHz BSS as QoS/EDCA capable
-To: Johannes Berg <johannes@sipsolutions.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath12k-ng v2 0/8] wifi: ath12k: Improve hal APIs usage in
+ rx path
+To: Ripan Deuri <quic_rdeuri@quicinc.com>, ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+References: <20250910181414.2062280-1-quic_rdeuri@quicinc.com>
+Content-Language: en-US
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+In-Reply-To: <20250910181414.2062280-1-quic_rdeuri@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAzOCBTYWx0ZWRfX8jkxP00Dt5mT
+ OkbmHVpIpfsqXQu0+HvGwNpp+hy2cGS1CIGKsl9WOKy2x5etEMoNTZBRK+/htYG5oQ+exCaBb/x
+ 3jUIPK4y+ySOVy2MYenBPmDpeBCT9JaF0I3VFjTEoF8HaIlahAP6xfnFcTY47O8Hqg4NyK4oAQJ
+ XpMgPCG/9e5xBb0qlAkbCpV+nLS3dLnt+eUWO5xKkXIivR3vEpTMG5EFBEWeA3cz6iPW6JrYIi3
+ 8zggJQRQfgkd6IZ5GQ5+B2UJarpB5bWbtMibADp+ewjGYO7COYvlDFb7pZg1GnBsTAbeulHFtYj
+ Uutlnqe6vLMUMw95GfLhbYjy02sliXwkJpNNzi6RuGKXG80g8HRde/iqeOblZuoYwaZjVI2ACfN
+ VhiGGbVm
+X-Authority-Analysis: v=2.4 cv=J66q7BnS c=1 sm=1 tr=0 ts=68c22b46 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=nnDDZHBImGbq5RFmGnAA:9
+ a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-GUID: VtNxQqiT2WMfWA06OHcJk7yHi3g1VHn8
+X-Proofpoint-ORIG-GUID: VtNxQqiT2WMfWA06OHcJk7yHi3g1VHn8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-10_04,2025-09-10_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 clxscore=1015 spamscore=0 phishscore=0
+ adultscore=0 priorityscore=1501 suspectscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060038
 
-Thank you for the very detailed explanation. I completely understand your
-reasoning to leave things the way they are, and agree that the best course
-of action is to hold vendors accountable. I will continue pushing Ruckus fo=
-r
-a fix in their firmware.
 
-FWIW (probably nothing), after applying the patch and getting past
-authentication, the association response has the WMM IE and also includes
-the MU EDCA parameter set, so everything seems to be within spec from that
-point forward. The sole problem really is the incorrect assumption of
-inheritance to the non-Tx profiles.
 
-I spent quite a bit of time turning knobs in the Ruckus controller and AP
-CLI trying to define a different QoS profile per SSID, so that maybe it
-would be explicit in the non-Tx profile, but it still wouldn't show up unti=
-l
-the association response.
+On 9/11/2025 2:14 AM, Ripan Deuri wrote:
+> The existing usage of rx_ops to reach the hal_apis at multiple places uses
+> function pointer indirections. In order to avoid such multiple function
+> pointer indirection, extract the required hal parameters in the rx path
+> right at the beginning and store them in a structure which is then
+> leveraged by the rest of the rx path.
+> 
+> Move remaining rx_ops APIs to hal_ops to simplify hal API usage.
+> 
+> Also, make compact tlvs as default mode and remove the non-compact tlvs
+> as they are unused. Since there is no need to maintain multiple versions
+> of tlv extraction APIs, move the rx_ops callbacks to hal_ops.
+> 
+> ----
+> Changes in v2:
+>      - Update commit messages in patch 1/8 and 7/8
+> ----
+> 
+> Pavankumar Nandeshwar (5):
+>   wifi: ath12k: Remove non-compact TLV support from QCN
+>   wifi: ath12k: Replace ops with direct calls for rxdma ring mask
+>   wifi: ath12k: Move hal_rx_ops callbacks to hal_ops
+>   wifi: ath12k: Add new infra for the rx path
+>   wifi: ath12k: Change the API prefixes to ath12k_wifi7 in tx/rx
+> 
+> Ripan Deuri (3):
+>   wifi: ath12k: Move the hal APIs to hardware specific files
+>   wifi: ath12k: unify HAL ops naming across chips
+>   wifi: ath12k: Remove hal_rx_ops and merge into hal_ops
+> 
+>  drivers/net/wireless/ath/ath12k/Makefile      |    4 +-
+>  drivers/net/wireless/ath/ath12k/ahb.c         |    2 +-
+>  drivers/net/wireless/ath/ath12k/core.c        |    2 +-
+>  drivers/net/wireless/ath/ath12k/core.h        |    2 -
+>  drivers/net/wireless/ath/ath12k/dbring.c      |    5 +-
+>  drivers/net/wireless/ath/ath12k/dp.c          |   31 +-
+>  drivers/net/wireless/ath/ath12k/dp.h          |    1 -
+>  drivers/net/wireless/ath/ath12k/dp_mon.c      |   36 +-
+>  drivers/net/wireless/ath/ath12k/dp_rx.c       |  128 +-
+>  drivers/net/wireless/ath/ath12k/dp_rx.h       |  204 +---
+>  drivers/net/wireless/ath/ath12k/hal.c         | 1048 +----------------
+>  drivers/net/wireless/ath/ath12k/hal.h         |  106 +-
+>  drivers/net/wireless/ath/ath12k/mac.c         |    6 +-
+>  drivers/net/wireless/ath/ath12k/pci.c         |    2 +-
+>  drivers/net/wireless/ath/ath12k/wifi7/dp.c    |   19 +-
+>  drivers/net/wireless/ath/ath12k/wifi7/dp.h    |    5 +-
+>  drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c |  501 ++++----
+>  drivers/net/wireless/ath/ath12k/wifi7/dp_rx.h |   74 +-
+>  drivers/net/wireless/ath/ath12k/wifi7/dp_tx.c |   49 +-
+>  drivers/net/wireless/ath/ath12k/wifi7/dp_tx.h |    8 +-
+>  .../wireless/ath/ath12k/wifi7/hal_qcn9274.c   |  369 ++++++
+>  .../wireless/ath/ath12k/wifi7/hal_qcn9274.h   |   35 +
+>  .../net/wireless/ath/ath12k/wifi7/hal_rx.c    |  161 +--
+>  .../net/wireless/ath/ath12k/wifi7/hal_rx.h    |   82 +-
+>  .../wireless/ath/ath12k/wifi7/hal_rx_desc.h   |    7 -
+>  .../net/wireless/ath/ath12k/wifi7/hal_tx.c    |   13 +-
+>  .../net/wireless/ath/ath12k/wifi7/hal_tx.h    |   18 +-
+>  .../wireless/ath/ath12k/wifi7/hal_wcn7850.c   |  364 ++++++
+>  .../wireless/ath/ath12k/wifi7/hal_wcn7850.h   |   32 +
+>  drivers/net/wireless/ath/ath12k/wifi7/pci.c   |    2 -
+>  30 files changed, 1452 insertions(+), 1864 deletions(-)
+>  create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.c
+>  create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_qcn9274.h
+>  create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.c
+>  create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/hal_wcn7850.h
+> 
+> 
+> base-commit: d637c58a29475d646f8decfbbc1d27fae999a449
 
-I also tried to use iw to set the SSID within a directed probe to the AP
-over its 6 GHz channel. At least in theory, the AP is supposed to include
-all QoS params in the response. It didn't work, but even if it did, it's st=
-ill
-not an excuse to disclude the params in the beacon frames.
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-Thanks again for the very detailed response!
-
-Jeff
-
-On Wed, Sep 10, 2025 at 3:01=E2=80=AFAM Johannes Berg <johannes@sipsolution=
-s.net> wrote:
->
-> On Tue, 2025-09-09 at 19:19 -0400, Jeff Isaacs wrote:
-> > Ok yeah I should have included a bit more info to begin with. First, I =
-will
-> > defend my assertion, then I will give more details on the motivation be=
-hind
-> > this patch.
->
-> :)
->
-> I'll point out first that this area is actually rather complex because
-> nobody is actually implementing QoS as written in the spec, but rather
-> WMM as documented by the relevant WFA spec, and then assumes it
-> satisfies the QoS requirements in the 802.11 spec (e.g. for HT/... STAs)
->
-> > [snip]
->
-> Sure, a 6G STA is a QoS STA. That doesn't mean a 6G AP STA is exempt
-> from actually announcing the QoS parameters.
->
-> > So the current logic in mac80211 to downgrade to legacy in absence of
-> > the WMM IE is flawed when the beacon is captured on 6 GHz, because
-> > any STA operating in 6 GHz must be at least implement HE and all of its
-> > required features.
->
-> It isn't: we internally first downgrade to legacy (because all of HT and
-> higher require QoS/WMM) and then don't connect because HE is required
-> and we cannot connect as a non-HE STA on 6 GHz.
->
-> > One more supporting item from the spec.
-> >
-> > 802.11-2020 =C2=A710.2.3.2 -
-> > "The QoS AP shall announce the EDCA parameters in selected Beacon
-> > frames and in all Probe Response and (Re)Association Response frames
-> > by the inclusion of the EDCA Parameter Set element using the informatio=
-n
-> > from the MIB entries in dot11EDCATable. If no such element has been
-> > received (e.g., prior to association in an infrastructure BSS), a non-A=
-P
-> > QoS STA shall use the default values for the parameters."
-> >
-> > So it is explicitly stated that it is possible that a beacon frame can =
-be
-> > received from a QoS AP without the EDCA parameters included. And
-> > since a non-AP STA cannot initiate a probe request with a wildcard for
-> > the SSID in 6 GHz, it has no choice but to use the default parameter
-> > values outlined in the spec until the QoS AP instructs otherwise.
->
-> Here in some way the difference between WMM and QoS becomes relevant,
-> but even if we read this as WMM=3D=3DQoS, I'm not sure I agree.
->
-> I suppose this is an interpretation matter, but "[t]he QoS AP shall"
-> already _requires_ the QoS AP to include that element. Any deviation
-> from that makes it non-compliant, and there's not much of an assumption
-> on STA behaviour from that point on.
->
-> The example in the "If not such element has been received [...]"
-> sentence to me at least implies that these are not meant to be cases
-> where the AP misbehaves if it doesn't include it (which is already
-> established by the first sentence), but is meant for the cases where
-> there's no QoS AP that controlled the parameters, "e.g., prior to
-> association in an infrastructure BSS", or also perhaps when associating
-> to a non-QoS infrastructure BSS, or similar cases.
->
-> > Now for my motivation for introducing this patch. I have observed that =
-the
-> > WMM element is not present in beacon frames in the 6 GHz spectrum on
-> > the Ruckus R770 when multiple BSSs are packed together using the
-> > MBSSID feature. The WMM IE is included in the top-level profile, but no=
-t
-> > in the non-Tx profiles defined within the MBSSID element.
->
-> This is a pretty common AP bug around element inheritance [1]. They
-> assume that it's inherited from the transmitting BSS, which is not true.
-> Actually, this is precisely _because_ of the difference between WMM and
-> QoS. If it were QoS elements, it _would_ be inherited, because all
-> elements are inherited unless overwritten in the specific profile. Since
-> it's WMM carried in a vendor element, any other vendor element overrides
-> the inheritance. Therefore, either _none_ or _all_ (intended) vendor
-> elements including WMM must be included in each non-transmitting
-> profile.
->
-> [1] Sometimes in MBSSID non-transmitting profiles, sometimes in multi-
-> link profiles, sometimes maybe even both.
->
-> > I am in contact
-> > with support, but the initial response I got from Ruckus is that this i=
-s
-> > intentional.
->
-> They're wrong, and even the language you quoted above makes that crystal
-> clear, as does the WMM spec [2]. We've (indirectly) actually discussed
-> this with Ruckus, and they have in fact acknowledged that this is a bug
-> in the AP and that they will fix it.
->
-> [2] though that never talks about MBSSID (I think) so you have to read a
-> whole bunch of cross-spec text wrt. inheritance etc.
->
->
-> > And well it makes sense I guess. If the spec defines default values, an=
-d
-> > the whole point behind MBSSID is to save airtime for data transmission,
-> > then why repeat the same unchanged default QoS values for every BSS.
->
-> No, see all the discussion above. The default values (in the BSS case)
-> are for when you're connecting to a non-QoS AP and pre-association use
-> cases etc.
->
-> > I also figured that they had to go through a lot to get the WiFi 7
-> > certification. If this is truly an error, I would be surprised if I'm
-> > the first to notice it, given that the R770 shipped out beginning in 20=
-23 :)
->
-> They cannot pass certification with this bug, but it's possible that
-> either they started including more vendor elements since, or changed the
-> configuration in other ways, or the specific MBSSID configuration isn't
-> tested in the certification, etc. But this _is_ validated as part of the
-> certification, if the scenario arises.
->
-> > So I dug through the spec, and ended up with this chain of reasoning fo=
-r
-> > why the WMM IE is not required in 6 GHz.
->
-> ... but it's still wrong since it's a clear *shall* requirement. I hope
-> I've been able to convey that.
->
-> Right now, as annoying that may be for you, I'm inclined to not change
-> anything here since multiple AP vendors confronted with this issue have
-> agreed that it's their issue and will be fixed. If we work around it
-> now, they have no incentive to fix their implementation. We have a bit
-> of market power here to push in the right direction, rather than piling
-> on workarounds on our side.
->
->
-> However, if in fact it later turns out that there are unfixable APs out
-> there, then given the reasoning I outlined above for how your
-> argumentation is wrong, I think the only plausible workaround would be
-> to (erroneously!) inherit the vendor WMM element from the transmitting
-> BSS, rather than making assumptions about it. We'd also have to do this
-> for change tracking which makes it all the more complex, and certainly
-> wouldn't want to apply it in strict mode.
->
-> johannes
 
