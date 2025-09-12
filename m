@@ -1,106 +1,85 @@
-Return-Path: <linux-wireless+bounces-27267-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27268-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9B8B54FE5
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Sep 2025 15:44:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBFFB5530D
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Sep 2025 17:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BAFD167F74
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Sep 2025 13:44:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A80EAC608C
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Sep 2025 15:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87562FD1C3;
-	Fri, 12 Sep 2025 13:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B723F3168E4;
+	Fri, 12 Sep 2025 15:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="TNMp5hEV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J+p7L5Oc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0018E1F872D;
-	Fri, 12 Sep 2025 13:44:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6803074B2
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Sep 2025 15:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757684682; cv=none; b=EGcunhKLtLTRmjYLgUIsNOc4xL/rIgD1lEdokpehyeacYzyvikE7J4+5HiMK6ONbE0NfF0JmPOiO6dE8Ox0HQF4+nmC7narHlLV86rHFSseXBtwwEb2OfkLhiwhB94VkJLt8cWUafZfMP6piMJ7nslpe3bUZ0VkWBgPCiRQlUTw=
+	t=1757690142; cv=none; b=pvMIFkBcYrhw78HV2n6jjtDyM5UcD8XRPoRQigGPfvZCDsTGumOCjvDvnR3VvDnvukfWfCDz+Fi7BYpT/aDszA/U7zMAmIMrXVTTsKMNXisTc58ejW4zGdFvElh2ZIae50vevNjVwsQ3rQN8Vnyw5DN5qhSvAEIwK7gqHkndveI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757684682; c=relaxed/simple;
-	bh=Z0AoKpkc0fJA3nJvzIAGtyg7Egr+rKkvpFqJ7nwmzNg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=TxhBEj7lkBP7Z87WLuyHqR+hvOuCQJc83eeBx0ykaRdZzuI3V0MQOAHazSuQR+QZ5gK/AYXlIsyZEtYkb4HNoZxr7AJGbIEjCl0Tgp5Hk6Pq5mQvu8rpHtsr2TE6zhx7WnhHxNSlQz+3cpCGmS+ltYuFshFRbC/cwT4aYE+7Hsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=TNMp5hEV reason="signature verification failed"; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=fn0AcCThmky4/tdg5r/iJhWkSOOpbV6urVsfWz/qpxA=; b=T
-	NMp5hEVLrzPlrjV/VzSN9Afm3adXlZhQdSrIReWBXdvyDq+2SEXVAHsvPVfExTJW
-	EGgwxQ3BIs3b1I3bnFX463qFs81RciZXnQuwxj9J1JyF1MkYvowR3KYF6gmexZI4
-	32jCFHqqp1r8lfl82Mco9fh2/M5p6lWf6o/W8zilKo=
-Received: from 00107082$163.com ( [111.35.190.173] ) by
- ajax-webmail-wmsvr-40-130 (Coremail) ; Fri, 12 Sep 2025 21:44:21 +0800
- (CST)
-Date: Fri, 12 Sep 2025 21:44:21 +0800 (CST)
-From: "David Wang" <00107082@163.com>
-To: "Johannes Berg" <johannes@sipsolutions.net>
-Cc: miriam.rachel.korenblit@intel.com, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: IWL Error Log Dump since 6.17.0-rc5
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20250723(a044bf12) Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <285c7cd9935d5c245ad478c5692faa927bcda245.camel@sipsolutions.net>
-References: <20250909165811.10729-1-00107082@163.com>
- <487c99e0.6ed4.19932979ca5.Coremail.00107082@163.com>
- <285c7cd9935d5c245ad478c5692faa927bcda245.camel@sipsolutions.net>
-X-NTES-SC: AL_Qu2eBfqTu04t5ySeYOkXn0oTju85XMCzuv8j3YJeN500mCXz2Cw8U1F4PFfV+fqkMhGjigm+VyZp4fxdephZYaytbZEat5SyfEZd582A9JWa
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=arc-20240116; t=1757690142; c=relaxed/simple;
+	bh=lpXtNXUnkeD2hxRlppy/xJK2BmpxX53cp8KUKDOIVGw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tp8Eb7yHaCjEJmwpIGmfRUrsIp5+3AeFmD4k3VfjDtKPS/HCtVgQ1cyPcy4f5qO6Ynrtzt8SM5sEwsDLAVTpOKpxOTjLamSinnxHdrW26R6fIbDMCTeWpa5Rq/+cGjiisb87DIM/ukKARmiYKBsAl0MfmwB1yLMD22sTRJJvfQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J+p7L5Oc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA67C4CEF4;
+	Fri, 12 Sep 2025 15:15:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757690142;
+	bh=lpXtNXUnkeD2hxRlppy/xJK2BmpxX53cp8KUKDOIVGw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=J+p7L5OcNJ/gFFxeT3+GwrXmQZpky2LLx7teJP+yC+sZHFDojv3xFkTMVFtVPdBp/
+	 bSIytXfPwYQiMX/BtFRFUSv3uT+8fDYic6pVCrb51RLucKitUwlzshqUtayqNIgakS
+	 nCgVgCHqfEWYSq2E6xptcc7AjSxDjB5LURPv0WiowLZpr7lNpnsJOIPM0CuRP7J+J2
+	 6llMHn8rzKKo9v72t6vcl5OkBc2kycdtNY0udpodlZHAG7G7Jz9ZTssa3OJIVXc+0p
+	 cR682EP6sMEmNMSj9KHu2JlJO0dC/v7x7t14+nWhh6nmuffnYcZtwoLLY/v69c6n7P
+	 D6XRCnDSQinrg==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: nbd@nbd.name
+Cc: lorenzo@kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH mt76] wifi: mt76: mt7996: Do not use #elifdef directive
+Date: Fri, 12 Sep 2025 17:15:34 +0200
+Message-ID: <8215423cad3d3a35e016b7d2b84d5036c3a0d092.1757690020.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <35b1fd7b.aa06.1993e2b7ce5.Coremail.00107082@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:gigvCgDXf3u2I8RoyuEBAA--.18346W
-X-CM-SenderInfo: qqqrilqqysqiywtou0bp/1tbiMxnGqmjD9J7QQAADsU
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
 
-CkF0IDIwMjUtMDktMTAgMTY6MzE6MzMsICJKb2hhbm5lcyBCZXJnIiA8am9oYW5uZXNAc2lwc29s
-dXRpb25zLm5ldD4gd3JvdGU6Cj5PbiBXZWQsIDIwMjUtMDktMTAgYXQgMTU6NDcgKzA4MDAsIERh
-dmlkIFdhbmcgd3JvdGU6Cj4+IEhpLCAKPj4gCj4+IEkgdGhpbmsgdGhvc2UgZXJyb3IgZHVtcCBp
-cyBpbnRyb2R1Y2VkIGJ5IGNvbW1pdCA1ODZlM2NiMzNiYTY4OTAwNTRiOTVhYTBhZGUwYTE2NTg5
-MGVmYWJkKCJ3aWZpOiBpd2x3aWZpOiBmaXggYnl0ZSBjb3VudCB0YWJsZSBmb3Igb2xkIGRldmlj
-ZXMiKQo+PiAKPj4gTXkgd2lyZWxlc3MgcGNpZSBjYXJkIGhhcyBkZXZpY2VfZmFtaWx5IDE1IHdo
-aWNoIGlzIGxlc3MgdGhhbiBJV0xfREVWSUNFX0ZBTUlMWV85MDAwLCBhbmQgdGhlIGNoYW5nZXMg
-aW4gdGhlIGNvbW1pdCBoYXZlIGNoYW5nZWQgdGhlIGJlaGF2aW9yIGZvciBteSBkZXZpY2VzLgo+
-PiAKPj4gLSAgICAgICBpZiAodHJhbnMtPm1hY19jZmctPmRldmljZV9mYW1pbHkgPCBJV0xfREVW
-SUNFX0ZBTUlMWV9BWDIxMCkKPj4gKyAgICAgICBpZiAodHJhbnMtPm1hY19jZmctPmRldmljZV9m
-YW1pbHkgPj0gSVdMX0RFVklDRV9GQU1JTFlfOTAwMCAmJgo+PiArICAgICAgICAgICB0cmFucy0+
-bWFjX2NmZy0+ZGV2aWNlX2ZhbWlseSA8IElXTF9ERVZJQ0VfRkFNSUxZX0FYMjEwKQo+PiAgICAg
-ICAgICAgICAgICAgbGVuID0gRElWX1JPVU5EX1VQKGxlbiwgNCk7Cj4KPkkgdGhpbmsgSSBqdXN0
-IGdvdCBjb25mdXNlZCwgYW5kIHRoYXQgOTAwMCBzaG91bGQgYmUgNzAwMC4gUHJlc3VtYWJseQo+
-dGhhdCdkIHdvcmsgZm9yIHlvdSwgSSdsbCBzZW5kIGEgcGF0Y2guCj4KPmpvaGFubmVzCgoKSGks
-IAoKTXkgc3lzdGVtIGhhcyBiZWVuIHJ1biBmb3IgZGF5cyBhbmQgbm8gSVdMIGVycm9yIGR1bXBz
-ICYgcmVzZXQgaGFwcGVuZWQuCkkgdGhpbmsgSSBjYW4gY29uZmlybSB0aGF0IG15IHdpcmVsZXNz
-IGNhcmQgbmVlZHMgdGhlIGxlbmd0aCBhZGp1c3RtZW50LgoKU29tZSBpbmZvcm1hdGlvbiBhYm91
-dCBteSBjYXJkczoKClsgICAgNS4wNjcyNjVdIGl3bHdpZmkgMDAwMDoyMTowMC4wOiBlbmFibGlu
-ZyBkZXZpY2UgKDAwMDAgLT4gMDAwMikKWyAgICA1LjA2ODc5OF0gaXdsd2lmaSAwMDAwOjIxOjAw
-LjA6IERldGVjdGVkIGNyZi1pZCAweDAsIGNudi1pZCAweDAgd2ZwbSBpZCAweDAKWyAgICA1LjA2
-ODgwOV0gaXdsd2lmaSAwMDAwOjIxOjAwLjA6IFBDSSBkZXYgMDhiMS9jMDcwLCByZXY9MHgxNDQs
-IHJmaWQ9MHhkNTU1NTVkNQpbICAgIDUuMDY4ODEzXSBpd2x3aWZpIDAwMDA6MjE6MDAuMDogZGV2
-aWNlIGZhbWlseTogMTUgIDwtLSAKWyAgICA1LjA2ODgxNl0gaXdsd2lmaSAwMDAwOjIxOjAwLjA6
-IERldGVjdGVkIEludGVsKFIpIER1YWwgQmFuZCBXaXJlbGVzcyBBQyA3MjYwClsgICAgNS4wNzU1
-OTNdIGl3bHdpZmkgMDAwMDoyMTowMC4wOiBsb2FkZWQgZmlybXdhcmUgdmVyc2lvbiAxNy5iZmI1
-ODUzOC4wIDcyNjAtMTcudWNvZGUgb3BfbW9kZSBpd2xtdm0KCiQgbHNwY2kKLi4uCjIxOjAwLjAg
-TmV0d29yayBjb250cm9sbGVyOiBJbnRlbCBDb3Jwb3JhdGlvbiBXaXJlbGVzcyA3MjYwIChyZXYg
-YmIpCi4uLgoKCk15IGRldmljZSBtYXRjaCB0aGUgY29uZmlnIGluIGRyaXZlcnMvbmV0L3dpcmVs
-ZXNzL2ludGVsL2l3bHdpZmkvcGNpZS9kcnYuYzoKCjI2MyAgICAgICAgIHtJV0xfUENJX0RFVklD
-RSgweDA4QjEsIDB4QzA3MCwgaXdsNzAwMF9tYWNfY2ZnKX0sCgppd2w3MDAwX21hY19jZmcgaXMg
-ZGVmaW5lZCBhczoKCiA4OCBjb25zdCBzdHJ1Y3QgaXdsX21hY19jZmcgaXdsNzAwMF9tYWNfY2Zn
-ID0geyAKIDg5ICAgICAgICAgLmRldmljZV9mYW1pbHkgPSBJV0xfREVWSUNFX0ZBTUlMWV83MDAw
-LCAKIDkwICAgICAgICAgLmJhc2UgPSAmaXdsNzAwMF9iYXNlLAogOTEgfTsKCkFuZCBpbmRlZWQs
-IGl0IGlzIElXTF9ERVZJQ0VfRkFNSUxZXzcwMDAKCkZZSQpEYXZpZA==
+Do not use #elifdef directive since it is a C23 extension but rely
+on #elif defined() instead.
+
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index be8bf03aeb4b..fae9c4e07ab9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -2258,7 +2258,7 @@ const struct ieee80211_ops mt7996_ops = {
+ 	.net_fill_forward_path = mt7996_net_fill_forward_path,
+ #ifdef CONFIG_NET_MEDIATEK_SOC_WED
+ 	.net_setup_tc = mt76_wed_net_setup_tc,
+-#elifdef CONFIG_MT7996_NPU
++#elif defined(CONFIG_MT7996_NPU)
+ 	.net_setup_tc = mt76_npu_net_setup_tc,
+ #endif
+ 	.change_vif_links = mt7996_change_vif_links,
+-- 
+2.51.0
+
 
