@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-27293-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27294-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33BEAB570C0
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 08:56:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CFDB570C1
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 08:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 761113AC2A0
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 06:56:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 813DD189A7C8
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 06:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AF528DB76;
-	Mon, 15 Sep 2025 06:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11452C028F;
+	Mon, 15 Sep 2025 06:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="kfCKvdTw"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="GOCu8fiT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD88214236
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 06:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07982550AF
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 06:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757919345; cv=none; b=M7OzKCuy8Ry0sTKuMGaS2JVgEDfgTAcCouHg5lvCnN9DxzsgZZPFqjFyQhzRWiASe6u8Cfak1tIwKqz6oL6fpZ1fLQyoHXiexngCcnM9Pz1jgt7BBdlc9qzZTwc8sUYk2oGg1YXYisneM3jpcCkK7Deck1WwvaOFNOr/fcIOOQA=
+	t=1757919350; cv=none; b=orX/DoXFO/MdP0TZespQbLVs0bQnl9iXoiBR9AfozNhX7ZRWoMj/5ag2dVA+a28W7SJ2Dw8QEom9unF5hCr8IIPPQ9ymMP+CrAAeyfJZEGk4e8y3c5Fc7DqGxN+ox+KqRGnMyrrSVsKw0LqOKcfeWahBtsqoZGJPIKhDA+C4Et4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757919345; c=relaxed/simple;
-	bh=917it6lxpxwsnIDAfs8BPb9VXkVVM2sMW5wH19ctkRA=;
+	s=arc-20240116; t=1757919350; c=relaxed/simple;
+	bh=jk482uxZZZqZVcW46qL+dywLm0szJ6d1su5PJMUGzNk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q6Dg9gnEmVJK5Ik536iLOuF2ZIk1ige22kepSrBxsv2D+lO0TRrJStFt159I9sOKFOab9zxgD3WON/YbJKVPPa/h0JU1IVIOdW+0Oi8Otme1JCGxSMKsu4MJ39OyZ2gEQLz89ugNcdv3r8orzQcc9lRJWBqBkAG6NgH49d2GcuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=kfCKvdTw; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=Db9/1AqCs6Aqb/wKyMdcYd/BIK+CYxtAoXR86csHn0bzszSdcP/BaBDRkhKRtl99WqLexBO8R6R88WmvRG1hu0B65OGfaSUgBV76XZ9AvCbF6vepqbXe71gaj+iXlKyNqwznLFhpwQJevNOU1F+E+d0+4hf3TRzgva5cteQ8pG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=GOCu8fiT; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58F6te3sB594835, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58F6tjbR7594920, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1757919340; bh=31rIQgwHEVialj3xPqMseNZxavafh5dHhkTaQPwJ9lo=;
+	t=1757919345; bh=FCcycoaGP9WFKD54yYd1q12caD/WQJ1bjTh5HlCeyAk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=kfCKvdTwf5pK3VlTa+ITYKNrfvzcdvdU3iCIP6k9vPmDoE35Gn8nMW86IaemR4qMe
-	 fxant983QyKlKvk3cBJdFVjtd0ncCyXTO3cM+ZWxYcPfurltqwNqbYvk8jyY2dOoBk
-	 HLykfpgcnDHqodv/Ua1ZXbypaQQ7veNr2ct6avwA2RULE3gOeBftoTO5KdrFL6Gczx
-	 RIsO1KputfjJj7JOz/lg8vUj1Ph6sJNFzKC1zcpTRd7yQX2w9n6Md3jGik4wIKdFwk
-	 6sVRsW6/XZYtFtLhS2JPBlynsIYUvjvdKBv31lSUxMuI5ecFGA8VcMt/WACKW+JrhJ
-	 6niAVjYv4y2gA==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58F6te3sB594835
+	b=GOCu8fiTTA9TZdekw48Q2pHvCkzbQl0FhybW8JUiSbj4Xvg34sIngUPKOAZTilrdw
+	 8XO0f+Hsg15PAbHsQ+pUJ6HHXf+rS68hM83Isk0SWt778rPNGt5SxowYLf2huaqJXm
+	 VRgQ/6NnQD2ggqrWLp4d3ZvpFS4DAxhZ7oEpjHpgoJF4QhCdk0nPLhPgVL+q89mQFq
+	 PKLJ90zF3Fshb+W453lIqxU/fM0ByIXqsHPjf5z9WKLextu7YfDi70vV8uP5f77c5u
+	 axGpQeHZVcI2wMffc8dygj5yhb8spmeZdRKeKxI0ePgqnnR7oZATejlvdL+pj4+CtC
+	 AUKq83ZCzq5EA==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58F6tjbR7594920
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 14:55:40 +0800
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 14:55:45 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 15 Sep 2025 14:55:41 +0800
+ 15.2.1544.27; Mon, 15 Sep 2025 14:55:45 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS06.realtek.com.tw
  (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27; Mon, 15 Sep
- 2025 14:55:40 +0800
+ 2025 14:55:45 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <gary.chang@realtek.com>, <damon.chen@realtek.com>,
         <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 10/11] wifi: rtw89: 8922a: add TAS feature support
-Date: Mon, 15 Sep 2025 14:54:29 +0800
-Message-ID: <20250915065429.39269-1-pkshih@realtek.com>
+Subject: [PATCH rtw-next 11/11] wifi: rtw89: wow: enable TKIP related feature
+Date: Mon, 15 Sep 2025 14:54:34 +0800
+Message-ID: <20250915065434.39324-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250915065213.38659-1-pkshih@realtek.com>
 References: <20250915065213.38659-1-pkshih@realtek.com>
@@ -75,368 +75,206 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTKEXHMBS06.realtek.com.tw (10.21.1.56)
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-Add TAS support for 8922AE. Unlike AX ICs, BE ICs introduce a TAS
-timer switch. The firmware starts a TAS timer to periodically
-collect TX power information and notify the driver via C2H
-events. To avoid unnecessary C2H events, the TAS timer is
-enabled during core_start().
+For chips that supports TKIP HW encryption and decryption, enable TKIP
+cipher for WoWLAN feature. Additionally, the TX MIC KEY and RX MIC KEY is
+opposite in FW. Therefore, reverse the MIC KEY direction in H2C format,
+and also reverse it from AOAC report before reporting to mac80211.
 
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c     |  2 +
- drivers/net/wireless/realtek/rtw89/fw.c       | 34 +++++++++
- drivers/net/wireless/realtek/rtw89/fw.h       | 14 +++-
- drivers/net/wireless/realtek/rtw89/phy.c      | 74 ++++++++++++-------
- drivers/net/wireless/realtek/rtw89/phy.h      |  3 +-
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |  7 +-
- drivers/net/wireless/realtek/rtw89/sar.c      | 15 ++++
- drivers/net/wireless/realtek/rtw89/sar.h      |  1 +
- 8 files changed, 119 insertions(+), 31 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h |  2 +-
+ drivers/net/wireless/realtek/rtw89/fw.c   |  5 +-
+ drivers/net/wireless/realtek/rtw89/wow.c  | 79 ++++++++++++++++++-----
+ drivers/net/wireless/realtek/rtw89/wow.h  |  6 ++
+ 4 files changed, 74 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index c7907949d3a2..fe059c4a6b55 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -5520,6 +5520,7 @@ int rtw89_core_start(struct rtw89_dev *rtwdev)
- 	rtw89_btc_ntfy_radio_state(rtwdev, BTC_RFCTRL_WL_ON);
- 	rtw89_fw_h2c_fw_log(rtwdev, rtwdev->fw.log.enable);
- 	rtw89_fw_h2c_init_ba_cam(rtwdev);
-+	rtw89_tas_fw_timer_enable(rtwdev, true);
- 
- 	return 0;
- }
-@@ -5535,6 +5536,7 @@ void rtw89_core_stop(struct rtw89_dev *rtwdev)
- 	if (!test_bit(RTW89_FLAG_RUNNING, rtwdev->flags))
- 		return;
- 
-+	rtw89_tas_fw_timer_enable(rtwdev, false);
- 	rtw89_btc_ntfy_radio_state(rtwdev, BTC_RFCTRL_WL_OFF);
- 
- 	clear_bit(RTW89_FLAG_RUNNING, rtwdev->flags);
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 8408d5d8d42d..3d4ad2ffb75c 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -5771,8 +5771,8 @@ struct rtw89_wow_gtk_info {
+ 	u8 kck[32];
+ 	u8 kek[32];
+ 	u8 tk1[16];
+-	u8 txmickey[8];
+ 	u8 rxmickey[8];
++	u8 txmickey[8];
+ 	__le32 igtk_keyid;
+ 	__le64 ipn;
+ 	u8 igtk[2][32];
 diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 9c98c25c10ce..2273dae8434a 100644
+index 2273dae8434a..ab904a7def1b 100644
 --- a/drivers/net/wireless/realtek/rtw89/fw.c
 +++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -6688,6 +6688,40 @@ int rtw89_fw_h2c_rf_rxdck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
- 	return ret;
- }
- 
-+int rtw89_fw_h2c_rf_tas_trigger(struct rtw89_dev *rtwdev, bool enable)
-+{
-+	struct rtw89_h2c_rf_tas *h2c;
-+	u32 len = sizeof(*h2c);
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
-+	if (!skb) {
-+		rtw89_err(rtwdev, "failed to alloc skb for h2c RF TAS\n");
-+		return -ENOMEM;
-+	}
-+	skb_put(skb, len);
-+	h2c = (struct rtw89_h2c_rf_tas *)skb->data;
-+
-+	h2c->enable = cpu_to_le32(enable);
-+
-+	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
-+			      H2C_CAT_OUTSRC, H2C_CL_OUTSRC_RF_FW_RFK,
-+			      H2C_FUNC_RFK_TAS_OFFLOAD, 0, 0, len);
-+
-+	ret = rtw89_h2c_tx(rtwdev, skb, false);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to send h2c\n");
-+		goto fail;
-+	}
-+
-+	return 0;
-+fail:
-+	dev_kfree_skb_any(skb);
-+
-+	return ret;
-+}
-+
- int rtw89_fw_h2c_raw_with_hdr(struct rtw89_dev *rtwdev,
- 			      u8 h2c_class, u8 h2c_func, u8 *buf, u16 len,
- 			      bool rack, bool dack)
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 98b187305481..ddebf7972068 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -4430,6 +4430,7 @@ enum rtw89_rfk_offload_h2c_func {
- 	H2C_FUNC_RFK_DACK_OFFLOAD = 0x5,
- 	H2C_FUNC_RFK_RXDCK_OFFLOAD = 0x6,
- 	H2C_FUNC_RFK_PRE_NOTIFY = 0x8,
-+	H2C_FUNC_RFK_TAS_OFFLOAD = 0x9,
- };
- 
- struct rtw89_fw_h2c_rf_get_mccch {
-@@ -4611,6 +4612,10 @@ struct rtw89_h2c_rf_rxdck_v0 {
- 	u8 rxdck_dbg_en;
- } __packed;
- 
-+struct rtw89_h2c_rf_tas {
-+	__le32 enable;
-+} __packed;
-+
- struct rtw89_h2c_rf_rxdck {
- 	struct rtw89_h2c_rf_rxdck_v0 v0;
- 	u8 is_chl_k;
-@@ -4743,12 +4748,16 @@ struct rtw89_c2h_rfk_report {
- 	u8 version;
- } __packed;
- 
--struct rtw89_c2h_rf_tas_info {
--	struct rtw89_c2h_hdr hdr;
-+struct rtw89_c2h_rf_tas_rpt_log {
- 	__le32 cur_idx;
- 	__le16 txpwr_history[20];
- } __packed;
- 
-+struct rtw89_c2h_rf_tas_info {
-+	struct rtw89_c2h_hdr hdr;
-+	struct rtw89_c2h_rf_tas_rpt_log content;
-+} __packed;
-+
- #define RTW89_FW_RSVD_PLE_SIZE 0x800
- 
- #define RTW89_FW_BACKTRACE_INFO_SIZE 8
-@@ -4889,6 +4898,7 @@ int rtw89_fw_h2c_rf_dack(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
- 			 const struct rtw89_chan *chan);
- int rtw89_fw_h2c_rf_rxdck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
- 			  const struct rtw89_chan *chan, bool is_chl_k);
-+int rtw89_fw_h2c_rf_tas_trigger(struct rtw89_dev *rtwdev, bool enable);
- int rtw89_fw_h2c_raw_with_hdr(struct rtw89_dev *rtwdev,
- 			      u8 h2c_class, u8 h2c_func, u8 *buf, u16 len,
- 			      bool rack, bool dack);
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 45823c9e9448..ba7feadd7582 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -3172,6 +3172,34 @@ void (* const rtw89_phy_c2h_dm_handler[])(struct rtw89_dev *rtwdev,
- 	[RTW89_PHY_C2H_DM_FUNC_FW_SCAN] = rtw89_phy_c2h_fw_scan_rpt,
- };
- 
-+static
-+void rtw89_phy_c2h_rfk_tas_pwr(struct rtw89_dev *rtwdev,
-+			       const struct rtw89_c2h_rf_tas_rpt_log *content)
-+{
-+	const enum rtw89_sar_sources src = rtwdev->sar.src;
-+	struct rtw89_tas_info *tas = &rtwdev->tas;
-+	u64 linear = 0;
-+	u32 i, cur_idx;
-+	s16 txpwr;
-+
-+	if (!tas->enable || src == RTW89_SAR_SOURCE_NONE)
-+		return;
-+
-+	cur_idx = le32_to_cpu(content->cur_idx);
-+	for (i = 0; i < cur_idx; i++) {
-+		txpwr = le16_to_cpu(content->txpwr_history[i]);
-+		linear += rtw89_db_quarter_to_linear(txpwr);
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_SAR,
-+			    "tas: index: %u, txpwr: %d\n", i, txpwr);
-+	}
-+
-+	if (cur_idx == 0)
-+		tas->instant_txpwr = rtw89_db_to_linear(0);
-+	else
-+		tas->instant_txpwr = DIV_ROUND_DOWN_ULL(linear, cur_idx);
-+}
-+
- static void rtw89_phy_c2h_rfk_rpt_log(struct rtw89_dev *rtwdev,
- 				      enum rtw89_phy_c2h_rfk_log_func func,
- 				      void *content, u16 len)
-@@ -3423,6 +3451,13 @@ static void rtw89_phy_c2h_rfk_rpt_log(struct rtw89_dev *rtwdev,
- 		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[TXGAPK]rpt power_d[1] = %*ph\n",
- 			    (int)sizeof(txgapk->power_d[1]), txgapk->power_d[1]);
- 		return;
-+	case RTW89_PHY_C2H_RFK_LOG_FUNC_TAS_PWR:
-+		if (len != sizeof(struct rtw89_c2h_rf_tas_rpt_log))
-+			goto out;
-+
-+		rtw89_phy_c2h_rfk_tas_pwr(rtwdev, content);
-+
-+		return;
- 	default:
- 		break;
+@@ -8726,9 +8726,10 @@ int rtw89_fw_h2c_wow_gtk_ofld(struct rtw89_dev *rtwdev,
+ 			goto fail;
  	}
-@@ -3475,9 +3510,6 @@ static void rtw89_phy_c2h_rfk_log(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
- 	u16 chunk_len;
- 	bool handled;
  
--	if (!rtw89_debug_is_enabled(rtwdev, RTW89_DBG_RFK))
--		return;
--
- 	log_ptr += sizeof(*c2h_hdr);
- 	len -= sizeof(*c2h_hdr);
+-	/* not support TKIP yet */
+ 	h2c->w0 = le32_encode_bits(enable, RTW89_H2C_WOW_GTK_OFLD_W0_EN) |
+-		  le32_encode_bits(0, RTW89_H2C_WOW_GTK_OFLD_W0_TKIP_EN) |
++		  le32_encode_bits(!!memchr_inv(gtk_info->txmickey, 0,
++						sizeof(gtk_info->txmickey)),
++				   RTW89_H2C_WOW_GTK_OFLD_W0_TKIP_EN) |
+ 		  le32_encode_bits(gtk_info->igtk_keyid ? 1 : 0,
+ 				   RTW89_H2C_WOW_GTK_OFLD_W0_IEEE80211W_EN) |
+ 		  le32_encode_bits(macid, RTW89_H2C_WOW_GTK_OFLD_W0_MAC_ID) |
+diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
+index 5bb7c1a42f1d..5faa51ad896a 100644
+--- a/drivers/net/wireless/realtek/rtw89/wow.c
++++ b/drivers/net/wireless/realtek/rtw89/wow.c
+@@ -99,13 +99,26 @@ static int rtw89_rx_pn_to_iv(struct rtw89_dev *rtwdev,
  
-@@ -3554,6 +3586,13 @@ rtw89_phy_c2h_rfk_log_txgapk(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32
- 			      RTW89_PHY_C2H_RFK_LOG_FUNC_TXGAPK, "TXGAPK");
- }
+ 	ieee80211_get_key_rx_seq(key, 0, &seq);
  
-+static void
-+rtw89_phy_c2h_rfk_log_tas_pwr(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
-+{
-+	rtw89_phy_c2h_rfk_log(rtwdev, c2h, len,
-+			      RTW89_PHY_C2H_RFK_LOG_FUNC_TAS_PWR, "TAS");
-+}
+-	/* seq.ccmp.pn[] is BE order array */
+-	pn = u64_encode_bits(seq.ccmp.pn[0], RTW89_KEY_PN_5) |
+-	     u64_encode_bits(seq.ccmp.pn[1], RTW89_KEY_PN_4) |
+-	     u64_encode_bits(seq.ccmp.pn[2], RTW89_KEY_PN_3) |
+-	     u64_encode_bits(seq.ccmp.pn[3], RTW89_KEY_PN_2) |
+-	     u64_encode_bits(seq.ccmp.pn[4], RTW89_KEY_PN_1) |
+-	     u64_encode_bits(seq.ccmp.pn[5], RTW89_KEY_PN_0);
++	switch (key->cipher) {
++	case WLAN_CIPHER_SUITE_TKIP:
++		pn = u64_encode_bits(seq.tkip.iv32, RTW89_KEY_TKIP_PN_IV32) |
++		     u64_encode_bits(seq.tkip.iv16, RTW89_KEY_TKIP_PN_IV16);
++		break;
++	case WLAN_CIPHER_SUITE_CCMP:
++	case WLAN_CIPHER_SUITE_GCMP:
++	case WLAN_CIPHER_SUITE_CCMP_256:
++	case WLAN_CIPHER_SUITE_GCMP_256:
++		/* seq.ccmp.pn[] is BE order array */
++		pn = u64_encode_bits(seq.ccmp.pn[0], RTW89_KEY_PN_5) |
++		     u64_encode_bits(seq.ccmp.pn[1], RTW89_KEY_PN_4) |
++		     u64_encode_bits(seq.ccmp.pn[2], RTW89_KEY_PN_3) |
++		     u64_encode_bits(seq.ccmp.pn[3], RTW89_KEY_PN_2) |
++		     u64_encode_bits(seq.ccmp.pn[4], RTW89_KEY_PN_1) |
++		     u64_encode_bits(seq.ccmp.pn[5], RTW89_KEY_PN_0);
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+ 	err = _pn_to_iv(rtwdev, key, iv, pn, key->keyidx);
+ 	if (err)
+@@ -177,13 +190,26 @@ static int rtw89_rx_iv_to_pn(struct rtw89_dev *rtwdev,
+ 	if (err)
+ 		return err;
+ 
+-	/* seq.ccmp.pn[] is BE order array */
+-	seq.ccmp.pn[0] = u64_get_bits(pn, RTW89_KEY_PN_5);
+-	seq.ccmp.pn[1] = u64_get_bits(pn, RTW89_KEY_PN_4);
+-	seq.ccmp.pn[2] = u64_get_bits(pn, RTW89_KEY_PN_3);
+-	seq.ccmp.pn[3] = u64_get_bits(pn, RTW89_KEY_PN_2);
+-	seq.ccmp.pn[4] = u64_get_bits(pn, RTW89_KEY_PN_1);
+-	seq.ccmp.pn[5] = u64_get_bits(pn, RTW89_KEY_PN_0);
++	switch (key->cipher) {
++	case WLAN_CIPHER_SUITE_TKIP:
++		seq.tkip.iv32 = u64_get_bits(pn, RTW89_KEY_TKIP_PN_IV32);
++		seq.tkip.iv16 = u64_get_bits(pn, RTW89_KEY_TKIP_PN_IV16);
++		break;
++	case WLAN_CIPHER_SUITE_CCMP:
++	case WLAN_CIPHER_SUITE_GCMP:
++	case WLAN_CIPHER_SUITE_CCMP_256:
++	case WLAN_CIPHER_SUITE_GCMP_256:
++		/* seq.ccmp.pn[] is BE order array */
++		seq.ccmp.pn[0] = u64_get_bits(pn, RTW89_KEY_PN_5);
++		seq.ccmp.pn[1] = u64_get_bits(pn, RTW89_KEY_PN_4);
++		seq.ccmp.pn[2] = u64_get_bits(pn, RTW89_KEY_PN_3);
++		seq.ccmp.pn[3] = u64_get_bits(pn, RTW89_KEY_PN_2);
++		seq.ccmp.pn[4] = u64_get_bits(pn, RTW89_KEY_PN_1);
++		seq.ccmp.pn[5] = u64_get_bits(pn, RTW89_KEY_PN_0);
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+ 	ieee80211_set_key_rx_seq(key, 0, &seq);
+ 	rtw89_debug(rtwdev, RTW89_DBG_WOW, "%s key %d iv-%*ph to pn-%*ph\n",
+@@ -285,6 +311,11 @@ static void rtw89_wow_get_key_info_iter(struct ieee80211_hw *hw,
+ 
+ 	switch (key->cipher) {
+ 	case WLAN_CIPHER_SUITE_TKIP:
++		if (sta)
++			memcpy(gtk_info->txmickey,
++			       key->key + NL80211_TKIP_DATA_OFFSET_TX_MIC_KEY,
++			       sizeof(gtk_info->txmickey));
++		fallthrough;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 	case WLAN_CIPHER_SUITE_GCMP:
+ 	case WLAN_CIPHER_SUITE_CCMP_256:
+@@ -348,10 +379,27 @@ static void rtw89_wow_set_key_info_iter(struct ieee80211_hw *hw,
+ 	struct rtw89_wow_aoac_report *aoac_rpt = &rtw_wow->aoac_rpt;
+ 	struct rtw89_set_key_info_iter_data *iter_data = data;
+ 	bool update_tx_key_info = iter_data->rx_ready;
++	u8 tmp[RTW89_MIC_KEY_LEN];
+ 	int ret;
+ 
+ 	switch (key->cipher) {
+ 	case WLAN_CIPHER_SUITE_TKIP:
++		/*
++		 * TX MIC KEY and RX MIC KEY is oppsite in FW,
++		 * need to swap it before sending to mac80211.
++		 */
++		if (!sta && update_tx_key_info && aoac_rpt->rekey_ok &&
++		    !iter_data->tkip_gtk_swapped) {
++			memcpy(tmp, &aoac_rpt->gtk[NL80211_TKIP_DATA_OFFSET_TX_MIC_KEY],
++			       RTW89_MIC_KEY_LEN);
++			memcpy(&aoac_rpt->gtk[NL80211_TKIP_DATA_OFFSET_TX_MIC_KEY],
++			       &aoac_rpt->gtk[NL80211_TKIP_DATA_OFFSET_RX_MIC_KEY],
++			       RTW89_MIC_KEY_LEN);
++			memcpy(&aoac_rpt->gtk[NL80211_TKIP_DATA_OFFSET_RX_MIC_KEY],
++			       tmp, RTW89_MIC_KEY_LEN);
++			iter_data->tkip_gtk_swapped = true;
++		}
++		fallthrough;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 	case WLAN_CIPHER_SUITE_GCMP:
+ 	case WLAN_CIPHER_SUITE_CCMP_256:
+@@ -642,7 +690,8 @@ static void rtw89_wow_update_key_info(struct rtw89_dev *rtwdev, bool rx_ready)
+ 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
+ 	struct rtw89_wow_aoac_report *aoac_rpt = &rtw_wow->aoac_rpt;
+ 	struct rtw89_set_key_info_iter_data data = {.error = false,
+-						    .rx_ready = rx_ready};
++						    .rx_ready = rx_ready,
++						    .tkip_gtk_swapped = false};
+ 	struct ieee80211_bss_conf *bss_conf;
+ 	struct ieee80211_key_conf *key;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/wow.h b/drivers/net/wireless/realtek/rtw89/wow.h
+index 6606528d31c7..d2ba6cebc2a6 100644
+--- a/drivers/net/wireless/realtek/rtw89/wow.h
++++ b/drivers/net/wireless/realtek/rtw89/wow.h
+@@ -5,6 +5,9 @@
+ #ifndef __RTW89_WOW_H__
+ #define __RTW89_WOW_H__
+ 
++#define RTW89_KEY_TKIP_PN_IV16 GENMASK_ULL(15, 0)
++#define RTW89_KEY_TKIP_PN_IV32 GENMASK_ULL(47, 16)
 +
- static
- void (* const rtw89_phy_c2h_rfk_log_handler[])(struct rtw89_dev *rtwdev,
- 					       struct sk_buff *c2h, u32 len) = {
-@@ -3563,6 +3602,7 @@ void (* const rtw89_phy_c2h_rfk_log_handler[])(struct rtw89_dev *rtwdev,
- 	[RTW89_PHY_C2H_RFK_LOG_FUNC_RXDCK] = rtw89_phy_c2h_rfk_log_rxdck,
- 	[RTW89_PHY_C2H_RFK_LOG_FUNC_TSSI] = rtw89_phy_c2h_rfk_log_tssi,
- 	[RTW89_PHY_C2H_RFK_LOG_FUNC_TXGAPK] = rtw89_phy_c2h_rfk_log_txgapk,
-+	[RTW89_PHY_C2H_RFK_LOG_FUNC_TAS_PWR] = rtw89_phy_c2h_rfk_log_tas_pwr,
+ #define RTW89_KEY_PN_0 GENMASK_ULL(7, 0)
+ #define RTW89_KEY_PN_1 GENMASK_ULL(15, 8)
+ #define RTW89_KEY_PN_2 GENMASK_ULL(23, 16)
+@@ -25,6 +28,8 @@
+ #define RTW89_WOW_SYMBOL_CHK_PTK BIT(0)
+ #define RTW89_WOW_SYMBOL_CHK_GTK BIT(1)
+ 
++#define RTW89_MIC_KEY_LEN 8
++
+ enum rtw89_wake_reason {
+ 	RTW89_WOW_RSN_RX_PTK_REKEY = 0x1,
+ 	RTW89_WOW_RSN_RX_GTK_REKEY = 0x2,
+@@ -73,6 +78,7 @@ struct rtw89_set_key_info_iter_data {
+ 	u32 igtk_cipher;
+ 	bool rx_ready;
+ 	bool error;
++	bool tkip_gtk_swapped;
  };
  
- static
-@@ -3625,39 +3665,19 @@ rtw89_phy_c2h_rfk_report_state(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u3
- }
- 
- static void
--rtw89_phy_c2h_rfk_log_tas_pwr(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
-+rtw89_phy_c2h_rfk_report_tas_pwr(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
- {
--	const struct rtw89_c2h_rf_tas_info *rf_tas =
-+	const struct rtw89_c2h_rf_tas_info *report =
- 		(const struct rtw89_c2h_rf_tas_info *)c2h->data;
--	const enum rtw89_sar_sources src = rtwdev->sar.src;
--	struct rtw89_tas_info *tas = &rtwdev->tas;
--	u64 linear = 0;
--	u32 i, cur_idx;
--	s16 txpwr;
- 
--	if (!tas->enable || src == RTW89_SAR_SOURCE_NONE)
--		return;
--
--	cur_idx = le32_to_cpu(rf_tas->cur_idx);
--	for (i = 0; i < cur_idx; i++) {
--		txpwr = (s16)le16_to_cpu(rf_tas->txpwr_history[i]);
--		linear += rtw89_db_quarter_to_linear(txpwr);
--
--		rtw89_debug(rtwdev, RTW89_DBG_SAR,
--			    "tas: index: %u, txpwr: %d\n", i, txpwr);
--	}
--
--	if (cur_idx == 0)
--		tas->instant_txpwr = rtw89_db_to_linear(0);
--	else
--		tas->instant_txpwr = DIV_ROUND_DOWN_ULL(linear, cur_idx);
-+	rtw89_phy_c2h_rfk_tas_pwr(rtwdev, &report->content);
- }
- 
- static
- void (* const rtw89_phy_c2h_rfk_report_handler[])(struct rtw89_dev *rtwdev,
- 						  struct sk_buff *c2h, u32 len) = {
- 	[RTW89_PHY_C2H_RFK_REPORT_FUNC_STATE] = rtw89_phy_c2h_rfk_report_state,
--	[RTW89_PHY_C2H_RFK_LOG_TAS_PWR] = rtw89_phy_c2h_rfk_log_tas_pwr,
-+	[RTW89_PHY_C2H_RFK_REPORT_FUNC_TAS_PWR] = rtw89_phy_c2h_rfk_report_tas_pwr,
- };
- 
- bool rtw89_phy_c2h_chk_atomic(struct rtw89_dev *rtwdev, u8 class, u8 func)
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index 674397c4b9a9..9caacffd0af8 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.h
-+++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -149,13 +149,14 @@ enum rtw89_phy_c2h_rfk_log_func {
- 	RTW89_PHY_C2H_RFK_LOG_FUNC_RXDCK = 3,
- 	RTW89_PHY_C2H_RFK_LOG_FUNC_TSSI = 4,
- 	RTW89_PHY_C2H_RFK_LOG_FUNC_TXGAPK = 5,
-+	RTW89_PHY_C2H_RFK_LOG_FUNC_TAS_PWR = 9,
- 
- 	RTW89_PHY_C2H_RFK_LOG_FUNC_NUM,
- };
- 
- enum rtw89_phy_c2h_rfk_report_func {
- 	RTW89_PHY_C2H_RFK_REPORT_FUNC_STATE = 0,
--	RTW89_PHY_C2H_RFK_LOG_TAS_PWR = 6,
-+	RTW89_PHY_C2H_RFK_REPORT_FUNC_TAS_PWR = 6,
- };
- 
- enum rtw89_phy_c2h_dm_func {
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-index 8eb0cb9bb23e..6aa19ad259ac 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-@@ -2765,6 +2765,10 @@ static int rtw8922a_mac_disable_bb_rf(struct rtw89_dev *rtwdev)
- 	return 0;
- }
- 
-+static const struct rtw89_chanctx_listener rtw8922a_chanctx_listener = {
-+	.callbacks[RTW89_CHANCTX_CALLBACK_TAS] = rtw89_tas_chanctx_cb,
-+};
-+
- #ifdef CONFIG_PM
- static const struct wiphy_wowlan_support rtw_wowlan_stub_8922a = {
- 	.flags = WIPHY_WOWLAN_MAGIC_PKT | WIPHY_WOWLAN_DISCONNECT |
-@@ -2876,6 +2880,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
- 	.nctl_post_table	= NULL,
- 	.dflt_parms		= NULL, /* load parm from fw */
- 	.rfe_parms_conf		= NULL, /* load parm from fw */
-+	.chanctx_listener	= &rtw8922a_chanctx_listener,
- 	.txpwr_factor_bb	= 3,
- 	.txpwr_factor_rf	= 2,
- 	.txpwr_factor_mac	= 1,
-@@ -2895,7 +2900,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
- 				  BIT(NL80211_CHAN_WIDTH_160),
- 	.support_unii4		= true,
- 	.support_ant_gain	= true,
--	.support_tas		= false,
-+	.support_tas		= true,
- 	.support_sar_by_ant	= true,
- 	.support_noise		= false,
- 	.ul_tb_waveform_ctrl	= false,
-diff --git a/drivers/net/wireless/realtek/rtw89/sar.c b/drivers/net/wireless/realtek/rtw89/sar.c
-index 7f568ffb3766..ef7feccccd5e 100644
---- a/drivers/net/wireless/realtek/rtw89/sar.c
-+++ b/drivers/net/wireless/realtek/rtw89/sar.c
-@@ -4,6 +4,7 @@
- 
- #include "acpi.h"
- #include "debug.h"
-+#include "fw.h"
- #include "phy.h"
- #include "reg.h"
- #include "sar.h"
-@@ -843,6 +844,20 @@ void rtw89_tas_chanctx_cb(struct rtw89_dev *rtwdev,
- }
- EXPORT_SYMBOL(rtw89_tas_chanctx_cb);
- 
-+void rtw89_tas_fw_timer_enable(struct rtw89_dev *rtwdev, bool enable)
-+{
-+	const struct rtw89_chip_info *chip = rtwdev->chip;
-+	struct rtw89_tas_info *tas = &rtwdev->tas;
-+
-+	if (!tas->enable)
-+		return;
-+
-+	if (chip->chip_gen == RTW89_CHIP_AX)
-+		return;
-+
-+	rtw89_fw_h2c_rf_tas_trigger(rtwdev, enable);
-+}
-+
- void rtw89_sar_init(struct rtw89_dev *rtwdev)
- {
- 	rtw89_set_sar_from_acpi(rtwdev);
-diff --git a/drivers/net/wireless/realtek/rtw89/sar.h b/drivers/net/wireless/realtek/rtw89/sar.h
-index 4b7f3d44f57b..60b3aec5b3be 100644
---- a/drivers/net/wireless/realtek/rtw89/sar.h
-+++ b/drivers/net/wireless/realtek/rtw89/sar.h
-@@ -37,6 +37,7 @@ void rtw89_tas_reset(struct rtw89_dev *rtwdev, bool force);
- void rtw89_tas_scan(struct rtw89_dev *rtwdev, bool start);
- void rtw89_tas_chanctx_cb(struct rtw89_dev *rtwdev,
- 			  enum rtw89_chanctx_state state);
-+void rtw89_tas_fw_timer_enable(struct rtw89_dev *rtwdev, bool enable);
- void rtw89_sar_init(struct rtw89_dev *rtwdev);
- void rtw89_sar_track(struct rtw89_dev *rtwdev);
- 
+ static inline int rtw89_wow_get_sec_hdr_len(struct rtw89_dev *rtwdev)
 -- 
 2.25.1
 
