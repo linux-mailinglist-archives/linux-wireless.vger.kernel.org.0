@@ -1,281 +1,110 @@
-Return-Path: <linux-wireless+bounces-27294-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27295-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36CFDB570C1
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 08:56:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE14B57186
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 09:31:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 813DD189A7C8
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 06:56:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63240161DCF
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 07:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11452C028F;
-	Mon, 15 Sep 2025 06:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C03E199949;
+	Mon, 15 Sep 2025 07:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="GOCu8fiT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MANXeAah"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07982550AF
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 06:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7972C181
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 07:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757919350; cv=none; b=orX/DoXFO/MdP0TZespQbLVs0bQnl9iXoiBR9AfozNhX7ZRWoMj/5ag2dVA+a28W7SJ2Dw8QEom9unF5hCr8IIPPQ9ymMP+CrAAeyfJZEGk4e8y3c5Fc7DqGxN+ox+KqRGnMyrrSVsKw0LqOKcfeWahBtsqoZGJPIKhDA+C4Et4=
+	t=1757921484; cv=none; b=gsQxoONy4yDmIE4XhQifcmoM7mfHhsRDH8+On93wVYIcMeh4decgvx4aUCkBhzB9W8g+s+MH4k0VzEdWl9Hxg44qg7I2AEZRKIuRY3U2nkXYSWlDCvj5O/iCSM7Ht9LxdKQ9yxcGz+AhJkEXczLeVTp9v3DiHCCbgWjSjvuQkQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757919350; c=relaxed/simple;
-	bh=jk482uxZZZqZVcW46qL+dywLm0szJ6d1su5PJMUGzNk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Db9/1AqCs6Aqb/wKyMdcYd/BIK+CYxtAoXR86csHn0bzszSdcP/BaBDRkhKRtl99WqLexBO8R6R88WmvRG1hu0B65OGfaSUgBV76XZ9AvCbF6vepqbXe71gaj+iXlKyNqwznLFhpwQJevNOU1F+E+d0+4hf3TRzgva5cteQ8pG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=GOCu8fiT; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58F6tjbR7594920, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1757919345; bh=FCcycoaGP9WFKD54yYd1q12caD/WQJ1bjTh5HlCeyAk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=GOCu8fiTTA9TZdekw48Q2pHvCkzbQl0FhybW8JUiSbj4Xvg34sIngUPKOAZTilrdw
-	 8XO0f+Hsg15PAbHsQ+pUJ6HHXf+rS68hM83Isk0SWt778rPNGt5SxowYLf2huaqJXm
-	 VRgQ/6NnQD2ggqrWLp4d3ZvpFS4DAxhZ7oEpjHpgoJF4QhCdk0nPLhPgVL+q89mQFq
-	 PKLJ90zF3Fshb+W453lIqxU/fM0ByIXqsHPjf5z9WKLextu7YfDi70vV8uP5f77c5u
-	 axGpQeHZVcI2wMffc8dygj5yhb8spmeZdRKeKxI0ePgqnnR7oZATejlvdL+pj4+CtC
-	 AUKq83ZCzq5EA==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58F6tjbR7594920
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 14:55:45 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 15 Sep 2025 14:55:45 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTKEXHMBS06.realtek.com.tw
- (10.21.1.56) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27; Mon, 15 Sep
- 2025 14:55:45 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <gary.chang@realtek.com>, <damon.chen@realtek.com>,
-        <kevin_yang@realtek.com>
-Subject: [PATCH rtw-next 11/11] wifi: rtw89: wow: enable TKIP related feature
-Date: Mon, 15 Sep 2025 14:54:34 +0800
-Message-ID: <20250915065434.39324-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250915065213.38659-1-pkshih@realtek.com>
-References: <20250915065213.38659-1-pkshih@realtek.com>
+	s=arc-20240116; t=1757921484; c=relaxed/simple;
+	bh=tliLl8Yj8qZbSqqAlik/5MffKkDtMhxmH9iigdtxRBc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LhyjxlroDw/Z3rcXR2fgg1Og0J/ht1CZM0bZ/qeaMufyocI01gquZOtAblZ5Bi/ZHvDZJasy8Dwff+Hs2EIDP+rBGBgv4tU6Z3EWodWz5QxBS8F7/XjRkdFIsbyllQ+hVFlLEddNQRNkPXKAUwu76YOsTkL60cXWbeYc4PWedp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MANXeAah; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757921483; x=1789457483;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tliLl8Yj8qZbSqqAlik/5MffKkDtMhxmH9iigdtxRBc=;
+  b=MANXeAahdZ+RrzedmNd+uXL7xgqPrNOiiQD7XFuheaIMEMTF7Go+U/RU
+   FWajB0U2mbfshe/Wj2Kn9ejz9wBJd1FzHc60YfcP2YMcYUMw9tRRhobME
+   FdlnTzj7dvEtG+04IkMkGZYoh4mA3eIMH27cGAiKPQ/Cal0yExtZ8O3RB
+   cWVjp2o01rDejHfYf0iGfLD1VhFIxJDGQmJ18HsRbwmNL8al9AqCjbw+S
+   wK4yJg3xjxR3eeJf4GevLpZlkUOfOq3bIoLxdTqr3pqiWquw0yxk2U4H5
+   lXvTVlw6bf/xhX8UiQ0KX0bSftAirW6atle5tQ07pUxzWL3wBr22UW1oj
+   Q==;
+X-CSE-ConnectionGUID: HDoAlepYSeG3R2sh+mSdEA==
+X-CSE-MsgGUID: GNxSamjYTXO8k+y9tytoYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11553"; a="70848967"
+X-IronPort-AV: E=Sophos;i="6.18,265,1751266800"; 
+   d="scan'208";a="70848967"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 00:31:21 -0700
+X-CSE-ConnectionGUID: beOxyWSSRsGFD2mtG7eapg==
+X-CSE-MsgGUID: Ydz5YDQIQL2yYbMbSEt/tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,265,1751266800"; 
+   d="scan'208";a="174474670"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 00:31:20 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	David Wang <00107082@163.com>
+Subject: [PATCH iwlwifi-fixes] wifi: iwlwifi: pcie: fix byte count table for some devices
+Date: Mon, 15 Sep 2025 10:30:52 +0300
+Message-Id: <20250915102743.777aaafbcc6c.I84404edfdfbf400501f6fb06def5b86c501da198@changeid>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTKEXHMBS06.realtek.com.tw (10.21.1.56)
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-For chips that supports TKIP HW encryption and decryption, enable TKIP
-cipher for WoWLAN feature. Additionally, the TX MIC KEY and RX MIC KEY is
-opposite in FW. Therefore, reverse the MIC KEY direction in H2C format,
-and also reverse it from AOAC report before reporting to mac80211.
+In my previous fix for this condition, I erroneously listed 9000
+instead of 7000 family, when 7000/8000 were already using iwlmvm.
+Thus the condition ended up wrong, causing the issue I had fixed
+for older devices to suddenly appear on 7000/8000 family devices.
+Correct the condition accordingly.
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Reported-by: David Wang <00107082@163.com>
+Closes: https://lore.kernel.org/r/20250909165811.10729-1-00107082@163.com/
+Fixes: 586e3cb33ba6 ("wifi: iwlwifi: fix byte count table for old devices")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h |  2 +-
- drivers/net/wireless/realtek/rtw89/fw.c   |  5 +-
- drivers/net/wireless/realtek/rtw89/wow.c  | 79 ++++++++++++++++++-----
- drivers/net/wireless/realtek/rtw89/wow.h  |  6 ++
- 4 files changed, 74 insertions(+), 18 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 8408d5d8d42d..3d4ad2ffb75c 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -5771,8 +5771,8 @@ struct rtw89_wow_gtk_info {
- 	u8 kck[32];
- 	u8 kek[32];
- 	u8 tk1[16];
--	u8 txmickey[8];
- 	u8 rxmickey[8];
-+	u8 txmickey[8];
- 	__le32 igtk_keyid;
- 	__le64 ipn;
- 	u8 igtk[2][32];
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 2273dae8434a..ab904a7def1b 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -8726,9 +8726,10 @@ int rtw89_fw_h2c_wow_gtk_ofld(struct rtw89_dev *rtwdev,
- 			goto fail;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/tx.c
+index d912e709a92c..bb03dad4a300 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/tx.c
+@@ -2092,7 +2092,7 @@ static void iwl_txq_gen1_update_byte_cnt_tbl(struct iwl_trans *trans,
+ 		break;
  	}
  
--	/* not support TKIP yet */
- 	h2c->w0 = le32_encode_bits(enable, RTW89_H2C_WOW_GTK_OFLD_W0_EN) |
--		  le32_encode_bits(0, RTW89_H2C_WOW_GTK_OFLD_W0_TKIP_EN) |
-+		  le32_encode_bits(!!memchr_inv(gtk_info->txmickey, 0,
-+						sizeof(gtk_info->txmickey)),
-+				   RTW89_H2C_WOW_GTK_OFLD_W0_TKIP_EN) |
- 		  le32_encode_bits(gtk_info->igtk_keyid ? 1 : 0,
- 				   RTW89_H2C_WOW_GTK_OFLD_W0_IEEE80211W_EN) |
- 		  le32_encode_bits(macid, RTW89_H2C_WOW_GTK_OFLD_W0_MAC_ID) |
-diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index 5bb7c1a42f1d..5faa51ad896a 100644
---- a/drivers/net/wireless/realtek/rtw89/wow.c
-+++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -99,13 +99,26 @@ static int rtw89_rx_pn_to_iv(struct rtw89_dev *rtwdev,
+-	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_9000 &&
++	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_7000 &&
+ 	    trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
+ 		len = DIV_ROUND_UP(len, 4);
  
- 	ieee80211_get_key_rx_seq(key, 0, &seq);
- 
--	/* seq.ccmp.pn[] is BE order array */
--	pn = u64_encode_bits(seq.ccmp.pn[0], RTW89_KEY_PN_5) |
--	     u64_encode_bits(seq.ccmp.pn[1], RTW89_KEY_PN_4) |
--	     u64_encode_bits(seq.ccmp.pn[2], RTW89_KEY_PN_3) |
--	     u64_encode_bits(seq.ccmp.pn[3], RTW89_KEY_PN_2) |
--	     u64_encode_bits(seq.ccmp.pn[4], RTW89_KEY_PN_1) |
--	     u64_encode_bits(seq.ccmp.pn[5], RTW89_KEY_PN_0);
-+	switch (key->cipher) {
-+	case WLAN_CIPHER_SUITE_TKIP:
-+		pn = u64_encode_bits(seq.tkip.iv32, RTW89_KEY_TKIP_PN_IV32) |
-+		     u64_encode_bits(seq.tkip.iv16, RTW89_KEY_TKIP_PN_IV16);
-+		break;
-+	case WLAN_CIPHER_SUITE_CCMP:
-+	case WLAN_CIPHER_SUITE_GCMP:
-+	case WLAN_CIPHER_SUITE_CCMP_256:
-+	case WLAN_CIPHER_SUITE_GCMP_256:
-+		/* seq.ccmp.pn[] is BE order array */
-+		pn = u64_encode_bits(seq.ccmp.pn[0], RTW89_KEY_PN_5) |
-+		     u64_encode_bits(seq.ccmp.pn[1], RTW89_KEY_PN_4) |
-+		     u64_encode_bits(seq.ccmp.pn[2], RTW89_KEY_PN_3) |
-+		     u64_encode_bits(seq.ccmp.pn[3], RTW89_KEY_PN_2) |
-+		     u64_encode_bits(seq.ccmp.pn[4], RTW89_KEY_PN_1) |
-+		     u64_encode_bits(seq.ccmp.pn[5], RTW89_KEY_PN_0);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
- 
- 	err = _pn_to_iv(rtwdev, key, iv, pn, key->keyidx);
- 	if (err)
-@@ -177,13 +190,26 @@ static int rtw89_rx_iv_to_pn(struct rtw89_dev *rtwdev,
- 	if (err)
- 		return err;
- 
--	/* seq.ccmp.pn[] is BE order array */
--	seq.ccmp.pn[0] = u64_get_bits(pn, RTW89_KEY_PN_5);
--	seq.ccmp.pn[1] = u64_get_bits(pn, RTW89_KEY_PN_4);
--	seq.ccmp.pn[2] = u64_get_bits(pn, RTW89_KEY_PN_3);
--	seq.ccmp.pn[3] = u64_get_bits(pn, RTW89_KEY_PN_2);
--	seq.ccmp.pn[4] = u64_get_bits(pn, RTW89_KEY_PN_1);
--	seq.ccmp.pn[5] = u64_get_bits(pn, RTW89_KEY_PN_0);
-+	switch (key->cipher) {
-+	case WLAN_CIPHER_SUITE_TKIP:
-+		seq.tkip.iv32 = u64_get_bits(pn, RTW89_KEY_TKIP_PN_IV32);
-+		seq.tkip.iv16 = u64_get_bits(pn, RTW89_KEY_TKIP_PN_IV16);
-+		break;
-+	case WLAN_CIPHER_SUITE_CCMP:
-+	case WLAN_CIPHER_SUITE_GCMP:
-+	case WLAN_CIPHER_SUITE_CCMP_256:
-+	case WLAN_CIPHER_SUITE_GCMP_256:
-+		/* seq.ccmp.pn[] is BE order array */
-+		seq.ccmp.pn[0] = u64_get_bits(pn, RTW89_KEY_PN_5);
-+		seq.ccmp.pn[1] = u64_get_bits(pn, RTW89_KEY_PN_4);
-+		seq.ccmp.pn[2] = u64_get_bits(pn, RTW89_KEY_PN_3);
-+		seq.ccmp.pn[3] = u64_get_bits(pn, RTW89_KEY_PN_2);
-+		seq.ccmp.pn[4] = u64_get_bits(pn, RTW89_KEY_PN_1);
-+		seq.ccmp.pn[5] = u64_get_bits(pn, RTW89_KEY_PN_0);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
- 
- 	ieee80211_set_key_rx_seq(key, 0, &seq);
- 	rtw89_debug(rtwdev, RTW89_DBG_WOW, "%s key %d iv-%*ph to pn-%*ph\n",
-@@ -285,6 +311,11 @@ static void rtw89_wow_get_key_info_iter(struct ieee80211_hw *hw,
- 
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_TKIP:
-+		if (sta)
-+			memcpy(gtk_info->txmickey,
-+			       key->key + NL80211_TKIP_DATA_OFFSET_TX_MIC_KEY,
-+			       sizeof(gtk_info->txmickey));
-+		fallthrough;
- 	case WLAN_CIPHER_SUITE_CCMP:
- 	case WLAN_CIPHER_SUITE_GCMP:
- 	case WLAN_CIPHER_SUITE_CCMP_256:
-@@ -348,10 +379,27 @@ static void rtw89_wow_set_key_info_iter(struct ieee80211_hw *hw,
- 	struct rtw89_wow_aoac_report *aoac_rpt = &rtw_wow->aoac_rpt;
- 	struct rtw89_set_key_info_iter_data *iter_data = data;
- 	bool update_tx_key_info = iter_data->rx_ready;
-+	u8 tmp[RTW89_MIC_KEY_LEN];
- 	int ret;
- 
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_TKIP:
-+		/*
-+		 * TX MIC KEY and RX MIC KEY is oppsite in FW,
-+		 * need to swap it before sending to mac80211.
-+		 */
-+		if (!sta && update_tx_key_info && aoac_rpt->rekey_ok &&
-+		    !iter_data->tkip_gtk_swapped) {
-+			memcpy(tmp, &aoac_rpt->gtk[NL80211_TKIP_DATA_OFFSET_TX_MIC_KEY],
-+			       RTW89_MIC_KEY_LEN);
-+			memcpy(&aoac_rpt->gtk[NL80211_TKIP_DATA_OFFSET_TX_MIC_KEY],
-+			       &aoac_rpt->gtk[NL80211_TKIP_DATA_OFFSET_RX_MIC_KEY],
-+			       RTW89_MIC_KEY_LEN);
-+			memcpy(&aoac_rpt->gtk[NL80211_TKIP_DATA_OFFSET_RX_MIC_KEY],
-+			       tmp, RTW89_MIC_KEY_LEN);
-+			iter_data->tkip_gtk_swapped = true;
-+		}
-+		fallthrough;
- 	case WLAN_CIPHER_SUITE_CCMP:
- 	case WLAN_CIPHER_SUITE_GCMP:
- 	case WLAN_CIPHER_SUITE_CCMP_256:
-@@ -642,7 +690,8 @@ static void rtw89_wow_update_key_info(struct rtw89_dev *rtwdev, bool rx_ready)
- 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
- 	struct rtw89_wow_aoac_report *aoac_rpt = &rtw_wow->aoac_rpt;
- 	struct rtw89_set_key_info_iter_data data = {.error = false,
--						    .rx_ready = rx_ready};
-+						    .rx_ready = rx_ready,
-+						    .tkip_gtk_swapped = false};
- 	struct ieee80211_bss_conf *bss_conf;
- 	struct ieee80211_key_conf *key;
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/wow.h b/drivers/net/wireless/realtek/rtw89/wow.h
-index 6606528d31c7..d2ba6cebc2a6 100644
---- a/drivers/net/wireless/realtek/rtw89/wow.h
-+++ b/drivers/net/wireless/realtek/rtw89/wow.h
-@@ -5,6 +5,9 @@
- #ifndef __RTW89_WOW_H__
- #define __RTW89_WOW_H__
- 
-+#define RTW89_KEY_TKIP_PN_IV16 GENMASK_ULL(15, 0)
-+#define RTW89_KEY_TKIP_PN_IV32 GENMASK_ULL(47, 16)
-+
- #define RTW89_KEY_PN_0 GENMASK_ULL(7, 0)
- #define RTW89_KEY_PN_1 GENMASK_ULL(15, 8)
- #define RTW89_KEY_PN_2 GENMASK_ULL(23, 16)
-@@ -25,6 +28,8 @@
- #define RTW89_WOW_SYMBOL_CHK_PTK BIT(0)
- #define RTW89_WOW_SYMBOL_CHK_GTK BIT(1)
- 
-+#define RTW89_MIC_KEY_LEN 8
-+
- enum rtw89_wake_reason {
- 	RTW89_WOW_RSN_RX_PTK_REKEY = 0x1,
- 	RTW89_WOW_RSN_RX_GTK_REKEY = 0x2,
-@@ -73,6 +78,7 @@ struct rtw89_set_key_info_iter_data {
- 	u32 igtk_cipher;
- 	bool rx_ready;
- 	bool error;
-+	bool tkip_gtk_swapped;
- };
- 
- static inline int rtw89_wow_get_sec_hdr_len(struct rtw89_dev *rtwdev)
 -- 
-2.25.1
+2.34.1
 
 
