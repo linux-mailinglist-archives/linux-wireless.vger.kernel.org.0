@@ -1,150 +1,151 @@
-Return-Path: <linux-wireless+bounces-27325-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27326-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EBCB57509
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 11:40:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8411B57731
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 12:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 865E23A5857
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 09:40:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 432F5169E4A
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 10:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E632F83D8;
-	Mon, 15 Sep 2025 09:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90082FF66C;
+	Mon, 15 Sep 2025 10:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="WeLcL0r/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dsm1gepW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A962F549F;
-	Mon, 15 Sep 2025 09:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6E72FF661
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 10:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757929227; cv=none; b=q+kM9HPOo2zVv5TOlRtL7KeKJiwYgEDwze/RtcQQSg4aF6Wln5VXm3eqrhHkiHFNGp0niSRefL8jn9uAOZShDlaJPZIIHHhoh7QuL4BnFXhW2nwWCZYix5ZqczFmnm6QOi/+O5eMbsjZaM/RE2nJ1QrXezu5Z9/Na3J2hDsJBqk=
+	t=1757933434; cv=none; b=LvDDJnpBe2sVvW45RIrdE4QCAustfYb7SG0o5/aQOaGFb3OpKW6bMrOisS4tkNdB2+3uNSm1XdRaSKTkFb7KF4Uf+cEZGn2vH+1d/aqLrEPTg0sOzp6VSS4Oap3VOQ2G0bFe0qpAUUDOl9LHWs6pv4xbrkklIJQKLrvqhi0cUA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757929227; c=relaxed/simple;
-	bh=Hmjdd1ChV+8SxQHGRgNWtZrCpwmOz+pQ5vs7rwQviJU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=re0GfjRppEWZQm81SoHj8Ew7UJXZaSd0qHw6Z0dFdBk9Fipui68vviApoAzuUgnh0P4hBCJKBW9fbG/Pixa06GE6RjM/8XwAsBWeY8of+quW7WPH7hcriiWWPzW6Sc8qOLslBhXHtKowiX/T2mGln8Lsn0Q/vcOMG7SO5W9fkAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=WeLcL0r/; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id BDAE11C006D; Mon, 15 Sep 2025 11:32:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1757928722;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nIME8cdz06LUslw529zpHp//o40yXRj8V4ARH29l+OM=;
-	b=WeLcL0r/wOESE22lzdL0T0iZSsoHeDCHNeQkagRYaZG10PxOeBZZ5bDcSKYh7v5oiJUYVs
-	QTedepsGbIkdFGSOmSM9atufwcdbyRMPCa2eSR7XjcfGQ5NOs74IPHr3tcdFoqylhLeadu
-	yXWzOmB+VkYwx6xEASZnw0ojDCuRAI4=
-Date: Mon, 15 Sep 2025 11:32:02 +0200
-From: Pavel Machek <pavel@ucw.cz>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: kernel list <linux-kernel@vger.kernel.org>, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, peterz@infradead.org,
-	will@kernel.org, longman@redhat.com,
-	miriam.rachel.korenblit@intel.com, linux-wireless@vger.kernel.org
-Subject: Re: locking problems in iwlwifi? was Re: 6.16-rcX: crashing way too
- often on thinkpad X220
-Message-ID: <aMfdEk6Cw6EFt+/l@duo.ucw.cz>
-References: <aH/L1PCwtwe8Y1+a@duo.ucw.cz>
- <aID6XPLXuGo+ViTm@duo.ucw.cz>
- <aIEC4t2EICdgomZV@duo.ucw.cz>
- <c5c06a93845f72b40c6df82fcbc89d3163a01d8b.camel@sipsolutions.net>
+	s=arc-20240116; t=1757933434; c=relaxed/simple;
+	bh=kARumPxqfmMMWgp1NvnsY+8lw/OMkVWPKeLFtKSIlME=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KIilW2HGcbFcEuUhOfaG9zJ1etuUqh7hkPv31S8Boly560ON5dicYUsYbDA7q1WPPUuZSXlYBddW80po8NfDVzZzqye6mPZIuvSRG/bRttA/oyxWxL9MsvDPFYy51CeFzXyxoQ7aFzTPMdepcq5XwnPoV5zYgpFLKTkX65Leu54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dsm1gepW; arc=none smtp.client-ip=74.125.224.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-62adfdda606so985267d50.2
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 03:50:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757933430; x=1758538230; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=a3UAx19vK1YiNrAi97n0gU/rRiRg+M8i65mS2Lnx+jM=;
+        b=dsm1gepW+64GUvS7kMWqaTSMnvOb4DE2XTTvWEeHN+RE/+11IMxt7/VT5nrAsrozPj
+         LjW2VVhrxJupJV9qXK3qo8acFznWW8EUfnwnoI4vzGcKbj1UMmf+bhA1qOvMvaSEpSri
+         JxWMtmdA/Sij1xAwa/AkWOoJWA5FL9LcqfNjqBUys25YDzn55KJIvJEGu+5RMQH+vPpr
+         P8UCDM4suEIwAfOvYk3SwbegH35M/X9YI1gUIk0XqsFMHy+ZES0t8yI4pLpuClLxwNQX
+         aI3en3/nuAnC9ZoXdtEoEmEg9DHc2ZK9SllMJGfkcANMbMEBs5t6ih8A2jNMaQ6iEEy7
+         zv+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757933430; x=1758538230;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a3UAx19vK1YiNrAi97n0gU/rRiRg+M8i65mS2Lnx+jM=;
+        b=Vos3FasD7/KRGfPPu2QfCWXfYsl1hCrpHFrUY7RwISALOeIKuW40HTosrUSeEdnU2z
+         SqPXX963yAuMqmDXN9861C14WHixAwRWFT1HG4qWgLAVcz9T3hMuQZf1iNr0S0WEDCzo
+         2oaRQyGGB1YHSnpI2Q0APJLCHt3OTLC9H/yRtGqSAxgAjzPNQAtMTyKJ+2tbQ5a1sD+s
+         BARtfpTJFNVyrnt4tBvj0HS+HBYULADBlA8158Gi+tY6L/1rx8+v7NMZAmjxtC6iiAI7
+         Pq5eB6Hc2WZ8V3BJKIr9qoq22H92oMJmHFB3Dq4FlmxlaEKiSTC1S5zGFwP6TQwbA0Fr
+         A3uQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCh/UZJP4e1XTR29uHvxjAtzytFX9djvLkwfO4R4B4UfjM6OPI+f5qWdxbOUREEaBtZsmNOKLeWp8krz1Kcw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxugsqj34ZuV1XExuaL0P7KHOEoeHss2YyymmTT8G+9HlTQyV+g
+	qn+tUPpZCd+B+9CxEy/XSv0klMQXn/WBI/hnVzJwHV9WoIuI4jVyMHG+UFmtPqDNklf+SQL8jhZ
+	oK+S0wdSjsYCKnoJy/EPrrmvEWB6poPcC5XJJEUaqZA==
+X-Gm-Gg: ASbGncuoMDSiK2TukgGvpA646rUlReWXyKajNyGoqjqTdXW+pzizPVvy/ciXQmIkg3a
+	8sMgNz0HXRZIzVxnkLoz8PPchBZ5rxxjfTAL2oVVgf8bCKtky9nsFb4Ng894HLTIl+tKOqG7Ogs
+	gtgUn4f7dQgPPCk2jSaDvFu3+go9cTC+Ji9vVmPWjd6jT7PvwdP8AmGpj3SckD+5HcmG4ue3s12
+	xmhNQdkW1kI4oESXgU=
+X-Google-Smtp-Source: AGHT+IGDEYgOKM3gJ8Zzlityz/syLNE9FRvDAqAmupyu9aSeveyvR7FHQhtEilEP6qYlMPKL0ImuzwqqE0dGUhFDiNI=
+X-Received: by 2002:a05:690c:3706:b0:722:7d35:e0c2 with SMTP id
+ 00721157ae682-730626d2dd2mr106799857b3.2.1757933429679; Mon, 15 Sep 2025
+ 03:50:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CcqJqSEzx53JM7Gd"
-Content-Disposition: inline
-In-Reply-To: <c5c06a93845f72b40c6df82fcbc89d3163a01d8b.camel@sipsolutions.net>
+References: <20250828-dt-apple-t6020-v1-0-507ba4c4b98e@jannau.net> <20250828-dt-apple-t6020-v1-3-507ba4c4b98e@jannau.net>
+In-Reply-To: <20250828-dt-apple-t6020-v1-3-507ba4c4b98e@jannau.net>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 15 Sep 2025 12:49:53 +0200
+X-Gm-Features: Ac12FXxZCAZGblY8VwFHa1GJ1rGV08p3Fv5KI-OAzvQkX2G4ZDMKiAukPP3wanY
+Message-ID: <CAPDyKFr9dAvP7U3dZ_LFw8YxcvJ6n95OKKLYpntUarqdfUqjWQ@mail.gmail.com>
+Subject: Re: [PATCH 03/37] pmdomain: apple: Add "apple,t8103-pmgr-pwrstate"
+To: Janne Grunau <j@jannau.net>
+Cc: Sven Peter <sven@kernel.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, Neal Gompa <neal@gompa.dev>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Hector Martin <marcan@marcan.st>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Mark Kettenis <kettenis@openbsd.org>, 
+	Andi Shyti <andi.shyti@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Sasha Finkelstein <fnkl.kernel@gmail.com>, Marcel Holtmann <marcel@holtmann.org>, 
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	van Spriel <arend@broadcom.com>, Lee Jones <lee@kernel.org>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, Wim Van Sebroeck <wim@linux-watchdog.org>, 
+	Guenter Roeck <linux@roeck-us.net>, Michael Turquette <mturquette@baylibre.com>, 
+	=?UTF-8?Q?Martin_Povi=C5=A1er?= <povik+lin@cutebit.org>, 
+	Vinod Koul <vkoul@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>, Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, asahi@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-bluetooth@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org, 
+	dmaengine@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-nvme@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
+On Thu, 28 Aug 2025 at 16:01, Janne Grunau <j@jannau.net> wrote:
+>
+> After discussion with the devicetree maintainers we agreed to not extend
+> lists with the generic compatible "apple,pmgr-pwrstate" anymore [1]. Use
+> "apple,t8103-pmgr-pwrstate" as base compatible as it is the SoC the
+> driver and bindings were written for.
+>
+> [1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
+>
+> Signed-off-by: Janne Grunau <j@jannau.net>
 
---CcqJqSEzx53JM7Gd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-Hi!
+Kind regards
+Uffe
 
-> > [  402.125635] ------------[ cut here ]------------
-> > [  402.125638] raw_local_irq_restore() called with IRQs enabled
-> > [  402.125645] WARNING: CPU: 3 PID: 387 at kernel/locking/irqflag-debug=
-=2Ec:10 warn_bogus_irq_restore+0x25/0x30
-> > [  402.125654] Modules linked in:
-> > [  402.125661] CPU: 3 UID: 0 PID: 387 Comm: kworker/u16:5 Tainted: G S =
-                 6.16.0-rc7+ #303 PREEMPT(voluntary)=20
-> > [  402.125667] Tainted: [S]=3DCPU_OUT_OF_SPEC
-> > [  402.125668] Hardware name: LENOVO 4291W3B/4291W3B, BIOS 8DET73WW (1.=
-43 ) 10/12/2016
-> > [  402.125671] Workqueue: events_unbound cfg80211_wiphy_work
-> > [  402.125678] RIP: 0010:warn_bogus_irq_restore+0x25/0x30
-> > [  402.125683] Code: 90 90 90 90 90 80 3d 51 3d dc 00 00 74 05 c3 cc cc=
- cc cc 55 48 c7 c7 c0 4f c9 85 48 89 e5 c6 05 38 3d dc 00 01 e8 9b d8 e6 fe=
- <0f> 0b 5d c3 cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90
-> > [  402.125686] RSP: 0018:ffffc9000173fb30 EFLAGS: 00010282
-> > [  402.125691] RAX: 0000000000000000 RBX: ffffffff8616b460 RCX: 0000000=
-000000000
-> > [  402.125694] RDX: 0000000000000003 RSI: 0000000000000027 RDI: 0000000=
-0ffffffff
-> > [  402.125696] RBP: ffffc9000173fb30 R08: 0000000028935f32 R09: 0000000=
-000000001
-> > [  402.125699] R10: 0000000000000044 R11: ffff888100ba52c8 R12: 0000000=
-000000001
-> > [  402.125702] R13: ffffc9000173fbcb R14: ffffffff84301224 R15: 0000000=
-000000000
-> > [  402.125704] FS:  0000000000000000(0000) GS:ffff88829007f000(0000) kn=
-lGS:0000000000000000
-> > [  402.125707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [  402.125710] CR2: 000055967d471ee0 CR3: 0000000006046001 CR4: 0000000=
-0000606b0
-> > [  402.125713] Call Trace:
-> > [  402.125716]  <TASK>
-> > [  402.125719]  console_flush_all+0x41e/0x460
-> > [  402.125725]  ? console_flush_all+0x43/0x460
-> > [  402.125735]  console_unlock+0x55/0x100
-> > [  402.125741]  vprintk_emit+0x157/0x320
-> > [  402.125748]  vprintk_default+0x18/0x20
-> > [  402.125752]  vprintk+0x9/0x10
-> > [  402.125756]  _printk+0x52/0x70
-> > [  402.125766]  ieee80211_sta_rx_queued_mgmt+0x4c8/0xd30
-> > [  402.125775]  ? __this_cpu_preempt_check+0x13/0x20
-> > [  402.125784]  ieee80211_iface_work+0x3ad/0x500
->=20
-> That's not great, but I don't see how the driver or wifi subsystem is
-> involved ... ieee80211_sta_rx_queued_mgmt() doesn't even use spinlocks
-> let alone disable IRQs or use raw_ APIs, and it's in the middle of
-> printk anyway.
->=20
-> No idea what might be going on here, sorry.
-
-For the record, problem was eventually traced to intel wifi driver bug
-in bugzilla, and at least experimental patch exist fixing it.
-
-Best regards,
-								Pavel
---=20
-I don't work for Nazis and criminals, and neither should you.
-Boycott Putin, Trump, Netanyahu and Musk!
-
---CcqJqSEzx53JM7Gd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaMfdEgAKCRAw5/Bqldv6
-8ovgAKCPjHJcOnb4T7bj/oFpRfr3ZByhzACcDbNIfOo86i/Wf6MvGZ8mxAhftmc=
-=9DKh
------END PGP SIGNATURE-----
-
---CcqJqSEzx53JM7Gd--
+> ---
+>  drivers/pmdomain/apple/pmgr-pwrstate.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/pmdomain/apple/pmgr-pwrstate.c b/drivers/pmdomain/apple/pmgr-pwrstate.c
+> index 9467235110f4654e00ab96c25e160e125ef0f3e5..82c33cf727a825d2536644d2fe09c0282acd1ef8 100644
+> --- a/drivers/pmdomain/apple/pmgr-pwrstate.c
+> +++ b/drivers/pmdomain/apple/pmgr-pwrstate.c
+> @@ -306,6 +306,7 @@ static int apple_pmgr_ps_probe(struct platform_device *pdev)
+>  }
+>
+>  static const struct of_device_id apple_pmgr_ps_of_match[] = {
+> +       { .compatible = "apple,t8103-pmgr-pwrstate" },
+>         { .compatible = "apple,pmgr-pwrstate" },
+>         {}
+>  };
+>
+> --
+> 2.51.0
+>
 
