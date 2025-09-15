@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-27322-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27323-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62A0B57310
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 10:35:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB0EB57311
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 10:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6FAC7A9859
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 08:34:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 025FF189D8DD
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 08:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438A22EF662;
-	Mon, 15 Sep 2025 08:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D052F0693;
+	Mon, 15 Sep 2025 08:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CEt2rZl5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UiQO6YpL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48B92F0692
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 08:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47662EF677
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 08:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757925318; cv=none; b=XOO+Aei7vIxCWKYiChZjaeiecwZIKNtYAUsE/i98N4wGwVR8yoNqAK+MtKuJsXqg42PqN4s5sQnY4JGY7dgH+z0n4+ig4I621/gYgShBYEN/rUi9GI00jsVN/EPN/vwAdOZVfSu0sNSfbZo8iGIHVzwDyr4kO3PoOszH2d92YKs=
+	t=1757925319; cv=none; b=lYtp6TUnzVyuXfJp91HpwJkqmGkSkz/M/jUAy/+WfNV/ohV5P3zJ6cwIVKAYl60aSVB4f5ACoL31v4Pl64D7A9z1iizjiDpq6SwMZrPYyDJxHWyrIc/uAOsrU+FuXP4Q+25LJ/dJmfw49HwtcliN+JGbrpzLAFfW/mvrVzppJl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757925318; c=relaxed/simple;
-	bh=AzQldFAki2Ux5dOHbcoGdMfwzsRw1ZENQOj35rTHN6A=;
+	s=arc-20240116; t=1757925319; c=relaxed/simple;
+	bh=+6JYyvmv+V3UrMiNlzYxGrwWL15vGp7lLc75Dkiuok0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u+ExcWiDyaEHkEwyxJDGm2UZLeO31FpKuMSHHmQZqX1RyfdFfShN+lbg0+o4+b2Gpq82++rKji/JhEE2dECx5Fq9gnNU3qf+1DNNjFe6h6e4jvxuo3Xwuduv20JNQGemDXSO7a9Ik/D0GjxI54Zby170xuDTfjwEmFIJ1hy3xZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CEt2rZl5; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=Sc1WEtLCEu3OwAjshYlHGdZEUZ5v2lmWuPOKIjUuYzPlCIwE/Ftry/F0xUxz5szIY2TKx8e0xYSQq2yzJ0KnQ6Br1OSD4b6xNtyV7GBuDNeSlVR7u4DVYB8jxvb6A/bezzOHhknLYPtHQRtT0xilKOJpGr+RHAMbSZlGBFJ8G5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UiQO6YpL; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757925317; x=1789461317;
+  t=1757925318; x=1789461318;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AzQldFAki2Ux5dOHbcoGdMfwzsRw1ZENQOj35rTHN6A=;
-  b=CEt2rZl5yC8si5D3SfqqNtyHNBEQO11vx/jy1o2jdUzzG7CytbEYbFOf
-   Kw87LM/xSZJxQZ5b/9wBcZIyOpn2xthf16h5d0nVyknPg5wi+VKP2PuKE
-   pT6VN6j7rX6h10Ye2S/fhWGDQ2vG6kYCukNpCUoGWI/KhaG9RUUhH0z34
-   xUlBXVnF7if+OB/JNZWQZxC591hhSI4oXbTagjMylHbSyq90NRhrrWY/F
-   oyqLorsfALE8GSC8HP6/w9AxcYLFXicKOfJ8nmHF/n5P4ITtVdL2l3Rvw
-   /HvXlZ/Ixy1nYeDaH8U6naK4x/7mQpDHaU0VYkHoQLRwQdO17XeM2kwe2
-   w==;
-X-CSE-ConnectionGUID: Y1s1+8gTQfuj5EFbvX/DTw==
-X-CSE-MsgGUID: FL8uMqkBST6RB4mABPsxcw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11553"; a="59213086"
+  bh=+6JYyvmv+V3UrMiNlzYxGrwWL15vGp7lLc75Dkiuok0=;
+  b=UiQO6YpLqD7vO4eclG1DEwkQMTZXJxfrQQKqbsMonBgZwf35Y1JuB6OY
+   hY3w7pBrHIWYUXyR3PMNKdqRSNzyBFArRFiHWlL7n/6QRjjSM+k2altyV
+   lQkQR6boMz3HEiBs82vN0ONn79zx+nRB4i99XXIrzxl4l1iaslajuGLLV
+   oxb0PkbmOE7QmoFv2qYOjv29GtCeu3uPWPhUMz+eS0n6zMdFLdGxbZb5R
+   DBdz67QGkfCDtl3KU2rTG3tUBMbotnc0vSvnCCEB4dfsfCSNXGeppCqQX
+   djiNWD+gSddY3hUs8YSER6J0f9l5CzhyNivUqxss1QpQ1gE+yU7ck/c8b
+   Q==;
+X-CSE-ConnectionGUID: 5lpml5EMTH6H8d3vFoKI3w==
+X-CSE-MsgGUID: lTpmgxhURxqBT+f6bxcH+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11553"; a="59213088"
 X-IronPort-AV: E=Sophos;i="6.18,265,1751266800"; 
-   d="scan'208";a="59213086"
+   d="scan'208";a="59213088"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 01:35:14 -0700
-X-CSE-ConnectionGUID: BImM0faTTYSRfZH0k+nrUQ==
-X-CSE-MsgGUID: aBCEgNLBQ36H38VOIAbmCg==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 01:35:15 -0700
+X-CSE-ConnectionGUID: wNLUPFkxT12FBhGHG7X3XQ==
+X-CSE-MsgGUID: VaDZtMIASVqYBdkgGSRktw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,265,1751266800"; 
-   d="scan'208";a="178569909"
+   d="scan'208";a="178569914"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 01:35:13 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 01:35:14 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-next 10/11] wifi: iwlwifi: mld: support get/set_antenna
-Date: Mon, 15 Sep 2025 11:34:31 +0300
-Message-Id: <20250915113137.5a45baf9513c.I5912e6b6d9a9ae6530d0ac45e9517d07f98b8d05@changeid>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH iwlwifi-next 11/11] wifi: iwlwifi: mld: set wiphy::iftype_ext_capab dynamically
+Date: Mon, 15 Sep 2025 11:34:32 +0300
+Message-Id: <20250915113137.b3c03b56d5a3.I38eaf8ebaf3256e78b4643bef7e3a54aeb4989df@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250915083432.1048608-1-miriam.rachel.korenblit@intel.com>
 References: <20250915083432.1048608-1-miriam.rachel.korenblit@intel.com>
@@ -76,117 +76,146 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Instead of having a static const array for each possible combination of
+features, build the extended capabilities dynamically.
 
-This allows to set the antennas from user space.
+With this we will also stop setting EHT capabilities when it might
+actually be disabled.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mld/mac80211.c | 34 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mld/mld.h  | 11 ++++++
- 2 files changed, 45 insertions(+)
+ .../wireless/intel/iwlwifi/mld/constants.h    |  2 +
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c | 63 ++++++++++---------
+ drivers/net/wireless/intel/iwlwifi/mld/mld.h  |  4 ++
+ 3 files changed, 39 insertions(+), 30 deletions(-)
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/constants.h b/drivers/net/wireless/intel/iwlwifi/mld/constants.h
+index 49accf96f44b..5d23a618ae3c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/constants.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/constants.h
+@@ -75,5 +75,7 @@
+ #define IWL_MLD_FTM_RESP_LMR_FEEDBACK_SUPPORT	true
+ #define IWL_MLD_FTM_NON_TB_MIN_TIME_BETWEEN_MSR	7
+ #define IWL_MLD_FTM_NON_TB_MAX_TIME_BETWEEN_MSR	1000
++#define IWL_MLD_STA_EXT_CAPA_SIZE		9
++#define IWL_MLD_EXT_CAPA_NUM_IFTYPES		1
+ 
+ #endif /* __iwl_mld_constants_h__ */
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index 5725104a53bf..98d47fed8421 100644
+index 98d47fed8421..5323c73ac827 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -23,6 +23,7 @@
- #include "roc.h"
- #include "mlo.h"
- #include "stats.h"
-+#include "iwl-nvm-parse.h"
- #include "ftm-initiator.h"
- #include "low_latency.h"
- #include "fw/api/scan.h"
-@@ -2591,11 +2592,44 @@ iwl_mld_can_neg_ttlm(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	return NEG_TTLM_RES_ACCEPT;
+@@ -76,13 +76,12 @@ iwl_mld_iface_combinations[] = {
+ 	},
+ };
+ 
+-static const u8 if_types_ext_capa_sta[] = {
+-	 [0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
+-	 [2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
+-	 [7] = WLAN_EXT_CAPA8_OPMODE_NOTIF |
+-	       WLAN_EXT_CAPA8_MAX_MSDU_IN_AMSDU_LSB,
+-	 [8] = WLAN_EXT_CAPA9_MAX_MSDU_IN_AMSDU_MSB,
+-	 [9] = WLAN_EXT_CAPA10_TWT_REQUESTER_SUPPORT,
++static const u8 ext_capa_base[IWL_MLD_STA_EXT_CAPA_SIZE] = {
++	[0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
++	[2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
++	[7] = WLAN_EXT_CAPA8_OPMODE_NOTIF |
++	      WLAN_EXT_CAPA8_MAX_MSDU_IN_AMSDU_LSB,
++	[8] = WLAN_EXT_CAPA9_MAX_MSDU_IN_AMSDU_MSB,
+ };
+ 
+ #define IWL_MLD_EMLSR_CAPA	(IEEE80211_EML_CAP_EMLSR_SUPP | \
+@@ -95,18 +94,6 @@ static const u8 if_types_ext_capa_sta[] = {
+ 			IEEE80211_MLD_CAP_OP_TID_TO_LINK_MAP_NEG_SUPP_SAME) | \
+ 			IEEE80211_MLD_CAP_OP_LINK_RECONF_SUPPORT)
+ 
+-static const struct wiphy_iftype_ext_capab iftypes_ext_capa[] = {
+-	{
+-		.iftype = NL80211_IFTYPE_STATION,
+-		.extended_capabilities = if_types_ext_capa_sta,
+-		.extended_capabilities_mask = if_types_ext_capa_sta,
+-		.extended_capabilities_len = sizeof(if_types_ext_capa_sta),
+-		/* relevant only if EHT is supported */
+-		.eml_capabilities = IWL_MLD_EMLSR_CAPA,
+-		.mld_capa_and_ops = IWL_MLD_CAPA_OPS,
+-	},
+-};
+-
+ static void iwl_mld_hw_set_addresses(struct iwl_mld *mld)
+ {
+ 	struct wiphy *wiphy = mld->wiphy;
+@@ -336,21 +323,37 @@ static void iwl_mac_hw_set_wiphy(struct iwl_mld *mld)
+ 	if (fw_has_capa(ucode_capa, IWL_UCODE_TLV_CAPA_PROTECTED_TWT))
+ 		wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_PROTECTED_TWT);
+ 
+-	wiphy->iftype_ext_capab = NULL;
+-	wiphy->num_iftype_ext_capab = 0;
+-
+-	if (!iwlwifi_mod_params.disable_11ax) {
+-		wiphy->iftype_ext_capab = iftypes_ext_capa;
+-		wiphy->num_iftype_ext_capab = ARRAY_SIZE(iftypes_ext_capa);
+-
+-		ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+-		ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
+-	}
+-
+ 	if (iwlmld_mod_params.power_scheme != IWL_POWER_SCHEME_CAM)
+ 		wiphy->flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
+ 	else
+ 		wiphy->flags &= ~WIPHY_FLAG_PS_ON_BY_DEFAULT;
++
++	/* We are done for non-HE */
++	if (iwlwifi_mod_params.disable_11ax)
++		return;
++
++	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
++	ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
++
++	wiphy->iftype_ext_capab = mld->ext_capab;
++	wiphy->num_iftype_ext_capab = ARRAY_SIZE(mld->ext_capab);
++
++	BUILD_BUG_ON(sizeof(mld->sta_ext_capab) < sizeof(ext_capa_base));
++
++	memcpy(mld->sta_ext_capab, ext_capa_base, sizeof(ext_capa_base));
++
++	mld->ext_capab[0].iftype = NL80211_IFTYPE_STATION;
++	mld->ext_capab[0].extended_capabilities = mld->sta_ext_capab;
++	mld->ext_capab[0].extended_capabilities_mask = mld->sta_ext_capab;
++	mld->ext_capab[0].extended_capabilities_len = sizeof(mld->sta_ext_capab);
++
++	if (!mld->nvm_data->sku_cap_11be_enable ||
++	    iwlwifi_mod_params.disable_11be)
++		return;
++
++	mld->ext_capab[0].eml_capabilities = IWL_MLD_EMLSR_CAPA;
++	mld->ext_capab[0].mld_capa_and_ops = IWL_MLD_CAPA_OPS;
++
  }
  
-+static int iwl_mld_get_antenna(struct ieee80211_hw *hw, int radio_idx,
-+			       u32 *tx_ant, u32 *rx_ant)
-+{
-+	struct iwl_mld *mld = IWL_MAC80211_GET_MLD(hw);
-+
-+	*tx_ant = iwl_mld_get_valid_tx_ant(mld);
-+	*rx_ant = iwl_mld_get_valid_rx_ant(mld);
-+
-+	return 0;
-+}
-+
-+static int iwl_mld_set_antenna(struct ieee80211_hw *hw, int radio_idx,
-+			       u32 tx_ant, u32 rx_ant)
-+{
-+	struct iwl_mld *mld = IWL_MAC80211_GET_MLD(hw);
-+
-+	if (WARN_ON(!mld->nvm_data))
-+		return -EBUSY;
-+
-+	/* mac80211 ensures the device is not started,
-+	 * so the firmware cannot be running
-+	 */
-+
-+	mld->set_tx_ant = tx_ant;
-+	mld->set_rx_ant = rx_ant;
-+
-+	iwl_reinit_cab(mld->trans, mld->nvm_data, tx_ant, rx_ant, mld->fw);
-+
-+	return 0;
-+}
-+
- const struct ieee80211_ops iwl_mld_hw_ops = {
- 	.tx = iwl_mld_mac80211_tx,
- 	.start = iwl_mld_mac80211_start,
- 	.stop = iwl_mld_mac80211_stop,
- 	.config = iwl_mld_mac80211_config,
-+	.get_antenna = iwl_mld_get_antenna,
-+	.set_antenna = iwl_mld_set_antenna,
- 	.add_interface = iwl_mld_mac80211_add_interface,
- 	.remove_interface = iwl_mld_mac80211_remove_interface,
- 	.conf_tx = iwl_mld_mac80211_conf_tx,
+ static void iwl_mac_hw_set_misc(struct iwl_mld *mld)
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.h b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
-index 94dc9da6360d..b1d44fdaa61b 100644
+index b1d44fdaa61b..ceda12c1672d 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/mld.h
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.h
-@@ -180,6 +180,8 @@
-  * @mcast_filter_cmd: pointer to the multicast filter command.
-  * @mgmt_tx_ant: stores the last TX antenna index; used for setting
-  *	TX rate_n_flags for non-STA mgmt frames (toggles on every TX failure).
-+ * @set_tx_ant: stores the last TX antenna bitmask set by user space (if any)
-+ * @set_rx_ant: stores the last RX antenna bitmask set by user space (if any)
-  * @fw_rates_ver_3: FW rates are in version 3
-  * @low_latency: low-latency manager.
-  * @tzone: thermal zone device's data
-@@ -279,6 +281,9 @@ struct iwl_mld {
- 
- 	u8 mgmt_tx_ant;
- 
-+	u8 set_tx_ant;
-+	u8 set_rx_ant;
-+
- 	bool fw_rates_ver_3;
- 
- 	struct iwl_mld_low_latency low_latency;
-@@ -374,6 +379,9 @@ static inline u8 iwl_mld_get_valid_tx_ant(const struct iwl_mld *mld)
- 	if (mld->nvm_data && mld->nvm_data->valid_tx_ant)
- 		tx_ant &= mld->nvm_data->valid_tx_ant;
- 
-+	if (mld->set_tx_ant)
-+		tx_ant &= mld->set_tx_ant;
-+
- 	return tx_ant;
- }
- 
-@@ -384,6 +392,9 @@ static inline u8 iwl_mld_get_valid_rx_ant(const struct iwl_mld *mld)
- 	if (mld->nvm_data && mld->nvm_data->valid_rx_ant)
- 		rx_ant &= mld->nvm_data->valid_rx_ant;
- 
-+	if (mld->set_rx_ant)
-+		rx_ant &= mld->set_rx_ant;
-+
- 	return rx_ant;
- }
- 
+@@ -134,6 +134,8 @@
+  * @fw: a pointer to the fw object
+  * @hw: pointer to the hw object.
+  * @wiphy: a pointer to the wiphy struct, for easier access to it.
++ * @ext_capab: extended capabilities that will be set to wiphy on registration.
++ * @sta_ext_capab: extended capabilities for the station interface.
+  * @nvm_data: pointer to the nvm_data that includes all our capabilities
+  * @fwrt: fw runtime data
+  * @debugfs_dir: debugfs directory
+@@ -227,6 +229,8 @@ struct iwl_mld {
+ 	const struct iwl_fw *fw;
+ 	struct ieee80211_hw *hw;
+ 	struct wiphy *wiphy;
++	struct wiphy_iftype_ext_capab ext_capab[IWL_MLD_EXT_CAPA_NUM_IFTYPES];
++	u8 sta_ext_capab[IWL_MLD_STA_EXT_CAPA_SIZE];
+ 	struct iwl_nvm_data *nvm_data;
+ 	struct iwl_fw_runtime fwrt;
+ 	struct dentry *debugfs_dir;
 -- 
 2.34.1
 
