@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-27313-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27314-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EA8B57307
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 10:35:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E593EB57308
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 10:35:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED661642A9
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 08:35:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6A071889508
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 08:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F84E2ECD05;
-	Mon, 15 Sep 2025 08:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6862C2EF65B;
+	Mon, 15 Sep 2025 08:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="II3w4DTi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DC7vusbF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E601B4231
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 08:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7C52EAD05
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 08:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757925304; cv=none; b=qTs8iTe03Dp2UMlryHEkTksXY/ofj+ZwpmbCLBa2i7028xXpanydj2TXrLZJmKWzD0hNbrubXMivwXX+zaSV3CYWAhVTmY1aKlm+IE+IX6nL8G8LsanXuYgSPLwa0mWNpqokHTRGa2JsPEE2WCw4nFz96omtoyjr8NuEXNmCBdI=
+	t=1757925305; cv=none; b=BQkoCV8KMxzuL2gcJdhv91KjR9PLp5BVxUlz1lLkQ0KrgzOkQSuKkGxbsbwQd5HOlVlo9aPJn0RO3RUUaW46yNRxazfuwnW9S6ullrTkQI1+A7TRMocwj/LWgfDjwHz53RMEZaj/8+E0sbXSaaVwwqaL7WSGqPoxx1TAGo4DmFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757925304; c=relaxed/simple;
-	bh=rorM+IJoBTIjNKFpRa17gKrJZZJoMiCxdsTGvgm+z+w=;
+	s=arc-20240116; t=1757925305; c=relaxed/simple;
+	bh=02c5WfOuwVWCr0BsuwIFZLEGy77jH47qvEUis7tHi2c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Md6+Tg5i0mkI00amdlghW8/O2x1kJ2fBQ0UHF5TLwWtA/Xuwn+a82SKn7995PuryLdgGv3ILnARUCcXRcbJYQGvC7MKCqWVZbapK5MihRmUKErkapFMJRs4KzP9y16DvVrQiae6RpmzjqPUK6TQ4Zslx4rPE4wjtga9+uIdEZqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=II3w4DTi; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=ICxP/7IEFtpIfM1/9MmSHnGb9/f1ltyhw04QYg89oYfAUq+2mw1dBeLM6As7O+2hYPbn8amw0DeGxmLTvBBL81nFijbxfUZdXgtnSZLN7xvh+/JmDAkbqsElbUUGXviZFobrhv9Nk16ZKbKVsKKih89Trs0cMbxI/a9+DMpEml0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DC7vusbF; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757925303; x=1789461303;
+  t=1757925304; x=1789461304;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=rorM+IJoBTIjNKFpRa17gKrJZZJoMiCxdsTGvgm+z+w=;
-  b=II3w4DTihY7B7vwdk1/NeOd9KgbKkSjP5FnzTaAOWirkgbWQ4CVj9j/+
-   0tBw5Gy265vAuN8pvrA2UR+e+crhFpZEUGnCu5zyx6QriCmGnAWlzOYxN
-   qfccTxGbwfTJM8mvYXc2j4P1kTc06afeBjfyj5GThg+xf3eFE8HPVXl/t
-   J1KKlzp4Sx2xLynKZa32mCgQTk7MjkLZ/ZzRvDt0w6NpS7TI4Ggtig+6T
-   rfSpPpfy8dlOMX3kR+0MexL6uW9Ashqyec4GwSLePaE1WgLU1pQafWlmi
-   Q7zWt1D9c0F6HQ+XdzxqxPwam7qnwI4QSb5P257oj6Eqk5ztRknKIuaiI
-   Q==;
-X-CSE-ConnectionGUID: tcpi3BJVQXGF4Bhlk0I8SA==
-X-CSE-MsgGUID: BrMQUoaNS9OX+M3M+QMl3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11553"; a="59213067"
+  bh=02c5WfOuwVWCr0BsuwIFZLEGy77jH47qvEUis7tHi2c=;
+  b=DC7vusbFDwIwj+vYdU5rEdNS0XtSCf78pxTPFeTuYjCws0wH7hhoL5Y1
+   belQ0Q1sbK/LMqJz+ejWFo8bPBCxGeH+z/1nhE7uUn3vg33DKUKJ9uUUx
+   bSTefoQUd1TmvVTTi/o+EmuXUtxsV1vZ+fZgWHbXfv6ABBh6kQxQx3lLN
+   A2R1Lc1l1r6PKIabjWwuK6ltTTRYeC62w1cB8HnTs0PFtSBNwkHeVQJVT
+   VrekZgun14PmmX8bML+4+ruWqfRFs1ltwCDnaRW+bdnXWvYaP1kSuY8Ki
+   tIx0QghceGcdF5Kpu8coHGkjiYDJipPp8Npo40ehZbZyTzQyt6Y/GyZvw
+   w==;
+X-CSE-ConnectionGUID: 3qJC5nO5QGagJDK0ZCsWKg==
+X-CSE-MsgGUID: yoUtUGFLRm+aXUE5y2XZ/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11553"; a="59213070"
 X-IronPort-AV: E=Sophos;i="6.18,265,1751266800"; 
-   d="scan'208";a="59213067"
+   d="scan'208";a="59213070"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 01:35:02 -0700
-X-CSE-ConnectionGUID: Un7+wWWNSO+qX8iOhB8dYg==
-X-CSE-MsgGUID: TcYxpumZSR2cuzNXJjW6kw==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 01:35:04 -0700
+X-CSE-ConnectionGUID: CPYwN3Q3Qt2B9mPJ9gX6pg==
+X-CSE-MsgGUID: 8WTALFj9SOeQabbm8DWAUQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,265,1751266800"; 
-   d="scan'208";a="178569847"
+   d="scan'208";a="178569858"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 01:35:01 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 01:35:03 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: linux-wireless@vger.kernel.org
 Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH iwlwifi-next 01/11] wifi: iwlwifi: align the name of iwl_alive_ntf_v6 to the convention
-Date: Mon, 15 Sep 2025 11:34:22 +0300
-Message-Id: <20250915113137.81240e1d4df3.I2c1264a49b9f0fc160f960cf3c5dc4cedf6ceb6d@changeid>
+Subject: [PATCH iwlwifi-next 02/11] wifi: iwlwifi: mld: remove support from of alive notif version 6
+Date: Mon, 15 Sep 2025 11:34:23 +0300
+Message-Id: <20250915113137.4923c981b0bf.Iff598c6d109fdbf0d5a5bab59d53485478ecc125@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250915083432.1048608-1-miriam.rachel.korenblit@intel.com>
 References: <20250915083432.1048608-1-miriam.rachel.korenblit@intel.com>
@@ -76,71 +76,40 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-This struct rperesent versions 6 and 7. The convention is to name an API
-struct with the last version it represent, so rename to
-iwl_alive_ntf_v7.
+The last FW API that supports version 6 is 97. Since this API is no
+longer supported on any device that loads iwlmld, we can remove support
+of it.
 
 Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/alive.h    | 2 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/commands.h | 2 +-
- drivers/net/wireless/intel/iwlwifi/mld/fw.c          | 2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c          | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/fw.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h b/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h
-index ad5b95cad0bf..ea2ba4b4cb7b 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/alive.h
-@@ -88,7 +88,7 @@ struct iwl_imr_alive_info {
- 	__le32 enabled;
- } __packed; /* IMR_ALIVE_INFO_API_S_VER_1 */
- 
--struct iwl_alive_ntf_v6 {
-+struct iwl_alive_ntf_v7 {
- 	__le16 status;
- 	__le16 flags;
- 	struct iwl_lmac_alive lmac_data[2];
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-index 997b0c9ce984..8d64a271bb94 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-@@ -60,7 +60,7 @@ enum iwl_legacy_cmds {
- 	 * @UCODE_ALIVE_NTFY:
- 	 * Alive data from the firmware, as described in
- 	 * &struct iwl_alive_ntf_v3 or &struct iwl_alive_ntf_v4 or
--	 * &struct iwl_alive_ntf_v5 or &struct iwl_alive_ntf_v6.
-+	 * &struct iwl_alive_ntf_v5 or &struct iwl_alive_ntf_v7.
- 	 */
- 	UCODE_ALIVE_NTFY = 0x1,
- 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mld/fw.c b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
-index b372173c4a79..bdb69c098fd1 100644
+index bdb69c098fd1..b3abfa1ec810 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mld/fw.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
-@@ -126,7 +126,7 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
+@@ -124,7 +124,6 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
+ 	u16 status;
+ 
  	switch (version) {
- 	case 6:
+-	case 6:
  	case 7:
--		expected_sz = sizeof(struct iwl_alive_ntf_v6);
-+		expected_sz = sizeof(struct iwl_alive_ntf_v7);
+ 		expected_sz = sizeof(struct iwl_alive_ntf_v7);
  		break;
- 	case 8:
- 		expected_sz = sizeof(struct iwl_alive_ntf);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 865f973f677d..6b76ce35443d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -115,7 +115,7 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
+@@ -188,9 +187,8 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
+ 		     le32_to_cpu(umac->umac_major),
+ 		     le32_to_cpu(umac->umac_minor));
  
+-	if (version >= 7)
+-		IWL_DEBUG_FW(mld, "FW alive flags 0x%x\n",
+-			     le16_to_cpu(palive->flags));
++	IWL_DEBUG_FW(mld, "FW alive flags 0x%x\n",
++		     le16_to_cpu(palive->flags));
  
- 	if (version >= 6) {
--		struct iwl_alive_ntf_v6 *palive;
-+		struct iwl_alive_ntf_v7 *palive;
- 
- 		if (pkt_len < sizeof(*palive))
- 			return false;
+ 	if (version >= 8)
+ 		IWL_DEBUG_FW(mld, "platform_id 0x%llx\n",
 -- 
 2.34.1
 
