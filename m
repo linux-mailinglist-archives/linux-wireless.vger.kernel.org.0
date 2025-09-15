@@ -1,118 +1,150 @@
-Return-Path: <linux-wireless+bounces-27324-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27325-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21750B573AC
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 10:55:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EBCB57509
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 11:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D61821894FDC
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 08:55:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 865E23A5857
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 09:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A9B2F0689;
-	Mon, 15 Sep 2025 08:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E632F83D8;
+	Mon, 15 Sep 2025 09:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LtBl9Fo0"
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="WeLcL0r/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC572F3C3B
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 08:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A962F549F;
+	Mon, 15 Sep 2025 09:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757926392; cv=none; b=qTqsbK7toNWmNu4k2VKsm2ICTHLQuLAfOlYdbwY8zt3yXAym1yxxPM+myr4rQM4WuDxAmpWvxlRwHh3JO62DLbLs8dVLVSx1OurJbkV4dRtkCTRFm9kk857XocgXi2FQZe+lvu3MvaCRCG5dw5mtwI/On8Frmk16gi91FcDSmV8=
+	t=1757929227; cv=none; b=q+kM9HPOo2zVv5TOlRtL7KeKJiwYgEDwze/RtcQQSg4aF6Wln5VXm3eqrhHkiHFNGp0niSRefL8jn9uAOZShDlaJPZIIHHhoh7QuL4BnFXhW2nwWCZYix5ZqczFmnm6QOi/+O5eMbsjZaM/RE2nJ1QrXezu5Z9/Na3J2hDsJBqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757926392; c=relaxed/simple;
-	bh=H+22KKChXzNX9iM6KKlsTWWBok/h/ZWmSrWZePYLO0c=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JszuzSn1m4WMwN3q61Y+VGHseeYKHcHHyz1ikkNxjYjaK6GoRy57CkoehrMGQ8klSRrxnHWyDdpbRYZtXCJxtnNz7zmwInrlYDN3a/t6JtmCD/mRceyML9ePi911NyXe2LvE81sfZONzTakgU4hrgipdkSGOCGV2OCeah4g41bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LtBl9Fo0; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=H+22KKChXzNX9iM6KKlsTWWBok/h/ZWmSrWZePYLO0c=;
-	t=1757926391; x=1759135991; b=LtBl9Fo0WV980vzsMo0Shv8zIPXlx5s8Na5XDaWmqiw8fcP
-	k/NqgiBl8d1RZnd7Amhah2VlwEYmSA+3ugQ6fxFEh1UdpnxXld+BFsxgKTE4hFfJVjsWzS6rquY0v
-	Ztg2RycupOw/1OjdpLxNScAAoc6Ah7ogRhbJaQTzmkABQRKV3j4n8Bd/7nty00atuquCsCvtBukDj
-	tKJykhim0OOILTScpGd65lFpntk44NpjwR2t4o2aer4Wffxl7sI7Cj70tQfWWnxPkbARiuaHllA2T
-	7L0ps81qU19vxligWQkSJVMACmpW+UBXwcCk3KuUOT9NzPNThPd664zi6aKqSLfg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uy4xQ-0000000647R-4Ax2;
-	Mon, 15 Sep 2025 10:53:09 +0200
-Message-ID: <5e0d4ccc88a292f5087ef16a3de4fb642a7ddcab.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: always mark 6 GHz BSS as QoS/EDCA
- capable
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeff Isaacs <scaasiffej@gmail.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Mon, 15 Sep 2025 10:53:08 +0200
-In-Reply-To: <CAOYMkPpsLa9dBeAwrS7o3--0D9O4is7D8qU_OAjLyh9hwJpBLA@mail.gmail.com> (sfid-20250910_230507_015661_713613FB)
-References: <20250909135510.757750-1-scaasiffej@gmail.com>
-	 <8d5d8339f1dd568f43d97c4ed60817df1838fc13.camel@sipsolutions.net>
-	 <CAOYMkPqAt-ETcwL7ZzUUB=0YO-ML+Mh60cB_-8MZj6zcp_-Cxg@mail.gmail.com>
-	 <2735aec6379159923299d6cfb916a2bf03aecf18.camel@sipsolutions.net>
-	 <CAOYMkPpsLa9dBeAwrS7o3--0D9O4is7D8qU_OAjLyh9hwJpBLA@mail.gmail.com>
-	 (sfid-20250910_230507_015661_713613FB)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1757929227; c=relaxed/simple;
+	bh=Hmjdd1ChV+8SxQHGRgNWtZrCpwmOz+pQ5vs7rwQviJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=re0GfjRppEWZQm81SoHj8Ew7UJXZaSd0qHw6Z0dFdBk9Fipui68vviApoAzuUgnh0P4hBCJKBW9fbG/Pixa06GE6RjM/8XwAsBWeY8of+quW7WPH7hcriiWWPzW6Sc8qOLslBhXHtKowiX/T2mGln8Lsn0Q/vcOMG7SO5W9fkAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=WeLcL0r/; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id BDAE11C006D; Mon, 15 Sep 2025 11:32:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1757928722;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nIME8cdz06LUslw529zpHp//o40yXRj8V4ARH29l+OM=;
+	b=WeLcL0r/wOESE22lzdL0T0iZSsoHeDCHNeQkagRYaZG10PxOeBZZ5bDcSKYh7v5oiJUYVs
+	QTedepsGbIkdFGSOmSM9atufwcdbyRMPCa2eSR7XjcfGQ5NOs74IPHr3tcdFoqylhLeadu
+	yXWzOmB+VkYwx6xEASZnw0ojDCuRAI4=
+Date: Mon, 15 Sep 2025 11:32:02 +0200
+From: Pavel Machek <pavel@ucw.cz>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: kernel list <linux-kernel@vger.kernel.org>, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, peterz@infradead.org,
+	will@kernel.org, longman@redhat.com,
+	miriam.rachel.korenblit@intel.com, linux-wireless@vger.kernel.org
+Subject: Re: locking problems in iwlwifi? was Re: 6.16-rcX: crashing way too
+ often on thinkpad X220
+Message-ID: <aMfdEk6Cw6EFt+/l@duo.ucw.cz>
+References: <aH/L1PCwtwe8Y1+a@duo.ucw.cz>
+ <aID6XPLXuGo+ViTm@duo.ucw.cz>
+ <aIEC4t2EICdgomZV@duo.ucw.cz>
+ <c5c06a93845f72b40c6df82fcbc89d3163a01d8b.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="CcqJqSEzx53JM7Gd"
+Content-Disposition: inline
+In-Reply-To: <c5c06a93845f72b40c6df82fcbc89d3163a01d8b.camel@sipsolutions.net>
 
-On Wed, 2025-09-10 at 17:04 -0400, Jeff Isaacs wrote:
-> FWIW (probably nothing), after applying the patch and getting past
-> authentication, the association response has the WMM IE and also includes
-> the MU EDCA parameter set, so everything seems to be within spec from tha=
-t
-> point forward. The sole problem really is the incorrect assumption of
-> inheritance to the non-Tx profiles.
 
-One additional problem though with this is that we're not actually using
-the intended inherited values, but rather the defaults. That might be OK
-in the specific situation you have, but might not be OK in general. Also
-(at least in theory) the QoS/WMM parameters can change during the
-lifetime of the BSS, and then the station might not know about updates
-from the beacon since they aren't present in the expected way there.
+--CcqJqSEzx53JM7Gd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In both of those cases the station can then cause conflicts with medium
-use vs. other stations, such as always winning or always losing the race
-to transmit if there's contention.
+Hi!
 
-> I spent quite a bit of time turning knobs in the Ruckus controller and AP
-> CLI trying to define a different QoS profile per SSID, so that maybe it
-> would be explicit in the non-Tx profile, but it still wouldn't show up un=
-til
-> the association response.
+> > [  402.125635] ------------[ cut here ]------------
+> > [  402.125638] raw_local_irq_restore() called with IRQs enabled
+> > [  402.125645] WARNING: CPU: 3 PID: 387 at kernel/locking/irqflag-debug=
+=2Ec:10 warn_bogus_irq_restore+0x25/0x30
+> > [  402.125654] Modules linked in:
+> > [  402.125661] CPU: 3 UID: 0 PID: 387 Comm: kworker/u16:5 Tainted: G S =
+                 6.16.0-rc7+ #303 PREEMPT(voluntary)=20
+> > [  402.125667] Tainted: [S]=3DCPU_OUT_OF_SPEC
+> > [  402.125668] Hardware name: LENOVO 4291W3B/4291W3B, BIOS 8DET73WW (1.=
+43 ) 10/12/2016
+> > [  402.125671] Workqueue: events_unbound cfg80211_wiphy_work
+> > [  402.125678] RIP: 0010:warn_bogus_irq_restore+0x25/0x30
+> > [  402.125683] Code: 90 90 90 90 90 80 3d 51 3d dc 00 00 74 05 c3 cc cc=
+ cc cc 55 48 c7 c7 c0 4f c9 85 48 89 e5 c6 05 38 3d dc 00 01 e8 9b d8 e6 fe=
+ <0f> 0b 5d c3 cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90
+> > [  402.125686] RSP: 0018:ffffc9000173fb30 EFLAGS: 00010282
+> > [  402.125691] RAX: 0000000000000000 RBX: ffffffff8616b460 RCX: 0000000=
+000000000
+> > [  402.125694] RDX: 0000000000000003 RSI: 0000000000000027 RDI: 0000000=
+0ffffffff
+> > [  402.125696] RBP: ffffc9000173fb30 R08: 0000000028935f32 R09: 0000000=
+000000001
+> > [  402.125699] R10: 0000000000000044 R11: ffff888100ba52c8 R12: 0000000=
+000000001
+> > [  402.125702] R13: ffffc9000173fbcb R14: ffffffff84301224 R15: 0000000=
+000000000
+> > [  402.125704] FS:  0000000000000000(0000) GS:ffff88829007f000(0000) kn=
+lGS:0000000000000000
+> > [  402.125707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [  402.125710] CR2: 000055967d471ee0 CR3: 0000000006046001 CR4: 0000000=
+0000606b0
+> > [  402.125713] Call Trace:
+> > [  402.125716]  <TASK>
+> > [  402.125719]  console_flush_all+0x41e/0x460
+> > [  402.125725]  ? console_flush_all+0x43/0x460
+> > [  402.125735]  console_unlock+0x55/0x100
+> > [  402.125741]  vprintk_emit+0x157/0x320
+> > [  402.125748]  vprintk_default+0x18/0x20
+> > [  402.125752]  vprintk+0x9/0x10
+> > [  402.125756]  _printk+0x52/0x70
+> > [  402.125766]  ieee80211_sta_rx_queued_mgmt+0x4c8/0xd30
+> > [  402.125775]  ? __this_cpu_preempt_check+0x13/0x20
+> > [  402.125784]  ieee80211_iface_work+0x3ad/0x500
+>=20
+> That's not great, but I don't see how the driver or wifi subsystem is
+> involved ... ieee80211_sta_rx_queued_mgmt() doesn't even use spinlocks
+> let alone disable IRQs or use raw_ APIs, and it's in the middle of
+> printk anyway.
+>=20
+> No idea what might be going on here, sorry.
 
-That's pretty strange, in that case it shouldn't even be inherited. That
-almost seems like an additional bug, though chances are when they fix
-things both will just be fixed.
+For the record, problem was eventually traced to intel wifi driver bug
+in bugzilla, and at least experimental patch exist fixing it.
 
-> I also tried to use iw to set the SSID within a directed probe to the AP
-> over its 6 GHz channel. At least in theory, the AP is supposed to include
-> all QoS params in the response. It didn't work, but even if it did, it's =
-still
-> not an excuse to disclude the params in the beacon frames.
+Best regards,
+								Pavel
+--=20
+I don't work for Nazis and criminals, and neither should you.
+Boycott Putin, Trump, Netanyahu and Musk!
 
-Interesting, not even _that_ worked... oh well.
+--CcqJqSEzx53JM7Gd
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> Thanks again for the very detailed response!
+-----BEGIN PGP SIGNATURE-----
 
-Thanks for understanding! I really do hope they'll fix it soon - FWIW
-the issue we were already discussing with them (via other parties) was
-on the same AP model.
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaMfdEgAKCRAw5/Bqldv6
+8ovgAKCPjHJcOnb4T7bj/oFpRfr3ZByhzACcDbNIfOo86i/Wf6MvGZ8mxAhftmc=
+=9DKh
+-----END PGP SIGNATURE-----
 
-johannes
+--CcqJqSEzx53JM7Gd--
 
