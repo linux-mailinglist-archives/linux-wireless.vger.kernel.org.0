@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-27376-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27377-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A07EB7DBDD
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4AEB7DAB3
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E816A3284CF
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:24:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CA40328533
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5D32E0415;
-	Tue, 16 Sep 2025 22:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90ADD2E0415;
+	Tue, 16 Sep 2025 22:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="KaTwc/QX"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="BHAwDjj0"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp14.infineon.com (smtp14.infineon.com [217.10.52.160])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A6324A06A
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5410F24A06A
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.160
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758061438; cv=none; b=KOyaIFiCPtY8VMMaLOfUHlO/XKlzXONwIPoh2UVCTIGq90vx2aIR1rPuaKQa2A7wrRfwKTZ4lEo9wrWaqAjBbv91lPC3jjUDuN2BLbgxyDSXPPib60TvqLlXd2F2qFZ3t/Qp06ene/88F57Hw8YDspaHWpNd4nmNgIpp4Npc1Vo=
+	t=1758061450; cv=none; b=R+d/tlEeWqazH0n8Eg++t9wukeioUiz09lqRIAZYRtjZbwK7X+Zlj++REGtvKgqAjw503qvY5r/+FlJKt37XGW5Fn1VexzfP1HFgDtz/v1Lhc4fETlcOKaxeLMvqUFLskUAD7yGb/QkoLKrb9etQpesKyT+QFGeXSnNzbxl8m6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758061438; c=relaxed/simple;
-	bh=sgke4Whjv+//0RuxnHdkxN+TL0S84Kfn2BK8lslHfGo=;
+	s=arc-20240116; t=1758061450; c=relaxed/simple;
+	bh=jdz3qKmsQiqsKY1h0CMYD+gk/a2kvPmBqe6fFNlW6AM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RtZqOJWlBXF0UlQNO/ElxkZjNnP8lr60FiGLEwtvc7l3M+p1BF4H8ZGq8byhx36p9riuPfS3OzfTW3A9gAdnuihF7jch0cGiSRR078MBg1X/bMA4t/L67rQS6/pc0NJrkRktQhfu7QZ4SnAlMy/HYwbHIE4heibmHHd97xmClQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=KaTwc/QX; arc=none smtp.client-ip=217.10.52.160
+	 MIME-Version:Content-Type; b=AeIYMpf8yuUIyBMmBydDyRiDFUcrRXAGZ3Z21uGqwtWEDkUIKd7RL834YTgMqCI0p8XTtsErKmMkzBkA/6GUURK7eBf+ibFD5k+uq7zj4DmDEUWEemfRskra8J3XL82b9c0vcIslex9fGURJq84wOxzoCy/KRLl8ddk+kb0pnC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=BHAwDjj0; arc=none smtp.client-ip=217.10.52.160
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1758061436; x=1789597436;
+  t=1758061449; x=1789597449;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=sgke4Whjv+//0RuxnHdkxN+TL0S84Kfn2BK8lslHfGo=;
-  b=KaTwc/QXKVHGvX9Y8K4euNJo2DbUqU1LQzG2pO1HR0+6uEVMJIYproix
-   cO3kTyVxyTzRwt7sfn2B7Y+w9mkXb/tSrBRkJ6niCIqYnR1Tg1rzHBFeS
-   4lL0gmil92SgqoJRgHX0fCEiMuAtydh02ggDeoAD34qc+lpzGq3Q1Utgi
-   E=;
-X-CSE-ConnectionGUID: NiII15kiQim0ciSZQcN65g==
-X-CSE-MsgGUID: 3V2C5wDBTMyEzWG7pm6CWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="99293976"
+  bh=jdz3qKmsQiqsKY1h0CMYD+gk/a2kvPmBqe6fFNlW6AM=;
+  b=BHAwDjj0HbMUVPZGnFSd4NqEiyL5yTB4tIPdqRzb7vxyCNB2RbPqZ5Ma
+   qk5oDEekIz/ZVg0q5ioZZfHCi2f0r5vvtWgYpXNnb+4Kqz+PKAb1A1cB/
+   sMxXznTqghQ1UVVfPgGWTdD6fNhsQCjxQi9u22TnZ9ZBeMKGOiuq9cTzK
+   8=;
+X-CSE-ConnectionGUID: ACQ6yMndRQq5h3VbbS95+A==
+X-CSE-MsgGUID: Nfd7E9HgRdapTtDmVw8dJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="99293986"
 X-IronPort-AV: E=Sophos;i="6.18,270,1751234400"; 
-   d="scan'208";a="99293976"
+   d="scan'208";a="99293986"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE814.infineon.com) ([172.23.29.40])
-  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:23:54 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE814.infineon.com
- (172.23.29.40) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE812.infineon.com) ([172.23.29.38])
+  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:24:07 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE812.infineon.com
+ (172.23.29.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Wed, 17 Sep
- 2025 00:23:53 +0200
+ 2025 00:24:06 +0200
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.36; Wed, 17 Sep 2025 00:23:51 +0200
+ 15.2.1748.36; Wed, 17 Sep 2025 00:24:03 +0200
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>, Johannes Berg
 	<johannes@sipsolutions.net>
 CC: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
 	<wlan-kernel-dev-list@infineon.com>
-Subject: [PATCH wireless-next 23/57] wifi: inffmac: add logger.c/h
-Date: Wed, 17 Sep 2025 03:47:41 +0530
-Message-ID: <20250916221821.4387-27-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next 24/57] wifi: inffmac: add debug.c/h
+Date: Wed, 17 Sep 2025 03:47:42 +0530
+Message-ID: <20250916221821.4387-28-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
 References: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
@@ -76,356 +76,355 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE824.infineon.com (172.23.29.55) To
+X-ClientProxiedBy: MUCSE802.infineon.com (172.23.29.28) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Implements the driver debugging infrastructure for logging important event
-or state information in a ring buffer, which is helpful in debugging
-intermittent issues that happened in the driver if kernel debug mechanisms
-were not enabled.
+Implements the driver debugging infrastructure for sending debug prints to
+the user (based on the configured debug level) with the help of helper
+functions. These functions are utilized by source files in the driver.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- .../net/wireless/infineon/inffmac/logger.c    | 189 ++++++++++++++++++
- .../net/wireless/infineon/inffmac/logger.h    | 133 ++++++++++++
+ drivers/net/wireless/infineon/inffmac/debug.c | 138 +++++++++++++
+ drivers/net/wireless/infineon/inffmac/debug.h | 184 ++++++++++++++++++
  2 files changed, 322 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/inffmac/logger.c
- create mode 100644 drivers/net/wireless/infineon/inffmac/logger.h
+ create mode 100644 drivers/net/wireless/infineon/inffmac/debug.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/debug.h
 
-diff --git a/drivers/net/wireless/infineon/inffmac/logger.c b/drivers/net/wireless/infineon/inffmac/logger.c
+diff --git a/drivers/net/wireless/infineon/inffmac/debug.c b/drivers/net/wireless/infineon/inffmac/debug.c
 new file mode 100644
-index 000000000000..7a1cf8c90dee
+index 000000000000..59c51c86bf51
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/logger.c
-@@ -0,0 +1,189 @@
++++ b/drivers/net/wireless/infineon/inffmac/debug.c
+@@ -0,0 +1,138 @@
 +// SPDX-License-Identifier: ISC
 +/*
++ * Copyright (c) 2012 Broadcom Corporation
++ *
 + * Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
-+#include <linux/slab.h>
++#include <linux/debugfs.h>
++#include <linux/netdevice.h>
++#include <linux/module.h>
++#include <linux/devcoredump.h>
++
 +#include "core.h"
++#include "bus.h"
 +#include "debug.h"
-+#include "logger.h"
 +
-+/**
-+ * inff_logring_fill() - Dump all the data in the logring.
-+ *
-+ * @drvr: Driver Context.
-+ * @ringid: Logring ID.
-+ */
-+void inff_logring_dump(struct inff_pub *drvr, u8 ringid)
++static int
++inff_debug_msgtrace_seqchk(u32 *prev, u32 cur)
 +{
-+	struct inff_logger *logger = drvr->logger;
-+	struct inff_logring *logring = &logger->logring[ringid];
-+
-+	if (!logring->enabled)
-+		return;
-+
-+	do {
-+		if (logring->dump_cb)
-+			logring->dump_cb(&logring->buffer[logring->curr],
-+					 logring->item_size);
-+
-+		logring->curr = (logring->curr + logring->item_size) %
-+				(logger->logring_depth * logring->item_size);
-+	} while (logring->curr != logring->head);
++	if ((cur == 0 && *prev == 0xFFFFFFFF) || ((cur - *prev) == 1)) {
++		goto done;
++	} else if (cur == *prev) {
++		inff_dbg(FWCON, "duplicate trace\n");
++		return -1;
++	} else if (cur > *prev) {
++		inff_dbg(FWCON, "lost %d packets\n", cur - *prev);
++	} else {
++		inff_dbg(FWCON, "seq out of order, host %d, dongle %d\n",
++			 *prev, cur);
++	}
++done:
++	*prev = cur;
++	return 0;
 +}
 +
-+/**
-+ * inff_logring_fill() - Fill the logring with data
-+ *
-+ * @drvr: Driver Context.
-+ * @ringid: Logring ID.
-+ * @data: data to be logged.
-+ * @size: size of the data to be logged.
-+ */
-+void inff_logring_fill(struct inff_pub *drvr, u8 ringid, u8 *data, u32 size)
++static int
++inff_debug_msg_parser(void *event_data)
 +{
-+	struct inff_logger *logger = drvr->logger;
-+	struct inff_logring *logring = &logger->logring[ringid];
-+	u8 *logring_buf;
++	int err = 0;
++	struct msgtrace_hdr *hdr;
++	char *data, *s;
++	static u32 seqnum_prev;
 +
-+	if (!logring->enabled)
-+		return;
++	hdr = (struct msgtrace_hdr *)event_data;
++	data = (char *)event_data + MSGTRACE_HDRLEN;
 +
-+	logring_buf = &logring->buffer[logring->curr];
++	/* There are 2 bytes available at the end of data */
++	data[ntohs(hdr->len)] = '\0';
 +
-+	memset(logring_buf, 0, logring->item_size);
++	if (ntohl(hdr->discarded_bytes) || ntohl(hdr->discarded_printf)) {
++		inff_dbg(FWCON, "Discarded_bytes %d discarded_printf %d\n",
++			 ntohl(hdr->discarded_bytes),
++				ntohl(hdr->discarded_printf));
++	}
 +
-+	/* Log timestamp */
-+	*(u64 *)logring_buf = (u64)ktime_to_ns(ktime_get_boottime());
-+	logring_buf += sizeof(u64);
++	err = inff_debug_msgtrace_seqchk(&seqnum_prev, ntohl(hdr->seqnum));
++	if (err)
++		return err;
 +
-+	/* Log Data */
-+	memcpy(logring_buf, data, size);
++	while (*data != '\0' && (s = strstr(data, "\n")) != NULL) {
++		*s = '\0';
++		inff_dbg(FWCON, "CONSOLE: %s\n", data);
++		data = s + 1;
++	}
++	if (*data)
++		inff_dbg(FWCON, "CONSOLE: %s", data);
 +
-+	logring->curr = (logring->curr + logring->item_size) %
-+			(logger->logring_depth * logring->item_size);
-+
-+	/* If logring becomes full, dump the ringitem contents before overwrite */
-+	if (logring->curr == logring->head)
-+		inff_logring_dump(drvr, ringid);
++	return err;
 +}
 +
-+/**
-+ * inff_logring_init() - Logring Initialization
-+ *
-+ * @drvr: Driver Context.
-+ * @ringid: Logring ID.
-+ * @item_size: Size of individual items in the logring.
-+ * @dump_cb: Callback function that dumps the ring item contents.
-+ *
-+ * Return success or failure.
-+ */
-+int inff_logring_init(struct inff_pub *drvr, u8 ringid, u32 item_size,
-+		      dump_callback_t dump_cb)
++static int
++inff_debug_trace_parser(struct inff_if *ifp,
++			const struct inff_event_msg *evtmsg,
++			 void *event_data)
 +{
-+	struct inff_logger *logger = drvr->logger;
-+	struct inff_logring *logring = &logger->logring[ringid];
++	int err = 0;
++	struct msgtrace_hdr *hdr;
 +
-+	if (!(logger->level & BIT(ringid)))
-+		return 0;
++	hdr = (struct msgtrace_hdr *)event_data;
++	if (hdr->version != MSGTRACE_VERSION) {
++		inff_dbg(FWCON, "trace version mismatch host %d dngl %d\n",
++			 MSGTRACE_VERSION, hdr->version);
++		err = -EPROTO;
++		return err;
++	}
 +
-+	logring->buffer = kzalloc(item_size * logger->logring_depth, GFP_KERNEL);
-+	if (!logring->buffer)
++	if (hdr->trace_type == MSGTRACE_HDR_TYPE_MSG)
++		err = inff_debug_msg_parser(event_data);
++
++	return err;
++}
++
++int inff_debug_create_memdump(struct inff_bus *bus, const void *data,
++			      size_t len)
++{
++	void *dump;
++	size_t ramsize;
++	int err;
++
++	ramsize = inff_bus_get_ramsize(bus);
++	if (!ramsize)
++		return -EOPNOTSUPP;
++
++	dump = vzalloc(len + ramsize);
++	if (!dump)
 +		return -ENOMEM;
 +
-+	logring->item_size = item_size;
-+	logring->curr = 0;
-+	logring->head = 0;
-+	logring->ringid = ringid;
-+	logring->dump_cb = dump_cb;
-+	logring->enabled = true;
++	if (data && len > 0)
++		memcpy(dump, data, len);
++	err = inff_bus_get_memdump(bus, dump + len, ramsize);
++	if (err) {
++		vfree(dump);
++		return err;
++	}
++
++	dev_coredumpv(bus->dev, dump, len + ramsize, GFP_KERNEL);
 +
 +	return 0;
 +}
 +
-+/**
-+ * inff_logring_deinit() - Logring De-initialization
-+ *
-+ * @drvr: Driver Context.
-+ * @ringid: Logring ID.
-+ */
-+void inff_logring_deinit(struct inff_pub *drvr, u8 ringid)
++int inff_debug_fwlog_init(struct inff_pub *drvr)
 +{
-+	struct inff_logger *logger = drvr->logger;
-+	struct inff_logring *logring;
-+
-+	if (!logger ||
-+	    !(logger->level & BIT(ringid)))
-+		return;
-+
-+	logring = &logger->logring[ringid];
-+
-+	if (logring->enabled) {
-+		logring->enabled = false;
-+		kfree(logring->buffer);
-+		logring->buffer = NULL;
-+	}
++	return inff_fweh_register(drvr, INFF_E_TRACE,
++				inff_debug_trace_parser);
 +}
 +
-+/**
-+ * inff_logger_attach() - allocate a context for the logger.
-+ *
-+ * @drvr: driver instance.
-+ * @logger_level: Debug logger log levels.
-+ * @logring_depth: Debug logring depth
-+ *
-+ * Returns success or failure
-+ */
-+int inff_logger_attach(struct inff_pub *drvr, u32 logger_level, u32 logring_depth)
++struct dentry *inff_debugfs_get_devdir(struct inff_pub *drvr)
 +{
-+	struct inff_logger *logger;
-+	s32 ret;
-+
-+	logger = kzalloc(sizeof(*logger), GFP_KERNEL);
-+	if (!logger)
-+		return -ENOMEM;
-+
-+	logger->level = logger_level;
-+	logger->logring_depth = logring_depth;
-+
-+	drvr->logger = logger;
-+
-+	ret = inff_logring_init(drvr, INFF_LOGRING_FW_CMD_SET,
-+				sizeof(struct inff_logring_fw_cmd_item), NULL);
-+	if (ret) {
-+		inff_err("Logger: FW_CMD_SET logring initialization failed ret=%d\n", ret);
-+		goto detach;
-+	}
-+
-+	ret = inff_logring_init(drvr, INFF_LOGRING_FW_CMD_GET,
-+				sizeof(struct inff_logring_fw_cmd_item), NULL);
-+	if (ret) {
-+		inff_err("Logger: FW_CMD_GET logring initialization failed ret=%d\n", ret);
-+		goto detach;
-+	}
-+
-+	return 0;
-+detach:
-+	inff_logger_detach(drvr);
-+	return ret;
++	return drvr->wiphy->debugfsdir;
 +}
 +
-+/**
-+ * inff_logger_detach() - Delloaction of the logger context
-+ *
-+ * @drvr: Driver instance.
-+ */
-+void inff_logger_detach(struct inff_pub *drvr)
++void inff_debugfs_add_entry(struct inff_pub *drvr, const char *fn,
++			    int (*read_fn)(struct seq_file *seq, void *data))
 +{
-+	struct inff_logger *logger = drvr->logger;
-+
-+	if (!logger)
-+		return;
-+
-+	inff_logring_deinit(drvr, INFF_LOGRING_FW_CMD_SET);
-+
-+	inff_logring_deinit(drvr, INFF_LOGRING_FW_CMD_GET);
-+
-+	kfree(logger);
-+	drvr->logger = NULL;
++	WARN(!drvr->wiphy->debugfsdir, "wiphy not (yet) registered\n");
++	debugfs_create_devm_seqfile(drvr->bus_if->dev, fn,
++				    drvr->wiphy->debugfsdir, read_fn);
 +}
-diff --git a/drivers/net/wireless/infineon/inffmac/logger.h b/drivers/net/wireless/infineon/inffmac/logger.h
+diff --git a/drivers/net/wireless/infineon/inffmac/debug.h b/drivers/net/wireless/infineon/inffmac/debug.h
 new file mode 100644
-index 000000000000..11b73df5fea7
+index 000000000000..a2ec711b8674
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/logger.h
-@@ -0,0 +1,133 @@
++++ b/drivers/net/wireless/infineon/inffmac/debug.h
+@@ -0,0 +1,184 @@
 +/* SPDX-License-Identifier: ISC */
 +/*
++ * Copyright (c) 2010 Broadcom Corporation
++ *
 + * Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
-+#ifndef INFF_LOGGER_H
-+#define INFF_LOGGER_H
++#ifndef INFF_DEBUG_H
++#define INFF_DEBUG_H
 +
-+#include <linux/types.h>
-+#include <linux/bits.h>
++#include <linux/net.h>	/* net_ratelimit() */
 +
-+/**
-+ * enum inff_logrings - Logring types
-+ *
-+ * @INFF_LOGRING_FW_EVENT - Logs all the events received from the firmware.
-+ *
-+ * @INFF_LOGRING_FW_CMD_SET - Logs all the SET CMD sent to the firmware.
-+ *
-+ * @INFF_LOGRING_FW_CMD_SET - Logs all the GET CMD sent to the firmware.
++/* message levels */
++#define INFF_TRACE_VAL		0x00000002
++#define INFF_INFO_VAL		0x00000004
++#define INFF_DATA_VAL		0x00000008
++#define INFF_CTL_VAL		0x00000010
++#define INFF_TIMER_VAL		0x00000020
++#define INFF_HDRS_VAL		0x00000040
++#define INFF_BYTES_VAL		0x00000080
++#define INFF_INTR_VAL		0x00000100
++#define INFF_GLOM_VAL		0x00000200
++#define INFF_EVENT_VAL		0x00000400
++#define INFF_BTA_VAL		0x00000800
++#define INFF_FIL_VAL		0x00001000
++#define INFF_USB_VAL		0x00002000
++#define INFF_SCAN_VAL		0x00004000
++#define INFF_CONN_VAL		0x00008000
++#define INFF_BCDC_VAL		0x00010000
++#define INFF_SDIO_VAL		0x00020000
++#define INFF_MSGBUF_VAL	0x00040000
++#define INFF_PCIE_VAL		0x00080000
++#define INFF_FWCON_VAL		0x00100000
++#define INFF_ULP_VAL		0x00200000
++#define INFF_TWT_VAL		0x00400000
++#define INFF_WLAN_SENSE_VAL	0x00800000
++#define INFF_SDIOEXT_VAL	0x01000000
++
++/* set default print format */
++#undef pr_fmt
++#define pr_fmt(fmt)		KBUILD_MODNAME ": " fmt
++
++struct inff_bus;
++
++__printf(3, 4)
++void __inff_err(struct inff_bus *bus, const char *func, const char *fmt, ...);
++/* Macro for error messages. When debugging / tracing the driver all error
++ * messages are important to us.
 + */
-+enum inff_logrings {
-+	INFF_LOGRING_FW_EVENT,
-+	INFF_LOGRING_FW_CMD_SET,
-+	INFF_LOGRING_FW_CMD_GET,
-+	INFF_LOGRING_MAX,
-+};
++#ifndef inff_err
++#define inff_err(fmt, ...)						\
++	do {								\
++		if (IS_ENABLED(CONFIG_INF_DEBUG) ||			\
++		    IS_ENABLED(CONFIG_INF_TRACING) ||			\
++		    net_ratelimit())					\
++			__inff_err(NULL, __func__, fmt, ##__VA_ARGS__);\
++	} while (0)
++#endif
 +
-+#define INFF_LOGGER_LEVEL_FW_EVENT	BIT(INFF_LOGRING_FW_EVENT)
-+#define INFF_LOGGER_LEVEL_FW_CMD_SET	BIT(INFF_LOGRING_FW_CMD_SET)
-+#define INFF_LOGGER_LEVEL_FW_CMD_GET	BIT(INFF_LOGRING_FW_CMD_GET)
++#define iphy_err(drvr, fmt, ...)					\
++	do {								\
++		if (IS_ENABLED(CONFIG_INF_DEBUG) ||			\
++		    IS_ENABLED(CONFIG_INF_TRACING) ||			\
++		    net_ratelimit())					\
++			wiphy_err((drvr)->wiphy, "%s: " fmt, __func__,	\
++				  ##__VA_ARGS__);			\
++	} while (0)
 +
-+#define INFF_LOGGER_LEVEL_DEFAULT	0x1
-+#define INFF_LOGRING_DEPTH_DEFAULT	32
++#define iphy_info_once(drvr, fmt, ...)					\
++	wiphy_info_once((drvr)->wiphy, "%s: " fmt, __func__,		\
++			##__VA_ARGS__)
 +
-+/**
-+ * struct inff_logring_fw_event_item - Firmware event logring item
-+ *
-+ * @timestamp: firmware event received time stamp.
-+ * @emsg: firmware event message.
-+ */
-+struct inff_logring_fw_event_item {
-+	u64 timestamp;
-+	struct inff_event_msg emsg;
-+};
++#if defined(DEBUG) || defined(CONFIG_INF_TRACING)
 +
-+/**
-+ * struct inff_logring_fw_cmd_item - Firmware cmd logring item
-+ *
-+ * @timestamp: firmware cmd senti time stamp.
-+ * @cmdid: firmware cmd ID.
-+ * @cmdstr: firmware cmd string.
-+ */
-+struct inff_logring_fw_cmd_item {
-+	u64 timestamp;
-+	u32 cmdid;
-+	u8 cmdstr[64];
-+};
++/* For debug/tracing purposes treat info messages as errors */
++#define inff_info inff_err
 +
-+typedef void (*dump_callback_t) (u8 *data, u32 size);
++__printf(3, 4)
++void __inff_dbg(u32 level, const char *func, const char *fmt, ...);
++#define inff_dbg(level, fmt, ...)				\
++do {								\
++	if (IS_ENABLED(CONFIG_INF_DEBUG) ||			\
++		IS_ENABLED(CONFIG_INF_TRACING))			\
++		__inff_dbg(INFF_##level##_VAL, __func__,	\
++			fmt, ##__VA_ARGS__);			\
++} while (0)
 +
-+/**
-+ * struct inff_logring - Debug Log ring structure.
-+ *
-+ * @enabled: Ring is enabled/disabled.
-+ * @ringid: unique identifier of the ring.
-+ * @curr: Current Index in the Ring.
-+ * @head: Head Index in the Ring.
-+ * @item_size: logring item size.
-+ * @buffer: Buffer for holding data.
-+ * @dump_cb: Dump callback function.
-+ */
-+struct inff_logring {
-+	bool enabled;
-+	u8 ringid;
-+	u32 curr;
-+	u32 head;
-+	u32 item_size;
-+	u8 *buffer;
-+	dump_callback_t dump_cb;
-+};
++#define INFF_DATA_ON()		(inff_msg_level & INFF_DATA_VAL)
++#define INFF_CTL_ON()		(inff_msg_level & INFF_CTL_VAL)
++#define INFF_HDRS_ON()		(inff_msg_level & INFF_HDRS_VAL)
++#define INFF_BYTES_ON()	(inff_msg_level & INFF_BYTES_VAL)
++#define INFF_GLOM_ON()		(inff_msg_level & INFF_GLOM_VAL)
++#define INFF_EVENT_ON()	(inff_msg_level & INFF_EVENT_VAL)
++#define INFF_FIL_ON()		(inff_msg_level & INFF_FIL_VAL)
++#define INFF_FWCON_ON()	(inff_msg_level & INFF_FWCON_VAL)
++#define INFF_SCAN_ON()		(inff_msg_level & INFF_SCAN_VAL)
++#define INFF_WLAN_SENSE_ON()	(inff_msg_level & INFF_WLAN_SENSE_VAL)
 +
-+/**
-+ * struct inff_logger - Debug Logger structure.
-+ *
-+ * @level: Logging level.
-+ * @logring_depth: Count of no if items in the logring.
-+ * @logring: array of ring buffers for logging the debug info by type.
-+ */
-+struct inff_logger {
-+	u32 level;
-+	u32 logring_depth;
-+	struct inff_logring logring[INFF_LOGRING_MAX];
-+};
++#else /* defined(DEBUG) || defined(CONFIG_INF_TRACING) */
 +
++#define inff_info(fmt, ...)						\
++	{								\
++		pr_info("%s: " fmt, __func__, ##__VA_ARGS__);		\
++	}
++
++#define inff_dbg(level, fmt, ...) \
++	{	\
++		UNUSED_PARAMETER(level);	\
++		no_printk(fmt, ##__VA_ARGS__);	\
++	}
++
++#define INFF_DATA_ON()		0
++#define INFF_CTL_ON()		0
++#define INFF_HDRS_ON()		0
++#define INFF_BYTES_ON()	0
++#define INFF_GLOM_ON()		0
++#define INFF_EVENT_ON()	0
++#define INFF_FIL_ON()		0
++#define INFF_FWCON_ON()	0
++#define INFF_SCAN_ON()		0
++
++#endif /* defined(DEBUG) || defined(CONFIG_INF_TRACING) */
++
++#define MSGTRACE_VERSION 1
++#define MSGTRACE_HDR_TYPE_MSG 0
++#define MSGTRACE_HDR_TYPE_LOG 1
++
++#define inff_dbg_hex_dump(test, data, len, fmt, ...) \
++do { \
++	if (test) \
++		inff_dbg_hex_dump(data, len, fmt, ##__VA_ARGS__); \
++} while (0)
++
++extern int inff_msg_level;
++
++struct inff_pub;
 +#ifdef DEBUG
-+void inff_logring_dump(struct inff_pub *drvr, u8 ringid);
-+void inff_logring_fill(struct inff_pub *drvr, u8 ringid, u8 *data, u32 size);
-+int inff_logring_init(struct inff_pub *drvr, u8 ringid, u32 ring_item_size,
-+		      dump_callback_t dump_cb);
-+void inff_logring_deinit(struct inff_pub *drvr, u8 ringid);
-+int inff_logger_attach(struct inff_pub *drvr, u32 logger_level, u32 logring_depth);
-+void inff_logger_detach(struct inff_pub *drvr);
++struct dentry *inff_debugfs_get_devdir(struct inff_pub *drvr);
++void inff_debugfs_add_entry(struct inff_pub *drvr, const char *fn,
++			    int (*read_fn)(struct seq_file *seq, void *data));
++int inff_debug_create_memdump(struct inff_bus *bus, const void *data,
++			      size_t len);
++int inff_debug_fwlog_init(struct inff_pub *drvr);
 +#else
-+static inline void inff_logring_dump(struct inff_pub *drvr, u8 ringid)
++
++static inline struct dentry *inff_debugfs_get_devdir(struct inff_pub *drvr)
 +{
++	return ERR_PTR(-ENOENT);
 +}
 +
-+static inline void inff_logring_fill(struct inff_pub *drvr, u8 ringid, u8 *data, u32 size)
-+{
-+}
-+
-+static inline int inff_logring_init(struct inff_pub *drvr, u8 ringid, u32 ring_item_size,
-+				    dump_callback_t dump_cb)
-+{
-+	return 0;
-+}
-+
-+static inline void inff_logring_deinit(struct inff_pub *drvr, u8 ringid)
-+{
-+}
-+
-+static inline int inff_logger_attach(struct inff_pub *drvr, u32 logger_level, u32 logring_depth)
++static inline
++void inff_debugfs_add_entry(struct inff_pub *drvr, const char *fn,
++			    int (*read_fn)(struct seq_file *seq, void *data))
++{ }
++static inline
++int inff_debug_create_memdump(struct inff_bus *bus, const void *data,
++			      size_t len)
 +{
 +	return 0;
 +}
 +
-+static inline void inff_logger_detach(struct inff_pub *drvr)
++static inline
++int inff_debug_fwlog_init(struct inff_pub *drvr)
 +{
++	return 0;
 +}
-+#endif /* DEBUG */
++#endif
 +
-+#endif /* INFF_LOGGER_H */
++/* Message trace header */
++struct msgtrace_hdr {
++	u8	version;
++	u8	trace_type;
++	u16	len;    /* Len of the trace */
++	u32	seqnum; /* Sequence number of message */
++	/* Number of discarded bytes because of trace overflow  */
++	u32	discarded_bytes;
++	/* Number of discarded printf because of trace overflow */
++	u32	discarded_printf;
++};
++
++#define MSGTRACE_HDRLEN		sizeof(struct msgtrace_hdr)
++
++#endif /* INFF_DEBUG_H */
 -- 
 2.25.1
 
