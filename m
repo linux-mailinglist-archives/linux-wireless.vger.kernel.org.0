@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-27355-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27357-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8549B7D840
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:30:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1867CB7DAB1
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E621F16B241
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:20:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4261916DCCD
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E5C329506;
-	Tue, 16 Sep 2025 22:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656482E2DF2;
+	Tue, 16 Sep 2025 22:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="jggLwJZP"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="BTvriaDH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp9.infineon.com (smtp9.infineon.com [217.10.52.204])
+Received: from smtp2.infineon.com (smtp2.infineon.com [217.10.52.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE73E2F9DAF
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567412D94B4
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758061201; cv=none; b=ZrUk8x1V+e0yV3ujx324wgJNvTqg83gkQ/+jeKxi3sUTYgysUNMMdKpervsBYqc3p3PykgUWGfS3cgMboFXvkUqf1wAAE88Aj+1oOHYJLod/ul5WSWGf0eYscpJpoiwmIOZPW7BynQfK0+Zk1tdPvjSbQ9Iv/FKbYF7UN2aXdRo=
+	t=1758061214; cv=none; b=KrutqYZngrxGEmNtWCvj0FHQieiIS6pft+AIygOKx5Ew24X+D6w4a5LpxZ4+hO9ENeidRNaK5TJ5u2Ll6NZGyRXBixzFzLPZv8mj375EUELkSX6ShaYz/iqmqnClDYEfd5sMTssdnNoSu58xA3/ypFAYSXHlzM90DRWDGcgeqrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758061201; c=relaxed/simple;
-	bh=pDw/UXo+B6azJZKjz74Lbo3wv6fcTQPvILuWNzEHwwM=;
+	s=arc-20240116; t=1758061214; c=relaxed/simple;
+	bh=kUkJTn1FvdwL0/ga3JUhIhLtGQOAqhimuFrkzPhjnrI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jMe+lxOVC6bh8N5STVroJI5JG6Hgc5ZySbfnc2AKYSrBAJU01D4pO+nxrTXm8hC/daNqbFwS4qK0M9uP4G2zXfQ2eUZzmjFrOy8Tm5RIH4ZWDYDXmfpF/p3R83vn0mntTrYkmVpeynPIGKChV8votcYhjgeC/Njyg5lJ6jNtk6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=jggLwJZP; arc=none smtp.client-ip=217.10.52.204
+	 MIME-Version:Content-Type; b=ZZPPxSgZ/UTsZt0IWVn81BtBRvsYYW9smiXm2fK4b0v7ZYYRPdF2PYMIC0k2OaJR5jvsgsYzPEaVyh5L5xIeccvTX93etkVznFudKuXNd7M47ANJZFHP4FZtBdg9yVS5cInrzS8d9RRd6ihnAZSQYLUYdK5GCfvMpbiALkacTfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=BTvriaDH; arc=none smtp.client-ip=217.10.52.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1758061199; x=1789597199;
+  t=1758061211; x=1789597211;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pDw/UXo+B6azJZKjz74Lbo3wv6fcTQPvILuWNzEHwwM=;
-  b=jggLwJZPpwvFaf9zqGr+H0mc8S+whDmF9O1c8rN7y9uVNI0UrAMHD0MZ
-   ejgqgqDVmtkE4/z97sMwWZBSfCWRbxDo43btZepMhrykDI5p6kx6VDxNB
-   oUONUSp/QZOw1RfkKvm6a0qGysHFdRpy1oM+pIb9l3i0uty21c9AMi1Wv
-   s=;
-X-CSE-ConnectionGUID: 5C59Y9ygQrK+K3ykrRN2bw==
-X-CSE-MsgGUID: kqPB3bbNTvyZWJuguDf41g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="64783232"
+  bh=kUkJTn1FvdwL0/ga3JUhIhLtGQOAqhimuFrkzPhjnrI=;
+  b=BTvriaDHsersPFoyuswaug5uUUPJ6lo/4XMWmHBq2hIpwTM9GR7gTxig
+   171pRckm4Xj5wd+thJ6OQ55qS9Gu6BRMdZC+D6D4Xf7AgQCqwd7bj6+OT
+   sp9uhZVQT7fcY2539da/kszLYUoSixRJ1dXC83ltFYklK6375PQlwegux
+   A=;
+X-CSE-ConnectionGUID: GZOsTZGCRjCXr6Xcxy+tyA==
+X-CSE-MsgGUID: uTxVTZ3nSfmiEamdgUh5ug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="125093165"
 X-IronPort-AV: E=Sophos;i="6.18,270,1751234400"; 
-   d="scan'208";a="64783232"
+   d="scan'208";a="125093165"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE805.infineon.com) ([172.23.29.31])
-  by smtp9.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:18:48 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE805.infineon.com
- (172.23.29.31) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE803.infineon.com) ([172.23.29.29])
+  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:19:00 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE803.infineon.com
+ (172.23.29.29) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Wed, 17 Sep
- 2025 00:18:47 +0200
+ 2025 00:19:00 +0200
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.36; Wed, 17 Sep 2025 00:18:44 +0200
+ 15.2.1748.36; Wed, 17 Sep 2025 00:18:57 +0200
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>, Johannes Berg
 	<johannes@sipsolutions.net>
 CC: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
 	<wlan-kernel-dev-list@infineon.com>
-Subject: [PATCH wireless-next 01/57] wifi: nl80211/cfg80211: introduce new iface type for WLAN Sensing operation
-Date: Wed, 17 Sep 2025 03:47:16 +0530
-Message-ID: <20250916221821.4387-2-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next 02/57] wifi: nl80211/cfg80211: add support to do WLAN Sensing operation using PMSR
+Date: Wed, 17 Sep 2025 03:47:17 +0530
+Message-ID: <20250916221821.4387-3-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
 References: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
@@ -76,425 +76,750 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE806.infineon.com (172.23.29.32) To
+X-ClientProxiedBy: MUCSE814.infineon.com (172.23.29.40) To
  MUCSE827.infineon.com (172.23.29.20)
 
-WLAN sensing operation uses signal processing on the Wi-Fi signals received
-by a station device to detect physical obstructions and interpret movements
-with the help of Channel State Information (CSI), defined in IEEE 802.11bf.
+Introduce a mechanism to initiate WLAN Sensing request to collect the
+Channel State Information (CSI) from the WLAN device, by leveraging and
+extending the existing Peer Measurement Request (PMSR) infrastructure.
+PMSR so far was supporting only one type of peer measurement, which is FTM.
 
-Introduce a new wdev (non-netdev) interface type WLAN SENSE for 802.11bf,
-similar to a NAN or P2P Discovery interface. This new wdev interface helps
-in separating WLAN Sensing operation and the normal WLAN traffic. Also this
-new interface is used for any 802.11 frame exchanges to be done as part of
-the WLAN Sensing Measurement operation. Also add new WLAN SENSE Start and
-Stop nl80211 commends to allow the userspace to control this interface.
+* Allow the driver to register/advertise the WLAN Sensing Measurement
+Capabilities of the Device to the userspace through cfg80211.
+
+* Add support to parse the WLAN Sensing Measurement Request params passed
+by userspace and send it to the driver using the start_pmsr cfg8021_ops cb.
+And let driver return the collected CSI raw data to the userspace using the
+cfg80211_pmsr_report() notification.
+
+* Also have a provision for passing vendor-specific params while initiating
+the WLAN Sensing Mesaurement request to the driver.
+
+* Add the corresponding nl80211 attributes, struct and enum definitions to
+do the above mentioned operations.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- include/net/cfg80211.h       |  7 ++++
- include/uapi/linux/nl80211.h | 11 +++++++
- net/mac80211/cfg.c           |  1 +
- net/mac80211/chan.c          |  2 ++
- net/mac80211/iface.c         |  2 ++
- net/mac80211/util.c          |  1 +
- net/wireless/chan.c          |  2 ++
- net/wireless/core.c          | 26 +++++++++++++++
- net/wireless/nl80211.c       | 63 ++++++++++++++++++++++++++++++++++++
- net/wireless/rdev-ops.h      | 19 +++++++++++
- net/wireless/trace.h         | 10 ++++++
- net/wireless/util.c          |  1 +
- 12 files changed, 145 insertions(+)
+ include/linux/ieee80211.h    |   5 ++
+ include/net/cfg80211.h       |  84 +++++++++++++++++++-
+ include/uapi/linux/nl80211.h | 119 +++++++++++++++++++++++++++++
+ net/wireless/core.c          |  93 +++++++++++++++--------
+ net/wireless/core.h          |   3 +
+ net/wireless/nl80211.c       |  70 +++++++++++++++++
+ net/wireless/pmsr.c          | 143 +++++++++++++++++++++++++++++++++++
+ 7 files changed, 485 insertions(+), 32 deletions(-)
 
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index d350263f23f3..a3a2ac682fd4 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -3499,6 +3499,11 @@ ieee80211_bandwidth_indication_size_ok(const u8 *data, u8 len)
+ #define WLAN_ERP_USE_PROTECTION (1<<1)
+ #define WLAN_ERP_BARKER_PREAMBLE (1<<2)
+ 
++/* IEEE Std 802.11bf, Sensing Capabilities */
++#define IEEE80211_SENSING_CAPA_MAX_LTF_REP              8
++#define IEEE80211_SENSING_CAPA_MAX_CHAINS               8
++#define IEEE80211_SENSING_CAPA_MAX_MEASUREMENT_INTERVAL 0x7FFFFF
++
+ /* WLAN_ERP_BARKER_PREAMBLE values */
+ enum {
+ 	WLAN_ERP_PREAMBLE_SHORT = 0,
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 4072a67c9cc9..d6145556fcf4 100644
+index d6145556fcf4..4a753d92c2e5 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -4762,6 +4762,8 @@ struct mgmt_frame_regs {
-  *	links by calling cfg80211_mlo_reconf_add_done(). When calling
-  *	cfg80211_mlo_reconf_add_done() the bss pointer must be given for each
-  *	link for which MLO reconfiguration 'add' operation was requested.
-+ * @start_wlan_sense: Start the wlan sense device.
-+ * @stop_wlan_sense: Stop the given wlan sense device.
-  */
- struct cfg80211_ops {
- 	int	(*suspend)(struct wiphy *wiphy, struct cfg80211_wowlan *wow);
-@@ -5133,6 +5135,11 @@ struct cfg80211_ops {
- 				   struct cfg80211_ml_reconf_req *req);
- 	int	(*set_epcs)(struct wiphy *wiphy, struct net_device *dev,
- 			    bool val);
-+
-+	int	(*start_wlan_sense)(struct wiphy *wiphy,
-+				    struct wireless_dev *wdev);
-+	void	(*stop_wlan_sense)(struct wiphy *wiphy,
-+				   struct wireless_dev *wdev);
+@@ -4178,6 +4178,19 @@ struct cfg80211_pmsr_ftm_result {
+ 	    dist_spread_valid:1;
  };
  
- /*
++/**
++ * struct cfg80211_pmsr_sensing_result - Sensing measurement report
++ * @seq_number: sequence number of the sensing measurement report
++ * @data_len: length of @data
++ * @data: raw data of the sensing measurement report whose format is
++ *	defined/parsed by user
++ */
++struct cfg80211_pmsr_sensing_result {
++	u16 seq_number;
++	u32 data_len;
++	u8 *data;
++};
++
+ /**
+  * struct cfg80211_pmsr_result - peer measurement result
+  * @addr: address of the peer
+@@ -4192,6 +4205,7 @@ struct cfg80211_pmsr_ftm_result {
+  *	one type at a time, but you can report multiple results separately and
+  *	they're all aggregated for userspace.
+  * @ftm: FTM result
++ * @sensing: Sensing result
+  */
+ struct cfg80211_pmsr_result {
+ 	u64 host_time, ap_tsf;
+@@ -4206,6 +4220,7 @@ struct cfg80211_pmsr_result {
+ 
+ 	union {
+ 		struct cfg80211_pmsr_ftm_result ftm;
++		struct cfg80211_pmsr_sensing_result sensing;
+ 	};
+ };
+ 
+@@ -4252,18 +4267,60 @@ struct cfg80211_pmsr_ftm_request_peer {
+ 	u8 bss_color;
+ };
+ 
++/**
++ * struct cfg80211_pmsr_sensing_request_peer - Sensing request data
++ * @associated: indicates device is in associated state
++ * @interval: interval between two consecutive sensing exchange
++ * @duration: duration of a sensing exchange
++ * @expiry_exp: measurement session expiry exponent
++ * @tx_ltf_rep: TX LTF Repetition
++ * @rx_ltf_rep: RX LTF Repetition
++ * @tx_sts: number of TX space-time streams
++ * @rx_sts: number of RX space-time streams
++ * @num_rx_chains: number of RX chains
++ * @min_interval: minimum measurement interval between two consecutive
++ *	non-TB sensing measurement exchanges
++ * @vendor_req_len: length of @vendor_req
++ *	works only if vendor_mode of sensing capabilities is set
++ * @vendor_req: vendor request block, interpreted by vendor implementation
++ *	works only if vendor_mode of sensing capabilities is set
++ *
++ * See also nl80211 for the respective attribute documentation
++ */
++struct cfg80211_pmsr_sensing_request_peer {
++	u8 associated:1;
++	u32 interval;
++	u16 duration;
++	u8 expiry_exp;
++	u8 tx_ltf_rep;
++	u8 rx_ltf_rep;
++	u8 tx_sts;
++	u8 rx_sts;
++	u8 num_rx_chains;
++	u32 min_interval;
++	u16 vendor_req_len;
++	u8 *vendor_req;
++};
++
+ /**
+  * struct cfg80211_pmsr_request_peer - peer data for a peer measurement request
+  * @addr: MAC address
+  * @chandef: channel to use
+  * @report_ap_tsf: report the associated AP's TSF
++ * @type: type of peer measurement, see &enum nl80211_peer_measurement_type
+  * @ftm: FTM data, see &struct cfg80211_pmsr_ftm_request_peer
++ * @sensing: sensing data, see &struct cfg80211_pmsr_sensing_request_peer
+  */
+ struct cfg80211_pmsr_request_peer {
+ 	u8 addr[ETH_ALEN];
+ 	struct cfg80211_chan_def chandef;
+ 	u8 report_ap_tsf:1;
+-	struct cfg80211_pmsr_ftm_request_peer ftm;
++
++	enum nl80211_peer_measurement_type type;
++	union {
++		struct cfg80211_pmsr_ftm_request_peer ftm;
++		struct cfg80211_pmsr_sensing_request_peer sensing;
++	};
+ };
+ 
+ /**
+@@ -5556,6 +5613,7 @@ cfg80211_get_iftype_ext_capa(struct wiphy *wiphy, enum nl80211_iftype type);
+  * @max_peers: maximum number of peers in a single measurement
+  * @report_ap_tsf: can report assoc AP's TSF for radio resource measurement
+  * @randomize_mac_addr: can randomize MAC address for measurement
++ *
+  * @ftm: FTM measurement data
+  * @ftm.supported: FTM measurement is supported
+  * @ftm.asap: ASAP-mode is supported
+@@ -5571,6 +5629,18 @@ cfg80211_get_iftype_ext_capa(struct wiphy *wiphy, enum nl80211_iftype type);
+  *	not limited)
+  * @ftm.trigger_based: trigger based ranging measurement is supported
+  * @ftm.non_trigger_based: non trigger based ranging measurement is supported
++ *
++ * @sensing.supported: Sensing measurement is supported
++ * @sensing.associated: support sensing under device associated
++ * @sensing.unassocaited: support sensing under device un-associated
++ * @sensing.vendor_mode: indicating vendor sensing measurement procedure
++ *	is adopted
++ * @sensing.bandwidths: bitmap of bandwidths supported (&enum nl80211_chan_width)
++ * @sensing.max_tx_ltf_rep: maximum number of TX LTF Repetition
++ * @sensing.max_rx_ltf_rep: maximum number of RX LTF Repetition
++ * @sensing.min_interval: minimum measurement interval between two consecutive
++ *	non-TB sensing measurement exchanges
++ * @sensing.max_rx_chains: maximum number of RX chains
+  */
+ struct cfg80211_pmsr_capabilities {
+ 	unsigned int max_peers;
+@@ -5590,6 +5660,18 @@ struct cfg80211_pmsr_capabilities {
+ 		   trigger_based:1,
+ 		   non_trigger_based:1;
+ 	} ftm;
++
++	struct {
++		u8 supported:1,
++		   associated:1,
++		   unassociated:1,
++		   vendor_mode:1;
++		u32 bandwidths;
++		u8 max_tx_ltf_rep;
++		u8 max_rx_ltf_rep;
++		u32 min_interval;
++		u8 max_rx_chains;
++	} sensing;
+ };
+ 
+ /**
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index aed0b4c5d5e8..5599fb9d2f08 100644
+index 5599fb9d2f08..36152192e09b 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -1344,6 +1344,12 @@
-  *	control EPCS configuration. Used to notify userland on the current state
-  *	of EPCS.
+@@ -7439,6 +7439,7 @@ enum nl80211_preamble {
+  *	these numbers also for attributes
   *
-+ * @NL80211_CMD_START_WLAN_SENSE: Start WLAN SENSE operation, identified
-+ *	by its %NL80211_ATTR_WDEV interface. This interface must have been
-+ *	previously created with %NL80211_CMD_NEW_INTERFACE.
-+ * @NL80211_CMD_STOP_WLAN_SENSE: Stop WLAN SENSE operation, identified by
-+ *	its %NL80211_ATTR_WDEV interface.
+  * @NL80211_PMSR_TYPE_FTM: flight time measurement
++ * @NL80211_PMSR_TYPE_SENSING: WLAN sensing measurement
+  *
+  * @NUM_NL80211_PMSR_TYPES: internal
+  * @NL80211_PMSR_TYPE_MAX: highest type number
+@@ -7447,6 +7448,7 @@ enum nl80211_peer_measurement_type {
+ 	NL80211_PMSR_TYPE_INVALID,
+ 
+ 	NL80211_PMSR_TYPE_FTM,
++	NL80211_PMSR_TYPE_SENSING,
+ 
+ 	NUM_NL80211_PMSR_TYPES,
+ 	NL80211_PMSR_TYPE_MAX = NUM_NL80211_PMSR_TYPES - 1
+@@ -7831,6 +7833,123 @@ enum nl80211_peer_measurement_ftm_resp {
+ 	NL80211_PMSR_FTM_RESP_ATTR_MAX = NUM_NL80211_PMSR_FTM_RESP_ATTR - 1
+ };
+ 
++/**
++ * enum nl80211_peer_measurement_sensing_capa - Sensing capabilities
++ * @__NL80211_PMSR_SENSING_CAPA_ATTR_INVALID: invalid
 + *
-  * @NL80211_CMD_MAX: highest used command number
-  * @__NL80211_CMD_AFTER_LAST: internal use
-  */
-@@ -1604,6 +1610,9 @@ enum nl80211_commands {
- 	NL80211_CMD_ASSOC_MLO_RECONF,
- 	NL80211_CMD_EPCS_CFG,
- 
-+	NL80211_CMD_START_WLAN_SENSE,
-+	NL80211_CMD_STOP_WLAN_SENSE,
++ * @NL80211_PMSR_SENSING_CAPA_ATTR_ASSOCIATED: flag attribute represents
++ *	supporting sensing under device associated
++ * @NL80211_PMSR_SENSING_CAPA_ATTR_UNASSOCIATED: flag attribute represents
++ *	supporting sensing under device unassociated
++ * @NL80211_PMSR_SENSING_CAPA_ATTR_VENDOR_MODE: flag attribute indicating
++ *	support vendor sensing measurement procedure
++ * @NL80211_PMSR_SENSING_CAPA_ATTR_BANDWIDTHS: bitmap of values from
++ *	&enum nl80211_chan_width indicating the supported channel
++ *	bandwidths for sensing
++ * @NL80211_PMSR_SENSING_CAPA_ATTR_MAX_TX_LTF_REP: set to maximum number of
++ *	TX LTF Repetition minus 1 (u8, 0-7)
++ * @NL80211_PMSR_SENSING_CAPA_ATTR_MAX_RX_LTF_REP: set to maximum number of
++ *	RX LTF Repetition minus 1 (u8, 0-7)
++ * @NL80211_PMSR_SENSING_CAPA_ATTR_MIN_INTERVAL: indicating minimum
++ *	measurement interval between two consecutive non-TB sensing
++ *	measurement exchanges (u32, 100us, 0-8388607)
++ * @NL80211_PMSR_SENSING_CAPA_ATTR_MAX_RX_CHAINS: set to maximum number of
++ *	RX chains minus 1 (u8, 0-7)
++ *
++ * @NUM_NL80211_PMSR_SENSING_CAPA_ATTR: internal
++ * @NL80211_PMSR_SENSING_CAPA_ATTR_MAX: highest attribute number
++ */
++enum nl80211_peer_measurement_sensing_capa {
++	__NL80211_PMSR_SENSING_CAPA_ATTR_INVALID,
 +
- 	/* add new commands above here */
- 
- 	/* used to define NL80211_CMD_MAX below */
-@@ -3592,6 +3601,7 @@ enum nl80211_attrs {
-  * @NL80211_IFTYPE_OCB: Outside Context of a BSS
-  *	This mode corresponds to the MIB variable dot11OCBActivated=true
-  * @NL80211_IFTYPE_NAN: NAN device interface type (not a netdev)
-+ * @NL80211_IFTYPE_WLAN_SENSE: WLAN Sensing device interface type (not a netdev)
-  * @NL80211_IFTYPE_MAX: highest interface type number currently defined
-  * @NUM_NL80211_IFTYPES: number of defined interface types
-  *
-@@ -3613,6 +3623,7 @@ enum nl80211_iftype {
- 	NL80211_IFTYPE_P2P_DEVICE,
- 	NL80211_IFTYPE_OCB,
- 	NL80211_IFTYPE_NAN,
-+	NL80211_IFTYPE_WLAN_SENSE,
- 
- 	/* keep last */
- 	NUM_NL80211_IFTYPES,
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index b26f61f13605..9f62f30a842c 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -592,6 +592,7 @@ static int ieee80211_add_key(struct wiphy *wiphy, struct net_device *dev,
- 	case NL80211_IFTYPE_MONITOR:
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 	case NL80211_IFTYPE_UNSPECIFIED:
- 	case NUM_NL80211_IFTYPES:
- 	case NL80211_IFTYPE_P2P_CLIENT:
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 57065714cf8c..5b304988e712 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -353,6 +353,7 @@ ieee80211_get_chanctx_max_required_bw(struct ieee80211_local *local,
- 			break;
- 		case NL80211_IFTYPE_P2P_DEVICE:
- 		case NL80211_IFTYPE_NAN:
-+		case NL80211_IFTYPE_WLAN_SENSE:
- 			continue;
- 		case NL80211_IFTYPE_MONITOR:
- 			WARN_ON_ONCE(!ieee80211_hw_check(&local->hw,
-@@ -1301,6 +1302,7 @@ ieee80211_link_chanctx_reservation_complete(struct ieee80211_link_data *link)
- 	case NL80211_IFTYPE_P2P_GO:
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 	case NUM_NL80211_IFTYPES:
- 		WARN_ON(1);
- 		break;
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 07ba68f7cd81..2537c4255efc 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1320,6 +1320,7 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	case NL80211_IFTYPE_OCB:
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 		/* no special treatment */
- 		break;
- 	case NL80211_IFTYPE_UNSPECIFIED:
-@@ -1888,6 +1889,7 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 		sdata->vif.bss_conf.bssid = sdata->vif.addr;
- 		break;
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 	case NL80211_IFTYPE_UNSPECIFIED:
- 	case NL80211_IFTYPE_WDS:
- 	case NUM_NL80211_IFTYPES:
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 9eb35e3b9e52..3a6c2536f338 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2064,6 +2064,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 		case NL80211_IFTYPE_AP_VLAN:
- 		case NL80211_IFTYPE_MONITOR:
- 		case NL80211_IFTYPE_P2P_DEVICE:
-+		case NL80211_IFTYPE_WLAN_SENSE:
- 			/* nothing to do */
- 			break;
- 		case NL80211_IFTYPE_UNSPECIFIED:
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 193734b7f9dc..3593a48f9a15 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -769,6 +769,7 @@ int cfg80211_chandef_dfs_required(struct wiphy *wiphy,
- 	case NL80211_IFTYPE_AP_VLAN:
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 		break;
- 	case NL80211_IFTYPE_WDS:
- 	case NL80211_IFTYPE_UNSPECIFIED:
-@@ -892,6 +893,7 @@ bool cfg80211_beaconing_iface_active(struct wireless_dev *wdev)
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	/* Can NAN type be considered as beaconing interface? */
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 		break;
- 	case NL80211_IFTYPE_UNSPECIFIED:
- 	case NL80211_IFTYPE_WDS:
++	NL80211_PMSR_SENSING_CAPA_ATTR_ASSOCIATED,
++	NL80211_PMSR_SENSING_CAPA_ATTR_UNASSOCIATED,
++	NL80211_PMSR_SENSING_CAPA_ATTR_VENDOR_MODE,
++	NL80211_PMSR_SENSING_CAPA_ATTR_BANDWIDTHS,
++	NL80211_PMSR_SENSING_CAPA_ATTR_MAX_TX_LTF_REP,
++	NL80211_PMSR_SENSING_CAPA_ATTR_MAX_RX_LTF_REP,
++	NL80211_PMSR_SENSING_CAPA_ATTR_MIN_INTERVAL,
++	NL80211_PMSR_SENSING_CAPA_ATTR_MAX_RX_CHAINS,
++
++	/* keep last */
++	NUM_NL80211_PMSR_SENSING_CAPA_ATTR,
++	NL80211_PMSR_SENSING_CAPA_ATTR_MAX = NUM_NL80211_PMSR_SENSING_CAPA_ATTR - 1
++};
++
++/**
++ * enum nl80211_peer_measurement_sensing_req - Sensing request attributes
++ * @__NL80211_PMSR_SENSING_REQ_ATTR_INVALID: invalid
++ *
++ * @NL80211_PMSR_SENSING_REQ_ATTR_ASSOCIATED: device is in associated state
++ *	(flag)
++ * @NL80211_PMSR_SENSING_REQ_ATTR_INTERVAL: interval between two consecutive
++ *	sensing exchange (u32, optional, ms)
++ * @NL80211_PMSR_SENSING_REQ_ATTR_DURATION: duration of a sensing exchange
++ *	(u16, optional, ms)
++ * @NL80211_PMSR_SENSING_REQ_ATTR_EXPIRY_EXP: measurement session expiry
++ *	exponent (u8, 0-15)
++ * @NL80211_PMSR_SENSING_REQ_ATTR_TX_LTF_REP: set to the number of LTF
++ *	repetitions minus 1 (u8, 0-7)
++ * @NL80211_PMSR_SENSING_REQ_ATTR_RX_LTF_REP: set to the number of LTF
++ *	repetitions minus 1 (u8, 0-7)
++ * @NL80211_PMSR_SENSING_REQ_ATTR_TX_STS: set to the number of TX space-time
++ *	streams minus 1 (u8, 0-7)
++ * @NL80211_PMSR_SENSING_REQ_ATTR_RX_STS: set to the number of RX space-time
++ *	streams minus 1 (u8, 0-7)
++ * @NL80211_PMSR_SENSING_REQ_ATTR_NUM_RX_CHAINS: requested number of RX chains
++ *	(u8, 0-7)
++ * @NL80211_PMSR_SENSING_REQ_ATTR_MIN_INTERVAL: minimum measurement interval
++ *	between two consecutive non-TB sensing measurement exchanges
++ *	(u32, 100us, 0-8388607)
++ * @NL80211_PMSR_SENSING_REQ_ATTR_VENDOR_REQ: vendor request block if vendor
++ *	procedure is adopted (binary, optional)
++ *
++ * @NUM_NL80211_PMSR_SENSING_REQ_ATTR: internal
++ * @NL80211_PMSR_SENSING_REQ_ATTR_MAX: highest attribute number
++ */
++enum nl80211_peer_measurement_sensing_req {
++	__NL80211_PMSR_SENSING_REQ_ATTR_INVALID,
++
++	NL80211_PMSR_SENSING_REQ_ATTR_ASSOCIATED,
++	NL80211_PMSR_SENSING_REQ_ATTR_INTERVAL,
++	NL80211_PMSR_SENSING_REQ_ATTR_DURATION,
++	NL80211_PMSR_SENSING_REQ_ATTR_EXPIRY_EXP,
++	NL80211_PMSR_SENSING_REQ_ATTR_TX_LTF_REP,
++	NL80211_PMSR_SENSING_REQ_ATTR_RX_LTF_REP,
++	NL80211_PMSR_SENSING_REQ_ATTR_TX_STS,
++	NL80211_PMSR_SENSING_REQ_ATTR_RX_STS,
++	NL80211_PMSR_SENSING_REQ_ATTR_NUM_RX_CHAINS,
++	NL80211_PMSR_SENSING_REQ_ATTR_MIN_INTERVAL,
++	NL80211_PMSR_SENSING_REQ_ATTR_VENDOR_REQ,
++
++	/* keep last */
++	NUM_NL80211_PMSR_SENSING_REQ_ATTR,
++	NL80211_PMSR_SENSING_REQ_ATTR_MAX = NUM_NL80211_PMSR_SENSING_REQ_ATTR - 1
++};
++
++/**
++ * enum nl80211_peer_measurement_sensing_req - Sensing request attributes
++ * @__NL80211_PMSR_SENSING_RESP_ATTR_INVALID: invalid
++ *
++ * @NL80211_PMSR_SENSING_RESP_ATTR_REPORT_INDEX: index of the sensing measurement
++ *	report (u8)
++ * @NL80211_PMSR_SENSING_RESP_ATTR_DATA: raw data of the sensing measurement
++ *	report (binary)
++ *
++ * @NUM_NL80211_PMSR_SENSING_RESP_ATTR: internal
++ * @NL80211_PMSR_SENSING_RESP_ATTR_MAX: highest attribute number
++ */
++enum nl80211_peer_measurement_sensing_resp {
++	__NL80211_PMSR_SENSING_RESP_ATTR_INVALID,
++
++	NL80211_PMSR_SENSING_RESP_ATTR_REPORT_INDEX,
++	NL80211_PMSR_SENSING_RESP_ATTR_DATA,
++
++	/* keep last */
++	NUM_NL80211_PMSR_SENSING_RESP_ATTR,
++	NL80211_PMSR_SENSING_RESP_ATTR_MAX = NUM_NL80211_PMSR_SENSING_RESP_ATTR - 1
++};
++
+ /**
+  * enum nl80211_obss_pd_attributes - OBSS packet detection attributes
+  * @__NL80211_HE_OBSS_PD_ATTR_INVALID: Invalid
 diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 797f9f2004a6..a8e982ae8628 100644
+index a8e982ae8628..0692469dca60 100644
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -265,6 +265,23 @@ void cfg80211_stop_nan(struct cfg80211_registered_device *rdev,
- 	rdev->opencount--;
- }
+@@ -786,39 +786,70 @@ int wiphy_register(struct wiphy *wiphy)
+ 	if (WARN_ON(wiphy->interface_modes & BIT(NL80211_IFTYPE_WDS)))
+ 		return -EINVAL;
+ 
+-	if (WARN_ON(wiphy->pmsr_capa && !wiphy->pmsr_capa->ftm.supported))
++	if (WARN_ON(wiphy->pmsr_capa &&
++		    !(wiphy->pmsr_capa->ftm.supported ||
++		    wiphy->pmsr_capa->sensing.supported)))
+ 		return -EINVAL;
+ 
+-	if (wiphy->pmsr_capa && wiphy->pmsr_capa->ftm.supported) {
+-		if (WARN_ON(!wiphy->pmsr_capa->ftm.asap &&
+-			    !wiphy->pmsr_capa->ftm.non_asap))
+-			return -EINVAL;
+-		if (WARN_ON(!wiphy->pmsr_capa->ftm.preambles ||
+-			    !wiphy->pmsr_capa->ftm.bandwidths))
+-			return -EINVAL;
+-		if (WARN_ON(wiphy->pmsr_capa->ftm.preambles &
+-				~(BIT(NL80211_PREAMBLE_LEGACY) |
+-				  BIT(NL80211_PREAMBLE_HT) |
+-				  BIT(NL80211_PREAMBLE_VHT) |
+-				  BIT(NL80211_PREAMBLE_HE) |
+-				  BIT(NL80211_PREAMBLE_DMG))))
+-			return -EINVAL;
+-		if (WARN_ON((wiphy->pmsr_capa->ftm.trigger_based ||
+-			     wiphy->pmsr_capa->ftm.non_trigger_based) &&
+-			    !(wiphy->pmsr_capa->ftm.preambles &
+-			      BIT(NL80211_PREAMBLE_HE))))
+-			return -EINVAL;
+-		if (WARN_ON(wiphy->pmsr_capa->ftm.bandwidths &
+-				~(BIT(NL80211_CHAN_WIDTH_20_NOHT) |
+-				  BIT(NL80211_CHAN_WIDTH_20) |
+-				  BIT(NL80211_CHAN_WIDTH_40) |
+-				  BIT(NL80211_CHAN_WIDTH_80) |
+-				  BIT(NL80211_CHAN_WIDTH_80P80) |
+-				  BIT(NL80211_CHAN_WIDTH_160) |
+-				  BIT(NL80211_CHAN_WIDTH_320) |
+-				  BIT(NL80211_CHAN_WIDTH_5) |
+-				  BIT(NL80211_CHAN_WIDTH_10))))
+-			return -EINVAL;
++	if (wiphy->pmsr_capa) {
++		if (wiphy->pmsr_capa->ftm.supported) {
++			if (WARN_ON(!wiphy->pmsr_capa->ftm.asap &&
++				    !wiphy->pmsr_capa->ftm.non_asap))
++				return -EINVAL;
++			if (WARN_ON(!wiphy->pmsr_capa->ftm.preambles ||
++				    !wiphy->pmsr_capa->ftm.bandwidths))
++				return -EINVAL;
++			if (WARN_ON(wiphy->pmsr_capa->ftm.preambles &
++					~(BIT(NL80211_PREAMBLE_LEGACY) |
++					  BIT(NL80211_PREAMBLE_HT) |
++					  BIT(NL80211_PREAMBLE_VHT) |
++					  BIT(NL80211_PREAMBLE_HE) |
++					  BIT(NL80211_PREAMBLE_DMG))))
++				return -EINVAL;
++			if (WARN_ON((wiphy->pmsr_capa->ftm.trigger_based ||
++				     wiphy->pmsr_capa->ftm.non_trigger_based) &&
++				    !(wiphy->pmsr_capa->ftm.preambles &
++				      BIT(NL80211_PREAMBLE_HE))))
++				return -EINVAL;
++			if (WARN_ON(wiphy->pmsr_capa->ftm.bandwidths &
++					~(BIT(NL80211_CHAN_WIDTH_20_NOHT) |
++					  BIT(NL80211_CHAN_WIDTH_20) |
++					  BIT(NL80211_CHAN_WIDTH_40) |
++					  BIT(NL80211_CHAN_WIDTH_80) |
++					  BIT(NL80211_CHAN_WIDTH_80P80) |
++					  BIT(NL80211_CHAN_WIDTH_160) |
++					  BIT(NL80211_CHAN_WIDTH_320) |
++					  BIT(NL80211_CHAN_WIDTH_5) |
++					  BIT(NL80211_CHAN_WIDTH_10))))
++				return -EINVAL;
++		}
++
++		if (wiphy->pmsr_capa->sensing.supported) {
++			if (WARN_ON(!wiphy->pmsr_capa->sensing.associated &&
++				    !wiphy->pmsr_capa->sensing.unassociated))
++				return -EINVAL;
++			if (WARN_ON((wiphy->pmsr_capa->sensing.max_tx_ltf_rep >
++				     IEEE80211_SENSING_CAPA_MAX_LTF_REP - 1) ||
++				     (wiphy->pmsr_capa->sensing.max_rx_ltf_rep >
++				     IEEE80211_SENSING_CAPA_MAX_LTF_REP - 1) ||
++				     (wiphy->pmsr_capa->sensing.max_rx_chains >
++				     IEEE80211_SENSING_CAPA_MAX_CHAINS - 1)))
++				return -EINVAL;
++			if (WARN_ON(wiphy->pmsr_capa->sensing.min_interval >
++				    IEEE80211_SENSING_CAPA_MAX_MEASUREMENT_INTERVAL))
++				return -EINVAL;
++			if (WARN_ON(wiphy->pmsr_capa->sensing.bandwidths &
++					~(BIT(NL80211_CHAN_WIDTH_20_NOHT) |
++					  BIT(NL80211_CHAN_WIDTH_20) |
++					  BIT(NL80211_CHAN_WIDTH_40) |
++					  BIT(NL80211_CHAN_WIDTH_80) |
++					  BIT(NL80211_CHAN_WIDTH_80P80) |
++					  BIT(NL80211_CHAN_WIDTH_160) |
++					  BIT(NL80211_CHAN_WIDTH_320) |
++					  BIT(NL80211_CHAN_WIDTH_5) |
++					  BIT(NL80211_CHAN_WIDTH_10))))
++				return -EINVAL;
++		}
+ 	}
+ 
+ 	if (WARN_ON((wiphy->regulatory_flags & REGULATORY_WIPHY_SELF_MANAGED) &&
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index b6bd7f4d6385..9ddf4075e969 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -544,6 +544,9 @@ void cfg80211_stop_p2p_device(struct cfg80211_registered_device *rdev,
+ void cfg80211_stop_nan(struct cfg80211_registered_device *rdev,
+ 		       struct wireless_dev *wdev);
  
 +void cfg80211_stop_wlan_sense(struct cfg80211_registered_device *rdev,
-+			      struct wireless_dev *wdev)
-+{
-+	lockdep_assert_held(&rdev->wiphy.mtx);
++			      struct wireless_dev *wdev);
 +
-+	if (WARN_ON(wdev->iftype != NL80211_IFTYPE_WLAN_SENSE))
-+		return;
-+
-+	if (!wdev_running(wdev))
-+		return;
-+
-+	rdev_stop_wlan_sense(rdev, wdev);
-+	wdev->is_running = false;
-+
-+	rdev->opencount--;
-+}
-+
- void cfg80211_shutdown_all_interfaces(struct wiphy *wiphy)
- {
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-@@ -667,6 +684,11 @@ int wiphy_verify_iface_combinations(struct wiphy *wiphy,
- 				    c->limits[j].max > 1))
- 				return -EINVAL;
- 
-+			/* Only a single WLAN Sense interface can be allowed */
-+			if (WARN_ON(types & BIT(NL80211_IFTYPE_WLAN_SENSE) &&
-+				    c->limits[j].max > 1))
-+				return -EINVAL;
-+
- 			/*
- 			 * This isn't well-defined right now. If you have an
- 			 * IBSS interface, then its beacon interval may change
-@@ -1297,6 +1319,9 @@ static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
- 	case NL80211_IFTYPE_NAN:
- 		cfg80211_stop_nan(rdev, wdev);
- 		break;
-+	case NL80211_IFTYPE_WLAN_SENSE:
-+		cfg80211_stop_wlan_sense(rdev, wdev);
-+		break;
- 	default:
- 		break;
- 	}
-@@ -1400,6 +1425,7 @@ void cfg80211_leave(struct cfg80211_registered_device *rdev,
- 		break;
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 		/* cannot happen, has no netdev */
- 		break;
- 	case NL80211_IFTYPE_AP_VLAN:
+ struct cfg80211_internal_bss *
+ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 		    struct cfg80211_internal_bss *tmp,
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index b7bc7e5e81dd..70717af1fbcd 100644
+index 70717af1fbcd..5ce75034cf3c 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -1642,6 +1642,7 @@ static int nl80211_key_allowed(struct wireless_dev *wdev)
- 	case NL80211_IFTYPE_MONITOR:
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	case NL80211_IFTYPE_WDS:
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 	case NUM_NL80211_IFTYPES:
- 		return -EINVAL;
- 	}
-@@ -4642,6 +4643,7 @@ static int _nl80211_new_interface(struct sk_buff *skb, struct genl_info *info)
- 		       wdev->u.mesh.id_up_len);
- 		break;
- 	case NL80211_IFTYPE_NAN:
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 		/*
- 		 * P2P Device and NAN do not have a netdev, so don't go
-@@ -13687,6 +13689,7 @@ static int nl80211_register_mgmt(struct sk_buff *skb, struct genl_info *info)
- 	case NL80211_IFTYPE_MESH_POINT:
- 	case NL80211_IFTYPE_P2P_GO:
- 	case NL80211_IFTYPE_P2P_DEVICE:
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 		break;
- 	case NL80211_IFTYPE_NAN:
- 		if (!wiphy_ext_feature_isset(wdev->wiphy,
-@@ -13748,6 +13751,7 @@ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
- 	case NL80211_IFTYPE_AP_VLAN:
- 	case NL80211_IFTYPE_MESH_POINT:
- 	case NL80211_IFTYPE_P2P_GO:
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 		break;
- 	case NL80211_IFTYPE_NAN:
- 		if (!wiphy_ext_feature_isset(wdev->wiphy,
-@@ -13872,6 +13876,7 @@ static int nl80211_tx_mgmt_cancel_wait(struct sk_buff *skb, struct genl_info *in
- 	case NL80211_IFTYPE_AP_VLAN:
- 	case NL80211_IFTYPE_P2P_GO:
- 	case NL80211_IFTYPE_P2P_DEVICE:
-+	case NL80211_IFTYPE_WLAN_SENSE:
- 		break;
- 	case NL80211_IFTYPE_NAN:
- 		if (!wiphy_ext_feature_isset(wdev->wiphy,
-@@ -15455,6 +15460,50 @@ static int nl80211_stop_nan(struct sk_buff *skb, struct genl_info *info)
+@@ -343,10 +343,28 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
+ 	[NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR] = { .type = NLA_U8 },
+ };
+ 
++static const struct nla_policy
++nl80211_pmsr_sensing_req_attr_policy[NL80211_PMSR_SENSING_REQ_ATTR_MAX + 1] = {
++	[NL80211_PMSR_SENSING_REQ_ATTR_ASSOCIATED] = { .type = NLA_FLAG },
++	[NL80211_PMSR_SENSING_REQ_ATTR_INTERVAL] = { .type = NLA_U32 },
++	[NL80211_PMSR_SENSING_REQ_ATTR_DURATION] = { .type = NLA_U16 },
++	[NL80211_PMSR_SENSING_REQ_ATTR_EXPIRY_EXP] = { .type = NLA_U8 },
++	[NL80211_PMSR_SENSING_REQ_ATTR_TX_LTF_REP] = { .type = NLA_U8 },
++	[NL80211_PMSR_SENSING_REQ_ATTR_RX_LTF_REP] = { .type = NLA_U8 },
++	[NL80211_PMSR_SENSING_REQ_ATTR_TX_STS] = { .type = NLA_U8 },
++	[NL80211_PMSR_SENSING_REQ_ATTR_RX_STS] = { .type = NLA_U8 },
++	[NL80211_PMSR_SENSING_REQ_ATTR_NUM_RX_CHAINS] = { .type = NLA_U8 },
++	[NL80211_PMSR_SENSING_REQ_ATTR_MIN_INTERVAL] = { .type = NLA_U32 },
++	[NL80211_PMSR_SENSING_REQ_ATTR_VENDOR_REQ] = { .type = NLA_BINARY,
++					.len = U8_MAX },
++};
++
+ static const struct nla_policy
+ nl80211_pmsr_req_data_policy[NL80211_PMSR_TYPE_MAX + 1] = {
+ 	[NL80211_PMSR_TYPE_FTM] =
+ 		NLA_POLICY_NESTED(nl80211_pmsr_ftm_req_attr_policy),
++	[NL80211_PMSR_TYPE_SENSING] =
++		NLA_POLICY_NESTED(nl80211_pmsr_sensing_req_attr_policy),
+ };
+ 
+ static const struct nla_policy
+@@ -2267,6 +2285,55 @@ nl80211_send_pmsr_ftm_capa(const struct cfg80211_pmsr_capabilities *cap,
  	return 0;
  }
  
-+static int nl80211_start_wlan_sense(struct sk_buff *skb, struct genl_info *info)
++static int
++nl80211_send_pmsr_sensing_capa(const struct cfg80211_pmsr_capabilities *cap,
++			       struct sk_buff *msg)
 +{
-+	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-+	struct wireless_dev *wdev = info->user_ptr[1];
-+	int err;
++	struct nlattr *sensing;
 +
-+	if (wdev->iftype != NL80211_IFTYPE_WLAN_SENSE)
-+		return -EOPNOTSUPP;
++	if (!cap->sensing.supported)
++		return 0;
 +
-+	if (!rdev->ops->start_wlan_sense)
-+		return -EOPNOTSUPP;
++	sensing = nla_nest_start_noflag(msg, NL80211_PMSR_TYPE_SENSING);
++	if (!sensing)
++		return -ENOBUFS;
 +
-+	if (wdev_running(wdev))
-+		return -EEXIST;
++	if (cap->sensing.associated &&
++	    nla_put_flag(msg, NL80211_PMSR_SENSING_CAPA_ATTR_ASSOCIATED))
++		return -ENOBUFS;
 +
-+	if (rfkill_blocked(rdev->wiphy.rfkill))
-+		return -ERFKILL;
++	if (cap->sensing.unassociated &&
++	    nla_put_flag(msg, NL80211_PMSR_SENSING_CAPA_ATTR_UNASSOCIATED))
++		return -ENOBUFS;
 +
-+	err = rdev_start_wlan_sense(rdev, wdev);
-+	if (err)
-+		return err;
++	if (cap->sensing.vendor_mode &&
++	    nla_put_flag(msg, NL80211_PMSR_SENSING_CAPA_ATTR_VENDOR_MODE))
++		return -ENOBUFS;
 +
-+	wdev->is_running = true;
-+	rdev->opencount++;
++	if (nla_put_u32(msg, NL80211_PMSR_SENSING_CAPA_ATTR_BANDWIDTHS,
++			cap->sensing.bandwidths))
++		return -ENOBUFS;
 +
++	if (nla_put_u8(msg, NL80211_PMSR_SENSING_CAPA_ATTR_MAX_TX_LTF_REP,
++		       cap->sensing.max_tx_ltf_rep))
++		return -ENOBUFS;
++
++	if (nla_put_u8(msg, NL80211_PMSR_SENSING_CAPA_ATTR_MAX_RX_LTF_REP,
++		       cap->sensing.max_rx_ltf_rep))
++		return -ENOBUFS;
++
++	if (nla_put_u32(msg, NL80211_PMSR_SENSING_CAPA_ATTR_MIN_INTERVAL,
++			cap->sensing.min_interval))
++		return -ENOBUFS;
++
++	if (nla_put_u8(msg, NL80211_PMSR_SENSING_CAPA_ATTR_MAX_RX_CHAINS,
++		       cap->sensing.max_rx_chains))
++		return -ENOBUFS;
++
++	nla_nest_end(msg, sensing);
 +	return 0;
 +}
 +
-+static int nl80211_stop_wlan_sense(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-+	struct wireless_dev *wdev = info->user_ptr[1];
-+
-+	if (wdev->iftype != NL80211_IFTYPE_WLAN_SENSE)
-+		return -EOPNOTSUPP;
-+
-+	if (!rdev->ops->stop_wlan_sense)
-+		return -EOPNOTSUPP;
-+
-+	cfg80211_stop_wlan_sense(rdev, wdev);
-+
-+	return 0;
-+}
-+
- static int validate_nan_filter(struct nlattr *filter_attr)
+ static int nl80211_send_pmsr_capa(struct cfg80211_registered_device *rdev,
+ 				  struct sk_buff *msg)
  {
- 	struct nlattr *attr;
-@@ -18755,6 +18804,20 @@ static const struct genl_small_ops nl80211_small_ops[] = {
- 		.flags = GENL_UNS_ADMIN_PERM,
- 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
- 	},
-+	{
-+		.cmd = NL80211_CMD_START_WLAN_SENSE,
-+		.doit = nl80211_start_wlan_sense,
-+		.flags = GENL_UNS_ADMIN_PERM,
-+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV |
-+					 NL80211_FLAG_NEED_RTNL),
-+	},
-+	{
-+		.cmd = NL80211_CMD_STOP_WLAN_SENSE,
-+		.doit = nl80211_stop_wlan_sense,
-+		.flags = GENL_UNS_ADMIN_PERM,
-+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_WDEV_UP |
-+					 NL80211_FLAG_NEED_RTNL),
-+	},
- };
+@@ -2303,6 +2370,9 @@ static int nl80211_send_pmsr_capa(struct cfg80211_registered_device *rdev,
+ 	if (nl80211_send_pmsr_ftm_capa(cap, msg))
+ 		return -ENOBUFS;
  
- static struct genl_family nl80211_fam __ro_after_init = {
-diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-index ac6884bacf3f..eb599b9f33d1 100644
---- a/net/wireless/rdev-ops.h
-+++ b/net/wireless/rdev-ops.h
-@@ -1060,6 +1060,25 @@ rdev_nan_change_conf(struct cfg80211_registered_device *rdev,
- 	return ret;
++	if (nl80211_send_pmsr_sensing_capa(cap, msg))
++		return -ENOBUFS;
++
+ 	nla_nest_end(msg, caps);
+ 	nla_nest_end(msg, pmsr);
+ 
+diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
+index a117f5093ca2..6eddb7a75356 100644
+--- a/net/wireless/pmsr.c
++++ b/net/wireless/pmsr.c
+@@ -189,6 +189,114 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	return 0;
  }
  
-+static inline int rdev_start_wlan_sense(struct cfg80211_registered_device *rdev,
-+					struct wireless_dev *wdev)
++static int pmsr_parse_sensing(struct cfg80211_registered_device *rdev,
++			      struct nlattr *sensingreq,
++			      struct cfg80211_pmsr_request_peer *out,
++			      struct genl_info *info)
 +{
-+	int ret;
++	const struct cfg80211_pmsr_capabilities *capa = rdev->wiphy.pmsr_capa;
++	struct nlattr *tb[NL80211_PMSR_SENSING_REQ_ATTR_MAX + 1];
 +
-+	trace_rdev_start_wlan_sense(&rdev->wiphy, wdev);
-+	ret = rdev->ops->start_wlan_sense(&rdev->wiphy, wdev);
-+	trace_rdev_return_int(&rdev->wiphy, ret);
-+	return ret;
++	nla_parse_nested(tb, NL80211_PMSR_SENSING_REQ_ATTR_MAX,
++			 sensingreq, NULL, NULL);
++
++	out->sensing.associated = !!tb[NL80211_PMSR_SENSING_REQ_ATTR_ASSOCIATED];
++	if (out->sensing.associated && !capa->sensing.associated) {
++		NL_SET_ERR_MSG(info->extack, "SENSING: associated mode not supported");
++		return -EINVAL;
++	}
++	if (!out->sensing.associated && !capa->sensing.unassociated) {
++		NL_SET_ERR_MSG(info->extack, "SENSING: unassociated mode not supported");
++		return -EINVAL;
++	}
++
++	out->sensing.interval = 10;
++	if (tb[NL80211_PMSR_SENSING_REQ_ATTR_INTERVAL])
++		out->sensing.interval = nla_get_u32(tb[NL80211_PMSR_SENSING_REQ_ATTR_INTERVAL]);
++
++	out->sensing.duration = 10;
++	if (tb[NL80211_PMSR_SENSING_REQ_ATTR_DURATION])
++		out->sensing.duration = nla_get_u16(tb[NL80211_PMSR_SENSING_REQ_ATTR_DURATION]);
++
++	out->sensing.expiry_exp = 0;
++	if (tb[NL80211_PMSR_SENSING_REQ_ATTR_EXPIRY_EXP])
++		out->sensing.expiry_exp = nla_get_u8(tb[NL80211_PMSR_SENSING_REQ_ATTR_EXPIRY_EXP]);
++	if (out->sensing.expiry_exp > 15) {
++		NL_SET_ERR_MSG_ATTR(info->extack,
++				    tb[NL80211_PMSR_SENSING_REQ_ATTR_EXPIRY_EXP],
++				    "SENSING: invalid Session Expiry Exponent");
++		return -EINVAL;
++	}
++
++	out->sensing.tx_ltf_rep = 0;
++	if (tb[NL80211_PMSR_SENSING_REQ_ATTR_TX_LTF_REP])
++		out->sensing.tx_ltf_rep = nla_get_u8(tb[NL80211_PMSR_SENSING_REQ_ATTR_TX_LTF_REP]);
++	if (out->sensing.tx_ltf_rep > capa->sensing.max_tx_ltf_rep) {
++		NL_SET_ERR_MSG_ATTR(info->extack,
++				    tb[NL80211_PMSR_SENSING_REQ_ATTR_TX_LTF_REP],
++				    "SENSING: invalid TX LTF Repetition");
++		return -EINVAL;
++	}
++
++	out->sensing.rx_ltf_rep = 0;
++	if (tb[NL80211_PMSR_SENSING_REQ_ATTR_RX_LTF_REP])
++		out->sensing.rx_ltf_rep = nla_get_u8(tb[NL80211_PMSR_SENSING_REQ_ATTR_RX_LTF_REP]);
++	if (out->sensing.rx_ltf_rep > capa->sensing.max_rx_ltf_rep) {
++		NL_SET_ERR_MSG_ATTR(info->extack,
++				    tb[NL80211_PMSR_SENSING_REQ_ATTR_RX_LTF_REP],
++				    "SENSING: invalid RX LTF Repetition");
++		return -EINVAL;
++	}
++
++	out->sensing.tx_sts = 0;
++	if (tb[NL80211_PMSR_SENSING_REQ_ATTR_TX_STS])
++		out->sensing.tx_sts = nla_get_u8(tb[NL80211_PMSR_SENSING_REQ_ATTR_TX_STS]);
++	if (out->sensing.tx_sts > 7) {
++		NL_SET_ERR_MSG_ATTR(info->extack,
++				    tb[NL80211_PMSR_SENSING_REQ_ATTR_TX_STS],
++				    "SENSING: invalid TX STS");
++		return -EINVAL;
++	}
++
++	out->sensing.rx_sts = 0;
++	if (tb[NL80211_PMSR_SENSING_REQ_ATTR_RX_STS])
++		out->sensing.rx_sts = nla_get_u8(tb[NL80211_PMSR_SENSING_REQ_ATTR_RX_STS]);
++	if (out->sensing.rx_sts > 7) {
++		NL_SET_ERR_MSG_ATTR(info->extack,
++				    tb[NL80211_PMSR_SENSING_REQ_ATTR_RX_STS],
++				    "SENSING: invalid RX STS");
++		return -EINVAL;
++	}
++
++	out->sensing.num_rx_chains = 0;
++	if (tb[NL80211_PMSR_SENSING_REQ_ATTR_NUM_RX_CHAINS])
++		out->sensing.num_rx_chains =
++			nla_get_u8(tb[NL80211_PMSR_SENSING_REQ_ATTR_NUM_RX_CHAINS]);
++	if (out->sensing.num_rx_chains > capa->sensing.max_rx_chains) {
++		NL_SET_ERR_MSG_ATTR(info->extack,
++				    tb[NL80211_PMSR_SENSING_REQ_ATTR_NUM_RX_CHAINS],
++				    "SENSING: invalid number of RX Chains");
++		return -EINVAL;
++	}
++
++	out->sensing.min_interval = 0;
++	if (tb[NL80211_PMSR_SENSING_REQ_ATTR_MIN_INTERVAL])
++		out->sensing.min_interval =
++			nla_get_u32(tb[NL80211_PMSR_SENSING_REQ_ATTR_MIN_INTERVAL]);
++	if (out->sensing.min_interval > capa->sensing.min_interval) {
++		NL_SET_ERR_MSG_ATTR(info->extack,
++				    tb[NL80211_PMSR_SENSING_REQ_ATTR_MIN_INTERVAL],
++				    "SENSING: invalid min Measurement Interval");
++		return -EINVAL;
++	}
++
++	if (capa->sensing.vendor_mode) {
++		out->sensing.vendor_req = nla_data(tb[NL80211_PMSR_SENSING_REQ_ATTR_VENDOR_REQ]);
++		out->sensing.vendor_req_len = nla_len(tb[NL80211_PMSR_SENSING_REQ_ATTR_VENDOR_REQ]);
++	}
++	return 0;
 +}
 +
-+static inline void rdev_stop_wlan_sense(struct cfg80211_registered_device *rdev,
-+					struct wireless_dev *wdev)
-+{
-+	trace_rdev_stop_wlan_sense(&rdev->wiphy, wdev);
-+	rdev->ops->stop_wlan_sense(&rdev->wiphy, wdev);
-+	trace_rdev_return_void(&rdev->wiphy);
-+}
-+
- static inline int rdev_set_mac_acl(struct cfg80211_registered_device *rdev,
- 				   struct net_device *dev,
- 				   struct cfg80211_acl_data *params)
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 9b6074155d59..91109c27e7a6 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -2372,6 +2372,16 @@ TRACE_EVENT(rdev_del_nan_func,
- 		  WIPHY_PR_ARG, WDEV_PR_ARG, __entry->cookie)
- );
- 
-+DEFINE_EVENT(wiphy_wdev_evt, rdev_start_wlan_sense,
-+	     TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev),
-+	     TP_ARGS(wiphy, wdev)
-+);
-+
-+DEFINE_EVENT(wiphy_wdev_evt, rdev_stop_wlan_sense,
-+	     TP_PROTO(struct wiphy *wiphy, struct wireless_dev *wdev),
-+	     TP_ARGS(wiphy, wdev)
-+);
-+
- TRACE_EVENT(rdev_set_mac_acl,
- 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
- 		 struct cfg80211_acl_data *params),
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index d12d49134c88..6cffd01c4668 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1297,6 +1297,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 		case NL80211_IFTYPE_P2P_DEVICE:
- 		case NL80211_IFTYPE_WDS:
- 		case NL80211_IFTYPE_NAN:
-+		case NL80211_IFTYPE_WLAN_SENSE:
- 			WARN_ON(1);
+ static int pmsr_parse_peer(struct cfg80211_registered_device *rdev,
+ 			   struct nlattr *peer,
+ 			   struct cfg80211_pmsr_request_peer *out,
+@@ -250,8 +358,13 @@ static int pmsr_parse_peer(struct cfg80211_registered_device *rdev,
+ 	nla_for_each_nested(treq, req[NL80211_PMSR_REQ_ATTR_DATA], rem) {
+ 		switch (nla_type(treq)) {
+ 		case NL80211_PMSR_TYPE_FTM:
++			out->type = NL80211_PMSR_TYPE_FTM;
+ 			err = pmsr_parse_ftm(rdev, treq, out, info);
  			break;
- 		}
++		case NL80211_PMSR_TYPE_SENSING:
++			out->type = NL80211_PMSR_TYPE_SENSING;
++			err = pmsr_parse_sensing(rdev, treq, out, info);
++			break;
+ 		default:
+ 			NL_SET_ERR_MSG_ATTR(info->extack, treq,
+ 					    "unsupported measurement type");
+@@ -328,6 +441,15 @@ int nl80211_pmsr_start(struct sk_buff *skb, struct genl_info *info)
+ 		err = pmsr_parse_peer(rdev, peer, &req->peers[idx], info);
+ 		if (err)
+ 			goto out_err;
++
++		/*
++		 * Sensing operation is restricted to run in sense interface only,
++		 * so it will not mix with normal data
++		 */
++		if (req->peers[idx].type == NL80211_PMSR_TYPE_SENSING &&
++		    wdev->iftype != NL80211_IFTYPE_WLAN_SENSE)
++			goto out_err;
++
+ 		idx++;
+ 	}
+ 	req->cookie = cfg80211_assign_cookie(rdev);
+@@ -399,6 +521,23 @@ void cfg80211_pmsr_complete(struct wireless_dev *wdev,
+ }
+ EXPORT_SYMBOL_GPL(cfg80211_pmsr_complete);
+ 
++static int nl80211_pmsr_send_sensing_res(struct sk_buff *msg,
++					 struct cfg80211_pmsr_result *res)
++{
++	if (nla_put_u16(msg, NL80211_PMSR_SENSING_RESP_ATTR_REPORT_INDEX,
++			res->sensing.seq_number))
++		goto error;
++
++	if (res->sensing.data_len && res->sensing.data)
++		if ((nla_put(msg, NL80211_PMSR_SENSING_RESP_ATTR_DATA,
++			     res->sensing.data_len, res->sensing.data)))
++			goto error;
++
++	return 0;
++error:
++	return -ENOSPC;
++}
++
+ static int nl80211_pmsr_send_ftm_res(struct sk_buff *msg,
+ 				     struct cfg80211_pmsr_result *res)
+ {
+@@ -537,6 +676,10 @@ static int nl80211_pmsr_send_result(struct sk_buff *msg,
+ 		if (nl80211_pmsr_send_ftm_res(msg, res))
+ 			goto error;
+ 		break;
++	case NL80211_PMSR_TYPE_SENSING:
++		if (nl80211_pmsr_send_sensing_res(msg, res))
++			goto error;
++		break;
+ 	default:
+ 		WARN_ON(1);
+ 	}
 -- 
 2.25.1
 
