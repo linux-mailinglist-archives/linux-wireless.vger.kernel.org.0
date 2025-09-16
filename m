@@ -1,164 +1,132 @@
-Return-Path: <linux-wireless+bounces-27344-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27345-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149DDB58DA8
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 06:58:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6FAB59157
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 10:54:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B651480C01
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 04:56:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 385D71BC29DB
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 08:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901AF2F28F7;
-	Tue, 16 Sep 2025 04:49:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JL+Xia8W"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084012882A1;
+	Tue, 16 Sep 2025 08:54:35 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0462F1FC9
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 04:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52563280A51
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 08:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757998191; cv=none; b=rb15GVIbStGqjVh8+vf6Mo521gEBQdALfmC+TwHnE6Ze/hBwI2W9aOqdlDA6qiHazwr/9P6eB31tPL4wm+LJctgz5el/DlJHZwte1DmyELYS/fD7z9nvYXPX46GKLWBrBOyjD/NdH92GbI1+P7kpIZqNobJvEFkM8UuvmpW4JrE=
+	t=1758012874; cv=none; b=huMYk8f3SqLRboIPOqzP0VBrHsuVmrTN3+JmUp5hqjPMYOEMYOsgYeHD3nWSQGkYmy0OWhRgDXqeoSUGk3fxvcrZHCgGSCk+Qi4xdSF29+uTS+2i8oahurvUq6xzLmhd5ghk6dCKGN07ziV3qh2IUUcl33S8Yv9X3n4PUTaNs0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757998191; c=relaxed/simple;
-	bh=slyVnZPzDDOXEcpF4QZOR3I7YB3yd3f7Gxtzb+FU87Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WpbSRmJ8LwMjm8SZE21makvqfyPvPI+9De98y9uyzxSJZJFllAIGcYrKcsDfivTtMmtPSHjOmy3q8aLVjxBKM/U/kU/3Ii/vpb/wZ5++DVQTwySLW5c4M0cT3X8/KxqG3FxFVejXhwf41cjslcQHBdOxfa19cysfQn5PHhMijT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JL+Xia8W; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-26763bb9a92so13927015ad.2
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 21:49:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757998187; x=1758602987; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OlYXyo2uZuFo7JhGyy9UUCXJlKeDR2CbpPIjqr5RgpE=;
-        b=JL+Xia8W4uyroTDLgoFXQGcvga86g7+1VEKz2roIDSxQwxKuGGI1kJw0E5mRvO2QSO
-         m/1WcvkXEpAacTm9jy5S7c5V4Dczrr3meBJOyddNip27HVCCCOgthvtb5FLtkxbvF41s
-         iGlUzzPGymDg3T5amMQJm6PDCBR7n+L0ahtyEay0NJYWIu7m2vFg6tr2ajT32yaanfBd
-         xDtJu+c4X/3CeTjTCyDCOh+jJ9IMVyUrOd4EWhGGuGTa3TWSp3+no8CtHQqAuwI3rWWA
-         BuIdQSsCM/Xgm1YsJeGbAazZkNWV/RcrZ3PBFtpntXLtYH4Vrd8FCoda8o0sXcMxI94o
-         +OOQ==
+	s=arc-20240116; t=1758012874; c=relaxed/simple;
+	bh=rWSFg93zJw/EVdFHHieAIdWz85smh+2OhFH0HRdsVR8=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=COIKazve348Hyb8BHctde7X/yYakrcJ6kWcN5MiYUJPJZM+tggwyJ+zCNxaDZfuxL5gE8HsbZPKpU8rq9UzuTWNpbDAxcfT6vMQsIwrS4MGcYfx23SLt6QvKJ4vWOB1s3okA311YJALBiB4DgwWaoUDh/UNW0c1tm0yOKKovvqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-424090abf73so22189015ab.3
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 01:54:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757998187; x=1758602987;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OlYXyo2uZuFo7JhGyy9UUCXJlKeDR2CbpPIjqr5RgpE=;
-        b=lauBmNq+2cVvApbxqIG+cmQ16DNOVmxuxMMMtg4ogfG6wbboKviuErZaOZN7GKPgop
-         vhWP2XCtuETuyU6auxOOO8xZT9BkOpUK+mtZOR6aiPGVpxe1G/3+DGzXaeJ/wBM+J7fZ
-         guW4zGs3XRhRU0uV8OaKMbJh0GV80y0EawOMnGdX+IzzgA/BFUwX5P8EJLhGcZGZerJV
-         IUpi8l3H7HAE6/w4pnODaWD1Pco8ZfpaJgkNktryFhhLyZ23MxEHxc3K81l7LbNoHN1E
-         Rv5njumI8E5e6zjcnH0PkVe/dGo7rIM8D1Kcw47LA3X2PFOV4kyuzjZT74KNAwHgSltm
-         s/4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUx21FD6bAMNDjaQtl5+XEn8cRN6zFl5mMQkOBIqhUKckKuaKvOv+MBVBAEYivz18Oc4qLda2ZEz0rF43W50g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YySc10LnnXxFhuVSH459OcdQBrLIg98fdMuAYiVf+nQtAlNKPXG
-	QPRTRXa4viPfg98WO06aE+V/ktv8xqtbQowqFq5VjbqWaLEQKzgHSZJM
-X-Gm-Gg: ASbGncvLQMBng3uNvYM/wage21XKPJmCO3Ybf6ybeHZYzsRbarFtPgbRHXW0C5yWNKw
-	1SXvllHhF26ZDJf9YqJyqahQmED2WOKW3CLnTZm7Sowvp4nfS2J4n4XIS0fDHVw4a21jBeC/7tZ
-	NeFn6CPn+jmKs5KHbyDPfodHTUBfYuWXsWXCIMUJrsZct4WJz5Rj9g8zwN5LsDvWqstMLqTL17T
-	hOyDjE3XA3CeYDBmhchhzVoXx8Bs3l57Vwu/niAR92BBduZr6Hg7Lw3c3s1IeDRoeohI/dhh8XQ
-	imkN/phq35iiWi7IXBkpFs9GVv7FTeTeVyW97SmacMCTKPrn3iUQcrkxsDAn0LbLkziSyYmfVPo
-	uRzFJyEZsFRWVF02NQK/oUBnjq3wHvZ2qWuF73kQLAuNlIXxEiw==
-X-Google-Smtp-Source: AGHT+IFV4zbzh4iycIfH4WDU92suC0bCanMglT0Ogl2GwpwL8kM68NHrYSygkh1AIkIcAzvJhqwslA==
-X-Received: by 2002:a17:903:2f4f:b0:24c:99bd:52bb with SMTP id d9443c01a7336-25d267641camr179941415ad.30.1757998187203;
-        Mon, 15 Sep 2025 21:49:47 -0700 (PDT)
-Received: from pengdl-pc.mioffice.cn ([43.224.245.249])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25ef09c77f8sm104600605ad.15.2025.09.15.21.49.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 21:49:46 -0700 (PDT)
-From: pengdonglin <dolinux.peng@gmail.com>
-To: tj@kernel.org,
-	tony.luck@intel.com,
-	jani.nikula@linux.intel.com,
-	ap420073@gmail.com,
-	jv@jvosburgh.net,
-	freude@linux.ibm.com,
-	bcrl@kvack.org,
-	trondmy@kernel.org,
-	longman@redhat.com,
-	kees@kernel.org
-Cc: bigeasy@linutronix.de,
-	hdanton@sina.com,
-	paulmck@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	linux-nfs@vger.kernel.org,
-	linux-aio@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	netdev@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-wireless@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	pengdonglin <dolinux.peng@gmail.com>,
-	"Toke" <toke@toke.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	pengdonglin <pengdonglin@xiaomi.com>
-Subject: [PATCH v3 14/14] wifi: ath9k: Remove redundant rcu_read_lock/unlock() in spin_lock
-Date: Tue, 16 Sep 2025 12:47:35 +0800
-Message-Id: <20250916044735.2316171-15-dolinux.peng@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250916044735.2316171-1-dolinux.peng@gmail.com>
-References: <20250916044735.2316171-1-dolinux.peng@gmail.com>
+        d=1e100.net; s=20230601; t=1758012872; x=1758617672;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8TcDWRbd+yIuJdUm2xw0Yx2oXd0R8a0H3/AvRt2C8dk=;
+        b=XVy/dC0BYycEUtph3LeIqx1JsoCt9XY2WwEij2awsgWIBKWZUNyaeyH4Gtl8RB7Wb4
+         A9VVbJF+7mDtUmXIIRJMzIcCXQuDV4lnW9cBzOFcz9T+XL/ib4pWcXa+SJqPtqX/lpBO
+         yYEeiF/yBV0RjAzpUEdLtUYoEXOY+7LzE/8sdJL18gXOeU8GwFhHOHb5XClt+Q15x6z5
+         ZuV+RGChdWdZ2t1xwyjYbIfuOoiOwIAVE4MYGgT4tuCNF0DLnciFTDyhHeRQM66GVuDe
+         T3NDIzRJBRdt9d/OdlyufnND/RkGgZT4M6hr5JEoIgRBLiBsfUpj++tzGp1R1Y9x8bj8
+         LJtg==
+X-Forwarded-Encrypted: i=1; AJvYcCX99flJ5+hQzfeKXk6dT2G5AJ7jcAjAtGitb9lDtLKURupD15z3NBk13Opj6+fYAmMEnIqFEgsdWQ4Mz+XSFQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg51Lsr/ntFzh7n/zSiDW+JUrpjXKNXKxD/1Ha6RsykVnd2Ynp
+	NUCTWhjS3EUShYJ27/2Alg0j8+GS+Rg2VV+6zqMm2dE8ewXWK+z/SX3RezwB1KY/GmDzBQXU1wC
+	JLOdQ/lCY8YHwiKHiiMpPZAtOopcWP08hja0bJS4UiMZfuPJVYtVTX7hnsBY=
+X-Google-Smtp-Source: AGHT+IFwt6D47g9F04dozxpZAXZD1svcTDwOwgWtjSPXWunGFTumQCoHUno7PfdvlJA/15zVscsHe9iNXSUCU9Pe0z99dY/bKrY1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:1561:b0:419:de32:2ce2 with SMTP id
+ e9e14a558f8ab-420a53aeadbmr147875485ab.32.1758012872433; Tue, 16 Sep 2025
+ 01:54:32 -0700 (PDT)
+Date: Tue, 16 Sep 2025 01:54:32 -0700
+In-Reply-To: <689d0a4a.050a0220.7f033.0164.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68c925c8.050a0220.50883.0019.GAE@google.com>
+Subject: Re: [syzbot] [wireless?] WARNING in cfg80211_rehash_bss
+From: syzbot <syzbot+dc6f4dce0d707900cdea@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: pengdonglin <pengdonglin@xiaomi.com>
+syzbot has found a reproducer for the following issue on:
 
-Since commit a8bb74acd8efe ("rcu: Consolidate RCU-sched update-side function definitions")
-there is no difference between rcu_read_lock(), rcu_read_lock_bh() and
-rcu_read_lock_sched() in terms of RCU read section and the relevant grace
-period. That means that spin_lock(), which implies rcu_read_lock_sched(),
-also implies rcu_read_lock().
+HEAD commit:    46a51f4f5eda Merge tag 'for-v6.17-rc' of git://git.kernel...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17077b12580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=bf99f2510ef92ba5
+dashboard link: https://syzkaller.appspot.com/bug?extid=dc6f4dce0d707900cdea
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=148db47c580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17fd7762580000
 
-There is no need no explicitly start a RCU read section if one has already
-been started implicitly by spin_lock().
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-46a51f4f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/ccc826c963ac/vmlinux-46a51f4f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/79f8a247dcf5/bzImage-46a51f4f.xz
 
-Simplify the code and remove the inner rcu_read_lock() invocation.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+dc6f4dce0d707900cdea@syzkaller.appspotmail.com
 
-Cc: "Toke" <toke@toke.dk>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: pengdonglin <pengdonglin@xiaomi.com>
-Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 43 at net/wireless/scan.c:1666 rb_insert_bss net/wireless/scan.c:1666 [inline]
+WARNING: CPU: 0 PID: 43 at net/wireless/scan.c:1666 cfg80211_rehash_bss+0x1e6/0x540 net/wireless/scan.c:1723
+Modules linked in:
+CPU: 0 UID: 0 PID: 43 Comm: kworker/u4:3 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: events_unbound cfg80211_wiphy_work
+RIP: 0010:rb_insert_bss net/wireless/scan.c:1666 [inline]
+RIP: 0010:cfg80211_rehash_bss+0x1e6/0x540 net/wireless/scan.c:1723
+Code: e8 48 c1 e8 03 42 0f b6 04 30 84 c0 0f 85 33 03 00 00 ff 45 00 48 83 c4 18 5b 41 5c 41 5d 41 5e 41 5f 5d e9 0c 3d af 00 cc 90 <0f> 0b 90 4c 8b 2c 24 4c 89 ef e8 7b 4c 02 fa 84 c0 74 78 e8 e2 dd
+RSP: 0018:ffffc900005e6f20 EFLAGS: 00010246
+RAX: ffffffff8acfee15 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: ffff88801f0c8000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffff8880113f6c68 R08: 0000000000000000 R09: 0000000000000002
+R10: 0000000000000002 R11: 0000000000000000 R12: ffff888043c281a0
+R13: ffff88801a485430 R14: dffffc0000000000 R15: ffff88801a484c20
+FS:  0000000000000000(0000) GS:ffff88808d00a000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000c009610000 CR3: 0000000011e4c000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ cfg80211_update_assoc_bss_entry+0x3f6/0x6a0 net/wireless/scan.c:3471
+ cfg80211_ch_switch_notify+0x3c1/0x780 net/wireless/nl80211.c:20399
+ ieee80211_sta_process_chanswitch+0xad4/0x2870 net/mac80211/mlme.c:-1
+ ieee80211_rx_mgmt_beacon+0x19c7/0x2cd0 net/mac80211/mlme.c:7523
+ ieee80211_sta_rx_queued_mgmt+0x4ed/0x4470 net/mac80211/mlme.c:8093
+ ieee80211_iface_process_skb net/mac80211/iface.c:1696 [inline]
+ ieee80211_iface_work+0x652/0x12d0 net/mac80211/iface.c:1753
+ cfg80211_wiphy_work+0x2b8/0x470 net/wireless/core.c:435
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3319
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
+ kthread+0x70e/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x436/0x7d0 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
 ---
- drivers/net/wireless/ath/ath9k/xmit.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index 0ac9212e42f7..4a0f465aa2fe 100644
---- a/drivers/net/wireless/ath/ath9k/xmit.c
-+++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -1993,7 +1993,6 @@ void ath_txq_schedule(struct ath_softc *sc, struct ath_txq *txq)
- 
- 	ieee80211_txq_schedule_start(hw, txq->mac80211_qnum);
- 	spin_lock_bh(&sc->chan_lock);
--	rcu_read_lock();
- 
- 	if (sc->cur_chan->stopped)
- 		goto out;
-@@ -2011,7 +2010,6 @@ void ath_txq_schedule(struct ath_softc *sc, struct ath_txq *txq)
- 	}
- 
- out:
--	rcu_read_unlock();
- 	spin_unlock_bh(&sc->chan_lock);
- 	ieee80211_txq_schedule_end(hw, txq->mac80211_qnum);
- }
--- 
-2.34.1
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
