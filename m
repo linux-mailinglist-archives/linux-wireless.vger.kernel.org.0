@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-27401-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27402-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B1DB7E91B
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:53:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD4DB7DE4E
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76CD8188680A
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:30:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3C99462D74
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC2A32F462;
-	Tue, 16 Sep 2025 22:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87F3323F63;
+	Tue, 16 Sep 2025 22:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="mS+CW+3s"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="PY/+hV5M"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp9.infineon.com (smtp9.infineon.com [217.10.52.204])
+Received: from smtp2.infineon.com (smtp2.infineon.com [217.10.52.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5504232E2DC
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3AE302CB9
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758061751; cv=none; b=oMIhWdRgVnXyKz9ElisImyZXUDsef/CdFJgn01mIt7KUWHj1yySUCNf0tTKYK7VW0s4ShKhF7CpH+qC4PTw6T/wDgN6i6JDDMcwfVtkU6TNybFaxl+KxMDMDYALmLvpHwImqUU042oio1jw8f4tU4eNqjcOlDQo5XkyCg4wzllA=
+	t=1758061763; cv=none; b=N2MYzSZ3v9fZT0IPzzL0AQzKKjlUAiTePfi5XFUMuW90rfbJU710MlPIVJrvzjeY++g+2mOfgJojOSfqRTs6FTzcTiC26g5butxFNibhl3UhKyoSBkx9cEniN10ejwCej0bKGi4MDilvEJzl4+TyubNS9MesmXDrdSGM7BoqfZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758061751; c=relaxed/simple;
-	bh=BIepjhTd6yjDC1bHaijXmWrWi/bs3+9yZ+l1/6z600g=;
+	s=arc-20240116; t=1758061763; c=relaxed/simple;
+	bh=oGIf3V+GKm02huNboeyKJ+RikONvpxlZfyoRYKWB+R4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iHeCwWDwx3lxDqebO2C9asLvOwtnodTDCom3UquyM6Mn2d/ju1nmjxIm0YmFYmMsRXQtiRhTFr7HpK3u9BdzixQq8GGJHhHm+JcdZF07AOgoMcSX5DQeYdxWFXi4XLCgzNJYr6dJmHIeu/bswtOb+s7K35uIORNMl5JOdAY2uNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=mS+CW+3s; arc=none smtp.client-ip=217.10.52.204
+	 MIME-Version:Content-Type; b=CPaXhBL9pVxphrqmGmtWOeFPCF5rZear/k8xqy8WtLzUn5kH2EqLfrUYbRIa/ML5hFUB8Y7IBRWotaBjcehmCqN00tiZPdvGL0Kp1s8U4nncystAZdjxxu1+pzIG5JPOTg1Ab7hN8NEnraLWJ3GyzSdIMryMB2L2mU9iZUd3uLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=PY/+hV5M; arc=none smtp.client-ip=217.10.52.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1758061748; x=1789597748;
+  t=1758061761; x=1789597761;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=BIepjhTd6yjDC1bHaijXmWrWi/bs3+9yZ+l1/6z600g=;
-  b=mS+CW+3sjvvRdvWoqFpPk7HqKE212EUwQQphEAV3VWnbEpjykun0CAc9
-   zzxOfujN0hmASx+LSdWoSgiH0wLFTT5O4O5xwTE4MTEMPaMOEKeOE5XNt
-   vY3m7YYnApbARL3/lmt1q7Vr7hWStnwP2qUoDdTyWfC6bURX5byYvj5b5
-   k=;
-X-CSE-ConnectionGUID: IqqkN0JMQRyWp2U2EqNFPw==
-X-CSE-MsgGUID: 91YO8im3RoCXNZy6PQGKdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="64783933"
+  bh=oGIf3V+GKm02huNboeyKJ+RikONvpxlZfyoRYKWB+R4=;
+  b=PY/+hV5M00TVKqDt+qGyzslV8DjynZLsSJNsiTcSYaYNBOTrhY4RmdMN
+   x04fN0elUkvg9IafyO7wwD4CfgkBO9paVD8heiIni1Y7mrU6VhkBtKwQc
+   QpJyqZBfkXkUNesxoZfAbYRThbB1/u2x9QkWFEJVBDtb+KmJFbFPgTrCD
+   o=;
+X-CSE-ConnectionGUID: kL/JRovITdmIUVtwRIPocg==
+X-CSE-MsgGUID: GNQAUdpcTgSU66l4cVIf2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="125093838"
 X-IronPort-AV: E=Sophos;i="6.18,270,1751234400"; 
-   d="scan'208";a="64783933"
+   d="scan'208";a="125093838"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE812.infineon.com) ([172.23.29.38])
-  by smtp9.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:29:06 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE812.infineon.com
- (172.23.29.38) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE805.infineon.com) ([172.23.29.31])
+  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:29:19 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE805.infineon.com
+ (172.23.29.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Wed, 17 Sep
- 2025 00:29:06 +0200
+ 2025 00:29:18 +0200
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.36; Wed, 17 Sep 2025 00:29:02 +0200
+ 15.2.1748.36; Wed, 17 Sep 2025 00:29:15 +0200
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>, Johannes Berg
 	<johannes@sipsolutions.net>
 CC: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
 	<wlan-kernel-dev-list@infineon.com>
-Subject: [PATCH wireless-next 46/57] wifi: inffmac: add pno.c/h
-Date: Wed, 17 Sep 2025 03:48:06 +0530
-Message-ID: <20250916221821.4387-52-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next 47/57] wifi: inffmac: add ie.c/h
+Date: Wed, 17 Sep 2025 03:48:07 +0530
+Message-ID: <20250916221821.4387-53-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
 References: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
@@ -76,942 +76,1000 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE816.infineon.com (172.23.29.42) To
+X-ClientProxiedBy: MUCSE810.infineon.com (172.23.29.36) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Driver implementation for the Preferred Network Offload (PNO) feature.
-This helps in offload the preferred BSS profiles to the Device firmware.
+Driver imeplementation to configure, handle and parse Information elements
+of the Wi-Fi frames.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- drivers/net/wireless/infineon/inffmac/pno.c | 770 ++++++++++++++++++++
- drivers/net/wireless/infineon/inffmac/pno.h | 140 ++++
- 2 files changed, 910 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/inffmac/pno.c
- create mode 100644 drivers/net/wireless/infineon/inffmac/pno.h
+ drivers/net/wireless/infineon/inffmac/ie.c | 801 +++++++++++++++++++++
+ drivers/net/wireless/infineon/inffmac/ie.h | 167 +++++
+ 2 files changed, 968 insertions(+)
+ create mode 100644 drivers/net/wireless/infineon/inffmac/ie.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/ie.h
 
-diff --git a/drivers/net/wireless/infineon/inffmac/pno.c b/drivers/net/wireless/infineon/inffmac/pno.c
+diff --git a/drivers/net/wireless/infineon/inffmac/ie.c b/drivers/net/wireless/infineon/inffmac/ie.c
 new file mode 100644
-index 000000000000..5d4026745f03
+index 000000000000..b3fa20f960d7
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/pno.c
-@@ -0,0 +1,770 @@
++++ b/drivers/net/wireless/infineon/inffmac/ie.c
+@@ -0,0 +1,801 @@
 +// SPDX-License-Identifier: ISC
 +/*
-+ * Copyright (c) 2016 Broadcom
++ * Copyright (c) 2010 Broadcom Corporation
 + *
 + * Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
-+#include <linux/netdevice.h>
-+#include <linux/gcd.h>
-+#include <net/cfg80211.h>
 +
++#include <linux/kernel.h>
++#include <linux/etherdevice.h>
++#include <linux/module.h>
++#include <linux/vmalloc.h>
++#include <linux/string.h>
++#include <net/cfg80211.h>
++#include <net/netlink.h>
++#include <uapi/linux/if_arp.h>
++
++#include "utils.h"
++#include "defs.h"
++#include "chanspec.h"
++#include "hw_ids.h"
 +#include "core.h"
 +#include "debug.h"
-+#include "fwil.h"
++#include "tracepoint.h"
 +#include "fwil_types.h"
-+#include "cfg80211.h"
++#include "p2p.h"
++#include "btcoex.h"
 +#include "pno.h"
++#include "fwsignal.h"
++#include "cfg80211.h"
 +#include "feature.h"
++#include "fwil.h"
++#include "proto.h"
++#include "vendor.h"
 +#include "vendor_inf.h"
-+#include "chanspec.h"
++#include "bus.h"
++#include "common.h"
++#include "he.h"
++#include "eht.h"
++#include "twt.h"
++#include "offload.h"
++#include "pmsr.h"
 +#include "security.h"
 +
-+#define INFF_PNO_VERSION		2
-+#define INFF_PNO_REPEAT		4
-+#define INFF_PNO_FREQ_EXPO_MAX		3
-+#define INFF_PNO_IMMEDIATE_SCAN_BIT	3
-+#define INFF_PNO_ENABLE_BD_SCAN_BIT	5
-+#define INFF_PNO_ENABLE_ADAPTSCAN_BIT	6
-+#define INFF_PNO_REPORT_SEPARATELY_BIT	11
-+#define INFF_PNO_SCAN_INCOMPLETE	0
-+#define INFF_PNO_WPA_AUTH_ANY		0xFFFFFFFF
-+#define INFF_PNO_HIDDEN_BIT		2
-+#define INFF_PNO_SCHED_SCAN_PERIOD	30
-+
-+#define INFF_PNO_MAX_BUCKETS		16
-+#define GSCAN_BATCH_NO_THR_SET			101
-+#define GSCAN_RETRY_THRESHOLD			3
-+
-+struct inff_pno_info {
-+	int n_reqs;
-+	struct cfg80211_sched_scan_request *reqs[INFF_PNO_MAX_BUCKETS];
-+	struct mutex req_lock;	/* used to protect pno resource */
-+};
-+
-+#define ifp_to_pno(_ifp)	((_ifp)->drvr->config->pno)
-+
-+static int inff_pno_store_request(struct inff_pno_info *pi,
-+				  struct cfg80211_sched_scan_request *req)
++void inff_clear_assoc_req_ie(struct inff_cfg80211_info *cfg)
 +{
-+	if (WARN(pi->n_reqs == INFF_PNO_MAX_BUCKETS,
-+		 "pno request storage full\n"))
-+		return -ENOSPC;
++	struct inff_cfg80211_connect_info *conn_info = cfg_to_conn(cfg);
 +
-+	inff_dbg(SCAN, "reqid=%llu\n", req->reqid);
-+	mutex_lock(&pi->req_lock);
-+	pi->reqs[pi->n_reqs++] = req;
-+	mutex_unlock(&pi->req_lock);
-+	return 0;
++	kfree(conn_info->req_ie);
++	conn_info->req_ie = NULL;
++	conn_info->req_ie_len = 0;
 +}
 +
-+static int inff_pno_remove_request(struct inff_pno_info *pi, u64 reqid)
++void inff_clear_assoc_resp_ie(struct inff_cfg80211_info *cfg)
 +{
-+	int i, err = 0;
++	struct inff_cfg80211_connect_info *conn_info = cfg_to_conn(cfg);
 +
-+	mutex_lock(&pi->req_lock);
++	kfree(conn_info->resp_ie);
++	conn_info->resp_ie = NULL;
++	conn_info->resp_ie_len = 0;
++}
 +
-+	/* Nothing to do if we have no requests */
-+	if (pi->n_reqs == 0)
-+		goto done;
++/* Traverse a string of 1-byte tag/1-byte length/variable-length value
++ * triples, returning a pointer to the substring whose first element
++ * matches tag
++ */
++const struct inff_tlv *
++inff_parse_tlvs(const void *buf, int buflen, uint key)
++{
++	const struct inff_tlv *elt = buf;
++	int totlen = buflen;
 +
-+	/* find request */
-+	for (i = 0; i < pi->n_reqs; i++) {
-+		if (pi->reqs[i]->reqid == reqid)
-+			break;
-+	}
-+	/* request not found */
-+	if (WARN(i == pi->n_reqs, "reqid not found\n")) {
-+		err = -ENOENT;
-+		goto done;
++	/* find tagged parameter */
++	while (totlen >= TLV_HDR_LEN) {
++		int len = elt->len;
++
++		/* validate remaining totlen */
++		if (elt->id == key && (totlen >= (len + TLV_HDR_LEN)))
++			return elt;
++
++		elt = (struct inff_tlv *)((u8 *)elt + (len + TLV_HDR_LEN));
++		totlen -= (len + TLV_HDR_LEN);
 +	}
 +
-+	inff_dbg(SCAN, "reqid=%llu\n", reqid);
-+	pi->n_reqs--;
++	return NULL;
++}
 +
-+	/* if last we are done */
-+	if (!pi->n_reqs || i == pi->n_reqs)
-+		goto done;
-+
-+	/* fill the gap with remaining requests */
-+	while (i <= pi->n_reqs - 1) {
-+		pi->reqs[i] = pi->reqs[i + 1];
-+		i++;
++/* Is any of the tlvs the expected entry? If
++ * not update the tlvs buffer pointer/length.
++ */
++bool
++inff_tlv_has_ie(const u8 *ie, const u8 **tlvs, u32 *tlvs_len,
++		const u8 *oui, u32 oui_len, u8 type)
++{
++	/* If the contents match the OUI and the type */
++	if (ie[TLV_LEN_OFF] >= oui_len + 1 &&
++	    !memcmp(&ie[TLV_BODY_OFF], oui, oui_len) &&
++	    type == ie[TLV_BODY_OFF + oui_len]) {
++		return true;
 +	}
 +
-+done:
-+	mutex_unlock(&pi->req_lock);
-+	return err;
-+}
-+
-+static int inff_pno_channel_config(struct inff_if *ifp,
-+				   struct inff_pno_config_le *cfg)
-+{
-+	cfg->reporttype = 0;
-+	cfg->flags = 0;
-+
-+	return inff_fil_iovar_data_set(ifp, "pfn_cfg", cfg, sizeof(*cfg));
-+}
-+
-+static int inff_pno_config(struct inff_if *ifp, u32 scan_freq,
-+			   u32 mscan, u32 bestn)
-+{
-+	struct inff_pub *drvr = ifp->drvr;
-+	struct inff_pno_param_le pfn_param;
-+	u16 flags;
-+	u32 pfnmem;
-+	s32 err;
-+
-+	memset(&pfn_param, 0, sizeof(pfn_param));
-+	pfn_param.version = cpu_to_le32(INFF_PNO_VERSION);
-+
-+	/* set extra pno params */
-+	flags = BIT(INFF_PNO_IMMEDIATE_SCAN_BIT) |
-+		BIT(INFF_PNO_ENABLE_ADAPTSCAN_BIT);
-+	pfn_param.repeat = INFF_PNO_REPEAT;
-+	pfn_param.exp = INFF_PNO_FREQ_EXPO_MAX;
-+
-+	/* set up pno scan fr */
-+	pfn_param.scan_freq = cpu_to_le32(scan_freq);
-+
-+	if (mscan) {
-+		pfnmem = bestn;
-+
-+		/* set bestn in firmware */
-+		err = inff_fil_iovar_int_set(ifp, "pfnmem", pfnmem);
-+		if (err < 0) {
-+			iphy_err(drvr, "failed to set pfnmem\n");
-+			goto exit;
-+		}
-+		/* get max mscan which the firmware supports */
-+		err = inff_fil_iovar_int_get(ifp, "pfnmem", &pfnmem);
-+		if (err < 0) {
-+			iphy_err(drvr, "failed to get pfnmem\n");
-+			goto exit;
-+		}
-+		mscan = min_t(u32, mscan, pfnmem);
-+		pfn_param.mscan = mscan;
-+		pfn_param.bestn = bestn;
-+		flags |= BIT(INFF_PNO_ENABLE_BD_SCAN_BIT);
-+		inff_dbg(INFO, "mscan=%d, bestn=%d\n", mscan, bestn);
-+	}
-+
-+	pfn_param.flags = cpu_to_le16(flags);
-+	err = inff_fil_iovar_data_set(ifp, "pfn_set", &pfn_param,
-+				      sizeof(pfn_param));
-+	if (err)
-+		iphy_err(drvr, "pfn_set failed, err=%d\n", err);
-+
-+exit:
-+	return err;
-+}
-+
-+static int inff_pno_set_random(struct inff_if *ifp, struct inff_pno_info *pi)
-+{
-+	struct inff_pub *drvr = ifp->drvr;
-+	struct inff_pno_macaddr_le pfn_mac;
-+	u8 *mac_addr = NULL;
-+	u8 *mac_mask = NULL;
-+	int err, i, ri;
-+
-+	for (ri = 0; ri < pi->n_reqs; ri++)
-+		if (pi->reqs[ri]->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
-+			mac_addr = pi->reqs[ri]->mac_addr;
-+			mac_mask = pi->reqs[ri]->mac_addr_mask;
-+			break;
-+		}
-+
-+	/* no random mac requested */
-+	if (!mac_addr)
-+		return 0;
-+
-+	pfn_mac.version = INFF_PFN_MACADDR_CFG_VER;
-+	pfn_mac.flags = INFF_PFN_MAC_OUI_ONLY | INFF_PFN_SET_MAC_UNASSOC;
-+
-+	memcpy(pfn_mac.mac, mac_addr, ETH_ALEN);
-+	for (i = 0; i < ETH_ALEN; i++) {
-+		pfn_mac.mac[i] &= mac_mask[i];
-+		pfn_mac.mac[i] |= get_random_u8() & ~(mac_mask[i]);
-+	}
-+	/* Clear multi bit */
-+	pfn_mac.mac[0] &= 0xFE;
-+	/* Set locally administered */
-+	pfn_mac.mac[0] |= 0x02;
-+
-+	inff_dbg(SCAN, "enabling random mac: reqid=%llu mac=%pM\n",
-+		 pi->reqs[ri]->reqid, pfn_mac.mac);
-+	err = inff_fil_iovar_data_set(ifp, "pfn_macaddr", &pfn_mac,
-+				      sizeof(pfn_mac));
-+	if (err)
-+		iphy_err(drvr, "pfn_macaddr failed, err=%d\n", err);
-+
-+	return err;
-+}
-+
-+static int inff_pno_add_ssid(struct inff_if *ifp, struct cfg80211_ssid *ssid,
-+			     bool active)
-+{
-+	struct inff_pub *drvr = ifp->drvr;
-+	struct inff_pno_net_param_le pfn;
-+	int err;
-+
-+	pfn.auth = cpu_to_le32(WLAN_AUTH_OPEN);
-+	pfn.wpa_auth = cpu_to_le32(INFF_PNO_WPA_AUTH_ANY);
-+	pfn.wsec = cpu_to_le32(0);
-+	pfn.infra = cpu_to_le32(1);
-+	pfn.flags = 0;
-+	if (active)
-+		pfn.flags = cpu_to_le32(1 << INFF_PNO_HIDDEN_BIT);
-+	pfn.ssid.SSID_len = cpu_to_le32(ssid->ssid_len);
-+	memcpy(pfn.ssid.SSID, ssid->ssid, ssid->ssid_len);
-+
-+	inff_dbg(SCAN, "adding ssid=%.32s (active=%d)\n", ssid->ssid, active);
-+	err = inff_fil_iovar_data_set(ifp, "pfn_add", &pfn, sizeof(pfn));
-+	if (err < 0)
-+		iphy_err(drvr, "adding failed: err=%d\n", err);
-+	return err;
-+}
-+
-+static int inff_pno_add_bssid(struct inff_if *ifp, const u8 *bssid)
-+{
-+	struct inff_pub *drvr = ifp->drvr;
-+	struct inff_pno_bssid_le bssid_cfg;
-+	int err;
-+
-+	memcpy(bssid_cfg.bssid, bssid, ETH_ALEN);
-+	bssid_cfg.flags = 0;
-+
-+	inff_dbg(SCAN, "adding bssid=%pM\n", bssid);
-+	err = inff_fil_iovar_data_set(ifp, "pfn_add_bssid", &bssid_cfg,
-+				      sizeof(bssid_cfg));
-+	if (err < 0)
-+		iphy_err(drvr, "adding failed: err=%d\n", err);
-+	return err;
-+}
-+
-+static bool inff_is_ssid_active(struct cfg80211_ssid *ssid,
-+				struct cfg80211_sched_scan_request *req)
-+{
-+	int i;
-+
-+	if (!ssid || !req->ssids || !req->n_ssids)
++	if (!tlvs)
 +		return false;
++	/* point to the next ie */
++	ie += ie[TLV_LEN_OFF] + TLV_HDR_LEN;
++	/* calculate the length of the rest of the buffer */
++	*tlvs_len -= (int)(ie - *tlvs);
++	/* update the pointer to the start of the buffer */
++	*tlvs = ie;
 +
-+	for (i = 0; i < req->n_ssids; i++) {
-+		if (ssid->ssid_len == req->ssids[i].ssid_len) {
-+			if (!strncmp(ssid->ssid, req->ssids[i].ssid,
-+				     ssid->ssid_len))
-+				return true;
-+		}
-+	}
 +	return false;
 +}
 +
-+static int inff_pno_clean(struct inff_if *ifp)
++struct inff_vs_tlv *
++inff_find_wpaie(const u8 *parse, u32 len)
 +{
-+	struct inff_pub *drvr = ifp->drvr;
-+	int ret;
++	const struct inff_tlv *ie;
 +
-+	/* Disable pfn */
-+	ret = inff_fil_iovar_int_set(ifp, "pfn", 0);
-+	if (ret == 0) {
-+		/* clear pfn */
-+		ret = inff_fil_iovar_data_set(ifp, "pfnclear", NULL, 0);
++	while ((ie = inff_parse_tlvs(parse, len, WLAN_EID_VENDOR_SPECIFIC))) {
++		if (inff_tlv_has_ie((const u8 *)ie, &parse, &len,
++				    WPA_OUI, TLV_OUI_LEN, WPA_OUI_TYPE))
++			return (struct inff_vs_tlv *)ie;
 +	}
-+	if (ret < 0)
-+		iphy_err(drvr, "failed code %d\n", ret);
-+
-+	return ret;
++	return NULL;
 +}
 +
-+static int inff_pno_get_bucket_channels(struct cfg80211_sched_scan_request *r,
-+					struct inff_pno_config_le *pno_cfg)
++struct inff_vs_tlv *
++inff_find_wpsie(const u8 *parse, u32 len)
 +{
-+	u32 n_chan = le32_to_cpu(pno_cfg->channel_num);
-+	u16 chan;
-+	int i, err = 0;
++	const struct inff_tlv *ie;
 +
-+	for (i = 0; i < r->n_channels; i++) {
-+		if (n_chan >= INFF_NUMCHANNELS) {
-+			err = -ENOSPC;
-+			goto done;
-+		}
-+		chan = r->channels[i]->hw_value;
-+		inff_dbg(SCAN, "[%d] Chan : %u\n", n_chan, chan);
-+		pno_cfg->channel_list[n_chan++] = cpu_to_le16(chan);
++	while ((ie = inff_parse_tlvs(parse, len, WLAN_EID_VENDOR_SPECIFIC))) {
++		if (inff_tlv_has_ie((u8 *)ie, &parse, &len,
++				    WPA_OUI, TLV_OUI_LEN, WPS_OUI_TYPE))
++			return (struct inff_vs_tlv *)ie;
 +	}
-+	/* return number of channels */
-+	err = n_chan;
-+done:
-+	pno_cfg->channel_num = cpu_to_le32(n_chan);
-+	return err;
++	return NULL;
 +}
 +
-+static int inff_pno_prep_fwconfig(struct inff_pno_info *pi,
-+				  struct inff_pno_config_le *pno_cfg,
-+				   struct inff_gscan_bucket_config **buckets,
-+				   u32 *scan_freq)
++struct inff_tlv *
++inff_find_iwie(const u8 *parse, u32 len)
 +{
-+	struct cfg80211_sched_scan_request *sr;
-+	struct inff_gscan_bucket_config *fw_buckets;
-+	int i, err, chidx;
++	const struct inff_tlv *ie = NULL;
 +
-+	inff_dbg(SCAN, "n_reqs=%d\n", pi->n_reqs);
-+	if (WARN_ON(!pi->n_reqs))
-+		return -ENODATA;
-+
-+	/*
-+	 * actual scan period is determined using gcd() for each
-+	 * scheduled scan period.
++	/* unfortunately it's too much work to dispose the const cast - inff_parse_tlvs
++	 * is used everywhere and changing its prototype to take const qualifier needs
++	 * a massive change to all its callers...
 +	 */
-+	*scan_freq = pi->reqs[0]->scan_plans[0].interval;
-+	for (i = 1; i < pi->n_reqs; i++) {
-+		sr = pi->reqs[i];
-+		*scan_freq = gcd(sr->scan_plans[0].interval, *scan_freq);
-+	}
-+	if (*scan_freq < INFF_PNO_SCHED_SCAN_MIN_PERIOD) {
-+		inff_dbg(SCAN, "scan period too small, using minimum\n");
-+		*scan_freq = INFF_PNO_SCHED_SCAN_MIN_PERIOD;
-+	}
 +
-+	*buckets = NULL;
-+	fw_buckets = kcalloc(pi->n_reqs, sizeof(*fw_buckets), GFP_KERNEL);
-+	if (!fw_buckets)
-+		return -ENOMEM;
-+
-+	memset(pno_cfg, 0, sizeof(*pno_cfg));
-+	for (i = 0; i < pi->n_reqs; i++) {
-+		sr = pi->reqs[i];
-+		chidx = inff_pno_get_bucket_channels(sr, pno_cfg);
-+		if (chidx < 0) {
-+			err = chidx;
-+			goto fail;
-+		}
-+		fw_buckets[i].bucket_end_index = chidx - 1;
-+		fw_buckets[i].bucket_freq_multiple =
-+			sr->scan_plans[0].interval / *scan_freq;
-+		/* assure period is non-zero */
-+		if (!fw_buckets[i].bucket_freq_multiple)
-+			fw_buckets[i].bucket_freq_multiple = 1;
-+		fw_buckets[i].flag = INFF_PNO_REPORT_NO_BATCH;
-+	}
-+
-+	if (INFF_SCAN_ON()) {
-+		inff_err("base period=%u\n", *scan_freq);
-+		for (i = 0; i < pi->n_reqs; i++) {
-+			inff_err("[%d] period %u max %u repeat %u flag %x idx %u\n",
-+				 i, fw_buckets[i].bucket_freq_multiple,
-+				 le16_to_cpu(fw_buckets[i].max_freq_multiple),
-+				 fw_buckets[i].repeat, fw_buckets[i].flag,
-+				 fw_buckets[i].bucket_end_index);
-+		}
-+	}
-+	*buckets = fw_buckets;
-+	return pi->n_reqs;
-+
-+fail:
-+	kfree(fw_buckets);
-+	return err;
++	ie = inff_parse_tlvs(parse, len, WLAN_EID_INTERWORKING);
++	if (ie)
++		return (struct inff_tlv *)ie;
++	return NULL;
 +}
 +
-+static int inff_pno_config_networks(struct inff_if *ifp,
-+				    struct inff_pno_info *pi)
++s32
++inff_clear_iwie(struct inff_cfg80211_info *cfg, struct inff_if *ifp)
 +{
-+	struct cfg80211_sched_scan_request *r;
-+	struct cfg80211_match_set *ms;
-+	bool active;
-+	int i, j, err = 0;
++	struct ie_set_buffer ie_setbuf = {0};
 +
-+	for (i = 0; i < pi->n_reqs; i++) {
-+		r = pi->reqs[i];
++	inff_dbg(TRACE, "clear interworking IE\n");
 +
-+		for (j = 0; j < r->n_match_sets; j++) {
-+			ms = &r->match_sets[j];
-+			if (ms->ssid.ssid_len) {
-+				active = inff_is_ssid_active(&ms->ssid, r);
-+				err = inff_pno_add_ssid(ifp, &ms->ssid,
-+							active);
-+			}
-+			if (!err && is_valid_ether_addr(ms->bssid))
-+				err = inff_pno_add_bssid(ifp, ms->bssid);
++	memset(&ie_setbuf, 0, sizeof(struct ie_set_buffer));
 +
-+			if (err < 0)
-+				return err;
-+		}
-+	}
-+	return 0;
++	ie_setbuf.ie_buffer.iecount = cpu_to_le32(1);
++	ie_setbuf.ie_buffer.ie_list[0].ie_data.id = WLAN_EID_INTERWORKING;
++	ie_setbuf.ie_buffer.ie_list[0].ie_data.len = 0;
++
++	return inff_fil_iovar_data_set(ifp, "ie", &ie_setbuf, sizeof(ie_setbuf));
 +}
 +
-+static int inff_pno_config_sched_scans(struct inff_if *ifp)
++s32
++inff_add_iwie(struct inff_cfg80211_info *cfg, struct inff_if *ifp, s32 pktflag,
++	      u8 ie_id, u8 *data, u8 data_len)
 +{
-+	struct inff_pub *drvr = ifp->drvr;
-+	struct inff_pno_info *pi;
-+	struct inff_gscan_config *gscan_cfg;
-+	struct inff_gscan_bucket_config *buckets;
-+	struct inff_pno_config_le pno_cfg;
-+	size_t gsz;
-+	u32 scan_freq;
-+	int err, n_buckets;
++	int err = 0;
++	u32 buf_len;
++	struct ie_set_buffer *ie_setbuf;
 +
-+	pi = ifp_to_pno(ifp);
-+	n_buckets = inff_pno_prep_fwconfig(pi, &pno_cfg, &buckets,
-+					   &scan_freq);
-+	if (n_buckets < 0)
-+		return n_buckets;
-+
-+	gsz = struct_size(gscan_cfg, bucket, n_buckets);
-+	gscan_cfg = kzalloc(gsz, GFP_KERNEL);
-+	if (!gscan_cfg) {
-+		err = -ENOMEM;
-+		goto free_buckets;
++	if (ie_id != WLAN_EID_INTERWORKING) {
++		inff_err("unsupported (id=%d)\n", ie_id);
++		return -EINVAL;
 +	}
 +
-+	/* clean up everything */
-+	err = inff_pno_clean(ifp);
-+	if  (err < 0) {
-+		iphy_err(drvr, "failed error=%d\n", err);
-+		goto free_gscan;
++	/* access network options (1 octet)  is the mandatory field */
++	if (!data || data_len == 0 || data_len > INFF_IW_IES_MAX_BUF_LEN) {
++		inff_err("wrong interworking IE (len=%d)\n", data_len);
++		return -EINVAL;
 +	}
 +
-+	/* configure pno */
-+	err = inff_pno_config(ifp, scan_freq, 0, 0);
-+	if (err < 0)
-+		goto free_gscan;
-+
-+	err = inff_pno_channel_config(ifp, &pno_cfg);
-+	if (err < 0)
-+		goto clean;
-+
-+	gscan_cfg->version = cpu_to_le16(INFF_GSCAN_CFG_VERSION);
-+	gscan_cfg->retry_threshold = GSCAN_RETRY_THRESHOLD;
-+	gscan_cfg->buffer_threshold = GSCAN_BATCH_NO_THR_SET;
-+	gscan_cfg->flags = INFF_GSCAN_CFG_ALL_BUCKETS_IN_1ST_SCAN;
-+
-+	gscan_cfg->count_of_channel_buckets = n_buckets;
-+	memcpy(gscan_cfg->bucket, buckets,
-+	       array_size(n_buckets, sizeof(*buckets)));
-+
-+	err = inff_fil_iovar_data_set(ifp, "pfn_gscan_cfg", gscan_cfg, gsz);
-+
-+	if (err < 0)
-+		goto clean;
-+
-+	/* configure random mac */
-+	err = inff_pno_set_random(ifp, pi);
-+	if (err < 0)
-+		goto clean;
-+
-+	err = inff_pno_config_networks(ifp, pi);
-+	if (err < 0)
-+		goto clean;
-+
-+	/* Enable the PNO */
-+	err = inff_fil_iovar_int_set(ifp, "pfn", 1);
-+
-+clean:
-+	if (err < 0)
-+		inff_pno_clean(ifp);
-+free_gscan:
-+	kfree(gscan_cfg);
-+free_buckets:
-+	kfree(buckets);
-+	return err;
-+}
-+
-+int inff_pno_start_sched_scan(struct inff_if *ifp,
-+			      struct cfg80211_sched_scan_request *req)
-+{
-+	struct inff_pno_info *pi;
-+	int ret;
-+
-+	inff_dbg(TRACE, "reqid=%llu\n", req->reqid);
-+
-+	pi = ifp_to_pno(ifp);
-+	ret = inff_pno_store_request(pi, req);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = inff_pno_config_sched_scans(ifp);
-+	if (ret < 0) {
-+		inff_pno_remove_request(pi, req->reqid);
-+		if (pi->n_reqs)
-+			(void)inff_pno_config_sched_scans(ifp);
-+		return ret;
++	/* Validate the pktflag parameter */
++	if (pktflag & ~(INFF_VNDR_IE_CUSTOM_FLAG)) {
++		inff_err("invalid packet flag 0x%x\n", pktflag);
++		return -EINVAL;
 +	}
-+	return 0;
-+}
 +
-+int inff_pno_stop_sched_scan(struct inff_if *ifp, u64 reqid)
-+{
-+	struct inff_pno_info *pi;
-+	int err;
++	buf_len = sizeof(struct ie_set_buffer) + data_len - 1;
 +
-+	inff_dbg(TRACE, "reqid=%llu\n", reqid);
-+
-+	pi = ifp_to_pno(ifp);
-+
-+	/* No PNO request */
-+	if (!pi->n_reqs)
-+		return 0;
-+
-+	err = inff_pno_remove_request(pi, reqid);
++	/* if already set with previous values, delete it first */
++	err = inff_clear_iwie(cfg, ifp);
 +	if (err)
 +		return err;
 +
-+	inff_pno_clean(ifp);
-+
-+	if (pi->n_reqs)
-+		(void)inff_pno_config_sched_scans(ifp);
-+
-+	return 0;
-+}
-+
-+int inff_pno_attach(struct inff_cfg80211_info *cfg)
-+{
-+	struct inff_pno_info *pi;
-+
-+	inff_dbg(TRACE, "enter\n");
-+	pi = kzalloc(sizeof(*pi), GFP_KERNEL);
-+	if (!pi)
++	ie_setbuf = kmalloc(buf_len, GFP_KERNEL);
++	if (!ie_setbuf)
 +		return -ENOMEM;
 +
-+	cfg->pno = pi;
-+	mutex_init(&pi->req_lock);
++	strscpy(ie_setbuf->cmd, "add", sizeof(ie_setbuf->cmd));
++
++	/* Buffer contains only 1 IE */
++	ie_setbuf->ie_buffer.iecount = cpu_to_le32(1);
++	/* use VNDR_IE_CUSTOM_FLAG flags for none vendor IE . currently fixed value */
++	ie_setbuf->ie_buffer.ie_list[0].pktflag = cpu_to_le32(pktflag);
++
++	/* Now, add the IE to the buffer */
++	ie_setbuf->ie_buffer.ie_list[0].ie_data.id = WLAN_EID_INTERWORKING;
++	ie_setbuf->ie_buffer.ie_list[0].ie_data.len = data_len;
++	/* Returning void here as max data_len can be 8 */
++	(void)memcpy((u8 *)&ie_setbuf->ie_buffer.ie_list[0].ie_data.data[0],
++			data, data_len);
++
++	err = inff_fil_iovar_data_set(ifp, "ie", ie_setbuf, buf_len);
++	if (err)
++		inff_err("Failed to add interworking IE\n");
++
++	kfree(ie_setbuf);
++
++	return err;
++}
++
++bool inff_valid_wpa_oui(u8 *oui, bool is_rsn_ie)
++{
++	if (is_rsn_ie)
++		return (memcmp(oui, RSN_OUI, TLV_OUI_LEN) == 0);
++
++	return (memcmp(oui, WPA_OUI, TLV_OUI_LEN) == 0);
++}
++
++bool inff_valid_dpp_suite(u8 *oui)
++{
++	return (memcmp(oui, WFA_OUI, TLV_OUI_LEN) == 0 &&
++		*(oui + TLV_OUI_LEN) == DPP_AKM_SUITE_TYPE);
++}
++
++s32
++inff_parse_vndr_ies(const u8 *vndr_ie_buf, u32 vndr_ie_len,
++		    struct parsed_vndr_ies *vndr_ies)
++{
++	struct inff_vs_tlv *vndrie;
++	struct inff_tlv *ie;
++	struct parsed_vndr_ie_info *parsed_info;
++	s32 remaining_len;
++
++	remaining_len = (s32)vndr_ie_len;
++	memset(vndr_ies, 0, sizeof(*vndr_ies));
++
++	ie = (struct inff_tlv *)vndr_ie_buf;
++	while (ie) {
++		if (ie->id != WLAN_EID_VENDOR_SPECIFIC)
++			goto next;
++		vndrie = (struct inff_vs_tlv *)ie;
++		/* len should be bigger than OUI length + one */
++		if (vndrie->len < (VS_IE_FIXED_HDR_LEN - TLV_HDR_LEN + 1)) {
++			inff_err("invalid vndr ie. length is too small %d\n",
++				 vndrie->len);
++			goto next;
++		}
++		/* if wpa or wme ie, do not add ie */
++		if (!memcmp(vndrie->oui, (u8 *)WPA_OUI, TLV_OUI_LEN) &&
++		    (vndrie->oui_type == WPA_OUI_TYPE ||
++		    vndrie->oui_type == WME_OUI_TYPE)) {
++			inff_dbg(TRACE, "Found WPA/WME oui. Do not add it\n");
++			goto next;
++		}
++
++		parsed_info = &vndr_ies->ie_info[vndr_ies->count];
++
++		/* save vndr ie information */
++		parsed_info->ie_ptr = (char *)vndrie;
++		parsed_info->ie_len = vndrie->len + TLV_HDR_LEN;
++		memcpy(&parsed_info->vndrie, vndrie, sizeof(*vndrie));
++
++		vndr_ies->count++;
++
++		inff_dbg(TRACE, "** OUI %3ph, type 0x%02x\n",
++			 parsed_info->vndrie.oui,
++			 parsed_info->vndrie.oui_type);
++
++		if (vndr_ies->count >= VNDR_IE_PARSE_LIMIT)
++			break;
++next:
++		remaining_len -= (ie->len + TLV_HDR_LEN);
++		if (remaining_len <= TLV_HDR_LEN)
++			ie = NULL;
++		else
++			ie = (struct inff_tlv *)(((u8 *)ie) + ie->len +
++				TLV_HDR_LEN);
++	}
 +	return 0;
 +}
 +
-+void inff_pno_detach(struct inff_cfg80211_info *cfg)
++u32
++inff_vndr_ie(u8 *iebuf, s32 pktflag, u8 *ie_ptr, u32 ie_len, s8 *add_del_cmd)
 +{
-+	struct inff_pno_info *pi;
++	strscpy(iebuf, add_del_cmd, VNDR_IE_CMD_LEN);
 +
-+	inff_dbg(TRACE, "enter\n");
-+	pi = cfg->pno;
-+	cfg->pno = NULL;
++	put_unaligned_le32(1, &iebuf[VNDR_IE_COUNT_OFFSET]);
 +
-+	WARN_ON(pi->n_reqs);
-+	mutex_destroy(&pi->req_lock);
-+	kfree(pi);
++	put_unaligned_le32(pktflag, &iebuf[VNDR_IE_PKTFLAG_OFFSET]);
++
++	memcpy(&iebuf[VNDR_IE_VSIE_OFFSET], ie_ptr, ie_len);
++
++	return ie_len + VNDR_IE_HDR_SIZE;
 +}
 +
-+void inff_pno_wiphy_params(struct wiphy *wiphy, bool gscan)
++s32
++inff_parse_extension_ies(const u8 *extension_ie_buf, u32 extension_ie_len,
++			 struct parsed_extension_ies *extension_ies)
 +{
-+	/* scheduled scan settings */
-+	wiphy->max_sched_scan_reqs = gscan ? INFF_PNO_MAX_BUCKETS : 1;
-+	wiphy->max_sched_scan_ssids = INFF_PNO_MAX_PFN_COUNT;
-+	wiphy->max_match_sets = INFF_PNO_MAX_PFN_COUNT;
-+	wiphy->max_sched_scan_ie_len = INFF_SCAN_IE_LEN_MAX;
-+	wiphy->max_sched_scan_plan_interval = INFF_PNO_SCHED_SCAN_MAX_PERIOD;
-+}
++	struct inff_ext_tlv *ext_ie;
++	struct inff_tlv *ie;
++	struct parsed_ext_ie_info *parsed_info;
++	s32 remaining_len;
 +
-+u64 inff_pno_find_reqid_by_bucket(struct inff_pno_info *pi, u32 bucket)
-+{
-+	u64 reqid = 0;
++	remaining_len = (s32)extension_ie_len;
++	memset(extension_ies, 0, sizeof(*extension_ies));
 +
-+	mutex_lock(&pi->req_lock);
++	ie = (struct inff_tlv *)extension_ie_buf;
++	while (ie) {
++		if (ie->id != WLAN_EID_EXTENSION)
++			goto next;
++		ext_ie = (struct inff_ext_tlv *)ie;
 +
-+	if (bucket < pi->n_reqs)
-+		reqid = pi->reqs[bucket]->reqid;
-+
-+	mutex_unlock(&pi->req_lock);
-+	return reqid;
-+}
-+
-+u32 inff_pno_get_bucket_map(struct inff_pno_info *pi,
-+			    struct inff_pno_net_info_le *ni)
-+{
-+	struct cfg80211_sched_scan_request *req;
-+	struct cfg80211_match_set *ms;
-+	u32 bucket_map = 0;
-+	int i, j;
-+
-+	mutex_lock(&pi->req_lock);
-+	for (i = 0; i < pi->n_reqs; i++) {
-+		req = pi->reqs[i];
-+
-+		if (!req->n_match_sets)
-+			continue;
-+		for (j = 0; j < req->n_match_sets; j++) {
-+			ms = &req->match_sets[j];
-+			if (ms->ssid.ssid_len == ni->SSID_len &&
-+			    !memcmp(ms->ssid.ssid, ni->SSID, ni->SSID_len)) {
-+				bucket_map |= BIT(i);
-+				break;
-+			}
-+			if (is_valid_ether_addr(ms->bssid) &&
-+			    !memcmp(ms->bssid, ni->bssid, ETH_ALEN)) {
-+				bucket_map |= BIT(i);
-+				break;
-+			}
++		/* len should be bigger than ext_id + one data */
++		if (ext_ie->len < 2) {
++			inff_err("invalid ext_ie ie. length is too small %d\n",
++				 ext_ie->len);
++			goto next;
 +		}
++
++		/* skip parsing the HE capab, HE_6G_capa & oper IE from upper layer
++		 * to avoid sending it to the FW, as these IEs will be
++		 * added by the FW based on the MAC & PHY capab if HE
++		 * is enabled.
++		 */
++		if (ext_ie->ext_id == WLAN_EID_EXT_HE_CAPABILITY ||
++		    ext_ie->ext_id == WLAN_EID_EXT_HE_OPERATION ||
++		    ext_ie->ext_id == WLAN_EID_EXT_HE_6GHZ_CAPA)
++			goto next;
++
++		parsed_info = &extension_ies->ie_info[extension_ies->count];
++
++		parsed_info->ie_ptr = (char *)ext_ie;
++		parsed_info->ie_len = ext_ie->len + TLV_HDR_LEN;
++		memcpy(&parsed_info->ie_data, ext_ie, sizeof(*ext_ie));
++
++		extension_ies->count++;
++
++		inff_dbg(TRACE, "** EXT_IE %d, len 0x%02x EXT_ID: %d\n",
++			 parsed_info->ie_data.id,
++			 parsed_info->ie_data.len,
++			 parsed_info->ie_data.ext_id);
++
++		/* temperory parsing at most 5 EXT_ID, will review it.*/
++		if (extension_ies->count >= VNDR_IE_PARSE_LIMIT)
++			break;
++next:
++		remaining_len -= (ie->len + TLV_HDR_LEN);
++		if (remaining_len <= TLV_HDR_LEN)
++			ie = NULL;
++		else
++			ie = (struct inff_tlv *)(((u8 *)ie) + ie->len +
++				TLV_HDR_LEN);
 +	}
-+	mutex_unlock(&pi->req_lock);
-+	return bucket_map;
++	return 0;
 +}
 +
-+int pfn_send_network_blob_fw(struct wiphy *wiphy,
-+			     struct wireless_dev *wdev)
++s32 inff_get_assoc_ies(struct inff_cfg80211_info *cfg, struct inff_if *ifp)
 +{
-+	int i, ret;
-+	struct inff_cfg80211_vif *vif;
-+	struct inff_if *ifp;
-+	struct network_blob *network_blob_data;
-+	struct inff_pfn_param pfn_param;
-+	struct inff_pfn *pfn_list_buffer = NULL, *pssidnet;
-+	int inff_pfn_length = 0;
-+	u32 offset;
-+	struct inff_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
++	struct inff_pub *drvr = cfg->pub;
++	struct inff_cfg80211_assoc_ielen_le *assoc_info;
++	struct inff_cfg80211_connect_info *conn_info = cfg_to_conn(cfg);
++	struct inff_cfg80211_edcf_acparam edcf_acparam_info[EDCF_AC_COUNT];
++	u32 req_len;
++	u32 resp_len;
++	u32 flags;
++	s32 err = 0;
 +
-+	vif = container_of(wdev, struct inff_cfg80211_vif, wdev);
-+	ifp = vif->ifp;
++	inff_dbg(CONN, "req: %p, req len (%d) resp: %p resp len (%d)\n", conn_info->req_ie,
++		 conn_info->req_ie_len, conn_info->resp_ie, conn_info->resp_ie_len);
 +
-+	inff_dbg(TRACE, "Enter\n");
-+
-+	ret = inff_fil_cmd_data_set(vif->ifp,
-+				    INFF_C_DISASSOC, NULL, 0);
-+	if (ret) {
-+		inff_err("INFF_C_DISASSOC error:%d\n", ret);
-+		return ret;
-+	}
-+	inff_pno_clean(ifp);
-+
-+	if (inff_feat_is_enabled(ifp, INFF_FEAT_FWSUP)) {
-+		ret = inff_fil_iovar_int_set(ifp, "sup_wpa", 1);
-+		if (ret) {
-+			inff_err("sup_wpa set error:%d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	if (!cfg->pfn_data.count)
++	if (conn_info->req_ie_len && conn_info->resp_ie_len &&
++	    conn_info->req_ie && conn_info->resp_ie)
 +		return 0;
 +
-+	pfn_param.flags = (PFN_LIST_ORDER << SORT_CRITERIA_BIT | ENABLE << IMMEDIATE_SCAN_BIT);
-+	pfn_param.bestn = DEFAULT_BESTN;
-+	pfn_param.mscan = DEFAULT_MSCAN;
-+	pfn_param.repeat = DEFAULT_REPEAT;
-+	pfn_param.exp = DEFAULT_EXP;
++	inff_clear_assoc_ies(cfg);
 +
-+	if (cfg->pfn_data.pfn_config == PFN_CONFIG_AUTOCONNECT) {
-+		pfn_param.flags |= AUTO_CONNECT_MASK;
-+
-+	} else if (cfg->pfn_data.pfn_config == PFN_CONFIG_AUTOSWITCH_LISTORDER) {
-+		pfn_param.flags |= AUTO_NET_SWITCH_MASK;
-+		pfn_param.flags |= (PFN_LIST_ORDER << SORT_CRITERIA_BIT);
-+
-+	} else if (cfg->pfn_data.pfn_config == PFN_CONFIG_AUTOSWITCH_RSSI) {
-+		pfn_param.flags |= AUTO_NET_SWITCH_MASK;
-+		pfn_param.flags |= (PFN_RSSI << SORT_CRITERIA_BIT);
++	memset(cfg->extra_buf, '\0', WL_EXTRA_BUF_MAX);
++	err = inff_fil_iovar_data_get(ifp, "assoc_info",
++				      cfg->extra_buf, WL_ASSOC_INFO_MAX);
++	if (err) {
++		iphy_err(drvr, "could not get assoc info (%d)\n", err);
++		return err;
 +	}
-+
-+	pfn_param.version = cpu_to_le32(PFN_VERSION);
-+	pfn_param.scan_freq = cpu_to_le32(30);
-+	pfn_param.lost_network_timeout = cpu_to_le32(60);
-+	pfn_param.flags = cpu_to_le16(pfn_param.flags);
-+	pfn_param.rssi_margin = cpu_to_le16(10);
-+	pfn_param.slow_freq = cpu_to_le32(0);
-+
-+	ret = inff_fil_iovar_data_set(ifp, "pfn_set", (void *)&pfn_param,
-+				      sizeof(struct inff_pfn_param));
-+	if (ret) {
-+		inff_err("set pfn_set enable error:%d\n", ret);
-+		return ret;
++	assoc_info =
++		(struct inff_cfg80211_assoc_ielen_le *)cfg->extra_buf;
++	req_len = le32_to_cpu(assoc_info->req_len);
++	resp_len = le32_to_cpu(assoc_info->resp_len);
++	flags = le32_to_cpu(assoc_info->flags);
++	if (req_len > WL_EXTRA_BUF_MAX || resp_len > WL_EXTRA_BUF_MAX) {
++		iphy_err(drvr, "invalid lengths in assoc info: req %u resp %u\n",
++			 req_len, resp_len);
++		return -EINVAL;
 +	}
-+
-+	inff_pfn_length = (cfg->pfn_data.count) * sizeof(struct inff_pfn);
-+
-+	pfn_list_buffer = kzalloc(inff_pfn_length, GFP_KERNEL);
-+
-+	if (!pfn_list_buffer)
-+		return -ENOMEM;
-+
-+	pssidnet = pfn_list_buffer;
-+	network_blob_data = cfg->pfn_data.network_blob_data;
-+
-+	for (i = 0; i < cfg->pfn_data.count; i++) {
-+		/* Default setting, open, no WPA, no WEP and bss */
-+		pssidnet->auth = WLAN_AUTH_OPEN;
-+		pssidnet->wpa_auth = WPA_AUTH_DISABLED;
-+		pssidnet->wsec = CRYPTO_ALGO_OFF;
-+		pssidnet->infra = PFN_SSID_INFRA;
-+		pssidnet->flags = 0;
-+		memcpy((char *)pssidnet->ssid.SSID, network_blob_data->ssid,
-+		       network_blob_data->ssid_len);
-+		pssidnet->ssid.SSID_len = cpu_to_le32(network_blob_data->ssid_len);
-+		pssidnet->flags = cpu_to_le32(pssidnet->flags);
-+
-+		if (strlen(network_blob_data->psk)) {
-+			memcpy((char *)pssidnet->psk.key,
-+			       network_blob_data->psk, WSEC_MAX_PASSWORD_LEN);
-+			pssidnet->psk.key_len = strlen(network_blob_data->psk);
++	if (req_len) {
++		memset(cfg->extra_buf, '\0', WL_EXTRA_BUF_MAX);
++		err = inff_fil_iovar_data_get(ifp, "assoc_req_ies",
++					      cfg->extra_buf,
++					      WL_ASSOC_INFO_MAX);
++		if (err) {
++			iphy_err(drvr, "could not get assoc req (%d)\n", err);
++			return err;
 +		}
 +
-+		if (network_blob_data->proto == WPA_PROTO_WPA &&
-+		    network_blob_data->key_mgmt == INFF_KEY_MGMT_ID_WPA) {
-+			pssidnet->wpa_auth = WPA_AUTH_PSK;
++		if (flags & INFF_ASSOC_REQ_IS_REASSOC)
++			conn_info->req_ie_len = req_len - sizeof(struct dot11_reassoc_req);
++		else
++			conn_info->req_ie_len = req_len - sizeof(struct dot11_assoc_req);
 +
-+		} else if (network_blob_data->proto == WPA_PROTO_RSN &&
-+			   network_blob_data->key_mgmt == INFF_KEY_MGMT_ID_WPA2) {
-+			pssidnet->wpa_auth = WPA2_AUTH_PSK;
-+
-+		} else if (network_blob_data->proto == WPA_PROTO_RSN &&
-+			   network_blob_data->key_mgmt == INFF_KEY_MGMT_ID_SAE) {
-+			pssidnet->wpa_auth = WPA3_AUTH_SAE_PSK;
-+			pssidnet->auth = WLAN_AUTH_SAE;
-+
-+		} else if (network_blob_data->proto == WPA_PROTO_RSN &&
-+			   network_blob_data->key_mgmt == INFF_KEY_MGMT_ID_OWE) {
-+			pssidnet->wpa_auth = WPA3_AUTH_OWE;
-+		}
-+
-+		if (network_blob_data->pairwise_cipher == BIT(CRYPTO_ALGO_AES_CCM))
-+			pssidnet->wsec = AES_ENABLED;
-+
-+		else if (network_blob_data->pairwise_cipher == BIT(CRYPTO_ALGO_TKIP))
-+			pssidnet->wsec = TKIP_ENABLED;
-+
-+		inff_dbg(TRACE, "ssid %s key_mgmt %d proto %d wsec %d wpa_auth %d auth %d\n",
-+			 network_blob_data->ssid, network_blob_data->key_mgmt,
-+			 network_blob_data->proto, pssidnet->wsec,
-+			 pssidnet->wpa_auth, pssidnet->auth);
-+		pssidnet++;
-+		network_blob_data++;
-+	}
-+
-+	/* There is a limit in len of data that we can send to fw using an iovar at a time.
-+	 * Here max value of cfg->pfn_data.count could be 16 which is exceeding the limit,
-+	 * so sending it two times.
-+	 */
-+	if (cfg->pfn_data.count > (INFF_PNO_MAX_PFN_COUNT / 2)) {
-+		offset = sizeof(struct inff_pfn) * (INFF_PNO_MAX_PFN_COUNT / 2);
-+		ret = inff_fil_iovar_data_set(ifp, "pfn_add", (void *)pfn_list_buffer,
-+					      offset);
-+		if (ret) {
-+			inff_err("set pfnadd enable error:%d\n", ret);
-+			return ret;
-+		}
-+
-+		ret = inff_fil_iovar_data_set(ifp, "pfn_add", (void *)pfn_list_buffer + offset,
-+					      inff_pfn_length - offset);
-+		if (ret) {
-+			inff_err("set pfnadd enable error:%d\n", ret);
-+			return ret;
-+		}
-+
++		conn_info->req_ie =
++		    kmemdup(cfg->extra_buf, conn_info->req_ie_len,
++			    GFP_KERNEL);
++		if (!conn_info->req_ie)
++			conn_info->req_ie_len = 0;
 +	} else {
-+		ret = inff_fil_iovar_data_set(ifp, "pfn_add", (void *)pfn_list_buffer,
-+					      inff_pfn_length);
++		conn_info->req_ie_len = 0;
++		conn_info->req_ie = NULL;
 +	}
 +
-+	if (ret) {
-+		inff_err("set pfnadd enable error:%d\n", ret);
-+		return ret;
++	/* resp_len is the total length of assoc resp
++	 * which includes 6 bytes of aid/status code/capabilities.
++	 * the assoc_resp_ie length should minus the 6 bytes which starts from rate_ie.
++	 */
++	if (resp_len) {
++		memset(cfg->extra_buf, '\0', WL_EXTRA_BUF_MAX);
++		err = inff_fil_iovar_data_get(ifp, "assoc_resp_ies",
++					      cfg->extra_buf,
++					      WL_ASSOC_INFO_MAX);
++		if (err) {
++			iphy_err(drvr, "could not get assoc resp (%d)\n", err);
++			return err;
++		}
++		conn_info->resp_ie_len = resp_len - sizeof(struct dot11_assoc_resp);
++		conn_info->resp_ie =
++		    kmemdup(cfg->extra_buf, conn_info->resp_ie_len,
++			    GFP_KERNEL);
++		if (!conn_info->resp_ie)
++			conn_info->resp_ie_len = 0;
++
++		err = inff_fil_iovar_data_get(ifp, "wme_ac_sta",
++					      edcf_acparam_info,
++					      sizeof(edcf_acparam_info));
++		if (err) {
++			inff_err("could not get wme_ac_sta (%d)\n", err);
++			return err;
++		}
++
++		inff_wifi_prioritize_acparams(edcf_acparam_info,
++					      cfg->ac_priority);
++	} else {
++		conn_info->resp_ie_len = 0;
++		conn_info->resp_ie = NULL;
 +	}
-+	ret =  inff_fil_iovar_int_set(ifp, "pfn", PFN_SET);
-+	if (ret) {
-+		inff_err("set pfn error:%d\n", ret);
-+		return ret;
++	inff_dbg(CONN, "req len (%d) resp len (%d)\n",
++		 conn_info->req_ie_len, conn_info->resp_ie_len);
++
++	return err;
++}
++
++void inff_clear_assoc_ies(struct inff_cfg80211_info *cfg)
++{
++	struct inff_cfg80211_connect_info *conn_info = cfg_to_conn(cfg);
++
++	kfree(conn_info->req_ie);
++	conn_info->req_ie = NULL;
++	conn_info->req_ie_len = 0;
++	kfree(conn_info->resp_ie);
++	conn_info->resp_ie = NULL;
++	conn_info->resp_ie_len = 0;
++}
++
++s32
++inff_config_ap_mgmt_ie(struct inff_cfg80211_vif *vif,
++		       struct cfg80211_beacon_data *beacon)
++{
++	struct inff_pub *drvr = vif->ifp->drvr;
++	s32 err;
++
++	/* Set Beacon IEs to FW */
++	err = inff_vif_set_mgmt_ie(vif, INFF_VNDR_IE_BEACON_FLAG,
++				   beacon->tail, beacon->tail_len);
++	if (err) {
++		iphy_err(drvr, "Set Beacon IE Failed\n");
++		return err;
 +	}
-+	kfree(pfn_list_buffer);
-+	inff_dbg(TRACE, "Exit\n");
++	inff_dbg(TRACE, "Applied Vndr IEs for Beacon\n");
++
++	/* Set Probe Response IEs to FW */
++	err = inff_vif_set_mgmt_ie(vif, INFF_VNDR_IE_PRBRSP_FLAG,
++				   beacon->proberesp_ies,
++				   beacon->proberesp_ies_len);
++	if (err)
++		iphy_err(drvr, "Set Probe Resp IE Failed\n");
++	else
++		inff_dbg(TRACE, "Applied Vndr IEs for Probe Resp\n");
++
++	/* Set Assoc Response IEs to FW */
++	err = inff_vif_set_mgmt_ie(vif, INFF_VNDR_IE_ASSOCRSP_FLAG,
++				   beacon->assocresp_ies,
++				   beacon->assocresp_ies_len);
++	if (err)
++		inff_err("Set Assoc Resp IE Failed\n");
++	else
++		inff_dbg(TRACE, "Applied Vndr IEs for Assoc Resp\n");
++
++	return err;
++}
++
++s32 inff_vif_set_mgmt_ie(struct inff_cfg80211_vif *vif, s32 pktflag,
++			 const u8 *vndr_ie_buf, u32 vndr_ie_len)
++{
++	struct inff_pub *drvr;
++	struct inff_if *ifp;
++	struct vif_saved_ie *saved_ie;
++	s32 err = 0;
++	u8  *iovar_ie_buf;
++	u8  *curr_ie_buf;
++	u8  *mgmt_ie_buf = NULL;
++	int mgmt_ie_buf_len;
++	u32 *mgmt_ie_len;
++	u32 del_add_ie_buf_len = 0;
++	u32 total_ie_buf_len = 0;
++	u32 parsed_ie_buf_len = 0;
++	struct parsed_vndr_ies old_vndr_ies;
++	struct parsed_vndr_ies new_vndr_ies;
++	struct parsed_vndr_ie_info *vndrie_info;
++	s32 i;
++	u8 *ptr;
++	int remained_buf_len;
++	struct parsed_extension_ies new_ext_ies;
++	struct parsed_extension_ies old_ext_ies;
++	struct parsed_ext_ie_info *extie_info;
++
++	if (!vif)
++		return -ENODEV;
++	ifp = vif->ifp;
++	drvr = ifp->drvr;
++	saved_ie = &vif->saved_ie;
++
++	inff_dbg(TRACE, "bsscfgidx %d, pktflag : 0x%02X\n", ifp->bsscfgidx,
++		 pktflag);
++	iovar_ie_buf = kzalloc(WL_EXTRA_BUF_MAX, GFP_KERNEL);
++	if (!iovar_ie_buf)
++		return -ENOMEM;
++	curr_ie_buf = iovar_ie_buf;
++	switch (pktflag) {
++	case INFF_VNDR_IE_PRBREQ_FLAG:
++		mgmt_ie_buf = saved_ie->probe_req_ie;
++		mgmt_ie_len = &saved_ie->probe_req_ie_len;
++		mgmt_ie_buf_len = sizeof(saved_ie->probe_req_ie);
++		break;
++	case INFF_VNDR_IE_PRBRSP_FLAG:
++		mgmt_ie_buf = saved_ie->probe_res_ie;
++		mgmt_ie_len = &saved_ie->probe_res_ie_len;
++		mgmt_ie_buf_len = sizeof(saved_ie->probe_res_ie);
++		break;
++	case INFF_VNDR_IE_BEACON_FLAG:
++		mgmt_ie_buf = saved_ie->beacon_ie;
++		mgmt_ie_len = &saved_ie->beacon_ie_len;
++		mgmt_ie_buf_len = sizeof(saved_ie->beacon_ie);
++		break;
++	case INFF_VNDR_IE_ASSOCREQ_FLAG:
++		mgmt_ie_buf = saved_ie->assoc_req_ie;
++		mgmt_ie_len = &saved_ie->assoc_req_ie_len;
++		mgmt_ie_buf_len = sizeof(saved_ie->assoc_req_ie);
++		break;
++	case INFF_VNDR_IE_ASSOCRSP_FLAG:
++		mgmt_ie_buf = saved_ie->assoc_res_ie;
++		mgmt_ie_len = &saved_ie->assoc_res_ie_len;
++		mgmt_ie_buf_len = sizeof(saved_ie->assoc_res_ie);
++		break;
++	default:
++		err = -EPERM;
++		iphy_err(drvr, "not suitable type\n");
++		goto exit;
++	}
++
++	if (vndr_ie_len > mgmt_ie_buf_len) {
++		err = -ENOMEM;
++		iphy_err(drvr, "extra IE size too big\n");
++		goto exit;
++	}
++
++	/* parse and save new vndr_ie in curr_ie_buff before comparing it */
++	if (vndr_ie_buf && vndr_ie_len && curr_ie_buf) {
++		ptr = curr_ie_buf;
++		inff_parse_vndr_ies(vndr_ie_buf, vndr_ie_len, &new_vndr_ies);
++		for (i = 0; i < new_vndr_ies.count; i++) {
++			vndrie_info = &new_vndr_ies.ie_info[i];
++			memcpy(ptr + parsed_ie_buf_len, vndrie_info->ie_ptr,
++			       vndrie_info->ie_len);
++			parsed_ie_buf_len += vndrie_info->ie_len;
++		}
++		inff_parse_extension_ies(vndr_ie_buf, vndr_ie_len, &new_ext_ies);
++		for (i = 0; i < new_ext_ies.count; i++) {
++			extie_info = &new_ext_ies.ie_info[i];
++			memcpy(ptr + parsed_ie_buf_len, extie_info->ie_ptr,
++			       extie_info->ie_len);
++			parsed_ie_buf_len += extie_info->ie_len;
++		}
++	}
++
++	if (mgmt_ie_buf && *mgmt_ie_len) {
++		if (parsed_ie_buf_len && parsed_ie_buf_len == *mgmt_ie_len &&
++		    (memcmp(mgmt_ie_buf, curr_ie_buf,
++			    parsed_ie_buf_len) == 0)) {
++			inff_dbg(TRACE, "Previous mgmt IE equals to current IE\n");
++			goto exit;
++		}
++
++		/* parse old vndr_ie */
++		inff_parse_vndr_ies(mgmt_ie_buf, *mgmt_ie_len, &old_vndr_ies);
++		/* parse old ext_ie */
++		inff_parse_extension_ies(mgmt_ie_buf, *mgmt_ie_len, &old_ext_ies);
++
++		/* make a command to delete old ie */
++		for (i = 0; i < old_vndr_ies.count; i++) {
++			vndrie_info = &old_vndr_ies.ie_info[i];
++
++			inff_dbg(TRACE, "DEL ID : %d, Len: %d , OUI:%3ph\n",
++				 vndrie_info->vndrie.id,
++				 vndrie_info->vndrie.len,
++				 vndrie_info->vndrie.oui);
++
++			del_add_ie_buf_len = inff_vndr_ie(curr_ie_buf, pktflag,
++							  vndrie_info->ie_ptr,
++							  vndrie_info->ie_len,
++							  "del");
++			curr_ie_buf += del_add_ie_buf_len;
++			total_ie_buf_len += del_add_ie_buf_len;
++		}
++		/* make a command to delete old extension ie */
++		for (i = 0; i < old_ext_ies.count; i++) {
++			extie_info = &old_ext_ies.ie_info[i];
++
++			inff_dbg(TRACE, "DEL EXT_IE : %d, Len: %d , ext_id:%d\n",
++				 extie_info->ie_data.id,
++				 extie_info->ie_data.len,
++				 extie_info->ie_data.ext_id);
++
++			del_add_ie_buf_len = inff_vndr_ie(curr_ie_buf,
++							  pktflag | INFF_VNDR_IE_CUSTOM_FLAG,
++							  extie_info->ie_ptr,
++							  extie_info->ie_len,
++							  "del");
++			curr_ie_buf += del_add_ie_buf_len;
++			total_ie_buf_len += del_add_ie_buf_len;
++		}
++	}
++
++	*mgmt_ie_len = 0;
++	/* Add if there is any extra IE */
++	if (mgmt_ie_buf && parsed_ie_buf_len) {
++		ptr = mgmt_ie_buf;
++
++		remained_buf_len = mgmt_ie_buf_len;
++
++		/* make a command to add new ie */
++		for (i = 0; i < new_vndr_ies.count; i++) {
++			vndrie_info = &new_vndr_ies.ie_info[i];
++
++			/* verify remained buf size before copy data */
++			if (remained_buf_len < (vndrie_info->vndrie.len +
++							VNDR_IE_VSIE_OFFSET)) {
++				iphy_err(drvr, "no space in mgmt_ie_buf: len left %d",
++					 remained_buf_len);
++				break;
++			}
++			remained_buf_len -= (vndrie_info->ie_len +
++					     VNDR_IE_VSIE_OFFSET);
++
++			inff_dbg(TRACE, "ADDED ID : %d, Len: %d, OUI:%3ph\n",
++				 vndrie_info->vndrie.id,
++				 vndrie_info->vndrie.len,
++				 vndrie_info->vndrie.oui);
++
++			del_add_ie_buf_len = inff_vndr_ie(curr_ie_buf, pktflag,
++							  vndrie_info->ie_ptr,
++							  vndrie_info->ie_len,
++							  "add");
++
++			/* save the parsed IE in wl struct */
++			memcpy(ptr + (*mgmt_ie_len), vndrie_info->ie_ptr,
++			       vndrie_info->ie_len);
++			*mgmt_ie_len += vndrie_info->ie_len;
++
++			curr_ie_buf += del_add_ie_buf_len;
++			total_ie_buf_len += del_add_ie_buf_len;
++		}
++		/* make a command to add new EXT ie */
++		for (i = 0; i < new_ext_ies.count; i++) {
++			extie_info = &new_ext_ies.ie_info[i];
++
++			/* verify remained buf size before copy data */
++			if (remained_buf_len < (extie_info->ie_data.len +
++							VNDR_IE_VSIE_OFFSET)) {
++				iphy_err(drvr, "no space in mgmt_ie_buf: len left %d",
++					 remained_buf_len);
++				break;
++			}
++			remained_buf_len -= (extie_info->ie_len +
++					     VNDR_IE_VSIE_OFFSET);
++
++			inff_dbg(TRACE, "ADDED EXT ID : %d, Len: %d, OUI:%d\n",
++				 extie_info->ie_data.id,
++				 extie_info->ie_data.len,
++				 extie_info->ie_data.ext_id);
++
++			del_add_ie_buf_len = inff_vndr_ie(curr_ie_buf,
++							  pktflag | INFF_VNDR_IE_CUSTOM_FLAG,
++							  extie_info->ie_ptr,
++							  extie_info->ie_len,
++							  "add");
++
++			/* save the parsed IE in wl struct */
++			memcpy(ptr + (*mgmt_ie_len), extie_info->ie_ptr,
++			       extie_info->ie_len);
++			*mgmt_ie_len += extie_info->ie_len;
++
++			curr_ie_buf += del_add_ie_buf_len;
++			total_ie_buf_len += del_add_ie_buf_len;
++		}
++	}
++	if (total_ie_buf_len) {
++		err  = inff_fil_bsscfg_data_set(ifp, "vndr_ie", iovar_ie_buf,
++						total_ie_buf_len);
++		if (err)
++			iphy_err(drvr, "vndr ie set error : %d\n", err);
++	}
++
++exit:
++	kfree(iovar_ie_buf);
++	return err;
++}
++
++s32 inff_vif_clear_mgmt_ies(struct inff_cfg80211_vif *vif)
++{
++	static const s32 pktflags[] = {
++		INFF_VNDR_IE_PRBRSP_FLAG,
++		INFF_VNDR_IE_BEACON_FLAG,
++		INFF_VNDR_IE_ASSOCRSP_FLAG
++	};
++	int i;
++
++	if (vif->wdev.iftype == NL80211_IFTYPE_AP)
++		inff_vif_set_mgmt_ie(vif, INFF_VNDR_IE_ASSOCRSP_FLAG, NULL, 0);
++	else
++		inff_vif_set_mgmt_ie(vif, INFF_VNDR_IE_PRBREQ_FLAG, NULL, 0);
++
++	for (i = 0; i < ARRAY_SIZE(pktflags); i++)
++		inff_vif_set_mgmt_ie(vif, pktflags[i], NULL, 0);
++
++	memset(&vif->saved_ie, 0, sizeof(vif->saved_ie));
 +	return 0;
 +}
-diff --git a/drivers/net/wireless/infineon/inffmac/pno.h b/drivers/net/wireless/infineon/inffmac/pno.h
++
++/* Is any of the tlvs the expected entry? If
++ * not update the tlvs buffer pointer/length.
++ */
++bool
++wl_cfgoce_has_ie(const u8 *ie, const u8 **tlvs, u32 *tlvs_len,
++		 const u8 *oui, u32 oui_len, u8 type)
++{
++	/* If the contents match the OUI and the type */
++	if (ie[TLV_LEN_OFF] >= oui_len + 1 &&
++	    !memcmp(&ie[TLV_BODY_OFF], oui, oui_len) &&
++	    type == ie[TLV_BODY_OFF + oui_len]) {
++		return true;
++	}
++
++	if (!tlvs)
++		return false;
++	/* point to the next ie */
++	ie += ie[TLV_LEN_OFF] + TLV_HDR_LEN;
++	/* calculate the length of the rest of the buffer */
++	*tlvs_len -= (int)(ie - *tlvs);
++	/* update the pointer to the start of the buffer */
++	*tlvs = ie;
++
++	return false;
++}
+diff --git a/drivers/net/wireless/infineon/inffmac/ie.h b/drivers/net/wireless/infineon/inffmac/ie.h
 new file mode 100644
-index 000000000000..9037107a648c
+index 000000000000..6716eb81eba0
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/pno.h
-@@ -0,0 +1,140 @@
++++ b/drivers/net/wireless/infineon/inffmac/ie.h
+@@ -0,0 +1,167 @@
 +/* SPDX-License-Identifier: ISC */
 +/*
-+ * Copyright (c) 2016 Broadcom
++ * Copyright (c) 2010 Broadcom Corporation
 + *
 + * Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
-+#ifndef INFF_PNO_H
-+#define INFF_PNO_H
++#ifndef INFF_IE_H
++#define INFF_IE_H
 +
-+#define INFF_PNO_SCAN_COMPLETE			1
-+#define INFF_PNO_MAX_PFN_COUNT			16
-+#define INFF_PNO_SCHED_SCAN_MIN_PERIOD	10
-+#define INFF_PNO_SCHED_SCAN_MAX_PERIOD	508
-+#define AUTO_CONNECT_MASK		0x0010
-+#define AUTO_NET_SWITCH_MASK		0x0002
-+#define INFF_PNO_WPA_AUTH_ANY		0xFFFFFFFF
-+#define MAXNUM_SSID_PER_ADD		16
-+#define WSEC_MIN_PASSWORD_LEN		8
-+#define WSEC_MAX_PASSWORD_LEN		64
-+#define PFN_VERSION			2
-+#define PFN_LIST_ORDER			0
-+#define PFN_RSSI			1
-+#define SORT_CRITERIA_BIT		0
-+#define ENABLE				1
-+#define IMMEDIATE_SCAN_BIT		3
-+#define DEFAULT_BESTN			2
-+#define DEFAULT_MSCAN			0
-+#define DEFAULT_REPEAT			10
-+#define DEFAULT_EXP			2
-+#define PFN_SET				1
-+#define PFN_UNSET			0
-+#define PFN_CONFIG_AND_COUNT_SIZE	2
-+#define PFN_SSID_INFRA			1
++#define	DOT11_MGMT_HDR_LEN		24	/* d11 management header len */
++#define	DOT11_BCN_PRB_FIXED_LEN		12	/* beacon/probe fixed length */
 +
-+struct inff_pfn_param {
-+	s32 version;
-+	s32 scan_freq;
-+	s32 lost_network_timeout;
-+	s16 flags;
-+	s16 rssi_margin;
-+	u8 bestn;
-+	u8 mscan;
-+	u8 repeat;
-+	u8 exp;
-+	s32 slow_freq;
++#define WPA_OUI				"\x00\x50\xF2"	/* WPA OUI */
++#define WPA_OUI_TYPE			1
++#define RSN_OUI				"\x00\x0F\xAC"	/* RSN OUI */
++#define	WME_OUI_TYPE			2
++#define WPS_OUI_TYPE			4
++#define WFA_OUI_TYPE_MBO_OCE		0x16
++
++#define VS_IE_FIXED_HDR_LEN		6
++#define WPA_IE_VERSION_LEN		2
++#define WPA_IE_MIN_OUI_LEN		4
++#define WPA_IE_SUITE_COUNT_LEN		2
++
++#define VNDR_IE_CMD_LEN			4	/* length of the set command
++						 * string :"add", "del" (+ NUL)
++						 */
++#define VNDR_IE_COUNT_OFFSET		4
++#define VNDR_IE_PKTFLAG_OFFSET		8
++#define VNDR_IE_VSIE_OFFSET		12
++#define VNDR_IE_HDR_SIZE		12
++#define VNDR_IE_PARSE_LIMIT		5
++
++/* flags */
++#define INFF_ASSOC_REQ_IS_REASSOC 0x01 /* assoc req was actually a reassoc */
++
++struct dot11_assoc_req {
++	u16 capability;		/* capability information */
++	u16 listen;		/* listen interval */
 +};
 +
-+struct inff_pfn {
-+	struct inff_ssid_le ssid; /*ssid and its length*/
-+	s32 flags; /*bit2: hidden*/
-+	s32 infra; /*BSS Vs IBSS*/
-+	s32 auth; /*Open Vs Closed*/
-+	s32 wpa_auth; /*WPA type*/
-+	s32 wsec; /*wsec value*/
-+	struct inff_wsec_pmk_le psk; /*Password*/
++struct dot11_reassoc_req {
++	u16 capability;		/* capability information */
++	u16 listen;		/* listen interval */
++	u8 ap[ETH_ALEN];	/* Current AP address */
 +};
 +
-+struct pfn_conn_info {
-+	u8 SSID_len;
-+	u8 SSID[IEEE80211_MAX_SSID_LEN];
-+	u8 BSSID[ETH_ALEN];
-+	s16 RSSI;
-+	s8 phy_noise;
-+	u16 channel;
-+	s16 SNR;
-+	u8 proto;
-+	int key_mgmt;
++struct dot11_assoc_resp {
++	u16 capability;		/* capability information */
++	u16 status;		/* status code */
++	u16 aid;		/* association ID */
 +};
 +
-+enum {
-+	PFN_CONFIG_AUTOCONNECT,
-+	PFN_CONFIG_AUTOSWITCH_LISTORDER,
-+	PFN_CONFIG_AUTOSWITCH_RSSI,
++/**
++ * struct inff_tlv - tag_ID/length/value_buffer tuple.
++ *
++ * @id: tag identifier.
++ * @len: number of bytes in value buffer.
++ * @data: value buffer.
++ */
++struct inff_tlv {
++	u8 id;
++	u8 len;
++	u8 data[];
 +};
 +
-+/* forward declaration */
-+struct inff_pno_info;
++/* Vendor specific ie. id = 221, oui and type defines exact ie */
++struct inff_vs_tlv {
++	u8 id;
++	u8 len;
++	u8 oui[3];
++	u8 oui_type;
++};
 +
-+/**
-+ * inff_pno_start_sched_scan - initiate scheduled scan on device.
-+ *
-+ * @ifp: interface object used.
-+ * @req: configuration parameters for scheduled scan.
-+ */
-+int inff_pno_start_sched_scan(struct inff_if *ifp,
-+			      struct cfg80211_sched_scan_request *req);
++struct parsed_vndr_ie_info {
++	u8 *ie_ptr;
++	u32 ie_len;	/* total length including id & length field */
++	struct inff_vs_tlv vndrie;
++};
 +
-+/**
-+ * inff_pno_stop_sched_scan - terminate scheduled scan on device.
-+ *
-+ * @ifp: interface object used.
-+ * @reqid: unique identifier of scan to be stopped.
-+ */
-+int inff_pno_stop_sched_scan(struct inff_if *ifp, u64 reqid);
++struct parsed_vndr_ies {
++	u32 count;
++	struct parsed_vndr_ie_info ie_info[VNDR_IE_PARSE_LIMIT];
++};
 +
-+/**
-+ * inff_pno_wiphy_params - fill scheduled scan parameters in wiphy instance.
-+ *
-+ * @wiphy: wiphy instance to be used.
-+ * @gscan: indicates whether the device has support for g-scan feature.
-+ */
-+void inff_pno_wiphy_params(struct wiphy *wiphy, bool gscan);
++struct inff_ext_tlv {
++	u8 id;
++	u8 len;
++	u8 ext_id;
++};
 +
-+/**
-+ * inff_pno_attach - allocate and attach module information.
-+ *
-+ * @cfg: cfg80211 context used.
-+ */
-+int inff_pno_attach(struct inff_cfg80211_info *cfg);
++struct parsed_ext_ie_info {
++	u8 *ie_ptr;
++	u32 ie_len;	/* total length including id & length field */
++	struct inff_ext_tlv ie_data;
++};
 +
-+/**
-+ * inff_pno_detach - detach and free module information.
-+ *
-+ * @cfg: cfg80211 context used.
-+ */
-+void inff_pno_detach(struct inff_cfg80211_info *cfg);
++struct parsed_extension_ies {
++	u32 count;
++	struct parsed_ext_ie_info ie_info[VNDR_IE_PARSE_LIMIT];
++};
 +
-+/**
-+ * inff_pno_find_reqid_by_bucket - find request id for given bucket index.
-+ *
-+ * @pi: pno instance used.
-+ * @bucket: index of firmware bucket.
-+ */
-+u64 inff_pno_find_reqid_by_bucket(struct inff_pno_info *pi, u32 bucket);
++struct ie_info {
++	u32 pktflag;			/* bitmask indicating which packet(s) contain this IE */
++	struct inff_tlv ie_data;	/* IE data */
++} __packed;
 +
-+/**
-+ * inff_pno_get_bucket_map - determine bucket map for given netinfo.
-+ *
-+ * @pi: pno instance used.
-+ * @netinfo: netinfo to compare with bucket configuration.
-+ */
-+u32 inff_pno_get_bucket_map(struct inff_pno_info *pi,
-+			    struct inff_pno_net_info_le *netinfo);
++struct ie_buf {
++	s32 iecount;			/* number of entries in the ie_list[] array */
++	struct ie_info ie_list[1];	/* variable size list of ie_info_t structs */
++} __packed;
 +
-+int pfn_send_network_blob_fw(struct wiphy *wiphy,
-+			     struct wireless_dev *wdev);
++struct ie_set_buffer {
++	char cmd[VNDR_IE_CMD_LEN];	/* ie IOVar set command : "add" + NUL */
++	struct ie_buf ie_buffer;	/* buffer containing IE list information */
++} __packed;
 +
-+#endif /* INFF_PNO_H */
++/* Check whether the given IE looks like WFA OCE IE. */
++#define wl_cfgoce_is_oce_ie(ie, tlvs, len)	\
++	wl_cfgoce_has_ie(ie, tlvs, len,		\
++			 (const u8 *)WFA_OUI, TLV_OUI_LEN, WFA_OUI_TYPE_MBO_OCE)
++
++bool
++wl_cfgoce_has_ie(const u8 *ie, const u8 **tlvs, u32 *tlvs_len,
++		 const u8 *oui, u32 oui_len, u8 type);
++
++const struct inff_tlv *inff_parse_tlvs(const void *buf, int buflen, uint key);
++
++bool inff_tlv_has_ie(const u8 *ie, const u8 **tlvs, u32 *tlvs_len,
++		     const u8 *oui, u32 oui_len, u8 type);
++
++struct inff_vs_tlv *inff_find_wpaie(const u8 *parse, u32 len);
++
++struct inff_vs_tlv *inff_find_wpsie(const u8 *parse, u32 len);
++
++struct inff_tlv *inff_find_iwie(const u8 *parse, u32 len);
++
++s32 inff_clear_iwie(struct inff_cfg80211_info *cfg, struct inff_if *ifp);
++
++s32 inff_add_iwie(struct inff_cfg80211_info *cfg, struct inff_if *ifp,
++		  s32 pktflag, u8 ie_id, u8 *data, u8 data_len);
++
++bool inff_valid_wpa_oui(u8 *oui, bool is_rsn_ie);
++bool inff_valid_dpp_suite(u8 *oui);
++
++s32 inff_parse_vndr_ies(const u8 *vndr_ie_buf, u32 vndr_ie_len, struct parsed_vndr_ies *vndr_ies);
++
++u32 inff_vndr_ie(u8 *iebuf, s32 pktflag, u8 *ie_ptr, u32 ie_len, s8 *add_del_cmd);
++
++s32 inff_parse_extension_ies(const u8 *extension_ie_buf, u32 extension_ie_len,
++			     struct parsed_extension_ies *extension_ies);
++
++s32 inff_get_assoc_ies(struct inff_cfg80211_info *cfg, struct inff_if *ifp);
++
++void inff_clear_assoc_ies(struct inff_cfg80211_info *cfg);
++
++s32 inff_vif_set_mgmt_ie(struct inff_cfg80211_vif *vif, s32 pktflag,
++			 const u8 *vndr_ie_buf, u32 vndr_ie_len);
++s32 inff_vif_clear_mgmt_ies(struct inff_cfg80211_vif *vif);
++s32 inff_config_ap_mgmt_ie(struct inff_cfg80211_vif *vif, struct cfg80211_beacon_data *beacon);
++
++void inff_clear_assoc_req_ie(struct inff_cfg80211_info *cfg);
++void inff_clear_assoc_resp_ie(struct inff_cfg80211_info *cfg);
++
++#endif /* INFF_IE_H */
 -- 
 2.25.1
 
