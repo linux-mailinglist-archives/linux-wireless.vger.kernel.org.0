@@ -1,140 +1,200 @@
-Return-Path: <linux-wireless+bounces-27328-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27329-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89003B57ACE
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 14:25:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7822B58BCF
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 04:27:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F5363A1EB4
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Sep 2025 12:25:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A7141B26FCF
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 02:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FB92D595F;
-	Mon, 15 Sep 2025 12:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF071D54FA;
+	Tue, 16 Sep 2025 02:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HGlGorY5"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="vYROwh0r"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9D02FB962;
-	Mon, 15 Sep 2025 12:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F9019AD48
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 02:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757939058; cv=none; b=qtpSvdEUB69oezre4WTWCMnT2gUzjX6Ggi5M9WHiDkOJMtdsUG3BZn0LxXmdtjC3fjgODNV5HBbhT999LIdoiHqpJBWl5+m3ZMmr0KF9I6uQ9pbjoGEdtFhWZc3ciDdl7l8oRGvB8alpP3TyyoxIWLbgbr0Fh7yoBNfgaDv2Cyg=
+	t=1757989641; cv=none; b=Sgw8YT3Mb1YrgBzFXoiGtfcps59aokX+4Wls4YRkDluXqQe4Gne4b6/tSIBEXQkixRq7PKVMfZKL8oNA9wG0rcIWqv0EMvKLfxaGuhmpNOlr4K7g2SAfWt+AWM4Vic2tw9vUKGFblrKWops/VHWk36p4PPDnEhbWffnjHxOkVr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757939058; c=relaxed/simple;
-	bh=7P1TH/iXUySVg0i/AUOTjLXI0gPuddCzRAcSmSb5R4w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rxGk9TsBi6zZ+Km+8ZbBFA3kJl2YZVTkOVfvsFkvDgRbzPkw6QC9D0i0a5fBJ303BzEYL6Boa0jfd1byUdiN+MCGY/TvMmvmhwJMIv5oQ614DUc5PeXQIl+w2a1/6xvPENUZWm2SORV1wrJLOh6dfSgqKFxIrFmnHLM0O+8waJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HGlGorY5; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757939056; x=1789475056;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7P1TH/iXUySVg0i/AUOTjLXI0gPuddCzRAcSmSb5R4w=;
-  b=HGlGorY5u4O6qVMz6bRyfyylVveO7XBK+tCOx2gImVVfftYiS9C7HnxO
-   wJZce1TYStwCIbpdN6/LHA9fXXFM/P44vJWLcCmyLrgi8HLMoQsdIucXr
-   GUCOHVuU1mHpi51ruZMVkMPZISQtEIpXNksJaByCICGF97TNkHqfXXmey
-   vT7jVuracm2K1TlQv9WC/+0kzdbbjlB52DNqR3GStZ5H025Pebz3KHdpt
-   fEz+A59meQdoIvvF3ixWvAocfg9cOy1C6vvJtqWv56BpsU9SYSTyl3z4V
-   1tNOaUhQzqbte3V0GeRVtugbbEvhpI3Ujtr0c4W/lVFVpDebFEBgpvGoZ
-   A==;
-X-CSE-ConnectionGUID: 2CxM061aQb2/xftyHhLUSA==
-X-CSE-MsgGUID: fx2PL+chRj6tNYhutlfOXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="70807161"
-X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
-   d="scan'208";a="70807161"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 05:24:15 -0700
-X-CSE-ConnectionGUID: lBHa8urVQ0C6GbcF5fU5aw==
-X-CSE-MsgGUID: UPGdaX0TSLSniCBvTRZPGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
-   d="scan'208";a="179783356"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by orviesa005.jf.intel.com with SMTP; 15 Sep 2025 05:24:12 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 15 Sep 2025 15:24:11 +0300
-Date: Mon, 15 Sep 2025 15:24:11 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Hans de Goede <hansg@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] net: rfkill: gpio: Fix crash due to dereferencering
- uninitialized pointer
-Message-ID: <aMgFa9LLJBhjcgJr@kuha.fi.intel.com>
-References: <20250913113515.21698-1-hansg@kernel.org>
+	s=arc-20240116; t=1757989641; c=relaxed/simple;
+	bh=e0oA7cYTS/sNvzjCdpQSq7IUAWUy6m2tdQ4GguN/6fI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=O5oCcN+v5NsxLyOc1yJDtCQmZq2Mv0kFzAnJoKK5xOUvqxqQQoFXlGOQVG2vQF6x18I7HPhUrp02xIioJA6YJIX6CAtVS8SF6zaUaNiQlI5bTSn0Sb8O/NMrrwe7jCLojaBBZQYZxVPn42+NMqReTGgchZtOsky9FOFQIeko7is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=vYROwh0r; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58G2R18j82075447, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1757989621; bh=e0oA7cYTS/sNvzjCdpQSq7IUAWUy6m2tdQ4GguN/6fI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=vYROwh0r1mxxpa0r9SFlX7ol1gwtvNGwGCQPd325r76U76YNnsy8SXlPTZ9oQKSf9
+	 lmxkCmExlI1QP7/JhgdZZZ+pqAdbMr5MMfFQAfjnqtgRmhfzjQz0F1O3VKBQKfWmSu
+	 aR25BlHi3DFVYu9vCQaM0Tv+DjOtceWVRjPHRLB/R3lSHBqsWDJyHiImb92Hpntm4z
+	 +zXY/DukCdmdFr/yn1DykBz1IHv9LrEHwBCkSImV+BIqA+SnVg8twX9OIvB5xwDmeD
+	 kgljAIkU5vNJ/U16SiCR5gFK4SyhgZstw0i2u0G3dWEY/d4gX2qsTtpJfjbRqqUin9
+	 t/KmRWgUR+N5w==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58G2R18j82075447
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Sep 2025 10:27:01 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Tue, 16 Sep 2025 10:27:00 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 16 Sep 2025 10:27:00 +0800
+Received: from RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d]) by
+ RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d%2]) with mapi id
+ 15.01.2507.035; Tue, 16 Sep 2025 10:27:00 +0800
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
+To: Raja Mani <raja.mani@oss.qualcomm.com>,
+        "johannes@sipsolutions.net"
+	<johannes@sipsolutions.net>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 5/5] iw: bitrate: support link id
+Thread-Topic: [PATCH 5/5] iw: bitrate: support link id
+Thread-Index: AQHcI8tTBaLby4iX1kWXCzQt5lUARrSTJAeAgAH2irA=
+Date: Tue, 16 Sep 2025 02:27:00 +0000
+Message-ID: <41315cdd01e347ac927bc51bfacb050b@realtek.com>
+References: <20250912095423.27266-1-kevin_yang@realtek.com>
+ <20250912095423.27266-6-kevin_yang@realtek.com>
+ <51e6a40d-8f1b-40ed-9105-4b0af0c544b9@oss.qualcomm.com>
+In-Reply-To: <51e6a40d-8f1b-40ed-9105-4b0af0c544b9@oss.qualcomm.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250913113515.21698-1-hansg@kernel.org>
 
-On Sat, Sep 13, 2025 at 01:35:15PM +0200, Hans de Goede wrote:
-> Since commit 7d5e9737efda ("net: rfkill: gpio: get the name and type from
-> device property") rfkill_find_type() gets called with the possibly
-> uninitialized "const char *type_name;" local variable.
-> 
-> On x86 systems when rfkill-gpio binds to a "BCM4752" or "LNV4752"
-> acpi_device, the rfkill->type is set based on the ACPI acpi_device_id:
-> 
->         rfkill->type = (unsigned)id->driver_data;
-> 
-> and there is no "type" property so device_property_read_string() will fail
-> and leave type_name uninitialized, leading to a potential crash.
-> 
-> rfkill_find_type() does accept a NULL pointer, fix the potential crash
-> by initializing type_name to NULL.
-> 
-> Note likely sofar this has not been caught because:
-> 
-> 1. Not many x86 machines actually have a "BCM4752"/"LNV4752" acpi_device
-> 2. The stack happened to contain NULL where type_name is stored
-> 
-> Fixes: 7d5e9737efda ("net: rfkill: gpio: get the name and type from device property")
-> Cc: stable@vger.kernel.org
-> Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Signed-off-by: Hans de Goede <hansg@kernel.org>
-
-FWIW:
-
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
-> ---
-> Changes in v2:
-> - Fix typo in stable email address
-> ---
->  net/rfkill/rfkill-gpio.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
-> index 41e657e97761..cf2dcec6ce5a 100644
-> --- a/net/rfkill/rfkill-gpio.c
-> +++ b/net/rfkill/rfkill-gpio.c
-> @@ -94,10 +94,10 @@ static const struct dmi_system_id rfkill_gpio_deny_table[] = {
->  static int rfkill_gpio_probe(struct platform_device *pdev)
->  {
->  	struct rfkill_gpio_data *rfkill;
-> -	struct gpio_desc *gpio;
-> +	const char *type_name = NULL;
->  	const char *name_property;
->  	const char *type_property;
-> -	const char *type_name;
-> +	struct gpio_desc *gpio;
->  	int ret;
->  
->  	if (dmi_check_system(rfkill_gpio_deny_table))
-> -- 
-> 2.51.0
-
--- 
-heikki
+UmFqYSBNYW5pIDxyYWphLm1hbmlAb3NzLnF1YWxjb21tLmNvbT4gd3JvdGU6DQo+IA0KPiBPbiA5
+LzEyLzIwMjUgMzoyNCBQTSwgWm9uZy1aaGUgWWFuZyB3cm90ZToNCj4gPiBTaW5jZSBubDgwMjEx
+IHJlcXVpcmVzIHZhbGlkIGxpbmsgaWQgKE5MODAyMTFfRkxBR19NTE9fVkFMSURfTElOS19JRCks
+DQo+ID4gc3VwcG9ydCBsaW5rLWlkIGZpZWxkIGZvciBNTEQuIEZvciBub24tTUxELCBqdXN0IGFz
+IGJlZm9yZSwgbm8gbmVlZCB0bw0KPiA+IGFzc2lnbiBsaW5rLWlkIGZpZWxkLg0KPiA+DQo+ID4g
+U2lnbmVkLW9mZi1ieTogWm9uZy1aaGUgWWFuZyA8a2V2aW5feWFuZ0ByZWFsdGVrLmNvbT4NCj4g
+PiAtLS0NCj4gPiAgIGJpdHJhdGUuYyAgIHwgMjkgKysrKysrKysrKysrKysrKysrKysrKysrKysr
+LS0NCj4gPiAgIGludGVyZmFjZS5jIHwgMzIgKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0t
+LS0NCj4gPiAgIGl3LmggICAgICAgIHwgIDIgKy0NCj4gPiAgIDMgZmlsZXMgY2hhbmdlZCwgNTUg
+aW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9iaXRy
+YXRlLmMgYi9iaXRyYXRlLmMNCj4gPiBpbmRleCAxNmYxMThjY2U0ZWMuLjc4ZDM5OWQyMjdlMiAx
+MDA2NDQNCj4gPiAtLS0gYS9iaXRyYXRlLmMNCj4gPiArKysgYi9iaXRyYXRlLmMNCj4gPiBAQCAt
+MTk1LDcgKzE5NSw3IEBAIHN0YXRpYyBpbnQgcGFyc2VfZWh0X2dpKGNoYXIgKmVodF9naSkNCj4g
+Pg0KPiA+ICAgaW50IHNldF9iaXRyYXRlcyhzdHJ1Y3QgbmxfbXNnICptc2csDQo+ID4gICAgICAg
+ICAgICAgICAgaW50IGFyZ2MsIGNoYXIgKiphcmd2LA0KPiA+IC0gICAgICAgICAgICAgIGVudW0g
+bmw4MDIxMV9hdHRycyBhdHRyKQ0KPiA+ICsgICAgICAgICAgICAgIGVudW0gbmw4MDIxMV9hdHRy
+cyBhdHRyLCBpbnQgKmxpbmtfaWQpDQo+ID4gICB7DQo+ID4gICAgICAgc3RydWN0IG5sYXR0ciAq
+bmxfcmF0ZXMsICpubF9iYW5kOw0KPiA+ICAgICAgIGludCBpLCByZXQgPSAwOw0KPiA+IEBAIC0y
+NDIsNiArMjQyLDcgQEAgaW50IHNldF9iaXRyYXRlcyhzdHJ1Y3QgbmxfbXNnICptc2csDQo+ID4g
+ICAgICAgY2hhciAqaGVfZ2lfYXJndiA9IE5VTEw7DQo+ID4gICAgICAgaW50IGVodF9naSA9IDAs
+IGVodF9sdGYgPSAwOw0KPiA+ICAgICAgIGNoYXIgKmVodF9naV9hcmd2ID0gTlVMTDsNCj4gPiAr
+ICAgICBib29sIGhhc19saW5rX2lkID0gZmFsc2U7DQo+ID4NCj4gPiAgICAgICBlbnVtIHsNCj4g
+PiAgICAgICAgICAgICAgIFNfTk9ORSwNCj4gPiBAQCAtMjUwLDYgKzI1MSw3IEBAIGludCBzZXRf
+Yml0cmF0ZXMoc3RydWN0IG5sX21zZyAqbXNnLA0KPiA+ICAgICAgICAgICAgICAgU19WSFQsDQo+
+ID4gICAgICAgICAgICAgICBTX0hFLA0KPiA+ICAgICAgICAgICAgICAgU19FSFQsDQo+ID4gKyAg
+ICAgICAgICAgICBTX0xJTktfSUQsDQo+ID4gICAgICAgICAgICAgICBTX0dJLA0KPiA+ICAgICAg
+ICAgICAgICAgU19IRV9HSSwNCj4gPiAgICAgICAgICAgICAgIFNfSEVfTFRGLA0KPiA+IEBAIC0z
+NDcsNiArMzQ5LDExIEBAIGludCBzZXRfYml0cmF0ZXMoc3RydWN0IG5sX21zZyAqbXNnLA0KPiA+
+ICAgICAgICAgICAgICAgICAgICAgICBlaHRfYXJndiA9IGVodF9hcmd2XzY7DQo+ID4gICAgICAg
+ICAgICAgICAgICAgICAgIGVodF9hcmdjID0gJmVodF9hcmdjXzY7DQo+ID4gICAgICAgICAgICAg
+ICAgICAgICAgIGhhdmVfZWh0X21jc182ID0gdHJ1ZTsNCj4gPiArICAgICAgICAgICAgIH0gZWxz
+ZSBpZiAoc3RyY21wKGFyZ3ZbaV0sICJsaW5rLWlkIikgPT0gMCkgew0KPiANCj4gTWlzc2VkIHRv
+IGluY2x1ZGUgdGhpcyBuZXcgYXJnIGluICd0aWRjb25mJyBhbmQgJ2JpdHJhdGVzJyBvcHRpb24n
+cyBoZWxwIHRleHQgPw0KDQpUaGFua3MuDQpJIHdpbGwgc2VuZCB2Mi4NCg0KPiANCj4gPiArICAg
+ICAgICAgICAgICAgICAgICAgaWYgKGhhc19saW5rX2lkKQ0KPiA+ICsgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHJldHVybiAxOw0KPiA+ICsgICAgICAgICAgICAgICAgICAgICBwYXJzZXJf
+c3RhdGUgPSBTX0xJTktfSUQ7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgIGhhc19saW5rX2lk
+ID0gdHJ1ZTsNCj4gPiAgICAgICAgICAgICAgIH0gZWxzZSBpZiAoc3RyY21wKGFyZ3ZbaV0sICJz
+Z2ktMi40IikgPT0gMCkgew0KPiA+ICAgICAgICAgICAgICAgICAgICAgICBzZ2lfMjQgPSAxOw0K
+PiA+ICAgICAgICAgICAgICAgICAgICAgICBwYXJzZXJfc3RhdGUgPSBTX0dJOyBAQCAtNDI3LDYg
+KzQzNCwxMSBAQCBpbnQNCj4gPiBzZXRfYml0cmF0ZXMoc3RydWN0IG5sX21zZyAqbXNnLA0KPiA+
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiAxOw0KPiA+ICAgICAgICAgICAg
+ICAgICAgICAgICBlaHRfYXJndlsoKmVodF9hcmdjKSsrXSA9IGFyZ3ZbaV07DQo+ID4gICAgICAg
+ICAgICAgICAgICAgICAgIGJyZWFrOw0KPiA+ICsgICAgICAgICAgICAgY2FzZSBTX0xJTktfSUQ6
+DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICpsaW5rX2lkID0gc3RydG9sKGFyZ3ZbaV0sICZl
+bmQsIDApOw0KPiA+ICsgICAgICAgICAgICAgICAgICAgICBpZiAoKmVuZCAhPSAnXDAnKQ0KPiA+
+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiAxOw0KPiA+ICsgICAgICAgICAg
+ICAgICAgICAgICBicmVhazsNCj4gPiAgICAgICAgICAgICAgIGNhc2UgU19HSToNCj4gPiAgICAg
+ICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+ID4gICAgICAgICAgICAgICBjYXNlIFNfSEVfR0k6
+DQo+ID4gQEAgLTYxOCw3ICs2MzAsMjAgQEAgc3RhdGljIGludCBoYW5kbGVfYml0cmF0ZXMoc3Ry
+dWN0IG5sODAyMTFfc3RhdGUgKnN0YXRlLA0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICBp
+bnQgYXJnYywgY2hhciAqKmFyZ3YsDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgIGVudW0g
+aWRfaW5wdXQgaWQpDQo+ID4gICB7DQo+ID4gLSAgICAgcmV0dXJuIHNldF9iaXRyYXRlcyhtc2cs
+IGFyZ2MsIGFyZ3YsIE5MODAyMTFfQVRUUl9UWF9SQVRFUyk7DQo+ID4gKyAgICAgaW50IGxpbmtf
+aWQgPSAtMTsNCj4gPiArICAgICBpbnQgcmV0Ow0KPiA+ICsNCj4gPiArICAgICByZXQgPSBzZXRf
+Yml0cmF0ZXMobXNnLCBhcmdjLCBhcmd2LCBOTDgwMjExX0FUVFJfVFhfUkFURVMsICZsaW5rX2lk
+KTsNCj4gPiArICAgICBpZiAocmV0KQ0KPiA+ICsgICAgICAgICAgICAgcmV0dXJuIHJldDsNCj4g
+PiArDQo+ID4gKyAgICAgaWYgKGxpbmtfaWQgPj0gMCkNCj4gPiArICAgICAgICAgICAgIE5MQV9Q
+VVRfVTgobXNnLCBOTDgwMjExX0FUVFJfTUxPX0xJTktfSUQsIGxpbmtfaWQpOw0KPiA+ICsNCj4g
+PiArICAgICByZXR1cm4gMDsNCj4gPiArDQo+ID4gKyBubGFfcHV0X2ZhaWx1cmU6DQo+ID4gKyAg
+ICAgcmV0dXJuIC1FTk9CVUZTOw0KPiA+ICAgfQ0KPiA+DQo+ID4gICAjZGVmaW5lIERFU0NSX0xF
+R0FDWSAiW2xlZ2FjeS08Mi40fDU+IDxsZWdhY3kgcmF0ZSBpbiBNYnBzPipdIg0KPiA+IGRpZmYg
+LS1naXQgYS9pbnRlcmZhY2UuYyBiL2ludGVyZmFjZS5jIGluZGV4DQo+ID4gNjVhNDAwNjk2M2U1
+Li4wZjFlOTY0N2YwZTQgMTAwNjQ0DQo+ID4gLS0tIGEvaW50ZXJmYWNlLmMNCj4gPiArKysgYi9p
+bnRlcmZhY2UuYw0KPiA+IEBAIC03OTYsMTAgKzc5NiwxMSBAQCBzdGF0aWMgaW50IHRvZ2dsZV90
+aWRfcGFyYW0oY29uc3QgY2hhciAqYXJndjAsIGNvbnN0IGNoYXIgKmFyZ3YxLA0KPiA+ICAgICAg
+IHJldHVybiAtRU5PQlVGUzsNCj4gPiAgIH0NCj4gPg0KPiA+IC1zdGF0aWMgaW50IGhhbmRsZV90
+aWRfY29uZmlnKHN0cnVjdCBubDgwMjExX3N0YXRlICpzdGF0ZSwNCj4gPiAtICAgICAgICAgICAg
+ICAgICAgICAgICAgICBzdHJ1Y3QgbmxfbXNnICptc2csDQo+ID4gLSAgICAgICAgICAgICAgICAg
+ICAgICAgICAgaW50IGFyZ2MsIGNoYXIgKiphcmd2LA0KPiA+IC0gICAgICAgICAgICAgICAgICAg
+ICAgICAgIGVudW0gaWRfaW5wdXQgaWQpDQo+ID4gK3N0YXRpYyBpbnQgX19oYW5kbGVfdGlkX2Nv
+bmZpZyhzdHJ1Y3Qgbmw4MDIxMV9zdGF0ZSAqc3RhdGUsDQo+ID4gKyAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICBzdHJ1Y3QgbmxfbXNnICptc2csDQo+ID4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBpbnQgYXJnYywgY2hhciAqKmFyZ3YsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBlbnVtIGlkX2lucHV0IGlkLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgaW50ICpsaW5rX2lkKQ0KPiA+ICAgew0KPiA+ICAgICAgIHN0cnVjdCBubGF0dHIgKnRpZHNf
+YXJyYXkgPSBOVUxMOw0KPiA+ICAgICAgIHN0cnVjdCBubGF0dHIgKnRpZHNfZW50cnkgPSBOVUxM
+OyBAQCAtOTg5LDcgKzk5MCw3IEBAIHN0YXRpYyBpbnQNCj4gPiBoYW5kbGVfdGlkX2NvbmZpZyhz
+dHJ1Y3Qgbmw4MDIxMV9zdGF0ZSAqc3RhdGUsDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgaWYgKHR4cmF0ZV90eXBlICE9IE5MODAyMTFfVFhfUkFURV9BVVRPTUFUSUMpIHsNCj4g
+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGF0dHIgPQ0KPiBOTDgwMjEx
+X1RJRF9DT05GSUdfQVRUUl9UWF9SQVRFOw0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgcmV0ID0gc2V0X2JpdHJhdGVzKG1zZywgYXJnYywgYXJndiwNCj4gPiAtICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhdHRy
+KTsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBhdHRyLA0KPiA+ICsgbGlua19pZCk7DQo+ID4gICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICBpZiAocmV0IDwgMikNCj4gPiAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIDE7DQo+ID4NCj4gPiBAQCAtMTAyMCw2ICsx
+MDIxLDI3IEBAIG5sYV9wdXRfZmFpbHVyZToNCj4gPiAgICAgICByZXR1cm4gLUVOT0JVRlM7DQo+
+ID4gICB9DQo+ID4NCj4gPiArc3RhdGljIGludCBoYW5kbGVfdGlkX2NvbmZpZyhzdHJ1Y3Qgbmw4
+MDIxMV9zdGF0ZSAqc3RhdGUsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgc3RydWN0
+IG5sX21zZyAqbXNnLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgIGludCBhcmdjLCBj
+aGFyICoqYXJndiwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICBlbnVtIGlkX2lucHV0
+IGlkKSB7DQo+ID4gKyAgICAgaW50IGxpbmtfaWQgPSAtMTsNCj4gPiArICAgICBpbnQgcmV0Ow0K
+PiA+ICsNCj4gPiArICAgICByZXQgPSBfX2hhbmRsZV90aWRfY29uZmlnKHN0YXRlLCBtc2csIGFy
+Z2MsIGFyZ3YsIGlkLCAmbGlua19pZCk7DQo+ID4gKyAgICAgaWYgKHJldCkNCj4gPiArICAgICAg
+ICAgICAgIHJldHVybiByZXQ7DQo+ID4gKw0KPiA+ICsgICAgIGlmIChsaW5rX2lkID49IDApDQo+
+ID4gKyAgICAgICAgICAgICBOTEFfUFVUX1U4KG1zZywgTkw4MDIxMV9BVFRSX01MT19MSU5LX0lE
+LCBsaW5rX2lkKTsNCj4gPiArDQo+ID4gKyAgICAgcmV0dXJuIDA7DQo+ID4gKw0KPiA+ICsgbmxh
+X3B1dF9mYWlsdXJlOg0KPiA+ICsgICAgIHJldHVybiAtRU5PQlVGUzsNCj4gPiArfQ0KPiA+ICsN
+Cj4gPiAgIENPTU1BTkQoc2V0LCB0aWRjb25mLCAiW3BlZXIgPE1BQyBhZGRyZXNzPl0gdGlkcyA8
+bWFzaz4gW292ZXJyaWRlXSBbc3JldHJ5IDxudW0+XQ0KPiBbbHJldHJ5IDxudW0+XSAiDQo+ID4g
+ICAgICAgIlthbXBkdSBbb258b2ZmXV0gW2Ftc2R1IFtvbnxvZmZdXSBbbm9hY2sgW29ufG9mZl1d
+IFtydHNjdHMgW29ufG9mZl1dIg0KPiA+ICAgICAgICJbYml0cmF0ZXMgPHR5cGUgW2F1dG98Zml4
+ZWR8bGltaXRdPiBbbGVnYWN5LTwyLjR8NT4gPGxlZ2FjeSByYXRlIGluIE1icHM+Kl0NCj4gW2h0
+LW1jcy08Mi40fDU+IDxNQ1MgaW5kZXg+Kl0iDQo+ID4gZGlmZiAtLWdpdCBhL2l3LmggYi9pdy5o
+DQo+ID4gaW5kZXggMTQ1YjA1OGQ4NmJhLi41YzRhYjZiMGIzOGUgMTAwNjQ0DQo+ID4gLS0tIGEv
+aXcuaA0KPiA+ICsrKyBiL2l3LmgNCj4gPiBAQCAtMzAyLDcgKzMwMiw3IEBAIHZvaWQgbmFuX2Jm
+KHVpbnQ4X3QgaWR4LCB1aW50OF90ICpiZiwgdWludDE2X3QgYmZfbGVuLCBjb25zdCB1aW50OF90
+DQo+ICpidWYsDQo+ID4gICBjaGFyICpoZXgyYmluKGNvbnN0IGNoYXIgKmhleCwgY2hhciAqYnVm
+KTsNCj4gPg0KPiA+ICAgaW50IHNldF9iaXRyYXRlcyhzdHJ1Y3QgbmxfbXNnICptc2csIGludCBh
+cmdjLCBjaGFyICoqYXJndiwNCj4gPiAtICAgICAgICAgICAgICBlbnVtIG5sODAyMTFfYXR0cnMg
+YXR0cik7DQo+ID4gKyAgICAgICAgICAgICAgZW51bSBubDgwMjExX2F0dHJzIGF0dHIsIGludCAq
+bGlua19pZCk7DQo+ID4NCj4gPiAgIGludCBjYWxjX3MxZ19jaF9jZW50ZXJfZnJlcShfX3U4IGNo
+X2luZGV4LCBfX3U4IHMxZ19vcGVyX2NsYXNzKTsNCj4gPg0KDQo=
 
