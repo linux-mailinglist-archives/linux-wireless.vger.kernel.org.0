@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-27358-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27359-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC61B7DB63
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:33:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B67B7D8DD
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB9637B5D3E
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:18:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAA613BB9D8
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EAB384A3E;
-	Tue, 16 Sep 2025 22:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8373E28C869;
+	Tue, 16 Sep 2025 22:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="eIsc4knG"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="lz3n+Lb1"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp11.infineon.com (smtp11.infineon.com [217.10.52.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E99222566
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8BF313D79
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758061221; cv=none; b=hMeAYcKX5oLbdQXCJYpb+apJTCzLCM/PQoAv4PM+Ob4C++ZqtZKWW8k10F/OYeRXsRJFVJTCFgso/mFQlEIK4qEKiA4kdBMU/tLxY56wS3oznks6mI6kqih74UIwottZ7bWknh6PzzaO4bJvOgNknoni/tjBVA9pvpxAVlF7P5k=
+	t=1758061232; cv=none; b=hHoOFFjVoIwrVUZZLEMcTcoXNNxmtfh8TI3Rh8O83f/eZi9gOE/H0vQV0s7IyUueqVvuEsYmSDsCYNJJf0WpiCUT5FArGOnrj3frw6YpRVNVyX9Rr+AdNnokMr0FYyZZtKkoIsObElPNtwM9nMPSwe8VkjouVbAfN/8PGyM4fQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758061221; c=relaxed/simple;
-	bh=pE1MEA2g2iI5/HhNfssVsltu5S/yQYfj63u7t7qydAM=;
+	s=arc-20240116; t=1758061232; c=relaxed/simple;
+	bh=o8DksrL2+wIYPSs9EDoI7+8cccmE8pH4G6Jx/o7zzN0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ysw1J6WyK6CSoMzIGnlWAtrdH9yx1RgEaULwAC4GcYjxDLQkpGy6M+PCSGJwCZYmN020uXfhW/SGckdjK8ypBg4eqYoUA3C1ctOv7KQHg0OidUCRlwik/d6Mib7/fG1L/vqIo5mUA9OvyGTgLKfcsp9eU3q2m7q1mmWtayVNBqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=eIsc4knG; arc=none smtp.client-ip=217.10.52.105
+	 MIME-Version:Content-Type; b=n5vAaOd3l2UmbivKBPoKvrZtVm6el7uetRpId5X3lvOB1jKGhekcEN0p5dac9K1+BrVtMyAN4Bw6QhgDy9oROeI2KviThYY0mnHeO0Q6asmBTbi3iIT80h/6iKx4OnhNHfMIG6Zc2rpfk0vDOABOfbr8iEhAQpU5JmFoRC/l8vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=lz3n+Lb1; arc=none smtp.client-ip=217.10.52.105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1758061219; x=1789597219;
+  t=1758061227; x=1789597227;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pE1MEA2g2iI5/HhNfssVsltu5S/yQYfj63u7t7qydAM=;
-  b=eIsc4knG1HsxLH7mluUUi5XCfZW6ySOPk3rlWEKmbge5ijFmmUoT/6mE
-   QJwpxMhYaICVHZ9ius+z7aof3Vdv4UH3VaG4ChZCsGAYUfBPBtn/uAzzu
-   9W3jHwhLWqfRQFdu+2RsczB+Yx5TfD5LhxnuHtaPcKZjWUVDHgiBanIu8
-   Q=;
-X-CSE-ConnectionGUID: DBQ97rRJQuiILw2PinudXw==
-X-CSE-MsgGUID: a3aQzbdVQlW8NQ9EYn+8/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="110918155"
+  bh=o8DksrL2+wIYPSs9EDoI7+8cccmE8pH4G6Jx/o7zzN0=;
+  b=lz3n+Lb1J3BUKgWITQZQyxltDBLb53o7Z9FFXHEwLYDTm3iv43IkDKaL
+   Gmuu2eDUor8g6IB4w4fJDQ0a3Hdi/C2i7BdOwSS92xPDW4YkS1HrzF9N0
+   /qO4YkcdTMK7i9vVNtrSSAbuj0KcKk8JtxWkIA52wocfoeKtaraDQD+Im
+   0=;
+X-CSE-ConnectionGUID: Tfr45d0AQmGeG7GzT/+3ZQ==
+X-CSE-MsgGUID: 3p+fGHhkS+iTLb+/S03Qcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="110918168"
 X-IronPort-AV: E=Sophos;i="6.18,270,1751234400"; 
-   d="scan'208";a="110918155"
+   d="scan'208";a="110918168"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE803.infineon.com) ([172.23.29.29])
-  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:20:13 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE803.infineon.com
- (172.23.29.29) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE822.infineon.com) ([172.23.29.53])
+  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:20:26 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE822.infineon.com
+ (172.23.29.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Wed, 17 Sep
- 2025 00:20:12 +0200
+ 2025 00:20:25 +0200
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.36; Wed, 17 Sep 2025 00:20:09 +0200
+ 15.2.1748.36; Wed, 17 Sep 2025 00:20:22 +0200
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>, Johannes Berg
 	<johannes@sipsolutions.net>
 CC: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
 	<wlan-kernel-dev-list@infineon.com>
-Subject: [PATCH wireless-next 08/57] wifi: inffmac: add wlan_sense.c/h
-Date: Wed, 17 Sep 2025 03:47:23 +0530
-Message-ID: <20250916221821.4387-9-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next 09/57] wifi: inffmac: add offload.c/h
+Date: Wed, 17 Sep 2025 03:47:24 +0530
+Message-ID: <20250916221821.4387-10-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
 References: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
@@ -76,1127 +76,679 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE803.infineon.com (172.23.29.29) To
+X-ClientProxiedBy: MUCSE810.infineon.com (172.23.29.36) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Driver implementation of WLAN sensing (802.11bf) Measurement. Handles the
-WLAN Sensing PMSR requests from cfg80211 and sends the configs to the
-Device firmware. Also collects Channel State Information (CSI) from the
-WLAN device and notifies it to the userspace through the cfg80211 driver.
+Driver implementation of Packet offload. The device driver provides user
+option to configure a wide range of packet offloads in the device as per
+the end use case, like MQTT Keepalive Ping Request offload, ICMP Echo
+Ping Request offload, Multicast DNS Query Response offload, and ICMP
+Echo Response offload.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- .../wireless/infineon/inffmac/wlan_sense.c    | 916 ++++++++++++++++++
- .../wireless/infineon/inffmac/wlan_sense.h    | 177 ++++
- 2 files changed, 1093 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/inffmac/wlan_sense.c
- create mode 100644 drivers/net/wireless/infineon/inffmac/wlan_sense.h
+ .../net/wireless/infineon/inffmac/offload.c   | 429 ++++++++++++++++++
+ .../net/wireless/infineon/inffmac/offload.h   | 215 +++++++++
+ 2 files changed, 644 insertions(+)
+ create mode 100644 drivers/net/wireless/infineon/inffmac/offload.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/offload.h
 
-diff --git a/drivers/net/wireless/infineon/inffmac/wlan_sense.c b/drivers/net/wireless/infineon/inffmac/wlan_sense.c
+diff --git a/drivers/net/wireless/infineon/inffmac/offload.c b/drivers/net/wireless/infineon/inffmac/offload.c
 new file mode 100644
-index 000000000000..083586767980
+index 000000000000..f0551ae0a26c
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/wlan_sense.c
-@@ -0,0 +1,916 @@
++++ b/drivers/net/wireless/infineon/inffmac/offload.c
+@@ -0,0 +1,429 @@
 +// SPDX-License-Identifier: ISC
 +/*
-+ * Copyright (c) 2024-2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
++ * Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
-+#include <linux/rtnetlink.h>
-+
-+#include "core.h"
++#include <linux/module.h>
++#include "offload.h"
++#include "feature.h"
++#include "fwil.h"
 +#include "cfg80211.h"
 +#include "debug.h"
-+#include "fwil.h"
-+#include "feature.h"
-+#include "bus.h"
-+#include "pmsr.h"
-+
-+/**
-+ * inff_wlan_sense_stats_read() - Read the contents of the debugfs file "wlan_sense_stats".
-+ *
-+ * @seq: sequence for debugfs entry.
-+ * @data: raw data pointer.
-+ *
-+ * return: 0.
-+ */
-+int
-+inff_wlan_sense_stats_read(struct seq_file *seq, void *data)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(seq->private);
-+	struct inff_pub *drvr = bus_if->drvr;
-+	struct inff_if *ifp = NULL;
-+	struct inff_cfg80211_info *cfg80211_info = NULL;
-+	struct inff_wlan_sense_info *wlan_sense = NULL;
-+	struct inff_wlan_sense_cfg *cfg = NULL;
-+	struct inff_wlan_sense_counters *counters = NULL;
-+	int i, j;
-+
-+	if (!inff_feat_is_enabled(inff_get_ifp(drvr, 0), INFF_FEAT_WLAN_SENSE)) {
-+		inff_err("the low layer not support WLAN SENSE\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	/* Iterate the interface list in struct inff_pub */
-+	for (i = 0; i < INFF_MAX_IFS; i++) {
-+		ifp = drvr->iflist[i];
-+
-+		if (!ifp || !ifp->vif ||
-+		    ifp->vif->wdev.iftype != NL80211_IFTYPE_WLAN_SENSE)
-+			continue;
-+
-+		cfg80211_info = ifp->drvr->config;
-+		wlan_sense = cfg80211_info->pmsr_info->wlan_sense_info;
-+		if (!wlan_sense)
-+			continue;
-+		cfg = &wlan_sense->cfg;
-+		counters = &wlan_sense->counters;
-+
-+		seq_printf(seq, "ifname: %s, ifidx: %u, bsscfgidx: %d: MAC: %pM\n",
-+			   inff_ifname(ifp), ifp->ifidx, ifp->bsscfgidx,
-+			   wlan_sense->dev_addr.octet);
-+
-+		/* WLAN Sensing Started */
-+		seq_printf(seq, "\tSensing State: %s\n",
-+			   wlan_sense->sensing ? "ENABLED" : "DISABLED");
-+
-+		/* WLAN Sensing Schedule Configuration */
-+		seq_puts(seq, "\tSensing Schedule Config:\n");
-+		seq_printf(seq, "\t\tInterval  : %u ms%s\n", cfg->interval,
-+			   cfg->interval ? "" : " (Non-Periodic)");
-+		seq_printf(seq, "\t\tDuration  : %u ms\n", cfg->duration);
-+
-+		/* WLAN Sensing Mode Configuration */
-+		seq_puts(seq, "\tSensing Mode Config:\n");
-+		seq_printf(seq, "\t\t%s Mode\n",
-+			   cfg->mode_flags & INFF_WLAN_SENSE_MODE_SOLICITED ?
-+			   "Solicited" : "Un-Soclited");
-+		seq_printf(seq, "\t\t%s Mode\n",
-+			   cfg->mode_flags & INFF_WLAN_SENSE_MODE_ASSOCIATED ?
-+			   "Associated" : "Un-Associated");
-+
-+		/* WLAN Sensing Filter Configuration */
-+		seq_puts(seq, "\tSensing Filter Config:\n");
-+		seq_printf(seq, "\t\tBSS Scope :%u\n", cfg->filter.bss_scope);
-+		seq_printf(seq, "\t\tIgnore FCS:%u\n", cfg->filter.ignore_fcs);
-+
-+		seq_puts(seq, "\t\tFrame Transmitter ADDR:\n");
-+		for (j = 0; j < INFF_WLAN_SENSE_FILTER_FRM_RA_NUM; j++)
-+			seq_printf(seq, "\t\t\t#%u: %pM\n", j,
-+				   cfg->filter.ta[j].octet);
-+
-+		seq_puts(seq, "\t\tFrame Type & Subtype:\n");
-+		for (j = 0; j < INFF_WLAN_SENSE_FILTER_FRM_TYP_SUBTYP_NUM; j++)
-+			seq_printf(seq, "\t\t\t#%u: 0x%x\n", j,
-+				   cfg->filter.frmtyp_subtyp[j]);
-+
-+		seq_puts(seq, "\tCSI Fragment & De-fragemented Data realted Counters:\n");
-+		seq_printf(seq, "\t\tFragment avail FW Event Total                : %u\n",
-+			   counters->csi_frag_fw_evt_tot_ct);
-+		seq_printf(seq, "\t\tFragment avail FW Event handle Success       : %u\n",
-+			   counters->csi_frag_fw_evt_handle_succ_ct);
-+		seq_printf(seq, "\t\tFragment avail FW Event handle Failure       : %u\n",
-+			   counters->csi_frag_fw_evt_handle_fail_ct);
-+	}
-+
-+	return 0;
-+}
-+
-+static inline void
-+inff_wlan_sense_dump_fil_cfg(struct inff_wlan_sense_fil_cfg fil_cfg)
-+{
-+	inff_dbg(WLAN_SENSE, "FIL CONFIG  :\n"
-+		  "csi_enable                   : %u\n"
-+		  "capture_interval_ms          : %d\n"
-+		  "capture_duration_ms          : %u\n"
-+		  "solicit_mode                 : %u\n"
-+		  "assoc_mode                   : %u\n"
-+		  "bss_mode                     : %u\n"
-+		  "ignore_fcs                   : %u\n"
-+		  "macaddr[0]                   : %pM\n"
-+		  "macaddr[1]                   : %pM\n"
-+		  "macaddr[2]                   : %pM\n"
-+		  "macaddr[3]                   : %pM\n"
-+		  "chanspec                     : %u\n"
-+		  "multi_csi_per_mac            : %u\n"
-+		  "link_protection              : %u\n"
-+		  "subcarriers                  : %u\n"
-+		  "frmtyp_subtyp[0]             : %u\n"
-+		  "frmtyp_subtyp[1]             : %u\n",
-+		  fil_cfg.csi_enable,
-+		  fil_cfg.capture_interval_ms,
-+		  fil_cfg.capture_duration_ms,
-+		  fil_cfg.solicit_mode,
-+		  fil_cfg.assoc_mode,
-+		  fil_cfg.bss_mode,
-+		  fil_cfg.ignore_fcs,
-+		  fil_cfg.macaddr[0].octet,
-+		  fil_cfg.macaddr[1].octet,
-+		  fil_cfg.macaddr[2].octet,
-+		  fil_cfg.macaddr[3].octet,
-+		  fil_cfg.chanspec,
-+		  fil_cfg.multi_csi_per_mac,
-+		  fil_cfg.link_protection,
-+		  fil_cfg.subcarriers,
-+		  fil_cfg.frmtyp_subtyp[0],
-+		  fil_cfg.frmtyp_subtyp[1]);
-+}
-+
-+/**
-+ * inff_wlan_sense_generate_vif_mac() - derive mac addresses for WLAN Sensing.
-+ *
-+ * @wlan_sense: WLAN Sensing specific data.
-+ * @dev_addr: optional device address.
-+ *
-+ * WLAN Sensing interface needs mac address. If no device
-+ * address it specified, these are derived from a random ethernet
-+ * address.
-+ */
-+static void
-+inff_wlan_sense_generate_vif_mac(struct inff_wlan_sense_info *wlan_sense, u8 *dev_addr)
-+{
-+	struct inff_cfg80211_info *cfg80211_info = wlan_sense->cfg80211_info;
-+	struct inff_if *pri_ifp;
-+
-+	pri_ifp = netdev_priv(cfg_to_ndev(cfg80211_info));
-+
-+	if (!dev_addr || is_zero_ether_addr(dev_addr)) {
-+		/* Generate the WLAN Sensing Device Address obtaining a random ethernet
-+		 * address with the locally administered bit set.
-+		 */
-+		eth_random_addr(wlan_sense->dev_addr.octet);
-+	} else {
-+		memcpy(wlan_sense->dev_addr.octet, dev_addr, ETH_ALEN);
-+	}
-+
-+	wlan_sense->dev_addr.octet[0] |= 0x02;
-+}
-+
-+/**
-+ * inff_wlan_sense_add_vif() - create a new WLAN Sensing virtual interface.
-+ *
-+ * @wiphy: wiphy device of new interface.
-+ * @name: name of the new interface.
-+ * @name_assign_type: origin of the interface name
-+ * @iftype: nl80211 interface type.
-+ * @params: contains mac address for WLAN Sensing device.
-+ */
-+struct wireless_dev *
-+inff_wlan_sense_add_vif(struct wiphy *wiphy, const char *name,
-+			unsigned char name_assign_type,
-+			enum nl80211_iftype iftype,
-+			struct vif_params *params)
-+{
-+	struct inff_cfg80211_info *cfg80211_info = wiphy_to_cfg(wiphy);
-+	struct inff_pub *drvr = cfg80211_info->pub;
-+	struct inff_if *pri_ifp;
-+	struct inff_if *wlan_sense_ifp;
-+	struct inff_wlan_sense_info *wlan_sense = cfg80211_info->pmsr_info->wlan_sense_info;
-+	struct inff_cfg80211_vif *wlan_sense_vif;
-+	struct inff_fil_wlan_sense_if_le if_request;
-+	int err = 0;
-+
-+	pri_ifp = netdev_priv(cfg_to_ndev(cfg80211_info));
-+
-+	if (!inff_feat_is_enabled(pri_ifp, INFF_FEAT_WLAN_SENSE) ||
-+	    iftype != NL80211_IFTYPE_WLAN_SENSE)
-+		return ERR_PTR(-EOPNOTSUPP);
-+
-+	if (inff_cfg80211_vif_event_armed(cfg80211_info))
-+		return ERR_PTR(-EBUSY);
-+
-+	inff_dbg(INFO, "adding vif \"%s\" (type=%d)\n", name, iftype);
-+
-+	wlan_sense_vif = inff_alloc_vif(wlan_sense->cfg80211_info, NL80211_IFTYPE_WLAN_SENSE);
-+	if (IS_ERR(wlan_sense_vif)) {
-+		iphy_err(drvr, "could not create discovery vif\n");
-+		return (struct wireless_dev *)wlan_sense_vif;
-+	}
-+
-+	/* firmware requires unique mac address for wlan_sensedev interface */
-+	if (params && ether_addr_equal(params->macaddr, pri_ifp->mac_addr)) {
-+		iphy_err(drvr, "wlan_sense vif must be different from primary interface\n");
-+		err = -EINVAL;
-+		goto fail;
-+	}
-+
-+	/* Generate MAC */
-+	inff_wlan_sense_generate_vif_mac(wlan_sense, params->macaddr);
-+
-+	/* fill the firmware request */
-+	ether_addr_copy(if_request.addr.octet, wlan_sense->dev_addr.octet);
-+	inff_fweh_wlan_sensedev_setup(pri_ifp, true);
-+
-+	inff_cfg80211_arm_vif_event(wlan_sense->cfg80211_info, wlan_sense_vif);
-+	/* Create WLAN Sensing interface in the firmware */
-+	err = inff_fil_iovar_data_set(pri_ifp, "csi_ifadd", &if_request,
-+				      sizeof(struct inff_fil_wlan_sense_if_le));
-+	if (err < 0) {
-+		iphy_err(drvr, "set csi_ifadd error\n");
-+		inff_fweh_wlan_sensedev_setup(pri_ifp, false);
-+		inff_cfg80211_arm_vif_event(wlan_sense->cfg80211_info, NULL);
-+		goto fail;
-+	}
-+
-+	/* wait for firmware event */
-+	err = inff_cfg80211_wait_vif_event(wlan_sense->cfg80211_info, INFF_E_IF_ADD,
-+					   INFF_VIF_EVENT_TIMEOUT);
-+	inff_cfg80211_arm_vif_event(wlan_sense->cfg80211_info, NULL);
-+	inff_fweh_wlan_sensedev_setup(pri_ifp, false);
-+	if (!err) {
-+		iphy_err(drvr, "timeout occurred\n");
-+		err = -EIO;
-+		goto fail;
-+	}
-+
-+	/* WLAN Sensing interface created */
-+	wlan_sense_ifp = wlan_sense_vif->ifp;
-+	wlan_sense->vif = wlan_sense_vif;
-+	ether_addr_copy(wlan_sense_ifp->mac_addr, wlan_sense->dev_addr.octet);
-+	ether_addr_copy(wlan_sense_vif->wdev.address, wlan_sense->dev_addr.octet);
-+
-+	return &wlan_sense_vif->wdev;
-+fail:
-+	inff_free_vif(wlan_sense_vif);
-+	return ERR_PTR(err);
-+}
-+
-+void inff_wlan_sense_ifp_removed(struct inff_if *ifp, bool locked)
-+{
-+	struct inff_cfg80211_info *cfg;
-+	struct inff_cfg80211_vif *vif;
-+
-+	inff_dbg(INFO, "WLAN Sense: device interface removed\n");
-+	vif = ifp->vif;
-+	cfg = wdev_to_cfg(&vif->wdev);
-+	cfg->pmsr_info->wlan_sense_info->vif = NULL;
-+	if (!locked) {
-+		rtnl_lock();
-+		wiphy_lock(cfg->wiphy);
-+		cfg80211_unregister_wdev(&vif->wdev);
-+		wiphy_unlock(cfg->wiphy);
-+		rtnl_unlock();
-+	} else {
-+		cfg80211_unregister_wdev(&vif->wdev);
-+	}
-+	inff_free_vif(vif);
-+}
-+
-+/**
-+ * inff_wlan_sense_del_vif() - delete a WLAN sensing virtual interface.
-+ *
-+ * @wiphy: wiphy device of interface.
-+ * @wdev: wireless device of interface.
-+ */
-+int
-+inff_wlan_sense_del_vif(struct wiphy *wiphy, struct wireless_dev *wdev)
-+{
-+	struct inff_cfg80211_info *cfg80211_info = wiphy_to_cfg(wiphy);
-+	struct inff_pub *drvr = cfg80211_info->pub;
-+	struct inff_if *wlan_sense_ifp = NULL;
-+	struct inff_wlan_sense_info *wlan_sense = cfg80211_info->pmsr_info->wlan_sense_info;
-+	struct inff_cfg80211_vif *vif;
-+	enum nl80211_iftype iftype;
-+	int err;
-+
-+	vif = wdev_to_vif(wdev);
-+	if (!vif) {
-+		err = -EIO;
-+		goto fail;
-+	}
-+
-+	wlan_sense_ifp = vif->ifp;
-+	if (!wlan_sense_ifp) {
-+		err = -EIO;
-+		goto fail;
-+	}
-+
-+	if (!inff_feat_is_enabled(wlan_sense_ifp, INFF_FEAT_WLAN_SENSE))
-+		return -EOPNOTSUPP;
-+
-+	vif = container_of(wdev, struct inff_cfg80211_vif, wdev);
-+	iftype = vif->wdev.iftype;
-+
-+	if (iftype != NL80211_IFTYPE_WLAN_SENSE)
-+		return -EOPNOTSUPP;
-+
-+	inff_dbg(WLAN_SENSE, "delete WLAN Sensing vif wlan_sense_ifp=0x%p\n",
-+		 wlan_sense_ifp);
-+
-+	inff_cfg80211_arm_vif_event(cfg80211_info, vif);
-+	err = inff_fil_iovar_data_set(wlan_sense_ifp, "csi_ifdel", wlan_sense->dev_addr.octet,
-+				      ETH_ALEN);
-+	if (err) {
-+		iphy_err(drvr, "set csi_ifdel error\n");
-+		goto fail;
-+	}
-+
-+	/* wait for firmware event */
-+	err = inff_cfg80211_wait_vif_event(cfg80211_info, INFF_E_IF_DEL,
-+					   INFF_VIF_EVENT_TIMEOUT);
-+	if (err)
-+		err = -EIO;
-+
-+	inff_remove_interface(drvr->iflist[wlan_sense_ifp->bsscfgidx], true);
-+
-+	inff_cfg80211_arm_vif_event(cfg80211_info, NULL);
-+fail:
-+	return err;
-+}
-+
-+/**
-+ * inff_wlan_sense_enabled_event_handler() - Handle the WLAN Sensing enabled Event notification
-+ *	from the Firmware.
-+ *
-+ */
-+static s32
-+inff_wlan_sense_enabled_event_handler(struct inff_if *ifp, const struct inff_event_msg *e,
-+				      void *data)
-+{
-+	struct inff_cfg80211_info *cfg80211_info = ifp->drvr->config;
-+	struct inff_wlan_sense_info *wlan_sense = cfg80211_info->pmsr_info->wlan_sense_info;
-+	struct inff_wlan_sense_cfg *cfg = &wlan_sense->cfg;
-+	struct inff_wlan_sense_fil_cfg fil_cfg = { 0 };
-+	int i = 0;
-+	s32 ret = 0;
-+
-+	ret = inff_fil_iovar_data_get(ifp, "csi", &fil_cfg,
-+				      sizeof(struct inff_wlan_sense_fil_cfg));
-+	if (ret) {
-+		inff_err("WLAN SENSE: WLAN Sensing Config Fetch failed, Firmware error (%d)",
-+			 ret);
-+		goto fail;
-+	}
-+
-+	/* WLAN Sensing Started */
-+	wlan_sense->sensing = fil_cfg.csi_enable ? true : false;
-+
-+	/* WLAN Sensing Schedule Configuration */
-+	if (le32_to_cpu(fil_cfg.capture_interval_ms) == -1)
-+		cfg->interval = 0;
-+	else
-+		cfg->interval = le32_to_cpu(fil_cfg.capture_interval_ms);
-+
-+	cfg->duration = le16_to_cpu(fil_cfg.capture_duration_ms);
-+
-+	/* WLAN Sensing Mode Configuration */
-+	cfg->mode_flags |= (fil_cfg.solicit_mode ? INFF_WLAN_SENSE_MODE_SOLICITED : 0);
-+	cfg->mode_flags |= (fil_cfg.assoc_mode ? INFF_WLAN_SENSE_MODE_ASSOCIATED : 0);
-+
-+	/* WLAN Sensing Filter Configuration */
-+	cfg->filter.bss_scope = fil_cfg.bss_mode;
-+	cfg->filter.ignore_fcs = fil_cfg.ignore_fcs ? true : false;
-+
-+	for (i = 0; i < INFF_WLAN_SENSE_FILTER_FRM_RA_NUM; i++)
-+		ether_addr_copy(cfg->filter.ta[i].octet, fil_cfg.macaddr[i].octet);
-+
-+	for (i = 0; i < INFF_WLAN_SENSE_FILTER_FRM_TYP_SUBTYP_NUM; i++) {
-+		cfg->filter.frmtyp_subtyp[i] = 0;
-+
-+		cfg->filter.frmtyp_subtyp[i] |= ((fil_cfg.frmtyp_subtyp[i] & 0x3) << 4);
-+		cfg->filter.frmtyp_subtyp[i] |= ((fil_cfg.frmtyp_subtyp[i] >> 2) & 0xF);
-+	}
-+
-+fail:
-+	return ret;
-+}
-+
-+/**
-+ * inff_wlan_sense_data_avail_event_handler() - Handle the new CSI data available event
-+ *	notification from the Firmware.
-+ *
-+ */
-+static s32
-+inff_wlan_sense_data_avail_event_handler(struct inff_if *ifp,
-+					 const struct inff_event_msg *emsg_hdr,
-+					 void *emsg)
-+{
-+	struct inff_cfg80211_info *cfg80211_info = ifp->drvr->config;
-+	struct inff_wlan_sense_info *wlan_sense = cfg80211_info->pmsr_info->wlan_sense_info;
-+	struct inff_csi_data_frag_hdr *frag_hdr = (struct inff_csi_data_frag_hdr *)emsg;
-+	struct cfg80211_pmsr_result result = {0};
-+	u32 frag_hdr_len = sizeof(struct inff_csi_data_frag_hdr);
-+	void *data_frag = NULL;
-+	u32 data_frag_len = 0, data_buf_old_len = 0, data_buf_new_len = 0;
-+	struct inff_wlan_sense_counters *counters;
-+	unsigned char *data_buf = NULL;
-+	s32 ret = 0;
-+
-+	/* Check if WLAN Sensing is in progress, before handling data available event */
-+	if (!wlan_sense || !wlan_sense->sensing)
-+		return -EINVAL;
-+
-+	counters = &wlan_sense->counters;
-+
-+	data_frag_len = emsg_hdr->datalen - frag_hdr_len;
-+	data_frag = emsg + frag_hdr_len;
-+	inff_dbg(TRACE, "CSI Data frag len: %u frag num: %d frag ct: %d seq: %d  hdr: %d\n",
-+		 data_frag_len, frag_hdr->fragment_num, frag_hdr->total_fragments,
-+		 frag_hdr->sequence_num, frag_hdr->hdr_version);
-+
-+	counters->csi_frag_fw_evt_tot_ct++;
-+
-+	/*
-+	 * TODO: Need to handle sequence number, fragment number mismatches.
-+	 * Also need check fragment header version.
-+	 */
-+
-+	if (frag_hdr->fragment_num == 0) {
-+		/* Handling Head fragment of CSI Data */
-+		wlan_sense->data_buf = kcalloc(data_frag_len, sizeof(char), GFP_KERNEL);
-+		if (!wlan_sense->data_buf)
-+			goto fail;
-+
-+		data_buf = wlan_sense->data_buf;
-+		wlan_sense->data_buf_len = data_frag_len;
-+	} else {
-+		/* Handling Body fragment of CSI Data */
-+		data_buf_old_len = wlan_sense->data_buf_len;
-+		data_buf_new_len = data_buf_old_len + data_frag_len;
-+
-+		if (data_buf_new_len > INFF_WLAN_SENSE_DATA_LEN_MAX) {
-+			counters->csi_frag_fw_evt_handle_fail_ct++;
-+			goto skip_data_frag;
-+		}
-+
-+		data_buf = wlan_sense->data_buf;
-+		wlan_sense->data_buf = krealloc(data_buf, data_buf_new_len,
-+						GFP_KERNEL);
-+		if (!wlan_sense->data_buf) {
-+			kfree(data_buf);
-+			goto fail;
-+		}
-+
-+		data_buf = wlan_sense->data_buf + data_buf_old_len;
-+		wlan_sense->data_buf_len = data_buf_new_len;
-+	}
-+
-+	/* Copy CSI Data Fragment into the CSI Data buf */
-+	memcpy(data_buf, data_frag, data_frag_len);
-+
-+	counters->csi_frag_fw_evt_handle_succ_ct++;
-+
-+skip_data_frag:
-+	if (frag_hdr->fragment_num == (frag_hdr->total_fragments - 1)) {
-+		inff_dbg(TRACE, "CSI Data len: %u", wlan_sense->data_buf_len);
-+		result.host_time = (u64)ktime_to_ns(ktime_get_boottime());
-+		result.status = NL80211_PMSR_STATUS_SUCCESS;
-+		result.final = 0;
-+		result.type = NL80211_PMSR_TYPE_SENSING;
-+		result.sensing.seq_number = frag_hdr->sequence_num;
-+		result.sensing.data_len = wlan_sense->data_buf_len;
-+		result.sensing.data = wlan_sense->data_buf;
-+
-+		cfg80211_pmsr_report(&ifp->vif->wdev, wlan_sense->sense_req,
-+				     &result, GFP_KERNEL);
-+		kfree(wlan_sense->data_buf);
-+	}
-+
-+	return ret;
-+fail:
-+	counters->csi_frag_fw_evt_handle_fail_ct++;
-+	inff_err("WLAN SENSE: Failed to allocate buffer for CSI Fragment Data\n");
-+	return -ENOMEM;
-+}
-+
-+/**
-+ * inff_wlan_sense_disabled_event_handler() - Handle the WLAN Sensing disabled Event
-+ *	notification from the Firmware.
-+ *
-+ */
-+static s32
-+inff_wlan_sense_disabled_event_handler(struct inff_if *ifp, const struct inff_event_msg *e,
-+				       void *data)
-+{
-+	struct inff_cfg80211_info *cfg80211_info = ifp->drvr->config;
-+	struct inff_wlan_sense_info *wlan_sense = cfg80211_info->pmsr_info->wlan_sense_info;
-+	s32 ret = 0;
-+
-+	if (!wlan_sense)
-+		return ret;
-+
-+	/* WLAN Sensing Stopped */
-+	wlan_sense->sensing = false;
-+
-+	/* complete the PMSR request */
-+	cfg80211_pmsr_complete(&ifp->vif->wdev, wlan_sense->sense_req, GFP_KERNEL);
-+	wlan_sense->sense_req = NULL;
-+
-+	return ret;
-+}
-+
-+/**
-+ * inff_notify_wlan_sense_event() - Handle the WLAN SENSE Event notifications from Firmware.
-+ *
-+ * @ifp: interface instatnce.
-+ * @e: event message.
-+ * @data: CSI data
-+ *
-+ * return: 0 on success, value < 0 on failure.
-+ */
-+s32
-+inff_notify_wlan_sense_event(struct inff_if *ifp, const struct inff_event_msg *e,
-+			     void *data)
-+{
-+	s32 ret = 0;
-+
-+	inff_dbg(WLAN_SENSE, "WLAN SENSE: EVENT from firmware\n");
-+
-+	if (!ifp) {
-+		ret = -EIO;
-+		goto exit;
-+	}
-+
-+	switch (e->event_code) {
-+	case INFF_E_WLAN_SENSE_ENABLED:
-+		ret = inff_wlan_sense_enabled_event_handler(ifp, e, data);
-+		if (ret) {
-+			inff_err("WLAN_SENSE: EVENT: Failed to handle ENABLED event ret=%d\n",
-+				 ret);
-+			goto exit;
-+		}
-+		inff_dbg(WLAN_SENSE, "WLAN SENSE: ENABLED\n");
-+		break;
-+	case INFF_E_WLAN_SENSE_DATA:
-+		ret = inff_wlan_sense_data_avail_event_handler(ifp, e, data);
-+		if (ret) {
-+			inff_err("WLAN_SENSE: EVENT: Failed to handle Data event ret=%d\n", ret);
-+			goto exit;
-+		}
-+		break;
-+	case INFF_E_WLAN_SENSE_DISABLED:
-+		ret = inff_wlan_sense_disabled_event_handler(ifp, e, data);
-+		if (ret) {
-+			inff_err("WLAN_SENSE: EVENT: Failed to handle DISABLED event ret=%d\n",
-+				 ret);
-+			goto exit;
-+		}
-+		inff_dbg(WLAN_SENSE, "WLAN SENSE: DISABLED\n");
-+		break;
-+	default:
-+		inff_err("WLAN_SENSE: Received event %d not handled", e->event_code);
-+		ret = -EOPNOTSUPP;
-+		goto exit;
-+	}
-+
-+exit:
-+	return ret;
-+}
-+
-+/**
-+ * inff_wlan_sense_enable_oper_handler() - Handle the WLAN Sense enable Operation request
-+ *	from Userspace.
-+ *
-+ * @ifp: interface instance.
-+ * @cfg: WLAN Sense parameters.
-+ *
-+ * return: 0 on success, value < 0 on failure.
-+ */
-+static s32
-+inff_wlan_sense_enable_oper_handler(struct inff_if *ifp, struct inff_wlan_sense_cfg cfg)
-+{
-+	struct inff_wlan_sense_fil_cfg fil_cfg;
-+	int i = 0;
-+	s32 ret = 0;
-+
-+	memset(&fil_cfg, 0, sizeof(struct inff_wlan_sense_fil_cfg));
-+
-+	/* Enable WLAN Sensing Functionality */
-+	fil_cfg.csi_enable = 1;
-+
-+	/* WLAN Sensing Schedule Configuration */
-+	if (cfg.interval == 0)
-+		fil_cfg.capture_interval_ms = cpu_to_le32(-1);
-+	else
-+		fil_cfg.capture_interval_ms = cpu_to_le32(cfg.interval);
-+
-+	fil_cfg.capture_duration_ms = cpu_to_le16(cfg.duration);
-+
-+	/* WLAN Sensing Mode Configuration */
-+	fil_cfg.solicit_mode = (cfg.mode_flags & INFF_WLAN_SENSE_MODE_SOLICITED) ? 1 : 0;
-+	fil_cfg.assoc_mode = (cfg.mode_flags & INFF_WLAN_SENSE_MODE_ASSOCIATED) ? 1 : 0;
-+
-+	/* WLAN Sensing Filter Configuration */
-+	fil_cfg.bss_mode = cfg.filter.bss_scope;
-+	fil_cfg.ignore_fcs = cfg.filter.ignore_fcs ? 1 : 0;
-+
-+	for (i = 0; i < INFF_WLAN_SENSE_FILTER_FRM_RA_NUM; i++)
-+		ether_addr_copy(fil_cfg.macaddr[i].octet, cfg.filter.ta[i].octet);
-+
-+	for (i = 0; i < INFF_WLAN_SENSE_FILTER_FRM_TYP_SUBTYP_NUM; i++) {
-+		fil_cfg.frmtyp_subtyp[i] |= ((cfg.filter.frmtyp_subtyp[i] & 0xF) << 2);
-+		fil_cfg.frmtyp_subtyp[i] |= ((cfg.filter.frmtyp_subtyp[i] >> 4) & 0x3);
-+	}
-+
-+	fil_cfg.multi_csi_per_mac = 1;
-+	fil_cfg.link_protection = 0;
-+	fil_cfg.chanspec = 255;
-+	fil_cfg.subcarriers = 0;
-+
-+	ret = inff_fil_iovar_data_set(ifp, "csi", &fil_cfg,
-+				      sizeof(struct inff_wlan_sense_fil_cfg));
-+	if (ret) {
-+		inff_err("WLAN SENSE: ENABLE: Failed, Firmware error (%d)", ret);
-+		goto fail;
-+	}
-+
-+	inff_wlan_sense_dump_fil_cfg(fil_cfg);
-+fail:
-+	return ret;
-+}
-+
-+/**
-+ * inff_wlan_sense_disable_oper_handler() - Handle the WLAN Sense disable Operation request
-+ *	from Userspace.
-+ *
-+ * @ifp: interface instance.
-+ *
-+ * return: 0 on success, value < 0 on failure.
-+ */
-+static s32
-+inff_wlan_sense_disable_oper_handler(struct inff_if *ifp)
-+{
-+	struct inff_wlan_sense_fil_cfg fil_cfg;
-+	s32 ret = 0;
-+
-+	memset(&fil_cfg, 0, sizeof(struct inff_wlan_sense_fil_cfg));
-+
-+	/* Disable WLAN Sensing Functionality */
-+	fil_cfg.csi_enable = 0;
-+
-+	ret = inff_fil_iovar_data_set(ifp, "csi", &fil_cfg,
-+				      sizeof(struct inff_wlan_sense_fil_cfg));
-+	if (ret) {
-+		inff_err("WLAN SENSE: DISABLE: Failed, Firmware error (%d)", ret);
-+		goto fail;
-+	}
-+
-+	inff_wlan_sense_dump_fil_cfg(fil_cfg);
-+fail:
-+	return ret;
-+}
-+
-+/**
-+ * inff_wlan_sense_configure_oper_handler() - Handle the WLAN Sense configure Operation
-+ *	request from Userspace.
-+ *
-+ * @ifp: interface instance.
-+ * @cfg: WLAN Sense parameters.
-+ *
-+ * return: 0 on success, value < 0 on failure.
-+ */
-+static s32
-+inff_wlan_sense_configure_oper_handler(struct inff_if *ifp, struct inff_wlan_sense_cfg cfg)
-+{
-+	struct inff_cfg80211_info *cfg80211_info = ifp->drvr->config;
-+	struct inff_wlan_sense_info *wlan_sense = cfg80211_info->pmsr_info->wlan_sense_info;
-+	s32 ret = 0;
-+
-+	if (!wlan_sense) {
-+		inff_dbg(WLAN_SENSE, "WLAN_SENSE: no data structure\n");
-+		return ret;
-+	}
-+
-+	if (!memcmp(&wlan_sense->cfg, &cfg, sizeof(struct inff_wlan_sense_cfg))) {
-+		inff_dbg(WLAN_SENSE, "WLAN_SENSE: Skipping new Duplicate configuration request\n");
-+		return ret;
-+	}
-+
-+	if (wlan_sense->sensing) {
-+		/* If WLAN Sensing is already running, send IOVAR request
-+		 * to Firmware with the new configurations
-+		 */
-+		ret = inff_wlan_sense_enable_oper_handler(ifp, cfg);
-+	} else {
-+		/* If WLAN Sensing is not running, store the new configurations
-+		 * in memory and wait for WLAN Sensing enable request from the user.
-+		 */
-+		memcpy(&wlan_sense->cfg, &cfg, sizeof(struct inff_wlan_sense_cfg));
-+	}
-+
-+	return ret;
-+}
-+
-+/**
-+ * inff_wlan_sense_oper_handler() - Handle the WLAN Sense Operation requests from Userspace.
-+ *
-+ * @wiphy: wiphy object for cfg80211 interface.
-+ * @wdev: wireless device.
-+ * @oper: WLAN sensing operation
-+ * @cfg: WLAN Sensing Configuration
-+ *
-+ * return: 0 on success, value < 0 on failure.
-+ */
-+s32
-+inff_wlan_sense_oper_handler(struct wiphy *wiphy, struct wireless_dev *wdev,
-+			     enum inff_wlan_sense_oper oper,
-+			     struct inff_wlan_sense_cfg cfg)
-+{
-+	struct inff_cfg80211_info *cfg80211_info = wiphy_to_cfg(wiphy);
-+	struct inff_wlan_sense_info *wlan_sense = cfg80211_info->pmsr_info->wlan_sense_info;
-+	struct inff_cfg80211_vif *vif = NULL;
-+	struct inff_if *ifp = NULL;
-+	s32 ret = 0;
-+
-+	vif = wdev_to_vif(wdev);
-+	if (!vif) {
-+		ret = -EIO;
-+		goto exit;
-+	}
-+
-+	ifp = vif->ifp;
-+	if (!ifp) {
-+		ret = -EIO;
-+		goto exit;
-+	}
-+
-+	/* Check if WLAN Sense feature is supported in the Firmware */
-+	if (!inff_feat_is_enabled(ifp, INFF_FEAT_WLAN_SENSE)) {
-+		inff_err("WLAN SENSE: Operation(%d) can't be handled, WLAN Sense not enabled on VIF(%s)",
-+			 oper, inff_ifname(ifp));
-+		ret = -EOPNOTSUPP;
-+		goto exit;
-+	}
-+
-+	switch (oper) {
-+	case INFF_WLAN_SENSE_OPER_CONFIGURE:
-+		ret = inff_wlan_sense_configure_oper_handler(ifp, cfg);
-+		break;
-+	case INFF_WLAN_SENSE_OPER_ENABLE:
-+		ret = inff_wlan_sense_enable_oper_handler(ifp, wlan_sense->cfg);
-+		break;
-+	case INFF_WLAN_SENSE_OPER_DISABLE:
-+		ret = inff_wlan_sense_disable_oper_handler(ifp);
-+		break;
-+	default:
-+		inff_err("WLAN SENSE: Operation(%d) not supported on VIF(%s)",
-+			 oper, inff_ifname(ifp));
-+		ret = -EOPNOTSUPP;
-+	}
-+exit:
-+	return ret;
-+}
-+
-+s32
-+inff_wlan_sense_parse_req(struct cfg80211_pmsr_request_peer *peer,
-+			  struct inff_wlan_sense_cfg *wlan_sense_cfg)
-+{
-+	char *token;
-+	char delim[] = ",\n";
-+	char *buf = peer->sensing.vendor_req;
-+	unsigned long val;
-+	s32 err = 0;
-+
-+	inff_dbg(TRACE, "WLAN SENSE: vendor_req(%d): %s\n", peer->sensing.vendor_req_len, buf);
-+	wlan_sense_cfg->interval = peer->sensing.interval;
-+	wlan_sense_cfg->duration = peer->sensing.duration;
-+	wlan_sense_cfg->mode_flags = 0;
-+	if (peer->sensing.associated)
-+		wlan_sense_cfg->mode_flags |= INFF_WLAN_SENSE_MODE_ASSOCIATED;
-+	ether_addr_copy(wlan_sense_cfg->filter.ta[0].octet, peer->addr);
-+
-+	/* parse vendor data */
-+	token = strsep(&buf, delim);
-+	while (token) {
-+		if (!strncmp(token, "solicit_mode=", 13)) {
-+			err = kstrtoul(token + 13, 0, &val);
-+			if (err)
-+				break;
-+			if (val)
-+				wlan_sense_cfg->mode_flags |= INFF_WLAN_SENSE_MODE_SOLICITED;
-+		}
-+		if (!strncmp(token, "bss_scope=", 10)) {
-+			err = kstrtoul(token + 10, 0, &val);
-+			if (err)
-+				break;
-+			wlan_sense_cfg->filter.bss_scope = val;
-+		}
-+		if (!strncmp(token, "ignore_fcs=", 11)) {
-+			err = kstrtoul(token + 11, 0, &val);
-+			if (err)
-+				break;
-+			wlan_sense_cfg->filter.ignore_fcs = !!val;
-+		}
-+		if (!strncmp(token, "frmtyp_subtyp0=", 15)) {
-+			err = kstrtoul(token + 15, 0, &val);
-+			if (err)
-+				break;
-+			wlan_sense_cfg->filter.frmtyp_subtyp[0] = val;
-+		}
-+		if (!strncmp(token, "frmtyp_subtyp1=", 15)) {
-+			err = kstrtoul(token + 15, 0, &val);
-+			if (err)
-+				break;
-+			wlan_sense_cfg->filter.frmtyp_subtyp[1] = val;
-+		}
-+		token = strsep(&buf, delim);
-+	}
-+
-+	if (err)
-+		inff_err("WLAN SENSE: Parse fail %d!\n", err);
-+
-+	return err;
-+}
-+
-+/**
-+ * inff_wlan_sense_attach() - attach for WLAN Sense.
-+ *
-+ * @cfg80211_info: driver private data for cfg80211 interface.
-+ */
-+s32
-+inff_wlan_sense_attach(struct inff_cfg80211_info *cfg80211_info)
-+{
-+	struct inff_wlan_sense_info *wlan_sense;
-+	struct inff_if *pri_ifp;
-+	s32 err = 0;
-+
-+	pri_ifp = netdev_priv(cfg_to_ndev(cfg80211_info));
-+
-+	wlan_sense = kzalloc(sizeof(*wlan_sense), GFP_KERNEL);
-+	if (!wlan_sense) {
-+		err = -ENOMEM;
-+		inff_err("WLAN SENSE: Failed to allocate memory for wlan_sense\n");
-+		goto fail;
-+	}
-+
-+	wlan_sense->sensing = false;
-+	wlan_sense->sense_req = NULL;
-+	wlan_sense->cfg80211_info = cfg80211_info;
-+	cfg80211_info->pmsr_info->wlan_sense_info = wlan_sense;
-+
-+fail:
-+	return err;
-+}
-+
-+/**
-+ * inff_wlan_sense_detach() - detach WLAN Sense.
-+ *
-+ * @cfg80211_info: driver private data for cfg80211 interface.
++#include "vendor_inf.h"
++
++unsigned int inff_offload_prof = INFF_OFFLOAD_PROF_TYPE_LOW_PWR;
++module_param_named(offload_prof, inff_offload_prof, uint, 0400);
++MODULE_PARM_DESC(offload_prof,
++		 "Offload power profile: 1:low 2:mid 3:high (default:1)");
++
++unsigned int inff_offload_feat = INFF_OFFLOAD_ARP |
++				 INFF_OFFLOAD_ND |
++				 INFF_OFFLOAD_BDO |
++				 INFF_OFFLOAD_ICMP |
++				 INFF_OFFLOAD_TKO |
++				 INFF_OFFLOAD_DLTRO |
++				 INFF_OFFLOAD_PNO |
++				 INFF_OFFLOAD_KEEPALIVE |
++				 INFF_OFFLOAD_GTKOE |
++				 INFF_OFFLOAD_WOWLPF;
++module_param_named(offload_feat, inff_offload_feat, uint, 0400);
++MODULE_PARM_DESC(offload_feat,
++		 "Offload feat bitmap: 0:arp 1:nd 2:mdns 3:icmp 4:tcp-keepalive 5:dhcp-renewal 6:pno 7:keepalive 8:gtk 9:wowlpf (default: 0x1FF)");
++
++/* Offload features to firmware based on a user based power profile using module param
++ * offload_prof and offload_feat (provides flag list of all offloads).
++ * Default power profile : LowPwr with all offloads enabled.
 + */
 +void
-+inff_wlan_sense_detach(struct inff_cfg80211_info *cfg80211_info)
++inff_offload_config(struct inff_if *ifp, unsigned int ol_feat,
++		    unsigned int ol_profile, bool reset)
 +{
-+	struct inff_wlan_sense_info *wlan_sense = cfg80211_info->pmsr_info->wlan_sense_info;
++	struct inff_ol_cfg_v1 ol_cfg = {0};
++	u32 ol_feat_skip = ~ol_feat;
++	int err = 0;
 +
-+	if (!wlan_sense || !wlan_sense->vif)
++	ol_cfg.ver = INFF_OFFLOAD_CFG_VER_1;
++	ol_cfg.len = sizeof(ol_cfg);
++	ol_cfg.id = INFF_OFFLOAD_CFG_ID_PROF;
++	ol_cfg.offload_skip = ol_feat_skip;
++	ol_cfg.u.ol_profile.reset = reset;
++	ol_cfg.u.ol_profile.type = ol_profile;
++
++	err = inff_fil_iovar_data_set(ifp, "offload_config", &ol_cfg,
++				      sizeof(ol_cfg));
++	if (err < 0)
++		inff_err("failed to %s generic offload profile:%u feat:0x%x, err = %d",
++			 reset ? "reset" : "set", ol_profile, ol_feat, err);
++	else
++		inff_info("successfully %s generic offload profile:%u feat:0x%x",
++			  reset ? "reset" : "set", ol_profile, ol_feat);
++}
++
++/* Enable specific offloads that are not enabled in a power profile but have
++ * to be enabled in suspend state as host goes to sleep.
++ */
++void
++inff_offload_enable(struct inff_if *ifp, unsigned int ol_feat,
++		    bool enable)
++{
++	struct inff_ol_cfg_v1 ol_cfg = {0};
++	u32 ol_feat_skip = ~ol_feat;
++	int err = 0;
++
++	ol_cfg.ver = INFF_OFFLOAD_CFG_VER_1;
++	ol_cfg.len = sizeof(ol_cfg);
++	ol_cfg.id = INFF_OFFLOAD_CFG_ID_ACTIVATE;
++	ol_cfg.u.ol_activate.enable = enable;
++	ol_cfg.offload_skip = ol_feat_skip;
++
++	err = inff_fil_iovar_data_set(ifp, "offload_config", &ol_cfg,
++				      sizeof(ol_cfg));
++	if (err < 0)
++		inff_err("failed to %s generic offload feat:0x%x, err = %d",
++			 enable ? "enable" : "disable", ol_feat, err);
++	else
++		inff_info("successfully %s generic offload feat:0x%x",
++			  enable ? "enabled" : "disabled", ol_feat);
++}
++
++void
++inff_offload_host_ipv4_update(struct inff_if *ifp, unsigned int ol_feat,
++			      u32 ipaddr, bool is_add)
++{
++	struct inff_ol_cfg_v1 ol_cfg = {0};
++	u32 ol_feat_skip = ~ol_feat;
++	int err = 0;
++
++	ol_cfg.ver = INFF_OFFLOAD_CFG_VER_1;
++	ol_cfg.len = sizeof(ol_cfg);
++	ol_cfg.id = INFF_OFFLOAD_CFG_ID_INET_V4;
++	ol_cfg.u.ol_inet_v4.del = !is_add;
++	memcpy(ol_cfg.u.ol_inet_v4.host_ipv4.addr, &ipaddr, sizeof(struct ipv4_addr));
++	ol_cfg.offload_skip = ol_feat_skip;
++
++	err = inff_fil_iovar_data_set(ifp, "offload_config", &ol_cfg,
++				      sizeof(ol_cfg));
++	if (err < 0)
++		inff_err("failed to %s generic offload host address %pI4, err = %d",
++			 is_add ? "add" : "del", &ipaddr, err);
++	else
++		inff_dbg(TRACE, "successfully %s generic offload host address %pI4",
++			 is_add ? "added" : "deleted", &ipaddr);
++}
++
++int
++inff_offload_host_ipv6_update(struct inff_if *ifp, unsigned int ol_feat,
++			      void *ptr, u8 type, bool is_add)
++{
++	struct inff_ol_cfg_v1 ol_cfg = {0};
++	u32 ol_feat_skip = ~ol_feat;
++	int err = 0;
++
++	ol_cfg.ver = INFF_OFFLOAD_CFG_VER_1;
++	ol_cfg.len = sizeof(ol_cfg);
++	ol_cfg.id = INFF_OFFLOAD_CFG_ID_INET_V6;
++	ol_cfg.u.ol_inet_v6.del = !is_add;
++	ol_cfg.u.ol_inet_v6.type = type;
++	memcpy(ol_cfg.u.ol_inet_v6.host_ipv6.addr, ptr, sizeof(struct ipv6_addr));
++	ol_cfg.offload_skip = ol_feat_skip;
++
++	err = inff_fil_iovar_data_set(ifp, "offload_config", &ol_cfg,
++				      sizeof(ol_cfg));
++	if (err < 0)
++		inff_err("failed to %s host address %pI6 err = %d",
++			 is_add ? "add" : "del", ptr, err);
++	else
++		inff_dbg(TRACE, "successfully %s host address %pI6",
++			 is_add ? "add" : "del", ptr);
++
++	return err;
++}
++
++void
++inff_offload_configure_arp_nd(struct inff_if *ifp, bool enable)
++{
++	s32 err;
++	u32 mode;
++
++	if (enable && inff_is_apmode_operating(ifp->drvr->wiphy)) {
++		inff_dbg(TRACE, "Skip ARP/ND offload enable when soft AP is running\n");
 +		return;
++	}
 +
-+	kfree(wlan_sense->data_buf);
-+	kfree(wlan_sense);
-+	cfg80211_info->pmsr_info->wlan_sense_info = NULL;
++	if (enable)
++		mode = INFF_OFFLOAD_ARP_AGENT | INFF_OFFLOAD_ARP_PEER_AUTO_REPLY;
++	else
++		mode = 0;
++
++	if (inff_feat_is_enabled(ifp, INFF_FEAT_OFFLOADS)) {
++		u32 feat_set = inff_offload_feat & (INFF_OFFLOAD_ARP | INFF_OFFLOAD_ND);
++
++		if (!feat_set)
++			return;
++
++		if (enable)
++			inff_offload_config(ifp, feat_set, inff_offload_prof, false);
++		else
++			inff_offload_config(ifp, feat_set, inff_offload_prof, true);
++	} else {
++		/* Try to set and enable ARP offload feature, this may fail, then it  */
++		/* is simply not supported and err 0 will be returned                 */
++		err = inff_fil_iovar_int_set(ifp, "arp_ol", mode);
++		if (err) {
++			inff_dbg(TRACE, "failed to set ARP offload mode to 0x%x, err = %d\n",
++				 mode, err);
++		} else {
++			err = inff_fil_iovar_int_set(ifp, "arpoe", enable);
++			if (err) {
++				inff_dbg(TRACE, "failed to configure (%d) ARP offload err = %d\n",
++					 enable, err);
++			} else {
++				inff_dbg(TRACE, "successfully configured (%d) ARP offload to 0x%x\n",
++					 enable, mode);
++			}
++		}
++
++		err = inff_fil_iovar_int_set(ifp, "ndoe", enable);
++		if (err) {
++			inff_dbg(TRACE, "failed to configure (%d) ND offload err = %d\n",
++				 enable, err);
++		} else {
++			inff_dbg(TRACE, "successfully configured (%d) ND offload to 0x%x\n",
++				 enable, mode);
++		}
++	}
 +}
 +
-+int inff_wlan_sense_start(struct wiphy *wiphy, struct wireless_dev *wdev)
++int
++inff_offload_configure_mkeep_alive(struct inff_if *ifp, bool immed_flag,
++				   long *param0, long *param1, long *param2,
++				   int max_param_ct)
 +{
-+	inff_dbg(TRACE, "WLAN SENSE: enter\n");
++	u8 buf[150] = {0};
++	struct inff_mkeep_alive *mkeep_alive;
++	int ret = 0, i = 0, j = 0;
 +
-+	/* do nothing for now */
-+	return 0;
++	mkeep_alive = (struct inff_mkeep_alive *)buf;
++
++	mkeep_alive->period_msec = (u32)(*param1);
++
++	if (immed_flag) {
++		if (mkeep_alive->period_msec & WL_MKEEP_ALIVE_IMMEDIATE) {
++			inff_err("Period %d too large\n", mkeep_alive->period_msec);
++			ret = -EINVAL;
++			goto exit;
++		}
++		if (mkeep_alive->period_msec)
++			mkeep_alive->period_msec |= WL_MKEEP_ALIVE_IMMEDIATE;
++	}
++	mkeep_alive->version = WL_MKEEP_ALIVE_VERSION;
++	mkeep_alive->keep_alive_id = (u8)(*param0);
++	mkeep_alive->length = offsetof(struct inff_mkeep_alive, data);
++
++	/* If there is no hex value for pkt data, it is treated as NULL KA.
++	 * If there is hex value for pkt data, then copy hex as data and is
++	 * treated as NAT KA.
++	 */
++	if (mkeep_alive->period_msec > 0) {
++		if (param2[j] < 0) {
++			mkeep_alive->len_bytes = 0;
++		} else if (param2[j + 14] < 0) {
++			inff_err("Invalid pkt data. Required len bytes >= 14.\n");
++			ret = -EINVAL;
++			goto exit;
++		} else {
++			while (param2[j] != ' ') {
++				if (j <= max_param_ct) {
++					mkeep_alive->data[i] = param2[j];
++					j++;
++				}
++				i++;
++			}
++			mkeep_alive->len_bytes = i;
++		}
++	}
++	ret = inff_fil_iovar_data_set(ifp, "mkeep_alive", buf, sizeof(buf));
++	if (ret)
++		inff_err("Failed to set mkeeplive params: %d\n", ret);
++
++exit:
++	return ret;
 +}
 +
-+void inff_wlan_sense_stop(struct wiphy *wiphy, struct wireless_dev *wdev)
++int
++inff_offload_configure_tko(struct inff_if *ifp, long tko_subcmd_id, long *param0,
++			   long *param1, long *param2, long *param3)
 +{
-+	s32 err = 0;
-+	struct inff_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
-+	struct inff_wlan_sense_info *wlan_sense_info = cfg->pmsr_info->wlan_sense_info;
-+	struct inff_wlan_sense_cfg wlan_sense_cfg = {0};
++	struct inff_tko *tko;
++	struct inff_tko_param *tko_param;
++	struct inff_tko_enable *tko_enable;
++	u8 buf[128] = {0};
++	int length;
++	int ret = 0;
 +
-+	inff_dbg(TRACE, "WLAN SENSE: enter\n");
++	tko = (struct inff_tko *)buf;
 +
-+	/* abort running sensing process if we get interface stop command */
-+	if (!wlan_sense_info->sense_req || !wlan_sense_info->sensing)
-+		return;
++	tko->subcmd_id = tko_subcmd_id;
++	switch (tko->subcmd_id) {
++	case WL_TKO_SUBCMD_ENABLE:
++		tko_enable = (struct inff_tko_enable *)tko->data;
++		tko->len = sizeof(*tko_enable);
 +
-+	err = inff_wlan_sense_oper_handler(wiphy, wdev,
-+					   INFF_WLAN_SENSE_OPER_DISABLE,
-+					   wlan_sense_cfg);
-+	inff_dbg(TRACE, "WLAN SENSE: err %d\n", err);
++		tko_enable->enable = (u8)(*param0);
++		break;
++	case WL_TKO_SUBCMD_PARAM:
++		tko_param = (struct inff_tko_param *)tko->data;
++		tko->len = sizeof(*tko_param);
++
++		tko_param->interval = (u16)(*param0);
++		tko_param->retry_interval = (u16)(*param1);
++		tko_param->retry_count = (u16)(*param2);
++		tko_param->rst_delay = (s16)(*param3);
++		break;
++	default:
++		inff_err("offload tko subcmd id %d not recognized", tko->subcmd_id);
++		ret = -EOPNOTSUPP;
++		goto exit;
++	}
++
++	length = offsetof(struct inff_tko, data) + tko->len;
++	ret = inff_fil_iovar_data_set(ifp, "tko", buf, length);
++	if (ret)
++		inff_err("Failed to configure tko: %d\n", ret);
++exit:
++	return ret;
 +}
-diff --git a/drivers/net/wireless/infineon/inffmac/wlan_sense.h b/drivers/net/wireless/infineon/inffmac/wlan_sense.h
++
++/**
++ * inff_offload_configure_icmp_echo_req() - Prepare ICMP Echo Request IOVAR
++ * based on the ICMP Echo Request Parameters.
++ *
++ * @ifp - Pointer to inff_if structure.
++ * @u8 - Sub Command Type.
++ * @enable - Enable.
++ * @ip_addr - IP Address to be filled.
++ * @ip_ver - IP version.
++ * @mac_addr - MAC Address to be filled.
++ * @periodicity - Periodicity of ping in sec.
++ * @duration - Duration in sec.
++ * Return
++ * 0 - success
++ * Non Zero  - otherwise
++ */
++int
++inff_offload_configure_icmp_echo_req(struct inff_if *ifp, u8 cmd_type,
++				     u8 enable, u8 *ip_addr, u8 ip_ver,
++				     u8 *mac_addr, u32 periodicity, u32 duration)
++{
++	struct inff_cfg80211_info *cfg = ifp->drvr->config;
++	struct inff_icmp_echo_req_cmd *icmp_echo_req_cmd;
++	struct inff_icmp_echo_req_peer_config *icmp_echo_req_peer_config;
++	struct inff_icmp_echo_req_peer_ip *icmp_echo_req_peer_ip;
++	int ret = 0;
++
++	memset(cfg->extra_buf, '\0', WL_EXTRA_BUF_MAX);
++	icmp_echo_req_cmd = (struct inff_icmp_echo_req_cmd *)cfg->extra_buf;
++
++	icmp_echo_req_cmd->version = INFF_OFFLOAD_ICMP_ECHO_REQ_VER;
++	icmp_echo_req_cmd->cmd_type = cmd_type;
++
++	switch (icmp_echo_req_cmd->cmd_type) {
++	case INFF_OFFLOAD_ICMP_ECHO_REQ_ENAB:
++		icmp_echo_req_cmd->data[0] = enable;
++		icmp_echo_req_cmd->length = sizeof(struct inff_icmp_echo_req_cmd) +
++					    sizeof(u8);
++		break;
++	case INFF_OFFLOAD_ICMP_ECHO_REQ_ADD:
++		icmp_echo_req_peer_config = (struct inff_icmp_echo_req_peer_config *)
++					    icmp_echo_req_cmd->data;
++		icmp_echo_req_cmd->length = sizeof(*icmp_echo_req_peer_config) +
++					    sizeof(struct inff_icmp_echo_req_cmd);
++		icmp_echo_req_peer_config->version = INFF_OFFLOAD_ICMP_ECHO_REQ_VER;
++		icmp_echo_req_peer_config->ip_ver = ip_ver;
++		memcpy(icmp_echo_req_peer_config->u.ipv6.addr, ip_addr,
++		       (icmp_echo_req_peer_config->ip_ver == INFF_OFFLOAD_ICMP_ECHO_REQ_IP_V6) ?
++			INFF_IPV6_ADDR_LEN : INFF_IPV4_ADDR_LEN);
++		memcpy(icmp_echo_req_peer_config->mac_addr, mac_addr, ETH_ALEN);
++		icmp_echo_req_peer_config->periodicity = periodicity;
++		icmp_echo_req_peer_config->duration = duration;
++		icmp_echo_req_peer_config->length = sizeof(struct inff_icmp_echo_req_peer_config);
++		break;
++	case INFF_OFFLOAD_ICMP_ECHO_REQ_DEL:
++	case INFF_OFFLOAD_ICMP_ECHO_REQ_START:
++	case INFF_OFFLOAD_ICMP_ECHO_REQ_STOP:
++		icmp_echo_req_peer_ip = (struct inff_icmp_echo_req_peer_ip *)
++					icmp_echo_req_cmd->data;
++		icmp_echo_req_cmd->length = sizeof(*icmp_echo_req_peer_ip) +
++					    sizeof(struct inff_icmp_echo_req_cmd);
++		icmp_echo_req_peer_ip->version = INFF_OFFLOAD_ICMP_ECHO_REQ_VER;
++		icmp_echo_req_peer_ip->ip_ver = ip_ver;
++		memcpy(icmp_echo_req_peer_ip->u.ipv6.addr, ip_addr,
++		       (icmp_echo_req_peer_ip->ip_ver == INFF_OFFLOAD_ICMP_ECHO_REQ_IP_V6) ?
++			INFF_IPV6_ADDR_LEN : INFF_IPV4_ADDR_LEN);
++		icmp_echo_req_peer_ip->length = sizeof(struct inff_icmp_echo_req_peer_ip);
++		break;
++	case INFF_OFFLOAD_ICMP_ECHO_REQ_INFO:
++		icmp_echo_req_peer_ip = (struct inff_icmp_echo_req_peer_ip *)
++					icmp_echo_req_cmd->data;
++		icmp_echo_req_cmd->length = sizeof(*icmp_echo_req_peer_ip) +
++					    sizeof(struct inff_icmp_echo_req_cmd);
++		icmp_echo_req_peer_ip->version = INFF_OFFLOAD_ICMP_ECHO_REQ_VER;
++		icmp_echo_req_peer_ip->ip_ver = ip_ver;
++		if (ip_ver != INFF_OFFLOAD_ICMP_ECHO_REQ_IP_BOTH) {
++			memcpy(icmp_echo_req_peer_ip->u.ipv6.addr, ip_addr,
++			       (icmp_echo_req_peer_ip->ip_ver == INFF_OFFLOAD_ICMP_ECHO_REQ_IP_V6) ?
++				INFF_IPV6_ADDR_LEN : INFF_IPV4_ADDR_LEN);
++		}
++		icmp_echo_req_peer_ip->length = sizeof(struct inff_icmp_echo_req_peer_ip);
++		break;
++	default:
++		inff_err("offload icmp_echo_req subcmd id %d not recognized",
++			 icmp_echo_req_cmd->cmd_type);
++		return -EOPNOTSUPP;
++	}
++
++	if (icmp_echo_req_cmd->cmd_type == INFF_OFFLOAD_ICMP_ECHO_REQ_INFO)
++		ret = inff_fil_iovar_data_get(ifp, "icmp_echo_req", cfg->extra_buf,
++					      WL_EXTRA_BUF_MAX);
++	else
++		ret = inff_fil_iovar_data_set(ifp, "icmp_echo_req", (u8 *)icmp_echo_req_cmd,
++					      icmp_echo_req_cmd->length);
++
++	if (ret)
++		inff_err("Failed to get icmp_echo_req info: %d\n", ret);
++
++	return ret;
++}
++
++s32
++inff_notify_icmp_echo_req_event(struct inff_if *ifp, const struct inff_event_msg *e,
++				void *data)
++{
++	struct inff_cfg80211_info *cfg = ifp->drvr->config;
++	struct wiphy *wiphy = cfg_to_wiphy(cfg);
++	struct inff_icmp_echo_req_event *echo_req_event;
++
++	echo_req_event = (struct inff_icmp_echo_req_event *)data;
++
++	inff_dbg(INFO, "Enter: event %s (%d), status=%d\n",
++		 inff_fweh_event_name(e->event_code), e->event_code,
++		 e->status);
++
++	inff_dbg(INFO, "icmp_echo_req_event reason = %d icmp_echo_req_event count = %d\n",
++		 echo_req_event->reason, echo_req_event->echo_req_cnt);
++
++	if (echo_req_event->ip_ver == INFF_OFFLOAD_ICMP_ECHO_REQ_IP_V6) {
++		inff_dbg(INFO, "icmp_echo_req_event IPv6 address = %pI6",
++			 &echo_req_event->u.ipv6.addr);
++	} else if (echo_req_event->ip_ver == INFF_OFFLOAD_ICMP_ECHO_REQ_IP_V4) {
++		inff_dbg(INFO, "icmp_echo_req_event IPv4 address = %pI4",
++			 &echo_req_event->u.ipv6.addr);
++	} else {
++		inff_err("Invalid IP address\n");
++		return -EINVAL;
++	}
++
++	return inff_cfg80211_vndr_evt_icmp_echo_req(wiphy, &ifp->vif->wdev, data,
++						    echo_req_event->length);
++}
+diff --git a/drivers/net/wireless/infineon/inffmac/offload.h b/drivers/net/wireless/infineon/inffmac/offload.h
 new file mode 100644
-index 000000000000..1345ff33b7ea
+index 000000000000..65b8711a99ed
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/wlan_sense.h
-@@ -0,0 +1,177 @@
++++ b/drivers/net/wireless/infineon/inffmac/offload.h
+@@ -0,0 +1,215 @@
 +/* SPDX-License-Identifier: ISC */
 +/*
-+ * Copyright (c) 2024-2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
++ * Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
-+#ifndef INFF_WLAN_SENSE_H
-+#define INFF_WLAN_SENSE_H
++#ifndef INFF_OFFLOAD_H
++#define INFF_OFFLOAD_H
 +
-+#define INFF_WLAN_SENSE_FILTER_FRM_RA_NUM		4
-+#define INFF_WLAN_SENSE_FILTER_FRM_TYP_SUBTYP_NUM	2
-+#define INFF_WLAN_SENSE_METADATA	64
-+/* 16k + Meta(64) for 2x2 80Mhz QoS HE */
-+#define INFF_WLAN_SENSE_DATA_LEN_MAX	(16384 + INFF_WLAN_SENSE_METADATA)
++#include "core.h"
++#include "fwil_types.h"
 +
-+struct inff_csi_data_frag_hdr {
-+	u8 hdr_version;
-+	u8 sequence_num;
-+	u8 fragment_num;
-+	u8 total_fragments;
-+} __packed;
-+
-+enum inff_wlan_sense_oper {
-+	INFF_WLAN_SENSE_OPER_UNSPECIFIED,
-+	INFF_WLAN_SENSE_OPER_CONFIGURE,
-+	INFF_WLAN_SENSE_OPER_ENABLE,
-+	INFF_WLAN_SENSE_OPER_DISABLE,
++/* enum inff_offload_feats - Packet types to be offloaded to firmware for processing */
++enum inff_offload_feats {
++	INFF_OFFLOAD_ARP		= BIT(0),
++	INFF_OFFLOAD_ND			= BIT(1),
++	INFF_OFFLOAD_BDO		= BIT(2),
++	INFF_OFFLOAD_ICMP		= BIT(3),
++	INFF_OFFLOAD_TKO		= BIT(4),
++	INFF_OFFLOAD_DLTRO		= BIT(5),
++	INFF_OFFLOAD_PNO		= BIT(6),
++	INFF_OFFLOAD_KEEPALIVE		= BIT(7),
++	INFF_OFFLOAD_GTKOE		= BIT(8),
++	INFF_OFFLOAD_WOWLPF		= BIT(9)
 +};
 +
-+enum inff_wlan_sense_mode_flags {
-+	INFF_WLAN_SENSE_MODE_SOLICITED = 1 << 0,
-+	INFF_WLAN_SENSE_MODE_ASSOCIATED = 1 << 1,
++enum inff_ol_cfg_id {
++	INFF_OFFLOAD_CFG_ID_PROF = 1,		/* Offload Profile Update */
++	INFF_OFFLOAD_CFG_ID_INET_V4,		/* ADD/DEL IPv4 Address */
++	INFF_OFFLOAD_CFG_ID_INET_V6,		/* ADD/DEL IPv6 Address */
++	INFF_OFFLOAD_CFG_ID_ACTIVATE,		/* Activate/Deactivate Offload */
++	/*  Add new type before this line */
++	INFF_OFFLOAD_CFG_ID_MAX			/* Max Offload Config ID */
 +};
 +
-+enum inff_wlan_sense_filter_bss_scope {
-+	INFF_WLAN_SENSE_FILTER_BSS_SCOPE_OWN_RA,
-+	INFF_WLAN_SENSE_FILTER_BSS_SCOPE_CURR_BSS,
-+	INFF_WLAN_SENSE_FILTER_BSS_SCOPE_ALL_BSS,
++enum inff_ol_prof_type {
++	INFF_OFFLOAD_PROF_TYPE_LOW_PWR = 1,	/* Low Power Profile */
++	INFF_OFFLOAD_PROF_TYPE_MID_PWR = 2,	/* Mid Power Profile */
++	INFF_OFFLOAD_PROF_TYPE_HIGH_PWR = 3,	/* High Power Profile */
++	/*  Add new type before this line */
++	INFF_OFFLOAD_PROF_TYPE_MAX		/* Max Offload Profile */
 +};
 +
-+struct inff_wlan_sense_filter {
-+	enum inff_wlan_sense_filter_bss_scope bss_scope;
-+	bool ignore_fcs;
-+	struct ether_addr ta[INFF_WLAN_SENSE_FILTER_FRM_RA_NUM];
-+	u8 frmtyp_subtyp[INFF_WLAN_SENSE_FILTER_FRM_TYP_SUBTYP_NUM];
++/* Offload profile configuration */
++struct inff_ol_cfg_v1 {
++	u16 ver;					/* version of this structure */
++	u16 len;					/* length of structure in bytes */
++	enum inff_ol_cfg_id id;			/* Offload Config ID */
++
++	union {
++		struct {
++			enum inff_ol_prof_type type;	/* offload profile type */
++			bool reset;			/* Remove profile configuration */
++			u8 pad[3];
++		} ol_profile;
++		struct {
++			struct ipv4_addr host_ipv4;
++			bool del;			/* 1:del 0:add host ipv4 address */
++			u8 pad[3];
++		} ol_inet_v4;
++		struct {
++			struct ipv6_addr host_ipv6;
++			u8 type;			/* 0:unicast 1:anycast */
++			bool del;			/* 1:del 0:add host ipv6 address */
++			u8 pad[2];
++		} ol_inet_v6;
++		struct {
++			bool enable;			/* enable/disable offload feature */
++			u8 pad[3];
++		} ol_activate;
++	} u;
++
++	u32 offload_skip;				/* Bitmap of offload to be skipped */
 +};
 +
-+struct inff_wlan_sense_cfg {
-+	u32 interval;
-+	u16 duration;
-+	u8 mode_flags;
-+	struct inff_wlan_sense_filter filter;
++/* ARP Offload feature flags for arp_ol iovar */
++#define INFF_OFFLOAD_ARP_AGENT			0x00000001
++#define INFF_OFFLOAD_ARP_SNOOP			0x00000002
++#define INFF_OFFLOAD_ARP_HOST_AUTO_REPLY	0x00000004
++#define INFF_OFFLOAD_ARP_PEER_AUTO_REPLY	0x00000008
++
++#define WL_MKEEP_ALIVE_VERSION			1
++#define WL_MKEEP_ALIVE_IMMEDIATE		0x80000000
++
++struct inff_mkeep_alive {
++	u16 version;				/* Version for mkeep_alive */
++	u16 length;				/* length of fixed parameters in the structure */
++	u32 period_msec;			/* high bit on means immediate send */
++	u16 len_bytes;
++	u8 keep_alive_id;			/* 0 - 3 for N = 4 */
++	u8 data[];
 +};
 +
-+struct inff_wlan_sense_fil_cfg {
-+	/* 1: Enable CSI capture  0: Disable CSI capture */
-+	u8 csi_enable;
-+
-+	/* -1: Disable periodic CSI capture */
-+	s32 capture_interval_ms;
-+	u16 capture_duration_ms;
-+
-+	/* 0: Unsolicited Mode 1: Solicited Mode */
-+	u8 solicit_mode;
-+
-+	/* 0: Unassociated Mode 1: Associated Mode */
-+	u8 assoc_mode;
-+
-+	/* 0: Allow all Rx   1: My BSS  2: Other BSS */
-+	u8 bss_mode;
-+
-+	/* Also capture badfcs packets */
-+	u8 ignore_fcs;
-+
-+	/* Only capture pkts from specified macaddr (Unassociated Mode) */
-+	struct ether_addr
-+	macaddr[INFF_WLAN_SENSE_FILTER_FRM_RA_NUM];
-+
-+	/* Capture CSI only for specified chanspec */
-+	u16 chanspec;
-+
-+	/* Capture multiple CSI per mac address (Unsolicited Mode) */
-+	u8 multi_csi_per_mac;
-+
-+	/* Enable PM indication before CSI window (Associated Mode) */
-+	u8 link_protection;
-+
-+	/* Capture CSI  only from selected subcarriers (Not Implemented) */
-+	u8 subcarriers;
-+
-+	/* FrameType & SubType */
-+	u8 frmtyp_subtyp[INFF_WLAN_SENSE_FILTER_FRM_TYP_SUBTYP_NUM];
++struct inff_tko {
++	u16 subcmd_id;				/* subcommand id */
++	u16 len;				/* total length of data[] */
++	u8 data[];				/* subcommand data */
 +};
 +
-+struct inff_fil_wlan_sense_if_le {
-+	struct ether_addr addr;
++/* subcommand ids */
++#define WL_TKO_SUBCMD_PARAM		1	/* configure offload common parameters  */
++#define WL_TKO_SUBCMD_ENABLE		3	/* enable/disable */
++
++/* WL_TKO_SUBCMD_PARAM subcommand data */
++struct inff_tko_param {
++	u16 interval;		/* keepalive tx interval (secs) */
++	u16 retry_interval;	/* keepalive retry interval (secs) */
++	u16 retry_count;	/* retry_count */
++	s16 rst_delay;		/* delay to delay a RST frame from reaching the host */
 +};
 +
-+/**
-+ * struct wlan_sense_bss - WLAN Sensing bss related information.
-+ *
-+ * @vif: virtual interface of this WLAN Sensing bss.
-+ * @private_data: TBD
-+ */
-+struct wlan_sense_bss {
-+	struct inff_cfg80211_vif *vif;
-+	void *private_data;
++struct inff_tko_enable {
++	u8 enable;				/* 1 - enable, 0 - disable */
++	u8 pad[3];				/* 4-byte struct alignment */
 +};
 +
-+/**
-+ * struct inff_wlan_sense_counters - WLAN Sensing debug counters
-+ *
-+ * @csi_frag_fw_evt_tot_ct: CSI Data Fragment Firmware event total count.
-+ * @csi_frag_fw_evt_handle_fail_ct: CSI Data Fragment Firmware event handled successfully count.
-+ * @csi_frag_fw_evt_handle_succ_ct: CSI Data Fragment Firmware event handle failure count.
-+ */
-+struct inff_wlan_sense_counters {
-+	u32 csi_frag_fw_evt_tot_ct;
-+	u32 csi_frag_fw_evt_handle_succ_ct;
-+	u32 csi_frag_fw_evt_handle_fail_ct;
++#define INFF_OFFLOAD_ICMP_ECHO_REQ_VER		1
++
++#define INFF_OFFLOAD_ICMP_ECHO_REQ_IP_BOTH	0
++#define INFF_OFFLOAD_ICMP_ECHO_REQ_IP_V4	1
++#define INFF_OFFLOAD_ICMP_ECHO_REQ_IP_V6	2
++
++/* ICMP Echo Request Sub commands */
++enum {
++	INFF_OFFLOAD_ICMP_ECHO_REQ_ENAB,
++	INFF_OFFLOAD_ICMP_ECHO_REQ_ADD,
++	INFF_OFFLOAD_ICMP_ECHO_REQ_DEL,
++	INFF_OFFLOAD_ICMP_ECHO_REQ_START,
++	INFF_OFFLOAD_ICMP_ECHO_REQ_STOP,
++	INFF_OFFLOAD_ICMP_ECHO_REQ_INFO
 +};
 +
-+/**
-+ * struct inff_wlan_sense_info - wlan_sense specific driver information.
-+ *
-+ * @cfg80211_info: driver private data for cfg80211 interface.
-+ * @vif: WLAN Sensing vif structure
-+ * @dev_addr: WLAN Sensing device address.
-+ * @cfg: WLAN Sensing Configuration.
-+ * @sense_req: the pmsr request sent from cfg80211
-+ * @data_buf: CSI Data buffer pointer.
-+ * @data_buf_len: CSI Data buffer allocated memory size.
-+ * @counters: CSI Data Debug counters.
-+ * @sensing: WLAN Sensing in progress.
-+ */
-+struct inff_wlan_sense_info {
-+	struct inff_cfg80211_info *cfg80211_info;
-+	struct inff_cfg80211_vif *vif;
-+	struct ether_addr dev_addr;
-+	struct inff_wlan_sense_cfg cfg;
-+	struct cfg80211_pmsr_request *sense_req;
-+	char *data_buf;
-+	u32 data_buf_len;
-+	struct inff_wlan_sense_counters counters;
-+	bool sensing;
++struct inff_icmp_echo_req_peer_ip {
++	u16 version;
++	u16 length;
++	u8 ip_ver;				/* IP Version IPv4:1 IPv6:2 */
++	u8 pad[3];
++	union {
++		struct ipv4_addr ipv4;		/* Peer IPV4 Address */
++		struct ipv6_addr ipv6;		/* Peer IPV6 Address */
++	} u;
 +};
 +
-+int inff_wlan_sense_start(struct wiphy *wiphy, struct wireless_dev *wdev);
-+void inff_wlan_sense_stop(struct wiphy *wiphy, struct wireless_dev *wdev);
++struct inff_icmp_echo_req_peer_config {
++	u16 version;
++	u16 length;
++	u8 ip_ver;				/* IP Version IPv4:1 IPv6:2 */
++	u8 pad[3];
++	u32 periodicity;			/* Periodicty of Ping in sec */
++	u32 duration;				/* Duration in sec  */
++	union {
++		struct ipv4_addr ipv4;		/* Peer IPv4 Address */
++		struct ipv6_addr ipv6;		/* Peer IPv6 Address */
++	} u;
++	u8 mac_addr[ETH_ALEN];			/* Peer Mac Address */
++};
 +
-+struct wireless_dev *
-+inff_wlan_sense_add_vif(struct wiphy *wiphy, const char *name,
-+			unsigned char name_assign_type,
-+			 enum nl80211_iftype type,
-+			 struct vif_params *params);
-+void
-+inff_wlan_sense_ifp_removed(struct inff_if *ifp, bool locked);
-+int
-+inff_wlan_sense_del_vif(struct wiphy *wiphy, struct wireless_dev *wdev);
-+int
-+inff_wlan_sense_stats_read(struct seq_file *seq, void *data);
-+s32
-+inff_notify_wlan_sense_event(struct inff_if *ifp, const struct inff_event_msg *e,
-+			     void *data);
-+s32
-+inff_wlan_sense_oper_handler(struct wiphy *wiphy, struct wireless_dev *wdev,
-+			     enum inff_wlan_sense_oper oper,
-+			     struct inff_wlan_sense_cfg wlan_sense_cfg);
-+s32
-+inff_wlan_sense_parse_req(struct cfg80211_pmsr_request_peer *peer,
-+			  struct inff_wlan_sense_cfg *wlan_sense_cfg);
-+s32
-+inff_wlan_sense_attach(struct inff_cfg80211_info *cfg);
-+void
-+inff_wlan_sense_detach(struct inff_cfg80211_info *cfg);
++/* ICMP Echo Req IOVAR Struct */
++struct inff_icmp_echo_req_cmd {
++	u16 version;
++	u16 length;
++	u8 cmd_type;				/* ICMP Echo Req Cmd Type */
++	u8 pad[3];
++	u8 data[];				/* Data Pointing to Sub cmd structure */
++};
 +
-+#endif /* INFF_WLAN_SENSE_H */
++/* ICMP Echo Request IOVAR INFO Struct */
++struct inff_icmp_echo_req_get_peer_info {
++	u32 state;					/* State of the Peer */
++	struct inff_icmp_echo_req_peer_config config;	/* Configuration of Peer */
++};
++
++struct inff_icmp_echo_req_get_info {
++	u16 version;
++	u16 length;
++	u8 enable;				/* Offload Enable */
++	u8 count;				/* Peer Count */
++	u8 pad[2];
++	u8 data[];				/* Data Pointing to get peer info structure */
++};
++
++struct inff_icmp_echo_req_event {
++	u16 version;
++	u16 length;
++	u8 ip_ver;			/* Peer IP Version IPv4:1 IPv6:2 */
++	u8 reason;			/* Event reason */
++	u8 pad[2];
++	u32 echo_req_cnt;		/* ICMP Echo Req Count */
++	union {
++		struct ipv4_addr ipv4;	/* Peer IPV4 Address */
++		struct ipv6_addr ipv6;	/* Peer IPV6 Address */
++	} u;
++};
++
++void inff_offload_config(struct inff_if *ifp, unsigned int ol_feat,
++			 unsigned int ol_profile, bool reset);
++void inff_offload_enable(struct inff_if *ifp, unsigned int ol_feat,
++			 bool enable);
++void inff_offload_host_ipv4_update(struct inff_if *ifp, unsigned int ol_feat,
++				   u32 ipaddr, bool is_add);
++int inff_offload_host_ipv6_update(struct inff_if *ifp, unsigned int ol_feat,
++				  void *ptr, u8 type, bool is_add);
++void inff_offload_configure_arp_nd(struct inff_if *ifp, bool enable);
++int inff_offload_configure_mkeep_alive(struct inff_if *ifp, bool immediate,
++				       long *param0, long *param1, long *param2,
++				       int max_param_ct);
++int inff_offload_configure_tko(struct inff_if *ifp, long tko_subcmd_id, long *param0,
++			       long *param1, long *param2, long *param3);
++int inff_offload_configure_icmp_echo_req(struct inff_if *ifp, u8 cmd_type,
++					 u8 enable, u8 *ip_addr, u8 ip_ver,
++					 u8 *mac_addr, u32 periodicity, u32 duration);
++s32 inff_notify_icmp_echo_req_event(struct inff_if *ifp, const struct inff_event_msg *e,
++				    void *data);
++
++#endif /* INFF_OFFLOAD_H */
 -- 
 2.25.1
 
