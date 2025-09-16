@@ -1,200 +1,175 @@
-Return-Path: <linux-wireless+bounces-27329-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27330-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7822B58BCF
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 04:27:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 430BCB58D19
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 06:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A7141B26FCF
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 02:27:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8FD85254EA
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 04:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF071D54FA;
-	Tue, 16 Sep 2025 02:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142C726E6EA;
+	Tue, 16 Sep 2025 04:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="vYROwh0r"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="isoHk3lp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F9019AD48
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 02:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B296426F29F
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 04:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757989641; cv=none; b=Sgw8YT3Mb1YrgBzFXoiGtfcps59aokX+4Wls4YRkDluXqQe4Gne4b6/tSIBEXQkixRq7PKVMfZKL8oNA9wG0rcIWqv0EMvKLfxaGuhmpNOlr4K7g2SAfWt+AWM4Vic2tw9vUKGFblrKWops/VHWk36p4PPDnEhbWffnjHxOkVr4=
+	t=1757998095; cv=none; b=j+jTlf+53Ot05iKS8dL6SZZWBsT3wNmVKOUkrpcvZxBie3rY/wiifTBVT5xdcimFb8WD2J89FtO0QLFl3C+vHkwcODht9+5iITUU4AoL0TNKKZhLa3ExEMlDU/z9P1MBDtdJjZMn9e6rG5MFez3nH/cyMcFvKfFa6I85YShE3iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757989641; c=relaxed/simple;
-	bh=e0oA7cYTS/sNvzjCdpQSq7IUAWUy6m2tdQ4GguN/6fI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=O5oCcN+v5NsxLyOc1yJDtCQmZq2Mv0kFzAnJoKK5xOUvqxqQQoFXlGOQVG2vQF6x18I7HPhUrp02xIioJA6YJIX6CAtVS8SF6zaUaNiQlI5bTSn0Sb8O/NMrrwe7jCLojaBBZQYZxVPn42+NMqReTGgchZtOsky9FOFQIeko7is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=vYROwh0r; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58G2R18j82075447, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1757989621; bh=e0oA7cYTS/sNvzjCdpQSq7IUAWUy6m2tdQ4GguN/6fI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=vYROwh0r1mxxpa0r9SFlX7ol1gwtvNGwGCQPd325r76U76YNnsy8SXlPTZ9oQKSf9
-	 lmxkCmExlI1QP7/JhgdZZZ+pqAdbMr5MMfFQAfjnqtgRmhfzjQz0F1O3VKBQKfWmSu
-	 aR25BlHi3DFVYu9vCQaM0Tv+DjOtceWVRjPHRLB/R3lSHBqsWDJyHiImb92Hpntm4z
-	 +zXY/DukCdmdFr/yn1DykBz1IHv9LrEHwBCkSImV+BIqA+SnVg8twX9OIvB5xwDmeD
-	 kgljAIkU5vNJ/U16SiCR5gFK4SyhgZstw0i2u0G3dWEY/d4gX2qsTtpJfjbRqqUin9
-	 t/KmRWgUR+N5w==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58G2R18j82075447
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Sep 2025 10:27:01 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 16 Sep 2025 10:27:00 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 16 Sep 2025 10:27:00 +0800
-Received: from RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d]) by
- RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d%2]) with mapi id
- 15.01.2507.035; Tue, 16 Sep 2025 10:27:00 +0800
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
-To: Raja Mani <raja.mani@oss.qualcomm.com>,
-        "johannes@sipsolutions.net"
-	<johannes@sipsolutions.net>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 5/5] iw: bitrate: support link id
-Thread-Topic: [PATCH 5/5] iw: bitrate: support link id
-Thread-Index: AQHcI8tTBaLby4iX1kWXCzQt5lUARrSTJAeAgAH2irA=
-Date: Tue, 16 Sep 2025 02:27:00 +0000
-Message-ID: <41315cdd01e347ac927bc51bfacb050b@realtek.com>
-References: <20250912095423.27266-1-kevin_yang@realtek.com>
- <20250912095423.27266-6-kevin_yang@realtek.com>
- <51e6a40d-8f1b-40ed-9105-4b0af0c544b9@oss.qualcomm.com>
-In-Reply-To: <51e6a40d-8f1b-40ed-9105-4b0af0c544b9@oss.qualcomm.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1757998095; c=relaxed/simple;
+	bh=VmO2kvinS3A1vRaM0G0YEMkRq/84D/KeYXH2dYVRBxo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UD5DVASNKXQUHDoVxxaeeXm1r4lT8QvNU0hHolOIuo4jxN/VxHxysdypO0VS+pSG5HH/PdlPxiivGy+JlpU1A9JoHpCSf6G8mvxy9/b1kYQsaeZm9yJ4m7QMeorRC/ShGQxEQotUVZlRMZm/1W24YzPPHWS96u6vBhfG/1EeOQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=isoHk3lp; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-266914a33e5so14498645ad.2
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 21:48:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757998091; x=1758602891; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MTEHvDm/IKR4tm1Bmr0HolxO+dzLmKu0Q858we1M/so=;
+        b=isoHk3lp/kmFTFnaHeJYBE80r7sNHEqVqjZ+45wb6IrmWrMuz2flgeColLovQOaDuf
+         NAUEFM9ecfmQSoQDeE3u58V7ghpBpdv4KxGtxqBh30vKMmepgvfCq+7U9/cFrLVukYUy
+         wCdIUGtwK53qcFRptBDC3bX9az7dK/Rm58f0Z7lcEN69v0Aq9ZW1Tla134rQD+4diuKQ
+         U1mOcz+P1CMlczkDX+mozr45Fo25Vl1zNXr8PZEeNHO2dwYuEZcfQruKhKuhy7ccFLfp
+         wjsvIEAE32onlHyrYQyak2+zcwEanV+eHJlD8AgPCiVP3AOf/bJjYCePLjhBDFEI6CeG
+         rMRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757998091; x=1758602891;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MTEHvDm/IKR4tm1Bmr0HolxO+dzLmKu0Q858we1M/so=;
+        b=kQT8W2RGQd7ZL2OMG7rcGgSSvGy4oROlgi0XgrX3fqHurcmX5eLjUYRW23+lMRJc6V
+         Yd9qm/m1lTbKgDseqH7ZYqEsQhay+nL5cVQECa1uqUZRLXanh1oMxZS9+92NYIUsq1u2
+         NZz0+4ebh+AHRoFvcoy98m3mHLfiOMV6v4MOphgGbIjmmaXiZ1/VGHarv0v7Wm5zPhdu
+         CZ13gN1yneXUEIsRogD62NIf5TNB3+581vq4TBSJC8wZjBHH649dzKukdS4Lk5j5ZO/J
+         C2VOa5yshcG+pItESZGYXMiiopolW9FJTUAjEI6zF0YR9/mb7bpaiEsvQzntTM0oewEV
+         NbfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXgZ4OmnunWj4kiqW2GeHPcSGo93gQjrYRT+jEE47eBtgHb63j756Pqdfg0uqucnZr7G2J+ysaL5MRgvl1Jgw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9QoA2DexnCK07/14Rr4/xx4zYbNvqoqCv4v5s0MCXRHYWJC8F
+	mfxe+3Ia3hqad0ltMRRMmvBjfq/M4jDNGxOpBmM+jmU2q4MH1Vynbqu+
+X-Gm-Gg: ASbGncuIgDWmt4dDq3u+4CghzWCdc63Pd1qFHV9iYTFwHX8lFsofUPSKXZUYLbz5T0q
+	/cRypv6roocwwOWSgxYkbJvn6+H0Qwds/6KiB25TDoWAhbG4sSX6LUH+P8TOBOWq5CkrKhMCpSp
+	hvNZKSMC28mD+xN7H0FLWdjbecX8gZKFuw9GpgKAZmcrq9K03zT4sgCJgPx8azMfdCo0Sw1tQwf
+	wTGwFyiIKwhrwtvTDMzPEkESWU66aRWkIjhaoTLB7ecAW6ePCcHA4Ggl/t4Kq3Otqyxi10b1VmT
+	M2rsBeTC3dG/lUPzB/Xemh0Q+TBY6gTtxoLvnk0MarzVnlN18Ty2iYkjZ81XYrKS10GB5l0WxR7
+	Kqz8goCoq/9LR76QTzW1YtuBTtFZfYXfZ+x36BuQ=
+X-Google-Smtp-Source: AGHT+IEF2ZVvpNxJJFMqOknMo3Fo0PQL8lIHY8yKPy5AwqV+Fi26iyI0GpvDt9oGgKPIwk00E+AHOw==
+X-Received: by 2002:a17:902:e790:b0:267:95b2:9c0f with SMTP id d9443c01a7336-26795b29cb0mr59076565ad.28.1757998090662;
+        Mon, 15 Sep 2025 21:48:10 -0700 (PDT)
+Received: from pengdl-pc.mioffice.cn ([43.224.245.249])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25ef09c77f8sm104600605ad.15.2025.09.15.21.48.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 21:48:09 -0700 (PDT)
+From: pengdonglin <dolinux.peng@gmail.com>
+To: tj@kernel.org,
+	tony.luck@intel.com,
+	jani.nikula@linux.intel.com,
+	ap420073@gmail.com,
+	jv@jvosburgh.net,
+	freude@linux.ibm.com,
+	bcrl@kvack.org,
+	trondmy@kernel.org,
+	longman@redhat.com,
+	kees@kernel.org
+Cc: bigeasy@linutronix.de,
+	hdanton@sina.com,
+	paulmck@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	linux-nfs@vger.kernel.org,
+	linux-aio@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	netdev@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	linux-wireless@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	pengdonglin <dolinux.peng@gmail.com>
+Subject: [PATCH v3 00/14] Remove redundant rcu_read_lock/unlock() in spin_lock
+Date: Tue, 16 Sep 2025 12:47:21 +0800
+Message-Id: <20250916044735.2316171-1-dolinux.peng@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-UmFqYSBNYW5pIDxyYWphLm1hbmlAb3NzLnF1YWxjb21tLmNvbT4gd3JvdGU6DQo+IA0KPiBPbiA5
-LzEyLzIwMjUgMzoyNCBQTSwgWm9uZy1aaGUgWWFuZyB3cm90ZToNCj4gPiBTaW5jZSBubDgwMjEx
-IHJlcXVpcmVzIHZhbGlkIGxpbmsgaWQgKE5MODAyMTFfRkxBR19NTE9fVkFMSURfTElOS19JRCks
-DQo+ID4gc3VwcG9ydCBsaW5rLWlkIGZpZWxkIGZvciBNTEQuIEZvciBub24tTUxELCBqdXN0IGFz
-IGJlZm9yZSwgbm8gbmVlZCB0bw0KPiA+IGFzc2lnbiBsaW5rLWlkIGZpZWxkLg0KPiA+DQo+ID4g
-U2lnbmVkLW9mZi1ieTogWm9uZy1aaGUgWWFuZyA8a2V2aW5feWFuZ0ByZWFsdGVrLmNvbT4NCj4g
-PiAtLS0NCj4gPiAgIGJpdHJhdGUuYyAgIHwgMjkgKysrKysrKysrKysrKysrKysrKysrKysrKysr
-LS0NCj4gPiAgIGludGVyZmFjZS5jIHwgMzIgKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0t
-LS0NCj4gPiAgIGl3LmggICAgICAgIHwgIDIgKy0NCj4gPiAgIDMgZmlsZXMgY2hhbmdlZCwgNTUg
-aW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9iaXRy
-YXRlLmMgYi9iaXRyYXRlLmMNCj4gPiBpbmRleCAxNmYxMThjY2U0ZWMuLjc4ZDM5OWQyMjdlMiAx
-MDA2NDQNCj4gPiAtLS0gYS9iaXRyYXRlLmMNCj4gPiArKysgYi9iaXRyYXRlLmMNCj4gPiBAQCAt
-MTk1LDcgKzE5NSw3IEBAIHN0YXRpYyBpbnQgcGFyc2VfZWh0X2dpKGNoYXIgKmVodF9naSkNCj4g
-Pg0KPiA+ICAgaW50IHNldF9iaXRyYXRlcyhzdHJ1Y3QgbmxfbXNnICptc2csDQo+ID4gICAgICAg
-ICAgICAgICAgaW50IGFyZ2MsIGNoYXIgKiphcmd2LA0KPiA+IC0gICAgICAgICAgICAgIGVudW0g
-bmw4MDIxMV9hdHRycyBhdHRyKQ0KPiA+ICsgICAgICAgICAgICAgIGVudW0gbmw4MDIxMV9hdHRy
-cyBhdHRyLCBpbnQgKmxpbmtfaWQpDQo+ID4gICB7DQo+ID4gICAgICAgc3RydWN0IG5sYXR0ciAq
-bmxfcmF0ZXMsICpubF9iYW5kOw0KPiA+ICAgICAgIGludCBpLCByZXQgPSAwOw0KPiA+IEBAIC0y
-NDIsNiArMjQyLDcgQEAgaW50IHNldF9iaXRyYXRlcyhzdHJ1Y3QgbmxfbXNnICptc2csDQo+ID4g
-ICAgICAgY2hhciAqaGVfZ2lfYXJndiA9IE5VTEw7DQo+ID4gICAgICAgaW50IGVodF9naSA9IDAs
-IGVodF9sdGYgPSAwOw0KPiA+ICAgICAgIGNoYXIgKmVodF9naV9hcmd2ID0gTlVMTDsNCj4gPiAr
-ICAgICBib29sIGhhc19saW5rX2lkID0gZmFsc2U7DQo+ID4NCj4gPiAgICAgICBlbnVtIHsNCj4g
-PiAgICAgICAgICAgICAgIFNfTk9ORSwNCj4gPiBAQCAtMjUwLDYgKzI1MSw3IEBAIGludCBzZXRf
-Yml0cmF0ZXMoc3RydWN0IG5sX21zZyAqbXNnLA0KPiA+ICAgICAgICAgICAgICAgU19WSFQsDQo+
-ID4gICAgICAgICAgICAgICBTX0hFLA0KPiA+ICAgICAgICAgICAgICAgU19FSFQsDQo+ID4gKyAg
-ICAgICAgICAgICBTX0xJTktfSUQsDQo+ID4gICAgICAgICAgICAgICBTX0dJLA0KPiA+ICAgICAg
-ICAgICAgICAgU19IRV9HSSwNCj4gPiAgICAgICAgICAgICAgIFNfSEVfTFRGLA0KPiA+IEBAIC0z
-NDcsNiArMzQ5LDExIEBAIGludCBzZXRfYml0cmF0ZXMoc3RydWN0IG5sX21zZyAqbXNnLA0KPiA+
-ICAgICAgICAgICAgICAgICAgICAgICBlaHRfYXJndiA9IGVodF9hcmd2XzY7DQo+ID4gICAgICAg
-ICAgICAgICAgICAgICAgIGVodF9hcmdjID0gJmVodF9hcmdjXzY7DQo+ID4gICAgICAgICAgICAg
-ICAgICAgICAgIGhhdmVfZWh0X21jc182ID0gdHJ1ZTsNCj4gPiArICAgICAgICAgICAgIH0gZWxz
-ZSBpZiAoc3RyY21wKGFyZ3ZbaV0sICJsaW5rLWlkIikgPT0gMCkgew0KPiANCj4gTWlzc2VkIHRv
-IGluY2x1ZGUgdGhpcyBuZXcgYXJnIGluICd0aWRjb25mJyBhbmQgJ2JpdHJhdGVzJyBvcHRpb24n
-cyBoZWxwIHRleHQgPw0KDQpUaGFua3MuDQpJIHdpbGwgc2VuZCB2Mi4NCg0KPiANCj4gPiArICAg
-ICAgICAgICAgICAgICAgICAgaWYgKGhhc19saW5rX2lkKQ0KPiA+ICsgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHJldHVybiAxOw0KPiA+ICsgICAgICAgICAgICAgICAgICAgICBwYXJzZXJf
-c3RhdGUgPSBTX0xJTktfSUQ7DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgIGhhc19saW5rX2lk
-ID0gdHJ1ZTsNCj4gPiAgICAgICAgICAgICAgIH0gZWxzZSBpZiAoc3RyY21wKGFyZ3ZbaV0sICJz
-Z2ktMi40IikgPT0gMCkgew0KPiA+ICAgICAgICAgICAgICAgICAgICAgICBzZ2lfMjQgPSAxOw0K
-PiA+ICAgICAgICAgICAgICAgICAgICAgICBwYXJzZXJfc3RhdGUgPSBTX0dJOyBAQCAtNDI3LDYg
-KzQzNCwxMSBAQCBpbnQNCj4gPiBzZXRfYml0cmF0ZXMoc3RydWN0IG5sX21zZyAqbXNnLA0KPiA+
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiAxOw0KPiA+ICAgICAgICAgICAg
-ICAgICAgICAgICBlaHRfYXJndlsoKmVodF9hcmdjKSsrXSA9IGFyZ3ZbaV07DQo+ID4gICAgICAg
-ICAgICAgICAgICAgICAgIGJyZWFrOw0KPiA+ICsgICAgICAgICAgICAgY2FzZSBTX0xJTktfSUQ6
-DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICpsaW5rX2lkID0gc3RydG9sKGFyZ3ZbaV0sICZl
-bmQsIDApOw0KPiA+ICsgICAgICAgICAgICAgICAgICAgICBpZiAoKmVuZCAhPSAnXDAnKQ0KPiA+
-ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiAxOw0KPiA+ICsgICAgICAgICAg
-ICAgICAgICAgICBicmVhazsNCj4gPiAgICAgICAgICAgICAgIGNhc2UgU19HSToNCj4gPiAgICAg
-ICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+ID4gICAgICAgICAgICAgICBjYXNlIFNfSEVfR0k6
-DQo+ID4gQEAgLTYxOCw3ICs2MzAsMjAgQEAgc3RhdGljIGludCBoYW5kbGVfYml0cmF0ZXMoc3Ry
-dWN0IG5sODAyMTFfc3RhdGUgKnN0YXRlLA0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICBp
-bnQgYXJnYywgY2hhciAqKmFyZ3YsDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgIGVudW0g
-aWRfaW5wdXQgaWQpDQo+ID4gICB7DQo+ID4gLSAgICAgcmV0dXJuIHNldF9iaXRyYXRlcyhtc2cs
-IGFyZ2MsIGFyZ3YsIE5MODAyMTFfQVRUUl9UWF9SQVRFUyk7DQo+ID4gKyAgICAgaW50IGxpbmtf
-aWQgPSAtMTsNCj4gPiArICAgICBpbnQgcmV0Ow0KPiA+ICsNCj4gPiArICAgICByZXQgPSBzZXRf
-Yml0cmF0ZXMobXNnLCBhcmdjLCBhcmd2LCBOTDgwMjExX0FUVFJfVFhfUkFURVMsICZsaW5rX2lk
-KTsNCj4gPiArICAgICBpZiAocmV0KQ0KPiA+ICsgICAgICAgICAgICAgcmV0dXJuIHJldDsNCj4g
-PiArDQo+ID4gKyAgICAgaWYgKGxpbmtfaWQgPj0gMCkNCj4gPiArICAgICAgICAgICAgIE5MQV9Q
-VVRfVTgobXNnLCBOTDgwMjExX0FUVFJfTUxPX0xJTktfSUQsIGxpbmtfaWQpOw0KPiA+ICsNCj4g
-PiArICAgICByZXR1cm4gMDsNCj4gPiArDQo+ID4gKyBubGFfcHV0X2ZhaWx1cmU6DQo+ID4gKyAg
-ICAgcmV0dXJuIC1FTk9CVUZTOw0KPiA+ICAgfQ0KPiA+DQo+ID4gICAjZGVmaW5lIERFU0NSX0xF
-R0FDWSAiW2xlZ2FjeS08Mi40fDU+IDxsZWdhY3kgcmF0ZSBpbiBNYnBzPipdIg0KPiA+IGRpZmYg
-LS1naXQgYS9pbnRlcmZhY2UuYyBiL2ludGVyZmFjZS5jIGluZGV4DQo+ID4gNjVhNDAwNjk2M2U1
-Li4wZjFlOTY0N2YwZTQgMTAwNjQ0DQo+ID4gLS0tIGEvaW50ZXJmYWNlLmMNCj4gPiArKysgYi9p
-bnRlcmZhY2UuYw0KPiA+IEBAIC03OTYsMTAgKzc5NiwxMSBAQCBzdGF0aWMgaW50IHRvZ2dsZV90
-aWRfcGFyYW0oY29uc3QgY2hhciAqYXJndjAsIGNvbnN0IGNoYXIgKmFyZ3YxLA0KPiA+ICAgICAg
-IHJldHVybiAtRU5PQlVGUzsNCj4gPiAgIH0NCj4gPg0KPiA+IC1zdGF0aWMgaW50IGhhbmRsZV90
-aWRfY29uZmlnKHN0cnVjdCBubDgwMjExX3N0YXRlICpzdGF0ZSwNCj4gPiAtICAgICAgICAgICAg
-ICAgICAgICAgICAgICBzdHJ1Y3QgbmxfbXNnICptc2csDQo+ID4gLSAgICAgICAgICAgICAgICAg
-ICAgICAgICAgaW50IGFyZ2MsIGNoYXIgKiphcmd2LA0KPiA+IC0gICAgICAgICAgICAgICAgICAg
-ICAgICAgIGVudW0gaWRfaW5wdXQgaWQpDQo+ID4gK3N0YXRpYyBpbnQgX19oYW5kbGVfdGlkX2Nv
-bmZpZyhzdHJ1Y3Qgbmw4MDIxMV9zdGF0ZSAqc3RhdGUsDQo+ID4gKyAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICBzdHJ1Y3QgbmxfbXNnICptc2csDQo+ID4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBpbnQgYXJnYywgY2hhciAqKmFyZ3YsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBlbnVtIGlkX2lucHV0IGlkLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgaW50ICpsaW5rX2lkKQ0KPiA+ICAgew0KPiA+ICAgICAgIHN0cnVjdCBubGF0dHIgKnRpZHNf
-YXJyYXkgPSBOVUxMOw0KPiA+ICAgICAgIHN0cnVjdCBubGF0dHIgKnRpZHNfZW50cnkgPSBOVUxM
-OyBAQCAtOTg5LDcgKzk5MCw3IEBAIHN0YXRpYyBpbnQNCj4gPiBoYW5kbGVfdGlkX2NvbmZpZyhz
-dHJ1Y3Qgbmw4MDIxMV9zdGF0ZSAqc3RhdGUsDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgaWYgKHR4cmF0ZV90eXBlICE9IE5MODAyMTFfVFhfUkFURV9BVVRPTUFUSUMpIHsNCj4g
-PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGF0dHIgPQ0KPiBOTDgwMjEx
-X1RJRF9DT05GSUdfQVRUUl9UWF9SQVRFOw0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgcmV0ID0gc2V0X2JpdHJhdGVzKG1zZywgYXJnYywgYXJndiwNCj4gPiAtICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhdHRy
-KTsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBhdHRyLA0KPiA+ICsgbGlua19pZCk7DQo+ID4gICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICBpZiAocmV0IDwgMikNCj4gPiAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIDE7DQo+ID4NCj4gPiBAQCAtMTAyMCw2ICsx
-MDIxLDI3IEBAIG5sYV9wdXRfZmFpbHVyZToNCj4gPiAgICAgICByZXR1cm4gLUVOT0JVRlM7DQo+
-ID4gICB9DQo+ID4NCj4gPiArc3RhdGljIGludCBoYW5kbGVfdGlkX2NvbmZpZyhzdHJ1Y3Qgbmw4
-MDIxMV9zdGF0ZSAqc3RhdGUsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgc3RydWN0
-IG5sX21zZyAqbXNnLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgIGludCBhcmdjLCBj
-aGFyICoqYXJndiwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICBlbnVtIGlkX2lucHV0
-IGlkKSB7DQo+ID4gKyAgICAgaW50IGxpbmtfaWQgPSAtMTsNCj4gPiArICAgICBpbnQgcmV0Ow0K
-PiA+ICsNCj4gPiArICAgICByZXQgPSBfX2hhbmRsZV90aWRfY29uZmlnKHN0YXRlLCBtc2csIGFy
-Z2MsIGFyZ3YsIGlkLCAmbGlua19pZCk7DQo+ID4gKyAgICAgaWYgKHJldCkNCj4gPiArICAgICAg
-ICAgICAgIHJldHVybiByZXQ7DQo+ID4gKw0KPiA+ICsgICAgIGlmIChsaW5rX2lkID49IDApDQo+
-ID4gKyAgICAgICAgICAgICBOTEFfUFVUX1U4KG1zZywgTkw4MDIxMV9BVFRSX01MT19MSU5LX0lE
-LCBsaW5rX2lkKTsNCj4gPiArDQo+ID4gKyAgICAgcmV0dXJuIDA7DQo+ID4gKw0KPiA+ICsgbmxh
-X3B1dF9mYWlsdXJlOg0KPiA+ICsgICAgIHJldHVybiAtRU5PQlVGUzsNCj4gPiArfQ0KPiA+ICsN
-Cj4gPiAgIENPTU1BTkQoc2V0LCB0aWRjb25mLCAiW3BlZXIgPE1BQyBhZGRyZXNzPl0gdGlkcyA8
-bWFzaz4gW292ZXJyaWRlXSBbc3JldHJ5IDxudW0+XQ0KPiBbbHJldHJ5IDxudW0+XSAiDQo+ID4g
-ICAgICAgIlthbXBkdSBbb258b2ZmXV0gW2Ftc2R1IFtvbnxvZmZdXSBbbm9hY2sgW29ufG9mZl1d
-IFtydHNjdHMgW29ufG9mZl1dIg0KPiA+ICAgICAgICJbYml0cmF0ZXMgPHR5cGUgW2F1dG98Zml4
-ZWR8bGltaXRdPiBbbGVnYWN5LTwyLjR8NT4gPGxlZ2FjeSByYXRlIGluIE1icHM+Kl0NCj4gW2h0
-LW1jcy08Mi40fDU+IDxNQ1MgaW5kZXg+Kl0iDQo+ID4gZGlmZiAtLWdpdCBhL2l3LmggYi9pdy5o
-DQo+ID4gaW5kZXggMTQ1YjA1OGQ4NmJhLi41YzRhYjZiMGIzOGUgMTAwNjQ0DQo+ID4gLS0tIGEv
-aXcuaA0KPiA+ICsrKyBiL2l3LmgNCj4gPiBAQCAtMzAyLDcgKzMwMiw3IEBAIHZvaWQgbmFuX2Jm
-KHVpbnQ4X3QgaWR4LCB1aW50OF90ICpiZiwgdWludDE2X3QgYmZfbGVuLCBjb25zdCB1aW50OF90
-DQo+ICpidWYsDQo+ID4gICBjaGFyICpoZXgyYmluKGNvbnN0IGNoYXIgKmhleCwgY2hhciAqYnVm
-KTsNCj4gPg0KPiA+ICAgaW50IHNldF9iaXRyYXRlcyhzdHJ1Y3QgbmxfbXNnICptc2csIGludCBh
-cmdjLCBjaGFyICoqYXJndiwNCj4gPiAtICAgICAgICAgICAgICBlbnVtIG5sODAyMTFfYXR0cnMg
-YXR0cik7DQo+ID4gKyAgICAgICAgICAgICAgZW51bSBubDgwMjExX2F0dHJzIGF0dHIsIGludCAq
-bGlua19pZCk7DQo+ID4NCj4gPiAgIGludCBjYWxjX3MxZ19jaF9jZW50ZXJfZnJlcShfX3U4IGNo
-X2luZGV4LCBfX3U4IHMxZ19vcGVyX2NsYXNzKTsNCj4gPg0KDQo=
+Since commit a8bb74acd8efe ("rcu: Consolidate RCU-sched update-side function definitions")
+there is no difference between rcu_read_lock(), rcu_read_lock_bh() and
+rcu_read_lock_sched() in terms of RCU read section and the relevant grace
+period. That means that spin_lock(), which implies rcu_read_lock_sched(),
+also implies rcu_read_lock().
+
+There is no need no explicitly start a RCU read section if one has already
+been started implicitly by spin_lock().
+
+Simplify the code and remove the inner rcu_read_lock() invocation.
+
+[1] https://elixir.bootlin.com/linux/v6.17-rc5/source/Documentation/RCU/rcu_dereference.rst#L407
+[2] https://lore.kernel.org/lkml/20180829222021.GA29944@linux.vnet.ibm.com/
+[3] https://lwn.net/Articles/777036/
+[4] https://lore.kernel.org/lkml/6435833a-bdcb-4114-b29d-28b7f436d47d@paulmck-laptop/
+
+pengdonglin (14):
+  ACPI: APEI: Remove redundant rcu_read_lock/unlock() in spin_lock
+  drm/i915/gt: Remove redundant rcu_read_lock/unlock() in spin_lock
+  fs: aio: Remove redundant rcu_read_lock/unlock() in spin_lock
+  nfs: Remove redundant rcu_read_lock/unlock() in spin_lock
+  s390/pkey: Remove redundant rcu_read_lock/unlock() in spin_lock
+  ipc: Remove redundant rcu_read_lock/unlock() in spin_lock
+  yama: Remove redundant rcu_read_lock/unlock() in spin_lock
+  cgroup: Remove redundant rcu_read_lock/unlock() in spin_lock
+  cgroup/cpuset: Remove redundant rcu_read_lock/unlock() in spin_lock
+  wifi: mac80211: Remove redundant rcu_read_lock/unlock() in spin_lock
+  net: ncsi: Remove redundant rcu_read_lock/unlock() in spin_lock
+  net: amt: Remove redundant rcu_read_lock/unlock() in spin_lock
+  net: bonding: Remove redundant rcu_read_lock/unlock() in spin_lock
+  wifi: ath9k: Remove redundant rcu_read_lock/unlock() in spin_lock
+
+ drivers/acpi/apei/ghes.c                        |  2 --
+ drivers/gpu/drm/i915/gt/intel_ring_submission.c |  2 --
+ drivers/net/amt.c                               |  8 --------
+ drivers/net/bonding/bond_3ad.c                  |  2 --
+ drivers/net/wireless/ath/ath9k/xmit.c           |  2 --
+ drivers/s390/crypto/pkey_base.c                 |  3 ---
+ fs/aio.c                                        |  6 ++----
+ fs/nfs/callback_proc.c                          |  2 --
+ fs/nfs/nfs4state.c                              |  2 --
+ fs/nfs/pnfs.c                                   | 12 +-----------
+ fs/nfs/pnfs_dev.c                               |  4 ----
+ ipc/msg.c                                       |  1 -
+ ipc/sem.c                                       |  1 -
+ ipc/shm.c                                       |  1 -
+ ipc/util.c                                      |  2 --
+ kernel/cgroup/cgroup.c                          |  2 --
+ kernel/cgroup/cpuset.c                          |  6 ------
+ kernel/cgroup/debug.c                           |  4 ----
+ net/mac80211/cfg.c                              |  2 --
+ net/mac80211/debugfs.c                          |  2 --
+ net/mac80211/debugfs_netdev.c                   |  2 --
+ net/mac80211/debugfs_sta.c                      |  2 --
+ net/mac80211/sta_info.c                         |  2 --
+ net/ncsi/ncsi-manage.c                          |  2 --
+ security/yama/yama_lsm.c                        |  4 ----
+ 25 files changed, 3 insertions(+), 75 deletions(-)
+
+-- 
+2.34.1
+
 
