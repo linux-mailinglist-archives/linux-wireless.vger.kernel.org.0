@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-27352-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27354-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87ED1B7D5BF
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:26:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D7AB7D898
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C17383A46DD
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9756A16C697
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8C128725B;
-	Tue, 16 Sep 2025 22:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDF028C869;
+	Tue, 16 Sep 2025 22:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="lDz/mLt+"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="axwfrq+h"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp11.infineon.com (smtp11.infineon.com [217.10.52.105])
+Received: from smtp2.infineon.com (smtp2.infineon.com [217.10.52.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12E4288AD
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1C9288AD
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:19:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758061180; cv=none; b=U0Mvt/uvkaeMj0l8/3ZosLgRC9/4EgzzOBZPUPCfHXBzMEx+H/11CFT3SkAbgvdscF5OIWmJ7u5ZRfJmEk/SfwhVDBESLahV/b7NNe9xIzWosirqs0V91wdT7KOe2vsrLrq4isD+vnqVrDBJCOAQPvl73adoDDpJJIzH6VnQVQY=
+	t=1758061192; cv=none; b=l27ClNjoduRFQRdyH4gDkZq68WL7jF7qJ20x7HESoIHhFwujEE2nBcUZ77p5hfzxPAGrilXG13L7l5MpGw1s4hdEJXX0xlkv2b/CWU96rGqH7rdLH69DIzrtz1i21xM3oJCLOYeiijfhxftsq0P0/YlTdvaBBSzosz2m12bgQTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758061180; c=relaxed/simple;
-	bh=8/+G9E0cTtbr/12fAzkkEQlz3NBucEpWQwactby8X/c=;
+	s=arc-20240116; t=1758061192; c=relaxed/simple;
+	bh=2kNYDaIr65fqF8XQvWro7dxKE52rpjkSlXXIxEhTR+U=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VAIWv12H0xIR92riir3WIvMikqcM0F8+IRJEker9mcyXABsxlin3B3Y93IVmH+9KDJqEkS/V1u/mqAZP57DBRYXFleAC3vHOnX8HlBbIc4r+Am++j9rb3oJbS5OKehAhbr3WNF+8MAIk0cCXY99d2HWnqFgqKXHgTwoKk9YIfkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=lDz/mLt+; arc=none smtp.client-ip=217.10.52.105
+	 MIME-Version:Content-Type; b=d8PXUHWmSnGiLMeDcA+HSstnwYlpqv8nH4C5bItoi8fzO2jZ0EZCseO0e/ugf5nhykFhQIMxJfJGen/8nvtUnJtbPSIratrBG7cbvOzhi44xo76q75fh15UEiWVlU/nsT1+xjxanX4/7tMOsRglBDu0kfk3jUgITKu0si76WBrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=axwfrq+h; arc=none smtp.client-ip=217.10.52.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1758061179; x=1789597179;
+  t=1758061190; x=1789597190;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8/+G9E0cTtbr/12fAzkkEQlz3NBucEpWQwactby8X/c=;
-  b=lDz/mLt+21DTJChVOiaOKTYNxXQ1G1PsMHfL0lfkERXxYWfyPaw9apIE
-   SxKasewCugdR9s8ikOwp3/MANbQArux0D5Wto9hYccFUuUU43AfUuSwhb
-   fbkpWjQXTkZJ4TN9czFktmW2WjJQdChY0xCSmB4vOWTHEiweAuWtH/X9H
-   A=;
-X-CSE-ConnectionGUID: clGIv2TdQNe5gSeSqE4OhQ==
-X-CSE-MsgGUID: dOu+d3/lT4uTDURbkNrlHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="110918093"
+  bh=2kNYDaIr65fqF8XQvWro7dxKE52rpjkSlXXIxEhTR+U=;
+  b=axwfrq+h1hzvu+mbP3yEyKHV8/FLUlHs1sFuJhm/P0LW6CS+ymOMJuqT
+   /Lh/rM/Hm1gXuEI4QI+mQixy2z0KWQQI1mYL/hYDDVSw3NK8rzCai0Xsu
+   oyFlUHLQnbEjoRt4qGF1XGJuVbr4W1O4r9nUCCt347RVeAWv5ZcZ/7JDi
+   g=;
+X-CSE-ConnectionGUID: EDXM3RfRSkakbyhj54erPQ==
+X-CSE-MsgGUID: 7SLFDAq/QCen24vVBWOxag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="125093193"
 X-IronPort-AV: E=Sophos;i="6.18,270,1751234400"; 
-   d="scan'208";a="110918093"
+   d="scan'208";a="125093193"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE814.infineon.com) ([172.23.29.40])
-  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:19:36 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE814.infineon.com
- (172.23.29.40) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE812.infineon.com) ([172.23.29.38])
+  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:19:48 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE812.infineon.com
+ (172.23.29.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Wed, 17 Sep
- 2025 00:19:35 +0200
+ 2025 00:19:47 +0200
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.36; Wed, 17 Sep 2025 00:19:33 +0200
+ 15.2.1748.36; Wed, 17 Sep 2025 00:19:44 +0200
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>, Johannes Berg
 	<johannes@sipsolutions.net>
 CC: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
 	<wlan-kernel-dev-list@infineon.com>
-Subject: [PATCH wireless-next 05/57] wifi: inffmac: introduce a new driver directory for infineon WLAN vendor
-Date: Wed, 17 Sep 2025 03:47:20 +0530
-Message-ID: <20250916221821.4387-6-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next 06/57] wifi: inffmac: add pmsr.c/h
+Date: Wed, 17 Sep 2025 03:47:21 +0530
+Message-ID: <20250916221821.4387-7-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
 References: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
@@ -76,106 +76,349 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE805.infineon.com (172.23.29.31) To
+X-ClientProxiedBy: MUCSE803.infineon.com (172.23.29.29) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Update the wireless driver common Kconfig and Makefile to include the
-new WLAN vendor directory for Infineon(Cypress).
+Driver implementation for Initating Peer Measurement (PMSR) Request and
+returning the collected result back to the userspace through cfg80211.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- drivers/net/wireless/Kconfig           |  1 +
- drivers/net/wireless/Makefile          |  1 +
- drivers/net/wireless/infineon/Kconfig  | 36 ++++++++++++++++++++++++++
- drivers/net/wireless/infineon/Makefile | 12 +++++++++
- 4 files changed, 50 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/Kconfig
- create mode 100644 drivers/net/wireless/infineon/Makefile
+ drivers/net/wireless/infineon/inffmac/pmsr.c | 282 +++++++++++++++++++
+ drivers/net/wireless/infineon/inffmac/pmsr.h |  35 +++
+ 2 files changed, 317 insertions(+)
+ create mode 100644 drivers/net/wireless/infineon/inffmac/pmsr.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/pmsr.h
 
-diff --git a/drivers/net/wireless/Kconfig b/drivers/net/wireless/Kconfig
-index c6599594dc99..c85c085741db 100644
---- a/drivers/net/wireless/Kconfig
-+++ b/drivers/net/wireless/Kconfig
-@@ -22,6 +22,7 @@ source "drivers/net/wireless/admtek/Kconfig"
- source "drivers/net/wireless/ath/Kconfig"
- source "drivers/net/wireless/atmel/Kconfig"
- source "drivers/net/wireless/broadcom/Kconfig"
-+source "drivers/net/wireless/infineon/Kconfig"
- source "drivers/net/wireless/intel/Kconfig"
- source "drivers/net/wireless/intersil/Kconfig"
- source "drivers/net/wireless/marvell/Kconfig"
-diff --git a/drivers/net/wireless/Makefile b/drivers/net/wireless/Makefile
-index e1c4141c6004..c934578aefe8 100644
---- a/drivers/net/wireless/Makefile
-+++ b/drivers/net/wireless/Makefile
-@@ -7,6 +7,7 @@ obj-$(CONFIG_WLAN_VENDOR_ADMTEK) += admtek/
- obj-$(CONFIG_WLAN_VENDOR_ATH) += ath/
- obj-$(CONFIG_WLAN_VENDOR_ATMEL) += atmel/
- obj-$(CONFIG_WLAN_VENDOR_BROADCOM) += broadcom/
-+obj-$(CONFIG_WLAN_VENDOR_INFINEON) += infineon/
- obj-$(CONFIG_WLAN_VENDOR_INTEL) += intel/
- obj-$(CONFIG_WLAN_VENDOR_INTERSIL) += intersil/
- obj-$(CONFIG_WLAN_VENDOR_MARVELL) += marvell/
-diff --git a/drivers/net/wireless/infineon/Kconfig b/drivers/net/wireless/infineon/Kconfig
+diff --git a/drivers/net/wireless/infineon/inffmac/pmsr.c b/drivers/net/wireless/infineon/inffmac/pmsr.c
 new file mode 100644
-index 000000000000..f2d56d15a741
+index 000000000000..049b39c984cc
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/Kconfig
-@@ -0,0 +1,36 @@
-+# SPDX-License-Identifier: ISC
++++ b/drivers/net/wireless/infineon/inffmac/pmsr.c
+@@ -0,0 +1,282 @@
++// SPDX-License-Identifier: ISC
++/*
++ * Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
++ * All rights reserved.
++ */
 +
-+config WLAN_VENDOR_INFINEON
-+       bool "Infineon devices"
-+       default y
-+       help
-+         If you have a wireless card belonging to this class, say Y.
++#include <linux/types.h>
++#include <linux/string.h>
++#include "cfg80211.h"
++#include "debug.h"
++#include "pmsr.h"
 +
-+         Note that the answer to this question doesn't directly affect the
-+         kernel: saying N will just cause the configurator to skip all the
-+         questions about these cards. If you say Y, you will be asked for
-+         your specific card in the following questions.
++void inff_wiphy_pmsr_params(struct wiphy *wiphy, struct inff_if *ifp)
++{
++	struct cfg80211_pmsr_capabilities *pmsr_capa;
 +
-+if WLAN_VENDOR_INFINEON
++	if (!inff_feat_is_enabled(ifp, INFF_FEAT_FTM) &&
++	    !inff_feat_is_enabled(ifp, INFF_FEAT_WLAN_SENSE))
++		return;
 +
-+source "drivers/net/wireless/infineon/inffmac/Kconfig"
++	pmsr_capa = kzalloc(sizeof(*pmsr_capa), GFP_KERNEL);
++	if (!pmsr_capa)
++		return;
 +
-+config INF_TRACING
-+	bool "Infineon device tracing"
-+	depends on INFFMAC
-+	help
-+	  If you say Y here, the Infineon wireless drivers will register
-+	  with ftrace to dump event information into the trace ringbuffer.
-+	  Tracing can be enabled at runtime to aid in debugging wireless
-+	  issues. This option adds a small amount of overhead when tracing
-+	  is disabled. If unsure, say Y to allow developers to better help
-+	  you when wireless problems occur.
++	pmsr_capa->max_peers = INFF_PMSR_PEER_MAX;
++	pmsr_capa->report_ap_tsf = 0;
++	pmsr_capa->randomize_mac_addr = 1;
 +
-+config INF_DEBUG
-+	bool "Infineon driver debug functions"
-+	depends on INFFMAC
-+	select WANT_DEV_COREDUMP
-+	help
-+	  Selecting this enables additional code for debug purposes.
++	if (inff_feat_is_enabled(ifp, INFF_FEAT_FTM)) {
++		pmsr_capa->ftm.preambles = BIT(NL80211_PREAMBLE_HT) |
++		   BIT(NL80211_PREAMBLE_VHT);
++		pmsr_capa->ftm.bandwidths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
++		   BIT(NL80211_CHAN_WIDTH_20);
++		pmsr_capa->ftm.max_bursts_exponent = -1; /* all supported */
++		pmsr_capa->ftm.max_ftms_per_burst = 0; /* no limits */
++		pmsr_capa->ftm.supported = 1;
++		pmsr_capa->ftm.asap = 1;
++		pmsr_capa->ftm.non_asap = 1;
++		pmsr_capa->ftm.request_lci = 1;
++		pmsr_capa->ftm.request_civicloc = 1;
++		pmsr_capa->ftm.trigger_based = 0;
++		pmsr_capa->ftm.non_trigger_based = 0;
++	}
 +
-+endif # WLAN_VENDOR_INFINEON
-diff --git a/drivers/net/wireless/infineon/Makefile b/drivers/net/wireless/infineon/Makefile
++	if (inff_feat_is_enabled(ifp, INFF_FEAT_WLAN_SENSE)) {
++		pmsr_capa->sensing.supported = 1;
++		pmsr_capa->sensing.associated = 1;
++		pmsr_capa->sensing.unassociated = 1;
++		pmsr_capa->sensing.vendor_mode = 1;
++		pmsr_capa->sensing.bandwidths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
++		   BIT(NL80211_CHAN_WIDTH_20);
++		pmsr_capa->sensing.max_tx_ltf_rep = 0;
++		pmsr_capa->sensing.max_rx_ltf_rep = 0;
++		pmsr_capa->sensing.min_interval = 0;
++		pmsr_capa->sensing.max_rx_chains = 0;
++	}
++
++	wiphy->pmsr_capa = pmsr_capa;
++}
++
++int inff_cfg80211_start_pmsr(struct wiphy *wiphy, struct wireless_dev *wdev,
++			     struct cfg80211_pmsr_request *request)
++{
++	struct inff_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
++	struct cfg80211_pmsr_request_peer *peer = &request->peers[0];
++	struct inff_ftm_info *ftm_info = cfg->pmsr_info->ftm_info;
++	struct inff_wlan_sense_info *wlan_sense_info = cfg->pmsr_info->wlan_sense_info;
++	struct inff_wlan_sense_cfg wlan_sense_cfg = {0};
++	s32 err = 0;
++
++	if (request->n_peers > INFF_PMSR_PEER_MAX) {
++		inff_err("PMSR: n_peers %d exceeds max peers %d!\n",
++			 request->n_peers, INFF_PMSR_PEER_MAX);
++		err = -EINVAL;
++		goto exit;
++	}
++
++	switch (peer->type) {
++	case NL80211_PMSR_TYPE_FTM:
++		if (!ftm_info || !ftm_info->vif) {
++			inff_err("FTM: context not created!\n");
++			err = -EACCES;
++			goto exit;
++		}
++
++		if (wdev != &ftm_info->vif->wdev) {
++			inff_err("FTM: get request from invalid wdev interface!\n");
++			err = -EINVAL;
++			goto exit;
++		}
++
++		if (ftm_info->ftm_req) {
++			inff_err("FTM: task is running!\n");
++			err = -EBUSY;
++			goto exit;
++		}
++
++		inff_dbg(TRACE, "FTM: FTM request\n"
++			"peer_mac          : %pM\n"
++			"center_freq       : %d\n"
++			"bandwidth         : %d\n"
++			"preamble          : %d\n"
++			"burst_period      : %d\n"
++			"requested         : %d\n"
++			"asap              : %d\n"
++			"request_lci       : %d\n"
++			"request_civicloc  : %d\n"
++			"trigger_based     : %d\n"
++			"non_trigger_based : %d\n"
++			"num_bursts_exp    : %d\n"
++			"burst_duration    : %d\n"
++			"ftms_per_burst    : %d\n"
++			"ftmr_retries      : %d\n",
++			peer->addr, peer->chandef.chan->center_freq, peer->chandef.width,
++			peer->ftm.preamble, peer->ftm.burst_period, peer->ftm.requested,
++			peer->ftm.asap, peer->ftm.request_lci, peer->ftm.request_civicloc,
++			peer->ftm.trigger_based, peer->ftm.non_trigger_based,
++			peer->ftm.num_bursts_exp, peer->ftm.burst_duration,
++			peer->ftm.ftms_per_burst, peer->ftm.ftmr_retries);
++
++		/* FTM global/session configure */
++		err = inff_ftm_set_global_config(ftm_info, peer);
++		if (err)
++			goto exit;
++		err = inff_ftm_set_session_config(ftm_info, peer,
++						  INFF_PROXD_SESSION_ID_DEFAULT_FTM);
++		if (err)
++			goto exit;
++
++		ftm_info->ftm_req = request;
++		break;
++	case NL80211_PMSR_TYPE_SENSING:
++		if (!wlan_sense_info || !wlan_sense_info->vif) {
++			inff_err("WLAN SENSE: interface not created!\n");
++			err = -EACCES;
++			goto exit;
++		}
++
++		if (wdev != &wlan_sense_info->vif->wdev) {
++			inff_err("WLAN SENSE: get request from invalid wdev interface!\n");
++			err = -EINVAL;
++			goto exit;
++		}
++
++		if (wlan_sense_info->sense_req) {
++			inff_err("WLAN SENSE: task is running!\n");
++			err = -EBUSY;
++			goto exit;
++		}
++
++		err = inff_wlan_sense_parse_req(peer, &wlan_sense_cfg);
++		if (err)
++			goto exit;
++
++		inff_dbg(TRACE, "WLAN SENSE: SENSING request\n"
++			"interval        : %d\n"
++			"duration        : %d\n"
++			"mode_flags      : %d\n"
++			"bss_scope       : %d\n"
++			"ignore_fcs      : %d\n"
++			"ta[0]           : %pM\n"
++			"ta[1]           : %pM\n"
++			"ta[2]           : %pM\n"
++			"ta[3]           : %pM\n"
++			"frmtyp_subtyp[0]: 0x%x\n"
++			"frmtyp_subtyp[1]: 0x%x\n",
++			wlan_sense_cfg.interval, wlan_sense_cfg.duration,
++			wlan_sense_cfg.mode_flags, wlan_sense_cfg.filter.bss_scope,
++			wlan_sense_cfg.filter.ignore_fcs,
++			wlan_sense_cfg.filter.ta[0].octet, wlan_sense_cfg.filter.ta[1].octet,
++			wlan_sense_cfg.filter.ta[2].octet, wlan_sense_cfg.filter.ta[3].octet,
++			wlan_sense_cfg.filter.frmtyp_subtyp[0],
++			wlan_sense_cfg.filter.frmtyp_subtyp[1]);
++
++		err = inff_wlan_sense_oper_handler(wiphy, wdev,
++						   INFF_WLAN_SENSE_OPER_CONFIGURE,
++						   wlan_sense_cfg);
++		if (err)
++			goto exit;
++		err = inff_wlan_sense_oper_handler(wiphy, wdev,
++						   INFF_WLAN_SENSE_OPER_ENABLE,
++						   wlan_sense_cfg);
++		if (err)
++			goto exit;
++
++		wlan_sense_info->sense_req = request;
++		break;
++	default:
++		inff_err("PMSR: type %d not support!\n", peer->type);
++		err = -EINVAL;
++		break;
++	}
++
++exit:
++	return err;
++}
++
++void inff_cfg80211_abort_pmsr(struct wiphy *wiphy, struct wireless_dev *wdev,
++			      struct cfg80211_pmsr_request *request)
++{
++	s32 err = 0;
++	struct inff_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
++	struct inff_ftm_info *ftm_info = cfg->pmsr_info->ftm_info;
++	struct inff_wlan_sense_info *wlan_sense_info = cfg->pmsr_info->wlan_sense_info;
++	struct inff_wlan_sense_cfg wlan_sense_cfg = {0};
++
++	if (ftm_info && ftm_info->vif &&
++	    &ftm_info->vif->wdev == wdev) {
++		/* FTM case */
++		if (!ftm_info->ftm_req) {
++			inff_err("FTM: task not running!\n");
++			return;
++		}
++
++		inff_err("FTM: not support abort currently!\n");
++		return;
++	} else if (wlan_sense_info && wlan_sense_info->vif &&
++		 &wlan_sense_info->vif->wdev == wdev) {
++		/* WLAN_SENSE case */
++		if (!wlan_sense_info->sense_req || !wlan_sense_info->sensing) {
++			inff_err("WLAN SENSE: task not running!\n");
++			return;
++		}
++
++		err = inff_wlan_sense_oper_handler(wiphy, wdev,
++						   INFF_WLAN_SENSE_OPER_DISABLE,
++						   wlan_sense_cfg);
++		inff_dbg(TRACE, "WLAN SENSE: err %d\n", err);
++	} else {
++		inff_err("PMSR: no matching interface!\n");
++	}
++}
++
++void inff_pmsr_debugfs_create(struct inff_pub *drvr)
++{
++	struct wiphy *wiphy = drvr->wiphy;
++	struct inff_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
++	struct inff_ftm_info *ftm_info = cfg->pmsr_info->ftm_info;
++	struct dentry *dentry = inff_debugfs_get_devdir(drvr);
++
++	debugfs_create_u8("ftm_partial_report", 0644, dentry,
++			  &ftm_info->ftm_partial_report);
++	debugfs_create_u32("ftm_debug_mask", 0644, dentry,
++			   &ftm_info->ftm_debug_mask);
++	inff_debugfs_add_entry(drvr, "wlan_sense_stats",
++			       inff_wlan_sense_stats_read);
++}
++
++s32 inff_pmsr_attach(struct inff_cfg80211_info *cfg)
++{
++	struct net_device *ndev = cfg_to_ndev(cfg);
++	struct inff_if *ifp = netdev_priv(ndev);
++	struct inff_pmsr_info *pmsr_info;
++	s32 err = 0;
++
++	pmsr_info = kzalloc(sizeof(*pmsr_info), GFP_KERNEL);
++	if (!pmsr_info)
++		return -ENOMEM;
++	cfg->pmsr_info = pmsr_info;
++
++	if (inff_feat_is_enabled(ifp, INFF_FEAT_FTM)) {
++		err = inff_ftm_attach(cfg);
++		if (err)
++			return err;
++	}
++	if (inff_feat_is_enabled(ifp, INFF_FEAT_WLAN_SENSE)) {
++		err = inff_wlan_sense_attach(cfg);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
++void inff_pmsr_detach(struct inff_cfg80211_info *cfg)
++{
++	inff_wlan_sense_detach(cfg);
++	inff_ftm_detach(cfg);
++
++	kfree(cfg->pmsr_info);
++	cfg->pmsr_info = NULL;
++}
+diff --git a/drivers/net/wireless/infineon/inffmac/pmsr.h b/drivers/net/wireless/infineon/inffmac/pmsr.h
 new file mode 100644
-index 000000000000..1f1872569a3c
+index 000000000000..83d88eb2c229
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/Makefile
-@@ -0,0 +1,12 @@
-+# SPDX-License-Identifier: ISC
-+#
-+# Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
-+# All rights reserved.
-+#
-+# Makefile fragment for Infineon 802.11 Networking Device Driver
-+#
++++ b/drivers/net/wireless/infineon/inffmac/pmsr.h
+@@ -0,0 +1,35 @@
++/* SPDX-License-Identifier: ISC */
++/*
++ * Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
++ * All rights reserved.
++ */
 +
-+# common flags
-+subdir-ccflags-$(CONFIG_INF_DEBUG)	+= -DDEBUG
++#ifndef INFF_PMSR_H
++#define INFF_PMSR_H
 +
-+obj-$(CONFIG_INFFMAC)	+= inffmac/
++#include "ftm.h"
++#include "wlan_sense.h"
++
++#define INFF_PMSR_PEER_MAX 1
++
++/**
++ * struct inff_pmsr_info - context for each kind of PMSR measurement procedure
++ *
++ * @ftm_info: FTM context
++ * @wlan_sense_info: WLAN Sensing context
++ */
++struct inff_pmsr_info {
++	struct inff_ftm_info *ftm_info;
++	struct inff_wlan_sense_info *wlan_sense_info;
++};
++
++void inff_wiphy_pmsr_params(struct wiphy *wiphy, struct inff_if *ifp);
++int inff_cfg80211_start_pmsr(struct wiphy *wiphy, struct wireless_dev *wdev,
++			     struct cfg80211_pmsr_request *request);
++void inff_cfg80211_abort_pmsr(struct wiphy *wiphy, struct wireless_dev *wdev,
++			      struct cfg80211_pmsr_request *request);
++void inff_pmsr_debugfs_create(struct inff_pub *drvr);
++s32 inff_pmsr_attach(struct inff_cfg80211_info *cfg);
++void inff_pmsr_detach(struct inff_cfg80211_info *cfg);
++
++#endif /* INFF_PMSR_H */
 -- 
 2.25.1
 
