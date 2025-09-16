@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-27340-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27341-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40AB0B58D6F
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 06:55:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C950B58D7B
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 06:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C336B1BC656F
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 04:54:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EA351BC69B1
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 04:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EA52EB855;
-	Tue, 16 Sep 2025 04:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 209C02EC0A7;
+	Tue, 16 Sep 2025 04:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BsGY6hpS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h23e2S6Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C18926E6F4
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 04:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84C22EC088
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 04:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757998163; cv=none; b=hTLI30h5BEg8RqWsQXWqmvlU6rGwtdWRVmwmHz/kyyyHnP6XgeD3XJ3/wn49L6YdZDHTKSEXNJbSYru8K2Ponj5zz1qfzjWraVAqdFm1R5QEw9z+tmoIqsPqlk3JN49hw/THOgWgLC7jQV9Oorj9jKyUwYtvvr2J/4byM+ozgpk=
+	t=1757998170; cv=none; b=PSxyA0GTKiyDDNA598nh7kKx95U471/Z9HLyqPqsQVOhLlpF9AA+xHVwf7K1rkJYEOtNXD65vggKpHLyn/Fn2ZPVxJGo+6W6H9VEd96/8mP38dM608G9YgsxiotICn1wZaOC0el3BregF1EgMo1c/zgNO0IpDAmhTYE/xAokQAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757998163; c=relaxed/simple;
-	bh=URVaUhKMvCuYEZ8psO6dkhmdgwpR5FJ6tmwMgMKVfqU=;
+	s=arc-20240116; t=1757998170; c=relaxed/simple;
+	bh=+qvXPu8HTVeRFaubIyM3rQFPhKws6qzYTh9yka49uSI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=I9MFrFDop+jf++pzthkRlA1VEgG6376JUbcM/tJVLhlzhZFCJDIcDf3JJsSxllVKYT2h9fLPht9IqwYo5dhGlQPW1kICQYkhe8I1R9rNCfEyqBqtd49+r0EQZXVsLRJ1y1G9Ih6cgPdbYhKa6zN9DPiHwPcPg8AXLMfD4qAV9i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BsGY6hpS; arc=none smtp.client-ip=209.85.214.179
+	 MIME-Version; b=jx4IcYbfFeGrptGivEa7QgX6h11np9EKMsWcDUHJHHtLX7ONlPQEJb4evIGHIOccN+tLJdNnik4KlOu6RH0QoPrRuxY9XFaMaJ1qcFF21nEo/eCupsEC85BDU4NvTPEGS/wapsmEGZVWqdz3JjwxMqP/QTgI/menjEEGkrJb8lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h23e2S6Y; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2616549b925so23787285ad.1
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 21:49:20 -0700 (PDT)
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b54b301d621so3114765a12.0
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Sep 2025 21:49:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757998160; x=1758602960; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757998167; x=1758602967; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WKFiV5+5iXRxF8ed4BpSpPqD3Dy/BIf3yej7QaTDllk=;
-        b=BsGY6hpSYfjuzifoJRtLEh+RcYVKPOj/4OL+ufcIYnWtFBm/6QKRUYkJx+jCgDAYD9
-         YbHuWQTT5bLKUtqT+ubu+NEUfJBxR9OEocsjh9hJTzGzPujujp2fEClDsxRly5Wh+GMu
-         vAlet4HSbTFgfIXuLduTgjZkp3SvB2dtCggWXba0sMJuWRzKqA7VTN20NSPo4MynPFP0
-         WuO6w0KUp+uNup9bgaj8lXwq5oTYBUHITPqcgH636iYC3TyW0hUwfAo9PqEIVLbRYNGT
-         AxXCAE3GeOSG9xKNzkv5hGF9Lp6ZvA0RqWhnuBVOe8wtQPQVKOlMmfBy/dzJJndpdxDQ
-         ZzbQ==
+        bh=zSw+5V18QQW1zrEulMj1oteRdmYU7Zw4RYS7vag/74M=;
+        b=h23e2S6YBhzCpQQF+vf3PMKlnWyaXYUwO6oF/J1csVqE8vMSVBFHJPP2kFyA7mTnw6
+         QwnvilGcLAzZwk5dm9UBosQKS6iNp2CfPLVNNazBVsUUUJfAbDLJfrY+mfJQkUvtu3z1
+         zWQax3mYP1rICXuSyt9xs3gS4/ZaW0cCGP0shYpcIQA0XBLWLYOdGS2SU+OIMLgtd4+t
+         B4N2aRUeDCv7XMX5ZYvbbFkYrMoh8OH7RWXOt/2ZQJzUw1ujVaB2Fx6RTQa2fB9o45cH
+         XBGVenMM6TSDsWgpoWOuPERolaNznuaoeMDBjHfKZa46SDncBp6qxbnQ5Typ86pzizmn
+         KHhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757998160; x=1758602960;
+        d=1e100.net; s=20230601; t=1757998167; x=1758602967;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WKFiV5+5iXRxF8ed4BpSpPqD3Dy/BIf3yej7QaTDllk=;
-        b=VprFCQM0Fzdp4u1bHgq8QX7JB31/k/XuMx/BCbaMtu0HlmYQsAOYGLE+V9JAzvFzof
-         drcalqbDP6PJfbspZI9+MWNwpfbAfSOl+xBOiTDEhsr5SlQVHL6GKoIWtjmbyYaQKUe5
-         oQJn38irhIGiSXswLZiIfJlAiiCQh4hfJBCdc3Y3SEupIoU3qo3T88NZbRyga68+R50S
-         xxvOLO/rC46wJ+dzojXJxSzmH3qyFHOm/rxAD+DidzZGinB4XtbNDbGd3WYvWDLyERrA
-         36RG2UIJqkLAdOaBoXC0oEQSDwzGdcmYu3KRm/RarzUCUkD3EmwIuQOJt71wVPySuvdR
-         W6aw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVRaflwSPLt1Rwu0Zpg575ArnoCk/m8MmiROMfKXFxIhUZRURU717ECftiyj5TaXqIULFR5GcPxW5XCdDyJQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyR9JC2HgU63ZP8RxU/FyrJlnrMhQShjas9WpspRVslrwSLh25d
-	GgFx/F74hJHukV93tOKooqpLCZskHRkNgcEqJLsfDqDQYmzzFi+EOcvt
-X-Gm-Gg: ASbGncsZ1CA/mh4vMwUGDO/Q8uO9SKgLFBcDxbizqAWBy2s3OZivzPPp4zi0sWnQpuE
-	mD4rHblTGzHfplF6ZLupl4vqOs1vIzi53R9auHoOvRw+YNducu4mcwpdno1bZ17K/k3w7OWrk66
-	yZkp2yv3dkvkKUooo3/Dzd6iVd716GKwtcBRzSwjvGDBDlVeqx9i9WTnOT/LowwVDw79RANd7SJ
-	jw9JfDk7grHtYXc1HVjA62bJ26Hlwik83DAxqoU8qaGojge2fza6OWWdbAW/xk1RJeiutbddic4
-	RajlcLS7/Hc+pwspm608Fa+8qn8Nw5oDqk5SBR6myCVrPg6WsHisi1UhlU1nhxzd8WVa/0bq53C
-	z8TG8pOnJ8BA0SIDelbx+VOrSMkVQvtcZuyZurWxMPg80XXcP5Q==
-X-Google-Smtp-Source: AGHT+IFnY0JR12RUAnqJgicB9FLxjxZB94pUdOOycWzScDVS8Oor/+yCs+nfn4PrPMaqh+5e4UELMQ==
-X-Received: by 2002:a17:902:c408:b0:267:d82a:127c with SMTP id d9443c01a7336-267d82a15fcmr9300035ad.42.1757998160302;
-        Mon, 15 Sep 2025 21:49:20 -0700 (PDT)
+        bh=zSw+5V18QQW1zrEulMj1oteRdmYU7Zw4RYS7vag/74M=;
+        b=AADODJOsM+AxhlBQxNzoOjBCmTVsbkiLYUZJKm3cXpfwaFXwhFM1/ait5hI0kZVcd0
+         CNOe7iery2sL/7mepM3zC3MvLOkoy1KMFLPHZ2LJFj1YGy+doGrhqmwdbFCrPrSaH+No
+         NISBv55mS3AUPGn0GaMjO6BzbFQAdZLAU22zqAjuTfPx3E7JqpYPqpawhg1d8mueO+Bk
+         +8uMmkCw/dhKFKcFoM2Kg2IcRWKGFUK9+57XrUge0YMP128wEpwzLlQ7/884fZJxW3U0
+         5kq7znkwIrMKRgbnNYRyN0j0Cl/iQaI87oaDapR3Lq3dhQ0aO2Rz25ddR6iUWOAZUC9y
+         Aphg==
+X-Forwarded-Encrypted: i=1; AJvYcCVs/uAXK/8q9wxmVrj6mTNc+Kmjs9K6twJYIzWGsXD5dszDIFo7mJx7zbFNWEX64xt6e09cFAObAU3upaeDLQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ6vgYVqsVUDkcqneq+GkxHPy2r/2Ug5Jv8hQvLD5er8A92wkb
+	cgl1KJDqxnK1QxBbtyT3Y59SlXscZtS/IMUH4WEiBwOvIv4zhgKkpYgC
+X-Gm-Gg: ASbGnct9N0URbMr7g67mWmnmn0KsrvDpsmiNAD0r/oEahZnC9/KPIlRC0NtB7ODlb/s
+	14k0UMZlcFoOZvfvoOoqPb7E7K5c3HNzcx8G4gdVlwuqeliEf2bq2SW4zN/581lAk43ZHE46Q7Q
+	S6FQkN6qlhgGvLcQqNBpIlYx80r+kJwGi0LMZ+txgDdV457RVt+11CDHv2A++K5V+YSplnt0gKb
+	86Em9e2+2LrZN2vTitbZGVLRA+S+vb6isLPPK8006U0i6cFm//4xDzrxAhwB5gwUh4rkGHfg1dQ
+	cPYEleUBXDFJkcRfbNDYv2Z2/k77BKYvSJDz79kxIRWy0fwrQWdjFuBE06P0EcISd212QJNJXj2
+	G5yysiBl3KZiImmokqHQVilfy9HnIKu3tqfbhZTU=
+X-Google-Smtp-Source: AGHT+IFoVKHWE4WmC5NQoAJgz5S3HoMpNrjT8PBpaSw1vdAI3yXeG2nG2SQAkLHZCeabG5ejGwx28A==
+X-Received: by 2002:a17:902:ea10:b0:24e:bdfa:112b with SMTP id d9443c01a7336-25d289e9988mr159622635ad.61.1757998167045;
+        Mon, 15 Sep 2025 21:49:27 -0700 (PDT)
 Received: from pengdl-pc.mioffice.cn ([43.224.245.249])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25ef09c77f8sm104600605ad.15.2025.09.15.21.49.14
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25ef09c77f8sm104600605ad.15.2025.09.15.21.49.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 21:49:19 -0700 (PDT)
+        Mon, 15 Sep 2025 21:49:26 -0700 (PDT)
 From: pengdonglin <dolinux.peng@gmail.com>
 To: tj@kernel.org,
 	tony.luck@intel.com,
@@ -100,11 +100,12 @@ Cc: bigeasy@linutronix.de,
 	linux-s390@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	pengdonglin <dolinux.peng@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
+	Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+	Paul Fertser <fercerpav@gmail.com>,
 	pengdonglin <pengdonglin@xiaomi.com>
-Subject: [PATCH v3 10/14] wifi: mac80211: Remove redundant rcu_read_lock/unlock() in spin_lock
-Date: Tue, 16 Sep 2025 12:47:31 +0800
-Message-Id: <20250916044735.2316171-11-dolinux.peng@gmail.com>
+Subject: [PATCH v3 11/14] net: ncsi: Remove redundant rcu_read_lock/unlock() in spin_lock
+Date: Tue, 16 Sep 2025 12:47:32 +0800
+Message-Id: <20250916044735.2316171-12-dolinux.peng@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250916044735.2316171-1-dolinux.peng@gmail.com>
 References: <20250916044735.2316171-1-dolinux.peng@gmail.com>
@@ -129,115 +130,34 @@ been started implicitly by spin_lock().
 
 Simplify the code and remove the inner rcu_read_lock() invocation.
 
-Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Samuel Mendoza-Jonas <sam@mendozajonas.com>
+Cc: Paul Fertser <fercerpav@gmail.com>
 Signed-off-by: pengdonglin <pengdonglin@xiaomi.com>
 Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
 ---
- net/mac80211/cfg.c            | 2 --
- net/mac80211/debugfs.c        | 2 --
- net/mac80211/debugfs_netdev.c | 2 --
- net/mac80211/debugfs_sta.c    | 2 --
- net/mac80211/sta_info.c       | 2 --
- 5 files changed, 10 deletions(-)
+ net/ncsi/ncsi-manage.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 2ed07fa121ab..4fe50d4c461d 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4825,7 +4825,6 @@ static int ieee80211_get_txq_stats(struct wiphy *wiphy,
- 	int ret = 0;
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 446e4e3b9553..6e36cd64a31e 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -650,7 +650,6 @@ static int set_one_vid(struct ncsi_dev_priv *ndp, struct ncsi_channel *nc,
  
- 	spin_lock_bh(&local->fq.lock);
+ 	spin_lock_irqsave(&nc->lock, flags);
+ 
 -	rcu_read_lock();
- 
- 	if (wdev) {
- 		sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
-@@ -4851,7 +4850,6 @@ static int ieee80211_get_txq_stats(struct wiphy *wiphy,
+ 	list_for_each_entry_rcu(vlan, &ndp->vlan_vids, list) {
+ 		vid = vlan->vid;
+ 		for (i = 0; i < ncf->n_vids; i++)
+@@ -661,7 +660,6 @@ static int set_one_vid(struct ncsi_dev_priv *ndp, struct ncsi_channel *nc,
+ 		if (vid)
+ 			break;
  	}
- 
- out:
 -	rcu_read_unlock();
- 	spin_unlock_bh(&local->fq.lock);
  
- 	return ret;
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index e8b78ec682da..82099f4cedbe 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -82,7 +82,6 @@ static ssize_t aqm_read(struct file *file,
- 	int len = 0;
- 
- 	spin_lock_bh(&local->fq.lock);
--	rcu_read_lock();
- 
- 	len = scnprintf(buf, sizeof(buf),
- 			"access name value\n"
-@@ -105,7 +104,6 @@ static ssize_t aqm_read(struct file *file,
- 			fq->limit,
- 			fq->quantum);
- 
--	rcu_read_unlock();
- 	spin_unlock_bh(&local->fq.lock);
- 
- 	return simple_read_from_buffer(user_buf, count, ppos,
-diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
-index 1dac78271045..30a5a978a678 100644
---- a/net/mac80211/debugfs_netdev.c
-+++ b/net/mac80211/debugfs_netdev.c
-@@ -625,7 +625,6 @@ static ssize_t ieee80211_if_fmt_aqm(
- 	txqi = to_txq_info(sdata->vif.txq);
- 
- 	spin_lock_bh(&local->fq.lock);
--	rcu_read_lock();
- 
- 	len = scnprintf(buf,
- 			buflen,
-@@ -642,7 +641,6 @@ static ssize_t ieee80211_if_fmt_aqm(
- 			txqi->tin.tx_bytes,
- 			txqi->tin.tx_packets);
- 
--	rcu_read_unlock();
- 	spin_unlock_bh(&local->fq.lock);
- 
- 	return len;
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 49061bd4151b..ef75255d47d5 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -148,7 +148,6 @@ static ssize_t sta_aqm_read(struct file *file, char __user *userbuf,
- 		return -ENOMEM;
- 
- 	spin_lock_bh(&local->fq.lock);
--	rcu_read_lock();
- 
- 	p += scnprintf(p,
- 		       bufsz + buf - p,
-@@ -178,7 +177,6 @@ static ssize_t sta_aqm_read(struct file *file, char __user *userbuf,
- 			       test_bit(IEEE80211_TXQ_DIRTY, &txqi->flags) ? " DIRTY" : "");
- 	}
- 
--	rcu_read_unlock();
- 	spin_unlock_bh(&local->fq.lock);
- 
- 	rv = simple_read_from_buffer(userbuf, count, ppos, buf, p - buf);
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 8c550aab9bdc..663318a75d7f 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -2637,13 +2637,11 @@ static void sta_set_tidstats(struct sta_info *sta,
- 
- 	if (link_id < 0 && tid < IEEE80211_NUM_TIDS) {
- 		spin_lock_bh(&local->fq.lock);
--		rcu_read_lock();
- 
- 		tidstats->filled |= BIT(NL80211_TID_STATS_TXQ_STATS);
- 		ieee80211_fill_txq_stats(&tidstats->txq_stats,
- 					 to_txq_info(sta->sta.txq[tid]));
- 
--		rcu_read_unlock();
- 		spin_unlock_bh(&local->fq.lock);
- 	}
- }
+ 	if (!vid) {
+ 		/* No VLAN ID is not set */
 -- 
 2.34.1
 
