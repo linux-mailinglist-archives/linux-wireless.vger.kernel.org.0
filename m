@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-27361-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27362-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E9DCB7D8BC
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:30:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4ADB7DA30
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3E2E484889
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:20:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F423188F762
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0405B303C93;
-	Tue, 16 Sep 2025 22:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CAEC32857C;
+	Tue, 16 Sep 2025 22:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="hi1ru2Y3"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="jAg8b1cn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp11.infineon.com (smtp11.infineon.com [217.10.52.105])
+Received: from smtp2.infineon.com (smtp2.infineon.com [217.10.52.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAC22877C1
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664412877C1
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758061255; cv=none; b=HXORIuE1UjPGyab6Iqj6i2NUYX2L7zist/iW+AI1SI7djAz7R95GQ/T/gkCOqGT8V1xyRKSaNoWdSxQkvlB6/Xd6wphma9JYDwFzqSWeS94o6j6/NhJIl4Fn5g7pVtrWfrRwew2SJPtb0Ub77I67fE5V4FHHUSo/MLF/kpoKULA=
+	t=1758061267; cv=none; b=Moqmpa5rJEx2I7iPoVkcjt7vpmy7AtMLlh38umxcRRCPzIa5n6lVBXg9Kr7bIsHhW9RJdQBn6XgjVmydAqK0OnEBw9vZDudHWYNtPl2jklvUlHxpYeev4Sy9TJteYtLUzbENmHG4z56f9pY0jUyi5FDlcJnetJaVPFIKSgA2NZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758061255; c=relaxed/simple;
-	bh=EKlOOJlBbdFYgxhuacFXk/45tqtsD3tCydeTE77OvpQ=;
+	s=arc-20240116; t=1758061267; c=relaxed/simple;
+	bh=oOP0HbIctTk+MFPC9lA4kiGppCnVLMcSv0mfM347KJ4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X74tV1YgP0UCLdmKUdDurJTzuqfR6566dwS1X3V/AjeBtbryiztp1SVaWHMdgJhPABVT8nVy6uImR5GbXASPYHhgXBDSsgBkT1UNIi/vaXMJGpUnf7cyIdb47qSf45zSMoiik9f6GA9ZhtcmXEo0/7idtoDLdvT3tX4JWX9DBHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=hi1ru2Y3; arc=none smtp.client-ip=217.10.52.105
+	 MIME-Version:Content-Type; b=kiOIBBIZu/joQ9nZwhEwDAqOri1046YXMYEWrxw+G+qgcCPC0M3S6coHEyzkA7GZ6HRfzlZjHJY17JWd0mNwdY3FtfGOtoLJPlKJHKolc+U1kMITqQOU/k2Cff+Rdby7q+KPb7trYbRwBZcjdE7XxVQ6+9a52cFat3cRDyU7MOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=jAg8b1cn; arc=none smtp.client-ip=217.10.52.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1758061253; x=1789597253;
+  t=1758061264; x=1789597264;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=EKlOOJlBbdFYgxhuacFXk/45tqtsD3tCydeTE77OvpQ=;
-  b=hi1ru2Y3acdbqBCQNcNOKKuloO0L9Xq+MjW4z7qgt0GKN69dRqGGw7QR
-   65Fqux5q4wIXwwjTVZzVsfm/mp8uhDky2q4SWn6vhTVF4BZ6N22xeQasx
-   6L6VEKkzNeHEm0NllXuVDeXP2cUJYzpYp9dRDaPugCwpB72oE1RxMIeWB
+  bh=oOP0HbIctTk+MFPC9lA4kiGppCnVLMcSv0mfM347KJ4=;
+  b=jAg8b1cn0GBdLoOitFrhbZX4Ppk32nb6tzWTkuSYaR9tBXzEMv9DOzuu
+   l186u7ICfZdj2HlfHbJ1uupzWNQ726zlUHQ8qYt8pWdan9C0k3VXbmgit
+   2/FqLO9Y2CBlfUT1GJvG5Ab3D3+pb5wkfMj5gsrQ/QT6AWte0+ymmnVWm
    o=;
-X-CSE-ConnectionGUID: ueY0BNMxRDGWvB8e+v447A==
-X-CSE-MsgGUID: dhynHplBQqS9DdWGnOZFxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="110918192"
+X-CSE-ConnectionGUID: yeT01HMPQI6KpmlPyimgBw==
+X-CSE-MsgGUID: Vzpscn0uRKKElpI/QHfAyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="125093303"
 X-IronPort-AV: E=Sophos;i="6.18,270,1751234400"; 
-   d="scan'208";a="110918192"
+   d="scan'208";a="125093303"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE803.infineon.com) ([172.23.29.29])
-  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:20:51 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE803.infineon.com
- (172.23.29.29) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE822.infineon.com) ([172.23.29.53])
+  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:21:02 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE822.infineon.com
+ (172.23.29.53) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Wed, 17 Sep
- 2025 00:20:49 +0200
+ 2025 00:21:02 +0200
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.36; Wed, 17 Sep 2025 00:20:46 +0200
+ 15.2.1748.36; Wed, 17 Sep 2025 00:20:59 +0200
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>, Johannes Berg
 	<johannes@sipsolutions.net>
 CC: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
 	<wlan-kernel-dev-list@infineon.com>
-Subject: [PATCH wireless-next 11/57] wifi: inffmac: add twt.c/h
-Date: Wed, 17 Sep 2025 03:47:26 +0530
-Message-ID: <20250916221821.4387-12-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next 12/57] wifi: inffmac: add bt_shared_sdio.c/h
+Date: Wed, 17 Sep 2025 03:47:27 +0530
+Message-ID: <20250916221821.4387-13-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
 References: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
@@ -76,1568 +76,1078 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE801.infineon.com (172.23.29.27) To
+X-ClientProxiedBy: MUCSE815.infineon.com (172.23.29.41) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Driver implementation for initiating and teardown an Individual Target Wake
-Time (iTWT) session with supported TWT Responder Device. The requests from
-the userspace for the sessions are handled by the driver through Infineon's
-Vendor NL80211 commands.
+Driver implementation of Bluetooth shared SDIO. This feature allows sharing
+a common SDIO bus interface between the Bluetooth host Linux driver and
+WLAN host Linux driver for any operations to be done in Infineons's
+Wi-Fi + Bluetooth combo chipsets.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- drivers/net/wireless/infineon/inffmac/twt.c | 1200 +++++++++++++++++++
- drivers/net/wireless/infineon/inffmac/twt.h |  334 ++++++
- 2 files changed, 1534 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/inffmac/twt.c
- create mode 100644 drivers/net/wireless/infineon/inffmac/twt.h
+ .../infineon/inffmac/bt_shared_sdio.c         | 1009 +++++++++++++++++
+ .../infineon/inffmac/bt_shared_sdio.h         |   35 +
+ 2 files changed, 1044 insertions(+)
+ create mode 100644 drivers/net/wireless/infineon/inffmac/bt_shared_sdio.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/bt_shared_sdio.h
 
-diff --git a/drivers/net/wireless/infineon/inffmac/twt.c b/drivers/net/wireless/infineon/inffmac/twt.c
+diff --git a/drivers/net/wireless/infineon/inffmac/bt_shared_sdio.c b/drivers/net/wireless/infineon/inffmac/bt_shared_sdio.c
 new file mode 100644
-index 000000000000..0e5d598a6765
+index 000000000000..763873083217
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/twt.c
-@@ -0,0 +1,1200 @@
++++ b/drivers/net/wireless/infineon/inffmac/bt_shared_sdio.c
+@@ -0,0 +1,1009 @@
 +// SPDX-License-Identifier: ISC
 +/*
 + * Copyright (c) 2023-2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
-+#include "twt.h"
-+#include "debug.h"
-+#include "fwil.h"
-+#include "feature.h"
++#include <linux/types.h>
++#include <linux/atomic.h>
++#include <linux/kernel.h>
++#include <linux/mmc/sdio_func.h>
++#include <linux/mmc/card.h>
++#include <linux/mmc/sdio_ids.h>
++#include <linux/mmc/host.h>
 +#include "bus.h"
-+#include "cfg80211.h"
++#include "chipcommon.h"
++#include "core.h"
++#include "sdio.h"
++#include "fwil.h"
++#include "common.h"
++#include "bt_shared_sdio.h"
 +
-+/**
-+ * inff_twt_oper_str - array of twt operations in string
-+ */
-+const char *inff_twt_oper_str[INFF_TWT_OPER_MAX] = {
-+	"Setup",
-+	"Teardown"
++/* make sure BTS version is the same as bt drier */
++#define BTS_VER_MAJOR 2
++#define BTS_VER_MINOR 0
++#define BTS_VER_PATCH 0
++#define BTS_VERSION (BTS_VER_MAJOR << 24 | BTS_VER_MINOR << 16 | BTS_VER_PATCH << 8)
++
++/* make sure bt_shared_info is the same as bt drier */
++struct bt_shared_info {
++	/* bt info */
++	void *bt_data;
++	void (*bt_int_fun)(void *data);
++
++	/* wlan info */
++	void *wlan_bus_if;
++	u16 device_id;
++	u32 enum_addr;
++};
++
++/* list wlan private data below */
++#define SDIOD_ADDR_BOUND		0x1000
++#define SDIOD_ADDR_BOUND_MASK		0xfff
++
++struct inff_bus *glob_bus_if;
++
++#define BTS_MAX_ERR_RECORD_CNT 128
++
++enum bts_err_type {
++	ERR_REG_RB = 0,		/* reg read 1 byte error */
++	ERR_REG_WB = 1,		/* reg write 1 byte error */
++	ERR_REG_RL = 2,		/* reg read 4 bytes error */
++	ERR_REG_WL = 3,		/* reg write 4 bytes error */
++	ERR_BUF_RD = 4,		/* receive buffer error */
++	ERR_BUF_WT = 5,		/* send buffer error */
++	ERR_MEM_RW = 6,		/* r/w memory error */
++	ERR_MAX,
++};
++
++struct bts_err_reg {
++	u8 fn;
++	u32 addr;
++	u32 val;
++};
++
++struct bts_err_buf {
++	u32 nbytes;
++};
++
++struct bts_err_mem {
++	bool set;
++	u32 addr;
++	u32 size;
++};
++
++struct bts_cmd_entity {
++	struct list_head list;  /* link into bt_if->err_list */
++	enum bts_err_type type;
++	int err;
++	struct timespec64 time;
++	union {
++		struct bts_err_reg reg;
++		struct bts_err_buf buf;
++		struct bts_err_mem mem;
++	} u;
 +};
 +
 +/**
-+ * inff_twt_nego_type_str - array of twt Negotiation types in string
-+ */
-+const char *inff_twt_nego_type_str[INFF_TWT_PARAM_NEGO_TYPE_MAX] = {
-+	"iTWT",
-+	"Wake TBTT",
-+	"bTWT IE BCN",
-+	"bTWT"
-+};
-+
-+/**
-+ * inff_twt_setup_cmd_str - array of twt setup commands in string
-+ */
-+const char *inff_twt_setup_cmd_str[INFF_TWT_OPER_SETUP_CMD_TYPE_MAX] = {
-+	"Request",
-+	"Suggest",
-+	"Demand",
-+	"Grouping",
-+	"Accept",
-+	"Alternate",
-+	"Dictate",
-+	"Reject"
-+};
-+
-+/**
-+ * inff_twt_sess_state_str - array of twt session states in string
-+ */
-+const char *inff_twt_sess_state_str[INFF_TWT_SESS_STATE_MAX] = {
-+	"Unspec",
-+	"Setup inprogress",
-+	"Setup incomplete",
-+	"Setup complete",
-+	"Teardown inprogress",
-+	"Teardown incomplete",
-+	"Teardown complete"
-+};
-+
-+/**
-+ * inff_twt_wake_dur_to_min_twt() - Nominal Minimum Wake Duration derivation from Wake Duration
++ * struct inff_bt_if - bt shared SDIO information.
 + *
-+ * @wake_dur: Wake Duration input.
-+ * @min_twt_unit: Nomial Minimum Wake Duration Unit input.
-+ *
-+ * return: Nominal Minimum Wake Duration in units of min_twt_unit.
++ * @ bt_data: bt internal structure data
++ * @ bt_sdio_int_cb: bt registered interrupt callback function
++ * @ bt_use_count: Counter that tracks whether BT is using the bus
 + */
-+static inline u8
-+inff_twt_wake_dur_to_min_twt(u32 wake_dur, u8 min_twt_unit)
++struct inff_bt_if {
++	void *bt_data;
++	void (*bt_sdio_int_cb)(void *data);
++	u32 use_count; /* Counter for tracking if BT is using the bus */
++	bool set_bt_reset; /* set bt reset bit in wlan remove flow */
++
++	/* debug purpose */
++	u32 cnt_attach;				/* number of attach */
++	u32 cnt_detach;				/* number of detach */
++	u32 cnt_total_err;			/* number of error */
++	spinlock_t err_list_lock;
++	struct list_head err_list;
++};
++
++bool inff_btsdio_inited(struct inff_bus *bus_if)
 +{
-+	u8 min_twt;
-+
-+	if (min_twt_unit) {
-+		/*
-+		 * If min_twt_unit is 1, then min_twt is
-+		 * in units of TUs (i.e) 1024 uS.
-+		 */
-+		min_twt = wake_dur / WAKE_DUR_UNIT_TU;
-+	} else {
-+		/*
-+		 * If min_twt_unit is 0, then min_twt is
-+		 * in units of 256 uS.
-+		 */
-+		min_twt = wake_dur / WAKE_DUR_UNIT_DEF;
++	if (!bus_if) {
++		inff_err("bus_if is null\n");
++		return false;
 +	}
 +
-+	return min_twt;
++	if (!bus_if->bt_if)
++		return false;
++
++	return true;
 +}
 +
-+/**
-+ * inff_twt_min_twt_to_wake_dur() - Derive Wake Duration from the
-+ *	Nominal Minimum Wake Duration
-+ *
-+ * @min_twt: Nominal Minimum Wake Duration input.
-+ * @min_twt_unit: Nomial Minimum Wake Duration Unit input.
-+ *	0 - 256 uS
-+ *	1 - 1TU (or) 1024 uS
-+ *
-+ * return: Wake Duration in unit of microseconds.
-+ */
-+static inline u32
-+inff_twt_min_twt_to_wake_dur(u8 min_twt, u8 min_twt_unit)
++static char *inff_btsdio_err_char(enum bts_err_type type)
 +{
-+	u32 wake_dur;
++	switch (type) {
++	case ERR_REG_RB:
++		return "REG_RB";
++	case ERR_REG_WB:
++		return "REG_WB";
++	case ERR_REG_RL:
++		return "REG_RL";
++	case ERR_REG_WL:
++		return "REG_WL";
++	case ERR_BUF_RD:
++		return "BUF_RD";
++	case ERR_BUF_WT:
++		return "BUF_WT";
++	case ERR_MEM_RW:
++		return "MEM_RW";
++	default:
++		return "unknown";
++	}
++}
 +
-+	if (min_twt_unit) {
-+		/*
-+		 * If min_twt_unit is 1, then min_twt is
-+		 * in units of TUs (i.e) 1024 uS.
-+		 */
-+		wake_dur = (u32)min_twt * WAKE_DUR_UNIT_TU;
-+	} else {
-+		/*
-+		 * If min_twt_unit is 0, then min_twt is
-+		 * in units of 256 uS.
-+		 */
-+		wake_dur = (u32)min_twt * WAKE_DUR_UNIT_DEF;
++static void inff_btsdio_err_free_all(struct inff_bt_if *bt_if)
++{
++	struct bts_cmd_entity *cmd = NULL;
++	struct bts_cmd_entity *next = NULL;
++
++	if (!bt_if) {
++		inff_err("bt_if is null\n");
++		return;
 +	}
 +
-+	return wake_dur;
-+}
-+
-+/**
-+ * inff_twt_u32_to_float() - Derive Wake Interval Mantissa and Exponent
-+ *	from the Wake Interval
-+ *
-+ * @wake_int: Wake Interval input in microseconds.
-+ * @exponent: pointer to Wake Interval Exponent output.
-+ * @mantissa: pointer to Wake Interval Mantissa output.
-+ */
-+static inline void
-+inff_twt_u32_to_float(u32 wake_int, u8 *exponent, u16 *mantissa)
-+{
-+	u8 lzs = (u8)__builtin_clz(wake_int); /* leading 0's */
-+	u8 shift = lzs < 16 ? 16 - lzs : 0;
-+
-+	*mantissa = (u16)(wake_int >> shift);
-+	*exponent = shift;
-+}
-+
-+/**
-+ * inff_twt_float_to_u32() - Derive Wake Interval derivation from
-+ *	Wake Interval Mantissa & Exponent.
-+ *
-+ * @exponent: Wake Interval Exponent input.
-+ * @mantissa: Wake Interval Mantissa input.
-+ *
-+ * return: Wake interval in unit of microseconds.
-+ */
-+static inline u32
-+inff_twt_float_to_u32(u8 exponent, u16 mantissa)
-+{
-+	return (u32)mantissa << exponent;
-+}
-+
-+/**
-+ * inff_twt_get_next_dialog_token() - Return the next available Dialog token.
-+ *
-+ * return: Dialog token in u8.
-+ */
-+static inline u8
-+inff_twt_get_next_dialog_token(void)
-+{
-+	static u8 dialog_token;
-+
-+	/* Continuous iteratation in the range 1-255 */
-+	dialog_token = ((dialog_token + 0x1) % 0x100) ? : 1;
-+
-+	return dialog_token;
-+}
-+
-+/**
-+ * inff_twt_stats_read() - Read the contents of the debugfs file "twt_stats".
-+ *
-+ * @seq: sequence for debugfs entry.
-+ * @data: raw data pointer.
-+ *
-+ * return: 0.
-+ */
-+static int
-+inff_twt_stats_read(struct seq_file *seq, void *data)
-+{
-+	struct inff_bus *bus_if = dev_get_drvdata(seq->private);
-+	struct inff_pub *drvr = bus_if->drvr;
-+	int i;
-+
-+	/* Return if the if TWT is not supported by Firmware */
-+	if (!(drvr->feat_flags[INFF_FEAT_TWT / 8] & BIT(INFF_FEAT_TWT % 8)))
-+		return 0;
-+
-+	/* Iterate the interface list in struct inff_pub */
-+	for (i = 0; i < INFF_MAX_IFS; i++) {
-+		struct inff_if *ifp = drvr->iflist[i];
-+		struct inff_twt_session *twt_sess;
-+
-+		/* Skip interface if TWT session list in struct inff_if is empty */
-+		if (!ifp || list_empty(&ifp->twt_sess_list))
-+			continue;
-+
-+		seq_printf(seq, "ifname: %s, ifidx: %u, bsscfgidx: %d\n",
-+			   inff_ifname(ifp), ifp->ifidx, ifp->bsscfgidx);
-+
-+		/* Iterate the TWT session list in struct inff_if */
-+		list_for_each_entry(twt_sess, &ifp->twt_sess_list, list) {
-+			struct inff_twt_params *twt_params;
-+			u32 wake_dur, wake_int;
-+
-+			twt_params = &twt_sess->twt_params;
-+
-+			wake_dur = inff_twt_min_twt_to_wake_dur(twt_params->min_twt,
-+								twt_params->min_twt_unit);
-+			wake_int = inff_twt_float_to_u32(twt_params->exponent,
-+							 twt_params->mantissa);
-+
-+			if (twt_params->negotiation_type == INFF_TWT_PARAM_NEGO_TYPE_ITWT)
-+				seq_printf(seq, "\tiTWT, Flow ID: %u, Dialog Token: %u\n",
-+					   twt_params->flow_id, twt_params->dialog_token);
-+			else if (twt_params->negotiation_type == INFF_TWT_PARAM_NEGO_TYPE_BTWT)
-+				seq_printf(seq, "\tbTWT, Bcast TWT ID: %u, Dialog Token: %u\n",
-+					   twt_params->bcast_twt_id, twt_params->dialog_token);
-+			else
-+				continue;
-+
-+			seq_printf(seq, "\t\tSession state       : %s\n",
-+				   inff_twt_sess_state_str[twt_sess->state]);
-+			seq_printf(seq, "\t\tTWT peer            : %pM\n",
-+				   twt_sess->peer_addr.octet);
-+			seq_printf(seq, "\t\tTarget Wake Time    : %llu uS\n",
-+				   twt_params->twt);
-+			seq_printf(seq, "\t\tWake Duration       : %u uS\n",
-+				   wake_dur);
-+			seq_printf(seq, "\t\tWake Interval       : %u uS\n",
-+				   wake_int);
-+			seq_printf(seq, "\t\tSession type        : %s, %s, %s\n\n",
-+				   twt_params->implicit ? "Implicit" : "Explicit",
-+				   twt_params->trigger ? "Trigger based" : "Non-Trigger based",
-+				   twt_params->flow_type ? "Un-Announced" : "Announced");
-+		}
++	spin_lock(&bt_if->err_list_lock);
++	list_for_each_entry_safe(cmd, next, &bt_if->err_list, list) {
++		list_del(&cmd->list);
++		kfree(cmd);
 +	}
++	spin_unlock(&bt_if->err_list_lock);
++}
++
++static int inff_btsdio_cmd_alloc(struct inff_bt_if *bt_if,  struct bts_cmd_entity **cmd,
++				 enum bts_err_type type, int err)
++{
++	if (!bt_if || !cmd) {
++		inff_err("bt_if(%p) or cmd(%p) is null\n", bt_if, cmd);
++		return -EINVAL;
++	}
++
++	if (++bt_if->cnt_total_err > BTS_MAX_ERR_RECORD_CNT)
++		return -EPERM;
++
++	*cmd = kzalloc(sizeof(**cmd), GFP_KERNEL);
++	if (!*cmd) {
++		inff_err("alloc failed\n");
++		return -ENOMEM;
++	}
++
++	INIT_LIST_HEAD(&(*cmd)->list);
++	(*cmd)->type = type;
++	(*cmd)->err = err;
++	ktime_get_ts64(&(*cmd)->time);
++
 +	return 0;
 +}
 +
-+/**
-+ * inff_twt_debugfs_create() - create debugfs entries.
-+ *
-+ * @drvr: driver instance.
-+ */
-+void
-+inff_twt_debugfs_create(struct inff_pub *drvr)
++static void inff_btsdio_err_enq(struct inff_bt_if *bt_if, struct bts_cmd_entity *cmd)
 +{
-+	inff_debugfs_add_entry(drvr, "twt_stats", inff_twt_stats_read);
-+}
-+
-+/**
-+ * inff_twt_cleanup_all_sess - Cleanup all TWT sessions from the driver list.
-+ *
-+ * @ifp: interface instatnce.
-+ *
-+ * return: 0 on success, value < 0 on failure.
-+ */
-+s32
-+inff_twt_cleanup_all_sess(struct inff_if *ifp)
-+{
-+	struct inff_twt_session *entry = NULL, *next = NULL;
-+	s32 ret = 0;
-+
-+	if (!ifp) {
-+		inff_err("TWT: Failed to cleanup sessions");
-+		ret = -EIO;
++	if (!bt_if || !cmd) {
++		inff_err("bt_if(%p) or cmd(%p) is null\n", bt_if, cmd);
++		return;
 +	}
 +
-+	spin_lock(&ifp->twt_sess_list_lock);
++	spin_lock(&bt_if->err_list_lock);
++	list_add_tail(&cmd->list, &bt_if->err_list);
++	spin_unlock(&bt_if->err_list_lock);
++}
 +
-+	list_for_each_entry_safe(entry, next, &ifp->twt_sess_list, list) {
-+		inff_dbg(TWT, "TWT: Deleting session(%u) with peer %pM",
-+			 entry->twt_params.flow_id, entry->peer_addr.octet);
-+		list_del(&entry->list);
-+		kfree(entry);
++static void inff_btsdio_err_reg_record(struct inff_bt_if *bt_if, enum bts_err_type type,
++				       int err, u8 fn, u32 addr, u32 val)
++{
++	struct bts_cmd_entity *cmd = NULL;
++	struct bts_err_reg *reg = NULL;
++
++	if (!bt_if) {
++		inff_err("bt_if is null\n");
++		return;
 +	}
 +
-+	spin_unlock(&ifp->twt_sess_list_lock);
++	if (inff_btsdio_cmd_alloc(bt_if, &cmd, type, err))
++		return;
 +
-+	return ret;
++	reg = &cmd->u.reg;
++	reg->fn = fn;
++	reg->addr = addr;
++	reg->val = val;
++	inff_err("[%5lld.%06ld] %8s err: %d\taddr: 0x%x\tval: 0x%x\n",
++		 (long long)cmd->time.tv_sec, cmd->time.tv_nsec / NSEC_PER_USEC,
++		 inff_btsdio_err_char(cmd->type), err, addr, val);
++
++	inff_btsdio_err_enq(bt_if, cmd);
 +}
 +
-+/**
-+ * inff_twt_lookup_sess_by_dialog_token() - Lookup a TWT sesssion information from
-+ *	the driver list based on the Dialog Token.
-+ *
-+ * @ifp: interface instance
-+ * @dialog_token: TWT session Dialog Token
-+ *
-+ * return: Pointer to a TWT session instance if lookup is successful, NULL on failure.
-+ */
-+static struct inff_twt_session *
-+inff_twt_lookup_sess_by_dialog_token(struct inff_if *ifp, u8 dialog_token)
++static void inff_btsdio_err_buf_record(struct inff_bt_if *bt_if, enum bts_err_type type,
++				       int err, u32 nbytes)
 +{
-+	struct inff_twt_session *iter = NULL;
++	struct bts_cmd_entity *cmd = NULL;
++	struct bts_err_buf *buf = NULL;
 +
-+	if (list_empty(&ifp->twt_sess_list))
-+		return NULL;
-+
-+	list_for_each_entry(iter, &ifp->twt_sess_list, list)
-+		if (iter->twt_params.dialog_token == dialog_token)
-+			return iter;
-+
-+	return NULL;
-+}
-+
-+/**
-+ * inff_itwt_lookup_sess_by_flowid() - Lookup an iTWT sesssion information from
-+ *	the driver list based on the Flow ID.
-+ *
-+ * @ifp: interface instance
-+ * @flow_id: iTWT session Flow ID
-+ *
-+ * return: Pointer to a TWT session instance if lookup is successful, NULL on failure.
-+ */
-+static struct inff_twt_session *
-+inff_itwt_lookup_sess_by_flowid(struct inff_if *ifp, u8 flow_id)
-+{
-+	struct inff_twt_session *iter = NULL;
-+
-+	if (list_empty(&ifp->twt_sess_list))
-+		return NULL;
-+
-+	list_for_each_entry(iter, &ifp->twt_sess_list, list) {
-+		if (iter->twt_params.negotiation_type != INFF_TWT_PARAM_NEGO_TYPE_ITWT)
-+			continue;
-+
-+		if (iter->twt_params.flow_id == flow_id)
-+			return iter;
++	if (!bt_if) {
++		inff_err("bt_if is null\n");
++		return;
 +	}
 +
-+	return NULL;
++	if (inff_btsdio_cmd_alloc(bt_if, &cmd, type, err))
++		return;
++
++	buf = &cmd->u.buf;
++	buf->nbytes = nbytes;
++	inff_err("[%5lld.%06ld] %8s err: %d\tnbytes: %d\n",
++		 (long long)cmd->time.tv_sec, cmd->time.tv_nsec / NSEC_PER_USEC,
++		 inff_btsdio_err_char(cmd->type), err, nbytes);
++
++	inff_btsdio_err_enq(bt_if, cmd);
 +}
 +
-+/**
-+ * inff_twt_update_sess_state() - Update the state of the TWT Session in the driver list
-+ *
-+ * @ifp: interface instance.
-+ * @twt_sess: TWT session to be updated.
-+ * @state: TWT session state, Refer enum inff_twt_session_state.
-+ * @err_msg: print this message if error happened.
-+ * @flow_id: print flow id if error happened.
-+ *
-+ * return: 0 on successful updation, value < 0 on failure.
-+ */
-+static s32
-+inff_twt_update_sess_state(struct inff_if *ifp, struct inff_twt_session *twt_sess,
-+			   enum inff_twt_session_state state, u8 *err_msg, u8 flow_id)
++static void inff_btsdio_err_mem_record(struct inff_bt_if *bt_if, int err, bool set,
++				       u32 addr, u32 size)
 +{
-+	s32 ret = 0;
++	struct bts_cmd_entity *cmd = NULL;
++	struct bts_err_mem *mem = NULL;
 +
-+	if (!twt_sess) {
-+		inff_err("TWT: %s: Failed to update session(%u) with state(%s)",
-+			 err_msg, flow_id,
-+			 inff_twt_sess_state_str[state]);
-+		ret = -EINVAL;
-+		goto exit;
++	if (!bt_if) {
++		inff_err("bt_if is null\n");
++		return;
 +	}
 +
-+	spin_lock(&ifp->twt_sess_list_lock);
++	if (inff_btsdio_cmd_alloc(bt_if, &cmd, ERR_MEM_RW, err))
++		return;
 +
-+	twt_sess->state = state;
-+	inff_dbg(TWT, "TWT: updated session(%u) with peer %pM, state(%s)",
-+		 twt_sess->twt_params.flow_id, twt_sess->peer_addr.octet,
-+		  inff_twt_sess_state_str[twt_sess->state]);
++	mem = &cmd->u.mem;
++	mem->set = set;
++	mem->addr = addr;
++	mem->size = size;
++	inff_err("[%5lld.%06ld] %8s err: %d\tset: %d\taddr: 0x%x\tsize: %d\n",
++		 (long long)cmd->time.tv_sec, cmd->time.tv_nsec / NSEC_PER_USEC,
++		 inff_btsdio_err_char(cmd->type), err, set, addr, size);
 +
-+	spin_unlock(&ifp->twt_sess_list_lock);
-+exit:
-+	return ret;
++	inff_btsdio_err_enq(bt_if, cmd);
 +}
 +
-+/**
-+ * inff_twt_update_sess() - Update TWT session info in the driver list.
-+ *
-+ * @ifp: interface instance.
-+ * @twt_sess: TWT session to be updated.
-+ * @peer_addr: TWT peer address.
-+ * @state: TWT session state, Refer enum inff_twt_session_state.
-+ * @twt_params: TWT session parameters.
-+ *
-+ * return: 0 on successful updation, value < 0 on failure.
-+ */
-+static s32
-+inff_twt_update_sess(struct inff_if *ifp, struct inff_twt_session *twt_sess,
-+		     const u8 *peer_addr, enum inff_twt_session_state state,
-+		     struct inff_twt_params *twt_params)
++static void inff_btsdio_err_dump(struct seq_file *seq, struct inff_bt_if *bt_if)
 +{
-+	s32 ret = 0;
++	struct bts_cmd_entity *cmd = NULL;
++	struct bts_err_reg *reg = NULL;
++	struct bts_err_buf *buf = NULL;
++	struct bts_err_mem *mem = NULL;
++	u8 idx = 0;
 +
-+	if (!twt_sess) {
-+		inff_dbg(TWT, "TWT: session is not available to update");
-+		ret = -EINVAL;
-+		goto exit;
++	if (!bt_if || !seq) {
++		inff_err("bt_if(%p) or seq(%p) is null\n", bt_if, seq);
++		return;
 +	}
 +
-+	spin_lock(&ifp->twt_sess_list_lock);
++	if (bt_if->cnt_total_err > 0)
++		seq_printf(seq, "\ntotal error number: %d\n", bt_if->cnt_total_err);
 +
-+	memcpy(twt_sess->peer_addr.octet, peer_addr, ETH_ALEN);
-+	twt_sess->state = state;
-+	memcpy(&twt_sess->twt_params, twt_params,
-+	       sizeof(struct inff_twt_params));
-+
-+	inff_dbg(TWT, "TWT: updated session(%u) with peer %pM, state(%s)",
-+		 twt_sess->twt_params.flow_id,
-+		 twt_sess->peer_addr.octet,
-+		 inff_twt_sess_state_str[twt_sess->state]);
-+
-+	spin_unlock(&ifp->twt_sess_list_lock);
-+exit:
-+	return ret;
-+}
-+
-+/**
-+ * inff_twt_del_sess() - Delete a TWT sesssion info from the driver list.
-+ *
-+ * @ifp: interface instance.
-+ * @twt_sess: TWT session to be deleted.
-+ *
-+ * return: 0 on successful deletion, value < 0 on failure.
-+ */
-+static s32
-+inff_twt_del_sess(struct inff_if *ifp, struct inff_twt_session *twt_sess)
-+{
-+	s32 ret = 0;
-+	u8 flow_id;
-+	u8 peer_addr[ETH_ALEN];
-+
-+	if (!twt_sess) {
-+		inff_dbg(TWT, "TWT: session is not available to delete");
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
-+	spin_lock(&ifp->twt_sess_list_lock);
-+
-+	flow_id = twt_sess->twt_params.flow_id;
-+	memcpy(peer_addr, twt_sess->peer_addr.octet, ETH_ALEN);
-+
-+	list_del(&twt_sess->list);
-+	kfree(twt_sess);
-+
-+	inff_dbg(TWT, "TWT: Deleted session(%u) with peer %pM",
-+		 flow_id, peer_addr);
-+
-+	spin_unlock(&ifp->twt_sess_list_lock);
-+exit:
-+	return ret;
-+}
-+
-+/**
-+ * inff_twt_add_sess() - Add a TWT session info to the driver list.
-+ *
-+ * @ifp: interface instance.
-+ * @peer_addr: TWT peer address.
-+ * @state: TWT session state, Refer enum inff_twt_session_state.
-+ * @twt_params: TWT session parameters.
-+ *
-+ * return: 0 on successful addition, value < 0 on failure.
-+ */
-+static s32
-+inff_twt_add_sess(struct inff_if *ifp, const u8 *peer_addr,
-+		  enum inff_twt_session_state state,
-+		  struct inff_twt_params *twt_params)
-+{
-+	struct inff_twt_session *new_twt_sess;
-+	s32 ret = 0;
-+
-+	new_twt_sess = kzalloc(sizeof(*new_twt_sess), GFP_ATOMIC);
-+	if (!new_twt_sess) {
-+		ret = -ENOMEM;
-+		goto exit;
-+	}
-+
-+	new_twt_sess->ifidx = ifp->ifidx;
-+	new_twt_sess->bsscfgidx = ifp->bsscfgidx;
-+	new_twt_sess->state = state;
-+
-+	memcpy(new_twt_sess->peer_addr.octet, peer_addr, ETH_ALEN);
-+	memcpy(&new_twt_sess->twt_params, twt_params,
-+	       sizeof(struct inff_twt_params));
-+
-+	spin_lock(&ifp->twt_sess_list_lock);
-+
-+	list_add_tail(&new_twt_sess->list, &ifp->twt_sess_list);
-+	inff_dbg(TWT, "TWT: Added session(%u) with peer %pM, state (%s)",
-+		 new_twt_sess->twt_params.flow_id,
-+		 new_twt_sess->peer_addr.octet,
-+		  inff_twt_sess_state_str[new_twt_sess->state]);
-+
-+	spin_unlock(&ifp->twt_sess_list_lock);
-+exit:
-+	return ret;
-+}
-+
-+/**
-+ * inff_twt_event_timeout_handler - Iterate the session list and handle stale
-+ *	TWT session entries which are failed to move to next state in FSM.
-+ *
-+ * @t: timer instance.
-+ */
-+void inff_twt_event_timeout_handler(struct timer_list *t)
-+{
-+	struct inff_if *ifp = timer_container_of(ifp, t, twt_evt_timeout);
-+	struct inff_twt_session *twt_sess = NULL, *next = NULL;
-+	unsigned long curr_ts = jiffies;
-+	s32 ret = 0;
-+
-+	list_for_each_entry_safe(twt_sess, next, &ifp->twt_sess_list, list) {
-+		/* For this session entry, Skip if the time since the TWT cmd sent to the
-+		 * Firmware does not exceed the Event timeout configured.
-+		 */
-+		if (time_after(twt_sess->oper_start_ts + INFF_TWT_EVENT_TIMEOUT, curr_ts))
-+			continue;
-+
-+		switch (twt_sess->state) {
-+		case INFF_TWT_SESS_STATE_SETUP_INPROGRESS:
-+			ret = inff_twt_update_sess_state(ifp, twt_sess,
-+							 INFF_TWT_SESS_STATE_SETUP_INCOMPLETE,
-+							 "Setup TIMEOUT",
-+							 twt_sess->twt_params.flow_id);
-+			if (ret)
-+				continue;
-+
++	spin_lock(&bt_if->err_list_lock);
++	list_for_each_entry(cmd, &bt_if->err_list, list) {
++		seq_printf(seq, "%3d: [%5lld.%06ld] %8s err: %d\t",
++			   ++idx, (long long)cmd->time.tv_sec, cmd->time.tv_nsec / NSEC_PER_USEC,
++			   inff_btsdio_err_char(cmd->type), cmd->err);
++		switch (cmd->type) {
++		case ERR_REG_RB:
++		case ERR_REG_RL:
++			reg = &cmd->u.reg;
++			seq_printf(seq, "F%d addr: 0x%x", reg->fn, reg->addr);
 +			break;
-+		case INFF_TWT_SESS_STATE_TEARDOWN_INPROGRESS:
-+			ret = inff_twt_update_sess_state(ifp, twt_sess,
-+							 INFF_TWT_SESS_STATE_TEARDOWN_INCOMPLETE,
-+							 "Teardown TIMEOUT",
-+							 twt_sess->twt_params.flow_id);
-+			if (ret)
-+				continue;
-+
++		case ERR_REG_WB:
++		case ERR_REG_WL:
++			reg = &cmd->u.reg;
++			seq_printf(seq, "F%d addr: 0x%x\tval: 0x%x",
++				   reg->fn, reg->addr, reg->val);
++			break;
++		case ERR_BUF_RD:
++			seq_puts(seq, "F3");
++			break;
++		case ERR_BUF_WT:
++			buf = &cmd->u.buf;
++			seq_printf(seq, "F3 nbytes: %d", buf->nbytes);
++			break;
++		case ERR_MEM_RW:
++			mem = &cmd->u.mem;
++			seq_printf(seq, "F1 set: %d\taddr: %d\tsize: %d",
++				   mem->set, mem->addr, mem->size);
 +			break;
 +		default:
-+			continue;
-+		}
-+
-+		ret = inff_twt_del_sess(ifp, twt_sess);
-+		if (ret) {
-+			inff_err("TWT: Failed to Delete session(%u) from list",
-+				 twt_sess->twt_params.flow_id);
 +			break;
 +		}
-+
-+		inff_dbg(TWT, "TWT: Cleared stale session(%u) with peer %pM, state(%s)",
-+			 twt_sess->twt_params.flow_id, twt_sess->peer_addr.octet,
-+			 inff_twt_sess_state_str[twt_sess->state]);
++		seq_puts(seq, "\n");
 +	}
++	spin_unlock(&bt_if->err_list_lock);
 +}
 +
-+/**
-+ * inff_twt_setup_event_handler() - Handle the TWT Setup Event notification from Firmware.
-+ *
-+ * @ifp: interface instatnce.
-+ * @e: event message.
-+ * @data: payload of message, contains TWT session data.
-+ *
-+ * return: 0 on success, value < 0 on failure.
-+ */
-+static s32
-+inff_twt_setup_event_handler(struct inff_if *ifp, const struct inff_event_msg *e,
-+			     void *data)
++static int inff_btsdio_debugfs_read(struct seq_file *seq, void *data)
 +{
-+	struct inff_twt_setup_event *setup_event;
-+	struct inff_twt_sdesc *setup_desc;
-+	struct inff_twt_session *twt_sess = NULL;
-+	struct inff_twt_params twt_params;
-+	bool unsolicited_setup = false;
-+	s32 ret = 0;
++	struct inff_bus *bus_if = NULL;
++	struct inff_sdio_dev *sdiodev = NULL;
++	struct inff_bt_if *bt_if = NULL;
++	struct mmc_host *host = NULL;
 +
-+	setup_event = (struct inff_twt_setup_event *)data;
-+	setup_desc = (struct inff_twt_sdesc *)
-+		     (data + sizeof(struct inff_twt_setup_event));
++	if (!seq || !data) {
++		inff_err("seq(%p) or data(%p) is null\n", seq, data);
++		return 0;
++	}
++	bus_if = dev_get_drvdata(seq->private);
 +
-+	/* TWT Negotiation_type */
-+	twt_params.negotiation_type = setup_desc->negotiation_type;
-+
-+	/* Dialog Token */
-+	twt_params.dialog_token = setup_event->dialog;
-+
-+	switch (twt_params.negotiation_type) {
-+	case INFF_TWT_PARAM_NEGO_TYPE_ITWT:
-+		/* Flow ID */
-+		twt_params.flow_id = setup_desc->flow_id;
-+
-+		/* Lookup the session list for the flow ID in the Setup Response */
-+		twt_sess = inff_itwt_lookup_sess_by_flowid(ifp, twt_params.flow_id);
-+		if (!twt_sess)
-+			twt_sess = inff_twt_lookup_sess_by_dialog_token(ifp,
-+									twt_params.dialog_token);
-+
-+		/* If this device requested for session setup, a session entry with
-+		 * state(setup inprogess) would be already available, else this is an
-+		 * Unsolicited Setup Response from the peer TWT device.
-+		 */
-+		if (!twt_sess || twt_sess->state != INFF_TWT_SESS_STATE_SETUP_INPROGRESS)
-+			unsolicited_setup = true;
-+
-+		break;
-+	case INFF_TWT_PARAM_NEGO_TYPE_BTWT:
-+		/* Broadcast TWT ID */
-+		twt_params.bcast_twt_id = setup_desc->bid;
-+
-+		/* TODO: Handle the Broadcast TWT Setup Event */
-+		fallthrough;
-+	default:
-+		inff_err("TWT: Setup EVENT: Negotiation Type(%s) not handled",
-+			 inff_twt_nego_type_str[twt_params.negotiation_type]);
-+		ret = -EOPNOTSUPP;
-+		goto exit;
++	if (!inff_btsdio_inited(bus_if)) {
++		seq_printf(seq, "Invalid bus_if (%p) or bt_if\n", bus_if);
++		return 0;
 +	}
 +
-+	/* Setup Event */
-+	twt_params.setup_cmd = setup_desc->setup_cmd;
++	sdiodev = bus_if->bus_priv.sdio;
++	bt_if = bus_if->bt_if;
 +
-+	/* Flowflags */
-+	twt_params.implicit = (setup_desc->flow_flags & INFF_TWT_FLOW_FLAG_IMPLICIT) ? 1 : 0;
-+	twt_params.flow_type = (setup_desc->flow_flags & INFF_TWT_FLOW_FLAG_UNANNOUNCED) ? 1 : 0;
-+	twt_params.trigger = (setup_desc->flow_flags & INFF_TWT_FLOW_FLAG_TRIGGER) ? 1 : 0;
-+	twt_params.requestor = (setup_desc->flow_flags & INFF_TWT_FLOW_FLAG_REQUEST) ? 1 : 0;
-+	twt_params.protection = (setup_desc->flow_flags & INFF_TWT_FLOW_FLAG_PROTECT) ? 1 : 0;
++	seq_printf(seq,
++		   "chip: 0x%x\tversion (%d.%d.%d)\n"
++		   "attach: %d\tdetach: %d\n"
++		   "set_bt_reset: %d\n",
++		   sdiodev->func1->device, BTS_VER_MAJOR, BTS_VER_MINOR, BTS_VER_PATCH,
++		   bt_if->cnt_attach, bt_if->cnt_detach,
++		   bt_if->set_bt_reset);
 +
-+	/* Target Wake Time */
-+	twt_params.twt = le64_to_cpu((u64)setup_desc->wake_time_h << 32) |
-+			 le64_to_cpu((u64)setup_desc->wake_time_l);
++	if (bt_if->cnt_attach > bt_if->cnt_detach)
++		seq_printf(seq, "bt data: 0x%p\tbt cb: 0x%p\n",
++			   bt_if->bt_data, bt_if->bt_sdio_int_cb);
 +
-+	/* Wake Duration or Service Period */
-+	twt_params.min_twt_unit = 0;
-+	twt_params.min_twt =
-+		inff_twt_wake_dur_to_min_twt(le32_to_cpu(setup_desc->wake_dur),
-+					     twt_params.min_twt_unit);
++	host = sdiodev->func2->card->host;
++	seq_printf(seq, "\nhost\n"
++		   "%-5s: 0x%08x\t%-5s: 0x%08x\n"
++		   "%-12s:%8d\t%-12s:%8d\t%-12s:%8d\t%-12s:%8d\n",
++		   "caps", host->caps, "caps2", host->caps2,
++		   "max blk cnt", host->max_blk_count,
++		   "max req size", host->max_req_size,
++		   "max seg", host->max_segs,
++		   "max seg size", host->max_seg_size);
 +
-+	/* Wake Interval or Service Interval */
-+	inff_twt_u32_to_float(le32_to_cpu(setup_desc->wake_int),
-+			      &twt_params.exponent, &twt_params.mantissa);
++	seq_printf(seq, "\ndevice\n"
++		   "%10s: %d\n"
++		   "%-12s: %8d\t%-12s: %8d\t%-12s: %8d\n",
++		   "sg_support", sdiodev->sg_support,
++		   "max req size", sdiodev->max_request_size,
++		   "max seg cnt", sdiodev->max_segment_count,
++		   "max seq size", sdiodev->max_segment_size);
 +
-+	inff_dbg(TWT, "TWT: Setup EVENT: %sResponse with cmd(%s) from peer %pM",
-+		 unsolicited_setup ? "Un-Solicited " : "",
-+		 inff_twt_setup_cmd_str[setup_desc->setup_cmd], e->addr);
++	seq_printf(seq, "\nblock size\n"
++		   "%-3s:%4d\t%-3s:%4d\t%-3s:%4d\n",
++		   "F1", sdiodev->func1->cur_blksize,
++		   "F2", sdiodev->func2->cur_blksize,
++		   "F3", sdiodev->func3->cur_blksize);
 +
-+	switch (setup_desc->setup_cmd) {
-+	case TWT_SETUP_CMD_REQUEST:
-+		fallthrough;
-+	case TWT_SETUP_CMD_SUGGEST:
-+		fallthrough;
-+	case TWT_SETUP_CMD_DEMAND:
-+		fallthrough;
-+	case TWT_SETUP_CMD_GROUPING:
-+		ret = -EOPNOTSUPP;
-+		goto exit;
-+	case TWT_SETUP_CMD_ACCEPT:
-+		if (!twt_sess)
-+			ret = inff_twt_add_sess(ifp, e->addr,
-+						INFF_TWT_SESS_STATE_SETUP_COMPLETE,
-+						&twt_params);
-+		else
-+			ret = inff_twt_update_sess(ifp, twt_sess, e->addr,
-+						   INFF_TWT_SESS_STATE_SETUP_COMPLETE,
-+						   &twt_params);
-+		break;
-+	case TWT_SETUP_CMD_ALTERNATE:
-+		fallthrough;
-+	case TWT_SETUP_CMD_DICTATE:
-+		ret = -EOPNOTSUPP;
-+		goto exit;
-+	case TWT_SETUP_CMD_REJECT:
-+		if (!twt_sess)
-+			/* Bail out, since nothing to handle on receiving Un-Solicited
-+			 * Reject from the TWT peer for an un-available TWT session.
-+			 */
-+			break;
++	inff_btsdio_err_dump(seq, bt_if);
 +
-+		ret = inff_twt_update_sess_state(ifp, twt_sess,
-+						 INFF_TWT_SESS_STATE_SETUP_INCOMPLETE,
-+						 "Setup EVENT", twt_params.flow_id);
-+		if (ret)
-+			goto exit;
-+
-+		ret = inff_twt_del_sess(ifp, twt_sess);
-+
-+		break;
-+	default:
-+		ret = -EOPNOTSUPP;
-+		goto exit;
-+	}
-+
-+	if (ret) {
-+		inff_err("TWT: Setup EVENT: Failed to add/update/del session(%u) with peer %pM",
-+			 twt_params.flow_id, e->addr);
-+		goto exit;
-+	}
-+
-+	inff_dbg(TWT, "TWT: Setup EVENT: Session %s\n"
-+		 "Dialog Token         : %u\n"
-+		 "Setup command        : %s\n"
-+		 "Flow flags           : 0x %02x\n"
-+		 "Flow ID              : %u\n"
-+		 "Broadcast TWT ID     : %u\n"
-+		 "Wake Time H,L        : 0x %08x %08x\n"
-+		 "Wake Type            : %u\n"
-+		 "Wake Duration        : %u uS\n"
-+		 "Wake Interval        : %u uS\n"
-+		 "Negotiation type     : %s\n",
-+		 inff_twt_sess_state_str[twt_sess->state], setup_event->dialog,
-+		 inff_twt_setup_cmd_str[setup_desc->setup_cmd], setup_desc->flow_flags,
-+		 setup_desc->flow_id, setup_desc->bid, setup_desc->wake_time_h,
-+		 setup_desc->wake_time_l, setup_desc->wake_type, setup_desc->wake_dur,
-+		 setup_desc->wake_int, inff_twt_nego_type_str[setup_desc->negotiation_type]);
-+exit:
-+	return ret;
++	return 0;
 +}
 +
-+/**
-+ * inff_twt_teardown_event_handler() - Handle the TWT Teardown Event notification from Firmware.
-+ *
-+ * @ifp: interface instatnce.
-+ * @e: event message.
-+ * @data: payload of message, contains TWT session data.
-+ *
-+ * return: 0 on success, value < 0 on failure.
-+ */
-+static s32
-+inff_twt_teardown_event_handler(struct inff_if *ifp, const struct inff_event_msg *e,
-+				void *data)
++static void *inff_btsdio_get_func_entity(struct inff_sdio_dev *sdiodev, u8 fn)
 +{
-+	struct inff_twt_teardown_event *teardown_event;
-+	struct inff_twt_teardesc *teardown_desc;
-+	struct inff_twt_session *twt_sess = NULL;
-+	struct inff_twt_params twt_params;
-+	bool unsolicited_teardown = false;
-+	s32 ret = 0;
++	struct sdio_func *func = NULL;
 +
-+	teardown_event = (struct inff_twt_teardown_event *)data;
-+	teardown_desc = (struct inff_twt_teardesc *)
-+			(data + sizeof(struct inff_twt_teardown_event));
-+
-+	/* TWT Negotiation_type */
-+	twt_params.negotiation_type = teardown_desc->negotiation_type;
-+
-+	/* Teardown all Negotiated TWT */
-+	twt_params.teardown_all_twt = teardown_desc->alltwt;
-+	if (twt_params.teardown_all_twt) {
-+		ret = inff_twt_cleanup_all_sess(ifp);
-+		goto exit;
++	if (!sdiodev) {
++		inff_err("sdiodev is null\n");
++		return NULL;
 +	}
 +
-+	switch (twt_params.negotiation_type) {
-+	case INFF_TWT_PARAM_NEGO_TYPE_ITWT:
-+		/* Flow ID */
-+		twt_params.flow_id = teardown_desc->flow_id;
++	if (fn == SDIO_FUNC_1)
++		func = sdiodev->func1;
++	else if (fn == SDIO_FUNC_2)
++		func = sdiodev->func2;
++	else if (fn == SDIO_FUNC_3)
++		func = sdiodev->func3;
 +
-+		/* Lookup the session list for the received flow ID */
-+		twt_sess = inff_itwt_lookup_sess_by_flowid(ifp, twt_params.flow_id);
-+
-+		/* If this device requested for session Teardown, a session entry with
-+		 * state(setup inprogess) would be already available, else this is an
-+		 * Unsolicited Teardown Response from the peer TWT device.
-+		 */
-+		if (!twt_sess || twt_sess->state != INFF_TWT_SESS_STATE_SETUP_INPROGRESS)
-+			unsolicited_teardown = true;
-+
-+		break;
-+	case INFF_TWT_PARAM_NEGO_TYPE_BTWT:
-+		/* Broadcast TWT ID */
-+		twt_params.bcast_twt_id = teardown_desc->bid;
-+
-+		/* TODO: Handle the Broadcast TWT Teardown Event */
-+		fallthrough;
-+	default:
-+		inff_err("TWT: Teardown EVENT: Negotiation Type(%s) not handled\n",
-+			 inff_twt_nego_type_str[twt_params.negotiation_type]);
-+		ret = -EOPNOTSUPP;
-+		goto exit;
-+	}
-+
-+	inff_dbg(TWT, "TWT: Teardown EVENT: %sResponse from peer %pM",
-+		 unsolicited_teardown ? "Un-Solicited " : "", e->addr);
-+
-+	if (!twt_sess) {
-+		inff_dbg(TWT, "TWT: Teardown EVENT: Un-available session(%u) for deletion",
-+			 twt_params.flow_id);
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
-+	ret = inff_twt_update_sess_state(ifp, twt_sess,
-+					 INFF_TWT_SESS_STATE_TEARDOWN_COMPLETE,
-+					 "Teardown EVENT", twt_params.flow_id);
-+	if (ret)
-+		goto exit;
-+
-+	ret = inff_twt_del_sess(ifp, twt_sess);
-+	if (ret) {
-+		inff_err("TWT: Teardown EVENT: Failed to Delete session from list");
-+		goto exit;
-+	}
-+
-+	inff_dbg(TWT, "TWT: Teardown EVENT: Session %s\n"
-+		 "Flow ID              : %u\n"
-+		 "Broadcast TWT ID     : %u\n"
-+		 "Negotiation type     : %s\n"
-+		 "Teardown all TWT     : %u\n",
-+		 inff_twt_sess_state_str[twt_sess->state], teardown_desc->flow_id,
-+		 teardown_desc->bid, inff_twt_nego_type_str[teardown_desc->negotiation_type],
-+		 teardown_desc->alltwt);
-+exit:
-+	return ret;
++	return func;
 +}
 +
-+/**
-+ * inff_notify_twt_event() - Handle the TWT Event notifications from Firmware.
-+ *
-+ * @ifp: interface instatnce.
-+ * @e: event message.
-+ * @data: payload of message, contains TWT session data.
-+ *
-+ * return: 0 on success, value < 0 on failure.
-+ */
-+s32
-+inff_notify_twt_event(struct inff_if *ifp, const struct inff_event_msg *e, void *data)
++static void inff_btsdio_int_handler(struct sdio_func *func)
 +{
-+	s32 ret;
++	struct inff_bus *bus_if = NULL;
++	struct inff_sdio_dev *sdiodev = NULL;
++	struct inff_bt_if *bt_if = NULL;
 +
-+	if (!ifp) {
-+		ret = -EIO;
-+		goto exit;
++	if (!func) {
++		inff_err("func is null\n");
++		return;
 +	}
++	bus_if = dev_get_drvdata(&func->dev);
 +
-+	switch (e->event_code) {
-+	case INFF_E_TWT_SETUP:
-+		ret = inff_twt_setup_event_handler(ifp, e, data);
-+		if (ret) {
-+			inff_err("TWT: EVENT: Failed to handle TWT Setup event");
-+			goto exit;
-+		}
-+		break;
-+	case INFF_E_TWT_TEARDOWN:
-+		ret = inff_twt_teardown_event_handler(ifp, e, data);
-+		if (ret) {
-+			inff_err("TWT: EVENT: Failed to handle TWT Teardown event");
-+			goto exit;
-+		}
-+		break;
-+	default:
-+		inff_err("TWT: EVENT: Received event %d not handeled", e->event_code);
-+		ret = -EOPNOTSUPP;
-+		goto exit;
++	if (!bus_if) {
++		inff_err("bus_if is null\n");
++		return;
 +	}
++	sdiodev = bus_if->bus_priv.sdio;
++	bt_if = bus_if->bt_if;
 +
-+exit:
-+	return ret;
++	if (!bus_if->bt_if)
++		return;
++
++	inff_dbg(INTR, "F%d IB intr triggered\n", func->num);
++
++	if (bt_if->bt_sdio_int_cb)
++		bt_if->bt_sdio_int_cb(bt_if->bt_data);
 +}
 +
-+/**
-+ * inff_twt_setup_oper_handler() - Handle the TWT Setup Operation request from Userspace.
-+ *
-+ * @ifp: interface instance.
-+ * @twt_params: TWT session parameters.
-+ *
-+ * return: 0 on success, value < 0 on failure.
-+ */
-+static s32
-+inff_twt_setup_oper_handler(struct inff_if *ifp, struct inff_twt_params twt_params)
++bool inff_btsdio_is_active(struct inff_bus *bus_if)
 +{
-+	struct inff_cfg80211_vif *vif = ifp->vif;
-+	struct inff_twt_setup_oper val;
-+	struct inff_twt_session *twt_sess = NULL;
-+	s32 ret;
++	struct inff_bt_if *bt_if = NULL;
 +
-+	memset(&val, 0, sizeof(val));
-+	val.version = INFF_TWT_SETUP_VER;
-+	val.length = sizeof(val.version) + sizeof(val.length);
++	if (!bus_if) {
++		inff_err("bus_if is null\n");
++		return false;
++	}
 +
-+	/* Default values, Override Below */
-+	val.sdesc.flow_flags = 0x0;
-+	val.sdesc.wake_dur = 0xFFFFFFFF;
-+	val.sdesc.wake_int = 0xFFFFFFFF;
-+	val.sdesc.wake_int_max = 0xFFFFFFFF;
++	if (!bus_if->bt_if)
++		return false;
 +
-+	/* TWT Negotiation_type */
-+	val.sdesc.negotiation_type = (u8)twt_params.negotiation_type;
++	bt_if = bus_if->bt_if;
 +
-+	switch (val.sdesc.negotiation_type) {
-+	case INFF_TWT_PARAM_NEGO_TYPE_ITWT:
-+		/* Flow ID */
-+		if ((twt_params.flow_id >= 0x0 && twt_params.flow_id <= 0x7)) {
-+			/* Lookup the session list for the requested flow ID */
-+			val.sdesc.flow_id = twt_params.flow_id;
-+			twt_sess = inff_itwt_lookup_sess_by_flowid(ifp, twt_params.flow_id);
-+			if (twt_sess) {
-+				inff_err("TWT: Setup REQ: Skipping");
-+				inff_err(" session(%u) entry is already available with state(%s)",
-+					 twt_params.flow_id,
-+					 inff_twt_sess_state_str[twt_sess->state]);
-+				ret = -EINVAL;
-+				goto exit;
-+			}
-+		} else if (twt_params.flow_id == 0xFF) {
-+			/* Let the Firmware choose the Flow ID */
-+			val.sdesc.flow_id = twt_params.flow_id;
++	if (bt_if->use_count == 0)
++		return false;
++
++	return true;
++}
++
++bool inff_btsdio_set_bt_reset(struct inff_bus *bus_if)
++{
++	if (!bus_if) {
++		inff_err("bus_if is null\n");
++		return false;
++	}
++
++	if (!bus_if->bt_if)
++		return false;
++
++	return bus_if->bt_if->set_bt_reset;
++}
++
++int inff_bus_attach(u32 ver, void *info)
++{
++	struct bt_shared_info *bts_info = NULL;
++	struct inff_sdio_dev *sdiodev = NULL;
++	struct inff_bt_if *bt_if = NULL;
++
++	inff_dbg(INFO, "Enter\n");
++
++	if (!info) {
++		inff_err("info is null\n");
++		return -EINVAL;
++	}
++	bts_info = (struct bt_shared_info *)info;
++
++	if (!glob_bus_if) {
++		inff_err("btsdio is not initialized\n");
++		return -EINVAL;
++	}
++
++	if (!glob_bus_if->bt_if) {
++		inff_err("bt dev is not allocated\n");
++		return -EINVAL;
++	}
++
++	sdiodev = glob_bus_if->bus_priv.sdio;
++
++	if (ver != BTS_VERSION) {
++		inff_err("version mismatch, bt 0x%x != wlan 0x%x\n",
++			 ver, BTS_VERSION);
++		return -EINVAL;
++	}
++
++	/* Get info from bt dev */
++	bt_if = glob_bus_if->bt_if;
++	bt_if->bt_data = bts_info->bt_data;
++	bt_if->bt_sdio_int_cb = bts_info->bt_int_fun;
++
++	/* Provide wlan info to bt dev */
++	bts_info->wlan_bus_if = glob_bus_if;
++	bts_info->device_id = sdiodev->func1->device;
++	bts_info->enum_addr = inff_sdio_get_enum_addr(sdiodev->bus);
++
++	bt_if->cnt_attach++;
++	inff_dbg(INFO, "Done: device: 0x%x, enum addr: 0x%08x\n",
++		 sdiodev->func1->device, bts_info->enum_addr);
++	return 0;
++}
++EXPORT_SYMBOL(inff_bus_attach);
++
++void inff_bus_detach(struct inff_bus *bus_if)
++{
++	struct inff_bt_if *bt_if = NULL;
++
++	inff_dbg(INFO, "Enter\n");
++
++	if (!bus_if) {
++		inff_err("bus_if is null\n");
++		return;
++	}
++
++	if (!bus_if->bt_if)
++		return;
++
++	bt_if = bus_if->bt_if;
++
++	if (bt_if->bt_data)
++		bt_if->bt_data = NULL;
++	if (bt_if->bt_sdio_int_cb)
++		bt_if->bt_sdio_int_cb = NULL;
++
++	bt_if->cnt_detach++;
++	inff_dbg(INFO, "Done\n");
++}
++EXPORT_SYMBOL(inff_bus_detach);
++
++u8 inff_bus_reg_readb(struct inff_bus *bus_if, u8 fn, u32 addr, int *err)
++{
++	struct inff_sdio_dev *sdiodev = NULL;
++	struct sdio_func *func = NULL;
++	u8 val = 0;
++
++	if (!bus_if || !err) {
++		inff_err("bus_if(%p) or err(%p) is null\n", bus_if, err);
++		*err = -EINVAL;
++		return 0;
++	}
++
++	if (!bus_if->bt_if) {
++		*err = -EINVAL;
++		return 0;
++	}
++
++	sdiodev = bus_if->bus_priv.sdio;
++
++	func = inff_btsdio_get_func_entity(sdiodev, fn);
++	if (fn > SDIO_FUNC_3 || (fn != SDIO_FUNC_0 && !func)) {
++		inff_err("invalid function number = %d\n", fn);
++		*err = -EINVAL;
++		return 0;
++	}
++
++	sdio_claim_host(sdiodev->func1);
++	if (fn == SDIO_FUNC_0)
++		val = inff_sdiod_func0_rb(sdiodev, addr, err);
++	else
++		val = inff_sdiod_func_rb(sdiodev, func, addr, err);
++	sdio_release_host(sdiodev->func1);
++
++	inff_dbg(SDIO, "F%d addr: 0x%08x, val: 0x%02x, err: %d\n", fn, addr, val, *err);
++
++	if (*err)
++		inff_btsdio_err_reg_record(bus_if->bt_if, ERR_REG_RB, *err, fn, addr, val);
++
++	return val;
++}
++EXPORT_SYMBOL(inff_bus_reg_readb);
++
++void inff_bus_reg_writeb(struct inff_bus *bus_if, u8 fn, u32 addr, u8 val, int *err)
++{
++	struct inff_sdio_dev *sdiodev = NULL;
++	struct sdio_func *func = NULL;
++
++	if (!bus_if || !err) {
++		inff_err("bus_if(%p) or err(%p) is null\n", bus_if, err);
++		*err = -EINVAL;
++		return;
++	}
++
++	if (!bus_if->bt_if) {
++		*err = -EINVAL;
++		return;
++	}
++
++	sdiodev = bus_if->bus_priv.sdio;
++
++	func = inff_btsdio_get_func_entity(sdiodev, fn);
++	if (fn > SDIO_FUNC_3 || (fn != SDIO_FUNC_0 && !func)) {
++		inff_err("invalid function number = %d\n", fn);
++		*err = -EINVAL;
++		return;
++	}
++
++	sdio_claim_host(sdiodev->func1);
++	if (fn == SDIO_FUNC_0)
++		inff_sdiod_func0_wb(sdiodev, addr, val, err);
++	else
++		inff_sdiod_func_wb(sdiodev, func, addr, val, err);
++	sdio_release_host(sdiodev->func1);
++
++	inff_dbg(SDIO, "F%d addr: 0x%08x, val: 0x%02x, err: %d\n", fn, addr, val, *err);
++
++	if (*err)
++		inff_btsdio_err_reg_record(bus_if->bt_if, ERR_REG_WB, *err, fn, addr, val);
++}
++EXPORT_SYMBOL(inff_bus_reg_writeb);
++
++u32 inff_bus_reg_readl(struct inff_bus *bus_if, u32 addr, int *err)
++{
++	struct inff_sdio_dev *sdiodev = NULL;
++	u32 val = 0;
++
++	if (!bus_if || !err) {
++		inff_err("bus_if(%p) or err(%p) is null\n", bus_if, err);
++		*err = -EINVAL;
++		return 0;
++	}
++
++	if (!bus_if->bt_if) {
++		*err = -EINVAL;
++		return 0;
++	}
++
++	sdiodev = bus_if->bus_priv.sdio;
++
++	sdio_claim_host(sdiodev->func1);
++	val = inff_sdiod_readl(sdiodev, addr, err);
++	sdio_release_host(sdiodev->func1);
++
++	inff_dbg(SDIO, "addr: 0x%08x, val: 0x%02x, err: %d\n", addr, val, *err);
++
++	if (*err)
++		inff_btsdio_err_reg_record(bus_if->bt_if, ERR_REG_RL, *err, 1, addr, val);
++
++	return val;
++}
++EXPORT_SYMBOL(inff_bus_reg_readl);
++
++void inff_bus_reg_writel(struct inff_bus *bus_if, u32 addr, u32 val, int *err)
++{
++	struct inff_sdio_dev *sdiodev = NULL;
++
++	if (!bus_if || !err) {
++		inff_err("bus_if(%p) or err(%p) is null\n", bus_if, err);
++		*err = -EINVAL;
++		return;
++	}
++
++	if (!bus_if->bt_if) {
++		*err = -EINVAL;
++		return;
++	}
++
++	sdiodev = bus_if->bus_priv.sdio;
++
++	sdio_claim_host(sdiodev->func1);
++	inff_sdiod_writel(sdiodev, addr, val, err);
++	sdio_release_host(sdiodev->func1);
++
++	inff_dbg(SDIO, "addr: 0x%08x, val: 0x%08x, err: %d\n", addr, val, *err);
++
++	if (*err)
++		inff_btsdio_err_reg_record(bus_if->bt_if, ERR_REG_WL, *err, 1, addr, val);
++}
++EXPORT_SYMBOL(inff_bus_reg_writel);
++
++int inff_bus_recv_buf(struct inff_bus *bus_if, u8 *buf, u32 nbytes)
++{
++	struct inff_sdio_dev *sdiodev = NULL;
++	int err = 0;
++
++	if (!bus_if || !buf) {
++		inff_err("bus_if(%p) or buf(%p) is null\n", bus_if, buf);
++		return -EINVAL;
++	}
++
++	if (!bus_if->bt_if)
++		return -EINVAL;
++
++	sdiodev = bus_if->bus_priv.sdio;
++
++	sdio_claim_host(sdiodev->func1);
++	err = inff_sdiod_recv_buf(sdiodev, SDIO_FUNC_3, buf, nbytes);
++	sdio_release_host(sdiodev->func1);
++
++	inff_dbg(DATA, "F3 receive nbytes: %d, err: %d\n", nbytes, err);
++
++	if (err)
++		inff_btsdio_err_buf_record(bus_if->bt_if, ERR_BUF_RD, err, 0);
++
++	return err;
++} EXPORT_SYMBOL(inff_bus_recv_buf);
++
++int inff_bus_send_buf(struct inff_bus *bus_if, u8 *buf, u32 nbytes)
++{
++	struct inff_sdio_dev *sdiodev = NULL;
++	int err = 0;
++
++	if (!bus_if || !buf) {
++		inff_err("bus_if(%p) or buf(%p) is null\n", bus_if, buf);
++		return -EINVAL;
++	}
++
++	if (!bus_if->bt_if)
++		return -EINVAL;
++
++	sdiodev = bus_if->bus_priv.sdio;
++
++	sdio_claim_host(sdiodev->func1);
++	err = inff_sdiod_send_buf(sdiodev, SDIO_FUNC_3, buf, nbytes);
++	sdio_release_host(sdiodev->func1);
++
++	inff_dbg(DATA, "F3 send nbytes: %d, err: %d\n", nbytes, err);
++
++	if (err)
++		inff_btsdio_err_buf_record(bus_if->bt_if, ERR_BUF_WT, err, nbytes);
++
++	return err;
++} EXPORT_SYMBOL(inff_bus_send_buf);
++
++int inff_bus_membytes(struct inff_bus *bus_if, bool set, u32 address, u8 *data, u32 size)
++{
++	struct inff_sdio_dev *sdiodev = NULL;
++	int err = 0;
++	u32 block1_offset = 0;
++	u32 block2_addr = 0;
++	u16 block1_size = 0;
++	u16 block2_size = 0;
++	u8 *block2_data = 0;
++
++	if (!bus_if || !data) {
++		inff_err("bus_if(%p) or data(%p) is null\n", bus_if, data);
++		return -EINVAL;
++	}
++
++	if (!bus_if->bt_if)
++		return -EINVAL;
++
++	sdiodev = bus_if->bus_priv.sdio;
++	sdio_claim_host(sdiodev->func1);
++	do {
++		/* To avoid SDIO access crosses AXI 4k address boundaries crossing */
++		if (((address & SDIOD_ADDR_BOUND_MASK) + size) > SDIOD_ADDR_BOUND) {
++			inff_dbg(SDIO, "data cross 4K boundary\n");
++			/* The 1st 4k packet */
++			block1_offset = address & SDIOD_ADDR_BOUND_MASK;
++			block1_size = (SDIOD_ADDR_BOUND - block1_offset);
++
++			err = inff_sdiod_ramrw(sdiodev, set, address,
++					       data, block1_size);
++			if (err)
++				break;
++
++			/* The 2nd 4k packet */
++			block2_addr = address + block1_size;
++			block2_size = size - block1_size;
++			block2_data = data + block1_size;
++			err = inff_sdiod_ramrw(sdiodev, set, block2_addr,
++					       block2_data, block2_size);
 +		} else {
-+			inff_err("TWT: Setup REQ: flow ID: %d is invalid",
-+				 twt_params.flow_id);
-+			ret = -EINVAL;
-+			goto exit;
++			err = inff_sdiod_ramrw(sdiodev, set, address, data, size);
 +		}
-+		break;
-+	case INFF_TWT_PARAM_NEGO_TYPE_BTWT:
-+		/* Broadcast TWT ID */
-+		val.sdesc.bid = twt_params.bcast_twt_id;
++	} while (false);
++	sdio_release_host(sdiodev->func1);
 +
-+		/* TODO: Handle the Broadcast TWT Setup REQ */
-+		fallthrough;
-+	default:
-+		inff_err("TWT: Setup REQ: Negotiation Type(%s) not handled",
-+			 inff_twt_nego_type_str[twt_params.negotiation_type]);
-+		ret = -EOPNOTSUPP;
-+		goto exit;
-+	}
++	if (err)
++		inff_btsdio_err_mem_record(bus_if->bt_if, err, set, address, size);
 +
-+	/* Setup command */
-+	val.sdesc.setup_cmd = twt_params.setup_cmd;
-+
-+	/* Flow flags */
-+	val.sdesc.flow_flags |= ((twt_params.negotiation_type & 0x02) >> 1 ?
-+				 INFF_TWT_FLOW_FLAG_BROADCAST : 0);
-+	val.sdesc.flow_flags |= (twt_params.implicit ? INFF_TWT_FLOW_FLAG_IMPLICIT : 0);
-+	val.sdesc.flow_flags |= (twt_params.flow_type ? INFF_TWT_FLOW_FLAG_UNANNOUNCED : 0);
-+	val.sdesc.flow_flags |= (twt_params.trigger ? INFF_TWT_FLOW_FLAG_TRIGGER : 0);
-+	val.sdesc.flow_flags |= ((twt_params.negotiation_type & 0x01) ?
-+				 INFF_TWT_FLOW_FLAG_WAKE_TBTT_NEGO : 0);
-+	val.sdesc.flow_flags |= (twt_params.requestor ? INFF_TWT_FLOW_FLAG_REQUEST : 0);
-+	val.sdesc.flow_flags |= (twt_params.protection ? INFF_TWT_FLOW_FLAG_PROTECT : 0);
-+
-+	if (twt_params.twt) {
-+		/* Target Wake Time parameter */
-+		val.sdesc.wake_time_h = cpu_to_le32((u32)(twt_params.twt >> 32));
-+		val.sdesc.wake_time_l = cpu_to_le32((u32)(twt_params.twt));
-+		val.sdesc.wake_type = INFF_TWT_WAKE_TIME_TYPE_BSS;
-+	} else if (twt_params.twt_offset) {
-+		/* Target Wake Time offset parameter */
-+		val.sdesc.wake_time_h = cpu_to_le32((u32)(twt_params.twt_offset >> 32));
-+		val.sdesc.wake_time_l = cpu_to_le32((u32)(twt_params.twt_offset));
-+		val.sdesc.wake_type = INFF_TWT_WAKE_TIME_TYPE_OFFSET;
-+	} else {
-+		/* Let the Firmware choose the Target Wake Time */
-+		val.sdesc.wake_time_h = 0x0;
-+		val.sdesc.wake_time_l = 0x0;
-+		val.sdesc.wake_type = INFF_TWT_WAKE_TIME_TYPE_AUTO;
-+	}
-+
-+	/* Wake Duration or Service Period */
-+	val.sdesc.wake_dur = cpu_to_le32(inff_twt_min_twt_to_wake_dur(twt_params.min_twt,
-+								      twt_params.min_twt_unit));
-+
-+	/* Wake Interval or Service Interval */
-+	val.sdesc.wake_int = cpu_to_le32(inff_twt_float_to_u32(twt_params.exponent,
-+							       twt_params.mantissa));
-+
-+	/* Override Dialog Token passed from userpace with next available value in Driver */
-+	twt_params.dialog_token = inff_twt_get_next_dialog_token();
-+	val.dialog = cpu_to_le16((u16)twt_params.dialog_token);
-+
-+	/* Send the TWT Setup request to Firmware */
-+	ret = inff_fil_xtlv_data_set(ifp, "twt", INFF_TWT_CMD_SETUP,
-+				     (void *)&val, sizeof(val));
-+	if (ret < 0) {
-+		inff_err("TWT: Setup REQ: Failed, Firmware error(%d)", ret);
-+		goto exit;
-+	}
-+
-+	/* Add an entry setup with progress state */
-+	ret = inff_twt_add_sess(ifp, vif->profile.bssid,
-+				INFF_TWT_SESS_STATE_SETUP_INPROGRESS,
-+				&twt_params);
-+	if (ret < 0) {
-+		inff_err("TWT: Setup REQ: Failed to add session");
-+		goto exit;
-+	}
-+
-+	/* Schedule the Cleanup timer to handle Setup Completion timeout */
-+	mod_timer(&ifp->twt_evt_timeout, jiffies + INFF_TWT_EVENT_TIMEOUT);
-+
-+	inff_dbg(TWT, "TWT: Setup REQ: Session %s\n"
-+		 "Dialog Token         : %u\n"
-+		 "Setup command        : %s\n"
-+		 "Flow flags           : 0x %02x\n"
-+		 "Flow ID              : %u\n"
-+		 "Broadcast TWT ID     : %u\n"
-+		 "Wake Time H,L        : 0x %08x %08x\n"
-+		 "Wake Type            : %u\n"
-+		 "Wake Duration        : %u uS\n"
-+		 "Wake Interval        : %u uS\n"
-+		 "Negotiation type     : %s\n",
-+		 inff_twt_sess_state_str[INFF_TWT_SESS_STATE_SETUP_INPROGRESS],
-+		 val.dialog, inff_twt_setup_cmd_str[val.sdesc.setup_cmd],
-+		 val.sdesc.flow_flags, val.sdesc.flow_id, val.sdesc.bid,
-+		 val.sdesc.wake_time_h, val.sdesc.wake_time_l, val.sdesc.wake_type,
-+		 val.sdesc.wake_dur, val.sdesc.wake_int,
-+		 inff_twt_nego_type_str[val.sdesc.negotiation_type]);
-+exit:
-+	return ret;
++	return err;
 +}
++EXPORT_SYMBOL(inff_bus_membytes);
 +
-+/**
-+ * inff_twt_teardown_oper_handler() - Handle the TWT Teardown Operation request from Userspace.
-+ *
-+ * @ifp: interface instance.
-+ * @twt_params: TWT session parameters.
-+ *
-+ * return: 0 on success, value < 0 on failure.
-+ */
-+static s32
-+inff_twt_teardown_oper_handler(struct inff_if *ifp, struct inff_twt_params twt_params)
++int inff_bus_set_blocksz(struct inff_bus *bus_if, u16 blocksz)
 +{
-+	struct inff_twt_teardown_oper val;
-+	struct inff_twt_session *twt_sess = NULL;
-+	s32 ret;
++	struct inff_sdio_dev *sdiodev = NULL;
++	int err = 0;
 +
-+	memset(&val, 0, sizeof(val));
-+	val.version = INFF_TWT_TEARDOWN_VER;
-+	val.length = sizeof(val.version) + sizeof(val.length);
-+
-+	/* TWT Negotiation_type */
-+	val.teardesc.negotiation_type = (u8)twt_params.negotiation_type;
-+
-+	/* Teardown All TWT */
-+	val.teardesc.alltwt = twt_params.teardown_all_twt;
-+	if (val.teardesc.alltwt) {
-+		/* If Teardown all TWT is set, then check if the TWT session is not empty */
-+		if (list_empty(&ifp->twt_sess_list)) {
-+			inff_err("TWT: Teardown REQ: No active TWT sessions");
-+			ret = -EINVAL;
-+			goto exit;
-+		}
-+
-+		/* Reset Flow ID & Bcast TWT ID with a placeholder value */
-+		twt_params.flow_id = 0xFF;
-+		twt_params.bcast_twt_id = 0xFF;
++	if (!bus_if) {
++		inff_err("bus_if is null\n");
++		return -EINVAL;
 +	}
 +
-+	switch (val.teardesc.negotiation_type) {
-+	case INFF_TWT_PARAM_NEGO_TYPE_ITWT:
-+		/* Flow ID */
-+		if ((twt_params.flow_id >= 0x0 && twt_params.flow_id <= 0x7)) {
-+			val.teardesc.flow_id = twt_params.flow_id;
++	if (!bus_if->bt_if)
++		return -EINVAL;
 +
-+			/* Lookup the session list for the requested flow ID */
-+			twt_sess = inff_itwt_lookup_sess_by_flowid(ifp, twt_params.flow_id);
-+			if (!twt_sess ||
-+			    twt_sess->state != INFF_TWT_SESS_STATE_SETUP_COMPLETE) {
-+				inff_err("TWT: Teardown REQ: session(%u) is not active",
-+					 twt_params.flow_id);
-+				ret = -EINVAL;
-+				goto exit;
-+			}
-+		} else if (twt_params.flow_id == 0xFF) {
-+			val.teardesc.flow_id = twt_params.flow_id;
-+		} else {
-+			inff_err("TWT: Teardown REQ: session(%u) is invalid",
-+				 twt_params.flow_id);
-+			ret = -EINVAL;
-+			goto exit;
-+		}
-+		break;
-+	case INFF_TWT_PARAM_NEGO_TYPE_BTWT:
-+		/* Broadcast TWT ID */
-+		val.teardesc.bid = twt_params.bcast_twt_id;
++	inff_dbg(INFO, "set F3 block size to %d\n", blocksz);
 +
-+		/* TODO: Handle the Broadcast TWT Teardown REQ */
-+		fallthrough;
-+	default:
-+		inff_err("TWT: Teardown REQ: Negotiation Type(%s) not handled",
-+			 inff_twt_nego_type_str[twt_params.negotiation_type]);
-+		ret = -EOPNOTSUPP;
-+		goto exit;
-+	}
++	sdiodev = bus_if->bus_priv.sdio;
++	sdio_claim_host(sdiodev->func1);
++	err = sdio_set_block_size(sdiodev->func3, blocksz);
++	sdio_release_host(sdiodev->func1);
++	if (err)
++		inff_err("set F3 block size failed, err: %d\n", err);
 +
-+	/* Send the TWT Teardown request to Firmware */
-+	ret = inff_fil_xtlv_data_set(ifp, "twt", INFF_TWT_CMD_TEARDOWN,
-+				     (void *)&val, sizeof(val));
-+	if (ret < 0) {
-+		inff_err("TWT: Teardown REQ: Failed, Firmware error(%d)", ret);
-+		goto exit;
-+	}
-+
-+	list_for_each_entry(twt_sess, &ifp->twt_sess_list, list) {
-+		/* Skip updating the state of this session to "Teardown inprogress"
-+		 * on one of the following cases
-+		 *	1. The "Teardown all" session action is not requested by userspace.
-+		 *	2. This session's Flow ID is not explcitly requested for Teardown.
-+		 *	3. This session's state is not "setup complete".
-+		 *	   i.e, it is not already active to teardown.
-+		 */
-+		if (!twt_params.teardown_all_twt ||
-+		    twt_params.flow_id != twt_sess->twt_params.flow_id ||
-+		    twt_sess->state != INFF_TWT_SESS_STATE_SETUP_COMPLETE)
-+			continue;
-+
-+		ret = inff_twt_update_sess_state(ifp, twt_sess,
-+						 INFF_TWT_SESS_STATE_TEARDOWN_INPROGRESS,
-+						 "Teardown REQ", twt_params.flow_id);
-+		if (ret)
-+			goto exit;
-+	}
-+
-+	/* Schedule the Cleanup timer to handle Teardown Completion timeout */
-+	mod_timer(&ifp->twt_evt_timeout, jiffies + INFF_TWT_EVENT_TIMEOUT);
-+
-+	inff_dbg(TWT, "TWT: Teardown REQ: Session %s\n"
-+		 "Flow ID              : %u\n"
-+		 "Broadcast TWT ID     : %u\n"
-+		 "Negotiation type     : %s\n"
-+		 "Teardown all TWT     : %u\n",
-+		 inff_twt_sess_state_str[INFF_TWT_SESS_STATE_TEARDOWN_INPROGRESS],
-+		 val.teardesc.flow_id, val.teardesc.bid,
-+		 inff_twt_nego_type_str[val.teardesc.negotiation_type],
-+		 val.teardesc.alltwt);
-+exit:
-+	return ret;
++	return err;
 +}
++EXPORT_SYMBOL(inff_bus_set_blocksz);
 +
-+/**
-+ * inff_twt_oper() - Handle the TWT Operation requests from Userspace.
-+ *
-+ * @wiphy: wiphy object for cfg80211 interface.
-+ * @wdev: wireless device.
-+ * @twt_params: TWT session parameters.
-+ *
-+ * return: 0 on success, value < 0 on failure.
++/* Function to enable the Bus Clock
++ * This function is not callable from non-sleepable context
 + */
-+s32
-+inff_twt_oper(struct wiphy *wiphy, struct wireless_dev *wdev,
-+	      struct inff_twt_params twt_params)
++int inff_bus_clk_enable(struct inff_bus *bus_if)
 +{
-+	struct inff_cfg80211_vif *vif = NULL;
++	struct inff_sdio_dev *sdiodev = NULL;
++	struct inff_bt_if *bt_if = NULL;
++	int err = 0;
++
++	if (!bus_if) {
++		inff_err("bus_if is null\n");
++		return -EINVAL;
++	}
++
++	if (!bus_if->bt_if)
++		return -EINVAL;
++
++	bt_if = bus_if->bt_if;
++	sdiodev = bus_if->bus_priv.sdio;
++
++	sdio_claim_host(sdiodev->func1);
++	bt_if->use_count++;
++	sdio_release_host(sdiodev->func1);
++	err = inff_sdio_sleep(sdiodev->bus, false);
++
++	return err;
++}
++EXPORT_SYMBOL(inff_bus_clk_enable);
++
++/* Function to disable the Bus Clock
++ * This function is not callable from non-sleepable context
++ */
++int inff_bus_clk_disable(struct inff_bus *bus_if)
++{
++	struct inff_sdio_dev *sdiodev = NULL;
++	struct inff_bt_if *bt_if = NULL;
++	int err = 0;
++
++	if (!bus_if) {
++		inff_err("bus_if is null\n");
++		return -EINVAL;
++	}
++
++	if (!bus_if->bt_if)
++		return -EINVAL;
++
++	bt_if = bus_if->bt_if;
++	sdiodev = bus_if->bus_priv.sdio;
++
++	sdio_claim_host(sdiodev->func1);
++	if (bt_if->use_count != 0)
++		bt_if->use_count--;
++	sdio_release_host(sdiodev->func1);
++	err = inff_sdio_sleep(sdiodev->bus, true);
++
++	return err;
++}
++EXPORT_SYMBOL(inff_bus_clk_disable);
++
++static bool inff_btsdio_is_over_sdio(struct inff_bus *bus_if)
++{
++	struct inff_pub *drvr = NULL;
 +	struct inff_if *ifp = NULL;
-+	s32 ret;
++	struct inff_sdio_dev *sdiodev = NULL;
++	u32 bt_over_sdio_hw = 0;
++	int err = 0;
 +
-+	vif = wdev_to_vif(wdev);
-+	if (!vif) {
-+		ret = -EIO;
-+		goto exit;
++	if (!bus_if) {
++		inff_err("bus_if is null\n");
++		return -EINVAL;
 +	}
++	drvr = bus_if->drvr;
++	ifp = inff_get_ifp(drvr, 0);
++	sdiodev = bus_if->bus_priv.sdio;
 +
-+	ifp = vif->ifp;
-+	if (!ifp) {
-+		ret = -EIO;
-+		goto exit;
-+	}
-+
-+	/* Check if TWT feature is supported in the Firmware */
-+	if (!inff_feat_is_enabled(ifp, INFF_FEAT_TWT)) {
-+		inff_err("TWT: REQ: Operation(%s) can't be handled, TWT not enabled on VIF(%s)",
-+			 inff_twt_oper_str[twt_params.twt_oper], inff_ifname(ifp));
-+		ret = -EOPNOTSUPP;
-+		goto exit;
-+	}
-+
-+	/* Check VIF operating Mode */
-+	switch (wdev->iftype) {
-+	case NL80211_IFTYPE_STATION:
-+		if (!test_bit(INFF_VIF_STATUS_CONNECTED, &vif->sme_state)) {
-+			inff_err("TWT: REQ: Operation(%s) invalid when VIF(%s) not connected with WLAN peer",
-+				 inff_twt_oper_str[twt_params.twt_oper], inff_ifname(ifp));
-+			ret = -ENOTCONN;
-+			goto exit;
++	switch (sdiodev->func1->device) {
++	case SDIO_DEVICE_ID_CYPRESS_43022:
++		/* cannot config in OTP */
++		bt_over_sdio_hw = 1;
++		break;
++	case SDIO_DEVICE_ID_CYPRESS_55500:
++		/* should enable feature in OTP */
++		err = inff_fil_iovar_int_get(ifp, "bt_over_sdio", &bt_over_sdio_hw);
++		if (err < 0) {
++			bt_over_sdio_hw = 0;
++			inff_err("failed to get bt_over_sdio\n");
 +		}
-+
-+		break;
-+	case NL80211_IFTYPE_AP:
-+		/* TODO: Handle the TWT operation requests for AP Mode */
-+		fallthrough;
-+	default:
-+		inff_err("TWT: REQ: Operation(%s) not supported on VIF(%s) mode(%u)",
-+			 inff_twt_oper_str[twt_params.twt_oper], inff_ifname(ifp),
-+			 wdev->iftype);
-+		ret = -EOPNOTSUPP;
-+		goto exit;
-+	}
-+
-+	/* TWT Operation */
-+	switch (twt_params.twt_oper) {
-+	case INFF_TWT_OPER_SETUP:
-+		ret = inff_twt_setup_oper_handler(ifp, twt_params);
-+		break;
-+	case INFF_TWT_OPER_TEARDOWN:
-+		ret = inff_twt_teardown_oper_handler(ifp, twt_params);
 +		break;
 +	default:
-+		inff_err("TWT: REQ: Operation(%s) not supported on VIF(%s)",
-+			 inff_twt_oper_str[twt_params.twt_oper], inff_ifname(ifp));
-+		ret = -EOPNOTSUPP;
-+		goto exit;
++		bt_over_sdio_hw = 0;
++		break;
 +	}
-+exit:
-+	return ret;
++
++	inff_dbg(INFO, "Device: %d (SW: %d, HW: %d)\n",
++		 sdiodev->func1->device, sdiodev->settings->bt_over_sdio,
++		 bt_over_sdio_hw);
++
++	if (sdiodev->settings->bt_over_sdio & bt_over_sdio_hw)
++		return true;
++	else
++		return false;
 +}
-diff --git a/drivers/net/wireless/infineon/inffmac/twt.h b/drivers/net/wireless/infineon/inffmac/twt.h
++
++void inff_btsdio_init(struct inff_bus *bus_if)
++{
++	struct inff_sdio_dev *sdiodev = NULL;
++	struct inff_sdio_platform_data *pdata = NULL;
++	struct inff_bt_if *bt_if = NULL;
++
++	inff_dbg(INFO, "Enter\n");
++
++	if (!bus_if) {
++		inff_err("bus_if is null\n");
++		return;
++	}
++	sdiodev = bus_if->bus_priv.sdio;
++	pdata = &sdiodev->settings->bus.sdio;
++
++	if (!inff_btsdio_is_over_sdio(bus_if)) {
++		inff_err("bt over uart\n");
++		return;
++	}
++
++	/* Allocate bt dev */
++	bt_if = kzalloc(sizeof(*bt_if), GFP_ATOMIC);
++	if (!bt_if)
++		return;
++
++	glob_bus_if = bus_if;
++	bus_if->bt_if = bt_if;
++
++	/* Initialize error list */
++	INIT_LIST_HEAD(&bt_if->err_list);
++	spin_lock_init(&bt_if->err_list_lock);
++
++	/* 43022: set bt reset by bt driver
++	 * 55500: set bt reset by wl driver if hw enable bt over sdio
++	 */
++	if (sdiodev->func1->device == SDIO_DEVICE_ID_CYPRESS_55500)
++		bt_if->set_bt_reset = true;
++
++	sdio_claim_host(sdiodev->func1);
++	/* register interrupt */
++	if (!pdata->oob_irq_supported) {
++		inff_dbg(INFO, "register F3 ib irq\n");
++		sdio_claim_irq(sdiodev->func3, inff_btsdio_int_handler);
++	}
++	sdio_release_host(sdiodev->func1);
++
++	inff_dbg(INFO, "init version (%d.%d.%d) done\n",
++		 BTS_VER_MAJOR, BTS_VER_MINOR, BTS_VER_PATCH);
++}
++
++void inff_btsdio_deinit(struct inff_bus *bus_if)
++{
++	struct inff_sdio_dev *sdiodev = NULL;
++	struct inff_sdio_platform_data *pdata = NULL;
++
++	inff_dbg(INFO, "Enter\n");
++
++	if (!bus_if) {
++		inff_err("bus_if is null\n");
++		return;
++	}
++
++	if (!bus_if->bt_if)
++		return;
++
++	sdiodev = bus_if->bus_priv.sdio;
++	pdata = &sdiodev->settings->bus.sdio;
++
++	/* unregister interrupt */
++	sdio_claim_host(sdiodev->func1);
++	if (!pdata->oob_irq_supported) {
++		inff_dbg(INFO, "release F3 ib irq\n");
++		sdio_release_irq(sdiodev->func3);
++	}
++	sdio_release_host(sdiodev->func1);
++
++	inff_bus_detach(bus_if);
++
++	/* Free all error info */
++	inff_btsdio_err_free_all(bus_if->bt_if);
++
++	/* Free bt dev */
++	kfree(bus_if->bt_if);
++
++	bus_if->bt_if = NULL;
++	glob_bus_if = NULL;
++
++	inff_dbg(INFO, "deinit done\n");
++}
++
++void inff_btsdio_debugfs_create(struct inff_pub *drvr)
++{
++	inff_debugfs_add_entry(drvr, "bts_info", inff_btsdio_debugfs_read);
++}
+diff --git a/drivers/net/wireless/infineon/inffmac/bt_shared_sdio.h b/drivers/net/wireless/infineon/inffmac/bt_shared_sdio.h
 new file mode 100644
-index 000000000000..a7aa672ceb75
+index 000000000000..0e5d3d7b8783
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/twt.h
-@@ -0,0 +1,334 @@
++++ b/drivers/net/wireless/infineon/inffmac/bt_shared_sdio.h
+@@ -0,0 +1,35 @@
 +/* SPDX-License-Identifier: ISC */
 +/*
 + * Copyright (c) 2023-2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
-+#ifndef INFF_TWT_H
-+#define INFF_TWT_H
++#ifndef	INFF_BT_SHARED_SDIO_H
++#define	INFF_BT_SHARED_SDIO_H
 +
-+#include <linux/sched.h>
-+#include <linux/jiffies.h>
-+#include "vendor_inf.h"
-+#include "core.h"
++#ifdef CONFIG_INFFMAC_BT_SHARED_SDIO
 +
-+/* Min TWT Default Unit */
-+#define WAKE_DUR_UNIT_DEF 256
-+/* Min TWT Unit in TUs */
-+#define WAKE_DUR_UNIT_TU 1024
++bool inff_btsdio_inited(struct inff_bus *bus_if);
++bool inff_btsdio_is_active(struct inff_bus *bus_if);
++bool inff_btsdio_set_bt_reset(struct inff_bus *bus_if);
 +
-+#define INFF_TWT_EVENT_TIMEOUT	msecs_to_jiffies(3000)
-+/**
-+ * enum inff_twt_cmd - TWT iovar subcmds handled by firmware TWT module
-+ *
-+ * @INFF_TWT_CMD_ENAB: Enable the firmware TWT module.
-+ * @INFF_TWT_CMD_SETUP: Setup a TWT session with a TWT peer.
-+ * @INFF_TWT_CMD_TEARDOWN: Teardown the active TWT session with a TWT peer.
-+ */
-+enum inff_twt_cmd {
-+	INFF_TWT_CMD_ENAB,
-+	INFF_TWT_CMD_SETUP,
-+	INFF_TWT_CMD_TEARDOWN,
-+};
++int inff_bus_attach(u32 ver, void *info);
++void inff_bus_detach(struct inff_bus *bus_if);
++u8 inff_bus_reg_readb(struct inff_bus *bus_if, u8 fn, u32 addr, int *err);
++void inff_bus_reg_writeb(struct inff_bus *bus_if, u8 fn, u32 addr, u8 val, int *err);
++u32 inff_bus_reg_readl(struct inff_bus *bus_if, u32 addr, int *err);
++void inff_bus_reg_writel(struct inff_bus *bus_if, u32 addr, u32 val, int *err);
++int inff_bus_recv_buf(struct inff_bus *bus_if, u8 *buf, u32 nbytes);
++int inff_bus_send_buf(struct inff_bus *bus_if, u8 *buf, u32 nbytes);
++int inff_bus_membytes(struct inff_bus *bus_if, bool set, u32 address, u8 *data, u32 size);
++int inff_bus_set_blocksz(struct inff_bus *bus_if, u16 blocksz);
++int inff_bus_clk_enable(struct inff_bus *bus_if);
++int inff_bus_clk_disable(struct inff_bus *bus_if);
 +
-+/* TWT iovar subcmd version */
-+#define INFF_TWT_SETUP_VER	0u
-+#define INFF_TWT_TEARDOWN_VER	0u
++void inff_btsdio_init(struct inff_bus *bus_if);
++void inff_btsdio_deinit(struct inff_bus *bus_if);
++void inff_btsdio_debugfs_create(struct inff_pub *drvr);
 +
-+/**
-+ * enum inff_twt_flow_flag - TWT flow flags to be used in TWT iovar setup subcmd
-+ *
-+ * @INFF_TWT_FLOW_FLAG_BROADCAST: Broadcast TWT Session.
-+ * @INFF_TWT_FLOW_FLAG_IMPLICIT: Implcit TWT session type.
-+ * @INFF_TWT_FLOW_FLAG_UNANNOUNCED: Unannounced TWT session type.
-+ * @INFF_TWT_FLOW_FLAG_TRIGGER: Trigger based TWT Session type.
-+ * @INFF_TWT_FLOW_FLAG_WAKE_TBTT_NEGO: Wake TBTT Negotiation type.
-+ * @INFF_TWT_FLOW_FLAG_REQUEST: TWT Session setup requestor.
-+ * @INFF_TWT_FLOW_FLAG_RESPONDER_PM: Not used.
-+ * @INFF_TWT_FLOW_FLAG_UNSOLICITED: Unsolicited TWT Session Setup.
-+ * @INFF_TWT_FLOW_FLAG_PROTECT: Specifies whether Tx within SP is protected, Not used.
-+ */
-+enum inff_twt_flow_flag {
-+	INFF_TWT_FLOW_FLAG_BROADCAST      = BIT(0),
-+	INFF_TWT_FLOW_FLAG_IMPLICIT       = BIT(1),
-+	INFF_TWT_FLOW_FLAG_UNANNOUNCED    = BIT(2),
-+	INFF_TWT_FLOW_FLAG_TRIGGER        = BIT(3),
-+	INFF_TWT_FLOW_FLAG_WAKE_TBTT_NEGO = BIT(4),
-+	INFF_TWT_FLOW_FLAG_REQUEST        = BIT(5),
-+	INFF_TWT_FLOW_FLAG_RESPONDER_PM   = BIT(6),
-+	INFF_TWT_FLOW_FLAG_UNSOLICITED    = BIT(7),
-+	INFF_TWT_FLOW_FLAG_PROTECT        = BIT(8)
-+};
++#endif /* CONFIG_INFFMAC_BT_SHARED_SDIO */
 +
-+/**
-+ * enum inff_twt_session_state - TWT session state in the Host driver list
-+ *
-+ * @INFF_TWT_SESS_STATE_UNSPEC: Reserved value 0.
-+ * @INFF_TWT_SESS_STATE_SETUP_INPROGRESS: TWT session setup request was sent
-+ *	to the Firmware.
-+ * @INFF_TWT_SESS_STATE_SETUP_INCOMPLETE: TWT session setup is incomplete,
-+ *	because either the TWT peer did not send a response, or sent a Reject
-+ *	response driver received a Reject Setup event from the Firmware.
-+ * @INFF_TWT_SESS_STATE_SETUP_COMPLETE: TWT session setup is complete and received
-+ *	setup event from the Firmware.
-+ * @INFF_TWT_SESS_STATE_TEARDOWN_INPROGRESS: TWT session teardown request was sent
-+ *	to the Firmware.
-+ * @INFF_TWT_SESS_STATE_TEARDOWN_INCOMPLETE: TWT session teardown event timed out.
-+ * @INFF_TWT_SESS_STATE_TEARDOWN_COMPLETE: TWT session teardown is complete and
-+ *	received Teardown event from the Firmware.
-+ * @INFF_TWT_SESS_STATE_MAX: This acts as a the tail of state list.
-+ *      Make sure it located at the end of the list.
-+ */
-+enum inff_twt_session_state {
-+	INFF_TWT_SESS_STATE_UNSPEC,
-+	INFF_TWT_SESS_STATE_SETUP_INPROGRESS,
-+	INFF_TWT_SESS_STATE_SETUP_INCOMPLETE,
-+	INFF_TWT_SESS_STATE_SETUP_COMPLETE,
-+	INFF_TWT_SESS_STATE_TEARDOWN_INPROGRESS,
-+	INFF_TWT_SESS_STATE_TEARDOWN_INCOMPLETE,
-+	INFF_TWT_SESS_STATE_TEARDOWN_COMPLETE,
-+	INFF_TWT_SESS_STATE_MAX
-+};
-+
-+/**
-+ * struct inff_twt_params - TWT session parameters
-+ *
-+ * @twt_oper: TWT operation, Refer enum inff_twt_oper.
-+ * @negotiation_type: Negotiation Type, Refer enum inff_twt_param_nego_type.
-+ * @setup_cmd: Setup cmd, Refer enum inff_twt_oper_setup_cmd_type.
-+ * @dialog_token: TWT Negotiation Dialog Token.
-+ * @twt: Target Wake Time.
-+ * @twt_offset: Target Wake Time Offset.
-+ * @min_twt: Nominal Minimum Wake Duration.
-+ * @exponent: Wake Interval Exponent.
-+ * @mantissa: Wake Interval Mantissa.
-+ * @requestor: TWT Session requestor or responder.
-+ * @implicit: implicit or Explicit TWT session.
-+ * @flow_type: Announced or Un-Announced TWT session.
-+ * @flow_id: Flow ID.
-+ * @bcast_twt_id: Broadcast TWT ID.
-+ * @protection: Protection, Not used.
-+ * @twt_channel: TWT Channel, Not used.
-+ * @twt_info_frame_disabled: TWT information frame disabled, Not used.
-+ * @min_twt_unit: Nominal Minimum Wake Duration Unit.
-+ * @teardown_all_twt: Teardown All TWT.
-+ */
-+struct inff_twt_params {
-+	enum inff_twt_oper twt_oper;
-+	enum inff_twt_param_nego_type negotiation_type;
-+	enum inff_twt_oper_setup_cmd_type setup_cmd;
-+	u8 dialog_token;
-+	u64 twt;
-+	u64 twt_offset;
-+	u8 min_twt;
-+	u8 exponent;
-+	u16 mantissa;
-+	u8 requestor;
-+	u8 trigger;
-+	u8 implicit;
-+	u8 flow_type;
-+	u8 flow_id;
-+	u8 bcast_twt_id;
-+	u8 protection;
-+	u8 twt_channel;
-+	u8 twt_info_frame_disabled;
-+	u8 min_twt_unit;
-+	u8 teardown_all_twt;
-+};
-+
-+/**
-+ * struct inff_twt_session - TWT session structure.
-+ *
-+ * @ifidx: interface index.
-+ * @bsscfgidx: bsscfg index.
-+ * @peer: TWT peer address.
-+ * @state: TWT session state, refer enum inff_twt_session_state.
-+ * @twt_params: TWT session parameters.
-+ * @oper_req_ts: TWT session operation (setup, teardown, etc..) start timestamp.
-+ * @list: linked list.
-+ */
-+struct inff_twt_session {
-+	u8 ifidx;
-+	s32 bsscfgidx;
-+	struct ether_addr peer_addr;
-+	enum inff_twt_session_state state;
-+	struct inff_twt_params twt_params;
-+	unsigned long oper_start_ts;
-+	struct list_head list;
-+};
-+
-+/**
-+ * enum inff_twt_wake_time_type - Type of the struct members wake_time_{h/l} in the
-+ *	TWT Setup descriptor struct inff_twt_sdesc.
-+ *
-+ * @INFF_TWT_WAKE_TIME_TYPE_BSS: wake_time_{h/l} is the BSS TSF tiume.
-+ * @INFF_TWT_WAKE_TIME_TYPE_OFFSET: wake_time_{h/l} is an offset of TSF time
-+ *	when the iovar is processed.
-+ * @INFF_TWT_WAKE_TIME_TYPE_AUTO: The target wake time is chosen internally by the Firmware.
-+ */
-+enum inff_twt_wake_time_type {
-+	INFF_TWT_WAKE_TIME_TYPE_BSS,
-+	INFF_TWT_WAKE_TIME_TYPE_OFFSET,
-+	INFF_TWT_WAKE_TIME_TYPE_AUTO
-+};
-+
-+/**
-+ * struct inff_twt_sdesc - TWT Setup Descriptor.
-+ *
-+ * @setup_cmd: Setup command and event type. Refer enum inff_twt_oper_setup_cmd_type.
-+ * @flow_flags: Flow attributes, Refer enum inff_twt_flow_flag.
-+ * @flow_id: Flow ID, Range 0-7. Set to 0xFF for auto assignment.
-+ * @wake_type: wake_time_{h/l} type, Refer enum inff_twt_wake_time_type.
-+ * @wake_time_h: Target Wake Time, high 32 bits.
-+ * @wake_time_l: Target Wake Time, Low 32 bits.
-+ * @wake_dur: Target Wake Duration in unit of uS.
-+ * @wake_int: Target Wake Interval.
-+ * @btwt_persistence: Broadcast TWT Persistence.
-+ * @wake_int_max: Max Wake interval(uS) for TWT.
-+ * @duty_cycle_min: Min Duty cycle for TWT(Percentage).
-+ * @pad: 1 byte pad.
-+ * @bid: Brodacst TWT ID, Range 0-31. Set to 0xFF for auto assignment.
-+ * @channel: TWT channel - Not used.
-+ * @negotiation_type: Negotiation Type, Refer enum inff_twt_param_nego_type.
-+ * @frame_recomm: Frame recommendation for broadcast TWTs - Not used.
-+ */
-+struct inff_twt_sdesc {
-+	u8 setup_cmd;
-+	u8 flow_flags;
-+	u8 flow_id;
-+	u8 wake_type;
-+	u32 wake_time_h;
-+	u32 wake_time_l;
-+	u32 wake_dur;
-+	u32 wake_int;
-+	u32 btwt_persistence;
-+	u32 wake_int_max;
-+	u8 duty_cycle_min;
-+	u8 pad;
-+	u8 bid;
-+	u8 channel;
-+	u8 negotiation_type;
-+	u8 frame_recomm;
-+};
-+
-+/**
-+ * struct inff_twt_setup_event - TWT Setup Completion event data from firmware TWT module
-+ *
-+ * @version: Structure version.
-+ * @length:the byte count of fields from 'dialog' onwards.
-+ * @dialog: the dialog token user supplied to the TWT setup API.
-+ * @pad: 3 byte Pad.
-+ * @status: Event status.
-+ */
-+struct inff_twt_setup_event {
-+	u16 version;
-+	u16 length;
-+	u8 dialog;
-+	u8 pad[3];
-+	s32 status;
-+	/* enum inff_twt_sdesc sdesc; */
-+};
-+
-+/**
-+ * struct inff_twt_setup_oper - TWT iovar Setup operation subcmd data to firmware TWT module
-+ *
-+ * @version: Structure version.
-+ * @length: data length (starting after this field).
-+ * @peer: TWT peer address.
-+ * @pad: 2 byte Pad.
-+ * @sdesc: TWT setup descriptor.
-+ */
-+struct inff_twt_setup_oper {
-+	u16 version;
-+	u16 length;
-+	struct ether_addr peer;
-+	u8 pad[2];
-+	struct inff_twt_sdesc sdesc;
-+	u16 dialog;
-+};
-+
-+/**
-+ * struct inff_twt_teardesc - TWT Teardown descriptor.
-+ *
-+ * @negotiation_type: Negotiation Type: Refer enum inff_twt_param_nego_type.
-+ * @flow_id: Flow ID: Range 0-7. Set to 0xFF for auto assignment.
-+ * @bid: Brodacst TWT ID: Range 0-31. Set to 0xFF for auto assignment.
-+ * @alltwt: Teardown all TWT sessions: set to 0 or 1.
-+ */
-+struct inff_twt_teardesc {
-+	u8 negotiation_type;
-+	u8 flow_id;
-+	u8 bid;
-+	u8 alltwt;
-+};
-+
-+/**
-+ * struct inff_twt_teardown_event - TWT Teardown Completion event data from firmware TWT module.
-+ *
-+ * @version: structure version.
-+ * @length: the byte count of fields from 'status' onwards.
-+ * @status: Event status.
-+ */
-+struct inff_twt_teardown_event {
-+	u16 version;
-+	u16 length;
-+	s32 status;
-+	/* enum inff_twt_teardesc teardesc; */
-+};
-+
-+/**
-+ * struct inff_twt_teardown_oper - TWT iovar Teardown operation subcmd data to firmware TWT module.
-+ *
-+ * @version: structure version.
-+ * @length: data length (starting after this field).
-+ * @peer: TWT peer address.
-+ * @teardesc: TWT Teardown descriptor.
-+ */
-+struct inff_twt_teardown_oper {
-+	u16 version;
-+	u16 length;
-+	struct ether_addr peer;
-+	struct inff_twt_teardesc teardesc;
-+};
-+
-+/**
-+ * inff_twt_debugfs_create() - create debugfs entries.
-+ *
-+ * @drvr: driver instance.
-+ */
-+void inff_twt_debugfs_create(struct inff_pub *drvr);
-+
-+/**
-+ * inff_twt_cleanup_all_sess - Cleanup all TWT sessions from the driver list.
-+ *
-+ * @ifp: interface instatnce.
-+ */
-+s32 inff_twt_cleanup_all_sess(struct inff_if *ifp);
-+
-+/**
-+ * inff_twt_event_timeout_handler - Iterate the session list and handle stale
-+ *	TWT session entries which are failed to move to next state in FSM.
-+ */
-+void inff_twt_event_timeout_handler(struct timer_list *t);
-+
-+/**
-+ * inff_notify_twt_event() - Handle the TWT Event notifications from Firmware.
-+ *
-+ * @ifp: interface instatnce.
-+ * @e: event message.
-+ * @data: payload of message, contains TWT session data.
-+ */
-+int inff_notify_twt_event(struct inff_if *ifp, const struct inff_event_msg *e,
-+			  void *data);
-+
-+/**
-+ * inff_twt_oper() - Handle the TWT Operation requests from Userspace.
-+ *
-+ * @wiphy: wiphy object for cfg80211 interface.
-+ * @wdev: wireless device.
-+ * @twt_params: TWT session parameters.
-+ */
-+int inff_twt_oper(struct wiphy *wiphy, struct wireless_dev *wdev,
-+		  struct inff_twt_params twt_params);
-+
-+#endif /* INFF_TWT_H */
++#endif /* INFF_BT_SHARED_SDIO_H */
 -- 
 2.25.1
 
