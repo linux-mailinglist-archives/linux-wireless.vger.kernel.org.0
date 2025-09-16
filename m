@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-27382-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27383-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F874B7DBA5
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:33:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2EFB7DD3C
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2B8C460EFC
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:25:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C63C3B0D3F
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C842E0415;
-	Tue, 16 Sep 2025 22:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1769531BC8C;
+	Tue, 16 Sep 2025 22:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="HEo6qvGE"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="Fg5XuR8k"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp2.infineon.com (smtp2.infineon.com [217.10.52.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C747230C620
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5842D2E2DF2
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758061512; cv=none; b=jl/0zNFDU3rO6mVKiKV0bz7p8Bdi5MAetH5MN7ccJaWt0WHMyjS6zw8jm6IPUaa1r93Ki7T//Nj6bk6+K/+cB02a+/efd2ntSngkkAvM0BN7DE7fpqHuEcdhKd5q9DS7v/68qiRmtf7vkm/vgMkkkrDuKQm+PXe+y3ri/dCxxRI=
+	t=1758061525; cv=none; b=k7nt5clRXq4bsErjp6R+vv/hxOpYUItPYz4ctOrfZeNKciSAzimbh6xsy68RDXr5YKjJXyt7ZlxyIpHYbTW9j4mD3LDETk+j8T8e87QT/KuxWIH4ZGpo/l2RzPzXYR1IenBXj4n5KOGrtc+Pl9qmL9+OqnyOpA50xMNcM0DQ6Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758061512; c=relaxed/simple;
-	bh=cCfw8t7BMiaqGq9T2dpGRIKljpRqWKfuDObqwGvtwGs=;
+	s=arc-20240116; t=1758061525; c=relaxed/simple;
+	bh=tpdlspHGXbn4hwcBir9tmA/04TlpvObByPz8Tqa53Q8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sa9Vl/+TC7J8pJ96a7DZNV1ORc+p1Ap7R802kDuG4VcM7ZUkTpVVZy3qRBlWI29dEduthgZrjXa5WN4NZzZP8u7q8YCuLFHtILjaM+vLa2DnfK+OEuOaclcJvIgmt6g5idkAKB9rS0cCgQUD5eYtcsebHoHspY+sorQVD3dvl5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=HEo6qvGE; arc=none smtp.client-ip=217.10.52.18
+	 MIME-Version:Content-Type; b=hXd1aRfHc4u90VQ0AEx4IyX7ifSvIJFTAmjbqsKSBLwtnVLl6WUvrJsSGPh5fAPtoTewmHH9N6iV44mOStenlNyadiKjJt6Cnr4DYDIOG7IJfalsBSrj9u59hnTVbHYNyw/W2PBzm71UkvJi+PFQ0aeg6rZNkXnd1wnqL+1Ii1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=Fg5XuR8k; arc=none smtp.client-ip=217.10.52.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1758061509; x=1789597509;
+  t=1758061522; x=1789597522;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=cCfw8t7BMiaqGq9T2dpGRIKljpRqWKfuDObqwGvtwGs=;
-  b=HEo6qvGEuWkywSvjTSYKDzv/bQ3aDCPPgNij2VHaH+2jJrqodQDvCuBg
-   CpUA5AbZYNj5NrHXO/TL8V58q7ljYJDVtK/VRncp3/dqGXa8ufn7wpRWQ
-   uPf1HzkB9mHGAukihOflr42POJNFoIlPFK3apCI6zKP/qDj4iDueOGJy0
-   c=;
-X-CSE-ConnectionGUID: nYkt4fPhTNaOAOctD/8wtg==
-X-CSE-MsgGUID: cA+RvGHwQseoTteL+S9SHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="125093608"
+  bh=tpdlspHGXbn4hwcBir9tmA/04TlpvObByPz8Tqa53Q8=;
+  b=Fg5XuR8kb82W1TwV8iSw1gcSbBszKoyABgNLD9Se+W461HNMbiu8x9Wm
+   54AQOXqp6hrcpEGTKhCdbcmNRdCmRbdTWzevx52mIgYjp7p4r+xg8bJc3
+   32rkl/jW1ZkZrVumccN4DrYzo4ILPL+wKst4jbQycliKP5VfFW6jQ6sna
+   Y=;
+X-CSE-ConnectionGUID: MbM4tY1CQ2S5q7jp0CSUgg==
+X-CSE-MsgGUID: jFJzoeP+RWu9rwZWfp9MCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="125093618"
 X-IronPort-AV: E=Sophos;i="6.18,270,1751234400"; 
-   d="scan'208";a="125093608"
+   d="scan'208";a="125093618"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE814.infineon.com) ([172.23.29.40])
-  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:25:07 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE814.infineon.com
- (172.23.29.40) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE812.infineon.com) ([172.23.29.38])
+  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:25:19 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE812.infineon.com
+ (172.23.29.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Wed, 17 Sep
- 2025 00:25:06 +0200
+ 2025 00:25:19 +0200
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.36; Wed, 17 Sep 2025 00:25:03 +0200
+ 15.2.1748.36; Wed, 17 Sep 2025 00:25:16 +0200
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>, Johannes Berg
 	<johannes@sipsolutions.net>
 CC: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
 	<wlan-kernel-dev-list@infineon.com>
-Subject: [PATCH wireless-next 27/57] wifi: inffmac: add firmware.c/h
-Date: Wed, 17 Sep 2025 03:47:47 +0530
-Message-ID: <20250916221821.4387-33-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next 28/57] wifi: inffmac: add feature.c/h
+Date: Wed, 17 Sep 2025 03:47:48 +0530
+Message-ID: <20250916221821.4387-34-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
 References: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
@@ -76,1123 +76,579 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE819.infineon.com (172.23.29.45) To
+X-ClientProxiedBy: MUCSE806.infineon.com (172.23.29.32) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Driver implementation for handling various types of Device firmware files
-like binaries, NVRAM, CLM BLOB.
+Driver implementation to detect and maintain the feature capabilities of
+the currently loaded Device firmware. All other driver source files
+utilizes these firmware feature flags for finding if the firmware is
+supporting a specific operation or functionality.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- .../net/wireless/infineon/inffmac/firmware.c  | 983 ++++++++++++++++++
- .../net/wireless/infineon/inffmac/firmware.h  | 108 ++
- 2 files changed, 1091 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/inffmac/firmware.c
- create mode 100644 drivers/net/wireless/infineon/inffmac/firmware.h
+ .../net/wireless/infineon/inffmac/feature.c   | 377 ++++++++++++++++++
+ .../net/wireless/infineon/inffmac/feature.h   | 168 ++++++++
+ 2 files changed, 545 insertions(+)
+ create mode 100644 drivers/net/wireless/infineon/inffmac/feature.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/feature.h
 
-diff --git a/drivers/net/wireless/infineon/inffmac/firmware.c b/drivers/net/wireless/infineon/inffmac/firmware.c
+diff --git a/drivers/net/wireless/infineon/inffmac/feature.c b/drivers/net/wireless/infineon/inffmac/feature.c
 new file mode 100644
-index 000000000000..9ea05c1119d7
+index 000000000000..dcc6e0d93686
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/firmware.c
-@@ -0,0 +1,983 @@
++++ b/drivers/net/wireless/infineon/inffmac/feature.c
+@@ -0,0 +1,377 @@
 +// SPDX-License-Identifier: ISC
 +/*
-+ * Copyright (c) 2013 Broadcom Corporation
++ * Copyright (c) 2014 Broadcom Corporation
 + *
 + * Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
-+#include <linux/efi.h>
-+#include <linux/kernel.h>
-+#include <linux/slab.h>
-+#include <linux/device.h>
-+#include <linux/firmware.h>
++#include <linux/netdevice.h>
 +#include <linux/module.h>
-+#include <linux/bcm47xx_nvram.h>
 +
-+#include "debug.h"
-+#include "firmware.h"
++#include "hw_ids.h"
 +#include "core.h"
++#include "bus.h"
++#include "debug.h"
++#include "fwil.h"
++#include "fwil_types.h"
++#include "feature.h"
 +#include "common.h"
-+#include "chip.h"
++#include "xtlv.h"
++#include "twt.h"
 +
-+#define INFF_FW_MAX_NVRAM_SIZE			64000
-+#define INFF_FW_NVRAM_DEVPATH_LEN		19	/* devpath0=pcie/1/4/ */
-+#define INFF_FW_NVRAM_PCIEDEV_LEN		20	/* pcie/1/4/ + \0 */
-+#define INFF_FW_DEFAULT_BOARDREV		"boardrev=0xff"
-+#define INFF_FW_MACADDR_FMT			"macaddr=%pM"
-+#define INFF_FW_MACADDR_LEN			(7 + ETH_ALEN * 3)
++static const char * const inff_feat_names[] = {
++	"MBSS",
++	"MCHAN",
++	"PNO",
++	"WOWL",
++	"P2P",
++	"RSDB",
++	"TDLS",
++	"SCAN_RANDOM_MAC",
++	"WOWL_ND",
++	"WOWL_GTK",
++	"WOWL_ARP_ND",
++	"MFP",
++	"GSCAN",
++	"FWSUP",
++	"MONITOR",
++	"MONITOR_FLAG",
++	"MONITOR_FMT_RADIOTAP",
++	"MONITOR_FMT_HW_RX_HDR",
++	"DOT11H",
++	"SAE",
++	"FWAUTH",
++	"DUMP_OBSS",
++	"SCAN_V2",
++	"PMKID_V2",
++	"PMKID_V3",
++	"SURVEY_DUMP",
++	"SAE_EXT",
++	"FBT",
++	"OKC",
++	"GCMP",
++	"TWT",
++	"OFFLOADS",
++	"ULP",
++	"PROPTXSTATUS",
++	"OWE",
++	"WLAN_SENSE",
++	"FTM",
++	"GTKO",
++	"MCHAN_CONFIG",
++	"MLO",
++	"LAST"
++};
 +
-+enum nvram_parser_state {
-+	ST_IDLE,
-+	ST_KEY,
-+	ST_VALUE,
-+	ST_COMMENT,
-+	ST_END
++struct inff_feat_fwcap {
++	enum inff_feat_id feature;
++	const char * const fwcap_id;
++};
++
++static const struct inff_feat_fwcap inff_fwcap_map[] = {
++	{ INFF_FEAT_MBSS, "mbss" },
++	{ INFF_FEAT_MCHAN, "mchan" },
++	{ INFF_FEAT_P2P, "p2p" },
++	{ INFF_FEAT_MONITOR, "monitor" },
++	{ INFF_FEAT_MONITOR_FLAG, "rtap" },
++	{ INFF_FEAT_MONITOR_FMT_RADIOTAP, "rtap" },
++	{ INFF_FEAT_DOT11H, "802.11h" },
++	{ INFF_FEAT_SAE, "sae " },
++	{ INFF_FEAT_FWAUTH, "idauth" },
++	{ INFF_FEAT_SAE_EXT, "sae_ext " },
++	{ INFF_FEAT_FBT, "fbt " },
++	{ INFF_FEAT_OKC, "okc" },
++	{ INFF_FEAT_GCMP, "gcmp" },
++	{ INFF_FEAT_OFFLOADS, "offloads" },
++	{ INFF_FEAT_ULP, "ulp" },
++	{ INFF_FEAT_PROPTXSTATUS, "proptxstatus" },
++	{ INFF_FEAT_OWE, "owe" },
++	{ INFF_FEAT_WLAN_SENSE, "wlan_sense" },
++	{ INFF_FEAT_FTM, "ftm" },
++	{ INFF_FEAT_GTKO, "gtko" },
++	{ INFF_FEAT_MCHAN_CONFIG, "mchan_config" },
++	{ INFF_FEAT_MLO, "mlo" },
++};
++
++#ifdef DEBUG
++static const char * const inff_quirk_names[] = {
++	"QUIRK_AUTO_AUTH",
++	"QUIRK_NEED_MPC",
++	"QUIRK_LAST"
 +};
 +
 +/**
-+ * struct nvram_parser - internal info for parser.
++ * inff_feat_debugfs_read() - expose feature info to debugfs.
 + *
-+ * @state: current parser state.
-+ * @data: input buffer being parsed.
-+ * @nvram: output buffer with parse result.
-+ * @nvram_len: length of parse result.
-+ * @line: current line.
-+ * @column: current column in line.
-+ * @pos: byte offset in input buffer.
-+ * @entry: start position of key,value entry.
-+ * @multi_dev_v1: detect pcie multi device v1 (compressed).
-+ * @multi_dev_v2: detect pcie multi device v2.
-+ * @boardrev_found: nvram contains boardrev information.
-+ * @strip_mac: strip the MAC address.
++ * @seq: sequence for debugfs entry.
++ * @data: raw data pointer.
 + */
-+struct nvram_parser {
-+	enum nvram_parser_state state;
-+	const u8 *data;
-+	u8 *nvram;
-+	u32 nvram_len;
-+	u32 line;
-+	u32 column;
-+	u32 pos;
-+	u32 entry;
-+	bool multi_dev_v1;
-+	bool multi_dev_v2;
-+	bool boardrev_found;
-+	bool strip_mac;
-+};
-+
-+/*
-+ * is_nvram_char() - check if char is a valid one for NVRAM entry
-+ *
-+ * It accepts all printable ASCII chars except for '#' which opens a comment.
-+ * Please note that ' ' (space) while accepted is not a valid key name char.
-+ */
-+static bool is_nvram_char(char c)
++static int inff_feat_debugfs_read(struct seq_file *seq, void *data)
 +{
-+	/* comment marker excluded */
-+	if (c == '#')
-+		return false;
++	struct inff_bus *bus_if = dev_get_drvdata(seq->private);
++	u8 feats[DIV_ROUND_UP(INFF_FEAT_LAST, 8)] = {0};
++	u32 quirks = bus_if->drvr->chip_quirks;
++	int id, i;
++	u8 size = INFF_FEAT_LAST / 8;
 +
-+	/* key and value may have any other readable character */
-+	return (c >= 0x20 && c < 0x7f);
-+}
++	memcpy(feats, bus_if->drvr->feat_flags, sizeof(feats));
 +
-+static bool is_whitespace(char c)
-+{
-+	return (c == ' ' || c == '\r' || c == '\n' || c == '\t');
-+}
++	seq_puts(seq, "Features: ");
++	for (i = 0; i < size; i++)
++		seq_printf(seq, "%02x", feats[i]);
++	seq_puts(seq, "\n");
 +
-+static enum nvram_parser_state inff_nvram_handle_idle(struct nvram_parser *nvp)
-+{
-+	char c;
++	for (id = 0; id < INFF_FEAT_LAST; id++)
++		if (feats[id / 8] & BIT(id % 8))
++			seq_printf(seq, "\t%s\n", inff_feat_names[id]);
 +
-+	c = nvp->data[nvp->pos];
-+	if (c == '\n')
-+		return ST_COMMENT;
-+	if (is_whitespace(c) || c == '\0')
-+		goto proceed;
-+	if (c == '#')
-+		return ST_COMMENT;
-+	if (is_nvram_char(c)) {
-+		nvp->entry = nvp->pos;
-+		return ST_KEY;
-+	}
-+	inff_dbg(INFO, "warning: ln=%d:col=%d: ignoring invalid character\n",
-+		 nvp->line, nvp->column);
-+proceed:
-+	nvp->column++;
-+	nvp->pos++;
-+	return ST_IDLE;
-+}
-+
-+static enum nvram_parser_state inff_nvram_handle_key(struct nvram_parser *nvp)
-+{
-+	enum nvram_parser_state st = nvp->state;
-+	char c;
-+
-+	c = nvp->data[nvp->pos];
-+	if (c == '=') {
-+		/* ignore RAW1 by treating as comment */
-+		if (strncmp(&nvp->data[nvp->entry], "RAW1", 4) == 0)
-+			st = ST_COMMENT;
-+		else
-+			st = ST_VALUE;
-+		if (strncmp(&nvp->data[nvp->entry], "devpath", 7) == 0)
-+			nvp->multi_dev_v1 = true;
-+		if (strncmp(&nvp->data[nvp->entry], "pcie/", 5) == 0)
-+			nvp->multi_dev_v2 = true;
-+		if (strncmp(&nvp->data[nvp->entry], "boardrev", 8) == 0)
-+			nvp->boardrev_found = true;
-+		/* strip macaddr if platform MAC overrides */
-+		if (nvp->strip_mac &&
-+		    strncmp(&nvp->data[nvp->entry], "macaddr", 7) == 0)
-+			st = ST_COMMENT;
-+	} else if (!is_nvram_char(c) || c == ' ') {
-+		inff_dbg(INFO, "warning: ln=%d:col=%d: '=' expected, skip invalid key entry\n",
-+			 nvp->line, nvp->column);
-+		return ST_COMMENT;
-+	}
-+
-+	nvp->column++;
-+	nvp->pos++;
-+	return st;
-+}
-+
-+static enum nvram_parser_state
-+inff_nvram_handle_value(struct nvram_parser *nvp)
-+{
-+	char c;
-+	char *skv;
-+	char *ekv;
-+	u32 cplen;
-+
-+	c = nvp->data[nvp->pos];
-+	if (!is_nvram_char(c)) {
-+		/* key,value pair complete */
-+		ekv = (u8 *)&nvp->data[nvp->pos];
-+		skv = (u8 *)&nvp->data[nvp->entry];
-+		cplen = ekv - skv;
-+		if (nvp->nvram_len + cplen + 1 >= INFF_FW_MAX_NVRAM_SIZE)
-+			return ST_END;
-+		/* copy to output buffer */
-+		memcpy(&nvp->nvram[nvp->nvram_len], skv, cplen);
-+		nvp->nvram_len += cplen;
-+		nvp->nvram[nvp->nvram_len] = '\0';
-+		nvp->nvram_len++;
-+		return ST_IDLE;
-+	}
-+	nvp->pos++;
-+	nvp->column++;
-+	return ST_VALUE;
-+}
-+
-+static enum nvram_parser_state
-+inff_nvram_handle_comment(struct nvram_parser *nvp)
-+{
-+	char *eoc, *sol;
-+
-+	sol = (char *)&nvp->data[nvp->pos];
-+	eoc = strchr(sol, '\n');
-+	if (!eoc) {
-+		eoc = strchr(sol, '\0');
-+		if (!eoc)
-+			return ST_END;
-+	}
-+
-+	/* eat all moving to next line */
-+	nvp->line++;
-+	nvp->column = 1;
-+	nvp->pos += (eoc - sol) + 1;
-+	return ST_IDLE;
-+}
-+
-+static enum nvram_parser_state inff_nvram_handle_end(struct nvram_parser *nvp)
-+{
-+	/* final state */
-+	return ST_END;
-+}
-+
-+static enum nvram_parser_state
-+(*nv_parser_states[])(struct nvram_parser *nvp) = {
-+	inff_nvram_handle_idle,
-+	inff_nvram_handle_key,
-+	inff_nvram_handle_value,
-+	inff_nvram_handle_comment,
-+	inff_nvram_handle_end
-+};
-+
-+static int inff_init_nvram_parser(struct nvram_parser *nvp,
-+				  const u8 *data, size_t data_len)
-+{
-+	size_t size;
-+
-+	memset(nvp, 0, sizeof(*nvp));
-+	nvp->data = data;
-+	/* Limit size to MAX_NVRAM_SIZE, some files contain lot of comment */
-+	if (data_len > INFF_FW_MAX_NVRAM_SIZE)
-+		size = INFF_FW_MAX_NVRAM_SIZE;
-+	else
-+		size = data_len;
-+	/* Add space for properties we may add */
-+	size += strlen(INFF_FW_DEFAULT_BOARDREV) + 1;
-+	size += INFF_FW_MACADDR_LEN + 1;
-+	/* Alloc for extra 0 byte + roundup by 4 + length field */
-+	size += 1 + 3 + sizeof(u32);
-+	nvp->nvram = kzalloc(size, GFP_KERNEL);
-+	if (!nvp->nvram)
-+		return -ENOMEM;
-+
-+	nvp->line = 1;
-+	nvp->column = 1;
++	seq_printf(seq, "\nQuirks:   %08x\n", quirks);
++	for (id = 0; id < INFF_FEAT_QUIRK_LAST; id++)
++		if (quirks & BIT(id))
++			seq_printf(seq, "\t%s\n", inff_quirk_names[id]);
 +	return 0;
-+}
-+
-+/* inff_fw_strip_multi_v1 :Some nvram files contain settings for multiple
-+ * devices. Strip it down for one device, use domain_nr/bus_nr to determine
-+ * which data is to be returned. v1 is the version where nvram is stored
-+ * compressed and "devpath" maps to index for valid entries.
-+ */
-+static void inff_fw_strip_multi_v1(struct nvram_parser *nvp, u16 domain_nr,
-+				   u16 bus_nr)
-+{
-+	/* Device path with a leading '=' key-value separator */
-+	char pci_path[20];
-+	size_t pci_len;
-+	char pcie_path[20];
-+	size_t pcie_len;
-+
-+	u32 i, j;
-+	bool found;
-+	u8 *nvram;
-+	u8 id;
-+
-+	nvram = kzalloc(nvp->nvram_len + 1 + 3 + sizeof(u32), GFP_KERNEL);
-+	if (!nvram)
-+		goto fail;
-+
-+	/* min length: devpath0=pcie/1/4/ + 0:x=y */
-+	if (nvp->nvram_len < INFF_FW_NVRAM_DEVPATH_LEN + 6)
-+		goto fail;
-+
-+	/* First search for the devpathX and see if it is the configuration
-+	 * for domain_nr/bus_nr. Search complete nvp
-+	 */
-+	snprintf(pci_path, sizeof(pci_path), "=pci/%d/%d", domain_nr,
-+		 bus_nr);
-+	pci_len = strlen(pci_path);
-+	snprintf(pcie_path, sizeof(pcie_path), "=pcie/%d/%d", domain_nr,
-+		 bus_nr);
-+	pcie_len = strlen(pcie_path);
-+	found = false;
-+	i = 0;
-+	while (i < nvp->nvram_len - INFF_FW_NVRAM_DEVPATH_LEN) {
-+		/* Format: devpathX=pcie/Y/Z/
-+		 * Y = domain_nr, Z = bus_nr, X = virtual ID
-+		 */
-+		if (strncmp(&nvp->nvram[i], "devpath", 7) == 0 &&
-+		    (!strncmp(&nvp->nvram[i + 8], pci_path, pci_len) ||
-+		     !strncmp(&nvp->nvram[i + 8], pcie_path, pcie_len))) {
-+			id = nvp->nvram[i + 7] - '0';
-+			found = true;
-+			break;
-+		}
-+		while (nvp->nvram[i] != 0)
-+			i++;
-+		i++;
-+	}
-+	if (!found)
-+		goto fail;
-+
-+	/* Now copy all valid entries, release old nvram and assign new one */
-+	i = 0;
-+	j = 0;
-+	while (i < nvp->nvram_len) {
-+		if ((nvp->nvram[i] - '0' == id) && (nvp->nvram[i + 1] == ':')) {
-+			i += 2;
-+			if (strncmp(&nvp->nvram[i], "boardrev", 8) == 0)
-+				nvp->boardrev_found = true;
-+			while (nvp->nvram[i] != 0) {
-+				nvram[j] = nvp->nvram[i];
-+				i++;
-+				j++;
-+			}
-+			nvram[j] = 0;
-+			j++;
-+		}
-+		while (nvp->nvram[i] != 0)
-+			i++;
-+		i++;
-+	}
-+	kfree(nvp->nvram);
-+	nvp->nvram = nvram;
-+	nvp->nvram_len = j;
-+	return;
-+
-+fail:
-+	kfree(nvram);
-+	nvp->nvram_len = 0;
-+}
-+
-+/* inff_fw_strip_multi_v2 :Some nvram files contain settings for multiple
-+ * devices. Strip it down for one device, use domain_nr/bus_nr to determine
-+ * which data is to be returned. v2 is the version where nvram is stored
-+ * uncompressed, all relevant valid entries are identified by
-+ * pcie/domain_nr/bus_nr:
-+ */
-+static void inff_fw_strip_multi_v2(struct nvram_parser *nvp, u16 domain_nr,
-+				   u16 bus_nr)
-+{
-+	char prefix[INFF_FW_NVRAM_PCIEDEV_LEN];
-+	size_t len;
-+	u32 i, j;
-+	u8 *nvram;
-+
-+	nvram = kzalloc(nvp->nvram_len + 1 + 3 + sizeof(u32), GFP_KERNEL);
-+	if (!nvram) {
-+		nvp->nvram_len = 0;
-+		return;
-+	}
-+
-+	/* Copy all valid entries, release old nvram and assign new one.
-+	 * Valid entries are of type pcie/X/Y/ where X = domain_nr and
-+	 * Y = bus_nr.
-+	 */
-+	snprintf(prefix, sizeof(prefix), "pcie/%d/%d/", domain_nr, bus_nr);
-+	len = strlen(prefix);
-+	i = 0;
-+	j = 0;
-+	while (i < nvp->nvram_len - len) {
-+		if (strncmp(&nvp->nvram[i], prefix, len) == 0) {
-+			i += len;
-+			if (strncmp(&nvp->nvram[i], "boardrev", 8) == 0)
-+				nvp->boardrev_found = true;
-+			while (nvp->nvram[i] != 0) {
-+				nvram[j] = nvp->nvram[i];
-+				i++;
-+				j++;
-+			}
-+			nvram[j] = 0;
-+			j++;
-+		}
-+		while (nvp->nvram[i] != 0)
-+			i++;
-+		i++;
-+	}
-+	kfree(nvp->nvram);
-+	nvp->nvram = nvram;
-+	nvp->nvram_len = j;
-+}
-+
-+static void inff_fw_add_defaults(struct nvram_parser *nvp)
-+{
-+	if (nvp->boardrev_found)
-+		return;
-+
-+	memcpy(&nvp->nvram[nvp->nvram_len], &INFF_FW_DEFAULT_BOARDREV,
-+	       strlen(INFF_FW_DEFAULT_BOARDREV));
-+	nvp->nvram_len += strlen(INFF_FW_DEFAULT_BOARDREV);
-+	nvp->nvram[nvp->nvram_len] = '\0';
-+	nvp->nvram_len++;
-+}
-+
-+static void inff_fw_add_macaddr(struct nvram_parser *nvp, u8 *mac)
-+{
-+	int len;
-+
-+	len = scnprintf(&nvp->nvram[nvp->nvram_len], INFF_FW_MACADDR_LEN + 1,
-+			INFF_FW_MACADDR_FMT, mac);
-+	WARN_ON(len != INFF_FW_MACADDR_LEN);
-+	nvp->nvram_len += len + 1;
-+}
-+
-+/* inff_nvram_strip :Takes a buffer of "<var>=<value>\n" lines read from a fil
-+ * and ending in a NUL. Removes carriage returns, empty lines, comment lines,
-+ * and converts newlines to NULs. Shortens buffer as needed and pads with NULs.
-+ * End of buffer is completed with token identifying length of buffer.
-+ */
-+static void *inff_fw_nvram_strip(const u8 *data, size_t data_len,
-+				 u32 *new_length, u16 domain_nr, u16 bus_nr,
-+				 struct device *dev)
-+{
-+	struct nvram_parser nvp;
-+	u32 pad;
-+	u32 token;
-+	__le32 token_le;
-+	u8 mac[ETH_ALEN];
-+
-+	if (inff_init_nvram_parser(&nvp, data, data_len) < 0)
-+		return NULL;
-+
-+	if (eth_platform_get_mac_address(dev, mac) == 0)
-+		nvp.strip_mac = true;
-+
-+	while (nvp.pos < data_len) {
-+		nvp.state = nv_parser_states[nvp.state](&nvp);
-+		if (nvp.state == ST_END)
-+			break;
-+	}
-+	if (nvp.multi_dev_v1) {
-+		nvp.boardrev_found = false;
-+		inff_fw_strip_multi_v1(&nvp, domain_nr, bus_nr);
-+	} else if (nvp.multi_dev_v2) {
-+		nvp.boardrev_found = false;
-+		inff_fw_strip_multi_v2(&nvp, domain_nr, bus_nr);
-+	}
-+
-+	if (nvp.nvram_len == 0) {
-+		kfree(nvp.nvram);
-+		return NULL;
-+	}
-+
-+	inff_fw_add_defaults(&nvp);
-+
-+	if (nvp.strip_mac)
-+		inff_fw_add_macaddr(&nvp, mac);
-+
-+	pad = nvp.nvram_len;
-+	*new_length = roundup(nvp.nvram_len + 1, 4);
-+	while (pad != *new_length) {
-+		nvp.nvram[pad] = 0;
-+		pad++;
-+	}
-+
-+	token = *new_length / 4;
-+	token = (~token << 16) | (token & 0x0000FFFF);
-+	token_le = cpu_to_le32(token);
-+
-+	memcpy(&nvp.nvram[*new_length], &token_le, sizeof(token_le));
-+	*new_length += sizeof(token_le);
-+
-+	return nvp.nvram;
-+}
-+
-+void inff_fw_nvram_free(void *nvram)
-+{
-+	kfree(nvram);
-+}
-+
-+struct inff_fw {
-+	struct device *dev;
-+	struct inff_fw_request *req;
-+	u32 curpos;
-+	unsigned int board_index;
-+	void (*done)(struct device *dev, int err, struct inff_fw_request *req);
-+};
-+
-+#ifdef CONFIG_EFI
-+/* In some cases the EFI-var stored nvram contains "ccode=ALL" or "ccode=XV"
-+ * to specify "worldwide" compatible settings, but these 2 ccode-s do not work
-+ * properly. "ccode=ALL" causes channels 12 and 13 to not be available,
-+ * "ccode=XV" causes all 5GHz channels to not be available. So we replace both
-+ * with "ccode=X2" which allows channels 12+13 and 5Ghz channels in
-+ * no-Initiate-Radiation mode. This means that we will never send on these
-+ * channels without first having received valid wifi traffic on the channel.
-+ */
-+static void inff_fw_fix_efi_nvram_ccode(char *data, unsigned long data_len)
-+{
-+	char *ccode;
-+
-+	ccode = strnstr((char *)data, "ccode=ALL", data_len);
-+	if (!ccode)
-+		ccode = strnstr((char *)data, "ccode=XV\r", data_len);
-+	if (!ccode)
-+		return;
-+
-+	ccode[6] = 'X';
-+	ccode[7] = '2';
-+	ccode[8] = '\r';
-+}
-+
-+static u8 *inff_fw_nvram_from_efi(size_t *data_len_ret)
-+{
-+	efi_guid_t guid = EFI_GUID(0x74b00bd9, 0x805a, 0x4d61, 0xb5, 0x1f,
-+				   0x43, 0x26, 0x81, 0x23, 0xd1, 0x13);
-+	unsigned long data_len = 0;
-+	efi_status_t status;
-+	u8 *data = NULL;
-+
-+	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE))
-+		return NULL;
-+
-+	status = efi.get_variable(L"nvram", &guid, NULL, &data_len, NULL);
-+	if (status != EFI_BUFFER_TOO_SMALL)
-+		goto fail;
-+
-+	data = kmalloc(data_len, GFP_KERNEL);
-+	if (!data)
-+		goto fail;
-+
-+	status = efi.get_variable(L"nvram", &guid, NULL, &data_len, data);
-+	if (status != EFI_SUCCESS)
-+		goto fail;
-+
-+	inff_fw_fix_efi_nvram_ccode(data, data_len);
-+	inff_info("Using nvram EFI variable\n");
-+
-+	*data_len_ret = data_len;
-+	return data;
-+fail:
-+	kfree(data);
-+	return NULL;
 +}
 +#else
-+static inline u8 *inff_fw_nvram_from_efi(size_t *data_len) { return NULL; }
-+#endif
-+
-+static void inff_fw_free_request(struct inff_fw_request *req)
++static int inff_feat_debugfs_read(struct seq_file *seq, void *data)
 +{
-+	struct inff_fw_item *item;
-+	int i;
-+
-+	for (i = 0, item = &req->items[0]; i < req->n_items; i++, item++) {
-+		if (item->type == INFF_FW_TYPE_BINARY ||
-+		    item->type == INFF_FW_TYPE_TRXS ||
-+		    item->type == INFF_FW_TYPE_TRXSE)
-+			release_firmware(item->binary);
-+		else if (item->type == INFF_FW_TYPE_NVRAM)
-+			inff_fw_nvram_free(item->nv_data.data);
-+	}
-+	kfree(req);
-+}
-+
-+static int inff_fw_request_nvram_done(const struct firmware *fw, void *ctx)
-+{
-+	struct inff_fw *fwctx = ctx;
-+	struct inff_fw_item *cur;
-+	bool free_bcm47xx_nvram = false;
-+	bool kfree_nvram = false;
-+	u32 nvram_length = 0;
-+	void *nvram = NULL;
-+	u8 *data = NULL;
-+	size_t data_len;
-+
-+	inff_dbg(TRACE, "enter: dev=%s\n", dev_name(fwctx->dev));
-+
-+	cur = &fwctx->req->items[fwctx->curpos];
-+
-+	if (fw && fw->data) {
-+		data = (u8 *)fw->data;
-+		data_len = fw->size;
-+	} else {
-+		data = inff_fw_nvram_from_efi(&data_len);
-+		if (data)
-+			kfree_nvram = true;
-+		else if (!(cur->flags & INFF_FW_REQF_OPTIONAL))
-+			goto fail;
-+	}
-+
-+	if (data)
-+		nvram = inff_fw_nvram_strip(data, data_len, &nvram_length,
-+					    fwctx->req->domain_nr,
-+					    fwctx->req->bus_nr,
-+					    fwctx->dev);
-+
-+	if (free_bcm47xx_nvram)
-+		bcm47xx_nvram_release_contents(data);
-+	if (kfree_nvram)
-+		kfree(data);
-+
-+	release_firmware(fw);
-+	if (!nvram && !(cur->flags & INFF_FW_REQF_OPTIONAL))
-+		goto fail;
-+
-+	inff_dbg(TRACE, "nvram %p len %d\n", nvram, nvram_length);
-+	cur->nv_data.data = nvram;
-+	cur->nv_data.len = nvram_length;
 +	return 0;
++}
++#endif /* DEBUG */
 +
-+fail:
-+	return -ENOENT;
++struct inff_feat_wlcfeat {
++	u16 min_ver_major;
++	u16 min_ver_minor;
++	u32 feat_flags;
++};
++
++static const struct inff_feat_wlcfeat inff_feat_wlcfeat_map[] = {
++	{ 12, 0, BIT(INFF_FEAT_PMKID_V2) },
++	{ 13, 0, BIT(INFF_FEAT_PMKID_V3) },
++};
++
++static void inff_feat_wlc_version_overrides(struct inff_pub *drv)
++{
++	struct inff_if *ifp = inff_get_ifp(drv, 0);
++	struct inff_wlc_version_le ver;
++	int err, major, minor;
++
++	err = inff_fil_iovar_data_get(ifp, "wlc_ver", &ver, sizeof(ver));
++	if (err)
++		return;
++
++	major = le16_to_cpu(ver.wlc_ver_major);
++	minor = le16_to_cpu(ver.wlc_ver_minor);
++
++	inff_dbg(INFO, "WLC version: %d.%d\n", major, minor);
 +}
 +
-+static int inff_fw_complete_request(const struct firmware *fw,
-+				    struct inff_fw *fwctx)
++/**
++ * inff_feat_iovar_int_get() - determine feature through iovar query.
++ *
++ * @ifp: interface to query.
++ * @id: feature id.
++ * @name: iovar name.
++ */
++static void inff_feat_iovar_int_get(struct inff_if *ifp,
++				    enum inff_feat_id id, char *name)
 +{
-+	struct inff_fw_item *cur = &fwctx->req->items[fwctx->curpos];
-+	int ret = 0;
++	u32 data;
++	int err;
 +
-+	inff_dbg(TRACE, "firmware %s %sfound\n", cur->path, fw ? "" : "not ");
++	/* we need to know firmware error */
++	ifp->fwil_fwerr = true;
 +
-+	switch (cur->type) {
-+	case INFF_FW_TYPE_NVRAM:
-+		ret = inff_fw_request_nvram_done(fw, fwctx);
-+		break;
-+	case INFF_FW_TYPE_BINARY:
-+	case INFF_FW_TYPE_TRXSE:
-+	case INFF_FW_TYPE_TRXS:
-+	case INFF_FW_TYPE_CLM:
-+		if (fw)
-+			cur->binary = fw;
-+		else
-+			ret = -ENOENT;
-+		break;
-+	default:
-+		/* something fishy here so bail out early */
-+		inff_err("unknown fw type: %d\n", cur->type);
-+		release_firmware(fw);
-+		ret = -EINVAL;
++	err = inff_fil_iovar_int_get(ifp, name, &data);
++	if (err != -INFF_FW_UNSUPPORTED) {
++		inff_dbg(INFO, "enabling feature: %s\n", inff_feat_names[id]);
++		ifp->drvr->feat_flags[id / 8] |= BIT(id % 8);
++	} else {
++		inff_dbg(TRACE, "%s feature check failed: %d\n",
++			 inff_feat_names[id], err);
 +	}
 +
-+	return (cur->flags & INFF_FW_REQF_OPTIONAL) ? 0 : ret;
++	ifp->fwil_fwerr = false;
 +}
 +
-+static char *inff_alt_fw_path(const char *path, const char *board_type)
++static void inff_feat_iovar_enab_get(struct inff_if *ifp,
++				     enum inff_feat_id id, char *name,
++				     u16 subcmd_id)
 +{
-+	char base[INFF_FW_NAME_LEN];
-+	const char *suffix;
-+	char *ret;
++	int err;
++	u8 val;
 +
-+	if (!board_type)
-+		return NULL;
++	/* we need to know firmware error */
++	ifp->fwil_fwerr = true;
 +
-+	suffix = strrchr(path, '.');
-+	if (!suffix || suffix == path)
-+		return NULL;
++	err = inff_fil_xtlv_data_get(ifp, name, subcmd_id,
++				     (void *)&val, sizeof(val));
 +
-+	/* strip extension at the end */
-+	strscpy(base, path, INFF_FW_NAME_LEN);
-+	base[suffix - path] = 0;
++	if (!err) {
++		inff_dbg(INFO, "enabling feature: %s\n", inff_feat_names[id]);
++		ifp->drvr->feat_flags[id / 8] |= BIT(id % 8);
++	} else {
++		inff_dbg(TRACE, "%s feature check failed: %d\n",
++			 inff_feat_names[id], err);
++	}
 +
-+	ret = kasprintf(GFP_KERNEL, "%s.%s%s", base, board_type, suffix);
-+	if (!ret)
-+		inff_err("out of memory allocating firmware path for '%s'\n",
-+			 path);
-+
-+	inff_dbg(TRACE, "FW alt path: %s\n", ret);
-+
-+	return ret;
++	ifp->fwil_fwerr = false;
 +}
 +
-+static int inff_fw_request_firmware(const struct firmware **fw,
-+				    struct inff_fw *fwctx)
++#define MAX_CAPS_BUFFER_SIZE	768
++static void inff_feat_firmware_capabilities(struct inff_if *ifp)
 +{
-+	struct inff_fw_item *cur = &fwctx->req->items[fwctx->curpos];
-+	unsigned int i;
-+	int ret;
++	struct inff_pub *drvr = ifp->drvr;
++	char caps[MAX_CAPS_BUFFER_SIZE];
++	enum inff_feat_id id;
++	int i, err;
 +
-+	/* Files can be board-specific, first try board-specific paths */
-+	for (i = 0; i < ARRAY_SIZE(fwctx->req->board_types); i++) {
-+		char *alt_path;
-+
-+		if (!fwctx->req->board_types[i])
-+			goto fallback;
-+		alt_path = inff_alt_fw_path(cur->path,
-+					    fwctx->req->board_types[i]);
-+		if (!alt_path)
-+			goto fallback;
-+
-+		ret = request_firmware_direct(fw, alt_path, fwctx->dev);
-+		kfree(alt_path);
-+		if (ret)
-+			inff_info("no board-specific nvram available (ret=%d), device will use %s\n",
-+				  ret, cur->path);
-+		else
-+			return ret;
-+	}
-+
-+fallback:
-+	return request_firmware(fw, cur->path, fwctx->dev);
-+}
-+
-+static void inff_fw_request_done(const struct firmware *fw, void *ctx)
-+{
-+	struct inff_fw *fwctx = ctx;
-+	struct inff_fw_item *cur = &fwctx->req->items[fwctx->curpos];
-+	char alt_path[INFF_FW_NAME_LEN];
-+	int ret;
-+
-+	if (!fw && cur->type == INFF_FW_TYPE_TRXS) {
-+		strscpy(alt_path, cur->path, INFF_FW_NAME_LEN);
-+		/* strip 'se' from .trxse at the end */
-+		//alt_path[strlen(alt_path) - ] = 0;
-+		ret = request_firmware(&fw, alt_path, fwctx->dev);
-+		if (!ret)
-+			cur->path = alt_path;
-+	}
-+	if (!fw && cur->type == INFF_FW_TYPE_TRXSE) {
-+		strscpy(alt_path, cur->path, INFF_FW_NAME_LEN);
-+		/* strip 'se' from .trxse at the end */
-+		alt_path[strlen(alt_path) - 2] = 0;
-+		ret = request_firmware(&fw, alt_path, fwctx->dev);
-+		if (!ret)
-+			cur->path = alt_path;
-+	}
-+
-+	ret = inff_fw_complete_request(fw, fwctx);
-+
-+	while (ret == 0 && ++fwctx->curpos < fwctx->req->n_items) {
-+		inff_fw_request_firmware(&fw, fwctx);
-+		ret = inff_fw_complete_request(fw, ctx);
-+	}
-+
-+	if (ret) {
-+		inff_fw_free_request(fwctx->req);
-+		fwctx->req = NULL;
-+	}
-+	fwctx->done(fwctx->dev, ret, fwctx->req);
-+	kfree(fwctx);
-+}
-+
-+static void inff_fw_request_done_alt_path(const struct firmware *fw, void *ctx)
-+{
-+	struct inff_fw *fwctx = ctx;
-+	struct inff_fw_item *first = &fwctx->req->items[0];
-+	const char *board_type, *alt_path;
-+	int ret = 0;
-+
-+	if (fw) {
-+		inff_fw_request_done(fw, ctx);
++	err = inff_fil_iovar_data_get(ifp, "cap", caps, sizeof(caps));
++	if (err) {
++		iphy_err(drvr, "could not get firmware cap (%d)\n", err);
 +		return;
 +	}
 +
-+	/* Try next board firmware */
-+	if (fwctx->board_index < ARRAY_SIZE(fwctx->req->board_types)) {
-+		board_type = fwctx->req->board_types[fwctx->board_index++];
-+		if (!board_type)
-+			goto fallback;
-+		alt_path = inff_alt_fw_path(first->path, board_type);
-+		if (!alt_path)
-+			goto fallback;
++	inff_dbg(INFO, "[ %s]\n", caps);
 +
-+		if (!fw) {
-+			ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
-+						      fwctx->dev, GFP_KERNEL, fwctx,
-+						      inff_fw_request_done_alt_path);
++	for (i = 0; i < ARRAY_SIZE(inff_fwcap_map); i++) {
++		if (strnstr(caps, inff_fwcap_map[i].fwcap_id, sizeof(caps))) {
++			id = inff_fwcap_map[i].feature;
++			inff_dbg(INFO, "enabling feature: %s\n",
++				 inff_feat_names[id]);
++			ifp->drvr->feat_flags[id / 8] |= BIT(id % 8);
 +		}
-+		kfree(alt_path);
-+
-+		if (ret < 0)
-+			inff_fw_request_done(fw, ctx);
-+		return;
 +	}
-+
-+fallback:
-+	/* Fall back to canonical path if board firmware not found */
-+	ret = request_firmware_nowait(THIS_MODULE, true, first->path,
-+				      fwctx->dev, GFP_KERNEL, fwctx,
-+				      inff_fw_request_done);
-+
-+	if (ret < 0)
-+		inff_fw_request_done(fw, ctx);
 +}
 +
-+static bool inff_fw_request_is_valid(struct inff_fw_request *req)
++/**
++ * inff_feat_fwcap_debugfs_read() - expose firmware capabilities to debugfs.
++ *
++ * @seq: sequence for debugfs entry.
++ * @data: raw data pointer.
++ */
++static int inff_feat_fwcap_debugfs_read(struct seq_file *seq, void *data)
 +{
-+	struct inff_fw_item *item;
++	struct inff_bus *bus_if = dev_get_drvdata(seq->private);
++	struct inff_pub *drvr = bus_if->drvr;
++	struct inff_if *ifp = inff_get_ifp(drvr, 0);
++	char caps[MAX_CAPS_BUFFER_SIZE + 1] = { };
++	char *tmp;
++	int err;
++
++	err = inff_fil_iovar_data_get(ifp, "cap", caps, sizeof(caps));
++	if (err) {
++		iphy_err(drvr, "could not get firmware cap (%d)\n", err);
++		return err;
++	}
++
++	/* Put every capability in a new line */
++	for (tmp = caps; *tmp; tmp++) {
++		if (*tmp == ' ')
++			*tmp = '\n';
++	}
++
++	/* Usually there is a space at the end of capabilities string */
++	seq_printf(seq, "%s", caps);
++	/* So make sure we don't print two line breaks */
++	if (tmp > caps && *(tmp - 1) != '\n')
++		seq_puts(seq, "\n");
++
++	return 0;
++}
++
++void inff_feat_attach(struct inff_pub *drvr)
++{
++	struct inff_if *ifp = inff_get_ifp(drvr, 0);
++	struct inff_pno_macaddr_le pfn_mac;
++	struct inff_gscan_config gscan_cfg;
++	u32 wowl_cap;
++	s32 err;
 +	int i;
 +
-+	if (!req->n_items)
++	inff_feat_firmware_capabilities(ifp);
++	memset(&gscan_cfg, 0, sizeof(gscan_cfg));
++	inff_feat_iovar_int_get(ifp, INFF_FEAT_PNO, "pfn");
++	if (drvr->bus_if->wowl_supported)
++		inff_feat_iovar_int_get(ifp, INFF_FEAT_WOWL, "wowl");
++	if (inff_feat_is_enabled(ifp, INFF_FEAT_WOWL)) {
++		err = inff_fil_iovar_int_get(ifp, "wowl_cap", &wowl_cap);
++		if (!err) {
++			ifp->drvr->feat_flags[INFF_FEAT_WOWL_ARP_ND / 8] |=
++				BIT(INFF_FEAT_WOWL_ARP_ND % 8);
++			if (wowl_cap & INFF_WOWL_PFN_FOUND)
++				ifp->drvr->feat_flags[INFF_FEAT_WOWL_ND / 8] |=
++					BIT(INFF_FEAT_WOWL_ND % 8);
++			if (wowl_cap & INFF_WOWL_GTK_FAILURE)
++				ifp->drvr->feat_flags[INFF_FEAT_WOWL_GTK / 8] |=
++					BIT(INFF_FEAT_WOWL_GTK % 8);
++		}
++	}
++
++	inff_feat_iovar_int_get(ifp, INFF_FEAT_RSDB, "rsdb_mode");
++	inff_feat_iovar_int_get(ifp, INFF_FEAT_TDLS, "tdls_enable");
++	inff_feat_iovar_int_get(ifp, INFF_FEAT_MFP, "mfp");
++	inff_feat_iovar_int_get(ifp, INFF_FEAT_DUMP_OBSS, "dump_obss");
++	inff_feat_iovar_int_get(ifp, INFF_FEAT_SURVEY_DUMP, "cca_survey_dump");
++
++	pfn_mac.version = INFF_PFN_MACADDR_CFG_VER;
++	err = inff_fil_iovar_data_get(ifp, "pfn_macaddr", &pfn_mac,
++				      sizeof(pfn_mac));
++	if (!err)
++		ifp->drvr->feat_flags[INFF_FEAT_SCAN_RANDOM_MAC / 8] |=
++			BIT(INFF_FEAT_SCAN_RANDOM_MAC % 8);
++
++	inff_feat_iovar_int_get(ifp, INFF_FEAT_FWSUP, "sup_wpa");
++	inff_feat_iovar_int_get(ifp, INFF_FEAT_SCAN_V2, "scan_ver");
++	inff_feat_iovar_enab_get(ifp, INFF_FEAT_TWT, "twt", INFF_TWT_CMD_ENAB);
++	inff_feat_iovar_int_get(ifp, INFF_FEAT_WLAN_SENSE, "csi");
++
++	for (i = 0; i < INFF_MAX_FEATURE_BYTES; i++) {
++		if (drvr->settings->feature_disable[i]) {
++			inff_dbg(INFO, "Features: 0x%02x, disable: 0x%02x\n",
++				 ifp->drvr->feat_flags[i],
++				 drvr->settings->feature_disable[i]);
++			ifp->drvr->feat_flags[i] &= ~drvr->settings->feature_disable[i];
++		}
++	}
++
++	inff_feat_wlc_version_overrides(drvr);
++}
++
++void inff_feat_debugfs_create(struct inff_pub *drvr)
++{
++	inff_debugfs_add_entry(drvr, "features", inff_feat_debugfs_read);
++	inff_debugfs_add_entry(drvr, "fwcap", inff_feat_fwcap_debugfs_read);
++}
++
++bool inff_feat_is_enabled(struct inff_if *ifp, enum inff_feat_id id)
++{
++	return (ifp->drvr->feat_flags[id / 8] & BIT(id % 8));
++}
++
++bool inff_feat_is_quirk_enabled(struct inff_if *ifp,
++				enum inff_feat_quirk quirk)
++{
++	return (ifp->drvr->chip_quirks & BIT(quirk));
++}
++
++bool inff_feat_is_6ghz_enabled(struct inff_if *ifp)
++{
++	return (!ifp->drvr->settings->disable_6ghz);
++}
++
++bool inff_feat_is_sdio_rxf_in_kthread(struct inff_pub *drvr)
++{
++	if (drvr)
++		return drvr->settings->sdio_rxf_in_kthread_enabled;
++	else
 +		return false;
-+
-+	for (i = 0, item = &req->items[0]; i < req->n_items; i++, item++) {
-+		if (!item->path)
-+			return false;
-+	}
-+	return true;
 +}
 +
-+int inff_fw_get_firmware_sync(struct device *dev, struct inff_fw_request *req,
-+			      void (*fw_cb)(struct device *dev, int err,
-+					    struct inff_fw_request *req))
++bool inff_feat_is_offloads_enabled(struct inff_if *ifp)
 +{
-+	struct inff_fw_item *first = &req->items[0];
-+	struct inff_fw *fwctx;
-+	char *alt_path = NULL;
-+	const struct firmware *fw;
-+	int ret = -ENOENT;
++	if (ifp && ifp->drvr)
++		return ifp->drvr->settings->offload_prof;
 +
-+	inff_dbg(TRACE, "enter: dev=%s\n", dev_name(dev));
-+
-+	if (!inff_fw_request_is_valid(req))
-+		return -EINVAL;
-+
-+	if (req->n_items > 1)
-+		return -EINVAL;
-+
-+	fwctx = kzalloc(sizeof(*fwctx), GFP_KERNEL);
-+	if (!fwctx)
-+		return -ENOMEM;
-+
-+	fwctx->dev = dev;
-+	fwctx->req = req;
-+	fwctx->done = fw_cb;
-+
-+	/* First try alternative board-specific path if any */
-+	if (fwctx->req->board_types[0])
-+		alt_path = inff_alt_fw_path(first->path,
-+					    fwctx->req->board_types[0]);
-+	if (alt_path) {
-+		/* Do not fallback to user-mode helper if file does not exist */
-+		ret = request_firmware_direct(&fw, alt_path, fwctx->dev);
-+		kfree(alt_path);
-+	}
-+
-+	if (ret == -ENOENT)
-+		ret = request_firmware(&fw, first->path, fwctx->dev);
-+
-+	inff_fw_request_done(fw, fwctx);
-+
-+	return ret;
++	return false;
 +}
-+
-+int inff_fw_get_firmwares(struct device *dev, struct inff_fw_request *req,
-+			  void (*fw_cb)(struct device *dev, int err,
-+					struct inff_fw_request *req))
-+{
-+	struct inff_fw_item *first = &req->items[0];
-+	struct inff_fw *fwctx;
-+	char *alt_path = NULL;
-+	int ret;
-+
-+	inff_dbg(TRACE, "enter: dev=%s\n", dev_name(dev));
-+	if (!fw_cb)
-+		return -EINVAL;
-+
-+	if (!inff_fw_request_is_valid(req))
-+		return -EINVAL;
-+
-+	fwctx = kzalloc(sizeof(*fwctx), GFP_KERNEL);
-+	if (!fwctx)
-+		return -ENOMEM;
-+
-+	fwctx->dev = dev;
-+	fwctx->req = req;
-+	fwctx->done = fw_cb;
-+
-+	/* First try alternative board-specific path if any */
-+	if (fwctx->req->board_types[0])
-+		alt_path = inff_alt_fw_path(first->path,
-+					    fwctx->req->board_types[0]);
-+	if (alt_path) {
-+		fwctx->board_index++;
-+		ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
-+					      fwctx->dev, GFP_KERNEL, fwctx,
-+					      inff_fw_request_done_alt_path);
-+		kfree(alt_path);
-+	} else {
-+		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
-+					      fwctx->dev, GFP_KERNEL, fwctx,
-+					      inff_fw_request_done);
-+	}
-+	if (ret < 0)
-+		inff_fw_request_done(NULL, fwctx);
-+
-+	return 0;
-+}
-+
-+struct inff_fw_request *
-+inff_fw_alloc_request(char mp_path[], u32 chip, u32 chiprev,
-+		      const struct inff_firmware_mapping mapping_table[],
-+		      u32 table_size, struct inff_fw_name *fwnames,
-+		      u32 n_fwnames)
-+{
-+	struct inff_fw_request *fwreq;
-+	char chipname[12];
-+	size_t mp_path_len;
-+	u32 i, j;
-+	char end = '\0';
-+
-+	if (chiprev >= BITS_PER_TYPE(u32)) {
-+		inff_err("Invalid chip revision %u\n", chiprev);
-+		return NULL;
-+	}
-+
-+	for (i = 0; i < table_size; i++) {
-+		if (mapping_table[i].chipid == chip &&
-+		    mapping_table[i].revmask & BIT(chiprev))
-+			break;
-+	}
-+
-+	inff_chip_name(chip, chiprev, chipname, sizeof(chipname));
-+
-+	if (i == table_size) {
-+		inff_err("Unknown chip %s\n", chipname);
-+		return NULL;
-+	}
-+
-+	fwreq = kzalloc(struct_size(fwreq, items, n_fwnames), GFP_KERNEL);
-+	if (!fwreq)
-+		return NULL;
-+
-+	inff_info("using %s for chip %s\n",
-+		  mapping_table[i].fw_base, chipname);
-+
-+	mp_path_len = strnlen(mp_path, INFF_FW_ALTPATH_LEN);
-+	if (mp_path_len)
-+		end = mp_path[mp_path_len - 1];
-+
-+	fwreq->n_items = n_fwnames;
-+
-+	for (j = 0; j < n_fwnames; j++) {
-+		fwreq->items[j].path = fwnames[j].path;
-+		fwnames[j].path[0] = '\0';
-+		/* check if firmware path is provided by module parameter */
-+		if (mp_path[0] != '\0') {
-+			strscpy(fwnames[j].path, mp_path,
-+				INFF_FW_NAME_LEN);
-+
-+			if (end != '/') {
-+				strlcat(fwnames[j].path, "/",
-+					INFF_FW_NAME_LEN);
-+			}
-+		}
-+		strlcat(fwnames[j].path, mapping_table[i].fw_base,
-+			INFF_FW_NAME_LEN);
-+		strlcat(fwnames[j].path, fwnames[j].extension,
-+			INFF_FW_NAME_LEN);
-+		fwreq->items[j].path = fwnames[j].path;
-+
-+		if (!strncmp(fwnames[j].extension, ".trxse", 6)) {
-+			fwreq->items[j].type = INFF_FW_TYPE_TRXSE;
-+		} else if (!strncmp(fwnames[j].extension, ".trxs", 5)) {
-+			fwreq->items[j].type = INFF_FW_TYPE_TRXS;
-+		} else if (!strncmp(fwnames[j].extension, ".txt", 4)) {
-+			fwreq->items[j].type = INFF_FW_TYPE_NVRAM;
-+			fwreq->items[j].flags = INFF_FW_REQF_OPTIONAL;
-+		} else if (!strncmp(fwnames[j].extension, ".clm_blob", 9)) {
-+			fwreq->items[j].type = INFF_FW_TYPE_CLM;
-+			fwreq->items[j].flags = INFF_FW_REQF_OPTIONAL;
-+		}
-+	}
-+
-+	return fwreq;
-+}
-+
-+struct inff_fw_request *
-+inff_prepare_fw_request(char mp_path[], struct inff_chip *ci,
-+			const struct inff_firmware_mapping *name_map,
-+			int map_size, const char *board_type)
-+{
-+	struct inff_fw_request *fwreq;
-+	struct inff_fw_name fwnames[INFF_FW_BIN_MAX_TYPE];
-+	struct inff_chip_specific *chip_spec = &ci->chip_spec;
-+	struct inff_fw_dataset *fw_data = &chip_spec->fwdata[0];
-+
-+	if (fw_data[INFF_FW_CODE].fwnames.extension) {
-+		fwnames[INFF_FW_CODE].extension = fw_data[INFF_FW_CODE].fwnames.extension;
-+		fwnames[INFF_FW_CODE].path = fw_data[INFF_FW_CODE].fwnames.path;
-+	} else {
-+		inff_err("chip 0x%x uninitialized with fw code file extension\n",
-+			 ci->chip);
-+		return NULL;
-+	}
-+
-+	if (fw_data[INFF_FW_NVRAM].fwnames.extension) {
-+		fwnames[INFF_FW_NVRAM].extension = fw_data[INFF_FW_NVRAM].fwnames.extension;
-+		fwnames[INFF_FW_NVRAM].path = fw_data[INFF_FW_NVRAM].fwnames.path;
-+	}
-+
-+	if (fw_data[INFF_FW_CLM].fwnames.extension) {
-+		fwnames[INFF_FW_CLM].extension = fw_data[INFF_FW_CLM].fwnames.extension;
-+		fwnames[INFF_FW_CLM].path = fw_data[INFF_FW_CLM].fwnames.path;
-+	}
-+
-+	fwreq = inff_fw_alloc_request(mp_path, ci->chip, ci->chiprev, name_map,
-+				      map_size, fwnames, ARRAY_SIZE(fwnames));
-+	if (!fwreq)
-+		return NULL;
-+
-+	fwreq->board_types[0] = board_type;
-+
-+	return fwreq;
-+}
-diff --git a/drivers/net/wireless/infineon/inffmac/firmware.h b/drivers/net/wireless/infineon/inffmac/firmware.h
+diff --git a/drivers/net/wireless/infineon/inffmac/feature.h b/drivers/net/wireless/infineon/inffmac/feature.h
 new file mode 100644
-index 000000000000..444a463b8140
+index 000000000000..14bbe68b9c0a
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/firmware.h
-@@ -0,0 +1,108 @@
++++ b/drivers/net/wireless/infineon/inffmac/feature.h
+@@ -0,0 +1,168 @@
 +/* SPDX-License-Identifier: ISC */
 +/*
-+ * Copyright (c) 2013 Broadcom Corporation
++ * Copyright (c) 2014 Broadcom Corporation
 + *
 + * Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
-+#ifndef INFF_FIRMWARE_H
-+#define INFF_FIRMWARE_H
-+
-+#define INFF_FW_REQF_OPTIONAL		0x0001
-+
-+#define	INFF_FW_NAME_LEN		320
-+
-+#define INFF_FW_MAX_BOARD_TYPES	8
-+
-+#define INFF_FW_DEFAULT_PATH		"infineon/"
-+
-+/* forward declaration */
-+struct inff_chip;
-+
-+/**
-+ * struct inff_firmware_mapping - Used to map chipid/revmask to firmware
-+ *	filename and nvram filename. Each bus type implementation should create
-+ *	a table of firmware mappings (using the macros defined below).
-+ *
-+ * @chipid: ID of chip.
-+ * @revmask: bitmask of revisions, e.g. 0x10 means rev 4 only, 0xf means rev 0-3
-+ * @fw: name of the firmware file.
-+ * @nvram: name of nvram file.
-+ */
-+struct inff_firmware_mapping {
-+	u32 chipid;
-+	u32 revmask;
-+	const char *fw_base;
-+};
-+
-+/* Firmware and Country Local Matrix files */
-+#define INFF_FW_ENTRY(chipid, mask, name) \
-+	{ chipid, mask, INFF_ ## name ## _FIRMWARE_BASENAME }
-+
-+void inff_fw_nvram_free(void *nvram);
-+
-+enum inff_fw_type {
-+	INFF_FW_TYPE_BINARY,
-+	INFF_FW_TYPE_NVRAM,
-+	INFF_FW_TYPE_TRXSE,
-+	INFF_FW_TYPE_TRXS,
-+	INFF_FW_TYPE_CLM,
-+};
-+
-+struct inff_fw_item {
-+	const char *path;
-+	enum inff_fw_type type;
-+	u16 flags;
-+	union {
-+		const struct firmware *binary;
-+		struct {
-+			void *data;
-+			u32 len;
-+		} nv_data;
-+	};
-+};
-+
-+struct inff_fw_request {
-+	u16 domain_nr;
-+	u16 bus_nr;
-+	u32 n_items;
-+	const char *board_types[INFF_FW_MAX_BOARD_TYPES];
-+	struct inff_fw_item items[] __counted_by(n_items);
-+};
-+
-+struct inff_fw_name {
-+	const char *extension;
-+	char *path;
-+};
-+
-+struct inff_fw_request *
-+inff_fw_alloc_request(char mp_path[], u32 chip, u32 chiprev,
-+		      const struct inff_firmware_mapping mapping_table[],
-+		      u32 table_size, struct inff_fw_name *fwnames,
-+		      u32 n_fwnames);
++#ifndef INFF_FEATURE_H
++#define INFF_FEATURE_H
 +
 +/*
-+ * Request firmware(s) asynchronously. When the asynchronous request
-+ * fails it will not use the callback, but call device_release_driver()
-+ * instead which will call the driver .remove() callback.
++ * Features:
++ *
++ * MBSS: multiple BSSID support (eg. guest network in AP mode).
++ * MCHAN: multi-channel for concurrent P2P.
++ * PNO: preferred network offload.
++ * WOWL: Wake-On-WLAN.
++ * P2P: peer-to-peer
++ * RSDB: Real Simultaneous Dual Band
++ * TDLS: Tunneled Direct Link Setup
++ * SCAN_RANDOM_MAC: Random MAC during (net detect) scheduled scan.
++ * WOWL_ND: WOWL net detect (PNO)
++ * WOWL_GTK: WOWL GTK rekey failure detect
++ * WOWL_ARP_ND: ARP and Neighbor Discovery offload support during WOWL.
++ * MFP: 802.11w Management Frame Protection.
++ * GSCAN: enhanced scan offload feature.
++ * FWSUP: Firmware supplicant.
++ * MONITOR: firmware can pass monitor packets to host.
++ * MONITOR_FLAG: firmware flags monitor packets.
++ * MONITOR_FMT_RADIOTAP: firmware provides monitor packets with radiotap header
++ * MONITOR_FMT_HW_RX_HDR: firmware provides monitor packets with hw/ucode header
++ * DOT11H: firmware supports 802.11h
++ * SAE: simultaneous authentication of equals
++ * FWAUTH: Firmware authenticator
++ * DUMP_OBSS: Firmware has capable to dump obss info to support ACS
++ * SCAN_V2: Version 2 scan params
++ * SURVEY_DUMP: Firmware has capable to survey dump info
++ * SAE_EXT: SAE be handled by userspace supplicant
++ * GCMP: firmware has defined GCMP or not.
++ * TWT: Firmware has the TWT Module Support.
++ * OFFLOADS: Firmware can do the packet processing work offloaded by
++ *	Host Driver, i.e, it can process specific types of RX packets like
++ *	ARP, ND, etc and send out a suitable response packet from within
++ *	Firmware.
++ * ULP: Firmware supports Ultra Low Power mode of operation.
++ * WLAN_SENSE: Feature that supports Collecting Channel State Information (WLAN).
++ * GTKO: GTK rekey offload.
++ * MLO: IEEE 802.11be MLO operation
 + */
-+int inff_fw_get_firmwares(struct device *dev, struct inff_fw_request *req,
-+			  void (*fw_cb)(struct device *dev, int err,
-+					struct inff_fw_request *req));
++enum inff_feat_id {
++	INFF_FEAT_MBSS,
++	INFF_FEAT_MCHAN,
++	INFF_FEAT_PNO,
++	INFF_FEAT_WOWL,
++	INFF_FEAT_P2P,
++	INFF_FEAT_RSDB,
++	INFF_FEAT_TDLS,
++	INFF_FEAT_SCAN_RANDOM_MAC,
++	INFF_FEAT_WOWL_ND,
++	INFF_FEAT_WOWL_GTK,
++	INFF_FEAT_WOWL_ARP_ND,
++	INFF_FEAT_MFP,
++	INFF_FEAT_GSCAN,
++	INFF_FEAT_FWSUP,
++	INFF_FEAT_MONITOR,
++	INFF_FEAT_MONITOR_FLAG,
++	INFF_FEAT_MONITOR_FMT_RADIOTAP,
++	INFF_FEAT_MONITOR_FMT_HW_RX_HDR,
++	INFF_FEAT_DOT11H,
++	INFF_FEAT_SAE,
++	INFF_FEAT_FWAUTH,
++	INFF_FEAT_DUMP_OBSS,
++	INFF_FEAT_SCAN_V2,
++	INFF_FEAT_PMKID_V2,
++	INFF_FEAT_PMKID_V3,
++	INFF_FEAT_SURVEY_DUMP,
++	INFF_FEAT_SAE_EXT,
++	INFF_FEAT_FBT,
++	INFF_FEAT_OKC,
++	INFF_FEAT_GCMP,
++	INFF_FEAT_TWT,
++	INFF_FEAT_OFFLOADS,
++	INFF_FEAT_ULP,
++	INFF_FEAT_PROPTXSTATUS,
++	INFF_FEAT_OWE,
++	INFF_FEAT_WLAN_SENSE,
++	INFF_FEAT_FTM,
++	INFF_FEAT_GTKO,
++	INFF_FEAT_MCHAN_CONFIG,
++	INFF_FEAT_MLO,
++	INFF_FEAT_LAST
++};
++
++/*
++ * Quirks:
++ *
++ * AUTO_AUTH: workaround needed for automatic authentication type.
++ * NEED_MPC: driver needs to disable MPC during scanning operation.
++ */
++enum inff_feat_quirk {
++	INFF_FEAT_QUIRK_AUTO_AUTH,
++	INFF_FEAT_QUIRK_NEED_MPC,
++	INFF_FEAT_QUIRK_LAST
++};
 +
 +/**
-+ * Request single firmware synchronously.
-+ * Callback is called on a valid request
-+ * whether it succeeds or not.
++ * inff_feat_attach() - determine features and quirks.
++ *
++ * @drvr: driver instance.
 + */
-+int inff_fw_get_firmware_sync(struct device *dev, struct inff_fw_request *req,
-+			      void (*fw_cb)(struct device *dev, int err,
-+					    struct inff_fw_request *req));
++void inff_feat_attach(struct inff_pub *drvr);
 +
-+struct inff_fw_request *
-+inff_prepare_fw_request(char mp_path[], struct inff_chip *ci,
-+			const struct inff_firmware_mapping *name_map,
-+			int map_size, const char *board_type);
++/**
++ * inff_feat_debugfs_create() - create debugfs entries.
++ *
++ * @drvr: driver instance.
++ */
++void inff_feat_debugfs_create(struct inff_pub *drvr);
 +
-+#endif /* INFF_FIRMWARE_H */
++/**
++ * inff_feat_is_enabled() - query feature.
++ *
++ * @ifp: interface instance.
++ * @id: feature id to check.
++ *
++ * Return: true is feature is enabled; otherwise false.
++ */
++bool inff_feat_is_enabled(struct inff_if *ifp, enum inff_feat_id id);
++
++/**
++ * inff_feat_is_quirk_enabled() - query chip quirk.
++ *
++ * @ifp: interface instance.
++ * @quirk: quirk id to check.
++ *
++ * Return: true is quirk is enabled; otherwise false.
++ */
++bool inff_feat_is_quirk_enabled(struct inff_if *ifp,
++				enum inff_feat_quirk quirk);
++
++/**
++ * inff_feat_is_6ghz_enabled() - Find if 6GHZ Operation is allowed
++ *
++ * @ifp: interface instance.
++ *
++ * Return: true if 6GHz operation is allowed; otherwise false.
++ */
++bool inff_feat_is_6ghz_enabled(struct inff_if *ifp);
++
++/**
++ * inff_feat_is_sdio_rxf_in_kthread() - handle SDIO Rx frame in kthread.
++ *
++ * @drvr: driver instance.
++ */
++bool inff_feat_is_sdio_rxf_in_kthread(struct inff_pub *drvr);
++
++/**
++ * inff_feat_is_offloads_enabled() - Find if offload_prof power profile
++ * is given by user
++ *
++ * @ifp: interface instance.
++ *
++ * Return: true if offloads_prof is set otherwise false.
++ */
++bool inff_feat_is_offloads_enabled(struct inff_if *ifp);
++
++#endif /* INFF_FEATURE_H */
 -- 
 2.25.1
 
