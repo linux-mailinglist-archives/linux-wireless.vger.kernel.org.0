@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-27409-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27410-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599C8B7E005
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:39:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E03FB7DF9E
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 593B01C07475
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:31:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 065D27B85E1
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Sep 2025 22:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785271F460B;
-	Tue, 16 Sep 2025 22:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A61286D56;
+	Tue, 16 Sep 2025 22:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="Hc6aQFeB"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="LpNp+LPR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp14.infineon.com (smtp14.infineon.com [217.10.52.160])
+Received: from smtp2.infineon.com (smtp2.infineon.com [217.10.52.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A056517BEBF
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.160
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF7C199935
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Sep 2025 22:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758061851; cv=none; b=NCJqOZUO1H6JjzxsSPLHJv39h6RUQciBTYC4lU6vhjn7Anet5wWkgdvTGh3dR282MvxUh3mCirvf4h3kWX/CTq8TdlgguFP/b8LbwfFiNKTC5IF7qD7k/7RFVfXM2uGolYWIAnRc25pGoav0v44EdISUcSJmhC5Izx7Vtxof408=
+	t=1758061863; cv=none; b=LTBxKNimggaKazyrp9j/JYPGkZ7U1o+Uw/Zov2MINY8t0JQEVBknWkJ+ok20YQwZ/9NM/IOQRuhGO9w+oQ735DF7v9FxECtERpLNbT9VVVlp5VndVNFocD0FGziju7kCYI3U3cgCyD8xoys1VZgeszn6XsczPUdLdlO541iHC8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758061851; c=relaxed/simple;
-	bh=rwLlzImAOLygQ1PKlAqqnmff8boB8pMApd9kOP7tTqk=;
+	s=arc-20240116; t=1758061863; c=relaxed/simple;
+	bh=BFlRNOFqroYVgxsXw288E+Zn1Ul2wZw1Lr/uSg/Xbv8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cYKHAUlp9iLW/+KzHmzXQXQENCDV14TjgcuTHxI3u/lxlPObgQg4sN/J2gTE0v9ZeNxqG+ACyew9i2wc2cXZyizArGPSI0UAJIPXLuG5wrAMYHqL4SputPiTFg26k6pmAvcDZDKk8XKF2m/v2HHgzqJcPvxZwxGv3loI4VRy/gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=Hc6aQFeB; arc=none smtp.client-ip=217.10.52.160
+	 MIME-Version:Content-Type; b=a1Ye6n6pIV0U3i1tbaXw1VwFkmQnEEoA/gEdAkS6V2LjmQ9FfjR02MhcAJW1V96JcaPDOwaSAaA3Ds+LCj/oU+OKW9CP5a8ABRCWAQq28/eHAr70erAA9jIk9KHfjJWCqOGfr8Ujmv8eJ/jY+NK4KwoSZDa3OJtU0hndOF5b8Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=LpNp+LPR; arc=none smtp.client-ip=217.10.52.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1758061849; x=1789597849;
+  t=1758061860; x=1789597860;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=rwLlzImAOLygQ1PKlAqqnmff8boB8pMApd9kOP7tTqk=;
-  b=Hc6aQFeBum/wVBS3+GDrFy1DTGtYEVz/mAjLnX0/HNiQ5u/GpOZLVeiy
-   vTivLutv9aSfFp08N8xhkqKAO05X/mXIYsqYtX5+m4fgJVYz8288i0OEs
-   bFqySgY6zgOvx51s5r5EtUaQkJxVPvMUOszNgTw65YGyyvKElkHHTtFLC
-   g=;
-X-CSE-ConnectionGUID: hlbUKc7sQvWLEEd3gN/ByQ==
-X-CSE-MsgGUID: 9puWreEySDmqZx/+Izv/kA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="99294381"
+  bh=BFlRNOFqroYVgxsXw288E+Zn1Ul2wZw1Lr/uSg/Xbv8=;
+  b=LpNp+LPRcAdUKcsIpjIEeQKFRO5s2Ux8TQeK9vkXjqM1ekCkP/izcMuP
+   LQnD4sV3cxEz3gFQJYaNdyC+SH5kA0AP4B0MQIZzt8Rqjl5OwjdCe8LPG
+   APu+yzGdxDO+Z6UJl7fY7sJyecOwDDM4XDVDLH7Rfo6WZKvEOLtTokzmf
+   k=;
+X-CSE-ConnectionGUID: Wjt4ztKIR8aIS+m4FoaE7w==
+X-CSE-MsgGUID: 7NICP0+5Sl+R6Ci6hxXK2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="125093945"
 X-IronPort-AV: E=Sophos;i="6.18,270,1751234400"; 
-   d="scan'208";a="99294381"
+   d="scan'208";a="125093945"
 X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE812.infineon.com) ([172.23.29.38])
-  by smtp14.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:30:47 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE812.infineon.com
- (172.23.29.38) with Microsoft SMTP Server (version=TLS1_2,
+Received: from unknown (HELO MUCSE805.infineon.com) ([172.23.29.31])
+  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 00:30:58 +0200
+Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE805.infineon.com
+ (172.23.29.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Wed, 17 Sep
- 2025 00:30:46 +0200
+ 2025 00:30:58 +0200
 Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
  MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.36; Wed, 17 Sep 2025 00:30:43 +0200
+ 15.2.1748.36; Wed, 17 Sep 2025 00:30:55 +0200
 From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 To: <linux-wireless@vger.kernel.org>, Johannes Berg
 	<johannes@sipsolutions.net>
 CC: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
 	<wlan-kernel-dev-list@infineon.com>
-Subject: [PATCH wireless-next 54/57] wifi: inffmac: add chanspec.c/h
-Date: Wed, 17 Sep 2025 03:48:14 +0530
-Message-ID: <20250916221821.4387-60-gokulkumar.sivakumar@infineon.com>
+Subject: [PATCH wireless-next 55/57] wifi: inffmac: add utils.c/h
+Date: Wed, 17 Sep 2025 03:48:15 +0530
+Message-ID: <20250916221821.4387-61-gokulkumar.sivakumar@infineon.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
 References: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
@@ -76,291 +76,355 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MUCSE821.infineon.com (172.23.29.47) To
+X-ClientProxiedBy: MUCSE823.infineon.com (172.23.29.54) To
  MUCSE827.infineon.com (172.23.29.20)
 
-Common definitions of the wifi chanspec specific structures and MACROs.
+Imeplemenation of common utility functions and MACRO definitions which can
+be used by other driver source files.
 
 Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 ---
- .../net/wireless/infineon/inffmac/chanspec.c  | 260 +++++++++++++
- .../net/wireless/infineon/inffmac/chanspec.h  | 357 ++++++++++++++++++
- 2 files changed, 617 insertions(+)
- create mode 100644 drivers/net/wireless/infineon/inffmac/chanspec.c
- create mode 100644 drivers/net/wireless/infineon/inffmac/chanspec.h
+ drivers/net/wireless/infineon/inffmac/utils.c | 323 ++++++++++++++++++
+ drivers/net/wireless/infineon/inffmac/utils.h | 254 ++++++++++++++
+ 2 files changed, 577 insertions(+)
+ create mode 100644 drivers/net/wireless/infineon/inffmac/utils.c
+ create mode 100644 drivers/net/wireless/infineon/inffmac/utils.h
 
-diff --git a/drivers/net/wireless/infineon/inffmac/chanspec.c b/drivers/net/wireless/infineon/inffmac/chanspec.c
+diff --git a/drivers/net/wireless/infineon/inffmac/utils.c b/drivers/net/wireless/infineon/inffmac/utils.c
 new file mode 100644
-index 000000000000..7bf5a09c2530
+index 000000000000..c27864f207bd
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/chanspec.c
-@@ -0,0 +1,260 @@
++++ b/drivers/net/wireless/infineon/inffmac/utils.c
+@@ -0,0 +1,323 @@
 +// SPDX-License-Identifier: ISC
++
 +/*
-+ * Copyright (c) 2013 Broadcom Corporation
++ * Copyright (c) 2010 Broadcom Corporation
 + *
 + * Copyright (c) 2025, Infineon Technologies AG, or an affiliate of Infineon Technologies AG.
 + * All rights reserved.
 + */
 +
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/netdevice.h>
 +#include <linux/module.h>
 +
 +#include "utils.h"
-+#include "chanspec.h"
 +
-+static u16 d11n_sb(enum inff_chan_sb sb)
++struct sk_buff *inff_pkt_buf_get_skb(uint len)
 +{
-+	switch (sb) {
-+	case INFF_CHAN_SB_NONE:
-+		return INFF_CHSPEC_D11N_SB_N;
-+	case INFF_CHAN_SB_L:
-+		return INFF_CHSPEC_D11N_SB_L;
-+	case INFF_CHAN_SB_U:
-+		return INFF_CHSPEC_D11N_SB_U;
-+	default:
-+		WARN_ON(1);
++	struct sk_buff *skb;
++
++	skb = dev_alloc_skb(len);
++	if (skb) {
++		skb_put(skb, len);
++		skb->priority = 0;
 +	}
-+	return 0;
++
++	return skb;
 +}
 +
-+static u16 d11n_bw(enum inff_chan_bw bw)
++/* Free the driver packet. Free the tag if present */
++void inff_pkt_buf_free_skb(struct sk_buff *skb)
 +{
-+	switch (bw) {
-+	case INFF_CHAN_BW_20:
-+		return INFF_CHSPEC_D11N_BW_20;
-+	case INFF_CHAN_BW_40:
-+		return INFF_CHSPEC_D11N_BW_40;
-+	default:
-+		WARN_ON(1);
-+	}
-+	return 0;
++	if (!skb)
++		return;
++
++	WARN_ON(skb->next);
++	dev_kfree_skb_any(skb);
 +}
 +
-+static void inff_d11n_encchspec(struct inff_chan *ch)
++/*
++ * osl multiple-precedence packet queue
++ * hi_prec is always >= the number of the highest non-empty precedence
++ */
++struct sk_buff *inff_pktq_penq(struct pktq *pq, int prec,
++			       struct sk_buff *p)
 +{
-+	if (ch->bw == INFF_CHAN_BW_20)
-+		ch->sb = INFF_CHAN_SB_NONE;
++	struct sk_buff_head *q;
 +
-+	ch->chspec = 0;
-+	inff_maskset16(&ch->chspec, INFF_CHSPEC_CH_MASK,
-+		       INFF_CHSPEC_CH_SHIFT, ch->chnum);
-+	inff_maskset16(&ch->chspec, INFF_CHSPEC_D11N_SB_MASK,
-+		       0, d11n_sb(ch->sb));
-+	inff_maskset16(&ch->chspec, INFF_CHSPEC_D11N_BW_MASK,
-+		       0, d11n_bw(ch->bw));
++	if (pktq_full(pq) || pktq_pfull(pq, prec))
++		return NULL;
 +
-+	if (ch->chnum <= CH_MAX_2G_CHANNEL)
-+		ch->chspec |= INFF_CHSPEC_D11N_BND_2G;
-+	else
-+		ch->chspec |= INFF_CHSPEC_D11N_BND_5G;
++	q = &pq->q[prec].skblist;
++	skb_queue_tail(q, p);
++	pq->len++;
++
++	if (pq->hi_prec < prec)
++		pq->hi_prec = (u8)prec;
++
++	return p;
 +}
 +
-+static u16 d11ac_bw(enum inff_chan_bw bw)
++struct sk_buff *inff_pktq_penq_head(struct pktq *pq, int prec,
++				    struct sk_buff *p)
 +{
-+	switch (bw) {
-+	case INFF_CHAN_BW_20:
-+		return INFF_CHSPEC_D11AC_BW_20;
-+	case INFF_CHAN_BW_40:
-+		return INFF_CHSPEC_D11AC_BW_40;
-+	case INFF_CHAN_BW_80:
-+		return INFF_CHSPEC_D11AC_BW_80;
-+	case INFF_CHAN_BW_160:
-+		return INFF_CHSPEC_D11AC_BW_160;
-+	default:
-+		WARN_ON(1);
-+	}
-+	return 0;
++	struct sk_buff_head *q;
++
++	if (pktq_full(pq) || pktq_pfull(pq, prec))
++		return NULL;
++
++	q = &pq->q[prec].skblist;
++	skb_queue_head(q, p);
++	pq->len++;
++
++	if (pq->hi_prec < prec)
++		pq->hi_prec = (u8)prec;
++
++	return p;
 +}
 +
-+static void inff_d11ac_encchspec(struct inff_chan *ch)
++struct sk_buff *inff_pktq_pdeq(struct pktq *pq, int prec)
 +{
-+	if (ch->bw == INFF_CHAN_BW_20 || ch->sb == INFF_CHAN_SB_NONE)
-+		ch->sb = INFF_CHAN_SB_L;
++	struct sk_buff_head *q;
++	struct sk_buff *p;
 +
-+	inff_maskset16(&ch->chspec, INFF_CHSPEC_CH_MASK,
-+		       INFF_CHSPEC_CH_SHIFT, ch->chnum);
-+	inff_maskset16(&ch->chspec, INFF_CHSPEC_D11AC_SB_MASK,
-+		       INFF_CHSPEC_D11AC_SB_SHIFT, ch->sb);
-+	inff_maskset16(&ch->chspec, INFF_CHSPEC_D11AC_BW_MASK,
-+		       0, d11ac_bw(ch->bw));
++	q = &pq->q[prec].skblist;
++	p = skb_dequeue(q);
++	if (!p)
++		return NULL;
 +
-+	ch->chspec &= ~INFF_CHSPEC_D11AC_BND_MASK;
-+	switch (ch->band) {
-+	case INFF_CHAN_BAND_6G:
-+		ch->chspec |= INFF_CHSPEC_D11AC_BND_6G;
-+		break;
-+	case INFF_CHAN_BAND_5G:
-+		ch->chspec |= INFF_CHSPEC_D11AC_BND_5G;
-+		break;
-+	case INFF_CHAN_BAND_2G:
-+		ch->chspec |= INFF_CHSPEC_D11AC_BND_2G;
-+		break;
-+	default:
-+		WARN_ONCE(1, "Invalid band 0x%04x\n", ch->band);
-+		break;
-+	}
++	pq->len--;
++	return p;
 +}
 +
-+static void inff_d11n_decchspec(struct inff_chan *ch)
++/*
++ * precedence based dequeue with match function. Passing a NULL pointer
++ * for the match function parameter is considered to be a wildcard so
++ * any packet on the queue is returned. In that case it is no different
++ * from inff_pktq_pdeq() above.
++ */
++struct sk_buff *inff_pktq_pdeq_match(struct pktq *pq, int prec,
++				     bool (*match_fn)(struct sk_buff *skb,
++						      void *arg), void *arg)
 +{
-+	u16 val;
++	struct sk_buff_head *q;
++	struct sk_buff *p, *next;
 +
-+	ch->chnum = (u8)(ch->chspec & INFF_CHSPEC_CH_MASK);
-+	ch->control_ch_num = ch->chnum;
-+
-+	switch (ch->chspec & INFF_CHSPEC_D11N_BW_MASK) {
-+	case INFF_CHSPEC_D11N_BW_20:
-+		ch->bw = INFF_CHAN_BW_20;
-+		ch->sb = INFF_CHAN_SB_NONE;
-+		break;
-+	case INFF_CHSPEC_D11N_BW_40:
-+		ch->bw = INFF_CHAN_BW_40;
-+		val = ch->chspec & INFF_CHSPEC_D11N_SB_MASK;
-+		if (val == INFF_CHSPEC_D11N_SB_L) {
-+			ch->sb = INFF_CHAN_SB_L;
-+			ch->control_ch_num -= CH_10MHZ_APART;
-+		} else {
-+			ch->sb = INFF_CHAN_SB_U;
-+			ch->control_ch_num += CH_10MHZ_APART;
++	q = &pq->q[prec].skblist;
++	skb_queue_walk_safe(q, p, next) {
++		if (!match_fn || match_fn(p, arg)) {
++			skb_unlink(p, q);
++			pq->len--;
++			return p;
 +		}
-+		break;
-+	default:
-+		WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chspec);
-+		break;
 +	}
++	return NULL;
++}
 +
-+	switch (ch->chspec & INFF_CHSPEC_D11N_BND_MASK) {
-+	case INFF_CHSPEC_D11N_BND_5G:
-+		ch->band = INFF_CHAN_BAND_5G;
-+		break;
-+	case INFF_CHSPEC_D11N_BND_2G:
-+		ch->band = INFF_CHAN_BAND_2G;
-+		break;
-+	default:
-+		WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chspec);
-+		break;
++struct sk_buff *inff_pktq_pdeq_tail(struct pktq *pq, int prec)
++{
++	struct sk_buff_head *q;
++	struct sk_buff *p;
++
++	q = &pq->q[prec].skblist;
++	p = skb_dequeue_tail(q);
++	if (!p)
++		return NULL;
++
++	pq->len--;
++	return p;
++}
++
++void
++inff_pktq_pflush(struct pktq *pq, int prec, bool dir,
++		 bool (*fn)(struct sk_buff *, void *), void *arg)
++{
++	struct sk_buff_head *q;
++	struct sk_buff *p, *next;
++
++	q = &pq->q[prec].skblist;
++	skb_queue_walk_safe(q, p, next) {
++		if (!fn || (*fn) (p, arg)) {
++			skb_unlink(p, q);
++			inff_pkt_buf_free_skb(p);
++			pq->len--;
++		}
 +	}
 +}
 +
-+static void inff_d11ac_decchspec(struct inff_chan *ch)
++void inff_pktq_flush(struct pktq *pq, bool dir,
++		     bool (*fn)(struct sk_buff *, void *), void *arg)
 +{
-+	u16 val;
++	int prec;
 +
-+	ch->chnum = (u8)(ch->chspec & INFF_CHSPEC_CH_MASK);
-+	ch->control_ch_num = ch->chnum;
++	for (prec = 0; prec < pq->num_prec; prec++)
++		inff_pktq_pflush(pq, prec, dir, fn, arg);
++}
 +
-+	switch (ch->chspec & INFF_CHSPEC_D11AC_BW_MASK) {
-+	case INFF_CHSPEC_D11AC_BW_20:
-+		ch->bw = INFF_CHAN_BW_20;
-+		ch->sb = INFF_CHAN_SB_NONE;
-+		break;
-+	case INFF_CHSPEC_D11AC_BW_40:
-+		ch->bw = INFF_CHAN_BW_40;
-+		val = ch->chspec & INFF_CHSPEC_D11AC_SB_MASK;
-+		if (val == INFF_CHSPEC_D11AC_SB_L) {
-+			ch->sb = INFF_CHAN_SB_L;
-+			ch->control_ch_num -= CH_10MHZ_APART;
-+		} else if (val == INFF_CHSPEC_D11AC_SB_U) {
-+			ch->sb = INFF_CHAN_SB_U;
-+			ch->control_ch_num += CH_10MHZ_APART;
-+		} else {
-+			WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chspec);
-+		}
-+		break;
-+	case INFF_CHSPEC_D11AC_BW_80:
-+		ch->bw = INFF_CHAN_BW_80;
-+		ch->sb = inff_maskget16(ch->chspec, INFF_CHSPEC_D11AC_SB_MASK,
-+					INFF_CHSPEC_D11AC_SB_SHIFT);
-+		switch (ch->sb) {
-+		case INFF_CHAN_SB_LL:
-+			ch->control_ch_num -= CH_30MHZ_APART;
-+			break;
-+		case INFF_CHAN_SB_LU:
-+			ch->control_ch_num -= CH_10MHZ_APART;
-+			break;
-+		case INFF_CHAN_SB_UL:
-+			ch->control_ch_num += CH_10MHZ_APART;
-+			break;
-+		case INFF_CHAN_SB_UU:
-+			ch->control_ch_num += CH_30MHZ_APART;
-+			break;
-+		default:
-+			WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chspec);
-+			break;
-+		}
-+		break;
-+	case INFF_CHSPEC_D11AC_BW_160:
-+		ch->bw = INFF_CHAN_BW_160;
-+		ch->sb = inff_maskget16(ch->chspec, INFF_CHSPEC_D11AC_SB_MASK,
-+					INFF_CHSPEC_D11AC_SB_SHIFT);
-+		switch (ch->sb) {
-+		case INFF_CHAN_SB_LLL:
-+			ch->control_ch_num -= CH_70MHZ_APART;
-+			break;
-+		case INFF_CHAN_SB_LLU:
-+			ch->control_ch_num -= CH_50MHZ_APART;
-+			break;
-+		case INFF_CHAN_SB_LUL:
-+			ch->control_ch_num -= CH_30MHZ_APART;
-+			break;
-+		case INFF_CHAN_SB_LUU:
-+			ch->control_ch_num -= CH_10MHZ_APART;
-+			break;
-+		case INFF_CHAN_SB_ULL:
-+			ch->control_ch_num += CH_10MHZ_APART;
-+			break;
-+		case INFF_CHAN_SB_ULU:
-+			ch->control_ch_num += CH_30MHZ_APART;
-+			break;
-+		case INFF_CHAN_SB_UUL:
-+			ch->control_ch_num += CH_50MHZ_APART;
-+			break;
-+		case INFF_CHAN_SB_UUU:
-+			ch->control_ch_num += CH_70MHZ_APART;
-+			break;
-+		default:
-+			WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chspec);
-+			break;
-+		}
-+		break;
-+	case INFF_CHSPEC_D11AC_BW_8080:
-+	default:
-+		WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chspec);
-+		break;
-+	}
++void inff_pktq_init(struct pktq *pq, int num_prec, int max_len)
++{
++	int prec;
 +
-+	switch (ch->chspec & INFF_CHSPEC_D11AC_BND_MASK) {
-+	case INFF_CHSPEC_D11AC_BND_6G:
-+		ch->band = INFF_CHAN_BAND_6G;
-+		break;
-+	case INFF_CHSPEC_D11AC_BND_5G:
-+		ch->band = INFF_CHAN_BAND_5G;
-+		break;
-+	case INFF_CHSPEC_D11AC_BND_2G:
-+		ch->band = INFF_CHAN_BAND_2G;
-+		break;
-+	default:
-+		WARN_ONCE(1, "Invalid chanspec 0x%04x\n", ch->chspec);
-+		break;
++	/* pq is variable size; only zero out what's requested */
++	memset(pq, 0,
++	       offsetof(struct pktq, q) + (sizeof(struct pktq_prec) * num_prec));
++
++	pq->num_prec = (u16)num_prec;
++
++	pq->max = (u16)max_len;
++
++	for (prec = 0; prec < num_prec; prec++) {
++		pq->q[prec].max = pq->max;
++		skb_queue_head_init(&pq->q[prec].skblist);
 +	}
 +}
 +
-+void inff_d11_attach(struct inff_d11inf *d11inf)
++struct sk_buff *inff_pktq_peek_tail(struct pktq *pq, int *prec_out)
 +{
-+	if (d11inf->io_type == INFF_D11N_IOTYPE) {
-+		d11inf->encchspec = inff_d11n_encchspec;
-+		d11inf->decchspec = inff_d11n_decchspec;
++	int prec;
++
++	if (pktq_empty(pq))
++		return NULL;
++
++	for (prec = 0; prec < pq->hi_prec; prec++)
++		if (!skb_queue_empty(&pq->q[prec].skblist))
++			break;
++
++	if (prec_out)
++		*prec_out = prec;
++
++	return skb_peek_tail(&pq->q[prec].skblist);
++}
++
++/* Return sum of lengths of a specific set of precedences */
++int inff_pktq_mlen(struct pktq *pq, uint prec_bmp)
++{
++	int prec, len;
++
++	len = 0;
++
++	for (prec = 0; prec <= pq->hi_prec; prec++)
++		if (prec_bmp & (1 << prec))
++			len += pq->q[prec].skblist.qlen;
++
++	return len;
++}
++
++/* Priority dequeue from a specific set of precedences */
++struct sk_buff *inff_pktq_mdeq(struct pktq *pq, uint prec_bmp,
++			       int *prec_out)
++{
++	struct sk_buff_head *q;
++	struct sk_buff *p;
++	int prec;
++
++	if (pktq_empty(pq))
++		return NULL;
++
++	while ((prec = pq->hi_prec) > 0 &&
++	       skb_queue_empty(&pq->q[prec].skblist))
++		pq->hi_prec--;
++
++	while ((prec_bmp & (1 << prec)) == 0 ||
++	       skb_queue_empty(&pq->q[prec].skblist))
++		if (prec-- == 0)
++			return NULL;
++
++	q = &pq->q[prec].skblist;
++	p = skb_dequeue(q);
++	if (!p)
++		return NULL;
++
++	pq->len--;
++
++	if (prec_out)
++		*prec_out = prec;
++
++	return p;
++}
++
++/* Produce a human-readable string for boardrev */
++char *inff_boardrev_str(u32 brev, char *buf)
++{
++	char c;
++
++	if (brev < 0x100) {
++		snprintf(buf, INFF_BOARDREV_LEN, "%d.%d",
++			 (brev & 0xf0) >> 4, brev & 0xf);
 +	} else {
-+		d11inf->encchspec = inff_d11ac_encchspec;
-+		d11inf->decchspec = inff_d11ac_decchspec;
++		c = (brev & 0xf000) == 0x1000 ? 'P' : 'A';
++		snprintf(buf, INFF_BOARDREV_LEN, "%c%03x", c, brev & 0xfff);
 +	}
++	return buf;
 +}
-diff --git a/drivers/net/wireless/infineon/inffmac/chanspec.h b/drivers/net/wireless/infineon/inffmac/chanspec.h
++
++char *inff_dotrev_str(u32 dotrev, char *buf)
++{
++	u8 dotval[4];
++
++	if (!dotrev) {
++		snprintf(buf, INFF_DOTREV_LEN, "unknown");
++		return buf;
++	}
++	dotval[0] = (dotrev >> 24) & 0xFF;
++	dotval[1] = (dotrev >> 16) & 0xFF;
++	dotval[2] = (dotrev >> 8) & 0xFF;
++	dotval[3] = dotrev & 0xFF;
++
++	if (dotval[3])
++		snprintf(buf, INFF_DOTREV_LEN, "%d.%d.%d.%d", dotval[0],
++			 dotval[1], dotval[2], dotval[3]);
++	else if (dotval[2])
++		snprintf(buf, INFF_DOTREV_LEN, "%d.%d.%d", dotval[0],
++			 dotval[1], dotval[2]);
++	else
++		snprintf(buf, INFF_DOTREV_LEN, "%d.%d", dotval[0],
++			 dotval[1]);
++
++	return buf;
++}
++
++struct sk_buff *__inff_pkt_buf_get_skb(uint len, gfp_t gfp_mask)
++{
++	struct sk_buff *skb;
++
++	skb = __netdev_alloc_skb(NULL, len, gfp_mask);
++	if (skb) {
++		skb_put(skb, len);
++		skb->priority = 0;
++	}
++	return skb;
++}
++
++#if defined(DEBUG)
++/* pretty hex print a pkt buffer chain */
++void inff_prpkt(const char *msg, struct sk_buff *p0)
++{
++	struct sk_buff *p;
++
++	if (msg && (msg[0] != '\0'))
++		pr_debug("%s:\n", msg);
++
++	for (p = p0; p; p = p->next)
++		print_hex_dump_bytes("", DUMP_PREFIX_OFFSET, p->data, p->len);
++}
++
++void inff_dbg_hex_dump(const void *data, size_t size, const char *fmt, ...)
++{
++	struct va_format vaf;
++	va_list args;
++
++	va_start(args, fmt);
++
++	vaf.fmt = fmt;
++	vaf.va = &args;
++
++	pr_debug("%pV", &vaf);
++
++	va_end(args);
++
++	print_hex_dump_bytes("", DUMP_PREFIX_OFFSET, data, size);
++}
++
++#endif				/* defined(DEBUG) */
+diff --git a/drivers/net/wireless/infineon/inffmac/utils.h b/drivers/net/wireless/infineon/inffmac/utils.h
 new file mode 100644
-index 000000000000..3d62f21cc9ed
+index 000000000000..e8cf19d8e0c3
 --- /dev/null
-+++ b/drivers/net/wireless/infineon/inffmac/chanspec.h
-@@ -0,0 +1,357 @@
++++ b/drivers/net/wireless/infineon/inffmac/utils.h
+@@ -0,0 +1,254 @@
 +/* SPDX-License-Identifier: ISC */
 +/*
 + * Copyright (c) 2010 Broadcom Corporation
@@ -369,355 +433,252 @@ index 000000000000..3d62f21cc9ed
 + * All rights reserved.
 + */
 +
-+#ifndef	INFF_WIFI_H
-+#define	INFF_WIFI_H
++#ifndef	INFF_UTILS_H
++#define	INFF_UTILS_H
 +
-+#include <linux/if_ether.h>		/* for ETH_ALEN */
-+#include <linux/ieee80211.h>		/* for WLAN_PMKID_LEN */
-+
-+/*
-+ * A chanspec (u16) holds the channel number, band, bandwidth and control
-+ * sideband
-+ */
-+
-+/* channel defines */
-+#define CH_UPPER_SB			0x01
-+#define CH_LOWER_SB			0x02
-+#define CH_EWA_VALID			0x04
-+#define CH_70MHZ_APART			14
-+#define CH_50MHZ_APART			10
-+#define CH_30MHZ_APART			6
-+#define CH_20MHZ_APART			4
-+#define CH_10MHZ_APART			2
-+#define CH_5MHZ_APART			1 /* 2G band channels are 5 Mhz apart */
-+#define CH_MIN_2G_CHANNEL		1
-+#define CH_MAX_2G_CHANNEL		14	/* Max channel in 2G band */
-+#define CH_MIN_5G_CHANNEL		34
-+
-+/* bandstate array indices */
-+#define BAND_2G_INDEX		0	/* wlc->bandstate[x] index */
-+#define BAND_5G_INDEX		1	/* wlc->bandstate[x] index */
++#include <linux/skbuff.h>
 +
 +/*
-+ * max # supported channels. The max channel no is 216, this is that + 1
-+ * rounded up to a multiple of NBBY (8). DO NOT MAKE it > 255: channels are
-+ * u8's all over
++ * Spin at most 'us' microseconds while 'exp' is true.
++ * Caller should explicitly test 'exp' when this completes
++ * and take appropriate error action if 'exp' is still true.
 + */
-+#define	MAXCHANNEL		224
++#define SPINWAIT(exp, us) { \
++	uint countdown = (us) + 9; \
++	while ((exp) && (countdown >= 10)) {\
++		usleep_range(10, 20); \
++		countdown -= 10; \
++	} \
++}
 +
-+#define WL_CHANSPEC_CHAN_MASK		0x00ff
-+#define WL_CHANSPEC_CHAN_SHIFT		0
++/* Spin at most 'ms' milliseconds with polling interval 'interval' milliseconds
++ * while 'exp' is true. Caller should explicitly test 'exp' when this completes
++ * and take appropriate error action if 'exp' is still true.
++ */
++#define SPINWAIT_MS(exp, ms, interval) { \
++	typeof(interval) interval_ = (interval); \
++	uint countdown = (ms) + (interval_ - 1U); \
++	while ((exp) && (countdown >= interval_)) { \
++		msleep(interval_); \
++		countdown -= interval_; \
++	} \
++}
 +
-+#define WL_CHANSPEC_CTL_SB_MASK		0x0300
-+#define WL_CHANSPEC_CTL_SB_SHIFT	     8
-+#define WL_CHANSPEC_CTL_SB_LOWER	0x0100
-+#define WL_CHANSPEC_CTL_SB_UPPER	0x0200
-+#define WL_CHANSPEC_CTL_SB_NONE		0x0300
++/* osl multi-precedence packet queue */
++#define PKTQ_LEN_DEFAULT        128	/* Max 128 packets */
++#define PKTQ_MAX_PREC           16	/* Maximum precedence levels */
 +
-+#define WL_CHANSPEC_BW_MASK		0x0C00
-+#define WL_CHANSPEC_BW_SHIFT		    10
-+#define WL_CHANSPEC_BW_10		0x0400
-+#define WL_CHANSPEC_BW_20		0x0800
-+#define WL_CHANSPEC_BW_40		0x0C00
-+#define WL_CHANSPEC_BW_80		0x2000
++/* the largest reasonable packet buffer driver uses for ethernet MTU in bytes */
++#define	PKTBUFSZ	2048
 +
-+#define WL_CHANSPEC_BAND_MASK		0xf000
-+#define WL_CHANSPEC_BAND_SHIFT		12
-+#define WL_CHANSPEC_BAND_5G		0x1000
-+#define WL_CHANSPEC_BAND_2G		0x2000
-+#define INVCHANSPEC			255
-+
-+#define WL_CHAN_VALID_HW		BIT(0) /* valid with current HW */
-+#define WL_CHAN_VALID_SW		BIT(1) /* valid with country sett. */
-+#define WL_CHAN_BAND_5G			BIT(2) /* 5GHz-band channel */
-+#define WL_CHAN_RADAR			BIT(3) /* radar sensitive  channel */
-+#define WL_CHAN_INACTIVE		BIT(4) /* inactive due to radar */
-+#define WL_CHAN_PASSIVE			BIT(5) /* channel in passive mode */
-+#define WL_CHAN_RESTRICTED		BIT(6) /* restricted use channel */
-+
-+/* values for band specific 40MHz capabilities  */
-+#define WLC_N_BW_20ALL			0
-+#define WLC_N_BW_40ALL			1
-+#define WLC_N_BW_20IN2G_40IN5G		2
-+
-+#define WLC_BW_20MHZ_BIT		BIT(0)
-+#define WLC_BW_40MHZ_BIT		BIT(1)
-+#define WLC_BW_80MHZ_BIT		BIT(2)
-+#define WLC_BW_160MHZ_BIT		BIT(3)
-+
-+/* Bandwidth capabilities */
-+#define WLC_BW_CAP_20MHZ		(WLC_BW_20MHZ_BIT)
-+#define WLC_BW_CAP_40MHZ		(WLC_BW_40MHZ_BIT | WLC_BW_20MHZ_BIT)
-+#define WLC_BW_CAP_80MHZ		(WLC_BW_80MHZ_BIT | WLC_BW_40MHZ_BIT | \
-+					 WLC_BW_20MHZ_BIT)
-+#define WLC_BW_CAP_160MHZ		(WLC_BW_160MHZ_BIT | WLC_BW_80MHZ_BIT | \
-+					 WLC_BW_40MHZ_BIT | WLC_BW_20MHZ_BIT)
-+#define WLC_BW_CAP_UNRESTRICTED		0xFF
-+
-+/* band types */
-+#define	WLC_BAND_AUTO			0	/* auto-select */
-+#define	WLC_BAND_5G			1	/* 5 Ghz */
-+#define	WLC_BAND_2G			2	/* 2.4 Ghz */
-+#define	WLC_BAND_6G			3	/* 6 Ghz */
-+#define	WLC_BAND_ALL			4	/* all bands */
-+
-+#define CHSPEC_CHANNEL(chspec)	((u8)((chspec) & WL_CHANSPEC_CHAN_MASK))
-+#define CHSPEC_BAND(chspec)	((chspec) & WL_CHANSPEC_BAND_MASK)
-+
-+#define CHSPEC_CTL_SB(chspec)	((chspec) & WL_CHANSPEC_CTL_SB_MASK)
-+#define CHSPEC_BW(chspec)	((chspec) & WL_CHANSPEC_BW_MASK)
-+
-+#define CHSPEC_IS10(chspec) \
-+	(((chspec) & WL_CHANSPEC_BW_MASK) == WL_CHANSPEC_BW_10)
-+
-+#define CHSPEC_IS20(chspec) \
-+	(((chspec) & WL_CHANSPEC_BW_MASK) == WL_CHANSPEC_BW_20)
-+
-+#define CHSPEC_IS40(chspec) \
-+	(((chspec) & WL_CHANSPEC_BW_MASK) == WL_CHANSPEC_BW_40)
-+
-+#define CHSPEC_IS80(chspec) \
-+	(((chspec) & WL_CHANSPEC_BW_MASK) == WL_CHANSPEC_BW_80)
-+
-+#define CHSPEC_IS5G(chspec) \
-+	(((chspec) & WL_CHANSPEC_BAND_MASK) == WL_CHANSPEC_BAND_5G)
-+
-+#define CHSPEC_IS2G(chspec) \
-+	(((chspec) & WL_CHANSPEC_BAND_MASK) == WL_CHANSPEC_BAND_2G)
-+
-+#define CHSPEC_SB_NONE(chspec) \
-+	(((chspec) & WL_CHANSPEC_CTL_SB_MASK) == WL_CHANSPEC_CTL_SB_NONE)
-+
-+#define CHSPEC_SB_UPPER(chspec) \
-+	(((chspec) & WL_CHANSPEC_CTL_SB_MASK) == WL_CHANSPEC_CTL_SB_UPPER)
-+
-+#define CHSPEC_SB_LOWER(chspec) \
-+	(((chspec) & WL_CHANSPEC_CTL_SB_MASK) == WL_CHANSPEC_CTL_SB_LOWER)
-+
-+#define CHSPEC_CTL_CHAN(chspec) {\
-+	typeof(i) _chspec = (chspec); \
-+	((CHSPEC_SB_LOWER(_chspec)) ? \
-+	(lower_20_sb((_chspec & WL_CHANSPEC_CHAN_MASK))) : \
-+	(upper_20_sb((_chspec & WL_CHANSPEC_CHAN_MASK)))); \
++#ifndef setbit
++#ifndef NBBY			/* the BSD family defines NBBY */
++#define	NBBY	8		/* 8 bits per byte */
++#endif				/* #ifndef NBBY */
++#define	setbit(a, i)	{ \
++	typeof(i) _i = (i); \
++	(((u8 *)a)[(_i) / NBBY] |= 1 << ((_i) % NBBY)); \
 +	}
++#define	clrbit(a, i)	{ \
++	typeof(i) _i = (i); \
++	(((u8 *)a)[(_i) / NBBY] &= ~(1 << ((_i) % NBBY))); \
++	}
++#define	isset(a, i)	{ \
++	typeof(i) _i = (i); \
++	(((const u8 *)a)[(_i) / NBBY] & (1 << ((_i) % NBBY))); \
++	}
++#define	isclr(a, i)	{ \
++	typeof(i) _i = (i); \
++	((((const u8 *)a)[(_i) / NBBY] & (1 << ((_i) % NBBY))) == 0); \
++	}
++#endif				/* setbit */
 +
-+/* band types */
-+#define INF_BAND_AUTO           0       /* auto-select */
-+#define INF_BAND_5G             1       /* 5 Ghz */
-+#define INF_BAND_2G             2       /* 2.4 Ghz */
-+#define INF_BAND_ALL            3       /* all bands */
++#define	NBITS(type)	(sizeof(type) * 8)
++#define NBITVAL(nbits)	(1 << (nbits))
++#define MAXBITVAL(nbits)	((1 << (nbits)) - 1)
++#define	NBITMASK(nbits)	MAXBITVAL(nbits)
++#define MAXNBVAL(nbyte)	MAXBITVAL((nbyte) * 8)
 +
-+#define CHSPEC2BAND(chspec) (CHSPEC_IS5G(chspec) ? INF_BAND_5G : INF_BAND_2G)
++/* crc defines */
++#define CRC16_INIT_VALUE 0xffff	/* Initial CRC16 checksum value */
++#define CRC16_GOOD_VALUE 0xf0b8	/* Good final CRC16 checksum value */
 +
-+#define CHANSPEC_STR_LEN    8
++/* 18-bytes of Ethernet address buffer length */
++#define ETHER_ADDR_STR_LEN	18
 +
-+static inline int lower_20_sb(int channel)
-+{
-+	return channel > CH_10MHZ_APART ? (channel - CH_10MHZ_APART) : 0;
-+}
-+
-+static inline int upper_20_sb(int channel)
-+{
-+	return (channel < (MAXCHANNEL - CH_10MHZ_APART)) ?
-+	       channel + CH_10MHZ_APART : 0;
-+}
-+
-+static inline int chspec_bandunit(u16 chspec)
-+{
-+	return CHSPEC_IS5G(chspec) ? BAND_5G_INDEX : BAND_2G_INDEX;
-+}
-+
-+static inline u16 ch20mhz_chspec(int channel)
-+{
-+	u16 rc = channel <= CH_MAX_2G_CHANNEL ?
-+		 WL_CHANSPEC_BAND_2G : WL_CHANSPEC_BAND_5G;
-+
-+	return	(u16)((u16)channel | WL_CHANSPEC_BW_20 |
-+		      WL_CHANSPEC_CTL_SB_NONE | rc);
-+}
-+
-+static inline int next_20mhz_chan(int channel)
-+{
-+	return channel < (MAXCHANNEL - CH_20MHZ_APART) ?
-+	       channel + CH_20MHZ_APART : 0;
-+}
-+
-+/* defined rate in 500kbps */
-+#define INF_MAXRATE	108	/* in 500kbps units */
-+#define INF_RATE_1M	2	/* in 500kbps units */
-+#define INF_RATE_2M	4	/* in 500kbps units */
-+#define INF_RATE_5M5	11	/* in 500kbps units */
-+#define INF_RATE_11M	22	/* in 500kbps units */
-+#define INF_RATE_6M	12	/* in 500kbps units */
-+#define INF_RATE_9M	18	/* in 500kbps units */
-+#define INF_RATE_12M	24	/* in 500kbps units */
-+#define INF_RATE_18M	36	/* in 500kbps units */
-+#define INF_RATE_24M	48	/* in 500kbps units */
-+#define INF_RATE_36M	72	/* in 500kbps units */
-+#define INF_RATE_48M	96	/* in 500kbps units */
-+#define INF_RATE_54M	108	/* in 500kbps units */
-+
-+#define INF_2G_25MHZ_OFFSET		5	/* 2.4GHz band channel offset */
-+
-+#define MCSSET_LEN	16
-+
-+static inline bool ac_bitmap_tst(u8 bitmap, int prec)
-+{
-+	return (bitmap & (1 << (prec))) != 0;
-+}
-+
-+/* d11 io type */
-+#define INFF_D11N_IOTYPE		1
-+#define INFF_D11AC_IOTYPE		2
-+
-+/* A chanspec (channel specification) holds the channel number, band,
-+ * bandwidth and control sideband
-+ */
-+
-+/* chanspec binary format */
-+
-+#define INFF_CHSPEC_INVALID		255
-+/* bit 0~7 channel number
-+ * for 80+80 channels: bit 0~3 low channel id, bit 4~7 high channel id
-+ */
-+#define INFF_CHSPEC_CH_MASK		0x00ff
-+#define INFF_CHSPEC_CH_SHIFT		0
-+#define INFF_CHSPEC_CHL_MASK		0x000f
-+#define INFF_CHSPEC_CHL_SHIFT		0
-+#define INFF_CHSPEC_CHH_MASK		0x00f0
-+#define INFF_CHSPEC_CHH_SHIFT		4
-+
-+/* bit 8~16 for dot 11n IO types
-+ * bit 8~9 sideband
-+ * bit 10~11 bandwidth
-+ * bit 12~13 spectral band
-+ * bit 14~15 not used
-+ */
-+#define INFF_CHSPEC_D11N_SB_MASK	0x0300
-+#define INFF_CHSPEC_D11N_SB_SHIFT	8
-+#define  INFF_CHSPEC_D11N_SB_L		0x0100	/* control lower */
-+#define  INFF_CHSPEC_D11N_SB_U		0x0200	/* control upper */
-+#define  INFF_CHSPEC_D11N_SB_N		0x0300	/* none */
-+#define INFF_CHSPEC_D11N_BW_MASK	0x0c00
-+#define INFF_CHSPEC_D11N_BW_SHIFT	10
-+#define  INFF_CHSPEC_D11N_BW_10	0x0400
-+#define  INFF_CHSPEC_D11N_BW_20	0x0800
-+#define  INFF_CHSPEC_D11N_BW_40	0x0c00
-+#define INFF_CHSPEC_D11N_BND_MASK	0x3000
-+#define INFF_CHSPEC_D11N_BND_SHIFT	12
-+#define  INFF_CHSPEC_D11N_BND_5G	0x1000
-+#define  INFF_CHSPEC_D11N_BND_2G	0x2000
-+
-+/* bit 8~16 for dot 11ac IO types
-+ * bit 8~10 sideband
-+ * bit 11~13 bandwidth
-+ * bit 14~15 spectral band
-+ */
-+#define INFF_CHSPEC_D11AC_SB_MASK	0x0700
-+#define INFF_CHSPEC_D11AC_SB_SHIFT	8
-+#define  INFF_CHSPEC_D11AC_SB_LLL	0x0000
-+#define  INFF_CHSPEC_D11AC_SB_LLU	0x0100
-+#define  INFF_CHSPEC_D11AC_SB_LUL	0x0200
-+#define  INFF_CHSPEC_D11AC_SB_LUU	0x0300
-+#define  INFF_CHSPEC_D11AC_SB_ULL	0x0400
-+#define  INFF_CHSPEC_D11AC_SB_ULU	0x0500
-+#define  INFF_CHSPEC_D11AC_SB_UUL	0x0600
-+#define  INFF_CHSPEC_D11AC_SB_UUU	0x0700
-+#define  INFF_CHSPEC_D11AC_SB_LL	INFF_CHSPEC_D11AC_SB_LLL
-+#define  INFF_CHSPEC_D11AC_SB_LU	INFF_CHSPEC_D11AC_SB_LLU
-+#define  INFF_CHSPEC_D11AC_SB_UL	INFF_CHSPEC_D11AC_SB_LUL
-+#define  INFF_CHSPEC_D11AC_SB_UU	INFF_CHSPEC_D11AC_SB_LUU
-+#define  INFF_CHSPEC_D11AC_SB_L	INFF_CHSPEC_D11AC_SB_LLL
-+#define  INFF_CHSPEC_D11AC_SB_U	INFF_CHSPEC_D11AC_SB_LLU
-+#define INFF_CHSPEC_D11AC_BW_MASK	0x3800
-+#define INFF_CHSPEC_D11AC_BW_SHIFT	11
-+#define  INFF_CHSPEC_D11AC_BW_5	0x0000
-+#define  INFF_CHSPEC_D11AC_BW_10	0x0800
-+#define  INFF_CHSPEC_D11AC_BW_20	0x1000
-+#define  INFF_CHSPEC_D11AC_BW_40	0x1800
-+#define  INFF_CHSPEC_D11AC_BW_80	0x2000
-+#define  INFF_CHSPEC_D11AC_BW_160	0x2800
-+#define  INFF_CHSPEC_D11AC_BW_8080	0x3000
-+#define INFF_CHSPEC_D11AC_BND_MASK	0xc000
-+#define INFF_CHSPEC_D11AC_BND_SHIFT	14
-+#define  INFF_CHSPEC_D11AC_BND_2G	0x0000
-+#define  INFF_CHSPEC_D11AC_BND_3G	0x4000
-+#define  INFF_CHSPEC_D11AC_BND_6G	0x8000
-+#define  INFF_CHSPEC_D11AC_BND_5G	0xc000
-+#define INFF_CHSPEC_IS5G(chspec) \
-+	(((chspec) & INFF_CHSPEC_D11AC_BND_MASK) == INFF_CHSPEC_D11AC_BND_5G)
-+#define INFF_CHSPEC_IS6G(chspec) \
-+	(((chspec) & INFF_CHSPEC_D11AC_BND_MASK) == INFF_CHSPEC_D11AC_BND_6G)
-+#define INFF_CHAN_BAND_2G		1
-+#define INFF_CHAN_BAND_5G		2
-+#define INFF_CHAN_BAND_6G		3
-+
-+enum inff_chan_bw {
-+	INFF_CHAN_BW_20,
-+	INFF_CHAN_BW_40,
-+	INFF_CHAN_BW_80,
-+	INFF_CHAN_BW_80P80,
-+	INFF_CHAN_BW_160,
++struct pktq_prec {
++	struct sk_buff_head skblist;
++	u16 max;		/* maximum number of queued packets */
 +};
 +
-+enum inff_chan_sb {
-+	INFF_CHAN_SB_NONE = -1,
-+	INFF_CHAN_SB_LLL,
-+	INFF_CHAN_SB_LLU,
-+	INFF_CHAN_SB_LUL,
-+	INFF_CHAN_SB_LUU,
-+	INFF_CHAN_SB_ULL,
-+	INFF_CHAN_SB_ULU,
-+	INFF_CHAN_SB_UUL,
-+	INFF_CHAN_SB_UUU,
-+	INFF_CHAN_SB_L = INFF_CHAN_SB_LLL,
-+	INFF_CHAN_SB_U = INFF_CHAN_SB_LLU,
-+	INFF_CHAN_SB_LL = INFF_CHAN_SB_LLL,
-+	INFF_CHAN_SB_LU = INFF_CHAN_SB_LLU,
-+	INFF_CHAN_SB_UL = INFF_CHAN_SB_LUL,
-+	INFF_CHAN_SB_UU = INFF_CHAN_SB_LUU,
++/* multi-priority pkt queue */
++struct pktq {
++	u16 num_prec;	/* number of precedences in use */
++	u16 hi_prec;	/* rapid dequeue hint (>= highest non-empty prec) */
++	u16 max;	/* total max packets */
++	u16 len;	/* total number of packets */
++	/*
++	 * q array must be last since # of elements can be either
++	 * PKTQ_MAX_PREC or 1
++	 */
++	struct pktq_prec q[PKTQ_MAX_PREC];
 +};
 +
-+/**
-+ * struct inff_chan - stores channel formats
++/* operations on a specific precedence in packet queue */
++
++static inline int pktq_plen(struct pktq *pq, int prec)
++{
++	return pq->q[prec].skblist.qlen;
++}
++
++static inline int pktq_pavail(struct pktq *pq, int prec)
++{
++	return pq->q[prec].max - pq->q[prec].skblist.qlen;
++}
++
++static inline bool pktq_pfull(struct pktq *pq, int prec)
++{
++	return pq->q[prec].skblist.qlen >= pq->q[prec].max;
++}
++
++static inline bool pktq_pempty(struct pktq *pq, int prec)
++{
++	return skb_queue_empty(&pq->q[prec].skblist);
++}
++
++static inline struct sk_buff *pktq_ppeek(struct pktq *pq, int prec)
++{
++	return skb_peek(&pq->q[prec].skblist);
++}
++
++static inline struct sk_buff *pktq_ppeek_tail(struct pktq *pq, int prec)
++{
++	return skb_peek_tail(&pq->q[prec].skblist);
++}
++
++struct sk_buff *inff_pktq_penq(struct pktq *pq, int prec, struct sk_buff *p);
++struct sk_buff *inff_pktq_penq_head(struct pktq *pq, int prec,
++				    struct sk_buff *p);
++struct sk_buff *inff_pktq_pdeq(struct pktq *pq, int prec);
++struct sk_buff *inff_pktq_pdeq_tail(struct pktq *pq, int prec);
++struct sk_buff *inff_pktq_pdeq_match(struct pktq *pq, int prec,
++				     bool (*match_fn)(struct sk_buff *p,
++						      void *arg),
++				      void *arg);
++
++/* packet primitives */
++struct sk_buff *inff_pkt_buf_get_skb(uint len);
++void inff_pkt_buf_free_skb(struct sk_buff *skb);
++struct sk_buff *__inff_pkt_buf_get_skb(uint len, gfp_t gfp_mask);
++
++/* Empty the queue at particular precedence level */
++/* callback function fn(pkt, arg) returns true if pkt belongs to if */
++void inff_pktq_pflush(struct pktq *pq, int prec, bool dir,
++		      bool (*fn)(struct sk_buff *, void *), void *arg);
++
++/* operations on a set of precedences in packet queue */
++
++int inff_pktq_mlen(struct pktq *pq, uint prec_bmp);
++struct sk_buff *inff_pktq_mdeq(struct pktq *pq, uint prec_bmp, int *prec_out);
++
++/* operations on packet queue as a whole */
++
++static inline int pktq_len(struct pktq *pq)
++{
++	return (int)pq->len;
++}
++
++static inline int pktq_max(struct pktq *pq)
++{
++	return (int)pq->max;
++}
++
++static inline int pktq_avail(struct pktq *pq)
++{
++	return (int)(pq->max - pq->len);
++}
++
++static inline bool pktq_full(struct pktq *pq)
++{
++	return pq->len >= pq->max;
++}
++
++static inline bool pktq_empty(struct pktq *pq)
++{
++	return pq->len == 0;
++}
++
++void inff_pktq_init(struct pktq *pq, int num_prec, int max_len);
++/* prec_out may be NULL if caller is not interested in return value */
++struct sk_buff *inff_pktq_peek_tail(struct pktq *pq, int *prec_out);
++void inff_pktq_flush(struct pktq *pq, bool dir,
++		     bool (*fn)(struct sk_buff *, void *), void *arg);
++
++/* externs */
++/* ip address */
++struct ipv4_addr;
++
++/*
++ * bitfield macros using masking and shift
 + *
-+ * This structure can be used with functions translating chanspec into generic
-+ * channel info and the other way.
-+ *
-+ * @chspec: firmware specific format
-+ * @chnum: center channel number
-+ * @control_ch_num: control channel number
-+ * @band: frequency band
-+ * @bw: channel width
-+ * @sb: control sideband (location of control channel against the center one)
++ * remark: the mask parameter should be a shifted mask.
 + */
-+struct inff_chan {
-+	u16 chspec;
-+	u8 chnum;
-+	u8 control_ch_num;
-+	u8 band;
-+	enum inff_chan_bw bw;
-+	enum inff_chan_sb sb;
-+};
++static inline void inff_maskset32(u32 *var, u32 mask, u8 shift, u32 value)
++{
++	value = (value << shift) & mask;
++	*var = (*var & ~mask) | value;
++}
 +
-+/**
-+ * struct inff_d11inf - provides functions translating channel format
-+ *
-+ * @io_type: determines version of channel format used by firmware
-+ * @encchspec: encodes channel info into a chanspec, requires center channel
-+ *	number, ignores control one
-+ * @decchspec: decodes chanspec into generic info
-+ */
-+struct inff_d11inf {
-+	u8 io_type;
++static inline u32 inff_maskget32(u32 var, u32 mask, u8 shift)
++{
++	return (var & mask) >> shift;
++}
 +
-+	void (*encchspec)(struct inff_chan *ch);
-+	void (*decchspec)(struct inff_chan *ch);
-+};
++static inline void inff_maskset16(u16 *var, u16 mask, u8 shift, u16 value)
++{
++	value = (value << shift) & mask;
++	*var = (*var & ~mask) | value;
++}
 +
-+void inff_d11_attach(struct inff_d11inf *d11inf);
++static inline u16 inff_maskget16(u16 var, u16 mask, u8 shift)
++{
++	return (var & mask) >> shift;
++}
 +
-+#endif /* INFF_WIFI_H */
++static inline int inff_work_sched_cpu(int cpu)
++{
++	if (cpu >= 0 && cpu < nr_cpu_ids)
++		return cpu;
++
++	return WORK_CPU_UNBOUND;
++}
++
++/* externs */
++/* format/print */
++#ifdef DEBUG
++void inff_prpkt(const char *msg, struct sk_buff *p0);
++#else
++#define inff_prpkt(a, b)
++#endif				/* DEBUG */
++
++#ifdef DEBUG
++__printf(3, 4)
++void inff_dbg_hex_dump(const void *data, size_t size, const char *fmt, ...);
++#else
++__printf(3, 4)
++static inline
++void inff_dbg_hex_dump(const void *data, size_t size, const char *fmt, ...)
++{
++}
++#endif
++
++#define INFF_BOARDREV_LEN	8
++#define INFF_DOTREV_LEN	16
++
++char *inff_boardrev_str(u32 brev, char *buf);
++char *inff_dotrev_str(u32 dotrev, char *buf);
++
++#endif /* INFF_UTILS_H */
 -- 
 2.25.1
 
