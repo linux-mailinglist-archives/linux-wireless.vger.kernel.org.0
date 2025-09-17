@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-27424-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27427-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4B9B802A5
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 16:44:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFCEB7C4CB
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 13:56:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F256532554D
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 05:56:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68B9417916B
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 05:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407A127B34D;
-	Wed, 17 Sep 2025 05:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2194F269D18;
+	Wed, 17 Sep 2025 05:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="mOAFKTbS"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="DZEuPFPY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B78326A0C6
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Sep 2025 05:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1C827D770
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Sep 2025 05:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758088577; cv=none; b=FgE0WTKBZA4AQpF3BIk3HEpGmQnslukZ6bttO4ED45Zhm0xSlsL8rIOtRZjoJxwe6Ydb5eliIabdz2b7UbITZ2JMwbGgG+84JxLlMF0VDTRR9p5OdP0p/D68OsrD6xQedN0o3WFMqw0Uky1Dy9EiNaD79/IQgmW6D0vrp0n/HEE=
+	t=1758088579; cv=none; b=YUcQHbcIfwfDopMg1wzhaPbIDaaCpZoQWU3dFCbgU2JZOJQo9yUL+lVoKJX4IoePab+pxCbGkBMFN9QlgkhIkqmIu3WpgYfFjW8CiLs81nTHNZBuMzV5ht+55Uwmj6DtbuKx8aRyKfpXS3tecMsxmzXc/XPKmeDgcIK2Dm9cCwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758088577; c=relaxed/simple;
-	bh=QQvmFhxNnbF3gfPPMN9cTjWoOlKlY++UTIm83UBGZco=;
+	s=arc-20240116; t=1758088579; c=relaxed/simple;
+	bh=DxKukQFq/ZQC/mxP1RrMMVfdKmqbYXwoNfHcQg5W7es=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JMvCb9nptNUjMfuixde9DeLLb7Aovb4rqabs1llHmlUziS7WlcOk49Eheqevet2HsbXBxO3Cwnh6Dq/3kKbM77dWF/iQsaD9OEJMpZK5vHFIbQ6bNMKNQboi/QZwy410d7Tgmyj5ExP2XREbGENVZcDZxHWIyMfN+MRj2LYcCb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=mOAFKTbS; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=odsUnKjPSuQhVm9Z8cHhoMobUg+JH7e5xLadH8mCjdR7awJKJhCPL5IKoowge5MoQQvAI3H6SalsYYaGt6ZjYmQSKEd2OLtegfboC/EbgHl+X9CXlZtynIZveLWOa0pkcRdShma+vA8ETFScQcAcXRFxvwRjTtvmyiQxtt0dhEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=DZEuPFPY; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58H5u0dsD3954268, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58H5u1Cz93954276, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1758088560; bh=Vcf0fh3CrtlezXm9nMh4hT2brMSnAdbk1pXNoLXdgXA=;
+	t=1758088561; bh=LONM7qK2eu2W3fUj3ApLMOfTs/CrnpFm4yqMBoeBw1I=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=mOAFKTbSrCsE5/kAnwVd3wfi6wRzo7BDK3jM12nULKSiglEDRsjPPOlUzcrbanPi2
-	 PpWIZWDKKUy+gZS19wGBmKOzuxyJEBN4ilJs7bJ9E6pxI1FoF93rXGLG2wiZePDIKm
-	 AokXM1NuQ79dIXHTelvIveYHakzinozZjyFwt7iCokS3/saWTNe85UITZSX5GpFJTD
-	 HVjYnLcPBd4YxhFVUUmrlKkCKiooJeZKSLtAC0tVFaX9drpydRPYOIQMG6xZDS8D8F
-	 gu5zcIeiGOvpP7Q70DkYWiJbVT54m/mJKaWjMrzwDi+hfSyqffpW7cKP8rOw3E4dXp
-	 qX4muu3hNf0Yw==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58H5u0dsD3954268
+	b=DZEuPFPYyJnDCs8HOmv/NOWdbghMjgsjvynrgIySS45Or5JJ7PABuF34RlKnMG/bB
+	 kyJFA0on5bTDPyyBBaDEe5z6bzGsx9hkj5SPNF9Dn+EcD/+JcrFbRIBZSmgAjSFApZ
+	 BGnE9ib09u3EijieKWETNZA4q1BbmbXbl+kgasSMUTSYLC93STtOkbfhFclfY292S4
+	 GqvF7liqWF7lUtFwHlInuN6TVQmrdkR41IKc34Nms8OKCVZwEJjLwi6jqbl02Hi2G/
+	 iRMKzhinJkfrehS89x9tI8VQ9ldPcfVJ9I12pEjMWgiCKEhWYZHKezc4zepgHhI3OB
+	 LuvGcyEAhKJMQ==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58H5u1Cz93954276
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Sep 2025 13:56:00 +0800
+	Wed, 17 Sep 2025 13:56:01 +0800
 Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1544.27; Wed, 17 Sep 2025 13:56:01 +0800
 Received: from kevin-ThinkPad-T430s.realtek.com.tw (172.21.69.104) by
  RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 17 Sep 2025 13:56:00 +0800
+ 15.1.2507.35; Wed, 17 Sep 2025 13:56:01 +0800
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>, <raja.mani@oss.qualcomm.com>
-Subject: [PATCH v2 5/6] iw: bitrate: support EHT rate/gi/ltf
-Date: Wed, 17 Sep 2025 13:55:42 +0800
-Message-ID: <20250917055543.27499-6-kevin_yang@realtek.com>
+Subject: [PATCH v2 6/6] iw: bitrate: support link id
+Date: Wed, 17 Sep 2025 13:55:43 +0800
+Message-ID: <20250917055543.27499-7-kevin_yang@realtek.com>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20250917055543.27499-1-kevin_yang@realtek.com>
 References: <20250917055543.27499-1-kevin_yang@realtek.com>
@@ -78,385 +78,49 @@ X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Support eht-mcs-*/eht-gi-*/eht-ltf-* fields when iw set bitrates.
+For MLD, support to assign link-id field. For non-MLD, just as before,
+no need to assign it.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 ---
- bitrate.c | 184 +++++++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 176 insertions(+), 8 deletions(-)
+v2: based on newly added parse_link_id() and add help text
+---
+ bitrate.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/bitrate.c b/bitrate.c
-index 8c575b086eba..16f118cce4ec 100644
+index 16f118cce4ec..144faeac88be 100644
 --- a/bitrate.c
 +++ b/bitrate.c
-@@ -7,7 +7,7 @@
- static int parse_rate_chunk(const char *arg, __u8 *nss, __u16 *mcs, unsigned int mode)
+@@ -618,6 +618,12 @@ static int handle_bitrates(struct nl80211_state *state,
+ 			   int argc, char **argv,
+ 			   enum id_input id)
  {
- 	unsigned int count, i;
--	unsigned int inss, mcs_start, mcs_end, tab[12];
-+	unsigned int inss, mcs_start, mcs_end, tab[16];
- 	unsigned int max_mcs = 0, max_nss = 0;
- 
- 	*nss = 0; *mcs = 0;
-@@ -15,6 +15,9 @@ static int parse_rate_chunk(const char *arg, __u8 *nss, __u16 *mcs, unsigned int
- 	if (mode == NL80211_TXRATE_HE) {
- 		max_mcs = 11;
- 		max_nss = NL80211_HE_NSS_MAX;
-+	} else if (mode == NL80211_TXRATE_EHT) {
-+		max_mcs = 15;
-+		max_nss = NL80211_EHT_NSS_MAX;
- 	} else {
- 		max_mcs = 9;
- 		max_nss = NL80211_VHT_NSS_MAX;
-@@ -47,6 +50,12 @@ static int parse_rate_chunk(const char *arg, __u8 *nss, __u16 *mcs, unsigned int
- 				       &inss, &tab[0], &tab[1], &tab[2], &tab[3],
- 				       &tab[4], &tab[5], &tab[6], &tab[7], &tab[8],
- 				       &tab[9], &tab[10], &tab[11]);
-+		} else if (mode == NL80211_TXRATE_EHT) {
-+			count = sscanf(arg, "%u:%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u",
-+				       &inss, &tab[0], &tab[1], &tab[2], &tab[3],
-+				       &tab[4], &tab[5], &tab[6], &tab[7], &tab[8],
-+				       &tab[9], &tab[10], &tab[11], &tab[12], &tab[13],
-+				       &tab[14], &tab[15]);
- 		} else {
- 			count = sscanf(arg, "%u:%u,%u,%u,%u,%u,%u,%u,%u,%u,%u", &inss,
- 				       &tab[0], &tab[1], &tab[2], &tab[3], &tab[4],
-@@ -80,6 +89,11 @@ static int parse_he_chunk(const char *arg, __u8 *nss, __u16 *mcs)
- 	return parse_rate_chunk(arg, nss, mcs, NL80211_TXRATE_HE);
++	int ret;
++
++	ret = parse_link_id(msg, &argc, argv);
++	if (ret)
++		return ret;
++
+ 	return set_bitrates(msg, argc, argv, NL80211_ATTR_TX_RATES);
  }
  
-+static int parse_eht_chunk(const char *arg, __u8 *nss, __u16 *mcs)
-+{
-+	return parse_rate_chunk(arg, nss, mcs, NL80211_TXRATE_EHT);
-+}
-+
- static int setup_vht(struct nl80211_txrate_vht *txrate_vht,
- 		     int argc, char **argv)
- {
-@@ -120,6 +134,26 @@ static int setup_he(struct nl80211_txrate_he *txrate_he,
- 	return 1;
- }
- 
-+static int setup_eht(struct nl80211_txrate_eht *txrate_eht,
-+		     int argc, char **argv)
-+{
-+	__u8 nss;
-+	__u16 mcs;
-+	int i;
-+
-+	memset(txrate_eht, 0, sizeof(*txrate_eht));
-+
-+	for (i = 0; i < argc; i++) {
-+		if (!parse_eht_chunk(argv[i], &nss, &mcs))
-+			return 0;
-+
-+		nss--;
-+		txrate_eht->mcs[nss] |= mcs;
-+	}
-+
-+	return 1;
-+}
-+
- #define HE_GI_STR_MAX	16
- #define HE_GI_08_STR "0.8"
- #define HE_GI_16_STR "1.6"
-@@ -139,6 +173,24 @@ static int parse_he_gi(char *he_gi)
- 	return -1;
- }
- 
-+#define EHT_GI_08_STR "0.8"
-+#define EHT_GI_16_STR "1.6"
-+#define EHT_GI_32_STR "3.2"
-+static int parse_eht_gi(char *eht_gi)
-+{
-+	if (eht_gi == NULL)
-+		return 0;
-+
-+	if (!strncmp(eht_gi, EHT_GI_08_STR, sizeof(EHT_GI_08_STR)))
-+		return NL80211_RATE_INFO_EHT_GI_0_8;
-+	if (!strncmp(eht_gi, EHT_GI_16_STR, sizeof(EHT_GI_16_STR)))
-+		return NL80211_RATE_INFO_EHT_GI_1_6;
-+	if (!strncmp(eht_gi, EHT_GI_32_STR, sizeof(EHT_GI_32_STR)))
-+		return NL80211_RATE_INFO_EHT_GI_3_2;
-+
-+	return -1;
-+}
-+
- #define VHT_ARGC_MAX	100
- 
- int set_bitrates(struct nl_msg *msg,
-@@ -156,6 +208,7 @@ int set_bitrates(struct nl_msg *msg,
- 	bool have_vht_mcs_24 = false, have_vht_mcs_5 = false;
- 	bool have_he_mcs_24 = false, have_he_mcs_5 = false;
- 	bool have_he_mcs_6 = false;
-+	bool have_eht_mcs_24 = false, have_eht_mcs_5 = false, have_eht_mcs_6 = false;
- 	uint8_t ht_mcs_24[77], ht_mcs_5[77];
- 	int n_ht_mcs_24 = 0, n_ht_mcs_5 = 0;
- 	struct nl80211_txrate_vht txrate_vht_24 = {};
-@@ -163,21 +216,32 @@ int set_bitrates(struct nl_msg *msg,
- 	struct nl80211_txrate_he txrate_he_24 = {};
- 	struct nl80211_txrate_he txrate_he_5 = {};
- 	struct nl80211_txrate_he txrate_he_6 = {};
-+	struct nl80211_txrate_eht txrate_eht_24 = {};
-+	struct nl80211_txrate_eht txrate_eht_5 = {};
-+	struct nl80211_txrate_eht txrate_eht_6 = {};
- 	uint8_t *mcs = NULL;
- 	int *n_mcs = NULL;
- 	char *vht_argv_5[VHT_ARGC_MAX] = {}; char *vht_argv_24[VHT_ARGC_MAX] = {};
- 	char *he_argv_5[VHT_ARGC_MAX] = {}; char *he_argv_24[VHT_ARGC_MAX] = {};
- 	char *he_argv_6[VHT_ARGC_MAX] = {};
--	char **vht_argv = NULL, **he_argv = NULL;
-+	char *eht_argv_24[VHT_ARGC_MAX] = {};
-+	char *eht_argv_5[VHT_ARGC_MAX] = {};
-+	char *eht_argv_6[VHT_ARGC_MAX] = {};
-+	char **vht_argv = NULL, **he_argv = NULL, **eht_argv = NULL;
- 	int vht_argc_5 = 0; int vht_argc_24 = 0;
- 	int he_argc_5 = 0; int he_argc_24 = 0;
- 	int he_argc_6 = 0;
--	int *vht_argc = NULL, *he_argc = NULL;
-+	int eht_argc_24 = 0, eht_argc_5 = 0, eht_argc_6 = 0;
-+	int *vht_argc = NULL, *he_argc = NULL, *eht_argc = NULL;
- 	int sgi_24 = 0, sgi_5 = 0, lgi_24 = 0, lgi_5 = 0;
- 	int has_he_gi_24 = 0, has_he_gi_5 = 0, has_he_ltf_24 = 0, has_he_ltf_5 = 0;
- 	int has_he_gi_6 = 0, has_he_ltf_6 = 0;
-+	int has_eht_gi_24 = 0, has_eht_gi_5 = 0, has_eht_gi_6 = 0;
-+	int has_eht_ltf_24 = 0, has_eht_ltf_5 = 0, has_eht_ltf_6 = 0;
- 	int he_gi = 0, he_ltf = 0;
- 	char *he_gi_argv = NULL;
-+	int eht_gi = 0, eht_ltf = 0;
-+	char *eht_gi_argv = NULL;
- 
- 	enum {
- 		S_NONE,
-@@ -185,9 +249,12 @@ int set_bitrates(struct nl_msg *msg,
- 		S_HT,
- 		S_VHT,
- 		S_HE,
-+		S_EHT,
- 		S_GI,
- 		S_HE_GI,
- 		S_HE_LTF,
-+		S_EHT_GI,
-+		S_EHT_LTF,
- 	} parser_state = S_NONE;
- 
- 	for (i = 0; i < argc; i++) {
-@@ -259,6 +326,27 @@ int set_bitrates(struct nl_msg *msg,
- 			he_argv = he_argv_6;
- 			he_argc = &he_argc_6;
- 			have_he_mcs_6 = true;
-+		} else if (strcmp(argv[i], "eht-mcs-2.4") == 0) {
-+			if (have_eht_mcs_24)
-+				return 1;
-+			parser_state = S_EHT;
-+			eht_argv = eht_argv_24;
-+			eht_argc = &eht_argc_24;
-+			have_eht_mcs_24 = true;
-+		} else if (strcmp(argv[i], "eht-mcs-5") == 0) {
-+			if (have_eht_mcs_5)
-+				return 1;
-+			parser_state = S_EHT;
-+			eht_argv = eht_argv_5;
-+			eht_argc = &eht_argc_5;
-+			have_eht_mcs_5 = true;
-+		} else if (strcmp(argv[i], "eht-mcs-6") == 0) {
-+			if (have_eht_mcs_6)
-+				return 1;
-+			parser_state = S_EHT;
-+			eht_argv = eht_argv_6;
-+			eht_argc = &eht_argc_6;
-+			have_eht_mcs_6 = true;
- 		} else if (strcmp(argv[i], "sgi-2.4") == 0) {
- 			sgi_24 = 1;
- 			parser_state = S_GI;
-@@ -289,6 +377,24 @@ int set_bitrates(struct nl_msg *msg,
- 		} else if (strcmp(argv[i], "he-ltf-6") == 0) {
- 			has_he_ltf_6 = 1;
- 			parser_state = S_HE_LTF;
-+		} else if (strcmp(argv[i], "eht-gi-2.4") == 0) {
-+			has_eht_gi_24 = 1;
-+			parser_state = S_EHT_GI;
-+		} else if (strcmp(argv[i], "eht-gi-5") == 0) {
-+			has_eht_gi_5 = 1;
-+			parser_state = S_EHT_GI;
-+		} else if (strcmp(argv[i], "eht-gi-6") == 0) {
-+			has_eht_gi_6 = 1;
-+			parser_state = S_EHT_GI;
-+		} else if (strcmp(argv[i], "eht-ltf-2.4") == 0) {
-+			has_eht_ltf_24 = 1;
-+			parser_state = S_EHT_LTF;
-+		} else if (strcmp(argv[i], "eht-ltf-5") == 0) {
-+			has_eht_ltf_5 = 1;
-+			parser_state = S_EHT_LTF;
-+		} else if (strcmp(argv[i], "eht-ltf-6") == 0) {
-+			has_eht_ltf_6 = 1;
-+			parser_state = S_EHT_LTF;
- 		} else switch (parser_state) {
- 		case S_LEGACY:
- 			tmpd = strtod(argv[i], &end);
-@@ -316,6 +422,11 @@ int set_bitrates(struct nl_msg *msg,
- 				return 1;
- 			he_argv[(*he_argc)++] = argv[i];
- 			break;
-+		case S_EHT:
-+			if (*eht_argc >= VHT_ARGC_MAX)
-+				return 1;
-+			eht_argv[(*eht_argc)++] = argv[i];
-+			break;
- 		case S_GI:
- 			break;
- 		case S_HE_GI:
-@@ -329,6 +440,19 @@ int set_bitrates(struct nl_msg *msg,
- 				return 1;
- 			he_ltf = he_ltf >> 1;
- 			break;
-+		case S_EHT_GI:
-+			eht_gi_argv = argv[i];
-+			break;
-+		case S_EHT_LTF:
-+			eht_ltf = strtol(argv[i], &end, 0);
-+			if (*end != '\0')
-+				return 1;
-+			if (eht_ltf < 1 || eht_ltf > 8)
-+				return 1;
-+			if (eht_ltf != 1 && eht_ltf % 2)
-+				return 1;
-+			eht_ltf >>= 1;
-+			break;
- 		default:
- 			if (attr != NL80211_ATTR_TX_RATES)
- 				goto next;
-@@ -360,6 +484,18 @@ next:
- 		if (!setup_he(&txrate_he_6, he_argc_6, he_argv_6))
- 			return -EINVAL;
- 
-+	if (have_eht_mcs_24)
-+		if (!setup_eht(&txrate_eht_24, eht_argc_24, eht_argv_24))
-+			return -EINVAL;
-+
-+	if (have_eht_mcs_5)
-+		if (!setup_eht(&txrate_eht_5, eht_argc_5, eht_argv_5))
-+			return -EINVAL;
-+
-+	if (have_eht_mcs_6)
-+		if (!setup_eht(&txrate_eht_6, eht_argc_6, eht_argv_6))
-+			return -EINVAL;
-+
- 	if (sgi_5 && lgi_5)
- 		return 1;
- 
-@@ -372,12 +508,19 @@ next:
- 			return 1;
- 	}
- 
-+	if (eht_gi_argv) {
-+		eht_gi = parse_eht_gi(eht_gi_argv);
-+		if (eht_gi < 0)
-+			return 1;
-+	}
-+
- 	nl_rates = nla_nest_start(msg, attr);
- 	if (!nl_rates)
- 		goto nla_put_failure;
- 
- 	if (have_legacy_24 || have_ht_mcs_24 || have_vht_mcs_24 || have_he_mcs_24 ||
--	    sgi_24 || lgi_24 || has_he_gi_24 || has_he_ltf_24) {
-+	    sgi_24 || lgi_24 || has_he_gi_24 || has_he_ltf_24 ||
-+	    have_eht_mcs_24 || has_eht_gi_24 || has_eht_ltf_24) {
- 		nl_band = nla_nest_start(msg, NL80211_BAND_2GHZ);
- 		if (!nl_band)
- 			goto nla_put_failure;
-@@ -390,6 +533,9 @@ next:
- 		if (have_he_mcs_24)
- 			nla_put(msg, NL80211_TXRATE_HE, sizeof(txrate_he_24),
- 				&txrate_he_24);
-+		if (have_eht_mcs_24)
-+			nla_put(msg, NL80211_TXRATE_EHT, sizeof(txrate_eht_24),
-+				&txrate_eht_24);
- 		if (sgi_24)
- 			nla_put_u8(msg, NL80211_TXRATE_GI, NL80211_TXRATE_FORCE_SGI);
- 		if (lgi_24)
-@@ -398,11 +544,16 @@ next:
- 			nla_put_u8(msg, NL80211_TXRATE_HE_GI, he_gi);
- 		if (has_he_ltf_24)
- 			nla_put_u8(msg, NL80211_TXRATE_HE_LTF, he_ltf);
-+		if (has_eht_gi_24)
-+			nla_put_u8(msg, NL80211_TXRATE_EHT_GI, eht_gi);
-+		if (has_eht_ltf_24)
-+			nla_put_u8(msg, NL80211_TXRATE_EHT_LTF, eht_ltf);
- 		nla_nest_end(msg, nl_band);
- 	}
- 
- 	if (have_legacy_5 || have_ht_mcs_5 || have_vht_mcs_5 || have_he_mcs_5 ||
--	    sgi_5 || lgi_5 || has_he_gi_5 || has_he_ltf_5) {
-+	    sgi_5 || lgi_5 || has_he_gi_5 || has_he_ltf_5 ||
-+	    have_eht_mcs_5 || has_eht_gi_5 || has_eht_ltf_5) {
- 		nl_band = nla_nest_start(msg, NL80211_BAND_5GHZ);
- 		if (!nl_band)
- 			goto nla_put_failure;
-@@ -415,6 +566,9 @@ next:
- 		if (have_he_mcs_5)
- 			nla_put(msg, NL80211_TXRATE_HE, sizeof(txrate_he_5),
- 				&txrate_he_5);
-+		if (have_eht_mcs_5)
-+			nla_put(msg, NL80211_TXRATE_EHT, sizeof(txrate_eht_5),
-+				&txrate_eht_5);
- 		if (sgi_5)
- 			nla_put_u8(msg, NL80211_TXRATE_GI, NL80211_TXRATE_FORCE_SGI);
- 		if (lgi_5)
-@@ -423,20 +577,32 @@ next:
- 			nla_put_u8(msg, NL80211_TXRATE_HE_GI, he_gi);
- 		if (has_he_ltf_5)
- 			nla_put_u8(msg, NL80211_TXRATE_HE_LTF, he_ltf);
-+		if (has_eht_gi_5)
-+			nla_put_u8(msg, NL80211_TXRATE_EHT_GI, eht_gi);
-+		if (has_eht_ltf_5)
-+			nla_put_u8(msg, NL80211_TXRATE_EHT_LTF, eht_ltf);
- 		nla_nest_end(msg, nl_band);
- 	}
- 
--	if (have_he_mcs_6 || has_he_gi_6 || has_he_ltf_6) {
-+	if (have_he_mcs_6 || has_he_gi_6 || has_he_ltf_6 ||
-+	    have_eht_mcs_6 || has_eht_gi_6 || has_eht_ltf_6) {
- 		nl_band = nla_nest_start(msg, NL80211_BAND_6GHZ);
- 		if (!nl_band)
- 			goto nla_put_failure;
- 		if (have_he_mcs_6)
- 			nla_put(msg, NL80211_TXRATE_HE, sizeof(txrate_he_6),
- 				&txrate_he_6);
-+		if (have_eht_mcs_6)
-+			nla_put(msg, NL80211_TXRATE_EHT, sizeof(txrate_eht_6),
-+				&txrate_eht_6);
- 		if (has_he_gi_6)
- 			nla_put_u8(msg, NL80211_TXRATE_HE_GI, he_gi);
- 		if (has_he_ltf_6)
- 			nla_put_u8(msg, NL80211_TXRATE_HE_LTF, he_ltf);
-+		if (has_eht_gi_6)
-+			nla_put_u8(msg, NL80211_TXRATE_EHT_GI, eht_gi);
-+		if (has_eht_ltf_6)
-+			nla_put_u8(msg, NL80211_TXRATE_EHT_LTF, eht_ltf);
- 		nla_nest_end(msg, nl_band);
- 	}
- 
-@@ -459,14 +625,16 @@ static int handle_bitrates(struct nl80211_state *state,
- #define DESCR_HT " [ht-mcs-<2.4|5> <MCS index>*]"
- #define DESCR_VHT " [vht-mcs-<2.4|5> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*]"
- #define DESCR_HE " [he-mcs-<2.4|5|6> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*]"
--#define DESCR_GI " [sgi-2.4|lgi-2.4] [sgi-5|lgi-5] [he-gi-<2.4|5|6> <0.8|1.6|3.2>]"
--#define DESCR_LTF " [he-ltf-<2.4|5|6> <1|2|4>]"
-+#define DESCR_EHT " [eht-mcs-<2.4|5|6> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*]"
-+#define DESCR_GI " [sgi-2.4|lgi-2.4] [sgi-5|lgi-5] [he-gi-<2.4|5|6> <0.8|1.6|3.2>] [eht-gi-<2.4|5|6> <0.8|1.6|3.2>]"
-+#define DESCR_LTF " [he-ltf-<2.4|5|6> <1|2|4>] [eht-ltf-<2.4|5|6> <1|2|4|6|8>]"
+@@ -628,6 +634,7 @@ static int handle_bitrates(struct nl80211_state *state,
+ #define DESCR_EHT " [eht-mcs-<2.4|5|6> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*]"
+ #define DESCR_GI " [sgi-2.4|lgi-2.4] [sgi-5|lgi-5] [he-gi-<2.4|5|6> <0.8|1.6|3.2>] [eht-gi-<2.4|5|6> <0.8|1.6|3.2>]"
+ #define DESCR_LTF " [he-ltf-<2.4|5|6> <1|2|4>] [eht-ltf-<2.4|5|6> <1|2|4|6|8>]"
++#define DESCR_MLO " [link-id <LINK ID>]"
  
  #define DESCR \
  	DESCR_LEGACY \
- 	DESCR_HT \
- 	DESCR_VHT \
- 	DESCR_HE \
-+	DESCR_EHT \
+@@ -637,6 +644,7 @@ static int handle_bitrates(struct nl80211_state *state,
+ 	DESCR_EHT \
  	DESCR_GI \
  	DESCR_LTF \
++	DESCR_MLO \
  	/* end of DESCR */
+ 
+ COMMAND(set, bitrates, DESCR,
 -- 
 2.39.0
 
