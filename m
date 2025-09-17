@@ -1,62 +1,58 @@
-Return-Path: <linux-wireless+bounces-27439-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27440-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C293CB7D421
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:23:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F209B7CC60
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CCD9178F07
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 09:54:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B59721B262F8
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 10:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAA7350D69;
-	Wed, 17 Sep 2025 09:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796E1285CA1;
+	Wed, 17 Sep 2025 10:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="gtnMD7af"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nqX4hXc6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09DB34F491;
-	Wed, 17 Sep 2025 09:53:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29DC2D05D;
+	Wed, 17 Sep 2025 10:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758102811; cv=none; b=QJT6d8aAyh9040Xo6+fzKORUGUWuKRkblADQORHfgWQXp823VfImrgmimt5dusQPZ1zF7KRiWZ5mgQh9tjIUgQidU+9W7e/E/YzQjyvrL+q0FlRB1hVDXR7sG+vLV9WlGind9LPHBoZt417QKuWJQQ0CEEe6NxuZnU8RZEFWSOw=
+	t=1758106328; cv=none; b=qzdjjXH/QlC1rVaRVp45SEdaXE6AzQEHBAkhTf6csgeAzG2jtMSGxAveqa7w2YxGmUhEZD6NFE32ySm39koGCZxVj072Yenm5Uel9AT26GCgycaFhW2Twz5bIYcn34urxaLTRsd2l8fpUuOJuWi4oNf2yiAFACHosz6r80Gwjdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758102811; c=relaxed/simple;
-	bh=8vsdd2sFyrMqz2yfcI5xKEhwqNBj2w5vDWqztVwy/0A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YgAJUqp70Rm5LHbente2srhDviBjQgve/9ypRk65a26VxYG99roowx/02ZDmW/QeXhcpVyNWU9fYwJsXsknLgW+XIu7icrgEGWnH8AV/Q1BRuPbWNZfzR/LmQY8tRA02xMBU5DVZZGTmZ2YZNFyExvpQu5ZMWiiunFh7uZEFnpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=gtnMD7af; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from debian (unknown [5.228.116.177])
-	by mail.ispras.ru (Postfix) with ESMTPSA id ABCB440762FB;
-	Wed, 17 Sep 2025 09:53:27 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru ABCB440762FB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1758102807;
-	bh=aFD6hKqDefMJ+Smg51iUVWcrwTkx0AEdYo32N/JXEP0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gtnMD7afkGyl8PDtsvY4pwwqSqAapcOKA/fFXudMVqjMF5nPqBagko36cFDc+Den1
-	 x66wOXzlrCv6sHLB+goX+B4rdGY2H+1hiLjhRXE8clird7Srr81mZQJ4wohrcNW1ft
-	 bb2fFJcZ7GXdHV0mWIc5inCThiwzROYtC7tldApc=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	Zong-Zhe Yang <kevin_yang@realtek.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Po-Hao Huang <phhuang@realtek.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH rtw v4 4/4] wifi: rtw89: avoid circular locking dependency in ser_state_run()
-Date: Wed, 17 Sep 2025 12:52:55 +0300
-Message-ID: <20250917095302.2908617-5-pchelkin@ispras.ru>
+	s=arc-20240116; t=1758106328; c=relaxed/simple;
+	bh=MguEq0RFysX6iVHApwFAjBaZigxJOOEDap5FC+ybZ9E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oMg6+CHeff87QRC22qAYn6xHwofL6ed34aUU6yYyj3nkb42sPr8FpJu28vTZ/BPRI3T3VVE+2aIpyF5loaQyxqDblTeUixvqqRGX23oDeMabRcCzQwoPzCRyOz7eo3QVgW9ttuylLbkO9Q+1hb9zwAJjLcHwxtXTg3cPDqjglcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nqX4hXc6; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=lr3uZ43uOxqUdkQuwA7YKfaJGPDt8d6P0M2HrbHSyoA=; t=1758106326; x=1759315926; 
+	b=nqX4hXc6YRmHp9U3PjEgQzmqShyzSCXug4vpdm+njpFqyef9TKiZnevDA90M8qcKPhQptPPTAj/
+	27NSbVQdrjLylMDN3l5NGpCNHNmTJwcZgi2IJJCJzKQFAHi25DUrmyzAXMUVul0f3XHSnhqe6Gfkc
+	SQ0DqLoN/Va+1kq8maILePc9/AohM3GFPaTt9bn3l0+24ERA6vWcbxkVWte8Zd3kNQeYCnmbFuqbe
+	UYDPMbgeQmjnwXxu+QaS6doZg3OecURwQ3Ksaho1QC5FsiVAgZJ/iDvS8W0H7YaVraPMNo6xT55f0
+	WBzocL0O60yLg6JWdkt9aGUBQydEeQiYEVng==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uyplc-0000000AoDo-1930;
+	Wed, 17 Sep 2025 12:52:04 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [GIT PULL] wireless-2025-09-17
+Date: Wed, 17 Sep 2025 12:49:50 +0200
+Message-ID: <20250917105159.161583-3-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250917095302.2908617-1-pchelkin@ispras.ru>
-References: <20250917095302.2908617-1-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,140 +61,47 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Lockdep gives a splat [1] when ser_hdl_work item is executed.  It is
-scheduled at mac80211 workqueue via ieee80211_queue_work() and takes a
-wiphy lock inside.  However, this workqueue can be flushed when e.g.
-closing the interface and wiphy lock is already taken in that case.
+Hi,
 
-Choosing wiphy_work_queue() for SER is likely not suitable.  Back on to
-the global workqueue.
+Two more fixes, but I think things have quieted down to say
+we probably won't have more. The iwlwifi aggregation thing
+is myself having messed up some recent changes, while rfkill
+has a potential crash that doesn't really seem to happen in
+practice, or only on some select machines.
 
-[1]:
+Please pull and let us know if there's any problem.
 
- WARNING: possible circular locking dependency detected
- 6.17.0-rc2 #17 Not tainted
- ------------------------------------------------------
- kworker/u32:1/61 is trying to acquire lock:
- ffff88811bc00768 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: ser_state_run+0x5e/0x180 [rtw89_core]
+Thanks,
+johannes
 
- but task is already holding lock:
- ffffc9000048fd30 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}, at: process_one_work+0x7b5/0x1450
 
- which lock already depends on the new lock.
 
- the existing dependency chain (in reverse order) is:
+The following changes since commit db87bd2ad1f736c2f7ab231f9b40c885934f6b2c:
 
- -> #2 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}:
-        process_one_work+0x7c6/0x1450
-        worker_thread+0x49e/0xd00
-        kthread+0x313/0x640
-        ret_from_fork+0x221/0x300
-        ret_from_fork_asm+0x1a/0x30
+  Merge tag 'net-6.17-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-09-11 08:54:42 -0700)
 
- -> #1 ((wq_completion)phy0){+.+.}-{0:0}:
-        touch_wq_lockdep_map+0x8e/0x180
-        __flush_workqueue+0x129/0x10d0
-        ieee80211_stop_device+0xa8/0x110
-        ieee80211_do_stop+0x14ce/0x2880
-        ieee80211_stop+0x13a/0x2c0
-        __dev_close_many+0x18f/0x510
-        __dev_change_flags+0x25f/0x670
-        netif_change_flags+0x7b/0x160
-        do_setlink.isra.0+0x1640/0x35d0
-        rtnl_newlink+0xd8c/0x1d30
-        rtnetlink_rcv_msg+0x700/0xb80
-        netlink_rcv_skb+0x11d/0x350
-        netlink_unicast+0x49a/0x7a0
-        netlink_sendmsg+0x759/0xc20
-        ____sys_sendmsg+0x812/0xa00
-        ___sys_sendmsg+0xf7/0x180
-        __sys_sendmsg+0x11f/0x1b0
-        do_syscall_64+0xbb/0x360
-        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+are available in the Git repository at:
 
- -> #0 (&rdev->wiphy.mtx){+.+.}-{4:4}:
-        __lock_acquire+0x124c/0x1d20
-        lock_acquire+0x154/0x2e0
-        __mutex_lock+0x17b/0x12f0
-        ser_state_run+0x5e/0x180 [rtw89_core]
-        rtw89_ser_hdl_work+0x119/0x220 [rtw89_core]
-        process_one_work+0x82d/0x1450
-        worker_thread+0x49e/0xd00
-        kthread+0x313/0x640
-        ret_from_fork+0x221/0x300
-        ret_from_fork_asm+0x1a/0x30
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-09-17
 
- other info that might help us debug this:
+for you to fetch changes up to b6f56a44e4c1014b08859dcf04ed246500e310e5:
 
- Chain exists of:
-   &rdev->wiphy.mtx --> (wq_completion)phy0 --> (work_completion)(&ser->ser_hdl_work)
+  net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer (2025-09-17 12:37:05 +0200)
 
-  Possible unsafe locking scenario:
+----------------------------------------------------------------
+Just two fixes:
+ - fix crash in rfkill due to uninitialized type_name
+ - fix aggregation in iwlwifi 7000/8000 devices
 
-        CPU0                    CPU1
-        ----                    ----
-   lock((work_completion)(&ser->ser_hdl_work));
-                                lock((wq_completion)phy0);
-                                lock((work_completion)(&ser->ser_hdl_work));
-   lock(&rdev->wiphy.mtx);
+----------------------------------------------------------------
+Hans de Goede (1):
+      net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
 
-  *** DEADLOCK ***
+Johannes Berg (2):
+      wifi: iwlwifi: pcie: fix byte count table for some devices
+      Merge tag 'iwlwifi-fixes-2025-09-15' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
 
- 2 locks held by kworker/u32:1/61:
-  #0: ffff888103835148 ((wq_completion)phy0){+.+.}-{0:0}, at: process_one_work+0xefa/0x1450
-  #1: ffffc9000048fd30 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}, at: process_one_work+0x7b5/0x1450
-
- stack backtrace:
- CPU: 0 UID: 0 PID: 61 Comm: kworker/u32:1 Not tainted 6.17.0-rc2 #17 PREEMPT(voluntary)
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS edk2-20250523-14.fc42 05/23/2025
- Workqueue: phy0 rtw89_ser_hdl_work [rtw89_core]
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x5d/0x80
-  print_circular_bug.cold+0x178/0x1be
-  check_noncircular+0x14c/0x170
-  __lock_acquire+0x124c/0x1d20
-  lock_acquire+0x154/0x2e0
-  __mutex_lock+0x17b/0x12f0
-  ser_state_run+0x5e/0x180 [rtw89_core]
-  rtw89_ser_hdl_work+0x119/0x220 [rtw89_core]
-  process_one_work+0x82d/0x1450
-  worker_thread+0x49e/0xd00
-  kthread+0x313/0x640
-  ret_from_fork+0x221/0x300
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: ebfc9199df05 ("wifi: rtw89: add wiphy_lock() to work that isn't held wiphy_lock() yet")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/net/wireless/realtek/rtw89/ser.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
-index fe7beff8c424..f99e179f7ff9 100644
---- a/drivers/net/wireless/realtek/rtw89/ser.c
-+++ b/drivers/net/wireless/realtek/rtw89/ser.c
-@@ -205,7 +205,6 @@ static void rtw89_ser_hdl_work(struct work_struct *work)
- 
- static int ser_send_msg(struct rtw89_ser *ser, u8 event)
- {
--	struct rtw89_dev *rtwdev = container_of(ser, struct rtw89_dev, ser);
- 	struct ser_msg *msg = NULL;
- 
- 	if (test_bit(RTW89_SER_DRV_STOP_RUN, ser->flags))
-@@ -221,7 +220,7 @@ static int ser_send_msg(struct rtw89_ser *ser, u8 event)
- 	list_add(&msg->list, &ser->msg_q);
- 	spin_unlock_irq(&ser->msg_q_lock);
- 
--	ieee80211_queue_work(rtwdev->hw, &ser->ser_hdl_work);
-+	schedule_work(&ser->ser_hdl_work);
- 	return 0;
- }
- 
--- 
-2.51.0
-
+ drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/tx.c | 2 +-
+ net/rfkill/rfkill-gpio.c                            | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
