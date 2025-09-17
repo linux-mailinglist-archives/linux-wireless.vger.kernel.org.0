@@ -1,44 +1,44 @@
-Return-Path: <linux-wireless+bounces-27419-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27420-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE75FB7DD9E
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:35:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD36B7E409
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 14:45:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75C3658116F
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 05:26:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E22C1BC351C
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Sep 2025 05:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAE823BD1F;
-	Wed, 17 Sep 2025 05:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E6B1494A8;
+	Wed, 17 Sep 2025 05:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="cnRhoa82"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="LEefuJXh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F391C5F23
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Sep 2025 05:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D460BA42
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Sep 2025 05:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758086815; cv=none; b=V0VZfgJ21MH2uGMedXHw5pmnTTCm3HpORCM4sUmt+RM1izu+X42uN1r85CHW1CX1f2Wt4m9+dD7bm5a9z272vUVPoaeZy+Euvpl9JxhB2KwqWSAsC+G2jYuV4DDJ0CSIv9rPNLO4axzozGwvtFD0L3fyhcKKsiIft+zKrC6j51s=
+	t=1758087387; cv=none; b=W+BpGeyeodhcSQqIZbmtPJPLTe8VbZLAHUveIVifZ0mh/ZKjs5OhSQk4udKSqZ1NK5KOB+UpqB9TyS3gdkd0uuqLcKv22GspAYuQ2E9Oa7rQcsQLIEVrg6ZjPigKmfnGIM9JLHQLxzmkQ6ilnYV5TAeeGXsaRw+XAkQY6csoHao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758086815; c=relaxed/simple;
-	bh=Hthr2OSJqdQIGncjko8L3O/tVT5b1zYowq4YAR1hVGc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TTgEQtZ9MbsasJxYcRq2/jrFf7/lsM/UNauf9O+LG1dFwA3bvirQyyKWMHcxuOUKt1bY6P0f7PAn1V/tOKX/Jkbp9dorI7+/TUvL7pKTlYXKsv3QvlphVHyyXKqRkfnp2hTq7UlV9u2u11IfYX570yjmdLe1mgTxZVhB2ndoTPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=cnRhoa82; arc=none smtp.client-ip=60.244.123.138
+	s=arc-20240116; t=1758087387; c=relaxed/simple;
+	bh=CMXobuaG7zupU3wdBjUPissy5icg5An+sqT4vvYcsDQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Jfj4TiuPhNYeg/7K6lhqaeWResPUWN/fREJjhRcQrNjqXqjpKPlHCqNpxrlo8ft/lD/AwssuNlrhPqPRML9p9BwZ2gPc39ovZSr9nmTVYhEW4/CIDN+ntEcSsC8PqL2sTcc84kx8XQ+XqJ311+uwwsUctDo/r2LiBMzJsWx2fBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=LEefuJXh; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: e78252b4938611f08d9e1119e76e3a28-20250917
+X-UUID: 3d2bd5cc938811f08d9e1119e76e3a28-20250917
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=HMgtL162QOwSiO6++LT7qOF6Bth8iVh1uGDZ9Y6GD3s=;
-	b=cnRhoa82J8kkquRLoSnlVKslSnnX/BtjEC5xkxPQuFKq5UGOjWCctQR1cEDPMKuwplZGQAyNZmVufNmuv7PrdK5zp8iTANZa0pAucZuI9xFDfX5CaH5Ze4XSfuKduaF3zEEn7iaS3wcJOJpA5bsmhPCoR6Xl8GcF8PTZGDFfLRs=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=+YNkTiTzV3j5UuyT6fJEnMntl49hId1F5ICyVqvtR0U=;
+	b=LEefuJXhp4/zCChcAjB4oXWuzakree1RysibgJf+tdpfp7V0sLnQhuvFM7XRKIbIx+0LNV4XJpYAVffzWEHk2qK8JMo/9K5us1/BB1/Qbq8cNh1DaC8wtfIGT1Pd7pAbAirNnIAybPkPKXQWMLqQ7PR4RkH9NyIR55mnMD62BIw=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.4,REQID:a06d9f02-86b0-4545-92c0-ea9143a3fa6e,IP:0,UR
+X-CID-O-INFO: VERSION:1.3.4,REQID:20ce1854-7594-4b8d-9318-6352230ac0e4,IP:0,UR
 	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
 	elease,TS:0
-X-CID-META: VersionHash:1ca6b93,CLOUDID:e8cbdf84-5317-4626-9d82-238d715c253f,B
+X-CID-META: VersionHash:1ca6b93,CLOUDID:b3ac62f8-ebfe-43c9-88c9-80cb93f22ca4,B
 	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836,TC:-5,Content:0|15|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -46,18 +46,18 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: e78252b4938611f08d9e1119e76e3a28-20250917
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+X-UUID: 3d2bd5cc938811f08d9e1119e76e3a28-20250917
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
 	(envelope-from <mingyen.hsieh@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 2084737133; Wed, 17 Sep 2025 13:26:46 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+	with ESMTP id 1711057517; Wed, 17 Sep 2025 13:36:19 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Wed, 17 Sep 2025 13:26:45 +0800
+ 15.2.1258.39; Wed, 17 Sep 2025 13:36:18 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Wed, 17 Sep 2025 13:26:45 +0800
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Wed, 17 Sep 2025 13:36:18 +0800
 From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
 To: <nbd@nbd.name>, <lorenzo@kernel.org>
 CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
@@ -65,11 +65,11 @@ CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
 	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
 	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
 	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Jack Kao <jack.kao@mediatek.com>, Ming
- Yen Hsieh <mingyen.hsieh@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7925: cqm rssi low/high event notify
-Date: Wed, 17 Sep 2025 13:26:43 +0800
-Message-ID: <20250917052643.496211-1-mingyen.hsieh@mediatek.com>
+	<linux-mediatek@lists.infradead.org>, Jack Kao <jack.kao@mediatek.com>, "Ming
+ Yen Hsieh" <mingyen.hsieh@mediatek.com>
+Subject: [PATCH v2] wifi: mt76: mt7925: cqm rssi low/high event notify
+Date: Wed, 17 Sep 2025 13:36:17 +0800
+Message-ID: <20250917053617.497393-1-mingyen.hsieh@mediatek.com>
 X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -91,6 +91,8 @@ RSSI drops below a certain threshold
 
 Signed-off-by: Jack Kao <jack.kao@mediatek.com>
 Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+---
+v2: fix build err for parameter of mt7925_mcu_set_rssimonitor()
 ---
  .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  2 +
  .../net/wireless/mediatek/mt76/mt7925/main.c  |  6 ++
@@ -120,7 +122,7 @@ index b30245ce009a..fd1189e74920 100644
  	MCU_UNI_CMD_TESTMODE_CTRL = 0x46,
  	MCU_UNI_CMD_RRO = 0x57,
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index eef9fae6a733..04b760e09777 100644
+index eef9fae6a733..8ba27bc6a1ac 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
 @@ -431,6 +431,9 @@ mt7925_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
@@ -138,7 +140,7 @@ index eef9fae6a733..04b760e09777 100644
  				      link_conf, NULL);
  
 +	if (changed & BSS_CHANGED_CQM)
-+		mt7925_mcu_set_rssimonitor(dev, vif, info);
++		mt7925_mcu_set_rssimonitor(dev, vif);
 +
  	mt792x_mutex_release(dev);
  }
