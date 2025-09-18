@@ -1,135 +1,157 @@
-Return-Path: <linux-wireless+bounces-27464-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27465-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9214B83268
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 08:34:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBCF7B833A9
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 08:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAB107A69EB
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 06:32:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 982B9625D76
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 06:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674581F3BA9;
-	Thu, 18 Sep 2025 06:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69FB2DECA3;
+	Thu, 18 Sep 2025 06:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zlu4+r53"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="idYCm4t0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3D71E51E0
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 06:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6D22DE6EE
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 06:57:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758177272; cv=none; b=HpHI9nEdWcEEUE4P7k6hpV11ncWh2OPm/v+Hf9MWcgaL+OevUN29pCacldzhZmtbocpu5ScKZtoUB5WW1sHQG4FY5X0ySJeShzvqGNL9oWO8xCZreLZn8NDKCODiKhXL+yQM1BBkqhMJG8n3fwM61lhj2WXKLuNa2CtGU4HCAzQ=
+	t=1758178643; cv=none; b=MsA3v3LWjhR/FEvHVepSgRltije4dL6RrcG6nf6MtN/ZkoWTt/kw66I2QGrGwNni7PHP+pKDaGV4hoDjCEFIl3U0SRmiCHsiuMTfqwWRiDOVDIiwN/AE+f9uw/P7dDpTmsNVq0HN3WWZSR7xpGiez3pb0YVDdmbz3fI1xNGi0iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758177272; c=relaxed/simple;
-	bh=BCopRdkAlLZUwepfWLHtixLX3yDFPpQqCze/Cb93lwo=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=l/8FHSyBozQ5z09a+XrneCDBjhZOP+tBiAqrs3aMQ6tw6zW3vU6Ytlc5ErwfmhmIlt584UmQuW74kALHt4UL4OSXhOly4o/hyMZL8Ti4LYMrVFzeNxFYNCQ2FDaHqOsLJFgHCvDsy5MFO8Lk0Twas+jPX0ZgMW36IuqihG+ehI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zlu4+r53; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b223ec0d5caso16651166b.0
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Sep 2025 23:34:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758177267; x=1758782067; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=F/ySUXJSHe8lpQVFSN8o7h8cD/xMra4YZMnsAza4vk8=;
-        b=Zlu4+r53z29VnLv90SE7MXi1wfnQMaN8TsAer8VuMcLHX+9WfK4vklpc1fu+KWHxkI
-         gJxHCAu9A3lVVqyTlQ8vkSm6PNlCbet3UETCHwlTfdM68AEe2SbECNqVgAS1VwK6ABLd
-         IXXwULo339vIeth7a3aTJxyeFlxAmTWUGklwNdeRLeaZ5yZdnO29E6u27XXOh5/Cva2h
-         ASDJDS2ofC4aOb9+aby/78XKfQnsCdon9bDRkkGrl4dIvgMz0TPRxo8RI8oQ6DJ8cRWQ
-         ALS0nu9ivFj6iJTKA4UL5k1gahjzft6AcsWk+4OFUP1RAFpmuJTNwz1dnPK8UGs5h5ZW
-         Dhkw==
+	s=arc-20240116; t=1758178643; c=relaxed/simple;
+	bh=3jcyUudN9w/dANiUt7a84TD4s/YyFm6IsN+T/R9wT0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ld/gqFDhGol5FrcL0Y1n83OYy16PF/QyQHlJnRZB1M1w1K5hphwHWllpK+f2qI4sgvjwOTF7o+vAS/dCNd7W1VJSeaiTJRautcR1VgLEqCGR7m3caCG4A5rFoSl1wo37z0ght6L0cCDDRVQglHzg7JXitYpo9V1PRR6ukM/Zm/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=idYCm4t0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58I33KmI026798
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 06:57:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	kP7bfGFdU/7o7BOcVSMb+JUezO30+s+j/x36Ohrw/po=; b=idYCm4t0dtfo1mNf
+	B2Ols5/GhVrplFSi7idhch8X0MeJX9GJv32dde2Vo//5J9SR5HBV3nmAOIG4zioJ
+	EAFpy5d1p0q+e6RZ1VdSzdfmWbmsaSXdeJ7eYOIoLKwYZFardky8jEsMkTr7X9Sk
+	OURmuhvqcajlpHAQpec1C8aE98oBkVYFXf7C0PlYAjYooZ1HxHWViDX5Du/MOe/3
+	+NQ+ic0AVwoLtoZR6b6pVqc2LPM60LLLD8gX6SaqSbgaImJQfL+PpNLKxthAgCgA
+	4h44ZnSwGhANADnb9Qe0VmBMsALL4Gn5Z+EH8goW0S16w15y5qRkBNerYr6uQiKR
+	z0ENmA==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 497fxt5a9e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 06:57:20 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-32e09eaf85dso747084a91.1
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Sep 2025 23:57:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758177267; x=1758782067;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=F/ySUXJSHe8lpQVFSN8o7h8cD/xMra4YZMnsAza4vk8=;
-        b=Qi0sV3jUVy4UjsUz48iL5PMAt0I6trrNP7wJD9PWAXNMwp5JADPhxUWjtYRuSSa5Ju
-         YPaS4FoVjd4g6VvMwwei89D8YkRWYfZhe9SS67P4sfUai7sFLp/ZCI8gWz5f/EqK6uTp
-         0MhYaabC9oJyLpOYNFcaRfoIIl/MNpRl0XZ0SrN5FhRP9oxhZgZkqIV5PmRzV7Z4uov5
-         MD3nGf2ns9I/HfkpxRz9LtiYdy4dQDl85fya8972hr/K3d6gheNrxwmWirCEWEU/ZwrB
-         Me8C+Qnou1gJqv4hXA1j2AZ5DZ6FHKbHdg6jdkpP8vL+ndcGYyMjhtTby5hSPkYjmqmy
-         fcGg==
-X-Gm-Message-State: AOJu0Yyc+yDZEMfoEsJOwiCrDjXmk2VVZCX5hi6FNG0ar25hvknPXWWb
-	o93N0e1J3sj1QwokFUf7iHSn98V45it1jhCEXDNkvBMYZierkyCXo16lK1J8wxJkixEo1VSuNel
-	IZc090iboQcGHFAdKmr63fM2yVZs0Sjb/ggxCS6Q=
-X-Gm-Gg: ASbGncvIz/ZAMTai207mr8NAkawlftU59iOxdcSWsnKTEUUEaOuk8UsX6gQxOOMpSes
-	wOIP3c73fsmU2yfXDQhPJ/sUeZ8d1kxO/hDKzrefsX2SX/FHMN2lAL9tOU9SQpaawU6jTf1E2an
-	8oLDLYDrvE+D20/dvX0vNOkQn2rtz2lDiL+7LRYLbAz96Zz/+zq2EgLTtyEen2UVx/DHIcXXVNL
-	r/07fM5n2r6r8UcrYr15l2YTjiuBuYV2nxF
-X-Google-Smtp-Source: AGHT+IET22ufB/xb6tHH1YtrYMLovt2prENQrB7ShitB4k6AXjdd81YqSOU4EtZP0cF75cKFjrwp5rfOzQiLL76X1IE=
-X-Received: by 2002:a17:907:6d02:b0:afe:be04:5ce2 with SMTP id
- a640c23a62f3a-b1bc2779eadmr491602266b.64.1758177267512; Wed, 17 Sep 2025
- 23:34:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758178640; x=1758783440;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kP7bfGFdU/7o7BOcVSMb+JUezO30+s+j/x36Ohrw/po=;
+        b=QWkfV6qKEFMn7uA8IAm/WqxoaG3nGsw3vnBqCogWhH59tZIVaWmFZaiTG6Rw4SxxeI
+         2U5aAaip/ZGDYx86loti9BgPrTxbVGapuExp0coj63SjeXcxWwH0W43GzpWXUIq/D/lB
+         TbVD4bNt71r8LxO51sN6lZrwxBf/ddI3erQ7DpFOfly41wJRy0d0nDgajZDoyxmwODtO
+         3p1mHJaLiN5j5C5qCwj6jco2XzQa63ruM06g4YhN5HN+8c2H5vrppEftbuYw28r7Ium5
+         SajKERiDknDn3iSSdCr42xQnjYXgWfnDkXHNbR8IdhLgdJl6V4DZGdXRz+WNkaDbQ0jI
+         a/iw==
+X-Gm-Message-State: AOJu0YyDoWr7ncb6LtfQ/PgIxrp2KRXr3+GDNpM/bsuR/QnNFcFI0qoi
+	cKaFRcjGU4jLt3JzVTRQiofZ1qx+z+gEnb/0+KdG+4JfRx9h8zY+MwJJiiu4GXpkh6Py95h4Hn/
+	tvlTOFXK20Bnli32yrYudQD+kpkDaxDN52EDRA8DjV1pMKexoLEOB/Gzb40S5IrocalhEsenjte
+	sxqQ==
+X-Gm-Gg: ASbGncvUPTgVC/o9Rq9f4uC4uLh84ieDpI0ni4kiSnxQ7kpeXhQye8b7TIlSwV7IRDc
+	vnfhFtgmuqGK8SlaA7/PrgO82LsSWsMb8GezKr8PyGF+uzXVVzQLpXyfyzVXW+roq5eucyyCCg1
+	W2JyxSHIu5ZLovjCf2yxZFX4SfVSUeOYLT7PKFoXobSofAUU456LUO2Zlrkqxmu4lyU86Afe98c
+	rV72yHh1lwQSfHGs4LRfgBkHfi3kYWfdESO/VPFqmNX6NVTFFZ55/SMUy6ClfPMLJprvDbAv1gB
+	kvdvuvMIUnTP/K8MNC2ASc6Qq047ligZyrl/GvXJv2k2blZ9O8eYDSXAfOY2shHx5/lijrGi682
+	guGTlTQ==
+X-Received: by 2002:a17:903:19d0:b0:267:9a29:7800 with SMTP id d9443c01a7336-26813f1d000mr61188765ad.59.1758178639560;
+        Wed, 17 Sep 2025 23:57:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEu+tO6Q57GSmftk1FgfAyqaDBz+rsymYzavH7+yrOI3zPLb0aE7EqBJflDWcrWlzsqxeR8vg==
+X-Received: by 2002:a17:903:19d0:b0:267:9a29:7800 with SMTP id d9443c01a7336-26813f1d000mr61188465ad.59.1758178639021;
+        Wed, 17 Sep 2025 23:57:19 -0700 (PDT)
+Received: from [10.152.204.0] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2698030ee20sm15625335ad.109.2025.09.17.23.57.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Sep 2025 23:57:18 -0700 (PDT)
+Message-ID: <7bb9c17f-34a9-2602-8bb5-d0d5f12f47d2@oss.qualcomm.com>
+Date: Thu, 18 Sep 2025 12:27:16 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: amit kumar <amit60700@gmail.com>
-Date: Thu, 18 Sep 2025 12:04:15 +0530
-X-Gm-Features: AS18NWAiMvUScp727Etf8J9TCBq_xjGbuL1DEk_60qWYVcJLvPZhyE2aRakmFCs
-Message-ID: <CAJNKUtcMh9+i2AiXGxKDqa41QRrkfHbU1rR-HJEKx9aJj2tJSg@mail.gmail.com>
-Subject: Inquiry: WPA3-FT Roaming Support in iwd ver3.9
-To: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH ath-next 0/3] wifi: ath12k: Add support to handle
+ inactivity STA kickout event
+Content-Language: en-US
+To: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250812111708.3686-1-maharaja.kennadyrajan@oss.qualcomm.com>
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20250812111708.3686-1-maharaja.kennadyrajan@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 3oJAu6pDqaZ2_so00ydUVw0hZf_DSomv
+X-Authority-Analysis: v=2.4 cv=bIMWIO+Z c=1 sm=1 tr=0 ts=68cbad50 cx=c_pps
+ a=0uOsjrqzRL749jD1oC5vDA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=o4nd2XIhPPp7Sg7KCEwA:9
+ a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX/jdV491k88MR
+ mOgG3JxUiOUy37J8/PBdkx0QAdKKVItIxndu1SchdEad8LcdoBhMN06caACk55IuiA4Zsak9XdA
+ JHEKb7gRHg0KTmINya7yvWaNKdy6Yj3ZfPyqojKOGTdJXYOL5sV5JPZLfBiV4sNy32KepBjOztX
+ thdWP4FbFH67qYDV3EDB13K+7SyAOb2HQjdqiyisvZBM4cjNj8uDs45gSoCLQaRN3ISGjmkbTYl
+ hu8ytt3F+aYehoip6qMfcSuwiMEGhBJJ5FhyCj3g18jb+sBK2L3BB6FPYDQwf7kdkpe1Dgb52P5
+ XGs46fM309+FC4xb0z0asiQMlzmTnZ3/Xpo8xUJ3SsjZHjb5V/THAk93ZjpzisMMpmRri34wZiK
+ bK1XpAGG
+X-Proofpoint-ORIG-GUID: 3oJAu6pDqaZ2_so00ydUVw0hZf_DSomv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-17_01,2025-09-18_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 malwarescore=0 adultscore=0 priorityscore=1501
+ suspectscore=0 spamscore=0 bulkscore=0 phishscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509160202
 
-Dear iwd maintainers and community,
 
-I=E2=80=99m currently working with iwd version 3.9 and have been evaluating
-Fast Transition (FT) behavior across different security
-configurations.
 
-In my testing:
+On 8/12/2025 4:47 PM, Maharaja Kennadyrajan wrote:
+> In this patch series, enhance the WMI_PEER_STA_KICKOUT event by adding
+> support for reporting the kickout reason and RSSI value.
+> All reason codes are handled by reporting low ACKs, and will be leveraged
+> in the future.
+> 
+> Add support to handle the peer non-AP STA kickout event for the reason
+> inactivity.
+> 
+> Currently, the ath12k_mac_handle_beacon_miss() does not handle MLO non-AP
+> STA. Hence, add support to handle the MLO non-AP support.
+> 
+> Arulanbu Balusamy (1):
+>    wifi: ath12k: Add support to handle reason inactivity STA kickout
+>      event for QCN9274/IPQ5332
+> 
+> Maharaja Kennadyrajan (2):
+>    wifi: ath12k: enhance the WMI_PEER_STA_KICKOUT event with reasons and
+>      RSSI reporting
+>    wifi: ath12k: Extend beacon miss handling for MLO non-AP STA
+> 
+>   drivers/net/wireless/ath/ath12k/mac.c | 24 +++--------
+>   drivers/net/wireless/ath/ath12k/mac.h |  3 +-
+>   drivers/net/wireless/ath/ath12k/wmi.c | 60 ++++++++++++++++++++-------
+>   drivers/net/wireless/ath/ath12k/wmi.h | 15 +++++++
+>   4 files changed, 66 insertions(+), 36 deletions(-)
 
-1>WPA2-FT works flawlessly =E2=80=94 the device connects and roams as expec=
-ted.
-2>WPA3-SAE also connects without issue.
-3>However, when the AP is configured with WPA3-FT only (AKM suite
-00-0F-AC:9), iwd fails to connect, logging:
-3.a>iwd[440]: autoconnect: No suitable BSSes found
-
-Upon reviewing the source code, I noticed that the AKM suite for FT
-over SAE (IE_RSN_AKM_SUITE_FT_OVER_SAE_SHA256) is not included in the
-logic that identifies WPA3-Personal networks. After adding the
-following patch to ie.c, iwd successfully connects to the WPA3-FT AP:
-
-----
-
-diff --git a/src/ie.c b/src/ie.c
---- a/src/ie.c
-+++ b/src/ie.c
-@@ -1338,7 +1338,8 @@ bool ie_rsne_is_wpa3_personal(const struct
-ie_rsn_info *info)
-         * 3. an AP should enable AKM suite selector: 00-0F-AC:6
-         * 5. an AP shall set MFPC to 1, MFPR to 0
-         */
--       if (!(info->akm_suites & IE_RSN_AKM_SUITE_SAE_SHA256))
-+       if (!(info->akm_suites & IE_RSN_AKM_SUITE_SAE_SHA256) &&
-+           !(info->akm_suites & IE_RSN_AKM_SUITE_FT_OVER_SAE_SHA256))
-                return false;
-
-        if (!info->mfpc)
-
-----
-
-My query:
-Does iwd officially support WPA3-FT roaming? If not, is there a
-specific reason this AKM suite is excluded =E2=80=94 such as spec maturity,
-roaming logic limitations, or security concerns?
-
-I=E2=80=99d appreciate any insights into the roadmap or design consideratio=
-ns
-around WPA3-FT support. Happy to share logs or test results if
-helpful.
-
-Best regards,
-[Amit Kumar]
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
