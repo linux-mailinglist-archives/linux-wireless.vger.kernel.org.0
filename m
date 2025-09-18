@@ -1,196 +1,135 @@
-Return-Path: <linux-wireless+bounces-27463-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27464-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98B7B83113
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 08:00:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9214B83268
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 08:34:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 702843A8245
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 06:00:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAB107A69EB
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 06:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1502D838B;
-	Thu, 18 Sep 2025 06:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674581F3BA9;
+	Thu, 18 Sep 2025 06:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mMEmJTd0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zlu4+r53"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34C32D7D59;
-	Thu, 18 Sep 2025 06:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3D71E51E0
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 06:34:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758175215; cv=none; b=o102ROSfNrNkwWkKDQplcnDaMXE8s7W+iKcRwDxg2KK/mdvH8ZDlX97Lza/hVdY4oSvYsDDnmGK7+7OKAyaAlCIYvBMAW/clgtTMyVWWNsqQBVreInSeIhLghMm2DcTMK2IYEGvSeQCX3mpHfAgTN57yTDIwqRofjlzCa2hr1HU=
+	t=1758177272; cv=none; b=HpHI9nEdWcEEUE4P7k6hpV11ncWh2OPm/v+Hf9MWcgaL+OevUN29pCacldzhZmtbocpu5ScKZtoUB5WW1sHQG4FY5X0ySJeShzvqGNL9oWO8xCZreLZn8NDKCODiKhXL+yQM1BBkqhMJG8n3fwM61lhj2WXKLuNa2CtGU4HCAzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758175215; c=relaxed/simple;
-	bh=0old9ctTyJsH/xFzWRZPdPpfchK49uoPWBzcpSBTL70=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lbY20LoljbBNmOp3iij7+DPI/JmXAbu+mYqIcilpTH4Ykk3rmil/xHsjYT+1sTue5JIyi2hB/83iXWYZsqaxueSXbm2sPsPgND0C6Fg8BBCEOuQrs1AYnjiyiyy+GiTEBLZIEaF2vyzyK0zyl95A86/uzx39PlDZez9qCgAbgJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mMEmJTd0; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758175213; x=1789711213;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0old9ctTyJsH/xFzWRZPdPpfchK49uoPWBzcpSBTL70=;
-  b=mMEmJTd0/o4yamQdDZHyRV2YSB1YQAzi+sDhOWuL0NtBBliwa/36RWkj
-   uavc1r1cq5mN6/Qt0FaNjXh2VZJzhArFjhiUgeJkzovwPT6Y7RUwbGDD6
-   9EB+Ahzl1MqJfI2vVVfL3Mu6qlbWrHzh8SYeg6upQmdd4C51w/tYnTV+x
-   zFVMJRBWcAJvbR4yYParWjgW2TZ3TRL5sC5Z6Jjrpp4x3q2GA6jcn1tTq
-   JJADchVF/EgeH6w2bzEgVDINrdzlwO45ZnCu7xTb9Q8NEozqr9HCaI/Pl
-   5bNs9KqqJnLQco8K/ZgVEsifedgM/5VZa9TUZYBvDgs3b1gBkki1yrsC6
-   Q==;
-X-CSE-ConnectionGUID: UdGRbL31QfCR58r4ZDvPSQ==
-X-CSE-MsgGUID: kELJzKH9TqeLzGWN3YEEfA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="60606193"
-X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; 
-   d="scan'208";a="60606193"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 23:00:12 -0700
-X-CSE-ConnectionGUID: HqVbENHoSCCstfpcc2jBfA==
-X-CSE-MsgGUID: O/WEU7TfQCO7wMt5r4e3QA==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 17 Sep 2025 23:00:10 -0700
-Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uz7gd-0002oN-0f;
-	Thu, 18 Sep 2025 06:00:07 +0000
-Date: Thu, 18 Sep 2025 13:59:15 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexander Wilhelm <alexander.wilhelm@westermo.com>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 RESEND 2/4] soc: qcom: fix QMI encoding/decoding for
- basic elements
-Message-ID: <202509181302.j10W2wCw-lkp@intel.com>
-References: <20250917070428.2909-3-alexander.wilhelm@westermo.com>
+	s=arc-20240116; t=1758177272; c=relaxed/simple;
+	bh=BCopRdkAlLZUwepfWLHtixLX3yDFPpQqCze/Cb93lwo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=l/8FHSyBozQ5z09a+XrneCDBjhZOP+tBiAqrs3aMQ6tw6zW3vU6Ytlc5ErwfmhmIlt584UmQuW74kALHt4UL4OSXhOly4o/hyMZL8Ti4LYMrVFzeNxFYNCQ2FDaHqOsLJFgHCvDsy5MFO8Lk0Twas+jPX0ZgMW36IuqihG+ehI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zlu4+r53; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b223ec0d5caso16651166b.0
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Sep 2025 23:34:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758177267; x=1758782067; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=F/ySUXJSHe8lpQVFSN8o7h8cD/xMra4YZMnsAza4vk8=;
+        b=Zlu4+r53z29VnLv90SE7MXi1wfnQMaN8TsAer8VuMcLHX+9WfK4vklpc1fu+KWHxkI
+         gJxHCAu9A3lVVqyTlQ8vkSm6PNlCbet3UETCHwlTfdM68AEe2SbECNqVgAS1VwK6ABLd
+         IXXwULo339vIeth7a3aTJxyeFlxAmTWUGklwNdeRLeaZ5yZdnO29E6u27XXOh5/Cva2h
+         ASDJDS2ofC4aOb9+aby/78XKfQnsCdon9bDRkkGrl4dIvgMz0TPRxo8RI8oQ6DJ8cRWQ
+         ALS0nu9ivFj6iJTKA4UL5k1gahjzft6AcsWk+4OFUP1RAFpmuJTNwz1dnPK8UGs5h5ZW
+         Dhkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758177267; x=1758782067;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F/ySUXJSHe8lpQVFSN8o7h8cD/xMra4YZMnsAza4vk8=;
+        b=Qi0sV3jUVy4UjsUz48iL5PMAt0I6trrNP7wJD9PWAXNMwp5JADPhxUWjtYRuSSa5Ju
+         YPaS4FoVjd4g6VvMwwei89D8YkRWYfZhe9SS67P4sfUai7sFLp/ZCI8gWz5f/EqK6uTp
+         0MhYaabC9oJyLpOYNFcaRfoIIl/MNpRl0XZ0SrN5FhRP9oxhZgZkqIV5PmRzV7Z4uov5
+         MD3nGf2ns9I/HfkpxRz9LtiYdy4dQDl85fya8972hr/K3d6gheNrxwmWirCEWEU/ZwrB
+         Me8C+Qnou1gJqv4hXA1j2AZ5DZ6FHKbHdg6jdkpP8vL+ndcGYyMjhtTby5hSPkYjmqmy
+         fcGg==
+X-Gm-Message-State: AOJu0Yyc+yDZEMfoEsJOwiCrDjXmk2VVZCX5hi6FNG0ar25hvknPXWWb
+	o93N0e1J3sj1QwokFUf7iHSn98V45it1jhCEXDNkvBMYZierkyCXo16lK1J8wxJkixEo1VSuNel
+	IZc090iboQcGHFAdKmr63fM2yVZs0Sjb/ggxCS6Q=
+X-Gm-Gg: ASbGncvIz/ZAMTai207mr8NAkawlftU59iOxdcSWsnKTEUUEaOuk8UsX6gQxOOMpSes
+	wOIP3c73fsmU2yfXDQhPJ/sUeZ8d1kxO/hDKzrefsX2SX/FHMN2lAL9tOU9SQpaawU6jTf1E2an
+	8oLDLYDrvE+D20/dvX0vNOkQn2rtz2lDiL+7LRYLbAz96Zz/+zq2EgLTtyEen2UVx/DHIcXXVNL
+	r/07fM5n2r6r8UcrYr15l2YTjiuBuYV2nxF
+X-Google-Smtp-Source: AGHT+IET22ufB/xb6tHH1YtrYMLovt2prENQrB7ShitB4k6AXjdd81YqSOU4EtZP0cF75cKFjrwp5rfOzQiLL76X1IE=
+X-Received: by 2002:a17:907:6d02:b0:afe:be04:5ce2 with SMTP id
+ a640c23a62f3a-b1bc2779eadmr491602266b.64.1758177267512; Wed, 17 Sep 2025
+ 23:34:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917070428.2909-3-alexander.wilhelm@westermo.com>
+From: amit kumar <amit60700@gmail.com>
+Date: Thu, 18 Sep 2025 12:04:15 +0530
+X-Gm-Features: AS18NWAiMvUScp727Etf8J9TCBq_xjGbuL1DEk_60qWYVcJLvPZhyE2aRakmFCs
+Message-ID: <CAJNKUtcMh9+i2AiXGxKDqa41QRrkfHbU1rR-HJEKx9aJj2tJSg@mail.gmail.com>
+Subject: Inquiry: WPA3-FT Roaming Support in iwd ver3.9
+To: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Alexander,
+Dear iwd maintainers and community,
 
-kernel test robot noticed the following build warnings:
+I=E2=80=99m currently working with iwd version 3.9 and have been evaluating
+Fast Transition (FT) behavior across different security
+configurations.
 
-[auto build test WARNING on ath/ath-next]
-[also build test WARNING on linus/master v6.17-rc6 next-20250917]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+In my testing:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Wilhelm/soc-qcom-introduce-generic-QMI-encoding-decoding-macros/20250917-150826
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git ath-next
-patch link:    https://lore.kernel.org/r/20250917070428.2909-3-alexander.wilhelm%40westermo.com
-patch subject: [PATCH v2 RESEND 2/4] soc: qcom: fix QMI encoding/decoding for basic elements
-config: openrisc-randconfig-r132-20250918 (https://download.01.org/0day-ci/archive/20250918/202509181302.j10W2wCw-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250918/202509181302.j10W2wCw-lkp@intel.com/reproduce)
+1>WPA2-FT works flawlessly =E2=80=94 the device connects and roams as expec=
+ted.
+2>WPA3-SAE also connects without issue.
+3>However, when the AP is configured with WPA3-FT only (AKM suite
+00-0F-AC:9), iwd fails to connect, logging:
+3.a>iwd[440]: autoconnect: No suitable BSSes found
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509181302.j10W2wCw-lkp@intel.com/
+Upon reviewing the source code, I noticed that the AKM suite for FT
+over SAE (IE_RSN_AKM_SUITE_FT_OVER_SAE_SHA256) is not included in the
+logic that identifies WPA3-Personal networks. After adding the
+following patch to ie.c, iwd successfully connects to the WPA3-FT AP:
 
-sparse warnings: (new ones prefixed by >>)
-   drivers/soc/qcom/qmi_encdec.c:384:55: sparse: sparse: cast to restricted __le16
-   drivers/soc/qcom/qmi_encdec.c:384:55: sparse: sparse: cast to restricted __le16
-   drivers/soc/qcom/qmi_encdec.c:384:55: sparse: sparse: cast to restricted __le16
-   drivers/soc/qcom/qmi_encdec.c:384:55: sparse: sparse: cast to restricted __le16
-   drivers/soc/qcom/qmi_encdec.c:715:31: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned int [usertype] val32 @@     got restricted __le32 [usertype] @@
-   drivers/soc/qcom/qmi_encdec.c:715:31: sparse:     expected unsigned int [usertype] val32
-   drivers/soc/qcom/qmi_encdec.c:715:31: sparse:     got restricted __le32 [usertype]
->> drivers/soc/qcom/qmi_encdec.c:188:25: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned short [usertype] @@     got restricted __le16 [usertype] @@
-   drivers/soc/qcom/qmi_encdec.c:188:25: sparse:     expected unsigned short [usertype]
-   drivers/soc/qcom/qmi_encdec.c:188:25: sparse:     got restricted __le16 [usertype]
->> drivers/soc/qcom/qmi_encdec.c:191:25: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned int [usertype] @@     got restricted __le32 [usertype] @@
-   drivers/soc/qcom/qmi_encdec.c:191:25: sparse:     expected unsigned int [usertype]
-   drivers/soc/qcom/qmi_encdec.c:191:25: sparse:     got restricted __le32 [usertype]
->> drivers/soc/qcom/qmi_encdec.c:194:25: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned long long [usertype] @@     got restricted __le64 [usertype] @@
-   drivers/soc/qcom/qmi_encdec.c:194:25: sparse:     expected unsigned long long [usertype]
-   drivers/soc/qcom/qmi_encdec.c:194:25: sparse:     got restricted __le64 [usertype]
-   drivers/soc/qcom/qmi_encdec.c:485:25: sparse: sparse: cast to restricted __le16
-   drivers/soc/qcom/qmi_encdec.c:485:25: sparse: sparse: cast to restricted __le16
-   drivers/soc/qcom/qmi_encdec.c:485:25: sparse: sparse: cast to restricted __le16
-   drivers/soc/qcom/qmi_encdec.c:485:25: sparse: sparse: cast to restricted __le16
->> drivers/soc/qcom/qmi_encdec.c:488:25: sparse: sparse: cast to restricted __le32
->> drivers/soc/qcom/qmi_encdec.c:488:25: sparse: sparse: cast to restricted __le32
->> drivers/soc/qcom/qmi_encdec.c:488:25: sparse: sparse: cast to restricted __le32
->> drivers/soc/qcom/qmi_encdec.c:488:25: sparse: sparse: cast to restricted __le32
->> drivers/soc/qcom/qmi_encdec.c:488:25: sparse: sparse: cast to restricted __le32
->> drivers/soc/qcom/qmi_encdec.c:488:25: sparse: sparse: cast to restricted __le32
->> drivers/soc/qcom/qmi_encdec.c:491:25: sparse: sparse: cast to restricted __le64
->> drivers/soc/qcom/qmi_encdec.c:491:25: sparse: sparse: cast to restricted __le64
->> drivers/soc/qcom/qmi_encdec.c:491:25: sparse: sparse: cast to restricted __le64
->> drivers/soc/qcom/qmi_encdec.c:491:25: sparse: sparse: cast to restricted __le64
->> drivers/soc/qcom/qmi_encdec.c:491:25: sparse: sparse: cast to restricted __le64
->> drivers/soc/qcom/qmi_encdec.c:491:25: sparse: sparse: cast to restricted __le64
->> drivers/soc/qcom/qmi_encdec.c:491:25: sparse: sparse: cast to restricted __le64
->> drivers/soc/qcom/qmi_encdec.c:491:25: sparse: sparse: cast to restricted __le64
->> drivers/soc/qcom/qmi_encdec.c:491:25: sparse: sparse: cast to restricted __le64
->> drivers/soc/qcom/qmi_encdec.c:491:25: sparse: sparse: cast to restricted __le64
+----
 
-vim +188 drivers/soc/qcom/qmi_encdec.c
+diff --git a/src/ie.c b/src/ie.c
+--- a/src/ie.c
++++ b/src/ie.c
+@@ -1338,7 +1338,8 @@ bool ie_rsne_is_wpa3_personal(const struct
+ie_rsn_info *info)
+         * 3. an AP should enable AKM suite selector: 00-0F-AC:6
+         * 5. an AP shall set MFPC to 1, MFPR to 0
+         */
+-       if (!(info->akm_suites & IE_RSN_AKM_SUITE_SAE_SHA256))
++       if (!(info->akm_suites & IE_RSN_AKM_SUITE_SAE_SHA256) &&
++           !(info->akm_suites & IE_RSN_AKM_SUITE_FT_OVER_SAE_SHA256))
+                return false;
 
-   161	
-   162	/**
-   163	 * qmi_encode_basic_elem() - Encodes elements of basic/primary data type
-   164	 * @buf_dst: Buffer to store the encoded information.
-   165	 * @buf_src: Buffer containing the elements to be encoded.
-   166	 * @elem_len: Number of elements, in the buf_src, to be encoded.
-   167	 * @elem_size: Size of a single instance of the element to be encoded.
-   168	 *
-   169	 * This function encodes the "elem_len" number of data elements, each of
-   170	 * size "elem_size" bytes from the source buffer "buf_src" and stores the
-   171	 * encoded information in the destination buffer "buf_dst". The elements are
-   172	 * of primary data type which include u8 - u64 or similar. This
-   173	 * function returns the number of bytes of encoded information.
-   174	 *
-   175	 * Return: The number of bytes of encoded information.
-   176	 */
-   177	static int qmi_encode_basic_elem(void *buf_dst, const void *buf_src,
-   178					 u32 elem_len, u32 elem_size)
-   179	{
-   180		u32 i, rc = 0;
-   181	
-   182		for (i = 0; i < elem_len; i++) {
-   183			switch (elem_size) {
-   184			case sizeof(u8):
-   185				QMI_ENCDEC_ENCODE_N_BYTES(buf_dst, buf_src, u8);
-   186				break;
-   187			case sizeof(u16):
- > 188				QMI_ENCDEC_ENCODE_N_BYTES(buf_dst, buf_src, u16);
-   189				break;
-   190			case sizeof(u32):
- > 191				QMI_ENCDEC_ENCODE_N_BYTES(buf_dst, buf_src, u32);
-   192				break;
-   193			case sizeof(u64):
- > 194				QMI_ENCDEC_ENCODE_N_BYTES(buf_dst, buf_src, u64);
-   195				break;
-   196			}
-   197	
-   198			rc += elem_size;
-   199		}
-   200	
-   201		return rc;
-   202	}
-   203	
+        if (!info->mfpc)
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+----
+
+My query:
+Does iwd officially support WPA3-FT roaming? If not, is there a
+specific reason this AKM suite is excluded =E2=80=94 such as spec maturity,
+roaming logic limitations, or security concerns?
+
+I=E2=80=99d appreciate any insights into the roadmap or design consideratio=
+ns
+around WPA3-FT support. Happy to share logs or test results if
+helpful.
+
+Best regards,
+[Amit Kumar]
 
