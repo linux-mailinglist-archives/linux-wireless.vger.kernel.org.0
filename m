@@ -1,80 +1,87 @@
-Return-Path: <linux-wireless+bounces-27486-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27487-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2C1B85AF2
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 17:39:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DC84B85E91
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 18:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09A877B864B
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 15:37:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8741161D41
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 16:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F6230E0FF;
-	Thu, 18 Sep 2025 15:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ECED313D41;
+	Thu, 18 Sep 2025 16:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Em/0lnuO"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lWsuGhjA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0D830F946
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 15:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E206623D7E9
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 16:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758209851; cv=none; b=dv3SWG+mC1BO1CHbdAxwzNiesncfVkDc+vsarYYLK8nQMhdgEslfIKMt0r8Tf95Owuideht+LFarsMEnaOihP6ZqwabsjKVlSPhuCaEoDn1v/uX1eEeWOE8+OU3QLplpj0zelHl3p7OG/1R+P0FUC5K34reF6evHI9KBNKVRgxY=
+	t=1758211683; cv=none; b=Swmzwd0NvVBboypZ+lO4+ARZ9e/4+LbEEY6nHys/kBEz8IZBwUPxZPcVDRh9ckd8xm0FFP0qoV+tX+6LFNHgnZolz4bQdfGzNn4B1+vnu//YKWnwhjz728xg+RgBdkgFoHffw7Ox/WQjVBRxv/sWWE1COlPE/DpGhrMFhS04454=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758209851; c=relaxed/simple;
-	bh=5a4VIoh+3AjSOqCSX6kuvG/N5MXZZ8MKVAtmohvSMrQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=PmA/nz55qSSoaRzhOawy+ZVhZsNVSS6eXyz7EkYe16xTuN+F3r/u5P3T97XikMLtfVPwVfcARt6RhFitGBRn+zbDGzYD6sHWchtcUOj6yoIjqE6Vyzm/Fdn5hPmwg7oSxxmzHEi8JpTTGfRSjrqPxCqfnEvKDLtJ8oY4FDKRvkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Em/0lnuO; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2570bf6058aso14521145ad.0
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 08:37:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758209849; x=1758814649; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=spxv57HJ9BfakePJ29btbG/jyvASrkJd61yqCTLxSCI=;
-        b=Em/0lnuOevpN2jq/Ny5PDiLIy4Zj7svgPhBEjtOr8xsekhZmL7fQWBxkZrgCaUYb//
-         TUjBbhLi31HO26PcUeB3Lus+uB4ofURAz+W+8QYIc69GFfJ8QNJSkxXdSfICmH08M9RL
-         lVqvLagniwRZHY2wk5HA3sABHBP+UL10/jVw6vn90qkFGs96PkwL/BETfw6/TqoKZFjP
-         mIUzZbstPSAUxTYZGLMTwzHnN3OmHZe+8zX/clRerLYDFDXRWpHlFI84BCRLbjtjzT5Z
-         LJeKLNyh0heonNNHkxFi7ipeyOgEV3aLn5JlBbl6UK7nbp/sIENzcKQrz7AA+oOn2j94
-         YhRw==
+	s=arc-20240116; t=1758211683; c=relaxed/simple;
+	bh=3LBAiHgmOEKmh8TVOjpuNesD82rvtwmdFUTaJPqFIBQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cYUtsq3+g0Z22Y87yiVYeySt1tBPNhRJV7MlGN0W0voV0aDCxQ7jTSD5xJene8xVS8DsFzgK6RQm7jheSunrof5z0DXY/DAUkVeFEAO6h1KHOVxojaR0jMqNHLfZ7fjg705/1VlYI04kvTwuBG8LeFJls/hQN+V14PlY8gqjTL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lWsuGhjA; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58IB8TGh032421
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 16:08:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	qICgYr9pTII0ek2CGvjEE+bggBezqbDRv5s7Qp5blPE=; b=lWsuGhjAfPcG/dFC
+	Y2QGOArgYjmDWw6zhISUE9kj6glVXlRkLr0c2dEETQaj0qomW3jv0q7FWy0wSpe9
+	xzTbnxKh/afGiDyXNK6n+08US6G4exQLze3YYujrOy77jJU29WuNyHGCmmNMxht0
+	OFgLCZC2oDsp12R8t1aF4gkYITBDAQeXs0hCTJudgdVucamdYQRf2/5sfGTbrzq7
+	4rEoQoWCI9ESbDs+95OfVe5ZEV1Ip0jFgoD1wfNrOy/9wWOPoXgrJ/kRHHoDlB5X
+	u0iTdscOHdx2WlfPkS7YblTfLoBxejS0rqN0BDqxM4Zb9DFaTK3KFuGuA7kTOXUi
+	hMZEZw==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 497fxyq2ss-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 16:08:01 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-77ddaa4caabso519028b3a.2
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 09:08:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758209849; x=1758814649;
+        d=1e100.net; s=20230601; t=1758211680; x=1758816480;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=spxv57HJ9BfakePJ29btbG/jyvASrkJd61yqCTLxSCI=;
-        b=Ck1Qiqv8guAmMr9R5VUepKRJcuqmZ4A8wekWYkObR0Djf3WbG1z3D3FmIfijlCWyJw
-         Hz1MPTQaHm3jmBV6fJYE7x9Leeq98p907igtVfB/h1tpqaHPMYhWS/JIQJs3VDxONcxV
-         Z15o0rsbqKbF9X2jyvDAl8z9jDAjIY/J8uLlepgGduhUz9Ls3pGEaEO+t69XMvDV/yFD
-         qT0vlDn4EhjmQlkKW8iPQn7uB0+PiyzziiMLn1LOfiAnrfh3yeKOUc5llBk+lTnMzgVV
-         aQDJnAnTTSsX4WlTaVGWBABQZagZxZ8SaadQCP/lB+vy895VIhwODGy5Ur2h91TowJ/L
-         sX4w==
-X-Forwarded-Encrypted: i=1; AJvYcCWzOO0yE8TaJbAHPSURlQuNciSmuiNSDN4A5F8W9QPA4dfBYBVJk0a6uPBHXAhT0b4mu6zLNmfLqLJFb0qihQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZYWqVUQr3v5PXyCjaHuyc3nVn9uOg0empQrS29qZzdYJxir5N
-	j+XFTc2AWy9NU8MSr3iOTB1P+fvxFzZ4IZQP9Pv1N4dy+ILPQQcRjlvyBMAPyw==
-X-Gm-Gg: ASbGncuAi1KpRLUDv2qpCeYzyIfB3OG2viclDgrblyvWa+rJnOmUDd8kvH/LLxkQwJP
-	4mCZmDblQT/WlXTAUPqbF0VohmzPxy3rSR8p8+y3sR6K61JOVfdbs8nk64Ne13FTyu9dzGbmU/T
-	3To9FbjASX558+WJywtBTO81KJXtGM6mNBlhz0zSiebWbS/TMspeQGjZknFMVAMpNJ2rVtihJiX
-	Qu1SZNr7WvxTKaZGnpcW31AmPpBO6z93XYqUgDL29GP9SB1PfFobvgVBTZjKas5q39+2RRhVQRI
-	8LioINhB9zf/N47q3d7YruPni3EivBSctDhGcCxxoJBCK8nAOh/dyGb3/eLsJnJ4MJmfyOozN6U
-	koMI2Rn0xhrA4zO9ZCcRK7hIx2Pyw7WcXqJMgiuOTT1AK
-X-Google-Smtp-Source: AGHT+IGwYI6E00yl0prQNe30Cf1y0xX1phFCc3rJEFdmCWA3tTwcqCG8zEPxZqyL5UFyjnz531VGkg==
-X-Received: by 2002:a17:902:f54a:b0:267:f131:d657 with SMTP id d9443c01a7336-268137f2a34mr81354955ad.33.1758209849043;
-        Thu, 18 Sep 2025 08:37:29 -0700 (PDT)
-Received: from [10.100.121.195] ([152.193.78.90])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269800531e8sm29641405ad.29.2025.09.18.08.37.27
+        bh=qICgYr9pTII0ek2CGvjEE+bggBezqbDRv5s7Qp5blPE=;
+        b=ApM7dniT8zIHKej2hXdrcp9ARNBPkg7+q9w+WcqY+DSxYKE/Rx3nnVyh7pGTZuHjWr
+         RxAWuBawfbEP0je1nKtfVxpMAhZaqTZt75Ncd716iPjSorS1OGHggUyY6B7E/ZNZ1aoV
+         WEOXkF8nio1uftkF4S6gbq1Q8ZtmZ3q0AYjgncA+Hd7PEfjFnOdPBUVTbyUWge6L8x7i
+         gMG4FeXmvXCVtyC2HfHE79iS/TR3dmFinOoFz/XOZeiFiOJqWT/hp7os/hA3TapH8BhL
+         kJemcUjJ5I2bXDeEsAHHNdfP4BD6BVeslLYb3IdheZdD2uFkWoNb4lSggskvGubAS+BM
+         Qiyw==
+X-Gm-Message-State: AOJu0YxomTOanZSiSOjfemp94y2rM/eMq3Qv1whxkLaZK0wTEAu1kliG
+	JXZGU5cx/Q/SpFt1jkzll+3CbdjtYG0SBkitCoXdLVP5s35puCyKn7jz9803FIBHbBeuM8grwHa
+	VX5dYul0EzlZPIWLl1Ur8jAuyHDN/pPBEG24wl7dW3dkx21/pvUtYzlHs62BApgc02uoRUw==
+X-Gm-Gg: ASbGncvSJMost6Um1V8TN1IMYNF30bQ7BQ2OD29F87q+XzHxy0+gphpI4V/xBR7EHQd
+	MZKa2guMKbUTJo45ju0qGbIQlIaXB/FHzYDx9DMg3nl2iVGZFvdm/FmE5WE4rodFwl18V6snxEj
+	olLNQocMolK8WOcJmrw+dyadhs9DBJqzu8xyjnOgvwL+0B75g7kkoljGEU1eEWUsxDXXXAIYNnL
+	jNfKX2gwvrbg5S8uRtEw4HXNMvgJEMrDHYAkjU3YyB+HWrIBSCV12Zyz9Yx0vWZzlua1WxHQTNq
+	GrBhKdRLKNpG9Ge5qTlo0y2B5H+VbebuTZdPWmpwB34bJexknwXY0V2qm+yHM1exIDz902Ogr4n
+	M300BsOxK
+X-Received: by 2002:a05:6a00:ad0:b0:778:97e1:f499 with SMTP id d2e1a72fcca58-77bf9c4b95bmr8516637b3a.21.1758211680061;
+        Thu, 18 Sep 2025 09:08:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGZc2KMQorqsMojd+psOzChVBBFfgXHMXPd0ZabNoIuhc/lj2qbM9Uj58M/Sr3DdXCoo4dh4A==
+X-Received: by 2002:a05:6a00:ad0:b0:778:97e1:f499 with SMTP id d2e1a72fcca58-77bf9c4b95bmr8516591b3a.21.1758211679475;
+        Thu, 18 Sep 2025 09:07:59 -0700 (PDT)
+Received: from [192.168.11.100] ([124.123.81.173])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77cfec403c1sm2705361b3a.83.2025.09.18.09.07.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Sep 2025 08:37:28 -0700 (PDT)
-Message-ID: <c2c30d01-0969-4d0f-9b11-2a4b125b4bf1@gmail.com>
-Date: Thu, 18 Sep 2025 08:37:25 -0700
+        Thu, 18 Sep 2025 09:07:58 -0700 (PDT)
+Message-ID: <d3f77052-bb4f-4ba4-b165-b672cc67147e@oss.qualcomm.com>
+Date: Thu, 18 Sep 2025 21:37:55 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,78 +89,104 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Inquiry: WPA3-FT Roaming Support in iwd ver3.9
-To: amit kumar <amit60700@gmail.com>, linux-wireless@vger.kernel.org
-References: <CAJNKUtcMh9+i2AiXGxKDqa41QRrkfHbU1rR-HJEKx9aJj2tJSg@mail.gmail.com>
+Subject: Re: [bug report] wifi: ath11k: fix group data packet drops during
+ rekey
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+References: <aLlaetkalDvWcB7b@stanley.mountain>
 Content-Language: en-US
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <CAJNKUtcMh9+i2AiXGxKDqa41QRrkfHbU1rR-HJEKx9aJj2tJSg@mail.gmail.com>
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+In-Reply-To: <aLlaetkalDvWcB7b@stanley.mountain>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=e50GSbp/ c=1 sm=1 tr=0 ts=68cc2e61 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=R7zuFBDiW8lgADV909h7jA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=b9pLVJSGNDumshOBPLQA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-GUID: dQAgk5-WGJnFk99rUTp8SfBE80hjUJ7A
+X-Proofpoint-ORIG-GUID: dQAgk5-WGJnFk99rUTp8SfBE80hjUJ7A
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX1jvLJ//PEf/D
+ Ep0Zlt03cIlz7b9uNAQx6PLtuQoGFul1+qfYdfEzMPdtSrv5NFHytSmj/m3oheoEgl9y6nvFPHO
+ gzZen2PbBAttu5KVsnE0aTvzegpAGqT0ZC+OS+9/sEnOxlU9hCivKSZ6ZJA9kzjCeXvhhNi093t
+ jtwl9/kWxdQJkIoJJB/6fU29YOAlVWzgj6YQaEPcyuHiVqS27tS4OXrLiI1woX1r20jUAp2GJE1
+ wboW3zVUp1Qpk+f//1MAB5sjcmBYyKKBB7JG1saf2tNQrfh8JSeoGQaojiUTEC17Gvdl6ZzO+7X
+ 38eW4hpGMVHy6lXJbDhqMpXJvj7aPYhEN8JbctrhhywqwgGW36lIv1S7Yi7KvtfBJB1brZf+vsR
+ v/3IQPee
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-18_01,2025-09-18_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 clxscore=1011 spamscore=0 priorityscore=1501
+ phishscore=0 malwarescore=0 suspectscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509160202
 
-Hi,
 
-On 9/17/25 11:34 PM, amit kumar wrote:
-> Dear iwd maintainers and community,
->
-> I’m currently working with iwd version 3.9 and have been evaluating
-> Fast Transition (FT) behavior across different security
-> configurations.
->
-> In my testing:
->
-> 1>WPA2-FT works flawlessly — the device connects and roams as expected.
-> 2>WPA3-SAE also connects without issue.
-> 3>However, when the AP is configured with WPA3-FT only (AKM suite
-> 00-0F-AC:9), iwd fails to connect, logging:
-> 3.a>iwd[440]: autoconnect: No suitable BSSes found
->
-> Upon reviewing the source code, I noticed that the AKM suite for FT
-> over SAE (IE_RSN_AKM_SUITE_FT_OVER_SAE_SHA256) is not included in the
-> logic that identifies WPA3-Personal networks. After adding the
-> following patch to ie.c, iwd successfully connects to the WPA3-FT AP:
->
-> ----
->
-> diff --git a/src/ie.c b/src/ie.c
-> --- a/src/ie.c
-> +++ b/src/ie.c
-> @@ -1338,7 +1338,8 @@ bool ie_rsne_is_wpa3_personal(const struct
-> ie_rsn_info *info)
->           * 3. an AP should enable AKM suite selector: 00-0F-AC:6
->           * 5. an AP shall set MFPC to 1, MFPR to 0
->           */
-> -       if (!(info->akm_suites & IE_RSN_AKM_SUITE_SAE_SHA256))
-> +       if (!(info->akm_suites & IE_RSN_AKM_SUITE_SAE_SHA256) &&
-> +           !(info->akm_suites & IE_RSN_AKM_SUITE_FT_OVER_SAE_SHA256))
->                  return false;
->
->          if (!info->mfpc)
->
-> ----
->
-> My query:
-> Does iwd officially support WPA3-FT roaming? If not, is there a
-> specific reason this AKM suite is excluded — such as spec maturity,
-> roaming logic limitations, or security concerns?
->
-> I’d appreciate any insights into the roadmap or design considerations
-> around WPA3-FT support. Happy to share logs or test results if
-> helpful.
->
-> Best regards,
-> [Amit Kumar]
 
-As Johannes said, IWD has its own mailing list [1] and we can continue 
-the discussion there. But it looks like this was done to adhere to the 
-WPA3 spec as mentioned in the comment above:
+On 9/4/2025 2:53 PM, Dan Carpenter wrote:
+> Hello Rameshkumar Sundaram,
+> 
+> Commit 97acb0259cc9 ("wifi: ath11k: fix group data packet drops
+> during rekey") from Aug 10, 2025 (linux-next), leads to the following
+> Smatch static checker warning:
+> 
+> 	drivers/net/wireless/ath/ath11k/mac.c:4459 ath11k_mac_op_set_key()
+> 	warn: bitwise AND condition is false here
+> 
+> drivers/net/wireless/ath/ath11k/mac.c
+>      4428
+>      4429         /* Allow group key clearing only in AP mode when no stations are
+>      4430          * associated. There is a known race condition in firmware where
+>      4431          * group addressed packets may be dropped if the key is cleared
+>      4432          * and immediately set again during rekey.
+>      4433          *
+>      4434          * During GTK rekey, mac80211 issues a clear key (if the old key
+>      4435          * exists) followed by an install key operation for same key
+>      4436          * index. This causes ath11k to send two WMI commands in quick
+>      4437          * succession: one to clear the old key and another to install the
+>      4438          * new key in the same slot.
+>      4439          *
+>      4440          * Under certain conditions—especially under high load or time
+>      4441          * sensitive scenarios, firmware may process these commands
+>      4442          * asynchronously in a way that firmware assumes the key is
+>      4443          * cleared whereas hardware has a valid key. This inconsistency
+>      4444          * between hardware and firmware leads to group addressed packet
+>      4445          * drops after rekey.
+>      4446          * Only setting the same key again can restore a valid key in
+>      4447          * firmware and allow packets to be transmitted.
+>      4448          *
+>      4449          * There is a use case where an AP can transition from Secure mode
+>      4450          * to open mode without a vdev restart by just deleting all
+>      4451          * associated peers and clearing key, Hence allow clear key for
+>      4452          * that case alone. Mark arvif->reinstall_group_keys in such cases
+>      4453          * and reinstall the same key when the first peer is added,
+>      4454          * allowing firmware to recover from the race if it had occurred.
+>      4455          */
+>      4456
+>      4457         is_ap_with_no_sta = (vif->type == NL80211_IFTYPE_AP &&
+>      4458                              !arvif->num_stations);
+> --> 4459         if ((flags & WMI_KEY_PAIRWISE) || cmd == SET_KEY || is_ap_with_no_sta) {
+>                                ^^^^^^^^^^^^^^^^
+> WMI_KEY_PAIRWISE is zero so this is false.
+> 
+> I should probably write a static checker warning for code that does:
+> 
+> 	flags |= WMI_KEY_PAIRWISE;
+> 
 
-2.2 WPA3-Personal only mode When operating in WPA3-Personal only mode: 
-1. An AP shall enable at least AKM suite selector 00-0F-AC:8 in the BSS
+Thanks for reporting this, will send a patch to fix the if() as well as 
+remove the code that does |= WMI_KEY_PAIRWISE.
 
-So this looks like an out of spec AP configuration if its not including 
-the SAE_SHA256 AKM.
 
-[1] iwd@lists.linux.dev
+>      4460                 ret = ath11k_install_key(arvif, key, cmd, peer_addr, flags);
+>      4461                 if (ret) {
+>      4462                         ath11k_warn(ab, "ath11k_install_key failed (%d)\n", ret);
+> 
+> regards,
+> dan carpenter
+
+
+--
+Ramesh
 
 
