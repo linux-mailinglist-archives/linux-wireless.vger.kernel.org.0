@@ -1,142 +1,159 @@
-Return-Path: <linux-wireless+bounces-27485-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27486-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5165EB85A74
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 17:35:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2C1B85AF2
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 17:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F18D51C23CFC
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 15:31:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09A877B864B
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Sep 2025 15:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CFD302CA6;
-	Thu, 18 Sep 2025 15:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F6230E0FF;
+	Thu, 18 Sep 2025 15:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dFi9e74j"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Em/0lnuO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB01027A929
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 15:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0D830F946
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 15:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758209444; cv=none; b=eBoZbaF2s3mhsAe904uWa1zJ8MOxBrW92iL3fUsSAybY71c8TRdrTs2gtobNb6BKMYV50symxs06B+VuLTQIRgrRQV7rlJl0dwqtolLxb94RqNoT2AgL8eJfnKjQ52nWsEzQLV4ZFH03bkCy+O9f1tMN8m7jJGm9etl0hCn1EEk=
+	t=1758209851; cv=none; b=dv3SWG+mC1BO1CHbdAxwzNiesncfVkDc+vsarYYLK8nQMhdgEslfIKMt0r8Tf95Owuideht+LFarsMEnaOihP6ZqwabsjKVlSPhuCaEoDn1v/uX1eEeWOE8+OU3QLplpj0zelHl3p7OG/1R+P0FUC5K34reF6evHI9KBNKVRgxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758209444; c=relaxed/simple;
-	bh=eHexsjWST8Mpsyps31lBz0UT880fxViH3NiR6TxIE44=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FyzcYn1YQdw/CI44xawHksT5mWOJNjU4GknT1d2GCn70cH1rfFHzdnzupB2UL6OgNJqO/CATgSmdFych7F3rNQHFD4qxBkimiVTR3E/phVPiCDRPVKxo2sy/DRAG4jpxpT9TdzUb4drL9WMa1Q1tzwJ+7worwuBSEXond4lbEQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dFi9e74j; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58IB1V0f029580
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 15:30:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	bhSX98HuJMkyrMaoMiSuQu57olFpyJn5Wru3dPmWuJo=; b=dFi9e74jPDRlKBq9
-	wyuv/FewfFCifXgDzVQNKatQxQ/gGqnQVf0D51B/j4e0LDOgDPm6FB9Pf1wHg26Y
-	7XtX047T9jmYvLYORZjmXPWzDIuvE/WEAptzPhFj+lxn2J6av7XgMAtof0ThpoSR
-	XUC/dPUpYXnV5hI+wCoHNetm43pcvQOKHH/9obHjSYCi+pCBUKFpR+JT73vW85TR
-	Vy3XQOpFCKmRxk+ZwVjxLsP58ib2qr8yMc8F98JVXGTvEYNXleDneff21Bv+w9EP
-	tQf0BueKnMnV4owOWYel4dgxDEqxKZUGfe+BDnBSscIFwOTFJrkRjXPe1u+NAngh
-	Rn26sA==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 497fy0xw37-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 15:30:41 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-32e0b001505so1089271a91.0
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 08:30:41 -0700 (PDT)
+	s=arc-20240116; t=1758209851; c=relaxed/simple;
+	bh=5a4VIoh+3AjSOqCSX6kuvG/N5MXZZ8MKVAtmohvSMrQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=PmA/nz55qSSoaRzhOawy+ZVhZsNVSS6eXyz7EkYe16xTuN+F3r/u5P3T97XikMLtfVPwVfcARt6RhFitGBRn+zbDGzYD6sHWchtcUOj6yoIjqE6Vyzm/Fdn5hPmwg7oSxxmzHEi8JpTTGfRSjrqPxCqfnEvKDLtJ8oY4FDKRvkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Em/0lnuO; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2570bf6058aso14521145ad.0
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Sep 2025 08:37:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758209849; x=1758814649; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=spxv57HJ9BfakePJ29btbG/jyvASrkJd61yqCTLxSCI=;
+        b=Em/0lnuOevpN2jq/Ny5PDiLIy4Zj7svgPhBEjtOr8xsekhZmL7fQWBxkZrgCaUYb//
+         TUjBbhLi31HO26PcUeB3Lus+uB4ofURAz+W+8QYIc69GFfJ8QNJSkxXdSfICmH08M9RL
+         lVqvLagniwRZHY2wk5HA3sABHBP+UL10/jVw6vn90qkFGs96PkwL/BETfw6/TqoKZFjP
+         mIUzZbstPSAUxTYZGLMTwzHnN3OmHZe+8zX/clRerLYDFDXRWpHlFI84BCRLbjtjzT5Z
+         LJeKLNyh0heonNNHkxFi7ipeyOgEV3aLn5JlBbl6UK7nbp/sIENzcKQrz7AA+oOn2j94
+         YhRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758209441; x=1758814241;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1758209849; x=1758814649;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bhSX98HuJMkyrMaoMiSuQu57olFpyJn5Wru3dPmWuJo=;
-        b=uMddo9IDZX4Dda5ZKYGbaWPJ9HnmCsZoBe5k1PsB2/Hyn4BZ6aRk5/XEYwStsbb4wy
-         ohfz3+UD55FxvHlQIyhyxhb9c8oyEcwTGJ7Xti6CVU5UWpO6FwHlaApdQ89ZabRNV/L6
-         tfkPQMq/pV0Fgfeeq5X6HeCiUaiIb7Xh6WmGXTpLCVMdc2ChnZ7CnhVKjHagvM6jctMt
-         pejuk9frWH9Nd6rZPNNtBrLXQNlSCqLmDrCASRrQ91Vd3suXDBktZexjoKFv58PLiy+S
-         IcoqhC7LNLs+PVlh340H36feCluzFuSOYt7Yrry4U/j61G1d1S/q8yJ56fVyPX3eiolg
-         JkUQ==
-X-Gm-Message-State: AOJu0Yx2B8bnkjJdelr0lVMHKAxxPw35Rp+mXG88l/N+GWlG1LjchDNJ
-	0gtfpW/xAar1dXxDl4PE29u+6Kh8+ecjcxrvF4MmBmxr+owa+68kad0NQOpBfyEF+Hu9kRO1lsn
-	XrnFVNtZz3j/69WfLjs2UmjruxU9iVkWmDzDIjpwemjOozo73J9P/jtt1kx7hmD3k8yMRXg==
-X-Gm-Gg: ASbGncsHKoDliS2d55Vkd8x9lf9bNjA0sOUF//5JKhgDCJORflAdCOJ0ZNuSZ3SmmP9
-	yzLVR+TgsehQ09/BXWVKR9mlljBE7u1tzbem8AoHkE2Ll+6vBmAn99XJpLOsQyznqJTg6/siqku
-	B3yU3/igQwTEOTXX5OSjCkkHnX6kNJOzhqB5+LmFLn47GImAnbb6285RlXY+PRgI5ZAXO8lBTNJ
-	GVjV8fFQSd9cHRZbIoafcGZet3FSzc2LDiy+y4sVgK0J/0HyKfwhVjHMPbLB4/TilGp0lCRy6a0
-	nZoCYh2zOocesSRo6TmgjKmy58q4irkIInjVRiqgLaFNceE1s33Fjy4IVXQlvEDF8xHiYPw+F2F
-	EffN1V3Jbbu0=
-X-Received: by 2002:a17:90b:5590:b0:32e:d282:3672 with SMTP id 98e67ed59e1d1-32ee3f68353mr7443677a91.23.1758209440722;
-        Thu, 18 Sep 2025 08:30:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJtZalFVe+kGAbPWvX/SFNLY4dbFllQVIHjbFGW3Gqec+5jAn3kcNmX6T2JYXIMtSPBWimIQ==
-X-Received: by 2002:a17:90b:5590:b0:32e:d282:3672 with SMTP id 98e67ed59e1d1-32ee3f68353mr7443610a91.23.1758209440202;
-        Thu, 18 Sep 2025 08:30:40 -0700 (PDT)
-Received: from [192.168.225.142] ([157.49.98.120])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3306061925esm2937000a91.2.2025.09.18.08.30.37
+        bh=spxv57HJ9BfakePJ29btbG/jyvASrkJd61yqCTLxSCI=;
+        b=Ck1Qiqv8guAmMr9R5VUepKRJcuqmZ4A8wekWYkObR0Djf3WbG1z3D3FmIfijlCWyJw
+         Hz1MPTQaHm3jmBV6fJYE7x9Leeq98p907igtVfB/h1tpqaHPMYhWS/JIQJs3VDxONcxV
+         Z15o0rsbqKbF9X2jyvDAl8z9jDAjIY/J8uLlepgGduhUz9Ls3pGEaEO+t69XMvDV/yFD
+         qT0vlDn4EhjmQlkKW8iPQn7uB0+PiyzziiMLn1LOfiAnrfh3yeKOUc5llBk+lTnMzgVV
+         aQDJnAnTTSsX4WlTaVGWBABQZagZxZ8SaadQCP/lB+vy895VIhwODGy5Ur2h91TowJ/L
+         sX4w==
+X-Forwarded-Encrypted: i=1; AJvYcCWzOO0yE8TaJbAHPSURlQuNciSmuiNSDN4A5F8W9QPA4dfBYBVJk0a6uPBHXAhT0b4mu6zLNmfLqLJFb0qihQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZYWqVUQr3v5PXyCjaHuyc3nVn9uOg0empQrS29qZzdYJxir5N
+	j+XFTc2AWy9NU8MSr3iOTB1P+fvxFzZ4IZQP9Pv1N4dy+ILPQQcRjlvyBMAPyw==
+X-Gm-Gg: ASbGncuAi1KpRLUDv2qpCeYzyIfB3OG2viclDgrblyvWa+rJnOmUDd8kvH/LLxkQwJP
+	4mCZmDblQT/WlXTAUPqbF0VohmzPxy3rSR8p8+y3sR6K61JOVfdbs8nk64Ne13FTyu9dzGbmU/T
+	3To9FbjASX558+WJywtBTO81KJXtGM6mNBlhz0zSiebWbS/TMspeQGjZknFMVAMpNJ2rVtihJiX
+	Qu1SZNr7WvxTKaZGnpcW31AmPpBO6z93XYqUgDL29GP9SB1PfFobvgVBTZjKas5q39+2RRhVQRI
+	8LioINhB9zf/N47q3d7YruPni3EivBSctDhGcCxxoJBCK8nAOh/dyGb3/eLsJnJ4MJmfyOozN6U
+	koMI2Rn0xhrA4zO9ZCcRK7hIx2Pyw7WcXqJMgiuOTT1AK
+X-Google-Smtp-Source: AGHT+IGwYI6E00yl0prQNe30Cf1y0xX1phFCc3rJEFdmCWA3tTwcqCG8zEPxZqyL5UFyjnz531VGkg==
+X-Received: by 2002:a17:902:f54a:b0:267:f131:d657 with SMTP id d9443c01a7336-268137f2a34mr81354955ad.33.1758209849043;
+        Thu, 18 Sep 2025 08:37:29 -0700 (PDT)
+Received: from [10.100.121.195] ([152.193.78.90])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269800531e8sm29641405ad.29.2025.09.18.08.37.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Sep 2025 08:30:39 -0700 (PDT)
-Message-ID: <3ecf5010-7480-c780-1bf7-b0e762bf293d@oss.qualcomm.com>
-Date: Thu, 18 Sep 2025 21:00:35 +0530
+        Thu, 18 Sep 2025 08:37:28 -0700 (PDT)
+Message-ID: <c2c30d01-0969-4d0f-9b11-2a4b125b4bf1@gmail.com>
+Date: Thu, 18 Sep 2025 08:37:25 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3] wifi: ath: Use of_reserved_mem_region_to_resource()
- for "memory-region"
+User-Agent: Mozilla Thunderbird
+Subject: Re: Inquiry: WPA3-FT Roaming Support in iwd ver3.9
+To: amit kumar <amit60700@gmail.com>, linux-wireless@vger.kernel.org
+References: <CAJNKUtcMh9+i2AiXGxKDqa41QRrkfHbU1rR-HJEKx9aJj2tJSg@mail.gmail.com>
 Content-Language: en-US
-To: "Rob Herring (Arm)" <robh@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org
-References: <20250813214933.897486-1-robh@kernel.org>
-From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-In-Reply-To: <20250813214933.897486-1-robh@kernel.org>
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <CAJNKUtcMh9+i2AiXGxKDqa41QRrkfHbU1rR-HJEKx9aJj2tJSg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: UguHiksf9pN6pRtQlQSSssbmC0APn_8R
-X-Authority-Analysis: v=2.4 cv=btZMBFai c=1 sm=1 tr=0 ts=68cc25a1 cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=31WDjHDmXr0yx5AvGNnQTg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=VjuCZWrZiTeoWwOd-AYA:9 a=QEXdDO2ut3YA:10 a=rl5im9kqc5Lf4LNbBjHf:22
-X-Proofpoint-GUID: UguHiksf9pN6pRtQlQSSssbmC0APn_8R
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX88Cwaz2NZfGT
- Ou79Liomzd3EDuKOQ09GPhSuKzu3dnII2NWLYj2oeqW1W/49UED9JwPXMAiRzTWdYnuuSLKb4/R
- 50rqStij/FUD2RBWqGqLwWXS8Z2b3r5+3V+4ilr6+wjVcZq6CrbD+WBeMAyQ9uh/E8JDS2cMzIF
- Ypiiwp11aimTQ8aATHnxJW7jL5e4H3CcUgxJf3hbl1A7AH2Let9Z9RaHPSpvcuInl2UkHJEMToG
- YRVj7y8gFJrNdiQ+lI10qLwmVt3e2iD6EEhJV27ZSWBDzYLsbzlhSsmGMfx8drcD/NrkNp+JaHA
- SBNAZecInCv++AcZXNv9MczROjfPVC7Q9uogSRJgi6cV3H19yJ2pnkJpy2rw90VTpU4TG2fr8od
- Sr7O8U1L
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-18_01,2025-09-18_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 impostorscore=0 clxscore=1015 malwarescore=0
- spamscore=0 adultscore=0 phishscore=0 suspectscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509160202
+Content-Transfer-Encoding: 8bit
 
+Hi,
 
+On 9/17/25 11:34 PM, amit kumar wrote:
+> Dear iwd maintainers and community,
+>
+> I’m currently working with iwd version 3.9 and have been evaluating
+> Fast Transition (FT) behavior across different security
+> configurations.
+>
+> In my testing:
+>
+> 1>WPA2-FT works flawlessly — the device connects and roams as expected.
+> 2>WPA3-SAE also connects without issue.
+> 3>However, when the AP is configured with WPA3-FT only (AKM suite
+> 00-0F-AC:9), iwd fails to connect, logging:
+> 3.a>iwd[440]: autoconnect: No suitable BSSes found
+>
+> Upon reviewing the source code, I noticed that the AKM suite for FT
+> over SAE (IE_RSN_AKM_SUITE_FT_OVER_SAE_SHA256) is not included in the
+> logic that identifies WPA3-Personal networks. After adding the
+> following patch to ie.c, iwd successfully connects to the WPA3-FT AP:
+>
+> ----
+>
+> diff --git a/src/ie.c b/src/ie.c
+> --- a/src/ie.c
+> +++ b/src/ie.c
+> @@ -1338,7 +1338,8 @@ bool ie_rsne_is_wpa3_personal(const struct
+> ie_rsn_info *info)
+>           * 3. an AP should enable AKM suite selector: 00-0F-AC:6
+>           * 5. an AP shall set MFPC to 1, MFPR to 0
+>           */
+> -       if (!(info->akm_suites & IE_RSN_AKM_SUITE_SAE_SHA256))
+> +       if (!(info->akm_suites & IE_RSN_AKM_SUITE_SAE_SHA256) &&
+> +           !(info->akm_suites & IE_RSN_AKM_SUITE_FT_OVER_SAE_SHA256))
+>                  return false;
+>
+>          if (!info->mfpc)
+>
+> ----
+>
+> My query:
+> Does iwd officially support WPA3-FT roaming? If not, is there a
+> specific reason this AKM suite is excluded — such as spec maturity,
+> roaming logic limitations, or security concerns?
+>
+> I’d appreciate any insights into the roadmap or design considerations
+> around WPA3-FT support. Happy to share logs or test results if
+> helpful.
+>
+> Best regards,
+> [Amit Kumar]
 
-On 8/14/2025 3:19 AM, Rob Herring (Arm) wrote:
-> Use the newly added of_reserved_mem_region_to_resource() function to
-> handle "memory-region" properties.
-> 
-> The error handling is a bit different for ath10k. "memory-region" is
-> optional, so failed lookup is not an error. But then an error in
-> of_address_to_resource() is treated as an error. However, that
-> distinction is not really important. Either the region is available
-> and usable or it is not. So now, it is just
-> of_reserved_mem_region_to_resource() which is checked for an error.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+As Johannes said, IWD has its own mailing list [1] and we can continue 
+the discussion there. But it looks like this was done to adhere to the 
+WPA3 spec as mentioned in the comment above:
 
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+2.2 WPA3-Personal only mode When operating in WPA3-Personal only mode: 
+1. An AP shall enable at least AKM suite selector 00-0F-AC:8 in the BSS
+
+So this looks like an out of spec AP configuration if its not including 
+the SAE_SHA256 AKM.
+
+[1] iwd@lists.linux.dev
+
 
