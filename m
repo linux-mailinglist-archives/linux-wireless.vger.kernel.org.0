@@ -1,96 +1,125 @@
-Return-Path: <linux-wireless+bounces-27516-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27517-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F733B8912C
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 12:38:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81837B892C1
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 13:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E7415A5A9C
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 10:35:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4496D1B232B1
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 11:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C8430C360;
-	Fri, 19 Sep 2025 10:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FA930BB9E;
+	Fri, 19 Sep 2025 11:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="F7UQ4zUT"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="Rn4GAO1I"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C336C30DD2E
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 10:33:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE1730B52E;
+	Fri, 19 Sep 2025 11:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758278033; cv=none; b=WtYXc+hWdjkyxjwQuNDFKOLNaNB8WH5zIRo9783fBqtCxt/1WxuLof5eDFsRh12c2umUd2dcQdq5yqIYFIVhaVBFfRocwMgkxlZwO245JUr+KRgW0WBbQBPIq77Q4CVZ9+5j9nSqch0cyymcia0TZrhp9aBm4qk7LnZDL6w6YRs=
+	t=1758279613; cv=none; b=XdemOGgboq65lYFFa4Phe9tc1tsssSQDKqB53LHuizbU4ZE5+DsLaEK9ypFg/sAPvmsjEOfwwaxrHcoBAHWYbIrhaOn/qB9Cco3taaIeC20Q9iRMfV+oQkreEeTN2mYgVj0sIgemdqkPXDo+e5TiuYoM0mMkHHHga4XfcFFVi08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758278033; c=relaxed/simple;
-	bh=NEkAnPgtNnJI98BslqSespzX2lakFKXxIyBVDF49iO8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Rxj/dhUSzPMQhYiLroLNYJUewLJ7DI9/HWKvISbIzxlJo2ug77NEVd87H4IH2VZz6pldFAhTkxDw4F1KTPAsJ2YHxWn/mM7A/4D/cfNJnq3G/sNxzBkFGikIr+Xe5nunt76cw50OWZkYyvi+EbpsobXVGRfOl9Q8b5FVqXAa9oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=F7UQ4zUT; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Hwou754GvHA+8bTqs4YPsZeqUbAO7+6O9KVMLycF9qk=;
-	t=1758278031; x=1759487631; b=F7UQ4zUTa1g0rwGGYeVC1prYAXBI+1j9IHrUhbJXOot6d5m
-	o27gQc3UXzRmWWJNh5FGRJ9t4dXgW2rISYRX6D5lhhDqeG1Tusom0LPbC037WNXN3orCOGP64KCUZ
-	jHq9++HDbtgm9Wk9AlIDS6wOHe+8qvfYcJrmbAj+yicjYzUeUQtaHmT5sYaa2IwNlQXUHinpSq1p3
-	AH3yHqjsIlaBzAf8kyxlIP0vRNYjcrrjl0zXjqNBOINWFVjPrn7/7L2wPy73xpSeqRnWvqUy+dRuD
-	kfA4CbqDkD9027tY5x9FXqNg50Fd8yCJy2FJ80JYwSRm6n8JDr14PXPaHbR+4+Gw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uzYR0-0000000Fi1A-3bq8;
-	Fri, 19 Sep 2025 12:33:47 +0200
-Message-ID: <f4e33ca572e77755c6db82a37c5372a99a8b7485.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 3/6] iw: util: support parsing link id
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Zong-Zhe Yang <kevin_yang@realtek.com>
-Cc: linux-wireless@vger.kernel.org, raja.mani@oss.qualcomm.com
-Date: Fri, 19 Sep 2025 12:33:46 +0200
-In-Reply-To: <20250917055543.27499-4-kevin_yang@realtek.com>
-References: <20250917055543.27499-1-kevin_yang@realtek.com>
-	 <20250917055543.27499-4-kevin_yang@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1758279613; c=relaxed/simple;
+	bh=iTara4sSupdozHepYizRgHeOHDqwbp9HFBUwDlsXipA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DpXyNUrn868cisu/aFpLrc+g03PyCbO2euZXrZQ1bVxMCPJ5/IVR6xxmrP/M+OSPsIni18ZCYtpQXIJpTBZdxDQE2Y9BQp9d+XL1CAaEoDa49/rzkm0REM02N8J4eLhNq/4jKKSCKsVNd+BAJihNSZyCBuC/QhL5U0QJExM/9v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=Rn4GAO1I; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost (unknown [10.10.165.9])
+	by mail.ispras.ru (Postfix) with UTF8SMTPSA id 8805040762F1;
+	Fri, 19 Sep 2025 11:00:06 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 8805040762F1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1758279606;
+	bh=olnDf6EjI1UvqfPCSzcCme6oOerL4VfaqpGnzGziL7s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rn4GAO1ItFgGjRkwKawJxdyqJp+B3jhg+qVmGs8FGyzWGyasdL6YsRjhaWbMpasmD
+	 q2wDnVCZyHJr8U77EkxNHflu2DdSVv8zbZtomgTlQy9q3maytCjacmjUY9REBiCGZ8
+	 AhoGLeb3aqbj84eW3nYICbolkCrzzQyRivm9bK0I=
+Date: Fri, 19 Sep 2025 14:00:06 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Zong-Zhe Yang <kevin_yang@realtek.com>, 
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>, Bernie Huang <phhuang@realtek.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
+Subject: Re: [PATCH rtw v4 4/4] wifi: rtw89: avoid circular locking
+ dependency in ser_state_run()
+Message-ID: <20250919133124-ffdfc2386e03e9d646af8d93-pchelkin@ispras>
+References: <20250917095302.2908617-1-pchelkin@ispras.ru>
+ <20250917095302.2908617-5-pchelkin@ispras.ru>
+ <0b56e5a8cd7048a19625764bc323ba46@realtek.com>
+ <20250918182202-29915c8fb7da60280f86084d-pchelkin@ispras>
+ <bb36bb617cef49d7973ba92d4bd094d8@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <bb36bb617cef49d7973ba92d4bd094d8@realtek.com>
 
-On Wed, 2025-09-17 at 13:55 +0800, Zong-Zhe Yang wrote:
-> For NL80211_FLAG_MLO_VALID_LINK_ID cases, MLD needs to assign link id,
-> but non-MLD doesn't. Add support of parsing link id where the pattern
-> is as below.
->=20
-> 	[link-id <LINK ID>]
->=20
-> If found, put NL80211_ATTR_MLO_LINK_ID and remove the assignment from
-> the argv range.
->=20
-> +	memmove(argv + pos, argv + pos + 2,
-> +		sizeof(*argv) * (*argc - pos - 2));
+On Fri, 19. Sep 00:46, Ping-Ke Shih wrote:
+> Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+> > On Thu, 18. Sep 05:52, Ping-Ke Shih wrote:
+> > > Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+> > > By the way, you mark this patchset as 'rtw'. Does it mean this patchset is
+> > > urgent to you? If not, it will be more smooth (avoid possible merge conflict)
+> > > if it goes via 'rtw-next'. Let me know your preference.
+> > 
+> > The first patch of the series is rather urgent compared to the others
+> > because it addresses the issue occasionally banging on a working system.
+> > The other ones are less urgent.
+> > 
+> > TBH I'm not aware of your development process in details.  It's v6.17-rc6
+> > at the moment.  If I target all patches at rtw-next, are they to land in
+> > upcoming merge window for v6.18 release (a couple of weeks from now)?
+> > If yes then no hurries from me, rtw-next is ok.
+> 
+> It's v6.17-rc6 (-rc eve), so I don't plan to send a pull-request.
+> 
+> Originally I plan to send the last pull-request to v6.18 today, so I did
+> review this patchset yesterday to see if I can merge it before sending. 
+> Since only two or three minor changes are needed, I can wait a while and
+> send the pull-request next Monday if you can re-spin the patchset this
+> weekend. 
+> 
+> If not, I can still merge this patchset in v6.18-rc cycle to rtw tree.
+> However, this might cause merge conflict with -next, so I don't prefer
+> this. Upper maintainers need to spend extra time to resolve conflicts.
 
-Honestly, I don't really like this, it's a bit too magic? What if you
-have something in there that is like
+One thing that I forgot to mention is about rtw89 USB part.
 
- ... ssid link-id foo bar
+"BUG: KFENCE: use-after-free write in rtw89_core_tx_kick_off_and_wait"
+which is fixed by the first patch of the current series is reproduced
+reliably with USB HCI because there is no TX completion there yet, i.e.
+rtw89_core_tx_kick_off_and_wait() always exits with a timeout and touches
+skb parts which are most probably already freed by the call to
+ieee80211_tx_status_irqsafe() from URB completion callback.  I've got
+a dongle now and confirm the bug.  Turns out it was reported here [1] by
+Bitterblue Smith as well.
 
-and then it *meant* the SSID to be "link-id", but with this it now
-actually fails or so? I don't think it's a good idea.
+[1]: https://lore.kernel.org/linux-wireless/1e5e97d4-8267-4f77-a4bf-1fe23ea40f77@gmail.com/
 
-So I think it should just be parsing it where it is at the beginning,
-and then for the last patch just put it at the beginning in the help,
-call parse_link_id() first like you did already, and we don't get any
-such potential mixups?
+The first patch does avoid use-after-free bug for USB, too.  But, as
+there is no TX ACK completion implemented for USB yet, tx_wait_list will
+be piled up with wasted items which can't be freed due to the lack of
+completion.  It's better than crash but still a problem.
 
-johannes
+Bitterblue suggested [2] implementing the missing TX completion parts for
+USB to fix this entirely.  I've got a bunch of patches for it which will
+send as a separate USB-series today or tomorrow.  I expect it'll require
+time for review and it probably should have to be improved/reworked in
+several places.  Anyway I'll send it soon so you've got a more complete
+picture and some time until Monday to decide how to handle it.
+
+[2]: https://lore.kernel.org/linux-wireless/0cb4d19b-94c7-450e-ac56-8b0d4a1d889f@gmail.com/
 
