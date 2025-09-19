@@ -1,105 +1,83 @@
-Return-Path: <linux-wireless+bounces-27523-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27524-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124AEB89FAA
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 16:32:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DF0B8A5C9
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 17:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EDBCD4E1EF7
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 14:32:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7995B3AABD2
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 15:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538DE315760;
-	Fri, 19 Sep 2025 14:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8039031BC86;
+	Fri, 19 Sep 2025 15:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PWbawacu"
+	dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b="b7bZlvl4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cdmsr2.hinet.net (210-65-1-144.hinet-ip.hinet.net [210.65.1.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA28314D33
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 14:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280AA1E5718
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 15:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.65.1.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758292320; cv=none; b=sg3wzHk9Ba8dyi95uASeH0IZWDU+cnae1wwyGQydJ5lzIYe5TjtwUmpkDmQIMAVrKRPxYseyvDEzZGregBuUn0dQdEhhuSgRiEKlSG2CEXKveYCj+vMvLnvm8YysCVTzZ/GCAoQMK4+FPLbNWhcaq2DcGjtib07ClcB0TUVOTww=
+	t=1758296496; cv=none; b=bRldRRLws4ctZTtzp/1uXpPGLURxOv65L4pgSZf92ML5lmV3FBhUGi+c95CPEU3SpikJyoBCxa6irZEfaFe3ElAYcRjWPAYBb8vtvnzuIMU/E+a2ahck1GlcHya/qJIdzwrk/42k5m3xkJwGGLtAW0y37ru98MMTxNTbVD+PW5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758292320; c=relaxed/simple;
-	bh=ezfOU/1GMLWeqS+bjgy1ZwWTdgQNEIEBXo9J8JeXB8E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EJPSf4QxZya0PHhZPRfNqx+7T+Peeyk2hv6gFN9V+9zSknmRLogGEBl7nHBqRGwExxct9Nc9XNkLuNB5HkqUYgcjkaKh3u0vMGbqrPRW5UqZuAyFdcM2vn1tT7HmPFFAvIvkYnNALDg+NLj2scNaW/6etVd5IpN25Bes6DY1Jrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PWbawacu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D20C4CEF9
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 14:32:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758292320;
-	bh=ezfOU/1GMLWeqS+bjgy1ZwWTdgQNEIEBXo9J8JeXB8E=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=PWbawacudtOvyg3vVGMGGiOmwoIFBIWIpS9HPm2TganW/fRXX3vsJHZeKnS3jXOom
-	 gDL7CLSKgSsw3JQo0g/8COHi6z+zdCIJk2uw+N4Nfzg/OunR+SOncvYiqLfqqdYh3y
-	 ttqgmqxCm1waPpj3R3bwIrRP4fqjW/BcLgeScPBAQDohAOenjnzccsjU3OgEuiPCd7
-	 J4alQTbXJ4fzC1B7vJh0MZUdfstGZnJb58f6EeOP7V95ncI20Y6CIy9YOowCB4cAH9
-	 XS9VrF7uOLYRujPTj3cHxUFtvFjGAFHTgTuy9sxhYs5Oobg5tmj17uAlZr5wZnCRbC
-	 XJrUZ18mNBkRg==
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-72e565bf2f0so18475217b3.3
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 07:32:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU+tYEYl6PSKtQ+JNOPOt+VMoQq3yoAsjwXtip2+ylSqo5AEWaeUQwJKW4ofpKFV+2q0qcRZSbcc35uwRcIEQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydxS4VIrO8Oepw9Gjr3beuFWLdm6eB0SfXKvsVkE77LZaYotWv
-	lZQHPg2kq5Z3PuUzu2ismIzS6dZxSE5+Fw2jkOSSC+N1ymrDRXKNDdub5G7gQP0ZX7Z3mPGFpU3
-	hKQrRMfHM/b2QtdyWXjU5IP9dZL7C4h0=
-X-Google-Smtp-Source: AGHT+IFCQN6I/KYO7xVrBSNFPDc5Kyac3QZX8xN90CS+V124H8ksRuV/W1kaFUkMgoZAWdeH1sqzdd0wvkGzwsWpr9w=
-X-Received: by 2002:a05:690c:5092:b0:734:81db:1b33 with SMTP id
- 00721157ae682-73d3237e749mr28124147b3.19.1758292319285; Fri, 19 Sep 2025
- 07:31:59 -0700 (PDT)
+	s=arc-20240116; t=1758296496; c=relaxed/simple;
+	bh=+MnGzmqBb67I1t0Sei2bE/vo4z5vwGS0J6E+W5fx1HQ=;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=d6uK40HSM9kAWZFY8xOoElLLG+IDD6VdkfhYBfFDBh5SBJMM4ZjbW9uEc0iqXJVwC/fW547telgSlSo51VKl3euHiC+ePSHA5eAnhumGyFGvml8iGXEW+yZSPlAbGAu7QjOzzyM6KJPgG6iqfvEromIthEkf6Eg8UyUBQTAbMQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net; spf=pass smtp.mailfrom=ms29.hinet.net; dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b=b7bZlvl4; arc=none smtp.client-ip=210.65.1.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ms29.hinet.net
+Received: from cmsr1.hinet.net ([10.199.216.80])
+	by cdmsr2.hinet.net (8.15.2/8.15.2) with ESMTPS id 58JFfPSH853698
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 23:41:30 +0800
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=ms29.hinet.net;
+	s=default; t=1758296490; bh=/9jXDfhWXo9xJFl5VAss8K1Ka4U=;
+	h=From:To:Subject:Date;
+	b=b7bZlvl4XkE26EZGBQ2Wop5JvmD2JBItfwQgRpTxPx/AZkw5+M5qX28unse18lP0l
+	 JDWumxmeCWZi5o06WMyn7rgffkJfAAMq5ICifTwDYJyW2WeTAOhjhgZhOJ05ua6Tr5
+	 37jY1D7QxF8s7BnAE94HOswrS2XdAUXSdns006fE=
+Received: from [127.0.0.1] (1-170-171-126.dynamic-ip.hinet.net [1.170.171.126])
+	by cmsr1.hinet.net (8.15.2/8.15.2) with ESMTPS id 58JFZSjL557869
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 23:38:32 +0800
+From: "Info - Albinayah 723" <Linux-wireless@ms29.hinet.net>
+To: linux-wireless@vger.kernel.org
+Reply-To: "Info - Albinayah." <europe-sales@albinayah-group.com>
+Subject: =?UTF-8?B?TmV3IFNlcHRlbWJlciBPcmRlci4gNTMwNDQgRnJpZGF5LCBTZXB0ZW1iZXIgMTksIDIwMjUgYXQgMDU6Mzg6MzEgUE0=?=
+Message-ID: <d1ce4819-817b-970c-1223-77b2346b950c@ms29.hinet.net>
+Content-Transfer-Encoding: 7bit
+Date: Fri, 19 Sep 2025 15:38:32 +0000
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <9cadcd6a-5f99-4a2f-8aac-c612f355d82a@oss.qualcomm.com>
-In-Reply-To: <9cadcd6a-5f99-4a2f-8aac-c612f355d82a@oss.qualcomm.com>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Fri, 19 Sep 2025 10:31:48 -0400
-X-Gmail-Original-Message-ID: <CA+5PVA446=RjjQpbAeiZYVeX-PAx1MrPVU_yPnOtOyuoJjLxDQ@mail.gmail.com>
-X-Gm-Features: AS18NWB_2BdrTn8cn6c5KQ00nGtZALj68uPuOx4rGtGAkFYLcFDgRu_jI6sPALQ
-Message-ID: <CA+5PVA446=RjjQpbAeiZYVeX-PAx1MrPVU_yPnOtOyuoJjLxDQ@mail.gmail.com>
-Subject: Re: [PULL linux-firmware] ath12k firmware ath-20250918
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org, 
-	ath12k@lists.infradead.org, jjohnson@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+X-HiNet-Brightmail: Spam
+X-CMAE-Score: 100
+X-CMAE-Analysis: v=2.4 cv=D/nkKeRj c=0 sm=1 tr=0 ts=68cd78fa
+	p=OrFXhexWvejrBOeqCD4A:9 a=JTR6ulth4X3MfQSnu1ztMg==:117 a=IkcTkHD0fZMA:10
+	a=5KLPUuaC_9wA:10
 
-On Thu, Sep 18, 2025 at 2:17=E2=80=AFPM Jeff Johnson
-<jeff.johnson@oss.qualcomm.com> wrote:
->
-> The following changes since commit 37f3f2d8e14cff7b316616924331d57f6ec6e2=
-59:
->
->   Merge branch 'robot/patch-0-1758163077' into 'main' (2025-09-18 12:26:2=
-2 +0000)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/ath/linux-firmware.git at=
-h-20250918
+Hi Linux-wireless,
 
-Merged and pushed out.
+Please provide a quote for your products:
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/696
+Include:
+1.Pricing (per unit)
+2.Delivery cost & timeline
+3.Quote expiry date
 
-josh
+Deadline: September
 
->
-> for you to fetch changes up to 1d588f106ceea113c4c650b43d948da5746e704c:
->
->   ath12k: WCN7850 hw2.0: update board-2.bin (2025-09-18 11:03:58 -0700)
->
-> ----------------------------------------------------------------
-> Jeff Johnson (1):
->       ath12k: WCN7850 hw2.0: update board-2.bin
->
->  ath12k/WCN7850/hw2.0/board-2.bin | Bin 1986952 -> 2253732 bytes
->  1 file changed, 0 insertions(+), 0 deletions(-)
+Thanks!
+
+Kamal Prasad
+
+Albinayah Trading
 
