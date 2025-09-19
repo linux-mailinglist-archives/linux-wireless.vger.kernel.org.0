@@ -1,115 +1,131 @@
-Return-Path: <linux-wireless+bounces-27511-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27512-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC52B88427
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 09:50:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5086B88A4E
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 11:48:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFC5BB64E16
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 07:45:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08AE17BF281
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 09:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F362C0F7C;
-	Fri, 19 Sep 2025 07:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65FD472634;
+	Fri, 19 Sep 2025 09:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="sU4pEa9h"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="G+TSvjnQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48231917ED;
-	Fri, 19 Sep 2025 07:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12A01990C7
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 09:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758267996; cv=none; b=G53P2oOGRiIOCOGulYvPsxTzdur2puLD8tWbT55x9ZsuorApSlSP4B7vQAyIH7D2L5x/4ky/FAsLN0iuO1/U7Z3u89ptLwspPq8wJvPOkebYB0BZELtjJ4pDwXLcy7kGeO4ztvstRgp9vcz55KTLsisPE7ljIEpeKeN9sWf6LNw=
+	t=1758275263; cv=none; b=BvBm+8DS5HNKPXo3JYypEuqzUI4islhSeVPvdnhVLPJxjM80+BSstW3HMiZ1tPwIpTq+TmRu710PvtopJzN2W2y5v2lVNcqiUApGJIDIP98vrdIzjd4+wuhE08UAfOlbO2aZSOvdGht1O0TL6MIcBScXj5kkWZUj0JMxGbid5PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758267996; c=relaxed/simple;
-	bh=rvrmYUZgL7bQQ6IjrPjE5dSTAS903szh3gdAerd2LU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=opfxsjek97yEGeDZgG+U+emCo56F7HDoGzqEy846xPYTaJFxHuSBigdEc+GbAT5CrWDOFwKFGPRKJQBHY8MSqqvX5lYYp5tkaVBFZjykRezN4FIJBVJL3WDdLPJ+dz50BexMPuGbb8Ddhs4/J3+kK1HnF/KqxKghgr1bFTWhm50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=sU4pEa9h; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost (unknown [10.10.165.9])
-	by mail.ispras.ru (Postfix) with UTF8SMTPSA id 40B084076723;
-	Fri, 19 Sep 2025 07:46:29 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 40B084076723
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1758267989;
-	bh=vvxr3H1WS7K4t51ln89FsOhtImEKJfiVxLgiE628QEA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sU4pEa9h+D76ZLjUJK/7/NZd35pUymq/yu3TJ4+z5lIR6nZ4RTeTTvqK4Yd+vOIhQ
-	 VhNziBWwwh/8iK5Oe2zaH+mdWxmxXV2ES6KGlB9oPWQH8wDjGiF3aohrDPeeN1URrS
-	 T4e0aKdWfrJngbKnxel9i5i0j2+nuAPK12FJjYGE=
-Date: Fri, 19 Sep 2025 10:46:29 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Zong-Zhe Yang <kevin_yang@realtek.com>, 
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>, Bernie Huang <phhuang@realtek.com>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH rtw v4 2/4] wifi: rtw89: fix tx_wait initialization race
-Message-ID: <20250919102546-7f8366ac69aae3e6d47c65a5-pchelkin@ispras>
-References: <20250917095302.2908617-1-pchelkin@ispras.ru>
- <20250917095302.2908617-3-pchelkin@ispras.ru>
- <08b25263c6874a089e4a271cb95a9cb7@realtek.com>
- <20250918173522-07abe99566c12fa46a096fc5-pchelkin@ispras>
- <7a53522bc0004a979fd78b1d6f440457@realtek.com>
- <97aed12182074193b362472d32f0c9a9@realtek.com>
+	s=arc-20240116; t=1758275263; c=relaxed/simple;
+	bh=yS22sKIRC3bUMzs1vDUfuyYBG/4h0Gs2CRz770Kxjz4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=B1GrcgSIsqK8WUKIPCyi1Z/xKcjH05Udtgfb5N7C/252H9m45M0YO1tUWPtPnRqBnVbZnIiA/vWmgDgsC3ZgCM8pm097lPq+cFFDnOHQL4W2MVfm+5PU130SPGKj53hyZVMAIyisCi3jXoTeTLFTkcINyhnrEdyWpFZA2Lg0jiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=G+TSvjnQ; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=wpmsJcN8QwExAlG8lju3X7G8E7NzD3/EGs3OG5j3vkk=;
+	t=1758275261; x=1759484861; b=G+TSvjnQOs9ccUZnTrPdxidyaYddCbeirGl120k0SKQF4Mw
+	HQ/pnjAxVZP3PMdbhQFbrKvPnU9QQDfp6/14apzF4KVdOZEw0+F6G7jUMZ+1Lp/PLn8mWpADN7g+K
+	wiaJfhet1OTJHqdZh9IPYV5OzVDUpwdxC0kkgRVGApn+zwSsonSWs9uCqaylL2Q9Hi3P4KUcc18pS
+	51tLSsY0sHS03R4bqMccWkX4RvtMyVtWFOAv3y/uL0vKT+1ZmRQ6wE3sqzQe95oFq3tdkRICSoEwx
+	YlTSQ4WlvmV58DqM6Ud+JIX6H7kCMPD+mFA1iwcpol0/DlsNnVM2VYkYIiqUsTgA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uzXiL-0000000FeNO-3T5Z;
+	Fri, 19 Sep 2025 11:47:38 +0200
+Message-ID: <42b9db0313d7b5448ca6103099b17e63c01300d3.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next v2 2/3] wifi: mac80211: add support to
+ handle incumbent signal detected event from driver
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Amith A <quic_amitajit@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, Hari Chandrakanthan
+ <quic_haric@quicinc.com>,  Aditya Kumar Singh
+ <aditya.kumar.singh@oss.qualcomm.com>
+Date: Fri, 19 Sep 2025 11:47:36 +0200
+In-Reply-To: <20250912032105.714949-3-quic_amitajit@quicinc.com>
+References: <20250912032105.714949-1-quic_amitajit@quicinc.com>
+	 <20250912032105.714949-3-quic_amitajit@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <97aed12182074193b362472d32f0c9a9@realtek.com>
+X-malware-bazaar: not-scanned
 
-On Fri, 19. Sep 00:50, Ping-Ke Shih wrote:
-> Ping-Ke Shih <pkshih@realtek.com> wrote:
-> > Fedor Pchelkin <pchelkin@ispras.ru> wrote:
-> > > That's a good question and it made me rethink the cause of the race
-> > > scenario.  I didn't initially take TX kick off into consideration when
-> > > it actually matters.
-> > 
-> > Do it mean that you pictured the racing scenario in commit message by
-> > code review instead of a real case you met?
+On Fri, 2025-09-12 at 08:51 +0530, Amith A wrote:
+>=20
+> =20
+> +void ieee80211_incumbent_signal_detected_work(struct wiphy *wiphy,
+> +					      struct wiphy_work *work)
+> +{
+> +	struct ieee80211_local *local =3D
+> +		container_of(work, struct ieee80211_local,
+> +			     incumbent_signal_detected_work);
+> +	struct ieee80211_chanctx_conf *conf;
+> +	struct ieee80211_chanctx *ctx;
+> +
+> +	lockdep_assert_wiphy(local->hw.wiphy);
+> +
+> +	list_for_each_entry(ctx, &local->chanctx_list, list) {
+> +		if (ctx->replace_state =3D=3D IEEE80211_CHANCTX_REPLACES_OTHER)
+> +			continue;
+> +
+> +		if (!ctx->conf.incumbt_sig_intf_bmap)
+> +			continue;
+> +
+> +		conf =3D &ctx->conf;
+> +		cfg80211_incumbent_signal_detect_event(local->hw.wiphy,
+> +						       &conf->def,
+> +						       conf->incumbt_sig_intf_bmap,
+> +						       GFP_KERNEL);
+> +	}
+> +}
+> +
+>  void ieee80211_dfs_radar_detected_work(struct wiphy *wiphy,
+>  				       struct wiphy_work *work)
+>  {
+> @@ -3592,6 +3618,19 @@ void ieee80211_radar_detected(struct ieee80211_hw =
+*hw,
+>  }
+>  EXPORT_SYMBOL(ieee80211_radar_detected);
+> =20
+> +void ieee80211_incumbent_signal_detected(struct ieee80211_hw *hw,
+> +					 struct ieee80211_chanctx_conf *chanctx_conf,
+> +					 u32 incumbt_sig_intf_bmap)
+> +{
+> +	struct ieee80211_local *local =3D hw_to_local(hw);
+> +
+> +	chanctx_conf->incumbt_sig_intf_bmap =3D incumbt_sig_intf_bmap;
+> +
+> +	trace_api_incumbent_signal_detected(local, chanctx_conf);
+> +	wiphy_work_queue(hw->wiphy, &local->incumbent_signal_detected_work);
+> +}
+> +EXPORT_SYMBOL(ieee80211_incumbent_signal_detected);
 
-Yes, the underlying issue for this patch was found by code review only.
-Somehow the negative consequences of the potential race became an "obvious"
-thing after preparing the first commit, and ignorance of TX kick off
-influence made the changelog confusing..
+I don't understand why you need the massive complexity here to jump
+through the workqueue, if you have everything right here in hand to call
+the cfg80211 API?
 
-> > 
-> > >
-> > > The thing is: there might have been another thread initiating TX kick off
-> > > for the same queue in parallel.  But no such thread exists because a taken
-> > > wiphy lock generally protects from such situations. rtw89_core_txq_schedule()
-> > > worker looks like a good candidate but it doesn't operate on the needed
-> > > management queues.
-> > 
-> > Last night I also thought if another thread works in parallel.
-> > Maybe rtw89_ops_tx() could be?
+And if I'm missing why it's needed and it indeed _is_ needed, then you
+don't need the gfp argument for the cfg80211 API, at least at this point
+(until some other driver shows up using it) but as I said, why?
 
-Well, probably it could.  I thought rtw89_ops_tx() is wiphy locked, too,
-but apparently it's not always the case.
-
-Not that it's a relatively easy-to-hit race I'm going to try to reproduce
-though :)
-
-> > 
-> > >
-> > > So I may conclude this patch doesn't fix any real bug though I'd prefer to
-> > > keep it (with description rewritten of course) because it helps to avoid
-> > > potential issues in future.
-> > 
-> > Agree.
-> > 
-> 
-> Forgot to say. Could you mention this racing scenario was found by core
-> review and your perspective in commit message? 
-
-Sure.
+johannes
 
