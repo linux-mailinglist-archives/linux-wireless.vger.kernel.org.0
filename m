@@ -1,140 +1,96 @@
-Return-Path: <linux-wireless+bounces-27515-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27516-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2113B88E3B
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 12:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F733B8912C
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 12:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 240C45A2490
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 10:25:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E7415A5A9C
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 10:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04390306B3E;
-	Fri, 19 Sep 2025 10:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C8430C360;
+	Fri, 19 Sep 2025 10:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="eIFC5Dax"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="F7UQ4zUT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB4C307AE5
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 10:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C336C30DD2E
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 10:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758277411; cv=none; b=aVGz+SA2cwpYEVD0W3cWByVUP2TpB/R9pRZj7wqjELpgpjW09pkqj1cIAgWKyDUIBZN5wgxQpMZdp8JGUMeE+uPxWDwAymAJtEOwyzmdSISQOuB+VErs3gcm5hrKSUY3Mxyt7WPjf96S11z8ek/8gowHF9hexhs2dwqH76Z66fE=
+	t=1758278033; cv=none; b=WtYXc+hWdjkyxjwQuNDFKOLNaNB8WH5zIRo9783fBqtCxt/1WxuLof5eDFsRh12c2umUd2dcQdq5yqIYFIVhaVBFfRocwMgkxlZwO245JUr+KRgW0WBbQBPIq77Q4CVZ9+5j9nSqch0cyymcia0TZrhp9aBm4qk7LnZDL6w6YRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758277411; c=relaxed/simple;
-	bh=GRrYLU0ohRN0XLpK6Kvx9ImkKLFMFU5OHh0Q+d08cWs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G2/s8cv3veyi5XgOIICPtM8HRRqtkV5MgmGuBuBl9m9ohRQbdOmaeC/Y6itqXvCVPZC0KLpEfQAeMBuSnP/IiUam10Ml80lFVHuNYqAD6hR2GNOK20F5G1F4e3vCRiXPv6X08eLI9bOEjMy5yb41T9QwVZTkmsb1KM2vBOIvu9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=eIFC5Dax; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1758278033; c=relaxed/simple;
+	bh=NEkAnPgtNnJI98BslqSespzX2lakFKXxIyBVDF49iO8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Rxj/dhUSzPMQhYiLroLNYJUewLJ7DI9/HWKvISbIzxlJo2ug77NEVd87H4IH2VZz6pldFAhTkxDw4F1KTPAsJ2YHxWn/mM7A/4D/cfNJnq3G/sNxzBkFGikIr+Xe5nunt76cw50OWZkYyvi+EbpsobXVGRfOl9Q8b5FVqXAa9oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=F7UQ4zUT; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=QlbhadHcs/yoCv9yNTvGoPylZoluUDBPSsgIpibX214=; t=1758277410; x=1759487010; 
-	b=eIFC5DaxV9sRZL01QPWqod1JrqhG98ygUypzPtITXze2J6A6f4ufz6gdq3zLxrVwkSDWXNBAIOL
-	VaMxK44SUT1M/Lei6srm04Ss0ze5CeDOq3RbJvla/Xa1vaa5jhQhPzf8FJ0heiTW5tqmfoGhh0j45
-	shvb8WAW/A0A1gtW+hk4ZHjgy9EFBhx4/v2eR6lWc8vZJ01CGoH7EUt2+U4v8FZFZeA1Xg9I+3ebR
-	ldSpom3wmr90nMcyjYKU5WNYtWyJ+/04QY4RBpqG047Zx3tKNaBWn6eU89OgB4Z9UEp0pEKydLYZA
-	eWgap+DodxaE8feWB9mn+5hGhxGc2489xeBw==;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=Hwou754GvHA+8bTqs4YPsZeqUbAO7+6O9KVMLycF9qk=;
+	t=1758278031; x=1759487631; b=F7UQ4zUTa1g0rwGGYeVC1prYAXBI+1j9IHrUhbJXOot6d5m
+	o27gQc3UXzRmWWJNh5FGRJ9t4dXgW2rISYRX6D5lhhDqeG1Tusom0LPbC037WNXN3orCOGP64KCUZ
+	jHq9++HDbtgm9Wk9AlIDS6wOHe+8qvfYcJrmbAj+yicjYzUeUQtaHmT5sYaa2IwNlQXUHinpSq1p3
+	AH3yHqjsIlaBzAf8kyxlIP0vRNYjcrrjl0zXjqNBOINWFVjPrn7/7L2wPy73xpSeqRnWvqUy+dRuD
+	kfA4CbqDkD9027tY5x9FXqNg50Fd8yCJy2FJ80JYwSRm6n8JDr14PXPaHbR+4+Gw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1uzYH1-0000000Fh6a-1zVO;
-	Fri, 19 Sep 2025 12:23:27 +0200
+	id 1uzYR0-0000000Fi1A-3bq8;
+	Fri, 19 Sep 2025 12:33:47 +0200
+Message-ID: <f4e33ca572e77755c6db82a37c5372a99a8b7485.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 3/6] iw: util: support parsing link id
 From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next] wifi: cfg80211: remove IEEE80211_CHAN_{1,2,4,8,16}MHZ flags
-Date: Fri, 19 Sep 2025 12:23:25 +0200
-Message-ID: <20250919122325.f0abcf092b9b.I04478fde87a79c7909f1cc4249430deaf71e8bd0@changeid>
-X-Mailer: git-send-email 2.51.0
+To: Zong-Zhe Yang <kevin_yang@realtek.com>
+Cc: linux-wireless@vger.kernel.org, raja.mani@oss.qualcomm.com
+Date: Fri, 19 Sep 2025 12:33:46 +0200
+In-Reply-To: <20250917055543.27499-4-kevin_yang@realtek.com>
+References: <20250917055543.27499-1-kevin_yang@realtek.com>
+	 <20250917055543.27499-4-kevin_yang@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Wed, 2025-09-17 at 13:55 +0800, Zong-Zhe Yang wrote:
+> For NL80211_FLAG_MLO_VALID_LINK_ID cases, MLD needs to assign link id,
+> but non-MLD doesn't. Add support of parsing link id where the pattern
+> is as below.
+>=20
+> 	[link-id <LINK ID>]
+>=20
+> If found, put NL80211_ATTR_MLO_LINK_ID and remove the assignment from
+> the argv range.
+>=20
+> +	memmove(argv + pos, argv + pos + 2,
+> +		sizeof(*argv) * (*argc - pos - 2));
 
-These were used by S1G for older chandef representation, but
-are no longer needed. Clean them up, even if we can't drop
-them from the userspace API entirely.
+Honestly, I don't really like this, it's a bit too magic? What if you
+have something in there that is like
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/net/cfg80211.h | 16 +---------------
- net/wireless/nl80211.c | 15 ---------------
- 2 files changed, 1 insertion(+), 30 deletions(-)
+ ... ssid link-id foo bar
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 1c041ce7a03b..781624f5913a 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -101,16 +101,6 @@ struct wiphy;
-  * @IEEE80211_CHAN_NO_10MHZ: 10 MHz bandwidth is not permitted
-  *	on this channel.
-  * @IEEE80211_CHAN_NO_HE: HE operation is not permitted on this channel.
-- * @IEEE80211_CHAN_1MHZ: 1 MHz bandwidth is permitted
-- *	on this channel.
-- * @IEEE80211_CHAN_2MHZ: 2 MHz bandwidth is permitted
-- *	on this channel.
-- * @IEEE80211_CHAN_4MHZ: 4 MHz bandwidth is permitted
-- *	on this channel.
-- * @IEEE80211_CHAN_8MHZ: 8 MHz bandwidth is permitted
-- *	on this channel.
-- * @IEEE80211_CHAN_16MHZ: 16 MHz bandwidth is permitted
-- *	on this channel.
-  * @IEEE80211_CHAN_NO_320MHZ: If the driver supports 320 MHz on the band,
-  *	this flag indicates that a 320 MHz channel cannot use this
-  *	channel as the control or any of the secondary channels.
-@@ -152,11 +142,7 @@ enum ieee80211_channel_flags {
- 	IEEE80211_CHAN_NO_20MHZ			= BIT(11),
- 	IEEE80211_CHAN_NO_10MHZ			= BIT(12),
- 	IEEE80211_CHAN_NO_HE			= BIT(13),
--	IEEE80211_CHAN_1MHZ			= BIT(14),
--	IEEE80211_CHAN_2MHZ			= BIT(15),
--	IEEE80211_CHAN_4MHZ			= BIT(16),
--	IEEE80211_CHAN_8MHZ			= BIT(17),
--	IEEE80211_CHAN_16MHZ			= BIT(18),
-+	/* can use free bits here */
- 	IEEE80211_CHAN_NO_320MHZ		= BIT(19),
- 	IEEE80211_CHAN_NO_EHT			= BIT(20),
- 	IEEE80211_CHAN_DFS_CONCURRENT		= BIT(21),
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index de34a1d14073..346dfd2bd987 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1280,21 +1280,6 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
- 		if ((chan->flags & IEEE80211_CHAN_NO_HE) &&
- 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_HE))
- 			goto nla_put_failure;
--		if ((chan->flags & IEEE80211_CHAN_1MHZ) &&
--		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_1MHZ))
--			goto nla_put_failure;
--		if ((chan->flags & IEEE80211_CHAN_2MHZ) &&
--		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_2MHZ))
--			goto nla_put_failure;
--		if ((chan->flags & IEEE80211_CHAN_4MHZ) &&
--		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_4MHZ))
--			goto nla_put_failure;
--		if ((chan->flags & IEEE80211_CHAN_8MHZ) &&
--		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_8MHZ))
--			goto nla_put_failure;
--		if ((chan->flags & IEEE80211_CHAN_16MHZ) &&
--		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_16MHZ))
--			goto nla_put_failure;
- 		if ((chan->flags & IEEE80211_CHAN_NO_320MHZ) &&
- 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_320MHZ))
- 			goto nla_put_failure;
--- 
-2.51.0
+and then it *meant* the SSID to be "link-id", but with this it now
+actually fails or so? I don't think it's a good idea.
 
+So I think it should just be parsing it where it is at the beginning,
+and then for the last patch just put it at the beginning in the help,
+call parse_link_id() first like you did already, and we don't get any
+such potential mixups?
+
+johannes
 
