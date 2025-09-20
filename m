@@ -1,114 +1,228 @@
-Return-Path: <linux-wireless+bounces-27533-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27534-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EC3B8BFD2
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Sep 2025 07:33:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 245A9B8C667
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Sep 2025 13:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65F7F1BC6EF0
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Sep 2025 05:33:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18B7A1B27D6C
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Sep 2025 11:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B3621B9FD;
-	Sat, 20 Sep 2025 05:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E902FB60D;
+	Sat, 20 Sep 2025 11:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iNp93eLA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53C986323
-	for <linux-wireless@vger.kernel.org>; Sat, 20 Sep 2025 05:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EF625DD1E
+	for <linux-wireless@vger.kernel.org>; Sat, 20 Sep 2025 11:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758346378; cv=none; b=JXyB6KliPdKeJccerNiuO/BEk+bN5OKH77oVd1MQ/Mb0u5YCRqJEnfOBb6hf+fzJKppRV0RcaksTjLlVohq1AC0NS5A0KRoAToVBNCzSsxTd8SLn952IJndwglbj7/jaJlbVOt9fzcKamWd7l82KzKymkuXEYe37tGRm7fJVzXU=
+	t=1758366048; cv=none; b=JQ1kJbbY+gZLGSfi1orD48GKVPYHYu6gfPa7YjmkgOqXKaqFBrkwWjEfBZteL+FrCnnkiGoJEAkNcJTaxOnqNSU7HBTusvhnuvJN1Tt97a2KD5Z+cISl3P3sACUyBFWyyFzjFe7fYRaA6Eyt3z8u8UhSr0z7PIRxl3IMe73EMVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758346378; c=relaxed/simple;
-	bh=xTeRPRtb/z82FGWD/vUPHRy2IHIbeXQf6bBU6bc+50M=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=MJsjSsFXusdDd8HjEv+97BpOlyWFNLNSihWqR8c5gRAZpPMcNizxDBNry6Pkh+bMNJWupqRTQDO2QKyouxA5oxtPeN9tThHc8xxSOiuTdcCzVOq63pQWoLn99Ll0Cp82/nrEi7WyUIwIUCclb2h1u14K8BlLu5vEozW9vx0rPpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-4240730201bso38363195ab.3
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 22:32:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758346376; x=1758951176;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BX121JOP+S660ZNIzknKQnVvd/Z/UMYcJSi3DaS1HFY=;
-        b=vDpk7FvEWVfb3gbm/1U47pZTl07iXFuU655X/G+ggCbAKFq0bvQ1u0oIFCTwRAI1Vl
-         htfqFU/DGilDi1Qo73Az/zh3OnKCMJmVCUBSKayQqGOZVA52gOSdY3Vr0jrE6soKvfVX
-         BzOlU7+M0xsLV9qDV9YekncvpxEYjdNC7VERyNtcTtIjx33XrAjaVUhxXdA0VTZd37tQ
-         7Nt7kCZr/SnZu2efn0tSDwClJX+AzrNSMDYLrg6Nip9gWX78EOft+6oBp83vL9Oo181Y
-         wy3IjwR9NQ/Uu0nLI6GTZvNtrclfmCyQ4soZ2seqbrNN4G3QJdduCVXo2GHhBdT+2gA/
-         37wA==
-X-Forwarded-Encrypted: i=1; AJvYcCW8Go2w+2zJmBaVQxmpsOruQLGi0cGVkYuGwMNro/ivEJMb9lD6S9XCR8FqmfqPD5/C+osZDkgvDH2CdSz5Fw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4a//xs9Ki/4/aQOQsQiDAnCeDov9a6ENH6n0H8nPd8kradNZF
-	qi+UOptTFJCkuIdrtUPv7EPBKGz/+K0iATnLXKciUcd4/2VBk3HOFgOKtTzOlmCZavi3U9dkRnG
-	GFsxaMCHpWyxGE+1U0NgJ5HasGUiDEgi1dTgORvaFferPre4wYifVVGrbIC0=
-X-Google-Smtp-Source: AGHT+IHhK4BnYrrwCEZIkw3iAnrm1xFmBEpN+VStYxwu7lVPH3kl9aQlZFRg9YSvloeaBEvkfIA9nTGbylEA6J0COoSho7qN9W+R
+	s=arc-20240116; t=1758366048; c=relaxed/simple;
+	bh=kYdkeR4g4GpLOwSLZ9xAENJoPONrFIQ6Tolxowj3bCM=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=EgGeh9Xfl/t2SFDG/PyVk8V/X9vJLWi542bj6STbJvwh3MwXOTPhRQ0iHlLvDLfs4KFMop/F/hixxgn9auqOMCX0IQq+u9qIWrR2HCcVOEr+Sx2NtuNVEPQn25dYHatR1HSkQA766tuGcFuEaOIuGKRaGTVb07+07IFVVpa3vHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iNp93eLA; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758366048; x=1789902048;
+  h=date:from:to:cc:subject:message-id;
+  bh=kYdkeR4g4GpLOwSLZ9xAENJoPONrFIQ6Tolxowj3bCM=;
+  b=iNp93eLAeXhS9nRHZXHvCtXdJXYwKhfZoGIki8oljELiUFQZko9oH/+7
+   BU2NSKsq4oXWLpPeXTV45tjJdZZdc11KTnyp/q4UDRUi3dnJkezLjwu1H
+   L0/AP84YWfYLRft9vd48tOfBoYC0rIDiF7KhJtZVk4ltFJ6tp3Qo5Guo2
+   QwqGHCZI1tKKqkx77kA3DREUonj2VIYIzKZPdmx4TSRdFIRmMspt5/AnU
+   8yIKzcYjLyYqHxjKdLSP9xWj+LfMCdLk4vgd1bLEzJVtluKI58H8A4nLG
+   cWqcOABzg67MpJXexKsFP+X2Kkm4arAUyJnJFKMQkigL4kv6aZq4FrMXv
+   w==;
+X-CSE-ConnectionGUID: 96BlVw61QDO8Kk55N2IJpg==
+X-CSE-MsgGUID: tiU2WAljTpO3XY6LSIa62g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11558"; a="78139098"
+X-IronPort-AV: E=Sophos;i="6.18,280,1751266800"; 
+   d="scan'208";a="78139098"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2025 04:00:47 -0700
+X-CSE-ConnectionGUID: jZFlzFePSK+beQSYP7PUBA==
+X-CSE-MsgGUID: 7V8QiN9uShm+5sz6RkfhPA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,280,1751266800"; 
+   d="scan'208";a="175184903"
+Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 20 Sep 2025 04:00:45 -0700
+Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uzvKd-0005El-0F;
+	Sat, 20 Sep 2025 11:00:43 +0000
+Date: Sat, 20 Sep 2025 19:00:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 32d340ae675800672e1219444a17940a8efe5cca
+Message-ID: <202509201858.j5UhlrMl-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1c0a:b0:40d:e7d8:63fa with SMTP id
- e9e14a558f8ab-42481999d70mr77858665ab.26.1758346375960; Fri, 19 Sep 2025
- 22:32:55 -0700 (PDT)
-Date: Fri, 19 Sep 2025 22:32:55 -0700
-In-Reply-To: <20250919122325.f0abcf092b9b.I04478fde87a79c7909f1cc4249430deaf71e8bd0@changeid>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68ce3c87.a00a0220.37dadf.0025.GAE@google.com>
-Subject: [syzbot ci] Re: wifi: cfg80211: remove IEEE80211_CHAN_{1,2,4,8,16}MHZ flags
-From: syzbot ci <syzbot+cib69b4e10bd070489@syzkaller.appspotmail.com>
-To: johannes.berg@intel.com, johannes@sipsolutions.net, 
-	lachlan.hodges@morsemicro.com, linux-wireless@vger.kernel.org
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
 
-syzbot ci has tested the following series
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 32d340ae675800672e1219444a17940a8efe5cca  wifi: mac80211: fix Rx packet handling when pubsta information is not available
 
-[v1] wifi: cfg80211: remove IEEE80211_CHAN_{1,2,4,8,16}MHZ flags
-https://lore.kernel.org/all/20250919122325.f0abcf092b9b.I04478fde87a79c7909f1cc4249430deaf71e8bd0@changeid
-* [PATCH wireless-next] wifi: cfg80211: remove IEEE80211_CHAN_{1,2,4,8,16}MHZ flags
+elapsed time: 1443m
 
-and found the following issue:
-kernel build error
+configs tested: 135
+configs skipped: 5
 
-Full report is available here:
-https://ci.syzbot.org/series/56aae9dc-2280-4bc7-9761-a0d119923350
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-***
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                         haps_hs_defconfig    gcc-15.1.0
+arc                   randconfig-001-20250919    gcc-15.1.0
+arc                   randconfig-002-20250919    gcc-8.5.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-22
+arm                              allyesconfig    gcc-15.1.0
+arm                          moxart_defconfig    gcc-15.1.0
+arm                          pxa168_defconfig    clang-19
+arm                   randconfig-001-20250919    gcc-12.5.0
+arm                   randconfig-002-20250919    gcc-10.5.0
+arm                   randconfig-003-20250919    gcc-12.5.0
+arm                   randconfig-004-20250919    clang-22
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                               defconfig    gcc-15.1.0
+arm64                 randconfig-001-20250919    gcc-15.1.0
+arm64                 randconfig-002-20250919    gcc-8.5.0
+arm64                 randconfig-003-20250919    gcc-12.5.0
+arm64                 randconfig-004-20250919    gcc-11.5.0
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20250919    gcc-14.3.0
+csky                  randconfig-002-20250919    gcc-15.1.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-22
+hexagon               randconfig-001-20250919    clang-22
+hexagon               randconfig-002-20250919    clang-22
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20250919    clang-20
+i386        buildonly-randconfig-002-20250919    gcc-14
+i386        buildonly-randconfig-003-20250919    gcc-14
+i386        buildonly-randconfig-004-20250919    gcc-14
+i386        buildonly-randconfig-005-20250919    clang-20
+i386        buildonly-randconfig-006-20250919    clang-20
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch             randconfig-001-20250919    gcc-15.1.0
+loongarch             randconfig-002-20250919    clang-22
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                         db1xxx_defconfig    clang-22
+mips                           gcw0_defconfig    clang-22
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20250919    gcc-10.5.0
+nios2                 randconfig-002-20250919    gcc-8.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250919    gcc-15.1.0
+parisc                randconfig-002-20250919    gcc-15.1.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-22
+powerpc                      pcm030_defconfig    clang-22
+powerpc               randconfig-001-20250919    gcc-10.5.0
+powerpc               randconfig-002-20250919    gcc-8.5.0
+powerpc               randconfig-003-20250919    clang-18
+powerpc                     taishan_defconfig    clang-17
+powerpc                     tqm8548_defconfig    clang-22
+powerpc64             randconfig-001-20250919    gcc-8.5.0
+powerpc64             randconfig-002-20250919    gcc-13.4.0
+powerpc64             randconfig-003-20250919    clang-18
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-22
+riscv                    nommu_k210_defconfig    clang-22
+riscv                 randconfig-001-20250919    gcc-10.5.0
+riscv                 randconfig-002-20250919    gcc-13.4.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                          debug_defconfig    gcc-15.1.0
+s390                                defconfig    clang-22
+s390                  randconfig-001-20250919    gcc-8.5.0
+s390                  randconfig-002-20250919    gcc-15.1.0
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                    randconfig-001-20250919    gcc-12.5.0
+sh                    randconfig-002-20250919    gcc-10.5.0
+sh                          sdk7786_defconfig    gcc-15.1.0
+sh                           se7724_defconfig    gcc-15.1.0
+sh                           se7780_defconfig    gcc-15.1.0
+sparc                            alldefconfig    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250919    gcc-14.3.0
+sparc                 randconfig-002-20250919    gcc-8.5.0
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20250919    clang-22
+sparc64               randconfig-002-20250919    gcc-14.3.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-22
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20250919    gcc-12
+um                    randconfig-002-20250919    clang-22
+um                           x86_64_defconfig    clang-22
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250919    clang-20
+x86_64      buildonly-randconfig-002-20250919    gcc-14
+x86_64      buildonly-randconfig-003-20250919    gcc-14
+x86_64      buildonly-randconfig-004-20250919    clang-20
+x86_64      buildonly-randconfig-005-20250919    clang-20
+x86_64      buildonly-randconfig-006-20250919    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250919    gcc-11.5.0
+xtensa                randconfig-002-20250919    gcc-8.5.0
 
-kernel build error
-
-tree:      torvalds
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
-base:      f83ec76bf285bea5727f478a68b894f5543ca76e
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/9c1d861d-4d4d-4c90-a946-8769043ca3e6/config
-
-net/wireless/util.c:118:20: error: use of undeclared identifier 'IEEE80211_CHAN_1MHZ'
-net/wireless/util.c:120:25: error: use of undeclared identifier 'IEEE80211_CHAN_2MHZ'
-net/wireless/util.c:122:25: error: use of undeclared identifier 'IEEE80211_CHAN_4MHZ'
-net/wireless/util.c:124:25: error: use of undeclared identifier 'IEEE80211_CHAN_8MHZ'
-net/wireless/util.c:126:25: error: use of undeclared identifier 'IEEE80211_CHAN_16MHZ'
-net/wireless/reg.c:1734:18: error: use of undeclared identifier 'IEEE80211_CHAN_1MHZ'
-net/wireless/reg.c:1737:18: error: use of undeclared identifier 'IEEE80211_CHAN_2MHZ'
-net/wireless/reg.c:1740:18: error: use of undeclared identifier 'IEEE80211_CHAN_4MHZ'
-net/wireless/reg.c:1743:18: error: use of undeclared identifier 'IEEE80211_CHAN_8MHZ'
-net/wireless/reg.c:1746:18: error: use of undeclared identifier 'IEEE80211_CHAN_16MHZ'
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
