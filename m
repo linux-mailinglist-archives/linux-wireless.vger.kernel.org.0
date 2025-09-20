@@ -1,163 +1,156 @@
-Return-Path: <linux-wireless+bounces-27543-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27544-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C90B8CC2A
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Sep 2025 17:49:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CFCB8CC5D
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Sep 2025 17:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3CB77C30A8
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Sep 2025 15:49:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D72A7A727C
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Sep 2025 15:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B242309AA;
-	Sat, 20 Sep 2025 15:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51CE2D0C68;
+	Sat, 20 Sep 2025 15:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.org header.i=@posteo.org header.b="RS9BVGpw"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="omqj98/9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDD91A9F97
-	for <linux-wireless@vger.kernel.org>; Sat, 20 Sep 2025 15:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CDF35942
+	for <linux-wireless@vger.kernel.org>; Sat, 20 Sep 2025 15:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758383388; cv=none; b=Pk4ZRqmOtnVcibwRoLyT/adO6YDppfp3u5zlrIMMtP42k7tpomjdaLY/y9/Epseok6gdIhdV2HYHoM9qIjwo2QBO9I/yAxxl0weLd0HGxClKQACoZTFHhM9BgxfbmWUrhFfef7BKgKw9nhXUBXfI+irnVj5raULpiCIFd8li+tI=
+	t=1758383727; cv=none; b=SKsZv4z9IyhOjVQqZxJ63XedHUGmmKz7L0zqS6iOFTFNW+1mL1Sn6EFE6XPeAxjaNhqFtJa0/TXcReMwicOgLJ4PP2EPlmODsZvdaMXip76o75K0Q3JXZlLGALiwRQkh5GuAohzVQLgkNfPaxOlpYAHamjON7O/Xl0TjV00Rd+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758383388; c=relaxed/simple;
-	bh=VqU9kBIv3GJH5ecLogCb8x8xG+AXIywoz3C9j4KNqQI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H74rSXkx0JfbAykhfcST4EVrHJGYTRbBmXkBT+bC3DyiSkYsYkQ612QOH8RF3XdRtr9o27mrGZSwWEFRkjU0bHl98ltWzZz4IixihdvPLo/Ytq1X0TIKYIxaSlt6JSmsBVHIqOJrn/NXBIxIZkAqDWUBtmtECaqyiAklcZDmhYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.org; spf=pass smtp.mailfrom=posteo.org; dkim=pass (2048-bit key) header.d=posteo.org header.i=@posteo.org header.b=RS9BVGpw; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.org
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 4A04F240101
-	for <linux-wireless@vger.kernel.org>; Sat, 20 Sep 2025 17:49:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.org; s=2017;
-	t=1758383383; bh=12cSXouHig6eJCbLkWhzyhxZJT9pxRosLx5CxBWPbmI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Description:Content-Disposition:From;
-	b=RS9BVGpwLMdEHsaWzNjqq2TshsaVMTUV/KSjEuZBt7DVGbrF4xStw7AJBRshRONGG
-	 BSSqd/MBkE2SR+y35HS+IRUX5GT1/sYqyPu5R6PnYtd9Czf+gIULZNpnr0OUtIivJh
-	 1pB6VYGp0/cx0bkPcw5QeXwTn4Un6IhXVA+z/gk8da9qbSXoXSR9F30IGBJ4Nt5xm6
-	 L33cGB2Aylc9QjxUm+gBnW88JjVCNvmDrCWdvJZRyOYRlkx3ReUhImyAB0nsxs53jX
-	 xibYBxSTfVGyTD+h2/IqkmO38ax2h3sDX4H2AwbsjG5soOPdRKfopZyt2g7/PRMF6p
-	 5G3QjpbBCZUvw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4cTYj162zwz9rxG;
-	Sat, 20 Sep 2025 17:49:41 +0200 (CEST)
-Date: Sat, 20 Sep 2025 15:49:42 +0000
-From: Karsten Tausche <ktao.oss@posteo.org>
-To: David Wang <00107082@163.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	miriam.rachel.korenblit@intel.com, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: IWL Error Log Dump since 6.17.0-rc5
-Message-ID: <aM7NFYJJdGR1Hnfg@rakis>
-References: <20250909165811.10729-1-00107082@163.com>
- <487c99e0.6ed4.19932979ca5.Coremail.00107082@163.com>
- <285c7cd9935d5c245ad478c5692faa927bcda245.camel@sipsolutions.net>
- <35b1fd7b.aa06.1993e2b7ce5.Coremail.00107082@163.com>
+	s=arc-20240116; t=1758383727; c=relaxed/simple;
+	bh=OB06cC8xAuL3KWcW6Hg+m8/AaE/xu/6RHB6DggGNVJA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T5TwM5QqYVNa0obxS0JcgbMGIW0RIhVwuVpda8Ft8H7aOCHQ4i/tq11h/AJ+pVzeZbVFWH3aCQ7js9/KtUoQY15qbx2s9RMg1nfAVJfJUEEcdpZDJDTkMsN8vYBvzE7AOXZDMjYgi4085qB7Kk/48Oeml8TAJfn/8p87IgLVoiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=omqj98/9; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58KDQ0Wx018356
+	for <linux-wireless@vger.kernel.org>; Sat, 20 Sep 2025 15:55:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ana8meb3LHSVJnJyVOUf7gTwHScScF51sLLwxr1JAzc=; b=omqj98/9y2UsYy3J
+	B9CUW8I+wxx9gMctpszRNYgcaOXyRmb1FksPnRwJZ71Eo3z/KmCbzz6mn41JeaL7
+	+2WpaqvmndKLq1RnRxDUUhrC7lSuRpvVwE0/FBddASofmudfwNCkDkFgcQDTOP6n
+	O5J1Dgx2/OFP4BFhJfjMZYc5nRH6jm/B+L8OVAjtl9SogbfTXb56CyihyJ7AFMl9
+	drd6P34/P+CVeToUU1THqWWtJhq3eEFMR/WtL+LXcH66Gp6eWB8OZNXj1xROyFoY
+	9nOA/r2a8NEMUDsgfJqgRJXTdEpeOhhdlP2RC2n/QJjKz1tYjflEGllWXgsSnlpK
+	AhnfSg==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 499k9890r0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Sat, 20 Sep 2025 15:55:24 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-77619bb3871so5526056b3a.1
+        for <linux-wireless@vger.kernel.org>; Sat, 20 Sep 2025 08:55:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758383723; x=1758988523;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ana8meb3LHSVJnJyVOUf7gTwHScScF51sLLwxr1JAzc=;
+        b=M9WZMND6ABq4a26rIbSGvxqDG/bsGN3HWNOqwYUw5jPOV/930Enl+NRaB/9wjzOMG3
+         O4Y6NaGbkgu27z5SAm7LY9O9/XG5myogX3aGBBeAQuGWCAZCEbzx91YwLtMTbEhSXrwG
+         DTWwbtlDS0gzGck2IhLy5Woh/0sv/tzgl6j0Y68J7uKF/BzRci9zCvwwHgLysTEavG8y
+         oj3DpKWO++7WgtaW5L5TI0Xv76dlbxVdYCgqiiDJpId5a5pr1ysxLifHsgcEunZtolmm
+         k9dtpRGi50K7I1OlOgaLcqrd4bIE8hfXTOvxrUPxa/a2PDEcU1TQIZhOFTLbXlR5kiDj
+         CsTA==
+X-Gm-Message-State: AOJu0Yy/eD21pD+I2RQFfJ/3NipoFthgeW3Nr62KMv2efYn+EcwWTwwA
+	ZanMQmW5+wjuitOD1uljUUGQXuK8YjYfUoEVuHbspaezqRsOcQb5CX5dg6MnVlz5SL15jD9IBbB
+	BR0tVJkVZKV+29uWDC1XjXUxp9s9UV6Yw6Ae/MFvbIrUxbKYd4bCwLustLuxfBkmBQgiyrw==
+X-Gm-Gg: ASbGnctul1f3Ng0cRwc3b/pNM6rkJ0S9UPHzeNfQ66+eO5Ib4ebrI/ixnYnaWrwEZiX
+	LGnhNkYsIr3ptSj7KguFFMzSaVyKjIHDbWqe9s7Gv+GpIzm6m+17IM7JzaCRMbQq72UZu45Qpns
+	ldClV/GfxzCzGLNQJRmCk4D+fsqPAa8dNg+zP/nEh7rkhfyFMfcuGBYuiXD0BFLDkkDWOiV23kH
+	MBF2ed/2KPCCwo1yTcOkhDgUbOIPbl0vyo1vFruxq79myam3Qa/t/bQ1HqlPJEdyL0Z0wKbwXyg
+	SP2X7qH6uaRem2Y6eFbMtl6A6w5D3I7yCbKbMJaiYSF5bUpwvnueM1574gYe1vOHgyZfgdq8frX
+	2mZRebD/fHyY4sWCKGgdjsiCEMNOF5VIEwe7P
+X-Received: by 2002:a05:6a00:2354:b0:77f:169d:7f62 with SMTP id d2e1a72fcca58-77f169d83e5mr5467953b3a.14.1758383723005;
+        Sat, 20 Sep 2025 08:55:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEOaB7iCjI78POPZVbbl+FVK1OsIR/scW1RaIBr44/RHLmSkmoH5nr7aySf6I4T55ojb3L+nw==
+X-Received: by 2002:a05:6a00:2354:b0:77f:169d:7f62 with SMTP id d2e1a72fcca58-77f169d83e5mr5467933b3a.14.1758383722325;
+        Sat, 20 Sep 2025 08:55:22 -0700 (PDT)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77ecd17bddbsm4548805b3a.46.2025.09.20.08.55.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 20 Sep 2025 08:55:21 -0700 (PDT)
+Message-ID: <4e204f93-b964-40fb-8eb5-f723f309a2c1@oss.qualcomm.com>
+Date: Sat, 20 Sep 2025 08:55:20 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Description: 
-Content-Disposition: inline
-In-Reply-To: <35b1fd7b.aa06.1993e2b7ce5.Coremail.00107082@163.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next] wifi: ath12k: Fix NSS value update in
+ ext_rx_stats
+To: Thiraviyam Mariyappan <thiraviyam.mariyappan@oss.qualcomm.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250725084426.3989966-1-thiraviyam.mariyappan@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250725084426.3989966-1-thiraviyam.mariyappan@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 50ll-pBUFLncm5Jlx8VceIy0e2-qc2l8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAxOCBTYWx0ZWRfX0M25LNH7IHJF
+ Kr4BW3Qo064ZZ6LxfFpAcFaak+/YjuN/IlBgYl2vl6BbEcIWjeDu51l6omzSzNtdAg7AROV0MWQ
+ YzY2z+tfgJi2oAhq8Eq5sr53eUCxcxW0+IEk5zkx1Uf5+evbUaMCQU19HYxOl5KeM4J5X40FU4p
+ bvgL6QNjCFtIvpokg0faaE08eEB7v627dljpPB2A3ueJFMiAnMxYSLiglbUBftJX+dj/C44fIWn
+ 1XKK/XmMn7zqC5KgCEK2uXrEKrToKBpNVEhTD23OK2o5WuOByynTnHMKasIz/IVdgF7NYbcy34U
+ Oz5ux4sJFMCYfNiwUG94iiVYZZMFvjk30KiyhSWP7Rhhly3VieAGlHn3NMjemK4FGdib+BZpG9J
+ N8TyxTBG
+X-Proofpoint-ORIG-GUID: 50ll-pBUFLncm5Jlx8VceIy0e2-qc2l8
+X-Authority-Analysis: v=2.4 cv=Dp1W+H/+ c=1 sm=1 tr=0 ts=68cece6c cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=e70TP3dOR9hTogukJ0528Q==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=tApd-Sg5WrpdobDWgDUA:9
+ a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-20_06,2025-09-19_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 adultscore=0 bulkscore=0 impostorscore=0
+ phishscore=0 spamscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509200018
 
-Hi,
+On 7/25/2025 1:44 AM, Thiraviyam Mariyappan wrote:
+> Currently, in ext_rx_stats, the NSS value is taken directly from
+> the firmware, which results in incorrect mapping:
+>         4x4, 3x3, 2x2, 1x1 SS are incorrectly updated as 3x3, 2x2,
+> 1x1, 0x0 SS respectively.
+> 
+> Fix the issue by incrementing the NSS value by 1 while updating
+> the PPDU info to ensure accurate spatial stream statistics.
+> 
+> Remove the redundant +1 increment in the radiotap header when monitor
+> mode is enabled to prevent double counting.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Thiraviyam Mariyappan <thiraviyam.mariyappan@oss.qualcomm.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/dp_mon.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
 
-I can confirm the same issue and resolution on a similar card "Intel
-Corporation Wireless 7265 (rev 59)". I did not test rc5, but rc4 was
-working and rc6 broken for me.
+This patch no longer cleanly applies to ath/main:
+Applying: wifi: ath12k: Fix NSS value update in ext_rx_stats
+Using index info to reconstruct a base tree...
+M       drivers/net/wireless/ath/ath12k/dp_mon.c
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/ath/ath12k/dp_mon.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/ath/ath12k/dp_mon.c
 
-On Fri, Sep 12, 2025 at 09:44:21PM +0800, David Wang wrote:
-> 
-> At 2025-09-10 16:31:33, "Johannes Berg" <johannes@sipsolutions.net> wrote:
-> >On Wed, 2025-09-10 at 15:47 +0800, David Wang wrote:
-> >> Hi, 
-> >> 
-> >> I think those error dump is introduced by commit 586e3cb33ba6890054b95aa0ade0a165890efabd("wifi: iwlwifi: fix byte count table for old devices")
-> >> 
-> >> My wireless pcie card has device_family 15 which is less than IWL_DEVICE_FAMILY_9000, and the changes in the commit have changed the behavior for my devices.
-> >> 
-> >> -       if (trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
-> >> +       if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_9000 &&
-> >> +           trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
-> >>                 len = DIV_ROUND_UP(len, 4);
-> >
-> >I think I just got confused, and that 9000 should be 7000. Presumably
-> >that'd work for you, I'll send a patch.
-> >
-> >johannes
-> 
-> 
-> Hi, 
-> 
-> My system has been run for days and no IWL error dumps & reset happened.
-> I think I can confirm that my wireless card needs the length adjustment.
-> 
-> Some information about my cards:
-> 
-> [    5.067265] iwlwifi 0000:21:00.0: enabling device (0000 -> 0002)
-> [    5.068798] iwlwifi 0000:21:00.0: Detected crf-id 0x0, cnv-id 0x0 wfpm id 0x0
-> [    5.068809] iwlwifi 0000:21:00.0: PCI dev 08b1/c070, rev=0x144, rfid=0xd55555d5
-> [    5.068813] iwlwifi 0000:21:00.0: device family: 15  <-- 
-> [    5.068816] iwlwifi 0000:21:00.0: Detected Intel(R) Dual Band Wireless AC 7260
-> [    5.075593] iwlwifi 0000:21:00.0: loaded firmware version 17.bfb58538.0 7260-17.ucode op_mode iwlmvm
-> 
-> $ lspci
-> ...
-> 21:00.0 Network controller: Intel Corporation Wireless 7260 (rev bb)
-> ...
-> 
-> 
-> My device match the config in drivers/net/wireless/intel/iwlwifi/pcie/drv.c:
-> 
-> 263         {IWL_PCI_DEVICE(0x08B1, 0xC070, iwl7000_mac_cfg)},
-> 
-> iwl7000_mac_cfg is defined as:
-> 
->  88 const struct iwl_mac_cfg iwl7000_mac_cfg = { 
->  89         .device_family = IWL_DEVICE_FAMILY_7000, 
->  90         .base = &iwl7000_base,
->  91 };
-> 
-> And indeed, it is IWL_DEVICE_FAMILY_7000
-> 
+Please rebase. And when you do so, please follow current legal guidance and
+replace the existing QUIC copyright with the new QTI one.
 
-Early kernel logs for my chip below. 095b/5210 is matching the same
-config iwl7000_mac_cfg as above.
-
-iwlwifi 0000:03:00.0: Detected crf-id 0x0, cnv-id 0x0 wfpm id 0x0
-iwlwifi 0000:03:00.0: PCI dev 095b/5210, rev=0x210, rfid=0xd55555d5
-iwlwifi 0000:03:00.0: Detected Intel(R) Dual Band Wireless-AC 7265
-
-Snippet of failure logs on v6.17-rc6:
-
-iwlwifi 0000:03:00.0: Microcode SW error detected.  Restarting 0x2000000.
-iwlwifi 0000:03:00.0: Start IWL Error Log Dump:
-iwlwifi 0000:03:00.0: Transport status: 0x0000004A, valid: 6
-iwlwifi 0000:03:00.0: Loaded firmware version: 29.f2390aa8.0 7265D-29.ucode
-iwlwifi 0000:03:00.0: 0x00001030 | ADVANCED_SYSASSERT
-iwlwifi 0000:03:00.0: 0x00800233 | trm_hw_status0
-iwlwifi 0000:03:00.0: 0x00000000 | trm_hw_status1
-iwlwifi 0000:03:00.0: 0x00043D6C | branchlink2
-iwlwifi 0000:03:00.0: 0x0004B002 | interruptlink1
-...
-
-$ lscpi
-...
-03:00.0 Network controller: Intel Corporation Wireless 7265 (rev 59)
-...
-
-
-Thanks,
-Karsten
-
+/jeff
 
