@@ -1,205 +1,102 @@
-Return-Path: <linux-wireless+bounces-27528-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27532-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2E7B8B486
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 23:09:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52392B8BB78
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Sep 2025 02:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA5971C81D1B
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Sep 2025 21:10:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 050177A7F95
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Sep 2025 00:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58962BEC5E;
-	Fri, 19 Sep 2025 21:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BFE154BE2;
+	Sat, 20 Sep 2025 00:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="YQjUp5Mr"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="FNi1FCq4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54212877F1;
-	Fri, 19 Sep 2025 21:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B78189
+	for <linux-wireless@vger.kernel.org>; Sat, 20 Sep 2025 00:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758316174; cv=none; b=nxRiiSP8QZMlSx8aZjlshnCrwxWc2x0HW4UnYVb0pc8WTdLs1YwVjPN10gdGGoFwUa8PNjY/0EC6LDvdqyVy8TL187X/Sq5s3jrAZUTn5EkzamXFXO324CBh/FtXgtXYhYiwXMPU5DdAi9EuohM5hnY9RjoHz+SCXeEQx/3An2Y=
+	t=1758329915; cv=none; b=ZpVdTSZgNAHnuylux0rt9epLHK0l+yu84nBGwo3tpCzcxwU3U5pY936TVkvDgXlEBBOZ4wmQWXG+Sv4lc3HMMGlrTi6Dbbxqnyp0siHvyMUDQK+0H8UeJNNSlHC0XURUEudIVfmu9ZuECfZ6X45F1zhMqgq3REuCec2R3kcV23U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758316174; c=relaxed/simple;
-	bh=g7ZYLJw64Tpc7UQeFooGHkKmnWawGuwg03GOSXNAUVk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POn+OyFKz+u6kszBX3tN7hABwxz/jggK4NulpOJnh64PLCP7M9VNwwaYPAskr/lqS9HocNBilgSO6CLS6Qnoz8vofrkbo5sXnfyLTDILOAPZJmt44Mn79g2pLAj7Pmcq42Zy+HA3gxJPUHREoC3I1XXQHeco+lJdRe9Bz2d5DYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=YQjUp5Mr; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from debian.intra.ispras.ru (unknown [10.10.165.9])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 2B09A4076733;
-	Fri, 19 Sep 2025 21:09:25 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 2B09A4076733
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1758316165;
-	bh=NJj22fzOdYNvzEou7366Uk4NlW3zvaZWooXBR+YJ0sc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQjUp5MrNxQEbhjPwiZZ5MRNqM3RpLbKc0le+iALLp88jNVZYDU4g4AEL3a8DUVjn
-	 7EVCB5t+HiiU6WNjLi6NBBmZ5xk5A1VV8bUokf9ed6r9Um0XVLoxMGcbzdiNOcPlX7
-	 70E+fgHakyVy+VodOiyoBDAf4wB12440cKTBMcTE=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	Zong-Zhe Yang <kevin_yang@realtek.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Po-Hao Huang <phhuang@realtek.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH rtw-next v5 4/4] wifi: rtw89: avoid circular locking dependency in ser_state_run()
-Date: Sat, 20 Sep 2025 00:08:50 +0300
-Message-ID: <20250919210852.823912-5-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250919210852.823912-1-pchelkin@ispras.ru>
-References: <20250919210852.823912-1-pchelkin@ispras.ru>
+	s=arc-20240116; t=1758329915; c=relaxed/simple;
+	bh=dOqoqBQvbMgBO4q9qTvkjSGSTfIfocM3zwJcwNNZoU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rUWMmUVGsZL1iZy7nXeQWJE992wQn7irGSU/UF4P5Gvge8rf8eSHn6WJMMCbsiM/pnWloTtY4Sxo9U3p19GfZ/t2KhzTtPd1wVTaU3wxE2TZjeFDGGVKoYczTV9/h2vUi051XgU4DXMtI6MTu6/FlundahHtzhepzsXyHjSRAO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=FNi1FCq4; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b523fb676efso2384649a12.3
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Sep 2025 17:58:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1758329912; x=1758934712; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dOqoqBQvbMgBO4q9qTvkjSGSTfIfocM3zwJcwNNZoU4=;
+        b=FNi1FCq4+mL7fJe2ZjUvk8ZfowQUgT8NvXGsH/3N9V9eSdtNqPaiP8zR2z+/g+rsSq
+         9I1k4Gyad3JyGODm+hCGwaqHrRsI5Xm5AjqHz25QcU8gwRlPZrNDlOKHHW8MwOGySFlu
+         0vuVdQVkJLsobGqbaX7ISwAOivvCpu8VrEZbiB1ImqvVjuKW8HJWwN98lT2yjCY1L6rI
+         QC/yU4WHsKWQ5O0pOFF4Yat7e2LV47UoZ1dZf2QtzS2O60ONPzmPEeKopV5oYQcOJ46S
+         YbvMEAD+vx4krqF4KqkFJZ1fZl6/JrVQrLg+9i7qr4L3bSYXmvbwZZPrq3QTPdocJ92x
+         zQAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758329912; x=1758934712;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dOqoqBQvbMgBO4q9qTvkjSGSTfIfocM3zwJcwNNZoU4=;
+        b=Qc+GAIeDP8B3kFuIXhjNxJmd8ov9IsUth5fKtiT7gBUZ57UFg+8D5jFQ3yrzBIoOL+
+         eSgqrXNXwlY2jFhf5vwk2w52dUUTZhe7DojsCLBaKTG5Fb0Lq5GHvK+wzuT0FOKWyRrz
+         Mx4GoIu00Xxl5G3hyvakyr99YNe5DsgrMIWfT87Z+1V8OxG3jWqYoA7gEfCRHA5DAmDj
+         hEufD5HijgiAhj3LGls0IimhqpkdLtRpjEhAhFVXzsuco6SIv6F/wq0EYtq1KrZqxiYk
+         h3c/Qt2dZX5UXKDk2NpkkMkZ5OhEL2UtHB8c0o3hZUbYr16YPoKAveYW9CcCwVdy4N98
+         FUAw==
+X-Gm-Message-State: AOJu0YzQM0usQxRrjLtqJViv/keoOifQOtxxZnA+vfFvuEEPtXhCIUfU
+	kp0Ah1121bIeowEIkanqS8kw0lF6dQKDmiIBQnd+vFmzzMjV45yDlxlv5Dwxcmesz18=
+X-Gm-Gg: ASbGncuxvVlMuANb2Nt2zzVF+JO28wJlRSGFKXQaKFP6qN4hKQiWlsrnA3131dkgIJj
+	N96Xsos1BQ7yczwfadXaIjYErbohFLKvbvPmT6c6h7ShbQ1ojdmJtkSTsFaiZOLTvQSAoWAWc8x
+	ws0umiP3ULuyMcs+oRKrDF4YKijcdp98FeR4LEPOze1gq3QlI59qjBvbHLxPVYTAmzCyL+EYa2j
+	IyVdpr49u2MWJyJvJgtZrew/sAz9qG3UtFc7bLfpkb3rbMFq6/rOI81svDVq0v8Rji1uTphWzrw
+	HHtXIgCR9s0X4TJ1W2ZSg3l/MZ7GGoYrUzeSWj0hcF/7o8aJ2dljLhf7sa9ur3zI05JuNXg+vz5
+	rkde0QnOerceEpDoNnqKgni5/4A5HNQCz
+X-Google-Smtp-Source: AGHT+IF8hGb7VOtneyeqaUn1qvHg90zu6fwDfc1BfmAwe44m8/vfZkBKCkKh1QZJFjMYCyZkjgJTZA==
+X-Received: by 2002:a17:902:dac2:b0:246:4077:4563 with SMTP id d9443c01a7336-269ba4eede8mr62771295ad.34.1758329912555;
+        Fri, 19 Sep 2025 17:58:32 -0700 (PDT)
+Received: from localhost ([60.227.224.187])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32ed26a4e5csm9585924a91.8.2025.09.19.17.58.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Sep 2025 17:58:32 -0700 (PDT)
+Date: Sat, 20 Sep 2025 10:58:27 +1000
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, 
+	Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH wireless-next] wifi: cfg80211: remove
+ IEEE80211_CHAN_{1,2,4,8,16}MHZ flags
+Message-ID: <pz6rm2z54rdhst2fksjcj62gqprpagtmnkk5aggu7qzse7qsgi@r3pruqjdh77d>
+References: <20250919122325.f0abcf092b9b.I04478fde87a79c7909f1cc4249430deaf71e8bd0@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919122325.f0abcf092b9b.I04478fde87a79c7909f1cc4249430deaf71e8bd0@changeid>
 
-Lockdep gives a splat [1] when ser_hdl_work item is executed.  It is
-scheduled at mac80211 workqueue via ieee80211_queue_work() and takes a
-wiphy lock inside.  However, this workqueue can be flushed when e.g.
-closing the interface and wiphy lock is already taken in that case.
+On Fri, Sep 19, 2025 at 12:23:25PM +0200, Johannes Berg wrote:
+> These were used by S1G for older chandef representation, but
+> are no longer needed. Clean them up, even if we can't drop
+> them from the userspace API entirely.
 
-Choosing wiphy_work_queue() for SER is likely not suitable.  Back on to
-the global workqueue.
+Thanks for removing these, probably should have done it as part
+of my patchset.. Looks much better now.
 
-[1]:
-
- WARNING: possible circular locking dependency detected
- 6.17.0-rc2 #17 Not tainted
- ------------------------------------------------------
- kworker/u32:1/61 is trying to acquire lock:
- ffff88811bc00768 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: ser_state_run+0x5e/0x180 [rtw89_core]
-
- but task is already holding lock:
- ffffc9000048fd30 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}, at: process_one_work+0x7b5/0x1450
-
- which lock already depends on the new lock.
-
- the existing dependency chain (in reverse order) is:
-
- -> #2 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}:
-        process_one_work+0x7c6/0x1450
-        worker_thread+0x49e/0xd00
-        kthread+0x313/0x640
-        ret_from_fork+0x221/0x300
-        ret_from_fork_asm+0x1a/0x30
-
- -> #1 ((wq_completion)phy0){+.+.}-{0:0}:
-        touch_wq_lockdep_map+0x8e/0x180
-        __flush_workqueue+0x129/0x10d0
-        ieee80211_stop_device+0xa8/0x110
-        ieee80211_do_stop+0x14ce/0x2880
-        ieee80211_stop+0x13a/0x2c0
-        __dev_close_many+0x18f/0x510
-        __dev_change_flags+0x25f/0x670
-        netif_change_flags+0x7b/0x160
-        do_setlink.isra.0+0x1640/0x35d0
-        rtnl_newlink+0xd8c/0x1d30
-        rtnetlink_rcv_msg+0x700/0xb80
-        netlink_rcv_skb+0x11d/0x350
-        netlink_unicast+0x49a/0x7a0
-        netlink_sendmsg+0x759/0xc20
-        ____sys_sendmsg+0x812/0xa00
-        ___sys_sendmsg+0xf7/0x180
-        __sys_sendmsg+0x11f/0x1b0
-        do_syscall_64+0xbb/0x360
-        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
- -> #0 (&rdev->wiphy.mtx){+.+.}-{4:4}:
-        __lock_acquire+0x124c/0x1d20
-        lock_acquire+0x154/0x2e0
-        __mutex_lock+0x17b/0x12f0
-        ser_state_run+0x5e/0x180 [rtw89_core]
-        rtw89_ser_hdl_work+0x119/0x220 [rtw89_core]
-        process_one_work+0x82d/0x1450
-        worker_thread+0x49e/0xd00
-        kthread+0x313/0x640
-        ret_from_fork+0x221/0x300
-        ret_from_fork_asm+0x1a/0x30
-
- other info that might help us debug this:
-
- Chain exists of:
-   &rdev->wiphy.mtx --> (wq_completion)phy0 --> (work_completion)(&ser->ser_hdl_work)
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock((work_completion)(&ser->ser_hdl_work));
-                                lock((wq_completion)phy0);
-                                lock((work_completion)(&ser->ser_hdl_work));
-   lock(&rdev->wiphy.mtx);
-
-  *** DEADLOCK ***
-
- 2 locks held by kworker/u32:1/61:
-  #0: ffff888103835148 ((wq_completion)phy0){+.+.}-{0:0}, at: process_one_work+0xefa/0x1450
-  #1: ffffc9000048fd30 ((work_completion)(&ser->ser_hdl_work)){+.+.}-{0:0}, at: process_one_work+0x7b5/0x1450
-
- stack backtrace:
- CPU: 0 UID: 0 PID: 61 Comm: kworker/u32:1 Not tainted 6.17.0-rc2 #17 PREEMPT(voluntary)
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS edk2-20250523-14.fc42 05/23/2025
- Workqueue: phy0 rtw89_ser_hdl_work [rtw89_core]
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x5d/0x80
-  print_circular_bug.cold+0x178/0x1be
-  check_noncircular+0x14c/0x170
-  __lock_acquire+0x124c/0x1d20
-  lock_acquire+0x154/0x2e0
-  __mutex_lock+0x17b/0x12f0
-  ser_state_run+0x5e/0x180 [rtw89_core]
-  rtw89_ser_hdl_work+0x119/0x220 [rtw89_core]
-  process_one_work+0x82d/0x1450
-  worker_thread+0x49e/0xd00
-  kthread+0x313/0x640
-  ret_from_fork+0x221/0x300
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: ebfc9199df05 ("wifi: rtw89: add wiphy_lock() to work that isn't held wiphy_lock() yet")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/ser.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
-index fe7beff8c424..f99e179f7ff9 100644
---- a/drivers/net/wireless/realtek/rtw89/ser.c
-+++ b/drivers/net/wireless/realtek/rtw89/ser.c
-@@ -205,7 +205,6 @@ static void rtw89_ser_hdl_work(struct work_struct *work)
- 
- static int ser_send_msg(struct rtw89_ser *ser, u8 event)
- {
--	struct rtw89_dev *rtwdev = container_of(ser, struct rtw89_dev, ser);
- 	struct ser_msg *msg = NULL;
- 
- 	if (test_bit(RTW89_SER_DRV_STOP_RUN, ser->flags))
-@@ -221,7 +220,7 @@ static int ser_send_msg(struct rtw89_ser *ser, u8 event)
- 	list_add(&msg->list, &ser->msg_q);
- 	spin_unlock_irq(&ser->msg_q_lock);
- 
--	ieee80211_queue_work(rtwdev->hw, &ser->ser_hdl_work);
-+	schedule_work(&ser->ser_hdl_work);
- 	return 0;
- }
- 
--- 
-2.51.0
-
+lachlan
 
