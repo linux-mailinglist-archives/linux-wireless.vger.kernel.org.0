@@ -1,146 +1,324 @@
-Return-Path: <linux-wireless+bounces-27546-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27547-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527BBB8D1C8
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Sep 2025 00:19:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE29B8DD74
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Sep 2025 17:44:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 186C617FB95
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Sep 2025 22:19:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F14C518992C1
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Sep 2025 15:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38ED2285069;
-	Sat, 20 Sep 2025 22:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E641212572;
+	Sun, 21 Sep 2025 15:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=technux.se header.i=@technux.se header.b="o2j5TBe1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jfHiiIh6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m101-out-mua-2.websupport.se (m101-out-mua-2.websupport.se [109.235.175.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAD91EFF8D
-	for <linux-wireless@vger.kernel.org>; Sat, 20 Sep 2025 22:19:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.235.175.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA28211A09
+	for <linux-wireless@vger.kernel.org>; Sun, 21 Sep 2025 15:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758406770; cv=none; b=g4O1mY1tj1sc/no+Q7GO8i0d6H2yspGF4qWnxwg/CLlsxZaChwO9yUo8itUum0tazkorYWOll1ccwVmLMslxgOSw/KDA6A15drB8S+o/Fs3hyCLgo4zJPkABFwyie96TO9frruOHhYsDW8UyC1v73u2+Lnah4V5XdkjXOC+ZfAI=
+	t=1758469475; cv=none; b=iW1USuTv4aXkNgt/GQnuqqQ3thr8b4DP+Ru/QDtAHlQpVind3W+9CrLeGLgl8yHgBI7yfnJuQW42n9yJ7TRCv+49KOb+ou1L7Eljbvdu4ghH6nmzqTa33mlWKS5VfvwQitglNextnF07akZiuy/EuRlTcRkysSeJHELuPaFQQFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758406770; c=relaxed/simple;
-	bh=FwPN/kfE0oL5jSM/vXSvYUGRrZyCJE6vUwv9LZt2DSY=;
-	h=MIME-Version:Date:From:To:Subject:Message-ID:Content-Type; b=CxDC8X+BcAMtGX8YPogN8ytUwG/CpOh1H2Y8jZMvU+il01XXHGkA0cDci9XKx6xGs9RcjTzgV5E5C14Z0ixL1hRSHHeQQby4o82HSpLygV749SuPLSrsbGRAHUBxF7m5C0I0IfxcHV86EB+x0JOj73kcaMgxgoj71H2f+/s1nZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=technux.se; spf=pass smtp.mailfrom=technux.se; dkim=pass (2048-bit key) header.d=technux.se header.i=@technux.se header.b=o2j5TBe1; arc=none smtp.client-ip=109.235.175.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=technux.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=technux.se
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=technux.se; s=mail;
-	t=1758406227; bh=21BlgSbO400wZ7rAfoiOr5dJm3AEdcItIEfSnbuS4K4=;
-	h=Date:From:To:Subject:From;
-	b=o2j5TBe1pTDA/xIGEBcE3Ilp3fOfGp+yfgP2L4cosuvuNfmT9ebCuyXrFG8pynNx2
-	 4+dDTYPKgkEeWkRUA2Tt754CXeaUsT5M9wfpCwCwqTmZ41ScAHuV0QE7GzgRglyC3q
-	 hN3UCVsfh4AIIOP/anX62lZhimQ9l6suRtNJqnccoRrLCveh0KOgCRz4me1rBoz7hU
-	 +AkOaQKOelcA4nMqOtoiGUmQNEqdwJ2bLj7QE9N9Pw025UZAzm3ea15no6B/jnriod
-	 C4unpl8g23SoOzEzZtyG14iYsYApIlQTMEaiaTIKffCmXDeLvoq2ct5cefKcb18lyo
-	 37t/2qJIZKBnw==
-Received: from m101-u5-ing.websupport.se (unknown [10.30.5.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	by m101-out-mua-2.websupport.se (Postfix) with ESMTPS id 4cTk8M0pH7z1hkt
-	for <linux-wireless@vger.kernel.org>; Sun, 21 Sep 2025 00:10:27 +0200 (CEST)
-X-Authenticated-Sender: petter@technux.se
-Authentication-Results: m101-u5-ing.websupport.se;
-	auth=pass smtp.auth=petter@technux.se smtp.mailfrom=petter@technux.se
-Received: from roundcube.ws.int (unknown [109.235.175.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: petter@technux.se)
-	by m101-u5-ing.websupport.se (Postfix) with ESMTPSA id 4cTk8L5c1gz1XlB
-	for <linux-wireless@vger.kernel.org>; Sun, 21 Sep 2025 00:10:26 +0200 (CEST)
+	s=arc-20240116; t=1758469475; c=relaxed/simple;
+	bh=TorXlnzo2MWNlQrV3lMZEG55rlMmiosJc6k61neyAcA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gmzdg2ORh4lqtBf3knWNH7dRX71WsMKQCCpIYFikh6qjuMYc42j9B8WzZr9GhwTyAwDKLsPyD+rHvXHRGyqRuTDS+KyVBkt1Tr3Ntd9cRVuf5/ZX2G0LVlJr88PKU+uUhv8HR8IsSKT6Mk77WJyhiTFo6F15bVIRD6AewBEp2Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jfHiiIh6; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-267f0fe72a1so23514445ad.2
+        for <linux-wireless@vger.kernel.org>; Sun, 21 Sep 2025 08:44:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758469473; x=1759074273; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+EG28P0iOsg16EFPGe9CXi+kR66aQLbg4RmAzKPuYI0=;
+        b=jfHiiIh605aU30Y2Y8nVy/QuIiEZcfXbAmRr3PPC1hp5UcU4DpXKhYnC3QzYUPzVRo
+         e3MAOPe4mJi/8eL8aDEnS0OK+YFTs81k8+soRb8JgwuLtXVKSzbnCJ1HCE56YIMPS5Hv
+         zEhNPT9bDeQu7ym97Ak7RC7V3KKVa7IoMDFLWREUVQ7uf2dgKtnU9UA4OctM0y7IzOL1
+         PjtVAajUeEY6KpSQY/aXRHLbUkYmTXwL8r+ao5dfPEg1HTzHejQW61SHRr9FvFncfiiz
+         kUqChY+kZYHuoF+UufaXTOKrGVa6ZtvtKNZP0M3iHzsuL6z6Tr1u1A8YnUM0FJIW/Iv5
+         YLig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758469473; x=1759074273;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+EG28P0iOsg16EFPGe9CXi+kR66aQLbg4RmAzKPuYI0=;
+        b=vWI1CbUHXruu+hwlr7Q81mmBOy0kPQxF5T/hmm+VnexG7KKU1LyR7Gu7rTP8w1ewP2
+         C4OMI1jqbIiAwVO4ootR2RuS8wiInP6oCetDTA2PRPOGwIGtFO5r7LrlUujpawSu0OdW
+         HJJH+GNQA23SBpEj8/w4qaiELQlYMm24bGLAlS6JBORuomz3lDwgb/m3K36+Q+CFIVZM
+         iIyuwK1HBnK1hCDRi9wenq6pIXBJZTVz9f1uC2rNp1Tq2UkufRERD7Y6BnB41Nx9AMbC
+         1M9x6tMgmluVfKQDXaDag/A8AKk14xt/btZ7sag/80IAOz0dIIc9BmfbP2K5guc9X8cg
+         rtvw==
+X-Gm-Message-State: AOJu0YxlD0P4qibPxmvrhSVb9lklugXRZyTZEgFzm9JoYLjQmKCoWA5c
+	o+69gx/QDdZ83vzLG4qkIn8q3mZ4JEuMBPN3oH/pqlsLvNCl9Cod0Fg0
+X-Gm-Gg: ASbGnctP9+MI1RnUJZ/BLrrPIv2roHGQUO/lxAW1XXGzqRrwP8jEbltCCIZQq3mBG2K
+	PuoKX5v/2dKOmc765JoASnnYqQTtF4J1E6rgve2gl/caC1KjBO+Rn3qzNHum+xGroVAaYT1cvxS
+	5L+3HDYbcxX8LF7M7rdR6fjSEymyp7tYKnyHY3ElE8EdOALci/718qCNqWVIgY7UIuGXcCpEcle
+	bpaFjhBZEuNprQOIioR+Q/dz6A6oqYkqQWFlQ0Xc1QnrNHKFURX7/cdGGb7bX5kvSS5LH4iFHWt
+	uAotaaKX1xPDouTnsHn+aAJb7brJ7T1oRY/QQEdp9IeinIcQYFBm0tB4r2rC4PiP5haUHdvowfr
+	lOA1sIM8U3RTJqd3aZcibJ7kWYyVz87yusYNIfh9Vb7ywQbfjGpZ8+qG8OyTJs/s=
+X-Google-Smtp-Source: AGHT+IElssErqvSrdGuhyH0vVhCmFkqiSxBKWh3bqR5whmCN8++24mRRt9yp/basgQHIC2bBl/4ILw==
+X-Received: by 2002:a17:902:f645:b0:269:b2e5:ee48 with SMTP id d9443c01a7336-269ba52e56emr145153705ad.52.1758469472698;
+        Sun, 21 Sep 2025 08:44:32 -0700 (PDT)
+Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269a75d63eesm89692205ad.100.2025.09.21.08.44.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Sep 2025 08:44:32 -0700 (PDT)
+From: Yu-Chun Lin <eleanor15x@gmail.com>
+To: pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	cy.huang@realtek.com,
+	stanley_chang@realtek.com,
+	jserv@ccns.ncku.edu.tw,
+	visitorckw@gmail.com,
+	Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: [PATCH rtw-next] wifi: rtw89: Replace hardcoded strings with helper functions
+Date: Sun, 21 Sep 2025 23:44:10 +0800
+Message-Id: <20250921154410.1202074-1-eleanor15x@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 21 Sep 2025 00:10:26 +0200
-From: petter@technux.se
-To: Linux wireless <linux-wireless@vger.kernel.org>
-Subject: [BUG] arm: wlcore: wl18xx: connection timeout after resuming from
- suspend
-User-Agent: Roundcube Webmail/1.6.11
-Message-ID: <814f1b989aa987fa93e216befec980d5@technux.se>
-X-Sender: petter@technux.se
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Out-Spamd-Result: default: False [0.00 / 1000.00];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:41528, ipnet:109.235.175.0/24, country:SE];
-	ARC_NA(0.00)[];
-	WS_IP_WHITELIST(0.00)[109.235.175.26]
-X-Rspamd-Pre-Result: action=no action;
-	module=multimap;
-	Matched map: WS_IP_WHITELIST
-X-Out-Rspamd-Queue-Id: 4cTk8L5c1gz1XlB
-X-Rspamd-Action: no action
-X-Out-Rspamd-Server: m101-rspamd-out-5
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
-X-purgate-size: 2079
-X-purgate-ID: 155908::1758406227-F3A44325-16F7DB7B/0/0
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Replace hardcoded strings with 'str_on_off()', 'str_enable_disable()',
+and 'str_read_write()'.
 
-When I bumped from Linux 6.6 to 6.9 or later, I have issues with wifi 
-after resuming from suspend on my am335x (Beagle Bone Black wireless) 
-board.
+The change improves readability and enables potential string deduplication
+by the linker, which may slightly reduce binary size.
 
-When the wifi starts up it just repeats with
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c | 10 ++++++----
+ drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c | 10 ++++++----
+ drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c |  8 +++++---
+ drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c | 11 ++++++-----
+ drivers/net/wireless/realtek/rtw89/usb.c          |  3 ++-
+ drivers/net/wireless/realtek/rtw89/wow.c          |  5 ++++-
+ 6 files changed, 29 insertions(+), 18 deletions(-)
 
-[ 183.118816] PM: suspend entry (deep)
-[ 183.128244] Filesystems sync: 0.005 seconds
-[ 183.158165] Freezing user space processes
-[ 183.167546] Freezing user space processes completed (elapsed 0.005 
-seconds) [ 183.174835] OOM killer disabled.
-[ 183.178082] Freezing remaining freezable tasks [ 183.184998] Freezing 
-remaining freezable tasks completed (elapsed 0.002 seconds)
-[ 183.192636] printk: Suspending console(s) (use no_console_suspend to 
-debug) [ 183.206858] wlan0: deauthenticating from d8:07:b6:83:ae:56 by 
-local choice (Reason: 3=DEAUTH_LEAVING) [ 183.293875] wlcore: down [ 
-183.296231] wlcore: down
-[ 183.444907] Disabling non-boot CPUs ...
-[ 183.444975] pm33xx pm33xx: PM: Successfully put all powerdomains to 
-target state
-[ 183.444975] PM: Wakeup source UART
-[ 184.159782] wlcore: PHY firmware version: Rev 8.2.0.0.243 [ 
-184.262260] wlcore: firmware booted (Rev 8.9.0.0.83) [ 184.408702] OOM 
-killer enabled.
-[ 184.412231] Restarting tasks ... done.
-[ 184.441020] random: crng reseeded on system resumption
-[ 184.708905] wlan0: authenticate with d8:07:b6:83:ad:be
-[ 184.865164] wlan0: send auth to d8:07:b6:83:ad:be (try 1/3)
-...
-[ 184.865164] wlan0: send auth to d8:07:b6:83:ad:be (try 2/3)
-...
-[ 184.865164] wlan0: send auth to d8:07:b6:83:ad:be (try 3/3)
-..
-timeout...
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
+index 84c46d2f4d85..000753061e38 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
+@@ -2,6 +2,8 @@
+ /* Copyright(c) 2022-2023  Realtek Corporation
+  */
+ 
++#include <linux/string_choices.h>
++
+ #include "coex.h"
+ #include "debug.h"
+ #include "mac.h"
+@@ -1626,7 +1628,7 @@ static void _iqk_get_ch_info(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+ 	iqk_info->iqk_table_idx[path] = idx;
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%d (PHY%d): / DBCC %s/ %s/ CH%d/ %s\n",
+-		    path, phy, rtwdev->dbcc_en ? "on" : "off",
++		    path, phy, str_on_off(rtwdev->dbcc_en),
+ 		    iqk_info->iqk_band[path] == 0 ? "2G" :
+ 		    iqk_info->iqk_band[path] == 1 ? "5G" : "6G",
+ 		    iqk_info->iqk_ch[path],
+@@ -1901,8 +1903,8 @@ static void _dpk_information(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[DPK] S%d[%d] (PHY%d): TSSI %s/ DBCC %s/ %s/ CH%d/ %s\n",
+ 		    path, dpk->cur_idx[path], phy,
+-		    rtwdev->is_tssi_mode[path] ? "on" : "off",
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->is_tssi_mode[path]),
++		    str_on_off(rtwdev->dbcc_en),
+ 		    dpk->bp[path][kidx].band == 0 ? "2G" :
+ 		    dpk->bp[path][kidx].band == 1 ? "5G" : "6G",
+ 		    dpk->bp[path][kidx].ch,
+@@ -2016,7 +2018,7 @@ static void _dpk_txpwr_bb_force(struct rtw89_dev *rtwdev,
+ 	rtw89_phy_write32_mask(rtwdev, R_TXPWRB_H + (path << 13), B_TXPWRB_RDY, force);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DPK] S%d txpwr_bb_force %s\n",
+-		    path, force ? "on" : "off");
++		    path, str_on_off(force));
+ }
+ 
+ static void _dpk_kip_pwr_clk_onoff(struct rtw89_dev *rtwdev, bool turn_on)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+index 9db8713ac99b..9ffde0894d8a 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+@@ -2,6 +2,8 @@
+ /* Copyright(c) 2019-2020  Realtek Corporation
+  */
+ 
++#include <linux/string_choices.h>
++
+ #include "coex.h"
+ #include "debug.h"
+ #include "mac.h"
+@@ -1403,7 +1405,7 @@ static void _iqk_get_ch_info(struct rtw89_dev *rtwdev,
+ 		    path, iqk_info->iqk_ch[path]);
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[IQK]S%d (PHY%d): / DBCC %s/ %s/ CH%d/ %s\n", path, phy,
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->dbcc_en),
+ 		    iqk_info->iqk_band[path] == 0 ? "2G" :
+ 		    iqk_info->iqk_band[path] == 1 ? "5G" : "6G",
+ 		    iqk_info->iqk_ch[path],
+@@ -1881,8 +1883,8 @@ static void _dpk_information(struct rtw89_dev *rtwdev,
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[DPK] S%d[%d] (PHY%d): TSSI %s/ DBCC %s/ %s/ CH%d/ %s\n",
+ 		    path, dpk->cur_idx[path], phy,
+-		    rtwdev->is_tssi_mode[path] ? "on" : "off",
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->is_tssi_mode[path]),
++		    str_on_off(rtwdev->dbcc_en),
+ 		    dpk->bp[path][kidx].band == 0 ? "2G" :
+ 		    dpk->bp[path][kidx].band == 1 ? "5G" : "6G",
+ 		    dpk->bp[path][kidx].ch,
+@@ -2736,7 +2738,7 @@ static void _dpk_onoff(struct rtw89_dev *rtwdev,
+ 			       MASKBYTE3, 0x6 | val);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DPK] S%d[%d] DPK %s !!!\n", path,
+-		    kidx, dpk->is_dpk_enable && !off ? "enable" : "disable");
++		    kidx, str_enable_disable(dpk->is_dpk_enable && !off));
+ }
+ 
+ static void _dpk_track(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
+index 4796588c0256..c156c64f4d5e 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
+@@ -2,6 +2,8 @@
+ /* Copyright(c) 2019-2022  Realtek Corporation
+  */
+ 
++#include <linux/string_choices.h>
++
+ #include "chan.h"
+ #include "coex.h"
+ #include "debug.h"
+@@ -1696,7 +1698,7 @@ static void _dpk_onoff(struct rtw89_dev *rtwdev, enum rtw89_rf_path path, bool o
+ 			       MASKBYTE3, _dpk_order_convert(rtwdev) << 1 | val);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DPK] S%d[%d] DPK %s !!!\n", path,
+-		    kidx, dpk->is_dpk_enable && !off ? "enable" : "disable");
++		    kidx, str_enable_disable(dpk->is_dpk_enable && !off));
+ }
+ 
+ static void _dpk_one_shot(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+@@ -1763,8 +1765,8 @@ static void _dpk_information(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[DPK] S%d[%d] (PHY%d): TSSI %s/ DBCC %s/ %s/ CH%d/ %s\n",
+ 		    path, dpk->cur_idx[path], phy,
+-		    rtwdev->is_tssi_mode[path] ? "on" : "off",
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->is_tssi_mode[path]),
++		    str_on_off(rtwdev->dbcc_en),
+ 		    dpk->bp[path][kidx].band == 0 ? "2G" :
+ 		    dpk->bp[path][kidx].band == 1 ? "5G" : "6G",
+ 		    dpk->bp[path][kidx].ch,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
+index b92e2ce4f4ad..3d3de3641edd 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /* Copyright(c) 2019-2022  Realtek Corporation
+  */
++#include <linux/string_choices.h>
+ 
+ #include "chan.h"
+ #include "coex.h"
+@@ -1344,7 +1345,7 @@ static void _iqk_get_ch_info(struct rtw89_dev *rtwdev,
+ 		    path, iqk_info->iqk_ch[path]);
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[IQK]S%d (PHY%d): / DBCC %s/ %s/ CH%d/ %s\n", path, phy,
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->dbcc_en),
+ 		    iqk_info->iqk_band[path] == 0 ? "2G" :
+ 		    iqk_info->iqk_band[path] == 1 ? "5G" : "6G",
+ 		    iqk_info->iqk_ch[path],
+@@ -1920,8 +1921,8 @@ static void _dpk_information(struct rtw89_dev *rtwdev,
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[DPK] S%d[%d] (PHY%d): TSSI %s/ DBCC %s/ %s/ CH%d/ %s\n",
+ 		    path, dpk->cur_idx[path], phy,
+-		    rtwdev->is_tssi_mode[path] ? "on" : "off",
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->is_tssi_mode[path]),
++		    str_on_off(rtwdev->dbcc_en),
+ 		    dpk->bp[path][kidx].band == 0 ? "2G" :
+ 		    dpk->bp[path][kidx].band == 1 ? "5G" : "6G",
+ 		    dpk->bp[path][kidx].ch,
+@@ -2000,7 +2001,7 @@ static void _dpk_txpwr_bb_force(struct rtw89_dev *rtwdev, u8 path, bool force)
+ 	rtw89_phy_write32_mask(rtwdev, R_TXPWRB_H + (path << 13), B_TXPWRB_RDY, force);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,  "[DPK] S%d txpwr_bb_force %s\n",
+-		    path, force ? "on" : "off");
++		    path, str_on_off(force));
+ }
+ 
+ static void _dpk_kip_restore(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+@@ -2828,7 +2829,7 @@ static void _dpk_onoff(struct rtw89_dev *rtwdev,
+ 			       B_DPD_MEN, val);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DPK] S%d[%d] DPK %s !!!\n", path,
+-		    kidx, dpk->is_dpk_enable && !off ? "enable" : "disable");
++		    kidx, str_enable_disable(dpk->is_dpk_enable && !off));
+ }
+ 
+ static void _dpk_track(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
+index 6cf89aee252e..c7c90ddea409 100644
+--- a/drivers/net/wireless/realtek/rtw89/usb.c
++++ b/drivers/net/wireless/realtek/rtw89/usb.c
+@@ -2,6 +2,7 @@
+ /* Copyright(c) 2025  Realtek Corporation
+  */
+ 
++#include <linux/string_choices.h>
+ #include <linux/usb.h>
+ #include "debug.h"
+ #include "mac.h"
+@@ -55,7 +56,7 @@ static void rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
+ 		else if (ret < 0)
+ 			rtw89_warn(rtwdev,
+ 				   "usb %s%u 0x%x fail ret=%d value=0x%x attempt=%d\n",
+-				   reqtype == RTW89_USB_VENQT_READ ? "read" : "write",
++				   str_read_write(reqtype == RTW89_USB_VENQT_READ),
+ 				   len * 8, addr, ret,
+ 				   le32_to_cpup(rtwusb->vendor_req_buf),
+ 				   attempt);
+diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
+index 5faa51ad896a..6e4156ef898c 100644
+--- a/drivers/net/wireless/realtek/rtw89/wow.c
++++ b/drivers/net/wireless/realtek/rtw89/wow.c
+@@ -1,6 +1,9 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /* Copyright(c) 2019-2022  Realtek Corporation
+  */
++
++#include <linux/string_choices.h>
++
+ #include "cam.h"
+ #include "core.h"
+ #include "debug.h"
+@@ -1248,7 +1251,7 @@ static int rtw89_wow_check_fw_status(struct rtw89_dev *rtwdev, bool wow_enable)
+ 				       mac->wow_ctrl.addr, mac->wow_ctrl.mask);
+ 	if (ret)
+ 		rtw89_err(rtwdev, "failed to check wow status %s\n",
+-			  wow_enable ? "enabled" : "disabled");
++			  str_enabled_disabled(wow_enable));
+ 	return ret;
+ }
+ 
+-- 
+2.34.1
 
-then repeats.. Only way to make it work again is to restart the board. 
-This works perfectly fine in Linux 6.6.. Any ideas what might have 
-changed in later kernels that might affect the wifi after rtcwake usage?
-
-Some tries to bisect the issues points to
-
-5797b1c18919 workqueue: Implement system-wide nr_active enforcement for 
-unbound workqueues
-
-But that might just be due to some timing issues caused by changed 
-behavior in workqueue of the driver?
-
-Any suggestions for how to troubleshoot this further is welcomed.
-
-BR Petter
 
