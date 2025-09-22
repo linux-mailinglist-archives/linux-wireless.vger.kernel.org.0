@@ -1,187 +1,167 @@
-Return-Path: <linux-wireless+bounces-27581-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27582-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7E1B8FFC9
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 12:24:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA53CB90236
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 12:40:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEC842A1567
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 10:24:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FADE7A672E
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 10:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09AF2FE569;
-	Mon, 22 Sep 2025 10:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C972FF15D;
+	Mon, 22 Sep 2025 10:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ZFR+mn7/"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Juit/85/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44C6285045
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 10:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA3D3009C4
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 10:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758536661; cv=none; b=SOni8oVgW5LtMa6ISPUOvpBbi3xR5IblNqD+JLrDEgywVBi6/9rPntzy6UQDIVHYLPIObr8Saqai2XLEwVRxb15Ux4szo2Bywvk4+XVsROxcg4chCuUeWv18fcTckFO4QTUn1UcPAxMDgyY7ZwcLOm5ONUrk7QsKWf35kPUjCiI=
+	t=1758537437; cv=none; b=C0ICVj4g86iUvc8HYWO0TgdIPRGW16F9IfkP6WQ0o7s9s88IKmJbL5XyFMOI4DLt7WzNsVa/mlK8rY4FQiMqI19H9CqsY60FH8KmoUAkkJM5CGn49yHEIvlAXW6/aGD9N0lvut1MQ9/mF2gHjVC8ycCiw8b3DWoV15CINj4FY9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758536661; c=relaxed/simple;
-	bh=mjmDxeFm4ivEKtiuc70Fa2u1N2lU2/4nYzKVIqzkgks=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y1hTz/Z6ovjCM3Vz1xS+W+US2e4w4vyQxy+WdCELiYDfEAFrRTVljah5BOmoquwE1ovg5KtRCTxxNilqm0nVf954SCR+57idoN9sh84MQ01YS7WDsxn4KDdNrCxfKBC0znFVNjZ7dB/URBQ3rmAVPB1IrZ7Y1pJ7D0ak4tqD0kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ZFR+mn7/; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3c68ac7e18aso2373322f8f.2
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 03:24:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1758536658; x=1759141458; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=umA1vIerCRk0pXVnB2+DctUQUhZAfzJTqLbmXpMD4bU=;
-        b=ZFR+mn7/nzgyeV/hTzn2zjFPUvN3/JmMwbiw3oKpg5ry+XlJ9zW8rGxq7YTNzwji4S
-         VHcr+71LviHEBw06VA/RIQ65xqOnnQQOxAjSuS9x2U8zCMfEG6UXXOPWYQeU9FayasK5
-         3TNpfL1xQyNAn6qoxh6l7EubRgv74yiUr6dDd5JPcT8mK4mUOg3Ng4idYtPYjTH8Z65W
-         XMTRNqaRSxxu203IPLPveN+iuNvt+mkZcv3hCraS7MEDp9SsY6nH97LfCyVIifIhUS8G
-         XnL46ys4skY7lZI0gnrtaBMqE18cYnq2Ce+uFmMZDE86FD1M/pefC+geyIDL9HK6lu22
-         punA==
+	s=arc-20240116; t=1758537437; c=relaxed/simple;
+	bh=cfSVPF6lkLPU7ZiW9Bu/6aAGtyRRNExRiSik7JwfSFI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f7c4kjWrgIUVfdF3SMG+hHOC+/NpNfJ07CiQGn3bUOtoFXR/852D/lTQ46sT6kTp/QJt6V+ZU8xg5QBLKsZdLEnTKGtkEE5UWG9fRQ095F4itTaw+lOPa3KBinqS/RfTO2dqjBT/7NhrCpMXVvLTYn1uGTUwQvpKUKpjUpoR+8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Juit/85/; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58M8nJ7s018943
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 10:37:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	3mRZTjL9CNSBmFci645MvcJjh64mcxXuziqCwozX+OA=; b=Juit/85/N8GzNdhu
+	nkYqMh6RwKFWqhigRwb1uLYia0HWNiDDIMamC6jhMG8b1WJUknRWBD1Fa9dKAAsQ
+	8HC4ndf5Ruw4ArKnjBw1aXIgH1Qh3ySMfKAep3GaUcm1F4tRyKSaaPMmpmQ03HSf
+	cg1aaZ/NZCJ9v1dT+4fXfq6sBdacGO6CloAAciUHJkC3up4UBr9MOriFn6eC0cmO
+	zLWP4djqgs7BwusVL204Dkv84JpAEgtUlWAs57t9wo7py1lp/di73Xvt3VsAD4Lb
+	mE5u+oh8nt5KfvAeuK/xmiJUP8tW6K8oBm9i+MbjEjvMHRBEOhm1mLx4L8h5ULaG
+	9xyuJA==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 499k7svhx1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 10:37:15 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-24456ebed7bso52157765ad.0
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 03:37:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758536658; x=1759141458;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=umA1vIerCRk0pXVnB2+DctUQUhZAfzJTqLbmXpMD4bU=;
-        b=PRQfuNuPFQdYa/vIMRCD4vbzUHr5yZFij8W4l6DsQSVDUQawicA4c7QyGo6aSpFhut
-         chaWaHt73SNc0b4NXCRgc+egg6MxINLYbcN5TZbbDi88KlKpkHlvZNtofmZiLTapQwtl
-         C6sf4SLe6IjQdugjwQW6pcjcfgGyFFo4aCNqx28sCuAneMJOKtib+9L11ttaEHwFOkVE
-         xnzj9ThSq+hNk4cdFIhrN8PlyAbo8u/oHmW72vZv5Vl6OXbDUINMEX0ISR8sM7BzwwnM
-         P8HY7UAlETijoImEDLJNhPWVY6I+VtN2iy5KQueyC2yRgaKoHVkgtMcabw9pqP2xytTN
-         dJmg==
-X-Forwarded-Encrypted: i=1; AJvYcCUzaGg/2Mv3RdrZn0OaqVYqQjcGIupICRYLHuu1xhcl5VbUV9qm6rfH6aUEcKGEFyrod4rNaGydI7dR4a1Fjw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcEpuHlsQknHxElAR3hlbEwfGD5WuSX9kTV5ryTRZZ+hc9n1pa
-	ytl+Fi8yhAT70xdZsIJMiR1QqQhSBGMhpFzMr1B6EMxs4HlFB9IdWH7dAPw/zirJZh8=
-X-Gm-Gg: ASbGncu87GFy6k2V+7qXKz0VGqHKcPYUu9FfFQPM1IfZexwIjQ7LJv4erK3MH4ymX5D
-	SblXHYbZr3rTu3NmdBEXLkH6+0q+HC3HS7OReaFLrIJ9/ecuQL1gsg7WDlT3xYBWXa5vpkOM4Oo
-	SmcAyR4IcUJjKTot+u1NRFFihD4U3vx6VdAzGLKLYAOTW2qT48FXP8LQ1lUDY9QBiL218R4lqFT
-	uR9gI4BOQgT5TksOqLTInKO7JsmwHyjcJoGOyYNSeMSG3mnzdCzmE0+xOodmP9qrqiE4PUgW95R
-	KXTR5kqvK9qz5kfnSCsuT/TQyo3dBIKtikrnh9x+dZ1woWC6vmTg9S4nm95QVNTr29TYZg25fdS
-	hk5prW4BtPh2okWdmVz33KEX8WOJZasUUy/kFd5gJIP0ROgI=
-X-Google-Smtp-Source: AGHT+IErikI5V8i9nOdU/HqH+vwUjdrAqRhxahFz4j7FUkqJbloiiigdONdwoWf0lQ4Vrh8/CHc7OQ==
-X-Received: by 2002:a5d:5f95:0:b0:3ea:71c4:8e1b with SMTP id ffacd0b85a97d-3ee86d6cf37mr9253783f8f.63.1758536657829;
-        Mon, 22 Sep 2025 03:24:17 -0700 (PDT)
-Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f4f9f41csm218613625e9.15.2025.09.22.03.24.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 03:24:17 -0700 (PDT)
-From: Marco Crivellari <marco.crivellari@suse.com>
-To: linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Kalle Valo <kvalo@kernel.org>,
-	"Dr . David Alan Gilbert" <linux@treblig.org>,
-	Jeff Chen <jeff.chen_1@nxp.com>,
-	Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Subject: [PATCH 1/1] wifi: libertas: WQ_PERCPU added to alloc_workqueue users
-Date: Mon, 22 Sep 2025 12:24:07 +0200
-Message-ID: <20250922102407.186660-2-marco.crivellari@suse.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922102407.186660-1-marco.crivellari@suse.com>
-References: <20250922102407.186660-1-marco.crivellari@suse.com>
+        d=1e100.net; s=20230601; t=1758537434; x=1759142234;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3mRZTjL9CNSBmFci645MvcJjh64mcxXuziqCwozX+OA=;
+        b=oy5jVZfuQEbeZ7r2Sl2dj6YlovE/NarwEYG074kdLOj3IpkCqjFbXPlaKzjCmNNyXa
+         1CxdxziiRsJRz+Wsne+FvMM23/P1ZNAv/2vUrGm9Zj5WRb0sJC372MmTfTbUIiC+wr7e
+         3EkGAJxvG0QsiMuz7sBAkb+cVXyRJHfhze6V0udY/dpBiU83gzPsZGlQXry2Zn7EcY5m
+         HvJO914+0TyUk5KzD9HAFu6aoImwrTlReyTlkLkTezRCO9PcZgVaDgk06B8CBOcG58lv
+         Z6Ogt4iD/fpTA0V0/1CGL2oVURgGmfFqAqVPAH5XaZgTfGR1/iHzXvWIxBQEGwp1w5nj
+         b/ew==
+X-Forwarded-Encrypted: i=1; AJvYcCVtPAmEdEsbLC4cBpmJuN55PBJduyjDXjEnjGJ7qtWWA6sQMOFsaJVZYlfJxnfDyycM2XshFje8Bh1Wueq4Bw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgqqP8YVom6NTjK+cHKJc5SiH0UbEy7phiPgti/YWuqNKqiTxs
+	mHZ0J8Gt2U2IN1FKtq/M46YSunyEd7tm5o8SymuJ9LSDZ72qaJD2j41CZaq9cbbH7eHSxMtAAsB
+	mNuQ/HuglAegY1YlUhRkjui7nvVwfH895J+Mqqd1buQFWbPQ0L0AQDAPRbE/drvsznb0xY/0Yvu
+	4Vvg==
+X-Gm-Gg: ASbGncv6TCj4NzlMcGrsq6fjmF+7Qt6ckuD4pEK6psF5wKYTbToH9/lM4dj6y2cxivR
+	YgAz+6GNI2yQVarEPYAQzT0BN0nBLFlPGTlxxNeFbjV+X1LOy3P65NvNFXncTYo/zmbsft8eBCB
+	sMaFhb8nM/myK/Gfy952BBVflZlJJqI7SM3d1HDOPnmBbsV4rNxRWkUYdylokBFdy+ZDcdHxUWM
+	uJZGEGK+74TQErYqpJfsw5SB1HEftGkVHlD6QaSPnZpLMOb31j24yyg0PAN0CXsmPlax815PzjN
+	dSb2ZHwgNuB/ok8bvQwlXH1HdpFyjcd0omV2AfH3oVMmWurrwWlV3eFOm9m2/4pJszRm3aM9Djs
+	qlQ==
+X-Received: by 2002:a17:903:298c:b0:267:44e6:11d6 with SMTP id d9443c01a7336-269b755bdcdmr165506585ad.6.1758537434525;
+        Mon, 22 Sep 2025 03:37:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvcWulNg9Fj6/yWP0trbjkyuvTBxtJhrOwOY+wpV2j7uSi59HnUGyIfFBK0KLrGNwikmeEuA==
+X-Received: by 2002:a17:903:298c:b0:267:44e6:11d6 with SMTP id d9443c01a7336-269b755bdcdmr165506185ad.6.1758537433964;
+        Mon, 22 Sep 2025 03:37:13 -0700 (PDT)
+Received: from [10.152.203.89] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269802deb3dsm128985645ad.93.2025.09.22.03.37.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Sep 2025 03:37:13 -0700 (PDT)
+Message-ID: <4689a1a9-c37b-46cd-baf8-9e5fed06764a@oss.qualcomm.com>
+Date: Mon, 22 Sep 2025 16:07:10 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next 1/2] wifi: cfg80211: extend link support for
+ stop iface handler
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+        linux-wireless@vger.kernel.org
+References: <20250922-stop_iface-split-v1-0-087403cea9f7@qti.qualcomm.com>
+ <20250922-stop_iface-split-v1-1-087403cea9f7@qti.qualcomm.com>
+ <35fe10f3adaaeaf667e9f95931319fb6d1954a0c.camel@sipsolutions.net>
+From: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
+In-Reply-To: <35fe10f3adaaeaf667e9f95931319fb6d1954a0c.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAxOCBTYWx0ZWRfX56FA2jJGJ8hQ
+ wln0rc+DfVGRY//IHm7k/9PhLxDHxA4cewaVAyFM/lV80m030UvRtntr1RmwEpSK0q1Y53+D5/J
+ ZVlwhydReF457x6nFoxIdlihDCiT1/yP2gicS8ZZpScnHRRfjYYm15OtMhIyYmIxOEEKlsXvsrV
+ wcvL94KHX73hlGxUccXeGJMJxzbrwMcbFqtC70fAtetnR+WlWsXczUn9e9i0OO7wMBoEZbWwaiu
+ EbPXdYUBhAikgPYAC2Mb0Yw4YQUYG5KX8hd6NFssbjBVN5mNi9tbtZKTL8OXR4bUqffmejmALbw
+ JYsXOWeTBLCieXDr4mC+dQEAnIadfBbuoikZ9enMuA4NQTncPnW3/sVGdqIKo2whYnad0HzHp45
+ HYK5kCHD
+X-Proofpoint-ORIG-GUID: xZ4NLd1xnsvc9t6FLa7meforb3bxZ_AK
+X-Authority-Analysis: v=2.4 cv=bvpMBFai c=1 sm=1 tr=0 ts=68d126db cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=P6100GRzAtort1aoOjgA:9
+ a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-GUID: xZ4NLd1xnsvc9t6FLa7meforb3bxZ_AK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-22_01,2025-09-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 bulkscore=0 clxscore=1015 suspectscore=0
+ malwarescore=0 impostorscore=0 adultscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509200018
 
-Currently if a user enqueue a work item using schedule_delayed_work() the
-used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
-WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
-schedule_work() that is using system_wq and queue_work(), that makes use
-again of WORK_CPU_UNBOUND.
-This lack of consistentcy cannot be addressed without refactoring the API.
 
-alloc_workqueue() treats all queues as per-CPU by default, while unbound
-workqueues must opt-in via WQ_UNBOUND.
 
-This default is suboptimal: most workloads benefit from unbound queues,
-allowing the scheduler to place worker threads where they’re needed and
-reducing noise when CPUs are isolated.
+On 9/22/2025 12:30 PM, Johannes Berg wrote:
+> On Mon, 2025-09-22 at 10:54 +0530, Manish Dharanenthiran wrote:
+>>
+>> +++ b/include/net/cfg80211.h
+>> @@ -9559,15 +9559,19 @@ int cfg80211_get_radio_idx_by_chan(struct wiphy *wiphy,
+>>    *
+>>    * @wiphy: the wiphy
+>>    * @wdev: wireless device
+>> + * @link_id: valid link ID in case of MLO AP/P2P_GO Operation or else -1
+>>    * @gfp: context flags
+>>    *
+>>    * Trigger interface to be stopped as if AP was stopped, IBSS/mesh left, STA
+>>    * disconnected.
+>> + * In case of AP/P2P_GO types, if link_id is passed, it would only stop that
+>> + * link on the iface alone. If need to stop the whole iface, -1 should be
+>> + * passed.
+>>    *
+>>    * Note: This doesn't need any locks and is asynchronous.
+>>    */
+>>   void cfg80211_stop_iface(struct wiphy *wiphy, struct wireless_dev *wdev,
+>> -			 gfp_t gfp);
+>> +			 int link_id, gfp_t gfp);
+> 
+> I think the naming (and touching all drivers) here is awful. Much better
+> would be to make a new cfg80211_stop_link() or so, pass -1 there to mean
+> the whole interface, and have cfg80211_stop_iface() be an inline that
+> always passes -1? In one fell swoop you get better naming and not
+> touching all drivers.
+> 
+> johannes
 
-This change add a new WQ_PERCPU flag, to explicitly request the use of
-the per-CPU behavior. Both flags coexist for one release cycle to allow
-callers to transition their calls.
+Sure Johannes, will introduce a new API as mentioned and re-spin a new 
+version.
 
-Once migration is complete, WQ_UNBOUND can be removed and unbound will
-become the implicit default.
-
-With the introduction of the WQ_PERCPU flag (equivalent to !WQ_UNBOUND),
-any alloc_workqueue() caller that doesn’t explicitly specify WQ_UNBOUND
-must now use WQ_PERCPU.
-
-All existing users have been updated accordingly.
-
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
----
- drivers/net/wireless/marvell/libertas/if_sdio.c | 3 ++-
- drivers/net/wireless/marvell/libertas/if_spi.c  | 3 ++-
- drivers/net/wireless/marvell/libertas_tf/main.c | 2 +-
- 3 files changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/marvell/libertas/if_sdio.c b/drivers/net/wireless/marvell/libertas/if_sdio.c
-index 524034699972..1e29e80cad61 100644
---- a/drivers/net/wireless/marvell/libertas/if_sdio.c
-+++ b/drivers/net/wireless/marvell/libertas/if_sdio.c
-@@ -1181,7 +1181,8 @@ static int if_sdio_probe(struct sdio_func *func,
- 	spin_lock_init(&card->lock);
- 	INIT_LIST_HEAD(&card->packets);
- 
--	card->workqueue = alloc_workqueue("libertas_sdio", WQ_MEM_RECLAIM, 0);
-+	card->workqueue = alloc_workqueue("libertas_sdio",
-+					  WQ_MEM_RECLAIM | WQ_PERCPU, 0);
- 	if (unlikely(!card->workqueue)) {
- 		ret = -ENOMEM;
- 		goto err_queue;
-diff --git a/drivers/net/wireless/marvell/libertas/if_spi.c b/drivers/net/wireless/marvell/libertas/if_spi.c
-index b722a6587fd3..699bae8971f8 100644
---- a/drivers/net/wireless/marvell/libertas/if_spi.c
-+++ b/drivers/net/wireless/marvell/libertas/if_spi.c
-@@ -1153,7 +1153,8 @@ static int if_spi_probe(struct spi_device *spi)
- 	priv->fw_ready = 1;
- 
- 	/* Initialize interrupt handling stuff. */
--	card->workqueue = alloc_workqueue("libertas_spi", WQ_MEM_RECLAIM, 0);
-+	card->workqueue = alloc_workqueue("libertas_spi",
-+					  WQ_MEM_RECLAIM | WQ_PERCPU, 0);
- 	if (!card->workqueue) {
- 		err = -ENOMEM;
- 		goto remove_card;
-diff --git a/drivers/net/wireless/marvell/libertas_tf/main.c b/drivers/net/wireless/marvell/libertas_tf/main.c
-index d1067874428f..c51091e7c6c6 100644
---- a/drivers/net/wireless/marvell/libertas_tf/main.c
-+++ b/drivers/net/wireless/marvell/libertas_tf/main.c
-@@ -708,7 +708,7 @@ EXPORT_SYMBOL_GPL(lbtf_bcn_sent);
- static int __init lbtf_init_module(void)
- {
- 	lbtf_deb_enter(LBTF_DEB_MAIN);
--	lbtf_wq = alloc_workqueue("libertastf", WQ_MEM_RECLAIM, 0);
-+	lbtf_wq = alloc_workqueue("libertastf", WQ_MEM_RECLAIM | WQ_PERCPU, 0);
- 	if (lbtf_wq == NULL) {
- 		printk(KERN_ERR "libertastf: couldn't create workqueue\n");
- 		return -ENOMEM;
--- 
-2.51.0
-
+Regards
+Manish Dharanenthiran
 
