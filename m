@@ -1,178 +1,159 @@
-Return-Path: <linux-wireless+bounces-27553-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27554-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B42B8EFD3
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 07:14:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC73B8F03A
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 07:24:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0E7A7A2C24
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 05:12:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7284A17A6F5
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 05:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6F31E521D;
-	Mon, 22 Sep 2025 05:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AEAC1531C8;
+	Mon, 22 Sep 2025 05:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ivHhLo6Q"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XpHDYtGK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5651DC994
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 05:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA303AC39
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 05:24:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758518073; cv=none; b=uy/RuPxBlL9WMTEP6E2u1EQS1zwisqFLZPkCakhoAIhL5whc6ccxHdJxArurEmqk476ZjyLXB6ZJfnAE3k2rSD0RJaaviFSco6gvtA3q7DuOY8wcSKPUUc9oU6YTlSqYBhNjZikNE1WYq9076THsZSZUUcDFS8w3Yn6qjdcHlTs=
+	t=1758518686; cv=none; b=dojtiCmRYYUsHtfuXzRvqe3l+jtWCKvcXote0ZxQy+g3drmjF3lT04bMxlJlNCLiudKti0EHpqOxo7y0oi604zCzjPds6uhua6VdnKjzikRzCec527QYBNdhwW3329NCsbK1ZzVWbU970Vk8gUsMxYPSU0pvDR9VAlTEks6tlPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758518073; c=relaxed/simple;
-	bh=wvAjjXRp8ffbZXncOQ/lr7gTgf5RhdhZbGnPwkCvIPw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vt8Bc9CYxe1CxRi3doUMzulhjMQh2gWtvaBhgk7VqHdvTCk6ZdHtuSu0Oly4G9Uuoj67d6sfrR41MLfT/1aaWc+eFsr0MrV2NOkLrTGjvn0gTBumCSbhXASxJZHLuZY28yHSO7VMbVszumzYqcCBkd3Y6/bgW8kRCUniE3VjvNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ivHhLo6Q; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1758518686; c=relaxed/simple;
+	bh=FvlESC/mg0BypHa/Op/vXPzTWjgK5riMInn4Sm8u6u4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ldmaYsHWgmcusi62Iv1tITMqMG71PKy2E38mCwGDAw/KtllCYnvTXcK2AKffYBALZ1pgSVxgyBiu/07x6cUTT1Mjj/4EPFFEICQeqezpOulhRN/aaQ/yQosTBdT5aKRb/AHJiXOFBh0r+bndNSvKt6AObOjRwy8hMk6P8fAeRVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XpHDYtGK; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58LNc556027593
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 05:14:30 GMT
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58LMurlc031985
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 05:24:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4t2MbPKeeyTCerO+jZq2CMDKEJKFkfNJ8eZh5BM34mc=; b=ivHhLo6QlpOPXuHo
-	Wsuj+7nqsenYgGnx1ZJTcHbwvqN6vlNNvl4IAztNeIR2D76s1U3p8oSlK+YPGJV6
-	imDhCy9mCwVXjKVnA5XACMMrowDS6P6NtuzAIFtxRuaST5FfQM+Kzt9Oxt4rbWTB
-	IJ8OeZoIr+Ir0vHpHdfjo1RNWD975b73R33uFtxhNSdf5X4BUC32tyKD/0DTu9Je
-	6YSvqOly4xhNpjuZNyDNkm5mzzm+rP2/wJvhegYwnRk0q8dNzNtnbfImVheGKiCC
-	ouKzBoFWqsNnj4b8R/2ZKO08SHjA1Sm9ot8MPyXwe+9bUBtrTnKMX3lbaDPaz3x9
-	yablJA==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 499mg33cwn-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=A3d4gbSFY2D/xKjYBpEnXz
+	vpR5UF+3q/i3hnwHakflw=; b=XpHDYtGKvZCgpO8A976NsIzVF8lgTlnTVfEKiR
+	og0wSeVp5mejApm5LeY1m7OcG4h+XloTIn29TGe3p1BG+Rz6EXpEeY99gCBkqLQ/
+	36YS6O4pWqhBwW+NZaEXcJQHZ/u121z/tWWTszksd3Ag1hvx0t4AbWA9Gy0r3+g8
+	y10TAG3VRhmMVaHyhWNSmpji1Nj6e2KoZDCY6tOkzH6ac5cbEb1jeWuOr2OdLEnV
+	WzbmrHXdpw4AHEduS9qzu5ihzVG9Jn21Bi+ivjEi+2rHvnDW1EHO1gmfyFby8aMG
+	g8TUhK4TJq0VrlFWxY7Ukm2SA3rpt44F7Us8IaX9MCl568dQ==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 499kv0uetu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 05:14:29 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-77daad52913so2950133b3a.3
-        for <linux-wireless@vger.kernel.org>; Sun, 21 Sep 2025 22:14:29 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 05:24:43 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b4c72281674so2725182a12.3
+        for <linux-wireless@vger.kernel.org>; Sun, 21 Sep 2025 22:24:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758518069; x=1759122869;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4t2MbPKeeyTCerO+jZq2CMDKEJKFkfNJ8eZh5BM34mc=;
-        b=YWKsUq6rwKNZiWsQ2upeZBJjBbaTxWR4/zLb951SwtirclPXVDruFMN0yZcXuvo61j
-         JiPAAB9D7FdoPt6hrtyF3+q4AJjZ5BK2lA8nstbBpWubrTk6Hl+LlDBGtWgK0lrKclvE
-         EGE+zQP6u3UuIj8GcnzeS7Vucq31K1xEhSkTiDaRNHswb98lG02uyKxle9gensiOUHkB
-         zTVXI6oaNYqEazywvPhc7pkBcSqJad8yYRTzpdLeF2tDRa2ntzrLcZtzeIs7PE19W7rL
-         J2XR8euytg3WpGwmhZ5icGdT3q9srU36xnVCuAfh5pDMnxgPIvXdePh+2YcYao6nZ5Pv
-         8OGg==
-X-Gm-Message-State: AOJu0Yza3XVFhhtqYVAHXa6yqe0N/zCR2leRNX1fNU0pUTEqFbaD25Tv
-	9Rw3Jgv4kR3unU7LIrxWpOQshnVw3L/9vspBuQ4qKHGL3W8JMD7DsoyP3+SVee/gduK56h7Kmy3
-	K3N24KHuzle+Q+gAq/IUig7aFYhqPsOERV5dyY/sERfIYo16+gK2gLfi6+gABis700ssni8ISAj
-	rDLw==
-X-Gm-Gg: ASbGnctYENBpgSgE088z+fk9IWZFOidan8iP+X5j6HsUv7fPjZYqadsHhGcrxw8tpDO
-	O9q5vvkajP+SXz0H0DvfiqdGK5SAUhwQ9ci6ISmSzhRl9mmyAXGQexHj1Gw3omc51huCEdjlegC
-	RLS0M0vtxRpbhuW9wKe8g74J87KnDFvJI0yaPPl0xjAuQOj13vloosqdlP6e9EmjcEg4wtFixhj
-	Ar6ALSrNl6BryKO8/Y5nQ7Ywx9JJHVE+1TGG/HHo3OzJQBnPLviybPfQDWBk/HxPMJSaqVFai75
-	YKh6JV8j16hf032apNSEfTZbMiDu0ijRT42KiLQ6q6zYcSszE8LVw0fNQ9GPntotRI/y/7+HvAS
-	Kl0SJX3yie8hBPG05Px4NNeHztGUB7K5/gEeU
-X-Received: by 2002:a05:6a20:431e:b0:249:824c:c60d with SMTP id adf61e73a8af0-2925f75d4c6mr16889445637.20.1758518068660;
-        Sun, 21 Sep 2025 22:14:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEjli9PJGgzAEkxVobbRVAo/BmjPvQIrfSHP0w7nF8GqIuv8u+ix93pGvdvoksek93V0d74PA==
-X-Received: by 2002:a05:6a20:431e:b0:249:824c:c60d with SMTP id adf61e73a8af0-2925f75d4c6mr16889421637.20.1758518068196;
-        Sun, 21 Sep 2025 22:14:28 -0700 (PDT)
-Received: from [10.133.33.83] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b55396db81fsm4702577a12.19.2025.09.21.22.14.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 Sep 2025 22:14:27 -0700 (PDT)
-Message-ID: <aae30f00-1d05-4f3f-afb0-8f4924f57bba@oss.qualcomm.com>
-Date: Mon, 22 Sep 2025 13:14:23 +0800
+        d=1e100.net; s=20230601; t=1758518682; x=1759123482;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A3d4gbSFY2D/xKjYBpEnXzvpR5UF+3q/i3hnwHakflw=;
+        b=X7he703XquvupwBonmdhhv7GSh22yVYa1gSU7iY6sMtlTkxP54MKDqp8nWT4oC/otd
+         UIJrdIiKQr2d/M8s40jyziwd/0Qn15NbDuKjL+eszz9cf7ec9VNC+V4AYXOBQDgoVvtT
+         pjUCPKZ1R3l/uRT/Ud469bEJI712Npiqjm+0slGISG748GyYLIno0MP8MSdgCMb/1hbY
+         XljnUlFJSyI2LG4v1oAE9qhlgEm/gtKI2f5hlW8yLTxHKvJvg91UZfkmkoFgIliVEUMm
+         ruSuuaAjiknhgUqBDMnc1tyPHSvOSVwS5lZ+natr5GaV0W+envjp8nC9G44UhAk+2ZTX
+         3qLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVySyJLyVD7d6CUb6DKpVGbgC0ijti1SVeBzCaJkfXZeuSF0PWgbFuuNTo+keTPZSPVq8ouupuOKOIO0bk9XQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI3Esd4i/N3r96smbk/lqvU+RrVwmODK5mAp8VVoF6F99MWAZP
+	J71XasVt6YY3dtkp//mvxOzLVP8xDne3GxPVxzo56Qn9vXrM8UyPtrH5qUwaJ+AUsaNPNgcSrdT
+	mqx/j4hmsGxjK0kRn41SF5c9NDnSJaBzMGN2Yvq+r2ulpZuu3RvPDvJPmo/joFTdR8nIjjw==
+X-Gm-Gg: ASbGncvCnNL+bzEL5WVWLKduIXIFNuz16gyFE7OpFpNUATBVHVDyH7mqqbBSgvKyyDg
+	dqBxcIJmKCfuHX2AoiHUoTEfcq5STBhlk/ixfw25c2zlWi7yVgBxbnrNdXMrRILF76HJ8OzzRuC
+	ETogWQBXlut7aJH+dx73AP0WCNauWmFmgNwmvupYtxdwV4O7jyIFR2vTEzMj5HCRaP/g/rGnzCh
+	H87ENqAtxXUIEc+1S1HYuMMl0b17e6TDtEcOCxRLuVyUXb+ETT2fDt+5HEkiJX8pKcfzbfwlmRH
+	uFRe6GjwGe+rUroEE8PzCk3r7pAsCe7bUG+xjA8rAENnOHMAiA6HeFvSkwk4XNts0QWY9W6Yo02
+	rp+1MGIJlHeT9rGQifO+aN+VyC6XbhKklLgKSNLl9YPihPUCNDzhf6k6oSC0wcnWO1cYqob7N
+X-Received: by 2002:a05:6a21:33a1:b0:2c4:c85a:7da5 with SMTP id adf61e73a8af0-2c4c8884a30mr967797637.6.1758518681922;
+        Sun, 21 Sep 2025 22:24:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHEzHmbyTmeaOwGK6g6Vg96fZfwCnWB+FtOA90BhnEQj92pfjzbUxgwbFA4cmAKICgJRc2w6g==
+X-Received: by 2002:a05:6a21:33a1:b0:2c4:c85a:7da5 with SMTP id adf61e73a8af0-2c4c8884a30mr967759637.6.1758518681426;
+        Sun, 21 Sep 2025 22:24:41 -0700 (PDT)
+Received: from hu-mdharane-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77f1815af13sm5938567b3a.0.2025.09.21.22.24.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Sep 2025 22:24:40 -0700 (PDT)
+From: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
+Subject: [PATCH wireless-next 0/2] wifi: cfg80211/mac80211: extend link
+ support for stop iface handler
+Date: Mon, 22 Sep 2025 10:54:23 +0530
+Message-Id: <20250922-stop_iface-split-v1-0-087403cea9f7@qti.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-current 0/7] wifi: ath12k: Fix Issues in REO RX Queue
- Updates
-To: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250806111750.3214584-1-nithyanantham.paramasivam@oss.qualcomm.com>
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20250806111750.3214584-1-nithyanantham.paramasivam@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAzMiBTYWx0ZWRfX0vrsE2iZ533E
- EJR8bw0cRSauehtzxVuELZCag0BGyDz0RTaHPby+Gy0xOCne6+LiDZ8u01TLojPGbUtL+ztma3S
- gzoZn1rdE9n8KGZCYzimlafWUqzbu/95YqrYzjY46+Lx/QfK1+EbIjSz2iVlfKmKBB/T8MeIyeO
- SO/jKozC4hCTZShxX3ntfmZfzVJNQoYDbvF1z8EAF0F4pd4Qz/08mKCYlM8XLxldQQossXds3OH
- 4oq+bKZKlxd4jBg0FeoGmJeqyJ7x5ufyC45O+4P9xjK+vFTRHPJhDBb2lYoZCjFkp/k7gHaHQXZ
- fG4fduPgMUGCAnVUw5S1ehB5fREsxO9AVmnOvT7LHBc4E8nKlA7/mrs9DDYMeWrIEP7M7u3PGfJ
- eerhyNsI
-X-Proofpoint-GUID: Kb5yoY6o40L8NJN06-McQJ7_18E210fD
-X-Authority-Analysis: v=2.4 cv=UvtjN/wB c=1 sm=1 tr=0 ts=68d0db35 cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=xzmuE1EisdE_tCyGCEEA:9
- a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-ORIG-GUID: Kb5yoY6o40L8NJN06-McQJ7_18E210fD
+X-B4-Tracking: v=1; b=H4sIAIfd0GgC/3WNwQ6CMBBEf4Xs2SUFwYIn/8MQU3CRTYBCtyKG8
+ O823L1MMpmZNxsIOSaBa7SBo4WF7RhMcoqg6cz4IuRn8JCqNFelKlC8nR7cmoZQpp491nQps7Q
+ 0SicFhNnkqOX1QN7hw456EsGRVg9ViDsOBPc9Dhd9lP6zF40K81obZc6ZznR7mz3H89v0jR2GO
+ AhU+77/AJaEnzLGAAAA
+X-Change-ID: 20250908-stop_iface-split-be69429a0718
+To: johannes@sipsolutions.net
+Cc: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+        Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>,
+        linux-wireless@vger.kernel.org
+X-Mailer: b4 0.15-dev-1b0d6
+X-Proofpoint-GUID: m2E9jcBW6-7q1bogo0VNyOAkY4lLluJe
+X-Authority-Analysis: v=2.4 cv=RO2zH5i+ c=1 sm=1 tr=0 ts=68d0dd9b cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=n2Nl_DE46FBFl3_Z1OwA:9
+ a=QEXdDO2ut3YA:10 a=3WC7DwWrALyhR5TkjVHa:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAyNSBTYWx0ZWRfX8U/r6uEOiaxJ
+ isUxUGrKZ5DhM8K0Xs8CSkl7ITQGooMo0vTUwMWQnMKXDRdG1uGRo0V6EuJ5FDFk5Pu6QCmq99u
+ ctQfsK5fH/kNG5/VU5PB6dmwUdCOysgBCr7i6lrIGg5FiMQVVriAbtt2joAIkjgXDUFOg9D40fP
+ etrSOTKnCHR62ityOMZbF8YOvHGBKNjlEaqka07IPTOVgwqHcoI56nEbeK6PvXBsLcm2N6Xaocx
+ nog7hSYaA2yoJPHs2xiC4PPK7bLO7Kmw4pGBCIJ0rMhspxdAjf+FN8rerLN8OGYVPh4lP0Aq/7W
+ pANT0pbKH/Yo5w6mCwOGYxuvrBHqZC/Dzdgcoec96YpFMuZV9DQUKqUA/9W4V+SbkH6GFjxNPdT
+ X0JshP0I
+X-Proofpoint-ORIG-GUID: m2E9jcBW6-7q1bogo0VNyOAkY4lLluJe
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-21_10,2025-09-19_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 adultscore=0 impostorscore=0 bulkscore=0
- malwarescore=0 suspectscore=0 clxscore=1015 priorityscore=1501
+ malwarescore=0 clxscore=1011 suspectscore=0 priorityscore=1501
+ impostorscore=0 spamscore=0 adultscore=0 bulkscore=0 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509200032
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509200025
 
+Currently whenever stop iface is called, the complete iface is getting
+stopped. However, there could be a need for AP/P2P_GO type, where one
+would like to stop a link alone instead of the whole interface.
 
+Hence, extend stop iface infra to handle the event on the passed link id
+and stop that link alone instead of the whole iface. This would be useful
+during cases such as failed to finalize CSA. In that case, a link alone
+could be stopped instead of stopping the whole interface.
 
-On 8/6/2025 7:17 PM, Nithyanantham Paramasivam wrote:
-> During stress test scenarios, when the REO command ring becomes full,
-> the RX queue update command issued during peer deletion fails due to
-> insufficient space. In response, the host performs a dma_unmap and
-> frees the associated memory. However, the hardware still retains a
-> reference to the same memory address. If the kernel later reallocates
-> this address, unaware that the hardware is still using it, it can
-> lead to memory corruption-since the host might access or modify
-> memory that is still actively referenced by the hardware.
-> 
-> Implement a retry mechanism for the HAL_REO_CMD_UPDATE_RX_QUEUE
-> command during TID deletion to prevent memory corruption. Introduce
-> a new list, reo_cmd_update_rx_queue_list, in the dp structure to
-> track pending RX queue updates. Protect this list with
-> reo_rxq_flush_lock, which also ensures synchronized access to
-> reo_cmd_cache_flush_list. Defer memory release until hardware
-> confirms the virtual address is no longer in use, avoiding immediate
-> deallocation on command failure. Release memory for pending RX queue
-> updates via ath12k_dp_rx_reo_cmd_list_cleanup() on system reset
-> if hardware confirmation is not received.
-> 
-> Additionally, increase DP_REO_CMD_RING_SIZE to 256 to reduce the
-> likelihood of ring exhaustion. Use a 1KB cache flush command for
-> QoS TID descriptors to improve efficiency.
-> 
-> Manish Dharanenthiran (2):
->   wifi: ath12k: Add Retry Mechanism for REO RX Queue Update Failures
->   wifi: ath12k: Use 1KB Cache Flush Command for QoS TID Descriptors
-> 
-> Nithyanantham Paramasivam (5):
->   wifi: ath12k: Increase DP_REO_CMD_RING_SIZE to 256
->   wifi: ath12k: Refactor RX TID deletion handling into helper function
->   wifi: ath12k: Refactor RX TID buffer cleanup into helper function
->   wifi: ath12k: Refactor REO command to use ath12k_dp_rx_tid_rxq
->   wifi: ath12k: Fix flush cache failure during RX queue update
-> 
->  drivers/net/wireless/ath/ath12k/dp.c       |   2 +
->  drivers/net/wireless/ath/ath12k/dp.h       |  12 +-
->  drivers/net/wireless/ath/ath12k/dp_rx.c    | 336 ++++++++++++++-------
->  drivers/net/wireless/ath/ath12k/dp_rx.h    |  18 +-
->  drivers/net/wireless/ath/ath12k/hal.h      |   1 +
->  drivers/net/wireless/ath/ath12k/hal_desc.h |   1 +
->  drivers/net/wireless/ath/ath12k/hal_rx.c   |   3 +
->  7 files changed, 251 insertions(+), 122 deletions(-)
-> 
-> 
-> base-commit: 95bf875b89b48a95a82aca922eeaf19d52543028
+Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Signed-off-by: Manish Dharanenthiran <manish.dharanenthiran@oss.qualcomm.com>
+---
+Aditya Kumar Singh (2):
+      wifi: cfg80211: extend link support for stop iface handler
+      wifi: mac80211: Update csa_finalize to use link_id
 
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c |  2 +-
+ include/net/cfg80211.h                             |  6 +++++-
+ net/mac80211/cfg.c                                 |  8 +++++++-
+ net/mac80211/chan.c                                |  2 +-
+ net/mac80211/iface.c                               |  5 +++--
+ net/wireless/core.c                                | 22 ++++++++++++++++------
+ net/wireless/core.h                                |  3 ++-
+ net/wireless/reg.c                                 |  2 +-
+ net/wireless/sysfs.c                               |  2 +-
+ net/wireless/trace.h                               | 11 +++++++----
+ net/wireless/util.c                                |  3 ++-
+ 11 files changed, 46 insertions(+), 20 deletions(-)
+---
+base-commit: ee6960bdbb74499516261b84eadb19acc01cb361
+change-id: 20250908-stop_iface-split-be69429a0718
 
 
