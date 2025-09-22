@@ -1,260 +1,190 @@
-Return-Path: <linux-wireless+bounces-27579-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27580-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A6FB8FE35
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 12:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3065B8FFC3
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 12:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C3EE189DA00
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 10:00:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A2F71895E06
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 10:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A41D17A5BE;
-	Mon, 22 Sep 2025 10:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B302874F6;
+	Mon, 22 Sep 2025 10:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lLEtZqGF"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Uf7ofyBF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD34182B4
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 10:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AED54758
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 10:24:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758535232; cv=none; b=nnc1FQS/y9NUvSjXBFQottvGcILIfOcGh115DCEpVkQ1Gv8AWjmUbwpzhfU0NNxG+mteWj+zPU+oU7RqaTxOFvNb0PoU0iyFB4kD3drZqwmG0KbD6GEHVkbnicW6OpheRTDCYvGb2dENh3se4FF0pLi5xxi7ReAn+sw5uJdWEpo=
+	t=1758536660; cv=none; b=rwk1jhVnTHqsARcA+fMR2IWXpmqkHiC6vwSjVtPZtnfUYCOzNaTGmpSEAXKOr9b5LM5aDllAIvuenW8CuWXJAXM+3RI3d/6tlbcvWHaNlEqa5p3sdAC43joBhvElqNGICWjS9YDcqQTfQFPFbeXg6tzdQAqGLLzhasRAPfdRDXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758535232; c=relaxed/simple;
-	bh=WUjf2nr/zBVgTBH19HZHpA2Urqn/4+Zx8YVX6YrCq30=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=df0VW5f+lV091xV23+zb7R71gz8uBHTpUvm6boBxHxjTc3z+rlkn1+FsdWP7G/nhQnU0ow7OhI1t+tF/LrC+t2xRTk7Lh3xVBC+uyl7zXmG08smEhB4h3qGxi9IViwk8phT0tAKGMmfM7cV6xLJslyoKy4bvANmOVwUE/lsw/FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lLEtZqGF; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58M90bMN017057
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 10:00:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	PY4sY6MmrFt3xxsaiWMW5QYeC8Yx0jKssOaY6t1KKpY=; b=lLEtZqGFMgPnHcr/
-	KOksm0XgShheHAArOKMspnID8roMuBH6M0YA/caR9BnYPu59XAI4efzsjxJ8cY6C
-	OCKkJ6XyIF0pJdraddn52bRFC+FCOh5GGZdoCPA99k43MYIMz+begh0fRGRko85E
-	6U68c3B7YDP17/qYagYHJggjRxHT3SPFYURX5jcq5QaOGVU3ZoKHDGFYro1VDG9q
-	hTCM6eLEmm7q9NR3Nt+RgZ2DfSOPap+MadY1Lv9gw9kc6WQ3SCl9bi9HYt0+gxPT
-	SohpnCOWZ/91Hlby554/p71edbCJhP4S5nsNqgQkcC1UGL4iic7TwvBKcUJLS62f
-	DXh12A==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 499k98cbqg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 10:00:29 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-77f352c04adso897909b3a.3
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 03:00:29 -0700 (PDT)
+	s=arc-20240116; t=1758536660; c=relaxed/simple;
+	bh=WeCgHLtnSgNpZ7gn36nF7rz1YE2rl4o0+q2+1VO9gL0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KtFABQ2SaUJPTA/hW9szZdZbVk6IsX00fz0pp1wEwxxZqQlf8yVE5e4QgtcLS8wTpZ1e1gxFdxtneL9ixxP+YxbHn6L5S9Dy/1GPjYDtkzDN86JPg4MGt87XeuucIWUO8A4utlD9pWGZjnU19PDWMMGh5GiC5qv0ZDMdcPPRWXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Uf7ofyBF; arc=none smtp.client-ip=209.85.128.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-45dd5e24d16so40614985e9.3
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 03:24:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1758536657; x=1759141457; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iLMVfYX+Ed+WkB440q1jx27jrFMxDy/tvf6qzWMnybQ=;
+        b=Uf7ofyBF0Bzt4XZLo786kh749jHm0tjXuIgQd3AFImuNRHWH+LWX+RSiyM/BhhGChx
+         27sM+I2NKAoCfQZhGC23HXIdt8p32tnhspMD71eQcpepjeBq/66THVsOSE8VF9U/bBIr
+         jPes1IXA4win1e8/LhUlTRoNP/0oyQI6/MxFIoMXIHAsQ/v7wLeclgWmebRQYtkfwyA1
+         N2tX33ennHQTnThz+W4WQ5VsraNnGnqoN+PoyGZ1KHpxEDkS3QkRYDgHxhEalSLGqoPa
+         hDuZv+IreoOpM6LhVIdzKy0ztqOlulxfzjyHiCwWihzXdxM5C0oxmNIZBdcY96TkOHg0
+         3Y1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758535228; x=1759140028;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PY4sY6MmrFt3xxsaiWMW5QYeC8Yx0jKssOaY6t1KKpY=;
-        b=lUvKArcruKZi8LpD0g+UhHQsXRcG8sjqw01lJ0LO0lG7K4dwfInJOjVGqv1l9D+L1B
-         a3NgYB4B5VwM9vmWvOqF3rhpwKEwpwt8499ZkM98/kHIHOfEpJ9edbXE8iG4WwEq/WjL
-         ON9o+3qsQHBMMchz0HcTpjpbKrXaR7uwoG69goxXWQLePvuGshcl9Z1cnHQY7aqu8+NR
-         AOiop6VAwKGRT88NXnzdsq1b3RoY+Msb2lNrMavUmTQfX1iUB4DNVeyYbNpVs7ptJkrZ
-         3AxQzMP5Liit96nwv85YyFwbtV2vrvz/MwWE9DXcyurEYRJSSpbleLtZ4oVGArlLER9S
-         UAfg==
-X-Gm-Message-State: AOJu0Yy9tgwVSnewI5ydpaUkpcxjP/91foI/zo6CFfVHMyM/IjYEGSYR
-	816C+nsn3v9LGxcBrfpnNzjG3+08FSXtPH+MEEyW86icdUeGP3+psknN/60G7YcnlnS77lSjG79
-	YXnE7P2SuamMIgN59t7HiF8JT4US9qXND+YvOUh0FO0IDdWU4yKhtmv/saIumeJJF7UtFHA==
-X-Gm-Gg: ASbGncs90fwfD0J23uFbVzSoGuWbD+mO4TwgkB/QcKiy1CVYW0wK6mjW86n4Dl/qTxc
-	/qbv2LMFu7Fpr5DFO6sbUQihsCIyQxdVbgmBNvsWzn/jgHtfuWWMbRObuNc2EooNpvYoGwlZJlk
-	Uo6yrnQL+1SexZ+gnNOtAvf+s62wAu0nWMey2zkUbBm3RokRIIDfYnMHq9HgE70JYXTnrXVfzoX
-	ukjjgAq4AfWwZchTbQd7iU02BECRi8W4czE27g7FbgmTkjo2xleGMqnE9fTuqoYaaCOP6l8uqeY
-	QWrYBLc7ZedAsAIDjZ3lsSxGEECqbQ7iO/VLATz47fa05BZlDsFtKa8RWmM3GxCPYDLR4nMUCLY
-	6YnzKTiS0YUr46g6dpW1yQmnvzpjblILaTXw9
-X-Received: by 2002:a05:6a00:22d1:b0:77f:414d:3774 with SMTP id d2e1a72fcca58-77f414d38e0mr2261247b3a.4.1758535228085;
-        Mon, 22 Sep 2025 03:00:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IECC0E5x38QUGEQsU0mrBt2q89oRS5DQAvPo5rg7+WX8hj7GkAgpphvgJRzcLcQaUXkRnqWgQ==
-X-Received: by 2002:a05:6a00:22d1:b0:77f:414d:3774 with SMTP id d2e1a72fcca58-77f414d38e0mr2261180b3a.4.1758535227365;
-        Mon, 22 Sep 2025 03:00:27 -0700 (PDT)
-Received: from [10.133.33.83] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77cfc2473d0sm11963900b3a.27.2025.09.22.03.00.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Sep 2025 03:00:27 -0700 (PDT)
-Message-ID: <95f50699-fe14-4858-aab6-f2e5a427587c@oss.qualcomm.com>
-Date: Mon, 22 Sep 2025 18:00:24 +0800
+        d=1e100.net; s=20230601; t=1758536657; x=1759141457;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iLMVfYX+Ed+WkB440q1jx27jrFMxDy/tvf6qzWMnybQ=;
+        b=UN1wmoGsIjfcEc42GTZDWvmyB/ufpLpKAmCGH/BoJKwcOIbEqLms8H6Hce7YqEnQYz
+         XgXNl+u5lgr/HH2TkZjnfaFSwzlYrZvf6nNJvodt2wQlLCIRzhUYkUn6aKyRgPDN5rfc
+         coeDr5sY1TzFrMkeVelJ0afZktyyb9g41IcNVP/WanT7U8CfnvM3gMir8hjeCaw1iKAu
+         htvoXDctUiuFJafvKWfcoPVDBMVv9YGYGclJWjKbSffQmRbpAfU7+IKVa15QUlZZbK2h
+         E7LOlRa/ZaYD3MrTCb3wDMaflvvppr0HAbcU2xYPBdJl/5134xeTUxEfaK9HFnV1MXF2
+         Eatw==
+X-Forwarded-Encrypted: i=1; AJvYcCX83yI4bfKsVMV0rKqQj69MRIFllGVwgycsFHmODzSDbw7AMa+o64Wx6eBMpBUaZWCKccqZN9e5VGfm/uiZ7w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzL6wmchgLHLqjHxWJZ7INcbkIxqFsUEyk4BLq273p5LR30Dsy4
+	Yjkq+6CMAU3tn4z9QGQbur/zzZADv2b1050jJ6jQtk05h1GiA/6WPOxXzt5ZG3oYvP8=
+X-Gm-Gg: ASbGncuFoanYwugUBgghQM8y1Mpo43CirvNlnTEnwASheTfU8VqWOvmDNtFya+utO4M
+	M3HcNydNf/1KHOQA//U96gdIKWpEweOv0cRArXUXu8Gp3s/nQ+gJPSFE9VtYToySNnTJSQrSpYK
+	3dXS1+Vs4uhMJdX2LoqcEHnGu4B/0AZcovk2YC0JlpTz0OZMfbgAykfOfRk82WYPSM28KIDHIf/
+	Jzp26q9NBEczNaI4JIDG5PIGJUz+O+yDwopu/sdHOx1mVg0pzraP6nZeMgiXYOislxndZjkJBr1
+	V6dv4rDp9oMk1xjebBFm4w0oeGDHeWfiJanOt7VhWwmftPNoNZy4+9xbwl4CM1QcwphxcAt8l+X
+	Qzni/ACWzyGEwf9JtI0+aWj+t7c7SjR+qpEWwh+UGm1hDxGw=
+X-Google-Smtp-Source: AGHT+IGv7BD/KGw2dPm5H7KTTZtP4TTXvAHrXkuN0W6sv8PTNay36d6Kg+AK+ZE5blJMp+jSnKWPJQ==
+X-Received: by 2002:a05:600c:1f90:b0:46b:9ab2:38d5 with SMTP id 5b1f17b1804b1-46b9ab23ac7mr54954705e9.31.1758536656657;
+        Mon, 22 Sep 2025 03:24:16 -0700 (PDT)
+Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f4f9f41csm218613625e9.15.2025.09.22.03.24.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Sep 2025 03:24:16 -0700 (PDT)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Kalle Valo <kvalo@kernel.org>,
+	"Dr . David Alan Gilbert" <linux@treblig.org>,
+	Jeff Chen <jeff.chen_1@nxp.com>,
+	Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Subject: [PATCH 0/1] wifi: libertas: add WQ_PERCPU to alloc_workqueue users
+Date: Mon, 22 Sep 2025 12:24:06 +0200
+Message-ID: <20250922102407.186660-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next] wifi: ath10k: move recovery check logic into a
- new work
-To: Kang Yang <kang.yang@oss.qualcomm.com>, ath10k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250922063112.1324-1-kang.yang@oss.qualcomm.com>
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20250922063112.1324-1-kang.yang@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: v1UnH-RZfJ7lPwB1pUy0VDb22wyhvlAA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAxOCBTYWx0ZWRfX7A8ZX3UZvi1H
- XwifjKESQQGNDjDVJGHpu7OAEsiKFTnqk5zCciiEzKZZ5jMvgwXBsuLjBRXLT8E+cmqizxiiCqV
- eoHlc+ia8ddZARnEiPicToAiKQvdMsNdepMJVBugrusOz2AkXfrYkEta7I7Ul55wKNvOA5agmAA
- nZc6ALu5CXHyGfQx/HDDcDOxrcgj6mi2mPygvIer6TVF5mtH9dMu2g7MI/Ur7zWVV94dMleTaX+
- HA/U6lVhWjcH+eHvV9A5h/7et5gmq7qQh84VVDCS/5+NZPveP14/hMpNQcEgcmuhBolNe1n7iKS
- +Qx8fRMxcECpqFch2itK9pbR3xKCu4G/JW8b6acVeyB1zI5l76tSiMmPHIiiaHh2NHtxRAlPvNf
- 6nos6WFB
-X-Proofpoint-ORIG-GUID: v1UnH-RZfJ7lPwB1pUy0VDb22wyhvlAA
-X-Authority-Analysis: v=2.4 cv=Dp1W+H/+ c=1 sm=1 tr=0 ts=68d11e3d cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=MXRxBWRP9Sj2SVTaot8A:9
- a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-22_01,2025-09-19_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 adultscore=0 bulkscore=0 impostorscore=0
- phishscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509200018
+Content-Transfer-Encoding: 8bit
 
+Hi!
 
+Below is a summary of a discussion about the Workqueue API and cpu isolation
+considerations. Details and more information are available here:
 
-On 9/22/2025 2:31 PM, Kang Yang wrote:
-> Currently, ath10k has a recovery check logic. It will wait for the
-> last recovery to finish by wait_for_completion_timeout();
-> 
-> But in SDIO scenarios, the recovery function may be invoked from
-> interrupt context, where long blocking waits are undesirable and can
-> lead to system instability.
-> 
-> To address this, move the recovery check logic into a workqueue.
-> Fixes: c256a94d1b1b ("wifi: ath10k: shutdown driver when hardware is unreliable")
-> Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
-> ---
->  drivers/net/wireless/ath/ath10k/core.c | 19 ++++++++-----------
->  drivers/net/wireless/ath/ath10k/core.h |  2 +-
->  drivers/net/wireless/ath/ath10k/mac.c  |  2 +-
->  3 files changed, 10 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-> index 6f78f1752cd6..991fe8d92297 100644
-> --- a/drivers/net/wireless/ath/ath10k/core.c
-> +++ b/drivers/net/wireless/ath/ath10k/core.c
-> @@ -3,7 +3,6 @@
->   * Copyright (c) 2005-2011 Atheros Communications Inc.
->   * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
->   * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-> - * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
->   * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
->   */
->  
-> @@ -2493,8 +2492,9 @@ static int ath10k_init_hw_params(struct ath10k *ar)
->  	return 0;
->  }
->  
-> -static bool ath10k_core_needs_recovery(struct ath10k *ar)
-> +static void ath10k_core_recovery_check_work(struct work_struct *work)
->  {
-> +	struct ath10k *ar = container_of(work, struct ath10k, recovery_check_work);
->  	long time_left;
->  
->  	/* Sometimes the recovery will fail and then the next all recovery fail,
-> @@ -2504,7 +2504,7 @@ static bool ath10k_core_needs_recovery(struct ath10k *ar)
->  		ath10k_err(ar, "consecutive fail %d times, will shutdown driver!",
->  			   atomic_read(&ar->fail_cont_count));
->  		ar->state = ATH10K_STATE_WEDGED;
-> -		return false;
-> +		return;
->  	}
->  
->  	ath10k_dbg(ar, ATH10K_DBG_BOOT, "total recovery count: %d", ++ar->recovery_count);
-> @@ -2518,27 +2518,23 @@ static bool ath10k_core_needs_recovery(struct ath10k *ar)
->  							ATH10K_RECOVERY_TIMEOUT_HZ);
->  		if (time_left) {
->  			ath10k_warn(ar, "previous recovery succeeded, skip this!\n");
-> -			return false;
-> +			return;
->  		}
->  
->  		/* Record the continuous recovery fail count when recovery failed. */
->  		atomic_inc(&ar->fail_cont_count);
->  
->  		/* Avoid having multiple recoveries at the same time. */
-> -		return false;
-> +		return;
->  	}
->  
->  	atomic_inc(&ar->pending_recovery);
-> -
-> -	return true;
-> +	queue_work(ar->workqueue, &ar->restart_work);
->  }
->  
->  void ath10k_core_start_recovery(struct ath10k *ar)
->  {
-> -	if (!ath10k_core_needs_recovery(ar))
-> -		return;
-> -
-> -	queue_work(ar->workqueue, &ar->restart_work);
-> +	queue_work(ar->workqueue, &ar->recovery_check_work);
->  }
->  EXPORT_SYMBOL(ath10k_core_start_recovery);
->  
-> @@ -3734,6 +3730,7 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
->  
->  	INIT_WORK(&ar->register_work, ath10k_core_register_work);
->  	INIT_WORK(&ar->restart_work, ath10k_core_restart);
-> +	INIT_WORK(&ar->recovery_check_work, ath10k_core_recovery_check_work);
->  	INIT_WORK(&ar->set_coverage_class_work,
->  		  ath10k_core_set_coverage_class_work);
->  
-> diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
-> index 8c72ed386edb..859176fcb5a2 100644
-> --- a/drivers/net/wireless/ath/ath10k/core.h
-> +++ b/drivers/net/wireless/ath/ath10k/core.h
-> @@ -3,7 +3,6 @@
->   * Copyright (c) 2005-2011 Atheros Communications Inc.
->   * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
->   * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-> - * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
->   * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
->   */
->  
-> @@ -1208,6 +1207,7 @@ struct ath10k {
->  
->  	struct work_struct register_work;
->  	struct work_struct restart_work;
-> +	struct work_struct recovery_check_work;
+        "workqueue: Always use wq_select_unbound_cpu() for WORK_CPU_UNBOUND."
+        https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de/
 
-Instead of adding a new work item, how about just moving the recovery check logic into the
-exsiting restart_work?
+=== Current situation: problems ===
 
->  	struct work_struct bundle_tx_work;
->  	struct work_struct tx_complete_work;
->  
-> diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-> index 154ac7a70982..da6f7957a0ae 100644
-> --- a/drivers/net/wireless/ath/ath10k/mac.c
-> +++ b/drivers/net/wireless/ath/ath10k/mac.c
-> @@ -3,7 +3,6 @@
->   * Copyright (c) 2005-2011 Atheros Communications Inc.
->   * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
->   * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-> - * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
->   * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
->   */
->  
-> @@ -5428,6 +5427,7 @@ static void ath10k_stop(struct ieee80211_hw *hw, bool suspend)
->  	cancel_work_sync(&ar->set_coverage_class_work);
->  	cancel_delayed_work_sync(&ar->scan.timeout);
->  	cancel_work_sync(&ar->restart_work);
-> +	cancel_work_sync(&ar->recovery_check_work);
->  }
->  
->  static int ath10k_config_ps(struct ath10k *ar)
+Let's consider a nohz_full system with isolated CPUs: wq_unbound_cpumask is
+set to the housekeeping CPUs, for !WQ_UNBOUND the local CPU is selected.
+
+This leads to different scenarios if a work item is scheduled on an isolated
+CPU where "delay" value is 0 or greater then 0:
+        schedule_delayed_work(, 0);
+
+This will be handled by __queue_work() that will queue the work item on the
+current local (isolated) CPU, while:
+
+        schedule_delayed_work(, 1);
+
+Will move the timer on an housekeeping CPU, and schedule the work there.
+
+Currently if a user enqueue a work item using schedule_delayed_work() the
+used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
+WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
+schedule_work() that is using system_wq and queue_work(), that makes use
+again of WORK_CPU_UNBOUND.
+
+This lack of consistentcy cannot be addressed without refactoring the API.
+
+=== Plan and future plans ===
+
+This patchset is the first stone on a refactoring needed in order to
+address the points aforementioned; it will have a positive impact also
+on the cpu isolation, in the long term, moving away percpu workqueue in
+favor to an unbound model.
+
+These are the main steps:
+1)  API refactoring (that this patch is introducing)
+    -   Make more clear and uniform the system wq names, both per-cpu and
+        unbound. This to avoid any possible confusion on what should be
+        used.
+
+    -   Introduction of WQ_PERCPU: this flag is the complement of WQ_UNBOUND,
+        introduced in this patchset and used on all the callers that are not
+        currently using WQ_UNBOUND.
+
+        WQ_UNBOUND will be removed in a future release cycle.
+
+        Most users don't need to be per-cpu, because they don't have
+        locality requirements, because of that, a next future step will be
+        make "unbound" the default behavior.
+
+2)  Check who really needs to be per-cpu
+    -   Remove the WQ_PERCPU flag when is not strictly required.
+
+3)  Add a new API (prefer local cpu)
+    -   There are users that don't require a local execution, like mentioned
+        above; despite that, local execution yeld to performance gain.
+
+        This new API will prefer the local execution, without requiring it.
+
+=== Introduced Changes by this series ===
+
+1) [P 1] add WQ_PERCPU to alloc_workqueue() users
+
+        Every alloc_workqueue() caller should use one among WQ_PERCPU or
+        WQ_UNBOUND.
+
+        WQ_UNBOUND will be removed in a next release cycle.
+
+Thanks!
+
+Marco Crivellari (1):
+  wifi: libertas: WQ_PERCPU added to alloc_workqueue users
+
+ drivers/net/wireless/marvell/libertas/if_sdio.c | 3 ++-
+ drivers/net/wireless/marvell/libertas/if_spi.c  | 3 ++-
+ drivers/net/wireless/marvell/libertas_tf/main.c | 2 +-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
+
+-- 
+2.51.0
 
 
