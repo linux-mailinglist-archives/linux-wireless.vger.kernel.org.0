@@ -1,143 +1,83 @@
-Return-Path: <linux-wireless+bounces-27551-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27552-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD25B8EAA7
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 03:20:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28295B8EDFC
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 05:45:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E6D7189A1B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 01:21:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FB5C3A9B87
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 03:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E861713C695;
-	Mon, 22 Sep 2025 01:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F9853A7;
+	Mon, 22 Sep 2025 03:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZDPXxArJ"
+	dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b="eEDIHPp1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cdmsr2.hinet.net (210-65-1-144.hinet-ip.hinet.net [210.65.1.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245E61805E;
-	Mon, 22 Sep 2025 01:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947AF20E6
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 03:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.65.1.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758504043; cv=none; b=S3YmXZgLALufix6CyCZbln5BAN1uUg5Eyj5mU+LRd5DK5jvIHRQP8fAkjgFxpjuY1JZnf02aFwWuFpuiqhbELrSrE8hxS+7NMGEJiN6phm2KoXTrCGDyjaN6vDriqKSs5EPaXWq1WZ9fOKqMHqzGSwdEuiKG+87M3TInRUC4Fe4=
+	t=1758512731; cv=none; b=Lv95poRYn0Z7Ig7EG0vlmKzWKRu8MSPUqMeLfjvrO8YvhIa8F6bubfrZp+56DidJfrx2DlbyG4QlbLe/ofytUKcXhh9yMr0FFdqQlpvWH9iAH2pI26dxnWiZZcLDEBJN7ZdSfGlCNyGY75IakmeIB5i7hgLfkKKAmJq1evN0C4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758504043; c=relaxed/simple;
-	bh=6l9Y4C/duqK/lyGI2pC1y6n1jf0gIfzWiRWkMO0xh8o=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Z8MFHCrPIX+PScRQDKVeGkqJoXty9fc7u0TG+S6vBVjuckNLd2134Ppqw1m1x4wIx46/psDMeyVfk0rr3xjYlfkmgi8Rm7NS+Xs+L9dKf8L9BnVJXYerTx01iFiyxde3hkD2Me0qfghmMqdv2AwfiCSLSd1hQeNcdnuRBSdrgfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZDPXxArJ; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58M1KPQf83496570, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1758504026; bh=vXg4a5VuQzcR91nfayU5hI1RVwFLygEJv+RdDtbf4O0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ZDPXxArJa79DpJwbc/+5k1p85Va7KmsPPQRzaMXJY43XH6ZzW2DlQOFyBuHcGgPEh
-	 ZZudFMFGvWl76dxo/ltowsDS3BxA8CcvZRsjAJptqBfwZISKk3qMBmItECKu1Xw1Sd
-	 qdN44ar0FiYCRDSYC/Ra8YcaOUthET27CKF21FHNfRrP9CBMWgveijm9nqcFASgJL8
-	 PJ7ZDMQ85Ocr3oPrm8M/IDb1KfVi7GO+9fZOrY29TMabSOxscO15/AhMgG07+ZSDl7
-	 17MiXtZ4Kvbjm95djlxXS0t4n/DMsYx1h9EdZUTE2Iwav1cfd+L5N60EMRkjiHyYZV
-	 FwHCHrGHNNhBg==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58M1KPQf83496570
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Sep 2025 09:20:26 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 22 Sep 2025 09:20:25 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Mon, 22 Sep 2025 09:20:25 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
- 15.02.1544.027; Mon, 22 Sep 2025 09:20:25 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Fedor Pchelkin <pchelkin@ispras.ru>,
-        Zong-Zhe Yang
-	<kevin_yang@realtek.com>
-CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        Bernie Huang
-	<phhuang@realtek.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH rtw-next v5 2/4] wifi: rtw89: avoid possible TX wait initialization race
-Thread-Topic: [PATCH rtw-next v5 2/4] wifi: rtw89: avoid possible TX wait
- initialization race
-Thread-Index: AQHcKan4kgPq+mq9eUqOfjqb4dlxI7SearVA
-Date: Mon, 22 Sep 2025 01:20:25 +0000
-Message-ID: <73dfdd41cf9c422c8cd18d41ab3dd1ec@realtek.com>
-References: <20250919210852.823912-1-pchelkin@ispras.ru>
- <20250919210852.823912-3-pchelkin@ispras.ru>
-In-Reply-To: <20250919210852.823912-3-pchelkin@ispras.ru>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1758512731; c=relaxed/simple;
+	bh=+MnGzmqBb67I1t0Sei2bE/vo4z5vwGS0J6E+W5fx1HQ=;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=koEiovyp394uWG2Xr0oAaFpCya/bWmV0+orWwPXyY2NIXCVDdIx14dKxpCGfi3WFjXsRByv1VZ+opG/9ilcR+85Ax2cymUMBPrnay/Lg0Z7k8rJ9717vnR2vBhbfL3Jbu02niL/Wa/OwqK+SBOhSq5xWXpzixAQZSmrjxIi/R3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net; spf=pass smtp.mailfrom=ms29.hinet.net; dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b=eEDIHPp1; arc=none smtp.client-ip=210.65.1.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ms29.hinet.net
+Received: from cmsr3.hinet.net ([10.199.216.82])
+	by cdmsr2.hinet.net (8.15.2/8.15.2) with ESMTPS id 58M3jGRU396573
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 11:45:20 +0800
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=ms29.hinet.net;
+	s=default; t=1758512720; bh=/9jXDfhWXo9xJFl5VAss8K1Ka4U=;
+	h=From:To:Subject:Date;
+	b=eEDIHPp1wl1gDwdaA2gU4uzSq6xKgMRMrjJ2XFRwpAwSoLp5P+4mhyW1LGw2Nxvyy
+	 GtRxHp3/A4xtB/oP+511gU6G8nME/y9Xal8XcYfLaltx7a4lYIwrXPgD32srAQv1h6
+	 wgXyzXt6DBeSBlhilyeP29J7ojsjyWiVMP+zeFcE=
+Received: from [127.0.0.1] (118-166-77-202.dynamic-ip.hinet.net [118.166.77.202])
+	by cmsr3.hinet.net (8.15.2/8.15.2) with ESMTPS id 58M3dVaM417606
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 11:43:10 +0800
+From: "Info - Albinayah 290" <Linux-wireless@ms29.hinet.net>
+To: linux-wireless@vger.kernel.org
+Reply-To: "Info - Albinayah." <europe-sales@albinayah-group.com>
+Subject: =?UTF-8?B?TmV3IFNlcHRlbWJlciBPcmRlci4gODk5OTYgTW9uZGF5LCBTZXB0ZW1iZXIgMjIsIDIwMjUgYXQgMDU6NDM6MDggQU0=?=
+Message-ID: <c517b6de-c964-9f65-ea21-8ea1a6e09d00@ms29.hinet.net>
+Content-Transfer-Encoding: 7bit
+Date: Mon, 22 Sep 2025 03:43:09 +0000
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+X-HiNet-Brightmail: Spam
+X-CMAE-Score: 100
+X-CMAE-Analysis: v=2.4 cv=D/nkKeRj c=0 sm=1 tr=0 ts=68d0c5cf
+	p=OrFXhexWvejrBOeqCD4A:9 a=aOLPtS5+W4zrI/fJI0lAUw==:117 a=IkcTkHD0fZMA:10
+	a=5KLPUuaC_9wA:10
 
-Fedor Pchelkin <pchelkin@ispras.ru> wrote:
-> The value of skb_data->wait indicates whether skb is passed on to the
-> core mac80211 stack or released by the driver itself.  Make sure that by
-> the time skb is added to txwd queue and becomes visible to the completing
-> side, it has already allocated and initialized TX wait related data (in
-> case it's needed).
->=20
-> This is found by code review and addresses a possible race scenario
-> described below:
->=20
->       Waiting thread                          Completing thread
->=20
-> rtw89_core_send_nullfunc()
->   rtw89_core_tx_write_link()
->     ...
->     rtw89_pci_txwd_submit()
->       skb_data->wait =3D NULL
->       /* add skb to the queue */
->       skb_queue_tail(&txwd->queue, skb)
->=20
->   /* another thread (e.g. rtw89_ops_tx) performs TX kick off for the same=
- queue */
->=20
->                                             rtw89_pci_napi_poll()
->                                             ...
->                                               rtw89_pci_release_txwd_skb(=
-)
->                                                 /* get skb from the queue=
- */
->                                                 skb_unlink(skb, &txwd->qu=
-eue)
->                                                 rtw89_pci_tx_status()
->                                                   rtw89_core_tx_wait_comp=
-lete()
->                                                   /* use incorrect skb_da=
-ta->wait */
->   rtw89_core_tx_kick_off_and_wait()
->   /* assign skb_data->wait but too late */
->=20
-> Found by Linux Verification Center (linuxtesting.org).
->=20
-> Fixes: 1ae5ca615285 ("wifi: rtw89: add function to wait for completion of=
- TX skbs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Hi Linux-wireless,
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Please provide a quote for your products:
 
+Include:
+1.Pricing (per unit)
+2.Delivery cost & timeline
+3.Quote expiry date
+
+Deadline: September
+
+Thanks!
+
+Kamal Prasad
+
+Albinayah Trading
 
