@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-27570-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27572-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107B8B8F38F
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 09:11:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3D3B8F395
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 09:11:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C018F3B0A74
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 07:10:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 153B1189CAA4
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Sep 2025 07:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836792F0C7B;
-	Mon, 22 Sep 2025 07:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811592F2908;
+	Mon, 22 Sep 2025 07:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Ywmi13Dy"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="jTrznELR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401E21F91E3
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 07:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7E3221FCC
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Sep 2025 07:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758525055; cv=none; b=OTF7rZC5qVbbxEVKFkr8cAeXr4J29lJeVnZwOu+ckb+GY527L14yodqWEwwz+y7fgho+aYA+JjVFieYAmY6fx/A838Np3K0F1rnZvIEwzY3outckUdS67MCQ9UL8CaVgTVuYqG3HXiS8tcwMFVc6VaJAFt3rKabht9iVysEM2j4=
+	t=1758525056; cv=none; b=MbrIchLh/4JfOjMtoEoKCvhUqERXzzKb3Mga7rbZ0f0D/WDfUB3uRXqc257r4HLVEmapf9p4HKKyhb5cydivX2VxTpAoeDs0HmXnJapo3LpQVDjx22RRHBG/+EhNAZV8DTohN8205yO2sXwMDLd9FKLZ+N5l4HmY6oAc18nKEmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758525055; c=relaxed/simple;
-	bh=RCPcyfauKH5suSokJng1vqhJvcEMFoxF9REiakB6YdU=;
+	s=arc-20240116; t=1758525056; c=relaxed/simple;
+	bh=yJLrDnXc+u8XzXH7D0NZCJUQdG1g+VQ/VSeRRiS/r1o=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ItH2aK80WuiIJPsqGyJaZtN1QlsAhvuSf+CvqJTorILagZ9OcIPnj28K1kLYJRKnFBMw4uz8Noeek/KuV1QC1OLh2H0wPvidTb5zfytkWtJFXsbxjRO3xDrFXgaJzhyoJOFBGPCo4ccoMsyg54k6PJbx6VcGRZkw7gXSJEsdYqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Ywmi13Dy; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=CCRM9EkyyaZvBioxgknW/AAY5+oyx9rPjjh6fLoMFgNRzLmgt1SNMkKJEoba2cfWEH40T1anGjLdh0oQq/D5Ixj24mgweSvlU22yyjpmwc94fGgHUurWJKeO0bk7fBUu4a0RV/D+cMZk7uQ5cnOAcJoOG7KRFcAO7S+ez4qhY8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=jTrznELR; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58M7AbfM64015233, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58M7AbAL24015236, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1758525037; bh=K2MPIWnEGvTfyQPwajjFy0Gs/LBbdeMBb7/5BFOpcCg=;
+	t=1758525038; bh=B9XXix4xQcndwqW2euab2by7UL6eUACqv57hnBEndus=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=Ywmi13DyS/fQhuKdp+g2P+gDWxJHrlzQLmmdwPe9iYzjSAAZU8XlS8skOUU0KUjWN
-	 jPJS0kFC1A2cht1RoECnrMYsmZ4D41azrRXrm91KU7CwnfYatwmpOD3BQUAr3oBNs0
-	 z6Tn1jJI1MvV4ZysF5bjGZftpybJ1JU/GWyCSBa3saBNSPRKhr0yf4W1se8BPXhvv3
-	 HNLcpGuTDR30ZOH/yjJbkTxJ2JLxxfc356nZH1t9bngFs6pMo17myb3PmiB86RIQ7y
-	 MhyrV0lNeKHK+/arp8xGSnNhe1Jot4Xlt6d4/ElfLxbI7e5DzyaZ1JUjx+eVX/b59I
-	 74zi4ptOEK0GQ==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58M7AbfM64015233
+	b=jTrznELRnaJy9Z7eMEPkvKvJKLpK01fXfZRUDoaUzb0mO1xKlRcVFpNg118DrT7vJ
+	 nooIPFnFvsEOedV25pek0ZhH4bMUnEDIhntgKOWqe3/zOr15GcUVGfwV5vjbOqa29f
+	 zJPDCQKNGxWjGkkgCrLGHoO7pYIVkSiGXOUxNli2Bww7cG1XbqwXXABgV+qgkmV0uB
+	 sKXLhg2XCzm04V9tAShfxhXWe/JIEfirxtrIzT+rF6hWqlErktyWPhaP5qaVaaf9Nr
+	 NsIoAyBeMESKHp+MUC1Z2YYfUdc9J4R0LsMyBT/afNnOPVbr/wP7BKjlhZGQ3oN9tN
+	 Kq7cpXiq7196g==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58M7AbAL24015236
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Mon, 22 Sep 2025 15:10:37 +0800
 Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1544.27; Mon, 22 Sep 2025 15:10:38 +0800
 Received: from kevin-ThinkPad-T430s.realtek.com.tw (172.21.69.104) by
@@ -57,9 +57,9 @@ Received: from kevin-ThinkPad-T430s.realtek.com.tw (172.21.69.104) by
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>, <raja.mani@oss.qualcomm.com>
-Subject: [PATCH v3 1/4] iw: util: support parsing link id
-Date: Mon, 22 Sep 2025 15:10:14 +0800
-Message-ID: <20250922071017.11954-2-kevin_yang@realtek.com>
+Subject: [PATCH v3 2/4] iw: bitrate: refactor description
+Date: Mon, 22 Sep 2025 15:10:15 +0800
+Message-ID: <20250922071017.11954-3-kevin_yang@realtek.com>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20250922071017.11954-1-kevin_yang@realtek.com>
 References: <20250922071017.11954-1-kevin_yang@realtek.com>
@@ -78,76 +78,46 @@ X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 
-For NL80211_FLAG_MLO_VALID_LINK_ID cases, MLD needs to assign link id,
-but non-MLD doesn't. Add support of parsing link id where the pattern
-is as below. To avoid mess where some fields could have "link-id" as a
-value, this pattern is only parsed at the beginning of argv.
+The description is too long to read, and some parameters
+have been described incorrectly, e.g. vht-mcs.
 
-	[link-id <LINK ID>]
-
-If found, put NL80211_ATTR_MLO_LINK_ID and remove the assignment from
-the argv range.
+Re-plan macro for description and use it.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 ---
-v3: parse it only at the beginning of argv
-v2: newly added
----
- iw.h   |  1 +
- util.c | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ bitrate.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/iw.h b/iw.h
-index 145b058d86ba..df9ea1375dae 100644
---- a/iw.h
-+++ b/iw.h
-@@ -305,6 +305,7 @@ int set_bitrates(struct nl_msg *msg, int argc, char **argv,
- 		 enum nl80211_attrs attr);
- 
- int calc_s1g_ch_center_freq(__u8 ch_index, __u8 s1g_oper_class);
-+int parse_link_id(struct nl_msg *msg, int *argc, char ***argv);
- 
- /* sections */
- DECLARE_SECTION(ap);
-diff --git a/util.c b/util.c
-index 36c118513e3f..a96fbf968244 100644
---- a/util.c
-+++ b/util.c
-@@ -2378,3 +2378,34 @@ void print_s1g_capability(const uint8_t *caps)
- 	/* Last 2 bits are reserved */
- #undef PRINT_S1G_CAP
+diff --git a/bitrate.c b/bitrate.c
+index 87146699937b..8c575b086eba 100644
+--- a/bitrate.c
++++ b/bitrate.c
+@@ -456,9 +456,22 @@ static int handle_bitrates(struct nl80211_state *state,
  }
+ 
+ #define DESCR_LEGACY "[legacy-<2.4|5> <legacy rate in Mbps>*]"
+-#define DESCR DESCR_LEGACY " [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5>  [he-mcs-<2.4|5|6> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5]"
+-
+-COMMAND(set, bitrates, "[legacy-<2.4|5> <legacy rate in Mbps>*] [ht-mcs-<2.4|5> <MCS index>*] [vht-mcs-<2.4|5> [he-mcs-<2.4|5|6> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*] [sgi-2.4|lgi-2.4] [sgi-5|lgi-5] [he-gi-<2.4|5|6> <0.8|1.6|3.2>] [he-ltf-<2.4|5|6> <1|2|4>]",
++#define DESCR_HT " [ht-mcs-<2.4|5> <MCS index>*]"
++#define DESCR_VHT " [vht-mcs-<2.4|5> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*]"
++#define DESCR_HE " [he-mcs-<2.4|5|6> <NSS:MCSx,MCSy... | NSS:MCSx-MCSy>*]"
++#define DESCR_GI " [sgi-2.4|lgi-2.4] [sgi-5|lgi-5] [he-gi-<2.4|5|6> <0.8|1.6|3.2>]"
++#define DESCR_LTF " [he-ltf-<2.4|5|6> <1|2|4>]"
 +
-+int parse_link_id(struct nl_msg *msg, int *argc, char ***argv)
-+{
-+	unsigned int link_id;
-+	char *endptr;
++#define DESCR \
++	DESCR_LEGACY \
++	DESCR_HT \
++	DESCR_VHT \
++	DESCR_HE \
++	DESCR_GI \
++	DESCR_LTF \
++	/* end of DESCR */
 +
-+	if (*argc < 1)
-+		return 0;
-+
-+	if (strcmp((*argv)[0], "link-id") != 0)
-+		return 0;
-+
-+	if (*argc == 1)
-+		goto usage;
-+
-+	link_id = strtol((*argv)[1], &endptr, 0);
-+	if (*endptr != '\0')
-+		goto usage;
-+
-+	*argv += 2;
-+	*argc -= 2;
-+
-+	NLA_PUT_U8(msg, NL80211_ATTR_MLO_LINK_ID, link_id);
-+	return 0;
-+
-+usage:
-+	return HANDLER_RET_USAGE;
-+
-+nla_put_failure:
-+	return -ENOBUFS;
-+}
++COMMAND(set, bitrates, DESCR,
+ 	NL80211_CMD_SET_TX_BITRATE_MASK, 0, CIB_NETDEV, handle_bitrates,
+ 	"Sets up the specified rate masks.\n"
+ 	"Not passing any arguments would clear the existing mask (if any).");
 -- 
 2.39.0
 
