@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-27612-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27611-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D34B9558C
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 11:57:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50796B95589
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 11:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D2733A832A
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 09:57:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E81B18A1597
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 09:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1990E32127A;
-	Tue, 23 Sep 2025 09:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C86E320A08;
+	Tue, 23 Sep 2025 09:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="okoIY/Ww"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NnOibgG3"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1AD32126B
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Sep 2025 09:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7496913AD26
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Sep 2025 09:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758621415; cv=none; b=GNPN66Gk3qks+vY8KzSN+rX/rNfzdSZmHSDU5fCAKvSssnIc23rPSWOlNTRkTizocpvXZl+GsdkdxK5Y4lGv9I3Rte8wHHdS+Mw+JLamibuX8mDa1IXdwwNAziJbBocN+NjjGHKovKZbppAjSyBcosqHXXkVRwZSZCOXEbKnTQE=
+	t=1758621414; cv=none; b=ZKshdGe/bTbmtL0bv7z2mzk9LG9GPLC4dPaR5zhVb1tZaVfkwCjESN+8CWhCz1MRtcLKO7WYtG0skTMxLQz3OsmDkGH2514YrzRCuPw73eXW6/WlwBjeRpmjmYMqZeA9OLUqcKl365yRPS4VMFAGEbHVPPziiodmzu1me6Ukp5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758621415; c=relaxed/simple;
-	bh=Fo0hkbL+Vg8JTh9JACekgok4Y6cCFqbcxenRp5jfEVY=;
+	s=arc-20240116; t=1758621414; c=relaxed/simple;
+	bh=JOvupwM+5J0RaSrlDIK1IKo3IJ1Qh50pARsE1Lrqyys=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WUpUReTt4qINsFPjsX7o3w3nohul/vwamT0EABw5+KI1aBW1iTHuD17awLaOiTPtIBQCT2SKRSgAU8bGpBACVmnUufoiOevdIms33fGslcvlOE6Wzu9oSvx+O1knHSdQToi0VAK3BQm5K6t95WE9I4lqT56KYbPPWIswGxG88vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=okoIY/Ww; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=iAe3qcYqv4nsDuSEENp9VMchIDf/kdoKtNVvwsKAGLqsCBE2IhpTR976V+SVKwPF8h+POQuSS/FUDKpudJuj6XdHYt0LUxRbrsCT+L1fNlX3T6vdknwb+lzlXQqQYKz+pF2SCMiTJvdATOzXg1in0hFkWyBecvxCZP+Yyx9uXqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NnOibgG3; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58N8HAUq020654;
-	Tue, 23 Sep 2025 09:56:49 GMT
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58N8HILY023900;
+	Tue, 23 Sep 2025 09:56:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	FyPn0QFOIJ3wNvoaUE8U+p7Nz+EPRxn5a10GerYmxgU=; b=okoIY/WwkLQrcBzB
-	EazRjTL9fJaG/6jIlp6bmVwk7zIV95Zq8ghgqAZT+CHbOAUcssi0I0ZAGu5NVKAd
-	b8XFESserAOgdakiMF+fcYxoPYDYW+j7qvD+n9BDxCDp5avGJbyKHe6L1uVoYxfx
-	OwzbNjmariaslLe5XRPTizwuBkksHGJ+s6v+z4idqKuKmtxsT6DfbUr77vOSbQ3D
-	YsmXQlIBgQU4TlG7ZXGpXTsBJ9V/uOinMJK7BYBM6odiUK59aBG/x/qk+sAHalP5
-	uCtlna13yqLigQG4G2REJFPgUyE9i03IdBKmu2s4623H4ADEsRIy6kg/pA46X+Ck
-	PqIf+A==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49bhvjscjj-1
+	3rBMTxrWBFONNh/3mSVGN1Xh4xJSh5cyWYTxwAaq/kY=; b=NnOibgG3QvnN3lvK
+	8iq2TvSy+VffpLmE6m64IMm4tI6STCM/eluGKeMObusH530wq3uBAhb6pgDAQ6Vn
+	zMapehzrNOBpfIYFv9dMWdmson4VH/5RBZ60t5zUp/uOL4Yg+tDf6hnTp2vS+/c1
+	0+0lhdBSNru9fycPGvbi66tuzcc8coI1IcoXG1/xkLuZmcNsWfbDYU6iGFPP8s1b
+	pqYtZVq1fq/8/pm5P6J9lNr5CQ4n1DZyUe2QxErxsNtIdUruQqe4pijx16LPpU76
+	f1vBpueejCXy4kxXrMcQ8zI9aRErP2w7AyU6M8/lZ0mWVEwyq+X5XXzBe1vjDAqy
+	G6kqkg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49b3nybv7c-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Sep 2025 09:56:48 +0000 (GMT)
+	Tue, 23 Sep 2025 09:56:50 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 58N9umnA009921
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 58N9unfU027165
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Sep 2025 09:56:48 GMT
+	Tue, 23 Sep 2025 09:56:49 GMT
 Received: from hu-rdeuri-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.24; Tue, 23 Sep 2025 02:56:46 -0700
+ 15.2.1748.24; Tue, 23 Sep 2025 02:56:47 -0700
 From: Ripan Deuri <quic_rdeuri@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH ath12k-ng 4/6] wifi: ath12k: Add framework for hardware specific ieee80211_ops registration
-Date: Tue, 23 Sep 2025 15:26:26 +0530
-Message-ID: <20250923095628.2438280-5-quic_rdeuri@quicinc.com>
+Subject: [PATCH ath12k-ng 5/6] wifi: ath12k: Add framework for hardware specific DP interrupt registration
+Date: Tue, 23 Sep 2025 15:26:27 +0530
+Message-ID: <20250923095628.2438280-6-quic_rdeuri@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250923095628.2438280-1-quic_rdeuri@quicinc.com>
 References: <20250923095628.2438280-1-quic_rdeuri@quicinc.com>
@@ -77,1173 +77,377 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: nORC_f1QzulzSe24oKgEoVmDhjkSyrJj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIzMDAxMSBTYWx0ZWRfX154CbZjNiZmv
- c0/4lDv8dnt2/HHINBW0yXUYUNwpyRZBjG9aSLRSVuwdkAkkKmpDtBa9ZFTvVru5F2FYSFPJc8e
- RMgJW4cadC+pfavn7ULqgtdJhl1ri6otzzk8etYoF1W2uPa05dW1PKuroQiedSSGCTICd0zTVGn
- Dpwo9c9h3OSXLGW9nxC8hEEmNn/b9+E/kIT/uDNOeltkzZ3y/6ExZD4xINESHxu4odBmZ3t8ZyW
- pMfoXu4jTVF8S8ZomnxfF3CxkuWmix+aceliWYjNdH/tj2myLi+1pPSV8WRvgNrbS3lsRsQxBiP
- LXmUmMxgP2wKUzzVcNBtaw8LKmK9bFfMlqtDCD4dCdqhToqh1uC+6foT1jVAyp9z60ocNnSCKwN
- /JKZ0RVv
-X-Proofpoint-GUID: nORC_f1QzulzSe24oKgEoVmDhjkSyrJj
-X-Authority-Analysis: v=2.4 cv=Csq/cm4D c=1 sm=1 tr=0 ts=68d26ee0 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=EuPSrTcA c=1 sm=1 tr=0 ts=68d26ee2 cx=c_pps
  a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=wTcbH1xZeotpbmmP5xMA:9
+ a=GEpy-HfZoHoA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=boQPsJf0mRWV6-TzE2AA:9
  a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: LB629wNpGyxyk7-eoipVXmjsxISEu_Tl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIyMDA5MCBTYWx0ZWRfX1GBES44HwGoR
+ Pxyo9p1DEGav3P3RUVrD1En8Op3yxyR1MMkxp5OoLEt5hGfcy6AAEnJaqcymJA7l+tQXcaSClLO
+ pU68qeHkIP2A6u/iPCF4Y5uhJI8w3HeymOUPJEDUJAFhJMsP1HT1sJjbuxySEOqk7ztWhFScJg8
+ OkjFPkYtSXS7LafIYEz43TcMo3K92aOl9vzIhQAjNgOpGLdktK+d1zAC77mijxHho3avCG5Dfta
+ bmTWwQuNv5Ffa5npwmpffDEIRyRwqjofYYmjXfRrrB1697RCkF4UWmY5ljSKOP/YP9DIPehtSpn
+ PVMXC6JebmyEr31n1oeoSBs4Ae1CvuBqJmOQ0bcKYCfiowh1tyNrwltoB9owtiOhXUVP6gSqNr8
+ /JsAw2wQ
+X-Proofpoint-ORIG-GUID: LB629wNpGyxyk7-eoipVXmjsxISEu_Tl
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-23_02,2025-09-22_05,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 adultscore=0 impostorscore=0 phishscore=0
- clxscore=1015 spamscore=0 priorityscore=1501 malwarescore=0
+ phishscore=0 suspectscore=0 malwarescore=0 spamscore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 impostorscore=0 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509230011
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509220090
 
-Introduce a framework to register the ieee80211_ops table based on the
-underlying hardware architecture. This is necessary to support
-architecture-specific implementations of ieee80211_ops such as .tx, which
-will be introduced in upcoming patches.
+Introduce an architecture-specific ops mechanism to handle interrupt
+registration for Data Path (DP). While the interrupt trigger originates
+from common DP code, the registration process differs across hardware
+architectures. This mechanism allows the common module to invoke functions
+implemented in architecture-specific modules.
+
+Add a generic dp_device_init() op to perform architecture-specific device
+initializations. Currently, this is used to set up interrupts, but it can
+be used for other initialization tasks in the future.
+
+Add PCI and AHB hif_ops to handle IRQ setup and cleanup from DP.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
 Signed-off-by: Ripan Deuri <quic_rdeuri@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/core.h        |   5 +
- drivers/net/wireless/ath/ath12k/debugfs.c     |   3 +-
- drivers/net/wireless/ath/ath12k/debugfs_sta.c |   3 +-
- drivers/net/wireless/ath/ath12k/mac.c         | 308 +++++++++---------
- drivers/net/wireless/ath/ath12k/mac.h         | 128 +++++++-
- drivers/net/wireless/ath/ath12k/testmode.c    |   3 +-
- drivers/net/wireless/ath/ath12k/wifi7/hw.c    |  62 ++++
- drivers/net/wireless/ath/ath12k/wow.c         |   5 +-
- 8 files changed, 350 insertions(+), 167 deletions(-)
+ drivers/net/wireless/ath/ath12k/ahb.c      | 16 +++++++-----
+ drivers/net/wireless/ath/ath12k/core.h     |  3 +++
+ drivers/net/wireless/ath/ath12k/dp.c       |  5 ++++
+ drivers/net/wireless/ath/ath12k/dp.h       | 10 ++++++++
+ drivers/net/wireless/ath/ath12k/hif.h      | 30 +++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/pci.c      | 20 ++++++++-------
+ drivers/net/wireless/ath/ath12k/wifi7/dp.c | 29 ++++++++++++++++++---
+ drivers/net/wireless/ath/ath12k/wifi7/dp.h |  2 --
+ 8 files changed, 94 insertions(+), 21 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
+index c545bea18935..4bacdaa62f83 100644
+--- a/drivers/net/wireless/ath/ath12k/ahb.c
++++ b/drivers/net/wireless/ath/ath12k/ahb.c
+@@ -524,10 +524,9 @@ static int ath12k_ahb_ext_grp_napi_poll(struct napi_struct *napi, int budget)
+ 	struct ath12k_ext_irq_grp *irq_grp = container_of(napi,
+ 						struct ath12k_ext_irq_grp,
+ 						napi);
+-	struct ath12k_base *ab = irq_grp->ab;
+ 	int work_done;
+ 
+-	work_done = ath12k_wifi7_dp_service_srng(ab, irq_grp, budget);
++	work_done = irq_grp->irq_handler(irq_grp->dp, irq_grp, budget);
+ 	if (work_done < budget) {
+ 		napi_complete_done(napi, work_done);
+ 		ath12k_ahb_ext_grp_enable(irq_grp);
+@@ -553,7 +552,12 @@ static irqreturn_t ath12k_ahb_ext_interrupt_handler(int irq, void *arg)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static int ath12k_ahb_config_ext_irq(struct ath12k_base *ab)
++static int
++ath12k_ahb_config_ext_irq(struct ath12k_base *ab,
++			  int (*irq_handler)(struct ath12k_dp *dp,
++					     struct ath12k_ext_irq_grp *irq_grp,
++					     int budget),
++			  struct ath12k_dp *dp)
+ {
+ 	const struct ath12k_hw_ring_mask *ring_mask;
+ 	struct ath12k_ext_irq_grp *irq_grp;
+@@ -569,6 +573,8 @@ static int ath12k_ahb_config_ext_irq(struct ath12k_base *ab)
+ 
+ 		irq_grp->ab = ab;
+ 		irq_grp->grp_id = i;
++		irq_grp->irq_handler = irq_handler;
++		irq_grp->dp = dp;
+ 
+ 		irq_grp->napi_ndev = alloc_netdev_dummy(0);
+ 		if (!irq_grp->napi_ndev)
+@@ -652,9 +658,6 @@ static int ath12k_ahb_config_irq(struct ath12k_base *ab)
+ 		ab->irq_num[irq_idx] = irq;
+ 	}
+ 
+-	/* Configure external interrupts */
+-	ret = ath12k_ahb_config_ext_irq(ab);
+-
+ 	return ret;
+ }
+ 
+@@ -702,6 +705,7 @@ static const struct ath12k_hif_ops ath12k_ahb_hif_ops = {
+ 	.map_service_to_pipe = ath12k_ahb_map_service_to_pipe,
+ 	.power_up = ath12k_ahb_power_up,
+ 	.power_down = ath12k_ahb_power_down,
++	.ext_irq_setup = ath12k_ahb_config_ext_irq,
+ };
+ 
+ static irqreturn_t ath12k_userpd_irq_handler(int irq, void *data)
 diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 357c3e7915fe..5a6f79c19aaa 100644
+index 5a6f79c19aaa..0a0a600a433d 100644
 --- a/drivers/net/wireless/ath/ath12k/core.h
 +++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -1242,6 +1242,11 @@ struct ath12k_base {
- 	const struct ath12k_mem_profile_based_param *profile_param;
- 	enum ath12k_qmi_mem_mode target_mem_mode;
+@@ -166,6 +166,7 @@ enum ath12k_firmware_mode {
+ #define ATH12K_MAX_TCL_RING_NUM	3
  
-+	/* FIXME: Define this field in a ag equivalent object available
-+	 * during the initial phase of probe later.
-+	 */
-+	const struct ieee80211_ops *ath12k_ops;
-+
- 	/* must be last */
- 	u8 drv_priv[] __aligned(sizeof(void *));
+ struct ath12k_ext_irq_grp {
++	struct ath12k_dp *dp;
+ 	struct ath12k_base *ab;
+ 	u32 irqs[ATH12K_EXT_IRQ_NUM_MAX];
+ 	u32 num_irq;
+@@ -174,6 +175,8 @@ struct ath12k_ext_irq_grp {
+ 	bool napi_enabled;
+ 	struct napi_struct napi;
+ 	struct net_device *napi_ndev;
++	int (*irq_handler)(struct ath12k_dp *dp,
++			   struct ath12k_ext_irq_grp *irq_grp, int budget);
  };
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs.c b/drivers/net/wireless/ath/ath12k/debugfs.c
-index 16601a8c3644..44c2402d70ca 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
  
- #include "core.h"
-@@ -1020,6 +1020,7 @@ void ath12k_debugfs_op_vif_add(struct ieee80211_hw *hw,
- 	debugfs_create_file("link_stats", 0400, vif->debugfs_dir, ahvif,
- 			    &ath12k_fops_link_stats);
- }
-+EXPORT_SYMBOL(ath12k_debugfs_op_vif_add);
+ enum ath12k_smbios_cc_type {
+diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+index 39d6bd41b4ef..34ff5736dd25 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.c
++++ b/drivers/net/wireless/ath/ath12k/dp.c
+@@ -1672,6 +1672,7 @@ static int ath12k_dp_setup(struct ath12k_base *ab)
  
- static ssize_t ath12k_debugfs_dump_device_dp_stats(struct file *file,
- 						   char __user *user_buf,
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_sta.c b/drivers/net/wireless/ath/ath12k/debugfs_sta.c
-index 5bd2bf4c9dac..e6665fd521db 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_sta.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_sta.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-- * Copyright (c) 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include <linux/vmalloc.h>
-@@ -335,3 +335,4 @@ void ath12k_debugfs_link_sta_op_add(struct ieee80211_hw *hw,
- 				    &fops_reset_rx_stats);
- 	}
- }
-+EXPORT_SYMBOL(ath12k_debugfs_link_sta_op_add);
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 449e6a2a9041..0f93fbeafa8c 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -1435,10 +1435,11 @@ int ath12k_mac_vdev_stop(struct ath12k_link_vif *arvif)
- 	return ret;
- }
- 
--static int ath12k_mac_op_config(struct ieee80211_hw *hw, int radio_idx, u32 changed)
-+int ath12k_mac_op_config(struct ieee80211_hw *hw, int radio_idx, u32 changed)
+ void ath12k_dp_cmn_device_deinit(struct ath12k_dp *dp)
  {
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_config);
- 
- static int ath12k_mac_setup_bcn_p2p_ie(struct ath12k_link_vif *arvif,
- 				       struct sk_buff *bcn)
-@@ -3982,7 +3983,7 @@ static void ath12k_mac_unassign_link_vif(struct ath12k_link_vif *arvif)
- 		memset(arvif, 0, sizeof(*arvif));
++	dp->ops->dp_device_deinit(dp);
+ 	ath12k_dp_cleanup(dp->ab);
  }
  
--static int
-+int
- ath12k_mac_op_change_vif_links(struct ieee80211_hw *hw,
- 			       struct ieee80211_vif *vif,
- 			       u16 old_links, u16 new_links,
-@@ -4031,6 +4032,7 @@ ath12k_mac_op_change_vif_links(struct ieee80211_hw *hw,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_change_vif_links);
- 
- static int ath12k_mac_fils_discovery(struct ath12k_link_vif *arvif,
- 				     struct ieee80211_bss_conf *info)
-@@ -4079,9 +4081,9 @@ static int ath12k_mac_fils_discovery(struct ath12k_link_vif *arvif,
- 	return ret;
- }
- 
--static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
--					  struct ieee80211_vif *vif,
--					  u64 changed)
-+void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
-+				   struct ieee80211_vif *vif,
-+				   u64 changed)
+@@ -1679,6 +1680,10 @@ int ath12k_dp_cmn_device_init(struct ath12k_dp *dp)
  {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	unsigned long links = ahvif->links_map;
-@@ -4149,6 +4151,7 @@ static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
- 		}
- 	}
- }
-+EXPORT_SYMBOL(ath12k_mac_op_vif_cfg_changed);
+ 	int ret;
  
- static void ath12k_mac_vif_setup_ps(struct ath12k_link_vif *arvif)
- {
-@@ -4553,10 +4556,10 @@ static void ath12k_ahvif_put_link_cache(struct ath12k_vif *ahvif, u8 link_id)
- 	ahvif->cache[link_id] = NULL;
- }
++	ret = dp->ops->dp_device_init(dp);
++	if (ret)
++		return ret;
++
+ 	ret = ath12k_dp_setup(dp->ab);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
+index 05f48b461774..57ce5e1e39d0 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.h
++++ b/drivers/net/wireless/ath/ath12k/dp.h
+@@ -367,6 +367,14 @@ struct ath12k_link_stats {
+ 	u32 tx_desc_type[HAL_TCL_DESC_TYPE_MAX];
+ };
  
--static void ath12k_mac_op_link_info_changed(struct ieee80211_hw *hw,
--					    struct ieee80211_vif *vif,
--					    struct ieee80211_bss_conf *info,
--					    u64 changed)
-+void ath12k_mac_op_link_info_changed(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif *vif,
-+				     struct ieee80211_bss_conf *info,
-+				     u64 changed)
- {
- 	struct ath12k *ar;
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
-@@ -4586,6 +4589,7 @@ static void ath12k_mac_op_link_info_changed(struct ieee80211_hw *hw,
- 
- 	ath12k_mac_bss_info_changed(ar, arvif, info, changed);
- }
-+EXPORT_SYMBOL(ath12k_mac_op_link_info_changed);
- 
- static struct ath12k*
- ath12k_mac_select_scan_device(struct ieee80211_hw *hw,
-@@ -4889,10 +4893,10 @@ int ath12k_mac_get_fw_stats(struct ath12k *ar,
- 	return 0;
- }
- 
--static int ath12k_mac_op_get_txpower(struct ieee80211_hw *hw,
--				     struct ieee80211_vif *vif,
--				     unsigned int link_id,
--				     int *dbm)
-+int ath12k_mac_op_get_txpower(struct ieee80211_hw *hw,
-+			      struct ieee80211_vif *vif,
-+			      unsigned int link_id,
-+			      int *dbm)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_fw_stats_req_params params = {};
-@@ -4965,6 +4969,7 @@ static int ath12k_mac_op_get_txpower(struct ieee80211_hw *hw,
- 		   *dbm);
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_get_txpower);
- 
- static u8
- ath12k_mac_find_link_id_by_ar(struct ath12k_vif *ahvif, struct ath12k *ar)
-@@ -5175,9 +5180,9 @@ static int ath12k_mac_initiate_hw_scan(struct ieee80211_hw *hw,
- 	return ret;
- }
- 
--static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
--				 struct ieee80211_vif *vif,
--				 struct ieee80211_scan_request *hw_req)
-+int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
-+			  struct ieee80211_vif *vif,
-+			  struct ieee80211_scan_request *hw_req)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ieee80211_channel **chan_list, *chan;
-@@ -5255,9 +5260,10 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
- 	kfree(chan_list);
- 	return ret;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_hw_scan);
- 
--static void ath12k_mac_op_cancel_hw_scan(struct ieee80211_hw *hw,
--					 struct ieee80211_vif *vif)
-+void ath12k_mac_op_cancel_hw_scan(struct ieee80211_hw *hw,
-+				  struct ieee80211_vif *vif)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	unsigned long link_id, links_map = ahvif->links_map;
-@@ -5278,6 +5284,7 @@ static void ath12k_mac_op_cancel_hw_scan(struct ieee80211_hw *hw,
- 		cancel_delayed_work_sync(&ar->scan.timeout);
- 	}
- }
-+EXPORT_SYMBOL(ath12k_mac_op_cancel_hw_scan);
- 
- static int ath12k_install_key(struct ath12k_link_vif *arvif,
- 			      struct ieee80211_key_conf *key,
-@@ -5615,9 +5622,9 @@ static int ath12k_mac_update_key_cache(struct ath12k_vif_cache *cache,
- 	return 0;
- }
- 
--static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
--				 struct ieee80211_vif *vif, struct ieee80211_sta *sta,
--				 struct ieee80211_key_conf *key)
-+int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
-+			  struct ieee80211_vif *vif, struct ieee80211_sta *sta,
-+			  struct ieee80211_key_conf *key)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_link_vif *arvif;
-@@ -5704,6 +5711,7 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_set_key);
- 
- static int
- ath12k_mac_bitrate_mask_num_vht_rates(struct ath12k *ar,
-@@ -6948,11 +6956,11 @@ static int ath12k_mac_select_links(struct ath12k_base *ab,
- 	return 0;
- }
- 
--static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
--				   struct ieee80211_vif *vif,
--				   struct ieee80211_sta *sta,
--				   enum ieee80211_sta_state old_state,
--				   enum ieee80211_sta_state new_state)
-+int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
-+			    struct ieee80211_vif *vif,
-+			    struct ieee80211_sta *sta,
-+			    enum ieee80211_sta_state old_state,
-+			    enum ieee80211_sta_state new_state)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
-@@ -7110,10 +7118,11 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_sta_state);
- 
--static int ath12k_mac_op_sta_set_txpwr(struct ieee80211_hw *hw,
--				       struct ieee80211_vif *vif,
--				       struct ieee80211_sta *sta)
-+int ath12k_mac_op_sta_set_txpwr(struct ieee80211_hw *hw,
-+				struct ieee80211_vif *vif,
-+				struct ieee80211_sta *sta)
- {
- 	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
- 	struct ath12k *ar;
-@@ -7160,11 +7169,12 @@ static int ath12k_mac_op_sta_set_txpwr(struct ieee80211_hw *hw,
- out:
- 	return ret;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_sta_set_txpwr);
- 
--static void ath12k_mac_op_link_sta_rc_update(struct ieee80211_hw *hw,
--					     struct ieee80211_vif *vif,
--					     struct ieee80211_link_sta *link_sta,
--					     u32 changed)
-+void ath12k_mac_op_link_sta_rc_update(struct ieee80211_hw *hw,
-+				      struct ieee80211_vif *vif,
-+				      struct ieee80211_link_sta *link_sta,
-+				      u32 changed)
- {
- 	struct ieee80211_sta *sta = link_sta->sta;
- 	struct ath12k *ar;
-@@ -7268,6 +7278,7 @@ static void ath12k_mac_op_link_sta_rc_update(struct ieee80211_hw *hw,
- 
- 	rcu_read_unlock();
- }
-+EXPORT_SYMBOL(ath12k_mac_op_link_sta_rc_update);
- 
- static struct ath12k_link_sta *ath12k_mac_alloc_assign_link_sta(struct ath12k_hw *ah,
- 								struct ath12k_sta *ahsta,
-@@ -7299,10 +7310,10 @@ static struct ath12k_link_sta *ath12k_mac_alloc_assign_link_sta(struct ath12k_hw
- 	return arsta;
- }
- 
--static int ath12k_mac_op_change_sta_links(struct ieee80211_hw *hw,
--					  struct ieee80211_vif *vif,
--					  struct ieee80211_sta *sta,
--					  u16 old_links, u16 new_links)
-+int ath12k_mac_op_change_sta_links(struct ieee80211_hw *hw,
-+				   struct ieee80211_vif *vif,
-+				   struct ieee80211_sta *sta,
-+				   u16 old_links, u16 new_links)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
-@@ -7363,15 +7374,17 @@ static int ath12k_mac_op_change_sta_links(struct ieee80211_hw *hw,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_change_sta_links);
- 
--static bool ath12k_mac_op_can_activate_links(struct ieee80211_hw *hw,
--					     struct ieee80211_vif *vif,
--					     u16 active_links)
-+bool ath12k_mac_op_can_activate_links(struct ieee80211_hw *hw,
-+				      struct ieee80211_vif *vif,
-+				      u16 active_links)
- {
- 	/* TODO: Handle recovery case */
- 
- 	return true;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_can_activate_links);
- 
- static int ath12k_conf_tx_uapsd(struct ath12k_link_vif *arvif,
- 				u16 ac, bool enable)
-@@ -7483,10 +7496,10 @@ static int ath12k_mac_conf_tx(struct ath12k_link_vif *arvif, u16 ac,
- 	return ret;
- }
- 
--static int ath12k_mac_op_conf_tx(struct ieee80211_hw *hw,
--				 struct ieee80211_vif *vif,
--				 unsigned int link_id, u16 ac,
--				 const struct ieee80211_tx_queue_params *params)
-+int ath12k_mac_op_conf_tx(struct ieee80211_hw *hw,
-+			  struct ieee80211_vif *vif,
-+			  unsigned int link_id, u16 ac,
-+			  const struct ieee80211_tx_queue_params *params)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_link_vif *arvif;
-@@ -7515,6 +7528,7 @@ static int ath12k_mac_op_conf_tx(struct ieee80211_hw *hw,
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_conf_tx);
- 
- static struct ieee80211_sta_ht_cap
- ath12k_create_ht_cap(struct ath12k *ar, u32 ar_ht_cap, u32 rate_cap_rx_chainmask)
-@@ -8803,9 +8817,9 @@ static u8 ath12k_mac_get_tx_link(struct ieee80211_sta *sta, struct ieee80211_vif
- }
- 
- /* Note: called under rcu_read_lock() */
--static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
--			     struct ieee80211_tx_control *control,
--			     struct sk_buff *skb)
-+void ath12k_mac_op_tx(struct ieee80211_hw *hw,
-+		      struct ieee80211_tx_control *control,
-+		      struct sk_buff *skb)
- {
- 	struct ath12k_skb_cb *skb_cb = ATH12K_SKB_CB(skb);
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-@@ -8985,6 +8999,7 @@ static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
- 		ieee80211_free_txskb(ar->ah->hw, skb);
- 	}
- }
-+EXPORT_SYMBOL(ath12k_mac_op_tx);
- 
- void ath12k_mac_drain_tx(struct ath12k *ar)
- {
-@@ -9159,7 +9174,7 @@ static void ath12k_drain_tx(struct ath12k_hw *ah)
- 		ath12k_mac_drain_tx(ar);
- }
- 
--static int ath12k_mac_op_start(struct ieee80211_hw *hw)
-+int ath12k_mac_op_start(struct ieee80211_hw *hw)
- {
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k *ar;
-@@ -9212,6 +9227,7 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_start);
- 
- int ath12k_mac_rfkill_config(struct ath12k *ar)
- {
-@@ -9318,7 +9334,7 @@ static void ath12k_mac_stop(struct ath12k *ar)
- 	atomic_set(&ar->num_pending_mgmt_tx, 0);
- }
- 
--static void ath12k_mac_op_stop(struct ieee80211_hw *hw, bool suspend)
-+void ath12k_mac_op_stop(struct ieee80211_hw *hw, bool suspend)
- {
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k *ar;
-@@ -9337,6 +9353,7 @@ static void ath12k_mac_op_stop(struct ieee80211_hw *hw, bool suspend)
- 
- 	mutex_unlock(&ah->hw_mutex);
- }
-+EXPORT_SYMBOL(ath12k_mac_op_stop);
- 
- static u8
- ath12k_mac_get_vdev_stats_id(struct ath12k_link_vif *arvif)
-@@ -9501,8 +9518,8 @@ static void ath12k_mac_update_vif_offload(struct ath12k_link_vif *arvif)
- 	}
- }
- 
--static void ath12k_mac_op_update_vif_offload(struct ieee80211_hw *hw,
--					     struct ieee80211_vif *vif)
-+void ath12k_mac_op_update_vif_offload(struct ieee80211_hw *hw,
-+				      struct ieee80211_vif *vif)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_link_vif *arvif;
-@@ -9526,6 +9543,7 @@ static void ath12k_mac_op_update_vif_offload(struct ieee80211_hw *hw,
- 
- 	ath12k_mac_update_vif_offload(&ahvif->deflink);
- }
-+EXPORT_SYMBOL(ath12k_mac_op_update_vif_offload);
- 
- static bool ath12k_mac_vif_ap_active_any(struct ath12k_base *ab)
- {
-@@ -10080,8 +10098,8 @@ static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
- 	return arvif->ar;
- }
- 
--static int ath12k_mac_op_add_interface(struct ieee80211_hw *hw,
--				       struct ieee80211_vif *vif)
-+int ath12k_mac_op_add_interface(struct ieee80211_hw *hw,
-+				struct ieee80211_vif *vif)
- {
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
-@@ -10128,6 +10146,7 @@ static int ath12k_mac_op_add_interface(struct ieee80211_hw *hw,
- 	 */
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_add_interface);
- 
- static void ath12k_mac_vif_unref(struct ath12k_dp *dp, struct ieee80211_vif *vif)
- {
-@@ -10216,8 +10235,8 @@ static int ath12k_mac_vdev_delete(struct ath12k *ar, struct ath12k_link_vif *arv
- 	return ret;
- }
- 
--static void ath12k_mac_op_remove_interface(struct ieee80211_hw *hw,
--					   struct ieee80211_vif *vif)
-+void ath12k_mac_op_remove_interface(struct ieee80211_hw *hw,
-+				    struct ieee80211_vif *vif)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_link_vif *arvif;
-@@ -10264,6 +10283,7 @@ static void ath12k_mac_op_remove_interface(struct ieee80211_hw *hw,
- 		ath12k_mac_unassign_link_vif(arvif);
- 	}
- }
-+EXPORT_SYMBOL(ath12k_mac_op_remove_interface);
- 
- /* FIXME: Has to be verified. */
- #define SUPPORTED_FILTERS			\
-@@ -10275,10 +10295,10 @@ static void ath12k_mac_op_remove_interface(struct ieee80211_hw *hw,
- 	FIF_PROBE_REQ |				\
- 	FIF_FCSFAIL)
- 
--static void ath12k_mac_op_configure_filter(struct ieee80211_hw *hw,
--					   unsigned int changed_flags,
--					   unsigned int *total_flags,
--					   u64 multicast)
-+void ath12k_mac_op_configure_filter(struct ieee80211_hw *hw,
-+				    unsigned int changed_flags,
-+				    unsigned int *total_flags,
-+				    u64 multicast)
- {
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k *ar;
-@@ -10290,9 +10310,10 @@ static void ath12k_mac_op_configure_filter(struct ieee80211_hw *hw,
- 	*total_flags &= SUPPORTED_FILTERS;
- 	ar->filter_flags = *total_flags;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_configure_filter);
- 
--static int ath12k_mac_op_get_antenna(struct ieee80211_hw *hw, int radio_idx,
--				     u32 *tx_ant, u32 *rx_ant)
-+int ath12k_mac_op_get_antenna(struct ieee80211_hw *hw, int radio_idx,
-+			      u32 *tx_ant, u32 *rx_ant)
- {
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	int antennas_rx = 0, antennas_tx = 0;
-@@ -10311,9 +10332,10 @@ static int ath12k_mac_op_get_antenna(struct ieee80211_hw *hw, int radio_idx,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_get_antenna);
- 
--static int ath12k_mac_op_set_antenna(struct ieee80211_hw *hw, int radio_idx,
--				     u32 tx_ant, u32 rx_ant)
-+int ath12k_mac_op_set_antenna(struct ieee80211_hw *hw, int radio_idx,
-+			      u32 tx_ant, u32 rx_ant)
- {
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k *ar;
-@@ -10330,6 +10352,7 @@ static int ath12k_mac_op_set_antenna(struct ieee80211_hw *hw, int radio_idx,
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_set_antenna);
- 
- static int ath12k_mac_ampdu_action(struct ieee80211_hw *hw,
- 				   struct ieee80211_vif *vif,
-@@ -10371,9 +10394,9 @@ static int ath12k_mac_ampdu_action(struct ieee80211_hw *hw,
- 	return ret;
- }
- 
--static int ath12k_mac_op_ampdu_action(struct ieee80211_hw *hw,
--				      struct ieee80211_vif *vif,
--				      struct ieee80211_ampdu_params *params)
-+int ath12k_mac_op_ampdu_action(struct ieee80211_hw *hw,
-+			       struct ieee80211_vif *vif,
-+			       struct ieee80211_ampdu_params *params)
- {
- 	struct ieee80211_sta *sta = params->sta;
- 	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
-@@ -10394,9 +10417,10 @@ static int ath12k_mac_op_ampdu_action(struct ieee80211_hw *hw,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_ampdu_action);
- 
--static int ath12k_mac_op_add_chanctx(struct ieee80211_hw *hw,
--				     struct ieee80211_chanctx_conf *ctx)
-+int ath12k_mac_op_add_chanctx(struct ieee80211_hw *hw,
-+			      struct ieee80211_chanctx_conf *ctx)
- {
- 	struct ath12k *ar;
++/* DP arch ops to communicate from common module
++ * to arch specific module
++ */
++struct ath12k_dp_arch_ops {
++	int (*dp_device_init)(struct ath12k_dp *dp);
++	void (*dp_device_deinit)(struct ath12k_dp *dp);
++};
++
+ struct ath12k_dp {
  	struct ath12k_base *ab;
-@@ -10423,9 +10447,10 @@ static int ath12k_mac_op_add_chanctx(struct ieee80211_hw *hw,
+ 	u32 mon_dest_ring_stuck_cnt;
+@@ -430,6 +438,8 @@ struct ath12k_dp {
  
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_add_chanctx);
+ 	struct ath12k_hw_group *ag;
+ 	u8 device_id;
++
++	struct ath12k_dp_arch_ops *ops;
+ };
  
--static void ath12k_mac_op_remove_chanctx(struct ieee80211_hw *hw,
--					 struct ieee80211_chanctx_conf *ctx)
-+void ath12k_mac_op_remove_chanctx(struct ieee80211_hw *hw,
-+				  struct ieee80211_chanctx_conf *ctx)
- {
- 	struct ath12k *ar;
- 	struct ath12k_base *ab;
-@@ -10450,6 +10475,7 @@ static void ath12k_mac_op_remove_chanctx(struct ieee80211_hw *hw,
- 	spin_unlock_bh(&ar->data_lock);
- 	ar->chan_tx_pwr = ATH12K_PDEV_TX_POWER_INVALID;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_remove_chanctx);
- 
- static enum wmi_phy_mode
- ath12k_mac_check_down_grade_phy_mode(struct ath12k *ar,
-@@ -10996,9 +11022,9 @@ ath12k_mac_update_active_vif_chan(struct ath12k *ar,
- 	kfree(arg.vifs);
- }
- 
--static void ath12k_mac_op_change_chanctx(struct ieee80211_hw *hw,
--					 struct ieee80211_chanctx_conf *ctx,
--					 u32 changed)
-+void ath12k_mac_op_change_chanctx(struct ieee80211_hw *hw,
-+				  struct ieee80211_chanctx_conf *ctx,
-+				  u32 changed)
- {
- 	struct ath12k *ar;
- 	struct ath12k_base *ab;
-@@ -11028,6 +11054,7 @@ static void ath12k_mac_op_change_chanctx(struct ieee80211_hw *hw,
- 
- 	/* TODO: Recalc radar detection */
- }
-+EXPORT_SYMBOL(ath12k_mac_op_change_chanctx);
- 
- static int ath12k_start_vdev_delay(struct ath12k *ar,
- 				   struct ath12k_link_vif *arvif)
-@@ -11465,7 +11492,7 @@ static void ath12k_mac_parse_tx_pwr_env(struct ath12k *ar,
- 	}
- }
- 
--static int
-+int
- ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
- 				 struct ieee80211_vif *vif,
- 				 struct ieee80211_bss_conf *link_conf,
-@@ -11550,8 +11577,9 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
- out:
- 	return ret;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_assign_vif_chanctx);
- 
--static void
-+void
- ath12k_mac_op_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_bss_conf *link_conf,
-@@ -11618,8 +11646,9 @@ ath12k_mac_op_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 		ar->scan.arvif = NULL;
- 	}
- }
-+EXPORT_SYMBOL(ath12k_mac_op_unassign_vif_chanctx);
- 
--static int
-+int
- ath12k_mac_op_switch_vif_chanctx(struct ieee80211_hw *hw,
- 				 struct ieee80211_vif_chanctx_switch *vifs,
- 				 int n_vifs,
-@@ -11644,6 +11673,7 @@ ath12k_mac_op_switch_vif_chanctx(struct ieee80211_hw *hw,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_switch_vif_chanctx);
- 
- static int
- ath12k_set_vdev_param_to_all_vifs(struct ath12k *ar, int param, u32 value)
-@@ -11672,8 +11702,8 @@ ath12k_set_vdev_param_to_all_vifs(struct ath12k *ar, int param, u32 value)
- /* mac80211 stores device specific RTS/Fragmentation threshold value,
-  * this is set interface specific to firmware from ath12k driver
-  */
--static int ath12k_mac_op_set_rts_threshold(struct ieee80211_hw *hw,
--					   int radio_idx, u32 value)
-+int ath12k_mac_op_set_rts_threshold(struct ieee80211_hw *hw,
-+				    int radio_idx, u32 value)
- {
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k *ar;
-@@ -11697,9 +11727,10 @@ static int ath12k_mac_op_set_rts_threshold(struct ieee80211_hw *hw,
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_set_rts_threshold);
- 
--static int ath12k_mac_op_set_frag_threshold(struct ieee80211_hw *hw,
--					    int radio_idx, u32 value)
-+int ath12k_mac_op_set_frag_threshold(struct ieee80211_hw *hw,
-+				     int radio_idx, u32 value)
- {
- 	/* Even though there's a WMI vdev param for fragmentation threshold no
- 	 * known firmware actually implements it. Moreover it is not possible to
-@@ -11716,6 +11747,7 @@ static int ath12k_mac_op_set_frag_threshold(struct ieee80211_hw *hw,
- 
- 	return -EOPNOTSUPP;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_set_frag_threshold);
- 
- static int ath12k_mac_flush(struct ath12k *ar)
- {
-@@ -11753,8 +11785,8 @@ int ath12k_mac_wait_tx_complete(struct ath12k *ar)
- 	return ath12k_mac_flush(ar);
- }
- 
--static void ath12k_mac_op_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
--				u32 queues, bool drop)
-+void ath12k_mac_op_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			 u32 queues, bool drop)
- {
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k_link_vif *arvif;
-@@ -11789,6 +11821,7 @@ static void ath12k_mac_op_flush(struct ieee80211_hw *hw, struct ieee80211_vif *v
- 		ath12k_mac_flush(arvif->ar);
- 	}
- }
-+EXPORT_SYMBOL(ath12k_mac_op_flush);
- 
- static int
- ath12k_mac_bitrate_mask_num_ht_rates(struct ath12k *ar,
-@@ -12272,7 +12305,7 @@ ath12k_mac_validate_fixed_rate_settings(struct ath12k *ar, enum nl80211_band ban
- 	return ret;
- }
- 
--static int
-+int
- ath12k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 			       struct ieee80211_vif *vif,
- 			       const struct cfg80211_bitrate_mask *mask)
-@@ -12428,8 +12461,9 @@ ath12k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- out:
- 	return ret;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_set_bitrate_mask);
- 
--static void
-+void
- ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
- 				enum ieee80211_reconfig_type reconfig_type)
- {
-@@ -12510,6 +12544,7 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
- 		}
- 	}
- }
-+EXPORT_SYMBOL(ath12k_mac_op_reconfig_complete);
- 
- static void
- ath12k_mac_update_bss_chan_survey(struct ath12k *ar,
-@@ -12543,8 +12578,8 @@ ath12k_mac_update_bss_chan_survey(struct ath12k *ar,
- 		ath12k_warn(ar->ab, "bss channel survey timed out\n");
- }
- 
--static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
--				    struct survey_info *survey)
-+int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
-+			     struct survey_info *survey)
- {
- 	struct ath12k *ar;
- 	struct ieee80211_supported_band *sband;
-@@ -12598,11 +12633,12 @@ static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_get_survey);
- 
--static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
--					 struct ieee80211_vif *vif,
--					 struct ieee80211_sta *sta,
--					 struct station_info *sinfo)
-+void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
-+				  struct ieee80211_vif *vif,
-+				  struct ieee80211_sta *sta,
-+				  struct station_info *sinfo)
- {
- 	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
- 	struct ath12k_fw_stats_req_params params = {};
-@@ -12677,11 +12713,12 @@ static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
- }
-+EXPORT_SYMBOL(ath12k_mac_op_sta_statistics);
- 
--static void ath12k_mac_op_link_sta_statistics(struct ieee80211_hw *hw,
--					      struct ieee80211_vif *vif,
--					      struct ieee80211_link_sta *link_sta,
--					      struct link_station_info *link_sinfo)
-+void ath12k_mac_op_link_sta_statistics(struct ieee80211_hw *hw,
-+				       struct ieee80211_vif *vif,
-+				       struct ieee80211_link_sta *link_sta,
-+				       struct link_station_info *link_sinfo)
- {
- 	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(link_sta->sta);
- 	struct ath12k_fw_stats_req_params params = {};
-@@ -12759,9 +12796,10 @@ static void ath12k_mac_op_link_sta_statistics(struct ieee80211_hw *hw,
- 	link_sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
- 	link_sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
- }
-+EXPORT_SYMBOL(ath12k_mac_op_link_sta_statistics);
- 
--static int ath12k_mac_op_cancel_remain_on_channel(struct ieee80211_hw *hw,
--						  struct ieee80211_vif *vif)
-+int ath12k_mac_op_cancel_remain_on_channel(struct ieee80211_hw *hw,
-+					   struct ieee80211_vif *vif)
- {
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k *ar;
-@@ -12781,12 +12819,13 @@ static int ath12k_mac_op_cancel_remain_on_channel(struct ieee80211_hw *hw,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_cancel_remain_on_channel);
- 
--static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
--					   struct ieee80211_vif *vif,
--					   struct ieee80211_channel *chan,
--					   int duration,
--					   enum ieee80211_roc_type type)
-+int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
-+				    struct ieee80211_vif *vif,
-+				    struct ieee80211_channel *chan,
-+				    int duration,
-+				    enum ieee80211_roc_type type)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
-@@ -12920,10 +12959,11 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(ath12k_mac_op_remain_on_channel);
- 
--static void ath12k_mac_op_set_rekey_data(struct ieee80211_hw *hw,
--					 struct ieee80211_vif *vif,
--					 struct cfg80211_gtk_rekey_data *data)
-+void ath12k_mac_op_set_rekey_data(struct ieee80211_hw *hw,
-+				  struct ieee80211_vif *vif,
-+				  struct cfg80211_gtk_rekey_data *data)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_rekey_data *rekey_data;
-@@ -12956,63 +12996,7 @@ static void ath12k_mac_op_set_rekey_data(struct ieee80211_hw *hw,
- 	ath12k_dbg_dump(ar->ab, ATH12K_DBG_MAC, "replay ctr", NULL,
- 			&rekey_data->replay_ctr, sizeof(rekey_data->replay_ctr));
- }
--
--static const struct ieee80211_ops ath12k_ops = {
--	.tx				= ath12k_mac_op_tx,
--	.wake_tx_queue			= ieee80211_handle_wake_tx_queue,
--	.start                          = ath12k_mac_op_start,
--	.stop                           = ath12k_mac_op_stop,
--	.reconfig_complete              = ath12k_mac_op_reconfig_complete,
--	.add_interface                  = ath12k_mac_op_add_interface,
--	.remove_interface		= ath12k_mac_op_remove_interface,
--	.update_vif_offload		= ath12k_mac_op_update_vif_offload,
--	.config                         = ath12k_mac_op_config,
--	.link_info_changed              = ath12k_mac_op_link_info_changed,
--	.vif_cfg_changed		= ath12k_mac_op_vif_cfg_changed,
--	.change_vif_links               = ath12k_mac_op_change_vif_links,
--	.configure_filter		= ath12k_mac_op_configure_filter,
--	.hw_scan                        = ath12k_mac_op_hw_scan,
--	.cancel_hw_scan                 = ath12k_mac_op_cancel_hw_scan,
--	.set_key                        = ath12k_mac_op_set_key,
--	.set_rekey_data	                = ath12k_mac_op_set_rekey_data,
--	.sta_state                      = ath12k_mac_op_sta_state,
--	.sta_set_txpwr			= ath12k_mac_op_sta_set_txpwr,
--	.link_sta_rc_update		= ath12k_mac_op_link_sta_rc_update,
--	.conf_tx                        = ath12k_mac_op_conf_tx,
--	.set_antenna			= ath12k_mac_op_set_antenna,
--	.get_antenna			= ath12k_mac_op_get_antenna,
--	.ampdu_action			= ath12k_mac_op_ampdu_action,
--	.add_chanctx			= ath12k_mac_op_add_chanctx,
--	.remove_chanctx			= ath12k_mac_op_remove_chanctx,
--	.change_chanctx			= ath12k_mac_op_change_chanctx,
--	.assign_vif_chanctx		= ath12k_mac_op_assign_vif_chanctx,
--	.unassign_vif_chanctx		= ath12k_mac_op_unassign_vif_chanctx,
--	.switch_vif_chanctx		= ath12k_mac_op_switch_vif_chanctx,
--	.get_txpower			= ath12k_mac_op_get_txpower,
--	.set_rts_threshold		= ath12k_mac_op_set_rts_threshold,
--	.set_frag_threshold		= ath12k_mac_op_set_frag_threshold,
--	.set_bitrate_mask		= ath12k_mac_op_set_bitrate_mask,
--	.get_survey			= ath12k_mac_op_get_survey,
--	.flush				= ath12k_mac_op_flush,
--	.sta_statistics			= ath12k_mac_op_sta_statistics,
--	.link_sta_statistics		= ath12k_mac_op_link_sta_statistics,
--	.remain_on_channel              = ath12k_mac_op_remain_on_channel,
--	.cancel_remain_on_channel       = ath12k_mac_op_cancel_remain_on_channel,
--	.change_sta_links               = ath12k_mac_op_change_sta_links,
--	.can_activate_links             = ath12k_mac_op_can_activate_links,
--#ifdef CONFIG_PM
--	.suspend			= ath12k_wow_op_suspend,
--	.resume				= ath12k_wow_op_resume,
--	.set_wakeup			= ath12k_wow_op_set_wakeup,
--#endif
--#ifdef CONFIG_ATH12K_DEBUGFS
--	.vif_add_debugfs                = ath12k_debugfs_op_vif_add,
--#endif
--	CFG80211_TESTMODE_CMD(ath12k_tm_cmd)
--#ifdef CONFIG_ATH12K_DEBUGFS
--	.link_sta_add_debugfs           = ath12k_debugfs_link_sta_op_add,
--#endif
--};
-+EXPORT_SYMBOL(ath12k_mac_op_set_rekey_data);
- 
- void ath12k_mac_update_freq_range(struct ath12k *ar,
- 				  u32 freq_low, u32 freq_high)
-@@ -14226,7 +14210,7 @@ static struct ath12k_hw *ath12k_mac_hw_allocate(struct ath12k_hw_group *ag,
- 	u8 pdev_idx;
- 
- 	hw = ieee80211_alloc_hw(struct_size(ah, radio, num_pdev_map),
--				&ath12k_ops);
-+				pdev_map->ab->ath12k_ops);
- 	if (!hw)
- 		return NULL;
- 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
-index 18c79d4002cb..ea6934e8d17c 100644
---- a/drivers/net/wireless/ath/ath12k/mac.h
-+++ b/drivers/net/wireless/ath/ath12k/mac.h
+ static inline void ath12k_dp_get_mac_addr(u32 addr_l32, u16 addr_h16, u8 *addr)
+diff --git a/drivers/net/wireless/ath/ath12k/hif.h b/drivers/net/wireless/ath/ath12k/hif.h
+index e8840fab6061..1f9781f6d564 100644
+--- a/drivers/net/wireless/ath/ath12k/hif.h
++++ b/drivers/net/wireless/ath/ath12k/hif.h
 @@ -1,7 +1,7 @@
  /* SPDX-License-Identifier: BSD-3-Clause-Clear */
  /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) 2019-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
 + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
   */
  
- #ifndef ATH12K_MAC_H
-@@ -193,4 +193,130 @@ void ath12k_mac_update_freq_range(struct ath12k *ar,
- void ath12k_mac_fill_reg_tpc_info(struct ath12k *ar,
- 				  struct ath12k_link_vif *arvif,
- 				  struct ieee80211_chanctx_conf *ctx);
-+void ath12k_mac_op_tx(struct ieee80211_hw *hw,
-+		      struct ieee80211_tx_control *control,
-+		      struct sk_buff *skb);
-+int ath12k_mac_op_start(struct ieee80211_hw *hw);
-+void ath12k_mac_op_stop(struct ieee80211_hw *hw, bool suspend);
-+void
-+ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
-+				enum ieee80211_reconfig_type reconfig_type);
-+int ath12k_mac_op_add_interface(struct ieee80211_hw *hw,
-+				struct ieee80211_vif *vif);
-+void ath12k_mac_op_remove_interface(struct ieee80211_hw *hw,
-+				    struct ieee80211_vif *vif);
-+void ath12k_mac_op_update_vif_offload(struct ieee80211_hw *hw,
-+				      struct ieee80211_vif *vif);
-+int ath12k_mac_op_config(struct ieee80211_hw *hw, int radio_idx, u32 changed);
-+void ath12k_mac_op_link_info_changed(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif *vif,
-+				     struct ieee80211_bss_conf *info,
-+				     u64 changed);
-+void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
-+				   struct ieee80211_vif *vif,
-+				   u64 changed);
-+int
-+ath12k_mac_op_change_vif_links
-+			(struct ieee80211_hw *hw,
-+			 struct ieee80211_vif *vif,
-+			 u16 old_links, u16 new_links,
-+			 struct ieee80211_bss_conf *ol[IEEE80211_MLD_MAX_NUM_LINKS]);
-+void ath12k_mac_op_configure_filter(struct ieee80211_hw *hw,
-+				    unsigned int changed_flags,
-+				    unsigned int *total_flags,
-+				    u64 multicast);
-+int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
-+			  struct ieee80211_vif *vif,
-+			  struct ieee80211_scan_request *hw_req);
-+void ath12k_mac_op_cancel_hw_scan(struct ieee80211_hw *hw,
-+				  struct ieee80211_vif *vif);
-+int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
-+			  struct ieee80211_vif *vif, struct ieee80211_sta *sta,
-+			  struct ieee80211_key_conf *key);
-+void ath12k_mac_op_set_rekey_data(struct ieee80211_hw *hw,
-+				  struct ieee80211_vif *vif,
-+				  struct cfg80211_gtk_rekey_data *data);
-+int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
-+			    struct ieee80211_vif *vif,
-+			    struct ieee80211_sta *sta,
-+			    enum ieee80211_sta_state old_state,
-+			    enum ieee80211_sta_state new_state);
-+int ath12k_mac_op_sta_set_txpwr(struct ieee80211_hw *hw,
-+				struct ieee80211_vif *vif,
-+				struct ieee80211_sta *sta);
-+void ath12k_mac_op_link_sta_rc_update(struct ieee80211_hw *hw,
-+				      struct ieee80211_vif *vif,
-+				      struct ieee80211_link_sta *link_sta,
-+				      u32 changed);
-+int ath12k_mac_op_conf_tx(struct ieee80211_hw *hw,
-+			  struct ieee80211_vif *vif,
-+			  unsigned int link_id, u16 ac,
-+			  const struct ieee80211_tx_queue_params *params);
-+int ath12k_mac_op_set_antenna(struct ieee80211_hw *hw, int radio_idx,
-+			      u32 tx_ant, u32 rx_ant);
-+int ath12k_mac_op_get_antenna(struct ieee80211_hw *hw, int radio_idx,
-+			      u32 *tx_ant, u32 *rx_ant);
-+int ath12k_mac_op_ampdu_action(struct ieee80211_hw *hw,
-+			       struct ieee80211_vif *vif,
-+			       struct ieee80211_ampdu_params *params);
-+int ath12k_mac_op_add_chanctx(struct ieee80211_hw *hw,
-+			      struct ieee80211_chanctx_conf *ctx);
-+void ath12k_mac_op_remove_chanctx(struct ieee80211_hw *hw,
-+				  struct ieee80211_chanctx_conf *ctx);
-+void ath12k_mac_op_change_chanctx(struct ieee80211_hw *hw,
-+				  struct ieee80211_chanctx_conf *ctx,
-+				  u32 changed);
-+int
-+ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
-+				 struct ieee80211_vif *vif,
-+				 struct ieee80211_bss_conf *link_conf,
-+				 struct ieee80211_chanctx_conf *ctx);
-+void
-+ath12k_mac_op_unassign_vif_chanctx(struct ieee80211_hw *hw,
-+				   struct ieee80211_vif *vif,
-+				   struct ieee80211_bss_conf *link_conf,
-+				   struct ieee80211_chanctx_conf *ctx);
-+int
-+ath12k_mac_op_switch_vif_chanctx(struct ieee80211_hw *hw,
-+				 struct ieee80211_vif_chanctx_switch *vifs,
-+				 int n_vifs,
-+				 enum ieee80211_chanctx_switch_mode mode);
-+int ath12k_mac_op_set_rts_threshold(struct ieee80211_hw *hw,
-+				    int radio_idx, u32 value);
-+int ath12k_mac_op_set_frag_threshold(struct ieee80211_hw *hw,
-+				     int radio_idx, u32 value);
-+int
-+ath12k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
-+			       struct ieee80211_vif *vif,
-+			       const struct cfg80211_bitrate_mask *mask);
-+int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
-+			     struct survey_info *survey);
-+void ath12k_mac_op_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			 u32 queues, bool drop);
-+void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
-+				  struct ieee80211_vif *vif,
-+				  struct ieee80211_sta *sta,
-+				  struct station_info *sinfo);
-+void ath12k_mac_op_link_sta_statistics(struct ieee80211_hw *hw,
-+				       struct ieee80211_vif *vif,
-+				       struct ieee80211_link_sta *link_sta,
-+				       struct link_station_info *link_sinfo);
-+int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
-+				    struct ieee80211_vif *vif,
-+				    struct ieee80211_channel *chan,
-+				    int duration,
-+				    enum ieee80211_roc_type type);
-+int ath12k_mac_op_cancel_remain_on_channel(struct ieee80211_hw *hw,
-+					   struct ieee80211_vif *vif);
-+int ath12k_mac_op_change_sta_links(struct ieee80211_hw *hw,
-+				   struct ieee80211_vif *vif,
-+				   struct ieee80211_sta *sta,
-+				   u16 old_links, u16 new_links);
-+bool ath12k_mac_op_can_activate_links(struct ieee80211_hw *hw,
-+				      struct ieee80211_vif *vif,
-+				      u16 active_links);
-+int ath12k_mac_op_get_txpower(struct ieee80211_hw *hw,
-+			      struct ieee80211_vif *vif,
-+			      unsigned int link_id,
-+			      int *dbm);
- #endif
-diff --git a/drivers/net/wireless/ath/ath12k/testmode.c b/drivers/net/wireless/ath/ath12k/testmode.c
-index fb6af7ccf71f..05a65970c862 100644
---- a/drivers/net/wireless/ath/ath12k/testmode.c
-+++ b/drivers/net/wireless/ath/ath12k/testmode.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include "testmode.h"
-@@ -393,3 +393,4 @@ int ath12k_tm_cmd(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		return -EOPNOTSUPP;
- 	}
- }
-+EXPORT_SYMBOL(ath12k_tm_cmd);
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/hw.c b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-index 909f7311619c..1acf6ffaea08 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/hw.c
-@@ -19,6 +19,10 @@
- #include "dp_rx.h"
- #include "../peer.h"
- #include "wmi.h"
-+#include "../wow.h"
-+#include "../debugfs.h"
-+#include "../debugfs_sta.h"
-+#include "../testmode.h"
- 
- static const guid_t wcn7850_uuid = GUID_INIT(0xf634f534, 0x6147, 0x11ec,
- 					     0x90, 0xd6, 0x02, 0x42,
-@@ -1042,6 +1046,63 @@ static const struct ath12k_hw_params ath12k_wifi7_hw_params[] = {
- 	},
+ #ifndef ATH12K_HIF_H
+@@ -32,6 +32,12 @@ struct ath12k_hif_ops {
+ 	void (*get_ce_msi_idx)(struct ath12k_base *ab, u32 ce_id, u32 *msi_idx);
+ 	int (*panic_handler)(struct ath12k_base *ab);
+ 	void (*coredump_download)(struct ath12k_base *ab);
++	int (*ext_irq_setup)(struct ath12k_base *ab,
++			     int (*handler)(struct ath12k_dp *dp,
++					    struct ath12k_ext_irq_grp *irq_grp,
++					    int budget),
++			     struct ath12k_dp *dp);
++	void (*ext_irq_cleanup)(struct ath12k_base *ab);
  };
  
-+static const struct ieee80211_ops ath12k_ops_wifi7 = {
-+	.tx				= ath12k_mac_op_tx,
-+	.wake_tx_queue			= ieee80211_handle_wake_tx_queue,
-+	.start                          = ath12k_mac_op_start,
-+	.stop                           = ath12k_mac_op_stop,
-+	.reconfig_complete              = ath12k_mac_op_reconfig_complete,
-+	.add_interface                  = ath12k_mac_op_add_interface,
-+	.remove_interface		= ath12k_mac_op_remove_interface,
-+	.update_vif_offload		= ath12k_mac_op_update_vif_offload,
-+	.config                         = ath12k_mac_op_config,
-+	.link_info_changed              = ath12k_mac_op_link_info_changed,
-+	.vif_cfg_changed		= ath12k_mac_op_vif_cfg_changed,
-+	.change_vif_links               = ath12k_mac_op_change_vif_links,
-+	.configure_filter		= ath12k_mac_op_configure_filter,
-+	.hw_scan                        = ath12k_mac_op_hw_scan,
-+	.cancel_hw_scan                 = ath12k_mac_op_cancel_hw_scan,
-+	.set_key                        = ath12k_mac_op_set_key,
-+	.set_rekey_data	                = ath12k_mac_op_set_rekey_data,
-+	.sta_state                      = ath12k_mac_op_sta_state,
-+	.sta_set_txpwr			= ath12k_mac_op_sta_set_txpwr,
-+	.link_sta_rc_update		= ath12k_mac_op_link_sta_rc_update,
-+	.conf_tx                        = ath12k_mac_op_conf_tx,
-+	.set_antenna			= ath12k_mac_op_set_antenna,
-+	.get_antenna			= ath12k_mac_op_get_antenna,
-+	.ampdu_action			= ath12k_mac_op_ampdu_action,
-+	.add_chanctx			= ath12k_mac_op_add_chanctx,
-+	.remove_chanctx			= ath12k_mac_op_remove_chanctx,
-+	.change_chanctx			= ath12k_mac_op_change_chanctx,
-+	.assign_vif_chanctx		= ath12k_mac_op_assign_vif_chanctx,
-+	.unassign_vif_chanctx		= ath12k_mac_op_unassign_vif_chanctx,
-+	.switch_vif_chanctx		= ath12k_mac_op_switch_vif_chanctx,
-+	.get_txpower			= ath12k_mac_op_get_txpower,
-+	.set_rts_threshold		= ath12k_mac_op_set_rts_threshold,
-+	.set_frag_threshold		= ath12k_mac_op_set_frag_threshold,
-+	.set_bitrate_mask		= ath12k_mac_op_set_bitrate_mask,
-+	.get_survey			= ath12k_mac_op_get_survey,
-+	.flush				= ath12k_mac_op_flush,
-+	.sta_statistics			= ath12k_mac_op_sta_statistics,
-+	.link_sta_statistics		= ath12k_mac_op_link_sta_statistics,
-+	.remain_on_channel              = ath12k_mac_op_remain_on_channel,
-+	.cancel_remain_on_channel       = ath12k_mac_op_cancel_remain_on_channel,
-+	.change_sta_links               = ath12k_mac_op_change_sta_links,
-+	.can_activate_links             = ath12k_mac_op_can_activate_links,
-+#ifdef CONFIG_PM
-+	.suspend			= ath12k_wow_op_suspend,
-+	.resume				= ath12k_wow_op_resume,
-+	.set_wakeup			= ath12k_wow_op_set_wakeup,
-+#endif
-+#ifdef CONFIG_ATH12K_DEBUGFS
-+	.vif_add_debugfs                = ath12k_debugfs_op_vif_add,
-+#endif
-+	CFG80211_TESTMODE_CMD(ath12k_tm_cmd)
-+#ifdef CONFIG_ATH12K_DEBUGFS
-+	.link_sta_add_debugfs           = ath12k_debugfs_link_sta_op_add,
-+#endif
-+};
+ static inline int ath12k_hif_map_service_to_pipe(struct ath12k_base *ab, u16 service_id,
+@@ -162,4 +168,26 @@ static inline void ath12k_hif_coredump_download(struct ath12k_base *ab)
+ 	if (ab->hif.ops->coredump_download)
+ 		ab->hif.ops->coredump_download(ab);
+ }
 +
- int ath12k_wifi7_hw_init(struct ath12k_base *ab)
++static inline
++int ath12k_hif_ext_irq_setup(struct ath12k_base *ab,
++			     int (*irq_handler)(struct ath12k_dp *dp,
++						struct ath12k_ext_irq_grp *irq_grp,
++						int budget),
++			     struct ath12k_dp *dp)
++{
++	if (!ab->hif.ops->ext_irq_setup)
++		return -EOPNOTSUPP;
++
++	return ab->hif.ops->ext_irq_setup(ab, irq_handler, dp);
++}
++
++static inline void ath12k_hif_ext_irq_cleanup(struct ath12k_base *ab)
++{
++	if (!ab->hif.ops->ext_irq_cleanup)
++		return;
++
++	ab->hif.ops->ext_irq_cleanup(ab);
++}
++
+ #endif /* ATH12K_HIF_H */
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 672cf2899681..c7dc0c976a89 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -319,8 +319,6 @@ static void ath12k_pci_free_irq(struct ath12k_base *ab)
+ 		irq_idx = ATH12K_PCI_IRQ_CE0_OFFSET + i;
+ 		free_irq(ab->irq_num[irq_idx], &ab->ce.ce_pipe[i]);
+ 	}
+-
+-	ath12k_pci_free_ext_irq(ab);
+ }
+ 
+ static void ath12k_pci_ce_irq_enable(struct ath12k_base *ab, u16 ce_id)
+@@ -478,11 +476,10 @@ static int ath12k_pci_ext_grp_napi_poll(struct napi_struct *napi, int budget)
+ 	struct ath12k_ext_irq_grp *irq_grp = container_of(napi,
+ 						struct ath12k_ext_irq_grp,
+ 						napi);
+-	struct ath12k_base *ab = irq_grp->ab;
+ 	int work_done;
+ 	int i;
+ 
+-	work_done = ath12k_wifi7_dp_service_srng(ab, irq_grp, budget);
++	work_done = irq_grp->irq_handler(irq_grp->dp, irq_grp, budget);
+ 	if (work_done < budget) {
+ 		napi_complete_done(napi, work_done);
+ 		for (i = 0; i < irq_grp->num_irq; i++)
+@@ -517,7 +514,12 @@ static irqreturn_t ath12k_pci_ext_interrupt_handler(int irq, void *arg)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static int ath12k_pci_ext_irq_config(struct ath12k_base *ab)
++static
++int ath12k_pci_ext_irq_config(struct ath12k_base *ab,
++			      int (*irq_handler)(struct ath12k_dp *dp,
++						 struct ath12k_ext_irq_grp *irq_grp,
++						 int budget),
++			      struct ath12k_dp *dp)
  {
- 	const struct ath12k_hw_params *hw_params = NULL;
-@@ -1061,6 +1122,7 @@ int ath12k_wifi7_hw_init(struct ath12k_base *ab)
+ 	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
+ 	int i, j, n, ret, num_vectors = 0;
+@@ -538,6 +540,8 @@ static int ath12k_pci_ext_irq_config(struct ath12k_base *ab)
+ 
+ 		irq_grp->ab = ab;
+ 		irq_grp->grp_id = i;
++		irq_grp->irq_handler = irq_handler;
++		irq_grp->dp = dp;
+ 		irq_grp->napi_ndev = alloc_netdev_dummy(0);
+ 		if (!irq_grp->napi_ndev) {
+ 			ret = -ENOMEM;
+@@ -651,10 +655,6 @@ static int ath12k_pci_config_irq(struct ath12k_base *ab)
+ 		ath12k_pci_ce_irq_disable(ab, i);
  	}
  
- 	ab->hw_params = hw_params;
-+	ab->ath12k_ops = &ath12k_ops_wifi7;
- 
- 	ath12k_info(ab, "Wi-Fi 7 Hardware name: %s\n", ab->hw_params->name);
- 
-diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
-index dce9bd0bcaef..b1af8613b810 100644
---- a/drivers/net/wireless/ath/ath12k/wow.c
-+++ b/drivers/net/wireless/ath/ath12k/wow.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2022-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include <linux/delay.h>
-@@ -918,6 +918,7 @@ int ath12k_wow_op_suspend(struct ieee80211_hw *hw,
- exit:
- 	return ret ? 1 : 0;
+-	ret = ath12k_pci_ext_irq_config(ab);
+-	if (ret)
+-		return ret;
+-
+ 	return 0;
  }
-+EXPORT_SYMBOL(ath12k_wow_op_suspend);
  
- void ath12k_wow_op_set_wakeup(struct ieee80211_hw *hw, bool enabled)
+@@ -1483,6 +1483,8 @@ static const struct ath12k_hif_ops ath12k_pci_hif_ops = {
+ #ifdef CONFIG_ATH12K_COREDUMP
+ 	.coredump_download = ath12k_pci_coredump_download,
+ #endif
++	.ext_irq_setup = ath12k_pci_ext_irq_config,
++	.ext_irq_cleanup = ath12k_pci_free_ext_irq,
+ };
+ 
+ static enum ath12k_device_family
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/dp.c b/drivers/net/wireless/ath/ath12k/wifi7/dp.c
+index adc3480b282b..c96c8bf062f4 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/dp.c
++++ b/drivers/net/wireless/ath/ath12k/wifi7/dp.c
+@@ -10,13 +10,15 @@
+ #include "../dp_mon.h"
+ #include "../dp_cmn.h"
+ #include "dp_rx.h"
++#include "../hif.h"
+ #include "dp.h"
+ #include "dp_tx.h"
+ 
+-int ath12k_wifi7_dp_service_srng(struct ath12k_base *ab,
+-				 struct ath12k_ext_irq_grp *irq_grp,
+-				 int budget)
++static int ath12k_wifi7_dp_service_srng(struct ath12k_dp *dp,
++					struct ath12k_ext_irq_grp *irq_grp,
++					int budget)
  {
-@@ -928,6 +929,7 @@ void ath12k_wow_op_set_wakeup(struct ieee80211_hw *hw, bool enabled)
- 
- 	device_set_wakeup_enable(ar->ab->dev, enabled);
++	struct ath12k_base *ab = dp->ab;
+ 	struct napi_struct *napi = &irq_grp->napi;
+ 	int grp_id = irq_grp->grp_id;
+ 	int work_done = 0;
+@@ -134,6 +136,25 @@ int ath12k_wifi7_dp_service_srng(struct ath12k_base *ab,
+ 	return tot_work_done;
  }
-+EXPORT_SYMBOL(ath12k_wow_op_set_wakeup);
  
- int ath12k_wow_op_resume(struct ieee80211_hw *hw)
++static int ath12k_wifi7_dp_op_device_init(struct ath12k_dp *dp)
++{
++	int ret;
++
++	ret = ath12k_hif_ext_irq_setup(dp->ab, ath12k_wifi7_dp_service_srng, dp);
++
++	return ret;
++}
++
++static void ath12k_wifi7_dp_op_device_deinit(struct ath12k_dp *dp)
++{
++	ath12k_hif_ext_irq_cleanup(dp->ab);
++}
++
++static struct ath12k_dp_arch_ops ath12k_wifi7_dp_arch_ops = {
++	.dp_device_init = ath12k_wifi7_dp_op_device_init,
++	.dp_device_deinit = ath12k_wifi7_dp_op_device_deinit,
++};
++
+ /* TODO: remove export once this file is built with wifi7 ko */
+ struct ath12k_dp *ath12k_wifi7_dp_device_alloc(struct ath12k_base *ab)
  {
-@@ -1000,6 +1002,7 @@ int ath12k_wow_op_resume(struct ieee80211_hw *hw)
+@@ -144,6 +165,8 @@ struct ath12k_dp *ath12k_wifi7_dp_device_alloc(struct ath12k_base *ab)
+ 	if (!dp)
+ 		return NULL;
  
- 	return ret;
- }
-+EXPORT_SYMBOL(ath12k_wow_op_resume);
++	dp->ops = &ath12k_wifi7_dp_arch_ops;
++
+ 	dp->ab = ab;
+ 	dp->dev = ab->dev;
+ 	dp->hw_params = ab->hw_params;
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/dp.h b/drivers/net/wireless/ath/ath12k/wifi7/dp.h
+index 2300fda65786..72fdfb368c99 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/dp.h
++++ b/drivers/net/wireless/ath/ath12k/wifi7/dp.h
+@@ -13,8 +13,6 @@
+ struct ath12k_base;
+ struct ath12k_dp;
  
- int ath12k_wow_init(struct ath12k *ar)
- {
+-int ath12k_wifi7_dp_service_srng(struct ath12k_base *ab,
+-				 struct ath12k_ext_irq_grp *irq_grp, int budget);
+ struct ath12k_dp *ath12k_wifi7_dp_device_alloc(struct ath12k_base *ab);
+ void ath12k_wifi7_dp_device_free(struct ath12k_dp *dp);
+ 
 -- 
 2.34.1
 
