@@ -1,82 +1,82 @@
-Return-Path: <linux-wireless+bounces-27604-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27605-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D100EB94E51
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 10:01:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 034D0B94E8D
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 10:04:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D1C67B6B87
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 07:59:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B7A916BF95
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 08:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AA134BA3A;
-	Tue, 23 Sep 2025 08:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29BF2EDD5D;
+	Tue, 23 Sep 2025 08:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Q155NzQd"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KY1Fsktp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1CD317707
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Sep 2025 08:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE4E2E1746
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Sep 2025 08:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758614435; cv=none; b=nfuh0mVYy+BT2d9YnhtYcXvHK3HY+ApnS+KYJ5BW5ssInyDwpO45o0SRBMWeBTtKeEnbEJKKrpt3figMGfug6IJyJMWU+h9FupyRAdG493ck0uQjj8rpTa4wgH12c8zrZb2WzHk+nYydKOlyPVBSwfd9S1yN2puC4fJ+hYNL1hQ=
+	t=1758614687; cv=none; b=qDTlvJ7ZPQOF60ScS2rk02NQMe5jvC7PCHGZfOKQgwjqBlBeJwdClmz+GX1e2jFJcDpbbo26N3a9a92U57vpVyH8ZiSNozPkaLO+OpAGytYe1QhZlQqG2AfQNVx2wgPkbcBppt3G0W43ioNQxN+ww/Ju3Gj0B2HRp+AL8ITS9bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758614435; c=relaxed/simple;
-	bh=pynqdHGr2KaEnteSncwKdJUw6R/4uCF4/io9wLSLKfc=;
+	s=arc-20240116; t=1758614687; c=relaxed/simple;
+	bh=q1WgresfBXhKDfegy1Bm756o3kmdPzapQV5PbbyUGrk=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Nb2pkWPdDHipnh6DKe0zsNPvAnLdVQhdeLHRZhjU5GPUSyx5GzqLifTslP21FgzxAbhXUkxdppbTX4HWoSFuw/KTZhtPmd1jLZHGrQpyZSm8YYExjg/thwsxQMEhfnFCfUh+F7dl1Vdu8aQoOjDH51dzDNNjK8PHMytP91IHku8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Q155NzQd; arc=none smtp.client-ip=209.85.128.54
+	 Content-Disposition; b=sJbOfFaJqEkrQS1JuJABHtrrOhVc9YlYm1xe6q3Nhxet2B0f1Zc+U6Ph7NEJXUIjVyf3hB+afXelJ5r6h8MOjTn2/rwJBgczgaD8T6foh3LmEQ3AxfAX8JeO8LI0n9U1utCOCszOAsx4EO05pNJ7lHU9rExcyx7MipOF0BJqiN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KY1Fsktp; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-46b303f755aso24263105e9.1
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Sep 2025 01:00:33 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-46e1cc6299cso5658065e9.1
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Sep 2025 01:04:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758614432; x=1759219232; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1758614684; x=1759219484; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=VfPpe/or52X+zhVBTtpPVXU4FPPLcpy3HAsFtg+RRoE=;
-        b=Q155NzQdTvQHWJ3n/2/G32VofoP63ZNqft4GlzNUPrKlcXm81wIOGlhS/vHVZO7GOX
-         xhwrbCpwerqIbcAQD5yman70zOa9kyDIQXF1pEW0PwgwjfOeZLlPrjDfAx6BsdY+lJKE
-         qsFzoBJPpZbyJFgoOCyez3Ma/mBTU6fbmvypfqEwqFAisYI9DGwe5qCcVaBvEw6iAXOP
-         DbTR9sZM1wolx8bXEeH+2kQEbnz5j9cVhHW6/nFmfK4EOYABnFrucVqGoyPJcR9RqCkK
-         TaWwLrK02eL49kJcdTMX2F7l3bf1Gh1r8DboR8azturYmYTy/C0BMlOIy4WFUAN32/s8
-         dbfQ==
+        bh=65gAs9t8N2uHZj/rvbjsiG4OJ6RKUb43eVRWusK5gqc=;
+        b=KY1FsktpBt8CvdXjyIKYag9yFrpPKqd+UzTd5sJeInSwFhMtnLP6BMHxCVRyf1IzF4
+         ttYFr3UmeOouau9J6mQQFHs2Nx8L6nvq3BsHkPGJdDMmI/IeOxMyotkOqQ0ZIbKorzz2
+         q2M5EWA98LEtiRy15wet8HFbaQTv6MEJn4hQCm1ZoS1I965Gp9c3WA0DBzpnboqEKPW3
+         P+yJvWW7uFR6/OVn8ViONi9xQrBUMqvbLtQwzgXW1waAahh4+f6/73zSzggXrci+senF
+         eoFoydJBlEbkpApXt8bMkEGNdDO0EqUMpCSDKaQ1POZlnjy+ijVUHJE8jafZUBadtV9W
+         4ytQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758614432; x=1759219232;
+        d=1e100.net; s=20230601; t=1758614684; x=1759219484;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VfPpe/or52X+zhVBTtpPVXU4FPPLcpy3HAsFtg+RRoE=;
-        b=AWF53cHRtHcWMfgE0q1ugGmkFOGrDNvbCfdozI67XqSjN/Suw2F4iEKk+um0uCydn/
-         2Sbw8UTa9fC3G2VyH3+yZ738VIj5F/2QI/PstlhwcWOgYSri1wPN7/U6CXlmQI054ktL
-         Qsr4Dn2lzpErsTtVcPuDH+P93Q4LPdwALVvPOUKYe+LJ2N90S0NQgVVmOvBmK0hdfFsy
-         AQtb4M3zwz4cyAs+Ey+fxxiEnNG+n4qN3ubHxe6v5YGwDZtXMD8T6W1+7kterj5PvGEc
-         V2TYdf5Y4TRFdGk5Kc1Fd+s5fhhfnWjtni0EVK1ZqQSNwqEoI0o0PBoEr8Iu6Ha55e+e
-         FZZA==
-X-Gm-Message-State: AOJu0Yzz8y6docxjWQBiIBzenxo4439W0wpGBy5m8EAXFWxzAihz2WRB
-	HofyMCWpZZBoZ+CPbBBV28iOWsV3jn2Y0C2FSh2B8PP1WOjNtRDj/9VFHv+ZqSkjvJo=
-X-Gm-Gg: ASbGncsEg5aQvvk8fYhIYAJ7H8pZzgi5RuD1ZPTaSjmhpiGJZPP36zeS4NSNchcUZ+7
-	keI2R2F3+OuJnrg2IEYh4Mh/1LE5e8VUXNvQpEoM4yz0sIhIS1Cs0q9IIbEzI8k0UMZj+gFgLqe
-	ZFTdTtfowlO9aDm0Q9OJLlwKgX0ZUD8lssJIiOmm8rQwzvMNJCxUqYm39KfN2hBJjeqnX0Pj/w8
-	4rlkHXuh3mZrTYLjiFjLr/cV6OYi//1REWoiAp8CjepFc+OI1fUR/3Wb5dTYPO9MDk8UXQdZKZ6
-	zdVIDqEc/Fx0qZYGj/GjcRsXInsj6/aJcIkMLhmVLnhyU9kTTqpzhnxc6IRQA3tc1FDmApgpL+O
-	SMf9sG3tI6xAmnkr8lZsfzAdFXoA4
-X-Google-Smtp-Source: AGHT+IEKEkfWWbkjde1dOLE+bL8O2HdDTlJTveliJYNiQVNvNq33H56qNuF9DYreJIpAj1wty36YjQ==
-X-Received: by 2002:a05:600c:4fc7:b0:45f:286e:49a8 with SMTP id 5b1f17b1804b1-46e1e0564famr16811235e9.30.1758614431906;
-        Tue, 23 Sep 2025 01:00:31 -0700 (PDT)
+        bh=65gAs9t8N2uHZj/rvbjsiG4OJ6RKUb43eVRWusK5gqc=;
+        b=JvhL7gl5CGgW+ddzTTGPvd3I9kuWCIqznlG3/lcXLAjRxVMnX/BOYyUG5cpCUGs6wU
+         UkXSpH3PSQGcfknEVn8DZM9a9IKNi8r9b19t1bOKbVY9wztb7dx6SAe4eHQ0bYYhKDG9
+         DyaT7Oqi6RQRdTgSehELFyecc2mbzQHo0Riuk2LKSspM7J1s/ngki22iUrDyT6EkGwYb
+         yBfnFfaf3uQEl8Phx2NbVfqiP1rjynNVxL6nMnrpV44WRWBvEHyTn7SAsnz+29151BrN
+         v7Cf2WtAd3QSY3TNsQhvAUsP9Xr4J7H5yvE9ps2ydbKlmLrcuZxiSf5pdBBVlavg/zD5
+         cOig==
+X-Gm-Message-State: AOJu0YxQ7tqe49J3WpMLFNGKn0rbZ3VkCrnRK9f4LvSgDB9pNsw650AU
+	ZZoaSDoT8h8ifIVFJAA1Zb5NEmnltq4RakXab6RDeyyzXup8WKdo5Dgi9bU6E/pRGDY=
+X-Gm-Gg: ASbGncvKKkPnG9zktG9DBEwGHUmKtFjqzDs53I0HeNZxQ5V+9x4ZSSiAdJnaUTvHQ1I
+	JpUhqCUbg1nA5PiFN28uowBGHKObivD8VwTRUjKMqKzmXnMfLYjIJcuFZg1CXmYyyYvUf0WG9ap
+	P6JMrNFal+nNyn/+w2YZUu3yFZF9ADQygmfI6TDUmuODr2rRL0fbWpllQLZHRE8zQQUpz8obUsW
+	sWKetz236IFS72nEmkqvkZVgaIpHQlG/da6pwDSeesAPuE8ya6pOdjm0NDwhWmxjmF0WQaT2vcg
+	HoOE4rfM4nxIGxvASKooadZqQmjK/HH1QMrwkodlfgwRrhgsnnS+41S0vGyyZtchcjcuXYBiOc8
+	s6ri1HgIpt6UKfcH0DTouTQ9uYTyT
+X-Google-Smtp-Source: AGHT+IHD1aRmr7M0acgtf8ZgOWg/F5WmK0Susqm0FnRinUKRRdtG/uyGDvkVOypLtqWKN9ZkaxuzpA==
+X-Received: by 2002:a05:600c:3b9e:b0:45b:88d6:8ddb with SMTP id 5b1f17b1804b1-46e1dae6142mr16344765e9.37.1758614683723;
+        Tue, 23 Sep 2025 01:04:43 -0700 (PDT)
 Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-464f5a285efsm262577465e9.18.2025.09.23.01.00.27
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-46e1d99f77esm9737165e9.5.2025.09.23.01.04.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Sep 2025 01:00:28 -0700 (PDT)
-Date: Tue, 23 Sep 2025 11:00:23 +0300
+        Tue, 23 Sep 2025 01:04:43 -0700 (PDT)
+Date: Tue, 23 Sep 2025 11:04:39 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: [bug report] wifi: mt76: mt7996: Set proper link destination address
- in mt7996_tx()
-Message-ID: <aNJTl89jpYob5XaR@stanley.mountain>
+To: Ilan Peer <ilan.peer@intel.com>
+Cc: linux-wireless@vger.kernel.org
+Subject: [bug report] wifi: mac80211_hwsim: Add simulation support for NAN
+ device
+Message-ID: <aNJUlyIiSTW9zZdr@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -86,119 +86,142 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Hello Lorenzo Bianconi,
+Hello Ilan Peer,
 
-Commit f940c9b7aef6 ("wifi: mt76: mt7996: Set proper link destination
-address in mt7996_tx()") from Jul 31, 2025 (linux-next), leads to the
+Commit a37a6f54439b ("wifi: mac80211_hwsim: Add simulation support
+for NAN device") from Sep 8, 2025 (linux-next), leads to the
 following Smatch static checker warning:
 
-	drivers/net/wireless/mediatek/mt76/mt7996/main.c:1344 mt7996_tx()
-	error: testing array offset 'link_id' after use.
+	drivers/net/wireless/virtual/mac80211_hwsim.c:2011 mac80211_hwsim_tx()
+	error: we previously assumed 'vif' could be null (see line 1978)
 
-drivers/net/wireless/mediatek/mt76/mt7996/main.c
-    1288 static void mt7996_tx(struct ieee80211_hw *hw,
-    1289                       struct ieee80211_tx_control *control,
-    1290                       struct sk_buff *skb)
-    1291 {
-    1292         struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
-    1293         struct mt7996_dev *dev = mt7996_hw_dev(hw);
-    1294         struct ieee80211_sta *sta = control->sta;
-    1295         struct mt7996_sta *msta = sta ? (void *)sta->drv_priv : NULL;
-    1296         struct mt76_phy *mphy = hw->priv;
-    1297         struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-    1298         struct ieee80211_vif *vif = info->control.vif;
-    1299         struct mt7996_vif *mvif = vif ? (void *)vif->drv_priv : NULL;
-    1300         struct mt76_wcid *wcid = &dev->mt76.global_wcid;
-    1301         u8 link_id = u32_get_bits(info->control.flags,
-    1302                                   IEEE80211_TX_CTRL_MLO_LINK);
-    1303 
-    1304         rcu_read_lock();
-    1305 
-    1306         /* Use primary link_id if the value from mac80211 is set to
-    1307          * IEEE80211_LINK_UNSPECIFIED.
-    1308          */
-    1309         if (link_id == IEEE80211_LINK_UNSPECIFIED) {
-    1310                 if (msta)
-    1311                         link_id = msta->deflink_id;
-    1312                 else if (mvif)
-    1313                         link_id = mvif->mt76.deflink_id;
+drivers/net/wireless/virtual/mac80211_hwsim.c
+    1958 static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
+    1959                               struct ieee80211_tx_control *control,
+    1960                               struct sk_buff *skb)
+    1961 {
+    1962         struct mac80211_hwsim_data *data = hw->priv;
+    1963         struct ieee80211_tx_info *txi = IEEE80211_SKB_CB(skb);
+    1964         struct ieee80211_hdr *hdr = (void *)skb->data;
+    1965         struct ieee80211_chanctx_conf *chanctx_conf;
+    1966         struct ieee80211_channel *channel;
+    1967         struct ieee80211_vif *vif = txi->control.vif;
+    1968         bool ack;
+    1969         enum nl80211_chan_width confbw = NL80211_CHAN_WIDTH_20_NOHT;
+    1970         u32 _portid, i;
+    1971 
+    1972         if (WARN_ON(skb->len < 10)) {
+    1973                 /* Should not happen; just a sanity check for addr1 use */
+    1974                 ieee80211_free_txskb(hw, skb);
+    1975                 return;
+    1976         }
+    1977 
+    1978         if (vif && vif->type == NL80211_IFTYPE_NAN && !data->tmp_chan) {
+                     ^^^
+Lets assume vif is NULL
 
-Can link_id be IEEE80211_LINK_UNSPECIFIED after this if statement?
+    1979                 /* For NAN Device simulation purposes, assume that NAN is always
+    1980                  * on channel 6 or channel 149, unless a ROC is in progress (for
+    1981                  * USD use cases).
+    1982                  */
+    1983                 if (data->nan_curr_dw_band == NL80211_BAND_2GHZ)
+    1984                         channel = ieee80211_get_channel(hw->wiphy, 2437);
+    1985                 else if (data->nan_curr_dw_band == NL80211_BAND_5GHZ)
+    1986                         channel = ieee80211_get_channel(hw->wiphy, 5745);
+    1987                 else
+    1988                         channel = NULL;
+    1989 
+    1990                 if (WARN_ON(!channel)) {
+    1991                         ieee80211_free_txskb(hw, skb);
+    1992                         return;
+    1993                 }
+    1994         } else if (!data->use_chanctx) {
+    1995                 channel = data->channel;
+    1996                 confbw = data->bw;
+    1997         } else if (txi->hw_queue == 4) {
+    1998                 channel = data->tmp_chan;
+    1999         } else {
+    2000                 u8 link = u32_get_bits(IEEE80211_SKB_CB(skb)->control.flags,
+    2001                                        IEEE80211_TX_CTRL_MLO_LINK);
+    2002                 struct ieee80211_link_sta *link_sta = NULL;
+    2003                 struct ieee80211_sta *sta = control->sta;
+    2004                 struct ieee80211_bss_conf *bss_conf;
+    2005 
+    2006                 if (link != IEEE80211_LINK_UNSPECIFIED) {
+    2007                         bss_conf = rcu_dereference(txi->control.vif->link_conf[link]);
+                                                            ^^^^^^^^^^^^^^^^
 
-    1314         }
-    1315 
-    1316         if (vif && ieee80211_vif_is_mld(vif)) {
-    1317                 struct ieee80211_bss_conf *link_conf;
-    1318 
-    1319                 if (msta) {
-    1320                         struct ieee80211_link_sta *link_sta;
-    1321 
-    1322                         link_sta = rcu_dereference(sta->link[link_id]);
+    2008                         if (sta)
+    2009                                 link_sta = rcu_dereference(sta->link[link]);
+    2010                 } else {
+--> 2011                         bss_conf = mac80211_hwsim_select_tx_link(data, vif, sta,
+                                                                                ^^^
+It is dereferenced on the else path with no NULL checks.
 
-Some unchecked uses.  IEEE80211_LINK_UNSPECIFIED would be off-by-one.
+    2012                                                                  hdr, &link_sta);
+    2013                 }
+    2014 
+    2015                 if (unlikely(!bss_conf)) {
+    2016                         /* if it's an MLO STA, it might have deactivated all
+    2017                          * links temporarily - but we don't handle real PS in
+    2018                          * this code yet, so just drop the frame in that case
+    2019                          */
+    2020                         WARN(link != IEEE80211_LINK_UNSPECIFIED || !sta || !sta->mlo,
+    2021                              "link:%d, sta:%pM, sta->mlo:%d\n",
+    2022                              link, sta ? sta->addr : NULL, sta ? sta->mlo : -1);
+    2023                         ieee80211_free_txskb(hw, skb);
+    2024                         return;
+    2025                 }
+    2026 
+    2027                 /* Do address translations only between shared links. It is
+    2028                  * possible that while an non-AP MLD station and an AP MLD
+    2029                  * station have shared links, the frame is intended to be sent
+    2030                  * on a link which is not shared (for example when sending a
+    2031                  * probe response).
+    2032                  */
+    2033                 if (sta && sta->mlo && link_sta) {
+    2034                         /* address translation to link addresses on TX */
+    2035                         ether_addr_copy(hdr->addr1, link_sta->addr);
+    2036                         ether_addr_copy(hdr->addr2, bss_conf->addr);
+    2037                         /* translate A3 only if it's the BSSID */
+    2038                         if (!ieee80211_has_tods(hdr->frame_control) &&
+    2039                             !ieee80211_has_fromds(hdr->frame_control)) {
+    2040                                 if (ether_addr_equal(hdr->addr3, sta->addr))
+    2041                                         ether_addr_copy(hdr->addr3, link_sta->addr);
+    2042                                 else if (ether_addr_equal(hdr->addr3, vif->addr))
+    2043                                         ether_addr_copy(hdr->addr3, bss_conf->addr);
+    2044                         }
+    2045                         /* no need to look at A4, if present it's SA */
+    2046                 }
+    2047 
+    2048                 chanctx_conf = rcu_dereference(bss_conf->chanctx_conf);
+    2049                 if (chanctx_conf) {
+    2050                         channel = chanctx_conf->def.chan;
+    2051                         confbw = chanctx_conf->def.width;
+    2052                 } else {
+    2053                         channel = NULL;
+    2054                 }
+    2055         }
+    2056 
+    2057         if (WARN(!channel, "TX w/o channel - queue = %d\n", txi->hw_queue)) {
+    2058                 ieee80211_free_txskb(hw, skb);
+    2059                 return;
+    2060         }
+    2061 
+    2062         if (data->idle && !data->tmp_chan) {
+    2063                 wiphy_dbg(hw->wiphy, "Trying to TX when idle - reject\n");
+    2064                 ieee80211_free_txskb(hw, skb);
+    2065                 return;
+    2066         }
+    2067 
+    2068         if (txi->control.vif)
+                     ^^^^^^^^^^^^^^^^
+Here is another check.
 
-    1323                         if (!link_sta)
-    1324                                 link_sta = rcu_dereference(sta->link[msta->deflink_id]);
-    1325 
-    1326                         if (link_sta) {
-    1327                                 memcpy(hdr->addr1, link_sta->addr, ETH_ALEN);
-    1328                                 if (ether_addr_equal(sta->addr, hdr->addr3))
-    1329                                         memcpy(hdr->addr3, link_sta->addr, ETH_ALEN);
-    1330                         }
-    1331                 }
-    1332 
-    1333                 link_conf = rcu_dereference(vif->link_conf[link_id]);
-
-Here too.
-
-    1334                 if (link_conf) {
-    1335                         memcpy(hdr->addr2, link_conf->addr, ETH_ALEN);
-    1336                         if (ether_addr_equal(vif->addr, hdr->addr3))
-    1337                                 memcpy(hdr->addr3, link_conf->addr, ETH_ALEN);
-    1338                 }
-    1339         }
-    1340 
-    1341         if (mvif) {
-    1342                 struct mt76_vif_link *mlink = &mvif->deflink.mt76;
-    1343 
---> 1344                 if (link_id < IEEE80211_LINK_UNSPECIFIED)
-
-Is this checker required?
-
-    1345                         mlink = rcu_dereference(mvif->mt76.link[link_id]);
-    1346 
-    1347                 if (mlink->wcid)
-    1348                         wcid = mlink->wcid;
-    1349 
-    1350                 if (mvif->mt76.roc_phy &&
-    1351                     (info->flags & IEEE80211_TX_CTL_TX_OFFCHAN)) {
-    1352                         mphy = mvif->mt76.roc_phy;
-    1353                         if (mphy->roc_link)
-    1354                                 wcid = mphy->roc_link->wcid;
-    1355                 } else {
-    1356                         mphy = mt76_vif_link_phy(mlink);
-    1357                 }
-    1358         }
-    1359 
-    1360         if (!mphy) {
-    1361                 ieee80211_free_txskb(hw, skb);
-    1362                 goto unlock;
-    1363         }
-    1364 
-    1365         if (msta && link_id < IEEE80211_LINK_UNSPECIFIED) {
-
-And this?
-
-    1366                 struct mt7996_sta_link *msta_link;
-    1367 
-    1368                 msta_link = rcu_dereference(msta->link[link_id]);
-    1369                 if (msta_link)
-    1370                         wcid = &msta_link->wcid;
-    1371         }
-    1372         mt76_tx(mphy, control->sta, wcid, skb);
-    1373 unlock:
-    1374         rcu_read_unlock();
-    1375 }
+    2069                 hwsim_check_magic(txi->control.vif);
+    2070         if (control->sta)
+    2071                 hwsim_check_sta_magic(control->sta);
+    2072 
 
 regards,
 dan carpenter
