@@ -1,185 +1,146 @@
-Return-Path: <linux-wireless+bounces-27616-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27617-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A67EB967B0
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 17:02:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6691B96AE6
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 17:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AB7C168D49
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 14:59:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B47A67A3F77
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Sep 2025 15:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BB9246BA4;
-	Tue, 23 Sep 2025 14:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E6726B2C8;
+	Tue, 23 Sep 2025 15:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="HZlNjRCd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hJikmrB/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA63223707
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Sep 2025 14:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC9025CC74
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Sep 2025 15:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758639561; cv=none; b=QMn9ffivH8OkG5n14jMpnYR/vnLIfanhNIw32lL5tc3FRlY+MXIJgNIC+N8OYWqbdqmghRsNbOrUSXwMnX6CWlpaVubWDpVHFZNrSm/xh3PLLJJAJScp8+3z74yLkuzHN6mA1UYSG4myK871xpu5uOVuTAChBE4480OEvF3ZXg4=
+	t=1758643079; cv=none; b=X85sUJFJEI085m+wYILIBxUMhyqOMg2IKWoqzu0d0aoVNmJCpuNf9ucT70qFUFdzqY+OYK5pEt8/ffjo3bpBUdsEtsftJ5AM4leNpkH0CQjEEaBWNrMuE/DPiklF5mdeXGC+/mNJ9/NYduXjZI42XCsUOfJ2ihhtuMP7YJD9qSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758639561; c=relaxed/simple;
-	bh=Nna1OdZOe0nnkKJ63oIewBWoT3so1EcPEublReL//R0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjNArwrK54lgIh9TrPBbOoFUK6BwT2XWDaIvyd60VMZq7niEaM47cq6/DvRDnM6wLviz2WtAXqYnbGgwN1gSu0w8hHaRhs8Qnq0yPpKWmI18cx7R6mLJwhd7LBSMUXDpCocUcz54ATYZW/pfByRsjiAm2vhMe3cXUR3+IzjtDho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=HZlNjRCd; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45ed646b656so50033995e9.3
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Sep 2025 07:59:19 -0700 (PDT)
+	s=arc-20240116; t=1758643079; c=relaxed/simple;
+	bh=0xTjUzYckiW3+Uj+BbjVGPhEvL2cUJ0srgbrDwcKnKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mhIeLgyG4TL6s1h5i7MSj8jXrjrZUMoECZ98QqBbOQPVKjHPBUcZTCEXLiJegy+dymOVyuo6xUyRqzC4ScmXNaWyQ/8j1Q8B8C/swKqn3t860SBq7kt1KhGWbP25rMREbpRoweITHZ67g6J+1UMl2CD4JZGeyjVHNcszwUypwtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hJikmrB/; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b554bb615dcso1622895a12.1
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Sep 2025 08:57:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1758639557; x=1759244357; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YOCISoePciLIeXeBbO4+qiMsX57pWEvn9G5NpvhqgC8=;
-        b=HZlNjRCd1VvelEJ0VPpHPx0naAQFT6PUofEKLgCLn/5ixHoBDkueU9ZKncN4LWUsoy
-         fWcxa+XJ8PZZlW1D9cyi7PUCVKOoP+zjWSj0VD++NXWRlsBv4vQcCttiLwLrSnP1Ucom
-         u5ymCPMVx6m22IEtUQI201wy1c8nPkIqtajygIHCzyQxCImRvR93pO7FMBTSZKwNHZG9
-         fljexQCx9hYkDXCBMKY5zngFrF9WTsGqEqGCzdyKBXTiQVSsqg5gR6PJjdqcIpq1RWUk
-         OtI8Lg3sl10j0tfZJpX3pM9K0GEm2FaPpXbswd2E0L9YOmc6tjFHRuRmoyI1fGNAIMjL
-         2lZA==
+        d=gmail.com; s=20230601; t=1758643077; x=1759247877; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HhP2KIIkJJSSND6m+IFOMFXEhQ7lM+LEtWJ8OfvJe8g=;
+        b=hJikmrB/+3KvtCnOmNaSE0kc9cfGcePluCyqT7nB+z5lFUbSaZmmPpg2K0ORiaror5
+         57jn2KmCS9CEtTuFjiHO7iDiQar7NAVk3p/pLlJlU3OheMc/Kvu9lvRUa1UCjbuA1HG7
+         2/pwuvMoIe/kK/lwx0IQgJ9decXsa6gsTFpeRkCL71il3iCPvWA6r9MTQOcYCcMudEBl
+         vDDEYa1XEe5KfUNPWbHhJTCaMI1tBIKJhsRJZZphKs1n3Sel3hwbgQWvKLAqHKKqGjA3
+         w/N3YGEmG/4cvvHOq+ye7IkaoEn6xGT8ATugKYXMmVhUP38VmId49CSCJE7adS8NbCEh
+         HZpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758639557; x=1759244357;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YOCISoePciLIeXeBbO4+qiMsX57pWEvn9G5NpvhqgC8=;
-        b=EAL3+Xz+tWX6epm6VuPzgYRHjOcgz1CkY/FOL/BPUdPYdtSE71dlPmftKoyY76av9B
-         /QFELjJ5mhTv11WxQP6kROH436upAjyFNYdX96iRBLbrvx3sBtsgqIGyTyBpPh5khZTR
-         O5fIgfA26clNj6aXKo9TgZQZCa9K/qrVUFdoJpfAwD+avsR8NWL1dPOfSrj4AJi2xs+R
-         6AlAbvnILe5Hfb9vEqqKxi4mhY5QBtBKUKuTIdXDcRo+heKBkh1CsF+MyxP36DPZQVB2
-         UvXC+X2vOhag5zskDiAsovhrBI/K4GFSsuFyu9yXd2J3zaPgI/oOu6pYx9uNHXsat8Ry
-         tcnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX6AiasNKrH/DEmWbtGO/f7IZBCPhVfXAe3lNsDHWZNJWUXn4hY42lwBKdixIrGw1Bo0+epm2hgUoKgAxdlvg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyLFNSEVBGKPNLw6Pa2yHoNEF+U8CAmzm4elfqUmagOvzEWHip
-	4Uv9USrMc00zNdMpTtfxjBxoLDR+vTxvvYerIJNLN3DDMI3IRtWVvOGHXHL4nNBYo3mbhJtOWFP
-	Bua0VdHQ=
-X-Gm-Gg: ASbGncvNnzqhrWmZdL8Gym30K0Xk8eDDoBjhWnZDB3beybF/8bkAt8gbN6WscfZOMJp
-	iT5u1Kfopu90tj+Am4t1MMENwP5PYUIKsqo05Wd90CVZ2b1zYQDQ/y1HZAbV26mcgCEDyLF6kP6
-	aTMOQ+8qWamTa1NjNmHvpsfm+0FKFdWyDQ1L4DU0V6TajUmbkmCbNB1G2V7CQWvn1fB6Li2Azbl
-	YqGPQe9H53Icj7M11O16tYKUFklgXyv1LooWJMAxlSID5gwmn2gqIEJn12yLy3D8SSF3muupW2x
-	opQwK6bpkCqeeY5fMUtNDFMNqEMq5sEZmibb5ScT+4fOkhvHT+0yJLZDUzYyDKKnlBLtpEfJxYp
-	VEka+QVDaPCfcbQsjk+lDt+ZMrCfsCvu3X43ON/2KOR9fbCk=
-X-Google-Smtp-Source: AGHT+IEIPtbSsWo6dVRsAMW229x4yzJgJx4HgWpoTAGkn3ab8jiwD4vY2vOQDp1TwA/CSqTehMF3Mw==
-X-Received: by 2002:a05:600c:470e:b0:45d:f650:376f with SMTP id 5b1f17b1804b1-46e1dab50f9mr31786745e9.23.1758639557483;
-        Tue, 23 Sep 2025 07:59:17 -0700 (PDT)
-Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46de4d67625sm76708005e9.16.2025.09.23.07.59.16
+        d=1e100.net; s=20230601; t=1758643077; x=1759247877;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HhP2KIIkJJSSND6m+IFOMFXEhQ7lM+LEtWJ8OfvJe8g=;
+        b=tE4QLMfI3AaaGBiVwUkplyyBBNPiagT1b8B5mCq23u2VBoBkDCFuzNExSEhzkyrmHT
+         C07290r5654A7PXjxOZH0S8vZrbXSsQPQDpkc8HR+U8oo0jNNto/ZnME8DfRqucRhiWR
+         L41CVlREoqaqUJaPUwCNEon+RUWwvGC+zIhMdtJToQyTpQNRq3P5s+TmPPOroKu8B8hL
+         tY53N8BnUvX6TZ+7No4BqQ7fT8ukJIrQDXnfXWYCxKxYURXOGKVkr5iThsRlvtyV9VSJ
+         4mZ0Lhs59iQoYzgMjEW6b5aOAE8P5rFRYORj7lwMnxedvto56VV/MTrJAqA3epfOq8Cz
+         h5Rg==
+X-Gm-Message-State: AOJu0Ywk3qhFHEO8dYO6UFGPIv31sy4Gg89koNMFnl8rGEUVFZAKMymG
+	0PGonMQXcNhoflC8qehD988XFmEw88XNc8ynmDq1PuzGjR1NKKutBnax
+X-Gm-Gg: ASbGncuRr+rSaRNctqXc8gltn++Ow1QtgOuGKRvqs0jh4RtpAJMI4ko5pqrRrJQBoNi
+	dR2Hehygnth3rI691ZE/aeLUz9rvpUsvIV8FleO4VZ5/GpFeAUBOOhG40I5Cul+dbeY8t+1B8DW
+	HP6YaTk5Yvvnj26PHlMAkHA3/alpH64hKMlkp0N1Hn5ED7UXeRBP/meLdqFdduln2MYX1votq6i
+	oGqLG69dUlxW68ENWaiQCob6p4jPWIHNnQE+D0mysUaESlEss1oW+453ofojUBTwY1PBzJZewK6
+	czS/xX0XdOesnw+c/LPDE6Vl5Rj/kgo5mL0KCIlOEfILrGzrM8tUIPURz7MDuRpGbNqpVHRhh9Z
+	Jqb96SNfgR8lGujYQ16jPwUdZNFz4fxPOGnXFk4gJgcNgI9kMLA==
+X-Google-Smtp-Source: AGHT+IHf8qBwNyR+6g2DVbOWQjt+iH9yo2QnbmewQABZ0aI+yvUdFycwvCtErc3P83DnFjNDYk2lUA==
+X-Received: by 2002:a17:90b:3a8e:b0:32d:e75a:5009 with SMTP id 98e67ed59e1d1-332a92d31e5mr3363869a91.1.1758643077369;
+        Tue, 23 Sep 2025 08:57:57 -0700 (PDT)
+Received: from visitorckw-System-Product-Name ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3306061925esm16901961a91.2.2025.09.23.08.57.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Sep 2025 07:59:17 -0700 (PDT)
-From: Marco Crivellari <marco.crivellari@suse.com>
-To: linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Kalle Valo <kvalo@kernel.org>,
-	"Dr . David Alan Gilbert" <linux@treblig.org>,
-	Jeff Chen <jeff.chen_1@nxp.com>,
-	Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Subject: [PATCH v2 1/1] wifi: libertas: WQ_UNBOUND added to alloc_workqueue users
-Date: Tue, 23 Sep 2025 16:59:05 +0200
-Message-ID: <20250923145905.327269-2-marco.crivellari@suse.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250923145905.327269-1-marco.crivellari@suse.com>
-References: <20250923145905.327269-1-marco.crivellari@suse.com>
+        Tue, 23 Sep 2025 08:57:56 -0700 (PDT)
+Date: Tue, 23 Sep 2025 23:57:53 +0800
+From: Yu-Chun Lin <eleanor15x@gmail.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	=?utf-8?B?Q1lfSHVhbmdb6buD6Ymm5pmPXQ==?= <cy.huang@realtek.com>,
+	Stanley =?utf-8?B?Q2hhbmdb5piM6IKy5b63XQ==?= <stanley_chang@realtek.com>,
+	"jserv@ccns.ncku.edu.tw" <jserv@ccns.ncku.edu.tw>,
+	"visitorckw@gmail.com" <visitorckw@gmail.com>
+Subject: Re: [PATCH rtw-next] wifi: rtw89: Replace hardcoded strings with
+ helper functions
+Message-ID: <aNLDga29Wp1nwhem@visitorckw-System-Product-Name>
+References: <20250921154410.1202074-1-eleanor15x@gmail.com>
+ <715313b943d84cfeb3a337dc20be5f6a@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <715313b943d84cfeb3a337dc20be5f6a@realtek.com>
 
-Currently if a user enqueue a work item using schedule_delayed_work() the
-used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
-WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
-schedule_work() that is using system_wq and queue_work(), that makes use
-again of WORK_CPU_UNBOUND.
-This lack of consistentcy cannot be addressed without refactoring the API.
+On Mon, Sep 22, 2025 at 05:50:50AM +0000, Ping-Ke Shih wrote:
+> Yu-Chun Lin <eleanor15x@gmail.com> wrote:
+> > Replace hardcoded strings with 'str_on_off()', 'str_enable_disable()',
+> > and 'str_read_write()'.
+> > 
+> > The change improves readability and enables potential string deduplication
+> > by the linker, which may slightly reduce binary size.
+> 
+> Have you measured the change of binary size? Maybe you can share the result
+> here.
+> 
 
-alloc_workqueue() treats all queues as per-CPU by default, while unbound
-workqueues must opt-in via WQ_UNBOUND.
+I tested the patch and did not observe any measurable change in the binary size.
+The commit message was refers to the description in string-choice.h:
 
-This default is suboptimal: most workloads benefit from unbound queues,
-allowing the scheduler to place worker threads where they’re needed and
-reducing noise when CPUs are isolated.
+"3) Deduping by the linker, which results in a smaller binary file."
 
-This change explicitly add the WQ_UNBOUND flag to alloc_workqueue() users,
-to mark the workqueue unbound.
+> > 
+> > Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+> > ---
+> >  drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c | 10 ++++++----
+> >  drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c | 10 ++++++----
+> >  drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c |  8 +++++---
+> >  drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c | 11 ++++++-----
+> >  drivers/net/wireless/realtek/rtw89/usb.c          |  3 ++-
+> >  drivers/net/wireless/realtek/rtw89/wow.c          |  5 ++++-
+> >  6 files changed, 29 insertions(+), 18 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
+> > b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
+> > index 84c46d2f4d85..000753061e38 100644
+> > --- a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
+> > +++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
+> > @@ -2,6 +2,8 @@
+> >  /* Copyright(c) 2022-2023  Realtek Corporation
+> >   */
+> > 
+> > +#include <linux/string_choices.h>
+> > +
+> 
+> Driver has included this implicitly, so don't need to include it across
+> whole patch.
+> 
 
-Once migration is complete, WQ_UNBOUND can be removed and unbound will
-become the implicit default.
+Got it, I will drop the include from all files in v2. Thanks.
 
-With the introduction of the WQ_PERCPU flag (equivalent to !WQ_UNBOUND),
-any alloc_workqueue() caller that doesn’t explicitly specify WQ_UNBOUND
-must now use WQ_PERCPU.
-
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
----
- drivers/net/wireless/marvell/libertas/if_sdio.c | 3 ++-
- drivers/net/wireless/marvell/libertas/if_spi.c  | 3 ++-
- drivers/net/wireless/marvell/libertas_tf/main.c | 2 +-
- 3 files changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/marvell/libertas/if_sdio.c b/drivers/net/wireless/marvell/libertas/if_sdio.c
-index 524034699972..fc5318035822 100644
---- a/drivers/net/wireless/marvell/libertas/if_sdio.c
-+++ b/drivers/net/wireless/marvell/libertas/if_sdio.c
-@@ -1181,7 +1181,8 @@ static int if_sdio_probe(struct sdio_func *func,
- 	spin_lock_init(&card->lock);
- 	INIT_LIST_HEAD(&card->packets);
- 
--	card->workqueue = alloc_workqueue("libertas_sdio", WQ_MEM_RECLAIM, 0);
-+	card->workqueue = alloc_workqueue("libertas_sdio",
-+					  WQ_MEM_RECLAIM | WQ_UNBOUND, 0);
- 	if (unlikely(!card->workqueue)) {
- 		ret = -ENOMEM;
- 		goto err_queue;
-diff --git a/drivers/net/wireless/marvell/libertas/if_spi.c b/drivers/net/wireless/marvell/libertas/if_spi.c
-index b722a6587fd3..8a2504a62840 100644
---- a/drivers/net/wireless/marvell/libertas/if_spi.c
-+++ b/drivers/net/wireless/marvell/libertas/if_spi.c
-@@ -1153,7 +1153,8 @@ static int if_spi_probe(struct spi_device *spi)
- 	priv->fw_ready = 1;
- 
- 	/* Initialize interrupt handling stuff. */
--	card->workqueue = alloc_workqueue("libertas_spi", WQ_MEM_RECLAIM, 0);
-+	card->workqueue = alloc_workqueue("libertas_spi",
-+					  WQ_MEM_RECLAIM | WQ_UNBOUND, 0);
- 	if (!card->workqueue) {
- 		err = -ENOMEM;
- 		goto remove_card;
-diff --git a/drivers/net/wireless/marvell/libertas_tf/main.c b/drivers/net/wireless/marvell/libertas_tf/main.c
-index d1067874428f..fb20fe31cd36 100644
---- a/drivers/net/wireless/marvell/libertas_tf/main.c
-+++ b/drivers/net/wireless/marvell/libertas_tf/main.c
-@@ -708,7 +708,7 @@ EXPORT_SYMBOL_GPL(lbtf_bcn_sent);
- static int __init lbtf_init_module(void)
- {
- 	lbtf_deb_enter(LBTF_DEB_MAIN);
--	lbtf_wq = alloc_workqueue("libertastf", WQ_MEM_RECLAIM, 0);
-+	lbtf_wq = alloc_workqueue("libertastf", WQ_MEM_RECLAIM | WQ_UNBOUND, 0);
- 	if (lbtf_wq == NULL) {
- 		printk(KERN_ERR "libertastf: couldn't create workqueue\n");
- 		return -ENOMEM;
--- 
-2.51.0
-
+> Otherwise looks good to me.
+> 
 
