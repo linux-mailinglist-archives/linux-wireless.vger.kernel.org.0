@@ -1,689 +1,311 @@
-Return-Path: <linux-wireless+bounces-27638-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27639-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DDEB9AB52
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Sep 2025 17:38:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5CCB9BA65
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Sep 2025 21:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C35D1890D5B
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Sep 2025 15:36:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B5C0420D32
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Sep 2025 19:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96D8313D71;
-	Wed, 24 Sep 2025 15:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A362258EF3;
+	Wed, 24 Sep 2025 19:16:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R45zdsHl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CCC312807;
-	Wed, 24 Sep 2025 15:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408672417E6
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Sep 2025 19:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758728071; cv=none; b=C7Kh1AEwFp4b/W2fJWQTw4likB3LGxXd17R0d3cwuxocM8xgyX6+fW7SLt38hK3V4MnMlL0CZpXYJ83sa6LRqq/iik20J5nYIwhQpU+1DZZlUmrZnwktBOpjZGhYdRR0xrqdIlUNHon/pwPhF1qIoLJDjsVpCyhP0M9K8AX/otw=
+	t=1758741410; cv=none; b=ZOloxpRaHPVfDZ78Q8buTrj8RF15d0s3lYjWQ0mTJLfmik13IwSUWh9y3EibIuWOZKkULEXU2of/jdVRDhmlQfN+I0WU22P6BKEQvGkjIuY0QPYYR28oJi23vbtI8rsG0O1LlDX6iy2+/tkxq3pnN5Cq6oc2p4eM9H8hgt/LQq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758728071; c=relaxed/simple;
-	bh=lsWkIc9G+VcRAJeYEpxxI8uJ4xCk02Vmb1N46e4BngI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QpIqsM7eot5Z9ft/THCsZOchT2cGt7ziv5H7xM/ucrlIi/1LBQLrbXWfnVA4hXCxtXpZFcTACtxACnsTHNyUvYXfyN/5CPTjIrvHi3rUlxwMhT+jM1s5dtqzA4sdYWhi7acVWIhNu4MR3u22MXGJzq7s7BTKVFERQEieF95CoR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from sven-desktop.home.narfation.org (p200300c597296Be00000000000000c00.dip0.t-ipconnect.de [IPv6:2003:c5:9729:6be0::c00])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 0CBBFFA182;
-	Wed, 24 Sep 2025 17:34:22 +0200 (CEST)
-From: "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
-Date: Wed, 24 Sep 2025 17:33:11 +0200
-Subject: [PATCH 3/3] wifi: mt76: mt7915: add bf backoff limit table support
+	s=arc-20240116; t=1758741410; c=relaxed/simple;
+	bh=YVlT54garPBD0FO2+bAXLOKliKfzm/96L/8qJaEhjbQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=EsCn6CUkzS3hHJr/nI1WhBCcw2bKzARgtkLoMQEnibh27DzdrGSb8a0TpymhWstk5MgnrkVBqcZE7ny/w9Xc77pw1u7gcJuLbZdt5OKTzHZWmYUIFwb7VgHFqpdWf1+7FlHjQHh+1XqdZyemZZiUJ5iWWQGA+3VR8zv2ww2Hb8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R45zdsHl; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-46e2c3b6d4cso952405e9.3
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Sep 2025 12:16:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758741406; x=1759346206; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WGx3zlBBHkNessJ0m/rkeDNiqfi2ciQeFSjApbhvzeI=;
+        b=R45zdsHlhW2m7bUWki9EbupS43pZK2YS+XNfKSbuRMrwXV+zKZikHOBntel/W2MhWj
+         HmuttDl1eP9aDJ38GKPCmnUzawuCeiG7p1myqYyn48ede61RO9VjLuPQuMhcXb3J0AmY
+         ppH4SM++F6UxTwO3pgpL0bOY3F7EanLw/igNyN+ss+BAU/DsIdbfavJVEQrqxPmQG9jX
+         W9Cwd5txHu4RusUdUzOPHgFyvvY9PS5TLbLaSSmFmtQA3La/uC/nBr1psBVwEKMAYNve
+         HI7MkuYVzPrxbpcwv3mNNB0WZlDffKeQFzJCGi6zr/6QlzUK1EdnzGaKBuKO7Q+anLVd
+         jW0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758741406; x=1759346206;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WGx3zlBBHkNessJ0m/rkeDNiqfi2ciQeFSjApbhvzeI=;
+        b=qYe5hNlh8sczFWmXobo6vqB/Fo6mFYcIxPkpDzg+iJYSkdabXEoXgRPK9hzrIyO5cP
+         aFE+53pS9yupv87K+nXgcG1zF0h24eiz/oqQFw63OJuc0/IYWdloLlYycGo1zqtreEyH
+         3usoYlEtsLku7ScTly671+xkTNA8WA342Kn0j/nFnvr2j0hWsWWGYbltOwnqnKCYBFPA
+         jBoQVGIjfebvtC7ZHPLgC3fiC2DQT0t70ovO489vwSvPnBoOwHM7PlIRcKcJwRxVJpFs
+         23M2XFjFrGjM3/zjjPR0u8F1K0RdXBogW40Pbcf7cOqjdUWvxnfrhanWxOua2GJ/lQFD
+         nBmA==
+X-Forwarded-Encrypted: i=1; AJvYcCWpdv2al9ugrSWhP1y1JzNBfRNpCJ6mV2nc4fWqgKJ9qqKkCh7MGDfo/OUzSlLWrMVYS4/TaxWttNm3hRGyFw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzd02OHA1LoKe3zNjz3fgGMg1hZR/r6kBAIK2Y3FYxaIBJBMOPN
+	FhOhuC8gZCn7khIjYocl/bidj+sDEgK69TJgTWOIqp9YsWHVQKEwT8Qh
+X-Gm-Gg: ASbGncs5mvExfwLXxAr4u3SicGcBKe6kKpOpMyR9hgNDMgfB6ZEZKo6nUd0pIyMTBjv
+	3hykj+3TGnUrQpjKnjp+AbujtRXx26F9mUpcmLc02qD6K/TKqhvXlTAYmMS4JktZidXfxD1qml+
+	IMYkzyTzLHmmZBW0rj93g59dFRVty4rmEpfclv81gZl9doeLU0M2VP4f2ifteykG3G7nsJ9kMXI
+	FIUPascy6bsgS6fyhVtY6M+aeSIdHO/9lVUKPoH8MfmSRPhjGFJM3UkVQqHjy8b005QrRiTNNCo
+	wn4tPF9ZZTzucxuc2FkB09apv98WMvhRmVaEF2VS0XI0/pc/iYyWJa5CNjj7xwVqXYvhAFdGxpM
+	RHQcCPmxgQqsryVjPwp36SPy7ulQc
+X-Google-Smtp-Source: AGHT+IEkmum6L+0ojuHXcWkPL4nJbsrtJLZN+RK5tA0W3rkL3CZoiSWqcMwEBXIQ0fuk2YRFA2vAwQ==
+X-Received: by 2002:a05:6000:40df:b0:3ea:c893:95a7 with SMTP id ffacd0b85a97d-40e4adce88amr837149f8f.31.1758741406208;
+        Wed, 24 Sep 2025 12:16:46 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.41])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee07407aebsm30282797f8f.14.2025.09.24.12.16.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Sep 2025 12:16:45 -0700 (PDT)
+Message-ID: <07ee4e8c-bcb8-4349-afd3-59bc58899116@gmail.com>
+Date: Wed, 24 Sep 2025 22:16:43 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rtw-next 3/6] wifi: rtw89: implement C2H TX report handler
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+To: Fedor Pchelkin <pchelkin@ispras.ru>, Ping-Ke Shih <pkshih@realtek.com>
+Cc: Zong-Zhe Yang <kevin_yang@realtek.com>, Po-Hao Huang
+ <phhuang@realtek.com>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
+References: <20250920132614.277719-1-pchelkin@ispras.ru>
+ <20250920132614.277719-4-pchelkin@ispras.ru>
+ <5316222e-5d9d-4cb8-b161-06ba311bdc2d@gmail.com>
+Content-Language: en-US
+In-Reply-To: <5316222e-5d9d-4cb8-b161-06ba311bdc2d@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250924-backoff-table-support-v1-3-20e50fbc59de@simonwunderlich.de>
-References: <20250924-backoff-table-support-v1-0-20e50fbc59de@simonwunderlich.de>
-In-Reply-To: <20250924-backoff-table-support-v1-0-20e50fbc59de@simonwunderlich.de>
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
- Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, devicetree@vger.kernel.org, 
- "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=22026;
- i=se@simonwunderlich.de; h=from:subject:message-id;
- bh=llxq0tQxVJCcXzp2DtT7cDJvAXox0Qy6OwbSEFDBH3o=;
- b=owGbwMvMwCXmy1+ufVnk62nG02pJDBlX+BML5Y6YLr9SYB23yMRlqsmNN/dn7H0ic/9yWJdZN
- uNuN8OWjlIWBjEuBlkxRZY9V/LPb2Z/K/952sejMHNYmUCGMHBxCsBElGYyMqyaLF6b6uq7d5Hb
- 929fVi+8vmXN2ZN3mBg6d17Iv1J8XSCHkWHTfKNykd/P/0jM/Dw76p0M75e090kGm1K4Dh1Tl/3
- JdZoVAA==
-X-Developer-Key: i=se@simonwunderlich.de; a=openpgp;
- fpr=522D7163831C73A635D12FE5EC371482956781AF
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+On 24/09/2025 01:12, Bitterblue Smith wrote:
+> On 20/09/2025 16:26, Fedor Pchelkin wrote:
+>> rtw89 has several ways of handling TX status report events.  The first one
+>> is based on RPP feature which is used by PCIe HCI.  The other one depends
+>> on firmware sending a corresponding C2H message, quite similar to what
+>> rtw88 has.
+>>
+>> Toggle a bit in the TX descriptor and place skb in a queue to wait for a
+>> message from the firmware.  Do this according to the vendor driver for
+>> RTL8851BU.
+>>
+>> It seems the only way to implement TX status reporting for rtw89 USB.
+>> This will allow handling TX wait skbs and the ones flagged with
+>> IEEE80211_TX_CTL_REQ_TX_STATUS correctly.
+>>
+>> Found by Linux Verification Center (linuxtesting.org).
+>>
+>> Suggested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+>> ---
+>>  drivers/net/wireless/realtek/rtw89/core.c | 12 +++++++++++-
+>>  drivers/net/wireless/realtek/rtw89/core.h |  2 ++
+>>  drivers/net/wireless/realtek/rtw89/fw.h   |  5 +++++
+>>  drivers/net/wireless/realtek/rtw89/mac.c  | 23 +++++++++++++++++++++++
+>>  drivers/net/wireless/realtek/rtw89/mac.h  |  9 +++++++++
+>>  drivers/net/wireless/realtek/rtw89/txrx.h |  2 ++
+>>  6 files changed, 52 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+>> index 917b2adede61..d2a559ddfa2e 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/core.c
+>> +++ b/drivers/net/wireless/realtek/rtw89/core.c
+>> @@ -1420,11 +1420,20 @@ static __le32 rtw89_build_txwd_info2_v1(struct rtw89_tx_desc_info *desc_info)
+>>  	return cpu_to_le32(dword);
+>>  }
+>>  
+>> +static __le32 rtw89_build_txwd_info3(struct rtw89_tx_desc_info *desc_info)
+>> +{
+>> +	bool rpt_en = desc_info->report;
+>> +	u32 dword = FIELD_PREP(RTW89_TXWD_INFO3_SPE_RPT, rpt_en);
+>> +
+>> +	return cpu_to_le32(dword);
+>> +}
+>> +
+>>  static __le32 rtw89_build_txwd_info4(struct rtw89_tx_desc_info *desc_info)
+>>  {
+>>  	bool rts_en = !desc_info->is_bmc;
+>>  	u32 dword = FIELD_PREP(RTW89_TXWD_INFO4_RTS_EN, rts_en) |
+>> -		    FIELD_PREP(RTW89_TXWD_INFO4_HW_RTS_EN, 1);
+>> +		    FIELD_PREP(RTW89_TXWD_INFO4_HW_RTS_EN, 1) |
+>> +		    FIELD_PREP(RTW89_TXWD_INFO4_SW_DEFINE, desc_info->sn);
+>>  
+>>  	return cpu_to_le32(dword);
+>>  }
+>> @@ -1447,6 +1456,7 @@ void rtw89_core_fill_txdesc(struct rtw89_dev *rtwdev,
+>>  	txwd_info->dword0 = rtw89_build_txwd_info0(desc_info);
+>>  	txwd_info->dword1 = rtw89_build_txwd_info1(desc_info);
+>>  	txwd_info->dword2 = rtw89_build_txwd_info2(desc_info);
+>> +	txwd_info->dword3 = rtw89_build_txwd_info3(desc_info);
+>>  	txwd_info->dword4 = rtw89_build_txwd_info4(desc_info);
+>>  
+>>  }
+>> diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+>> index 928c8c84c964..2362724323a9 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/core.h
+>> +++ b/drivers/net/wireless/realtek/rtw89/core.h
+>> @@ -1167,6 +1167,8 @@ struct rtw89_tx_desc_info {
+>>  	u8 ampdu_density;
+>>  	u8 ampdu_num;
+>>  	bool sec_en;
+>> +	bool report;
+>> +	u8 sn;
+>>  	u8 addr_info_nr;
+>>  	u8 sec_keyid;
+>>  	u8 sec_type;
+>> diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+>> index ddebf7972068..f196088a8316 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/fw.h
+>> +++ b/drivers/net/wireless/realtek/rtw89/fw.h
+>> @@ -3747,6 +3747,11 @@ struct rtw89_c2h_scanofld {
+>>  #define RTW89_GET_MAC_C2H_MCC_REQ_ACK_H2C_FUNC(c2h) \
+>>  	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(15, 8))
+>>  
+>> +#define RTW89_GET_MAC_C2H_TX_RPT_TX_STATE(c2h) \
+>> +	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(7, 6))
+>> +#define RTW89_GET_MAC_C2H_TX_RPT_SW_DEFINE(c2h) \
+>> +	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(12, 8))
+> 
+> This is only 4 bits:
+> 
+> #define TXCCXRPT_SW_DEFINE_SH		8
+> #define TXCCXRPT_SW_DEFINE_MSK		0xf
+> 
+> 
+> The rest of the series looks good to me. (I don't know much about
+> the RCU stuff.) I will test this tomorrow.
+> 
 
-The commit 22b980badc0f ("mt76: add functions for parsing rate power limits
-from DT") introduced generic support for rates limits in the devicetree.
-But the mt7915 supports beamforming and has another table for configuring
-the backoff limits. These can be configured in the DT with the paths-*
-properties. The path-*-bf are the ones relevant for beamforming and the
-ones without -bf suffix for "traditional" path backoff.
+Actually, I found this in my notes:
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
----
- drivers/net/wireless/mediatek/mt76/debugfs.c       |   4 +-
- drivers/net/wireless/mediatek/mt76/eeprom.c        |  38 ++++-
- drivers/net/wireless/mediatek/mt76/mt76.h          |   8 +
- .../net/wireless/mediatek/mt76/mt7915/debugfs.c    |  74 ++++++++-
- drivers/net/wireless/mediatek/mt76/mt7915/init.c   |   7 +
- drivers/net/wireless/mediatek/mt76/mt7915/main.c   |   2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c    | 182 ++++++++++++++++-----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.h    |   6 +
- drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h |   9 +-
- .../net/wireless/mediatek/mt76/mt7915/testmode.c   |   2 +-
- 10 files changed, 277 insertions(+), 55 deletions(-)
+"how to get just one tx report for each request? currently it seems
+to provide a report for each transmission attempt. how is the vendor
+driver coping with that?"
 
-diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/wireless/mediatek/mt76/debugfs.c
-index b6a2746c187d0272d7e97f7647e8bd0f2ff5db30..bee1177594d325f1da3d109444c91d11265f4e75 100644
---- a/drivers/net/wireless/mediatek/mt76/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
-@@ -93,9 +93,9 @@ void mt76_seq_puts_array(struct seq_file *file, const char *str,
- {
- 	int i;
- 
--	seq_printf(file, "%10s:", str);
-+	seq_printf(file, "%16s:", str);
- 	for (i = 0; i < len; i++)
--		seq_printf(file, " %2d", val[i]);
-+		seq_printf(file, " %4d", val[i]);
- 	seq_puts(file, "\n");
- }
- EXPORT_SYMBOL_GPL(mt76_seq_puts_array);
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 6ce8e4af18fe53c10a0cb7290bf65962ce9cdde4..cbda19a868826bf92cf4afb0504bd6636e9bd7fb 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -324,9 +324,10 @@ mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
- static void
- mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 			     const s8 *data, size_t len, s8 target_power,
--			     s8 nss_delta, s8 *max_power)
-+			     s8 nss_delta)
- {
- 	int i, cur;
-+	s8 max_power = -128;
- 
- 	if (!data)
- 		return;
-@@ -337,7 +338,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 			break;
- 
- 		mt76_apply_array_limit(pwr + pwr_len * i, pwr_len, data + 1,
--				       target_power, nss_delta, max_power);
-+				       target_power, nss_delta, &max_power);
- 		if (--cur > 0)
- 			continue;
- 
-@@ -364,12 +365,16 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 	char band;
- 	size_t len;
- 	s8 max_power = 0;
-+	s8 max_power_backoff = -127;
- 	s8 txs_delta;
-+	int n_chains = hweight16(phy->chainmask);
-+	s8 target_power_combine = target_power + mt76_tx_power_path_delta(n_chains);
- 
- 	if (!mcs_rates)
- 		mcs_rates = 10;
- 
--	memset(dest, target_power, sizeof(*dest));
-+	memset(dest, target_power, sizeof(*dest) - sizeof(dest->path));
-+	memset(&dest->path, 0, sizeof(dest->path));
- 
- 	if (!IS_ENABLED(CONFIG_OF))
- 		return target_power;
-@@ -415,12 +420,35 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
- 	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
- 				     ARRAY_SIZE(dest->mcs), val, len,
--				     target_power, txs_delta, &max_power);
-+				     target_power, txs_delta);
- 
- 	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
- 	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
- 				     ARRAY_SIZE(dest->ru), val, len,
--				     target_power, txs_delta, &max_power);
-+				     target_power, txs_delta);
-+
-+	max_power_backoff = max_power;
-+	val = mt76_get_of_array_s8(np, "paths-cck", &len, ARRAY_SIZE(dest->path.cck));
-+	mt76_apply_array_limit(dest->path.cck, ARRAY_SIZE(dest->path.cck), val,
-+			       target_power_combine, txs_delta, &max_power_backoff);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ofdm", &len, ARRAY_SIZE(dest->path.ofdm));
-+	mt76_apply_array_limit(dest->path.ofdm, ARRAY_SIZE(dest->path.ofdm), val,
-+			       target_power_combine, txs_delta, &max_power_backoff);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ofdm-bf", &len, ARRAY_SIZE(dest->path.ofdm_bf));
-+	mt76_apply_array_limit(dest->path.ofdm_bf, ARRAY_SIZE(dest->path.ofdm_bf), val,
-+			       target_power_combine, txs_delta, &max_power_backoff);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ru", &len, ARRAY_SIZE(dest->path.ru[0]) + 1);
-+	mt76_apply_multi_array_limit(dest->path.ru[0], ARRAY_SIZE(dest->path.ru[0]),
-+				     ARRAY_SIZE(dest->path.ru), val, len,
-+				     target_power_combine, txs_delta);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ru-bf", &len, ARRAY_SIZE(dest->path.ru_bf[0]) + 1);
-+	mt76_apply_multi_array_limit(dest->path.ru_bf[0], ARRAY_SIZE(dest->path.ru_bf[0]),
-+				     ARRAY_SIZE(dest->path.ru_bf), val, len,
-+				     target_power_combine, txs_delta);
- 
- 	return max_power;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index e0d50b58cd012910b697102bd50bb855966876f9..86b812f68c970c453cd7b31d690f1761ebbea5f5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1113,6 +1113,14 @@ struct mt76_power_limits {
- 	s8 mcs[4][10];
- 	s8 ru[7][12];
- 	s8 eht[16][16];
-+
-+	struct {
-+		s8 cck[4];
-+		s8 ofdm[4];
-+		s8 ofdm_bf[4];
-+		s8 ru[7][10];
-+		s8 ru_bf[7][10];
-+	} path;
- };
- 
- struct mt76_ethtool_worker_info {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index b287b7d9394e20496d7e5628c5984776100dc9d7..6ff0d262c28ac691992585cff1bbc4038e900b36 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -1008,7 +1008,7 @@ mt7915_rate_txpower_get(struct file *file, char __user *user_buf,
- 	if (!buf)
- 		return -ENOMEM;
- 
--	ret = mt7915_mcu_get_txpower_sku(phy, txpwr, sizeof(txpwr));
-+	ret = mt7915_mcu_get_txpower_sku(phy, txpwr, sizeof(txpwr), TX_POWER_INFO_RATE);
- 	if (ret)
- 		goto out;
- 
-@@ -1118,7 +1118,7 @@ mt7915_rate_txpower_set(struct file *file, const char __user *user_buf,
- 
- 	mutex_lock(&dev->mt76.mutex);
- 	ret = mt7915_mcu_get_txpower_sku(phy, req.txpower_sku,
--					 sizeof(req.txpower_sku));
-+					 sizeof(req.txpower_sku), TX_POWER_INFO_RATE);
- 	if (ret)
- 		goto out;
- 
-@@ -1160,7 +1160,7 @@ mt7915_rate_txpower_set(struct file *file, const char __user *user_buf,
- 	return ret ? ret : count;
- }
- 
--static const struct file_operations mt7915_rate_txpower_fops = {
-+static const struct file_operations mt7915_txpower_fops = {
- 	.write = mt7915_rate_txpower_set,
- 	.read = mt7915_rate_txpower_get,
- 	.open = simple_open,
-@@ -1168,6 +1168,70 @@ static const struct file_operations mt7915_rate_txpower_fops = {
- 	.llseek = default_llseek,
- };
- 
-+static int
-+mt7915_path_txpower_show(struct seq_file *file)
-+{
-+	struct mt7915_phy *phy = file->private;
-+	s8 txpower[MT7915_SKU_PATH_NUM], *buf = txpower;
-+	int ret;
-+
-+#define PATH_POWER_SHOW(_name, _len, _skip) do {			\
-+		size_t __len = (_len);					\
-+		if (_skip) {						\
-+			buf -= 1;					\
-+			*buf = 0;					\
-+		}							\
-+		mt76_seq_puts_array(file, _name, buf, __len);		\
-+		buf += __len;						\
-+	} while (0)
-+
-+	seq_printf(file, "\n%*c", 18, ' ');
-+	seq_puts(file, "1T1S/2T1S/3T1S/4T1S/2T2S/3T2S/4T2S/3T3S/4T3S/4T4S\n");
-+	ret = mt7915_mcu_get_txpower_sku(phy, txpower, sizeof(txpower),
-+					 TX_POWER_INFO_PATH);
-+	if (ret)
-+		return ret;
-+
-+	PATH_POWER_SHOW("CCK", 4, 0);
-+	PATH_POWER_SHOW("OFDM", 4, 0);
-+	PATH_POWER_SHOW("BF-OFDM", 4, 1);
-+
-+	PATH_POWER_SHOW("HT/VHT20", 10, 0);
-+	PATH_POWER_SHOW("BF-HT/VHT20", 10, 1);
-+	PATH_POWER_SHOW("HT/VHT40", 10, 0);
-+	PATH_POWER_SHOW("BF-HT/VHT40", 10, 1);
-+
-+	PATH_POWER_SHOW("BW20/RU242", 10, 0);
-+	PATH_POWER_SHOW("BF-BW20/RU242", 10, 1);
-+	PATH_POWER_SHOW("BW40/RU484", 10, 0);
-+	PATH_POWER_SHOW("BF-BW40/RU484", 10, 1);
-+	PATH_POWER_SHOW("BW80/RU996", 10, 0);
-+	PATH_POWER_SHOW("BF-BW80/RU996", 10, 1);
-+	PATH_POWER_SHOW("BW160/RU2x996", 10, 0);
-+	PATH_POWER_SHOW("BF-BW160/RU2x996", 10, 1);
-+	PATH_POWER_SHOW("RU26", 10, 0);
-+	PATH_POWER_SHOW("BF-RU26", 10, 0);
-+	PATH_POWER_SHOW("RU52", 10, 0);
-+	PATH_POWER_SHOW("BF-RU52", 10, 0);
-+	PATH_POWER_SHOW("RU106", 10, 0);
-+	PATH_POWER_SHOW("BF-RU106", 10, 0);
-+#undef PATH_POWER_SHOW
-+
-+	return 0;
-+}
-+
-+static int
-+mt7915_txpower_path_show(struct seq_file *file, void *data)
-+{
-+	struct mt7915_phy *phy = file->private;
-+
-+	seq_printf(file, "\nBand %d\n", phy != &phy->dev->phy);
-+
-+	return mt7915_path_txpower_show(file);
-+}
-+
-+DEFINE_SHOW_ATTRIBUTE(mt7915_txpower_path);
-+
- static int
- mt7915_twt_stats(struct seq_file *s, void *data)
- {
-@@ -1254,7 +1318,9 @@ int mt7915_init_debugfs(struct mt7915_phy *phy)
- 	debugfs_create_file("implicit_txbf", 0600, dir, dev,
- 			    &fops_implicit_txbf);
- 	debugfs_create_file("txpower_sku", 0400, dir, phy,
--			    &mt7915_rate_txpower_fops);
-+			    &mt7915_txpower_fops);
-+	debugfs_create_file("txpower_path", 0400, dir, phy,
-+			    &mt7915_txpower_path_fops);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "twt_stats", dir,
- 				    mt7915_twt_stats);
- 	debugfs_create_file("rf_regval", 0600, dir, dev, &fops_rf_regval);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 5ea8b46e092ef38bd23d0cbbd1cc579ea8089682..1ac7ee2922b0d8656137724185af572997b9ffec 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -289,6 +289,8 @@ static void __mt7915_init_txpower(struct mt7915_phy *phy,
- 	int pwr_delta = mt7915_eeprom_get_power_delta(dev, sband->band);
- 	struct mt76_power_limits limits;
- 
-+	phy->sku_limit_en = true;
-+	phy->sku_path_en = true;
- 	for (i = 0; i < sband->n_channels; i++) {
- 		struct ieee80211_channel *chan = &sband->channels[i];
- 		u32 target_power = 0;
-@@ -305,6 +307,11 @@ static void __mt7915_init_txpower(struct mt7915_phy *phy,
- 		target_power = mt76_get_rate_power_limits(phy->mt76, chan,
- 							  &limits,
- 							  target_power);
-+
-+		/* MT7915N can not enable Backoff table without setting value in dts */
-+		if (!limits.path.ofdm[0])
-+			phy->sku_path_en = false;
-+
- 		target_power += path_delta;
- 		target_power = DIV_ROUND_UP(target_power, 2);
- 		chan->max_power = min_t(int, chan->max_reg_power,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index fe0639c14bf9bc6ec934325bd4afa263eb106dcb..fa135447a2632305cf9e3c38c5a3c2bb14efc4ce 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -73,7 +73,7 @@ int mt7915_run(struct ieee80211_hw *hw)
- 	if (ret)
- 		goto out;
- 
--	ret = mt7915_mcu_set_sku_en(phy, true);
-+	ret = mt7915_mcu_set_sku_en(phy);
- 	if (ret)
- 		goto out;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index c1fdd3c4f1ba6eb51c2be1794a2628d38f5a44ad..673338d508a88d542539128d72a155326af1e56a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3336,7 +3336,8 @@ int mt7915_mcu_set_txpower_frame(struct mt7915_phy *phy,
- 	int ret;
- 	s8 txpower_sku[MT7915_SKU_RATE_NUM];
- 
--	ret = mt7915_mcu_get_txpower_sku(phy, txpower_sku, sizeof(txpower_sku));
-+	ret = mt7915_mcu_get_txpower_sku(phy, txpower_sku, sizeof(txpower_sku),
-+					 TX_POWER_INFO_RATE);
- 	if (ret)
- 		return ret;
- 
-@@ -3376,51 +3377,136 @@ int mt7915_mcu_set_txpower_frame(struct mt7915_phy *phy,
- 				 sizeof(req), true);
- }
- 
-+static void
-+mt7915_update_txpower(struct mt7915_phy *phy, int tx_power)
-+{
-+	struct mt76_phy *mphy = phy->mt76;
-+	struct ieee80211_channel *chan = mphy->main_chandef.chan;
-+	int chain_idx, val, e2p_power_limit = 0;
-+
-+	if (!chan) {
-+		mphy->txpower_cur = tx_power;
-+		return;
-+	}
-+
-+	for (chain_idx = 0; chain_idx < hweight16(mphy->chainmask); chain_idx++) {
-+		val = mt7915_eeprom_get_target_power(phy->dev, chan, chain_idx);
-+		val += mt7915_eeprom_get_power_delta(phy->dev, chan->band);
-+
-+		e2p_power_limit = max_t(int, e2p_power_limit, val);
-+	}
-+
-+	if (phy->sku_limit_en)
-+		mphy->txpower_cur = min_t(int, e2p_power_limit, tx_power);
-+	else
-+		mphy->txpower_cur = e2p_power_limit;
-+}
-+
- int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy)
- {
-+#define TX_POWER_LIMIT_TABLE_RATE	0
-+#define TX_POWER_LIMIT_TABLE_PATH	1
- 	struct mt7915_dev *dev = phy->dev;
- 	struct mt76_phy *mphy = phy->mt76;
- 	struct ieee80211_hw *hw = mphy->hw;
--	struct mt7915_mcu_txpower_sku req = {
-+	struct mt7915_sku_val {
-+		u8 format_id;
-+		u8 limit_type;
-+		u8 band_idx;
-+	} __packed hdr = {
- 		.format_id = TX_POWER_LIMIT_TABLE,
-+		.limit_type = TX_POWER_LIMIT_TABLE_RATE,
- 		.band_idx = phy->mt76->band_idx,
- 	};
--	struct mt76_power_limits limits_array;
--	s8 *la = (s8 *)&limits_array;
--	int i, idx;
--	int tx_power;
-+	int i, ret, tx_power;
-+	const u8 *len = mt7915_sku_group_len;
-+	struct mt76_power_limits la = {};
-+	struct sk_buff *skb;
- 
- 	tx_power = mt76_get_power_bound(mphy, hw->conf.power_level);
--	tx_power = mt76_get_rate_power_limits(mphy, mphy->chandef.chan,
--					      &limits_array, tx_power);
--	mphy->txpower_cur = tx_power;
--
--	for (i = 0, idx = 0; i < ARRAY_SIZE(mt7915_sku_group_len); i++) {
--		u8 mcs_num, len = mt7915_sku_group_len[i];
--		int j;
--
--		if (i >= SKU_HT_BW20 && i <= SKU_VHT_BW160) {
--			mcs_num = 10;
--
--			if (i == SKU_HT_BW20 || i == SKU_VHT_BW20)
--				la = (s8 *)&limits_array + 12;
--		} else {
--			mcs_num = len;
--		}
--
--		for (j = 0; j < min_t(u8, mcs_num, len); j++)
--			req.txpower_sku[idx + j] = la[j];
--
--		la += mcs_num;
--		idx += len;
-+	if (phy->sku_limit_en) {
-+		tx_power = mt76_get_rate_power_limits(mphy, mphy->chandef.chan,
-+						      &la, tx_power);
-+		mt7915_update_txpower(phy, tx_power);
-+	} else {
-+		mt7915_update_txpower(phy, tx_power);
-+		return 0;
- 	}
- 
--	return mt76_mcu_send_msg(&dev->mt76,
--				 MCU_EXT_CMD(TX_POWER_FEATURE_CTRL), &req,
--				 sizeof(req), true);
-+	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
-+				 sizeof(hdr) + MT7915_SKU_RATE_NUM);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	skb_put_data(skb, &hdr, sizeof(hdr));
-+	skb_put_data(skb, &la.cck, len[SKU_CCK] + len[SKU_OFDM]);
-+	skb_put_data(skb, &la.mcs[0], len[SKU_HT_BW20]);
-+	skb_put_data(skb, &la.mcs[1], len[SKU_HT_BW40]);
-+
-+	/* vht */
-+	for (i = 0; i < 4; i++) {
-+		skb_put_data(skb, &la.mcs[i], sizeof(la.mcs[i]));
-+		skb_put_zero(skb, 2);  /* padding */
-+	}
-+
-+	/* he */
-+	skb_put_data(skb, &la.ru[0], sizeof(la.ru));
-+	ret = mt76_mcu_skb_send_msg(&dev->mt76, skb,
-+				    MCU_EXT_CMD(TX_POWER_FEATURE_CTRL), true);
-+	if (ret)
-+		return ret;
-+
-+	/* only set per-path power table when it's configured */
-+	if (!phy->sku_path_en)
-+		return 0;
-+
-+	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
-+				 sizeof(hdr) + MT7915_SKU_PATH_NUM);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	hdr.limit_type = TX_POWER_LIMIT_TABLE_PATH;
-+	skb_put_data(skb, &hdr, sizeof(hdr));
-+	skb_put_data(skb, &la.path.cck, sizeof(la.path.cck));
-+	skb_put_data(skb, &la.path.ofdm, sizeof(la.path.ofdm));
-+	skb_put_data(skb, &la.path.ofdm_bf[1], sizeof(la.path.ofdm_bf) - 1);
-+
-+	/* HT20 and HT40 */
-+	skb_put_data(skb, &la.path.ru[3], sizeof(la.path.ru[3]));
-+	skb_put_data(skb, &la.path.ru_bf[3][1], sizeof(la.path.ru_bf[3]) - 1);
-+	skb_put_data(skb, &la.path.ru[4], sizeof(la.path.ru[4]));
-+	skb_put_data(skb, &la.path.ru_bf[4][1], sizeof(la.path.ru_bf[4]) - 1);
-+
-+	/* start from non-bf and bf fields of
-+	 * BW20/RU242, BW40/RU484, BW80/RU996, BW160/RU2x996,
-+	 * RU26, RU52, and RU106
-+	 */
-+
-+	for (i = 0; i < 8; i++) {
-+		bool bf = i % 2;
-+		u8 idx = (i + 6) / 2;
-+		s8 *buf = bf ? la.path.ru_bf[idx] : la.path.ru[idx];
-+		/* The non-bf fields of RU26 to RU106 are special cases */
-+		if (bf)
-+			skb_put_data(skb, buf + 1, 9);
-+		else
-+			skb_put_data(skb, buf, 10);
-+	}
-+
-+	for (i = 0; i < 6; i++) {
-+		bool bf = i % 2;
-+		u8 idx = i / 2;
-+		s8 *buf = bf ? la.path.ru_bf[idx] : la.path.ru[idx];
-+
-+		skb_put_data(skb, buf, 10);
-+	}
-+
-+	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
-+				     MCU_EXT_CMD(TX_POWER_FEATURE_CTRL), true);
- }
- 
--int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len)
-+int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len,
-+			       u8 category)
- {
- #define RATE_POWER_INFO	2
- 	struct mt7915_dev *dev = phy->dev;
-@@ -3431,10 +3517,9 @@ int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len)
- 		u8 _rsv;
- 	} __packed req = {
- 		.format_id = TX_POWER_LIMIT_INFO,
--		.category = RATE_POWER_INFO,
-+		.category = category,
- 		.band_idx = phy->mt76->band_idx,
- 	};
--	s8 txpower_sku[MT7915_SKU_RATE_NUM][2];
- 	struct sk_buff *skb;
- 	int ret, i;
- 
-@@ -3444,9 +3529,15 @@ int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len)
- 	if (ret)
- 		return ret;
- 
--	memcpy(txpower_sku, skb->data + 4, sizeof(txpower_sku));
--	for (i = 0; i < len; i++)
--		txpower[i] = txpower_sku[i][req.band_idx];
-+	if (category == TX_POWER_INFO_RATE) {
-+		s8 res[MT7915_SKU_RATE_NUM][2];
-+
-+		memcpy(res, skb->data + 4, sizeof(res));
-+		for (i = 0; i < len; i++)
-+			txpower[i] = res[i][req.band_idx];
-+	} else if (category == TX_POWER_INFO_PATH) {
-+		memcpy(txpower, skb->data + 4, len);
-+	}
- 
- 	dev_kfree_skb(skb);
- 
-@@ -3475,7 +3566,7 @@ int mt7915_mcu_set_test_param(struct mt7915_dev *dev, u8 param, bool test_mode,
- 				 sizeof(req), false);
- }
- 
--int mt7915_mcu_set_sku_en(struct mt7915_phy *phy, bool enable)
-+int mt7915_mcu_set_sku_en(struct mt7915_phy *phy)
- {
- 	struct mt7915_dev *dev = phy->dev;
- 	struct mt7915_sku {
-@@ -3484,10 +3575,21 @@ int mt7915_mcu_set_sku_en(struct mt7915_phy *phy, bool enable)
- 		u8 band_idx;
- 		u8 rsv;
- 	} __packed req = {
--		.format_id = TX_POWER_LIMIT_ENABLE,
- 		.band_idx = phy->mt76->band_idx,
--		.sku_enable = enable,
- 	};
-+	int ret;
-+
-+	req.sku_enable = phy->sku_limit_en;
-+	req.format_id = TX_POWER_LIMIT_ENABLE;
-+
-+	ret = mt76_mcu_send_msg(&dev->mt76,
-+				MCU_EXT_CMD(TX_POWER_FEATURE_CTRL), &req,
-+				sizeof(req), true);
-+	if (ret)
-+		return ret;
-+
-+	req.sku_enable = phy->sku_path_en;
-+	req.format_id = TX_POWER_LIMIT_PATH_ENABLE;
- 
- 	return mt76_mcu_send_msg(&dev->mt76,
- 				 MCU_EXT_CMD(TX_POWER_FEATURE_CTRL), &req,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 086ad89ecd9144b4bc566e2a958c99153b3d1dd4..b72535efc6d7d411bf2f03899ac10a81d4d0545b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -429,12 +429,18 @@ enum {
- 
- enum {
- 	TX_POWER_LIMIT_ENABLE,
-+	TX_POWER_LIMIT_PATH_ENABLE = 0x3,
- 	TX_POWER_LIMIT_TABLE = 0x4,
- 	TX_POWER_LIMIT_INFO = 0x7,
- 	TX_POWER_LIMIT_FRAME = 0x11,
- 	TX_POWER_LIMIT_FRAME_MIN = 0x12,
- };
- 
-+enum {
-+	TX_POWER_INFO_PATH = 1,
-+	TX_POWER_INFO_RATE,
-+};
-+
- enum {
- 	SPR_ENABLE = 0x1,
- 	SPR_ENABLE_SD = 0x3,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 2e94347c46d624394a68cf5095c11cafb8264f85..b15d31d36a8725d3d914dda205a13322ea875bfe 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -70,6 +70,7 @@
- #define MT7915_CDEV_THROTTLE_MAX	99
- 
- #define MT7915_SKU_RATE_NUM		161
-+#define MT7915_SKU_PATH_NUM		185
- 
- #define MT7915_MAX_TWT_AGRT		16
- #define MT7915_MAX_STA_TWT_AGRT		8
-@@ -223,6 +224,9 @@ struct mt7915_phy {
- 	struct mt76_mib_stats mib;
- 	struct mt76_channel_state state_ts;
- 
-+	bool sku_limit_en:1;
-+	bool sku_path_en:1;
-+
- #ifdef CONFIG_NL80211_TESTMODE
- 	struct {
- 		u32 *reg_backup;
-@@ -491,9 +495,10 @@ int mt7915_mcu_set_mac(struct mt7915_dev *dev, int band, bool enable,
- int mt7915_mcu_set_test_param(struct mt7915_dev *dev, u8 param, bool test_mode,
- 			      u8 en);
- int mt7915_mcu_set_ser(struct mt7915_dev *dev, u8 action, u8 set, u8 band);
--int mt7915_mcu_set_sku_en(struct mt7915_phy *phy, bool enable);
-+int mt7915_mcu_set_sku_en(struct mt7915_phy *phy);
- int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy);
--int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len);
-+int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len,
-+			       u8 category);
- int mt7915_mcu_set_txpower_frame_min(struct mt7915_phy *phy, s8 txpower);
- int mt7915_mcu_set_txpower_frame(struct mt7915_phy *phy,
- 				 struct ieee80211_vif *vif,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-index d534fff5c952bdbf03f3ddafb194220ac882676a..5836b9733f276ffa3dcda2b7a40a0c0e2e987b8a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-@@ -409,7 +409,7 @@ mt7915_tm_init(struct mt7915_phy *phy, bool en)
- 	if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
- 		return;
- 
--	mt7915_mcu_set_sku_en(phy, !en);
-+	mt7915_mcu_set_sku_en(phy);
- 
- 	mt7915_tm_mode_ctrl(dev, en);
- 	mt7915_tm_reg_backup_restore(phy);
+I think your code doesn't account for this.
 
--- 
-2.47.3
+Sorry I forgot about this detail. This behaviour is new in rtw89.
+The chips supported by rtw88 provide only one report for each request.
+
+>> +
+>>  struct rtw89_mac_mcc_tsf_rpt {
+>>  	u32 macid_x;
+>>  	u32 macid_y;
+>> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+>> index fd11b8fb3c89..01afdcd5f36c 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/mac.c
+>> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
+>> @@ -5457,6 +5457,17 @@ rtw89_mac_c2h_mcc_status_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32
+>>  	rtw89_complete_cond(&rtwdev->mcc.wait, cond, &data);
+>>  }
+>>  
+>> +static void
+>> +rtw89_mac_c2h_tx_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
+>> +{
+>> +	u8 sw_define = RTW89_GET_MAC_C2H_TX_RPT_SW_DEFINE(c2h->data);
+>> +	u8 tx_status = RTW89_GET_MAC_C2H_TX_RPT_TX_STATE(c2h->data);
+>> +
+>> +	rtw89_debug(rtwdev, RTW89_DBG_TXRX,
+>> +		    "C2H TX RPT: sn %d, tx_status %d\n",
+>> +		    sw_define, tx_status);
+>> +}
+>> +
+>>  static void
+>>  rtw89_mac_c2h_mrc_tsf_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
+>>  {
+>> @@ -5691,6 +5702,12 @@ void (* const rtw89_mac_c2h_mcc_handler[])(struct rtw89_dev *rtwdev,
+>>  	[RTW89_MAC_C2H_FUNC_MCC_STATUS_RPT] = rtw89_mac_c2h_mcc_status_rpt,
+>>  };
+>>  
+>> +static
+>> +void (* const rtw89_mac_c2h_misc_handler[])(struct rtw89_dev *rtwdev,
+>> +					    struct sk_buff *c2h, u32 len) = {
+>> +	[RTW89_MAC_C2H_FUNC_TX_REPORT] = rtw89_mac_c2h_tx_rpt,
+>> +};
+>> +
+>>  static
+>>  void (* const rtw89_mac_c2h_mlo_handler[])(struct rtw89_dev *rtwdev,
+>>  					   struct sk_buff *c2h, u32 len) = {
+>> @@ -5777,6 +5794,8 @@ bool rtw89_mac_c2h_chk_atomic(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
+>>  		}
+>>  	case RTW89_MAC_C2H_CLASS_MCC:
+>>  		return true;
+>> +	case RTW89_MAC_C2H_CLASS_MISC:
+>> +		return true;
+>>  	case RTW89_MAC_C2H_CLASS_MLO:
+>>  		return true;
+>>  	case RTW89_MAC_C2H_CLASS_MRC:
+>> @@ -5812,6 +5831,10 @@ void rtw89_mac_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
+>>  		if (func < NUM_OF_RTW89_MAC_C2H_FUNC_MCC)
+>>  			handler = rtw89_mac_c2h_mcc_handler[func];
+>>  		break;
+>> +	case RTW89_MAC_C2H_CLASS_MISC:
+>> +		if (func < NUM_OF_RTW89_MAC_C2H_FUNC_MISC)
+>> +			handler = rtw89_mac_c2h_misc_handler[func];
+>> +		break;
+>>  	case RTW89_MAC_C2H_CLASS_MLO:
+>>  		if (func < NUM_OF_RTW89_MAC_C2H_FUNC_MLO)
+>>  			handler = rtw89_mac_c2h_mlo_handler[func];
+>> diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+>> index 25fe5e5c8a97..632b85aed032 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/mac.h
+>> +++ b/drivers/net/wireless/realtek/rtw89/mac.h
+>> @@ -432,6 +432,14 @@ enum rtw89_mac_c2h_mcc_func {
+>>  	NUM_OF_RTW89_MAC_C2H_FUNC_MCC,
+>>  };
+>>  
+>> +enum rtw89_mac_c2h_misc_func {
+>> +	RTW89_MAC_C2H_FUNC_WPS_RPT,
+>> +	RTW89_MAC_C2H_FUNC_TX_REPORT,
+>> +	RTW89_MAC_C2H_FUNC_BF_SENS_FEEDBACK = 0x4,
+>> +
+>> +	NUM_OF_RTW89_MAC_C2H_FUNC_MISC,
+>> +};
+>> +
+>>  enum rtw89_mac_c2h_mlo_func {
+>>  	RTW89_MAC_C2H_FUNC_MLO_GET_TBL			= 0x0,
+>>  	RTW89_MAC_C2H_FUNC_MLO_EMLSR_TRANS_DONE		= 0x1,
+>> @@ -470,6 +478,7 @@ enum rtw89_mac_c2h_class {
+>>  	RTW89_MAC_C2H_CLASS_WOW = 0x3,
+>>  	RTW89_MAC_C2H_CLASS_MCC = 0x4,
+>>  	RTW89_MAC_C2H_CLASS_FWDBG = 0x5,
+>> +	RTW89_MAC_C2H_CLASS_MISC = 0x9,
+>>  	RTW89_MAC_C2H_CLASS_MLO = 0xc,
+>>  	RTW89_MAC_C2H_CLASS_MRC = 0xe,
+>>  	RTW89_MAC_C2H_CLASS_AP = 0x18,
+>> diff --git a/drivers/net/wireless/realtek/rtw89/txrx.h b/drivers/net/wireless/realtek/rtw89/txrx.h
+>> index 984c9fdbb018..d7259e6d798e 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/txrx.h
+>> +++ b/drivers/net/wireless/realtek/rtw89/txrx.h
+>> @@ -139,8 +139,10 @@ static inline u8 rtw89_get_data_nss(struct rtw89_dev *rtwdev, u16 hw_rate)
+>>  #define RTW89_TXWD_INFO2_SEC_CAM_IDX GENMASK(7, 0)
+>>  
+>>  /* TX WD INFO DWORD 3 */
+>> +#define RTW89_TXWD_INFO3_SPE_RPT BIT(10)
+>>  
+>>  /* TX WD INFO DWORD 4 */
+>> +#define RTW89_TXWD_INFO4_SW_DEFINE GENMASK(3, 0)
+>>  #define RTW89_TXWD_INFO4_RTS_EN BIT(27)
+>>  #define RTW89_TXWD_INFO4_HW_RTS_EN BIT(31)
+>>  
+> 
 
 
