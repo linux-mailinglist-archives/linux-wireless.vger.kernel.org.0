@@ -1,105 +1,72 @@
-Return-Path: <linux-wireless+bounces-27648-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27649-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2C5B9DF3B
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 10:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C080B9EE91
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 13:30:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E93C519C2426
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 08:00:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8921319C1927
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 11:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4661F26FD8E;
-	Thu, 25 Sep 2025 08:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFB820E6;
+	Thu, 25 Sep 2025 11:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LiHRCldY"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="axS/0vCE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D7B25F98A;
-	Thu, 25 Sep 2025 08:00:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2EF287274
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Sep 2025 11:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758787225; cv=none; b=TLr364Uo8kq3MZXMYjvff1SDhDI0b2H1BJM1QuX75OvvaQoLG3OMUqAMp3KQHL3e7rRdaHgpBl0R1gqBZL6LcQytmXXDK1SEHGMEsneBDp5rxzUkHFUVcqltBDo74NJN5eJFQMsWpYf95WQyv+xFnOrchxdyvV6TrstMqgpEGxQ=
+	t=1758799851; cv=none; b=NPh4/USm3Fduno9nfZGv4PA2xrmpeA/FsoVQfiZ/TaRKIuuf5USpG6W0pkV55jEUqhRThykCIVA0LKy/WI9lNq6np2BDsaOEb8xyfocyXfs+JsF1g7wUClthOblkwl3/r/bG1hyM9dDm+nDSQRopaWE+s0JMO1wUJ+ai+qolPvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758787225; c=relaxed/simple;
-	bh=G0wE6GDhMjrEgAVeXZdBQvhN3c5CaLo5qSGmNrKn1bk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WAYu6nKqy9etZMCr0JUkYuuvIqIzMPTL9SHYUbT3gZCu8NrorMp42LMvoyV4xvYT3kd1sa10koXAEmVREnjbM0OW719ctrbiq+Oo8W4aoOsbKAWmQROdm/xn9AqPY7f60HGnvckxgayQPHlnhZr1BcxWrAPFoFpqn97rn2Tvngo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LiHRCldY; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=oraknh3t1E5ZIO7ASTmkAkRYi0tE6MMY5GpktDUviUM=;
-	t=1758787223; x=1759996823; b=LiHRCldYIzKlJZSeWybHbOC2FIWYTsQcbadLlopht1H8mhF
-	MLIfeaTL4H1msSvm6wAyK5LvyEUQFXFM3aVHCTxIzEQpRjkBZDdOMijVDI8utePf9DyqztGUU5fT/
-	Y6s7IP9y6pmE9UVbZ4b/7JZVTz57qdsNW+Qz1YGMTBTvKHjd0glYEh2H97gxJklB+UUtvx1dPvUeP
-	GrbmlEZBIxFr4vQ+BQdEV8KiHG2NpKCIK30zyxcPhzLqZ04c/keVj9mdmG5/1UuskPDVOqWu3pZg0
-	OBojeMwAqGDUxkl3zNNGl5VaA8MObguVE1X1WC+HgdJag65zuK9yNwaxfMOXQmQw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1v1gtj-0000000Anv0-0Lmb;
-	Thu, 25 Sep 2025 10:00:15 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: stable@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	David Wang <00107082@163.com>
-Subject: [PATCH 6.16 2/2] wifi: iwlwifi: pcie: fix byte count table for some devices
-Date: Thu, 25 Sep 2025 10:00:07 +0200
-Message-ID: <20250925080010.9298-4-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250925080010.9298-3-johannes@sipsolutions.net>
-References: <20250925080010.9298-3-johannes@sipsolutions.net>
+	s=arc-20240116; t=1758799851; c=relaxed/simple;
+	bh=LRnemnqNWUw7RqRTqpb5s+BboHjWuTOsbJFLzwh/52E=;
+	h=Date:To:From:Subject:Message-ID:MIME-Version:Content-Type; b=lWKGZOEG0692PJk03kn+yW1ErKTAMOIT+CaB1e/LPTB9rv3i/ur5o/4w92P0oXkCfklgjNf9cZ20PHfNuNPwEGZIW6r+hAnUEH9XETXHdWeqoSHv0GDSLkdyKJGtmoHLwfNEX3/d2uzn2u/yq5zjAAuH0GXQCVaMsaL0JrrGKKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=axS/0vCE; arc=none smtp.client-ip=185.70.43.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=3o3f36kae5dhlimh5y7k5sj5oq.protonmail; t=1758799840; x=1759059040;
+	bh=LRnemnqNWUw7RqRTqpb5s+BboHjWuTOsbJFLzwh/52E=;
+	h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=axS/0vCEBrbUc9TXE0xWmcF54MU7bUhJUuClE02yJJdXuP3MQOJ3GHoldIfxIckA8
+	 vns/YjBUDk5TunnNl+iKGlrRssHIZJQgOq8xdMe7YlwDt0DPaK60HZ5K++1+jU/lK9
+	 SGVcD7Ry8I6AbfRtvWhe5uDL6UxOJhCajL5/a7OZjZ95ilSMkdMagd8i935UwRA896
+	 j+9FV4lAnUl64yE+GYvKGMqhvILPtfiKxxBbzwzmXigTToWuLvE/wzf5R4aVolE/pO
+	 KYOVgNL45znSynh7dMoyk6eJWRwO4sj2y2o0Y2bJfE3FPzB9KqDJfUo2wDc1E05J7m
+	 Zobqo4kMpyNAQ==
+Date: Thu, 25 Sep 2025 11:30:34 +0000
+To: "nbd@nbd.name" <nbd@nbd.name>, "lorenzo@kernel.org" <lorenzo@kernel.org>, "ryder.lee@mediatek.com" <ryder.lee@mediatek.com>, "shayne.chen@mediatek.com" <shayne.chen@mediatek.com>, "sean.wang@mediatek.com" <sean.wang@mediatek.com>, "deren.wu@mediatek.com" <deren.wu@mediatek.com>, "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From: HMTheBoy154 <hmtheboy154@proton.me>
+Subject: Requesting MT7902 support for mt76 driver
+Message-ID: <zJTdgBCk5Us_-6bstYmzg2Trn-ntC0_mJyMLOvAQya5Jxg-wn17E3E_go5qM3aqvz1ncA2MV8bqTy_8udMubwLvsxkZuWCfav--IlrA-I8c=@proton.me>
+Feedback-ID: 46487666:user:proton
+X-Pm-Message-ID: 25682861f240f550ec316fee506f58e409dc0269
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hi, could the mt76 driver be updated to support the MT7902 Wi-Fi card?
+Recently a lot of hardware like laptops & motherboard come with the PCIe ve=
+rsion of this wifi card. I've noticed that the MT7902's drivers for other p=
+latforms (like Windows or the Android BSP driver at the link below) show it=
+'s very similar to the already-supported MT7921 series. I believe this simi=
+larity suggests that adding support for the MT7902 may be feasible. If not,=
+ could I have a reason for why ?
 
-commit a38108a23ab558b834d71d542d32c05ab0fb64d4 upstream.
+Link: https://github.com/MiCode/MTK_kernel_modules/tree/bsp-rodin-v-oss/con=
+nectivity/wlan/core/gen4-mt79xx
 
-In my previous fix for this condition, I erroneously listed 9000
-instead of 7000 family, when 7000/8000 were already using iwlmvm.
-Thus the condition ended up wrong, causing the issue I had fixed
-for older devices to suddenly appear on 7000/8000 family devices.
-Correct the condition accordingly.
-
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/r/20250909165811.10729-1-00107082@163.com/
-Fixes: 586e3cb33ba6 ("wifi: iwlwifi: fix byte count table for old devices")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250915102743.777aaafbcc6c.I84404edfdfbf400501f6fb06def5b86c501da198@changeid
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-index 5ca9712dd7f0..de5005815ee7 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-@@ -2093,7 +2093,7 @@ static void iwl_txq_gen1_update_byte_cnt_tbl(struct iwl_trans *trans,
- 		break;
- 	}
- 
--	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_9000 &&
-+	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_7000 &&
- 	    trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
- 		len = DIV_ROUND_UP(len, 4);
- 
--- 
-2.51.0
-
+Sent with Proton Mail secure email.
 
