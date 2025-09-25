@@ -1,165 +1,179 @@
-Return-Path: <linux-wireless+bounces-27652-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27653-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C32BA0F1A
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 19:50:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199D3BA1054
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 20:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEAE07A1508
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 17:48:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD9FE7B3F3B
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 18:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0E530EF89;
-	Thu, 25 Sep 2025 17:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E973164AA;
+	Thu, 25 Sep 2025 18:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="MpjBrYgf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
+Received: from mail-yw1-f228.google.com (mail-yw1-f228.google.com [209.85.128.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9648830E0CD
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Sep 2025 17:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E0D315D33
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Sep 2025 18:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758822632; cv=none; b=pZxBFYKUwFLScWZB/QpyPC35/qa4nL2OQt4L2yBnniBG7mbJlpGRB47WttKlhiIiA1V7IVlWaOMEJOUuYM3sbae0xSdsypwvrdjYhezdZ/fzwh1Eafirqb8q/Z+FdqIQP7vnQcJb+1aXna+Q2LbquOcYTa+W2WVIOunyAOn9C/4=
+	t=1758824954; cv=none; b=gwNZe7TyEAw0NzP0VcOgDRCUvEdv2IeR234K3nHsJfPNhYHG1++jZRsn+c17TJiYKlquDDp8lP//UeQjZQc8qmrLRh0afF62MYKplyiDXdFj6YgaKgXWhGKce+1Q87DbhhGiI5GD2ztCwxHTgEMYa+QimE/Bi3j/JPW7fKO+7GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758822632; c=relaxed/simple;
-	bh=ylf/4ZPnXwGVo3cG2fEs2Eso7BVd+FvhU1qDHr2/Tnc=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=CW2OH91Y3fRGYacDDjn0Tqzvo9ZEFAFdGTY9w/w8GZvykfEmDPcxdnLNvmVFpQjS/JW+DYq6+t+nQdM4NxbeIOi+sY2z+V5+P9TDO/Lq3KKzK6FjHMENoXyC7H+j8wE22iI+Mnnc4a+NjmRSCxMx4pAbouQkL74zB5D2DCmkGC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-426cbe6a23aso6335155ab.0
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Sep 2025 10:50:30 -0700 (PDT)
+	s=arc-20240116; t=1758824954; c=relaxed/simple;
+	bh=pBO/UX4J7C0KI04B26XSe7hPoe9OX9Q+92VaUGVxbJI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R4AbRLi+ghsdETURyzQXpUPM7UXiOrRxxS2eXDdo312yECOJtvVrTdNn5fc509EQ8PspKWjLt3BZoRfo//uycKjSUwSqybJ1obLxFkV1XGq4YjnISv6KENowPLJlmIWxQOYTpFgA0Bo00HM//HsVOREQf95GMQ1hNCCuUC2jq8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=MpjBrYgf; arc=none smtp.client-ip=209.85.128.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-yw1-f228.google.com with SMTP id 00721157ae682-71d5fe46572so16540797b3.1
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Sep 2025 11:29:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758822630; x=1759427430;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eZie39W39Ctc/C3R1GNhaN1HRnKwGgYtyoeaL+9tcXI=;
-        b=Pn+9pPHFLvLaeWNglB4IPQH78mBpWmLb9B5r76kelvBmCHRdrmljejr7gMRB7ID7Ro
-         Q0pCz/gEOMHwjOl62THa4dJW8uGj4pBc/9TcBH3XFprqFVdN/u1djXSALopFFZ2CvJYh
-         YAo8iy7Ioelj0yGQBa8Z7tAeudEPEzblRT0kvC0n+s8QgUy7DvXYeAecOY7Em1wvYod5
-         6yprbrPCiNH/kf+2L1DcPodcEXbUN0y08EJcIcPMnMcSf43wC35Lw/PlyqC9fdEw+2Ha
-         q7OUEhT8YkH1TkxvOoGAmlBI+9G2v3G9C8jy7RTfDZBPlLmjgFmm4tH1Q58WZwXL6BzR
-         FD5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUoFSbDzUsB7dLLv3MJ1gz/3DtBAQsra+FUOiPj8JE0Bodw7uTIgLwy7ioB0YkFRPKjZDjWdPiyARl81alwmg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWC2G7s2ctJmqjEfLmme7IzRAyeLOvPUmDTYkfq27tNW5suB4u
-	UFo8BRVXCiDm8fXwBlidPQZBwRn9lLZ9E8DAhq13Cgogxd28ruD0rJFDHZe+RX/Odx8fy5KNcEP
-	KaOFv+wXobbis/T/rdnUoInRv3+Q5NdQ9IwHvB1WJSThIkvdSfTdLTbHXyQo=
-X-Google-Smtp-Source: AGHT+IEWsMCPCAyXck5Q4Ob+BH2+WZgit6Vu+IY53oOMv7RR8QXLFyhAhDoz09zeTXf/B6XSjEKGqaQmrcW2i2Cy2MN2ChyjCKnq
+        d=1e100.net; s=20230601; t=1758824952; x=1759429752;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P9mUkWMYiaFyyO8vrDokgAXf/iLB3jaofepgCpBek4g=;
+        b=fqkLxPQpE+zUCIRf9F8QtMwUCdhoJOUkVp9S9TgGinHNkZEwoWAn4DztHu3trw5hkb
+         0g9JMcdTgzeuUP233SlESayC18jDeFbOXJc0ofvB7DdOo04a2mz9iEXSkRcY55Fp+M7R
+         rOVWrEv5C9I+dikyalpT2+ZnJlSJ8r+vv8EBDD81f1y/XbC8sx6ZsnrtEls/FQZmbY+L
+         z+UOOwBKdFt1mLQUvgewEURLpXzp7UYpxH9q9QWLYNMLscpFoVxLv9EikRO3wwcukF7e
+         EP5Go240FIYb337bG5PZE7cT+4yzO3iruQB3qZF/CfZURppKE5ATiS83MSVe9AkEFdwa
+         Gj4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWkiCkwaH7LpDJJF1F4B0NVMymFTIOrlW13JeE33a76G5bneh5lDsKERwVm39SRm3F5lX9xxp295oP2UKM04g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg8DMYs/P5Dm3UbqZXCbfN1Z6yujUdk7iiSWLBzRna8BxIfJT7
+	73+i4CUutfdHXH9Sh0sIWBwo80rl9R8HiuZN2QKB19cFZlwV4ZL4JCdSz8nzBkR15JtbM1o+pN7
+	t66zn8c2lWwsxgCHUUTjG1QzDCjYOpeOjuSKptR+bDLc3Pw3uYznE5y2G/0LiwVt15PlEt3NnUw
+	Zcp3qZYx99qrjWQ6f8YPHoxPJJEwyxolIdqCrpjm6tSMLCQY2R/KlrgsT+Wfjk02oTU1YLmALXz
+	J+ASxNq9h66cGwtiChtIwkWw6mg
+X-Gm-Gg: ASbGncumwu+VHHFfO1BB3Ulm+5QGeOgtl2RlRKPi+doX5V9WcZAO1G4cRJ8hgn2IjLK
+	P7hetUTx0BrVYZtr4/6ktEf61f7FaYeKRqUSE7oQcPZn2KeZTG6xlqpiacJnMIXaUKSbcbDwwGH
+	3Qy+6NtnB/yXG4RHxI87OSbBrbTuKOCRDnPQQ3k3dyRDriP5Zxk4/EACCQvyfb7aVWoKps+ChwH
+	hcbmrZDMWLgoKGk4BNQ741AGDHBDgiXPuPHFtJVCOu0dFcngN6/zipk7OiDCRqJ7L8c/ynyOGeX
+	zp7I+EvioSbdVrqE1qS64Uls4xQmYBpPbbSdShLBZNtwyFOPr8osdaw5qGkOJF7B8mgDivCS4B6
+	3syye1fm9Xpld+yiorIigs/CaZFnyxFhCbXre3cmgZRGF8TDEuBfefgqJ7xJmI7bLVyavhz9Mvm
+	AEDlmyPw==
+X-Google-Smtp-Source: AGHT+IG/Zrh9mdSW6fMI8Ij8hxLXxxyyC4ccYtNe4P/qTE6R52cwzYA45k/WA1NMkhkVDdCmH1bzocrcYoSH
+X-Received: by 2002:a05:690c:ec7:b0:729:5fe2:3dad with SMTP id 00721157ae682-76551448a01mr33671157b3.1.1758824952228;
+        Thu, 25 Sep 2025 11:29:12 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-121.dlp.protect.broadcom.com. [144.49.247.121])
+        by smtp-relay.gmail.com with ESMTPS id 00721157ae682-765cf0f6169sm1154097b3.12.2025.09.25.11.29.11
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 25 Sep 2025 11:29:12 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b2d604db3easo106238866b.3
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Sep 2025 11:29:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1758824950; x=1759429750; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=P9mUkWMYiaFyyO8vrDokgAXf/iLB3jaofepgCpBek4g=;
+        b=MpjBrYgfW29vhURPfbQy+AI/x3wcC9qgcG0nS1Qvn7gVXt05/i8mZH/lAXCCVsi7Gh
+         zX6wHobHk3Uniq1GyU58jZxBmimGs/4RNoR2a0bslA2JyRAuSOOd06BME6N+CQ32MOSa
+         QwJUr3bB18z4qQ9UsP1pyDoQWNvLHz5ZtFMv0=
+X-Forwarded-Encrypted: i=1; AJvYcCXgxbY6SPY1NQZXWFtc6Sfx7aEWSorRmJ4QV9RixKEARu7TWcquKbfLpAPc92NlAeGHG3Uvm8IAclbhTkW4nw==@vger.kernel.org
+X-Received: by 2002:a17:907:908c:b0:b36:f77e:15d0 with SMTP id a640c23a62f3a-b36f77e2046mr120544166b.37.1758824950259;
+        Thu, 25 Sep 2025 11:29:10 -0700 (PDT)
+X-Received: by 2002:a17:907:908c:b0:b36:f77e:15d0 with SMTP id a640c23a62f3a-b36f77e2046mr120543066b.37.1758824949890;
+        Thu, 25 Sep 2025 11:29:09 -0700 (PDT)
+Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b353e5d155asm220768766b.6.2025.09.25.11.29.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Sep 2025 11:29:09 -0700 (PDT)
+Message-ID: <1122cfba-0735-4392-accb-ed42c5b3bf6a@broadcom.com>
+Date: Thu, 25 Sep 2025 20:29:08 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:184e:b0:425:8857:6e3c with SMTP id
- e9e14a558f8ab-425955f47f9mr60595035ab.11.1758822629764; Thu, 25 Sep 2025
- 10:50:29 -0700 (PDT)
-Date: Thu, 25 Sep 2025 10:50:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68d580e5.a00a0220.303701.001a.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_tdls_oper (2)
-From: syzbot <syzbot+665dd2d6eb222ac6a6ab@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: hostapd Kernel Crashes with IOS
+To: Chris Spargo <chris@streetlogic.pro>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>,
+ "brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>
+Cc: Jonah Finkelstein <jonah@streetlogic.pro>,
+ Parker Borneman <parker@streetlogic.pro>
+References: <MW2PR02MB3674333A04868446C75C39EDB51CA@MW2PR02MB3674.namprd02.prod.outlook.com>
+ <1997f6d2b48.2873.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <MW2PR02MB36742154B795D5FBCB77C394B51FA@MW2PR02MB3674.namprd02.prod.outlook.com>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <MW2PR02MB36742154B795D5FBCB77C394B51FA@MW2PR02MB3674.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Hello,
+On 9/25/2025 3:36 PM, Chris Spargo wrote:
+> It appears that user was also testing with the Pixel7 (mentioned in the 
+> ticket).
+> 
+> Our experience has been both the little circled information icon on 
+> iphone triggers this, as well as simply joining the network then leaving 
+> it.  It’s been a bit of a diagnostic frenzy here yesterday, so I need to 
+> slow down and understand if those are both the same failure, or 
+> different overruns that cause fundamentally the same crash.
+> 
+> I will pull together cleaner examples of both crashes.  Should I attach 
+> them to the github ticket or forward directly here?
 
-syzbot found the following issue on:
+Either way works for me although I have a slight preference for using 
+the mailing lists.
 
-HEAD commit:    4ea5af085908 Merge tag 'pm-6.17-rc8' of git://git.kernel.o..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1629ed34580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=bf99f2510ef92ba5
-dashboard link: https://syzkaller.appspot.com/bug?extid=665dd2d6eb222ac6a6ab
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=123634e2580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1129ed34580000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-4ea5af08.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/7ad79540e83d/vmlinux-4ea5af08.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1e92b3f5e3f3/bzImage-4ea5af08.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+665dd2d6eb222ac6a6ab@syzkaller.appspotmail.com
-
-mac80211_hwsim: wmediumd released netlink socket, switching to perfect channel medium
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5569 at net/mac80211/tdls.c:1461 ieee80211_tdls_oper+0x38f/0x680 net/mac80211/tdls.c:1460
-Modules linked in:
-CPU: 0 UID: 0 PID: 5569 Comm: syz.0.19 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:ieee80211_tdls_oper+0x38f/0x680 net/mac80211/tdls.c:1460
-Code: 6f 01 00 00 e8 a2 e0 b1 f6 eb 22 e8 9b e0 b1 f6 4c 89 e2 eb 21 e8 91 e0 b1 f6 b8 bd ff ff ff e9 21 fe ff ff e8 82 e0 b1 f6 90 <0f> 0b 90 4c 8b 7c 24 08 48 8b 14 24 4d 8d a7 2a 1d 00 00 4c 89 e0
-RSP: 0018:ffffc9000caa7320 EFLAGS: 00010293
-RAX: ffffffff8b0ddcbe RBX: dffffc0000000000 RCX: ffff888032f20000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffff888011f50187 R09: 1ffff110023ea030
-R10: dffffc0000000000 R11: ffffed10023ea031 R12: ffff88804e3e5d2e
-R13: ffff88804e3e4d80 R14: 1ffff11009c7cae4 R15: 0000000000000000
-FS:  0000555560f3b500(0000) GS:ffff88808d007000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000c008670000 CR3: 00000000440e0000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- rdev_tdls_oper net/wireless/rdev-ops.h:945 [inline]
- nl80211_tdls_oper+0x285/0x440 net/wireless/nl80211.c:13249
- genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x205/0x470 net/netlink/af_netlink.c:2552
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
- netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1346
- netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
- sock_sendmsg_nosec net/socket.c:714 [inline]
- __sock_sendmsg+0x21c/0x270 net/socket.c:729
- ____sys_sendmsg+0x505/0x830 net/socket.c:2614
- ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2668
- __sys_sendmsg net/socket.c:2700 [inline]
- __do_sys_sendmsg net/socket.c:2705 [inline]
- __se_sys_sendmsg net/socket.c:2703 [inline]
- __x64_sys_sendmsg+0x19b/0x260 net/socket.c:2703
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fdcac18eec9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffe2622fcd8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fdcac3e5fa0 RCX: 00007fdcac18eec9
-RDX: 0000000000000050 RSI: 0000200000000240 RDI: 0000000000000005
-RBP: 00007fdcac211f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fdcac3e5fa0 R14: 00007fdcac3e5fa0 R15: 0000000000000003
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Regards,
+Arend
 
