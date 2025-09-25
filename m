@@ -1,60 +1,62 @@
-Return-Path: <linux-wireless+bounces-27647-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27648-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456A1B9DF31
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 10:00:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2C5B9DF3B
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 10:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED7083ADCE8
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 08:00:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E93C519C2426
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 08:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB5626A08A;
-	Thu, 25 Sep 2025 08:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4661F26FD8E;
+	Thu, 25 Sep 2025 08:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="NnCXqymb"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LiHRCldY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0671925DD0B;
-	Thu, 25 Sep 2025 08:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D7B25F98A;
+	Thu, 25 Sep 2025 08:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758787224; cv=none; b=uUXOC8I7etHpSNazEINYnzv79drMU7F57d2EgMq3PEkoPIcTYKpD/CKYxU+bOzv6sulDOETjiMNg1RofkUmL+Y04h3W42wHkIP93SVDw3SCCWB6ZxFTE68lQ+83MqHM3VTfjP20/MhN2P+v9+quCXVf1tDr+VtDGgvVoKiwoGII=
+	t=1758787225; cv=none; b=TLr364Uo8kq3MZXMYjvff1SDhDI0b2H1BJM1QuX75OvvaQoLG3OMUqAMp3KQHL3e7rRdaHgpBl0R1gqBZL6LcQytmXXDK1SEHGMEsneBDp5rxzUkHFUVcqltBDo74NJN5eJFQMsWpYf95WQyv+xFnOrchxdyvV6TrstMqgpEGxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758787224; c=relaxed/simple;
-	bh=lEdXdsWft4AO75HCnvZQ8vPsorkolkiczbtHjFkHByE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mc6W8UnpG8aBLhcvUbCLtR9QrJN8ZnGcptBso9//NLJMKvHzSV6GpDuBcYtI0GXVCahE3LEkhCzD9xY5fKVbd+K9UfpgqPsJKM5vHdGB+c9mWHUNQYu9wi4bWj0kEORrce/aAsZzR2D5D1ASWDVmecTC74ND5tFGDACBqvFPE9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=NnCXqymb; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1758787225; c=relaxed/simple;
+	bh=G0wE6GDhMjrEgAVeXZdBQvhN3c5CaLo5qSGmNrKn1bk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WAYu6nKqy9etZMCr0JUkYuuvIqIzMPTL9SHYUbT3gZCu8NrorMp42LMvoyV4xvYT3kd1sa10koXAEmVREnjbM0OW719ctrbiq+Oo8W4aoOsbKAWmQROdm/xn9AqPY7f60HGnvckxgayQPHlnhZr1BcxWrAPFoFpqn97rn2Tvngo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LiHRCldY; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=FzxDSPy9KU4erZk9t1+i+HaA9soMowGoS/WKgL1AqXA=; t=1758787223; x=1759996823; 
-	b=NnCXqymbqr2Ll1Subu1JwzatobeoVsoaQFZGR1eCCQUPFhFkFP2R7Bmb8Ofdz0ushxK5cDtSqHB
-	2qw6iI0ZtHXb1KCFujbcPfzDDVAQN8cXVpzho4BWuoBA4ETmGNfAezNZ4D0tNPrXRHAl2fcubKH5z
-	/rvlK66gN1blEU4a2GLndQhGf/4fuIE83ByTV4aZi+ZVb3/VtFexdVSPAYEoGmN2J84qR/zRF3NfM
-	cZIJSh9we/Jda4FLi+cuM3utssPi1nUjiFMn506DjmhMOXzgA8VFyiXDUUiuSyJgEymjMk86Jnt9G
-	DPM+d3Peq8DcG1GZSZcDPAaQTNMkBIrMuzdw==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=oraknh3t1E5ZIO7ASTmkAkRYi0tE6MMY5GpktDUviUM=;
+	t=1758787223; x=1759996823; b=LiHRCldYIzKlJZSeWybHbOC2FIWYTsQcbadLlopht1H8mhF
+	MLIfeaTL4H1msSvm6wAyK5LvyEUQFXFM3aVHCTxIzEQpRjkBZDdOMijVDI8utePf9DyqztGUU5fT/
+	Y6s7IP9y6pmE9UVbZ4b/7JZVTz57qdsNW+Qz1YGMTBTvKHjd0glYEh2H97gxJklB+UUtvx1dPvUeP
+	GrbmlEZBIxFr4vQ+BQdEV8KiHG2NpKCIK30zyxcPhzLqZ04c/keVj9mdmG5/1UuskPDVOqWu3pZg0
+	OBojeMwAqGDUxkl3zNNGl5VaA8MObguVE1X1WC+HgdJag65zuK9yNwaxfMOXQmQw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1v1gti-0000000Anv0-1LoZ;
-	Thu, 25 Sep 2025 10:00:14 +0200
+	id 1v1gtj-0000000Anv0-0Lmb;
+	Thu, 25 Sep 2025 10:00:15 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: stable@vger.kernel.org
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 6.16 1/2] wifi: iwlwifi: fix byte count table for old devices
-Date: Thu, 25 Sep 2025 10:00:06 +0200
-Message-ID: <20250925080010.9298-3-johannes@sipsolutions.net>
+	David Wang <00107082@163.com>
+Subject: [PATCH 6.16 2/2] wifi: iwlwifi: pcie: fix byte count table for some devices
+Date: Thu, 25 Sep 2025 10:00:07 +0200
+Message-ID: <20250925080010.9298-4-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250925080010.9298-3-johannes@sipsolutions.net>
+References: <20250925080010.9298-3-johannes@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,35 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-commit 586e3cb33ba6890054b95aa0ade0a165890efabd upstream.
+commit a38108a23ab558b834d71d542d32c05ab0fb64d4 upstream.
 
-For devices handled by iwldvm, bc_table_dword was never set, but I missed
-that during the removal thereof. Change the logic to not treat the byte
-count table as dwords for devices older than 9000 series to fix that.
+In my previous fix for this condition, I erroneously listed 9000
+instead of 7000 family, when 7000/8000 were already using iwlmvm.
+Thus the condition ended up wrong, causing the issue I had fixed
+for older devices to suddenly appear on 7000/8000 family devices.
+Correct the condition accordingly.
 
-Fixes: 6570ea227826 ("wifi: iwlwifi: remove bc_table_dword transport config")
+Reported-by: David Wang <00107082@163.com>
+Closes: https://lore.kernel.org/r/20250909165811.10729-1-00107082@163.com/
+Fixes: 586e3cb33ba6 ("wifi: iwlwifi: fix byte count table for old devices")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250828095500.eccd7d3939f1.Ibaffa06d0b3aa5f35a9451d94af34de208b8a2bc@changeid
+Link: https://patch.msgid.link/20250915102743.777aaafbcc6c.I84404edfdfbf400501f6fb06def5b86c501da198@changeid
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-index eee55428749c..5ca9712dd7f0 100644
+index 5ca9712dd7f0..de5005815ee7 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-@@ -2093,7 +2093,8 @@ static void iwl_txq_gen1_update_byte_cnt_tbl(struct iwl_trans *trans,
+@@ -2093,7 +2093,7 @@ static void iwl_txq_gen1_update_byte_cnt_tbl(struct iwl_trans *trans,
  		break;
  	}
  
--	if (trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
-+	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_9000 &&
-+	    trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
+-	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_9000 &&
++	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_7000 &&
+ 	    trans->mac_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
  		len = DIV_ROUND_UP(len, 4);
  
- 	if (WARN_ON(len > 0xFFF || write_ptr >= TFD_QUEUE_SIZE_MAX))
 -- 
 2.51.0
 
