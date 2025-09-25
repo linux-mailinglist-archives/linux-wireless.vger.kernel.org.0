@@ -1,177 +1,127 @@
-Return-Path: <linux-wireless+bounces-27642-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27643-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 413B7B9D558
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 05:51:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BD6B9D58E
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 05:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7877384B53
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 03:51:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A097A1BC1B94
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 03:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58A01BC9E2;
-	Thu, 25 Sep 2025 03:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D4C2E03E6;
+	Thu, 25 Sep 2025 03:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="c5rUKeBP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FN0YdjDj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366F9DF49;
-	Thu, 25 Sep 2025 03:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100961BC9E2
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Sep 2025 03:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758772256; cv=none; b=Rxv5x2tWGdBfpCQnCEORkSWzYqJTKon6AiuwBMWgUxZNYC8jp15k9bXBOaFotBvQDis2rdKVQmwHUdzqUyBDMY9UY28sQ+o2WeyqGqqDrgnP9EjN9JGAM/EfpnFWs4Q0U94Nm0+80ezzBUCgiFDHsivXdv+Ji6yPbRHQ09OTVQ8=
+	t=1758772772; cv=none; b=gpXsYvmAKqI1/ZTQudC1AGs71Szo45Vmvy3x9h+VInNjCZiLDWLMPLfZmpDhS7CnhZodHNoNxFPKAkuKYPHFkuERL9szbKIkk+A9w8ieWpg3fR/LUjWl/A91Q94TTgtquzsTga7dnvEd2W1ZEsrf5iCvk/0pBawfdMNwOpo9zLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758772256; c=relaxed/simple;
-	bh=u+YG2r1SNvMdS8TBEwU5LGMaEoPJiBDgeoIbB7TL2cI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=sn0EV/WMnOpD72lq3VRlqyEpPrFn5onRsbmNtVGlyv7vanKsbU/4uI8zVjyrJueDkpNNysE8jkVC7T7KzQrXqHjZ3NGcQJQNtmM3lo28yqJmZzCGn/qfIXHRSpo06tF2sADkeHJBFCtG5G9bbv+R19E0xhd7bU+/ADQgIQvf1N4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=c5rUKeBP; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58P3obscF598126, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1758772237; bh=Nv+QKKiTdimLoBy6nI6TipBmRe22MP8UB9z+42n3ScI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=c5rUKeBPJlfsyA978VIMPYlw/7yCME6vNsb3WxqxsJzDC8JJNBa3w7fTsIvhlsmJ9
-	 re3eCkdPj3oDFnOkFXlltYUwQF7ZP4XlTf+YtoZz1XzDGUIO2O8aVnoQ/Yhu8PlhSZ
-	 irmp4kZdEoYDcsOFxMPx1bA0nBqV6SCykilDMTOpijxc0+p1nUGk3mHcSov197XCs/
-	 E29WFg6xd72Xv0P43kkcrDVHuZD0fzbJ+Y6jT0XyOsnAj4XvRrvwCb6d5sOxLwNq6E
-	 TnVX3h3x9wvwmACNJNVJTF0R0cuFFKjHHZwXW+/9S0cU4dr3tksVWDAClzN6jwm4lL
-	 gMvlF7eY9VhJA==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58P3obscF598126
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 25 Sep 2025 11:50:37 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 25 Sep 2025 11:50:37 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 25 Sep 2025 11:50:37 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
- 15.02.1544.027; Thu, 25 Sep 2025 11:50:37 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Fedor Pchelkin <pchelkin@ispras.ru>,
-        Bitterblue Smith
-	<rtl8821cerfe2@gmail.com>
-CC: Zong-Zhe Yang <kevin_yang@realtek.com>,
-        Bernie Huang
-	<phhuang@realtek.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>
-Subject: RE: [PATCH rtw-next 6/6] wifi: rtw89: forcefully clear TX wait list on HCI reset
-Thread-Topic: [PATCH rtw-next 6/6] wifi: rtw89: forcefully clear TX wait list
- on HCI reset
-Thread-Index: AQHcKjJ745QK2h3rIEmncWsot8cSj7SjSEhg
-Date: Thu, 25 Sep 2025 03:50:37 +0000
-Message-ID: <0c30dbd0d1d243d1a9e4336b979ecb9a@realtek.com>
-References: <20250920132614.277719-1-pchelkin@ispras.ru>
- <20250920132614.277719-7-pchelkin@ispras.ru>
-In-Reply-To: <20250920132614.277719-7-pchelkin@ispras.ru>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1758772772; c=relaxed/simple;
+	bh=HPv4vSzoBu8JThytGjdGbKxgJmi4vPkfPjeTQDWF6j0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XoG+/eZo5QpeEfQjFDI55rlfdYw7G2JQ4J7/DsMJ/QCo09erLoZpivVdPK1paMvxLlZvEoUu0jG2RLCKgUNUqNTV3C3eI7en9wIatqMQMXA2CkD67KH1uNQVhuiOKrNaurBul6rg0nLIqOq19761TbrKTWQARchSHqAHpnWWuFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FN0YdjDj; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-32ed19ce5a3so456952a91.0
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Sep 2025 20:59:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758772770; x=1759377570; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qo3Gw2aldDy8S+SFdy/VgsjaY7xrxXzEhcJKjVaEe5g=;
+        b=FN0YdjDjNqJsVxyQ1SZFtaLffq+wDuxJGG0Uc02H0PPWmN6uxQIqIoDg8vpm4FX3yk
+         VYT0IoMnZH3tX9a+IbhI22tnHzYlCluN8tv0Cvm0CiHjczLvb4/iqYnckz7Ar7uu3PxK
+         XTUClRgXew8C2nhKKD047gPZbqvTdO8NOPyOMco3tAD4ymSAiSmrSqrc8xg/9zFKkBSy
+         XSqPrFeW611uYlckDQS6LXEC3CAroodh0RKQrOfOt1bm2AxoDmNs948s9iKdBV2ITXId
+         d8gURBh/GpH+IQqKi1lhs64ybe44I1jsQj87uUo3nqfU5YG5VxmkcLAzhQoIBPWgsAuG
+         n1xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758772770; x=1759377570;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qo3Gw2aldDy8S+SFdy/VgsjaY7xrxXzEhcJKjVaEe5g=;
+        b=Q6897vIe+6wtRGvm5LxNrH34ymHwO/zrU8Iwi7YnZDPy79pcC3sK5AB72IJ11be0nU
+         +J5buOd9dvNEb/lmreNGZn6sOBoiGWq8ssEdXx1T8pQKrmIFStqVQj62ezM3MksG9uFB
+         hoVyzjCNEqoTIt63k/NhAsxstHQdcEuXlqFCnZqwiTw552IpQ9aU78VmgIq6OV/OQnbB
+         cYZeS3gojxJkTgiNHiOOQDwftrIGR3va3WJ4zU6EwPj9QQ/KlEEE7DFmqhnmSjfYjokD
+         bNQGewbIJhNTF8ArwYAv3bCSSj97s8M74pT0rP9asywZRzYHYgJqsKxTTruI3p0uEMUv
+         +JAg==
+X-Gm-Message-State: AOJu0YzoQVcqd6crUA1VMWNHH08jLsLwexnUYCWJoESlYB+asezKD8R2
+	Ho5SPUuDRAQoloLCtPiX1Vf9V+xri2CR/QuyS8t9lNPIAq5O1sWKXwC2XaFrWQ==
+X-Gm-Gg: ASbGncuzwxpf4C2bVRBYL2Cg5CU7qSEiXutBrcoZOWy4wQbqWr3zYBez1FV/Em4h7pw
+	vPIQnhMgxdMBtQADBPzmzV7Y118I7yhE6lkkdhT7WEmAMI87hqtqCyhHNXNKWBLd3mHPl4Wq6z6
+	rYLbCMeEX8FweVMCTuh+xBvgRr3Bc5urSEPwbO4jq6RnMVtzlJnQcOEuHHpJYOIdPE4UL3gGZ8A
+	GRLVVzA+W2A4fBs+SEvGvJg3p30HRBaqC/QJtwLiDxDKfWt8OHSipm/ybo9dReD6e3jquWoxxti
+	TcVIPraBqETJ4AywFCmOwqmsldqnW84t4SvAXv2x8tq5/WrbZrO0WeGQlKRpO3hrxBOcWWdYa4Z
+	BkjPFaPc1oge+igcboDjdu5qJF938m91ZJAAeWr184oVOxhiPqg==
+X-Google-Smtp-Source: AGHT+IGA8RsHIjBG0k1aXxxaNhSe1BGhPJx2qvJCYAhDLSPQSQC6J583+cbdCvov1XBpJdYbBe81Tw==
+X-Received: by 2002:a17:90b:3849:b0:32d:d5f1:fe7f with SMTP id 98e67ed59e1d1-3342a257810mr2866527a91.15.1758772770187;
+        Wed, 24 Sep 2025 20:59:30 -0700 (PDT)
+Received: from visitorckw-System-Product-Name ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3347224b2fdsm695859a91.10.2025.09.24.20.59.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 20:59:29 -0700 (PDT)
+Date: Thu, 25 Sep 2025 11:59:26 +0800
+From: Yu-Chun Lin <eleanor15x@gmail.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	=?utf-8?B?Q1lfSHVhbmdb6buD6Ymm5pmPXQ==?= <cy.huang@realtek.com>,
+	Stanley =?utf-8?B?Q2hhbmdb5piM6IKy5b63XQ==?= <stanley_chang@realtek.com>,
+	"jserv@ccns.ncku.edu.tw" <jserv@ccns.ncku.edu.tw>,
+	"visitorckw@gmail.com" <visitorckw@gmail.com>
+Subject: Re: [PATCH rtw-next] wifi: rtw89: Replace hardcoded strings with
+ helper functions
+Message-ID: <aNS+Hk5QTzGq+AUO@visitorckw-System-Product-Name>
+References: <20250921154410.1202074-1-eleanor15x@gmail.com>
+ <715313b943d84cfeb3a337dc20be5f6a@realtek.com>
+ <aNLDga29Wp1nwhem@visitorckw-System-Product-Name>
+ <51518b935e7649e3b5413e3a119d549b@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51518b935e7649e3b5413e3a119d549b@realtek.com>
 
-Fedor Pchelkin <pchelkin@ispras.ru> wrote:
-> TX status reporting based on firmware messages does not necessarily happe=
-n
-> when an HCI reset occurs, in contrast to RPP based one where pending skbs
-> are forcefully flushed, see rtw89_pci_release_txwd_skb().
+On Wed, Sep 24, 2025 at 12:43:56AM +0000, Ping-Ke Shih wrote:
+> Yu-Chun Lin <eleanor15x@gmail.com> wrote:
+> > On Mon, Sep 22, 2025 at 05:50:50AM +0000, Ping-Ke Shih wrote:
+> > > Yu-Chun Lin <eleanor15x@gmail.com> wrote:
+> > > > Replace hardcoded strings with 'str_on_off()', 'str_enable_disable()',
+> > > > and 'str_read_write()'.
+> > > >
+> > > > The change improves readability and enables potential string deduplication
+> > > > by the linker, which may slightly reduce binary size.
+> > >
+> > > Have you measured the change of binary size? Maybe you can share the result
+> > > here.
+> > >
+> > 
+> > I tested the patch and did not observe any measurable change in the binary size.
+> > The commit message was refers to the description in string-choice.h:
+> > 
+> > "3) Deduping by the linker, which results in a smaller binary file."
+> 
+> It might rely on LTO (link-time optimization). 
+>
 
-Is it possible that USB implement HCI reset as the same behavior? So flow c=
-an
-be common and people can be easier to understand the driver.
+I re-tested with 'LTO_CLANG=y', and the code size remains unchanged before
+and after the patch. I will remove the statement
+("may slightly reduce binary size") from the v2 commit message.
 
-Any limitation of USB subsystem in TX path?
-
->=20
-> So for the former case, if completion from the firmware doesn't happen, T=
-X
-> wait objects are wastefully piled up in the list and not released.
-> Forcefully clear TX wait list on HCI reset then.
->=20
-> It's okay since wiphy lock is held during HCI reset.  For the RPP case,
-> all pending completions were done just before in ->reset callback and no
-> new ones can appear.  For the C2H message case, RCU access to the list
-> helps.
->=20
-> Found by Linux Verification Center (linuxtesting.org).
->=20
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> ---
->  drivers/net/wireless/realtek/rtw89/core.c | 2 +-
->  drivers/net/wireless/realtek/rtw89/core.h | 6 +++---
->  2 files changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wire=
-less/realtek/rtw89/core.c
-> index e76f04736502..3a0388d3acbf 100644
-> --- a/drivers/net/wireless/realtek/rtw89/core.c
-> +++ b/drivers/net/wireless/realtek/rtw89/core.c
-> @@ -1140,7 +1140,7 @@ static void rtw89_tx_wait_work(struct wiphy *wiphy,=
- struct wiphy_work *work)
->         struct rtw89_dev *rtwdev =3D container_of(work, struct rtw89_dev,
->                                                 tx_wait_work.work);
->=20
-> -       rtw89_tx_wait_list_clear(rtwdev);
-> +       rtw89_tx_wait_list_clear(rtwdev, false);
->  }
->=20
->  void rtw89_core_tx_kick_off(struct rtw89_dev *rtwdev, u8 qsel)
-> diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wire=
-less/realtek/rtw89/core.h
-> index e7948bd0bdf6..0ad871472e79 100644
-> --- a/drivers/net/wireless/realtek/rtw89/core.h
-> +++ b/drivers/net/wireless/realtek/rtw89/core.h
-> @@ -6282,14 +6282,14 @@ static inline void rtw89_tx_wait_release(struct r=
-tw89_tx_wait_info *wait)
->         kfree_rcu(wait, rcu_head);
->  }
->=20
-> -static inline void rtw89_tx_wait_list_clear(struct rtw89_dev *rtwdev)
-> +static inline void rtw89_tx_wait_list_clear(struct rtw89_dev *rtwdev, bo=
-ol force)
->  {
->         struct rtw89_tx_wait_info *wait, *tmp;
->=20
->         lockdep_assert_wiphy(rtwdev->hw->wiphy);
->=20
->         list_for_each_entry_safe(wait, tmp, &rtwdev->tx_waits, list) {
-> -               if (!completion_done(&wait->completion))
-> +               if (!force && !completion_done(&wait->completion))
->                         continue;
->                 list_del_rcu(&wait->list);
->                 rtw89_tx_wait_release(wait);
-> @@ -6305,7 +6305,7 @@ static inline int rtw89_hci_tx_write(struct rtw89_d=
-ev *rtwdev,
->  static inline void rtw89_hci_reset(struct rtw89_dev *rtwdev)
->  {
->         rtwdev->hci.ops->reset(rtwdev);
-> -       rtw89_tx_wait_list_clear(rtwdev);
-> +       rtw89_tx_wait_list_clear(rtwdev, true);
->         skb_queue_purge(&rtwdev->tx_rpt_queue);
->  }
->=20
-> --
-> 2.51.0
->=20
 
 
