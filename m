@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-27641-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27642-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B142AB9D52E
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 05:39:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 413B7B9D558
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 05:51:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0D617AD750
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 03:38:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7877384B53
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Sep 2025 03:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026962DEA80;
-	Thu, 25 Sep 2025 03:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58A01BC9E2;
+	Thu, 25 Sep 2025 03:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="dxZjIb72"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="c5rUKeBP"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39A6233134;
-	Thu, 25 Sep 2025 03:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366F9DF49;
+	Thu, 25 Sep 2025 03:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758771577; cv=none; b=Ngh/ljjI+UIMblyIGCeQyu6Sx7ZkerDgff3UE71oD7gdtY71ykRk90J6M9ercLSJNiW8Vf8NOZxkQTNvqzhjK97eXjzj9T33Ip8y5PDvMomc1LUaRAOANCpes/P5gmHzkaIjrj5FmkRrJkEHtnqSt/vm5sNUH1ppq26pWag690A=
+	t=1758772256; cv=none; b=Rxv5x2tWGdBfpCQnCEORkSWzYqJTKon6AiuwBMWgUxZNYC8jp15k9bXBOaFotBvQDis2rdKVQmwHUdzqUyBDMY9UY28sQ+o2WeyqGqqDrgnP9EjN9JGAM/EfpnFWs4Q0U94Nm0+80ezzBUCgiFDHsivXdv+Ji6yPbRHQ09OTVQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758771577; c=relaxed/simple;
-	bh=XPuiJTetrA6TzrhKGeU6oChWLgdR6/7myg5dufXg3MY=;
+	s=arc-20240116; t=1758772256; c=relaxed/simple;
+	bh=u+YG2r1SNvMdS8TBEwU5LGMaEoPJiBDgeoIbB7TL2cI=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=rN/NbHh5tyOhHBg8bU9DjUfErKwtrAQxaMu5UbQdq0X7WuyEypvrz/22JjZ4soCA9r4MirFJlY3iamPwF7kXN5C7qrQDhVnslhaDa4y7Sq2k6MCgCnXOpxQAsvXsKityV+aSf2MxwmL3L+7Xv8R8XK9J001/jq/hcD1AhCH+5C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=dxZjIb72; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:MIME-Version; b=sn0EV/WMnOpD72lq3VRlqyEpPrFn5onRsbmNtVGlyv7vanKsbU/4uI8zVjyrJueDkpNNysE8jkVC7T7KzQrXqHjZ3NGcQJQNtmM3lo28yqJmZzCGn/qfIXHRSpo06tF2sADkeHJBFCtG5G9bbv+R19E0xhd7bU+/ADQgIQvf1N4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=c5rUKeBP; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58P3dEgeD589309, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58P3obscF598126, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1758771554; bh=UBK/F3gJ4sbQkkaxgyTqVjw8gDtHVjsoI3s75BRHtoY=;
+	t=1758772237; bh=Nv+QKKiTdimLoBy6nI6TipBmRe22MP8UB9z+42n3ScI=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=dxZjIb72q2Yt/ZUzQ2OLkwbjmMQdOEQfZd7Om1WS7xyAbndzVsTIbc8mE3i2ctVbp
-	 GPt2JAk9LAIgw734JvvhMvhITwlvVbp+4/ROs1rw0xRYIlUn+nb3hSjcrpACdAg47V
-	 K6Pd1JvUW1dJCbVEmZF8MfRfSp2hu+0nwGr+U2OHxuTdQzIdQsCICrgaN4UNCcEV3r
-	 4ugIRSPFwPBV4GiBkh+iCBUNbVAOKZ59UAw12klcd/BrCkJ98nlE66ukAuCFg/k5/c
-	 zxQcwlchdC1HynxnQUbVf3gQlbRx1oujQafiYSABdxQpVnJPn5iJC+TtKqJ5HszMND
-	 ne4kO2rJ+XeWQ==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58P3dEgeD589309
+	b=c5rUKeBPJlfsyA978VIMPYlw/7yCME6vNsb3WxqxsJzDC8JJNBa3w7fTsIvhlsmJ9
+	 re3eCkdPj3oDFnOkFXlltYUwQF7ZP4XlTf+YtoZz1XzDGUIO2O8aVnoQ/Yhu8PlhSZ
+	 irmp4kZdEoYDcsOFxMPx1bA0nBqV6SCykilDMTOpijxc0+p1nUGk3mHcSov197XCs/
+	 E29WFg6xd72Xv0P43kkcrDVHuZD0fzbJ+Y6jT0XyOsnAj4XvRrvwCb6d5sOxLwNq6E
+	 TnVX3h3x9wvwmACNJNVJTF0R0cuFFKjHHZwXW+/9S0cU4dr3tksVWDAClzN6jwm4lL
+	 gMvlF7eY9VhJA==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58P3obscF598126
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 25 Sep 2025 11:39:14 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+	Thu, 25 Sep 2025 11:50:37 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 25 Sep 2025 11:39:15 +0800
+ 15.2.1544.27; Thu, 25 Sep 2025 11:50:37 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 25 Sep 2025 11:39:14 +0800
+ 15.2.1544.27; Thu, 25 Sep 2025 11:50:37 +0800
 Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
  RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
- 15.02.1544.027; Thu, 25 Sep 2025 11:39:14 +0800
+ 15.02.1544.027; Thu, 25 Sep 2025 11:50:37 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: Fedor Pchelkin <pchelkin@ispras.ru>,
         Bitterblue Smith
@@ -70,15 +70,15 @@ CC: Zong-Zhe Yang <kevin_yang@realtek.com>,
 	<linux-kernel@vger.kernel.org>,
         "lvc-project@linuxtesting.org"
 	<lvc-project@linuxtesting.org>
-Subject: RE: [PATCH rtw-next 5/6] wifi: rtw89: process TX wait skbs for USB via C2H handler
-Thread-Topic: [PATCH rtw-next 5/6] wifi: rtw89: process TX wait skbs for USB
- via C2H handler
-Thread-Index: AQHcKjJdzKHdGQymJEGBjGH1ND0qlLSjQH4w
-Date: Thu, 25 Sep 2025 03:39:14 +0000
-Message-ID: <c2c40bed311c4f05948cf2541c64ea30@realtek.com>
+Subject: RE: [PATCH rtw-next 6/6] wifi: rtw89: forcefully clear TX wait list on HCI reset
+Thread-Topic: [PATCH rtw-next 6/6] wifi: rtw89: forcefully clear TX wait list
+ on HCI reset
+Thread-Index: AQHcKjJ745QK2h3rIEmncWsot8cSj7SjSEhg
+Date: Thu, 25 Sep 2025 03:50:37 +0000
+Message-ID: <0c30dbd0d1d243d1a9e4336b979ecb9a@realtek.com>
 References: <20250920132614.277719-1-pchelkin@ispras.ru>
- <20250920132614.277719-6-pchelkin@ispras.ru>
-In-Reply-To: <20250920132614.277719-6-pchelkin@ispras.ru>
+ <20250920132614.277719-7-pchelkin@ispras.ru>
+In-Reply-To: <20250920132614.277719-7-pchelkin@ispras.ru>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 Content-Type: text/plain; charset="us-ascii"
@@ -91,59 +91,87 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 Fedor Pchelkin <pchelkin@ispras.ru> wrote:
-> TX wait skbs need to be completed when they are done.  PCIe part does thi=
-s
-> inside rtw89_pci_tx_status() during RPP processing.  Other HCIs use a
-> mechanism based on C2H firmware messages.
+> TX status reporting based on firmware messages does not necessarily happe=
+n
+> when an HCI reset occurs, in contrast to RPP based one where pending skbs
+> are forcefully flushed, see rtw89_pci_release_txwd_skb().
+
+Is it possible that USB implement HCI reset as the same behavior? So flow c=
+an
+be common and people can be easier to understand the driver.
+
+Any limitation of USB subsystem in TX path?
+
 >=20
-> Store a sequence number in a TX wait object so that it'll be possible to
-> identify completed items inside C2H handler.  No need to add the
-> corresponding skb to the &txcb->tx_ack_queue on USB part.
+> So for the former case, if completion from the firmware doesn't happen, T=
+X
+> wait objects are wastefully piled up in the list and not released.
+> Forcefully clear TX wait list on HCI reset then.
+>=20
+> It's okay since wiphy lock is held during HCI reset.  For the RPP case,
+> all pending completions were done just before in ->reset callback and no
+> new ones can appear.  For the C2H message case, RCU access to the list
+> helps.
 >=20
 > Found by Linux Verification Center (linuxtesting.org).
 >=20
 > Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-
-[...]
-
-> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wirel=
-ess/realtek/rtw89/mac.c
-> index 831e53aedccc..79409eb4d028 100644
-> --- a/drivers/net/wireless/realtek/rtw89/mac.c
-> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-> @@ -5477,6 +5477,7 @@ rtw89_mac_c2h_tx_rpt(struct rtw89_dev *rtwdev, stru=
-ct sk_buff *c2h, u32 len)
->  {
->         u8 sw_define =3D RTW89_GET_MAC_C2H_TX_RPT_SW_DEFINE(c2h->data);
->         u8 tx_status =3D RTW89_GET_MAC_C2H_TX_RPT_TX_STATE(c2h->data);
-> +       struct rtw89_tx_wait_info *wait;
->         struct sk_buff *cur, *tmp;
->         unsigned long flags;
->         u8 *n;
-> @@ -5485,6 +5486,16 @@ rtw89_mac_c2h_tx_rpt(struct rtw89_dev *rtwdev, str=
-uct sk_buff *c2h, u32 len)
->                     "C2H TX RPT: sn %d, tx_status %d\n",
->                     sw_define, tx_status);
+> ---
+>  drivers/net/wireless/realtek/rtw89/core.c | 2 +-
+>  drivers/net/wireless/realtek/rtw89/core.h | 6 +++---
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 >=20
-> +       rcu_read_lock();
-> +       list_for_each_entry_rcu(wait, &rtwdev->tx_waits, list) {
-> +               if (wait->sn =3D=3D sw_define) {
-> +                       wait->tx_done =3D tx_status =3D=3D RTW89_TX_DONE;
-> +                       complete_all(&wait->completion);
-> +                       break;
-> +               }
-> +       }
-> +       rcu_read_unlock();
-> +
-
-Since we can get 'wait' from RTW89_TX_SKB_CB(), can we just use
-rtwdev->tx_rpt_queue?
-
-Also, call rtw89_core_tx_wait_complete() to complete wait?
-
->         spin_lock_irqsave(&rtwdev->tx_rpt_queue.lock, flags);
->         skb_queue_walk_safe(&rtwdev->tx_rpt_queue, cur, tmp) {
->                 n =3D (u8 *)RTW89_TX_SKB_CB(cur)->hci_priv;
-
+> diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wire=
+less/realtek/rtw89/core.c
+> index e76f04736502..3a0388d3acbf 100644
+> --- a/drivers/net/wireless/realtek/rtw89/core.c
+> +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> @@ -1140,7 +1140,7 @@ static void rtw89_tx_wait_work(struct wiphy *wiphy,=
+ struct wiphy_work *work)
+>         struct rtw89_dev *rtwdev =3D container_of(work, struct rtw89_dev,
+>                                                 tx_wait_work.work);
+>=20
+> -       rtw89_tx_wait_list_clear(rtwdev);
+> +       rtw89_tx_wait_list_clear(rtwdev, false);
+>  }
+>=20
+>  void rtw89_core_tx_kick_off(struct rtw89_dev *rtwdev, u8 qsel)
+> diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wire=
+less/realtek/rtw89/core.h
+> index e7948bd0bdf6..0ad871472e79 100644
+> --- a/drivers/net/wireless/realtek/rtw89/core.h
+> +++ b/drivers/net/wireless/realtek/rtw89/core.h
+> @@ -6282,14 +6282,14 @@ static inline void rtw89_tx_wait_release(struct r=
+tw89_tx_wait_info *wait)
+>         kfree_rcu(wait, rcu_head);
+>  }
+>=20
+> -static inline void rtw89_tx_wait_list_clear(struct rtw89_dev *rtwdev)
+> +static inline void rtw89_tx_wait_list_clear(struct rtw89_dev *rtwdev, bo=
+ol force)
+>  {
+>         struct rtw89_tx_wait_info *wait, *tmp;
+>=20
+>         lockdep_assert_wiphy(rtwdev->hw->wiphy);
+>=20
+>         list_for_each_entry_safe(wait, tmp, &rtwdev->tx_waits, list) {
+> -               if (!completion_done(&wait->completion))
+> +               if (!force && !completion_done(&wait->completion))
+>                         continue;
+>                 list_del_rcu(&wait->list);
+>                 rtw89_tx_wait_release(wait);
+> @@ -6305,7 +6305,7 @@ static inline int rtw89_hci_tx_write(struct rtw89_d=
+ev *rtwdev,
+>  static inline void rtw89_hci_reset(struct rtw89_dev *rtwdev)
+>  {
+>         rtwdev->hci.ops->reset(rtwdev);
+> -       rtw89_tx_wait_list_clear(rtwdev);
+> +       rtw89_tx_wait_list_clear(rtwdev, true);
+>         skb_queue_purge(&rtwdev->tx_rpt_queue);
+>  }
+>=20
+> --
+> 2.51.0
+>=20
 
 
