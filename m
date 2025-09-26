@@ -1,321 +1,438 @@
-Return-Path: <linux-wireless+bounces-27665-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27666-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4BDBA270E
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Sep 2025 07:35:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E02BA2BFE
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Sep 2025 09:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BD9156079A
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Sep 2025 05:35:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 814F21C0023A
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Sep 2025 07:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D575621C9EA;
-	Fri, 26 Sep 2025 05:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C69299A94;
+	Fri, 26 Sep 2025 07:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="sK9Uuuiw"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Dd4lYgso"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8641FCFEF
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Sep 2025 05:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0A828C5AA
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Sep 2025 07:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758864896; cv=none; b=ZXGFQ7A/jp7EMX294+Wk358I0WIfzKsCyiFzH/xj2sDWfgjM6AeU45M/9imBuHQE/v25W5TqR0zsGEqMOKVnmUhgkik6ZO30JKTSjBGu6FGntfWh/AbyIU7UeGRSlWQIf7Er9Snd7lpOVUU7NeVSItRBhN5aBBN+Rs8hJ4onsO0=
+	t=1758871638; cv=none; b=GALtE7W+tFwdjhk2+PCm0585V7R8IkCYA220XwWHoYKOxsCyXYQ1Z4MPXzmxyksNfRF8d626y537gLqdXXcdGf7a9eeP+BIamyEECLHfkl0YCBz4PvbnRR8k6LNGsSV6HWMWC5AEOpztREnZbBGJOWu5Ld1oOvCrVqSdrZu/d8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758864896; c=relaxed/simple;
-	bh=u8M2kAWIz77+xvOpXmDhaV+IUO5mcab/RNhkYtwkkEc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LXWHkl/W1kHHGEuCObLDKYUITaBW+J3OPW6tN9Ok2bxd1E0Ls0Ch97w5uiPKkeJZgHLkY2KA2XDOfw3aTpZgMvsXCyLPSKD7LuGIV3vbiC2vxuFu5Jetlc7I7AsfzXGvNZes3g89kyJ1jbP+6qrfdVxFQtXDDMFEljmQBRO5nfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=sK9Uuuiw; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 852c3a2e9a9a11f0b33aeb1e7f16c2b6-20250926
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=GjiETwtrb/SDq5RmJmJt7QuB7m5UvZZd5ahRKxKwBVQ=;
-	b=sK9Uuuiwopk6uaTSQGyuwNjrw5PYSaHyklV3p+ZG/gojNUeSgAj9XsPwg0XIJnrwqcp5XoIQxsSJBxTd+rA2iE2qXbppJX7cjUtev0m/Kc37uoBgGtdfqX3qO86L90THWRWzoWTq0df0IW9ttV8+9+UdxC4T6y935w/jU9nS10g=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:ba868d29-c038-446c-8d73-81f96c494cb0,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:a9d874c,CLOUDID:01c2b5f8-ebfe-43c9-88c9-80cb93f22ca4,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,
-	OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 852c3a2e9a9a11f0b33aeb1e7f16c2b6-20250926
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 514014623; Fri, 26 Sep 2025 13:34:49 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 26 Sep 2025 13:34:48 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1748.10 via Frontend Transport; Fri, 26 Sep 2025 13:34:48 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Leon Yen <leon.yen@mediatek.com>, Ming
- Yen Hsieh <mingyen.hsieh@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7925: introduce CSA support in non-MLO mode
-Date: Fri, 26 Sep 2025 13:34:47 +0800
-Message-ID: <20250926053447.4036650-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1758871638; c=relaxed/simple;
+	bh=RFJ20F/VsXsw+YV4x6PONqPe0lWq9NVW41q2auQeC4U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mpVf91AN51JzM7T9TEcboYwv1tV+5LeiWvmgm5QgSfnyrZdB4lLxrKEQGFFi/8599VQg6A/KK16Dwv+2WWO1JH3epTHdtLkwAuxPBTL0GJwBsPfXFH38vF7XII6sEAaXvUKvFEwFHz1hqgTw0uDckl70+6BYkRjw7+cloUap/4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Dd4lYgso; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58Q6jYau005850
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Sep 2025 07:27:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	mRTTMC10gW7pg7wc4jjHUj9XGpKgR6moGigWHXu5GPQ=; b=Dd4lYgsoSUd3eeKF
+	Ll4BxuoLxJXk06YdjCF6ZXub0O0QEqhTB90+D6PWqJ/wlK4BaRy6ZvqJUK2rXp6J
+	Tp1aBcbqZs2Ge9FBMufmB2NlA4JyJFJ3BjY42GmSkd8gy+7utU7Se4AAhEdVDQqq
+	9hgIL5GkMWUISBmgO8Ibdrwbzd+75ZLFih//nfV2gv7mxNna4rnnzQPEaMnPjVvl
+	dvZLGHTZ+sxSrvwYWWyb0HP0dC+Tmr+cP+IHFIvU39otgPNEScZrZvpJN0KAcQOw
+	kBKe+qR1I3YEyo+ShxiTrZPPmdEK3uRGOpe0q9K1cv9SnHQJZs3N8/akjjPq8gWw
+	TtH/pA==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49db321vp3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Sep 2025 07:27:15 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b57c2371182so1752739a12.1
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Sep 2025 00:27:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758871634; x=1759476434;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mRTTMC10gW7pg7wc4jjHUj9XGpKgR6moGigWHXu5GPQ=;
+        b=QP/ZCno9shuut888sx7T8WmLy53DCS9bqHjNwFvZOL/0jw9fMiB53RelsGmtwsNkyh
+         fVKD5bmG2CZ8TY7X8MKfblaO/wpzDv38wbHwQJM6+4ccvv2bX6eOguVLqhqDLH9RcHWV
+         iNO4NCUqnnDdoO/uXMrBWnsnR3lUHLZsYS0YsfV2sMqhY5p+/Km0wCdJoOok6DtGCEQu
+         1Ozf0cOjG+I8pqGTtUB5deT5Cd8zohhvw7wzXZiI7bh5igULKkp2zFN1BzzRwyyopWD2
+         YClhORYWnxhlaPpWLx725bSYMJTyH0fM1RQcFaQR7c9H7Fhw1TTD5zgivdB+cBxTzVtj
+         6lUg==
+X-Gm-Message-State: AOJu0Yxt57yASs4kx8dh8K6mTFwJrOV0aFrarhb1mfgtI2WniP0Du3OD
+	XdKWD8GOLptAoTLJq0CX++MXwP9A0F/SVLo630+pw+nh+qh++uHlut3SOv6RK2SR/Y9Du4kExXp
+	AOF2uNaMXBFuZmBaduzgU0exeNsGEDCKwtERWnI/h1jJhMUWM49ZImUDKrhcfFNNxW3tf1Q==
+X-Gm-Gg: ASbGncs+m+MkAy2eIo7KuGjTu9jtH0eF8THddtJVtK42AC9A8DlQR78JgBx6+HQlfK8
+	36Y6EPdVzZ0dPwg/rRHXHUjEhJfGbi33Yf0gkuC7mLg8IaWi1fHkV6cxMrvp5KO7inN7rCz5+Fc
+	0CPxqBimNUhkipal3bThxv1SB35eJunDcNH5S0LIUQPk12vzJPo/uHwlmLqvbkeK5SIhSkL9MvN
+	xcqnLham2F5liuy+5nN6vOyHCeVtmKiwykENxHHMyYuXN9vnglKHqsZqAymvZV5Mu6LlaVtJnzq
+	DV+IWzQLOOg6kXZAOqsQ00NThJDkdwBSej5qvynWgouhEfvpjvN4Uii6KWxiBMcOJVvBqxtSEuL
+	1cmSuWEIJ/BDs2jNpxwQbgno4zkhsYYJ6NhMjQQ==
+X-Received: by 2002:a05:6a20:7f98:b0:2b0:ff55:f830 with SMTP id adf61e73a8af0-2e7d9411f54mr6839651637.51.1758871634274;
+        Fri, 26 Sep 2025 00:27:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1YmHQPNhEyp2ELtAqGOqtH3wPgpV+noxsscF3YY5NGTaiC84YxbqpHzs5+Gt61tFNcrrrsQ==
+X-Received: by 2002:a05:6a20:7f98:b0:2b0:ff55:f830 with SMTP id adf61e73a8af0-2e7d9411f54mr6839627637.51.1758871633793;
+        Fri, 26 Sep 2025 00:27:13 -0700 (PDT)
+Received: from [10.133.33.196] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b57c53cb975sm4046472a12.18.2025.09.26.00.27.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Sep 2025 00:27:13 -0700 (PDT)
+Message-ID: <04b2d56e-7b1d-4ceb-9479-3ad97cb7132a@oss.qualcomm.com>
+Date: Fri, 26 Sep 2025 15:27:08 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath12k-ng v2 5/6] wifi: ath12k: Add framework for hardware
+ specific DP interrupt registration
+To: Ripan Deuri <quic_rdeuri@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20250926052218.893876-1-quic_rdeuri@quicinc.com>
+ <20250926052218.893876-6-quic_rdeuri@quicinc.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250926052218.893876-6-quic_rdeuri@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=ao6/yCZV c=1 sm=1 tr=0 ts=68d64053 cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=LDVpCoHNsb-ULt4mha4A:9
+ a=QEXdDO2ut3YA:10 a=3WC7DwWrALyhR5TkjVHa:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: Vc0xb0FXxqoWS2bbDLMIdiH73nj6oahy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI1MDE3MiBTYWx0ZWRfX0wN5EQ+s/rTs
+ aLWsLi3hQA+Ha7CAdvg/eVMwAgHs8JD31z6sWL7BbLPe+/NMi/CI6BWKGGWaSVZeXjZNFZaC/CL
+ MQ0ApbOhPDwAnX04ZXUgZ7r4dvYNy7YbU2UhVJ0XFEBwQOeOcM3BsB+neNapSyzHn33T/AMYZZi
+ pogEtSjSRP76djgxDum2exFvpjPsuWXM0Xl8hGYENHXyRuDoz0VxMgPLz838KGLBYb+qO9nlinR
+ UNzJ3dEcrs+QugxUq1eSTR3/Gg/QT6+Yf6LbpwpovJmwPeQeKWqrkmcBxd7altJwf9M0EeEdohq
+ +he3WqamJyBMjVl5YhcY0oO3BQrMQ6ujKYKsxOJavhtwD++z1pZpQqZSAZycNYPaC3Ad58jLGWx
+ w8OaYNRP6fISyucqyUctOtjxw7iwFQ==
+X-Proofpoint-GUID: Vc0xb0FXxqoWS2bbDLMIdiH73nj6oahy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-26_02,2025-09-26_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 priorityscore=1501 suspectscore=0 phishscore=0
+ adultscore=0 spamscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509250172
 
-From: Leon Yen <leon.yen@mediatek.com>
 
-Add CSA (Channel Switch Announcement) related implementation
-in collaboration with mac80211 to deal with dynamic channel
-switching.
 
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7925/main.c  | 139 ++++++++++++++++++
- .../wireless/mediatek/mt76/mt7925/mt7925.h    |   1 +
- .../net/wireless/mediatek/mt76/mt792x_core.c  |   5 +-
- 3 files changed, 142 insertions(+), 3 deletions(-)
+On 9/26/2025 1:22 PM, Ripan Deuri wrote:
+> Currently, the DP service SRNG handler is invoked directly from the NAPI
+> poll handler, which prevents using different handlers for different
+> architectures. To fix this, introduce a framework that allows registering
+> architecture-specific service SRNG handlers.
+> 
+> Also, add PCI and AHB hif_ops to manage IRQ setup and cleanup from DP.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Ripan Deuri <quic_rdeuri@quicinc.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/ahb.c      | 16 +++++++-----
+>  drivers/net/wireless/ath/ath12k/core.h     |  3 +++
+>  drivers/net/wireless/ath/ath12k/hif.h      | 30 +++++++++++++++++++++-
+>  drivers/net/wireless/ath/ath12k/pci.c      | 23 +++++++++--------
+>  drivers/net/wireless/ath/ath12k/wifi7/dp.c | 20 ++++++++++++---
+>  drivers/net/wireless/ath/ath12k/wifi7/dp.h |  2 --
+>  6 files changed, 71 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/ahb.c b/drivers/net/wireless/ath/ath12k/ahb.c
+> index c545bea18935..4bacdaa62f83 100644
+> --- a/drivers/net/wireless/ath/ath12k/ahb.c
+> +++ b/drivers/net/wireless/ath/ath12k/ahb.c
+> @@ -524,10 +524,9 @@ static int ath12k_ahb_ext_grp_napi_poll(struct napi_struct *napi, int budget)
+>  	struct ath12k_ext_irq_grp *irq_grp = container_of(napi,
+>  						struct ath12k_ext_irq_grp,
+>  						napi);
+> -	struct ath12k_base *ab = irq_grp->ab;
+>  	int work_done;
+>  
+> -	work_done = ath12k_wifi7_dp_service_srng(ab, irq_grp, budget);
+> +	work_done = irq_grp->irq_handler(irq_grp->dp, irq_grp, budget);
+>  	if (work_done < budget) {
+>  		napi_complete_done(napi, work_done);
+>  		ath12k_ahb_ext_grp_enable(irq_grp);
+> @@ -553,7 +552,12 @@ static irqreturn_t ath12k_ahb_ext_interrupt_handler(int irq, void *arg)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> -static int ath12k_ahb_config_ext_irq(struct ath12k_base *ab)
+> +static int
+> +ath12k_ahb_config_ext_irq(struct ath12k_base *ab,
+> +			  int (*irq_handler)(struct ath12k_dp *dp,
+> +					     struct ath12k_ext_irq_grp *irq_grp,
+> +					     int budget),
+> +			  struct ath12k_dp *dp)
+>  {
+>  	const struct ath12k_hw_ring_mask *ring_mask;
+>  	struct ath12k_ext_irq_grp *irq_grp;
+> @@ -569,6 +573,8 @@ static int ath12k_ahb_config_ext_irq(struct ath12k_base *ab)
+>  
+>  		irq_grp->ab = ab;
+>  		irq_grp->grp_id = i;
+> +		irq_grp->irq_handler = irq_handler;
+> +		irq_grp->dp = dp;
+>  
+>  		irq_grp->napi_ndev = alloc_netdev_dummy(0);
+>  		if (!irq_grp->napi_ndev)
+> @@ -652,9 +658,6 @@ static int ath12k_ahb_config_irq(struct ath12k_base *ab)
+>  		ab->irq_num[irq_idx] = irq;
+>  	}
+>  
+> -	/* Configure external interrupts */
+> -	ret = ath12k_ahb_config_ext_irq(ab);
+> -
+>  	return ret;
+>  }
+>  
+> @@ -702,6 +705,7 @@ static const struct ath12k_hif_ops ath12k_ahb_hif_ops = {
+>  	.map_service_to_pipe = ath12k_ahb_map_service_to_pipe,
+>  	.power_up = ath12k_ahb_power_up,
+>  	.power_down = ath12k_ahb_power_down,
+> +	.ext_irq_setup = ath12k_ahb_config_ext_irq,
+>  };
+>  
+>  static irqreturn_t ath12k_userpd_irq_handler(int irq, void *data)
+> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+> index ff99d5ae6226..6a36dfdf5b17 100644
+> --- a/drivers/net/wireless/ath/ath12k/core.h
+> +++ b/drivers/net/wireless/ath/ath12k/core.h
+> @@ -166,6 +166,7 @@ enum ath12k_firmware_mode {
+>  #define ATH12K_MAX_TCL_RING_NUM	3
+>  
+>  struct ath12k_ext_irq_grp {
+> +	struct ath12k_dp *dp;
+>  	struct ath12k_base *ab;
+>  	u32 irqs[ATH12K_EXT_IRQ_NUM_MAX];
+>  	u32 num_irq;
+> @@ -174,6 +175,8 @@ struct ath12k_ext_irq_grp {
+>  	bool napi_enabled;
+>  	struct napi_struct napi;
+>  	struct net_device *napi_ndev;
+> +	int (*irq_handler)(struct ath12k_dp *dp,
+> +			   struct ath12k_ext_irq_grp *irq_grp, int budget);
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 8ba27bc6a1ac..a2a94e5fbf04 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -241,6 +241,7 @@ int mt7925_init_mlo_caps(struct mt792x_phy *phy)
- {
- 	struct wiphy *wiphy = phy->mt76->hw->wiphy;
- 	static const u8 ext_capa_sta[] = {
-+		[0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
- 		[2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
- 		[7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
- 	};
-@@ -434,6 +435,9 @@ mt7925_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 	if (phy->chip_cap & MT792x_CHIP_CAP_RSSI_NOTIFY_EVT_EN)
- 		vif->driver_flags |= IEEE80211_VIF_SUPPORTS_CQM_RSSI;
- 
-+	INIT_WORK(&mvif->csa_work, mt7925_csa_work);
-+	timer_setup(&mvif->csa_timer, mt792x_csa_timer, 0);
-+
- out:
- 	mt792x_mutex_release(dev);
- 
-@@ -1758,6 +1762,10 @@ static int
- mt7925_add_chanctx(struct ieee80211_hw *hw,
- 		   struct ieee80211_chanctx_conf *ctx)
- {
-+	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+
-+	dev->new_ctx = ctx;
-+
- 	return 0;
- }
- 
-@@ -1765,6 +1773,11 @@ static void
- mt7925_remove_chanctx(struct ieee80211_hw *hw,
- 		      struct ieee80211_chanctx_conf *ctx)
- {
-+	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+
-+	if (dev->new_ctx == ctx)
-+		dev->new_ctx = NULL;
-+
- }
- 
- static void
-@@ -2153,6 +2166,11 @@ static void mt7925_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 	mctx->bss_conf = NULL;
- 	mconf->mt76.ctx = NULL;
- 	mutex_unlock(&dev->mt76.mutex);
-+
-+	if (link_conf->csa_active) {
-+		timer_delete_sync(&mvif->csa_timer);
-+		cancel_work_sync(&mvif->csa_work);
-+	}
- }
- 
- static void mt7925_rfkill_poll(struct ieee80211_hw *hw)
-@@ -2167,6 +2185,121 @@ static void mt7925_rfkill_poll(struct ieee80211_hw *hw)
- 	wiphy_rfkill_set_hw_state(hw->wiphy, ret == 0);
- }
- 
-+static int mt7925_switch_vif_chanctx(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif_chanctx_switch *vifs,
-+				     int n_vifs,
-+				     enum ieee80211_chanctx_switch_mode mode)
-+{
-+	return mt7925_assign_vif_chanctx(hw, vifs->vif, vifs->link_conf,
-+					 vifs->new_ctx);
-+}
-+
-+void mt7925_csa_work(struct work_struct *work)
-+{
-+	struct mt792x_vif *mvif;
-+	struct mt792x_dev *dev;
-+	struct ieee80211_vif *vif;
-+	struct ieee80211_bss_conf *link_conf;
-+	struct mt792x_bss_conf *mconf;
-+	u8 link_id, roc_rtype;
-+	int ret = 0;
-+
-+	mvif = (struct mt792x_vif *)container_of(work, struct mt792x_vif,
-+						csa_work);
-+	dev = mvif->phy->dev;
-+	vif = container_of((void *)mvif, struct ieee80211_vif, drv_priv);
-+
-+	if (ieee80211_vif_is_mld(vif))
-+		return;
-+
-+	if (!dev->new_ctx)
-+		return;
-+
-+	link_id = 0;
-+	mconf = &mvif->bss_conf;
-+	link_conf = &vif->bss_conf;
-+	roc_rtype = MT7925_ROC_REQ_JOIN;
-+
-+	mt792x_mutex_acquire(dev);
-+	ret = mt7925_set_roc(mvif->phy, mconf, dev->new_ctx->def.chan,
-+			     4000, roc_rtype);
-+	mt792x_mutex_release(dev);
-+	if (!ret) {
-+		mt792x_mutex_acquire(dev);
-+		ret = mt7925_mcu_set_chctx(mvif->phy->mt76, &mconf->mt76, link_conf,
-+					   dev->new_ctx);
-+		mt792x_mutex_release(dev);
-+
-+		mt7925_abort_roc(mvif->phy, mconf);
-+	}
-+
-+	ieee80211_chswitch_done(vif, !ret, link_id);
-+}
-+
-+static int mt7925_pre_channel_switch(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif *vif,
-+				     struct ieee80211_channel_switch *chsw)
-+{
-+	if (ieee80211_vif_is_mld(vif))
-+		return -EOPNOTSUPP;
-+
-+	if (vif->type != NL80211_IFTYPE_STATION || !vif->cfg.assoc)
-+		return -EOPNOTSUPP;
-+
-+	if (!cfg80211_chandef_usable(hw->wiphy, &chsw->chandef,
-+				     IEEE80211_CHAN_DISABLED))
-+		return -EOPNOTSUPP;
-+
-+	return 0;
-+}
-+
-+static void mt7925_channel_switch(struct ieee80211_hw *hw,
-+				  struct ieee80211_vif *vif,
-+				  struct ieee80211_channel_switch *chsw)
-+{
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	u16 beacon_interval;
-+
-+	if (ieee80211_vif_is_mld(vif))
-+		return;
-+
-+	beacon_interval = vif->bss_conf.beacon_int;
-+
-+	mvif->csa_timer.expires = TU_TO_EXP_TIME(beacon_interval * chsw->count);
-+	add_timer(&mvif->csa_timer);
-+}
-+
-+static void mt7925_abort_channel_switch(struct ieee80211_hw *hw,
-+					struct ieee80211_vif *vif,
-+					struct ieee80211_bss_conf *link_conf)
-+{
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+
-+	timer_delete_sync(&mvif->csa_timer);
-+	cancel_work_sync(&mvif->csa_work);
-+}
-+
-+static void mt7925_channel_switch_rx_beacon(struct ieee80211_hw *hw,
-+					    struct ieee80211_vif *vif,
-+					    struct ieee80211_channel_switch *chsw)
-+{
-+	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	u16 beacon_interval;
-+
-+	if (ieee80211_vif_is_mld(vif))
-+		return;
-+
-+	beacon_interval = vif->bss_conf.beacon_int;
-+
-+	if (cfg80211_chandef_identical(&chsw->chandef,
-+				       &dev->new_ctx->def) &&
-+				       chsw->count) {
-+		mod_timer(&mvif->csa_timer,
-+			  TU_TO_EXP_TIME(beacon_interval * chsw->count));
-+	}
-+}
-+
- const struct ieee80211_ops mt7925_ops = {
- 	.tx = mt792x_tx,
- 	.start = mt7925_start,
-@@ -2230,6 +2363,12 @@ const struct ieee80211_ops mt7925_ops = {
- 	.change_vif_links = mt7925_change_vif_links,
- 	.change_sta_links = mt7925_change_sta_links,
- 	.rfkill_poll = mt7925_rfkill_poll,
-+
-+	.switch_vif_chanctx = mt7925_switch_vif_chanctx,
-+	.pre_channel_switch = mt7925_pre_channel_switch,
-+	.channel_switch = mt7925_channel_switch,
-+	.abort_channel_switch = mt7925_abort_channel_switch,
-+	.channel_switch_rx_beacon = mt7925_channel_switch_rx_beacon,
- };
- EXPORT_SYMBOL_GPL(mt7925_ops);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index b8ccdc0e2772..ac1e381eff40 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -300,6 +300,7 @@ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
- void mt7925_mlo_pm_work(struct work_struct *work);
- void mt7925_scan_work(struct work_struct *work);
- void mt7925_roc_work(struct work_struct *work);
-+void mt7925_csa_work(struct work_struct *work);
- int mt7925_mcu_uni_bss_ps(struct mt792x_dev *dev,
- 			  struct ieee80211_bss_conf *link_conf);
- void mt7925_coredump_work(struct work_struct *work);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index 0c090288d7b8..65cff5302a5a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -691,9 +691,8 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
- 	ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
- 
--	if (is_mt7921(&dev->mt76)) {
--		ieee80211_hw_set(hw, CHANCTX_STA_CSA);
--	}
-+	ieee80211_hw_set(hw, CHANCTX_STA_CSA);
-+
- 
- 	if (dev->pm.enable)
- 		ieee80211_hw_set(hw, CONNECTION_MONITOR);
--- 
-2.34.1
+commit message says IRQ handler is architiecture specific, then why not put it in
+ath12k_dp_arch_ops? Replicating irq_handler in each irq_grp seems kind of waste.
+
+>  };
+>  
+>  enum ath12k_smbios_cc_type {
+> diff --git a/drivers/net/wireless/ath/ath12k/hif.h b/drivers/net/wireless/ath/ath12k/hif.h
+> index e8840fab6061..1f9781f6d564 100644
+> --- a/drivers/net/wireless/ath/ath12k/hif.h
+> +++ b/drivers/net/wireless/ath/ath12k/hif.h
+> @@ -1,7 +1,7 @@
+>  /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+>  /*
+>   * Copyright (c) 2019-2021 The Linux Foundation. All rights reserved.
+> - * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+>   */
+>  
+>  #ifndef ATH12K_HIF_H
+> @@ -32,6 +32,12 @@ struct ath12k_hif_ops {
+>  	void (*get_ce_msi_idx)(struct ath12k_base *ab, u32 ce_id, u32 *msi_idx);
+>  	int (*panic_handler)(struct ath12k_base *ab);
+>  	void (*coredump_download)(struct ath12k_base *ab);
+> +	int (*ext_irq_setup)(struct ath12k_base *ab,
+> +			     int (*handler)(struct ath12k_dp *dp,
+> +					    struct ath12k_ext_irq_grp *irq_grp,
+> +					    int budget),
+> +			     struct ath12k_dp *dp);
+> +	void (*ext_irq_cleanup)(struct ath12k_base *ab);
+>  };
+>  
+>  static inline int ath12k_hif_map_service_to_pipe(struct ath12k_base *ab, u16 service_id,
+> @@ -162,4 +168,26 @@ static inline void ath12k_hif_coredump_download(struct ath12k_base *ab)
+>  	if (ab->hif.ops->coredump_download)
+>  		ab->hif.ops->coredump_download(ab);
+>  }
+> +
+> +static inline
+> +int ath12k_hif_ext_irq_setup(struct ath12k_base *ab,
+> +			     int (*irq_handler)(struct ath12k_dp *dp,
+> +						struct ath12k_ext_irq_grp *irq_grp,
+> +						int budget),
+> +			     struct ath12k_dp *dp)
+> +{
+> +	if (!ab->hif.ops->ext_irq_setup)
+> +		return -EOPNOTSUPP;
+> +
+> +	return ab->hif.ops->ext_irq_setup(ab, irq_handler, dp);
+> +}
+> +
+> +static inline void ath12k_hif_ext_irq_cleanup(struct ath12k_base *ab)
+> +{
+> +	if (!ab->hif.ops->ext_irq_cleanup)
+> +		return;
+> +
+> +	ab->hif.ops->ext_irq_cleanup(ab);
+> +}
+> +
+>  #endif /* ATH12K_HIF_H */
+> diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+> index 672cf2899681..a28bea5c1d40 100644
+> --- a/drivers/net/wireless/ath/ath12k/pci.c
+> +++ b/drivers/net/wireless/ath/ath12k/pci.c
+> @@ -319,8 +319,6 @@ static void ath12k_pci_free_irq(struct ath12k_base *ab)
+>  		irq_idx = ATH12K_PCI_IRQ_CE0_OFFSET + i;
+>  		free_irq(ab->irq_num[irq_idx], &ab->ce.ce_pipe[i]);
+>  	}
+> -
+> -	ath12k_pci_free_ext_irq(ab);
+>  }
+>  
+>  static void ath12k_pci_ce_irq_enable(struct ath12k_base *ab, u16 ce_id)
+> @@ -478,11 +476,10 @@ static int ath12k_pci_ext_grp_napi_poll(struct napi_struct *napi, int budget)
+>  	struct ath12k_ext_irq_grp *irq_grp = container_of(napi,
+>  						struct ath12k_ext_irq_grp,
+>  						napi);
+> -	struct ath12k_base *ab = irq_grp->ab;
+>  	int work_done;
+>  	int i;
+>  
+> -	work_done = ath12k_wifi7_dp_service_srng(ab, irq_grp, budget);
+> +	work_done = irq_grp->irq_handler(irq_grp->dp, irq_grp, budget);
+>  	if (work_done < budget) {
+>  		napi_complete_done(napi, work_done);
+>  		for (i = 0; i < irq_grp->num_irq; i++)
+> @@ -517,7 +514,12 @@ static irqreturn_t ath12k_pci_ext_interrupt_handler(int irq, void *arg)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> -static int ath12k_pci_ext_irq_config(struct ath12k_base *ab)
+> +static
+> +int ath12k_pci_ext_irq_config(struct ath12k_base *ab,
+> +			      int (*irq_handler)(struct ath12k_dp *dp,
+> +						 struct ath12k_ext_irq_grp *irq_grp,
+> +						 int budget),
+> +			      struct ath12k_dp *dp)
+>  {
+>  	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
+>  	int i, j, n, ret, num_vectors = 0;
+> @@ -538,6 +540,8 @@ static int ath12k_pci_ext_irq_config(struct ath12k_base *ab)
+>  
+>  		irq_grp->ab = ab;
+>  		irq_grp->grp_id = i;
+> +		irq_grp->irq_handler = irq_handler;
+> +		irq_grp->dp = dp;
+>  		irq_grp->napi_ndev = alloc_netdev_dummy(0);
+>  		if (!irq_grp->napi_ndev) {
+>  			ret = -ENOMEM;
+> @@ -651,10 +655,6 @@ static int ath12k_pci_config_irq(struct ath12k_base *ab)
+>  		ath12k_pci_ce_irq_disable(ab, i);
+>  	}
+>  
+> -	ret = ath12k_pci_ext_irq_config(ab);
+> -	if (ret)
+> -		return ret;
+> -
+>  	return 0;
+>  }
+>  
+> @@ -1483,6 +1483,8 @@ static const struct ath12k_hif_ops ath12k_pci_hif_ops = {
+>  #ifdef CONFIG_ATH12K_COREDUMP
+>  	.coredump_download = ath12k_pci_coredump_download,
+>  #endif
+> +	.ext_irq_setup = ath12k_pci_ext_irq_config,
+> +	.ext_irq_cleanup = ath12k_pci_free_ext_irq,
+>  };
+>  
+>  static enum ath12k_device_family
+> @@ -1691,6 +1693,7 @@ static void ath12k_pci_remove(struct pci_dev *pdev)
+>  	ath12k_fw_unmap(ab);
+>  	ath12k_mhi_unregister(ab_pci);
+>  
+> +	ab_pci->device_family_ops->arch_deinit(ab);
+>  	ath12k_pci_free_irq(ab);
+>  	ath12k_pci_msi_free(ab_pci);
+>  	ath12k_pci_free_region(ab_pci);
+> @@ -1698,8 +1701,6 @@ static void ath12k_pci_remove(struct pci_dev *pdev)
+>  	ath12k_hal_srng_deinit(ab);
+>  	ath12k_ce_free_pipes(ab);
+>  
+> -	ab_pci->device_family_ops->arch_deinit(ab);
+> -
+>  	ath12k_core_free(ab);
+>  }
+>  
+> diff --git a/drivers/net/wireless/ath/ath12k/wifi7/dp.c b/drivers/net/wireless/ath/ath12k/wifi7/dp.c
+> index adc3480b282b..df9696549d06 100644
+> --- a/drivers/net/wireless/ath/ath12k/wifi7/dp.c
+> +++ b/drivers/net/wireless/ath/ath12k/wifi7/dp.c
+> @@ -10,13 +10,15 @@
+>  #include "../dp_mon.h"
+>  #include "../dp_cmn.h"
+>  #include "dp_rx.h"
+> +#include "../hif.h"
+>  #include "dp.h"
+>  #include "dp_tx.h"
+>  
+> -int ath12k_wifi7_dp_service_srng(struct ath12k_base *ab,
+> -				 struct ath12k_ext_irq_grp *irq_grp,
+> -				 int budget)
+> +static int ath12k_wifi7_dp_service_srng(struct ath12k_dp *dp,
+> +					struct ath12k_ext_irq_grp *irq_grp,
+> +					int budget)
+>  {
+> +	struct ath12k_base *ab = dp->ab;
+>  	struct napi_struct *napi = &irq_grp->napi;
+>  	int grp_id = irq_grp->grp_id;
+>  	int work_done = 0;
+> @@ -138,6 +140,7 @@ int ath12k_wifi7_dp_service_srng(struct ath12k_base *ab,
+>  struct ath12k_dp *ath12k_wifi7_dp_device_alloc(struct ath12k_base *ab)
+>  {
+>  	struct ath12k_dp *dp;
+> +	int ret;
+>  
+>  	/* TODO: align dp later if cache alignment becomes a bottleneck */
+>  	dp = kzalloc(sizeof(*dp), GFP_KERNEL);
+> @@ -148,12 +151,23 @@ struct ath12k_dp *ath12k_wifi7_dp_device_alloc(struct ath12k_base *ab)
+>  	dp->dev = ab->dev;
+>  	dp->hw_params = ab->hw_params;
+>  
+> +	ret = ath12k_hif_ext_irq_setup(dp->ab, ath12k_wifi7_dp_service_srng, dp);
+> +	if (ret) {
+> +		ath12k_err(ab, "failed to setup ext irq, ret %d", ret);
+> +		goto free_dp;
+> +	}
+> +
+>  	return dp;
+> +
+> +free_dp:
+> +	kfree(dp);
+> +	return NULL;
+>  }
+>  EXPORT_SYMBOL(ath12k_wifi7_dp_device_alloc);
+>  
+>  void ath12k_wifi7_dp_device_free(struct ath12k_dp *dp)
+>  {
+> +	ath12k_hif_ext_irq_cleanup(dp->ab);
+>  	kfree(dp);
+>  }
+>  EXPORT_SYMBOL(ath12k_wifi7_dp_device_free);
+> diff --git a/drivers/net/wireless/ath/ath12k/wifi7/dp.h b/drivers/net/wireless/ath/ath12k/wifi7/dp.h
+> index 2300fda65786..72fdfb368c99 100644
+> --- a/drivers/net/wireless/ath/ath12k/wifi7/dp.h
+> +++ b/drivers/net/wireless/ath/ath12k/wifi7/dp.h
+> @@ -13,8 +13,6 @@
+>  struct ath12k_base;
+>  struct ath12k_dp;
+>  
+> -int ath12k_wifi7_dp_service_srng(struct ath12k_base *ab,
+> -				 struct ath12k_ext_irq_grp *irq_grp, int budget);
+>  struct ath12k_dp *ath12k_wifi7_dp_device_alloc(struct ath12k_base *ab);
+>  void ath12k_wifi7_dp_device_free(struct ath12k_dp *dp);
+>  
 
 
