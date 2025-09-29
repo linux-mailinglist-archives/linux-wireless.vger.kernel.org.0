@@ -1,126 +1,83 @@
-Return-Path: <linux-wireless+bounces-27695-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27696-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6082BA8B88
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 11:46:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91427BA8E93
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 12:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E3103B6A23
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 09:46:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11BCC188DC41
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 10:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED272D0C95;
-	Mon, 29 Sep 2025 09:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC7829BD83;
+	Mon, 29 Sep 2025 10:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="ScLp0n5E"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="bJ/G51Cv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B47D27E06D;
-	Mon, 29 Sep 2025 09:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB5B1A9FBD
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 10:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759139187; cv=none; b=t9uHiwKFmBEf6OrQuZdidf2EZasCAXv0Eum9BrtCSz01aoY8kEp4EGPctPCPaztY4y7ACLRVZvlT/O3YUitickYpYz3OTzmeMsOzKx1BVPk2H+g7Z/Qv5iJlr+JHm59FRIMzsbW+phd1fpZPFyhsmhZwqFXyMR/y2bv879Oivfg=
+	t=1759142610; cv=none; b=nNfwb3siPNtuPoML5IfC4Iwylv7vMnBoEM0A5qgzApXuNUVxK2gowPx+titZv5Z4up8ra5PTrWlhznuwKBWAn1OJNOeOkb0hcjhi/eSy83BX/FzxFGOY+UWZEakobrsvNeW4BvfIniJDfVO5PXLUf7e5bUMxMx1X0zxaB6I95yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759139187; c=relaxed/simple;
-	bh=tAQ0z88IVH9cwoTS3/hEi0QtFi9WWrwFP5+oS9kp2EQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=riV7bpmirGeff2TFV8R/bIjYQU5A4tsbjcIobTkD+G6zuLGO4f9xfjC4wq+rcqsScMfOHx4ijn6yyQlT3rMMOKNaWFCaHrW7qs9o8UOswh9G4HLx5Q/SaXG3QyC8qauZDsbLZENgavEZLQw/oUJcz8FTSkCpAYA5mWgB1pAy/1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=ScLp0n5E; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost (unknown [10.10.165.17])
-	by mail.ispras.ru (Postfix) with UTF8SMTPSA id B07B74028387;
-	Mon, 29 Sep 2025 09:46:20 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru B07B74028387
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1759139180;
-	bh=KBkfj0Ry6JPnYVze3a/9swiipK9iA83UU8fx5Xmmhc0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ScLp0n5ElKTMAiPv0bYlYvA7HyLVv2+z+WDNColfFgOCpkBny+9tMBLzdb89cAROf
-	 36nXAJyDL6w4JKtRjSW4QltDay8YLjRecfzWZjVDvexH2Q0/klQfQWHm6wQkghEtES
-	 VZwdt+Q3HA0W/ICsthKOZ1fBWG/r55CU5bS3k1jg=
-Date: Mon, 29 Sep 2025 12:46:20 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, 
-	Zong-Zhe Yang <kevin_yang@realtek.com>, Po-Hao Huang <phhuang@realtek.com>, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
-Subject: Re: [PATCH rtw-next 3/6] wifi: rtw89: implement C2H TX report handler
-Message-ID: <20250929121400-91aaec5c84b4868757ce3384-pchelkin@ispras>
-References: <20250920132614.277719-1-pchelkin@ispras.ru>
- <20250920132614.277719-4-pchelkin@ispras.ru>
- <5316222e-5d9d-4cb8-b161-06ba311bdc2d@gmail.com>
- <07ee4e8c-bcb8-4349-afd3-59bc58899116@gmail.com>
+	s=arc-20240116; t=1759142610; c=relaxed/simple;
+	bh=tReOAykf5vjaZ4hWe3+AO58F3yFrvH759h1eiJJ2MIo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fcvb1zJUCulFI24QAmdqT6beGZ6ojoqaXpQjlPdUO4O+klTISQNRetIM40FjcJAzqHP8oRpdrFu5BGdqWFxgi1ZPbLI9Tnpp6VRTIZqkbMdTzBVrmLdlPX7nHw76Bh7inCL0ym5CSSrybKXGxaLACm+DxKB5mYuNfkgC6H8Qw3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=bJ/G51Cv; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1759142606;
+	bh=tReOAykf5vjaZ4hWe3+AO58F3yFrvH759h1eiJJ2MIo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bJ/G51CvVwbJl+3LMpYYWgo7h0Z8q5DWkVt+lG5Eg9efIxYzvhqWZ+boXRQL33P2B
+	 JW7IHn18C7q36Dkcpd2g+znP3oOdC6U9j04tZleA3Mi2XfYPGpW/VjiDSpqdRSE4Y1
+	 KXIiPS4v8Q4yYgvhpAZNJetGmfbctZ4cbNAl+cMvVlaa9dVe1A1vT9lPk0yJXeflsd
+	 0JxQnNEYdgiAIkPs4/T3pnzN6PlUSldTz0B0yTTMjwp1ilTXxdJAClU0vSzRydnHqV
+	 TRNBE8ni6UVRR2sDstKGBDr6UuvSq3DPIxKxI/RD2n3MYq/xEgLfhKojAaRjx8X2JX
+	 2WR0wa/OlCRlA==
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 539D717E12DD;
+	Mon, 29 Sep 2025 12:43:26 +0200 (CEST)
+Message-ID: <0bef7e84-415d-4324-94d0-a2adb261a18e@collabora.com>
+Date: Mon, 29 Sep 2025 12:43:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <07ee4e8c-bcb8-4349-afd3-59bc58899116@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mt76] wifi: mt76: mt7996: Add missing CHANCTX_STA_CSA
+ property
+To: Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
+ Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+ Sean Wang <sean.wang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>
+Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+References: <20250928-mt7996_chanctx_sta_csa-v1-1-82e455185990@kernel.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20250928-mt7996_chanctx_sta_csa-v1-1-82e455185990@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 24. Sep 22:16, Bitterblue Smith wrote:
-> On 24/09/2025 01:12, Bitterblue Smith wrote:
-> > On 20/09/2025 16:26, Fedor Pchelkin wrote:
-> >> diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-> >> index ddebf7972068..f196088a8316 100644
-> >> --- a/drivers/net/wireless/realtek/rtw89/fw.h
-> >> +++ b/drivers/net/wireless/realtek/rtw89/fw.h
-> >> @@ -3747,6 +3747,11 @@ struct rtw89_c2h_scanofld {
-> >>  #define RTW89_GET_MAC_C2H_MCC_REQ_ACK_H2C_FUNC(c2h) \
-> >>  	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(15, 8))
-> >>  
-> >> +#define RTW89_GET_MAC_C2H_TX_RPT_TX_STATE(c2h) \
-> >> +	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(7, 6))
-> >> +#define RTW89_GET_MAC_C2H_TX_RPT_SW_DEFINE(c2h) \
-> >> +	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(12, 8))
-> > 
-> > This is only 4 bits:
-> > 
-
-Right, will be fixed.
-
-> > #define TXCCXRPT_SW_DEFINE_SH		8
-> > #define TXCCXRPT_SW_DEFINE_MSK		0xf
-> > 
-> > 
-> > The rest of the series looks good to me. (I don't know much about
-> > the RCU stuff.) I will test this tomorrow.
-> > 
+Il 28/09/25 18:27, Lorenzo Bianconi ha scritto:
+> Enable missing CHANCTX_STA_CSA property required for MLO.
 > 
-> Actually, I found this in my notes:
-> 
-> "how to get just one tx report for each request? currently it seems
-> to provide a report for each transmission attempt. how is the vendor
-> driver coping with that?"
-> 
-> I think your code doesn't account for this.
-> 
-> Sorry I forgot about this detail. This behaviour is new in rtw89.
-> The chips supported by rtw88 provide only one report for each request.
+> Fixes: f5160304d57c ("wifi: mt76: mt7996: Enable MLO support for client interfaces")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-I think this part is also controlled with a couple of extra bits in TX
-descriptor.
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-The vendor driver specifies a retry limit of 8 times.  It's probably the
-default one followed by the firmware anyway because multiple retries on
-failure status are seen via debug output of rtw89_mac_c2h_tx_rpt().
-https://github.com/fofajardo/rtl8851bu/blob/1f1a14492fdac757c64a7efb7846be6374984d09/core/rtw_xmit.c#L7438
 
-When there is a failed TX status reported by the firmware, the report is
-ignored until the limit is reached or success status appears.
-https://github.com/fofajardo/rtl8851bu/blob/1f1a14492fdac757c64a7efb7846be6374984d09/phl/hal_g6/hal_api_mac.c#L9547
-
-The only concern is what happens if the sequence number of transmitted
-frames wraps (4 bits is not a big range) when the previous frames with the
-same sequence number were not processed yet - probability of the situation
-increases with high retry limit being set.  I imagine the firmware has
-some sort of handling for this but your reply suggests constraining retry
-limit in the driver, are there maybe some other reasons we should set the
-retry limit to one TX report?
 
