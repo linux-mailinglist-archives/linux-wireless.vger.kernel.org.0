@@ -1,196 +1,213 @@
-Return-Path: <linux-wireless+bounces-27711-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27712-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022A9BAA28D
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 19:24:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841C4BAA480
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 20:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6324E19231AE
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 17:24:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3889D3C7ED1
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 18:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC57830101A;
-	Mon, 29 Sep 2025 17:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D902367CF;
+	Mon, 29 Sep 2025 18:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=countingcars.onmicrosoft.com header.i=@countingcars.onmicrosoft.com header.b="BrTUySjy"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="aHyld3c+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11023091.outbound.protection.outlook.com [40.93.196.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f97.google.com (mail-io1-f97.google.com [209.85.166.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDEC2EC561
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 17:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.91
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759166659; cv=fail; b=H2WhgiyNe/y4eAEAncHll4ZUzOknKWGHJhbaWzcIz3jAmPidsKLJ/NkjPpaalokg5re1HZ0xaurlpUJAOeOYIloKOz4ltne0SpVnD3rAfCf/94nnEXS3+YhpyzfFCo+OqWmu7M5XavwAtcM97EEGd3RqvvlmoaO2T0vyPI65cRg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759166659; c=relaxed/simple;
-	bh=Tc+cawo7BR+W//wt6mVNSsuy+1Bfb2jkb9JAsqdvTuw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=lRwo1i9oAvdCuQlU5ftES6rPv8VUXpbiS8GodaSH6LOf/CDBaQuwfMOQwJSkvLDR5dmkMXkHws6uk98sA/Y9pN6z1m6w7Yz+coXOdZKKKHk4Hc9xIbbMTTqtKHVA1chGYeYVycS88VveNIhLDdHcrAFA7QIeg/jQE78JR/O8szo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=streetlogic.pro; spf=pass smtp.mailfrom=streetlogic.pro; dkim=pass (1024-bit key) header.d=countingcars.onmicrosoft.com header.i=@countingcars.onmicrosoft.com header.b=BrTUySjy; arc=fail smtp.client-ip=40.93.196.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=streetlogic.pro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=streetlogic.pro
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nUXGtnIoAo3LWzxX3aYPQ097bIZj9RjdeKwgOkKSjJZ/eQvdbQKliroNT6UEI8XeP27ILo+5vK0yP/YzcNrgZu0GKRMuMT1LdgnJi+Zj4Xg7eAEOtqU8yRI2Kja77V5Zsu5FM2cfMVO80AJbAq0CrRBH8nZolzAMu0BMtCpXohpC9f4BLmL4W5MJHloXEHHDAn0fRinJvpHBEHNaQ1M3aagceGWIKJRh6fWXq72wh9+J1O9lGngwJsFAxh8XIQ5GKAhwE729UE/WP3ak1taAleUitPLWR8l4cBH1FyebGA+6lgr0glfVziyOxP4D5hc99XFrW0dD/wgtVEMF7egH1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TDaCAqup9HbaMbxVO3SN1V0pihE4e5T6cZXV27OXsmo=;
- b=gLRi2CsyxhDpZ57M+STyUObMqDgvVZC63wmEGlt61+THhTgapIu3y5W8YolvRIC2VcLiVkw+yumcFaA56/nvhuxyv9qXqtKFmra5vTSQpIxjG7kbguS5ec9pWS/FWMYRcJ5plfG4M/33mM/KySBZf7J0cVdpha0KcNx5CuDO76EVRgUjg/gsaILiszkVS5us6x+qLvPd5G4Dpk/D+4ODi3Jhf5g4KFRiD5gi0ePKlH0rhF3qPJ50GSUQ6UJKMjAyDOMQQGem2adEpFv290LIIAbxIAMwCUI4gB+VpFBDnqrO+HaqBUdKrCyMCgCrmKr9tV2087F/E3bp604Yguri6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=streetlogic.pro; dmarc=pass action=none
- header.from=streetlogic.pro; dkim=pass header.d=streetlogic.pro; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E578236A73
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 18:23:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.97
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759170213; cv=none; b=Q7sW/fajdkmdFC8etpXAUgFxEE+/ceqkeME38t1V+PfxxjQ48ZkxJIrMTfqzmrnji3via3fEfY4TUhxOXCnaHBl4HKpEdpzenlFs1F3b3krQGo9lzASfymAl2s7m2UsmOwuHogGnDPi7xYAnPExFJA228XHCytOhjp+szmZCnDk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759170213; c=relaxed/simple;
+	bh=QJFtZVXeI6V/F7PauM5ALE2r/fz4phzD29nTCt36V1s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JEDZ4VfT/nHJB1Dhc9obqDlbYPAALsb+zQ+kXOK1k1T3oIdZ1WPrh2IHAsbhCQTQsBVESDOPCq9typK+2Ho270viCEyzyB0Oi0rNwYd75X6WQISk27SpY/xAnwI03zuB0Imv/d9zz+MF9bnD+EmhHZPfIXRXYF5GN99FLiZsfz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=aHyld3c+; arc=none smtp.client-ip=209.85.166.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-io1-f97.google.com with SMTP id ca18e2360f4ac-90926724bceso309666939f.1
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 11:23:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759170211; x=1759775011;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8820Bco2QKTOhDzV/dKofCVg3cLeM7g3fa83BzQ1oeE=;
+        b=Y88dUaW6pUNs89pzz5lfs52t8owVcc6iK//0gsp4+scheLoor8tbF6Tk8fge2EkTZH
+         PXhSvCdqmPwI7oLHR6dKVPbn6Vy5fOkfKEB+5GWSZ85jFqXpgE27lEZlyDlSA9uRug3i
+         2tOYwwedxM9SSL9yF6WUOkDpfRY1RyMu6LslrrYtmH7WNrkl8p5GxqMMJBm18Fd4js5y
+         2rN66BFyHOK9h7jeZ09wNh95p1kJvGxE3YlaKpioh29L30iICQzvJ8jkr7TgD1tvv5Fe
+         Y7ecwZMnTTpxZVzbk/knaxzLd5gr3/+DtJtv5/D6KW52Q9+GXmkKLAZLkuSQumeHaN7K
+         KF7A==
+X-Gm-Message-State: AOJu0YwX3Dg5Ds053fCbZLm3x5ejQXu0FlWA71DU5E/34E70e6Mqi8ee
+	dId6uzxeTrU2yQkomH+bQMFpWxWcy2usPTCk8CdVyHT13nNePsW28K3Kb6dk9W3bW1DPMXb7VTT
+	E8cVOdK2gs60uTNuQn0J7Zv0akxQ+MNzLbQklI8XROarCBIcbhhzi5KbSsdgr3Jmq8I23k/Nw4C
+	HoF9oYo66oaAaLGzUwuq17vrePrf0Ek62mRD4vJLm+kn6a4E/e3f30oWuhGe87yFL8w28NupHTq
+	9HLA7Jlvg7Sf77xM6L7KEwVcERa
+X-Gm-Gg: ASbGnctv+5nDnjjMZ2VDyh/NG1eCnnPKEg9tBO1YsVLYYIqzgFuquDmORNv7tFupZF6
+	y3mwX/ksqS6O57REfmBWbUN/oAmU6flaHtKZxiC/RHiCDLfTg3ows9Lv83m0RFOylV7LdIv67WH
+	Qfq3j6DeCY+ZQ7RhvscoI7KJPXFOfC0wUMcfxV92opyx8qny25uYIBE5uYD5ZfwtVhGCVJ8qEg5
+	vehvp3KebTuBSzr5XqrhWCHEHgiGVBfLK9Hr8hBcZ/AeMiVkhlY/ZkiUcBnjA2i18K34H7btCTp
+	O6PkkbpHaHJUaOhqIv/2Ct02ibAsuRhekVeKDcq5tY6FaUda2fZoMLEbRxzfvUNJFJi5XO0muPV
+	5j7Wh5pciUxl4d2TxQ1dKH1l2iHXkiiBO7sm0rqITBoutyEuqvB4/Yvbf74gheDR6lfnrHZmc+/
+	/+6ZkuBQ==
+X-Google-Smtp-Source: AGHT+IHdLY1kwdSpqhc8sDnd2yNFso70wecSAX/EasWbfXbm1j9aplb9RSmpQ2PAp6xWP21TwS2lBRESH/Rt
+X-Received: by 2002:a92:dd11:0:b0:41f:5e50:23f1 with SMTP id e9e14a558f8ab-4259564927bmr208641255ab.25.1759170210536;
+        Mon, 29 Sep 2025 11:23:30 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-121.dlp.protect.broadcom.com. [144.49.247.121])
+        by smtp-relay.gmail.com with ESMTPS id e9e14a558f8ab-425bf6d4f14sm8373065ab.23.2025.09.29.11.23.30
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 Sep 2025 11:23:30 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3f42b54d159so3829733f8f.2
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 11:23:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=countingcars.onmicrosoft.com; s=selector2-countingcars-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TDaCAqup9HbaMbxVO3SN1V0pihE4e5T6cZXV27OXsmo=;
- b=BrTUySjy2tIY0DIILvg2KolUCGzoUDbJDobMl/dAgi3jDm+icdoCgH8mbZG48OtdhX6iXDSEnEuGWuy9VHFAZSKwHt5614EGJQc3lY4kP3D6xg7ONIBMzpIHUBYSq3sl44DGynBBLXb0hvyAFB3sZzM+XKrrjvwsFGCavsGVf14=
-Received: from MW2PR02MB3674.namprd02.prod.outlook.com (2603:10b6:907:e::30)
- by DS0PR02MB10917.namprd02.prod.outlook.com (2603:10b6:8:28e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.15; Mon, 29 Sep
- 2025 17:24:13 +0000
-Received: from MW2PR02MB3674.namprd02.prod.outlook.com
- ([fe80::adc9:8462:2a75:d483]) by MW2PR02MB3674.namprd02.prod.outlook.com
- ([fe80::adc9:8462:2a75:d483%6]) with mapi id 15.20.9160.014; Mon, 29 Sep 2025
- 17:24:13 +0000
-From: Chris Spargo <chris@streetlogic.pro>
-To: Stefan Wahren <wahrenst@gmx.net>, Hsien Chou <s311332@gmail.com>, Arend
- van Spriel <arend.vanspriel@broadcom.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>,
-	"brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>
-Subject: RE: brcmfmac: driver crash with iOS 18.6.1, potential DoS
-Thread-Topic: brcmfmac: driver crash with iOS 18.6.1, potential DoS
-Thread-Index: AQHcMKYY+EaaT/7OI0GjH7ZdX8EvxrSqZX0AgAAB0GA=
-Date: Mon, 29 Sep 2025 17:24:13 +0000
-Message-ID:
- <MW2PR02MB3674EDA6ED6DE4FC1D74AD75B51BA@MW2PR02MB3674.namprd02.prod.outlook.com>
-References: <1a187bdb-abd6-4e2c-bc29-94f9ab944023@broadcom.com>
- <fd88175f-497b-4fec-9094-58709ddfd1bf@gmx.net>
-In-Reply-To: <fd88175f-497b-4fec-9094-58709ddfd1bf@gmx.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=streetlogic.pro;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW2PR02MB3674:EE_|DS0PR02MB10917:EE_
-x-ms-office365-filtering-correlation-id: 3e049a4b-3865-4f0b-5db4-08ddff7d0287
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|10070799003|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?XF0Zwu/+ltMV1ZPdLpZrVoVRcU0Z0QqtfzIJ6Tn7WPoWVDAOeDGxXEqhbiEp?=
- =?us-ascii?Q?2WmLIEFZXr9d9cOg2PpI8QJLK6E9oQF+GEfxqFTNTF6y+l5THxM58Pfdo9l2?=
- =?us-ascii?Q?ZDo6ib5nUYdSr+kH4sjJo/CGprpA5cGGlc2FT75aWr9u0YkzlAbguhpVKFrQ?=
- =?us-ascii?Q?cA3EEdCGL4TbG5DdpagkzYEMt9btNxsbZrdUnQZwlR0Qda+1LXrCGPUqMZtU?=
- =?us-ascii?Q?7Reqf07BovvWnQszJHoue3H9bJD4C7Unde6+qMWnm9TYRgBxQPOAw4T+/vF8?=
- =?us-ascii?Q?cT8GnHHSCT+z9shUetIFLYyd5TIloYf/Vnwb0VZGHZeiR8Rvm8SiNrPlYJ+H?=
- =?us-ascii?Q?z058sI6PL/uUCgF8ycsOD8CfQfZESPameTCshUCoyCb1jmDmxOFzTIIN72hP?=
- =?us-ascii?Q?v0rnnUrsoD/Nk6FUw/4Dl5TknBUlxbSO9ENp4NXlndJHQ/Iihm36UHpn+QSQ?=
- =?us-ascii?Q?5cn6DX1NM1JxSvihYTBxvkRh5lwKMiQ1EHZIe+LYnB5CDSlroFHrIdETxdt5?=
- =?us-ascii?Q?4NxaKK2WqK29hIiCukYWWHXdZtJxnrm60BooVgBE/CEVlttmAPJq7wuxA7F0?=
- =?us-ascii?Q?TWDzn8rdF/FbXF8cnuzyySMv9pfMIyt9DAc8hlJJ5froLdI2Pq5Op4IDlF3J?=
- =?us-ascii?Q?TCAWA3xgLR4W4sIf/3ZOefYMf6/YsWbZ89SHIdKD/l4+gxFW8RZhPIGvruN0?=
- =?us-ascii?Q?Ow79ISbheQgbRpzwr6v+xxWpNbmdk+bRqvn2Het1gdfRiigXzoi4RVkJ+rYQ?=
- =?us-ascii?Q?MqbQ/np7vz/QazpNrQQmEaAP8ml1k1LrDF1WnxoHbPx4uVyneU7n8sGlVDPA?=
- =?us-ascii?Q?9GUtuhflcu2+zuW1LVUGKtDdUjMhOJsy4HrEk0KL6unHYYEFFSwsL8ZBnLw6?=
- =?us-ascii?Q?WjJpiV0Q8952IV82MiTxV3UxQJAM2wxZb1y+gfVNK9nKdIZK6TvKy9PapBUK?=
- =?us-ascii?Q?PkBZYaxkIZEEw5/ElN1dDxHqHAfMGidWbVXhuh/61l697kTH6TRKQs7+wVzd?=
- =?us-ascii?Q?66U7K+DgL6MTglS73VulxdDl4m7wrSNg+KADJ8HwjPeIICKWDm+2dKMOKcRw?=
- =?us-ascii?Q?JVkDhqOBycQhGgXeqmWmtJvyaqQjqJSlxAF9Rhp1/bNsP7uC7o7102vxX5jc?=
- =?us-ascii?Q?H8y6jco7BXjTVGt3MN0Z4DHvmDmUxd6ZiORUs8m3rZeQNlEKadpscaacncxt?=
- =?us-ascii?Q?4jSoMRh+mnHtqrVLDVaPwva4QxeQXMTv65kP/zC01Bfhw9hgJxxM4VuPBsNL?=
- =?us-ascii?Q?HssQKkp1YxWxZyTvrVBBt+/NAt8a9In/Zmy8qIUYUtiK4gfELjJomeJ17sgm?=
- =?us-ascii?Q?wOLuRSg1u50HoJplGtrD22K7IHS/Z9P3a37k0PhsNNYPA+4Rih9Xk+SfvkQY?=
- =?us-ascii?Q?UCwwk13gGEkR4mMrmBh83zFK7ofngDgu2zpOJUYQDVk+4v9bSv5g1KYkMuPB?=
- =?us-ascii?Q?7bAfadSPMrntqpbGh1F5/Wuu0WVMWSHZaqhHIryDqkrSquSfJdyC2DX2Gb2E?=
- =?us-ascii?Q?ehdIEMjYtBuT5yDp8yOf2+cM3fHpiSzDFZri?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW2PR02MB3674.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(10070799003)(38070700021);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?fVHo9FfjzSy6StyCZqi5JBcoF+bqWsZAJPjl72zwtqYtNVAnOG4vgmPXer+C?=
- =?us-ascii?Q?66GpGTN4oDKFWaR8sgIjddN3PQqMPW7H4tZrcFn8rVWamsLXDTkN3MQxbyBa?=
- =?us-ascii?Q?PIiEFN1hY7LTdj4ZHfKYNeZDLpxP8pgZ8AMGI1mHLHJ0xr81eJPxvwLhHR+f?=
- =?us-ascii?Q?J4ZrMMk9wPBv+mFi4+kMXOAVhLPYCT9D8gAO6KqXwmsO6G1W5tpmMc+ITFfs?=
- =?us-ascii?Q?clJbnbDg1amM4MibFHAUIjAyqJ6xsvt527xFD8dbh9WMhTCATZR4Q/BS/7Gk?=
- =?us-ascii?Q?kKz6OUvsDH/3a8uBvWGPvBvaSqjPUV6YLPeBCf6wPvyvfyCsoV4X8QYzLx3x?=
- =?us-ascii?Q?Iz40Gp6++MjSqU2CBr1mNImOFQ4uMbcA8i+VhIlG+w/zvs7bq0WDl9XLNYK8?=
- =?us-ascii?Q?hDRLUg+yYGLRF8m8aD5fX57xhBKAqP+2jjpoikaky7OsQ32jtqOkNvmG8a+z?=
- =?us-ascii?Q?b6Htf3C8T+wtYm+oCmu/V/BZCMYcBdAv9a1cffiJ09Zfd/pbzH001TxoNBrG?=
- =?us-ascii?Q?STs/+WqnfOmlSs8BUIthpiuwRcMdIDZnBicqg1Ds//4WS2MO6Bo4MgLgNXCw?=
- =?us-ascii?Q?Rkz5KKZy7aTmAoXzoMWf2VUEikk8+EkXRl+DJD3ZWV9VeKR54KGGrBRIJhgI?=
- =?us-ascii?Q?HMcPRjNM7KGX/VgsR881r+4oApOTlyvBGYrr63NtYjlaEka/ECq+9BUKwGgD?=
- =?us-ascii?Q?dGnTucz+55Vikw4RJPrVzdBJ5P7sk40VyArKhFjZ8aIdFIsyKZSvxyfOhMJZ?=
- =?us-ascii?Q?9mcL8aW0554b0GQPWj77qVjLedhdhZ+kjNAY/jaCgeaSWvlVSNj3Sywm/V2Y?=
- =?us-ascii?Q?EnYdoMYUEfZZiw/qh/uhxwfJzJWsONpegcJYDktdQJdgg2bNywDwQvxFQIsX?=
- =?us-ascii?Q?OGjRcXDHYIUoKw4LjySSdYJbyLTAOfBwAk0zm8IeXG1L/OF037qmQkLjr599?=
- =?us-ascii?Q?ddmGlThUwmSu657zkGev9TmKGB2QQRFxRXA6/5GYob3oKuhO0p1DYrWAHsJp?=
- =?us-ascii?Q?QGcKX+eSf6wkWj0msv+eulk4Rl7faCzr2p77BnpO3+dvhR5HR1uhb1Sw3npS?=
- =?us-ascii?Q?E3rCdIGH1F5z7dX/T+pjVAyAjNxorYXB1GsLHSKUzy20DS4sFuMR0bzTx5f4?=
- =?us-ascii?Q?jKRuuxOs7LaWvJVhr8JLI+jwyZUZ0SuR5IX34xVP1nskQfAocL9UYWRwPpfn?=
- =?us-ascii?Q?41FlRPmrjfSh0xEDz1OkTZIg0YYeUJEDHIMscymFzBnozSRQF0rNgB/IBrf7?=
- =?us-ascii?Q?uJKuvx+UUYmgzxTuXn3ucWU6PjZlXBiQ3F/JfVkPZdeiKd/BxuhMtgJvk04C?=
- =?us-ascii?Q?C5hNcIPsA30owQzU5UY2BVMu2s51RmjL2QTyDJK8cDA0cSJTfrZaiivL1fLe?=
- =?us-ascii?Q?d5WJRikMtxacPI9eELXouQhi/kYEa1wxO4zXodWsM7tOlWsM2vdNHMUm78Fu?=
- =?us-ascii?Q?q1pEFzZP0GBLspbfClBofQDMc+QFLSS41osNAt4T7xLmkMn7C5gR3udxtoTE?=
- =?us-ascii?Q?fh/UNWBTf5g5VEZ/K+2YLJLfCHfzLnVEYvXyKG42ttkWi1WeOpAJl5G5XZ2b?=
- =?us-ascii?Q?ZUICkM8OCPzGDeWvqGYj+sigj+xUup7mh+Fab74l70rS8HiUWBp4lktE9O6z?=
- =?us-ascii?Q?gyKePZSCRqQpatv1ElN533ANdFCe2DEGCPz6FZ7Wsg1+?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        d=broadcom.com; s=google; t=1759170209; x=1759775009; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=8820Bco2QKTOhDzV/dKofCVg3cLeM7g3fa83BzQ1oeE=;
+        b=aHyld3c+/SEaDAHzQwytg1guZ9pxHzSCfLwqm33610R+dZ+BZ4MCrZ0ZsX5vR8z4dQ
+         MGVMIHxHRRXEPGflmwRvyGlaSdxXUO3PkwY2arKWvQW/Kfda9jyLwwr3/Tnqm41dTADh
+         WT070k71mqHuDeLzXs9N/n6Zep8GDZX5Iyj1A=
+X-Received: by 2002:adf:ee44:0:b0:3ec:1b42:1f93 with SMTP id ffacd0b85a97d-413591d7997mr9616576f8f.37.1759170208798;
+        Mon, 29 Sep 2025 11:23:28 -0700 (PDT)
+X-Received: by 2002:adf:ee44:0:b0:3ec:1b42:1f93 with SMTP id ffacd0b85a97d-413591d7997mr9616558f8f.37.1759170208302;
+        Mon, 29 Sep 2025 11:23:28 -0700 (PDT)
+Received: from [10.229.41.112] ([192.19.176.227])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc6921b7dsm18996937f8f.42.2025.09.29.11.23.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Sep 2025 11:23:27 -0700 (PDT)
+Message-ID: <b2e0bf04-f149-4a23-aba5-cad55a8923c1@broadcom.com>
+Date: Mon, 29 Sep 2025 20:23:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: streetlogic.pro
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW2PR02MB3674.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e049a4b-3865-4f0b-5db4-08ddff7d0287
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2025 17:24:13.4304
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: da4745ef-da8d-4b22-b0f4-eafca8feef17
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PN2k5vuqO5ykyGIy7kIXTkdRdz+vqFJTLGbqEEjGkkpeU3muu1+s/F3fqAzPeycHy+vWzCugVNfmRAwr8ACVqA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR02MB10917
-
-
-Our experience is with kernel version 5.4.83-v7+.    I've not rebuilt the k=
-ernel or worked in that space for some time.  =20
-
-I'm happy to follow directions and give specific examples and feedback if t=
-here's something I can test, but I don't want to cloud the results by not k=
-nowing what I'm doing.   Let me know how I can help.
-
-Thanks-
-Chris
-
-
------Original Message-----
-From: Stefan Wahren <wahrenst@gmx.net>=20
-Sent: Monday, September 29, 2025 12:06 PM
-To: Hsien Chou <s311332@gmail.com>; Arend van Spriel <arend.vanspriel@broad=
-com.com>; Chris Spargo <chris@streetlogic.pro>
-Cc: linux-wireless@vger.kernel.org; brcm80211-dev-list.pdl@broadcom.com; br=
-cm80211@lists.linux.dev
+User-Agent: Mozilla Thunderbird
 Subject: Re: brcmfmac: driver crash with iOS 18.6.1, potential DoS
+To: Stefan Wahren <wahrenst@gmx.net>, Hsien Chou <s311332@gmail.com>,
+ Chris Spargo <chris@streetlogic.pro>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>,
+ "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>
+References: <fd88175f-497b-4fec-9094-58709ddfd1bf@gmx.net>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <fd88175f-497b-4fec-9094-58709ddfd1bf@gmx.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Hi,
-regarding reproducibility, I would assume Arend is using the mainline kerne=
-l and Hsien just tested the Raspberry Pi vendor kernel. The brcmfmac driver=
- has some modifications downstream.
+On 9/29/2025 7:06 PM, Stefan Wahren wrote:
+> Hi,
+> regarding reproducibility, I would assume Arend is using the mainline 
+> kernel and Hsien just tested the Raspberry Pi vendor kernel. The 
+> brcmfmac driver has some modifications downstream.
 
-@Hsien or @Chris,
-are you able to reproduce it with a mainline/torvalds kernel?
-You only need to replace Kernel, Modules and Device tree.
+Actually, I tried to build the downstream RPi vendor kernel. However, 
+there are some variables in play. The config Hsien Chou sent was 6.6.28, 
+but the log is 6.12.34. So I have taken the provided config and built 
+from the rpi-6.6.y branch:
 
-Best regards
+commit bba53a117a4a5c29da892962332ff1605990e17a (HEAD, rpi/rpi-6.6.y)
+Author: Phil Elwell <phil@raspberrypi.com>
+Date:   Wed Mar 26 11:28:28 2025 +0000
+
+     dts: rp1: Don't use DMA with UARTs
+
+     DMA has been enabled on RP1's UART0, but with mixed success. Transmits
+     seem to work, but the DMA interface is not well suited to receiving
+     arbitrary amounts of data. In particular, the PL011 driver is slow to
+     pass on the received data, batching it into large blocks.
+
+     On balance, it's better to just disable the DMA support. As with the
+     other UARTs, the required runes are left in the DTS as comments.
+
+     Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+
+Probably should have tried withthe rpui-6.12.y branch instead. Let me 
+try that although...:
+
+$ git diff rpi/rpi-6.6.y rpi/rpi-6.12.y -- 
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c 
+b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+index 7376f9f37d07..7949f78c61e1 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+@@ -2339,7 +2339,7 @@ struct wireless_dev *brcmf_p2p_add_vif(struct 
+wiphy *wiphy, const char *name,
+                 goto fail;
+         }
+
+-       strncpy(ifp->ndev->name, name, sizeof(ifp->ndev->name) - 1);
++       strscpy(ifp->ndev->name, name, sizeof(ifp->ndev->name));
+         ifp->ndev->name_assign_type = name_assign_type;
+         err = brcmf_net_attach(ifp, true);
+         if (err) {
+
+Gr. AvS
+
+> @Hsien or @Chris,
+> are you able to reproduce it with a mainline/torvalds kernel?
+> You only need to replace Kernel, Modules and Device tree.
+> 
+> Best regards
+>
+
 
