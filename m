@@ -1,213 +1,225 @@
-Return-Path: <linux-wireless+bounces-27712-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27713-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 841C4BAA480
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 20:23:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC49BAA71D
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 21:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3889D3C7ED1
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 18:23:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 528C97A3AFF
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 19:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D902367CF;
-	Mon, 29 Sep 2025 18:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9E82417E6;
+	Mon, 29 Sep 2025 19:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="aHyld3c+"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="QXEsuj1X";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HgmlHyFV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f97.google.com (mail-io1-f97.google.com [209.85.166.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E578236A73
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 18:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087A119E967;
+	Mon, 29 Sep 2025 19:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759170213; cv=none; b=Q7sW/fajdkmdFC8etpXAUgFxEE+/ceqkeME38t1V+PfxxjQ48ZkxJIrMTfqzmrnji3via3fEfY4TUhxOXCnaHBl4HKpEdpzenlFs1F3b3krQGo9lzASfymAl2s7m2UsmOwuHogGnDPi7xYAnPExFJA228XHCytOhjp+szmZCnDk=
+	t=1759173712; cv=none; b=D/bpdX9ESUEAnsiDNXGb8uLjfyT/ScuiX+/1DPohxCjlMfiGhsqH5UmTQ0tH3rkm4DF8XPH+iq9yEfCopM1Js3rZRM/E78fkjoyTlrHnLtiBOiYoHV0cn5OUGo46IZbjkPnEqTN0NjRw2ovicWMcigl8O/uVtLOIeh2cfoF08pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759170213; c=relaxed/simple;
-	bh=QJFtZVXeI6V/F7PauM5ALE2r/fz4phzD29nTCt36V1s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JEDZ4VfT/nHJB1Dhc9obqDlbYPAALsb+zQ+kXOK1k1T3oIdZ1WPrh2IHAsbhCQTQsBVESDOPCq9typK+2Ho270viCEyzyB0Oi0rNwYd75X6WQISk27SpY/xAnwI03zuB0Imv/d9zz+MF9bnD+EmhHZPfIXRXYF5GN99FLiZsfz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=aHyld3c+; arc=none smtp.client-ip=209.85.166.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-io1-f97.google.com with SMTP id ca18e2360f4ac-90926724bceso309666939f.1
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 11:23:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759170211; x=1759775011;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8820Bco2QKTOhDzV/dKofCVg3cLeM7g3fa83BzQ1oeE=;
-        b=Y88dUaW6pUNs89pzz5lfs52t8owVcc6iK//0gsp4+scheLoor8tbF6Tk8fge2EkTZH
-         PXhSvCdqmPwI7oLHR6dKVPbn6Vy5fOkfKEB+5GWSZ85jFqXpgE27lEZlyDlSA9uRug3i
-         2tOYwwedxM9SSL9yF6WUOkDpfRY1RyMu6LslrrYtmH7WNrkl8p5GxqMMJBm18Fd4js5y
-         2rN66BFyHOK9h7jeZ09wNh95p1kJvGxE3YlaKpioh29L30iICQzvJ8jkr7TgD1tvv5Fe
-         Y7ecwZMnTTpxZVzbk/knaxzLd5gr3/+DtJtv5/D6KW52Q9+GXmkKLAZLkuSQumeHaN7K
-         KF7A==
-X-Gm-Message-State: AOJu0YwX3Dg5Ds053fCbZLm3x5ejQXu0FlWA71DU5E/34E70e6Mqi8ee
-	dId6uzxeTrU2yQkomH+bQMFpWxWcy2usPTCk8CdVyHT13nNePsW28K3Kb6dk9W3bW1DPMXb7VTT
-	E8cVOdK2gs60uTNuQn0J7Zv0akxQ+MNzLbQklI8XROarCBIcbhhzi5KbSsdgr3Jmq8I23k/Nw4C
-	HoF9oYo66oaAaLGzUwuq17vrePrf0Ek62mRD4vJLm+kn6a4E/e3f30oWuhGe87yFL8w28NupHTq
-	9HLA7Jlvg7Sf77xM6L7KEwVcERa
-X-Gm-Gg: ASbGnctv+5nDnjjMZ2VDyh/NG1eCnnPKEg9tBO1YsVLYYIqzgFuquDmORNv7tFupZF6
-	y3mwX/ksqS6O57REfmBWbUN/oAmU6flaHtKZxiC/RHiCDLfTg3ows9Lv83m0RFOylV7LdIv67WH
-	Qfq3j6DeCY+ZQ7RhvscoI7KJPXFOfC0wUMcfxV92opyx8qny25uYIBE5uYD5ZfwtVhGCVJ8qEg5
-	vehvp3KebTuBSzr5XqrhWCHEHgiGVBfLK9Hr8hBcZ/AeMiVkhlY/ZkiUcBnjA2i18K34H7btCTp
-	O6PkkbpHaHJUaOhqIv/2Ct02ibAsuRhekVeKDcq5tY6FaUda2fZoMLEbRxzfvUNJFJi5XO0muPV
-	5j7Wh5pciUxl4d2TxQ1dKH1l2iHXkiiBO7sm0rqITBoutyEuqvB4/Yvbf74gheDR6lfnrHZmc+/
-	/+6ZkuBQ==
-X-Google-Smtp-Source: AGHT+IHdLY1kwdSpqhc8sDnd2yNFso70wecSAX/EasWbfXbm1j9aplb9RSmpQ2PAp6xWP21TwS2lBRESH/Rt
-X-Received: by 2002:a92:dd11:0:b0:41f:5e50:23f1 with SMTP id e9e14a558f8ab-4259564927bmr208641255ab.25.1759170210536;
-        Mon, 29 Sep 2025 11:23:30 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-121.dlp.protect.broadcom.com. [144.49.247.121])
-        by smtp-relay.gmail.com with ESMTPS id e9e14a558f8ab-425bf6d4f14sm8373065ab.23.2025.09.29.11.23.30
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 29 Sep 2025 11:23:30 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3f42b54d159so3829733f8f.2
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 11:23:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1759170209; x=1759775009; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=8820Bco2QKTOhDzV/dKofCVg3cLeM7g3fa83BzQ1oeE=;
-        b=aHyld3c+/SEaDAHzQwytg1guZ9pxHzSCfLwqm33610R+dZ+BZ4MCrZ0ZsX5vR8z4dQ
-         MGVMIHxHRRXEPGflmwRvyGlaSdxXUO3PkwY2arKWvQW/Kfda9jyLwwr3/Tnqm41dTADh
-         WT070k71mqHuDeLzXs9N/n6Zep8GDZX5Iyj1A=
-X-Received: by 2002:adf:ee44:0:b0:3ec:1b42:1f93 with SMTP id ffacd0b85a97d-413591d7997mr9616576f8f.37.1759170208798;
-        Mon, 29 Sep 2025 11:23:28 -0700 (PDT)
-X-Received: by 2002:adf:ee44:0:b0:3ec:1b42:1f93 with SMTP id ffacd0b85a97d-413591d7997mr9616558f8f.37.1759170208302;
-        Mon, 29 Sep 2025 11:23:28 -0700 (PDT)
-Received: from [10.229.41.112] ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc6921b7dsm18996937f8f.42.2025.09.29.11.23.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Sep 2025 11:23:27 -0700 (PDT)
-Message-ID: <b2e0bf04-f149-4a23-aba5-cad55a8923c1@broadcom.com>
-Date: Mon, 29 Sep 2025 20:23:27 +0200
+	s=arc-20240116; t=1759173712; c=relaxed/simple;
+	bh=ujDbkHw/xdsvbIV0XdkfukeD3oLBVhwFpdNItyGewBw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GWyiflk+QrYSOnmKKPu7gkCZjvDFH/bAdITfy4Le/trdPXi+M++MtSnpHmTKIC7t5Tt0rPgJcH/fil+Js59wIS1zmWWsNm8rjWojdDVja1XsKKuUwA6jpT5FYcgiZbqtYh2qcIr8O2BGxrmzK9mwaC4UZ+h41PRFSQCh86EfbzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=QXEsuj1X; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HgmlHyFV; arc=none smtp.client-ip=103.168.172.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.phl.internal (Postfix) with ESMTP id 2A9E5EC0170;
+	Mon, 29 Sep 2025 15:21:49 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Mon, 29 Sep 2025 15:21:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1759173709; x=
+	1759260109; bh=bfQKgoj9sFKuTXtBwbqoDkLJI+gJiyffPRmuhrKgtQc=; b=Q
+	XEsuj1XK0ok5o6RDn6FbMiz5tz1Ufhy64qZUXxr23JT0UQ4ZR5ko4By1j1fBo1HG
+	udaiUNM+iffAF3RAdJIIAWhE1FZESSzFgt/zj5F+JaKUEuAYGaay71d57hudcL9Z
+	IUIKZDoUi1V29vX29F714hXAIKTTRwkmW4o1lpIxQCHSG9qDNu2Sa7pnKFisTvpL
+	PEW82mO7QlBwcnRr4CKwHizcgZxPRql6jrg+YTAkuPfLgDs7GpLro4rXMeTop/qa
+	Jj2QVi7JZJQl79r2/DxgQpRieZMejLwdrJXuJqiOKmP8E4oTLcVpUCWR8RIMmFkH
+	XDidxyySGep6F7qyK3yaQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm2; t=1759173709; x=1759260109; bh=b
+	fQKgoj9sFKuTXtBwbqoDkLJI+gJiyffPRmuhrKgtQc=; b=HgmlHyFVsQtqRHdfg
+	nnTkHgq8pVT/703XJvGcMGpQGSrhNrFoewFvHoE4E+SEoXwvg8vqMs9CFp5AVvsq
+	WpQCNVDbshXiMrszVDLwe7TbvOoiXz0EGdM4C396ytPMum0NXwjSHVi83AQPL5Fa
+	C2O5r2tsQQp0HOXhW5K1BFv+jPCIES0qcY/Za8W09eNz92YhgTZK6fS+ltzeF9Vh
+	vG8rZ/8b6RSx1zdL4qlv2ynsoYcCv2AxjoyAwrhb1guZ43ZG5DVI8BenMkQUJZ7F
+	me0LHnTAYdNmMezOCFZag0e0G7klsMpR87EEtwdmwOwrep0ptGQquSgFSGNazXAY
+	p/aug==
+X-ME-Sender: <xms:TNzaaC4TNlQkS4doqlyd0ucV2hJ9LZe21LruayHQT4SoTvqa7VakbA>
+    <xme:TNzaaE3YpQaY8HS5jX5NDd-I9uWsjEtU6ZMHkNJZCvtNHbx2_050meXQPbfq17Nb0
+    geyWSI9P-t1BFWPXWQ1Pup0pgZysOve8YfJkx8JTZMgTg3GUtC2I8Y>
+X-ME-Received: <xmr:TNzaaNCOJ1jnkXl0uociQJPCDth7P2e4e4blxYmFRiseY3UKhO_YUdphKVAZfHQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdejkeekfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecuogetfedtuddqtdduucdludehmdenucfjughrpefhvfevuf
+    ffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeforghrkhcurfgvrghrshhonhcu
+    oehmphgvrghrshhonhdqlhgvnhhovhhosehsqhhuvggssgdrtggrqeenucggtffrrghtth
+    gvrhhnpeevtdelgfeggfejtedtvdfgkefhuefguedtkeeffeduueduvdeiuedtleejvdfh
+    vdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhsohhnqdhlvghnohhvohesshhq
+    uhgvsggsrdgtrgdpnhgspghrtghpthhtohephedpmhhouggvpehsmhhtphhouhhtpdhrtg
+    hpthhtohepmhhpvggrrhhsohhnqdhlvghnohhvohesshhquhgvsggsrdgtrgdprhgtphht
+    thhopehjjhhohhhnshhonheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghthhduud
+    hksehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidq
+    fihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
+    hugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:TNzaaPPvVxKVDzHu4qWCm3xqLRPONgJa5nIh2p4dex0gk7iWxZGJsg>
+    <xmx:TNzaaCbXzAedOiNXkBZAVavcHL5MWE-m5CgU3DP2QoOmORHWlK0l4g>
+    <xmx:TNzaaOsueYrO-BZwkIXiP1Dqog3nTGM3JPhr2JmaBTEkk_Rw2OjQOA>
+    <xmx:TNzaaEPr2UZerHWnhKUBo9BJp3UZM3eiLvKYuEVY4xBzDkSk6oZBNA>
+    <xmx:TdzaaOoYBrfZ47_QNhXSi0-3gff0j-bnt1AdM33PueMXnxDPphjZsfxB>
+Feedback-ID: ibe194615:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 29 Sep 2025 15:21:48 -0400 (EDT)
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
+To: mpearson-lenovo@squebb.ca
+Cc: jjohnson@kernel.org,
+	ath11k@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] wifi: ath11k: Add missing platform IDs for quirk table
+Date: Mon, 29 Sep 2025 15:21:35 -0400
+Message-ID: <20250929192146.1789648-1-mpearson-lenovo@squebb.ca>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <mpearson-lenovo@squebb.ca>
+References: <mpearson-lenovo@squebb.ca>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: brcmfmac: driver crash with iOS 18.6.1, potential DoS
-To: Stefan Wahren <wahrenst@gmx.net>, Hsien Chou <s311332@gmail.com>,
- Chris Spargo <chris@streetlogic.pro>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>,
- "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>
-References: <fd88175f-497b-4fec-9094-58709ddfd1bf@gmx.net>
-Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <fd88175f-497b-4fec-9094-58709ddfd1bf@gmx.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Transfer-Encoding: 8bit
 
-On 9/29/2025 7:06 PM, Stefan Wahren wrote:
-> Hi,
-> regarding reproducibility, I would assume Arend is using the mainline 
-> kernel and Hsien just tested the Raspberry Pi vendor kernel. The 
-> brcmfmac driver has some modifications downstream.
+Lenovo platforms can come with one of two different IDs.
+The pm_quirk table was missing the second ID for each platform.
 
-Actually, I tried to build the downstream RPi vendor kernel. However, 
-there are some variables in play. The config Hsien Chou sent was 6.6.28, 
-but the log is 6.12.34. So I have taken the provided config and built 
-from the rpi-6.6.y branch:
+Add missing ID and some extra platform identification comments.
+Reported on https://bugzilla.kernel.org/show_bug.cgi?id=219196
 
-commit bba53a117a4a5c29da892962332ff1605990e17a (HEAD, rpi/rpi-6.6.y)
-Author: Phil Elwell <phil@raspberrypi.com>
-Date:   Wed Mar 26 11:28:28 2025 +0000
+Tested-on: P14s G4 AMD.
+Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine model")
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+---
+Changes in v2:
+ - Correct typo for T14s G4 AMD to use correct ID. Sorry!
+ - Added in Fixes and Tested-on tags correctly.
 
-     dts: rp1: Don't use DMA with UARTs
+ drivers/net/wireless/ath/ath11k/core.c | 54 +++++++++++++++++++++++---
+ 1 file changed, 48 insertions(+), 6 deletions(-)
 
-     DMA has been enabled on RP1's UART0, but with mixed success. Transmits
-     seem to work, but the DMA interface is not well suited to receiving
-     arbitrary amounts of data. In particular, the PL011 driver is slow to
-     pass on the received data, batching it into large blocks.
-
-     On balance, it's better to just disable the DMA support. As with the
-     other UARTs, the required runes are left in the DTS as comments.
-
-     Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-
-Probably should have tried withthe rpui-6.12.y branch instead. Let me 
-try that although...:
-
-$ git diff rpi/rpi-6.6.y rpi/rpi-6.12.y -- 
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c 
-b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-index 7376f9f37d07..7949f78c61e1 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-@@ -2339,7 +2339,7 @@ struct wireless_dev *brcmf_p2p_add_vif(struct 
-wiphy *wiphy, const char *name,
-                 goto fail;
-         }
-
--       strncpy(ifp->ndev->name, name, sizeof(ifp->ndev->name) - 1);
-+       strscpy(ifp->ndev->name, name, sizeof(ifp->ndev->name));
-         ifp->ndev->name_assign_type = name_assign_type;
-         err = brcmf_net_attach(ifp, true);
-         if (err) {
-
-Gr. AvS
-
-> @Hsien or @Chris,
-> are you able to reproduce it with a mainline/torvalds kernel?
-> You only need to replace Kernel, Modules and Device tree.
-> 
-> Best regards
->
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index d49353b6b2e7..47522fa186a1 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -912,42 +912,84 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /* X13 G4 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21J3"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* X13 G4 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21J4"),
+ 		},
+ 	},
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /* T14 G4 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K3"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* T14 G4 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),
+ 		},
+ 	},
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /* P14s G4 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K5"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* P14s G4 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),
+ 		},
+ 	},
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /* T16 G2 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K7"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /* T16 G2 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21K8"),
+ 		},
+ 	},
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /*P16s G2 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K9"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /*P16s G2 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21KA"),
+ 		},
+ 	},
+ 	{
+ 		.driver_data = (void *)ATH11K_PM_WOW,
+-		.matches = {
++		.matches = { /*T14s G4 AMD #1 */
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21F8"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = { /*T14s G4 AMD #2 */
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21F9"),
+ 		},
+-- 
+2.43.0
 
 
