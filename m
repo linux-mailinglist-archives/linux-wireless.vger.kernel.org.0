@@ -1,147 +1,185 @@
-Return-Path: <linux-wireless+bounces-27706-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27707-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B851BA92F5
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 14:19:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BAD4BA934F
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 14:30:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71634189EEDB
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 12:19:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E85371892506
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 12:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C653301482;
-	Mon, 29 Sep 2025 12:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07DCB67E;
+	Mon, 29 Sep 2025 12:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QmPInS+j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SAbI6utn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B532EB5AF
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 12:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C39426F443
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 12:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759148348; cv=none; b=O9PLHV2L6YqufeeUbfLhFxsMUOAT7h7dqxay9pWiRjgELQPzEwYa0RKsle/4WOxyVEjXs/d7ydJvWc2WO84KolWX2lu8Ds3eeCb0kZl8nzGnLKcuC++NxU8GkMzpykwGLsvUQysHQNniKkJuoWbRKPzetBpfQ8MLWpnXsbVsdnI=
+	t=1759149021; cv=none; b=X4DbM9qqTccyGPggc9G6dMIj4dxFk9fPsgsIFaA9vvXAOJVbEZc44ZpiOKqB9iTxtvI3kJz+95ojOLdW6P+2xQ58bLIaBSyalRsm0OZHDwUYR5SjCltn7yVDhNxMMnTNtGA7WctMctTJyX9YXZnkQuGRZ4uL4bS4RwJWwjCbZ4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759148348; c=relaxed/simple;
-	bh=aT/DCjXCwhUv0XXBSmUnUzpw3KWocFMoT3s7DAQA7VI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=c6RLqXlPgncU8sYgA2FoKFyAyPcEipi0NwNbI4LJhQP5oHYqAyuGLds7+JDzxJLcJcu98AqnWSc3r7eUaVS+hJx9DvL17ugA7z/mSiSN3aErrZuYE4PdzL9S6oQR639rLYIEG/emNJP+R6XvMcuYguOoKn9u0oavitfTQ2LXp4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QmPInS+j; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45b4d89217aso28338605e9.2
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 05:19:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759148345; x=1759753145; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aT/DCjXCwhUv0XXBSmUnUzpw3KWocFMoT3s7DAQA7VI=;
-        b=QmPInS+jwjsO/HGVVkULk5YviHAgmcQlFr0rLj/KFftJJOdevQ1HFhSmtJRSn1Kkdf
-         2Z8qfy5j6grC1Sgdzo1e5Y9sYfZeYj0/WciI66TJu+d47z97EMWjMwik/Dib2K5uA+21
-         8f+SmQZQR8WTG395qu5k8a/mblSfbAz7goY6dp1YG198OrV+8rfpEPhp1Nri3mFEzoxf
-         euVjf+j1+lb7TajRhpkVUudYocGVKXWOgpf1cj/tzloGlpHMJkfRDYOpEqs8ONCkrPyN
-         yyhY9u15IKolTexkPLb+WGAN4Niz7i/SkRNBHJ65hnj37GY4LYr6vVttG+gJVL85UqF0
-         MaMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759148345; x=1759753145;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aT/DCjXCwhUv0XXBSmUnUzpw3KWocFMoT3s7DAQA7VI=;
-        b=Gv93yrEgjvc5BWD652LZUhK7ZGGJrIl2OMHxB2Jc8hMZaHKRNRvEZrDtDz/cvRXEmy
-         GBHwC/Y6B7e+GYhUAU18X4luWTTjBDBSSxsgNqbRFpBdPOSU5gs6C0xZwmPUib83TsNo
-         ekxvf+BFCMwegljf7QUD/mgFG7iAvZrczY1NHcg2SSHv49oeyya2TiIW69yDvWxXNlgw
-         QoQoRAlN/jbN+l4h0tsdeamKdYfypZOPp/0BiIX8Nhq4iPa3ktE+TjXvktdVT+LBmXz6
-         HPvQL7DWA6ZBNqMSaykfQRp/3txh4DNGFEk34QOVvv5YceSfMFocP2mFf4YWdN0f4h0k
-         nvOQ==
-X-Gm-Message-State: AOJu0YyCSTQ9TwoONqdAs4evQzqHPkLQ1RX106IYLcJWBXwaXyrGRAND
-	6sFXK2faZnRVtX6IJPmVZj6p27FB8e0zsZU00BifTFcg+M9hFWy9ip5vaMTTTA==
-X-Gm-Gg: ASbGnctZ0oVuNdjx2FGA59tRkdc0UAwRsyogwnVfLhTd1Z3tdv2X3ndBpDiKFwR1x6D
-	BnJJ2R27t6yz+PoyMqaIa+nYDs8reQ94rSXvYmrg8e0aRi0nw+liR63CafjfAFXD6dJpxcvkmqH
-	LVPBgCt5pRBPZJNqZRQBhKj/tAfFipPnATy5AKsK02I+R1tMc77JBsbw69A/eVX+nT0H7hroyJu
-	W8fyloNMS/4OmkchAfEUiuv/c2weZdpY6it9ojqkL+UB+s94uOUsw62XejQCaXFVSCTNKCHAbs2
-	6i5Rk47cwlZkQkUVyO0dFOvLLwb6YFQ+GjoJ5j6GGY0cfZmCuDF7rDop99WvC0aqUyQwyDBSR1N
-	Zc0Xvnf9zY/q54JJMDx9brxvPbv7jAnj+AISumaKLf0H2iDEEAMMbNS97331fmM8=
-X-Google-Smtp-Source: AGHT+IHBb08XFrh9vxYgcnIxlVs0+rX5j9ohWU54l76f6T3cELMRiuHTRW0h+WyLv2eggDY/UZF5Gw==
-X-Received: by 2002:a05:600c:1d07:b0:45f:2805:91df with SMTP id 5b1f17b1804b1-46e329eb016mr143107405e9.20.1759148344276;
-        Mon, 29 Sep 2025 05:19:04 -0700 (PDT)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e56f3dcacsm12050635e9.2.2025.09.29.05.19.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Sep 2025 05:19:03 -0700 (PDT)
+	s=arc-20240116; t=1759149021; c=relaxed/simple;
+	bh=LteeNK/Qi4/3VUsKVPKkNMIk3NgIepRJeoPP3Qbt6+w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SiYF/ZQH/Fs0CL1qGzNo3AoRdbv/GAOcOwimjwu2Jj9P6PWoCj/lYoe4oK9NWi2fgqXOmG9Ti3aQSD+lgGOx4Gvbk3NNs5HutodBCH2jdfg8RRUIUQ8UV8RvWCAZ2udoJczKheQiK4x8SE9jojCiL/hUAz1uMrYb8KXT+BQav14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SAbI6utn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0976C4CEF4;
+	Mon, 29 Sep 2025 12:30:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759149021;
+	bh=LteeNK/Qi4/3VUsKVPKkNMIk3NgIepRJeoPP3Qbt6+w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SAbI6utnxPmm0HELwX5QotVIMsRxaAOUty4dyzTYdClFUT/kfHqs+Y2v23dmnooHV
+	 2k0En8p5XNHqUa+DN535tnuvseIot5Z3aLYFrcVURcRIcYNKpAfID9tMZKTqRrEMXq
+	 Dzdc3OlB24XCSePyP/TBY5mFuM5CvdYx/UZMcTbiD7IpD/p8Ttlcnk4N/GTHLHT37i
+	 fUnOe2kppYe1MtRUYpir5QeILe+MZKV6+J6PZxzqtMHiZVeJpKMSdbSqLSDYu8k033
+	 UQApmrcUY36fX8UdqfP0LgVy+Sn4Kr6XbYU7Fnzw7Gce1VGjjC/m33obIewe+yIFFW
+	 eGn68W/q8DV4g==
+Date: Mon, 29 Sep 2025 14:30:18 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>
+Cc: linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: mt76: mt7996: fix null pointer deref in
+ mt7996_conf_tx()
+Message-ID: <aNp72sR-n2qF-g9v@lore-desk>
+References: <20250929111723.52486-1-nbd@nbd.name>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Omv+lzBXjGAEfCFx"
+Content-Disposition: inline
+In-Reply-To: <20250929111723.52486-1-nbd@nbd.name>
+
+
+--Omv+lzBXjGAEfCFx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 29 Sep 2025 14:19:03 +0200
-Message-Id: <DD5A1KBRHCWZ.RXDUFTTTZU4J@gmail.com>
-Cc: "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>, "Lorenzo
- Bianconi" <lorenzo@kernel.org>, "Ryder Lee" <ryder.lee@mediatek.com>
-Subject: Re: [DESIGN RFC] Critical Update handling in the kernel
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: <linux-wireless@vger.kernel.org>, "Ping-Ke Shih" <pkshih@realtek.com>,
- "Johannes Berg" <johannes@sipsolutions.net>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20250717045540.27208-1-aditya.kumar.singh@oss.qualcomm.com>
- <1a77ca6a35ad03f839b7c997de3977b521d88edc.camel@sipsolutions.net>
- <fce447412112421887a1a81f5ada850e@realtek.com>
- <e79d3239-d536-45c9-b081-09ea7ba5bb00@oss.qualcomm.com>
-In-Reply-To: <e79d3239-d536-45c9-b081-09ea7ba5bb00@oss.qualcomm.com>
 
-On Thu Sep 4, 2025 at 4:24 PM CEST, Jeff Johnson wrote:
-> On 7/24/2025 1:48 AM, Ping-Ke Shih wrote:
->> Johannes Berg <johannes@sipsolutions.net> wrote:
->>>> Before we move forward with implementation, we'd like to confirm wheth=
-er
->>>> the proposed design looks sound. Are there any concerns or potential i=
-ssues
->>>> we should be aware of?
->>>>
->>>> Out of curiosity, we're also interested in understanding how other ven=
-dors
->>>> are currently handling this feature in their downstream drivers. Is it
->>>> typically offloaded to firmware, or is the logic implemented in the ke=
-rnel?
->>>> Just want to confirm whether all this will be used only by mac80211_hw=
-sim
->>>> or will there be any actual users?
->>>
->>> I think Ping-Ke previously indicated that they were planning to do
->>> things host side? I'm not super familiar with the timing constraints
->>> though, so I'm not sure what that might imply.
->>=20
->> Yes, Realtek vendor driver handles the feature in host driver. Having no=
-t
->> tested CSA and ML procedure mentioned in this discussion thread, we
->> are also not sure how timing constraint to evaluate if we have to implem=
-ent
->> the feature in firmware. =20
->
-> Ping-Ke (and Johannes),
-> Have you had a chance to review Aditya's August 21 follow-up?
->
-> We'd like to move forward with our firmware-based approach (since that lo=
-gic
-> is already shipping in our OpenWrt-based systems). Perhaps Realtek can pr=
-opose
-> alternative host-based logic, and there can be a flag to select either
-> host-based or firmware-based Critical Update handling?
->
-> Thanks,
-> /jeff
+> If a link does not have an assigned channel yet, mt7996_vif_link returns
+> NULL. We still need to store the updated queue settings in that case, and
+> apply them later.
+> Move the location of the queue params to within struct mt7996_vif_link.
 
-Hey guys, any news on this one ? Seeing the ieee802.11 bn preliminary work =
-done
-by Johannes, reminded me that there are still some usefull parts of 802.11 =
-be
-that are not completely finished yet ...
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Thanks,
+>=20
+> Fixes: c0df2f0caa8d ("wifi: mt76: mt7996: prepare mt7996_mcu_set_tx for M=
+LO support")
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7996/main.c   | 6 +++---
+>  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 5 ++++-
+>  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 7 ++++++-
+>  3 files changed, 13 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7996/main.c
+> index 581314368c5b..b53ca702591c 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+> @@ -665,8 +665,8 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80=
+211_vif *vif,
+>  	       unsigned int link_id, u16 queue,
+>  	       const struct ieee80211_tx_queue_params *params)
+>  {
+> -	struct mt7996_dev *dev =3D mt7996_hw_dev(hw);
+> -	struct mt7996_vif_link *mlink =3D mt7996_vif_link(dev, vif, link_id);
+> +	struct mt7996_vif *mvif =3D (struct mt7996_vif *)vif->drv_priv;
+> +	struct mt7996_vif_link_info *link_info =3D &mvif->link_info[link_id];
+>  	static const u8 mq_to_aci[] =3D {
+>  		[IEEE80211_AC_VO] =3D 3,
+>  		[IEEE80211_AC_VI] =3D 2,
+> @@ -675,7 +675,7 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80=
+211_vif *vif,
+>  	};
+> =20
+>  	/* firmware uses access class index */
+> -	mlink->queue_params[mq_to_aci[queue]] =3D *params;
+> +	link_info->queue_params[mq_to_aci[queue]] =3D *params;
+>  	/* no need to update right away, we'll get BSS_CHANGED_QOS */
+> =20
+>  	return 0;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7996/mcu.c
+> index 0347ee0c2dd7..afa6a43bd51e 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+> @@ -3414,6 +3414,9 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struc=
+t ieee80211_vif *vif,
+>  #define WMM_PARAM_SET		(WMM_AIFS_SET | WMM_CW_MIN_SET | \
+>  				 WMM_CW_MAX_SET | WMM_TXOP_SET)
+>  	struct mt7996_vif_link *link =3D mt7996_vif_conf_link(dev, vif, link_co=
+nf);
+> +	struct mt7996_vif *mvif =3D (struct mt7996_vif *)vif->drv_priv;
+> +	unsigned int link_id =3D link_conf->link_id;
+> +	struct mt7996_vif_link_info *link_info =3D &mvif->link_info[link_id];
+>  	struct {
+>  		u8 bss_idx;
+>  		u8 __rsv[3];
+> @@ -3431,7 +3434,7 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struc=
+t ieee80211_vif *vif,
+>  	skb_put_data(skb, &hdr, sizeof(hdr));
+> =20
+>  	for (ac =3D 0; ac < IEEE80211_NUM_ACS; ac++) {
+> -		struct ieee80211_tx_queue_params *q =3D &link->queue_params[ac];
+> +		struct ieee80211_tx_queue_params *q =3D &link_info->queue_params[ac];
+>  		struct edca *e;
+>  		struct tlv *tlv;
+> =20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers=
+/net/wireless/mediatek/mt76/mt7996/mt7996.h
+> index 8ec2acdb3319..718e4d4ad85f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+> @@ -253,16 +253,21 @@ struct mt7996_vif_link {
+>  	struct mt7996_sta_link msta_link;
+>  	struct mt7996_phy *phy;
+> =20
+> -	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
+>  	struct cfg80211_bitrate_mask bitrate_mask;
+> =20
+>  	u8 mld_idx;
+>  };
+> =20
+> +struct mt7996_vif_link_info {
+> +	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
+> +};
+> +
+>  struct mt7996_vif {
+>  	struct mt7996_vif_link deflink; /* must be first */
+>  	struct mt76_vif_data mt76;
+> =20
+> +	struct mt7996_vif_link_info link_info[IEEE80211_MLD_MAX_NUM_LINKS];
+> +
+>  	u8 mld_group_idx;
+>  	u8 mld_remap_idx;
+>  };
+> --=20
+> 2.51.0
+>=20
+>=20
+
+--Omv+lzBXjGAEfCFx
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaNp72gAKCRA6cBh0uS2t
+rG6UAPwLjLD/WfO4E0F+HGJj6Jh/zdbxK26IEW8Znk1OckbGnQD8C9ZE7TQH2dc/
+GjS60CqBrKhLmCbRJo5vljs+EWiEvQ4=
+=QQHL
+-----END PGP SIGNATURE-----
+
+--Omv+lzBXjGAEfCFx--
 
