@@ -1,83 +1,153 @@
-Return-Path: <linux-wireless+bounces-27696-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27697-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91427BA8E93
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 12:43:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 042C6BA8FFD
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 13:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11BCC188DC41
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 10:43:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3BB31C0539
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 11:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC7829BD83;
-	Mon, 29 Sep 2025 10:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E636E1922FD;
+	Mon, 29 Sep 2025 11:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="bJ/G51Cv"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="as90G04S"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB5B1A9FBD
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 10:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA484824BD
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 11:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759142610; cv=none; b=nNfwb3siPNtuPoML5IfC4Iwylv7vMnBoEM0A5qgzApXuNUVxK2gowPx+titZv5Z4up8ra5PTrWlhznuwKBWAn1OJNOeOkb0hcjhi/eSy83BX/FzxFGOY+UWZEakobrsvNeW4BvfIniJDfVO5PXLUf7e5bUMxMx1X0zxaB6I95yY=
+	t=1759145136; cv=none; b=gH79FeWj9nMkzSkL7a+UQ2LKRhcDpAUkgmrsMWayP7koXzh3kldFKC6aP+ZT3NIOr4IvkMEhwheJ+F4v2XUVtbp6qEIyTw3G1RZaF7RC+vGkznp1sSPdEpp3Okc+PJ8EXxFA1MBqbO3OVBDSAef3ewEbnB1vhvMegNb0WcdslU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759142610; c=relaxed/simple;
-	bh=tReOAykf5vjaZ4hWe3+AO58F3yFrvH759h1eiJJ2MIo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fcvb1zJUCulFI24QAmdqT6beGZ6ojoqaXpQjlPdUO4O+klTISQNRetIM40FjcJAzqHP8oRpdrFu5BGdqWFxgi1ZPbLI9Tnpp6VRTIZqkbMdTzBVrmLdlPX7nHw76Bh7inCL0ym5CSSrybKXGxaLACm+DxKB5mYuNfkgC6H8Qw3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=bJ/G51Cv; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1759142606;
-	bh=tReOAykf5vjaZ4hWe3+AO58F3yFrvH759h1eiJJ2MIo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bJ/G51CvVwbJl+3LMpYYWgo7h0Z8q5DWkVt+lG5Eg9efIxYzvhqWZ+boXRQL33P2B
-	 JW7IHn18C7q36Dkcpd2g+znP3oOdC6U9j04tZleA3Mi2XfYPGpW/VjiDSpqdRSE4Y1
-	 KXIiPS4v8Q4yYgvhpAZNJetGmfbctZ4cbNAl+cMvVlaa9dVe1A1vT9lPk0yJXeflsd
-	 0JxQnNEYdgiAIkPs4/T3pnzN6PlUSldTz0B0yTTMjwp1ilTXxdJAClU0vSzRydnHqV
-	 TRNBE8ni6UVRR2sDstKGBDr6UuvSq3DPIxKxI/RD2n3MYq/xEgLfhKojAaRjx8X2JX
-	 2WR0wa/OlCRlA==
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 539D717E12DD;
-	Mon, 29 Sep 2025 12:43:26 +0200 (CEST)
-Message-ID: <0bef7e84-415d-4324-94d0-a2adb261a18e@collabora.com>
-Date: Mon, 29 Sep 2025 12:43:25 +0200
+	s=arc-20240116; t=1759145136; c=relaxed/simple;
+	bh=mgoQN81IfLTCxc6XS2gSZrPJUTcoMvVUTi8CzjTdy4s=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=CQ0j5paC8bW3/R0ajMgH0ZFZ1D5tiVtf0ZVCLSV+0zdd+7sq6h9j8YMHX8lNqIALWUHkImXJ5jw8FE6v1PPQ2lpsxbnM0fKdLjJcpfWuYvpgzUB5wK+I6CWw/66gqAwUHu/vi2kINKJlUU4PiZDlbQCXO1Thwi2nNdpGuberfwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=as90G04S; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=d8ngw17hiiMCFVoitBUXvI+b9O0QLPbkviCtej4wAFw=; b=as90G04SZq+GtbUnEZ+uxEJt7C
+	bgSmLC1G7MJAcDVTNhxXb3L+CBYob67zOp7/e0mScntTakCXSNqiC59FEdLheoz0Fh1DSs7vfuIN+
+	YtH+6TnoN9xIkTGIb2hgWxn8a5qQFzW6DDMDtPCYwl60crCkQdBVAWBMjjfeTMXQbqJs=;
+Received: from p4ff13580.dip0.t-ipconnect.de ([79.241.53.128] helo=Maecks.lan)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1v3Bsi-00ESEo-08
+	for linux-wireless@vger.kernel.org;
+	Mon, 29 Sep 2025 13:17:24 +0200
+From: Felix Fietkau <nbd@nbd.name>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: mt76: mt7996: fix null pointer deref in mt7996_conf_tx()
+Date: Mon, 29 Sep 2025 13:17:23 +0200
+Message-ID: <20250929111723.52486-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mt76] wifi: mt76: mt7996: Add missing CHANCTX_STA_CSA
- property
-To: Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
- Sean Wang <sean.wang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-References: <20250928-mt7996_chanctx_sta_csa-v1-1-82e455185990@kernel.org>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <20250928-mt7996_chanctx_sta_csa-v1-1-82e455185990@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Il 28/09/25 18:27, Lorenzo Bianconi ha scritto:
-> Enable missing CHANCTX_STA_CSA property required for MLO.
-> 
-> Fixes: f5160304d57c ("wifi: mt76: mt7996: Enable MLO support for client interfaces")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+If a link does not have an assigned channel yet, mt7996_vif_link returns
+NULL. We still need to store the updated queue settings in that case, and
+apply them later.
+Move the location of the queue params to within struct mt7996_vif_link.
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: c0df2f0caa8d ("wifi: mt76: mt7996: prepare mt7996_mcu_set_tx for MLO support")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c   | 6 +++---
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 5 ++++-
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 7 ++++++-
+ 3 files changed, 13 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 581314368c5b..b53ca702591c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -665,8 +665,8 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	       unsigned int link_id, u16 queue,
+ 	       const struct ieee80211_tx_queue_params *params)
+ {
+-	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+-	struct mt7996_vif_link *mlink = mt7996_vif_link(dev, vif, link_id);
++	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
++	struct mt7996_vif_link_info *link_info = &mvif->link_info[link_id];
+ 	static const u8 mq_to_aci[] = {
+ 		[IEEE80211_AC_VO] = 3,
+ 		[IEEE80211_AC_VI] = 2,
+@@ -675,7 +675,7 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	};
+ 
+ 	/* firmware uses access class index */
+-	mlink->queue_params[mq_to_aci[queue]] = *params;
++	link_info->queue_params[mq_to_aci[queue]] = *params;
+ 	/* no need to update right away, we'll get BSS_CHANGED_QOS */
+ 
+ 	return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 0347ee0c2dd7..afa6a43bd51e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3414,6 +3414,9 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ #define WMM_PARAM_SET		(WMM_AIFS_SET | WMM_CW_MIN_SET | \
+ 				 WMM_CW_MAX_SET | WMM_TXOP_SET)
+ 	struct mt7996_vif_link *link = mt7996_vif_conf_link(dev, vif, link_conf);
++	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
++	unsigned int link_id = link_conf->link_id;
++	struct mt7996_vif_link_info *link_info = &mvif->link_info[link_id];
+ 	struct {
+ 		u8 bss_idx;
+ 		u8 __rsv[3];
+@@ -3431,7 +3434,7 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 	skb_put_data(skb, &hdr, sizeof(hdr));
+ 
+ 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
+-		struct ieee80211_tx_queue_params *q = &link->queue_params[ac];
++		struct ieee80211_tx_queue_params *q = &link_info->queue_params[ac];
+ 		struct edca *e;
+ 		struct tlv *tlv;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 8ec2acdb3319..718e4d4ad85f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -253,16 +253,21 @@ struct mt7996_vif_link {
+ 	struct mt7996_sta_link msta_link;
+ 	struct mt7996_phy *phy;
+ 
+-	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
+ 	struct cfg80211_bitrate_mask bitrate_mask;
+ 
+ 	u8 mld_idx;
+ };
+ 
++struct mt7996_vif_link_info {
++	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
++};
++
+ struct mt7996_vif {
+ 	struct mt7996_vif_link deflink; /* must be first */
+ 	struct mt76_vif_data mt76;
+ 
++	struct mt7996_vif_link_info link_info[IEEE80211_MLD_MAX_NUM_LINKS];
++
+ 	u8 mld_group_idx;
+ 	u8 mld_remap_idx;
+ };
+-- 
+2.51.0
 
 
