@@ -1,104 +1,89 @@
-Return-Path: <linux-wireless+bounces-27713-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27714-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC49BAA71D
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 21:21:59 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03551BAAC62
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 02:06:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 528C97A3AFF
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Sep 2025 19:20:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4FDF34E174C
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 00:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9E82417E6;
-	Mon, 29 Sep 2025 19:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EC138D;
+	Tue, 30 Sep 2025 00:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="QXEsuj1X";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HgmlHyFV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RcSwNsBh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087A119E967;
-	Mon, 29 Sep 2025 19:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D292AD14
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 00:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759173712; cv=none; b=D/bpdX9ESUEAnsiDNXGb8uLjfyT/ScuiX+/1DPohxCjlMfiGhsqH5UmTQ0tH3rkm4DF8XPH+iq9yEfCopM1Js3rZRM/E78fkjoyTlrHnLtiBOiYoHV0cn5OUGo46IZbjkPnEqTN0NjRw2ovicWMcigl8O/uVtLOIeh2cfoF08pQ=
+	t=1759190757; cv=none; b=WIYVum5UB6GfznYJ8IR1Ss15B+kChLY9uvF40KTV+OXwm7WRDzi8dHHEDEWpRVwqjR7GcagbhaDWETOJLd+y2X40+fcYEVc1Lk3j8t8gC/tWLnHjqfSJmbw8bTwjgFYn0Wapx+LMR4QAkn1gzTf47O57H7qkk9sTY7rw1uhbG8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759173712; c=relaxed/simple;
-	bh=ujDbkHw/xdsvbIV0XdkfukeD3oLBVhwFpdNItyGewBw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWyiflk+QrYSOnmKKPu7gkCZjvDFH/bAdITfy4Le/trdPXi+M++MtSnpHmTKIC7t5Tt0rPgJcH/fil+Js59wIS1zmWWsNm8rjWojdDVja1XsKKuUwA6jpT5FYcgiZbqtYh2qcIr8O2BGxrmzK9mwaC4UZ+h41PRFSQCh86EfbzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=QXEsuj1X; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HgmlHyFV; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.phl.internal (Postfix) with ESMTP id 2A9E5EC0170;
-	Mon, 29 Sep 2025 15:21:49 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Mon, 29 Sep 2025 15:21:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1759173709; x=
-	1759260109; bh=bfQKgoj9sFKuTXtBwbqoDkLJI+gJiyffPRmuhrKgtQc=; b=Q
-	XEsuj1XK0ok5o6RDn6FbMiz5tz1Ufhy64qZUXxr23JT0UQ4ZR5ko4By1j1fBo1HG
-	udaiUNM+iffAF3RAdJIIAWhE1FZESSzFgt/zj5F+JaKUEuAYGaay71d57hudcL9Z
-	IUIKZDoUi1V29vX29F714hXAIKTTRwkmW4o1lpIxQCHSG9qDNu2Sa7pnKFisTvpL
-	PEW82mO7QlBwcnRr4CKwHizcgZxPRql6jrg+YTAkuPfLgDs7GpLro4rXMeTop/qa
-	Jj2QVi7JZJQl79r2/DxgQpRieZMejLwdrJXuJqiOKmP8E4oTLcVpUCWR8RIMmFkH
-	XDidxyySGep6F7qyK3yaQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1759173709; x=1759260109; bh=b
-	fQKgoj9sFKuTXtBwbqoDkLJI+gJiyffPRmuhrKgtQc=; b=HgmlHyFVsQtqRHdfg
-	nnTkHgq8pVT/703XJvGcMGpQGSrhNrFoewFvHoE4E+SEoXwvg8vqMs9CFp5AVvsq
-	WpQCNVDbshXiMrszVDLwe7TbvOoiXz0EGdM4C396ytPMum0NXwjSHVi83AQPL5Fa
-	C2O5r2tsQQp0HOXhW5K1BFv+jPCIES0qcY/Za8W09eNz92YhgTZK6fS+ltzeF9Vh
-	vG8rZ/8b6RSx1zdL4qlv2ynsoYcCv2AxjoyAwrhb1guZ43ZG5DVI8BenMkQUJZ7F
-	me0LHnTAYdNmMezOCFZag0e0G7klsMpR87EEtwdmwOwrep0ptGQquSgFSGNazXAY
-	p/aug==
-X-ME-Sender: <xms:TNzaaC4TNlQkS4doqlyd0ucV2hJ9LZe21LruayHQT4SoTvqa7VakbA>
-    <xme:TNzaaE3YpQaY8HS5jX5NDd-I9uWsjEtU6ZMHkNJZCvtNHbx2_050meXQPbfq17Nb0
-    geyWSI9P-t1BFWPXWQ1Pup0pgZysOve8YfJkx8JTZMgTg3GUtC2I8Y>
-X-ME-Received: <xmr:TNzaaNCOJ1jnkXl0uociQJPCDth7P2e4e4blxYmFRiseY3UKhO_YUdphKVAZfHQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdejkeekfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecuogetfedtuddqtdduucdludehmdenucfjughrpefhvfevuf
-    ffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeforghrkhcurfgvrghrshhonhcu
-    oehmphgvrghrshhonhdqlhgvnhhovhhosehsqhhuvggssgdrtggrqeenucggtffrrghtth
-    gvrhhnpeevtdelgfeggfejtedtvdfgkefhuefguedtkeeffeduueduvdeiuedtleejvdfh
-    vdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhsohhnqdhlvghnohhvohesshhq
-    uhgvsggsrdgtrgdpnhgspghrtghpthhtohephedpmhhouggvpehsmhhtphhouhhtpdhrtg
-    hpthhtohepmhhpvggrrhhsohhnqdhlvghnohhvohesshhquhgvsggsrdgtrgdprhgtphht
-    thhopehjjhhohhhnshhonheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghthhduud
-    hksehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidq
-    fihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
-    hugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:TNzaaPPvVxKVDzHu4qWCm3xqLRPONgJa5nIh2p4dex0gk7iWxZGJsg>
-    <xmx:TNzaaCbXzAedOiNXkBZAVavcHL5MWE-m5CgU3DP2QoOmORHWlK0l4g>
-    <xmx:TNzaaOsueYrO-BZwkIXiP1Dqog3nTGM3JPhr2JmaBTEkk_Rw2OjQOA>
-    <xmx:TNzaaEPr2UZerHWnhKUBo9BJp3UZM3eiLvKYuEVY4xBzDkSk6oZBNA>
-    <xmx:TdzaaOoYBrfZ47_QNhXSi0-3gff0j-bnt1AdM33PueMXnxDPphjZsfxB>
-Feedback-ID: ibe194615:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 29 Sep 2025 15:21:48 -0400 (EDT)
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
-To: mpearson-lenovo@squebb.ca
-Cc: jjohnson@kernel.org,
-	ath11k@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] wifi: ath11k: Add missing platform IDs for quirk table
-Date: Mon, 29 Sep 2025 15:21:35 -0400
-Message-ID: <20250929192146.1789648-1-mpearson-lenovo@squebb.ca>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <mpearson-lenovo@squebb.ca>
-References: <mpearson-lenovo@squebb.ca>
+	s=arc-20240116; t=1759190757; c=relaxed/simple;
+	bh=a154aIdBQtmZaCQ2OgoZBJaqPWbb1ESXLP3b5mhSmww=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bBdMmAj7V0VWItUWfXbJ9z5tITCptcO46Zyg17UlSZ8az9zbePjEo6hlpDOfsxSiu0Cem4AUqAWv5fSaa8CejFgC5MrGvZLaxPUpzicRkxkCfwWpYV3N6+GIHxHdMd7ykZjiK9xRelD/wA9pZLlvTGq8V6aSHzvVVMOoHUsCDZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RcSwNsBh; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-269af38418aso67488845ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Sep 2025 17:05:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759190755; x=1759795555; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2bUrbTjyVbGQlT+Ufj8ik95yyvvCsvJU5vx0WHjNybE=;
+        b=RcSwNsBhkYtUlgVRqOzrVEhNzl4ziY5NGCmtAiSAqr4z38Rg7fFXlYpQvNVyfnmo4d
+         t118hOw1n1KR2boMRQNIi3LTZJ37KjeH0NSR9VDRvM9EzvL+c7DwLedOElGBDpOAaiRg
+         sSwTr/QjJidHyEhIXwWCJz1tTlfQDfkf34eQRXWsdOoZy0qf8tyvWHrJTUTQgt8i2jo0
+         +MgN3xSa72bSw2HLnqxYEnRPAmgLK2CsZuZv6E2vfAMQVUahUWxaUf7IRunVHuyGvIF+
+         l8IxxBs8EgjJiO4oqf9cGgmbfISAhRMgM9ROFQMk7ogcn9siR/blzc10NeEMm1Wb5fHi
+         4dRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759190755; x=1759795555;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2bUrbTjyVbGQlT+Ufj8ik95yyvvCsvJU5vx0WHjNybE=;
+        b=aSX7wG9e3HQxKWgTdSfs+vdBm5XHvR9fSUe8oD8pmmujH52wkhfMmpIgzmfjBXGXDw
+         jicYsvMthLssUFKQVjnyqbFP6VbO2pZHP+74sLChc78JRj5YIJbN4dajVA8ucm+w+5Gg
+         e/VpfG+RYZWqjvlf3iHZ1k2N9Ixv/twa6c/46bYwbn82HzbRtMCpfngZMsBfSnEUuYYv
+         13nzFBaXEtMt9Da+GZxGTfgQbJh4XNHfqE91XBE4e0ik6x/xhiy2issKMFKNW+ddIGKI
+         EB+MBlPWAkAauY/w5XEW7K56hSu/G7t3PlJzdKD4KQwYiPrQscXhW8rJnKwsMyEyn0WE
+         t5bA==
+X-Gm-Message-State: AOJu0YygzYhdVewUp8bYCjWMMT6Gwr1uG87uZwlJwS5Ma2AwJbPv1/uX
+	w+/Gn2dQaUyXor4US7o3TRiFfzokmDdiC9NW9ImyQnzrSepc/RefJyWYw8mA0g==
+X-Gm-Gg: ASbGncv1aE6HZueG0YXYMJEM9CSw4q+Z0wH6ssW+5jvb3kqTGv+admydY4HjT4BMrqs
+	Bl19MvB7uNuuR8qEu53mQXYxeS28+hVsDre2k2QewWmdbs8UZkWxVaxHmNR1G5HXj5jpeIaZYG+
+	/aNUYW91b27NvhMVCknlBU2nMF829yYX0zpTpFDFdmPmUlQA1k0DOEALIpP/Y9TxsnD/mVI0qI6
+	cmEzTtmZJpGswGdqy44oQgFRN205qxsGJhpdVEmN+CHWXD2fkPIiwCOu0A382jb2UIye5S54YLC
+	p5FzrcWmvLkbxZ6hYtvdml1Jg/QAuhwscEWVWsX3yYkXvwWIiDDQ4nfKyZkP1+UzjaXMoviftNU
+	5ehLtdgpX72v0vt6RHiLSHbzBk9ZrcrVGVxw4894mdLw0yBrAGB89khgl9z75brYiE2SM3YsetE
+	OxIFCSCUmv7lzMPyrSqqXNng==
+X-Google-Smtp-Source: AGHT+IFrBzNZCu2BRKgrIq9N42owNMMwxrRNQZJtahP6J+jz1S8/03SSBYxre9N2U9nV1UFhDTMKeQ==
+X-Received: by 2002:a17:902:c950:b0:279:daa1:6780 with SMTP id d9443c01a7336-27ed4a86e0emr214819425ad.52.1759190754799;
+        Mon, 29 Sep 2025 17:05:54 -0700 (PDT)
+Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed6715f0esm141988805ad.52.2025.09.29.17.05.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Sep 2025 17:05:52 -0700 (PDT)
+From: Yu-Chun Lin <eleanor15x@gmail.com>
+To: pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jserv@ccns.ncku.edu.tw,
+	visitorckw@gmail.com,
+	stanley_chang@realtek.com,
+	cy.huang@realtek.com,
+	Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: [PATCH rtw-next v2] wifi: rtw89: Replace hardcoded strings with helper functions
+Date: Tue, 30 Sep 2025 08:05:45 +0800
+Message-Id: <20250930000545.2192692-1-eleanor15x@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -107,119 +92,195 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Lenovo platforms can come with one of two different IDs.
-The pm_quirk table was missing the second ID for each platform.
+Replace hardcoded strings with 'str_on_off()', 'str_enable_disable()',
+and 'str_read_write()'.
 
-Add missing ID and some extra platform identification comments.
-Reported on https://bugzilla.kernel.org/show_bug.cgi?id=219196
+The change improves readability.
 
-Tested-on: P14s G4 AMD.
-Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine model")
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
 ---
-Changes in v2:
- - Correct typo for T14s G4 AMD to use correct ID. Sorry!
- - Added in Fixes and Tested-on tags correctly.
+v1 -> v2
+- Drop all #include <linux/string_choices.h>
+- Remove mention of potential binary size reduction
 
- drivers/net/wireless/ath/ath11k/core.c | 54 +++++++++++++++++++++++---
- 1 file changed, 48 insertions(+), 6 deletions(-)
+v1 Link:
+https://lore.kernel.org/lkml/20250921154410.1202074-1-eleanor15x@gmail.com/
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index d49353b6b2e7..47522fa186a1 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -912,42 +912,84 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- static const struct dmi_system_id ath11k_pm_quirk_table[] = {
- 	{
- 		.driver_data = (void *)ATH11K_PM_WOW,
--		.matches = {
-+		.matches = { /* X13 G4 AMD #1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21J3"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* X13 G4 AMD #2 */
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21J4"),
- 		},
- 	},
- 	{
- 		.driver_data = (void *)ATH11K_PM_WOW,
--		.matches = {
-+		.matches = { /* T14 G4 AMD #1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21K3"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* T14 G4 AMD #2 */
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),
- 		},
- 	},
- 	{
- 		.driver_data = (void *)ATH11K_PM_WOW,
--		.matches = {
-+		.matches = { /* P14s G4 AMD #1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21K5"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* P14s G4 AMD #2 */
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),
- 		},
- 	},
- 	{
- 		.driver_data = (void *)ATH11K_PM_WOW,
--		.matches = {
-+		.matches = { /* T16 G2 AMD #1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21K7"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /* T16 G2 AMD #2 */
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21K8"),
- 		},
- 	},
- 	{
- 		.driver_data = (void *)ATH11K_PM_WOW,
--		.matches = {
-+		.matches = { /*P16s G2 AMD #1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21K9"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /*P16s G2 AMD #2 */
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21KA"),
- 		},
- 	},
- 	{
- 		.driver_data = (void *)ATH11K_PM_WOW,
--		.matches = {
-+		.matches = { /*T14s G4 AMD #1 */
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21F8"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = { /*T14s G4 AMD #2 */
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21F9"),
- 		},
+ drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c |  8 ++++----
+ drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c |  8 ++++----
+ drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c |  6 +++---
+ drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c | 10 +++++-----
+ drivers/net/wireless/realtek/rtw89/usb.c          |  2 +-
+ drivers/net/wireless/realtek/rtw89/wow.c          |  3 ++-
+ 6 files changed, 19 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
+index 84c46d2f4d85..e574a9950a3b 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
+@@ -1626,7 +1626,7 @@ static void _iqk_get_ch_info(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+ 	iqk_info->iqk_table_idx[path] = idx;
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%d (PHY%d): / DBCC %s/ %s/ CH%d/ %s\n",
+-		    path, phy, rtwdev->dbcc_en ? "on" : "off",
++		    path, phy, str_on_off(rtwdev->dbcc_en),
+ 		    iqk_info->iqk_band[path] == 0 ? "2G" :
+ 		    iqk_info->iqk_band[path] == 1 ? "5G" : "6G",
+ 		    iqk_info->iqk_ch[path],
+@@ -1901,8 +1901,8 @@ static void _dpk_information(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[DPK] S%d[%d] (PHY%d): TSSI %s/ DBCC %s/ %s/ CH%d/ %s\n",
+ 		    path, dpk->cur_idx[path], phy,
+-		    rtwdev->is_tssi_mode[path] ? "on" : "off",
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->is_tssi_mode[path]),
++		    str_on_off(rtwdev->dbcc_en),
+ 		    dpk->bp[path][kidx].band == 0 ? "2G" :
+ 		    dpk->bp[path][kidx].band == 1 ? "5G" : "6G",
+ 		    dpk->bp[path][kidx].ch,
+@@ -2016,7 +2016,7 @@ static void _dpk_txpwr_bb_force(struct rtw89_dev *rtwdev,
+ 	rtw89_phy_write32_mask(rtwdev, R_TXPWRB_H + (path << 13), B_TXPWRB_RDY, force);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DPK] S%d txpwr_bb_force %s\n",
+-		    path, force ? "on" : "off");
++		    path, str_on_off(force));
+ }
+ 
+ static void _dpk_kip_pwr_clk_onoff(struct rtw89_dev *rtwdev, bool turn_on)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+index 9db8713ac99b..e74257d19412 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+@@ -1403,7 +1403,7 @@ static void _iqk_get_ch_info(struct rtw89_dev *rtwdev,
+ 		    path, iqk_info->iqk_ch[path]);
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[IQK]S%d (PHY%d): / DBCC %s/ %s/ CH%d/ %s\n", path, phy,
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->dbcc_en),
+ 		    iqk_info->iqk_band[path] == 0 ? "2G" :
+ 		    iqk_info->iqk_band[path] == 1 ? "5G" : "6G",
+ 		    iqk_info->iqk_ch[path],
+@@ -1881,8 +1881,8 @@ static void _dpk_information(struct rtw89_dev *rtwdev,
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[DPK] S%d[%d] (PHY%d): TSSI %s/ DBCC %s/ %s/ CH%d/ %s\n",
+ 		    path, dpk->cur_idx[path], phy,
+-		    rtwdev->is_tssi_mode[path] ? "on" : "off",
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->is_tssi_mode[path]),
++		    str_on_off(rtwdev->dbcc_en),
+ 		    dpk->bp[path][kidx].band == 0 ? "2G" :
+ 		    dpk->bp[path][kidx].band == 1 ? "5G" : "6G",
+ 		    dpk->bp[path][kidx].ch,
+@@ -2736,7 +2736,7 @@ static void _dpk_onoff(struct rtw89_dev *rtwdev,
+ 			       MASKBYTE3, 0x6 | val);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DPK] S%d[%d] DPK %s !!!\n", path,
+-		    kidx, dpk->is_dpk_enable && !off ? "enable" : "disable");
++		    kidx, str_enable_disable(dpk->is_dpk_enable && !off));
+ }
+ 
+ static void _dpk_track(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
+index 4796588c0256..70b1515c00fa 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
+@@ -1696,7 +1696,7 @@ static void _dpk_onoff(struct rtw89_dev *rtwdev, enum rtw89_rf_path path, bool o
+ 			       MASKBYTE3, _dpk_order_convert(rtwdev) << 1 | val);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DPK] S%d[%d] DPK %s !!!\n", path,
+-		    kidx, dpk->is_dpk_enable && !off ? "enable" : "disable");
++		    kidx, str_enable_disable(dpk->is_dpk_enable && !off));
+ }
+ 
+ static void _dpk_one_shot(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+@@ -1763,8 +1763,8 @@ static void _dpk_information(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[DPK] S%d[%d] (PHY%d): TSSI %s/ DBCC %s/ %s/ CH%d/ %s\n",
+ 		    path, dpk->cur_idx[path], phy,
+-		    rtwdev->is_tssi_mode[path] ? "on" : "off",
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->is_tssi_mode[path]),
++		    str_on_off(rtwdev->dbcc_en),
+ 		    dpk->bp[path][kidx].band == 0 ? "2G" :
+ 		    dpk->bp[path][kidx].band == 1 ? "5G" : "6G",
+ 		    dpk->bp[path][kidx].ch,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
+index b92e2ce4f4ad..e7fd028c5e82 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
+@@ -1344,7 +1344,7 @@ static void _iqk_get_ch_info(struct rtw89_dev *rtwdev,
+ 		    path, iqk_info->iqk_ch[path]);
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[IQK]S%d (PHY%d): / DBCC %s/ %s/ CH%d/ %s\n", path, phy,
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->dbcc_en),
+ 		    iqk_info->iqk_band[path] == 0 ? "2G" :
+ 		    iqk_info->iqk_band[path] == 1 ? "5G" : "6G",
+ 		    iqk_info->iqk_ch[path],
+@@ -1920,8 +1920,8 @@ static void _dpk_information(struct rtw89_dev *rtwdev,
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[DPK] S%d[%d] (PHY%d): TSSI %s/ DBCC %s/ %s/ CH%d/ %s\n",
+ 		    path, dpk->cur_idx[path], phy,
+-		    rtwdev->is_tssi_mode[path] ? "on" : "off",
+-		    rtwdev->dbcc_en ? "on" : "off",
++		    str_on_off(rtwdev->is_tssi_mode[path]),
++		    str_on_off(rtwdev->dbcc_en),
+ 		    dpk->bp[path][kidx].band == 0 ? "2G" :
+ 		    dpk->bp[path][kidx].band == 1 ? "5G" : "6G",
+ 		    dpk->bp[path][kidx].ch,
+@@ -2000,7 +2000,7 @@ static void _dpk_txpwr_bb_force(struct rtw89_dev *rtwdev, u8 path, bool force)
+ 	rtw89_phy_write32_mask(rtwdev, R_TXPWRB_H + (path << 13), B_TXPWRB_RDY, force);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,  "[DPK] S%d txpwr_bb_force %s\n",
+-		    path, force ? "on" : "off");
++		    path, str_on_off(force));
+ }
+ 
+ static void _dpk_kip_restore(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+@@ -2828,7 +2828,7 @@ static void _dpk_onoff(struct rtw89_dev *rtwdev,
+ 			       B_DPD_MEN, val);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DPK] S%d[%d] DPK %s !!!\n", path,
+-		    kidx, dpk->is_dpk_enable && !off ? "enable" : "disable");
++		    kidx, str_enable_disable(dpk->is_dpk_enable && !off));
+ }
+ 
+ static void _dpk_track(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
+index 6cf89aee252e..afbd1fb79021 100644
+--- a/drivers/net/wireless/realtek/rtw89/usb.c
++++ b/drivers/net/wireless/realtek/rtw89/usb.c
+@@ -55,7 +55,7 @@ static void rtw89_usb_vendorreq(struct rtw89_dev *rtwdev, u32 addr,
+ 		else if (ret < 0)
+ 			rtw89_warn(rtwdev,
+ 				   "usb %s%u 0x%x fail ret=%d value=0x%x attempt=%d\n",
+-				   reqtype == RTW89_USB_VENQT_READ ? "read" : "write",
++				   str_read_write(reqtype == RTW89_USB_VENQT_READ),
+ 				   len * 8, addr, ret,
+ 				   le32_to_cpup(rtwusb->vendor_req_buf),
+ 				   attempt);
+diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
+index 5faa51ad896a..6950fed96267 100644
+--- a/drivers/net/wireless/realtek/rtw89/wow.c
++++ b/drivers/net/wireless/realtek/rtw89/wow.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /* Copyright(c) 2019-2022  Realtek Corporation
+  */
++
+ #include "cam.h"
+ #include "core.h"
+ #include "debug.h"
+@@ -1248,7 +1249,7 @@ static int rtw89_wow_check_fw_status(struct rtw89_dev *rtwdev, bool wow_enable)
+ 				       mac->wow_ctrl.addr, mac->wow_ctrl.mask);
+ 	if (ret)
+ 		rtw89_err(rtwdev, "failed to check wow status %s\n",
+-			  wow_enable ? "enabled" : "disabled");
++			  str_enabled_disabled(wow_enable));
+ 	return ret;
+ }
+ 
 -- 
-2.43.0
+2.34.1
 
 
