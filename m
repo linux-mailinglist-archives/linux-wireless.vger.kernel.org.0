@@ -1,157 +1,136 @@
-Return-Path: <linux-wireless+bounces-27731-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27732-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A994BABE1C
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 09:45:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41868BABED6
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 09:57:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C19816865E
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 07:45:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC436189D073
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 07:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B3F33F6;
-	Tue, 30 Sep 2025 07:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675C32C11C9;
+	Tue, 30 Sep 2025 07:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HjLHHSwZ"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="s6ErOSoO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B5021B918
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 07:45:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EB523E229;
+	Tue, 30 Sep 2025 07:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759218338; cv=none; b=clEuh/HOTATe7ViLitIEmfcvPH1DjduvKk+mMnHHEDaLNpl904PDQzrOYr3CrpngQ4ndg4cpRkbQH7+BW5wtMjAx4Z/i3hgaXR29I9er5RMKeFdcyCCQtzW+cqMdNW4guu3qKpxqWDz5jxLQsCgMSGTdhbx2FKRz6ZFRNOnLQMg=
+	t=1759219028; cv=none; b=QL4QuYmlVEa4Rt5lnqQpS7RxUGePw9LeQYZWIIwNjWHJn/U/s4dFoz0yrfs9zGrseLBkEegmqD2Uh/RdmcYS74WPMgSGqms50+tNHQSNZRx0TcXqiik4ERV/YQOAV4jgr2+nIrXvU+wJf2qKt9TPCz7mId1uhbO+p6Y+H+wN+Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759218338; c=relaxed/simple;
-	bh=VknSEzbFRyg2p5S7p3lhBFmyvSKPT0KFiZDA68l4arc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YZwyK1ZbH2pa4hg8I02ahAWWvc6LsUU0GM5dXykLhpgMBAgWjtwWxTAA6kyBBhNVTm/oO9eMG28+HLpDrJC4WFEK8p2tnOpRF7QomJbyc2yDGKx+jMJkH3TZG15mwdJrf4nz7YIzTWZVuSwZRP2Cm/nL70Id4irAkhvlmkJOOZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HjLHHSwZ; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7835321bc98so2732621b3a.2
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 00:45:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759218336; x=1759823136; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4uumGeXdxkz5gZ2F60Gfh4IUJzxzYu9Q+pP6Rv+RiNY=;
-        b=HjLHHSwZLIkEAuYY8T8Q8wpgvFDzBUgn5Cd27Q8DoeIWT5uZIb0yXMWIN7Soy27Ln6
-         AzaYTtc1lfK4MXoJzgFbi2WpSegOM6bGWFpjz1t74oLozvyLP99lMed+TzlncyoiYvs4
-         mmM9Sl7Glv4m9ObWAXRoljGdcJOhOKL6tTXmSXQRriC2itmnDdo55Hi7yHksEYFY7/hD
-         gyT/vltZl/AUiSK8PpufQWM6q/QR9/ay/sNxlnrbrbZyHpXlVDY2qjLKj4gkdt4YWxJu
-         eLXFYp+XRjp5n3fEcndT2oAZ1kkjbJGtMcZFvTjaNkFp7FwpYfH7IvoxyCsOEui0BXE1
-         KbTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759218336; x=1759823136;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4uumGeXdxkz5gZ2F60Gfh4IUJzxzYu9Q+pP6Rv+RiNY=;
-        b=FN4rVqpK2k/IPug7qUJ9g8t2tfZiqrZy45sYz0mQIFzTCbeW7rxY8YSMGATtz0HkKf
-         QA3G9eTSaz2cVNPQHrKgWV2MlNQi9q8flvqb+wz2CVQgZcY/DPONHBl256PHvggVICY/
-         SU5sOYRlKQ9lVzisYRJia6J/6i1Gu8s5j1sn+H4AsZeDAxB/0QCtvkJjdmI9uzX9Jy2o
-         uP5Aas8h1oKME4Kjl0PADiwEM2KG/i4/q75hxXWQnZGLvxS75s5SEjcHrAyOk2UZQwHz
-         688Tb1+2lEi1SJGfE6LQ1h4jHvttcuyHb1cviJay7gOe78zBW5cBDW5L4zo6dcTYaM4c
-         ydQQ==
-X-Gm-Message-State: AOJu0YxXqALLQpxk+KvwbPDTR1HgKsiLu2DacCha2MXjTm7W3HWnaEf6
-	tH1UoDt+VgfJCIyi4s5yISaKgLVkBZ+T3Wzqpquf/WlVJxN5eww6m974
-X-Gm-Gg: ASbGnctISsJcvMoGL9SrrpS2q6nWoUnS3zuUOQqnH48yieq/CmbI8+DI3mYzhh2qFhH
-	zU8J2sjEfrkVPmChlK1lqxA26WXOYPukxdqzh+/r0pbYGdp6eHhIOHjWZ/pXQXiQRs7GsbyHLpS
-	y8aRFM7HF08jnNzXkbULk5LtVmkF6lUaKH16P2lXlA+jh5Mdl8XbD/7oTEubQyNoriEaG96MT9j
-	HRSWtxEGEg65FwkJpall1EBuQHbBnBSbK2tNv5xxJjkL0LLijpp4X2Acvq8+1zcK9oiOEVVbAKd
-	h3bfuHxCRGk1rbINL0YZ4jtnhaVO1cO2yswphiM0Y8wPhiacpKOPI+s5VI0pfZwxXhuWATsPgtY
-	WoACOvyahPSEp6PNAN3OjvFzS1fl4uvsucG1ddRr0FLOSiUo=
-X-Google-Smtp-Source: AGHT+IHBWQaxjNpvQkLTQV4wAuyXn8LXuHL8BSyY9zDckA2nLcbamYPZxcGJSX0XiLrCktXXBvwHcw==
-X-Received: by 2002:a05:6a00:1883:b0:781:15b0:bea9 with SMTP id d2e1a72fcca58-78115b0c366mr16605719b3a.22.1759218335832;
-        Tue, 30 Sep 2025 00:45:35 -0700 (PDT)
-Received: from BM5220 ([49.215.217.94])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-781023c158fsm12977520b3a.24.2025.09.30.00.45.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Sep 2025 00:45:35 -0700 (PDT)
-From: Zenm Chen <zenmchen@gmail.com>
-To: pkshih@realtek.com
-Cc: linux-wireless@vger.kernel.org,
-	rtl8821cerfe2@gmail.com,
-	stable@vger.kernel.org,
-	zenmchen@gmail.com
+	s=arc-20240116; t=1759219028; c=relaxed/simple;
+	bh=0s6ejZYwNsOM6uPaW1Eumj7yDgYQ23Q6dPw8TxD24qs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DSydb1sF8OcLiy/1mZZqmlP66/Rtni3tRFpbao5EYMcbOPTPOm47VQJ1XqZrTXHi9z36pHNtMMNQmNrRFLbeTuvGfaMTLHHz/V7CJeM0v2a4P04vaTPwUQyE6jYlkuBgQSOiyglKkMC8B2Io9pQrquXbW+rPtAgQ7q0Qo8FBqq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=s6ErOSoO; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 58U7v1KK1726047, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1759219021; bh=0s6ejZYwNsOM6uPaW1Eumj7yDgYQ23Q6dPw8TxD24qs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=s6ErOSoOiy3pHB+R6KFpp9L8xdYE51oLgMeMUaDt8fwIVZfkEmn9dON7jXS8idSgi
+	 D/FxUwzZ0nlgPOWXsReelJmhaB60wm/LOc/og5fqSbx+4HrjWgNGnLRvJ2KE53+Gkz
+	 Huu++r63DCnToymW0HDNOAm3i8J55GzJ0gKVkW2OJCrC2YQhrOEwTBRWkJSFtVfs3O
+	 kIzlZ8TX8cn/dM/tQoofoypyr4CXlOJm85hgfM5xIavmSHO+IMZf6ttd9HUoK4iGCr
+	 D81HrpM5SaA/CMQiH4/+nsrrxrnxmnxwB9N+BeCF6bnEjkimvPslngWNBeawCeqkON
+	 Ld/fWpW4Xjh9g==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 58U7v1KK1726047
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 30 Sep 2025 15:57:01 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Tue, 30 Sep 2025 15:57:01 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
+ 15.02.1544.027; Tue, 30 Sep 2025 15:57:01 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Zenm Chen <zenmchen@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
 Subject: RE: [PATCH rtw-next] wifi: rtl8xxxu: Add USB ID 2001:3328 for D-Link AN3U rev. A1
-Date: Tue, 30 Sep 2025 15:45:26 +0800
-Message-ID: <20250930074530.4204-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <62f767e17eaf428393cf79d55666a011@realtek.com>
+Thread-Topic: [PATCH rtw-next] wifi: rtl8xxxu: Add USB ID 2001:3328 for D-Link
+ AN3U rev. A1
+Thread-Index: AQHcMPU4LFvfPiVdyEmxJ5atcfU8NbSrAmPg///R9ACAAIdawA==
+Date: Tue, 30 Sep 2025 07:57:00 +0000
+Message-ID: <70d9d98f2c8d41fb94438d653e91697a@realtek.com>
 References: <62f767e17eaf428393cf79d55666a011@realtek.com>
+ <20250930074530.4204-1-zenmchen@gmail.com>
+In-Reply-To: <20250930074530.4204-1-zenmchen@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-Ping-Ke Shih <pkshih@realtek.com> 於 2025年9月30日 週二 上午11:19寫道：
->
-> Zenm Chen <zenmchen@gmail.com> wrote:
-> > Add USB ID 2001:3328 for D-Link AN3U rev. A1 which is a RTL8192FU-based
-> > Wi-Fi adapter.
-> >
-> > Compile tested only.
-> >
-> > Cc: stable@vger.kernel.org # 6.6.x
-> > Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-> > ---
-> > Link to the Windows driver for D-Link AN3U rev. A1
-> >
-> > https://www.dlinktw.com.tw/techsupport/ProductInfo.aspx?m=AN3U
->
-> Could you please enlighten me how you address this is RTL8192FU-based?
-> I downloaded the setup.ext and decompressed the file, but I can't find
-> 8192FU.
-
-Hi Ping-Ke,
-
-After installing that Windows driver, the driver will be placed at C:\Program Files\D-Link\AN3U\Driver.
-
-According to the line 266 of the C:\Program Files\D-Link\AN3U\Driver\WIN10X64\netrtwlanu.inf file [1], we know that this dongle uses a 8192FU chip.
-The specification [2] which says it supports both WPA2 and WPA3 is also a clue. As far as I know, among all Windows drivers for Realtek 802.11n 2T2R chips, only the driver for 8192FU supports both WPA2/WPA3, others support WPA2 only.
-This is how I determine what chip this dongle uses, but unfortunately there is no related report at linux-hardware.org [3] so cannot confirm it does use the ID 2001:3328.
-
-[1] line 265 ~ 266 of the netrtwlanu.inf file
-;; For 8192F DLINK
-%DLink_AN3U.DeviceDesc% 			= RTL8192fu.ndi, 	USB\VID_2001&PID_3328
-
-[2] https://www.dlink.com/tw/zh/products/an3u#Specs
-
-[3] Reports about the ID 2001:3328 and 2001:3329
-https://linux-hardware.org/?id=usb:2001-3328
-https://linux-hardware.org/?id=usb:2001-3329
-
->
-> > ---
-> >  drivers/net/wireless/realtek/rtl8xxxu/core.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> > b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> > index 3ded59527..be39463bd 100644
-> > --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> > +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> > @@ -8136,6 +8136,9 @@ static const struct usb_device_id dev_table[] = {
-> >  /* TP-Link TL-WN823N V2 */
-> >  {USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0135, 0xff, 0xff, 0xff),
-> >         .driver_info = (unsigned long)&rtl8192fu_fops},
-> > +/* D-Link AN3U rev. A1 */
-> > +{USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3328, 0xff, 0xff, 0xff),
-> > +       .driver_info = (unsigned long)&rtl8192fu_fops},
-> >  #ifdef CONFIG_RTL8XXXU_UNTESTED
-> >  /* Still supported by rtlwifi */
-> >  {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x8176, 0xff, 0xff, 0xff),
-> > --
-> > 2.51.0
->
-
+WmVubSBDaGVuIDx6ZW5tY2hlbkBnbWFpbC5jb20+IHdyb3RlOg0KPiBQaW5nLUtlIFNoaWggPHBr
+c2hpaEByZWFsdGVrLmNvbT4g5pa8IDIwMjXlubQ55pyIMzDml6Ug6YCx5LqMIOS4iuWNiDExOjE5
+5a+r6YGT77yaDQo+ID4NCj4gPiBaZW5tIENoZW4gPHplbm1jaGVuQGdtYWlsLmNvbT4gd3JvdGU6
+DQo+ID4gPiBBZGQgVVNCIElEIDIwMDE6MzMyOCBmb3IgRC1MaW5rIEFOM1UgcmV2LiBBMSB3aGlj
+aCBpcyBhIFJUTDgxOTJGVS1iYXNlZA0KPiA+ID4gV2ktRmkgYWRhcHRlci4NCj4gPiA+DQo+ID4g
+PiBDb21waWxlIHRlc3RlZCBvbmx5Lg0KPiA+ID4NCj4gPiA+IENjOiBzdGFibGVAdmdlci5rZXJu
+ZWwub3JnICMgNi42LngNCj4gPiA+IFNpZ25lZC1vZmYtYnk6IFplbm0gQ2hlbiA8emVubWNoZW5A
+Z21haWwuY29tPg0KPiA+ID4gLS0tDQo+ID4gPiBMaW5rIHRvIHRoZSBXaW5kb3dzIGRyaXZlciBm
+b3IgRC1MaW5rIEFOM1UgcmV2LiBBMQ0KPiA+ID4NCj4gPiA+IGh0dHBzOi8vd3d3LmRsaW5rdHcu
+Y29tLnR3L3RlY2hzdXBwb3J0L1Byb2R1Y3RJbmZvLmFzcHg/bT1BTjNVDQo+ID4NCj4gPiBDb3Vs
+ZCB5b3UgcGxlYXNlIGVubGlnaHRlbiBtZSBob3cgeW91IGFkZHJlc3MgdGhpcyBpcyBSVEw4MTky
+RlUtYmFzZWQ/DQo+ID4gSSBkb3dubG9hZGVkIHRoZSBzZXR1cC5leHQgYW5kIGRlY29tcHJlc3Nl
+ZCB0aGUgZmlsZSwgYnV0IEkgY2FuJ3QgZmluZA0KPiA+IDgxOTJGVS4NCj4gDQo+IEhpIFBpbmct
+S2UsDQo+IA0KPiBBZnRlciBpbnN0YWxsaW5nIHRoYXQgV2luZG93cyBkcml2ZXIsIHRoZSBkcml2
+ZXIgd2lsbCBiZSBwbGFjZWQgYXQgQzpcUHJvZ3JhbSBGaWxlc1xELUxpbmtcQU4zVVxEcml2ZXIu
+DQo+IA0KPiBBY2NvcmRpbmcgdG8gdGhlIGxpbmUgMjY2IG9mIHRoZSBDOlxQcm9ncmFtIEZpbGVz
+XEQtTGlua1xBTjNVXERyaXZlclxXSU4xMFg2NFxuZXRydHdsYW51LmluZiBmaWxlIFsxXSwgd2UN
+Cj4ga25vdyB0aGF0IHRoaXMgZG9uZ2xlIHVzZXMgYSA4MTkyRlUgY2hpcC4NCj4gVGhlIHNwZWNp
+ZmljYXRpb24gWzJdIHdoaWNoIHNheXMgaXQgc3VwcG9ydHMgYm90aCBXUEEyIGFuZCBXUEEzIGlz
+IGFsc28gYSBjbHVlLiBBcyBmYXIgYXMgSSBrbm93LCBhbW9uZw0KPiBhbGwgV2luZG93cyBkcml2
+ZXJzIGZvciBSZWFsdGVrIDgwMi4xMW4gMlQyUiBjaGlwcywgb25seSB0aGUgZHJpdmVyIGZvciA4
+MTkyRlUgc3VwcG9ydHMgYm90aCBXUEEyL1dQQTMsDQo+IG90aGVycyBzdXBwb3J0IFdQQTIgb25s
+eS4NCj4gVGhpcyBpcyBob3cgSSBkZXRlcm1pbmUgd2hhdCBjaGlwIHRoaXMgZG9uZ2xlIHVzZXMs
+IGJ1dCB1bmZvcnR1bmF0ZWx5IHRoZXJlIGlzIG5vIHJlbGF0ZWQgcmVwb3J0IGF0DQo+IGxpbnV4
+LWhhcmR3YXJlLm9yZyBbM10gc28gY2Fubm90IGNvbmZpcm0gaXQgZG9lcyB1c2UgdGhlIElEIDIw
+MDE6MzMyOC4NCg0KVGhhbmtzIGZvciB0aGUgZGV0YWlsLiBJIGhhdmUgbm8gcGVybWlzc2lvbiB0
+byBpbnN0YWxsIGRyaXZlcnMgdG8NCm15IFdpbmRvd3MgUEMgaW4gb2ZmaWNlLCBzbyBJIGNhbiBv
+bmx5IHRyeSB0byBkZWNvbXByZXNzIHNldHVwLmV4ZS4NCkFueXdheSwgYWNrIHRoaXMgcGF0Y2gu
+IFRoYW5rcy4NCg0KUmV2aWV3ZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29t
+Pg0KDQo+IA0KPiBbMV0gbGluZSAyNjUgfiAyNjYgb2YgdGhlIG5ldHJ0d2xhbnUuaW5mIGZpbGUN
+Cj4gOzsgRm9yIDgxOTJGIERMSU5LDQo+ICVETGlua19BTjNVLkRldmljZURlc2MlICAgICAgICAg
+ICAgICAgICAgICAgICAgID0gUlRMODE5MmZ1Lm5kaSwgICAgICAgIFVTQlxWSURfMjAwMSZQSURf
+MzMyOA0KPiANCj4gWzJdIGh0dHBzOi8vd3d3LmRsaW5rLmNvbS90dy96aC9wcm9kdWN0cy9hbjN1
+I1NwZWNzDQo+IA0KPiBbM10gUmVwb3J0cyBhYm91dCB0aGUgSUQgMjAwMTozMzI4IGFuZCAyMDAx
+OjMzMjkNCj4gaHR0cHM6Ly9saW51eC1oYXJkd2FyZS5vcmcvP2lkPXVzYjoyMDAxLTMzMjgNCj4g
+aHR0cHM6Ly9saW51eC1oYXJkd2FyZS5vcmcvP2lkPXVzYjoyMDAxLTMzMjkNCj4gDQo+ID4NCj4g
+PiA+IC0tLQ0KPiA+ID4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUvY29y
+ZS5jIHwgMyArKysNCj4gPiA+ICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspDQo+ID4g
+Pg0KPiA+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4
+eHUvY29yZS5jDQo+ID4gPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUv
+Y29yZS5jDQo+ID4gPiBpbmRleCAzZGVkNTk1MjcuLmJlMzk0NjNiZCAxMDA2NDQNCj4gPiA+IC0t
+LSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUvY29yZS5jDQo+ID4gPiAr
+KysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L2NvcmUuYw0KPiA+ID4g
+QEAgLTgxMzYsNiArODEzNiw5IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgdXNiX2RldmljZV9pZCBk
+ZXZfdGFibGVbXSA9IHsNCj4gPiA+ICAvKiBUUC1MaW5rIFRMLVdOODIzTiBWMiAqLw0KPiA+ID4g
+IHtVU0JfREVWSUNFX0FORF9JTlRFUkZBQ0VfSU5GTygweDIzNTcsIDB4MDEzNSwgMHhmZiwgMHhm
+ZiwgMHhmZiksDQo+ID4gPiAgICAgICAgIC5kcml2ZXJfaW5mbyA9ICh1bnNpZ25lZCBsb25nKSZy
+dGw4MTkyZnVfZm9wc30sDQo+ID4gPiArLyogRC1MaW5rIEFOM1UgcmV2LiBBMSAqLw0KPiA+ID4g
+K3tVU0JfREVWSUNFX0FORF9JTlRFUkZBQ0VfSU5GTygweDIwMDEsIDB4MzMyOCwgMHhmZiwgMHhm
+ZiwgMHhmZiksDQo+ID4gPiArICAgICAgIC5kcml2ZXJfaW5mbyA9ICh1bnNpZ25lZCBsb25nKSZy
+dGw4MTkyZnVfZm9wc30sDQo+ID4gPiAgI2lmZGVmIENPTkZJR19SVEw4WFhYVV9VTlRFU1RFRA0K
+PiA+ID4gIC8qIFN0aWxsIHN1cHBvcnRlZCBieSBydGx3aWZpICovDQo+ID4gPiAge1VTQl9ERVZJ
+Q0VfQU5EX0lOVEVSRkFDRV9JTkZPKFVTQl9WRU5ET1JfSURfUkVBTFRFSywgMHg4MTc2LCAweGZm
+LCAweGZmLCAweGZmKSwNCj4gPiA+IC0tDQo+ID4gPiAyLjUxLjANCj4gPg0KDQo=
 
