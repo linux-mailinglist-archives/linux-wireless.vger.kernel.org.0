@@ -1,189 +1,157 @@
-Return-Path: <linux-wireless+bounces-27729-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27730-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE17BBABA8E
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 08:25:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8052BABCF9
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 09:25:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FDC01C6F22
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 06:25:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B904A4E23BD
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 07:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62ABC2581;
-	Tue, 30 Sep 2025 06:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CC5239E76;
+	Tue, 30 Sep 2025 07:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZS44hf+h"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iawEnjln"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C1827B339
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 06:25:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E466F23182D
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 07:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759213509; cv=none; b=kdLQ52C9mur2wZuXejKkxyX87rmWdaHBRJnEjVxqyqoAeCPSOpkcEWEd78ZHmblkCwwHEqrOnIVtuxokFmYmezHHBxtPQUvfaNYwQtesrS8Cc5qbDYM8LBybnn4JjJHCYfAqrCkkXsWNf6Fb+2GywZtNH2Prf+MOUKVECwHbGhc=
+	t=1759217133; cv=none; b=ARC1xuhHv28cFoAtLNKDfSwHTdVXyyoAL7H21vEQFDlxTHVgv6oVh/+bNevah5Dg0NAD6V0r2OGPFyi4PGMX88+qIDRqOw0z5pxN56cWaujYOGtNhY+0SjQsQZNlUmUC2DxUivjva+bfJGnSY9u8e+2XAjsBlCLaGxuLDCs3xVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759213509; c=relaxed/simple;
-	bh=16Lc+wM3WkMBVsu91oIa15x3brJ28HoCPaDDL30QKNc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mvUJWMzxHYt7UFjdceT+oT4Eg7Vn9Ph1kxOyYn6ae5JKskW45T2jY2JxVBLMrdDwFp176VhgjNNU755YT+UzGf4upsU9u822tudjU1zfdM3R3lgaHxAfSslNw+qR3coi7ET9dUFZ7B3CmJpJJQUwV2ndGgScdB6dC4ajlaPg4YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZS44hf+h; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58U4HvD2011778;
-	Tue, 30 Sep 2025 06:24:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nn+qAJIlHrfAtc6icVKaRA7vk1pOD9ZpryOheEuTofU=; b=ZS44hf+h5PALUdZk
-	j1pyKQ78Smon12XGl8zNxwUwSWT74lxhHuiCH4hSpKZc1ghQATOYPx/pXfXkOCXN
-	9dDmNhSXuO9Lo2dSlz78GkxzDlfPOqKjuzRC7Or1+poDvc6D2Aj6xmnIVcVUGtxc
-	kH1i57qlyVuSBhLhQLRlmucI/EBPsGlu0pcbS5/OQfUH+BNUOHTqEtYImeDa32xk
-	zkUdi7FFF17Z6oOz/dI8fGikMDNgZAdwwM5m1DO7lglz3RpMqxzLuyWQtlXdZmyQ
-	ghbHU9hwGS9hZRAWf5N3ZnPb/UfwoW0q7bT4sAQzKWURhy0jtyZV1Ezl9wVoenN+
-	TEDnGg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49e5mcr5cy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Sep 2025 06:24:58 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 58U6OvHn001812
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Sep 2025 06:24:57 GMT
-Received: from [10.79.196.122] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.24; Mon, 29 Sep
- 2025 23:24:56 -0700
-Message-ID: <495834e0-aa0c-4ea5-9e54-17ed0bcadf73@quicinc.com>
-Date: Tue, 30 Sep 2025 11:54:53 +0530
+	s=arc-20240116; t=1759217133; c=relaxed/simple;
+	bh=/qY19bwAFqM5QVChj7mGu0N4u7Sre3LNSXSK+ti50T4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RaSWKQPvFj+CHinKDqAA7WG3wQW6pjau7leVVK9EfiA/Xuy5W2Xvxtuyouge5yCbFgNYYDZ82vuqvrDIDaPOjInOc0zDdB3uh9btbFNje30IiqI5GZL5jvFsBkugA1JnFQX+cNy+SuJhNXMTkawaruwQBl8aBoKDLxrGf9qgREc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iawEnjln; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-62fc28843ecso7663228a12.1
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 00:25:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759217129; x=1759821929; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Led2UwPQnyytnl+DzRHCByDRtvZjSP7e5YjaRCfpAKg=;
+        b=iawEnjlnZSX2qhU1WoWjaRUgLqpHbqx6bSowoPhZr63KvT7A70JrqPG6+ck/DnpQcw
+         vjxTpibWPGBWGvJ7C2+dBWmPL4VS2+OtmdlgQ17R3yXFAgv8y4/qFfqo1GmIdoq711GX
+         jvMgT8CfGc4ZoaEYnJEVz0RJUvIdgcToseIrg4TPs2gZxSg005T/8aw2pEG1yFafRYGT
+         9CWeEVDzmKinHB9s/t4y+iigCHAqL1dg5kXgULG5eafTg3Lfcs912hZhsjBhyOm7oYvo
+         JKTe+tCRRFH2k90Lq3x/k+ORHhSB9R5hcSVX+UxkuyugNd62d+nVWBFJxwMk/Y2L08Sy
+         HH/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759217129; x=1759821929;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Led2UwPQnyytnl+DzRHCByDRtvZjSP7e5YjaRCfpAKg=;
+        b=bj/RnmpHGXMSGh0Biq0E/vu9rGNqI4vm71v3qhNNZMClfRICqsQaPaZxgP/3KlPE/e
+         8dClYq/Frty/cNzyfs8sndbPdLVkHkOqSnVfk6b0YfeJmlQcZKnr5KTDmTtZfLit7MiV
+         7/GIYANuYHwLOY+yjkO0diuvmtnooDm4gLZI4VzV9iBd7BsiPYqeY0+QW71ScCx7+Zhe
+         g7Bi5isly/VnhaeUVDvh/8+ENzDNmBGkMz+krZrMl6LqFtsav9ivl9e1Migoa7RgeYrr
+         fpqHlzf64Dwjv4XoElScCh9I860lvn6ijyf5v2ENraayVvGErQ00OX8RdTRaHEmUtDSS
+         IbLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUYjUGPCboP9Re4mt901nnrpxn9ykclrMllL5+uBkMayZpauNg7pH2brx/G6hrPYnp9QEvQmiem/YDdqu7zkw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2OrBifvjVhpo7DTcAVh122BjHQ4XjX/UqdKVKWA0QI8Xg5+g0
+	JICHJT+Osc8MHmszs2kChHUIWwGRyx8L20XR9i1IXOZ5wA8DA5qdjz2VeKpIC3QeDa8NWLC4FnM
+	UIlQscQ8vVwaHM+Hy/7LmzhVHCmtq2GE=
+X-Gm-Gg: ASbGncv1Q2b6uhdAESu9zRnWD3+kXB7Nwjp6uNlBxreeP2+aWRM3CVQtbvH7Tsh/8Rk
+	ZhV0JfWsqe853jTD7AE56piYLaMm931PnDu0g+0Co1nB8oMeKHqZEzakm2hVWgxAB6BDY5+kCP4
+	XRzhbj7ERGEHaZM3lJ/Ap4LYy5B4EqHOqWK1YpiblVHQLVPe4J4Y9yR1cWsFyc3/panbmYIxzWb
+	lkMgRA3YS00oITaUgXLEt/K63XBhMA=
+X-Google-Smtp-Source: AGHT+IF4t4oQO0H59K5Coad4/8MzQEtuxgT8xWOt07Q8r4oPn0OPKDtCHe6XhgsPz7Ze7htZiZMbsS28x5RpC/AfOIk=
+X-Received: by 2002:a17:907:3c8c:b0:b09:c230:12dc with SMTP id
+ a640c23a62f3a-b34b7209e46mr2050761566b.8.1759217128969; Tue, 30 Sep 2025
+ 00:25:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next v3 0/3] wifi: cfg80211/mac80211: add support
- to handle incumbent signal detected event
-To: Benjamin Berg <benjamin@sipsolutions.net>, <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20250923073554.3438429-1-quic_amitajit@quicinc.com>
- <fc58639b6e910e93b103cb8abcf2a5edefa70913.camel@sipsolutions.net>
-Content-Language: en-US
-From: Amith A <quic_amitajit@quicinc.com>
-In-Reply-To: <fc58639b6e910e93b103cb8abcf2a5edefa70913.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=RMC+3oi+ c=1 sm=1 tr=0 ts=68db77ba cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10
- a=SOZjVK6XgupnwtrLmuEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=HhbK4dLum7pmb74im6QT:22
-X-Proofpoint-ORIG-GUID: t9fCrmI6jtu1PFBvlLivVNvdrv7MMZ-3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAwNCBTYWx0ZWRfXw8eZwMCprZrK
- NbFTNtl7Z7gmihzxIyd5l3qowhN80zPN3iwFwQ6pD51NvJeSflwJnFBG1N8m5ZMLPh6hLS2UTpG
- gSR06k+55i6AdZ+ajDVLmHBUJnNNtfvJbqPcku1erM/KVndEokWx7n6DXyZxm4k6Sw/htfqSTNq
- 5kQfXFs1//51cFEzlpuIBRxtF/nIMRFY8KyOEOUMfbpZZjugx1mUvEMdHY5TV8tEflQQuzAKTNo
- obQef2ltqllvHZjm1FleMjvr+PMh1VCGzOd8sYdaQVUKorRGB7MswD0RIfk3nrEAWmXprrZ9bb9
- w8ASuXy9LfPxqsGutldZcm6WrQqJm6c83uMjr843fGUI3T9brMlhVP0WLXK21vofIlNhJ9AU3NG
- sjGDm7HJMJjbCgN8VotRgA2kczE0Jg==
-X-Proofpoint-GUID: t9fCrmI6jtu1PFBvlLivVNvdrv7MMZ-3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-30_01,2025-09-29_04,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 suspectscore=0 impostorscore=0 spamscore=0
- adultscore=0 bulkscore=0 clxscore=1011 phishscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270004
+References: <20250930042948.427154-1-wens@kernel.org>
+In-Reply-To: <20250930042948.427154-1-wens@kernel.org>
+From: Ping-Ke Shih <pkshih@gmail.com>
+Date: Tue, 30 Sep 2025 15:25:17 +0800
+X-Gm-Features: AS18NWDi9ciIzyF1qDllkNFnyo0p18giZ057pSnyex9niropTawTNyln0E9z9bI
+Message-ID: <CAHrRpunr+hbWiO1jY=jGZOiqGWcXFGYBSJi17+r-AgOMwssaXg@mail.gmail.com>
+Subject: Re: [PATCH] wireless-regdb: Permit lower 6 GHz band for Kazakhstan (KZ)
+To: Chen-Yu Tsai <wens@kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Pavel Starosek <starosekpd@gmail.com>, 
+	wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-
-
-On 9/23/2025 2:30 PM, Benjamin Berg wrote:
-> Hi,
+Chen-Yu Tsai <wens@kernel.org> wrote:
 >
-> On Tue, 2025-09-23 at 13:05 +0530, Amith A wrote:
->> This patch series adds support to handle incumbent signal interference
->> detected event in 6 GHz band. When an incumbent signal is detected by an
->> AP/mesh interface operating in 6 GHz band, the AP/mesh is expected to
->> vacate the channels affected by it.
->>
->> Driver is expected to call the newly introduced API with required
->> information to notify the interference detection. This information will be
->> ultimately sent to user space via NL802111 command. User space is expected
->> to process it and take further action - vacate the channel, or reduce the
->> bandwidth.
-> I am wondering a bit whether cfg80211 should enforce some AP behaviour
-> here. Like marking the channels as incumbent internally and stopping
-> the interface if userspace does not vacate them within a certain period
-> of time.
+> By Order of the Minister of Digital Development No. 564/NK dated
+> September 19, 2024 [1], an amendment was made to the assignment of
+> frequency bands, opening up the lower part of the 6 GHz band (5,945 MHz
+> to 6,425 MHz) was opened up to "SRD (wideband data transmission systems)
+> WAS/RLAN Data transmission systems/radio local area networks".
 >
-> As-is, userspace seems to be able to simply ignore the event or
-> misbehave in other ways and cause an incumbent channel to be used even
-> though it is prohibited by regulatory rules.
-This infrastructure was designed to closely resemble DFS radar detection
-and handling, where cfg80211/mac80211 acts as a pass-through layer and
-userspace is responsible for taking action. If you suggest adopting AP
-behavior in cfg80211 where the interface is stopped if userspace fails to
-vacate the affected channels within a certain timeout, that’s certainly
-doable.
+> The power is limited to 200 mW e.i.r.p. with a spectral density of 10
+> mW/MHz. Only indoor use is permitted.
+>
+> While at it, also change the power limits to use mW units to match the
+> official documents.
+>
+> Initial information was provided by the Wi-Fi Alliance website, which
+> has a map [2] showing all countries that have enabled 6 GHz WiFi, and
+> links to official documents. This document was not sufficient as it did
+> not include power limits or other restrictions.
+>
+> A subsequent search found a blog post [3] providing details and titles
+> of the official documents in English. An AI agent was used to search
+> for the original text of said order [1] after rummaging through
+> government websites in Russian and Kazakh failed to find anything.
+>
+> [1] https://adilet.zan.kz/rus/docs/V2400035100
+> [2] https://www.wi-fi.org/regulations-enabling-6-ghz-wi-fi
+> [3] https://www.onewindow.pro/blog-posts/6-ghz-band-regulation-in-the-republic-of-kazakhstan
+>
+> Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+> ---
+> If you received this patch, please help review it. The changes are
+> based on translations of the original text / tables, so a second set
+> of eyes would be appreciated.
+>
+>  db.txt | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/db.txt b/db.txt
+> index 6e1ad30..16bcb32 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -1136,11 +1136,12 @@ country KY: DFS-FCC
+>  # http://adilet.zan.kz/rus/docs/V1500010730
+>  # http://adilet.zan.kz/rus/docs/V1500010375
+>  country KZ: DFS-ETSI
+> -       (2400 - 2483.5 @ 40), (20)
+> -       (5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW
+> +       (2400 - 2483.5 @ 40), (100 mW)
+> +       (5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
+>         (5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW
 
-Based on my understanding, regulatory requirements prohibit transmission
-on a channel while interference is present and allow resumption only once
-the interference ceases. However, I am not aware of any specific time
-constraints defined for vacating the channel.
-> Another question may be whether cfg80211 needs to verify that the
-> driver/hardware is doing incumbent signal detection before it uses
-> channels that may be affected.
-Apologies, I didn’t fully grasp your question. Are you suggesting that
-we advertise a capability flag if the driver/hardware supports
-incumbent signal detection?
->
-> Benjamin
->
->> Aditya Kumar Singh (1):
->>    wifi: mac80211_hwsim: add incumbent signal interference detection
->>      support
->>
->> Hari Chandrakanthan (2):
->>    wifi: cfg80211: add support to handle incumbent signal detected event
->>      from mac80211/driver
->>    wifi: mac80211: add support to handle incumbent signal detected event
->>      from driver
->> ---
->> Changes in v3:
->>   - Removed the workqueue mechanism in ieee80211_incumbent_signal_detected(),
->>     exported the cfg80211_ function that sends the NL80211 command and called
->>     it from ieee80211_incumbent_signal_detected() directly.
->>   - Renamed nl80211_incumbent_signal_notify() to
->>     cfg80211_incumbent_signal_notify() and removed the gfp argument from it.
->>
->> Changes in v2:
->>   - Updated the kernel doc of NL80211_ATTR_INCUMBENT_SIGNAL_INTERFERENCE_BITMAP
->>     to include details of how it interacts with puncturing.
->>   - Rebased on ToT
->> ---
->>   drivers/net/wireless/virtual/mac80211_hwsim.c | 33 ++++++++++++++++
->>   drivers/net/wireless/virtual/mac80211_hwsim.h |  4 ++
->>   include/net/cfg80211.h                        | 17 ++++++++
->>   include/net/mac80211.h                        | 18 +++++++++
->>   include/uapi/linux/nl80211.h                  | 19 +++++++++
->>   net/mac80211/ieee80211_i.h                    |  5 +++
->>   net/mac80211/main.c                           |  3 ++
->>   net/mac80211/trace.h                          | 26 +++++++++++++
->>   net/mac80211/util.c                           | 39 +++++++++++++++++++
->>   net/wireless/mlme.c                           | 12 ++++++
->>   net/wireless/nl80211.c                        | 35 +++++++++++++++++
->>   net/wireless/nl80211.h                        |  4 ++
->>   12 files changed, 215 insertions(+)
->>
->>
->> base-commit: e3ac93e9d916ebae0711a42f524429dad89c4887
+The power limit of 5150-5350 MHz is 200 mW, maximum spectral density
+e.i.r.p. 10 mW/MHz.
 
+So, 5250 - 5350 should be 23 dBm or 200 mW.
+
+> -       (5470 - 5725 @ 160), (20), NO-OUTDOOR, DFS
+> -       (5725 - 5850 @ 80), (20), NO-OUTDOOR
+> +       (5470 - 5725 @ 160), (100 mW), NO-OUTDOOR, DFS
+> +       (5725 - 5850 @ 80), (100 mW), NO-OUTDOOR
+> +       (5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
+>         (57000 - 66000 @ 2160), (40)
+>
+>  country LB: DFS-FCC
+> --
+> 2.47.3
+>
+>
 
