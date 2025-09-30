@@ -1,243 +1,172 @@
-Return-Path: <linux-wireless+bounces-27741-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27742-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7CFBACC5A
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 14:06:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB214BACFA0
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 15:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AF98188ECA8
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 12:06:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32EB71928309
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 13:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A51B2F83B8;
-	Tue, 30 Sep 2025 12:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6792D3237;
+	Tue, 30 Sep 2025 13:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="pOJ5Bo76";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Fk36Da/C"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QNp/dnt1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3DD23183F;
-	Tue, 30 Sep 2025 12:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190D524E00F
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 13:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759233962; cv=none; b=rQdMl1KY/W661St3AU2vQXaKDTTpTlxja2HifJZGhX/fvBLkd4HNDSTQ58tEFADwo639rfQ1kcFX73WNtiuWJzyZUKOwaADJU404m+p9AnhNtrKvuCNVP8MXxQrYOEd7ebhDof6AgDYjaForb6BrAPTRpH3xpdFuLtvod2kAxxA=
+	t=1759237827; cv=none; b=KC9um1H7lgZwAzInAWNFA7O1vVuS7mjdPBLr+Q4qF9Q72jzSayBdu2FRveq6I1KHhsNnmxCQZA8F0RlZ3HcMjbG5i60N2VUfbSjDsbVfbepUVYA+8ouUeeWEfKWIvuHEiZf44910lLMZja0phbNczyfWPTkZ/AyWzPrn16D/dXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759233962; c=relaxed/simple;
-	bh=jFIkL4prmYeCbZOsejsqEGgN4EPfp/Rp74PA+aBVUBs=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=N6POSC2EO2Owpps/TdnmdhfDiSGsfTHE8oOaQbXg7JcaBhMjew3+VRYbbq0RwLNDU213igmsibrE5+g65cqKCiXqhvhOUshlK3qZv4zc9UYqJTAZXamzLATS6dSx6cc2ikj4dvvWpTYkM8BlTwrU0TFFIT1ClWvmI3eeVjF72Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=pOJ5Bo76; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Fk36Da/C; arc=none smtp.client-ip=202.12.124.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id DD9057A0015;
-	Tue, 30 Sep 2025 08:05:58 -0400 (EDT)
-Received: from phl-imap-08 ([10.202.2.84])
-  by phl-compute-12.internal (MEProxy); Tue, 30 Sep 2025 08:05:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1759233958;
-	 x=1759320358; bh=nq0GN9PRh99W21XkvPPazW0cqGY5esYpC6Jj9s3RJ20=; b=
-	pOJ5Bo76T+av2xZyEAwC3FZk7seiRsa8LDd0UV3oOeXRsjo+SZHj3uCdtY/9Kbf+
-	KDBaU8TKHD4o3UIqcoeAaEZ0FWqHJ3sJTtl4xo2sTA7Gp+TFr4Okz02nqbjxTbdl
-	XSsZbtOS2kwtsiz2Ea5gMfgEiNU6rUFEuBpzqvlO07xQOAKkA2StIyFQDuQgf1Tc
-	q6Dxi4F85IQFpEQFzXngYfW0OJouf55045Fe/+/FkzJuHlOw3uTnQDSXlHDKeIRf
-	TiehZ24PMMr0bD/vFsG4+VcLCbz9kkO14/uYVGxVoJjsmyFw5EniBd0mkpixd7TJ
-	g0OBHbUrw3aR4P2Glt6vBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1759233958; x=
-	1759320358; bh=nq0GN9PRh99W21XkvPPazW0cqGY5esYpC6Jj9s3RJ20=; b=F
-	k36Da/C/YvazKd2lJ1mI7pj58jEQ3JoeORk9b7XpfRh8YV0yhWGpk1e0+lCDZ1/m
-	aZIQMuv6XQRFl4UBIfqSavwCT3iKqxdxfbexKn+qkreKYMECW+jbPGnLVhwEw53G
-	WsO/E9nXnpMFAH6JGvOgxkKAMqyFQC6MpoaqXnFBkt6T+ZsFh7MYcNplGdKN+nb3
-	/WaddGlaESZneKm1xswGvupm4W5GvV+pwy4SQPL++s2yRyDEvDTIiQMAp8+avAOv
-	T+6gYOrd/Zw/9VUdGaWIRKAVP+44eHlbNHr+8uFOo+rOgCG8XWUl5sVHaDyo8AV0
-	r3WWzfu3hd8pTVUPdoYKQ==
-X-ME-Sender: <xms:psfbaJTMG-CGPVP-5WIVXAnkVRgg8JgxWjshy1S-RA_zILzmfGxV2g>
-    <xme:psfbaNnmoTHJPHZlOlQcvGdNbiX0YzrNBiqs7atdFZGiZgZfsP9U0Jg6J8QvO86Km
-    AleS-MyuMWi3Kl6qy2CqKEp2Z6TFcjefJp6G91G0rFQYyHbkkoFDxvX>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdektdekvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdforghrkhcu
-    rfgvrghrshhonhdfuceomhhpvggrrhhsohhnqdhlvghnohhvohesshhquhgvsggsrdgtrg
-    eqnecuggftrfgrthhtvghrnheptdffvefgtefhveetuddvfeelveektdduvdelgfehgfei
-    keffjeetjeevffektdfhnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhush
-    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmphgvrghrshhonhdq
-    lhgvnhhovhhosehsqhhuvggssgdrtggrpdhnsggprhgtphhtthhopeehpdhmohguvgepsh
-    hmthhpohhuthdprhgtphhtthhopehjjhhohhhnshhonheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheprghthhduudhksehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtg
-    hpthhtohepsggrohgthhgvnhdrqhhirghnghesohhsshdrqhhurghltghomhhmrdgtohhm
-    pdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgvrhhnvghl
-    rdhorhhg
-X-ME-Proxy: <xmx:psfbaM8JLF3MitQNge6OY6_-uJSMQXuYM5warZs8ex3cGXRxhwffUQ>
-    <xmx:psfbaOCWUa0ySZebsqxclpBj7gItye9tpD1CDqcfH75hyfKfBN1m0w>
-    <xmx:psfbaJRMQNZ_ui8uAz1FpEvaO_a6MB4_Csfbgv2F7PpO8dCVQJ_Tlg>
-    <xmx:psfbaNuxzX2EU8mtb6K3gCy3vDo-MaTBN1A1P-nOQjmdRIWtMpwzNQ>
-    <xmx:psfbaNdEi148Dd4pCKaf-U7idj3vyfY9b0R3_G5mLXy6yd2Ku01Ak0W7>
-Feedback-ID: ibe194615:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 4E3092CE0072; Tue, 30 Sep 2025 08:05:58 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1759237827; c=relaxed/simple;
+	bh=XWgNxJzRizMjCwCg2F8zTdJ5VaXCIxNXL518vxocreU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UfFNasc344O7Xt8mKtlNdRuUCPaMJIEap14apRh/RNt5ToBxp05PIdG08LGwScDV5l8LZVom+lo6+dwhFdTwKErdkXstdU9VeJ3CG0ejCjCRxODSS4LSsT8w5pBBhW0eMnYuVCf4Ib3BlIbfXmPpSjO6syNDVPGjnnbukFcm540=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QNp/dnt1; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58UBFHVL024597;
+	Tue, 30 Sep 2025 13:10:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=qVqhrfCUZgX47G5UuvctTl
+	6SNSUmslLlTjza6gmH9+A=; b=QNp/dnt1W032UrC0+hsm8ZAmEJYv2WpvEKSHrF
+	3hGfOcrqODZkX+G6bq/om5KbtP6QO1Gtf8pVZZf+o9svTn5BDwpMy1kUyilU2K5R
+	cfpLah5y1xeuY9gXBn0EhpKyVPDIQvpnAKkMNEMZ+bH804vN9oM/MmjIr1wcGCXZ
+	a+SQROHbC470PVsUkO/sgfKu66lBR8sL+0C2TXWwwZR4oCygQos/sS1oH1kdxkpd
+	uN+8JM6ezULtNC/pXs9Eoy/iytBR/WdH8kv+MJO7kYsT1EfRberba0dXPOO90rh+
+	HcdlFH2gVYo0r1y20tukR1Pm8/NmrUTfI9H22V61QnoR4y7A==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49e59n1c50-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Sep 2025 13:10:20 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 58UDAJnB007624
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Sep 2025 13:10:19 GMT
+Received: from hu-rdeuri-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.24; Tue, 30 Sep 2025 06:10:18 -0700
+From: Ripan Deuri <quic_rdeuri@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+Subject: [PATCH ath12k-ng v4 0/6] wifi: ath12k: Modularization of objects for Next Generation Driver
+Date: Tue, 30 Sep 2025 18:39:59 +0530
+Message-ID: <20250930131005.2884253-1-quic_rdeuri@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AVTq1tek_bVo
-Date: Tue, 30 Sep 2025 08:05:38 -0400
-From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
-To: "Baochen Qiang" <baochen.qiang@oss.qualcomm.com>
-Cc: jjohnson@kernel.org, ath11k@lists.infradead.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <eddb5c03-e919-485b-a6d4-06485cd87db9@app.fastmail.com>
-In-Reply-To: <83de6105-ef4c-48dc-8960-430893ae253e@oss.qualcomm.com>
-References: <mpearson-lenovo@squebb.ca>
- <20250929192146.1789648-1-mpearson-lenovo@squebb.ca>
- <83de6105-ef4c-48dc-8960-430893ae253e@oss.qualcomm.com>
-Subject: Re: [PATCH v2] wifi: ath11k: Add missing platform IDs for quirk table
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: kfQAFID7bMki3ehCbB9PekbhfH6UBFph
+X-Authority-Analysis: v=2.4 cv=O4g0fR9W c=1 sm=1 tr=0 ts=68dbd6bc cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=yJojWOMRYYMA:10 a=ZmDZ8v0v9Rlbw9gN6qoA:9
+X-Proofpoint-ORIG-GUID: kfQAFID7bMki3ehCbB9PekbhfH6UBFph
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAwMSBTYWx0ZWRfXznmJqIYbPVcc
+ 4YjPhJLCzCgzoTy+/em4KHHHiP9YDaEIsoG6WHDqIh1xmM0frFKekWgD9BwfkfBHEjUr3FmIvma
+ AT+4IPN6NSYBJS9f/IZX9XO5umVjnVCdk2sHAGGuQK6T6jRtZTEYGEq7EFpF6LE0zbWbzrTGlfn
+ JKLVjC1YNtk+rGP9I70UmBi9ESWXHEaUL0skzbpVBvgAjh9XLzAi+hMW4w9/q4ljyUpz7HbNmHR
+ TgFkNYQWhN0dUQDTpYN7mSm51Gq4x+94QmmJ1FcdYXKjZCnfEpwLnusiGOlScGJm5gZVxkAs1xe
+ Y8DgHl7r5knOkV0Ud84ibptejZRxAL9QHNuXUAccxrGfwwBiW1QAOBJkMh5SogzjBJdot0Ppqg5
+ bfrijD+s4A05n4qh9Y9SXGo10MmSFA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-30_02,2025-09-29_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 phishscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
+ spamscore=0 impostorscore=0 bulkscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270001
 
-On Mon, Sep 29, 2025, at 10:17 PM, Baochen Qiang wrote:
-> On 9/30/2025 3:21 AM, Mark Pearson wrote:
->> Lenovo platforms can come with one of two different IDs.
->> The pm_quirk table was missing the second ID for each platform.
->> 
->> Add missing ID and some extra platform identification comments.
->> Reported on https://bugzilla.kernel.org/show_bug.cgi?id=219196
->> 
->> Tested-on: P14s G4 AMD.
->
-> Leave a blank line as 'Tested-on:' is not an official tag
->
->> Fixes: ce8669a27016 ("wifi: ath11k: determine PM policy based on machine model")
->
-> Better to move the bugzilla link here and reword as below?
->
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219196
->
->> Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
->> ---
->> Changes in v2:
->>  - Correct typo for T14s G4 AMD to use correct ID. Sorry!
->>  - Added in Fixes and Tested-on tags correctly.
->> 
->>  drivers/net/wireless/ath/ath11k/core.c | 54 +++++++++++++++++++++++---
->>  1 file changed, 48 insertions(+), 6 deletions(-)
->> 
->> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
->> index d49353b6b2e7..47522fa186a1 100644
->> --- a/drivers/net/wireless/ath/ath11k/core.c
->> +++ b/drivers/net/wireless/ath/ath11k/core.c
->> @@ -912,42 +912,84 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
->>  static const struct dmi_system_id ath11k_pm_quirk_table[] = {
->>  	{
->>  		.driver_data = (void *)ATH11K_PM_WOW,
->> -		.matches = {
->> +		.matches = { /* X13 G4 AMD #1 */
->> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->> +			DMI_MATCH(DMI_PRODUCT_NAME, "21J3"),
->> +		},
->> +	},
->> +	{
->> +		.driver_data = (void *)ATH11K_PM_WOW,
->> +		.matches = { /* X13 G4 AMD #2 */
->>  			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->>  			DMI_MATCH(DMI_PRODUCT_NAME, "21J4"),
->>  		},
->>  	},
->>  	{
->>  		.driver_data = (void *)ATH11K_PM_WOW,
->> -		.matches = {
->> +		.matches = { /* T14 G4 AMD #1 */
->> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->> +			DMI_MATCH(DMI_PRODUCT_NAME, "21K3"),
->> +		},
->> +	},
->> +	{
->> +		.driver_data = (void *)ATH11K_PM_WOW,
->> +		.matches = { /* T14 G4 AMD #2 */
->>  			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->>  			DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),
->>  		},
->>  	},
->>  	{
->>  		.driver_data = (void *)ATH11K_PM_WOW,
->> -		.matches = {
->> +		.matches = { /* P14s G4 AMD #1 */
->> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->> +			DMI_MATCH(DMI_PRODUCT_NAME, "21K5"),
->> +		},
->> +	},
->> +	{
->> +		.driver_data = (void *)ATH11K_PM_WOW,
->> +		.matches = { /* P14s G4 AMD #2 */
->>  			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->>  			DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),
->>  		},
->>  	},
->>  	{
->>  		.driver_data = (void *)ATH11K_PM_WOW,
->> -		.matches = {
->> +		.matches = { /* T16 G2 AMD #1 */
->> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->> +			DMI_MATCH(DMI_PRODUCT_NAME, "21K7"),
->> +		},
->> +	},
->> +	{
->> +		.driver_data = (void *)ATH11K_PM_WOW,
->> +		.matches = { /* T16 G2 AMD #2 */
->>  			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->>  			DMI_MATCH(DMI_PRODUCT_NAME, "21K8"),
->>  		},
->>  	},
->>  	{
->>  		.driver_data = (void *)ATH11K_PM_WOW,
->> -		.matches = {
->> +		.matches = { /*P16s G2 AMD #1 */
->> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->> +			DMI_MATCH(DMI_PRODUCT_NAME, "21K9"),
->> +		},
->> +	},
->> +	{
->> +		.driver_data = (void *)ATH11K_PM_WOW,
->> +		.matches = { /*P16s G2 AMD #2 */
->>  			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->>  			DMI_MATCH(DMI_PRODUCT_NAME, "21KA"),
->>  		},
->>  	},
->>  	{
->>  		.driver_data = (void *)ATH11K_PM_WOW,
->> -		.matches = {
->> +		.matches = { /*T14s G4 AMD #1 */
->> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->> +			DMI_MATCH(DMI_PRODUCT_NAME, "21F8"),
->> +		},
->> +	},
->> +	{
->> +		.driver_data = (void *)ATH11K_PM_WOW,
->> +		.matches = { /*T14s G4 AMD #2 */
->>  			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
->>  			DMI_MATCH(DMI_PRODUCT_NAME, "21F9"),
->>  		},
->
-> assuming Jeff can resolve above nits ...
->
-> Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+The primary purpose of the patches in this series is modularization of
+object structures along with their allocation and initialization APIs.
 
-Thanks for the review.
-Jeff, let me know if you need a v3 with the small changes.
+Patches in this series are made to achieve the following:
+1. Modularization of device object to have a separate DP object in order
+   to support chipsets of different hardware architectures
+2. Refactor hardware group and vif structures to optimize data
+   path operations for future extensions
+3. Add framework to support architecture specific interrupt handling and
+   ieee80211_ops registration
 
-Mark
+These changes are intended to provide a base framework for the data path,
+allowing the data path to remain flexible for future extensions in Next
+Generation driver development.
+---
+Changes in v4:
+     - Use ath12k_dp_vif_to_dp_link_vif() in patch 6/6
+Changes in v3:
+     - Use dp arch ops to invoke arch specific service srng handler
+Changes in v2:
+     - Invoke ext irq setup/cleanup from dp device alloc/free to fix
+     suspend and resume call trace for wcn7850 in patch 5/6
+---
+Harsh Kumar Bijlani (1):
+  wifi: ath12k: Refactor ath12k_vif structure
+
+Ripan Deuri (5):
+  wifi: ath12k: Convert ath12k_dp member in ath12k_base to pointer
+  wifi: ath12k: Support arch-specific DP device allocation
+  wifi: ath12k: Rearrange DP fields in ath12k_hw_group struct
+  wifi: ath12k: Add framework for hardware specific ieee80211_ops
+    registration
+  wifi: ath12k: Add framework for hardware specific DP interrupt handler
+
+ drivers/net/wireless/ath/ath12k/ahb.c         |  22 +-
+ drivers/net/wireless/ath/ath12k/ahb.h         |   4 +-
+ drivers/net/wireless/ath/ath12k/cmn_defs.h    |  19 +
+ drivers/net/wireless/ath/ath12k/core.c        |  19 +-
+ drivers/net/wireless/ath/ath12k/core.h        |  39 +-
+ drivers/net/wireless/ath/ath12k/debugfs.c     |   3 +-
+ drivers/net/wireless/ath/ath12k/debugfs_sta.c |   3 +-
+ drivers/net/wireless/ath/ath12k/dp.c          | 145 +++++---
+ drivers/net/wireless/ath/ath12k/dp.h          |  32 +-
+ drivers/net/wireless/ath/ath12k/dp_cmn.h      |  50 +++
+ drivers/net/wireless/ath/ath12k/dp_htt.c      |  22 +-
+ drivers/net/wireless/ath/ath12k/dp_mon.c      |  15 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c       |  20 +-
+ drivers/net/wireless/ath/ath12k/mac.c         | 339 +++++++++---------
+ drivers/net/wireless/ath/ath12k/mac.h         | 131 ++++++-
+ drivers/net/wireless/ath/ath12k/pci.c         |  23 +-
+ drivers/net/wireless/ath/ath12k/pci.h         |   4 +-
+ drivers/net/wireless/ath/ath12k/peer.c        |  10 +-
+ drivers/net/wireless/ath/ath12k/testmode.c    |   3 +-
+ drivers/net/wireless/ath/ath12k/wifi7/ahb.c   |   4 +
+ drivers/net/wireless/ath/ath12k/wifi7/core.c  |  24 ++
+ drivers/net/wireless/ath/ath12k/wifi7/core.h  |  11 +
+ drivers/net/wireless/ath/ath12k/wifi7/dp.c    |  40 ++-
+ drivers/net/wireless/ath/ath12k/wifi7/dp.h    |   9 +-
+ drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c |  88 +++--
+ drivers/net/wireless/ath/ath12k/wifi7/dp_tx.c |  29 +-
+ drivers/net/wireless/ath/ath12k/wifi7/hw.c    |  62 ++++
+ drivers/net/wireless/ath/ath12k/wifi7/pci.c   |   4 +
+ drivers/net/wireless/ath/ath12k/wmi.c         |   5 +-
+ drivers/net/wireless/ath/ath12k/wmi.h         |   5 +-
+ drivers/net/wireless/ath/ath12k/wow.c         |   5 +-
+ 31 files changed, 849 insertions(+), 340 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/cmn_defs.h
+ create mode 100644 drivers/net/wireless/ath/ath12k/dp_cmn.h
+ create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/core.h
+
+
+base-commit: 972f34d54015a4a16aa9e6a081bafabb6f9bf95c
+-- 
+2.34.1
+
 
