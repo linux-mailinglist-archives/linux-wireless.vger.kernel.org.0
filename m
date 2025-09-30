@@ -1,201 +1,140 @@
-Return-Path: <linux-wireless+bounces-27736-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27737-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906C0BAC0D3
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 10:29:59 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D58BAC3B8
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 11:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F9BA1C27B7
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 08:29:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 68F824E249C
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 09:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED472F49FE;
-	Tue, 30 Sep 2025 08:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C0D21FF4A;
+	Tue, 30 Sep 2025 09:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hmbMB4Ei"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jw2M+syT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B672F3C2D
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 08:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E1B23B62C
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 09:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759220989; cv=none; b=CNUJuuiegv1HW19MfMOdMHlef3gYHZMatRgdNejcnc1deNJw841rC7x94nOFABME92uYnHVzI+L2vGdepI5im272qzpw2OfAhIuYgEJ6CbyRDixqkArHOUEHiEzw34PEUnZtwbmRMU6W4QVkJfsQf4S3vzwUEGy1BhebZ2cxYrY=
+	t=1759223785; cv=none; b=upwn6zWnr9zVvH/aUTWIjJGRIIwNCVlwDIVAHfZDAnhLqMYTNFmXzZHMs+w77MPpwEAWxVPmKAgwYio0T2hXSg18wa27WgXBPrwtxNP0dp5zWWvbbTAH5eyuaINZ4HMW0sXukDWp3yguJbSY/DH3/xZz452alGNcqlFMr7vjTbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759220989; c=relaxed/simple;
-	bh=6aSVEqmot5ETN73n2AYoeHUpFp25qXy9tDjovnVF954=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XduVfcj+kvNO+Vzd2M5dWPNAx7hZYXUGnZXzpp/ehZlYYgoDsjdmtybIcVWqzlfeyhJ1ETSsNY4ipGDaRYd77TyzA5PwkGmV+E9owO/QL0omptAu1SXN4OFXjNBTjAwuMG5fTvQB1tlYHd1wfVuIN0dblG/9DkCCNaP1G/9il8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hmbMB4Ei; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6364eb32535so2747570a12.1
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 01:29:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759220986; x=1759825786; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6SlLvvJinaAuYlVS2t7jvPR1UWeQSmp1JYog8PUyqAk=;
-        b=hmbMB4Ei4a4VbVTf7FT1pjEj3Jq5R2IUPDodd+HvWbVmqryvQss+aT13LgL2ySrDRM
-         kL7SpH0ChT0FcxoGFEw783Iq3jDNNL3SWhMvUtQjKKnFh6uhPWD2QDGiRrSl8GsmdxDi
-         kLS8C9hwh39dEaywsQPNUKZLx1LMtyIWsEMv3RKHRt5dMartdNXMz0L1dGXg5DTWp9xp
-         nnP256WU02xyuuyS18LOVRMN+cl861eYT5FdaR5NBdVv1aSU3J1P/bNZGJbsgpjque7m
-         eY/CzGrG3fAjOIAl4uzjGKn22c8ZglRTbDjyNtD5dKD79WjltgnnTocTAhezAwiiYcN2
-         gcSA==
+	s=arc-20240116; t=1759223785; c=relaxed/simple;
+	bh=lJMEJSx4drjfG71rZhzFTS/OoPc8j7S1LaZqaan3iqs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bMSiGY2IJaU7bPCFP/x8W/ouBfZ+996Oo6u6wz9a/4uHwEMRkyblFuiUXfMTIW351EFdpjlBFensb/z7zVoDxziNvbx1WKL4n0sBEQbeDiaF7ux06VGX72CnIfOB17fw5Iw5kIzBsSd8YinnvKO/HAKxHerFVir4oB/03/mBk8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jw2M+syT; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58U4Hoi7021155
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 09:16:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=XCJKrrgmaDL66Q7yaaKc6X7YICUIwVtqPie
+	fT9SBHIg=; b=jw2M+syTYVCVPQnSi6UIBluidvi/Kd8ENqdlIx5pgBAPWjzseLW
+	CFDwwowk9Fu3sBd1EO+phUritUosmv1iIgl9g4purH1vsICi3PkOn8G0sJXcUgBH
+	NZsZj8jQBH2P3R5pD6lJCHOJTLIFtikCy26yYTIdS9d8PCQ+SrsS3OGYtY7uNVpi
+	2KNvce7A6YiLaafupsoubf8OpqHeuhCFW5Cn8NInXya+yfhNow6i9IZskKV1hysl
+	HIHxT7fQkof9whJTBV8vERq3C2Iag09bnbKUxWZpX4XaHdBhSByfuHiIUnduCtWn
+	8GfHShtuOZi8V9e79flpknQb2B2IW8wrfCw==
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49e6x5rhf4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 09:16:21 +0000 (GMT)
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-780f9cc532bso4941636b3a.0
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 02:16:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759220986; x=1759825786;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6SlLvvJinaAuYlVS2t7jvPR1UWeQSmp1JYog8PUyqAk=;
-        b=w1WzKNN7ZpNIy4QIZ9+gGoFX+c3WQwdf1ooiINv3nIdRiWFBkPzbJ44Dx1XfvNWneg
-         D8P3jLPU9kfUmJf6xnAI3249U+tFryKGgIr2IGjPxf4Q/fgkCL5m7wgS1bYeqjqowDmE
-         TlqPzczAWqKWApBp8wvGiKgyZ86YXdqphcpNg1of6aprnIrQ7yWVAoD34gA+5JNDYlkD
-         vut2FJzq6Sb42puU98WdxJoZSWkkrV2MAj/zAiTOtG4rSSuVBSOnO7BxyrG6dgZCX08k
-         0zfWBBgpU7VicAVUOY7iUkCHwkM218vEuIeHPRSZ0uTnN1lIbVOx4sq7Ywi9Sz3IxPMz
-         a/kA==
-X-Forwarded-Encrypted: i=1; AJvYcCWI3TkmRRUe9cjnR5kiGZ9ZHIKj4TB7N5hYj5Y5O89dJvc69fv8ob43lXhJxsVbevTCpEzXpnqjr4q2oCTi4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2RqajgVBTqTvgZiWThcmOk7FJre9yFturmyE0mCZcW9F5JEDW
-	kllxtRG0u3oDunqOaSQmlR6fiypWb5WcqYV/o4eFdUL4hRTCyHi48kTEffYOPzXdVx/Cg33xjVL
-	rkVDLaWY4ziExcnwlOp1XuK1KIlmDPss=
-X-Gm-Gg: ASbGncu7fqCXtX0/EOuauwmcDUUUGCphmNecc55qfjggB3MOipyemL1t4tm4Q5ENIOz
-	+HV8NsezugzwNB4HZCFkp2CeQatJ72zdzyt34/s/Y3wMcrOlTJFuTAtbqewCF1zuy4R1xlPt3Fg
-	zS56DJOAX/quZZU+TmWmfC4N2IKVZ+w+1/9eA0VPvMlgGi3Rk8gBydRvp6RNqhRwYexxjY22I=
-X-Google-Smtp-Source: AGHT+IH5YekqQgFJjUFrO0jzbtWB4khK1HL08YXCjPWwgh1Ae++V5Ftuu/LEstsULtasxSzfjfU1Vvotict2ReA0BHg=
-X-Received: by 2002:a05:6402:268f:b0:634:a85c:8c9c with SMTP id
- 4fb4d7f45d1cf-634a85c8e1dmr16501864a12.12.1759220984180; Tue, 30 Sep 2025
- 01:29:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759223780; x=1759828580;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XCJKrrgmaDL66Q7yaaKc6X7YICUIwVtqPiefT9SBHIg=;
+        b=RqSQBlB5l+Uo2GzkV+7iihxVbGWznzcLQXA5Io3fJsjpQo/8gyemWviywkBz0D1u7s
+         euSSnTbBS13Ohjf0zzgxu8AHzc1ZMJgq6mxtXj/p0RFED2VAZ+AoTUtZqA2ITuvVJtLx
+         X3p7fys1mepv2OEkrG08Nx7c+iC9tZG9cix96ZkE1IgJE/pgd6WWwW08MEWdZyAxgasn
+         T+5sLw8FavzllD6DNB7mHQbJ6Iu1slz+K+/u6ydoWd9QQprBBnISf6c6bf6GVV2admHX
+         a41003T5OCIa8ygN0vW+4VJWQLlyW0yjsYCrsmFzZ1DMmMMf/Bb59i3i8XUVWwhUw628
+         BWqg==
+X-Gm-Message-State: AOJu0YzbLtdf7bl2iD1OnErGV/rSc7KZQoblRiXtpX73vxujXv8K9aEG
+	fxk9JgEzy3OZRk22XTkZRG8nEkbC6g4Tx+/ow/diQJe4lwarc3f7kU+vKl6FElL+tzW5e11Uc5h
+	dFwtl1sd6vanxFB8rI5WkiwjSIr1CtPfq2sif10+ZErg3jWdpgNZIrnmn61wc+Ztpb2fB6A==
+X-Gm-Gg: ASbGncvt42iHaBzFTvTG/SqM4dTS5NwPi+vGW8tQ7M1FOy84hlXtsYeir3yAuYcZsXw
+	uC2GzsL0bp/q48H1tZKqebzV6tweQuY10GX5Wq2AU8cYjngJEM9I3bdDSuVf0YVCt9LHAd08DKr
+	tTv023O1fs0AHD46ThEEnhkA4eXFhI6URER4ZPLvoVZF9xhW4FH4oAMJuV1o1G+bYWfe/IM915L
+	XPB7cFSDFgSfCEGJj1zJ6wDK/MvdE3jrRiR/Of9/lvQqh5QEtXUv1m+P5oI1lPFBXQMquVw5F5E
+	D8mQZPYmNqBKXOThNGKuDoG+wg8TxF0Qzlo7vgW3mvZ8p6+gHqoJck/J8gHX5UIsZgDV6DzdlMM
+	wI8wBI+FqOVgmETjcsu1Y0tiw88zuMpq2vpHcP8V0dLyzqHtTk67npKlJtRAnewNLxLY=
+X-Received: by 2002:a05:6a00:180e:b0:77e:d2f7:f307 with SMTP id d2e1a72fcca58-787c858295amr4518534b3a.9.1759223780161;
+        Tue, 30 Sep 2025 02:16:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEm7frcA2ooc4Zvu11tR6lQz0vE5C6XAaFdpafzAfJK1ikmPVz61Q+9J92XNHvj2SVqacz4ew==
+X-Received: by 2002:a05:6a00:180e:b0:77e:d2f7:f307 with SMTP id d2e1a72fcca58-787c858295amr4518500b3a.9.1759223779703;
+        Tue, 30 Sep 2025 02:16:19 -0700 (PDT)
+Received: from hu-sarishar-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78102b26644sm13431963b3a.67.2025.09.30.02.16.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Sep 2025 02:16:19 -0700 (PDT)
+From: Sarika Sharma <sarika.sharma@oss.qualcomm.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Sarika Sharma <sarika.sharma@oss.qualcomm.com>
+Subject: [PATCH ath-next 0/2] wifi: ath12k: Improve RX Error Handling and Debug Visibility
+Date: Tue, 30 Sep 2025 14:45:49 +0530
+Message-Id: <20250930091551.3305312-1-sarika.sharma@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250930042948.427154-1-wens@kernel.org> <CAHrRpunr+hbWiO1jY=jGZOiqGWcXFGYBSJi17+r-AgOMwssaXg@mail.gmail.com>
- <CAGb2v65wSPCeW=qgrjX1cBUfbYj55U9HUOdPw3n0zHm0PJpNNA@mail.gmail.com> <CAHrRpum=kos=b+h=dPvQ2YaoXqPCEudjuU9-VNGQYRg928x=Ug@mail.gmail.com>
-In-Reply-To: <CAHrRpum=kos=b+h=dPvQ2YaoXqPCEudjuU9-VNGQYRg928x=Ug@mail.gmail.com>
-From: Ping-Ke Shih <pkshih@gmail.com>
-Date: Tue, 30 Sep 2025 16:29:33 +0800
-X-Gm-Features: AS18NWCvK9jeI-jDeBFE1mrfn99Y7wy_1Q3dZLIBSV48e5aWfewnb74h57EdySs
-Message-ID: <CAHrRpumYJ8T4E1__Gmiq_W7BCjURp7N-4F=+O+LQA8UTcyc6gA@mail.gmail.com>
-Subject: Re: [PATCH] wireless-regdb: Permit lower 6 GHz band for Kazakhstan (KZ)
-To: wens@kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Pavel Starosek <starosekpd@gmail.com>, 
-	wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: PqxBFdyoaTVgIRsBetyaqhEmMQE56OSB
+X-Proofpoint-ORIG-GUID: PqxBFdyoaTVgIRsBetyaqhEmMQE56OSB
+X-Authority-Analysis: v=2.4 cv=ZtPg6t7G c=1 sm=1 tr=0 ts=68db9fe5 cx=c_pps
+ a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=yJojWOMRYYMA:10 a=DWEtr7Mots4MbkrcYGMA:9 a=2VI0MkxyNR6bbpdq8BZq:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAxOCBTYWx0ZWRfXzaLy1NiFB1wQ
+ SFaqc4KUn4H+I9p91wegaP2nVC9yeQ5OfRrlmdz7L+/1gZOaMb1U9myZVkuHuSUPOZfGtcn4OTr
+ tII93rB0MNQljrw07+8o3fYLHKyw3u9NN0y+te38iqpIU8omfVZ9mP+o3nuukMPvPAJC23sWXEU
+ drGBBPmH+50P+O46a0M8VhlHrinCL/8qaRN4i6G+O6S7d6GXnUrCSnS1fmW1xMIf9Kpepk/Q8we
+ 5kRlUcsbukSWiF+1qtWx8T1LHZ9b1gmxfjCaXtQqzX+dUmYxi0GSwyNEVJ0QWZV7hu6AYnqzRuk
+ c0wf0CAvNzd2+BGpsN3PDmOCe7gaOhHWL00457qnjhnCoVlOqvTVtJ04Eg7id9kefL7Zjtv8LGb
+ mv8+IVNRCIDfnTFg7UBcBFdOiwYjQg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-30_01,2025-09-29_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
+ suspectscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270018
 
-Ping-Ke Shih <pkshih@gmail.com> wrote:
->
-> Chen-Yu Tsai <wens@kernel.org> wrote:
-> >
-> > On Tue, Sep 30, 2025 at 3:25=E2=80=AFPM Ping-Ke Shih <pkshih@gmail.com>=
- wrote:
-> > >
-> > > Chen-Yu Tsai <wens@kernel.org> wrote:
-> > > >
-> > > > By Order of the Minister of Digital Development No. 564/NK dated
-> > > > September 19, 2024 [1], an amendment was made to the assignment of
-> > > > frequency bands, opening up the lower part of the 6 GHz band (5,945=
- MHz
-> > > > to 6,425 MHz) was opened up to "SRD (wideband data transmission sys=
-tems)
-> > > > WAS/RLAN Data transmission systems/radio local area networks".
-> > > >
-> > > > The power is limited to 200 mW e.i.r.p. with a spectral density of =
-10
-> > > > mW/MHz. Only indoor use is permitted.
-> > > >
-> > > > While at it, also change the power limits to use mW units to match =
-the
-> > > > official documents.
-> > > >
-> > > > Initial information was provided by the Wi-Fi Alliance website, whi=
-ch
-> > > > has a map [2] showing all countries that have enabled 6 GHz WiFi, a=
-nd
-> > > > links to official documents. This document was not sufficient as it=
- did
-> > > > not include power limits or other restrictions.
-> > > >
-> > > > A subsequent search found a blog post [3] providing details and tit=
-les
-> > > > of the official documents in English. An AI agent was used to searc=
-h
-> > > > for the original text of said order [1] after rummaging through
-> > > > government websites in Russian and Kazakh failed to find anything.
-> > > >
-> > > > [1] https://adilet.zan.kz/rus/docs/V2400035100
-> > > > [2] https://www.wi-fi.org/regulations-enabling-6-ghz-wi-fi
-> > > > [3] https://www.onewindow.pro/blog-posts/6-ghz-band-regulation-in-t=
-he-republic-of-kazakhstan
-> > > >
-> > > > Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
-> > > > ---
-> > > > If you received this patch, please help review it. The changes are
-> > > > based on translations of the original text / tables, so a second se=
-t
-> > > > of eyes would be appreciated.
-> > > >
-> > > >  db.txt | 9 +++++----
-> > > >  1 file changed, 5 insertions(+), 4 deletions(-)
-> > > >
-> > > > diff --git a/db.txt b/db.txt
-> > > > index 6e1ad30..16bcb32 100644
-> > > > --- a/db.txt
-> > > > +++ b/db.txt
-> > > > @@ -1136,11 +1136,12 @@ country KY: DFS-FCC
-> > > >  # http://adilet.zan.kz/rus/docs/V1500010730
-> > > >  # http://adilet.zan.kz/rus/docs/V1500010375
-> > > >  country KZ: DFS-ETSI
-> > > > -       (2400 - 2483.5 @ 40), (20)
-> > > > -       (5150 - 5250 @ 80), (23), NO-OUTDOOR, AUTO-BW
-> > > > +       (2400 - 2483.5 @ 40), (100 mW)
-> > > > +       (5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
-> > > >         (5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW
-> > >
-> > > The power limit of 5150-5350 MHz is 200 mW, maximum spectral density
-> > > e.i.r.p. 10 mW/MHz.
-> > >
-> > > So, 5250 - 5350 should be 23 dBm or 200 mW.
-> >
-> > I had this question as well. Looking at the original submission history=
-,
-> > it seems that the limit for 5250-5350 MHz was halved to cover TPC
-> > requirements. See [1]. I'd like to follow the existing values unless
-> > someone can point to documents stating otherwise.
->
-> Thanks for the info. Would you like to add the reference to commit messag=
-e?
-> Anyway, it is fine to me.
->
-> Reviewed-by: Ping-Ke Shih <pkshih@gmail.com>
+Fix buffer leak and potential crash in RX error path. Drop MSDU
+buffer-type packets received on the REO exception ring from
+unassociated peers, as they are not parsed but their buffers are not
+freed. Add debug counter reo_excep_msdu_buf_type in
+ath12k_debugfs_dump_device_dp_stats() to track dropped packets
+and aid debugging.
 
-Ah. Sorry. Please apply my company e-mail.
+Sarika Sharma (2):
+  wifi: ath12k: Fix MSDU buffer types handling in RX error path
+  wifi: ath12k: track dropped MSDU buffer type packets in REO exception
+    ring
 
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+ drivers/net/wireless/ath/ath12k/core.h    |  1 +
+ drivers/net/wireless/ath/ath12k/debugfs.c |  5 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c   | 72 +++++++++++++++++++++--
+ drivers/net/wireless/ath/ath12k/hal_rx.c  | 10 +---
+ 4 files changed, 73 insertions(+), 15 deletions(-)
 
->
-> >
-> > Thanks
-> > ChenYu
-> >
-> > [1] https://lore.kernel.org/wireless-regdb/20191029144815.GR30813@ubunt=
-u-xps13/
-> >
-> > > > -       (5470 - 5725 @ 160), (20), NO-OUTDOOR, DFS
-> > > > -       (5725 - 5850 @ 80), (20), NO-OUTDOOR
-> > > > +       (5470 - 5725 @ 160), (100 mW), NO-OUTDOOR, DFS
-> > > > +       (5725 - 5850 @ 80), (100 mW), NO-OUTDOOR
-> > > > +       (5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
-> > > >         (57000 - 66000 @ 2160), (40)
-> > > >
-> > > >  country LB: DFS-FCC
-> > > > --
-> > > > 2.47.3
-> > > >
-> > > >
+
+base-commit: 58a0a7a45feaf4538841afe8e251737bf7c56607
+-- 
+2.34.1
+
 
