@@ -1,983 +1,202 @@
-Return-Path: <linux-wireless+bounces-27751-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27752-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1096BAD154
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 15:35:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 717B0BAD34D
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 16:35:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5669D3A135D
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 13:35:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 069EA7A777D
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Sep 2025 14:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E661DFD8B;
-	Tue, 30 Sep 2025 13:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734E11D63D8;
+	Tue, 30 Sep 2025 14:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BYdaWFeE"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JKk+gxh7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118CB269CE1
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 13:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9391B4236
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 14:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759239314; cv=none; b=T8EiWHMv6LSvUZm0in0r/RNIO6blyS1nAWuPWY/5AcJzSngbzeG6F+dnWkdQXnExPntabBWzTizibAvSOSXSxu+w2d2zYgEARJLM4JPdSdesC7h2MgF0/MeZkIwA7LLeo0clCUSBGWbLQrpSMFgB8pOliU07gNsv30F2L8GwJOU=
+	t=1759242919; cv=none; b=ViMpVnqL9yWuVfijI374wOczEmhNtltTmJNQbBTJ1fZq8iS2ljrTmnLfb/O48C27FMXsrTaxfWwSjT439wSKOoSRgalCkNeOiHPKWZhVqtXxwfe1dHTzSDp7jLrLl7btONI2vyeLYVPNc9NG/vTJhanufrJN6bz/xwSf8xSo2hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759239314; c=relaxed/simple;
-	bh=wZ+ef0N7HPwr2CTVfNTgcm9iAGQDKeFdF4gb1mQFyBA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fGoM8tJ/plOYTZmB1DGQ6imHzebQR1NipYhAzBnBTz2lwd0S4xXP0D5g9lkt9nPpIXjcOsGkFSltE48P8vCckuQABq7xBG7/Z3Unyyv7HJbr5z5MJFP1fzSi+79mwmTpVd/qQKdpspFT+EMIpT3uh4ah7TdESsFGuhvjMV6vkOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BYdaWFeE; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-855733c47baso840493985a.0
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 06:35:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759239310; x=1759844110; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XY9lCLXBcQRVW3P645odqE/nmJoloK6t/4kDtYkchtA=;
-        b=BYdaWFeEg/HNCrNBBP5jVrz9TmMiXuw5t+jp/B8iZPvOG/lNTdqRLJPWIDeZjos+NB
-         uW8Z12zZDp0T7yNGrKuJUUwqHzGnI4NMGmlvSSQI1TLaKePWb9UCGRCS6Q7spB0WDoIE
-         NGvrgGexF1/UEs9fXG4kobfvVebwAjmCIngq9jemj+/jS82aHZy2Sbgk1RE9+1ZIZVYM
-         C0z1op+vMKWsFZ3LAJl/2KjxvwRadtv5I3HliH3IKfKRGLBlmQXFFmVxThJorS5TGUeQ
-         Z5N9DrTi+XgPl3ltZFh8Duwr84jLOCrBPcb2tJcnOhHida+IjgdVSVoxnCl1fgiMK4P7
-         Fahg==
+	s=arc-20240116; t=1759242919; c=relaxed/simple;
+	bh=T44Q+A+NXVpaUyF9McD48ycjPHjUWj6+/FpypSXQ5xQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rCGPvgt6gXqWOpv4llCXpeyeQR+UbpfveDblqq5avdt3ZrxP5gxZBzdvjgo6SC+xtuvlwiC4PN5oztsE2ZrC/+rdCe4DiOcs6msHWVEJXGYEgnMs7/HhsTFoyCD3z2OwiAFIhd6/eYSnTYyUGHn7yfOaJLjjzGCDf6v1cIa40xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JKk+gxh7; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58UC3CNL017533
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 14:35:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	BUYOMDB9EkEFadf2JHO2eigkdoLDTAIOZ93jCOeSXbY=; b=JKk+gxh7wEwDRTsA
+	fJh+SJ1ZcP1TK06O+lY/z0pHCj/I7jND6Uy+AMQ1YhcfoX/3/3N0V/XC0nUk3j0s
+	oU+a2kCtFYBt2ujmyeb3brY7TuhkJhTV5jWHTrDVIYSU49xzRnGOGe2QZkx/hX16
+	Ksmzi1k2kRCjOUl8+i6Ro8C3NEKb6dk961V2MDOZ9fDcBNKlqdVYj5RR69JbwEcY
+	7gEjUlB/Xumc/jx0SdRGW+JOC9eK7PRhAitHgf1M01NcYmA5KUrHNNmYH2j1Sj3R
+	qoHkb+rLhcD53/EluPAt5av06oRDatqpQHpyCK5eCMNajR5qdK/ZWk1O2Ru08FrY
+	uxPQrg==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49e80tscsm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 14:35:16 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-78104c8c8ddso5162075b3a.2
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Sep 2025 07:35:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759239310; x=1759844110;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XY9lCLXBcQRVW3P645odqE/nmJoloK6t/4kDtYkchtA=;
-        b=sE1vx71dzXX4J6P/oKZCwakif7bMLBZUABZH61eVBwhO6SUoNg/SEkmWXusNb+R29s
-         avnPsTy8Y/tkmHyW/xg6m8JACxIu8H5L0mTeniK7B2/iINa3+pJ9RmIrdis9BZJH/+ll
-         Y5nBJa7je5R5Jke2cdTgG9K7AXawaXr+r8RJB+0Ek/kzTVaczku2WaevdWoPRafYiJZb
-         xEtIKminHca4jKlJNwOAaE7FHpc0QpCBNrTa6BWIvqLN6c6MBcO9KkJ4NTI9dBnmYWdj
-         Sn+aJa3cMzpxVw7tsnR1L+iN5cyGd8OoIOATti2RlXOaO3iHI1pL1FMxocCUMhDLy1Xh
-         9+eQ==
-X-Gm-Message-State: AOJu0YxPYz2Kgvk+KXa3yXPcJ0WboL2nTGDdzNT1L7VZFSpW8EvH9mUS
-	WTQwPqu3y8z2FyhGAHkhUVkeb4c6iRZcybhwV4fz45a8As7qyAs0y9WXogGRap++oPpTtVBa44z
-	vgGyi430q5h+z+iyOxF6Ot/n1ZTbjqVFzK7Ws
-X-Gm-Gg: ASbGncuVk+UbKjfWLJh9A7//A3i7CTVGf2lbfFD9X5L51Ee/lfNnRcUi4zm3iqrX31J
-	Ht0t5gRr/q4UkmQGTnJwWnNc0y0vJ8cG5ewCd2odNtYNHsWI8jRQJI/3vH0HCfRkvVr8ryqmdWW
-	MGXBSj8AHCYtqoZpMQpC3t9LobY7VUvUz3JQ3neb/qsMd4/dErrlhyoWMmt2LI1rA4b2hVrdSI9
-	ZINxg5/1d6HLLG+Vk586TIc3Kto3jukD244GNQ=
-X-Google-Smtp-Source: AGHT+IGqmKFzOawiDa8nMrtlCqgJg7nxz7hxeWwx9lHHEw24vm8JcT835PwqKbJN2m6fBmCC7n+8skIWTwJ3kJIx7gg=
-X-Received: by 2002:a05:6214:262c:b0:795:7af3:6ffb with SMTP id
- 6a1803df08f44-7fc439506a6mr288728946d6.63.1759239307923; Tue, 30 Sep 2025
- 06:35:07 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759242915; x=1759847715;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BUYOMDB9EkEFadf2JHO2eigkdoLDTAIOZ93jCOeSXbY=;
+        b=b5sTrS3tO7DLkZyWSZmRV8nYqdhuha4KMdIQeI4iO6C8gabaZVU5XNt+xIdd9uTOx0
+         GcHBCr1NwZtgi6IOHiHQg4sgRcII2puy0lFgWHr5inBPzkM+lqwiCSqNdMCwg1auLdAN
+         Em50ldn0ErygWu8CPMAD2GaPWRt2RIwkwroq2DJZLJWd3NWjWGHNLAUNca1lI1eI1whv
+         wTnyyAkHWezUgcwQPSpxf5Kd8ZgRVDg4/gNj2aUQziBX6UuG4KX+mgDbM4g8rqLU5s5O
+         DdYa2tTlB524TEHfugk/5OCXiE+Qmmnd5Z6+fdaWunsqGqppafmHo1BaTbUkHSMnAFbS
+         kXeg==
+X-Gm-Message-State: AOJu0YzthBZsnJYRum0FFm8VE5sMBCAlQ9DvkPlHkZh3aWXRFbOWLfNk
+	1Jt8PQjy87IDJHdnfFkC99bMbCAdUL1ghoCKxPFcvW6sIFretJWN+xSzw/3DVYnoTlcE8Y4k2pb
+	Bb5x2hqD5fCzschTNOpSLkwitVthhalird8ucXY6TfkRtPGWqYX1mjT2byrp2eSLKniAjpZz1Dh
+	Gi0A==
+X-Gm-Gg: ASbGnct/rGoX51wxq6mKW7tJg8QEHp8QgNos+Myv83gsG7dyMsKkMN1lSeXreoWyXd1
+	ocnxg2iEL4MGwDxVEBtNtd2Kloc/LLdKI0lxlHezJ/AT3bnDfBuYB9/NHBnHUZGvmfQhbggwqfy
+	0T/f600FRDfiq3o4ZK8Tr1U7KQnowNHrqCf40yrjMup8+IpaX+jMqAcyujhJnQ0GGd5KwHOk9EW
+	b1Nz51pP7CDKQwHTbsAXsL1CfXxfdTdudBEISZYHEvDf9s5C9KQ/V7e9qv3HzBlS3pOWLpcqg2l
+	uQWE78vpQ5nsSSZKXV42pbbIdtPfBG3meAOqoQetkvL7ChtFyxyTGNBS7CGaceFnQZaTmjliw78
+	2m5XG/1KDN30nl73ZkJQ=
+X-Received: by 2002:a05:6a00:21c1:b0:77b:943e:7615 with SMTP id d2e1a72fcca58-780fce9a50emr19078502b3a.16.1759242914909;
+        Tue, 30 Sep 2025 07:35:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IERPg5ZJRk8dz0ph328bRiAAwJg2g4EB7GzvUxmIyjNu0bbkfh2u3peHgOnyQ/TEKb1iV+ZMA==
+X-Received: by 2002:a05:6a00:21c1:b0:77b:943e:7615 with SMTP id d2e1a72fcca58-780fce9a50emr19078462b3a.16.1759242914342;
+        Tue, 30 Sep 2025 07:35:14 -0700 (PDT)
+Received: from [192.168.225.142] ([157.48.120.6])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78102b23736sm14083548b3a.51.2025.09.30.07.35.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Sep 2025 07:35:14 -0700 (PDT)
+Message-ID: <d0f8650e-1e65-3c9f-7906-507ae08bdebb@oss.qualcomm.com>
+Date: Tue, 30 Sep 2025 20:05:09 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFXXzTbHabF2hZKWM=RquQXB_tFq-24SPifnyL9ZA5-HL30X1A@mail.gmail.com>
- <76fa4cd8d3598c771f5e1c8bb305c241907edc77.camel@sipsolutions.net>
-In-Reply-To: <76fa4cd8d3598c771f5e1c8bb305c241907edc77.camel@sipsolutions.net>
-From: Francesco Bergesio <francescobergesio1@gmail.com>
-Date: Tue, 30 Sep 2025 15:34:55 +0200
-X-Gm-Features: AS18NWBdchHCSNq7zZbmYN4aEWdDqmB9PxNgF3zx_-mhIXgGlxqAtq_YGBGrMVc
-Message-ID: <CAFXXzTZD3Wfywo2Mug8=3TrV2b0hsFSMERyd8YpzUgnBzP4uDA@mail.gmail.com>
-Subject: Re: [Bug Report] Intel AX1775 / AX1790 / BE20 / BE401 / BE1750 2x2
- (Wi-Fi 7) fails to resume after suspend (s2idle)
-To: Johannes Berg <johannes@sipsolutions.net>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH ath12k-ng v4 0/6] wifi: ath12k: Modularization of objects
+ for Next Generation Driver
+Content-Language: en-US
+To: Ripan Deuri <quic_rdeuri@quicinc.com>, ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-
-Hi,
-The only feedback in DE is the icon not connected and wireless active
-but no network visible. I disabled the power save settings, restarted
-the driver iwlwifi.
-
-iwconfig
-lo        no wireless extensions.
-
-enp45s0   no wireless extensions.
-
-docker0   no wireless extensions.
-
-br-3558f493dc1a  no wireless extensions.
-
-wlp44s0f0  no wireless extensions.
-
-nmcli device
-DEVICE           TYPE      STATE                   CONNECTION
-lo               loopback  connected (externally)  lo
-br-3558f493dc1a  bridge    connected (externally)  br-3558f493dc1a
-docker0          bridge    connected (externally)  docker0
-wlp44s0f0        wifi      disconnected            --
-enp45s0          ethernet  unavailable             --
-
-cat /sys/bus/pci/devices/0000\:2c\:00.0/power/control
-on
-
-after nmcli connection up 77cb0111-a245-41ea-884e-ad5b8234fd15 ifname wlp44s0f0
-in DE it shows connecting icon and the SSID (only  that network), but
-it doesn't connect
-
-network manager log
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2557] agent-manager:
-agent[21145e3eacd428e7,:1.3854/nmcli-connect/1000]: agent registered
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2575] device (wlp44s0f0):
-Activation: starting connection 'Auto TP-Link_5982'
-(77cb0111-a245-41ea-884e-ad5b8234fd15)
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2575] audit:
-op="connection-activate" uuid="77cb0111-a245-41ea-884e-ad5b8234fd15"
-name="Auto TP-Link_5982" pid=214789 uid=1000 result="success"
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2575] device (wlp44s0f0):
-state change: disconnected -> prepare (reason 'none', sys-iface-state:
-'managed')
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2576] manager:
-NetworkManager state is now CONNECTING
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2578] device (wlp44s0f0):
-state change: prepare -> config (reason 'none', sys-iface-state:
-'managed')
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2579] device (wlp44s0f0):
-Activation: (wifi) access point 'Auto TP-Link_5982' has security, but
-secrets are required.
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2579] device (wlp44s0f0):
-state change: config -> need-auth (reason 'none', sys-iface-state:
-'managed')
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2582] device (wlp44s0f0):
-state change: need-auth -> prepare (reason 'none', sys-iface-state:
-'managed')
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2582] device (wlp44s0f0):
-state change: prepare -> config (reason 'none', sys-iface-state:
-'managed')
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2583] device (wlp44s0f0):
-Activation: (wifi) connection 'Auto TP-Link_5982' has security, and
-secrets exist.  No new secrets needed.
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2601] Config: added 'ssid'
-value 'TP-Link_5982'
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2601] Config: added
-'scan_ssid' value '1'
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2602] Config: added
-'bgscan' value 'simple:30:-65:300'
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2602] Config: added
-'key_mgmt' value 'WPA-PSK WPA-PSK-SHA256'
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2602] Config: added
-'auth_alg' value 'OPEN'
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238148.2602] Config: added 'psk'
-value '<hidden>'
-set 30 15:16:13 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <warn>  [1759238173.6185] device (wlp44s0f0):
-Activation: (wifi) association took too long, failing activation
-set 30 15:16:13 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238173.6186] device (wlp44s0f0):
-state change: config -> failed (reason 'ssid-not-found',
-sys-iface-state: 'managed')
-set 30 15:16:13 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238173.6190] manager:
-NetworkManager state is now DISCONNECTED
-set 30 15:16:13 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <warn>  [1759238173.6193] device (wlp44s0f0):
-Activation: failed for connection 'Auto TP-Link_5982'
-set 30 15:16:13 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238173.6195] device (wlp44s0f0):
-state change: failed -> disconnected (reason 'none', sys-iface-state:
-'managed')
-set 30 15:16:14 linux-Stealth-16-AI-Studio-A1VGG
-NetworkManager[209395]: <info>  [1759238174.3019] device (wlp44s0f0):
-supplicant interface state: disconnected -> inactive
+References: <20250930131005.2884253-1-quic_rdeuri@quicinc.com>
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20250930131005.2884253-1-quic_rdeuri@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyOSBTYWx0ZWRfX1zvfAoI7U0Uk
+ kgZdit8KhLUHoqdnmrwpNENNNAnfdSYaAAU3oMPQvfXSkgKF037ZsPU4lwt779w65AyMWW4ps5J
+ 7eX+NRBWwL8iTGWLyYkqOvkRyOIee3QEoLqTFQmfRc1ixLp6lHF8G7a1YhSlNbD1E91dC7xrzoD
+ 0GQK06Ymt7atn8R/VMRKX7m+uZ7xV0fJbq11ny/7bODJCDl6etm9DsJFaXUlhoG9HgxvymYySaA
+ t2h0zb+Y2hyzkyS5ldxYHz0UjSsRJwrUkA6XQCWB3ROCSUb+EIcErqBh8n7O4g0wXnOk3PlEq/3
+ lTDE0nVD74SCvWxrz0kgvBqKVoOQ9fcI4HUhE6dG1Wx/C/cKsMdt8uNNRY9ByWi513Xx7HYXDRC
+ AsHt00YLepam9VlS7mkA0piACIGGFQ==
+X-Proofpoint-GUID: o_Z59Nj1Bqc3celKvh0_gXVyxktmqeMz
+X-Authority-Analysis: v=2.4 cv=OMkqHCaB c=1 sm=1 tr=0 ts=68dbeaa4 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=3dlviFq7DiuaNFQpTVE66g==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=RLL8ftfnos28qhovEkQA:9
+ a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-ORIG-GUID: o_Z59Nj1Bqc3celKvh0_gXVyxktmqeMz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-30_03,2025-09-29_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 bulkscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2509150000
+ definitions=main-2509270029
 
 
-These are wpa-supplicant log (with journalctl -u wpa-supplicant) when resumed
-set 30 14:48:36 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DISCONNECTED bssid=84:d8:1b:70:59:82 reason=3
-locally_generated=1
-set 30 14:48:36 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 14:48:37 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-p2p-dev-wlp44s0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 14:48:37 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-p2p-dev-wlp44s0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 14:48:37 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-nl80211: deinit ifname=p2p-dev-wlp44s0 disabled_11b_rates=0
-set 30 14:48:37 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 14:48:37 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 14:48:37 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-nl80211: deinit ifname=wlp44s0f0 disabled_11b_rates=0
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-nl80211: deinit ifname=wlp44s0f0 disabled_11b_rates=0
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWMODE]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWRANGE]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWMODE]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWAP]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWESSID]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-dbus: fill_dict_with_properties
-dbus_interface=fi.w1.wpa_supplicant1.Interface.P2PDevice
-dbus_property=P2PDeviceConfig getter failed
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:48:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:48:46 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:48:46 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:48:51 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:48:51 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:48:58 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:48:58 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:49:08 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:49:08 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:49:08 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:49:18 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:49:22 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:49:22 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:49:32 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:49:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:49:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:49:52 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:50:11 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:50:11 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:50:21 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:50:54 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:50:54 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:51:04 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:51:58 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:51:58 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:52:08 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:52:38 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:52:38 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:52:48 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:52:55 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:52:55 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:53:05 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:53:33 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:53:33 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:53:35 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:53:35 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:53:45 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:55:33 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:55:33 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:55:43 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:57:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:57:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:57:44 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:58:50 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:58:50 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:59:00 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:59:05 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:59:05 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:59:15 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 14:59:35 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 14:59:35 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 14:59:45 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:01:36 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:01:36 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:01:46 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:03:37 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:03:37 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:03:47 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:05:38 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:05:38 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:05:48 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:06:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 15:06:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 15:06:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWMODE]: Operation not supported
-set 30 15:06:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWAP]: Operation not supported
-set 30 15:06:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWESSID]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-nl80211: deinit ifname=wlp44s0f0 disabled_11b_rates=0
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWMODE]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWRANGE]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWMODE]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWAP]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWESSID]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-dbus: fill_dict_with_properties
-dbus_interface=fi.w1.wpa_supplicant1.Interface.P2PDevice
-dbus_property=P2PDeviceConfig getter failed
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:06:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:06:20 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:06:20 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:06:22 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:06:22 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:06:26 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:06:26 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:06:33 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:06:33 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:06:43 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:06:43 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:06:43 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:06:53 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:06:57 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:06:57 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:07:07 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:07:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:07:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:07:27 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:07:28 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 15:07:28 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 15:07:28 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWMODE]: Operation not supported
-set 30 15:07:28 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWAP]: Operation not supported
-set 30 15:07:28 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWESSID]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-nl80211: deinit ifname=wlp44s0f0 disabled_11b_rates=0
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWMODE]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWRANGE]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWMODE]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWAP]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWESSID]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-dbus: fill_dict_with_properties
-dbus_interface=fi.w1.wpa_supplicant1.Interface.P2PDevice
-dbus_property=P2PDeviceConfig getter failed
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:07:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:07:38 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:07:38 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:07:43 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:07:43 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:07:50 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:07:50 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:08:00 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:08:00 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:08:00 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:08:10 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:08:14 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:08:14 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:08:24 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:08:26 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: Driver does not support AP mode
-set 30 15:08:51 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 15:08:51 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:08:51 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:08:52 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:08:52 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:08:55 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:08:55 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:08:57 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:08:57 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:08:59 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:08:59 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:09:06 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:09:06 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:09:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:09:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:09:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:09:26 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:09:30 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:09:30 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:09:33 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWMODE]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWAP]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWESSID]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-nl80211: deinit ifname=wlp44s0f0 disabled_11b_rates=0
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWMODE]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWRANGE]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWMODE]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWAP]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWESSID]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODEEXT]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWENCODE]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-dbus: fill_dict_with_properties
-dbus_interface=fi.w1.wpa_supplicant1.Interface.P2PDevice
-dbus_property=P2PDeviceConfig getter failed
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:09:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:09:38 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:09:38 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:09:43 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:09:43 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:09:50 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:09:50 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:10:00 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:10:00 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:10:00 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:10:10 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:10:14 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:10:14 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:10:24 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:10:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:10:34 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:10:44 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:10:49 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: Driver does not support AP mode
-set 30 15:11:14 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 15:11:14 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:11:14 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:11:15 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:11:15 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:11:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:11:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:11:18 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:11:18 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:11:22 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: Driver does not support AP mode
-set 30 15:11:26 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:11:26 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:11:36 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:11:47 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 15:11:47 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:11:47 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:11:48 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:11:48 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:11:51 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:11:51 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:11:56 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:11:56 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:12:03 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:12:03 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:12:13 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:12:13 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:12:13 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:12:23 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:12:27 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:12:27 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:12:37 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:12:47 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:12:47 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:12:57 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:13:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:13:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:13:22 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:13:22 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:13:32 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:13:59 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:13:59 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:14:09 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:15:03 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:03 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:15:13 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:48 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:15:49 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:49 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:15:50 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:50 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:15:51 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:51 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:15:52 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:52 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:15:53 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:53 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:15:54 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:54 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:15:55 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:55 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:15:56 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:56 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:15:57 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:57 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:15:58 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:58 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:15:59 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:15:59 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:00 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:00 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:01 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:01 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:02 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:02 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:03 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:03 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:04 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:04 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:05 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:05 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:06 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:06 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:07 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:07 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:08 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:08 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:09 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:09 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:10 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:10 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:11 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:11 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:12 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:12 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:13 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:13 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1 retry=1
-set 30 15:16:13 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-DSCP-POLICY clear_all
-set 30 15:16:13 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:13 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:16:14 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:14 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:16:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:16:22 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:22 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:16:29 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:29 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:16:39 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:16:39 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:39 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:16:49 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:16:53 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:16:53 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:17:03 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:17:13 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:17:13 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:17:23 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:17:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:17:42 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:17:52 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:18:25 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:18:25 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:18:35 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:19:29 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:19:29 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:19:39 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:21:04 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:21:04 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:21:14 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:21:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:21:17 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:21:27 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:23:05 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:23:05 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:23:15 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
-set 30 15:25:06 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCSIWSCAN]: Operation not supported
-set 30 15:25:06 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-wlp44s0f0: CTRL-EVENT-SCAN-FAILED ret=-1
-set 30 15:25:16 linux-Stealth-16-AI-Studio-A1VGG wpa_supplicant[1656]:
-ioctl[SIOCGIWSCAN]: Operation not supported
 
+On 9/30/2025 6:39 PM, Ripan Deuri wrote:
+> The primary purpose of the patches in this series is modularization of
+> object structures along with their allocation and initialization APIs.
+> 
+> Patches in this series are made to achieve the following:
+> 1. Modularization of device object to have a separate DP object in order
+>     to support chipsets of different hardware architectures
+> 2. Refactor hardware group and vif structures to optimize data
+>     path operations for future extensions
+> 3. Add framework to support architecture specific interrupt handling and
+>     ieee80211_ops registration
+> 
+> These changes are intended to provide a base framework for the data path,
+> allowing the data path to remain flexible for future extensions in Next
+> Generation driver development.
+> ---
+> Changes in v4:
+>       - Use ath12k_dp_vif_to_dp_link_vif() in patch 6/6
+> Changes in v3:
+>       - Use dp arch ops to invoke arch specific service srng handler
+> Changes in v2:
+>       - Invoke ext irq setup/cleanup from dp device alloc/free to fix
+>       suspend and resume call trace for wcn7850 in patch 5/6
+> ---
+> Harsh Kumar Bijlani (1):
+>    wifi: ath12k: Refactor ath12k_vif structure
+> 
+> Ripan Deuri (5):
+>    wifi: ath12k: Convert ath12k_dp member in ath12k_base to pointer
+>    wifi: ath12k: Support arch-specific DP device allocation
+>    wifi: ath12k: Rearrange DP fields in ath12k_hw_group struct
+>    wifi: ath12k: Add framework for hardware specific ieee80211_ops
+>      registration
+>    wifi: ath12k: Add framework for hardware specific DP interrupt handler
+> 
+>   drivers/net/wireless/ath/ath12k/ahb.c         |  22 +-
+>   drivers/net/wireless/ath/ath12k/ahb.h         |   4 +-
+>   drivers/net/wireless/ath/ath12k/cmn_defs.h    |  19 +
+>   drivers/net/wireless/ath/ath12k/core.c        |  19 +-
+>   drivers/net/wireless/ath/ath12k/core.h        |  39 +-
+>   drivers/net/wireless/ath/ath12k/debugfs.c     |   3 +-
+>   drivers/net/wireless/ath/ath12k/debugfs_sta.c |   3 +-
+>   drivers/net/wireless/ath/ath12k/dp.c          | 145 +++++---
+>   drivers/net/wireless/ath/ath12k/dp.h          |  32 +-
+>   drivers/net/wireless/ath/ath12k/dp_cmn.h      |  50 +++
+>   drivers/net/wireless/ath/ath12k/dp_htt.c      |  22 +-
+>   drivers/net/wireless/ath/ath12k/dp_mon.c      |  15 +-
+>   drivers/net/wireless/ath/ath12k/dp_rx.c       |  20 +-
+>   drivers/net/wireless/ath/ath12k/mac.c         | 339 +++++++++---------
+>   drivers/net/wireless/ath/ath12k/mac.h         | 131 ++++++-
+>   drivers/net/wireless/ath/ath12k/pci.c         |  23 +-
+>   drivers/net/wireless/ath/ath12k/pci.h         |   4 +-
+>   drivers/net/wireless/ath/ath12k/peer.c        |  10 +-
+>   drivers/net/wireless/ath/ath12k/testmode.c    |   3 +-
+>   drivers/net/wireless/ath/ath12k/wifi7/ahb.c   |   4 +
+>   drivers/net/wireless/ath/ath12k/wifi7/core.c  |  24 ++
+>   drivers/net/wireless/ath/ath12k/wifi7/core.h  |  11 +
+>   drivers/net/wireless/ath/ath12k/wifi7/dp.c    |  40 ++-
+>   drivers/net/wireless/ath/ath12k/wifi7/dp.h    |   9 +-
+>   drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c |  88 +++--
+>   drivers/net/wireless/ath/ath12k/wifi7/dp_tx.c |  29 +-
+>   drivers/net/wireless/ath/ath12k/wifi7/hw.c    |  62 ++++
+>   drivers/net/wireless/ath/ath12k/wifi7/pci.c   |   4 +
+>   drivers/net/wireless/ath/ath12k/wmi.c         |   5 +-
+>   drivers/net/wireless/ath/ath12k/wmi.h         |   5 +-
+>   drivers/net/wireless/ath/ath12k/wow.c         |   5 +-
+>   31 files changed, 849 insertions(+), 340 deletions(-)
+>   create mode 100644 drivers/net/wireless/ath/ath12k/cmn_defs.h
+>   create mode 100644 drivers/net/wireless/ath/ath12k/dp_cmn.h
+>   create mode 100644 drivers/net/wireless/ath/ath12k/wifi7/core.h
+> 
 
-For further information do not hesitate to contact me
-
-Francesco
-
-Il giorno mar 30 set 2025 alle ore 13:34 Johannes Berg
-<johannes@sipsolutions.net> ha scritto:
->
-> On Sun, 2025-09-28 at 20:51 +0200, Francesco Bergesio wrote:
-> >
-> > Steps to Reproduce:
-> > - Connect to a Wi-Fi network.
-> > - Suspend the system using systemctl suspend.
-> > - Resume the system.
-> > - Wi-Fi does not reconnect automatically; manual reconnection fails.
->
-> How does it fail? Does userspace get errors? Is there a wpa_s log? The
-> kernel log indicates the driver was restarted/reloaded or so, but
-> nothing else.
->
-> johannes
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
