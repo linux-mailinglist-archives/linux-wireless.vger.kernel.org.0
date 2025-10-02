@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-27788-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27789-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545CEBB51A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 02 Oct 2025 22:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7411DBB51B5
+	for <lists+linux-wireless@lfdr.de>; Thu, 02 Oct 2025 22:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93D9D423A73
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Oct 2025 20:09:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBA6A423E84
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Oct 2025 20:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753DB296BDE;
-	Thu,  2 Oct 2025 20:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D882BE65F;
+	Thu,  2 Oct 2025 20:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="r1QefwUO"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="qJHDIkMT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B518A27A904;
-	Thu,  2 Oct 2025 20:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E8E286893;
+	Thu,  2 Oct 2025 20:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759435768; cv=none; b=BJChsGbz3IbzOLeb3mIaDZ/8kkCIIxBGObl11E8WktkGfl1crNUE0k1bRIccvTzKoSk4GKMMlkLaCHCnoCS5ez0VJudn6WzrRjRRqEtwgzrwoncX/ffGMT3Slieg9UreLPglv/M9Xavl7eRAn4P2ogd4KttIFq7Q2J2e66a9vWE=
+	t=1759435769; cv=none; b=R4J05wqwUYAa07v4s+pjbMGT61Neg/QGNUKXjuJFTX6IwZ45y21LflicHZHCSv6VxzeY+dOD7WuTD+wmbPM1JPQE0Ks0ZgOMPK8VPDlaI1rLxXYCgSOBUA8vKTEW4LbXZlHGz8tOcXlB1BaWy/Xjmlwm2WgwEH4OVIJLuEV529Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759435768; c=relaxed/simple;
-	bh=Rmj2sgA5CekdHAHknJfKqQC1LMlQZq/QRpUSbyFFRYo=;
+	s=arc-20240116; t=1759435769; c=relaxed/simple;
+	bh=0Ub/qcLVk3pkt6FDZetLZb0AwpvmcCDODl9rsSxjH9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YezByaSY/j/VUH66yXfuv+oYe4BUPAjjq+2P2KOMmeFON1y7msmBnRiqvqPEbm8iuQbvUBnhL1BJZ0dMxlihURoJh+g25N0ftjZZCshAFAk8WUhlzTl8QwzE3AS71i3pXiSWY7/EC7P/wdZ5O4nnRwPyjlFX19KIzqR8dlWRpTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=r1QefwUO; arc=none smtp.client-ip=83.149.199.84
+	 MIME-Version; b=JX4DxGAAYGxi8KfNl14vPgDFIthAlM++dF2ZOTZrcNoC9t8dTdQ2Q+qDIcTXu2n6Fg1NdlPuiS7WPCBxKEU2uOEJSY9whRC++G/Cet8r9hBpVwaYUil/fbcpKDtkK+VY5J0aNgA3RIjnYYZpzLSIS9jx7EwlKZQA3QbWd3LA/iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=qJHDIkMT; arc=none smtp.client-ip=83.149.199.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
 Received: from debian.intra.ispras.ru (unknown [10.10.165.9])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 31CAF40762EC;
+	by mail.ispras.ru (Postfix) with ESMTPSA id DF5D64076196;
 	Thu,  2 Oct 2025 20:09:18 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 31CAF40762EC
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru DF5D64076196
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1759435758;
-	bh=91TWc3inH30K3Fo86B486YT7zZg8JTJp9Q43ZuDHyqg=;
+	s=default; t=1759435759;
+	bh=TEBbAc8sG2aEjstpmXYsQVFspq47Rcl+1lZWXzFUVKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r1QefwUOM8L3iOEDQzPhogDHrBOAqj+iB6MQsK4KSv+1V8voyJGBPi1SzB+4TE1tH
-	 uc1mDbmU9rgeYvIyBgeFqR54Se4qgaPLZATApVKW1Tqv8B8ZoW/474cuBxJY6+LkF/
-	 U2wLJEaz+UB5iYEHIX5VSLRkdnKK+d8a+9akg+nw=
+	b=qJHDIkMTnA8ZLE2W+kv42blf+Lpz0IYn8CSnkGDyau3iqNWJW1OUotzqQ636TXY3t
+	 QK4mnjUwmWNsng4Sza9oVe+VggYuvP5YyyCbAHcsdIDNFkEfmRWEACuwYZWhRoCHzY
+	 Z9oa94y5bmcGVdVzbk9F0kLMRRhBgLGr+p5gCcBo=
 From: Fedor Pchelkin <pchelkin@ispras.ru>
 To: Ping-Ke Shih <pkshih@realtek.com>,
 	Bitterblue Smith <rtl8821cerfe2@gmail.com>
@@ -51,9 +51,9 @@ Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	lvc-project@linuxtesting.org
-Subject: [PATCH rtw-next v2 3/7] wifi: rtw89: usb: use ieee80211_free_txskb() where appropriate
-Date: Thu,  2 Oct 2025 23:08:48 +0300
-Message-ID: <20251002200857.657747-4-pchelkin@ispras.ru>
+Subject: [PATCH rtw-next v2 4/7] wifi: rtw89: refine rtw89_core_tx_wait_complete()
+Date: Thu,  2 Oct 2025 23:08:49 +0300
+Message-ID: <20251002200857.657747-5-pchelkin@ispras.ru>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251002200857.657747-1-pchelkin@ispras.ru>
 References: <20251002200857.657747-1-pchelkin@ispras.ru>
@@ -65,57 +65,95 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rtw89_usb_ops_tx_kick_off() may need to release skb if a failure occurs.
-It operates mainly on skbs coming from the core wireless stack and the
-ones containing firmware commands.
+Pass TX status value directly into rtw89_core_tx_wait_complete().  This
+will make it a bit in sync with further patches and will give flexibility
+in future work.  Also use scope based RCU locking which simplifies the
+code of the function.
 
-Use ieee80211_free_txskb() for the former case.
+Found by Linux Verification Center (linuxtesting.org).
 
-Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 ---
+ drivers/net/wireless/realtek/rtw89/core.h | 20 ++++++++++----------
+ drivers/net/wireless/realtek/rtw89/pci.c  |  2 +-
+ drivers/net/wireless/realtek/rtw89/pci.h  |  4 ----
+ 3 files changed, 11 insertions(+), 15 deletions(-)
 
- drivers/net/wireless/realtek/rtw89/usb.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
-index 512a46dd9d06..655e8437d62e 100644
---- a/drivers/net/wireless/realtek/rtw89/usb.c
-+++ b/drivers/net/wireless/realtek/rtw89/usb.c
-@@ -278,6 +278,15 @@ static int rtw89_usb_write_port(struct rtw89_dev *rtwdev, u8 ch_dma,
- 	return ret;
- }
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 928c8c84c964..60e32894d8b4 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3507,6 +3507,11 @@ struct rtw89_phy_rate_pattern {
+ 	bool enable;
+ };
  
-+static void rtw89_usb_tx_free_skb(struct rtw89_dev *rtwdev, u8 txch,
-+				  struct sk_buff *skb)
-+{
-+	if (txch == RTW89_TXCH_CH12)
-+		dev_kfree_skb_any(skb);
-+	else
-+		ieee80211_free_txskb(rtwdev->hw, skb);
-+}
++#define RTW89_TX_DONE			0x0
++#define RTW89_TX_RETRY_LIMIT		0x1
++#define RTW89_TX_LIFE_TIME		0x2
++#define RTW89_TX_MACID_DROP		0x3
 +
- static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
+ #define RTW89_TX_WAIT_WORK_TIMEOUT msecs_to_jiffies(500)
+ struct rtw89_tx_wait_info {
+ 	struct rcu_head rcu_head;
+@@ -7374,25 +7379,20 @@ static inline struct sk_buff *rtw89_alloc_skb_for_rx(struct rtw89_dev *rtwdev,
+ 
+ static inline bool rtw89_core_tx_wait_complete(struct rtw89_dev *rtwdev,
+ 					       struct rtw89_tx_skb_data *skb_data,
+-					       bool tx_done)
++					       u8 tx_status)
  {
- 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
-@@ -292,7 +301,7 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
+ 	struct rtw89_tx_wait_info *wait;
+-	bool ret = false;
  
- 		txcb = kmalloc(sizeof(*txcb), GFP_ATOMIC);
- 		if (!txcb) {
--			dev_kfree_skb_any(skb);
-+			rtw89_usb_tx_free_skb(rtwdev, txch, skb);
- 			continue;
- 		}
+-	rcu_read_lock();
++	guard(rcu)();
  
-@@ -311,7 +320,7 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
+ 	wait = rcu_dereference(skb_data->wait);
+ 	if (!wait)
+-		goto out;
++		return false;
  
- 			skb_dequeue(&txcb->tx_ack_queue);
- 			kfree(txcb);
--			dev_kfree_skb_any(skb);
-+			rtw89_usb_tx_free_skb(rtwdev, txch, skb);
- 		}
- 	}
+-	ret = true;
+-	wait->tx_done = tx_done;
++	wait->tx_done = tx_status == RTW89_TX_DONE;
+ 	/* Don't access skb anymore after completion */
+ 	complete_all(&wait->completion);
+-
+-out:
+-	rcu_read_unlock();
+-	return ret;
++	return true;
  }
+ 
+ static inline bool rtw89_is_mlo_1_1(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 0ee5f8579447..b1985193a18f 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -464,7 +464,7 @@ static void rtw89_pci_tx_status(struct rtw89_dev *rtwdev,
+ 	struct rtw89_tx_skb_data *skb_data = RTW89_TX_SKB_CB(skb);
+ 	struct ieee80211_tx_info *info;
+ 
+-	if (rtw89_core_tx_wait_complete(rtwdev, skb_data, tx_status == RTW89_TX_DONE))
++	if (rtw89_core_tx_wait_complete(rtwdev, skb_data, tx_status))
+ 		return;
+ 
+ 	info = IEEE80211_SKB_CB(skb);
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
+index cb05c83dfd56..16dfb0e79d77 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -1487,10 +1487,6 @@ struct rtw89_pci_tx_addr_info_32_v1 {
+ #define RTW89_PCI_RPP_POLLUTED		BIT(31)
+ #define RTW89_PCI_RPP_SEQ		GENMASK(30, 16)
+ #define RTW89_PCI_RPP_TX_STATUS		GENMASK(15, 13)
+-#define RTW89_TX_DONE			0x0
+-#define RTW89_TX_RETRY_LIMIT		0x1
+-#define RTW89_TX_LIFE_TIME		0x2
+-#define RTW89_TX_MACID_DROP		0x3
+ #define RTW89_PCI_RPP_QSEL		GENMASK(12, 8)
+ #define RTW89_PCI_RPP_MACID		GENMASK(7, 0)
+ 
 -- 
 2.51.0
 
