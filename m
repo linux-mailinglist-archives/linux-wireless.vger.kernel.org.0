@@ -1,129 +1,165 @@
-Return-Path: <linux-wireless+bounces-27800-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27801-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB69BB6AF0
-	for <lists+linux-wireless@lfdr.de>; Fri, 03 Oct 2025 14:52:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F84BB76E2
+	for <lists+linux-wireless@lfdr.de>; Fri, 03 Oct 2025 18:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 190AE4E8ACA
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Oct 2025 12:52:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C2CA3A5A76
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Oct 2025 16:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4069E2EE276;
-	Fri,  3 Oct 2025 12:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8334E3C1F;
+	Fri,  3 Oct 2025 16:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QPVp+u52"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="gaYoDZpI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-qt1-f226.google.com (mail-qt1-f226.google.com [209.85.160.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7FDEEA8
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Oct 2025 12:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DD0286884
+	for <linux-wireless@vger.kernel.org>; Fri,  3 Oct 2025 16:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759495878; cv=none; b=CKe4/n7/FmVD5Yy6RBTthgkq9i1p+ul5aA1WEEctCZhHRZRJ1LdpcTIZOToPZHIZsm+mqSe4SW6dK0nRvPl5wybnUeos9PJ+oTeHFiTmTrVi/UBV26vj5sibEh0HtZBWjQbu2HaTGlvqOExhflNm4fVWkF51hjUQF6Lpm4qsjV8=
+	t=1759507225; cv=none; b=X0NvaQmR9VcxEMuU26SOdG7Z/ww7DM5YV8rn7zMNd99ZMynYWspc8fSMjqwCGYtsK8Mg00O/REQlVkNLLAGcKPaD90/QTZi82pmiHCrnAqcGFE/CwgTY4yq1e3ejSX2r9F9qLlzG4yAy6lR1r1oDyPVlkC6/FxeOgUDocR9O06k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759495878; c=relaxed/simple;
-	bh=4106OzuLrCHbM187f2nPxnTy8mZf5HbUyjgFSYFBlDE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X7fdZfWk1xV3VA3A/XCwGnNoyI9dTCbaLy1ipPOfzVCe+crp4MlV81WsK/mx2qbezhRqwOiLqU4OALoPioaMeaB5/wYvU1KiSMsqY2N8dmAKy/iq8c0Dn68k+Q7KVlsApnPujIxJJKIx9fGB5Yq7sZrQ452phDIyd/K5RMhvXq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QPVp+u52; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-57a292a3a4bso255175e87.3
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Oct 2025 05:51:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759495874; x=1760100674; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mxQuA0+a8WwM5wGmsFx6bUU6ctiTtR6jNj+VSASu29g=;
-        b=QPVp+u52MufJNQKSOdssJeJzcqOIHH8z5p7VDmMp/VOkaaUfsgh8r/gPQnGzQPRuM6
-         JUnwzUAwD8qBbfqZyghO6AI3EVodHk8EaSLjP3xKg1VeuvfrzmGsbq3EFoEonk8siiEo
-         F1DK6JxC50isMZfgchY9dUSwjkoS7o7P0rNwR/+wvETAO9ONVxd4jzQHMDfQS4fkwypl
-         BsCFxQa3MI7TszZuPTxAZrimb/yyrNePWINijmRw7Bu3ZHH5ftFfiSUWt9hr7YTrButn
-         G/iQ00UF1PG1SiRBzS24+YHOpGVypkChAd8blcy3gdUikx3sSyXJM/LyfEbtIBOtZ/BB
-         70EA==
+	s=arc-20240116; t=1759507225; c=relaxed/simple;
+	bh=qeBXk6ZxCgM8dte0UkFnj58GTDcppJ1R34Pxrk8rISM=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=tP07dkB8FoRFxCa1kiq+Aq8PoTdSD9xXVYylzG3tb4aYWCZPK+0HsLsqbgYyfhhp8VTNdBcqBIVS5mrVJYZ4IW5x27lnqZso0z+9ZYGc5OdT64KlfqaIng7+0g7OptKfXA++lOwj1i+DPPnDod7RquzJ17zXI6VlO4hpSwO4lRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=gaYoDZpI; arc=none smtp.client-ip=209.85.160.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qt1-f226.google.com with SMTP id d75a77b69052e-4dfbab4fb0dso29913651cf.3
+        for <linux-wireless@vger.kernel.org>; Fri, 03 Oct 2025 09:00:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759495874; x=1760100674;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mxQuA0+a8WwM5wGmsFx6bUU6ctiTtR6jNj+VSASu29g=;
-        b=SWlxT0rcCC8PDrFHLk6WpVdJOXKHbflP4dWT/Vndk2pX5IwHuyzroCuRTiR/2z/rfP
-         sxJEgKhR0jT7tu+eGmjYTQvm6cCxW6jMqBF5b0Rk4lVpCkxSqOXZwOXCrtOdARliZUVg
-         NRnfjhcaZcwlf69LjMx5104N+rT+jvl6Y9z4cAKU+MtnA8akChP4jn8Kt4wLCu7mk28/
-         8Ysi3AXs1uZA0itPbnC+ZZT10J0L+kW1289zJYKhHLLMoVk8FWcmqz0M1xHZJNRqvyp3
-         pyzDjCKYw+aSA9tOhR0xt1TdCBngXh+odchIVjVwl4qlN+dmsvBJrpmv5diPtumkN5QX
-         ZTnw==
-X-Gm-Message-State: AOJu0YxCQzFzjgWAYgRoXzndzq93ZikRJWI0X376gk89pSlgW/HLnpbj
-	5JTTmh0zbwZ9IWLatcPYMvok/wavZeSoSknlUFMqrHhUrTsz8J7QrCrt0XNajQ==
-X-Gm-Gg: ASbGncuIwlhyVz6519OJUkR4wMBnYxjZpuyNuUjJhymu2EotWb5Fvy9U8duaykB6/F0
-	cixSrCo9mCLkNXLetMlxK+4O2HxHURKWULO8n3FGKzeSieT32FlG1cuqjWTd2weC0JdiE065QEA
-	k7Hni+uyWnPpzwWtxhlkVecn2+khJ5RCAMP3tf5OPTLGkbEd43N2iHZfwntZkVgo5PhJ+7/JMKz
-	QHqKoUTogaoqDzWltMwZsvut+Y9y7IeA07t3CQqrlBkXuKg5Kx4T6FhyHEMdlIikKxZJR7TQPV+
-	ZWQqJN0lASB/B3Yp33i219eUUvgKpnaWDV2c1+LxC98YW9VXKYOJFQLsJsXPybkwp7B/xcuIscM
-	M85uJR7VlzVFUckLuK7IS+GYn9/H5zih9kPMHOf9jNIFo6xs/qUZHyXQ3
-X-Google-Smtp-Source: AGHT+IGOkIiBxFS7sLKqdNCtuaLNaV5ILOMjEF/5BHH4PN6Le2G5tSzvYWzPfB5TcIQlAYpjPdpDHw==
-X-Received: by 2002:a05:6512:3e11:b0:581:7695:a14c with SMTP id 2adb3069b0e04-58cb984e3c0mr792738e87.20.1759495873858;
-        Fri, 03 Oct 2025 05:51:13 -0700 (PDT)
-Received: from localhost.localdomain.pl ([89.151.31.85])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-58b011b0f0csm1802380e87.130.2025.10.03.05.51.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Oct 2025 05:51:13 -0700 (PDT)
-From: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Hauke Mehrtens <hauke@hauke-m.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	bcm-kernel-feedback-list@broadcom.com,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
-Subject: [PATCH] bcma: don't register devices disabled in OF
-Date: Fri,  3 Oct 2025 14:51:26 +0200
-Message-ID: <20251003125126.27950-1-zajec5@gmail.com>
-X-Mailer: git-send-email 2.51.0
+        d=1e100.net; s=20230601; t=1759507223; x=1760112023;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:dkim-signature
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zIRz7gWQ1Xu5Iai6JSmMimzSEA8Q3m4VGxXaY2xiIFs=;
+        b=b3wnDKrS+chFpRmt9aHYAVOVqqcwq+wd+DuK/aGyawna/wgXRyXLEovG0tRevuxZ/K
+         UrMlxPfwq7h9Xt3LUpmPi/kD/MzWav83Mv6dzin+W6014a13FCB4mNHuU+cK8X0r8+zp
+         7gvNYGRgAqIpc+XaL8VtGUDDpf8VaA0hQasytdOnucGiDbcIs9+rJd6hMK/cdd7tsB+4
+         L9dEMSlCbGN9UF0Aq0hz314QkFx+77hgs9jhSjzsh1KVQN8lXm3SfZ1nTatKLtb04NaK
+         dx4TNkeqm09ndZ01PrK8pd+BZYnmXBZaa1wBCIR17+wBVDw6LJUuiEazAyDYDcIYZyRj
+         R6aA==
+X-Forwarded-Encrypted: i=1; AJvYcCWbnEV+8XJOPQpBE56A7zbi6WRXTzt9wLBJIp32W9v8yzDQ6+I1BvraGMQtFPiZSgl/tvccpHA+QaLgEw3tmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3erTN0qPd9w5Ypj+i4p/IflGAeBCRGk1dCeVjYzG6Wy3Ljr++
+	ozc0IyLkuxf8beULhXamlac98VA+TbjvAT2x4cKzkCSjDQlfeFk/pc04qgPTITG+UKw1VEFT6oN
+	aRu4k2Ui97MBnntN65mOnwLbKV5xpNJtBPMaBTjgIEE2inaBf5iJmJSLsALj7YIIKlKgXoXRTwq
+	1DPZtAM8zuKaVurZusEa/9Du0GrR6RAA8zaJ5+LLnVB3ENyEuzUXNDQ6jnXAZHDB59uzYgZFTrl
+	ZKLtWurBLo+HM2K8JfFlzUq5+Su
+X-Gm-Gg: ASbGncuwQaTCmHfNIq3xfRtepI4VF48765EiW4PUhITM913vK7RWopnRaOOvOYNeeLm
+	05aq3IuLmkpCEmuO1lu/76kn8Vo5xjUmAu8og2O3SKpNYXQ78NwF6UiiCeI2zLb1p5spzSzqSBn
+	9zZWs7WdXVeIGJFk/hEOuGpCeXD1nOwRw0pFNsLiuhGs4gX80Du1/BNzbJQgF98xLaUL+yrtzIT
+	29KOZQHtgaMQd2sccwICkr9rYjiL41nDtPsnvyCsbdHWsbxmv3/MIKftHJlEkTCzkf0US2RWVk2
+	Fu6J5qvlrx4CpqgYG2AYXMIFJX7qyobzcjvYbvmVxqc2xImzZjFAOFWI7oUnHsYclRf5enIQYnO
+	Y8XBI1y0rLE1UcHx31VzyM6NePxp5LeHCuEMSj28b8C35/MC97ewKerJ/CtC9aSndFjB/k1wFzJ
+	zxsdw8cgIW
+X-Google-Smtp-Source: AGHT+IElvSMqmjLgNJEG1twXebCpa1YfTWL7WZi3Zp0xZvdEIQfLuxMbWyTbXNdPHMzbvwjA8XzWHwx2N83f
+X-Received: by 2002:ac8:7e81:0:b0:4e5:6cf8:2a5 with SMTP id d75a77b69052e-4e576adc719mr45349851cf.60.1759507221060;
+        Fri, 03 Oct 2025 09:00:21 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-15.dlp.protect.broadcom.com. [144.49.247.15])
+        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-87775e06ee7sm35792185a.5.2025.10.03.09.00.20
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 03 Oct 2025 09:00:21 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-b48635cf06fso281237966b.1
+        for <linux-wireless@vger.kernel.org>; Fri, 03 Oct 2025 09:00:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1759507219; x=1760112019; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zIRz7gWQ1Xu5Iai6JSmMimzSEA8Q3m4VGxXaY2xiIFs=;
+        b=gaYoDZpIkBN65CRXfoCodh4X2kbRUfl1m5tjuDLy8byAquc7pp68n8w/it/YEIaBMM
+         EzA5Pd9ms3A6F5RgDFVpbLIw8AcwG6JvqSJKfk4s1e53feGhPVb4YbpOBmLyDttZ8h1n
+         3LP+Bbu/C9ujN3dd01mGMpNbAorb+hoirPcDk=
+X-Forwarded-Encrypted: i=1; AJvYcCWaCiNJNdy8CO4NgozKqS37i8n+S/N6/rAvEjnqJXtMiUYSUHeNEYWNruFwQPHkH8PFSff6J6xr38EBE/UTzA==@vger.kernel.org
+X-Received: by 2002:a17:907:1c90:b0:b04:2452:e267 with SMTP id a640c23a62f3a-b49c4394d63mr422922066b.56.1759507219417;
+        Fri, 03 Oct 2025 09:00:19 -0700 (PDT)
+X-Received: by 2002:a17:907:1c90:b0:b04:2452:e267 with SMTP id a640c23a62f3a-b49c4394d63mr422918566b.56.1759507218910;
+        Fri, 03 Oct 2025 09:00:18 -0700 (PDT)
+Received: from [192.168.178.31] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b486970a4bdsm467071266b.49.2025.10.03.09.00.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Oct 2025 09:00:18 -0700 (PDT)
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+To: Richard Reigh <richard@govivid.ai>
+CC: <brcm80211-dev-list.pdl@broadcom.com>, <brcm80211@lists.linux.dev>, <chris@streetlogic.pro>, <linux-wireless@vger.kernel.org>, <s311332@gmail.com>, <wahrenst@gmx.net>
+Date: Fri, 03 Oct 2025 18:00:18 +0200
+Message-ID: <199aacd7e50.2873.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <20251002232002.124609-1-richard@govivid.ai>
+References: <b2e0bf04-f149-4a23-aba5-cad55a8923c1@broadcom.com>
+ <20251002232002.124609-1-richard@govivid.ai>
+User-Agent: AquaMail/1.55.2 (build: 105502562)
+Subject: Re: [PATCH] brcmfmac: Fix NULL pointer dereference in P2P action frame handling
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Rafał Miłecki <rafal@milecki.pl>
+Op 3 oktober 2025 01:20:21 schreef Richard Reigh <richard@govivid.ai>:
 
-Some bus devices can be marked as disabled for specific SoCs or models.
-Those should not be registered to avoid probing them.
+> When iPhones query network information via the WiFi settings "i" button,
+> the brcmfmac driver crashes with a NULL pointer dereference. This occurs
+> because the P2P device vif is not initialized when handling certain action
+> frames.
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
----
- drivers/bcma/main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+That does make a lot more sense than the line that gdb gave me with my 
+driver rebuild attempt.
 
-diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
-index 6ecfc821cf83..72f045e6ed51 100644
---- a/drivers/bcma/main.c
-+++ b/drivers/bcma/main.c
-@@ -294,6 +294,8 @@ static int bcma_register_devices(struct bcma_bus *bus)
- 	int err;
- 
- 	list_for_each_entry(core, &bus->cores, list) {
-+		struct device_node *np;
-+
- 		/* We support that core ourselves */
- 		switch (core->id.id) {
- 		case BCMA_CORE_4706_CHIPCOMMON:
-@@ -311,6 +313,10 @@ static int bcma_register_devices(struct bcma_bus *bus)
- 		if (bcma_is_core_needed_early(core->id.id))
- 			continue;
- 
-+		np = core->dev.of_node;
-+		if (np && !of_device_is_available(np))
-+			continue;
-+
- 		/* Only first GMAC core on BCM4706 is connected and working */
- 		if (core->id.id == BCMA_CORE_4706_MAC_GBIT &&
- 		    core->core_unit > 0)
--- 
-2.51.0
+> Add NULL check for vif before dereferencing in brcmf_p2p_tx_action_frame()
+> and return -ENODEV when vif is NULL. Also modify
+
+Now I don't think it is necessary to bail out here. See my suggestion below...
+
+> the retry loop in
+> brcmf_p2p_send_action_frame() to stop immediately on permanent failures
+> rather than retrying.
+>
+> Tested on Raspberry Pi Zero 2 W with kernel 6.1.21-v8+
+>
+> Signed-off-by: Richard Reigh <richard@govivid.ai>
+> ---
+> .../wireless/broadcom/brcm80211/brcmfmac/p2p.c   | 16 +++++++++++++++-
+> 1 file changed, 15 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c 
+> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> index 10d9d9c63..2c73156fa 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> @@ -1559,6 +1559,12 @@ static s32 brcmf_p2p_tx_action_frame(struct 
+> brcmf_p2p_info *p2p,
+> else
+> vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
+>
+> + /* add NULL check */
+> + if (!vif) {
+> + brcmf_err("vif is NULL, cannot send action frame\n");
+> + return -ENODEV;
+> + }
+
+Instead of giving up and surrender we can use primary vif, ie. 
+p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif:
+
+if (!vif) {
+        brcmf_dbg(TRACE, "no P2P device setup\n");
+        vif = p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
+}
+
+Regards,
+Arend
+
 
 
