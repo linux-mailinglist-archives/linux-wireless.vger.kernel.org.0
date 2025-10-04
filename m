@@ -1,121 +1,227 @@
-Return-Path: <linux-wireless+bounces-27805-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27808-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01BF2BB8C72
-	for <lists+linux-wireless@lfdr.de>; Sat, 04 Oct 2025 12:40:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE80BB8E91
+	for <lists+linux-wireless@lfdr.de>; Sat, 04 Oct 2025 16:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD7E6189A117
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Oct 2025 10:41:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D4753B3C54
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Oct 2025 14:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362C3254B19;
-	Sat,  4 Oct 2025 10:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734E1205E3B;
+	Sat,  4 Oct 2025 14:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gyJxyF/a"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="zUs9+cL5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDE826281
-	for <linux-wireless@vger.kernel.org>; Sat,  4 Oct 2025 10:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D36645
+	for <linux-wireless@vger.kernel.org>; Sat,  4 Oct 2025 14:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759574447; cv=none; b=sOEb7r0+t3ILkUR23mU+7REHHKxGar1t5rFtadLzPDs1wTMkCGGRKrKRETInK2uQGzwsabp7YB7Wm42L0WvMa3dEdX2Jt+tCLOxbqw3m2++szwbUlpgYHunVNIGNfj6fbxmu6ajWTrNYuZ5xvI61/lbL1JSnQUgmFs/KSIyzhbk=
+	t=1759587347; cv=none; b=NR6Ff3+WPHXWQJA+ofgE5m9faqQFWuwNFvFEdzwimwF8BMdm2eI6xKwH5NID3vnvM9WXTTLkAl/UdXEmLJ8falpo6Api3yu2d9f+Vyb8QDOroXAAyl+UEp/YypIxSxkdWDO5fERXIrnMW1qvWkRkR/asZuqAvehbHwgx6Hr4mO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759574447; c=relaxed/simple;
-	bh=CxJyVI6f/VZSxGdtkS1513lnZw1Ti10YZjyQeydEVs0=;
-	h=From:Message-ID:Date:MIME-Version:To:Cc:Subject:Content-Type; b=lInur6u3WqDRM3+J1dfrEg5f9IaLfsdBV5rbsEcUZkiuEg50iQQ+NUq019ZITEQgGd+zUYBq6l1RJLIGT5XCS9uiNut0s6dYZv/KFIh41u80AqYVRx0gP0kdrhXd4RUEzka2GITW6yK14RteVw1WSTCVXULc5TdCsm2p3wibTIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gyJxyF/a; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-57a960fe78fso3373292e87.2
-        for <linux-wireless@vger.kernel.org>; Sat, 04 Oct 2025 03:40:45 -0700 (PDT)
+	s=arc-20240116; t=1759587347; c=relaxed/simple;
+	bh=VwS6wD6aOQfO5N3l8LdCLUsFLqX6zsGd/ZTuPki6hFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DedDLZJpB3vGLYp6uLgZ5r/JgyPd97ksVMOKnRxEp9/wN0hObBlcPmz7incLB67F9IOurfbGLf4phQuUYXyQEcz/36B0ZOmUlButHjDPw8gRn/GTxm4cC+qJBE8xSEmObyyW4fspxghmOxXWdden/+gpcLai29Eu6958yOEGvWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=zUs9+cL5; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3ee15505cdeso2580866f8f.0
+        for <linux-wireless@vger.kernel.org>; Sat, 04 Oct 2025 07:15:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759574443; x=1760179243; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:cc:to:content-language:user-agent
-         :mime-version:date:message-id:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xhmW8jJYdppFzGWtIB5Vpr6Pj6ixAp4KG5I9YLNLeEA=;
-        b=gyJxyF/aoKiWeEU3OPfeojhg0vSnsRuabbFen1zOr++6ki7eMvxb1o/JPiAbaTxuJv
-         MzSHlzwK6bqY1nh/xn2uDmCxDmkLBSzDRc1aZtZHCw8tOMG9l1leaoxkHexv0hKfqfkh
-         CaYL5xpm9LX4+w0/VW7dNX4nbs2ECgWkGvM58wcRli6FpZ9vAHx1EvZ9FyiPYoooqQzB
-         dcBy2Y7gGeGlBl04eitcavE1GnsKpbcISI3N1xXFIZC7POozSlYEaMwUnagJitQpiJbD
-         FqeX0hYFabvqrpwDie2MPy7gYmIwGgwp5x2Ixisv0ojfUVLYMdKEQv6FexYY3QXPJWCw
-         wI6Q==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1759587343; x=1760192143; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=f6aPg5XQM47KrBayeWfvz6FQ/94diyOyozYAwDrlP0Q=;
+        b=zUs9+cL5MJdvCedvk6CzR4iLNX5WEqGhCVhFonwGjONZLkZwjlcX7Y4rnYQR/oEBm4
+         Uq3xSeE7rT/XGHyvZEScFqeZm65ttUGUN1v0+/10pXgoO/9CONp7ulrxy9pkzE5QSrE7
+         2UxH29kv5DQn8UNrHUbrqidttn+uDk5b32zLGEhQVuQXtpiX3TBZvugwCWjfO+IoAZxO
+         HrBy2Kgt1Wt/ty82o9E4zNKoQQgDvfX5DcFEhc/vAxjjOp8CrH03/3w21/PNprDeIotn
+         DXwa+iYCNGSSJOF1qK0xBWdrL21DDGtCUxSOJZlvmRikcXZ/w7Lk+OeoVcDJ8eh+fTaW
+         JTTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759574443; x=1760179243;
-        h=content-transfer-encoding:subject:cc:to:content-language:user-agent
-         :mime-version:date:message-id:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xhmW8jJYdppFzGWtIB5Vpr6Pj6ixAp4KG5I9YLNLeEA=;
-        b=uWKD3Fh9qq8bQZXT6vU6NbdQFYeL/ia/F+JY+MyhJBJWOsNSsQOBBX6UNJDJfESsyi
-         dObe0jOwObIfxIMO/eCdAe8Phs1yVBrfohOwNpa7+8OpnaJAOhQxFDxjm4Blisw/zBQp
-         kUP8PtY//r5BBUmdw5o+A0I/c4thmd2HUn/WU6a0gcrKl836B0r15k88WJGgW/w9oaE5
-         h0LX9TS9BU4nWy7ac2GRkTdGZSUViiKPtg0KjtbRFUQmlIeRAW8zq6Poi6Z7dhxtzcWb
-         dI4WDQoYN78frF3qg0tjxah/qb4gK4DqrHSflMVx6lZ+ArtG3Uym73i5evLkK9bndQoW
-         le2w==
-X-Gm-Message-State: AOJu0YxMGlc1aqq/fxAaJmqfze6GAbgp8bTnCSitW+tUx+EjPrFLHRir
-	4jd38fQdmxSouMvci+YrOdIW1Nrj6OFxIEXt1+FCdkvHJOxmQxYLp8HUUmpzMQ==
-X-Gm-Gg: ASbGncvgFUicAXztU6Tg1FUG8HCJ5alPtM9tNvBYwnRj2CI3kQ2BjoQmRRkhO0+WjPB
-	LBIgdLePBE90pkFneRndnkKFnwwANY8rIliVlvh+9JqYfBi+EzBXNJ9JiklmZAIarntYMT6pO3S
-	KXxOmOdA2Bdqka5kwEjXsfIVOBvsM9/GjREmynRZzMdgOfJBpn0m91nZ0MncowdO9y+apryRy8M
-	WPTyMaNeyig5GyhMc+T7uICH6sUupan6nsK1HssjWd/xfhwKsFRJfQQvi++D6HTF3RRe9xJyyR/
-	5eDYNoLjuY/ZHb+ve4OqmCbVvxeb+qOQHut8WLm9boM35OfcembFm+XFjUx/M//2PlkxqiJXugI
-	u0dbPf+NTFtqjyjXqiA/X4FBK7tOvJPgZslWL5RIJjfKZzVpI9yTQkJ1fcDHZdyfkQXA62H8D0i
-	PoYBGq/hEm
-X-Google-Smtp-Source: AGHT+IG6bzm/OFjWWDzzJQnAznCc1Tnlid+nL82BR83SlJTbSGElwP5jc2lsB7objpYqr3fvB9wIig==
-X-Received: by 2002:a05:6512:3f23:b0:58b:189:871b with SMTP id 2adb3069b0e04-58cb9473319mr1806236e87.5.1759574443046;
-        Sat, 04 Oct 2025 03:40:43 -0700 (PDT)
-Received: from troynas (host-176-37-53-238.b025.la.net.ua. [176.37.53.238])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-58b0114033dsm2709143e87.53.2025.10.04.03.40.42
+        d=1e100.net; s=20230601; t=1759587343; x=1760192143;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=f6aPg5XQM47KrBayeWfvz6FQ/94diyOyozYAwDrlP0Q=;
+        b=AAHHMEtbBqQGtDP9Vw8JSD9nZRnS/hoNKlxw+idbLM/blwNYVATTlaTSNan5Z20nB5
+         RPK6/lcn1OY31ZMr+0AXDrwpqX6sH9OOTLyk7x9f7LNIn3VgUQ2kUj1Fr4yMga1EZdBr
+         WXEliU7jdmtzdKf+iQmdFW/FuB5idTL7HnNdTNLu2Rn3rC2HD3X/hLCIYhD5VSxSJAZn
+         f+U2HsKS8gyjkyhk4uLgTPx679kipYpZFsCzSTjQN4KcwYcrABN/DwLeF2ZeuBbYA3EW
+         qLPEdusx027IlUIXHN9wy4uiI75Kdx3dymFnAmxaO57ihOj/MibX2ZrAuoJuSc7SvHyn
+         Go+w==
+X-Gm-Message-State: AOJu0YzPoNt9LK3p2MA2jsbz21qG5UKATByTA/+zCOSg8NMhd6Al1l/G
+	rpeRkgkx9q38jivEYhwYZJ/wjxoImre2iFFuf8ee2SzL9ebd4OxojFEWi0ZZQIOPGOQ=
+X-Gm-Gg: ASbGnctN1LxSf9QKQWn3UdMMKpCSTMrYuq2dOKkwE+t8pvzjdfCabLQv29bvyJf3nbl
+	hT5f74I5DFOZzfXKoGsYNwYMgkKVadcli2MqDM+JH1Cn4k0d1mhtjiTWuG2ddxGxI57a9nGt3sc
+	TLhe5HjRIlZlkU1NK/0GUtnt82z13Yr2RFUsgzPtpu6kxyXTOT1L0FSvFpyMHDQop8EuOmfILFh
+	/dDa45cJCp88/+EdPiqEcSbQE53g++jaVewEs1XJBHvQua6DsabVT+5GQCIgJvtvgxUnU6VRrbu
+	dpe42nUpWlp4FO42bYwfclh20AWwNQ/9/ymOKqGq4kGUgkhoQRHFFKw+b51NdUaPi4aVHZXUeIV
+	xcnJOEdXXxT5FgXRRYJxv+qgByionhEolHLdVvPPd6jj/OQ4=
+X-Google-Smtp-Source: AGHT+IFC3a01Q6okezr/1zEZE2FS4rppFre70olqqFb1+EYD+U645Zcdn6VsbgyCAgObBlX6vnCjfw==
+X-Received: by 2002:a05:6000:605:b0:3ea:e0fd:2906 with SMTP id ffacd0b85a97d-4255d2ca8c1mr6718651f8f.23.1759587342381;
+        Sat, 04 Oct 2025 07:15:42 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:e6fc:e693:dd89:41a9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6bbesm12357182f8f.12.2025.10.04.07.15.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Oct 2025 03:40:42 -0700 (PDT)
-From: Dmitry Geurkov <d.geurkov@gmail.com>
-X-Google-Original-From: Dmitry Geurkov <d.geurkov@gmai.com>
-Received: from [192.168.1.116] ([192.168.1.1])
-	by troynas with ESMTPSA
-	id XwptGKr54GgICwAAVAQQrQ
-	(envelope-from <d.geurkov@gmai.com>); Sat, 04 Oct 2025 10:40:42 +0000
-Message-ID: <d2e09391-d2fd-4456-ae45-103239dbac74@gmai.com>
-Date: Sat, 4 Oct 2025 13:40:05 +0300
+        Sat, 04 Oct 2025 07:15:41 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] Revert "wifi: iwlwifi: mvm: remove support for REDUCE_TX_POWER_CMD ver 6 and 7"
+Date: Sat,  4 Oct 2025 16:15:39 +0200
+Message-ID: <20251004141539.6512-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: linux-wireless@vger.kernel.org
-Cc: wireless-regdb@lists.infradead.org
-Subject: wireless-regdb: Update regulatory rules for Ukraine (UA) on 6GHz
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-6GHz wireless band was recently allowed by Ukraine government for WiFi 
-6e standard indoor use.
+This reverts commit e3fd06d1d8869747e02a022e3c9045a3187f3aa5 as it broke
+wifi on my Thinkpad P1 (Intel AX210) in v6.17. I don't have a better idea
+than reverting as - contrary to what the commit message claims - this
+chip seems to still be using the commands removed by this commit.
 
-Could you please add the appropriate setting to wireless-regdb
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+ .../net/wireless/intel/iwlwifi/fw/api/power.h | 48 +++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 14 ++++--
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  4 ++
+ 3 files changed, 62 insertions(+), 4 deletions(-)
 
-I'm not familiar with wireless-regdb format nor an expert on wireless 
-technology to create PR myself
-
-You can find all needed information here
-
-https://eba.com.ua/en/v-ukrayini-dozvoleno-vykorystannya-novitnoyi-radiotehnologiyi-wi-fi-6e/ 
-<https://eba.com.ua/en/v-ukrayini-dozvoleno-vykorystannya-novitnoyi-radiotehnologiyi-wi-fi-6e/> 
-
-
-https://mrt-cert.com/en/gjxw/4323.html 
-<https://mrt-cert.com/en/gjxw/4323.html>
-
-
-Best regards from Ukraine
-
-Dmitry Geurkov
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
+index 535864e22626..d2db59615fc6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
+@@ -328,6 +328,50 @@ struct iwl_dev_tx_power_cmd_v5 {
+ 	__le32 timer_period;
+ } __packed; /* TX_REDUCED_POWER_API_S_VER_5 */
+ 
++/**
++ * struct iwl_dev_tx_power_cmd_v6 - TX power reduction command version 6
++ * @per_chain: per chain restrictions
++ * @enable_ack_reduction: enable or disable close range ack TX power
++ *	reduction.
++ * @per_chain_restriction_changed: is per_chain_restriction has changed
++ *	from last command. used if set_mode is
++ *	IWL_TX_POWER_MODE_SET_SAR_TIMER.
++ *	note: if not changed, the command is used for keep alive only.
++ * @reserved: reserved (padding)
++ * @timer_period: timer in milliseconds. if expires FW will change to default
++ *	BIOS values. relevant if setMode is IWL_TX_POWER_MODE_SET_SAR_TIMER
++ */
++struct iwl_dev_tx_power_cmd_v6 {
++	__le16 per_chain[IWL_NUM_CHAIN_TABLES_V2][IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V2];
++	u8 enable_ack_reduction;
++	u8 per_chain_restriction_changed;
++	u8 reserved[2];
++	__le32 timer_period;
++} __packed; /* TX_REDUCED_POWER_API_S_VER_6 */
++
++/**
++ * struct iwl_dev_tx_power_cmd_v7 - TX power reduction command version 7
++ * @per_chain: per chain restrictions
++ * @enable_ack_reduction: enable or disable close range ack TX power
++ *	reduction.
++ * @per_chain_restriction_changed: is per_chain_restriction has changed
++ *	from last command. used if set_mode is
++ *	IWL_TX_POWER_MODE_SET_SAR_TIMER.
++ *	note: if not changed, the command is used for keep alive only.
++ * @reserved: reserved (padding)
++ * @timer_period: timer in milliseconds. if expires FW will change to default
++ *	BIOS values. relevant if setMode is IWL_TX_POWER_MODE_SET_SAR_TIMER
++ * @flags: reduce power flags.
++ */
++struct iwl_dev_tx_power_cmd_v7 {
++	__le16 per_chain[IWL_NUM_CHAIN_TABLES_V2][IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V2];
++	u8 enable_ack_reduction;
++	u8 per_chain_restriction_changed;
++	u8 reserved[2];
++	__le32 timer_period;
++	__le32 flags;
++} __packed; /* TX_REDUCED_POWER_API_S_VER_7 */
++
+ /**
+  * struct iwl_dev_tx_power_cmd_v8 - TX power reduction command version 8
+  * @per_chain: per chain restrictions
+@@ -372,6 +416,8 @@ struct iwl_dev_tx_power_cmd_per_band {
+  * @v3: version 3 part of the command
+  * @v4: version 4 part of the command
+  * @v5: version 5 part of the command
++ * @v6: version 6 part of the command
++ * @v7: version 7 part of the command
+  * @v8: version 8 part of the command
+  */
+ struct iwl_dev_tx_power_cmd_v3_v8 {
+@@ -381,6 +427,8 @@ struct iwl_dev_tx_power_cmd_v3_v8 {
+ 		struct iwl_dev_tx_power_cmd_v3 v3;
+ 		struct iwl_dev_tx_power_cmd_v4 v4;
+ 		struct iwl_dev_tx_power_cmd_v5 v5;
++		struct iwl_dev_tx_power_cmd_v6 v6;
++		struct iwl_dev_tx_power_cmd_v7 v7;
+ 		struct iwl_dev_tx_power_cmd_v8 v8;
+ 	};
+ };
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 6b76ce35443d..c64c599b1d78 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -870,11 +870,17 @@ int iwl_mvm_sar_select_profile(struct iwl_mvm *mvm, int prof_a, int prof_b)
+ 		len = sizeof(cmd_v9_v10.v9);
+ 		n_subbands = IWL_NUM_SUB_BANDS_V1;
+ 		per_chain = &cmd_v9_v10.v9.per_chain[0][0];
+-	} else if (cmd_ver == 8) {
+-		len = sizeof(cmd.v8);
++	} else if (cmd_ver >= 7) {
++		len = sizeof(cmd.v7);
+ 		n_subbands = IWL_NUM_SUB_BANDS_V2;
+-		per_chain = cmd.v8.per_chain[0][0];
+-		cmd.v8.flags = cpu_to_le32(mvm->fwrt.reduced_power_flags);
++		per_chain = cmd.v7.per_chain[0][0];
++		cmd.v7.flags = cpu_to_le32(mvm->fwrt.reduced_power_flags);
++		if (cmd_ver == 8)
++			len = sizeof(cmd.v8);
++	} else if (cmd_ver == 6) {
++		len = sizeof(cmd.v6);
++		n_subbands = IWL_NUM_SUB_BANDS_V2;
++		per_chain = cmd.v6.per_chain[0][0];
+ 	} else if (fw_has_api(&mvm->fw->ucode_capa,
+ 			      IWL_UCODE_TLV_API_REDUCE_TX_POWER)) {
+ 		len = sizeof(cmd.v5);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 44029ceb8f77..8274437b78be 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1517,6 +1517,10 @@ int iwl_mvm_set_tx_power(struct iwl_mvm *mvm,
+ 		len = sizeof(cmd_v9_v10.v9);
+ 	else if (cmd_ver == 8)
+ 		len = sizeof(cmd.v8);
++	else if (cmd_ver == 7)
++		len = sizeof(cmd.v7);
++	else if (cmd_ver == 6)
++		len = sizeof(cmd.v6);
+ 	else if (fw_has_api(&mvm->fw->ucode_capa,
+ 			    IWL_UCODE_TLV_API_REDUCE_TX_POWER))
+ 		len = sizeof(cmd.v5);
+-- 
+2.48.1
 
 
