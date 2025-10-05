@@ -1,169 +1,156 @@
-Return-Path: <linux-wireless+bounces-27815-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27816-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B608BB9471
-	for <lists+linux-wireless@lfdr.de>; Sun, 05 Oct 2025 09:12:32 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A236BB94C1
+	for <lists+linux-wireless@lfdr.de>; Sun, 05 Oct 2025 10:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D473B1898E6D
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Oct 2025 07:12:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0FB12345835
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Oct 2025 08:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB941E47CC;
-	Sun,  5 Oct 2025 07:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BF71F12F4;
+	Sun,  5 Oct 2025 08:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZGmR4VfZ"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="mPSfjFj6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B10186E40
-	for <linux-wireless@vger.kernel.org>; Sun,  5 Oct 2025 07:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD5C1F19A
+	for <linux-wireless@vger.kernel.org>; Sun,  5 Oct 2025 08:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759648349; cv=none; b=XW5FYT4fbf+bvjEjRdTQQRWeOXr2SHtPoaXyOfrnR6CO2qPe+yryCWoxWPhcXlwjSObTsMDz2BfY18zkAA9qxsOTSKtHn1HJja9n5oz8xO9yvYtOAggeOGkg2y7nYteGzy3fCrGPK4ZlDsg3PSisiALXocH5vsJ0f7WCG7SLxas=
+	t=1759653500; cv=none; b=Cjc2Re1IdQGt4W/3YyM+z8gW8bWskDgWPWtWPOhs/ARRuLUgAFh/v7NMFB8pGHewV+SWYd/cq5Gcwu4iHFhSOw8te4Tg0rvGhNkq3v8fJus3QItdyHTgu1JDBzdj2WmipYB+vDS4F/3Lbem130dJFF1Gy47GTyw+y4DfqBDUFwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759648349; c=relaxed/simple;
-	bh=uLbCSnPzxk3Pd2cfZv75N/9WHUkvGEISioC9aAo2FWg=;
+	s=arc-20240116; t=1759653500; c=relaxed/simple;
+	bh=3fqWPSIJd3csmKZXNaWWqZ3XRDeayAB5rf7z0R2exvo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sjde96ThsuaOmUt8nOaWPOLv4scQyFgk+0PGxE2G3uNyrHUwtzeyye2WT3gHTURpfatDpl5LdLtKQX7ZkibAmdikIf1WCDcPLK2ATgggKkxiefv+4o6mmcGq1Vwai57D7q1Wzoyn+KLDgMU5bIUbY7TxKpeBzMlKiTZhOpykif4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZGmR4VfZ; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6398ff5fbd3so79123a12.2
-        for <linux-wireless@vger.kernel.org>; Sun, 05 Oct 2025 00:12:27 -0700 (PDT)
+	 To:Cc:Content-Type; b=cmKdxqJqhQDr7EwqwV+/ZHCw8w/iUG467T5zMS6x69l5KXkeN4ru75XuPocp74QzVyaAIhxHwrT+BbqCaJ4WMMnAck4Osf/AOnhRHI1bPL9FgPPj8ry66Zu8xhzv1hwNuPx+aLouXSGS1QtlYQTG6ksJpj/WgjBAh5v+7JO861E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=mPSfjFj6; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-367444a3e2aso47213871fa.2
+        for <linux-wireless@vger.kernel.org>; Sun, 05 Oct 2025 01:38:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759648346; x=1760253146; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uLbCSnPzxk3Pd2cfZv75N/9WHUkvGEISioC9aAo2FWg=;
-        b=ZGmR4VfZUJEYMzzDqJ9BmlhtCueDf+5p2jsHDuEAdERfjY7qLS7lVRFJEG4VFYOalb
-         VBKP9HujOjbAJlLO/ZO5WCMGF57ma4BVDjVpDT91ldB6LCz2MT9BpStkLZW1rZyRDG7v
-         75iMyxYNp39mcJG19J42/+FWecdYdiiAHX7fxKK6wNBl3eq6PlIc1itcn1fuONhJBCYV
-         bIjPANKgcPkieWgucV0wcSc10Ji0cuaXL426BLbfNW3evcBIoHuQTEl7XtuNmf5yj45A
-         kAr+/f1pFGH2kBOegKnida9oOja+iUEDc+eYuuh+/FDZ3L9xkh1qS+p16PejuEdFMlYn
-         qjkA==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1759653497; x=1760258297; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3fqWPSIJd3csmKZXNaWWqZ3XRDeayAB5rf7z0R2exvo=;
+        b=mPSfjFj6Wqfxn3fwpSqWJx87aheLRCYmRJUztu2vObv8J4vLEdpFmz40XizaAhddPn
+         gUo61X3era7lKGtAzhPgSSNgDxqCcPYEkwHAxossxwlkoO0nuxN59tYNMo4wXyzh92A5
+         miPkXGRRmlYCZHrjYOPnSk3a2DpXkl6n7oTBuh8gNSn7eIldvJKy6DQSTOPJPIKeutDw
+         BTOBXCD2p8fVmIQwQtRjXA/akZ/0HkqTZ7NGMCOo1gg1PttGgDNq+i/Z05V27JnPvmuj
+         eXOkbI6yQpTt19+wRy8bzEOKgUqVUaJazwEjXFL4qMipQu5lUqPvV8HjCgwlNNJkDETp
+         PTmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759648346; x=1760253146;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uLbCSnPzxk3Pd2cfZv75N/9WHUkvGEISioC9aAo2FWg=;
-        b=BWRrRRtQw/pr9LHa1XSJTFsmicNqr72b91odzNb4dJD1L5t6laLRTsma6sUKRG46r2
-         O7RXtfvyvfZ/x+PSXRNUa5ZzI/iImH6zuUsk620/m9TaWcAllHItOunNkpoL4c7pp2/Z
-         iVwiSQILfamuogssjMQuiboKIGL+eSkqy/bW/Oo8Vq4Yvg43kNfUOTJOss7YvD8aKjN4
-         jf3yl9GVdRjcYjCrbP1+uiSY+Ez4crUHr+Odc1eVPk88O7PUbEM0ybCNiI6md02jS6i7
-         SSrHkB5ohvD//lET27NQw15Pgw0VphDcxdDsQnKjXtwFRpeWVXgVnWUx+kO6U7go5zI7
-         gJ3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXxNbUQZOXZqL1OcL2lhcS+k4Sc9CybboJBnrSs5uEU/VfMAT2zLCdzXPT9WVrrshR2mFqmzQZxbdy2rI+qSw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3CfQCoX4EjIjQXcaCpC2MnEsaPqONoly3SjMFxh/TW7vZb+DR
-	3LBmp8sPwePNJO5Ql9hCoJpEblykrNui9tTEOVBMspCPByIXzPmDpP//qAYqdR1/7HsipFYUnaw
-	2YdWhsEzBHuUZ+/yxeN1rBBRTIgHIEsM=
-X-Gm-Gg: ASbGncs04DemneEUuqO74dKjiuS7887QSB52t1FMPipY2dHU/25G6vCYqaNHMpYaetF
-	Lj0a+Xk5KfZEbLohaNRHFDRWyeu3eyIIwYfXAyVuTY6d2IrGFh8PIyVysCcWp67FUIO6Z0MrL6x
-	cieG4enO6MNQAk9wOnvRXYslC+sBgCTUyXggq/wn/u5FTYDcaEqlKx4OkNp9eQwPIY4illlw76R
-	0hg491WRMs+DwPz4dRX/3IEreUsARrL8f1UwWoWTSwsMpMZFIAFaMVR49kqKovehxd4YeXrrL0T
-	CiDzrpfXFy8UU8PFoN2WcA==
-X-Google-Smtp-Source: AGHT+IEaPBqgxHA9mkRsw5U5GshfyfUI6tv0+FQCqIyqIgMWxhvQ3ZtfCt3ueV0hiB4VsTPxZMicA8Qi+UM3+mqAQlw=
-X-Received: by 2002:a05:6402:40c4:b0:637:e490:4609 with SMTP id
- 4fb4d7f45d1cf-63939c3d1c9mr9167635a12.31.1759648346239; Sun, 05 Oct 2025
- 00:12:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759653497; x=1760258297;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3fqWPSIJd3csmKZXNaWWqZ3XRDeayAB5rf7z0R2exvo=;
+        b=R5j882PHKUOI53GSU6aFbiHPuH6KWqBPMjkOeLzs82IozufXGOqJG5Tbf6i43exW8n
+         0tXhgGMmuFlk4uIjNLRWEau/bKDd5I+Z1H6DuJh2gBCBLnc5ws/CHQp/+nHwn0nroImi
+         x86iqPVTQ1RfBEeS37DVtik68aeIdtBu1yl4RvsA6DgYv+xuZr0h8xMTSLDZJIG4vg4u
+         2vUxupsOvPJYv+PS71aSwEninMhdvr5Ftit5l+Kczkea+OIpO13Ar+PKWhpOsMajthUm
+         kvLXoJ76Jth2CVr3+xmF44bq0fh28FcKnJitB/hylaG/SpBLrTQi9dAVDZcVJsoL/Yhf
+         BqLA==
+X-Forwarded-Encrypted: i=1; AJvYcCX5+MmWgDyq2arV0s4lMijiXiKOg6yI9VoQaGXIPUW2P37XNXyirpyKqFOQKidDqA6NTFmJbRYh3eHG7A1OLw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvBoRITbwVozj0uKrm9pj8tfq52q7Nr4++C8UyltjrfVNnQ81s
+	saawLOqEkkjgTXWSoJd2fIjODjYVx3TkpoUYlQcKyyESeGrca/49sH8tnYCD6k6kNhfaptpafaQ
+	DTIn5S0oX4mGWU6icr4pKcIFPVoUG1kBd0mzqAuE36g==
+X-Gm-Gg: ASbGncuKDFxY3oZn5vfVXnaVBT0ja1dR53Wrjl13KfBIiR+T4LySNOyNyrYuSWR6zEC
+	eOJaTERsKEtLn2lTz7IpvatsG1e07PdcRarOnauULkg0Mel29m4EvjaeNAan4Fho79VyIhKsTDs
+	GsvQ/2pj7Nrw7BjJPCsxkDKroPptLL2OJV/zQmyg5a20jQxzL/wkdAK7vqnTNIKtdQSmUVidRsd
+	tLjYkoW/b3D0cNjasllctQ6Cp74aDORhVSfgXiA7ymlGmxsw3Zz1wjDYNml7gZp9dZ2iuOk
+X-Google-Smtp-Source: AGHT+IEINNT+1HcIX5qvEP3cKB0i3Rl+j+gRT3t5cn5mZ+kseOJQ3GUfdRwHB/qOyZHhmlkOW4wkJiqmUqqo9GnyvTQ=
+X-Received: by 2002:a05:651c:2357:10b0:372:9780:a2b2 with SMTP id
+ 38308e7fff4ca-374c386133fmr17808901fa.39.1759653496689; Sun, 05 Oct 2025
+ 01:38:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAJxkQ2gADc+kvZhxz3ds-QSkg+c59DQdmtXLVwRF2pGFgFNL-A@mail.gmail.com>
-In-Reply-To: <CAJxkQ2gADc+kvZhxz3ds-QSkg+c59DQdmtXLVwRF2pGFgFNL-A@mail.gmail.com>
-From: Austin Justin <austinjustin4809@gmail.com>
-Date: Sun, 5 Oct 2025 12:42:14 +0530
-X-Gm-Features: AS18NWCh-Go5b09ggMRT_w8w5GXIx2rCfjQ6NaWUTEl5HGWub9C6sqG-upQZYzI
-Message-ID: <CAJxkQ2iVpQBzLJcFawm9qvqQ=04=MxO9puD2ChgjyXL36h1w9A@mail.gmail.com>
-Subject: =?UTF-8?Q?Fwd=3A_Request_for_Linux_Driver_Support_=E2=80=93_MediaTek_M?=
-	=?UTF-8?Q?T7902_Wi=2DFi_and_Bluetooth_Chipset_on_Ubuntu_22=2E04_LTS?=
-To: yder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com, 
-	deren.wu@mediatek.com
-Cc: linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	kernel-team@lists.ubuntu.com
-Content-Type: multipart/mixed; boundary="0000000000009ba71f0640640e99"
-
---0000000000009ba71f0640640e99
+References: <20251004141539.6512-1-brgl@bgdev.pl> <CAMRc=Mepopam1zhUONtratqopa6zHhsJfah9JO9D2VKyXcqjEQ@mail.gmail.com>
+ <DM3PPF63A6024A97A503FF0208F582651E1A3E5A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+In-Reply-To: <DM3PPF63A6024A97A503FF0208F582651E1A3E5A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Sun, 5 Oct 2025 10:38:05 +0200
+X-Gm-Features: AS18NWC7MOPcYjLRf-YXTIdh4W7Riig9juU3nPGCdB8PWtzaZXoX7i1GOtQ5KMA
+Message-ID: <CAMRc=MdtkAFJBGN1biaGDLjgwjuzJ=kjDzEWbrX+DX27e8jYhg@mail.gmail.com>
+Subject: Re: [PATCH] Revert "wifi: iwlwifi: mvm: remove support for
+ REDUCE_TX_POWER_CMD ver 6 and 7"
+To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
+Cc: "Berg, Johannes" <johannes.berg@intel.com>, 
+	"Anjaneyulu, Pagadala Yesu" <pagadala.yesu.anjaneyulu@intel.com>, 
+	"Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>, Bhaskar Chowdhury <unixbhaskar@gmail.com>, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, "Peer, Ilan" <ilan.peer@intel.com>, 
+	"Gabay, Daniel" <daniel.gabay@intel.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Request for Linux Driver Support =E2=80=93 MediaTek MT7902 Wi-Fi and Blueto=
-oth
-Chipset on Ubuntu 22.04 LTS
----------- Forwarded message ---------
-From: Austin Justin <austinjustin4809@gmail.com>
-Date: Sun, 5 Oct 2025 at 12:37
-Subject: Request for Linux Driver Support =E2=80=93 MediaTek MT7902 Wi-Fi a=
-nd
-Bluetooth Chipset on Ubuntu 22.04 LTS
-To: <ryder.lee@mediatek.com>, <shayne.chen@mediatek.com>,
-<sean.wang@mediatek.com>, <deren.wu@mediatek.com>
-Cc: <linux-mediatek@lists.infradead.org>,
-<linux-wireless@vger.kernel.org>, <kernel-team@lists.ubuntu.com>
+On Sat, Oct 4, 2025 at 11:00=E2=80=AFPM Korenblit, Miriam Rachel
+<miriam.rachel.korenblit@intel.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Bartosz Golaszewski <brgl@bgdev.pl>
+> > Sent: Saturday, October 4, 2025 5:19 PM
+> > To: Korenblit, Miriam Rachel <miriam.rachel.korenblit@intel.com>; Berg,
+> > Johannes <johannes.berg@intel.com>; Anjaneyulu, Pagadala Yesu
+> > <pagadala.yesu.anjaneyulu@intel.com>; Grumbach, Emmanuel
+> > <emmanuel.grumbach@intel.com>; Bhaskar Chowdhury
+> > <unixbhaskar@gmail.com>; Bartosz Golaszewski
+> > <bartosz.golaszewski@linaro.org>; Peer, Ilan <ilan.peer@intel.com>; Gab=
+ay,
+> > Daniel <daniel.gabay@intel.com>
+> > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH] Revert "wifi: iwlwifi: mvm: remove support for
+> > REDUCE_TX_POWER_CMD ver 6 and 7"
+> >
+> > On Sat, Oct 4, 2025 at 4:15=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.=
+pl> wrote:
+> > >
+> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > >
+> > > This reverts commit e3fd06d1d8869747e02a022e3c9045a3187f3aa5 as it
+> > > broke wifi on my Thinkpad P1 (Intel AX210) in v6.17. I don't have a
+> > > better idea than reverting as - contrary to what the commit message
+> > > claims - this chip seems to still be using the commands removed by th=
+is
+> > commit.
+> > >
+> > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > > ---
+> >
+> > And here's the kernel log: https://pastebin.com/zrTPbE0j
+> >
+> > Bartosz
+>
+> Hi
+>
+> I think you reverted the wrong commit?
+> Didn=E2=80=99t you mean
+> e3fd06d1d886 ("wifi: iwlwifi: mvm: remove support for REDUCE_TX_POWER_CMD=
+ ver 6 and 7")
+> ?
+>
 
+This is the same commit though, right? Am I missing something?
 
-Dear MediaTek Linux Driver Team,
+> Anyway, for fixing this issue, can I ask you to upgrade your FW? Then you=
+ should not see this error anymore.
+>
 
-I am writing to request official Linux driver support for the MediaTek
-MT7902 Wi-Fi and Bluetooth chipset.
+To what? I'm already at iwlwifi-ty-a0-gf-a0-89 which seems to be the
+most recent firmware for this card.
 
-This hardware is present in my ASUS Vivobook X1605VA laptop running
-Ubuntu 22.04 LTS, but it currently lacks native driver support in the
-kernel and Ubuntu repositories.
-The wireless and Bluetooth interfaces are not detected automatically,
-and no compatible package is available through 'ubuntu-drivers' or
-DKMS.
-
-Hardware details:
-------------------------------------------------------
-$ lspci -nn | grep -i network
-03:00.0 Network controller [0280]: MEDIATEK Corp. Device [14c3:7902]
-
-Kernel version:
-6.8.0-79-generic
-------------------------------------------------------
-
-Could you please advise if there are existing drivers for this
-chipset, or if MediaTek plans to upstream support into the Linux
-kernel?
-If testing or logs are required, I would be happy to assist to help
-ensure compatibility with Ubuntu and other Linux distributions.
-
-Thank you for your time and support in improving Linux compatibility
-with MediaTek devices.
-
-Best regards,
-Austin Justin
-ASUS Vivobook X1605VA
-Ubuntu 22.04 LTS
-
---0000000000009ba71f0640640e99
-Content-Type: text/plain; charset="US-ASCII"; name="network_info.txt"
-Content-Disposition: attachment; filename="network_info.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_mgdd105m0>
-X-Attachment-Id: f_mgdd105m0
-
-ICAqLW5ldHdvcmsgVU5DTEFJTUVECiAgICAgICBkZXNjcmlwdGlvbjogTmV0d29yayBjb250cm9s
-bGVyCiAgICAgICBwcm9kdWN0OiBNRURJQVRFSyBDb3JwLgogICAgICAgdmVuZG9yOiBNRURJQVRF
-SyBDb3JwLgogICAgICAgcGh5c2ljYWwgaWQ6IDAKICAgICAgIGJ1cyBpbmZvOiBwY2lAMDAwMDow
-MzowMC4wCiAgICAgICB2ZXJzaW9uOiAwMAogICAgICAgd2lkdGg6IDY0IGJpdHMKICAgICAgIGNs
-b2NrOiAzM01IegogICAgICAgY2FwYWJpbGl0aWVzOiBwY2lleHByZXNzIG1zaSBwbSBjYXBfbGlz
-dAogICAgICAgY29uZmlndXJhdGlvbjogbGF0ZW5jeT0wCiAgICAgICByZXNvdXJjZXM6IGlvbWVt
-b3J5OjYwMC01ZmYgbWVtb3J5OjYwMDAwMDAwMDAtNjAwMDBmZmZmZiBtZW1vcnk6ODA4MDAwMDAt
-ODA4MDdmZmYKICAqLW5ldHdvcmsKICAgICAgIGRlc2NyaXB0aW9uOiBFdGhlcm5ldCBpbnRlcmZh
-Y2UKICAgICAgIHBoeXNpY2FsIGlkOiA5CiAgICAgICBidXMgaW5mbzogdXNiQDE6MQogICAgICAg
-bG9naWNhbCBuYW1lOiBlbngyZTQwNzc2ZjBkNjMKICAgICAgIHNlcmlhbDogMmU6NDA6Nzc6NmY6
-MGQ6NjMKICAgICAgIGNhcGFiaWxpdGllczogZXRoZXJuZXQgcGh5c2ljYWwKICAgICAgIGNvbmZp
-Z3VyYXRpb246IGF1dG9uZWdvdGlhdGlvbj1vZmYgYnJvYWRjYXN0PXllcyBkcml2ZXI9cm5kaXNf
-aG9zdCBkcml2ZXJ2ZXJzaW9uPTYuOC4wLTc5LWdlbmVyaWMgZHVwbGV4PWhhbGYgZmlybXdhcmU9
-Uk5ESVMgZGV2aWNlIGlwPTE5Mi4xNjguMTYwLjE5NiBsaW5rPXllcyBtdWx0aWNhc3Q9eWVzIHBv
-cnQ9dHdpc3RlZCBwYWlyCg==
---0000000000009ba71f0640640e99--
+Bartosz
 
