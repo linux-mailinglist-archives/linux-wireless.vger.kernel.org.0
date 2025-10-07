@@ -1,193 +1,165 @@
-Return-Path: <linux-wireless+bounces-27859-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27860-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C6FBC1635
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Oct 2025 14:41:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C4CBC17F4
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Oct 2025 15:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CDB5B4F58B9
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Oct 2025 12:41:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF622188BCAF
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Oct 2025 13:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6F72DF157;
-	Tue,  7 Oct 2025 12:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323BC225785;
+	Tue,  7 Oct 2025 13:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="U4GAirtl"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PPEtf7kt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B0A2DF129
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Oct 2025 12:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1A21E32D3
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Oct 2025 13:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759840866; cv=none; b=iVAq3BSHhO8qRFAjgyU5oSoEdL04sNtTD9saRUCMTTlDFtEHZqPv4mVlSmyFEplo4Z+EWLbcbECGdK/gAZjCc4sGQwB3pVNmo1ycoaak9zdPQG3YELTyyislvV6z1BioyO3+fCy670iA9euk/i52EI+We9fOQKOTEImkaQM78Xo=
+	t=1759843873; cv=none; b=qY5ggWCz9RK3V3aS6tyF5tMoVJ9fJdoCXJnLQVlgQ1LWyPWloqoe3at1U6oSneQ3MwWNqmMWjsl/kEJV/5mW98HX/0NEALltRDMMUI/QlYKq9k8j0dRzuSFs+ji398I7ynmPy/89tPyuS9R9wbMHNGjPtcdtsgzs0Xo9wvg4zig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759840866; c=relaxed/simple;
-	bh=WGN7ZiUWGOlkdOmh6A6Q8cVASHcj8jYwtaaha+bg0yI=;
+	s=arc-20240116; t=1759843873; c=relaxed/simple;
+	bh=4deyOB2L6dqto1XiXR6qCw+93oIrxZdYhpy+WxMuTq4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pEIXNKFj3qQB1oNksaxCNTxPnawiPaXPbh2jbJYxvOmu3tmdbJoNngI0JxofPkJ/nxs9vcJqNZh/kWCngOyHUdxiPw8bGO5n9KSR2QEJLXdna/AuFU0o2aHw1H66wbtJctdaekxlqOBR8Zytai6W1CJu+ZcwexAA+veTm/z93wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=U4GAirtl; arc=none smtp.client-ip=185.84.6.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
-Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:46084 helo=webmail.newmedia-net.de)
-	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
-	(Exim 4.97.1)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1v66xq-0000000008O-07oy;
-	Tue, 07 Oct 2025 14:38:46 +0200
-X-SASI-Hits: BODY_SIZE_3000_3999 0.000000, BODY_SIZE_5000_LESS 0.000000,
-	BODY_SIZE_7000_LESS 0.000000, CTE_7BIT 0.000000, DKIM_ALIGNS 0.000000,
-	DKIM_SIGNATURE 0.000000, HTML_00_01 0.050000, HTML_00_10 0.050000,
-	IN_REP_TO 0.000000, LEGITIMATE_SIGNS 0.000000,
-	MSGID_SAMEAS_FROM_HEX_844412 0.100000, MSG_THREAD 0.000000,
-	MULTIPLE_REAL_RCPTS 0.000000, NO_FUR_HEADER 0.000000, OUTBOUND 0.000000,
-	OUTBOUND_SOPHOS 0.000000, REFERENCES 0.000000, SENDER_NO_AUTH 0.000000,
-	SINGLE_URI_IN_BODY 0.000000, SUSP_DH_NEG 0.000000,
-	URI_WITH_PATH_ONLY 0.000000, USER_AGENT 0.000000, __ANY_URI 0.000000,
-	__BODY_NO_MAILTO 0.000000, __BOUNCE_CHALLENGE_SUBJ 0.000000,
-	__BOUNCE_NDR_SUBJ_EXEMPT 0.000000, __BULK_NEGATE 0.000000,
-	__CP_URI_IN_BODY 0.000000, __CT 0.000000, __CTE 0.000000,
-	__CT_TEXT_PLAIN 0.000000, __DKIM_ALIGNS_1 0.000000, __DKIM_ALIGNS_2 0.000000,
-	__DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000, __DQ_NEG_IP 0.000000,
-	__FORWARDED_MSG 0.000000, __FRAUD_BODY_WEBMAIL 0.000000,
-	__FRAUD_WEBMAIL 0.000000, __FROM_DOMAIN_NOT_IN_BODY 0.000000,
-	__FROM_NAME_NOT_IN_BODY 0.000000, __FUR_RDNS_SOPHOS 0.000000,
-	__HAS_CC_HDR 0.000000, __HAS_FROM 0.000000, __HAS_MSGID 0.000000,
-	__HAS_REFERENCES 0.000000, __HEADER_ORDER_FROM 0.000000,
-	__HTTPS_URI 0.000000, __INVOICE_MULTILINGUAL 0.000000, __IN_REP_TO 0.000000,
-	__MAIL_CHAIN 0.000000, __MIME_BOUND_CHARSET 0.000000,
-	__MIME_TEXT_ONLY 0.000000, __MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000,
-	__MIME_VERSION 0.000000, __MOZILLA_USER_AGENT 0.000000,
-	__MSGID_HEX_844412 0.000000, __MULTIPLE_RCPTS_TO_X2 0.000000,
-	__NO_HTML_TAG_RAW 0.000000, __OUTBOUND_SOPHOS_FUR 0.000000,
-	__OUTBOUND_SOPHOS_FUR_IP 0.000000, __OUTBOUND_SOPHOS_FUR_RDNS 0.000000,
-	__PHISH_SPEAR_SUBJ_PREDICATE 0.000000, __RCVD_PASS 0.000000,
-	__REFERENCES 0.000000, __SANE_MSGID 0.000000, __SCAN_D_NEG 0.000000,
-	__SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
-	__SCAN_D_NEG_HEUR2 0.000000, __SINGLE_URI_TEXT 0.000000,
-	__SUBJ_ALPHA_END 0.000000, __SUBJ_ALPHA_NEGATE 0.000000,
-	__SUBJ_REPLY 0.000000, __TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
-	__TO_NAME_DIFF_FROM_ACC 0.000000, __TO_REAL_NAMES 0.000000,
-	__URI_ENDS_IN_SLASH 0.000000, __URI_HAS_HYPHEN_USC 0.000000,
-	__URI_IN_BODY 0.000000, __URI_MAILTO 0.000000, __URI_NOT_IMG 0.000000,
-	__URI_NO_WWW 0.000000, __URI_NS 0.000000, __URI_WITH_PATH 0.000000,
-	__USER_AGENT 0.000000, __X_MAILSCANNER 0.000000
-X-SASI-Probability: 8%
-X-SASI-RCODE: 200
-X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2025.10.7.115719
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
-	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=NH6l7vXjZTW9rORMEQZCLed1T0oPY5YrlQ8uec4d4J4=;
-	b=U4GAirtlnWlJ1FSNKVMluctdhDAB8VNah7SecEcpN72mSRISkuAI9tf30crjMVpLH404UcmHozo8x08FlAYrPim0Nf59Ly3MIlYhuqe6V5HvG1+sUY3gENCWNRUfyoydEeElXeqcHdQ8+TBCpJtuiVjGyQjEiZSi/Avjd4DA3PA=;
-Message-ID: <236b48e6-43c3-4d2e-a864-3ba627101c90@dd-wrt.com>
-Date: Tue, 7 Oct 2025 14:38:43 +0200
+	 In-Reply-To:Content-Type; b=lal8ugwRS3L7B3Mmvqa4wMT5ZQAqzHEJa9Y5yfVAUWX87MplcQ0iexjkI+UwGB+J6oYaGuxPABH/S1HqeNua6fDl2/Z//TuzzhhjTp2XVpaQeR+zNIJIB9xDh3YSjJRG2kRs91H/Olon8gNJE2iPtl2cRVbavM17h09Gja6aBo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PPEtf7kt; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 597C9o2U029299
+	for <linux-wireless@vger.kernel.org>; Tue, 7 Oct 2025 13:31:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Ntyqc3cfFdL0+zciHAWHrYx64d7Wo2ITIj39j+9BU1A=; b=PPEtf7ktZZv8VKC8
+	YUTgicsLYTLA2ABfArxbCHtU8DjF6Z8EVy67FMhsaPrnwx6/e6RzJuJGPZKErGTq
+	il9+f1DYjS2MonG37PHQ/oUTaKNp0qlaOaI0ob0SxD5M+cwWaa633zm9iuVz8kV6
+	FszkhPjGwpE8lWKrIWXiTNX6L6NiYGqBQKG85cw6gPc9ZTnFS88SxvLEWaCnSwpf
+	RlolBHO9EwstyEbuPZJiHqpU1AcPaWjX00ebr49abgq+10NWLShqDH6eBsSmKJlk
+	vZjXlhqHdORBw8PPslniIJWb0uYrValFqNKeU5DvdAgBzhaOFw2Ff+v9u10ZfjAp
+	ieq69Q==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49jut1q8x0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 07 Oct 2025 13:31:10 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b56ae0c8226so4252531a12.2
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Oct 2025 06:31:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759843870; x=1760448670;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ntyqc3cfFdL0+zciHAWHrYx64d7Wo2ITIj39j+9BU1A=;
+        b=U9+jZrsbkz6AJtGPJ909GEVkCpoDC/UiQlSG73CjluRFPJe6ptQTPjltn3hLXqbOZh
+         q8u99b7aW71CxtAQBaL5wrk3oU+2rjlqBRDWvd7RjQqb2ek7CoHACuW8SOEidWQBKrie
+         DD71M57IH9clRIFg9PZ6qDIZcBjN0jdZqTm81ICoX8gXKiIMTYKPwxMiRrEWgRtLFjtg
+         FlDcL5B9xUadMkJ2a8ZeSFaA4+Akkjz6QvnDm19LHBC7icJcvrwG09CLWMcKl774LAFc
+         Mz14IXlbj8dBl/T5tEFighKlMoVzRJEAjFAGQbpx93j4nHXD1J/giGdREFLXwL3jetZI
+         uo8Q==
+X-Gm-Message-State: AOJu0YwcdNpTLwWbWYqWhcZwy/TVi3q/bLrzTdjzcJsLAHqZA0dgpVGs
+	xPVVVooWg8xnRa791AzTiCc1ZEV5psYTxbhgw+ypCPZVqpzuRPyehw6CCgCOMmZOEi+XcBz6Jw6
+	HRIY/FR4t8FXuZKHfPI8PP/pfSs9hvr9DAc/bSY9ChPMGQuecQ0hvpPr9SFvn/597RUgzDQ==
+X-Gm-Gg: ASbGnctHbjmtcqLhj9Vo3Dt08z3EEvNCUBXtd9JSzPYMOjKZWx0Ziyv8GT8wlY799gl
+	sDrOSSJ/oFu4IjbfrVXA4b0qraZumIlQwDzJHlQVQrw+iX0uHXJLHwRKq4zmLDLk4DoLYltsEKw
+	8GUIWH+XL6VEwTm/3vHVPHnVz6pblQI2YdUs5hhDRqHcNxC+l0yJ9Rzbb9eT+obac2palws4U6P
+	1SXixsmx3C1Ki49uJwBZnMXEuVRqFyEUx4lRfP51qJ8geUoYAj1Y/9Rn5UyUveRKnR31Dlgki6o
+	70Oty7CX/3Ko/nqgXlA6zZegsz8LlNVBtvc9vH/1j2RpfO/czrju9sCIlspTmHJ7vf1QZKhiDG6
+	e3JMTeH2V
+X-Received: by 2002:a17:90b:1d0a:b0:32e:1188:147f with SMTP id 98e67ed59e1d1-339c276e95emr21898799a91.19.1759843869417;
+        Tue, 07 Oct 2025 06:31:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEWkR3NMZmKO8TBoV/tq1VuPyh74ytxa3HIkPi4GrzXtS7xG0vWtr49AExNmovoi+H2e/nfYg==
+X-Received: by 2002:a17:90b:1d0a:b0:32e:1188:147f with SMTP id 98e67ed59e1d1-339c276e95emr21898752a91.19.1759843868848;
+        Tue, 07 Oct 2025 06:31:08 -0700 (PDT)
+Received: from [192.168.1.6] ([115.96.2.203])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339f09bdf1fsm1224456a91.2.2025.10.07.06.31.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Oct 2025 06:31:08 -0700 (PDT)
+Message-ID: <8e8b06f0-e654-44da-91a9-9731cb92516e@oss.qualcomm.com>
+Date: Tue, 7 Oct 2025 19:01:04 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [RFC PATCH] ath11k: add ath11k_mac_op_flush_sta to properly flush
- pending packets
-To: Florian Maurer <f.maurer@outlook.de>, Jeff Johnson <jjohnson@kernel.org>,
- ath11k@lists.infradead.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next] wifi: ath12k: Fix NSS value update in
+ ext_rx_stats
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-References: <GV1P250MB14333A5BF24623C4753A10E1E8E0A@GV1P250MB1433.EURP250.PROD.OUTLOOK.COM>
-From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-In-Reply-To: <GV1P250MB14333A5BF24623C4753A10E1E8E0A@GV1P250MB1433.EURP250.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20250725084426.3989966-1-thiraviyam.mariyappan@oss.qualcomm.com>
+ <4e204f93-b964-40fb-8eb5-f723f309a2c1@oss.qualcomm.com>
+Content-Language: en-US
+From: Thiraviyam Mariyappan <thiraviyam.mariyappan@oss.qualcomm.com>
+In-Reply-To: <4e204f93-b964-40fb-8eb5-f723f309a2c1@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass (webmail.newmedia-net.de: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=s.gottschall@dd-wrt.com; helo=webmail.newmedia-net.de;
-X-SA-Exim-Connect-IP: 127.0.0.1
-X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
-X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
-X-NMN-MailScanner-Information: Please contact the ISP for more information
-X-NMN-MailScanner-ID: 1v66xo-000GUM-Sa
-X-NMN-MailScanner: Found to be clean
-X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
-X-Received:  from localhost ([127.0.0.1] helo=webmail.newmedia-net.de)
-	by webmail.newmedia-net.de with esmtp (Exim 4.72)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1v66xo-000GUM-Sa; Tue, 07 Oct 2025 14:38:44 +0200
+X-Proofpoint-GUID: kyUj4rVUHVxAckZxiYmtJ3iNKQsEiQxR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAyNyBTYWx0ZWRfX2sRZVeHdAlvl
+ hadLtzd3U3oR/G63KZqo0qn8cy3IozsKO0/W/2gi/vTjEE8TUl73aAH5wm/de0WA0yMfH0L2Lwo
+ tucfJfyKY21XZeBbtFVzD12wGm+LURgVZcpFFaRIe8wHx/0pguVGIa6mXF9cs+Ro6ZuZ/lTpiIx
+ Hme8l36cHo33A7unyxiaBmPaWXm4nY6sh7FV08M8orr6UuJ3iLdUaGce4327edxvM2iPXlZMm1k
+ tKGRv/0VNSg2u+DmsIrcRhdK/eb1TLnu5qzL8QTJKxmzvrf4HkvW+XJ0xiB0gGZZZVnCi8vTk+B
+ yGc7bmE/a9OEkEnckC7yjpocfQgmTvArY4hYC/mVWpEdmaKIdOtaLJcAjhMpMWTURwEmb3Rl19Q
+ jrwfqA5WI9xB8pnIeWl/cPTuGfoR4w==
+X-Authority-Analysis: v=2.4 cv=Vqcuwu2n c=1 sm=1 tr=0 ts=68e5161e cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=P8EKGVp7AHIUQAkkfTWdsA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=EUspDBNiAAAA:8 a=myYG0hIH-BHpDLZ92UcA:9
+ a=QEXdDO2ut3YA:10 a=3WC7DwWrALyhR5TkjVHa:22
+X-Proofpoint-ORIG-GUID: kyUj4rVUHVxAckZxiYmtJ3iNKQsEiQxR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-07_01,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0 priorityscore=1501
+ suspectscore=0 bulkscore=0 clxscore=1015 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040027
 
-Am 07.10.2025 um 10:11 schrieb Florian Maurer:
 
-> When a STA is marked as no longer authorized, if the driver doesn't
-> implement flush_sta(), mac80211 calls ieee80211_flush_queues() to
-> flush hardware queues to avoid sending unencrypted frames.
->
-> This has became a problem for ath11k because ieee80211_flush_queues()
-> will stop all traffic and call ath11k_flush, which waits until the
-> whole HW queue is empty. In a busy environment this will trigger a
-> timeout warning and stalls other STAs.
->
-> Fix this by implementing flush_sta method using WMI command to flush
-> frames of a specific STA.
-> Flushed frames will be marked as discard in tx complete indication.
->
-> warning print "ath11k c000000.wifi: failed to flush transmit queue 0"
-> was observed on various openwrt devices, and is fixed through this patch.
->
-> Signed-off-by: Florian Maurer <f.maurer@outlook.de>
-> Tested-by: Florian Maurer  <f.maurer@outlook.de>
-> Co-authored-by: Benjamin Berg <benjamin@sipsolutions.net>
-> Tested-by: Flole <flole@flole.de>
-> ---
-> We tested this patch and it solved the problem of flushing the transmit
-> queues taking too long when the AP is busy.
-> We did not confirm if this flush is implemented to guarantee that no
-> unencrypted frames are sent out on station removal.
-> Could someone with more knowledge about the firmware behavior check
-> wether this approach is feasible or if a different approach should be
-> taken.
-> It is not clear to me if the approach taken in "wifi: ath10k: Flush
-> only requested txq in ath10k_flush()" might be better.
-> https://lore.kernel.org/linux-wireless/01d859e8e574a1f5d0b916333fe0b5cda859af9b.1732293922.git.repk@triplefau.lt/
->
-> Regards
-> Florian
->
->   drivers/net/wireless/ath/ath11k/mac.c | 19 +++++++++++++++++++
->   1 file changed, 19 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-> index 106e2530b64e..a94649edd4ed 100644
-> --- a/drivers/net/wireless/ath/ath11k/mac.c
-> +++ b/drivers/net/wireless/ath/ath11k/mac.c
-> @@ -8330,6 +8330,24 @@ static void ath11k_mac_op_flush(struct ieee80211_hw *hw, struct ieee80211_vif *v
->   	ath11k_mac_flush_tx_complete(ar);
->   }
->   
-> +static void ath11k_mac_op_flush_sta(struct ieee80211_hw *hw,
-> +							struct ieee80211_vif *vif,
-> +			    			struct ieee80211_sta *sta)
-> +{
-> +	struct ath11k_vif *arvif = (void *)vif->drv_priv;
-> +	struct ath11k *ar = hw->priv;
-> +	struct peer_flush_params params = {
-> +		.peer_tid_bitmap = 0xFF,
-> +		.vdev_id = arvif->vdev_id,
-> +	};
-> +	int ret = 0;
-> +
-> +	ret = ath11k_wmi_send_peer_flush_tids_cmd(ar, sta->addr, &params);
-> +	if (ret)
-> +		ath11k_warn(ar->ab, "failed to flush sta (sta %pM)\n",
-> +			    sta->addr);
-> +}
-> +
->   static bool
->   ath11k_mac_has_single_legacy_rate(struct ath11k *ar,
->   				  enum nl80211_band band,
-> @@ -9920,6 +9938,7 @@ static const struct ieee80211_ops ath11k_ops = {
->   	.set_bitrate_mask		= ath11k_mac_op_set_bitrate_mask,
->   	.get_survey			= ath11k_mac_op_get_survey,
->   	.flush				= ath11k_mac_op_flush,
-> +	.flush_sta			= ath11k_mac_op_flush_sta,
->   	.sta_statistics			= ath11k_mac_op_sta_statistics,
->   	CFG80211_TESTMODE_CMD(ath11k_tm_cmd)
->   
-why is peer_tid_bitmap 0xff instead of 0xffffffff?
+
+On 9/20/2025 9:25 PM, Jeff Johnson wrote:
+> On 7/25/2025 1:44 AM, Thiraviyam Mariyappan wrote:
+>> Currently, in ext_rx_stats, the NSS value is taken directly from
+>> the firmware, which results in incorrect mapping:
+>>         4x4, 3x3, 2x2, 1x1 SS are incorrectly updated as 3x3, 2x2,
+>> 1x1, 0x0 SS respectively.
+>>
+>> Fix the issue by incrementing the NSS value by 1 while updating
+>> the PPDU info to ensure accurate spatial stream statistics.
+>>
+>> Remove the redundant +1 increment in the radiotap header when monitor
+>> mode is enabled to prevent double counting.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Thiraviyam Mariyappan <thiraviyam.mariyappan@oss.qualcomm.com>
+>> ---
+>>  drivers/net/wireless/ath/ath12k/dp_mon.c | 13 +++++++------
+>>  1 file changed, 7 insertions(+), 6 deletions(-)
+> 
+> This patch no longer cleanly applies to ath/main:
+> Applying: wifi: ath12k: Fix NSS value update in ext_rx_stats
+> Using index info to reconstruct a base tree...
+> M       drivers/net/wireless/ath/ath12k/dp_mon.c
+> Falling back to patching base and 3-way merge...
+> Auto-merging drivers/net/wireless/ath/ath12k/dp_mon.c
+> CONFLICT (content): Merge conflict in drivers/net/wireless/ath/ath12k/dp_mon.c
+> 
+> Please rebase. And when you do so, please follow current legal guidance and
+> replace the existing QUIC copyright with the new QTI one.
+
+WIll rebase and update the copyright in the next version.
+> 
+> /jeff
+
+Thanks,
+Thiraviyam M
+
 
