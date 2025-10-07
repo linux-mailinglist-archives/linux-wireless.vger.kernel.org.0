@@ -1,303 +1,167 @@
-Return-Path: <linux-wireless+bounces-27865-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27866-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C40ABC22E8
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Oct 2025 18:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60735BC2EB1
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Oct 2025 01:05:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 816B219A5592
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Oct 2025 16:52:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4348D19A07E2
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Oct 2025 23:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266652E8DEA;
-	Tue,  7 Oct 2025 16:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8817F4A23;
+	Tue,  7 Oct 2025 23:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=martyn.welch@collabora.com header.b="BoQrBaYJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gFcnKzkP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-op-o10.zoho.com (sender4-op-o10.zoho.com [136.143.188.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31A42E092E;
-	Tue,  7 Oct 2025 16:50:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759855829; cv=pass; b=kg+ebGN15JfHsLQuMPucJziqeLyf6cv68cg/cgz8jrRZN4fVB+s4hFRkfy+Cyl6zy5KqzXX8t9X3uUrug4PQd5UKhVPlq60Qbv0F36illnulLwslsPMlHc/JOWmOdTSuDx3emE2fMbZHDIKgSckj4b6gKlBnxmd88AJk1YQ6QXA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759855829; c=relaxed/simple;
-	bh=qVgLaiSMFmjcTqtxzKUzSJ/p69getcGMTOUSmcceP4E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=caOKLzLYRLm8V9qK1DNgnn1jrjf20sIhV8wVDP3bwdSpH5g2OlCt+fTKo5zIiuFb+Sg6iMHC3yaVY6S2V6quP3ACcxb2f8JZd1O/iEn9klazAH+FgfM60KGwt++6UH6GI9D692TdcEqTle6wVSqRPjXIMfFmw+vbvjFipUT03pk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=martyn.welch@collabora.com header.b=BoQrBaYJ; arc=pass smtp.client-ip=136.143.188.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1759855808; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=RXINFNUMUFs0v0nzjC3qR4mMK14+5vMGKJDGrb3dBlpkTk9PWpiT3HwtuoviTqPJJuJaF5swW+MQgdmEBqn7nLtMlH9xbGNXQTLlkzgHHs069eZM2UBBw/ClTbIdbspvIn7SD0mo6mNzQjGDoYrTG9JXe38X20MhSwBmqstUtNA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1759855808; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=28fTeNGRiLWS3FEGLkHs27peDqzHM2o/niSEx5qE1aw=; 
-	b=KVU+38cJ3OzqvThnv5t/DLdhOzi1ss1Yn5bluyzoeCgQWyQjbCzOF2RaFRveraacUNhAwSUbYsJIxvlPgNnHbvJVI1MdI9NOWEfx/ARMxIr6g3iDO+yPjvT5BDkqzYvmxdr07VPncvElfXoMI2UWhEEjHtPXhV7zo6jul+/DHyU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=martyn.welch@collabora.com;
-	dmarc=pass header.from=<martyn.welch@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1759855808;
-	s=zohomail; d=collabora.com; i=martyn.welch@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=28fTeNGRiLWS3FEGLkHs27peDqzHM2o/niSEx5qE1aw=;
-	b=BoQrBaYJFQTVosCRsESrAZwi4rNs0DvaT9Ty2f/CP41UYN+8ZKsymWoX58kk7FFa
-	1+CgX7FRohIGF1KY9lGrlBvrnCVKkiTdqxXr+j7NuiQMJmYlroTFyaYvGsUl0n1S60u
-	lPcWz+KSuE4gQGBV0Yu9ETOBsBT2AbMrDMmquBYY=
-Received: by mx.zohomail.com with SMTPS id 1759855805204489.75007646978963;
-	Tue, 7 Oct 2025 09:50:05 -0700 (PDT)
-Message-ID: <164050d7-e0db-4a67-bf47-6d88e80d78ab@collabora.com>
-Date: Tue, 7 Oct 2025 17:49:59 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CF72C9D
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Oct 2025 23:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759878303; cv=none; b=Le4e2cOpV4tCBSIJvA3StRmy43wvtI+LEISH1veMaoQYXmtJffLeBttvuzsqxqR0t09Eo6r0+E3u8Xv2JjslGlhD/6sjoLpleFmnFb1Ic2cDAekUKP1uErVsM3fgxBlWr1Dln6S9WrQpltHXamXDDPDeOJodhJ7CHnVbsNqf+yc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759878303; c=relaxed/simple;
+	bh=rfBiSupUkgpYT7D6/wSMlkh3EDRkRCguaZumtXVjJ5c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C4FNasS1kw5L6u3JQRi4CbqsSJQk5UX6SuPeiShZeSvYjbkdDvrJUGg3TcwShLzP0/j6jlC8xHGoe50C528lDdQDOxBuDr+Dk1yT+IcdqWOs6m3h4KTp75UQ3YeuABCv7RRX3J5IYcuncRBQaUj1IW2aroDGscJSCww/E0bRM3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gFcnKzkP; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-781997d195aso4486092b3a.3
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Oct 2025 16:05:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759878301; x=1760483101; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iErhUlP9LkaGfTWDLHYRh3GvBloCr7rImgT7YEPmvUY=;
+        b=gFcnKzkP5Hsa2CgaEyEJXxs1uctGfCQYIS7MHuGqMje00QipMXeyBa8uOQY7w5ngpc
+         V7P8ijCBAZwtefl0UEXPwgRx00XzMnbkbVH1iXu17R+0o2GHxgJNmSti2kwwA0SowxgP
+         zC8lT5r6Wmf25DyShlENq0Lcahsz17iOYwt7kgDkR4hhaTqI0uO7qdYSGzYmEVgl3d5c
+         lW8H0xVzrFNh3+3v6s/DllXGw6pERx+T9YQV9+N0HFUDPjkX2WkPLDkd0QjCbMyF90US
+         yyF0pIg0QVApvLkRm95AFTphBYWIO/HNYFQevuVnh1qsG2oPWhQ1mYZZrM32oKd9vC1v
+         QGXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759878301; x=1760483101;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iErhUlP9LkaGfTWDLHYRh3GvBloCr7rImgT7YEPmvUY=;
+        b=Vu+Wn8vmC1WVTWmS7DCMLDIXtLX+cDpU/ecmYWytIXNW262Ux6ha3Z3sYpKQ2ZoGCk
+         znr5NHlkPNyEAM7Qfz4zAvtL7ZpMql59CL4puFon9kUADa6YnKWuzOg9hiueTpCkiEcm
+         lbKdWEFXTzcC3lfTRaW3LQxnRulcuoxKDS/hImfQSB9Qz24HsBLOZB2dzXtk0oOBV9yC
+         90XShQKRKvtUS0C4k+1QCnbepre2ixlVuKU9OUKiU5S74fm0WnV6OdHAaoxhjHC8b6GU
+         YrHMrfjPwEUVuTawT+1eXu8x12Ue/UFR5PkPpumu9mi4nTiQI63k0A9SiMS3h5JZZg8R
+         tsJA==
+X-Gm-Message-State: AOJu0YyGfcfjHbDkwu6UTaNUS9LuMMX9kyr1cpgwo4ifuiXQtZRAnCJq
+	zvxwlvBBAqkW8u/pnqA1+/q8+EYpWNhgh40sXGObCYIpjPNSlNXHfTv4hazFSyH/
+X-Gm-Gg: ASbGncsDWm/Zoa/3YCZTNueRgfP5GHLT0FXBH0xniBZCUqhw+tSWMgDdrAMdKp+xG0g
+	P86sILkGywMJWCXIAPQIxXywYoP58yyF7Tc5UPhp8UvtB09tXg5V6potRS8g2VAPbco0v8Q6Bl6
+	xmKzW3G2+IoODKMndDqH9SuoqKJEUbbR99/dDMc1nW7/1EkMvScFwtgd86yX7pQTJsiYQiAvOe6
+	PaJKBQp/3/wLjF1vTaH0vBH1c0JKmPUeR7vraLO9/HYlY9S3VXp84LbE1AoXSWI2IJQ5P4rV4PN
+	kB8veGhrWrtxbwOEVwQSq00n1882PjPZg3lqgCxIYxvg/SvxFsZy73Q5iByfcyK8Z7NV5DG5O55
+	w08foumSjOR3jf1Lg7hF65/5+2364I6aK+P60QH9TmQxaONIMyccnvue1ELSWuoJc+95VEps=
+X-Google-Smtp-Source: AGHT+IGvAJ9A+Bqbg5BqXp6J9ZCiCr+iUd2CSt5143mGGYGW2sQJ3GfysgqIB8fpu0ckb75FsUeAAA==
+X-Received: by 2002:a05:6a00:23d4:b0:77f:2978:30b0 with SMTP id d2e1a72fcca58-793859f338fmr1257512b3a.11.1759878300849;
+        Tue, 07 Oct 2025 16:05:00 -0700 (PDT)
+Received: from localhost (2403-5806-8049--d1d.ip6.aussiebb.net. [2403:5806:8049::d1d])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-78b01fb0548sm16843453b3a.27.2025.10.07.16.04.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Oct 2025 16:05:00 -0700 (PDT)
+From: Richard Huynh <voxlympha@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: wireless-regdb@lists.infradead.org,
+	Richard Huynh <voxlympha@gmail.com>
+Subject: [PATCH] wireless-regdb: Update regulatory info for Australia (AU) for 2025
+Date: Wed,  8 Oct 2025 10:04:50 +1100
+Message-ID: <20251007230450.69998-1-voxlympha@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/22] wifi: nxpwifi: create nxpwifi to support iw61x
-To: Jeff Chen <jeff.chen_1@nxp.com>, linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, briannorris@chromium.org,
- johannes@sipsolutions.net, francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
- s.hauer@pengutronix.de, brian.hsu@nxp.com
-References: <20250804154018.3563834-1-jeff.chen_1@nxp.com>
-Content-Language: en-US
-From: Martyn Welch <martyn.welch@collabora.com>
-In-Reply-To: <20250804154018.3563834-1-jeff.chen_1@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
 
-On 04/08/2025 16:39, Jeff Chen wrote:
-> This series adds a new full-MAC Wi-Fi driver `nxpwifi` to support NXP IW61x
-> chip family. These chips are tri-radio single-chip solutions with Wi-Fi 6
-> (1x1, 2.4/5 GHz), Bluetooth 5.4, and IEEE 802.15.4. Communication with the
-> external host is via SDIO interface. The driver is tested on i.MX8M Mini
-> EVK in both STA and AP mode.
-> 
-> This driver is not based on mac80211. It derives from mwifiex, but due to
-> significant differences in firmware architecture, host command interface,
-> and supported features, it was not feasible to extend mwifiex without risk
-> of regressions. Thus, a new driver is introduced. Future NXP Wi-Fi chipsets
-> will also be supported under `nxpwifi`.
-> 
-> The driver passes checkpatch. WPA2/WPA3 personal/enterprise is currently
-> handled in host via wpa_supplicant/hostapd.
-> 
-> v4 adds support for TWT, monitor mode, WPA3 Enterprise Suite-B, and various
-> fixes and improvements. See below for full changelog.
-> 
+As of October 1 2025, a new class licence is in effect[1]
+Update the link and references in the comments to it
 
-This seems to be working well for me, at least for Wifi. I'd like to get 
-Bluetooth up as well. The bluetooth driver (btnxpuart) doesn't seem 
-happy loading the bluetooh firmware:
+Additionally for the lower part of 6Ghz spectrum:
+- Allow for EHT-320 as it complies with PSD limits
+- Expand the upper range up to 6585 as permitted in new licence
 
-[   35.930755] Bluetooth: hci0: Request Firmware: nxp/uartspi_n61x_v1.bin.se
-[   37.953107] Bluetooth: hci0: FW Download Complete: 396444 bytes
-[   37.953167] Bluetooth: hci0: Frame reassembly failed (-84)
-[   39.277635] Bluetooth: hci0: Frame reassembly failed (-84)
-[   39.292011] Bluetooth: hci0: Frame reassembly failed (-84)
-[   39.310094] Bluetooth: hci0: Frame reassembly failed (-84)
-[   39.330273] Bluetooth: hci0: Frame reassembly failed (-84)
-[   39.351381] Bluetooth: hci0: Frame reassembly failed (-84)
-[   39.373112] Bluetooth: hci0: Frame reassembly failed (-84)
-[   41.353087] Bluetooth: hci0: Opcode 0x1002 failed: -110
-[   41.358411] Bluetooth: hci0: command 0x1002 tx timeout
+[1] https://www.legislation.gov.au/Details/F2025L01047
 
-I think the "combo" firmware needs to be loaded by the WiFi driver 
-right? I assume this isn't supported yet?
+Signed-off-by: Richard Huynh <voxlympha@gmail.com>
+---
+ db.txt | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-Martyn
-
-> Data sheet is available at:
-> https://www.nxp.com/docs/en/data-sheet/IW612.pdf
-> 
-> Change history:
-> 
-> v5:
->     - Fixed build errors introduced in v4.
-> 
-> v4:
->     - Added support for TWT (STA mode)
->     - Added support for Monitor mode
->     - Added support for WPA3 Enterprise Suite-B
->     - Bug fix: In BGN/AN HT40 mode, throughput was 50% lower than expected
->     - Bug fix: In STA 2.4G HE40 mode, throughput was 80% lower than expected
->     - Use wiphy work instead of general workqueue for cfg80211 ops
->     - Introduced RCU protection for ba, rx_reorder, and sta_lists
->     - Used per-TID spinlock for tx_ba / rx_reorder lists to improve
->       concurrency
->     - Replaced mutex_lock with wiphy_lock
->     - Reverted "use tasklet for Rx" (back to workqueue)
->     - Refactored HE capability handling for better clarity and
->       maintainability
->     - Used standard kernel helpers for MAC address handling
->     - Replaced proprietary nxpwifi_ieee80211 with standard ieee80211_mgmt
->       structure
->     - Used u32_get_bits() for VHT capability field access
->     - Replaced LOW_PRIO_TID with TC_PRIO_BESTEFFORT for skb priority
->     - Removed static WPA/RSN OUI table; now derived from cipher suite ID
->     - Removed redundant helper functions: has_vendor_hdr and has_ieee_hdr
-> 
-> v3:
->     - Enable 802.11ax (Wi-Fi 6) for both AP and STA mode.
->     - Extend driver verion string with hotfix number.
->     - Remove Rx mlme work.
->     - Remove all useless check of netif_carrier_ok().
->     - Merge decl.h to cfg.h.
->     - Remove unnecessary check for wiphy parameters setting.
->     - Synchronize following commits from Mwifiex:
->       wifi: mwifiex: replace open-coded module_sdio_driver()
->       wifi: mwifiex: Fix interface type change
->       wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
->       wifi: mwifiex: increase max_num_akm_suites
->       wifi: mwifiex: duplicate static structs used in driver instances
->       wifi: mwifiex: keep mwifiex_cfg80211_ops constant
->       wifi: mwifiex: Fix uninitialized variable in
->                      mwifiex_cfg80211_authenticate()
->       wifi: mwifiex: remove unnecessary checks for valid priv
->       wifi: mwifiex: Fix memcpy() field-spanning write warning in
->                      mwifiex_cmd_802_11_scan_ext()
->       wifi: mwifiex: Use IRQF_NO_AUTOEN flag in request_irq()
-> 
-> v2:
->     - Rename ioctl.h and sta_ioctl.c to cfg.h and sta_cfg.c.
->     - Remove useless header file semaphore.h.
->     - Use static variable for cookie.
->     - Modify nxpwifi_register to use ERR_PTR, IS_ERR and PTR_ERR.
->     - Use error number for error code.
->     - Remove unnecessary private ie definitions.
->     - Remove mutex async_mutex and related code.
->     - Remove unnecessary work queue.
->     - Add the support for PSK SHA256.
->     - Use tasklet for Rx.
->     - Remove unused functions.
->     - Remove compile warning.
-> 
-> Jeff Chen (22):
->    wifi: nxpwifi: add 802.11n files
->    wifi: nxpwifi: add 802.11ac files
->    wifi: nxpwifi: add 802.11ax files
->    wifi: nxpwifi: add 802.11h file
->    wifi: nxpwifi: add WMM files
->    wifi: nxpwifi: add scan.c
->    wifi: nxpwifi: add join.c
->    wifi: nxpwifi: add cfp.c
->    wifi: nxpwifi: add configuration files
->    wifi: nxpwifi: implement cfg80211 ops
->    wifi: nxpwifi: add host command file
->    wifi: nxpwifi: add command and event files
->    wifi: nxpwifi: add data path files
->    wifi: nxpwifi: add debugfs file
->    wifi: nxpwifi: add ethtool.c
->    wifi: nxpwifi: add utility files
->    wifi: nxpwifi: add initialization file
->    wifi: nxpwifi: add core files
->    wifi: nxpwifi: add sdio bus driver files
->    wifi: nxpwifi: modify sdio_ids.h
->    wifi: nxpwifi: add makefile and kconfig files
->    wifi: nxpwifi: modify MAINTAINERS file
-> 
->   MAINTAINERS                                   |    9 +
->   drivers/net/wireless/Kconfig                  |    1 +
->   drivers/net/wireless/Makefile                 |    1 +
->   drivers/net/wireless/nxp/Kconfig              |   17 +
->   drivers/net/wireless/nxp/Makefile             |    3 +
->   drivers/net/wireless/nxp/nxpwifi/11ac.c       |  289 ++
->   drivers/net/wireless/nxp/nxpwifi/11ac.h       |   32 +
->   drivers/net/wireless/nxp/nxpwifi/11ax.c       |  590 +++
->   drivers/net/wireless/nxp/nxpwifi/11ax.h       |   72 +
->   drivers/net/wireless/nxp/nxpwifi/11h.c        |  346 ++
->   drivers/net/wireless/nxp/nxpwifi/11n.c        |  895 ++++
->   drivers/net/wireless/nxp/nxpwifi/11n.h        |  167 +
->   drivers/net/wireless/nxp/nxpwifi/11n_aggr.c   |  275 ++
->   drivers/net/wireless/nxp/nxpwifi/11n_aggr.h   |   21 +
->   .../net/wireless/nxp/nxpwifi/11n_rxreorder.c  |  938 ++++
->   .../net/wireless/nxp/nxpwifi/11n_rxreorder.h  |   71 +
->   drivers/net/wireless/nxp/nxpwifi/Kconfig      |   22 +
->   drivers/net/wireless/nxp/nxpwifi/Makefile     |   39 +
->   drivers/net/wireless/nxp/nxpwifi/cfg.h        |  984 ++++
->   drivers/net/wireless/nxp/nxpwifi/cfg80211.c   | 4071 +++++++++++++++++
->   drivers/net/wireless/nxp/nxpwifi/cfg80211.h   |   19 +
->   drivers/net/wireless/nxp/nxpwifi/cfp.c        |  475 ++
->   drivers/net/wireless/nxp/nxpwifi/cmdevt.c     | 1284 ++++++
->   drivers/net/wireless/nxp/nxpwifi/cmdevt.h     |   98 +
->   drivers/net/wireless/nxp/nxpwifi/debugfs.c    | 1230 +++++
->   drivers/net/wireless/nxp/nxpwifi/ethtool.c    |   58 +
->   drivers/net/wireless/nxp/nxpwifi/fw.h         | 2401 ++++++++++
->   drivers/net/wireless/nxp/nxpwifi/ie.c         |  501 ++
->   drivers/net/wireless/nxp/nxpwifi/init.c       |  684 +++
->   drivers/net/wireless/nxp/nxpwifi/join.c       |  911 ++++
->   drivers/net/wireless/nxp/nxpwifi/main.c       | 1716 +++++++
->   drivers/net/wireless/nxp/nxpwifi/main.h       | 1850 ++++++++
->   drivers/net/wireless/nxp/nxpwifi/scan.c       | 2805 ++++++++++++
->   drivers/net/wireless/nxp/nxpwifi/sdio.c       | 2656 +++++++++++
->   drivers/net/wireless/nxp/nxpwifi/sdio.h       |  340 ++
->   drivers/net/wireless/nxp/nxpwifi/sta_cfg.c    | 1319 ++++++
->   drivers/net/wireless/nxp/nxpwifi/sta_cmd.c    | 3449 ++++++++++++++
->   drivers/net/wireless/nxp/nxpwifi/sta_event.c  |  868 ++++
->   drivers/net/wireless/nxp/nxpwifi/sta_rx.c     |  250 +
->   drivers/net/wireless/nxp/nxpwifi/sta_tx.c     |  208 +
->   drivers/net/wireless/nxp/nxpwifi/txrx.c       |  358 ++
->   drivers/net/wireless/nxp/nxpwifi/uap_cmd.c    | 1234 +++++
->   drivers/net/wireless/nxp/nxpwifi/uap_event.c  |  490 ++
->   drivers/net/wireless/nxp/nxpwifi/uap_txrx.c   |  506 ++
->   drivers/net/wireless/nxp/nxpwifi/util.c       | 1580 +++++++
->   drivers/net/wireless/nxp/nxpwifi/util.h       |  132 +
->   drivers/net/wireless/nxp/nxpwifi/wmm.c        | 1379 ++++++
->   drivers/net/wireless/nxp/nxpwifi/wmm.h        |   78 +
->   include/linux/mmc/sdio_ids.h                  |    3 +
->   49 files changed, 37725 insertions(+)
->   create mode 100644 drivers/net/wireless/nxp/Kconfig
->   create mode 100644 drivers/net/wireless/nxp/Makefile
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ac.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ac.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ax.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/11ax.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/11h.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_aggr.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_aggr.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/Kconfig
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/Makefile
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg80211.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg80211.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfp.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/cmdevt.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/cmdevt.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/debugfs.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/ethtool.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/fw.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/ie.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/init.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/join.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/main.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/main.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/scan.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/sdio.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/sdio.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_cfg.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_cmd.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_event.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_rx.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_tx.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/txrx.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_cmd.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_event.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_txrx.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/util.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/util.h
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/wmm.c
->   create mode 100644 drivers/net/wireless/nxp/nxpwifi/wmm.h
-> 
+diff --git a/db.txt b/db.txt
+index 16bcb32..93d709e 100644
+--- a/db.txt
++++ b/db.txt
+@@ -145,43 +145,44 @@ country AT: DFS-ETSI
+ 
+ # Source:
+ # 'Item' in the comments below refers to each numbered rule found at:
+-# https://www.legislation.gov.au/Details/F2023C00524
++# https://www.legislation.gov.au/Details/F2025L01047 within Table 8
++# except for 5850-5875 which is found in Table 1.
+ # Both DFS-ETSI and DFS-FCC are acceptable per AS/NZS 4268 Appendix B.
+ # The EIRP for DFS bands can be increased by 3dB if TPC is implemented.
+ # In order to allow 80MHz operation between 5650-5730MHz the upper boundary
+ # of this more restrictive band has been shifted up by 5MHz from 5725MHz.
+ country AU: DFS-ETSI
+-	# Item 58
++	# Item 1
+ 	(915 - 920 @ 4), (1000 mW)
+ 	(920 - 928 @ 8), (1000 mW)
+ 
+-	# Item 59
++	# Item 3
+ 	(2400 - 2483.5 @ 40), (4000 mW)
+ 
+-	# Item 61
++	# Item 10
+ 	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
+ 
+-	# Item 62 (200 mW allowed if TPC is used)
++	# Item 11 (200 mW allowed if TPC is used)
+ 	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, AUTO-BW, DFS
+ 
+-	# Item 63(a) (1000 mW with TPC)
++	# Item 12(a) (1000 mW with TPC)
+ 	(5470 - 5600 @ 80), (500 mW), DFS
+ 
+-	# Item 63(b) (1000 mW with TPC)
++	# Item 12(b) (1000 mW with TPC)
+ 	# The end is 5725 but we borrow 5 MHz from the following less restrictive band
+ 	# so we can get an 80 MHz channel.
+ 	(5650 - 5730 @ 80), (500 mW), DFS
+ 
+-	# Item 60
++	# Item 9
+ 	(5730 - 5850 @ 80), (4000 mW), AUTO-BW
+ 
+-	# Item 22
++	# Item 22 of Table 1
+ 	(5850 - 5875 @ 20), (25 mW), AUTO-BW
+ 
+-	# Item 63AA (25 mW if outdoors)
+-	(5925 - 6425 @ 160), (250 mW), NO-OUTDOOR
++	# Item 13 (25 mW if outdoors)
++	(5925 - 6585 @ 320), (250 mW), NO-OUTDOOR
+ 
+-	# Item 65
++	# Item 18
+ 	(57000 - 71000 @ 2160), (20000 mW), NO-OUTDOOR
+ 
+ country AW: DFS-ETSI
+-- 
+2.51.0
 
 
