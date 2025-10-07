@@ -1,690 +1,235 @@
-Return-Path: <linux-wireless+bounces-27853-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27849-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE20BC0922
-	for <lists+linux-wireless@lfdr.de>; Tue, 07 Oct 2025 10:12:34 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABCDBC08F5
+	for <lists+linux-wireless@lfdr.de>; Tue, 07 Oct 2025 10:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 547873C58CE
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Oct 2025 08:12:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6FADF4E05B9
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Oct 2025 08:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0E4257AC7;
-	Tue,  7 Oct 2025 08:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0071257858;
+	Tue,  7 Oct 2025 08:11:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazolkn19011025.outbound.protection.outlook.com [52.103.39.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8ED261B70;
-	Tue,  7 Oct 2025 08:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759824702; cv=none; b=EktumrqhUSLDkrxOJqU9OnDaAebt273lvPZljDHptT7Nxh64F9nuGARI2MQelH9ccXSQoQZ9VL22XLTc2RGqn+nQdsRD1obK8P9WAtDZTQGT/voU+OBWsskxHpf47YZqdTQYZldGiuZkXiQyXihRH9nh4qzuaOD/A0EZmAWTeAI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759824702; c=relaxed/simple;
-	bh=uPZ1RFWAyi2zaF95vgdrnPgW5I1R9qdPrmbRHP6UFu0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GeMoajvkWF72tbCEkIiokZ7jnM1t+/+TQQhS8wKTw8MVQLqSlxnp/kZhTMvR3ZkRyh/AnyH+YbXO6oKd095/IM42tFW5qbRwt84qQRDpOWCnPkLErp/OwDcGZ+eN0pE/q6WRV41p9cH2fe5tqClSYTUBJvNkygcgkTwiRm8ZTXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from sven-desktop.home.narfation.org (p200300c597021Ae00000000000000c00.dip0.t-ipconnect.de [IPv6:2003:c5:9702:1ae0::c00])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 4CE97FA184;
-	Tue,  7 Oct 2025 10:11:38 +0200 (CEST)
-From: "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10EC2550AF
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Oct 2025 08:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.39.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759824682; cv=fail; b=C02S4PYPrFQO1sSGLov8Dle1OQ9bGcow2ff+4udXaTru77QbJfFBuSXaizARjhLVFGLq28AHcB2jGCrg2eaOkx0Gr7vW8nHKjJ7w9GIFV5uojeijh05knCPXhTnStIPfFV4j9frkol9H/omPu8a4Ad8oxqyCta2eXMLHvwn667Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759824682; c=relaxed/simple;
+	bh=4q2/r5h04+/j4ChWX41fEJSiGmGRHW2rflqRcu7svCE=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=FUaPPIj1mlBo9Ggz/WuX7eVoAH2cWCHViMhffeUcqkZqVsRU8KQCfok89RM2HGMuhO+1d2QM7GWeXvcHYQ7roqRWFJ7y0QUl4TmKErclSUhIoT9gdr8Lllap4EDsbERF9pI3c5EAstT+K3Y+HTigzNvj2USfnND/LwCENpIpSY0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outlook.de; spf=pass smtp.mailfrom=outlook.de; arc=fail smtp.client-ip=52.103.39.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outlook.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.de
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ntE7rj7j1sogx0xprzepLth1nngWVsi4ssyIH6mIpLkoFqbL1YyJTnYv2hALepStdjWhO2gtDi1gR5gSwNAqnSP0gZfOXbOj0Mp2BGIc7srG6DYKyvJYF8vIzpRAWup3owpkTaZiWljZwN4dRfWPuwRQeK4sOn4a0aoF+rac6E3IgHTZ15SUcjODCM+9yWC1gPmGjXNvx6OV/kNwZuwtmSTETVa3sMioSWk1EoL2zIWailsXze+AkEs0yNS9LYCdWgS6x+zMmCHQETSoQysb9HoN7y9X3kWcASknm7+TQ7ph9CxUViVlioAQvsS+fWn9VYsuwcS4SJ1mZn9IhsH//A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aX+Sa+g3JxYQdmRZvAEhVm9iZwqXmPV/pvfdfF3SINY=;
+ b=hZWvmYpgJG9UJ2pS4YCdJ/ElC4SawgAacLK2QOY5flCuoDpEI/sd7Gln5R/pZUGw3IAygMIPbWmL5Q3J6F6raDd3PXo2j8L58f4qhbDy9SmCsOlHjBsJlDKjNcBG91EAw/ZMJqtAK0Sid/kSs5CiUpFFaT1B0isXoVXlHx7ttxTQQquroIOCqGoAsnkKnVdfdoLaFT+uInviAduhI+tGPec6wWpvtLDiYHZIH3evil1jTK1JK5cvb1b1xEfF9IiMsAh7CqirG6dnqF/vs3GtJuEYgisQP+0t5Oq8sdD3mXn8tMa3Y2dm9vRZnk4hy5PitWWH9AASvxb7h2FrRpgrfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from GV1P250MB1433.EURP250.PROD.OUTLOOK.COM (2603:10a6:150:284::10)
+ by AS8P250MB0007.EURP250.PROD.OUTLOOK.COM (2603:10a6:20b:35a::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.20; Tue, 7 Oct
+ 2025 08:11:18 +0000
+Received: from GV1P250MB1433.EURP250.PROD.OUTLOOK.COM
+ ([fe80::5957:21ce:d025:7747]) by GV1P250MB1433.EURP250.PROD.OUTLOOK.COM
+ ([fe80::5957:21ce:d025:7747%3]) with mapi id 15.20.9160.017; Tue, 7 Oct 2025
+ 08:11:18 +0000
+Message-ID:
+ <GV1P250MB14333A5BF24623C4753A10E1E8E0A@GV1P250MB1433.EURP250.PROD.OUTLOOK.COM>
+Subject: [RFC PATCH] ath11k: add ath11k_mac_op_flush_sta to properly flush
+ pending packets
+From: Florian Maurer <f.maurer@outlook.de>
+To: Jeff Johnson <jjohnson@kernel.org>, ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
 Date: Tue, 07 Oct 2025 10:11:16 +0200
-Subject: [PATCH mt76 v3 3/3] wifi: mt76: mt7915: add bf backoff limit table
- support
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1 
+X-ClientProxiedBy: FR4P281CA0260.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e8::7) To GV1P250MB1433.EURP250.PROD.OUTLOOK.COM
+ (2603:10a6:150:284::10)
+X-Microsoft-Original-Message-ID:
+ <3851002fc48cd95f674710c7535ced7826ffcdec.camel@outlook.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251007-backoff-table-support-v3-3-fd6e2684988f@simonwunderlich.de>
-References: <20251007-backoff-table-support-v3-0-fd6e2684988f@simonwunderlich.de>
-In-Reply-To: <20251007-backoff-table-support-v3-0-fd6e2684988f@simonwunderlich.de>
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
- Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- linux-stm32@st-md-mailman.stormreply.com, devicetree@vger.kernel.org, 
- "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=21466;
- i=se@simonwunderlich.de; h=from:subject:message-id;
- bh=AZfICyDNGqNlPS0p7hnQCldD1Ap4MuqI8Wn8Wcr2Tlc=;
- b=owGbwMvMwCXmy1+ufVnk62nG02pJDBlPTuvO5U6PCJmt7vA7zeDFf/m5v+97tLzNXSQd/7295
- Pb0V+q3OkpZGMS4GGTFFFn2XMk/v5n9rfznaR+PwsxhZQIZwsDFKQATyfnKyHD1+3a+lY4zXdjj
- mDoWMkmuW7nl4cfuw0uNguy3Tdy0ZsJNhv8xAc/uzNi0ylzBX739x39ZwUpFbdZ61YropOOT7r1
- 4d4MJAA==
-X-Developer-Key: i=se@simonwunderlich.de; a=openpgp;
- fpr=522D7163831C73A635D12FE5EC371482956781AF
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV1P250MB1433:EE_|AS8P250MB0007:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0935b36-55b9-41fa-81d8-08de057917ab
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|19110799012|15080799012|23021999003|8060799015|12121999013|5062599005|5072599009|6090799003|461199028|1602099012|39105399003|40105399003|4302099013|3412199025|440099028|51005399003|10035399007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eDZRc0tFNEg5RG1VMm52N0lmalpkWnlyN0dCc0lud01KNjhSRUdlQ1lOeFd1?=
+ =?utf-8?B?Rys0N3gvR2xwSUx1bWRTdG5iMHVzU0RyT0VFRElPZ2dDR1VXNGY2WkZBNjRM?=
+ =?utf-8?B?WkJyU3B1dVkrMXNrQW1oZGNyV09tMEo5N2JLQmFiZjBYUjNEdEgveXo0U0Zn?=
+ =?utf-8?B?RGdaR2d0WGlmQTlsNS9HVkN2a21WL3hjWUNic0VySlQxbEdKamttWkdjeGFk?=
+ =?utf-8?B?MWVza0RyaC9aY204dysrTmY0dWt2RlE4OHFCQUxtNWdnTFIvTERCT0VsZW1p?=
+ =?utf-8?B?bU41TGhxY01ZTVYwNVFqWEtXTTdyd1V3aGlvL2FjWVJHcnhYdXNLaG5JTk1S?=
+ =?utf-8?B?cTlmZUpWZTJoZFhYZGJCR0YweFd0VHhqcEt1K1Jiem4xdTFENENHNm9pZW5t?=
+ =?utf-8?B?TUdicHFWQ1Y1RU9jTFJaQ21oMlFHRGFpMUhKak45dVNKSnNhL05KdEdJdUpn?=
+ =?utf-8?B?NHJRUTF0M3RjRWd2RWRCMFA4MTZyeDMzODljNW9TcGJ4YmJ6L2QycUFBSENU?=
+ =?utf-8?B?aTdZSWhxZjJsdXhkbW5RNGxJRlpkZ2I4Mlk2UVBPSG45Sm54OWlsTFJlWmxD?=
+ =?utf-8?B?cDN6Y09kWFF5cm8wWlBUd2FvdnpaM3hjME1XNWVwVytVVlVDKzZMWVA2MThq?=
+ =?utf-8?B?M2ZMY2liOXphZDdoeWVDSUE0MnltTWttZkdoNmg2WXhRTXd1dDJqVnVsaDY5?=
+ =?utf-8?B?S1o1RndTU0VoTS9CMXpsUnpDQmVHKzB4L2ZTSEJwcHJtUEhTTHluQVNrZEZh?=
+ =?utf-8?B?NHRqaEFDSDduU09YdkNhczdVZHdrZ1JnL1AxZVVYV2g5cEhpOVhrL0o5alZR?=
+ =?utf-8?B?cERjeUhJN3hZb0lSMDNYQlBRbmJydVRMV1MvemIvYXFYMndHZm1aYjFLMGtF?=
+ =?utf-8?B?dEVZb3ZHWk1YcXd6cnZyUTI5MS9SbmoyR0dVRjNHYW45bXZ6S2FqR3pLOWZ6?=
+ =?utf-8?B?Q2txTE95c0RDQmtITHl1S3hxUDVuSkVCanNRVDFJSHdaMEt6bHpYeFVoT2Zu?=
+ =?utf-8?B?RFUwaCtvVzNTUkZ4L2FFSi9tcmZHeFRGNkFRejBSY003eVpDM3ltSkRNQ2NC?=
+ =?utf-8?B?dmZ4eERmeU5mNk9NcXJUaVRsa1RITzRTMVY3RTI3T1VmU3RtSnprMTJ3dng4?=
+ =?utf-8?B?R0l6ZXVDVFExN2Z5OTNhckRVK3RpUU1GYWlvS0tmVFBmWDNHU2hEZnBLUVZG?=
+ =?utf-8?B?TWVTSGRhbnNVL3pIYnFVb0JHbXp2TEhKVXZ1OUs0Q0l6TFgvYk1hb1hJTkZL?=
+ =?utf-8?B?b1dxY1dRelZEcks0Umg2L2JYZytyc0F5NHc0WGhVd1ZTWHRIYUNIVDVwaVlq?=
+ =?utf-8?B?eFI3cHpveVZaMEN0VFdmTFZGOEVvdFhOTUJiNUNFZXN3QnNRYzZ5MFA5ZE5D?=
+ =?utf-8?B?UDV1blMreExCTm5EeEpWTDFWYkRGWmFRbVRlOFpYSXEzUHA1TDA1WVEwSVVp?=
+ =?utf-8?B?ejRzdHk5UW5xZXIwNkhyTEpFSnMzeVBUb002cGZKRW5ONzFLeVF1UnIzZlZq?=
+ =?utf-8?B?ZEtsOERIbTA3WUpJY25meFdrd2tIMzBKa2s4cVNHYStTQ290cW5tSGszMitI?=
+ =?utf-8?B?Sk0yWnZkZUxTdVJrYlBBZkV6N01MRmJNRnpwQ3cyY1VRL0VTS2hPaDFrTnVH?=
+ =?utf-8?B?UHBING16ZzFET3phZGcxa2pzM2JFZ2YyN3lXWlhNMHpPckFzZTArL2Z3bHFC?=
+ =?utf-8?B?SGtISjVCdm5MYUR3N1hZYm9YeTFDNFdGemNHNEs0YXRSNjlLalRWZXJaRm83?=
+ =?utf-8?B?RDdabVpjUUphYXdackl2ejk2NEN1ZE1vZlE3ajFvTG8yV2lUVnVEREkwWmpG?=
+ =?utf-8?B?SkQ3YnZ1RGQ0RDgyVm1Qb0oycTdYZmRBeUFBYTYvR00vLzh3aFdmZ21PRG5Z?=
+ =?utf-8?B?QmRKYTFaSlpkUWFTYUJ3NUJFdzZZcm04WWo5LzdoajFDUFU3eXFjSHRmMGQ3?=
+ =?utf-8?Q?N8jLHxsl7Gi4QDZmhE5F2/OKvUlN59SK?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QWRXdVlzanpnRXJYMzRlK1F2b1k3bVFCdWVHcEtsUHVYSU5lekdPV0FmRXlY?=
+ =?utf-8?B?Yk1SS3pRamxRYjEvdHltMDRUS0xRZVl4ZmRZVm5zeldya0o0SFJkUXYxY0c4?=
+ =?utf-8?B?Q1o3bVVRMFlIdkNpTUtRY2l6dmEzelM1ckFnSFhXZ1oydGRaWXlvdE5SSDdE?=
+ =?utf-8?B?Z0FKVWt4S2pJMTMxSFVjWjdVcnhJclpWZkhZNHAySG5IM2RxdVU3TTNMWWJB?=
+ =?utf-8?B?QVJpWlFJTHpmbUdBSVFLYzdnL2lSVzZxNzQxSkl2TkxyMFpWYVlYRlFGbFFZ?=
+ =?utf-8?B?bmlENExEbm5MQjJNMEtOVW8yQ0hCZC9HK1V4dzdXME1CbElsZkxTa25RbjNl?=
+ =?utf-8?B?NlhwZU5RWXVlcDdHVWhpVEdEdXJ4RlZ3QWhySnp1L1ZCZlRxNTdFR251cGVr?=
+ =?utf-8?B?bzVmM0dJeUtWMXBKVU4zN21OQVcrM0krQzI1UDFqSm5rd3NBWm9qNzdRWUJ6?=
+ =?utf-8?B?cTl6TFBlWFVwYk5ZQndrN1BTNGJ4V3VlN1JEVVVoTnJXV2tSVW93NzVBU203?=
+ =?utf-8?B?a2Q4Z091ek1EdGVVYWNZVVl1MzVjY3ArMGtXbEQ0TU05S3NBTnF0RGJiQzNB?=
+ =?utf-8?B?b1JOV0xzdFp1S2V3Y09QU1YyeTVaVGxrMVJYRElhWStFcE1VUFZuSlBnNjFx?=
+ =?utf-8?B?ZE5EZzZ1NHRWVTdXeC9Fbnp2cURIV2NCOTZ4TS9EektUUEFMWTdHMHhXRHZL?=
+ =?utf-8?B?aURnZ0wvZ2lKZUtBVytvRUZiRlR3TnNjMU1BeU80TVhVc0Z5czZhLzQyT205?=
+ =?utf-8?B?a2FsTnJqZlFkRHRCV21ZeldPblMyemVPQXBJL2M4RFRTRjJLZGhiUmI3OU1N?=
+ =?utf-8?B?ZFZFbnVuY1o5R2VnMXEyUWUxVUhVQWRRSGFZY2VQdk8zMzJjaTRRNFEzTDFK?=
+ =?utf-8?B?eGtvYmZVOTh5WTJGQWVqZzBzaUVKTHc2LzB2NHZQL1Z1ZkNJTDkvV2RBL0RM?=
+ =?utf-8?B?eFZGeHFNdFdjTWhqZVJnQURmSzVpbGE1c1BaMENJVHFPQkpCTHVhcXBnaVFX?=
+ =?utf-8?B?SHFJemhRNE55ZFkyNndpTVZObHdGUDBBM010OHZIay9Ja1RPZFBsVW53THZr?=
+ =?utf-8?B?azZ6L09YTFZvYmZGaDlLWisyWldxREVFbzd3ZkJPSlltQ2NCU3REOXJSYUdR?=
+ =?utf-8?B?SVZoMWJDUm1aV0RhY0M0S016VndtT0VITTNEbSt2dkliVm56VDZzb0ZTVDll?=
+ =?utf-8?B?QmVqUHY5UVNJazJ4MXliR3FTTmd1V1NBRDZxTUNndGV3Tlo0ZXFBcWhxMDRm?=
+ =?utf-8?B?eEQ2eGdxSm5DN1RlY2hwUkh0aWcvYnZVVTFBUFMzam1nUysveVFISzh0NnQy?=
+ =?utf-8?B?ZEQwZTdxZm5CcTgweUZ3Zyt0amZHazlPVDJrZm1LKzd5TmZZRzJaSncvemJG?=
+ =?utf-8?B?Z0JJTlRtZHpnMmFWaEVybmxlNEhRT1lXZFFpbHk1dTY0cEsrWlpJUWtFWDNw?=
+ =?utf-8?B?Q0hqTXRIRkxwQUQ5OFF5R3U5dHl0WS9VYWU5emJVckQ0d2E1a085V0dCM3lG?=
+ =?utf-8?B?ZUFBdzBQakJrZGh1Q2t6T1FUVEJQWUZzSTMvbnA4dTZFNC9jdVFPYVZjQlNq?=
+ =?utf-8?B?RGVQRDczRXhuQktDdnlMZXlvcmNLcS9qam1wdzg0SWlIMnBhL1dRY0U5V3Bx?=
+ =?utf-8?B?QXNzVXduQlNqQm9LNmpFK0lCWGFJSDJrUHEwS3pzUFUzRFpaVU9EL2N0N3No?=
+ =?utf-8?Q?AqS+m+htsPB93YT8PAdS?=
+X-OriginatorOrg: sct-15-20-8534-15-msonline-outlook-5f066.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0935b36-55b9-41fa-81d8-08de057917ab
+X-MS-Exchange-CrossTenant-AuthSource: GV1P250MB1433.EURP250.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2025 08:11:18.3122
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P250MB0007
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+When a STA is marked as no longer authorized, if the driver doesn't
+implement flush_sta(), mac80211 calls ieee80211_flush_queues() to
+flush hardware queues to avoid sending unencrypted frames.
 
-The commit 22b980badc0f ("mt76: add functions for parsing rate power limits
-from DT") introduced generic support for rates limits in the devicetree.
-But the mt7915 supports beamforming and has another table for configuring
-the backoff limits. These can be configured in the DT with the paths-*
-properties. The path-*-bf are the ones relevant for beamforming and the
-ones without -bf suffix for "traditional" path backoff.
+This has became a problem for ath11k because ieee80211_flush_queues()
+will stop all traffic and call ath11k_flush, which waits until the
+whole HW queue is empty. In a busy environment this will trigger a
+timeout warning and stalls other STAs.
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+Fix this by implementing flush_sta method using WMI command to flush
+frames of a specific STA.
+Flushed frames will be marked as discard in tx complete indication.
+
+warning print "ath11k c000000.wifi: failed to flush transmit queue 0"
+was observed on various openwrt devices, and is fixed through this patch.
+
+Signed-off-by: Florian Maurer <f.maurer@outlook.de>
+Tested-by: Florian Maurer  <f.maurer@outlook.de>
+Co-authored-by: Benjamin Berg <benjamin@sipsolutions.net>
+Tested-by: Flole <flole@flole.de>
 ---
- drivers/net/wireless/mediatek/mt76/debugfs.c       |   4 +-
- drivers/net/wireless/mediatek/mt76/eeprom.c        |  38 ++++-
- drivers/net/wireless/mediatek/mt76/mt76.h          |   8 +
- .../net/wireless/mediatek/mt76/mt7915/debugfs.c    |  74 ++++++++-
- drivers/net/wireless/mediatek/mt76/mt7915/init.c   |   7 +
- drivers/net/wireless/mediatek/mt76/mt7915/main.c   |   2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c    | 182 ++++++++++++++++-----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.h    |   6 +
- drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h |   9 +-
- .../net/wireless/mediatek/mt76/mt7915/testmode.c   |   2 +-
- 10 files changed, 277 insertions(+), 55 deletions(-)
+We tested this patch and it solved the problem of flushing the transmit
+queues taking too long when the AP is busy.
+We did not confirm if this flush is implemented to guarantee that no
+unencrypted frames are sent out on station removal.
+Could someone with more knowledge about the firmware behavior check
+wether this approach is feasible or if a different approach should be
+taken.
+It is not clear to me if the approach taken in "wifi: ath10k: Flush
+only requested txq in ath10k_flush()" might be better.
+https://lore.kernel.org/linux-wireless/01d859e8e574a1f5d0b916333fe0b5cda859=
+af9b.1732293922.git.repk@triplefau.lt/
 
-diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/wireless/mediatek/mt76/debugfs.c
-index b6a2746c187d..bee1177594d3 100644
---- a/drivers/net/wireless/mediatek/mt76/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
-@@ -93,9 +93,9 @@ void mt76_seq_puts_array(struct seq_file *file, const char *str,
- {
- 	int i;
- 
--	seq_printf(file, "%10s:", str);
-+	seq_printf(file, "%16s:", str);
- 	for (i = 0; i < len; i++)
--		seq_printf(file, " %2d", val[i]);
-+		seq_printf(file, " %4d", val[i]);
- 	seq_puts(file, "\n");
- }
- EXPORT_SYMBOL_GPL(mt76_seq_puts_array);
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 6ce8e4af18fe..cbda19a86882 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -324,9 +324,10 @@ mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
- static void
- mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 			     const s8 *data, size_t len, s8 target_power,
--			     s8 nss_delta, s8 *max_power)
-+			     s8 nss_delta)
- {
- 	int i, cur;
-+	s8 max_power = -128;
- 
- 	if (!data)
- 		return;
-@@ -337,7 +338,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 			break;
- 
- 		mt76_apply_array_limit(pwr + pwr_len * i, pwr_len, data + 1,
--				       target_power, nss_delta, max_power);
-+				       target_power, nss_delta, &max_power);
- 		if (--cur > 0)
- 			continue;
- 
-@@ -364,12 +365,16 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 	char band;
- 	size_t len;
- 	s8 max_power = 0;
-+	s8 max_power_backoff = -127;
- 	s8 txs_delta;
-+	int n_chains = hweight16(phy->chainmask);
-+	s8 target_power_combine = target_power + mt76_tx_power_path_delta(n_chains);
- 
- 	if (!mcs_rates)
- 		mcs_rates = 10;
- 
--	memset(dest, target_power, sizeof(*dest));
-+	memset(dest, target_power, sizeof(*dest) - sizeof(dest->path));
-+	memset(&dest->path, 0, sizeof(dest->path));
- 
- 	if (!IS_ENABLED(CONFIG_OF))
- 		return target_power;
-@@ -415,12 +420,35 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
- 	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
- 				     ARRAY_SIZE(dest->mcs), val, len,
--				     target_power, txs_delta, &max_power);
-+				     target_power, txs_delta);
- 
- 	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
- 	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
- 				     ARRAY_SIZE(dest->ru), val, len,
--				     target_power, txs_delta, &max_power);
-+				     target_power, txs_delta);
-+
-+	max_power_backoff = max_power;
-+	val = mt76_get_of_array_s8(np, "paths-cck", &len, ARRAY_SIZE(dest->path.cck));
-+	mt76_apply_array_limit(dest->path.cck, ARRAY_SIZE(dest->path.cck), val,
-+			       target_power_combine, txs_delta, &max_power_backoff);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ofdm", &len, ARRAY_SIZE(dest->path.ofdm));
-+	mt76_apply_array_limit(dest->path.ofdm, ARRAY_SIZE(dest->path.ofdm), val,
-+			       target_power_combine, txs_delta, &max_power_backoff);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ofdm-bf", &len, ARRAY_SIZE(dest->path.ofdm_bf));
-+	mt76_apply_array_limit(dest->path.ofdm_bf, ARRAY_SIZE(dest->path.ofdm_bf), val,
-+			       target_power_combine, txs_delta, &max_power_backoff);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ru", &len, ARRAY_SIZE(dest->path.ru[0]) + 1);
-+	mt76_apply_multi_array_limit(dest->path.ru[0], ARRAY_SIZE(dest->path.ru[0]),
-+				     ARRAY_SIZE(dest->path.ru), val, len,
-+				     target_power_combine, txs_delta);
-+
-+	val = mt76_get_of_array_s8(np, "paths-ru-bf", &len, ARRAY_SIZE(dest->path.ru_bf[0]) + 1);
-+	mt76_apply_multi_array_limit(dest->path.ru_bf[0], ARRAY_SIZE(dest->path.ru_bf[0]),
-+				     ARRAY_SIZE(dest->path.ru_bf), val, len,
-+				     target_power_combine, txs_delta);
- 
- 	return max_power;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index e0d50b58cd01..86b812f68c97 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1113,6 +1113,14 @@ struct mt76_power_limits {
- 	s8 mcs[4][10];
- 	s8 ru[7][12];
- 	s8 eht[16][16];
-+
-+	struct {
-+		s8 cck[4];
-+		s8 ofdm[4];
-+		s8 ofdm_bf[4];
-+		s8 ru[7][10];
-+		s8 ru_bf[7][10];
-+	} path;
- };
- 
- struct mt76_ethtool_worker_info {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index b287b7d9394e..6ff0d262c28a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -1008,7 +1008,7 @@ mt7915_rate_txpower_get(struct file *file, char __user *user_buf,
- 	if (!buf)
- 		return -ENOMEM;
- 
--	ret = mt7915_mcu_get_txpower_sku(phy, txpwr, sizeof(txpwr));
-+	ret = mt7915_mcu_get_txpower_sku(phy, txpwr, sizeof(txpwr), TX_POWER_INFO_RATE);
- 	if (ret)
- 		goto out;
- 
-@@ -1118,7 +1118,7 @@ mt7915_rate_txpower_set(struct file *file, const char __user *user_buf,
- 
- 	mutex_lock(&dev->mt76.mutex);
- 	ret = mt7915_mcu_get_txpower_sku(phy, req.txpower_sku,
--					 sizeof(req.txpower_sku));
-+					 sizeof(req.txpower_sku), TX_POWER_INFO_RATE);
- 	if (ret)
- 		goto out;
- 
-@@ -1160,7 +1160,7 @@ mt7915_rate_txpower_set(struct file *file, const char __user *user_buf,
- 	return ret ? ret : count;
- }
- 
--static const struct file_operations mt7915_rate_txpower_fops = {
-+static const struct file_operations mt7915_txpower_fops = {
- 	.write = mt7915_rate_txpower_set,
- 	.read = mt7915_rate_txpower_get,
- 	.open = simple_open,
-@@ -1168,6 +1168,70 @@ static const struct file_operations mt7915_rate_txpower_fops = {
- 	.llseek = default_llseek,
- };
- 
-+static int
-+mt7915_path_txpower_show(struct seq_file *file)
-+{
-+	struct mt7915_phy *phy = file->private;
-+	s8 txpower[MT7915_SKU_PATH_NUM], *buf = txpower;
-+	int ret;
-+
-+#define PATH_POWER_SHOW(_name, _len, _skip) do {			\
-+		size_t __len = (_len);					\
-+		if (_skip) {						\
-+			buf -= 1;					\
-+			*buf = 0;					\
-+		}							\
-+		mt76_seq_puts_array(file, _name, buf, __len);		\
-+		buf += __len;						\
-+	} while (0)
-+
-+	seq_printf(file, "\n%*c", 18, ' ');
-+	seq_puts(file, "1T1S/2T1S/3T1S/4T1S/2T2S/3T2S/4T2S/3T3S/4T3S/4T4S\n");
-+	ret = mt7915_mcu_get_txpower_sku(phy, txpower, sizeof(txpower),
-+					 TX_POWER_INFO_PATH);
-+	if (ret)
-+		return ret;
-+
-+	PATH_POWER_SHOW("CCK", 4, 0);
-+	PATH_POWER_SHOW("OFDM", 4, 0);
-+	PATH_POWER_SHOW("BF-OFDM", 4, 1);
-+
-+	PATH_POWER_SHOW("HT/VHT20", 10, 0);
-+	PATH_POWER_SHOW("BF-HT/VHT20", 10, 1);
-+	PATH_POWER_SHOW("HT/VHT40", 10, 0);
-+	PATH_POWER_SHOW("BF-HT/VHT40", 10, 1);
-+
-+	PATH_POWER_SHOW("BW20/RU242", 10, 0);
-+	PATH_POWER_SHOW("BF-BW20/RU242", 10, 1);
-+	PATH_POWER_SHOW("BW40/RU484", 10, 0);
-+	PATH_POWER_SHOW("BF-BW40/RU484", 10, 1);
-+	PATH_POWER_SHOW("BW80/RU996", 10, 0);
-+	PATH_POWER_SHOW("BF-BW80/RU996", 10, 1);
-+	PATH_POWER_SHOW("BW160/RU2x996", 10, 0);
-+	PATH_POWER_SHOW("BF-BW160/RU2x996", 10, 1);
-+	PATH_POWER_SHOW("RU26", 10, 0);
-+	PATH_POWER_SHOW("BF-RU26", 10, 0);
-+	PATH_POWER_SHOW("RU52", 10, 0);
-+	PATH_POWER_SHOW("BF-RU52", 10, 0);
-+	PATH_POWER_SHOW("RU106", 10, 0);
-+	PATH_POWER_SHOW("BF-RU106", 10, 0);
-+#undef PATH_POWER_SHOW
-+
-+	return 0;
-+}
-+
-+static int
-+mt7915_txpower_path_show(struct seq_file *file, void *data)
-+{
-+	struct mt7915_phy *phy = file->private;
-+
-+	seq_printf(file, "\nBand %d\n", phy != &phy->dev->phy);
-+
-+	return mt7915_path_txpower_show(file);
-+}
-+
-+DEFINE_SHOW_ATTRIBUTE(mt7915_txpower_path);
-+
- static int
- mt7915_twt_stats(struct seq_file *s, void *data)
- {
-@@ -1254,7 +1318,9 @@ int mt7915_init_debugfs(struct mt7915_phy *phy)
- 	debugfs_create_file("implicit_txbf", 0600, dir, dev,
- 			    &fops_implicit_txbf);
- 	debugfs_create_file("txpower_sku", 0400, dir, phy,
--			    &mt7915_rate_txpower_fops);
-+			    &mt7915_txpower_fops);
-+	debugfs_create_file("txpower_path", 0400, dir, phy,
-+			    &mt7915_txpower_path_fops);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "twt_stats", dir,
- 				    mt7915_twt_stats);
- 	debugfs_create_file("rf_regval", 0600, dir, dev, &fops_rf_regval);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 5ea8b46e092e..1ac7ee2922b0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -289,6 +289,8 @@ static void __mt7915_init_txpower(struct mt7915_phy *phy,
- 	int pwr_delta = mt7915_eeprom_get_power_delta(dev, sband->band);
- 	struct mt76_power_limits limits;
- 
-+	phy->sku_limit_en = true;
-+	phy->sku_path_en = true;
- 	for (i = 0; i < sband->n_channels; i++) {
- 		struct ieee80211_channel *chan = &sband->channels[i];
- 		u32 target_power = 0;
-@@ -305,6 +307,11 @@ static void __mt7915_init_txpower(struct mt7915_phy *phy,
- 		target_power = mt76_get_rate_power_limits(phy->mt76, chan,
- 							  &limits,
- 							  target_power);
-+
-+		/* MT7915N can not enable Backoff table without setting value in dts */
-+		if (!limits.path.ofdm[0])
-+			phy->sku_path_en = false;
-+
- 		target_power += path_delta;
- 		target_power = DIV_ROUND_UP(target_power, 2);
- 		chan->max_power = min_t(int, chan->max_reg_power,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index fe0639c14bf9..fa135447a263 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -73,7 +73,7 @@ int mt7915_run(struct ieee80211_hw *hw)
- 	if (ret)
- 		goto out;
- 
--	ret = mt7915_mcu_set_sku_en(phy, true);
-+	ret = mt7915_mcu_set_sku_en(phy);
- 	if (ret)
- 		goto out;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index c1fdd3c4f1ba..673338d508a8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3336,7 +3336,8 @@ int mt7915_mcu_set_txpower_frame(struct mt7915_phy *phy,
- 	int ret;
- 	s8 txpower_sku[MT7915_SKU_RATE_NUM];
- 
--	ret = mt7915_mcu_get_txpower_sku(phy, txpower_sku, sizeof(txpower_sku));
-+	ret = mt7915_mcu_get_txpower_sku(phy, txpower_sku, sizeof(txpower_sku),
-+					 TX_POWER_INFO_RATE);
- 	if (ret)
- 		return ret;
- 
-@@ -3376,51 +3377,136 @@ int mt7915_mcu_set_txpower_frame(struct mt7915_phy *phy,
- 				 sizeof(req), true);
- }
- 
-+static void
-+mt7915_update_txpower(struct mt7915_phy *phy, int tx_power)
-+{
-+	struct mt76_phy *mphy = phy->mt76;
-+	struct ieee80211_channel *chan = mphy->main_chandef.chan;
-+	int chain_idx, val, e2p_power_limit = 0;
-+
-+	if (!chan) {
-+		mphy->txpower_cur = tx_power;
-+		return;
-+	}
-+
-+	for (chain_idx = 0; chain_idx < hweight16(mphy->chainmask); chain_idx++) {
-+		val = mt7915_eeprom_get_target_power(phy->dev, chan, chain_idx);
-+		val += mt7915_eeprom_get_power_delta(phy->dev, chan->band);
-+
-+		e2p_power_limit = max_t(int, e2p_power_limit, val);
-+	}
-+
-+	if (phy->sku_limit_en)
-+		mphy->txpower_cur = min_t(int, e2p_power_limit, tx_power);
-+	else
-+		mphy->txpower_cur = e2p_power_limit;
-+}
-+
- int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy)
- {
-+#define TX_POWER_LIMIT_TABLE_RATE	0
-+#define TX_POWER_LIMIT_TABLE_PATH	1
- 	struct mt7915_dev *dev = phy->dev;
- 	struct mt76_phy *mphy = phy->mt76;
- 	struct ieee80211_hw *hw = mphy->hw;
--	struct mt7915_mcu_txpower_sku req = {
-+	struct mt7915_sku_val {
-+		u8 format_id;
-+		u8 limit_type;
-+		u8 band_idx;
-+	} __packed hdr = {
- 		.format_id = TX_POWER_LIMIT_TABLE,
-+		.limit_type = TX_POWER_LIMIT_TABLE_RATE,
- 		.band_idx = phy->mt76->band_idx,
- 	};
--	struct mt76_power_limits limits_array;
--	s8 *la = (s8 *)&limits_array;
--	int i, idx;
--	int tx_power;
-+	int i, ret, tx_power;
-+	const u8 *len = mt7915_sku_group_len;
-+	struct mt76_power_limits la = {};
-+	struct sk_buff *skb;
- 
- 	tx_power = mt76_get_power_bound(mphy, hw->conf.power_level);
--	tx_power = mt76_get_rate_power_limits(mphy, mphy->chandef.chan,
--					      &limits_array, tx_power);
--	mphy->txpower_cur = tx_power;
--
--	for (i = 0, idx = 0; i < ARRAY_SIZE(mt7915_sku_group_len); i++) {
--		u8 mcs_num, len = mt7915_sku_group_len[i];
--		int j;
--
--		if (i >= SKU_HT_BW20 && i <= SKU_VHT_BW160) {
--			mcs_num = 10;
--
--			if (i == SKU_HT_BW20 || i == SKU_VHT_BW20)
--				la = (s8 *)&limits_array + 12;
--		} else {
--			mcs_num = len;
--		}
--
--		for (j = 0; j < min_t(u8, mcs_num, len); j++)
--			req.txpower_sku[idx + j] = la[j];
--
--		la += mcs_num;
--		idx += len;
-+	if (phy->sku_limit_en) {
-+		tx_power = mt76_get_rate_power_limits(mphy, mphy->chandef.chan,
-+						      &la, tx_power);
-+		mt7915_update_txpower(phy, tx_power);
-+	} else {
-+		mt7915_update_txpower(phy, tx_power);
-+		return 0;
- 	}
- 
--	return mt76_mcu_send_msg(&dev->mt76,
--				 MCU_EXT_CMD(TX_POWER_FEATURE_CTRL), &req,
--				 sizeof(req), true);
-+	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
-+				 sizeof(hdr) + MT7915_SKU_RATE_NUM);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	skb_put_data(skb, &hdr, sizeof(hdr));
-+	skb_put_data(skb, &la.cck, len[SKU_CCK] + len[SKU_OFDM]);
-+	skb_put_data(skb, &la.mcs[0], len[SKU_HT_BW20]);
-+	skb_put_data(skb, &la.mcs[1], len[SKU_HT_BW40]);
-+
-+	/* vht */
-+	for (i = 0; i < 4; i++) {
-+		skb_put_data(skb, &la.mcs[i], sizeof(la.mcs[i]));
-+		skb_put_zero(skb, 2);  /* padding */
-+	}
-+
-+	/* he */
-+	skb_put_data(skb, &la.ru[0], sizeof(la.ru));
-+	ret = mt76_mcu_skb_send_msg(&dev->mt76, skb,
-+				    MCU_EXT_CMD(TX_POWER_FEATURE_CTRL), true);
-+	if (ret)
-+		return ret;
-+
-+	/* only set per-path power table when it's configured */
-+	if (!phy->sku_path_en)
-+		return 0;
-+
-+	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
-+				 sizeof(hdr) + MT7915_SKU_PATH_NUM);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	hdr.limit_type = TX_POWER_LIMIT_TABLE_PATH;
-+	skb_put_data(skb, &hdr, sizeof(hdr));
-+	skb_put_data(skb, &la.path.cck, sizeof(la.path.cck));
-+	skb_put_data(skb, &la.path.ofdm, sizeof(la.path.ofdm));
-+	skb_put_data(skb, &la.path.ofdm_bf[1], sizeof(la.path.ofdm_bf) - 1);
-+
-+	/* HT20 and HT40 */
-+	skb_put_data(skb, &la.path.ru[3], sizeof(la.path.ru[3]));
-+	skb_put_data(skb, &la.path.ru_bf[3][1], sizeof(la.path.ru_bf[3]) - 1);
-+	skb_put_data(skb, &la.path.ru[4], sizeof(la.path.ru[4]));
-+	skb_put_data(skb, &la.path.ru_bf[4][1], sizeof(la.path.ru_bf[4]) - 1);
-+
-+	/* start from non-bf and bf fields of
-+	 * BW20/RU242, BW40/RU484, BW80/RU996, BW160/RU2x996,
-+	 * RU26, RU52, and RU106
-+	 */
-+
-+	for (i = 0; i < 8; i++) {
-+		bool bf = i % 2;
-+		u8 idx = (i + 6) / 2;
-+		s8 *buf = bf ? la.path.ru_bf[idx] : la.path.ru[idx];
-+		/* The non-bf fields of RU26 to RU106 are special cases */
-+		if (bf)
-+			skb_put_data(skb, buf + 1, 9);
-+		else
-+			skb_put_data(skb, buf, 10);
-+	}
-+
-+	for (i = 0; i < 6; i++) {
-+		bool bf = i % 2;
-+		u8 idx = i / 2;
-+		s8 *buf = bf ? la.path.ru_bf[idx] : la.path.ru[idx];
-+
-+		skb_put_data(skb, buf, 10);
-+	}
-+
-+	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
-+				     MCU_EXT_CMD(TX_POWER_FEATURE_CTRL), true);
- }
- 
--int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len)
-+int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len,
-+			       u8 category)
- {
- #define RATE_POWER_INFO	2
- 	struct mt7915_dev *dev = phy->dev;
-@@ -3431,10 +3517,9 @@ int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len)
- 		u8 _rsv;
- 	} __packed req = {
- 		.format_id = TX_POWER_LIMIT_INFO,
--		.category = RATE_POWER_INFO,
-+		.category = category,
- 		.band_idx = phy->mt76->band_idx,
- 	};
--	s8 txpower_sku[MT7915_SKU_RATE_NUM][2];
- 	struct sk_buff *skb;
- 	int ret, i;
- 
-@@ -3444,9 +3529,15 @@ int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len)
- 	if (ret)
- 		return ret;
- 
--	memcpy(txpower_sku, skb->data + 4, sizeof(txpower_sku));
--	for (i = 0; i < len; i++)
--		txpower[i] = txpower_sku[i][req.band_idx];
-+	if (category == TX_POWER_INFO_RATE) {
-+		s8 res[MT7915_SKU_RATE_NUM][2];
-+
-+		memcpy(res, skb->data + 4, sizeof(res));
-+		for (i = 0; i < len; i++)
-+			txpower[i] = res[i][req.band_idx];
-+	} else if (category == TX_POWER_INFO_PATH) {
-+		memcpy(txpower, skb->data + 4, len);
-+	}
- 
- 	dev_kfree_skb(skb);
- 
-@@ -3475,7 +3566,7 @@ int mt7915_mcu_set_test_param(struct mt7915_dev *dev, u8 param, bool test_mode,
- 				 sizeof(req), false);
- }
- 
--int mt7915_mcu_set_sku_en(struct mt7915_phy *phy, bool enable)
-+int mt7915_mcu_set_sku_en(struct mt7915_phy *phy)
- {
- 	struct mt7915_dev *dev = phy->dev;
- 	struct mt7915_sku {
-@@ -3484,10 +3575,21 @@ int mt7915_mcu_set_sku_en(struct mt7915_phy *phy, bool enable)
- 		u8 band_idx;
- 		u8 rsv;
- 	} __packed req = {
--		.format_id = TX_POWER_LIMIT_ENABLE,
- 		.band_idx = phy->mt76->band_idx,
--		.sku_enable = enable,
- 	};
-+	int ret;
-+
-+	req.sku_enable = phy->sku_limit_en;
-+	req.format_id = TX_POWER_LIMIT_ENABLE;
-+
-+	ret = mt76_mcu_send_msg(&dev->mt76,
-+				MCU_EXT_CMD(TX_POWER_FEATURE_CTRL), &req,
-+				sizeof(req), true);
-+	if (ret)
-+		return ret;
-+
-+	req.sku_enable = phy->sku_path_en;
-+	req.format_id = TX_POWER_LIMIT_PATH_ENABLE;
- 
- 	return mt76_mcu_send_msg(&dev->mt76,
- 				 MCU_EXT_CMD(TX_POWER_FEATURE_CTRL), &req,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 086ad89ecd91..b72535efc6d7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -429,12 +429,18 @@ enum {
- 
- enum {
- 	TX_POWER_LIMIT_ENABLE,
-+	TX_POWER_LIMIT_PATH_ENABLE = 0x3,
- 	TX_POWER_LIMIT_TABLE = 0x4,
- 	TX_POWER_LIMIT_INFO = 0x7,
- 	TX_POWER_LIMIT_FRAME = 0x11,
- 	TX_POWER_LIMIT_FRAME_MIN = 0x12,
- };
- 
-+enum {
-+	TX_POWER_INFO_PATH = 1,
-+	TX_POWER_INFO_RATE,
-+};
-+
- enum {
- 	SPR_ENABLE = 0x1,
- 	SPR_ENABLE_SD = 0x3,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 2e94347c46d6..b15d31d36a87 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -70,6 +70,7 @@
- #define MT7915_CDEV_THROTTLE_MAX	99
- 
- #define MT7915_SKU_RATE_NUM		161
-+#define MT7915_SKU_PATH_NUM		185
- 
- #define MT7915_MAX_TWT_AGRT		16
- #define MT7915_MAX_STA_TWT_AGRT		8
-@@ -223,6 +224,9 @@ struct mt7915_phy {
- 	struct mt76_mib_stats mib;
- 	struct mt76_channel_state state_ts;
- 
-+	bool sku_limit_en:1;
-+	bool sku_path_en:1;
-+
- #ifdef CONFIG_NL80211_TESTMODE
- 	struct {
- 		u32 *reg_backup;
-@@ -491,9 +495,10 @@ int mt7915_mcu_set_mac(struct mt7915_dev *dev, int band, bool enable,
- int mt7915_mcu_set_test_param(struct mt7915_dev *dev, u8 param, bool test_mode,
- 			      u8 en);
- int mt7915_mcu_set_ser(struct mt7915_dev *dev, u8 action, u8 set, u8 band);
--int mt7915_mcu_set_sku_en(struct mt7915_phy *phy, bool enable);
-+int mt7915_mcu_set_sku_en(struct mt7915_phy *phy);
- int mt7915_mcu_set_txpower_sku(struct mt7915_phy *phy);
--int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len);
-+int mt7915_mcu_get_txpower_sku(struct mt7915_phy *phy, s8 *txpower, int len,
-+			       u8 category);
- int mt7915_mcu_set_txpower_frame_min(struct mt7915_phy *phy, s8 txpower);
- int mt7915_mcu_set_txpower_frame(struct mt7915_phy *phy,
- 				 struct ieee80211_vif *vif,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-index d534fff5c952..5836b9733f27 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
-@@ -409,7 +409,7 @@ mt7915_tm_init(struct mt7915_phy *phy, bool en)
- 	if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
- 		return;
- 
--	mt7915_mcu_set_sku_en(phy, !en);
-+	mt7915_mcu_set_sku_en(phy);
- 
- 	mt7915_tm_mode_ctrl(dev, en);
- 	mt7915_tm_reg_backup_restore(phy);
+Regards
+Florian
 
--- 
+ drivers/net/wireless/ath/ath11k/mac.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/a=
+th/ath11k/mac.c
+index 106e2530b64e..a94649edd4ed 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -8330,6 +8330,24 @@ static void ath11k_mac_op_flush(struct ieee80211_hw =
+*hw, struct ieee80211_vif *v
+ 	ath11k_mac_flush_tx_complete(ar);
+ }
+=20
++static void ath11k_mac_op_flush_sta(struct ieee80211_hw *hw,
++							struct ieee80211_vif *vif,
++			    			struct ieee80211_sta *sta)
++{
++	struct ath11k_vif *arvif =3D (void *)vif->drv_priv;
++	struct ath11k *ar =3D hw->priv;
++	struct peer_flush_params params =3D {
++		.peer_tid_bitmap =3D 0xFF,
++		.vdev_id =3D arvif->vdev_id,
++	};
++	int ret =3D 0;
++
++	ret =3D ath11k_wmi_send_peer_flush_tids_cmd(ar, sta->addr, &params);
++	if (ret)
++		ath11k_warn(ar->ab, "failed to flush sta (sta %pM)\n",
++			    sta->addr);
++}
++
+ static bool
+ ath11k_mac_has_single_legacy_rate(struct ath11k *ar,
+ 				  enum nl80211_band band,
+@@ -9920,6 +9938,7 @@ static const struct ieee80211_ops ath11k_ops =3D {
+ 	.set_bitrate_mask		=3D ath11k_mac_op_set_bitrate_mask,
+ 	.get_survey			=3D ath11k_mac_op_get_survey,
+ 	.flush				=3D ath11k_mac_op_flush,
++	.flush_sta			=3D ath11k_mac_op_flush_sta,
+ 	.sta_statistics			=3D ath11k_mac_op_sta_statistics,
+ 	CFG80211_TESTMODE_CMD(ath11k_tm_cmd)
+=20
+--=20
 2.47.3
 
 
