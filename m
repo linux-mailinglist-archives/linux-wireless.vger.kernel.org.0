@@ -1,83 +1,85 @@
-Return-Path: <linux-wireless+bounces-27866-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27867-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60735BC2EB1
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Oct 2025 01:05:09 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4979BC31DB
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Oct 2025 03:39:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4348D19A07E2
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Oct 2025 23:05:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 91DF54E127A
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Oct 2025 01:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8817F4A23;
-	Tue,  7 Oct 2025 23:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064DD28D84F;
+	Wed,  8 Oct 2025 01:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gFcnKzkP"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="Lv/mGzES"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CF72C9D
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Oct 2025 23:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DC9286413
+	for <linux-wireless@vger.kernel.org>; Wed,  8 Oct 2025 01:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759878303; cv=none; b=Le4e2cOpV4tCBSIJvA3StRmy43wvtI+LEISH1veMaoQYXmtJffLeBttvuzsqxqR0t09Eo6r0+E3u8Xv2JjslGlhD/6sjoLpleFmnFb1Ic2cDAekUKP1uErVsM3fgxBlWr1Dln6S9WrQpltHXamXDDPDeOJodhJ7CHnVbsNqf+yc=
+	t=1759887564; cv=none; b=DMo/IHp7ifBbcF8uNHX4yD7lEmbQFugGfa7xGPtDE7yB73205lXk0P3l6sJtEFkdNIqQi9xJHL3hv3hcsiiP1AiwkcffbIK1XeH/trOOX5qg001E7SylLOAMcJzddWlVzOaDSz6qB3H5ewkYqL+6q1torRvG6csWjL1HpfZNahQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759878303; c=relaxed/simple;
-	bh=rfBiSupUkgpYT7D6/wSMlkh3EDRkRCguaZumtXVjJ5c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C4FNasS1kw5L6u3JQRi4CbqsSJQk5UX6SuPeiShZeSvYjbkdDvrJUGg3TcwShLzP0/j6jlC8xHGoe50C528lDdQDOxBuDr+Dk1yT+IcdqWOs6m3h4KTp75UQ3YeuABCv7RRX3J5IYcuncRBQaUj1IW2aroDGscJSCww/E0bRM3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gFcnKzkP; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-781997d195aso4486092b3a.3
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Oct 2025 16:05:01 -0700 (PDT)
+	s=arc-20240116; t=1759887564; c=relaxed/simple;
+	bh=Wkylx4y1AotVjQSGb1TEHvwMfFPZrR5CTFgRe9OM7a8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ty+8/cWejZQh0FFgYuvsnZ6VSJmWjubOZSx5TTFXEADqqlQKWFOfA0FdqIzRW4d1CbzqeFgSr0KpN7cCvtH+3n+ekJeef/ehggMH+IOXCzNTr+wFzmHP5Tgj2lLbyVWxiEiwFmLX3Cl8Xx+ScdC4xI9nwTDCETEPv1dKFC+ObVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=Lv/mGzES; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-782bfd0a977so6011953b3a.3
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Oct 2025 18:39:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759878301; x=1760483101; darn=vger.kernel.org;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1759887562; x=1760492362; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iErhUlP9LkaGfTWDLHYRh3GvBloCr7rImgT7YEPmvUY=;
-        b=gFcnKzkP5Hsa2CgaEyEJXxs1uctGfCQYIS7MHuGqMje00QipMXeyBa8uOQY7w5ngpc
-         V7P8ijCBAZwtefl0UEXPwgRx00XzMnbkbVH1iXu17R+0o2GHxgJNmSti2kwwA0SowxgP
-         zC8lT5r6Wmf25DyShlENq0Lcahsz17iOYwt7kgDkR4hhaTqI0uO7qdYSGzYmEVgl3d5c
-         lW8H0xVzrFNh3+3v6s/DllXGw6pERx+T9YQV9+N0HFUDPjkX2WkPLDkd0QjCbMyF90US
-         yyF0pIg0QVApvLkRm95AFTphBYWIO/HNYFQevuVnh1qsG2oPWhQ1mYZZrM32oKd9vC1v
-         QGXg==
+        bh=FOegZgCGfsuY2ZSO7hoPKDK2DkDCi6DOqQot2mu+73A=;
+        b=Lv/mGzESUZSGbTP4ob1PKWWCTAjqR/T6KfbU9dEoNbigOBv95MrOJ9u8C/fgf+qYRq
+         Vb5mpYzxVQMDbStKemw8LNh9VnNqrRcAFrzYjT7n87jojZ6wwYvwmjMwFHI4pw3lKrLE
+         3E3Xv3lf6/Du8lq/x/vCpik4OdLQGTnDtd75kHjmauvdNLIA+STWU2mzXgNYcwIvvJlg
+         Q/FicjWaJ65h1GUuiNRmHK8i8PjXJWI1azhakcM0N/Y7BXeE8Vz9twIEbNDBf80hHcfe
+         Vghbi2KIoByUIYTMgkZnglsgd0T/DewgXnTlnLKI17TndWwCOaxIinfEqT9/GLofiEX+
+         V+qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759878301; x=1760483101;
+        d=1e100.net; s=20230601; t=1759887562; x=1760492362;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iErhUlP9LkaGfTWDLHYRh3GvBloCr7rImgT7YEPmvUY=;
-        b=Vu+Wn8vmC1WVTWmS7DCMLDIXtLX+cDpU/ecmYWytIXNW262Ux6ha3Z3sYpKQ2ZoGCk
-         znr5NHlkPNyEAM7Qfz4zAvtL7ZpMql59CL4puFon9kUADa6YnKWuzOg9hiueTpCkiEcm
-         lbKdWEFXTzcC3lfTRaW3LQxnRulcuoxKDS/hImfQSB9Qz24HsBLOZB2dzXtk0oOBV9yC
-         90XShQKRKvtUS0C4k+1QCnbepre2ixlVuKU9OUKiU5S74fm0WnV6OdHAaoxhjHC8b6GU
-         YrHMrfjPwEUVuTawT+1eXu8x12Ue/UFR5PkPpumu9mi4nTiQI63k0A9SiMS3h5JZZg8R
-         tsJA==
-X-Gm-Message-State: AOJu0YyGfcfjHbDkwu6UTaNUS9LuMMX9kyr1cpgwo4ifuiXQtZRAnCJq
-	zvxwlvBBAqkW8u/pnqA1+/q8+EYpWNhgh40sXGObCYIpjPNSlNXHfTv4hazFSyH/
-X-Gm-Gg: ASbGncsDWm/Zoa/3YCZTNueRgfP5GHLT0FXBH0xniBZCUqhw+tSWMgDdrAMdKp+xG0g
-	P86sILkGywMJWCXIAPQIxXywYoP58yyF7Tc5UPhp8UvtB09tXg5V6potRS8g2VAPbco0v8Q6Bl6
-	xmKzW3G2+IoODKMndDqH9SuoqKJEUbbR99/dDMc1nW7/1EkMvScFwtgd86yX7pQTJsiYQiAvOe6
-	PaJKBQp/3/wLjF1vTaH0vBH1c0JKmPUeR7vraLO9/HYlY9S3VXp84LbE1AoXSWI2IJQ5P4rV4PN
-	kB8veGhrWrtxbwOEVwQSq00n1882PjPZg3lqgCxIYxvg/SvxFsZy73Q5iByfcyK8Z7NV5DG5O55
-	w08foumSjOR3jf1Lg7hF65/5+2364I6aK+P60QH9TmQxaONIMyccnvue1ELSWuoJc+95VEps=
-X-Google-Smtp-Source: AGHT+IGvAJ9A+Bqbg5BqXp6J9ZCiCr+iUd2CSt5143mGGYGW2sQJ3GfysgqIB8fpu0ckb75FsUeAAA==
-X-Received: by 2002:a05:6a00:23d4:b0:77f:2978:30b0 with SMTP id d2e1a72fcca58-793859f338fmr1257512b3a.11.1759878300849;
-        Tue, 07 Oct 2025 16:05:00 -0700 (PDT)
-Received: from localhost (2403-5806-8049--d1d.ip6.aussiebb.net. [2403:5806:8049::d1d])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-78b01fb0548sm16843453b3a.27.2025.10.07.16.04.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Oct 2025 16:05:00 -0700 (PDT)
-From: Richard Huynh <voxlympha@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: wireless-regdb@lists.infradead.org,
-	Richard Huynh <voxlympha@gmail.com>
-Subject: [PATCH] wireless-regdb: Update regulatory info for Australia (AU) for 2025
-Date: Wed,  8 Oct 2025 10:04:50 +1100
-Message-ID: <20251007230450.69998-1-voxlympha@gmail.com>
-X-Mailer: git-send-email 2.51.0
+        bh=FOegZgCGfsuY2ZSO7hoPKDK2DkDCi6DOqQot2mu+73A=;
+        b=m0TH9eIhubPi+x9o/Ho1qQoAYhqaIJ9V9LVjLH3U40OPNLKR0tPYDupjFi/PBpYvBc
+         UFxlMakMEm8Wa6B6FHBDq36//Dd8QXzAeTJTPMXNtImgthsg4TSDOAG90B7JXVB7BBxF
+         pvBm3C/s1qFXic5Wmq0ZybPyfeoN3rlUfvQvDidIXaYXYQBI4QxlDbsFVuh0TEmlC2Pj
+         rhAohkJs/A5S8eQVBUwvOM+izDbujHJPp0Q/j3SYwF+gwlDDE+oG0LjwRSoSecwKrXwF
+         aMDNSENRwpM/Rw57yW37o7eDzZvM/qpiecv8a5pyKlJaNDN1Brq2N8sSecvAY5H+x2Zn
+         Wv1w==
+X-Gm-Message-State: AOJu0YwlmD+gNZcvDG59VXWq9WpQfF+t8QqV2nzJfh4MrmmeaOtsw6t0
+	+sZFyDveFXBjTSDYk/bD9I84JyplgUGnD8ImN1QXSuzC8x6OBEGMYPYJ+U7kJOGYvBg=
+X-Gm-Gg: ASbGncvtyqtX5KaunVd/IrjyCbxQmHQ3cBxIs6Hn0Halyo3jWWccvVLn+vNv3Twov/R
+	ThIE9Tacfe/TwJ0OuTuafuefn9t8PewRB3jCvrJiDitdHudHFXveru1p9w3y5cFrzzao2XgL9kT
+	331mMWGF3ym1OOSJRIcsWm1DAEsejxAc58fGju+xm48TC7kuv/lRTzIHfAwr0PduQ48B/cRlR/i
+	gzskdCY2y/dMIfuKzoS8RO46Vf/qNA1DPwG4eYrzEPJbdzZ8hedwmzVnt9Roo8FzksmekKNj2B0
+	/BZL6+94FwoJ4ALI/KeAn99nC3aI/EXgrJJhz3K26wtTXnFL0y/FCmHwEbg1+0dvILWuit5r6b/
+	4nhgReiNtphbXjQAIGiqxJ1n05sZ+kWNbO8Caes4pq/BE30Kb9m+nRyMMG0iKldEpNTr4wH4Ulm
+	WtNtFApE0T6Kazi3f/CBk=
+X-Google-Smtp-Source: AGHT+IHvr4QSLNCbuayBM6KO/U2fd3/+0epVPwRTdaDJWWXgWhUZqdD3K3gsgZKAQDLSo9AEuikLKQ==
+X-Received: by 2002:a05:6a00:886:b0:77f:449f:66b0 with SMTP id d2e1a72fcca58-793883dad54mr1960205b3a.32.1759887562220;
+        Tue, 07 Oct 2025 18:39:22 -0700 (PDT)
+Received: from mma-H9MHD44.lan (60-242-93-14.static.tpgi.com.au. [60.242.93.14])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78b01f9a364sm16978696b3a.6.2025.10.07.18.39.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Oct 2025 18:39:21 -0700 (PDT)
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	arien.judge@morsemicro.com,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless-next] wifi: mac80211_hwsim: update S1G channel list
+Date: Wed,  8 Oct 2025 12:39:03 +1100
+Message-ID: <20251008013903.219169-1-lachlan.hodges@morsemicro.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -86,82 +88,100 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-As of October 1 2025, a new class licence is in effect[1]
-Update the link and references in the comments to it
+Update the mac80211_hwsim channel list to represent what cfg80211
+expects drivers to advertise, that being 1MHz primary channels.
 
-Additionally for the lower part of 6Ghz spectrum:
-- Allow for EHT-320 as it complies with PSD limits
-- Expand the upper range up to 6585 as permitted in new licence
-
-[1] https://www.legislation.gov.au/Details/F2025L01047
-
-Signed-off-by: Richard Huynh <voxlympha@gmail.com>
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 ---
- db.txt | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 53 +++++++++++++------
+ 1 file changed, 36 insertions(+), 17 deletions(-)
 
-diff --git a/db.txt b/db.txt
-index 16bcb32..93d709e 100644
---- a/db.txt
-+++ b/db.txt
-@@ -145,43 +145,44 @@ country AT: DFS-ETSI
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 9f856042a67a..dde6a622ff72 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -359,6 +359,13 @@ static struct net_device *hwsim_mon; /* global monitor netdev */
+ 	.hw_value = (_freq), \
+ }
  
- # Source:
- # 'Item' in the comments below refers to each numbered rule found at:
--# https://www.legislation.gov.au/Details/F2023C00524
-+# https://www.legislation.gov.au/Details/F2025L01047 within Table 8
-+# except for 5850-5875 which is found in Table 1.
- # Both DFS-ETSI and DFS-FCC are acceptable per AS/NZS 4268 Appendix B.
- # The EIRP for DFS bands can be increased by 3dB if TPC is implemented.
- # In order to allow 80MHz operation between 5650-5730MHz the upper boundary
- # of this more restrictive band has been shifted up by 5MHz from 5725MHz.
- country AU: DFS-ETSI
--	# Item 58
-+	# Item 1
- 	(915 - 920 @ 4), (1000 mW)
- 	(920 - 928 @ 8), (1000 mW)
++#define CHANS1G(_freq, _offset) { \
++	.band = NL80211_BAND_S1GHZ, \
++	.center_freq = (_freq), \
++	.freq_offset = (_offset), \
++	.hw_value = (_freq), \
++}
++
+ static const struct ieee80211_channel hwsim_channels_2ghz[] = {
+ 	CHAN2G(2412), /* Channel 1 */
+ 	CHAN2G(2417), /* Channel 2 */
+@@ -487,8 +494,35 @@ static const struct ieee80211_channel hwsim_channels_6ghz[] = {
+ 	CHAN6G(7115), /* Channel 233 */
+ };
  
--	# Item 59
-+	# Item 3
- 	(2400 - 2483.5 @ 40), (4000 mW)
+-#define NUM_S1G_CHANS_US 51
+-static struct ieee80211_channel hwsim_channels_s1g[NUM_S1G_CHANS_US];
++/* US S1G channels only */
++static const struct ieee80211_channel hwsim_channels_s1g[] = {
++	CHANS1G(902, 500), /* Channel 1 */
++	CHANS1G(903, 500), /* Channel 3 */
++	CHANS1G(904, 500), /* Channel 5 */
++	CHANS1G(905, 500), /* Channel 7 */
++	CHANS1G(906, 500), /* Channel 9 */
++	CHANS1G(907, 500), /* Channel 11 */
++	CHANS1G(908, 500), /* Channel 13 */
++	CHANS1G(909, 500), /* Channel 15 */
++	CHANS1G(910, 500), /* Channel 17 */
++	CHANS1G(911, 500), /* Channel 19 */
++	CHANS1G(912, 500), /* Channel 21 */
++	CHANS1G(913, 500), /* Channel 23 */
++	CHANS1G(914, 500), /* Channel 25 */
++	CHANS1G(915, 500), /* Channel 27 */
++	CHANS1G(916, 500), /* Channel 29 */
++	CHANS1G(917, 500), /* Channel 31 */
++	CHANS1G(918, 500), /* Channel 33 */
++	CHANS1G(919, 500), /* Channel 35 */
++	CHANS1G(920, 500), /* Channel 37 */
++	CHANS1G(921, 500), /* Channel 39 */
++	CHANS1G(922, 500), /* Channel 41 */
++	CHANS1G(923, 500), /* Channel 43 */
++	CHANS1G(924, 500), /* Channel 45 */
++	CHANS1G(925, 500), /* Channel 47 */
++	CHANS1G(926, 500), /* Channel 49 */
++	CHANS1G(927, 500), /* Channel 51 */
++};
  
--	# Item 61
-+	# Item 10
- 	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
+ static const struct ieee80211_sta_s1g_cap hwsim_s1g_cap = {
+ 	.s1g = true,
+@@ -517,19 +551,6 @@ static const struct ieee80211_sta_s1g_cap hwsim_s1g_cap = {
+ 		     0 },
+ };
  
--	# Item 62 (200 mW allowed if TPC is used)
-+	# Item 11 (200 mW allowed if TPC is used)
- 	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, AUTO-BW, DFS
+-static void hwsim_init_s1g_channels(struct ieee80211_channel *chans)
+-{
+-	int ch, freq;
+-
+-	for (ch = 0; ch < NUM_S1G_CHANS_US; ch++) {
+-		freq = 902000 + (ch + 1) * 500;
+-		chans[ch].band = NL80211_BAND_S1GHZ;
+-		chans[ch].center_freq = KHZ_TO_MHZ(freq);
+-		chans[ch].freq_offset = freq % 1000;
+-		chans[ch].hw_value = ch + 1;
+-	}
+-}
+-
+ static const struct ieee80211_rate hwsim_rates[] = {
+ 	{ .bitrate = 10 },
+ 	{ .bitrate = 20, .flags = IEEE80211_RATE_SHORT_PREAMBLE },
+@@ -7081,8 +7102,6 @@ static int __init init_mac80211_hwsim(void)
+ 		goto out_exit_virtio;
+ 	}
  
--	# Item 63(a) (1000 mW with TPC)
-+	# Item 12(a) (1000 mW with TPC)
- 	(5470 - 5600 @ 80), (500 mW), DFS
+-	hwsim_init_s1g_channels(hwsim_channels_s1g);
+-
+ 	for (i = 0; i < radios; i++) {
+ 		struct hwsim_new_radio_params param = { 0 };
  
--	# Item 63(b) (1000 mW with TPC)
-+	# Item 12(b) (1000 mW with TPC)
- 	# The end is 5725 but we borrow 5 MHz from the following less restrictive band
- 	# so we can get an 80 MHz channel.
- 	(5650 - 5730 @ 80), (500 mW), DFS
- 
--	# Item 60
-+	# Item 9
- 	(5730 - 5850 @ 80), (4000 mW), AUTO-BW
- 
--	# Item 22
-+	# Item 22 of Table 1
- 	(5850 - 5875 @ 20), (25 mW), AUTO-BW
- 
--	# Item 63AA (25 mW if outdoors)
--	(5925 - 6425 @ 160), (250 mW), NO-OUTDOOR
-+	# Item 13 (25 mW if outdoors)
-+	(5925 - 6585 @ 320), (250 mW), NO-OUTDOOR
- 
--	# Item 65
-+	# Item 18
- 	(57000 - 71000 @ 2160), (20000 mW), NO-OUTDOOR
- 
- country AW: DFS-ETSI
 -- 
-2.51.0
+2.43.0
 
 
