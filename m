@@ -1,105 +1,136 @@
-Return-Path: <linux-wireless+bounces-27879-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27880-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799DBBC4202
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Oct 2025 11:12:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3ADBC4252
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Oct 2025 11:20:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 120C44F25E7
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Oct 2025 09:12:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97D9A3B2532
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Oct 2025 09:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC83D2F3609;
-	Wed,  8 Oct 2025 09:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29722C0260;
+	Wed,  8 Oct 2025 09:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="i2xD+Ri4"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="lK8+4Wcb"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071F92EC0B5
-	for <linux-wireless@vger.kernel.org>; Wed,  8 Oct 2025 09:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B32D1AAA1C
+	for <linux-wireless@vger.kernel.org>; Wed,  8 Oct 2025 09:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759914731; cv=none; b=lq/GPsfjk8wCmJ476jAJ/aqxt5yEyR4sbXm+b56PkPZNIjD/Peu4Lfz25CdBU2D3xFQVYj380GR3r6jgHXn5K4FQoAS4+q/GSFu54Jlkru2cwvBY0wC8ROiU3WWi4p+7ivztFNdhs8AKkT9P/mpnKNKfYA62B64YVvGvaQXJ7X0=
+	t=1759915251; cv=none; b=DhVBOtfJCdSNM5lV6C48rjcsytuviVmUcthhq8cWQsQ/QORlAPBmE5Re6SnFvAQfY1/SJWmjrs32l4dmB/TMLNAZHI1ANoeFpRzpeAKhn2pZdIT9BFk08JUMy4qyZvfI7533XJKJeARGQjgEUqNmDrkE8A9x5nQnJ+AivNgNfs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759914731; c=relaxed/simple;
-	bh=K2i7tlJbWwCqGLACH6V+d2RelCEDWGlXAhO/jF3R7lk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iz8r16sYhvKk1V9LgQSMOqVUU2d0n5q8zAV8fUkzhYPOX6c0NtHEPcQYn9CjZUQtCIHfr3f2v4s8mEBPrQnnCRE91iVDAS9B3PC9hhWqKIizmSz2cLxYdBsxa+TYDbqCV068oTIfeiMEZ3UMSw1SzQf9MhM61GLcBXRFGVmT6FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=i2xD+Ri4; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1759915251; c=relaxed/simple;
+	bh=my+SpFOay0mdz8lxH/lTGMhuomoeUpY5SGPindTkeYE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YPZOugui9bolipQ8PIMuhtQybYDjL5ASxfFOtCeilYVpS3XdZ9Q4jaQsxj4SF1DIMjg/7z8pdgoUUJ4mNH7z1jIYfibYXlX/V8Gxj/QXzWfQ2Gjhs6qbtTWtW/ngMKT7A7jreBMmgZr8vcUUNzhyehdqjR6hI+uB6DJR7Sma3H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=lK8+4Wcb; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=yFcKqv6NENApTHDEgHun0uuN+uezqyHAhEFQCuoA28I=;
-	t=1759914730; x=1761124330; b=i2xD+Ri4LlMnpWp7mTWMKD7kL4eEYpUjMic3UWq1d3yfGNa
-	zHwWgYiMxgV3ZqnIJPgzmsMLtc+IfZWY59cZnJaYc6IvxcwD+hk3chuhr+30C9sOm7r10cfr1H02Q
-	5Pqva+948io4ulOp+WSH65xpNwprr0+ohkNXe/pBxd+i9lYbok0q5GZnGlqwDS4yXx1xmUiNAM23F
-	8Z7T2CfNkrWOlSDGgyISqqe/JkP2wu4oJN7lQ2nJwICyr7eU++j5/u369sAvErNqSOUnbyk8E2aak
-	aiwknfEjkdHXcOPHadgcveAMNnIuaSxdOeZgXRH09lRmXA3NzNLkTAJOJEL4gm2g==;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=9+l0BjOP0bHMkcQNeG+mJbpoJkWMJ2C3T7sFre5jtsc=; t=1759915250; x=1761124850; 
+	b=lK8+4WcbrrvEvS+RmKAdxJRLdVZKvJHGnO0SBuGBjaHKoOKDVT2huuf7vOmB54KCOoTb1SVUydi
+	/wokDzlDoasu5SYXW1AbbjWPvXAbypRwYBipHHCrdRRn8jg/Rbvx376lPy3DsX44D1+1Ai+w3ENNN
+	4dz6/FxBzT7Pv4NiCLT85hzDa3CADVaXlt6G8XCtgxbtqJU4znd6mlmXA05c4pV2z9hL9zOo5KDDV
+	H7Nu5jQhyFIP428B9+EycEFs4bkWY6LVQ9beiKWXBWYV0ougSsx2ZM0Q+2ZbNkS09MfelVaavkd2Z
+	5vmZbI6G5Nh6y5OQ0eK7k3aglBLDsZXhENSQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1v6QDN-00000000FXv-1RFj;
-	Wed, 08 Oct 2025 11:12:05 +0200
-Message-ID: <d7eb196b01003a1de70456d5a31d9b4a37d555bd.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] wifi: mt76: mt7921: Add PCIe AER handler support to
- prevent system crash
+	id 1v6QLn-00000000G5c-0NQM;
+	Wed, 08 Oct 2025 11:20:47 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, nbd@nbd.name, 
-	lorenzo@kernel.org
-Cc: deren.wu@mediatek.com, Sean.Wang@mediatek.com, Leon.Yen@mediatek.com, 
-	Michael.Lo@mediatek.com, allan.wang@mediatek.com,
- Eric-SY.Chang@mediatek.com, 	km.lin@mediatek.com, Quan.Zhou@mediatek.com,
- Ryder.Lee@mediatek.com, 	Shayne.Chen@mediatek.com,
- linux-wireless@vger.kernel.org, 	linux-mediatek@lists.infradead.org
-Date: Wed, 08 Oct 2025 11:12:04 +0200
-In-Reply-To: <20251008085916.1626952-1-mingyen.hsieh@mediatek.com>
-References: <20251008085916.1626952-1-mingyen.hsieh@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>
+Subject: [PATCH iwlwifi-fixes] wifi: iwlwifi: mvm: fix beacon template/fixed rate
+Date: Wed,  8 Oct 2025 11:20:44 +0200
+Message-ID: <20251008112044.3bb8ea849d8d.I90f4d2b2c1f62eaedaf304a61d2ab9e50c491c2d@changeid>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Johannes Berg <johannes.berg@intel.com>
 
-So ... yeah it's your driver, and yes it's already at v2, but ... this
-still seems very much papering over a problem?
+During the development of the rate changes, I evidently made
+some changes that shouldn't have been there; beacon templates
+with rate_n_flags are only in old versions, so no changes to
+them should have been necessary, and evidently broke on some
+devices. This also would have broken fixed (injection) rates,
+it would seem. Restore the old handling of this.
 
-On Wed, 2025-10-08 at 16:59 +0800, Mingyen Hsieh wrote:
->=20
-> Unable to handle kernel paging request at virtual address ffffffc01099eac=
-0
-> pc : mt76_dma_add_buf+0x124/0x188 [mt76]
+Fixes: dabc88cb3b78 ("wifi: iwlwifi: handle v3 rates")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220558
+Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 13 +++----------
+ drivers/net/wireless/intel/iwlwifi/mvm/utils.c    | 12 +++++++++---
+ 2 files changed, 12 insertions(+), 13 deletions(-)
 
-Why does it even crash there?
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index 8805ab344895..0065c2ead56b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -938,19 +938,12 @@ u8 iwl_mvm_mac_ctxt_get_lowest_rate(struct iwl_mvm *mvm,
+ 
+ u16 iwl_mvm_mac_ctxt_get_beacon_flags(const struct iwl_fw *fw, u8 rate_idx)
+ {
++	u16 flags = iwl_mvm_mac80211_idx_to_hwrate(fw, rate_idx);
+ 	bool is_new_rate = iwl_fw_lookup_cmd_ver(fw, BEACON_TEMPLATE_CMD, 0) > 10;
+-	u16 flags, cck_flag;
+-
+-	if (is_new_rate) {
+-		flags = iwl_mvm_mac80211_idx_to_hwrate(fw, rate_idx);
+-		cck_flag = IWL_MAC_BEACON_CCK;
+-	} else {
+-		cck_flag = IWL_MAC_BEACON_CCK_V1;
+-		flags = iwl_fw_rate_idx_to_plcp(rate_idx);
+-	}
+ 
+ 	if (rate_idx <= IWL_LAST_CCK_RATE)
+-		flags |= cck_flag;
++		flags |= is_new_rate ? IWL_MAC_BEACON_CCK
++			  : IWL_MAC_BEACON_CCK_V1;
+ 
+ 	return flags;
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+index 62da0132f383..a62f5288dfd0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+@@ -169,9 +169,15 @@ int iwl_mvm_legacy_rate_to_mac80211_idx(u32 rate_n_flags,
+ 
+ u8 iwl_mvm_mac80211_idx_to_hwrate(const struct iwl_fw *fw, int rate_idx)
+ {
+-	return (rate_idx >= IWL_FIRST_OFDM_RATE ?
+-		rate_idx - IWL_FIRST_OFDM_RATE :
+-		rate_idx);
++	if (iwl_fw_lookup_cmd_ver(fw, TX_CMD, 0) > 8)
++		/* In the new rate legacy rates are indexed:
++		 * 0 - 3 for CCK and 0 - 7 for OFDM.
++		 */
++		return (rate_idx >= IWL_FIRST_OFDM_RATE ?
++			rate_idx - IWL_FIRST_OFDM_RATE :
++			rate_idx);
++
++	return iwl_fw_rate_idx_to_plcp(rate_idx);
+ }
+ 
+ u8 iwl_mvm_mac80211_ac_to_ucode_ac(enum ieee80211_ac_numbers ac)
+-- 
+2.51.0
 
-> +++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
-> @@ -96,6 +96,9 @@ mt76_rx_aggr_reorder_work(struct work_struct *work)
->  	struct sk_buff_head frames;
->  	int nframes;
-> =20
-> +	if (atomic_read(&dev->bus_hung) =3D=3D 1)
-> +		return;
-
-And how does sprinkling this "magic dust" all over even do anything?
-
-
-This sounds a bit like the driver isn't able to deal with surprise
-removal, what happens if you e.g. rmmod it while running traffic? I
-believe the effect of the error recovery would be similar, if you don't
-handle it, so are you sure there's not a completely different underlying
-bug?
-
-johannes
 
