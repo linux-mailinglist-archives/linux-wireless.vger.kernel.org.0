@@ -1,42 +1,42 @@
-Return-Path: <linux-wireless+bounces-27872-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27873-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DAE6BC3685
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Oct 2025 07:59:29 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4E6BC3701
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Oct 2025 08:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C8C7834E8E1
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Oct 2025 05:59:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 29F47350FD3
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Oct 2025 06:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2482EA49C;
-	Wed,  8 Oct 2025 05:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C792B296BD6;
+	Wed,  8 Oct 2025 06:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="dNetz+jh"
+	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="lDQfOP/O"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17E7EACD
-	for <linux-wireless@vger.kernel.org>; Wed,  8 Oct 2025 05:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830202EA75E
+	for <linux-wireless@vger.kernel.org>; Wed,  8 Oct 2025 06:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759903164; cv=none; b=bzWA0uCt0Sc2lHv+zg6tFPgt43RP2llQju6Nzj6blniGvk1txF4/kP2LGiauJiMzW60mQbhhGCScuPqYg22fOQu+JrHr8lNKaV5gO6UEeyWD51dbkowQLxhEcmXX5a4c1LDSYD9cPw7bawAXOXFCfyCZrW6QfbR6luiiTRsYETg=
+	t=1759903785; cv=none; b=eBhfDN2YBo8hTZOacebNTEoW4oD2LKboAY/yRHfjxJuiJCOcrQmaEa74WATiEYNd1iE3Brc0qerKELO5J/Decnw61tlryaA4yVCv97oIIwVHV22koDGOw/LrbpABn/S2PRL2cJhO2HzAif5m3OeHi2IKSikn1BKtXrSvEfXBOKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759903164; c=relaxed/simple;
-	bh=6G+vui2ApzW3rsveBmcB68my+Lene8X8ImwkBxmTxTY=;
+	s=arc-20240116; t=1759903785; c=relaxed/simple;
+	bh=y8Hu4shrVUY+3QFV+qlSHuGm4UYwSSnmLjF0bFuLi8Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DMC+pxx/fwuW4RfjfbFruTbuv3cSBmqVDHdqnM5t3+/b5f7E7D6ZAfhBrKpC2tcAwZ77D1qnfFG32lWh0uE3l97SAaXIKRo5RatAzWrszfOaPaKrEJNDGvoaW1389FimxSUPi+/kcEugXEjlVb7q2F6M2A8BdgWzK0ZBsNUw4eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=dNetz+jh; arc=none smtp.client-ip=185.84.6.188
+	 In-Reply-To:Content-Type; b=PoPG2boSwhJ2PesQdql17CTolJuksqOMXPADRdsvjoZTe4Ko+MV9B1PhoWX007MdvbxIQOgiQUy1MPMqr9F72EGAZUybXbUbghE6q16CgaMhkG8oPE9NNndpXyhqyfpaMC+gZShOGAYiY8i7moA1jCF8lu+VltytQVPvBsdCftQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=lDQfOP/O; arc=none smtp.client-ip=185.84.6.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
-Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:46128 helo=webmail.newmedia-net.de)
+Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:49592 helo=webmail.newmedia-net.de)
 	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
 	(Exim 4.97.1)
 	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1v6NCn-000000007z9-07j0;
-	Wed, 08 Oct 2025 07:59:17 +0200
+	id 1v6NMq-000000001Wu-06QM;
+	Wed, 08 Oct 2025 08:09:40 +0200
 X-SASI-Hits: BODY_SIZE_4000_4999 0.000000, BODY_SIZE_5000_LESS 0.000000,
 	BODY_SIZE_7000_LESS 0.000000, CTE_7BIT 0.000000, DKIM_ALIGNS 0.000000,
 	DKIM_SIGNATURE 0.000000, HTML_00_01 0.050000, HTML_00_10 0.050000,
@@ -51,21 +51,20 @@ X-SASI-Hits: BODY_SIZE_4000_4999 0.000000, BODY_SIZE_5000_LESS 0.000000,
 	__CTE 0.000000, __CT_TEXT_PLAIN 0.000000, __DKIM_ALIGNS_1 0.000000,
 	__DKIM_ALIGNS_2 0.000000, __DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000,
 	__DQ_NEG_IP 0.000000, __FORWARDED_MSG 0.000000,
-	__FRAUD_BODY_WEBMAIL 0.000000, __FRAUD_PARTNERSHIP 0.000000,
-	__FRAUD_WEBMAIL 0.000000, __FROM_DOMAIN_NOT_IN_BODY 0.000000,
-	__FUR_RDNS_SOPHOS 0.000000, __HAS_CC_HDR 0.000000, __HAS_FROM 0.000000,
-	__HAS_MSGID 0.000000, __HAS_REFERENCES 0.000000,
-	__HEADER_ORDER_FROM 0.000000, __HTTPS_URI 0.000000,
-	__INVOICE_MULTILINGUAL 0.000000, __IN_REP_TO 0.000000, __MAIL_CHAIN 0.000000,
-	__MIME_BOUND_CHARSET 0.000000, __MIME_TEXT_ONLY 0.000000,
-	__MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000, __MIME_VERSION 0.000000,
-	__MOZILLA_USER_AGENT 0.000000, __MSGID_HEX_844412 0.000000,
-	__MULTIPLE_RCPTS_TO_X2 0.000000, __MULTIPLE_URI_TEXT 0.000000,
-	__NO_HTML_TAG_RAW 0.000000, __OUTBOUND_SOPHOS_FUR 0.000000,
-	__OUTBOUND_SOPHOS_FUR_IP 0.000000, __OUTBOUND_SOPHOS_FUR_RDNS 0.000000,
-	__PHISH_SPEAR_SUBJ_PREDICATE 0.000000, __RCVD_PASS 0.000000,
-	__REFERENCES 0.000000, __SANE_MSGID 0.000000, __SCAN_D_NEG 0.000000,
-	__SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
+	__FRAUD_BODY_WEBMAIL 0.000000, __FRAUD_WEBMAIL 0.000000,
+	__FROM_DOMAIN_NOT_IN_BODY 0.000000, __FUR_RDNS_SOPHOS 0.000000,
+	__HAS_CC_HDR 0.000000, __HAS_FROM 0.000000, __HAS_MSGID 0.000000,
+	__HAS_REFERENCES 0.000000, __HEADER_ORDER_FROM 0.000000,
+	__HTTPS_URI 0.000000, __INVOICE_MULTILINGUAL 0.000000, __IN_REP_TO 0.000000,
+	__MAIL_CHAIN 0.000000, __MIME_BOUND_CHARSET 0.000000,
+	__MIME_TEXT_ONLY 0.000000, __MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000,
+	__MIME_VERSION 0.000000, __MOZILLA_USER_AGENT 0.000000,
+	__MSGID_HEX_844412 0.000000, __MULTIPLE_RCPTS_TO_X2 0.000000,
+	__MULTIPLE_URI_TEXT 0.000000, __NO_HTML_TAG_RAW 0.000000,
+	__OUTBOUND_SOPHOS_FUR 0.000000, __OUTBOUND_SOPHOS_FUR_IP 0.000000,
+	__OUTBOUND_SOPHOS_FUR_RDNS 0.000000, __PHISH_SPEAR_SUBJ_PREDICATE 0.000000,
+	__RCVD_PASS 0.000000, __REFERENCES 0.000000, __SANE_MSGID 0.000000,
+	__SCAN_D_NEG 0.000000, __SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
 	__SCAN_D_NEG_HEUR2 0.000000, __SUBJ_ALPHA_END 0.000000,
 	__SUBJ_ALPHA_NEGATE 0.000000, __SUBJ_REPLY 0.000000,
 	__TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
@@ -76,12 +75,12 @@ X-SASI-Hits: BODY_SIZE_4000_4999 0.000000, BODY_SIZE_5000_LESS 0.000000,
 	__USER_AGENT 0.000000, __X_MAILSCANNER 0.000000
 X-SASI-Probability: 8%
 X-SASI-RCODE: 200
-X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2025.10.8.45719
+X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2025.10.8.52719
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
-	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=XobQWHMsN4/biCRYjq9SRSXgTwbdiyO4GRWenZy9z+0=;
-	b=dNetz+jh29FgYuOmixy2Oq0XHCYMUV+A1mfJtOtauJkSq6+wuNkLi20yb1Cac/gND4JI+AQP/bCUaurbMcm7ECCaEDeuXx5v8kd6KYWZ9MEV2sry22i44aTbjVvMMkHfnOmaDssn4gzaB53TjzLRSQGEumHbO/3nignMABCIp8Q=;
-Message-ID: <0eefe658-19c4-4527-8866-474b4a635cd6@dd-wrt.com>
-Date: Wed, 8 Oct 2025 07:59:14 +0200
+	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=ZjAFkAwnsi4tcxNNj3MNh9UFNQuCts5SaEEBlOZE+2o=;
+	b=lDQfOP/On/CBvYS/kgOztXi4K7Ur+qLc+4/FsoRyZxasNTLO+cNfDN2dZM23HAsOeKSKlUFHNwFKt5TxHzropEiaIMvUn3Q4+G0mcZs/GI2BYcd2ei00k6TR5W4YUBxXCL4b8BEMC8qV5jr4n44frcROUwjgqbZ6CHFx4//NaCU=;
+Message-ID: <822673fe-174f-472e-8874-783198e22300@dd-wrt.com>
+Date: Wed, 8 Oct 2025 08:09:37 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -106,13 +105,13 @@ X-SA-Exim-Connect-IP: 127.0.0.1
 X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
 X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
 X-NMN-MailScanner-Information: Please contact the ISP for more information
-X-NMN-MailScanner-ID: 1v6NCm-0004hT-DO
+X-NMN-MailScanner-ID: 1v6NMo-0004kr-RP
 X-NMN-MailScanner: Found to be clean
 X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
 X-Received:  from localhost ([127.0.0.1] helo=webmail.newmedia-net.de)
 	by webmail.newmedia-net.de with esmtp (Exim 4.72)
 	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1v6NCm-0004hT-DO; Wed, 08 Oct 2025 07:59:16 +0200
+	id 1v6NMo-0004kr-RP; Wed, 08 Oct 2025 08:09:38 +0200
 
 
 Am 07.10.2025 um 15:59 schrieb Florian Maurer:
@@ -202,10 +201,7 @@ Am 07.10.2025 um 15:59 schrieb Florian Maurer:
 > https://github.com/openwrt/openwrt/pull/20293#issuecomment-3367037471
 > It works with 0xffff though, but I don't quite know what the firmware
 > does/expects here. Maybe someone with more information can help.
-got it. i was working on exactly the same patch some days ago and got a 
-report from testers with exakt that firmware crash.
-i may be able to explain the cause since i have the firmware 
-sourcecodes, but they are very complex and it will take a while to find 
-that out
+due the sources. BIT 17 has a special purpose named WMI_MGMT_TID
+all bits can be masked but bit 17 as it seems
 >
 
