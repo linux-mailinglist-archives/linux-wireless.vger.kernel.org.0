@@ -1,170 +1,169 @@
-Return-Path: <linux-wireless+bounces-27886-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27887-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4671FBC4890
-	for <lists+linux-wireless@lfdr.de>; Wed, 08 Oct 2025 13:21:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF33BC5EC2
+	for <lists+linux-wireless@lfdr.de>; Wed, 08 Oct 2025 18:02:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AAE7B4E6FF4
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Oct 2025 11:21:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA781544738
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Oct 2025 15:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8FC224B09;
-	Wed,  8 Oct 2025 11:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5337124E01D;
+	Wed,  8 Oct 2025 15:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zag6UPXc"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Hfp5B4nc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E75C35966
-	for <linux-wireless@vger.kernel.org>; Wed,  8 Oct 2025 11:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B653734BA49
+	for <linux-wireless@vger.kernel.org>; Wed,  8 Oct 2025 15:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759922512; cv=none; b=nii73nCHoPLUzeZT2BNmeJLNsbxiawaEuUsL8nmT6E1eONFQrgcAxFgB7dAXXTH/FOhlRVzP/spYAXhZqtNcratAwc004rs5cassgsGvkLROC49JwmZY1O+O4/NibbDBCKGAE6IlLu1G8pYs3Yn1pIbhdsFLaNBs3LYrqM+cLmk=
+	t=1759938741; cv=none; b=Y5zsoOq4oGDiRCXtnjkXRjPOWIjv3KweyXq09opaBVB8wVS41RBcv4eRo+Klcbz2RQeO4QO88fWTlaZlhbswL1UiNood5QHRbB/Ms2GJXGt53YTiW7PLKXVEUTVuWfX2Zq36t6vBf6BdDoNrJl4xvASlnmNZFeX5Mef2OB++cs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759922512; c=relaxed/simple;
-	bh=AZgfpz/q67cZvhcrGfEfBOZxORglU0KDAGjwOqIlKqM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q2196nJekbkU1pTaMl6wwmRlVUbcGS74dyoUbrwty7uZAv4cIKKLMrpCzHIX+LiI/jCfgeC75Cvk+Rl1oQjMtpYc/CsT2Qfn/6jpv3HEgJRQEDpxxB/7O8dfSBLAvkJuJwBq50V8yiyxPDqGF1yhxioqrsT1jJrtitINDhSIV/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zag6UPXc; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-78f3bfe3f69so3564804b3a.2
-        for <linux-wireless@vger.kernel.org>; Wed, 08 Oct 2025 04:21:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759922510; x=1760527310; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CY9sBhAH5xyY7adQ+pO128vNRZQE2GY/Fvz2grNM6jw=;
-        b=Zag6UPXcexzFPcXobRaa4i+iAjyUoky/AYU2QVU/Z94frtKdegi+lGumG12QyIRCNr
-         ZW9yKszIKy2iKxlYaWyp9MnhFtBpCdd7jTiPanWxItQadIesAE9OqtSYYeyN91omg0bK
-         PQHxPeLGKfMc7bAva9JC8zIYdhZO7ZOCQe+n0k27zgXx895rgOKsl2kdYUkxN7CgmwHJ
-         0mvxw5sLazXNB3NnZIqcRBSMqx86J30n8KArgq0Dxid7j27PLCRtqSwal18oS9Mry+1T
-         dFwdcZCoeQ4T2vpAcKwSoMjfNTa30VuboG5lY09+UDPwMctaU5q7x0nlI6hVb111aEg7
-         SdAA==
+	s=arc-20240116; t=1759938741; c=relaxed/simple;
+	bh=Q/GPlPertDK5rTYCQYgTjljnUZsVTJF7yiOUPKjbbSw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ER5fIKwNU5MS7LmLGr+pgY4IV8pIK3hg5OiBAPCvnC0Lf+KeuM8svtDLQTY2pnxdIE999LNaY0hCyu1ZfuF3RaDD2xXr6k1ODrvdzrpGqimwOyfBgE+iAVRfqdQNTRrbW86rm5vb4jfr98I13JlA+enbk11AAIw/gKEugCr9pEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Hfp5B4nc; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59890PP0022734
+	for <linux-wireless@vger.kernel.org>; Wed, 8 Oct 2025 15:52:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	KFc76BDgD2P9Eg/sErqSY2dRKzFxKP25dp0vt90ggU4=; b=Hfp5B4nc5fUWczSt
+	Gf/rQyICI705m8baPzccyDITha05ciCVRU66tE2cs4a1hZXbIxgFOGWbknki+oUT
+	HvKqMiMt9PY497s07lVpV5rW7Kst+Qel0H2PS7+5nD/UTfPfYgMbfX8TKNT1RWqy
+	ngbX45awxmnS0iYeZeMXDB6Kl0iJVCGjUoM7LqMaK2cb6Z+hMQ/hrBe527JVKstt
+	hWRfaA963jtUdYlOF9W/UnV/6nSPtk+vzrUr7PKEoc5IFa5+FL5YEQ1NUaOOBwLE
+	9IWyWBYFmYCsWJ4Z6RXDRAeLB215hyyS4VS+2u4Sq9OnORPK8MmlNnPiD3CfONzZ
+	79S7QA==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49n4wkukkc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 08 Oct 2025 15:52:18 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-277f0ea6fbaso104964775ad.0
+        for <linux-wireless@vger.kernel.org>; Wed, 08 Oct 2025 08:52:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759922510; x=1760527310;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CY9sBhAH5xyY7adQ+pO128vNRZQE2GY/Fvz2grNM6jw=;
-        b=mDCxYyS+6ACUyz7StRvpSLOBHwQF2hHxSRdzEsyz5Tk2P9w+FQA0/VaHv7yOKnKhIR
-         Vl+cgRjI/SA7Ur24a0ut/oVXJWCf1i8Bf040GBZmoYZBRHYQGpT0fEWCZ1glHrdveCP8
-         wPYlggFHaMuGXoArNskfuK+25JsT+DP0EJCD5gMtdrBp+RB4Yfda+jkEXAjoMYJynyTD
-         q/SB/xTPDy3N0B37nPo/NlswKXg836Xs8XXgYjawnV91oEf0SAq/a0pvrgsKWN2YeYzF
-         8F7ww4goQzuwVUJZhuiYNbdFKlwLGXFOGpKxFCoWtPVFfkE7na/yakryJnnFoQKPG1at
-         Y9jQ==
-X-Gm-Message-State: AOJu0YxpRaYmkqOX/HTUc5ELV/s2vO3wXrFnHHEoS0IfclHj/r3dbv66
-	lMPUDpM2Gaf8zQKHQ6cUXg4oDm1/qn8AL93QW/ejxpk0XGUohf64q7Rg1mTCK/WH
-X-Gm-Gg: ASbGncvQ0J6IElkqOR7vxdDVgB7Eoj937asUe3Cg0B0jdOC1pfa7898nXHDCyOOO3kI
-	6zYY3ZwLZwyraotoTjZT/uDJYiyZIgc3S+Cydx7Pr16iZjZPuVJTV+01+rL+GADq70/EPpDDpn9
-	owY5jxSw6pKmePjAMOIqQEu6OqtB4sK8suO00zpMvXQLe8QMgOc7ozTycwr+R5VHpg2gx9ns5Ex
-	tb2QI7rgxMfX8WCgluD4kPIssRSIQk+nV4W32Xt/t5U61tEGhsIsSh9N8BtwcZsrRAIRPKilQAO
-	TMjF3nPqEuVnnyz9PoE3jBGrMP+BdrZ+dgMn7yTwpTbdKL0I8L3SutXR1+Yn1eC81tAqOp5urpg
-	lIKn8na8fMchu2rx0vAECGW2hXjxjJnxEDOeZyL1IsC75R9wxqhpZya/4OZg=
-X-Google-Smtp-Source: AGHT+IGq9/h3SCHVJ26M/IheL3kyqejiM/guUXKuxBEkYZSVffGGqGY0aWbkPUC6zjPk0MfMOTpvKw==
-X-Received: by 2002:a05:6a00:17a7:b0:780:9932:6ae9 with SMTP id d2e1a72fcca58-793876363abmr4056737b3a.18.1759922510121;
-        Wed, 08 Oct 2025 04:21:50 -0700 (PDT)
-Received: from localhost (2403-5806-8049--d1d.ip6.aussiebb.net. [2403:5806:8049::d1d])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-78b0206f619sm18501471b3a.67.2025.10.08.04.21.48
+        d=1e100.net; s=20230601; t=1759938738; x=1760543538;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KFc76BDgD2P9Eg/sErqSY2dRKzFxKP25dp0vt90ggU4=;
+        b=Bb3uFjOnNKuPJqny4ePl0JkkpveHYFxeVV3epNwccNUiT1tWxMpnMrG33vlkslEA0c
+         1tVDeLa/yX3kj4FzJ4K69vLL0eHsCLerkZQSuMMQAwDpNKQemcimCmkRC/LyudAE6H+/
+         hsqJzy84DWzgq0dug4Zvfu5DeFmTnzGHyxv0Y7B8CFgd5ahl0GZZsJRPGyRCK/tNB12X
+         qqCfBWA5em6vIeCUfv5xXX4ixuDb9Wv2532E/tWqq5/rc2Sw2xKEIXk0LlCYVZpTupp4
+         syWE8cztKBU7uTUihm1mge4e8r8gDl3gLxIsOcGSrW7/nqnewtw3YQb8h78/edSwN8WY
+         zwWQ==
+X-Gm-Message-State: AOJu0Yw9e7kCvsb7gCePiHtt2DBSY6mwY3oq3g4c/aDh7oLEtX+mK8H+
+	qXso58qN1fu2pVDRoY2dJYQqL8BfIcGtlSlGhUS7BSDdnbqFRZeoEcOMN1Zq4WDep+/sFDYPuLg
+	BYwSmczstvSExQiZsAPJ6PS7M/3o7QZzb4CeAQDwUj58SmPaBy2HByvrZ/Ldh+fu3mE4S0A==
+X-Gm-Gg: ASbGncsDIlQbuqQ36XPRWu2eSd6Ll06G0PdQ+rH2VszFev02mx1fWMSHwcRBEjjmz0U
+	uKLt639npvFvwcN/xP6h/zFYw4IYNWmpsfU59ky08Wbbc3EL/OuBsnl0tmXRV73E1760GzHgl+5
+	YtnCewUKHsLz1aDkofUNahJD3bOu/aLWMz1yhEOT+tZhMMIZp7VDgyTV+dlgM9gakjDLbopiCTM
+	ypSe6sKq1RSVoyz0x/p4u5I9p9ZWnnYkw9VAqHCRnOLBTVQvnydswZU7GeX7if9fiq5qnFkqjrG
+	WNXV7Ww3DOJMIbs4Vi5CZG0ZBWa0SN9ztcMGh5gBNdsfJz8wsAE7Ee6ksk0NjD9Bp5aMFxohBBT
+	AmPzom1AqaWShue7WQO8sOg==
+X-Received: by 2002:a17:903:8cc:b0:269:936c:88da with SMTP id d9443c01a7336-290273ffeecmr43821555ad.41.1759938737880;
+        Wed, 08 Oct 2025 08:52:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHNlgtcPoxczCO031rhbVKzGidTk9wzfvUrXjmBL5eGY3gTdvs/Q86Zo/mTahJRpgOo0JJCIQ==
+X-Received: by 2002:a17:903:8cc:b0:269:936c:88da with SMTP id d9443c01a7336-290273ffeecmr43821275ad.41.1759938737356;
+        Wed, 08 Oct 2025 08:52:17 -0700 (PDT)
+Received: from [192.168.225.142] ([157.49.106.187])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034f93b66sm862305ad.124.2025.10.08.08.52.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Oct 2025 04:21:49 -0700 (PDT)
-From: Richard Huynh <voxlympha@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: wireless-regdb@lists.infradead.org,
-	Richard Huynh <voxlympha@gmail.com>
-Subject: [PATCH v2] wireless-regdb: Update regulatory info for Australia (AU) for 2025
-Date: Wed,  8 Oct 2025 22:21:04 +1100
-Message-ID: <20251008112104.8558-1-voxlympha@gmail.com>
-X-Mailer: git-send-email 2.51.0
+        Wed, 08 Oct 2025 08:52:16 -0700 (PDT)
+Message-ID: <a3b8334e-c3bf-015b-540e-d6962ecfaa4f@oss.qualcomm.com>
+Date: Wed, 8 Oct 2025 21:22:13 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH ath12k-ng v2 0/2] wifi: ath12k: Modularization of PDEV
+ object for Next Generation Driver
+Content-Language: en-US
+To: Ripan Deuri <quic_rdeuri@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20251007110203.1541167-1-quic_rdeuri@quicinc.com>
+From: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+In-Reply-To: <20251007110203.1541167-1-quic_rdeuri@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA3MDExNyBTYWx0ZWRfX0YJ4cp21rArS
+ Bcciz2GbgbTKXMMKDjU/I7x2JZVqRjdh0pE4ITByv7YtXgyxc7z6Z6XLSK2GWH8PGxo7enOhD5s
+ jw1QwsK1uoVE7tzUn9weEjgwCfGqnwRgjloBR9sPakXDG61lN+TYQ6j+22eRzKAC2SDIXBxTe8G
+ NFdH1Ff+tU2oT7AkUTsIcmrc45R+UgCY7Zauqvo47u7aBuB+RYzsU+KNgEyokYX910CJKJ/2c6/
+ xvGLIeJUO6ncXizV1A88DeJ3ZHuRa3MZE0mVOzxNwDsJcgeOGlywVjiBSyQvOvJoip39ulj98R9
+ 8lXtfaAv5e6IdQo7oKWT9ldDNPtSkbhaS4gaoNsO8vJbds+GI3HRut+StHe+ATHn64OWfkFwIc0
+ EsdMz7w2OQceuhphOQrJb298HBqmoQ==
+X-Authority-Analysis: v=2.4 cv=BP2+bVQG c=1 sm=1 tr=0 ts=68e688b2 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=z6xreaRxtU16OQ9bEhv1vw==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=EUspDBNiAAAA:8 a=vHGgmhArcKzGfspvb2AA:9
+ a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-GUID: rTStvKXlbDwBJZh8IUFwnhp0Gs1QWj2s
+X-Proofpoint-ORIG-GUID: rTStvKXlbDwBJZh8IUFwnhp0Gs1QWj2s
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-08_05,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ phishscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510070117
 
-As of October 1 2025, a new class licence is in effect[1]
-Update the link and references in the comments to it
 
-Also align the 915-928mhz block with the document
 
-Additionally for the lower part of 6Ghz spectrum:
-- Allow for EHT-320 as it complies with PSD limits
-- Expand the upper range up to 6585 as permitted in new licence
+On 10/7/2025 4:32 PM, Ripan Deuri wrote:
+> This patch series continues the effort to modularize data path structures
+> in ath12k, focusing on improving the organization of DP pdev handling and
+> preparing for future architecture-specific extensions.
+> 
+> Patch 1 refactors DP pdev handling by consolidating all DP-related fields
+> of a radio into struct ath12k_pdev_dp structure. An RCU-protected array of
+> these objects is introduced in ath12k_dp to facilitate dp_pdev lookup from
+> ath12k_dp.
+> 
+> Patch 2 encapsulates PPDU statistics within dp_pdev, as these stats are
+> associated with out-of-band data path operations. This reorganization
+> provides a cleaner structure by grouping both in-band (per-packet) fields
+> and out-of-band stats under the same ath12k_pdev_dp object.
+> 
+> These changes are part of a broader effort to establish a base framework
+> for next-generation driver development, allowing the data path to remain
+> flexible for future extensions.
+> ---
+> Changes in v2:
+>      - Made ath12k_pdev_dp_to_ar() a static inline in core.h
+> ---
+> Ripan Deuri (2):
+>    wifi: ath12k: Refactor data path pdev struct
+>    wifi: ath12k: Rearrange PPDU radio stats
+> 
+>   drivers/net/wireless/ath/ath12k/core.h        |  24 +-
+>   drivers/net/wireless/ath/ath12k/dp.c          |  23 ++
+>   drivers/net/wireless/ath/ath12k/dp.h          |  41 ++++
+>   drivers/net/wireless/ath/ath12k/dp_cmn.h      |  18 ++
+>   drivers/net/wireless/ath/ath12k/dp_htt.c      |  59 +++--
+>   drivers/net/wireless/ath/ath12k/dp_mon.c      | 183 ++++++++-------
+>   drivers/net/wireless/ath/ath12k/dp_mon.h      |   9 +-
+>   drivers/net/wireless/ath/ath12k/dp_rx.c       |  99 ++++----
+>   drivers/net/wireless/ath/ath12k/dp_rx.h       |  13 +-
+>   drivers/net/wireless/ath/ath12k/mac.c         |  34 ++-
+>   drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c | 216 ++++++++++--------
+>   drivers/net/wireless/ath/ath12k/wifi7/dp_tx.c |  66 +++---
+>   drivers/net/wireless/ath/ath12k/wifi7/dp_tx.h |   2 +-
+>   13 files changed, 488 insertions(+), 299 deletions(-)
 
-[1] https://www.legislation.gov.au/Details/F2025L01047
-
-Signed-off-by: Richard Huynh <voxlympha@gmail.com>
----
- db.txt | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
-
-diff --git a/db.txt b/db.txt
-index 16bcb32..1d17271 100644
---- a/db.txt
-+++ b/db.txt
-@@ -145,43 +145,43 @@ country AT: DFS-ETSI
- 
- # Source:
- # 'Item' in the comments below refers to each numbered rule found at:
--# https://www.legislation.gov.au/Details/F2023C00524
-+# https://www.legislation.gov.au/Details/F2025L01047 within Table 8
-+# except for 5850-5875 which is found in Table 1.
- # Both DFS-ETSI and DFS-FCC are acceptable per AS/NZS 4268 Appendix B.
- # The EIRP for DFS bands can be increased by 3dB if TPC is implemented.
- # In order to allow 80MHz operation between 5650-5730MHz the upper boundary
- # of this more restrictive band has been shifted up by 5MHz from 5725MHz.
- country AU: DFS-ETSI
--	# Item 58
--	(915 - 920 @ 4), (1000 mW)
--	(920 - 928 @ 8), (1000 mW)
-+	# Item 1
-+	(915 - 928 @ 8), (1000 mW)
- 
--	# Item 59
-+	# Item 3 and 7
- 	(2400 - 2483.5 @ 40), (4000 mW)
- 
--	# Item 61
-+	# Item 10
- 	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
- 
--	# Item 62 (200 mW allowed if TPC is used)
-+	# Item 11 (200 mW allowed if TPC is used)
- 	(5250 - 5350 @ 80), (100 mW), NO-OUTDOOR, AUTO-BW, DFS
- 
--	# Item 63(a) (1000 mW with TPC)
-+	# Item 12(a) (1000 mW with TPC)
- 	(5470 - 5600 @ 80), (500 mW), DFS
- 
--	# Item 63(b) (1000 mW with TPC)
-+	# Item 12(b) (1000 mW with TPC)
- 	# The end is 5725 but we borrow 5 MHz from the following less restrictive band
- 	# so we can get an 80 MHz channel.
- 	(5650 - 5730 @ 80), (500 mW), DFS
- 
--	# Item 60
-+	# Item 9
- 	(5730 - 5850 @ 80), (4000 mW), AUTO-BW
- 
--	# Item 22
-+	# Item 22 of Table 1
- 	(5850 - 5875 @ 20), (25 mW), AUTO-BW
- 
--	# Item 63AA (25 mW if outdoors)
--	(5925 - 6425 @ 160), (250 mW), NO-OUTDOOR
-+	# Item 13 (25 mW if outdoors)
-+	(5925 - 6585 @ 320), (250 mW), NO-OUTDOOR
- 
--	# Item 65
-+	# Item 18
- 	(57000 - 71000 @ 2160), (20000 mW), NO-OUTDOOR
- 
- country AW: DFS-ETSI
--- 
-2.51.0
-
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
 
