@@ -1,175 +1,317 @@
-Return-Path: <linux-wireless+bounces-27932-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27933-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE586BCDFB6
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Oct 2025 18:48:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40127BCE433
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Oct 2025 20:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 906B84E281F
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Oct 2025 16:48:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3779D1894E43
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Oct 2025 18:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4DB26657D;
-	Fri, 10 Oct 2025 16:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B3A20ADD6;
+	Fri, 10 Oct 2025 18:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DrGT3VFl"
+	dkim=pass (2048-bit key) header.d=govivid-ai.20230601.gappssmtp.com header.i=@govivid-ai.20230601.gappssmtp.com header.b="BUPgcPHR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA701FBCA1
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Oct 2025 16:48:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4502726E714
+	for <linux-wireless@vger.kernel.org>; Fri, 10 Oct 2025 18:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760114884; cv=none; b=crvjY9LZV9pIjDMZaB1N5zVrn8txVh3NV/GzSFf534q+8sYhcO09r4lN26SFWf2lHs2R5JX0Wjwu9rRVRyzqv/h1qtu1d1iJAvGW5Vf0japsxTJXW8Z2lLv/oDAFtHZzk40PFhmJI1WGinNBkfuxhnY4z3PWWJu1RQzZDq39QkI=
+	t=1760121373; cv=none; b=GmfigoWxrRxFhCV7vFQlUh4i3G42+49ejp3dWYMWZpgKaSQWM6/3WU5Y5FC+vZzDSTfiJmD4QrJL/BIAO4QZuzQ3B8MQAOHk1CRyevPxmGhlSNoyJcc7sVJEW/FDZAjKByyhC7upJgjpROPhD6MWr2utzIOWuypXmmWp8qvtU4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760114884; c=relaxed/simple;
-	bh=ymW+zyTZP4gAEse1v2OnM/48QMF0bwv76+SY9R8XWIY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kOENJE4JNJNfsajrpCTZ8lMfJaQEjp9c+h5mOHjCJa+K2jEcCqYruiZ1KgrCNUx91u+ywl4/Ii1hsJ1uiy6cwJx41fckkq7L43LWpRwRL8kZdDhJlqpk8/zU7dCykCnx0Ph05M0DY/+X4lxnSdV26dHqUDhTKMusxAa93okplec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DrGT3VFl; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59AF1OO7018539
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Oct 2025 16:48:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=UQLk3w6GkzbTjYg8BRnJ/q
-	Gfyc3WiUkLopNUoNxwb40=; b=DrGT3VFlgdhd9K3OcybKLdW6BRpq0+qcbchkUX
-	gGvfC2mS3q0Fqc6cgHd90JSkFJ8o0PmFQ3uQau4EMIW6nJCBZDwqbHufMtQDCRFR
-	Oh/GIb8bRCqO/6HAZJ2Rlla3SC0VArbN/C3NPDfGoGVQ3YTZBGyqZaMPjraiZ5L6
-	T0NUdbPz8KcU08DXytl1av3BhZ/zDjya6XFXGyKYuSMxk+8XRu8V8zrHILhrk06U
-	hQH0V52py846P99vdBEUNtqlP5DlrMPRxj0+VGdR+vtFWcKn9PlSMuXKWPH0Rmri
-	c4P5rfzLhvV0pSq64EyFxn9faE9gMgSVtETK1WY9gTM6Okiw==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49nv4m74jt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Oct 2025 16:48:02 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-28e8112143fso57166595ad.2
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Oct 2025 09:48:02 -0700 (PDT)
+	s=arc-20240116; t=1760121373; c=relaxed/simple;
+	bh=8ohi4vYtvoGftZm1/y8L/7lgcEV30Sor3yH9TUppnA4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OHscu+GeVX835R7JS2vRUa/02hYJoy2BrrKOE1G7ZFHAHoJvbZaHmuFZA6tJ57VRxBjHx4CckQ/OCInqBVrndNj5tyPELeBzW8Fuep2ryTBxt3X2WzumIl7cxnWMk0P8Hwf4IZZ9sZ8+XQlS8wWINFJDOyEitwUkxNxfbz5dpec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=govivid.ai; spf=pass smtp.mailfrom=govivid.ai; dkim=pass (2048-bit key) header.d=govivid-ai.20230601.gappssmtp.com header.i=@govivid-ai.20230601.gappssmtp.com header.b=BUPgcPHR; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=govivid.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=govivid.ai
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-87bb66dd224so24136026d6.3
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Oct 2025 11:36:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=govivid-ai.20230601.gappssmtp.com; s=20230601; t=1760121369; x=1760726169; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BMpQgemd8DjL/QPm5m0YSEI53NHCuTK7lub7j1PHEhU=;
+        b=BUPgcPHR+neLeBcbnbHwbACbevmTLWfEVGGXYd/d++0BCCeUtC8v1c9JQzZaNer2gW
+         RE+I0vcekcD+B+NbpA+ZJZxbyG9rclLC1XlE3UmYRE6SMtoVyKAe/wspS1jrkFihwUgo
+         CMVI/nknmyHBLKJwzKKCkQB+TRt/rqYv2GqpcNVYeNxM0h0VC69LVLNxKeC+aqv7ACoW
+         HWgUQCZejKdNUoQI8MdklkyowKHTL+y/QwJmzJa9VD35/vFgc/W16AtZc+p6FsGwANaF
+         uxmbwGYuIIU9p0zdoqFYP0ciqpjkv3XN1ndoV84CWEa7NTVXuOebtys/ih/avZt+vZei
+         fbxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760114881; x=1760719681;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UQLk3w6GkzbTjYg8BRnJ/qGfyc3WiUkLopNUoNxwb40=;
-        b=Z2YAeUaf7mMXq/VT+b5eEv+mv2JCg6MEHVeBLKFkSablkXo8dtYHU73jr85dl5SH4u
-         p1hh947dBzEFaHrKKbcHrKV3/pEh4oYPilt1VbwRiI7cGqRw/Vybubnvq0zmy8oE6ukX
-         PFfxYh+FQDzJqCwjkJMsjU4oaDWTDKYpwnzZsK+PKEomRphwuQxIdMVPZ6AIVfrixUtp
-         S3YphX+nHGqwnYDn2FU7gMfMtsJ6e2C7ZxyjWlRJCbrcmku6gd8LF/nIlotXfrsGpO0Y
-         S3LkXUh7zx1lWPw32roWGaIoamR9mV8EphecZbq85fZ7dCqI+w/Ie0dB2IfrPEEQfznB
-         QY6w==
-X-Gm-Message-State: AOJu0YzatwiFtYNMJxZ5+ZlndHHn0FzbtwJssNou2hus1wRfHwf61mbE
-	FXePTOnMjHXPVXUi99Es4TjZhhBxDhibaC+DDSB87VRmDiId3ymP84ub9PhrUcQJEqJXEOU9W1Y
-	9ldOzGCgr/2Lx3CEF0X43CBIgGTZtUkxJDkbcFpg3rDF8tIqZVq/DP/KyTKdCkU1wYD+RKcZTE5
-	liNw==
-X-Gm-Gg: ASbGnctk2JfQIeM6IYjhLMtkkVbsYKQOxYgvhEk4Dm7CNkA1pUUakMjy0L2BI8wrtGW
-	bgj3qyxzyPqOSMbWt6SXJP0EZke20uBNocjL+qlXqZaQ2hXGeEPmfIZULNufOjZlsGvHjSKTbTn
-	cmNlCCZTWIgK/KIGFVPAV0jRppI2mSC44I9z7ipzNb1sdiDSJI+24BpPe7K5Mi7xyFO7muKE0Cr
-	yCQVQEBZHDrRB0aUTxif/Hs8eKia6KesUYk2quZGQMS6aHKLdSGhSmVdAAFn5Pd9oZs0TsBnRon
-	Oa4bKlm9DQwztx4B8B2BRbA17elUw0jzSXhwepmUqwgNIezQqRIOkStZAJ/nsiD0xp0q4wEC1JU
-	8
-X-Received: by 2002:a17:903:2343:b0:28e:7f50:5d80 with SMTP id d9443c01a7336-2902721336cmr169496555ad.7.1760114881085;
-        Fri, 10 Oct 2025 09:48:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEPCbDu/FieQ+1h3nbSJfYEKgWjo1fZ5p8ESMMN+g7cvnCdHW+SRo5D4/i2QdXk4gTd+gR+0w==
-X-Received: by 2002:a17:903:2343:b0:28e:7f50:5d80 with SMTP id d9443c01a7336-2902721336cmr169496125ad.7.1760114880618;
-        Fri, 10 Oct 2025 09:48:00 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034e1cc53sm61760885ad.46.2025.10.10.09.47.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 09:48:00 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Date: Fri, 10 Oct 2025 09:47:58 -0700
-Subject: [PATCH ath-next] wifi: ath12k: Remove struct
- wmi_bcn_send_from_host_cmd
+        d=1e100.net; s=20230601; t=1760121369; x=1760726169;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BMpQgemd8DjL/QPm5m0YSEI53NHCuTK7lub7j1PHEhU=;
+        b=M0H8fRyhf+uX/L1kTf/grktoSkG4oNgQruQTECJdoOLcfjtHoBOArbHUbGKhzn34mn
+         AdW/AsavYX5r12KHi35SyNskmzIuODqgr5N05llWxzvpCZdAmkmpAtKDN1HNwknRt5Cg
+         7cUoU0b8bPDCQpxYMBY0/WYiNTgUWohP8N/hYROoWM1xX326t7+3BOkFGd4Aluy9DPXZ
+         dfeC02FAityviT5p48Qj2WQDfANSGKC38sHRgzmXitvHSWDXVdW5nm3KaQX4KJ69eD7J
+         8iHy+SrXNEx6oNhbmlwlzagOBuWDfo8DmK5ncnf1WKyAhmZ89/A0OeZHueuRtg5rnAds
+         geaw==
+X-Forwarded-Encrypted: i=1; AJvYcCXjTk41Pd2/rqTpunWTFbDdSnIuL7ATXkA/932u+Z0axhn9V4p2LF5nA8ZHQkzf8x+9B14+Jx0f/LOPX3EQQw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2WbTEhBoZ6bzrmQ59i8DjfnjqiyM1mDy3SRQlYKVCvXNCOpI3
+	NvvHvs2x3aT46GaFB6nvcFCggHpkoHyxmqLdwI/wU3Tg7DtYztn072KSMN31XZ6IeMYWoOrz1jG
+	xa18eU9S7c28rRqnPqjy7GmMqvm2ykgqyZuUw4HeGcnI/b2kCHT6rIwQ=
+X-Gm-Gg: ASbGncscy4ZIOJAmfThqQ8X0klrezTwBLjUwvUgspxRAd3noTLQm2T+NkEfPIhjrd50
+	inoHRD32islrANRsYqEAEwVDtgv9JfiwbrNaZ/iLwMyOk1+zYenIjWSecA9DxEnNg6XNp9lQR5n
+	msadwvcmMUNkKjVxrb6/wL/2noo/thk/V9UEUlUpPVWNt+Xx4TIULXbTbk8EBiGGkMmimdsl9L/
+	tT6+sZSgl+FOv9BTs46yKsczJ+5184LC/c=
+X-Google-Smtp-Source: AGHT+IFSqLS6m5Kvkhl7GHA6+mxDHD8vkdNeJhRot5/QhfZNy2UOLP0PVOJYt2cz2cIFphy2P3i+YIltOxY1L3kj668=
+X-Received: by 2002:ad4:551d:0:b0:78f:2a6c:11 with SMTP id 6a1803df08f44-87b2efc2d8fmr139819516d6.62.1760121368964;
+ Fri, 10 Oct 2025 11:36:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251010-ath12k-nuke-wmi_bcn_send_from_host_cmd-v1-1-6f1172b77848@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAL046WgC/52PywrCMBBFf0WyNiWZvqgr/0MkpMnUhppEk7ZWS
- v/d0LUb3QxcLpxzZyURg8FIToeVBJxNNN6lwI8HonrpbkiNTpkAg5Iz1lA59hwG6qYB6csa0So
- nIjotuuCt6H0chbKaFjWrGtm0ICskCfYI2JllF11IYlCHy0iuqelNHH147wtmvve/ymZOOYW8z
- kuUMgcJZx9j9pzkXXlrs3R20wz/0SHRWXoIykp1qIsv9G3bPibN5rRLAQAA
-X-Change-ID: 20251009-ath12k-nuke-wmi_bcn_send_from_host_cmd-47069a9b2a6e
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfX5cmZuHMF28Tn
- PrMlATcIKAumrs6/PXHeRpGYmcB9ZOj/B6IEXuMio7SeeIdZQMQvbgAxysU+5gKlkypsPIOE/Hw
- UI3WLgQ3FadKZqYh/CCPRBdfP7X/1H49nCarRoUN4MVLlBHLcxTvRkD20YA53Vdzy2D2aydzEdz
- m9eEcG5GF2EG9UWtPutLJFrCQYrUSMxUhU7ASsvTyGlhLbssjLLLBdRcqo+QspFHeSRcPcOlnmV
- lZ6RT3cM6pGNs1SAm017efEBFMRmks2FE8yA8XgrZWlxxDZ8HPF7fKmu88d2k0BqTEqRuEvKXYy
- rCnlh0qi7p9GMaG8bL4XO2LWZAPZssI/De5IacSiap2QvErVra6KD2VSHFtSLCZSklOMH4kStAi
- LZeMC9HDpgm5b1XUKdS/iEaF7hLZcw==
-X-Authority-Analysis: v=2.4 cv=B6G0EetM c=1 sm=1 tr=0 ts=68e938c2 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=EUspDBNiAAAA:8 a=kmflYwvQEMg1wVHhIzQA:9
- a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-GUID: gIJCFpf_LLpDMyCnflisXX3SIm37ZyIB
-X-Proofpoint-ORIG-GUID: gIJCFpf_LLpDMyCnflisXX3SIm37ZyIB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-10_04,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015 suspectscore=0
- malwarescore=0 adultscore=0 priorityscore=1501 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510080121
+References: <9a0849d8-befd-4fca-9d5d-a24520ccfa26@broadcom.com> <20251009073928.6803-1-gokulkumar.sivakumar@infineon.com>
+In-Reply-To: <20251009073928.6803-1-gokulkumar.sivakumar@infineon.com>
+From: Richard Reigh <richard@govivid.ai>
+Date: Fri, 10 Oct 2025 13:35:58 -0500
+X-Gm-Features: AS18NWBGUJE436z4r3vTQjxbi-vU1TJtN7DA6uJIZH9UUqY2OK2qXWOqtkmbYy0
+Message-ID: <CAFwtOaU45QEO=1jMsvM9EqbQ8NVYgDnXzV5k2s5xVaZo-z2zVw@mail.gmail.com>
+Subject: Re: [PATCH wireless-next] wifi: brcmfmac: fix crash while sending
+ Action Frames in standalone AP Mode
+To: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+Cc: arend.vanspriel@broadcom.com, brcm80211-dev-list.pdl@broadcom.com, 
+	brcm80211@lists.linux.dev, chris@streetlogic.pro, 
+	linux-wireless@vger.kernel.org, s311332@gmail.com, wahrenst@gmx.net, 
+	wlan-kernel-dev-list@infineon.com, johannes@sipsolutions.net
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-struct wmi_bcn_send_from_host_cmd is unused, so remove it.
+On Thu, Oct 9, 2025 at 2:41=E2=80=AFAM Gokul Sivakumar
+<gokulkumar.sivakumar@infineon.com> wrote:
+>
+> Currently, whenever there is a need to transmit an Action frame,
+> the brcmfmac driver always uses the P2P vif to send the "actframe" IOVAR =
+to
+> firmware. The P2P interfaces were available when wpa_supplicant is managi=
+ng
+> the wlan interface.
+>
+> However, the P2P interfaces are not created/initialized when only hostapd
+> is managing the wlan interface. And if hostapd receives an ANQP Query REQ
+> Action frame even from an un-associated STA, the brcmfmac driver tries
+> to use an uninitialized P2P vif pointer for sending the IOVAR to firmware=
+.
+> This NULL pointer dereferencing triggers a driver crash.
+>
+>  [ 1417.074538] Unable to handle kernel NULL pointer dereference at virtu=
+al
+>  address 0000000000000000
+>  [...]
+>  [ 1417.075188] Hardware name: Raspberry Pi 4 Model B Rev 1.5 (DT)
+>  [...]
+>  [ 1417.075653] Call trace:
+>  [ 1417.075662]  brcmf_p2p_send_action_frame+0x23c/0xc58 [brcmfmac]
+>  [ 1417.075738]  brcmf_cfg80211_mgmt_tx+0x304/0x5c0 [brcmfmac]
+>  [ 1417.075810]  cfg80211_mlme_mgmt_tx+0x1b0/0x428 [cfg80211]
+>  [ 1417.076067]  nl80211_tx_mgmt+0x238/0x388 [cfg80211]
+>  [ 1417.076281]  genl_family_rcv_msg_doit+0xe0/0x158
+>  [ 1417.076302]  genl_rcv_msg+0x220/0x2a0
+>  [ 1417.076317]  netlink_rcv_skb+0x68/0x140
+>  [ 1417.076330]  genl_rcv+0x40/0x60
+>  [ 1417.076343]  netlink_unicast+0x330/0x3b8
+>  [ 1417.076357]  netlink_sendmsg+0x19c/0x3f8
+>  [ 1417.076370]  __sock_sendmsg+0x64/0xc0
+>  [ 1417.076391]  ____sys_sendmsg+0x268/0x2a0
+>  [ 1417.076408]  ___sys_sendmsg+0xb8/0x118
+>  [ 1417.076427]  __sys_sendmsg+0x90/0xf8
+>  [ 1417.076445]  __arm64_sys_sendmsg+0x2c/0x40
+>  [ 1417.076465]  invoke_syscall+0x50/0x120
+>  [ 1417.076486]  el0_svc_common.constprop.0+0x48/0xf0
+>  [ 1417.076506]  do_el0_svc+0x24/0x38
+>  [ 1417.076525]  el0_svc+0x30/0x100
+>  [ 1417.076548]  el0t_64_sync_handler+0x100/0x130
+>  [ 1417.076569]  el0t_64_sync+0x190/0x198
+>  [ 1417.076589] Code: f9401e80 aa1603e2 f9403be1 5280e483 (f9400000)
+>
+> Fix this, by always using the vif corresponding to the wdev on which the
+> Action frame Transmission request was initiated by the userspace. This wa=
+y,
+> even if P2P vif is not available, the IOVAR is sent to firmware on AP vif
+> and the ANQP Query RESP Action frame is transmitted without crashing the
+> driver.
+>
+> Remove init_completion() for "send_af_done" from brcmf_p2p_create_p2pdev(=
+)
+> and do it in brcmf_p2p_tx_action_frame() instead of reinit_completion().
+> Because the formar function would not get executed when hostapd is managi=
+ng
+> wlan interface, and so it is not safe to do reinit_completion() without a=
+ny
+> prior init_completion().
+>
+> And in the brcmf_p2p_tx_action_frame() function, the condition check for
+> P2P Presence response frame is not needed, since the wpa_supplicant is
+> properly sending the P2P Presense Response frame on the P2P-GO vif instea=
+d
+> of the P2P-Device vif.
+>
+> Fixes: 18e2f61db3b7 ("brcmfmac: P2P action frame tx.")
+> Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+> ---
+>  .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  3 +-
+>  .../broadcom/brcm80211/brcmfmac/p2p.c         | 28 ++++++-------------
+>  .../broadcom/brcm80211/brcmfmac/p2p.h         |  3 +-
+>  3 files changed, 11 insertions(+), 23 deletions(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c =
+b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> index 8afaffe31031..bb96b87b2a6e 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> @@ -5627,8 +5627,7 @@ brcmf_cfg80211_mgmt_tx(struct wiphy *wiphy, struct =
+wireless_dev *wdev,
+>                           *cookie, le16_to_cpu(action_frame->len),
+>                           le32_to_cpu(af_params->channel));
+>
+> -               ack =3D brcmf_p2p_send_action_frame(cfg, cfg_to_ndev(cfg)=
+,
+> -                                                 af_params);
+> +               ack =3D brcmf_p2p_send_action_frame(vif->ifp, af_params);
+>
+>                 cfg80211_mgmt_tx_status(wdev, *cookie, buf, len, ack,
+>                                         GFP_KERNEL);
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/dri=
+vers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> index 0dc9d28cd77b..c7c40dc3be08 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+> @@ -1529,6 +1529,7 @@ int brcmf_p2p_notify_action_tx_complete(struct brcm=
+f_if *ifp,
+>  /**
+>   * brcmf_p2p_tx_action_frame() - send action frame over fil.
+>   *
+> + * @ifp: interface to transmit on.
+>   * @p2p: p2p info struct for vif.
+>   * @af_params: action frame data/info.
+>   *
+> @@ -1538,28 +1539,20 @@ int brcmf_p2p_notify_action_tx_complete(struct br=
+cmf_if *ifp,
+>   * The WLC_E_ACTION_FRAME_COMPLETE event will be received when the actio=
+n
+>   * frame is transmitted.
+>   */
+> -static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
+> +static s32 brcmf_p2p_tx_action_frame(struct brcmf_if *ifp,
+> +                                    struct brcmf_p2p_info *p2p,
+>                                      struct brcmf_fil_af_params_le *af_pa=
+rams)
+>  {
+>         struct brcmf_pub *drvr =3D p2p->cfg->pub;
+> -       struct brcmf_cfg80211_vif *vif;
+> -       struct brcmf_p2p_action_frame *p2p_af;
+>         s32 err =3D 0;
+>
+>         brcmf_dbg(TRACE, "Enter\n");
+>
+> -       reinit_completion(&p2p->send_af_done);
+> +       init_completion(&p2p->send_af_done);
+>         clear_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
+>         clear_bit(BRCMF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
+>
+> -       /* check if it is a p2p_presence response */
+> -       p2p_af =3D (struct brcmf_p2p_action_frame *)af_params->action_fra=
+me.data;
+> -       if (p2p_af->subtype =3D=3D P2P_AF_PRESENCE_RSP)
+> -               vif =3D p2p->bss_idx[P2PAPI_BSSCFG_CONNECTION].vif;
+> -       else
+> -               vif =3D p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
+> -
+> -       err =3D brcmf_fil_bsscfg_data_set(vif->ifp, "actframe", af_params=
+,
+> +       err =3D brcmf_fil_bsscfg_data_set(ifp, "actframe", af_params,
+>                                         sizeof(*af_params));
+>         if (err) {
+>                 bphy_err(drvr, " sending action frame has failed\n");
+> @@ -1711,16 +1704,14 @@ static bool brcmf_p2p_check_dwell_overflow(u32 re=
+quested_dwell,
+>  /**
+>   * brcmf_p2p_send_action_frame() - send action frame .
+>   *
+> - * @cfg: driver private data for cfg80211 interface.
+> - * @ndev: net device to transmit on.
+> + * @ifp: interface to transmit on.
+>   * @af_params: configuration data for action frame.
+>   */
+> -bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
+> -                                struct net_device *ndev,
+> +bool brcmf_p2p_send_action_frame(struct brcmf_if *ifp,
+>                                  struct brcmf_fil_af_params_le *af_params=
+)
+>  {
+> +       struct brcmf_cfg80211_info *cfg =3D ifp->drvr->config;
+>         struct brcmf_p2p_info *p2p =3D &cfg->p2p;
+> -       struct brcmf_if *ifp =3D netdev_priv(ndev);
+>         struct brcmf_fil_action_frame_le *action_frame;
+>         struct brcmf_config_af_params config_af_params;
+>         struct afx_hdl *afx_hdl =3D &p2p->afx_hdl;
+> @@ -1857,7 +1848,7 @@ bool brcmf_p2p_send_action_frame(struct brcmf_cfg80=
+211_info *cfg,
+>                 if (af_params->channel)
+>                         msleep(P2P_AF_RETRY_DELAY_TIME);
+>
+> -               ack =3D !brcmf_p2p_tx_action_frame(p2p, af_params);
+> +               ack =3D !brcmf_p2p_tx_action_frame(ifp, p2p, af_params);
+>                 tx_retry++;
+>                 dwell_overflow =3D brcmf_p2p_check_dwell_overflow(request=
+ed_dwell,
+>                                                                 dwell_jif=
+fies);
+> @@ -2217,7 +2208,6 @@ static struct wireless_dev *brcmf_p2p_create_p2pdev=
+(struct brcmf_p2p_info *p2p,
+>
+>         WARN_ON(p2p_ifp->bsscfgidx !=3D bsscfgidx);
+>
+> -       init_completion(&p2p->send_af_done);
+>         INIT_WORK(&p2p->afx_hdl.afx_work, brcmf_p2p_afx_handler);
+>         init_completion(&p2p->afx_hdl.act_frm_scan);
+>         init_completion(&p2p->wait_next_af);
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h b/dri=
+vers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
+> index d2ecee565bf2..d3137ebd7158 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
+> @@ -168,8 +168,7 @@ int brcmf_p2p_notify_action_frame_rx(struct brcmf_if =
+*ifp,
+>  int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
+>                                         const struct brcmf_event_msg *e,
+>                                         void *data);
+> -bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
+> -                                struct net_device *ndev,
+> +bool brcmf_p2p_send_action_frame(struct brcmf_if *ifp,
+>                                  struct brcmf_fil_af_params_le *af_params=
+);
+>  bool brcmf_p2p_scan_finding_common_channel(struct brcmf_cfg80211_info *c=
+fg,
+>                                            struct brcmf_bss_info_le *bi);
+>
+> base-commit: 94aced6ed9e2630bae0b5631e384a5302c4b6783
+> --
+> 2.25.1
 
-Compile tested only.
 
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/wmi.h | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+Hi Gokul,
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index a8c3190e8ad9..d9fd6a6b708d 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #ifndef ATH12K_WMI_H
-@@ -3609,20 +3609,6 @@ struct ath12k_wmi_scan_cancel_arg {
- 	u32 pdev_id;
- };
- 
--struct wmi_bcn_send_from_host_cmd {
--	__le32 tlv_header;
--	__le32 vdev_id;
--	__le32 data_len;
--	union {
--		__le32 frag_ptr;
--		__le32 frag_ptr_lo;
--	};
--	__le32 frame_ctrl;
--	__le32 dtim_flag;
--	__le32 bcn_antenna;
--	__le32 frag_ptr_hi;
--};
--
- #define WMI_CHAN_INFO_MODE		GENMASK(5, 0)
- #define WMI_CHAN_INFO_HT40_PLUS		BIT(6)
- #define WMI_CHAN_INFO_PASSIVE		BIT(7)
+I tested your patch on Raspberry Pi Zero 2 W with kernel 6.1.21-v8+
+and can confirm it fixes the crash. The iPhone now successfully
+queries network information without causing a NULL pointer
+dereference.
 
----
-base-commit: de7674ee69a0023a2dd1c6f0cb66f3cbbba89923
-change-id: 20251009-ath12k-nuke-wmi_bcn_send_from_host_cmd-47069a9b2a6e
+Tested-by: Richard Reigh <richard@govivid.ai>
 
+Best regards,
+Richard
 
