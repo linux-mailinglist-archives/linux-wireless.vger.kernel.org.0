@@ -1,100 +1,143 @@
-Return-Path: <linux-wireless+bounces-27946-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27947-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFDE3BD02F9
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Oct 2025 15:59:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940DBBD07CA
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Oct 2025 18:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1133D3BC1A7
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Oct 2025 13:59:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3D3E1897215
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Oct 2025 16:40:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23C12737FD;
-	Sun, 12 Oct 2025 13:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9F42D6E43;
+	Sun, 12 Oct 2025 16:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="cFaeUfhZ"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="GWd29rGa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC3A2741CB
-	for <linux-wireless@vger.kernel.org>; Sun, 12 Oct 2025 13:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FF628DF0B;
+	Sun, 12 Oct 2025 16:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760277582; cv=none; b=JZ9wXegGSXC5xzhqwE9KlYLD5pY1a6z4jR8bf3PQR6m3mO+RopRgi12WHzec57caCtJsAsvsgddqtmF1CWGOQsNJjm9D/UOyClLqVHLCwSpzN6qBC/ruaengrxPH3hiIcib0fZSFBy32W3Ns8YYgEa8uHTyFznJv24ANfUVOEfg=
+	t=1760287228; cv=none; b=MyDz9LrvX1IDiaSJf5YHEwav42r+5WqmmcyGmxRa6mdObJLN+tPzzu7BLT0Sjgl0VKs7Fq+nODNyols95N1bD39DyfwKQkozqCB64R4RRkyJW3gksIOJ0WXD7rxs/YkG1xSUGf/FaR8FxpMtNP3CbXn4lof5d3h9sLoyveEcXOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760277582; c=relaxed/simple;
-	bh=G2x4pWvUiFVWFG2PcNA4gws3V9CjQUeQbG4WlfjZhXI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Y0jawcZFUyhFMaAzNmasNvNMEh6OqvbuRiy+alSPMOgbBNg4vj0Jm45uYUwAnGg+bvDP/enLKlP53/mZzbuNGWgcUWVUrD0w+e+GP3D5OoZm+OV4ZPHNd8aMBEttbeaz4Mk33uJLI+iagj97TgjIA6MGIZVSvMsZ00pU2Z2RQus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=cFaeUfhZ; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=rGMyGxMjkQ+b3vCIVngK9ivzNaspS3b1SY6lwz20Bmk=;
-	t=1760277581; x=1761487181; b=cFaeUfhZXIir1JJ5A/QuvpAEILKWrGRVs3nmKNfpWiwMQe7
-	ZrvH/f3Cfo7MEexnqain12nZtQ/DNSNaPQxNioy7sJP2AIcf3zS2jGwLCbNB/mBcqxckRefI18osn
-	X5GJiFmJkP5b3TSZOGC41AJ2wxdgj1EP3yj316ctWwBErwNMdkAzuA9/9+qfSGene11Ipohb3NODA
-	xhsUNmdoV39VDxW2KXUEHi4CYmk2uwumGzFvub6HUiwi7ld1btWJQq1rDpPK3bLyTng7K4Gyg7Q5u
-	3z4/XMvfYvGv7pp/8HaQamF/yMgykwkS4Qm+6nlOoQPlgWfX4d2UOVOYECvV54Uw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1v7wbo-00000008FIA-3lws;
-	Sun, 12 Oct 2025 15:59:37 +0200
-Message-ID: <30403bb70a2a017c90b1d4a5a1a07514bb670822.camel@sipsolutions.net>
-Subject: Re: [RFC][v1][Design] AP Architecture for Roaming with Wi-Fi 8
- Seamless Mobility Domain (SMD)
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Aditya Sathish <quic_asathish@quicinc.com>, ath12k@lists.infradead.org, 
-	hostap@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Date: Sun, 12 Oct 2025 15:59:36 +0200
-In-Reply-To: <c618e0e8fdee9f7aa2628aefdf2dc04c48e6e9b7.camel@sipsolutions.net>
-References: <fbf4209c-4fd8-4047-96d7-7fa34d9ba44d@quicinc.com>
-	 <c618e0e8fdee9f7aa2628aefdf2dc04c48e6e9b7.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1760287228; c=relaxed/simple;
+	bh=jWCc18PpdJfGMKi+sdi7sqDK+rRMDn7pLGWGjIeo37w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jDyNgqw+ZdFYnY85+9ZZ980dSl15mv6cGmbIWAN4zAdgtDJk4qrjML5LQDKYXMgGJtVytyoBan8noxDa9RfdMg/Z2QCS4Ps3qUfEkqRropMZWIadrcK8AFXVR5jJycXnTdg7PuWcxoVVyzEw3XJQimCbzCapBjqbyHbxnyImCnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=GWd29rGa; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+	:Subject; bh=dKcY5QMuB4ui9FZBXGralraAi/Id1gyrnGStgEz8INg=; b=GWd29rGaML08LkDM
+	segaT8sJ6fdzVERpv7ftMrSu37HYqJ9XyouPGfYylAvMgCMU3JE5KmOoFYN3muXHy1gE6i6hb9mPg
+	AjwEZYu4wm7bzs1rtN2Gj1n6AflFjolK+A8gkx2Ckv+8nrSZ1v7X88VScNedGKwX4U1+Vxggla8fR
+	z/cDc/8Q5TMy/krdnNYll39E1taV/NkgnpvuHqc9+/IjOS4MaLyYafHds1I4QX8bDzP/zVPGxsa2x
+	GKO8IL3uUDKjU/X6Ulrjwe2Wi7rS+0chhXNjWXYqlr7EsH4P0MQarenVkYc+gjCdnOQ1vq1LT0sfU
+	Ji0AyDmwPBebRA+xUg==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+	(envelope-from <dg@treblig.org>)
+	id 1v7z7I-00FwA9-0O;
+	Sun, 12 Oct 2025 16:40:16 +0000
+Date: Sun, 12 Oct 2025 16:40:16 +0000
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
+To: johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: mac80211: Remove unused wdev_to_ieee80211_vif
+Message-ID: <aOvZ8FHp7-tliei2@gallifrey>
+References: <20250619005229.291961-1-linux@treblig.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20250619005229.291961-1-linux@treblig.org>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
+X-Uptime: 16:39:51 up 168 days, 53 min,  1 user,  load average: 0.00, 0.00,
+ 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-On Sun, 2025-10-12 at 15:51 +0200, Johannes Berg wrote:
-> > 	DL/UL traffic transition latency to the target AP MLD depends on the I=
-AP
-> > 	messages and the ST Execution Response arriving on time. Therefore, th=
-ese
-> > 	actions should not have to wait for pending management frames to be ha=
-ndled.
->=20
-> A good part of this argument - "pending management frames" - really goes
-> back to hostapd's architecture and single-threadedness, but really I
-> don't think "hostapd's current architecture implies more latency"
-> implies "we must put this into the kernel."
+* linux@treblig.org (linux@treblig.org) wrote:
+> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> 
+> wdev_to_ieee80211_vif() was added in 2013 by
+> commit ad7e718c9b4f ("nl80211: vendor command support")
+> but has remained unused.
+> 
+> Remove it.
+> 
+> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 
-Continuing that thought: I think that hostapd's architecture currently
-leaves a lot to be desired, in particular around how MLD works, and
-obviously, at least to some extent, being single-threaded is an
-architectural advantage in hostapd.
+Hi,
+  Gentle ping on this one please.
 
-However, user space also affords far more flexibility than kernel space,
-for example some things could be written in rust (with its "fearless
-concurrency", which I can attest to), split out to a separate thread or
-process, etc.
+Dave
 
-Anyway ... I guess in a way I'm using the opportunity here to lament the
-lack of architectural work in hostapd which isn't necessarily related to
-this, but I suspect that had hostapd historically had more architectural
-flexibility we might not even be having this discussion?
-
-johannes
+> ---
+>  include/net/mac80211.h | 13 -------------
+>  net/mac80211/util.c    | 11 -----------
+>  2 files changed, 24 deletions(-)
+> 
+> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+> index 286c944d90ad..544a28336b93 100644
+> --- a/include/net/mac80211.h
+> +++ b/include/net/mac80211.h
+> @@ -2112,19 +2112,6 @@ static inline bool ieee80211_vif_is_mesh(struct ieee80211_vif *vif)
+>  	return false;
+>  }
+>  
+> -/**
+> - * wdev_to_ieee80211_vif - return a vif struct from a wdev
+> - * @wdev: the wdev to get the vif for
+> - *
+> - * This can be used by mac80211 drivers with direct cfg80211 APIs
+> - * (like the vendor commands) that get a wdev.
+> - *
+> - * Return: pointer to the wdev, or %NULL if the given wdev isn't
+> - * associated with a vif that the driver knows about (e.g. monitor
+> - * or AP_VLAN interfaces.)
+> - */
+> -struct ieee80211_vif *wdev_to_ieee80211_vif(struct wireless_dev *wdev);
+> -
+>  /**
+>   * ieee80211_vif_to_wdev - return a wdev struct from a vif
+>   * @vif: the vif to get the wdev for
+> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+> index 27d414efa3fd..39a25fe20959 100644
+> --- a/net/mac80211/util.c
+> +++ b/net/mac80211/util.c
+> @@ -857,17 +857,6 @@ void ieee80211_iterate_stations_mtx(struct ieee80211_hw *hw,
+>  }
+>  EXPORT_SYMBOL_GPL(ieee80211_iterate_stations_mtx);
+>  
+> -struct ieee80211_vif *wdev_to_ieee80211_vif(struct wireless_dev *wdev)
+> -{
+> -	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
+> -
+> -	if (!ieee80211_sdata_running(sdata) ||
+> -	    !(sdata->flags & IEEE80211_SDATA_IN_DRIVER))
+> -		return NULL;
+> -	return &sdata->vif;
+> -}
+> -EXPORT_SYMBOL_GPL(wdev_to_ieee80211_vif);
+> -
+>  struct wireless_dev *ieee80211_vif_to_wdev(struct ieee80211_vif *vif)
+>  {
+>  	if (!vif)
+> -- 
+> 2.49.0
+> 
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
