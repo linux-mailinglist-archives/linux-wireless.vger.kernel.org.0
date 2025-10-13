@@ -1,204 +1,132 @@
-Return-Path: <linux-wireless+bounces-27951-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27952-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9977EBD1CEB
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Oct 2025 09:31:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0AE3BD234E
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Oct 2025 11:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAD361890CAB
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Oct 2025 07:31:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2F594E1476
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Oct 2025 09:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7174D19C54E;
-	Mon, 13 Oct 2025 07:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED9F2DF139;
+	Mon, 13 Oct 2025 09:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="FqLp6acL"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="aeQpyleO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp11.infineon.com (smtp11.infineon.com [217.10.52.105])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8454927934B
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Oct 2025 07:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD22D220F2A
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Oct 2025 09:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760340625; cv=none; b=N1ZqmlSYpR34koZ2TjjmqPFiKNrDcKRBD+vP/Ch862KOB3Ga7QaX0hLSkZBD7FL72iNW887cs9Vt0BiHowc5Q0Td6XphIlrSMZaX0NWleLaRG4REIeZaIt/V8HUGWqhbkTxAtoM5KT7zx2u8ZIRIQvQNtHpIVXZ7tZ9U/cPOJZc=
+	t=1760346533; cv=none; b=NvEqvM1riljkvPdjm46ft9zguktEIFJvVMD9rYEsa2IqBBYRbzsLZjDkxnazJMDODdZGfiKmW+jTm/1lBh+i0pWDxzu+iu8FDPHjvjvCqVuicldppQTwAVNoWdsc8cRB7WCuMgmTl1TVK2czmgVasU3wjtnTJH8bclFSuniC4+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760340625; c=relaxed/simple;
-	bh=T9N1F/ssv2+Yb4PZMJoCocjOG3Ky+daCqJjUbxs6Wlc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=irKcPa925ejPfUtEdGoB+CGNljQqgW2XWN1DG54k1FgyrzSoxREzusN9tD95FwMZ34NXdWbUUNlmp+CwdDorQy39Zf/ZcSitAK1zZ8KXJZnwMMvz4mIOc6syt66Vm73ooW990XUkTpGsp39EzHXXwjUmoNzHgUqyS5QbM4ar0VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=FqLp6acL; arc=none smtp.client-ip=217.10.52.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1760340622; x=1791876622;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=T9N1F/ssv2+Yb4PZMJoCocjOG3Ky+daCqJjUbxs6Wlc=;
-  b=FqLp6acLqOoUJf7/IvqEH9085Ymz2ZcyVt69ESPdoQXHDRb657uykJ5e
-   7p7l3pZSlLGp1XD5/9qxQ3ZXy+ZuXM6CxbmCgnctp62lJH65Y0Mxf+DEV
-   CMi40HeHrZpAfbBm4k95fsuDZotLcTBqeT/o7dqBuQgrk0D0WI7dD1ngU
-   0=;
-X-CSE-ConnectionGUID: ocYOW8omTAGJDCNc8tBYdA==
-X-CSE-MsgGUID: LTvFHWwNQQOo8gXs6iu40Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11580"; a="114287522"
-X-IronPort-AV: E=Sophos;i="6.19,224,1754949600"; 
-   d="scan'208";a="114287522"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE805.infineon.com) ([172.23.29.31])
-  by smtp11.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2025 09:29:11 +0200
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE805.infineon.com
- (172.23.29.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 13 Oct
- 2025 09:29:09 +0200
-Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
- MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Mon, 13 Oct 2025 09:29:07 +0200
-Date: Mon, 13 Oct 2025 12:58:58 +0530
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-CC: <brcm80211-dev-list.pdl@broadcom.com>, <brcm80211@lists.linux.dev>,
-	<chris@streetlogic.pro>, <linux-wireless@vger.kernel.org>,
-	<richard@govivid.ai>, <s311332@gmail.com>, <wahrenst@gmx.net>,
-	<wlan-kernel-dev-list@infineon.com>, <johannes@sipsolutions.net>
-Subject: Re: [PATCH wireless-next] wifi: brcmfmac: fix crash while sending
- Action Frames in standalone AP Mode
-Message-ID: <aOyqOnKEnkNqfg9u@ISCN5CG14747PP.infineon.com>
-References: <9a0849d8-befd-4fca-9d5d-a24520ccfa26@broadcom.com>
- <20251009073928.6803-1-gokulkumar.sivakumar@infineon.com>
- <08368241-6b89-49e5-81cf-8e7874c91696@broadcom.com>
+	s=arc-20240116; t=1760346533; c=relaxed/simple;
+	bh=8qncjzfcSLSfXP6mFCXjgHM0X64xkEpHhJWoSinNKvs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MMS8Mr5o5D6kjsDCW5AVxU8BxzootZ7SzzicTCi5CsAJSMlRhCxpnEd59fF+rlVFIsbimlOOx8ZwxOyOD6SmJy1eBLEo3xDsDGC1FZrpOhqKHQE2EUI7qohPoH4rBC9zFdiDa+JVCkOnqGTm2Ittw4wycRms5hXa0Wjx7s9Fbns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=aeQpyleO; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59D7u8p1030844;
+	Mon, 13 Oct 2025 09:08:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=aDdSxgXuG/KYYt4kVs0ZMvJZZGdyU
+	y6t+twUF1JMoqo=; b=aeQpyleOjIuq0nBljQlNguz8bXCWfvqDIpGf1l6w5C78D
+	D5hpmFDQUwG0O6ivbfwUNvbDPSVOs4G0JtABeGirrJalGQ/JISru4vth2zg9Ijm6
+	jBQ+1rNep7YU19m9zshQSOtaJPv20HUTh78HpHQJaB2vbjtFwvJIVSRFHo/2NxDJ
+	odKzHiINRopKZ1brJLbxMfOhve2k4vEc9LBPU5yJPEVpus82scg/uhhfOYvCmiAf
+	dNe+e3OvfNJ7J+IOO3/0Ja7acp+c/p6Vkyls95lxHQzokN+uhXEI6GOZkANYyzI5
+	yrEJvzH1diCTeEL8I/kHxbO4xExbdB0BRpjQpXwyQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49qf47hudx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Oct 2025 09:08:42 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59D6njVn017202;
+	Mon, 13 Oct 2025 09:08:42 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 49qdp799ce-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Oct 2025 09:08:42 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 59D98euF033499;
+	Mon, 13 Oct 2025 09:08:40 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 49qdp7993g-1;
+	Mon, 13 Oct 2025 09:08:40 +0000
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
+To: sean.wang@mediatek.com, chui-hao.chiu@mediatek.com, Bo.Jiao@mediatek.com,
+        howard-yh.hsu@mediatek.com, meichia.chiu@mediatek.com,
+        Money.Wang@mediatek.com, StanleyYP.Wang@mediatek.com, nbd@nbd.name,
+        lorenzo@kernel.org, ryder.lee@mediatek.com, shayne.chen@mediatek.com,
+        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Cc: alok.a.tiwari@oracle.com, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] wifi: mt76: mt7996: fix FCS error flag check in RX descriptor
+Date: Mon, 13 Oct 2025 02:08:24 -0700
+Message-ID: <20251013090826.753992-1-alok.a.tiwari@oracle.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <08368241-6b89-49e5-81cf-8e7874c91696@broadcom.com>
-X-ClientProxiedBy: MUCSE803.infineon.com (172.23.29.29) To
- MUCSE827.infineon.com (172.23.29.20)
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-13_03,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 mlxscore=0
+ suspectscore=0 spamscore=0 mlxlogscore=870 malwarescore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510020000
+ definitions=main-2510130044
+X-Authority-Analysis: v=2.4 cv=SK9PlevH c=1 sm=1 tr=0 ts=68ecc19a b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=x6icFKpwvdMA:10 a=yPCof4ZbAAAA:8 a=DCrMf5CXL9jqBmdGqfsA:9
+X-Proofpoint-GUID: K1p-Oqcd0XEeZFZfYH1FfP-hQzFzUDcB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNiBTYWx0ZWRfX0HYwiB32KN9M
+ otEXwPebu83zXI1XrjxQ5VA85uhc7+YtYnK/s7v0wlgF8cT5Y1s9AQ37npZPmrlHgB6u5PFJ0Md
+ QsY8QbdHhjapDsutMBQMr7kS6FxXhOnN8zqJXlziFJvLRkPF7Qzz8gRj6A+g+VeJxcmn92+s9HM
+ MFIzqncDZzZ2F3ey5vL+iO2fcMqNYRJVNCrbm3R6Iov4h35qm+R6yTsEkAQK9ygSqFy0aANw5CV
+ pBdnKlhz54QhEqInP9Iw4xZo+PumUQ3I7wj1P0Xy/AxZ0LJ4JqanPtJW12G9bEx7H6hHHSBOVpt
+ LBpuuXys3b+iL4wV7ZO/Dfx2UlLwsolJc14rwLjSeL5vQQ3b4rRL8JGLvHzqZoX9oXsCnDLaAQB
+ R5QJT49QPMRi38YPaEhjGUODaqu6gA==
+X-Proofpoint-ORIG-GUID: K1p-Oqcd0XEeZFZfYH1FfP-hQzFzUDcB
 
-On 10/12, Arend van Spriel wrote:
-> On 10/9/2025 9:39 AM, Gokul Sivakumar wrote:
-> > Currently, whenever there is a need to transmit an Action frame,
-> > the brcmfmac driver always uses the P2P vif to send the "actframe" IOVAR to
-> > firmware. The P2P interfaces were available when wpa_supplicant is managing
-> > the wlan interface.
-> > 
-> > However, the P2P interfaces are not created/initialized when only hostapd
-> > is managing the wlan interface. And if hostapd receives an ANQP Query REQ
-> > Action frame even from an un-associated STA, the brcmfmac driver tries
-> > to use an uninitialized P2P vif pointer for sending the IOVAR to firmware.
-> > This NULL pointer dereferencing triggers a driver crash.
-> > 
-> >   [ 1417.074538] Unable to handle kernel NULL pointer dereference at virtual
-> >   address 0000000000000000
-> >   [...]
-> >   [ 1417.075188] Hardware name: Raspberry Pi 4 Model B Rev 1.5 (DT)
-> >   [...]
-> >   [ 1417.075653] Call trace:
-> >   [ 1417.075662]  brcmf_p2p_send_action_frame+0x23c/0xc58 [brcmfmac]
-> >   [ 1417.075738]  brcmf_cfg80211_mgmt_tx+0x304/0x5c0 [brcmfmac]
-> >   [ 1417.075810]  cfg80211_mlme_mgmt_tx+0x1b0/0x428 [cfg80211]
-> >   [ 1417.076067]  nl80211_tx_mgmt+0x238/0x388 [cfg80211]
-> >   [ 1417.076281]  genl_family_rcv_msg_doit+0xe0/0x158
-> >   [ 1417.076302]  genl_rcv_msg+0x220/0x2a0
-> >   [ 1417.076317]  netlink_rcv_skb+0x68/0x140
-> >   [ 1417.076330]  genl_rcv+0x40/0x60
-> >   [ 1417.076343]  netlink_unicast+0x330/0x3b8
-> >   [ 1417.076357]  netlink_sendmsg+0x19c/0x3f8
-> >   [ 1417.076370]  __sock_sendmsg+0x64/0xc0
-> >   [ 1417.076391]  ____sys_sendmsg+0x268/0x2a0
-> >   [ 1417.076408]  ___sys_sendmsg+0xb8/0x118
-> >   [ 1417.076427]  __sys_sendmsg+0x90/0xf8
-> >   [ 1417.076445]  __arm64_sys_sendmsg+0x2c/0x40
-> >   [ 1417.076465]  invoke_syscall+0x50/0x120
-> >   [ 1417.076486]  el0_svc_common.constprop.0+0x48/0xf0
-> >   [ 1417.076506]  do_el0_svc+0x24/0x38
-> >   [ 1417.076525]  el0_svc+0x30/0x100
-> >   [ 1417.076548]  el0t_64_sync_handler+0x100/0x130
-> >   [ 1417.076569]  el0t_64_sync+0x190/0x198
-> >   [ 1417.076589] Code: f9401e80 aa1603e2 f9403be1 5280e483 (f9400000)
-> > 
-> > Fix this, by always using the vif corresponding to the wdev on which the
-> > Action frame Transmission request was initiated by the userspace. This way,
-> > even if P2P vif is not available, the IOVAR is sent to firmware on AP vif
-> > and the ANQP Query RESP Action frame is transmitted without crashing the
-> > driver.
-> > 
-> > Remove init_completion() for "send_af_done" from brcmf_p2p_create_p2pdev()
-> > and do it in brcmf_p2p_tx_action_frame() instead of reinit_completion().
-> > Because the formar function would not get executed when hostapd is managing
-> > wlan interface, and so it is not safe to do reinit_completion() without any
-> > prior init_completion().
-> > 
-> > And in the brcmf_p2p_tx_action_frame() function, the condition check for
-> > P2P Presence response frame is not needed, since the wpa_supplicant is
-> > properly sending the P2P Presense Response frame on the P2P-GO vif instead
-> > of the P2P-Device vif.
-> 
-> Thanks, Gokul
-> 
-> Looks good. Respecting the vif provided by userspace is a better
-> approach. So the actual issue is that hostapd does not create the
-> P2P-Device interface, which is why I suggested to fallback on the
-> primary vif. Overlooked the fact that we are doing a init_completion()
-> in brcmf_p2p_create_p2pdev() which is needed for the action frame
-> transmit. I have some comment on theat init_completion() change you made
-> (see below).
-> 
-> Still would prefer to move the action frame transmit (afx) functionality
-> out of the p2p source file, but that can be a separate rework.
+The mt7996 driver currently checks the MT_RXD3_NORMAL_FCS_ERR bit in
+rxd1 whereas other Connac3-based drivers(mt7925) correctly check this
+bit in rxd3.
 
-I agree. The action frame transmission funcationality should properly work
-for STA and AP mode, irrespective of P2P being enabled/disabled. So this
-functionality needs to be cleaned up.
+Since the MT_RXD3_NORMAL_FCS_ERR bit is defined in the fourth RX
+descriptor word (rxd3), update mt7996 to use the proper descriptor
+field. This change aligns mt7996 with mt7925 and the rest of the
+Connac3 family.
 
-> > Fixes: 18e2f61db3b7 ("brcmfmac: P2P action frame tx.")
-> > Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-> > ---
-> >   .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  3 +-
-> >   .../broadcom/brcm80211/brcmfmac/p2p.c         | 28 ++++++-------------
-> >   .../broadcom/brcm80211/brcmfmac/p2p.h         |  3 +-
-> >   3 files changed, 11 insertions(+), 23 deletions(-)
-> [...]
-> 
-> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-> > index 0dc9d28cd77b..c7c40dc3be08 100644
-> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-> 
-> [...]
-> 
-> > @@ -1538,28 +1539,20 @@ int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
-> >    * The WLC_E_ACTION_FRAME_COMPLETE event will be received when the action
-> >    * frame is transmitted.
-> >    */
-> > -static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
-> > +static s32 brcmf_p2p_tx_action_frame(struct brcmf_if *ifp,
-> > +                                  struct brcmf_p2p_info *p2p,
-> >                                    struct brcmf_fil_af_params_le *af_params)
-> >   {
-> >       struct brcmf_pub *drvr = p2p->cfg->pub;
-> > -     struct brcmf_cfg80211_vif *vif;
-> > -     struct brcmf_p2p_action_frame *p2p_af;
-> >       s32 err = 0;
-> > 
-> >       brcmf_dbg(TRACE, "Enter\n");
-> > 
-> > -     reinit_completion(&p2p->send_af_done);
-> > +     init_completion(&p2p->send_af_done);
-> 
-> I think we should not do this here. It used to be init_completion() here
-> but the kernel API changed introducing the reinit_completion() to make
-> explicit distinction between init and reinit. So I would suggest to do
-> the init_completion() in brcmf_p2p_attach() which is always invoked and
-> leave the reinit_completion() here.
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-That works too. Will create an updated v2 patch after making this change
-and submit it for the wireless tree instead of wireless-next.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 9501def3e0e3..59744e5593b6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -527,7 +527,7 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, enum mt76_rxq_id q,
+ 	    !(csum_status & (BIT(0) | BIT(2) | BIT(3))))
+ 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+ 
+-	if (rxd1 & MT_RXD3_NORMAL_FCS_ERR)
++	if (rxd3 & MT_RXD3_NORMAL_FCS_ERR)
+ 		status->flag |= RX_FLAG_FAILED_FCS_CRC;
+ 
+ 	if (rxd1 & MT_RXD1_NORMAL_TKIP_MIC_ERR)
+-- 
+2.50.1
+
 
