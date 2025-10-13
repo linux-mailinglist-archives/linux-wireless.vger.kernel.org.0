@@ -1,88 +1,89 @@
-Return-Path: <linux-wireless+bounces-27957-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27958-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7CEFBD4CD8
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4746BD4CD5
 	for <lists+linux-wireless@lfdr.de>; Mon, 13 Oct 2025 18:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 304E65440F9
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Oct 2025 15:59:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D41CB18A61E7
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Oct 2025 16:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E9830DEB1;
-	Mon, 13 Oct 2025 15:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED1430B51C;
+	Mon, 13 Oct 2025 15:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="F9j/NwLm"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="V5BhJn+I"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FBA30DD3F
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Oct 2025 15:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B22630AD16
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Oct 2025 15:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369983; cv=none; b=IsAcZGBfEdiXpp/5tAHwGwQK3ObTgkVgGzLJbab6hnCA6DhOBlJkDwZrU3y6pE8ojXmq6nCgFTBdpEmZp0F4w2xgozFZ0I2aMROR07Etk8+ye91+KTVPv7cxQFkc8Om6L5S9acHXcKwYa6ed/8+IDUc82ySHdaKy9Z97oavl2j0=
+	t=1760370841; cv=none; b=erXsvs2H5XyZa5rgo//MesYolsXbkUe4kNEn2Xm6O+oPq+TLYXX2Z5c/f+LDBc8vE5EMDjjKtadwp/YYCYVaoa9el164uppHt4UGB41ouP3iKC/r6JuzxXyv28Dy92Pz0NmveDB1XMV//9mGbs6OyRRmgdaWQvkYIhegfX/F+tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369983; c=relaxed/simple;
-	bh=DJZv9XO6AMW5Pzu4cX/CNpbhe388sE5sJYjo7HG2UiY=;
+	s=arc-20240116; t=1760370841; c=relaxed/simple;
+	bh=HbG2wBq+kzrvixdmpzlPy9Ug5SwqZucflfyMkiRs8FI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hb1CWYFP59JcGY2JTFiWiW+NMNJibwFrzq6u7E5M4cJKqx+MppVTYoSTESUVxAmBLX1Y+0+N3IZb1hkubBzsFzlPoM+wijbCwM8W1m/ODjAjgyKZ37H5vKEmzEBZQPV1ZwhMdA9Q/ZgTh8VYvtKA7sVw530+Sni4iLII05jpqBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=F9j/NwLm; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=tjggnjVhenrW03l0jDcRAVgtx8oL65uaUn5pbiUXHGSgas5iSkHgH7uayRhuaRYajClDUwnL3iJ6qRg76CJ5qaeJJKNe7YCL4szRw6fBXptQtVgM+eYk8rIaeJJbsLRtYLF9/omGWeUVCWiVlqih8tSGv8lQIFLpWJMTvc2TItA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=V5BhJn+I; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59DEhJOd013013
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Oct 2025 15:39:40 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59DEh16J013016
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Oct 2025 15:53:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	gFxfNALQj0kVo1nFaR/pZdz97+/8Uqorpj5QRkTfdsg=; b=F9j/NwLmz4Fbf0Lv
-	A2kJotKX+VXn1eUmSlYnDhzKxqBC5XE48IsCjtZZ30/XWpM4dyMHBANlJqygJZxm
-	gu99K5aLjf21rYg/CvZVnZMX4jvZ54cJgny4UL1GtuGXydsFOtPS8Bl2f17j08/R
-	ruDr6Iw/B4PZhn9Zu/e0foTZFg6lahdYJnZXUjgkBJCpyjjv6Z+iFEUkAc0wwXHT
-	CFuP6WPWHMrP3yjLWdjZIXOoi/8od7s1gKZ+ohioK7tbKwZrpN5sxlHlAUXqAvTA
-	aWDSbeXWJab8h5N3iBRWivo0ajVM4zJ8IqMg8BCG3k7EPULC8bQVys1kWFs/aP0U
-	MLo1fA==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49rw1a9guk-1
+	FLZHcYaWOwdVaCOJVJU11rWTvsHsE26FRFeT3K+SBCc=; b=V5BhJn+IcxAdoGZO
+	vNMBg7xnwOPwRSWa/Y7MG09KPu7GaFA7RrWJRJryoFu1scJdjkAN/jw7akLPAtx/
+	3AGWaMDWpfAS0Q7ZupteR57odeTgprt/gdprB7wFyjEGE5IsVBvzBpJ8wBQRkc/U
+	F59qdzVG9dhQoFPhPRU3dj66aX4zA67g3WyyTY8/lZTZDT8NMvBX1aB5GPonkr7Q
+	xhm+yd1+8pJFjPe7EjkSKZSuOcYMsh0lN7amGKVeP6/8yEoVteSlqHSfZEKpMu2F
+	qUZuSr0jZtSXV1KFMu7j6Is2fpGRRLVr26gsROYBzgm5CUIAt8YxvPreL7B7Emc+
+	Rdxj/w==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49rw1a9jv1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 13 Oct 2025 15:39:40 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-780f82484faso5307050b3a.3
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Oct 2025 08:39:40 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Mon, 13 Oct 2025 15:53:59 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-76e2eb787f2so6998734b3a.3
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Oct 2025 08:53:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760369979; x=1760974779;
-        h=content-transfer-encoding:in-reply-to:content-language:from
+        d=1e100.net; s=20230601; t=1760370838; x=1760975638;
+        h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gFxfNALQj0kVo1nFaR/pZdz97+/8Uqorpj5QRkTfdsg=;
-        b=JC7Bj2UhulNFD08aKwtr8+6B77V9KDSe4tVfX7K8wsAK6t69+dAKtpkwaFSdSbCJRI
-         feRrzkGMDBIE8sX1l7uIUVYjex3d3pqc+4jnP7FKcB8Lrgdn01wfOrsXb8phup6m7T1D
-         HP/55x2R7N1UbOncqLiLKnGDt9CIV8o8y1KF0Tut1vDozf6pCAdHqKOJzVVGFv2ODQf/
-         2LWWoGPNbuBNBUlvpaJL4IPexaZsBXwWkGk+qaKB8s0QRu7Az16Pl/oxIebS+jLqmx9a
-         RYRZwD5gNUT6DcSHB2IbdN4Mad8IXDrCkh1eYGVw7IqLv1XhO9eDI3OpPhQZhUd4KSHd
-         kM2g==
-X-Gm-Message-State: AOJu0YzD5U3+5hHVXt19Gia4PBmlGjWLmBi2EBQtpGCvlThi6Rp15u2d
-	0jiptMGYjvG0ZVTXAkylIqoLIcR9KphUl23LjDk+ftyypHNFxqvgDRYxiRtfRmnTMJFH1f50I5K
-	od+23eIliBshWVfYRzMaG4fTKOekQ862fOPSYXFfWY1XdoEFj0/HZTNPKUvWPYnwlx9gtFJM0MB
-	rArQ==
-X-Gm-Gg: ASbGncsN1mVYtAKnPujYWdFfhbZEpDqnkrPuz/sJ7XWyZ3Qy/JYL67ZCbAV39LmXxLQ
-	LwlB/6jA04uzZRVX9+M9xnaz3PCNqALA4Ka3Fj3xVx9Mwn+n+sC0mY9oB59vPiaHhwIiEcCZi+g
-	VwOpsYNXlXJPwhS1LnS7z03ihj+UCT4KbPy3Q+GKt93sL8JcsugGQ57W8GTC6FkqLQZbN2RfS8H
-	8eqbr9blDjuRa0lhOGc3ry5fvW7InNYoLg59ujtF82iVehpTCoafR+xE9RvSoUjmXa9ovAQvPK2
-	WMEEy4C7EKxhD387Nfq+0Si5fCN0YHKesuFyy4ffZAycNs/fmx+go3mN1SLJd0xAb6teYGWdrb/
-	xpukvx8pdF/WJgVkUkun9WHPM
-X-Received: by 2002:a05:6a00:2389:b0:77f:68a4:a88 with SMTP id d2e1a72fcca58-7938762f6cdmr23218485b3a.21.1760369979396;
-        Mon, 13 Oct 2025 08:39:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF4kxqkpVz9sQusAyfzIDLIVnk2b1584b0w/ts/XE/aPdVbk1/Yuuxpe1N910zi6UxYAFwSQQ==
-X-Received: by 2002:a05:6a00:2389:b0:77f:68a4:a88 with SMTP id d2e1a72fcca58-7938762f6cdmr23218460b3a.21.1760369978948;
-        Mon, 13 Oct 2025 08:39:38 -0700 (PDT)
+        bh=FLZHcYaWOwdVaCOJVJU11rWTvsHsE26FRFeT3K+SBCc=;
+        b=n4IhJZVkS+8Pk0kShIcy8YtSgj1w/LNQgcsLl8XHegkEsZQ87UeN19QCag7C3H8CAb
+         6Pd3rkEi2ElDZdYJH7nLwSaA0nP/Jz/IMzNYVB6hn9YedB1Ey3zlx7BwmqjMFweFayG3
+         ygc81QYi4f7LjnOx85g/aWRXCocZ74O45NRFR/79oYSYRNxVosqCaRueNa9epLzCzQLw
+         SHtQO7eJy2UEZf6yLmaiyZH8RsIjNohayax5lod8cLQqjSLXSmz2dRaqzti+wApCah9A
+         Pen6NdfecczJiFCZZfn1YrGUxNLGzxVBvAQ/fJDHoIiFn+7t1PLdl5eJdcp+h3mhwzx7
+         DTJw==
+X-Forwarded-Encrypted: i=1; AJvYcCXdQjQ7pA8bGwJjeOGVzmsdrPskafVytdKAUpg9d3PopaYPWM7oh1Kdh0pFHgtgN34ZKyFyfV+a+jVLElne4g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6IG1AuvLBPCrq0NDjchpQPLuR7us8dMJm+5ztTNNQ+vDBF15D
+	8Y2ODOXlD+c3gOGbtB9Qqf8saw65bGx5V8naT6roHswttkjjF+RtkkeieIjvgM5q57mWkHb2UMc
+	lWo0ssc24DzoHi4u9kPI+FF2ze3LnQYFPuNf/E8tmmkcOxS7Wxn+TUt6aQFEF+hkMfJzF6rrmq9
+	51aQ==
+X-Gm-Gg: ASbGncs7RBhdLvz9i5JR6Iv8etcvIQmvKfTIDXJ/iVPFGGaAqeefQmx3GJXxwS7defR
+	noUvsJ6mi6swmvRvIZtdtO3FwEziRMVF3ji85O3bpriV69L4avMCww5mXX66x7qZlgeWOHU+zri
+	Keq4mSWFVWwyGaV7q/rtF3YLod034lyH64IQRkbctZx0nUDUJv7/cCTYaYvnp4ohGy8fRonHNGO
+	BmfhV9rbnCxrECGSri/hizJH9G/ZDdLPgI6DRxPB4QyBbnc7Bi8q+YxI10V1cuplZsQfgltHgxo
+	QRJy7XfZDvNJBF2xbCGixoDlNf5m4o2gCSnE+szuRLJ9EETeHv/sfylhzyiBnootuPiw1ON0y1g
+	QqeLjB3K9ZoTedCZmvFx2lk+R
+X-Received: by 2002:a05:6a00:2444:b0:781:1cc0:d0ce with SMTP id d2e1a72fcca58-7938705204dmr23432408b3a.16.1760370837990;
+        Mon, 13 Oct 2025 08:53:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFfBsZAhL7dFU0TP/OXXaf1VQDK54KxbV2/t0a9unz8l+QOuLf/jfMSlOxH/EZT6mdYvOQe4w==
+X-Received: by 2002:a05:6a00:2444:b0:781:1cc0:d0ce with SMTP id d2e1a72fcca58-7938705204dmr23432387b3a.16.1760370837543;
+        Mon, 13 Oct 2025 08:53:57 -0700 (PDT)
 Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992d096527sm11927416b3a.44.2025.10.13.08.39.37
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992b060b59sm12346851b3a.2.2025.10.13.08.53.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Oct 2025 08:39:38 -0700 (PDT)
-Message-ID: <1f47148e-30cd-4698-8b1b-3a22a6c1fefe@oss.qualcomm.com>
-Date: Mon, 13 Oct 2025 08:39:37 -0700
+        Mon, 13 Oct 2025 08:53:57 -0700 (PDT)
+Message-ID: <2e90f3ca-0752-4594-be92-094d4f251187@oss.qualcomm.com>
+Date: Mon, 13 Oct 2025 08:53:56 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -90,29 +91,30 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: pull-request: ath-current-20251006
-To: linux-wireless@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>
-Cc: ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, jjohnson@kernel.org
-References: <45843a5f-011f-4751-b9bc-004768b1454e@oss.qualcomm.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: Re: [PATCH] MAINTAINERS: wcn36xx: Add linux-wireless list
+To: linux@treblig.org, loic.poulain@oss.qualcomm.com
+Cc: linux-kernel@vger.kernel.org, wcn36xx@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+References: <20251010235735.350638-1-linux@treblig.org>
 Content-Language: en-US
-In-Reply-To: <45843a5f-011f-4751-b9bc-004768b1454e@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+In-Reply-To: <20251010235735.350638-1-linux@treblig.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=K88v3iWI c=1 sm=1 tr=0 ts=68ed1d3c cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=WHy267Qvh4jMVSjEg6QA:9
- a=QEXdDO2ut3YA:10 a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-GUID: Dd4YEzsd1_SSQ3TqZ_lyQ7kWO_pyyY-h
-X-Proofpoint-ORIG-GUID: Dd4YEzsd1_SSQ3TqZ_lyQ7kWO_pyyY-h
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEzMDAzNSBTYWx0ZWRfXyCkSZ0H7Oqpz
- Nf+iA6LY90/URHm/It5I9/4VIgoqkRT9y3PqMZjU3r8UVese+bKh+cG2fgvTBjS1HAYBphHRnKr
- 1cE+5ndpZ+T2kzaNcJZs/9q94Hx5llg8jIuiewOY38kElSPWIYPmtFYgvLRy9385TvSJhGER6tQ
- Hat6h9j1nSd9pPz1ckOBjvTUmZpxmi8anAR9lEb8o081wq7d4JhOx19l4Y4UDt9v3k4FbWw56ez
- 98NFojdQWBuUg0C/vtgK8AMLjzKqgbhwKRO88xYqEFjZXUWkbq6+bfBI0lOrCJwMuC17I92aJLP
- 8K3UTQHTa0rEsONL011k4e1HQ5H/rpv8hKxdGTnK9pX6yhGGKn4qHuvgzBccLB7gD855difd2pT
- BmnQrtLfuXULmQro0eMQ58dzD7inZg==
+X-Authority-Analysis: v=2.4 cv=K88v3iWI c=1 sm=1 tr=0 ts=68ed2097 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=3WJfbomfAAAA:8 a=VwQbUJbxAAAA:8
+ a=zbSwXIVSrdAPPfZg_F0A:9 a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
+ a=1cNuO-ABBywtgFSQhe9S:22
+X-Proofpoint-GUID: Ao0cdspPaewQENeAe7x8uaI184qw3JV2
+X-Proofpoint-ORIG-GUID: Ao0cdspPaewQENeAe7x8uaI184qw3JV2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEzMDAzNSBTYWx0ZWRfXxcihlXE0ADQi
+ ktJrbx6+IBOFNK0AtGI3A8CDohXb6sN6gM4jPWcBu3d7zi8Qa3alEBjW163Dujteb1eKiJkP3GY
+ 9OT7XGh93XwqQsmJGbiZoDucFlcgDCQ3pGlDNVZMrQ0DUGJdH94cra3lFD3Hpt+IAwHtqx2ywV2
+ NrdwqkopO4pApbwqENDNCtNZ3dPkaiIzegFgDbFEO9pyUc9lsfOK1z885tRMRrBiwCdmgF36tjw
+ 7zLfD00D/KjN+fvQT4lm7NTevdcFPIwaPc7wKv/7ILgq1k5Fk4iJnAsjeeCVIQFIrB9EF2PpCLs
+ H0mE0dw4OcKnYrvVCxBUNTVP7n1KDiK6Wb5KGWSHAvy3ngF4OSPliUBrRsbpcKC3Hg1lsZppkpA
+ eE2lxGhfoj6BCU/XDSat3Hp4BARG8Q==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-13_05,2025-10-06_01,2025-03-28_01
@@ -122,47 +124,19 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510130035
 
-On 10/6/2025 10:12 AM, Jeff Johnson wrote:
-> The following changes since commit 4ff71af020ae59ae2d83b174646fc2ad9fcd4dc4:
+On 10/10/2025 4:57 PM, linux@treblig.org wrote:
+> From: "Dr. David Alan Gilbert" <linux@treblig.org>
 > 
->   Merge tag 'net-6.17-rc8' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-09-25 08:23:52 -0700)
+> The wcn36xx is a wireless device but doesn't have the wireless
+> list in its MAINTAINERS entry.
+> Add it.
 > 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git tags/ath-current-20251006
-> 
-> for you to fetch changes up to 9c78e747dd4fee6c36fcc926212e20032055cf9d:
-> 
->   wifi: ath11k: avoid bit operation on key flags (2025-10-06 09:48:55 -0700)
-> 
-> ----------------------------------------------------------------
-> ath.git update for v6.18-rc1
-> 
-> Fix memory leaks in both ath10k and ath12k.
-> Fix a sparse issue in ath11k.
-> Allow ath11k suspend/resume to work on more Lenovo laptops.
-> 
-> ----------------------------------------------------------------
-> Karthik M (1):
->       wifi: ath12k: free skb during idr cleanup callback
-> 
-> Loic Poulain (1):
->       wifi: ath10k: Fix memory leak on unsupported WMI command
-> 
-> Mark Pearson (1):
->       wifi: ath11k: Add missing platform IDs for quirk table
-> 
-> Rameshkumar Sundaram (1):
->       wifi: ath11k: avoid bit operation on key flags
-> 
->  drivers/net/wireless/ath/ath10k/wmi.c  |  1 +
->  drivers/net/wireless/ath/ath11k/core.c | 54 ++++++++++++++++++++++++++++++----
->  drivers/net/wireless/ath/ath11k/mac.c  | 10 +++----
->  drivers/net/wireless/ath/ath12k/mac.c  | 34 +++++++++++----------
->  4 files changed, 72 insertions(+), 27 deletions(-)
+> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 
-Johannes,
-Hopefully this can get picked up for -rc2?
+Acked-by: Jeff Johnson <jjohnson@kernel.org>
+
+Johannes, can you take this through wireless to get into -rc2?
+Currently wcn36xx patches are not getting into patchwork.
 
 /jeff
 
