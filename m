@@ -1,143 +1,113 @@
-Return-Path: <linux-wireless+bounces-27947-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27948-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940DBBD07CA
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Oct 2025 18:40:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3DB2BD1025
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Oct 2025 03:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3D3E1897215
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Oct 2025 16:40:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 697173B9193
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Oct 2025 01:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9F42D6E43;
-	Sun, 12 Oct 2025 16:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46D73594F;
+	Mon, 13 Oct 2025 01:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="GWd29rGa"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="r187yzH0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FF628DF0B;
-	Sun, 12 Oct 2025 16:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCE54C97;
+	Mon, 13 Oct 2025 01:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760287228; cv=none; b=MyDz9LrvX1IDiaSJf5YHEwav42r+5WqmmcyGmxRa6mdObJLN+tPzzu7BLT0Sjgl0VKs7Fq+nODNyols95N1bD39DyfwKQkozqCB64R4RRkyJW3gksIOJ0WXD7rxs/YkG1xSUGf/FaR8FxpMtNP3CbXn4lof5d3h9sLoyveEcXOE=
+	t=1760317206; cv=none; b=Wf3h0r/byelKTA2aZCGE4HgPQJELEjKJeaRuibnHJvykwrilUTGpRjEEaacrJKA1+0SEHnvLirbxk/MY8WKggpd3swMh1ABVxK/GpUVKE9T7bt+Fi6SUh5P2EK5JF/67JcxTfk1F3I/Db1R1vNlaIuemgWmKuHYAcMIfyb9k8To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760287228; c=relaxed/simple;
-	bh=jWCc18PpdJfGMKi+sdi7sqDK+rRMDn7pLGWGjIeo37w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jDyNgqw+ZdFYnY85+9ZZ980dSl15mv6cGmbIWAN4zAdgtDJk4qrjML5LQDKYXMgGJtVytyoBan8noxDa9RfdMg/Z2QCS4Ps3qUfEkqRropMZWIadrcK8AFXVR5jJycXnTdg7PuWcxoVVyzEw3XJQimCbzCapBjqbyHbxnyImCnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=GWd29rGa; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=dKcY5QMuB4ui9FZBXGralraAi/Id1gyrnGStgEz8INg=; b=GWd29rGaML08LkDM
-	segaT8sJ6fdzVERpv7ftMrSu37HYqJ9XyouPGfYylAvMgCMU3JE5KmOoFYN3muXHy1gE6i6hb9mPg
-	AjwEZYu4wm7bzs1rtN2Gj1n6AflFjolK+A8gkx2Ckv+8nrSZ1v7X88VScNedGKwX4U1+Vxggla8fR
-	z/cDc/8Q5TMy/krdnNYll39E1taV/NkgnpvuHqc9+/IjOS4MaLyYafHds1I4QX8bDzP/zVPGxsa2x
-	GKO8IL3uUDKjU/X6Ulrjwe2Wi7rS+0chhXNjWXYqlr7EsH4P0MQarenVkYc+gjCdnOQ1vq1LT0sfU
-	Ji0AyDmwPBebRA+xUg==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-	(envelope-from <dg@treblig.org>)
-	id 1v7z7I-00FwA9-0O;
-	Sun, 12 Oct 2025 16:40:16 +0000
-Date: Sun, 12 Oct 2025 16:40:16 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: mac80211: Remove unused wdev_to_ieee80211_vif
-Message-ID: <aOvZ8FHp7-tliei2@gallifrey>
-References: <20250619005229.291961-1-linux@treblig.org>
+	s=arc-20240116; t=1760317206; c=relaxed/simple;
+	bh=a9D9IG3PSDShqFsyr2lmyTeOA5Qqin/IbeEHsmZFJeY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=JJADBOG0uI7hirScVyMvk7ezLblknxvNclebFJgzDcTygfZoIEawW1y8eMuHPUucGA/aWJOFIbtjW0cDH/gv7xymQ+93gK8Aa0Xi9Y56eTh2XJMy6HgPVCuj/zIeuzAwx6+kfyXusDPIO2PF7Wr1nbef0m+2sobo6jkjZUPPSEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=r187yzH0; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 59D0xVcrD532587, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1760317171; bh=a9D9IG3PSDShqFsyr2lmyTeOA5Qqin/IbeEHsmZFJeY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=r187yzH0a8ToknsbEwynx0SBaWRw2PJxSreP8YsOR/7brL0MGgJT59wUGDDvSrIjt
+	 Q79YesievKcHN3Z8Vpb5YvgxQyxiPetduO9nRzNiw6ueXYqT1TErIJbdcp9lz0maYj
+	 tmNdphZMkwNpqOLmAo5uLun5+p3SlVqLOVTdh+QCb/BNBSQQEK0U/6A4ySDTb8A6x0
+	 XNzSKcZVWQTOx+GJmkWEm+PBOczbgWYb0S9EGIx0SxxTt3qUJnbrzG75c5kwnebbKU
+	 KlYQoC6nTH5e0xmay6QOC3ZwnCYhnDQdyyzGqYkU7DCyZlN2BsuNMW4dcdt1V2HSfC
+	 3xXcsXN4HPkyw==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 59D0xVcrD532587
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Oct 2025 08:59:31 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Mon, 13 Oct 2025 08:59:31 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
+ 15.02.1544.027; Mon, 13 Oct 2025 08:59:31 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Zong-Zhe Yang
+	<kevin_yang@realtek.com>,
+        Bernie Huang <phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
+Subject: RE: [PATCH rtw-next v2 7/7] wifi: rtw89: process TX wait skbs for USB via C2H handler
+Thread-Topic: [PATCH rtw-next v2 7/7] wifi: rtw89: process TX wait skbs for
+ USB via C2H handler
+Thread-Index: AQHcM9il/GZvLLVcMUW99DlZMhOcmbS2QTFAgAZi/oCAAqtWwA==
+Date: Mon, 13 Oct 2025 00:59:31 +0000
+Message-ID: <04b364eb49a4465a826fdc92e5ca5680@realtek.com>
+References: <20251002200857.657747-1-pchelkin@ispras.ru>
+ <20251002200857.657747-8-pchelkin@ispras.ru>
+ <d72c6bf8618b4245939fd73cd9e24acd@realtek.com>
+ <20251011175758-9e1b3340d51ac93a2663a800-pchelkin@ispras>
+In-Reply-To: <20251011175758-9e1b3340d51ac93a2663a800-pchelkin@ispras>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20250619005229.291961-1-linux@treblig.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
-X-Uptime: 16:39:51 up 168 days, 53 min,  1 user,  load average: 0.00, 0.00,
- 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
 
-* linux@treblig.org (linux@treblig.org) wrote:
-> From: "Dr. David Alan Gilbert" <linux@treblig.org>
-> 
-> wdev_to_ieee80211_vif() was added in 2013 by
-> commit ad7e718c9b4f ("nl80211: vendor command support")
-> but has remained unused.
-> 
-> Remove it.
-> 
-> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-
-Hi,
-  Gentle ping on this one please.
-
-Dave
-
-> ---
->  include/net/mac80211.h | 13 -------------
->  net/mac80211/util.c    | 11 -----------
->  2 files changed, 24 deletions(-)
-> 
-> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-> index 286c944d90ad..544a28336b93 100644
-> --- a/include/net/mac80211.h
-> +++ b/include/net/mac80211.h
-> @@ -2112,19 +2112,6 @@ static inline bool ieee80211_vif_is_mesh(struct ieee80211_vif *vif)
->  	return false;
->  }
->  
-> -/**
-> - * wdev_to_ieee80211_vif - return a vif struct from a wdev
-> - * @wdev: the wdev to get the vif for
-> - *
-> - * This can be used by mac80211 drivers with direct cfg80211 APIs
-> - * (like the vendor commands) that get a wdev.
-> - *
-> - * Return: pointer to the wdev, or %NULL if the given wdev isn't
-> - * associated with a vif that the driver knows about (e.g. monitor
-> - * or AP_VLAN interfaces.)
-> - */
-> -struct ieee80211_vif *wdev_to_ieee80211_vif(struct wireless_dev *wdev);
-> -
->  /**
->   * ieee80211_vif_to_wdev - return a wdev struct from a vif
->   * @vif: the vif to get the wdev for
-> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-> index 27d414efa3fd..39a25fe20959 100644
-> --- a/net/mac80211/util.c
-> +++ b/net/mac80211/util.c
-> @@ -857,17 +857,6 @@ void ieee80211_iterate_stations_mtx(struct ieee80211_hw *hw,
->  }
->  EXPORT_SYMBOL_GPL(ieee80211_iterate_stations_mtx);
->  
-> -struct ieee80211_vif *wdev_to_ieee80211_vif(struct wireless_dev *wdev)
-> -{
-> -	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
-> -
-> -	if (!ieee80211_sdata_running(sdata) ||
-> -	    !(sdata->flags & IEEE80211_SDATA_IN_DRIVER))
-> -		return NULL;
-> -	return &sdata->vif;
-> -}
-> -EXPORT_SYMBOL_GPL(wdev_to_ieee80211_vif);
-> -
->  struct wireless_dev *ieee80211_vif_to_wdev(struct ieee80211_vif *vif)
->  {
->  	if (!vif)
-> -- 
-> 2.49.0
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+RmVkb3IgUGNoZWxraW4gPHBjaGVsa2luQGlzcHJhcy5ydT4gd3JvdGU6DQo+IE9uIFR1ZSwgMDcu
+IE9jdCAwODowNywgUGluZy1LZSBTaGloIHdyb3RlOg0KPiA+IEZlZG9yIFBjaGVsa2luIDxwY2hl
+bGtpbkBpc3ByYXMucnU+IHdyb3RlOg0KPiA+ID4gQEAgLTExNzMsNyArMTE3Myw4IEBAIGludCBy
+dHc4OV9jb3JlX3R4X2tpY2tfb2ZmX2FuZF93YWl0KHN0cnVjdCBydHc4OV9kZXYgKnJ0d2Rldiwg
+c3RydWN0IHNrX2J1ZmYgKnNrDQo+ID4gPg0KPiA+ID4gICAgICAgICBpZiAodGltZV9sZWZ0ID09
+IDApIHsNCj4gPiA+ICAgICAgICAgICAgICAgICByZXQgPSAtRVRJTUVET1VUOw0KPiA+ID4gLSAg
+ICAgICAgICAgICAgIGxpc3RfYWRkX3RhaWwoJndhaXQtPmxpc3QsICZydHdkZXYtPnR4X3dhaXRz
+KTsNCj4gPiA+ICsgICAgICAgICAgICAgICBpZiAoIXJ0d2Rldi0+aGNpLnR4X3JwdF9lbmFibGUp
+DQo+ID4gPiArICAgICAgICAgICAgICAgICAgICAgICBsaXN0X2FkZF90YWlsKCZ3YWl0LT5saXN0
+LCAmcnR3ZGV2LT50eF93YWl0cyk7DQo+ID4NCj4gPiBPaC4gWW91IGF2b2lkIHVzaW5nIHJ0d2Rl
+di0+dHhfd2FpdHMgZm9yIFVTQi4gQnV0IEknZCBsaWtlIHRvIGhhdmUgdGhlIHNhbWUNCj4gPiBi
+ZWhhdmlvciBhcyBQQ0lFLg0KPiANCj4gSSBtYXkgYmUgY29uZnVzZWQgYnV0IGRvZXNuJ3QgaXQg
+Y29uZmxpY3Qgd2l0aCB0aGUgY29tbWVudCBbMV0geW91J3ZlDQo+IHBvc3RlZCB0byB0aGUgcHJl
+dmlvdXMgdmVyc2lvbj8gIEkndmUgdHJlYXRlZCB0aGF0IGFzIHdlIHNob3VsZCB1c2UNCj4gcnR3
+ZGV2LT50eF9ycHRfcXVldWUgZm9yIGJvdGggVFggd2FpdCBhbmQgSUVFRTgwMjExX1RYX0NUTF9S
+RVFfVFhfU1RBVFVTDQo+IGZyYW1lcy4uLg0KDQpZZXMuIEkgZ290IHRoaXMgdGhvdWdodCBhZnRl
+ciByZXZpZXdpbmcgd2hvbGUgdjIuDQoNCj4gDQo+IEknbSBhbGwgZm9yIGZvbGxvd2luZyB0aGUg
+UENJZS1zdHlsZSBhcyBwb3NzaWJsZSwgdG9vLCBidXQgdGhlbiBpbml0aWFsDQo+IGNvbW1lbnQg
+WzFdIGJlY29tZXMgaXJyZWxldmFudCwgcmlnaHQ/DQo+IA0KPiBbMV06IGh0dHBzOi8vbG9yZS5r
+ZXJuZWwub3JnL2xpbnV4LXdpcmVsZXNzL2MyYzQwYmVkMzExYzRmMDU5NDhjZjI1NDFjNjRlYTMw
+QHJlYWx0ZWsuY29tLw0KDQpBdCB0aGUgWzFdLCBJIHdhbnRlZCB0byBpdGVyYXRlIHNrYidzIGlu
+IHJ0d2Rldi0+dHhfcnB0X3F1ZXVlLCBhbmQgdGhlbiBjYWxsDQpydHc4OV9jb3JlX3R4X3dhaXRf
+Y29tcGxldGUoKSBpZiAnd2FpdCcgZXhpc3RpbmcgaW4gUlRXODlfVFhfU0tCX0NCKCkuDQoNCkkg
+dGhpbmsgdGhlIGlkZWEgaXMgc2ltaWxhciwgYnV0IEkgbWlnaHQgbm90IGhhdmUgY2xlYXIgcGlj
+dHVyZSBhdCB2MSByZXZpZXcuDQpJZiB5b3UgZmVlbCB0aGV5IGFyZSBjb25mbGljdCwganVzdCBj
+aGVjayBhbmQgZGlzY3VzcyB3aXRoIG5ldyBjb21tZW50cy4NCg0K
 
