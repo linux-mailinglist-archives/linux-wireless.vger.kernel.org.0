@@ -1,84 +1,104 @@
-Return-Path: <linux-wireless+bounces-27970-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27971-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485A1BD9AFA
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 15:24:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0C2BD9BC3
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 15:33:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 369954F831B
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 13:24:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6783A189085F
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 13:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC83314B8C;
-	Tue, 14 Oct 2025 13:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6EA2D248A;
+	Tue, 14 Oct 2025 13:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="FDLpWcw0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hRvpWAu1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA966314B6E;
-	Tue, 14 Oct 2025 13:21:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0763D2D8DB5
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Oct 2025 13:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760448108; cv=none; b=pPNXt+CTWlYs+dreLYr0UDjp16SNB9OUfl2RU2WorprIFW0/Ms10q/OFfAhzyaIXsK7ZY6YXgyJItYVLmqJcvaeBpSUi0p5O6+wIOOHRwoZF1y4TFoU3j0XVkhcu1ajUoHJN+u3rC+i2MOUVIQsXDnWJGn2C8JOYXk2KhCXjBTM=
+	t=1760448552; cv=none; b=r1UaM0u98Ba1TcjJhnRlpRTKn/xWU5AcFt8ucLS/LUCZAEiThuzsBi8OlXSgLMc4ZPiia1XR7fco7mWbE58kFEGNcKwnrDqO7pY45x2ymXnkCsSSh2Loq3Z369v/7L/W2T0lA5cSw/O5gCCiYN2lyk3iuk7haHvqvdzArMddTJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760448108; c=relaxed/simple;
-	bh=zCgNIkIe81eviywn2khOOfKzvpgqFCye5+tn1JB2k8U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kSoQ2wUG+oPNGqUKIMJP+LasvXYzTn7qzQyapGppL2NA513c+NN/Vca57TNjUGmIzNQTFQ/C3IIjRYEX7GV/G90Wl5oUwqq1jK0A3C0jVSxcrcVCbqko4qiVDhTfxWL4NJ8NiLrfCSrT/CilJ/I6prRa2XU+lJoqXRu9WfbEbNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=FDLpWcw0; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1760448105;
-	bh=zCgNIkIe81eviywn2khOOfKzvpgqFCye5+tn1JB2k8U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FDLpWcw0QdVM7FZLv7GALWkFRQzRz88Rz/7SCz38RKgob7fEVhvcWSuo/lCAJJJg9
-	 uCYNCecDlFyuYrFMeQDRbTtSOCUXJ0r9p2wd1jIXqUbKVKm9FC58046YYpOmE6LS4s
-	 3FBi3WNJATGPXHWd+rp5QNHTBptH6vNr+XsvbonXtkyjYnso06FwSg6lN2/zzUMHkx
-	 F5pqMIX/ZLulBNiVmXsyj8uhEVaHhc1rIhBz6BhjDAYX98SiQwvGwC3cm5RU1spxGG
-	 yWk5JP5TnJkvcwcYRWjtovbL+zgHKB1Q5mO7VlMAiibduOMXzioEtvLn6EQGJa/SnX
-	 ustCBjyvJeQRQ==
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id BFBFF17E003B;
-	Tue, 14 Oct 2025 15:21:44 +0200 (CEST)
-Message-ID: <4e0d5f72-c35c-4c04-b0a0-dfcd5cb9ca59@collabora.com>
-Date: Tue, 14 Oct 2025 15:21:44 +0200
+	s=arc-20240116; t=1760448552; c=relaxed/simple;
+	bh=yrU/wVuLdmgKHx45LWjxxFJNQ2uyG8EC9y0uqLydue4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZCKTKXhhwsJWsuQkunRZrp/C2ZETq3mQPAD2F8nIsWPQk6OAn659QkfhuVLzvSpzUfA2aRDkfR1SRkKDiyZ0venz4tpzvz8H1C/O08R7W3Oi+5IjQxKgKTYItVKXFOq3lnAODX/8qYD1WD4foOIzUs4M+u4+CeN/r/vE6tRemx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hRvpWAu1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B5AC4CEE7;
+	Tue, 14 Oct 2025 13:29:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760448550;
+	bh=yrU/wVuLdmgKHx45LWjxxFJNQ2uyG8EC9y0uqLydue4=;
+	h=From:Date:Subject:To:Cc:From;
+	b=hRvpWAu13U8ZgPlwKZJ1kACJFoY1FOfAtWwgaAO5STTY4NbZUniTde/HKDDIoOpFp
+	 rNB9oIhVaM+i25hdQssI1VR44PBfyXuTQ6ws/6DzvnOVNi0IexyI8zttZI8gWyiIOa
+	 /khIwGPWg5R4+woqcJUK9HJWUY8cOO6k0rGEdX0FIPoiXaI/qsdOPzF3RohbL7hQee
+	 Goa4njmgj4mJ2R/DdrQ3NcsfFKSR3LG6/8aG3ou+UUIZ2ne6F0/IgbvTRNZRhR0zgo
+	 lwbKQ4XA/aZmpt4FjPmzYKlKO92d3dtGvkj82CYKDVDcPfgeGMee9u4/BBe/iMShcG
+	 dzL2D/tdP9f2Q==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Tue, 14 Oct 2025 15:28:53 +0200
+Subject: [PATCH mt76] wifi: mt76: mt7996: Remove useless check in
+ mt7996_msdu_page_get_from_cache()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] wifi: mt76: Use of_reserved_mem_region_to_resource()
- for "memory-region"
-To: "Rob Herring (Arm)" <robh@kernel.org>, Felix Fietkau <nbd@nbd.name>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20250813214917.897113-1-robh@kernel.org>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <20250813214917.897113-1-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20251014-mt7996_msdu_page_get_from_cache-remove-null-ptr-check-v1-1-fbeb7881e192@kernel.org>
+X-B4-Tracking: v=1; b=H4sIABRQ7mgC/x2NSwrDIBQArxJc94FKY2qvUoqIeTHS+OFpQiHk7
+ pUuZxYzJ6tIASt7DicjPEINOXUQt4G51SaPEObOTHI5Ci7uENuktTKxzrsp1qPx2MxCORpn3Yp
+ AGPOBkPZtg9IIunMfeOiRc2Unh0qy3i6ES/j+v6/3df0A4F66gIcAAAA=
+X-Change-ID: 20251014-mt7996_msdu_page_get_from_cache-remove-null-ptr-check-895006a7ce62
+To: Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>, 
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Rex Lu <rex.lu@mediatek.com>
+Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, kernel test robot <lkp@intel.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.2
 
-Il 13/08/25 23:49, Rob Herring (Arm) ha scritto:
-> Use the newly added of_reserved_mem_region_to_resource() function to
-> handle "memory-region" properties.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Get rid of useless null-pointer check in mt7996_msdu_page_get_from_cache
+since we have already verfied the list is not empty.
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: b1e58e137b616 ("wifi: mt76: mt7996: Introduce RRO MSDU callbacks")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202510100155.MS0IXhzm-lkp@intel.com/
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 9501def3e0e3e20132fdbcfe0b1f489694afdc5f..284f2eea71e5bf0a34c7fe84084d998164a31a05 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1681,8 +1681,7 @@ mt7996_msdu_page_get_from_cache(struct mt7996_dev *dev)
+ 	if (!list_empty(&dev->wed_rro.page_cache)) {
+ 		p = list_first_entry(&dev->wed_rro.page_cache,
+ 				     struct mt7996_msdu_page, list);
+-		if (p)
+-			list_del(&p->list);
++		list_del(&p->list);
+ 	}
+ 
+ 	spin_unlock(&dev->wed_rro.lock);
+
+---
+base-commit: 94aced6ed9e2630bae0b5631e384a5302c4b6783
+change-id: 20251014-mt7996_msdu_page_get_from_cache-remove-null-ptr-check-895006a7ce62
+
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
 
 
