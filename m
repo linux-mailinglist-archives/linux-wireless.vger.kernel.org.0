@@ -1,101 +1,161 @@
-Return-Path: <linux-wireless+bounces-27965-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27966-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 687BDBD73C3
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 06:23:56 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CAFEBD75D1
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 07:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22E5E3ABF38
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 04:23:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5F1E94E65CF
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 05:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E30309EF8;
-	Tue, 14 Oct 2025 04:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3035F1E9905;
+	Tue, 14 Oct 2025 05:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="tv/VyKem"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BlN/OcwJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3379D309EFE
-	for <linux-wireless@vger.kernel.org>; Tue, 14 Oct 2025 04:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A820C75809
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Oct 2025 05:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760415834; cv=none; b=op57EDm5HoUdvwmX90CdO4E+XvMXtgBPcC99IZbnFeRNvkXsbhmct7hlh1yuX1a+7sAanw1JD3aIFOG3cxvnpZVj/33R11UuOtwIDnwVnjyZpNBhPntRq0UQxwDBhCL6uR2EM//EAPysduw//bRp8ECBIE3J8V2s8c1lp+HoBZg=
+	t=1760418525; cv=none; b=kaB9xDMEl7QumsjW5zOtjj24vlYUfyWtagoQ3/nULxVACKcqZze7IKvVe74SZhVHiLrGunvGfBtvvTBX9633dhJn0Ycvmqgq/Fc7f9VkW7lGL5DAC2th00hf3T9XS1VtdzjbaPpK0BsJCalLZ87cQi6r/4dY6R9Pn22D5R65mvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760415834; c=relaxed/simple;
-	bh=lNVmhydPCgJ2LUL8u7uKwqpoDYP0zzZsX+JC1JW5MTY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=V+MxFVzB3swpax0tu2OWDrQc+VdisGb/6LDZaSwnowX0Cu/qLURcN5/1qm8Q6Stx5JEatkPcsS2r7yVXLxup+3cHLhZdHJHOZ/OeyoQ9n8mNccOZK+QHCZnuCOiKpDH8+Mc1PsqNI4oKCmwqF492HExNRa4eO75NiWkg1Ute1SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=tv/VyKem; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 59E4NljjE2703959, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1760415827; bh=lNVmhydPCgJ2LUL8u7uKwqpoDYP0zzZsX+JC1JW5MTY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=tv/VyKemBB45sUV6aOSANUEn8bfxHPIMjiTLmnggSZviXCrpa+Xfjfwm4BR7Zh+7U
-	 W8uGOWwNeeUY0QFFVlPZNqooZP7HHX+p73/8xzrq/AUpv0yGwCCny3iyfqKaekyLYO
-	 lhjPtUvtzwiM0o2ZYUQMk3UIlurfwHldhAYUBrcpoWNMrnKR7WysTD+4vUYQLj7vWP
-	 yLMFIx28qwG8IvHNsk5FAQel+MPArXudQDqOAZufO5CGERAWAm5tMlWFpn3nmoIBN/
-	 fJLEKz0S1sBUd3NtN4CmPIo/SMXpFQxFGCoP3DAcY5g2HTU+UPxXjG0+rU3inrZY/Z
-	 zIDyzPwSOuFrg==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 59E4NljjE2703959
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Oct 2025 12:23:47 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 14 Oct 2025 12:23:47 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
- 15.02.1544.027; Tue, 14 Oct 2025 12:23:47 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH rtw-next 3/3] wifi: rtl8xxxu: Use correct power off sequence for RTL8192CU
-Thread-Topic: [PATCH rtw-next 3/3] wifi: rtl8xxxu: Use correct power off
- sequence for RTL8192CU
-Thread-Index: AQHcOROTFQrJR1IL0U6V5SQ9ch0O4bTBEmVQ
-Date: Tue, 14 Oct 2025 04:23:47 +0000
-Message-ID: <8ee6d453d265451385b7c4e156c0ecf9@realtek.com>
-References: <cdbe1a18-f6f1-4575-bad9-e85db8101247@gmail.com>
- <b9d3f137-12ce-4bd9-8ada-3b8874bc3615@gmail.com>
-In-Reply-To: <b9d3f137-12ce-4bd9-8ada-3b8874bc3615@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1760418525; c=relaxed/simple;
+	bh=hiNjZwxJJo1X69EqwOZbH5S5zv0mjdM4IbnMX1cmpqw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jqrzoRdFwZOBhw4q0roR/UQtYTef4aHr4kVUBkvehpy7tcqAOG3gt6Xv69uN7suZ8Y6W55k4umpcgd/c1bt04AkET1hzTys5TqabqomQhlUPTDwvzURyut4nc+Z5VNl28OBgaKPd0/i9l7DkAAdXSL5c0eTaY9SBt/Squ+S2vJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BlN/OcwJ; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-28e8c5d64d8so45218285ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Oct 2025 22:08:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760418523; x=1761023323; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=h1w46zoCvtGYydFKbWpCCDQMNSytOz7VPd57KZ8FzLk=;
+        b=BlN/OcwJklROy+eTL1C+klhIc4KnqEDPEna9IrA6wQzyU7F9WYchz5BvNYWC8+sCp1
+         hXZDkjCtCOO7HXJMdJwPx9bqyrysWqS4jh9NcGUI3wJtefk7n+ruJPL9Nj+Ag5mQng7f
+         FotOWRq+ahjmAJb+ZF+8cMx9trRVCqtJCD/cqgVU4Q2tY15coi4A7AuOvgot67CQRD/p
+         qyuEOK5up1hhHxR3dCLRwu7mVk0vJOivZ/qwh0cqCuZMVp9e2hvynHJvud1Zm4gu95Fj
+         h4fWpjL61f+S5Txlks29Smm2vluPx3nB7VGxV9Vd+/pgzzNWacV734eXkkJZLwOTkL2C
+         QK9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760418523; x=1761023323;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h1w46zoCvtGYydFKbWpCCDQMNSytOz7VPd57KZ8FzLk=;
+        b=VTdhW4m/UCcsgdfg8QHQZ+Hg5U+8MsK5moh6YYMQb/WYZaWg25Z+07kkI376YFIyXo
+         5WsEOdI80+A5xOGLdPFeAiyHUL/Wz/UjtZBSKmLWP0xi9H0RYojBbcDjYWhJlKTUPTbx
+         gEe397TYZ29zoLtfQxGiaE9YFmyP2vcapY0On974RqH8Zmp8oyQMDnTOEHIzFCj+7m3Q
+         NnG34bQAkeJSsmMb4huFPhelx9h3538PQsydgakFo8hiwvQiRHpGw2NUVgBfZThs6JOK
+         ppiN7GT3iatB2uXpLq84W251U8+d9BJTP+MYRTfQD8G1CMtprCDdm2Nj0EIa7laFH67r
+         qC4A==
+X-Gm-Message-State: AOJu0YxD9fwcRCMXRsOIn0YpRnv9KHXLMRGncHVHv9YabZwQqt+IGe5/
+	pMPUCGuf695jvjp0Kidc+m/cDwU945CZVPIPBLnOMbQkDFByLPqa8UoPWyteIQ==
+X-Gm-Gg: ASbGnctTRJnFP/LPPLgj1T88/fMbc8sVPO2WwvegePNwWMO74eKmnjoJTQQM76MD35h
+	KiPUh5KYoywXUPi/N1lL8TBLcVb7nFzsWD/EVvxz408b7KgZp3RFz9eU2xhKdyJZNoay07gHoNm
+	JKIRLXfbkO2t8r9sPKkyhEWc+bqiUoD7xzZvmalq+dLbYeC6ROQsdAO9L0FYk6205ChrK2I06a6
+	ID/n3Wqlju2NsG/duholwEB2+08C1xqsx6wX5sm8IeiNwKRCLabHOIjLqs04xXZoh2EdF+SZYZ/
+	xCTB3qG9xwgXzjmy7G9S8DUHGmW+iupTTFTXxAuKywrEBoW3sIZsXQP4QjW6iZUKPgIBUu/oTaA
+	Mm20Wt8vgWaTyTMz9bwyYk07fjUBuF0MLtzrKr2v0pAHqcaCfpsNHsT9/WsgxLIAhJfpSqJaXpA
+	==
+X-Google-Smtp-Source: AGHT+IFBv/pjNzRJIKP7NS0jHQ2HGYXoiDJzsM3PJZaEWiyn91ehnTTQEt42pX7up1zTubYQE+UIBA==
+X-Received: by 2002:a17:903:2d0:b0:25e:78db:4a0d with SMTP id d9443c01a7336-290273eddd5mr287646635ad.36.1760418522740;
+        Mon, 13 Oct 2025 22:08:42 -0700 (PDT)
+Received: from ryzen ([2601:644:8200:ac2f::ea0])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29055badc54sm84752255ad.37.2025.10.13.22.08.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Oct 2025 22:08:42 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: Stanislaw Gruszka <stf_xl@wp.pl>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] wifi: rt2x00: check retval for of_get_mac_address
+Date: Mon, 13 Oct 2025 22:08:33 -0700
+Message-ID: <20251014050833.46377-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBSVEw4
-MTkyQ1UgZGlzYXBwZWFycyBhbmQgcmVhcHBlYXJzIHdoZW4gcnRsOHh4eHUgaXMgdW5sb2FkZWQ6
-DQo+IA0KPiB1c2Jjb3JlOiBkZXJlZ2lzdGVyaW5nIGludGVyZmFjZSBkcml2ZXIgcnRsOHh4eHUN
-Cj4gd2xwM3MwZjN1MjogZGVhdXRoZW50aWNhdGluZyBmcm9tIC4uLiBieSBsb2NhbCBjaG9pY2Ug
-KFJlYXNvbjogMz1ERUFVVEhfTEVBVklORykNCj4gdXNiIDEtMjogcnRsOHh4eHVfYWN0aXZlX3Rv
-X2VtdTogRGlzYWJsaW5nIE1BQyB0aW1lZCBvdXQNCj4gdXNiIDEtMjogVVNCIGRpc2Nvbm5lY3Qs
-IGRldmljZSBudW1iZXIgNw0KPiB1c2IgMS0yOiBkaXNjb25uZWN0aW5nDQo+IHVzYiAxLTI6IG5l
-dyBoaWdoLXNwZWVkIFVTQiBkZXZpY2UgbnVtYmVyIDggdXNpbmcgeGhjaV9oY2QNCj4gdXNiIDEt
-MjogTmV3IFVTQiBkZXZpY2UgZm91bmQsIGlkVmVuZG9yPTBiZGEsIGlkUHJvZHVjdD04MTc4LCBi
-Y2REZXZpY2U9IDIuMDANCj4gdXNiIDEtMjogTmV3IFVTQiBkZXZpY2Ugc3RyaW5nczogTWZyPTEs
-IFByb2R1Y3Q9MiwgU2VyaWFsTnVtYmVyPTMNCj4gdXNiIDEtMjogUHJvZHVjdDogODAyLjExbiBX
-TEFOIEFkYXB0ZXINCj4gdXNiIDEtMjogTWFudWZhY3R1cmVyOiBSZWFsdGVrDQo+IHVzYiAxLTI6
-IFNlcmlhbE51bWJlcjogMDBlMDRjMDAwMDAxDQo+IA0KPiBUaGlzIGlzIGJlY2F1c2UgcnRsOHh4
-eHUgaXMgdXNpbmcgdGhlIHBvd2VyIG9mZiBzZXF1ZW5jZSBmb3IgUlRMODcyM0FVLg0KPiBBZGQg
-dGhlIGNvcnJlY3QgcG93ZXIgb2ZmIHNlcXVlbmNlIGZvciBSVEw4MTkyQ1UuDQo+IA0KPiBydGw4
-eHh4dV9wb3dlcl9vZmYoKSwgcnRsOHh4eHVfYWN0aXZlX3RvX2VtdSgpLCBhbmQNCj4gcnRsOHh4
-eHVfZW11X3RvX2Rpc2FibGVkKCkgYXJlIG5vdyBvbmx5IHVzZWQgZm9yIFJUTDg3MjNBVSwgc28g
-bW92ZQ0KPiB0aGVtIHRvIDg3MjNhLmMgYW5kIHJlbmFtZSB0aGVtIHRvIGhhdmUgdGhlICJydGw4
-NzIzYXUiIHByZWZpeC4NCj4gDQo+IFRlc3RlZCBvbmx5IHdpdGggUlRMODE5MkNVLg0KPiANCj4g
-U2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+
-DQoNClJldmlld2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCg0K
+of_get_mac_address can return -EPROBE_DEFER when nvmem is not probed yet
+for whatever reason. In this case, nvmem mac assignments will not work.
+
+Based on the function path, this change only has effect for rt2800soc.c
+and rt2800pci.c. The former tends to use nvmem for assignments.
+
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/net/wireless/ralink/rt2x00/rt2800lib.c |  4 +++-
+ drivers/net/wireless/ralink/rt2x00/rt2x00.h    |  2 +-
+ drivers/net/wireless/ralink/rt2x00/rt2x00dev.c | 10 ++++++++--
+ 3 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index b312b40f4aa3..af19153697ed 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -11010,7 +11010,9 @@ static int rt2800_validate_eeprom(struct rt2x00_dev *rt2x00dev)
+ 	 * Start validation of the data that has been read.
+ 	 */
+ 	mac = rt2800_eeprom_addr(rt2x00dev, EEPROM_MAC_ADDR_0);
+-	rt2x00lib_set_mac_address(rt2x00dev, mac);
++	retval = rt2x00lib_set_mac_address(rt2x00dev, mac);
++	if (retval)
++		return retval;
+ 
+ 	word = rt2800_eeprom_read(rt2x00dev, EEPROM_NIC_CONF0);
+ 	if (word == 0xffff) {
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00.h b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
+index 0b67b09695b6..4d6437deaa9a 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00.h
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
+@@ -1416,7 +1416,7 @@ static inline void rt2x00debug_dump_frame(struct rt2x00_dev *rt2x00dev,
+  */
+ u32 rt2x00lib_get_bssidx(struct rt2x00_dev *rt2x00dev,
+ 			 struct ieee80211_vif *vif);
+-void rt2x00lib_set_mac_address(struct rt2x00_dev *rt2x00dev, u8 *eeprom_mac_addr);
++int rt2x00lib_set_mac_address(struct rt2x00_dev *rt2x00dev, u8 *eeprom_mac_addr);
+ 
+ /*
+  * Interrupt context handlers.
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+index ee667e1a7937..4af132acadb6 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+@@ -984,14 +984,20 @@ static void rt2x00lib_rate(struct ieee80211_rate *entry,
+ 		entry->flags |= IEEE80211_RATE_SHORT_PREAMBLE;
+ }
+ 
+-void rt2x00lib_set_mac_address(struct rt2x00_dev *rt2x00dev, u8 *eeprom_mac_addr)
++int rt2x00lib_set_mac_address(struct rt2x00_dev *rt2x00dev, u8 *eeprom_mac_addr)
+ {
+-	of_get_mac_address(rt2x00dev->dev->of_node, eeprom_mac_addr);
++	int ret;
++
++	ret = of_get_mac_address(rt2x00dev->dev->of_node, eeprom_mac_addr);
++	if (ret == -EPROBE_DEFER)
++		return ret;
+ 
+ 	if (!is_valid_ether_addr(eeprom_mac_addr)) {
+ 		eth_random_addr(eeprom_mac_addr);
+ 		rt2x00_eeprom_dbg(rt2x00dev, "MAC: %pM\n", eeprom_mac_addr);
+ 	}
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(rt2x00lib_set_mac_address);
+ 
+-- 
+2.51.0
+
 
