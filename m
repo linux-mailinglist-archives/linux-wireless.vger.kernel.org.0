@@ -1,58 +1,63 @@
-Return-Path: <linux-wireless+bounces-27967-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27968-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFFBBD8B9A
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 12:21:16 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5269BD8D0B
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 12:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9DCD34F0415
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 10:21:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DC7BD4FE44B
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Oct 2025 10:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4332F1FC8;
-	Tue, 14 Oct 2025 10:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB9024468D;
+	Tue, 14 Oct 2025 10:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=martyn.welch@collabora.com header.b="jBULKro9"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ImhtqxR5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A5F2EF65C;
-	Tue, 14 Oct 2025 10:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760437272; cv=pass; b=LP2XvXJ5u/+lD2BApbGXAjJcdAcBfDBjRl0rl5ixmnlrBr9E80UVW8OnMh3GgL3T+tZO5doibhQ6Q1ncYEY2qGex25sGO5Ul70u4a9pcB+mHauqmQAvu9qEwFwcKp+xp3RwLSwl4W3M1awvVcCFN7ii27xndAfoY17mNwwngy/Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760437272; c=relaxed/simple;
-	bh=in3hLsBdh9+qwcKg/2PuSAiTqvF0x2syVodOcjFvtKU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TW/Jnz1u0C30AsrKg4YfSQSbCZmU/LAiebn7AVYQ6OcezFF2N+uDkWSUeFIfxbM1VIcD2NjKqRdMkoGO3lvKd5lsj9/pBBAQW5OgZzLS5z4KQWRrG/un5X0TwUDE469/3o1utSRm54QN5RAxYVKCRZ2m3hU7imyZx3Ldtn+34pk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=martyn.welch@collabora.com header.b=jBULKro9; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1760437256; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=N45UMsbrPq2Nc6UZ7veVNt3MzI/XTA/oPGudRe6x32jIVbAlq6UIgfDTKAlOA/sFCjn0xT++G+4fhYA+LG+ykcsC8Cb995ptwT4VoBsHmIDS9m5GFW73BDl2y2UaYXpgvgWdubZtEgx4bmbEJhrneO432DYHkkmA4aV6xM/Z8jg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1760437256; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ViAhFjbrUDgTrJEB/pjJ1MaP+jKQqaLZixuuaWttkbI=; 
-	b=BP8mf5thQH9aHKUH9Mq+E9ag/LxnM6KJjDN4dKkWKhPG2Akih5Y7Joz3PduiaL6dHRaLPFvn/QayA6m63iwLJmhALwPrihA4OkXT/+BsOvLJLjXIz2Sr+3f5r5zVCXXBanZOLJHwgSCcyDHdM+oeEgQ73DyBQxQPGHK8NxMZPu8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=martyn.welch@collabora.com;
-	dmarc=pass header.from=<martyn.welch@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1760437255;
-	s=zohomail; d=collabora.com; i=martyn.welch@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=ViAhFjbrUDgTrJEB/pjJ1MaP+jKQqaLZixuuaWttkbI=;
-	b=jBULKro95D8H98pvAbY+X8GrGu9LD4jkWH4CYn7PbbbkZIqbACj3jNaRy4oP1PUN
-	XZEXymnDBGGCFmN6/ykf+FYSaqVfvxphoeHOXtLBaBCrSfDHEIgxrbxw+3Ufsi1Pi4L
-	TYuycfhrT214mt90fiSwXd3UP0gTVwIpAbf2O7fc=
-Received: by mx.zohomail.com with SMTPS id 1760437252221171.57739643098307;
-	Tue, 14 Oct 2025 03:20:52 -0700 (PDT)
-Message-ID: <83877838-1203-4e21-9612-bc43407eaa54@collabora.com>
-Date: Tue, 14 Oct 2025 11:20:44 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647AE2FB97F
+	for <linux-wireless@vger.kernel.org>; Tue, 14 Oct 2025 10:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760439074; cv=none; b=X1nJTMpB4xRzaT1OBYh7aE5aQWTVA6bu82/b/Afg9sAA/HbRCOYSClLw2R4QdL8YKxmEmD7ccsPz158Fk7REdk2jRIwCtG8qGzE4m0X2NTIYK4hirLMmP0w9Y6/oNENQtw5HJKpPlujbLL6urMY6JTaJ9PwlCVzdRVc9prVUSJs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760439074; c=relaxed/simple;
+	bh=r3SMO0hsVtpAMSQYEE8jNByy+5VAA1HUDi8Q7ydqB6s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dyIM5Bxb2jhii/aOBGnO2vv+2ArpssrbKigpBpjopSkHtsz3dtt/0d6xxaaatACXcIpRvCRaiKR0CYoqClyMTqcT8kCsKxG2RTtMB3andCNibhNr1Pvr0VsEicix+YtI1S7PmAfCoKPGUuiwf4F9v3OpPG1hFAzLaYWlR+E1dWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ImhtqxR5; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59E87JgZ030981;
+	Tue, 14 Oct 2025 10:51:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	HS/sLOlTMQ/ErfIxCptau1fJ7YiIPaYLDnJYut0AAPc=; b=ImhtqxR5dyPHLdbk
+	MlFj0o/sOeX11iE4DPOunjrPaB5ROW1SOgAuXPCp3TZ6ltdC+ca9ByXhFTG7zOvx
+	8lD+6AiRUdnCey2DeRBUOCtg2Glp9SqDPl2+KMrb3bJQX8kgLe5yinzEEJoSeTtR
+	PZ9P1/K2jbrsHspa3isiKfO2UhtABPVMQq3ney71iaKuxr34Mbb3AS7zmFVDFTs9
+	MHYKj/83C/CY6dkxB5N6J1TqT8DeB3sXC3fYtgXzyZ5L0WlaZEh0E7SZkl6Z0O5F
+	N9vhF7smOlqhmZMivVitMBpucBjtGN8kmVtiWu/TcjFYEjJlk+Rcuhdw9Ahr3cbd
+	rJHyOw==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49qff0r4q6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Oct 2025 10:51:08 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 59EAp7oq003564
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Oct 2025 10:51:07 GMT
+Received: from [10.152.205.141] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.24; Tue, 14 Oct
+ 2025 03:50:40 -0700
+Message-ID: <753a7db5-c6d1-4255-aac0-12c5b61211a0@quicinc.com>
+Date: Tue, 14 Oct 2025 16:20:36 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -60,155 +65,80 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [EXT] Re: [PATCH v5 00/22] wifi: nxpwifi: create nxpwifi to
- support iw61x
-To: Jeff Chen <jeff.chen_1@nxp.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "briannorris@chromium.org" <briannorris@chromium.org>,
- "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
- "francesco@dolcini.it" <francesco@dolcini.it>,
- Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- Brian Hsu <brian.hsu@nxp.com>
-References: <20250804154018.3563834-1-jeff.chen_1@nxp.com>
- <164050d7-e0db-4a67-bf47-6d88e80d78ab@collabora.com>
- <aOfcb3bwacg8RidH@nxpwireless-Inspiron-14-Plus-7440>
- <7c3e9c5a-2f1f-44e7-9c99-2f0a173bd8eb@collabora.com>
- <DBBPR04MB7740C33F56C41373CE6641109CEAA@DBBPR04MB7740.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH wireless-next v2 1/2] wifi: nl80211/cfg80211: Add
+ last_beacon_seen in station info
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Maharaja Kennadyrajan
+	<maharaja.kennadyrajan@oss.qualcomm.com>
+CC: <linux-wireless@vger.kernel.org>
+References: <20250812114029.23538-1-maharaja.kennadyrajan@oss.qualcomm.com>
+ <20250812114029.23538-2-maharaja.kennadyrajan@oss.qualcomm.com>
+ <89df15828ef732a32b0681a3a7a2308170d80386.camel@sipsolutions.net>
 Content-Language: en-US
-From: Martyn Welch <martyn.welch@collabora.com>
-In-Reply-To: <DBBPR04MB7740C33F56C41373CE6641109CEAA@DBBPR04MB7740.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
+In-Reply-To: <89df15828ef732a32b0681a3a7a2308170d80386.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxOCBTYWx0ZWRfXzAVJSGtBOmkB
+ UdaD2lWycZ+ffSaKoMq2xtPuvwA6Zi85dBByKipnv5Yvcg35T50pxV6S9BElytggPaaWMTxNKEe
+ UVvKHeKNROchwva0acIHYfhrv+B9pIbJbIk+U7yo1kzt6u7e5DSZiGi4nGYNb63+6sg+WBXH1+9
+ ugiNSJJQMFBCoX8+ir4AwFctua0LAApr6jpdnFItyOeW1CahvEmu4rmqqTgyYAYNLBLu+skx8qS
+ 88wL1PTa3kfGCBFW1LJW2uVELJs+lLCYNlKBKats7ky17WO58bAir6OGuaLpjXPznhtYE05kSGC
+ BiN4OImFwEnkAP1m1jYyWr2cmCP8CZjvq16oj3rFvnRRlaK9IqtwKqMna1SaxYdxBAai1wGfSMy
+ YjIybj+nsT8jt6s3HuVme+cNkxUoYg==
+X-Proofpoint-GUID: TKYAPN3klBwSFBKQe4e5kerkWAXEw8Tn
+X-Authority-Analysis: v=2.4 cv=PriergM3 c=1 sm=1 tr=0 ts=68ee2b1c cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=8VBlgJUiRuiNAbeW9b4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: TKYAPN3klBwSFBKQe4e5kerkWAXEw8Tn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-14_02,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 clxscore=1015 bulkscore=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 suspectscore=0 impostorscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
+ definitions=main-2510110018
 
 
+On 9/4/2025 2:28 PM, Johannes Berg wrote:
+> On Tue, 2025-08-12 at 17:10 +0530, Maharaja Kennadyrajan wrote:
+>> Report the time since last beacon was received for each beaconing peer to
+>> userspace. In MLO, this information is reported per link and additionally,
+>> it is reported at the MLD level, the timestamp of the most recently
+>> received beacon across all affiliated links to give a unified view of
+>> beacon reception status.
+> Is this really appropriate? We already have NL80211_BSS_SEEN_MS_AGO,
+> which is updated per BSS/link and could be used. Perhaps it needs to be
+> split over multiple values for probe response/beacon, but I'm not sure
+> that's critical?
+>
+> Also, I'd say really that "seen X ms ago" is not a good value to give,
+> and even in the BSS we later added NL80211_BSS_LAST_SEEN_BOOTTIME which
+> is far better to use since it isn't subject to drifting between "when
+> the value was taken" vs. "when the value was used" and such issues. For
+> this reason alone I'm going to reject this proposal, but I'm also not
+> convinced that something like "LAST_SEEN_BEACON" should be part of STA
+> info, when the stated purpose could be achieved with the BSS info?
+>
+>> This allows applications to detect potential beacon misses and make
+>> informed decisions.
+> Also, this really calls for extending CQM instead and having signals on
+> beacon loss, rather than userspace _polling_ for this information.
 
-On 13/10/2025 19:18, Jeff Chen wrote:
-> Hi Martyn,
-> 
-> Thanks again for your detailed feedback and testing.
-> 
->  From what you've described, this issue doesn't appear to be caused by the
-> nxpwifi driver itself. The Wi-Fi side seems to be functioning correctly.
-> 
-> To simplify things and avoid firmware loading conflicts, I recommend using
-> the Wi-Fi-only firmware with the nxpwifi driver, and letting the btnxpuart
-> driver handle its own Bluetooth firmware loading.
-> Also, I've looped in Neeraj and Amit, who are the maintainer of the btnxpuart
-> driver.
-> 
->  From your BT-only scenario logs:
-> We can confirm that the host-to-chip communication is working correctly, and the
-> firmware download completes successfully. This rules out hardware issues and
-> confirms that the UART link is functional. The problem seems to occur during HCI initialization,
-> where the btnxpuart driver reports repeated Frame reassembly failed (-84) errors.
-> 
-> We suggest that to debug this quickly, it would be very helpful if you could capture the UART
-> lines (TX/RX/CTS/RTS) using a logic analyzer (e.g., Saleae) and share the trace. This would allow
-> us to inspect what's happening on the wire and identify the root cause of the
-> "Frame Reassembly Failed" error. There are affordable logic analyzers compatible with Saleae
-> software, such as:
-> https://www.amazon.in/Robodo-Electronics-USBLA24M-Analyser-Compatible/dp/B07B8KHYDD?source=ps-sl-shoppingads-lpcontext&ref_=fplfs&psc=1&smid=AJ6SIZC8YQDZX
-> 
 
-Hi Jeff,
+Johannes, as we already have the beacon loss notify 
+NL80211_ATTR_CQM_BEACON_LOSS_EVENT in CQM, we are dropping this patch 
+series.
 
-Thanks for the information.
 
-I have a logic analyser, but those lines are running from BGA to a PCB 
-module that's 95% canned and currently I have no access to them.
-
-Unfortunately I can't risk breaking this device trying to access them.
-
-Martyn
-
-> best regards,
-> 
-> Jeff
->> -----Original Message-----
->> From: Martyn Welch <martyn.welch@collabora.com>
->> Sent: Saturday, October 11, 2025 12:22 AM
->>
->> On 09/10/2025 17:01, Jeff Chen wrote:
->>> On Tue, Oct 07, 2025 at 05:49:59 PM +0100, Martyn Welch wrote:
->>>> This seems to be working well for me, at least for Wifi. I'd like to
->>>> get Bluetooth up as well. The bluetooth driver (btnxpuart) doesn't
->>>> seem happy loading the bluetooh firmware:
->>>
->>
->> Yes, I'm currently using the wifi only firmware. If I'm not mistaken, that's the
->> only firmware that the NXPWifi driver will currently use. It appears that it
->> should be able to load `firmware_sdiouart`, but that doesn't appear to be set
->> anywhere and thus it's not considered. I tried to rename the combo firmware
->> to have the name used for the wifi only firmware, but that was failing for me
->> (more about that in a moment).
->>
->>> To help us reproduce and investigate further, could you please share:
->>> - Your test platform (SoC, board, etc.)
->>
->> Custom board based on Renesas RZ-G2L, using Ezurio Sona NX611 M.2 1216
->> module.
->>
->> Kernel is 6.17 with an added custom DT, a few patches for other hardware and
->> the NXPWifi patch series.
->>
->> Both btnxpuart and nxpwifi are built as modules.
->>
->> The firmware itself is what Ezurio provide in their Yocto layer:
->>
->> $ md5sum *
->> 6a9307d27c3bdb3bde800265056ab217  sd_w61x_v1.bin.se
->> 8a28ec7f1b77dbde0ac7568d0426c669  sduart_nw61x_v1.bin.se
->> d38935f03dbe6da7a9ac3daf58e640bf  uartspi_n61x_v1.bin.se
->>
->>
->> Looking a bit deeper, if I try and load the combined firmware, the bluetooth
->> modules attempts to load before the WiFi driver has had a chance to complete
->> loading the firmware which is resulting in the firmware failing.
->>
->> If I blacklist the btnxpuart module (and rename the combo firmware), it loads:
->>
->>> - Your test steps
->>
->> At the moment, booting and checking to see if the hardware has probed.
->> If it has, ensure I can connect to my wifi network and ensure that I can pass a
->> little bit of traffic.
->>
->>> - The exact firmware version you're using
->>
->> As above.
->>
->>> Also, have you tried running Bluetooth in a BT-only scenario (without
->>> loading the Wi-Fi driver)? Does that work correctly?
->>>
->>
->> I hadn't. Just gave that a go and I seem to be getting the same failure (though :
->>
->> $ sudo dmesg | grep hci0
->> [   40.859055] Bluetooth: hci0: ChipID: 7601, Version: 0
->> [   40.889487] Bluetooth: hci0: Request Firmware:
->> nxp/uartspi_n61x_v1.bin.se
->> [   42.850682] Bluetooth: hci0: FW Download Complete: 396444 bytes
->> [   42.850736] Bluetooth: hci0: Frame reassembly failed (-84)
->> [   44.222243] Bluetooth: hci0: Frame reassembly failed (-84)
->> [   44.230226] Bluetooth: hci0: Frame reassembly failed (-84)
->> [   44.237480] Bluetooth: hci0: Frame reassembly failed (-84)
->> [   44.247567] Bluetooth: hci0: Frame reassembly failed (-84)
->> [   44.254188] Bluetooth: hci0: Frame reassembly failed (-84)
->> [   44.263459] Bluetooth: hci0: Frame reassembly failed (-84)
->> [   44.269814] Bluetooth: hci0: Frame reassembly failed (-84)
->> [   46.280494] Bluetooth: hci0: Opcode 0x1002 failed: -110
->> [   46.285835] Bluetooth: hci0: command 0x1002 tx timeout
->>
-> 
->> Are there any BT patches that I'm missing?
->>
->> Martyn
->>
->>> Thanks,
->>> Jeff
-> 
-
+>
+> johannes
+>
 
