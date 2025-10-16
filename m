@@ -1,148 +1,149 @@
-Return-Path: <linux-wireless+bounces-27992-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27993-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB1EBE10CA
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Oct 2025 01:41:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C6ABE1248
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Oct 2025 02:54:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43ADE19C53B3
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Oct 2025 23:42:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F339F3BCB6E
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Oct 2025 00:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4968D31A7F1;
-	Wed, 15 Oct 2025 23:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E291C7012;
+	Thu, 16 Oct 2025 00:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WDUnIY7q"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="HncOOCvO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE42A31A549
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Oct 2025 23:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34F81311AC;
+	Thu, 16 Oct 2025 00:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760571635; cv=none; b=Eann6deHbTSzYO/ti32xELBEsPc5+zHXE2Dm/QCkfn8M52Ud5pVr0LQatzqV9j12718iwcU/SlxgHh9Zrfur5/36aamp9YvOk29+y3o3WHStuFLZuaG0JH4GR1ezn0zkEoetb6d4sABmHgd71GVBAa4PZorov/lq3q5e/XeySHw=
+	t=1760576080; cv=none; b=Umk3AZcO89btW3r09Wfw139Np2lmVnq8jL0nmLXXp6dOTd7XEYUHhuuxrGo15ARCs7dnClimQMXmAYVYs65RX207ZU+OI9HT5XJ61KjXfMF/Dj9b3wmABlBRcc5QK8gkMn7LopCWSdV7707m9YkGAw158UgOtjeuke5p/voVCdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760571635; c=relaxed/simple;
-	bh=CqQ0tjvrx3mT0wyvG6NSgf0BT/Shsb5Uh/9onRWU5cw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=rtvS3HC2s6n2y8fN8GGAHvugMKm0IjRqhZDR2c5WWiXbgDAf0fOqhjjhEObtUdiMnApI2e+O2OouFG/msffQTSink8x0fi+cRjVolQLHcFvyGl/wuVv5Mu4IRqyK21wCAdgmCKfMlAlpTxC/qxa7O5KVUuqulB97E0qC/OW6zfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WDUnIY7q; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59FJ22GS016723
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Oct 2025 23:40:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	JN9sVLu+a4PjGTCXxkztPeS/5WtgaxXqbM3gWtB+1Wc=; b=WDUnIY7qqTjNpsKV
-	nodmW/589QlozQjuYNSlCJbvdix6ByKfv30FJ50JeyoBYNtCsmoBIkrF/vsstNMO
-	xMzSM1K3G2zEZU9JyvKmwN7Fzq/GEkAWdo/8F02xfOWwORRndUVoxiUj/IGYagc+
-	NYIXj0JMYwxTHq6R+x7MrSsKQMiD8MCWIy1BAuDkKO6u7hmugfJg+RBb68S38sPq
-	27akgKRSjInSC8vGVbn0zsv1+7e6oDrCRCZXBKMNL2SeNZHUuE8V4WlgL0CTp7XV
-	IFrkhkoVsycV0CcpuH7LvlSAwNTBBoRPnskzl8t9oNy+YzHfNy4eyUnzf6qMmIgg
-	4MboRw==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49rtrtb7h3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 15 Oct 2025 23:40:32 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-277f0ea6fbaso1949025ad.0
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Oct 2025 16:40:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760571631; x=1761176431;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JN9sVLu+a4PjGTCXxkztPeS/5WtgaxXqbM3gWtB+1Wc=;
-        b=X8JwsZF3HacUFl+jLrwG2hD7Y0+Wy2L/kYfgO9zADeUp8k+9S/vFlEFKfEIx1EUmAb
-         6j+h619JYzflPDuKO3IDRbXdmeTymbMrytrWFUj8y7ElyBhIFvpTd8Sa9XeGKJbh4RCG
-         siUW3K7DOLq1WoFXXDI8ERfkBq6s0Z6sIiNPvNQ1ezvce1iMRlR6QEC2UIh5NgXRqTBL
-         RkaKkc1Z/8Rnu7mRg9ay7xhYDKcDEyHmZtJFZyijUoFZCOWiR01oc3No00Ig7krz1zF7
-         NmmDtdJUH7enExvKQDzZpLLEUOGiPFkvBJNC0Lfi5CrqiFG2WkjbNR0Q3l9Ot74jMhfg
-         UcPQ==
-X-Gm-Message-State: AOJu0YwkTOGgG+8tJ+dNlL5F7joHHR4i5Jh1UZBufsIhrGHPNiKdKXWJ
-	zYpAeXRn6gA+2DgllnfK1Q4gI7IEWb1j/BB8viyhG/sDd1qfWhwQ4nWp7IxqbL/kbz+QGfGgms6
-	vekYFs2Q0/myfuOXiqXDsPmcAIUEoDBaR1vN/zr70WUKKVPVTbFd1gwr1H4iYJwYL2iad/w==
-X-Gm-Gg: ASbGncvVBVJ3bDpH8hG0pf0YdE6pAXUPs4T4Cyg1wFsL3Ojxf+e/njwNj7u/3XJ48Ru
-	BlGdW7xS+HOkzTZgwEMR/qh9iZmtsoAFKOBfEF9x/2eH4d36sQRk1yAggnL09KkGSisrZga8IiJ
-	9+9U8LNiFtU8UofSx7ivW0+tYXbUP0+SkY1pbAF6OwVK5dRVvsQiRuBtSFwVHFzpylumqrpOkXh
-	PV+Hg4S/riam3L6Cc+fyw3RjQtzkHSHLuPZH3Akws0HY6g1RDFGlHkrQ/X9RiTSdceeWKYfWmoL
-	SD6OjMMpBKrr/C55PBc5p6PDsBABrnr+lMZ1PiP3EA/orXCHbIOUX1UrwmoarjANgpKGEAAIX9w
-	AnWRy+U+85TLfkOnS9Gc+aB/9FyFAQ387HWQ=
-X-Received: by 2002:a17:903:37d0:b0:28d:1936:ee9a with SMTP id d9443c01a7336-290273ed7c7mr395820985ad.29.1760571631592;
-        Wed, 15 Oct 2025 16:40:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEx9/Zjh+cw65UvBzvZIJ5TaNJbwq7xsNwcsRRA90SFXBFxs2t0VrnT2QlohmCo8U7d7vlx+g==
-X-Received: by 2002:a17:903:37d0:b0:28d:1936:ee9a with SMTP id d9443c01a7336-290273ed7c7mr395820735ad.29.1760571631155;
-        Wed, 15 Oct 2025 16:40:31 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29099a7c255sm8055635ad.70.2025.10.15.16.40.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 16:40:30 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: ath12k@lists.infradead.org,
-        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20251009211656.2386085-1-quic_pradeepc@quicinc.com>
-References: <20251009211656.2386085-1-quic_pradeepc@quicinc.com>
-Subject: Re: [PATCH ath-next V17 0/2] wifi: ath12k: fix TX and RX MCS
- configurations in VHT and HE modes
-Message-Id: <176057163051.260563.14889563082385358243.b4-ty@oss.qualcomm.com>
-Date: Wed, 15 Oct 2025 16:40:30 -0700
+	s=arc-20240116; t=1760576080; c=relaxed/simple;
+	bh=S8v4Y8Pc7brp923e59wokMQk/3V9RcozT8lbAAA4+tw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=uApzHhgi7ZmZ4BaxoafF68XrXWqN5rH6RL3jwPweDvJOHOlazRBj7vork+x98lYZikyKAYdxqZkfuWig5I22UTyz/OmIy5WMir7hYJKVMPtAMOnIcWRiepAPKrg86Jd7PJCBI0MV77SAjkO/LziFywtIC6dIUOTow1ZgLwsAkXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=HncOOCvO; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 59G0sB3Q11839849, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1760576051; bh=S8v4Y8Pc7brp923e59wokMQk/3V9RcozT8lbAAA4+tw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=HncOOCvOQRmw7EK4x1wESrFbxIpRKy9NWwqw0jtNwPhhVpvav+35+vYilHXb1k9t+
+	 Y1/JG0a9peAHIc6r2NFJXKwaVztfCEIsoxpVDq4VTyzs62DROJU/8xleo9jdgfs9Ny
+	 /8tcnUYFDmrqOlvBIY0jtwh9GiU6hxMYbcElO4iz+xy3Y3He/o57AccYsvpnd0uQB7
+	 HKJxjWwJyJ7fneNJrgFhYY01ekFpBCVg+4Utnp2S6o4rXcCiWXx+iLvsKrs6dgq5eJ
+	 ftp1jD5iISOoqzoBxOO0m3lDJiQK2aYVSdh8SJXIEspntEWSw5m3JpWwy8y0FFm69k
+	 3Dsp4ycAnUnrw==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 59G0sB3Q11839849
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Oct 2025 08:54:11 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Thu, 16 Oct 2025 08:54:12 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Thu, 16 Oct 2025 08:54:11 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::c39a:c87d:b10b:d090%10]) with mapi id
+ 15.02.1544.027; Thu, 16 Oct 2025 08:54:11 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+CC: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Zong-Zhe Yang
+	<kevin_yang@realtek.com>,
+        Bernie Huang <phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
+Subject: RE: [PATCH rtw-next v2 6/7] wifi: rtw89: handle IEEE80211_TX_CTL_REQ_TX_STATUS frames for USB
+Thread-Topic: [PATCH rtw-next v2 6/7] wifi: rtw89: handle
+ IEEE80211_TX_CTL_REQ_TX_STATUS frames for USB
+Thread-Index: AQHcM9kdfiUOXJLj/0mDvzfuYNV6NLS2Ds4ggAuk6gCAAMoPUP//5WiAgAGi3dA=
+Date: Thu, 16 Oct 2025 00:54:11 +0000
+Message-ID: <164d3319d29e4a9aa3658726ee098092@realtek.com>
+References: <20251002200857.657747-1-pchelkin@ispras.ru>
+ <20251002200857.657747-7-pchelkin@ispras.ru>
+ <b1725b36caba476ba9ee4916910d8232@realtek.com>
+ <20251014234211-4f763e2dab18fe04fbe4d95c-pchelkin@ispras>
+ <bbaaabd1631d43fdaa24b818b7ac7929@realtek.com>
+ <20251015103403-08f19f981c70546d56ebd07a-pchelkin@ispras>
+In-Reply-To: <20251015103403-08f19f981c70546d56ebd07a-pchelkin@ispras>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
-X-Proofpoint-ORIG-GUID: 6MNjGgfruuJir7NHh1ehyLBEnAq4xq5w
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEzMDAyMiBTYWx0ZWRfXw41M3LmK2YUE
- 7KM7cDeLJsi/VkGVj4nOMVJVAImNEJ0Y4geo/oI0CtH3zBP/d/Kn6ti1oP4W4MdrC2lPbJRMa7R
- jIMdsQkbWo/6B7NDfz8tybdBB0wnSi96akoht+3XJ19v4lKAiuXCgEgYn8bUS5sAazFaHxKhzoE
- zBEgbhi1TTJ4zL/rl0uK/E1ttrKNYM1VzEj+G1vQvIObDZdEI1R9imAcxIBjlWigdCyuK0USyyB
- 7z6Qx3n/LZXOHo2dMo5YMpmx6KNm9ivIARRm5J9BBO5uDbtPFaMkMMIwidMs9EnPdjvogCN2LzR
- Hq1clAcwMcZNCGeqYEE0RbBFLTFZ7Y+6SsTdcd20Dg8cb1a+Nh3prdXKx5K6FQmrP8xqeO+tAqV
- ZDaoOcdqol/hIulluJpxX5YVmQlSZA==
-X-Authority-Analysis: v=2.4 cv=SfD6t/Ru c=1 sm=1 tr=0 ts=68f030f0 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=1T_kBm5XZ40ICzLEKyUA:9
- a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: 6MNjGgfruuJir7NHh1ehyLBEnAq4xq5w
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-15_07,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 adultscore=0 phishscore=0 lowpriorityscore=0
- bulkscore=0 impostorscore=0 priorityscore=1501 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510130022
 
-
-On Thu, 09 Oct 2025 14:16:54 -0700, Pradeep Kumar Chitrapu wrote:
-> This is revision version for patch:
-> https://patchwork.kernel.org/project/linux-wireless/patch/20250701010408.1257201-6-quic_pradeepc@quicinc.com/
-> 
-> changes in v17:
->  - fix spelling in description.
->  - change wmi.c wmi.h copy right per guidelines.
->  - fix missing recalculation of v for TX MCS 160 in patch 2/2.
-> 
-> [...]
-
-Applied, thanks!
-
-[1/2] wifi: ath12k: fix VHT MCS assignment
-      commit: 8c21b32c2cc82224c7fc1a9f67318f3b1199744b
-[2/2] wifi: ath12k: fix TX and RX MCS rate configurations in HE mode
-      commit: 9c5f229b1312a31aff762b2111f6751e4e3722fe
-
-Best regards,
--- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-
+RmVkb3IgUGNoZWxraW4gPHBjaGVsa2luQGlzcHJhcy5ydT4gd3JvdGU6DQo+IE9uIFdlZCwgMTUu
+IE9jdCAwMTo0MywgUGluZy1LZSBTaGloIHdyb3RlOg0KPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiAr
+ICAgICAgICAgICAgICAgaWYgKHN3X2RlZmluZSAhPSBza2JfZGF0YS0+dHhfcnB0X3NuKQ0KPiA+
+ID4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIGNvbnRpbnVlOw0KPiA+ID4gPiA+ICsgICAg
+ICAgICAgICAgICBpZiAodHhfc3RhdHVzICE9IFJUVzg5X1RYX0RPTkUgJiYNCj4gPiA+ID4gPiAr
+ICAgICAgICAgICAgICAgICAgIGRhdGFfdHhjbnQgIT0gc2tiX2RhdGEtPnR4X3BrdF9jbnRfbG10
+KQ0KPiA+ID4gPg0KPiA+ID4gPiBBcyBjb21taXQgbWVzc2FnZSBvZiBwcmV2aW91cyBwYXRjaCwg
+IldoZW4gdGhlcmUgaXMgYSBmYWlsZWQNCj4gPiA+ID4gVFggc3RhdHVzIHJlcG9ydGVkIGJ5IHRo
+ZSBmaXJtd2FyZSwgdGhlIHJlcG9ydCBpcyBpZ25vcmVkIHVudGlsIHRoZSBsaW1pdA0KPiA+ID4g
+PiBpcyByZWFjaGVkIG9yIHN1Y2Nlc3Mgc3RhdHVzIGFwcGVhcnMuIg0KPiA+ID4gPg0KPiA+ID4g
+PiBEbyB5b3Ugc3RpbGwgbmVlZCB0byBjaGVjayBkYXRhX3R4Y250IGZvciBmYWlsZWQgY2FzZXM/
+DQo+ID4gPg0KPiA+ID4gVGhlIHF1ZXN0aW9uIGFsc28gY29uY2VybnMNCj4gPiA+DQo+ID4gPiAg
+IHR4X3JlcS0+ZGVzY19pbmZvLnR4X2NudF9sbXQgPSA4Ow0KPiA+ID4NCj4gPiA+IGxpbmUgaW4g
+cnR3ODlfdHhfcnB0X2VuYWJsZSgpLiAgJ3R4X2NudF9sbXQnIGlzIHdyaXR0ZW4gdG8gVFggZGVz
+Y3JpcHRvcg0KPiA+ID4gYW5kIHByb2Nlc3NlZCBieSBmaXJtd2FyZS4gIFRoZSB2YWx1ZSBkZWZp
+bmVzIGhvdyBtYW55IHRpbWVzIHRoZSBmaXJtd2FyZQ0KPiA+ID4gd2lsbCByZXRyeSB0cmFuc21p
+c3Npb24gYXR0ZW1wdHMsIGl0IHdpbGwgbm90IHJldHJ5IG1vcmUgdGltZXMgdGhhbiB0aGF0Lg0K
+PiA+ID4NCj4gPiA+ICdkYXRhX3R4Y250JyBDMkggZmllbGQgZGV0ZXJtaW5lcyB0aGUgcmV0cnkg
+YXR0ZW1wdCBjb3VudGVyIGZvciB0aGUgZnJhbWUNCj4gPiA+IHJldHVybmVkIGJ5IHRoZSBmaXJt
+d2FyZS4gIElmIGl0IHJlYWNoZXMgdGhlIGxpbWl0LCB0aGlzIG1lYW5zIHdlIGdvdA0KPiA+ID4g
+dGhlIGxhc3QgcmVwb3J0IGZyb20gdGhlIGZpcm13YXJlIGFuZCB0aGVyZSB3b3VsZCBiZSBubyBv
+dGhlciBmaXJtd2FyZQ0KPiA+ID4gcmVwb3J0cyBmb3IgdGhlIHNlbnQgZnJhbWUuICBTbyBhIGZp
+bmFsIHR4X3N0YXR1cyBzaG91bGQgYmUgdGFrZW4NCj4gPiA+IHVuY29uZGlvbmFsbHkgaW4gdGhp
+cyBjYXNlLg0KPiA+ID4NCj4gPiA+IEUuZy4gaWYgJ3R4X2NudF9sbXQnIGlzIHNldCB0byAxLCB0
+aGUgZmlybXdhcmUgd2lsbCB0cnkgb25seSBvbmNlLA0KPiA+ID4gJ2RhdGFfdHhjbnQnIHdpbGwg
+YmUgMSwgdG9vLiAgVGhlIGxpbWl0IGlzIHJlYWNoZWQgYW5kIHdlIHNob3VsZCB0YWtlDQo+ID4g
+PiB0eF9zdGF0dXMgaW1tZWRpYXRlbHkgYXMgaXMuICBTbyB0aGVyZSdzIGEgaGlnaGVyIGNoYW5j
+ZSBvZiBnZXR0aW5nIGENCj4gPiA+IGZhaWxlZCBzdGF0dXMgZXZlbnR1YWxseS4NCj4gPiA+DQo+
+ID4gPiBJIHNldCBpdCBjdXJyZW50bHkgdG8gOCBhcyB0aGUgdmVuZG9yIGRyaXZlciBkb2VzLiAg
+SW4gbG9jYWwgdGVzdGluZyBpdA0KPiA+ID4gbG9va3MgbW9yZSB0aGFuIGVub3VnaC4gIEkndmUg
+c2VlbiBtYXhpbXVtIG9mIDUgcmV0cnkgYXR0ZW1wdHMgZm9yIHRoZQ0KPiA+ID4gc2FtZSBmcmFt
+ZSAodXN1YWxseSB0aGVyZSBhcmUgbm8gcmV0cmllcyBhdCBhbGwpIHRob3VnaCBteSBuZXR3b3Jr
+IHJhZGlvDQo+ID4gPiBlbnZpcm9ubWVudCBpcyBxdWl0ZSBub2lzeS4NCj4gPiA+DQo+ID4gPiBJ
+J2xsIGFkZCB0aGUgdHhfY250X2xtdCByZWxhdGVkIGluZm8gdG8gY29tbWl0IG1lc3NhZ2UgZm9y
+IGNsYXJpdHkuDQo+ID4gPg0KPiA+DQo+ID4gVGhhbmtzIGZvciB0aGUgZGV0YWlsLg0KPiA+DQo+
+ID4gICAgIDEgMiAzIDQgNSA2IDcgOA0KPiA+IChhKSB4IHggeCB4IHggeCB4IHggID09PiByZXRy
+eSA4IHRpbWVzLCBidXQgYWxsIGZhaWx1cmUuIFJlcG9ydCBhdCA4dGggQzJILg0KPiA+IChiKSB4
+IHggeCBvICAgICAgICAgID09PiByZXRyeSAzIHRpbWVzLCBhbmQgNHRoIGRvbmUuIFJlcG9ydCBh
+dCA0dGggQzJILg0KPiA+IChjKSBvICAgICAgICAgICAgICAgID09PiBqdXN0IGRvbmUgYXQgZmly
+c3Qgb25lLiBSZXBvcnQgYXQgZmlyc3QgQzJILg0KPiA+DQo+ID4gRm9yIGV2ZXJ5IGF0dGVtcHQs
+IGZpcm13YXJlIHJlcG9ydHMgYSBDMkggd2l0aCB0eF9zdGF0dXMsIHJpZ2h0Pw0KPiANCj4gWWVz
+Lg0KPiANCj4gPiBDYW4gSSBzYXkgKGEpIGNhc2UgaXMgd2h5IHdlIHNob3VsZCBjaGVjayBkYXRh
+X3R4Y250Pw0KPiA+IEZvciBjYXNlcyAoYikvKGMpLCB0aGV5IHJlbHkgb24gJ3R4X3N0YXR1cyA9
+PSBSVFc4OV9UWF9ET05FJy4NCj4gDQo+IFdlIHNob3VsZCBzb21laG93IGRldGVybWluZSBpbiBj
+YXNlIChhKSB3aGVuIHRob3NlIDggYXR0ZW1wdHMgZm9yIHRoZQ0KPiBmcmFtZSBoYXZlIHBhc3Nl
+ZCBhbmQgdGhlbiBwcm9tcHRseSBnaXZlIHRoZSByZXBvcnQgd2l0aCBhIGZhaWxlZCBzdGF0dXMN
+Cj4gdXAgdG8gdGhlIHdpcmVsZXNzIHN0YWNrLiAgVG8gbXkgbWluZCwgd2l0aG91dCBjaGVja2lu
+ZyBkYXRhX3R4Y250DQo+IHJ0dzg5X21hY19jMmhfdHhfcnB0KCkgY2FuJ3QgZGV0ZXJtaW5lIHRo
+ZSB0aW1lIHdoZW4gdG8gZG8gYW4gYWN0dWFsDQo+IHJlcG9ydCBpZiBldmVyeSByZXRyeSBhdHRl
+bXB0IGhhcyBmYWlsZWQuDQo+IA0KPiBPdGhlcndpc2Ugc2tiIHdvdWxkIHJlbWFpbiBpbiB0aGUg
+cXVldWUgYmVpbmcgdW5yZXBvcnRlZCB1bnRpbCBIQ0kgcmVzZXQNCj4gdGFrZXMgcGxhY2UsIHRo
+b3VnaCB3ZSBhbHJlYWR5IGhhZCBhIGNoYW5jZSB0byByZXBvcnQgaXQgYXMgZmFpbGVkLg0KDQpH
+b3QgaXQuDQoNCkJ5IHRoZSB3YXksIEknZCBsaXN0IGNhc2UgKGQpIHdoaWNoIFRYIGRvbmUgYXQg
+OHRoIHJldHJ5IGFuZCBjYW4gYmUgaGFuZGxlZA0KcHJvcGVybHkgYXMgd2VsbC4gDQoNCiAgICAx
+IDIgMyA0IDUgNiA3IDgNCihkKSB4IHggeCB4IHggeCB4IG8gID09PiByZXRyeSA4IHRpbWVzLCBh
+bmQgZmluYWxseSBkb25lLiBSZXBvcnQgYXQgOHRoIEMySC4NCg0K
 
