@@ -1,105 +1,167 @@
-Return-Path: <linux-wireless+bounces-27995-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-27996-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296F7BE2713
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Oct 2025 11:40:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C90EBE5964
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Oct 2025 23:44:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F1388502804
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Oct 2025 09:37:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57BD519A82EC
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Oct 2025 21:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F60C3191AB;
-	Thu, 16 Oct 2025 09:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B74E2D9EE5;
+	Thu, 16 Oct 2025 21:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="AzvnOVGo"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="D2im+KXj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4327.protonmail.ch (mail-4327.protonmail.ch [185.70.43.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9758C31A544
-	for <linux-wireless@vger.kernel.org>; Thu, 16 Oct 2025 09:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3844B201004
+	for <linux-wireless@vger.kernel.org>; Thu, 16 Oct 2025 21:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760607276; cv=none; b=eNn9nrSvEeu3/9lH3UR1NvP/tCkq3ZjHe4c3CtjIoM6SCCsDV+ukTYlOLGYPXDcYCOQvD87urjC56F97h3WODTIT6h8INFIwNs7fVOxhJ0sqYncf6F2eVUTViQ/I2DSr41gY03l9qbOLbvDQGhJhkvKghNr6W4vq2bf3/DBKf60=
+	t=1760651059; cv=none; b=oNuiqEG6nItdzBuDUtAziQHRa36inWJg4Xh5hWnGoGggVAhftgcjm/DxEA5+fCmPJlZg76NTXeD7sOpndOv/C6hssXOtO2f6YZ38KbfMKtHOBSw5apXeYdKhmjiuUiXENnkg8llsUkf9UNp6RRoXwuFiyeHFW1FocmyrF0wWt30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760607276; c=relaxed/simple;
-	bh=ukUP9Gub5S3CFm/7Z681FtIY90ovj4unaCC6QPHHDKA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X9ikd3ECFkw56rnF1et3Scr/S9oXlvC7aTJ8/9eeDw3gjqCFl9YAGr3ukkQu7QWlLYBn3GipnSpGZ/brHTItliISauyUftJP3kXFPDRsZoyhU+WGp80het1XLNEx8aGfSsoXnevPmgZk22SbWX9J7r0E+hYv2aKJH/1hNXUP654=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=AzvnOVGo; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7811fa91774so502487b3a.0
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Oct 2025 02:34:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1760607274; x=1761212074; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1lXSqc6ztdc/gaHXPdaYXTLqiiANaESgHFbEEhkOO24=;
-        b=AzvnOVGoQIegxe4WnXSX87wtPVs5A5NBaEPECsTpJRoTUHnYsasqeGH+Rv804qxtrY
-         0+na3ZZPa72cNK870X70lPr3OzejOSF3Kz/OpvIGxlWjCOxJUgITOt1qUlJL/POL1MHD
-         VmfzOcZ2YgRVeH87fsJ2UVEipRTn5SIMJXAgCtaIKi91ZZm3CE9IMoVceTVhPty2SBwA
-         Os1z5Usqe4if+4kNLtIfPqNDtmuCAKu8RfeEVETk9Iq1nISJc46QLQH83aNFIe3wbXCK
-         VTJeIWm76pXP7UCgRiHqGK1LVZZlM9HeigRCWBwcdzFcxdc4glZMWwlA9a/TIwDjLW5K
-         8wwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760607274; x=1761212074;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1lXSqc6ztdc/gaHXPdaYXTLqiiANaESgHFbEEhkOO24=;
-        b=h/nlVw3ukpslFeR3rMMBlue17LpX+xX5NY7zMdF/kc+HeQ1vBCiOjKXM4eSw9gIHnN
-         mp9pGjM2yXIerJchIlftcfO++sJ3eRfaUMyXICmMP8VggKb4RdnUeCN2018VR6FA5tZa
-         hD9WnhM8jjIQaEsqqH4JvyAF57qqJZfCRxuILsjOfIKEwhNCFUnADANbZX05FhzscOP+
-         9DceO4PXzVx+Ojqm7wxYhfG5MOG0Mvim43w+zRAvnFJFUWaxPdZGN14AKfBiHw/ZqgCZ
-         DeWXpIqCNal+rKdntUqJNIXiaToMeuprsnXRZzSanu+/X8L6/0fVuFWtxuxoYuzR3uiD
-         HtdQ==
-X-Gm-Message-State: AOJu0YzO7O1wy0EsIOBm1JLkFn8OMzaOm9Xdmtog3od8uJUcDWPYJMDW
-	29es3DSQKOfjD0y7CMgf7fJKyf032+fMnQ24SKEvhuU+HvuRwqrHJN1CtcxpVjmE750KarKVb1V
-	zjFzyDP4=
-X-Gm-Gg: ASbGnctR8+2DnWF+UE3YK5XXeYviyk43qGY0nPYV13QXLRHeeB/whG/ihiLgoLD9xSK
-	HSolFqJxU2nvwyzhet/ArTzrkp+UVoXjNUrS75S/GK509s0X5gzPUbZ+98bs7IXV4WbEar7jZrv
-	h8V9qSzKD1mlORTTHiC9/xrFYT9q4uCSHeKwQ9SNyQoa+qdb4f/+9Ps+OaHHOhwwEqEL41OP4W7
-	vw9gHE5WKSghIQC4NyHmBqw0qLWWroHUuqhedk+UokRw0MXO70NKK0lscN5V+1sPrmw1AMcQ8+c
-	Dqrv+seVl0BD4XITd91zp5257ZaiN1BdYovW/tauG43e2FwTkNlr6smHr7D2J45X/ctIgXKRnr/
-	RGMVi6C1lzmb3V7nfyixf4gJiifIBsmTmDD4oIuBWbBGXkyVYFOXKnMc114HftHoLZT3wn71M8P
-	rp21JSsbiq7qlP4SVs2w==
-X-Google-Smtp-Source: AGHT+IF0uqg1OehBE+UGEzYh27PaO9U8LZjXW4AlrD9RNfWJYWCT5fbF6mgFS7fXtrIuzqsarQBf4w==
-X-Received: by 2002:a05:6a20:9787:b0:334:988d:a9a1 with SMTP id adf61e73a8af0-334988dadd9mr2644842637.16.1760607273861;
-        Thu, 16 Oct 2025 02:34:33 -0700 (PDT)
-Received: from localhost ([1.145.24.210])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a22b7866csm2181126a12.19.2025.10.16.02.34.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 02:34:33 -0700 (PDT)
-Date: Thu, 16 Oct 2025 20:34:30 +1100
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Subject: Re: [PATCH wireless-next] wifi: mac80211_hwsim: update S1G channel
- list
-Message-ID: <ir77qmw6omyeh3gy5xphdexdioicval66ps7twovjcyzdxju4q@ijcoeappjknj>
-References: <20251008013903.219169-1-lachlan.hodges@morsemicro.com>
+	s=arc-20240116; t=1760651059; c=relaxed/simple;
+	bh=E1ebM1D7a9YZg3kfHFk8oGlhjCVfD448OsvpiIi9UWo=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=W3k1SB+AQFXeVV+5M9A3lfuf3+2xIQtPX/2T0gJDgTLZrQP3MogH60L4Z3k/6SqXeguoPRWAgig+DV572ViptEoFmcjj0OsDvE1fOEvq0n6AO65qDJJNSy9CpHessb6h3dVs6ePDrhAo4Gx6wRFupBE4u5j2pNxwPlGlAxmcvtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=D2im+KXj; arc=none smtp.client-ip=185.70.43.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1760650370; x=1760909570;
+	bh=E1ebM1D7a9YZg3kfHFk8oGlhjCVfD448OsvpiIi9UWo=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=D2im+KXjtyk128l1EjhYfeE3fUEBvV3sr5XjBJ8fcqFpgMw8/pviCO3w8HVr/bg/b
+	 TO5zoaSIAMnIiOCtPdDiEGUWCm+uHg0h4wqkCscSDkTe08D+oUcTn13jfCcs9XRIR0
+	 RG02DnAGOe6TtaK53licQTsHaVKlOO1F/OifCZ1Z1oZKf0c7od2IvXAVzlFZEx0duC
+	 zMR0GXJnC1syijr36TeU3svRmfpAvn/hdDseVHJqAbn4ST2bK679dhWwThA8XMWN5v
+	 M1UE59qr28ATUjMMevj6d6NzPV6XPDgXirDnTcG0heGswZGU6DcdPDIAsLnk/TzUYP
+	 NDM+Q7CHkQd4A==
+Date: Thu, 16 Oct 2025 21:32:42 +0000
+To: "pkshih@realtek.com" <pkshih@realtek.com>
+From: Samuil <samuilsgames@protonmail.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RTW88 USB Wi-Fi Adapter (8822BU) Disconnects and Fails with USB Write Errors - Status -71 & -110
+Message-ID: <zjR8G0R1ZUFe9h8_ibO-LWc9OOJyMThA9jp9ftYbETLG3IN0cHPvhCAaC9ypGKPbapsbzTH5VqnDhFcX93GkwnG1BEyETplFQmRiGGshBz8=@protonmail.com>
+Feedback-ID: 26992803:user:proton
+X-Pm-Message-ID: f2bc95de633ee915683afa61d0dad0d276adb263
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251008013903.219169-1-lachlan.hodges@morsemicro.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 08, 2025 at 12:39:03PM +1100, Lachlan Hodges wrote:
-> Update the mac80211_hwsim channel list to represent what cfg80211
-> expects drivers to advertise, that being 1MHz primary channels.
+Dear Sir or Madam,
 
-Hi,
+My TP-Link Archer T4U (AC1300) Wi-FI adapter has not been working properly.=
+ When I first boot the system, the device is perfectly operational. However=
+, after a few minutes it disconnects. In GNOME the whole WiFi GUI is bugged=
+ after that: It shows that I am still connected but I can't turn off the co=
+nnection or do anything. `iwctl station list` also runs indefinitely withou=
+t ever showing info. It seems like iwd and NetworkManager are blocked by th=
+e RTW88 driver. When I try to turn off my PC in this state, the driver erro=
+r blocks my OS from entirely shutting down until I unplug the WiFi adapter.
 
-Please decline / defer this for now.. I have found the recent S1G channel
-changes _may_ require some more work / refactoring so lets keep hwsim as is
-for now.
+Keywords: networking, rtw88_8822bu, wifi
 
-lachlan 
+Kernel version: 6.17.3 (latest stable)
+
+Most recent kernel version which did not have the bug: 6.11.*
+
+The Journal shows following error message during boot:
+```
+Okt 16 22:10:05 batcomputer kernel: rtw88_8822bu 1-4:1.0: write register 0x=
+c4 failed with -71
+Okt 16 22:10:05 batcomputer kernel: usbcore: registered new interface drive=
+r rtw88_8822bu
+Okt 16 22:10:06 batcomputer kernel: usb 2-4: new SuperSpeed USB device numb=
+er 2 using xhci_hcd
+Okt 16 22:10:06 batcomputer kernel: usb 2-4: New USB device found, idVendor=
+=3D2357, idProduct=3D0115, bcdDevice=3D 3.00
+Okt 16 22:10:06 batcomputer kernel: usb 2-4: New USB device strings: Mfr=3D=
+1, Product=3D2, SerialNumber=3D3
+Okt 16 22:10:06 batcomputer kernel: usb 2-4: Product: 802.11ac NIC
+Okt 16 22:10:06 batcomputer kernel: usb 2-4: Manufacturer: Realtek
+Okt 16 22:10:06 batcomputer kernel: usb 2-4: SerialNumber: 123456
+Okt 16 22:10:06 batcomputer kernel: rtw88_8822bu 2-4:1.0: Firmware version =
+27.2.0, H2C version 13
+```
+
+When my Internet cuts off, these messages pop up:
+```
+Okt 16 22:11:55 batcomputer kernel: rtw88_8822bu 2-4:1.0: firmware failed t=
+o leave lps state
+Okt 16 22:12:04 batcomputer kernel: xhci_hcd 0000:02:00.0: WARN Set TR Deq =
+Ptr cmd failed due to incorrect slot or ep state.
+Okt 16 22:12:04 batcomputer kernel: rtw88_8822bu 2-4:1.0: read register 0x8=
+a4 failed with -110
+Okt 16 22:12:05 batcomputer kernel: rtw88_8822bu 2-4:1.0: failed to get tx =
+report from firmware
+Okt 16 22:12:05 batcomputer kernel: rtw88_8822bu 2-4:1.0: write register 0x=
+8a4 failed with -110
+Okt 16 22:12:05 batcomputer kernel: rtw88_8822bu 2-4:1.0: read register 0x4=
+c failed with -110
+Okt 16 22:12:06 batcomputer kernel: rtw88_8822bu 2-4:1.0: rtw_usb_reg_sec: =
+reg 0x4e0, usb write 1 fail, status: -110
+Okt 16 22:12:06 batcomputer kernel: rtw88_8822bu 2-4:1.0: read register 0x1=
+0c failed with -115
+Okt 16 22:12:07 batcomputer kernel: rtw88_8822bu 2-4:1.0: read register 0x4=
+c failed with -110
+Okt 16 22:12:09 batcomputer kernel: rtw88_8822bu 2-4:1.0: write register 0x=
+4c failed with -110
+Okt 16 22:12:14 batcomputer kernel: rtw88_8822bu 2-4:1.0: rtw_usb_reg_sec: =
+reg 0x4e0, usb write 1 fail, status: -110
+Okt 16 22:12:14 batcomputer kernel: rtw88_8822bu 2-4:1.0: write register 0x=
+4c failed with -110
+Okt 16 22:12:16 batcomputer kernel: rtw88_8822bu 2-4:1.0: rtw_usb_reg_sec: =
+reg 0x4e0, usb write 1 fail, status: -110
+Okt 16 22:12:18 batcomputer kernel: rtw88_8822bu 2-4:1.0: rtw_usb_reg_sec: =
+reg 0x4e0, usb write 1 fail, status: -110
+Okt 16 22:12:18 batcomputer kernel: rtw88_8822bu 2-4:1.0: rtw_usb_reg_sec: =
+reg 0x4e0, usb write 1 fail, status: -110
+Okt 16 22:12:20 batcomputer kernel: rtw88_8822bu 2-4:1.0: rtw_usb_reg_sec: =
+reg 0x4e0, usb write 1 fail, status: -110
+[...] (goes on like this for a while)
+```
+
+When I shut off my computer, these messages pop up:
+```
+[...] (repeats for a LOT of times with marginally different mem addresses)
+Okt 16 22:19:04 batcomputer kernel: xhci_hcd 0000:02:00.0: Event dma 0x0000=
+000105a9e110 for ep 0 status 4 not part of TD at 000000011fd2bd30 - 0000000=
+11fd2bd50
+Okt 16 22:19:04 batcomputer kernel: xhci_hcd 0000:02:00.0: Event dma 0x0000=
+000105a9e110 for ep 0 status 4 not part of TD at 000000011fd2bd90 - 0000000=
+11fd2bdb0
+Okt 16 22:19:04 batcomputer kernel: rtw88_8822bu 2-4:1.0: rtw_usb_reg_sec: =
+reg 0x4e0, usb write 1 fail, status: -110
+Okt 16 22:19:05 batcomputer kernel: xhci_hcd 0000:02:00.0: Event dma 0x0000=
+000105a9e110 for ep 0 status 4 not part of TD at 000000011fd2bdf0 - 0000000=
+11fd2be10
+Okt 16 22:19:05 batcomputer kernel: rtw88_8822bu 2-4:1.0: rtw_usb_reg_sec: =
+reg 0x4e0, usb write 1 fail, status: -110
+Okt 16 22:19:06 batcomputer kernel: xhci_hcd 0000:02:00.0: Event dma 0x0000=
+000105a9e110 for ep 0 status 4 not part of TD at 000000011fd2be20 - 0000000=
+11fd2be40
+Okt 16 22:19:06 batcomputer kernel: xhci_hcd 0000:02:00.0: Event dma 0x0000=
+000105a9e110 for ep 0 status 4 not part of TD at 000000011fd2beb0 - 0000000=
+11fd2bed0
+Okt 16 22:19:06 batcomputer kernel: usb 2-4: USB disconnect, device number =
+2
+Okt 16 22:19:06 batcomputer kernel: xhci_hcd 0000:02:00.0: WARN Set TR Deq =
+Ptr cmd failed due to incorrect slot or ep state.
+```
+
+Thanks for the help in advance!
+
+Best regards,
+Samuil
+
 
