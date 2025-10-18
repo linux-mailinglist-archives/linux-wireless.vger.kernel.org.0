@@ -1,145 +1,169 @@
-Return-Path: <linux-wireless+bounces-28042-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28043-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D202BED2B4
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Oct 2025 17:38:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6685BED7EB
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Oct 2025 20:46:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 231F342016F
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Oct 2025 15:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1950E19C1317
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Oct 2025 18:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CFA21CFEF;
-	Sat, 18 Oct 2025 15:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804D6268C73;
+	Sat, 18 Oct 2025 18:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ALFHQtyO"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WsGk7o34"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f100.google.com (mail-io1-f100.google.com [209.85.166.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABC2147C9B
-	for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 15:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8B17DA66
+	for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 18:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760801911; cv=none; b=PgENIEA8FTBDnCU4N8MVa2kih581t+WdRf/m2EKbOJWIJygfC8u5tR8h46HRJsJhSNPSR5zqTYWkqEgoMpMevH78A7yI3ZgnsaS+wll6QbXxwnCYz0auMuGtdRo9fRw/1NQNZo3dlyr66+Btd/oL7cVBxyW4F9sajOtHhlvepag=
+	t=1760813208; cv=none; b=SxBiQCb9v5SAl8wV+XHiWFuOVCt8mRkVtfw7b6HcSbjIKD4R69ojmtwJbDq9QgAaIKBHxLqOVqmXFloEh2YhA66S769dWqdoTHBUwn38eRxOMNRG0y9ekB35hDUF+QQN94SQ3fs02pWVEJF4AyFQVvoXOUVANCw2kTYQuXA8fC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760801911; c=relaxed/simple;
-	bh=WK62ob4AeK+YG/Lzd0HTAcgVyqGd0czUP29w8h+GAgo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=BnbP4T7nnVKPq7LswJLA2b8mDjnB5NFNxATJFVnkb1DgKhBSZfb5dUnmBB+BJva9ltfFZqZ0Od1NQwyRnTwDFLVCp6NERPucamJEZfNALfam138FoSo9s3mKINiHngcPPyN0be8pccUDNtJY1kQtsVFXaR+DhGQSu4XkWWZE0Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ALFHQtyO; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59ICpx1V001363
-	for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 15:38:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	tTJZQzKPDxO/ZOg051psoNPOywl2B+7guIEa9xKApMw=; b=ALFHQtyO9QLI3zZf
-	C4jR9dlz4bk5ppVM6lteSsO0ml2VbzLNHs1Vxrn7VDKKYIOjCOhyP350iV1dUbTc
-	Qr8sb9mcI7gn7H8SvmWtNHGskSPvgL8kdLcBjWWKsYBsRJXHvLGm46Y8zneDvSOF
-	jc2EVwnPDD2LVLyD3eSXUnRP367+j3JyWO9++BuC3B6nWgtzF7sk1SeJtrRr2/dh
-	2LE7kckEg3+xVbQnN8y4C/+h7txQhKwZJwSwc6Go4/WozKUaC3H0WX99Zkgtig/l
-	KQ2Jqhib3BfkgiY58o40hAh904rQTfvq0vZz3zsiO/EDppFYyA1Mma94dxp1gjT1
-	Jda0PQ==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v1w7s0wk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 15:38:29 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-28eb14e3cafso54268635ad.1
-        for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 08:38:28 -0700 (PDT)
+	s=arc-20240116; t=1760813208; c=relaxed/simple;
+	bh=so63KevQGBFjL9THsiWOunsT5D2s0Nr7Jnz3dwCnGzw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=W72xV+6GANTGsTxb3Gs5/3/fAUvgzYeEsAjkN6sPQllYk28oN0wzAC0NUa103UwqAoEIM/nukdONPhXqaw5wbjAksdRx34i0gvKLDej894MRayIVVwTqGYG2YzEBfTyj1vRTuCFxNu51D0t1yDqaBaSTa9y1D+smbwYQoRRSfFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WsGk7o34; arc=none smtp.client-ip=209.85.166.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-io1-f100.google.com with SMTP id ca18e2360f4ac-937b40137b4so167308739f.0
+        for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 11:46:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760801907; x=1761406707;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tTJZQzKPDxO/ZOg051psoNPOywl2B+7guIEa9xKApMw=;
-        b=eAJm3leMgeS7FTPyzF0mQqP2/qe1MLV4ulv8wT0QfvwrbkbIedbjxRJIxRHGuGZ7h7
-         Z3ezJeR6Xcn++/MJzw4PO1iclJ4WXmM0VGJO6z5dESjwhSlqayoIyTMA4oItDpTikHQ9
-         gKDIGJFqTKORH1V9B8ywqwSkImloo8Bdm24Y2No+oeENC4ih7QiPvBUTXRiVMxRZac/V
-         12TD8SnTR/Yp07pPB+KBn5TYGkfNI6q4wzGEhha8XJgqS8LbjVaqlMbif5QHkSDW1MUe
-         Ui6GBT/69e5j/SNO9+VU2vruifP/GvNEdFhWeUf0+jJx2Wp0Apg61umvPVRpmUxtKnR3
-         yimg==
-X-Gm-Message-State: AOJu0Yz/rLXDbRewhq/samBBkBHvir7GxnPY5zloSgrRQ7ycamQspVzx
-	jddiSab+5PWv+dB/iqKx9rFCe1HSm2blYzqmpo2tiNqEas9tL6lz9usK+o+CcE5CplQz3uCC7RV
-	qU1nFdS80MsYcf1C7M7Fp1M4tHTZg6YuYtQ8UqvG26pzaGlmWZTKp1peO7ziNDZSxgn/Dj3AXFb
-	B2eg==
-X-Gm-Gg: ASbGncvyeB4Ziitf1KQANu8vYkmFAXhcVrnEjfvNRb15tPxJcmXvC2P1ACvFrb4s2tq
-	2U2OHwybub8Z2u31/jD247z58sdemjUNxk6SB133d4F8YNiYsiFtFOIlxraDAOXN5/8Ibd7Q7dd
-	VrXdg3LWT+gSlAnjCKKaLLCyXua+tPMDgezyov0gqodbuhq1BosHU3t2y+ALhoXAa3l2HY4DDOf
-	0271o7UEFj0rOaWIn52Oe9mk7P1NkR1f2B9TEW0joauO7aQ6uT6Ud4NU4tnA2errx/n9dtAKjvm
-	CZbeofsUXlUYGWq6zCVIJsSBT565r6oa8Eun+raml/0rxkJMcmVTvLIE9Q/phWhqY2MLBPEzWh+
-	c+UJU6H/sOBq0g3ndiQQ4qYQrhW7WaUhuFFg=
-X-Received: by 2002:a17:902:c943:b0:290:ac36:2ed6 with SMTP id d9443c01a7336-290c9d1b907mr106269995ad.14.1760801907604;
-        Sat, 18 Oct 2025 08:38:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGB3O19xCI68MiNuktLQKUvkcvzqeLpea4bfKPkKFnzOz1BRXIF6Sf2snzCwqAohNlPYTUtzg==
-X-Received: by 2002:a17:902:c943:b0:290:ac36:2ed6 with SMTP id d9443c01a7336-290c9d1b907mr106269675ad.14.1760801907170;
-        Sat, 18 Oct 2025 08:38:27 -0700 (PDT)
-Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a7664a228sm2999109a12.4.2025.10.18.08.38.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 08:38:26 -0700 (PDT)
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-To: Jeff Johnson <jjohnson@kernel.org>, Takashi Iwai <tiwai@suse.de>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org
-In-Reply-To: <20251003082955.11436-1-tiwai@suse.de>
-References: <20251003082955.11436-1-tiwai@suse.de>
-Subject: Re: [PATCH] wifi: ath12k: Add MODULE_FIRMWARE() entries
-Message-Id: <176080190653.1665595.13835656196130660579.b4-ty@oss.qualcomm.com>
-Date: Sat, 18 Oct 2025 08:38:26 -0700
+        d=1e100.net; s=20230601; t=1760813206; x=1761418006;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:cc
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:dkim-signature:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=JrkmJIXKp7kFfOk4QDLOiZNg8PV8Dbo0hsP+gg8GAyM=;
+        b=rG36aEHNwmHZLNRm6zN78BrzSavRKw6fgyK2Z3cNKtHVTiOsowG43Z63NPZmbm24qg
+         eSKa4i/u0w71wNBcK0uV+4JJGChG5VJLXX2YGyotrUL30r14mMM/MxMWNjY7nzFvVuSK
+         peOkyGQhjpgzfcFSKkG3DOkc4kJWhzp+3cTTAvl9Mc4EPqU8jYrCCv5Dc0vmXDtuuhGQ
+         00JmCQQbh5O7Lg/lC86rp23tufgKtwjmGE1T5Nu9TwtMUEwZvafuu8JqwKGL8rJMFRQK
+         l1a+9cCFHiXC5M2rECLpiSt1IWIWOA9LzTs2wIBi2frulkhS71TNS6Eaf4eM3M8GgSBs
+         2k9w==
+X-Gm-Message-State: AOJu0YzEquahiryOAdmj8GmLL8lAMP8T1XpEh8AC4kSL8wHLKFr8LQpD
+	u6r+Tez+ZrD1JNUxDWKoD8+AK1j4/Sl3+RW7eEucTzG6db5p5tvwzcq9VJl2WxfuYnozok89NME
+	mvJy2QP6MBm5cDKGHsVXAc7g/bSizAvR/eyd0zOeHMJbasfIEVTLpso/n9NhbzAfiAeHmS+zccy
+	XI3s76teSaPAUTaMX+z300pFIweuxYORRZ0GdnF647cidAKWZa6JFdZhDc8vN4DM0pUiumQk2mc
+	Ml4LDrQu9a5X5fYapTob8ju8EqekZE=
+X-Gm-Gg: ASbGncvhjgTxftm6MZmqsgMiFGpYyqFIpn7Ko/BxlKA+TIAPlq69q5YCwCvrENSLIAl
+	OGyssyxSHbYBpQV9RGvrvEB5hz2PABzFZzRIonOCnnYZ7j4lBq9upp7sT64OQTAg/ZDZV1OjBYK
+	UCfJa6oGV9vy9dU3ewbxR9pf2Ef1Rb0zex34IB4S5oBwOM6RI1/2lLHBPAfaK+41+y2F7iUg7xE
+	XEwA3CmqDgY62n3d9Ig4qaOPUp2sDD/rfWqeHrXNatfqLX8azeTbG3uc4QA1p7DgzP0fqy+j4g2
+	aqkECaLdQrpNcIV0Fztp06wI15Sk4zsCAFUWtK7I25lCNXZOOOx00mxDGTWpp7OnFsFtSk3s+FA
+	0vEvYxciUyIGGOuD+wMV1yeUSU4XBGCImicgHodG7rbGSPvmPsLGUqRCHEQDZ4iImjfUhhtkKJn
+	nkbtE2AASIWMki7OFcYXAIViHZvvAlvN5kXq3F6g==
+X-Google-Smtp-Source: AGHT+IG4DFOau67gh3tYUwW++VlkCfMO5M3Wxwdsd0oG1tYrqfUtN0Zm8pIdi29+0pfciYgqHsAdD7hB8jWN
+X-Received: by 2002:a05:6e02:18c9:b0:430:c8b3:39d5 with SMTP id e9e14a558f8ab-430c8b34cd6mr103543195ab.0.1760813205726;
+        Sat, 18 Oct 2025 11:46:45 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-11.dlp.protect.broadcom.com. [144.49.247.11])
+        by smtp-relay.gmail.com with ESMTPS id 8926c6da1cb9f-5a8a9778692sm361638173.35.2025.10.18.11.46.45
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 18 Oct 2025 11:46:45 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2909daa65f2so32715155ad.0
+        for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 11:46:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1760813204; x=1761418004; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:cc
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=JrkmJIXKp7kFfOk4QDLOiZNg8PV8Dbo0hsP+gg8GAyM=;
+        b=WsGk7o34zHhpWGtC235vhk/cmcJB8lV21lQ/J2lbV1W2ucda1VDtSgKE3AEKJIy6gw
+         E8vk8R6HIbcub6ziORHvHLrRXQ/s7FLzRVEkQ/5l7D4eMWJPIT/W0sdzu+5LPiHhddIJ
+         EFAFSZkxjBbftKohRkV7VKd3ASB4HbSaF1FXk=
+X-Received: by 2002:a17:902:f709:b0:266:3f63:3500 with SMTP id d9443c01a7336-29091af39e6mr148833335ad.12.1760813204333;
+        Sat, 18 Oct 2025 11:46:44 -0700 (PDT)
+X-Received: by 2002:a17:902:f709:b0:266:3f63:3500 with SMTP id d9443c01a7336-29091af39e6mr148833155ad.12.1760813203923;
+        Sat, 18 Oct 2025 11:46:43 -0700 (PDT)
+Received: from [10.229.40.87] ([192.19.176.250])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33d5df9351fsm3201099a91.16.2025.10.18.11.46.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 Oct 2025 11:46:43 -0700 (PDT)
+Message-ID: <977b67ef-ef6f-4ae4-99db-eeb921a17e3f@broadcom.com>
+Date: Sat, 18 Oct 2025 20:46:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: New test release reload driver
+To: Berkem Dincman <berkem.dincman@gmail.com>
+References: <CAC3nzgJ9uX3rREGQGbLA+oJMzDh0Bc-Fs5sP1sM_4DGScgq=3w@mail.gmail.com>
+Content-Language: en-US
+Cc: linux-wireless <linux-wireless@vger.kernel.org>,
+ "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <CAC3nzgJ9uX3rREGQGbLA+oJMzDh0Bc-Fs5sP1sM_4DGScgq=3w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAxNSBTYWx0ZWRfX44D1DXur72Ui
- 6M94FEHsmhhM4vrkWIXMVoi49ta/envJh0KWEstkPxluMMyJMq6/nGkEsV1+YUh/zMuaTb7IIkK
- TELi0qOzAgDXT5OY7W1l2lIvhZzRJ2Cbo1cm6Ugwo969h+A/hCxTG/+25RQ39Tt3tes69wOn0mb
- sHmZfziTB4vCKRj2C54sNn0oRiFHDVC39hsRiF0o9gZQd36Fd6yS6CM7Om3AiW4Fw26cfk8Wtj7
- wtr5ARo+OPOhSlLYjvz9puaC8mzmskzEA94Jsjjr5GgB5uo7lUyZGVwkqP/LSfnRCR3s8CcfIkk
- NftBxkqAGwNdSxL9zRIx7+6SxvH8i/7YzUafsd8ovszC7aIQfEe9rdn7T01ThxGTJrW/ojOLbq+
- wBsAyL6wKLSwpwDDaPINPAAGDNZM0A==
-X-Authority-Analysis: v=2.4 cv=bNUb4f+Z c=1 sm=1 tr=0 ts=68f3b475 cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=eBwvleRBC9WfgbDsz4IA:9 a=QEXdDO2ut3YA:10
- a=1OuFwYUASf3TG4hYMiVC:22
-X-Proofpoint-GUID: RNjQoZIzzTW_vgU7s3TaDczu5RCRqdMr
-X-Proofpoint-ORIG-GUID: RNjQoZIzzTW_vgU7s3TaDczu5RCRqdMr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-18_05,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015
- priorityscore=1501 suspectscore=0 adultscore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180015
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
+On 10/18/2025 5:38 PM, Berkem Dincman wrote:
+> I have PostmarketOS on Pinebook Pro v25.06 it has an 6.6.34 kernel 
+> originally I have custom kernels 6.16.7 6.17-rc7 also booting and wifi 
+> working 6.18-rc1 sends alot error messages to the screen but works fine 
+> if the driver (brcmfmac) is reloaded
 
-On Fri, 03 Oct 2025 10:29:19 +0200, Takashi Iwai wrote:
-> Some systems such as live-image or installer require the firmware
-> information for each module declared by MODULE_FIRMWARE(), which is
-> currently missing in ath12k driver.
-> 
-> For addressing it, this patch adds the MODULE_FIRMWARE() entries.
-> Like ath11k driver, we can just put the currently used firmware
-> entries for QCN9274 and WCN7850 with wildcards.
-> 
-> [...]
+Thanks for the feedback. I would be happy to look into the 6.18-rc1 
+issue, but you are giving me much to work with. Any kernel logs that 
+show the error messages would be a start.
 
-Applied, thanks!
+Also please put the mailing lists in Cc: so other people seeing the same 
+issue can chime in.
 
-[1/1] wifi: ath12k: Add MODULE_FIRMWARE() entries
-      commit: 38e3a9408496540f3a1dbbfc2ea7e495e14e03d7
-
-Best regards,
--- 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-
+Regards,
+Arend
 
