@@ -1,144 +1,145 @@
-Return-Path: <linux-wireless+bounces-28041-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28042-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1907BED0A9
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Oct 2025 15:51:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D202BED2B4
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Oct 2025 17:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 83DD234DA90
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Oct 2025 13:51:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 231F342016F
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Oct 2025 15:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175FC1EE7B9;
-	Sat, 18 Oct 2025 13:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CFA21CFEF;
+	Sat, 18 Oct 2025 15:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bo6bFSao"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ALFHQtyO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC491B4247
-	for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 13:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABC2147C9B
+	for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 15:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760795462; cv=none; b=BzccQP5/VjCeT8uw0wKrB0LB2wTLZSO0/XocfM/49pTzLH4fg+gjUkfPwewO/FuNM2VWNeMllvQEILFdIzeNBoCLB2cI0cmJay2eEy70gxmArHJgcSwOedzmCLSY9YrVnr0kvLrn1KtJf0RjDrJxOEtt6XuXLumWH1KGje3GjPU=
+	t=1760801911; cv=none; b=PgENIEA8FTBDnCU4N8MVa2kih581t+WdRf/m2EKbOJWIJygfC8u5tR8h46HRJsJhSNPSR5zqTYWkqEgoMpMevH78A7yI3ZgnsaS+wll6QbXxwnCYz0auMuGtdRo9fRw/1NQNZo3dlyr66+Btd/oL7cVBxyW4F9sajOtHhlvepag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760795462; c=relaxed/simple;
-	bh=H4XC02jwzmIvWBlWZFVlD8AYAXuXdd+oXv6dBP/Y7Fw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qHiGGubhIeFFGPTtrMjxIwrmcx2FRNpCN40mU/42LVY8cOdFp/faMYLmO+69QJBAx1H5a74cRW5vMjCnR96cpvUFvECk1ib47zbNcbhXWO1h+0YDWG0hFizSRk0SexkLtwgpyOGrUxCWG3yAGfyaznW/aj02HVJcKuNDkhufNgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bo6bFSao; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-471b80b994bso5571165e9.3
-        for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 06:51:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760795459; x=1761400259; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=H4XC02jwzmIvWBlWZFVlD8AYAXuXdd+oXv6dBP/Y7Fw=;
-        b=bo6bFSao2RTB9jQUGiyXPqoFscyKTxAcLlVhnBMJM8KuwtqZF8V6Z0JbA6q/6lihyi
-         lDlL0rlhtD+RLnGZIVHkLEFOovExMTq6KWYiJfcrLNH95g3+4S+YfTixdEmTpHuOnc/Y
-         dVzJcwIv9tvb0VMA6LSA1gfSgbAJHv0rpm0DeE6TmYAjNffO/f32H9Q2lrc41ItlXN4Z
-         sd3vvnRq2fVXZS4S06dsQWa5MLY9LBANpZns6iH7EvApYkNJ2bQmY8RUcIDyt0UEKQbA
-         FIncqfUGmVoQ7dBGV2fankh1DLt9ppGlLsnI6ZmJl0tGkTFSS+WcnVjJwiY8SA7OqXdS
-         Aoig==
+	s=arc-20240116; t=1760801911; c=relaxed/simple;
+	bh=WK62ob4AeK+YG/Lzd0HTAcgVyqGd0czUP29w8h+GAgo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=BnbP4T7nnVKPq7LswJLA2b8mDjnB5NFNxATJFVnkb1DgKhBSZfb5dUnmBB+BJva9ltfFZqZ0Od1NQwyRnTwDFLVCp6NERPucamJEZfNALfam138FoSo9s3mKINiHngcPPyN0be8pccUDNtJY1kQtsVFXaR+DhGQSu4XkWWZE0Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ALFHQtyO; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59ICpx1V001363
+	for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 15:38:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	tTJZQzKPDxO/ZOg051psoNPOywl2B+7guIEa9xKApMw=; b=ALFHQtyO9QLI3zZf
+	C4jR9dlz4bk5ppVM6lteSsO0ml2VbzLNHs1Vxrn7VDKKYIOjCOhyP350iV1dUbTc
+	Qr8sb9mcI7gn7H8SvmWtNHGskSPvgL8kdLcBjWWKsYBsRJXHvLGm46Y8zneDvSOF
+	jc2EVwnPDD2LVLyD3eSXUnRP367+j3JyWO9++BuC3B6nWgtzF7sk1SeJtrRr2/dh
+	2LE7kckEg3+xVbQnN8y4C/+h7txQhKwZJwSwc6Go4/WozKUaC3H0WX99Zkgtig/l
+	KQ2Jqhib3BfkgiY58o40hAh904rQTfvq0vZz3zsiO/EDppFYyA1Mma94dxp1gjT1
+	Jda0PQ==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v1w7s0wk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 15:38:29 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-28eb14e3cafso54268635ad.1
+        for <linux-wireless@vger.kernel.org>; Sat, 18 Oct 2025 08:38:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760795459; x=1761400259;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=H4XC02jwzmIvWBlWZFVlD8AYAXuXdd+oXv6dBP/Y7Fw=;
-        b=ko8Wp4Jy4nTXL+d1O7VMeRB4rCVwBNHuS04pciG8A563etfpwQP1gK7Wk/wfBhHQkm
-         +FLfZsQ4n6y/zO+gOEDmEmYxzr6K0chqZyP663VDTs7EdpsrYcLOXfw5i/VPCNviNJei
-         wpffRHrPmMfph5EaZzBlWMqK7PybchssnC+i0xNJul1AFVxQh5lUcbh5lzbDFDl/kRzW
-         JCGBxB64Hea2bAxGuLCubLrlch63kTGA9HqpnLgUp+D7eKvUXPbN5jKuNq1ISvHG++/v
-         /3k4/iuJsTNGtGZCEKVLikqqrAYoXDPszBbah4RJfMFCnUP2sPoiBqP5c2Y379kGbNrG
-         abxQ==
-X-Gm-Message-State: AOJu0Yypc8h28nD2o3AeCKDZzbVKi5m3sBUWRikNgaY/1KmkydxfaCZk
-	K20pOzH5s2+IGYVrdy5J8NTECstctjhsxslFy7mRiBLiDEKXOzenOt07
-X-Gm-Gg: ASbGncv6kZ7FT0PakGU3NTFsAJ548YY1KnOitIcmJ7q/LbsBCbIOf5wlXl7od5USZqm
-	Bf0R+NsYcO/FMi06jyStlCngJLKejA7NXqIP4zgWcsRFBKCUhgYgo4CpRbEguuuEJhFWM1MphU4
-	PUeBxbwZ4MDJzmC9VGN2abH6Qxi46VOnRhqA598GJ79pPJeiCvcut4zrXa8BHtIJW0ox+9BIm0M
-	OCVJSFzKc8Gd16tKEFJ8+p2kzmBPCPNHT+b5GSPkxx29C8zTTgqBvAApQjIWJYMm5W0pu57PGg1
-	oP+ThkydbmyjT6cU9o311RNi90R1vFUSvfVeTm1X5MefFav1drjK5VkWU4VotQzEa7Z3C6YcKxK
-	P+7Msbl8v8cI2dY8lEcJIVIN8+O015p9qjaCYHwGJCwSByf5byGN0RRdlstfB4AEi45DPHh6xSq
-	yrVABo+fScxf0EcgBAasZi+sWFFrG97ZrOvRXQWrsdDOFvu8yHzaeRj4I=
-X-Google-Smtp-Source: AGHT+IGCXXxrQgd1EYgtv5VJuy0v1uJ9qqFR/wWr3wDngmDs1z9Yq8rUTLutJ5vzlAyNORMZR7xTyQ==
-X-Received: by 2002:a05:600c:4715:b0:45b:9a46:69e9 with SMTP id 5b1f17b1804b1-4711791c8c3mr54887815e9.31.1760795458332;
-        Sat, 18 Oct 2025 06:50:58 -0700 (PDT)
-Received: from ?IPv6:2a02:168:6806:0:a776:5e51:5cb5:418? ([2a02:168:6806:0:a776:5e51:5cb5:418])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47154d382d8sm48677685e9.12.2025.10.18.06.50.57
+        d=1e100.net; s=20230601; t=1760801907; x=1761406707;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tTJZQzKPDxO/ZOg051psoNPOywl2B+7guIEa9xKApMw=;
+        b=eAJm3leMgeS7FTPyzF0mQqP2/qe1MLV4ulv8wT0QfvwrbkbIedbjxRJIxRHGuGZ7h7
+         Z3ezJeR6Xcn++/MJzw4PO1iclJ4WXmM0VGJO6z5dESjwhSlqayoIyTMA4oItDpTikHQ9
+         gKDIGJFqTKORH1V9B8ywqwSkImloo8Bdm24Y2No+oeENC4ih7QiPvBUTXRiVMxRZac/V
+         12TD8SnTR/Yp07pPB+KBn5TYGkfNI6q4wzGEhha8XJgqS8LbjVaqlMbif5QHkSDW1MUe
+         Ui6GBT/69e5j/SNO9+VU2vruifP/GvNEdFhWeUf0+jJx2Wp0Apg61umvPVRpmUxtKnR3
+         yimg==
+X-Gm-Message-State: AOJu0Yz/rLXDbRewhq/samBBkBHvir7GxnPY5zloSgrRQ7ycamQspVzx
+	jddiSab+5PWv+dB/iqKx9rFCe1HSm2blYzqmpo2tiNqEas9tL6lz9usK+o+CcE5CplQz3uCC7RV
+	qU1nFdS80MsYcf1C7M7Fp1M4tHTZg6YuYtQ8UqvG26pzaGlmWZTKp1peO7ziNDZSxgn/Dj3AXFb
+	B2eg==
+X-Gm-Gg: ASbGncvyeB4Ziitf1KQANu8vYkmFAXhcVrnEjfvNRb15tPxJcmXvC2P1ACvFrb4s2tq
+	2U2OHwybub8Z2u31/jD247z58sdemjUNxk6SB133d4F8YNiYsiFtFOIlxraDAOXN5/8Ibd7Q7dd
+	VrXdg3LWT+gSlAnjCKKaLLCyXua+tPMDgezyov0gqodbuhq1BosHU3t2y+ALhoXAa3l2HY4DDOf
+	0271o7UEFj0rOaWIn52Oe9mk7P1NkR1f2B9TEW0joauO7aQ6uT6Ud4NU4tnA2errx/n9dtAKjvm
+	CZbeofsUXlUYGWq6zCVIJsSBT565r6oa8Eun+raml/0rxkJMcmVTvLIE9Q/phWhqY2MLBPEzWh+
+	c+UJU6H/sOBq0g3ndiQQ4qYQrhW7WaUhuFFg=
+X-Received: by 2002:a17:902:c943:b0:290:ac36:2ed6 with SMTP id d9443c01a7336-290c9d1b907mr106269995ad.14.1760801907604;
+        Sat, 18 Oct 2025 08:38:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGB3O19xCI68MiNuktLQKUvkcvzqeLpea4bfKPkKFnzOz1BRXIF6Sf2snzCwqAohNlPYTUtzg==
+X-Received: by 2002:a17:902:c943:b0:290:ac36:2ed6 with SMTP id d9443c01a7336-290c9d1b907mr106269675ad.14.1760801907170;
+        Sat, 18 Oct 2025 08:38:27 -0700 (PDT)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a7664a228sm2999109a12.4.2025.10.18.08.38.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 06:50:57 -0700 (PDT)
-Message-ID: <10919281648e306fd3f6713437b4793c50bb6692.camel@gmail.com>
-Subject: Re: [REGRESSION] ath10k fails initialization, bisected to "wifi:
- ath10k: avoid unnecessary wait for service ready message"
-From: Klaus Kudielka <klaus.kudielka@gmail.com>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Jeff Johnson
-	 <jjohnson@kernel.org>, Kalle Valo <kvalo@kernel.org>, Baochen Qiang
-	 <quic_bqiang@quicinc.com>, Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Paul Menzel <pmenzel@molgen.mpg.de>, 
-	regressions@lists.linux.dev
-Date: Sat, 18 Oct 2025 15:50:57 +0200
-In-Reply-To: <76d4235d-db4e-40f4-9ede-8cb536b82fbd@oss.qualcomm.com>
-References: 
-	<20250811-ath10k-avoid-unnecessary-wait-v1-1-db2deb87c39b@oss.qualcomm.com>
-	 <175823924851.3217488.17742065327824732992.b4-ty@oss.qualcomm.com>
-	 <6d41bc00602c33ffbf68781f563ff2e6c6915a3e.camel@gmail.com>
-	 <76d4235d-db4e-40f4-9ede-8cb536b82fbd@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-5 
+        Sat, 18 Oct 2025 08:38:26 -0700 (PDT)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: Jeff Johnson <jjohnson@kernel.org>, Takashi Iwai <tiwai@suse.de>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org
+In-Reply-To: <20251003082955.11436-1-tiwai@suse.de>
+References: <20251003082955.11436-1-tiwai@suse.de>
+Subject: Re: [PATCH] wifi: ath12k: Add MODULE_FIRMWARE() entries
+Message-Id: <176080190653.1665595.13835656196130660579.b4-ty@oss.qualcomm.com>
+Date: Sat, 18 Oct 2025 08:38:26 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-On Fri, 2025-10-17 at 08:57 -0700, Jeff Johnson wrote:
-> On 10/17/2025 8:37 AM, Klaus Kudielka wrote:
-> > Unfortunately, this particular commit completely breaks the ath10k driv=
-er in my setup.
-> >=20
-> >=20
-> > Hardware:
-> > - Turris Omnia (arch/arm/boot/dts/marvell/armada-385-turris-omnia.dts)
-> > - Wifi card (output from lspci): Network controller: Qualcomm Atheros Q=
-CA986x/988x 802.11ac Wireless Network Adapter
->=20
-> This issue was previously reported with that particular chipset.
-> This is currently being tracked at:
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D220671
->=20
-> It may be useful to supply your information as a separate record to that =
-bug.
->=20
-> /jeff
-
-Some more observations on that topic with the hardware shown above.
-
-ath10k_core_start() calls ath10k_wmi_wait_for_service_ready(), and later at=
-h10k_wmi_wait_for_unified_ready().
-
-The now *unconditional* call to ath10k_hif_send_complete_check() inside ath=
-10k_wmi_wait_for_service_ready()
-makes the later call to ath10k_wmi_wait_for_unified_ready() fail.
-
-If I call and handle wait_for_completion_timeout()=C2=A0first (as it was be=
-fore the patch),
-ath10k_hif_send_complete_check() is *not* called, and both ath10k_wmi_wait_=
-for_service_ready() and
-ath10k_wmi_wait_for_unified_ready() succeed. Everything is back to normal.
-
-Side note:
-ath10k_wmi_wait_for_service_ready() succeeds in both cases with time_left =
-=3D=3D WMI_SERVICE_READY_TIMEOUT_HZ.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAxNSBTYWx0ZWRfX44D1DXur72Ui
+ 6M94FEHsmhhM4vrkWIXMVoi49ta/envJh0KWEstkPxluMMyJMq6/nGkEsV1+YUh/zMuaTb7IIkK
+ TELi0qOzAgDXT5OY7W1l2lIvhZzRJ2Cbo1cm6Ugwo969h+A/hCxTG/+25RQ39Tt3tes69wOn0mb
+ sHmZfziTB4vCKRj2C54sNn0oRiFHDVC39hsRiF0o9gZQd36Fd6yS6CM7Om3AiW4Fw26cfk8Wtj7
+ wtr5ARo+OPOhSlLYjvz9puaC8mzmskzEA94Jsjjr5GgB5uo7lUyZGVwkqP/LSfnRCR3s8CcfIkk
+ NftBxkqAGwNdSxL9zRIx7+6SxvH8i/7YzUafsd8ovszC7aIQfEe9rdn7T01ThxGTJrW/ojOLbq+
+ wBsAyL6wKLSwpwDDaPINPAAGDNZM0A==
+X-Authority-Analysis: v=2.4 cv=bNUb4f+Z c=1 sm=1 tr=0 ts=68f3b475 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=EUspDBNiAAAA:8 a=eBwvleRBC9WfgbDsz4IA:9 a=QEXdDO2ut3YA:10
+ a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-GUID: RNjQoZIzzTW_vgU7s3TaDczu5RCRqdMr
+X-Proofpoint-ORIG-GUID: RNjQoZIzzTW_vgU7s3TaDczu5RCRqdMr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-18_05,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015
+ priorityscore=1501 suspectscore=0 adultscore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180015
 
 
-#regzbot monitor: https://bugzilla.kernel.org/show_bug.cgi?id=3D220671
+On Fri, 03 Oct 2025 10:29:19 +0200, Takashi Iwai wrote:
+> Some systems such as live-image or installer require the firmware
+> information for each module declared by MODULE_FIRMWARE(), which is
+> currently missing in ath12k driver.
+> 
+> For addressing it, this patch adds the MODULE_FIRMWARE() entries.
+> Like ath11k driver, we can just put the currently used firmware
+> entries for QCN9274 and WCN7850 with wildcards.
+> 
+> [...]
+
+Applied, thanks!
+
+[1/1] wifi: ath12k: Add MODULE_FIRMWARE() entries
+      commit: 38e3a9408496540f3a1dbbfc2ea7e495e14e03d7
+
+Best regards,
+-- 
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+
 
