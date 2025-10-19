@@ -1,56 +1,55 @@
-Return-Path: <linux-wireless+bounces-28085-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28086-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A76BEE90C
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 17:58:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 115A2BEE9F7
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 18:27:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4060C4E1756
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 15:58:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C7D9E4E29A1
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 16:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8982EB861;
-	Sun, 19 Oct 2025 15:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4862D2E613C;
+	Sun, 19 Oct 2025 16:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="dN+InTtX"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="clqctUPT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-81.smtpout.orange.fr [80.12.242.81])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C662EBBB0;
-	Sun, 19 Oct 2025 15:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0499824676A;
+	Sun, 19 Oct 2025 16:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760889486; cv=none; b=aF3pRbBhoH3QMtOmscNaqyJhd8o8hc1GkKPx3EBjDGucbxFC/oeBrvFqz3X7q59jXdHfDQzghE9xjxiFtUfc7TkILRUnRhHUyyb2uyAZgbKmV7YlGcLTuAU1KOcVHg8BGU/eVe25fFTKHBZIV5dpxqp2AdFKLAvwZPJmeRC/Rcs=
+	t=1760891239; cv=none; b=P6HHZwdu3tyG8EDIU24V0rDNogqSLQ03TBrnDuIxuTe4lTcB1rR3Fr0SJkejcy0nV8NEq9lyna9HvyD8q1jU1UEXPRYqL2CYoBp0H6/a0/YL8We5yQPZfYccEX1LL3CDOl6y7kh36K/Kmt1hEUOQhyeVVpn6kJtfVU+5L218/g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760889486; c=relaxed/simple;
-	bh=yQpcd6B8y1bqilGpUP9oP8k+ZSZB3SE6WNMkT0kB0ks=;
+	s=arc-20240116; t=1760891239; c=relaxed/simple;
+	bh=BJmOPFG38eK0SQjYH7HJARC0SJdnqD67ngX0T+67GTA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=YEthheD5PGZKYyi0q3KM5xp/xssXmHPF8W3o6sGBNcePtP5JDImBVhl6nJ1yA7LO+hpY0V/aYMWRUyniayxcLZ04VPZ4ZF9be/JT+7XVzHG4d+EJkwhHk4+GkAiVhIjWyDlMSt11gmtJRGuw0qhiQtUOsqNO49VMeOGgg5ZeB4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=dN+InTtX; arc=none smtp.client-ip=80.12.242.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
- ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
-	by smtp.orange.fr with ESMTPA
-	id AVlyvBh0PDOeWAVlyvdeNf; Sun, 19 Oct 2025 17:56:50 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1760889410;
-	bh=R5H+MaCr8Gp0YfRAgXVkenTGJLR59RzoE18KNDLcDYQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=dN+InTtXbEQFgpQGgwNWLk2rLIeP2eEX9Yt1WZuX7ggfe7c7i2PFQHh2dVAcVzOR/
-	 GMYQPeRg8zYSYF7mD6y3TaYQ14z4vNy2GVUwM8SgspZ3go8NkpbN1t04Qp1iG4sY5C
-	 3d7IBvbk/8aaHsOn/eKKbWctllnznhJLAwlfHu06hOR6buY8iD9GSCtJXgXRrV1eE0
-	 wtOCrju4F3dg6zxDlfxefjwF5gYgStxRALOmCC0GgiGjM+xvFhpkGqyVqdQRhMnGfo
-	 Vqw8/ds8sqrlhLoKoRqPIPPdKqMF2f0YzR7I8NIx6n8JV5kLA++dzhaL1CtebQHZN3
-	 /Da6zRepGe+tA==
-X-ME-Helo: [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Sun, 19 Oct 2025 17:56:50 +0200
-X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
-Message-ID: <c674e933-cf6f-412d-b83b-b225ff6365c9@wanadoo.fr>
-Date: Sun, 19 Oct 2025 17:56:40 +0200
+	 In-Reply-To:Content-Type; b=DvY778phf88nqxXW7xTaJMp8QoeybImdXMa+mKoEylo1feS/B49/abi3d4hKXn6jg9r4rcpTJfSG2ZI2qJDHuV0Sl4hiX+jsW0R1V3WnHyeFHiOaaoxWrhovErcS5JbkrBstWw9//tR/LtAL4zysAnNabC04gVkBdqD2VDGrOSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=clqctUPT; arc=none smtp.client-ip=148.163.129.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id B5E5FC00063;
+	Sun, 19 Oct 2025 16:27:04 +0000 (UTC)
+Received: from [192.168.1.23] (unknown [98.97.32.185])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 9D2B513C2B0;
+	Sun, 19 Oct 2025 09:26:44 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 9D2B513C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1760891222;
+	bh=BJmOPFG38eK0SQjYH7HJARC0SJdnqD67ngX0T+67GTA=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=clqctUPTKzP1E+Q6/vsaq33wdwavDRqx0lN7mQQg3rVaeGoQ7ttwFl0FFv9KkQdYh
+	 F6oSDhZPdku7Wcrqr4ercqiQPlc15qFsoPOMMHl51T0U4WHKUBbI65JV8WF8tN/pAs
+	 VeT9Dv2x2qqBfNKV19u3z0j6PUgMXdDrl26MnGZc=
+Message-ID: <fa7befd5-b2c7-4277-ad57-a1577216ba83@candelatech.com>
+Date: Sun, 19 Oct 2025 09:26:41 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,13 +67,19 @@ To: Aleksander Jan Bajkowski <olek2@wp.pl>, nbd@nbd.name, lorenzo@kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-mediatek@lists.infradead.org
 References: <20251019155316.3537185-1-olek2@wp.pl>
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Content-Language: en-US, fr-FR
+Content-Language: en-MW
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
 In-Reply-To: <20251019155316.3537185-1-olek2@wp.pl>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-MDID: 1760891226-AlOZrs4LaPdf
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;ut7;1760891226;AlOZrs4LaPdf;<greearb@candelatech.com>;d5c215dcae166280e85b20da571dd1ee
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-Le 19/10/2025 à 17:51, Aleksander Jan Bajkowski a écrit :
+On 10/19/25 08:51, Aleksander Jan Bajkowski wrote:
 > Supports IPv4 and IPv6 TCP + UDP
 > 
 > In various tests between MT7986 and Intel BE200, I observed a performance
@@ -83,6 +88,18 @@ Le 19/10/2025 à 17:51, Aleksander Jan Bajkowski a écrit :
 > I did the tests on the MT7915, MT7981, MT7986, and MT7921 variants. The
 > MT7922, MT7925, and MT799x are untouched for now and still have
 > checksumming disabled.
+
+At least with  7996, tcp csum only worked on the first few vdevs
+created in our testing, so we had to add logic to disable that flag
+on subsequent vdevs.
+
+Have you tried creating a bunch of station and/or vap vdevs to see if
+all of them can still transmit TCP traffic?
+
+Thanks,
+Ben
+
+
 > 
 > Signed-off-by: Felix Fietkau <nbd@nbd.name>
 > [rebased and resolved conflicts]
@@ -140,18 +157,13 @@ Le 19/10/2025 à 17:51, Aleksander Jan Bajkowski a écrit :
 >   
 > +	if (is_mt7921(&dev->mt76))
 > +		NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
-
-This looks strange.
-
-Maybe:
-	netdev_features |= NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
-?
-
-CJ
-
 > +
 >   	hw->radiotap_timestamp.units_pos =
 >   		IEEE80211_RADIOTAP_TIMESTAMP_UNIT_US;
 >   
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
 
