@@ -1,74 +1,71 @@
-Return-Path: <linux-wireless+bounces-28052-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28053-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1869BEE079
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 10:13:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D758BEE0AD
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 10:29:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0109E4023C5
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 08:13:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 746051899E03
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 08:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB43C1C54AF;
-	Sun, 19 Oct 2025 08:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA09A26F296;
+	Sun, 19 Oct 2025 08:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fLZI0JVq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lu+69wOe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB38354AEB
-	for <linux-wireless@vger.kernel.org>; Sun, 19 Oct 2025 08:13:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4B6354AF6
+	for <linux-wireless@vger.kernel.org>; Sun, 19 Oct 2025 08:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760861595; cv=none; b=n6MPYY7yglv4Y3mYnHuahHvr+NSnHDKJaLktqdy3n/KRYdhTe9LFZCUljmhC60G+2ddSJh5mtesIGVgas8OH1vZafH5X3D/9C7S3fMt7kaMlaToycy6Zso1kAjMZOZXHBYD8nWy6ix1/wMUjaPSC8A/xVTGxGV5kw09DXpoalGk=
+	t=1760862592; cv=none; b=VuRdoTx35lh7WjQRcGyU1ooKiWCUNgoNxL63KiMh40xZWzWrzserts5I5ASsA/dCdH6lgfb6iGlUk4oKVOyQhoBS+c8XFX/gIuCmBf2Z1F05J+H3qz58S51VVfYQU+Ib/viR5+UihfRbWCozTxIMBetR862OCsdOro1xUeXPmyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760861595; c=relaxed/simple;
-	bh=phj9qOuOr865HycJIeOWhLcNat6kQ5Wr5JWsxJLbAwA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T0EZNky/1Mne79YQAKqm25Np3S1wFmej6UUKbb3VKYZYW6QSk+Af8RssbP7HG726KY9z7sAugfi1UhH3U09Tz1Ci6iQsJGM7dM4Jdt11euHH6wRbZnSkcfwHBuA0DtbS30MyavU4P6nSSkCHccoFQ9/Fw7adQYOf7IsIzH8znuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fLZI0JVq; arc=none smtp.client-ip=198.175.65.19
+	s=arc-20240116; t=1760862592; c=relaxed/simple;
+	bh=rcJQrTCwQ++mfO1U8lUx4IjJYbfcQncN6AjuxrDvqD0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qeS0+6SOyw99NZLfl4mLqL0deLNemLyxYMFglTHFaZx7ASeXoFmq3he2RkIrq0Ngp59ezWxvg3kRt5EMQ5RBBcgs1zLF+6QtDKhaqFXgN2XJKiV1D+0kAnGKKGrTlfIMkyrZ3Xbl4rRMSRP/VdUnsPATSg+t2g0nxQ1lgWqCOAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lu+69wOe; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760861594; x=1792397594;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=phj9qOuOr865HycJIeOWhLcNat6kQ5Wr5JWsxJLbAwA=;
-  b=fLZI0JVqlh/G+2UfzquDgN+aybOigeSAhBqz5xuCPclZnAXqKrifSEHA
-   DjOkUPBqngd9zPmgHgNGXe0zymfNECAXLsAe35tyMgAouK9xIWpyzauYO
-   pZlrr5UGcLF2SpMr/5qo/zBAtjWcaMAS+bhgcu0ql+dBq/dmCarahyPXh
-   ObjhsUapgDnmkC0RUGHtaR9ZfF+tHLKFf3aR4VIKeErVPA8oggArLiuMO
-   VHpKqz8qKFykWNC5dwy711KlmgJHeZdswd13AeiXbSL2NAnaqrV3nIgGs
-   au59hiWaPLhFQRCvIYGGCN6wZQ+2MfI0hWbIIqhyIBjM1R0+QKSTwzB9m
-   g==;
-X-CSE-ConnectionGUID: wtBfUw5UT7ihGwP85qYyfQ==
-X-CSE-MsgGUID: iHLhWfWdTgeKFg4icatC/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62912544"
+  t=1760862591; x=1792398591;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rcJQrTCwQ++mfO1U8lUx4IjJYbfcQncN6AjuxrDvqD0=;
+  b=lu+69wOe6b2/AaVyEV9AtskwFeereManD3RvO/26j+17xCJyXYbzpw0s
+   WGCAUwntaJpm9KZx9k9rJwtCk//PA1tJG1J6QL5xTfFXShkw8+E+NjqfB
+   1z1IH6JAh6JFrGoKgvwV1C0qwLuVfPUbFdrip69XL+TdI+B9CwqMy6lyM
+   gBH2+0+tOhkPZHN99F1IY04YMQutAlm7kMUDRwhVUI+zt4sH/zL00NRmY
+   tKmfDcitlMJZXXVufdqEAnpwhh3aQPPtxTyHi0W266WguLbS0cPuXkCm4
+   dPLiYj8JxgNARN0dcuC/Q/NJ8LqYXIV6VMUKRxe0H3K9iJ6sE8dkwRtdQ
+   Q==;
+X-CSE-ConnectionGUID: USvKMDc2SwqGaGxaPccYjg==
+X-CSE-MsgGUID: EheMiTJxSwiuxvrSbxpnbw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="73299024"
 X-IronPort-AV: E=Sophos;i="6.19,240,1754982000"; 
-   d="scan'208";a="62912544"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:13:14 -0700
-X-CSE-ConnectionGUID: K8EbTh7nSD2qqdNLQRTsWA==
-X-CSE-MsgGUID: 8/pboil6QNifwim0XO8c+w==
+   d="scan'208";a="73299024"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:29:50 -0700
+X-CSE-ConnectionGUID: n9bN2k+pS7CvZCWnAHLJ5w==
+X-CSE-MsgGUID: T5y5LnnnTXytcgaWEg1PBA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,240,1754982000"; 
-   d="scan'208";a="183501623"
+   d="scan'208";a="182224163"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:13:11 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:29:49 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Benjamin Berg <benjamin.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 4/4] wifi: mac80211: use wiphy_hrtimer_work for csa.switch_work
-Date: Sun, 19 Oct 2025 11:12:59 +0300
-Message-Id: <20251019111003.09b3ef1c0953.I4ff2b2cdffbbf858bf5f08baccc7a88c4f9efe6f@changeid>
+Subject: [PATCH] wifi: mac80211: Try to overcome bad HE operation in association response
+Date: Sun, 19 Oct 2025 11:29:43 +0300
+Message-Id: <20251019112935.08f722e20f42.I69591428f2b9bde9df3c78c333e9b4fc264da0d9@changeid>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251019081259.2455317-1-miriam.rachel.korenblit@intel.com>
-References: <20251019081259.2455317-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -78,137 +75,153 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-The work item may be scheduled relatively far in the future. As the
-event happens at a specific point in time, the normal timer accuracy is
-not sufficient in that case.
+Some APs, e.g., some versions of Aruba APs, have a bug where they
+advertise invalid 6 GHz Operation Information in their HE operation
+element in the association response. Since the information is invalid,
+mac80211 cannot connect.
 
-Switch to use wiphy_hrtimer_work so that the accuracy is sufficient. To
-make this work, use the same clock to store the timestamp.
+Try to overcome such cases by falling back to use the beacon/probe
+response HE operation element. If this is possible, do not attempt
+to connect with EHT and suffice with HE.
 
-Fixes: ec3252bff7b6 ("wifi: mac80211: use wiphy work for channel switch")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/chan.c        |  2 +-
- net/mac80211/ieee80211_i.h |  4 ++--
- net/mac80211/link.c        |  4 ++--
- net/mac80211/mlme.c        | 18 +++++++++---------
- 4 files changed, 14 insertions(+), 14 deletions(-)
+ net/mac80211/mlme.c | 69 ++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 62 insertions(+), 7 deletions(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 57065714cf8c..7f8799fd673e 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -1290,7 +1290,7 @@ ieee80211_link_chanctx_reservation_complete(struct ieee80211_link_data *link)
- 				 &link->csa.finalize_work);
- 		break;
- 	case NL80211_IFTYPE_STATION:
--		wiphy_delayed_work_queue(sdata->local->hw.wiphy,
-+		wiphy_hrtimer_work_queue(sdata->local->hw.wiphy,
- 					 &link->u.mgd.csa.switch_work, 0);
- 		break;
- 	case NL80211_IFTYPE_UNSPECIFIED:
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index eb38049b2252..878c3b14aeb8 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1017,10 +1017,10 @@ struct ieee80211_link_data_managed {
- 	bool operating_11g_mode;
- 
- 	struct {
--		struct wiphy_delayed_work switch_work;
-+		struct wiphy_hrtimer_work switch_work;
- 		struct cfg80211_chan_def ap_chandef;
- 		struct ieee80211_parsed_tpe tpe;
--		unsigned long time;
-+		ktime_t time;
- 		bool waiting_bcn;
- 		bool ignored_same_chan;
- 		bool blocked_tx;
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index d71eabe5abf8..4a19b765ccb6 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -472,10 +472,10 @@ static int _ieee80211_set_active_links(struct ieee80211_sub_if_data *sdata,
- 		 * from there.
- 		 */
- 		if (link->conf->csa_active)
--			wiphy_delayed_work_queue(local->hw.wiphy,
-+			wiphy_hrtimer_work_queue(local->hw.wiphy,
- 						 &link->u.mgd.csa.switch_work,
- 						 link->u.mgd.csa.time -
--						 jiffies);
-+						 ktime_get_boottime());
- 	}
- 
- 	for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index f95bcf84ecc2..f3138d158535 100644
+index 3b5827ea438e..ac4cb1df8dc3 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -2594,7 +2594,7 @@ void ieee80211_chswitch_done(struct ieee80211_vif *vif, bool success,
- 			return;
- 		}
- 
--		wiphy_delayed_work_queue(sdata->local->hw.wiphy,
-+		wiphy_hrtimer_work_queue(sdata->local->hw.wiphy,
- 					 &link->u.mgd.csa.switch_work, 0);
- 	}
- 
-@@ -2753,7 +2753,8 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 		.timestamp = timestamp,
- 		.device_timestamp = device_timestamp,
- 	};
--	unsigned long now;
-+	u32 csa_time_tu;
-+	ktime_t now;
- 	int res;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
-@@ -2983,10 +2984,9 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 					  csa_ie.mode);
- 
- 	/* we may have to handle timeout for deactivated link in software */
--	now = jiffies;
--	link->u.mgd.csa.time = now +
--			       TU_TO_JIFFIES((max_t(int, csa_ie.count, 1) - 1) *
--					     link->conf->beacon_int);
-+	now = ktime_get_boottime();
-+	csa_time_tu = (max_t(int, csa_ie.count, 1) - 1) * link->conf->beacon_int;
-+	link->u.mgd.csa.time = now + us_to_ktime(ieee80211_tu_to_usec(csa_time_tu));
- 
- 	if (ieee80211_vif_link_active(&sdata->vif, link->link_id) &&
- 	    local->ops->channel_switch) {
-@@ -3001,7 +3001,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 	}
- 
- 	/* channel switch handled in software */
--	wiphy_delayed_work_queue(local->hw.wiphy,
-+	wiphy_hrtimer_work_queue(local->hw.wiphy,
- 				 &link->u.mgd.csa.switch_work,
- 				 link->u.mgd.csa.time - now);
- 	return;
-@@ -8849,7 +8849,7 @@ void ieee80211_mgd_setup_link(struct ieee80211_link_data *link)
- 	else
- 		link->u.mgd.req_smps = IEEE80211_SMPS_OFF;
- 
--	wiphy_delayed_work_init(&link->u.mgd.csa.switch_work,
-+	wiphy_hrtimer_work_init(&link->u.mgd.csa.switch_work,
- 				ieee80211_csa_switch_work);
- 
- 	ieee80211_clear_tpe(&link->conf->tpe);
-@@ -10064,7 +10064,7 @@ void ieee80211_mgd_stop_link(struct ieee80211_link_data *link)
- 			  &link->u.mgd.request_smps_work);
- 	wiphy_work_cancel(link->sdata->local->hw.wiphy,
- 			  &link->u.mgd.recalc_smps);
--	wiphy_delayed_work_cancel(link->sdata->local->hw.wiphy,
-+	wiphy_hrtimer_work_cancel(link->sdata->local->hw.wiphy,
- 				  &link->u.mgd.csa.switch_work);
+@@ -149,6 +149,45 @@ static int ecw2cw(int ecw)
+ 	return (1 << ecw) - 1;
  }
  
++static bool
++ieee80211_chandef_he_6ghz_oper_bss(struct ieee80211_sub_if_data *sdata,
++				   struct cfg80211_bss *cbss,
++				   struct cfg80211_chan_def *chandef)
++{
++	const struct ieee80211_he_operation *he_operation;
++	const struct cfg80211_bss_ies *ies;
++	const struct element *elem;
++	bool ret;
++
++	if (ieee80211_hw_check(&sdata->local->hw, STRICT) || !cbss)
++		return false;
++
++	guard(rcu)();
++
++	ies = rcu_dereference(cbss->ies);
++	if (!ies)
++		return false;
++
++	elem = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_OPERATION, ies->data,
++				      ies->len);
++	if (!elem || elem->datalen < sizeof(*he_operation) + 1 ||
++	    elem->datalen < ieee80211_he_oper_size(elem->data + 1))
++		return false;
++
++	he_operation = (const struct ieee80211_he_operation *)(elem->data + 1);
++
++	/* As this is a workaround to allow connection to Wi-Fi 6E APs, check
++	 * only for HE operation and do not check EHT operation.
++	 */
++	ret = ieee80211_chandef_he_6ghz_oper(sdata->local, he_operation, NULL,
++					     chandef);
++	if (ret)
++		sdata_info(sdata,
++			   "Using HE 6 GHz operation information from BSS elems\n");
++
++	return ret;
++}
++
+ static enum ieee80211_conn_mode
+ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
+ 			    struct ieee80211_channel *channel,
+@@ -156,7 +195,8 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
+ 			    const struct ieee802_11_elems *elems,
+ 			    bool ignore_ht_channel_mismatch,
+ 			    const struct ieee80211_conn_settings *conn,
+-			    struct cfg80211_chan_def *chandef)
++			    struct cfg80211_chan_def *chandef,
++			    struct cfg80211_bss *cbss)
+ {
+ 	const struct ieee80211_ht_operation *ht_oper = elems->ht_operation;
+ 	const struct ieee80211_vht_operation *vht_oper = elems->vht_operation;
+@@ -212,7 +252,20 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
+ 		if (!ieee80211_chandef_he_6ghz_oper(sdata->local, he_oper,
+ 						    eht_oper, chandef)) {
+ 			sdata_info(sdata, "bad HE/EHT 6 GHz operation\n");
+-			return IEEE80211_CONN_MODE_LEGACY;
++
++			/* Some APs, e.g. some versions of Aruba AP-635,
++			 * advertise bad HE operation in their association
++			 * response. In such cases, try to use the HE operation
++			 * from beacon/probe response if possible.
++			 */
++			if (!ieee80211_chandef_he_6ghz_oper_bss(sdata, cbss,
++								chandef))
++				return IEEE80211_CONN_MODE_LEGACY;
++
++			/* The above check verifies only HE operation, and
++			 * doesn't check EHT operation, thus set the mode to HE.
++			 */
++			return IEEE80211_CONN_MODE_HE;
+ 		}
+ 
+ 		return mode;
+@@ -1017,7 +1070,8 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	ap_mode = ieee80211_determine_ap_chan(sdata, channel, bss->vht_cap_info,
+-					      elems, false, conn, ap_chandef);
++					      elems, false, conn, ap_chandef,
++					      cbss);
+ 
+ 	/* this should be impossible since parsing depends on our mode */
+ 	if (WARN_ON(ap_mode > conn->mode)) {
+@@ -1231,7 +1285,8 @@ EXPORT_SYMBOL_IF_MAC80211_KUNIT(ieee80211_determine_chan_mode);
+ 
+ static int ieee80211_config_bw(struct ieee80211_link_data *link,
+ 			       struct ieee802_11_elems *elems,
+-			       bool update, u64 *changed, u16 stype)
++			       bool update, u64 *changed, u16 stype,
++			       struct cfg80211_bss *cbss)
+ {
+ 	struct ieee80211_channel *channel = link->conf->chanreq.oper.chan;
+ 	struct ieee80211_sub_if_data *sdata = link->sdata;
+@@ -1271,7 +1326,7 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
+ 
+ 	ap_mode = ieee80211_determine_ap_chan(sdata, channel, vht_cap_info,
+ 					      elems, true, &link->u.mgd.conn,
+-					      &ap_chandef);
++					      &ap_chandef, cbss);
+ 
+ 	if (ap_mode != link->u.mgd.conn.mode) {
+ 		link_info(link,
+@@ -5396,7 +5451,7 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
+ 				link_id == assoc_data->assoc_link_id,
+ 				changed,
+ 				le16_to_cpu(mgmt->frame_control) &
+-					IEEE80211_FCTL_STYPE)) {
++					IEEE80211_FCTL_STYPE, cbss)) {
+ 		ret = false;
+ 		goto out;
+ 	}
+@@ -7628,7 +7683,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 	changed |= ieee80211_recalc_twt_req(sdata, sband, link, link_sta, elems);
+ 
+ 	if (ieee80211_config_bw(link, elems, true, &changed,
+-				IEEE80211_STYPE_BEACON)) {
++				IEEE80211_STYPE_BEACON, NULL)) {
+ 		ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+ 				       WLAN_REASON_DEAUTH_LEAVING,
+ 				       true, deauth_buf);
 -- 
 2.34.1
 
