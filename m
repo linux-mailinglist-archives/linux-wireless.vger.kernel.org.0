@@ -1,70 +1,68 @@
-Return-Path: <linux-wireless+bounces-28054-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28055-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3A2BEE0BF
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 10:35:02 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF708BEE0E0
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 10:45:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D996189A0A8
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 08:35:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ADB514E23DA
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Oct 2025 08:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C0621A95D;
-	Sun, 19 Oct 2025 08:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED6F230264;
+	Sun, 19 Oct 2025 08:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z/xpCVUx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XLerHJ8H"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A291459F6
-	for <linux-wireless@vger.kernel.org>; Sun, 19 Oct 2025 08:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A93A1E1DE5
+	for <linux-wireless@vger.kernel.org>; Sun, 19 Oct 2025 08:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760862899; cv=none; b=FTHy81TnWQUMiUbwhh7L46ZOMX7EgCHAoTTX80n9Yg7oxMi/7lYegKHhe6wOQR17scAi5Hnh3ykYnuwrLxlXTZVTSwAHVVKhITn9WV8y8xA3yeqPSg7Sh4pL2/Hpj5fXnJ+SuqfWQ9k/ahG+xT/CX+euy7HO1hfr8fSw3kM0V+Q=
+	t=1760863530; cv=none; b=cLTHH9q/kEPT7Y1a76OZgir+TgfgQVwzArlk+reDgk0a1B1q5BfSL8hN6n2/YXJDJbQeba8pCJzmE/2jldW++yGkpVpM2R6aOnOK7PnLeZr+GFS6kErRZzLprdr35IBozdFtvsP9Es/qDIvnaBNou8YNKwaGg+ugwa5bJNJtc1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760862899; c=relaxed/simple;
-	bh=vTTXyvZt38btVue6QooweQvayDl6pF3rTeaQaBCCiYo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SL+SIvO47g/clhFjdn8xVU+0JYpiH4fxWdFBown4TRZ2hIvjjZqFMEnnu4yCwVLf2huKnXN5CFL0ykm+C4lXAgsMCRRKc5wFGrHiltlBI0zviQLiPMiIi0xzWYCX8pPuf/j+eWY0WEVrW+JDCPh2YZqneYRU9bwY+cZkPcr7r8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z/xpCVUx; arc=none smtp.client-ip=192.198.163.12
+	s=arc-20240116; t=1760863530; c=relaxed/simple;
+	bh=fUALxToEvJEZimGqW+1DCabffhSKi9BEWGWHn1HijMo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Pdc0xP0UHhX4KHrOqCqenrck2GR100nEuYXi8k3LNKJX96f9tE7WzQ/S+k3y/WWHFMcJSsCLdziia8CtiXjFoJLpEWCsJS1bzb9J49rY+TJ4yALlO18z4H/KW/6jVQ+CYXYUPPd2mEc2XYgyrLgms+mFhvsr5nQD1lEZwznAkeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XLerHJ8H; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760862898; x=1792398898;
+  t=1760863528; x=1792399528;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=vTTXyvZt38btVue6QooweQvayDl6pF3rTeaQaBCCiYo=;
-  b=Z/xpCVUx9rO+vtU8hmvt6iQkfVNzljsyXGEztnqiACrNULe52EyHvpaV
-   2Q4KpuwxXV1mGfxk7Ihz/+FNd1LuIrCa+eAjh7Uu6K8nVPcDthDHgyV60
-   rMtjTcVu1x1LCkyZ7DZrYW+yhgjBrnNfMWSVaCFurvwJy1d4uwZZZozfW
-   YONMNrMGAPq9iO0kqihPlP0HP67LJVAvQLl5vz7y/ldwrVFP/TucOjYRN
-   vURTNR6fWM3sB0k5vf4qh1AMi8hWmS6mSCTll6umK9zftZkvAVsO1GDaz
-   grI6j3oNEgfy3a4ElDWPFXKm3WfWmVWOefyO1tEglmotyTSo6nkoXE6h5
-   Q==;
-X-CSE-ConnectionGUID: dZtMktXLTZKvGQHj7Qc3UQ==
-X-CSE-MsgGUID: OxLgHP9GTt+uVWpGOkqMeg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66884162"
+  bh=fUALxToEvJEZimGqW+1DCabffhSKi9BEWGWHn1HijMo=;
+  b=XLerHJ8HlO1HM1Gg2krz+GV3UjqAbkOjv0ugFFPDoL+ELAXRw9B/ovib
+   r9r4Rmw31ZVIz7/ZUzFDkKxJ5RCP+w3zGRPK+gMg4iRfBO6gcQQS5RSc4
+   06+M86glQ+m+i5wjZBFxdscsMwy+6c6IdSxWGc0r+G4vKjQfjS/5w5dw3
+   hNz6kClTjlXoLIE1JVCas+8NMxVhWRbo8Xh8BMvZfxeKKu2P2xA6zM393
+   n+SQyAjvX2/qCBl5XCAMRcTRgSuEN+knAwScXYsdKyAOyvVlu9Te8qSEF
+   8IhfrcVm6PHSNH42X7TPsyez0KRsY/JwP0uxPkfBBNZiTD5Ead5BT3nOh
+   w==;
+X-CSE-ConnectionGUID: /SITpLOQRm+sU4+XHt98bQ==
+X-CSE-MsgGUID: OUsOjZAqSWCYrSmvQjv+bQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74363178"
 X-IronPort-AV: E=Sophos;i="6.19,240,1754982000"; 
-   d="scan'208";a="66884162"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:34:57 -0700
-X-CSE-ConnectionGUID: DiKMki6aQ9mFzj6yq7isbQ==
-X-CSE-MsgGUID: bQniS891Qw+VqnZuFtsMWA==
+   d="scan'208";a="74363178"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:45:28 -0700
+X-CSE-ConnectionGUID: /cL74Ld3RTGku+siMi83vg==
+X-CSE-MsgGUID: L11QWfGmT0mA9wI67q99dw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,240,1754982000"; 
-   d="scan'208";a="188188416"
+   d="scan'208";a="182279848"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:34:55 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 01:45:27 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH] wifi: mac80211: reset CRC valid after CSA
-Date: Sun, 19 Oct 2025 11:34:48 +0300
-Message-Id: <20251019113426.521ad9c6b87d.I86376900df3d3423185b75bf63358c29f33a5eb6@changeid>
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH iwlwifi-next 00/15] wifi: iwlwifi: updates - 2025-10-19
+Date: Sun, 19 Oct 2025 11:45:01 +0300
+Message-Id: <20251019084516.2568208-1-miriam.rachel.korenblit@intel.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -75,47 +73,73 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hi,
 
-While waiting for a beacon after CSA, reset the CRC valid
-so that the next beacon is handled even if it happens to
-be identical the last one on the old channel. This is an
-AP bug either way, but it's better to disconnect cleanly
-than to have lingering CSA state.
+features, cleanups and fixes from our internal tree.
 
-In the iwlwifi instantiation of this problem, mac80211 is
-ignoring the beacon but the firmware creates a new CSA,
-and then crashes later because mac80211/driver didn't do
-anything about it.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Miri
 ---
- net/mac80211/mlme.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 3b5827ea438e..e699702fe5b1 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2508,6 +2508,16 @@ static void ieee80211_csa_switch_work(struct wiphy *wiphy,
- 
- 	link->u.mgd.csa.waiting_bcn = true;
- 
-+	/*
-+	 * The next beacon really should always be different, so this should
-+	 * have no effect whatsoever. However, some APs (we observed this in
-+	 * an Asus AXE11000), the beacon after the CSA might be identical to
-+	 * the last beacon on the old channel - in this case we'd ignore it.
-+	 * Resetting the CRC will lead us to handle it better (albeit with a
-+	 * disconnect, but clearly the AP is broken.)
-+	 */
-+	link->u.mgd.beacon_crc_valid = false;
-+
- 	/* apply new TPE restrictions immediately on the new channel */
- 	if (link->u.mgd.csa.ap_chandef.chan->band == NL80211_BAND_6GHZ &&
- 	    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_HE) {
+Emmanuel Grumbach (4):
+  wifi: iwlwifi: be more chatty when we fail to find a wifi7 device
+  wifi: iwlwifi: stop checking the firmware's error pointer
+  wifi: iwlwifi: disable EHT if the device doesn't allow it
+  wifi: iwlwifi: mld: check for NULL pointer after kmalloc
+
+Johannes Berg (8):
+  wifi: iwlwifi: mld: update to new sniffer API
+  wifi: iwlwifi: mld: include raw PHY notification in radiotap
+  wifi: iwlwifi: fix build when mvm/mld not configured
+  wifi: iwlwifi: bump core version for BZ/SC/DR
+  wifi: iwlwifi: mvm/mld: report non-HT frames as 20 MHz
+  wifi: iwlwifi: mld: use FW_CHECK on bad ROC notification
+  wifi: iwlwifi: bump core version for BZ/SC/DR
+  wifi: iwlwifi: cfg: fix a few device names
+
+Miri Korenblit (1):
+  wifi: iwlwifi: mld: check the validity of noa_len
+
+Nidhish A N (2):
+  wifi: iwlwifi: fw: remove support of several
+    iwl_lari_config_change_cmd versions
+  wifi: iwlwifi: mld: Move EMLSR prints to IWL_DL_EHT
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |    1 -
+ drivers/net/wireless/intel/iwlwifi/cfg/8000.c |    1 -
+ drivers/net/wireless/intel/iwlwifi/cfg/9000.c |    1 -
+ .../net/wireless/intel/iwlwifi/cfg/ax210.c    |    1 -
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |    3 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/dr.c   |    3 +-
+ .../net/wireless/intel/iwlwifi/cfg/rf-fm.c    |    1 +
+ .../net/wireless/intel/iwlwifi/cfg/rf-pe.c    |    1 +
+ .../net/wireless/intel/iwlwifi/cfg/rf-wh.c    |   23 +
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |    3 +-
+ .../wireless/intel/iwlwifi/fw/api/datapath.h  |    5 +
+ .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |  134 +-
+ .../net/wireless/intel/iwlwifi/fw/api/rx.h    |  286 +++
+ .../wireless/intel/iwlwifi/fw/regulatory.c    |   26 +-
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |    8 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |   11 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |    2 +-
+ drivers/net/wireless/intel/iwlwifi/mld/fw.c   |    6 +-
+ .../net/wireless/intel/iwlwifi/mld/iface.c    |   13 +
+ drivers/net/wireless/intel/iwlwifi/mld/link.c |   16 +-
+ .../net/wireless/intel/iwlwifi/mld/mac80211.c |    6 +-
+ drivers/net/wireless/intel/iwlwifi/mld/mld.c  |    1 +
+ drivers/net/wireless/intel/iwlwifi/mld/mld.h  |   10 +-
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.c  |   97 +-
+ .../net/wireless/intel/iwlwifi/mld/notif.c    |    4 +-
+ drivers/net/wireless/intel/iwlwifi/mld/roc.c  |    4 +-
+ drivers/net/wireless/intel/iwlwifi/mld/rx.c   | 1691 +++++++++--------
+ drivers/net/wireless/intel/iwlwifi/mld/rx.h   |    5 +-
+ drivers/net/wireless/intel/iwlwifi/mld/sta.c  |    2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   13 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |    2 +
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |   13 +-
+ .../intel/iwlwifi/pcie/gen1_2/trans.c         |    9 +
+ .../wireless/intel/iwlwifi/tests/devinfo.c    |    2 +
+ 34 files changed, 1357 insertions(+), 1047 deletions(-)
+
 -- 
 2.34.1
 
