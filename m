@@ -1,190 +1,216 @@
-Return-Path: <linux-wireless+bounces-28095-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28097-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648B1BEFF64
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Oct 2025 10:31:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D58BFBF02BF
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Oct 2025 11:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0CA394F0057
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Oct 2025 08:31:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DFF0189F401
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Oct 2025 09:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218532EB873;
-	Mon, 20 Oct 2025 08:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QD4MBqFD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F26C2F5A3F;
+	Mon, 20 Oct 2025 09:30:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377222E339B
-	for <linux-wireless@vger.kernel.org>; Mon, 20 Oct 2025 08:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2169C2F60B5;
+	Mon, 20 Oct 2025 09:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760949108; cv=none; b=hPtDCEfGRTHQI66SNcM1xJw+Tm0Tw+bIL24Qidf9mE2pGXbal2f3XHVawKkfAUZmvi7512Zffxbk3YYD2P+z/LlT53d5mcWbvP0O5INtfjEa9KN/Jsw8w3vGvxdFY+b2PzwLFHW1k72IzzaY6WkTwSeHzbF+8oMyP9vkIuWjdA0=
+	t=1760952621; cv=none; b=Z96885A6atRhbvsUCX7Czwbj2W6ZiaxsX0c96lz5LZWH1qtNLtSsZg0ZT9uFwQjP/Dv01lzSQFUBIS9uNG/g2Io4B5tUnX2sPWiSyy5PnWqAUfne8mvRKF4uJbHrpKK4+okHPtsdAXEwtjNdAg+rc8PFvFxzr7NJUebpTIlDhKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760949108; c=relaxed/simple;
-	bh=ZvD3ZMZdL1w/6XegkMJCVYKZa/CKWyTVrD/45o3+BFI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CYAWBpzaY0FfYHNW9CGjLBtQokJbkIARRpPS/Ff9XITId8jYI65MmM+isPcjexkce03nrcfLD1BTj7iRVJgEbbFCr+fXL8XykiKNnPLk7DmQ8XC0eR04WFcMfg2CP/U2NaOErEqxfFilwaQSnKMB9vwDEKjSFngT3dTSLlbNxhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QD4MBqFD; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-57a292a3a4bso4774584e87.3
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Oct 2025 01:31:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760949104; x=1761553904; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/A4cHmYOWCf0dL97JI4s6z4lNHCMjZua/3EXqu47DJI=;
-        b=QD4MBqFDDuDgrw0U0tROD7zCGLj2WIeaJ0brDIicrBaJUw+3cON0zuxJ01IZg3W36L
-         frHopsNheyEbbDwFkVDlDDMXgO8HmvTdU1MSiYc7tuxphcIBUN8maWl+FJLmW+w47AvK
-         oPmrSY1IEGTUIMFARlROxBxq8IMeg7O2+jH9+F/wSskw/yNDxbN5RnT2iMprWDhbA/bn
-         kJeFQKgBl5h2Dm5ixbMaT05fBh1XR2bh/jhouQuD2qInZ6ynwxa1lc1x0Pn263GW56Zk
-         Sd6jFLaMayUbPmANNdkyMvUSJMHQB2AVRmfuDUhtjDG9qPQGozDnZj+KqUd7Gh0ItFBZ
-         u/sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760949104; x=1761553904;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/A4cHmYOWCf0dL97JI4s6z4lNHCMjZua/3EXqu47DJI=;
-        b=OTbllX+s7NsKRYKCPAa/MkkfH5wZWcApb1akjMNIwSPP74/G7DflZpuhOpHmQZrZ15
-         oz1f+P/WwXIDvVYqNvO0C6W2arFHfsylNu3vYOJxj56wvptkj0My5fNBjFwMtrcejRfh
-         eIYAEI1pl+FEArI5i0JV0KHhFvW3oaGtUEf+LM+7pYvSGlalF477LqG/t6PdH2QvHkp/
-         KHhAtiex6XCEus4NK/QFpjgqqzVii6Ks/X1xq6R5kbwYhVsbWJgXgt9oQpUubnQK7YVX
-         wVNYXJDp2iV5T/VyLmxQnhui3+90VW4Fbk9NjmXoEE8ddLrXkpRk0002D7V/28/wzJhS
-         mlXw==
-X-Gm-Message-State: AOJu0YxaKxPeFrpF0MG9rXn77WCtvv+CQRxEuVtmstdPklseAgPMldsR
-	P8aHYvb/BA7Ejrr/9Jcv8RLseCLyzSiTQJYTJp2RrTzUSWf3xnZYfu/CvAwZtuxRP0/wddXbgeg
-	5PDkQjliNyrDvAfFp711eim8quml9bTQ=
-X-Gm-Gg: ASbGncuqv8TBHu4W/XNit7XnNuoJNdvZEtq7aJIc9X2QT76gCvJBaWRIVMvviz1zOwD
-	LZD64FamtHIEHL0KRXUznLbBZ0OX5GmhsWR6QJfi0wk5Ny//7GpXz0c/EhLHMl/TvclntbVPmWw
-	7rzw2iKsCU7JOlpgr2tBCAZHxnpV7esgv9dLGy3mDd1W3sHGTD76b4j9MtkPGsusoo3mA3MAdro
-	Xoi8zkTuErFVKUEgkeMgu2xSuCV48aaw6ma0cPMksiBVm5lgP506I//eAo=
-X-Google-Smtp-Source: AGHT+IE42qiWQSmH4fNgySSy5iZ9HHBA/72mgHfF3UNVKwQsT9p5fpIQne4VWppsxcaB/3va0c6KvWnBKugslZMY2dc=
-X-Received: by 2002:a2e:8593:0:b0:375:ffc2:1b2e with SMTP id
- 38308e7fff4ca-37797a8d834mr38883871fa.45.1760949103930; Mon, 20 Oct 2025
- 01:31:43 -0700 (PDT)
+	s=arc-20240116; t=1760952621; c=relaxed/simple;
+	bh=4UgmR2z1wg7yH4cLtO7dxKxxXESpTcWRNrpxYXHV0sI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IkNzFoXjjy+0hwDYpeijedH45xsGqzDpsQ8PqtxfCyjUf3lo+Z3Px+0MAgOaeeEdtI/otJT1rfx+8JDIrauBOnqJxI2HQZcZ9xulAAzIT85D5oh4vtmGmnvKNjuu+i+yJ7t/0uADbIK/tl2NSCTu8ICLvUtTpKBJ+cu6Jv5Jews=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from sven-desktop.home.narfation.org (p200300c59748F6e00000000000000c00.dip0.t-ipconnect.de [IPv6:2003:c5:9748:f6e0::c00])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id D7EE1FA130;
+	Mon, 20 Oct 2025 11:21:42 +0200 (CEST)
+From: "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
+Date: Mon, 20 Oct 2025 11:20:53 +0200
+Subject: [PATCH mt76 v3] wifi: mt76: Fix DTS power-limits on little endian
+ systems
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAC3nzgJ9uX3rREGQGbLA+oJMzDh0Bc-Fs5sP1sM_4DGScgq=3w@mail.gmail.com>
- <977b67ef-ef6f-4ae4-99db-eeb921a17e3f@broadcom.com> <CAC3nzgJM6azT8T4StreR874h5sUarLH62mgHvRZndV_XEOBEgQ@mail.gmail.com>
- <199fc3250e0.2873.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAC3nzgJxowTjrJJppahVMg1iLVXad38D5ZR38-rzsDQm8daUTA@mail.gmail.com> <98a614cf-0016-4cb2-9109-84dec84b535f@broadcom.com>
-In-Reply-To: <98a614cf-0016-4cb2-9109-84dec84b535f@broadcom.com>
-From: Berkem Dincman <berkem.dincman@gmail.com>
-Date: Mon, 20 Oct 2025 11:31:30 +0300
-X-Gm-Features: AS18NWDQUl5MF1GWw5yZD57LFRBu3h3PcroP7Q0u6GLCcED9z7v2VHC9_U5xVOo
-Message-ID: <CAC3nzgJ94L_20hhCbsNu9Unzjg-gDvs-a1x2_vMiarj=wdR6TQ@mail.gmail.com>
-Subject: Re: New test release reload driver
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: linux-wireless <linux-wireless@vger.kernel.org>, brcm80211@lists.linux.dev
-Content-Type: multipart/mixed; boundary="000000000000cec12a064192e907"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251020-fix-power-limits-v3-1-019d2e49239a@simonwunderlich.de>
+X-B4-Tracking: v=1; b=H4sIAPX+9WgC/3XNTQ6CMBAF4KuQrq2hJfTHlfcwLqAdZRJoSYtFQ
+ 7i7TVcucPlm3nyzkQgBIZJLtZEACSN6l0NzqogZOvcEijZnwmve1ppJ+sA3nf0KgY444RJpa6C
+ WvdaNUIzkszlA7hTyRqZFCnLP0wHj4sOn/Ems7P6TiVFGBROgWt1ppdg14uTd+nIWwohmOFsoa
+ uI/EhcHEs+S4b2RWYFe2ENp3/cvoYyprQkBAAA=
+X-Change-ID: 20250917-fix-power-limits-5ce07b993681
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+ Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
+ Sean Wang <sean.wang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ stable@vger.kernel.org, 
+ "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5253; i=se@simonwunderlich.de;
+ h=from:subject:message-id; bh=4UgmR2z1wg7yH4cLtO7dxKxxXESpTcWRNrpxYXHV0sI=;
+ b=owGbwMvMwCXmy1+ufVnk62nG02pJDBlf//3Z/iSYPb+57M51U0YdOdspMxML5OquqIay/WGL7
+ b/1dVN0RykLgxgXg6yYIsueK/nnN7O/lf887eNRmDmsTCBDGLg4BWAiBQqMDGdWLjVbXmwm/TRH
+ WiH9DzfzIsmPXFxvvvWfPezwYQL3Fg+G/54tHQmRV5UmxixLSVkrX6Kb+as28P0JZ74tScp7IhJ
+ WMgEA
+X-Developer-Key: i=se@simonwunderlich.de; a=openpgp;
+ fpr=522D7163831C73A635D12FE5EC371482956781AF
 
---000000000000cec12a064192e907
-Content-Type: multipart/alternative; boundary="000000000000cec129064192e905"
+The power-limits for ru and mcs and stored in the devicetree as bytewise
+array (often with sizes which are not a multiple of 4). These arrays have a
+prefix which defines for how many modes a line is applied. This prefix is
+also only a byte - but the code still tried to fix the endianness of this
+byte with a be32 operation. As result, loading was mostly failing or was
+sending completely unexpected values to the firmware.
 
---000000000000cec129064192e905
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Since the other rates are also stored in the devicetree as bytewise arrays,
+just drop the u32 access + be32_to_cpu conversion and directly access them
+as bytes arrays.
 
-20 Eki 2025 Pzt 11:16 tarihinde Arend van Spriel <
-arend.vanspriel@broadcom.com> =C5=9Funu yazd=C4=B1:
+Cc: stable@vger.kernel.org
+Fixes: 22b980badc0f ("mt76: add functions for parsing rate power limits from DT")
+Fixes: a9627d992b5e ("mt76: extend DT rate power limits to support 11ax devices")
+Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+---
+Changes in v3:
+- add "mt76" as addition prefix after "PATCH" as requested by Zhi-Jun You
+- Link to v2: https://lore.kernel.org/r/20250926-fix-power-limits-v2-1-c2bc7881eb6d@simonwunderlich.de
 
-> On 10/19/2025 1:50 PM, Berkem Dincman wrote:
-> >     [ 17.288032] Bluetooth: BNEP socket layer initialized
-> >     [ 17.319081] Bluetooth: MGMT ver 1.23
-> >     [ 20.068465] brcmfmac: brcmf_sdio_bus_rxctl: resumed on timeout
-> >
-> >     As Bluetooth resides on the same chip as wifi I find that
-> suspicious. I
-> >     would like to know what happens when you disable Bluetooth. Can you
-> >     test that?
-> >
-> > No I turned Bluetooth off and restarted the same error messages would b=
-e
-> > printed onto the screen
->
-> Ok. Thanks for testing. What do you mean by "turned Bluetooth off"? I
-> want to assure the bluetooth part of the chip is not powered on. This is
-> probably not the same as "turned Bluetooth off". Please provide logs for
-> each test and/or verification done. It may save going back and forth
-> over email.
->
-rfkill list all
-I observed another thing, the battery was drained overnight this happened
-before in the 6.17 series the screen remained black shutting it of with
-Ctrl-Alt-Del also would let somethings open in the 6.17-rc7 release there
-was a power management patch from Rockchip and the screen started working
+Changes in v2:
+- Fix second Fixes line, thanks Zhi-Jun You
+- Link to v1: https://lore.kernel.org/r/20250917-fix-power-limits-v1-1-616e859a9881@simonwunderlich.de
+---
+ drivers/net/wireless/mediatek/mt76/eeprom.c | 37 +++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
->
-> Regards,
-> Arend
->
->
+diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+index a987c5e4eff6..6ce8e4af18fe 100644
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -253,6 +253,19 @@ mt76_get_of_array(struct device_node *np, char *name, size_t *len, int min)
+ 	return prop->value;
+ }
+ 
++static const s8 *
++mt76_get_of_array_s8(struct device_node *np, char *name, size_t *len, int min)
++{
++	struct property *prop = of_find_property(np, name, NULL);
++
++	if (!prop || !prop->value || prop->length < min)
++		return NULL;
++
++	*len = prop->length;
++
++	return prop->value;
++}
++
+ struct device_node *
+ mt76_find_channel_node(struct device_node *np, struct ieee80211_channel *chan)
+ {
+@@ -294,7 +307,7 @@ mt76_get_txs_delta(struct device_node *np, u8 nss)
+ }
+ 
+ static void
+-mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const __be32 *data,
++mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
+ 		       s8 target_power, s8 nss_delta, s8 *max_power)
+ {
+ 	int i;
+@@ -303,15 +316,14 @@ mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const __be32 *data,
+ 		return;
+ 
+ 	for (i = 0; i < pwr_len; i++) {
+-		pwr[i] = min_t(s8, target_power,
+-			       be32_to_cpu(data[i]) + nss_delta);
++		pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
+ 		*max_power = max(*max_power, pwr[i]);
+ 	}
+ }
+ 
+ static void
+ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
+-			     const __be32 *data, size_t len, s8 target_power,
++			     const s8 *data, size_t len, s8 target_power,
+ 			     s8 nss_delta, s8 *max_power)
+ {
+ 	int i, cur;
+@@ -319,8 +331,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
+ 	if (!data)
+ 		return;
+ 
+-	len /= 4;
+-	cur = be32_to_cpu(data[0]);
++	cur = data[0];
+ 	for (i = 0; i < pwr_num; i++) {
+ 		if (len < pwr_len + 1)
+ 			break;
+@@ -335,7 +346,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
+ 		if (!len)
+ 			break;
+ 
+-		cur = be32_to_cpu(data[0]);
++		cur = data[0];
+ 	}
+ }
+ 
+@@ -346,7 +357,7 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
+ {
+ 	struct mt76_dev *dev = phy->dev;
+ 	struct device_node *np;
+-	const __be32 *val;
++	const s8 *val;
+ 	char name[16];
+ 	u32 mcs_rates = dev->drv->mcs_rates;
+ 	u32 ru_rates = ARRAY_SIZE(dest->ru[0]);
+@@ -392,21 +403,21 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
+ 
+ 	txs_delta = mt76_get_txs_delta(np, hweight16(phy->chainmask));
+ 
+-	val = mt76_get_of_array(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
++	val = mt76_get_of_array_s8(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
+ 	mt76_apply_array_limit(dest->cck, ARRAY_SIZE(dest->cck), val,
+ 			       target_power, txs_delta, &max_power);
+ 
+-	val = mt76_get_of_array(np, "rates-ofdm",
+-				&len, ARRAY_SIZE(dest->ofdm));
++	val = mt76_get_of_array_s8(np, "rates-ofdm",
++				   &len, ARRAY_SIZE(dest->ofdm));
+ 	mt76_apply_array_limit(dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
+ 			       target_power, txs_delta, &max_power);
+ 
+-	val = mt76_get_of_array(np, "rates-mcs", &len, mcs_rates + 1);
++	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
+ 	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
+ 				     ARRAY_SIZE(dest->mcs), val, len,
+ 				     target_power, txs_delta, &max_power);
+ 
+-	val = mt76_get_of_array(np, "rates-ru", &len, ru_rates + 1);
++	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
+ 	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
+ 				     ARRAY_SIZE(dest->ru), val, len,
+ 				     target_power, txs_delta, &max_power);
 
---000000000000cec129064192e905
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+---
+base-commit: b36d55610215a976267197ddc914902c494705d7
+change-id: 20250917-fix-power-limits-5ce07b993681
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
-ner"><div dir=3D"ltr" class=3D"gmail_attr">20 Eki 2025 Pzt 11:16 tarihinde =
-Arend van Spriel &lt;<a href=3D"mailto:arend.vanspriel@broadcom.com">arend.=
-vanspriel@broadcom.com</a>&gt; =C5=9Funu yazd=C4=B1:<br></div><blockquote c=
-lass=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;=
-padding-left:1ex">On 10/19/2025 1:50 PM, Berkem Dincman wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0[ 17.288032] Bluetooth: BNEP socket layer initializ=
-ed<br>
-&gt;=C2=A0 =C2=A0 =C2=A0[ 17.319081] Bluetooth: MGMT ver 1.23<br>
-&gt;=C2=A0 =C2=A0 =C2=A0[ 20.068465] brcmfmac: brcmf_sdio_bus_rxctl: resume=
-d on timeout<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0As Bluetooth resides on the same chip as wifi I fin=
-d that suspicious. I<br>
-&gt;=C2=A0 =C2=A0 =C2=A0would like to know what happens when you disable Bl=
-uetooth. Can you<br>
-&gt;=C2=A0 =C2=A0 =C2=A0test that?<br>
-&gt; <br>
-&gt; No I turned Bluetooth off and restarted the same error messages would =
-be <br>
-&gt; printed onto the screen<br>
-<br>
-Ok. Thanks for testing. What do you mean by &quot;turned Bluetooth off&quot=
-;? I <br>
-want to assure the bluetooth part of the chip is not powered on. This is <b=
-r>
-probably not the same as &quot;turned Bluetooth off&quot;. Please provide l=
-ogs for <br>
-each test and/or verification done. It may save going back and forth <br>
-over email.<br></blockquote></div></div><div dir=3D"auto">rfkill list all</=
-div><div dir=3D"auto">I observed another thing, the battery was drained ove=
-rnight this happened before in the 6.17 series the screen remained black sh=
-utting it of with Ctrl-Alt-Del also would let somethings open in the 6.17-r=
-c7 release there was a power management patch from Rockchip and the screen =
-started working</div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quot=
-e_container"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;b=
-order-left:1px #ccc solid;padding-left:1ex">
-<br>
-Regards,<br>
-Arend<br>
-<br>
-</blockquote></div></div></div>
+Best regards,
+-- 
+Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
 
---000000000000cec129064192e905--
---000000000000cec12a064192e907
-Content-Type: text/plain; charset="US-ASCII"; name="devices_112749.txt"
-Content-Disposition: attachment; filename="devices_112749.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <19a00bbbcd9beed38ce1>
-X-Attachment-Id: 19a00bbbcd9beed38ce1
-
-MDogaGNpMDogQmx1ZXRvb3RoCglTb2Z0IGJsb2NrZWQ6IHllcwoJSGFyZCBibG9ja2VkOiBubwox
-OiBwaHkwOiBXaXJlbGVzcyBMQU4KCVNvZnQgYmxvY2tlZDogbm8KCUhhcmQgYmxvY2tlZDogbm8K
---000000000000cec12a064192e907--
 
