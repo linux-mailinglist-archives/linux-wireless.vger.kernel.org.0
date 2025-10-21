@@ -1,87 +1,87 @@
-Return-Path: <linux-wireless+bounces-28155-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28156-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FC8BF8CCE
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 22:52:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC6CBF8CDA
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 22:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6929F465206
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 20:52:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9F60481BAD
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 20:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1842836B0;
-	Tue, 21 Oct 2025 20:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859E3285CAA;
+	Tue, 21 Oct 2025 20:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cKsB00rc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VMEQRAHp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AD3281503
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 20:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED16F245014
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 20:51:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761079911; cv=none; b=sf7lGQDm5X/EIwgvhYa/GG2ZAIxXaPZDnYQVyhS827hYT5fbIo5dByful2uigRetiOnR5jS1b/NwrWcAXxhwu1JwGlORgKd+fo+dxBisPooJgk4I/GszjRccNL9ZTsFZLZmuzp/r63SAGoLBwFbC7iBdyxQje9Zte78nIh6q4Vo=
+	t=1761079916; cv=none; b=OQeYsoeX94/VfsWIl8Fynp8CbqpXsn/W/q2AwaPratAYjNimInjwixoNLHKj5UaJ4AHgN0Ov1CbsMTaRf+jZed3hyCdZHxwRr3AfTYFZVx2APs/upNeWfkYJpj4TT9gQaznZJ6TgTKD3lOPsE5TDiTnvQ6c20G9cQAnyqrB/csQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761079911; c=relaxed/simple;
-	bh=MjkLnc2tVg/RJb5BApj/E98F+C69Oi0/gfMCl2ZTnJw=;
+	s=arc-20240116; t=1761079916; c=relaxed/simple;
+	bh=UveeWbonEBzHOsedwEkyFhZXsXP8dHRyWcqRFSsd9is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLTOZ69T/zT/iy07EP8r9rr0UcIsZbIozWelC1X8sjKcT80bpYJCZGfTKXRlVmFipPQv47kcB+J8hKxMEklTmmZ8y0yiNTSqnxXVWciNhaQUE7qP63Y/2dg5txhPH4hGJCX4gx+L0f8kacA4WJl8ygMOUn1oYkLrBz1sEPWm66U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cKsB00rc; arc=none smtp.client-ip=209.85.214.173
+	 MIME-Version; b=ulGENnYaBaLUNW7KHmg7LteOuCLNRiCj2MEKLln6M5V6kETi56aywIH7k7qiloZrfy/l32MrR4XE6AaZX+USxUwu9DvD1eKKD2tSaS6n9SOCMSVhDtpzbbM+tCRs+kc7uEmpY2xf1Fi7tEGof4cYY8k/vXkaU8w0gI9cf4os07M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VMEQRAHp; arc=none smtp.client-ip=209.85.215.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-290aaff555eso59335445ad.2
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 13:51:49 -0700 (PDT)
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b5526b7c54eso3917592a12.0
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 13:51:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761079909; x=1761684709; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761079914; x=1761684714; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xWnNLlNkfbiftBrKkWUkiWaeBS4JxfSDDd9vblIlhTk=;
-        b=cKsB00rcQJQyTGCATp4VsekVlqP3C2BXisyHnar3lm35/fbwRrlrD/xioXlquuFSre
-         MnfugRQJ//NRnD+N1zRHm7zM/gko9f8q7uTlBZmo2X/ramHzyk9rdv+nj9uVwu4uT4uB
-         UKjdWKCIyVp2nTzOESY+XZo2jDPhjyjsgNywDdn7w8UcVsIzxpyXAI/MjaQojwGzTBZl
-         KWCNgspdu6FwEL4hnybO38OjGLmPV1yEsE9dhcvQAiYo+ha63ACbFD7iXsgbnKdcxjtA
-         8pd0GP3qrKh18krBD41vP6plttfbQ0a1Ydkxb6Trud1Yty5skc0O+XHuZ43HYi/5Ro7g
-         35Zw==
+        bh=lftas2ddDSmWmb+YGuwk3FBQVOltsQH5UlJvrmZ5q6U=;
+        b=VMEQRAHp5d0MUi9apIanWr8EFTh9XMrXLK7jbqYnZt+v3idOmVv80UtivRn0Ef3YQv
+         SUe5dg1cRPtxO/vb2ean9LiL7kmS9ev6TPezIKdJWVqSnS0yK7dEYJa/L6oK8dy5MLfx
+         6g1HM9Cx/cg4qvgDkv3J7XVtYQvVEDPWIkVE9oq33liB1gYON1IFTa96Df8cCnjB+HJu
+         2WUaxI9b9rrYwluKaSDtzd0zV74pj1sJh9ucqZ7quSUZQuUFyjtM0g5A6/S+K4o+fXjb
+         9+k3JsHAttpayl+R4SdxMVYtpuLWGU/8pYo+pqaIUey74jqgQ/AN7SK1fi52woH+FVs3
+         5ufQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761079909; x=1761684709;
+        d=1e100.net; s=20230601; t=1761079914; x=1761684714;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xWnNLlNkfbiftBrKkWUkiWaeBS4JxfSDDd9vblIlhTk=;
-        b=wcaPWGIG/9YEWSlxZ29JN+9TZ4ZHoGvKUZVtZs2pTa2ilkEVHGySg6HTQMzSPRoXNx
-         Uz0kHetuDP7hp5UsbGC7bWTc1As/vz1svI2pu4eR8LiA4GEXFt257NzLvA9bys1i2K6m
-         iONPDa7O47t2WmSBqquIz3tXaaJ0KzFYMazxvqPgsqP+Bz8iFS/AvPqaUsXx9PwC3A0s
-         yp4Sj1oDdMzk67bnZdEnmwJGMRicTaNNAthWYPYjoQiMtCV1QkYCxUIbR0/Swxnvw0kU
-         YQr2cCui//0+XEm0ZZlvzlAhmjjJiEZSvzwYntZlWKPKijtMHESMkTaKZygG79cXe4yp
-         SHGg==
-X-Gm-Message-State: AOJu0Yz2dRLWuHz7Vhxszt3vpHCRxvR10FlssSiuLwukUMtBH+Nkllom
-	bqDdpcEYEO9mY50ZPvaq7tVuODvosl6dKKRFYixGkxJ25cIf8x5wEn7j
-X-Gm-Gg: ASbGncv/WoM0ywFHzcuOCIg3hs9npa6CkolY+PHELFjftb/fYQyd5HZaO+e2iWQfsPX
-	BZZXaQawDUL21+3PVXrDcKKaiFaXBV8EOFpwxbUvzSLnHMZ/kJ4eTovsdLJMPXBXFYdA8fm8QVQ
-	XKQdQTnjkKTIcdDGccCqFYrvYw0cpLqsmrKhTko5CpMDFuczUIAvQvieTQ51XgvHy38YxhFFOOp
-	5tDZL22yyr076h42iDXnoapsQtrCvJAK0uiFEONdpPgDQ5/VvPezwFestvUMkyfiUZbfCUsMw0V
-	iPgOY5YPDBoNuI4Pc3endXPnnubU/OrByliK//r2+IymCQlp3mW8xxGPGY1QRDY2WJEXcCq6Xhh
-	vbE9wHMQft9MTszw0RMvL98bW9lELECP4P/eRXqcI1E1REjVjaNdnB2Mxdt0BaEV61qAVTmeJ8I
-	SOW6ng6bNjqjjo
-X-Google-Smtp-Source: AGHT+IEqwMCwtpJe6M2AVLhFFJ0/uoQlhALmf+ZedDkgLsoDbgVNNdvSO65CLJQ2YxoWpuTW4Nbyhw==
-X-Received: by 2002:a17:903:94d:b0:266:9c1a:6def with SMTP id d9443c01a7336-290c9bea18dmr221028235ad.0.1761079908830;
-        Tue, 21 Oct 2025 13:51:48 -0700 (PDT)
+        bh=lftas2ddDSmWmb+YGuwk3FBQVOltsQH5UlJvrmZ5q6U=;
+        b=D4TNZwRqSS3hD130h7ZDswHTQbkk5FLNCAxwqsKhekl4Hj1yhgAvvW4rUN0iZC8ucZ
+         REQbufXoY5n1HkABQxWLljStzoZoZXm0QwbeKQIWzTNvCL7mZbM9ub49jfa7JjRh8u+y
+         P3ZMmipTFPtVDUMAUP7xNN9I16eu7lzruflZ4ZMxrDXn3zj4Y0mJdLhfujt3LLJDYFvH
+         juFpzeDTAIMtKCcZFfawXd+7Jk/cYpNxMeje4mSsamz+vbbuJdazxL5bjDf7vS5Fbk5d
+         DsHzqPr8eCAzSoHJW7uVcSC1pdRTHrpyYxRNgrM+mqFjHcbHImSnWZz04UxcvRJ2Xhb6
+         fwxQ==
+X-Gm-Message-State: AOJu0YzP8mfprc9JiZdJLW1xYhZ2CJU0cu/a8Ioc0g1tFv6YEhiXaZyv
+	aym4uyfDjScUZjlpdhSTLgitS1Yp9foQSU6SKkzfosvQK2aAmPXCAD8v
+X-Gm-Gg: ASbGncsPbp5zDEOf91+RDfb+roucbT+CfNFSqtsdUVS+oESBaqP74TH2MmRtqjEm8OE
+	TXx4Op3imztMNnaite5sdlCyzoM5ybFJ79eEukj9ulSRK++Fhvp+O7V4Pj/3miYhlEzC7CgOLNt
+	Xu/EuvQWBWpGR95XAcKQxAmW31pbDtbhp0lmRUPBEkygJVsOficgxYH/2TAXml75+bPwLNMa5S4
+	9+pG3cicnrut7v++X6edxKpMBFSfzztubbQhufO22dh2GpIEhh4Vy/jQ5g0DNOZxjuyq5xs/Nbl
+	HJSdfp6nP5DjUHaiNh2zmEpPirpCiJm7zeolmcytgKAu9EjNVxPmjJiGPb4QLG1MemLOCTCEGjm
+	M5UG5nIbL/JAJvTyK0YtHh6SRqKRq9D/hATwOYjCFLlpWf2RcJX6jIt2VJ5exekkUCQ6DL7Lb8p
+	CLzkIHztP7SDK/
+X-Google-Smtp-Source: AGHT+IEfhRm0UFYKNj6H7qrDGgiGnDijmQN5E6l3vSDSR8fMiI77xk4Co+Iyyb2wZMvFpNiuKZWgVg==
+X-Received: by 2002:a17:902:f610:b0:261:1521:17a8 with SMTP id d9443c01a7336-290c9ca6b06mr233478265ad.16.1761079914034;
+        Tue, 21 Oct 2025 13:51:54 -0700 (PDT)
 Received: from skylark ([171.50.223.156])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29246ebcde4sm119174415ad.5.2025.10.21.13.51.47
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29246fcc795sm118283815ad.30.2025.10.21.13.51.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 13:51:48 -0700 (PDT)
+        Tue, 21 Oct 2025 13:51:53 -0700 (PDT)
 From: Amol Dhamale <amoldhamale1105@gmail.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	sriram.g@kpit.com,
 	Amol Dhamale <amoldhamale1105@gmail.com>
-Subject: [PATCH 2/4] wifi: mac80211_hwsim: fix coding style issue by adding whitespaces
-Date: Tue, 21 Oct 2025 20:50:24 +0000
-Message-ID: <2120f77e6cbcd7fedf9171f7e5eb58f7acda3273.1761078139.git.amoldhamale1105@gmail.com>
+Subject: [PATCH 3/4] wifi: mac80211_hwsim: add sufficient parantheses to complex macro
+Date: Tue, 21 Oct 2025 20:50:25 +0000
+Message-ID: <719536080163f4b8ecb9af6ebbb7af8304fe3401.1761078139.git.amoldhamale1105@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1761078139.git.amoldhamale1105@gmail.com>
 References: <cover.1761078139.git.amoldhamale1105@gmail.com>
@@ -97,46 +97,32 @@ Adhere to Linux kernel coding style.
 
 Reported by checkpatch:
 
-ERROR: space required after that ',' (ctx:VxV)
-ERROR: space required before the open brace '{'
-ERROR: space required after that ',' (ctx:VxV)
+ERROR: Macros with complex values should be enclosed in parentheses
 
 Signed-off-by: Amol Dhamale <amoldhamale1105@gmail.com>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 95582345cffc..51c0582e3b77 100644
+index 51c0582e3b77..e62d4a98671f 100644
 --- a/drivers/net/wireless/virtual/mac80211_hwsim.c
 +++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -2504,7 +2504,7 @@ static int mac80211_hwsim_config(struct ieee80211_hw *hw, int radio_idx,
+@@ -5357,10 +5357,10 @@ static const u8 iftypes_ext_capa_ap[] = {
+ };
  
- static void mac80211_hwsim_configure_filter(struct ieee80211_hw *hw,
- 					    unsigned int changed_flags,
--					    unsigned int *total_flags,u64 multicast)
-+					    unsigned int *total_flags, u64 multicast)
- {
- 	struct mac80211_hwsim_data *data = hw->priv;
+ #define MAC80211_HWSIM_MLD_CAPA_OPS				\
+-	FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_TID_TO_LINK_MAP_NEG_SUPP, \
+-			 IEEE80211_MLD_CAP_OP_TID_TO_LINK_MAP_NEG_SUPP_SAME) | \
+-	FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS, \
+-			 IEEE80211_MLD_MAX_NUM_LINKS - 1)
++	((FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_TID_TO_LINK_MAP_NEG_SUPP, \
++			 IEEE80211_MLD_CAP_OP_TID_TO_LINK_MAP_NEG_SUPP_SAME)) | \
++	(FIELD_PREP_CONST(IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS, \
++			 IEEE80211_MLD_MAX_NUM_LINKS - 1)))
  
-@@ -5710,7 +5710,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 			continue;
- 		}
- 
--		if (band != NL80211_BAND_6GHZ){
-+		if (band != NL80211_BAND_6GHZ) {
- 			sband->ht_cap.ht_supported = true;
- 			sband->ht_cap.cap = IEEE80211_HT_CAP_SUP_WIDTH_20_40 |
- 					    IEEE80211_HT_CAP_GRN_FLD |
-@@ -6398,7 +6398,7 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
- 	if (info->attrs[HWSIM_ATTR_PERM_ADDR]) {
- 		if (!is_valid_ether_addr(
- 				nla_data(info->attrs[HWSIM_ATTR_PERM_ADDR]))) {
--			GENL_SET_ERR_MSG(info,"MAC is no valid source addr");
-+			GENL_SET_ERR_MSG(info, "MAC is no valid source addr");
- 			NL_SET_BAD_ATTR(info->extack,
- 					info->attrs[HWSIM_ATTR_PERM_ADDR]);
- 			return -EINVAL;
+ static const struct wiphy_iftype_ext_capab mac80211_hwsim_iftypes_ext_capa[] = {
+ 	{
 -- 
 2.43.0
 
