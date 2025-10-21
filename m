@@ -1,156 +1,95 @@
-Return-Path: <linux-wireless+bounces-28130-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28131-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD4FBF536D
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 10:25:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 794E6BF5388
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 10:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6C4FD4E34F0
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 08:25:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3927F3AAA91
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 08:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47D62ECEAC;
-	Tue, 21 Oct 2025 08:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A00303A2D;
+	Tue, 21 Oct 2025 08:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="VMo/3tAP"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="APiTwHVU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E50298CB7
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 08:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9164C303A0B;
+	Tue, 21 Oct 2025 08:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761035132; cv=none; b=H616NdG9pqhunAHICg1GdjqPevT2N8E+odk5U5dR0LgXgUJ0DBOHj7b2608QFi00QJCpF/923y8jTnP8isdbHnCCeEBn/okMfqtGEcBIkqVxcOXZuKe7ONHMtB9yi8/d+cR3j0u+neu6/wTfioXTg/pTuvtXdV8AsAWiO85m6DU=
+	t=1761035250; cv=none; b=pVLKpbH4aZEDbzIHxiNyGGgk8DFk6f5j/9Uq+28Xpxx6qNxa+yk2nCNI9f+hM59oVbdYJqJNVv8YCT7zcETfvU/z4WYpzWcQ73Ai4VL1EMeTMvIXYgQS2Hq+eAc+IyVipr8NsadXzIYBwRgrtWT/RMdO07d4zPVXOxbQJpEd7C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761035132; c=relaxed/simple;
-	bh=CDOX/Q0SciF/sAPfd5jrTqH0lpHfF0elP4tDo34UTmk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sj5bWIMqifPBP+raVrX0xQh9rUoHyBk13fCfNv9qolhKjW6cvenUjozmyb0WtTQvRu4+MT+l1Lkzjj2wymJURfa6eoAHq+OSQGIDbSEy3Kps36pZ+QH5/4p9jxrsg7aQb6v7TF8jf4uo+yiSDwq0c8By35DaY7MttzmdPZiLZew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=VMo/3tAP; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-367444a3e2aso65169801fa.2
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 01:25:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1761035129; x=1761639929; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8L2F3ZRh6fW8RZGFdedUhnU7a9bMMQNWC8eaAEnGh4U=;
-        b=VMo/3tAP6USTssallSInBg/Sa1LRioToEouW+zy70B6VtBtrrHdm1IOxFiRrcob8P3
-         /lKmzGs5OQLGRvyJ2Pm1a3IfhHkJFfpTEXrMUWmVh0Phs9XcrdZ9gzkA/DE28E7etfQ7
-         WLvmfzi/2X7c5U6eVZKKnZ/BNKKNa+XkMpVOnlJRdB+Sr4RyPILIWyNGKgsbSlYLerD8
-         mfkYE/pU6MyrCEyekAg+fxrkUJJeobT5kkJBwV9UfZAM2JoFpgQcbi5e9TAVB3eokWjh
-         emgc0AdQ9Brut9eLKW0hEPf5lxpqPedPBb2EHaodtjAzE51er+3nNDmgVMoDDtCcCdm8
-         wzpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761035129; x=1761639929;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8L2F3ZRh6fW8RZGFdedUhnU7a9bMMQNWC8eaAEnGh4U=;
-        b=Vo3CiT4jUc3qmQr+owLK1+Skcd3kualD2z4mktrmEI6FnytskfdGckZDF88V4aya61
-         E8XxS8M7hWc5K4/QrMo+y6tU3LwqcA7jFKdzECaZqC6jn8DisVOjCUCZM4m62jLjRFtO
-         9KPTNv/IQizo6iRkZc7FXr8hQxr7SZS2e0c8Ssi2cVumGdjWMXgdbMOyKlCHAH6+H6rC
-         QoHJUTH88Kezdz7q/bKN75MiXFh3cl3/Xsu7KZbffs2toYbNTlLZ1N0y9KyjaGbOJw1U
-         9pUiRyPLJLp93CrRI/Vi9z7nt9JNJK+Q3otYcWVEB27Ez2qr57amay4MeupNORAHGA3R
-         XnJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqwCbmPjjafkr60t+8LTv2gZgN6joejcYWj5cU7mUXH2j0bTILEguqeKIXdY26q8zoiE2dIVYIUTo/IPqxKg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwvBAVa5zAPe4QQxK6fUn5EHRVS0t6x7QmAWNtH3IQ3wb+XlbO
-	KBgxrjDwJuI2cEwdGvhHPGppwWEg9VLAMaM40N7hx+9ff3t+ATG6jcfJpDqSYf8CMnvYlIJFiII
-	gzq55jpCvh+AFVaBOqygN0JJq912W+WOoH3nXs3/agA8eyZITcSJw
-X-Gm-Gg: ASbGncs5RObk27ucmkw7JCPcBaqMhCGkC+kaMWLjnZ1YasdN2YWNeF6Hv7PJ8kCmAlP
-	ms5s16p9W6/Kn67LSgllBrvhIid/wgBGEASFZWeYs3AIWvQSev+VBv1L6emSKwwHNv+eKJXDX/p
-	qtL3CxQ7RtnMSkW96E69r8LwQsznfssbWZItF/rrPbw9+4XaiPDRlrdGVLnzp21KH4/ClS7PEuP
-	VBrabm7P+kyzwV/I6XUnLQVk9g4J7kwMPd5mmLI+egov6eC8k6jtp8b0zIt1DPXG7Cl7OGsFdcB
-	FrTKxgIQ4IkL1cIewyLDTXnOLfxxIgdi6l8oXpU=
-X-Google-Smtp-Source: AGHT+IHXwT/xNzUPN0bqIpQnLcE/96hcau6Gg+Y66ThzilB47Bpq6EUW/f9z6HeQw52ISlIUQnzWWfBWa7aI3wFgiK8=
-X-Received: by 2002:a05:651c:983:b0:376:45a3:27c4 with SMTP id
- 38308e7fff4ca-3779782c00bmr48618191fa.5.1761035128705; Tue, 21 Oct 2025
- 01:25:28 -0700 (PDT)
+	s=arc-20240116; t=1761035250; c=relaxed/simple;
+	bh=QHC3WozEhc//frG3tRZ9YA6Jk2AfmypdfZ6r0DzLzVE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UTE57ec4m9LOSn0tHTvwKnywH38s2jbhEPuTFoZ3+m+8vtbZe+EPpFgvTpyhMwKRBqWCVtYKZX3/Y+cZJKFyejWfKdvgbc0Q0PgEcM3wbcXMkPcUvCnOYq31aLX0HSQnuwYmc7SWCWyyZAmfdTHP/tn+GfTbflx2hGDCvGgNx18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=APiTwHVU; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=QHC3WozEhc//frG3tRZ9YA6Jk2AfmypdfZ6r0DzLzVE=;
+	t=1761035248; x=1762244848; b=APiTwHVUKZdeSpx/aRORxjGp3COth2wKqKmGznTL3sCZ+uU
+	2Nba2I1stnhvS8WzaojAD/22Z1WUAWnveZuYecUKsz5KctrULNbpUk2kUBJJj9ej7A/pEsvrXM4YY
+	h2QiG9F8Twx6k0SBjY1mQ24WUdnZCaAFN5GY7x20MvnXvUTTxJq7L2Q00L8jpPaE94bEfFNQOFNM8
+	yCcWsZ+IX4AGvufGRMZGFtSliBfGXr/kQtEIae0mYhnwBG0KUGIza6MrnVbYuWdrbpjEyKolKpnmQ
+	pOEai4AHig9Oe+MxFmtSDulqYXxuH59/tSeJeRN6QpyRHcnlLP/DG4tIo5X2LM1g==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vB7i8-0000000BIMk-2RVk;
+	Tue, 21 Oct 2025 10:27:19 +0200
+Message-ID: <a99d7c92bcf40614d66228d8de89017ce2b6a580.camel@sipsolutions.net>
+Subject: Re: [PATCH v1 6.14] wireless: aic8800: add support for AIC8800 WiFi
+ chipset
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Krzysztof Kozlowski <krzk@kernel.org>, "he.zhenang"
+ <he.zhenang@bedmex.com>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date: Tue, 21 Oct 2025 10:27:15 +0200
+In-Reply-To: <01030786-764c-4215-a4ca-dcd841e6ed3e@kernel.org>
+References: <20251020092144.25259-1-he.zhenang@bedmex.com>
+	 <01030786-764c-4215-a4ca-dcd841e6ed3e@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250926083841.74621-1-marco.crivellari@suse.com>
- <20250926083841.74621-3-marco.crivellari@suse.com> <7c8363c38c4352181ebde6b27b6d8fe69c60429f.camel@sipsolutions.net>
-In-Reply-To: <7c8363c38c4352181ebde6b27b6d8fe69c60429f.camel@sipsolutions.net>
-From: Marco Crivellari <marco.crivellari@suse.com>
-Date: Tue, 21 Oct 2025 10:25:15 +0200
-X-Gm-Features: AS18NWDyx8qVK6r7mfmkx-izjawGx9uFzulIzN-LcHUeTPVQt9XiCdqbcImcGGg
-Message-ID: <CAAofZF6uieKF463KnikeTWqKxjaaZ0SX8t5CpAsFWTkj8r1G7Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] wifi: WQ_PERCPU added to alloc_workqueue users
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-Hi Johannes,
+On Tue, 2025-10-21 at 09:03 +0200, Krzysztof Kozlowski wrote:
+> On 20/10/2025 11:21, he.zhenang wrote:
+> > Add driver support for the AIC8800 WiFi chipset family.
+> >=20
+> > Driver features:
+> > - Supports 802.11ax (Wi-Fi 6) and backward compatible modes
+> > - PCIe/USB/SDIO interface support
+> > - Hardware encryption offload (WPA3 support)
+> > - Enhanced power management for mobile devices
+> > - Integrated Bluetooth coexistence (if applicable)
+> >=20
+> v6.14? That's ancient. Work on mainline, please.
+>=20
+> Also, this is absolutely unmanageable huge patch. Please read submitting
+> patches document.
 
-On Mon, Oct 20, 2025 at 4:21=E2=80=AFPM Johannes Berg <johannes@sipsolution=
-s.net> wrote:
->
-> Hi,
->
-> So I don't know if I really need to tell you this, but generally the
-> subject should be _imperative_, not describing what you did after the
-> fact (i.e. "add WQ_PERCPU to ..." rather than "added ...")
+Well, it's got 25k lines that are an embedded firmware blob, etc. Not
+even sure _staging_ would take that kind of thing as is.
 
-Aha, thanks for the hint.
+The details you gave for submitting patches are obviously not wrong, but
+in a way also miss the point entirely, this driver needs to be
+redesigned from scratch before going anywhere near upstream.
 
-> > All existing users have been updated accordingly.
->
-> Surely this is not _all_ existing users? :)
-
-Yeah :-)
-
-> > Suggested-by: Tejun Heo <tj@kernel.org>
-> > Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-> > ---
-> >  drivers/net/wireless/ath/ath6kl/usb.c         | 2 +-
-> >  drivers/net/wireless/quantenna/qtnfmac/core.c | 3 ++-
-> >  drivers/net/wireless/realtek/rtlwifi/base.c   | 2 +-
-> >  drivers/net/wireless/realtek/rtw88/usb.c      | 3 ++-
-> >  drivers/net/wireless/silabs/wfx/main.c        | 2 +-
-> >  drivers/net/wireless/st/cw1200/bh.c           | 4 ++--
->
-> These have different maintainers, please split up accordingly.
-
-Sure, I will do it, like I did for the others.
-
-> >  6 files changed, 9 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wirele=
-ss/ath/ath6kl/usb.c
-> > index 38bb501fc553..bfb21725d779 100644
-> > --- a/drivers/net/wireless/ath/ath6kl/usb.c
-> > +++ b/drivers/net/wireless/ath/ath6kl/usb.c
-> > @@ -637,7 +637,7 @@ static struct ath6kl_usb *ath6kl_usb_create(struct =
-usb_interface *interface)
-> >       ar_usb =3D kzalloc(sizeof(struct ath6kl_usb), GFP_KERNEL);
-> >       if (ar_usb =3D=3D NULL)
-> >               return NULL;
-> > -     ar_usb->wq =3D alloc_workqueue("ath6kl_wq", 0, 0);
-> > +     ar_usb->wq =3D alloc_workqueue("ath6kl_wq", WQ_PERCPU, 0);
-> >       if (!ar_usb->wq) {
-> >               kfree(ar_usb);
->
-> I'd also think that WQ_PERCPU doesn't actually make sense for any of
-> these instances, but for those that still have an active maintainer I'll
-> defer to them, of course.
-
-Thanks for the pointer!
-
---=20
-
-Marco Crivellari
-
-L3 Support Engineer, Technology & Product
+johannes
 
