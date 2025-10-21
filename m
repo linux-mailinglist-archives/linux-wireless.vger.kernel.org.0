@@ -1,63 +1,62 @@
-Return-Path: <linux-wireless+bounces-28150-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28151-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF71BF713E
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 16:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D31C5BF7177
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 16:33:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76337402BEB
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 14:27:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E42D5474C3
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 14:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D772F2916;
-	Tue, 21 Oct 2025 14:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E435B2F60CD;
+	Tue, 21 Oct 2025 14:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FeVe7Url"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="MU02TDUt"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A1D2D6E67;
-	Tue, 21 Oct 2025 14:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417B033A032;
+	Tue, 21 Oct 2025 14:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761056830; cv=none; b=OtRFOtjccD9qbXkf/sDVBLlD6h1TaeurqrvZrBLo16/cjwK9ovoMYLUAxihQzpYAks99oEwqzO2UQEASegNa1OXVN8Az1ibEhi3ArySAOU4pL5kQ03covTdLBGlz2mufRUQpfrl4TiVqAzzxgc5+0iRZFcio0fYANxdQ1+1VUho=
+	t=1761057026; cv=none; b=iLVFLikWJ1w12uqjCvVoM89zCxDAhmX7GLz0CDKb2Yz/HuUqcu6wlFJLwlv26FWkJ9x0ihZWFu+0lC2q320D1QQH8YqFi5gv2AjJQ43v7t3EF69BSZ3bYTbKVk+hQ+CVVDK8AMu/DDrndw/QHf/rVvdT/4FajN4QidvOS1/jEc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761056830; c=relaxed/simple;
-	bh=JSobYfr+WjpQpXvdVJCSc0DfJWxmil7RxAESVY00LRE=;
+	s=arc-20240116; t=1761057026; c=relaxed/simple;
+	bh=6yv3xeioCTIhUI0epdU1FmxXFWsVBiP/Cy7QjsBiGKE=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mhzmYU1Cn9PttycfOAcuFoN01RAoEzaH1YhQ2PloWbCqduX7DCBvIUelC2ftS/YBM18F5VvxEqWzP9ODoOG0nVdZIUZNApN4GK3xgPCFfyDGYm78Yv3X1dt9guyv1WRM53It57NVV+yHPxurIVgvOGhEbnn9ZPHj753WvGX+nds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FeVe7Url; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=Ix+cLp9H9YMoBh9LsVs2fXvWMFKz1ZrmvUxXgZ/IbD4UosZ1IkPxrUbMwS2z1kydnX/W8SmB71q6FahvYimoYph4oLye80XehmP3Xb2RHGLoBZAxyBYrHKXE60q4REftYvmwNBpGv6F/RwmYEVswqZUKF42p6VRz2LdZq4v52sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=MU02TDUt; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=LIAVNbOhdkFrK1z7fNFUt6d9/zFjhPdfVuObhwjxb98=;
-	t=1761056829; x=1762266429; b=FeVe7UrlBUuPquqXfuzlaLYzXmOMYzGSLVMyCpzYUCPdpZu
-	NEjDeMVb2YNOPaX9kmG2zncgAP4BQ0quN2HbFPssa0hm5AY59psiLCLQzJJfpmFSr9hhW9EavMW34
-	iuKGM1Ufs/YhxhX3KfH04lKgmrkiKQg50J38bFpNbQJfQGvJTJUchcswy+17wDazFUcs+fL/IhCBc
-	ZElwG1HqBiev96Nne55/V4KK/kC8tffAe0+C0qZbOWpA0m1NfT4/wOnshhAsoUEFdJ1pjoAxBqdlx
-	C6lsO4e63lQMIz4pVS692zHYNMGFOPuPC4eekNeQKBermp56kXc9QKONSPouQyrQ==;
+	Resent-Cc:Resent-Message-ID; bh=6yv3xeioCTIhUI0epdU1FmxXFWsVBiP/Cy7QjsBiGKE=;
+	t=1761057025; x=1762266625; b=MU02TDUtJkRse0dXHMU5+HCF7IW5Yubq3GgZgf2KZnR7wN/
+	tudJKSukLcCRlAY/LHRJKj0+Ws8uH7Kr9ZNTRmAzc1njLlEvW/00cs8OnEb00jZ08bvvELLr4UgiN
+	QdMjN5C3vj1km+MiJLXRO6LpksR09qgXUUUUfa9xVQCZ9hAldfgVJuzMCEfnV2Q4E01NGwVPKHaY/
+	3Nphh8YxvYW4GgRqApAM+9HItJv2uthyLZfUWHFNmJWkn/cHasdIcWi/+6+HZVW+2nDVDBlsRbiQH
+	kt6ybfYJT/c0STEs57ZPT9iA09fQ6g5w7oluqBuRbeAmRqDTCpc4cKNnx0L4NF4A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vBDKL-0000000C0fg-0OQr;
-	Tue, 21 Oct 2025 16:27:05 +0200
-Message-ID: <0400fa9ddfcb235aa6f80290f95fceb2d1a3ab12.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless-next] wifi: mac80211_hwsim: advertise
- puncturing feature support
+	id 1vBDNW-0000000C14h-0dPU;
+	Tue, 21 Oct 2025 16:30:22 +0200
+Message-ID: <c93a5030eac4a0042e5773fa49037a35c9239027.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: Remove unused wdev_to_ieee80211_vif
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+To: "Dr. David Alan Gilbert" <linux@treblig.org>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 21 Oct 2025 16:27:04 +0200
-In-Reply-To: <8eaadd1e-793c-4931-bee9-599fd333ab04@oss.qualcomm.com>
-References: 
-	<20251017-hwsim_set_punct_feature_bit-v1-1-3be1bb3450c0@oss.qualcomm.com>
-	 <e0ce9b89f0e0a6379070e9e135c53722a2d0a19f.camel@sipsolutions.net>
-	 <8eaadd1e-793c-4931-bee9-599fd333ab04@oss.qualcomm.com>
+Date: Tue, 21 Oct 2025 16:30:21 +0200
+In-Reply-To: <aPZl0LFtls2LA6uf@gallifrey>
+References: <20250619005229.291961-1-linux@treblig.org>
+	 <aOvZ8FHp7-tliei2@gallifrey>
+	 <30b9e7eebfc99330857f7a81c72b9eb23ea6406d.camel@sipsolutions.net>
+	 <aPZl0LFtls2LA6uf@gallifrey>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
@@ -69,60 +68,14 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Tue, 2025-10-21 at 11:26 +0530, Aditya Kumar Singh wrote:
-> On 10/20/2025 7:55 PM, Johannes Berg wrote:
-> > On Fri, 2025-10-17 at 09:32 +0530, Aditya Kumar Singh wrote:
-> > > If userspace provides a puncturing bitmap via the NL80211_ATTR_PUNCT_=
-BITMAP
-> > > attribute, the kernel with mac80211_hwsim driver currently rejects th=
-e
-> > > command with the error: "driver doesn't support puncturing", because =
-the
-> > > driver does not advertise support for this feature.
-> > >=20
-> > > At present, the following hwsim test cases utilize puncturing, but th=
-e
-> > > bitmap is not sent to the kernel. Instead, the puncturing information=
- is
-> > > conveyed only through the beacon data:
-> > >   * eht_5ghz_80mhz_puncturing_override_1
-> > >   * eht_5ghz_80mhz_puncturing_override_2
-> > >   * eht_5ghz_80mhz_puncturing_override_3
-> > >=20
-> > > A future change in hostapd will begin configuring the puncturing bitm=
-ap
-> > > explicitly, which will cause these test cases to fail unless the driv=
-er
-> > > advertises support.
-> > >=20
-> > > To address this, update mac80211_hwsim driver to advertise puncturing
-> > > feature support.
-> >=20
-> > This might be a good time to introduce better checks vs. what we have
-> > now in hwsim_chans_compat(), which just uses the control channel rather
-> > than any actual bandwidth/puncturing/etc.
->=20
-> Comparing those will be equivalent to comparing chandefs instead of=20
-> control channel right? And we already have a helper=20
-> cfg80211_chandef_compatible() to do that. So we just need to pass=20
-> chandefs and call that helper? Or hwsim should be more stricter and just=
-=20
-> use cfg80211_chandef_identical() (this helper is not exported yet!) ?
+On Mon, 2025-10-20 at 16:39 +0000, Dr. David Alan Gilbert wrote:
+> So what is it about these out of tree things that needs these calls;
+> why don't the in tree ones need it?
 
-I guess it shouldn't be either of those, since if you transmit at a
-higher bandwidth, even if cfg80211_chandef_compatible() returns true, it
-still shouldn't work? But that's also a rate scaling thing with the
-bandwidth actually used.
-
->   >
-> > It'd also make the tests actually test more. What do you think?
->=20
-> That's true. You want those changes also along with this patch or you'd=
-=20
-> take this one as it is and take those separately?
-
-Well given what we have now it doesn't really matter I guess, just
-thought about it here because of the context.
+If you have a mac80211 driver that has cfg80211 vendor commands, it'll
+be called with just the wdev, but will need to have the mac80211
+corresponding vif in most cases, and if it's e.g. called for a monitor
+interface, there might not even _be_ a vif (and get NULL here.)
 
 johannes
 
