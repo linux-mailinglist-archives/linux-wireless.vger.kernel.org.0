@@ -1,128 +1,128 @@
-Return-Path: <linux-wireless+bounces-28147-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28150-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A79ABF6CDF
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 15:36:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF71BF713E
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 16:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1B6D19A4E86
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 13:35:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76337402BEB
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 14:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4541338929;
-	Tue, 21 Oct 2025 13:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D772F2916;
+	Tue, 21 Oct 2025 14:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="HnJtjsBH"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FeVe7Url"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BB93370F5
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 13:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A1D2D6E67;
+	Tue, 21 Oct 2025 14:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761053671; cv=none; b=hcwe/C0WNFyVVnaKxiaAhC6hLaLs3pq66BwmiyALndb82dC1v1Lch1w4URW4tJuNV9pkBwvTs6GsUs8DKmkxq5TNVXwjzhpw1aUpuBRIxIW5gPFgK08DKcYKNCYVDdlE1f9rAmdkznV3HT0PK1URrOTBRFD2RPRryfGt9ayL7s8=
+	t=1761056830; cv=none; b=OtRFOtjccD9qbXkf/sDVBLlD6h1TaeurqrvZrBLo16/cjwK9ovoMYLUAxihQzpYAks99oEwqzO2UQEASegNa1OXVN8Az1ibEhi3ArySAOU4pL5kQ03covTdLBGlz2mufRUQpfrl4TiVqAzzxgc5+0iRZFcio0fYANxdQ1+1VUho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761053671; c=relaxed/simple;
-	bh=p0ObaJhdNVmgY2H2zh82Apd2IxZcoTYWN7AUIEW2UeI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hitShgjMUFNyxc/d7ahF4+UVrECzGmF9RLTXzc5VScD04qeYYKkIYv0qI5I7A3+KzV9s8uEpl+k9waiJhqj+wfm8cTkoFcdswmOdE2Nt/aFLJR1qEVCskppZucc3C1NKg8OO43rgSWleKtW0naQgyA1Ej+IWB2IFaMdK5GMg96k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=HnJtjsBH; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 59LDYNOo83088107, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1761053663; bh=KL1ZOMfg3RY99M0UoZtr6pEHLeKU/oMOBR7WGT0cr44=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=HnJtjsBHxdAm2KbACU9RNsV0jNLIYKUvGjEDPmsMB7Y5F0Jg13pMXDTtjkjUYhEms
-	 qLeNJV9DOFMXw9X969jM+jOB1iDZYdLL4j8FOyyZWmsbXRHebr6MQXjG/lr4gRb5qu
-	 bhRnAXFK6ZkYHeHapq3YTxsLUfUVXqHXQ4UYeb+YA4s+arVAcIpicgf52zpCIk/LFe
-	 X/m/0VLqeJG91sdPi8d7dlSPIX7Ja8Q4OurjEUwF+RM8yg5ByP4aruBIPZv5PQDdQJ
-	 uQb71WNjLb++Zh4H2QxOEYj12e94c2BOoYuFfGW3xEX7/yiK5PeHV/ymP2TpRgsd6y
-	 tS4ThinyLzJ6w==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 59LDYNOo83088107
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 21:34:23 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 21 Oct 2025 21:34:23 +0800
-Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 21 Oct 2025 21:34:22 +0800
-Received: from [127.0.1.1] (10.22.225.127) by RTKEXHMBS04.realtek.com.tw
- (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
- Transport; Tue, 21 Oct 2025 21:34:22 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <timlee@realtek.com>, <emma_tsai@realtek.com>, <damon.chen@realtek.com>,
-        <kevin_yang@realtek.com>
-Subject: [rtw-next 8/8] wifi: rtw89: improve scan time on 6 GHz band
-Date: Tue, 21 Oct 2025 21:34:02 +0800
-Message-ID: <20251021133402.15467-9-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251021133402.15467-1-pkshih@realtek.com>
-References: <20251021133402.15467-1-pkshih@realtek.com>
+	s=arc-20240116; t=1761056830; c=relaxed/simple;
+	bh=JSobYfr+WjpQpXvdVJCSc0DfJWxmil7RxAESVY00LRE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mhzmYU1Cn9PttycfOAcuFoN01RAoEzaH1YhQ2PloWbCqduX7DCBvIUelC2ftS/YBM18F5VvxEqWzP9ODoOG0nVdZIUZNApN4GK3xgPCFfyDGYm78Yv3X1dt9guyv1WRM53It57NVV+yHPxurIVgvOGhEbnn9ZPHj753WvGX+nds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FeVe7Url; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=LIAVNbOhdkFrK1z7fNFUt6d9/zFjhPdfVuObhwjxb98=;
+	t=1761056829; x=1762266429; b=FeVe7UrlBUuPquqXfuzlaLYzXmOMYzGSLVMyCpzYUCPdpZu
+	NEjDeMVb2YNOPaX9kmG2zncgAP4BQ0quN2HbFPssa0hm5AY59psiLCLQzJJfpmFSr9hhW9EavMW34
+	iuKGM1Ufs/YhxhX3KfH04lKgmrkiKQg50J38bFpNbQJfQGvJTJUchcswy+17wDazFUcs+fL/IhCBc
+	ZElwG1HqBiev96Nne55/V4KK/kC8tffAe0+C0qZbOWpA0m1NfT4/wOnshhAsoUEFdJ1pjoAxBqdlx
+	C6lsO4e63lQMIz4pVS692zHYNMGFOPuPC4eekNeQKBermp56kXc9QKONSPouQyrQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vBDKL-0000000C0fg-0OQr;
+	Tue, 21 Oct 2025 16:27:05 +0200
+Message-ID: <0400fa9ddfcb235aa6f80290f95fceb2d1a3ab12.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next] wifi: mac80211_hwsim: advertise
+ puncturing feature support
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 21 Oct 2025 16:27:04 +0200
+In-Reply-To: <8eaadd1e-793c-4931-bee9-599fd333ab04@oss.qualcomm.com>
+References: 
+	<20251017-hwsim_set_punct_feature_bit-v1-1-3be1bb3450c0@oss.qualcomm.com>
+	 <e0ce9b89f0e0a6379070e9e135c53722a2d0a19f.camel@sipsolutions.net>
+	 <8eaadd1e-793c-4931-bee9-599fd333ab04@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-From: Jui-Peng Tsai <emma_tsai@realtek.com>
+On Tue, 2025-10-21 at 11:26 +0530, Aditya Kumar Singh wrote:
+> On 10/20/2025 7:55 PM, Johannes Berg wrote:
+> > On Fri, 2025-10-17 at 09:32 +0530, Aditya Kumar Singh wrote:
+> > > If userspace provides a puncturing bitmap via the NL80211_ATTR_PUNCT_=
+BITMAP
+> > > attribute, the kernel with mac80211_hwsim driver currently rejects th=
+e
+> > > command with the error: "driver doesn't support puncturing", because =
+the
+> > > driver does not advertise support for this feature.
+> > >=20
+> > > At present, the following hwsim test cases utilize puncturing, but th=
+e
+> > > bitmap is not sent to the kernel. Instead, the puncturing information=
+ is
+> > > conveyed only through the beacon data:
+> > >   * eht_5ghz_80mhz_puncturing_override_1
+> > >   * eht_5ghz_80mhz_puncturing_override_2
+> > >   * eht_5ghz_80mhz_puncturing_override_3
+> > >=20
+> > > A future change in hostapd will begin configuring the puncturing bitm=
+ap
+> > > explicitly, which will cause these test cases to fail unless the driv=
+er
+> > > advertises support.
+> > >=20
+> > > To address this, update mac80211_hwsim driver to advertise puncturing
+> > > feature support.
+> >=20
+> > This might be a good time to introduce better checks vs. what we have
+> > now in hwsim_chans_compat(), which just uses the control channel rather
+> > than any actual bandwidth/puncturing/etc.
+>=20
+> Comparing those will be equivalent to comparing chandefs instead of=20
+> control channel right? And we already have a helper=20
+> cfg80211_chandef_compatible() to do that. So we just need to pass=20
+> chandefs and call that helper? Or hwsim should be more stricter and just=
+=20
+> use cfg80211_chandef_identical() (this helper is not exported yet!) ?
 
-Reduce scan time for all supported channels from 4.4s to 3.5s.
+I guess it shouldn't be either of those, since if you transmit at a
+higher bandwidth, even if cfg80211_chandef_compatible() returns true, it
+still shouldn't work? But that's also a rate scaling thing with the
+bandwidth actually used.
 
-If NL80211_SCAN_FLAG_COLOCATED_6GHZ is set in scan request, only scan PSC
-channels and the channels from the RNR element found on the 2.4/5 GHz
-channels. When firmware support parsing RNR element from received beacon
-or probe response, offload the decision about non-PSC channels to firmware.
-Driver do not need to fill non-PSC channels to scan list. If
-NL80211_SCAN_FLAG_COLOCATED_6GHZ is not set, scan all supported channels.
+>   >
+> > It'd also make the tests actually test more. What do you think?
+>=20
+> That's true. You want those changes also along with this patch or you'd=
+=20
+> take this one as it is and take those separately?
 
-Signed-off-by: Jui-Peng Tsai <emma_tsai@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/fw.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Well given what we have now it doesn't really matter I guess, just
+thought about it here because of the context.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 9a926bb2cf00..cb431c8a65ac 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -7787,15 +7787,23 @@ int rtw89_hw_scan_prep_chan_list_be(struct rtw89_dev *rtwdev,
- 	struct ieee80211_channel *channel;
- 	struct list_head chan_list;
- 	enum rtw89_chan_type type;
-+	bool chan_by_rnr;
- 	bool random_seq;
- 	int ret;
- 	u32 idx;
- 
- 	random_seq = !!(req->flags & NL80211_SCAN_FLAG_RANDOM_SN);
-+	chan_by_rnr = rtwdev->chip->support_rnr &&
-+		      (req->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ);
- 	INIT_LIST_HEAD(&chan_list);
- 
- 	for (idx = 0; idx < req->n_channels; idx++) {
- 		channel = req->channels[idx];
-+
-+		if (channel->band == NL80211_BAND_6GHZ &&
-+		    !cfg80211_channel_is_psc(channel) && chan_by_rnr)
-+			continue;
-+
- 		ch_info = kzalloc(sizeof(*ch_info), GFP_KERNEL);
- 		if (!ch_info) {
- 			ret = -ENOMEM;
--- 
-2.25.1
-
+johannes
 
