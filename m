@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-28146-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28145-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00B4BF6CCA
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 15:35:36 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B05DBF6D09
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 15:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86619423076
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 13:35:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D45ED506122
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 13:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1AE338587;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D988338928;
 	Tue, 21 Oct 2025 13:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZHNrKs+g"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="oExmoEPn"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08A3280CFC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46B7338583
 	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 13:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761053668; cv=none; b=oGGhkSIF45ZHWHtqZR7+62ItQh5FW+SvCOjc4kVd628BdFcwTeZ8jJK/oD9jMZ43xY2252G0cBiX6EndzuOAiizwukYMZJArfL3M0HHWVPPPUBv2wTdsfrQEgv1TTSvN2ZJjEB4UkbD4SBA/ahL9s7nqXBGH7nh0l25Y5KSvJIA=
+	t=1761053669; cv=none; b=SJhoNu4iTHkwxprbbP6y//+v6jnvGm0Q/X3vpnpJ8AzMfQAxjXSq8588HcV7gEt79LbgZfH8v9cpoQch5M3lcjFm6W+b+LPBlLxTYbLl9SSN5ubf9gC/F6nRaHU130CV68OJn8BgittV/5cV4BY1ZvxaCXvE6AsGRygJSGJ5GMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761053668; c=relaxed/simple;
-	bh=+9vx7gy4sPVGQELA/9PT0OtsBp7BKKB/L6/5WuFL/vM=;
+	s=arc-20240116; t=1761053669; c=relaxed/simple;
+	bh=tMkrfG/mH6P37yUYX/7Ad2VRE9kXqLOg3/7/jXqjDLc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QcnmUwt/9WDaMAMxX5Fqn/BiAhGNWWSh8fcnYuICv/gSjOxBOy/GJ/gU8PEZdgIxWRwNbofTjPO8iMDfkMUGR7FWHSzwDd93ZwpND4ZLRMyJxSFgpZjW31/tBLddE31FnkRlxUWpqw/8hNs8oRciGzuwjbiX6Kr53FPYD4ON9Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZHNrKs+g; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=YqM3sunxyq0vFkQvNdhJODqoxsqWfq2wvxfTBdiP1QJ9AwmjA3b+pG0grfZIbDXER2f+uqlgtllyekGEtAkRq3/luhm2M22r+s/JBwCQsJmtB6H6ajC0PlmK0/4SECNSLo/mML1txbiqvYMjeDTCMEYRb2LBVpznmUxQOF2Qd6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=oExmoEPn; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 59LDYMZz83088103, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 59LDYMyhC3088105, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1761053662; bh=ufGNYklE2FeHziSdiZ0Z13US5svZ1c0RrT5gx5T1yfc=;
+	t=1761053662; bh=pR+WrRG+7ihAMDgdHjfRl62txFkIXr+W2yPUVMUxt28=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=ZHNrKs+gjD4OJdaJstKQfDFMCB3QjdJR9Cl2cxNmmsg9XdTM+tpCLa+ENiBv8JRKy
-	 ckSodTO73RqcPPagqSCUfXL8B9LE7rGKvvXcZqUm8O4TQC1GLZRiAuxSsFAzgFT/Jj
-	 wOP5BygXxzvj5Ak5nHOp8NBlH+nAx/PmtmqSDhUqnm07mkUQqcuJiPvz+UzblzLIw5
-	 lHpGwSJ3gfvI4Ghh8GE8ZfFFKQ4s3pTIsLsBaak4ir0FN0FpGDqAK9x9xelCGGrI+l
-	 DwPQWeYqj7S1K1qzCylcDYVpItr1K1ta+lvJM+V9oZcXyOd5CTpW/D7LvvysQQg1zU
-	 bY0qoyodFpsUg==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 59LDYMZz83088103
+	b=oExmoEPnre/ThQAWdWXxnCT6nJcID5+UaIdsOJU6cWpQ8HlJsiBYMzsUMr1v2mOAu
+	 h/bit7TnADJmXMO1VP+VsxViAkege/i1W1S7YldomMDmYGBtdwIexWDSXBDjGo0bi5
+	 dz/snMLqsNtYMlhEbDE4mZeLdPWEU2d0KgMBH7jxlwmjYGmk+eNro5yOaQhY/nm5wu
+	 w4GhK/16oSmPRl43q4TvXsMgxfcW5WCmmsj2/BzpvLmBnohApRiqvXaWXozazIQQky
+	 /mI8/cAM1f6/4REUHgRKKNeBOgctYFx4SWSjYM9cbnpS8enVfVijZ8LpRdxn8vHVVp
+	 oMkBuqnXsb9Fg==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 59LDYMyhC3088105
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
 	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 21:34:22 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1544.27; Tue, 21 Oct 2025 21:34:22 +0800
 Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
  RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 21 Oct 2025 21:34:21 +0800
+ 15.2.1544.27; Tue, 21 Oct 2025 21:34:22 +0800
 Received: from [127.0.1.1] (10.22.225.127) by RTKEXHMBS04.realtek.com.tw
  (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
- Transport; Tue, 21 Oct 2025 21:34:21 +0800
+ Transport; Tue, 21 Oct 2025 21:34:22 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <timlee@realtek.com>, <emma_tsai@realtek.com>, <damon.chen@realtek.com>,
         <kevin_yang@realtek.com>
-Subject: [rtw-next 6/8] wifi: rtw89: 8852c: fix ADC oscillation in 160MHz affecting RX performance
-Date: Tue, 21 Oct 2025 21:34:00 +0800
-Message-ID: <20251021133402.15467-7-pkshih@realtek.com>
+Subject: [rtw-next 7/8] wifi: rtw89: restart hardware to recover firmware if power-save becomes abnormal
+Date: Tue, 21 Oct 2025 21:34:01 +0800
+Message-ID: <20251021133402.15467-8-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251021133402.15467-1-pkshih@realtek.com>
 References: <20251021133402.15467-1-pkshih@realtek.com>
@@ -77,97 +77,146 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+From: Chin-Yen Lee <timlee@realtek.com>
 
-When operating in 160 MHz, the ADC may oscillate and affect AGC, leading
-to unstable RX quality. This issue can be resolved by ensuring proper
-RF filter bandwidth switching to avoid ADC oscillation.
+Somehow power-save related functions get failure, such as failed to
+send null packet, or no response form firmware, and then WiFi will
+become unstable. Trigger SER function actively to reset firmware/driver
+to recover from abnormal states, including
 
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
+ - firmware failed to ACK for entering PS mode
+ - firmware failed to ACK for leaving PS mode
+ - check PS H2C command received by firmware fail
+ - failed to leave PS state
+
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- .../net/wireless/realtek/rtw89/rtw8852c_rfk.c | 59 ++++++++++++-------
- 1 file changed, 39 insertions(+), 20 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c |  1 +
+ drivers/net/wireless/realtek/rtw89/core.h |  2 ++
+ drivers/net/wireless/realtek/rtw89/mac.c  |  7 +++++--
+ drivers/net/wireless/realtek/rtw89/ps.c   | 23 +++++++++++++++++++++--
+ 4 files changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-index e7fd028c5e82..cbee484dee30 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-@@ -3987,37 +3987,56 @@ static void _ctrl_ch(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index a3f156bf708e..1b5a40e9821c 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -5538,6 +5538,7 @@ int rtw89_core_start(struct rtw89_dev *rtwdev)
+ 	rtw89_fw_h2c_fw_log(rtwdev, rtwdev->fw.log.enable);
+ 	rtw89_fw_h2c_init_ba_cam(rtwdev);
+ 	rtw89_tas_fw_timer_enable(rtwdev, true);
++	rtwdev->ps_hang_cnt = 0;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index ae98d6866b30..f8b443894db9 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -42,6 +42,7 @@ extern const struct ieee80211_ops rtw89_ops;
+ #define RTW89_TRACK_WORK_PERIOD	round_jiffies_relative(HZ * 2)
+ #define RTW89_TRACK_PS_WORK_PERIOD msecs_to_jiffies(100)
+ #define RTW89_FORBID_BA_TIMER round_jiffies_relative(HZ * 4)
++#define RTW89_PS_HANG_MAX_CNT 3
+ #define CFO_TRACK_MAX_USER 64
+ #define MAX_RSSI 110
+ #define RSSI_FACTOR 1
+@@ -6082,6 +6083,7 @@ struct rtw89_dev {
+ 	struct rtw89_btc btc;
+ 	enum rtw89_ps_mode ps_mode;
+ 	bool lps_enabled;
++	u8 ps_hang_cnt;
+ 
+ 	struct rtw89_wow_param wow;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index fd11b8fb3c89..d837513f4e92 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -12,6 +12,7 @@
+ #include "phy.h"
+ #include "ps.h"
+ #include "reg.h"
++#include "ser.h"
+ #include "util.h"
+ 
+ static const u32 rtw89_mac_mem_base_addrs_ax[RTW89_MAC_MEM_NUM] = {
+@@ -1423,13 +1424,15 @@ void rtw89_mac_power_mode_change(struct rtw89_dev *rtwdev, bool enter)
+ 		if (!ret)
+ 			break;
+ 
+-		if (i == RPWM_TRY_CNT - 1)
++		if (i == RPWM_TRY_CNT - 1) {
+ 			rtw89_err(rtwdev, "firmware failed to ack for %s ps mode\n",
+ 				  enter ? "entering" : "leaving");
+-		else
++			rtw89_ser_notify(rtwdev, MAC_AX_ERR_ASSERTION);
++		} else {
+ 			rtw89_debug(rtwdev, RTW89_DBG_UNEXP,
+ 				    "%d time firmware failed to ack for %s ps mode\n",
+ 				    i + 1, enter ? "entering" : "leaving");
++		}
  	}
  }
  
-+static void _set_rxbb_bw(struct rtw89_dev *rtwdev, enum rtw89_rf_path path,
-+			 enum rtw89_bandwidth bw)
-+{
-+	u32 val;
-+
-+	rtw89_write_rf(rtwdev, path, RR_LUTWE2, RR_LUTWE2_RTXBW, 0x1);
-+	rtw89_write_rf(rtwdev, path, RR_LUTWA, RR_LUTWA_M2, 0xa);
-+
-+	switch (bw) {
-+	case RTW89_CHANNEL_WIDTH_20:
-+		val = 0x1b;
-+		break;
-+	case RTW89_CHANNEL_WIDTH_40:
-+		val = 0x13;
-+		break;
-+	case RTW89_CHANNEL_WIDTH_80:
-+		val = 0xb;
-+		break;
-+	case RTW89_CHANNEL_WIDTH_160:
-+	default:
-+		val = 0x3;
-+		break;
+diff --git a/drivers/net/wireless/realtek/rtw89/ps.c b/drivers/net/wireless/realtek/rtw89/ps.c
+index cf58121eb541..3f69dd4361c3 100644
+--- a/drivers/net/wireless/realtek/rtw89/ps.c
++++ b/drivers/net/wireless/realtek/rtw89/ps.c
+@@ -11,6 +11,7 @@
+ #include "phy.h"
+ #include "ps.h"
+ #include "reg.h"
++#include "ser.h"
+ #include "util.h"
+ 
+ static int rtw89_fw_receive_lps_h2c_check(struct rtw89_dev *rtwdev, u8 macid)
+@@ -26,16 +27,27 @@ static int rtw89_fw_receive_lps_h2c_check(struct rtw89_dev *rtwdev, u8 macid)
+ 	c2h_info.id = RTW89_FWCMD_C2HREG_FUNC_PS_LEAVE_ACK;
+ 	ret = rtw89_fw_msg_reg(rtwdev, NULL, &c2h_info);
+ 	if (ret)
+-		return ret;
++		goto fw_fail;
+ 
+ 	c2hreg_macid = u32_get_bits(c2h_info.u.c2hreg[0],
+ 				    RTW89_C2HREG_PS_LEAVE_ACK_MACID);
+ 	c2hreg_ret = u32_get_bits(c2h_info.u.c2hreg[1], RTW89_C2HREG_PS_LEAVE_ACK_RET);
+ 
+-	if (macid != c2hreg_macid || c2hreg_ret)
++	if (macid != c2hreg_macid || c2hreg_ret) {
+ 		rtw89_warn(rtwdev, "rtw89: check lps h2c received by firmware fail\n");
++		ret = -EINVAL;
++		goto fw_fail;
 +	}
-+
-+	rtw89_write_rf(rtwdev, path, RR_LUTWD0, RR_LUTWD0_LB, val);
-+	rtw89_write_rf(rtwdev, path, RR_LUTWE2, RR_LUTWE2_RTXBW, 0x0);
-+}
-+
-+static void _set_tia_bw(struct rtw89_dev *rtwdev, enum rtw89_rf_path path,
-+			enum rtw89_bandwidth bw)
-+{
-+	if (bw == RTW89_CHANNEL_WIDTH_160)
-+		rtw89_write_rf(rtwdev, path, RR_RXBB2, RR_RXBB2_EBW, 0x0);
-+	else
-+		rtw89_write_rf(rtwdev, path, RR_RXBB2, RR_RXBB2_EBW, 0x2);
-+}
-+
- static void _rxbb_bw(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 		     enum rtw89_bandwidth bw)
- {
- 	u8 kpath;
- 	u8 path;
--	u32 val;
++	rtwdev->ps_hang_cnt = 0;
  
- 	kpath = _kpath(rtwdev, phy);
- 	for (path = 0; path < 2; path++) {
- 		if (!(kpath & BIT(path)))
- 			continue;
+ 	return 0;
++
++fw_fail:
++	rtwdev->ps_hang_cnt++;
++	if (rtwdev->ps_hang_cnt >= RTW89_PS_HANG_MAX_CNT)
++		rtw89_ser_notify(rtwdev, MAC_AX_ERR_ASSERTION);
++
++	return ret;
+ }
  
--		rtw89_write_rf(rtwdev, path, RR_LUTWE2, RR_LUTWE2_RTXBW, 0x1);
--		rtw89_write_rf(rtwdev, path, RR_LUTWA, RR_LUTWA_M2, 0xa);
--		switch (bw) {
--		case RTW89_CHANNEL_WIDTH_20:
--			val = 0x1b;
--			break;
--		case RTW89_CHANNEL_WIDTH_40:
--			val = 0x13;
--			break;
--		case RTW89_CHANNEL_WIDTH_80:
--			val = 0xb;
--			break;
--		case RTW89_CHANNEL_WIDTH_160:
--		default:
--			val = 0x3;
--			break;
--		}
--		rtw89_write_rf(rtwdev, path, RR_LUTWD0, RR_LUTWD0_LB, val);
--		rtw89_write_rf(rtwdev, path, RR_LUTWE2, RR_LUTWE2_RTXBW, 0x0);
-+		_set_rxbb_bw(rtwdev, path, bw);
-+		_set_tia_bw(rtwdev, path, bw);
+ static int rtw89_fw_leave_lps_check(struct rtw89_dev *rtwdev, u8 macid)
+@@ -51,9 +63,16 @@ static int rtw89_fw_leave_lps_check(struct rtw89_dev *rtwdev, u8 macid)
+ 				       mac->ps_status, chk_msk);
+ 	if (ret) {
+ 		rtw89_info(rtwdev, "rtw89: failed to leave lps state\n");
++
++		rtwdev->ps_hang_cnt++;
++		if (rtwdev->ps_hang_cnt >= RTW89_PS_HANG_MAX_CNT)
++			rtw89_ser_notify(rtwdev, MAC_AX_ERR_ASSERTION);
++
+ 		return -EBUSY;
  	}
+ 
++	rtwdev->ps_hang_cnt = 0;
++
+ 	return 0;
  }
  
 -- 
