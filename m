@@ -1,150 +1,132 @@
-Return-Path: <linux-wireless+bounces-28132-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28133-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536C7BF5C0F
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 12:22:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01383BF5F31
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 13:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8029C3A5439
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 10:22:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A596519A0493
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 11:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9180320391;
-	Tue, 21 Oct 2025 10:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37382F28EB;
+	Tue, 21 Oct 2025 11:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="hU6Z46wj"
+	dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b="idg6nFMs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AF22EA17D
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 10:22:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AED2F0C7F
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 11:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761042133; cv=none; b=enZb0g5Vf8lAVMuBlrO377epvb/CmW/Ld1sZsEEApzo3anS6I4m0IIGGHsHdYhtjP2m4nNbo2DryZ8Oa0UQ3Ug6MevoJVKbgyAjzmyp8suIZ/gqHT1086aU6w9qs7pgfQdliCYPrZ/+sR/YbO75piDlFznyrfRzePzXs8g2bUbw=
+	t=1761044864; cv=none; b=K7gXNQF3bfxtUc5w+rv9D6GSweyZx+zSZmwyMYGUKKuxWe+yzy5V4TqXORtuzXEODSKVy7AyYzImBxVDqFii0oZcYqVgAGKIge2/5A5387kBHNIGchwTLivNKHcVce2Ps6bAvo+ZZ4y+42eij3DtgWzdwn1E+SxEjADXf3vFINI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761042133; c=relaxed/simple;
-	bh=jOWFbBkmo9QcpQZXDKONhCCGG1D62pkQPjUSP9O+sIc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BBRE4x249rP9licv48GtZ49mAyfIY2azIIqI8GSfp2r6WLof+Kp1d4Eg/EfPn8u0XB5jAB0l0gbq7BqH8Vcw/psBwNEv/LS0XYxHVMsYkKwpWPHG0RabGDOah2oyPOEvJlf18lrfdpLgNvvW3uj79HM/cLruDLRgZEqcqfosMCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=hU6Z46wj; arc=none smtp.client-ip=212.77.101.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 30124 invoked from network); 21 Oct 2025 12:22:00 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1761042120; bh=SF6LoAXfZ7sHzYrQeTZS5IqAbBi9Ehzr8C6mmjUXlSU=;
-          h=From:To:Cc:Subject;
-          b=hU6Z46wjQqZI4Pmno7++IBcA9vPzzs6Rvw041D29d0QOmSyrdp2F+JXE/ujepE9Vm
-           +RLHfcNHH0grj4p9dF7BPeJHT+kQ3LuXDWjFX2dvrJC+zo//1JJ7L9ZLUB87afup9W
-           lwpVmIqZWazLbSgEDRzEGKch1aspA9DePhCgRvIaLBVsFmP+APcFkzWZyrzQjPuP1+
-           1Ovy5FRieZHDV/aDVTDYnxxhXTOUtOd7fdHKcc8VhfM8LWKa2QV2JcoUglyJFa9s9J
-           W5/zz2Zx94fjFeVVQhSB0O+siQlcoxLFxh2KiZslcRMZdloaNbWKv/dex+U3px01Gp
-           DWclhKi7JMDZA==
-Received: from 89-64-9-53.dynamic.play.pl (HELO localhost) (stf_xl@wp.pl@[89.64.9.53])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <rosenp@gmail.com>; 21 Oct 2025 12:22:00 +0200
-Date: Tue, 21 Oct 2025 12:21:59 +0200
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Rosen Penev <rosenp@gmail.com>
+	s=arc-20240116; t=1761044864; c=relaxed/simple;
+	bh=1Bpqd8lrgo2+0MhiSpeX+mng/wohV+Y3Epwiemg2Gq8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KP79/NB4khLCHOWQXfQOCygUmTfDtY9kqnuXpNNXlkdjcqzadZKjjlv0b9AT73M4ssjx6jLGduyKQbXrf/iHikFKE8iEQK8nU8zYGhH1OJpXPJ/KJCdX4aF8VrWoAJOh8KH9WS62iJSUOAPhH3QaweN5pVPfKYtZgyA/NT0V/nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20230601.gappssmtp.com header.i=@morsemicro-com.20230601.gappssmtp.com header.b=idg6nFMs; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-27ee41e0798so86750465ad.1
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 04:07:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20230601.gappssmtp.com; s=20230601; t=1761044862; x=1761649662; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NvbRL9UqpsUU8q/T1vY0eSi4B+AlOiGHVqp7wFWeSGg=;
+        b=idg6nFMsh1xUJMNNq9eN7vifeLzFeo5OlygGMIxWJNFzjMmslnho4WIU3HVPkcbGq6
+         zJHMAOqk0yWpxJ/WHcf0tPNckFWuSXda4vX651omMdcSISfVPuTIp0pbjpKIwbGg37Ex
+         A4Gqwu6/NAPoKPZ9BkZPEEnWqiOlYGnc503nGZDNz0g3lhKQKkGVUBLlbOdzoRSpg4z5
+         k1XFzN0aN2LaZbBZnAV+Ogq9yZvI1eGZTS5QP5UM4+T2rc/0cv29rmC59xjHynux6jef
+         arwI7pEp5WFmUlnQ8a5nYQa38NgjzG1ZRj3peytNdILXwJp71nqqUnp57S4O7NF11Znk
+         X9qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761044862; x=1761649662;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NvbRL9UqpsUU8q/T1vY0eSi4B+AlOiGHVqp7wFWeSGg=;
+        b=YqQR+sxe1R5YOIKeRNFXXbjrcu/3iA3kpnKKfI24thzIocIVQl4jt9rMancqoNJFnS
+         kjjQLJ2LJlgpXhoNtWhRymwnmnAkWtSJLDda6E/wrI7xETgxWP6x4krIASXtB4aGpmWH
+         6a8IJfvJen7Og9rMdylSKT0sfPN7ba1R2mKA+TQGt1HSNUA+9uFars1tWwz7hRkMvXvD
+         8tMWyV4S9uqDu3hLJugzPNIql5xQLmV/m6loceZxgfY2QtPAqIKRG7hU/5BGr+/hGI4W
+         7QK5Sf30IZ71d7LMTemXvTcNQmupjxomuI2Bg0Z/ZErlM+ficOiUE7g+Ko5tf+qAihhU
+         lo8Q==
+X-Gm-Message-State: AOJu0Yza8rkhY6Jhl2G/RzUnPsbTd+w8B47EsuO2xndHYVhsS2gMhGOv
+	puteAmZ9Xur6PbnmzoEaIp8TIdh150pXrRvSsz5ShF+BuL/sAv5nkFa4CuX/4w0LB2s=
+X-Gm-Gg: ASbGncsZaWEywCGKkSqGHhaJJcbDAViSj/mvjKNIEvGzAmjIfKbxSvhTBM2teS9U1F+
+	FTDSIG4zDeL4LcSc0QTCTVAViqm2cpLeg4Sz/ixFhl27cdKNm8hqjdnJzKiQlU6pPs4/h9hWvGm
+	0eBvTO7+YdxAgOBD1XKOEQ13AmDvxUudoyDEGUKAvGFqFEM08zyFPWnQafUmO4BltsJtLRugOkv
+	TCvXM9xfPy8+3r2N9T0w1L/rxk1zhFSuUvl5N5G44N58BEMQ5J2hpyYW+ZSUCE2V8b/bcMAQyqN
+	26tbXx71/Qfm+MzIPyi+FAbrSeVVja+GX4+izsVCf7Z1v0idb/1HfpgK3Sw7adDJvGygX3nC1qM
+	vVvwJVDHBgDJ3oJozxTWogTWHzUSmagQKFUmhH0oPcSGjySaonWJaMbBficj+zJxIey0tf/w7AF
+	H+engZCaJsaVJf+GR8kegSn7+AVVbXKijc4Qn5/+CEtjDHFPa2Eg==
+X-Google-Smtp-Source: AGHT+IGctx4M6/0AMtFJbVTpegZshaOh4Gn3wZweo6x2cXay9AVuEkuymFY+PQL2Xs7th6ZemPiKEA==
+X-Received: by 2002:a17:902:d508:b0:28a:2e51:9272 with SMTP id d9443c01a7336-290cbc3f200mr236599475ad.48.1761044861646;
+        Tue, 21 Oct 2025 04:07:41 -0700 (PDT)
+Received: from mma-H9MHD44.lan ([60.227.210.150])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471d5868sm105543275ad.60.2025.10.21.04.07.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Oct 2025 04:07:41 -0700 (PDT)
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] wifi: rt2x00: check retval for of_get_mac_address
-Message-ID: <20251021102159.GA14793@wp.pl>
-References: <20251014050833.46377-1-rosenp@gmail.com>
+	arien.judge@morsemicro.com,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Subject: [PATCH wireless] wifi: cfg80211: return center freq for 1Mhz S1G chan start/end
+Date: Tue, 21 Oct 2025 22:07:25 +1100
+Message-ID: <20251021110725.397982-1-lachlan.hodges@morsemicro.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251014050833.46377-1-rosenp@gmail.com>
-X-WP-MailID: 70b5e08b3428e12d1b1a4af11f1c2643
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [geOx]                               
+Content-Transfer-Encoding: 8bit
 
-Hi
+The frequencies returned by cfg80211_s1g_get_{start/end}_freq_khz()
+for 1MHz chandefs are off by +-1000KHz. This prevents some 1MHz
+channels from being used as the range returned is larger leading to
+adjacent 1MHz channels being included in the validation process.
+Channels on the band edge may be prevented from being used if any
+of those extra channels are disabled / no primary etc. To fix return
+the center frequency as 1MHz channels don't contain any subchannels.
 
-On Mon, Oct 13, 2025 at 10:08:33PM -0700, Rosen Penev wrote:
-> of_get_mac_address can return -EPROBE_DEFER when nvmem is not probed yet
-> for whatever reason. In this case, nvmem mac assignments will not work.
-> 
-> Based on the function path, this change only has effect for rt2800soc.c
-> and rt2800pci.c. The former tends to use nvmem for assignments.
+Fixes: d0688dc2b172 ("wifi: cfg80211: correctly implement and validate S1G chandef")
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+---
+ include/net/cfg80211.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-What you mean? The USB probing also goes through
-rt2800_validate_eeprom().
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 781624f5913a..a1e362e0054d 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -10194,7 +10194,8 @@ cfg80211_s1g_get_start_freq_khz(const struct cfg80211_chan_def *chandef)
+ 	u32 bw_mhz = cfg80211_chandef_get_width(chandef);
+ 	u32 center_khz =
+ 		MHZ_TO_KHZ(chandef->center_freq1) + chandef->freq1_offset;
+-	return center_khz - bw_mhz * 500 + 500;
++
++	return (bw_mhz == 1) ? center_khz : center_khz - bw_mhz * 500 + 500;
+ }
+ 
+ /**
+@@ -10209,7 +10210,8 @@ cfg80211_s1g_get_end_freq_khz(const struct cfg80211_chan_def *chandef)
+ 	u32 bw_mhz = cfg80211_chandef_get_width(chandef);
+ 	u32 center_khz =
+ 		MHZ_TO_KHZ(chandef->center_freq1) + chandef->freq1_offset;
+-	return center_khz + bw_mhz * 500 - 500;
++
++	return (bw_mhz == 1) ? center_khz : center_khz + bw_mhz * 500 - 500;
+ }
+ 
+ /**
+-- 
+2.43.0
 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-
-Anyway patch looks ok for me.
-
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-
->  drivers/net/wireless/ralink/rt2x00/rt2800lib.c |  4 +++-
->  drivers/net/wireless/ralink/rt2x00/rt2x00.h    |  2 +-
->  drivers/net/wireless/ralink/rt2x00/rt2x00dev.c | 10 ++++++++--
->  3 files changed, 12 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> index b312b40f4aa3..af19153697ed 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> @@ -11010,7 +11010,9 @@ static int rt2800_validate_eeprom(struct rt2x00_dev *rt2x00dev)
->  	 * Start validation of the data that has been read.
->  	 */
->  	mac = rt2800_eeprom_addr(rt2x00dev, EEPROM_MAC_ADDR_0);
-> -	rt2x00lib_set_mac_address(rt2x00dev, mac);
-> +	retval = rt2x00lib_set_mac_address(rt2x00dev, mac);
-> +	if (retval)
-> +		return retval;
->  
->  	word = rt2800_eeprom_read(rt2x00dev, EEPROM_NIC_CONF0);
->  	if (word == 0xffff) {
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00.h b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-> index 0b67b09695b6..4d6437deaa9a 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
-> @@ -1416,7 +1416,7 @@ static inline void rt2x00debug_dump_frame(struct rt2x00_dev *rt2x00dev,
->   */
->  u32 rt2x00lib_get_bssidx(struct rt2x00_dev *rt2x00dev,
->  			 struct ieee80211_vif *vif);
-> -void rt2x00lib_set_mac_address(struct rt2x00_dev *rt2x00dev, u8 *eeprom_mac_addr);
-> +int rt2x00lib_set_mac_address(struct rt2x00_dev *rt2x00dev, u8 *eeprom_mac_addr);
->  
->  /*
->   * Interrupt context handlers.
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-> index ee667e1a7937..4af132acadb6 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-> @@ -984,14 +984,20 @@ static void rt2x00lib_rate(struct ieee80211_rate *entry,
->  		entry->flags |= IEEE80211_RATE_SHORT_PREAMBLE;
->  }
->  
-> -void rt2x00lib_set_mac_address(struct rt2x00_dev *rt2x00dev, u8 *eeprom_mac_addr)
-> +int rt2x00lib_set_mac_address(struct rt2x00_dev *rt2x00dev, u8 *eeprom_mac_addr)
->  {
-> -	of_get_mac_address(rt2x00dev->dev->of_node, eeprom_mac_addr);
-> +	int ret;
-> +
-> +	ret = of_get_mac_address(rt2x00dev->dev->of_node, eeprom_mac_addr);
-> +	if (ret == -EPROBE_DEFER)
-> +		return ret;
->  
->  	if (!is_valid_ether_addr(eeprom_mac_addr)) {
->  		eth_random_addr(eeprom_mac_addr);
->  		rt2x00_eeprom_dbg(rt2x00dev, "MAC: %pM\n", eeprom_mac_addr);
->  	}
-> +
-> +	return 0;
->  }
->  EXPORT_SYMBOL_GPL(rt2x00lib_set_mac_address);
->  
-> -- 
-> 2.51.0
-> 
 
