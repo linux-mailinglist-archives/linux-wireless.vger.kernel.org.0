@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-28143-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28144-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55235BF6CD3
+	by mail.lfdr.de (Postfix) with ESMTPS id B65B3BF6CD6
 	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 15:35:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE8B719A5F9E
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 13:35:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C1A519A5FC6
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 13:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EFA33385A4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0713385A3;
 	Tue, 21 Oct 2025 13:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="j59Oj/3p"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="R0y/vBQY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67B62512DE
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 13:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C795F280CC1
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 13:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761053667; cv=none; b=jIT5xgn+eBiU203IwW6lhWF5hhJTXZAzhCVscdjZjrdCMTzgk3dLqZOW9qYMuQMg9jIqms7bZMmG3mezpf/JttHUyeVHeIx57fcm+79V6NUm3p0gVC0IdEQ2MVRQ6BoZJvssEw4CtQ5/EWP0RbAG42roDLOotOHZfs37qfLwz7w=
+	t=1761053667; cv=none; b=j4hL6jcaApmgZRl5kHEEq7uQTm0gNKve1yEHMeINsfDDzcbvd/jO6unLwiV6IseJnBjr2/anzOk21Occ1beA0/Rf2KQtsmx6URvteBXOi3o+6rPIKg3nNo+s0WBUTaVs5CYFydwqd/MgHTg2nrRoTt2OIElN3aIIGbjxjjZuDoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761053667; c=relaxed/simple;
-	bh=6n4kxl0ybRMrHvZRNPxwVoCzhGgfyHXVn1rSnW31/0w=;
+	bh=UE3TM9ZEPFMOS/eOr6U2b3n4LIQftAmJmpmdzHrnrkM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uBF2MKxe8993JmzcMlYrWUcC9nEuNgNyTse3d//OU/CjAnKoZWGZJiN2R9R9TBybpfkWm/zHm+7SLCG97nLWfpwgLYeaBSrUmYy0otVU4miBxTwgmcT1Y93zTGjCE8+CLsZhx4AwdUreMQ8NCrqxg8JvAwUGluvwAoQvGj0qKrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=j59Oj/3p; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=OQDkAkTzkHu8SxenLVDk1YcjNj8uGJnmh369YKySvm8Kwp3V9SdDhWBZUX3/84EDegNJPEgpq1BnVwerkZT0489y9hF+IWBxNEOHxKCMVVXSKBYyRWPfbDG4/P0lYwRBuvXZXBjCdMR9qGOkHGgds9iSIj7oDewRIsVAvffclf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=R0y/vBQY; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 59LDYK4p83088097, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 59LDYLkY43088099, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1761053660; bh=H3Fuh07POmwFj5h6dtlSXUzOO3IgaVZ/VysFT4urWqg=;
+	t=1761053661; bh=lBnwTYaS1nEaUpLhvQMVKriQi8/0/BYuRQWZPuXIVYY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=j59Oj/3pT75iGyi4hryATMc87MaDN0G9k4Vh0xn1VsYzOM4G6MOI8lmmvaAZ1zCTR
-	 kQRxUnmr8dMGyxVyS8G4cjeH17PDtxgaz0x/3ZJWbTZIy/42Ba775L5Dtg+DGRPgbB
-	 cXLleIh7DnYmOLsV2xlWTIad/n6EGC22+fit21tCjGnG9togDodZievICniUFVfXdn
-	 rDdVDkNliVO/oqJyTsdakDKJ7nvpATqwKQ/tLM1OSUTgxwH8I/Punb5lj5SOKOHRWA
-	 0ZAgjyapSJGLgFNnNaiVZ3iSxygDhCovm7AzOss25sl9o+5dTbqNQqD8jgDMVEDph2
-	 Y/JPC2oKaJSsw==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 59LDYK4p83088097
+	b=R0y/vBQYF/n+18t2m6bNHqOf08okfV5qBQ94WGnDLrB384AZkS6GZ7HZBlwu2IIQg
+	 8LZ1ZpMZo1hwoPdJwd3u4lW4Hx+JY7xSHehxxEuQNtxqlIGVTJ84AjhtVHKKJbqq1Y
+	 xSqhkMT4+lRGCgfI+CFojYpDq6fncRu7/EgR8loeI7lFvJwoAMrY7Gkj6Nw5ui0jXo
+	 L7xMM7wPeR+/VwXbsheApJVMhe8LFBK6in4wMQJ4Jf3n8xMo8GOSWb+H1ewS2QYj8I
+	 +MtRfZHlWU3wmKWsPViLCYMrbydu8DGzbq/KbB2f8siNXMj3s3p8P77z6pYW+39aSk
+	 3b42+Wx+cFpLQ==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 59LDYLkY43088099
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 21:34:20 +0800
+	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 21:34:21 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Tue, 21 Oct 2025 21:34:20 +0800
+ 15.2.1544.27; Tue, 21 Oct 2025 21:34:21 +0800
 Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
  RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -62,9 +62,9 @@ From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <timlee@realtek.com>, <emma_tsai@realtek.com>, <damon.chen@realtek.com>,
         <kevin_yang@realtek.com>
-Subject: [rtw-next 3/8] wifi: rtw89: mlo: handle needed H2C when link switching is requested by stack
-Date: Tue, 21 Oct 2025 21:33:57 +0800
-Message-ID: <20251021133402.15467-4-pkshih@realtek.com>
+Subject: [rtw-next 4/8] wifi: rtw89: support EHT rate pattern via bitrate mask
+Date: Tue, 21 Oct 2025 21:33:58 +0800
+Message-ID: <20251021133402.15467-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251021133402.15467-1-pkshih@realtek.com>
 References: <20251021133402.15467-1-pkshih@realtek.com>
@@ -79,196 +79,95 @@ Content-Type: text/plain
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-To switch link, FW needs H2C commands to indicate which link is on or off.
-Originally, these H2C commands are considered only when the link switching
-is initiated by driver. But, in some cases, e.g. ml_reconf or TTLM, link
-switching would be initiated by stack. Hence, plan these H2C commands into
-ieee80211_ops.
+When setting bitrate mask, e.g. using iw set bitrates, there are some
+designated patterns to be recognized, called rate pattern. When a rate
+pattern is matched, treat the setting as asking a fixed rate. Now, add
+support to recognize EHT rates.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c     | 18 +-----
- drivers/net/wireless/realtek/rtw89/core.h     |  8 +++
- drivers/net/wireless/realtek/rtw89/mac80211.c | 64 ++++++++++++++++++-
- 3 files changed, 74 insertions(+), 16 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c | 39 +++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 8b40cada4149..a3f156bf708e 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -6010,7 +6010,7 @@ int rtw89_core_mlsr_switch(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
- 	struct ieee80211_vif *vif = rtwvif_to_vif(rtwvif);
- 	u16 usable_links = ieee80211_vif_usable_links(vif);
- 	u16 active_links = vif->active_links;
--	struct rtw89_vif_link *target, *cur;
-+	struct rtw89_vif_link *target;
- 	int ret;
- 
- 	lockdep_assert_wiphy(rtwdev->hw->wiphy);
-@@ -6036,11 +6036,9 @@ int rtw89_core_mlsr_switch(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
- 	ieee80211_stop_queues(rtwdev->hw);
- 	flush_work(&rtwdev->txq_work);
- 
--	cur = rtw89_get_designated_link(rtwvif);
--
--	ret = ieee80211_set_active_links(vif, active_links | BIT(link_id));
-+	ret = ieee80211_set_active_links(vif, BIT(link_id));
- 	if (ret) {
--		rtw89_err(rtwdev, "%s: failed to activate link id %u\n",
-+		rtw89_err(rtwdev, "%s: failed to work on link id %u\n",
- 			  __func__, link_id);
- 		goto wake_queue;
- 	}
-@@ -6055,16 +6053,6 @@ int rtw89_core_mlsr_switch(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
- 		goto wake_queue;
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index ba7feadd7582..23892c1359a5 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -231,7 +231,12 @@ static u64 rtw89_phy_ra_mask_cfg(struct rtw89_dev *rtwdev,
+ 		return -1;
  	}
  
--	if (likely(cur))
--		rtw89_fw_h2c_mlo_link_cfg(rtwdev, cur, false);
--
--	rtw89_fw_h2c_mlo_link_cfg(rtwdev, target, true);
--
--	ret = ieee80211_set_active_links(vif, BIT(link_id));
--	if (ret)
--		rtw89_err(rtwdev, "%s: failed to inactivate links 0x%x\n",
--			  __func__, active_links);
--
- 	rtw89_chip_rfk_channel(rtwdev, target);
+-	if (link_sta->he_cap.has_he) {
++	if (link_sta->eht_cap.has_eht) {
++		cfg_mask |= u64_encode_bits(mask->control[band].eht_mcs[0],
++					    RA_MASK_EHT_1SS_RATES);
++		cfg_mask |= u64_encode_bits(mask->control[band].eht_mcs[1],
++					    RA_MASK_EHT_2SS_RATES);
++	} else if (link_sta->he_cap.has_he) {
+ 		cfg_mask |= u64_encode_bits(mask->control[band].he_mcs[0],
+ 					    RA_MASK_HE_1SS_RATES);
+ 		cfg_mask |= u64_encode_bits(mask->control[band].he_mcs[1],
+@@ -557,6 +562,14 @@ static bool __check_rate_pattern(struct rtw89_phy_rate_pattern *next,
+ 	return true;
+ }
  
- 	rtwvif->mlo_mode = RTW89_MLO_MODE_MLSR;
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 928c8c84c964..7c74ed3cfaf7 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -5933,6 +5933,7 @@ struct rtw89_mcc_info {
- 
- enum rtw89_mlo_mode {
- 	RTW89_MLO_MODE_MLSR = 0,
-+	RTW89_MLO_MODE_EMLSR = 1,
- 
- 	NUM_OF_RTW89_MLO_MODE,
- };
-@@ -6097,6 +6098,12 @@ struct rtw89_link_conf_container {
- 	struct ieee80211_bss_conf *link_conf[IEEE80211_MLD_MAX_NUM_LINKS];
- };
- 
-+struct rtw89_vif_ml_trans {
-+	u16 mediate_links;
-+	u16 links_to_del;
-+	u16 links_to_add;
++enum __rtw89_hw_rate_invalid_bases {
++	/* no EHT rate for ax chip */
++	RTW89_HW_RATE_EHT_NSS1_MCS0 = RTW89_HW_RATE_INVAL,
++	RTW89_HW_RATE_EHT_NSS2_MCS0 = RTW89_HW_RATE_INVAL,
++	RTW89_HW_RATE_EHT_NSS3_MCS0 = RTW89_HW_RATE_INVAL,
++	RTW89_HW_RATE_EHT_NSS4_MCS0 = RTW89_HW_RATE_INVAL,
 +};
 +
- #define RTW89_VIF_IDLE_LINK_ID 0
- 
- struct rtw89_vif {
-@@ -6119,6 +6126,7 @@ struct rtw89_vif {
- 	bool offchan;
- 
- 	enum rtw89_mlo_mode mlo_mode;
-+	struct rtw89_vif_ml_trans ml_trans;
- 
- 	struct list_head dlink_pool;
- 	u8 links_inst_valid_num;
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index 7b04183a3a5d..a19304ff8306 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -718,6 +718,17 @@ static void rtw89_ops_vif_cfg_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_ARP_FILTER)
- 		rtwvif->ip_addr = vif->cfg.arp_addr_list[0];
-+
-+	if (changed & BSS_CHANGED_MLD_VALID_LINKS) {
-+		struct rtw89_vif_link *cur = rtw89_get_designated_link(rtwvif);
-+
-+		rtw89_chip_rfk_channel(rtwdev, cur);
-+
-+		if (hweight16(vif->active_links) == 1)
-+			rtwvif->mlo_mode = RTW89_MLO_MODE_MLSR;
-+		else
-+			rtwvif->mlo_mode = RTW89_MLO_MODE_EMLSR;
-+	}
- }
- 
- static void rtw89_ops_link_info_changed(struct ieee80211_hw *hw,
-@@ -1531,10 +1542,29 @@ static bool rtw89_ops_can_activate_links(struct ieee80211_hw *hw,
- 					 u16 active_links)
- {
- 	struct rtw89_dev *rtwdev = hw->priv;
-+	struct rtw89_vif *rtwvif = vif_to_rtwvif(vif);
-+	u16 current_links = vif->active_links;
-+	struct rtw89_vif_ml_trans trans = {
-+		.mediate_links = current_links | active_links,
-+		.links_to_del = current_links & ~active_links,
-+		.links_to_add = active_links & ~current_links,
+ #define RTW89_HW_RATE_BY_CHIP_GEN(rate) \
+ 	{ \
+ 		[RTW89_CHIP_AX] = RTW89_HW_RATE_ ## rate, \
+@@ -572,6 +585,12 @@ void __rtw89_phy_rate_pattern_vif(struct rtw89_dev *rtwdev,
+ 	struct rtw89_phy_rate_pattern next_pattern = {0};
+ 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev,
+ 						       rtwvif_link->chanctx_idx);
++	static const u16 hw_rate_eht[][RTW89_CHIP_GEN_NUM] = {
++		RTW89_HW_RATE_BY_CHIP_GEN(EHT_NSS1_MCS0),
++		RTW89_HW_RATE_BY_CHIP_GEN(EHT_NSS2_MCS0),
++		RTW89_HW_RATE_BY_CHIP_GEN(EHT_NSS3_MCS0),
++		RTW89_HW_RATE_BY_CHIP_GEN(EHT_NSS4_MCS0),
 +	};
+ 	static const u16 hw_rate_he[][RTW89_CHIP_GEN_NUM] = {
+ 		RTW89_HW_RATE_BY_CHIP_GEN(HE_NSS1_MCS0),
+ 		RTW89_HW_RATE_BY_CHIP_GEN(HE_NSS2_MCS0),
+@@ -596,6 +615,17 @@ void __rtw89_phy_rate_pattern_vif(struct rtw89_dev *rtwdev,
+ 	u8 tx_nss = rtwdev->hal.tx_nss;
+ 	u8 i;
  
- 	lockdep_assert_wiphy(hw->wiphy);
++	if (chip_gen == RTW89_CHIP_AX)
++		goto rs_11ax;
++
++	for (i = 0; i < tx_nss; i++)
++		if (!__check_rate_pattern(&next_pattern, hw_rate_eht[i][chip_gen],
++					  RA_MASK_EHT_RATES, RTW89_RA_MODE_EHT,
++					  mask->control[nl_band].eht_mcs[i],
++					  0, true))
++			goto out;
++
++rs_11ax:
+ 	for (i = 0; i < tx_nss; i++)
+ 		if (!__check_rate_pattern(&next_pattern, hw_rate_he[i][chip_gen],
+ 					  RA_MASK_HE_RATES, RTW89_RA_MODE_HE,
+@@ -640,6 +670,13 @@ void __rtw89_phy_rate_pattern_vif(struct rtw89_dev *rtwdev,
+ 	if (!next_pattern.enable)
+ 		goto out;
  
--	return rtw89_can_work_on_links(rtwdev, vif, active_links);
-+	if (!rtw89_can_work_on_links(rtwdev, vif, active_links))
-+		return false;
-+
-+	/*
-+	 * Leave LPS at the beginning of ieee80211_set_active_links().
-+	 * Because the entire process takes the same lock as our track
-+	 * work, LPS will not enter during ieee80211_set_active_links().
-+	 */
-+	rtw89_leave_lps(rtwdev);
-+
-+	rtwvif->ml_trans = trans;
-+
-+	return true;
- }
- 
- static void __rtw89_ops_clr_vif_links(struct rtw89_dev *rtwdev,
-@@ -1579,6 +1609,36 @@ static int __rtw89_ops_set_vif_links(struct rtw89_dev *rtwdev,
- 	return 0;
- }
- 
-+static void rtw89_vif_cfg_fw_links(struct rtw89_dev *rtwdev,
-+				   struct rtw89_vif *rtwvif,
-+				   unsigned long links, bool en)
-+{
-+	struct rtw89_vif_link *rtwvif_link;
-+	unsigned int link_id;
-+
-+	for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
-+		rtwvif_link = rtwvif->links[link_id];
-+		if (unlikely(!rtwvif_link))
-+			continue;
-+
-+		rtw89_fw_h2c_mlo_link_cfg(rtwdev, rtwvif_link, en);
++	if (unlikely(next_pattern.rate >= RTW89_HW_RATE_INVAL)) {
++		rtw89_debug(rtwdev, RTW89_DBG_RA,
++			    "pattern invalid target: chip_gen %d, mode 0x%x\n",
++			    chip_gen, next_pattern.ra_mode);
++		goto out;
 +	}
-+}
 +
-+static void rtw89_vif_update_fw_links(struct rtw89_dev *rtwdev,
-+				      struct rtw89_vif *rtwvif,
-+				      u16 current_links)
-+{
-+	struct rtw89_vif_ml_trans *trans = &rtwvif->ml_trans;
-+
-+	/* Do follow-up when all updating links exist. */
-+	if (current_links != trans->mediate_links)
-+		return;
-+
-+	rtw89_vif_cfg_fw_links(rtwdev, rtwvif, trans->links_to_del, false);
-+	rtw89_vif_cfg_fw_links(rtwdev, rtwvif, trans->links_to_add, true);
-+}
-+
- static
- int rtw89_ops_change_vif_links(struct ieee80211_hw *hw,
- 			       struct ieee80211_vif *vif,
-@@ -1620,6 +1680,8 @@ int rtw89_ops_change_vif_links(struct ieee80211_hw *hw,
- 	if (rtwdev->scanning)
- 		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
- 
-+	rtw89_vif_update_fw_links(rtwdev, rtwvif, old_links);
-+
- 	if (!old_links)
- 		__rtw89_ops_clr_vif_links(rtwdev, rtwvif,
- 					  BIT(RTW89_VIF_IDLE_LINK_ID));
+ 	rtwvif_link->rate_pattern = next_pattern;
+ 	rtw89_debug(rtwdev, RTW89_DBG_RA,
+ 		    "configure pattern: rate 0x%x, mask 0x%llx, mode 0x%x\n",
 -- 
 2.25.1
 
