@@ -1,101 +1,153 @@
-Return-Path: <linux-wireless+bounces-28172-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28173-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3063DBFB1DB
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Oct 2025 11:17:20 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCC8BFB5A9
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Oct 2025 12:15:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CB171898A05
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Oct 2025 09:17:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 999294FDA67
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Oct 2025 10:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB2C27A46A;
-	Wed, 22 Oct 2025 09:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40B13161A0;
+	Wed, 22 Oct 2025 10:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="s9GU55Lc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NtWmdAbe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082BE30EF84;
-	Wed, 22 Oct 2025 09:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF635315D41
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Oct 2025 10:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761124632; cv=none; b=RVF3JGSzODSRJjCSUEN6NGkOpCMsVTozPbEoH/qndV7j2zd7rqu6zMhXHNAnmvU4UXAIggzwpTCD10qmGGo6GFdf/V3i7Q6rR8N9wmSHUtI8E1/ONiSlD2yzevMdcWKZsQdn/lDuySqAR0osfjgygSzj3sQeHz4r6su/MEdBtOQ=
+	t=1761128090; cv=none; b=WVl64Kadp/ud1c1eR2cjE7pMseZK7PrjI66TCojBnxAc/9ig5u2SLYxac2cGqNezsd7479++tq/SO4rom+Qnepao7IM1VkNoQPfhmODOvZey8f1+oezBcidple4/Gmx9QpprQVFb6/mq297qKo78FSZkmnE0vxH6Ff4g8eViRLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761124632; c=relaxed/simple;
-	bh=xGz92sZd9owiqeq2wwVPdHMaKmiDtAU0dL8ZyyOp4qE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:Content-Type:
-	 MIME-Version; b=Ll91Dn1IAHY5u0tiYLveecUvnyXoasgV96FEehIAaYWodf3wBmN/cnmh2tUh8yF9x92DELSnp2+EL6QtVpAZmrzaI2AempIbiMAT+GlL7Hkdb8P1Gpz+igGaIKZzJ+vD4N87lTM4nLibN3MIWK1AMMZBAFWam5rSz8tx3P4tfqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=s9GU55Lc; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 59M9GrvR6384837, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1761124613; bh=xGz92sZd9owiqeq2wwVPdHMaKmiDtAU0dL8ZyyOp4qE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	b=s9GU55LcRexK4p5ktdzHFPilPz8fg/+2jwNR8RzxX0PvTKllnlky4nwiNAUNHDmOW
-	 lm0pQfrH6xRhvToaFhsT5Y6u6YtGHezVu0wWQEK4B06Gtu86zq4aqu/jIOSoR5wcbf
-	 OJLD2O25+U5p5OVk12BSMFIhU6s995PLZTrZuoMFt53BBp3U0/K8B3uMi3kH/UtF04
-	 Xruc7LI33zPThqk1MIwfPnv2/h0MIvY5Fve9wePhtm2Vk95BD6VCGMYF66cpsKbd0h
-	 IIexLCzm363UH9EKP2PRbmuAImjrDgsMK7qSyn/Zgob05f762PPL+FGsST1el0sUN0
-	 8Cb6ENqIuVbcg==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 59M9GrvR6384837
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Oct 2025 17:16:53 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Wed, 22 Oct 2025 17:16:53 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Wed, 22 Oct 2025 17:16:53 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
- 15.02.1544.027; Wed, 22 Oct 2025 17:16:53 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Fedor Pchelkin <pchelkin@ispras.ru>,
-        Bitterblue Smith
-	<rtl8821cerfe2@gmail.com>
-CC: Zong-Zhe Yang <kevin_yang@realtek.com>,
-        Bernie Huang
-	<phhuang@realtek.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>
-Subject: RE: [PATCH rtw-next v3 7/9] wifi: rtw89: handle IEEE80211_TX_CTL_REQ_TX_STATUS frames for USB
-Thread-Topic: [PATCH rtw-next v3 7/9] wifi: rtw89: handle
- IEEE80211_TX_CTL_REQ_TX_STATUS frames for USB
-Thread-Index: AQHcP03+N98C+NXP40OStTAnFiNodrTNutGwgAAvBeA=
-Date: Wed, 22 Oct 2025 09:16:52 +0000
-Message-ID: <3aa77693afa44a9aabb4a385d65f55f4@realtek.com>
-References: <20251017100658.66581-1-pchelkin@ispras.ru>
- <20251017100658.66581-8-pchelkin@ispras.ru> 
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1761128090; c=relaxed/simple;
+	bh=fmPj26op52izc1UGOmKv4+NJ1O9NjhtbeYL3VjKEnGE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=redepqsh0sczMZietWEEaNfWH97lg3//mJ/EpqEzfzjrCsCtPQzqJmgvdCxtZsfmKxv1P8KwUhlIlEw2AptrkQfwooYsFRybU1J0vP2ZDnPNaAXCaMmwH70uKSZznfwOs4V7Hbqh492WDIIzhhAuVABJmoCDdZdo6rLiprAIcq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NtWmdAbe; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-37777912136so64808241fa.0
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Oct 2025 03:14:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761128086; x=1761732886; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fmPj26op52izc1UGOmKv4+NJ1O9NjhtbeYL3VjKEnGE=;
+        b=NtWmdAbe7H0XSxfB6NH+1E5h/jePGLR0I+f/mhb7ZzAgxL9fykIIVwdKubU6kofX5j
+         8IvzuHN83uW+Ok8ZiHmCv6rKGZ3rNGzYKF6ynIwYXcu5PKYMsAsOBnF3pI/Kn4o2eWZD
+         XZHwC3RUr+yGFUTCS4hTagwRWF/J5FBhiGo28Y8WDyZa2Xv05GFR6PRGBIqZZPPkvrid
+         ApjDU7cgoNk6qdL6pj2sC4uI/08xB0mSR0fwPsRCkQepshnxTgun2ojN3uyShk6YqHne
+         JwhAkm4LtUTSqwvTvvfZbfuhXOStBXs4M7m/d8RppTcheVfHuOR305G60sIDftY5h8oi
+         gpug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761128086; x=1761732886;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fmPj26op52izc1UGOmKv4+NJ1O9NjhtbeYL3VjKEnGE=;
+        b=M4+3cGyYKptsZg64DENqO1Ayt0KTyPm1Ix4TKGT/+HwH6H3kA/S8IXKdz0P/fp6gvn
+         jD4rbqUspLxJNxOUXEWbWzMbp5i5mf+dGBifRCfQwnM+3YkvfPMt32D2wCeTYW0xWVlR
+         xpmXKe8AV8ehPMiZignuFVGsTRvO7xbtnNbXGRVyWDIuzBYjkIwyZuEpwzcfBSZ1G0tb
+         691dOYUznEB6SVru5oQBp5LlKcO4mOJfZRTZ22m7lCi4JJUUBwR359eCyybluOQ91PbK
+         fEE5j+PSrEf1VEek8RH6neeAI99fxAPoC25ZVXXZLeWrgislBmmv9WDmEPjYVBNehjOS
+         Uqfw==
+X-Gm-Message-State: AOJu0YyNAMUwj8vTzR9h+7AwXAAmCZSWurqF+sSpNQEhOG8kMkb9GLQ0
+	layzBOD9a7QCudCRawHWGLk/pG38uo+zMJrshNiao8uuNcHATGwjYfwg1v9zZAmNFCC4CNgYC3C
+	VW/fQju0DxfZuhlu5TGyfywpLSm1VzuI9EDAX
+X-Gm-Gg: ASbGncsWSxCpa3GJ8AU3CH5yLZiWOKWXGZkONiFAqWZu03u221Qj7Jfo2ZsHs9CnFFF
+	PCJZm/ksN/L99np685x0GVQoanR4Euuinc3E3dGX5OcvoBUKglRwv+j+vGbIUOQZY+LoQnJHB1N
+	5zqP6JLIO3Q876pjfj7wtKmos7fFHAvLeIjz28s++6Cwmi9Fjysj92CUuMXAasMYpOkiEM0nLZJ
+	YXn4bdHSgA7DlBF4NXwrqEiOko3TIulDmybuWstpPQ50Vx+IILK+PlVjz79DoCW5MA9YJm3PMnw
+	FMaQfB+0iz1BHRuGjQ==
+X-Google-Smtp-Source: AGHT+IGpRAGcgMzpy5zYAGnxQjHRBk5ftHK5R+tVZQ/Nyxg1n0MvYmTnrik3WyVAnbQ+pvVTtL+iVUsWfu9PvldFuR0=
+X-Received: by 2002:a2e:a803:0:b0:360:e364:bb3d with SMTP id
+ 38308e7fff4ca-37797637a81mr62862361fa.0.1761128086241; Wed, 22 Oct 2025
+ 03:14:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <32dce695-4b41-46fe-a31e-33d86fefc107@gmail.com>
+In-Reply-To: <32dce695-4b41-46fe-a31e-33d86fefc107@gmail.com>
+From: Avamander <avamander@gmail.com>
+Date: Wed, 22 Oct 2025 13:14:29 +0300
+X-Gm-Features: AS18NWA93sEHOCg2WAjgBtT1hAwxhB30YpiD7zoXYbKNt2QS-RRnxet0k-ACDRQ
+Message-ID: <CAPLrxsEkpeCLLJtSd1BqVdtYWBrCndVwTJRZzqcCtEefzg=NOQ@mail.gmail.com>
+Subject: Re: iwlwifi: bad HE/EHT 6 GHz operation
+To: linux-wireless@vger.kernel.org
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
->=20
-> Also, all are dropped, can't we just call ieee80211_purge_tx_queue()?
->=20
+I have a strong suspicion that "[PATCH] wifi: mac80211: Try to
+overcome bad HE operation in association response" might be the patch
+that tries to work around this issue.
 
-Please ignore this comment. Since you want to complete wait, then
-rtw89_tx_wait_list_clear() can delete wait marked as completed from list.
+> [...] they advertise invalid 6 GHz Operation Information in their HE oper=
+ation element in the association response. Since the information is invalid=
+, mac80211 cannot connect.
+
+I would really appreciate it if it could be clarified what exactly is
+incorrect in the HE operation element in the association response (and
+why everything else seems to ignore that error). This would make it
+possible to actually inform HP/Aruba of the issue and maybe get them
+to fix it.
 
 
+On Thu, Apr 10, 2025 at 8:15=E2=80=AFPM Avamander <avamander@gmail.com> wro=
+te:
+>
+> Hi,
+>
+> I was trying to connect my PC with an Intel AX210 card to an Aruba AP-655=
+ on the 6GHz band with 160MHz bandwidth. Unfortunately this results in the =
+following kernel log messages:
+>
+> wlp4s0: bad HE/EHT 6 GHz operation
+> wlp4s0: AP appears to change mode (expected HE, found legacy), disconnect
+>
+> I'm currently running 6.11.0 (-21-generic #21-Ubuntu), with matching iwlw=
+ifi ("driverversion=3D6.11.0-21-generic firmware=3D89.202a2f7b.0 ty-a0-gf-a=
+0-89.uc"). The network however seems to cause no issues for macOS devices.
+>
+> I've captured the beacon frame and it contains the following HE 6GHz oper=
+ation information:
+>
+> Control: 0x03
+> Primary Channel: 69
+> Channel Center Frequency Segment 0: 71
+> Channel Center Frequency Segment 1: 79
+> Minimum Rate: 1
+>
+> There's a very similar (and singular) issue on BugZilla (219159) also con=
+cerning operations with Aruba AP-s. But it seems that it's not exactly the =
+same. First and foremost, the CCFS0 and CCFS1 seem to be correct in my case=
+. 71 is a valid 80MHz channel, 79 is a valid 160MHz channel. (As per 802.11=
+ax-2021, CCFS1 must be greater than zero and the absolute difference betwee=
+n CCFS0 and CCFS1 must equal to exactly 8, which seems to be the case.)
+>
+> Commit 91b193d546683558a8799ffb2e2f935d3800633e seems to be the most rece=
+nt one that seems to directly adjust this logic. Manually checking all the =
+channel/AP parameters against these new checks, everything seems to be vali=
+d. But as this code does not log which exact check failed, it's very diffic=
+ult to say what's going wrong. (Given the relative complexity of this I ima=
+gine more detailed logging would be handy for many.)
+>
+> I would really appreciate any help debugging this.
+>
+>
+>
+> Best Regards,
+> Avamander
+>
+>
+>
 
