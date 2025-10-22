@@ -1,220 +1,169 @@
-Return-Path: <linux-wireless+bounces-28158-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28159-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6CDBF906A
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Oct 2025 00:18:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E46C1BF9A8F
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Oct 2025 03:59:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B64544E24ED
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Oct 2025 22:18:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC9954E24B5
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Oct 2025 01:59:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702C4221DB9;
-	Tue, 21 Oct 2025 22:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0188B288D2;
+	Wed, 22 Oct 2025 01:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="BjLctmpf"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GVYzx2WR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF661E89C
-	for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 22:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAF01ACEDF
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Oct 2025 01:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761085098; cv=none; b=Riq6To/l3qDfzPulFMBxR/a1dYdcok4OFHeGgLfRBTQD2PmJJ1T1h6Ljul365iq4XycJCwgjN4BmeYHRJWaZUGX4x7+nKyQjR6+LsD5lIffps8VMYietBq473DJadbtOFZS8Y5yQPDqXwm5C6SBlZgcTLkm0ww1D40pXF3Ol6xE=
+	t=1761098351; cv=none; b=URJlfytUrqveZS4fYX06xeK/nQY52dhQ/3DSGbhgnOvR8SbqczPdL/DUHVt1T+3fDhYG9eucGkTKKaA70ZoXNxS2AuzMJz6UObAV0zMd5wZFezW83ercSkQYjwe5JQ7js8m7StjNZ8rN5W8sioB98CQlPgFwqFwBmrYeKv3Ieuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761085098; c=relaxed/simple;
-	bh=8tWjpmUqwY8lISj+hmLyfs3ncBtqYwq6OWoFOXs7H0w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q6WwlKFqc4+uTIT+A+MErUhADU4F1KNmcLfdZff3ACxwjEVn21CR7CZjRPHJhQ8eJdN2mEqK4V+x8NoxhTu0y23VnAYyP6UbJUhDiX2txM9BVnkw+mJx+Y5xMqABxyLZgjFBlpyuA8q6ziRU2Kx7IMbSdlBpjb7dnF0rSiOndY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=BjLctmpf; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: d1208e9aaecb11f0ae1e63ff8927bad3-20251022
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=kBoRHETR39/hNbQNLPDXtydPl6F6PFfb+q6/pjZMVaI=;
-	b=BjLctmpfyb3ihFdSCxK9WRmprhtel039XgyaBzXWqcN+3ek329dgk/JK4mmIt57qufn71tN6XXvXficWSiPSYCcDiS3UMuI86C6hgndao5am1wP/DvNPlYUKeXoZB68CAqSHYe6fLfbYMfiQkpF6nXejRv3F0Dz1CgjX3bqNmFU=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:42e3a40f-1a7e-48f3-b924-3e063a1de6d4,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:a9d874c,CLOUDID:75ddae58-98d8-4d0a-b903-bc96efd77f78,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,
-	OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: d1208e9aaecb11f0ae1e63ff8927bad3-20251022
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
-	(envelope-from <ryder.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 978249052; Wed, 22 Oct 2025 06:18:05 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Wed, 22 Oct 2025 06:18:04 +0800
-Received: from mussdccf250.eus.mediatek.inc (10.73.250.250) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1748.26 via Frontend Transport; Wed, 22 Oct 2025 06:18:03 +0800
-From: Ryder Lee <ryder.lee@mediatek.com>
-To: <linux-wireless@vger.kernel.org>, Johannes Berg
-	<johannes@sipsolutions.net>
-CC: Shayne Chen <shayne.chen@mediatek.com>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, Felix Fietkau <nbd@nbd.name>, Money Wang
-	<money.wang@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v3] wifi: cfg80211/mac80211: validate radio frequency range for monitor mode
-Date: Tue, 21 Oct 2025 22:17:35 +0000
-Message-ID: <700b8284e845d96654eb98431f8eeb5a81503862.1758647858.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1761098351; c=relaxed/simple;
+	bh=GH7P2Z816MXeFIc54lW8I7MJ97fWpsE6LLus6ueQncY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tcaX7pMuy16ANgw9Tox4/mcd+mv0aSGhk8gKbdFvF/tNx+1HWO7XGZvlfGTKjFu+0B+cRrY9ZbRNHBfqYpx6GqnNpik1UUuj/UuEO6ZXmUcT9/sgM9tfopTKl0QhzxsWeYwXm41R5M9l3hVy/Zc7lI+1RU/LzpZjEdNsipf0bzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GVYzx2WR; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59LFieLD026555
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Oct 2025 01:59:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Z1IeuNaDea5YK2zKyUZ4RwziKcJaa7Qo6G4eoyjFFNw=; b=GVYzx2WR4WyJJwD2
+	j08SKgeMjohK+ia+qVEvEGSgh1+r3gWz0I1hB+Ot5oBtr3SHPnKwaxK6FBHAkBPY
+	h2moINtIaiuxUYE2DG9w758qCUNEx16nZozEu/B2ghk8XnhpXDMJRPu0Zrwkf/8R
+	Z/VihAX9fk8JJRuaxYgpnCjNSywl1P8mDUwMKpsC8ah/qdt1GEDxDmlNO4wD4WQw
+	oZnySejonWzq8iAGonT/YaH23uVbELdBeUxBlwgTkfW4sbZRjSoBq9CqWdJ5Q/Dv
+	LXUFY7+BDOcPrRH/o4lqTvyVpO1DmsMZ2mQx7QXFWkNoCP71FqpUGFIWCqlA1UHt
+	1t/s1g==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v27j2u14-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Wed, 22 Oct 2025 01:59:09 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-78104c8c8ddso5274014b3a.2
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Oct 2025 18:59:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761098348; x=1761703148;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z1IeuNaDea5YK2zKyUZ4RwziKcJaa7Qo6G4eoyjFFNw=;
+        b=p5vF8YZhSmwLw5LvAP21EkndkXETdURJAQBf/FtTHHjBsYWkejS4LHuTtrj2A/rPNt
+         FIAeK/NFnhOOrfx9x+BB12zbFBbKgJaQsAwg4WQy4PpuFxjuYak01tiJLcmDUUUZz6Te
+         Y/Taz3EfRy+At1Es1ylS3pXq74ye2cJXMz7VCsZfn80vEZBz/EvESZlyC3AmCvRklw6h
+         8JrPWYriFwy0IiEyLVKZc50I7106OuEThQWJB3BpDkmtMvQrZeiTyzzku4gNR70hVdKM
+         F7TVAwxB2Gzm/VDitlRm/Jxsk2G/XgD9u9ux3GbfGBLN3DbY4aA+cc0b8rRCtu5wssad
+         KTzA==
+X-Gm-Message-State: AOJu0YwT8ESVAaB1oKfyR7GC1qiakYrtFuSuE8dPaiBARQKpnNRgCCc0
+	SrTFrhhebWDiSQFrP3J6lhW2Mgn/nce87f2X4PkegMUv4IL8ABEdz+oGohdts9wx+9lVqMjmY/W
+	A10n2QJQTlvGloz6kySiRenK9ce+6icYcwtmOESP3pzINA7KoHIUdAt96ZsO/HLcXn1MoSA==
+X-Gm-Gg: ASbGncs0JlxmGpVP6iRCT3Fz4fjxx9BlQhYkXo429CO8Tjnv7tu0N/op1tySBF6igEq
+	aJo5rXmSTC+bwBW6CxML9xwNVesgf4/vN22lPBTICCiaj8TjMzhmCWfvMSaGwCF+Cf+bbXWSxze
+	LyjyMmyNbxD+XSMd459KAbVoZFjykE1Qh0Hwg3kRqxZOnlg0X316RGV3RmesjEpIkNtF4liNIcM
+	FEqNLCdlguYwyMVfYpkh/pEcbiTFsR16v4ckSLUqijfSsqOqHS2fE0fk4t3Q936fIzoLKzLS5Cx
+	yZAGFKq+ew4oLnWwlomyAuXZdcCsTokcBEtUEByrW1YKYv3O9mZKeQMyhFvrscNwaD/K9c+O0ZZ
+	ZrekMyBVoumsMpwOVPL5K5WHwpZXqlw2Un+vL+Igzh5xXpRIRtaEHl/BN8OxWxyZacHd0+jS2
+X-Received: by 2002:a05:6a20:1611:b0:334:98c0:9c3a with SMTP id adf61e73a8af0-334a8585723mr23162902637.24.1761098347819;
+        Tue, 21 Oct 2025 18:59:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFA3Ow01RmsRCtTan9tz/juMLr3gv7kE5ADQ1R9VputSABfYuzoLi42dtGfxiqZ1ISudZNqwg==
+X-Received: by 2002:a05:6a20:1611:b0:334:98c0:9c3a with SMTP id adf61e73a8af0-334a8585723mr23162879637.24.1761098347339;
+        Tue, 21 Oct 2025 18:59:07 -0700 (PDT)
+Received: from [10.133.33.122] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76676a2esm11489091a12.15.2025.10.21.18.59.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Oct 2025 18:59:07 -0700 (PDT)
+Message-ID: <1f49fc62-9416-4443-ac47-e67fb7836797@oss.qualcomm.com>
+Date: Wed, 22 Oct 2025 09:59:04 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next 0/4] wifi: ath11k: add support for Tx Power
+ insertion
+To: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20251017-add_tx_power_insertion_support-v1-0-f08feacfca93@oss.qualcomm.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20251017-add_tx_power_insertion_support-v1-0-f08feacfca93@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAxOCBTYWx0ZWRfX3zqJxpIMoyFF
+ 7hCg64Uc0BxFOrSmeOK1gIUmqs/LsGqKNWJ7pFCVMlqVS8M3oP3cE0a8pLnGByU16nHhfkUiI/N
+ I4/34wnrt95GB7N4M8c90sVJ8CBjlbSKrWTpQaB5wH5YHO5EKXThCDc55hrJC2sWfFSM8nYwYuI
+ r1uqS1aK16ikNEOD2EvGEeIWlg5b5twwwuZ0Hwzb8i4doHGzKGZVHWHczILRc6FkvpbxYcZuHFL
+ Z/V+aVUqUdAn6YMmYmPEiH6pp7xYygMMCyE+XqhDcKEgxXfGX5lHcRf5Xriy91UCGokgDJcS27i
+ /0GU0/LknY9VqwOVnEHPZUb5hhqU/n9pvIyLHbFCjdN5IfZNaL9T3P5ORhxpFtJGbOAA3AufOVB
+ 7BPH8b3USpUeZSLoXz4DMo+uIsoAPw==
+X-Authority-Analysis: v=2.4 cv=G4UR0tk5 c=1 sm=1 tr=0 ts=68f83a6d cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=9jhMNZ7qWXdoG8tHMgQA:9 a=QEXdDO2ut3YA:10
+ a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-GUID: HrsRJiezAWQqjyI88jH88mf0paIA6Lyr
+X-Proofpoint-ORIG-GUID: HrsRJiezAWQqjyI88jH88mf0paIA6Lyr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_01,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 suspectscore=0 adultscore=0 clxscore=1015
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
+ definitions=main-2510180018
 
-In multi-radio devices, it is possible to have an MLD AP and a monitor
-interface active at the same time. In such cases, monitor mode may not
-be able to specify a fixed channel and could end up capturing frames
-from all radios, including those outside the intended frequency bands.
 
-This patch adds frequency validation for monitor mode. Received frames
-are now only processed if their frequency fall within the allowed ranges
-of the radios specified by the interface's radio_mask.
 
-This prevents monitor mode from capturing frames outside the supported radio.
+On 10/17/2025 12:07 PM, Aditya Kumar Singh wrote:
+> For certain action frames like the TPC Report IE in the spectrum management
+> TPC Report action frame, and in the Radio Measurement Link Measurement
+> Report action frame there is a requirement to fill in the current
+> and max Tx power of the device in the packet.
+> 
+> Add support to populate these fields in the relevant packets. Advertise
+> this capability from the driver using the feature flag
+> NL80211_FEATURE_TX_POWER_INSERTION.
+> 
+> In software-encrypted cases such as PMF, skip insertion since the packets
+> are already encrypted and cannot be modified.
+> 
+> Patch Overview:
+> Patches 1 and 2 serve as preparatory groundwork.
+> Patches 3 and 4 implement the core changes described.
+> 
+> For context, this ath11k implementation is adapted from prior ath12k work [1].
+> 
+> Reference:
+> [1] https://lore.kernel.org/linux-wireless/20250630-support-for-tx-power-insertion-v1-0-77f45484d5bb@oss.qualcomm.com/
+> 
+> ---
+> Aditya Kumar Singh (4):
+>       wifi: ath11k: relocate some Tx power related functions in mac.c
+>       wifi: ath11k: wrap ath11k_mac_op_get_txpower() with lock-aware internal helper
+>       wifi: ath11k: add support for Tx Power insertion in RRM action frame
+>       wifi: ath11k: advertise NL80211_FEATURE_TX_POWER_INSERTION
+> 
+>  drivers/net/wireless/ath/ath11k/mac.c | 447 ++++++++++++++++++++++++----------
+>  1 file changed, 312 insertions(+), 135 deletions(-)
+> ---
+> base-commit: d5ce93f136fbee2b7afbe221f34ca881036f8de3
+> change-id: 20251008-add_tx_power_insertion_support-e5225e924bfd
+> 
+> 
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-change since v2: fix build error
-change since v1: fix email address
-change sinve v3: remove multiple blank lines
----
- include/net/cfg80211.h | 14 ++++++++++++
- net/mac80211/rx.c      | 49 ++++++++++++++++++++++++++++++++++++++++++
- net/wireless/util.c    |  6 +++---
- 3 files changed, 66 insertions(+), 3 deletions(-)
-
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 4072a67c9cc9..c6f6f9a0d97b 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -6775,6 +6776,19 @@ static inline bool cfg80211_channel_is_psc(struct ieee80211_channel *chan)
- 	return ieee80211_frequency_to_channel(chan->center_freq) % 16 == 5;
- }
- 
-+/**
-+ * ieee80211_radio_freq_range_valid - Check if the radio supports the
-+ * specified frequency range
-+ *
-+ * @radio: wiphy radio
-+ * @freq: the frequency (in KHz) to be queried
-+ * @width: the bandwidth (in KHz) to be queried
-+ *
-+ * Return: whether or not the given frequency range is valid for the given radio
-+ */
-+bool ieee80211_radio_freq_range_valid(const struct wiphy_radio *radio,
-+				      u32 freq, u32 width);
-+
- /**
-  * cfg80211_radio_chandef_valid - Check if the radio supports the chandef
-  *
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 4d4ff4d4917a..f91c2e00abb2 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -763,6 +763,51 @@ ieee80211_make_monitor_skb(struct ieee80211_local *local,
- 	return skb;
- }
- 
-+static bool
-+ieee80211_validate_monitor_radio(struct ieee80211_sub_if_data *sdata,
-+				 struct ieee80211_local *local,
-+				 struct ieee80211_rx_status *status)
-+{
-+	struct wiphy *wiphy = local->hw.wiphy;
-+	int i, freq, bw;
-+
-+	if (!wiphy->n_radio)
-+		return true;
-+
-+	switch (status->bw) {
-+	case RATE_INFO_BW_20:
-+		bw = 20000;
-+		break;
-+	case RATE_INFO_BW_40:
-+		bw = 40000;
-+		break;
-+	case RATE_INFO_BW_80:
-+		bw = 80000;
-+		break;
-+	case RATE_INFO_BW_160:
-+		bw = 160000;
-+		break;
-+	case RATE_INFO_BW_320:
-+		bw = 320000;
-+		break;
-+	default:
-+		return false;
-+	}
-+
-+	freq = MHZ_TO_KHZ(status->freq);
-+
-+	for (i = 0; i < wiphy->n_radio; i++) {
-+		if (!(sdata->wdev.radio_mask & BIT(i)))
-+			continue;
-+
-+		if (!ieee80211_radio_freq_range_valid(&wiphy->radio[i], freq, bw))
-+			continue;
-+
-+		return true;
-+	}
-+	return false;
-+}
-+
- /*
-  * This function copies a received frame to all monitor interfaces and
-  * returns a cleaned-up SKB that no longer includes the FCS nor the
-@@ -855,6 +900,10 @@ ieee80211_rx_monitor(struct ieee80211_local *local, struct sk_buff *origskb,
- 		    chandef->chan->center_freq != status->freq)
- 			continue;
- 
-+		if (ieee80211_hw_check(&local->hw, NO_VIRTUAL_MONITOR) &&
-+		    !ieee80211_validate_monitor_radio(sdata, local, status))
-+			continue;
-+
- 		if (!prev_sdata) {
- 			prev_sdata = sdata;
- 			continue;
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 55925d6f800f..e477925d35e6 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -2969,9 +2969,8 @@ cfg80211_get_iftype_ext_capa(struct wiphy *wiphy, enum nl80211_iftype type)
- }
- EXPORT_SYMBOL(cfg80211_get_iftype_ext_capa);
- 
--static bool
--ieee80211_radio_freq_range_valid(const struct wiphy_radio *radio,
--				 u32 freq, u32 width)
-+bool ieee80211_radio_freq_range_valid(const struct wiphy_radio *radio,
-+				      u32 freq, u32 width)
- {
- 	const struct wiphy_radio_freq_range *r;
- 	int i;
-@@ -2985,6 +2984,7 @@ ieee80211_radio_freq_range_valid(const struct wiphy_radio *radio,
- 
- 	return false;
- }
-+EXPORT_SYMBOL(ieee80211_radio_freq_range_valid);
- 
- bool cfg80211_radio_chandef_valid(const struct wiphy_radio *radio,
- 				  const struct cfg80211_chan_def *chandef)
--- 
-2.45.2
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
 
