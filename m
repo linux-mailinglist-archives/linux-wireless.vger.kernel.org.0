@@ -1,130 +1,154 @@
-Return-Path: <linux-wireless+bounces-28196-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28197-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAF7C021FD
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Oct 2025 17:31:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B67C0231A
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Oct 2025 17:42:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54EA03AE78D
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Oct 2025 15:24:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D91F51AA1791
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Oct 2025 15:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FB7337BB1;
-	Thu, 23 Oct 2025 15:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097AE33F8BB;
+	Thu, 23 Oct 2025 15:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="pN81CW0V"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XLsEC/hK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D122333441
-	for <linux-wireless@vger.kernel.org>; Thu, 23 Oct 2025 15:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BB833C50F
+	for <linux-wireless@vger.kernel.org>; Thu, 23 Oct 2025 15:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761233091; cv=none; b=n8fY4w5g9qdXzoIyIu8KJWDijppQnTJE0l4SyOIyFMAeJBpqtSc4Ggi65hPoNxCPY3gpwcTCmIq/6ohZdaRpenIiCk8GfGMijLiw2b5zPspuY+wr4lY5rJHhuKaLEbnpf0SKwFwmWGkLCrr0EZ/H1ANUu0ewGCiJtyzZyTbxhbc=
+	t=1761234149; cv=none; b=RTuzLFqfbVLLwrjfAHvSW+zRExpOHMjb0KbiLxWyok3iOX047YgwmzCovbMLMkGxsL7DpaJUJfK7aqCftHJKo7M9xzsbt5Lkw7osG61R2Nm8xTw8jQPFApMse2Sz0P6nz6L6uvHRYJ0glSyYggpnJkMoEUXjEnyrtKoS3eosQeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761233091; c=relaxed/simple;
-	bh=1XEeTVOQCclEbMP3aPRKsu84UhnVY/8X+gDzLp20v5U=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=K+kTtJY99/Bj+xj1mF8C/ysyyQsBYGf5viwl6Seo1q4PR8ckAwxfXd0TXlV83QwAt6ueTI98kUHraIQrK/xoFh4OvxpfABR1Yc9bHMCKqni71nxjf8UhS+/hHunHayX0Tm4/iJ1+qWi8AL4zB0KyaPhv67hIRGw5Nrl+DwBi6eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=pN81CW0V; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=1XEeTVOQCclEbMP3aPRKsu84UhnVY/8X+gDzLp20v5U=;
-	t=1761233089; x=1762442689; b=pN81CW0VKVzi5KXqNb4n6nkWR4ClD6p/rUTwnZMq8hCjM9O
-	+fiA98yfEDQU1gSoeMsDzETqaKjpav0IKp9x41oNSDYDCLJvYvSZaOq0YrvnRSmXqXMEgVEecZIvK
-	T5qH0mk1iTijNDkFbFGDmzFTNZDjCrZacR0VKGUylq3fUvP2LH9YAQyW/Z3BvFcYtTqI15Lj5wrFP
-	Zrg8Ijn0GYlBVQY+xU93KXb7MehVFZAxxUVLN8HhQSSIvV49pkQL0fI1mnoYUk+XkSCQ6fzuLsMBr
-	xkxlj7DA+LU+6sWHIgzu55d9jvkAQ0fdgeUYDh+Tkga+BRqT+og3HJZFw+tGjx/A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vBxB7-00000000C6D-2V6Q;
-	Thu, 23 Oct 2025 17:24:37 +0200
-Message-ID: <1062167f6dfed8384d36f8f9f1d61a46c4b04c61.camel@sipsolutions.net>
-Subject: Re: Extended Capabilities bit values overwritten by the kernel
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Pablo MARTIN-GOMEZ <pmartin-gomez@freebox.fr>, 
-	linux-wireless@vger.kernel.org, "hostap@lists.infradead.org"
-	 <hostap@lists.infradead.org>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Date: Thu, 23 Oct 2025 17:24:36 +0200
-In-Reply-To: <cd2ec7dc-1987-4f8b-8c5a-1f420a2de3c7@freebox.fr> (sfid-20251023_151356_177071_BFFF1AFB)
-References: <cd2ec7dc-1987-4f8b-8c5a-1f420a2de3c7@freebox.fr>
-	 (sfid-20251023_151356_177071_BFFF1AFB)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1761234149; c=relaxed/simple;
+	bh=CdcIJyHX4clb96PckgG+JIrIZVu7Cky4+dgR8wQZ0AQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iFZcekrwCLl/tvv2uMoEUdymkpJuD9R0J/flLtQcu7pNsPuQSZVneg+DxHw0QxzbkEVD91z3kS6XNowdggZLjnKK1yjcg3rmKK0yBFXu7hcxmUxTjCpj9Bxste6bUz97FF0aeZ04Z3Q4HXzlEUUJamW1BZk2jGWc4pl7iTUmm2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XLsEC/hK; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-29476dc9860so6067265ad.0
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Oct 2025 08:42:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761234146; x=1761838946; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FiXLImZ7fPO15Ek72Gzubnx0U1bgG0nde4mxLe+ZreM=;
+        b=XLsEC/hKI9rcYtvZep1kAQCqqw3YI29awmGXe1rBHmx869IAnxsBuaeEQYB0t6jLQs
+         imXwO/2IUFcQ/T4FXrbzCa4iK4fw1KiOFu5ITCVwnTwBKQFw/Ld6UhdCElxyHmrOnC6L
+         ZlL0a4p9RqTAN+T048bJ/RrIYJM+v6w4/AwZafr2sonvbFsXG58KyM/1bY5LSWq7BmH0
+         3sFqTzk+Cpf+GXDmZpQEcqhfDS4YOKcZ/CeX/sZSZCikzQoMak/Sjbj0n1nb+YU+m0Qa
+         D8WzDb1sjN9Dk5u+tUXh9878VLKtcU+YcYZlNPE3+zGCQNIaoO7A4ZRnOKxhG75gCRmX
+         9aWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761234146; x=1761838946;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FiXLImZ7fPO15Ek72Gzubnx0U1bgG0nde4mxLe+ZreM=;
+        b=plmXukXdzopvQNLKDofwrG41tugE7zzctjH5BU3WW/+0M28F9rMzI6ClgPcSz1M5hV
+         uMz0F80Fqs/J3D/ui+URAy3MHAFRm99cDSoucQhCdDSluzUxkCrkrvB3rizgJ2L69dcK
+         4XcPotrKkGFlP/0DrtFZe5zqUPa9gbali3LvCVQsi9flnMoZwB3qXqgauLXIWbo+7BLL
+         hWftLIhro7nVfBpQCWkVXcH5mIJaw/sH4guuLp0zgK4PFIO0EEZpEgJhhdDANOzTpw1J
+         mSbiTnvPG9ux7XSsWyioHKYnS9AJ1bYp5KVviIfd9Rpv42s0K47R03vQdB6jpbyOS1FY
+         551g==
+X-Forwarded-Encrypted: i=1; AJvYcCW++qIShYYqd3jM+T66Ysj6od7lvJ1f2Wmh44ZCpigNL8Q9szL8KlvGJlAXAdVQuaaYVEPQe1f7ryXAVjBSqQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyh17kWa7CbbLz1VRnkXjUl09F/v1z/XfukbtoPEpEH+Ny82ARm
+	STuHLicQEPyDkeevA2r93m7uzyLqcxRhEODC1YZWItE5lv6XuPyUc9gP
+X-Gm-Gg: ASbGncsdsUnubG6I4cxU4LfFJQuE5ftdJDT2jdol1RtfP1naYJnHaMpCXUlmFOq61nV
+	4GlgtFFU9sLeRCbxtxMti6KtxVyB/6DzFQSx1gmCkqqVV8M0vfpvsXbKmVtAHtoFX/nOvN5aDYo
+	lCaSHn9RDdRpo5PAI6d1XzuUSZfZr6xDRXf7UfNzEMLQt5xOq/yNb2wbN6ToSAkLkDUqFgvMqWH
+	KLJi7qxWGs73Y7heRQ5QWbHfLcEgP3JpjN8JU0ZtqaZMFvEXdI2nnL9C28Ogl/+1ajLip9jDdlq
+	DzUvJZQq9jW5fTT32gacBqx4/qwC7rTmStENM9Z/eKynmVasay/PKrc9J/qW74m5Zw37pV7gHPj
+	r20B0rhN/JKQ/ZhzWmsV1abnVHmLvsvGsYqQDnPk/k1B31zjlGjzL6H6Ebw4BUaQKZN6laXbKwm
+	Ahlerjg3iAEgiz
+X-Google-Smtp-Source: AGHT+IFivLiKbkP0y2KMH2ZNEJ7GlEhOb9t2a5oI0W2mRRwwxItjHXvAd1GZTuvYOgULd0RdTXOLyw==
+X-Received: by 2002:a17:903:1746:b0:290:9ebf:211b with SMTP id d9443c01a7336-290cb07d223mr295078455ad.40.1761234145718;
+        Thu, 23 Oct 2025 08:42:25 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946dda72ddsm27825615ad.6.2025.10.23.08.42.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 08:42:24 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 23 Oct 2025 08:42:23 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Robert Foss <rfoss@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Georgi Djakov <djakov@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Sebastian Reichel <sre@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-pm@vger.kernel.org, iommu@lists.linux.dev,
+	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Remove extra blank lines
+Message-ID: <0d01d218-15df-4553-8e84-fef84fde211e@roeck-us.net>
+References: <20251023143957.2899600-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251023143957.2899600-1-robh@kernel.org>
 
-On Thu, 2025-10-23 at 15:13 +0200, Pablo MARTIN-GOMEZ wrote:
-> Hello all,
->=20
-> I've encountered an issue with an ath12k & hostapd based AP: whatever=20
-> value I put in `he_twt_responder` and `he_twt_responder` in the hostapd=
-=20
-> config, I always have the bit `TWT Responder Support` set to 1 in the=20
-> Extended Capabilities IE. This happens because hostapd overwrites all=20
-> the bit values of the Extended Capabilities bitmap set in the config=20
-> with the values coming from the kernel (ext_capa_mask) since commit=20
-> 8cd6b7bce8b8f1fe2803bc17ddf0f51bd07330b1 (hostapd), and in the case of=
-=20
-> the ath12k (and also ath11k), the driver sets=20
-> WLAN_EXT_CAPA10_TWT_RESPONDER_SUPPORT in ext_capa_mask. I'm unsure on=20
-> how to fix this: should hostapd be change so the kernel values can be=20
-> overwritten by the config, or are the kernel values an invariant that=20
-> shall not be overwritten and therefore ath12k should be modified=20
-> so=C2=A0WLAN_EXT_CAPA10_TWT_RESPONDER_SUPPORT is only set in the user spa=
-ce=20
-> or elsewhere in the driver dynamically. I'm taking the example with TWT=
-=20
-> Responder and ath12k, but I believe other drivers are concerned (e.g.=20
-> TWT Requester Support and iwlwifi).
+On Thu, Oct 23, 2025 at 09:37:56AM -0500, Rob Herring (Arm) wrote:
+> Generally at most 1 blank line is the standard style for DT schema
+> files. Remove the few cases with more than 1 so that the yamllint check
+> for this can be enabled.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-You're probably the only/first person to ever want to _remove_
-capabilities that the driver has :)
-
-The original intent (and note the age of that commit) was that we'd have
-some capabilities that are implemented by the kernel (mac80211 sets some
-such as WLAN_EXT_CAPA8_OPMODE_NOTIF) or device (driver sets some such as
-the TWT ones you're looking at) and in that case they're exported to
-wpa_s/hostapd to use in the association request/response (respectively);
-other capabilities are implemented by hostapd and wpa_supplicant (such
-as WNM sleep mode or BSS transition) and then hostapd/wpa_s set the bits
-appropriately.
-
-This way, you can add new features purely in the kernel without updating
-wpa_supplicant to match, or add some in wpa_supplicant without updating
-the kernel, and it all still works.
-
-For mixed features that need both mac80211/driver/device and hostapd or
-wpa_s involvement we typically would add an nl80211 extended feature
-flag (rather than 802.11 extended capability), and then hostapd/wpa_s
-would set the extended capability bit. This, for example, is the case
-for FTM responder with NL80211_EXT_FEATURE_ENABLE_FTM_RESPONDER (as well
-as some others working slightly differently, e.g. QoS mapping.)
-
-Somehow it appears that we never considered the case of a capability
-that's _completely_ implemented in mac80211/driver/device but someone
-explicitly does _not_ want to advertise it.
-
-I'm not sure I know what the right solution is ... Obviously not
-advertising some features could easily be done in hostapd/wpa_s by just
-clearing the bits you don't want, but that wouldn't actually disable the
-feature in the lower level. So it'd probably work for TWT responder, but
-not for TWT requester maybe, if the request would be triggered by
-something in lower levels?
-
-johannes
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
