@@ -1,70 +1,84 @@
-Return-Path: <linux-wireless+bounces-28236-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28238-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A565C07AF0
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 20:17:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7B3C08119
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 22:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31B181C247DD
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 18:17:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1050F3B9A41
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 20:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E1824BBEC;
-	Fri, 24 Oct 2025 18:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FFB21F63D9;
+	Fri, 24 Oct 2025 20:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BfFOD3Va"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UYb4K6AT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FEF344037
-	for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 18:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9B82F532F
+	for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 20:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761329784; cv=none; b=cKy3NhpvDBdH3x9vtJVodKGm5sOou+bXd6wPAyBH15lL2GuPSIU1uUKw4MIcrTFF70F3VhCc9eeUaRdoOAB9HVh2YCloItM2Fpbyff05BxXF+yeO63v3d+cKwgP8PZBU+5cR8mEDYMHoaz8rSRc7yX2F9ne/zn+rFp5dNtfu8CY=
+	t=1761337866; cv=none; b=dyu6PO6vda9uMdCaVo/92PlFlhlVDpLLubMffZS0MpLZ6VkJ3xcFl8HzfQxkEa2Gw16VjKKsi+isQ5PjuMjuwAv2MrZBusfKY7JREF1Dmo1u4m7JRyK6ej/dKl62ZdWh43lornHNgo9ubAsE5EMqbaIe//GbP7lIyPO6wmVv8ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761329784; c=relaxed/simple;
-	bh=kYGFSTQMa5rYg6SCXR8hY1Iv9NwfVEYjUwIclqw3aZ4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TI0pDnrL9Tr+Mz0vRSnyTw68bEY+eOxtwsDtCu4GNLElCUEhjcnKxYHrZUHIt256yy+Sgjug/u0RNM3pmmamm6XuB05ZwduW7ja98qv+WhQHT2rvvuu3VWnagUeQDWK4SRM7qTPqLQiU9IHTLlckb0dxgUBQ9kNaB2zmfHMQm9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BfFOD3Va; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59OI9HuY028223;
-	Fri, 24 Oct 2025 18:16:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	+/pH9nFi6m8bAxoLzJ10u4Q1VOPz4fr3mkLB/CyxbKs=; b=BfFOD3VafmWOeLr8
-	nWc2pxQuYpcnlkcsQ1I4tST7N9eR6c93wESqgPabKimsssafPJFHLzUs9zE2WtBt
-	DVy+7yCEcHJXyuF3bX997Wt6BapX7LVexVwrqVa6qsrJwP4bwWyNf9PGwteBBjUu
-	qIcaPxxZwVe18uyu98Tu3lvjhcjsGmWnho1KbKPtGmoIjb9vtfDPfaGbfyvuSnHV
-	J617kJux8EOZYxMancbi7/kWLgH+3iJ5uHEF9wF2owWahoTY9uMiIYD+MbRr2N4i
-	/UjFNmK6lHB9UInR1CTtONDkbMLM+4A8Y9+L4ZvrR48i4zpVSVR2JjM/wexgKgiI
-	eUpSdA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49y67qpvkk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Oct 2025 18:16:19 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 59OIGJea007004
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Oct 2025 18:16:19 GMT
-Received: from hu-rdeuri-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.24; Fri, 24 Oct 2025 11:16:18 -0700
-From: Ripan Deuri <quic_rdeuri@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH ath12k-ng 9/9] wifi: ath12k: Add lockdep warn for RCU
-Date: Fri, 24 Oct 2025 23:45:48 +0530
-Message-ID: <20251024181548.3255166-10-quic_rdeuri@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251024181548.3255166-1-quic_rdeuri@quicinc.com>
-References: <20251024181548.3255166-1-quic_rdeuri@quicinc.com>
+	s=arc-20240116; t=1761337866; c=relaxed/simple;
+	bh=xJtwGFmgtaU6iZWPKPQwz0rRnnmShy5v7UuQ8AmKrW8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZCJC7he1yJQkij94ghNma+5I0by1qYBSba/Llig/v6TNH7a1Y4UI9rLVr9QcJoNPU5r7w3fOmKNRxGXR7HSTQymLal5C6A9ccHIumqBk0LcXS+X6wZoGQg0AWP+HiEZPUbpwhKQN8id93TydkOp8GIG819zNkQ8xGJ/Wbg9IL2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UYb4K6AT; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-781206cce18so2649176b3a.0
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 13:31:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761337864; x=1761942664; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=V5tOUaj5VV1BEYhc/rWHWJcsKQ0Ib+ABYORFUkcDOxk=;
+        b=UYb4K6ATI2oYlzgpCr3sPw133dpRvDGAD1BD5Pjl5rKCgDDDy1kKCNlLSawqhqux1k
+         K56HedUowwBt/Vhw0VLIf+TmRTpQItOoGmkkG4mRCMIXxwkHasHKGnc7iExsWhiYzz+6
+         KUxe8oxiyBSi12NcPWa3VZKg3qIhBvEHWtu/+U9W3BT/YNduCfiJueHgH5StGTCb5zcy
+         h8U83kx0PamaUccO3u5IRwXOhyuKjsAIHfypZSbKjyW2OK4o9H7pYxStPTjGwRxNw7V2
+         v0v6VEn27gxrrX7fV9fXM5EmtM/o07qcjFpOgieRFHKq9y8lVewPuyc7N8ej7VI/7COV
+         uMQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761337864; x=1761942664;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V5tOUaj5VV1BEYhc/rWHWJcsKQ0Ib+ABYORFUkcDOxk=;
+        b=lBE6XCDj+4lm2hkESnuSj1a3zc6qqctwDBXhcen9TWI14XntJTPT6KT5LmTPAZK7fw
+         ojgUw2WTmQjRtFc94RpcbCOy47SVJp2+et3eeBUAFdOHyrIvY4/vy3bieruHtZ2oSTbp
+         1zpib9Is8QZCXD3sdIX17toYKuuPd6SEX+PF3ymkOfCi8KiDZ7l158P6m57INa1FZR/R
+         0KWiaRbLgWAwZsBfOpIsVz+MYsE1v8kLOfKfTtN/MzWlSc0aYHj1mU7AoJhlj3ryq23c
+         ATz1x2UbhOWklVU9+x3WlyzcsowriH6kv4BuVuP4ZG73KITOr44oKqCrbluzF2iKqFE+
+         4Z+g==
+X-Gm-Message-State: AOJu0YwTW7z3B7Mm0eyORXPAArQjHFemsdcQylgN/R2Vs0kfbpvFVz+I
+	QICWyNcYczxJrb8Qc5h4WHP/p6kNnY+HS0OI/i32/+ckvUzqfaCX2ENj/pBVgA==
+X-Gm-Gg: ASbGncvyFsp5LCFtveC2eqOHtFN32CsImtc62zHahfE0ZDFdatS5PuW+wlxrvf/IjZ0
+	HDXpQNQ7h05buml3nFPfEcQbkon+vAXQ2q9JiS0jtMZJXw0raw4pIOS2KULvuaUN95qWm2+sPlB
+	5Iu7PVzjiEsf6kO98Tp8hJ5YOoh7Ne2mbncepb6RHWxOFUUVaxqziPKMnZe6zAg+2GVQWFQc2Wh
+	sCrATunGOqpqlguCxZE0pvB9amgHJLbtoWOfuBt+YT0KL9NGyr//u1QxzH38qhYdSpvTAVtFPxv
+	mNQeouftzZAtOGbzX+qzFNfYN962+mIA1jEGgN2tYxE8qGrk47di7Ds7VwUCj7Vq9iqdeArKB12
+	+U4mhUuK0BYtPdzoU3Vdp8RllcOIaMc2gwn+BRwE2FgbAWuDdtTIzmaPiikZUEx0m+6bqQ2iYfR
+	ITaphei3KjKWlyLzCCo1DvBYi2cyETPOAf
+X-Google-Smtp-Source: AGHT+IGVhdsP8QTOQ18jvLJ4RAz9BWt5s+cwCt2z98ZkChyhoIbvucYAMe2Lu+MzsPCuii/xH164Fg==
+X-Received: by 2002:a05:6a00:2c4:b0:78a:f4e6:847f with SMTP id d2e1a72fcca58-7a284c4bb71mr3428596b3a.6.1761337863656;
+        Fri, 24 Oct 2025 13:31:03 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:8e26::ea0])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414068cdcsm98552b3a.47.2025.10.24.13.31.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Oct 2025 13:31:03 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: Stanislaw Gruszka <stf_xl@wp.pl>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] wifi: rt2x00: add nvmem eeprom support
+Date: Fri, 24 Oct 2025 13:30:46 -0700
+Message-ID: <20251024203046.42275-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -72,76 +86,113 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDIyMDE2OCBTYWx0ZWRfX1adU5iCm8WNq
- yOPuKqqeF9JX9vN55dVU5qR29w/CJxcNP479XNSNIIsxQyJAIClHYlzKoUyM/PvI8c2MqJNzr+v
- qGC/NlfMxkGqjaSsfeXbjNOqaDy6qx3+Qc2XH0c/O6Z6lSHv/SGA75N4KoyrpGpeyLlxzP8LuNJ
- sOtzRGqY2sFmB/5nTjr6uBKiB+FcKH5N8TXviXSi4VQtKdsZckcIl6kf2vxZFjv9xQQEoXPTFmQ
- yn7s6i9Ezs2+w9EVVJ/eCaSNTzXs/0Nty0vGgqcUJ8bP2puttyVPm2IcXONb5/MbLKQpmd7Akfb
- al8gTXMYw8IaU11lF7W5wv7+dSTziPCWBXoMD9J9TBL7izYJ4A9Qig0FprOpHBM/Tt9D8Lz73SN
- 0zzRxWOjYrzTCIB0gPCPO+9Tf/2xig==
-X-Authority-Analysis: v=2.4 cv=LMRrgZW9 c=1 sm=1 tr=0 ts=68fbc273 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=COk6AnOGAAAA:8 a=eG82KGEsS7oeUIB4lrIA:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: Gk46W9JyeORcM5OMRVxyKqKCfvBSrksc
-X-Proofpoint-ORIG-GUID: Gk46W9JyeORcM5OMRVxyKqKCfvBSrksc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-24_03,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015 priorityscore=1501 impostorscore=0 phishscore=0
- bulkscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510220168
 
-Add RCU_LOCKDEP_WARN() in following functions:
+Some embedded platforms have eeproms located in flash. Add nvmem support
+to handle this. Support is added for PCI and SOC backends.
 
-  - ath12k_dp_link_peer_to_link_sta()
-  - ath12k_wifi7_dp_rx_h_mpdu()
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Ripan Deuri <quic_rdeuri@quicinc.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- drivers/net/wireless/ath/ath12k/dp_peer.c     | 3 +++
- drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c | 3 +++
- 2 files changed, 6 insertions(+)
+ .../net/wireless/ralink/rt2x00/rt2800lib.c    | 31 +++++++++++++++++++
+ .../net/wireless/ralink/rt2x00/rt2800lib.h    |  2 ++
+ .../net/wireless/ralink/rt2x00/rt2800pci.c    |  3 ++
+ .../net/wireless/ralink/rt2x00/rt2800soc.c    |  6 +++-
+ 4 files changed, 41 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_peer.c b/drivers/net/wireless/ath/ath12k/dp_peer.c
-index 61478e66d9af..a06113bedf0d 100644
---- a/drivers/net/wireless/ath/ath12k/dp_peer.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_peer.c
-@@ -182,6 +182,9 @@ struct ath12k_link_sta *ath12k_dp_link_peer_to_link_sta(struct ath12k_base *ab,
- 	struct ath12k_sta *ahsta;
- 	struct ath12k_link_sta *arsta;
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index af19153697ed..f0d8b5140e1a 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -24,6 +24,7 @@
+ #include <linux/clk.h>
+ #include <linux/crc-ccitt.h>
+ #include <linux/module.h>
++#include <linux/nvmem-consumer.h>
  
-+	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
-+			 "ath12k_dp_link_peer to ath12k_link_sta called without rcu lock");
+ #include "rt2x00.h"
+ #include "rt2800lib.h"
+@@ -10961,6 +10962,36 @@ int rt2800_read_eeprom_efuse(struct rt2x00_dev *rt2x00dev)
+ }
+ EXPORT_SYMBOL_GPL(rt2800_read_eeprom_efuse);
+ 
++int rt2800_read_eeprom_nvmem(struct rt2x00_dev *rt2x00dev)
++{
++	struct device_node *np = rt2x00dev->dev->of_node;
++	unsigned int len = rt2x00dev->ops->eeprom_size;
++	struct nvmem_cell *cell;
++	const void *data;
++	size_t retlen;
 +
- 	if (!peer->sta)
- 		return NULL;
- 
-diff --git a/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c b/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
-index 87875486fb4a..d24d0f12742e 100644
---- a/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/wifi7/dp_rx.c
-@@ -323,6 +323,9 @@ static void ath12k_wifi7_dp_rx_h_mpdu(struct ath12k_pdev_dp *dp_pdev,
- 	struct ieee80211_rx_status *rx_status = rx_info->rx_status;
- 	u32 err_bitmap = rx_info->err_bitmap;
- 
-+	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
-+			 "dp_rx_h_mpdu called without rcu lock");
++	cell = of_nvmem_cell_get(np, "eeprom");
++	if (IS_ERR(cell))
++		return PTR_ERR(cell);
 +
- 	/* PN for multicast packets will be checked in mac80211 */
- 	rxcb = ATH12K_SKB_RXCB(msdu);
- 	rxcb->is_mcbc = rx_info->is_mcbc;
++	data = nvmem_cell_read(cell, &retlen);
++	nvmem_cell_put(cell);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	if (retlen != len) {
++		dev_err(rt2x00dev->dev, "invalid eeprom size, required: 0x%04x\n", len);
++		kfree(data);
++		return -EINVAL;
++	}
++
++	memcpy(rt2x00dev->eeprom, data, len);
++	kfree(data);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(rt2800_read_eeprom_nvmem);
++
+ static u8 rt2800_get_txmixer_gain_24g(struct rt2x00_dev *rt2x00dev)
+ {
+ 	u16 word;
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
+index 620a3d9872ce..a3c3a751f57e 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
+@@ -248,6 +248,8 @@ void rt2800_disable_radio(struct rt2x00_dev *rt2x00dev);
+ int rt2800_efuse_detect(struct rt2x00_dev *rt2x00dev);
+ int rt2800_read_eeprom_efuse(struct rt2x00_dev *rt2x00dev);
+ 
++int rt2800_read_eeprom_nvmem(struct rt2x00_dev *rt2x00dev);
++
+ int rt2800_probe_hw(struct rt2x00_dev *rt2x00dev);
+ 
+ void rt2800_get_key_seq(struct ieee80211_hw *hw,
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800pci.c b/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
+index 8c2e7b388832..c7b853195722 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
+@@ -274,6 +274,9 @@ static int rt2800pci_read_eeprom(struct rt2x00_dev *rt2x00dev)
+ {
+ 	int retval;
+ 
++	if (!rt2800_read_eeprom_nvmem(rt2x00dev))
++		return 0;
++
+ 	if (rt2800pci_efuse_detect(rt2x00dev))
+ 		retval = rt2800pci_read_eeprom_efuse(rt2x00dev);
+ 	else
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
+index 24549072e324..4952afe02b62 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
+@@ -89,8 +89,12 @@ static int rt2800soc_set_device_state(struct rt2x00_dev *rt2x00dev,
+ 
+ static int rt2800soc_read_eeprom(struct rt2x00_dev *rt2x00dev)
+ {
+-	void __iomem *base_addr = ioremap(0x1F040000, EEPROM_SIZE);
++	void __iomem *base_addr;
+ 
++	if (!rt2800_read_eeprom_nvmem(rt2x00dev))
++		return 0;
++
++	base_addr = ioremap(0x1F040000, EEPROM_SIZE);
+ 	if (!base_addr)
+ 		return -ENOMEM;
+ 
 -- 
-2.34.1
+2.51.1
 
 
