@@ -1,198 +1,153 @@
-Return-Path: <linux-wireless+bounces-28238-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28239-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7B3C08119
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 22:31:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E00C084C9
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 01:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1050F3B9A41
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 20:31:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D67544E348F
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 23:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FFB21F63D9;
-	Fri, 24 Oct 2025 20:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D6830DEAB;
+	Fri, 24 Oct 2025 23:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UYb4K6AT"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="jUTlBQ2h"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9B82F532F
-	for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 20:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761337866; cv=none; b=dyu6PO6vda9uMdCaVo/92PlFlhlVDpLLubMffZS0MpLZ6VkJ3xcFl8HzfQxkEa2Gw16VjKKsi+isQ5PjuMjuwAv2MrZBusfKY7JREF1Dmo1u4m7JRyK6ej/dKl62ZdWh43lornHNgo9ubAsE5EMqbaIe//GbP7lIyPO6wmVv8ao=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761337866; c=relaxed/simple;
-	bh=xJtwGFmgtaU6iZWPKPQwz0rRnnmShy5v7UuQ8AmKrW8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZCJC7he1yJQkij94ghNma+5I0by1qYBSba/Llig/v6TNH7a1Y4UI9rLVr9QcJoNPU5r7w3fOmKNRxGXR7HSTQymLal5C6A9ccHIumqBk0LcXS+X6wZoGQg0AWP+HiEZPUbpwhKQN8id93TydkOp8GIG819zNkQ8xGJ/Wbg9IL2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UYb4K6AT; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-781206cce18so2649176b3a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 13:31:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761337864; x=1761942664; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=V5tOUaj5VV1BEYhc/rWHWJcsKQ0Ib+ABYORFUkcDOxk=;
-        b=UYb4K6ATI2oYlzgpCr3sPw133dpRvDGAD1BD5Pjl5rKCgDDDy1kKCNlLSawqhqux1k
-         K56HedUowwBt/Vhw0VLIf+TmRTpQItOoGmkkG4mRCMIXxwkHasHKGnc7iExsWhiYzz+6
-         KUxe8oxiyBSi12NcPWa3VZKg3qIhBvEHWtu/+U9W3BT/YNduCfiJueHgH5StGTCb5zcy
-         h8U83kx0PamaUccO3u5IRwXOhyuKjsAIHfypZSbKjyW2OK4o9H7pYxStPTjGwRxNw7V2
-         v0v6VEn27gxrrX7fV9fXM5EmtM/o07qcjFpOgieRFHKq9y8lVewPuyc7N8ej7VI/7COV
-         uMQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761337864; x=1761942664;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=V5tOUaj5VV1BEYhc/rWHWJcsKQ0Ib+ABYORFUkcDOxk=;
-        b=lBE6XCDj+4lm2hkESnuSj1a3zc6qqctwDBXhcen9TWI14XntJTPT6KT5LmTPAZK7fw
-         ojgUw2WTmQjRtFc94RpcbCOy47SVJp2+et3eeBUAFdOHyrIvY4/vy3bieruHtZ2oSTbp
-         1zpib9Is8QZCXD3sdIX17toYKuuPd6SEX+PF3ymkOfCi8KiDZ7l158P6m57INa1FZR/R
-         0KWiaRbLgWAwZsBfOpIsVz+MYsE1v8kLOfKfTtN/MzWlSc0aYHj1mU7AoJhlj3ryq23c
-         ATz1x2UbhOWklVU9+x3WlyzcsowriH6kv4BuVuP4ZG73KITOr44oKqCrbluzF2iKqFE+
-         4Z+g==
-X-Gm-Message-State: AOJu0YwTW7z3B7Mm0eyORXPAArQjHFemsdcQylgN/R2Vs0kfbpvFVz+I
-	QICWyNcYczxJrb8Qc5h4WHP/p6kNnY+HS0OI/i32/+ckvUzqfaCX2ENj/pBVgA==
-X-Gm-Gg: ASbGncvyFsp5LCFtveC2eqOHtFN32CsImtc62zHahfE0ZDFdatS5PuW+wlxrvf/IjZ0
-	HDXpQNQ7h05buml3nFPfEcQbkon+vAXQ2q9JiS0jtMZJXw0raw4pIOS2KULvuaUN95qWm2+sPlB
-	5Iu7PVzjiEsf6kO98Tp8hJ5YOoh7Ne2mbncepb6RHWxOFUUVaxqziPKMnZe6zAg+2GVQWFQc2Wh
-	sCrATunGOqpqlguCxZE0pvB9amgHJLbtoWOfuBt+YT0KL9NGyr//u1QxzH38qhYdSpvTAVtFPxv
-	mNQeouftzZAtOGbzX+qzFNfYN962+mIA1jEGgN2tYxE8qGrk47di7Ds7VwUCj7Vq9iqdeArKB12
-	+U4mhUuK0BYtPdzoU3Vdp8RllcOIaMc2gwn+BRwE2FgbAWuDdtTIzmaPiikZUEx0m+6bqQ2iYfR
-	ITaphei3KjKWlyLzCCo1DvBYi2cyETPOAf
-X-Google-Smtp-Source: AGHT+IGVhdsP8QTOQ18jvLJ4RAz9BWt5s+cwCt2z98ZkChyhoIbvucYAMe2Lu+MzsPCuii/xH164Fg==
-X-Received: by 2002:a05:6a00:2c4:b0:78a:f4e6:847f with SMTP id d2e1a72fcca58-7a284c4bb71mr3428596b3a.6.1761337863656;
-        Fri, 24 Oct 2025 13:31:03 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:8e26::ea0])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414068cdcsm98552b3a.47.2025.10.24.13.31.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 13:31:03 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Stanislaw Gruszka <stf_xl@wp.pl>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] wifi: rt2x00: add nvmem eeprom support
-Date: Fri, 24 Oct 2025 13:30:46 -0700
-Message-ID: <20251024203046.42275-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.51.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3E92F5A22;
+	Fri, 24 Oct 2025 23:24:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761348269; cv=pass; b=tESIZXI3rYe74n1MlkmYxetEG3LosKmeN3UR1hdQDjz99Tbz9srsmGVoDx8Wt4YvF1W87bGfcvNavQPxn7Nj7P9kXzzJ6n6TRvefIAhbizE8PqujlDCJzBPDyifyWVTwv1CLlkT+FvgpXTXTWHecJR+SB7Zsfo10l0t51+fECNY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761348269; c=relaxed/simple;
+	bh=NQ0CrT99S0HB3iA81tiE1fKOXNruYRsIn5L3vGBZdtI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R8JSdoh30zTpkv6DtPR9UqjoEILC8+z0s+1Ndj9y9flFG9S6SiV2d8jrt6hAqlx98mamkkU772V9SXHMqb6FLq9Q8oF2I6f1yTOpM0T8cJsnr2EL37uclg12YjC5zQnpg1dIRbZ+1QTDUVK5x58ziodwvrPG+7DKkUIVgQ0ROQc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=jUTlBQ2h; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1761348264; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=E7jo3eFGtMbYc4umajgAJrDaAAeoH78FvXSvtwIPzMd+KALm6TW6J/PZo3Gl8IAj7J4S4JOqDkVaqCJ4DpyxUkL/D7r/nDZxCDXQIylw9m80ZHFV7ZnmYl6fN+yD1hWHfO07oqL+vl1wjfMlpqfazjWlj918MvnuxIHK7Hk60jc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1761348264; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=TolhaGIsyaj1gVoV8dHb9QimZIX1Tzw1zXYiEcETqjM=; 
+	b=ERHFHpBMKqE6LtNxoI7EvA9o2mCsVLRI6J1+/qPThd+k1qt+nO9OwZhbx5E81USsXE7RyOCW1GyB5isp3iLRSkJC/p6ufY9tyScGPtH6liK71Qdq4msBQsSye0JsA4aNBjxrfKHSyGI+LcIwBsP7dWSDg8vI9r+LX3h+vlO9w2c=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
+	dmarc=pass header.from=<sebastian.reichel@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1761348264;
+	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=TolhaGIsyaj1gVoV8dHb9QimZIX1Tzw1zXYiEcETqjM=;
+	b=jUTlBQ2h6Tuak+aNMb2CNTnEQ4BDpyDVgaRRROiBpKRCvZOPLn1o5LGy8JyX0l9X
+	sOXFCDgYktIsDNXusx7tmsAjPkY6Gy0P2EcQplSNWKOk61O5CR3GNBKVdk6o+/41U8c
+	rO3cD7tc7lCrL45EbJ0fyWmdAPtKKmAhIvpw6Ir4=
+Received: by mx.zohomail.com with SMTPS id 1761348261746725.1283250784594;
+	Fri, 24 Oct 2025 16:24:21 -0700 (PDT)
+Received: by venus (Postfix, from userid 1000)
+	id 476FE181935; Sat, 25 Oct 2025 01:24:06 +0200 (CEST)
+Date: Sat, 25 Oct 2025 01:24:06 +0200
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Guenter Roeck <linux@roeck-us.net>, 
+	Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Georgi Djakov <djakov@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Joerg Roedel <joro@8bytes.org>, 
+	Jassi Brar <jassisinghbrar@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Lee Jones <lee@kernel.org>, Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Mark Brown <broonie@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, dmaengine@vger.kernel.org, 
+	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-pm@vger.kernel.org, iommu@lists.linux.dev, linux-media@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, linux-crypto@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Remove extra blank lines
+Message-ID: <god73pukywwznfyym7tym6m5k6fn3u7hwzj5gwhrxytt7oinfv@pokb4aos7pp6>
+References: <20251023143957.2899600-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4uianbie6i5kbvu2"
+Content-Disposition: inline
+In-Reply-To: <20251023143957.2899600-1-robh@kernel.org>
+X-Zoho-Virus-Status: 1
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-1.4.3/261.330.82
+X-ZohoMailClient: External
 
-Some embedded platforms have eeproms located in flash. Add nvmem support
-to handle this. Support is added for PCI and SOC backends.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- .../net/wireless/ralink/rt2x00/rt2800lib.c    | 31 +++++++++++++++++++
- .../net/wireless/ralink/rt2x00/rt2800lib.h    |  2 ++
- .../net/wireless/ralink/rt2x00/rt2800pci.c    |  3 ++
- .../net/wireless/ralink/rt2x00/rt2800soc.c    |  6 +++-
- 4 files changed, 41 insertions(+), 1 deletion(-)
+--4uianbie6i5kbvu2
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] dt-bindings: Remove extra blank lines
+MIME-Version: 1.0
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index af19153697ed..f0d8b5140e1a 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -24,6 +24,7 @@
- #include <linux/clk.h>
- #include <linux/crc-ccitt.h>
- #include <linux/module.h>
-+#include <linux/nvmem-consumer.h>
- 
- #include "rt2x00.h"
- #include "rt2800lib.h"
-@@ -10961,6 +10962,36 @@ int rt2800_read_eeprom_efuse(struct rt2x00_dev *rt2x00dev)
- }
- EXPORT_SYMBOL_GPL(rt2800_read_eeprom_efuse);
- 
-+int rt2800_read_eeprom_nvmem(struct rt2x00_dev *rt2x00dev)
-+{
-+	struct device_node *np = rt2x00dev->dev->of_node;
-+	unsigned int len = rt2x00dev->ops->eeprom_size;
-+	struct nvmem_cell *cell;
-+	const void *data;
-+	size_t retlen;
-+
-+	cell = of_nvmem_cell_get(np, "eeprom");
-+	if (IS_ERR(cell))
-+		return PTR_ERR(cell);
-+
-+	data = nvmem_cell_read(cell, &retlen);
-+	nvmem_cell_put(cell);
-+
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
-+
-+	if (retlen != len) {
-+		dev_err(rt2x00dev->dev, "invalid eeprom size, required: 0x%04x\n", len);
-+		kfree(data);
-+		return -EINVAL;
-+	}
-+
-+	memcpy(rt2x00dev->eeprom, data, len);
-+	kfree(data);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(rt2800_read_eeprom_nvmem);
-+
- static u8 rt2800_get_txmixer_gain_24g(struct rt2x00_dev *rt2x00dev)
- {
- 	u16 word;
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-index 620a3d9872ce..a3c3a751f57e 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
-@@ -248,6 +248,8 @@ void rt2800_disable_radio(struct rt2x00_dev *rt2x00dev);
- int rt2800_efuse_detect(struct rt2x00_dev *rt2x00dev);
- int rt2800_read_eeprom_efuse(struct rt2x00_dev *rt2x00dev);
- 
-+int rt2800_read_eeprom_nvmem(struct rt2x00_dev *rt2x00dev);
-+
- int rt2800_probe_hw(struct rt2x00_dev *rt2x00dev);
- 
- void rt2800_get_key_seq(struct ieee80211_hw *hw,
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800pci.c b/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
-index 8c2e7b388832..c7b853195722 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
-@@ -274,6 +274,9 @@ static int rt2800pci_read_eeprom(struct rt2x00_dev *rt2x00dev)
- {
- 	int retval;
- 
-+	if (!rt2800_read_eeprom_nvmem(rt2x00dev))
-+		return 0;
-+
- 	if (rt2800pci_efuse_detect(rt2x00dev))
- 		retval = rt2800pci_read_eeprom_efuse(rt2x00dev);
- 	else
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
-index 24549072e324..4952afe02b62 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
-@@ -89,8 +89,12 @@ static int rt2800soc_set_device_state(struct rt2x00_dev *rt2x00dev,
- 
- static int rt2800soc_read_eeprom(struct rt2x00_dev *rt2x00dev)
- {
--	void __iomem *base_addr = ioremap(0x1F040000, EEPROM_SIZE);
-+	void __iomem *base_addr;
- 
-+	if (!rt2800_read_eeprom_nvmem(rt2x00dev))
-+		return 0;
-+
-+	base_addr = ioremap(0x1F040000, EEPROM_SIZE);
- 	if (!base_addr)
- 		return -ENOMEM;
- 
--- 
-2.51.1
+Hi,
 
+On Thu, Oct 23, 2025 at 09:37:56AM -0500, Rob Herring (Arm) wrote:
+> Generally at most 1 blank line is the standard style for DT schema
+> files. Remove the few cases with more than 1 so that the yamllint check
+> for this can be enabled.
+>=20
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  .../devicetree/bindings/power/supply/mt6360_charger.yaml     | 1 -
+>  .../bindings/power/supply/stericsson,ab8500-charger.yaml     | 1 -
+
+Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+
+-- Sebastian
+
+--4uianbie6i5kbvu2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmj8CpEACgkQ2O7X88g7
++pqEIQ//WxlORWTU9xe37JxSV9323KQXYJPU3wtmtK4U8OlNGoVKu9XeR3w5pitG
+uy2cIzo80EdVMKsq5GKcONqwht31w9+RJaWZmytnll9Wbe3eiW3Lu6Ymx2zopgcW
+OoRuaiPPQUqGdgt7+VKgNt+4kH1sX/ur8z/Zd1rUrK9Xkks09pdqcZ/wpjm6KlQw
+e7x03OaDQ5h17Cg56SgH7NwoYjoUXDuSEKoZDx4wv5DQWh171Ez0/tWvYwYxM7+a
+Pxqt+zTDC1hdh6j1CaiOuwNb7pbdfcOWS7WZC8BPHNYW3eqFk5OQg+tZwEgoK9zV
+GLO0FrPPimJLgL2mfnq5FP0SzYU7FNgJD6gD/qKPzjsQlFLnwn69QCH/nTA9J/ZT
+ajcxgv6FLs3R3CGRptDBEUPOXez3dJeMeaN7hNeoswZNAe9uw1irXmedEzxLDO7S
+8WDVz6MvUAXOdXEcI+pUvuYfGWPwuJHspOgPuOwzO2sqg212V3sScOGcATq2BTDD
+mpc8LtRdKoZ3vUS9cVLRxtqLo8YB5roCBg0HEOexrwJayA074TSteqXhF2LH7LOW
+IcSZ37y+8QgWjTO2aXsiLJjoK2PsOLnvKzBRD5aeLhMd4H1Lw1xCxi75ut/fJPUY
+MLaS7WMtq7TVMRxBrjz8kaiR4opj84mVIXbVgoiISYooEKbbdic=
+=pPcb
+-----END PGP SIGNATURE-----
+
+--4uianbie6i5kbvu2--
 
