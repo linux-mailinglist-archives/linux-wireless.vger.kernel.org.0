@@ -1,92 +1,67 @@
-Return-Path: <linux-wireless+bounces-28213-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28214-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381C4C04584
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 06:37:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 427BEC0459C
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 06:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C150119A76F5
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 04:37:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00EDF3B63C3
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 04:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9C2125A9;
-	Fri, 24 Oct 2025 04:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3823219E8;
+	Fri, 24 Oct 2025 04:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fwbCcWe/"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="C0urqBMm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD3C26F299
-	for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 04:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC4735B122
+	for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 04:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761280621; cv=none; b=CPfKPy8DRK2M4AstHfwRLOp5VkwAeEAYKq5hOczGSjFmDU9bMySkXu6PUiSC7RtCqdiYl0EixPx043RLtiFjAQZrSah05G8bRMXGhdc8Iv0c+TE4X8sJM7RUJU4BE7Ohik6PGd7HEzG4iz/sJRU6M4jPXZGYtiCW3MOXd0H2LaU=
+	t=1761281248; cv=none; b=USl0XP3TkdYkS61/wJRyCeHIr/YMbzCjjj3hK+3PCHh/ghtT/fa/uiQPF6UiUgB4JcMnXTAGfdFmZcoHLQZGHs0Arn771WLgvtoO+tRYuSTo1wId9RT6p4mzw9AI5QRuko7axmi1eOVqpan1iPyC5bYnhGtqXhhUeq+rv7y+2SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761280621; c=relaxed/simple;
-	bh=C6qYUx+o8lVTnrJ5qeF8LZta2Yed8AVwAESyDhW8FL4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f87Wi3IGaxUW2YeMBjdXJWo73Lk6BDDPVdaoYwCpdMKb9ys3Hx83qsurlRydJ2U+G7eoDFWRXhs7zBewRbiO53kCLzfw8O3+CCZQOtkPMIBM9sW4JVcaKXbjmZ4mzbZ/yG+5UHES1QF/3UTvNU54UPNeHY7lK9/s0eGHpqQoPf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fwbCcWe/; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59O3FTrD003638
-	for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 04:36:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=HbXgG/TmBKSw+IXuoLF5GYrDORjh7XXFpRj
-	JBGBbqBY=; b=fwbCcWe/EaVNea0TwJkhoPFD/mvahaOzuhnVwFm08a+0oj2HvWh
-	SAodIjdVYwV4s6Y8d1zs52W3aTCrt5WmnIKccPl+rNC4ydWCaN4AJSDQ3lczvU/S
-	RLpQjul03WiUhSAyFJL6tuNZeEpJe9mTy68tYrln4Ghi5jnei5qH6ZdNw50V5tpZ
-	2AV4nAAWYyCUZBuohL8GyBKfb3GI70eB+OfwhclR/yxMNsJpNLmkbhNz6U0OyUvX
-	CTKyEEG6SC/OYvdob1G8pQgQm1JKX0WDmP4MsdyoELDq16ERaQhAZZYuaH8pwkBY
-	z9t2FIAm2CZFXGyk6H/QRuHyUxBpiyDygTg==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v2geasg6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 04:36:58 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b6cf50cbd2cso1238781a12.3
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Oct 2025 21:36:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761280617; x=1761885417;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HbXgG/TmBKSw+IXuoLF5GYrDORjh7XXFpRjJBGBbqBY=;
-        b=umKrayf00q39t/Btl4BKcQuVHof0a8PmfEPWpzHmRf6iErJKmjERALYuM0Jux5bKR9
-         mO5bOzxmQX2VKN06TI5ZgFaL5L85hS3yrEwuoTui8FObrHOiOOXtvcXDCY+d6mmbe8+o
-         ssYHJduAGP6pXO5OTWc95N3xg2dTNyIwW2plwtdatZhRT0CREpIIDVBp7kIehlMKX8lZ
-         ln49Z7yyXfPmA6Q2vl3y0wDWz3vcZtvA54dLXHIszEJ76uFtK8J0KhGFAQrwpNZhvMdv
-         z2j5OoLGNLFST2ab+GEDu0t1sgi5mndkOTkrnzyF9i588p1gVCBH1yWBd48qv+G534Ng
-         HMtg==
-X-Gm-Message-State: AOJu0YyzpIi9l/zMyjSJbAY0+1K8ieNSoUsLrKvY3JTAbmd9pBOHF+nY
-	Me3WlfloHBeqOKBPlhX2RrE+LTtJdIzHv+vcuCOfrMOaxqkuuyCt5Ikjcp7VabjJQ7gU8PLkljk
-	oU7C2qNGmTMRAZUidlLSCniRkA7XFdi5mEn4bbmtybXEsZUGQhzKcfy1GSCJJcZdqINxo6II7d4
-	oWqQ==
-X-Gm-Gg: ASbGncvYl2NgVrfDvIDlLXuEiZ5YXBPDiIXzS+rQkxOQzt1M2eZPj5ekt1P5e//O51d
-	9qLi42eTUWPiW7eOW7zSF546LsW9xIxmx0bC5Ss71SesTjlIt0ORew1W1VnISKTy+b7G1ZaAPIS
-	L6Dn6s8YDlZBaQ05ML87k3zg3AWA24uiHL6P0CslqwcfONWBLbo0BMgt03sZlbcw5+a1Bd6pfqo
-	IKz+fuQOnGVYiD2ERTUOxbb5jQz5UcbY9kDCJG1Ayc/TQyup2Brv4NMRCQKbbAgbu9mjtVC5cCv
-	EFK2zDvb2f6dX2AHRGDz/PUHseutqDDDPJxLQRJgMZr+AROYkvrCgxr3cTSYW00Y9RQWhuqK8l0
-	w1U3JsD2DhodZBwmBicDKYe/5B/4uEj7o6mrocZAqTfykbVIybYtPCdVvCRm4P09h7My0pkjkGR
-	PeJfkJMOkD2wRGjdrR/YMn
-X-Received: by 2002:a17:902:f688:b0:28d:c790:43d0 with SMTP id d9443c01a7336-2948ba0d566mr10755195ad.29.1761280616618;
-        Thu, 23 Oct 2025 21:36:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE0CFaqwWzBZ2M7ItIBkQEv+Rq6hH1iXb9SiXv2S86uZllktCCMFBhBB/gVl2VHELKsygwCCQ==
-X-Received: by 2002:a17:902:f688:b0:28d:c790:43d0 with SMTP id d9443c01a7336-2948ba0d566mr10754945ad.29.1761280616072;
-        Thu, 23 Oct 2025 21:36:56 -0700 (PDT)
-Received: from hu-sarishar-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946dfd050fsm40457485ad.62.2025.10.23.21.36.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 21:36:55 -0700 (PDT)
-From: Sarika Sharma <sarika.sharma@oss.qualcomm.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-        Sarika Sharma <sarika.sharma@oss.qualcomm.com>
-Subject: [PATCH wireless-next] wifi: mac80211: fix missing RX bitrate update for mesh forwarding path
-Date: Fri, 24 Oct 2025 10:06:27 +0530
-Message-Id: <20251024043627.1640447-1-sarika.sharma@oss.qualcomm.com>
+	s=arc-20240116; t=1761281248; c=relaxed/simple;
+	bh=TtU3Y4qgtqsg99geRkYk5mVIMnkeCMc5GOQuyYoF5CQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aGa3990cluPXcGcQivooE3BAnWXlWMySRIJxUZqglrArXwYAL9s8yhhTFoW1w4DsfbGsI++jiOqUV8/USojYsgwrefv1ofcaGTtp94JpOkPreiO3Gan3rK11X2gLdKfMtpW2wTiEqNxlquq5yIOXnekAHomGXKgtY2m1qafznSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=C0urqBMm; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59O3G2V8022770;
+	Fri, 24 Oct 2025 04:47:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=wiL9wXjOkEuBpdabPzTJHl
+	ZPBHxMsFG8HQA8AySwHzk=; b=C0urqBMmJTt18B1YhRp0lohy6HdgNcPFLftm7P
+	Q37x6qH9nxjU/XYyl4/qTOfO7nkKVqaL06xu2fS7Is5jS9vtfazOQDliXm0MEDsv
+	By1O2NZ5D3wYHzB5IeS4CFmfFD+QbU8Vr7yzu4ZMxK3dYo3BK6dmqyA/1XJO84Kc
+	KJ/b5eKVqG+6Pk2PpW5egd1wYu19/Q8u6vAU1nSJKaVj/2nhybljb1v54cDWWyhN
+	9uRabeTBIYgDMO2MGfza239vneGOjECJ7sOpuI0uZqcIW9lJf5AV8vLbrIKMWvsL
+	wOwCpgpHdyGP2SC+YQDcX+wztGBt2x1tT7xoBIcV4qOYdQig==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49y67qmsfu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Oct 2025 04:47:21 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 59O4lLtW021686
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Oct 2025 04:47:21 GMT
+Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.24; Thu, 23 Oct 2025 21:47:19 -0700
+From: Roopni Devanathan <quic_rdevanat@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>,
+        Roopni Devanathan
+	<quic_rdevanat@quicinc.com>
+Subject: [PATCH wireless-next 0/2] wifi: cfg80211: Add debugfs support for multi-radio wiphy
+Date: Fri, 24 Oct 2025 10:16:47 +0530
+Message-ID: <20251024044649.483557-1-quic_rdevanat@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -95,83 +70,192 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMCBTYWx0ZWRfX4H8kTByqclqE
- 01luBVnBZsT0y+XvdjIZotf63Zj+jKsWMdz4LiCrMTwHnDSh5LmBM6HrAet14YbsIL0MqHN4Nud
- d909fEXUGcHZmrYlW5KNOzTsYkeWWuEl/6e/wxmHLg3L28ZgJEBC20mKl2y1MKEgctBa7kcrE1v
- /DH7OUR0vGe0NT51FcxPN+Zn+g4N2VAvXpW0SHi4JOZr7z5GFy5qLteYomqrPZYSjc/2BfFUvJk
- 05EbhJuStMKs83/5h4VV8VlJRjHjwHrDWA8WKdzesme9LprBAnTg1cslhvHTVx/7huT2GzuLnBX
- uSDlZ8p0k2j5v1ibN7QzShyXCk3JocDtIGu8FCOO1AqPAP4QYqYleEPbeEDEV7YkbM0oEhDL1JK
- eXwPquaMT4MsnKYkjcdFTS0k7rE25Q==
-X-Authority-Analysis: v=2.4 cv=KqFAGGWN c=1 sm=1 tr=0 ts=68fb026a cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8
- a=ORGBUgWhjCuPX_p6B_oA:9 a=bFCP_H2QrGi7Okbo017w:22
-X-Proofpoint-GUID: TeCGwMSmuJHTKgccUY1eJJzYBupDSKN3
-X-Proofpoint-ORIG-GUID: TeCGwMSmuJHTKgccUY1eJJzYBupDSKN3
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDIyMDE2OCBTYWx0ZWRfX9MQrQDdMyp2S
+ hoUjo+Q+RSpWdJBbYyJQF0Yupo8XZqPkwC9eeNK4Jmz3hPMG5PaODcP43uQ3C+7ChUtK1ioWPNf
+ dcSiwmc6g4Sk/XrZXrFH4jsxUaz2aUFGw9wZbqDv4rZ6oh+0U6/Di8gfPECDMlSjXl7D0PwhM91
+ Yqm2Y8J0m5cY8orXfcCY0iiZhF6Qw4NMZ3y/XF1JTECSZqnijzqhLvVizRqtVrzSXx0eGGlnILu
+ 7wvfvSoF7VGQcQ4/efZ0koIH6yYvdlAynk8ha9cnx8a6uwbNJNZZqYmxiKvUPgc9EWylOBrmKeH
+ UvDsC4B07GQ05iqUG09xXtVz5kJMFS/X3TowWtOE4lhzM4AJEJDh7ulT4WLw1G8PbE6PrTPKWU/
+ 4SEqKYj8uCd2CqzYfauuEKhnOitkFg==
+X-Authority-Analysis: v=2.4 cv=LMRrgZW9 c=1 sm=1 tr=0 ts=68fb04d9 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=MIN5GFXLiVYSEp0tk_wA:9
+X-Proofpoint-GUID: fZtdA-ttoss6haui9FdKoduWSJy3X4UK
+X-Proofpoint-ORIG-GUID: fZtdA-ttoss6haui9FdKoduWSJy3X4UK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-23_03,2025-10-22_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 phishscore=0 malwarescore=0 impostorscore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 spamscore=0 suspectscore=0
+ suspectscore=0 clxscore=1011 priorityscore=1501 impostorscore=0 phishscore=0
+ bulkscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180020
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510220168
 
-Currently, RX bitrate statistics are not updated for packets received
-on the mesh forwarding path during fast RX processing. This results in
-incomplete RX rate tracking in station dump outputs for mesh scenarios.
+In single-radio wiphy architecture where each radio is tied to a separate
+wiphy, a few radio configuration parameters and wiphy parameters are
+maintained as separate debugfs entries. So, the radio configuration
+parameters - 'fragmentation_threshold', 'rts_threshold', 'long_retry_limit'
+and 'short_retry_limit' and the wiphy parameters - 'airtime_flags',
+'aql_enable', 'aql_pending', 'aql_threshold', 'aql_txq_limit', 'aqm',
+'force_tx_status', 'ht40allow_map', 'hw_conf', 'hwflags', 'power',
+'queues', 'rate_ctrl_alg', 'reset', 'total_ps_buffered', 'user_power' and
+'wep_iv' are present in separate directories corresponding to the
+respective wiphy. So the debugfs directory structure for 5G radio, for
+example, is represented as:
+/sys
+	|- kernel
+		|- debug
+			|- ieee80211
+				|- phy#0
+					|- airtime_flags
+					|- aql_enable
+					...
+					|- user_power
+					|- wep_iv
+					|- fragmentation_threshold
+					|- rts_threshold
+					|- long_retry_limit
+					|- short_retry_limit
+				|- phy#1
+					|- airtime_flags
+					|- aql_enable
+					...
+					|- user_power
+					|- wep_iv
+					|- fragmentation_threshold
+					|- rts_threshold
+					|- long_retry_limit
+					|- short_retry_limit
+				|- phy#2
+					|- airtime_flags
+					|- aql_enable
+					...
+					|- user_power
+					|- wep_iv
+					|- fragmentation_threshold
+					|- rts_threshold
+					|- long_retry_limit
+					|- short_retry_limit
 
-Update ieee80211_invoke_fast_rx() to record the RX rate using
-sta_stats_encode_rate() and store it in the last_rate field of
-ieee80211_sta_rx_stats when RX_QUEUED is returned from
-ieee80211_rx_mesh_data(). This ensures that RX bitrate is properly
-accounted for in both RSS and non-RSS paths.
+In multi-radio wiphy architecture, where a single wiphy can have multiple
+radios tied to it, radio configuration parameters and wiphy parameters are
+maintained similar to how it is done in multi-wiphy architecture, i.e.,
+under phy#X. These can be considered as global wiphy configuration
+parameters. In case of wiphy parameters, these are tied to global data of
+the entire physical device and common to all radios irrespective of the
+architecture. But each radio can have different values for each radio
+configuration parameter. To address this, in addition to maintaining global
+wiphy configuration parameters in phy#X directory, create separate debugfs
+directories for each radio in a wiphy and within each directory, maintain
+parameters corresponding to that radio. So, the proposed debugfs directory
+structure can be represented as:
+/sys
+	|- kernel
+		|- debug
+			|- ieee80211
+				|- phy#0
+					|- airtime_flags
+					|- aql_enable
+					...
+					|- user_power
+					|- wep_iv
+					|- fragmentation_threshold
+					|- rts_threshold
+					|- long_retry_limit
+					|- short_retry_limit
+					|- radio0
+						|- fragmentation_threshold
+						|- rts_threshold
+						|- long_retry_limit
+						|- short_retry_limit
+					|- radio1
+						|- fragmentation_threshold
+						|- rts_threshold
+						|- long_retry_limit
+						|- short_retry_limit
+				|- phy#1
+					|- airtime_flags
+					|- aql_enable
+					...
+					|- user_power
+					|- wep_iv
+					|- fragmentation_threshold
+					|- rts_threshold
+					|- long_retry_limit
+					|- short_retry_limit
+					|- radio0
+						|- fragmentation_threshold
+						|- rts_threshold
+						|- long_retry_limit
+						|- short_retry_limit
+				|- phy#2
+					|- airtime_flags
+					|- aql_enable
+					...
+					|- user_power
+					|- wep_iv
+					|- fragmentation_threshold
+					|- rts_threshold
+					|- long_retry_limit
+					|- short_retry_limit
+					|- radio0
+						|- fragmentation_threshold
+						|- rts_threshold
+						|- long_retry_limit
+						|- short_retry_limit
+					|- radio1
+						|- fragmentation_threshold
+						|- rts_threshold
+						|- long_retry_limit
+						|- short_retry_limit
+					|- radio2
+						|- fragmentation_threshold
+						|- rts_threshold
+						|- long_retry_limit
+						|- short_retry_limit
+						
+To do this, maintain a dentry structure in wiphy_radio_cfg, a structure 
+containing radio configurations of a wiphy. This struct is maintained to
+denote per-radio configurations of a wiphy. Create separate directories
+representing each radio within phy#X directory during wiphy registration.
 
-Signed-off-by: Sarika Sharma <sarika.sharma@oss.qualcomm.com>
----
- net/mac80211/rx.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+Whenever a wiphy configuration parameter is added as an entry to phyX
+directory, check if that applies on a per-radio basis and if it does,
+create its entry in radio directories too. This way radio-specific
+configuration parameters can be maintained along with global wiphy
+configuration parameters.
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 6af43dfefdd6..5a18389c1608 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4903,6 +4903,11 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
- 
- 	/* after this point, don't punt to the slowpath! */
- 
-+	if (fast_rx->uses_rss)
-+		stats = this_cpu_ptr(rx->link_sta->pcpu_rx_stats);
-+	else
-+		stats = &rx->link_sta->rx_stats;
-+
- 	if (rx->key && !(status->flag & RX_FLAG_MIC_STRIPPED) &&
- 	    pskb_trim(skb, skb->len - fast_rx->icv_len))
- 		goto drop;
-@@ -4937,6 +4942,8 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
- 	res = ieee80211_rx_mesh_data(rx->sdata, rx->sta, rx->skb);
- 	switch (res) {
- 	case RX_QUEUED:
-+		stats->last_rx = jiffies;
-+		stats->last_rate = sta_stats_encode_rate(status);
- 		return true;
- 	case RX_CONTINUE:
- 		break;
-@@ -4950,11 +4957,6 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
-  drop:
- 	dev_kfree_skb(skb);
- 
--	if (fast_rx->uses_rss)
--		stats = this_cpu_ptr(rx->link_sta->pcpu_rx_stats);
--	else
--		stats = &rx->link_sta->rx_stats;
--
- 	stats->dropped++;
- 	return true;
- }
+With this change brought in, when user tries to modify the value of any of
+radio's configuration parameter, only that radio's parameter will change
+and the global wiphy parameter and other radios' parameter values will
+remain unchanged. This applies to all per-radio configurations without
+any radio-specific limitations. Also, when the user tries to write to
+global wiphy parameter, then the existing behavior will work, i.e., the
+global wiphy parameter will get changed, but in addition, that particular
+parameter of all radios in that wiphy will also get updated to the new
+value of global wiphy parameter. This ensures backward compatibility is
+maintained, i.e., the existing userspace will work alongside the per-radio
+parameters configuration implementation. 
+
+
+Roopni Devanathan (2):
+  wifi: cfg80211: Add debugfs support for multi-radio wiphy
+  wifi: cfg80211: Add parameters to radio-specific debugfs directories
+
+ include/net/cfg80211.h |  4 ++++
+ net/wireless/core.c    | 15 +++++++++++++++
+ net/wireless/debugfs.c | 33 +++++++++++++++++++++++++++++++++
+ 3 files changed, 52 insertions(+)
+
 
 base-commit: 55db64ddd6a12c5157a61419a11a18fc727e8286
 -- 
-2.34.1
+2.25.1
 
 
