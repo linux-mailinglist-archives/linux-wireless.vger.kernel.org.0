@@ -1,171 +1,137 @@
-Return-Path: <linux-wireless+bounces-28218-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28219-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F8CC04BFC
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 09:36:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE13C04E20
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 09:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D39AF34F8C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 07:36:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 178D0188AA0C
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Oct 2025 07:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD9A2E7178;
-	Fri, 24 Oct 2025 07:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744E82FAC07;
+	Fri, 24 Oct 2025 07:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="UlR6HSho"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="v3iF3RAP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9154F2E6CCE
-	for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 07:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7062F9D85
+	for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 07:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761291403; cv=none; b=S4M6+DL0ra7Rsfb0iKfrhWTqCAfF/QnWGLD33gN68FssWVNVNVnJ9mpaBNn8ulNrZ8DllV0zuTcTvUV911i0OWn9wOLPNzoxMJ3BE+G7WLhUjupyJBmYI0vgfcafd72BOHOtAcYKu39O+XfCKqJLWIwuEkFzVGluq50iCSTo/sI=
+	t=1761292584; cv=none; b=J7hTFhbQbVa7SYiKFl0FX0XmwUfE913s5lj+sV2zPoEANvWO7XT5pFTPGIN1kTKaIz0TTUhUf7hKDN0vl+YezpKS8dv3ljq8H/DrKVtPkAomZ074bokNSPO79xCFU36U1vC3lA+72dVGCQ+Hz9FTOQcbm9akQcEflS8X/p17+4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761291403; c=relaxed/simple;
-	bh=bCqaM+5tMnrCNGM7zdEdZY1VsIMFr7ZwdzNUWWEH8kU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OyKAqw6nmFk2acyLCx26/Sa173w2/OccFQaqDpQK1zLtjRXuh3kkeC7Y9R/fWMuDdPGxuBo6azXx9ipGQo2owCnJOMu5TDPNPTCWJ87owbiTIHMMzDEXGFmaMr3vcsnWb8INHaUoG5WG8r6crwW0eWzd2ugNxYaQO4/n6QZ2hmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=UlR6HSho; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=bsEYSr4v5+VmX/FgprfPbXQhNMByRkluP/B9UxZgZGk=;
-	t=1761291401; x=1762501001; b=UlR6HShoOXPrXFzdqCyMIaOI0UViCkXEFysr9SSFZffsIAx
-	ea+7Dz7RJ7xxACPR48gTKnLUKRiPFQN6HZ0Moq/CSI+028Jp/1DlaMrMLHMf0jXT/m9wBvnHt/Sin
-	ilFJphzNxvTMXPdd6Ssnq/m7PcOA0PvtHRvbVHTyaqvAMBLZEuaTmgHuA6g5ZaUOhqD8LKy3Vnfwt
-	EAbRWPTWAB2Y6KZlxtEietiNYefvUDzGQy6/s2lGMjXBTrnaGmYgkSiHhnW168nnmeptoJPyhuAJF
-	86CJsCRBFOsDEMaG7h6z5Sf+F3im/KxmSamkxzKy7nIrdTMsBB6NgRNYsrJ0PbOg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vCCLm-00000002Ij5-2r11;
-	Fri, 24 Oct 2025 09:36:38 +0200
-Message-ID: <ccef9238eaced219bf7526a30e8ee0acb54ea282.camel@sipsolutions.net>
-Subject: Re: [PATCH RFC wireless-next] wifi: mac80211_hwsim: dont perform
- rate validation for S1G
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Cc: linux-wireless@vger.kernel.org, arien.judge@morsemicro.com
-Date: Fri, 24 Oct 2025 09:36:38 +0200
-In-Reply-To: <e3fl4s2at6oz5rtvurivxormmndj22l3h2dkqovhnhj5u6fw2q@c65nw3shnxcl> (sfid-20251021_053610_768426_4DF09D77)
-References: <20251008014006.219605-1-lachlan.hodges@morsemicro.com>
-	 <0f82718459bc6e31238f1189f8f5bfc859b59a3e.camel@sipsolutions.net>
-	 <e3fl4s2at6oz5rtvurivxormmndj22l3h2dkqovhnhj5u6fw2q@c65nw3shnxcl>
-	 (sfid-20251021_053610_768426_4DF09D77)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1761292584; c=relaxed/simple;
+	bh=nxy0zWX1h247nPbsMpYtj4rqvQKsZpsdIsqOdaa3i18=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BwO27n5ZyxEji8ugZUy2t8CcIcSexEN52SPne8Z4mNGP14PKuvjauXrCfT87wQidZX26fNpglGwAb8dHdLqQT/IHcwEkUkoghopJOpjeJStvkN1JAHdM/MWB81h4NghXdpo46cqQ8UNJ6u57n3Vq9BltNV88UZYOuzsRFPDnAAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=v3iF3RAP; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-592fb5d644bso744482e87.1
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Oct 2025 00:56:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1761292579; x=1761897379; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nxy0zWX1h247nPbsMpYtj4rqvQKsZpsdIsqOdaa3i18=;
+        b=v3iF3RAPDCb1elFqO0VtoWQu+fW6ymU7UCcKEvvmYKNYTD2ooJnLd6jMbuJoUoN+Dn
+         48jC0TXcnzK7hHI8l7XLLufqE40irxcJ4vQUvDf4zdOy47noMAAYnUg6+rKFE7kuW8KB
+         USll7/Aewk1bIvHRDatF6iZ+ivUhLjYhiJEJEaA/t1MN12k63JvJ8Z2BqetAPfCPpfzc
+         bXyJLqDmaG/v2uSkzQNDFkhtLwjQdE/QsFWa4lokn+PvuaNQ6Zeenb8G29xaiiFXP0S7
+         FDqWxQyTvlalR9tZ8BC9oRxHctw1PO5qfa50RYj0lq81NdRESC/gWmdIjcg72jvCS2fV
+         wJ4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761292579; x=1761897379;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nxy0zWX1h247nPbsMpYtj4rqvQKsZpsdIsqOdaa3i18=;
+        b=NdRIq3tipMmNhZMFEp+ihJeszyjucRoJyzWx+MQ2afBfJ/s2BPpOFv/NhvfpGd0nDK
+         3XX0UDolDlp//kr2LW1JFZe4BfwmghNxAN4fbzi7SoV6kj1OYEZL26pgwrF2Wk7DOlEc
+         8xMYOZvztxigakGpZqgqMZ9WdCs711miMMz4A3nLtkrXK/z6ijYafN6+3Wb0LQ0BgzBU
+         RyA66Io+K9ivtUZxFHc8Hg1rl0x0FW5WJoyDdEev6sUQWYtEBuBTPMm8IaX78rWo8N/S
+         T5I8mOGF8i66vmsk3MMDqHjkVrKlmFxRIW17HTz7T2HFwI/RQwJoo1G3acmyX590+6v9
+         C7hA==
+X-Forwarded-Encrypted: i=1; AJvYcCXLvfwn+7ecqiQqMOT7KQEtzEU8Jpws34Io1iOt6bw5VLDFpakB1FPBDmuhHnWQlcCokicXd86iPxdeFyjaOA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvMwqLf/sF8OE8Jz70x4zHQoH0Gxany8085oF0v1jBL/29OhSm
+	3Vrn/JHbc4dsxM8kYsBNtNnFOQgeWaQ+dCCHAvQ74M5eyQr6F9Q1L9gisNUGJasSAJoKuk9mmwD
+	bpWFChxXDX0HfBfdsshNzcLIILwZaCBK1TrTOYULQ2w==
+X-Gm-Gg: ASbGncsbPe+iUO+AKnGf4ALQhZ0lWNapEaP3N1JMwK5aSfeKzn6ZBpi6wD2R5htDp5k
+	KuZlmf12OnFT0pM7WLPXGhSG7goy6IiveIrw4FmK4M2OJkHX8QNtnrWgLzPH7YtBlUHEEKQVumP
+	yi8JgACtAwZjlCh86KDdts9eS4vHiVUwQzEdToGVzOGuV8SgSVU2zGOlI9RwtLwzFxlrvW+6ktB
+	CYzMIizAq/GsABxjwvjCQs1l/VfeI1XuqA8jGz+LH+yHC5jVCnrOSY2W50LUb7jtcjekOvWgPyO
+	QCniUNFAxHZ4q+E=
+X-Google-Smtp-Source: AGHT+IHSnXZ/gyOux7cXwXN4jLtleYFyXBIE1/V6t/jovl+yJ4b+HMb04wimJ5i7xVzENgmv7b2GUJ2i/5ONH7mEpKM=
+X-Received: by 2002:a05:6512:130c:b0:586:83e2:2295 with SMTP id
+ 2adb3069b0e04-591d85525f5mr9376212e87.45.1761292578695; Fri, 24 Oct 2025
+ 00:56:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+References: <20251023143957.2899600-1-robh@kernel.org>
+In-Reply-To: <20251023143957.2899600-1-robh@kernel.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Fri, 24 Oct 2025 09:56:07 +0200
+X-Gm-Features: AS18NWBwXS6t25LKJEi_UKqvj6YhljrcGI4AFOhItyKPndeRwhvu3EmnTJe9vDc
+Message-ID: <CAMRc=MdE=1cPDPQwPQA6mdBkbXF2pG=oQ_oR_YuasGzaPDsKtg@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Remove extra blank lines
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
+	Vinod Koul <vkoul@kernel.org>, Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>, 
+	Guenter Roeck <linux@roeck-us.net>, Andi Shyti <andi.shyti@kernel.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Georgi Djakov <djakov@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Joerg Roedel <joro@8bytes.org>, 
+	Jassi Brar <jassisinghbrar@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Lee Jones <lee@kernel.org>, Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Mark Brown <broonie@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Olivia Mackall <olivia@selenic.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, 
+	dmaengine@vger.kernel.org, linux-fpga@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-input@vger.kernel.org, linux-pm@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org, 
+	linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-usb@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2025-10-21 at 14:36 +1100, Lachlan Hodges wrote:
-> > > If an S1G driver is submitted it
-> > > would be considered a "modern" driver and would probably contain its =
-own
-> > > rate control. There has been some S1G hostap work recently submitted =
-[1]
-> > > though it's only STA side though this will need to be fixed in order =
-for
-> > > proper tests to be run.
-> >=20
-> > I'm not sure really to be considered "modern" you need driver/firmware
-> > rate control, but I'd assume a new driver were to do that anyway :)
-> >=20
-> > So overall it seems reasonable to mostly ignore the rate control issue,
-> > but maybe it'd make more sense to be "cleaner" about it, maybe
-> > separating out something like HAS_RATE_CONTROL to be per station, i.e.
-> > letting drivers somehow (not) set WLAN_STA_RATE_CONTROL?
->=20
-> I do agree - I have some initial rough thoughts -
->=20
-> Separating out HAS_RATE_CONTROL to be per station rather then per wiphy
-> seems to be a major change for just this single case?=C2=A0
+On Thu, Oct 23, 2025 at 4:40=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org>=
+ wrote:
+>
+> Generally at most 1 blank line is the standard style for DT schema
+> files. Remove the few cases with more than 1 so that the yamllint check
+> for this can be enabled.
+>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
 
-Yeah, that's true.
+For GPIO:
 
-> Now Im not sure what
-> Wi-Fi8 entails (heh) but I also understand it's best to do this properly =
-rather
-> then some S1G specific hack.
-
-WiFi8/UHR isn't going to change anything in this area, it's not really
-any different from WiFi7/EHT wrt. this.
-
-> It seems that introducing a flags parameter into the ieee80211_link_sta w=
-here
-> drivers can apply the inverse i.e LINK_STA_NO_RATE_CONTROL or something s=
-imilar
-> that before drv_link_sta_rc_update() is called the flag can be tested, so=
-mething
-> like, for example within rate_control_rate_update():
->=20
-> [...]
-> 	if (sta->uploaded && !(link_sta->pub->flags & LINK_STA_NO_RC))
-> 		drv_link_sta_rc_update(local, sta->sdata, link_sta->pub,
-> 				       changed);
-> [...]
->=20
-> Then w.r.t setting the flag, we could introduce a new function that gets
-> called within mac80211_hwsim_sta_add() called mac80211_hwsim_link_sta_set=
-_flags()
-> or something where it could enumerate the links of the ieee80211_sta and
-> apply the flag to the link with an S1G band channel context?
->=20
-> The reason for it being driver-facing is that any future upstream S1G dri=
-vers
-> may make use of the .sta_rc_update() callback.
-
-But the .sta_rc_update() call is desired/needed either way (if
-implemented) - the issue is about the _other_ side of this, "if (ref &&
-ref->ops->rate_update)", no?
-
-So I'd rather think we need something like
-
-static int sta_prepare_rate_control(struct ieee80211_local *local,
-                                    struct sta_info *sta, gfp_t gfp)
-{
-        if (ieee80211_hw_check(&local->hw, HAS_RATE_CONTROL))
-                return 0;
-
-+	if (something new here)
-+		return 0;
-+
-        sta->rate_ctrl =3D local->rate_ctrl;
-        sta->rate_ctrl_priv =3D rate_control_alloc_sta(sta->rate_ctrl,
-                                                     sta, gfp);
-        if (!sta->rate_ctrl_priv)
-                return -ENOMEM;
-
-        return 0;
-}
-
-
-However, an issue is that the "something new here" can't check a per-STA
-flag because this happens before the driver is actually told about the
-station.
-
-I suppose the easiest way, if a bit special to hwsim, would be to add a
-specific flag for S1G, so that "something new here" becomes just
-
-	on_s1g && ieee80211_hw_check(&local->hw, HAS_S1G_RATE_CONTROL)
-
-(where on_s1g needs the sdata passed to the function and the chanctx
-checked)
-
-Then hwsim can sort it out or even just call rate_control_send_low() for
-that all the time (which has a TODO for S1G buried, but that probably
-needs addressing either way eventually.)
-
-johannes
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
