@@ -1,120 +1,140 @@
-Return-Path: <linux-wireless+bounces-28241-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28242-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A930EC08E1F
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 10:55:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5F6C08EDE
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 12:13:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 779574E11F4
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 08:55:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E62811899A70
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 10:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E84222129B;
-	Sat, 25 Oct 2025 08:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29BB29E101;
+	Sat, 25 Oct 2025 10:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=duck.com header.i=@duck.com header.b="RaGNwZb9"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="A8FMeEFg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-outbound8.duck.com (smtp-outbound8.duck.com [20.67.223.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170AF1F4CAE
-	for <linux-wireless@vger.kernel.org>; Sat, 25 Oct 2025 08:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=20.67.223.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5A827E7F0;
+	Sat, 25 Oct 2025 10:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761382546; cv=none; b=bGEN6lKCJCciksoxK21THq3Vay3ZWX967oKxTEAoXDhj18PrCD1DaOY1BIEugqczFe4vw28UQYHJQzwZEX3xjsI2V5Nj8q1OoG1AG/W9r/bengur17SBT1uzV0Mh7J83umUgD9SkE6bVRzAfkEWv3IddQAqdZEYA5ByVt2usBhw=
+	t=1761387164; cv=none; b=ItqtiAk/4GdqBbUJNaovvc2Xbq4pkmgAYdLdvq0vDlSfhHfnInQlTpenv8Irp3j4q7908LAYzvKel7rkelrYg0bcdwM43MdbDm34t1O/qqpFJcf5KCHu5f385DjDXIJTVR0wSDIO6jgpsbJfm7qK4epXr11VoHqDhVweTV76X9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761382546; c=relaxed/simple;
-	bh=PQjm/epzb1I7LJO3G2SLFh9JS4zKVn22NumIJ65TAmU=;
-	h=Subject:MIME-Version:To:Cc:Message-ID:Date:From; b=PFI8cqeAbiw6j8ofM1vsIJ0zGvMQGgMyzI5YDHBx7q78Mn0a147DvW9S9VNcU08FV0WVznYj+GEYngofCI5SY4LbtXImMaeDQj1wCjvVoY79Vg6r6NyZQn3C8bsw9Wjs22FSd8Zs2DJpzzvcVO7YGpTeswwhCJMmTyX9oKUlemg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=duck.com; spf=pass smtp.mailfrom=duck.com; dkim=pass (1024-bit key) header.d=duck.com header.i=@duck.com header.b=RaGNwZb9; arc=none smtp.client-ip=20.67.223.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=duck.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=duck.com
-Subject: [PATCH] wireless-regdb: Update regulatory info for Brunei Darussalam (BN) for 2022
+	s=arc-20240116; t=1761387164; c=relaxed/simple;
+	bh=xYAgceLspemRBMQ+mkC0zd2Skjqs0JX7be4SWBc08mQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cxZHTQUYV5gtNChOs+/TowJY8bjlSh4EQzIu4gyiURsxw17HKm+TW5f4qKq0w7nYukAT+JiIVZ4Y5sPNAgkgGxvS0iwHs0Iqu5kVxXJa4CAfuKD1uAZ4knPuYLnLLkiWYr0567AZDktZ8g4CxZ4+dCPLR5nVmMm98sTCd0/c1Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=A8FMeEFg; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost (unknown [5.228.116.177])
+	by mail.ispras.ru (Postfix) with UTF8SMTPSA id 86E8B407674D;
+	Sat, 25 Oct 2025 10:12:31 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 86E8B407674D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1761387151;
+	bh=k+qxlMOpsdoySMMJQyou7/5VUprV+TN2uaIvjNBJC+k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A8FMeEFg13jLtvFiL4eXye2eSbdwsbkTQb9Gk4wQykr/cc98JmH6zHwNYfihRRjYK
+	 pCW0tJLZrVNNij3/EfDICQ3YeHN2wSGT5FlNF3HOQED67KJ+orKuXKgFgjkA0nbbnK
+	 /slwHH8a3ZJAHFuKyWDk1idByKuzbVz04uc6GtgE=
+Date: Sat, 25 Oct 2025 13:12:31 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>, 
+	Zong-Zhe Yang <kevin_yang@realtek.com>, Bernie Huang <phhuang@realtek.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
+Subject: Re: [PATCH rtw-next v3 5/9] wifi: rtw89: implement C2H TX report
+ handler
+Message-ID: <20251025125848-1a66489b56a61c3e63193431-pchelkin@ispras>
+References: <20251017100658.66581-1-pchelkin@ispras.ru>
+ <20251017100658.66581-6-pchelkin@ispras.ru>
+ <6dc0740a095f4a38ae2427169b1d100c@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: /
-X-Rspamd-Report: R_MISSING_CHARSET(0.5) DMARC_POLICY_ALLOW(-0.5) R_DKIM_ALLOW(-0.2) MIME_GOOD(-0.1) R_SPF_ALLOW(-0.2) MID_RHS_MATCH_TO(1)
-X-Rspamd-Score: 0.5
-X-Rspamd-Action: no action
-To: linux-wireless@vger.kernel.org
-Cc: wireless-regdb@lists.infradead.org,
- Hafiz Zafran <hfzz7@duck.com>
-Received: by smtp-inbound1.duck.com; Sat, 25 Oct 2025 04:55:39 -0400
-Message-ID: <6CE7089F-5113-4210-B09C-2DDEC06A2225.1@smtp-inbound1.duck.com>
-Date: Sat, 25 Oct 2025 04:55:39 -0400
-From: hfzz7@duck.com
-Feedback-ID: :isSendReply:isDirect:duckcom
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=duck.com;
- h=Feedback-ID: From: Date: Message-ID: Cc: To: Content-Transfer-Encoding:
- MIME-Version: Subject; q=dns/txt; s=postal-KpyQVw; t=1761382543;
- bh=7aeFWucAJ5b1P9eHusXCkS37rYsvW2nu12CFLMSqyV8=;
- b=RaGNwZb9pl/ni5gZKSfiZNlH8FAZQrvnJFLiu0paM1H/D+dSXUvCpRw5+PcHLWUzy5Ym2+qr0
- p4DETQWJ1Gp2NNEhxgJ/13FUTKPW9SfGu0OyZuaAxyz63vn32faR77phw1+fcY7NHUlioHVjZWb
- Uhe5Eb6Qfix9L7Gg8/cb/lI=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <6dc0740a095f4a38ae2427169b1d100c@realtek.com>
 
-In 2022, Authority for Info-communications Technology Industry of Brunei Darussalam (AITI) updates The Brunei Darussalam Radio Spectrum Plan. [1]
+On Wed, 22. Oct 06:21, Ping-Ke Shih wrote:
+> Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+> > @@ -5457,6 +5457,35 @@ rtw89_mac_c2h_mcc_status_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32
+> >         rtw89_complete_cond(&rtwdev->mcc.wait, cond, &data);
+> >  }
+> > 
+> > +static void
+> > +rtw89_mac_c2h_tx_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
+> > +{
+> > +       u8 sw_define, tx_status, data_txcnt;
+> > +
+> > +       if (rtwdev->chip->chip_id == RTL8922A) {
+> 
+> Add a chip_ops c2h_tx_rpt? Then, no need chip_id checking, and reduce line
+> length (normally we prefer shorter than 80 or 90 characters; over 100 characters
+> isn't a good idea).
+> 
+> Maybe this is because you want to store the status into local variables.
+> With a chip_ops, you should define another struct to store them.
+> 
+> Or, you just keep it as was, but wrap lines to be shorter, and give shorter
+> naming. For example,
+>   - rpt_v2 -> v2
+> 
+>   - data_txcnt -> txcnt
+> 
+> 		if (rtwdev->chip->chip_id == RTL8852C)
+> 			txcnt = le32_get_bits(rpt->w5,
+> 					              RTW89_C2H_MAC_TX_RPT_W5_DATA_TX_CNT_V1);
+> 		else
+> 			txcnt = le32_get_bits(rpt->w5,
+> 					              RTW89_C2H_MAC_TX_RPT_W5_DATA_TX_CNT);
+> 
 
-* 2400-2483.5 MHz
-	- 200 mW
+The chip_ops variant is more abstract (and good in such a way) but I don't
+think it's worth mangling with modifying struct chip_ops of each chip and
+adding new structs as we probably won't need to scale or expand
+rtw89_mac_c2h_tx_rpt() further unless some another V3 format is supported.
+Also other mac C2H functions tend to check chip_id in place if they need.
 
-* 5150-5350 MHz
-	- 1000 mW
-	(For 5250-5.350 MHz, DFS and TPC are required)
+I'll try to make the lines shorter - the longest one will be 86 symbols.
 
-* 5470-5725 MHz
-	- 1000 mW
-	- DFS
-	- TPC
-
-* 5725-5850 MHz
-	- 4000 mW
-
-Also, add regulatory info for WiGig/60 GHz
-* 57000-66000 MHz
-	- 10 W / 10000 mW
-
-Note: According to the Telecommunications (Radio-communication) Regulations, 2013 of the Telecommunications Order, 2001 (S 38/2001), "non-localised use" refers to the operations of specified radio-communication equipment or network at a specific frequency or in any specified frequency within the whole of Brunei Darussalam. [2]
-
-[1] https://aiti.gov.bn/media/planjc1p/bd-radio-spectrum-plan-2019.pdf
-[2] https://www.agc.gov.bn/AGC%20Images/LAWS/Gazette_PDF/2013/EN/s086.pdf
-
-Signed-off-by: Hafiz Zafran <hfzz7@duck.com>
----
- db.txt | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/db.txt b/db.txt
-index 1d17271..8e5cbb5 100644
---- a/db.txt
-+++ b/db.txt
-@@ -326,11 +326,15 @@ country BM: DFS-FCC
- 	(5490 - 5730 @ 160), (24), DFS
- 	(5735 - 5835 @ 80), (30)
- 
--country BN: DFS-JP
--	(2402 - 2482 @ 40), (20)
--	(5170 - 5250 @ 80), (20), AUTO-BW
--	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
--	(5735 - 5835 @ 80), (20)
-+# https://aiti.gov.bn/media/planjc1p/bd-radio-spectrum-plan-2019.pdf
-+# Section 7.5, Page 244-251
-+country BN: DFS-FCC
-+	(2400 - 2483.5 @ 40), (200 mW)
-+	(5150 - 5250 @ 80), (1000 mW), AUTO-BW
-+	(5250 - 5350 @ 80), (1000 mW), DFS, AUTO-BW	
-+	(5470 - 5730 @ 160), (1000 mW), DFS
-+	(5725 - 5850 @ 80), (4000 mW), AUTO-BW
-+	(57000 - 66000 @ 2160), (10000 mW)
- 
- country BO: DFS-JP
- 	(2402 - 2482 @ 40), (20)
--- 
-2.51.1
-
+> 
+> > +               const struct rtw89_c2h_mac_tx_rpt_v2 *rpt_v2;
+> > +
+> > +               rpt_v2 = (const struct rtw89_c2h_mac_tx_rpt_v2 *)c2h->data;
+> > +               sw_define = le32_get_bits(rpt_v2->w12, RTW89_C2H_MAC_TX_RPT_W12_SW_DEFINE_V2);
+> > +               tx_status = le32_get_bits(rpt_v2->w12, RTW89_C2H_MAC_TX_RPT_W12_TX_STATE_V2);
+> > +               data_txcnt = le32_get_bits(rpt_v2->w14, RTW89_C2H_MAC_TX_RPT_W14_DATA_TX_CNT_V2);
+> > +       } else {
+> > +               const struct rtw89_c2h_mac_tx_rpt *rpt;
+> > +
+> > +               rpt = (const struct rtw89_c2h_mac_tx_rpt *)c2h->data;
+> > +               sw_define = le32_get_bits(rpt->w2, RTW89_C2H_MAC_TX_RPT_W2_SW_DEFINE);
+> > +               tx_status = le32_get_bits(rpt->w2, RTW89_C2H_MAC_TX_RPT_W2_TX_STATE);
+> > +               if (rtwdev->chip->chip_id == RTL8852C)
+> > +                       data_txcnt = le32_get_bits(rpt->w5, RTW89_C2H_MAC_TX_RPT_W5_DATA_TX_CNT_V1);
+> > +               else
+> > +                       data_txcnt = le32_get_bits(rpt->w5, RTW89_C2H_MAC_TX_RPT_W5_DATA_TX_CNT);
+> > +       }
+> > +
+> > +       rtw89_debug(rtwdev, RTW89_DBG_TXRX,
+> > +                   "C2H TX RPT: sn %d, tx_status %d, data_txcnt %d\n",
+> > +                   sw_define, tx_status, data_txcnt);
+> > +}
+> > +
+> >  static void
+> >  rtw89_mac_c2h_mrc_tsf_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
+> >  {
+> 
+> [...]
+> 
 
