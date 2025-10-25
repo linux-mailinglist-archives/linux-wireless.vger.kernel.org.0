@@ -1,56 +1,58 @@
-Return-Path: <linux-wireless+bounces-28255-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28256-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25143C09758
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 18:27:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44AAC097DF
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 18:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A19A03AEAB4
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 16:22:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD4961A6713B
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 16:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201D730C60C;
-	Sat, 25 Oct 2025 16:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FC73093C4;
+	Sat, 25 Oct 2025 16:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uDvbFg6k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fsM6OrVC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6F03090F7;
-	Sat, 25 Oct 2025 16:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E763043D4;
+	Sat, 25 Oct 2025 16:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761409129; cv=none; b=jqwj1bavP6nmTImPPWnL4qYDOnC4fodOtCxd+t4bhH6vRTCB2K7CPpNsOJyEXvhZJrw+tesYxsg8B6LoKdiNlXyNoUFeWSkkfS18hq8FDTYr3oXHkCsL2OOcpcSK1VNPXnoGcnKthM90Sq0n5bT377aHgOvTgzXV2kNw4BBC9L8=
+	t=1761409134; cv=none; b=PdvU8QpaIIriFVuAm6aTo6WWu+e77VQMXm77jae1nulEJZQ9W02eUNGI66xKNj91r40bRGDgEQ77qeio7Px2nqHA9Mcm4E0LNQS8aAP3tsbgYCCB/C42uZ4OsXmgRN/OZZCFodMa4pSImBveex61DM3pgx526alMcX1RtxhTuCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761409129; c=relaxed/simple;
-	bh=eZtBbOBL0b4kmGXZubuxk4FnOOlr3qqqWwl+rHIVSro=;
+	s=arc-20240116; t=1761409134; c=relaxed/simple;
+	bh=YHIXX4TJphinosFFaiwJz8/1JzRqAdezGn42xVWf6/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b7zKYrLM0si9oOIz4++F2kTJtm3zkM14kQpHeZUb4wpr+WS4oTAksEWKYraAbnrDtqialg0SHcsgPtbCuhSdsr7fj7/fuRucHG7HWWO+/xvQS3MjQevC/DukpEFlI2zCiYO10vPFtw8jfARJcyhqIYcRZPrnPp8z7Ene3vYR06I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uDvbFg6k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3E9C4CEF5;
-	Sat, 25 Oct 2025 16:18:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BHxPwWtBmh0MVplfyQ49EKruos6pTBaR17OIlM+KnXTepLS/YHlT510PIB6SlWf+1Op6N1jdJGxqHRzs9G/uNBAVNdmKvkhevDuDtXgGOxqJasNlYzIFTbL4wJXWy/TEIv/m0iiakoBpcFgUH4UqIjsnB90El+U2X32QTRX1usw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fsM6OrVC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B940C4CEF5;
+	Sat, 25 Oct 2025 16:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761409128;
-	bh=eZtBbOBL0b4kmGXZubuxk4FnOOlr3qqqWwl+rHIVSro=;
+	s=k20201202; t=1761409134;
+	bh=YHIXX4TJphinosFFaiwJz8/1JzRqAdezGn42xVWf6/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDvbFg6kj/dEgBVtdECVcBJlj1aZgL1NDSfj2VU8aimp1Ik42GU9p2ylg+uFvPaGA
-	 GHZAx/64OrfpbTKZYbG5qlj5CMpnE1/6v5s1UKHm7C6eWMz9RFl9l52TYwRsLuVg7q
-	 0rsjtRAGbvIpcmC3luGgrhXOoh9g3BZ6BycmImfA0HmRjVAJBHQKDe+GEIG5YJh2rd
-	 jfxrLxsPyk4CLcwkvlLSN0C8gt8bmogtZSCJJzmQT8vnFUlESYoVWbVkSKUrdfMP+l
-	 1X0YlRhwtqd2fF+A/8YnRgv0ravhhOwBBAo10D1PTiwEAZ1CV6JZ6Oym97Gqu8b1Pg
-	 9A8zhNjhQ4BUQ==
+	b=fsM6OrVCLc9lqirbcguIEyuyHw+QUCB6zIdVndFWaHifDmMeUEvCGqM+qPllyUu/4
+	 nvVT7xJgWYNgivcx2xjTZT8SXM+E6x8ixsJxKjfgNBnROa8ddTXrpoDbAadc4tgtEm
+	 shgvSp7GP7l0lI6RCpwOGvBUV/soy0vSCHTHZj3GalZLppiSE+7bz9lSGpaDfWzyKa
+	 gyHififw9DSVZ6i+QqU4+SCnM5VbqbZgw0FZ1vA56d8YRKKl81BkkDHY87v+vS5tKn
+	 Nfp0STBuv/wxus6fRQ3/G/3kjvJ4y7i/OsDT40XJKXH6emOcCTkcapCk91+qCLRqWu
+	 WvBo+mJlHDGYA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Kuan-Chung Chen <damon.chen@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17-6.12] wifi: rtw89: fix BSSID comparison for non-transmitted BSSID
-Date: Sat, 25 Oct 2025 11:57:22 -0400
-Message-ID: <20251025160905.3857885-211-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.17-6.1] wifi: mac80211: Fix HE capabilities element check
+Date: Sat, 25 Oct 2025 11:57:24 -0400
+Message-ID: <20251025160905.3857885-213-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -66,16 +68,17 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit c4c16c88e78417424b4e3f33177e84baf0bc9a99 ]
+[ Upstream commit ea928544f3215fdeac24d66bef85e10bb638b8c1 ]
 
-For non-transmitted connections, beacons are received from the
-transmitted BSSID. Fix this to avoid missing beacon statistics.
+The element data length check did not account for the extra
+octet used for the extension ID. Fix it.
 
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250811123950.15697-1-pkshih@realtek.com
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250907115109.8da0012e2286.I8c0c69a0011f7153c13b365b14dfef48cfe7c3e3@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
@@ -83,103 +86,85 @@ LLM Generated explanations, may be completely bogus:
 
 YES
 
-Explanation
+- What the patch changes
+  - Tightens the HE capabilities IE length check in
+    `ieee80211_max_rx_chains()` to account for the one-byte Extension
+    ID:
+    - Before: `if (!he_cap_elem || he_cap_elem->datalen <
+      sizeof(*he_cap)) return chains;`
+    - After:  `if (!he_cap_elem || he_cap_elem->datalen <
+      sizeof(*he_cap) + 1) return chains;`
+  - Location: `net/mac80211/mlme.c` in `ieee80211_max_rx_chains()`
+    around the HE path (`cfg80211_find_ext_elem(...)`), see current tree
+    at `net/mac80211/mlme.c:5741` and the nearby “skip one byte
+    ext_tag_id” comment at `net/mac80211/mlme.c:5744`.
 
-- What it fixes
-  - In rtw89, beacon frames are filtered per-VIF by comparing the frame
-    BSSID (`iter_data->bssid`) to `bss_conf->bssid`. Today that check is
-    unconditional, so when associated to a nontransmitted BSSID in an
-    MBSSID set, beacons sent by the transmitter BSSID never match and
-    the driver drops out before updating beacon-related stats. See the
-    unconditional check at
-    drivers/net/wireless/realtek/rtw89/core.c:2276.
-  - As a result, the driver silently misses key updates triggered only
-    for beacons: TSF sync, RSSI EWMA for beacons, beacon bandwidth
-    index, beacon-rate sampling and the beacon counter. These are all
-    under the beacon-handling block starting at
-    drivers/net/wireless/realtek/rtw89/core.c:2284 (e.g.,
-    `rtw89_vif_sync_bcn_tsf`, `rtw89_fw_h2c_rssi_offload`,
-    `ewma_rssi_add`, `pkt_stat->beacon_nr++`).
-  - The commit teaches the driver to, for beacon frames only, compare
-    against `bss_conf->transmitter_bssid` when
-    `bss_conf->nontransmitted` is true; otherwise fall back to
-    `bss_conf->bssid`. This matches 802.11 MBSSID behavior where the
-    TxBSSID transmits the beacon for nontransmitted profiles. The new
-    `target_bssid` logic is inserted next to `const u8 *bssid =
-    iter_data->bssid;` at drivers/net/wireless/realtek/rtw89/core.c:2254
-    and replaces the unconditional comparison at
-    drivers/net/wireless/realtek/rtw89/core.c:2276.
+- Why this is correct
+  - For extended IEs, `cfg80211_find_ext_elem()` matches the extended
+    EID at offset 0 of the element data (so `data[0]` is the Extension
+    ID), see `include/net/cfg80211.h:7282`. The returned `struct
+    element` layout is `id`, `datalen`, `data[]` (see
+    `include/linux/ieee80211.h:5220`), and for an extended IE the first
+    byte of `data[]` is the ext ID.
+  - The code immediately “skips” this byte (`he_cap = (void
+    *)(he_cap_elem->data + 1)`), so the initial length check must
+    require at least `1 + sizeof(struct ieee80211_he_cap_elem)` to
+    ensure the entire HE capability fixed fields are present. The
+    original check only required `sizeof(*he_cap)`, which is off by one
+    and inconsistent with the subsequent “invalid HE IE” check that
+    already uses `1 + mcs_nss_size + sizeof(*he_cap)` at
+    `net/mac80211/mlme.c:5749`.
+  - Consistency with other callers: in `net/wireless/nl80211.c`, the HE
+    capability parsing uses the correct “+1” rule (`cap->datalen >=
+    sizeof(*params->he_cap) + 1`) before skipping the ext ID
+    (`net/wireless/nl80211.c:6402-6408`). This patch aligns mac80211
+    with that established pattern.
 
-- Why it’s correct
-  - mac80211 already models MBSSID with `bss_conf->nontransmitted` and
-    `bss_conf->transmitter_bssid` (include/net/mac80211.h:812,
-    include/net/mac80211.h:814). Using the transmitter BSSID only for
-    beacons when on a nontransmitted BSSID is the correct interpretation
-    of the spec and consistent with how other drivers behave.
-  - Cross-driver precedent: ath12k selects `transmitter_bssid` when
-    `nontransmitted` for station links
-    (drivers/net/wireless/ath/ath12k/mac.c:633), reinforcing that this
-    pattern is standard.
+- Bug impact and risk
+  - Impact: Without the “+1”, the parser may treat a truncated HE
+    capability (exactly `sizeof(*he_cap)` bytes total, including the
+    extension ID) as if it had the full fixed portion after skipping the
+    ext ID. This can lead to mis-parse or at minimum unnecessary
+    processing of invalid data before bailing at the later check. It
+    risks reading fields relative to the HE cap beyond the element’s
+    logical bounds, even if still within the overall IE buffer.
+  - User-visible effect: `ieee80211_max_rx_chains()` is used to derive
+    `link->needed_rx_chains` during association/connection
+    (`net/mac80211/mlme.c:6103`). Correctly rejecting invalid/truncated
+    HE IEs avoids computing chain counts from malformed data, preventing
+    subtle misconfiguration and ensuring safe fallback to HT/VHT-derived
+    limits.
+  - Scope and risk: One-line guard fix in mac80211 parsing path. No
+    API/ABI changes, no architectural refactoring. Behavior for valid
+    IEs is unchanged; malformed IEs are handled more robustly.
 
-- Scope and risk
-  - Change is small and self-contained: one extra `const u8
-    *target_bssid` and a conditional selection for the comparison in a
-    single function (`rtw89_vif_rx_stats_iter`).
-  - It only affects handling of beacon frames and only when
-    `nontransmitted` is true. All other frames and the general
-    comparison path remain unchanged, minimizing regression risk.
-  - No API/ABI or architectural changes; it uses existing mac80211
-    fields present in 6.17 (include/net/mac80211.h:812,
-    include/net/mac80211.h:814).
+- Stable backport suitability
+  - Fixes a real parsing bug with potential robustness/safety
+    implications.
+  - Minimal, well-scoped change with very low regression risk.
+  - Aligns mac80211 with correct extended IE handling used elsewhere in
+    the tree, improving consistency.
+  - Touches a contained part of mac80211 and does not introduce new
+    features or architectural changes.
 
-- User impact
-  - Without this, associated stations on nontransmitted BSSIDs miss
-    beacon-derived stats (TSF sync, RSSI EWMA, beacon counters/rates),
-    which can degrade link monitoring, roaming decisions, and power
-    behavior.
-  - With this fix, rtw89 correctly accounts beacons for such
-    connections, restoring expected functionality.
+Given these points, this is a textbook stable backport candidate.
 
-- Stable backport criteria
-  - Important bugfix with user-visible impact: YES.
-  - Small and contained change: YES (one function, a few lines).
-  - No new features or interface changes: YES.
-  - Minimal regression risk: YES.
-  - Confined to a driver subsystem: YES (rtw89 only).
-  - Explicit stable tag not present, but the nature of the fix fits
-    stable policy.
+ net/mac80211/mlme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Given the above, this is a good candidate for backporting to stable
-trees that have rtw89 and MBSSID support (e.g., 6.17.x and other
-maintained series with these fields and code paths).
-
- drivers/net/wireless/realtek/rtw89/core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 5dd05b296e71c..0f7a467671ca8 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2246,6 +2246,7 @@ static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
- 	struct ieee80211_bss_conf *bss_conf;
- 	struct rtw89_vif_link *rtwvif_link;
- 	const u8 *bssid = iter_data->bssid;
-+	const u8 *target_bssid;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 0f2d2fec05426..d0af917a40b34 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5733,7 +5733,7 @@ static u8 ieee80211_max_rx_chains(struct ieee80211_link_data *link,
+ 	he_cap_elem = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_CAPABILITY,
+ 					     ies->data, ies->len);
  
- 	if (rtwdev->scanning &&
- 	    (ieee80211_is_beacon(hdr->frame_control) ||
-@@ -2267,7 +2268,10 @@ static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
- 		goto out;
- 	}
+-	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap))
++	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap) + 1)
+ 		return chains;
  
--	if (!ether_addr_equal(bss_conf->bssid, bssid))
-+	target_bssid = ieee80211_is_beacon(hdr->frame_control) &&
-+		       bss_conf->nontransmitted ?
-+		       bss_conf->transmitter_bssid : bss_conf->bssid;
-+	if (!ether_addr_equal(target_bssid, bssid))
- 		goto out;
- 
- 	if (is_mld) {
+ 	/* skip one byte ext_tag_id */
 -- 
 2.51.0
 
