@@ -1,76 +1,87 @@
-Return-Path: <linux-wireless+bounces-28271-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28272-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901C1C09E68
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 20:35:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC30C09E6B
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 20:36:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6D91434CC77
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 18:35:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB6EB3B76CC
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 18:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80662301022;
-	Sat, 25 Oct 2025 18:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6114B301035;
+	Sat, 25 Oct 2025 18:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="FABmC0It"
-X-Original-To: Linux-wireless@vger.kernel.org
-Received: from mail-07.mail-europe.com (mail-07.mail-europe.com [188.165.51.139])
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="mAg6/cV5"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F6618E1F
-	for <Linux-wireless@vger.kernel.org>; Sat, 25 Oct 2025 18:35:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C448B18E1F;
+	Sat, 25 Oct 2025 18:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761417351; cv=none; b=YLTLZy9zsus9EtEZgZzHQ7k2vNiXP3vceiXBhltqmFJqPjdhV5/pWdmgXMdu9yvjtIA5KhTw+o9nf58DxiCOngxnzQiVZMMaGQr48qNNXqnXUYxWYy3DKsKwg7HF1E7YUFXi6OOTD9OvZ0rFUrC4EBWn37vAlnam/Pzvo7V1GnI=
+	t=1761417376; cv=none; b=smHt/fMr+/HdVMnu96NEftM/f4VTNybyquKV+SySjE0eexpqIwzluakiAGF3Dn/6dTS/SsW2IXfGJW90SFxHt//jpEKNpTHqeiA6iY6gF3pNQMs/AgR4vPJUSTaZkkxz1bebTS1c7eLQMwnsnkVJpwg4wr4X/urOxQsgIZW1r/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761417351; c=relaxed/simple;
-	bh=hrls5/Ad1iVeQotMvLsY5g1yyc4AAKD7ajSaBxJVjT0=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=UC+EmaIq05z8jT7N6NDUeQbfGmg9o1IlsK7CJqJ+gbSVPF3VDCKX1cNCfrP3rqlkKGwsnotLYfwwe5/ZpAEeTpB3HffUqEYCY551qSP/RnoU8qWM1fIGCl8Ci4iaSOzbVuUF/7wHq3xV+1YTwx7dHFKlVEyodkRDkj9rAqmRWMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=FABmC0It; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1761417338; x=1761676538;
-	bh=hrls5/Ad1iVeQotMvLsY5g1yyc4AAKD7ajSaBxJVjT0=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=FABmC0ItsHOoph/HwwXSWWEkQY+oN7zE1EITRM18FqkbP6emDdzC5pMMzJsqXN0c7
-	 UohlgqezZ6PXfVg8VbehMM17pgaOIoq9QfXZJdfDl2C/7TbPLxP+2KPhIAEENfcri9
-	 Dk3IxKD83proUlUltC/X+a6KCuRQZBOcouUFa4t1/rQeDxzM5bDJ8XX1PTJk3QTokj
-	 Cd8npYzMEn3dynAzN0g+4KBpan/H+fPXGBCtves1snFe3VdBt+zZY0tOXmmWTiGENC
-	 1EZDy59HpkkKu/YuC/4vfARoyrn6ldCNT0y2N6ea4MfNq4zat03s5svky17nMjE9K1
-	 PAHIOp94RJ7wg==
-Date: Sat, 25 Oct 2025 18:35:33 +0000
-To: wojcikmarcin49@gmail.com
-From: Nate S <gitnux@pm.me>
-Cc: Linux-wireless@vger.kernel.org
-Subject: No networks available after suspend on Debian 13
-Message-ID: <880cd1a0-647f-4039-9edc-bd76576b5a74@pm.me>
-Feedback-ID: 91264322:user:proton
-X-Pm-Message-ID: 4e47c6a4f1c79a13f3aeb1c308dbbbd16671ae71
+	s=arc-20240116; t=1761417376; c=relaxed/simple;
+	bh=KODcySrExIg6wn2VGbfIskPdYJpjyaZmt8a+ivqWlFs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=AMiFJ3sAZeFl6EI74IpzIFf6gis9tSt0oixaKRr4S+jiHm7TOEcF0FGcrhkh2UmFX+LQRSJ501oCuAloSwEmXfflGeY5JDWEYPj5ybvo5CLbB5Aq4O/c9FnAErjxQ8gB3uPMN6tPDMWrFZONUrnziWYdSpeP9orc5+yuWBjF50Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=mAg6/cV5; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=KODcySrExIg6wn2VGbfIskPdYJpjyaZmt8a+ivqWlFs=;
+	t=1761417374; x=1762626974; b=mAg6/cV5VaAtt+euND5YrR05qJoILWMNkYoITYfkZWQ2ZqZ
+	na866l+lrjVHGCSfQXwsiJPMGsC3eRhSoa8hhbBk8I/CXLLlY0trv4RpDwTuLjidVpcGVuMsnLy/2
+	VViCiAwNHjzMOIh07grHx9205Ftfanbf5wWh087z/qA5C2YKaBpt4oNHrFN08G1ohSEHABN10s09M
+	aahasaXaosLnsau7HbNTKHLxmXCSryajvVxxl4iQhUvOMP8pfUZ9PNZjb6cq8IXdM982ATHAtcKrt
+	r9fp2XA4D/ALRSzf3CTa/M9tsKAGN8lcyi9DepGM6mcJqKrmOad5PPSH4TRHMTUA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vCj7V-00000005omn-3R2n;
+	Sat, 25 Oct 2025 20:36:06 +0200
+Message-ID: <72966d6ccecfcf51f741ca8243e446a0aaa9b5c1.camel@sipsolutions.net>
+Subject: Re: [PATCH AUTOSEL 6.17-6.12] wifi: mac80211: support parsing S1G
+ TIM PVB
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev, 
+	stable@vger.kernel.org
+Cc: Lachlan Hodges <lachlan.hodges@morsemicro.com>, Arien Judge	
+ <arien.judge@morsemicro.com>, chunkeey@googlemail.com, pkshih@realtek.com, 
+	alexander.deucher@amd.com, alexandre.f.demers@gmail.com,
+ tglx@linutronix.de, 	namcao@linutronix.de, bhelgaas@google.com,
+ linux-wireless@vger.kernel.org
+Date: Sat, 25 Oct 2025 20:36:04 +0200
+In-Reply-To: <20251025160905.3857885-99-sashal@kernel.org>
+References: <20251025160905.3857885-1-sashal@kernel.org>
+	 <20251025160905.3857885-99-sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-I was asked to reply after this fix:
+On Sat, 2025-10-25 at 11:55 -0400, Sasha Levin wrote:
+>=20
+> LLM Generated explanations, may be completely bogus:
+>=20
+> YES
+>=20
+> - Fixes a real functional gap for S1G (802.11ah):
 
-`echo 0 | dd "of=3D/sys/bus/pci/devices/0000:01:00.0/d3cold_allowed"`
+I guess, but ... there's no real driver for this, only hwsim, so there
+isn't really all that much point.
 
----
-
-6.12.48+deb13-amd64
-
-DMI: HP HP Laptop 15-fd0xxx/8DDB, BIOS F.19 05/28/2025
-
-
-
-
-
-
+johannes
 
