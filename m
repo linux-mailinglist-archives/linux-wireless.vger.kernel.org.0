@@ -1,58 +1,57 @@
-Return-Path: <linux-wireless+bounces-28256-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28257-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44AAC097DF
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 18:31:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8581C0992C
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 18:37:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD4961A6713B
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 16:23:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E55A74EE8DC
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 16:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FC73093C4;
-	Sat, 25 Oct 2025 16:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2332330ACE3;
+	Sat, 25 Oct 2025 16:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fsM6OrVC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVSdwaj5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E763043D4;
-	Sat, 25 Oct 2025 16:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4DB2FC893;
+	Sat, 25 Oct 2025 16:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761409134; cv=none; b=PdvU8QpaIIriFVuAm6aTo6WWu+e77VQMXm77jae1nulEJZQ9W02eUNGI66xKNj91r40bRGDgEQ77qeio7Px2nqHA9Mcm4E0LNQS8aAP3tsbgYCCB/C42uZ4OsXmgRN/OZZCFodMa4pSImBveex61DM3pgx526alMcX1RtxhTuCA=
+	t=1761409193; cv=none; b=pwEIhbDKNycxB0F5jGLQyYJsv3iFIpPCuKoeNYAihG3jNjR4Q/3aauxQoBm+ivYxaM87KZhWBbyFIydHpnSjIf8RJd8kjxb/35gsPaVJCo2+U4PuarWPrrT4RUf6neiMRoNaGTVRSN4P1QB5elsWH9nPTfL33ZmZi61tTTKfJrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761409134; c=relaxed/simple;
-	bh=YHIXX4TJphinosFFaiwJz8/1JzRqAdezGn42xVWf6/Y=;
+	s=arc-20240116; t=1761409193; c=relaxed/simple;
+	bh=DSgj7znKqFNXPi5aWGyyUsGmRujf5oyPa4uzTCW+9TU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BHxPwWtBmh0MVplfyQ49EKruos6pTBaR17OIlM+KnXTepLS/YHlT510PIB6SlWf+1Op6N1jdJGxqHRzs9G/uNBAVNdmKvkhevDuDtXgGOxqJasNlYzIFTbL4wJXWy/TEIv/m0iiakoBpcFgUH4UqIjsnB90El+U2X32QTRX1usw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fsM6OrVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B940C4CEF5;
-	Sat, 25 Oct 2025 16:18:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tryDbXJfYRbzaXTomf6vh2i4y7mFirsoKQ6kNTow5yb/7d/PLWL1oxravK3YUYmxfm8oZMMPgkwNCGKHYYgk6ThCaTukL6/cpcgFbFZQl7AjJf5Wt1B7r0LMFL4kY51tOsrLgnamO0DJLh9GXmMJ4Eergowmn1sv1dHd66k7GHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVSdwaj5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050F2C113D0;
+	Sat, 25 Oct 2025 16:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761409134;
-	bh=YHIXX4TJphinosFFaiwJz8/1JzRqAdezGn42xVWf6/Y=;
+	s=k20201202; t=1761409192;
+	bh=DSgj7znKqFNXPi5aWGyyUsGmRujf5oyPa4uzTCW+9TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fsM6OrVCLc9lqirbcguIEyuyHw+QUCB6zIdVndFWaHifDmMeUEvCGqM+qPllyUu/4
-	 nvVT7xJgWYNgivcx2xjTZT8SXM+E6x8ixsJxKjfgNBnROa8ddTXrpoDbAadc4tgtEm
-	 shgvSp7GP7l0lI6RCpwOGvBUV/soy0vSCHTHZj3GalZLppiSE+7bz9lSGpaDfWzyKa
-	 gyHififw9DSVZ6i+QqU4+SCnM5VbqbZgw0FZ1vA56d8YRKKl81BkkDHY87v+vS5tKn
-	 Nfp0STBuv/wxus6fRQ3/G/3kjvJ4y7i/OsDT40XJKXH6emOcCTkcapCk91+qCLRqWu
-	 WvBo+mJlHDGYA==
+	b=jVSdwaj5YvO6tLCmEKJVuVbkxXsdEAAupFBPMLv8OhXLV9CvzEqjbg28jBXeh0dYj
+	 2P7q6f9LC/TrnhxYGoDWsklnswnR12SNWWTN2XkyZ49Zf86vkc8MbL3Q1Tq1oajCWs
+	 IlbjMQXp1Otb9jOH8HIAJ6BJ4S/BHqLynCVBOo+Z+8M8T0gx0tShApXMKnGjohG6NE
+	 e3FfZ61+dpx/ZmsjUdmHenCzZdcAofZbl8NvxHH6Q2Xj6JEYB/+9yb1TvsQe9c314Z
+	 U+UM9J9LlQi2WeGiXQaUpGwFSRzJBh1AQUy4LMOKBySr2yQJSfQ/M91twKtbQ9eT0D
+	 9TRWdCwN2+iUw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17-6.1] wifi: mac80211: Fix HE capabilities element check
-Date: Sat, 25 Oct 2025 11:57:24 -0400
-Message-ID: <20251025160905.3857885-213-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.17] wifi: mac80211: count reg connection element in the size
+Date: Sat, 25 Oct 2025 11:57:48 -0400
+Message-ID: <20251025160905.3857885-237-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -68,16 +67,16 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit ea928544f3215fdeac24d66bef85e10bb638b8c1 ]
+[ Upstream commit 1373f94148a5adac2f42c8ba9771105624fe4af0 ]
 
-The element data length check did not account for the extra
-octet used for the extension ID. Fix it.
+We currently don't count the reg connection length in the per-link
+capability length. Fix it.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250907115109.8da0012e2286.I8c0c69a0011f7153c13b365b14dfef48cfe7c3e3@changeid
+Link: https://patch.msgid.link/20250826202512.b14fc82f736b.I03442382e8a07f6f9836bcdac2e22ce8afbe6a21@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -86,85 +85,77 @@ LLM Generated explanations, may be completely bogus:
 
 YES
 
-- What the patch changes
-  - Tightens the HE capabilities IE length check in
-    `ieee80211_max_rx_chains()` to account for the one-byte Extension
-    ID:
-    - Before: `if (!he_cap_elem || he_cap_elem->datalen <
-      sizeof(*he_cap)) return chains;`
-    - After:  `if (!he_cap_elem || he_cap_elem->datalen <
-      sizeof(*he_cap) + 1) return chains;`
-  - Location: `net/mac80211/mlme.c` in `ieee80211_max_rx_chains()`
-    around the HE path (`cfg80211_find_ext_elem(...)`), see current tree
-    at `net/mac80211/mlme.c:5741` and the nearby “skip one byte
-    ext_tag_id” comment at `net/mac80211/mlme.c:5744`.
+- What the change fixes: The size estimator for per-link capability
+  elements in association/ML frames failed to account for the 6 GHz
+  “regulatory connectivity” element. The patch adds 4 bytes for this
+  element when operating on 6 GHz, ensuring the pre-allocation size
+  matches what is actually written.
+  - Change site: net/mac80211/mlme.c:2125 adds the missing size
+    accounting in `ieee80211_link_common_elems_size(...)`, specifically:
+    - Adds `size += 2 + 1 + sizeof(struct ieee80211_he_6ghz_capa);` and
+      now also
+    - Adds `size += 4; /* reg connection */` for 6 GHz
+      (net/mac80211/mlme.c:2125–2129).
+- Why it matters: The element is always emitted for non-AP STAs on 6 GHz
+  and has a fixed size of 4 bytes, so not counting it underestimates the
+  SKB size and can lead to tailroom underruns.
+  - The element writer `ieee80211_put_reg_conn(...)` emits exactly 4
+    bytes (Extension IE header + ext ID + 1-octet value):
+    net/mac80211/util.c:2569–2573.
+  - This writer is called for 6 GHz links in
+    `ieee80211_add_link_elems(...)`: net/mac80211/mlme.c:1876–1880.
+- Where the size is used: The total buffer for management frames is
+  precomputed and passed to `alloc_skb(size, GFP_KERNEL)`.
+  Underestimation here risks overrun when later appending IEs.
+  - Association request path: `ieee80211_send_assoc(...)` sums
+    `ieee80211_link_common_elems_size(...)` into `size` before
+    `alloc_skb(size, GFP_KERNEL)` (net/mac80211/mlme.c:2167–2184,
+    2217–2219).
+  - ML reconfiguration frames also use this helper for their per-link
+    STA profiles (net/mac80211/mlme.c:10481–10485).
+- User impact: On 6 GHz connections (HE/EHT, especially with MLO), the
+  missing 4 bytes can cause:
+  - Buffer tailroom underrun during frame construction (possible
+    KASAN/BUG/WARN or memory corruption).
+  - Malformed frames leading to association or ML reconfiguration
+    failures.
+- Scope and risk:
+  - Small, self-contained fix in mac80211 mgmt path; no API/ABI change;
+    no feature addition.
+  - Only affects 6 GHz cases where the element is actually sent; over-
+    allocation by 4 bytes in other contexts does not occur.
+  - Very low regression risk; it corrects a precise accounting bug to
+    match already-emitted bytes.
 
-- Why this is correct
-  - For extended IEs, `cfg80211_find_ext_elem()` matches the extended
-    EID at offset 0 of the element data (so `data[0]` is the Extension
-    ID), see `include/net/cfg80211.h:7282`. The returned `struct
-    element` layout is `id`, `datalen`, `data[]` (see
-    `include/linux/ieee80211.h:5220`), and for an extended IE the first
-    byte of `data[]` is the ext ID.
-  - The code immediately “skips” this byte (`he_cap = (void
-    *)(he_cap_elem->data + 1)`), so the initial length check must
-    require at least `1 + sizeof(struct ieee80211_he_cap_elem)` to
-    ensure the entire HE capability fixed fields are present. The
-    original check only required `sizeof(*he_cap)`, which is off by one
-    and inconsistent with the subsequent “invalid HE IE” check that
-    already uses `1 + mcs_nss_size + sizeof(*he_cap)` at
-    `net/mac80211/mlme.c:5749`.
-  - Consistency with other callers: in `net/wireless/nl80211.c`, the HE
-    capability parsing uses the correct “+1” rule (`cap->datalen >=
-    sizeof(*params->he_cap) + 1`) before skipping the ext ID
-    (`net/wireless/nl80211.c:6402-6408`). This patch aligns mac80211
-    with that established pattern.
+Stable backport criteria:
+- Fixes a real bug that can affect users on 6 GHz.
+- Minimal, targeted change; no architectural changes.
+- Low risk of regressions; strictly improves size correctness.
 
-- Bug impact and risk
-  - Impact: Without the “+1”, the parser may treat a truncated HE
-    capability (exactly `sizeof(*he_cap)` bytes total, including the
-    extension ID) as if it had the full fixed portion after skipping the
-    ext ID. This can lead to mis-parse or at minimum unnecessary
-    processing of invalid data before bailing at the later check. It
-    risks reading fields relative to the HE cap beyond the element’s
-    logical bounds, even if still within the overall IE buffer.
-  - User-visible effect: `ieee80211_max_rx_chains()` is used to derive
-    `link->needed_rx_chains` during association/connection
-    (`net/mac80211/mlme.c:6103`). Correctly rejecting invalid/truncated
-    HE IEs avoids computing chain counts from malformed data, preventing
-    subtle misconfiguration and ensuring safe fallback to HT/VHT-derived
-    limits.
-  - Scope and risk: One-line guard fix in mac80211 parsing path. No
-    API/ABI changes, no architectural refactoring. Behavior for valid
-    IEs is unchanged; malformed IEs are handled more robustly.
+Conclusion: This should be backported to all stable kernels that include
+`ieee80211_put_reg_conn()` and use `ieee80211_link_common_elems_size()`
+for SKB sizing in association/ML frames.
 
-- Stable backport suitability
-  - Fixes a real parsing bug with potential robustness/safety
-    implications.
-  - Minimal, well-scoped change with very low regression risk.
-  - Aligns mac80211 with correct extended IE handling used elsewhere in
-    the tree, improving consistency.
-  - Touches a contained part of mac80211 and does not introduce new
-    features or architectural changes.
-
-Given these points, this is a textbook stable backport candidate.
-
- net/mac80211/mlme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/mlme.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 0f2d2fec05426..d0af917a40b34 100644
+index dd650a127a317..f38881b927d17 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -5733,7 +5733,7 @@ static u8 ieee80211_max_rx_chains(struct ieee80211_link_data *link,
- 	he_cap_elem = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_CAPABILITY,
- 					     ies->data, ies->len);
+@@ -2112,8 +2112,11 @@ ieee80211_link_common_elems_size(struct ieee80211_sub_if_data *sdata,
+ 		sizeof(struct ieee80211_he_mcs_nss_supp) +
+ 		IEEE80211_HE_PPE_THRES_MAX_LEN;
  
--	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap))
-+	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap) + 1)
- 		return chains;
+-	if (sband->band == NL80211_BAND_6GHZ)
++	if (sband->band == NL80211_BAND_6GHZ) {
+ 		size += 2 + 1 + sizeof(struct ieee80211_he_6ghz_capa);
++		/* reg connection */
++		size += 4;
++	}
  
- 	/* skip one byte ext_tag_id */
+ 	size += 2 + 1 + sizeof(struct ieee80211_eht_cap_elem) +
+ 		sizeof(struct ieee80211_eht_mcs_nss_supp) +
 -- 
 2.51.0
 
