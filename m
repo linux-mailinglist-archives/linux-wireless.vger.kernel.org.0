@@ -1,122 +1,76 @@
-Return-Path: <linux-wireless+bounces-28270-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28271-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A228FC09C17
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 18:53:15 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901C1C09E68
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 20:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28EE7421665
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 16:46:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6D91434CC77
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 18:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77208306B3C;
-	Sat, 25 Oct 2025 16:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80662301022;
+	Sat, 25 Oct 2025 18:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E2bffbq4"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="FABmC0It"
+X-Original-To: Linux-wireless@vger.kernel.org
+Received: from mail-07.mail-europe.com (mail-07.mail-europe.com [188.165.51.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3850306B0C
-	for <linux-wireless@vger.kernel.org>; Sat, 25 Oct 2025 16:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F6618E1F
+	for <Linux-wireless@vger.kernel.org>; Sat, 25 Oct 2025 18:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761410434; cv=none; b=hABIpmUB4Rk6lOQslS5nDZdC6t24xiQPTPe9pJYOnqNamehEMn/Ydr1s3DMmVrRBfD89OMvvhXlHo+f1le0p0Pm3C1iGbdLUUvwgURp6uuO9cSeNu+9uYnWcyML/Xnwdb4bPJmK7sKX55IuJ9XFxRgYwij2+B98/KJcqeQarNzg=
+	t=1761417351; cv=none; b=YLTLZy9zsus9EtEZgZzHQ7k2vNiXP3vceiXBhltqmFJqPjdhV5/pWdmgXMdu9yvjtIA5KhTw+o9nf58DxiCOngxnzQiVZMMaGQr48qNNXqnXUYxWYy3DKsKwg7HF1E7YUFXi6OOTD9OvZ0rFUrC4EBWn37vAlnam/Pzvo7V1GnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761410434; c=relaxed/simple;
-	bh=142ZarbauOc/OnyndUEIR7x0gLhU0Vf39KWkHIFGmYg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtxa4WoXf6icwmdvmYZ8fVjCbXD6eBrTwXLTeKXHlFOPym/v3oejrU6HRIwGKq3I3w+4EKn7bLF5zkAkfK5I4uu7wzGx/2/qeZf2xYF7RwQllVGljm9HM6boUIyh5j6L2EKeDoEmkbeM6YGk+Flqq9SqjSAyy0v8RxgGX5jx5HM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E2bffbq4; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-89f4779fe03so75684085a.3
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Oct 2025 09:40:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761410431; x=1762015231; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EVD9Zxv6Y0ifC9xZiOG7Ki+TEfCe0ib+yy9r9fDGLQc=;
-        b=E2bffbq4Ds02AQpl5Qu4A6vUW9DDnxFSCVuvwODdRYBO87m9APxmbbdz/OMSE3eYX0
-         31KuLZR1HTiahp9XODbFezyTjr/+r0lHsBySNOlOhhLiORMTQ0wKRounf8UJdkYEIb/q
-         PI3lzI7VG55iMAWHWZ2DsgAcJap1EzIGk3zpWWqw2TKrcQTSZPseqXx6ls0jb2I9sico
-         g2wXlJcC0uCAGV+c/Y4Mt/1gP5qNHC+imvs+0X8U74QKspC9OUoCa+HOJUd9x+DZ+Frf
-         S3+mjLQI74L6MYnws9eSSQcFt3eX5FWzPDmKcbHPO+l7vdzzUp62tRJp1Km8+EMA5Pgs
-         MNKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761410431; x=1762015231;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EVD9Zxv6Y0ifC9xZiOG7Ki+TEfCe0ib+yy9r9fDGLQc=;
-        b=SSDgxO6alzNWcz4R5ciw3wkQh4tPqrTyMjAVbG9pFMQSIT/y3nJp7vkWiVoMiUU69n
-         QpFyL8ihZM0OrQugpZ59V3sgfHpnKG393BTgTXwUeAr0ztzH2H/QRNTRM5mykMUygSM3
-         LM5i/g40IJDmqh5ua6WnSRZ2dr6mn4Ww+uFpxGwtir79Md+hGJZs9xO/l/RTKmSKoJkS
-         6dVMimDfwf1YIEIWba2IeZdIKbdFVj3aXmNPZyH/qtq6IWEgoMO3bKVgEfDGvUjtblDY
-         o1Utdsh0ylg+NAQ9/Bx2w7GTZvLDoGXm+qsyt4Zyu5Y7d2XvYoEIB8dE3OklkeVb0mko
-         HcCA==
-X-Forwarded-Encrypted: i=1; AJvYcCXEimdatzWQHcxjWUbUo9LfI+yatayvYRrUsZK2AapVrQKSo6X29vR8wW0OutbjXCPpG772Hj+XsWill4fk+Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1KWrLwXcPvQp09k/Ga1Vx7Ny1dV+44NsQIKwhM4BL+twRC8SS
-	WotbqJeJsr5IqlaATyJGjue5CV54VUDYW419vyrghWG68G4UZ+l9LG1m
-X-Gm-Gg: ASbGncuus/xsrXQVQoOZe/5EiD3nt1mu92hEGxUONiOjjUEtoEnNMaYqdK6iT0hyTDe
-	Yp3FyR4y4yh4Jo+9v/W+q+T8XbdtdtY9XZELrCEkAzNq/cSAhx/OFqRvLshu5e4PBJkDagRLZe1
-	baS2xSA4tkNGnkmkMQ+ZwiVhcuCrdXWt54HKFek9IMFiN/WhvGz/uSCdMBG0d+uSC6GN16gJROB
-	8m+miL/A0xUKmar2IbqlCN0NwhM6phOy8GRGc7SFBbj3TzF/NGITSA3RBTbc/OvkUCdVpsdn0GL
-	9brGyFcwf3U8fVgKzpb+hIhp2RQslagCCnv8kY63wSbhXxciOQ3CMd58x6dMzImgCgJbSIboyjz
-	hZ+SZxDlckn7mdCXjA5lDQDw1V+2w3wBmINZ184eBJHRcu0+63+4UePB5dg1XjT0mCcuAC98+
-X-Google-Smtp-Source: AGHT+IHi0SzLVtyyhZwoQbQ1wMM4wPKEE+MJJFPaEhrXN5x+mdVgxlbnahirAfa9H7ObZoH6VLCARw==
-X-Received: by 2002:a05:620a:2a06:b0:891:e26f:512d with SMTP id af79cd13be357-891e27ea1acmr3419884985a.59.1761410431571;
-        Sat, 25 Oct 2025 09:40:31 -0700 (PDT)
-Received: from localhost ([12.22.141.131])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-89f2421f8b8sm175760385a.7.2025.10.25.09.40.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Oct 2025 09:40:31 -0700 (PDT)
-From: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: [PATCH 02/21] iwlwifi: drop unused BITS()
-Date: Sat, 25 Oct 2025 12:40:01 -0400
-Message-ID: <20251025164023.308884-3-yury.norov@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251025164023.308884-1-yury.norov@gmail.com>
-References: <20251025164023.308884-1-yury.norov@gmail.com>
+	s=arc-20240116; t=1761417351; c=relaxed/simple;
+	bh=hrls5/Ad1iVeQotMvLsY5g1yyc4AAKD7ajSaBxJVjT0=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=UC+EmaIq05z8jT7N6NDUeQbfGmg9o1IlsK7CJqJ+gbSVPF3VDCKX1cNCfrP3rqlkKGwsnotLYfwwe5/ZpAEeTpB3HffUqEYCY551qSP/RnoU8qWM1fIGCl8Ci4iaSOzbVuUF/7wHq3xV+1YTwx7dHFKlVEyodkRDkj9rAqmRWMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=FABmC0It; arc=none smtp.client-ip=188.165.51.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1761417338; x=1761676538;
+	bh=hrls5/Ad1iVeQotMvLsY5g1yyc4AAKD7ajSaBxJVjT0=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=FABmC0ItsHOoph/HwwXSWWEkQY+oN7zE1EITRM18FqkbP6emDdzC5pMMzJsqXN0c7
+	 UohlgqezZ6PXfVg8VbehMM17pgaOIoq9QfXZJdfDl2C/7TbPLxP+2KPhIAEENfcri9
+	 Dk3IxKD83proUlUltC/X+a6KCuRQZBOcouUFa4t1/rQeDxzM5bDJ8XX1PTJk3QTokj
+	 Cd8npYzMEn3dynAzN0g+4KBpan/H+fPXGBCtves1snFe3VdBt+zZY0tOXmmWTiGENC
+	 1EZDy59HpkkKu/YuC/4vfARoyrn6ldCNT0y2N6ea4MfNq4zat03s5svky17nMjE9K1
+	 PAHIOp94RJ7wg==
+Date: Sat, 25 Oct 2025 18:35:33 +0000
+To: wojcikmarcin49@gmail.com
+From: Nate S <gitnux@pm.me>
+Cc: Linux-wireless@vger.kernel.org
+Subject: No networks available after suspend on Debian 13
+Message-ID: <880cd1a0-647f-4039-9edc-bd76576b5a74@pm.me>
+Feedback-ID: 91264322:user:proton
+X-Pm-Message-ID: 4e47c6a4f1c79a13f3aeb1c308dbbbd16671ae71
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-BITS() is unused in iwlwifi. Drop it.
+I was asked to reply after this fix:
 
-Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
+`echo 0 | dd "of=3D/sys/bus/pci/devices/0000:01:00.0/d3cold_allowed"`
+
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/coex.h | 2 --
- 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/coex.h b/drivers/net/wireless/intel/iwlwifi/fw/api/coex.h
-index ddc84430d895..b0d68b4c504b 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/coex.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/coex.h
-@@ -11,8 +11,6 @@
- #include <linux/types.h>
- #include <linux/bitops.h>
- 
--#define BITS(nb) (BIT(nb) - 1)
--
- enum iwl_bt_coex_lut_type {
- 	BT_COEX_TIGHT_LUT = 0,
- 	BT_COEX_LOOSE_LUT,
--- 
-2.43.0
+6.12.48+deb13-amd64
+
+DMI: HP HP Laptop 15-fd0xxx/8DDB, BIOS F.19 05/28/2025
+
+
+
+
+
 
 
