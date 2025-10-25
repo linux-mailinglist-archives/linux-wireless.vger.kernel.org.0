@@ -1,56 +1,58 @@
-Return-Path: <linux-wireless+bounces-28249-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28250-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF57EC09608
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 18:23:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A142C09520
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 18:20:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4FDDD4EFA51
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 16:15:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18AC01C209D1
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 16:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282B9304BAB;
-	Sat, 25 Oct 2025 16:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F7B307ADA;
+	Sat, 25 Oct 2025 16:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kIv+Hdfv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n98rt97V"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F136F303A19;
-	Sat, 25 Oct 2025 16:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC4F3054F9;
+	Sat, 25 Oct 2025 16:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761408861; cv=none; b=fXRi1ARGAUCCTsvXb6OVnjbR5ZW1kVJYBN9/q7tSeIV7/YNm/pXcSyq4EpzOfe0BYAdQ4WW4KZ4Q7HEG466c9fl1zrZ62pH1Wl1u1g+gTpKIdCvMPlMyrGwSsSNtDncRyl/7MmLeYttlqTx2RQfX2CcI9GTbiLQlnOG2uMbVAzk=
+	t=1761408876; cv=none; b=i1NRSFqt4/U/YsO7hx5A6N0ZUqfxrPOQ7rQPwpUNblRUgTXd8pffGXSBbV4NUVKBE5IWc763j4b+lnchbsu/YqLyXrBNPyDZgXi9UhBCi/JjfkWnZehFS/mJEpPIUKtU+8BFaqrdaiElqJ93cm35MtboYihV+qzZ2jCDL+Yt9HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761408861; c=relaxed/simple;
-	bh=dNRqzk6PR52romSKaeV8CFRlktah5VCw/ExB0EH7O1g=;
+	s=arc-20240116; t=1761408876; c=relaxed/simple;
+	bh=W5QiCdh96TWlhg/ayjzSoL3QDHsdhCmpuocEhXHpLsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=thBEowOcVsntdkQwcusJ7gaZ3sB3SiRIANTVy0qfK1nio9eN0kidsnIA2L0HoHS94m+HZX/7Eq/ndfGK9nH6GU6N8rWlUiJjSB/tRYD/u/PKBUbzFwxTKUBXJ1hM+C6gUI6rU6goHYYnOWo2kC6BhFAWsZJtok+Hj2I/pOnZjkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kIv+Hdfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2333CC4CEFF;
-	Sat, 25 Oct 2025 16:14:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hk+Y2DdD1kROS/lu+xYbIrsc2hDNeEWxbbub+Xnu8PJ6HM5lP4Xy5BjHdpM/PYUjkooab2fgEF2YeUQ98Zmlnde//u4yYRA49eOBIcj8Bwx9hwTFNefb2XpUzP1EFxVnCGLvjbS9Z28CtN+OYYYWSNsLxh8VpGQAfYQ0e3mTJmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n98rt97V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D80C4CEFF;
+	Sat, 25 Oct 2025 16:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761408860;
-	bh=dNRqzk6PR52romSKaeV8CFRlktah5VCw/ExB0EH7O1g=;
+	s=k20201202; t=1761408875;
+	bh=W5QiCdh96TWlhg/ayjzSoL3QDHsdhCmpuocEhXHpLsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kIv+Hdfvy6G49N5G8eIgu2lxDTO3ix+Kt+Z8Y3GwpDJBNngxwX6hfaRSpmetd4ANI
-	 yg6pA8HsPH1n4xV0tAr+SIXNKTVCcaAcK4FHHhwHG/dVE/u6ogZm4Y5j2awDJJz7yY
-	 MFUB/hTuFV91x0P8w3V5HAL2TPzhgO49wC+0C2k5W9W/aCscTqjp/GGfa8KgRrwGsQ
-	 ikagpCAhLlU7diKh5t9qGu2RlkKax6AVUSh90E3xNZWxSpze2a5aoTj2BNh8vXDWAi
-	 bYw52KHXURIFrVOc2PyCe4l9V2/dIuvfIPyg0nP45+VnCCDpJVex5i3kFN2DPsnWJj
-	 kF27QakBIf/9A==
+	b=n98rt97VWxm4bgbTrg4dCCUwKN250CmTneuopBSk3/lS1N/4IH+fFhjZay1DAYbN1
+	 Prfh7YaybOAfUHkaBzzcwZxQzw6zY0wUYYgikIu86jZaSLnU2FxvRsQxn/hEhOVxMz
+	 fafYTV4bYYwORkabTvD4M+yQd9U5bAFx97b2gGcQQ9qLCj1iaPq/39fzKpBMfoypR1
+	 28pP4ykRfoqAAOy+JpXQftJgPLAEB4pLBWhhSX7VCpVvs7cbP/eXrGlH9bYEsMTZJY
+	 LVn6YkWcbpMTb9i5JhxJ4xGqhvtfVun/SCUmV/9PgFidXuiGmDjOdErwVJkr2zYQ7H
+	 VRCB9NIO/Iy5Q==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Chih-Kang Chang <gary.chang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17] wifi: rtw89: disable RTW89_PHYSTS_IE09_FTR_0 for ppdu status
-Date: Sat, 25 Oct 2025 11:55:36 -0400
-Message-ID: <20251025160905.3857885-105-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.17-6.12] wifi: mac80211: Fix 6 GHz Band capabilities element advertisement in lower bands
+Date: Sat, 25 Oct 2025 11:55:42 -0400
+Message-ID: <20251025160905.3857885-111-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -66,70 +68,114 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
 
-[ Upstream commit 4e79a5cc01c5e1f1ba393ed3b44b0c3611eaadf1 ]
+[ Upstream commit e53f8b12a21c2974b66fa8c706090182da06fff3 ]
 
-The IE length of RTW89_PHYSTS_IE09_FTR_0 is dynamic, need to calculate
-more to get it. This IE is not necessary now, disable it to avoid get
-wrong IE length to let the parse function check failed.
+Currently, when adding the 6 GHz Band Capabilities element, the channel
+list of the wiphy is checked to determine if 6 GHz is supported for a given
+virtual interface. However, in a multi-radio wiphy (e.g., one that has
+both lower bands and 6 GHz combined), the wiphy advertises support for
+all bands. As a result, the 6 GHz Band Capabilities element is incorrectly
+included in mesh beacon and station's association request frames of
+interfaces operating in lower bands, without verifying whether the
+interface is actually operating in a 6 GHz channel.
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250915065213.38659-4-pkshih@realtek.com
+Fix this by verifying if the interface operates on 6 GHz channel
+before adding the element. Note that this check cannot be placed
+directly in ieee80211_put_he_6ghz_cap() as the same function is used to
+add probe request elements while initiating scan in which case the
+interface may not be operating in any band's channel.
+
+Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250606104436.326654-1-rameshkumar.sundaram@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-YES – Removing the request for the optional FTR_0 PHY-status IE keeps
-PPDU parsing from failing when the hardware emits that variable-length
-block.
+YES
 
-- **Bug impact**: Before this change, `__rtw89_physts_parsing_init()`
-  set `RTW89_PHYSTS_IE09_FTR_0` for every PPDU page
-  (`drivers/net/wireless/realtek/rtw89/phy.c:6290`). The parser still
-  assumes IE09 has a fixed 8‑byte length via
-  `rtw89_core_get_phy_status_ie_len()`
-  (`drivers/net/wireless/realtek/rtw89/core.c:1816`), so when the
-  hardware sends a longer instance the loop in
-  `rtw89_core_rx_parse_phy_sts()` overruns and returns `-EINVAL`
-  (`drivers/net/wireless/realtek/rtw89/core.c:1959`), leaving
-  `phy_ppdu->valid` false and blocking follow-up processing such as per-
-  chain RSSI conversion and antenna-diversity updates.
+- What it fixes: On multi-radio wiphys, mac80211 could incorrectly
+  include the HE 6 GHz Band Capabilities element in frames while the
+  interface operates on 2.4/5 GHz. This misadvertises capabilities and
+  can cause interop issues (e.g., peers misinterpreting the association
+  or mesh beacon content).
 
-- **Fix rationale**: The patch stops setting
-  `BIT(RTW89_PHYSTS_IE09_FTR_0)` in that PPDU initialization block
-  (`drivers/net/wireless/realtek/rtw89/phy.c:6290`), so the firmware no
-  longer emits the problematic IE. Because no driver code consumes IE09
-  today, nothing functional is lost while the parser again succeeds and
-  the PHY statistics remain usable.
+- Station assoc request gating (mlme.c): The call to add the HE 6 GHz
+  Band Capabilities IE is now correctly gated to only when the
+  association channel is 6 GHz. This uses the per-link association
+  channel to derive `sband` and checks the band before adding the IE:
+  - `sband` selection tied to the AP’s channel: net/mac80211/mlme.c:1768
+  - Gate before adding the IE: net/mac80211/mlme.c:1862
+  - Only add if 6 GHz: net/mac80211/mlme.c:1863
 
-- **Risk assessment**: Change is tiny, localized to bitmap setup, and
-  merely disables an unused, optional report. No API changes, no new
-  dependencies. It only matters on kernels that already picked up commit
-  28bb3d842e8f1e (“add EHT physts…”), which introduced the IE09
-  enablement; older stable trees without that commit aren’t affected.
+- Mesh beacon gating (mesh.c): The mesh beacon builder now adds the HE 6
+  GHz Band Capabilities element only when the mesh interface operates on
+  a 6 GHz channel, not merely if the wiphy supports 6 GHz:
+  - Get current sband, error if missing: net/mac80211/mesh.c:623
+  - Early return if not 6 GHz: net/mac80211/mesh.c:627
+  - Only then add the IE: net/mac80211/mesh.c:636
+  - This function is used when composing the mesh beacon tail:
+    net/mac80211/mesh.c:1119
 
-Given it fixes real PPDU-status breakage with minimal regression risk,
-it’s a good stable backport candidate.
+- Why not move the check into ieee80211_put_he_6ghz_cap(): That helper
+  is intentionally band-agnostic and is also used in probe requests
+  during scan, where the interface may not be operating on a specific
+  band. Probe requests still (correctly) include the 6 GHz capability if
+  the device supports it:
+  - Probe request builder unconditionally uses the helper:
+    net/mac80211/util.c:1368
+  - The helper itself checks 6 GHz device/wiphy support, not current
+    operating band: net/mac80211/util.c:2585, net/mac80211/util.c:2590
 
- drivers/net/wireless/realtek/rtw89/phy.c | 2 --
- 1 file changed, 2 deletions(-)
+- Risk and scope: The change is small, local, and surgical. It only adds
+  band checks at the two call sites that build management frames tied to
+  a specific operating channel (association requests and mesh beacons).
+  No data structures or driver interfaces change. On 6 GHz operation the
+  behavior is unchanged; on lower bands the incorrect element is no
+  longer advertised. This reduces interop failures and aligns with
+  802.11 requirements.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 01a03d2de3ffb..59cb32720fb7b 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -5929,8 +5929,6 @@ static void __rtw89_physts_parsing_init(struct rtw89_dev *rtwdev,
- 			val |= BIT(RTW89_PHYSTS_IE13_DL_MU_DEF) |
- 			       BIT(RTW89_PHYSTS_IE01_CMN_OFDM);
- 		} else if (i >= RTW89_CCK_PKT) {
--			val |= BIT(RTW89_PHYSTS_IE09_FTR_0);
--
- 			val &= ~(GENMASK(RTW89_PHYSTS_IE07_CMN_EXT_PATH_D,
- 					 RTW89_PHYSTS_IE04_CMN_EXT_PATH_A));
+- Stable suitability: This is a correctness/interop bugfix, not a
+  feature; it is minimal and contained to mac80211 management IE
+  composition. It follows stable backport guidelines (important bug fix,
+  low regression risk, no architectural changes).
+
+ net/mac80211/mesh.c | 3 +++
+ net/mac80211/mlme.c | 3 ++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index a4a715f6f1c32..f37068a533f4e 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -624,6 +624,9 @@ int mesh_add_he_6ghz_cap_ie(struct ieee80211_sub_if_data *sdata,
+ 	if (!sband)
+ 		return -EINVAL;
  
++	if (sband->band != NL80211_BAND_6GHZ)
++		return 0;
++
+ 	iftd = ieee80211_get_sband_iftype_data(sband,
+ 					       NL80211_IFTYPE_MESH_POINT);
+ 	/* The device doesn't support HE in mesh mode or at all */
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index b0575604ce71c..0f2d2fec05426 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -1850,7 +1850,8 @@ ieee80211_add_link_elems(struct ieee80211_sub_if_data *sdata,
+ 		ieee80211_put_he_cap(skb, sdata, sband,
+ 				     &assoc_data->link[link_id].conn);
+ 		ADD_PRESENT_EXT_ELEM(WLAN_EID_EXT_HE_CAPABILITY);
+-		ieee80211_put_he_6ghz_cap(skb, sdata, smps_mode);
++		if (sband->band == NL80211_BAND_6GHZ)
++			ieee80211_put_he_6ghz_cap(skb, sdata, smps_mode);
+ 	}
+ 
+ 	/*
 -- 
 2.51.0
 
