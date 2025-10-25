@@ -1,59 +1,56 @@
-Return-Path: <linux-wireless+bounces-28267-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28269-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B23C09C9E
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 18:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1ECEC09D31
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 19:04:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 832A0565A6B
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 16:37:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 80F83580F7E
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Oct 2025 16:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6A930FC0C;
-	Sat, 25 Oct 2025 16:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48EAE329C5A;
+	Sat, 25 Oct 2025 16:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WhYQ2WOT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fa+pZ3Qz"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B72304BD8;
-	Sat, 25 Oct 2025 16:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AFE329C45;
+	Sat, 25 Oct 2025 16:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761409674; cv=none; b=AV91qIqAM92n4H+FlV0NhLCqKNp8LAZ1pdz4+i/W6QiTPm1rk4zcbsdw0Wcc9qDfDC5VwRFXkQ+smBEDkqVg2oBE8UycPLWPyQ1t4sxZ7k2vYXdphPJtzujA2zIiFLsJK9an4jVqEQH/6EZg9rdI1gHpyaW6RApQaLViHakjqwg=
+	t=1761409769; cv=none; b=YdxWpb+GK2qddQSrnOpxhlN1vFUfX4o0kDDyWKUY+R0oqzQbotNWaf3bn3GRUO/6Ce9+f0kJR6334FyD47ysDwuPgweXXgxG6EraPRQfZyvDaumOAcyYTi0oPSE/pQ2Y2d47WSe2hDzqjMKQYdEM4BUZtrcPrJIFdKgXUI+HUyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761409674; c=relaxed/simple;
-	bh=aP3V15lk+TbrRjFG+Wj9Cb4LCF+DIpiIR3kSIbcNLHM=;
+	s=arc-20240116; t=1761409769; c=relaxed/simple;
+	bh=0+BJRNm6FUXKSQUw/J/BOoKZfZsQt3lj8ysUEga8zH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lkTrWhFq2kP/QT4rgh6F4XbS1PWdqP3eH6hom2N7jd8w6gYhTyfWYsOdOdtmCOmaT73gfH8rNJm9Bh5CJ9IN8ALkV6XJGeToV7egK+w8qeNunXd8gtIt9py60bovw2eAENpK71Pke7/BVHopz8DP9EeJygGUvUSeHCAt8vQvGy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WhYQ2WOT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 814AFC113D0;
-	Sat, 25 Oct 2025 16:27:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GCH5vJ77aBRZXHAuDi6AkMkCiJSm/5L+wH9PL/WCsYB+kydaCwUsRP+SjTe8SEwq2ONpKH4Lz1R1869pnp6WI79qtVtoMLestLPvDwhcXDbmhFWUQnBOgXwbZQ6tWlcGge9+1ethIteE1eAvEVum4oM4pJrK5F/v9Z8IwlPFC9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fa+pZ3Qz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D27C113D0;
+	Sat, 25 Oct 2025 16:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761409673;
-	bh=aP3V15lk+TbrRjFG+Wj9Cb4LCF+DIpiIR3kSIbcNLHM=;
+	s=k20201202; t=1761409768;
+	bh=0+BJRNm6FUXKSQUw/J/BOoKZfZsQt3lj8ysUEga8zH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhYQ2WOTKV+K53s4+isUuo9BPyWsFu7y7O35U3jfDMmMiOMxBp9MboCxiJYb34tAR
-	 PGkPz3xoaES3RDesknsvTwvj4nY2J+wvdqJpdjtKZpfDzTG2lCj7CnrylgcIGFgmbN
-	 qFvSqALf+hdvG3tq62GXOLtnESPFXXGoB0l3+p1z2bO2cnUKpOz/Kh489RS4Ix2weB
-	 55XOtKaE65FPa040Yq35dkFvzb4GmAwuf+Yn7ZXsgT0h1XKD037o4GrCg+HM6Ng/tI
-	 uqD9PLZQKAdX1pL44lVJC0yJvWtZmQFwuEorDohhV/q/xOQVL9oYElN4AG8R1y0W3G
-	 YRf4RPm98ny2A==
+	b=Fa+pZ3QzDnXWBxUEhilmvwyl3cmzwFWhn78L+LYmDIA1BL0RROtYm3XqERssMyzff
+	 +kRQ22x3diJGTDBAGwdEaS6Kf6PDMEtCgnLieXfwRCd+2W4fYDBNvkNPZOLYzoSKkY
+	 dZ75/Mofcu27HYqhjs/wc0uPX3hoLRg/X5NZA7rtPn7GFBplbWrU8HEz1bble7v91F
+	 KDlJa7kSOMzL/qpVOVNYsLXHtUHoGpgaMfPmGzL1ZUaxkN/QnVjgD2l58Ywx8HJTF/
+	 g6C1JxZ2+5xP3VRBywxpM1fbQIt16MJuS17GiUnI+JDAexmmTj29ZhhOs7w1Lc6rng
+	 a5wOEe6/H4IMA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ilan Peer <ilan.peer@intel.com>,
-	Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Kuan-Chung Chen <damon.chen@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17-6.12] wifi: mac80211: Track NAN interface start/stop
-Date: Sat, 25 Oct 2025 12:00:46 -0400
-Message-ID: <20251025160905.3857885-415-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.17] wifi: rtw89: 8851b: rfk: update IQK TIA setting
+Date: Sat, 25 Oct 2025 12:01:28 -0400
+Message-ID: <20251025160905.3857885-457-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
 References: <20251025160905.3857885-1-sashal@kernel.org>
@@ -69,157 +66,297 @@ X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Kuan-Chung Chen <damon.chen@realtek.com>
 
-[ Upstream commit 8f79d2f13dd3b0af00a5303d4ff913767dd7684e ]
+[ Upstream commit b521685da35ebf091e51f9ea9ad2896a4ddb6e98 ]
 
-In case that NAN is started, mark the device as non idle,
-and set LED triggering similar to scan and ROC. Set the
-device to idle once NAN is stopped.
+With the new TIA setting of RX IQK, unstable RX throughput can
+be avoided, especially in medium-high attenuation environments.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250908140015.2711d62fce22.I9b9f826490e50967a66788d713b0eba985879873@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250811123744.15361-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
 YES
-- `ieee80211_start_nan()` now flips a dedicated `started` flag and
-  immediately calls `ieee80211_recalc_idle()` once NAN activation
-  succeeds (`net/mac80211/cfg.c:323-345`). Without this, the hw stays
-  flagged idle (`IEEE80211_CONF_IDLE`) after mac80211 opens the
-  interface, so drivers may power down the radio and NAN
-  discovery/advertisement stops working despite reporting success. The
-  new `-EALREADY` guard also prevents double starts that would otherwise
-  re-run the driver callback on an already-open interface.
-- `ieee80211_stop_nan()` symmetrically checks the flag, calls the driver
-  stop hook, clears `started`, and recalculates idle
-  (`net/mac80211/cfg.c:349-360`). This guarantees the device returns to
-  idle only after NAN really terminates, fixing the stale “busy”/LED
-  state left behind today.
-- `__ieee80211_recalc_idle()` now marks the device “working” whenever
-  any interface of type `NL80211_IFTYPE_NAN` is flagged as started
-  (`net/mac80211/iface.c:105-146`). This ties NAN activity into the
-  existing idle/LED machinery instead of relying on ROC/scan
-  bookkeeping, which never covered NAN and is why the hw incorrectly
-  entered idle before this change.
-- A new `bool started` in `struct ieee80211_if_nan`
-  (`net/mac80211/ieee80211_i.h:985-999`) is the only state carried
-  across, fits the existing zero-initialized lifetime of `sdata->u.nan`,
-  and does not affect other interface types sharing the union. The rest
-  of the logic and cfg80211 NAN APIs stay untouched, so drivers see no
-  interface changes.
 
-The regression being fixed is user-visible (NAN sessions silently stall
-because hw is left in idle), the patch is small and self-contained in
-mac80211, and the new state bit is initialized automatically. No
-architectural churn or external dependencies are introduced, making this
-a low-risk, high-value candidate for stable backporting.
+Summary
+- This is a targeted RF calibration/tuning fix for rtw89 8851B that
+  avoids unstable RX throughput under medium-high attenuation, i.e., a
+  user-visible bug/performance regression. It is small, self-contained
+  to one file, and affects only the 8851B device in RX IQK flows.
 
- net/mac80211/cfg.c         | 20 +++++++++++++++++---
- net/mac80211/ieee80211_i.h |  2 ++
- net/mac80211/iface.c       |  9 +++++++++
- 3 files changed, 28 insertions(+), 3 deletions(-)
+What the change does
+- Expands 5 GHz RXK group coverage from 2 to 4 and calibrates all
+  groups:
+  - Changes `#define RTW8851B_RXK_GROUP_IDX_NR` from 2 to 4
+    (drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c:20).
+  - Extends 5G-specific arrays to 4 entries to match, e.g.:
+    - `a_idxrxgain` → `{0x10C, 0x112, 0x28c, 0x292}`
+      (drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c:117)
+    - `a_idxattc2` → all 0xf
+      (drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c:118)
+    - `a_idxrxagc` → `{0x4, 0x5, 0x6, 0x7}`
+      (drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c:119)
+  - Removes the helper that restricted selection to groups 0 and 2,
+    ensuring all four 5 GHz groups are calibrated and better matched to
+    varying attenuation scenarios (previously at
+    drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c:142).
+- Programs TIA-related settings during RX IQK:
+  - In `_rxk_5g_group_sel()`, before the per-group loop, writes a
+    sequence to the RF LUT (RR_LUTWE/WA/WD0) and sets/clears RR_RXA2 bit
+    0x20 to enable the new TIA behavior during calibration; restores
+    everything after the loop (the loop originally starts at
+    drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c:913).
+  - Mirrors the same pattern in `_iqk_5g_nbrxk()`, applying TIA
+    programming and restoration around the group-2 run (function starts
+    at drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c:977).
+- Improves failure handling by clearing RXCFIR bits on failure, aligning
+  8851B behavior with other rtw89 chips:
+  - Adds `rtw89_phy_write32_mask(rtwdev, R_IQK_RES..., B_IQK_RES_RXCFIR,
+    0x0)` on failure in 5G RXK paths, similar to existing patterns in
+    8852 series (see e.g., rtw8852b_rfk.c uses `R_IQK_RES` and
+    `B_IQK_RES_RXCFIR`).
+- Fine-tunes RX clock table for 960M by adjusting `ck960_8851b` last
+  value from 0x93 to 0x92, a small, contained calibration tweak
+  (baseline array is at
+  drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c:199).
+- Drops an unnecessary initialization write in `_iqk_init()` (removing a
+  `R_IQKINF` clear), which is benign and reduces redundant writes.
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 7609c7c31df74..42539c3b4f282 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -320,6 +320,9 @@ static int ieee80211_start_nan(struct wiphy *wiphy,
+Why it’s a good stable backport
+- Fixes a real-world user problem: The commit explicitly addresses
+  unstable RX throughput in certain environments (medium-high
+  attenuation), which is a functional/performance correctness issue, not
+  a feature.
+- Contained scope and minimal risk:
+  - Single file change (rtw8851b_rfk.c), 8851B-only paths, and affects
+    RX IQK calibrations.
+  - No architectural or API/ABI changes; only calibration logic and RF
+    register programming sequences.
+- Dependencies are already present in stable:
+  - 6.17 contains the preceding updates this depends on (e.g., IQK v0x14
+    and DPK v0x11 are already in place, as seen from the constants in
+    drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c:22 and :15).
+  - All macros/registers used exist in stable branches (RR_LUTWE/WA/WD0,
+    RR_MOD_MASK, RR_RXA2, R_IQK_RES, B_IQK_RES_RXCFIR).
+- Consistent with existing practices in rtw89:
+  - The addition of RXCFIR reset on failure mirrors patterns already
+    used by other chips (e.g., rtw8852b), reducing risk and improving
+    robustness.
+
+Risk assessment
+- Changes touch calibration-only flows (`_rxk_5g_group_sel`,
+  `_iqk_5g_nbrxk`), with state saved/restored around TIA writes,
+  limiting side effects.
+- The broader constants and macros are stable and used elsewhere in the
+  driver.
+- No cross-subsystem impact; limited to rtw89/8851B RFK.
+
+Conclusion
+- This is a targeted, low-risk fix that addresses a user-visible
+  throughput stability issue without introducing features or
+  architectural changes. It applies cleanly on stable trees that already
+  have the 8851B support and related RFK updates. Backporting is
+  recommended.
+
+ .../net/wireless/realtek/rtw89/rtw8851b_rfk.c | 85 ++++++++++++-------
+ 1 file changed, 54 insertions(+), 31 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
+index 7a319a6c838af..a7867b0e083ac 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
+@@ -17,7 +17,7 @@
+ #define DPK_RF_REG_NUM_8851B 4
+ #define DPK_KSET_NUM 4
+ #define RTW8851B_RXK_GROUP_NR 4
+-#define RTW8851B_RXK_GROUP_IDX_NR 2
++#define RTW8851B_RXK_GROUP_IDX_NR 4
+ #define RTW8851B_TXK_GROUP_NR 1
+ #define RTW8851B_IQK_VER 0x14
+ #define RTW8851B_IQK_SS 1
+@@ -114,9 +114,9 @@ static const u32 _tssi_de_mcs_10m[RF_PATH_NUM_8851B] = {0x5830};
+ static const u32 g_idxrxgain[RTW8851B_RXK_GROUP_NR] = {0x10e, 0x116, 0x28e, 0x296};
+ static const u32 g_idxattc2[RTW8851B_RXK_GROUP_NR] = {0x0, 0xf, 0x0, 0xf};
+ static const u32 g_idxrxagc[RTW8851B_RXK_GROUP_NR] = {0x0, 0x1, 0x2, 0x3};
+-static const u32 a_idxrxgain[RTW8851B_RXK_GROUP_IDX_NR] = {0x10C, 0x28c};
+-static const u32 a_idxattc2[RTW8851B_RXK_GROUP_IDX_NR] = {0xf, 0xf};
+-static const u32 a_idxrxagc[RTW8851B_RXK_GROUP_IDX_NR] = {0x4, 0x6};
++static const u32 a_idxrxgain[RTW8851B_RXK_GROUP_IDX_NR] = {0x10C, 0x112, 0x28c, 0x292};
++static const u32 a_idxattc2[RTW8851B_RXK_GROUP_IDX_NR] = {0xf, 0xf, 0xf, 0xf};
++static const u32 a_idxrxagc[RTW8851B_RXK_GROUP_IDX_NR] = {0x4, 0x5, 0x6, 0x7};
+ static const u32 a_power_range[RTW8851B_TXK_GROUP_NR] = {0x0};
+ static const u32 a_track_range[RTW8851B_TXK_GROUP_NR] = {0x6};
+ static const u32 a_gain_bb[RTW8851B_TXK_GROUP_NR] = {0x0a};
+@@ -139,17 +139,6 @@ static const u32 dpk_rf_reg[DPK_RF_REG_NUM_8851B] = {0xde, 0x8f, 0x5, 0x10005};
  
- 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+ static void _set_ch(struct rtw89_dev *rtwdev, u32 val);
  
-+	if (sdata->u.nan.started)
-+		return -EALREADY;
-+
- 	ret = ieee80211_check_combinations(sdata, NULL, 0, 0, -1);
- 	if (ret < 0)
- 		return ret;
-@@ -329,12 +332,18 @@ static int ieee80211_start_nan(struct wiphy *wiphy,
- 		return ret;
- 
- 	ret = drv_start_nan(sdata->local, sdata, conf);
--	if (ret)
-+	if (ret) {
- 		ieee80211_sdata_stop(sdata);
-+		return ret;
-+	}
- 
--	sdata->u.nan.conf = *conf;
-+	sdata->u.nan.started = true;
-+	ieee80211_recalc_idle(sdata->local);
- 
--	return ret;
-+	sdata->u.nan.conf.master_pref = conf->master_pref;
-+	sdata->u.nan.conf.bands = conf->bands;
-+
-+	return 0;
- }
- 
- static void ieee80211_stop_nan(struct wiphy *wiphy,
-@@ -342,8 +351,13 @@ static void ieee80211_stop_nan(struct wiphy *wiphy,
+-static u8 _rxk_5ghz_group_from_idx(u8 idx)
+-{
+-	/* There are four RXK groups (RTW8851B_RXK_GROUP_NR), but only group 0
+-	 * and 2 are used in 5 GHz band, so reduce elements to 2.
+-	 */
+-	if (idx < RTW8851B_RXK_GROUP_IDX_NR)
+-		return idx * 2;
+-
+-	return 0;
+-}
+-
+ static u8 _kpath(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
  {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
- 
-+	if (!sdata->u.nan.started)
-+		return;
-+
- 	drv_stop_nan(sdata->local, sdata);
-+	sdata->u.nan.started = false;
- 	ieee80211_sdata_stop(sdata);
-+	ieee80211_recalc_idle(sdata->local);
- }
- 
- static int ieee80211_nan_change_conf(struct wiphy *wiphy,
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 140dc7e32d4aa..7d1e93f51a67b 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -977,11 +977,13 @@ struct ieee80211_if_mntr {
-  * struct ieee80211_if_nan - NAN state
-  *
-  * @conf: current NAN configuration
-+ * @started: true iff NAN is started
-  * @func_lock: lock for @func_inst_ids
-  * @function_inst_ids: a bitmap of available instance_id's
-  */
- struct ieee80211_if_nan {
- 	struct cfg80211_nan_conf conf;
-+	bool started;
- 
- 	/* protects function_inst_ids */
- 	spinlock_t func_lock;
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index abc8cca54f4e1..a7873832d4fa6 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -107,6 +107,7 @@ static u32 __ieee80211_recalc_idle(struct ieee80211_local *local,
+ 	return RF_A;
+@@ -196,7 +185,7 @@ static void _txck_force(struct rtw89_dev *rtwdev, enum rtw89_rf_path path,
+ static void _rxck_force(struct rtw89_dev *rtwdev, enum rtw89_rf_path path,
+ 			bool force, enum adc_ck ck)
  {
- 	bool working, scanning, active;
- 	unsigned int led_trig_start = 0, led_trig_stop = 0;
-+	struct ieee80211_sub_if_data *iter;
+-	static const u32 ck960_8851b[] = {0x8, 0x2, 0x2, 0x4, 0xf, 0xa, 0x93};
++	static const u32 ck960_8851b[] = {0x8, 0x2, 0x2, 0x4, 0xf, 0xa, 0x92};
+ 	static const u32 ck1920_8851b[] = {0x9, 0x0, 0x0, 0x3, 0xf, 0xa, 0x49};
+ 	const u32 *data;
  
- 	lockdep_assert_wiphy(local->hw.wiphy);
+@@ -905,18 +894,27 @@ static bool _rxk_5g_group_sel(struct rtw89_dev *rtwdev,
+ 	bool kfail = false;
+ 	bool notready;
+ 	u32 rf_0;
+-	u8 idx;
++	u32 val;
+ 	u8 gp;
  
-@@ -117,6 +118,14 @@ static u32 __ieee80211_recalc_idle(struct ieee80211_local *local,
- 	working = !local->ops->remain_on_channel &&
- 		  !list_empty(&local->roc_list);
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]===>%s\n", __func__);
  
-+	list_for_each_entry(iter, &local->interfaces, list) {
-+		if (iter->vif.type == NL80211_IFTYPE_NAN &&
-+		    iter->u.nan.started) {
-+			working = true;
-+			break;
-+		}
-+	}
+-	for (idx = 0; idx < RTW8851B_RXK_GROUP_IDX_NR; idx++) {
+-		gp = _rxk_5ghz_group_from_idx(idx);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWE, RFREG_MASK, 0x1000);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWA, RFREG_MASK, 0x4);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWD0, RFREG_MASK, 0x17);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWA, RFREG_MASK, 0x5);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWD0, RFREG_MASK, 0x27);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWE, RFREG_MASK, 0x0);
+ 
++	val = rtw89_read_rf(rtwdev, RF_PATH_A, RR_RXA2, 0x20);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_MOD, RR_MOD_MASK, 0xc);
 +
- 	scanning = test_bit(SCAN_SW_SCANNING, &local->scanning) ||
- 		   test_bit(SCAN_ONCHANNEL_SCANNING, &local->scanning);
++	for (gp = 0; gp < RTW8851B_RXK_GROUP_IDX_NR; gp++) {
+ 		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%x, gp = %x\n", path, gp);
+ 
+-		rtw89_write_rf(rtwdev, RF_PATH_A, RR_MOD, RR_MOD_RGM, a_idxrxgain[idx]);
+-		rtw89_write_rf(rtwdev, RF_PATH_A, RR_RXA2, RR_RXA2_ATT, a_idxattc2[idx]);
++		rtw89_write_rf(rtwdev, RF_PATH_A, RR_MOD, RR_MOD_RGM, a_idxrxgain[gp]);
++		rtw89_write_rf(rtwdev, RF_PATH_A, RR_RXA2, RR_RXA2_ATT, a_idxattc2[gp]);
++		rtw89_write_rf(rtwdev, RF_PATH_A, RR_RXA2, 0x20, 0x1);
+ 
+ 		rtw89_phy_write32_mask(rtwdev, R_CFIR_LUT, B_CFIR_LUT_SEL, 0x1);
+ 		rtw89_phy_write32_mask(rtwdev, R_CFIR_LUT, B_CFIR_LUT_G3, 0x0);
+@@ -926,7 +924,7 @@ static bool _rxk_5g_group_sel(struct rtw89_dev *rtwdev,
+ 		fsleep(100);
+ 		rf_0 = rtw89_read_rf(rtwdev, path, RR_MOD, RFREG_MASK);
+ 		rtw89_phy_write32_mask(rtwdev, R_IQK_DIF2, B_IQK_DIF2_RXPI, rf_0);
+-		rtw89_phy_write32_mask(rtwdev, R_IQK_RXA, B_IQK_RXAGC, a_idxrxagc[idx]);
++		rtw89_phy_write32_mask(rtwdev, R_IQK_RXA, B_IQK_RXAGC, a_idxrxagc[gp]);
+ 		rtw89_phy_write32_mask(rtwdev, R_IQK_DIF4, B_IQK_DIF4_RXT, 0x11);
+ 		notready = _iqk_one_shot(rtwdev, phy_idx, path, ID_RXAGC);
+ 
+@@ -959,6 +957,7 @@ static bool _rxk_5g_group_sel(struct rtw89_dev *rtwdev,
+ 		_iqk_sram(rtwdev, path);
+ 
+ 	if (kfail) {
++		rtw89_phy_write32_mask(rtwdev, R_IQK_RES, B_IQK_RES_RXCFIR, 0x0);
+ 		rtw89_phy_write32_mask(rtwdev, R_RXIQC + (path << 8), MASKDWORD,
+ 				       iqk_info->nb_rxcfir[path] | 0x2);
+ 		iqk_info->is_wb_txiqk[path] = false;
+@@ -968,6 +967,14 @@ static bool _rxk_5g_group_sel(struct rtw89_dev *rtwdev,
+ 		iqk_info->is_wb_txiqk[path] = true;
+ 	}
+ 
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_RXA2, 0x20, val);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWE, RFREG_MASK, 0x1000);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWA, RFREG_MASK, 0x4);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWD0, RFREG_MASK, 0x37);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWA, RFREG_MASK, 0x5);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWD0, RFREG_MASK, 0x27);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWE, RFREG_MASK, 0x0);
++
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[IQK]S%x, kfail = 0x%x, 0x8%x3c = 0x%x\n", path, kfail,
+ 		    1 << path, iqk_info->nb_rxcfir[path]);
+@@ -980,17 +987,26 @@ static bool _iqk_5g_nbrxk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
+ 	struct rtw89_iqk_info *iqk_info = &rtwdev->iqk;
+ 	bool kfail = false;
+ 	bool notready;
+-	u8 idx = 0x1;
++	u8 gp = 2;
+ 	u32 rf_0;
+-	u8 gp;
+-
+-	gp = _rxk_5ghz_group_from_idx(idx);
++	u32 val;
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]===>%s\n", __func__);
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%x, gp = %x\n", path, gp);
+ 
+-	rtw89_write_rf(rtwdev, RF_PATH_A, RR_MOD, RR_MOD_RGM, a_idxrxgain[idx]);
+-	rtw89_write_rf(rtwdev, RF_PATH_A, RR_RXA2, RR_RXA2_ATT, a_idxattc2[idx]);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWE, RFREG_MASK, 0x1000);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWA, RFREG_MASK, 0x4);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWD0, RFREG_MASK, 0x17);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWA, RFREG_MASK, 0x5);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWD0, RFREG_MASK, 0x27);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWE, RFREG_MASK, 0x0);
++
++	val = rtw89_read_rf(rtwdev, RF_PATH_A, RR_RXA2, 0x20);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_MOD, RR_MOD_MASK, 0xc);
++
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_MOD, RR_MOD_RGM, a_idxrxgain[gp]);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_RXA2, RR_RXA2_ATT, a_idxattc2[gp]);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_RXA2, 0x20, 0x1);
+ 
+ 	rtw89_phy_write32_mask(rtwdev, R_CFIR_LUT, B_CFIR_LUT_SEL, 0x1);
+ 	rtw89_phy_write32_mask(rtwdev, R_CFIR_LUT, B_CFIR_LUT_G3, 0x0);
+@@ -1000,7 +1016,7 @@ static bool _iqk_5g_nbrxk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
+ 	fsleep(100);
+ 	rf_0 = rtw89_read_rf(rtwdev, path, RR_MOD, RFREG_MASK);
+ 	rtw89_phy_write32_mask(rtwdev, R_IQK_DIF2, B_IQK_DIF2_RXPI, rf_0);
+-	rtw89_phy_write32_mask(rtwdev, R_IQK_RXA, B_IQK_RXAGC, a_idxrxagc[idx]);
++	rtw89_phy_write32_mask(rtwdev, R_IQK_RXA, B_IQK_RXAGC, a_idxrxagc[gp]);
+ 	rtw89_phy_write32_mask(rtwdev, R_IQK_DIF4, B_IQK_DIF4_RXT, 0x11);
+ 	notready = _iqk_one_shot(rtwdev, phy_idx, path, ID_RXAGC);
+ 
+@@ -1026,6 +1042,7 @@ static bool _iqk_5g_nbrxk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
+ 		kfail = !!rtw89_phy_read32_mask(rtwdev, R_NCTL_RPT, B_NCTL_RPT_FLG);
+ 
+ 	if (kfail) {
++		rtw89_phy_write32_mask(rtwdev, R_IQK_RES + (path << 8), 0xf, 0x0);
+ 		rtw89_phy_write32_mask(rtwdev, R_RXIQC + (path << 8),
+ 				       MASKDWORD, 0x40000002);
+ 		iqk_info->is_wb_rxiqk[path] = false;
+@@ -1033,6 +1050,14 @@ static bool _iqk_5g_nbrxk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
+ 		iqk_info->is_wb_rxiqk[path] = false;
+ 	}
+ 
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_RXA2, 0x20, val);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWE, RFREG_MASK, 0x1000);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWA, RFREG_MASK, 0x4);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWD0, RFREG_MASK, 0x37);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWA, RFREG_MASK, 0x5);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWD0, RFREG_MASK, 0x27);
++	rtw89_write_rf(rtwdev, RF_PATH_A, RR_LUTWE, RFREG_MASK, 0x0);
++
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[IQK]S%x, kfail = 0x%x, 0x8%x3c = 0x%x\n", path, kfail,
+ 		    1 << path, iqk_info->nb_rxcfir[path]);
+@@ -1664,8 +1689,6 @@ static void _iqk_init(struct rtw89_dev *rtwdev)
+ 	struct rtw89_iqk_info *iqk_info = &rtwdev->iqk;
+ 	u8 idx, path;
+ 
+-	rtw89_phy_write32_mask(rtwdev, R_IQKINF, MASKDWORD, 0x0);
+-
+ 	if (iqk_info->is_iqk_init)
+ 		return;
  
 -- 
 2.51.0
