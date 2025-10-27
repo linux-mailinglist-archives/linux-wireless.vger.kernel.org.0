@@ -1,322 +1,180 @@
-Return-Path: <linux-wireless+bounces-28309-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28310-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AFEAC0D7CB
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 13:23:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC85C0D7F8
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 13:25:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 409CD4F49EC
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 12:22:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A40F219A1FA3
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 12:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014D82FD7DD;
-	Mon, 27 Oct 2025 12:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338A4301025;
+	Mon, 27 Oct 2025 12:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fzJvY46V"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hQQFjcNu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE063019AD
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 12:22:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EBD2F9DAF
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 12:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761567744; cv=none; b=FSAwsqwTSuRqdmG2NrF8gBnrLBZ4dk/HTD7sVLcVHz0qOBNLjuI+WtjdNyYWUg+AWgQFnZUEB0wxs1uNM6dzlfD6i+5yRqsg0HTJ5vu0wh0pn21pkvmrD5MCpZrqIteqbgIB5+wrSp2KHnfGYdb4TqO73jO/xm3hLNcPo1//9Q4=
+	t=1761567770; cv=none; b=kZirUTbSTM7wGHw4U6Kn1UfO6Ybc8VDyQp15QJbjSIG9UvUHeNWPp7Y8oagYQitLkNY3Sa3kGCMUCdNPoNJaeTMTvbIDAORYwKf6v7dNYyjpEzI7sxCnIwrQFe5t6ltTaVhjyxfokGDPntfVZpQ2h/eIVu+I/xKQSfpqCxmKdBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761567744; c=relaxed/simple;
-	bh=jmX1VxW/MtEjn2MXwdGjdsbv+CJiyUlsR6BosOubk64=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IIC4agX/LE/wBMEgSqdAHuBbAEOfXPQWMWOlqx29LWuX5TA/S0KXvhTcCqhr8auAZPwypEkESlqmUsdm921aK4ivxXVtSETgVTtvD+HAe/r5CziQv17nggJJjTSVqjTsQ6yIYAglkcOc4bemP/8L+/3XBScS9t8Kxpvwudmu5ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fzJvY46V; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761567743; x=1793103743;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=jmX1VxW/MtEjn2MXwdGjdsbv+CJiyUlsR6BosOubk64=;
-  b=fzJvY46VnlNVBgIzBYGqbg6WCk89H/y4G5vCkGJgffKT+PHTNfCdcMb6
-   OBxmfq7kS+54MbroRgkKLuZIGulo1XDAPtcG2gLZrvdi9mpB50KH/kWpq
-   olbu4ACv3xKdDyH79YVZLkGF6G1Ra2TNq4CZUDleBlbFGq7/Z3Cmd/Z6K
-   BHfz3+1PWggXf+tOZ1r/VWKkikb0Ekbptvr4DhdGzoK4QzY0AXmK7tReg
-   D91mSJJqusgmUgAYE/8mNjw/DxYWWXMpd6NlJ8JDnE4WIu3tqN55u29si
-   +qdvHJckjZrmpWLPwDcCzVBY+6ymmNiQZkiWzMVmsgjiulke9H47yU3We
-   A==;
-X-CSE-ConnectionGUID: qMHYLCIjQCaFEVcrbiXtwQ==
-X-CSE-MsgGUID: NWzM1yxtS6CrIZ6KV41ekg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63794357"
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="63794357"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 05:22:22 -0700
-X-CSE-ConnectionGUID: M4zKhbeWT/meaXhXZYGEkw==
-X-CSE-MsgGUID: XK9jYZJETaqIyD6MWP3Lxw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="189343042"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 05:22:21 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next v3] wifi: mac80211: add RX flag to report radiotap VHT information
-Date: Mon, 27 Oct 2025 14:22:14 +0200
-Message-Id: <20251027142118.0bad1c307a21.I2cf285c20a822698039603f2af00ed9c548f2ee0@changeid>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1761567770; c=relaxed/simple;
+	bh=3muxG6MPxyrW/HfGoVTrDpf0zTKrmjAvX4xRLEsxaLs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hP/cjQrVaI3tv2VMBnBK199qPkMPvxr7ulIfrp5XhiKu1Cw+YR7uAz83SLXnTAzjDMIdHN9a8NNujf/Z5kO/de341G17QwSORA3pUNhVuuTX1TPpmT3SFvfcXuLfxz1EaCDB4oXSLfLwSfODq+mhqEO4+GezMgzCX/8y6CiQ2eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hQQFjcNu; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59R81hAe915959
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 12:22:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=JncXzot9W1gow8/tUDBTV3mA
+	gpfqF8x82foGvNCR8u8=; b=hQQFjcNu2DH5Lw59o1W3SMNAFQY0QXjO/ktVuC40
+	hzC7YzQhGKGkCh1lCcdb/C/niKl0YCCv4pxGe/CTro0PzN3sR8SCaf+bRb1G1SzN
+	q+VuVqXq66xW1wvCMEun5HJ81BTKuCA3TxV612EXGGbQdvrskchdpi2h51F/OUc0
+	NSqKEbYWk4av6IrCCZHgQNu/VoFWqFXK3rMMy9vmJNTSf4zHBpVxvjY5YwkyfErW
+	3Ps46xiotXAIzJnryRT7QeUNOyGxvZKYB+by7tQ7mfvn5y+2l69ZVBj3vtenKmSR
+	dxdsKS6jQdPufQELxCcW3VKJ+HXMXz8y5LsPIIwe11cxCQ==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a0px6mekd-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 12:22:46 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4ecf72a45f5so38793111cf.2
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 05:22:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761567766; x=1762172566;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JncXzot9W1gow8/tUDBTV3mAgpfqF8x82foGvNCR8u8=;
+        b=DvSH27GGynUg3Ow9/3VAd8M4BFv+Orjkb4gZTBo+83c9Q2mFqxAAriC2giixdqCkr2
+         xA5B0Ti+hJVLhxLR1tmrAolaScsUdVPRuTqcuOis4JYtvj+aj3d7S79Ty5p+XcBbOMvD
+         VaCvPwhxZfr0dNaLARaIEnpt96U/4uo6c7a+N1ipFIXR/vydPAmA9UwDYEn0DCrEB/VH
+         riHXr1oSHjTm1rU6rEYHLBFkd5+IVJUqU4AEux2GLHEpvLgO7IkMoEKnIqA/ntm+mdms
+         1iDgrEuFoZs6YlTmczXAF+fYtNL2DBaoV5hUEmUY9X4sn4PBs8S1QlcVg+aNPViCWx63
+         4r/A==
+X-Forwarded-Encrypted: i=1; AJvYcCUkunGSXs4ekX0+5RLXwlTKGh/onvBnK/ZJQ4Rwzq5L+oJWmTMTyDvp+/kOrJYLgPpUOYEtYqJnOy/rAGgerQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyK36wdS4gUzIiHbSzozk049iJeUIdrYo9DcFmjQ22CaIYfJ+TI
+	xn60tymDaVuq99NfDERQGnkzWNKdQAoZqrkhDp0RMPblJkByh8HgKIepCY5Da1v7nOnx+Cr3B8l
+	Xs9/KIdyWf3rMRK8fyDsbbYDGWjilizsr3834qm4/IFhh0fLimXCZ/1W4TZR4POALfiNUbw==
+X-Gm-Gg: ASbGncuUI7Kjs2oUV8lh4HKHMM2ykT16LqTdiTOZKbHZqsztFV1JwZ52ThYiTFWLKWK
+	IjZ8kjLa7EvDTPT1So0Y5rKG2mK/m0K/plIaCL4Lwl6pntnD9CJpxn+UCs1amWtkI21410dQ6c9
+	ly60fiXiXfIRjDe3J9sYYIo41VW/f9w2VcRDZT8tQYv39qRUnfsJ0qxzAz0OzeSPHglamo4gzYh
+	Tkc+PPV0umo1isuRrGsonpiOw6uLPnI2GNJGIwUV1l0i2I9bHJ+iTdanVv4im5xLr7SuEJekvQk
+	VKXEc9LMtg7TlKbAHuHuu0ztRx5wPev9pUsQO+Xw5Dnms7lPXy61YsZNy2IvANlC+fm/x6W7uon
+	lRYB56HeCTHl87ExGFj5w694hswNLkerepWKG8r7gVHaMvgFloo/0Q8BgnPYbpy/fHUCMAoUoeR
+	OChqDh9G4tit8r
+X-Received: by 2002:a05:622a:353:b0:4e8:9f87:1f42 with SMTP id d75a77b69052e-4eb94922adcmr152956141cf.69.1761567766376;
+        Mon, 27 Oct 2025 05:22:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH79d7Do90KoVZ1tYBoBY55fSIjzc3SaetN68K8JqBrkVyDzQwzXI4DnjU4YyJIchWS9APnNA==
+X-Received: by 2002:a05:622a:353:b0:4e8:9f87:1f42 with SMTP id d75a77b69052e-4eb94922adcmr152954761cf.69.1761567765265;
+        Mon, 27 Oct 2025 05:22:45 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-378ee0e0246sm19655221fa.49.2025.10.27.05.22.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 05:22:44 -0700 (PDT)
+Date: Mon, 27 Oct 2025 14:22:42 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: netdev@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Wei Fang <wei.fang@nxp.com>,
+        Shenwei Wang <shenwei.wang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Paul Barker <paul@pbarker.dev>,
+        Siddharth Vadapalli <s-vadapalli@ti.com>,
+        Roger Quadros <rogerq@kernel.org>, Alex Elder <elder@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Loic Poulain <loic.poulain@oss.qualcomm.com>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
+        Liu Haijun <haijun.liu@mediatek.com>,
+        Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+        "Dr. David Alan Gilbert" <linux@treblig.org>,
+        Ingo Molnar <mingo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+        Michael Nemanov <michael.nemanov@ti.com>,
+        Kalle Valo <kvalo@kernel.org>, Andreas Kemnade <andreas@kemnade.info>,
+        Roopni Devanathan <quic_rdevanat@quicinc.com>,
+        Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH RESEND 2/4] net: ipa: Remove redundant
+ pm_runtime_mark_last_busy() calls
+Message-ID: <g4ryfonkdpnsgqo4brx2dymo7o35jkndc5kkhdybhyvwo5rust@jwsivdbievvi>
+References: <20251027115022.390997-1-sakari.ailus@linux.intel.com>
+ <20251027115022.390997-2-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027115022.390997-2-sakari.ailus@linux.intel.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI3MDExNSBTYWx0ZWRfX5qqA2B1Fep24
+ 2UPTgdVKK65fdcxJh4BJPBJDq8gHuQYqbFNwoCT7Ou9O9DIZ8UAFm/JsHG5jdRyzNs1t0tpmdjf
+ Fi/G4RcydudDJraTRys9SIZblIjmjgXeW0Ixlm61chZD/R2KQpntUQJbHHZ5NsQLgQ5nn/6XHG3
+ MlkrGyK49awP6FGeyLn4Vo4XtT9pe5mF+k5sV9wNs7aiQSQCQrZtxQta1VcG90sxlc4uKkclEqr
+ kIaMHd8LXxgwU1b2tcNDBnKJr8ZTG67zVOP9lxe7WDop0yZ7o5kIwlsMXihZr9g7JxmVI7W5Ykq
+ AIOqTqqJ2/jnZrfL4pegnmRBYJI39iCPnyzcuv6L2gkd/8OZmrB2HMFRbTzQ+bFTJ5MZ+eTF+y7
+ Fz53MrkkYPLHtpfx3ILol2Nq+zkdvQ==
+X-Proofpoint-ORIG-GUID: -wt30fdyR_d22qXFo_i-JEz-Cu5cslFN
+X-Proofpoint-GUID: -wt30fdyR_d22qXFo_i-JEz-Cu5cslFN
+X-Authority-Analysis: v=2.4 cv=WqMm8Nfv c=1 sm=1 tr=0 ts=68ff6417 cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=QyXUC8HyAAAA:8 a=EUspDBNiAAAA:8
+ a=QXDDecBx9f-8Df5VMo8A:9 a=CjuIK1q_8ugA:10 a=a_PwQJl-kcHnX1M80qC6:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-27_05,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510020000 definitions=main-2510270115
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+On Mon, Oct 27, 2025 at 01:50:20PM +0200, Sakari Ailus wrote:
+> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+> pm_runtime_mark_last_busy().
+> 
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  drivers/net/ipa/ipa_interrupt.c | 1 -
+>  drivers/net/ipa/ipa_main.c      | 1 -
+>  drivers/net/ipa/ipa_modem.c     | 4 ----
+>  drivers/net/ipa/ipa_smp2p.c     | 2 --
+>  drivers/net/ipa/ipa_uc.c        | 2 --
+>  5 files changed, 10 deletions(-)
+> 
 
-mac80211 already reports some basic information in the radiotap header
-with the known fields declared by the driver. However, drivers may want
-to report more accurate information and in that case the full VHT
-radiotap structure needs to be provided.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-Add a new RX_FLAG_RADIOTAP_VHT which is set when the VHT information
-should be pulled from the skb. Update the code to fill in the VHT fields
-to only do so when requested by the driver or if the information has not
-yet been set. This way the driver can fully control the information if
-it chooses so.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
-v2: add the destination tree to the subject
-v3: fix kernel documentation
-
- include/net/ieee80211_radiotap.h |  20 +++++-
- include/net/mac80211.h           |   2 +
- net/mac80211/rx.c                | 104 ++++++++++++++++++++-----------
- 3 files changed, 89 insertions(+), 37 deletions(-)
-
-diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
-index 813e163ce27c..c60867e7e43c 100644
---- a/include/net/ieee80211_radiotap.h
-+++ b/include/net/ieee80211_radiotap.h
-@@ -1,6 +1,6 @@
- /*
-  * Copyright (c) 2017		Intel Deutschland GmbH
-- * Copyright (c) 2018-2019, 2021-2022 Intel Corporation
-+ * Copyright (c) 2018-2019, 2021-2022, 2025 Intel Corporation
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-  * purpose with or without fee is hereby granted, provided that the above
-@@ -202,6 +202,24 @@ enum ieee80211_radiotap_vht_coding {
- 	IEEE80211_RADIOTAP_CODING_LDPC_USER3 = 0x08,
- };
- 
-+enum ieee80211_radiotap_vht_bandwidth {
-+	/* Note: more values are defined but can't really be used */
-+	IEEE80211_RADIOTAP_VHT_BW_20		= 0,
-+	IEEE80211_RADIOTAP_VHT_BW_40		= 1,
-+	IEEE80211_RADIOTAP_VHT_BW_80		= 4,
-+	IEEE80211_RADIOTAP_VHT_BW_160		= 11,
-+};
-+
-+struct ieee80211_radiotap_vht {
-+	__le16 known;
-+	u8 flags;
-+	u8 bandwidth;
-+	u8 mcs_nss[4];
-+	u8 coding;
-+	u8 group_id;
-+	__le16 partial_aid;
-+} __packed;
-+
- /* for IEEE80211_RADIOTAP_TIMESTAMP */
- enum ieee80211_radiotap_timestamp_unit_spos {
- 	IEEE80211_RADIOTAP_TIMESTAMP_UNIT_MASK = 0x000F,
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index a55085cf4ec4..c326243e1f01 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1529,6 +1529,7 @@ ieee80211_tx_info_clear_status(struct ieee80211_tx_info *info)
-  *	known the frame shouldn't be reported.
-  * @RX_FLAG_8023: the frame has an 802.3 header (decap offload performed by
-  *	hardware or driver)
-+ * @RX_FLAG_RADIOTAP_VHT: VHT radiotap data is present
-  */
- enum mac80211_rx_flags {
- 	RX_FLAG_MMIC_ERROR		= BIT(0),
-@@ -1564,6 +1565,7 @@ enum mac80211_rx_flags {
- 	RX_FLAG_RADIOTAP_LSIG		= BIT(28),
- 	RX_FLAG_NO_PSDU			= BIT(29),
- 	RX_FLAG_8023			= BIT(30),
-+	RX_FLAG_RADIOTAP_VHT		= BIT(31),
- };
- 
- /**
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 4641a2a80856..b59aeed340b3 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -59,7 +59,8 @@ static struct sk_buff *ieee80211_clean_skb(struct sk_buff *skb,
- 	status->flag &= ~(RX_FLAG_RADIOTAP_TLV_AT_END |
- 			  RX_FLAG_RADIOTAP_LSIG |
- 			  RX_FLAG_RADIOTAP_HE_MU |
--			  RX_FLAG_RADIOTAP_HE);
-+			  RX_FLAG_RADIOTAP_HE |
-+			  RX_FLAG_RADIOTAP_VHT);
- 
- 	hdr = (void *)skb->data;
- 	fc = hdr->frame_control;
-@@ -151,8 +152,10 @@ ieee80211_rx_radiotap_hdrlen(struct ieee80211_local *local,
- 	}
- 
- 	if (status->encoding == RX_ENC_VHT) {
-+		/* Included even if RX_FLAG_RADIOTAP_VHT is not set */
- 		len = ALIGN(len, 2);
- 		len += 12;
-+		BUILD_BUG_ON(sizeof(struct ieee80211_radiotap_vht) != 12);
- 	}
- 
- 	if (local->hw.radiotap_timestamp.units_pos >= 0) {
-@@ -195,6 +198,9 @@ ieee80211_rx_radiotap_hdrlen(struct ieee80211_local *local,
- 		 * The position to look at depends on the existence (or non-
- 		 * existence) of other elements, so take that into account...
- 		 */
-+		if (status->flag & RX_FLAG_RADIOTAP_VHT)
-+			tlv_offset +=
-+				sizeof(struct ieee80211_radiotap_vht);
- 		if (status->flag & RX_FLAG_RADIOTAP_HE)
- 			tlv_offset +=
- 				sizeof(struct ieee80211_radiotap_he);
-@@ -319,10 +325,17 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 	u32 tlvs_len = 0;
- 	int mpdulen, chain;
- 	unsigned long chains = status->chains;
-+	struct ieee80211_radiotap_vht vht = {};
- 	struct ieee80211_radiotap_he he = {};
- 	struct ieee80211_radiotap_he_mu he_mu = {};
- 	struct ieee80211_radiotap_lsig lsig = {};
- 
-+	if (status->flag & RX_FLAG_RADIOTAP_VHT) {
-+		vht = *(struct ieee80211_radiotap_vht *)skb->data;
-+		skb_pull(skb, sizeof(vht));
-+		WARN_ON_ONCE(status->encoding != RX_ENC_VHT);
-+	}
-+
- 	if (status->flag & RX_FLAG_RADIOTAP_HE) {
- 		he = *(struct ieee80211_radiotap_he *)skb->data;
- 		skb_pull(skb, sizeof(he));
-@@ -530,45 +543,61 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 	}
- 
- 	if (status->encoding == RX_ENC_VHT) {
--		u16 known = local->hw.radiotap_vht_details;
-+		u16 fill = local->hw.radiotap_vht_details;
- 
--		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_VHT));
--		put_unaligned_le16(known, pos);
--		pos += 2;
--		/* flags */
--		if (status->enc_flags & RX_ENC_FLAG_SHORT_GI)
--			*pos |= IEEE80211_RADIOTAP_VHT_FLAG_SGI;
-+		/* Leave driver filled fields alone */
-+		fill &= ~le16_to_cpu(vht.known);
-+		vht.known |= cpu_to_le16(fill);
-+
-+		if (fill & IEEE80211_RADIOTAP_VHT_KNOWN_GI &&
-+		    status->enc_flags & RX_ENC_FLAG_SHORT_GI)
-+			vht.flags |= IEEE80211_RADIOTAP_VHT_FLAG_SGI;
- 		/* in VHT, STBC is binary */
--		if (status->enc_flags & RX_ENC_FLAG_STBC_MASK)
--			*pos |= IEEE80211_RADIOTAP_VHT_FLAG_STBC;
--		if (status->enc_flags & RX_ENC_FLAG_BF)
-+		if (fill & IEEE80211_RADIOTAP_VHT_KNOWN_STBC &&
-+		    status->enc_flags & RX_ENC_FLAG_STBC_MASK)
-+			vht.flags |= IEEE80211_RADIOTAP_VHT_FLAG_STBC;
-+		if (fill & IEEE80211_RADIOTAP_VHT_KNOWN_BEAMFORMED &&
-+		    status->enc_flags & RX_ENC_FLAG_BF)
- 			*pos |= IEEE80211_RADIOTAP_VHT_FLAG_BEAMFORMED;
--		pos++;
--		/* bandwidth */
--		switch (status->bw) {
--		case RATE_INFO_BW_80:
--			*pos++ = 4;
--			break;
--		case RATE_INFO_BW_160:
--			*pos++ = 11;
--			break;
--		case RATE_INFO_BW_40:
--			*pos++ = 1;
--			break;
--		default:
--			*pos++ = 0;
-+
-+		if (fill & IEEE80211_RADIOTAP_VHT_KNOWN_BANDWIDTH) {
-+			switch (status->bw) {
-+			case RATE_INFO_BW_40:
-+				vht.bandwidth = IEEE80211_RADIOTAP_VHT_BW_40;
-+				break;
-+			case RATE_INFO_BW_80:
-+				vht.bandwidth = IEEE80211_RADIOTAP_VHT_BW_80;
-+				break;
-+			case RATE_INFO_BW_160:
-+				vht.bandwidth = IEEE80211_RADIOTAP_VHT_BW_160;
-+				break;
-+			default:
-+				vht.bandwidth = IEEE80211_RADIOTAP_VHT_BW_20;
-+				break;
-+			}
- 		}
--		/* MCS/NSS */
--		*pos = (status->rate_idx << 4) | status->nss;
--		pos += 4;
--		/* coding field */
--		if (status->enc_flags & RX_ENC_FLAG_LDPC)
--			*pos |= IEEE80211_RADIOTAP_CODING_LDPC_USER0;
--		pos++;
--		/* group ID */
--		pos++;
--		/* partial_aid */
--		pos += 2;
-+
-+		/*
-+		 * If the driver filled in mcs_nss[0], then do not touch it.
-+		 *
-+		 * Otherwise, put some information about MCS/NSS into the
-+		 * user 0 field. Note that this is not technically correct for
-+		 * an MU frame as we might have decoded a different user.
-+		 */
-+		if (!vht.mcs_nss[0]) {
-+			vht.mcs_nss[0] = (status->rate_idx << 4) | status->nss;
-+
-+			/* coding field */
-+			if (status->enc_flags & RX_ENC_FLAG_LDPC)
-+				vht.coding |= IEEE80211_RADIOTAP_CODING_LDPC_USER0;
-+		}
-+
-+		/* ensure 2 byte alignment */
-+		while ((pos - (u8 *)rthdr) & 1)
-+			pos++;
-+		rthdr->it_present |= cpu_to_le32(BIT(IEEE80211_RADIOTAP_VHT));
-+		memcpy(pos, &vht, sizeof(vht));
-+		pos += sizeof(vht);
- 	}
- 
- 	if (local->hw.radiotap_timestamp.units_pos >= 0) {
-@@ -834,6 +863,9 @@ ieee80211_rx_monitor(struct ieee80211_local *local, struct sk_buff *origskb,
- 		return NULL;
- 	}
- 
-+	if (status->flag & RX_FLAG_RADIOTAP_VHT)
-+		rtap_space += sizeof(struct ieee80211_radiotap_vht);
-+
- 	if (status->flag & RX_FLAG_RADIOTAP_HE)
- 		rtap_space += sizeof(struct ieee80211_radiotap_he);
- 
 -- 
-2.34.1
-
+With best wishes
+Dmitry
 
