@@ -1,214 +1,161 @@
-Return-Path: <linux-wireless+bounces-28315-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28316-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A0AC0D987
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 13:39:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6078DC0E464
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 15:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43E6919A24FF
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 12:36:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7644C4F63A7
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 14:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E02C30F959;
-	Mon, 27 Oct 2025 12:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2245C25DD0B;
+	Mon, 27 Oct 2025 14:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CkQiDI3v"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Op1+Q5kZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FB730F921
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 12:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882731F4161
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 14:04:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761568451; cv=none; b=dEaIwD8PK5BDP5BOdKogGnlxOTkGNICpkVexWSW/AjdLbGOY0X71uSfGjMjatuBHhAcQP1BHN3rtsZI/pEgrPpLlvQAfxoM4ArRlWus4UneS6w3k0R0rLKUtbJAJkt/bmq+0caFckZjVn/r3p+VKHXqFkK44zE04NduC6bLy1d0=
+	t=1761573845; cv=none; b=tZ42a5lLXREgWyZY/Qf3SYe/fVAWmmFoQM5Zjrc6BSslEZhKZNNPIFHjwj+5K1c6Ij+ewALzcRVQ1vjGvE01RCLCwpP0eZsOY7g+M8kG8lt+UDp8xUqHPAFcfKanriI2mI4s+COBe/P/SIuaDh2pqmegncrcgZpJWZ0fGzHuZ1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761568451; c=relaxed/simple;
-	bh=dGL4Jm1ew5khgBhB6mbdQygeiPY7CEaGZ0zXi3YNTTE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tP7C5+ugTSe3dQpFV/PWkTlLmdksUQQmrnrn5cE6QcGqe2tvHiz5Q+5/AeMz4f5KvIctBrWThpQefE+V2V76dZxvAEigakpKfepQaI4o988TvcuwVMhK5+7MJYgqjQ8DmY/sczGmkcoLcg/oYtxglGZaxGpvJKKJoKxsKqSCRY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CkQiDI3v; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761568449; x=1793104449;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=dGL4Jm1ew5khgBhB6mbdQygeiPY7CEaGZ0zXi3YNTTE=;
-  b=CkQiDI3v3VP2/6MyttsH8tcOw0KZ+X1UY0qHyw7rKYly3VkSy06kNBPh
-   uKDrUptKmVm4hWWRamxMk5/pMrCv1r5DJsPKwTyyXoRyOcP+04DPHHMpZ
-   OLT6wbI1lvMfIy2FJBJzlqhgjwz41++db+t2ZI/RrHKupZORC1P9/4Py/
-   1bXtv9ia+9vmJKv+qwClMp0wJWvl7TbCXyvMxJ+9i86HpMCH/p7AnYrUS
-   Za4Qui3PTbwTv5x7Z4pHsWwfClayaz0R+zWHn4xJH7C8ucAEWl/BgtLlI
-   3sHyQOL67sGO/leloeyaXwk1MDAE/wFB/afDRZgmW3E9JSRcT9Xvxd3mo
-   w==;
-X-CSE-ConnectionGUID: nR3WcMD8T6iXgqSrZ4cBZA==
-X-CSE-MsgGUID: DdlWLSXKR2qGblyohHJFYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66258579"
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="66258579"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 05:34:09 -0700
-X-CSE-ConnectionGUID: ozK0NQXoT7OPPDyeBymF7A==
-X-CSE-MsgGUID: bKkjsP/wRTiWljAp0MsDOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="190162834"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 05:34:08 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next v3 4/4] wifi: mac80211: use wiphy_hrtimer_work for csa.switch_work
-Date: Mon, 27 Oct 2025 14:33:57 +0200
-Message-Id: <20251027143011.8e0ca5adf1c2.I4ff2b2cdffbbf858bf5f08baccc7a88c4f9efe6f@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251027123357.2221947-1-miriam.rachel.korenblit@intel.com>
-References: <20251027123357.2221947-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1761573845; c=relaxed/simple;
+	bh=rS1fOXfMqQXvPa6hGYgImNOsoSSvwfxjEAGQpgmDOB4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=VJCVD1PqYXZXxTrELdvt9oLAwxJiJ4PR8uUTIVD6FqjO4qKzuTW7s5VoO1FjJkq1MOSIBOoeA267tmdvdVS2uLWHhLvjtYylxjYaA5e5yMdUvn/zJDC5sucRSseiV6bHO4g3SANiUdBREf1BnjWDeOIHsArUSIu9E4vdSJOtFrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Op1+Q5kZ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59RDhS0b2963114
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 14:04:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	hu24l8t8X8f/xJJ8OqbvDIHaP5xTZrki9rKkEnx7h5o=; b=Op1+Q5kZjHd+4sar
+	Hj/ViJYFgGJ3GZN+kL0EfzO0+q5NMQo5NPSr4lOCuOJwz9ZMBM3THcX5D9cH49RR
+	/zCdrLqDWZzRBKBrziM7o9/v0Z1MT9UE82F1aod6wpro13Iq/B10zqJDKsdEz569
+	ATLZs+g4NFfXdtlsmuiDwYWFJnMvX/lHKiKY2E63GXbPP2G7TP4PKB9jgSYoKaCj
+	6qb1QdukswguwmmApRnwMCu/tjm+hgMz02lyzAzeT215PP4ZD4oZQgVDxEtNQNNe
+	6Gyw6KSp34L1xcG6mty34sX5JGrGhEC4NP8QDQXKbrtFXYjsQT+JMTA3ysqcWi2H
+	aUYB0A==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a29v9r1uq-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 14:04:02 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-33bdd0479a9so4844102a91.2
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 07:04:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761573841; x=1762178641;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hu24l8t8X8f/xJJ8OqbvDIHaP5xTZrki9rKkEnx7h5o=;
+        b=CsW/ZjaLPezLlNoCCSHJ4D3jddNs5662x6RKKzhyjjxjboMhMqRdi1VgbGB80xM8EU
+         ek50DKGTmNnUFjlG+tDzYiZq5xofZm1mAxWn79qOBdInT3+k5++oXMVzPlCn7HEYuQAA
+         1tuGDtpBppvJdnZbdt2divDF/29cgpOr55159UbvaJpmmajrjuH5+711T9xqce3KOZWC
+         bdqMqibTE3j6EITF3xsMUqR0daX9/LtTn0imJMhfHY0zqe8x6i2KtpJq6EQFyvi0Xsbd
+         I0B2+32CDBZjwcvqudfLI5XqPSaR1vddy7AWpPPVdhba0cuXWrcLgQNlQ8Ox3mlb3GdE
+         Wyuw==
+X-Gm-Message-State: AOJu0YxZ4NcxeP+vDceLYXSh1JKjrgCudQ+IMRfgQfC77p/ryP7o/VIH
+	d+I3nCTF6Sqf4OKLllXHtuEPoIRKqRcMMuphAwC+UG0H4lm8bZHFnHJLDqJGC/BYMmtUkaVrYla
+	iQ2YN5QiFsbmIsdg6PU1nw7KkaDjQCXuIYdRQzZgmXP/f3F1qUrUZjNjran3kORhYHWbo7g==
+X-Gm-Gg: ASbGncseFgofhU2gchCavtamq5bYX7GRosgwTNqUFrxKRLhx0CsUlnYe0GSbgZWIfy0
+	vurQba9oLOQ7xDRSfcUGSMQWq1E4OdnUm38+jaov0oKZWtXIZ1ZD2gM3Ch9THBKua1f9oxEu/J+
+	556cmHJnW/MccX0hKyInqat5SycM8BaeXKIDY4dcwixslKsVJ6w8hi43qq29xRMfSu7lPDEjpxA
+	9WQLZV1crdSpdpdBJsOqjtQBWvOfrceuja3ChfLOO/s0WRYZDeUpsXQR/NVwEA2m4VzI639rWb8
+	yJG4SHBilttdMUdokC7gcvXo20Gv5ExHaxtW1doYPr/gpj2cB9knhpvVASx2/+be+xI0p1mGHOZ
+	sAD248V+3AOoevGp/yQ4uCFs9t2oqUlQnwbM=
+X-Received: by 2002:a17:90b:3fc5:b0:33e:2d0f:479c with SMTP id 98e67ed59e1d1-33fd66b42dbmr13564749a91.22.1761573839953;
+        Mon, 27 Oct 2025 07:03:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGVrhYFLGJrFEFxAjB79L3hU/gm394qy1xmuPF7hMFnkJhfGT7xIHgo7Bqqbr4CEcmUrFRhHA==
+X-Received: by 2002:a17:90b:3fc5:b0:33e:2d0f:479c with SMTP id 98e67ed59e1d1-33fd66b42dbmr13564699a91.22.1761573839160;
+        Mon, 27 Oct 2025 07:03:59 -0700 (PDT)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fed7f3aeesm8620313a91.14.2025.10.27.07.03.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 07:03:57 -0700 (PDT)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: ath12k@lists.infradead.org, Ripan Deuri <quic_rdeuri@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+In-Reply-To: <20251024181548.3255166-1-quic_rdeuri@quicinc.com>
+References: <20251024181548.3255166-1-quic_rdeuri@quicinc.com>
+Subject: Re: [PATCH ath12k-ng 0/9] wifi: ath12k: Modularization of peer
+ object
+Message-Id: <176157383748.213109.7770176959041227936.b4-ty@oss.qualcomm.com>
+Date: Mon, 27 Oct 2025 07:03:57 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Proofpoint-GUID: IITJf1lonFJDwvhbcJlpYcZ0u4Ctja8y
+X-Authority-Analysis: v=2.4 cv=D/VK6/Rj c=1 sm=1 tr=0 ts=68ff7bd2 cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=EUspDBNiAAAA:8 a=xMiiiAbsooRf6sH7C_0A:9 a=QEXdDO2ut3YA:10
+ a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-ORIG-GUID: IITJf1lonFJDwvhbcJlpYcZ0u4Ctja8y
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI3MDEzMSBTYWx0ZWRfX7+p0NZwyA8E4
+ wm8fEibHNU3YV8jfFRLzYSGlxBJFER9r7Gjh1fcbi/ByWO4+ktlaeNNf0v7xyFAQPWbJK1CgZ/D
+ yiFyVB7Z75SPsQOY2eFJQzk9O9L2cBLTr9OgQd5QhoMy95KLszLvolGDeUcAiEHC9igyEEMq4tX
+ n7uRZudxXXmdbiTqx1Sz2/Fty+lQA+qsBYeYfnTqm9JdcTVoeUzMQ2qHf4Md4n6bxlvB3vo83di
+ 2kYNcsnGCNnseK+M5RnMNKbTSo94X4NTh1FULpnwg7L4PlwuQydeWG0la2+4Jb061I8RyJx2TYf
+ Q0qNywcz8xZ0SoA3fdbkvpxg2M6zYYo1bIn2uCyGWfy9zGIAG4bzk/cvWI2kceTP18Ef/PMWKY1
+ GtgVtFdxDD1U092mcIUxwp+ePtd18w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-27_06,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0
+ suspectscore=0 spamscore=0 adultscore=0 clxscore=1015 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510020000 definitions=main-2510270131
 
-From: Benjamin Berg <benjamin.berg@intel.com>
 
-The work item may be scheduled relatively far in the future. As the
-event happens at a specific point in time, the normal timer accuracy is
-not sufficient in that case.
+On Fri, 24 Oct 2025 23:45:39 +0530, Ripan Deuri wrote:
+> struct ath12k_sta has an array of struct ath12k_link_sta wherein each index
+> represents one link of the connected station.
+> 
+> For each ath12k_link_sta, there is a corresponding data path peer which is
+> represented by struct ath12k_peer.
+> 
+> Diagrammatic view of the station is a below:
+> 
+> [...]
 
-Switch to use wiphy_hrtimer_work so that the accuracy is sufficient. To
-make this work, use the same clock to store the timestamp.
+Applied, thanks!
 
-Fixes: ec3252bff7b6 ("wifi: mac80211: use wiphy work for channel switch")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- net/mac80211/chan.c        |  2 +-
- net/mac80211/ieee80211_i.h |  4 ++--
- net/mac80211/link.c        |  4 ++--
- net/mac80211/mlme.c        | 18 +++++++++---------
- 4 files changed, 14 insertions(+), 14 deletions(-)
+[1/9] wifi: ath12k: Move DP related functions from peer.c to dp_peer.c file
+      commit: 07174dc94269758e271cba01680a8fecf35169dd
+[2/9] wifi: ath12k: Rename ath12k_peer to ath12k_dp_link_peer
+      commit: 9e0b56a33384c670501632810634553a767912d5
+[3/9] wifi: ath12k: Add hash table for ath12k_link_sta in ath12k_base
+      commit: 57ccca410237285f8f25a988655e6910cadc63f2
+[4/9] wifi: ath12k: Move ath12k_dp_link_peer list from ath12k_base to ath12k_dp
+      commit: 0cafe8cc85665f29b28891f4b921bef1854c2e99
+[5/9] wifi: ath12k: Add hash table for ath12k_dp_link_peer
+      commit: a88cf5f71adfc5e7412a505ee0077628231c6d80
+[6/9] wifi: ath12k: Define ath12k_dp_peer structure & APIs for create & delete
+      commit: ee16dcf573d5e3283fda601dd4bca6bc52251017
+[7/9] wifi: ath12k: Attach and detach ath12k_dp_link_peer to ath12k_dp_peer
+      commit: 5525f12fa671a007c6c6044c861eee86de71b576
+[8/9] wifi: ath12k: Use ath12k_dp_peer in per packet Tx & Rx paths
+      commit: 11157e0910fdc9ab8077af69fd4496b80d7c39a0
+[9/9] wifi: ath12k: Add lockdep warn for RCU
+      commit: 6633dca572d8f599b0a1ead0f145a52049ec7709
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 57065714cf8c..7f8799fd673e 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -1290,7 +1290,7 @@ ieee80211_link_chanctx_reservation_complete(struct ieee80211_link_data *link)
- 				 &link->csa.finalize_work);
- 		break;
- 	case NL80211_IFTYPE_STATION:
--		wiphy_delayed_work_queue(sdata->local->hw.wiphy,
-+		wiphy_hrtimer_work_queue(sdata->local->hw.wiphy,
- 					 &link->u.mgd.csa.switch_work, 0);
- 		break;
- 	case NL80211_IFTYPE_UNSPECIFIED:
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index eb38049b2252..878c3b14aeb8 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1017,10 +1017,10 @@ struct ieee80211_link_data_managed {
- 	bool operating_11g_mode;
- 
- 	struct {
--		struct wiphy_delayed_work switch_work;
-+		struct wiphy_hrtimer_work switch_work;
- 		struct cfg80211_chan_def ap_chandef;
- 		struct ieee80211_parsed_tpe tpe;
--		unsigned long time;
-+		ktime_t time;
- 		bool waiting_bcn;
- 		bool ignored_same_chan;
- 		bool blocked_tx;
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index d71eabe5abf8..4a19b765ccb6 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -472,10 +472,10 @@ static int _ieee80211_set_active_links(struct ieee80211_sub_if_data *sdata,
- 		 * from there.
- 		 */
- 		if (link->conf->csa_active)
--			wiphy_delayed_work_queue(local->hw.wiphy,
-+			wiphy_hrtimer_work_queue(local->hw.wiphy,
- 						 &link->u.mgd.csa.switch_work,
- 						 link->u.mgd.csa.time -
--						 jiffies);
-+						 ktime_get_boottime());
- 	}
- 
- 	for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index dad3985b5704..767804e41a34 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2604,7 +2604,7 @@ void ieee80211_chswitch_done(struct ieee80211_vif *vif, bool success,
- 			return;
- 		}
- 
--		wiphy_delayed_work_queue(sdata->local->hw.wiphy,
-+		wiphy_hrtimer_work_queue(sdata->local->hw.wiphy,
- 					 &link->u.mgd.csa.switch_work, 0);
- 	}
- 
-@@ -2763,7 +2763,8 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 		.timestamp = timestamp,
- 		.device_timestamp = device_timestamp,
- 	};
--	unsigned long now;
-+	u32 csa_time_tu;
-+	ktime_t now;
- 	int res;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
-@@ -2993,10 +2994,9 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 					  csa_ie.mode);
- 
- 	/* we may have to handle timeout for deactivated link in software */
--	now = jiffies;
--	link->u.mgd.csa.time = now +
--			       TU_TO_JIFFIES((max_t(int, csa_ie.count, 1) - 1) *
--					     link->conf->beacon_int);
-+	now = ktime_get_boottime();
-+	csa_time_tu = (max_t(int, csa_ie.count, 1) - 1) * link->conf->beacon_int;
-+	link->u.mgd.csa.time = now + us_to_ktime(ieee80211_tu_to_usec(csa_time_tu));
- 
- 	if (ieee80211_vif_link_active(&sdata->vif, link->link_id) &&
- 	    local->ops->channel_switch) {
-@@ -3011,7 +3011,7 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 	}
- 
- 	/* channel switch handled in software */
--	wiphy_delayed_work_queue(local->hw.wiphy,
-+	wiphy_hrtimer_work_queue(local->hw.wiphy,
- 				 &link->u.mgd.csa.switch_work,
- 				 link->u.mgd.csa.time - now);
- 	return;
-@@ -8859,7 +8859,7 @@ void ieee80211_mgd_setup_link(struct ieee80211_link_data *link)
- 	else
- 		link->u.mgd.req_smps = IEEE80211_SMPS_OFF;
- 
--	wiphy_delayed_work_init(&link->u.mgd.csa.switch_work,
-+	wiphy_hrtimer_work_init(&link->u.mgd.csa.switch_work,
- 				ieee80211_csa_switch_work);
- 
- 	ieee80211_clear_tpe(&link->conf->tpe);
-@@ -10074,7 +10074,7 @@ void ieee80211_mgd_stop_link(struct ieee80211_link_data *link)
- 			  &link->u.mgd.request_smps_work);
- 	wiphy_work_cancel(link->sdata->local->hw.wiphy,
- 			  &link->u.mgd.recalc_smps);
--	wiphy_delayed_work_cancel(link->sdata->local->hw.wiphy,
-+	wiphy_hrtimer_work_cancel(link->sdata->local->hw.wiphy,
- 				  &link->u.mgd.csa.switch_work);
- }
- 
+Best regards,
 -- 
-2.34.1
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
 
