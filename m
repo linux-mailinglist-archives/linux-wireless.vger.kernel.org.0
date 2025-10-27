@@ -1,145 +1,144 @@
-Return-Path: <linux-wireless+bounces-28319-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28320-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A0FC0EDC6
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 16:14:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8F3C0F9C0
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 18:22:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B21F501E65
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 15:03:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38700463505
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 17:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043522D0611;
-	Mon, 27 Oct 2025 15:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44DA03168E0;
+	Mon, 27 Oct 2025 17:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="d0o/shcU"
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="urmwCXI+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640D22C08B2
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 15:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710153161BD;
+	Mon, 27 Oct 2025 17:18:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761577313; cv=none; b=GCV0lV6l5V6/4r22e2NkhtsQCPiY6TfcW2gP8cqLs2gJgjaKTUK40smwpdXQCB7pp5rDmlSz7FQxh9RHYf1JyCraaniGio+PttiKk1ej4QJn2eXF14OPtf5LOb/sxRofroCSICcLZrgWWZch92mX6f3/CpMmNdB5mGD0ryk+K64=
+	t=1761585500; cv=none; b=jBgVlaoiTeTkdu/e3nxThaWGup8XBhNb4zieMHHuHh8kCMDh7r/5zfO42SH/TRxFG9+CDgxgsfbLDu6dupMyM03PUNiehg0BBqRoDrfjNfrqlgCtMR4yoNyKhERBvFy2TD7z3XPotBv5vPyaNCJWBrFFtkSXt+QNIl/o/lQO3/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761577313; c=relaxed/simple;
-	bh=QLqVDGKVKT0Vzx9Z1Px+JIv6i17b5HfUWfDL1/spq64=;
-	h=Message-ID:Date:MIME-Version:To:Cc:Subject:From:Content-Type; b=DiGZTJHXdynsdJoAO9rPuwnFgbtejywAy2ZJ82oSCjvdvKrTpoFkiK3+/7PFTGcuNszecXT2q5D0gmz1M+AShRQngrWOWfhYgtqbSNwdYObQMGmaoVs+Ak/W8UhrAUbnBB1vOZL7lOADl+09wBkN33A8bp9U7Anu9x1ieM+J5eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=d0o/shcU; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59RCLYcb2753176
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 15:01:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=OCOrSgOblqXWig6OfCFVn8
-	9kjpCjlnAQHN6FWMG46rg=; b=d0o/shcUHoGwdYkJx/43muxD6H4lTTPZG4Uqtx
-	kGG8WOo9rQPg+LVFxMSfGq5H37eg4VDrVLQKqi+rh1yS1lHI7oN+UtwVK/GQMPjc
-	mlXickZfXq1bFJoyRtCNo9NBKs0uGRGHmxSL/5IVBTMC7ViA/fw8mL9mLAi+lTWH
-	CL+TlRXnssNx3C7bwhhvwyL94Zi4Z1d0/SAjypiNIHto9h3Jq3K2QkFKCXbGvFut
-	ESeCDh/qTvsLXUkvQiMGRlG7w+bvfeRrmbAuVckBKv21vmk7uhgpqmeEl08rgcx4
-	fYwhGR4oCNJmuPiKo/Xi0zv8laZlQMWfJL8R1K0eKpehbIxg==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a28nsrhek-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 15:01:51 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-798920399a6so4960398b3a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 08:01:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761577310; x=1762182110;
-        h=content-transfer-encoding:from:content-language:subject:cc:to
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=OCOrSgOblqXWig6OfCFVn89kjpCjlnAQHN6FWMG46rg=;
-        b=fIHhWKhGpVJ6RseKA5hh6IQcpoOpIcxHc7yeJgh5UMwmChu1UToUf0lN+yLB+5Wb6q
-         q9uVsaa/HgxJdOijMZblF5DTIe6XuhTdlOEhbuEvO3hXxjvSEi/FiUX4TA8sCvYhX9rL
-         o+cRZ4ulFDhV4VZ2GcbtiTGcab1EyYSCERIffpkS5ALTX8YfIiUqmXEkXB+1bHqwoBk2
-         7/Q6P8VPtbxAXGB19f3kOuoy2tlYrYJsHT8ROAq86sJo7+niODXXzPCWg59KP7dfFNNr
-         61FgKzPlGLdCu0eg+msm1kHslp+5ub1bBovKiN7BVmj9x+b28YU9cZM4riPlTrHOzvx4
-         YJfQ==
-X-Gm-Message-State: AOJu0YydfU2eYuO1zRS6sA6JJJTAozpeSlN9Sjrs7P2c9qjdvsPe3VY3
-	DSgzkQhlbkuDgBHbJ5iXdBV/VcDyKTvhBHSwh1NgoBFALXoTSSVVVffOkxXRpYRoIxzMViwmlT3
-	U2WM9Bsm+G0+gSbo1gYOdd4sd+U9SIthbEcqAVVHh4kHxMH+qy6AMqwyWBfiihUsi7SmST8DPtN
-	1rsQ==
-X-Gm-Gg: ASbGnctdnU9CcEFBm5DcE84R18oIgvSLVkZ5XHbIbm+Nll9/MgNupsQDAJxB0dIcVTk
-	iSSEF395osYZYSIAxeCRLkeAVrrcfGtINExv1hXtfr5XOzgnazU9pKEC1KArZbg+8+hy0tBEg/W
-	6E3QuaTUREjukLmx73seq0zEpjRCjIwG97yRR2h3frjYjMdsiQTvpgI5qYczmK+kLslIY4VVTMp
-	7mAHmv3Y3vZcsYhOWEP7m9PBTuUm8xojwtEYtW+uLr3Lp5tlr4OFtupzHdX21HByaV2sXi2Ohez
-	N6k8jcgeZ4bQbnNwbBbnLyYmMWAS8yvmogtoYlZ/j1EfdL/4QJ4MlD7fA7AW1nldfIhh+KBQzJQ
-	s30Pfx24y00N6qDgtYjZEvsoi+oOqAMvPEGQ=
-X-Received: by 2002:a05:6a21:6d94:b0:343:6c90:77aa with SMTP id adf61e73a8af0-344b5167005mr468356637.29.1761577308082;
-        Mon, 27 Oct 2025 08:01:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHrvvBRv7oKTSELHMmBANH7x5KQyEPgrSTWh4Tjr+xrvgbNF7sSM/4PBKdW1pG8CYbqDyIRmA==
-X-Received: by 2002:a05:6a21:6d94:b0:343:6c90:77aa with SMTP id adf61e73a8af0-344b5167005mr468285637.29.1761577307219;
-        Mon, 27 Oct 2025 08:01:47 -0700 (PDT)
-Received: from [10.81.24.74] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a4140530d3sm8590390b3a.40.2025.10.27.08.01.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 08:01:46 -0700 (PDT)
-Message-ID: <e7e3ab9f-f477-4e84-8a5c-609fa1834624@oss.qualcomm.com>
-Date: Mon, 27 Oct 2025 08:01:45 -0700
+	s=arc-20240116; t=1761585500; c=relaxed/simple;
+	bh=q3+UUee6NjTzNjSLDHwWJbhFuDGP/50LJwD0evnMWfA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lvB0n8lGkzdmxgVFF3aKzdYIP+uQwz4SLD0a7DLm+zQtt1WJQuD/QcL+bIQNrQZSZctbyxtJ0A687bkLw0i5DkLEgDWRA1S/Ai0f8dWnWMOIFLVDKMzUOG/87qWMiIVFvZ7IFtggb5XbN2g1YwMPpOG6Se6LHw+ExZy1bLgT4AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=urmwCXI+; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 30E3F9550E9;
+	Mon, 27 Oct 2025 18:18:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1761585495; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=5v858IqBCKzHdFBFJSrUXXRl+m6ZWDsQE2+Wy791NHk=;
+	b=urmwCXI+p6sTAzM1plgPvyAbITmXVecUPt/MUVnrt3yVBRIzQ5O89xXzvoMReMtJ1zpFpg
+	3MatFg0stEc/zmY2tiRDvV15O0s32oEkCZokP5LsQpdKQUWHg3PRZolErNZO3j7kDHbILp
+	np45K7feborSAdT7f67w88TI3zpTuWMmB64j0wtWb29fJYPr7S2PzBcCSOf0odx0XBKREs
+	1/GSeZmiHgj1n+myAew/mamlotbALtmKZg1lAqlRTmNoVdlxzN+wHrC2k5X+7Q1zSN7ZjG
+	IhUTdGkF1nErt8tvGGeXdcmoOls+ZX7egl/qxhdpXkQlOpvpY/F63nJL6uiVXQ==
+From: Caleb James DeLisle <cjd@cjdns.fr>
+To: nbd@nbd.name,
+	lorenzo@kernel.org
+Cc: ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Caleb James DeLisle <cjd@cjdns.fr>
+Subject: [PATCH] wifi: mt76: mmio_(read|write)_copy byte swap when on Big Endian
+Date: Mon, 27 Oct 2025 17:17:59 +0000
+Message-Id: <20251027171759.1484844-1-cjd@cjdns.fr>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: linux-wireless@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>
-Cc: ath10k@lists.infradead.org, jjohnson@kernel.org
-Subject: pull-request: ath-current-20251027
-Content-Language: en-US
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI3MDE0MCBTYWx0ZWRfX1RSicK9JtyJ6
- Y7iHYjyxd6SKwHYMumKj9bVWsswKZQc2DMrGI1Pcm78SH4pLlaPUE2xceRK+wxK+b3CNDrQQhst
- X1ZvXu4/V5MF2uwt9U/Y/4tjtzZXiq1nIlkwVdR4N+9CgtwT0fuJN1w/CEbhNZQ6GmP/0d7/vza
- 1F1gD7qp0knCVxdkrcMBgVD8H16liWgu1uPS1V0bJDmGjTH7WkWcD2qwvP7975nVHrZnMwfGKIj
- 6OVIjrl7Jl/c5EOumm2WS0vbY2q6asLduv/9j69voOzb4kLLidOTt7Yh9djXzCPrEwMBGRyrTKt
- llTwnD+SXkmnmokDR5JLnQDJChr2sRZCOnE5dzqYUNqNBkOR/ResFqpe/jkrYISQLUiehfk9hoh
- B2MFjX6bA4IL9NJwo00Ut85tCaNCIw==
-X-Authority-Analysis: v=2.4 cv=RIW+3oi+ c=1 sm=1 tr=0 ts=68ff895f cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=-r_gnQ9DsvtphcIF9MQA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
- a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-ORIG-GUID: gScEZ3ZFnWi-syRDJrQBdqzqHYIHfF8N
-X-Proofpoint-GUID: gScEZ3ZFnWi-syRDJrQBdqzqHYIHfF8N
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-27_06,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 impostorscore=0 adultscore=0 priorityscore=1501
- malwarescore=0 clxscore=1015 bulkscore=0 phishscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510020000 definitions=main-2510270140
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The following changes since commit a83155cc4ec5dd8c99edb541dc12d3bd8e97eae9:
+When on a Big Endian machine, PCI swaps words to/from LE when
+reading/writing them. This presents a problem when we're trying
+to copy an opaque byte array such as firmware or encryption key.
 
-  Merge tag 'wireless-2025-10-23' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless (2025-10-23 17:15:48 -0700)
+Byte-swapping during copy results in two swaps, but solves the
+problem.
 
-are available in the Git repository at:
+Fixes:
+mt76x2e 0000:02:00.0: ROM patch build: 20141115060606a
+mt76x2e 0000:02:00.0: Firmware Version: 0.0.00
+mt76x2e 0000:02:00.0: Build: 1
+mt76x2e 0000:02:00.0: Build Time: 201607111443____
+mt76x2e 0000:02:00.0: Firmware failed to start
+mt76x2e 0000:02:00.0: probe with driver mt76x2e failed with error -145
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git tags/ath-current-20251027
+Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+---
+ drivers/net/wireless/mediatek/mt76/mmio.c | 34 +++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-for you to fetch changes up to 2469bb6a6af944755a7d7daf66be90f3b8decbf9:
+diff --git a/drivers/net/wireless/mediatek/mt76/mmio.c b/drivers/net/wireless/mediatek/mt76/mmio.c
+index cd2e9737c3bf..776dbaacc8a3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mmio.c
+@@ -30,15 +30,49 @@ static u32 mt76_mmio_rmw(struct mt76_dev *dev, u32 offset, u32 mask, u32 val)
+ 	return val;
+ }
+ 
++static void mt76_mmio_write_copy_portable(void __iomem *dst,
++					  const u8 *src, int len)
++{
++	__le32 val;
++	int i = 0;
++
++	for (i = 0; i < ALIGN(len, 4); i += 4) {
++		memcpy(&val, src + i, sizeof(val));
++		writel(cpu_to_le32(val), dst + i);
++	}
++}
++
+ static void mt76_mmio_write_copy(struct mt76_dev *dev, u32 offset,
+ 				 const void *data, int len)
+ {
++	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)) {
++		mt76_mmio_write_copy_portable(dev->mmio.regs + offset, data,
++					      len);
++		return;
++	}
+ 	__iowrite32_copy(dev->mmio.regs + offset, data, DIV_ROUND_UP(len, 4));
+ }
+ 
++static void mt76_mmio_read_copy_portable(u8 *dst,
++					 const void __iomem *src, int len)
++{
++	u32 val;
++	int i;
++
++	for (i = 0; i < ALIGN(len, 4); i += 4) {
++		val = le32_to_cpu(readl(src + i));
++		memcpy(dst + i, &val, sizeof(val));
++	}
++}
++
+ static void mt76_mmio_read_copy(struct mt76_dev *dev, u32 offset,
+ 				void *data, int len)
+ {
++	if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)) {
++		mt76_mmio_read_copy_portable(data, dev->mmio.regs + offset,
++					     len);
++		return;
++	}
+ 	__ioread32_copy(data, dev->mmio.regs + offset, DIV_ROUND_UP(len, 4));
+ }
+ 
+-- 
+2.39.5
 
-  Revert "wifi: ath10k: avoid unnecessary wait for service ready message" (2025-10-27 07:35:24 -0700)
-
-----------------------------------------------------------------
-ath.git update for v6.18-rc4
-
-Revert an ath10k change which improved QCA6174 but completely broke
-QCA988x and QCA9984.
-
-----------------------------------------------------------------
-Baochen Qiang (1):
-      Revert "wifi: ath10k: avoid unnecessary wait for service ready message"
-
- drivers/net/wireless/ath/ath10k/wmi.c | 39 ++++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 19 deletions(-)
 
