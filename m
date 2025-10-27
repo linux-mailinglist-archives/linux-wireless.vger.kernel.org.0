@@ -1,115 +1,99 @@
-Return-Path: <linux-wireless+bounces-28321-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28322-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A1E9C0FCAC
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 18:53:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E92EC0FD84
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 19:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9FC414FCFD4
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 17:51:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EAFD467867
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 18:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364EE31A549;
-	Mon, 27 Oct 2025 17:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F28031283D;
+	Mon, 27 Oct 2025 18:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="chXtgWv6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c0f12F+W"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C7D315D2A
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 17:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84AE30AAC8
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 18:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761587445; cv=none; b=kB0nAN0FYLmEutINzCV8msIAQxhC6qlZqUkq6VO5P0Uc5DOMKnesANaax9Yvm8//DrKMPoAxwXXT5YrOkYidV58TxqEnJ6MphYkJQojqs9I/IlwqvD256V6o4l4lJqh/H/gNATmmCUCmBYizzPH3a3pLUEjXUeBRNHAc5TF5S0o=
+	t=1761588202; cv=none; b=UtIr+X2UpKM24o3a2M6qlRklFyNki3fMk1HlY50WT2OwwrjWp2ja4h5On/FgjalvVF5yrKwqS0wph50pC2wTgRD5fO/0N20X1aGmxfUWbSOnKXbDrqb/vhUgGil4RP0JLXVcHiVcUITOZ18kRFm3VlichoVoAr879kkYd2HEmds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761587445; c=relaxed/simple;
-	bh=bdKOi4YQCsGQsKdKtMIrpIeObDpZmEpfrbyf0ia0seQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OBiCMpXU5P8Fis1uuebD2y++bSlAoatvy4sG0tLs+IRbTFAQ08jDZatNkLZ6PgpuJQVJgPaGBFsq5BYI0x+YVsTi/3XkgmQ+i8YZozEZzXRKqq+ylvFnx4g5yYjBD7n23Q7IrRJ+m3kdcEKwOL3CA71H3w8qNYyRwg8KflEpU74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=chXtgWv6; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1761588202; c=relaxed/simple;
+	bh=z83AXuvcweGfzJ1YzykNAVHCd4v5jqaWPkQKxlN5fdk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EJ1vbxpU/1FgDG79KTUA3mmbRvfSeWs6wr5pEg5kfwPFbPITlaPgmO9vEQY77hiQ/sPHlYtg7+TWz67MtQjiykCtPDKleNcOZ78I9fh9ZrtxKIh9E90PkQ/w7wZGHM8Y2UHUlsRnJxpbqnR5J/KGeKdoxkHFUe4+KW4c6QXIksQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c0f12F+W; arc=none smtp.client-ip=209.85.128.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47117f92e32so44401185e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 10:50:42 -0700 (PDT)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-781421f5be6so55486177b3.0
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 11:03:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761587441; x=1762192241; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bdKOi4YQCsGQsKdKtMIrpIeObDpZmEpfrbyf0ia0seQ=;
-        b=chXtgWv6B2hUNDaNo3rhzlcsL9GqkoMzFCB8Xpl+DBQJuWvoWYmDln2lgCmQRTxTVa
-         OiHIpqdAj5IbRZLr616mUybNehgNZxWdfy4uBId9jmPPGmQGRuid991Mx4adW3319HBR
-         lnqKynCQd99BUjsAQdWHWgc/fYQI5wA87LnYfbyN0jbHnpNKHEiiwaI9bCh0dTO0tpj/
-         TUlcgPWTNgv4YlYxRt1Sk5Lf3nGUgcJQUc6ofqVTZf+rSuj9eXpVUSHEZc3ca8kLhJJk
-         mdnChGAOx9ZYOoUT2uVzOvaymjxHTILhDpzm3GztadKXamhFYUXCYJ4yKeZYaKZztp7d
-         +5WQ==
+        d=gmail.com; s=20230601; t=1761588200; x=1762193000; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z83AXuvcweGfzJ1YzykNAVHCd4v5jqaWPkQKxlN5fdk=;
+        b=c0f12F+WW0vGS4nnwmN0CAqpGqsYPbcNoXMYqtY6tayUXPn+w9w1Z7+TvQ9TJHMIaZ
+         e/oLYIc2o3HBdvrDLSTORpq2S9NYZfE0n0raZs89Cvetx52IY92qjlb8LIZo8QREKQcp
+         w8Z7WB3QQ32NfMfYYINjaNqA9RMW59deUJGNEiqIdr+wI+BTsPanrMhYvO5bAbkw3fDD
+         uYkIN0Hn10UwhwKzoE5X3XKW3eFwkk5w2j/OkdlaGEqEMq8kPOBmCSAk8Xlfmo4D5BZp
+         SsatJCpkubkrNhEa8qlNH+LcKovXN5wnD7DCF1DvWWnvT9+XwBAVynn5xuClkcmzS24m
+         pMzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761587441; x=1762192241;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bdKOi4YQCsGQsKdKtMIrpIeObDpZmEpfrbyf0ia0seQ=;
-        b=KdrNYfyhKSIhX2kN1rBaCp8lFRpSdnVm/+o4HYHKmf+gjgO9Fuejm0dq/YffFmR38T
-         LsGOiYykoB15Isj9+ry4hw5lSgd62Bxse8qbM1tlvY4OgKQO+ymfcOXHIheZ9DwBvSPf
-         T0u5ntWmBohNC1Cmwzx7OAKige9Kw+6ER+KXucEq6b4ie84ulRG5HzIefA3KzFtAZRZY
-         68sCWZsCwa1pp7A3hA/ScgthUtk7OxQzoQgBASThPC5YMm74+XToL6LCcXC2vVln5fn7
-         lAe+y10jxSnXxsKAkNMzdVRp/YysSRfu36Jy3OIrsLl1OJQ/J+AGL9UuFLQd9BsTNrlG
-         jHnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvIN450+VV4gRSnkDarnOMf1Df1y6SQwFp+pJ/us8+lSF0qdSwcaR1lTCPuyJP8drrO27IFHRN7WuNIf7zWQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYzXsDHT8yOIIiM10SGBi+kl3aWwVb2v/dJywMZ72dyXU6L8Uk
-	WQPJ78YmQS7+Cfma9L+w1zj9+YhoQ/Ymv6cBOFgdi3sTmRAhkJbSrcp8
-X-Gm-Gg: ASbGnct8tT0oRHh0do7XDu9W7NzvBqBhJzhLf1nPvI/RG8ysVN5J31+IlniwffYVQnE
-	k3HSoGYs90vUsQTWFHVLz19uLIWbBIzKGE00OBMd4e2cx7u6apwMd9EXrpKSe8JXiC481oizdKp
-	s/ESZyAv117N6j5Zx4OwCbsqRNvcOXUByWkqGf8RhulDHo3r1sYYb4AmRkngRUnIBUVM+XV7aE2
-	BRYvHQ09Wh82u0koLAdCscrpQMzRbm9CDizHOHcxI3eNjj52BvFwa/B/Aqwva9ybXueaBzbZDnq
-	O7JjrVlrY9SLLjWB5vstrzUs1K97DyASEjqQsNzystDX73NwVcRdp6T1iPVZST9d1LcnBl9ex9W
-	HgNts4Yj3r+N7EQ268xjLsfsKt3S+YdqVHGtz7niCYf+cSV9PNfzP+LpCUxSqV7ioS76R824hLi
-	s7FkpQHxhVAMmBbnhV8fh0gx/FOetdOmE27xDJazVc16gYb4Y=
-X-Google-Smtp-Source: AGHT+IFjedik0MVZzW42ZeTwxhByD4S2tb7wikp1vYXQLqeLHay/lDx+CGiXprGCEhGGKNb5OAwYAg==
-X-Received: by 2002:a05:600c:638e:b0:477:bcb:24cd with SMTP id 5b1f17b1804b1-47717e30a86mr4189795e9.22.1761587441185;
-        Mon, 27 Oct 2025 10:50:41 -0700 (PDT)
-Received: from ?IPv6:2a02:168:6806:0:7ad3:93f6:d1b5:4923? ([2a02:168:6806:0:7ad3:93f6:d1b5:4923])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd02ce46sm179949795e9.3.2025.10.27.10.50.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 10:50:39 -0700 (PDT)
-Message-ID: <97ee879e4f80c3746f6b79ef5ed1d45f452f8ce7.camel@gmail.com>
-Subject: Re: [PATCH ath-current] Revert "wifi: ath10k: avoid unnecessary
- wait for service ready message"
-From: Klaus Kudielka <klaus.kudielka@gmail.com>
-To: Baochen Qiang <baochen.qiang@oss.qualcomm.com>, Jeff Johnson
-	 <jjohnson@kernel.org>
-Cc: yannick.martin@okazoo.eu, andreas.tobler@onway.ch, 
-	mathias.kretschmer@fit.fraunhofer.de, linux-wireless@vger.kernel.org, 
-	ath10k@lists.infradead.org
-Date: Mon, 27 Oct 2025 18:50:38 +0100
-In-Reply-To: <20251027-ath10k-revert-polling-first-change-v1-1-89aaf3bcbfa1@oss.qualcomm.com>
-References: 
-	<20251027-ath10k-revert-polling-first-change-v1-1-89aaf3bcbfa1@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-5 
+        d=1e100.net; s=20230601; t=1761588200; x=1762193000;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z83AXuvcweGfzJ1YzykNAVHCd4v5jqaWPkQKxlN5fdk=;
+        b=q29cyWGdJGgE7lriarbNdinXXY59tvbUGgUmrQ0ymNqwml4PekgDmLLpM2WWxpcnA5
+         CULAZpPAW20paLhRjJ1GBHMXVsw6t7JldMHpaYu0eUa/bo1QSvD3TTFGPYD6Z6J+fSB4
+         kFy6iRf4kMRcCl+u8xsRKYD98LqqUbYFke3wJjRjGEJ4+5h9WFeDjLB/v68GyPhtwXEv
+         /YPcMR52iw3n1GsX09X+laLcvafn2TaAlPzao1OkFcreBGN0AqqAie63snSWk4CIPgdC
+         UsKpbV8S+JX3i3lhY1/IDqLHEBRdfRP6svQ3IfHTZtNcK7tPFR7c50+F9Tvwb2LN3sp/
+         6Ygw==
+X-Gm-Message-State: AOJu0YyNM4ia6wlSyGqpNIMMVwhlHpAK/oVx/lI6oFhr1f5Ny8LtULlS
+	aDDm5fBFElB9nZ31kWD/gEPBya2fqhWF+Y8K732pUk95mOPDuWnmXoeRs+mpU7gJz66V2g8J2tE
+	84wk+4R4OxBZur67dOx+O1E0AN9goQX+9Zw==
+X-Gm-Gg: ASbGncu2Cc42bdpVGeWTpsFaIEoSBZJbf43nQcmsj6QDdTZf/fvVN6LNn4fDUvmKaR+
+	NQftLQn4LB6Gi5BQlL6YMwaejul39xB9uqTTZwwlbTYi0zsaMToGxG24r1pGKmsLC677FE/kCrP
+	uAMfj1H5vFgHApHFkQLxjdb1R9U4ss5jQca80nNwPx6E/tav8npE4o0eNNK9kWVIYWy2cWrJxr8
+	p1RFxmHZweu84oJbY47GOOlQAwkbuBECLvptw0wUA2JzUXfkvEtx8H8PUlEhibVRkV96HwAwYiN
+	q1YHNSax
+X-Google-Smtp-Source: AGHT+IHEjGHWDboqhwqSgR5zzYygFRWXIgKKmRw5b5ajo6pajcH8E9/Do3d86XVr5QyKBXnYP/5zxJVt23CEn2AWdc8=
+X-Received: by 2002:a05:690c:74c2:b0:784:8b01:c21e with SMTP id
+ 00721157ae682-78617f34811mr7129517b3.45.1761588199733; Mon, 27 Oct 2025
+ 11:03:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20251024203046.42275-1-rosenp@gmail.com> <b725672aab8c5a006603110b46e6e15495acccbc.camel@sipsolutions.net>
+In-Reply-To: <b725672aab8c5a006603110b46e6e15495acccbc.camel@sipsolutions.net>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Mon, 27 Oct 2025 11:03:08 -0700
+X-Gm-Features: AWmQ_bkES62pMCkmUYcvxmud3HMsqvB9OnJHmQIGlhxldOaEtBshd7JdM20rGJI
+Message-ID: <CAKxU2N_zzZX7RWMWqRfa8PwiDC=gZtqOZkSPWdcUKrd9eLSrVg@mail.gmail.com>
+Subject: Re: [PATCH] wifi: rt2x00: add nvmem eeprom support
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2025-10-27 at 09:49 +0800, Baochen Qiang wrote:
-> This reverts commit 51a73f1b2e56b0324b4a3bb8cebc4221b5be4c7a.
->=20
-> Although this commit benefits QCA6174, it breaks QCA988x and
-> QCA9984 [1][2]. Since it is not likely to root cause/fix this
-> issue in a short time, revert it to get those chips back.
->=20
-> Compile tested only.
-
-With this patch on top of v6.18-rc3, the following device works again:
-
-02:00.0 Network controller: Qualcomm Atheros QCA986x/988x 802.11ac Wireless=
- Network Adapter
-
-Tested-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+On Mon, Oct 27, 2025 at 1:13=E2=80=AFAM Johannes Berg <johannes@sipsolution=
+s.net> wrote:
+>
+> Please always tag patches with the tree they should apply to (e.g.
+> '[PATCH wireless-next]') and make sure they actually _do_ apply.
+That's embarrassing. Will resend with both issues fixed.
+>
+> johannes
 
