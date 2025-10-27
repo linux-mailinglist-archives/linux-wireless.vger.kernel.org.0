@@ -1,99 +1,198 @@
-Return-Path: <linux-wireless+bounces-28322-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28323-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E92EC0FD84
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 19:05:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD039C0FDA5
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 19:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EAFD467867
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 18:03:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3437E4F9E91
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Oct 2025 18:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F28031283D;
-	Mon, 27 Oct 2025 18:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C041316911;
+	Mon, 27 Oct 2025 18:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c0f12F+W"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G/Y5oNJn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84AE30AAC8
-	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 18:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF9831A81C
+	for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 18:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761588202; cv=none; b=UtIr+X2UpKM24o3a2M6qlRklFyNki3fMk1HlY50WT2OwwrjWp2ja4h5On/FgjalvVF5yrKwqS0wph50pC2wTgRD5fO/0N20X1aGmxfUWbSOnKXbDrqb/vhUgGil4RP0JLXVcHiVcUITOZ18kRFm3VlichoVoAr879kkYd2HEmds=
+	t=1761588421; cv=none; b=JfORs/+kC/ym2nxiWRd+1cjbvSTCv74q59u5QO67fcV2poK2vfP6xL3tRW5tn+O0LklbPdULHABBG8eu5I/1t9EqDEz2PBa2nGflxgDqIz+1D53PFw6MmFJ8YvTtBiRSd2P/61mRGIipUEiKDjM7lBi3w3PRVqm/WwjkPfAwyvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761588202; c=relaxed/simple;
-	bh=z83AXuvcweGfzJ1YzykNAVHCd4v5jqaWPkQKxlN5fdk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EJ1vbxpU/1FgDG79KTUA3mmbRvfSeWs6wr5pEg5kfwPFbPITlaPgmO9vEQY77hiQ/sPHlYtg7+TWz67MtQjiykCtPDKleNcOZ78I9fh9ZrtxKIh9E90PkQ/w7wZGHM8Y2UHUlsRnJxpbqnR5J/KGeKdoxkHFUe4+KW4c6QXIksQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c0f12F+W; arc=none smtp.client-ip=209.85.128.176
+	s=arc-20240116; t=1761588421; c=relaxed/simple;
+	bh=qurCehPtM9xeSnu8xN7CLjDJGyKjFe58N41J9IjlZ8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R1teX+aK8xjRtF7fJhRv/lVqFAiWI/HPOS2rejcXcQM8cf8JJxPfbiBaV8R9TvA5rHA62anowaPfoWgCDGI4dTWnX2dFydIZD/bumBiC/q8WRWQiRZG5ENcraoNBxYbv27Mw5Scphn1GVAGEjmw44uoWoYX4kiS1h+q1v63tLzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G/Y5oNJn; arc=none smtp.client-ip=209.85.160.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-781421f5be6so55486177b3.0
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 11:03:20 -0700 (PDT)
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4eb75e8e47eso56890251cf.0
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 11:06:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761588200; x=1762193000; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z83AXuvcweGfzJ1YzykNAVHCd4v5jqaWPkQKxlN5fdk=;
-        b=c0f12F+WW0vGS4nnwmN0CAqpGqsYPbcNoXMYqtY6tayUXPn+w9w1Z7+TvQ9TJHMIaZ
-         e/oLYIc2o3HBdvrDLSTORpq2S9NYZfE0n0raZs89Cvetx52IY92qjlb8LIZo8QREKQcp
-         w8Z7WB3QQ32NfMfYYINjaNqA9RMW59deUJGNEiqIdr+wI+BTsPanrMhYvO5bAbkw3fDD
-         uYkIN0Hn10UwhwKzoE5X3XKW3eFwkk5w2j/OkdlaGEqEMq8kPOBmCSAk8Xlfmo4D5BZp
-         SsatJCpkubkrNhEa8qlNH+LcKovXN5wnD7DCF1DvWWnvT9+XwBAVynn5xuClkcmzS24m
-         pMzg==
+        d=gmail.com; s=20230601; t=1761588418; x=1762193218; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+UKcuUb7XULGoVq4L0fXwmW3xKPpWtrfaM+Kq/kuFPI=;
+        b=G/Y5oNJntcFYfytKqEidSiZEeLuusWXRcAkwjAhGh47PtFcWFqTkZaDWWt+5TwLJBQ
+         R6gISJ+uBx+fUllcEHlUqnG0ksOaoVNi2TeXRMmHWgh8EeGSd4Mu0yJaM5+7uq9q0Wi+
+         t21XJo3h0jUVDxSneqB8I4U4iIH2ilquM2OsYFF0rjjbxXRTDgwXDm52rQe6LWRwy+Oz
+         Qd8xfQslsFP/pQalACPmXKDivbqZH4wO6wl8GDUwrSkghSrMa0MiGDw7DG7ytMLi1oK7
+         /mUJ6+i6K23Dc9q5piS+OUIKvPekv03EUmpFpMEJZoQzU3BiAYjR9SXB9d0GV/VfSGya
+         XSbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761588200; x=1762193000;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z83AXuvcweGfzJ1YzykNAVHCd4v5jqaWPkQKxlN5fdk=;
-        b=q29cyWGdJGgE7lriarbNdinXXY59tvbUGgUmrQ0ymNqwml4PekgDmLLpM2WWxpcnA5
-         CULAZpPAW20paLhRjJ1GBHMXVsw6t7JldMHpaYu0eUa/bo1QSvD3TTFGPYD6Z6J+fSB4
-         kFy6iRf4kMRcCl+u8xsRKYD98LqqUbYFke3wJjRjGEJ4+5h9WFeDjLB/v68GyPhtwXEv
-         /YPcMR52iw3n1GsX09X+laLcvafn2TaAlPzao1OkFcreBGN0AqqAie63snSWk4CIPgdC
-         UsKpbV8S+JX3i3lhY1/IDqLHEBRdfRP6svQ3IfHTZtNcK7tPFR7c50+F9Tvwb2LN3sp/
-         6Ygw==
-X-Gm-Message-State: AOJu0YyNM4ia6wlSyGqpNIMMVwhlHpAK/oVx/lI6oFhr1f5Ny8LtULlS
-	aDDm5fBFElB9nZ31kWD/gEPBya2fqhWF+Y8K732pUk95mOPDuWnmXoeRs+mpU7gJz66V2g8J2tE
-	84wk+4R4OxBZur67dOx+O1E0AN9goQX+9Zw==
-X-Gm-Gg: ASbGncu2Cc42bdpVGeWTpsFaIEoSBZJbf43nQcmsj6QDdTZf/fvVN6LNn4fDUvmKaR+
-	NQftLQn4LB6Gi5BQlL6YMwaejul39xB9uqTTZwwlbTYi0zsaMToGxG24r1pGKmsLC677FE/kCrP
-	uAMfj1H5vFgHApHFkQLxjdb1R9U4ss5jQca80nNwPx6E/tav8npE4o0eNNK9kWVIYWy2cWrJxr8
-	p1RFxmHZweu84oJbY47GOOlQAwkbuBECLvptw0wUA2JzUXfkvEtx8H8PUlEhibVRkV96HwAwYiN
-	q1YHNSax
-X-Google-Smtp-Source: AGHT+IHEjGHWDboqhwqSgR5zzYygFRWXIgKKmRw5b5ajo6pajcH8E9/Do3d86XVr5QyKBXnYP/5zxJVt23CEn2AWdc8=
-X-Received: by 2002:a05:690c:74c2:b0:784:8b01:c21e with SMTP id
- 00721157ae682-78617f34811mr7129517b3.45.1761588199733; Mon, 27 Oct 2025
- 11:03:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761588418; x=1762193218;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+UKcuUb7XULGoVq4L0fXwmW3xKPpWtrfaM+Kq/kuFPI=;
+        b=FgO+Vn9BhQKGBFjNNRIPwxLO7XjTRf9LjY6XBJDpLOHLLQDT36q0ep9M+u/8AJFbvX
+         FbDtVrc4OIRUG29aE3lOdpzhMwiuPTMSd22fHDPhgGSQgv0HgfeHQqxfqq+UdTT9tZpT
+         zwajsG8GH2MRSs0+mV7ft63Hc0mtNFIW/xAGLfcIThETupRzD7HIVqnEyDXC2tHKov5B
+         jaxbG0ZIEwNFkGDoYH78myFz26USHP5lp6UHkKReKPWAUBZzmbuu3APr7FF1uJjfqRez
+         usQIIP7HZxtTneK1slCJlcxvpHeITfKYEhSLoRlacbNKUYyuyIcGEhcT6c7L3z1Ew5/u
+         Wusw==
+X-Gm-Message-State: AOJu0YywEepqUeK8HzST4MMYvpqx8UiUCSlJom4L22WTadAEEUFgaW9p
+	uozqXqQxIWqtzhS5cx/ideCzRqkXORPwZ7CsGTtnF0yhqKvR0TAw0joy6X392Q==
+X-Gm-Gg: ASbGncuUEPsLfd/x9fk0ork6klYD6hcUm1/cJrhghHpXxILc63kDEit9Sux6Vwij0XD
+	e/u59mOR81Nq1pYYVNlZrxwOPogTY3xXYE/w152vA+LwgD3MA3+tGAsInf5mC87Va8wyA1WmCCG
+	5o/4p770mWezwvBUvLaFWes+A/b/qQk1xC2m4jNtv5PhFBvIes4vJnjdKNgxnQqXnmBWTUtPuWV
+	ss3yqgHSzS14Q6kOhnl0lOLYRQrLjFpuZixU7iiU8VRq/QO+y/c89b9hUmVo/VkyISZBvG2B2VF
+	0BdhLGhwnVVLHKsOMf/iggyNto63Qe+fS2AvexlMVroPZB6Ku/QHPUEzyLo0nTI9crSLqZ2y8dq
+	yF7J90+spviCpF86el5vaaM31xj59rzoxYjyYhwRyeaHJ9K3W60sXN41ewQ==
+X-Google-Smtp-Source: AGHT+IG1YtEHc0hSmIjWnUz0R4sCDCiHD5Zs26Y2Phxukq8yd1P1dZtt4RMgj+v3QtFQvXIQOWpK4Q==
+X-Received: by 2002:a05:622a:15c3:b0:4e7:1d1d:944e with SMTP id d75a77b69052e-4ed089c22dbmr4894241cf.15.1761588418350;
+        Mon, 27 Oct 2025 11:06:58 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:8e26::ea0])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4eba37fa7b9sm55446871cf.17.2025.10.27.11.06.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 11:06:57 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: Stanislaw Gruszka <stf_xl@wp.pl>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCHv2 wireless-next] wifi: rt2x00: add nvmem eeprom support
+Date: Mon, 27 Oct 2025 11:06:38 -0700
+Message-ID: <20251027180639.3797-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251024203046.42275-1-rosenp@gmail.com> <b725672aab8c5a006603110b46e6e15495acccbc.camel@sipsolutions.net>
-In-Reply-To: <b725672aab8c5a006603110b46e6e15495acccbc.camel@sipsolutions.net>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Mon, 27 Oct 2025 11:03:08 -0700
-X-Gm-Features: AWmQ_bkES62pMCkmUYcvxmud3HMsqvB9OnJHmQIGlhxldOaEtBshd7JdM20rGJI
-Message-ID: <CAKxU2N_zzZX7RWMWqRfa8PwiDC=gZtqOZkSPWdcUKrd9eLSrVg@mail.gmail.com>
-Subject: Re: [PATCH] wifi: rt2x00: add nvmem eeprom support
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 27, 2025 at 1:13=E2=80=AFAM Johannes Berg <johannes@sipsolution=
-s.net> wrote:
->
-> Please always tag patches with the tree they should apply to (e.g.
-> '[PATCH wireless-next]') and make sure they actually _do_ apply.
-That's embarrassing. Will resend with both issues fixed.
->
-> johannes
+Some embedded platforms have eeproms located in flash. Add nvmem support
+to handle this. Support is added for PCI and SOC backends.
+
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ v2: add wireless-next tag and fix the patch actually applying.
+ .../net/wireless/ralink/rt2x00/rt2800lib.c    | 31 +++++++++++++++++++
+ .../net/wireless/ralink/rt2x00/rt2800lib.h    |  2 ++
+ .../net/wireless/ralink/rt2x00/rt2800pci.c    |  3 ++
+ .../net/wireless/ralink/rt2x00/rt2800soc.c    |  6 +++-
+ 4 files changed, 41 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index f07152fa3725..65d0f805459c 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -24,6 +24,7 @@
+ #include <linux/crc-ccitt.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/nvmem-consumer.h>
+ #include <linux/slab.h>
+
+ #include "rt2x00.h"
+@@ -10962,6 +10963,36 @@ int rt2800_read_eeprom_efuse(struct rt2x00_dev *rt2x00dev)
+ }
+ EXPORT_SYMBOL_GPL(rt2800_read_eeprom_efuse);
+
++int rt2800_read_eeprom_nvmem(struct rt2x00_dev *rt2x00dev)
++{
++	struct device_node *np = rt2x00dev->dev->of_node;
++	unsigned int len = rt2x00dev->ops->eeprom_size;
++	struct nvmem_cell *cell;
++	const void *data;
++	size_t retlen;
++
++	cell = of_nvmem_cell_get(np, "eeprom");
++	if (IS_ERR(cell))
++		return PTR_ERR(cell);
++
++	data = nvmem_cell_read(cell, &retlen);
++	nvmem_cell_put(cell);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	if (retlen != len) {
++		dev_err(rt2x00dev->dev, "invalid eeprom size, required: 0x%04x\n", len);
++		kfree(data);
++		return -EINVAL;
++	}
++
++	memcpy(rt2x00dev->eeprom, data, len);
++	kfree(data);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(rt2800_read_eeprom_nvmem);
++
+ static u8 rt2800_get_txmixer_gain_24g(struct rt2x00_dev *rt2x00dev)
+ {
+ 	u16 word;
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
+index 620a3d9872ce..a3c3a751f57e 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.h
+@@ -248,6 +248,8 @@ void rt2800_disable_radio(struct rt2x00_dev *rt2x00dev);
+ int rt2800_efuse_detect(struct rt2x00_dev *rt2x00dev);
+ int rt2800_read_eeprom_efuse(struct rt2x00_dev *rt2x00dev);
+
++int rt2800_read_eeprom_nvmem(struct rt2x00_dev *rt2x00dev);
++
+ int rt2800_probe_hw(struct rt2x00_dev *rt2x00dev);
+
+ void rt2800_get_key_seq(struct ieee80211_hw *hw,
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800pci.c b/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
+index 14c45aba836f..4fa14bb573ad 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800pci.c
+@@ -278,6 +278,9 @@ static int rt2800pci_read_eeprom(struct rt2x00_dev *rt2x00dev)
+ {
+ 	int retval;
+
++	if (!rt2800_read_eeprom_nvmem(rt2x00dev))
++		return 0;
++
+ 	if (rt2800pci_efuse_detect(rt2x00dev))
+ 		retval = rt2800pci_read_eeprom_efuse(rt2x00dev);
+ 	else
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
+index 8f510a84e7f1..5c29201b34c8 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800soc.c
+@@ -92,8 +92,12 @@ static int rt2800soc_set_device_state(struct rt2x00_dev *rt2x00dev,
+
+ static int rt2800soc_read_eeprom(struct rt2x00_dev *rt2x00dev)
+ {
+-	void __iomem *base_addr = ioremap(0x1F040000, EEPROM_SIZE);
++	void __iomem *base_addr;
+
++	if (!rt2800_read_eeprom_nvmem(rt2x00dev))
++		return 0;
++
++	base_addr = ioremap(0x1F040000, EEPROM_SIZE);
+ 	if (!base_addr)
+ 		return -ENOMEM;
+
+--
+2.51.1
+
 
