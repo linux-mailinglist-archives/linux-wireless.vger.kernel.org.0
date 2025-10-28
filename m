@@ -1,82 +1,82 @@
-Return-Path: <linux-wireless+bounces-28327-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28328-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0CA0C12A21
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 03:09:23 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 680A4C12A5F
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 03:17:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CA2784F53CE
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 02:09:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 02F0135406D
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 02:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC9D1A8412;
-	Tue, 28 Oct 2025 02:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C39D85C4A;
+	Tue, 28 Oct 2025 02:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b="H9mKiUVX"
+	dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b="FUqDUHNK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E792DF68
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 02:09:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EE6165F16
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 02:17:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761617352; cv=none; b=g1KY7VtMy+x8jLMFuCPcMCYZUXZfYX8vBCJHYCmP67Vj0u4PeD842rqgx7/MyJ03xmXmH/Ifiw9+sGSXOxSAmOZjXOu7X87D/+tTnXOBjMSvbpLBr4qluI1Zdi/84NF7gMXe1OsxOjDAHcpiZsI5+Pgz33Al3rmprB/3VLDLcII=
+	t=1761617862; cv=none; b=F56LDTqAMwJIPxank3ykeSCosSAnoEcvJ2PICaGY7JCQRDQP1D6/W/pkPityOs2en/zHlBmnO2+voStAz2SHMhckj0fHhsMHxRHxdQKXnpsPGPZ//WsITz3rSuhDFojO1Z4qAgiwOoECAtHGu4gPeMfb4dSo7WS08/Q4pxavXJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761617352; c=relaxed/simple;
-	bh=HuGqISG12kqWjCddLMtiUSxCEruCMqJ/e11aDb1Zieg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CYhoBPbpdf4GRufLrPNNWD7eIWE5jo7mMAI1Av3C3ZTmqRCJByKWWX0ZbWDTiH+DvRkvIvbk6Vtg6Pv32/0q0xmsttrm7jNwQFp0XG9P0UgXypWROFsO8Js9qddLOmCFcMkyKADFGAHHUdwylP2Bxf3QqWef7tFYFkgS86Omyd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndoo.sg; spf=pass smtp.mailfrom=ndoo.sg; dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b=H9mKiUVX; arc=none smtp.client-ip=209.85.215.175
+	s=arc-20240116; t=1761617862; c=relaxed/simple;
+	bh=4RGsYqKh5COiPjR1AeIG3YJ/+d/ctZMmDvt4v+E7hRw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nU4iBKhu44mbj1/268AxvFi0x0ZyfI2ffzLFq13lSkYYR2jzOpvV/YRhyHTL0s6w0b4fso+67GaCiUxhU+pPlNtLpo1KBt9GEW+03M/dx4xLj1jNA3HbPRVre/FHYh8xyX/Xu266RGMQdv30y0WJAyUp1XgeAfpm1y8ckSc5oIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndoo.sg; spf=pass smtp.mailfrom=ndoo.sg; dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b=FUqDUHNK; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndoo.sg
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndoo.sg
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b6cf214a3ceso516269a12.3
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 19:09:10 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-269640c2d4bso8867915ad.2
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 19:17:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndoo.sg; s=google; t=1761617349; x=1762222149; darn=vger.kernel.org;
+        d=ndoo.sg; s=google; t=1761617856; x=1762222656; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BDPjYGcXz413BMEtPr/eFLPA6/i78BGY36YiaTonr58=;
-        b=H9mKiUVXMtzEKmBPcF3pYoAutLRXQLYstLRMH/jkh9o6VqKR2ytpP5w116yhKS0RjS
-         0nf02p22iwxuy2f2fJkDVCPtXOzvAYr7ZV+G+M3kSBrOvUNT6vltLr1uIrYbRoKu6ZTd
-         tc0Fw+7MbbBaAy1an4aykbfbrpTMmZ3By5Wyg=
+        bh=QRasVuptSb2E4fyxHvpuoBQu98CkUiF1wClK1J/dHaA=;
+        b=FUqDUHNKk4oSQBe/Wi+GMFqrL+BUT/504/NK5dM4b1oQsQFgrD/e2eA0TvHiRKXL8J
+         1TXfSINyU/85ccSFbWk5Qqrm2TB+kzccvIDisX8bSnFizKCxuMq7gQ2QjkHt+XNeXtH4
+         tCiTr/DaJNP1/51+KvJ0DAcPGg9KZgmkH4z+g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761617349; x=1762222149;
+        d=1e100.net; s=20230601; t=1761617856; x=1762222656;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BDPjYGcXz413BMEtPr/eFLPA6/i78BGY36YiaTonr58=;
-        b=IspM30q8c2idrdR/Gt/JZwKT2102BGpK5MpUNGrP3wcl5YFE58pIx00NxhewW6IMs3
-         EE4qJutQzO/NEWQvudVlsP/ErxrIIgilDEfzQpEFJRViMTuN9dFY9Sb+Od4TxTQUioIh
-         7TNCoHgkzFH0Tu31ww42FmfgSlFVcXzU8Wtgis8d6WZTZJCDIeRSu7g5UG8o6auHfFCk
-         prdF8551u0luhaP5sHHaE+eP16cR82aHtHC+wZU2fp1X54Rr1awWcdpLaV1iCy38bZ2W
-         ZgIanBn9K6bXDESi2uaWctT/B4wnV6BDXdiLmU+Raw26+LzWgU2TaSJYpSdY2eZOCusF
-         K+BQ==
-X-Gm-Message-State: AOJu0YzKhB4+9fZhOMMQyNQLb6VjGJ+0e7aT9bbAdu2RkaZQe4mb9PFa
-	YGlJwM34dT83BaGEm5dPBs0WHZHjehN3xVTNrasQIefh8d9Dr0+KIB/vPazWJct54YfdxcLEdkf
-	v/TU=
-X-Gm-Gg: ASbGncujM64QUmovVCbBFohXUC7zAj7eQ6F9W44xOQD6r0OnYzsdJYzSeweaa89Iibt
-	Tc4qANmywLG7VwTxlnMqalh2yGWbAHXuzwHZLEL9htBbdCg84g4AYRzWfxcrFqLgoMmiQkoZd//
-	O87z8O/yYwNXLVP3sPMQY2oxmFgXeG6I53feUxL+K4vtTWcR8OV3vRXUoSyxeYnXjUhn4R7ja3G
-	3p+HNF+gyL1tHBQ2Dp4jeovlWfGVOZhLCZYp9NM/wv30t6TIZZj7rpdJzvo9fdwIO7GXcZboVab
-	QeQZLPtAOD1lU0HLi7HJWwffxjBkrrSbBokk9RmjOVpEe7nacJ4+hA/2l/mlfDJ/9TQTR9Be/4l
-	sveDjl0E22JoSe/D4nb5NK5PSfQrTKwnpEqilafvoLD0l6rPxIVWE6Dg9x2tDRaDSQEYQeMQATX
-	fNlNKn8U3FQLItZRfkXgW5C+W9yBLvG+HkrMBuGdCobllETQ8zn7qHGNhg8KNM60aSdTAfTNzDb
-	+lZrA==
-X-Google-Smtp-Source: AGHT+IEESyFigmifFi+Rj8ugy24JBYOUq7NzGTqrrb9m5CTGP8BtwuDdoO+2b5FtujpZEayf74JllA==
-X-Received: by 2002:a05:6a00:39a6:b0:7a2:6f23:91e1 with SMTP id d2e1a72fcca58-7a441b79347mr1164507b3a.1.1761617348773;
-        Mon, 27 Oct 2025 19:09:08 -0700 (PDT)
+        bh=QRasVuptSb2E4fyxHvpuoBQu98CkUiF1wClK1J/dHaA=;
+        b=Md+wTFg+wJnC8XWdfYvclDl9ZBWfBnEmGoVUlg0rhHqstHkKWKJXIPch156mBIUXWH
+         pv48ZPI6YkKPqQ29qqR9hsBGf3iZYbRByyGbxahcTFqbgyhREddZ6iiFx3TXXnTWQRUj
+         YioHQEsjdbnkfGBM2c+KGE9gmqbvEYCra1ItSe1J/0oejEWQ8p0VfJhaYrFgBr3Lqlux
+         f1NimBvKJ+FfMOit7nEnY6Y8P6UEzEJWPjviM2qZ5YmlUsVy9SR+7q235LFdahXdM4Zl
+         ddD9NCAZlbcsm69IQ5WI4lPyPKnoseHOfCuCvhfwmjpFOWZqWVzulEUP3paL16eFBbeL
+         +MDA==
+X-Gm-Message-State: AOJu0Ywy+jchGMsT4MJtSXjpWoj/hNARb+41UC+m64RFMejdb1Y9k3Pv
+	8b20/WDrLXjnou50QhvXrfQkmrWTUZfxoOwd4zaXxnV47HM0GKshCDF9vaWSDIsXhS2AngDL678
+	hdQc=
+X-Gm-Gg: ASbGncuoKYaeiuj9p7hI/IWTBfIFnXDsdXt4j4D503xKd1dqTjrhfq543k3oz/K/bNs
+	gWWXPd4B/Zy9A35D9H2Qg3CUintJ1btV4RgggemYDVUDE1TyB68HRZ7pTkCxE1puzXztAwC2sF4
+	9CFiVYl91WusfZE5n4ZpkHSdKcKSzHK5G+xYEv/vs1hHvTPY3cpYh3mp7Kp4a2HwgROx0ksFyZ2
+	d74mNuZmc3KDU3SAoMdq5spZOoPJFVkE3Cv3crw3XNmb8gIVJ2Smd7DoyiY+aqSEs7Idtoa9zKN
+	V+oTvN0L/31gR4WIYXtRdGrU3YR1Knrwy+KgPtCgtLhvE272LtTkM4+4+bmZICKbe518esxGPQK
+	gTCX2mO8FxKrZkmfac5kmV2jb1PAdXUBozG5651LnWi0vFYbh7eDvIVGc8zyDqZI7tE/gz7qmLw
+	OzwVqQ89JOrBYHI/C7K2vZ/oIrZ4ilixiD7EB9cW2Gn3hma1OGw1I7b9KW9P3EcQikCFOj3jr6t
+	yxxpkwrVWhDgpdV
+X-Google-Smtp-Source: AGHT+IGk+Wit2trGW8g8fX09WMk6GWWnCwQJjT+X3SY0eLq9QqZdoKZdreJc06GRHhdMrN/SRXXxDQ==
+X-Received: by 2002:a17:903:240b:b0:258:a3a1:9aa5 with SMTP id d9443c01a7336-294cacb1186mr12847195ad.0.1761617856337;
+        Mon, 27 Oct 2025 19:17:36 -0700 (PDT)
 Received: from localhost.localdomain ([121.120.74.142])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414068cdcsm9865142b3a.47.2025.10.27.19.09.07
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498d40ac9sm98147485ad.71.2025.10.27.19.17.34
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 27 Oct 2025 19:09:08 -0700 (PDT)
+        Mon, 27 Oct 2025 19:17:35 -0700 (PDT)
 From: Andrew Yong <me@ndoo.sg>
 To: linux-wireless@vger.kernel.org
 Cc: wireless-regdb@lists.infradead.org,
 	Andrew Yong <me@ndoo.sg>
-Subject: [PATCH] wireless-regdb: Update regulatory info for Malaysia (MY) for 2024
-Date: Tue, 28 Oct 2025 10:09:01 +0800
-Message-ID: <20251028020901.44906-1-me@ndoo.sg>
+Subject: [PATCH] wireless-regdb: Update broken link in regulatory.bin(5) manpage
+Date: Tue, 28 Oct 2025 10:17:29 +0800
+Message-ID: <20251028021729.45098-1-me@ndoo.sg>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -86,45 +86,22 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Malaysia Communications and Multimedia Commission announced CLASS ASSIGNMENT NO. 1 OF 2024[1], with the following changes to wireless SRD frequency class assignment(s):
-
-5925-6425 MHz EIRP has increased from 2022 assignment[2] of 200 mW, to 250 mW; refer to page 10.
-5150-5250 MHz EIRP of 1 W has changed from 2022 assignment[2] of indoor & outdoor, to indoor-only at 1 W; refer to page 20.
-5250-5350 MHz EIRP of 1 W has changed from 2022 assignment[2] of indoor & outdoor, to indoor-only at 1 W; refer to page 20.
-
-Update limits of existing entries accordingly.
-
-[1] https://www.mcmc.gov.my/skmmgovmy/media/General/pdf2/Class-Assignment-No-1-of-2024.pdf
-[2] https://www.mcmc.gov.my/skmmgovmy/media/General/CA-No-1-of-2022_-signed_19012022.pdf
-
 Signed-off-by: Andrew Yong <me@ndoo.sg>
 ---
- db.txt | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ regulatory.bin.5 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/db.txt b/db.txt
-index 1d17271..a65910a 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1450,14 +1450,14 @@ country MX: DFS-FCC
- 	(5925 - 6425 @ 320), (12), NO-OUTDOOR
+diff --git a/regulatory.bin.5 b/regulatory.bin.5
+index b1862cd..5448aca 100644
+--- a/regulatory.bin.5
++++ b/regulatory.bin.5
+@@ -45,5 +45,5 @@ and
+ .BR crda (8)
+ .BR iw (8)
  
- # Source:
--# https://www.mcmc.gov.my/skmmgovmy/media/General/CA-No-1-of-2022_-signed_19012022.pdf
-+# https://www.mcmc.gov.my/skmmgovmy/media/General/pdf2/Class-Assignment-No-1-of-2024.pdf
- country MY: DFS-FCC
- 	(2402 - 2482 @ 40), (500 mW)
--	(5170 - 5250 @ 80), (1000 mW), AUTO-BW
--	(5250 - 5330 @ 80), (1000 mW), DFS, AUTO-BW
-+	(5170 - 5250 @ 80), (1000 mW), AUTO-BW, NO-OUTDOOR
-+	(5250 - 5330 @ 80), (1000 mW), DFS, AUTO-BW, NO-OUTDOOR
- 	(5490 - 5650 @ 160), (1000 mW), DFS
- 	(5735 - 5835 @ 80), (1000 mW)
--	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
-+	(5925 - 6425 @ 320), (250 mW), NO-OUTDOOR
+-.BR http://wireless.kernel.org/en/developers/Regulatory/
++.BR https://wireless.docs.kernel.org/en/latest/en/developers/regulatory.html
  
- # Source:
- # https://www.cran.na/yglilidy/2023/04/GG-8060-dated-3-April-2023.pdf
 -- 
 2.50.1 (Apple Git-155)
 
