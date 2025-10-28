@@ -1,83 +1,87 @@
-Return-Path: <linux-wireless+bounces-28334-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28335-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC92C132DC
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 07:33:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2542C132DF
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 07:33:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EEA8588019
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 06:30:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F02E35E23E6
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 06:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DAA2C0293;
-	Tue, 28 Oct 2025 06:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD142C21E1;
+	Tue, 28 Oct 2025 06:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b="G6zIuY7k"
+	dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b="cx0i1lSN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB4D2C159D
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 06:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166552C17A3
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 06:28:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761632929; cv=none; b=gpFvFwo6gz+2182KVYKL9tSYvSz2mLLwEqidbyrlniKiKPHgaeeAJUiapMALUvRMyL8yQAuyJU9KgyZd8MubkYjHlYxuN1uf3/kjrHQwlvzU5DRnSDnKWzuXRVHJ23lvKcpxParFAC8f347xnNyEyRHqdt6L7LSwpNb5OGqNCgQ=
+	t=1761632934; cv=none; b=Q+VkFDvo6xJyAMWHsf/jON5f0+6oOPoDe0JPWme8wa97b3rioSnzKEXixLtSkFcGDQwwmugymwY5yiUkCZz8rF+3SekArNjuEcXb5c8gVu8Pa1Xjuu0/LDiRC337okzNlN82rNVWOEIfZ4YzEvgC7EJlqTza5NzeLmnviAjNClQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761632929; c=relaxed/simple;
+	s=arc-20240116; t=1761632934; c=relaxed/simple;
 	bh=E+Wf7u0x+/17U+NiieuV5frgrCB1kWN/5KGPBvPsMfs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QWLcw06olcYGTjYjMfU/+UG+nFSNvHQEO/S4w9j7Rm1OVJoYkgOjdeMvH83ca+WseTEz7d+M45pto3KtBntMRZdKoBfxHMx3WnloKfKgVZhW70ZmUlD7Ri6UppmUPAxmAQ33hRc5qG9g5KNW0FBpM/FE13bguxwE68DOrmmbyEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndoo.sg; spf=pass smtp.mailfrom=ndoo.sg; dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b=G6zIuY7k; arc=none smtp.client-ip=209.85.210.170
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Axyn/NPmj1Icu4WK1ovj5U59K2WyXJAzdYMG4coUN1gbd4+7poxF2IZfBUavssn2yNXU7GcmMSvdRPZokltm9NRkxFLnKfqc8hi1rU912VTGNPJvKcAZo/bY1gkBqZ2UPeS6IpORr4vYZIeua/z8RAYwiuaJn3ycrLHuQGSpDVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndoo.sg; spf=pass smtp.mailfrom=ndoo.sg; dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b=cx0i1lSN; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndoo.sg
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndoo.sg
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7a27f2469b8so426023b3a.0
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 23:28:47 -0700 (PDT)
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b63e5da0fdeso543632a12.0
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 23:28:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndoo.sg; s=google; t=1761632926; x=1762237726; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        d=ndoo.sg; s=google; t=1761632932; x=1762237732; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
         bh=ir73evyIRDVF112L404qeqtUBiO/cfljmivHcH0fmV0=;
-        b=G6zIuY7kgckuJWEI8UAVOOeqW5atEGsJDYBCu/sUon7PXYZT13KVrpaSwXpEOwSkpW
-         z7/VD1RxJIPacyb/QMaAg3zbwR4ZixdmkMy+stJ5l2GPCbgH50OXQqkNTNAXv92xj86C
-         88VEGoSN2QTEyVcy+j0uGW7Bf8auSSx+ofVXE=
+        b=cx0i1lSNFmVHJ93qwsFDjp7A2czvGgDNOmlxYK0uYZ+XOcKBQV+BvtKVCjGBHZpjct
+         Hqy7N8/T/tjWHbQTWQyXissnheclS6MFmMKeBgnml8qgpRQhswOb64jwdPqKwOqVPoOC
+         AGJ9anUYzaQ8AyNybwNLELJlmkkfSXwa529O8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761632926; x=1762237726;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
+        d=1e100.net; s=20230601; t=1761632932; x=1762237732;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
         bh=ir73evyIRDVF112L404qeqtUBiO/cfljmivHcH0fmV0=;
-        b=ZBB5AHJPCju6a/2Bz3skZtx9GVTjVw2PXYoT8TbZ2BWpsdSzexQUK410cadFeB17gm
-         Pl2HjjS1U8FwPU6z6+cSFU3TcHOk9wMd1JDghYFDfFK8avqumSq2KCgGG5vkzULTSVlB
-         hocimZ2f3lQPyTT8D5Kqo7wJz5S5xdUkxmvBVpayN7pfqWlPSFqj1YS3sr+Olgid8HrN
-         G22tQG2hvu9lKyP3V+2ft2Vd3LK31WdWuTCpZzneRwTE1RmshkX9FDC56rF3d1cTcDIu
-         SOKls5NlqshjQWxqBjjLaca5RCi6+HnB65jvsswIC8/T7DYgpuuH97cu5HudfyB+t8WN
-         G9Qg==
-X-Gm-Message-State: AOJu0YxUUHhs5dAFaSY22l7J/e/uDISmFanFhU/JWp3VvQeGHBWofhei
-	MHoQ1sEz70BzQJ4OkEMLbX7E612+YHMiTzrZUhWHIdBw8CE3kpF1hqMGZfr3uRJNDpkxJ8uGoC8
-	DUKA=
-X-Gm-Gg: ASbGncvvR6jlP086fOHxPdRd4TjFiNAtHAabFSZWU4soVtQVQn+99Nq2wk89b+vpgjO
-	jfOhJqjhNbzjSzN+2Vvd5UUMrXsoz2PdBnBnVfmoy2+pIzmJK5Qu6qzc9SdNfI9HjjRVckutu4S
-	7q4wJrBUbUnw0O3w4bLyRVemjJCwl+nuLvDB0kf6405Q83r3C8yKzZoJcCZWWSx7ozsOgfsEf2a
-	E0Z1BG43KyIU8jr/w81ZC4/o+6HfV5wBYTNrTtUHLTRmi7noDarFz47qvVjAVy45n+KhhpbTpOI
-	VZqLS4W9xOPZZ5pVUkhP+qpIYONr5TioJ8HoCgTDjrN4tXPVQHGADO88/cFWOr66XenYiUiFWDz
-	8rwc3isB48rtbj6QDY79onMsusZ7NN9DmtA/g/DeZisFKr+InrQKMEX7Zbu8JyUNHP5CskT2Mq0
-	dTkQF+HO2muFdZ82L6xdSJ3egpYXx8Dd0KedKv01Wru5MqV4U7wv8ANnApZ7tJj45d5J4rfQte4
-	+Ovuw==
-X-Google-Smtp-Source: AGHT+IFFeA3qpztAaG/RGooLaSJ+Yx7ATRVfl20wYEUuwleA0W9QGBSiaRvJg1lDAC7uQwfNpZujIA==
-X-Received: by 2002:a05:6a00:2d8a:b0:7a2:855f:f88b with SMTP id d2e1a72fcca58-7a441c208edmr1702138b3a.3.1761632926412;
-        Mon, 27 Oct 2025 23:28:46 -0700 (PDT)
+        b=xNJaZExPiBN7bc0YqRVv0UAsQMY1Saov8LpbqBYfiWhxlE92bx5SEZfcN7oKZ6JMao
+         jb0PhJQ3uMHAPdo4r3S6RAoyE+9s9XodUaS98IuOnP0oDURzmMF4fz6CkfJRkbPD32EJ
+         wSnRCFTgG3l5JvDKbUXqjWOvjzdIOaIcoN43d0fTVaeKPUOi/tGGemyQ60Fqmtp2wQOq
+         q/76K4skuBgtx/C7dCAsopeEpBGMI5jgG/S+8q+zIqpvGTrGB3yGsD5pbgMqJpWNmc+E
+         auCKyqXjm6wz0FsctleIFNKC33qsYd88JY/BQIJQanLtFwQUVy/LOSv6I76kevwOPxWi
+         kcqQ==
+X-Gm-Message-State: AOJu0YzuB/rBUGFFP5qu343uIjt04SSjCa6EK8I5zGU4Lg4SrKWc/B8j
+	uE3gT+/KDChkDMHDoQ+DAUmr97qtpK3toBql2+nTxSJphDnIWupQHJ+6Hh74vzQhI/yEwiK4W+U
+	trpE=
+X-Gm-Gg: ASbGnctpS4+3xA12Ega3tSjl38sRBKfyXcPZbYVZb0Aosiv13aLHNu5scEoab+1k/4J
+	smLEwcaWyLgHpzANDw1npF++KzTJUKPC2sS0sXOamEpz2KcxYZzCofRYkx869uv7Ubjs/6DI/h2
+	9yggfifK5iHL7UzsPqPMKmG0h0FvkFSPcdOrMQccZ3NbO7TUOHHtv33kWkPv6cnDRgGqt7XxqMQ
+	f9x906hMTs1GeMTboOKi2ayEXEVMZ59F1ouY/TIJxk0Q+yoEB4REHIRM2/lzzQRMjs1TWK8WWcG
+	PZWqMF5y93fRT0LXkfsZqdlSlH4pg4wkbvoxZ6/LqQrZp1Iw9ip6rYC2FtRv1a0wxgrwZmIqZc4
+	xXI2WXsfpd8/yHOy0BJ7y6KVIcj3IJ0+odgNjt0kbxQidPaXOe4FWRxADdHWb4hO5eYqK1HiLn1
+	N8g5UJrbcrW7R7fukGINsg08DutSi999EAmjIdZiPw3AtMlEeiSmMicTCBQzXCPJEzXdUASwg+t
+	LqPo3MtEPLdL2W/
+X-Google-Smtp-Source: AGHT+IGKPUZcH3wpBBQ4WcYbADX7gLEdRxi1mFofpl7lids9ns5f4RVp7JNyeHDMn8AquBZTDloDbA==
+X-Received: by 2002:a05:6a00:1385:b0:7a2:861d:bfb with SMTP id d2e1a72fcca58-7a441c3be6bmr1656542b3a.7.1761632931968;
+        Mon, 27 Oct 2025 23:28:51 -0700 (PDT)
 Received: from localhost.localdomain ([121.120.74.142])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414015724sm10360781b3a.14.2025.10.27.23.28.45
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414015724sm10360781b3a.14.2025.10.27.23.28.50
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 27 Oct 2025 23:28:46 -0700 (PDT)
+        Mon, 27 Oct 2025 23:28:51 -0700 (PDT)
 From: Andrew Yong <me@ndoo.sg>
 To: linux-wireless@vger.kernel.org
 Cc: wireless-regdb@lists.infradead.org,
 	Andrew Yong <me@ndoo.sg>
-Subject: [PATCH] wireless-regdb: Update regulatory info for Malaysia (MY) for 2024
-Date: Tue, 28 Oct 2025 14:28:40 +0800
-Message-ID: <20251028062841.49216-1-me@ndoo.sg>
+Subject: [PATCH v2] wireless-regdb: Update regulatory info for Malaysia (MY) for 2024
+Date: Tue, 28 Oct 2025 14:28:41 +0800
+Message-ID: <20251028062841.49216-2-me@ndoo.sg>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251028062841.49216-1-me@ndoo.sg>
+References: <20251028062841.49216-1-me@ndoo.sg>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
