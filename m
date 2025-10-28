@@ -1,95 +1,83 @@
-Return-Path: <linux-wireless+bounces-28333-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28334-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D298C13131
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 07:08:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC92C132DC
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 07:33:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CB321AA64EC
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 06:08:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EEA8588019
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 06:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA35296BB6;
-	Tue, 28 Oct 2025 06:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DAA2C0293;
+	Tue, 28 Oct 2025 06:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AHGNaB9p"
+	dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b="G6zIuY7k"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6E2277819
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 06:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB4D2C159D
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 06:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761631696; cv=none; b=Q/IZH3uhOY25zyo9qWO4PsZTmyqJ2ipGFOIVhWIE9C+SB6Q2gEBwXjU7IuQQGUnS5eBIdANNysacE7VBo8Y3mmbg3zQmWqsJXxC97QpGl8sggLPkk5Ht3NCcwQKAqNipMVSuwPxjLuj6isW9BXRlu+m3TKVUB5xHrClLz179uHo=
+	t=1761632929; cv=none; b=gpFvFwo6gz+2182KVYKL9tSYvSz2mLLwEqidbyrlniKiKPHgaeeAJUiapMALUvRMyL8yQAuyJU9KgyZd8MubkYjHlYxuN1uf3/kjrHQwlvzU5DRnSDnKWzuXRVHJ23lvKcpxParFAC8f347xnNyEyRHqdt6L7LSwpNb5OGqNCgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761631696; c=relaxed/simple;
-	bh=W0c8R10SoHWGGlerj/TVivFgOQeuC3ZQvjeAXshqRTM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=krKR7lDVxNaaujALmmfkR3o2qZds3ZP5NsRJ0+amR+tFgweqbst8rvsM4C9qs5BItJxngr0DV/I9UXH+7r180XAVvqshvhDzEM3M5PDBT/7ZJ1yNWzixh8fEtsxH73oWU8GWx/gbz5/HqRrRQcZxM74eeSXShBGqvodShfQEC+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AHGNaB9p; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59S0cMAi2881766
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 06:08:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=YFQernyphzUokXIV/+I70uHICPm/RP+xKMy
-	m6taPSU8=; b=AHGNaB9pEUoM29BMQpWF6/trsZW1rS5KDocyjzV8W/vz2j4q31H
-	ESPuVsfd68gX/V4mkTkOL9wgY4lCXzbJ0aV4Ub810hB/4P7nsPLk+KjdVdgQFkE8
-	0KTFCwyUCwd6ZwLWs14EZTyorviFMDvmzOMFjz7lfpwqJ82AxbC54C9mW2wl9Zxp
-	o99XC+/nZ1KwF6BKoFFEvRwx++MypnucKh/XX9q/eikQwcFuSQn0J93lkXsWD6zB
-	S8lTfhGAGLW73wU91vZ94ai/Ol8RCs21NeMA4+umq7WTZLv60aALwT374kLQqAyj
-	BcZNbgVasZGCp886nqiBa2Xtc//dyLT+Zyg==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a29uham8k-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 06:08:13 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7a27d7b0195so8776970b3a.2
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 23:08:13 -0700 (PDT)
+	s=arc-20240116; t=1761632929; c=relaxed/simple;
+	bh=E+Wf7u0x+/17U+NiieuV5frgrCB1kWN/5KGPBvPsMfs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QWLcw06olcYGTjYjMfU/+UG+nFSNvHQEO/S4w9j7Rm1OVJoYkgOjdeMvH83ca+WseTEz7d+M45pto3KtBntMRZdKoBfxHMx3WnloKfKgVZhW70ZmUlD7Ri6UppmUPAxmAQ33hRc5qG9g5KNW0FBpM/FE13bguxwE68DOrmmbyEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndoo.sg; spf=pass smtp.mailfrom=ndoo.sg; dkim=pass (1024-bit key) header.d=ndoo.sg header.i=@ndoo.sg header.b=G6zIuY7k; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndoo.sg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndoo.sg
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7a27f2469b8so426023b3a.0
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 23:28:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndoo.sg; s=google; t=1761632926; x=1762237726; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ir73evyIRDVF112L404qeqtUBiO/cfljmivHcH0fmV0=;
+        b=G6zIuY7kgckuJWEI8UAVOOeqW5atEGsJDYBCu/sUon7PXYZT13KVrpaSwXpEOwSkpW
+         z7/VD1RxJIPacyb/QMaAg3zbwR4ZixdmkMy+stJ5l2GPCbgH50OXQqkNTNAXv92xj86C
+         88VEGoSN2QTEyVcy+j0uGW7Bf8auSSx+ofVXE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761631693; x=1762236493;
+        d=1e100.net; s=20230601; t=1761632926; x=1762237726;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YFQernyphzUokXIV/+I70uHICPm/RP+xKMym6taPSU8=;
-        b=lOVzG6haxqBXyePEhVj/ZkDVQUNk9oxJ999q6mGphqMFz/fJpN1J5Go3EoaYYDXub2
-         sLMV5pK2+7TPWjUfwY2AwZ8quFsS44GoDgL7tLU33aPhBR4ouIB3y26Nx3Z98jXJH4Me
-         tLS13tBnJYvxH8/MP0Ob7S99VG7NIiNZJ69TOer52sYLD61043LgLmYGNuAYUB5U4R2t
-         j7YxE3RKDuaL6wHNkoToJIZtRzTL0qPcfkXzwzaPlvHf1QslMRflAPJjpp/VcJhN83HN
-         De7RurQAmsUYH8jNefdzJa4Gi3RCRYc8hxVoTBgmD7ijhQRdnpmTKK5vubPD+aRy4j+X
-         jzpA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxDDQLMYhWXzdLG+8RF9ZnRz+1lxGTrs6NrPRZBwG4jq0Ch68HWI6tFUVVqkuVrgZGj5Q+w28aYVRdokFuJg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuyOMbxCt4+K0KhUx2NXJGbITDSBX3A/EspujVdkGPmfQ/Z/Zi
-	bjA9e3sxsFFphafKCAuNAe7LHZBAfQKOn0Y1T4+KjWFrj/8sGGkK4tMZcl2NVUt/8rE3LqNVF+c
-	aVoreIjYrZ8G7e0VLdeX6/NOv7wO5hG4PhN0cBlsPpk5jQrLlx3z7ho5VviZ0pbYoZjx7dCP6OT
-	qNt2cfI5U=
-X-Gm-Gg: ASbGncs9sea0JVtbFgzcOsDkHdxxeqCk/bBktzuICcsRIQf/5mBsG1yWXabXaReoXUb
-	I362/FjmbwYNUl/PffcmvJtEQ1UklTqzgFIOzEyJXg28H2lyinAddf/WTebb4ub76CSV9PiGroH
-	ZG1Il0RSw4PKfQdvezUvq1Ow8LCSe2tNtWTfbmfkrRM3TUAc+2ks7n+8EfIYR1PgcbHRBnbhtw7
-	TX7oFU+FTZLBD5ZrlrdlpjvGpaEmL4BiSjcKcu8pl5LcEaR/r9S01LUtmOsIMTI28wPNEOHjZ//
-	0hTRnv8d/xdnXnUNwiyS6oT83kBaidcM6W6GpW8ddNAtBhJ9kFymIhzw4Jb1IwFOiVKQ+kSNimq
-	vm1G29qs5IYNEfrHGOJQ2VLZxs+gRJcdVxXWmCiMJZw/MDo7BKSXiJ86lxQ==
-X-Received: by 2002:a05:6a00:9281:b0:7a2:721b:adb6 with SMTP id d2e1a72fcca58-7a441c47627mr3120285b3a.28.1761631692847;
-        Mon, 27 Oct 2025 23:08:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5IdZmG+yfCiDsulIMrTHpgRc/xNK0DVqnVio5NHUD8R1SXXmWIe+eXbbrig1qqDs8Z+/EJA==
-X-Received: by 2002:a05:6a00:9281:b0:7a2:721b:adb6 with SMTP id d2e1a72fcca58-7a441c47627mr3120253b3a.28.1761631692335;
-        Mon, 27 Oct 2025 23:08:12 -0700 (PDT)
-Received: from Z2-SFF-G9-MQ.ap.qualcomm.com (i-global052.qualcomm.com. [199.106.103.52])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414011acdsm10204566b3a.13.2025.10.27.23.08.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 23:08:11 -0700 (PDT)
-From: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
-To: jjohnson@kernel.org
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>,
-        Ross Brown <true.robot.ross@gmail.com>
-Subject: [PATCH ath-current] Revert "wifi: ath12k: Fix missing station power save configuration"
-Date: Tue, 28 Oct 2025 14:07:44 +0800
-Message-Id: <20251028060744.897198-1-miaoqing.pan@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+        bh=ir73evyIRDVF112L404qeqtUBiO/cfljmivHcH0fmV0=;
+        b=ZBB5AHJPCju6a/2Bz3skZtx9GVTjVw2PXYoT8TbZ2BWpsdSzexQUK410cadFeB17gm
+         Pl2HjjS1U8FwPU6z6+cSFU3TcHOk9wMd1JDghYFDfFK8avqumSq2KCgGG5vkzULTSVlB
+         hocimZ2f3lQPyTT8D5Kqo7wJz5S5xdUkxmvBVpayN7pfqWlPSFqj1YS3sr+Olgid8HrN
+         G22tQG2hvu9lKyP3V+2ft2Vd3LK31WdWuTCpZzneRwTE1RmshkX9FDC56rF3d1cTcDIu
+         SOKls5NlqshjQWxqBjjLaca5RCi6+HnB65jvsswIC8/T7DYgpuuH97cu5HudfyB+t8WN
+         G9Qg==
+X-Gm-Message-State: AOJu0YxUUHhs5dAFaSY22l7J/e/uDISmFanFhU/JWp3VvQeGHBWofhei
+	MHoQ1sEz70BzQJ4OkEMLbX7E612+YHMiTzrZUhWHIdBw8CE3kpF1hqMGZfr3uRJNDpkxJ8uGoC8
+	DUKA=
+X-Gm-Gg: ASbGncvvR6jlP086fOHxPdRd4TjFiNAtHAabFSZWU4soVtQVQn+99Nq2wk89b+vpgjO
+	jfOhJqjhNbzjSzN+2Vvd5UUMrXsoz2PdBnBnVfmoy2+pIzmJK5Qu6qzc9SdNfI9HjjRVckutu4S
+	7q4wJrBUbUnw0O3w4bLyRVemjJCwl+nuLvDB0kf6405Q83r3C8yKzZoJcCZWWSx7ozsOgfsEf2a
+	E0Z1BG43KyIU8jr/w81ZC4/o+6HfV5wBYTNrTtUHLTRmi7noDarFz47qvVjAVy45n+KhhpbTpOI
+	VZqLS4W9xOPZZ5pVUkhP+qpIYONr5TioJ8HoCgTDjrN4tXPVQHGADO88/cFWOr66XenYiUiFWDz
+	8rwc3isB48rtbj6QDY79onMsusZ7NN9DmtA/g/DeZisFKr+InrQKMEX7Zbu8JyUNHP5CskT2Mq0
+	dTkQF+HO2muFdZ82L6xdSJ3egpYXx8Dd0KedKv01Wru5MqV4U7wv8ANnApZ7tJj45d5J4rfQte4
+	+Ovuw==
+X-Google-Smtp-Source: AGHT+IFFeA3qpztAaG/RGooLaSJ+Yx7ATRVfl20wYEUuwleA0W9QGBSiaRvJg1lDAC7uQwfNpZujIA==
+X-Received: by 2002:a05:6a00:2d8a:b0:7a2:855f:f88b with SMTP id d2e1a72fcca58-7a441c208edmr1702138b3a.3.1761632926412;
+        Mon, 27 Oct 2025 23:28:46 -0700 (PDT)
+Received: from localhost.localdomain ([121.120.74.142])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414015724sm10360781b3a.14.2025.10.27.23.28.45
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 27 Oct 2025 23:28:46 -0700 (PDT)
+From: Andrew Yong <me@ndoo.sg>
+To: linux-wireless@vger.kernel.org
+Cc: wireless-regdb@lists.infradead.org,
+	Andrew Yong <me@ndoo.sg>
+Subject: [PATCH] wireless-regdb: Update regulatory info for Malaysia (MY) for 2024
+Date: Tue, 28 Oct 2025 14:28:40 +0800
+Message-ID: <20251028062841.49216-1-me@ndoo.sg>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -97,214 +85,61 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: o7W694ohT40Nbc6_-s_AU7lpAvnaqzrC
-X-Proofpoint-GUID: o7W694ohT40Nbc6_-s_AU7lpAvnaqzrC
-X-Authority-Analysis: v=2.4 cv=QuFTHFyd c=1 sm=1 tr=0 ts=69005dcd cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=b9+bayejhc3NMeqCNyeLQQ==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
- a=EUspDBNiAAAA:8 a=rFrEXt6fRIhDJ_V8PpwA:9 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDA1MSBTYWx0ZWRfXzRUhR958qQCy
- CjpUuHjQKP3KUPvCoo84tK/wqCVmhnyXe/URgv1NYg+krus2Ic0Y3Qug67pRhVX7FNCYg72pemA
- F+wOWr/XDenfesjqWeSjkPyF7PnNectTT+I8tTFCcZxrn+GszgPueNa2N/P9T0YLahP5LOhd3qL
- WEv0aNFAmunW0ofwTAnkUFL2bqmOsuzwZpTUQvrrYnGXBEropQcx8Txa34Y9gvRyv8imVcCyWNf
- G51iiua6b7LVCIaGeavf0c+LZYR0ZmIKXImwKgz8UzxYiv6rsbJ/TZhqmW0JyHeFy110v46YHNi
- JPhAS64xboPfziSODXvBc+es1rfRFuzxZ3RFNabDGsZOwAEqzw5eZWWQ87tSoZiAEPoi9eOHJzC
- LP6G69cyq15s9s2I2Rg9dPYMAxrlwA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-28_03,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- phishscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510020000 definitions=main-2510280051
 
-This reverts commit 4b66d18918f8e4d85e51974a9e3ce9abad5c7c3d.
+Malaysia Communications and Multimedia Commission announced CLASS ASSIGNMENT NO. 1 OF 2024[1].
 
-In [1], Ross Brown reports poor performance of WCN7850 after enabling
-power save. Temporarily revert the fix; it will be re-enabled once
-the issue is resolved.
+With reference to class assignments on page 10, and Power Spectral Density (PSD) limits on page 20, update the following rules:
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.IOE_HMT.1.1-00011-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+2400-2500 MHz: Align previous 2402-2482 MHz rule to class assignment
+5150-5250 MHz:
+  1. Align previous 5170-5250 MHz rule to class assignment
+  2. Mark as NO-OUTDOOR
+5250-5350 MHz:
+  1. Align previous 5250-5330 MHz rule to class assignment
+  2. Limit EIRP from 1 W to 200 mW due to PSD limit of 10 mW/MHz, calculated at 20 MHz channel width
+  3. Mark as NO-OUTDOOR
+5470-5650 MHz:
+  1. Align previous 5490-5650 MHz rule to class assignment
+  2. Limit EIRP from 1 W to 200 mW due to PSD limit of 10 mW/MHz, calculated at 20 MHz channel width
+5725-5875 MHz: Align previous 5735-5835 MHz rule to class assignment
+5925-6425 MHz: Increase EIRP from 200 mW to 250 mW (remains within PSD limit of 12.5 mW/MHz)
 
-Fixes: 4b66d18918f8 ("wifi: ath12k: Fix missing station power save configuration")
-Reported-by: Ross Brown <true.robot.ross@gmail.com>
-Closes: https://lore.kernel.org/all/CAMn66qZENLhDOcVJuwUZ3ir89PVtVnQRq9DkV5xjJn1p6BKB9w@mail.gmail.com/ # [1]
-Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+[1] https://www.mcmc.gov.my/skmmgovmy/media/General/pdf2/Class-Assignment-No-1-of-2024.pdf
+
+Signed-off-by: Andrew Yong <me@ndoo.sg>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 122 ++++++++++++--------------
- 1 file changed, 55 insertions(+), 67 deletions(-)
+ db.txt | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index eacab798630a..db351c922018 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4064,68 +4064,12 @@ static int ath12k_mac_fils_discovery(struct ath12k_link_vif *arvif,
- 	return ret;
- }
+diff --git a/db.txt b/db.txt
+index 1d17271..3df9c41 100644
+--- a/db.txt
++++ b/db.txt
+@@ -1450,14 +1450,16 @@ country MX: DFS-FCC
+ 	(5925 - 6425 @ 320), (12), NO-OUTDOOR
  
--static void ath12k_mac_vif_setup_ps(struct ath12k_link_vif *arvif)
--{
--	struct ath12k *ar = arvif->ar;
--	struct ieee80211_vif *vif = arvif->ahvif->vif;
--	struct ieee80211_conf *conf = &ath12k_ar_to_hw(ar)->conf;
--	enum wmi_sta_powersave_param param;
--	struct ieee80211_bss_conf *info;
--	enum wmi_sta_ps_mode psmode;
--	int ret;
--	int timeout;
--	bool enable_ps;
--
--	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
--
--	if (vif->type != NL80211_IFTYPE_STATION)
--		return;
--
--	enable_ps = arvif->ahvif->ps;
--	if (enable_ps) {
--		psmode = WMI_STA_PS_MODE_ENABLED;
--		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
--
--		timeout = conf->dynamic_ps_timeout;
--		if (timeout == 0) {
--			info = ath12k_mac_get_link_bss_conf(arvif);
--			if (!info) {
--				ath12k_warn(ar->ab, "unable to access bss link conf in setup ps for vif %pM link %u\n",
--					    vif->addr, arvif->link_id);
--				return;
--			}
--
--			/* firmware doesn't like 0 */
--			timeout = ieee80211_tu_to_usec(info->beacon_int) / 1000;
--		}
--
--		ret = ath12k_wmi_set_sta_ps_param(ar, arvif->vdev_id, param,
--						  timeout);
--		if (ret) {
--			ath12k_warn(ar->ab, "failed to set inactivity time for vdev %d: %i\n",
--				    arvif->vdev_id, ret);
--			return;
--		}
--	} else {
--		psmode = WMI_STA_PS_MODE_DISABLED;
--	}
--
--	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac vdev %d psmode %s\n",
--		   arvif->vdev_id, psmode ? "enable" : "disable");
--
--	ret = ath12k_wmi_pdev_set_ps_mode(ar, arvif->vdev_id, psmode);
--	if (ret)
--		ath12k_warn(ar->ab, "failed to set sta power save mode %d for vdev %d: %d\n",
--			    psmode, arvif->vdev_id, ret);
--}
--
- static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
- 					  struct ieee80211_vif *vif,
- 					  u64 changed)
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	unsigned long links = ahvif->links_map;
--	struct ieee80211_vif_cfg *vif_cfg;
- 	struct ieee80211_bss_conf *info;
- 	struct ath12k_link_vif *arvif;
- 	struct ieee80211_sta *sta;
-@@ -4189,24 +4133,61 @@ static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
- 			}
- 		}
- 	}
-+}
+ # Source:
+-# https://www.mcmc.gov.my/skmmgovmy/media/General/CA-No-1-of-2022_-signed_19012022.pdf
++# https://www.mcmc.gov.my/skmmgovmy/media/General/pdf2/Class-Assignment-No-1-of-2024.pdf
+ country MY: DFS-FCC
+-	(2402 - 2482 @ 40), (500 mW)
+-	(5170 - 5250 @ 80), (1000 mW), AUTO-BW
+-	(5250 - 5330 @ 80), (1000 mW), DFS, AUTO-BW
+-	(5490 - 5650 @ 160), (1000 mW), DFS
+-	(5735 - 5835 @ 80), (1000 mW)
+-	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
++	(2400 - 2500 @ 40), (500 mW)
++	(5150 - 5250 @ 80), (1000 mW), AUTO-BW, NO-OUTDOOR
++	# 5250 - 5350 MHz regulatory limit is 1000 mW, but 200 mW reaches the PSD limit of 10 mW / MHz at 20 MHz channel width
++	(5250 - 5350 @ 80), (200 mW), DFS, AUTO-BW, NO-OUTDOOR
++	# 5470 - 5650 MHz regulatory limit is 1000 mW, but 200 mW reaches the PSD limit of 10 mW / MHz at 20 MHz channel width
++	(5470 - 5650 @ 160), (200 mW), DFS
++	(5725 - 5875 @ 80), (1000 mW)
++	(5925 - 6425 @ 320), (250 mW), NO-OUTDOOR
  
--	if (changed & BSS_CHANGED_PS) {
--		links = ahvif->links_map;
--		vif_cfg = &vif->cfg;
-+static void ath12k_mac_vif_setup_ps(struct ath12k_link_vif *arvif)
-+{
-+	struct ath12k *ar = arvif->ar;
-+	struct ieee80211_vif *vif = arvif->ahvif->vif;
-+	struct ieee80211_conf *conf = &ath12k_ar_to_hw(ar)->conf;
-+	enum wmi_sta_powersave_param param;
-+	struct ieee80211_bss_conf *info;
-+	enum wmi_sta_ps_mode psmode;
-+	int ret;
-+	int timeout;
-+	bool enable_ps;
- 
--		for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
--			arvif = wiphy_dereference(hw->wiphy, ahvif->link[link_id]);
--			if (!arvif || !arvif->ar)
--				continue;
-+	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
- 
--			ar = arvif->ar;
-+	if (vif->type != NL80211_IFTYPE_STATION)
-+		return;
-+
-+	enable_ps = arvif->ahvif->ps;
-+	if (enable_ps) {
-+		psmode = WMI_STA_PS_MODE_ENABLED;
-+		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
- 
--			if (ar->ab->hw_params->supports_sta_ps) {
--				ahvif->ps = vif_cfg->ps;
--				ath12k_mac_vif_setup_ps(arvif);
-+		timeout = conf->dynamic_ps_timeout;
-+		if (timeout == 0) {
-+			info = ath12k_mac_get_link_bss_conf(arvif);
-+			if (!info) {
-+				ath12k_warn(ar->ab, "unable to access bss link conf in setup ps for vif %pM link %u\n",
-+					    vif->addr, arvif->link_id);
-+				return;
- 			}
-+
-+			/* firmware doesn't like 0 */
-+			timeout = ieee80211_tu_to_usec(info->beacon_int) / 1000;
- 		}
-+
-+		ret = ath12k_wmi_set_sta_ps_param(ar, arvif->vdev_id, param,
-+						  timeout);
-+		if (ret) {
-+			ath12k_warn(ar->ab, "failed to set inactivity time for vdev %d: %i\n",
-+				    arvif->vdev_id, ret);
-+			return;
-+		}
-+	} else {
-+		psmode = WMI_STA_PS_MODE_DISABLED;
- 	}
-+
-+	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac vdev %d psmode %s\n",
-+		   arvif->vdev_id, psmode ? "enable" : "disable");
-+
-+	ret = ath12k_wmi_pdev_set_ps_mode(ar, arvif->vdev_id, psmode);
-+	if (ret)
-+		ath12k_warn(ar->ab, "failed to set sta power save mode %d for vdev %d: %d\n",
-+			    psmode, arvif->vdev_id, ret);
- }
- 
- static bool ath12k_mac_supports_tpc(struct ath12k *ar, struct ath12k_vif *ahvif,
-@@ -4228,6 +4209,7 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
- {
- 	struct ath12k_vif *ahvif = arvif->ahvif;
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
-+	struct ieee80211_vif_cfg *vif_cfg = &vif->cfg;
- 	struct cfg80211_chan_def def;
- 	u32 param_id, param_value;
- 	enum nl80211_band band;
-@@ -4514,6 +4496,12 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
- 	}
- 
- 	ath12k_mac_fils_discovery(arvif, info);
-+
-+	if (changed & BSS_CHANGED_PS &&
-+	    ar->ab->hw_params->supports_sta_ps) {
-+		ahvif->ps = vif_cfg->ps;
-+		ath12k_mac_vif_setup_ps(arvif);
-+	}
- }
- 
- static struct ath12k_vif_cache *ath12k_ahvif_get_link_cache(struct ath12k_vif *ahvif,
-
-base-commit: 2469bb6a6af944755a7d7daf66be90f3b8decbf9
+ # Source:
+ # https://www.cran.na/yglilidy/2023/04/GG-8060-dated-3-April-2023.pdf
 -- 
-2.34.1
+2.50.1 (Apple Git-155)
 
 
