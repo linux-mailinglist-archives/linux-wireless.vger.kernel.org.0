@@ -1,160 +1,161 @@
-Return-Path: <linux-wireless+bounces-28330-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28331-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22BE5C12DE1
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 05:35:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5C4C12ED3
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 06:19:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0AD4466E3B
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 04:34:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E175B1AA4481
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Oct 2025 05:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F111E570D;
-	Tue, 28 Oct 2025 04:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B17E1FA859;
+	Tue, 28 Oct 2025 05:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Y6jb0Mca"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LspUgPhr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7EF3C38
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 04:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544EE1EDA02
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 05:19:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761626096; cv=none; b=Vjk+SynVzAiGObsyc8T5s0HtTpv3s0fjmjbwlkcfOS3PS459amDOJxLSXI9nAaORLRI1PxVFIV4ok0XJyuiVNY9hFW13Lajs80h3vCzWqOqDnG68S8TfJtpUAALWUt/r8z+kr4R/mqTbEw9EEiXOOF0PyMjOYTq2kFPydWfGXVg=
+	t=1761628775; cv=none; b=BmviVX5CcPe6UCeV76n/ZmLpSU1S/tQMQBb4KLdS1t62AnWQn9tSKBYQFTuVfnJRriqdqtxBw0+sHygCWsgZaN8P9tkkUAVf+HHWlvdWuTb5HxTZ073e2UtsL6KGA8CtVAkPjdNaNksgzjzij8Y54d/NID1hdGl81h1rgHP0fac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761626096; c=relaxed/simple;
-	bh=fg8tFD7/dxR/xyk4u0afHRNrNLydihFFtwkN7oUy1Bc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AKZsd12101/roc2HOROMExn/wOQy+71xmNgm1QgsPXrOONl00IQn78r5lpD3eQNBYcB+wF/Lya554GPc07rVOQ2mdmMLjtX0VNkK6ftpO4N4f8BoEJECyVDZ4JiGMMH1rmLl7LVmQQ2S+JoDYI3s6PEFt5Q3AEMNrTL/WMSK5RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Y6jb0Mca; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59RJtq1m2546726
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 04:34:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=M4LpyJwg/5ltHE3unTKLRRHwCp5ckUw2bZQ
-	gIpby6e0=; b=Y6jb0McacJPIoU/W7EWtoUMRY7JiAHAjriccRNqMOlTz9lWVttL
-	BLdl4a0Iyn8MdeLReD5uDxR1faASYJB4Don56X0jyohglYZfpfE4ucptKN4AjYnV
-	/Vqrtq2P7ax5iY031lwEOItxPkSpA+TmE0onRHY1ugJF83MJ8ISNW+CSXsbYoPSs
-	N9VM5pFg5vJnSoTPcSBZGtDjfsl6ZJqAvZUVa9vd1asq8DAs7gosL5mMTZbxSM82
-	OS/eiOehu+xPTy95rjWHRG+N7bHzmfVHfKmHlcAepHb8eZbA+NLgkgHkb/MaWbmO
-	8+L9So1ge6zNnSHcdeQ+95I+rQM029E5PnA==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a27s2js4r-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 04:34:53 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-33bb4d11f5eso5319506a91.3
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 21:34:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761626092; x=1762230892;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=M4LpyJwg/5ltHE3unTKLRRHwCp5ckUw2bZQgIpby6e0=;
-        b=LyfPYa/64u6efMnlp6dvJkoxo86nn37KFTDlBXhiM4j225uuWYCO4FlVX1qn6RfQP1
-         wDesBYx41BY0zohXakdcnaYxZhnmXq1P8jlP8A4Ta60iZB5R9lfZDjIhBpCSBSikSs2D
-         FZYhyoltEuzFZOH0qWl7lEyElyhQ9Q7fRu3qLqIHF9tlAVEJnv1cxaThjho0g32JjrpS
-         V3w/SavO+GrkDgf8GzpaoSPElaCIt/j+qOPHQLCYe/ZRYooICNA2ON2QApx/YkCnoewi
-         Xx1b1M46u+oinrGljSfRN3U1wKOh+MA8bg13kTVs6svycAeQePRquSm1TYyXKbc+5daW
-         HeMA==
-X-Gm-Message-State: AOJu0YzqjlOH2eXSgwSh9ZhXgese1rbykKXHFOUrxtUrRzD9gJ+SY7ry
-	ryazMTYK8PZicgKTyH7PIknbGj6xFFDmn4Cx5LHU4rsG+NFEWBok1h6ySqXqk/biWeztyLikNjR
-	AhtfVNZnrnB0Ys6FvcAHBIGEtQqhvF2e7WG4uO0I6nb91ckaMjGLe2lYPM6mpd/8OapVDDg==
-X-Gm-Gg: ASbGncvtHWfegtQOWwMFfmIEunNL+63tQuYvn/pMyibNpGTfwmiDf19o330nDZi4TvO
-	Ibhggv8IxChhqAD5m7HnoO5LxtIxOItPn9fedwV2OqPhh1yjj8S6Ni02KjUEe5SFke2jYrXed5v
-	8APcNPHal62D1rywiueGFrtFisZxAlBjK7XLCtzvGJm9RyX6d5/5kIe9T8dYyBsFkQa494xR5eP
-	RhwISWuv3chKHvu8xEsOx6Y3Aum5IJogviDPvmjsuDU+rx+cX7dIkHQQcCi6++NFn693Ah9trDw
-	yMGY1F9dD0tpoQvmIZSe9fgaMBp1iHXLYl+1dKSNXgRWaIlwc/HjVzUi76xvKboIu6kxWe0z4nQ
-	Bs6HJBzVUI5WoeSNZyosiXyz3GCnkDAMbn8ecJ/bV4486NKlXLjVumaW1BhYllzW+fLFlIW3Dwo
-	kKuhly1GI7Rq8LizeplHdK0Q==
-X-Received: by 2002:a17:90b:56cc:b0:332:6356:86b6 with SMTP id 98e67ed59e1d1-34027a04268mr2336692a91.9.1761626092337;
-        Mon, 27 Oct 2025 21:34:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEIhTEI69DQ6bryc46vnkxo3dp2xWAB7AIWv/c80+DCh1lgO2+1GRRV3V10olRbCWqcUSRyyw==
-X-Received: by 2002:a17:90b:56cc:b0:332:6356:86b6 with SMTP id 98e67ed59e1d1-34027a04268mr2336660a91.9.1761626091873;
-        Mon, 27 Oct 2025 21:34:51 -0700 (PDT)
-Received: from hu-aarasahu-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3402942f298sm529568a91.5.2025.10.27.21.34.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 21:34:51 -0700 (PDT)
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Thomas Wu <quic_wthomas@quicinc.com>,
-        Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Subject: [PATCH wireless-next] wifi: mac80211: Allow HT Action frame processing on 6 GHz when HE is supported
-Date: Tue, 28 Oct 2025 10:04:42 +0530
-Message-Id: <20251028043442.523647-1-aaradhana.sahu@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1761628775; c=relaxed/simple;
+	bh=e846JwhJGQnPRCxnOQ3YEesDevoWZto01oO8ElGrLJQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ebEoSWr+vn5ObHK561+fRX07UHJaJM20Uj2T7C6DzCtzDiMRAYDTDSjX7KCljPBkjgr2R5lyWvaf8l8Cr/ZvY2eXy6NLiOF9uTkuDQkXw7xQLCZnfHNrXSNU5NQ/WIzDdwzSUZklka+KIigGLhX2Fy4SminZp7K9vvZhNEjqnrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LspUgPhr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3546C4CEE7
+	for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 05:19:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761628774;
+	bh=e846JwhJGQnPRCxnOQ3YEesDevoWZto01oO8ElGrLJQ=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=LspUgPhrrepZy2gxTu0Uldd9Z0vNFVduq7SNirdFmT8Q5EdSBc8JJTZGlAYvoHdzS
+	 eFgfpWtAony39UirE0UHxXXfWXyDl9EP0alWperzzVPqhwUCRYexKAzn03y1+hD1ci
+	 hEQsecl867iJTxVnfzTUMKWMHpiIqi2gIgkHpoXKTQdTudxuFsCyFkQWGZR7hx5n0N
+	 DAC6MKJi4yWJmNIhxVfXmouobvHzBJX5x6UqxCMz4AbHgV/L6bixoXMl7r+KpZE8y7
+	 3XbOnpLtZ+ptjGXkjFC5V9Fvab1l6k7I4M3ib7UCyZnTb+OH5eYdIUzuuFrdbaPslK
+	 kKPTrj6xhM0JQ==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-378d50e1c82so55317661fa.3
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Oct 2025 22:19:34 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzAXVCuwogNtS8N9ALAd5E2b7z1sYivxk6TLjOQUGIToCdd77vo
+	YcRGJL2GazD71wPbwfXNuI4jH9taTzIsf74EUI5X6yUr3AwzaX8tT/vokKA+eozRTe18xGHnJSQ
+	UIdCtGTP3dxQbr2r4g2traxFIqXabC7I=
+X-Google-Smtp-Source: AGHT+IEIm1k8rbh6K/Q+N1se02uR5tEMyyKNUh5mPGwoZSaVNZu228ng9HkSFP8vwf2JU4vBsf6No0gjwOfOhuEbeIE=
+X-Received: by 2002:a05:651c:440d:20b0:375:d985:7009 with SMTP id
+ 38308e7fff4ca-37907780dcbmr5921791fa.44.1761628773212; Mon, 27 Oct 2025
+ 22:19:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: iW2MEobXqUOkPbeLun9Sn7GbPM0dkc1o
-X-Proofpoint-GUID: iW2MEobXqUOkPbeLun9Sn7GbPM0dkc1o
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDAzNyBTYWx0ZWRfX1oz7Bj7XhApM
- aMp3kCUnyZVJbtY0fL+1viIgu9HIR4fipIEoMYf+symtF8GtUk8Lrk/a7lQWG1dkOtI/DmJfGhu
- DpDy/Pt8IS1wPFm2vIIuoOQqVjfZDrbl0S47aqxqgDLSueX5BQykqHxdVz81WwrxHhOI9IwR+/a
- zPRvN72W0vKZNl+gp1sfM3jTzuXG0E4yKNVdUkOJTmDioWvOfliDPWsl9R3UUjOVOsyT0btVm+M
- 0YKJUT+6sWXC0tn5GIFQ7PjSHP7PEPoFqxilg3+UdUkPYPAao7UZR7533GvFWJ27K1nenlVPmqb
- Nw+AxmaUpASmoddJSrpUf9LghGwFbAZkDhbZWFn+rx60YIVsKDIrDN8RBROKjXmtms0UtpOOF6z
- FuRVIJ3WpPst9RcX8hwEv2MeY9Zo8A==
-X-Authority-Analysis: v=2.4 cv=R60O2NRX c=1 sm=1 tr=0 ts=690047ed cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=TfuwYnTvkOvh0IDu4YEA:9 a=rl5im9kqc5Lf4LNbBjHf:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-28_02,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 phishscore=0 bulkscore=0
- impostorscore=0 clxscore=1015 spamscore=0 adultscore=0 malwarescore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510020000
- definitions=main-2510280037
+References: <20251028020901.44906-1-me@ndoo.sg>
+In-Reply-To: <20251028020901.44906-1-me@ndoo.sg>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Tue, 28 Oct 2025 13:19:21 +0800
+X-Gmail-Original-Message-ID: <CAGb2v64yJ_UDdAL3n2CbbOoEbZFxRLQ07QnmF-WgtLiW=VxMOQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bmaVfeN6x_eRRZFde7mHcCOqB1disY77tTO64RDr6F7cD1VGejmCyMsVrg
+Message-ID: <CAGb2v64yJ_UDdAL3n2CbbOoEbZFxRLQ07QnmF-WgtLiW=VxMOQ@mail.gmail.com>
+Subject: Re: [PATCH] wireless-regdb: Update regulatory info for Malaysia (MY)
+ for 2024
+To: Andrew Yong <me@ndoo.sg>
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Thomas Wu <quic_wthomas@quicinc.com>
+Hi,
 
-Management frames on 6 GHz do not include HT Capabilities, causing HT
-Action frames to be dropped in ieee80211_rx_h_action(). The current logic
-checks only ht_cap.ht_supported, which fails for 6 GHz radios that support
-only HE and EHT.
+On Tue, Oct 28, 2025 at 10:09=E2=80=AFAM Andrew Yong <me@ndoo.sg> wrote:
+>
+> Malaysia Communications and Multimedia Commission announced CLASS ASSIGNM=
+ENT NO. 1 OF 2024[1], with the following changes to wireless SRD frequency =
+class assignment(s):
+>
+> 5925-6425 MHz EIRP has increased from 2022 assignment[2] of 200 mW, to 25=
+0 mW; refer to page 10.
+> 5150-5250 MHz EIRP of 1 W has changed from 2022 assignment[2] of indoor &=
+ outdoor, to indoor-only at 1 W; refer to page 20.
+> 5250-5350 MHz EIRP of 1 W has changed from 2022 assignment[2] of indoor &=
+ outdoor, to indoor-only at 1 W; refer to page 20.
 
-Update the condition to also allow HT Action frame processing when
-he_cap.has_he is true. This enables support for HE dynamic SM power save
-as defined in IEEE Std 802.11ax-2021, section 26.14.4.
+Based on page 20 in schedule two of 2022 assignment, this should have
+already been limited to indoor only.
 
-Signed-off-by: Thomas Wu <quic_wthomas@quicinc.com>
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
----
- net/mac80211/rx.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+> Update limits of existing entries accordingly.
+>
+> [1] https://www.mcmc.gov.my/skmmgovmy/media/General/pdf2/Class-Assignment=
+-No-1-of-2024.pdf
+> [2] https://www.mcmc.gov.my/skmmgovmy/media/General/CA-No-1-of-2022_-sign=
+ed_19012022.pdf
+>
+> Signed-off-by: Andrew Yong <me@ndoo.sg>
+> ---
+>  db.txt | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/db.txt b/db.txt
+> index 1d17271..a65910a 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -1450,14 +1450,14 @@ country MX: DFS-FCC
+>         (5925 - 6425 @ 320), (12), NO-OUTDOOR
+>
+>  # Source:
+> -# https://www.mcmc.gov.my/skmmgovmy/media/General/CA-No-1-of-2022_-signe=
+d_19012022.pdf
+> +# https://www.mcmc.gov.my/skmmgovmy/media/General/pdf2/Class-Assignment-=
+No-1-of-2024.pdf
+>  country MY: DFS-FCC
+>         (2402 - 2482 @ 40), (500 mW)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 4641a2a80856..d9553e8854b7 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3570,8 +3570,11 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
- 
- 	switch (mgmt->u.action.category) {
- 	case WLAN_CATEGORY_HT:
--		/* reject HT action frames from stations not supporting HT */
--		if (!rx->link_sta->pub->ht_cap.ht_supported)
-+		/* reject HT action frames from stations not supporting HT
-+		 * or not HE Capable
-+		 */
-+		if (!rx->link_sta->pub->ht_cap.ht_supported &&
-+		    !rx->link_sta->pub->he_cap.has_he)
- 			goto invalid;
- 
- 		if (sdata->vif.type != NL80211_IFTYPE_STATION &&
+Please also align the rule boundary with the official rules. This should
+now show 2400 - 2500.
 
-base-commit: 88de08348af8ce15dc563e0ebb5553eddd821c06
--- 
-2.34.1
+> -       (5170 - 5250 @ 80), (1000 mW), AUTO-BW
+> -       (5250 - 5330 @ 80), (1000 mW), DFS, AUTO-BW
+> +       (5170 - 5250 @ 80), (1000 mW), AUTO-BW, NO-OUTDOOR
 
+This should show 5150 - 5250.
+
+> +       (5250 - 5330 @ 80), (1000 mW), DFS, AUTO-BW, NO-OUTDOOR
+
+This should show 5250 - 5350.
+
+>         (5490 - 5650 @ 160), (1000 mW), DFS
+
+This should show 5470 - 5650.
+
+Also, for bands 5250 - 5350 and 5470 - 5650, the PSD limit is 10 mW / MHz,
+effectively limiting the EIRP to 200 mW for a 20 MHz channel. There is
+no way to describe PSD in the database, so we can only go with the smallest
+channel width for PSD calculation.
+
+>         (5735 - 5835 @ 80), (1000 mW)
+
+This should show 5725 - 5875.
+
+> -       (5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
+> +       (5925 - 6425 @ 320), (250 mW), NO-OUTDOOR
+
+This bit is correct.
+
+
+Thanks
+ChenYu
+
+>
+>  # Source:
+>  # https://www.cran.na/yglilidy/2023/04/GG-8060-dated-3-April-2023.pdf
+> --
+> 2.50.1 (Apple Git-155)
+>
+>
 
