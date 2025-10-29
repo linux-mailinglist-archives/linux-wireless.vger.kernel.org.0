@@ -1,160 +1,195 @@
-Return-Path: <linux-wireless+bounces-28357-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28360-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DB4C1B641
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 15:49:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D307C1B88F
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 16:05:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F381446655A
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 14:26:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0716E5C0C28
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 14:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB5D1C2BD;
-	Wed, 29 Oct 2025 14:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA912D0602;
+	Wed, 29 Oct 2025 14:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="EG7uUYc+";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="eTW0Kw/x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HWOzqi9B"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896F027B353
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Oct 2025 14:26:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41CE2BEC30;
+	Wed, 29 Oct 2025 14:26:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761747965; cv=none; b=Yv9HVuHs4ZmEOEvaeV5rf+atcPU3LAIjPS4XMfLJeSBcZcsIisId+7IPg9dm4+IN6UWxitLrnR30/p52ETTeEQKnjSWErbJXnfL+nsdxmVZctuwha9K77ROzVMrJtU8tZL0f/dmG+zVxXSyTW4lPFQHlDfDD/hkCmnX28YU2KGE=
+	t=1761748000; cv=none; b=kItTT8gjiLXIct+mad4vylnpgpI5aCvkBW9k1COMCW6xIxKn4mpXQrFYPpF2PWC3o1I8RlNaRZLOl8yqKe4oTCeN3n5lwGf233ut3Wdc4Rh7un30bDi13VMVx/zDiE2GTo7XbSepaGAING2u1rSFY0JKO/jDu2fhikBtMqC31Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761747965; c=relaxed/simple;
-	bh=HKUSPmcUj2Xtfi53LB6PGs3J2vl36BecbCI5CMafn/Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hNFJN8tmNxdRQFfzgUiH/DyL+BIu8Uwl1EgUiWCz8x5qNVCZ7OejgE/ARmwa0vfuptGgNhiDP+TTgkpicXONQ3zIjWuzzq6Gq374eCr3gazGWFnd4G2AvmlE+OHqs8g6aYUepPBn8FXZXR4la0cA6+1JOhjcYhuGxjyOXt0MMUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EG7uUYc+; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=eTW0Kw/x; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59TDd94a569233
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Oct 2025 14:26:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	8lRCEMmy9OZlhkQ8RmEl5rJEU/q4AS+Z5wN60SHfen4=; b=EG7uUYc+8OTWFxlc
-	AbPYX791VJcYlKkwwm6u57Y8YcEtntoUAkKf5o8AWtM8pWtaN9Gz6ZhvfwXR5w+a
-	uNcIPAOnpJ+Oq2LbYIA5nx4We0DvIUn7o2nwb94GoCqRRIg3/8+KsX/7Hmi74En3
-	r2ceN9B76Udfu2u9UIfBfgyfGSOAZqyXRRVKVw+u68F4gYI5Sdgf7RmlyypmJDiN
-	8PFVjeW28runf14z5AbVeTNlHZ17rprZBEZ9g1R3dMguM3U7+pfAUvpQU9i8Srq7
-	GIesfSJ3dom1nhU9YoW5od6nXgnkH5yUWSrdF/aurrd3z2ERh+skYcFJQPjdG2dO
-	Bs5P0Q==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a3m0bg4qv-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Oct 2025 14:26:02 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b6097ca315bso14952147a12.3
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Oct 2025 07:26:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1761747961; x=1762352761; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8lRCEMmy9OZlhkQ8RmEl5rJEU/q4AS+Z5wN60SHfen4=;
-        b=eTW0Kw/x8o0zP1+zeopzLQetVJ1d73m/WMgrM6ap/iZMrJoyE/jbVN9e9mMM+CKIEr
-         Esey7D5gfAj4Y0TkgGU6cInPeSKYv5xMO3vzaBHlHL36ld2qxtji+DIyib73m9u+za2C
-         fXy/VRM0NkOXf2btvqj/TM0/N4bd2NGEuPNVKyg8efZTu5XWaSD2tJbcKDBXXZoMnGa+
-         ugOTWMe7DDk3bLZyR6hVrn/lIno/oMy+BOqoBqf8EUCU88VC7UzzLi+WAsMwhwFNlL8K
-         olMGcJzAlYlsBxEFX30fFoOkybge1r3f+mX0Fcp1Hd/nWoIfju8vcjj9OO2O00TPFUUn
-         xiEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761747961; x=1762352761;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8lRCEMmy9OZlhkQ8RmEl5rJEU/q4AS+Z5wN60SHfen4=;
-        b=v41RD5ubK1bkTKfgyser72cjUtM7Hdxd5jyINY66xKujT9TuG+iR/OZ3VyxBFcbjrP
-         WW+Q/DumClHZI3iS04+gS8g/mipBG60+wvEY+RtFYVRQh4rLZBnneAlN53m25XvQ+xBP
-         C2+A5+Js87Q0PzEE9m4xiMYRSweWHbzM94PYtBSqn8I7ZksPjbjtLNvliP6atRFycqBG
-         OxWZevfROs0htsRLINi/apczkTi+Tec4WOQGU3hrzAAiiV6GRPWKMrsiwR0pDHKMIdqf
-         VzQm9XapBcUvYeWMpu83ddQZXblG8PQwpGSsSqhXg0MOZRXyxGDnTXs+kuPzZWs42/Uv
-         Q8EA==
-X-Forwarded-Encrypted: i=1; AJvYcCUGZvxs2gkXlqMuy6xu1VRKHKMkkyQKDJ8UW8xEJ0AxR4aEmccgGfPYjvDbtsn3aBDUA4UvXWQXplPCPZZLxg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzepwH2buu4H+Fm7tFEwdd3wLdVmAqZaEY0jvpiBEwNiMCGNRYe
-	la56QtRwmyqOwBiuU0yaSABVWIdjpEvJ/Eu7aiAMguLqibT8pBZFIvqlrXjAphJtclSZmIhWQ5X
-	VAXMUyRyWSDEcXEkMbpUI8D8iFrykNRGO3mRiy8Hvk3xBjuE39a673+Ep1ul2/5AL5ZVNHg==
-X-Gm-Gg: ASbGncv21Auw9UkvDauAxTkWYSY8vsY0KnSfu8ezb+syZ0jDyjKX++lsZ+N6HKAKy/0
-	fuMBqhFAGhc18Ym0lN9k3eG/JxorRdwWPwjJLAZj/bMW4ZwvaGsCrRcq5wzLPdi2TrqIkR3SAX4
-	n72BdKake/UFqt9Lh5U7EfflzzyEnnJofvsZ9U/HWxJXMHAuvPy28n3qhPbirSzgMpEtt1REkkU
-	znLFLnXlX3yGhdRmLlqdCKXblakU9IGau+4LcwSDDBUf/Sssj8UZllpUMMnRR8Pa+9qE9w0qll0
-	usos89yk2/yqHZ6XP7fPgiBjjUKKMt3/JmCxT9kIBMZwS+zPnklZZ+uTZJosDp61Gc+ytAAMaDj
-	NgKpRENH8l7iXW8wuaJ3NaSmRjY7CzT0hBduARxwG8V9BkkU3J5PbEw+lFQ4=
-X-Received: by 2002:a17:902:d491:b0:269:4741:6d33 with SMTP id d9443c01a7336-294dee4b276mr35510335ad.23.1761747961357;
-        Wed, 29 Oct 2025 07:26:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEVs9ARm8Q5wCdoLG9mCSaU6IsMR0Zt2w484KzdbhKLh1iw8y3iST3S4vvTj/Qii13tEl5pOg==
-X-Received: by 2002:a17:902:d491:b0:269:4741:6d33 with SMTP id d9443c01a7336-294dee4b276mr35509925ad.23.1761747960807;
-        Wed, 29 Oct 2025 07:26:00 -0700 (PDT)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498d0996esm152263505ad.28.2025.10.29.07.25.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 07:26:00 -0700 (PDT)
-Message-ID: <c7b1a108-6831-4e48-becf-45bac0e73d54@oss.qualcomm.com>
-Date: Wed, 29 Oct 2025 07:25:59 -0700
+	s=arc-20240116; t=1761748000; c=relaxed/simple;
+	bh=uAFaddzt+o5Jaxvpc4u0qmiEWtTqty66JcCDtI2hth0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=L2xr2o1SNHTAKyh9xRiX0nWPvmBkm7B4dtMvZqJ32QlXc0AYq4wEdB7XPrBl0jYctZBfhq3UxpgoJMVK4IOdJTjAzJhyedDEUzZTypagkk6AGU8GBcwEZBKbNrV1Dia1VBw/inoik0JkpSKV4qccEE9IwEkUFFFpx43TxVF4Pqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HWOzqi9B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 63B83C4CEFF;
+	Wed, 29 Oct 2025 14:26:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761748000;
+	bh=uAFaddzt+o5Jaxvpc4u0qmiEWtTqty66JcCDtI2hth0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=HWOzqi9Bxd3FHXRdr4CFX8V6rgdrLULLiUfNUWKA/TnH4K7W3ygUUHvKfbUvD0n9F
+	 BCqxIgLQ5YSqLKGJhQfVffKJlhU2lixUy0mBbkq0/UKfTw/NuFGQ8B65RAom6Sig3Z
+	 tp96yXpR5vz77Jf/I2EgXD8p8E1XS1NZjwe54BV0an2KV/zmTIKukPEWHUD8dTxCEZ
+	 WfgUvcP9Wij5fM8zSwBTtY8dgXuGFfMMlb7Kr5LUrp2YlE8s3gPo8dBO9ZTPaMxAze
+	 CWuUOXbOe7cIILBSW/Gnwl00ScbPjNsMYHG2PS5XsalV1tW11ELXqmwjrb4ZdmBoAD
+	 1jUDYwUg4e4VQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A06FCCF9EB;
+	Wed, 29 Oct 2025 14:26:40 +0000 (UTC)
+From: George Moussalem via B4 Relay <devnull+george.moussalem.outlook.com@kernel.org>
+Date: Wed, 29 Oct 2025 18:26:22 +0400
+Subject: [PATCH 1/6] dt: bindings: net: add bindings for QCN6122
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-current] Revert "wifi: ath12k: Fix missing station
- power save configuration"
-To: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>, jjohnson@kernel.org
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ross Brown <true.robot.ross@gmail.com>
-References: <20251028060744.897198-1-miaoqing.pan@oss.qualcomm.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20251028060744.897198-1-miaoqing.pan@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: V4Hmvk17geOCHQ7gPDJWz1cPo75yb4mD
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI5MDExMCBTYWx0ZWRfX0pxq5vwJKQbB
- KGZp1CPwjQSqJZkyrmURcWNWzKcJ/3BuT2yuK9GUVUjHfGOLFEkpqlnNSshkzymCqZMjty3aYLN
- TOfdZ/mqYuRU0pOBPFwrnn+6oExpUrmolxWJkCJ69oX4+ExoCt1K8lUzQbKm51KiTxNW1Jb48gX
- wbb1b+uqI7+b9c4+giP6ysgz5BLoUUyz/pW+0OuIZgPfaD0zgL4fNyiUcmRPrVPgAkpnbrbd3n3
- rUfWpWIfIFZFEnpMd3Q/obass+aunuCHa8TOrh9fKMusfZk/EAs7YrjTg3+qSBWC8cTl30aZ1ck
- mSnro0BbclKrvBrcoBAFiv3Ex8j+ZRGO4zETqC21cyglA3gwnVfKu7R8ZFSwERTJxw5e3tioeVb
- rYXWrdlKNpt8NJMNsEsYWv0KqUAcYw==
-X-Proofpoint-GUID: V4Hmvk17geOCHQ7gPDJWz1cPo75yb4mD
-X-Authority-Analysis: v=2.4 cv=YLySCBGx c=1 sm=1 tr=0 ts=690223fa cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
- a=WZLPHaEoEJzMMJhDTEQA:9 a=QEXdDO2ut3YA:10 a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-10-29_06,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 bulkscore=0 spamscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2510290110
+Message-Id: <20251029-ath11k-qcn6122-v1-1-58ed68eba333@outlook.com>
+References: <20251029-ath11k-qcn6122-v1-0-58ed68eba333@outlook.com>
+In-Reply-To: <20251029-ath11k-qcn6122-v1-0-58ed68eba333@outlook.com>
+To: Johannes Berg <johannes@sipsolutions.net>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, 
+ ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ George Moussalem <george.moussalem@outlook.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761747997; l=4199;
+ i=george.moussalem@outlook.com; s=20250321; h=from:subject:message-id;
+ bh=8oCgkx2tBE/XoLjt2QmaWVlpynCUGOtanyX8ad9w9XQ=;
+ b=+Lg/GmnlljSyRRhc0gmBi4zkwu92ultczCM8t+AFO50E/X2H02QHzXOZ5sQq/NWMTJ4ecsWAg
+ BpYCx8WZCEsAmjBNYcHAARzuXPOGOojbgr8hchE+sS28bDo9FeHSEGM
+X-Developer-Key: i=george.moussalem@outlook.com; a=ed25519;
+ pk=/PuRTSI9iYiHwcc6Nrde8qF4ZDhJBlUgpHdhsIjnqIk=
+X-Endpoint-Received: by B4 Relay for george.moussalem@outlook.com/20250321
+ with auth_id=364
+X-Original-From: George Moussalem <george.moussalem@outlook.com>
+Reply-To: george.moussalem@outlook.com
 
-On 10/27/2025 11:07 PM, Miaoqing Pan wrote:
-> This reverts commit 4b66d18918f8e4d85e51974a9e3ce9abad5c7c3d.
-> 
-> In [1], Ross Brown reports poor performance of WCN7850 after enabling
-> power save. Temporarily revert the fix; it will be re-enabled once
-> the issue is resolved.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.IOE_HMT.1.1-00011-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
-> 
-> Fixes: 4b66d18918f8 ("wifi: ath12k: Fix missing station power save configuration")
-> Reported-by: Ross Brown <true.robot.ross@gmail.com>
-> Closes: https://lore.kernel.org/all/CAMn66qZENLhDOcVJuwUZ3ir89PVtVnQRq9DkV5xjJn1p6BKB9w@mail.gmail.com/ # [1]
-> Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+From: George Moussalem <george.moussalem@outlook.com>
 
-Note to maintainers:
+QCN6122 is a PCIe based solution that is attached to and enumerated
+by the WPSS (Wireless Processor SubSystem) Q6 processor.
 
-This patch to ath/ath-current has a trivial conflict with code coming
-in ath/ath-next.  The resolution is to take both hunks, ordering them
-in reverse xmas tree style.
+Though it is a PCIe device, since it is not attached to APSS processor
+(Application Processor SubSystem), APSS will be unaware of such a decice
+so it is registered to the APSS processor as a platform device(AHB).
+Because of this hybrid nature, it is called as a hybrid bus device as
+introduced by WCN6750. It has 5 CE and 8 DP rings.
+
+QCN6122 is similar to WCN6750 and follows the same codepath as for
+WCN6750.
+
+Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+---
+ .../bindings/net/wireless/qcom,ath11k.yaml         | 57 +++++++++++++++++++++-
+ 1 file changed, 56 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+index c089677702cf17f3016b054d21494d2a7706ce5d..4b0b282bb9231c8bc496fed42e0917b9d7d106d2 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+@@ -21,12 +21,13 @@ properties:
+       - qcom,ipq6018-wifi
+       - qcom,wcn6750-wifi
+       - qcom,ipq5018-wifi
++      - qcom,qcn6122-wifi
+ 
+   reg:
+     maxItems: 1
+ 
+   interrupts:
+-    minItems: 32
++    minItems: 13
+     maxItems: 52
+ 
+   interrupt-names:
+@@ -87,6 +88,14 @@ properties:
+     items:
+       - const: wlan-smp2p-out
+ 
++  qcom,userpd:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [2, 3]
++    description: instance ID of user PD (protection domain) in multi-PD
++                 architectures to distinguish between multiple instances
++                 of the same wifi chip used by QMI in its interface with
++                 the firmware running on Q6.
++
+ required:
+   - compatible
+   - reg
+@@ -268,6 +277,31 @@ allOf:
+             - description: interrupt event for ring DP20
+             - description: interrupt event for ring DP21
+             - description: interrupt event for ring DP22
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - qcom,qcn6122-wifi
++    then:
++      required:
++        - qcom,userpd
++      properties:
++        interrupts:
++          items:
++            - description: interrupt event for ring CE1
++            - description: interrupt event for ring CE2
++            - description: interrupt event for ring CE3
++            - description: interrupt event for ring CE4
++            - description: interrupt event for ring CE5
++            - description: interrupt event for ring DP1
++            - description: interrupt event for ring DP2
++            - description: interrupt event for ring DP3
++            - description: interrupt event for ring DP4
++            - description: interrupt event for ring DP5
++            - description: interrupt event for ring DP6
++            - description: interrupt event for ring DP7
++            - description: interrupt event for ring DP8
+ 
+ examples:
+   - |
+@@ -467,3 +501,24 @@ examples:
+             iommus = <&apps_smmu 0x1c02 0x1>;
+         };
+     };
++
++  - |
++    wifi1: wifi@b00a040 {
++        reg = <0x0b00a040 0x0>;
++        compatible = "qcom,qcn6122-wifi";
++        interrupts = <GIC_SPI 416 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 417 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 418 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 419 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 420 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 421 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 422 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 423 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 424 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 425 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 426 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 427 IRQ_TYPE_EDGE_RISING>,
++                     <GIC_SPI 428 IRQ_TYPE_EDGE_RISING>;
++        qcom,rproc = <&q6v5_wcss_pd2>;
++        qcom,userpd = <2>;
++    };
+
+-- 
+2.51.1
+
 
 
