@@ -1,137 +1,269 @@
-Return-Path: <linux-wireless+bounces-28368-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28371-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9E4C1B9B9
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 16:21:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA8AC1C48A
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 17:56:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44F25647B1D
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 14:50:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 331F7660726
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 15:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DAD2D46D6;
-	Wed, 29 Oct 2025 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88B7306498;
+	Wed, 29 Oct 2025 15:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lru/7wFl"
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="GMzqksbi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1ECF2C0278;
-	Wed, 29 Oct 2025 14:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7582E62D0;
+	Wed, 29 Oct 2025 15:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761748949; cv=none; b=ZBvLou8A7EJOTVeohSA/po12Ivub0eStcsHc69Mnyn26Ic58N4rqRAXxCoFUHeUL2s1gBpDG6OvmME0F2FH++tP2fKkKUVR+PcJ5jxhUT3pQ5vW6VNLc0cE3hACpq6WZ1Cwe2tgnwi5LDeYtXZ8/nhY27kdCk0NFdu9Gzy9IyZY=
+	t=1761751450; cv=none; b=u8qxT2fUyP2SQ4Ut1nMZL7ENr4NtHwsySkRFQ1lwfchuFkm7L+Wbp/69Po2pvrSu3cRtYWa3X12PYMS33Fccsi6l3waqz+PPq5Xh3uwnEzhD/EOpaMvp0pnu7yOy9BlJLt9dfPk9l+nBfHIOkKKS1LgpoLyZd58CrSEzrjdz3Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761748949; c=relaxed/simple;
-	bh=OL5OfoPuxbIYywoeixb28UuDau6oBIR4B5nO47ShPL0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=EspQQEWhlBFSvVfcUuowJjFs7/BdJcBKQ15EHdFltdMxz4n7h3fDaJeTD584MlvqLbXwDWA/feDK9/WLPycXAWlPGiS5rtaQGEyOx1EkcNHML3VG/jL9wt3OAWyki4JfFBZNuI2LyXmAKUzqDuUyU6zCsww9j2a705pyndoeAoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lru/7wFl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001D8C4CEF7;
-	Wed, 29 Oct 2025 14:42:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761748948;
-	bh=OL5OfoPuxbIYywoeixb28UuDau6oBIR4B5nO47ShPL0=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=lru/7wFlAg1DloJlbA/BJLJmx1lfctkMkKmO4x0LWxsPrzKS5ydYgsMzeitMBmcD6
-	 iQo8ukMywd50O5dGQ7WLAldqeC11dSOoFd70P9uPwHpn+K3CS/V0tbcxvPc62zVgIj
-	 LzTpZLKR5C1saHAZdFNK2+lxfwydPg2h3PL46g6bbMDS1thA1ECmXU5YdOcFoleTjS
-	 b4KLKVajsFY3cnKqyU3R48HXQJ9DjQ06aRMSzYUB4KMwAyMr12RQ5uRGfAyeb4ZCwT
-	 VsThsk3cx7q0oEzBDbrcNxFAhNx40pnFvfH662wEI+JaSlqJVkdUDTcLV0N34BAGKh
-	 o7fsBCQSyrvgg==
-Message-ID: <52a0d7f1-e342-46a6-86e7-9852ac2f2eba@kernel.org>
-Date: Wed, 29 Oct 2025 15:42:23 +0100
+	s=arc-20240116; t=1761751450; c=relaxed/simple;
+	bh=Kc7TKxqdTAkBbKBEgmqy8X5D6Sk0jxfuz4PoU0lTyQM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ioAqAhuQc4b3jtNaHR1WcCtNgHszgNBOWDioeMFwXY03Af9iwxdRJOAckUe9G8XlweUJ6IQO80Wy8oe3vp1aNJdgoambx1dBWybmPfwtPdLeemM8CFBX1Wtv5XreS5J2CIXMIxQTQIci2O8aB7Zv5BgGhtC7EGnkjpKrREk058o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=GMzqksbi; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 720BE97CC4D;
+	Wed, 29 Oct 2025 16:24:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1761751445; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=S7JJudnfDv5QPdu5hrZsVzBT2WDQqBEsqAz/usdjoJc=;
+	b=GMzqksbihEI9h21HrYWmiGqL8DwFW+vR30PryrlhdUibq9cgDf5RXlAVc6CRsbNd7zE2X7
+	Q68OsUnzXYFdexUShEILw0xgdvIb8L5ItovjpLA2IuNBoSdvljt5puOrcp9NS6dpn1k1j7
+	J5bmhNBx58AcIZnFGY8MmcD6s2wfr5V4mpoEuTdQy2dIdEIxO+geBHcBdg1Hz7wqiuB7yV
+	9gZjtwZ+OaoYAXNi9l0HWhZQ/+iobzThfmOjFpYF1TC2AEUU6dlbrcjaOq/dsJpso0q2tC
+	p3IhzixwYum0ISbxztTdN6bwTR13ijFdQzEflGDbIYKaS+Z2tpyQd7mhR0iKlw==
+Message-ID: <4d5fe35f-6841-4b73-9c8c-a1f3bce886c8@cjdns.fr>
+Date: Wed, 29 Oct 2025 16:24:00 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] dt: bindings: net: add bindings for QCN6122
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: george.moussalem@outlook.com, Johannes Berg <johannes@sipsolutions.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
- ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20251029-ath11k-qcn6122-v1-0-58ed68eba333@outlook.com>
- <20251029-ath11k-qcn6122-v1-1-58ed68eba333@outlook.com>
- <3dc712ae-b51f-4142-bbab-1eadbc27e60a@kernel.org>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH] wifi: mt76: mmio_(read|write)_copy byte swap when on Big
+ Endian
+To: Jonas Gorski <jonas.gorski@gmail.com>
+Cc: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+ shayne.chen@mediatek.com, sean.wang@mediatek.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ Daniel Golle <daniel@makrotopia.org>
+References: <20251027171759.1484844-1-cjd@cjdns.fr>
+ <CAOiHx=nSEP=4s2xZuPtLEO43YDbkNEYzw6V11JbXG0H2iPn7Ag@mail.gmail.com>
+ <096509d1-4af8-4abc-8068-ca27d8ef601e@cjdns.fr>
+ <CAOiHx=nqWEdHEMf5immXO0VwyzDakDV9AMsoDETcJ0F4FqUt=w@mail.gmail.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <3dc712ae-b51f-4142-bbab-1eadbc27e60a@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Caleb James DeLisle <cjd@cjdns.fr>
+In-Reply-To: <CAOiHx=nqWEdHEMf5immXO0VwyzDakDV9AMsoDETcJ0F4FqUt=w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 29/10/2025 15:32, Krzysztof Kozlowski wrote:
->>    interrupt-names:
->> @@ -87,6 +88,14 @@ properties:
->>      items:
->>        - const: wlan-smp2p-out
->>  
->> +  qcom,userpd:
->> +    $ref: /schemas/types.yaml#/definitions/uint32
->> +    enum: [2, 3]
->> +    description: instance ID of user PD (protection domain) in multi-PD
->> +                 architectures to distinguish between multiple instances
->> +                 of the same wifi chip used by QMI in its interface with
->> +                 the firmware running on Q6.
-> 
-> Broken indentation. It is supposed to be two spaces. Look at this file -
-> why are you doing this completely different?
-> 
-> Anyway, please do not come with 2nd or 3rd property for this. We already
-> have such somewhere.
 
-And reading the driver code, this is instance ID, so not really suitable
-here. Sorry, such are not allowed. See writing bindings or my last OSSE
-slides.
+On 29/10/2025 10:15, Jonas Gorski wrote:
+> On Tue, Oct 28, 2025 at 10:42 PM Caleb James DeLisle <cjd@cjdns.fr> wrote:
+>>
+>> On 28/10/2025 21:19, Jonas Gorski wrote:
+>>> Hi,
+>>>
+>>> On Mon, Oct 27, 2025 at 6:19 PM Caleb James DeLisle <cjd@cjdns.fr> wrote:
+>>>> When on a Big Endian machine, PCI swaps words to/from LE when
+>>>> reading/writing them. This presents a problem when we're trying
+>>>> to copy an opaque byte array such as firmware or encryption key.
+>>>>
+>>>> Byte-swapping during copy results in two swaps, but solves the
+>>>> problem.
+>>>>
+>>>> Fixes:
+>>>> mt76x2e 0000:02:00.0: ROM patch build: 20141115060606a
+>>>> mt76x2e 0000:02:00.0: Firmware Version: 0.0.00
+>>>> mt76x2e 0000:02:00.0: Build: 1
+>>>> mt76x2e 0000:02:00.0: Build Time: 201607111443____
+>>>> mt76x2e 0000:02:00.0: Firmware failed to start
+>>>> mt76x2e 0000:02:00.0: probe with driver mt76x2e failed with error -145
+>>>>
+>>>> Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+>>>> ---
+>>>>    drivers/net/wireless/mediatek/mt76/mmio.c | 34 +++++++++++++++++++++++
+>>>>    1 file changed, 34 insertions(+)
+>>>>
+>>>> diff --git a/drivers/net/wireless/mediatek/mt76/mmio.c b/drivers/net/wireless/mediatek/mt76/mmio.c
+>>>> index cd2e9737c3bf..776dbaacc8a3 100644
+>>>> --- a/drivers/net/wireless/mediatek/mt76/mmio.c
+>>>> +++ b/drivers/net/wireless/mediatek/mt76/mmio.c
+>>>> @@ -30,15 +30,49 @@ static u32 mt76_mmio_rmw(struct mt76_dev *dev, u32 offset, u32 mask, u32 val)
+>>>>           return val;
+>>>>    }
+>>>>
+>>>> +static void mt76_mmio_write_copy_portable(void __iomem *dst,
+>>>> +                                         const u8 *src, int len)
+>>>> +{
+>>>> +       __le32 val;
+>>>> +       int i = 0;
+>>>> +
+>>>> +       for (i = 0; i < ALIGN(len, 4); i += 4) {
+>>>> +               memcpy(&val, src + i, sizeof(val));
+>>>> +               writel(cpu_to_le32(val), dst + i);
+>>>> +       }
+>>>> +}
+>>>> +
+>>>>    static void mt76_mmio_write_copy(struct mt76_dev *dev, u32 offset,
+>>>>                                    const void *data, int len)
+>>>>    {
+>>>> +       if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)) {
+>>>> +               mt76_mmio_write_copy_portable(dev->mmio.regs + offset, data,
+>>>> +                                             len);
+>>>> +               return;
+>>>> +       }
+>>>>           __iowrite32_copy(dev->mmio.regs + offset, data, DIV_ROUND_UP(len, 4));
+>>> Maybe just replace this with memcpy_toio() which does no swapping at
+>>> all instead of double swapping on BE?
+>>
+>> I'm not that informed about how PCI works so I had to test to confirm
+>> my understanding, but I can confirm that memcpy_toio() does not solve
+>> the problem.
+> Ah, right, I misread _iowrite32_copy() to do conversion to LE, but it doesn't.
+>
+> What architecture is this you have? PowerPC? ARM? MIPS? 32 bit? 64 bit?
 
-Best regards,
-Krzysztof
+
+MIPS32 (EcoNet EN751221 34Kc)
+
+
+>
+> So the differences I see are:
+>
+> 1. __iowrite32_copy() uses __raw_writel(), which has different memory
+> semantics than writel()
+> 2. __iowrite32_copy() assumed src is aligned to 32 bit, while you
+> explicitly align it
+> 3. memcpy_toio() will handle unaligned src properly, but does 64 bit
+> accesses on 64 bit systems (and uses __raw* again).
+>
+> Is src aligned? If not, then the issue might be 2. And if your system
+> is 64 bit, it would explain why 3 didn't help.
+
+
+I'm not a regular developer of mt76 so I wasn't sure if that was
+guaranteed and I just wanted to code for safety.
+
+After reviewing the code, I see that there are a few places where
+mt76_mmio_write_copy is being called with stack-allocated u8 arrays
+so it's pretty clear to me that this is being treated as a memcpy-like
+function and we should be handling unaligned inputs.
+
+
+>
+> As a first step you could try to replace the writel(cpu_to_le32(val)
+> with a iowrite32be(val, ...) which should do the same except avoiding
+> the doubled byte swapping. If that works, you can try to replace it
+
+This works.
+
+These symbols are a bit of a nightmare to trace, so I ended up making
+an .i file so I could confirm what's happening.
+
+iowrite32be() uses the version in iomap.c so I understand that's using 
+writel(swab32(val),port), so a writel with an unconditional byte swap.
+
+writel() is more complicated, it's an inline function that is generated 
+in a rat's nest of preprocessor macros in mips/include/asm/io.h
+
+The preprocessed is this:
+
+__mem = (void *)((unsigned long)(mem)); __val = (val); if (sizeof(u32) 
+!= sizeof(u64) || sizeof(u64) == sizeof(long)) { *__mem = __val;
+
+The source is this:
+
+     __mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));    \
+     __val = pfx##ioswab##bwlq(__mem, val);                \
+     if (sizeof(type) != sizeof(u64) || sizeof(u64) == sizeof(long)) \
+         *__mem = __val;                        \
+
+The line "pfx##ioswab##bwlq(__mem, val);" is ioswabl() and the source
+of that explains the issue:
+
+  * Sane hardware offers swapping of PCI/ISA I/O space accesses in hardware;
+  * less sane hardware forces software to fiddle with this...
+
+So this confirms my initial understanding, the PCI hardware is doing the
+byte swapping unconditionally.
+
+
+> with __raw_writel(), which then would make this the same as
+> __iowrite32_copy, except making sure that src is aligned.
+
+
+This fails.
+
+Since I'm the maintainer of this SoC and it's still fairly new, I wrote
+a trivial kmod to verify that unaligned access is not just silently
+returning trash, it works as though it were aligned so alignment is
+not the issue.
+
+
+>
+> Also you could replace your memcpy() with get_unaligned((u32 *)(src +
+> i)); Should do the same but inline.
+Good idea, I will do this.
+>> The issue as I understand it is that rather than making every driver
+>> carefully call cpu_to_le*() every MMIO write, someone decided to make
+>> the PCI host bridge itself transparently byte-swap all MMIO on the
+>> wire. Since most MMIO is hitting registers and most buffers are
+>> transferred by DMA, for the most part everything works and nobody
+>> notices.
+>>
+>> But in the rare case that we need to write a blob to MMIO, it gets
+>> transparently swapped in hardware so you need to use cpu_to_le in that
+>> case. Doing a search of ./drivers for write.*cpu_to_le I can see this
+>> issue comes up a bit.
+> Every (PCI) driver does conversion to LE implicitly by using
+> writel/readl (or iowrite32/ioread32) etc do the conversion to/from LE.
+> So writel(foo, dst )is a __raw_writel(cpu_to_le32(foo), dst) etc. PCI
+> memory is assumed to be in LE. If you are on a little endian system,
+> then no byte swapping happens, and on BE it will do byte swapping
+> before writing the value.
+
+Okay so it seems that in the case of MIPS, that's not always how it
+works.
+
+https://github.com/torvalds/linux/blob/e53642b87a4f4b03a8d7e5f8507fc3cd0c595ea6/arch/mips/include/asm/mach-generic/mangle-port.h#L17
+
+Since we don't know if the swap will happen in hardware or software
+and (AFAIK) this is not a hot enough path that double-swapping will
+have a notable performance penalty, I think the most sane thing to
+do is use writel(cpu_to_le32()) and not care if it's swapped back
+in the kernel or hardware.
+
+I've just tested writel(get_unaligned_le32(src + i), dst + i);
+and confirmed this is working.
+
+Lastly, I'd like to just move everybody over rather than
+special-casing Big Endian, but I don't have a Little Endian board
+with an mt75x2e on it and no matter how trivial it is, I loathe to
+submit a patch that hasn't been tested.
+
+Is there somebody here who can get me a Tested-by for LE ?
+
+
+Thanks,
+
+Caleb
+
+
+>
+> Best regards,
+> Jonas
 
