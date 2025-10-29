@@ -1,238 +1,331 @@
-Return-Path: <linux-wireless+bounces-28350-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28351-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3945AC1800A
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 03:08:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2F5C185B0
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 06:50:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8E2B3A7B6F
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 02:07:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D06EF1C646A9
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 05:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DF32820DB;
-	Wed, 29 Oct 2025 02:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1D22E8B61;
+	Wed, 29 Oct 2025 05:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="eG+lj6EG";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hGqBLl3/"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LoAUlbno";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="iZsqEXtT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9922367DF
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Oct 2025 02:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54BE1EEA49
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Oct 2025 05:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761703657; cv=none; b=L1sqL7awKvbZNSiQ8ddQniRNlN848j00i4JVGVmH1vLF2vU2/hxlbpmmOE5JBZVvKRpUsH98PUKT/X6faQAY7Fz2MMT1PURv/DPxuVPuFSPbV6mQojyjkOfee6EsP461YIZ3U16a5qpaLRUQUuga1VVAltFW16OHXbZppUCSLaw=
+	t=1761717030; cv=none; b=JqsagXW9Tu/06k8fVL6CXekANbsxbJIj6gl0UGJf4glyXc2yVImCRKPFbNiAAuSrpGrf45GDUtef2n2yKntb20G/DqaCxg+6P9g31n6TWYdgcA0cpZyBFCjO/pS42bsEOgw2+uVHewPPyDWOd9xnJ+4n/71WBscqw7Zgg/GyqVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761703657; c=relaxed/simple;
-	bh=dukLJ8qr6RnpgDE8Dd4ybgF6t8jY79MiNUxGQ2vSHtE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RDUTGSEylOLAr4m/brk/OHMduBhVdyJ+O8T2Us7UWEPGRwL1lzK7fNr43omz5R2Qp9RdIJkYoqUsfgGUmW6ip1t13l5iL3NTNgMoaDQGKLdRsNqq+n13xYLt2DuNIFYoVuilaLxGzWG9oz50e7tVRmerO7xsW46g8nQmHexxr7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=eG+lj6EG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hGqBLl3/; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1761717030; c=relaxed/simple;
+	bh=XYZA6dr1okn2VPnrrxRm+D/fdgcyYPasXfIVwZAT9Og=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GBZl0C4ILs1eHJCaMzduxUe6nc49TqOOb9vytoaGXio4Hkk26t7UOeVlj5Y3oIUDI9szbQp6+wLFXU4FPkvnD2Fl9p78cMMmkdHrBzb/iA2uqhw3b7QfwX+g7AKUTR1uwlLnBF71la5Y+R0p6jUUyrXd0OxvJBsrBXRjanwGxSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LoAUlbno; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=iZsqEXtT; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59SJlMg62539303
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Oct 2025 02:07:35 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59T4usSS3764268
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Oct 2025 05:50:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=F/iu6iGjXVw2O/5Detpz/z
-	aQ4O1XGKDWpUnpe03APtA=; b=eG+lj6EGkXe/fjjkFi1c+nnHkPMlNiywUvYUEq
-	UzXq0PgPYOkKvngQua8se5ts66vyxRrNBPf9DxIlmyZEaFORmQuuiLjJqEkzEJyg
-	xMA+RL6yGAmN9DJucpC+aw2nEiRGRY0eO4hC9mMU7mfvn0hpoN79sYHZIvHWK5PS
-	hd6US86nn9CNxqo3ovXa2ZjBJQ+hYG6nAf4nrBbsLyo9OUmPq1hXErAlrVJ5Hsyq
-	yYcYDeXTO9/5ZdJlUKjMtX76DqMxGzgVAhmpsU76NmBGEPTnlpNcAqLXbx9+Q9/p
-	kBla4dUejxgBCLyDPYhZh2ogbikSIW9RLF7ptoxv8P6QTA+A==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a34a1gtjv-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	WmAbIa2HLXGYbY6ZAbrAI3G+RXNbdEwalIvBalCKji4=; b=LoAUlbno80vuob69
+	4XmkeXz5/TSlanqqv8vvBmc6XesLnrOD2VotMcYOzHhYp5Q2eba3ssaoMZ034cBz
+	5vtdZ6mdB2a+9QLuERnqChFlaP+Z8ZjOB4YxJug7yYPPPBl6mXNtiAguzQ1/lC3i
+	uk8suQ8tHLMCCJECHt28zYFhWTGYpHHWWBhrcCvpujnQ9q88a6RLzrfLsYxmwlLb
+	HSybs3Idlak16TVxaXEMeywc9lT77IKFL9lKnLdDZIB09MR/cD6ZnA+1XN/B45zD
+	zfAYCckvMuil/Bjus0ZCAa3FvA+3Tsnd8Zd/zQ1+M8OE8+1NayAOIPaZPjfvBEE7
+	TzkvFQ==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a34a11aue-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Wed, 29 Oct 2025 02:07:34 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7810289cd5eso14247220b3a.1
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 19:07:34 -0700 (PDT)
+	for <linux-wireless@vger.kernel.org>; Wed, 29 Oct 2025 05:50:27 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-29085106b99so65599015ad.1
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Oct 2025 22:50:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1761703653; x=1762308453; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=F/iu6iGjXVw2O/5Detpz/zaQ4O1XGKDWpUnpe03APtA=;
-        b=hGqBLl3/X5U1/Ytc0VFMJoKhTwiJiIDKQF0CfZSCgc4c1PkGqg6iLMkUc4dFq8d2ZN
-         tt3aMHSbxXVrPNpTWMeoxtPnZ3+WZ9EhHPYHlGL0cxaPK5dGJxjYF4O2jcJeJNaVyvfA
-         xUmHfNLUTXTKkRiAbxzgoqas4B+bo4mbrdyFNI3ERcTKJ0ltK02B16dqfJlrNCd13ApP
-         Iw7TwGLlh1t3higKKMJHosa5zG1W4c3gEqgO1RNuxaUGG1a4VkjSnCqxLMN6gPCCeWVX
-         kT8ucnkFPQYLQ3ttbRdf/BAS4vcY2e8nqYGeIgrJQesT5VpkIW1t9VeuC0iMy9NrAFUO
-         pD9Q==
+        d=oss.qualcomm.com; s=google; t=1761717027; x=1762321827; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WmAbIa2HLXGYbY6ZAbrAI3G+RXNbdEwalIvBalCKji4=;
+        b=iZsqEXtTJR82EKBlF+iDLcWBPzwjFWlKw1gPwbPXY/BE0DTaXIfGPBXnCcCg4vfeKN
+         hlpjnlKZOxX20yR9L6upiVK90EDlOXmGnahnEtmpQxICBgjeZLFw5fht+ZM4xFoEN9C5
+         gUjm5i+7XWsX+6IkDDgxjehfrBMfHxjfvOejHpf9kKZHI3CtTlnMTHYJ6zCBqKd67zUb
+         M1VtZHF76iQT+oEseu1zyBKEDigXqml34nLOWdoEdt1cuDeQlSRj9GuEpT89rywUkyad
+         CSEbma8Ez8urmY4sEPKFsffcmIAgBbx6wTogBL2OHFa63Cjs/AizV7z1bqR0w7Ufq2aO
+         XErg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761703653; x=1762308453;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=F/iu6iGjXVw2O/5Detpz/zaQ4O1XGKDWpUnpe03APtA=;
-        b=PcWeTkigcZERQKlfjEGCokGL3roYr4UwPQyDVqEP9SFpNBWkbx/m/RBWPPVU41FMe3
-         ZHgXIstHWLqiHXvPipIdo8hEvIBaUf/ciKeGFXiyCCZgSkLX8PS6NXSE9HLdDnW1JnHF
-         87DbCch7czAfgyvj8hJHsbt1KoIdRHE9STyZZi/UsL5CbOgNqzHA7K0NADgP91AihoDN
-         xwFVaoSAiI+SABoNT7d7uuQYD1nB1EqFW7KHD4GCJiS/eQinGNQelG/aUadlarS6WGeW
-         +47QH6yfclwh6oewHuPs1i+amaW8DskVtvWNNMT+ZguM/V9tRwj8aLZmCQyGkGu3lLgo
-         euKw==
-X-Gm-Message-State: AOJu0YzuWpBMx6WSPHZ8QymuBVQUcCEd+vtEHqQ8DZOtiDJK2D7TBXbr
-	EJYkK6HOE1uCL6+mhJWTGcqbENx0tA9sH4YkMkcHPZri8GXq51eSLCT/Sl6b+tAXFz1Y9td5NRX
-	trbG0LzThaGarT+rd0HEiDVS0Sivuyko96sIhAMzuQGl9JoMYicopxVU+Dhj6micH3Of9j3x/0g
-	0iIA==
-X-Gm-Gg: ASbGncup5fGfNjTvj+ZMyTx/NjMHq3EpMAswfDYAjx7cZ0v8zJxuSbX71yvvl3u9yCY
-	YE7sjFVIvyG9iJr+rLdrz4AKT6ntw8h1RlOi2Awg66QxqwkZTfN4WPBhC3s9Tr7Rz8lcFk4gksO
-	mCYcF0BCQATXnoXeDEFg0lrko7J89ScyndKdbJeHO4zvismkduP+hQ7qkAfyvFGeeOuNwpWQ5xG
-	5yUjy9ZC1FT2S99w8UT6VMSxvbjLYGl8yDTBFIFDNjxIG/4oWBmbU8n7LSwEkps5nCH1GsWrfQw
-	QHcrEFi64G8zKhdUhVy8uFBPTtNIflLH4M95U5eIokVjatEjnyFZYLI8h6kSuqKsTefZpSdDG4F
-	HlkrNCRYkyLWjH/haOwVgFbzNmdZoNta3AXHWNaYO2JFNU+t13cAO
-X-Received: by 2002:a05:6a00:1786:b0:7a2:8649:5ab7 with SMTP id d2e1a72fcca58-7a4e2fe7764mr1698655b3a.14.1761703653157;
-        Tue, 28 Oct 2025 19:07:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFUvjVwtp3NwrQWxnAVxZgwMjhqYYTsjLFFZpyhtM+DKRTN/RtILgRk2ESDH14aq7koiopgfg==
-X-Received: by 2002:a05:6a00:1786:b0:7a2:8649:5ab7 with SMTP id d2e1a72fcca58-7a4e2fe7764mr1698625b3a.14.1761703652606;
-        Tue, 28 Oct 2025 19:07:32 -0700 (PDT)
-Received: from [127.0.1.1] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414069164sm13369697b3a.45.2025.10.28.19.07.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Oct 2025 19:07:32 -0700 (PDT)
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Date: Wed, 29 Oct 2025 10:07:14 +0800
-Subject: [PATCH ath-next] wifi: ath12k: fix reusing m3 memory
+        d=1e100.net; s=20230601; t=1761717027; x=1762321827;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WmAbIa2HLXGYbY6ZAbrAI3G+RXNbdEwalIvBalCKji4=;
+        b=emcVNG9g5EuglPmvTE4SYaoSJOoAWoV8EoPLiPxpnDcCBYdXbwIR7sCohNGhLQT4Jt
+         c7I2jbpVH5Odib4YYXS2evEGA/7xPzTauzUw/UowL8whN8DY8lOFcLo4ZDjX2s14jpnw
+         rdaxr6iN0zk0vh9GhSX+/xIySyg/w/xbEzNBI0GjDCTg1BT5DQOkkFG2bQh7TVQRxiVG
+         xMdnh88I+J/2hmDsIkmi1Fy6t+2ok3NHzZ1VuNXpHQIJGuVcYw1dOavbD2xVtMKe+qXs
+         zyoGC0C5wC3wzHmo/ghCWmfWqU7zg0ffynO7alMeZexEUkiLBxBqK9hst4us/P+eDHXj
+         egWg==
+X-Forwarded-Encrypted: i=1; AJvYcCVDPyRnNJ+cfU/CCyo9WD2VL1pbEuO6/38ajhcl/sjM2MFaAco7Dkerc3Rug5L/9r2OrIRS+AHteCMlw1NsyQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgvJb+RTu4pjZVqROf4u721jx5L1SGLtZNF/bU6BqDejXrKsBD
+	J53nosvRt9qUcQx8hQ1+Es9mdVamceowtXKOUuUKlFc/D9yn7lvM2zzlDXgsr3kThim8dBIfhCb
+	DqrdR6QjdCFy49qZ/X/fcrHJos24tAtWuDf4Qn4XWvs0xI/qrqyCMevDIQx2c+lN5PYDcjQ==
+X-Gm-Gg: ASbGncvm4IK2b4XuebLj0Hwm+FXIQj0cE+AjSLbjZ8APg5uavbMFStPTwfJQhKAa6vX
+	PjjQ9sHJ0hI/iDaRHETFMOGfmUczafNGnh64L9nQ8uxoFEkSDR9Zt1Yp+YLKBpo5lA6e5Rz6Z/V
+	fFFZvqFstwWdiKt2esiXmcjgT6uJhOUeVky0qkSsLm8m7zc06Y4oJMfZBr0AhLLQRrnaZRON6xY
+	vKb1umnXCF+9evOzplj/LS3tnKnHoS8dm5MJh2JMV0y8b9L9LrRt1VdcmmmlxrAuamTR6eXno9W
+	cNOagDaVflLb6lvMmziMEjVngwc/hhOZ/ZXpWKk13g/yYc/pzxS/cZT6zSn/HSHMQeeRuhzTqoz
+	kX//Pp8KnVkPEgS+YicyX8YTG0Y7b7+HFMUc7Rf6zeU0+5kxGqJ+D/ixj4pBF
+X-Received: by 2002:a17:902:e5ce:b0:290:c3ad:8432 with SMTP id d9443c01a7336-294deef9a95mr22435885ad.46.1761717026488;
+        Tue, 28 Oct 2025 22:50:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3oGqY6JtnY6s9TE+mNpoQ7oW8tW3Vrva1KS/4zSSUMofam04Zi+J5i3WgpjvLhwaCJSaxcA==
+X-Received: by 2002:a17:902:e5ce:b0:290:c3ad:8432 with SMTP id d9443c01a7336-294deef9a95mr22435595ad.46.1761717026005;
+        Tue, 28 Oct 2025 22:50:26 -0700 (PDT)
+Received: from [10.133.33.233] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498d0c414sm137576335ad.44.2025.10.28.22.50.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Oct 2025 22:50:25 -0700 (PDT)
+Message-ID: <7d389aa2-5e5d-4b0c-8603-60bbcbce7015@oss.qualcomm.com>
+Date: Wed, 29 Oct 2025 13:50:22 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-current] Revert "wifi: ath12k: Fix missing station
+ power save configuration"
+To: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>, jjohnson@kernel.org
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ross Brown <true.robot.ross@gmail.com>
+References: <20251028060744.897198-1-miaoqing.pan@oss.qualcomm.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20251028060744.897198-1-miaoqing.pan@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251029-ath12k-fix-m3-reuse-v1-1-69225bacfc5d@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIANF2AWkC/32NQQ6CMBBFr0Jm7ZBOSRFdeQ/DAuhUGoVqBwiGc
- HcbDuDmJz8v7/8NhKNngWu2QeTFiw9jKnTKoOub8cHobeqglTakdIXN1JN+ovMrDgVGnoWRjLO
- 2UmWrLg6S+Y6c+LF6hyTgyOsEdSK9lynE73G30MH/Li+EhOWFrDGtLuzZ3YJI/pmbVxeGIU8B9
- b7vP3MetW3HAAAA
-X-Change-ID: 20251028-ath12k-fix-m3-reuse-15fdd806b09f
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Authority-Analysis: v=2.4 cv=Nu/cssdJ c=1 sm=1 tr=0 ts=690176e7 cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+X-Proofpoint-GUID: mMujMzADuq0XeAwX8lY9VoCSzoxG1u9b
+X-Proofpoint-ORIG-GUID: mMujMzADuq0XeAwX8lY9VoCSzoxG1u9b
+X-Authority-Analysis: v=2.4 cv=A5dh/qWG c=1 sm=1 tr=0 ts=6901ab23 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
  a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=1qHGFEiZaCHBQHMGWPoA:9
- a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-GUID: -kEhAydT6qtztz1o60Hy2qnXmchvIeBj
-X-Proofpoint-ORIG-GUID: -kEhAydT6qtztz1o60Hy2qnXmchvIeBj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI5MDAxNSBTYWx0ZWRfX3OzQMCbaFG8c
- 7IqTF0K+zM4PkrccfLfNsnBFqegDEfxVGgb7ddcc/wsRMx+wyhW7RfdXIgz2LtZyxMPzYy/8s2T
- XwQGkck0KIua+6wEjh5p/4Cl4UXish0j6Eg/u8B3x1bGyr0eoY9DmkO9hJIRIhUEG//DFftvc2Y
- opoUqTar+xS1XRab+GDmI5qxTVqyeT/sq51MNLdFILV4svohcg1tLIAymwH0ZL0///3kerKNLai
- 7Mz54xV+5ff47fK4Uq9/v9vBnv82OxdADj11oIJp04vEFicAzSjIdAtRmusJOD5rHO9HEuTHbb6
- 3pR4Nzw4/0uD02u/qWFjMoGyYXu8TZx7Xw2EbLUXYhjfNj88hvGZZ1ypN5vEa9F+TDS5KGvSX8t
- tKodNYynLqGhNAHzlcDG4ZrZYKCSiw==
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=dJ2fJ0zB95bh057hNQsA:9 a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI5MDA0MSBTYWx0ZWRfX6k4Hnj9HXko8
+ qGBUjRy3AeU3hDYQ2upPU4ova27fHHmYR4dE2UTYcooajE8oW0muIxbiRSTqPQn19Vyisguodcc
+ eQR1rUZCiS9am+i13oePApueP4GlH2I2eAULwjdD2ifnaQa/+dwPv2vpuP8w1Fs9nMuhP1B2LDE
+ 2XZZbqB/pojqEO4E38lpQkewcGWBqz5PCaNKPQFtcKf0zsgcN0QRMkNa4X0ZPnTHjKTVW1UfvwZ
+ P3vcmCzCx8Mj6CQR8aL+sI+6kyCEhC+4gklYczHbo8N6ST39bPY89ZbIohT6HryXbf8FHmjdnuR
+ seSW5zlQEPhRBXj26KBn3SWnJXhr6eD06BbCCmSIgq9RSsZV7P7DEei7luWu4D6EzvUnf1CSoK9
+ BUleSXKCtIyKf/LptmuwGsvjrpk0UQ==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-29_01,2025-10-22_01,2025-03-28_01
+ definitions=2025-10-29_02,2025-10-22_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 adultscore=0 suspectscore=0 clxscore=1015
- lowpriorityscore=0 phishscore=0 impostorscore=0 bulkscore=0 malwarescore=0
+ phishscore=0 priorityscore=1501 spamscore=0 bulkscore=0 impostorscore=0
+ clxscore=1015 malwarescore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2510290015
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2510290041
 
-During firmware recovery or suspend/resume, m3 memory could be reused if
-the size of the new m3 binary is equal to or less than that of the
-existing memory. There will be issues for the latter case, since
-m3_mem->size will be updated with a smaller value and this value is
-eventually used in the free path, where the original total size should be
-used instead.
 
-To fix it, add a new member in m3_mem_region structure to track the original
-memory size and use it in free path.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+On 10/28/2025 2:07 PM, Miaoqing Pan wrote:
+> This reverts commit 4b66d18918f8e4d85e51974a9e3ce9abad5c7c3d.
+> 
+> In [1], Ross Brown reports poor performance of WCN7850 after enabling
+> power save. Temporarily revert the fix; it will be re-enabled once
+> the issue is resolved.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.IOE_HMT.1.1-00011-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+> 
+> Fixes: 4b66d18918f8 ("wifi: ath12k: Fix missing station power save configuration")
+> Reported-by: Ross Brown <true.robot.ross@gmail.com>
+> Closes: https://lore.kernel.org/all/CAMn66qZENLhDOcVJuwUZ3ir89PVtVnQRq9DkV5xjJn1p6BKB9w@mail.gmail.com/ # [1]
+> Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/mac.c | 122 ++++++++++++--------------
+>  1 file changed, 55 insertions(+), 67 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+> index eacab798630a..db351c922018 100644
+> --- a/drivers/net/wireless/ath/ath12k/mac.c
+> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+> @@ -4064,68 +4064,12 @@ static int ath12k_mac_fils_discovery(struct ath12k_link_vif *arvif,
+>  	return ret;
+>  }
+>  
+> -static void ath12k_mac_vif_setup_ps(struct ath12k_link_vif *arvif)
+> -{
+> -	struct ath12k *ar = arvif->ar;
+> -	struct ieee80211_vif *vif = arvif->ahvif->vif;
+> -	struct ieee80211_conf *conf = &ath12k_ar_to_hw(ar)->conf;
+> -	enum wmi_sta_powersave_param param;
+> -	struct ieee80211_bss_conf *info;
+> -	enum wmi_sta_ps_mode psmode;
+> -	int ret;
+> -	int timeout;
+> -	bool enable_ps;
+> -
+> -	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+> -
+> -	if (vif->type != NL80211_IFTYPE_STATION)
+> -		return;
+> -
+> -	enable_ps = arvif->ahvif->ps;
+> -	if (enable_ps) {
+> -		psmode = WMI_STA_PS_MODE_ENABLED;
+> -		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
+> -
+> -		timeout = conf->dynamic_ps_timeout;
+> -		if (timeout == 0) {
+> -			info = ath12k_mac_get_link_bss_conf(arvif);
+> -			if (!info) {
+> -				ath12k_warn(ar->ab, "unable to access bss link conf in setup ps for vif %pM link %u\n",
+> -					    vif->addr, arvif->link_id);
+> -				return;
+> -			}
+> -
+> -			/* firmware doesn't like 0 */
+> -			timeout = ieee80211_tu_to_usec(info->beacon_int) / 1000;
+> -		}
+> -
+> -		ret = ath12k_wmi_set_sta_ps_param(ar, arvif->vdev_id, param,
+> -						  timeout);
+> -		if (ret) {
+> -			ath12k_warn(ar->ab, "failed to set inactivity time for vdev %d: %i\n",
+> -				    arvif->vdev_id, ret);
+> -			return;
+> -		}
+> -	} else {
+> -		psmode = WMI_STA_PS_MODE_DISABLED;
+> -	}
+> -
+> -	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac vdev %d psmode %s\n",
+> -		   arvif->vdev_id, psmode ? "enable" : "disable");
+> -
+> -	ret = ath12k_wmi_pdev_set_ps_mode(ar, arvif->vdev_id, psmode);
+> -	if (ret)
+> -		ath12k_warn(ar->ab, "failed to set sta power save mode %d for vdev %d: %d\n",
+> -			    psmode, arvif->vdev_id, ret);
+> -}
+> -
+>  static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
+>  					  struct ieee80211_vif *vif,
+>  					  u64 changed)
+>  {
+>  	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
+>  	unsigned long links = ahvif->links_map;
+> -	struct ieee80211_vif_cfg *vif_cfg;
+>  	struct ieee80211_bss_conf *info;
+>  	struct ath12k_link_vif *arvif;
+>  	struct ieee80211_sta *sta;
+> @@ -4189,24 +4133,61 @@ static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
+>  			}
+>  		}
+>  	}
+> +}
+>  
+> -	if (changed & BSS_CHANGED_PS) {
+> -		links = ahvif->links_map;
+> -		vif_cfg = &vif->cfg;
+> +static void ath12k_mac_vif_setup_ps(struct ath12k_link_vif *arvif)
+> +{
+> +	struct ath12k *ar = arvif->ar;
+> +	struct ieee80211_vif *vif = arvif->ahvif->vif;
+> +	struct ieee80211_conf *conf = &ath12k_ar_to_hw(ar)->conf;
+> +	enum wmi_sta_powersave_param param;
+> +	struct ieee80211_bss_conf *info;
+> +	enum wmi_sta_ps_mode psmode;
+> +	int ret;
+> +	int timeout;
+> +	bool enable_ps;
+>  
+> -		for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
+> -			arvif = wiphy_dereference(hw->wiphy, ahvif->link[link_id]);
+> -			if (!arvif || !arvif->ar)
+> -				continue;
+> +	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+>  
+> -			ar = arvif->ar;
+> +	if (vif->type != NL80211_IFTYPE_STATION)
+> +		return;
+> +
+> +	enable_ps = arvif->ahvif->ps;
+> +	if (enable_ps) {
+> +		psmode = WMI_STA_PS_MODE_ENABLED;
+> +		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
+>  
+> -			if (ar->ab->hw_params->supports_sta_ps) {
+> -				ahvif->ps = vif_cfg->ps;
+> -				ath12k_mac_vif_setup_ps(arvif);
+> +		timeout = conf->dynamic_ps_timeout;
+> +		if (timeout == 0) {
+> +			info = ath12k_mac_get_link_bss_conf(arvif);
+> +			if (!info) {
+> +				ath12k_warn(ar->ab, "unable to access bss link conf in setup ps for vif %pM link %u\n",
+> +					    vif->addr, arvif->link_id);
+> +				return;
+>  			}
+> +
+> +			/* firmware doesn't like 0 */
+> +			timeout = ieee80211_tu_to_usec(info->beacon_int) / 1000;
+>  		}
+> +
+> +		ret = ath12k_wmi_set_sta_ps_param(ar, arvif->vdev_id, param,
+> +						  timeout);
+> +		if (ret) {
+> +			ath12k_warn(ar->ab, "failed to set inactivity time for vdev %d: %i\n",
+> +				    arvif->vdev_id, ret);
+> +			return;
+> +		}
+> +	} else {
+> +		psmode = WMI_STA_PS_MODE_DISABLED;
+>  	}
+> +
+> +	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac vdev %d psmode %s\n",
+> +		   arvif->vdev_id, psmode ? "enable" : "disable");
+> +
+> +	ret = ath12k_wmi_pdev_set_ps_mode(ar, arvif->vdev_id, psmode);
+> +	if (ret)
+> +		ath12k_warn(ar->ab, "failed to set sta power save mode %d for vdev %d: %d\n",
+> +			    psmode, arvif->vdev_id, ret);
+>  }
+>  
+>  static bool ath12k_mac_supports_tpc(struct ath12k *ar, struct ath12k_vif *ahvif,
+> @@ -4228,6 +4209,7 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
+>  {
+>  	struct ath12k_vif *ahvif = arvif->ahvif;
+>  	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
+> +	struct ieee80211_vif_cfg *vif_cfg = &vif->cfg;
+>  	struct cfg80211_chan_def def;
+>  	u32 param_id, param_value;
+>  	enum nl80211_band band;
+> @@ -4514,6 +4496,12 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
+>  	}
+>  
+>  	ath12k_mac_fils_discovery(arvif, info);
+> +
+> +	if (changed & BSS_CHANGED_PS &&
+> +	    ar->ab->hw_params->supports_sta_ps) {
+> +		ahvif->ps = vif_cfg->ps;
+> +		ath12k_mac_vif_setup_ps(arvif);
+> +	}
+>  }
+>  
+>  static struct ath12k_vif_cache *ath12k_ahvif_get_link_cache(struct ath12k_vif *ahvif,
+> 
+> base-commit: 2469bb6a6af944755a7d7daf66be90f3b8decbf9
 
-Fixes: 05090ae82f44 ("wifi: ath12k: check M3 buffer size as well whey trying to reuse it")
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/qmi.c | 11 +++++++----
- drivers/net/wireless/ath/ath12k/qmi.h |  5 ++++-
- 2 files changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index 36325e62aa2423fcc091d6d447700d6598a16317..8de9aee2498ec55e2065f655993d929ddf696e82 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include <linux/elf.h>
-@@ -3114,9 +3114,10 @@ static void ath12k_qmi_m3_free(struct ath12k_base *ab)
- 	if (!m3_mem->vaddr)
- 		return;
- 
--	dma_free_coherent(ab->dev, m3_mem->size,
-+	dma_free_coherent(ab->dev, m3_mem->total_size,
- 			  m3_mem->vaddr, m3_mem->paddr);
- 	m3_mem->vaddr = NULL;
-+	m3_mem->total_size = 0;
- 	m3_mem->size = 0;
- }
- 
-@@ -3152,7 +3153,7 @@ static int ath12k_qmi_m3_load(struct ath12k_base *ab)
- 
- 	/* In recovery/resume cases, M3 buffer is not freed, try to reuse that */
- 	if (m3_mem->vaddr) {
--		if (m3_mem->size >= m3_len)
-+		if (m3_mem->total_size >= m3_len)
- 			goto skip_m3_alloc;
- 
- 		/* Old buffer is too small, free and reallocate */
-@@ -3164,11 +3165,13 @@ static int ath12k_qmi_m3_load(struct ath12k_base *ab)
- 					   GFP_KERNEL);
- 	if (!m3_mem->vaddr) {
- 		ath12k_err(ab, "failed to allocate memory for M3 with size %zu\n",
--			   fw->size);
-+			   m3_len);
- 		ret = -ENOMEM;
- 		goto out;
- 	}
- 
-+	m3_mem->total_size = m3_len;
-+
- skip_m3_alloc:
- 	memcpy(m3_mem->vaddr, m3_data, m3_len);
- 	m3_mem->size = m3_len;
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.h b/drivers/net/wireless/ath/ath12k/qmi.h
-index 4767d9a2e309e48e4a9939296ec99513536af953..7a88268aa1e9e99a13034003cf2ca7d21ccb7573 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.h
-+++ b/drivers/net/wireless/ath/ath12k/qmi.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #ifndef ATH12K_QMI_H
-@@ -120,6 +120,9 @@ struct target_info {
- };
- 
- struct m3_mem_region {
-+	/* total memory allocated */
-+	u32 total_size;
-+	/* actual memory being used */
- 	u32 size;
- 	dma_addr_t paddr;
- 	void *vaddr;
-
----
-base-commit: a6199e69fc9ce2da461aad389a875cfdf99fc283
-change-id: 20251028-ath12k-fix-m3-reuse-15fdd806b09f
-
-Best regards,
--- 
-Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
 
