@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-28367-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28368-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90C3C1BAB9
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 16:31:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9E4C1B9B9
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 16:21:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 955865816C1
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 14:33:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44F25647B1D
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 14:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D6F24DD17;
-	Wed, 29 Oct 2025 14:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DAD2D46D6;
+	Wed, 29 Oct 2025 14:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VG80Au/z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lru/7wFl"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7323189B84;
-	Wed, 29 Oct 2025 14:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1ECF2C0278;
+	Wed, 29 Oct 2025 14:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761748411; cv=none; b=E8zUdmjzakxuJNf9Jwy7jlr+kxnsxe7WzWpDq92smPUMZNQygg4ZucAdXuuqxZgzUiq4czfweXGg1pWS6M0oiTFd9oobPlcBO5UjIGKA+CEJjZbDq3pNaDzgQl9ScvPBw2xeHXbWIPl4qUcT0Jd48E+Tyg19UyrC/6004VkpVGQ=
+	t=1761748949; cv=none; b=ZBvLou8A7EJOTVeohSA/po12Ivub0eStcsHc69Mnyn26Ic58N4rqRAXxCoFUHeUL2s1gBpDG6OvmME0F2FH++tP2fKkKUVR+PcJ5jxhUT3pQ5vW6VNLc0cE3hACpq6WZ1Cwe2tgnwi5LDeYtXZ8/nhY27kdCk0NFdu9Gzy9IyZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761748411; c=relaxed/simple;
-	bh=KBexipZinacsmi51W/An1mVKtsS6DoAr0PqX5xgZB5s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rtpqpX7BaKb7HT8a5dO8Piz19SVvUxrH8eHNIc5InFRyG1opr1Gdzt4OlEXEKi0qfsG5Xc6cBO30aQ7iiGU+LfhqtGy+49ZSClodfUESEYV/qJHvblZW47PF5V4l81C5f+oeKn5UX9me0S6vdNQ/hmlAn6VjzJk4vUrPgXT/SX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VG80Au/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0001EC4CEF7;
-	Wed, 29 Oct 2025 14:33:28 +0000 (UTC)
+	s=arc-20240116; t=1761748949; c=relaxed/simple;
+	bh=OL5OfoPuxbIYywoeixb28UuDau6oBIR4B5nO47ShPL0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=EspQQEWhlBFSvVfcUuowJjFs7/BdJcBKQ15EHdFltdMxz4n7h3fDaJeTD584MlvqLbXwDWA/feDK9/WLPycXAWlPGiS5rtaQGEyOx1EkcNHML3VG/jL9wt3OAWyki4JfFBZNuI2LyXmAKUzqDuUyU6zCsww9j2a705pyndoeAoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lru/7wFl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001D8C4CEF7;
+	Wed, 29 Oct 2025 14:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761748411;
-	bh=KBexipZinacsmi51W/An1mVKtsS6DoAr0PqX5xgZB5s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VG80Au/zpuSHRueSTHUFZR/1bZL28JCayNjHxCoG26OBnSuxkV80upA4J5ugWGUkD
-	 4dwRjt6wHcHp7yYiwSODIz4aLnKfk/Dfoen8JzMwDOn9eT/lYp6hy1r1fF+P/u/CVV
-	 xvP8po+84ATTQC37CgGJYpcITqmDvO5+bpCFbpf0MfiXpqvuoMyBnukdKBCsFJL3I3
-	 uC2ZPKbEoL3KExRBwmCI3SEA/M62j3zozMnHCOHYtP/5lHqEekiAQk6bTowalGH8am
-	 k+sftZ6uNO0ao3kOp3YxVZuuTjKhk30F9y4D6GGJo/mlutf1OsJkvJXk4IkILsqdWP
-	 HmT+WlrES4uQg==
-Message-ID: <59ab13be-f72d-4567-a512-15b2c0be5ff4@kernel.org>
-Date: Wed, 29 Oct 2025 15:33:27 +0100
+	s=k20201202; t=1761748948;
+	bh=OL5OfoPuxbIYywoeixb28UuDau6oBIR4B5nO47ShPL0=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=lru/7wFlAg1DloJlbA/BJLJmx1lfctkMkKmO4x0LWxsPrzKS5ydYgsMzeitMBmcD6
+	 iQo8ukMywd50O5dGQ7WLAldqeC11dSOoFd70P9uPwHpn+K3CS/V0tbcxvPc62zVgIj
+	 LzTpZLKR5C1saHAZdFNK2+lxfwydPg2h3PL46g6bbMDS1thA1ECmXU5YdOcFoleTjS
+	 b4KLKVajsFY3cnKqyU3R48HXQJ9DjQ06aRMSzYUB4KMwAyMr12RQ5uRGfAyeb4ZCwT
+	 VsThsk3cx7q0oEzBDbrcNxFAhNx40pnFvfH662wEI+JaSlqJVkdUDTcLV0N34BAGKh
+	 o7fsBCQSyrvgg==
+Message-ID: <52a0d7f1-e342-46a6-86e7-9852ac2f2eba@kernel.org>
+Date: Wed, 29 Oct 2025 15:42:23 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,15 +50,16 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] wifi: ath11k: add hw ring mask for QCN6122
+Subject: Re: [PATCH 1/6] dt: bindings: net: add bindings for QCN6122
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: george.moussalem@outlook.com, Johannes Berg <johannes@sipsolutions.net>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
 Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
  ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <20251029-ath11k-qcn6122-v1-0-58ed68eba333@outlook.com>
- <20251029-ath11k-qcn6122-v1-3-58ed68eba333@outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <20251029-ath11k-qcn6122-v1-1-58ed68eba333@outlook.com>
+ <3dc712ae-b51f-4142-bbab-1eadbc27e60a@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -103,28 +104,33 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251029-ath11k-qcn6122-v1-3-58ed68eba333@outlook.com>
+In-Reply-To: <3dc712ae-b51f-4142-bbab-1eadbc27e60a@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 29/10/2025 15:26, George Moussalem via B4 Relay wrote:
-> +};
-> +
->  /* Target firmware's Copy Engine configuration for IPQ5018 */
->  const struct ce_pipe_config ath11k_target_ce_config_wlan_ipq5018[] = {
->  	/* CE0: host->target HTC control and raw streams */
-> diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-> index 52d9f4c13b1366f2339b8900cf9db91e6ff1bcff..e7220c46de10c378ea5b452d78f921054ff54e54 100644
-> --- a/drivers/net/wireless/ath/ath11k/hw.h
-> +++ b/drivers/net/wireless/ath/ath11k/hw.h
-> @@ -285,6 +285,7 @@ extern const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_ipq8074;
->  extern const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_qca6390;
->  extern const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_qcn9074;
->  extern const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_wcn6750;
-> +extern const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_qcn6122;
+On 29/10/2025 15:32, Krzysztof Kozlowski wrote:
+>>    interrupt-names:
+>> @@ -87,6 +88,14 @@ properties:
+>>      items:
+>>        - const: wlan-smp2p-out
+>>  
+>> +  qcom,userpd:
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    enum: [2, 3]
+>> +    description: instance ID of user PD (protection domain) in multi-PD
+>> +                 architectures to distinguish between multiple instances
+>> +                 of the same wifi chip used by QMI in its interface with
+>> +                 the firmware running on Q6.
+> 
+> Broken indentation. It is supposed to be two spaces. Look at this file -
+> why are you doing this completely different?
+> 
+> Anyway, please do not come with 2nd or 3rd property for this. We already
+> have such somewhere.
 
-Why are you breaking the order in every such list? Keep it
-alphabetically sorted.
+And reading the driver code, this is instance ID, so not really suitable
+here. Sorry, such are not allowed. See writing bindings or my last OSSE
+slides.
 
 Best regards,
 Krzysztof
