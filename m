@@ -1,211 +1,241 @@
-Return-Path: <linux-wireless+bounces-28364-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28366-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78869C1B611
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 15:48:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC7FC1B5F3
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 15:47:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7F9A9589198
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 14:27:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1599758152D
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 14:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1102DC359;
-	Wed, 29 Oct 2025 14:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE4624467E;
+	Wed, 29 Oct 2025 14:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T3HpVNeY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YuUE8j0+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13972C026A;
-	Wed, 29 Oct 2025 14:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD2272639;
+	Wed, 29 Oct 2025 14:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761748001; cv=none; b=OC7TWWV2HYkOCtucsVX9jhvftg5UAfRPmC/mdsfjK0QsuVJI/BlS+zxK8VvbP1qlKINehgHu/sRrJFI8yidhxttrOMYO88ZPug/47FqLZuFJH7+wH0H+DBJ+etVf53hfPPoBVGB9MAX7d8wbZaTu9xj39mvPF+3PFPNjgpPzOyM=
+	t=1761748341; cv=none; b=COKgfJ20hx5ioazhDdN8+j9eOqEec2q/QGxfeXsxcVNGxF0ZrYgtbV8pwNJnj6zT8RHS4b3vEXX0JcDmxutv97Cm9Grdh0IUCt6dFgicuABvlUbarL1MUbIOFRN0Wx9SSYiSuyiEeLfS+DzErpyBzTJu67fkWeEI7nQnceGasNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761748001; c=relaxed/simple;
-	bh=MJBhAVMBcsaOmDVhNfz6RWxEfIYgXLg28HCz04+0t1g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XrSBQIL2w0By3vAVNitj3RlAcsQGifRrJW90w9bKJxL/W+lVitlDOLNbQg6UhXz789S1o4hPeK2BQh2hNcZ9vR62V6OODt2lbHXRDIe2OFmA3IFYjex5dmnmviq4GfbY8TlUZSLFGigWt6l5JOaYQVBVYhURiYRkFvwmfjpAx/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T3HpVNeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 99F0EC4CEF7;
-	Wed, 29 Oct 2025 14:26:40 +0000 (UTC)
+	s=arc-20240116; t=1761748341; c=relaxed/simple;
+	bh=NEzLf3mSJIDiz5bz4MFHpewpc6FNvGIjuz2LwuKvfbA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aVvhcs1+Z482kVcYDMKi0Rex2vOTwGkoAbwYP5TOWIsp3/ETD5RHghn7vnEKVL4XeTMxU5buMrOAF9DDSlK3GYE67TSkETWetBtGZ4lrFJKPf5fXCWwSGUjJy/SpjSPIjUV1jCl/ztGloseIeeWUS7GNIlYOtHk1GsPMDb9zI3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YuUE8j0+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 228B9C4CEF7;
+	Wed, 29 Oct 2025 14:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761748000;
-	bh=MJBhAVMBcsaOmDVhNfz6RWxEfIYgXLg28HCz04+0t1g=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=T3HpVNeYB91pk2yGCBf5LL38KMdqC3dSThTgCn7Qp4AjLCq57Dl6BBJRsEpYAmggu
-	 x47kL3K2uVI58P2d+IyY9bhENLpPvhn4aKwJzs+HOA529l+iaXpScg7Z1v9KthT93Y
-	 KsP+7iVq62IUcuqSpp14NtzPGQdQ7+qz515VCB7XUxnod8M/o0r/7k3JV0lUc+FRQl
-	 nv2ridgJb8/QUb78/forrsvo16H9LIdy0AvU+ffRIcAafi4H/BPCmTrIcIDP+kmh+V
-	 7ApgB0ce8oEZAbF3ap/R5+FVSiKcv1sK4VJcZjvPkP/DfycO5T3dZ4uBwL+ibPZIqW
-	 XUqOjSKbAjR2A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BE5DCCF9EB;
-	Wed, 29 Oct 2025 14:26:40 +0000 (UTC)
-From: George Moussalem via B4 Relay <devnull+george.moussalem.outlook.com@kernel.org>
-Date: Wed, 29 Oct 2025 18:26:26 +0400
-Subject: [PATCH 5/6] wifi: ath11k: add multipd support for QCN6122
+	s=k20201202; t=1761748341;
+	bh=NEzLf3mSJIDiz5bz4MFHpewpc6FNvGIjuz2LwuKvfbA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YuUE8j0+KmbFvLDKEg3mYRB2zH3GCFwCCwV49oUVrYlH7pVzDTOWbcda9NwPmdfwj
+	 Srda6GY9aDZB9lvwIwHg2Zc9lbh7P7QdqJX58gCUsBXcGB9c3l3psJrLGHtBPkuN95
+	 f30wC4+7So/oYSzEIly7xFTgK6NRvMr/BEXgISeaaG+65GiNVmgC0XAX3sNthi+gtO
+	 2VxQnZCHk1wV5OAAMbDx52InZXzTgcJpx63lPEFko53LPR5MgKHy9VQ8d9RmFO1UQh
+	 +JhYDGejI6ECOHHbQL/GmxGVdICcOXjM3Fl/RtKcI3Q/cynu8qTTaRMvL8g4MciALG
+	 TgFoL9bmSR5Gw==
+Message-ID: <3dc712ae-b51f-4142-bbab-1eadbc27e60a@kernel.org>
+Date: Wed, 29 Oct 2025 15:32:17 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251029-ath11k-qcn6122-v1-5-58ed68eba333@outlook.com>
-References: <20251029-ath11k-qcn6122-v1-0-58ed68eba333@outlook.com>
-In-Reply-To: <20251029-ath11k-qcn6122-v1-0-58ed68eba333@outlook.com>
-To: Johannes Berg <johannes@sipsolutions.net>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] dt: bindings: net: add bindings for QCN6122
+To: george.moussalem@outlook.com, Johannes Berg <johannes@sipsolutions.net>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org, 
- ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
- George Moussalem <george.moussalem@outlook.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761747997; l=4796;
- i=george.moussalem@outlook.com; s=20250321; h=from:subject:message-id;
- bh=wfJCOLdDasJ1dIO5v/sGeipzvLRwEDiv/orAU1lK7ig=;
- b=hO0zotmMQKU+pCPVaXheybqxYq7jqzphqz6cWD2fnXPgd+2NjHxivZauWEc/hytJBOkvZTdxI
- d1kgbvTamTRBaBSJvpwgXeQ1Qqa0QsR6K7H9Q/BXYEDMSzYLjoB53V/
-X-Developer-Key: i=george.moussalem@outlook.com; a=ed25519;
- pk=/PuRTSI9iYiHwcc6Nrde8qF4ZDhJBlUgpHdhsIjnqIk=
-X-Endpoint-Received: by B4 Relay for george.moussalem@outlook.com/20250321
- with auth_id=364
-X-Original-From: George Moussalem <george.moussalem@outlook.com>
-Reply-To: george.moussalem@outlook.com
+Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+ ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20251029-ath11k-qcn6122-v1-0-58ed68eba333@outlook.com>
+ <20251029-ath11k-qcn6122-v1-1-58ed68eba333@outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
+ QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
+ +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
+ ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
+ 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
+ hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
+ tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
+ 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
+ naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
+ hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
+ whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
+ qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
+ RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
+ Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
+ H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
+ dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
+ AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
+ jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
+ zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
+ XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
+In-Reply-To: <20251029-ath11k-qcn6122-v1-1-58ed68eba333@outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: George Moussalem <george.moussalem@outlook.com>
+On 29/10/2025 15:26, George Moussalem via B4 Relay wrote:
+> From: George Moussalem <george.moussalem@outlook.com>
+> 
+> QCN6122 is a PCIe based solution that is attached to and enumerated
+> by the WPSS (Wireless Processor SubSystem) Q6 processor.
 
-IPQ5018/QCN6122 platforms use multi PD (protection domains) to avoid
-having one instance of the running Q6 firmware crashing resulting in
-crashing the others.
+Please use subject prefixes matching the subsystem. You can get them for
+example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+your patch is touching. For bindings, the preferred subjects are
+explained here:
+https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
 
-The IPQ5018 platform can have up to two QCN6122 wifi chips.
-To differentiate the two, the PD instance number (1 or 2) is added to
-the QMI service instance ID, which the QCN6122 firmware also expects.
-IPQ5018 internal wifi is always the first PD while QCN6122 cards must be
-second or third.
-
-Signed-off-by: George Moussalem <george.moussalem@outlook.com>
----
-See below patch for more info:
-https://lore.kernel.org/all/20231110091939.3025413-1-quic_mmanikan@quicinc.com/
----
- drivers/net/wireless/ath/ath11k/ahb.c  | 31 +++++++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/core.h |  4 ++++
- drivers/net/wireless/ath/ath11k/pci.c  |  1 +
- 3 files changed, 36 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 7b267dd62e964b2c4d6c3bbe016abd1ad0297219..820a383e88caf125892176e421b0121fed7e7055 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -429,6 +429,7 @@ static void ath11k_ahb_init_qmi_ce_config(struct ath11k_base *ab)
- 	cfg->svc_to_ce_map_len = ab->hw_params.svc_to_ce_map_len;
- 	cfg->svc_to_ce_map = ab->hw_params.svc_to_ce_map;
- 	ab->qmi.service_ins_id = ab->hw_params.qmi_service_ins_id;
-+	ab->qmi.service_ins_id += ab->userpd_id;
- }
- 
- static void ath11k_ahb_free_ext_irq(struct ath11k_base *ab)
-@@ -1101,6 +1102,28 @@ static int ath11k_ahb_fw_resources_init(struct ath11k_base *ab)
- 	return ret;
- }
- 
-+static int ath11k_get_userpd_id(struct device *dev, int *userpd)
-+{
-+	int ret, userpd_id;
-+
-+	ret = of_property_read_u32(dev->of_node, "qcom,userpd", &userpd_id);
-+
-+	if (ret)
-+		return ret;
-+
-+	switch (userpd_id) {
-+	case 2:
-+		*userpd = ATH11K_QCN6122_USERPD_2;
-+		break;
-+	case 3:
-+		*userpd = ATH11K_QCN6122_USERPD_3;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static int ath11k_ahb_fw_resource_deinit(struct ath11k_base *ab)
- {
- 	struct ath11k_ahb *ab_ahb = ath11k_ahb_priv(ab);
-@@ -1142,6 +1165,7 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
- 	const struct ath11k_hif_ops *hif_ops;
- 	const struct ath11k_pci_ops *pci_ops;
- 	enum ath11k_hw_rev hw_rev;
-+	int userpd_id = 0;
- 	int ret;
- 
- 	hw_rev = (uintptr_t)device_get_match_data(&pdev->dev);
-@@ -1160,6 +1184,12 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
- 	case ATH11K_HW_QCN6122_HW10:
- 		hif_ops = &ath11k_ahb_hif_ops_qcn6122;
- 		pci_ops = &ath11k_ahb_pci_ops_wcn6750;
-+		ret = ath11k_get_userpd_id(&pdev->dev, &userpd_id);
-+		if (ret) {
-+			dev_err(&pdev->dev, "failed to get userpd: %d\n", ret);
-+			return ret;
-+		}
-+		dev_info(&pdev->dev, "multi-pd architecture - userpd: %d\n", userpd_id);
- 		break;
- 	default:
- 		dev_err(&pdev->dev, "unsupported device type %d\n", hw_rev);
-@@ -1182,6 +1212,7 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
- 	ab->hif.ops = hif_ops;
- 	ab->pdev = pdev;
- 	ab->hw_rev = hw_rev;
-+	ab->userpd_id = userpd_id;
- 	ab->fw_mode = ATH11K_FIRMWARE_MODE_NORMAL;
- 	platform_set_drvdata(pdev, ab);
- 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index afc591f9608f48506bf19851169828c519661d72..87e047c9a0debc35aa3d37cb0125e741085f73d9 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -48,6 +48,9 @@
- #define ATH11K_INVALID_HW_MAC_ID	0xFF
- #define ATH11K_CONNECTION_LOSS_HZ	(3 * HZ)
- 
-+#define	ATH11K_QCN6122_USERPD_2		1
-+#define	ATH11K_QCN6122_USERPD_3		2
-+
- /* SMBIOS type containing Board Data File Name Extension */
- #define ATH11K_SMBIOS_BDF_EXT_TYPE 0xF8
- 
-@@ -969,6 +972,7 @@ struct ath11k_base {
- 	struct list_head peers;
- 	wait_queue_head_t peer_mapping_wq;
- 	u8 mac_addr[ETH_ALEN];
-+	int userpd_id;
- 	int irq_num[ATH11K_IRQ_NUM_MAX];
- 	struct ath11k_ext_irq_grp ext_irq_grp[ATH11K_EXT_IRQ_GRP_NUM_MAX];
- 	struct ath11k_targ_cap target_caps;
-diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-index d8655badd96d0f4b6946f8af927d878aaa3147ad..89b882bdf08446fd2d429d9a360c90f68c740bdb 100644
---- a/drivers/net/wireless/ath/ath11k/pci.c
-+++ b/drivers/net/wireless/ath/ath11k/pci.c
-@@ -383,6 +383,7 @@ static void ath11k_pci_init_qmi_ce_config(struct ath11k_base *ab)
- 	cfg->svc_to_ce_map = ab->hw_params.svc_to_ce_map;
- 	cfg->svc_to_ce_map_len = ab->hw_params.svc_to_ce_map_len;
- 	ab->qmi.service_ins_id = ab->hw_params.qmi_service_ins_id;
-+	ab->qmi.service_ins_id += ab->userpd_id;
- 
- 	ath11k_ce_get_shadow_config(ab, &cfg->shadow_reg_v2,
- 				    &cfg->shadow_reg_v2_len);
-
--- 
-2.51.1
+The prefix is never "dt:".
 
 
+A nit, subject: drop second/last, redundant "bindings for". The
+"dt-bindings" prefix is already stating that these are bindings.
+See also:
+https://elixir.bootlin.com/linux/v6.17-rc3/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+
+> 
+> Though it is a PCIe device, since it is not attached to APSS processor
+> (Application Processor SubSystem), APSS will be unaware of such a decice
+> so it is registered to the APSS processor as a platform device(AHB).
+> Because of this hybrid nature, it is called as a hybrid bus device as
+> introduced by WCN6750. It has 5 CE and 8 DP rings.
+> 
+> QCN6122 is similar to WCN6750 and follows the same codepath as for
+> WCN6750.
+> 
+> Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+> ---
+>  .../bindings/net/wireless/qcom,ath11k.yaml         | 57 +++++++++++++++++++++-
+>  1 file changed, 56 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+> index c089677702cf17f3016b054d21494d2a7706ce5d..4b0b282bb9231c8bc496fed42e0917b9d7d106d2 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+> @@ -21,12 +21,13 @@ properties:
+>        - qcom,ipq6018-wifi
+>        - qcom,wcn6750-wifi
+>        - qcom,ipq5018-wifi
+> +      - qcom,qcn6122-wifi
+
+Why people keep adding to the end... previously ipq5018 added by
+qualcom, did not even get any review.
+
+Place it before wcn and let ipq5018 be outlier since this was broken
+already.
+
+>  
+>    reg:
+>      maxItems: 1
+>  
+>    interrupts:
+> -    minItems: 32
+> +    minItems: 13
+>      maxItems: 52
+>  
+>    interrupt-names:
+> @@ -87,6 +88,14 @@ properties:
+>      items:
+>        - const: wlan-smp2p-out
+>  
+> +  qcom,userpd:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [2, 3]
+> +    description: instance ID of user PD (protection domain) in multi-PD
+> +                 architectures to distinguish between multiple instances
+> +                 of the same wifi chip used by QMI in its interface with
+> +                 the firmware running on Q6.
+
+Broken indentation. It is supposed to be two spaces. Look at this file -
+why are you doing this completely different?
+
+Anyway, please do not come with 2nd or 3rd property for this. We already
+have such somewhere.
+
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -268,6 +277,31 @@ allOf:
+>              - description: interrupt event for ring DP20
+>              - description: interrupt event for ring DP21
+>              - description: interrupt event for ring DP22
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,qcn6122-wifi
+> +    then:
+> +      required:
+> +        - qcom,userpd
+> +      properties:
+> +        interrupts:
+> +          items:
+> +            - description: interrupt event for ring CE1
+> +            - description: interrupt event for ring CE2
+> +            - description: interrupt event for ring CE3
+> +            - description: interrupt event for ring CE4
+> +            - description: interrupt event for ring CE5
+> +            - description: interrupt event for ring DP1
+> +            - description: interrupt event for ring DP2
+> +            - description: interrupt event for ring DP3
+> +            - description: interrupt event for ring DP4
+> +            - description: interrupt event for ring DP5
+> +            - description: interrupt event for ring DP6
+> +            - description: interrupt event for ring DP7
+> +            - description: interrupt event for ring DP8
+>  
+>  examples:
+>    - |
+> @@ -467,3 +501,24 @@ examples:
+>              iommus = <&apps_smmu 0x1c02 0x1>;
+>          };
+>      };
+> +
+> +  - |
+> +    wifi1: wifi@b00a040 {
+> +        reg = <0x0b00a040 0x0>;
+> +        compatible = "qcom,qcn6122-wifi";
+
+Don't add examples if they differ by one property. Drop.
+
+BR
+
+Best regards,
+Krzysztof
 
