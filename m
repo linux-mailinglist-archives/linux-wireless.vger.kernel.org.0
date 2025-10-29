@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-28380-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28377-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA8FC1CE1E
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 20:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08888C1CE12
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 20:04:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1578188EBCC
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 19:04:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B60C1A22754
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Oct 2025 19:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D967359703;
-	Wed, 29 Oct 2025 19:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0C83590BE;
+	Wed, 29 Oct 2025 19:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="O9+u1rCJ"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="si0mvWm0"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460023590AB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB69C2F12CC;
 	Wed, 29 Oct 2025 19:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761764584; cv=none; b=O5QvTqRgConAoHS7xG+RsyMyz3W2Y6RdSbALOBa9MWtiLD7BIJjGuL/MRQzK1S9XJwNOC26TT17kX0nlg4VmhtLo5vHGlz9N2JZID5Z5KoX9MV53ZrFt0PLcgtPsSLU9PeQ74u4lSIHC58IfDLOhngqa3/amAAZyW0PstlxXCjA=
+	t=1761764582; cv=none; b=qt7gbqLD+fTses/HKrU+En4mi/UR2BHO3T/qTH0JbgVwMu21hk7J+IIrrN/k4WoKnhe2J+RavqkDvUZ/X3NOVFUD9xtMy2bp2qsj0tTmgOKtpCby3OMqwan7KM0rnVBCFo3XjsiAdOVvtc8zl9P83iA8r2M6Yp4grM6t54NeFFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761764584; c=relaxed/simple;
-	bh=1FtZW4U1ojwEyztWuRwA0Bae7MsM11HBqcUXmyFU5Ps=;
+	s=arc-20240116; t=1761764582; c=relaxed/simple;
+	bh=m1ThU6s/OuTsfPXh0aCqXOqnYksqYIpXdR+yR8bMpS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pnhev9jWP9oE4I8Yu1f2XdtHez79tdHoqMJF9Cso3JWCrTcsQf0kELEWJn7ikMCx1FzguBydU2DW+vfHQsEwj03oSRmKCgPFSptXjxQXdaZFLD93lFsVcSXS8UHnxWy97P2mK8P27GBcpPTmdEtQTn0lnkz0+jvH8/eG5XsLPSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=O9+u1rCJ; arc=none smtp.client-ip=83.149.199.84
+	 MIME-Version; b=kjj6uD9Ksd/jMkiKiGGtflA7yySggHftxFDmCfkY4bYXwxjN7JxwpizU1cjUDkKpMhDjEFHP0pneWUJWiMTCXvxmV+z4RJkByrYTRFSdtiZf1GNK/7Q4mAwYT9SGOCRbU+hkC0YgTInKkOlb0xRwD8fHLsr4RdRyHRAosZ8BQTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=si0mvWm0; arc=none smtp.client-ip=83.149.199.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
 Received: from debian.intra.ispras.ru (unknown [10.10.165.6])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 58D0D40777A0;
+	by mail.ispras.ru (Postfix) with ESMTPSA id E970040777A3;
 	Wed, 29 Oct 2025 19:02:58 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 58D0D40777A0
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru E970040777A3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1761764578;
-	bh=OfAgYaOUI1AFIjwkIwYHMJ5+77hecm5s5YXZ1vh9cCE=;
+	s=default; t=1761764579;
+	bh=8jiWoBq2G+KYWCFKuOBzxu0i0MoFGVrc86YGBUTtZb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O9+u1rCJS1rgqa1mCKytKYlzWq+fvWNitjDFaXHJYHus+tz62Vv50OKFZppIZRHUe
-	 WYaUnSiilORgv+ljNbDubL/L0HTaLuGAufcQpYDLaAjb9jDN0UvQEtIWlegloX1TIY
-	 Pd6NDkemgArPILXoMbMCy1OEFPNKbcsEG9kHnMX0=
+	b=si0mvWm02txeDnjF2v3nO5P9NTgZ4CjDskBXw5QAzVzq/EIfYV5ucJhoA6sOCtvMP
+	 tfVVmf+Y+WSOx7g7NzkX3QeKd2ywFeelE0EUmIqhpbNXTIGoyTRLKvD5oJOsUxQimi
+	 zfcPmJHE/ADFYT6RRJW5QRzqP8FWJxnVfJOXz4AM=
 From: Fedor Pchelkin <pchelkin@ispras.ru>
 To: Ping-Ke Shih <pkshih@realtek.com>,
 	Bitterblue Smith <rtl8821cerfe2@gmail.com>
@@ -51,9 +51,9 @@ Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	lvc-project@linuxtesting.org
-Subject: [PATCH rtw-next v4 02/10] wifi: rtw89: usb: fix leak in rtw89_usb_write_port()
-Date: Wed, 29 Oct 2025 22:02:30 +0300
-Message-ID: <20251029190241.1023856-3-pchelkin@ispras.ru>
+Subject: [PATCH rtw-next v4 03/10] wifi: rtw89: usb: use ieee80211_free_txskb() where appropriate
+Date: Wed, 29 Oct 2025 22:02:31 +0300
+Message-ID: <20251029190241.1023856-4-pchelkin@ispras.ru>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251029190241.1023856-1-pchelkin@ispras.ru>
 References: <20251029190241.1023856-1-pchelkin@ispras.ru>
@@ -65,45 +65,57 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When there is an attempt to write data and RTW89_FLAG_UNPLUGGED is set,
-this means device is disconnected and no urb is submitted.  Return
-appropriate error code to the caller to properly free the allocated
-resources.
+rtw89_usb_ops_tx_kick_off() may need to release skb if a failure occurs.
+It operates mainly on skbs coming from the core wireless stack and the
+ones containing firmware commands.
 
-Found by Linux Verification Center (linuxtesting.org).
+Use ieee80211_free_txskb() for the former case.
 
-Fixes: 2135c28be6a8 ("wifi: rtw89: Add usb.{c,h}")
+Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/usb.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/usb.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wireless/realtek/rtw89/usb.c
-index 15fba22b4f5d..1d9760e5eae7 100644
+index 1d9760e5eae7..93dc4e91c1d4 100644
 --- a/drivers/net/wireless/realtek/rtw89/usb.c
 +++ b/drivers/net/wireless/realtek/rtw89/usb.c
-@@ -256,7 +256,7 @@ static int rtw89_usb_write_port(struct rtw89_dev *rtwdev, u8 ch_dma,
- 	int ret;
+@@ -278,6 +278,15 @@ static int rtw89_usb_write_port(struct rtw89_dev *rtwdev, u8 ch_dma,
+ 	return ret;
+ }
  
- 	if (test_bit(RTW89_FLAG_UNPLUGGED, rtwdev->flags))
--		return 0;
-+		return -ENODEV;
++static void rtw89_usb_tx_free_skb(struct rtw89_dev *rtwdev, u8 txch,
++				  struct sk_buff *skb)
++{
++	if (txch == RTW89_TXCH_CH12)
++		dev_kfree_skb_any(skb);
++	else
++		ieee80211_free_txskb(rtwdev->hw, skb);
++}
++
+ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
+ {
+ 	struct rtw89_usb *rtwusb = rtw89_usb_priv(rtwdev);
+@@ -292,7 +301,7 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
  
- 	urb = usb_alloc_urb(0, GFP_ATOMIC);
- 	if (!urb)
-@@ -305,8 +305,9 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
- 		ret = rtw89_usb_write_port(rtwdev, txch, skb->data, skb->len,
- 					   txcb);
- 		if (ret) {
--			rtw89_err(rtwdev, "write port txch %d failed: %d\n",
--				  txch, ret);
-+			if (ret != -ENODEV)
-+				rtw89_err(rtwdev, "write port txch %d failed: %d\n",
-+					  txch, ret);
+ 		txcb = kmalloc(sizeof(*txcb), GFP_ATOMIC);
+ 		if (!txcb) {
+-			dev_kfree_skb_any(skb);
++			rtw89_usb_tx_free_skb(rtwdev, txch, skb);
+ 			continue;
+ 		}
+ 
+@@ -311,7 +320,7 @@ static void rtw89_usb_ops_tx_kick_off(struct rtw89_dev *rtwdev, u8 txch)
  
  			skb_dequeue(&txcb->tx_ack_queue);
  			kfree(txcb);
+-			dev_kfree_skb_any(skb);
++			rtw89_usb_tx_free_skb(rtwdev, txch, skb);
+ 		}
+ 	}
+ }
 -- 
 2.51.0
 
