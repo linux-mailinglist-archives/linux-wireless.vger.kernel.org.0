@@ -1,179 +1,154 @@
-Return-Path: <linux-wireless+bounces-28405-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28406-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012BFC2011F
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 13:44:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF099C2023B
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 14:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D85614E0EDA
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 12:44:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2B1461C09
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 13:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955CA326D73;
-	Thu, 30 Oct 2025 12:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39032FFF9B;
+	Thu, 30 Oct 2025 13:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="LguW/d9b"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cE7pe2jp";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="FENLG4sR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f225.google.com (mail-pf1-f225.google.com [209.85.210.225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365B323D7D4
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 12:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF7D2620DE
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 13:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761828281; cv=none; b=gbz9Flh7o4Yg4p7wCf/VmWe16p6w+YRNtf7uXvuwnpit1K0luYxkAXRzkX2ZxdW9JRUfTaSr3DqjElSTiFWSli35ZryUZPeCZ4StEc285ma5Wf3egjg6qL1bWP0NOv6nybqowOMdfj6z14u7zQpEikVfXIysvEa44UL0LkiJWEE=
+	t=1761829230; cv=none; b=b1gfiu/sTdSvinM1eisWK9tkd/J9F7Fa2P00JLwOBHGqy+uZhRzc+96FUCuTSB2ru2AKllZN1SoBn6cGhVUQkFAOfbhFzbzu1+pKV153uX1pIyvhhmjWHysGjm/KwWRo+/OAQXgW569BfqT+CdhekW4DKK7uap/zSXa8zDyc3xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761828281; c=relaxed/simple;
-	bh=cvvZA7+qJeflSP1NlbAS5AXhgF46EZ6m6aWmA0G/6ZU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XHXySnJrcX/I9+bZdbvdcvOF4PJ29alrlhP42AlIZg26Un+JW3air7JF7MHbEzSEl///jdP1ydrqqvDKiyfkTsZ7rKNUBeVI4KSrj0G7dHGFbfbfngc+Z5tSZ+oec8qLyjOOGZbk1Mc7jSKVtlw9Nq54GaYofOpgCy4UHIG3AB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=LguW/d9b; arc=none smtp.client-ip=209.85.210.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pf1-f225.google.com with SMTP id d2e1a72fcca58-7a1603a098eso675290b3a.1
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 05:44:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761828279; x=1762433079;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V0ZO+Z/yIeLzdxpgTNNQEPGygwiE0S/8mhzLNxS1ecs=;
-        b=BxcRqQgpn4l8a8rjL1+pfCi+RuEbKApy3dN2X1hgViLibsd5zByIscPn/+HhVg/LTS
-         a0X03AOOm6XeSVuIDsHPL/VUCiUzvraBkVjwqaR5o/bNnNewcoKPRNHr6s7VVCQcLNHk
-         VdvUydvuEUq4/htBQRBwYOnGQGnfKRSkrErYpfEvplhA9MWgdQlCls4ePKBbVGZqixKO
-         kv/psz82bnIyiJqbtxsudIWdZNBNCRhYFpJ5xbA6rncT4ti5PKLf5lZ5v1DwCLrxm87i
-         s/W5PDO4sIaQbWOe6aCMMtdKhxXv8Gulsb+ws9K1NZzHNQ83+D4KuOl5qU9EFZ6lEZGY
-         A61Q==
-X-Gm-Message-State: AOJu0YyOz1NccnZqx9dYP2DL1BHHB+bF1SqFVrESAzkSJDYn9oE4RBiv
-	6SkinPJTtHiSPqhlwBLQLgYRzW3teEc1NRy0Lq1mU9rBuBc6G8oq96lT5igefr8SFgisBDA+XHl
-	KN4u94BN/yHVJgBazVrJZ6ADAstONQHTXhB3QWubLzBtgMK6ViJ6ay1ol5fSEKL8frTFdKAERxL
-	2GeNwZvmwDcRtodkUc8sUXleFf4+dPud68VzsL/Nrepald3isf+f0ckw/q08ci+KmMsDZQSNFar
-	JF5CumvMviMpaAt5WKdkn24i4QW
-X-Gm-Gg: ASbGncuJtDscDVftBq+2Cn5uixEmRdh84M0OLDjEkY43ywoBMZ9zOUeNZeLnZnBx7fO
-	yTyIDxYUDozFoTvKOPVJqZrnuY+67b3+LnX2yhERkCl/viejmaRkH2vZZGsMaNGwTAoEC93i3GK
-	bQznyn8cbSofQmufJW1uZMyb1IU6tufhlfOGF3qi1ORQFs0NaoyfMyOVJ63hVmR0Qvxt32kIV6G
-	X0kZPj+KIu6I5vUWf7/IMl3+3Mz5Gg8Aey8RAYG5UHxjMOdN2deL1BolHRKpEU5DhNQwOztHD3X
-	ASvTUAyLJSH9iiIvKJ8zUknq9RjNTWIUehbiZ3tGPRctSv+mx44vjle0iZ3MAJeW7CAXSJJoVKp
-	1NALBST+wWiJ9bnIOY2118xJZCfbGM5YlCEBNMfxYZavwO7ZqkJLpXxzAF9eDhNK9d7UT+1nFxn
-	yCSng6n2fq14YzlT5SG0BM2qqvrs/51km81qj5ZWFt
-X-Google-Smtp-Source: AGHT+IH7wWcf74Vve34/01OqqVJa7Ij17tcQUzTeyODofG4CK4f2ox6vbHS02nCAXKge3GiIvoSd2D6e9Mu4
-X-Received: by 2002:a05:6a00:2d0f:b0:7a2:7157:6d95 with SMTP id d2e1a72fcca58-7a4e2cfcbe7mr8253735b3a.14.1761828279329;
-        Thu, 30 Oct 2025 05:44:39 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-101.dlp.protect.broadcom.com. [144.49.247.101])
-        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-7a41409fd52sm1357806b3a.7.2025.10.30.05.44.38
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 30 Oct 2025 05:44:39 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b6ceba8968dso780134a12.2
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 05:44:38 -0700 (PDT)
+	s=arc-20240116; t=1761829230; c=relaxed/simple;
+	bh=Uom8V/YfuN/7Nw8amHiJnoa2AsDN4tgm566EKh85FUc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OTLHR5bVT2dQoK3lP7RVp4sPhENCpbpRQConFiLpkmSFUj+ZP7y1xf6xxMklt1HDdr1gaaaHE9lP3N1CuRN34ZsTlO7E+2U3WtikjTIXXdHBgo1WAdcdN5FJyJGfVpEGyPD9F1t7b2wAjhCs6nYIM/vgJ8Q53bwRBjezY4ZNMyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cE7pe2jp; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=FENLG4sR; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59U9PEUf3508948
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 13:00:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=hB4YVQpNrgVLXtIFDYO2m3A6urjOI3oWMSt
+	1zsIO0ko=; b=cE7pe2jpFUXafII/UxYCBRZ6JrjSRcQiAbPJefiRgvkAyZLPglT
+	n2sWaOlxclAvSPLZsuxDqdnGKmgM4VATern9TmdcfM0FFgCf/XRKy8uR+uGFwMw5
+	BBUyY5DgMS8NJQt3FbBJn8pj1ZvmdKPfac5Oj7q/K+CKYU9XVt6wZ2Afd5IIeAwk
+	3HwHwWyqXPr4TCHTmT2X61bs0FqhUnj+TWsuHBKySqy94JwW2C7PwLkAGmg4uNDo
+	lSRn1TBdgS+fhVbOoQnhyd3IGyeEWd6+RFGCWYLspqw2QUrFprUf1mD9jpvG6nns
+	sH5Cq0niP3ElV6wfO1YTCmb5xdEUAGdEIwQ==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a45cdgk10-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 13:00:28 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7a264d65dbeso882825b3a.0
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 06:00:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1761828276; x=1762433076; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=V0ZO+Z/yIeLzdxpgTNNQEPGygwiE0S/8mhzLNxS1ecs=;
-        b=LguW/d9bJORIHa7AgPuPBJmd0GqYZZpIFsod9qshaDhBcMgaje/iDyU4QAAv3rA3vw
-         rU5Moj2I32ZcRbtSVPgQWQTVLgtNFWQcR9sZe0X+no0bMPsrvOyNbgH+b7J1ohMbE1g2
-         afiEzmD41LqBEgdOB7qXguda3sc2S9DdDnBoU=
-X-Received: by 2002:a05:6a20:a10b:b0:341:262f:651c with SMTP id adf61e73a8af0-34652f52792mr9835362637.25.1761828276247;
-        Thu, 30 Oct 2025 05:44:36 -0700 (PDT)
-X-Received: by 2002:a05:6a20:a10b:b0:341:262f:651c with SMTP id adf61e73a8af0-34652f52792mr9835327637.25.1761828275836;
-        Thu, 30 Oct 2025 05:44:35 -0700 (PDT)
-Received: from [10.176.2.229] ([192.19.176.250])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414068cdcsm18970045b3a.47.2025.10.30.05.44.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Oct 2025 05:44:35 -0700 (PDT)
-Message-ID: <12ed332e-bcd9-4f0e-a2ee-6d1b3de8753c@broadcom.com>
-Date: Thu, 30 Oct 2025 13:44:32 +0100
+        d=oss.qualcomm.com; s=google; t=1761829228; x=1762434028; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hB4YVQpNrgVLXtIFDYO2m3A6urjOI3oWMSt1zsIO0ko=;
+        b=FENLG4sRlFgmd5YPCAIMLigdXKKP/lk2FMcI78rW76pfkFnTiqTrtzNALbfWuBsAE9
+         9vf796/cgHVt8AAI/H2Kw39+mVftS6w0QgaCVCzqReArmL5i037iev5liisETaPR1WgS
+         de1fy6c5QAiisobUNZvaSfnE64sfaiteuwB+wBHa6edgMtzhIzJFq7N4tj2k5U8Vy6at
+         DSnbWmBRtlwVZP8lmbU4pMCZrLlSbit1dVN9X84tkDJnlCJd7vXoDOur1RR7OHuOE+qB
+         sfttFE4sFEljYwjXwkGsKSWVDZgvtcDq64NX7EWpiZ6aSXzxtorjiG9hXTHYl/4MBZb7
+         ezcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761829228; x=1762434028;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hB4YVQpNrgVLXtIFDYO2m3A6urjOI3oWMSt1zsIO0ko=;
+        b=hBOoq7tTRqg2YUd7DUzmNHhs+Mk5pi6887YyYm+FBSQPns8Br92UrXWLIlpe/gTjFi
+         VthMvDIfV8gLURZoKSTH4zHKchPK4iA+GHh+B76+Uv5wHC8qQ/UKErmwCwTaRVT7UULb
+         Pud5GSudGx3wLf2HQBAUnH4xpvWwZHaP3uiQLyJjKpVrYxDocl4wExwosvMP2ayQCjJv
+         HygzX1ICtwPSSVr+jkX7+jBwyEC4lo82F5XSM8yeNhFmfaxXTRIiozeNKvP6hkfkhmcY
+         DtCUDa9+OTP349aJsi67exgzyq9Vi3uTo4vo1Du7jnEEwcg0jGbnsLQfuGgcYTVXkhEm
+         jcFw==
+X-Forwarded-Encrypted: i=1; AJvYcCXVhlMkRDa/EYT5eNSt8pYgt+hnldgnoRFsMGzJH4B1uBVkNhjyiAqEN/sQldrdgb1CSxDMF+HVTj7QCZvJ7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPp46fMJLIlbK5IujaOn8u/N101l7SAUAKS0hm0uLY5oq7Xsjf
+	Nlpsr3E7MT9S5ZSzWNEMY4ug8vkJI7jYxbAnQRmiYIpxOQ1+ZOJE5PFf9H/Y5HKqSowzC5XGzUf
+	fh6kJbME7bNao68XfpiBWj7KtfuQgl6iW8fp+qesRfCxKIlahw+p3VSBAJgeO69oXC49niQ==
+X-Gm-Gg: ASbGnctnizGVR9G1Sr7owoppUiGBL7bij3WZvWw10SFumvUG+SREKcTx9oKNeGLblIc
+	nDKxlcdkn4QgyatJCy/wYX72ieaF8yCaFubK4KciH+zibDYG2C6jJA7t8/SIpDV0dOvWoGkLP8i
+	qLGU/gNR2vsZxM1jJuvU8vq4QY9wyoLU5ngSz9qwTPnJjbJEH5wR9K1Od4PdUvpwPYxjrtjbkSc
+	hOr9uSVqOZq3oipFM+bftlLfwqoIvdVHb917vZiyNR1dH7g/2lfD6XWM7VXWyhx0XH6QiUlVjbx
+	ZmGTbjLWOyA5Cr4nwMVTcSgaUO1Mn/aYkd++URp0GuZufXE5trCdDwhoxrsW99AVhF9E14xrrLY
+	LUJGcjRvS5BdEzXpLP4AI6SW55ZPYWJBpO4SPRt0h27Q7C1PIj1MmsBj4+zc5lhDrXg==
+X-Received: by 2002:a05:6a00:2d14:b0:76e:885a:c332 with SMTP id d2e1a72fcca58-7a4e59d272bmr8952748b3a.32.1761829227505;
+        Thu, 30 Oct 2025 06:00:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG7jPHh0c1uibK0ShPcz0qwGkhJCFIROjLJpHtxaloxQisZrlsEnpM36w+1oNBnie8yyuXrCg==
+X-Received: by 2002:a05:6a00:2d14:b0:76e:885a:c332 with SMTP id d2e1a72fcca58-7a4e59d272bmr8952656b3a.32.1761829226853;
+        Thu, 30 Oct 2025 06:00:26 -0700 (PDT)
+Received: from zhonhan-gv.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414068addsm19078757b3a.44.2025.10.30.06.00.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 06:00:26 -0700 (PDT)
+From: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+To: jjohnson@kernel.org
+Cc: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, zhongqiu.han@oss.qualcomm.com
+Subject: [PATCH 0/2] wifi: ath10k: clean up structure initialization
+Date: Thu, 30 Oct 2025 21:00:21 +0800
+Message-ID: <20251030130023.1836808-1-zhongqiu.han@oss.qualcomm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] brcmfmac: Add DMI nvram filename quirk for Acer A1 840
- tablet
-To: Hans de Goede <hansg@kernel.org>
-Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com
-References: <20251020163421.68717-1-hansg@kernel.org>
-Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <20251020163421.68717-1-hansg@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: GdmXrjFwoaexN8LdZv1OxT9D9MFMQamj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDMwMDEwNSBTYWx0ZWRfXw/CKGqXYnyJS
+ +nDM6NoXkXYSrrnmIymFSBWkznYSr8Q6E/igSSgxbIBMamn1qJPs0glToU8v/BCG4M34IsPNeGj
+ mruzsQycFdgrnx/9E5NxqZWT3iX04ogp9kfBqWBgRbz5xNUFAK7v1ki+fJwlCl8Ki0f5E/YAq/u
+ 3rysuQ3kisB1JHf0wsd4PC1U3mhnk2RFlK8Rx7eE1kOsMIu0Ad2idGLoYgwS7deD1crmu7sEwqA
+ RU/1uV78LJgb9m0GoeSZVKzgG0wGo1NCUiIb1EJIzE6QuW3PbUpkME4NLnCnqqsNML8L1iReZY1
+ h4qlR5CaYIF4MkAvgXBLhETYvw1zUmpdkW9dBiFqJp23735UjZx0yYxbTlWGyPa1YC5QauqCSp0
+ NpM8VvszBnru/Nf12tVQUmJHKXNKEg==
+X-Proofpoint-ORIG-GUID: GdmXrjFwoaexN8LdZv1OxT9D9MFMQamj
+X-Authority-Analysis: v=2.4 cv=ItUTsb/g c=1 sm=1 tr=0 ts=6903616c cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=x6icFKpwvdMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=j7ZLb4g6lzcXWYqKbDQA:9 a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-10-30_04,2025-10-29_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 malwarescore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
+ bulkscore=0 phishscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2510300105
 
-On 10/20/2025 6:34 PM, Hans de Goede wrote:
-> The Acer A1 840 tablet contains quite generic names in the sys_vendor and
-> product_name DMI strings, without this patch brcmfmac will try to load:
-> brcmfmac43340-sdio.Insyde-BayTrail.txt as nvram file which is a bit
-> too generic.
-> 
-> Add a DMI quirk so that a unique and clearly identifiable nvram file name
-> is used on the Acer A1 840 tablet.
+This patchset simplifies structure initialization in ath10k by replacing
+explicit memset() calls with zero initializers (`= {}`) for local
+variables.
 
-Thanks, Hans
+Patch 1 updates the initialization of `pm_qos_request` in
+ath10k_download_fw().
 
-Please note that the subject should start with subtree name, ie. 'wifi' 
-prefixed:
+Patch 2 updates the initialization of `bmi_target_info` in
+ath10k_core_probe_fw().
 
-wifi: brcmfmac: Add DMI nvram filename quirk for Acer A1 840 tablet
+These changes improve code clarity and efficiency by avoiding unnecessary
+runtime memset calls.
 
-Apart from that...
+Zhongqiu Han (2):
+  wifi: ath10k: use = {} to initialize pm_qos_request instead of memset
+  wifi: ath10k: use = {} to initialize bmi_target_info instead of memset
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+ drivers/net/wireless/ath/ath10k/core.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-> Signed-off-by: Hans de Goede <hansg@kernel.org>
-> ---
->   .../net/wireless/broadcom/brcm80211/brcmfmac/dmi.c | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
+-- 
+2.43.0
+
 
