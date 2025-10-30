@@ -1,229 +1,167 @@
-Return-Path: <linux-wireless+bounces-28401-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28402-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9897EC1E74A
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 06:47:53 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E030AC1F15C
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 09:50:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9C7418941CF
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 05:48:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8F3CA4E9BBF
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 08:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBB222AE45;
-	Thu, 30 Oct 2025 05:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5AE33891D;
+	Thu, 30 Oct 2025 08:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCKsZOhs"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QpKwMHkj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBDB37A3BB;
-	Thu, 30 Oct 2025 05:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F93337BA1
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 08:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761803269; cv=none; b=gV6rJXeQpS+hFoAePeBKbJnvzZ5Io5c1K9SHXkDg/t9EwlnryXsFnPAtZ3hTHbj/45aSU9+MYZG6ihGp3QEl9StNqvhpyAdsSlbrAFH5p7Iia54BRVMyNYrQp4fNJMEdFF7h4jVxdD48oicbfajI+K9vSyoLmzKcyNgGL6jqa2Q=
+	t=1761814082; cv=none; b=cevsblolR5gBZ5QhuLs6TPy/rm3uvEPcUNBqGmjYa3QMIvFC7rOq7NqCfu3ptGOGn8moF+e9BMhGP1HwAisE26MLvWPL2THS+veFvo/MLB7ijLczC4lFkd58C3slRZDxMUvwbe6VMHT31ikt9fErEuwWQtgi54u46KQXo8Q7MMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761803269; c=relaxed/simple;
-	bh=M0L09TztyNjiCDc0Fb+g18Hn3UGbrQ0moZLvALPRArs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ByeahxkhFaxAdbbJGZ6q5EtZuO3Np04e1uNjzih9AyZjnzbPCVdfBXIKCYxFdXuW9QkJvnApZp72iDVXTwQUpxqogZaaly6f7TrnZAoTHd6UDVuHNvFxrv2qq+29zCBJGCPNmWy2cV8q7nNhW4NQdKieHczxIk2Osnyf3SLJnG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCKsZOhs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4806DC4CEF1;
-	Thu, 30 Oct 2025 05:47:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761803268;
-	bh=M0L09TztyNjiCDc0Fb+g18Hn3UGbrQ0moZLvALPRArs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UCKsZOhsyY1IhSirXHQDQstZCJkLbnus/ixxDFTWJBopPno78YIamfu11F2ZYTHeE
-	 j4hKn0TbDWKCquth7Q9IRZbw3o+aK/WT+eQN+A1ceicjqKy8Tnx5Ios2HHNOlNYEh0
-	 KgZTfhcE9RpjBMtrHogO363mF+I7l1HBS+ybg1GLjJZgskbYDJq+Foc13No4VcWFwm
-	 o71IW93b2TIweD2yCLvb3uno2HIibJSKVRkckg4d2NOhy5m0q5DCzIvYZ8dB/sEnlw
-	 Xcz3pnQE5U97HlPymLuaxeVMaQs6oL8VNkyb9p/nqUsSTrTjZqcXQaY0FKfRqQS5k9
-	 urWdccmHQqy7g==
-Message-ID: <da7ecb40-dbc2-4f6e-8026-d630e5b3bb52@kernel.org>
-Date: Thu, 30 Oct 2025 06:47:44 +0100
+	s=arc-20240116; t=1761814082; c=relaxed/simple;
+	bh=3Hf+wEBwc7Rzr1pIbO2ZOzrCbf45iMRZH1tYzls+nMg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iiHJrohHzBZK+2fWuA14ePDhskHRY/TwZui0fX6XQLTFG+nTRB9FHBVlSijFprWKBiaMPk/G79NHGV/2HL3ZQAS0eQCtAjUzkdOJiOET6c+zgYsQGOtXfX5ZVxNEEM7KxU2XmPNCe6IhOxO03G4nprLaRWXBnYatOjCP1LuDqGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QpKwMHkj; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=3Hf+wEBwc7Rzr1pIbO2ZOzrCbf45iMRZH1tYzls+nMg=;
+	t=1761814081; x=1763023681; b=QpKwMHkj8wEL1QkP3lOv/Moxi48bMPE3ZjzXcTeTdGvvsyv
+	2Dnj0Ys7nfY+P7DN8jUSp6RVpnV3g65IvN97lhyan9dLsz5hKsOr/irKH1lckgN/y0NvgvzRCtl8w
+	CMEp44zJ/xWJI9wSf4AoV420speeob0QogZAhleUryKXleJ4PCj26NiIFp5Z6ftlWnCisNyVjdc/D
+	KMoVxajfrA2g+yx63Vc6K1jMx3Pb+uuXlOG4KVMwEwv8ujylI7vUpk0G+HB7XdBd4M2SDEhlnrR+j
+	bPRrY9ZGJZRpobL7d9oNWJ9H7ZdtRCGVpoplPJWOnuXkSpDv7zIq8a6DZl64dwXA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <benjamin@sipsolutions.net>)
+	id 1vEOK4-0000000GDBZ-1Lgp;
+	Thu, 30 Oct 2025 09:47:56 +0100
+Message-ID: <b6a9de98b9b09c73003b89331ba235c3a959c3fd.camel@sipsolutions.net>
+Subject: Re: [RFC][v1][Design] AP Architecture for Roaming with Wi-Fi 8
+ Seamless Mobility Domain (SMD)
+From: Benjamin Berg <benjamin@sipsolutions.net>
+To: Aditya Sathish <quic_asathish@quicinc.com>, Johannes Berg
+	 <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
+	hostap@lists.infradead.org
+Date: Thu, 30 Oct 2025 09:47:55 +0100
+In-Reply-To: <fb0a1ddb-af24-47f9-9d75-0a8f2e346d81@quicinc.com>
+References: <fbf4209c-4fd8-4047-96d7-7fa34d9ba44d@quicinc.com>
+	 <c618e0e8fdee9f7aa2628aefdf2dc04c48e6e9b7.camel@sipsolutions.net>
+	 <30403bb70a2a017c90b1d4a5a1a07514bb670822.camel@sipsolutions.net>
+	 <fb0a1ddb-af24-47f9-9d75-0a8f2e346d81@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] dt: bindings: net: add bindings for QCN6122
-To: George Moussalem <george.moussalem@outlook.com>,
- Johannes Berg <johannes@sipsolutions.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
- ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20251029-ath11k-qcn6122-v1-0-58ed68eba333@outlook.com>
- <20251029-ath11k-qcn6122-v1-1-58ed68eba333@outlook.com>
- <3dc712ae-b51f-4142-bbab-1eadbc27e60a@kernel.org>
- <DS7PR19MB88836505C4CC48D3E62FBC0A9DFAA@DS7PR19MB8883.namprd19.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <DS7PR19MB88836505C4CC48D3E62FBC0A9DFAA@DS7PR19MB8883.namprd19.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-On 29/10/2025 17:12, George Moussalem wrote:
-> 
-> 
-> On 10/29/25 18:32, Krzysztof Kozlowski wrote:
->> On 29/10/2025 15:26, George Moussalem via B4 Relay wrote:
->>> From: George Moussalem <george.moussalem@outlook.com>
->>>
->>> QCN6122 is a PCIe based solution that is attached to and enumerated
->>> by the WPSS (Wireless Processor SubSystem) Q6 processor.
->>
->> Please use subject prefixes matching the subsystem. You can get them for
->> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
->> your patch is touching. For bindings, the preferred subjects are
->> explained here:
->> https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
->>
->> The prefix is never "dt:".
->>
-> Will do in next version, thanks.
-> 
->>
->> A nit, subject: drop second/last, redundant "bindings for". The
->> "dt-bindings" prefix is already stating that these are bindings.
->> See also:
->> https://elixir.bootlin.com/linux/v6.17-rc3/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
->>
-> 
-> Will change accordingly.
-> 
->>>
->>> Though it is a PCIe device, since it is not attached to APSS processor
->>> (Application Processor SubSystem), APSS will be unaware of such a decice
->>> so it is registered to the APSS processor as a platform device(AHB).
->>> Because of this hybrid nature, it is called as a hybrid bus device as
->>> introduced by WCN6750. It has 5 CE and 8 DP rings.
->>>
->>> QCN6122 is similar to WCN6750 and follows the same codepath as for
->>> WCN6750.
->>>
->>> Signed-off-by: George Moussalem <george.moussalem@outlook.com>
->>> ---
->>>  .../bindings/net/wireless/qcom,ath11k.yaml         | 57 +++++++++++++++++++++-
->>>  1 file changed, 56 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
->>> index c089677702cf17f3016b054d21494d2a7706ce5d..4b0b282bb9231c8bc496fed42e0917b9d7d106d2 100644
->>> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
->>> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
->>> @@ -21,12 +21,13 @@ properties:
->>>        - qcom,ipq6018-wifi
->>>        - qcom,wcn6750-wifi
->>>        - qcom,ipq5018-wifi
->>> +      - qcom,qcn6122-wifi
->>
->> Why people keep adding to the end... previously ipq5018 added by
->> qualcom, did not even get any review.
->>
->> Place it before wcn and let ipq5018 be outlier since this was broken
->> already.
->>
-> 
-> it was exactly ipq5018 which got me thinking I should add it to the end.
-> Will alphabetically insert qcn6122. I could reorder the entire list as
-> well if you'd like (ipq6018 is also misplaced)
-> 
->>>  
->>>    reg:
->>>      maxItems: 1
->>>  
->>>    interrupts:
->>> -    minItems: 32
->>> +    minItems: 13
->>>      maxItems: 52
->>>  
->>>    interrupt-names:
->>> @@ -87,6 +88,14 @@ properties:
->>>      items:
->>>        - const: wlan-smp2p-out
->>>  
->>> +  qcom,userpd:
->>> +    $ref: /schemas/types.yaml#/definitions/uint32
->>> +    enum: [2, 3]
->>> +    description: instance ID of user PD (protection domain) in multi-PD
->>> +                 architectures to distinguish between multiple instances
->>> +                 of the same wifi chip used by QMI in its interface with
->>> +                 the firmware running on Q6.
->>
->> Broken indentation. It is supposed to be two spaces. Look at this file -
->> why are you doing this completely different?
->>
->> Anyway, please do not come with 2nd or 3rd property for this. We already
->> have such somewhere.
-> 
-> Would you mind pointing me to the property you're referring to? Do you
-> mean the QRTR ID as proposed in this RFC:
-> https://lore.kernel.org/linux-wireless/cover.1732506261.git.ionic@ionic.de/
-> 
-> if so, this wouldn't help this in this case. Although it's PCIe based,
-> PCI is not even enabled as the Q6 firmware itself takes care of that.
+Hi,
 
+On Wed, 2025-10-29 at 16:17 -0700, Aditya Sathish wrote:
+> [SNIP]
+>=20
+> > A good part of this argument - "pending management frames" - really goe=
+s
+> > back to hostapd's architecture and single-threadedness, but really I
+> > don't think "hostapd's current architecture implies more latency"
+> > implies "we must put this into the kernel."
+> >=20
+> > Continuing that thought: I think that hostapd's architecture currently
+> > leaves a lot to be desired, in particular around how MLD works, and
+> > obviously, at least to some extent, being single-threaded is an
+> > architectural advantage in hostapd.
+> >=20
+> > However, user space also affords far more flexibility than kernel space=
+,
+> > for example some things could be written in rust (with its "fearless
+> > concurrency", which I can attest to), split out to a separate thread or
+> > process, etc.
+> >=20
+> > Anyway ... I guess in a way I'm using the opportunity here to lament th=
+e
+> > lack of architectural work in hostapd which isn't necessarily related t=
+o
+> > this, but I suspect that had hostapd historically had more architectura=
+l
+> > flexibility we might not even be having this discussion?
+> On hostapd architecture: we have had internal discussions with Jouni and
+> recognize the limitations of its single-threaded model at least in contex=
+t
+> of SMD roaming. We are yet to identify any features outside of SMD which
+> holds a critical latency requirement. As such, we see _full_ multi-thread=
+ing
+> as a significant undertaking without any users of this benefit outside of
+> SMD (at least at this time).
+>=20
+> Given this, we are exploring an alternative approach =E2=80=94 introducin=
+g worker
+> threads for low-priority kernel events while enabling prioritized handlin=
+g
+> for sequences like ST Execution and the inter-AP messaging in the main
+> thread. This could offer a tractable path to bring multi-threading withou=
+t
+> having to do a deep-dive study on the impact of parallelism on existing
+> features.
 
-I expect something covering all cases, so it must cover ipq5332 and
-ipq9574 from the other patchset you mentioned:
-https://lore.kernel.org/all/20231110091939.3025413-2-quic_mmanikan@quicinc.com/
+Do we have a clear picture of what the performance issues might be?
 
-Same thing cannot be represented in two different ways.
+To me, it seems a bit that talking about threading might be a red
+heering. It could be that the primary issue is the prioritization of
+events when there is a burst of activity.
 
-For APR and GPR we already have qcom,protection-domain as a service
-name. Linux drivers use it a bit differently than your code here, but
-unfortunately I focus on bindings and the binding sounds exactly the same.
+We should not need threading as long as each individual event can be
+processed quickly and hostapd is able to keep up overall. In that case,
+we have an event ordering issue which can likely be solved by using
+multiple nl80211 sockets and giving them different priorities in the
+mainloop. By doing that, you can effectively pull all time-critical
+events to the front of the queue and ensure they are processed with
+only a short delay.
 
-Anyway instance ID is not acceptable. Check my slides for possible
-workarounds, if you do not know the actual protection domain.
+Now, that doesn't invalidate your point at all. If we do have tasks
+that take a long time (crypto?, external requests?), then it can make
+sense to push just the slow part into a separate thread and pick up
+processing in the main thread once it has finished.
 
-Best regards,
-Krzysztof
+Benjamin
+
+> To summarize,
+> (1) We will defer offloading the ST Execution and inter-AP communication
+> =C2=A0=C2=A0=C2=A0 to mac80211 until we are ready to demonstrate the need=
+. Until then,
+> =C2=A0=C2=A0=C2=A0 we will proceed with hostapd-based ST Preparation, ST =
+Execution and
+> =C2=A0=C2=A0=C2=A0 inter-AP communication.
+> (2) We are planning to explore the introduction of worker threads for low=
+-
+> =C2=A0=C2=A0=C2=A0 priority kernel events while enabling prioritized hand=
+ling for
+> =C2=A0=C2=A0=C2=A0 sequences like ST Execution in the main thread.
+>=20
+> Regards,
+> Aditya
+>=20
+> Regards,
+> Aditya
+>=20
+>=20
+> _______________________________________________
+> Hostap mailing list
+> Hostap@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/hostap
 
