@@ -1,184 +1,200 @@
-Return-Path: <linux-wireless+bounces-28408-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28409-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62E1C20252
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 14:04:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A71BDC203C4
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 14:30:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1C2A5609F1
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 13:01:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CC20421E39
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Oct 2025 13:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63CF7354AC2;
-	Thu, 30 Oct 2025 13:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777A732E699;
+	Thu, 30 Oct 2025 13:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Ldl8GfmU";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="QNUzrTTe"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="AEEO4qE/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f100.google.com (mail-yx1-f100.google.com [74.125.224.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D28355053
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 13:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0139322C80
+	for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 13:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761829236; cv=none; b=fMjnhrrRoeEtUxgMRZCx8GSLCf1F1Z5EnsMPXKdBWv26XvLtP8h2QNss+HPb+ySCh8cUOy6OmjPLljP7zLjQqkAUtIvf+0msVLaHOHsp7oLnwA5wUf5e4Ypc8BOiMJKbhD1jYvWqE+jH30N5lSZLunhOLLwehVR3XyHqkuxIM5w=
+	t=1761830837; cv=none; b=unPDTjFXac5P9aRtlNLWZQUmiAq502KpqGSLd1b/QQDkqjv2vsTIunJYWoM6+8B8HzNO+UzeZ6EP2pf9+mztTd7e4Buua/obLsB6eWTmFh7Js+1ov5+dZeIiGStMfEh+ULJOW7cxAYwX5lG1zOWRQ6tYkolTPOIF/ME9ahLawUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761829236; c=relaxed/simple;
-	bh=LGW7hdfvroyMNsS3xnEjeZR4TQUPNzO2Hk/wStLQaew=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDf3NPDdRa6pVq0YCUM6qYDPQyrFrOf4x+MmcS18xdacZi6xZT2UH7iBgs6mN1pVj7SGjMiEZLQYQ+mZGrwMenSyiz7YlpzR+KHOXoSEEa3q/1E78SATlmg1v50cplqVKlDeszXiWlxpvfbam2x6G0ETg1sVBAX3IwaFb/Joai8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Ldl8GfmU; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=QNUzrTTe; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59U9PEUg3508948
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 13:00:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=YBSYMbXV4wP
-	o16RGwlAGSta0tp2sRbEpfdJq3GdZt0I=; b=Ldl8GfmUBy+qMs5f4/aExlHoCB2
-	OnxBk6QH7mUDJrtuKZLarliPTm3O8N86zUXw/ydl4KgE7bxNEKkLES7DxCCH6XNZ
-	xKeiZJ4sy649qK78+H4IY5zw5G/VUJZW32t0KVDSskRZkc2J8MnEb37T1nRfvSnD
-	YuLnWXnBze7fy9gBby0sfw4sPTtErld2X+5zmnnofshJbuZxKrRXyRmRu1OGS0Uh
-	2ho5L44zEwrTexQyT47DZ/DKo4VuwDyo9THCNDTi2XeeraDxByvUv81WmFN2CrhT
-	wHIPjwhUhVOzGn6MaJMyZpcgxguqF2ENOU0LuxIHZHjVhnui1/lBingW4Rw==
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a45cdgk19-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 13:00:34 +0000 (GMT)
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-7a675fbd6c7so557731b3a.2
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 06:00:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1761829233; x=1762434033; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YBSYMbXV4wPo16RGwlAGSta0tp2sRbEpfdJq3GdZt0I=;
-        b=QNUzrTTeqFr+/eNJNYL44FPJgZbenNHSfNiwCN7tILb2o1uPjjzibsWsqqY4Cj33Bf
-         SWtH1hOHE+gBeVn5qugA7bfzhJ7mGuZPWtwnDq5ffN87K4dOdxIW2OxP+oLNtwGUAUqL
-         IZ1Gyq+pYyGrhlpK7GjBZQMe00FLdK7QxlAmzTz1nnNVF6+LqAyHQbHnEYcWt2iohYsF
-         yDfRf7iCaLTB56RgbR3pNy2SiVVJVCTwp5i3UT00DX4C0XfKWmxO5rU8Bkxz3oIaPQ3x
-         bN/tXGLyw6zlBjsIPz8XXxHtQcY4Arkqjt2RSgJ/HjgF4q2c9Q7jrgNRfHPzAR8sYEw5
-         J2Dg==
+	s=arc-20240116; t=1761830837; c=relaxed/simple;
+	bh=1qUD48hf7Zf4bL0s/Ql9Y1pI9LG/2BGYn8uIuRM7T6s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hT/KlbukjCwVEBwKxM8dSXUEboPysqh+GVh0dhJM5ujvGOvGqM1F25hm/oftgjgsK6CxjmH6lvFr3i665fP4xnIJdYZdX8siw5mzVRrejvt5S9Yh7GKZBTuBMb3bLxGENFwM7wWVSJhvPWldSZv2cx9sISwOSWrmxUS5V81B35Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=AEEO4qE/; arc=none smtp.client-ip=74.125.224.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-yx1-f100.google.com with SMTP id 956f58d0204a3-63f870cc79aso601539d50.0
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 06:27:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761829233; x=1762434033;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1761830835; x=1762435635;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YBSYMbXV4wPo16RGwlAGSta0tp2sRbEpfdJq3GdZt0I=;
-        b=GW+9p5t5RvWKv7W5mi7l81BvmDVhJQpC2AkDcng9Of0fmCbsqqlsiSChq46Xe1vjRA
-         j2LX6RxeJvKbx6rD+R86GcwYUBwec/OwOEy/uUgTd53himQYwMtZ54acbnVAuTn8PdI0
-         3VyGC1xF7FRFzZ6Z/JzjrKh+um0Nf5ONjoQJqI1NeRdNOI/eoZbDZz8ScCUSnokFehGF
-         5g+hRTbjcUD8dZFZVc6WELFtF9nxpL84ydv9SdWFNzp2v+lmF2XLCHRuDbD74aG1QPd5
-         YF2LXEWAs/wlT3DsNwhg0un14ONGsr6StJSEHflusp5rW5TMDUgf1XtheITfLu/xHHUW
-         ajRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXp6h9rhiGyPlnj4NPySb/Fc8962Pm6iPTJJbfbCC5L0WiiGeEYDwQCPt680aXL2x7tRj2cCiEqYuG0tmPhvg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbBpHHSEV85RPndLzXIsnwRcqoNYx4PYVwX1jCflXmu1slSo4A
-	fRsWB3/CMmBuidWAV1IG5hX4cMLZDkIRZ+9vnSzF74sCb7GF5ukU+BS8kMIkTBrgAEziluUr5B6
-	r9uIGOWa4hx+IwW1ZMF1GBkRqxMTgYOXomPQgOYcVCNPF2L5dGVb+wLfL/W92s8m15gCORw==
-X-Gm-Gg: ASbGncvKKCxhBXF3SzsprZ4AFp+xcU+LtsvWrbe3LrtBAYQsemL5weeMRiz8Xk132Ay
-	+9T46j3cnNwrd6lpPbsU03mqPuxVvHNSPbe4UjFpv3ga5arQU8VDUiLpjY2KhKTzEYVlLIuWTU/
-	F4c/MKg+ZUstqiNRCh4q9ii5DdK6to8cjWcyxc5wJi3yNBhENp2Wlv9dUdEZhHCN6GtAx6P83lC
-	+jbHn8LrDMDb3xQyOdg+kXsCBGTn8x72jt+C2D4Cg+3KjABewjmoYkWIbTMCnDk0Bc8zMpeHtlT
-	CbZOxYe+uf3zeTLtyddbC8OB1of6psKujwLm0ZcDoHu5IdNtOZviB7f49ZLpeG+HigL/9ZWKbbv
-	KP4ufw150U2CTOnJGjEyvNAnBGrLoLAIDsmGETEkrH9igO+AjNPnsAAHyt6tLZ9DEyA==
-X-Received: by 2002:a05:6a00:14c7:b0:776:1c49:82f8 with SMTP id d2e1a72fcca58-7a4e2cfc4f7mr8535251b3a.8.1761829232901;
-        Thu, 30 Oct 2025 06:00:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFwUbo2rnq1u5I3smURzqZgV3UkEDWSY8iTqhS1M3qZiZ/dcfDt2ClBHzvIFP5gbjiY99BDhQ==
-X-Received: by 2002:a05:6a00:14c7:b0:776:1c49:82f8 with SMTP id d2e1a72fcca58-7a4e2cfc4f7mr8535091b3a.8.1761829231545;
-        Thu, 30 Oct 2025 06:00:31 -0700 (PDT)
-Received: from zhonhan-gv.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414068addsm19078757b3a.44.2025.10.30.06.00.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 06:00:30 -0700 (PDT)
-From: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-To: jjohnson@kernel.org
-Cc: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, zhongqiu.han@oss.qualcomm.com
-Subject: [PATCH 2/2] wifi: ath10k: use = {} to initialize bmi_target_info instead of memset
-Date: Thu, 30 Oct 2025 21:00:23 +0800
-Message-ID: <20251030130023.1836808-3-zhongqiu.han@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251030130023.1836808-1-zhongqiu.han@oss.qualcomm.com>
-References: <20251030130023.1836808-1-zhongqiu.han@oss.qualcomm.com>
+        bh=dMXWIu8U60uApRCrqyrIhfDspTa+9zuuI22qzRz3bTA=;
+        b=U2BfMPnvZR1nJe7B8CmlObbVQmE1I9FjyswCIhsLCvWxpYZTBkCRjSaw9FBr7InOVT
+         07cEQciA7aNGFVdaeTDC9AU4yY+YE38Vyf3TfYt8dzmeUKTx0g5zbqNcOv35gm9Wbmk1
+         HjAYmrYJRJsWMeUlHnzlSGWQ0Nb3CxJkFxysi0+Cr99JzTNHrGJx2QNy+URTPSd6cs+p
+         /EK8qjH9C0Fs2bh6MPFOAve4yVEgst5nCgQDuyyfAcnEgocCmMza63qycTERXFp9p41W
+         q8PnKIlQSoXpf7IcrbEzHlZDSYtrxxiGf1Wm3bQaLE1A4i+oB559gfPuJRys5NDFhalY
+         8edg==
+X-Forwarded-Encrypted: i=1; AJvYcCVgwx4yrct5Cix7kgGoGfaC4vpKbOWptBVVF7LU/Wd4F2JeJm1YTLLRQ+ovLzyriRNx0LftbyNY6P3amqNX8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyd4hwZ2FETkGYFjXAiv+lBe9my01ggGuDMQhn6HNj3UIhCtpRF
+	gW8PHaIsVQAAgx3xJg697633gejBKx2tTnVxJfSXDxXlPMdusp0wNV9hWzugPPGBc7U5lK/qa3k
+	oAoFS6JZuJX1qDrIHgIk5c9BTNYoWuSvv9bLFtrB3CRzZHq8D+M3MEcM69V9fnvV/57WqHemDoP
+	t6QXkoBPZ6CF3fAK8+6sciPHtzn0ULjU0BZ9vT6mnqCMpEqUt0N45h8X6TNHUAAonEOa87HCOUi
+	zroYnQbJD3bsDIHI10hfqDat04W
+X-Gm-Gg: ASbGncuxZto5dPLnyLh+l/6S6whm17ERZhcRcpxuDLcxqoTPXyDYoym80hmQKWlzQ+v
+	XcocFwKJfr+Fq4kK0lVrPjCcI5AmbQkDNqXRlacor9JXXP9XHfMbSH8nxX+6ew9HM9OIyICWEzw
+	HX5LGgRnKW4/Gau2T065DO+BQA/wvP4ZZ8rj/DM8fwlHlgttI5ASCVEuZN+Venbbwq2l9vjdQyB
+	xR/uI/EjicPYuawCjRx3Mgh2ij9gbxkKwjIgoILdlvUxEzNrSaPA1AOXgR7b4YLTGBdJpbHy6b5
+	zefMV53vsj3r2DqhVFAqffHpUxy1HckVtUbpYRSQnTo2/z3/75DErWTJN0eYZzPAHp9231omoV6
+	O8dL3qczgHLd61iE5fxytyWiZPO/0Kd+HTVuehieAszCjzCxH6KR/foeoVYJTEXXSAXUJK/CuIw
+	Skmdaz9B2UwflnY1rT0zy/I0iG7/fZdw9B7/TVGTIo
+X-Google-Smtp-Source: AGHT+IGXFoGlRhntrrvEchttE8k2yzgARcYgke60R/qDBLeysVezwI3bsAC04U1f+VZzmRzq1ZlLLi6GcbOB
+X-Received: by 2002:a05:690c:9a8f:b0:785:bfa1:223a with SMTP id 00721157ae682-78628f8d9edmr60711877b3.45.1761830834621;
+        Thu, 30 Oct 2025 06:27:14 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-102.dlp.protect.broadcom.com. [144.49.247.102])
+        by smtp-relay.gmail.com with ESMTPS id 00721157ae682-786444a5f68sm376177b3.12.2025.10.30.06.27.14
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 30 Oct 2025 06:27:14 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8904a9e94ebso267088585a.1
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 06:27:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1761830834; x=1762435634; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=dMXWIu8U60uApRCrqyrIhfDspTa+9zuuI22qzRz3bTA=;
+        b=AEEO4qE/GVz5H/LknnNrdMy5UIPE7EtayioLrjSQ8vqikvVpDgueiphI+bqoA3ewSd
+         LvOH7YIyz9MdlOUqfJlXeOgEIc2hZL4mDot3QLDaKl+lgdcbLvPtqEyNLCNsI1M7Xl3i
+         rd2/d+W4AL0x6t1I56MddRvMMt9F8YFSgR/y4=
+X-Forwarded-Encrypted: i=1; AJvYcCW+m9fiMOtZ9Bfhi+v06+KxO2HBsoMjuaMzeG/wMzqU0jEF0dzBM7zgIKNQv080pzcSn41eVRgO6PIvpYnEng==@vger.kernel.org
+X-Received: by 2002:a05:620a:45a7:b0:82e:6ec8:9887 with SMTP id af79cd13be357-8a8e3b9b881mr886990885a.24.1761830828815;
+        Thu, 30 Oct 2025 06:27:08 -0700 (PDT)
+X-Received: by 2002:a05:620a:45a7:b0:82e:6ec8:9887 with SMTP id af79cd13be357-8a8e3b9b881mr886986885a.24.1761830828170;
+        Thu, 30 Oct 2025 06:27:08 -0700 (PDT)
+Received: from [10.176.2.229] ([192.19.176.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-89f25e8685fsm1259974385a.50.2025.10.30.06.27.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Oct 2025 06:27:07 -0700 (PDT)
+Message-ID: <17ed1078-772e-4c01-ba7c-63c58d89c0d9@broadcom.com>
+Date: Thu, 30 Oct 2025 14:27:05 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: P4vk4Dtr0EyqJoE6z_dO55stHkiC0F_Q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDMwMDEwNSBTYWx0ZWRfX2kcu7Co+iXfx
- NpleonZ4BzlJqKv1aikCl3uCO0Q4c/GT9XkSolfsGZzw9gji0bKSHyjijOIbgvJ5c7L/3Vcmopt
- lJfIuUablTVcW9+QvK4+7xhWujA9+OmwJL6z9VHQu1yLID1nhzh7e+4eFxeGxW0KEmydo7rDhZ+
- 7qi6AGUI53dqbUv+6hupxl9R+i36DTB9oyEa71eFR6TwN6JlZXQOCZGmAdsSlQUov/arkPWZnfZ
- hT1NU+EEN14EWzRS5qzQW19NHnnaWCVrN6sHliCnXdDYONH4srJfCUyc6B1AqUwUWOqj0oxuUbo
- LGNpKcTfXtso59BlQYf3fts9TnrilT8SLKUXuqMTgplZ+zAx+7oMY2kb/iRh3BRPQWu4EAnSYvH
- y8wqNk/3njhGHl9rqDgTh1KSK/HmLQ==
-X-Proofpoint-ORIG-GUID: P4vk4Dtr0EyqJoE6z_dO55stHkiC0F_Q
-X-Authority-Analysis: v=2.4 cv=ItUTsb/g c=1 sm=1 tr=0 ts=69036172 cx=c_pps
- a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=x6icFKpwvdMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=vBECTLBiNrBzeQB1dycA:9 a=OpyuDcXvxspvyRM73sMx:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-10-30_04,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 malwarescore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
- bulkscore=0 phishscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2510300105
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: brcmfmac: Add null pointer check to
+ brcmf_acpi_probe
+To: Li Qiang <liqiang01@kylinos.cn>, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com
+Cc: linux-kernel@vger.kernel.org
+References: <20251015071607.96415-1-liqiang01@kylinos.cn>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <20251015071607.96415-1-liqiang01@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Initialize the bmi_target_info structure using = {} at declaration time
-instead of calling memset() in each bus-specific code path. This
-simplifies the code and avoids an explicit memset.
+On 10/15/2025 9:16 AM, Li Qiang wrote:
+> devm_kasprintf() returns a pointer to dynamically allocated memory
+> which can be NULL upon failure.
 
-Signed-off-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath10k/core.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Thanks. However, it does not make sense to just bail out. 
+settings->board_type will still be NULL and apparently that is not an 
+issue. It is used to fill the firmware request (see struct 
+brcmf_fw_request [1]) which is done for PCIe devices in 
+brcmf_pcie_prepare_fw_request() [2].
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 670c31a52a12..7c2939cbde5f 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -3352,7 +3352,7 @@ EXPORT_SYMBOL(ath10k_core_stop);
-  */
- static int ath10k_core_probe_fw(struct ath10k *ar)
- {
--	struct bmi_target_info target_info;
-+	struct bmi_target_info target_info = {};
- 	int ret = 0;
- 
- 	ret = ath10k_hif_power_up(ar, ATH10K_FIRMWARE_MODE_NORMAL);
-@@ -3363,7 +3363,6 @@ static int ath10k_core_probe_fw(struct ath10k *ar)
- 
- 	switch (ar->hif.bus) {
- 	case ATH10K_BUS_SDIO:
--		memset(&target_info, 0, sizeof(target_info));
- 		ret = ath10k_bmi_get_target_info_sdio(ar, &target_info);
- 		if (ret) {
- 			ath10k_err(ar, "could not get target info (%d)\n", ret);
-@@ -3375,7 +3374,6 @@ static int ath10k_core_probe_fw(struct ath10k *ar)
- 	case ATH10K_BUS_PCI:
- 	case ATH10K_BUS_AHB:
- 	case ATH10K_BUS_USB:
--		memset(&target_info, 0, sizeof(target_info));
- 		ret = ath10k_bmi_get_target_info(ar, &target_info);
- 		if (ret) {
- 			ath10k_err(ar, "could not get target info (%d)\n", ret);
-@@ -3385,7 +3383,6 @@ static int ath10k_core_probe_fw(struct ath10k *ar)
- 		ar->hw->wiphy->hw_version = target_info.version;
- 		break;
- 	case ATH10K_BUS_SNOC:
--		memset(&target_info, 0, sizeof(target_info));
- 		ret = ath10k_hif_get_target_info(ar, &target_info);
- 		if (ret) {
- 			ath10k_err(ar, "could not get target info (%d)\n", ret);
--- 
-2.43.0
+So struct brcmf_fw_request::board_types array may hold NULL pointers 
+which is not an issue.
+
+So this patch does not solve a problem.
+
+Regards,
+Arend
+
+[1] 
+https://elixir.bootlin.com/linux/v6.17.5/source/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h#L67
+[2] 
+https://elixir.bootlin.com/linux/v6.17.5/source/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c#L2264
+
+> Fixes: 0f485805d008a ("wifi: brcmfmac: acpi: Add support for fetching Apple ACPI properties")
+> Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
+> index c4a54861bfb4..f8f6433bdf69 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
+> @@ -25,6 +25,8 @@ void brcmf_acpi_probe(struct device *dev, enum brcmf_bus_type bus_type,
+>   		settings->board_type = devm_kasprintf(dev, GFP_KERNEL,
+>   						      "apple,%s",
+>   						      o->string.pointer);
+> +		if (!settings->board_type)
+> +			return;
+>   	} else {
+>   		brcmf_dbg(INFO, "No ACPI module-instance\n");
+>   		return;
 
 
