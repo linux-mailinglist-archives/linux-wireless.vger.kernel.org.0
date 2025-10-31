@@ -1,160 +1,244 @@
-Return-Path: <linux-wireless+bounces-28425-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28426-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0B0C22DA8
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 02:19:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E32C230B4
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 03:43:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39A751895624
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 01:19:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DC2618927AB
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 02:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56DA1DE3DC;
-	Fri, 31 Oct 2025 01:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F063081B5;
+	Fri, 31 Oct 2025 02:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KxWgkhib"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DMbdBDJy";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Wt6bgqZ0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35364C81;
-	Fri, 31 Oct 2025 01:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223CC2C3271
+	for <linux-wireless@vger.kernel.org>; Fri, 31 Oct 2025 02:43:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761873569; cv=none; b=Y8ZSEbq7HvhKM3VOscNRGg8AkPhfekjkJJqG0p7jXHCIFxWsghdeYNviYThh836dxoEY9cg5oa0sjq62plJRaorApuz4qvAZfpJcJvIJBJj3GYf///2oFaPz8VI0eGBNA9nc6HQtVnU7IhnCXhFioNFzXGxx0BrGpB0nKO6IvHo=
+	t=1761878589; cv=none; b=MLhYO2McqSp+qeBWZziZax9rWVz/w1quKI6PABesbtnCqbHtyKn6Jzn8Pl+IX5qp0DUXZAyAb1PuxY0hnCuLYBYdh/lgmLjW9yW+s46xBDkVUbQhZX+M2U0I/GOmq6b3zL6KQdQ7CrnJkbuLIAPGyHKsapll7gZh7GtFFDhSUkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761873569; c=relaxed/simple;
-	bh=s3KxTLvxykwuQMgwYymSDxBhPd0V8H4sWyAgWwULAKI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r91kqQUNBpp7su1mpmwLLptkq3qAwmQdxYgpVhQX9JOrlNLeEuLilQRNpfmiA6EY4YBQMnCQqnOAEBATGF+/XP28TZCTUBv+Vp6DvLivDNOFERO2/7otwZcNf14e68AwWVilnFy+aiV3DwRlV26maWvo+2ErswaxqjaH7q+Z3ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KxWgkhib; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761873568; x=1793409568;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=s3KxTLvxykwuQMgwYymSDxBhPd0V8H4sWyAgWwULAKI=;
-  b=KxWgkhibFNk2OBR338daFTnQuyNBMUavEjdbyx5wclbp2wQh85cs99ZP
-   ay0whbO4SrVi73cMCmS/Nnj14H/2/9A8D2AdpN0PnAdM1K+DCMtfvb6PE
-   luu+UiDUzWapY3c/1t3xWTXhM+uzHJOIgJpURYsX7YF+wOBcwm4w5tvSk
-   KXtzajBxdOAtWlZZorLhi0kGWnEnkzq+YB/kncBDyOcmPOFtGOZoxkUjS
-   covSCGdo74xSzf0D9eUUyPtrVeK9u0PQsT4crAkWPYhpz21/4jt5a4YPs
-   xKnRdjXAArG46v0FD6yDiHY+cGA9LW4PqowpcynKeb0sl0AYtj/soPdqs
-   A==;
-X-CSE-ConnectionGUID: nwklheNoS4GfMfhjjv+Kzg==
-X-CSE-MsgGUID: +EpFke1ZQH6yAjCg9qy2zw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="64069214"
-X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; 
-   d="scan'208";a="64069214"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 18:19:28 -0700
-X-CSE-ConnectionGUID: mCjhLEe6QCKcT9fN0jidcg==
-X-CSE-MsgGUID: jQINaZDsRf6rcrtZb6y02w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; 
-   d="scan'208";a="185979707"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 30 Oct 2025 18:19:24 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vEdnS-000Mem-0M;
-	Fri, 31 Oct 2025 01:19:20 +0000
-Date: Fri, 31 Oct 2025 09:18:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Caleb James DeLisle <cjd@cjdns.fr>, nbd@nbd.name, lorenzo@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com, sean.wang@mediatek.com,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Caleb James DeLisle <cjd@cjdns.fr>
-Subject: Re: [PATCH] wifi: mt76: mmio_(read|write)_copy byte swap when on Big
- Endian
-Message-ID: <202510310816.kyDHJNiS-lkp@intel.com>
-References: <20251027171759.1484844-1-cjd@cjdns.fr>
+	s=arc-20240116; t=1761878589; c=relaxed/simple;
+	bh=3xpe/u+umBwh3iWjjLU3VUCqiNVzlIwOoLMx1RqSURI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o1GbNFfZAGKn1rGrUSbzkde5Hnptbywlv2cJSrdzYjopye+alkf08cswDXYaabTGHPpntvG392Bck0hwB4UGxYQd9qvzm2kvyrEgfsm+pPtQW6VL5RGPTJAoMHCzHhVBgjo6l3hCq7ZOohUoyY2xSJf46jk+O00ZSpgpnDslMlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DMbdBDJy; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Wt6bgqZ0; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59UI6H2M3115819
+	for <linux-wireless@vger.kernel.org>; Fri, 31 Oct 2025 02:43:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	zaaBloIJGhaoPgQ7d71zW2258dFe1LLg6EVGK/EBrpk=; b=DMbdBDJyehDD5EkG
+	3NYYD9iuLX2ZZjLN7z//9yHqBW5zaf1leAY2I3+vf7LGxHr8E0igItnzHFZV1vgs
+	TcBLpQuj66vCxy9Ldaqw55ktwx/8GdarNR4jBIamzDGw8dIxPYE/A3WPl0FhYy3h
+	Lab3GZUPWmvmY7R0ClpqE5XqjGeHN5//qWNfmXmypiT8IncfIJE8RlG4ys3YpEfy
+	HU6KgL+vsyOcMfmEUb7y54HiaDDu0UUkLvPy0VeeOncMEtMBtra7FT8VwMFGHSRF
+	E/PjF4lf8YhCnkvN0BqwaeO/zfPpdRMqvN4s+Gj3xl7w4UQnMYoS31Ryd+02Q4TS
+	l4TzRQ==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a45b42n5q-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 31 Oct 2025 02:43:06 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-290e4fade70so20803195ad.2
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Oct 2025 19:43:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1761878585; x=1762483385; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zaaBloIJGhaoPgQ7d71zW2258dFe1LLg6EVGK/EBrpk=;
+        b=Wt6bgqZ0dbdG9w7/idtIJNTFdUGlzCQUXCYWs1XVAaWrkpDiTliXTdRFLWq2gYzAlz
+         Uuf1W8RAnLtpN+8mV8pAMaTe/CJw4bPwvo0bPZMi4ynfokV3a/O3n1KMDuyUIh7a/0Gj
+         fk5Pf5+V/NW3XWVqrTtz6WeLgEOXlvdkW4kEGeHozDokaYiLKtgRxcwIrlzTQ3ifTpaz
+         cct5huuh6V0176VX8QnAHeLlrZOgSuw+2HhVaY+fJpxHJ/lU8XzTBpfejIdAfk7yyUyU
+         Utak1LKcyQEuFHMOt1GIagCwF+ujC+sswi5yVXMMSrjNqh8uFJBz6uvqLb9Bqwqy4V8h
+         4O2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761878585; x=1762483385;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zaaBloIJGhaoPgQ7d71zW2258dFe1LLg6EVGK/EBrpk=;
+        b=elDMv3xDkz1Rf6I23nJ2kE5lAmuZo4Xcp7v+WSBSPhGVAJTg0ePhTvw9FCDv6UoqtD
+         hq01TYiHOO3aKtYDT3/xyCuPsH1B1flUI8MijkTwW3gIF5g3077sBqUUOHPWoSrTM5IM
+         /twzHG8tZzsJbKmTPRjUGqulXdCsxt0uEdiy6I1A7OdggpCMFSOQLe5yvLtXabcZAGDh
+         bEJmUebYA0iKPoFRR8l3Nf7sIH2WFA1wKZBcKmNsTX4UOIr9oNGMaEMMcPzZWOe+3Naj
+         3hfu0Dra9VJM1flHp8GxOC7437nwPP6gyOxB8MWbe7uLev5XhfrioUcm3EBrPmmzT69z
+         RlgA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPTawLEpRFrMSYUHPQFvKQgdbQNxYSfzo0Zz3VNN//CqmQ1ctRMgUljJaA3I6zR7OMfDtplb+3YMOXJS+RMA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyfutjm69LbP9nHjirT8CMPHm6B8PoWJIMsCj92FM1DQi3I/2Cs
+	6MA8/7If7zeHwqHck87xXIVzcLEZTNO/DXRQyJusyvKqODL9kcU4VtCeMqV1+SLDnn8uL7lbRcV
+	kGAzTMWb4Yy/NNUPTvp7kdomvGDBE2YQA2Weya2MizmIIjRwLzZPGRbIxXgzOye5rv4JQDry/9p
+	oY14Hm
+X-Gm-Gg: ASbGncsqJlDAqj1e5Lm2nt54gEj4SEGgoFcgge2R5WhUvE4Yzl8IASLR8vOxkIudlk3
+	M5i5iy/+PkS05telN3dBIJ4V0FeGiBrhHdQPwROQrryLv8PO2YZOvlyndpfnIyE4mGlNiJbRZNv
+	Pu/aRR0x9t/xbJ4fl5couxJco0Ku6N9/hPTpfmN8unt5bApmkm19Snkz2+E/2h5qk+wVYDRHAUH
+	k6hRPsQqHj4gw81uvDOMbWg2abLoDYvxknArxk27YgxThToOFqQraVX8eekU5TQE4bHU6zqJqyR
+	4rJ5z2d3SrbCmCokeBLywbcIHceZ1j/PhhcIRxUYD7qjNCAXi7qXjBqAnUtk80ruGUyxrbVBohP
+	QWXTzlliPYDX/uzz/RVe/MESdCJzu2BVJtWODAjkCGrgZaCNhN4ZFeORKitI5XYzH+M36oq0=
+X-Received: by 2002:a17:903:41c4:b0:293:b97:c323 with SMTP id d9443c01a7336-2951a4d8a1amr22756875ad.32.1761878584942;
+        Thu, 30 Oct 2025 19:43:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFYAINtH87QCRpaxqVNeNSoSEV2daxmlFd7YpOAhUp+qFnEbICbCWiL3U2ZX63kl/mhI4m9tA==
+X-Received: by 2002:a17:903:41c4:b0:293:b97:c323 with SMTP id d9443c01a7336-2951a4d8a1amr22756625ad.32.1761878584373;
+        Thu, 30 Oct 2025 19:43:04 -0700 (PDT)
+Received: from [10.133.33.51] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-295268cdfcesm4592145ad.48.2025.10.30.19.43.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Oct 2025 19:43:04 -0700 (PDT)
+Message-ID: <ba928aa0-d1d0-4e10-bfd4-ab7a577dc8c1@oss.qualcomm.com>
+Date: Fri, 31 Oct 2025 10:42:45 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251027171759.1484844-1-cjd@cjdns.fr>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next 1/6] wifi: ath11k: Add initialization and
+ deinitialization sequence for CFR module
+To: "Yu Zhang(Yuriy)" <yu.zhang@oss.qualcomm.com>, jjohnson@kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org
+References: <20251030043150.3905086-1-yu.zhang@oss.qualcomm.com>
+ <20251030043150.3905086-2-yu.zhang@oss.qualcomm.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20251030043150.3905086-2-yu.zhang@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDMxMDAyMiBTYWx0ZWRfX6eQTVobIbV60
+ 641f5ROsr0VncOm064uTVrdk1e4j8z6rpbt2thNlLXl65vJlW6TyWinMO1m1oI5r3m0O+4YXhOO
+ AWlzyb7fjpVUdgiBcK3EiHhbt0q73cxa1fSSHT/HfltQkaY/jMSb9tE165DNn+i61cK3h8z3pui
+ GuHuSoMsf+9nGKdBDgHznC66/NlMUMOKUAumjAoFmU5bhE+Y6MzqOESZtLeVQXJAlC3vOaEis0A
+ mLGFWErz+l+VbkCqvHUE3RzLUwDsRwcf4rd3ezXErM9QmEszzQ2qXXxZW+BLR8zXH07rfQgVue3
+ zkVCl6TetuzdlO4QFE1dT+T9LWP1zXO+rWbTzS5xevCzptvvJ6EklIbFHk0xm3N87CNPrgRogNq
+ TUBefe/L8otGYI/d0eVDC+yTfNzjZw==
+X-Authority-Analysis: v=2.4 cv=KePfcAYD c=1 sm=1 tr=0 ts=6904223a cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=d9LWlda1mWfGAY6gbx0A:9 a=QEXdDO2ut3YA:10
+ a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-ORIG-GUID: 8PU4Xk3qEk_FIuDw00YkUReq_QZZ4jNo
+X-Proofpoint-GUID: 8PU4Xk3qEk_FIuDw00YkUReq_QZZ4jNo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-10-30_08,2025-10-29_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 impostorscore=0 priorityscore=1501 bulkscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1015 phishscore=0 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2510310022
 
-Hi Caleb,
 
-kernel test robot noticed the following build warnings:
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main linus/master v6.18-rc3 next-20251030]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On 10/30/2025 12:31 PM, Yu Zhang(Yuriy) wrote:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Caleb-James-DeLisle/wifi-mt76-mmio_-read-write-_copy-byte-swap-when-on-Big-Endian/20251028-012349
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20251027171759.1484844-1-cjd%40cjdns.fr
-patch subject: [PATCH] wifi: mt76: mmio_(read|write)_copy byte swap when on Big Endian
-config: i386-randconfig-061-20251031 (https://download.01.org/0day-ci/archive/20251031/202510310816.kyDHJNiS-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251031/202510310816.kyDHJNiS-lkp@intel.com/reproduce)
+> +void ath11k_cfr_deinit(struct ath11k_base *ab)
+> +{
+> +	struct ath11k_pdev *pdev;
+> +	struct ath11k_cfr *cfr;
+> +	struct ath11k *ar;
+> +	int i;
+> +
+> +	if (!test_bit(WMI_TLV_SERVICE_CFR_CAPTURE_SUPPORT, ab->wmi_ab.svc_map) ||
+> +	    !ab->hw_params.cfr_support)
+> +		return;
+> +
+> +	for (i = 0; i <  ab->num_radios; i++) {
+> +		pdev = rcu_dereference(ab->pdevs_active[i]);
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510310816.kyDHJNiS-lkp@intel.com/
+_deinit() runs during driver unload etc where pdev may not be active hence issues can be
+expected?
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/net/wireless/mediatek/mt76/mmio.c:41:24: sparse: sparse: cast from restricted __le32
->> drivers/net/wireless/mediatek/mt76/mmio.c:41:24: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned int val @@     got restricted __le32 [usertype] @@
-   drivers/net/wireless/mediatek/mt76/mmio.c:41:24: sparse:     expected unsigned int val
-   drivers/net/wireless/mediatek/mt76/mmio.c:41:24: sparse:     got restricted __le32 [usertype]
->> drivers/net/wireless/mediatek/mt76/mmio.c:63:23: sparse: sparse: cast to restricted __le32
+besides, pdevs_active used here but pdev used in _init() ...
 
-vim +41 drivers/net/wireless/mediatek/mt76/mmio.c
+IMO, we don't need pdev to be active here
 
-    32	
-    33	static void mt76_mmio_write_copy_portable(void __iomem *dst,
-    34						  const u8 *src, int len)
-    35	{
-    36		__le32 val;
-    37		int i = 0;
-    38	
-    39		for (i = 0; i < ALIGN(len, 4); i += 4) {
-    40			memcpy(&val, src + i, sizeof(val));
-  > 41			writel(cpu_to_le32(val), dst + i);
-    42		}
-    43	}
-    44	
-    45	static void mt76_mmio_write_copy(struct mt76_dev *dev, u32 offset,
-    46					 const void *data, int len)
-    47	{
-    48		if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)) {
-    49			mt76_mmio_write_copy_portable(dev->mmio.regs + offset, data,
-    50						      len);
-    51			return;
-    52		}
-    53		__iowrite32_copy(dev->mmio.regs + offset, data, DIV_ROUND_UP(len, 4));
-    54	}
-    55	
-    56	static void mt76_mmio_read_copy_portable(u8 *dst,
-    57						 const void __iomem *src, int len)
-    58	{
-    59		u32 val;
-    60		int i;
-    61	
-    62		for (i = 0; i < ALIGN(len, 4); i += 4) {
-  > 63			val = le32_to_cpu(readl(src + i));
-    64			memcpy(dst + i, &val, sizeof(val));
-    65		}
-    66	}
-    67	
+> +		if (pdev && pdev->ar) {
+> +			ar = ab->pdevs[i].ar;
+> +			cfr = &ar->cfr;
+> +
+> +			ath11k_cfr_ring_free(ar);
+> +
+> +			spin_lock_bh(&cfr->lut_lock);
+> +			kfree(cfr->lut);
+> +			cfr->lut = NULL;
+> +			spin_unlock_bh(&cfr->lut_lock);
+> +		}
+> +	}
+> +}
+> +
+> +int ath11k_cfr_init(struct ath11k_base *ab)
+> +{
+> +	struct ath11k_dbring_cap db_cap;
+> +	struct ath11k_cfr *cfr;
+> +	u32 num_lut_entries;
+> +	struct ath11k *ar;
+> +	int i, ret;
+> +
+> +	if (!test_bit(WMI_TLV_SERVICE_CFR_CAPTURE_SUPPORT, ab->wmi_ab.svc_map) ||
+> +	    !ab->hw_params.cfr_support)
+> +		return 0;
+> +
+> +	for (i = 0; i < ab->num_radios; i++) {
+> +		ar = ab->pdevs[i].ar;
+> +		cfr = &ar->cfr;
+> +
+> +		ret = ath11k_dbring_get_cap(ar->ab, ar->pdev_idx,
+> +					    WMI_DIRECT_BUF_CFR, &db_cap);
+> +		if (ret)
+> +			continue;
+> +
+> +		idr_init(&cfr->rx_ring.bufs_idr);
+> +		spin_lock_init(&cfr->rx_ring.idr_lock);
+> +		spin_lock_init(&cfr->lock);
+> +		spin_lock_init(&cfr->lut_lock);
+> +
+> +		num_lut_entries = min_t(u32, CFR_MAX_LUT_ENTRIES, db_cap.min_elem);
+> +		cfr->lut = kcalloc(num_lut_entries, sizeof(*cfr->lut),
+> +				   GFP_KERNEL);
+> +		if (!cfr->lut) {
+> +			ret = -ENOMEM;
+> +			goto err;
+> +		}
+> +
+> +		ret = ath11k_cfr_ring_alloc(ar, &db_cap);
+> +		if (ret) {
+> +			ath11k_warn(ab, "failed to init cfr ring for pdev %d: %d\n",
+> +				    i, ret);
+> +			goto err;
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+you need to free lut before jumping to error handling
+
+> +		}
+> +
+> +		cfr->lut_num = num_lut_entries;
+> +	}
+> +
+> +	return 0;
+> +
+> +err:
+> +	for (i = i - 1; i >= 0; i--) {
+> +		ar = ab->pdevs[i].ar;
+> +		cfr = &ar->cfr;
+> +
+> +		ath11k_cfr_ring_free(ar);
+> +
+> +		spin_lock_bh(&cfr->lut_lock);
+> +		kfree(cfr->lut);
+> +		cfr->lut = NULL;
+> +		spin_unlock_bh(&cfr->lut_lock);
+> +	}
+> +	return ret;
+> +}
 
