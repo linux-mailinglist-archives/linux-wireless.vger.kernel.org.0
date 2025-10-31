@@ -1,280 +1,150 @@
-Return-Path: <linux-wireless+bounces-28434-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28435-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB53C2371C
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 07:48:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55540C23CE7
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 09:29:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFFEB3A5C0E
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 06:47:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C4285601F3
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 08:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7742EC0B9;
-	Fri, 31 Oct 2025 06:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73312FBE01;
+	Fri, 31 Oct 2025 08:22:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="LSlR4IXh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01141238C2F;
-	Fri, 31 Oct 2025 06:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9FA2E8B78;
+	Fri, 31 Oct 2025 08:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761893222; cv=none; b=uq1Zwov0nvuYmHVzV6dQ6ZP2w4DQLp7AmdWrlxh3oJYxZy5MlDJaaOZ6xCRxO/0sxAgZGhmnNjINuZoqQMdfXSEyyaGRPREBIzgHd9MTy9BZRWvttHlZSFkvkndwNSo1gyZj9xb3i0biscgdxo9PyLVoXVlKz1IV2Ru270lAIYA=
+	t=1761898955; cv=none; b=OgHnR02gUj/6lika/0QxD3DsXowtyTU5JqT+iGZuNWfJBN6DdYMv7lSPyBqod7gJlsmEBweIBilwc7awAOzWyCNCvh9xb12Jmt6Im9XYDN3BaSsQQQ9q4tqEL9ORU+pExy2f4S2w2dQRWebJw9ZwMGZQk8if682/DUN/Jdooxa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761893222; c=relaxed/simple;
-	bh=JZ4d4kYh8rfhRKOmG05eahnty61ao/DjaXEzL0J39VE=;
+	s=arc-20240116; t=1761898955; c=relaxed/simple;
+	bh=62GjFdGWwbbzA3cm5sko4T/hxx35PdHGWci6ZMG3GSA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TskgaPVQJsUCUuHXplTXXLo5eukzUN6/Q7Wkl7H7QqPVPsZEkVxtSyvpZ9hLtQbI00b+JikGCQ9r5etgDgA4AVRoE3uzfS/kUMkVb5aXHKnLdOQ1mcVfG/U7REJOiDvSqXLK5YMgJ8zFJwpCYXnQOj1EYgo4xBq+LVuMpAXgCsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=linux.starfivetech.com; spf=none smtp.mailfrom=linux.starfivetech.com; arc=none smtp.client-ip=54.243.244.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=linux.starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.starfivetech.com
-X-QQ-mid: esmtpgz13t1761893210tf21d82f4
-X-QQ-Originating-IP: R90kadoSj/Lu9jhXDo3EOBK+P2zoChp7ZYtBXxB6TvQ=
-Received: from [192.168.125.98] ( [113.104.140.154])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 31 Oct 2025 14:46:46 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 1332421492275545379
-Message-ID: <99841AD0EE6A35D4+4a6afacb-4d1c-4727-9a75-134190350aca@linux.starfivetech.com>
-Date: Fri, 31 Oct 2025 14:46:46 +0800
+	 In-Reply-To:Content-Type; b=egRWd693OmMbouaHLH6333yQtCgVfLwBrLgWpZt6JIk6IdZjDyy/lIMjDU+lnSeeL0JIJV9o9+avpJyg43aWRShe7N8tksKWewgnkDXvj/SGyif4nGfVXEs0whXdkow1ywFh++/ncIkwwXXlXBgfwfyO/wE6CHgHTAkiBukgX0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=LSlR4IXh; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 56BF597720A;
+	Fri, 31 Oct 2025 09:22:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1761898944; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=Qib6qRQMu5LVMMGbQVwGmu5XzHqsEzGPUdm1+2Fg8Jw=;
+	b=LSlR4IXhs1thoBJw7RjsbQ2kPHdVT2DjByuTTOkK3UPb9+mxo6NJ4OYEkOnppZbI5rGz/W
+	btyKf3Gnc3YLdHGnMQhETaGs4ArrNP2QLS/ZhSyUuV54vKZu8uEyVw/FgOAauVbfwuXUMZ
+	kzrB7KIf3FrR95eYqazZFy2UeEjhj8UbsqJLoHE/3nPlWEeL7tcOKL8jWhAWTWTr8qi4k1
+	8v8dkeQ7iZdKietWGxL8AJeHat6lUKZrZkdY4rEngTDKP1TO6/UR4HJu5z8Vy18tLzMm7P
+	hHs2iaFsAYppKcCTwsCCDkMh4PHmdyxZshGYiwHbZ+Aoe+Aj8y96H87eiutRsg==
+Message-ID: <cf6d217f-1f1f-41f9-9ed7-9454aad080df@cjdns.fr>
+Date: Fri, 31 Oct 2025 09:22:18 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: Remove extra blank lines
-To: "Rob Herring (Arm)" <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>,
- Vinod Koul <vkoul@kernel.org>, Moritz Fischer <mdf@kernel.org>,
- Xu Yilun <yilun.xu@intel.com>, Bartosz Golaszewski <brgl@bgdev.pl>,
- Guenter Roeck <linux@roeck-us.net>, Andi Shyti <andi.shyti@kernel.org>,
- Jonathan Cameron <jic23@kernel.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Georgi Djakov <djakov@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Joerg Roedel <joro@8bytes.org>, Jassi Brar <jassisinghbrar@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Lee Jones <lee@kernel.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Kishon Vijay Abraham I <kishon@kernel.org>,
- Sebastian Reichel <sre@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
- <ukleinek@kernel.org>, Mark Brown <broonie@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Philipp Zabel <p.zabel@pengutronix.de>, Olivia Mackall <olivia@selenic.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org, dmaengine@vger.kernel.org,
- linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
- linux-pm@vger.kernel.org, iommu@lists.linux.dev,
- linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
- netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-sound@vger.kernel.org,
- linux-usb@vger.kernel.org
-References: <20251023143957.2899600-1-robh@kernel.org>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH] wifi: mt76: mmio_(read|write)_copy byte swap when on Big
+ Endian
+To: kernel test robot <lkp@intel.com>, nbd@nbd.name, lorenzo@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, ryder.lee@mediatek.com,
+ shayne.chen@mediatek.com, sean.wang@mediatek.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org
+References: <20251027171759.1484844-1-cjd@cjdns.fr>
+ <202510310816.kyDHJNiS-lkp@intel.com>
 Content-Language: en-US
-From: Hal Feng <hal.feng@linux.starfivetech.com>
-In-Reply-To: <20251023143957.2899600-1-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+From: Caleb James DeLisle <cjd@cjdns.fr>
+In-Reply-To: <202510310816.kyDHJNiS-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:linux.starfivetech.com:qybglogicsvrgz:qybglogicsvrgz5a-1
-X-QQ-XMAILINFO: OXV5Clc+9wUNMha98fyhsJ9fYHhPR6licQKZE9QKvLaYdJH05c3/jMdo
-	t1zEuZz6yoP4kE4PsT4O7GS31TYuk4U5zQv84lqP40Ins5iyRxFusFsY1CPVJ8MZbIIC2kM
-	3iX+CSTeqePRj7lESMUGrtGI5xDxnEOZknXdtdQdLI+EnyseMDgcG1J+nnEGzdqlF6VM70C
-	Zd6hXQ9NYaBr95+DhGRmTINNntgYoyTqO5EIAY2tT4Us4c02HwXHJQeX6esG9wHXD/6PE+6
-	fkyYNMvflwWQcIvFnSxC0Lc2wHhiayC7k9ehO5YQHzM2Hsk86Vg2P0AZdpjhy1ggB0mw7nf
-	3zMfyOMAnqUDN15S8zfGsbk9RLrFbLW7txuGqyRwUWXre5gGL3fiH4xFPrBxCGwUR8vRJi9
-	pWr1UosPhh4spXLQtGx4RMXMGN/+pe21cT7mVYnq9pCIP4zXlHwPsxwm7gtyW9J1XBMk9xz
-	2E8SOPE4Y95KfPA6NlKoZOp+/KecsNDOOBIgXDnNAXnuRB0UbD0HnEbTTidl0X4WmimGqZt
-	OhZA8XC8qkivUeoH7e9pxDHVtLjXzmJDlQllu8maKt64i12OOVpQXM+81q0KgDpXZW/8K6z
-	ssCfxrg4K/aPbEpyL07sBVlHbJzyBUwltEqKnR5GwuFD1412AE24sSBOp9vouoA+lGNJkIk
-	fCziUFmhD6bZCS1M5f3QH1rGW14BWcM5zq1lWVY8se2UOFCtwenZvhZ0HRW3u3wUdb3G/AD
-	bMvaGAMfA2ZDZmXrBlE8wBnYCUrRNfGfrNowHJTktwBbAytQCz22VEWfHnuRqcEIqD//9Nf
-	lKkiNXJNpafll9bQg1rd098Yw718lE4sEaTdLITVoyiEjeBFD7iCC7abM4WN49kmh5OVWsL
-	kVzNsLnjHQ+O3ZO64KddXLXloL3LpByIV99gAOXLivP/ylOf9qkmJTwAcYTvYrteHrpSizY
-	Ovi85/99AoQotG/SBsdUfGRTP44UsyLAEhVw=
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-X-QQ-RECHKSPAM: 0
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/23/2025 10:37 PM, Rob Herring (Arm) wrote:
-> Generally at most 1 blank line is the standard style for DT schema
-> files. Remove the few cases with more than 1 so that the yamllint check
-> for this can be enabled.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  Documentation/devicetree/bindings/.yamllint                  | 2 +-
->  Documentation/devicetree/bindings/arm/psci.yaml              | 1 -
->  .../bindings/clock/allwinner,sun4i-a10-gates-clk.yaml        | 1 -
->  .../devicetree/bindings/clock/renesas,cpg-mssr.yaml          | 1 -
->  .../devicetree/bindings/clock/xlnx,clocking-wizard.yaml      | 1 -
->  .../display/allwinner,sun4i-a10-display-frontend.yaml        | 1 -
->  .../devicetree/bindings/display/allwinner,sun6i-a31-drc.yaml | 1 -
->  .../bindings/display/allwinner,sun8i-a83t-dw-hdmi.yaml       | 1 -
->  .../devicetree/bindings/display/amlogic,meson-vpu.yaml       | 1 -
->  .../devicetree/bindings/display/bridge/adi,adv7511.yaml      | 1 -
->  .../devicetree/bindings/display/bridge/lvds-codec.yaml       | 1 -
->  .../devicetree/bindings/display/bridge/toshiba,tc358767.yaml | 1 -
->  .../devicetree/bindings/display/ilitek,ili9486.yaml          | 1 -
->  Documentation/devicetree/bindings/display/msm/gpu.yaml       | 1 -
->  .../devicetree/bindings/display/panel/panel-timing.yaml      | 1 -
->  .../devicetree/bindings/display/panel/tpo,tpg110.yaml        | 1 -
->  .../devicetree/bindings/display/rockchip/rockchip,dw-dp.yaml | 1 -
->  .../devicetree/bindings/display/simple-framebuffer.yaml      | 1 -
->  .../devicetree/bindings/dma/snps,dma-spear1340.yaml          | 1 -
->  Documentation/devicetree/bindings/dma/stericsson,dma40.yaml  | 1 -
->  .../devicetree/bindings/dma/stm32/st,stm32-dma.yaml          | 1 -
->  Documentation/devicetree/bindings/edac/apm,xgene-edac.yaml   | 1 -
->  .../devicetree/bindings/firmware/qemu,fw-cfg-mmio.yaml       | 1 -
->  Documentation/devicetree/bindings/fpga/fpga-region.yaml      | 5 -----
->  .../devicetree/bindings/gpio/brcm,xgs-iproc-gpio.yaml        | 1 -
->  .../devicetree/bindings/gpio/fairchild,74hc595.yaml          | 1 -
->  Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml     | 1 -
->  Documentation/devicetree/bindings/hwmon/adi,max31827.yaml    | 1 -
->  Documentation/devicetree/bindings/hwmon/national,lm90.yaml   | 1 -
->  Documentation/devicetree/bindings/hwmon/ti,tmp513.yaml       | 1 -
->  Documentation/devicetree/bindings/hwmon/ti,tps23861.yaml     | 1 -
->  Documentation/devicetree/bindings/i2c/i2c-mux-gpmux.yaml     | 1 -
->  .../devicetree/bindings/i2c/realtek,rtl9301-i2c.yaml         | 1 -
->  Documentation/devicetree/bindings/i2c/tsd,mule-i2c-mux.yaml  | 2 --
->  Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml    | 1 -
->  Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml    | 1 -
->  Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml    | 1 -
->  Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml   | 1 -
->  .../devicetree/bindings/iio/adc/cosmic,10001-adc.yaml        | 1 -
->  Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml  | 1 -
->  .../devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml     | 1 -
->  .../devicetree/bindings/iio/afe/voltage-divider.yaml         | 1 -
->  .../devicetree/bindings/iio/frequency/adi,admv4420.yaml      | 1 -
->  .../devicetree/bindings/iio/pressure/murata,zpa2326.yaml     | 1 -
->  .../devicetree/bindings/iio/proximity/semtech,sx9324.yaml    | 1 -
->  .../devicetree/bindings/iio/temperature/adi,ltc2983.yaml     | 1 -
->  Documentation/devicetree/bindings/input/ti,drv266x.yaml      | 1 -
->  .../devicetree/bindings/interconnect/qcom,rpmh.yaml          | 1 -
->  .../devicetree/bindings/interrupt-controller/arm,gic-v3.yaml | 1 -
->  .../bindings/interrupt-controller/aspeed,ast2700-intc.yaml   | 1 -
->  .../bindings/interrupt-controller/fsl,vf610-mscm-ir.yaml     | 1 -
->  .../bindings/interrupt-controller/loongson,liointc.yaml      | 1 -
->  .../bindings/interrupt-controller/mediatek,mtk-cirq.yaml     | 1 -
->  .../bindings/interrupt-controller/mscc,ocelot-icpu-intr.yaml | 1 -
->  Documentation/devicetree/bindings/iommu/arm,smmu.yaml        | 4 ----
->  Documentation/devicetree/bindings/mailbox/arm,mhu.yaml       | 1 -
->  Documentation/devicetree/bindings/mailbox/arm,mhuv2.yaml     | 1 -
->  Documentation/devicetree/bindings/mailbox/mtk,adsp-mbox.yaml | 1 -
->  Documentation/devicetree/bindings/media/amphion,vpu.yaml     | 1 -
->  Documentation/devicetree/bindings/media/i2c/adi,adv7604.yaml | 2 --
->  .../devicetree/bindings/media/i2c/techwell,tw9900.yaml       | 1 -
->  Documentation/devicetree/bindings/media/nxp,imx8-jpeg.yaml   | 1 -
->  .../devicetree/bindings/media/qcom,sc8280xp-camss.yaml       | 1 -
->  .../bindings/media/samsung,exynos4212-fimc-is.yaml           | 1 -
->  .../devicetree/bindings/media/samsung,s5pv210-jpeg.yaml      | 1 -
->  Documentation/devicetree/bindings/media/st,stm32-dma2d.yaml  | 1 -
->  .../devicetree/bindings/media/video-interface-devices.yaml   | 4 ----
->  .../memory-controllers/qcom,ebi2-peripheral-props.yaml       | 1 -
->  Documentation/devicetree/bindings/mfd/stericsson,ab8500.yaml | 1 -
->  .../devicetree/bindings/mtd/amlogic,meson-nand.yaml          | 1 -
->  .../devicetree/bindings/mtd/marvell,nand-controller.yaml     | 1 -
->  Documentation/devicetree/bindings/mux/mux-controller.yaml    | 1 -
->  .../devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml   | 2 --
->  Documentation/devicetree/bindings/net/brcm,bcmgenet.yaml     | 1 -
->  .../devicetree/bindings/net/brcm,mdio-mux-iproc.yaml         | 1 -
->  .../devicetree/bindings/net/cortina,gemini-ethernet.yaml     | 1 -
->  Documentation/devicetree/bindings/net/fsl,gianfar.yaml       | 2 --
->  .../devicetree/bindings/net/mdio-mux-multiplexer.yaml        | 1 -
->  Documentation/devicetree/bindings/net/qcom,ipa.yaml          | 1 -
->  Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml    | 1 -
->  .../devicetree/bindings/net/wireless/ti,wlcore.yaml          | 1 -
->  .../devicetree/bindings/pci/altr,pcie-root-port.yaml         | 1 -
->  Documentation/devicetree/bindings/pci/loongson.yaml          | 1 -
->  Documentation/devicetree/bindings/pci/rockchip-dw-pcie.yaml  | 1 -
->  .../devicetree/bindings/pci/starfive,jh7110-pcie.yaml        | 1 -
->  Documentation/devicetree/bindings/pci/versatile.yaml         | 1 -
->  .../bindings/phy/qcom,sc8280xp-qmp-usb3-uni-phy.yaml         | 1 -
->  .../devicetree/bindings/pinctrl/brcm,bcm21664-pinctrl.yaml   | 1 -
->  .../devicetree/bindings/pinctrl/fsl,imx9-pinctrl.yaml        | 1 -
->  .../devicetree/bindings/pinctrl/qcom,qcs404-pinctrl.yaml     | 1 -
->  .../bindings/pinctrl/qcom,sm6115-lpass-lpi-pinctrl.yaml      | 1 -
->  .../devicetree/bindings/pinctrl/qcom,sm6125-tlmm.yaml        | 1 -
->  .../devicetree/bindings/pinctrl/renesas,rza1-ports.yaml      | 3 ---
->  .../devicetree/bindings/pinctrl/starfive,jh7100-pinctrl.yaml | 1 -
->  .../devicetree/bindings/power/supply/mt6360_charger.yaml     | 1 -
->  .../bindings/power/supply/stericsson,ab8500-charger.yaml     | 1 -
->  .../devicetree/bindings/pwm/allwinner,sun4i-a10-pwm.yaml     | 1 -
->  .../bindings/regulator/richtek,rt6245-regulator.yaml         | 1 -
->  .../devicetree/bindings/remoteproc/ti,k3-r5f-rproc.yaml      | 2 --
->  Documentation/devicetree/bindings/reset/ti,sci-reset.yaml    | 1 -
->  .../bindings/rng/inside-secure,safexcel-eip76.yaml           | 2 --
->  .../devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-muram.yaml     | 1 -
->  .../devicetree/bindings/soc/mediatek/mediatek,mutex.yaml     | 1 -
->  .../bindings/soc/microchip/atmel,at91rm9200-tcb.yaml         | 1 -
->  Documentation/devicetree/bindings/soc/rockchip/grf.yaml      | 1 -
->  Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml       | 3 ---
->  Documentation/devicetree/bindings/sound/adi,adau1372.yaml    | 1 -
->  Documentation/devicetree/bindings/sound/adi,adau7118.yaml    | 1 -
->  .../devicetree/bindings/sound/rockchip,i2s-tdm.yaml          | 1 -
->  .../devicetree/bindings/sound/rockchip,rk3328-codec.yaml     | 2 +-
->  Documentation/devicetree/bindings/sound/samsung,tm2.yaml     | 1 -
->  .../devicetree/bindings/sound/ti,tlv320dac3100.yaml          | 1 -
->  Documentation/devicetree/bindings/sound/wlf,wm8903.yaml      | 1 -
->  .../devicetree/bindings/timer/nvidia,tegra-timer.yaml        | 1 -
->  .../devicetree/bindings/timer/nvidia,tegra186-timer.yaml     | 1 -
->  Documentation/devicetree/bindings/usb/qcom,pmic-typec.yaml   | 1 -
->  116 files changed, 2 insertions(+), 136 deletions(-)
-> 
 
-...
+On 31/10/2025 02:18, kernel test robot wrote:
+> Hi Caleb,
+>
+> kernel test robot noticed the following build warnings:
+>
+> [auto build test WARNING on wireless-next/main]
+> [also build test WARNING on wireless/main linus/master v6.18-rc3 next-20251030]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Caleb-James-DeLisle/wifi-mt76-mmio_-read-write-_copy-byte-swap-when-on-Big-Endian/20251028-012349
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+> patch link:    https://lore.kernel.org/r/20251027171759.1484844-1-cjd%40cjdns.fr
+> patch subject: [PATCH] wifi: mt76: mmio_(read|write)_copy byte swap when on Big Endian
+> config: i386-randconfig-061-20251031 (https://download.01.org/0day-ci/archive/20251031/202510310816.kyDHJNiS-lkp@intel.com/config)
+> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251031/202510310816.kyDHJNiS-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202510310816.kyDHJNiS-lkp@intel.com/
+>
+> sparse warnings: (new ones prefixed by >>)
+>>> drivers/net/wireless/mediatek/mt76/mmio.c:41:24: sparse: sparse: cast from restricted __le32
+>>> drivers/net/wireless/mediatek/mt76/mmio.c:41:24: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned int val @@     got restricted __le32 [usertype] @@
 
-> diff --git a/Documentation/devicetree/bindings/pci/starfive,jh7110-pcie.yaml b/Documentation/devicetree/bindings/pci/starfive,jh7110-pcie.yaml
-> index 5f432452c815..33c80626e8ec 100644
-> --- a/Documentation/devicetree/bindings/pci/starfive,jh7110-pcie.yaml
-> +++ b/Documentation/devicetree/bindings/pci/starfive,jh7110-pcie.yaml
-> @@ -16,7 +16,6 @@ properties:
->    compatible:
->      const: starfive,jh7110-pcie
->  
-> -
->    reg:
->      maxItems: 2
->  
 
-...
+This should not be an issue in PATCH v2 because it no longer uses a 
+temporary variable.
 
-> diff --git a/Documentation/devicetree/bindings/pinctrl/starfive,jh7100-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/starfive,jh7100-pinctrl.yaml
-> index f3258f2fd3a4..3f14eab01c54 100644
-> --- a/Documentation/devicetree/bindings/pinctrl/starfive,jh7100-pinctrl.yaml
-> +++ b/Documentation/devicetree/bindings/pinctrl/starfive,jh7100-pinctrl.yaml
-> @@ -32,7 +32,6 @@ description: |
->      | | |     |   |   |          -------
->      UART0     UART1 --
->  
-> -
->    The big MUX in the diagram only has 7 different ways of mapping peripherals
->    on the left to pins on the right. StarFive calls the 7 configurations "signal
->    groups".
+Thanks,
 
-Reviewed-by: Hal Feng <hal.feng@starfivetech.com>
+Caleb
 
-Best regards,
-Hal
+
+>     drivers/net/wireless/mediatek/mt76/mmio.c:41:24: sparse:     expected unsigned int val
+>     drivers/net/wireless/mediatek/mt76/mmio.c:41:24: sparse:     got restricted __le32 [usertype]
+>>> drivers/net/wireless/mediatek/mt76/mmio.c:63:23: sparse: sparse: cast to restricted __le32
+> vim +41 drivers/net/wireless/mediatek/mt76/mmio.c
+>
+>      32	
+>      33	static void mt76_mmio_write_copy_portable(void __iomem *dst,
+>      34						  const u8 *src, int len)
+>      35	{
+>      36		__le32 val;
+>      37		int i = 0;
+>      38	
+>      39		for (i = 0; i < ALIGN(len, 4); i += 4) {
+>      40			memcpy(&val, src + i, sizeof(val));
+>    > 41			writel(cpu_to_le32(val), dst + i);
+>      42		}
+>      43	}
+>      44	
+>      45	static void mt76_mmio_write_copy(struct mt76_dev *dev, u32 offset,
+>      46					 const void *data, int len)
+>      47	{
+>      48		if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)) {
+>      49			mt76_mmio_write_copy_portable(dev->mmio.regs + offset, data,
+>      50						      len);
+>      51			return;
+>      52		}
+>      53		__iowrite32_copy(dev->mmio.regs + offset, data, DIV_ROUND_UP(len, 4));
+>      54	}
+>      55	
+>      56	static void mt76_mmio_read_copy_portable(u8 *dst,
+>      57						 const void __iomem *src, int len)
+>      58	{
+>      59		u32 val;
+>      60		int i;
+>      61	
+>      62		for (i = 0; i < ALIGN(len, 4); i += 4) {
+>    > 63			val = le32_to_cpu(readl(src + i));
+>      64			memcpy(dst + i, &val, sizeof(val));
+>      65		}
+>      66	}
+>      67	
+>
 
