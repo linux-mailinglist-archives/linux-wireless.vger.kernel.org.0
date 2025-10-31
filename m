@@ -1,86 +1,86 @@
-Return-Path: <linux-wireless+bounces-28446-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28447-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5475C24BEC
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 12:17:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC174C24C11
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 12:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 83E25350BEE
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 11:17:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 010344F4F26
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Oct 2025 11:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EE733DEE9;
-	Fri, 31 Oct 2025 11:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D58C345754;
+	Fri, 31 Oct 2025 11:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gsKuwkQL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aDihGp7A"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44683321AE
-	for <linux-wireless@vger.kernel.org>; Fri, 31 Oct 2025 11:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38463451BF
+	for <linux-wireless@vger.kernel.org>; Fri, 31 Oct 2025 11:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761909457; cv=none; b=mBjpEJcD6IM/FJibS4VisDbZuNAHCPpb/x07v5G//BZ6Ahz0BmSiMgjZvpra0CAXnLwZi8pfzj1l0pk7l3WMQ91hoVl2B5Gw2dKNuW/nnOfnGl0m6MO+jmTkc+mk/1Hb4qDgP2P0XC1Wyp5XY7kHDTp14LeIWr7KBxsFHZX8TeQ=
+	t=1761909460; cv=none; b=GAWuWuREok14bEAQLRAn3fwDneSr5L1jTE+tyjGgcrcrn3E5HMUDlSyctEN+qMkKTWlMNp6hdJhKrFfMSJNPy8cjPQpunpDCQYK9ky+0Xbxrid3tiu+Eb5g3KX/7yA2x5Zs+5iM+RsZcHG2f5FP0pKdI4+WC6sNoCrUosngqVTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761909457; c=relaxed/simple;
-	bh=rCLJ6hwa9Lj8OJwfpuGfm4VjzDMM2/dDqWVI+BgYPmU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xq0lkLimwa8bglDZh7jajInXMKZg1F2UYI28NnmHxvsPBqsDAnfsx8dcHcnkD4Y62l/faxtYS8iP+j/O6GCusEJhruhvtzvJyk0woo2bPbTLJImSNz9rmtTAxF+z8OjhkKus1ODSd12xtyAc6iHsiek6b7jvYx9JNGYzH9a2qzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gsKuwkQL; arc=none smtp.client-ip=209.85.210.170
+	s=arc-20240116; t=1761909460; c=relaxed/simple;
+	bh=XsaAKu1cdwxrlu436RGnx13iM1mV+nARVNc9oObE86c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZqSWEdWT/4EhCmvOY0krEGTS/tSbUNOY21T8zV0er4px5A8nXJg24n41WmaHOory++Gn9oo7a6PsSjRDLEnKs3vgOQJUAD3JizFneqHDNM+m7gB3+2JSQJpAGssGj7NcpvS+BgfbB8U3Rp7qk4lWI9ADS9jLh8LJmmPI8aI6OXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aDihGp7A; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-78125ed4052so3081551b3a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 31 Oct 2025 04:17:35 -0700 (PDT)
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7a2738daea2so2112575b3a.0
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Oct 2025 04:17:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761909455; x=1762514255; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761909458; x=1762514258; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7FW9g8tetROcy3bzpkRVbdV9vmDjQkA5zzLWmu49/bA=;
-        b=gsKuwkQLNSK/gpFijuLadkyGIUOeXMjjNdSI2E1K+UNoNEf9V5uqbVqhZ0KDQSPpnS
-         WGLWUBPntZYTwagF5mo3+6yooQjYe1orGlZxEtFYi1siQ8ldAThNH6AVAlBjQ4LOWFrF
-         I5vRVczBp3gpsHzLwtgc0teIbh3ooggHaSr1ylwRSrvFrRcwcBO92pPs4h1sJ0R53e8p
-         cT2BNh5Z0c92lD2qCnyiVyX7jsIPtic1prBKvrBzzHjTZTrjWgOP4xKNtt59pKKtcPIx
-         ncwA2/X+954EGmh6cj3MEgA0+ozhZHmsyYuw3cLQ70Sf5w64LsAQSwaoSRxi3/5fkY10
-         oe7g==
+        bh=+e+UAk578qZgTiUOAdHLd6XVTShCxhiEWjVV/FznGz0=;
+        b=aDihGp7AUrh+t2Xx1G53H0KcJpFC4U8K14VF2JcGY+w/mQl4Bdkx7SMO5fIK6tRjRG
+         1pxOGGNQVCh+xfR+odEX8q0AMaFuaFNIlIHV0N1/SSZAwqwETk7S6HAQd8cJXSZpgsMw
+         8ICyHMgHnCZ65BYW1RhKbd0YeQ1OAeWRIDUqdTCzJ4tJ3wX16V98+mAgJLrhSm6OQy/S
+         u141boo4nuSRlfKOsV0f750uF6oaPyE6527EvDxT1T3Slf0vvC2gOVEu+04aF2cmTJPf
+         tIqiO+/xWcaAjj3At/NEYEhMSKQFBecnAAqbRHcafG8pFH2TXB/Ll0r/w8i51mZkbNnX
+         PZDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761909455; x=1762514255;
+        d=1e100.net; s=20230601; t=1761909458; x=1762514258;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7FW9g8tetROcy3bzpkRVbdV9vmDjQkA5zzLWmu49/bA=;
-        b=bjM+F0ruKliOsS9ITlZS0S8ONmFcE4JWD7Xftu8yeIOPiKGpv7Z5TOAE55ogd/rI8j
-         qQZeeBzLIkDbkdqWKQKZISIMCYcEU273kc33cWdw22OYTkYnSLkv8KkfoQXQXU2okC1F
-         NhYtCKyWCufR4Dy7zrB+2rGmfUMZyjPuPZzF4MYAr4m2ZPRYsx/RJ2/PDKXocpzQ/Fqk
-         XkC8y3pzwWsEToGcBsQW6MDHwX5Pa5Xlb6/MjSULefDnhtWll3lLKDVMEGfJDpijdpWV
-         h/u/BEb7gWGWvjESXHq6rUhtChs6poC1KIB7NNIJMS8trHxPBUbQOo/abKaR4HFIt7bq
-         15vg==
-X-Forwarded-Encrypted: i=1; AJvYcCXgSrzQDIHr3yf0tPLX9CU+MVo1ok+pWHQXxxAMJZb+uR1TCuEkzjQQNSBq5AHYWdlsGMdFFLS6yNnPhEctug==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2uItmioXhUxkyO3/hOPMN451/ARFePguugQPlAyWiimqCDIJY
-	15FPxh2n+jaVV2LhNUmKQq4ALY6k1WPUwtdmEhG7sOBItxB2C8uVPLNrskcxmWmOdv0=
-X-Gm-Gg: ASbGnctLa4yt0QBovP99EyLPJUGKo0yN60S34gWbHpyGMjG/GunKmOjBjxkXW7WI+pX
-	i/20a/Oni7MzQWfFZ9etxsUbrHWL3vcyVERRK4ZTJmxPpASsZF+tUvWfHD3Edprnlca6roRYsr1
-	SkEcJ6HN3rWQnk1ZWPVobHD38fEJR9YZOchG3JTQwJ6RLZWDwrZ77um4931XXDaHx4eQzz3bEgy
-	H9zTg8lbJVOjAUMO/ksVjRLyFVid9xOb8lLDt5VvVoQK/tPGK/dSRZ8Dg5cfMjC0gdblQtIKSlW
-	hiD0aLnwrxvv6EEwKhj3u7+7hiHse0QPAO8H6xfBLZ5tL/xiP7EJ8qubDT0ogLNuZzt2KTLyHqX
-	8AtvkBsekZfXVzbN6DZUQuqXQoNNdp0vLnppaAlPa8akt2WqNNrhhkcBRZHWF1YrItE+tEvvfpG
-	JLEXrjpH17ZXAF5yOZr8CYNcpHbyE6QiYg
-X-Google-Smtp-Source: AGHT+IFlhnYfXMSj2T55Ss8vnR2jwuezLPVcKwc/QgNEa6eU9nUkToSG449YGCbPZeDNO/OCtRrkdQ==
-X-Received: by 2002:a05:6a20:5483:b0:32b:7220:8536 with SMTP id adf61e73a8af0-348cad92443mr4451995637.16.1761909455133;
-        Fri, 31 Oct 2025 04:17:35 -0700 (PDT)
-Received: from tpp14s.i.sslab.ics.keio.ac.jp ([131.113.100.7])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7a7db197366sm1896707b3a.46.2025.10.31.04.17.33
+        bh=+e+UAk578qZgTiUOAdHLd6XVTShCxhiEWjVV/FznGz0=;
+        b=Uaw/drsBCwfYB9LaS3CLYuVux9MJCFGYAw2S0zPif5YIm15+lu6rDVvug1aX423I0W
+         SElEw/BW1+U8G+UiUV98b5O5xrWVzwECul+Zp8zgbTo2lyob/GbCl6uAspEiZlHNd3PF
+         D8DliRyuhD9rxBueSKETZU+ns+DoUnlhhNUe9jhGhCcs5P6Pa3POzShc7Nct+mwcHc3p
+         Avh80oJDfaCVOr7K/zcnSyQrRXRQByAyRb+fHs82dSnIeYa5Xazckjh6FcLijCWptXiz
+         aHv/GGKJbNzQbFV83KfoOqzgRSiPsirR+mfS68+6mm8E4d67dAb6nr9znT5aSE+x+LKQ
+         7hVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUfgPuZTkZJ9HXDTviQ2agIq3iIR3uZt0JwMWl6vL82g7VbZ8rjxp6BcpRsscPKHvMhd5nFmZbEzTkNjEAnhQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVVRM3hgkKM7rm+xuOCIOscGKcMHw9cEfLWMuwAUCc1PkWW8c/
+	Rr8ojBvKtWooyRWm7SErL6xGIj07hgdlHNJTf1P/hwfCrocJ4rqoCfVSJyjbaHcO
+X-Gm-Gg: ASbGnctt0qQlIgziXu6QJXnJR6TM2BPRBA5+I6+blonKlNGbTSV1H8hSURkt1JLHDoB
+	oRwrMUBqYqj+pjbWd9U37hLU2qYQpjt8dC2ynV7IQeyd2DBjcL37tiaYANFYPdpF35pJYcEvOT0
+	p1moY4wCUdGp5hXRP+HSI6Zjf2vrgyt6rkC9BK6UNsqfoen+bmyoqtbK2uMzboGGilRGH0i0mJa
+	xv8fXo6Omg/eCM3Gv8I2D10WMGIb3JPFMEef3dhBVCVqaPw77bvRBwk5iNXZ7cu7pJ1PdzW7WSs
+	g13tF7lc+Twzar9DOSTGxCNIREOOVtY4EwngJVf2AD3NAXwsvXef5wGr2us+5p3uo0Qh+kkAtFz
+	1B1Hf4wvmKb28Xay6s3uyVnkU4kOgNlvvNklHzVOPE/n0quqImOU9X86TXdpenh044UnUkGDdTr
+	CRcRkIAC0EUkaYC4+APcuu6QMDfydPcCVsS/2iW0rCz1UE5rsp
+X-Google-Smtp-Source: AGHT+IHDqFb6gR3IjGUQRse71p5ISdIE1cA0yF0w/b7oVCBs5q2wxqjLzKdDydo1C/6WO9/1B2HbeQ==
+X-Received: by 2002:a17:902:7608:b0:290:a32b:9095 with SMTP id d9443c01a7336-2951a5c201bmr29211485ad.54.1761909458309;
+        Fri, 31 Oct 2025 04:17:38 -0700 (PDT)
+Received: from NT123328-PC02.ZyXEL.com (114-33-191-187.hinet-ip.hinet.net. [114.33.191.187])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-295268a96fdsm20220115ad.31.2025.10.31.04.17.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Oct 2025 04:17:34 -0700 (PDT)
-From: Hiroaki Yamamoto <hrak1529@gmail.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: hrak1529@gmail.com,
+        Fri, 31 Oct 2025 04:17:37 -0700 (PDT)
+From: Zhi-Jun You <hujy652@gmail.com>
+To: jjohnson@kernel.org
+Cc: ath10k@lists.infradead.org,
 	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: rtw88: Add BUFFALO WI-U3-866DHP to the USB ID list
-Date: Fri, 31 Oct 2025 20:16:34 +0900
-Message-ID: <20251031111641.33653-1-hrak1529@gmail.com>
-X-Mailer: git-send-email 2.51.2
+	Zhi-Jun You <hujy652@gmail.com>
+Subject: [PATCH ath-next] wifi: ath10k: simplify ath10k_htt_tx_mgmt_inc_pending
+Date: Fri, 31 Oct 2025 19:16:39 +0800
+Message-ID: <20251031111639.406873-1-hujy652@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,28 +89,90 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-BUFFALO WI-U3-866DHP (0411:03d0) is based on rtl8812bu. I locally tested
-this patch with a retail sample and it worked fine.
+Remove is_mgmt from ath10k_htt_tx_mgmt_inc_pending and make sure we only
+call it when it's a mgmt frame.
 
-Signed-off-by: Hiroaki Yamamoto <hrak1529@gmail.com>
+Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822bu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/ath10k/htt.h    |  3 +--
+ drivers/net/wireless/ath/ath10k/htt_tx.c |  5 ++---
+ drivers/net/wireless/ath/ath10k/mac.c    | 20 +++++++++++---------
+ 3 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-index 44e28e583964..2769b86ce1b2 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
-@@ -79,6 +79,8 @@ static const struct usb_device_id rtw_8822bu_id_table[] = {
- 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* D-Link DWA-T185 rev. A1 */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03d1, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* BUFFALO WI-U2-866DM */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x03d0, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* BUFFALO WI-U3-866DHP */
- 	{},
- };
- MODULE_DEVICE_TABLE(usb, rtw_8822bu_id_table);
+diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
+index 603f6de62b0a..d94f63637810 100644
+--- a/drivers/net/wireless/ath/ath10k/htt.h
++++ b/drivers/net/wireless/ath/ath10k/htt.h
+@@ -2450,8 +2450,7 @@ void ath10k_htt_tx_txq_sync(struct ath10k *ar);
+ void ath10k_htt_tx_dec_pending(struct ath10k_htt *htt);
+ int ath10k_htt_tx_inc_pending(struct ath10k_htt *htt);
+ void ath10k_htt_tx_mgmt_dec_pending(struct ath10k_htt *htt);
+-int ath10k_htt_tx_mgmt_inc_pending(struct ath10k_htt *htt, bool is_mgmt,
+-				   bool is_presp);
++int ath10k_htt_tx_mgmt_inc_pending(struct ath10k_htt *htt, bool is_presp);
+ 
+ int ath10k_htt_tx_alloc_msdu_id(struct ath10k_htt *htt, struct sk_buff *skb);
+ void ath10k_htt_tx_free_msdu_id(struct ath10k_htt *htt, u16 msdu_id);
+diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+index d6f1d85ba871..0cf30068447b 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_tx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+@@ -168,14 +168,13 @@ int ath10k_htt_tx_inc_pending(struct ath10k_htt *htt)
+ 	return 0;
+ }
+ 
+-int ath10k_htt_tx_mgmt_inc_pending(struct ath10k_htt *htt, bool is_mgmt,
+-				   bool is_presp)
++int ath10k_htt_tx_mgmt_inc_pending(struct ath10k_htt *htt, bool is_presp)
+ {
+ 	struct ath10k *ar = htt->ar;
+ 
+ 	lockdep_assert_held(&htt->tx_lock);
+ 
+-	if (!is_mgmt || !ar->hw_params.max_probe_resp_desc_thres)
++	if (!ar->hw_params.max_probe_resp_desc_thres)
+ 		return 0;
+ 
+ 	if (is_presp &&
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index da6f7957a0ae..6d77d451988a 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -4442,7 +4442,7 @@ int ath10k_mac_tx_push_txq(struct ieee80211_hw *hw,
+ 		is_presp = ieee80211_is_probe_resp(hdr->frame_control);
+ 
+ 		spin_lock_bh(&ar->htt.tx_lock);
+-		ret = ath10k_htt_tx_mgmt_inc_pending(htt, is_mgmt, is_presp);
++		ret = ath10k_htt_tx_mgmt_inc_pending(htt, is_presp);
+ 
+ 		if (ret) {
+ 			ath10k_htt_tx_dec_pending(htt);
+@@ -4728,14 +4728,16 @@ static void ath10k_mac_op_tx(struct ieee80211_hw *hw,
+ 			return;
+ 		}
+ 
+-		ret = ath10k_htt_tx_mgmt_inc_pending(htt, is_mgmt, is_presp);
+-		if (ret) {
+-			ath10k_dbg(ar, ATH10K_DBG_MAC, "failed to increase tx mgmt pending count: %d, dropping\n",
+-				   ret);
+-			ath10k_htt_tx_dec_pending(htt);
+-			spin_unlock_bh(&ar->htt.tx_lock);
+-			ieee80211_free_txskb(ar->hw, skb);
+-			return;
++		if (is_mgmt) {
++			ret = ath10k_htt_tx_mgmt_inc_pending(htt, is_presp);
++			if (ret) {
++				ath10k_dbg(ar, ATH10K_DBG_MAC, "failed to increase tx mgmt pending count: %d, dropping\n",
++					   ret);
++				ath10k_htt_tx_dec_pending(htt);
++				spin_unlock_bh(&ar->htt.tx_lock);
++				ieee80211_free_txskb(ar->hw, skb);
++				return;
++			}
+ 		}
+ 		spin_unlock_bh(&ar->htt.tx_lock);
+ 	}
 -- 
-2.51.2
+2.51.0
 
 
