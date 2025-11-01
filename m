@@ -1,80 +1,80 @@
-Return-Path: <linux-wireless+bounces-28457-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28458-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69245C28608
-	for <lists+linux-wireless@lfdr.de>; Sat, 01 Nov 2025 20:20:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44527C28611
+	for <lists+linux-wireless@lfdr.de>; Sat, 01 Nov 2025 20:20:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 46FA44E1C94
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Nov 2025 19:20:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1CF3D4E965C
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Nov 2025 19:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FFDE224B0E;
-	Sat,  1 Nov 2025 19:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060DE2FFFA4;
+	Sat,  1 Nov 2025 19:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fxwsjxMl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CzpVPHSK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3581DF258
-	for <linux-wireless@vger.kernel.org>; Sat,  1 Nov 2025 19:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C0F224B0E
+	for <linux-wireless@vger.kernel.org>; Sat,  1 Nov 2025 19:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762024801; cv=none; b=iEPyihmETEqedMYTmlnAX37XsEF2dWldY3nVSWs6R92TwwqSOJHP2RLaqjl7qqMqEO00/CYejs2sfAF3h0w3ws6HkeqW6RDQ1aGTcU4fQXHb9bMZ+wy4isFKQ8qJ4gXt7gZ9hG7/BJ/n2/GRW//3gV680ZOjybS8OHZ/JvOes50=
+	t=1762024844; cv=none; b=pT19w9uW1+ApskrgJCdcdXchyAp3HsABBlvF/y+1CWrxh5Eyfg7CASSQFrip7cQWAOOhwbjN7d3vF8prh+K7dNe4KUin4Ixl6kpv0WQhBzg0NBaW0YFDzrf2ddHcCGUT9Tn9LVYyS6FK9lL8h2sLRR+Oz/lYnkJIUSt/Qz53dvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762024801; c=relaxed/simple;
-	bh=zpR2fA8G2YVH+ZIpqcNaEUaQ/t0V0LCY2vpkjFDdi6M=;
+	s=arc-20240116; t=1762024844; c=relaxed/simple;
+	bh=HVRDnfuB0enF4iVG2/A+E2VGefHu53rdTS/s37EICZA=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=m5HmN2Pmdo+q7UCQ3N/mlqE1UuLIW5ckexL1hlUaSDdV+cbu4PxaQOpGSeCzMxOoNHbSDsIg/JGKN37rsRvfcxJUuX4PfMBmicVl0MzAafp8SUlEUc9Y6O+JDjPHB+dk00UKE7OO8LixatJA67koHGr/iIHvbBNksNtVbjKW+mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fxwsjxMl; arc=none smtp.client-ip=209.85.221.47
+	 In-Reply-To:Content-Type; b=R16ZEUG/J+TVlZcXPaeoVLkyajwLL+znLpW5WLc0M8sd/4mGgkcyTtwfrBGhGRyNiWAb33WGs4WDEXv59rshlIjawlwz9HOqNX9iBvZREq5YrTxos6OmJzQnOlF+k/gMPINZD6jVhglh1ZuDfsFwpOBLD1HM5QOtSiOR0Sxfr2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CzpVPHSK; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-421851bcb25so1829685f8f.2
-        for <linux-wireless@vger.kernel.org>; Sat, 01 Nov 2025 12:19:59 -0700 (PDT)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-429c8632fcbso367681f8f.1
+        for <linux-wireless@vger.kernel.org>; Sat, 01 Nov 2025 12:20:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762024798; x=1762629598; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762024841; x=1762629641; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=++3AEd9RT+ehNKItO7LkzPOrwMeYbdGr7VjSOCS7lNI=;
-        b=fxwsjxMl7V94geTX3Ahowy020AJw44IYYHRoimyD5q9ECBsrXtH+T/FaeK4V78QGgD
-         +S5eDua6k79/4anoQDliTyY23jApoUu9lQ5udm1UvBcfRKjWqGr+FoS/Bhz5I0C2gLS2
-         yXW3gwU1BC+erU4HT2Bvm286BCaOjMFKhS+No5UTYEOhdY6dz5VC6lE1y5+2OEHR/dGD
-         6Cbj3xG9qx0i+hAHGhMpFlje19TWtFV8VMDKlzmOuMUhnz5lnKVCACya/s7PPsVwREaZ
-         lKZkFHuo0W1Ngleq9tUhrxTJytMQHHV0E2FfO9bDwJO/NgWFqL7xPPU6pTPi5bTdZDeI
-         ZA2Q==
+        bh=/1IocHzXTlU5q4PcdHFM0f/zZqOHtSpZQuEiOCgx9To=;
+        b=CzpVPHSK8EjBxDByftsdIkNxqCbXxVwn2iUZ9822vjt4IbYrosdRralKFcgkgCp2kw
+         BjXVkcKCmQW8wGqTR0hR0p60xRK9Sf2smGNxkDL8FYaWD49TpAVeU5P1DiVx1C7q16H4
+         AuRlmAlxrHLVIV4kSOXAymhBJUdn4XLFSNc0+MV687++oDP6oZ69XbjXRmWBYCJE8UTF
+         ZiP8ZEVT2kj8SbpXxJNtKRGm07pzOkjiSgh9aKF31lyjWbKxtoTRKlQSGihk0InGmR7e
+         0Wrzp1SqVd1tZ128QGz27v2MW8zI3rS+PjvYLzhHOi+5zQP5KHmoGC5KoYYzbC6KGmPD
+         gAFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762024798; x=1762629598;
+        d=1e100.net; s=20230601; t=1762024841; x=1762629641;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=++3AEd9RT+ehNKItO7LkzPOrwMeYbdGr7VjSOCS7lNI=;
-        b=Cg96hAHgVas3JIY5Gd5ZWfzUmXIGOCbjzyOsAOdX+OROk072eauzHLBuaa4snde1+e
-         Y15cHd7wR056naN/FByqJmQjF/Ctc4d+ok0X+KC+amOHPwowofIl6ym4A+WCCxvMCzdL
-         LmyjmoHxzPwoKc9zZRL+DWfx8OgJ1fpXuNb2jBo1hH34rpXjP82IYNra61W0gcybN60u
-         BQ1qozh6a+TNbPpek4wpvEOeHb3dPkfPjANN5fMukkGf902uuW7pR3KTArAzvfKRAAng
-         Z/8ZBESIgYe+i+Z8JXF+YeI3CE70GimCCI3wkfYnJqoFVn3RYaPN79E4cv/rSJkBaHcP
-         Hn4A==
-X-Gm-Message-State: AOJu0YxcsFGCiRwYV84JsvPaABXlYhiA7YtBfxe53W4K3yF61bkwPwhQ
-	dKZAJK8IfTvAYU0+AY9XocUVjl/oCeXqKu4vzXItI7XknDtfsURfJLaFxAhGgg==
-X-Gm-Gg: ASbGnctwjF95JgzSMFOiOXrx0LaVoCX0/07u4HYFo/qY/MCVfuwi5Aixk2B/LFvczoV
-	40pXR6tOmgygJ6VOKnfRC4Q8H17KN348LjRX7Z4o6xsOb39hinjz8qhVMZsS3KGvUMwGQ+GOvTs
-	LncDrwdEpwKSlK15H9gC7Gztw+wEBv0JfCSUgopebWGHObkZssrDHh/mfoE/Up666xyfu7dP9lb
-	SqS8QWIPDEl2Yc6MWnw70g4PfCQlK8EI0kSvEUF3HrC8yrzZWh1lrPmvgVsX3uYqfpROWkTHQHO
-	YY3TLqiXH7dOF+KlvMCqNITrZKXp763dGQ4tT9TyW5o6PP1wYU3l3ZcXD/Do/zzEVVcLCEaYYEo
-	xJab6Ifv/eu19Hlpa2Qf4Zomux8TZo/FkffR0lW5usR0Hr7t6kG9U0dHPTFD1cg9iagMUQcWRbL
-	0LTdKgYMuLvEue//8SvaY=
-X-Google-Smtp-Source: AGHT+IErTwdKW7tyTLJuefijKIsJGPDFlv2dlNGWnH6jQlGP1jnxNqBrEarRMW62d5ENCjLqM0SCZQ==
-X-Received: by 2002:a05:6000:2dc6:b0:428:55c3:ced4 with SMTP id ffacd0b85a97d-429bd680cddmr5740398f8f.18.1762024797603;
-        Sat, 01 Nov 2025 12:19:57 -0700 (PDT)
+        bh=/1IocHzXTlU5q4PcdHFM0f/zZqOHtSpZQuEiOCgx9To=;
+        b=PX0zn1FXCjT8tPhy5IHu8RmQqw9WZABXyUk73PmS0mK2WnRcNx1v0n2jsYM9eXsxsL
+         MdAM3Z6bvDuyNPzYyrZ8oweRnpVUoOIIUZKo6CRgsJwsBHrOe5uCeyx22rA7pxfFHmqv
+         EcmSNo195ZaVHAGl3oHjoWA6gUSMr8oLcrMieAXwCIwGDNkJNz75aSyfeSYSU5ZeQ9Z2
+         PEr4MkCrdYG9FKccuzXdqFEuxQIVwU2glwQsknn0Cw2VyXZCh8pzly4nD+2dLk4ZOx/m
+         pNtxJk3Xu8GSkuuKhBghdbMh1XVIjv1+Sl+hDmsaALiwLMNwR8T5udkZFNs6keEkHA7O
+         J8yw==
+X-Gm-Message-State: AOJu0YxZjlpJ3kWjFg/Le56EFdPV5Go0NDIlMpMkgeibhwSZG+8B9q1E
+	aOR3Hm/LninBuun9+l84Yw7Pobz9LuyAEN8GEgMwThm6CAdrbZk03TZZ95FEOA==
+X-Gm-Gg: ASbGncvtZQcdI7pgeLwU4btd9NKupeAibsWoQyyieSS6sATojcvejrNSHSVZWcBCxCG
+	4BRhvbQn9pXSIIoABeOGciPKfGtVMrDlA7ykwzANL6ShFlfWylK/XPXvEzX6E3MvBFLGoJjRYAe
+	IMkPQRfcaI/yzWYdzJnLoRtfwrvSWFPxS1LkYewXNx26IMA99fT8815mdYMxJa9GxNL9vNutRgV
+	P28ZEO6WdGMbXyKpcyJAV/ikUQehKaPR9SIMznoaTeAcIYkZ00f/kJSZ5TaCwNNHJEdM6RwU6OI
+	ExBoub3lB+5yYBApmNchq399vnUpZbxxnPonxMtZbW2kQxpCX3CwWBiqdO/YTxH+4IXBS3m4p58
+	vr64Udc73f5QN95fl1Ff7H/QvgpwTbjOZn/3axciJeRXGp32tCH8Ar8+8PWlMS6iFgf+fy8fXpS
+	HnJu3x1wYHYNqes0SmynY=
+X-Google-Smtp-Source: AGHT+IFVHjgdY10+PMT9gzrcDuQy1qLC65Wbj02gvpTBOLdbvMESP5jWbfzwDFY9o2gd0MoguVODiQ==
+X-Received: by 2002:a5d:5f50:0:b0:429:b8f9:a87e with SMTP id ffacd0b85a97d-429bd6887f5mr7220140f8f.20.1762024841053;
+        Sat, 01 Nov 2025 12:20:41 -0700 (PDT)
 Received: from [192.168.1.50] ([79.119.240.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4773c23b8d9sm71367945e9.0.2025.11.01.12.19.56
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c13e1c9esm10741832f8f.22.2025.11.01.12.20.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Nov 2025 12:19:56 -0700 (PDT)
-Message-ID: <3904dd9f-2178-41e5-95c2-7a9f6268e935@gmail.com>
-Date: Sat, 1 Nov 2025 21:19:55 +0200
+        Sat, 01 Nov 2025 12:20:40 -0700 (PDT)
+Message-ID: <6c7b2f01-2c78-47c8-a4c4-98cd3060d7f3@gmail.com>
+Date: Sat, 1 Nov 2025 21:20:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,80 +82,195 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH rtw-next v4 01/12] wifi: rtw89: 8832cu: turn off TX partial
- mode
+Subject: [PATCH rtw-next v4 02/12] wifi: rtw89: Add rtw89_core_get_ch_dma_v2()
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
 References: <1d0b14ff-333c-462e-a420-ce6bdf298fe6@gmail.com>
+ <3904dd9f-2178-41e5-95c2-7a9f6268e935@gmail.com>
 Content-Language: en-US
-In-Reply-To: <1d0b14ff-333c-462e-a420-ce6bdf298fe6@gmail.com>
+In-Reply-To: <3904dd9f-2178-41e5-95c2-7a9f6268e935@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+RTL8852CU, RTL8852AU, and RTL8922AU need a different mapping of TX
+queue to DMA channel compared to their PCI versions, so make
+get_ch_dma in struct rtw89_chip_ops an array and add
+rtw89_core_get_ch_dma_v2().
 
-The TX partial mode in USB devices will cause timeout to wait for payload,
-causing SER 0x999 and disconnection. Turn off this mode according to
-design suggestion.
-
-rtw89_8852cu 2-4:1.0: FW status = 0xee001108
-rtw89_8852cu 2-4:1.0: FW BADADDR = 0x18605fc8
-rtw89_8852cu 2-4:1.0: FW EPC/RA = 0x0
-rtw89_8852cu 2-4:1.0: FW MISC = 0x1010000
-rtw89_8852cu 2-4:1.0: R_AX_HALT_C2H = 0x999
-rtw89_8852cu 2-4:1.0: R_AX_SER_DBG_INFO = 0x71020010
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f554
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f556
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
-rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
-rtw89_8852cu 2-4:1.0: --->
-err=0x999
-rtw89_8852cu 2-4:1.0: R_AX_SER_DBG_INFO =0x71020010
-rtw89_8852cu 2-4:1.0: R_AX_SER_DBG_INFO =0x71020010
-rtw89_8852cu 2-4:1.0: DBG Counter 1 (R_AX_DRV_FW_HSK_4)=0x00000000
-rtw89_8852cu 2-4:1.0: DBG Counter 2 (R_AX_DRV_FW_HSK_5)=0x00000000
-rtw89_8852cu 2-4:1.0: R_AX_DMAC_ERR_ISR=0x00000000
-rtw89_8852cu 2-4:1.0: R_AX_DMAC_ERR_IMR=0x00000000
-rtw89_8852cu 2-4:1.0: R_AX_CMAC_ERR_ISR [0]=0x00000000
-rtw89_8852cu 2-4:1.0: R_AX_CMAC_FUNC_EN [0]=0xf000803f
-rtw89_8852cu 2-4:1.0: R_AX_CK_EN [0]=0xffffffff
-rtw89_8852cu 2-4:1.0: R_AX_CMAC_ERR_IMR [0]=0x00000000
-rtw89_8852cu 2-4:1.0: [CMAC] : CMAC1 not enabled
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
+v2:
+ - No change, messed up sending v1.
+
+v3:
+ - Use the new get_ch_dma chip op and add rtw89_core_get_ch_dma_v2()
+   instead of modifying rtw89_core_get_ch_dma().
+
 v4:
- - Patch is new in v4.
+ - Add Acked-by.
 ---
- drivers/net/wireless/realtek/rtw89/mac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/core.c     | 19 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/core.h     |  5 +++--
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |  4 +++-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  4 +++-
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |  4 +++-
+ .../net/wireless/realtek/rtw89/rtw8852bt.c    |  4 +++-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  4 +++-
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |  4 +++-
+ 8 files changed, 40 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index d837513f4e92..df040b4e8855 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -2327,7 +2327,8 @@ static int sec_eng_init_ax(struct rtw89_dev *rtwdev)
- 	if (chip->chip_id == RTL8852C)
- 		val |= B_AX_UC_MGNT_DEC;
- 	if (chip->chip_id == RTL8852A || chip->chip_id == RTL8852B ||
--	    chip->chip_id == RTL8851B)
-+	    chip->chip_id == RTL8851B ||
-+	    (chip->chip_id == RTL8852C && rtwdev->hci.type == RTW89_HCI_TYPE_USB))
- 		val &= ~B_AX_TX_PARTIAL_MODE;
- 	rtw89_write32(rtwdev, R_AX_SEC_ENG_CTRL, val);
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 1b5a40e9821c..1f92be300ea7 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -759,6 +759,25 @@ u8 rtw89_core_get_ch_dma_v1(struct rtw89_dev *rtwdev, u8 qsel)
+ }
+ EXPORT_SYMBOL(rtw89_core_get_ch_dma_v1);
  
++u8 rtw89_core_get_ch_dma_v2(struct rtw89_dev *rtwdev, u8 qsel)
++{
++	switch (qsel) {
++	default:
++		rtw89_warn(rtwdev, "Cannot map qsel to dma v2: %d\n", qsel);
++		fallthrough;
++	case RTW89_TX_QSEL_BE_0:
++	case RTW89_TX_QSEL_VO_0:
++		return RTW89_TXCH_ACH0;
++	case RTW89_TX_QSEL_BK_0:
++	case RTW89_TX_QSEL_VI_0:
++		return RTW89_TXCH_ACH2;
++	case RTW89_TX_QSEL_B0_MGMT:
++	case RTW89_TX_QSEL_B0_HI:
++		return RTW89_TXCH_CH8;
++	}
++}
++EXPORT_SYMBOL(rtw89_core_get_ch_dma_v2);
++
+ static void
+ rtw89_core_tx_update_mgmt_info(struct rtw89_dev *rtwdev,
+ 			       struct rtw89_core_tx_request *tx_req)
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index f8b443894db9..c7b48bd000c7 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3764,7 +3764,7 @@ struct rtw89_chip_ops {
+ 	void (*fill_txdesc_fwcmd)(struct rtw89_dev *rtwdev,
+ 				  struct rtw89_tx_desc_info *desc_info,
+ 				  void *txdesc);
+-	u8 (*get_ch_dma)(struct rtw89_dev *rtwdev, u8 qsel);
++	u8 (*get_ch_dma[RTW89_HCI_TYPE_NUM])(struct rtw89_dev *rtwdev, u8 qsel);
+ 	int (*cfg_ctrl_path)(struct rtw89_dev *rtwdev, bool wl);
+ 	int (*mac_cfg_gnt)(struct rtw89_dev *rtwdev,
+ 			   const struct rtw89_mac_ax_coex_gnt *gnt_cfg);
+@@ -7253,7 +7253,7 @@ u8 rtw89_chip_get_ch_dma(struct rtw89_dev *rtwdev, u8 qsel)
+ {
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 
+-	return chip->ops->get_ch_dma(rtwdev, qsel);
++	return chip->ops->get_ch_dma[rtwdev->hci.type](rtwdev, qsel);
+ }
+ 
+ static inline
+@@ -7507,6 +7507,7 @@ void rtw89_core_fill_txdesc_fwcmd_v2(struct rtw89_dev *rtwdev,
+ 				     void *txdesc);
+ u8 rtw89_core_get_ch_dma(struct rtw89_dev *rtwdev, u8 qsel);
+ u8 rtw89_core_get_ch_dma_v1(struct rtw89_dev *rtwdev, u8 qsel);
++u8 rtw89_core_get_ch_dma_v2(struct rtw89_dev *rtwdev, u8 qsel);
+ void rtw89_core_rx(struct rtw89_dev *rtwdev,
+ 		   struct rtw89_rx_desc_info *desc_info,
+ 		   struct sk_buff *skb);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+index edcbda124916..2019f6022cbb 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+@@ -2537,7 +2537,9 @@ static const struct rtw89_chip_ops rtw8851b_chip_ops = {
+ 	.query_rxdesc		= rtw89_core_query_rxdesc,
+ 	.fill_txdesc		= rtw89_core_fill_txdesc,
+ 	.fill_txdesc_fwcmd	= rtw89_core_fill_txdesc,
+-	.get_ch_dma		= rtw89_core_get_ch_dma,
++	.get_ch_dma		= {rtw89_core_get_ch_dma,
++				   rtw89_core_get_ch_dma,
++				   NULL,},
+ 	.cfg_ctrl_path		= rtw89_mac_cfg_ctrl_path,
+ 	.mac_cfg_gnt		= rtw89_mac_cfg_gnt,
+ 	.stop_sch_tx		= rtw89_mac_stop_sch_tx,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 232f4c1bee1b..fa347dbebf9a 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -2178,7 +2178,9 @@ static const struct rtw89_chip_ops rtw8852a_chip_ops = {
+ 	.query_rxdesc		= rtw89_core_query_rxdesc,
+ 	.fill_txdesc		= rtw89_core_fill_txdesc,
+ 	.fill_txdesc_fwcmd	= rtw89_core_fill_txdesc,
+-	.get_ch_dma		= rtw89_core_get_ch_dma,
++	.get_ch_dma		= {rtw89_core_get_ch_dma,
++				   rtw89_core_get_ch_dma_v2,
++				   NULL,},
+ 	.cfg_ctrl_path		= rtw89_mac_cfg_ctrl_path,
+ 	.mac_cfg_gnt		= rtw89_mac_cfg_gnt,
+ 	.stop_sch_tx		= rtw89_mac_stop_sch_tx,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index 0777e336aaa1..38cd151f8c3f 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -842,7 +842,9 @@ static const struct rtw89_chip_ops rtw8852b_chip_ops = {
+ 	.query_rxdesc		= rtw89_core_query_rxdesc,
+ 	.fill_txdesc		= rtw89_core_fill_txdesc,
+ 	.fill_txdesc_fwcmd	= rtw89_core_fill_txdesc,
+-	.get_ch_dma		= rtw89_core_get_ch_dma,
++	.get_ch_dma		= {rtw89_core_get_ch_dma,
++				   rtw89_core_get_ch_dma,
++				   NULL,},
+ 	.cfg_ctrl_path		= rtw89_mac_cfg_ctrl_path,
+ 	.mac_cfg_gnt		= rtw89_mac_cfg_gnt,
+ 	.stop_sch_tx		= rtw89_mac_stop_sch_tx,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
+index b3a79ebc7e75..15ba780492d6 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
+@@ -708,7 +708,9 @@ static const struct rtw89_chip_ops rtw8852bt_chip_ops = {
+ 	.query_rxdesc		= rtw89_core_query_rxdesc,
+ 	.fill_txdesc		= rtw89_core_fill_txdesc,
+ 	.fill_txdesc_fwcmd	= rtw89_core_fill_txdesc,
+-	.get_ch_dma		= rtw89_core_get_ch_dma,
++	.get_ch_dma		= {rtw89_core_get_ch_dma,
++				   NULL,
++				   NULL,},
+ 	.cfg_ctrl_path		= rtw89_mac_cfg_ctrl_path,
+ 	.mac_cfg_gnt		= rtw89_mac_cfg_gnt,
+ 	.stop_sch_tx		= rtw89_mac_stop_sch_tx,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 440801d63343..ee1915307376 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -2962,7 +2962,9 @@ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
+ 	.query_rxdesc		= rtw89_core_query_rxdesc,
+ 	.fill_txdesc		= rtw89_core_fill_txdesc_v1,
+ 	.fill_txdesc_fwcmd	= rtw89_core_fill_txdesc_fwcmd_v1,
+-	.get_ch_dma		= rtw89_core_get_ch_dma,
++	.get_ch_dma		= {rtw89_core_get_ch_dma,
++				   rtw89_core_get_ch_dma_v2,
++				   NULL,},
+ 	.cfg_ctrl_path		= rtw89_mac_cfg_ctrl_path_v1,
+ 	.mac_cfg_gnt		= rtw89_mac_cfg_gnt_v1,
+ 	.stop_sch_tx		= rtw89_mac_stop_sch_tx_v1,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+index 6aa19ad259ac..61f3a0a3f440 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
+@@ -2821,7 +2821,9 @@ static const struct rtw89_chip_ops rtw8922a_chip_ops = {
+ 	.query_rxdesc		= rtw89_core_query_rxdesc_v2,
+ 	.fill_txdesc		= rtw89_core_fill_txdesc_v2,
+ 	.fill_txdesc_fwcmd	= rtw89_core_fill_txdesc_fwcmd_v2,
+-	.get_ch_dma		= rtw89_core_get_ch_dma,
++	.get_ch_dma		= {rtw89_core_get_ch_dma,
++				   rtw89_core_get_ch_dma_v2,
++				   NULL,},
+ 	.cfg_ctrl_path		= rtw89_mac_cfg_ctrl_path_v2,
+ 	.mac_cfg_gnt		= rtw89_mac_cfg_gnt_v2,
+ 	.stop_sch_tx		= rtw89_mac_stop_sch_tx_v2,
 -- 
 2.51.1
 
