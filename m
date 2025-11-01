@@ -1,80 +1,80 @@
-Return-Path: <linux-wireless+bounces-28466-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28467-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77882C2864D
-	for <lists+linux-wireless@lfdr.de>; Sat, 01 Nov 2025 20:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC9BC28650
+	for <lists+linux-wireless@lfdr.de>; Sat, 01 Nov 2025 20:27:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7475918922D9
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Nov 2025 19:27:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA4601893EE0
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Nov 2025 19:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41222FF678;
-	Sat,  1 Nov 2025 19:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAC12FF678;
+	Sat,  1 Nov 2025 19:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="njKyFHux"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dSXDlk3J"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1176B2FC86B
-	for <linux-wireless@vger.kernel.org>; Sat,  1 Nov 2025 19:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF492FC86B
+	for <linux-wireless@vger.kernel.org>; Sat,  1 Nov 2025 19:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762025234; cv=none; b=TCpK25GAw3bz85/hoNn1FaU4o68P2M23TLfo7dJ969sUKjdhJniTBJu7z4qJnb93ixMyA5AfgE+ZvcbOCoAH2YDJJdc9srOyVuOsQMbQ3mDSzRejYLj9hN2eGvToFj0BiN+0JUDv42gaViKo35aTNMSDdI1p/bZb90FGQ0ihYmI=
+	t=1762025264; cv=none; b=b+Khz5zwbhXoHrAek90yW8s/g4MJflrzv7kK//+x4dNDssvXhQNy4Qa+rnQqebeDYyAVo2okIqN1yErgoqyILZ8H+94SXTOnMT0n+i40Wsb/rtzmegXC4P3wEnl1MeiJMB5FwzqSI+vGFEIM9OqLiGvontHn68DE+onU5QpZM6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762025234; c=relaxed/simple;
-	bh=Suxt249Jel700FCiuN9qWTxzeYVPJdMkv6nX2Trzblw=;
+	s=arc-20240116; t=1762025264; c=relaxed/simple;
+	bh=T2kOppB1PjUnVq59+kWaZrV3b1TewOxynv0TgUzYoYM=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=dADFh5Shhtr7XPRRhUMcZdHVkPYg2ZwhtouhhEBq70/VgR6B8zKADDVgCWgRmbWcTnZeVoAQkLzzMcOvnk+0D+hOHEWP9cwpl0H5iMhOJadlxeYtUlGR8D8MyL1kjIlBl8gqMXKUt1Pfiw+pRcvOUJtF9DFb4hoNEDYKR56pN/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=njKyFHux; arc=none smtp.client-ip=209.85.221.51
+	 In-Reply-To:Content-Type; b=OFNmH9PxfSoucVYC86IDRxBxGVR+Gt5IAvucI+o6LLw68RUPpFgO+AmWyy/ojuLi0A0aDaap4VNSbSYm3P0LFsl76EQoODw4/6BG0lKVk7OLWgZhTz0ACHFX7Ue9CQTJXgSVO+15xlzkXORXmEf4Z3ZOocWvZqHeQmrFagnJfBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dSXDlk3J; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-429c2f6a580so1327615f8f.1
-        for <linux-wireless@vger.kernel.org>; Sat, 01 Nov 2025 12:27:12 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4770c2cd96fso21355415e9.3
+        for <linux-wireless@vger.kernel.org>; Sat, 01 Nov 2025 12:27:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762025231; x=1762630031; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762025261; x=1762630061; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=tbAMSIxPUFNaZfeuYQhRw79ZTQhMaCBk53c6BXDwOVQ=;
-        b=njKyFHuxu/y89s297bDeTrbfFTldp6eSLROi7Kjq0HDWtb2KxQ0Fj8wqj+fEPeXtyo
-         z+d5BJr1oTVhmrp7h8sYiWWHkoijUqP9pPO8C2kMe7ziU3TMYyeKN9tgXJMbYTnhPU+E
-         j14eXopE/EXU9BD/m1WrOWVNOds38OPZgncdlz3nkBUM9wUqP9tV0Al6UCpS0Cxlbvm+
-         jpHzQkzULdMmt4tr/Yjcnc59MNz96AA9luGovMKjgrA9My05SmfeFrZnJ3WU30PZEG6k
-         7HYM7yx+6xB6s1DLo0enOc4GMpxLUBCbWh57OBdj8dfeKal14TbjnaL+wIygCZ3Kvh+j
-         gHBg==
+        bh=0FhujW+k2/q9FC2pb+nVVv3dV7/p79VxMi6+jUwk+V8=;
+        b=dSXDlk3JE3egCXgTTO21v6MXlQDfmt5yY1Hmlva6iOOSqo9euzwuLgMGzJFuNAq83Y
+         xNC4/puWk2OjG+TdSFlJCRe/w1yp+OMPHH3wGe54egAl8pyQPv42D3IxPnaObdbEO5qh
+         d4eEWeFEJNZrOO/Y2OIhgvUGUx/kRkKbfCkaA5SHHQ1OKrJ1I2EqTnsstLmz95X4EkGb
+         C4QrvL+opbYZivSvcR7DtaxxQZa6xA2409p5+cTJRLLmuCVV5ZyESeUNSGofvXEa93nU
+         hS64ijP7k3HTiYBySHe+rvZr4NKEoN80r0hkme+xNCRkZ9GqZkaHX8kKhuxPbVk/qgwD
+         y2+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762025231; x=1762630031;
+        d=1e100.net; s=20230601; t=1762025261; x=1762630061;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tbAMSIxPUFNaZfeuYQhRw79ZTQhMaCBk53c6BXDwOVQ=;
-        b=IF//gX49mqfgcdE0yDJxOZOYCpC6aTUkOGvT2CIF/Ydd28h8ncZD+hyNuahIopRT5X
-         6dqDoX0qEPql1hplYnWBrbf1grm8O2eQ1ZvxCwmbytfQJAfmMZiNogGxY1eUUI7HP2XC
-         w7qQNqHwlDYCk1xiSznl8/uuAyrEJzOcxv6WBpwd468xgZeUR4deu2qmz+wGGH/hnrqR
-         1/zhun+ZuklzNEmdb/WnFrWCECXOwQ33LWC6Y+IHIkmfBlhv962WRnDPfR9eMzciEZtX
-         u/tujiaNpndj2tVkIcLCmro+MAyY3aPc/1IDxNMHsAtxz5293zFQxCQ2JqX2DNKlONjU
-         191Q==
-X-Gm-Message-State: AOJu0YyOcVKaNHAFijvK1W86JHfs3sg+KsVN9j6N5IX71pI00ISwaYzL
-	ojqlOdnywcOypk/WyMl1vEC5cG1VglhKJCIRHtjGTbY4cCEA/QrYKqqeb2fq3A==
-X-Gm-Gg: ASbGncuQQaKOE7tLpFSMCp5P/4pjwNp/B7xTDtqaU+MYdhWzwtXrYok49e1PixxR9N+
-	MKCiKQpCb+F8E3oQn8wccyH7kaghji9ISwAVvcutnQqcrWHiM2Vd81OXgj+3UzzEvEoCoh/2PDB
-	Kt3KI1GoM8GRCDXLmD4s6hl0+RkuOXZg31o/vIZR6/aS5/oXgQB3DOzglj8KhQUiFqO4ccdu+eJ
-	wACBdKNfk73mXi8Xpco9Kd+MG5iL5g+Lzylby5Y9xQ7KMZEiI0THf6vDxZ6N72IlW2gURrJ3Ma9
-	kmE4SPAV5Uxvr9byANvD9dnPdGcB+Q/CchztxJhYXWg7HoNow+Dwi1r0osrgSoR5HfM+RhCvJsc
-	ZyTzJRQmEEAhE5dvLdSudSiorLB9Y+uToM2y/jRl62M3ONt3vjOsvWm15tMeTDeRM6QnkwGncDh
-	CtK+UEi3kS
-X-Google-Smtp-Source: AGHT+IGVdvLZ3fLJcwrTDUkkAm0g3QZvpqsLkKE/aOZagwE8FYB6NUIIkxClTb/Iufk/C/Oa6kPrVg==
-X-Received: by 2002:a05:6000:25c2:b0:429:b718:167c with SMTP id ffacd0b85a97d-429bd68847fmr6025524f8f.28.1762025231371;
-        Sat, 01 Nov 2025 12:27:11 -0700 (PDT)
+        bh=0FhujW+k2/q9FC2pb+nVVv3dV7/p79VxMi6+jUwk+V8=;
+        b=jHQqxhCn0ZR9soWeOGt4P1JWZQImHxX1FahyAme5TynFVYedQrlgK4/jNYBGeO3V3Y
+         ITjs804vmTE6OS6iPl/oZy+Gly51vOe5CI/z/+L13FzAtScoKLcF3Nulyn2xtcp8K95+
+         0Rd+st3GRFWS8w6nuK4zMz2QJUpAmkJVvI5DlC32Bp/8sy3ZTSEnWYtTkHpGkDfHlc3R
+         SBSwsGAWS4o40bc/AvnW0SwZ4zl2Fi2gfzGnrK5Wkry/97UUaeiBstX2yrgp6g+W/ver
+         gb6Q5Z9VLHuW37BJPAr5gS0U+7ZZIa1HEWuyB4OQriMRJEKGLiNa4KRaoaq8WiEfrMwx
+         iy+A==
+X-Gm-Message-State: AOJu0YyBX90LxyZNTJbyIezB15/tsCDMFUxmVU3bQNvJ5aToPvWYW2UM
+	TZZk9kAXw25bwuAhynUywECPYVztwkdO9z8spLihO04Xp1SDT48RZ46WQ2IxOA==
+X-Gm-Gg: ASbGncstwuCIsaSEu2BHyvP/UcIi7AtQztBaUF/LHLY6INxZOwbjY6CIk9dZZMM+3/y
+	jrZ4yAs2Gei6ezWFb7BxvNcvDNTYK2PrQlbMqPSMoF7cODtu5pJlCYCwCyObTH8R4TqC+BBC2qa
+	Cc6SMOpZR3h/MBAbmG+nQ2IGO6J8SWXAQbrLdqp9XomZe/+9CeSD/UL7vhYiDl132Bu/z24PzjD
+	2dDmBMunJK/r7zzaS4cAbCGsIJLtYoJ3m+N/kO/PuUQFYJWL4x6Yjl6yRX0XXfgWP/dHu+UNypn
+	HsozC2rS3Tg8QWveYAEz9xLVg7JdmBcFkpzK3cCCzSFlwB+ocogVJYWKnInldHjLvnmwtFcj+OS
+	uJKPZOfohaROHkpgsPQOywh1cKm9Lrh9PypdI/pMYWwJtpPrpMTmZue7VPF3w4lPUJuQTP8cB+i
+	9NrfcK6Mdn
+X-Google-Smtp-Source: AGHT+IGvP7qyO0HnOYgIrqsR1tCq7v8SPPc+0oaPxCyo9LmnnT2EUbfewP1EBNGtokCHFW/EqQPUvw==
+X-Received: by 2002:a05:600d:4352:b0:477:429b:3b93 with SMTP id 5b1f17b1804b1-477429b3fb5mr11106385e9.18.1762025260621;
+        Sat, 01 Nov 2025 12:27:40 -0700 (PDT)
 Received: from [192.168.1.50] ([79.119.240.71])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c102dfd2sm10612290f8f.0.2025.11.01.12.27.10
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4773c53ec2csm61873185e9.11.2025.11.01.12.27.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Nov 2025 12:27:11 -0700 (PDT)
-Message-ID: <78138507-99ea-4a58-a02b-f4d11dbfba3b@gmail.com>
-Date: Sat, 1 Nov 2025 21:27:09 +0200
+        Sat, 01 Nov 2025 12:27:39 -0700 (PDT)
+Message-ID: <a63a71f0-8003-4390-8bee-5cfd298867a0@gmail.com>
+Date: Sat, 1 Nov 2025 21:27:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,8 +82,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH rtw-next v4 10/12] wifi: rtw89: 8852c: Accept USB devices and
- load their MAC address
+Subject: [PATCH rtw-next v4 11/12] wifi: rtw89: Add rtw8852cu.c
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
@@ -93,10 +92,7 @@ In-Reply-To: <1d0b14ff-333c-462e-a420-ce6bdf298fe6@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Make rtw8852c_read_efuse() accept USB devices and load the MAC
-address from the correct offset.
-
-Also fix the offset of the MAC address because it was wrong.
+This is the entry point for the new rtw89_8852cu module.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 Acked-by: Ping-Ke Shih <pkshih@realtek.com>
@@ -110,62 +106,85 @@ v3:
 v4:
  - No change.
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 16 +++++++---------
- drivers/net/wireless/realtek/rtw89/rtw8852c.h |  2 +-
- 2 files changed, 8 insertions(+), 10 deletions(-)
+ .../net/wireless/realtek/rtw89/rtw8852cu.c    | 69 +++++++++++++++++++
+ 1 file changed, 69 insertions(+)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852cu.c
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 10e3963b692c..8550ae3bcb64 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -480,14 +480,6 @@ static int rtw8852c_pwr_off_func(struct rtw89_dev *rtwdev)
- 	return 0;
- }
- 
--static void rtw8852c_e_efuse_parsing(struct rtw89_efuse *efuse,
--				     struct rtw8852c_efuse *map)
--{
--	ether_addr_copy(efuse->addr, map->e.mac_addr);
--	efuse->rfe_type = map->rfe_type;
--	efuse->xtal_cap = map->xtal_k;
--}
--
- static void rtw8852c_efuse_parsing_tssi(struct rtw89_dev *rtwdev,
- 					struct rtw8852c_efuse *map)
- {
-@@ -596,12 +588,18 @@ static int rtw8852c_read_efuse(struct rtw89_dev *rtwdev, u8 *log_map,
- 
- 	switch (rtwdev->hci.type) {
- 	case RTW89_HCI_TYPE_PCIE:
--		rtw8852c_e_efuse_parsing(efuse, map);
-+		ether_addr_copy(efuse->addr, map->e.mac_addr);
-+		break;
-+	case RTW89_HCI_TYPE_USB:
-+		ether_addr_copy(efuse->addr, map->u.mac_addr);
- 		break;
- 	default:
- 		return -ENOTSUPP;
- 	}
- 
-+	efuse->rfe_type = map->rfe_type;
-+	efuse->xtal_cap = map->xtal_k;
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852cu.c b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
+new file mode 100644
+index 000000000000..2708b523ca14
+--- /dev/null
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852cu.c
+@@ -0,0 +1,69 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/* Copyright(c) 2025  Realtek Corporation
++ */
 +
- 	rtw89_info(rtwdev, "chip rfe_type is %d\n", efuse->rfe_type);
- 
- 	return 0;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.h b/drivers/net/wireless/realtek/rtw89/rtw8852c.h
-index 77b05daedd10..8585921ac6c4 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.h
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.h
-@@ -11,7 +11,7 @@
- #define BB_PATH_NUM_8852C 2
- 
- struct rtw8852c_u_efuse {
--	u8 rsvd[0x38];
-+	u8 rsvd[0x88];
- 	u8 mac_addr[ETH_ALEN];
- };
- 
++#include <linux/module.h>
++#include <linux/usb.h>
++#include "rtw8852c.h"
++#include "reg.h"
++#include "usb.h"
++
++static const struct rtw89_usb_info rtw8852c_usb_info = {
++	.usb_host_request_2		= R_AX_USB_HOST_REQUEST_2_V1,
++	.usb_wlan0_1			= R_AX_USB_WLAN0_1_V1,
++	.hci_func_en			= R_AX_HCI_FUNC_EN_V1,
++	.usb3_mac_npi_config_intf_0	= R_AX_USB3_MAC_NPI_CONFIG_INTF_0_V1,
++	.usb_endpoint_0			= R_AX_USB_ENDPOINT_0_V1,
++	.usb_endpoint_2			= R_AX_USB_ENDPOINT_2_V1,
++	.bulkout_id = {
++		[RTW89_DMA_ACH0] = 3,
++		[RTW89_DMA_ACH2] = 5,
++		[RTW89_DMA_ACH4] = 4,
++		[RTW89_DMA_ACH6] = 6,
++		[RTW89_DMA_B0MG] = 0,
++		[RTW89_DMA_B0HI] = 0,
++		[RTW89_DMA_B1MG] = 1,
++		[RTW89_DMA_B1HI] = 1,
++		[RTW89_DMA_H2C] = 2,
++	},
++};
++
++static const struct rtw89_driver_info rtw89_8852cu_info = {
++	.chip = &rtw8852c_chip_info,
++	.variant = NULL,
++	.quirks = NULL,
++	.bus = {
++		.usb = &rtw8852c_usb_info,
++	},
++};
++
++static const struct usb_device_id rtw_8852cu_id_table[] = {
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc832, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc85a, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x0bda, 0xc85d, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x0db0, 0x991d, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x35b2, 0x0502, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0101, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0102, 0xff, 0xff, 0xff),
++	  .driver_info = (kernel_ulong_t)&rtw89_8852cu_info },
++	{},
++};
++MODULE_DEVICE_TABLE(usb, rtw_8852cu_id_table);
++
++static struct usb_driver rtw_8852cu_driver = {
++	.name = KBUILD_MODNAME,
++	.id_table = rtw_8852cu_id_table,
++	.probe = rtw89_usb_probe,
++	.disconnect = rtw89_usb_disconnect,
++};
++module_usb_driver(rtw_8852cu_driver);
++
++MODULE_AUTHOR("Bitterblue Smith <rtl8821cerfe2@gmail.com>");
++MODULE_DESCRIPTION("Realtek 802.11ax wireless 8852CU driver");
++MODULE_LICENSE("Dual BSD/GPL");
 -- 
 2.51.1
 
