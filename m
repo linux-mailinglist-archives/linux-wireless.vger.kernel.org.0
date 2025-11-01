@@ -1,124 +1,147 @@
-Return-Path: <linux-wireless+bounces-28453-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28454-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B6FC279B5
-	for <lists+linux-wireless@lfdr.de>; Sat, 01 Nov 2025 09:33:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A7C1C2808C
+	for <lists+linux-wireless@lfdr.de>; Sat, 01 Nov 2025 15:09:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D69961A26285
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Nov 2025 08:34:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BB881A22EB1
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Nov 2025 14:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2993F22FDEA;
-	Sat,  1 Nov 2025 08:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F58B2882AA;
+	Sat,  1 Nov 2025 14:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L2KlPE3T"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GyDBaAJL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702E0299AAC
-	for <linux-wireless@vger.kernel.org>; Sat,  1 Nov 2025 08:33:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514C8189B84
+	for <linux-wireless@vger.kernel.org>; Sat,  1 Nov 2025 14:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761986032; cv=none; b=VMFPdUi/yX6N2NLh58aAp6ejeEQh63/Md46QxfMD4teDYE2Z1V0ZQDouMKih7Q3Mcb8JZbjS0IXoAtG3aSncJwcqwZ3Z5fC6+JN8zn6UbLmXZMboGM1uu2/NmosETRIAfnaPXI36DwGXa0DoZf8dOX4de56hyMoeh8jZlL4a1Rk=
+	t=1762006166; cv=none; b=annKY0fRppK0IhH7vvNpRPnr90KqK8tcWClnY/3PUjfUEkHQcMDiDYpaZEGw4QxYP9OuRauNWS0qq007Vi6sWcQ2Gaosg8PjrlWuTRfUOKHM2b2T/BFmowPngjjUM+r9AxSt3odZmHh3Tb7motWmiIBwyE+zFCb7vR0SqHE2j7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761986032; c=relaxed/simple;
-	bh=T6FDRMvNjCpM5LhW8oA1BhHC3fA7lHDvd289NfjuJEk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W+ON7hikrCiIO3xpBbZGMYoIr+C1fqm1/CKTU67Do72ArTYMSZU3jdPcZ5/AEo1Wol/3RZeLGms3BaW2KfXuqHVtimaAcgl7IEp4YYr6AMekTJY8M3QPHW1h8DGkoft+61TXSPOzB6ig5cv+MxF9MXxwmun7j/eBrAzlKvSDzDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L2KlPE3T; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1762006166; c=relaxed/simple;
+	bh=bY9A7f5T0avlV6x9P7sAniPcVef5NAIJ1un1OSez7LQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=aJXrLTfqymcjrZXx3aCj5rUa9EEbSG4SK95rdqQ8RWHYziSOnXl0b3lwevNxUniDQjTMhA00T9fouopL+fIXugRJZHlsuInNK1M4sZPgepkoCJELuXZ2zZ2yHfpO//bNQUM5zCOZDGopm8Wa6P51WiueErANzlMdz69wLBvMTbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GyDBaAJL; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b6d83bf1077so609199166b.3
-        for <linux-wireless@vger.kernel.org>; Sat, 01 Nov 2025 01:33:50 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4771b03267bso21033275e9.0
+        for <linux-wireless@vger.kernel.org>; Sat, 01 Nov 2025 07:09:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761986029; x=1762590829; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T6FDRMvNjCpM5LhW8oA1BhHC3fA7lHDvd289NfjuJEk=;
-        b=L2KlPE3TsUKrrJtukTI5oeCT7zoq/gnDjZ5p5MHWohZIHthwhlEE2tQ4SvCUu/1pPk
-         MVdrh9+HE6i0qwVfhUvI9JdtM9Hi0yeWzb3hTQeegueqLPnq8OfMrUCQRqNQ4TicwRAS
-         5kc7BVWlzGpsEETwth/uFhkIkrEesk6du1V+lA+NdiJX+Louj+Na0M9ugU3NsVfaQ7vc
-         QnXFxiSX74DLa3H00xbKYFUaGZ+aBT/E9o9kUKyzy17LbwFKHCE8UXYvuL0Eh2TwAfrC
-         FXjkKimN4C5CXmr+NXtL5YBzdK1Z8JpD3H4tJ7gv/3IqIP9xeSxZ9wCSqoXs/P4ZxsiS
-         PbJA==
+        d=gmail.com; s=20230601; t=1762006163; x=1762610963; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ujb8Z63OBL3/S9qdmCFHVoYEyV/TIBIToVJZuS5+7tQ=;
+        b=GyDBaAJLBxmjKWvrQi8a0+WdY5ueDwhXP/VxQIBttqnW95vw2BT0tO6UNdNN70l4r7
+         hbkGXMT4NtI6Uz7sxZi32HbbctsgrdLpv3aTPqxghats4qCGWKGmPnlL5n9geKy6+/NS
+         VIevcXCTv5aWJ/UO+6Pp1khYvclkEKay1XX0q8P0ICtm+mxGGPVXOHfNnooXBgJGLKBi
+         ywN4dvzkEitg8EiexAwvs/NsDADz6m5kwzgIYGBg+a7x5fOM2sJyBAIWWPANWRrV+Pa5
+         nJgXwPgYDe+Q41BT0gfdGiYj6mwmRKyd4ssMvfMHIqMHCfRAfwkBEdRlD8CbJhVNyEp0
+         NBXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761986029; x=1762590829;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T6FDRMvNjCpM5LhW8oA1BhHC3fA7lHDvd289NfjuJEk=;
-        b=pOXMntuXANlUo0ZJk7QccjAs2sTrqzKNP4ZO/xKTj/+ouiAt+hCp3coq5KkhaVtVB+
-         XW5xVLwmcuamNmWezHfpvJVTNLUrJXHXmyTsggP/HIvH1azNzICJot0RbhUgOU9wnCwv
-         wRzC+XwHxNW/vpYkb+zpQxuGWAcj3xQtk3qpAnCjbxbxs0OZkDnNKZfOhezxrL3cj/RU
-         6ufzpSz0Pi3TTYUriSGR0RCBlOPGv8LmzQX3S0JAq4vUjRddWDENqj2gH7KUvr7y6cfC
-         6ALC2OFxjWbPAAFud1r9SeQfzLazFWjN+H7I4ZBrKLwKLETuPXPmcaq5cZLPFkl9YVdT
-         6Irw==
-X-Forwarded-Encrypted: i=1; AJvYcCVz4n4TKHhJMEbZbqYUmvmKsCMOzJvTxoh3Ho3ObaWYSjwkBIPldI1MLTLqbPif6MHcbVzvhtHXXsOhgQs52Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4Bn2hXO8tVVGqs7maDKJ2wir/LDS9uaXmTnD29YYl2L6WTWTI
-	bXeNiHYb8A8rr9DsbfJDURLXIjgDFwv3rGRj73IhgYx45itHlZNWRNYSh4nLR+v2kFxyYWGHETZ
-	n+y7kM7VU906pnm9Mmc+oStKtzVTMcT2kfI4+GB8=
-X-Gm-Gg: ASbGncvFhC6UtHy4GPxErrFrBMFVKBhshFjJInfK53lzRAIevzeiFIehj9ZOQ25SKWO
-	8b/WAG9t50o47VP7ONHZ6u5p4TGYDs+FOzfW3R/Upx9r95qTS8eEPUjsmbSZvuKypEflKuGVncr
-	LgVvrqKPqrselDEBwNhoU2hgMJmvSM/nKM5gK6xO8xDlirF8GbxYkEcS6iWmbv0bCZRtLkDBFvJ
-	zccr6sJVYChsb4iK6gEf4bOOK8oil2+pGZX8OZ+I95JY1ERY4BupDPQ8T3ZiR3JCIV8P8U=
-X-Google-Smtp-Source: AGHT+IFFNpeJR9dbHOFQiQ7dl2HrM0sefQRNzTRSLtFVnX83H6VZ3RyD1DGUtnaezdZpBQrS3kk9GBbj9+zKnfj/3K0=
-X-Received: by 2002:a17:907:6d19:b0:b6d:6a35:99a0 with SMTP id
- a640c23a62f3a-b70705e3de7mr643662466b.33.1761986028413; Sat, 01 Nov 2025
- 01:33:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1762006163; x=1762610963;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ujb8Z63OBL3/S9qdmCFHVoYEyV/TIBIToVJZuS5+7tQ=;
+        b=eLbwWBg7bUyx2mb1EaCdMwpWcpNYZvsKsBl6iIkGbrf7+WSVp+BZeonB28jCo54kyb
+         9KlgeN/F8KQG8kLw7nXovC0vT5cjEO3B+Z1neJ9s8gCI0zcAPSqnjSvFrx5PiFQBeIeG
+         GjjFeW3aH3u5eZOYxFWQ2Obln13bQIEv81AvnyVnQ030a42kIrRddZlYflmo4iAMrnND
+         xaGHVR3ILe0DesJxfTmZcse7HTfXmjnZ6TCyXcmWi8OiFYx9n0j5UWYIMUU0pkr2RJ8x
+         V7J4T9U5YmtPM60VmBPEWOgcEMD5GNJMQ8IgPzM68+6wwmt44rbI70p3KyJFaXjHDPN7
+         rhAg==
+X-Gm-Message-State: AOJu0YzjIumL1hOgKHeopYOnlQUPt8WGpJ34M6zMvL04pWoTMtv+hqh0
+	AHOaNsacn7WIQinC6fcZzkTvYvNgkDfp+qapEZNL3w95CiPG9hmBj9Hf
+X-Gm-Gg: ASbGncuH7WB6oCuSvLf1d1ft+GphVHt9UZ0dkQrxfkAzrHZuQYxAbijbRfZ6tCmeqBc
+	Itygw0ZLJKESSwiDuR3Ov+b2g5MJmrlkqgOCP0SXMhtATeKwHiokQXR149yLQMav2/8mDnb6Umq
+	xLrcM3KOQtW8Xc0Ff7cuccrBYR8CDtOS3LirbgrRZ9eZyUV4OGdzSEczejdKEmusSg9lXmta5X7
+	ls0Ucpk6DRv6JZznUwVaesnzHSAbCnEndewTZmwvhZa/VkWZAISwt5bmv27HPIGTdmUI69cE394
+	73pU6/NZ2K6KtzNstR/pEoHp/Gxti5S3HBXhQoDuhmOpPLc67523W/nM+bG6IE/KEtCQtez/NQm
+	p8HDXnA82O7LQMvcCSFO9WyzAUUFnTiSPN++DjS0z87PYb3yk6NCUqiydgL1qxC6f4HS75NfTqG
+	BJeFFt0Blg252abY4doCIW8nDls7JrW13UEppiSbKREqNf
+X-Google-Smtp-Source: AGHT+IFskyqA/JihqRH0qYQj327yRRIPGRIxKarRuLsTMEIc/CthCSy1c5cMTqDg14hazFeNlgL2nw==
+X-Received: by 2002:a05:600c:b85:b0:46e:4a30:2b0f with SMTP id 5b1f17b1804b1-477308908c6mr63633035e9.29.1762006162214;
+        Sat, 01 Nov 2025 07:09:22 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4773c4af7c7sm51176185e9.7.2025.11.01.07.09.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Nov 2025 07:09:21 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 1F065BE2EE7; Sat, 01 Nov 2025 15:09:20 +0100 (CET)
+Date: Sat, 1 Nov 2025 15:09:20 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Jiri Slaby <jirislaby@kernel.org>,
+	Nick Kossifidis <mickflemm@gmail.com>,
+	Luis Chamberlain <mcgrof@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Vincent Danjean <vdanjean@debian.org>, 1119093@bugs.debian.org
+Subject: UBSAN array-index-out-of-bounds in ath5k driver
+Message-ID: <aQYUkIaT87ccDCin@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251031111639.406873-1-hujy652@gmail.com> <6de0a467-14f3-43e1-952c-b8cc7eb4801c@oss.qualcomm.com>
-In-Reply-To: <6de0a467-14f3-43e1-952c-b8cc7eb4801c@oss.qualcomm.com>
-From: Zhi-Jun You <hujy652@gmail.com>
-Date: Sat, 1 Nov 2025 16:33:37 +0800
-X-Gm-Features: AWmQ_bkotIWEYeL4LFQRHlK9ja_7OBUjk7WwHRpeWL4qz8dPtvmOxKYUFA5-LAc
-Message-ID: <CAHGaMk8BZiA+_ucfqZ+AnBe1ewuagADJfMK3UjECU3rutOW-kw@mail.gmail.com>
-Subject: Re: [PATCH ath-next] wifi: ath10k: simplify ath10k_htt_tx_mgmt_inc_pending
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: jjohnson@kernel.org, ath10k@lists.infradead.org, 
-	linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Fri, Oct 31, 2025 at 11:00=E2=80=AFPM Jeff Johnson
-<jeff.johnson@oss.qualcomm.com> wrote:
->
-> On 10/31/2025 4:16 AM, Zhi-Jun You wrote:
-> > Remove is_mgmt from ath10k_htt_tx_mgmt_inc_pending and make sure we onl=
-y
-> > call it when it's a mgmt frame.
->
-> This fails to describe WHY the patch is needed
->
-> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#de=
-scribe-your-changes
+Hi
 
-Hi Jeff,
+In Debian, https://bugs.debian.org/1119093, Vincent Danjean reported
+the following:
 
-My apologies. I will try to describe it in this mail and update it in
-v2 if it looks good to you.
+>   Hi,
+> 
+>   The ath5k driver seems to do an array-index-out-of-bounds access
+> as shown by the UBSAN kernel message.
+> [   17.954484] ------------[ cut here ]------------
+> [   17.954487] UBSAN: array-index-out-of-bounds in /build/reproducible-path/linux-6.16.3/drivers/net/wireless/ath/ath5k/base.c:1741:20
+> [   17.955289] index 4 is out of range for type 'ieee80211_tx_rate [4]'
+> [   17.956134] CPU: 1 UID: 0 PID: 1745 Comm: 16 Not tainted 6.16.3+deb13-amd64 #1 PREEMPT(lazy)  Debian 6.16.3-1~bpo13+1 
+> [   17.956137] Hardware name: Gigabyte Technology Co., Ltd. H67A-UD3H-B3/H67A-UD3H-B3, BIOS F8 03/27/2012
+> [   17.956139] Call Trace:
+> [   17.956142]  <TASK>
+> [   17.956145]  dump_stack_lvl+0x5d/0x80
+> [   17.956154]  ubsan_epilogue+0x5/0x2b
+> [   17.956158]  __ubsan_handle_out_of_bounds.cold+0x46/0x4b
+> [   17.956162]  ath5k_tasklet_tx+0x4e0/0x560 [ath5k]
+> [   17.956173]  tasklet_action_common+0xb5/0x1c0
+> [   17.956178]  handle_softirqs+0xdf/0x320
+> [   17.956181]  __irq_exit_rcu+0xbc/0xe0
+> [   17.956184]  common_interrupt+0x47/0xa0
+> [   17.956188]  asm_common_interrupt+0x26/0x40
+> [   17.956191] RIP: 0033:0x7f4fa439067d
+> [   17.956204] Code: 0f b6 14 16 45 85 c0 74 01 92 29 d0 c3 48 8d 3c 07 48 8d 34 0e 45 85 c0 74 03 48 87 f7 48 0f bc d2 49 29 d3 76 0b 0f b6 0c 16 <0f> b6 04 17 29 c8 c3 31 c0 c3 66 0f 1f 84 00 00 00 00 00 0f b6 0e
+> [   17.956206] RSP: 002b:00007ffd8cc32f08 EFLAGS: 00000212
+> [   17.956209] RAX: 0000000000000020 RBX: 0000556dfab414a0 RCX: 0000000000000070
+> [   17.956210] RDX: 000000000000000d RSI: 00007f4fa4b7a05f RDI: 0000556dfab414a0
+> [   17.956211] RBP: 00007f4fa4b7a05f R08: 0000000000000400 R09: 0000000000000008
+> [   17.956213] R10: fffffffffffff4b8 R11: 000000000000000e R12: 000000000000001b
+> [   17.956214] R13: 0000556dfab412c0 R14: 00007ffd8cc32f80 R15: 00007f4fa4b79eaf
+> [   17.956217]  </TASK>
+> [   17.956217] ---[ end trace ]---
+> 
+> It occurs once at each boot.
+> According to
+> https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stable/+blame/master/drivers/net/wireless/ath/ath5k/base.c
+> the line of code has not changed for about 15 years.
+> And I'm using this driver for more than 10 years.
+> So, the array-index-out-of-bounds does not seem to
+> have hard consequences for now (by luck?)
+> 
+>   Regards,
+>     Vincent
 
-ath10k_htt_tx_mgmt_inc_pending() is called in ath10k_mac_tx_push_txq()
-and ath10k_mac_op_tx().
-In ath10k_mac_tx_push_txq(), it checks is_mgmt before calling
-ath10k_htt_tx_mgmt_inc_pending() but there's another is_mgmt check
-inside which looks redundant.
-The function name itself already indicates that it's for mgmt frame only.
+Does that ring any bell?
 
-This patch removed the is_mgmt check in
-ath10k_htt_tx_mgmt_inc_pending() and add an is_mgmt check in
-ath10k_mac_op_tx() to make sure it's only called for mgmt frames.
-
-Thanks for taking your time.
-
-Best regards,
-Zhi-Jun
+Regards,
+Salvatore
 
