@@ -1,107 +1,130 @@
-Return-Path: <linux-wireless+bounces-28470-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28471-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D67C28F7A
-	for <lists+linux-wireless@lfdr.de>; Sun, 02 Nov 2025 14:28:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B23C294D6
+	for <lists+linux-wireless@lfdr.de>; Sun, 02 Nov 2025 19:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 62A264E1EDB
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Nov 2025 13:27:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 866A13AEAA8
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Nov 2025 18:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF415208AD;
-	Sun,  2 Nov 2025 13:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D484F70810;
+	Sun,  2 Nov 2025 18:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ayswOxPf"
+	dkim=pass (2048-bit key) header.d=bues.ch header.i=@bues.ch header.b="LU/JW8Wc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.bues.ch (bues.ch [116.203.120.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FA811CBA
-	for <linux-wireless@vger.kernel.org>; Sun,  2 Nov 2025 13:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D39A3B2A0
+	for <linux-wireless@vger.kernel.org>; Sun,  2 Nov 2025 18:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.120.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762090046; cv=none; b=SrKDIL5Bf1EKJaXoWDRcnupgLyxREsLADQ7P6HXE+8WxfdIE3uGX9MFxDYDWu2+Tupa/ouL4mDXztabDVqqWjIT9BfKPdzhP7u7E4TCp88khUHV/OV7bAL2pHGWwYip+WtyPb1jbZtnhwjYCySq7q8mrE/VnnbsiQH7RMfqVcDo=
+	t=1762107622; cv=none; b=uXzF+0Dl7XSGWhca2BAKUjU2x/bQ4Cj1QUlgCeaigtBNv+wyvwWy7HQ86dOaZ6LtcZPyzKJZ9nney+wzxQq5Bh7OXG+UQmCkrK4VUZyRbKHW5upqX4H+XeXBs/9+I9e6/dfRahdaoR7mYnFkFq1NcQSsBLcdGsx3q1xIsV5yQPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762090046; c=relaxed/simple;
-	bh=R6SA1ev4vId5ptZ+vYLkDAhDbJK/+ZkuwUIWh6j/WKk=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ERHgdCYfcJ2j1HfnkIEzsQ5SBokiZv63cpEWKDNc1aCEqOziKcN8BFLkALYDrNMCZZtxlTbVH9WQk5ltgt/fOkuH5Sqnr5jWTACXgH2biAHeVmw7Yc3lUquuANOorqGbh2wi5eHb8/3xTrJp18H6ghIf4lYRe5U4BofuUBGXYMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ayswOxPf; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b6cdba2663dso2617169a12.2
-        for <linux-wireless@vger.kernel.org>; Sun, 02 Nov 2025 05:27:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762090045; x=1762694845; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=R6SA1ev4vId5ptZ+vYLkDAhDbJK/+ZkuwUIWh6j/WKk=;
-        b=ayswOxPfB49toV1ChSk8/53ta8obO8p7qh8HcIbnZoxevE+n1T+yIJIqG6HahtNMuY
-         pbJjBgm932SWwQTNSD9Ruv448++hhZ1xRxO5ayMAEUrR3WGIYiUvTjsNprJjebu8ZphQ
-         PdGSvT6d1rLEVDreX1MzuqTprgdq4Skt1xS6f7LqC5Dpt6P7xhJMliQX7yGN95S091Ec
-         eK6kzC+7sg2IBG33tfBc5KQs0YCBZsOXKSevQPcaTW5e/vS4JMTGnMlgmstL6ZGc/PlK
-         u/A8YwNeIbxpkjQ///DldlSZJOpeaFcMwPsiyg4jCGr3Trd4q1WrPgNKpWjHA86c+qhX
-         XxOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762090045; x=1762694845;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=R6SA1ev4vId5ptZ+vYLkDAhDbJK/+ZkuwUIWh6j/WKk=;
-        b=PhSktiTCVpGy6c5aSb0dg8qpsF47niLewN8dtkOoLeCH1OabOci6R60HPH+FgtKTgz
-         Kqgm2xQC46y5zYU7zN4VFYqiOhFyixMMlV00TcX+ThpaPaRhkJ15XiVtQo22A9mLROXB
-         hxKH+rtX6vv98XxP1wHg/QNCuha5UTUcZ6SurGFqZRc5KNptyomY8BNB/6GaZ6PnS558
-         /v3mvZ10lP3r4nCKpvfmyESC5zHp5FbRx23YbzElvsQVAwzfgM53RLbeV505gUNJcnFg
-         JV4Hb7LG+SGNQMbAdl38lC5IW+gBWNMmjHThwmfRRMTwfiAX0EEVAL8yHz9IZA/EYwru
-         1q5g==
-X-Gm-Message-State: AOJu0YwLokVEe2z3ryC9fNHiqNDdNZefVX9l7q4y4vdvjRZfZHpyJcQR
-	qXoizSJ8i3faQfOAVDk+xXfS/UMhufIMYp7tZ3mb1Tyx06VnGsbKqKFHOlw+C897TDpYOJYMgKL
-	vRt/KcXNKRjUGOgg/EVgHke5RUVxTqArHeZw1ZnI14A==
-X-Gm-Gg: ASbGncsPqkk1jbs5Nm0rrCLQufqKhU9SC92NWbDd0o8F9SoBTfVThM+6skVnRNgUsxJ
-	7c8trkMqFAPg14k1FaNWvHmy96BwioKCrWrogc7ywMNaKBNOFWaPgxNIOwUqVgegxe9JFNOh7oo
-	Y54ICG274vMlOHEpPbpNo011QmScMIKCbdcYnUeK39RloT+beqtub/bWYY9er7oiptTmxyy6hyN
-	Nyg06rZNPaFE92SUaaghtpS1SjD5tiSuJLjUidXuvbfJ9ZzoVVhwGiP5f28n1XeqhGM
-X-Google-Smtp-Source: AGHT+IFXMNQ6bqxdCUMAZNM5lKRmt9hh7BQRNqn64KpipxL/6mIadWN9lRa31KZfIcU6b/9SCfuLY45Z4lEBUJdNLk4=
-X-Received: by 2002:a17:902:be13:b0:294:66ad:113e with SMTP id
- d9443c01a7336-2951a5c1fe1mr93261775ad.47.1762090044707; Sun, 02 Nov 2025
- 05:27:24 -0800 (PST)
+	s=arc-20240116; t=1762107622; c=relaxed/simple;
+	bh=MpYicsu1cWamEcqCUbeSatdE5GzMhSpI/fix3zjI7Do=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=N+UmXoIJz76ysFH5xRgsFVVgleGKL7nPy7SinMUA0ZN/HK06XiqpZ+vQNUH9iRA1KXY0C829IHG/GIBtZbB44syc6rYR1+smVL9VjIEaBJHzO4+kw6KxiZ9n/ZnlNdCyOlGl8F5cwgkDCKcS9My5E5NiP/SBSgA4Rvwd0YOEfyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; dkim=pass (2048-bit key) header.d=bues.ch header.i=@bues.ch header.b=LU/JW8Wc; arc=none smtp.client-ip=116.203.120.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Date: Sun, 2 Nov 2025 19:07:15 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bues.ch; s=main;
+	t=1762107031;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MpYicsu1cWamEcqCUbeSatdE5GzMhSpI/fix3zjI7Do=;
+	b=LU/JW8Wc6I6mSW/VJdhbQlJ07+RsBabnzdF94JJvT3g8Iu6ChASmPhXue0Z+jSV8cOU6fr
+	BMRIF+LzdMK2fd/mxHG3wk9vkSLUFiBYB8ImVL4X1PdrH4hSZeQiPGAjuocpJ4Wa4ykJSy
+	n9iTjCM75FCLIEf4Xz9hQMWX9sNZlh8Mov7HLNkSo78JXw5glAK/UAl17d22CIr/00Y3pr
+	ye/xv+cIHxX9J+Q+1pQuxpdqjqBowljL1+bQdHDcx0sPFMkR8i3Z00f/kVBt7ZcINchuTk
+	tAZ9NNNXGGaRp/PYAbTIR98UuoiQ3GagNJt2qVKbRBgmN+p/PN5h70clFR/ZkQ==
+From: Michael =?UTF-8?B?QsO8c2No?= <mb@bues.ch>
+To: "Zedequias Marin (DECO)" <dudecco@gmail.com>
+Cc: linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org
+Subject: Re: BCM4312 EEPROM corruption recovery help - HP Mini 110
+ U98Z049.00
+Message-ID: <20251102190715.317960fa@barney>
+In-Reply-To: <CALaz+jkqX=JX5ODuSJTm0k_qokgYidQ5+Zu1vBuu-zmFZ6JWqQ@mail.gmail.com>
+References: <CALaz+jkqX=JX5ODuSJTm0k_qokgYidQ5+Zu1vBuu-zmFZ6JWqQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Zedequias Marin (DECO)" <dudecco@gmail.com>
-Date: Sun, 2 Nov 2025 10:27:10 -0300
-X-Gm-Features: AWmQ_bkl4GMIpjJMZYaT8OxjgnDEUfa-gArWTwHZcR95LlRTrqRtPKZnNI7wh00
-Message-ID: <CALaz+jkqX=JX5ODuSJTm0k_qokgYidQ5+Zu1vBuu-zmFZ6JWqQ@mail.gmail.com>
-Subject: BCM4312 EEPROM corruption recovery help - HP Mini 110 U98Z049.00
-To: linux-wireless@vger.kernel.org
-Cc: b43-dev@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="Sig_//7Hj5KtT_B49Y1+2PMPTewt";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 
-Dear Linux Wireless Developers,
+--Sig_//7Hj5KtT_B49Y1+2PMPTewt
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-I found your 2011 thread about BCM4312 issues and need help recovering
-from EEPROM corruption.
+On Sun, 2 Nov 2025 10:27:10 -0300
+"Zedequias Marin (DECO)" <dudecco@gmail.com> wrote:
 
-My Device: HP Mini 110
-WiFi Card: Broadcom BCM4312 802.11b/g LP-PHY (14e4:4315)
-Subsystem: Hewlett-Packard Company U98Z049.00
+> I found your 2011 thread about BCM4312 issues and need help recovering
+> from EEPROM corruption.
+>=20
+> My Device: HP Mini 110
+> WiFi Card: Broadcom BCM4312 802.11b/g LP-PHY (14e4:4315)
+> Subsystem: Hewlett-Packard Company U98Z049.00
+>=20
+> Problem: I corrupted the EEPROM while trying to configure as WiFi
+> repeater. The card is detected but no wireless interface is created.
+> EEPROM shows repetitive FF/3F patterns.
+>=20
+> Request: Could anyone provide a known good EEPROM dump for BCM4312
+> (14e4:4315) specifically for HP Mini 110/U98Z049.00, or guidance on
+> EEPROM recovery?
+>=20
+> I have EEPROM backups and can provide diagnostic info.
 
-Problem: I corrupted the EEPROM while trying to configure as WiFi
-repeater. The card is detected but no wireless interface is created.
-EEPROM shows repetitive FF/3F patterns.
+Hi,
 
-Request: Could anyone provide a known good EEPROM dump for BCM4312
-(14e4:4315) specifically for HP Mini 110/U98Z049.00, or guidance on
-EEPROM recovery?
+the PCI ID (14e4:4315) is stored in the wireless device's serial EEPROM.
+If the EEPROM is corrupted, you need to find out which PCI ID it uses now.
+You can do that with lspci -nn.
+Once you found out which corrupted PCI ID your device uses, you can registe=
+r this
+new PCI ID to the b43 driver via sysfs to recognize (see PCI/sysfs document=
+ation).
 
-I have EEPROM backups and can provide diagnostic info.
+Then the driver will recognize your device again and you can flash the orig=
+inal
+serial EEPROM to the device. See b43-tools/ssb_sprom documentation [1].
 
-Thank you for your help!
+[1] https://github.com/mbuesch/b43-tools/tree/master/ssb_sprom
 
-Best regards,
-Zedequias Marin
-From Sao Paulo, Brazil
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
+
+--Sig_//7Hj5KtT_B49Y1+2PMPTewt
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmkHndMACgkQ9TK+HZCN
+iw7WNxAAqwQ/6lcqajfQmkthAZR7/cph0khJChpdhvDFvWt7R5cne6QjIiUZJJat
+6OqdFGZFWOLkatjZoa7DdHaZY2Dmlr3DTVXqbaqIHojGPlKowVUPXdPYSR58jyTz
+JkiFFTAAwm5PboUb1mLii7myvxbLavpTo78ICEAt1rzGwshKHtpJCfzB8/7U3oj0
+zvVcVPyOjuIpoGUa7PRFdip5tROVka0oZVsMHTiYXh2G6j943kh+4PtvJefZli7e
+Oo2db4p5UPt3CwqLgEqBqT8sHLe8AYdWm/7lDStDKq/ZOVy0Y2XBOfV4T7edUTWJ
+829PZ9UT+olm1f0I1eVk5PaIx3DcueVT3Oo8p8MvswCj7oHOGrywb7WounPcvGUT
+PYAZRwVpLw7h4glRZx69ZOvqVNUC1VdSI+XZ/grd9fcq9x+3XxTZ0ILSCHBXIn4p
+OU6/1egUS/wdzfCxuZ+FxnsNSrLrmKl0nAQyr0/GxUZe4ENYIL2qQEk/QMXt8cEi
+ONv516VFeTzI4F1drd1UWIfzCX9AvBHNWczAU37Q0F0qkW/2KumpoNK8wEy02418
+CL4lvVaYOAHF2sXXd6G2Z24AHhOdvBNxFerRzFpjO5iBe3F6e4w6GWPIsZvkz4KR
+MCZURdznzrmpJPguIsi/VLOH+jQs9cmQK+9B6dbmLTwQoUDiFKc=
+=/HYr
+-----END PGP SIGNATURE-----
+
+--Sig_//7Hj5KtT_B49Y1+2PMPTewt--
 
