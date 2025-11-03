@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-28484-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28485-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C081C2A3CB
-	for <lists+linux-wireless@lfdr.de>; Mon, 03 Nov 2025 08:00:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D59ADC2A3D9
+	for <lists+linux-wireless@lfdr.de>; Mon, 03 Nov 2025 08:04:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDAFD3B14E4
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Nov 2025 07:00:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F3713B163C
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Nov 2025 07:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F800153BED;
-	Mon,  3 Nov 2025 07:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15609286D72;
+	Mon,  3 Nov 2025 07:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ioTUDku6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0KcvUD4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B851D6BB;
-	Mon,  3 Nov 2025 07:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07FA13635E;
+	Mon,  3 Nov 2025 07:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762153253; cv=none; b=CGi4B50LNZXnFbQqR7WtxkScy7szpBN/nyv9igyhvz1ma5DrjzRxaPE+sT1PBvfXpmP+6n7DdA3Xr0QKdoDsno+TsnaQOKzeSxS+lXfFmajQe6Zd9tTWlLjNqf8oZGnEvhE3tDNwQAMUdr7SHZl/UXHtJH3+C4u95tEyK3FhKyw=
+	t=1762153446; cv=none; b=hsgvcwZRj/K4RTpct83rW7Jm57N1mygPI37QU57rrOe4HG+tahZ1TdUNZ0Z+3invaIf01exp+A7sruQCJgUnHV12gskvmHyIYfAFolLpJVHC5Ts1CcmUwvP9hnqtbdXd02jMhsUVa3SrDtnhih0/TsGGeXNR3SvNWn1zbtiLB9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762153253; c=relaxed/simple;
-	bh=++BYz3wLy7KKNt9WCxuevvrNqcu/xEFmWOkqS6cYeMs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qb56SpvdVRlYbq1l8ojIkBg4Jq9Lr5hL1CZeOdYMeUst2BnOoJSn2JEIWVvwgYK2Or+iM2U69BIVRi+UnSpG5sUrk7t6yLRsYvrXCVWtCgrOl9F1AhEWLVx3qxhDzD29F9qBFEQ8HpMI0y6SvsAayNLYQjZA79ZrtRDd2AtCYJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ioTUDku6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5009EC4CEE7;
-	Mon,  3 Nov 2025 07:00:51 +0000 (UTC)
+	s=arc-20240116; t=1762153446; c=relaxed/simple;
+	bh=Bl5tzp+0IXBLOhlXIXp+qC72NWAu/2B3Wzn/AiXlTNM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Lncv0T9Hu2f8cXv+LuIvKCv8HCJF/0KmVn5IKBpoQhZAx5xZMBGv0YimyAv/ziMTZhsQXd3CuFhJxkrv8BiHqklwS+uBnja1mj5SPNVEBdhg4B2SeUn+fpPwr9L+rNEvEJDEIq3qHTCNAB8fUjJaiGiQ4DBppF3hDyZR4lNmtzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0KcvUD4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF637C4CEE7;
+	Mon,  3 Nov 2025 07:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762153252;
-	bh=++BYz3wLy7KKNt9WCxuevvrNqcu/xEFmWOkqS6cYeMs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ioTUDku6ZOD8T4EjhS354K4+deuOuw4zzEn3adYig37RaNye+zNltsGydLfmv1I5J
-	 7VCrlu426sm2nd07WWMlat+zSBLQp9100V9rYYtXMGAcUospIPSY9A9xgK1gTO7PvA
-	 UoVXPZP0VCOnQHSik0egqITB6MAT5H/LhhzOBYSOLQ/1Gb+9+CwHYdN9pj5rQ7gBwW
-	 oxepNagOZHQ7APUaBTggHAeZQG5eXfJBmu7GLqNrrJ7Kqa6wL3iB5Q/ZREGZYodyKJ
-	 f0YJxDTk+sQ+2Bbi7k5EzLa1YHzKiUUMU2ftnjoRzDiBK/mYoA0BXrzi0leQ/GjoVZ
-	 ScIdW3exDQuCQ==
-Message-ID: <791a9e59-7819-4d63-b737-65ff1de6d73d@kernel.org>
-Date: Mon, 3 Nov 2025 08:00:48 +0100
+	s=k20201202; t=1762153443;
+	bh=Bl5tzp+0IXBLOhlXIXp+qC72NWAu/2B3Wzn/AiXlTNM=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=l0KcvUD4tAtYvGHMTf8/ECvfP8JA5mcEaec/NXQNezu6eICvMuslMAYoiDj81RfBr
+	 WWn7l943cTEfRvwkaHqP5++sSmY0jK5rl1DFHDcrhs0U9uPxV5iejEqWC1dROxM3pc
+	 w5qcUTV1BaohCkgb+zmswJ11pvIzrBhARzLffZl41t0lx35aUlA/eMpWvMQX+qBwHb
+	 VJTQGBs9tSVb8c4xuPPqozC80LqgyPx2IdVboQ4N/QiDhr8ohwlhtDydpX2Ntgs79V
+	 WizFpZ1hjLCEpkPq4Sf3FslHNmi9r4J4RIkgdtoaE0NnorWYt1T67YCWZSg+3P3S4X
+	 MjfxIfOLxe92g==
+Message-ID: <c41cf4eb-cabc-4345-8476-cd7a4d2c4202@kernel.org>
+Date: Mon, 3 Nov 2025 08:04:00 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -51,13 +51,14 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: UBSAN array-index-out-of-bounds in ath5k driver
+From: Jiri Slaby <jirislaby@kernel.org>
 To: Salvatore Bonaccorso <carnil@debian.org>,
  Nick Kossifidis <mickflemm@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
  Vincent Danjean <vdanjean@debian.org>, 1119093@bugs.debian.org
 References: <aQYUkIaT87ccDCin@eldamar.lan>
+ <791a9e59-7819-4d63-b737-65ff1de6d73d@kernel.org>
 Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
  xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
  rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
@@ -100,70 +101,103 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <aQYUkIaT87ccDCin@eldamar.lan>
+In-Reply-To: <791a9e59-7819-4d63-b737-65ff1de6d73d@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
-
-On 01. 11. 25, 15:09, Salvatore Bonaccorso wrote:
-> In Debian, https://bugs.debian.org/1119093, Vincent Danjean reported
-> the following:
->>    The ath5k driver seems to do an array-index-out-of-bounds access
->> as shown by the UBSAN kernel message.
->> [   17.954484] ------------[ cut here ]------------
->> [   17.954487] UBSAN: array-index-out-of-bounds in /build/reproducible-path/linux-6.16.3/drivers/net/wireless/ath/ath5k/base.c:1741:20
->> [   17.955289] index 4 is out of range for type 'ieee80211_tx_rate [4]'
->> [   17.956134] CPU: 1 UID: 0 PID: 1745 Comm: 16 Not tainted 6.16.3+deb13-amd64 #1 PREEMPT(lazy)  Debian 6.16.3-1~bpo13+1
->> [   17.956137] Hardware name: Gigabyte Technology Co., Ltd. H67A-UD3H-B3/H67A-UD3H-B3, BIOS F8 03/27/2012
->> [   17.956139] Call Trace:
->> [   17.956142]  <TASK>
->> [   17.956145]  dump_stack_lvl+0x5d/0x80
->> [   17.956154]  ubsan_epilogue+0x5/0x2b
->> [   17.956158]  __ubsan_handle_out_of_bounds.cold+0x46/0x4b
->> [   17.956162]  ath5k_tasklet_tx+0x4e0/0x560 [ath5k]
->> [   17.956173]  tasklet_action_common+0xb5/0x1c0
->> [   17.956178]  handle_softirqs+0xdf/0x320
->> [   17.956181]  __irq_exit_rcu+0xbc/0xe0
->> [   17.956184]  common_interrupt+0x47/0xa0
->> [   17.956188]  asm_common_interrupt+0x26/0x40
->> [   17.956191] RIP: 0033:0x7f4fa439067d
->> [   17.956204] Code: 0f b6 14 16 45 85 c0 74 01 92 29 d0 c3 48 8d 3c 07 48 8d 34 0e 45 85 c0 74 03 48 87 f7 48 0f bc d2 49 29 d3 76 0b 0f b6 0c 16 <0f> b6 04 17 29 c8 c3 31 c0 c3 66 0f 1f 84 00 00 00 00 00 0f b6 0e
->> [   17.956206] RSP: 002b:00007ffd8cc32f08 EFLAGS: 00000212
->> [   17.956209] RAX: 0000000000000020 RBX: 0000556dfab414a0 RCX: 0000000000000070
->> [   17.956210] RDX: 000000000000000d RSI: 00007f4fa4b7a05f RDI: 0000556dfab414a0
->> [   17.956211] RBP: 00007f4fa4b7a05f R08: 0000000000000400 R09: 0000000000000008
->> [   17.956213] R10: fffffffffffff4b8 R11: 000000000000000e R12: 000000000000001b
->> [   17.956214] R13: 0000556dfab412c0 R14: 00007ffd8cc32f80 R15: 00007f4fa4b79eaf
->> [   17.956217]  </TASK>
->> [   17.956217] ---[ end trace ]---
->>
->> It occurs once at each boot.
->> According to
->> https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stable/+blame/master/drivers/net/wireless/ath/ath5k/base.c
->> the line of code has not changed for about 15 years.
->> And I'm using this driver for more than 10 years.
->> So, the array-index-out-of-bounds does not seem to
->> have hard consequences for now (by luck?)
+On 03. 11. 25, 8:00, Jiri Slaby wrote:
+> Hi,
 > 
-> Does that ring any bell?
+> On 01. 11. 25, 15:09, Salvatore Bonaccorso wrote:
+>> In Debian, https://bugs.debian.org/1119093, Vincent Danjean reported
+>> the following:
+>>>    The ath5k driver seems to do an array-index-out-of-bounds access
+>>> as shown by the UBSAN kernel message.
+>>> [   17.954484] ------------[ cut here ]------------
+>>> [   17.954487] UBSAN: array-index-out-of-bounds in /build/ 
+>>> reproducible-path/linux-6.16.3/drivers/net/wireless/ath/ath5k/ 
+>>> base.c:1741:20
+>>> [   17.955289] index 4 is out of range for type 'ieee80211_tx_rate [4]'
+>>> [   17.956134] CPU: 1 UID: 0 PID: 1745 Comm: 16 Not tainted 
+>>> 6.16.3+deb13-amd64 #1 PREEMPT(lazy)  Debian 6.16.3-1~bpo13+1
+>>> [   17.956137] Hardware name: Gigabyte Technology Co., Ltd. H67A- 
+>>> UD3H-B3/H67A-UD3H-B3, BIOS F8 03/27/2012
+>>> [   17.956139] Call Trace:
+>>> [   17.956142]  <TASK>
+>>> [   17.956145]  dump_stack_lvl+0x5d/0x80
+>>> [   17.956154]  ubsan_epilogue+0x5/0x2b
+>>> [   17.956158]  __ubsan_handle_out_of_bounds.cold+0x46/0x4b
+>>> [   17.956162]  ath5k_tasklet_tx+0x4e0/0x560 [ath5k]
+>>> [   17.956173]  tasklet_action_common+0xb5/0x1c0
+>>> [   17.956178]  handle_softirqs+0xdf/0x320
+>>> [   17.956181]  __irq_exit_rcu+0xbc/0xe0
+>>> [   17.956184]  common_interrupt+0x47/0xa0
+>>> [   17.956188]  asm_common_interrupt+0x26/0x40
+>>> [   17.956191] RIP: 0033:0x7f4fa439067d
+>>> [   17.956204] Code: 0f b6 14 16 45 85 c0 74 01 92 29 d0 c3 48 8d 3c 
+>>> 07 48 8d 34 0e 45 85 c0 74 03 48 87 f7 48 0f bc d2 49 29 d3 76 0b 0f 
+>>> b6 0c 16 <0f> b6 04 17 29 c8 c3 31 c0 c3 66 0f 1f 84 00 00 00 00 00 
+>>> 0f b6 0e
+>>> [   17.956206] RSP: 002b:00007ffd8cc32f08 EFLAGS: 00000212
+>>> [   17.956209] RAX: 0000000000000020 RBX: 0000556dfab414a0 RCX: 
+>>> 0000000000000070
+>>> [   17.956210] RDX: 000000000000000d RSI: 00007f4fa4b7a05f RDI: 
+>>> 0000556dfab414a0
+>>> [   17.956211] RBP: 00007f4fa4b7a05f R08: 0000000000000400 R09: 
+>>> 0000000000000008
+>>> [   17.956213] R10: fffffffffffff4b8 R11: 000000000000000e R12: 
+>>> 000000000000001b
+>>> [   17.956214] R13: 0000556dfab412c0 R14: 00007ffd8cc32f80 R15: 
+>>> 00007f4fa4b79eaf
+>>> [   17.956217]  </TASK>
+>>> [   17.956217] ---[ end trace ]---
+>>>
+>>> It occurs once at each boot.
+>>> According to
+>>> https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/ 
+>>> linux-stable/+blame/master/drivers/net/wireless/ath/ath5k/base.c
+>>> the line of code has not changed for about 15 years.
+>>> And I'm using this driver for more than 10 years.
+>>> So, the array-index-out-of-bounds does not seem to
+>>> have hard consequences for now (by luck?)
+>>
+>> Does that ring any bell?
+> 
+> No, but it is real. ts_final_idx is at most 3 on 5212, so:
+>    info->status.rates[ts->ts_final_idx + 1].idx = -1;
+> with:
+>    struct ieee80211_tx_rate rates[IEEE80211_TX_MAX_RATES];
+> and:
+>    #define IEEE80211_TX_MAX_RATES  4
+> is indeed bogus.
+> 
+> IMO we should just *not* set idx = -1 if ts->ts_final_idx is >= 3. As 
+> mac80211 won't look at rates beyond IEEE80211_TX_MAX_RATES.
 
-No, but it is real. ts_final_idx is at most 3 on 5212, so:
-   info->status.rates[ts->ts_final_idx + 1].idx = -1;
-with:
-   struct ieee80211_tx_rate rates[IEEE80211_TX_MAX_RATES];
-and:
-   #define IEEE80211_TX_MAX_RATES  4
-is indeed bogus.
+This™:
+--- a/drivers/net/wireless/ath/ath5k/base.c
++++ b/drivers/net/wireless/ath/ath5k/base.c
+@@ -1738,7 +1738,8 @@ ath5k_tx_frame_completed(struct ath5k_hw *ah, 
+struct sk_buff *skb,
+         }
 
-IMO we should just *not* set idx = -1 if ts->ts_final_idx is >= 3. As 
-mac80211 won't look at rates beyond IEEE80211_TX_MAX_RATES.
+         info->status.rates[ts->ts_final_idx].count = ts->ts_final_retry;
+-       info->status.rates[ts->ts_final_idx + 1].idx = -1;
++       if (ts->ts_final_idx + 1 < IEEE80211_TX_MAX_RATES)
++               info->status.rates[ts->ts_final_idx + 1].idx = -1;
 
-FWIW, the effect of the UB is it just overwrites the next member of 
-info->status, i.e. ack_signal.
+         if (unlikely(ts->ts_status)) {
+                 ah->stats.ack_fail++;
 
-thanks,
+Vincent, can you test this?
+
+> FWIW, the effect of the UB is it just overwrites the next member of 
+> info->status, i.e. ack_signal.
+> 
+> thanks,
+
 -- 
 js
 suse labs
+
 
