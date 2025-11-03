@@ -1,48 +1,51 @@
-Return-Path: <linux-wireless+bounces-28485-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28486-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D59ADC2A3D9
-	for <lists+linux-wireless@lfdr.de>; Mon, 03 Nov 2025 08:04:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1A9CC2A524
+	for <lists+linux-wireless@lfdr.de>; Mon, 03 Nov 2025 08:29:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F3713B163C
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Nov 2025 07:04:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 87CF24ECCF7
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Nov 2025 07:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15609286D72;
-	Mon,  3 Nov 2025 07:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0KcvUD4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4F729B20A;
+	Mon,  3 Nov 2025 07:26:56 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sonata.ens-lyon.org (sonata.ens-lyon.org [140.77.166.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07FA13635E;
-	Mon,  3 Nov 2025 07:04:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298051E8836;
+	Mon,  3 Nov 2025 07:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.77.166.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762153446; cv=none; b=hsgvcwZRj/K4RTpct83rW7Jm57N1mygPI37QU57rrOe4HG+tahZ1TdUNZ0Z+3invaIf01exp+A7sruQCJgUnHV12gskvmHyIYfAFolLpJVHC5Ts1CcmUwvP9hnqtbdXd02jMhsUVa3SrDtnhih0/TsGGeXNR3SvNWn1zbtiLB9s=
+	t=1762154816; cv=none; b=Dk0GI08m9YlwwNCM87OVxLVvrqzUuXoo85RSv7E410JC4Gh+1tBm+CnYld+c2RTe/dRqdKlBONPXnFUsf/9o3avxqgyK0LDdgG5CKP0M4WDXUz+5of+NbGjrv02CN8SbvXnjJcdGikyxYSxfdLFH+YWS90EiK3YLuMx3PxHftE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762153446; c=relaxed/simple;
-	bh=Bl5tzp+0IXBLOhlXIXp+qC72NWAu/2B3Wzn/AiXlTNM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Lncv0T9Hu2f8cXv+LuIvKCv8HCJF/0KmVn5IKBpoQhZAx5xZMBGv0YimyAv/ziMTZhsQXd3CuFhJxkrv8BiHqklwS+uBnja1mj5SPNVEBdhg4B2SeUn+fpPwr9L+rNEvEJDEIq3qHTCNAB8fUjJaiGiQ4DBppF3hDyZR4lNmtzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0KcvUD4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF637C4CEE7;
-	Mon,  3 Nov 2025 07:04:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762153443;
-	bh=Bl5tzp+0IXBLOhlXIXp+qC72NWAu/2B3Wzn/AiXlTNM=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=l0KcvUD4tAtYvGHMTf8/ECvfP8JA5mcEaec/NXQNezu6eICvMuslMAYoiDj81RfBr
-	 WWn7l943cTEfRvwkaHqP5++sSmY0jK5rl1DFHDcrhs0U9uPxV5iejEqWC1dROxM3pc
-	 w5qcUTV1BaohCkgb+zmswJ11pvIzrBhARzLffZl41t0lx35aUlA/eMpWvMQX+qBwHb
-	 VJTQGBs9tSVb8c4xuPPqozC80LqgyPx2IdVboQ4N/QiDhr8ohwlhtDydpX2Ntgs79V
-	 WizFpZ1hjLCEpkPq4Sf3FslHNmi9r4J4RIkgdtoaE0NnorWYt1T67YCWZSg+3P3S4X
-	 MjfxIfOLxe92g==
-Message-ID: <c41cf4eb-cabc-4345-8476-cd7a4d2c4202@kernel.org>
-Date: Mon, 3 Nov 2025 08:04:00 +0100
+	s=arc-20240116; t=1762154816; c=relaxed/simple;
+	bh=+GOZtumJAdEc90mqb1rS76zM1WObYGvJRY5hd4EJ5k8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AUHD6Yyn7XviqBOBqdmlm8y+9wFJHYvYzGd9BM+4RSnMxDlbo73OmVJ/91dAX8VM9OcBl/ENsXD5Bhqj21eYvU6YAaiW7JbejpEJh/aOBGAY2MY3glz3Yzzk9eoerscm0npXjS3lAxn6cupjePSRXKsAjs+42qQMUoH1yG3d4YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=bounce.ens-lyon.org; arc=none smtp.client-ip=140.77.166.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounce.ens-lyon.org
+Received: from localhost (localhost [127.0.0.1])
+	by sonata.ens-lyon.org (Postfix) with ESMTP id 8AC3AA1C4E;
+	Mon,  3 Nov 2025 08:26:46 +0100 (CET)
+Received: from sonata.ens-lyon.org ([127.0.0.1])
+	by localhost (sonata.ens-lyon.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id DGiRmJBlDaM4; Mon,  3 Nov 2025 08:26:46 +0100 (CET)
+Received: from eyak.inrialpe.fr (freebox.danjean.fr [82.64.217.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by sonata.ens-lyon.org (Postfix) with ESMTPSA id 693B9A03EC;
+	Mon,  3 Nov 2025 08:26:46 +0100 (CET)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by eyak.inrialpe.fr (Postfix) with ESMTP id 27C191A04D6;
+	Mon, 03 Nov 2025 08:26:46 +0100 (CET)
+Message-ID: <871fce95-f7e4-439b-be4c-4037d4f0088b@debian.org>
+Date: Mon, 3 Nov 2025 08:26:44 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -51,153 +54,91 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: UBSAN array-index-out-of-bounds in ath5k driver
-From: Jiri Slaby <jirislaby@kernel.org>
-To: Salvatore Bonaccorso <carnil@debian.org>,
+To: Jiri Slaby <jirislaby@kernel.org>,
+ Salvatore Bonaccorso <carnil@debian.org>,
  Nick Kossifidis <mickflemm@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- Vincent Danjean <vdanjean@debian.org>, 1119093@bugs.debian.org
+ 1119093@bugs.debian.org
 References: <aQYUkIaT87ccDCin@eldamar.lan>
  <791a9e59-7819-4d63-b737-65ff1de6d73d@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <791a9e59-7819-4d63-b737-65ff1de6d73d@kernel.org>
+ <c41cf4eb-cabc-4345-8476-cd7a4d2c4202@kernel.org>
+From: Vincent Danjean <vdanjean@debian.org>
+Content-Language: fr
+Autocrypt: addr=vdanjean@debian.org; keydata=
+ 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
+ tlMEro7WXly/MLE0qaRWgbV5yZCe7hwCzPE=
+In-Reply-To: <c41cf4eb-cabc-4345-8476-cd7a4d2c4202@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 03. 11. 25, 8:00, Jiri Slaby wrote:
-> Hi,
+Le 03/11/2025 à 08:04, Jiri Slaby a écrit :
+> This™:
+> --- a/drivers/net/wireless/ath/ath5k/base.c
+> +++ b/drivers/net/wireless/ath/ath5k/base.c
+> @@ -1738,7 +1738,8 @@ ath5k_tx_frame_completed(struct ath5k_hw *ah, struct sk_buff *skb,
+>          }
 > 
-> On 01. 11. 25, 15:09, Salvatore Bonaccorso wrote:
->> In Debian, https://bugs.debian.org/1119093, Vincent Danjean reported
->> the following:
->>>    The ath5k driver seems to do an array-index-out-of-bounds access
->>> as shown by the UBSAN kernel message.
->>> [   17.954484] ------------[ cut here ]------------
->>> [   17.954487] UBSAN: array-index-out-of-bounds in /build/ 
->>> reproducible-path/linux-6.16.3/drivers/net/wireless/ath/ath5k/ 
->>> base.c:1741:20
->>> [   17.955289] index 4 is out of range for type 'ieee80211_tx_rate [4]'
->>> [   17.956134] CPU: 1 UID: 0 PID: 1745 Comm: 16 Not tainted 
->>> 6.16.3+deb13-amd64 #1 PREEMPT(lazy)  Debian 6.16.3-1~bpo13+1
->>> [   17.956137] Hardware name: Gigabyte Technology Co., Ltd. H67A- 
->>> UD3H-B3/H67A-UD3H-B3, BIOS F8 03/27/2012
->>> [   17.956139] Call Trace:
->>> [   17.956142]  <TASK>
->>> [   17.956145]  dump_stack_lvl+0x5d/0x80
->>> [   17.956154]  ubsan_epilogue+0x5/0x2b
->>> [   17.956158]  __ubsan_handle_out_of_bounds.cold+0x46/0x4b
->>> [   17.956162]  ath5k_tasklet_tx+0x4e0/0x560 [ath5k]
->>> [   17.956173]  tasklet_action_common+0xb5/0x1c0
->>> [   17.956178]  handle_softirqs+0xdf/0x320
->>> [   17.956181]  __irq_exit_rcu+0xbc/0xe0
->>> [   17.956184]  common_interrupt+0x47/0xa0
->>> [   17.956188]  asm_common_interrupt+0x26/0x40
->>> [   17.956191] RIP: 0033:0x7f4fa439067d
->>> [   17.956204] Code: 0f b6 14 16 45 85 c0 74 01 92 29 d0 c3 48 8d 3c 
->>> 07 48 8d 34 0e 45 85 c0 74 03 48 87 f7 48 0f bc d2 49 29 d3 76 0b 0f 
->>> b6 0c 16 <0f> b6 04 17 29 c8 c3 31 c0 c3 66 0f 1f 84 00 00 00 00 00 
->>> 0f b6 0e
->>> [   17.956206] RSP: 002b:00007ffd8cc32f08 EFLAGS: 00000212
->>> [   17.956209] RAX: 0000000000000020 RBX: 0000556dfab414a0 RCX: 
->>> 0000000000000070
->>> [   17.956210] RDX: 000000000000000d RSI: 00007f4fa4b7a05f RDI: 
->>> 0000556dfab414a0
->>> [   17.956211] RBP: 00007f4fa4b7a05f R08: 0000000000000400 R09: 
->>> 0000000000000008
->>> [   17.956213] R10: fffffffffffff4b8 R11: 000000000000000e R12: 
->>> 000000000000001b
->>> [   17.956214] R13: 0000556dfab412c0 R14: 00007ffd8cc32f80 R15: 
->>> 00007f4fa4b79eaf
->>> [   17.956217]  </TASK>
->>> [   17.956217] ---[ end trace ]---
->>>
->>> It occurs once at each boot.
->>> According to
->>> https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/ 
->>> linux-stable/+blame/master/drivers/net/wireless/ath/ath5k/base.c
->>> the line of code has not changed for about 15 years.
->>> And I'm using this driver for more than 10 years.
->>> So, the array-index-out-of-bounds does not seem to
->>> have hard consequences for now (by luck?)
+>          info->status.rates[ts->ts_final_idx].count = ts->ts_final_retry;
+> -       info->status.rates[ts->ts_final_idx + 1].idx = -1;
+> +       if (ts->ts_final_idx + 1 < IEEE80211_TX_MAX_RATES)
+> +               info->status.rates[ts->ts_final_idx + 1].idx = -1;
+> 
+>          if (unlikely(ts->ts_status)) {
+>                  ah->stats.ack_fail++;
+> 
+> Vincent, can you test this?
+
+It is not easy for me: the computer with this wifi card is in my parent's home.
+I won't go back there until Christmas.
+
+I will see if I can test remotely.
+
+   Regards,
+     Vincent
+
+>> FWIW, the effect of the UB is it just overwrites the next member of info->status, i.e. ack_signal.
 >>
->> Does that ring any bell?
+>> thanks,
 > 
-> No, but it is real. ts_final_idx is at most 3 on 5212, so:
->    info->status.rates[ts->ts_final_idx + 1].idx = -1;
-> with:
->    struct ieee80211_tx_rate rates[IEEE80211_TX_MAX_RATES];
-> and:
->    #define IEEE80211_TX_MAX_RATES  4
-> is indeed bogus.
-> 
-> IMO we should just *not* set idx = -1 if ts->ts_final_idx is >= 3. As 
-> mac80211 won't look at rates beyond IEEE80211_TX_MAX_RATES.
-
-This™:
---- a/drivers/net/wireless/ath/ath5k/base.c
-+++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -1738,7 +1738,8 @@ ath5k_tx_frame_completed(struct ath5k_hw *ah, 
-struct sk_buff *skb,
-         }
-
-         info->status.rates[ts->ts_final_idx].count = ts->ts_final_retry;
--       info->status.rates[ts->ts_final_idx + 1].idx = -1;
-+       if (ts->ts_final_idx + 1 < IEEE80211_TX_MAX_RATES)
-+               info->status.rates[ts->ts_final_idx + 1].idx = -1;
-
-         if (unlikely(ts->ts_status)) {
-                 ah->stats.ack_fail++;
-
-Vincent, can you test this?
-
-> FWIW, the effect of the UB is it just overwrites the next member of 
-> info->status, i.e. ack_signal.
-> 
-> thanks,
-
--- 
-js
-suse labs
 
 
