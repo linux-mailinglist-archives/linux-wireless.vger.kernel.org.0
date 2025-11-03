@@ -1,153 +1,120 @@
-Return-Path: <linux-wireless+bounces-28505-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28506-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADDD2C2B506
-	for <lists+linux-wireless@lfdr.de>; Mon, 03 Nov 2025 12:26:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ACFBC2B839
+	for <lists+linux-wireless@lfdr.de>; Mon, 03 Nov 2025 12:51:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7963AE0EF
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Nov 2025 11:24:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C2B63A24CE
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Nov 2025 11:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83282FC010;
-	Mon,  3 Nov 2025 11:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D66C303A2E;
+	Mon,  3 Nov 2025 11:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QK9BzXGC"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Jao7Sjet"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7C32F3C12
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Nov 2025 11:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C47C304969
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Nov 2025 11:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762169077; cv=none; b=AjFcMB27t/8H8tGiIx/v+dgtNUSQDaqXNsQ2pImVm8MfgVXwYUFvag1oTJ/cIwnxmdF7o6EuX/J3JpEtkX2Vk86bTcfXOzNvMLAQpjJQbdkjcXwjhd/RDZnEKuHN4t+1+NGYWgySXSx8c6TslQjS5jpVC54/NcZ9okOTp3hJ30E=
+	t=1762170388; cv=none; b=KpipOk5ZPgPEVgTNSrr8SkTGg6W6EyPoy7zfdGVG9Bia2tdOqgB/gcdnGCdnbBWAkf39uT8LN9DQzVq+G0eawIdWaFTFw1WviIsWEWpP0Fan9atLUmJBygmkeiOxDR1JqpbNv7/ZpfxuaHdC+0aNird0lRSQ51LGs5jP87qqjAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762169077; c=relaxed/simple;
-	bh=YuEsN0SJ98qHtrR+p6zDw6xUBC7pj4eKyOEs5rY7AVo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=aNgJh8OSH81X2jhyG+YE67IAhKIXKXwpz8k1lwMVsohh5XQgxEBd8NlfiBSfLqkLEdWlYdKYodx7oVNvdtzCd9d3hYj9FEU1h5Wd/CF//ATzvPScOb2yrOJ7yTmwiLSxGfEONsrCBckmS3A/ZAQcqDq/e4JAXBdOWPxUTmXdzPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QK9BzXGC; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-475dc0ed8aeso29114125e9.2
-        for <linux-wireless@vger.kernel.org>; Mon, 03 Nov 2025 03:24:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762169074; x=1762773874; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lcgs04/C+3T9jpceXbHFJFlo9+cVLwBCYvR0EaLGV2w=;
-        b=QK9BzXGCCEdcck8ngeOjEv8lJYVC/VGSuaEB9ZU8yPtFdc0e+RvsKMc6n/2+iFe6k2
-         +RSd98xPKZckO2idnfRzWmtNcJdRKXFMDm5UbQTi0Q1nmGCrfJHl0mXmfjSaE4q24AWY
-         5KLuEuYz3luUx8F06vKH8+fh+01GQK0/ItZZZhnAKO0famLAqKvQpjjkm9jG8v5rAvOU
-         DC6l4rXO9FTcrjyszcu8aK4TFiD5IjKjQINNtNLuBQLZvXTNVldIZAolLU8a4wokHJRV
-         am/jKXFTj6BfFnqqXruWbbCGbrwxJvIZyCcRzHMxFyk1VyiMOecwS+cos65zqjIHMyXu
-         N7Fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762169074; x=1762773874;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lcgs04/C+3T9jpceXbHFJFlo9+cVLwBCYvR0EaLGV2w=;
-        b=ldXHIgKTs6NlZza29+wzCCTguep3TedGC+UL9uOwbu9WTaYcNlyP+JPFHUer5KJucb
-         w3LNcZTw/M65//MG+3z/zZLZVKd+vfPvGkYdw5lTq5+NeQJftIvqwmc5BBlRoDRXBR3q
-         K/WyBtwle1Z1y099DAg9/LmpKdCvG8xPMYvn3STB9WQ+WZ4xSFtLrAg/dpd+padlewMb
-         eLblfDzULT/2h9xNVwomBY5DIjbLaNX3vKDURWKkKWRYexPSuOm7mG9kqto7lbCIoeyv
-         oQtOqRVobKQklhm0OeQhDWwP0ItmN2OQsER8nB5edLRq0H0uA0rg56qh3eDwOZIFg6zX
-         WgfA==
-X-Forwarded-Encrypted: i=1; AJvYcCViAPK+cqjjmQdIg8PYtgZyms5x54IEBhHlSC8fXwD/MMVGl4R11/k9kqyln3uUrVpFwB9KbYvO6JL92Mbrhw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIKIxFVhnx3NX0ulJjVBbS/Gq0ZeVfDFzxuD0s8VHyHSoYhcuY
-	EYGAg9JxPlmxHfB3KQhFpFkERiYFjBednfrhdAW7/w+QXr7SW7w6nVhG
-X-Gm-Gg: ASbGnctgyHDsL2vOVMg3PzzwzHwBvZC5QYD0V/MJDc0XuDRABP4S6ic4wNAbuA8mAiN
-	BQ5QATNKEGEqxS/ASSA5ehrsRnASInnD1fL9NtyhhThsR137plfn4UX8L/HKoLxQ0YgGNBWdO79
-	5xsL9vF+RDWsJbJqN2vUV2Jlz5aLYaY959glqd+UjoMMRKjBt9CCzGmJibefYWAUPK8vjU3S87Q
-	hKZCXNvXqx8zgE+fESDwpeWVJ5BKv9yLGqr9MqoTsqFSN1pOFy2n02iwIpKq6zCdEkvGijIWBxN
-	Dw3awvdUIFylfKypxkCNBqYuv2Kyz6HOtF7DSb6scMx7hDeCf4BduvkyIWvqat8T94WsjV9W+TO
-	mZeyMzyFEjpsd7d5YnQlsIXT6ArTXkn6ndWsF3tcMY9PGbEHfUAHJE83oIL7fKcASUHglmdliQR
-	YpE5tp4Irj
-X-Google-Smtp-Source: AGHT+IE3o64gHgn4CYtymiKMvyi3D1eCCSztLe1+rnmq2nOmSvwtrkaSZh2jedYofPM9j0RyggjaRw==
-X-Received: by 2002:a05:600c:3149:b0:477:fcb:2256 with SMTP id 5b1f17b1804b1-477307e486fmr102924685e9.17.1762169073881;
-        Mon, 03 Nov 2025 03:24:33 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4773c2fea93sm151321665e9.5.2025.11.03.03.24.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Nov 2025 03:24:33 -0800 (PST)
-Message-ID: <e955e80a-c63f-48ad-badc-df6f13d363d7@gmail.com>
-Date: Mon, 3 Nov 2025 13:24:32 +0200
+	s=arc-20240116; t=1762170388; c=relaxed/simple;
+	bh=ATTx8UWIQVorh5tzfcfkRLnebsxOTptgm+ternQ8VLM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DN8vooQSJFg4dqvliGNKOG+hNZL93XEld44SZP9cwmqUNNBaEls0zdT8YoQbkPtlyCLoacDKAeMJAFAJwmBmYsPSiROteyfY0KzR2SsmAjSgJyvg68ZaC8XpRuaJp0AuH0rEAN0LpeJMz78liMs8iG5KqrFQC6bQ01vK+L438Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Jao7Sjet; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=ATTx8UWIQVorh5tzfcfkRLnebsxOTptgm+ternQ8VLM=;
+	t=1762170386; x=1763379986; b=Jao7Sjetke7MgpuB56Lld6RJfqW60PMGnXVTAPkxzcbyfJB
+	ggHmgL5fmlZWn+tAfjXExbMxtK4N3EpyQU7BaMgpVoInDwgfE33uTNboNBhF3TTyJq4hRNE6qHx9q
+	DwL4Zs66Rn3C4YOPZ7BdQkLCsto6HwajuojMdTwRhq532szmI0VdJBvPFdUxFDQtQ4PIsdsMTlJ/j
+	wS2WrqTPPHdV+woamfNf5dR/WWrs/B2NH2Og44jknNTV6ox8zBOJR3iQ9KuepOGhhG4V4EqsH+XPt
+	AvPbs0CfpbRO7T3mJWziFEqHjGfdEUaaO4O/3f4ANcT2O5CMMpvDnHZPPFbOLR9Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vFt0x-000000095bi-3RTK;
+	Mon, 03 Nov 2025 12:46:24 +0100
+Message-ID: <a4368b0ad60c28e143ff35df0b246759d72a6b62.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless] wifi: mac80211_hwsim: Limit destroy_on_close
+ radio removal to netgroup
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Martin Willi <martin@strongswan.org>
+Cc: linux-wireless@vger.kernel.org
+Date: Mon, 03 Nov 2025 12:46:23 +0100
+In-Reply-To: <d2cbf9d01d80e8b42afb162e30f7ab6c72605f46.camel@strongswan.org>
+References: <20251103082436.30483-1-martin@strongswan.org>
+		 <e0027a727707215c279626548bd3bb2101ffd8a8.camel@sipsolutions.net>
+	 <d2cbf9d01d80e8b42afb162e30f7ab6c72605f46.camel@strongswan.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next v4 01/12] wifi: rtw89: 8832cu: turn off TX
- partial mode
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <1d0b14ff-333c-462e-a420-ce6bdf298fe6@gmail.com>
- <3904dd9f-2178-41e5-95c2-7a9f6268e935@gmail.com>
- <ae01e924471e442c897b3087bdf0dff7@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <ae01e924471e442c897b3087bdf0dff7@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-On 03/11/2025 02:47, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> From: Ping-Ke Shih <pkshih@realtek.com>
->>
->> The TX partial mode in USB devices will cause timeout to wait for payload,
->> causing SER 0x999 and disconnection. Turn off this mode according to
->> design suggestion.
->>
->> rtw89_8852cu 2-4:1.0: FW status = 0xee001108
->> rtw89_8852cu 2-4:1.0: FW BADADDR = 0x18605fc8
->> rtw89_8852cu 2-4:1.0: FW EPC/RA = 0x0
->> rtw89_8852cu 2-4:1.0: FW MISC = 0x1010000
->> rtw89_8852cu 2-4:1.0: R_AX_HALT_C2H = 0x999
->> rtw89_8852cu 2-4:1.0: R_AX_SER_DBG_INFO = 0x71020010
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f554
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f556
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55a
->> rtw89_8852cu 2-4:1.0: [ERR]fw PC = 0x2013f55e
->> rtw89_8852cu 2-4:1.0: --->
->> err=0x999
->> rtw89_8852cu 2-4:1.0: R_AX_SER_DBG_INFO =0x71020010
->> rtw89_8852cu 2-4:1.0: R_AX_SER_DBG_INFO =0x71020010
->> rtw89_8852cu 2-4:1.0: DBG Counter 1 (R_AX_DRV_FW_HSK_4)=0x00000000
->> rtw89_8852cu 2-4:1.0: DBG Counter 2 (R_AX_DRV_FW_HSK_5)=0x00000000
->> rtw89_8852cu 2-4:1.0: R_AX_DMAC_ERR_ISR=0x00000000
->> rtw89_8852cu 2-4:1.0: R_AX_DMAC_ERR_IMR=0x00000000
->> rtw89_8852cu 2-4:1.0: R_AX_CMAC_ERR_ISR [0]=0x00000000
->> rtw89_8852cu 2-4:1.0: R_AX_CMAC_FUNC_EN [0]=0xf000803f
->> rtw89_8852cu 2-4:1.0: R_AX_CK_EN [0]=0xffffffff
->> rtw89_8852cu 2-4:1.0: R_AX_CMAC_ERR_IMR [0]=0x00000000
->> rtw89_8852cu 2-4:1.0: [CMAC] : CMAC1 not enabled
->>
->> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> 
-> Though this patch is from me, but I think you did some cosmetic and agree
-> this patch, so I'd add
-> 
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> 
-> Is it okay to you?
-> 
+On Mon, 2025-11-03 at 12:12 +0100, Martin Willi wrote:
+> > > As the portid is not unique across network
+> > > namespaces, closing a socket in one namespace may remove radios in
+> > > another if it has the destroy_on_close flag set.
+> >=20
+> > How did you find that? :)
+>=20
+> A test-case for our hwsim API runs in a container with PID namespaces,
+> so portid is usually the same. Concurrent CI-runs of this test failed
+> quite often...
 
-Yes, it's okay. I only added the output from dmesg.
+Ah, OK, makes sense. We do most/all (kernel-level) testing in VMs or
+UML, so haven't been affected I guess.
+
+> > And then, how did you find it in hwsim only, there are surely other
+> > places in wifi, see nl80211_netlink_notify, that have the same issue?
+>=20
+> Hm, I assumed it was just a shortcoming in my commit referenced in the
+> Fixes tag :-/.
+
+Well, I guess not "just", but I suppose it was in a way. But I didn't
+notice it either, which is not surprising because I wasn't even aware of
+it in general.
+
+> Shall I send a patch for nl80211_netlink_notify(), skipping radios not
+> in the netns of the closing socket?=C2=A0
+
+Hm, yeah, we could do that? I was going to say it's more complex since
+we'd need to track the netgroup for each "thing" we have there (that can
+be owned by a socket), but I guess if a radio is only reachable from a
+given netns then everything must be owned in there.
+
+So I guess I haven't fully thought about it now, but patches definitely
+welcome.
+
+> What about regulatory_netlink_notify(), skip it if netns !=3D init_net?
+
+I guess then we'd have to prevent nl80211_req_set_reg() from being
+called outside init_net too? Hmm. I don't know right now how we should
+handle this.
+
+> Treewide, {nfqnl,nfulnl,nft}_rcv_nl_event() look fine, as they operate
+> on per-net data. nfc_genl_rcv_nl_event() might need a fix as well.
+
+It does seem a bit of a gotcha. Maybe the upper 32 bits of the portid
+should have encoded the netns or something. But too late now, and it
+seems it was really "always" this way.
+
+johannes
 
