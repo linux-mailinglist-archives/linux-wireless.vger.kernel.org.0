@@ -1,82 +1,114 @@
-Return-Path: <linux-wireless+bounces-28489-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28490-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40756C2AA86
-	for <lists+linux-wireless@lfdr.de>; Mon, 03 Nov 2025 09:57:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF338C2AE7C
+	for <lists+linux-wireless@lfdr.de>; Mon, 03 Nov 2025 11:03:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 54A414E4476
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Nov 2025 08:57:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8F0664E24EC
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Nov 2025 10:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FFC2DCBF2;
-	Mon,  3 Nov 2025 08:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF6A2F3C02;
+	Mon,  3 Nov 2025 10:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="kKKknquP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cpgeSmLe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2CE2C0261
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Nov 2025 08:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B4B14A60F;
+	Mon,  3 Nov 2025 10:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762160255; cv=none; b=UrigFAA3eWkAdaR3CgkgSYrMcBxu3Po3OjSEd08PfYyIgM50Bhr4VyXsEcx4RqQAg71tWRsr7BCtopNIdUaxkWJYqybHM9QEgbVWc9vMG/O+KGD189iWO9v7hQqZC/Oko6i53IkIqky+q9zDq6TUDmsCFkXo5DhQGxb9O+v6l+8=
+	t=1762164198; cv=none; b=M4Kjv7ESpTdLgcYFd8DFGCnjZu3ykgDbrrRTxAsMJqj13jP0zffAbKQxYkf9nlAwGlOaPSZNpnHPBV/s4qAIsU78MQao3FBoLPn0YvrDD4TBTNzsuo4zoJT9GNE/k69j8g2wnDVzKaehWEMEue+HbNo8khzgjx4KYYcWuvFTPJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762160255; c=relaxed/simple;
-	bh=NmXjogRZSZnHAWMDixScQHkgBOhBEllMfwwTWFombAU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e9Stb254iV/oFUzECmJHoEFMMZ31hoPlbNYc09brnT91af7RdU7OIwriGmP819nBp/Jp5RC0IcABmLtwhWBg+piv3SuGOc0HjH8ljLSg0h9oPLpY046yPsazX6+J8ByEDtSzs+CZHS8Io8VeIqRrm8xYWPvmG8VJPnxqKdbCy8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=kKKknquP; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=NmXjogRZSZnHAWMDixScQHkgBOhBEllMfwwTWFombAU=;
-	t=1762160253; x=1763369853; b=kKKknquPBmSCSeKHtkVgSOe9+LYkLVpO67/g89q+UFi2f+m
-	ZCe5t+BVYlzcwXBMB1HUKiOpxUWvDAV3d1ABzjVPKonewvtxFfKXRMmyBilhMIqJPcvrm8V3UIcjS
-	xmHzvFYtElSSAFpfRDwdm/h2hNlh6a3jdHri4AyMS8iZLqslqhnaW32uMt21z+WewDnzIr0o9OG5M
-	OjUG7s3876xKl8s9zGrG0S3NjIBLGErN5X7DgJGeaGJO4wR3jbKovpbApkjD1oFmT2flPN3shI5LD
-	l7QWlAjY9GIxxzr2WmNAZKJU/ICLrTQwjN0Q3v563+DOpPtDDc5vUTLct0/coTGA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vFqNQ-00000008lkL-2MCT;
-	Mon, 03 Nov 2025 09:57:24 +0100
-Message-ID: <e0027a727707215c279626548bd3bb2101ffd8a8.camel@sipsolutions.net>
-Subject: Re: [PATCH wireless] wifi: mac80211_hwsim: Limit destroy_on_close
- radio removal to netgroup
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Martin Willi <martin@strongswan.org>
-Cc: linux-wireless@vger.kernel.org
-Date: Mon, 03 Nov 2025 09:57:23 +0100
-In-Reply-To: <20251103082436.30483-1-martin@strongswan.org>
-References: <20251103082436.30483-1-martin@strongswan.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1762164198; c=relaxed/simple;
+	bh=UzkBsO1Y6JmHR8J5My8to9G4+ZIVEdHd2vQql21wdVk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hy2QKiOJvqQYKjJJdDyMeJKfXIBenKfzlhLvFxsJ6v56UNofY+uIYNKQyh9C+TLlrlHFOM+beagvYOKOuq3zk0Lvn7GtTfasSgmoRApDZsTrriL+XrYpyPpzcY+LZIPTnIX3G9ABT+qR7eSwElbGjZEi2EHvHqp2G0Y7KXqTJlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cpgeSmLe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55196C4CEE7;
+	Mon,  3 Nov 2025 10:03:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762164197;
+	bh=UzkBsO1Y6JmHR8J5My8to9G4+ZIVEdHd2vQql21wdVk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cpgeSmLeZHC+zNiAXJ8U0rOWzm61pxEuHfCI32kk2JeXeyEj7zYjfTjZ74onOjl8X
+	 Ti2iDDvNtYt+60iepio3yw45FgtHh7QHDayZgFlaftZYEThn2fak9xSayhPbibYI8Q
+	 SRArtPSpZT7ekrLucz6vKm/jqEnJWPNaWwJUhh1tYlpS4keYTYZ1y84RvKv0qLWZLb
+	 shBZ34ihFlmGbC2XBWheSMrABJrZ5SjoLq8YpepERKvYQqORmmDsddEgDdVibgVtWf
+	 HdGp+AOwLM8xE4HOoa6rhGi1UT9fKxPdU/zs9k8a0DbBGr1UCuwDsA0FR3Ak8PH1vi
+	 H/jJVUhqS5HRA==
+From: Hans de Goede <hansg@kernel.org>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: Hans de Goede <hansg@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com
+Subject: [PATCH v2] wifi: brcmfmac: Add DMI nvram filename quirk for Acer A1 840 tablet
+Date: Mon,  3 Nov 2025 11:03:14 +0100
+Message-ID: <20251103100314.353826-1-hansg@kernel.org>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2025-11-03 at 09:24 +0100, Martin Willi wrote:
-> hwsim radios marked destroy_on_close are removed when the Netlink socket
-> that created them is closed. As the portid is not unique across network
-> namespaces, closing a socket in one namespace may remove radios in anothe=
-r
-> if it has the destroy_on_close flag set.
+The Acer A1 840 tablet contains quite generic names in the sys_vendor and
+product_name DMI strings, without this patch brcmfmac will try to load:
+brcmfmac43340-sdio.Insyde-BayTrail.txt as nvram file which is a bit
+too generic.
 
-How did you find that? :)
+Add a DMI quirk so that a unique and clearly identifiable nvram file name
+is used on the Acer A1 840 tablet.
 
-And then, how did you find it in hwsim only, there are surely other
-places in wifi, see nl80211_netlink_notify, that have the same issue?
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+---
+Changes in v2:
+- Add wifi: prefix to subject
+- Add Arend's Acked-by
+---
+ .../net/wireless/broadcom/brcm80211/brcmfmac/dmi.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-johannes
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+index c3a602197662..abe7f6501e5e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+@@ -24,6 +24,10 @@ static const struct brcmf_dmi_data acepc_t8_data = {
+ 	BRCM_CC_4345_CHIP_ID, 6, "acepc-t8"
+ };
+ 
++static const struct brcmf_dmi_data acer_a1_840_data = {
++	BRCM_CC_43340_CHIP_ID, 2, "acer-a1-840"
++};
++
+ /* The Chuwi Hi8 Pro uses the same Ampak AP6212 module as the Chuwi Vi8 Plus
+  * and the nvram for the Vi8 Plus is already in linux-firmware, so use that.
+  */
+@@ -91,6 +95,16 @@ static const struct dmi_system_id dmi_platform_data[] = {
+ 		},
+ 		.driver_data = (void *)&acepc_t8_data,
+ 	},
++	{
++		/* Acer Iconia One 8 A1-840 (non FHD version) */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "BayTrail"),
++			/* Above strings are too generic also match BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "04/01/2014"),
++		},
++		.driver_data = (void *)&acer_a1_840_data,
++	},
+ 	{
+ 		/* Chuwi Hi8 Pro with D2D3_Hi8Pro.233 BIOS */
+ 		.matches = {
+-- 
+2.51.1
+
 
