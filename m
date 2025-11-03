@@ -1,225 +1,250 @@
-Return-Path: <linux-wireless+bounces-28479-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28480-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFDBC29E10
-	for <lists+linux-wireless@lfdr.de>; Mon, 03 Nov 2025 03:45:31 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 398D4C29E80
+	for <lists+linux-wireless@lfdr.de>; Mon, 03 Nov 2025 04:05:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC4AB3AFD1D
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Nov 2025 02:45:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 732A3345FCF
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Nov 2025 03:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D80CEACD;
-	Mon,  3 Nov 2025 02:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32999154BF5;
+	Mon,  3 Nov 2025 03:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZGEiX191";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="SWgR95RC"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="RDkToIF1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6345334D3A0
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Nov 2025 02:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F44734D3BE;
+	Mon,  3 Nov 2025 03:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762137926; cv=none; b=LE4VMQWaOa7BSvse8gOkfPl1QoLbHD2Qeo2X0dQq5UwC3F/sozQiCZ6lxRqqMwTCYFO6Y8pHCO5qwCE6AeUC6pO4f5xlYEvQF6BJzwens64XFEnAB0KAG/i7snB03J3uxIDg2l5JPTkpe4sqovixD/a0v0IdqLzowp7SLv0IFxk=
+	t=1762139123; cv=none; b=q2So6HjESpGWa+pqWtWJIL6H/n2u7jmiIJrlwoBCgTbiqU+6qCJlqH++sV/T7ktvfAwGrqe+BHYyKRdYF5xzr98HwJAbVeDFJ9/97X//Xe9Ijt7F3mJte8asRIFd8OcPu9tL/QkOZL2iKR57oKOVnNF08IEFP1Yn9bXUNe+VviY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762137926; c=relaxed/simple;
-	bh=SrvhFUwn1NWMZ0ClivPfucOpViRdD06TCJLi1gxqhQw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WaDG1NrTEfCd7sHUTzZLqqTgPb47TZJeLyDj2kkjrlEZr00GDsgoSPbm60Cd+iRBF8EjrxZCpqQOVgcE6NDy+z+qo+Hy4WjtZlpfMfAfOYwLRN2OH9Qnputztf4jzi1mH7cBUh0JO1i4xZH9WO/sNI5r6faHUngtGm9zmN7pnfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZGEiX191; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=SWgR95RC; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A2M0JLf1255496
-	for <linux-wireless@vger.kernel.org>; Mon, 3 Nov 2025 02:45:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=St8TE2OHEhQyYwmvkJ5Xd4
-	8GZGKr1wvQZLaduJDmOAI=; b=ZGEiX191X3WSDkct2flOnE6onMKRdsnQTon+YU
-	qaBqQ9G504MK7JvTAP04ZMYI/wkRmBem7YjBNsTxvEgZVOr7XTaNN6qxbjhzPwGz
-	BaEzek2qAyEeND5Q65mIxpAr7rxR42MOQN91/lPQasUV7LD//qIX+3AUz5B2TusS
-	BmfbfQuybBTgzFLNMtSx3mfPAnnOtirOmPyY4yr7saIz3+izmx1pH+HVsVAVGKs9
-	tKqu/Zxbe+H+fO00aRz76svAjsexqXfVeYPjUEEKI2K9sGxHnbq7QSD8gxBwAvr0
-	zxTykJrzGze+14aLbbkDKQjWMF9vbO7qRcOlhfOuP5Hezbog==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a57web97a-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Mon, 03 Nov 2025 02:45:24 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2904e9e0ef9so96177425ad.3
-        for <linux-wireless@vger.kernel.org>; Sun, 02 Nov 2025 18:45:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1762137924; x=1762742724; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=St8TE2OHEhQyYwmvkJ5Xd48GZGKr1wvQZLaduJDmOAI=;
-        b=SWgR95RCd6EPSssm0qfR9+WetWsDegf8mnGdUCWgGORGpFGHmLcllEes150NzcqdDP
-         pdQZjbcRBAbf9Iy1JkF3fqUQ3b54fn7JMrrN0GbBQMlaoksE8lelfPPzwQ4rVRcWs0ml
-         zTbZ7gEjmidZv4W1Db6RmEqJXsKcgUE5pOdLOYcZ2VG+z8wrmyNLZhCeMAg4kQkSdBkN
-         snATpeZgEbfIniH9k+2dyHxHi1uJs79kHNM/PRLgGwCF2sWyAK1Qd/KBaBpgKFRfqBhI
-         EkcMNEZO21Bh3hTv+bFXr5VBwRuJvi5JSPBa7UIJgrT+jZiER4U+rKuG6qjVh47TF0Hg
-         kk7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762137924; x=1762742724;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=St8TE2OHEhQyYwmvkJ5Xd48GZGKr1wvQZLaduJDmOAI=;
-        b=bkkRTr4Z0JpZfm0PIamlOQSrABoP98H2YOQ02/JKnTffMHxlLd0gz9MuQLxsYzeWH/
-         aDALl5xHwexPsB0SKft6RURdvFJ2yx8YD1Z3ViaFOzm99QvTOQY6kuc/VmmcLNink4km
-         u0baFym9ye9ZsRV8fNrOPAGVkA4fiSowIFNxBRSH43twa4pmkoJckgeK3ZiSGV9WfHji
-         KSgBXAqTGpg+emJRyp6umrv/PYDZEGKP/eBkUVcU63H2VzP5wOt2hV4LHcCxFaj1P+fQ
-         eA4dkGzTFGknNcO1EpGUzV8tHUgOg2lbo9GsXrg6BM/UuyEnDk8qX+VnGIGCkrC7zzJf
-         GnAg==
-X-Gm-Message-State: AOJu0YyEDc/k0DURWRFwyribCz8kgDuN2Vvel8tWW9BrIvQQ55x0GxyX
-	76x+J0FiIPIncuQAXXVI0QKwhZ6o09hMiqtIS8yEA7hgkjy4A1Ioam/yly3SEPVmY7upIZVFQMH
-	Aau2lQ9XmP1SBXOM5ENISBCFw9/CQYKwwo7KgtKA1jic/lels6q4fD0urojR9X9BBCEtXKw==
-X-Gm-Gg: ASbGncvv6Jn+FaOBRPGxxu5bvvyv/QDsh6g8XzAAqm7mHj2CexTYdhqRgf9XDnIx/MZ
-	AsuldKOEZqnYMZ9DgFb+o/sqsVlNoSULA1eaeeHDeW1RCOa2b+s3wUcmvDVFeiiUwh4b379SY5S
-	oyYdjYk+dOv0bEnSrrKDifQA3cClhqVjIf+S21stk77LdILVV1JcuU73m9/To1X6jGSz6goa9U2
-	F3le8M4mOl+7ZtqQQPY7fF/NXblL5kfw5RR1I+OygZYEp4bx0verHlj1pWs93NDtXjNU/RbkRMk
-	sdErSIYOYJsSbBIxOodQsgnubtdfljKMj02/Liv6NCh6MQKY3+OsMZWz4PXRcXhmozmWjJc3E6q
-	HevtZsV8TxY3kebKI52J1zuudV/Yv54Lx0Q/E/YyKrAQGk8EWf+ff
-X-Received: by 2002:a17:902:ea06:b0:28d:18d3:46ca with SMTP id d9443c01a7336-2951a5449aemr134563225ad.49.1762137923744;
-        Sun, 02 Nov 2025 18:45:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHnqS0lDCyYdmp1X/MWQ5lHj0npVE6nLXW+QGXfUcuIxpZz6RlxM8UYVjLshPY8NExVC2fDsQ==
-X-Received: by 2002:a17:902:ea06:b0:28d:18d3:46ca with SMTP id d9443c01a7336-2951a5449aemr134563055ad.49.1762137923221;
-        Sun, 02 Nov 2025 18:45:23 -0800 (PST)
-Received: from [127.0.1.1] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b93b8c8cdc0sm8746759a12.13.2025.11.02.18.45.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Nov 2025 18:45:22 -0800 (PST)
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Date: Mon, 03 Nov 2025 10:44:49 +0800
-Subject: [PATCH ath-next] wifi: ath12k: do WoW offloads only on primary
- link
+	s=arc-20240116; t=1762139123; c=relaxed/simple;
+	bh=h2on8smZNhSjND6dDV/2OQmdbs3lEHFCbUmsU4mkBno=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ilNeIlUIPjRwbTEIp5PVLi5XAqQ4pQb7pYa1JJYKg0imnFakJp+bRlqUrJWPGlNZORsIXdv8HmYN4wSLAytO+k1MCaPdEKcPTCWHUwfzGrRbSccMRcFivlmRuT/N3BAv5eM3fycwIRmm3jOt4IhyXDeoHqx7IY7kO+jVc0BIZBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RDkToIF1; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5A3353Ar8687552, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1762139103; bh=CDIb0DFGsEfP0VvgpwQqbMHWoefHoMlYMo8jDAfDT8c=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=RDkToIF1xJ9sGZEZZY2zhG5QZ/kZMPMq8cIaVYEEWBRwz0e846CP3sclBjP/Es9Wh
+	 zX1ePHkLNvtW7/4FcgFLuDNuSejEtRjm7hAfiTJ+vEVXript5sfv1ss/C7/w3wug1P
+	 hU2qqchtwzlQ+s1hz0sx7hyDUtGoNM4KjgqomauPdVGznygiLC3THuag1P8YqBix3q
+	 LNIrXf3Fomb+PuLt/8v8GdCI2bh4N3k5hKt4g1zuSduSmdqsf6D1d0bKCET+YuE4Aj
+	 Fn4NZ68yXKuek9zNh9tdWzhaEXLnSr2ZN/B7xHIhmZlJINjZFxfsVaFMIW4hIrM9u6
+	 OrQSEEWSpN/tQ==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 5A3353Ar8687552
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 3 Nov 2025 11:05:03 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Mon, 3 Nov 2025 11:05:03 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
+ 15.02.1544.027; Mon, 3 Nov 2025 11:05:03 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Fedor Pchelkin <pchelkin@ispras.ru>,
+        Bitterblue Smith
+	<rtl8821cerfe2@gmail.com>
+CC: Zong-Zhe Yang <kevin_yang@realtek.com>,
+        Bernie Huang
+	<phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>
+Subject: RE: [PATCH rtw-next v4 08/10] wifi: rtw89: handle IEEE80211_TX_CTL_REQ_TX_STATUS frames for USB
+Thread-Topic: [PATCH rtw-next v4 08/10] wifi: rtw89: handle
+ IEEE80211_TX_CTL_REQ_TX_STATUS frames for USB
+Thread-Index: AQHcSQcQXOM7uN/tL0SzUQvbc//iV7TgQVHA
+Date: Mon, 3 Nov 2025 03:05:03 +0000
+Message-ID: <1f5893398aac4966a2ae2939a6cb7f9c@realtek.com>
+References: <20251029190241.1023856-1-pchelkin@ispras.ru>
+ <20251029190241.1023856-9-pchelkin@ispras.ru>
+In-Reply-To: <20251029190241.1023856-9-pchelkin@ispras.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251103-ath12-primary-link-wow-v1-1-3cf523dc09f0@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIACEXCGkC/x3MQQqDMBBA0avIrDvgJKkVr1K6iDrWQY0ykaqId
- zd0+RfvnxBZhSNU2QnKP4kyhxT0yKDpffgySpsaTG6eRLlFv/ZkcFGZvB44ShhwmzesHRcluVf
- ROQsJL8qd7P/xG5LBwPsKn+u6ASArxJdyAAAA
-X-Change-ID: 20251103-ath12-primary-link-wow-b4e681476f43
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Authority-Analysis: v=2.4 cv=M85A6iws c=1 sm=1 tr=0 ts=69081744 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=LP1QxI6-xhCX3emMPfsA:9
- a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-ORIG-GUID: g7VhJ5-RA0lVXZW4Pb7MEacHGXY2WTRe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAzMDAyMiBTYWx0ZWRfX2/TJT7LPghlt
- N62KU+fJ7rdsCW+31D7ic80/U8c8vah/yI1OWRoJCdrBFE8Oih+GOQlPXJpc5OGm823fdT41Mel
- 8xoN5PJ49gqbwxXYGpuwV8nnFVZGu1mvXxNun+v4wVSJ0TfLmuVWwYzo4IBkKdwoQatly2dWZvf
- U22lMMeG7/hQgVjq38+zLrXSIjwRxevuwTYPc7vtBI1DKX4R0fChlQ3NihDjsNSVz9V4yQDYv61
- ffinU36xEGfS4JlF823MGu+1m6ItofvZi34gQgOGRPJJqOkiOShg4OWYdDGeY3O/SlPaqguuzME
- CNV0Ww5XhXiF2THj4D4e/xo79jhVSv6T3IqrcJDC4YdK56H02aaF7BxfK+FT3O9QGkCdnxvhjJe
- Jkbmc72F03Eab3FpZiLHw/e7DuKDsQ==
-X-Proofpoint-GUID: g7VhJ5-RA0lVXZW4Pb7MEacHGXY2WTRe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-02_02,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- malwarescore=0 bulkscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511030022
 
-In case of multi-link connection, WCN7850 firmware crashes due to WoW
-offloads enabled on both primary and secondary links.
+Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+> Frames flagged with IEEE80211_TX_CTL_REQ_TX_STATUS mean the driver has to
+> report to mac80211 stack whether AP sent ACK for the null frame/probe
+> request or not.  It's not implemented in USB part of the driver yet.
+>=20
+> PCIe HCI has its own way of getting TX status incorporated into RPP
+> feature, and it's always enabled there.  Other HCIs need a different
+> scheme based on processing C2H messages.
+>=20
+> Thus define a .tx_rpt_enabled flag indicating which HCIs need to enable a
+> TX report feature.  Currently it is USB only.
+>=20
+> Toggle a bit in the TX descriptor and place flagged skbs in a fix-sized
+> queue to wait for a message from the firmware.  Firmware maintains a 4-bi=
+t
+> sequence number for required frames hence the queue can contain just 16
+> elements simultaneously.  That's enough for normal driver / firmware
+> communication.  If the firmware crashes for any reason and doesn't provid=
+e
+> TX reports in time, driver will handle this and report the obsolete frame=
+s
+> as dropped.
+>=20
+> rtw89 also has a new feature providing a TX report for each transmission
+> attempt.  Ignore a failed TX status reported by the firmware until retry
+> limit is reached or successful status appears.  When there is no success
+> and the retry limit is reached, report the frame up to the wireless stack
+> as failed eventually.
+>=20
+> HCI reset should stop all pending TX activity so forcefully flush the
+> queue there.
+>=20
+> Found by Linux Verification Center (linuxtesting.org).
+>=20
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 
-Change to do it only on primary link to fix it.
+Thanks for your work. I have only some minor suggestions for v4.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+[...]
 
-Fixes: 32f7b19668bd ("wifi: ath12k: support MLO as well if single_chip_mlo_support flag is set")
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
----
- drivers/net/wireless/ath/ath12k/wow.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+> diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wire=
+less/realtek/rtw89/core.h
+> index 9372e30a0039..015d7833841f 100644
+> --- a/drivers/net/wireless/realtek/rtw89/core.h
+> +++ b/drivers/net/wireless/realtek/rtw89/core.h
+> @@ -3517,6 +3517,14 @@ struct rtw89_phy_rate_pattern {
+>  #define RTW89_TX_LIFE_TIME             0x2
+>  #define RTW89_TX_MACID_DROP            0x3
+>=20
+> +#define RTW89_MAX_TX_RPTS              16
+> +#define RTW89_MAX_TX_RPTS_MASK         (RTW89_MAX_TX_RPTS - 1)
+> +struct rtw89_tx_rpt {
+> +       struct sk_buff *skbs[RTW89_MAX_TX_RPTS];
+> +       spinlock_t skb_lock;
 
-diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
-index e8481626f194040cf0728597272801dfd1f8fda4..6448378d85141c5a77c55565ccff1908014e2005 100644
---- a/drivers/net/wireless/ath/ath12k/wow.c
-+++ b/drivers/net/wireless/ath/ath12k/wow.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2022-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include <linux/delay.h>
-@@ -135,6 +135,9 @@ static int ath12k_wow_cleanup(struct ath12k *ar)
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
- 
- 	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		if (arvif != &arvif->ahvif->deflink)
-+			continue;
-+
- 		ret = ath12k_wow_vif_cleanup(arvif);
- 		if (ret) {
- 			ath12k_warn(ar->ab, "failed to clean wow wakeups on vdev %i: %d\n",
-@@ -479,8 +482,12 @@ static int ath12k_wow_set_wakeups(struct ath12k *ar,
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
- 
- 	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		if (arvif != &arvif->ahvif->deflink)
-+			continue;
-+
- 		if (ath12k_wow_is_p2p_vdev(arvif->ahvif))
- 			continue;
-+
- 		ret = ath12k_wow_vif_set_wakeups(arvif, wowlan);
- 		if (ret) {
- 			ath12k_warn(ar->ab, "failed to set wow wakeups on vdev %i: %d\n",
-@@ -538,6 +545,9 @@ static int ath12k_wow_nlo_cleanup(struct ath12k *ar)
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
- 
- 	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		if (arvif != &arvif->ahvif->deflink)
-+			continue;
-+
- 		if (ath12k_wow_is_p2p_vdev(arvif->ahvif))
- 			continue;
- 
-@@ -745,6 +755,9 @@ static int ath12k_wow_arp_ns_offload(struct ath12k *ar, bool enable)
- 	list_for_each_entry(arvif, &ar->arvifs, list) {
- 		ahvif = arvif->ahvif;
- 
-+		if (arvif != &ahvif->deflink)
-+			continue;
-+
- 		if (ahvif->vdev_type != WMI_VDEV_TYPE_STA)
- 			continue;
- 
-@@ -776,6 +789,9 @@ static int ath12k_gtk_rekey_offload(struct ath12k *ar, bool enable)
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
- 
- 	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		if (arvif != &arvif->ahvif->deflink)
-+			continue;
-+
- 		if (arvif->ahvif->vdev_type != WMI_VDEV_TYPE_STA ||
- 		    !arvif->is_up ||
- 		    !arvif->rekey_data.enable_offload)
+I think we should add a comment to describe how/where this lock can be used=
+.
+At least checkpatch will complain this.=20
 
----
-base-commit: 6a5812e1623723adb18e6217d512274ef0d84015
-change-id: 20251103-ath12-primary-link-wow-b4e681476f43
+> +       atomic_t sn;
+> +};
+> +
+>  #define RTW89_TX_WAIT_WORK_TIMEOUT msecs_to_jiffies(500)
+>  struct rtw89_tx_wait_info {
+>         struct rcu_head rcu_head;
 
-Best regards,
--- 
-Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+[...]
+
+> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wirel=
+ess/realtek/rtw89/mac.c
+> index e4e126a4428b..a6642c5761cb 100644
+> --- a/drivers/net/wireless/realtek/rtw89/mac.c
+> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
+> @@ -5463,7 +5463,10 @@ rtw89_mac_c2h_mcc_status_rpt(struct rtw89_dev *rtw=
+dev, struct sk_buff *c2h, u32
+>  static void
+>  rtw89_mac_c2h_tx_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 =
+len)
+>  {
+> +       struct rtw89_tx_rpt *tx_rpt =3D &rtwdev->tx_rpt;
+> +       struct rtw89_tx_skb_data *skb_data;
+>         u8 sw_define, tx_status, txcnt;
+> +       struct sk_buff *skb;
+>=20
+>         if (rtwdev->chip->chip_id =3D=3D RTL8922A) {
+>                 const struct rtw89_c2h_mac_tx_rpt_v2 *rpt_v2;
+> @@ -5492,6 +5495,29 @@ rtw89_mac_c2h_tx_rpt(struct rtw89_dev *rtwdev, str=
+uct sk_buff *c2h, u32 len)
+>         rtw89_debug(rtwdev, RTW89_DBG_TXRX,
+>                     "C2H TX RPT: sn %d, tx_status %d, txcnt %d\n",
+>                     sw_define, tx_status, txcnt);
+
+To claim sw_define is not over size of tx_rpt->skbs[], we can add below:
+
+	static_assert(hweight32(RTW89_MAX_TX_RPTS_MASK) =3D=3D
+		      hweight32(RTW89_C2H_MAC_TX_RPT_W12_SW_DEFINE_V2) &&
+		      hweight32(RTW89_MAX_TX_RPTS_MASK) =3D=3D
+		      hweight32(RTW89_C2H_MAC_TX_RPT_W2_SW_DEFINE));
+
+
+> +
+> +       scoped_guard(spinlock_irqsave, &tx_rpt->skb_lock) {
+> +               skb =3D tx_rpt->skbs[sw_define];
+> +
+> +               /* skip if no skb (normally shouldn't happen) */
+> +               if (!skb) {
+> +                       rtw89_debug(rtwdev, RTW89_DBG_TXRX,
+> +                                   "C2H TX RPT: no skb found in queue\n"=
+);
+> +                       return;
+> +               }
+> +
+> +               skb_data =3D RTW89_TX_SKB_CB(skb);
+> +
+> +               /* skip if TX attempt has failed and retry limit has not =
+been
+> +                * reached yet
+> +                */
+> +               if (tx_status !=3D RTW89_TX_DONE &&
+> +                   txcnt !=3D skb_data->tx_pkt_cnt_lmt)
+> +                       return;
+> +
+> +               tx_rpt->skbs[sw_define] =3D NULL;
+> +               rtw89_tx_rpt_tx_status(rtwdev, skb, tx_status);
+> +       }
+>  }
+>=20
+>  static void
+
+[...]
+
+> diff --git a/drivers/net/wireless/realtek/rtw89/usb.c b/drivers/net/wirel=
+ess/realtek/rtw89/usb.c
+> index c359b469aabe..5e587c93268e 100644
+> --- a/drivers/net/wireless/realtek/rtw89/usb.c
+> +++ b/drivers/net/wireless/realtek/rtw89/usb.c
+> @@ -216,6 +216,15 @@ static void rtw89_usb_write_port_complete(struct urb=
+ *urb)
+>                 skb_pull(skb, txdesc_size);
+>=20
+>                 info =3D IEEE80211_SKB_CB(skb);
+
+Since newly added chunk doesn't use 'info', just do it before
+ieee80211_tx_info_clear_status().
+
+> +               if (rtw89_is_tx_rpt_skb(skb)) {
+> +                       if (urb->status =3D=3D 0)
+> +                               rtw89_tx_rpt_skb_add(rtwdev, skb);
+> +                       else
+> +                               rtw89_tx_rpt_tx_status(rtwdev, skb,
+> +                                                      RTW89_TX_MACID_DRO=
+P);
+> +                       continue;
+> +               }
+> +
+>                 ieee80211_tx_info_clear_status(info);
+>=20
+>                 if (urb->status =3D=3D 0) {
+
+[...]
 
 
