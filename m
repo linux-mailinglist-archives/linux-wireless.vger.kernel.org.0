@@ -1,45 +1,45 @@
-Return-Path: <linux-wireless+bounces-28571-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28560-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 085D7C34DC4
-	for <lists+linux-wireless@lfdr.de>; Wed, 05 Nov 2025 10:32:51 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A100EC34E2E
+	for <lists+linux-wireless@lfdr.de>; Wed, 05 Nov 2025 10:38:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 63889346ADE
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Nov 2025 09:32:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 867B14FA54F
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Nov 2025 09:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF1A3303C86;
-	Wed,  5 Nov 2025 09:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83173302772;
+	Wed,  5 Nov 2025 09:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="R2Cn7Ktq"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Rm3+PDFx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6312430C62B
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Nov 2025 09:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7BE3016E8
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Nov 2025 09:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762335106; cv=none; b=GjqXur0eDrxMFaYP9D0Om0P/48slpReuXFa94FStEU9oi0DQr9umfnvseqxO1kgqpq7nKHbQAS/2Cmtx9KmHs3EZiaJlHG6HcgQYK2VVIE6ZYPiEjhewryCydk6d2OpWW45hPhtwVDJ9JvH2TQXgcxkQHzXR6gnTe1rfxTmI5fY=
+	t=1762335097; cv=none; b=fjhtt5bXLImMN+2Pn1qWHYnjUBW99B0vAddlYqSZWkI7lJh7uHCZHTDsZ6iR92ZjOC0D8gkzLiRArtBp9xbFlneKfEJlyQWc1S0EtKacvdOxPyTtaPNj7ojryqE1j8aHYLR2UyOOIrMuJplRYwXPkeCdQyiMrwp+3+plAmmYRSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762335106; c=relaxed/simple;
-	bh=q0BV/1NfashOFvc/I/zBM4ha5tdTC2ETvzSCZhARZpY=;
+	s=arc-20240116; t=1762335097; c=relaxed/simple;
+	bh=TAIQogdJRjQIk73claTECHTYLZaizDMSn6JTTNP85Cc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KRfVOi7ODfFzTTvl64jGOy6EIXJw6hSe+6cWt5x2S/IGDlORM3SXyQa9LqrOm8wl6sfa7JxpSJzEkndgqpVr4LYgDkOt8fg6TG5/4bYPdLOtla46pZbmGRckwJrUhLzhUvGrY0j3DL3jt9coqnM7Gsh9w7J4va5Nq8kvh1ZSBrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=R2Cn7Ktq; arc=none smtp.client-ip=60.244.123.138
+	 MIME-Version:Content-Type; b=YJiO++aPGSAke/DwdKUjAM5S5tNHzXtBe4LdomXXEEcEvo676O9rV+1yytensQp0Jf4vr2tfWFiR1pW6bgesDgig1cCU/owF2sZWjNhSbo3+KklVZ0ey/ZJomyt4cRwp7Gp4Es4RVT2adG79rNlcf4xngPlKSJBMA886EXbMjv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Rm3+PDFx; arc=none smtp.client-ip=210.61.82.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 35f29c32ba2a11f08ac0a938fc7cd336-20251105
+X-UUID: 35fd8ad4ba2a11f0b33aeb1e7f16c2b6-20251105
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=uRQCbxty+oCeY3WSzE8Zyh70FUpPPnBhb+RjzJOjTts=;
-	b=R2Cn7KtqzCQTlaF9FKxnCazfIKjX4Yv27OuEh2DMu2Wgzjo7nVf34DrBV826142NOlAMLaniKtfngfLq0hMJX0r44ZrajJHu6EulfYjr2lkPrM9FWk6bmvAVr9KeKZ8XlOnd6iKVdlknEiBqmZKEDhy0vR+DQvLpVcyb89Le9Z4=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=wD7CTgGN0HXslZItpuaLY+mVpq95s4Mq81y8wSj0vOA=;
+	b=Rm3+PDFxqaGySj9BliqvBwFf6WRVjvkSCdLU0lKh/5XwrMtGeojqRXliCIvOpc3rmK3ni7DUHp6tzz1t7HUq6vbg+OvxvQodDI9eocBjbyyd0EN5k66mNubfoBYrnpAwfYXXODT5J/xGTrYMPeyP4at/miYTeQ/TuTmjb7J/t+A=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:2a58c07b-a934-4005-b1b2-f811bc8db6b8,IP:0,UR
+X-CID-O-INFO: VERSION:1.3.6,REQID:ddeaa9dc-ef12-4167-88cb-c6f2f4bef474,IP:0,UR
 	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
 	elease,TS:0
-X-CID-META: VersionHash:a9d874c,CLOUDID:000bf218-3399-4579-97ab-008f994989ea,B
+X-CID-META: VersionHash:a9d874c,CLOUDID:90d7106b-d4bd-4ab9-8221-0049857cc502,B
 	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
 	0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OS
 	I:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -47,13 +47,13 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 35f29c32ba2a11f08ac0a938fc7cd336-20251105
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+X-UUID: 35fd8ad4ba2a11f0b33aeb1e7f16c2b6-20251105
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
 	(envelope-from <shayne.chen@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 130445521; Wed, 05 Nov 2025 17:31:30 +0800
+	with ESMTP id 1619931806; Wed, 05 Nov 2025 17:31:30 +0800
 Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1748.26; Wed, 5 Nov 2025 17:31:29 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
@@ -64,11 +64,10 @@ To: Felix Fietkau <nbd@nbd.name>
 CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
 	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
 	<evelyn.tsai@mediatek.com>, linux-mediatek
-	<linux-mediatek@lists.infradead.org>, Shayne Chen <shayne.chen@mediatek.com>,
-	Howard Hsu <howard-yh.hsu@mediatek.com>
-Subject: [PATCH mt76 04/12] wifi: mt76: mt7996: support fixed rate for link station
-Date: Wed, 5 Nov 2025 17:30:52 +0800
-Message-ID: <20251105093100.541408-4-shayne.chen@mediatek.com>
+	<linux-mediatek@lists.infradead.org>, Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH mt76 05/12] wifi: mt76: mt7996: fix several fields in mt7996_mcu_bss_basic_tlv()
+Date: Wed, 5 Nov 2025 17:30:53 +0800
+Message-ID: <20251105093100.541408-5-shayne.chen@mediatek.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20251105093100.541408-1-shayne.chen@mediatek.com>
 References: <20251105093100.541408-1-shayne.chen@mediatek.com>
@@ -82,169 +81,74 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-MTK: N
 
-Introduce mt7996_link_sta_add_debugfs() to extend fixed rate support for
-MLO link station.
+Fix several fields in mt7996_mcu_bss_basic_tlv() that were not obtained
+from the correct link. Without this patch, the MLD station interface
+does not function properly.
 
-Co-developed-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+Fixes: 34a41bfbcb71 ("wifi: mt76: mt7996: prepare mt7996_mcu_add_dev/bss_info for MLO support")
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- .../wireless/mediatek/mt76/mt7996/debugfs.c   | 72 +++++++++++--------
- .../net/wireless/mediatek/mt76/mt7996/main.c  |  1 +
- .../wireless/mediatek/mt76/mt7996/mt7996.h    |  3 +
- 3 files changed, 48 insertions(+), 28 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 21 ++++++++++---------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
-index a000275b369b..76d623b2cafb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
-@@ -953,16 +953,34 @@ bool mt7996_debugfs_rx_log(struct mt7996_dev *dev, const void *data, int len)
- #ifdef CONFIG_MAC80211_DEBUGFS
- /** per-station debugfs **/
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 82dd34a8780f..f1892aaf6a91 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1037,7 +1037,6 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
+ 	struct mt76_connac_bss_basic_tlv *bss;
+ 	u32 type = CONNECTION_INFRA_AP;
+ 	u16 sta_wlan_idx = wlan_idx;
+-	struct ieee80211_sta *sta;
+ 	struct tlv *tlv;
+ 	int idx;
  
--static ssize_t mt7996_sta_fixed_rate_set(struct file *file,
--					 const char __user *user_buf,
--					 size_t count, loff_t *ppos)
-+static int
-+mt7996_queues_show(struct seq_file *s, void *data)
-+{
-+	struct ieee80211_sta *sta = s->private;
+@@ -1048,14 +1047,18 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
+ 		break;
+ 	case NL80211_IFTYPE_STATION:
+ 		if (enable) {
++			struct ieee80211_sta *sta;
 +
-+	mt7996_sta_hw_queue_read(s, sta);
-+
-+	return 0;
-+}
-+
-+DEFINE_SHOW_ATTRIBUTE(mt7996_queues);
-+
-+void mt7996_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			    struct ieee80211_sta *sta, struct dentry *dir)
-+{
-+	debugfs_create_file("hw-queues", 0400, dir, sta, &mt7996_queues_fops);
-+}
-+
-+static ssize_t mt7996_link_sta_fixed_rate_set(struct file *file,
-+					      const char __user *user_buf,
-+					      size_t count, loff_t *ppos)
- {
- #define SHORT_PREAMBLE 0
- #define LONG_PREAMBLE 1
--	struct ieee80211_sta *sta = file->private_data;
--	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
-+	struct ieee80211_link_sta *link_sta = file->private_data;
-+	struct mt7996_sta *msta = (struct mt7996_sta *)link_sta->sta->drv_priv;
- 	struct mt7996_dev *dev = msta->vif->deflink.phy->dev;
--	struct mt7996_sta_link *msta_link = &msta->deflink;
-+	struct mt7996_sta_link *msta_link;
- 	struct ra_rate phy = {};
- 	char buf[100];
- 	int ret;
-@@ -981,12 +999,13 @@ static ssize_t mt7996_sta_fixed_rate_set(struct file *file,
+ 			rcu_read_lock();
+-			sta = ieee80211_find_sta(vif, vif->bss_conf.bssid);
+-			/* TODO: enable BSS_INFO_UAPSD & BSS_INFO_PM */
++			sta = ieee80211_find_sta(vif, link_conf->bssid);
+ 			if (sta) {
+-				struct mt76_wcid *wcid;
++				struct mt7996_sta *msta = (void *)sta->drv_priv;
++				struct mt7996_sta_link *msta_link;
++				int link_id = link_conf->link_id;
  
- 	/* mode - cck: 0, ofdm: 1, ht: 2, gf: 3, vht: 4, he_su: 8, he_er: 9 EHT: 15
- 	 * bw - bw20: 0, bw40: 1, bw80: 2, bw160: 3, BW320: 4
--	 * nss - vht: 1~4, he: 1~4, eht: 1~4, others: ignore
- 	 * mcs - cck: 0~4, ofdm: 0~7, ht: 0~32, vht: 0~9, he_su: 0~11, he_er: 0~2, eht: 0~13
-+	 * nss - vht: 1~4, he: 1~4, eht: 1~4, others: ignore
- 	 * gi - (ht/vht) lgi: 0, sgi: 1; (he) 0.8us: 0, 1.6us: 1, 3.2us: 2
- 	 * preamble - short: 1, long: 0
--	 * ldpc - off: 0, on: 1
- 	 * stbc - off: 0, on: 1
-+	 * ldpc - off: 0, on: 1
-+	 * spe - off: 0, on: 1
- 	 * ltf - 1xltf: 0, 2xltf: 1, 4xltf: 2
- 	 */
- 	if (sscanf(buf, "%hhu %hhu %hhu %hhu %hu %hhu %hhu %hhu %hhu %hu",
-@@ -994,9 +1013,16 @@ static ssize_t mt7996_sta_fixed_rate_set(struct file *file,
- 		   &phy.preamble, &phy.stbc, &phy.ldpc, &phy.spe, &ltf) != 10) {
- 		dev_warn(dev->mt76.dev,
- 			 "format: Mode BW MCS NSS GI Preamble STBC LDPC SPE ltf\n");
--		goto out;
-+		return -EINVAL;
- 	}
+-				wcid = (struct mt76_wcid *)sta->drv_priv;
+-				sta_wlan_idx = wcid->idx;
++				msta_link = rcu_dereference(msta->link[link_id]);
++				if (msta_link)
++					sta_wlan_idx = msta_link->wcid.idx;
+ 			}
+ 			rcu_read_unlock();
+ 		}
+@@ -1072,8 +1075,6 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
+ 	tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_BASIC, sizeof(*bss));
  
-+	mutex_lock(&dev->mt76.mutex);
-+
-+	msta_link = mt76_dereference(msta->link[link_sta->link_id], &dev->mt76);
-+	if (!msta_link) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
- 	phy.wlan_idx = cpu_to_le16(msta_link->wcid.idx);
- 	phy.gi = cpu_to_le16(gi);
- 	phy.ltf = cpu_to_le16(ltf);
-@@ -1005,36 +1031,26 @@ static ssize_t mt7996_sta_fixed_rate_set(struct file *file,
+ 	bss = (struct mt76_connac_bss_basic_tlv *)tlv;
+-	bss->bcn_interval = cpu_to_le16(link_conf->beacon_int);
+-	bss->dtim_period = link_conf->dtim_period;
+ 	bss->bmc_tx_wlan_idx = cpu_to_le16(wlan_idx);
+ 	bss->sta_idx = cpu_to_le16(sta_wlan_idx);
+ 	bss->conn_type = cpu_to_le32(type);
+@@ -1093,10 +1094,10 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
  
- 	ret = mt7996_mcu_set_fixed_rate_ctrl(dev, &phy, 0);
- 	if (ret)
--		return -EFAULT;
-+		goto out;
+ 	memcpy(bss->bssid, link_conf->bssid, ETH_ALEN);
+ 	bss->bcn_interval = cpu_to_le16(link_conf->beacon_int);
+-	bss->dtim_period = vif->bss_conf.dtim_period;
++	bss->dtim_period = link_conf->dtim_period;
+ 	bss->phymode = mt76_connac_get_phy_mode(phy, vif,
+ 						chandef->chan->band, NULL);
+-	bss->phymode_ext = mt76_connac_get_phy_mode_ext(phy, &vif->bss_conf,
++	bss->phymode_ext = mt76_connac_get_phy_mode_ext(phy, link_conf,
+ 							chandef->chan->band);
  
-+	ret = count;
- out:
--	return count;
-+	mutex_unlock(&dev->mt76.mutex);
-+	return ret;
- }
- 
- static const struct file_operations fops_fixed_rate = {
--	.write = mt7996_sta_fixed_rate_set,
-+	.write = mt7996_link_sta_fixed_rate_set,
- 	.open = simple_open,
- 	.owner = THIS_MODULE,
- 	.llseek = default_llseek,
- };
- 
--static int
--mt7996_queues_show(struct seq_file *s, void *data)
--{
--	struct ieee80211_sta *sta = s->private;
--
--	mt7996_sta_hw_queue_read(s, sta);
--
--	return 0;
--}
--
--DEFINE_SHOW_ATTRIBUTE(mt7996_queues);
--
--void mt7996_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
--			    struct ieee80211_sta *sta, struct dentry *dir)
-+void mt7996_link_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+				 struct ieee80211_link_sta *link_sta,
-+				 struct dentry *dir)
- {
--	debugfs_create_file("fixed_rate", 0600, dir, sta, &fops_fixed_rate);
--	debugfs_create_file("hw-queues", 0400, dir, sta, &mt7996_queues_fops);
-+	debugfs_create_file("fixed_rate", 0600, dir, link_sta, &fops_fixed_rate);
- }
- 
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 08c4d9c8791b..5e0b57657e7e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -2283,6 +2283,7 @@ const struct ieee80211_ops mt7996_ops = {
- 	.twt_teardown_request = mt7996_twt_teardown_request,
- #ifdef CONFIG_MAC80211_DEBUGFS
- 	.sta_add_debugfs = mt7996_sta_add_debugfs,
-+	.link_sta_add_debugfs = mt7996_link_sta_add_debugfs,
- #endif
- 	.set_radar_background = mt7996_set_radar_background,
- 	.net_fill_forward_path = mt7996_net_fill_forward_path,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 891b187566b3..65eeb37ab8c7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -863,6 +863,9 @@ int mt7996_mcu_cp_support(struct mt7996_dev *dev, u8 mode);
- #ifdef CONFIG_MAC80211_DEBUGFS
- void mt7996_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			    struct ieee80211_sta *sta, struct dentry *dir);
-+void mt7996_link_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+				 struct ieee80211_link_sta *link_sta,
-+				 struct dentry *dir);
- #endif
- int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
- 			 bool hif2, int *irq);
+ 	return 0;
 -- 
 2.51.0
 
