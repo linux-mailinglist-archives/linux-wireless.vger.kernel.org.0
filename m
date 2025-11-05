@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-28605-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28606-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C989C3621A
-	for <lists+linux-wireless@lfdr.de>; Wed, 05 Nov 2025 15:44:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F29A0C3621D
+	for <lists+linux-wireless@lfdr.de>; Wed, 05 Nov 2025 15:45:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64A74620A38
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Nov 2025 14:39:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 367C9620D38
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Nov 2025 14:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F391732E75E;
-	Wed,  5 Nov 2025 14:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C38932D0D8;
+	Wed,  5 Nov 2025 14:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Zpe1Hwho"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="T1RJWmk7"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF6C32D0D8
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Nov 2025 14:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A818532E759
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Nov 2025 14:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762353532; cv=none; b=PNAOZP3/DVXghLIxE2dIw9ew5qzreHUrSX3sO3m6wal3K3sdhZbN6R8CHT2YjT5lKwG/yzqFy0OCCwZIeIhu4Df/0tCIUrYkb6TDwAxS5MLnYL6eo2N+nCrUXQ2g8NWE22hWxbYGCvsh0eDHG19bSSFG82aBaPkgOy1gWK5XjmA=
+	t=1762353534; cv=none; b=Ik8zr70tjVPLtSWp6JPcfYblAL4Eqw6e+qQLgMy4AIxT8s22Wffx+ZiU3y5juqSq5duqq7jh+aBCJtcW5bTupGJoe7iB3iyytnCt4pfp/LxKTgBZh5V27AMwET+DmXfftb4gz5+Wm0AZSqj/vw13FjZa1+6V8YR/cvps8+/wU/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762353532; c=relaxed/simple;
-	bh=zfXRQbHCPr2x8l/nVUY1uMfS58bmtVpvZ5hFIya+F44=;
+	s=arc-20240116; t=1762353534; c=relaxed/simple;
+	bh=UEr7XMLKs9eHFySLtf79K00ieoh7AhQtlbBRRc4DVj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0GTRSNvvZAVMDKQrc65v/kPhJGOWqk5Yobfb91Zhxmm/JaXvL+NraFF9ZAoW4iX9IEoF/Y6lFuKlxB2MVTLPnoyVHh9Ghk4UfPpcIxBbZW07UTZ8GdYR198RUIJVvP1Zen0VVRRlUSoC0hJ5VGKgZBJpRXBl6viJMgguoKAAHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Zpe1Hwho; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=n7/CMAioNo9GfcWNRJibiDsaymV/SHG42mW7kFJ3yNMcpRHl2zn8ZpwcOwAMXMOzfU0Y76cCaAr3aO3/uOu8/d7Y6e+9rUxJEdkb/LntPWrqCs0t+WN5Y1TJg7GvyZHg8R9GVJ0HUewAbieXSLVoyFNgzccpCkAMmY4lRuAWOsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=T1RJWmk7; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=4f8H0tzTgr3G0LXJHyOqY7endssP3d95kzVhUDgq17w=;
-	t=1762353530; x=1763563130; b=Zpe1HwhohXyH8kRhxa+bodPpje7b+L1aYcdvN9I9xMGkxee
-	zZS/5NSfeQ5drA7CZ3R73IPQe+O6o27vYW6UZcctXqNaT4xztxLL7I3E+jO5DHc0FHUTiO8+LJLHe
-	9+bi9VyyFN2JzTW9KgmVPIuYiF7cRO4/kQkSzenKXs8YTsQz/SinpZlVWKuUAOok7K7q42fxYNPxD
-	J1Svzb7ArxgFpJgJJ8V3i07KMj4Ka5VBwN6E4RqchnU08SPB4qmSYG888UqUUBw/V8JJusJ6Yc6xR
-	nsX/fmq3Qf546yqMxPN+QIB71cccLOyvsz3DKTEha3esMXlEqQO7EYWCKBGc42+A==;
+	Resent-Cc:Resent-Message-ID; bh=BrXODJqEETtrmhyiaGrB4YGIfgSp9ltr/6At0quQX4c=;
+	t=1762353531; x=1763563131; b=T1RJWmk7nYFtXMrVX0FRAZI/pk29eu+ajG6oVOZrqOM3iPV
+	qFf2fJ+x2z2DzJlWqWK12kK/xc1FsVySSFe1OctnGa1T2XoK/sp7yes2EkTTgiCqtl+2ErVNsnbZ8
+	ofiGeB+MVKLhkId2iipkxxkcHROtlKML2Gk4i6FnBOCikTia22cqYgGtO5J96Rf7hzKz7LxZmxOf2
+	/mjGhJiMoKzK9j/rNTS6M52tw/A98T5PHZqu5eQp6o6ut55X/NRIV+Nq5CZiIjyiqiD9GrjEq86Qf
+	nGNOvbQFNZHpy+bk7fI+qSqUxCvuGj+gMM7NieED5rMOBWYlOuCXA6PandrVHl3g==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vGeet-0000000FDcs-3MvH;
+	id 1vGeeu-0000000FDcs-2dgW;
 	Wed, 05 Nov 2025 15:38:48 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 1/8] wifi: ieee80211: split mesh definitions out
-Date: Wed,  5 Nov 2025 15:36:49 +0100
-Message-ID: <20251105153843.489713ca8b34.I3befb4bf6ace0315758a1794224ddd18c4652e32@changeid>
+Subject: [PATCH wireless-next 2/8] wifi: ieee80211: split HT definitions out
+Date: Wed,  5 Nov 2025 15:36:50 +0100
+Message-ID: <20251105153843.7532471178d0.Id956a5433ad8658e4e5c0272dbcbb59587206142@changeid>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251105143843.46279-10-johannes@sipsolutions.net>
 References: <20251105143843.46279-10-johannes@sipsolutions.net>
@@ -65,25 +65,25 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-The ieee80211.h file has gotten very long, start splitting it
-by putting mesh definitions into a separate file.
+The ieee80211.h file has gotten very long, continue splitting
+it by putting HT definitions into a separate file.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/linux/ieee80211-mesh.h | 230 +++++++++++++++++++++++++++++++++
- include/linux/ieee80211.h      | 211 +-----------------------------
- 2 files changed, 232 insertions(+), 209 deletions(-)
- create mode 100644 include/linux/ieee80211-mesh.h
+ include/linux/ieee80211-ht.h | 292 +++++++++++++++++++++++++++++++++++
+ include/linux/ieee80211.h    | 272 +-------------------------------
+ 2 files changed, 293 insertions(+), 271 deletions(-)
+ create mode 100644 include/linux/ieee80211-ht.h
 
-diff --git a/include/linux/ieee80211-mesh.h b/include/linux/ieee80211-mesh.h
+diff --git a/include/linux/ieee80211-ht.h b/include/linux/ieee80211-ht.h
 new file mode 100644
-index 000000000000..4b829bcb38b6
+index 000000000000..21bbf470540f
 --- /dev/null
-+++ b/include/linux/ieee80211-mesh.h
-@@ -0,0 +1,230 @@
++++ b/include/linux/ieee80211-ht.h
+@@ -0,0 +1,292 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * IEEE 802.11 mesh definitions
++ * IEEE 802.11 HT definitions
 + *
 + * Copyright (c) 2001-2002, SSH Communications Security Corp and Jouni Malinen
 + * <jkmaline@cc.hut.fi>
@@ -95,483 +95,615 @@ index 000000000000..4b829bcb38b6
 + * Copyright (c) 2018 - 2025 Intel Corporation
 + */
 +
-+#ifndef LINUX_IEEE80211_MESH_H
-+#define LINUX_IEEE80211_MESH_H
++#ifndef LINUX_IEEE80211_HT_H
++#define LINUX_IEEE80211_HT_H
 +
 +#include <linux/types.h>
 +#include <linux/if_ether.h>
 +
-+#define IEEE80211_MAX_MESH_ID_LEN	32
++/* Maximal size of an A-MSDU that can be transported in a HT BA session */
++#define IEEE80211_MAX_MPDU_LEN_HT_BA		4095
 +
-+struct ieee80211s_hdr {
-+	u8 flags;
-+	u8 ttl;
-+	__le32 seqnum;
-+	u8 eaddr1[ETH_ALEN];
-+	u8 eaddr2[ETH_ALEN];
-+} __packed __aligned(2);
++/* Maximal size of an A-MSDU */
++#define IEEE80211_MAX_MPDU_LEN_HT_3839		3839
++#define IEEE80211_MAX_MPDU_LEN_HT_7935		7935
 +
-+/* Mesh flags */
-+#define MESH_FLAGS_AE_A4 	0x1
-+#define MESH_FLAGS_AE_A5_A6	0x2
-+#define MESH_FLAGS_AE		0x3
-+#define MESH_FLAGS_PS_DEEP	0x4
++#define IEEE80211_HT_CTL_LEN		4
 +
-+/**
-+ * enum ieee80211_preq_flags - mesh PREQ element flags
-+ *
-+ * @IEEE80211_PREQ_PROACTIVE_PREP_FLAG: proactive PREP subfield
-+ */
-+enum ieee80211_preq_flags {
-+	IEEE80211_PREQ_PROACTIVE_PREP_FLAG	= 1<<2,
++enum ieee80211_ht_chanwidth_values {
++	IEEE80211_HT_CHANWIDTH_20MHZ = 0,
++	IEEE80211_HT_CHANWIDTH_ANY = 1,
 +};
 +
 +/**
-+ * enum ieee80211_preq_target_flags - mesh PREQ element per target flags
++ * struct ieee80211_bar - Block Ack Request frame format
++ * @frame_control: Frame Control
++ * @duration: Duration
++ * @ra: RA
++ * @ta: TA
++ * @control: BAR Control
++ * @start_seq_num: Starting Sequence Number (see Figure 9-37)
 + *
-+ * @IEEE80211_PREQ_TO_FLAG: target only subfield
-+ * @IEEE80211_PREQ_USN_FLAG: unknown target HWMP sequence number subfield
-+ */
-+enum ieee80211_preq_target_flags {
-+	IEEE80211_PREQ_TO_FLAG	= 1<<0,
-+	IEEE80211_PREQ_USN_FLAG	= 1<<2,
-+};
-+
-+/**
-+ * struct ieee80211_mesh_chansw_params_ie - mesh channel switch parameters IE
-+ * @mesh_ttl: Time To Live
-+ * @mesh_flags: Flags
-+ * @mesh_reason: Reason Code
-+ * @mesh_pre_value: Precedence Value
-+ *
-+ * This structure represents the payload of the "Mesh Channel Switch
-+ * Parameters element" as described in IEEE Std 802.11-2020 section
-+ * 9.4.2.102.
-+ */
-+struct ieee80211_mesh_chansw_params_ie {
-+	u8 mesh_ttl;
-+	u8 mesh_flags;
-+	__le16 mesh_reason;
-+	__le16 mesh_pre_value;
++ * This structure represents the "BlockAckReq frame format"
++ * as described in IEEE Std 802.11-2020 section 9.3.1.7.
++*/
++struct ieee80211_bar {
++	__le16 frame_control;
++	__le16 duration;
++	__u8 ra[ETH_ALEN];
++	__u8 ta[ETH_ALEN];
++	__le16 control;
++	__le16 start_seq_num;
 +} __packed;
 +
++/* 802.11 BAR control masks */
++#define IEEE80211_BAR_CTRL_ACK_POLICY_NORMAL	0x0000
++#define IEEE80211_BAR_CTRL_MULTI_TID		0x0002
++#define IEEE80211_BAR_CTRL_CBMTID_COMPRESSED_BA	0x0004
++#define IEEE80211_BAR_CTRL_TID_INFO_MASK	0xf000
++#define IEEE80211_BAR_CTRL_TID_INFO_SHIFT	12
++
++#define IEEE80211_HT_MCS_MASK_LEN		10
++
 +/**
-+ * struct ieee80211_meshconf_ie - Mesh Configuration element
-+ * @meshconf_psel: Active Path Selection Protocol Identifier
-+ * @meshconf_pmetric: Active Path Selection Metric Identifier
-+ * @meshconf_congest: Congestion Control Mode Identifier
-+ * @meshconf_synch: Synchronization Method Identifier
-+ * @meshconf_auth: Authentication Protocol Identifier
-+ * @meshconf_form: Mesh Formation Info
-+ * @meshconf_cap: Mesh Capability (see &enum mesh_config_capab_flags)
++ * struct ieee80211_mcs_info - Supported MCS Set field
++ * @rx_mask: RX mask
++ * @rx_highest: highest supported RX rate. If set represents
++ *	the highest supported RX data rate in units of 1 Mbps.
++ *	If this field is 0 this value should not be used to
++ *	consider the highest RX data rate supported.
++ * @tx_params: TX parameters
++ * @reserved: Reserved bits
 + *
-+ * This structure represents the payload of the "Mesh Configuration
-+ * element" as described in IEEE Std 802.11-2020 section 9.4.2.97.
++ * This structure represents the "Supported MCS Set field" as
++ * described in IEEE Std 802.11-2020 section 9.4.2.55.4.
 + */
-+struct ieee80211_meshconf_ie {
-+	u8 meshconf_psel;
-+	u8 meshconf_pmetric;
-+	u8 meshconf_congest;
-+	u8 meshconf_synch;
-+	u8 meshconf_auth;
-+	u8 meshconf_form;
-+	u8 meshconf_cap;
++struct ieee80211_mcs_info {
++	u8 rx_mask[IEEE80211_HT_MCS_MASK_LEN];
++	__le16 rx_highest;
++	u8 tx_params;
++	u8 reserved[3];
 +} __packed;
 +
-+/**
-+ * enum mesh_config_capab_flags - Mesh Configuration IE capability field flags
-+ *
-+ * @IEEE80211_MESHCONF_CAPAB_ACCEPT_PLINKS: STA is willing to establish
-+ *	additional mesh peerings with other mesh STAs
-+ * @IEEE80211_MESHCONF_CAPAB_FORWARDING: the STA forwards MSDUs
-+ * @IEEE80211_MESHCONF_CAPAB_TBTT_ADJUSTING: TBTT adjustment procedure
-+ *	is ongoing
-+ * @IEEE80211_MESHCONF_CAPAB_POWER_SAVE_LEVEL: STA is in deep sleep mode or has
-+ *	neighbors in deep sleep mode
-+ *
-+ * Enumerates the "Mesh Capability" as described in IEEE Std
-+ * 802.11-2020 section 9.4.2.97.7.
-+ */
-+enum mesh_config_capab_flags {
-+	IEEE80211_MESHCONF_CAPAB_ACCEPT_PLINKS		= 0x01,
-+	IEEE80211_MESHCONF_CAPAB_FORWARDING		= 0x08,
-+	IEEE80211_MESHCONF_CAPAB_TBTT_ADJUSTING		= 0x20,
-+	IEEE80211_MESHCONF_CAPAB_POWER_SAVE_LEVEL	= 0x40,
-+};
++/* 802.11n HT capability MSC set */
++#define IEEE80211_HT_MCS_RX_HIGHEST_MASK	0x3ff
++#define IEEE80211_HT_MCS_TX_DEFINED		0x01
++#define IEEE80211_HT_MCS_TX_RX_DIFF		0x02
++/* value 0 == 1 stream etc */
++#define IEEE80211_HT_MCS_TX_MAX_STREAMS_MASK	0x0C
++#define IEEE80211_HT_MCS_TX_MAX_STREAMS_SHIFT	2
++#define		IEEE80211_HT_MCS_TX_MAX_STREAMS	4
++#define IEEE80211_HT_MCS_TX_UNEQUAL_MODULATION	0x10
 +
-+#define IEEE80211_MESHCONF_FORM_CONNECTED_TO_GATE 0x1
++#define IEEE80211_HT_MCS_CHAINS(mcs) ((mcs) == 32 ? 1 : (1 + ((mcs) >> 3)))
 +
 +/*
-+ * mesh channel switch parameters element's flag indicator
-+ *
++ * 802.11n D5.0 20.3.5 / 20.6 says:
++ * - indices 0 to 7 and 32 are single spatial stream
++ * - 8 to 31 are multiple spatial streams using equal modulation
++ *   [8..15 for two streams, 16..23 for three and 24..31 for four]
++ * - remainder are multiple spatial streams using unequal modulation
 + */
-+#define WLAN_EID_CHAN_SWITCH_PARAM_TX_RESTRICT BIT(0)
-+#define WLAN_EID_CHAN_SWITCH_PARAM_INITIATOR BIT(1)
-+#define WLAN_EID_CHAN_SWITCH_PARAM_REASON BIT(2)
++#define IEEE80211_HT_MCS_UNEQUAL_MODULATION_START 33
++#define IEEE80211_HT_MCS_UNEQUAL_MODULATION_START_BYTE \
++	(IEEE80211_HT_MCS_UNEQUAL_MODULATION_START / 8)
 +
 +/**
-+ * struct ieee80211_rann_ie - RANN (root announcement) element
-+ * @rann_flags: Flags
-+ * @rann_hopcount: Hop Count
-+ * @rann_ttl: Element TTL
-+ * @rann_addr: Root Mesh STA Address
-+ * @rann_seq: HWMP Sequence Number
-+ * @rann_interval: Interval
-+ * @rann_metric: Metric
++ * struct ieee80211_ht_cap - HT capabilities element
++ * @cap_info: HT Capability Information
++ * @ampdu_params_info: A-MPDU Parameters
++ * @mcs: Supported MCS Set
++ * @extended_ht_cap_info: HT Extended Capabilities
++ * @tx_BF_cap_info: Transmit Beamforming Capabilities
++ * @antenna_selection_info: ASEL Capability
 + *
-+ * This structure represents the payload of the "RANN element" as
-+ * described in IEEE Std 802.11-2020 section 9.4.2.111.
++ * This structure represents the payload of the "HT Capabilities
++ * element" as described in IEEE Std 802.11-2020 section 9.4.2.55.
 + */
-+struct ieee80211_rann_ie {
-+	u8 rann_flags;
-+	u8 rann_hopcount;
-+	u8 rann_ttl;
-+	u8 rann_addr[ETH_ALEN];
-+	__le32 rann_seq;
-+	__le32 rann_interval;
-+	__le32 rann_metric;
++struct ieee80211_ht_cap {
++	__le16 cap_info;
++	u8 ampdu_params_info;
++
++	/* 16 bytes MCS information */
++	struct ieee80211_mcs_info mcs;
++
++	__le16 extended_ht_cap_info;
++	__le32 tx_BF_cap_info;
++	u8 antenna_selection_info;
 +} __packed;
 +
-+enum ieee80211_rann_flags {
-+	RANN_FLAG_IS_GATE = 1 << 0,
++/* 802.11n HT capabilities masks (for cap_info) */
++#define IEEE80211_HT_CAP_LDPC_CODING		0x0001
++#define IEEE80211_HT_CAP_SUP_WIDTH_20_40	0x0002
++#define IEEE80211_HT_CAP_SM_PS			0x000C
++#define		IEEE80211_HT_CAP_SM_PS_SHIFT	2
++#define IEEE80211_HT_CAP_GRN_FLD		0x0010
++#define IEEE80211_HT_CAP_SGI_20			0x0020
++#define IEEE80211_HT_CAP_SGI_40			0x0040
++#define IEEE80211_HT_CAP_TX_STBC		0x0080
++#define IEEE80211_HT_CAP_RX_STBC		0x0300
++#define		IEEE80211_HT_CAP_RX_STBC_SHIFT	8
++#define IEEE80211_HT_CAP_DELAY_BA		0x0400
++#define IEEE80211_HT_CAP_MAX_AMSDU		0x0800
++#define IEEE80211_HT_CAP_DSSSCCK40		0x1000
++#define IEEE80211_HT_CAP_RESERVED		0x2000
++#define IEEE80211_HT_CAP_40MHZ_INTOLERANT	0x4000
++#define IEEE80211_HT_CAP_LSIG_TXOP_PROT		0x8000
++
++/* 802.11n HT extended capabilities masks (for extended_ht_cap_info) */
++#define IEEE80211_HT_EXT_CAP_PCO		0x0001
++#define IEEE80211_HT_EXT_CAP_PCO_TIME		0x0006
++#define		IEEE80211_HT_EXT_CAP_PCO_TIME_SHIFT	1
++#define IEEE80211_HT_EXT_CAP_MCS_FB		0x0300
++#define		IEEE80211_HT_EXT_CAP_MCS_FB_SHIFT	8
++#define IEEE80211_HT_EXT_CAP_HTC_SUP		0x0400
++#define IEEE80211_HT_EXT_CAP_RD_RESPONDER	0x0800
++
++/* 802.11n HT capability AMPDU settings (for ampdu_params_info) */
++#define IEEE80211_HT_AMPDU_PARM_FACTOR		0x03
++#define IEEE80211_HT_AMPDU_PARM_DENSITY		0x1C
++#define		IEEE80211_HT_AMPDU_PARM_DENSITY_SHIFT	2
++
++/*
++ * Maximum length of AMPDU that the STA can receive in high-throughput (HT).
++ * Length = 2 ^ (13 + max_ampdu_length_exp) - 1 (octets)
++ */
++enum ieee80211_max_ampdu_length_exp {
++	IEEE80211_HT_MAX_AMPDU_8K = 0,
++	IEEE80211_HT_MAX_AMPDU_16K = 1,
++	IEEE80211_HT_MAX_AMPDU_32K = 2,
++	IEEE80211_HT_MAX_AMPDU_64K = 3
 +};
 +
-+/* Mesh action codes */
-+enum ieee80211_mesh_actioncode {
-+	WLAN_MESH_ACTION_LINK_METRIC_REPORT,
-+	WLAN_MESH_ACTION_HWMP_PATH_SELECTION,
-+	WLAN_MESH_ACTION_GATE_ANNOUNCEMENT,
-+	WLAN_MESH_ACTION_CONGESTION_CONTROL_NOTIFICATION,
-+	WLAN_MESH_ACTION_MCCA_SETUP_REQUEST,
-+	WLAN_MESH_ACTION_MCCA_SETUP_REPLY,
-+	WLAN_MESH_ACTION_MCCA_ADVERTISEMENT_REQUEST,
-+	WLAN_MESH_ACTION_MCCA_ADVERTISEMENT,
-+	WLAN_MESH_ACTION_MCCA_TEARDOWN,
-+	WLAN_MESH_ACTION_TBTT_ADJUSTMENT_REQUEST,
-+	WLAN_MESH_ACTION_TBTT_ADJUSTMENT_RESPONSE,
++#define IEEE80211_HT_MAX_AMPDU_FACTOR 13
++
++/* Minimum MPDU start spacing */
++enum ieee80211_min_mpdu_spacing {
++	IEEE80211_HT_MPDU_DENSITY_NONE = 0,	/* No restriction */
++	IEEE80211_HT_MPDU_DENSITY_0_25 = 1,	/* 1/4 usec */
++	IEEE80211_HT_MPDU_DENSITY_0_5 = 2,	/* 1/2 usec */
++	IEEE80211_HT_MPDU_DENSITY_1 = 3,	/* 1 usec */
++	IEEE80211_HT_MPDU_DENSITY_2 = 4,	/* 2 usec */
++	IEEE80211_HT_MPDU_DENSITY_4 = 5,	/* 4 usec */
++	IEEE80211_HT_MPDU_DENSITY_8 = 6,	/* 8 usec */
++	IEEE80211_HT_MPDU_DENSITY_16 = 7	/* 16 usec */
 +};
 +
 +/**
-+ * enum ieee80211_mesh_sync_method - mesh synchronization method identifier
++ * struct ieee80211_ht_operation - HT operation IE
++ * @primary_chan: Primary Channel
++ * @ht_param: HT Operation Information parameters
++ * @operation_mode: HT Operation Information operation mode
++ * @stbc_param: HT Operation Information STBC params
++ * @basic_set: Basic HT-MCS Set
 + *
-+ * @IEEE80211_SYNC_METHOD_NEIGHBOR_OFFSET: the default synchronization method
-+ * @IEEE80211_SYNC_METHOD_VENDOR: a vendor specific synchronization method
-+ *	that will be specified in a vendor specific information element
++ * This structure represents the payload of the "HT Operation
++ * element" as described in IEEE Std 802.11-2020 section 9.4.2.56.
 + */
-+enum ieee80211_mesh_sync_method {
-+	IEEE80211_SYNC_METHOD_NEIGHBOR_OFFSET = 1,
-+	IEEE80211_SYNC_METHOD_VENDOR = 255,
++struct ieee80211_ht_operation {
++	u8 primary_chan;
++	u8 ht_param;
++	__le16 operation_mode;
++	__le16 stbc_param;
++	u8 basic_set[16];
++} __packed;
++
++/* for ht_param */
++#define IEEE80211_HT_PARAM_CHA_SEC_OFFSET		0x03
++#define		IEEE80211_HT_PARAM_CHA_SEC_NONE		0x00
++#define		IEEE80211_HT_PARAM_CHA_SEC_ABOVE	0x01
++#define		IEEE80211_HT_PARAM_CHA_SEC_BELOW	0x03
++#define IEEE80211_HT_PARAM_CHAN_WIDTH_ANY		0x04
++#define IEEE80211_HT_PARAM_RIFS_MODE			0x08
++
++/* for operation_mode */
++#define IEEE80211_HT_OP_MODE_PROTECTION			0x0003
++#define		IEEE80211_HT_OP_MODE_PROTECTION_NONE		0
++#define		IEEE80211_HT_OP_MODE_PROTECTION_NONMEMBER	1
++#define		IEEE80211_HT_OP_MODE_PROTECTION_20MHZ		2
++#define		IEEE80211_HT_OP_MODE_PROTECTION_NONHT_MIXED	3
++#define IEEE80211_HT_OP_MODE_NON_GF_STA_PRSNT		0x0004
++#define IEEE80211_HT_OP_MODE_NON_HT_STA_PRSNT		0x0010
++#define IEEE80211_HT_OP_MODE_CCFS2_SHIFT		5
++#define IEEE80211_HT_OP_MODE_CCFS2_MASK			0x1fe0
++
++/* for stbc_param */
++#define IEEE80211_HT_STBC_PARAM_DUAL_BEACON		0x0040
++#define IEEE80211_HT_STBC_PARAM_DUAL_CTS_PROT		0x0080
++#define IEEE80211_HT_STBC_PARAM_STBC_BEACON		0x0100
++#define IEEE80211_HT_STBC_PARAM_LSIG_TXOP_FULLPROT	0x0200
++#define IEEE80211_HT_STBC_PARAM_PCO_ACTIVE		0x0400
++#define IEEE80211_HT_STBC_PARAM_PCO_PHASE		0x0800
++
++
++/* block-ack parameters */
++#define IEEE80211_ADDBA_PARAM_AMSDU_MASK 0x0001
++#define IEEE80211_ADDBA_PARAM_POLICY_MASK 0x0002
++#define IEEE80211_ADDBA_PARAM_TID_MASK 0x003C
++#define IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK 0xFFC0
++#define IEEE80211_DELBA_PARAM_TID_MASK 0xF000
++#define IEEE80211_DELBA_PARAM_INITIATOR_MASK 0x0800
++
++/*
++ * A-MPDU buffer sizes
++ * According to HT size varies from 8 to 64 frames
++ * HE adds the ability to have up to 256 frames.
++ * EHT adds the ability to have up to 1K frames.
++ */
++#define IEEE80211_MIN_AMPDU_BUF		0x8
++#define IEEE80211_MAX_AMPDU_BUF_HT	0x40
++#define IEEE80211_MAX_AMPDU_BUF_HE	0x100
++#define IEEE80211_MAX_AMPDU_BUF_EHT	0x400
++
++
++/* Spatial Multiplexing Power Save Modes (for capability) */
++#define WLAN_HT_CAP_SM_PS_STATIC	0
++#define WLAN_HT_CAP_SM_PS_DYNAMIC	1
++#define WLAN_HT_CAP_SM_PS_INVALID	2
++#define WLAN_HT_CAP_SM_PS_DISABLED	3
++
++/* for SM power control field lower two bits */
++#define WLAN_HT_SMPS_CONTROL_DISABLED	0
++#define WLAN_HT_SMPS_CONTROL_STATIC	1
++#define WLAN_HT_SMPS_CONTROL_DYNAMIC	3
++
++/* HT action codes */
++enum ieee80211_ht_actioncode {
++	WLAN_HT_ACTION_NOTIFY_CHANWIDTH = 0,
++	WLAN_HT_ACTION_SMPS = 1,
++	WLAN_HT_ACTION_PSMP = 2,
++	WLAN_HT_ACTION_PCO_PHASE = 3,
++	WLAN_HT_ACTION_CSI = 4,
++	WLAN_HT_ACTION_NONCOMPRESSED_BF = 5,
++	WLAN_HT_ACTION_COMPRESSED_BF = 6,
++	WLAN_HT_ACTION_ASEL_IDX_FEEDBACK = 7,
 +};
 +
-+/**
-+ * enum ieee80211_mesh_path_protocol - mesh path selection protocol identifier
-+ *
-+ * @IEEE80211_PATH_PROTOCOL_HWMP: the default path selection protocol
-+ * @IEEE80211_PATH_PROTOCOL_VENDOR: a vendor specific protocol that will
-+ *	be specified in a vendor specific information element
-+ */
-+enum ieee80211_mesh_path_protocol {
-+	IEEE80211_PATH_PROTOCOL_HWMP = 1,
-+	IEEE80211_PATH_PROTOCOL_VENDOR = 255,
++/* BACK action code */
++enum ieee80211_back_actioncode {
++	WLAN_ACTION_ADDBA_REQ = 0,
++	WLAN_ACTION_ADDBA_RESP = 1,
++	WLAN_ACTION_DELBA = 2,
 +};
 +
-+/**
-+ * enum ieee80211_mesh_path_metric - mesh path selection metric identifier
-+ *
-+ * @IEEE80211_PATH_METRIC_AIRTIME: the default path selection metric
-+ * @IEEE80211_PATH_METRIC_VENDOR: a vendor specific metric that will be
-+ *	specified in a vendor specific information element
-+ */
-+enum ieee80211_mesh_path_metric {
-+	IEEE80211_PATH_METRIC_AIRTIME = 1,
-+	IEEE80211_PATH_METRIC_VENDOR = 255,
++/* BACK (block-ack) parties */
++enum ieee80211_back_parties {
++	WLAN_BACK_RECIPIENT = 0,
++	WLAN_BACK_INITIATOR = 1,
 +};
 +
-+/**
-+ * enum ieee80211_root_mode_identifier - root mesh STA mode identifier
-+ *
-+ * These attribute are used by dot11MeshHWMPRootMode to set root mesh STA mode
-+ *
-+ * @IEEE80211_ROOTMODE_NO_ROOT: the mesh STA is not a root mesh STA (default)
-+ * @IEEE80211_ROOTMODE_ROOT: the mesh STA is a root mesh STA if greater than
-+ *	this value
-+ * @IEEE80211_PROACTIVE_PREQ_NO_PREP: the mesh STA is a root mesh STA supports
-+ *	the proactive PREQ with proactive PREP subfield set to 0
-+ * @IEEE80211_PROACTIVE_PREQ_WITH_PREP: the mesh STA is a root mesh STA
-+ *	supports the proactive PREQ with proactive PREP subfield set to 1
-+ * @IEEE80211_PROACTIVE_RANN: the mesh STA is a root mesh STA supports
-+ *	the proactive RANN
-+ */
-+enum ieee80211_root_mode_identifier {
-+	IEEE80211_ROOTMODE_NO_ROOT = 0,
-+	IEEE80211_ROOTMODE_ROOT = 1,
-+	IEEE80211_PROACTIVE_PREQ_NO_PREP = 2,
-+	IEEE80211_PROACTIVE_PREQ_WITH_PREP = 3,
-+	IEEE80211_PROACTIVE_RANN = 4,
-+};
-+
-+#endif /* LINUX_IEEE80211_MESH_H */
++#endif /* LINUX_IEEE80211_HT_H */
 diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index ddff9102f633..fe78b150ab45 100644
+index fe78b150ab45..0a9b4a8025cd 100644
 --- a/include/linux/ieee80211.h
 +++ b/include/linux/ieee80211.h
-@@ -252,8 +252,6 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
+@@ -239,13 +239,6 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
+ /* 30 byte 4 addr hdr, 2 byte QoS, 2304 byte MSDU, 12 byte crypt, 4 byte FCS */
+ #define IEEE80211_MAX_FRAME_LEN		2352
  
- #define IEEE80211_MAX_SSID_LEN		32
+-/* Maximal size of an A-MSDU that can be transported in a HT BA session */
+-#define IEEE80211_MAX_MPDU_LEN_HT_BA		4095
+-
+-/* Maximal size of an A-MSDU */
+-#define IEEE80211_MAX_MPDU_LEN_HT_3839		3839
+-#define IEEE80211_MAX_MPDU_LEN_HT_7935		7935
+-
+ #define IEEE80211_MAX_MPDU_LEN_VHT_3895		3895
+ #define IEEE80211_MAX_MPDU_LEN_VHT_7991		7991
+ #define IEEE80211_MAX_MPDU_LEN_VHT_11454	11454
+@@ -302,8 +295,6 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
+ #define IEEE80211_WMM_IE_STA_QOSINFO_SP_MASK	0x03
+ #define IEEE80211_WMM_IE_STA_QOSINFO_SP_SHIFT	5
  
--#define IEEE80211_MAX_MESH_ID_LEN	32
+-#define IEEE80211_HT_CTL_LEN		4
 -
- #define IEEE80211_FIRST_TSPEC_TSID	8
- #define IEEE80211_NUM_TIDS		16
- 
-@@ -881,40 +879,6 @@ static inline u16 ieee80211_get_sn(struct ieee80211_hdr *hdr)
- 	return le16_get_bits(hdr->seq_ctrl, IEEE80211_SCTL_SEQ);
- }
- 
--struct ieee80211s_hdr {
--	u8 flags;
--	u8 ttl;
--	__le32 seqnum;
--	u8 eaddr1[ETH_ALEN];
--	u8 eaddr2[ETH_ALEN];
--} __packed __aligned(2);
--
--/* Mesh flags */
--#define MESH_FLAGS_AE_A4 	0x1
--#define MESH_FLAGS_AE_A5_A6	0x2
--#define MESH_FLAGS_AE		0x3
--#define MESH_FLAGS_PS_DEEP	0x4
--
--/**
-- * enum ieee80211_preq_flags - mesh PREQ element flags
-- *
-- * @IEEE80211_PREQ_PROACTIVE_PREP_FLAG: proactive PREP subfield
-- */
--enum ieee80211_preq_flags {
--	IEEE80211_PREQ_PROACTIVE_PREP_FLAG	= 1<<2,
--};
--
--/**
-- * enum ieee80211_preq_target_flags - mesh PREQ element per target flags
-- *
-- * @IEEE80211_PREQ_TO_FLAG: target only subfield
-- * @IEEE80211_PREQ_USN_FLAG: unknown target HWMP sequence number subfield
-- */
--enum ieee80211_preq_target_flags {
--	IEEE80211_PREQ_TO_FLAG	= 1<<0,
--	IEEE80211_PREQ_USN_FLAG	= 1<<2,
--};
--
- /**
-  * struct ieee80211_quiet_ie - Quiet element
-  * @count: Quiet Count
-@@ -993,24 +957,6 @@ struct ieee80211_sec_chan_offs_ie {
- 	u8 sec_chan_offs;
- } __packed;
- 
--/**
-- * struct ieee80211_mesh_chansw_params_ie - mesh channel switch parameters IE
-- * @mesh_ttl: Time To Live
-- * @mesh_flags: Flags
-- * @mesh_reason: Reason Code
-- * @mesh_pre_value: Precedence Value
-- *
-- * This structure represents the payload of the "Mesh Channel Switch
-- * Parameters element" as described in IEEE Std 802.11-2020 section
-- * 9.4.2.102.
-- */
--struct ieee80211_mesh_chansw_params_ie {
--	u8 mesh_ttl;
--	u8 mesh_flags;
--	__le16 mesh_reason;
--	__le16 mesh_pre_value;
--} __packed;
--
- /**
-  * struct ieee80211_wide_bw_chansw_ie - wide bandwidth channel switch IE
-  * @new_channel_width: New Channel Width
-@@ -1051,87 +997,6 @@ struct ieee80211_tim_ie {
+ /* trigger type within common_info of trigger frame */
+ #define IEEE80211_TRIGGER_TYPE_MASK		0xf
+ #define IEEE80211_TRIGGER_TYPE_BASIC		0x0
+@@ -997,11 +988,6 @@ struct ieee80211_tim_ie {
  	};
  } __packed;
  
--/**
-- * struct ieee80211_meshconf_ie - Mesh Configuration element
-- * @meshconf_psel: Active Path Selection Protocol Identifier
-- * @meshconf_pmetric: Active Path Selection Metric Identifier
-- * @meshconf_congest: Congestion Control Mode Identifier
-- * @meshconf_synch: Synchronization Method Identifier
-- * @meshconf_auth: Authentication Protocol Identifier
-- * @meshconf_form: Mesh Formation Info
-- * @meshconf_cap: Mesh Capability (see &enum mesh_config_capab_flags)
-- *
-- * This structure represents the payload of the "Mesh Configuration
-- * element" as described in IEEE Std 802.11-2020 section 9.4.2.97.
-- */
--struct ieee80211_meshconf_ie {
--	u8 meshconf_psel;
--	u8 meshconf_pmetric;
--	u8 meshconf_congest;
--	u8 meshconf_synch;
--	u8 meshconf_auth;
--	u8 meshconf_form;
--	u8 meshconf_cap;
--} __packed;
--
--/**
-- * enum mesh_config_capab_flags - Mesh Configuration IE capability field flags
-- *
-- * @IEEE80211_MESHCONF_CAPAB_ACCEPT_PLINKS: STA is willing to establish
-- *	additional mesh peerings with other mesh STAs
-- * @IEEE80211_MESHCONF_CAPAB_FORWARDING: the STA forwards MSDUs
-- * @IEEE80211_MESHCONF_CAPAB_TBTT_ADJUSTING: TBTT adjustment procedure
-- *	is ongoing
-- * @IEEE80211_MESHCONF_CAPAB_POWER_SAVE_LEVEL: STA is in deep sleep mode or has
-- *	neighbors in deep sleep mode
-- *
-- * Enumerates the "Mesh Capability" as described in IEEE Std
-- * 802.11-2020 section 9.4.2.97.7.
-- */
--enum mesh_config_capab_flags {
--	IEEE80211_MESHCONF_CAPAB_ACCEPT_PLINKS		= 0x01,
--	IEEE80211_MESHCONF_CAPAB_FORWARDING		= 0x08,
--	IEEE80211_MESHCONF_CAPAB_TBTT_ADJUSTING		= 0x20,
--	IEEE80211_MESHCONF_CAPAB_POWER_SAVE_LEVEL	= 0x40,
+-enum ieee80211_ht_chanwidth_values {
+-	IEEE80211_HT_CHANWIDTH_20MHZ = 0,
+-	IEEE80211_HT_CHANWIDTH_ANY = 1,
 -};
 -
--#define IEEE80211_MESHCONF_FORM_CONNECTED_TO_GATE 0x1
+ /**
+  * enum ieee80211_vht_opmode_bits - VHT operating mode field bits
+  * @IEEE80211_OPMODE_NOTIF_CHANWIDTH_MASK: channel width mask
+@@ -1677,146 +1663,6 @@ struct ieee80211_p2p_noa_attr {
+ #define IEEE80211_P2P_OPPPS_ENABLE_BIT		BIT(7)
+ #define IEEE80211_P2P_OPPPS_CTWINDOW_MASK	0x7F
+ 
+-/**
+- * struct ieee80211_bar - Block Ack Request frame format
+- * @frame_control: Frame Control
+- * @duration: Duration
+- * @ra: RA
+- * @ta: TA
+- * @control: BAR Control
+- * @start_seq_num: Starting Sequence Number (see Figure 9-37)
+- *
+- * This structure represents the "BlockAckReq frame format"
+- * as described in IEEE Std 802.11-2020 section 9.3.1.7.
+-*/
+-struct ieee80211_bar {
+-	__le16 frame_control;
+-	__le16 duration;
+-	__u8 ra[ETH_ALEN];
+-	__u8 ta[ETH_ALEN];
+-	__le16 control;
+-	__le16 start_seq_num;
+-} __packed;
+-
+-/* 802.11 BAR control masks */
+-#define IEEE80211_BAR_CTRL_ACK_POLICY_NORMAL	0x0000
+-#define IEEE80211_BAR_CTRL_MULTI_TID		0x0002
+-#define IEEE80211_BAR_CTRL_CBMTID_COMPRESSED_BA	0x0004
+-#define IEEE80211_BAR_CTRL_TID_INFO_MASK	0xf000
+-#define IEEE80211_BAR_CTRL_TID_INFO_SHIFT	12
+-
+-#define IEEE80211_HT_MCS_MASK_LEN		10
+-
+-/**
+- * struct ieee80211_mcs_info - Supported MCS Set field
+- * @rx_mask: RX mask
+- * @rx_highest: highest supported RX rate. If set represents
+- *	the highest supported RX data rate in units of 1 Mbps.
+- *	If this field is 0 this value should not be used to
+- *	consider the highest RX data rate supported.
+- * @tx_params: TX parameters
+- * @reserved: Reserved bits
+- *
+- * This structure represents the "Supported MCS Set field" as
+- * described in IEEE Std 802.11-2020 section 9.4.2.55.4.
+- */
+-struct ieee80211_mcs_info {
+-	u8 rx_mask[IEEE80211_HT_MCS_MASK_LEN];
+-	__le16 rx_highest;
+-	u8 tx_params;
+-	u8 reserved[3];
+-} __packed;
+-
+-/* 802.11n HT capability MSC set */
+-#define IEEE80211_HT_MCS_RX_HIGHEST_MASK	0x3ff
+-#define IEEE80211_HT_MCS_TX_DEFINED		0x01
+-#define IEEE80211_HT_MCS_TX_RX_DIFF		0x02
+-/* value 0 == 1 stream etc */
+-#define IEEE80211_HT_MCS_TX_MAX_STREAMS_MASK	0x0C
+-#define IEEE80211_HT_MCS_TX_MAX_STREAMS_SHIFT	2
+-#define		IEEE80211_HT_MCS_TX_MAX_STREAMS	4
+-#define IEEE80211_HT_MCS_TX_UNEQUAL_MODULATION	0x10
+-
+-#define IEEE80211_HT_MCS_CHAINS(mcs) ((mcs) == 32 ? 1 : (1 + ((mcs) >> 3)))
 -
 -/*
-- * mesh channel switch parameters element's flag indicator
-- *
+- * 802.11n D5.0 20.3.5 / 20.6 says:
+- * - indices 0 to 7 and 32 are single spatial stream
+- * - 8 to 31 are multiple spatial streams using equal modulation
+- *   [8..15 for two streams, 16..23 for three and 24..31 for four]
+- * - remainder are multiple spatial streams using unequal modulation
 - */
--#define WLAN_EID_CHAN_SWITCH_PARAM_TX_RESTRICT BIT(0)
--#define WLAN_EID_CHAN_SWITCH_PARAM_INITIATOR BIT(1)
--#define WLAN_EID_CHAN_SWITCH_PARAM_REASON BIT(2)
+-#define IEEE80211_HT_MCS_UNEQUAL_MODULATION_START 33
+-#define IEEE80211_HT_MCS_UNEQUAL_MODULATION_START_BYTE \
+-	(IEEE80211_HT_MCS_UNEQUAL_MODULATION_START / 8)
 -
 -/**
-- * struct ieee80211_rann_ie - RANN (root announcement) element
-- * @rann_flags: Flags
-- * @rann_hopcount: Hop Count
-- * @rann_ttl: Element TTL
-- * @rann_addr: Root Mesh STA Address
-- * @rann_seq: HWMP Sequence Number
-- * @rann_interval: Interval
-- * @rann_metric: Metric
+- * struct ieee80211_ht_cap - HT capabilities element
+- * @cap_info: HT Capability Information
+- * @ampdu_params_info: A-MPDU Parameters
+- * @mcs: Supported MCS Set
+- * @extended_ht_cap_info: HT Extended Capabilities
+- * @tx_BF_cap_info: Transmit Beamforming Capabilities
+- * @antenna_selection_info: ASEL Capability
 - *
-- * This structure represents the payload of the "RANN element" as
-- * described in IEEE Std 802.11-2020 section 9.4.2.111.
+- * This structure represents the payload of the "HT Capabilities
+- * element" as described in IEEE Std 802.11-2020 section 9.4.2.55.
 - */
--struct ieee80211_rann_ie {
--	u8 rann_flags;
--	u8 rann_hopcount;
--	u8 rann_ttl;
--	u8 rann_addr[ETH_ALEN];
--	__le32 rann_seq;
--	__le32 rann_interval;
--	__le32 rann_metric;
+-struct ieee80211_ht_cap {
+-	__le16 cap_info;
+-	u8 ampdu_params_info;
+-
+-	/* 16 bytes MCS information */
+-	struct ieee80211_mcs_info mcs;
+-
+-	__le16 extended_ht_cap_info;
+-	__le32 tx_BF_cap_info;
+-	u8 antenna_selection_info;
 -} __packed;
 -
--enum ieee80211_rann_flags {
--	RANN_FLAG_IS_GATE = 1 << 0,
--};
+-/* 802.11n HT capabilities masks (for cap_info) */
+-#define IEEE80211_HT_CAP_LDPC_CODING		0x0001
+-#define IEEE80211_HT_CAP_SUP_WIDTH_20_40	0x0002
+-#define IEEE80211_HT_CAP_SM_PS			0x000C
+-#define		IEEE80211_HT_CAP_SM_PS_SHIFT	2
+-#define IEEE80211_HT_CAP_GRN_FLD		0x0010
+-#define IEEE80211_HT_CAP_SGI_20			0x0020
+-#define IEEE80211_HT_CAP_SGI_40			0x0040
+-#define IEEE80211_HT_CAP_TX_STBC		0x0080
+-#define IEEE80211_HT_CAP_RX_STBC		0x0300
+-#define		IEEE80211_HT_CAP_RX_STBC_SHIFT	8
+-#define IEEE80211_HT_CAP_DELAY_BA		0x0400
+-#define IEEE80211_HT_CAP_MAX_AMSDU		0x0800
+-#define IEEE80211_HT_CAP_DSSSCCK40		0x1000
+-#define IEEE80211_HT_CAP_RESERVED		0x2000
+-#define IEEE80211_HT_CAP_40MHZ_INTOLERANT	0x4000
+-#define IEEE80211_HT_CAP_LSIG_TXOP_PROT		0x8000
 -
- enum ieee80211_ht_chanwidth_values {
- 	IEEE80211_HT_CHANWIDTH_20MHZ = 0,
- 	IEEE80211_HT_CHANWIDTH_ANY = 1,
-@@ -3971,21 +3836,6 @@ enum ieee80211_self_protected_actioncode {
- 	WLAN_SP_MGK_ACK = 5,
- };
- 
--/* Mesh action codes */
--enum ieee80211_mesh_actioncode {
--	WLAN_MESH_ACTION_LINK_METRIC_REPORT,
--	WLAN_MESH_ACTION_HWMP_PATH_SELECTION,
--	WLAN_MESH_ACTION_GATE_ANNOUNCEMENT,
--	WLAN_MESH_ACTION_CONGESTION_CONTROL_NOTIFICATION,
--	WLAN_MESH_ACTION_MCCA_SETUP_REQUEST,
--	WLAN_MESH_ACTION_MCCA_SETUP_REPLY,
--	WLAN_MESH_ACTION_MCCA_ADVERTISEMENT_REQUEST,
--	WLAN_MESH_ACTION_MCCA_ADVERTISEMENT,
--	WLAN_MESH_ACTION_MCCA_TEARDOWN,
--	WLAN_MESH_ACTION_TBTT_ADJUSTMENT_REQUEST,
--	WLAN_MESH_ACTION_TBTT_ADJUSTMENT_RESPONSE,
--};
+-/* 802.11n HT extended capabilities masks (for extended_ht_cap_info) */
+-#define IEEE80211_HT_EXT_CAP_PCO		0x0001
+-#define IEEE80211_HT_EXT_CAP_PCO_TIME		0x0006
+-#define		IEEE80211_HT_EXT_CAP_PCO_TIME_SHIFT	1
+-#define IEEE80211_HT_EXT_CAP_MCS_FB		0x0300
+-#define		IEEE80211_HT_EXT_CAP_MCS_FB_SHIFT	8
+-#define IEEE80211_HT_EXT_CAP_HTC_SUP		0x0400
+-#define IEEE80211_HT_EXT_CAP_RD_RESPONDER	0x0800
 -
- /* Unprotected WNM action codes */
- enum ieee80211_unprotected_wnm_actioncode {
- 	WLAN_UNPROTECTED_WNM_ACTION_TIM = 0,
-@@ -4198,65 +4048,6 @@ enum ieee80211_tdls_actioncode {
- /* BSS Coex IE information field bits */
- #define WLAN_BSS_COEX_INFORMATION_REQUEST	BIT(0)
- 
--/**
-- * enum ieee80211_mesh_sync_method - mesh synchronization method identifier
-- *
-- * @IEEE80211_SYNC_METHOD_NEIGHBOR_OFFSET: the default synchronization method
-- * @IEEE80211_SYNC_METHOD_VENDOR: a vendor specific synchronization method
-- *	that will be specified in a vendor specific information element
+-/* 802.11n HT capability AMPDU settings (for ampdu_params_info) */
+-#define IEEE80211_HT_AMPDU_PARM_FACTOR		0x03
+-#define IEEE80211_HT_AMPDU_PARM_DENSITY		0x1C
+-#define		IEEE80211_HT_AMPDU_PARM_DENSITY_SHIFT	2
+-
+-/*
+- * Maximum length of AMPDU that the STA can receive in high-throughput (HT).
+- * Length = 2 ^ (13 + max_ampdu_length_exp) - 1 (octets)
 - */
--enum ieee80211_mesh_sync_method {
--	IEEE80211_SYNC_METHOD_NEIGHBOR_OFFSET = 1,
--	IEEE80211_SYNC_METHOD_VENDOR = 255,
--};
--
--/**
-- * enum ieee80211_mesh_path_protocol - mesh path selection protocol identifier
-- *
-- * @IEEE80211_PATH_PROTOCOL_HWMP: the default path selection protocol
-- * @IEEE80211_PATH_PROTOCOL_VENDOR: a vendor specific protocol that will
-- *	be specified in a vendor specific information element
-- */
--enum ieee80211_mesh_path_protocol {
--	IEEE80211_PATH_PROTOCOL_HWMP = 1,
--	IEEE80211_PATH_PROTOCOL_VENDOR = 255,
--};
--
--/**
-- * enum ieee80211_mesh_path_metric - mesh path selection metric identifier
-- *
-- * @IEEE80211_PATH_METRIC_AIRTIME: the default path selection metric
-- * @IEEE80211_PATH_METRIC_VENDOR: a vendor specific metric that will be
-- *	specified in a vendor specific information element
-- */
--enum ieee80211_mesh_path_metric {
--	IEEE80211_PATH_METRIC_AIRTIME = 1,
--	IEEE80211_PATH_METRIC_VENDOR = 255,
--};
--
--/**
-- * enum ieee80211_root_mode_identifier - root mesh STA mode identifier
-- *
-- * These attribute are used by dot11MeshHWMPRootMode to set root mesh STA mode
-- *
-- * @IEEE80211_ROOTMODE_NO_ROOT: the mesh STA is not a root mesh STA (default)
-- * @IEEE80211_ROOTMODE_ROOT: the mesh STA is a root mesh STA if greater than
-- *	this value
-- * @IEEE80211_PROACTIVE_PREQ_NO_PREP: the mesh STA is a root mesh STA supports
-- *	the proactive PREQ with proactive PREP subfield set to 0
-- * @IEEE80211_PROACTIVE_PREQ_WITH_PREP: the mesh STA is a root mesh STA
-- *	supports the proactive PREQ with proactive PREP subfield set to 1
-- * @IEEE80211_PROACTIVE_RANN: the mesh STA is a root mesh STA supports
-- *	the proactive RANN
-- */
--enum ieee80211_root_mode_identifier {
--	IEEE80211_ROOTMODE_NO_ROOT = 0,
--	IEEE80211_ROOTMODE_ROOT = 1,
--	IEEE80211_PROACTIVE_PREQ_NO_PREP = 2,
--	IEEE80211_PROACTIVE_PREQ_WITH_PREP = 3,
--	IEEE80211_PROACTIVE_RANN = 4,
+-enum ieee80211_max_ampdu_length_exp {
+-	IEEE80211_HT_MAX_AMPDU_8K = 0,
+-	IEEE80211_HT_MAX_AMPDU_16K = 1,
+-	IEEE80211_HT_MAX_AMPDU_32K = 2,
+-	IEEE80211_HT_MAX_AMPDU_64K = 3
 -};
 -
  /*
-  * IEEE 802.11-2007 7.3.2.9 Country information element
-  *
-@@ -6098,4 +5889,6 @@ static inline u32 ieee80211_eml_trans_timeout_in_us(u16 eml_cap)
+  * Maximum length of AMPDU that the STA can receive in VHT.
+  * Length = 2 ^ (13 + max_ampdu_length_exp) - 1 (octets)
+@@ -1832,98 +1678,6 @@ enum ieee80211_vht_max_ampdu_length_exp {
+ 	IEEE80211_VHT_MAX_AMPDU_1024K = 7
+ };
+ 
+-#define IEEE80211_HT_MAX_AMPDU_FACTOR 13
+-
+-/* Minimum MPDU start spacing */
+-enum ieee80211_min_mpdu_spacing {
+-	IEEE80211_HT_MPDU_DENSITY_NONE = 0,	/* No restriction */
+-	IEEE80211_HT_MPDU_DENSITY_0_25 = 1,	/* 1/4 usec */
+-	IEEE80211_HT_MPDU_DENSITY_0_5 = 2,	/* 1/2 usec */
+-	IEEE80211_HT_MPDU_DENSITY_1 = 3,	/* 1 usec */
+-	IEEE80211_HT_MPDU_DENSITY_2 = 4,	/* 2 usec */
+-	IEEE80211_HT_MPDU_DENSITY_4 = 5,	/* 4 usec */
+-	IEEE80211_HT_MPDU_DENSITY_8 = 6,	/* 8 usec */
+-	IEEE80211_HT_MPDU_DENSITY_16 = 7	/* 16 usec */
+-};
+-
+-/**
+- * struct ieee80211_ht_operation - HT operation IE
+- * @primary_chan: Primary Channel
+- * @ht_param: HT Operation Information parameters
+- * @operation_mode: HT Operation Information operation mode
+- * @stbc_param: HT Operation Information STBC params
+- * @basic_set: Basic HT-MCS Set
+- *
+- * This structure represents the payload of the "HT Operation
+- * element" as described in IEEE Std 802.11-2020 section 9.4.2.56.
+- */
+-struct ieee80211_ht_operation {
+-	u8 primary_chan;
+-	u8 ht_param;
+-	__le16 operation_mode;
+-	__le16 stbc_param;
+-	u8 basic_set[16];
+-} __packed;
+-
+-/* for ht_param */
+-#define IEEE80211_HT_PARAM_CHA_SEC_OFFSET		0x03
+-#define		IEEE80211_HT_PARAM_CHA_SEC_NONE		0x00
+-#define		IEEE80211_HT_PARAM_CHA_SEC_ABOVE	0x01
+-#define		IEEE80211_HT_PARAM_CHA_SEC_BELOW	0x03
+-#define IEEE80211_HT_PARAM_CHAN_WIDTH_ANY		0x04
+-#define IEEE80211_HT_PARAM_RIFS_MODE			0x08
+-
+-/* for operation_mode */
+-#define IEEE80211_HT_OP_MODE_PROTECTION			0x0003
+-#define		IEEE80211_HT_OP_MODE_PROTECTION_NONE		0
+-#define		IEEE80211_HT_OP_MODE_PROTECTION_NONMEMBER	1
+-#define		IEEE80211_HT_OP_MODE_PROTECTION_20MHZ		2
+-#define		IEEE80211_HT_OP_MODE_PROTECTION_NONHT_MIXED	3
+-#define IEEE80211_HT_OP_MODE_NON_GF_STA_PRSNT		0x0004
+-#define IEEE80211_HT_OP_MODE_NON_HT_STA_PRSNT		0x0010
+-#define IEEE80211_HT_OP_MODE_CCFS2_SHIFT		5
+-#define IEEE80211_HT_OP_MODE_CCFS2_MASK			0x1fe0
+-
+-/* for stbc_param */
+-#define IEEE80211_HT_STBC_PARAM_DUAL_BEACON		0x0040
+-#define IEEE80211_HT_STBC_PARAM_DUAL_CTS_PROT		0x0080
+-#define IEEE80211_HT_STBC_PARAM_STBC_BEACON		0x0100
+-#define IEEE80211_HT_STBC_PARAM_LSIG_TXOP_FULLPROT	0x0200
+-#define IEEE80211_HT_STBC_PARAM_PCO_ACTIVE		0x0400
+-#define IEEE80211_HT_STBC_PARAM_PCO_PHASE		0x0800
+-
+-
+-/* block-ack parameters */
+-#define IEEE80211_ADDBA_PARAM_AMSDU_MASK 0x0001
+-#define IEEE80211_ADDBA_PARAM_POLICY_MASK 0x0002
+-#define IEEE80211_ADDBA_PARAM_TID_MASK 0x003C
+-#define IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK 0xFFC0
+-#define IEEE80211_DELBA_PARAM_TID_MASK 0xF000
+-#define IEEE80211_DELBA_PARAM_INITIATOR_MASK 0x0800
+-
+-/*
+- * A-MPDU buffer sizes
+- * According to HT size varies from 8 to 64 frames
+- * HE adds the ability to have up to 256 frames.
+- * EHT adds the ability to have up to 1K frames.
+- */
+-#define IEEE80211_MIN_AMPDU_BUF		0x8
+-#define IEEE80211_MAX_AMPDU_BUF_HT	0x40
+-#define IEEE80211_MAX_AMPDU_BUF_HE	0x100
+-#define IEEE80211_MAX_AMPDU_BUF_EHT	0x400
+-
+-
+-/* Spatial Multiplexing Power Save Modes (for capability) */
+-#define WLAN_HT_CAP_SM_PS_STATIC	0
+-#define WLAN_HT_CAP_SM_PS_DYNAMIC	1
+-#define WLAN_HT_CAP_SM_PS_INVALID	2
+-#define WLAN_HT_CAP_SM_PS_DISABLED	3
+-
+-/* for SM power control field lower two bits */
+-#define WLAN_HT_SMPS_CONTROL_DISABLED	0
+-#define WLAN_HT_SMPS_CONTROL_STATIC	1
+-#define WLAN_HT_SMPS_CONTROL_DYNAMIC	3
+-
+ /**
+  * struct ieee80211_vht_mcs_info - VHT MCS information
+  * @rx_mcs_map: RX MCS map 2 bits for each stream, total 8 streams
+@@ -3807,18 +3561,6 @@ enum ieee80211_spectrum_mgmt_actioncode {
+ 	WLAN_ACTION_SPCT_CHL_SWITCH = 4,
+ };
+ 
+-/* HT action codes */
+-enum ieee80211_ht_actioncode {
+-	WLAN_HT_ACTION_NOTIFY_CHANWIDTH = 0,
+-	WLAN_HT_ACTION_SMPS = 1,
+-	WLAN_HT_ACTION_PSMP = 2,
+-	WLAN_HT_ACTION_PCO_PHASE = 3,
+-	WLAN_HT_ACTION_CSI = 4,
+-	WLAN_HT_ACTION_NONCOMPRESSED_BF = 5,
+-	WLAN_HT_ACTION_COMPRESSED_BF = 6,
+-	WLAN_HT_ACTION_ASEL_IDX_FEEDBACK = 7,
+-};
+-
+ /* VHT action codes */
+ enum ieee80211_vht_actioncode {
+ 	WLAN_VHT_ACTION_COMPRESSED_BF = 0,
+@@ -4155,19 +3897,6 @@ struct ieee80211_bss_max_idle_period_ie {
+ 	u8 idle_options;
+ } __packed;
+ 
+-/* BACK action code */
+-enum ieee80211_back_actioncode {
+-	WLAN_ACTION_ADDBA_REQ = 0,
+-	WLAN_ACTION_ADDBA_RESP = 1,
+-	WLAN_ACTION_DELBA = 2,
+-};
+-
+-/* BACK (block-ack) parties */
+-enum ieee80211_back_parties {
+-	WLAN_BACK_RECIPIENT = 0,
+-	WLAN_BACK_INITIATOR = 1,
+-};
+-
+ /* SA Query action */
+ enum ieee80211_sa_query_action {
+ 	WLAN_ACTION_SA_QUERY_REQUEST = 0,
+@@ -5889,6 +5618,7 @@ static inline u32 ieee80211_eml_trans_timeout_in_us(u16 eml_cap)
  #define NAN_DEV_CAPA_NDPE_SUPPORTED		0x08
  #define NAN_DEV_CAPA_S3_SUPPORTED		0x10
  
-+#include "ieee80211-mesh.h"
-+
++#include "ieee80211-ht.h"
+ #include "ieee80211-mesh.h"
+ 
  #endif /* LINUX_IEEE80211_H */
 -- 
 2.51.1
