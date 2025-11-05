@@ -1,45 +1,45 @@
-Return-Path: <linux-wireless+bounces-28563-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28569-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82051C34E34
-	for <lists+linux-wireless@lfdr.de>; Wed, 05 Nov 2025 10:38:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD93C34E58
+	for <lists+linux-wireless@lfdr.de>; Wed, 05 Nov 2025 10:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 10EAF4FE46D
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Nov 2025 09:32:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40964565147
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Nov 2025 09:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31BC30ACEA;
-	Wed,  5 Nov 2025 09:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7346130C605;
+	Wed,  5 Nov 2025 09:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Z8KFrIy8"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="C/gKbVuu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76F430276A
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Nov 2025 09:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75881305E38
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Nov 2025 09:31:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762335099; cv=none; b=NYO2WMalKlogiKW6t+jqfBsim3xSc85rhE/nYu+vesOI9AO4gE54PlZI1JL6K/h/WhGX5fmBgv6OjFmQ/BM5r3Fw3hxNx/rIdBEnLx4hDqsJLnG4fTxzWYyqlMRCdxRlJIHuomqnxt5jNX4sRKEKcF5FNnyEMhzQOn9A218zHN0=
+	t=1762335103; cv=none; b=LJ/SGpSjEMvDYGQwjQtFEc89aIZnJiWz8FwDdeB7fJNvXUVtko0CjrIY7U3llSpG4dsSG6iq7C/zz0ze5QT6fP6bQzLqgtQwCPTj1I/H+VT5E5Ij+xDeoGrsgJI9Z8h3q/q4z/IubYCJVxOTtAxawYrCm4qQ9gYsNsw2DHCbAxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762335099; c=relaxed/simple;
-	bh=j231RBczGYd+jG0Hqp3O/44PP6/KKhFDz2r4m03AiUQ=;
+	s=arc-20240116; t=1762335103; c=relaxed/simple;
+	bh=7sC9ZO2K0z3bxi6iWBeNjqPuJToHdR5rxXsRhW1qHIo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WuE1AjkvwgA0iuyon9NDZ05PVNLK4sRGPzdIhzM3gPSnASyiTmr6MRHvkLzenQEqCDnZ4XvFxJx/1ZgOdqexngNScSojyHkbfP9DSlhQQ3FNHOlPXkPcrJQEOB+nF1ZEZvC+nNK+aS1NzsGKv7BZ09CAe3Lvk4CKeBmBS6mEiwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Z8KFrIy8; arc=none smtp.client-ip=210.61.82.184
+	 MIME-Version:Content-Type; b=WvUwBYkcU9axpwjbu8KMdFrjfhqI6bipg0ZoZSxuxKTfLc6IFfftT2D7ZvYDuLrqJ01OcmvE10bI4xsTZsaaczXGd/jqU2pWvpaqg5DtwM9/t3JEQU9DSVyhVVKjchzdlxJxgt8QZzP1Ek5J+gfY8rOzRG2djf/Xy4XnuTGCE5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=C/gKbVuu; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 3660bddeba2a11f0b33aeb1e7f16c2b6-20251105
+X-UUID: 3678f03eba2a11f08ac0a938fc7cd336-20251105
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=nIpLSysPm7kVFkPKaLEgh58So/Wz0cCH+wJpZ7kNnmg=;
-	b=Z8KFrIy8Toj7lq24Vilkc0dDuNKHHpVDMP6yZNocK9vWpTve3g7os0wIrGJhn5HfS+OWSzonhoC0S9GITA0zSMQnk7lhCpmnW261t9mQJaVQH4Qu2/GFmTcWGgjWp28HPsLOqFlSZeCNZJ1M8Mn4+1HgLLlXdHv8IguwtBVoTLE=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=G3l/8w9LFF3Da+ODUDPwhdSpkt/289SBKwemiyfCLOg=;
+	b=C/gKbVuu66k7/gQA+aXrZMN/hlsfl+km33WVq/I8g9WcG4speWrJxlyFQfbTHBrBcIbSUK0/yX71aitr18HKscn2FwcijA6Llk5VJUGifxPotFkdhNZOdwByEQMmGg4GsIs9VnWqd1LP0mntr3/zBFRYfrlGhkYmw8n5MxB/QMs=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:5da43c32-547a-4ad7-9eda-8397650a5e18,IP:0,UR
+X-CID-O-INFO: VERSION:1.3.6,REQID:21a97858-b98d-4f60-a9ce-cea96c3273aa,IP:0,UR
 	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
 	elease,TS:0
-X-CID-META: VersionHash:a9d874c,CLOUDID:afbaef7c-f9d7-466d-a1f7-15b5fcad2ce6,B
+X-CID-META: VersionHash:a9d874c,CLOUDID:2a7a28e0-3890-4bb9-a90e-2a6a4ecf6c66,B
 	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
 	0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OS
 	I:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -47,27 +47,27 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 3660bddeba2a11f0b33aeb1e7f16c2b6-20251105
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
+X-UUID: 3678f03eba2a11f08ac0a938fc7cd336-20251105
+Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw01.mediatek.com
 	(envelope-from <shayne.chen@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 976961817; Wed, 05 Nov 2025 17:31:31 +0800
+	with ESMTP id 1671883264; Wed, 05 Nov 2025 17:31:31 +0800
 Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1748.26; Wed, 5 Nov 2025 17:31:30 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
  mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1748.26 via Frontend Transport; Wed, 5 Nov 2025 17:31:29 +0800
+ 15.2.1748.26 via Frontend Transport; Wed, 5 Nov 2025 17:31:30 +0800
 From: Shayne Chen <shayne.chen@mediatek.com>
 To: Felix Fietkau <nbd@nbd.name>
 CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
 	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
 	<evelyn.tsai@mediatek.com>, linux-mediatek
 	<linux-mediatek@lists.infradead.org>, Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH mt76 06/12] wifi: mt76: mt7996: fix teardown command for an MLD peer
-Date: Wed, 5 Nov 2025 17:30:54 +0800
-Message-ID: <20251105093100.541408-6-shayne.chen@mediatek.com>
+Subject: [PATCH mt76 07/12] wifi: mt76: mt7996: set link_valid field when initializing wcid
+Date: Wed, 5 Nov 2025 17:30:55 +0800
+Message-ID: <20251105093100.541408-7-shayne.chen@mediatek.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20251105093100.541408-1-shayne.chen@mediatek.com>
 References: <20251105093100.541408-1-shayne.chen@mediatek.com>
@@ -81,38 +81,35 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-MTK: N
 
-For an MLD peer, we only need to call the teardown command when removing
-the last link, and there's no need to call mt7996_mcu_add_sta() for the
-earlier links.
+This ensures the upper layer uses the correct link ID during packet
+processing.
 
-Fixes: c1d6dd5d03eb ("wifi: mt76: mt7996: Add mt7996_mcu_teardown_mld_sta rouine")
+Fixes: dd82a9e02c05 ("wifi: mt76: mt7996: Rely on mt7996_sta_link in sta_add/sta_remove callbacks")
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 5e0b57657e7e..685be98b9f27 100644
+index 685be98b9f27..c26f8f49ce44 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1206,13 +1206,13 @@ mt7996_mac_sta_event(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 				mt7996_mac_twt_teardown_flow(dev, link,
- 							     msta_link, i);
+@@ -343,6 +343,7 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 	INIT_LIST_HEAD(&msta_link->rc_list);
+ 	msta_link->wcid.idx = idx;
+ 	msta_link->wcid.link_id = link_conf->link_id;
++	msta_link->wcid.link_valid = ieee80211_vif_is_mld(vif);
+ 	msta_link->wcid.tx_info |= MT_WCID_TX_INFO_SET;
+ 	mt76_wcid_init(&msta_link->wcid, band_idx);
  
--			if (sta->mlo && links == BIT(link_id)) /* last link */
--				mt7996_mcu_teardown_mld_sta(dev, link,
--							    msta_link);
--			else
-+			if (!sta->mlo)
- 				mt7996_mcu_add_sta(dev, link_conf, link_sta,
- 						   link, msta_link,
- 						   CONN_STATE_DISCONNECT, false);
-+			else if (sta->mlo && links == BIT(link_id)) /* last link */
-+				mt7996_mcu_teardown_mld_sta(dev, link,
-+							    msta_link);
- 			msta_link->wcid.sta_disabled = 1;
- 			msta_link->wcid.sta = 0;
- 			links = links & ~BIT(link_id);
+@@ -984,6 +985,7 @@ mt7996_mac_sta_init_link(struct mt7996_dev *dev,
+ 	msta_link->wcid.sta = 1;
+ 	msta_link->wcid.idx = idx;
+ 	msta_link->wcid.link_id = link_id;
++	msta_link->wcid.link_valid = !!sta->valid_links;
+ 	msta_link->wcid.def_wcid = &msta->deflink.wcid;
+ 
+ 	ewma_avg_signal_init(&msta_link->avg_ack_signal);
 -- 
 2.51.0
 
