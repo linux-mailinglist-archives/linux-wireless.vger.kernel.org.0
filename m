@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-28591-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28592-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60178C35431
-	for <lists+linux-wireless@lfdr.de>; Wed, 05 Nov 2025 11:59:20 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BA8C353ED
+	for <lists+linux-wireless@lfdr.de>; Wed, 05 Nov 2025 11:55:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39165624447
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Nov 2025 10:52:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E34214F19B1
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Nov 2025 10:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4124030C617;
-	Wed,  5 Nov 2025 10:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE9E30E836;
+	Wed,  5 Nov 2025 10:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZvhBIwPr"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KcUmkoeh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011031.outbound.protection.outlook.com [52.101.65.31])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011049.outbound.protection.outlook.com [52.101.70.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC01D30E0F7;
-	Wed,  5 Nov 2025 10:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B03530E0F1;
+	Wed,  5 Nov 2025 10:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762339800; cv=fail; b=sNikhJ+03igN8cnhhb80j/n85UTc12LaxRa1ESI+qWUA/nZ360HxIMMKB8HRvpbILPAji28xjVizz2mY4Vqb4J1VbVXgCN97ItP75ebZlBy/cegQ/QeWFZ82EDvMm5ocV8aYeI/HT/eHVutCf4y4uCqgDJLfw1Zr1oz0DcGGM7o=
+	t=1762339802; cv=fail; b=PibZnSGnawuaj7rXrVvFk8FDvlXIuZbeEKN9BgA4wicKTxvRXXACI+YNWmwdzv9OZOosDnwBmFdS/reHBzb0OvgUmFyKNeBAZ+IFl2VMZLJNVvAWJ1if71M42SUiCn2+JRgrcfDvm5E/VMKYbbzUYcXTUNJFDEKfsuDHmiq7hOQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762339800; c=relaxed/simple;
-	bh=4oco+9hJOb0eXWJxQ9fn+mdn5Q9OLOIgdaI/cVAk9Xc=;
+	s=arc-20240116; t=1762339802; c=relaxed/simple;
+	bh=OVLY7UHQb4JuGyBdZXomVtNiLz8FYxp6BMB7mYEhM30=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fRFfH6KiZN8MC2m+OnSnZZnDqBi5GFETwYwy3M4PLV0qokS2Uz9phz8JvSGeH3dPxaLAJRJfHWIAiFRvQ/JUM7yAY1evMNZh9DopUnJ/vl1W8tgxRfYW8hlaLyYPhqS4fFRgPfonAhRdWFOYj2+1GvCpK3rZ2/8jUUfMiDwT92A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZvhBIwPr; arc=fail smtp.client-ip=52.101.65.31
+	 Content-Type:MIME-Version; b=AGQnpe05V3cmKaVOXiPN1NSn3Ly30rtfviGZ32Bmn7QmXSdAGOxhdnuOmQN5kuPgc6Ur/BBR28Rw2ySPa3asyI9g3pcTcPj5uQ9r6+Fg/tN/7H1DEBh4iXyM+I5VvYMrlYxR+BBIXKzh0gRC3JxqUlxIgZd90i8489qYgWWuzMM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KcUmkoeh; arc=fail smtp.client-ip=52.101.70.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R1UoaPsWAlYP5SC4FmUGHjMPLMnCqhNykXfrPSEc1XK/NANIkVGesRZ+ZOPIEuSq748GIsD28IP3GCkH4bE/6xS7dXQXZDnLM+Ncy91P0EXWkFipAv4sWlgyHYUd7Iprl20wcmDLL2lqznc25aS3SecFaDxfJTfqkT6Z5047NhwW67/7uc9A8nXZsupZhe+pfGK81rOgK4g5E/HrdkepTSJb9mRvv37E1o2uwl9j6CxkS1ojw0yhfJrnzT2xWaGVlpX0KUnkiOpgbeD5B/UtRqlstZPuub+ww7Gv4k9l4cmuIc2OGChwER0RxC1dYkHfTWkDVW3WXP8VCn5esKJu5Q==
+ b=pBlDp9wT5kdHs2sV8T9s5G9EbYrGEMgoygivACCdZnIrUaDuekwx+hXDizIZ5z9O3rBuAZh1S9qw+qicjqXBHTlejAK5wvO7fTvSvczIC3VW8QmMQFpR2oR3dCSBLQ0qaVS6uAgZ1OQ0SFUJN4Xzrs8tE/66AEheDlSXSnWqExVCVq2kbN89NjKoOSgYhZZlMhpreTyBBb/QuJh6CaSBezjZX0KyN3s0lEl2DAHgPKremWk6ZDU1OxqdeZuZGP4R14+lybc7EstHyG01fGwI29IaDmW+ZXvUQZLq4mib1YHv6ZzFeG2lCxGfjSOQ5DB3mIl0Y409l5ytg6fm5Y2efw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AzeNsvO01GJbO6yeDFMvxvvutfrLpMlnr+d3sV+O7go=;
- b=tfqKkloM6oZkGnT/ZCahbuRGYkMPGa+jtJBBKNKt0CIOr5I+yBTVDfXlf0TWgA+lb3K6TCi8C1JHenKsaGdgMQheIp5avgS+EZtU6L/GMbvuPjq2T2BfZyvh1b4Dbh+0EQTgarYzKaDU/YlD2Y+j1sVqu+nqsSs2nbxBRHSm9PGY8NZdrvH3YQHkmxwaaZ24C/o5zAJXBgUHx++12aU2ErydCduTfNXyEGdtvI9qK6M/rVnmkWvsKgsH6YJK8mbwPPhc9CAOSphogWO004ediaWUayey1j+ufJ2epMsAAOGyw38rt9t2DE+VJuggcA38NRsmRPNqkWcB2pMuQMsOQA==
+ bh=eQDnTgcYoHq2dSQY7YSKKI8iO38VIP4BsIbf1Xxs1xM=;
+ b=xfLTdOVYMNST4+MVAxmbBAAmRQdjGtcYdCS8eEqPBcsNPzBrdq8e/V2zTBYSzV0WYQ+Uprc9KIv82GcK/5rH73PRogrYN66tZZRA7U/FNvjC2KV6ujyNbLjWN8/hV0i7kEAQyu2YeaDt+brKHm0+58iTtz76U2ED0xydS14DHVVs/J3+HFeh6sxVVTtZoiB78UaWIKqU8eQUPkO00yvCtTSdmOxVZDQ0CY660/30u3P6e5tYUJXCLyF5UPj5b5MpvbaV9+OtvsBv7tSRosePb3MFssbkBnm9hHgVq40mKAZ+qQaMMMv0TXgXifu2OGum5M/CX+HJXo7/6DAfdJKtAA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AzeNsvO01GJbO6yeDFMvxvvutfrLpMlnr+d3sV+O7go=;
- b=ZvhBIwPr3KHFTEBI13npqmystuTNn7vBhGUOnrr5rUCr1+onc+s9oGwjY2KiN2UBDLdvUABBWGlwa8TS74+YJ1sAWw2STTMESK5/DMizFTU09uCVmShfyqGxfQ2w48rfJ6xQvBUobxGIjVRgsNcqN5vIC/12j/BLp7VBzzzy6U3fyiTwtLCkbwx/FAGhhALTVb6k1OekiS2KAokBWGM/ieHuxD8zG9ejdoyEjmnet6qlhzuwHgbAl9WB5TOvd4cxwRPdt15lruQHFUETKbzjUESR2hiYyRfFdvo8Qt2psDg4mWxm7/28jWyciDhzsaL1xYYB/oE2zYcIRPp3NMtE/Q==
+ bh=eQDnTgcYoHq2dSQY7YSKKI8iO38VIP4BsIbf1Xxs1xM=;
+ b=KcUmkoehrE71J4ftuR+tqI4bqPYQLoz14+Ua6R0WOx/I7kwiGg4Ld+RLfFjZdcSIf/gGLWo0u40kkQxkyCpBfwG0+jxkAJiFfPpzml6S81aO5251SAMjI9kBnJJXggc6igbLKoEcoTKKUaqCr9aeMmmLBWa/mNrtFa8V9KeoOE1hTOdHHwI3JJHFGMgZ2wELpd7y0pje8G+9LKxdbIG45/RNWLDlr9w8OGxB/U1oTDSsIR50szfJpYHeYiS8Pf9N7fyVTEeZEzG9a3snZ66zyi75utRiaDqR4ekyo1mC5n84MrWxOQRqnt0ByjUcgkoCBvwghxiWtffnfB/As34+sQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DBBPR04MB7740.eurprd04.prod.outlook.com (2603:10a6:10:1ee::23)
  by PA1PR04MB10770.eurprd04.prod.outlook.com (2603:10a6:102:492::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.9; Wed, 5 Nov
- 2025 10:49:39 +0000
+ 2025 10:49:42 +0000
 Received: from DBBPR04MB7740.eurprd04.prod.outlook.com
  ([fe80::7a71:369b:fb82:59d7]) by DBBPR04MB7740.eurprd04.prod.outlook.com
  ([fe80::7a71:369b:fb82:59d7%2]) with mapi id 15.20.9275.015; Wed, 5 Nov 2025
- 10:49:39 +0000
+ 10:49:42 +0000
 From: Jeff Chen <jeff.chen_1@nxp.com>
 To: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -65,9 +65,9 @@ Cc: linux-kernel@vger.kernel.org,
 	tsung-hsien.hsieh@nxp.com,
 	s.hauer@pengutronix.de,
 	Jeff Chen <jeff.chen_1@nxp.com>
-Subject: [PATCH v6 13/22] wifi: nxpwifi: add data path support for STA and AP modes
-Date: Wed,  5 Nov 2025 18:47:35 +0800
-Message-Id: <20251105104744.2401992-14-jeff.chen_1@nxp.com>
+Subject: [PATCH v6 14/22] wifi: nxpwifi: add debugfs support for diagnostics and testing
+Date: Wed,  5 Nov 2025 18:47:36 +0800
+Message-Id: <20251105104744.2401992-15-jeff.chen_1@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251105104744.2401992-1-jeff.chen_1@nxp.com>
 References: <20251105104744.2401992-1-jeff.chen_1@nxp.com>
@@ -84,1459 +84,1315 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DBBPR04MB7740:EE_|PA1PR04MB10770:EE_
-X-MS-Office365-Filtering-Correlation-Id: 03323cbd-41f0-45fc-089c-08de1c59050d
+X-MS-Office365-Filtering-Correlation-Id: bbe3e6c6-ee2a-41ab-ead0-08de1c5906d1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|19092799006|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?CCqhZCZVTjYC8g5FCXysfQ9ptQY0HF+kBuaZ0USRDHvqgkhny46mvkulvrEl?=
- =?us-ascii?Q?AbJPY7Zv+iYx35HkVPrUmjDj0cU9N5+sjp4AS9ctPy32vDxhAHlSTEATl+WR?=
- =?us-ascii?Q?rTyG4mRANk2uhQry/Yvfg9WdPbb+PIKmXbgHv/JelhNof0Q5cPoM1ebaHSS2?=
- =?us-ascii?Q?+MVFdoyLyX6Mgv+z7yXbnUZvPwi5lLhyL1KP7ntQn6RbE/w5zb4XDjQ+onz9?=
- =?us-ascii?Q?o7YH73wa8gDw0Q2NZt0kGb9WkKd/pUfI5RX0PEuUrGzg8T6FxzzfXY5hzfhq?=
- =?us-ascii?Q?umtpUE/N81HuCHhGN78rgVQbsrtWSRX3OaN0QAC0V3h1askGrTleGmEZ/qSt?=
- =?us-ascii?Q?RcgKpD4AuGNjfDPu/UA3QblIdDiKaW8EIgH3C/tJa4AW7L1PWODpYKZdMN3L?=
- =?us-ascii?Q?J02hg7+zwI4IFHCk2vJc5ZYgZapI4vS3rY03fDrtcy3eK/YIhjm0vRru3sP+?=
- =?us-ascii?Q?cYXpk9v08QC33lqviCehjpXyIZ4t241cGktMbHql2BP9vpCuJ8ZFLvIjYB5q?=
- =?us-ascii?Q?O+ga3mVw/ycdes71ONr4wBsDqWlkrBh9cL3SvjIgA0i+UQV23JxTGjhY+0Hp?=
- =?us-ascii?Q?WWqnNcLekPqMkJE5/wxHRo2j45pHcjKgYa4sqCuTlGmF0xefBdCOJruwf7uo?=
- =?us-ascii?Q?FOX0dCyBQkT+X8Q6F5SN3hGgX4lJ/a9naAphssABBIkU3qtA6Lz32I0B30qy?=
- =?us-ascii?Q?6OZ7u1mlEE86jV182GxlsA7xZNVSTxAD4WyKJNi1jvHpXkpNAuSvuKxAfqrs?=
- =?us-ascii?Q?u6H14tshrRBJMxhMFRDR0JNdAVqG/GLJIDi0EbbJF/9nXKDW3+F4K4DfRPf7?=
- =?us-ascii?Q?Vc2FJUoCr37ZZvTrpW1fXWFjqVfbA+x8Ph8tQS8SUBySys2ucWitEZCKyhOI?=
- =?us-ascii?Q?X0Q9uaIKKhHiDljeYft1yUdFjv0rT4tWEXjfJVT9D0FFbnFzi+p9iRkVHcHE?=
- =?us-ascii?Q?BPBpywIuJX7C2mMnSyhk2Hg315dLxUxxP+qQma4724kNb7uEgmYsm6wWFFDn?=
- =?us-ascii?Q?jHDPxXYITpqt8BjmfVoE1Sq1SsMuDHECVYkR+fjbZe5VnhszPK+YoI5sF9HH?=
- =?us-ascii?Q?fFOfmyhKXDdMSj7ttM6OcXIzhmqpu/Oi0gbXLpVncx4rMR/NVp4I+bsdS2gl?=
- =?us-ascii?Q?pTTuoYCvwNadWqQLm6xX/NowjaFtDbcecAwyZn6P/Piwl2no/pnvfDSZfKtw?=
- =?us-ascii?Q?HS6jlVNpNMqHBeEYPv/Pv7Xz9yA9YpfJeFsD0SMvAD0mg6qjRR6VMi8AP+qu?=
- =?us-ascii?Q?Vc0g6dEKns+HGrLUqrwfv6cFb8PHySkqtpWoz551SibZi08TyGhr9/lsPGLf?=
- =?us-ascii?Q?03FAKv4ssDHflfYtcOfnUF+IcY+WXY4j7ToVNXaIeSoWUvOFd/oRN4HufXUv?=
- =?us-ascii?Q?2QW/Nxiq0fSB+9S9h+VLAmImntJ4s+Fa2tOwmP8PQjnDzAzlaVs0mVn5ZMw7?=
- =?us-ascii?Q?azzeSUCZztkW6Uynl9mTy8bkuBILtlv8Y1IyYIedWIo/Vvyq/wdw0jdyFoLk?=
- =?us-ascii?Q?vN0fo1zl1BGlZAzKxqmsiSJXvVudl1N1MxdP?=
+	=?us-ascii?Q?BZSGbaKWozmgzS89MNpCjW75yv122pnZRfTfogkBVvyh1SD5aaefU+fRFz2v?=
+ =?us-ascii?Q?A7nHITu9zIibeZKBfmKJJRwoKU4P3Fry2Y52oRNpucWvPE9fnhUFcWxfC3ho?=
+ =?us-ascii?Q?yybmQwzpDyKMfMujvamb3Uq40LZkqc4UfOrgG+1m3USlY3UioLoSXgII59Td?=
+ =?us-ascii?Q?VHJymaUS1mZxYLXezrfV+zXFNE00mCmlQCwbH0icIAigu7C3ArsdzWHjCiX+?=
+ =?us-ascii?Q?XeNK1hVLV9mxkzEjHaMUV2up9jNqYtakowzbpX8XqwIEz+3l4d45UR/jX9Uq?=
+ =?us-ascii?Q?lCllbG4O0VOCSS0DIsg5hgLqOESAoOLobj6ccPk09mlQWpqHQLwUL/N0eLUu?=
+ =?us-ascii?Q?ruriOTNYHz5hEjtvOTPQtqlU4immXeGwsO/o7vBRpitvE+Ut8jk6yZ0u0s/X?=
+ =?us-ascii?Q?+bzm2k0v/FwduDnU4CBKGvMgscR/+zsPH5YA4Vbd6MZb794AVeXkyL7sqZ9R?=
+ =?us-ascii?Q?eNjjvR0tvTRE75bZh9JlipPQUcsXQ+JDdYIuStSTviw1w5BDl8r/NIZR8Sxw?=
+ =?us-ascii?Q?MdRfGymDpGvbsuL/WiO+FWlreZr+QYkrIgYbC6Qc0OkWzxz5ifyuvGsqPchh?=
+ =?us-ascii?Q?8yXqIV4zeJEgDuu997KpGkEtT2ZIuN22c2TQnO+KxOaVllE8Ua7tQbG80Bu/?=
+ =?us-ascii?Q?r/adWQEy4HwCdf288ST/pxS+wDj6ZoXmL05gAUCc+nQHrnuLjfl63R8gANQR?=
+ =?us-ascii?Q?18Ch0fmL1sqtnsrTnHwFAnbwak+32eqUUG/0tkOHR6xz4rOzYhzm8UPw/SOn?=
+ =?us-ascii?Q?qrxyeW/zFF69RWDfdxoGM3eDTDCOAx+hzJVuz1T24n4m8Gg7g8NcYkDb2yYV?=
+ =?us-ascii?Q?Wcy1xlGF/bVpaiZYTX4iTGZTOrHlXZkk/9WAYn66lvF22QXPDg5fHJ+M4cwO?=
+ =?us-ascii?Q?SmK1VE/qhe9DP6reZCbMK7YoPNGpbWUIqDOGVHjeIzftytmvNuh/IcUq1kED?=
+ =?us-ascii?Q?XRklOGwdzC22YPF+0aE0EnY9B9Md4qQotyXkL/Ctl0NjUndElDcDbVTcn+ZS?=
+ =?us-ascii?Q?qPyHwFOAGhl6myceo8K4Zzb0Bp07HLzhjyfVuVW52CDD+g6gcSxaXQiSnGjS?=
+ =?us-ascii?Q?QbrG4AlpVvEONtFzCS71lDkIpcTIFji6qqzV1IKASZUwHCsX9+ICWOFP7m1c?=
+ =?us-ascii?Q?TVdnxoXqzLVyHTCEdFXXBPpCA026nwLZ1KYMajn0DXhM2Ke6aieG3HGCrKY5?=
+ =?us-ascii?Q?B6Agpmi5AcKtD+YSpqw1KSuTFXvQcpThZ9Iq/P7hbNSJjxWV3nYxA96oJCUS?=
+ =?us-ascii?Q?QU+0vBaWqMLCAlHNulThvE2zimiR5TPShMPx0WOaX1vuoY73LDrMqWtZLIvg?=
+ =?us-ascii?Q?prdMvxPuPW/Lp9mtb8ptXLbl/EHGy7pbamUpY+fgM7U6GaILM277EoCp2PsU?=
+ =?us-ascii?Q?Htu5YV+yoboaPFWbEBAWZ6zyYYeWCQSzgX1+IEOgLBMg6n4tES+0Utf+n597?=
+ =?us-ascii?Q?N2mgwqVbCctoPOBYEkcj3KPT4UA2FIWpWeEM5ALL7nLxmpkZUSdXK5SmWB4K?=
+ =?us-ascii?Q?ZWX4b9p0th7o/dzHazLZEg5meDWoSp/2Cthm?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7740.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(19092799006)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xHo8SpqdRhzgGQ7sHX5wRa76mQ9SsxQrHmzBMDYmJgYjnd5qrQjLhaAFYfKU?=
- =?us-ascii?Q?OMfr+9J/Skt87vcv10r3IvrUKNi4goAkFipgvs2LZUoZkhqcRtV8Wvq1sp2d?=
- =?us-ascii?Q?cYG0pvL2XQQ3BPTjrBv0pa27IqwAO/oNyiHit19XJH5OZ/jiAhho6GRMtW0h?=
- =?us-ascii?Q?83+YrzBKI4k+YeJfYqPzDSUeWv9cvDVu7dNljYAR36qlc3q386ysvYOUc1oZ?=
- =?us-ascii?Q?tdAWXGRFVq0Zxe1Si+ki3mL50k0E3eAsPshqFsUWuSiv1ZOIh5TqDQWNJ3/X?=
- =?us-ascii?Q?rSDbcQosZiJfkrbc68Iy22nXnHUc8Wge5lZKOZ2MUlN01f2J2WannqbNG9hP?=
- =?us-ascii?Q?zxPCVFtiDPvBK8MN8SBzcpgobz/Y6iq4sIAM0DhMfjQqEmLcQj2WspX1hSd3?=
- =?us-ascii?Q?rQUcMk/3AXW/nxeBGhkKwcrPh6xh3W6KBdzKIgj53cttxaG3GW5xChWFyMtE?=
- =?us-ascii?Q?zG3DTEwZs/QqgwxLoOKjYXBE0QJOiGt9kWeyxNi+QxirUrA/Wct6hz49kJfw?=
- =?us-ascii?Q?b6ozjVtNanaZD5L7UcNrHL8PTlszrhIa35+4dF2grOc9NnU2Yf/h5GDFmMzn?=
- =?us-ascii?Q?WkPlbbyrvoctU5OSN6H4XfRY0DOO0IA8t1P8eG5H7+pIE6ItBSlNae+3UtHn?=
- =?us-ascii?Q?B1/Yv3h02vI6fJTd+O4jx31c4osTOMqulkMN5fWFHRu2uLmDYN2VP0QAIdJT?=
- =?us-ascii?Q?eNZ5496l/VaboBQzrG0jYl+aYZgvmQyiYqvyTWgZuQ5OlIisSVn0kr9nyTg4?=
- =?us-ascii?Q?uBQpJ+hx4QNune99XTjsU+5TJvaoaQa+c6dlxjuWYxpvZjpFKTorb0TDVbLM?=
- =?us-ascii?Q?A+O6nKATjWeKOzz1XFKHjjoYXxUYLRt1sJieQvQ01AeY9jSBa5k2g80JNo6x?=
- =?us-ascii?Q?/9BtjByNfBVgURYVJegt8qnNQcW//75He9NswAN4OQsEjLvcnKkigj3mOylA?=
- =?us-ascii?Q?PU/uKpUNWFjlcrS+ct+L4xoPdnKC9L893ptCaU/Znh9zGu4du3675PtrUQkU?=
- =?us-ascii?Q?LzaMRJ0WDTSREpGSNp841WkhqV03TZdnOKUBeuo3hFtWqQpnK6HQu5w1znj5?=
- =?us-ascii?Q?6uKVw466kfasFA0t1thBOwox3C9TgMqJg1AfFG1w2Wm3GGkbE2DV9bU9sLw6?=
- =?us-ascii?Q?YQzrdwSzu2VBdqTLbRuOa1gfQUrPylPJuW+q2+HnFUxt623E4Ruk7U8kD/EF?=
- =?us-ascii?Q?VQZD6tMVjDro+GVt+2swfPihHU/YalPh3KiNdagkfIwl9zIo+y6LVPW605ye?=
- =?us-ascii?Q?CrarcP5BHrjpCNFgDQuwz66qzBbJgxPo+Y3oUrQVulXhnEqP0ItEyYCb4whr?=
- =?us-ascii?Q?ps50X0dUj9VW+lWheJ/4J6vflSRrIIqXqyjdZZzZl0+5fvSKjIagJbSXrw0e?=
- =?us-ascii?Q?XPcLnYc1yqIRRnygMVaLzCkS2vvdbjSHq0vrJSAZIZZSW6RNsHa22yhgUMtv?=
- =?us-ascii?Q?d+5JkXl2hsu/SPxXCAYBixHoC3Iqqng5042pKKQcpTR+4dDTB7SSslOIxuvj?=
- =?us-ascii?Q?uxMsk0McH3sJ++JLjBqx+m4vZwRgglVkoP/NGww8+YNqbV9VZSgdNOS4b+P+?=
- =?us-ascii?Q?89BG6OWkGXmO6zPWeGgTbQNpcAug92EBGDDuWTyY?=
+	=?us-ascii?Q?5Rsb4DoJUvP2k94YD7dynj127jqa3SYAMaMVAY97b/qiWLBzDMxsgxZGz0Mt?=
+ =?us-ascii?Q?OEDQcJeNbc/5knSi7DcMLcUuryoKgn+4ucqiOaR1llVMAwu7Gg0qWsMuXX+q?=
+ =?us-ascii?Q?2zsD96aM3lpdzDkyfxiHL/yqaYKfRJoebR/Eu4HZWUwTFV9847eJnRXQn0Ht?=
+ =?us-ascii?Q?hQLYOPfyGHe0CcOdUe6h+4uuxLG3C2ettIqKjhHGyzwhlTbjSYfEF71Ip6Fk?=
+ =?us-ascii?Q?h5eUM2Y2yRUhClak11Sb1GA767IFPhl+vaLZPu5rHyNzpEIlmGufbyakRcpN?=
+ =?us-ascii?Q?+rTVer5cuJUuiqJoiKsNzSlwpaVs+SohnV9VZA5jmVVBD3lU/oPGlMlshvpe?=
+ =?us-ascii?Q?w+ojmqkH3wwsed+j8oLjG52JjYmT42yxjn5ITHVriMbH41AS+prufTLJLXZQ?=
+ =?us-ascii?Q?l1fmZTEsPrwX93dN+yiBOBEzb6iVbif+BWO+VWk2T8B61c09xJwDN0dPbQZc?=
+ =?us-ascii?Q?B2g6L70BycWJ79mi+Ez/Ylq/spJfaCB0/5PY5YQhwUZZsXhk2TdrkCWQSh6T?=
+ =?us-ascii?Q?QYNHnJXmrK98SHjCQMLoeempPC8XxVJaNlJro+eYTWUdlRVmqozi0LLL3ZXl?=
+ =?us-ascii?Q?pxtmwYwzDmsHpWAf1tqVAGDBU8yRVDXEL+UFBuJ5bg9SXpYWQwIUywqVdlHS?=
+ =?us-ascii?Q?iwtRDl71oJPxTYOEYYrGA4u7LgjxRXJ/xxqCFNghqkje31XvVYWOdPlVGv0o?=
+ =?us-ascii?Q?rDPn/xSBhlWQXjtJd69AkYFxYghk1acUI8i7o3RgrFq9ha7jJt+sOcErnhV3?=
+ =?us-ascii?Q?Wr2iQ5t5F3t675qA30Jww6k8PlfZHgMfl7OqLVcMaOQRql7ckQTjHc4mNq4t?=
+ =?us-ascii?Q?xUOGErCAWXMt3OtAaphRNjh1SKJxa3nibSkGT51XmvHWNmcwKCosN4ZtJPEI?=
+ =?us-ascii?Q?AnmNMUo+5U+jr+IeKHA5C3ojZrePlrLWzyH/r3etKfuQcsnQnvQ/rBo9uvtd?=
+ =?us-ascii?Q?WFWJ0UrLCRzkR/jdmC0KDzEBk2ehXn8q06mMF9izJ/iWgqpvEYfPyGtAMpzT?=
+ =?us-ascii?Q?OKDQXuxeW2/5KlosfHbAvQfVLPY7ahvMiJi+X3UbmEMZgjOGkTakOpFdya7D?=
+ =?us-ascii?Q?acfbRU32XhXzl/Jss/Hj9b/ghPyfXiqbMY1fv+XNxdjn3I5884cxVRkTfX6R?=
+ =?us-ascii?Q?6FPuDXXaQVGPfx3L4f8Zi23w8U+W2A8xwF1ejru21wULKqAK5D1092fD+V02?=
+ =?us-ascii?Q?hxoQ3jZu/UBC3KwA9tspTxK1BVWtsxCE+WQr2ahhNUvvEYxIrhgb2OApdfwB?=
+ =?us-ascii?Q?1L5f4wlX7RuDt5IWne0XdeuoWQGTUu/8XjTewvfYt0QZVLepf5pyeByh2bQA?=
+ =?us-ascii?Q?2e4idpnt25Z8PAF93J/JOEF4gOL/RJFWetW0JsivQPRZcsOm844QNak6FAz7?=
+ =?us-ascii?Q?kHpZeNCv8msIkBDcO+lCI0RUzJgZz9p5rZwbGI1q8PFSKBk26R4t/+PeUKrX?=
+ =?us-ascii?Q?SLrRzRkphZhkoDjWyN7HcVMuACcBoLl8JqcDgr2NHEMnW5W5nkJtOK1iWtwJ?=
+ =?us-ascii?Q?ALYeFJciqveiNha+4hB3oPrTfeSWf5eHaKw8D4uameRedQ4Q1NYhKqMla9Cv?=
+ =?us-ascii?Q?n68lFXq0kW7RE/I+nY0R0NMM/ZKKoxvUHJyxUMHu?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03323cbd-41f0-45fc-089c-08de1c59050d
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbe3e6c6-ee2a-41ab-ead0-08de1c5906d1
 X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7740.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2025 10:49:39.9001
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2025 10:49:42.8519
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X11FDiQOet4J40m/uWrOTYEAT2a2x0G5VKs9txJQf191zlvX4dYVh0x4SB8MKpVIW0Y56f7cgZTLFeRnd0fUmA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8QotOA1Q6521vH02ey0Dg731dcTUllfitLujcJbyyL/Uovl6PHmAs2tea38WgEI/UveuK+R0NrfbPCJpvxjG3Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10770
 
-This patch introduces the data path implementation for the nxpwifi driver,
-covering both transmit (Tx) and receive (Rx) handling in station (STA) and
-access point (AP) modes.
+This patch adds a comprehensive debugfs interface for the nxpwifi driver,
+enabling easier diagnostics, testing, and runtime inspection.
 
-Key components added:
-- sta_rx.c: RX packet processing for STA mode
-- sta_tx.c: TX packet preparation and NULL frame handling for STA mode
-- uap_txrx.c: TX/RX logic for AP mode, including bridging and forwarding
-- txrx.c: Common TX/RX logic shared across roles
-
-Features include:
-- Ethernet frame reconstruction from 802.11 headers
-- TxPD/RxPD handling and alignment
-- WMM priority and packet delay calculation
-- 11n RX reordering support
-- Bridged packet queuing and forwarding in AP mode
-- TX status reporting and completion callbacks
-
-This is a foundational step toward enabling full data path support for
-nxpwifi in both client and AP roles.
+These tools are useful for both development and field debugging, especially
+for validating DFS behavior, power management, and firmware interaction.
 
 Signed-off-by: Jeff Chen <jeff.chen_1@nxp.com>
 ---
- drivers/net/wireless/nxp/nxpwifi/sta_rx.c   | 250 ++++++++++
- drivers/net/wireless/nxp/nxpwifi/sta_tx.c   | 208 ++++++++
- drivers/net/wireless/nxp/nxpwifi/txrx.c     | 358 ++++++++++++++
- drivers/net/wireless/nxp/nxpwifi/uap_txrx.c | 506 ++++++++++++++++++++
- 4 files changed, 1322 insertions(+)
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_rx.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_tx.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/txrx.c
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/uap_txrx.c
+ drivers/net/wireless/nxp/nxpwifi/debugfs.c | 1217 ++++++++++++++++++++
+ 1 file changed, 1217 insertions(+)
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/debugfs.c
 
-diff --git a/drivers/net/wireless/nxp/nxpwifi/sta_rx.c b/drivers/net/wireless/nxp/nxpwifi/sta_rx.c
+diff --git a/drivers/net/wireless/nxp/nxpwifi/debugfs.c b/drivers/net/wireless/nxp/nxpwifi/debugfs.c
 new file mode 100644
-index 000000000000..32252021d948
+index 000000000000..5e3d249f6e5e
 --- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/sta_rx.c
-@@ -0,0 +1,250 @@
++++ b/drivers/net/wireless/nxp/nxpwifi/debugfs.c
+@@ -0,0 +1,1217 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * NXP Wireless LAN device driver: station RX data handling
++ * NXP Wireless LAN device driver: debugfs
 + *
 + * Copyright 2011-2024 NXP
 + */
 +
-+#include <uapi/linux/ipv6.h>
-+#include <net/ndisc.h>
-+#include "cfg.h"
-+#include "util.h"
-+#include "fw.h"
-+#include "main.h"
-+#include "11n_aggr.h"
-+#include "11n_rxreorder.h"
++#include <linux/debugfs.h>
 +
-+/* This function checks if a frame is IPv4 ARP or IPv6 Neighbour advertisement
-+ * frame. If frame has both source and destination mac address as same, this
-+ * function drops such gratuitous frames.
-+ */
-+static bool
-+nxpwifi_discard_gratuitous_arp(struct nxpwifi_private *priv,
-+			       struct sk_buff *skb)
-+{
-+	const struct nxpwifi_arp_eth_header *arp;
-+	struct ethhdr *eth;
-+	struct ipv6hdr *ipv6;
-+	struct icmp6hdr *icmpv6;
-+
-+	eth = (struct ethhdr *)skb->data;
-+	switch (ntohs(eth->h_proto)) {
-+	case ETH_P_ARP:
-+		arp = (void *)(skb->data + sizeof(struct ethhdr));
-+		if (arp->hdr.ar_op == htons(ARPOP_REPLY) ||
-+		    arp->hdr.ar_op == htons(ARPOP_REQUEST)) {
-+			if (!memcmp(arp->ar_sip, arp->ar_tip, 4))
-+				return true;
-+		}
-+		break;
-+	case ETH_P_IPV6:
-+		ipv6 = (void *)(skb->data + sizeof(struct ethhdr));
-+		icmpv6 = (void *)(skb->data + sizeof(struct ethhdr) +
-+				  sizeof(struct ipv6hdr));
-+		if (icmpv6->icmp6_type == NDISC_NEIGHBOUR_ADVERTISEMENT) {
-+			if (!memcmp(&ipv6->saddr, &ipv6->daddr,
-+				    sizeof(struct in6_addr)))
-+				return true;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return false;
-+}
-+
-+/* This function processes the received packet and forwards it
-+ * to kernel/upper layer.
-+ *
-+ * This function parses through the received packet and determines
-+ * if it is a debug packet or normal packet.
-+ *
-+ * For non-debug packets, the function chops off unnecessary leading
-+ * header bytes, reconstructs the packet as an ethernet frame or
-+ * 802.2/llc/snap frame as required, and sends it to kernel/upper layer.
-+ *
-+ * The completion callback is called after processing in complete.
-+ */
-+int nxpwifi_process_rx_packet(struct nxpwifi_private *priv,
-+			      struct sk_buff *skb)
-+{
-+	int ret;
-+	struct rx_packet_hdr *rx_pkt_hdr;
-+	struct rxpd *local_rx_pd;
-+	int hdr_chop;
-+	struct ethhdr *eth;
-+	u16 rx_pkt_off;
-+	u8 adj_rx_rate = 0;
-+
-+	local_rx_pd = (struct rxpd *)(skb->data);
-+
-+	rx_pkt_off = le16_to_cpu(local_rx_pd->rx_pkt_offset);
-+	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
-+
-+	if (sizeof(rx_pkt_hdr->eth803_hdr) + sizeof(rfc1042_header) +
-+	    rx_pkt_off > skb->len) {
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+		return -EINVAL;
-+	}
-+
-+	if (sizeof(*rx_pkt_hdr) + rx_pkt_off <= skb->len &&
-+	    ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
-+		      sizeof(bridge_tunnel_header))) ||
-+	     (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-+		      sizeof(rfc1042_header)) &&
-+	      rx_pkt_hdr->rfc1042_hdr.snap_type != htons(ETH_P_AARP) &&
-+	      rx_pkt_hdr->rfc1042_hdr.snap_type != htons(ETH_P_IPX)))) {
-+		/*  Replace the 803 header and rfc1042 header (llc/snap) with an
-+		 *    EthernetII header, keep the src/dst and snap_type
-+		 *    (ethertype).
-+		 *  The firmware only passes up SNAP frames converting
-+		 *    all RX Data from 802.11 to 802.2/LLC/SNAP frames.
-+		 *  To create the Ethernet II, just move the src, dst address
-+		 *    right before the snap_type.
-+		 */
-+		eth = (struct ethhdr *)
-+			((u8 *)&rx_pkt_hdr->eth803_hdr
-+			 + sizeof(rx_pkt_hdr->eth803_hdr) +
-+			 sizeof(rx_pkt_hdr->rfc1042_hdr)
-+			 - sizeof(rx_pkt_hdr->eth803_hdr.h_dest)
-+			 - sizeof(rx_pkt_hdr->eth803_hdr.h_source)
-+			 - sizeof(rx_pkt_hdr->rfc1042_hdr.snap_type));
-+
-+		memcpy(eth->h_source, rx_pkt_hdr->eth803_hdr.h_source,
-+		       sizeof(eth->h_source));
-+		memcpy(eth->h_dest, rx_pkt_hdr->eth803_hdr.h_dest,
-+		       sizeof(eth->h_dest));
-+
-+		/* Chop off the rxpd + the excess memory from the 802.2/llc/snap
-+		 * header that was removed.
-+		 */
-+		hdr_chop = (u8 *)eth - (u8 *)local_rx_pd;
-+	} else {
-+		/* Chop off the rxpd */
-+		hdr_chop = (u8 *)&rx_pkt_hdr->eth803_hdr - (u8 *)local_rx_pd;
-+	}
-+
-+	/* Chop off the leading header bytes so the it points to the start of
-+	 * either the reconstructed EthII frame or the 802.2/llc/snap frame
-+	 */
-+	skb_pull(skb, hdr_chop);
-+
-+	if (priv->hs2_enabled &&
-+	    nxpwifi_discard_gratuitous_arp(priv, skb)) {
-+		nxpwifi_dbg(priv->adapter, INFO, "Bypassed Gratuitous ARP\n");
-+		dev_kfree_skb_any(skb);
-+		return 0;
-+	}
-+
-+	/* Only stash RX bitrate for unicast packets. */
-+	if (likely(!is_multicast_ether_addr(rx_pkt_hdr->eth803_hdr.h_dest))) {
-+		priv->rxpd_rate = local_rx_pd->rx_rate;
-+		priv->rxpd_htinfo = local_rx_pd->ht_info;
-+	}
-+
-+	if (GET_BSS_ROLE(priv) == NXPWIFI_BSS_ROLE_STA ||
-+	    GET_BSS_ROLE(priv) == NXPWIFI_BSS_ROLE_UAP) {
-+		adj_rx_rate = nxpwifi_adjust_data_rate(priv,
-+						       local_rx_pd->rx_rate,
-+						       local_rx_pd->ht_info);
-+		nxpwifi_hist_data_add(priv, adj_rx_rate, local_rx_pd->snr,
-+				      local_rx_pd->nf);
-+	}
-+
-+	ret = nxpwifi_recv_packet(priv, skb);
-+	if (ret)
-+		nxpwifi_dbg(priv->adapter, ERROR,
-+			    "recv packet failed\n");
-+
-+	return ret;
-+}
-+
-+/* This function processes the received buffer.
-+ *
-+ * The function looks into the RxPD and performs sanity tests on the
-+ * received buffer to ensure its a valid packet, before processing it
-+ * further. If the packet is determined to be aggregated, it is
-+ * de-aggregated accordingly. Non-unicast packets are sent directly to
-+ * the kernel/upper layers. Unicast packets are handed over to the
-+ * Rx reordering routine if 11n is enabled.
-+ *
-+ * The completion callback is called after processing in complete.
-+ */
-+int nxpwifi_process_sta_rx_packet(struct nxpwifi_private *priv,
-+				  struct sk_buff *skb)
-+{
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	int ret = 0;
-+	struct rxpd *local_rx_pd;
-+	struct rx_packet_hdr *rx_pkt_hdr;
-+	u8 ta[ETH_ALEN];
-+	u16 rx_pkt_type, rx_pkt_offset, rx_pkt_length, seq_num;
-+
-+	local_rx_pd = (struct rxpd *)(skb->data);
-+	rx_pkt_type = le16_to_cpu(local_rx_pd->rx_pkt_type);
-+	rx_pkt_offset = le16_to_cpu(local_rx_pd->rx_pkt_offset);
-+	rx_pkt_length = le16_to_cpu(local_rx_pd->rx_pkt_length);
-+	seq_num = le16_to_cpu(local_rx_pd->seq_num);
-+
-+	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_offset;
-+
-+	if ((rx_pkt_offset + rx_pkt_length) > skb->len ||
-+	    sizeof(rx_pkt_hdr->eth803_hdr) + rx_pkt_offset > skb->len) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "wrong rx packet: len=%d, rx_pkt_offset=%d, rx_pkt_length=%d\n",
-+			    skb->len, rx_pkt_offset, rx_pkt_length);
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+		return ret;
-+	}
-+
-+	if (priv->adapter->enable_net_mon && rx_pkt_type == PKT_TYPE_802DOT11) {
-+		ret = nxpwifi_recv_packet_to_monif(priv, skb);
-+		if (ret)
-+			dev_kfree_skb_any(skb);
-+		return ret;
-+	}
-+
-+	if (rx_pkt_type == PKT_TYPE_MGMT) {
-+		ret = nxpwifi_process_mgmt_packet(priv, skb);
-+		if (ret && (ret != -EINPROGRESS))
-+			nxpwifi_dbg(adapter, DATA, "Rx of mgmt packet failed");
-+		if (ret != -EINPROGRESS)
-+			dev_kfree_skb_any(skb);
-+		return ret;
-+	}
-+
-+	/* If the packet is not an unicast packet then send the packet
-+	 * directly to os. Don't pass thru rx reordering
-+	 */
-+	if (!IS_11N_ENABLED(priv) ||
-+	    !ether_addr_equal_unaligned(priv->curr_addr,
-+					rx_pkt_hdr->eth803_hdr.h_dest)) {
-+		nxpwifi_process_rx_packet(priv, skb);
-+		return ret;
-+	}
-+
-+	if (nxpwifi_queuing_ra_based(priv)) {
-+		memcpy(ta, rx_pkt_hdr->eth803_hdr.h_source, ETH_ALEN);
-+	} else {
-+		if (rx_pkt_type != PKT_TYPE_BAR &&
-+		    local_rx_pd->priority < MAX_NUM_TID)
-+			priv->rx_seq[local_rx_pd->priority] = seq_num;
-+		memcpy(ta, priv->curr_bss_params.bss_descriptor.mac_address,
-+		       ETH_ALEN);
-+	}
-+
-+	/* Reorder and send to OS */
-+	ret = nxpwifi_11n_rx_reorder_pkt(priv, seq_num, local_rx_pd->priority,
-+					 ta, (u8)rx_pkt_type, skb);
-+
-+	if (ret || rx_pkt_type == PKT_TYPE_BAR)
-+		dev_kfree_skb_any(skb);
-+
-+	if (ret)
-+		priv->stats.rx_dropped++;
-+
-+	return ret;
-+}
-diff --git a/drivers/net/wireless/nxp/nxpwifi/sta_tx.c b/drivers/net/wireless/nxp/nxpwifi/sta_tx.c
-new file mode 100644
-index 000000000000..6611db254931
---- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/sta_tx.c
-@@ -0,0 +1,208 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * NXP Wireless LAN device driver: station TX data handling
-+ *
-+ * Copyright 2011-2024 NXP
-+ */
-+
-+#include "cfg.h"
-+#include "util.h"
-+#include "fw.h"
 +#include "main.h"
 +#include "cmdevt.h"
-+#include "wmm.h"
++#include "11n.h"
 +
-+/* This function fills the TxPD for tx packets.
++static struct dentry *nxpwifi_dfs_dir;
++
++static char *bss_modes[] = {
++	"UNSPECIFIED",
++	"ADHOC",
++	"STATION",
++	"AP",
++	"AP_VLAN",
++	"WDS",
++	"MONITOR",
++	"MESH_POINT",
++	"P2P_CLIENT",
++	"P2P_GO",
++	"P2P_DEVICE",
++};
++
++/* Proc info file read handler.
 + *
-+ * The Tx buffer received by this function should already have the
-+ * header space allocated for TxPD.
++ * This function is called when the 'info' file is opened for reading.
++ * It prints the following driver related information -
++ *      - Driver name
++ *      - Driver version
++ *      - Driver extended version
++ *      - Interface name
++ *      - BSS mode
++ *      - Media state (connected or disconnected)
++ *      - MAC address
++ *      - Total number of Tx bytes
++ *      - Total number of Rx bytes
++ *      - Total number of Tx packets
++ *      - Total number of Rx packets
++ *      - Total number of dropped Tx packets
++ *      - Total number of dropped Rx packets
++ *      - Total number of corrupted Tx packets
++ *      - Total number of corrupted Rx packets
++ *      - Carrier status (on or off)
++ *      - Tx queue status (started or stopped)
 + *
-+ * This function inserts the TxPD in between interface header and actual
-+ * data and adjusts the buffer pointers accordingly.
-+ *
-+ * The following TxPD fields are set by this function, as required -
-+ *      - BSS number
-+ *      - Tx packet length and offset
-+ *      - Priority
-+ *      - Packet delay
-+ *      - Priority specific Tx control
-+ *      - Flags
++ * For STA mode drivers, it also prints the following extra -
++ *      - ESSID
++ *      - BSSID
++ *      - Channel
++ *      - Region code
++ *      - Multicast count
++ *      - Multicast addresses
 + */
-+void nxpwifi_process_sta_txpd(struct nxpwifi_private *priv,
-+			      struct sk_buff *skb)
-+{
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	struct txpd *local_tx_pd;
-+	struct nxpwifi_txinfo *tx_info = NXPWIFI_SKB_TXCB(skb);
-+	unsigned int pad;
-+	u16 pkt_type, pkt_length, pkt_offset;
-+	int hroom = adapter->intf_hdr_len;
-+	u32 tx_control;
-+
-+	pkt_type = nxpwifi_is_skb_mgmt_frame(skb) ? PKT_TYPE_MGMT : 0;
-+
-+	pad = ((uintptr_t)skb->data - (sizeof(*local_tx_pd) + hroom)) &
-+	       (NXPWIFI_DMA_ALIGN_SZ - 1);
-+	skb_push(skb, sizeof(*local_tx_pd) + pad);
-+
-+	local_tx_pd = (struct txpd *)skb->data;
-+	memset(local_tx_pd, 0, sizeof(struct txpd));
-+	local_tx_pd->bss_num = priv->bss_num;
-+	local_tx_pd->bss_type = priv->bss_type;
-+
-+	pkt_length = (u16)(skb->len - (sizeof(struct txpd) + pad));
-+	if (pkt_type == PKT_TYPE_MGMT)
-+		pkt_length -= NXPWIFI_MGMT_FRAME_HEADER_SIZE;
-+	local_tx_pd->tx_pkt_length = cpu_to_le16(pkt_length);
-+
-+	local_tx_pd->priority = (u8)skb->priority;
-+	local_tx_pd->pkt_delay_2ms =
-+				nxpwifi_wmm_compute_drv_pkt_delay(priv, skb);
-+
-+	if (tx_info->flags & NXPWIFI_BUF_FLAG_EAPOL_TX_STATUS ||
-+	    tx_info->flags & NXPWIFI_BUF_FLAG_ACTION_TX_STATUS) {
-+		local_tx_pd->tx_token_id = tx_info->ack_frame_id;
-+		local_tx_pd->flags |= NXPWIFI_TXPD_FLAGS_REQ_TX_STATUS;
-+	}
-+
-+	if (local_tx_pd->priority <
-+	    ARRAY_SIZE(priv->wmm.user_pri_pkt_tx_ctrl)) {
-+		/* Set the priority specific tx_control field, setting of 0 will
-+		 *   cause the default value to be used later in this function
-+		 */
-+		tx_control =
-+			priv->wmm.user_pri_pkt_tx_ctrl[local_tx_pd->priority];
-+		local_tx_pd->tx_control = cpu_to_le32(tx_control);
-+	}
-+
-+	if (adapter->pps_uapsd_mode) {
-+		if (nxpwifi_check_last_packet_indication(priv)) {
-+			adapter->tx_lock_flag = true;
-+			local_tx_pd->flags =
-+				NXPWIFI_TxPD_POWER_MGMT_LAST_PACKET;
-+		}
-+	}
-+
-+	/* Offset of actual data */
-+	pkt_offset = sizeof(struct txpd) + pad;
-+	if (pkt_type == PKT_TYPE_MGMT) {
-+		/* Set the packet type and add header for management frame */
-+		local_tx_pd->tx_pkt_type = cpu_to_le16(pkt_type);
-+		pkt_offset += NXPWIFI_MGMT_FRAME_HEADER_SIZE;
-+	}
-+
-+	local_tx_pd->tx_pkt_offset = cpu_to_le16(pkt_offset);
-+
-+	/* make space for adapter->intf_hdr_len */
-+	skb_push(skb, hroom);
-+
-+	if (!local_tx_pd->tx_control)
-+		/* TxCtrl set by user or default */
-+		local_tx_pd->tx_control = cpu_to_le32(priv->pkt_tx_ctrl);
-+}
-+
-+/* This function tells firmware to send a NULL data packet.
-+ *
-+ * The function creates a NULL data packet with TxPD and sends to the
-+ * firmware for transmission, with highest priority setting.
-+ */
-+int nxpwifi_send_null_packet(struct nxpwifi_private *priv, u8 flags)
-+{
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	struct txpd *local_tx_pd;
-+	struct nxpwifi_tx_param tx_param;
-+/* sizeof(struct txpd) + Interface specific header */
-+#define NULL_PACKET_HDR 64
-+	u32 data_len = NULL_PACKET_HDR;
-+	struct sk_buff *skb;
-+	int ret;
-+	struct nxpwifi_txinfo *tx_info = NULL;
-+
-+	if (test_bit(NXPWIFI_SURPRISE_REMOVED, &adapter->work_flags))
-+		return -EPERM;
-+
-+	if (!priv->media_connected)
-+		return -EPERM;
-+
-+	if (adapter->data_sent)
-+		return -EBUSY;
-+
-+	skb = dev_alloc_skb(data_len);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	tx_info = NXPWIFI_SKB_TXCB(skb);
-+	memset(tx_info, 0, sizeof(*tx_info));
-+	tx_info->bss_num = priv->bss_num;
-+	tx_info->bss_type = priv->bss_type;
-+	tx_info->pkt_len = data_len -
-+			(sizeof(struct txpd) + adapter->intf_hdr_len);
-+	skb_reserve(skb, sizeof(struct txpd) + adapter->intf_hdr_len);
-+	skb_push(skb, sizeof(struct txpd));
-+
-+	local_tx_pd = (struct txpd *)skb->data;
-+	local_tx_pd->tx_control = cpu_to_le32(priv->pkt_tx_ctrl);
-+	local_tx_pd->flags = flags;
-+	local_tx_pd->priority = WMM_HIGHEST_PRIORITY;
-+	local_tx_pd->tx_pkt_offset = cpu_to_le16(sizeof(struct txpd));
-+	local_tx_pd->bss_num = priv->bss_num;
-+	local_tx_pd->bss_type = priv->bss_type;
-+
-+	skb_push(skb, adapter->intf_hdr_len);
-+	tx_param.next_pkt_len = 0;
-+	ret = adapter->if_ops.host_to_card(adapter, NXPWIFI_TYPE_DATA,
-+					   skb, &tx_param);
-+
-+	switch (ret) {
-+	case -EBUSY:
-+		dev_kfree_skb_any(skb);
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "%s: host_to_card failed: ret=%d\n",
-+			    __func__, ret);
-+		adapter->dbg.num_tx_host_to_card_failure++;
-+		break;
-+	case 0:
-+		dev_kfree_skb_any(skb);
-+		nxpwifi_dbg(adapter, DATA,
-+			    "data: %s: host_to_card succeeded\n",
-+			    __func__);
-+		adapter->tx_lock_flag = true;
-+		break;
-+	case -EINPROGRESS:
-+		adapter->tx_lock_flag = true;
-+		break;
-+	default:
-+		dev_kfree_skb_any(skb);
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "%s: host_to_card failed: ret=%d\n",
-+			    __func__, ret);
-+		adapter->dbg.num_tx_host_to_card_failure++;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+/* This function checks if we need to send last packet indication.
-+ */
-+u8
-+nxpwifi_check_last_packet_indication(struct nxpwifi_private *priv)
-+{
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	u8 ret = false;
-+
-+	if (!adapter->sleep_period.period)
-+		return ret;
-+	if (nxpwifi_wmm_lists_empty(adapter))
-+		ret = true;
-+
-+	if (ret && !adapter->cmd_sent && !adapter->curr_cmd &&
-+	    !is_command_pending(adapter)) {
-+		adapter->delay_null_pkt = false;
-+		ret = true;
-+	} else {
-+		ret = false;
-+		adapter->delay_null_pkt = true;
-+	}
-+	return ret;
-+}
-diff --git a/drivers/net/wireless/nxp/nxpwifi/txrx.c b/drivers/net/wireless/nxp/nxpwifi/txrx.c
-new file mode 100644
-index 000000000000..e6e0bcb14e91
---- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/txrx.c
-@@ -0,0 +1,358 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * NXP Wireless LAN device driver: generic TX/RX data handling
-+ *
-+ * Copyright 2011-2024 NXP
-+ */
-+
-+#include "cfg.h"
-+#include "util.h"
-+#include "fw.h"
-+#include "main.h"
-+#include "wmm.h"
-+
-+/* This function processes the received buffer.
-+ *
-+ * Main responsibility of this function is to parse the RxPD to
-+ * identify the correct interface this packet is headed for and
-+ * forwarding it to the associated handling function, where the
-+ * packet will be further processed and sent to kernel/upper layer
-+ * if required.
-+ */
-+int nxpwifi_handle_rx_packet(struct nxpwifi_adapter *adapter,
-+			     struct sk_buff *skb)
++static ssize_t
++nxpwifi_info_read(struct file *file, char __user *ubuf,
++		  size_t count, loff_t *ppos)
 +{
 +	struct nxpwifi_private *priv =
-+		nxpwifi_get_priv(adapter, NXPWIFI_BSS_ROLE_ANY);
-+	struct rxpd *local_rx_pd;
-+	struct nxpwifi_rxinfo *rx_info = NXPWIFI_SKB_RXCB(skb);
-+	int ret;
++		(struct nxpwifi_private *)file->private_data;
++	struct net_device *netdev = priv->netdev;
++	struct netdev_hw_addr *ha;
++	struct netdev_queue *txq;
++	unsigned long page = get_zeroed_page(GFP_KERNEL);
++	char *p = (char *)page, fmt[64];
++	struct nxpwifi_bss_info info;
++	ssize_t ret;
++	int i = 0;
 +
-+	local_rx_pd = (struct rxpd *)(skb->data);
-+	/* Get the BSS number from rxpd, get corresponding priv */
-+	priv = nxpwifi_get_priv_by_id(adapter, local_rx_pd->bss_num &
-+				      BSS_NUM_MASK, local_rx_pd->bss_type);
-+	if (!priv)
-+		priv = nxpwifi_get_priv(adapter, NXPWIFI_BSS_ROLE_ANY);
-+
-+	if (!priv) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "data: priv not found. Drop RX packet\n");
-+		dev_kfree_skb_any(skb);
-+		return -EINVAL;
-+	}
-+
-+	nxpwifi_dbg_dump(adapter, DAT_D, "rx pkt:", skb->data,
-+			 min_t(size_t, skb->len, DEBUG_DUMP_DATA_MAX_LEN));
-+
-+	memset(rx_info, 0, sizeof(*rx_info));
-+	rx_info->bss_num = priv->bss_num;
-+	rx_info->bss_type = priv->bss_type;
-+
-+	if (priv->bss_role == NXPWIFI_BSS_ROLE_UAP)
-+		ret = nxpwifi_process_uap_rx_packet(priv, skb);
-+	else
-+		ret = nxpwifi_process_sta_rx_packet(priv, skb);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(nxpwifi_handle_rx_packet);
-+
-+/* This function sends a packet to device.
-+ *
-+ * It processes the packet to add the TxPD, checks condition and
-+ * sends the processed packet to firmware for transmission.
-+ *
-+ * On successful completion, the function calls the completion callback
-+ * and logs the time.
-+ */
-+int nxpwifi_process_tx(struct nxpwifi_private *priv, struct sk_buff *skb,
-+		       struct nxpwifi_tx_param *tx_param)
-+{
-+	int hroom, ret;
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	struct txpd *local_tx_pd = NULL;
-+	struct nxpwifi_sta_node *dest_node;
-+	struct ethhdr *hdr = (void *)skb->data;
-+
-+	if (unlikely(!skb->len ||
-+		     skb_headroom(skb) < NXPWIFI_MIN_DATA_HEADER_LEN)) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	hroom = adapter->intf_hdr_len;
-+
-+	if (priv->bss_role == NXPWIFI_BSS_ROLE_UAP) {
-+		rcu_read_lock();
-+		dest_node = nxpwifi_get_sta_entry(priv, hdr->h_dest);
-+		if (dest_node) {
-+			dest_node->stats.tx_bytes += skb->len;
-+			dest_node->stats.tx_packets++;
-+		}
-+		rcu_read_unlock();
-+		nxpwifi_process_uap_txpd(priv, skb);
-+	} else {
-+		nxpwifi_process_sta_txpd(priv, skb);
-+	}
-+
-+	if ((adapter->data_sent || adapter->tx_lock_flag)) {
-+		skb_queue_tail(&adapter->tx_data_q, skb);
-+		atomic_inc(&adapter->tx_queued);
-+		return 0;
-+	}
-+
-+	if (GET_BSS_ROLE(priv) == NXPWIFI_BSS_ROLE_STA)
-+		local_tx_pd = (struct txpd *)(skb->data + hroom);
-+	ret = adapter->if_ops.host_to_card(adapter,
-+					   NXPWIFI_TYPE_DATA,
-+					   skb, tx_param);
-+	nxpwifi_dbg_dump(adapter, DAT_D, "tx pkt:", skb->data,
-+			 min_t(size_t, skb->len, DEBUG_DUMP_DATA_MAX_LEN));
-+
-+out:
-+	switch (ret) {
-+	case -ENOSR:
-+		nxpwifi_dbg(adapter, DATA, "data: -ENOSR is returned\n");
-+		break;
-+	case -EBUSY:
-+		if ((GET_BSS_ROLE(priv) == NXPWIFI_BSS_ROLE_STA) &&
-+		    adapter->pps_uapsd_mode && adapter->tx_lock_flag) {
-+			priv->adapter->tx_lock_flag = false;
-+			if (local_tx_pd)
-+				local_tx_pd->flags = 0;
-+		}
-+		nxpwifi_dbg(adapter, ERROR, "data: -EBUSY is returned\n");
-+		break;
-+	case -EINPROGRESS:
-+		break;
-+	case -EINVAL:
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "malformed skb (length: %u, headroom: %u)\n",
-+			    skb->len, skb_headroom(skb));
-+		fallthrough;
-+	case 0:
-+		nxpwifi_write_data_complete(adapter, skb, 0, ret);
-+		break;
-+	default:
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "nxpwifi_write_data_async failed: 0x%X\n",
-+			    ret);
-+		adapter->dbg.num_tx_host_to_card_failure++;
-+		nxpwifi_write_data_complete(adapter, skb, 0, ret);
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static int nxpwifi_host_to_card(struct nxpwifi_adapter *adapter,
-+				struct sk_buff *skb,
-+				struct nxpwifi_tx_param *tx_param)
-+{
-+	struct txpd *local_tx_pd = NULL;
-+	u8 *head_ptr = skb->data;
-+	int ret = 0;
-+	struct nxpwifi_private *priv;
-+	struct nxpwifi_txinfo *tx_info;
-+
-+	tx_info = NXPWIFI_SKB_TXCB(skb);
-+	priv = nxpwifi_get_priv_by_id(adapter, tx_info->bss_num,
-+				      tx_info->bss_type);
-+	if (!priv) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "data: priv not found. Drop TX packet\n");
-+		adapter->dbg.num_tx_host_to_card_failure++;
-+		nxpwifi_write_data_complete(adapter, skb, 0, 0);
-+		return ret;
-+	}
-+	if (GET_BSS_ROLE(priv) == NXPWIFI_BSS_ROLE_STA)
-+		local_tx_pd = (struct txpd *)(head_ptr + adapter->intf_hdr_len);
-+
-+	ret = adapter->if_ops.host_to_card(adapter,
-+					   NXPWIFI_TYPE_DATA,
-+					   skb, tx_param);
-+
-+	switch (ret) {
-+	case -ENOSR:
-+		nxpwifi_dbg(adapter, ERROR, "data: -ENOSR is returned\n");
-+		break;
-+	case -EBUSY:
-+		if ((GET_BSS_ROLE(priv) == NXPWIFI_BSS_ROLE_STA) &&
-+		    adapter->pps_uapsd_mode &&
-+		    adapter->tx_lock_flag) {
-+			priv->adapter->tx_lock_flag = false;
-+			if (local_tx_pd)
-+				local_tx_pd->flags = 0;
-+		}
-+		skb_queue_head(&adapter->tx_data_q, skb);
-+		if (tx_info->flags & NXPWIFI_BUF_FLAG_AGGR_PKT)
-+			atomic_add(tx_info->aggr_num, &adapter->tx_queued);
-+		else
-+			atomic_inc(&adapter->tx_queued);
-+		nxpwifi_dbg(adapter, ERROR, "data: -EBUSY is returned\n");
-+		break;
-+	case -EINPROGRESS:
-+		break;
-+	case 0:
-+		nxpwifi_write_data_complete(adapter, skb, 0, ret);
-+		break;
-+	default:
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "nxpwifi_write_data_async failed: 0x%X\n", ret);
-+		adapter->dbg.num_tx_host_to_card_failure++;
-+		nxpwifi_write_data_complete(adapter, skb, 0, ret);
-+		break;
-+	}
-+	return ret;
-+}
-+
-+static int
-+nxpwifi_dequeue_tx_queue(struct nxpwifi_adapter *adapter)
-+{
-+	struct sk_buff *skb, *skb_next;
-+	struct nxpwifi_txinfo *tx_info;
-+	struct nxpwifi_tx_param tx_param;
-+
-+	skb = skb_dequeue(&adapter->tx_data_q);
-+	if (!skb)
++	if (!p)
 +		return -ENOMEM;
 +
-+	tx_info = NXPWIFI_SKB_TXCB(skb);
-+	if (tx_info->flags & NXPWIFI_BUF_FLAG_AGGR_PKT)
-+		atomic_sub(tx_info->aggr_num, &adapter->tx_queued);
-+	else
-+		atomic_dec(&adapter->tx_queued);
++	memset(&info, 0, sizeof(info));
++	ret = nxpwifi_get_bss_info(priv, &info);
++	if (ret)
++		goto free_and_exit;
 +
-+	if (!skb_queue_empty(&adapter->tx_data_q))
-+		skb_next = skb_peek(&adapter->tx_data_q);
++	nxpwifi_drv_get_driver_version(priv->adapter, fmt, sizeof(fmt) - 1);
++
++	nxpwifi_get_ver_ext(priv, 0);
++
++	p += sprintf(p, "driver_name = ");
++	p += sprintf(p, "\"nxpwifi\"\n");
++	p += sprintf(p, "driver_version = %s", fmt);
++	p += sprintf(p, "\nverext = %s", priv->version_str);
++	p += sprintf(p, "\ninterface_name=\"%s\"\n", netdev->name);
++
++	if (info.bss_mode >= ARRAY_SIZE(bss_modes))
++		p += sprintf(p, "bss_mode=\"%d\"\n", info.bss_mode);
 +	else
-+		skb_next = NULL;
-+	tx_param.next_pkt_len = ((skb_next) ? skb_next->len : 0);
-+	if (!tx_param.next_pkt_len) {
-+		if (!nxpwifi_wmm_lists_empty(adapter))
-+			tx_param.next_pkt_len = 1;
++		p += sprintf(p, "bss_mode=\"%s\"\n", bss_modes[info.bss_mode]);
++
++	p += sprintf(p, "media_state=\"%s\"\n",
++		     (!priv->media_connected ? "Disconnected" : "Connected"));
++	p += sprintf(p, "mac_address=\"%pM\"\n", netdev->dev_addr);
++
++	if (GET_BSS_ROLE(priv) == NXPWIFI_BSS_ROLE_STA) {
++		p += sprintf(p, "multicast_count=\"%d\"\n",
++			     netdev_mc_count(netdev));
++		p += sprintf(p, "essid=\"%.*s\"\n", info.ssid.ssid_len,
++			     info.ssid.ssid);
++		p += sprintf(p, "bssid=\"%pM\"\n", info.bssid);
++		p += sprintf(p, "channel=\"%d\"\n", (int)info.bss_chan);
++		p += sprintf(p, "country_code = \"%s\"\n", info.country_code);
++		p += sprintf(p, "region_code=\"0x%x\"\n",
++			     priv->adapter->region_code);
++
++		netdev_for_each_mc_addr(ha, netdev)
++			p += sprintf(p, "multicast_address[%d]=\"%pM\"\n",
++					i++, ha->addr);
 +	}
-+	return nxpwifi_host_to_card(adapter, skb, &tx_param);
++
++	p += sprintf(p, "num_tx_bytes = %lu\n", priv->stats.tx_bytes);
++	p += sprintf(p, "num_rx_bytes = %lu\n", priv->stats.rx_bytes);
++	p += sprintf(p, "num_tx_pkts = %lu\n", priv->stats.tx_packets);
++	p += sprintf(p, "num_rx_pkts = %lu\n", priv->stats.rx_packets);
++	p += sprintf(p, "num_tx_pkts_dropped = %lu\n", priv->stats.tx_dropped);
++	p += sprintf(p, "num_rx_pkts_dropped = %lu\n", priv->stats.rx_dropped);
++	p += sprintf(p, "num_tx_pkts_err = %lu\n", priv->stats.tx_errors);
++	p += sprintf(p, "num_rx_pkts_err = %lu\n", priv->stats.rx_errors);
++	p += sprintf(p, "carrier %s\n", ((netif_carrier_ok(priv->netdev))
++					 ? "on" : "off"));
++	p += sprintf(p, "tx queue");
++	for (i = 0; i < netdev->num_tx_queues; i++) {
++		txq = netdev_get_tx_queue(netdev, i);
++		p += sprintf(p, " %d:%s", i, netif_tx_queue_stopped(txq) ?
++			     "stopped" : "started");
++	}
++	p += sprintf(p, "\n");
++
++	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
++				      (unsigned long)p - page);
++
++free_and_exit:
++	free_page(page);
++	return ret;
 +}
 +
-+void
-+nxpwifi_process_tx_queue(struct nxpwifi_adapter *adapter)
-+{
-+	do {
-+		if (adapter->data_sent || adapter->tx_lock_flag)
-+			break;
-+		if (nxpwifi_dequeue_tx_queue(adapter))
-+			break;
-+	} while (!skb_queue_empty(&adapter->tx_data_q));
-+}
-+
-+/* Packet send completion callback handler.
++/* Proc getlog file read handler.
 + *
-+ * It either frees the buffer directly or forwards it to another
-+ * completion callback which checks conditions, updates statistics,
-+ * wakes up stalled traffic queue if required, and then frees the buffer.
++ * This function is called when the 'getlog' file is opened for reading
++ * It prints the following log information -
++ *      - Number of multicast Tx frames
++ *      - Number of failed packets
++ *      - Number of Tx retries
++ *      - Number of multicast Tx retries
++ *      - Number of duplicate frames
++ *      - Number of RTS successes
++ *      - Number of RTS failures
++ *      - Number of ACK failures
++ *      - Number of fragmented Rx frames
++ *      - Number of multicast Rx frames
++ *      - Number of FCS errors
++ *      - Number of Tx frames
++ *      - WEP ICV error counts
++ *      - Number of received beacons
++ *      - Number of missed beacons
 + */
-+int nxpwifi_write_data_complete(struct nxpwifi_adapter *adapter,
-+				struct sk_buff *skb, int aggr, int status)
++static ssize_t
++nxpwifi_getlog_read(struct file *file, char __user *ubuf,
++		    size_t count, loff_t *ppos)
 +{
-+	struct nxpwifi_private *priv;
-+	struct nxpwifi_txinfo *tx_info;
-+	struct netdev_queue *txq;
-+	int index;
++	struct nxpwifi_private *priv =
++		(struct nxpwifi_private *)file->private_data;
++	unsigned long page = get_zeroed_page(GFP_KERNEL);
++	char *p = (char *)page;
++	ssize_t ret;
++	struct nxpwifi_ds_get_stats stats;
 +
-+	if (!skb)
-+		return 0;
++	if (!p)
++		return -ENOMEM;
 +
-+	tx_info = NXPWIFI_SKB_TXCB(skb);
-+	priv = nxpwifi_get_priv_by_id(adapter, tx_info->bss_num,
-+				      tx_info->bss_type);
-+	if (!priv)
-+		goto done;
++	memset(&stats, 0, sizeof(stats));
++	ret = nxpwifi_get_stats_info(priv, &stats);
++	if (ret)
++		goto free_and_exit;
 +
-+	nxpwifi_set_trans_start(priv->netdev);
++	p += sprintf(p, "\n"
++		     "mcasttxframe     %u\n"
++		     "failed           %u\n"
++		     "retry            %u\n"
++		     "multiretry       %u\n"
++		     "framedup         %u\n"
++		     "rtssuccess       %u\n"
++		     "rtsfailure       %u\n"
++		     "ackfailure       %u\n"
++		     "rxfrag           %u\n"
++		     "mcastrxframe     %u\n"
++		     "fcserror         %u\n"
++		     "txframe          %u\n"
++		     "wepicverrcnt-1   %u\n"
++		     "wepicverrcnt-2   %u\n"
++		     "wepicverrcnt-3   %u\n"
++		     "wepicverrcnt-4   %u\n"
++		     "bcn_rcv_cnt   %u\n"
++		     "bcn_miss_cnt   %u\n",
++		     stats.mcast_tx_frame,
++		     stats.failed,
++		     stats.retry,
++		     stats.multi_retry,
++		     stats.frame_dup,
++		     stats.rts_success,
++		     stats.rts_failure,
++		     stats.ack_failure,
++		     stats.rx_frag,
++		     stats.mcast_rx_frame,
++		     stats.fcs_error,
++		     stats.tx_frame,
++		     stats.wep_icv_error[0],
++		     stats.wep_icv_error[1],
++		     stats.wep_icv_error[2],
++		     stats.wep_icv_error[3],
++		     stats.bcn_rcv_cnt,
++		     stats.bcn_miss_cnt);
 +
-+	if (tx_info->flags & NXPWIFI_BUF_FLAG_BRIDGED_PKT)
-+		atomic_dec_return(&adapter->pending_bridged_pkts);
++	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
++				      (unsigned long)p - page);
 +
-+	if (tx_info->flags & NXPWIFI_BUF_FLAG_AGGR_PKT)
-+		goto done;
++free_and_exit:
++	free_page(page);
++	return ret;
++}
 +
-+	if (!status) {
-+		priv->stats.tx_packets++;
-+		priv->stats.tx_bytes += tx_info->pkt_len;
-+		if (priv->tx_timeout_cnt)
-+			priv->tx_timeout_cnt = 0;
-+	} else {
-+		priv->stats.tx_errors++;
++/* Sysfs histogram file read handler.
++ *
++ * This function is called when the 'histogram' file is opened for reading
++ * It prints the following histogram information -
++ *      - Number of histogram samples
++ *      - Receive packet number of each rx_rate
++ *      - Receive packet number of each snr
++ *      - Receive packet number of each nosie_flr
++ *      - Receive packet number of each signal streath
++ */
++static ssize_t
++nxpwifi_histogram_read(struct file *file, char __user *ubuf,
++		       size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv =
++		(struct nxpwifi_private *)file->private_data;
++	ssize_t ret;
++	struct nxpwifi_histogram_data *phist_data;
++	int i, value;
++	unsigned long page = get_zeroed_page(GFP_KERNEL);
++	char *p = (char *)page;
++
++	if (!p)
++		return -ENOMEM;
++
++	if (!priv || !priv->hist_data) {
++		ret = -EFAULT;
++		goto free_and_exit;
 +	}
 +
-+	if (aggr)
-+		/* For skb_aggr, do not wake up tx queue */
-+		goto done;
++	phist_data = priv->hist_data;
 +
-+	atomic_dec(&adapter->tx_pending);
++	p += sprintf(p, "\n"
++		     "total samples = %d\n",
++		     atomic_read(&phist_data->num_samples));
 +
-+	index = nxpwifi_1d_to_wmm_queue[skb->priority];
-+	if (atomic_dec_return(&priv->wmm_tx_pending[index]) < LOW_TX_PENDING) {
-+		txq = netdev_get_tx_queue(priv->netdev, index);
-+		if (netif_tx_queue_stopped(txq)) {
-+			netif_tx_wake_queue(txq);
-+			nxpwifi_dbg(adapter, DATA, "wake queue: %d\n", index);
++	p += sprintf(p,
++		     "rx rates (in Mbps): 0=1M   1=2M 2=5.5M  3=11M   4=6M   5=9M  6=12M\n"
++		     "7=18M  8=24M  9=36M  10=48M  11=54M 12-27=MCS0-15(BW20) 28-43=MCS0-15(BW40)\n");
++
++	if (ISSUPP_11ACENABLED(priv->adapter->fw_cap_info)) {
++		p += sprintf(p,
++			     "44-53=MCS0-9(VHT:BW20) 54-63=MCS0-9(VHT:BW40) 64-73=MCS0-9(VHT:BW80)\n\n");
++	} else {
++		p += sprintf(p, "\n");
++	}
++
++	for (i = 0; i < NXPWIFI_MAX_RX_RATES; i++) {
++		value = atomic_read(&phist_data->rx_rate[i]);
++		if (value)
++			p += sprintf(p, "rx_rate[%02d] = %d\n", i, value);
++	}
++
++	if (ISSUPP_11ACENABLED(priv->adapter->fw_cap_info)) {
++		for (i = NXPWIFI_MAX_RX_RATES; i < NXPWIFI_MAX_AC_RX_RATES;
++		     i++) {
++			value = atomic_read(&phist_data->rx_rate[i]);
++			if (value)
++				p += sprintf(p, "rx_rate[%02d] = %d\n",
++					   i, value);
 +		}
++	}
++
++	for (i = 0; i < NXPWIFI_MAX_SNR; i++) {
++		value =  atomic_read(&phist_data->snr[i]);
++		if (value)
++			p += sprintf(p, "snr[%02ddB] = %d\n", i, value);
++	}
++	for (i = 0; i < NXPWIFI_MAX_NOISE_FLR; i++) {
++		value = atomic_read(&phist_data->noise_flr[i]);
++		if (value)
++			p += sprintf(p, "noise_flr[%02ddBm] = %d\n",
++				     (int)(i - 128), value);
++	}
++	for (i = 0; i < NXPWIFI_MAX_SIG_STRENGTH; i++) {
++		value = atomic_read(&phist_data->sig_str[i]);
++		if (value)
++			p += sprintf(p, "sig_strength[-%02ddBm] = %d\n",
++				i, value);
++	}
++
++	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
++				      (unsigned long)p - page);
++
++free_and_exit:
++	free_page(page);
++	return ret;
++}
++
++static ssize_t
++nxpwifi_histogram_write(struct file *file, const char __user *ubuf,
++			size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv = (void *)file->private_data;
++
++	if (priv && priv->hist_data)
++		nxpwifi_hist_data_reset(priv);
++	return 0;
++}
++
++static struct nxpwifi_debug_info info;
++
++/* Proc debug file read handler.
++ *
++ * This function is called when the 'debug' file is opened for reading
++ * It prints the following log information -
++ *      - Interrupt count
++ *      - WMM AC VO packets count
++ *      - WMM AC VI packets count
++ *      - WMM AC BE packets count
++ *      - WMM AC BK packets count
++ *      - Maximum Tx buffer size
++ *      - Tx buffer size
++ *      - Current Tx buffer size
++ *      - Power Save mode
++ *      - Power Save state
++ *      - Deep Sleep status
++ *      - Device wakeup required status
++ *      - Number of wakeup tries
++ *      - Host Sleep configured status
++ *      - Host Sleep activated status
++ *      - Number of Tx timeouts
++ *      - Number of command timeouts
++ *      - Last timed out command ID
++ *      - Last timed out command action
++ *      - Last command ID
++ *      - Last command action
++ *      - Last command index
++ *      - Last command response ID
++ *      - Last command response index
++ *      - Last event
++ *      - Last event index
++ *      - Number of host to card command failures
++ *      - Number of sleep confirm command failures
++ *      - Number of host to card data failure
++ *      - Number of deauthentication events
++ *      - Number of disassociation events
++ *      - Number of link lost events
++ *      - Number of deauthentication commands
++ *      - Number of association success commands
++ *      - Number of association failure commands
++ *      - Number of commands sent
++ *      - Number of data packets sent
++ *      - Number of command responses received
++ *      - Number of events received
++ *      - Tx BA stream table (TID, RA)
++ *      - Rx reorder table (TID, TA, Start window, Window size, Buffer)
++ */
++static ssize_t
++nxpwifi_debug_read(struct file *file, char __user *ubuf,
++		   size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv =
++		(struct nxpwifi_private *)file->private_data;
++	unsigned long page = get_zeroed_page(GFP_KERNEL);
++	char *p = (char *)page;
++	ssize_t ret;
++
++	if (!p)
++		return -ENOMEM;
++
++	ret = nxpwifi_get_debug_info(priv, &info);
++	if (ret)
++		goto free_and_exit;
++
++	p += nxpwifi_debug_info_to_buffer(priv, p, &info);
++
++	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
++				      (unsigned long)p - page);
++
++free_and_exit:
++	free_page(page);
++	return ret;
++}
++
++static u32 saved_reg_type, saved_reg_offset, saved_reg_value;
++
++/* Proc regrdwr file write handler.
++ *
++ * This function is called when the 'regrdwr' file is opened for writing
++ *
++ * This function can be used to write to a register.
++ */
++static ssize_t
++nxpwifi_regrdwr_write(struct file *file,
++		      const char __user *ubuf, size_t count, loff_t *ppos)
++{
++	char *buf;
++	int ret;
++	u32 reg_type = 0, reg_offset = 0, reg_value = UINT_MAX;
++	int rv;
++
++	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
++
++	rv = sscanf(buf, "%u %x %x", &reg_type, &reg_offset, &reg_value);
++
++	if (rv != 3) {
++		ret = -EINVAL;
++		goto done;
++	}
++
++	if (reg_type == 0 || reg_offset == 0) {
++		ret = -EINVAL;
++		goto done;
++	} else {
++		saved_reg_type = reg_type;
++		saved_reg_offset = reg_offset;
++		saved_reg_value = reg_value;
++		ret = count;
 +	}
 +done:
-+	dev_kfree_skb_any(skb);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(nxpwifi_write_data_complete);
-+
-+void nxpwifi_parse_tx_status_event(struct nxpwifi_private *priv,
-+				   void *event_body)
-+{
-+	struct tx_status_event *tx_status = (void *)priv->adapter->event_body;
-+	struct sk_buff *ack_skb;
-+	struct nxpwifi_txinfo *tx_info;
-+
-+	if (!tx_status->tx_token_id)
-+		return;
-+
-+	spin_lock_bh(&priv->ack_status_lock);
-+	ack_skb = idr_remove(&priv->ack_status_frames, tx_status->tx_token_id);
-+	spin_unlock_bh(&priv->ack_status_lock);
-+
-+	if (ack_skb) {
-+		tx_info = NXPWIFI_SKB_TXCB(ack_skb);
-+
-+		if (tx_info->flags & NXPWIFI_BUF_FLAG_EAPOL_TX_STATUS) {
-+			/* consumes ack_skb */
-+			skb_complete_wifi_ack(ack_skb, !tx_status->status);
-+		} else {
-+			/* Remove broadcast address which was added by driver */
-+			memmove(ack_skb->data +
-+				sizeof(struct ieee80211_hdr_3addr) +
-+				NXPWIFI_MGMT_FRAME_HEADER_SIZE + sizeof(u16),
-+				ack_skb->data +
-+				sizeof(struct ieee80211_hdr_3addr) +
-+				NXPWIFI_MGMT_FRAME_HEADER_SIZE + sizeof(u16) +
-+				ETH_ALEN, ack_skb->len -
-+				(sizeof(struct ieee80211_hdr_3addr) +
-+				NXPWIFI_MGMT_FRAME_HEADER_SIZE + sizeof(u16) +
-+				ETH_ALEN));
-+			ack_skb->len = ack_skb->len - ETH_ALEN;
-+			/* Remove driver's proprietary header including 2 bytes
-+			 * of packet length and pass actual management frame buffer
-+			 * to cfg80211.
-+			 */
-+			cfg80211_mgmt_tx_status(&priv->wdev, tx_info->cookie,
-+						ack_skb->data +
-+						NXPWIFI_MGMT_FRAME_HEADER_SIZE +
-+						sizeof(u16), ack_skb->len -
-+						(NXPWIFI_MGMT_FRAME_HEADER_SIZE
-+						 + sizeof(u16)),
-+						!tx_status->status, GFP_ATOMIC);
-+			dev_kfree_skb_any(ack_skb);
-+		}
-+	}
-+}
-diff --git a/drivers/net/wireless/nxp/nxpwifi/uap_txrx.c b/drivers/net/wireless/nxp/nxpwifi/uap_txrx.c
-new file mode 100644
-index 000000000000..abdb7305211d
---- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/uap_txrx.c
-@@ -0,0 +1,506 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * NXP Wireless LAN device driver: AP TX and RX data handling
-+ *
-+ * Copyright 2011-2024 NXP
-+ */
-+
-+#include "cfg.h"
-+#include "main.h"
-+#include "wmm.h"
-+#include "11n_aggr.h"
-+#include "11n_rxreorder.h"
-+
-+/* This function checks if particular RA list has packets more than low bridge
-+ * packet threshold and then deletes packet from this RA list.
-+ * Function deletes packets from such RA list and returns true. If no such list
-+ * is found, false is returned.
-+ */
-+static bool
-+nxpwifi_uap_del_tx_pkts_in_ralist(struct nxpwifi_private *priv,
-+				  struct list_head *ra_list_head,
-+				  int tid)
-+{
-+	struct nxpwifi_ra_list_tbl *ra_list;
-+	struct sk_buff *skb, *tmp;
-+	bool pkt_deleted = false;
-+	struct nxpwifi_txinfo *tx_info;
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+
-+	list_for_each_entry(ra_list, ra_list_head, list) {
-+		if (skb_queue_empty(&ra_list->skb_head))
-+			continue;
-+
-+		skb_queue_walk_safe(&ra_list->skb_head, skb, tmp) {
-+			tx_info = NXPWIFI_SKB_TXCB(skb);
-+			if (tx_info->flags & NXPWIFI_BUF_FLAG_BRIDGED_PKT) {
-+				__skb_unlink(skb, &ra_list->skb_head);
-+				nxpwifi_write_data_complete(adapter, skb, 0,
-+							    -1);
-+				if (ra_list->tx_paused)
-+					priv->wmm.pkts_paused[tid]--;
-+				else
-+					atomic_dec(&priv->wmm.tx_pkts_queued);
-+				pkt_deleted = true;
-+			}
-+			if ((atomic_read(&adapter->pending_bridged_pkts) <=
-+					     NXPWIFI_BRIDGED_PKTS_THR_LOW))
-+				break;
-+		}
-+	}
-+
-+	return pkt_deleted;
-+}
-+
-+/* This function deletes packets from particular RA List. RA list index
-+ * from which packets are deleted is preserved so that packets from next RA
-+ * list are deleted upon subsequent call thus maintaining fairness.
-+ */
-+static void nxpwifi_uap_cleanup_tx_queues(struct nxpwifi_private *priv)
-+{
-+	struct list_head *ra_list;
-+	int i;
-+
-+	spin_lock_bh(&priv->wmm.ra_list_spinlock);
-+
-+	for (i = 0; i < MAX_NUM_TID; i++, priv->del_list_idx++) {
-+		if (priv->del_list_idx == MAX_NUM_TID)
-+			priv->del_list_idx = 0;
-+		ra_list = &priv->wmm.tid_tbl_ptr[priv->del_list_idx].ra_list;
-+		if (nxpwifi_uap_del_tx_pkts_in_ralist(priv, ra_list, i)) {
-+			priv->del_list_idx++;
-+			break;
-+		}
-+	}
-+
-+	spin_unlock_bh(&priv->wmm.ra_list_spinlock);
-+}
-+
-+static void
-+nxpwifi_uap_queue_bridged_pkt(struct nxpwifi_private *priv,
-+			      struct sk_buff *skb)
-+{
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	struct uap_rxpd *uap_rx_pd;
-+	struct rx_packet_hdr *rx_pkt_hdr;
-+	struct sk_buff *new_skb;
-+	struct nxpwifi_txinfo *tx_info;
-+	int hdr_chop;
-+	struct ethhdr *p_ethhdr;
-+	struct nxpwifi_sta_node *src_node;
-+	int index;
-+
-+	uap_rx_pd = (struct uap_rxpd *)(skb->data);
-+	rx_pkt_hdr = (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_offset);
-+
-+	if ((atomic_read(&adapter->pending_bridged_pkts) >=
-+					     NXPWIFI_BRIDGED_PKTS_THR_HIGH)) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "Tx: Bridge packet limit reached. Drop packet!\n");
-+		kfree_skb(skb);
-+		nxpwifi_uap_cleanup_tx_queues(priv);
-+		return;
-+	}
-+
-+	if (sizeof(*rx_pkt_hdr) +
-+	    le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len) {
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+		return;
-+	}
-+
-+	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
-+		     sizeof(bridge_tunnel_header))) ||
-+	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-+		     sizeof(rfc1042_header)) &&
-+	     rx_pkt_hdr->rfc1042_hdr.snap_type != htons(ETH_P_AARP) &&
-+	     rx_pkt_hdr->rfc1042_hdr.snap_type != htons(ETH_P_IPX))) {
-+		/* Replace the 803 header and rfc1042 header (llc/snap) with
-+		 * an Ethernet II header, keep the src/dst and snap_type
-+		 * (ethertype).
-+		 *
-+		 * The firmware only passes up SNAP frames converting all RX
-+		 * data from 802.11 to 802.2/LLC/SNAP frames.
-+		 *
-+		 * To create the Ethernet II, just move the src, dst address
-+		 * right before the snap_type.
-+		 */
-+		p_ethhdr = (struct ethhdr *)
-+			((u8 *)(&rx_pkt_hdr->eth803_hdr)
-+			 + sizeof(rx_pkt_hdr->eth803_hdr)
-+			 + sizeof(rx_pkt_hdr->rfc1042_hdr)
-+			 - sizeof(rx_pkt_hdr->eth803_hdr.h_dest)
-+			 - sizeof(rx_pkt_hdr->eth803_hdr.h_source)
-+			 - sizeof(rx_pkt_hdr->rfc1042_hdr.snap_type));
-+		memcpy(p_ethhdr->h_source, rx_pkt_hdr->eth803_hdr.h_source,
-+		       sizeof(p_ethhdr->h_source));
-+		memcpy(p_ethhdr->h_dest, rx_pkt_hdr->eth803_hdr.h_dest,
-+		       sizeof(p_ethhdr->h_dest));
-+		/* Chop off the rxpd + the excess memory from
-+		 * 802.2/llc/snap header that was removed.
-+		 */
-+		hdr_chop = (u8 *)p_ethhdr - (u8 *)uap_rx_pd;
-+	} else {
-+		/* Chop off the rxpd */
-+		hdr_chop = (u8 *)&rx_pkt_hdr->eth803_hdr - (u8 *)uap_rx_pd;
-+	}
-+
-+	/* Chop off the leading header bytes so that it points
-+	 * to the start of either the reconstructed EthII frame
-+	 * or the 802.2/llc/snap frame.
-+	 */
-+	skb_pull(skb, hdr_chop);
-+
-+	if (skb_headroom(skb) < NXPWIFI_MIN_DATA_HEADER_LEN) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "data: Tx: insufficient skb headroom %d\n",
-+			    skb_headroom(skb));
-+		/* Insufficient skb headroom - allocate a new skb */
-+		new_skb =
-+			skb_realloc_headroom(skb, NXPWIFI_MIN_DATA_HEADER_LEN);
-+		if (unlikely(!new_skb)) {
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "Tx: cannot allocate new_skb\n");
-+			kfree_skb(skb);
-+			priv->stats.tx_dropped++;
-+			return;
-+		}
-+
-+		kfree_skb(skb);
-+		skb = new_skb;
-+		nxpwifi_dbg(adapter, INFO,
-+			    "info: new skb headroom %d\n",
-+			    skb_headroom(skb));
-+	}
-+
-+	tx_info = NXPWIFI_SKB_TXCB(skb);
-+	memset(tx_info, 0, sizeof(*tx_info));
-+	tx_info->bss_num = priv->bss_num;
-+	tx_info->bss_type = priv->bss_type;
-+	tx_info->flags |= NXPWIFI_BUF_FLAG_BRIDGED_PKT;
-+
-+	rcu_read_lock();
-+	src_node = nxpwifi_get_sta_entry(priv, rx_pkt_hdr->eth803_hdr.h_source);
-+	if (src_node) {
-+		src_node->stats.last_rx = jiffies;
-+		src_node->stats.rx_bytes += skb->len;
-+		src_node->stats.rx_packets++;
-+		src_node->stats.last_tx_rate = uap_rx_pd->rx_rate;
-+		src_node->stats.last_tx_htinfo = uap_rx_pd->ht_info;
-+	}
-+	rcu_read_unlock();
-+
-+	if (is_unicast_ether_addr(rx_pkt_hdr->eth803_hdr.h_dest)) {
-+		/* Update bridge packet statistics as the
-+		 * packet is not going to kernel/upper layer.
-+		 */
-+		priv->stats.rx_bytes += skb->len;
-+		priv->stats.rx_packets++;
-+
-+		/* Sending bridge packet to TX queue, so save the packet
-+		 * length in TXCB to update statistics in TX complete.
-+		 */
-+		tx_info->pkt_len = skb->len;
-+	}
-+
-+	__net_timestamp(skb);
-+
-+	index = nxpwifi_1d_to_wmm_queue[skb->priority];
-+	atomic_inc(&priv->wmm_tx_pending[index]);
-+	nxpwifi_wmm_add_buf_txqueue(priv, skb);
-+	atomic_inc(&adapter->tx_pending);
-+	atomic_inc(&adapter->pending_bridged_pkts);
-+
-+	nxpwifi_queue_work(adapter, &adapter->main_work);
-+}
-+
-+/* This function contains logic for AP packet forwarding.
-+ *
-+ * If a packet is multicast/broadcast, it is sent to kernel/upper layer
-+ * as well as queued back to AP TX queue so that it can be sent to other
-+ * associated stations.
-+ * If a packet is unicast and RA is present in associated station list,
-+ * it is again requeued into AP TX queue.
-+ * If a packet is unicast and RA is not in associated station list,
-+ * packet is forwarded to kernel to handle routing logic.
-+ */
-+int nxpwifi_handle_uap_rx_forward(struct nxpwifi_private *priv,
-+				  struct sk_buff *skb)
-+{
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	struct uap_rxpd *uap_rx_pd;
-+	struct rx_packet_hdr *rx_pkt_hdr;
-+	u8 ra[ETH_ALEN];
-+	struct sk_buff *skb_uap;
-+	struct nxpwifi_sta_node *node;
-+
-+	uap_rx_pd = (struct uap_rxpd *)(skb->data);
-+	rx_pkt_hdr = (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_offset);
-+
-+	/* don't do packet forwarding in disconnected state */
-+	if (!priv->media_connected) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "drop packet in disconnected state.\n");
-+		dev_kfree_skb_any(skb);
-+		return 0;
-+	}
-+
-+	memcpy(ra, rx_pkt_hdr->eth803_hdr.h_dest, ETH_ALEN);
-+
-+	if (is_multicast_ether_addr(ra)) {
-+		skb_uap = skb_copy(skb, GFP_ATOMIC);
-+		if (likely(skb_uap)) {
-+			nxpwifi_uap_queue_bridged_pkt(priv, skb_uap);
-+		} else {
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "failed to copy skb for uAP\n");
-+				    priv->stats.rx_dropped++;
-+				    dev_kfree_skb_any(skb);
-+			return -ENOMEM;
-+		}
-+	} else {
-+		node = nxpwifi_get_sta_entry_rcu(priv, ra);
-+		if (node) {
-+			/* Requeue Intra-BSS packet */
-+			nxpwifi_uap_queue_bridged_pkt(priv, skb);
-+			return 0;
-+		}
-+	}
-+
-+	/* Forward unicat/Inter-BSS packets to kernel. */
-+	return nxpwifi_process_rx_packet(priv, skb);
-+}
-+
-+int nxpwifi_uap_recv_packet(struct nxpwifi_private *priv,
-+			    struct sk_buff *skb)
-+{
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	struct nxpwifi_sta_node *src_node, *dst_node;
-+	struct ethhdr *p_ethhdr;
-+	struct sk_buff *skb_uap;
-+	struct nxpwifi_txinfo *tx_info;
-+
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	p_ethhdr = (void *)skb->data;
-+	rcu_read_lock();
-+	src_node = nxpwifi_get_sta_entry(priv, p_ethhdr->h_source);
-+	if (src_node) {
-+		src_node->stats.last_rx = jiffies;
-+		src_node->stats.rx_bytes += skb->len;
-+		src_node->stats.rx_packets++;
-+	}
-+	dst_node = nxpwifi_get_sta_entry(priv, p_ethhdr->h_dest);
-+	rcu_read_unlock();
-+
-+	if (is_multicast_ether_addr(p_ethhdr->h_dest) || dst_node) {
-+		if (skb_headroom(skb) < NXPWIFI_MIN_DATA_HEADER_LEN)
-+			skb_uap =
-+			skb_realloc_headroom(skb, NXPWIFI_MIN_DATA_HEADER_LEN);
-+		else
-+			skb_uap = skb_copy(skb, GFP_ATOMIC);
-+
-+		if (likely(skb_uap)) {
-+			tx_info = NXPWIFI_SKB_TXCB(skb_uap);
-+			memset(tx_info, 0, sizeof(*tx_info));
-+			tx_info->bss_num = priv->bss_num;
-+			tx_info->bss_type = priv->bss_type;
-+			tx_info->flags |= NXPWIFI_BUF_FLAG_BRIDGED_PKT;
-+			__net_timestamp(skb_uap);
-+			nxpwifi_wmm_add_buf_txqueue(priv, skb_uap);
-+			atomic_inc(&adapter->tx_pending);
-+			atomic_inc(&adapter->pending_bridged_pkts);
-+			if ((atomic_read(&adapter->pending_bridged_pkts) >=
-+					NXPWIFI_BRIDGED_PKTS_THR_HIGH)) {
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "Tx: Bridge packet limit reached. Drop packet!\n");
-+				nxpwifi_uap_cleanup_tx_queues(priv);
-+			}
-+
-+		} else {
-+			nxpwifi_dbg(adapter, ERROR, "failed to allocate skb_uap");
-+		}
-+
-+		nxpwifi_queue_work(adapter, &adapter->main_work);
-+		/* Don't forward Intra-BSS unicast packet to upper layer*/
-+
-+		if (dst_node)
-+			return 0;
-+	}
-+
-+	skb->dev = priv->netdev;
-+	skb->protocol = eth_type_trans(skb, priv->netdev);
-+	skb->ip_summed = CHECKSUM_NONE;
-+
-+	/* Forward multicast/broadcast packet to upper layer*/
-+	netif_rx(skb);
-+	return 0;
-+}
-+
-+/* This function processes the packet received on AP interface.
-+ *
-+ * The function looks into the RxPD and performs sanity tests on the
-+ * received buffer to ensure its a valid packet before processing it
-+ * further. If the packet is determined to be aggregated, it is
-+ * de-aggregated accordingly. Then skb is passed to AP packet forwarding logic.
-+ *
-+ * The completion callback is called after processing is complete.
-+ */
-+int nxpwifi_process_uap_rx_packet(struct nxpwifi_private *priv,
-+				  struct sk_buff *skb)
-+{
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	int ret;
-+	struct uap_rxpd *uap_rx_pd;
-+	struct rx_packet_hdr *rx_pkt_hdr;
-+	u16 rx_pkt_type;
-+	u8 ta[ETH_ALEN], pkt_type;
-+	struct nxpwifi_sta_node *node;
-+
-+	uap_rx_pd = (struct uap_rxpd *)(skb->data);
-+	rx_pkt_type = le16_to_cpu(uap_rx_pd->rx_pkt_type);
-+	rx_pkt_hdr = (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_offset);
-+
-+	if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-+	    sizeof(rx_pkt_hdr->eth803_hdr) > skb->len) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "wrong rx packet for struct ethhdr: len=%d, offset=%d\n",
-+			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+		return 0;
-+	}
-+
-+	ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
-+
-+	if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-+	     le16_to_cpu(uap_rx_pd->rx_pkt_length)) > (u16)skb->len) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "wrong rx packet: len=%d, offset=%d, length=%d\n",
-+			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset),
-+			    le16_to_cpu(uap_rx_pd->rx_pkt_length));
-+		priv->stats.rx_dropped++;
-+		rcu_read_lock();
-+		node = nxpwifi_get_sta_entry(priv, ta);
-+		if (node)
-+			node->stats.tx_failed++;
-+		rcu_read_unlock();
-+
-+		dev_kfree_skb_any(skb);
-+		return 0;
-+	}
-+
-+	if (rx_pkt_type == PKT_TYPE_MGMT) {
-+		ret = nxpwifi_process_mgmt_packet(priv, skb);
-+		if (ret && (ret != -EINPROGRESS))
-+			nxpwifi_dbg(adapter, DATA, "Rx of mgmt packet failed");
-+		if (ret != -EINPROGRESS)
-+			dev_kfree_skb_any(skb);
-+		return ret;
-+	}
-+
-+	if (rx_pkt_type != PKT_TYPE_BAR && uap_rx_pd->priority < MAX_NUM_TID) {
-+		rcu_read_lock();
-+		node = nxpwifi_get_sta_entry(priv, ta);
-+		if (node)
-+			node->rx_seq[uap_rx_pd->priority] =
-+						le16_to_cpu(uap_rx_pd->seq_num);
-+		rcu_read_unlock();
-+	}
-+
-+	if (!priv->ap_11n_enabled ||
-+	    (!nxpwifi_11n_get_rx_reorder_tbl(priv, uap_rx_pd->priority, ta) &&
-+	    (le16_to_cpu(uap_rx_pd->rx_pkt_type) != PKT_TYPE_AMSDU))) {
-+		ret = nxpwifi_handle_uap_rx_forward(priv, skb);
-+		return ret;
-+	}
-+
-+	/* Reorder and send to kernel */
-+	pkt_type = (u8)le16_to_cpu(uap_rx_pd->rx_pkt_type);
-+	ret = nxpwifi_11n_rx_reorder_pkt(priv, le16_to_cpu(uap_rx_pd->seq_num),
-+					 uap_rx_pd->priority, ta, pkt_type,
-+					 skb);
-+
-+	if (ret || rx_pkt_type == PKT_TYPE_BAR)
-+		dev_kfree_skb_any(skb);
-+
-+	if (ret)
-+		priv->stats.rx_dropped++;
-+
++	kfree(buf);
 +	return ret;
 +}
 +
-+/* This function fills the TxPD for AP tx packets.
++/* Proc regrdwr file read handler.
 + *
-+ * The Tx buffer received by this function should already have the
-+ * header space allocated for TxPD.
++ * This function is called when the 'regrdwr' file is opened for reading
 + *
-+ * This function inserts the TxPD in between interface header and actual
-+ * data and adjusts the buffer pointers accordingly.
-+ *
-+ * The following TxPD fields are set by this function, as required -
-+ *      - BSS number
-+ *      - Tx packet length and offset
-+ *      - Priority
-+ *      - Packet delay
-+ *      - Priority specific Tx control
-+ *      - Flags
++ * This function can be used to read from a register.
 + */
-+void nxpwifi_process_uap_txpd(struct nxpwifi_private *priv,
-+			      struct sk_buff *skb)
++static ssize_t
++nxpwifi_regrdwr_read(struct file *file, char __user *ubuf,
++		     size_t count, loff_t *ppos)
 +{
++	struct nxpwifi_private *priv =
++		(struct nxpwifi_private *)file->private_data;
++	unsigned long addr = get_zeroed_page(GFP_KERNEL);
++	char *buf = (char *)addr;
++	int pos = 0, ret = 0;
++	u32 reg_value;
++
++	if (!buf)
++		return -ENOMEM;
++
++	if (!saved_reg_type) {
++		/* No command has been given */
++		pos += snprintf(buf, PAGE_SIZE, "0");
++		goto done;
++	}
++	/* Set command has been given */
++	if (saved_reg_value != UINT_MAX) {
++		ret = nxpwifi_reg_write(priv, saved_reg_type, saved_reg_offset,
++					saved_reg_value);
++
++		pos += snprintf(buf, PAGE_SIZE, "%u 0x%x 0x%x\n",
++				saved_reg_type, saved_reg_offset,
++				saved_reg_value);
++
++		ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
++
++		goto done;
++	}
++	/* Get command has been given */
++	ret = nxpwifi_reg_read(priv, saved_reg_type,
++			       saved_reg_offset, &reg_value);
++	if (ret) {
++		ret = -EINVAL;
++		goto done;
++	}
++
++	pos += snprintf(buf, PAGE_SIZE, "%u 0x%x 0x%x\n", saved_reg_type,
++			saved_reg_offset, reg_value);
++
++	ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
++
++done:
++	free_page(addr);
++	return ret;
++}
++
++/* Proc debug_mask file read handler.
++ * This function is called when the 'debug_mask' file is opened for reading
++ * This function can be used read driver debugging mask value.
++ */
++static ssize_t
++nxpwifi_debug_mask_read(struct file *file, char __user *ubuf,
++			size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv =
++		(struct nxpwifi_private *)file->private_data;
++	unsigned long page = get_zeroed_page(GFP_KERNEL);
++	char *buf = (char *)page;
++	size_t ret = 0;
++	int pos = 0;
++
++	if (!buf)
++		return -ENOMEM;
++
++	pos += snprintf(buf, PAGE_SIZE, "debug mask=0x%08x\n",
++			priv->adapter->debug_mask);
++	ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
++
++	free_page(page);
++	return ret;
++}
++
++/* Proc debug_mask file read handler.
++ * This function is called when the 'debug_mask' file is opened for reading
++ * This function can be used read driver debugging mask value.
++ */
++static ssize_t
++nxpwifi_debug_mask_write(struct file *file, const char __user *ubuf,
++			 size_t count, loff_t *ppos)
++{
++	int ret;
++	unsigned long debug_mask;
++	struct nxpwifi_private *priv = (void *)file->private_data;
++	char *buf;
++
++	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
++
++	if (kstrtoul(buf, 0, &debug_mask)) {
++		ret = -EINVAL;
++		goto done;
++	}
++
++	priv->adapter->debug_mask = debug_mask;
++	ret = count;
++done:
++	kfree(buf);
++	return ret;
++}
++
++/* debugfs verext file write handler.
++ * This function is called when the 'verext' file is opened for write
++ */
++static ssize_t
++nxpwifi_verext_write(struct file *file, const char __user *ubuf,
++		     size_t count, loff_t *ppos)
++{
++	int ret;
++	u32 versionstrsel;
++	struct nxpwifi_private *priv = (void *)file->private_data;
++
++	ret = kstrtou32_from_user(ubuf, count, 10, &versionstrsel);
++	if (ret)
++		return ret;
++
++	priv->versionstrsel = versionstrsel;
++
++	return count;
++}
++
++/* Proc verext file read handler.
++ * This function is called when the 'verext' file is opened for reading
++ * This function can be used read driver exteneed verion string.
++ */
++static ssize_t
++nxpwifi_verext_read(struct file *file, char __user *ubuf,
++		    size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv =
++		(struct nxpwifi_private *)file->private_data;
++	char buf[256];
++	int ret;
++
++	nxpwifi_get_ver_ext(priv, priv->versionstrsel);
++	ret = snprintf(buf, sizeof(buf), "version string: %s\n",
++		       priv->version_str);
++
++	return simple_read_from_buffer(ubuf, count, ppos, buf, ret);
++}
++
++/* Proc memrw file write handler.
++ * This function is called when the 'memrw' file is opened for writing
++ * This function can be used to write to a memory location.
++ */
++static ssize_t
++nxpwifi_memrw_write(struct file *file, const char __user *ubuf, size_t count,
++		    loff_t *ppos)
++{
++	int ret;
++	char cmd;
++	struct nxpwifi_ds_mem_rw mem_rw;
++	u16 cmd_action;
++	struct nxpwifi_private *priv = (void *)file->private_data;
++	char *buf;
++
++	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
++
++	ret = sscanf(buf, "%c %x %x", &cmd, &mem_rw.addr, &mem_rw.value);
++	if (ret != 3) {
++		ret = -EINVAL;
++		goto done;
++	}
++
++	if ((cmd == 'r') || (cmd == 'R')) {
++		cmd_action = HOST_ACT_GEN_GET;
++		mem_rw.value = 0;
++	} else if ((cmd == 'w') || (cmd == 'W')) {
++		cmd_action = HOST_ACT_GEN_SET;
++	} else {
++		ret = -EINVAL;
++		goto done;
++	}
++
++	memcpy(&priv->mem_rw, &mem_rw, sizeof(mem_rw));
++	ret = nxpwifi_send_cmd(priv, HOST_CMD_MEM_ACCESS, cmd_action, 0,
++			       &mem_rw, true);
++	if (!ret)
++		ret = count;
++
++done:
++	kfree(buf);
++	return ret;
++}
++
++/* Proc memrw file read handler.
++ * This function is called when the 'memrw' file is opened for reading
++ * This function can be used to read from a memory location.
++ */
++static ssize_t
++nxpwifi_memrw_read(struct file *file, char __user *ubuf,
++		   size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv = (void *)file->private_data;
++	unsigned long addr = get_zeroed_page(GFP_KERNEL);
++	char *buf = (char *)addr;
++	int ret, pos = 0;
++
++	if (!buf)
++		return -ENOMEM;
++
++	pos += snprintf(buf, PAGE_SIZE, "0x%x 0x%x\n", priv->mem_rw.addr,
++			priv->mem_rw.value);
++	ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
++
++	free_page(addr);
++	return ret;
++}
++
++static u32 saved_offset = -1, saved_bytes = -1;
++
++/* Proc rdeeprom file write handler.
++ *
++ * This function is called when the 'rdeeprom' file is opened for writing
++ *
++ * This function can be used to write to a RDEEPROM location.
++ */
++static ssize_t
++nxpwifi_rdeeprom_write(struct file *file,
++		       const char __user *ubuf, size_t count, loff_t *ppos)
++{
++	char *buf;
++	int ret = 0;
++	int offset = -1, bytes = -1;
++	int rv;
++
++	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
++
++	rv = sscanf(buf, "%d %d", &offset, &bytes);
++
++	if (rv != 2) {
++		ret = -EINVAL;
++		goto done;
++	}
++
++	if (offset == -1 || bytes == -1) {
++		ret = -EINVAL;
++		goto done;
++	} else {
++		saved_offset = offset;
++		saved_bytes = bytes;
++		ret = count;
++	}
++done:
++	kfree(buf);
++	return ret;
++}
++
++/* Proc rdeeprom read write handler.
++ *
++ * This function is called when the 'rdeeprom' file is opened for reading
++ *
++ * This function can be used to read from a RDEEPROM location.
++ */
++static ssize_t
++nxpwifi_rdeeprom_read(struct file *file, char __user *ubuf,
++		      size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv =
++		(struct nxpwifi_private *)file->private_data;
++	unsigned long addr = get_zeroed_page(GFP_KERNEL);
++	char *buf = (char *)addr;
++	int pos, ret, i;
++	u8 value[MAX_EEPROM_DATA];
++
++	if (!buf)
++		return -ENOMEM;
++
++	if (saved_offset == -1) {
++		/* No command has been given */
++		pos = snprintf(buf, PAGE_SIZE, "0");
++		goto done;
++	}
++
++	/* Get command has been given */
++	ret = nxpwifi_eeprom_read(priv, (u16)saved_offset,
++				  (u16)saved_bytes, value);
++	if (ret) {
++		ret = -EINVAL;
++		goto out_free;
++	}
++
++	pos = snprintf(buf, PAGE_SIZE, "%d %d ", saved_offset, saved_bytes);
++
++	for (i = 0; i < saved_bytes; i++)
++		pos += scnprintf(buf + pos, PAGE_SIZE - pos, "%d ", value[i]);
++
++done:
++	ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
++out_free:
++	free_page(addr);
++	return ret;
++}
++
++/* Proc hscfg file write handler
++ * This function can be used to configure the host sleep parameters.
++ */
++static ssize_t
++nxpwifi_hscfg_write(struct file *file, const char __user *ubuf,
++		    size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv = (void *)file->private_data;
++	char *buf;
++	int ret, arg_num;
++	struct nxpwifi_ds_hs_cfg hscfg;
++	int conditions = HS_CFG_COND_DEF;
++	u32 gpio = HS_CFG_GPIO_DEF, gap = HS_CFG_GAP_DEF;
++
++	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
++
++	arg_num = sscanf(buf, "%d %x %x", &conditions, &gpio, &gap);
++
++	memset(&hscfg, 0, sizeof(struct nxpwifi_ds_hs_cfg));
++
++	if (arg_num > 3) {
++		nxpwifi_dbg(priv->adapter, ERROR,
++			    "Too many arguments\n");
++		ret = -EINVAL;
++		goto done;
++	}
++
++	if (arg_num >= 1 && arg_num < 3)
++		nxpwifi_set_hs_params(priv, HOST_ACT_GEN_GET,
++				      NXPWIFI_SYNC_CMD, &hscfg);
++
++	if (arg_num) {
++		if (conditions == HS_CFG_CANCEL) {
++			nxpwifi_cancel_hs(priv, NXPWIFI_ASYNC_CMD);
++			ret = count;
++			goto done;
++		}
++		hscfg.conditions = conditions;
++	}
++	if (arg_num >= 2)
++		hscfg.gpio = gpio;
++	if (arg_num == 3)
++		hscfg.gap = gap;
++
++	hscfg.is_invoke_hostcmd = false;
++	nxpwifi_set_hs_params(priv, HOST_ACT_GEN_SET,
++			      NXPWIFI_SYNC_CMD, &hscfg);
++
++	nxpwifi_enable_hs(priv->adapter);
++	clear_bit(NXPWIFI_IS_HS_ENABLING, &priv->adapter->work_flags);
++	ret = count;
++done:
++	kfree(buf);
++	return ret;
++}
++
++/* Proc hscfg file read handler
++ * This function can be used to read host sleep configuration
++ * parameters from driver.
++ */
++static ssize_t
++nxpwifi_hscfg_read(struct file *file, char __user *ubuf,
++		   size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv = (void *)file->private_data;
++	unsigned long addr = get_zeroed_page(GFP_KERNEL);
++	char *buf = (char *)addr;
++	int pos, ret;
++	struct nxpwifi_ds_hs_cfg hscfg;
++
++	if (!buf)
++		return -ENOMEM;
++
++	nxpwifi_set_hs_params(priv, HOST_ACT_GEN_GET,
++			      NXPWIFI_SYNC_CMD, &hscfg);
++
++	pos = snprintf(buf, PAGE_SIZE, "%u 0x%x 0x%x\n", hscfg.conditions,
++		       hscfg.gpio, hscfg.gap);
++
++	ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
++
++	free_page(addr);
++	return ret;
++}
++
++static ssize_t
++nxpwifi_timeshare_coex_read(struct file *file, char __user *ubuf,
++			    size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv = file->private_data;
++	char buf[3];
++	bool timeshare_coex;
++	int ret;
++	unsigned int len;
++
++	if (priv->adapter->fw_api_ver != NXPWIFI_FW_V15)
++		return -EOPNOTSUPP;
++
++	ret = nxpwifi_send_cmd(priv, HOST_CMD_ROBUST_COEX,
++			       HOST_ACT_GEN_GET, 0, &timeshare_coex, true);
++	if (ret)
++		return ret;
++
++	len = sprintf(buf, "%d\n", timeshare_coex);
++	return simple_read_from_buffer(ubuf, count, ppos, buf, len);
++}
++
++static ssize_t
++nxpwifi_timeshare_coex_write(struct file *file, const char __user *ubuf,
++			     size_t count, loff_t *ppos)
++{
++	bool timeshare_coex;
++	struct nxpwifi_private *priv = file->private_data;
++	int ret;
++
++	if (priv->adapter->fw_api_ver != NXPWIFI_FW_V15)
++		return -EOPNOTSUPP;
++
++	ret = kstrtobool_from_user(ubuf, count, &timeshare_coex);
++	if (ret)
++		return ret;
++
++	ret = nxpwifi_send_cmd(priv, HOST_CMD_ROBUST_COEX,
++			       HOST_ACT_GEN_SET, 0, &timeshare_coex, true);
++	if (ret)
++		return ret;
++	else
++		return count;
++}
++
++static ssize_t
++nxpwifi_reset_write(struct file *file,
++		    const char __user *ubuf, size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv = file->private_data;
 +	struct nxpwifi_adapter *adapter = priv->adapter;
-+	struct uap_txpd *txpd;
-+	struct nxpwifi_txinfo *tx_info = NXPWIFI_SKB_TXCB(skb);
-+	int pad;
-+	u16 pkt_type, pkt_offset;
-+	int hroom = adapter->intf_hdr_len;
++	bool result;
++	int rc;
 +
-+	pkt_type = nxpwifi_is_skb_mgmt_frame(skb) ? PKT_TYPE_MGMT : 0;
++	rc = kstrtobool_from_user(ubuf, count, &result);
++	if (rc)
++		return rc;
 +
-+	pad = ((uintptr_t)skb->data - (sizeof(*txpd) + hroom)) &
-+	       (NXPWIFI_DMA_ALIGN_SZ - 1);
++	if (!result)
++		return -EINVAL;
 +
-+	skb_push(skb, sizeof(*txpd) + pad);
-+
-+	txpd = (struct uap_txpd *)skb->data;
-+	memset(txpd, 0, sizeof(*txpd));
-+	txpd->bss_num = priv->bss_num;
-+	txpd->bss_type = priv->bss_type;
-+	txpd->tx_pkt_length = cpu_to_le16((u16)(skb->len - (sizeof(*txpd) +
-+						pad)));
-+	txpd->priority = (u8)skb->priority;
-+
-+	txpd->pkt_delay_2ms = nxpwifi_wmm_compute_drv_pkt_delay(priv, skb);
-+
-+	if (tx_info->flags & NXPWIFI_BUF_FLAG_EAPOL_TX_STATUS ||
-+	    tx_info->flags & NXPWIFI_BUF_FLAG_ACTION_TX_STATUS) {
-+		txpd->tx_token_id = tx_info->ack_frame_id;
-+		txpd->flags |= NXPWIFI_TXPD_FLAGS_REQ_TX_STATUS;
++	if (adapter->if_ops.card_reset) {
++		dev_info(adapter->dev, "Resetting per request\n");
++		adapter->if_ops.card_reset(adapter);
 +	}
 +
-+	if (txpd->priority < ARRAY_SIZE(priv->wmm.user_pri_pkt_tx_ctrl))
-+		/* Set the priority specific tx_control field, setting of 0 will
-+		 * cause the default value to be used later in this function.
-+		 */
-+		txpd->tx_control =
-+		    cpu_to_le32(priv->wmm.user_pri_pkt_tx_ctrl[txpd->priority]);
++	return count;
++}
 +
-+	/* Offset of actual data */
-+	pkt_offset = sizeof(*txpd) + pad;
-+	if (pkt_type == PKT_TYPE_MGMT) {
-+		/* Set the packet type and add header for management frame */
-+		txpd->tx_pkt_type = cpu_to_le16(pkt_type);
-+		pkt_offset += NXPWIFI_MGMT_FRAME_HEADER_SIZE;
++static ssize_t
++nxpwifi_fake_radar_detect_write(struct file *file,
++				const char __user *ubuf,
++				size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv = file->private_data;
++	struct nxpwifi_adapter *adapter = priv->adapter;
++	bool result;
++	int rc;
++
++	rc = kstrtobool_from_user(ubuf, count, &result);
++	if (rc)
++		return rc;
++
++	if (!result)
++		return -EINVAL;
++
++	if (priv->wdev.links[0].cac_started) {
++		nxpwifi_dbg(adapter, MSG,
++			    "Generate fake radar detected during CAC\n");
++		if (nxpwifi_stop_radar_detection(priv, &priv->dfs_chandef))
++			nxpwifi_dbg(adapter, ERROR,
++				    "Failed to stop CAC in FW\n");
++		wiphy_delayed_work_cancel(priv->adapter->wiphy, &priv->dfs_cac_work);
++		cfg80211_cac_event(priv->netdev, &priv->dfs_chandef,
++				   NL80211_RADAR_CAC_ABORTED, GFP_KERNEL, 0);
++		cfg80211_radar_event(adapter->wiphy, &priv->dfs_chandef,
++				     GFP_KERNEL);
++	} else {
++		if (priv->bss_chandef.chan->dfs_cac_ms) {
++			nxpwifi_dbg(adapter, MSG,
++				    "Generate fake radar detected\n");
++			cfg80211_radar_event(adapter->wiphy,
++					     &priv->dfs_chandef,
++					     GFP_KERNEL);
++		}
 +	}
 +
-+	txpd->tx_pkt_offset = cpu_to_le16(pkt_offset);
++	return count;
++}
 +
-+	/* make space for adapter->intf_hdr_len */
-+	skb_push(skb, hroom);
++static ssize_t
++nxpwifi_netmon_write(struct file *file, const char __user *ubuf,
++		     size_t count, loff_t *ppos)
++{
++	int ret;
++	struct nxpwifi_802_11_net_monitor netmon_cfg;
++	struct nxpwifi_private *priv = (void *)file->private_data;
++	char *buf;
 +
-+	if (!txpd->tx_control)
-+		/* TxCtrl set by user or default */
-+		txpd->tx_control = cpu_to_le32(priv->pkt_tx_ctrl);
++	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
++	memset(&netmon_cfg, 0, sizeof(struct nxpwifi_802_11_net_monitor));
++	ret = sscanf(buf, "%u %u %u %u %u",
++		     &netmon_cfg.enable_net_mon,
++		     &netmon_cfg.filter_flag,
++		     &netmon_cfg.band,
++		     &netmon_cfg.channel,
++		     &netmon_cfg.chan_bandwidth);
++
++	ret = nxpwifi_send_cmd(priv, HOST_CMD_802_11_NET_MONITOR,
++			       HOST_ACT_GEN_SET, 0, &netmon_cfg, true);
++
++	if (!ret)
++		ret = count;
++
++	kfree(buf);
++	return ret;
++}
++
++static ssize_t
++nxpwifi_twt_setup_write(struct file *file, const char __user *ubuf,
++			size_t count, loff_t *ppos)
++{
++	int ret;
++	struct nxpwifi_twt_cfg twt_cfg;
++	struct nxpwifi_private *priv = (void *)file->private_data;
++	char *buf;
++
++	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
++
++	ret = sscanf(buf, "%hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hu %hhu %hu",
++		     &twt_cfg.param.twt_setup.implicit,
++		     &twt_cfg.param.twt_setup.announced,
++		     &twt_cfg.param.twt_setup.trigger_enabled,
++		     &twt_cfg.param.twt_setup.twt_info_disabled,
++		     &twt_cfg.param.twt_setup.negotiation_type,
++		     &twt_cfg.param.twt_setup.twt_wakeup_duration,
++		     &twt_cfg.param.twt_setup.flow_identifier,
++		     &twt_cfg.param.twt_setup.hard_constraint,
++		     &twt_cfg.param.twt_setup.twt_exponent,
++		     &twt_cfg.param.twt_setup.twt_mantissa,
++		     &twt_cfg.param.twt_setup.twt_request,
++		     &twt_cfg.param.twt_setup.bcn_miss_threshold);
++
++	twt_cfg.sub_id = NXPWIFI_11AX_TWT_SETUP_SUBID;
++	ret = nxpwifi_send_cmd(priv, HOST_CMD_TWT_CFG, HOST_ACT_GEN_SET, 0,
++			       &twt_cfg, true);
++	if (!ret)
++		ret = count;
++
++	kfree(buf);
++	return ret;
++}
++
++static ssize_t
++nxpwifi_twt_teardown_write(struct file *file, const char __user *ubuf,
++			   size_t count, loff_t *ppos)
++{
++	int ret;
++	struct nxpwifi_twt_cfg twt_cfg;
++	struct nxpwifi_private *priv = (void *)file->private_data;
++	char *buf;
++
++	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
++
++	ret = sscanf(buf, "%hhu %hhu %hhu",
++		     &twt_cfg.param.twt_teardown.flow_identifier,
++		     &twt_cfg.param.twt_teardown.negotiation_type,
++		     &twt_cfg.param.twt_teardown.teardown_all_twt);
++
++	twt_cfg.sub_id = NXPWIFI_11AX_TWT_TEARDOWN_SUBID;
++	ret = nxpwifi_send_cmd(priv, HOST_CMD_TWT_CFG, HOST_ACT_GEN_SET, 0,
++			       &twt_cfg, true);
++
++	if (!ret)
++		ret = count;
++
++	kfree(buf);
++	return ret;
++}
++
++static ssize_t
++nxpwifi_twt_report_read(struct file *file, char __user *ubuf,
++			size_t count, loff_t *ppos)
++{
++	struct nxpwifi_private *priv =
++		(struct nxpwifi_private *)file->private_data;
++	unsigned long page = get_zeroed_page(GFP_KERNEL);
++	char *p = (char *)page;
++	ssize_t ret;
++	struct nxpwifi_twt_cfg twt_cfg;
++	u8 num, i, j;
++
++	if (!p)
++		return -ENOMEM;
++
++	twt_cfg.sub_id = NXPWIFI_11AX_TWT_REPORT_SUBID;
++	ret = nxpwifi_send_cmd(priv, HOST_CMD_TWT_CFG, HOST_ACT_GEN_GET, 0,
++			       &twt_cfg, true);
++	if (ret)
++		goto done;
++	num = twt_cfg.param.twt_report.length / NXPWIFI_BTWT_REPORT_LEN;
++	num = num <= NXPWIFI_BTWT_REPORT_MAX_NUM ? num : NXPWIFI_BTWT_REPORT_MAX_NUM;
++	p += sprintf(p, "\ntwt_report len %hhu, num %hhu, twt_report_info:\n",
++		twt_cfg.param.twt_report.length, num);
++	for (i = 0; i < num; i++) {
++		p += sprintf(p, "id[%hu]:\r\n", i);
++		for (j = 0; j < NXPWIFI_BTWT_REPORT_LEN; j++) {
++			p += sprintf(p,
++				" 0x%02x",
++				twt_cfg.param.twt_report.data[i * NXPWIFI_BTWT_REPORT_LEN + j]);
++		}
++		p += sprintf(p, "\r\n");
++	}
++
++	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
++				      (unsigned long)p - page);
++
++done:
++	free_page(page);
++	return ret;
++}
++
++static ssize_t
++nxpwifi_twt_information_write(struct file *file, const char __user *ubuf,
++			      size_t count, loff_t *ppos)
++{
++	int ret;
++	struct nxpwifi_twt_cfg twt_cfg;
++	struct nxpwifi_private *priv = (void *)file->private_data;
++	char *buf;
++
++	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
++	if (IS_ERR(buf))
++		return PTR_ERR(buf);
++
++	ret = sscanf(buf, "%hhu %u",
++		     &twt_cfg.param.twt_information.flow_identifier,
++		     &twt_cfg.param.twt_information.suspend_duration);
++
++	twt_cfg.sub_id = NXPWIFI_11AX_TWT_INFORMATION_SUBID;
++	ret = nxpwifi_send_cmd(priv, HOST_CMD_TWT_CFG, HOST_ACT_GEN_SET, 0,
++			       &twt_cfg, true);
++
++	if (!ret)
++		ret = count;
++
++	kfree(buf);
++	return ret;
++}
++
++#define NXPWIFI_DFS_ADD_FILE(name) debugfs_create_file(#name, 0644,     \
++				   priv->dfs_dev_dir, priv,             \
++				   &nxpwifi_dfs_##name##_fops)
++
++#define NXPWIFI_DFS_FILE_OPS(name)                                      \
++static const struct file_operations nxpwifi_dfs_##name##_fops = {       \
++	.read = nxpwifi_##name##_read,                                  \
++	.write = nxpwifi_##name##_write,                                \
++	.open = simple_open,                                            \
++}
++
++#define NXPWIFI_DFS_FILE_READ_OPS(name)                                 \
++static const struct file_operations nxpwifi_dfs_##name##_fops = {       \
++	.read = nxpwifi_##name##_read,                                  \
++	.open = simple_open,                                            \
++}
++
++#define NXPWIFI_DFS_FILE_WRITE_OPS(name)                                \
++static const struct file_operations nxpwifi_dfs_##name##_fops = {       \
++	.write = nxpwifi_##name##_write,                                \
++	.open = simple_open,                                            \
++}
++
++NXPWIFI_DFS_FILE_READ_OPS(info);
++NXPWIFI_DFS_FILE_READ_OPS(debug);
++NXPWIFI_DFS_FILE_READ_OPS(getlog);
++NXPWIFI_DFS_FILE_OPS(regrdwr);
++NXPWIFI_DFS_FILE_OPS(rdeeprom);
++NXPWIFI_DFS_FILE_OPS(memrw);
++NXPWIFI_DFS_FILE_OPS(hscfg);
++NXPWIFI_DFS_FILE_OPS(histogram);
++NXPWIFI_DFS_FILE_OPS(debug_mask);
++NXPWIFI_DFS_FILE_OPS(timeshare_coex);
++NXPWIFI_DFS_FILE_WRITE_OPS(reset);
++NXPWIFI_DFS_FILE_WRITE_OPS(fake_radar_detect);
++NXPWIFI_DFS_FILE_OPS(verext);
++NXPWIFI_DFS_FILE_WRITE_OPS(netmon);
++NXPWIFI_DFS_FILE_WRITE_OPS(twt_setup);
++NXPWIFI_DFS_FILE_WRITE_OPS(twt_teardown);
++NXPWIFI_DFS_FILE_READ_OPS(twt_report);
++NXPWIFI_DFS_FILE_WRITE_OPS(twt_information);
++
++/* This function creates the debug FS directory structure and the files.
++ */
++void
++nxpwifi_dev_debugfs_init(struct nxpwifi_private *priv)
++{
++	if (!nxpwifi_dfs_dir || !priv)
++		return;
++
++	priv->dfs_dev_dir = debugfs_create_dir(priv->netdev->name,
++					       nxpwifi_dfs_dir);
++
++	NXPWIFI_DFS_ADD_FILE(info);
++	NXPWIFI_DFS_ADD_FILE(debug);
++	NXPWIFI_DFS_ADD_FILE(getlog);
++	NXPWIFI_DFS_ADD_FILE(regrdwr);
++	NXPWIFI_DFS_ADD_FILE(rdeeprom);
++
++	NXPWIFI_DFS_ADD_FILE(memrw);
++	NXPWIFI_DFS_ADD_FILE(hscfg);
++	NXPWIFI_DFS_ADD_FILE(histogram);
++	NXPWIFI_DFS_ADD_FILE(debug_mask);
++	NXPWIFI_DFS_ADD_FILE(timeshare_coex);
++	NXPWIFI_DFS_ADD_FILE(reset);
++	NXPWIFI_DFS_ADD_FILE(fake_radar_detect);
++	NXPWIFI_DFS_ADD_FILE(verext);
++	NXPWIFI_DFS_ADD_FILE(netmon);
++	NXPWIFI_DFS_ADD_FILE(twt_setup);
++	NXPWIFI_DFS_ADD_FILE(twt_teardown);
++	NXPWIFI_DFS_ADD_FILE(twt_report);
++	NXPWIFI_DFS_ADD_FILE(twt_information);
++}
++
++/* This function removes the debug FS directory structure and the files.
++ */
++void
++nxpwifi_dev_debugfs_remove(struct nxpwifi_private *priv)
++{
++	if (!priv)
++		return;
++
++	debugfs_remove_recursive(priv->dfs_dev_dir);
++}
++
++/* This function creates the top level proc directory.
++ */
++void
++nxpwifi_debugfs_init(void)
++{
++	if (!nxpwifi_dfs_dir)
++		nxpwifi_dfs_dir = debugfs_create_dir("nxpwifi", NULL);
++}
++
++/* This function removes the top level proc directory.
++ */
++void
++nxpwifi_debugfs_remove(void)
++{
++	debugfs_remove(nxpwifi_dfs_dir);
 +}
 -- 
 2.34.1
