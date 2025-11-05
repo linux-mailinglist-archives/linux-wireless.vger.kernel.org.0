@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-28611-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28610-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F893C36226
-	for <lists+linux-wireless@lfdr.de>; Wed, 05 Nov 2025 15:45:54 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CEF9C361BD
+	for <lists+linux-wireless@lfdr.de>; Wed, 05 Nov 2025 15:40:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD7C66221B9
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Nov 2025 14:39:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C45CD4F9091
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Nov 2025 14:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4C4330305;
-	Wed,  5 Nov 2025 14:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D6C32F75F;
+	Wed,  5 Nov 2025 14:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ddFWiGZ6"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Sgz6HQn/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8D532E120
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Nov 2025 14:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD0A32D7FF
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Nov 2025 14:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762353541; cv=none; b=I4kYXnjNR1lLDLD0q0dLNZyUIMjacN6hNBjzWX3L0AeF24HizCSzxX2Y/8e6z7ffmd/2+0S+iRgEIh3pfoaEi5w+sJ4qclKz8pzU/f6nqkEuUmjEcOKLOQ6cwuQlz/PsRPcZtPehF65lvpqjGerdwyr4Md8b8P5MqJazNAvPSVs=
+	t=1762353540; cv=none; b=qy74Z8RdFXvnGa/miKUmmKkupHHBAiuwVY74/+yGsrmS+BQ2mgee6zF5zmiy6CtvnGYJBMZTPVfRExmM6HlyjSEDPPW8AI420YxMuiAEhY9nkUNZIckZK8GuDJmKOfCyWjPJ8du6K5Q3cPtrj0d96S2ATNx+pGZ7J5seweibAAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762353541; c=relaxed/simple;
-	bh=b7iS40jw3pDYR53oITh8UGvwyETVa329kbRDpo2IHGc=;
+	s=arc-20240116; t=1762353540; c=relaxed/simple;
+	bh=9DXmsOEbxp+3WKExWyGspw5MRpXuGnu77nj3ZDYZnLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXpuTNrA+E4scP5TZJd7vCNHGD3zNkii7Y+RPpPdds0F1cnk58ge9MxX2OBYX3t7IbJvapG8XkfjzOM+6sESe0WiSyD1bnRsnTVtrbc8PW1RGmaqpb3FUi+imYxZKLv1nXjzo/m2mx+MMvQXNdf2aWw7drKMXUz/V9CrM4ypG5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ddFWiGZ6; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=cD0hxf6u8IHbUbIHh9+pw+pGjp6aInmvUwa98rE7kuQSYOjEosNMSBW+SI92e8r8UtqS1iOTevrJBrjmChb42azgMgXLWRgX+Gf4Mh6JhxwD8CaM3vyPggc7dvAxWJ9fxKXLtETH+xzUs3NYElovJzA0+2W1boOjJ+TqxkWITkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Sgz6HQn/; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=hAQAAl7aapEJQqBgdIMtF3L6XaOvP4RL3P1JAcoci0Y=;
-	t=1762353537; x=1763563137; b=ddFWiGZ62oHomBdKxSee6evugBPlXdl36vugbjs6ssMKEYv
-	cHbvYRqpsmQ+OY4c8KQBIls59zq3mE8yTOdS9cKntRfldfGjo9ZKEJj8NhlEbpBGQyv/YxNPSLoCr
-	evA9H3g/q2eEkqNyxzH9oXuqK8r48woM50KwympwXVhdf1eNT8+Ht5hL/VByfOWu736q5ywpXmHcA
-	2/WWppcWboXVhXQMkh55MNwiQX4wHB263A2UQlca6FzoDH4esr1pQG3+ocKdCOFTcKKzpdcTfGaTg
-	2zSAoe5+S7t4saqpLjSsa7cCbaqSZYcwLsOID7ut5T7crzpprOR9u+Rg+Mzqu0BQ==;
+	Resent-Cc:Resent-Message-ID; bh=oZqu8SuJGAt77c3hnxqJbbtuRsC7ZoNsPfCz64TndYQ=;
+	t=1762353539; x=1763563139; b=Sgz6HQn/Pf8BRs444hgRehCX6Wm4GuMGNqe1LMT1qe8P8wF
+	xOd8egkPfmTmD6OwA2v9/47evkxAHr4xDZ0TBeGdNP42Yaxi1URH3bhEqqsa4cgc1s7+lavvroZrE
+	BtjAmaT3RzUMCAo0+BbnALqIaW7qMl9pV+D3DaMpuPpTRKzvk4H5Q2cc3AFKgME9pVMVgEVGWbWlv
+	aAgFDJ9tQUzgz8z4l8X7a5s8Lm5bwuaLhaKPWFq/pcUaxn+tmwM73edTPyKX6brd6D9n7u18BTF5+
+	CoS8JtXp1pD29mc287xkWM/S2UV0eQVd7I4rESJjRzk2vOy+1jTfuT312I48ojmw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vGeey-0000000FDcs-0Zd3;
-	Wed, 05 Nov 2025 15:38:52 +0100
+	id 1vGef2-0000000FDcs-0FUy;
+	Wed, 05 Nov 2025 15:38:56 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH wireless-next 6/8] wifi: ieee80211: split S1G definitions out
-Date: Wed,  5 Nov 2025 15:36:54 +0100
-Message-ID: <20251105153843.82c0bddee6e3.Ic6646615286dad240b42e31e9d428c7e4ea40ce0@changeid>
+Subject: [PATCH wireless-next 7/8] wifi: ieee80211: split P2P definitions out
+Date: Wed,  5 Nov 2025 15:36:55 +0100
+Message-ID: <20251105153843.e47b2614e9d2.Id242f61da720e365f6b5d7a4a545fbbc2f1e92b4@changeid>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251105143843.46279-10-johannes@sipsolutions.net>
 References: <20251105143843.46279-10-johannes@sipsolutions.net>
@@ -66,24 +66,25 @@ Content-Transfer-Encoding: 8bit
 From: Johannes Berg <johannes.berg@intel.com>
 
 The ieee80211.h file has gotten very long, continue splitting
-it by putting S1G definitions into a separate file.
+it by putting P2P definitions into a separate file. Note that
+P2P isn't really even IEEE 802.11 but WFA.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/linux/ieee80211-s1g.h | 575 +++++++++++++++++++++++++++++++++
- include/linux/ieee80211.h     | 585 +---------------------------------
- 2 files changed, 591 insertions(+), 569 deletions(-)
- create mode 100644 include/linux/ieee80211-s1g.h
+ include/linux/ieee80211-p2p.h | 71 +++++++++++++++++++++++++++++++++++
+ include/linux/ieee80211.h     | 53 +-------------------------
+ 2 files changed, 72 insertions(+), 52 deletions(-)
+ create mode 100644 include/linux/ieee80211-p2p.h
 
-diff --git a/include/linux/ieee80211-s1g.h b/include/linux/ieee80211-s1g.h
+diff --git a/include/linux/ieee80211-p2p.h b/include/linux/ieee80211-p2p.h
 new file mode 100644
-index 000000000000..5b9ed2dcc00e
+index 000000000000..180891c11f08
 --- /dev/null
-+++ b/include/linux/ieee80211-s1g.h
-@@ -0,0 +1,575 @@
++++ b/include/linux/ieee80211-p2p.h
+@@ -0,0 +1,71 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * IEEE 802.11 S1G definitions
++ * WFA P2P definitions
 + *
 + * Copyright (c) 2001-2002, SSH Communications Security Corp and Jouni Malinen
 + * <jkmaline@cc.hut.fi>
@@ -95,1232 +96,134 @@ index 000000000000..5b9ed2dcc00e
 + * Copyright (c) 2018 - 2025 Intel Corporation
 + */
 +
-+#ifndef LINUX_IEEE80211_S1G_H
-+#define LINUX_IEEE80211_S1G_H
++#ifndef LINUX_IEEE80211_P2P_H
++#define LINUX_IEEE80211_P2P_H
 +
 +#include <linux/types.h>
-+#include <linux/if_ether.h>
-+
-+/* bits unique to S1G beacon frame control */
-+#define IEEE80211_S1G_BCN_NEXT_TBTT	0x100
-+#define IEEE80211_S1G_BCN_CSSID		0x200
-+#define IEEE80211_S1G_BCN_ANO		0x400
-+
-+/* see 802.11ah-2016 9.9 NDP CMAC frames */
-+#define IEEE80211_S1G_1MHZ_NDP_BITS	25
-+#define IEEE80211_S1G_1MHZ_NDP_BYTES	4
-+#define IEEE80211_S1G_2MHZ_NDP_BITS	37
-+#define IEEE80211_S1G_2MHZ_NDP_BYTES	5
-+
-+/**
-+ * ieee80211_is_s1g_beacon - check if IEEE80211_FTYPE_EXT &&
-+ * IEEE80211_STYPE_S1G_BEACON
-+ * @fc: frame control bytes in little-endian byteorder
-+ * Return: whether or not the frame is an S1G beacon
-+ */
-+static inline bool ieee80211_is_s1g_beacon(__le16 fc)
-+{
-+	return (fc & cpu_to_le16(IEEE80211_FCTL_FTYPE |
-+				 IEEE80211_FCTL_STYPE)) ==
-+	       cpu_to_le16(IEEE80211_FTYPE_EXT | IEEE80211_STYPE_S1G_BEACON);
-+}
-+
-+/**
-+ * ieee80211_s1g_has_next_tbtt - check if IEEE80211_S1G_BCN_NEXT_TBTT
-+ * @fc: frame control bytes in little-endian byteorder
-+ * Return: whether or not the frame contains the variable-length
-+ *	next TBTT field
-+ */
-+static inline bool ieee80211_s1g_has_next_tbtt(__le16 fc)
-+{
-+	return ieee80211_is_s1g_beacon(fc) &&
-+		(fc & cpu_to_le16(IEEE80211_S1G_BCN_NEXT_TBTT));
-+}
-+
-+/**
-+ * ieee80211_s1g_has_ano - check if IEEE80211_S1G_BCN_ANO
-+ * @fc: frame control bytes in little-endian byteorder
-+ * Return: whether or not the frame contains the variable-length
-+ *	ANO field
-+ */
-+static inline bool ieee80211_s1g_has_ano(__le16 fc)
-+{
-+	return ieee80211_is_s1g_beacon(fc) &&
-+		(fc & cpu_to_le16(IEEE80211_S1G_BCN_ANO));
-+}
-+
-+/**
-+ * ieee80211_s1g_has_cssid - check if IEEE80211_S1G_BCN_CSSID
-+ * @fc: frame control bytes in little-endian byteorder
-+ * Return: whether or not the frame contains the variable-length
-+ *	compressed SSID field
-+ */
-+static inline bool ieee80211_s1g_has_cssid(__le16 fc)
-+{
-+	return ieee80211_is_s1g_beacon(fc) &&
-+		(fc & cpu_to_le16(IEEE80211_S1G_BCN_CSSID));
-+}
-+
-+/**
-+ * enum ieee80211_s1g_chanwidth - S1G channel widths
-+ * These are defined in IEEE802.11-2016ah Table 10-20
-+ * as BSS Channel Width
-+ *
-+ * @IEEE80211_S1G_CHANWIDTH_1MHZ: 1MHz operating channel
-+ * @IEEE80211_S1G_CHANWIDTH_2MHZ: 2MHz operating channel
-+ * @IEEE80211_S1G_CHANWIDTH_4MHZ: 4MHz operating channel
-+ * @IEEE80211_S1G_CHANWIDTH_8MHZ: 8MHz operating channel
-+ * @IEEE80211_S1G_CHANWIDTH_16MHZ: 16MHz operating channel
-+ */
-+enum ieee80211_s1g_chanwidth {
-+	IEEE80211_S1G_CHANWIDTH_1MHZ = 0,
-+	IEEE80211_S1G_CHANWIDTH_2MHZ = 1,
-+	IEEE80211_S1G_CHANWIDTH_4MHZ = 3,
-+	IEEE80211_S1G_CHANWIDTH_8MHZ = 7,
-+	IEEE80211_S1G_CHANWIDTH_16MHZ = 15,
-+};
-+
-+/**
-+ * enum ieee80211_s1g_pri_chanwidth - S1G primary channel widths
-+ *	described in IEEE80211-2024 Table 10-39.
-+ *
-+ * @IEEE80211_S1G_PRI_CHANWIDTH_2MHZ: 2MHz primary channel
-+ * @IEEE80211_S1G_PRI_CHANWIDTH_1MHZ: 1MHz primary channel
-+ */
-+enum ieee80211_s1g_pri_chanwidth {
-+	IEEE80211_S1G_PRI_CHANWIDTH_2MHZ = 0,
-+	IEEE80211_S1G_PRI_CHANWIDTH_1MHZ = 1,
-+};
-+
-+/**
-+ * struct ieee80211_s1g_bcn_compat_ie - S1G Beacon Compatibility element
-+ * @compat_info: Compatibility Information
-+ * @beacon_int: Beacon Interval
-+ * @tsf_completion: TSF Completion
-+ *
-+ * This structure represents the payload of the "S1G Beacon
-+ * Compatibility element" as described in IEEE Std 802.11-2020 section
-+ * 9.4.2.196.
-+ */
-+struct ieee80211_s1g_bcn_compat_ie {
-+	__le16 compat_info;
-+	__le16 beacon_int;
-+	__le32 tsf_completion;
-+} __packed;
-+
-+/**
-+ * struct ieee80211_s1g_oper_ie - S1G Operation element
-+ * @ch_width: S1G Operation Information Channel Width
-+ * @oper_class: S1G Operation Information Operating Class
-+ * @primary_ch: S1G Operation Information Primary Channel Number
-+ * @oper_ch: S1G Operation Information  Channel Center Frequency
-+ * @basic_mcs_nss: Basic S1G-MCS and NSS Set
-+ *
-+ * This structure represents the payload of the "S1G Operation
-+ * element" as described in IEEE Std 802.11-2020 section 9.4.2.212.
-+ */
-+struct ieee80211_s1g_oper_ie {
-+	u8 ch_width;
-+	u8 oper_class;
-+	u8 primary_ch;
-+	u8 oper_ch;
-+	__le16 basic_mcs_nss;
-+} __packed;
-+
-+/**
-+ * struct ieee80211_aid_response_ie - AID Response element
-+ * @aid: AID/Group AID
-+ * @switch_count: AID Switch Count
-+ * @response_int: AID Response Interval
-+ *
-+ * This structure represents the payload of the "AID Response element"
-+ * as described in IEEE Std 802.11-2020 section 9.4.2.194.
-+ */
-+struct ieee80211_aid_response_ie {
-+	__le16 aid;
-+	u8 switch_count;
-+	__le16 response_int;
-+} __packed;
-+
-+struct ieee80211_s1g_cap {
-+	u8 capab_info[10];
-+	u8 supp_mcs_nss[5];
-+} __packed;
-+
-+/**
-+ * ieee80211_s1g_optional_len - determine length of optional S1G beacon fields
-+ * @fc: frame control bytes in little-endian byteorder
-+ * Return: total length in bytes of the optional fixed-length fields
-+ *
-+ * S1G beacons may contain up to three optional fixed-length fields that
-+ * precede the variable-length elements. Whether these fields are present
-+ * is indicated by flags in the frame control field.
-+ *
-+ * From IEEE 802.11-2024 section 9.3.4.3:
-+ *  - Next TBTT field may be 0 or 3 bytes
-+ *  - Short SSID field may be 0 or 4 bytes
-+ *  - Access Network Options (ANO) field may be 0 or 1 byte
-+ */
-+static inline size_t
-+ieee80211_s1g_optional_len(__le16 fc)
-+{
-+	size_t len = 0;
-+
-+	if (ieee80211_s1g_has_next_tbtt(fc))
-+		len += 3;
-+
-+	if (ieee80211_s1g_has_cssid(fc))
-+		len += 4;
-+
-+	if (ieee80211_s1g_has_ano(fc))
-+		len += 1;
-+
-+	return len;
-+}
-+
-+/* S1G Capabilities Information field */
-+#define IEEE80211_S1G_CAPABILITY_LEN	15
-+
-+#define S1G_CAP0_S1G_LONG	BIT(0)
-+#define S1G_CAP0_SGI_1MHZ	BIT(1)
-+#define S1G_CAP0_SGI_2MHZ	BIT(2)
-+#define S1G_CAP0_SGI_4MHZ	BIT(3)
-+#define S1G_CAP0_SGI_8MHZ	BIT(4)
-+#define S1G_CAP0_SGI_16MHZ	BIT(5)
-+#define S1G_CAP0_SUPP_CH_WIDTH	GENMASK(7, 6)
-+
-+#define S1G_SUPP_CH_WIDTH_2	0
-+#define S1G_SUPP_CH_WIDTH_4	1
-+#define S1G_SUPP_CH_WIDTH_8	2
-+#define S1G_SUPP_CH_WIDTH_16	3
-+#define S1G_SUPP_CH_WIDTH_MAX(cap) ((1 << FIELD_GET(S1G_CAP0_SUPP_CH_WIDTH, \
-+						    cap[0])) << 1)
-+
-+#define S1G_CAP1_RX_LDPC	BIT(0)
-+#define S1G_CAP1_TX_STBC	BIT(1)
-+#define S1G_CAP1_RX_STBC	BIT(2)
-+#define S1G_CAP1_SU_BFER	BIT(3)
-+#define S1G_CAP1_SU_BFEE	BIT(4)
-+#define S1G_CAP1_BFEE_STS	GENMASK(7, 5)
-+
-+#define S1G_CAP2_SOUNDING_DIMENSIONS	GENMASK(2, 0)
-+#define S1G_CAP2_MU_BFER		BIT(3)
-+#define S1G_CAP2_MU_BFEE		BIT(4)
-+#define S1G_CAP2_PLUS_HTC_VHT		BIT(5)
-+#define S1G_CAP2_TRAVELING_PILOT	GENMASK(7, 6)
-+
-+#define S1G_CAP3_RD_RESPONDER		BIT(0)
-+#define S1G_CAP3_HT_DELAYED_BA		BIT(1)
-+#define S1G_CAP3_MAX_MPDU_LEN		BIT(2)
-+#define S1G_CAP3_MAX_AMPDU_LEN_EXP	GENMASK(4, 3)
-+#define S1G_CAP3_MIN_MPDU_START		GENMASK(7, 5)
-+
-+#define S1G_CAP4_UPLINK_SYNC	BIT(0)
-+#define S1G_CAP4_DYNAMIC_AID	BIT(1)
-+#define S1G_CAP4_BAT		BIT(2)
-+#define S1G_CAP4_TIME_ADE	BIT(3)
-+#define S1G_CAP4_NON_TIM	BIT(4)
-+#define S1G_CAP4_GROUP_AID	BIT(5)
-+#define S1G_CAP4_STA_TYPE	GENMASK(7, 6)
-+
-+#define S1G_CAP5_CENT_AUTH_CONTROL	BIT(0)
-+#define S1G_CAP5_DIST_AUTH_CONTROL	BIT(1)
-+#define S1G_CAP5_AMSDU			BIT(2)
-+#define S1G_CAP5_AMPDU			BIT(3)
-+#define S1G_CAP5_ASYMMETRIC_BA		BIT(4)
-+#define S1G_CAP5_FLOW_CONTROL		BIT(5)
-+#define S1G_CAP5_SECTORIZED_BEAM	GENMASK(7, 6)
-+
-+#define S1G_CAP6_OBSS_MITIGATION	BIT(0)
-+#define S1G_CAP6_FRAGMENT_BA		BIT(1)
-+#define S1G_CAP6_NDP_PS_POLL		BIT(2)
-+#define S1G_CAP6_RAW_OPERATION		BIT(3)
-+#define S1G_CAP6_PAGE_SLICING		BIT(4)
-+#define S1G_CAP6_TXOP_SHARING_IMP_ACK	BIT(5)
-+#define S1G_CAP6_VHT_LINK_ADAPT		GENMASK(7, 6)
-+
-+#define S1G_CAP7_TACK_AS_PS_POLL		BIT(0)
-+#define S1G_CAP7_DUP_1MHZ			BIT(1)
-+#define S1G_CAP7_MCS_NEGOTIATION		BIT(2)
-+#define S1G_CAP7_1MHZ_CTL_RESPONSE_PREAMBLE	BIT(3)
-+#define S1G_CAP7_NDP_BFING_REPORT_POLL		BIT(4)
-+#define S1G_CAP7_UNSOLICITED_DYN_AID		BIT(5)
-+#define S1G_CAP7_SECTOR_TRAINING_OPERATION	BIT(6)
-+#define S1G_CAP7_TEMP_PS_MODE_SWITCH		BIT(7)
-+
-+#define S1G_CAP8_TWT_GROUPING	BIT(0)
-+#define S1G_CAP8_BDT		BIT(1)
-+#define S1G_CAP8_COLOR		GENMASK(4, 2)
-+#define S1G_CAP8_TWT_REQUEST	BIT(5)
-+#define S1G_CAP8_TWT_RESPOND	BIT(6)
-+#define S1G_CAP8_PV1_FRAME	BIT(7)
-+
-+#define S1G_CAP9_LINK_ADAPT_PER_CONTROL_RESPONSE BIT(0)
-+
-+#define S1G_OPER_CH_WIDTH_PRIMARY	BIT(0)
-+#define S1G_OPER_CH_WIDTH_OPER		GENMASK(4, 1)
-+#define S1G_OPER_CH_PRIMARY_LOCATION	BIT(5)
-+
-+#define S1G_2M_PRIMARY_LOCATION_LOWER	0
-+#define S1G_2M_PRIMARY_LOCATION_UPPER	1
-+
-+#define LISTEN_INT_USF	GENMASK(15, 14)
-+#define LISTEN_INT_UI	GENMASK(13, 0)
-+
-+#define IEEE80211_MAX_USF	FIELD_MAX(LISTEN_INT_USF)
-+#define IEEE80211_MAX_UI	FIELD_MAX(LISTEN_INT_UI)
-+
-+/* S1G encoding types */
-+#define IEEE80211_S1G_TIM_ENC_MODE_BLOCK	0
-+#define IEEE80211_S1G_TIM_ENC_MODE_SINGLE	1
-+#define IEEE80211_S1G_TIM_ENC_MODE_OLB		2
-+
-+enum ieee80211_s1g_actioncode {
-+	WLAN_S1G_AID_SWITCH_REQUEST,
-+	WLAN_S1G_AID_SWITCH_RESPONSE,
-+	WLAN_S1G_SYNC_CONTROL,
-+	WLAN_S1G_STA_INFO_ANNOUNCE,
-+	WLAN_S1G_EDCA_PARAM_SET,
-+	WLAN_S1G_EL_OPERATION,
-+	WLAN_S1G_TWT_SETUP,
-+	WLAN_S1G_TWT_TEARDOWN,
-+	WLAN_S1G_SECT_GROUP_ID_LIST,
-+	WLAN_S1G_SECT_ID_FEEDBACK,
-+	WLAN_S1G_TWT_INFORMATION = 11,
-+};
-+
-+/**
-+ * ieee80211_is_s1g_short_beacon - check if frame is an S1G short beacon
-+ * @fc: frame control bytes in little-endian byteorder
-+ * @variable: pointer to the beacon frame elements
-+ * @variable_len: length of the frame elements
-+ * Return: whether or not the frame is an S1G short beacon. As per
-+ *	IEEE80211-2024 11.1.3.10.1, The S1G beacon compatibility element shall
-+ *	always be present as the first element in beacon frames generated at a
-+ *	TBTT (Target Beacon Transmission Time), so any frame not containing
-+ *	this element must have been generated at a TSBTT (Target Short Beacon
-+ *	Transmission Time) that is not a TBTT. Additionally, short beacons are
-+ *	prohibited from containing the S1G beacon compatibility element as per
-+ *	IEEE80211-2024 9.3.4.3 Table 9-76, so if we have an S1G beacon with
-+ *	either no elements or the first element is not the beacon compatibility
-+ *	element, we have a short beacon.
-+ */
-+static inline bool ieee80211_is_s1g_short_beacon(__le16 fc, const u8 *variable,
-+						 size_t variable_len)
-+{
-+	if (!ieee80211_is_s1g_beacon(fc))
-+		return false;
-+
-+	/*
-+	 * If the frame does not contain at least 1 element (this is perfectly
-+	 * valid in a short beacon) and is an S1G beacon, we have a short
-+	 * beacon.
-+	 */
-+	if (variable_len < 2)
-+		return true;
-+
-+	return variable[0] != WLAN_EID_S1G_BCN_COMPAT;
-+}
-+
-+struct s1g_tim_aid {
-+	u16 aid;
-+	u8 target_blk; /* Target block index */
-+	u8 target_subblk; /* Target subblock index */
-+	u8 target_subblk_bit; /* Target subblock bit */
-+};
-+
-+struct s1g_tim_enc_block {
-+	u8 enc_mode;
-+	bool inverse;
-+	const u8 *ptr;
-+	u8 len;
-+
-+	/*
-+	 * For an OLB encoded block that spans multiple blocks, this
-+	 * is the offset into the span described by that encoded block.
-+	 */
-+	u8 olb_blk_offset;
-+};
-+
 +/*
-+ * Helper routines to quickly extract the length of an encoded block. Validation
-+ * is also performed to ensure the length extracted lies within the TIM.
++ * Peer-to-Peer IE attribute related definitions.
 + */
-+
-+static inline int ieee80211_s1g_len_bitmap(const u8 *ptr, const u8 *end)
-+{
-+	u8 blkmap;
-+	u8 n_subblks;
-+
-+	if (ptr >= end)
-+		return -EINVAL;
-+
-+	blkmap = *ptr;
-+	n_subblks = hweight8(blkmap);
-+
-+	if (ptr + 1 + n_subblks > end)
-+		return -EINVAL;
-+
-+	return 1 + n_subblks;
-+}
-+
-+static inline int ieee80211_s1g_len_single(const u8 *ptr, const u8 *end)
-+{
-+	return (ptr + 1 > end) ? -EINVAL : 1;
-+}
-+
-+static inline int ieee80211_s1g_len_olb(const u8 *ptr, const u8 *end)
-+{
-+	if (ptr >= end)
-+		return -EINVAL;
-+
-+	return (ptr + 1 + *ptr > end) ? -EINVAL : 1 + *ptr;
-+}
-+
 +/*
-+ * Enumerate all encoded blocks until we find the encoded block that describes
-+ * our target AID. OLB is a special case as a single encoded block can describe
-+ * multiple blocks as a single encoded block.
++ * enum ieee80211_p2p_attr_id - identifies type of peer-to-peer attribute.
 + */
-+static inline int ieee80211_s1g_find_target_block(struct s1g_tim_enc_block *enc,
-+						  const struct s1g_tim_aid *aid,
-+						  const u8 *ptr, const u8 *end)
-+{
-+	/* need at least block-control octet */
-+	while (ptr + 1 <= end) {
-+		u8 ctrl = *ptr++;
-+		u8 mode = ctrl & 0x03;
-+		bool contains, inverse = ctrl & BIT(2);
-+		u8 span, blk_off = ctrl >> 3;
-+		int len;
++enum ieee80211_p2p_attr_id {
++	IEEE80211_P2P_ATTR_STATUS = 0,
++	IEEE80211_P2P_ATTR_MINOR_REASON,
++	IEEE80211_P2P_ATTR_CAPABILITY,
++	IEEE80211_P2P_ATTR_DEVICE_ID,
++	IEEE80211_P2P_ATTR_GO_INTENT,
++	IEEE80211_P2P_ATTR_GO_CONFIG_TIMEOUT,
++	IEEE80211_P2P_ATTR_LISTEN_CHANNEL,
++	IEEE80211_P2P_ATTR_GROUP_BSSID,
++	IEEE80211_P2P_ATTR_EXT_LISTEN_TIMING,
++	IEEE80211_P2P_ATTR_INTENDED_IFACE_ADDR,
++	IEEE80211_P2P_ATTR_MANAGABILITY,
++	IEEE80211_P2P_ATTR_CHANNEL_LIST,
++	IEEE80211_P2P_ATTR_ABSENCE_NOTICE,
++	IEEE80211_P2P_ATTR_DEVICE_INFO,
++	IEEE80211_P2P_ATTR_GROUP_INFO,
++	IEEE80211_P2P_ATTR_GROUP_ID,
++	IEEE80211_P2P_ATTR_INTERFACE,
++	IEEE80211_P2P_ATTR_OPER_CHANNEL,
++	IEEE80211_P2P_ATTR_INVITE_FLAGS,
++	/* 19 - 220: Reserved */
++	IEEE80211_P2P_ATTR_VENDOR_SPECIFIC = 221,
 +
-+		switch (mode) {
-+		case IEEE80211_S1G_TIM_ENC_MODE_BLOCK:
-+			len = ieee80211_s1g_len_bitmap(ptr, end);
-+			contains = blk_off == aid->target_blk;
-+			break;
-+		case IEEE80211_S1G_TIM_ENC_MODE_SINGLE:
-+			len = ieee80211_s1g_len_single(ptr, end);
-+			contains = blk_off == aid->target_blk;
-+			break;
-+		case IEEE80211_S1G_TIM_ENC_MODE_OLB:
-+			len = ieee80211_s1g_len_olb(ptr, end);
-+			/*
-+			 * An OLB encoded block can describe more then one
-+			 * block, meaning an encoded OLB block can span more
-+			 * then a single block.
-+			 */
-+			if (len > 0) {
-+				/* Minus one for the length octet */
-+				span = DIV_ROUND_UP(len - 1, 8);
-+				/*
-+				 * Check if our target block lies within the
-+				 * block span described by this encoded block.
-+				 */
-+				contains = (aid->target_blk >= blk_off) &&
-+					   (aid->target_blk < blk_off + span);
-+			}
-+			break;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
++	IEEE80211_P2P_ATTR_MAX
++};
 +
-+		if (len < 0)
-+			return len;
++/* Notice of Absence attribute - described in P2P spec 4.1.14 */
++/* Typical max value used here */
++#define IEEE80211_P2P_NOA_DESC_MAX	4
 +
-+		if (contains) {
-+			enc->enc_mode = mode;
-+			enc->inverse = inverse;
-+			enc->ptr = ptr;
-+			enc->len = (u8)len;
-+			enc->olb_blk_offset = blk_off;
-+			return 0;
-+		}
++struct ieee80211_p2p_noa_desc {
++	u8 count;
++	__le32 duration;
++	__le32 interval;
++	__le32 start_time;
++} __packed;
 +
-+		ptr += len;
-+	}
++struct ieee80211_p2p_noa_attr {
++	u8 index;
++	u8 oppps_ctwindow;
++	struct ieee80211_p2p_noa_desc desc[IEEE80211_P2P_NOA_DESC_MAX];
++} __packed;
 +
-+	return -ENOENT;
-+}
++#define IEEE80211_P2P_OPPPS_ENABLE_BIT		BIT(7)
++#define IEEE80211_P2P_OPPPS_CTWINDOW_MASK	0x7F
 +
-+static inline bool ieee80211_s1g_parse_bitmap(struct s1g_tim_enc_block *enc,
-+					      struct s1g_tim_aid *aid)
-+{
-+	const u8 *ptr = enc->ptr;
-+	u8 blkmap = *ptr++;
-+
-+	/*
-+	 * If our block bitmap does not contain a set bit that corresponds
-+	 * to our AID, it could mean a variety of things depending on if
-+	 * the encoding mode is inverted or not.
-+	 *
-+	 * 1. If inverted, it means the entire subblock is present and hence
-+	 *    our AID has been set.
-+	 * 2. If not inverted, it means our subblock is not present and hence
-+	 *    it is all zero meaning our AID is not set.
-+	 */
-+	if (!(blkmap & BIT(aid->target_subblk)))
-+		return enc->inverse;
-+
-+	/*
-+	 * Increment ptr by the number of set subblocks that appear before our
-+	 * target subblock. If our target subblock is 0, do nothing as ptr
-+	 * already points to our target subblock.
-+	 */
-+	if (aid->target_subblk)
-+		ptr += hweight8(blkmap & GENMASK(aid->target_subblk - 1, 0));
-+
-+	return !!(*ptr & BIT(aid->target_subblk_bit)) ^ enc->inverse;
-+}
-+
-+static inline bool ieee80211_s1g_parse_single(struct s1g_tim_enc_block *enc,
-+					      struct s1g_tim_aid *aid)
-+{
-+	/*
-+	 * Single AID mode describes, as the name suggests, a single AID
-+	 * within the block described by the encoded block. The octet
-+	 * contains the 6 LSBs of the AID described in the block. The other
-+	 * 2 bits are reserved. When inversed, every single AID described
-+	 * by the current block have buffered traffic except for the AID
-+	 * described in the single AID octet.
-+	 */
-+	return ((*enc->ptr & 0x3f) == (aid->aid & 0x3f)) ^ enc->inverse;
-+}
-+
-+static inline bool ieee80211_s1g_parse_olb(struct s1g_tim_enc_block *enc,
-+					   struct s1g_tim_aid *aid)
-+{
-+	const u8 *ptr = enc->ptr;
-+	u8 blk_len = *ptr++;
-+	/*
-+	 * Given an OLB encoded block that describes multiple blocks,
-+	 * calculate the offset into the span. Then calculate the
-+	 * subblock location normally.
-+	 */
-+	u16 span_offset = aid->target_blk - enc->olb_blk_offset;
-+	u16 subblk_idx = span_offset * 8 + aid->target_subblk;
-+
-+	if (subblk_idx >= blk_len)
-+		return enc->inverse;
-+
-+	return !!(ptr[subblk_idx] & BIT(aid->target_subblk_bit)) ^ enc->inverse;
-+}
-+
-+/*
-+ * An S1G PVB has 3 non optional encoding types, each that can be inverted.
-+ * An S1G PVB is constructed with zero or more encoded block subfields. Each
-+ * encoded block represents a single "block" of AIDs (64), and each encoded
-+ * block can contain one of the 3 encoding types alongside a single bit for
-+ * whether the bits should be inverted.
-+ *
-+ * As the standard makes no guarantee about the ordering of encoded blocks,
-+ * we must parse every encoded block in the worst case scenario given an
-+ * AID that lies within the last block.
-+ */
-+static inline bool ieee80211_s1g_check_tim(const struct ieee80211_tim_ie *tim,
-+					   u8 tim_len, u16 aid)
-+{
-+	int err;
-+	struct s1g_tim_aid target_aid;
-+	struct s1g_tim_enc_block enc_blk;
-+
-+	if (tim_len < 3)
-+		return false;
-+
-+	target_aid.aid = aid;
-+	target_aid.target_blk = (aid >> 6) & 0x1f;
-+	target_aid.target_subblk = (aid >> 3) & 0x7;
-+	target_aid.target_subblk_bit = aid & 0x7;
-+
-+	/*
-+	 * Find our AIDs target encoded block and fill &enc_blk with the
-+	 * encoded blocks information. If no entry is found or an error
-+	 * occurs return false.
-+	 */
-+	err = ieee80211_s1g_find_target_block(&enc_blk, &target_aid,
-+					      tim->virtual_map,
-+					      (const u8 *)tim + tim_len + 2);
-+	if (err)
-+		return false;
-+
-+	switch (enc_blk.enc_mode) {
-+	case IEEE80211_S1G_TIM_ENC_MODE_BLOCK:
-+		return ieee80211_s1g_parse_bitmap(&enc_blk, &target_aid);
-+	case IEEE80211_S1G_TIM_ENC_MODE_SINGLE:
-+		return ieee80211_s1g_parse_single(&enc_blk, &target_aid);
-+	case IEEE80211_S1G_TIM_ENC_MODE_OLB:
-+		return ieee80211_s1g_parse_olb(&enc_blk, &target_aid);
-+	default:
-+		return false;
-+	}
-+}
-+
-+#endif /* LINUX_IEEE80211_H */
++#endif /* LINUX_IEEE80211_P2P_H */
 diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 63a9775b059d..1b27bbac145b 100644
+index 1b27bbac145b..fa0f7f917ce7 100644
 --- a/include/linux/ieee80211.h
 +++ b/include/linux/ieee80211.h
-@@ -109,17 +109,6 @@
- #define IEEE80211_STYPE_DMG_BEACON		0x0000
- #define IEEE80211_STYPE_S1G_BEACON		0x0010
- 
--/* bits unique to S1G beacon */
--#define IEEE80211_S1G_BCN_NEXT_TBTT	0x100
--#define IEEE80211_S1G_BCN_CSSID		0x200
--#define IEEE80211_S1G_BCN_ANO		0x400
--
--/* see 802.11ah-2016 9.9 NDP CMAC frames */
--#define IEEE80211_S1G_1MHZ_NDP_BITS	25
--#define IEEE80211_S1G_1MHZ_NDP_BYTES	4
--#define IEEE80211_S1G_2MHZ_NDP_BITS	37
--#define IEEE80211_S1G_2MHZ_NDP_BYTES	5
--
- #define IEEE80211_NDP_FTYPE_CTS			0
- #define IEEE80211_NDP_FTYPE_CF_END		0
- #define IEEE80211_NDP_FTYPE_PS_POLL		1
-@@ -221,11 +210,6 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
- #define IEEE80211_MAX_TIM_LEN		251
- #define IEEE80211_MAX_MESH_PEERINGS	63
- 
--/* S1G encoding types */
--#define IEEE80211_S1G_TIM_ENC_MODE_BLOCK	0
--#define IEEE80211_S1G_TIM_ENC_MODE_SINGLE	1
--#define IEEE80211_S1G_TIM_ENC_MODE_OLB		2
--
- /* Maximum size for the MA-UNITDATA primitive, 802.11 standard section
-    6.2.1.1.2.
- 
-@@ -604,55 +588,6 @@ static inline bool ieee80211_is_beacon(__le16 fc)
- 	       cpu_to_le16(IEEE80211_FTYPE_MGMT | IEEE80211_STYPE_BEACON);
- }
- 
--/**
-- * ieee80211_is_s1g_beacon - check if IEEE80211_FTYPE_EXT &&
-- * IEEE80211_STYPE_S1G_BEACON
-- * @fc: frame control bytes in little-endian byteorder
-- * Return: whether or not the frame is an S1G beacon
-- */
--static inline bool ieee80211_is_s1g_beacon(__le16 fc)
--{
--	return (fc & cpu_to_le16(IEEE80211_FCTL_FTYPE |
--				 IEEE80211_FCTL_STYPE)) ==
--	       cpu_to_le16(IEEE80211_FTYPE_EXT | IEEE80211_STYPE_S1G_BEACON);
--}
--
--/**
-- * ieee80211_s1g_has_next_tbtt - check if IEEE80211_S1G_BCN_NEXT_TBTT
-- * @fc: frame control bytes in little-endian byteorder
-- * Return: whether or not the frame contains the variable-length
-- *	next TBTT field
-- */
--static inline bool ieee80211_s1g_has_next_tbtt(__le16 fc)
--{
--	return ieee80211_is_s1g_beacon(fc) &&
--		(fc & cpu_to_le16(IEEE80211_S1G_BCN_NEXT_TBTT));
--}
--
--/**
-- * ieee80211_s1g_has_ano - check if IEEE80211_S1G_BCN_ANO
-- * @fc: frame control bytes in little-endian byteorder
-- * Return: whether or not the frame contains the variable-length
-- *	ANO field
-- */
--static inline bool ieee80211_s1g_has_ano(__le16 fc)
--{
--	return ieee80211_is_s1g_beacon(fc) &&
--		(fc & cpu_to_le16(IEEE80211_S1G_BCN_ANO));
--}
--
--/**
-- * ieee80211_s1g_has_cssid - check if IEEE80211_S1G_BCN_CSSID
-- * @fc: frame control bytes in little-endian byteorder
-- * Return: whether or not the frame contains the variable-length
-- *	compressed SSID field
-- */
--static inline bool ieee80211_s1g_has_cssid(__le16 fc)
--{
--	return ieee80211_is_s1g_beacon(fc) &&
--		(fc & cpu_to_le16(IEEE80211_S1G_BCN_CSSID));
--}
--
- /**
-  * ieee80211_is_atim - check if IEEE80211_FTYPE_MGMT && IEEE80211_STYPE_ATIM
-  * @fc: frame control bytes in little-endian byteorder
-@@ -984,37 +919,6 @@ struct ieee80211_tim_ie {
- 	};
- } __packed;
- 
--/**
-- * enum ieee80211_s1g_chanwidth - S1G channel widths
-- * These are defined in IEEE802.11-2016ah Table 10-20
-- * as BSS Channel Width
-- *
-- * @IEEE80211_S1G_CHANWIDTH_1MHZ: 1MHz operating channel
-- * @IEEE80211_S1G_CHANWIDTH_2MHZ: 2MHz operating channel
-- * @IEEE80211_S1G_CHANWIDTH_4MHZ: 4MHz operating channel
-- * @IEEE80211_S1G_CHANWIDTH_8MHZ: 8MHz operating channel
-- * @IEEE80211_S1G_CHANWIDTH_16MHZ: 16MHz operating channel
-- */
--enum ieee80211_s1g_chanwidth {
--	IEEE80211_S1G_CHANWIDTH_1MHZ = 0,
--	IEEE80211_S1G_CHANWIDTH_2MHZ = 1,
--	IEEE80211_S1G_CHANWIDTH_4MHZ = 3,
--	IEEE80211_S1G_CHANWIDTH_8MHZ = 7,
--	IEEE80211_S1G_CHANWIDTH_16MHZ = 15,
--};
--
--/**
-- * enum ieee80211_s1g_pri_chanwidth - S1G primary channel widths
-- *	described in IEEE80211-2024 Table 10-39.
-- *
-- * @IEEE80211_S1G_PRI_CHANWIDTH_2MHZ: 2MHz primary channel
-- * @IEEE80211_S1G_PRI_CHANWIDTH_1MHZ: 1MHz primary channel
-- */
--enum ieee80211_s1g_pri_chanwidth {
--	IEEE80211_S1G_PRI_CHANWIDTH_2MHZ = 0,
--	IEEE80211_S1G_PRI_CHANWIDTH_1MHZ = 1,
--};
--
- #define WLAN_SA_QUERY_TR_ID_LEN 2
- #define WLAN_MEMBERSHIP_LEN 8
- #define WLAN_USER_POSITION_LEN 16
-@@ -1042,61 +946,6 @@ struct ieee80211_addba_ext_ie {
- 	u8 data;
- } __packed;
- 
--/**
-- * struct ieee80211_s1g_bcn_compat_ie - S1G Beacon Compatibility element
-- * @compat_info: Compatibility Information
-- * @beacon_int: Beacon Interval
-- * @tsf_completion: TSF Completion
-- *
-- * This structure represents the payload of the "S1G Beacon
-- * Compatibility element" as described in IEEE Std 802.11-2020 section
-- * 9.4.2.196.
-- */
--struct ieee80211_s1g_bcn_compat_ie {
--	__le16 compat_info;
--	__le16 beacon_int;
--	__le32 tsf_completion;
--} __packed;
--
--/**
-- * struct ieee80211_s1g_oper_ie - S1G Operation element
-- * @ch_width: S1G Operation Information Channel Width
-- * @oper_class: S1G Operation Information Operating Class
-- * @primary_ch: S1G Operation Information Primary Channel Number
-- * @oper_ch: S1G Operation Information  Channel Center Frequency
-- * @basic_mcs_nss: Basic S1G-MCS and NSS Set
-- *
-- * This structure represents the payload of the "S1G Operation
-- * element" as described in IEEE Std 802.11-2020 section 9.4.2.212.
-- */
--struct ieee80211_s1g_oper_ie {
--	u8 ch_width;
--	u8 oper_class;
--	u8 primary_ch;
--	u8 oper_ch;
--	__le16 basic_mcs_nss;
--} __packed;
--
--/**
-- * struct ieee80211_aid_response_ie - AID Response element
-- * @aid: AID/Group AID
-- * @switch_count: AID Switch Count
-- * @response_int: AID Response Interval
-- *
-- * This structure represents the payload of the "AID Response element"
-- * as described in IEEE Std 802.11-2020 section 9.4.2.194.
-- */
--struct ieee80211_aid_response_ie {
--	__le16 aid;
--	u8 switch_count;
--	__le16 response_int;
--} __packed;
--
--struct ieee80211_s1g_cap {
--	u8 capab_info[10];
--	u8 supp_mcs_nss[5];
--} __packed;
--
- struct ieee80211_ext {
- 	__le16 frame_control;
- 	__le16 duration;
-@@ -1110,37 +959,6 @@ struct ieee80211_ext {
+@@ -1333,58 +1333,6 @@ struct ieee80211_tdls_data {
  	} u;
- } __packed __aligned(2);
+ } __packed;
  
--/**
-- * ieee80211_s1g_optional_len - determine length of optional S1G beacon fields
-- * @fc: frame control bytes in little-endian byteorder
-- * Return: total length in bytes of the optional fixed-length fields
-- *
-- * S1G beacons may contain up to three optional fixed-length fields that
-- * precede the variable-length elements. Whether these fields are present
-- * is indicated by flags in the frame control field.
-- *
-- * From IEEE 802.11-2024 section 9.3.4.3:
-- *  - Next TBTT field may be 0 or 3 bytes
-- *  - Short SSID field may be 0 or 4 bytes
-- *  - Access Network Options (ANO) field may be 0 or 1 byte
+-/*
+- * Peer-to-Peer IE attribute related definitions.
 - */
--static inline size_t
--ieee80211_s1g_optional_len(__le16 fc)
--{
--	size_t len = 0;
+-/*
+- * enum ieee80211_p2p_attr_id - identifies type of peer-to-peer attribute.
+- */
+-enum ieee80211_p2p_attr_id {
+-	IEEE80211_P2P_ATTR_STATUS = 0,
+-	IEEE80211_P2P_ATTR_MINOR_REASON,
+-	IEEE80211_P2P_ATTR_CAPABILITY,
+-	IEEE80211_P2P_ATTR_DEVICE_ID,
+-	IEEE80211_P2P_ATTR_GO_INTENT,
+-	IEEE80211_P2P_ATTR_GO_CONFIG_TIMEOUT,
+-	IEEE80211_P2P_ATTR_LISTEN_CHANNEL,
+-	IEEE80211_P2P_ATTR_GROUP_BSSID,
+-	IEEE80211_P2P_ATTR_EXT_LISTEN_TIMING,
+-	IEEE80211_P2P_ATTR_INTENDED_IFACE_ADDR,
+-	IEEE80211_P2P_ATTR_MANAGABILITY,
+-	IEEE80211_P2P_ATTR_CHANNEL_LIST,
+-	IEEE80211_P2P_ATTR_ABSENCE_NOTICE,
+-	IEEE80211_P2P_ATTR_DEVICE_INFO,
+-	IEEE80211_P2P_ATTR_GROUP_INFO,
+-	IEEE80211_P2P_ATTR_GROUP_ID,
+-	IEEE80211_P2P_ATTR_INTERFACE,
+-	IEEE80211_P2P_ATTR_OPER_CHANNEL,
+-	IEEE80211_P2P_ATTR_INVITE_FLAGS,
+-	/* 19 - 220: Reserved */
+-	IEEE80211_P2P_ATTR_VENDOR_SPECIFIC = 221,
 -
--	if (ieee80211_s1g_has_next_tbtt(fc))
--		len += 3;
+-	IEEE80211_P2P_ATTR_MAX
+-};
 -
--	if (ieee80211_s1g_has_cssid(fc))
--		len += 4;
+-/* Notice of Absence attribute - described in P2P spec 4.1.14 */
+-/* Typical max value used here */
+-#define IEEE80211_P2P_NOA_DESC_MAX	4
 -
--	if (ieee80211_s1g_has_ano(fc))
--		len += 1;
+-struct ieee80211_p2p_noa_desc {
+-	u8 count;
+-	__le32 duration;
+-	__le32 interval;
+-	__le32 start_time;
+-} __packed;
 -
--	return len;
--}
+-struct ieee80211_p2p_noa_attr {
+-	u8 index;
+-	u8 oppps_ctwindow;
+-	struct ieee80211_p2p_noa_desc desc[IEEE80211_P2P_NOA_DESC_MAX];
+-} __packed;
 -
- /**
-  * struct ieee80211_bss_load_elem - BSS Load elemen
-  *
-@@ -1567,98 +1385,6 @@ struct ieee80211_p2p_noa_attr {
- #define IEEE80211_P2P_OPPPS_ENABLE_BIT		BIT(7)
- #define IEEE80211_P2P_OPPPS_CTWINDOW_MASK	0x7F
- 
--/* S1G Capabilities Information field */
--#define IEEE80211_S1G_CAPABILITY_LEN	15
--
--#define S1G_CAP0_S1G_LONG	BIT(0)
--#define S1G_CAP0_SGI_1MHZ	BIT(1)
--#define S1G_CAP0_SGI_2MHZ	BIT(2)
--#define S1G_CAP0_SGI_4MHZ	BIT(3)
--#define S1G_CAP0_SGI_8MHZ	BIT(4)
--#define S1G_CAP0_SGI_16MHZ	BIT(5)
--#define S1G_CAP0_SUPP_CH_WIDTH	GENMASK(7, 6)
--
--#define S1G_SUPP_CH_WIDTH_2	0
--#define S1G_SUPP_CH_WIDTH_4	1
--#define S1G_SUPP_CH_WIDTH_8	2
--#define S1G_SUPP_CH_WIDTH_16	3
--#define S1G_SUPP_CH_WIDTH_MAX(cap) ((1 << FIELD_GET(S1G_CAP0_SUPP_CH_WIDTH, \
--						    cap[0])) << 1)
--
--#define S1G_CAP1_RX_LDPC	BIT(0)
--#define S1G_CAP1_TX_STBC	BIT(1)
--#define S1G_CAP1_RX_STBC	BIT(2)
--#define S1G_CAP1_SU_BFER	BIT(3)
--#define S1G_CAP1_SU_BFEE	BIT(4)
--#define S1G_CAP1_BFEE_STS	GENMASK(7, 5)
--
--#define S1G_CAP2_SOUNDING_DIMENSIONS	GENMASK(2, 0)
--#define S1G_CAP2_MU_BFER		BIT(3)
--#define S1G_CAP2_MU_BFEE		BIT(4)
--#define S1G_CAP2_PLUS_HTC_VHT		BIT(5)
--#define S1G_CAP2_TRAVELING_PILOT	GENMASK(7, 6)
--
--#define S1G_CAP3_RD_RESPONDER		BIT(0)
--#define S1G_CAP3_HT_DELAYED_BA		BIT(1)
--#define S1G_CAP3_MAX_MPDU_LEN		BIT(2)
--#define S1G_CAP3_MAX_AMPDU_LEN_EXP	GENMASK(4, 3)
--#define S1G_CAP3_MIN_MPDU_START		GENMASK(7, 5)
--
--#define S1G_CAP4_UPLINK_SYNC	BIT(0)
--#define S1G_CAP4_DYNAMIC_AID	BIT(1)
--#define S1G_CAP4_BAT		BIT(2)
--#define S1G_CAP4_TIME_ADE	BIT(3)
--#define S1G_CAP4_NON_TIM	BIT(4)
--#define S1G_CAP4_GROUP_AID	BIT(5)
--#define S1G_CAP4_STA_TYPE	GENMASK(7, 6)
--
--#define S1G_CAP5_CENT_AUTH_CONTROL	BIT(0)
--#define S1G_CAP5_DIST_AUTH_CONTROL	BIT(1)
--#define S1G_CAP5_AMSDU			BIT(2)
--#define S1G_CAP5_AMPDU			BIT(3)
--#define S1G_CAP5_ASYMMETRIC_BA		BIT(4)
--#define S1G_CAP5_FLOW_CONTROL		BIT(5)
--#define S1G_CAP5_SECTORIZED_BEAM	GENMASK(7, 6)
--
--#define S1G_CAP6_OBSS_MITIGATION	BIT(0)
--#define S1G_CAP6_FRAGMENT_BA		BIT(1)
--#define S1G_CAP6_NDP_PS_POLL		BIT(2)
--#define S1G_CAP6_RAW_OPERATION		BIT(3)
--#define S1G_CAP6_PAGE_SLICING		BIT(4)
--#define S1G_CAP6_TXOP_SHARING_IMP_ACK	BIT(5)
--#define S1G_CAP6_VHT_LINK_ADAPT		GENMASK(7, 6)
--
--#define S1G_CAP7_TACK_AS_PS_POLL		BIT(0)
--#define S1G_CAP7_DUP_1MHZ			BIT(1)
--#define S1G_CAP7_MCS_NEGOTIATION		BIT(2)
--#define S1G_CAP7_1MHZ_CTL_RESPONSE_PREAMBLE	BIT(3)
--#define S1G_CAP7_NDP_BFING_REPORT_POLL		BIT(4)
--#define S1G_CAP7_UNSOLICITED_DYN_AID		BIT(5)
--#define S1G_CAP7_SECTOR_TRAINING_OPERATION	BIT(6)
--#define S1G_CAP7_TEMP_PS_MODE_SWITCH		BIT(7)
--
--#define S1G_CAP8_TWT_GROUPING	BIT(0)
--#define S1G_CAP8_BDT		BIT(1)
--#define S1G_CAP8_COLOR		GENMASK(4, 2)
--#define S1G_CAP8_TWT_REQUEST	BIT(5)
--#define S1G_CAP8_TWT_RESPOND	BIT(6)
--#define S1G_CAP8_PV1_FRAME	BIT(7)
--
--#define S1G_CAP9_LINK_ADAPT_PER_CONTROL_RESPONSE BIT(0)
--
--#define S1G_OPER_CH_WIDTH_PRIMARY	BIT(0)
--#define S1G_OPER_CH_WIDTH_OPER		GENMASK(4, 1)
--#define S1G_OPER_CH_PRIMARY_LOCATION	BIT(5)
--
--#define S1G_2M_PRIMARY_LOCATION_LOWER	0
--#define S1G_2M_PRIMARY_LOCATION_UPPER	1
--
--#define LISTEN_INT_USF	GENMASK(15, 14)
--#define LISTEN_INT_UI	GENMASK(13, 0)
--
--#define IEEE80211_MAX_USF	FIELD_MAX(LISTEN_INT_USF)
--#define IEEE80211_MAX_UI	FIELD_MAX(LISTEN_INT_UI)
+-#define IEEE80211_P2P_OPPPS_ENABLE_BIT		BIT(7)
+-#define IEEE80211_P2P_OPPPS_CTWINDOW_MASK	0x7F
 -
  /* Authentication algorithms */
  #define WLAN_AUTH_OPEN 0
  #define WLAN_AUTH_SHARED_KEY 1
-@@ -2189,20 +1915,6 @@ enum ieee80211_key_len {
- 	WLAN_KEY_LEN_BIP_GMAC_256 = 32,
- };
- 
--enum ieee80211_s1g_actioncode {
--	WLAN_S1G_AID_SWITCH_REQUEST,
--	WLAN_S1G_AID_SWITCH_RESPONSE,
--	WLAN_S1G_SYNC_CONTROL,
--	WLAN_S1G_STA_INFO_ANNOUNCE,
--	WLAN_S1G_EDCA_PARAM_SET,
--	WLAN_S1G_EL_OPERATION,
--	WLAN_S1G_TWT_SETUP,
--	WLAN_S1G_TWT_TEARDOWN,
--	WLAN_S1G_SECT_GROUP_ID_LIST,
--	WLAN_S1G_SECT_ID_FEEDBACK,
--	WLAN_S1G_TWT_INFORMATION = 11,
--};
--
- /* Radio measurement action codes as defined in IEEE 802.11-2024 - Table 9-470 */
- enum ieee80211_radio_measurement_actioncode {
- 	WLAN_RM_ACTION_RADIO_MEASUREMENT_REQUEST = 0,
-@@ -2877,254 +2589,6 @@ static inline bool __ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
- 	return !!(tim->virtual_map[index] & mask);
- }
- 
--struct s1g_tim_aid {
--	u16 aid;
--	u8 target_blk; /* Target block index */
--	u8 target_subblk; /* Target subblock index */
--	u8 target_subblk_bit; /* Target subblock bit */
--};
--
--struct s1g_tim_enc_block {
--	u8 enc_mode;
--	bool inverse;
--	const u8 *ptr;
--	u8 len;
--
--	/*
--	 * For an OLB encoded block that spans multiple blocks, this
--	 * is the offset into the span described by that encoded block.
--	 */
--	u8 olb_blk_offset;
--};
--
--/*
-- * Helper routines to quickly extract the length of an encoded block. Validation
-- * is also performed to ensure the length extracted lies within the TIM.
-- */
--
--static inline int ieee80211_s1g_len_bitmap(const u8 *ptr, const u8 *end)
--{
--	u8 blkmap;
--	u8 n_subblks;
--
--	if (ptr >= end)
--		return -EINVAL;
--
--	blkmap = *ptr;
--	n_subblks = hweight8(blkmap);
--
--	if (ptr + 1 + n_subblks > end)
--		return -EINVAL;
--
--	return 1 + n_subblks;
--}
--
--static inline int ieee80211_s1g_len_single(const u8 *ptr, const u8 *end)
--{
--	return (ptr + 1 > end) ? -EINVAL : 1;
--}
--
--static inline int ieee80211_s1g_len_olb(const u8 *ptr, const u8 *end)
--{
--	if (ptr >= end)
--		return -EINVAL;
--
--	return (ptr + 1 + *ptr > end) ? -EINVAL : 1 + *ptr;
--}
--
--/*
-- * Enumerate all encoded blocks until we find the encoded block that describes
-- * our target AID. OLB is a special case as a single encoded block can describe
-- * multiple blocks as a single encoded block.
-- */
--static inline int ieee80211_s1g_find_target_block(struct s1g_tim_enc_block *enc,
--						  const struct s1g_tim_aid *aid,
--						  const u8 *ptr, const u8 *end)
--{
--	/* need at least block-control octet */
--	while (ptr + 1 <= end) {
--		u8 ctrl = *ptr++;
--		u8 mode = ctrl & 0x03;
--		bool contains, inverse = ctrl & BIT(2);
--		u8 span, blk_off = ctrl >> 3;
--		int len;
--
--		switch (mode) {
--		case IEEE80211_S1G_TIM_ENC_MODE_BLOCK:
--			len = ieee80211_s1g_len_bitmap(ptr, end);
--			contains = blk_off == aid->target_blk;
--			break;
--		case IEEE80211_S1G_TIM_ENC_MODE_SINGLE:
--			len = ieee80211_s1g_len_single(ptr, end);
--			contains = blk_off == aid->target_blk;
--			break;
--		case IEEE80211_S1G_TIM_ENC_MODE_OLB:
--			len = ieee80211_s1g_len_olb(ptr, end);
--			/*
--			 * An OLB encoded block can describe more then one
--			 * block, meaning an encoded OLB block can span more
--			 * then a single block.
--			 */
--			if (len > 0) {
--				/* Minus one for the length octet */
--				span = DIV_ROUND_UP(len - 1, 8);
--				/*
--				 * Check if our target block lies within the
--				 * block span described by this encoded block.
--				 */
--				contains = (aid->target_blk >= blk_off) &&
--					   (aid->target_blk < blk_off + span);
--			}
--			break;
--		default:
--			return -EOPNOTSUPP;
--		}
--
--		if (len < 0)
--			return len;
--
--		if (contains) {
--			enc->enc_mode = mode;
--			enc->inverse = inverse;
--			enc->ptr = ptr;
--			enc->len = (u8)len;
--			enc->olb_blk_offset = blk_off;
--			return 0;
--		}
--
--		ptr += len;
--	}
--
--	return -ENOENT;
--}
--
--static inline bool ieee80211_s1g_parse_bitmap(struct s1g_tim_enc_block *enc,
--					      struct s1g_tim_aid *aid)
--{
--	const u8 *ptr = enc->ptr;
--	u8 blkmap = *ptr++;
--
--	/*
--	 * If our block bitmap does not contain a set bit that corresponds
--	 * to our AID, it could mean a variety of things depending on if
--	 * the encoding mode is inverted or not.
--	 *
--	 * 1. If inverted, it means the entire subblock is present and hence
--	 *    our AID has been set.
--	 * 2. If not inverted, it means our subblock is not present and hence
--	 *    it is all zero meaning our AID is not set.
--	 */
--	if (!(blkmap & BIT(aid->target_subblk)))
--		return enc->inverse;
--
--	/*
--	 * Increment ptr by the number of set subblocks that appear before our
--	 * target subblock. If our target subblock is 0, do nothing as ptr
--	 * already points to our target subblock.
--	 */
--	if (aid->target_subblk)
--		ptr += hweight8(blkmap & GENMASK(aid->target_subblk - 1, 0));
--
--	return !!(*ptr & BIT(aid->target_subblk_bit)) ^ enc->inverse;
--}
--
--static inline bool ieee80211_s1g_parse_single(struct s1g_tim_enc_block *enc,
--					      struct s1g_tim_aid *aid)
--{
--	/*
--	 * Single AID mode describes, as the name suggests, a single AID
--	 * within the block described by the encoded block. The octet
--	 * contains the 6 LSBs of the AID described in the block. The other
--	 * 2 bits are reserved. When inversed, every single AID described
--	 * by the current block have buffered traffic except for the AID
--	 * described in the single AID octet.
--	 */
--	return ((*enc->ptr & 0x3f) == (aid->aid & 0x3f)) ^ enc->inverse;
--}
--
--static inline bool ieee80211_s1g_parse_olb(struct s1g_tim_enc_block *enc,
--					   struct s1g_tim_aid *aid)
--{
--	const u8 *ptr = enc->ptr;
--	u8 blk_len = *ptr++;
--	/*
--	 * Given an OLB encoded block that describes multiple blocks,
--	 * calculate the offset into the span. Then calculate the
--	 * subblock location normally.
--	 */
--	u16 span_offset = aid->target_blk - enc->olb_blk_offset;
--	u16 subblk_idx = span_offset * 8 + aid->target_subblk;
--
--	if (subblk_idx >= blk_len)
--		return enc->inverse;
--
--	return !!(ptr[subblk_idx] & BIT(aid->target_subblk_bit)) ^ enc->inverse;
--}
--
--/*
-- * An S1G PVB has 3 non optional encoding types, each that can be inverted.
-- * An S1G PVB is constructed with zero or more encoded block subfields. Each
-- * encoded block represents a single "block" of AIDs (64), and each encoded
-- * block can contain one of the 3 encoding types alongside a single bit for
-- * whether the bits should be inverted.
-- *
-- * As the standard makes no guarantee about the ordering of encoded blocks,
-- * we must parse every encoded block in the worst case scenario given an
-- * AID that lies within the last block.
-- */
--static inline bool ieee80211_s1g_check_tim(const struct ieee80211_tim_ie *tim,
--					   u8 tim_len, u16 aid)
--{
--	int err;
--	struct s1g_tim_aid target_aid;
--	struct s1g_tim_enc_block enc_blk;
--
--	if (tim_len < 3)
--		return false;
--
--	target_aid.aid = aid;
--	target_aid.target_blk = (aid >> 6) & 0x1f;
--	target_aid.target_subblk = (aid >> 3) & 0x7;
--	target_aid.target_subblk_bit = aid & 0x7;
--
--	/*
--	 * Find our AIDs target encoded block and fill &enc_blk with the
--	 * encoded blocks information. If no entry is found or an error
--	 * occurs return false.
--	 */
--	err = ieee80211_s1g_find_target_block(&enc_blk, &target_aid,
--					      tim->virtual_map,
--					      (const u8 *)tim + tim_len + 2);
--	if (err)
--		return false;
--
--	switch (enc_blk.enc_mode) {
--	case IEEE80211_S1G_TIM_ENC_MODE_BLOCK:
--		return ieee80211_s1g_parse_bitmap(&enc_blk, &target_aid);
--	case IEEE80211_S1G_TIM_ENC_MODE_SINGLE:
--		return ieee80211_s1g_parse_single(&enc_blk, &target_aid);
--	case IEEE80211_S1G_TIM_ENC_MODE_OLB:
--		return ieee80211_s1g_parse_olb(&enc_blk, &target_aid);
--	default:
--		return false;
--	}
--}
--
--/**
-- * ieee80211_check_tim - check if AID bit is set in TIM
-- * @tim: the TIM IE
-- * @tim_len: length of the TIM IE
-- * @aid: the AID to look for
-- * @s1g: whether the TIM is from an S1G PPDU
-- * Return: whether or not traffic is indicated in the TIM for the given AID
-- */
--static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
--				       u8 tim_len, u16 aid, bool s1g)
--{
--	return s1g ? ieee80211_s1g_check_tim(tim, tim_len, aid) :
--		     __ieee80211_check_tim(tim, tim_len, aid);
--}
--
- /**
-  * ieee80211_get_tdls_action - get TDLS action code
-  * @skb: the skb containing the frame, length will not be checked
-@@ -3258,39 +2722,6 @@ static inline bool ieee80211_is_ftm(struct sk_buff *skb)
- 	return false;
- }
- 
--/**
-- * ieee80211_is_s1g_short_beacon - check if frame is an S1G short beacon
-- * @fc: frame control bytes in little-endian byteorder
-- * @variable: pointer to the beacon frame elements
-- * @variable_len: length of the frame elements
-- * Return: whether or not the frame is an S1G short beacon. As per
-- *	IEEE80211-2024 11.1.3.10.1, The S1G beacon compatibility element shall
-- *	always be present as the first element in beacon frames generated at a
-- *	TBTT (Target Beacon Transmission Time), so any frame not containing
-- *	this element must have been generated at a TSBTT (Target Short Beacon
-- *	Transmission Time) that is not a TBTT. Additionally, short beacons are
-- *	prohibited from containing the S1G beacon compatibility element as per
-- *	IEEE80211-2024 9.3.4.3 Table 9-76, so if we have an S1G beacon with
-- *	either no elements or the first element is not the beacon compatibility
-- *	element, we have a short beacon.
-- */
--static inline bool ieee80211_is_s1g_short_beacon(__le16 fc, const u8 *variable,
--						 size_t variable_len)
--{
--	if (!ieee80211_is_s1g_beacon(fc))
--		return false;
--
--	/*
--	 * If the frame does not contain at least 1 element (this is perfectly
--	 * valid in a short beacon) and is an S1G beacon, we have a short
--	 * beacon.
--	 */
--	if (variable_len < 2)
--		return true;
--
--	return variable[0] != WLAN_EID_S1G_BCN_COMPAT;
--}
--
- struct element {
- 	u8 id;
- 	u8 datalen;
-@@ -3446,5 +2877,21 @@ struct ieee80211_tbtt_info_ge_11 {
- #include "ieee80211-he.h"
+@@ -2878,6 +2826,7 @@ struct ieee80211_tbtt_info_ge_11 {
  #include "ieee80211-eht.h"
  #include "ieee80211-mesh.h"
-+#include "ieee80211-s1g.h"
-+
-+/**
-+ * ieee80211_check_tim - check if AID bit is set in TIM
-+ * @tim: the TIM IE
-+ * @tim_len: length of the TIM IE
-+ * @aid: the AID to look for
-+ * @s1g: whether the TIM is from an S1G PPDU
-+ * Return: whether or not traffic is indicated in the TIM for the given AID
-+ */
-+static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
-+				       u8 tim_len, u16 aid, bool s1g)
-+{
-+	return s1g ? ieee80211_s1g_check_tim(tim, tim_len, aid) :
-+		     __ieee80211_check_tim(tim, tim_len, aid);
-+}
+ #include "ieee80211-s1g.h"
++#include "ieee80211-p2p.h"
  
- #endif /* LINUX_IEEE80211_H */
+ /**
+  * ieee80211_check_tim - check if AID bit is set in TIM
 -- 
 2.51.1
 
