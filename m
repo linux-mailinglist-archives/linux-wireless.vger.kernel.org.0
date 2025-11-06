@@ -1,166 +1,158 @@
-Return-Path: <linux-wireless+bounces-28666-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28667-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C38C3B095
-	for <lists+linux-wireless@lfdr.de>; Thu, 06 Nov 2025 13:59:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A0BC3C17E
+	for <lists+linux-wireless@lfdr.de>; Thu, 06 Nov 2025 16:37:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4596D50136D
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Nov 2025 12:54:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79A061B231AF
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Nov 2025 15:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B43B3328E1;
-	Thu,  6 Nov 2025 12:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E274F28850C;
+	Thu,  6 Nov 2025 15:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="gu5aWBrM"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fXqMdtr5";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GDxb04xt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B0A331A5F
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Nov 2025 12:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B81287518
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Nov 2025 15:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762433588; cv=none; b=X5c5NeEBR/x5t8//QdvuO2rIUM5M/dIFmh78qSbplTAyRtE9JblUkpDCzaNsWWD+huv6hME9RAKKTOhZETjKEVuRDFv8QUEmciFADDO8UL3bzUStd3fo7SKnY1tOotaH2Z2xEJhHMbpY5Oyn1HUeg++PStzzK47AoGmpkBFXw+A=
+	t=1762443152; cv=none; b=pZYi25cqPz1PQKGZxz6QQJRrARYqbDKHliitVvhqZVneSDHURPhCDMCmxiIAdjNxjHSaENeCIdyCuXJ6uiuX90mbU8fPOZ7kUL8KLb6OW+RpMRupc3UXfVAbaZKQdzsuv4Si7xOYqrY2xrYr2vvWY/INCXQeNb7LzgDG+9TMVsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762433588; c=relaxed/simple;
-	bh=SB8+JLmxMvZ1taiZmigv9b0OWRL2mwFbMhEcLnOTyhU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ECLNTH2x3h2YwGSSs/apSbWZvz6TB5j8TgnRIs1lpyDcApBdkF+thjAu6xu8acGliC2EwJ3KLK3tqomOFE4rk1/C/3Mgj8eWx0wm1n5u+ASJwseP+kbm6deqn9gFzjjQ05yEBLpbMe8SZ2Ms7KT00kmiAOql0Xj+354YmZqovzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=gu5aWBrM; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=SB8+JLmxMvZ1taiZmigv9b0OWRL2mwFbMhEcLnOTyhU=;
-	t=1762433586; x=1763643186; b=gu5aWBrMTZ8So9auL/Syki9rqx7yQ5dJLZnQ+2V8pRjlKJa
-	OQxwfDzoaDY4gC9LKagy5H/B4fLyucfcVLD4Yn3DMhLtNldESSxT90J+h4CCFsbcb6drM3DETfQcQ
-	HgrUfE3cWn+lxqxC7qSDDO51aOzAOq5lsjVh/scDcd+C8DUGz7y+aHGxLNLiRJjdSaxT22bbEONyn
-	BRZZb2cAH8Ab6/dV3NuPKmQnuOF5DhKkomuDWBfjMfYX/nYNlHAOthj+7xc9FKUdZ5oV0sDODkyMs
-	woNdYAH4OJn5aq3E27Bbj9rvEjXJjsqODG424wNpgC7rpZ1wmDmv8D1uLaMvlFHQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <benjamin@sipsolutions.net>)
-	id 1vGzTx-00000000Bbc-1oWV;
-	Thu, 06 Nov 2025 13:52:53 +0100
-Message-ID: <996194019be7dcca0ee0fd16d7d3274d0f2d4a92.camel@sipsolutions.net>
-Subject: Re: [RFC][v1][Design] AP Architecture for Roaming with Wi-Fi 8
- Seamless Mobility Domain (SMD)
-From: Benjamin Berg <benjamin@sipsolutions.net>
-To: Aditya Sathish <quic_asathish@quicinc.com>, Johannes Berg
-	 <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org, 
-	hostap@lists.infradead.org
-Date: Thu, 06 Nov 2025 13:52:52 +0100
-In-Reply-To: <793f6c8d-d092-49c8-b34f-8e6db7761750@quicinc.com> (sfid-20251104_223218_742396_D7F355C0)
-References: <fbf4209c-4fd8-4047-96d7-7fa34d9ba44d@quicinc.com>
-		 <c618e0e8fdee9f7aa2628aefdf2dc04c48e6e9b7.camel@sipsolutions.net>
-		 <30403bb70a2a017c90b1d4a5a1a07514bb670822.camel@sipsolutions.net>
-		 <fb0a1ddb-af24-47f9-9d75-0a8f2e346d81@quicinc.com>
-		 <b6a9de98b9b09c73003b89331ba235c3a959c3fd.camel@sipsolutions.net>
-		 <793f6c8d-d092-49c8-b34f-8e6db7761750@quicinc.com>
-		 (sfid-20251104_223218_742396_D7F355C0)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1762443152; c=relaxed/simple;
+	bh=tJuRLTBbnt8QzEMUAPDjN+o/zv//m/QOINWwPZqyotA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=L/VVaqdCRBmgVAdqEAt11qvIOSqoId0hlL0qeNeYdYJjovjucGLCRz1h+XCEaAAhhAK0HBblwb9k7nU/w4WXrMI1lc04cBE5ezlYzYRh395KLdN4atXty+fOE+RltQ9YmcTCfpg/pxfqvYPAmN8krb3HuBlBiNJVPGsS8iC1U3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fXqMdtr5; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GDxb04xt; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A6ASshf3749048
+	for <linux-wireless@vger.kernel.org>; Thu, 6 Nov 2025 15:32:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	qoESMWn7PrULWRu14sjXfmZhKckiVnKGNTN25vzvmQs=; b=fXqMdtr53wOVF3dL
+	WK60UNxOi3glB5OA0HxFmC5kgweW+LcmTakEHK8oEzrcjQgFIX0/53KDV2lurSJJ
+	OEkd+HzXx0XM9s3P7GJiEcNk2bwLhhpK9FTPf+KPtMR4FWHdiFfhuQwww2cInk/R
+	Ou9UrdWUh5fJHHBwrNG/lqwFEyDEz8wUm0iDJ6VOdPMdDliQ3RwenZJiMcZTzGB+
+	APmDO1U/GGYYbRLq3yCc/eIpwwj34E57tWmH7GEE5AwQK8143Jrjlu7N9nKyxloc
+	1Y1aKRHGSDhhDxCMad7LYZGIoSSPfqR1HLQweIUVn4CJIj3kCN8Eut/fG4r8d2Jt
+	mZ7k9Q==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a8sy6guf1-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 06 Nov 2025 15:32:30 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-340bb1bf12aso810861a91.1
+        for <linux-wireless@vger.kernel.org>; Thu, 06 Nov 2025 07:32:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1762443149; x=1763047949; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qoESMWn7PrULWRu14sjXfmZhKckiVnKGNTN25vzvmQs=;
+        b=GDxb04xt/T403QF7InddnDWZL7FbcD+X76s0BNAzUHoyvXgkaqZ1OLbTngWyiZK+ok
+         GxzXUpRxgdDgvAskxzbBTFjVXv3eNtfiBWTsjn0cYiXuVaz/08MLNZGlDI4KEjHhdNXU
+         wTe4d6O7bAgrd4bbtMitKkDwnJ3bgP3kkvSv+DSgHlHbhe4PDx7qtChklKTThsoufY5V
+         q0Sd+jsvbj6djR4xCqu4HEotXymeDz6Hnm4eRdLvu9ZnVwZDOuDL1SyntIvzCKEK9G5e
+         hzUZbnouO/pitZVGRw/6b0ORiHyzC4qypU0Vrb0eDmYQVbX011eVNEJUvjcU89lBGXn5
+         4RIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762443149; x=1763047949;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qoESMWn7PrULWRu14sjXfmZhKckiVnKGNTN25vzvmQs=;
+        b=Zjwsqvch6z0dHjjFI/D9vfEYA87PH3I/J41PnMkCiNWXgd2HZ4CkthOoqWXvwCuzOc
+         BpyhGs2txL5YfSU2pmYrrAkRArv0rnZ2Pk/x5uMHUWioEcHDVRHSVYYkrOiUPoUvCnkh
+         NzjylAr1VnbAPKWSMrnnzsPf0wyEjQnlzA+ER9uvC5DjYoyJLGjTagsDh0F2KFUBvVLl
+         QkZKyn8oUartrWVgmBg7FQ4zoq1WTjAGVWLKDD72nYYEohFsfBXd7bmIQc3c26GbZJ9i
+         FddxYqQ7Y0pOk4GldxNyQHeNCntrugn6cRZmFFXUpBAVgXcIHSb7uyPWxm2Lgpc79u6U
+         g47Q==
+X-Gm-Message-State: AOJu0YxQgLBnEpvkQ2te7XeoQ1WqX7jQDaibwPa9ds7PbHzS5V7ppp/t
+	UuKjprXjIp0eASbus8lrBEdSkGz2+OIe9ODvuwDVRPRyL+ESnwdVvf//wMP96JCZ9HfkGGLLmT6
+	dAnacnyDKTtZJTFMDpsmUv0juvRAl6ZOe7l1PBIkbryD4Qcu7I0g+cZpkIKBuDAe60T9UBhOzw0
+	XMcg==
+X-Gm-Gg: ASbGncvWVG24D9LsH0r9BEmKmHmrlN3vBhYykv93HbdebCYEepvodGzHAVjjqNo3q0P
+	vRsEIYQHdlXv9ULyhr3lOiQTKQPwNZoGhZJ+7tMN6666QlYvIeRZG67QI1Pjo5i5KbVOSJWNW5/
+	NKDqI+RXxLL6fPLIz0Ff7wF+yS9EbvpZaq/C0erb35vEjRLVKCpB4aPXAIZAOO605k69bGDszs5
+	14aR3yL6Q0u0sK0GkE788T/Oot+ngxEOXEd0XetQRQ6sUu4tdBW/6I+G4qd9J3y7IdOA3FkCYC8
+	dXuNNCrhd9yVi5V9EeoLhi+fAkAKoMEOItI17QVwlwaPEWuVsGDDxk98TPJM10HzlvTEE6q7RZ9
+	TUO4L8nNWgYGNAzshtZmxbU6+cigVo5WRmpI=
+X-Received: by 2002:a17:90b:198c:b0:341:8c15:959e with SMTP id 98e67ed59e1d1-341a6dd6981mr7910663a91.17.1762443148937;
+        Thu, 06 Nov 2025 07:32:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGXcCOwxhywFFmIqy4/If8FuyWQ+DC4C3swH4/tyjEm7gs+eBSnZVs5l2xisqNftHNSyFuzuQ==
+X-Received: by 2002:a17:90b:198c:b0:341:8c15:959e with SMTP id 98e67ed59e1d1-341a6dd6981mr7910641a91.17.1762443148373;
+        Thu, 06 Nov 2025 07:32:28 -0800 (PST)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341a696f15asm6619916a91.12.2025.11.06.07.32.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Nov 2025 07:32:28 -0800 (PST)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: ath11k@lists.infradead.org, Nicolas Escande <nico.escande@gmail.com>
+Cc: linux-wireless@vger.kernel.org
+In-Reply-To: <20251104083957.717825-1-nico.escande@gmail.com>
+References: <20251104083957.717825-1-nico.escande@gmail.com>
+Subject: Re: [PATCH ath-next] wifi: ath11k: zero init info->status in
+ wmi_process_mgmt_tx_comp()
+Message-Id: <176244314778.1820261.5998504841196098963.b4-ty@oss.qualcomm.com>
+Date: Thu, 06 Nov 2025 07:32:27 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Authority-Analysis: v=2.4 cv=AYu83nXG c=1 sm=1 tr=0 ts=690cbf8e cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=HIa3pkW2VRZaOz2dKSoA:9
+ a=QEXdDO2ut3YA:10 a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA2MDEyMyBTYWx0ZWRfX63NJG6PaCLQF
+ UWQdULmGpiR+o1Dq4PxAOLN1862TMuhUe+wkzQtH/iMWAjzXIT6R2NgFt+5E6fjcAACe018pcz9
+ tQB4bmNi/eYxFL87BU+3nH09MFZYzP9FN1gRsAVwZhOxGBgU5HxIepsBk+CjhOAwt5jQYB/4Vhx
+ JNG2d5s93ZDM70jTEOKqI3ZfAe8nJBi3aQuCcTq7nHPocBUPGts0pU08YUqVKy6ZWcN93TFuNkc
+ Uh19+HuLHj/wb1D36a0S7iUWg/s+QAFPCLApnJy8BGyZ7KeeRv8JyFyoPZf6Jl3qSBt+rgErM2Z
+ U8KrD7Nd5Rjo4NMyvK9i6lsOgVZvFUV+ATVhX63g8U5Vo7XiRhfPQLUh3xg6h5Z9v+JPmAGByNo
+ kJXeAWxQTOT3PhvVzUcWD7ja93y45g==
+X-Proofpoint-ORIG-GUID: X4trPzDxnfnQuzx_zFNqoB8gemrPsE-m
+X-Proofpoint-GUID: X4trPzDxnfnQuzx_zFNqoB8gemrPsE-m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-06_03,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ clxscore=1015 spamscore=0 phishscore=0 priorityscore=1501 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511060123
 
-Hi Aditya,
 
-On Tue, 2025-11-04 at 13:30 -0800, Aditya Sathish wrote:
-> On 10/30/2025 01:47, Benjamin Berg wrote:
-> > Do we have a clear picture of what the performance issues might be?
-> >=20
-> > To me, it seems a bit that talking about threading might be a red
-> > heering. It could be that the primary issue is the prioritization of
-> > events when there is a burst of activity.
-> >=20
-> > We should not need threading as long as each individual event can be
-> > processed quickly and hostapd is able to keep up overall. In that case,
-> > we have an event ordering issue which can likely be solved by using
-> > multiple nl80211 sockets and giving them different priorities in the
-> > mainloop. By doing that, you can effectively pull all time-critical
-> > events to the front of the queue and ensure they are processed with
-> > only a short delay.
-> >=20
-> > Now, that doesn't invalidate your point at all. If we do have tasks
-> > that take a long time (crypto?, external requests?), then it can make
-> > sense to push just the slow part into a separate thread and pick up
-> > processing in the main thread once it has finished.
-> To preface our concerns: the longer the context transfer takes, the
-> less time the serving AP has available to drain its remaining packets
-> before hitting the SN limit. This can result in a larger gap in
-> client-perceived latency during roaming depending on when the target
-> AP is ready to start DL transmission. Efficient handling of the
-> context transfer (during the ST Execution phase) is therefore key to
-> minimize client-perceived latency.
+On Tue, 04 Nov 2025 09:39:57 +0100, Nicolas Escande wrote:
+> When reporting tx completion using ieee80211_tx_status_xxx() familly of
+> functions, the status part of the struct ieee80211_tx_info nested in the
+> skb is used to report things like transmit rates & retry count to mac80211
+> 
+> On the TX data path, this is correctly memset to 0 before calling
+> ieee80211_tx_status_ext(), but on the tx mgmt path this was not done.
+> 
+> [...]
 
-Right, so the time it takes to drain the queues and the likelihood of
-hitting the SN limit is not purely a function of how long the whole ST
-Execution process takes.
+Applied, thanks!
 
-I am probably missing some important bits, but I imagine that an early
-bridge update is quite important. The earlier the bridge stops
-forwarding packets to Serving AP MLD, the fewer packets need to be
-flushed relaxing the SN limit issue and minimizing the time needed to
-drain the queues.
+[1/1] wifi: ath11k: zero init info->status in wmi_process_mgmt_tx_comp()
+      commit: 9065b968752334f972e0d48e50c4463a172fc2a7
 
-As far as I can tell, one could immediately ask the bridge to stop
-forwarding packets to the Serving AP MLD when the ST Execution Request
-frame is received. Similarly, forwarding to the Target AP MLD can begin
-as soon as it is known that the ST Execution will succeed. After all,
-the Target AP MLD already knows about the station and can buffer frames
-for it. Such buffering can happen before the HW is fully configured and
-even before the Context has been transferred.
+Best regards,
+-- 
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
-Now, the Target AP MLD does need to be fully configured before the ST
-Execution Response can be sent out. But maybe we can effectively start
-the the DL draining period early and relax the timings that way?
-
-> You've accurately captured the core performance concerns we intended
-> to highlight:
-> 1. _Prioritization of Management Frames:_
-> =C2=A0=C2=A0 Certain management frames - such as SMD - should be able to =
-"skip
-> =C2=A0=C2=A0 the line" since a roam request typically will indicate degra=
-ded
-> =C2=A0=C2=A0 client link quality and prioritizing immediate transition ov=
-er
-> =C2=A0=C2=A0 processing existing management traffic is likely in the clie=
-nt's
-> =C2=A0=C2=A0 best interest - especially after preparation has already com=
-pleted.
-> 2. _Additional Threads for Long-Polled Operations:_
-> =C2=A0=C2=A0 Without multi-threading, long-polled netlink messages or sys=
-tem
-> =C2=A0=C2=A0 calls can block even the prioritized kernel events. As you n=
-oted,
-> =C2=A0=C2=A0 offloading slow operations that are busy waiting to worker t=
-hreads
-> =C2=A0=C2=A0 can allow the main thread to handle time-critical events.
->=20
-> That said, even with multi-threading in hostapd, we still face
-> overhead from RTNL locks and netlink socket overhead =E2=80=94 not only f=
-rom
-> hostapd of the serving MLD but also from other hostapd processes tied
-> to other MLDs on the AP. This is why we initially proposed moving the
-> ST Execution sequence to mac80211. Doing so could reduce round-trip
-> latency from ST Execution Request to Response, especially under high
-> system load and concurrent work across multiple hostapd interfaces.
-
-Yeah, there may be some things for which a lock might need to be held
-in the kernel. That said, with the above in mind, I am wondering what
-the critical parts there are and how long the round-trip time is
-permitted to be in the end.
-
-Benjamin
 
