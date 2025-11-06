@@ -1,96 +1,147 @@
-Return-Path: <linux-wireless+bounces-28641-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28643-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037D9C38838
-	for <lists+linux-wireless@lfdr.de>; Thu, 06 Nov 2025 01:46:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84219C38A22
+	for <lists+linux-wireless@lfdr.de>; Thu, 06 Nov 2025 02:02:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 99EA834F9E4
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Nov 2025 00:46:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C36D3BAC44
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Nov 2025 00:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E3028682;
-	Thu,  6 Nov 2025 00:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1EC233D85;
+	Thu,  6 Nov 2025 00:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="NrfBlESi"
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="SYeTmXSO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556FE86331
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Nov 2025 00:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4E9217F2E;
+	Thu,  6 Nov 2025 00:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762389970; cv=none; b=hfx4gtrBM1jWFef5hyh0Vb546QBVo8lUF874Kl2dGR/0Te970ETzknVi3P+2PDNpf8NeuuLq9IlwW4PPJDJ/NVIZIr+VZ4lSK4FcrdqDIrzGE+8YSjqVQnorrx9Yrh7B9osF6CARmFnigh5X/rtU6XbQpPMa1ALKTdIdcRx00O0=
+	t=1762390603; cv=none; b=HGuITjYNTaVwb5warMJjpNKB+7yBDdffWzqpZovj1VX4hJIMgci5bUgA1bubVpqIX4DTWvqds8aeZvLJiixSe+nAQNInVHHJbxOh83xNk+Grs6NfcLFveYgUg5DCw3FH+c8Odxn6eJe35upHvBOzk5oiBkdj3iIi65LlKllurQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762389970; c=relaxed/simple;
-	bh=FWSS/quBZeKlwUvl0vjNF7hYHXs6KVkm+0JA9K/i7R0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eD27XFtoZPN2bo77rnD04+DenUdUC115+NawPeyCqfhDEmFZGbZkHzrqEYBTAik71N7Gtl9ZONfmBh48NCSzdJcxzVzU62eMLZ22hyHZBYmG2pZwcAKek5lTzP912OdoNLEAW/Qo3Ze8iMoxi7IgeezEC15M1lAdP+R0/e98LeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=NrfBlESi; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5A60k09912075728, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1762389960; bh=KURB2uBVCzRtyxWr0PxwxreV5e8VDXK9N/Fuqg/4SQc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=NrfBlESi1TKjT8SuVZ6orueA7Dk7b/pHlBQA7AuWHQGUwZgcDpz+LvaRv8YZCPPX9
-	 KrEWhfPun/CcK1DnQZllBXtvLs78QFH7BRpIMCRXZpuBaxhS/Dx5d42sQC7CAQ70gj
-	 8L5uuqFcv0dzvb+FEsVACAcYxQf/Krsd7VwAXtd2lpaOtlDRh04PbG6IctKWUquFLy
-	 CgDi7qoJ3DJmbj7PY1DipFR1rR0F7OmrfpdxEynk9FX4I6x7oDnmPamRo2jvw5x5f7
-	 bxYYxkK7WMij3VohJJ1e1eVYNsYtmaD0dSdh5NOhidFVZxV2ODTQAiA9NZmcadbY8x
-	 /lUjcdrGEM6Jw==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 5A60k09912075728
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Nov 2025 08:46:00 +0800
-Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.27; Thu, 6 Nov 2025 08:46:01 +0800
-Received: from [127.0.1.1] (172.21.146.58) by RTKEXHMBS04.realtek.com.tw
- (10.21.1.54) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27 via Frontend
- Transport; Thu, 6 Nov 2025 08:46:01 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <dan.carpenter@linaro.org>
-Subject: [PATCH rtw-next] wifi: rtlwifi: rtl8188ee: correct allstasleep in P2P PS H2C command
-Date: Thu, 6 Nov 2025 08:49:32 +0800
-Message-ID: <1762390172-21091-1-git-send-email-pkshih@realtek.com>
-X-Mailer: git-send-email 2.7.4
+	s=arc-20240116; t=1762390603; c=relaxed/simple;
+	bh=VTdaiQ10La+yHV2hAr6XnpnjrSzQmsBxUAirtnL2j0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JmFs08FX2Tp5bPlaOcglOUR6cHzBTrMdnjPZXxFPyR7VymWA+xJ3fWuxKl7qsjTgSm+dmD7CQ1rD9Yog7kNAOgX9PQs2yPwPaRXi+MySZbGSzGdjCtmvWtJjGCdsD2NnAHywNpofOBBw9RO3abmEQhF9HbTV++FbICUFEMvpDaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=SYeTmXSO; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=202503; t=1762390597;
+	bh=Vmvg9PQucrM9XxyCcYL1ru8Zcq3bHljcwVp773OjC68=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SYeTmXSO4Jihd8mmRX6XpxoQiMhI+p60/y9ve/mTwdmT6Au/J/3v/bqr46TPio/FZ
+	 WUYXmPGM27qcGMHdLMGHnVOzLp4VdQQwcEcOtXmF6LO7/ebkPxc56tVpAn1juy2rbD
+	 bPnroJbfyDppcVAvqyqikjFUmlcZWY9PDA6R+XUbth/iL57jdZpmCMMbeoOnIYtuBF
+	 A5oIDS39GDRzxeIIU1caOg25n8BQkei3+cYGIJYUf8lXOX9AxdLv6WKhzA+XdLoI0E
+	 eDTRbUEAii78SNY1X1yyJdRv+efofmgs6TMCKsOaXj12yvOtPh19O+1NEiVZ/J9oHG
+	 ckwYRpe25ZluQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4d23fr4Y9zz4w9q;
+	Thu, 06 Nov 2025 11:56:36 +1100 (AEDT)
+Date: Thu, 6 Nov 2025 11:56:36 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>, Jeff Johnson
+ <jeff.johnson@oss.qualcomm.com>, Ath10k List <ath10k@lists.infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next
+ Mailing List <linux-next@vger.kernel.org>, Maharaja Kennadyrajan
+ <maharaja.kennadyrajan@oss.qualcomm.com>, Miaoqing Pan
+ <miaoqing.pan@oss.qualcomm.com>, Wireless <linux-wireless@vger.kernel.org>
+Subject: Re: linux-next: manual merge of the ath-next tree with the ath tree
+Message-ID: <20251106115636.7ab861b3@canb.auug.org.au>
+In-Reply-To: <20251030113037.1932c6d2@canb.auug.org.au>
+References: <20251030113037.1932c6d2@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/2l67aILM2GZVGRsolWjDVnl";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-The "->allstasleep" variable is a 1 bit bitfield. It can only be 0 or 1.
-This "= -1" assignement should be "= 0" as other chips and vendor driver.
+--Sig_/2l67aILM2GZVGRsolWjDVnl
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-wireless/5c992936-4e7b-4c0a-abfc-0ec0fb9ef9fd@suswa.mountain/T/#t
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi all,
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.c
-index 7252bc621211..9a9f9e14f472 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/fw.c
-@@ -694,7 +694,7 @@ void rtl88e_set_p2p_ps_offload_cmd(struct ieee80211_hw *hw, u8 p2p_ps_state)
- 
- 			if (P2P_ROLE_GO == rtlpriv->mac80211.p2p) {
- 				p2p_ps_offload->role = 1;
--				p2p_ps_offload->allstasleep = -1;
-+				p2p_ps_offload->allstasleep = 0;
- 			} else {
- 				p2p_ps_offload->role = 0;
- 			}
--- 
-2.25.1
+On Thu, 30 Oct 2025 11:30:37 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
+>
+> Today's linux-next merge of the ath-next tree got a conflict in:
+>=20
+>   drivers/net/wireless/ath/ath12k/mac.c
+>=20
+> between commit:
+>=20
+>   9222582ec524 ("Revert "wifi: ath12k: Fix missing station power save con=
+figuration"")
+>=20
+> from the ath tree and commit:
+>=20
+>   6917e268c433 ("wifi: ath12k: Defer vdev bring-up until CSA finalize to =
+avoid stale beacon")
+>=20
+> from the ath-next tree.
+>=20
+> I fixed it up (see below) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
+>=20
+> --=20
+> Cheers,
+> Stephen Rothwell
+>=20
+> diff --cc drivers/net/wireless/ath/ath12k/mac.c
+> index db351c922018,e79d457e3c03..000000000000
+> --- a/drivers/net/wireless/ath/ath12k/mac.c
+> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+> @@@ -4209,7 -4286,7 +4267,8 @@@ static void ath12k_mac_bss_info_changed
+>   {
+>   	struct ath12k_vif *ahvif =3D arvif->ahvif;
+>   	struct ieee80211_vif *vif =3D ath12k_ahvif_to_vif(ahvif);
+>  +	struct ieee80211_vif_cfg *vif_cfg =3D &vif->cfg;
+> + 	struct ath12k_link_vif *tx_arvif;
+>   	struct cfg80211_chan_def def;
+>   	u32 param_id, param_value;
+>   	enum nl80211_band band;
 
+This is now a conflict between the wireless-next tree and the wireless
+tree.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/2l67aILM2GZVGRsolWjDVnl
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmkL8kQACgkQAVBC80lX
+0GyvVQf+NOSIdJpJoqqqMOPrC3ImZTPukpFKJir+EkjlJ03KVa5kXIFB3E+05KI+
+vr9VI65YX+MVbxmnAjDljyiEp1RY02rn2DOJCOOR4bp4ImP0nent3QbazODcguea
+/EKTLPqMh2NX4fjwcptG2Xyf7iga8Or1WnJWHSDoCWWqlyo4YLNTpQm/OaM35Evg
+eJ2vCXWkP+1QaLa8O7w7ogGQ6O9bizTYXN7CSHwl3IBK1Tn6XcM/T7Iftlz0oiZ9
+Taj82PcPsUNbDjp58ZX9SL7WPNjvaxeE7aWOS4TisVhh3vwrkVEx2TW+DJrrnEdL
+gEDzD9FN4FJAEm7kd/HEYK/dPPQCOg==
+=d+pj
+-----END PGP SIGNATURE-----
+
+--Sig_/2l67aILM2GZVGRsolWjDVnl--
 
