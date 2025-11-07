@@ -1,94 +1,115 @@
-Return-Path: <linux-wireless+bounces-28679-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28680-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6C5C40509
-	for <lists+linux-wireless@lfdr.de>; Fri, 07 Nov 2025 15:25:38 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6969C40BF4
+	for <lists+linux-wireless@lfdr.de>; Fri, 07 Nov 2025 17:05:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8501E56279F
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Nov 2025 14:24:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 380FE4F2E8E
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Nov 2025 16:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7411328B4C;
-	Fri,  7 Nov 2025 14:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E71261B67;
+	Fri,  7 Nov 2025 16:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b="E95MYpiF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FhvJlT7p"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2152328B53
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Nov 2025 14:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762525422; cv=pass; b=EWnaocHRlRzmHDWdLgByTpfoOUkJE1UrE5HOx4pSXBjspaNhjFornOEhQ4csUbzg126ToGtKf9jTy2Ro02mLskKWrIZmeYncbknfNB22G2n/jqfsN3ows5SMMDBuOmZZNfBMVD9O607x4IXIA5mRl6D9oAcXNI4qo1hLhfMuQk0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762525422; c=relaxed/simple;
-	bh=kYdmu7m5tcmJ6pkeDIp3d3ZSMRfEM9EKy/93l9kAUYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KjHim864xf6DJ8FaTTGNQI1frT1zIq8+nXKEMgdNBCeheWoWiiTsNOTwKJq4egqAtjV3tDlJqV2cZmQIbUQm2e+13EIud6V5bqHfEfGiR0mAfE5kwDyZd9C3lUic7zj9tRIXoQwZUfWVAV8edCXdgV41zCSjzK+d3HVEM27UjTw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com; spf=pass smtp.mailfrom=xv97.com; dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b=E95MYpiF; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xv97.com
-ARC-Seal: i=1; a=rsa-sha256; t=1762525417; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=VsQS2HWGYhoxOGWg8I4fkbFc4FBuc7kxuY4BOtuq80k2Py7+rGNPGggjFR9X5wpCKieLD/8G/gypY+ZOCtdpK3UVpu5r8wKTnFCVK6x3deztQC+F0nCp0DtMWwztAvzTv2Gz7krEY8Hu4VNrx8LuTxMuL8rXDh/4aKYT5SyW9Pk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1762525417; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=WMd+byUbXGYLtZdo6YadawPUVvaymL3D63gdXIACTBM=; 
-	b=Onn9Qu9BNXbQI5lgA81/X/HLv477XgH42oXWQO4AjsJaqlc2UlxfsqdvK3Duow9VZ1jXGz6sQ9rDHV+CF3GB4NjSqVTuds83ZZO2u8YHsH2yh6wD1y41moUBQv+jycaUtKtnOFznRPh0TQnoBwV8DXeFpHilakKR8YaF/S7eJ4M=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=xv97.com;
-	spf=pass  smtp.mailfrom=m@xv97.com;
-	dmarc=pass header.from=<m@xv97.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1762525417;
-	s=zmail; d=xv97.com; i=m@xv97.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=WMd+byUbXGYLtZdo6YadawPUVvaymL3D63gdXIACTBM=;
-	b=E95MYpiFyY1oJ25eCY4+WejsF5M2bIC1OFJxB8Ekb913V3ey2Ui+cP+JhQ44tFMh
-	UIcrrZSOFUcgGLV/pTJ2tROvnjx+8KHzU8jm6r1vshAKtmOu5hxbCXV5SGWPW5gmJBt
-	UvqN9nGHyJcEzw8ORwidPLc+LSTG6858vjrMtDlM=
-Received: by mx.zohomail.com with SMTPS id 176252541667721.287471192262842;
-	Fri, 7 Nov 2025 06:23:36 -0800 (PST)
-From: Chien Wong <m@xv97.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: cfg80211: fix doc of struct key_params
-Date: Fri,  7 Nov 2025 22:23:32 +0800
-Message-ID: <20251107142332.181308-1-m@xv97.com>
-X-Mailer: git-send-email 2.51.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963B1256C9E
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Nov 2025 16:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762531483; cv=none; b=MwxLdvTeSWfUFNHX+AtIut/mQCYCvnsfpTc3YT2FHVjYDGBYL7e2Xurnjy6b8/xft6UOf9oOktY4G7IgUUEqaDx47suHdmthV4CYcPjdq+VhDk+vkvQzFkZ3H34Rgn67MWsV0TXPs/1zTZ0vP9M60VlcTnJdOmjki8c5FjEh5G4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762531483; c=relaxed/simple;
+	bh=L6/OytdrNTBpY7t0hutcFfOH2ZEVbj7O3miZpVxVSwg=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=UCPcE6eLfXof/1iulh5r+TX6AKj8zFcAVcq9Y1+H39uB10aHxXP77p3baZkfR40rHyzesVRad9Q6eHoq4EKAEWdLZS5CGKDCWixEFArxLO1dwRAX/E9O13A+tgaUEHvSUwmTc/qX3cllYGErxuyNkzZmlxWYmNwd9ac3oAxiees=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FhvJlT7p; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-429c7f4f8a2so480894f8f.0
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Nov 2025 08:04:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762531480; x=1763136280; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MdPnxwm95optEi7JBTccXSE8V3tYyiQtxJuT6k5myUY=;
+        b=FhvJlT7pF/vBjCfSq3P3MgcNESr9/8oke6TsXEVjOgd09efP18tPW1xzBnQToczw3F
+         hWedDir0m3DFSMHeNLaenWZbrnz9X356Q6Sgxx/krV3mVajny3zG30KoSbCTn+/7AY0l
+         zgxlu7rHaZJZjanK3WIvpdHuNgNsTSS+4DSdQa+4b4oIM3unF75yx0qieDHwKBJ/k37V
+         jsxqmT4QddS3RtKA7Wxms1A520YG9j+9/TAN1QLqbblydPjUNe1G72Ol2xRqmtJ6VjKQ
+         e3dk73CpCHV00IFKuYOl5N0EFYVh5vJ2Kstl4jiYjzpy03h+b6Jaf60INslQRuJ1Y8ng
+         mMqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762531480; x=1763136280;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MdPnxwm95optEi7JBTccXSE8V3tYyiQtxJuT6k5myUY=;
+        b=E1RUTuCn19ObxeBmAOePjxVm19qNsHqAdbhHEylNcDTZrdY2vtjmySLg07eAFIDof/
+         utmY6D5ar7yZQRnBTAUtYt/u9a+fVdIlumGrfjEBoi8ZvfxvCXAlXREfB5ORkdj4KS0d
+         v040lzEPri0MFw8K10AToV6KNP1llkrdlrtRU0cPT5MfH9PsLGFdfNxwxDtbpho2YUlJ
+         TFCTR/4ZaCZHMz93qaXy4hz8TTUVX9iqRZwLxwRm8aPZvTDYoETwcRtELTUH2BGwvtKZ
+         AKV4PnjRI6jDSUp1Gf7yJsXSA00M9zfQ/hGjjW1fqP1HL4vvOKBI26/CC0Fynx+Vigzl
+         VTag==
+X-Gm-Message-State: AOJu0YyzzS3g7OyYE46Nu4dF+abU7dTBH60BosKqpxDKSyxSEB8Dq/e3
+	+rBJH5M4eXUqNJhtsyjm6Y18DRYSNrHLAgQOBEEkRO9jnigQP4lEEjn2pCj0/g==
+X-Gm-Gg: ASbGncvdtgKDKRMkpS+NZY6NlHYy+DMPE5T3NyDJgAPx4zjkdZn+33f1pMw1T+5PWs0
+	cckfGxAVGn1saPct/9BjMXFDNEjlB465kVzlt1mdQLMJDEYccKW1cQuonUbydUwdovng2dtQ8Yi
+	6pWEfISCBppB4/3BiSpj5DJLbi8cUG8A9Gvt/E/Y0OPMG/UtawvuPYOh1Unwii/UEQwr1uT6a3S
+	bZem9pufbku6Zw0OJpim1eRb4XXfIDgzpcE7IvXlTKfNfZklRwEoaoIN5updaUoumCO8LaKTooW
+	3aGXt9mIsDpOvsphYZlieUVVFI9CE7Z5PnI6DZ33Jv7o+wIJPR37SxYwM7o48Xw1KFSH9KDTUIN
+	iHfzqKrXcRRHa/JzsDGB7FvKRbBbXoOSzW/smt8ERh8sQ/ktfP/9IkI1PZDCBSq91NjqRXFwhQa
+	/fGxHqz5BkFHWSdqj6J7s=
+X-Google-Smtp-Source: AGHT+IGSCkDY0mCr3XAcX9CO3YTdfKbbe579K4VAyrCx2H56jCe+4hgdU8xCmJy//S6oAILu750m1A==
+X-Received: by 2002:a05:6000:4212:b0:429:c7d9:2f3e with SMTP id ffacd0b85a97d-42b26fc16bemr2501138f8f.21.1762531479717;
+        Fri, 07 Nov 2025 08:04:39 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.87])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac675ca47sm5888615f8f.24.2025.11.07.08.04.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Nov 2025 08:04:39 -0800 (PST)
+Message-ID: <f0021b8c-efc7-4993-b0a8-8954c682d13b@gmail.com>
+Date: Fri, 7 Nov 2025 18:04:37 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH rtw-next 0/6] Add support for RTL8852AU
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The seq in struct key_params is for many ciphers, including CCMP, GCMP,
-CMAC, GMAC. In addition to get_key(), it is also used when setting keys.
+Just in time for the last of these devices disappearing from the
+market.
 
-Signed-off-by: Chien Wong <m@xv97.com>
----
- include/net/cfg80211.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Bitterblue Smith (6):
+  wifi: rtw89: Use the correct power sequences for USB/SDIO
+  wifi: rtw89: Add rtw8852a_dle_mem_usb
+  wifi: rtw89: Add rtw8852a_hfc_param_ini_usb
+  wifi: rtw89: 8852a: Accept USB devices and load their MAC address
+  wifi: rtw89: Add rtw8852au.c
+  wifi: rtw89: Enable the new rtw89_8852au module
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index f2e8963cfaac..67be17f80ac7 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -786,8 +786,7 @@ struct vif_params {
-  * @key: key material
-  * @key_len: length of key material
-  * @cipher: cipher suite selector
-- * @seq: sequence counter (IV/PN) for TKIP and CCMP keys, only used
-- *	with the get_key() callback, must be in little endian,
-+ * @seq: sequence counter (IV/PN), must be in little endian,
-  *	length given by @seq_len.
-  * @seq_len: length of @seq.
-  * @vlan_id: vlan_id for VLAN group key (if nonzero)
+ drivers/net/wireless/realtek/rtw89/Kconfig    | 11 +++
+ drivers/net/wireless/realtek/rtw89/Makefile   |  3 +
+ drivers/net/wireless/realtek/rtw89/mac.c      | 26 +++++-
+ drivers/net/wireless/realtek/rtw89/mac.h      |  5 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c | 80 ++++++++++++++++---
+ .../net/wireless/realtek/rtw89/rtw8852au.c    | 79 ++++++++++++++++++
+ 6 files changed, 192 insertions(+), 12 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8852au.c
+
 -- 
-2.51.2
+2.51.1
 
 
