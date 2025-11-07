@@ -1,196 +1,215 @@
-Return-Path: <linux-wireless+bounces-28672-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28673-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A743C3D3A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 06 Nov 2025 20:24:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DFFC3E1D3
+	for <lists+linux-wireless@lfdr.de>; Fri, 07 Nov 2025 02:20:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFCD63AB544
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Nov 2025 19:24:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A118D3AAF0B
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Nov 2025 01:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF889337B99;
-	Thu,  6 Nov 2025 19:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C35D2F5A11;
+	Fri,  7 Nov 2025 01:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="JgMs1toH"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="FjYtJuer"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp2.infineon.com (smtp2.infineon.com [217.10.52.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F7B757EA
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Nov 2025 19:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E90258EC1;
+	Fri,  7 Nov 2025 01:19:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762457047; cv=none; b=Arkkr72r+5rIQcjGdBTJmp2iSTN/cPUztK8jXEoHWjjOx4RxakdNq67KpX7ic7u8IwsOw4eO+ZiRzxRMg4/bdsHj5VF564DAzmyOkaK5G8K6CEXCu58LIkWltckgv/N+Z1gT7fGosmOoW/pIDT+dEs4Gi86mt3spFgjtyl/Ic/Y=
+	t=1762478397; cv=none; b=tH7DlqE5rDC/ZZEiDxdaKkbrE5n8Pe6f7fiUFbs8U9vAtqKVe2z/9cGROvAw+nXXwXw6rRMGzAW43/sqO1Y1HJTfMbqKaYBkRNYRfyyMfK2nTHksHqzZLqjlkpM2Z29u1mmMobUPXRZPcenmOAEvBhRJ5V/oJCL+rXI6tYsmRQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762457047; c=relaxed/simple;
-	bh=7qZYSYhfSN1+qhGofitUTrLN6Ax0HIah9z0gC2b7hcc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M079yVoGfF8+yfK6XhTM6XblhSanawPpxIcFh5fVzsm9T+N1PzwFzES0oeH8e3kaJ89Wk7D+gRiuIcdHzHvzv7ekBDm7LfKX13F8RMRGMbCTxng1xl9vAYPMlEMUZ4ZAFgJiZPRA0auGZB2C1w6zWOnK5ENKmATfBasjU/LY5D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=JgMs1toH; arc=none smtp.client-ip=217.10.52.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infineon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
-  t=1762457046; x=1793993046;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7qZYSYhfSN1+qhGofitUTrLN6Ax0HIah9z0gC2b7hcc=;
-  b=JgMs1toHv6lKeHFpvhD0l+mJ3Unhjw4TOiKDaD2NVVfNbmrMGxl/nwEJ
-   ml1/Y4pNPlARqxYUQMfuCJthZu2XRBvcGPL2dHRhrZX9Hmjh4de4V3KD9
-   y5d6HbguA+W5hLUk5TahJshsed0JkPwEXBSYRkAJdX/ZR2Lq5E+exwlpS
-   I=;
-X-CSE-ConnectionGUID: wiGP3YewRd+bzxLFBpwKDw==
-X-CSE-MsgGUID: WGNET0WkS9eXxmGh+06pog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="131388838"
-X-IronPort-AV: E=Sophos;i="6.19,284,1754949600"; 
-   d="scan'208";a="131388838"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO MUCSE812.infineon.com) ([172.23.29.38])
-  by smtp2.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 20:22:53 +0100
-Received: from MUCSE827.infineon.com (172.23.29.20) by MUCSE812.infineon.com
- (172.23.29.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Thu, 6 Nov
- 2025 20:22:52 +0100
-Received: from ISCN5CG14747PP.infineon.com (10.161.6.196) by
- MUCSE827.infineon.com (172.23.29.20) with Microsoft SMTP Server
+	s=arc-20240116; t=1762478397; c=relaxed/simple;
+	bh=Nm5aMpud/BwEyTnT0c68VLPBz2VGNEgyWcHAjm32KTE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Kr/8JEooxJKAIiNJN9twd47UqByUmi5ZKA7pkfxLVQ6IW6HnNhd+NWZevMltuv3bOJzE/qMmGKjGPBTpluSjhPkRQKwBQJGfne9FMiD+iuEWrRy9dAw4snbepNHR2EK1U9c/BurC/BHHs1uTFcOwIZpPIDL2AAf3mrexA+N6mek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=FjYtJuer; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 5A71DE0O03948483, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1762477994; bh=Nm5aMpud/BwEyTnT0c68VLPBz2VGNEgyWcHAjm32KTE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=FjYtJuer4hRCLimOXncXlZIQxrDIaJOzVIlyF/XR+2h07rMUryx0of4RxIvpnWYjQ
+	 7CeWbPiqMjRIThwIdvIfHVndwI62Q2G/4Ev1pMTbRkBH1z2sS/+XMeyYoTUkBUviQ+
+	 0g91XR4antu5YKqHLja9I6+xY8OcEgKObAEJ0REFrKD52eWs4fZ0MxIWFPT9lb9Hfn
+	 4dF7jFfR4j2q5+TTYChrRdYCkECjVqqmQZLpcq+ffADMpD6XYAjUIFwzRrOvgbj8FW
+	 /uX6VKcx87UIUR27N3Qud+rxr5tUk90eTGOyvjTdYsGBScC7CFLZdC23drT0pq4k7B
+	 HoF3ZSJ5AXsgg==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 5A71DE0O03948483
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Nov 2025 09:13:14 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 6 Nov 2025 20:22:50 +0100
-Date: Fri, 7 Nov 2025 00:52:38 +0530
-From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>, <wlan-kernel-dev-list@infineon.com>,
-	Carter Chen <Carter.Chen@infineon.com>, Owen Huang <Owen.Huang@infineon.com>,
-	Ian Lin <Ian.Lin@infineon.com>, JasonHuang <Jason.Huang2@infineon.com>,
-	Shelley Yang <Shelley.Yang@infineon.com>, avishad verma
-	<avishad.verma@infineon.com>
-Subject: Re: [PATCH wireless-next 00/57] wifi: inffmac: introducing a driver
- for Infineon's new generation chipsets
-Message-ID: <aQz1fiYQW2BsKi6Z@ISCN5CG14747PP.infineon.com>
-References: <20250916221821.4387-1-gokulkumar.sivakumar@infineon.com>
- <4d46dfb13927a878f5684e9e8cfc51673e8df4b8.camel@sipsolutions.net>
- <aMqm-soAc5tzHQFf@ISCN5CG14747PP.infineon.com>
- <3cb0e7a95fdba1ee1003c10606fd58e7b9071c58.camel@sipsolutions.net>
- <dc5017d0e4eed59905597f000a11887e9e264eb9.camel@sipsolutions.net>
- <aQr1eO-5Gmg7JSf2@ISCN5CG14747PP.infineon.com>
- <e10958bc500acbf514ef664387d1df61a065a70d.camel@sipsolutions.net>
+ 15.2.1544.27; Fri, 7 Nov 2025 09:13:15 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Fri, 7 Nov 2025 09:13:14 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::744:4bc9:832c:9b7e%10]) with mapi id
+ 15.02.1544.027; Fri, 7 Nov 2025 09:13:14 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>,
+        Andy Shevchenko
+	<andriy.shevchenko@intel.com>
+CC: Yury Norov <yury.norov@gmail.com>,
+        Michael Turquette
+	<mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Nicolas Ferre
+	<nicolas.ferre@microchip.com>,
+        Alexandre Belloni
+	<alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Herbert Xu
+	<herbert@gondor.apana.org.au>,
+        David Miller <davem@davemloft.net>,
+        "Linus
+ Walleij" <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@codeconstruct.com.au>,
+        Crt Mori <cmo@melexis.com>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter
+ Clausen <lars@metafoo.de>,
+        Jacky Huang <ychuang3@nuvoton.com>,
+        Shan-Chun Hung
+	<schung@nuvoton.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Jaroslav
+ Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Johannes Berg
+	<johannes@sipsolutions.net>,
+        Jakub Kicinski <kuba@kernel.org>, Alex Elder
+	<elder@ieee.org>,
+        David Laight <david.laight.linux@gmail.com>,
+        Vincent
+ Mailhol <mailhol.vincent@wanadoo.fr>,
+        Jason Baron <jbaron@akamai.com>, "Borislav Petkov" <bp@alien8.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Michael
+ Hennerich <Michael.Hennerich@analog.com>,
+        Kim Seer Paller
+	<kimseer.paller@analog.com>,
+        David Lechner <dlechner@baylibre.com>,
+        =?utf-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Andy Shevchenko
+	<andy@kernel.org>,
+        Richard Genoud <richard.genoud@bootlin.com>,
+        Cosmin
+ Tanislav <demonsingur@gmail.com>,
+        "Biju Das" <biju.das.jz@bp.renesas.com>,
+        Jianping Shen <Jianping.Shen@de.bosch.com>,
+        Nathan Chancellor
+	<nathan@kernel.org>,
+        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger
+	<richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+        "linux-renesas-soc@vger.kernel.org"
+	<linux-renesas-soc@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org"
+	<linux-crypto@vger.kernel.org>,
+        "linux-edac@vger.kernel.org"
+	<linux-edac@vger.kernel.org>,
+        "qat-linux@intel.com" <qat-linux@intel.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-wireless
+	<linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH v6 12/26] bitfield: Add less-checking __FIELD_{GET,PREP}()
+Thread-Topic: [PATCH v6 12/26] bitfield: Add less-checking
+ __FIELD_{GET,PREP}()
+Thread-Index: AQHcTzpEEEZZM/7p4kSHE1AyVJF587TmYVZQ
+Date: Fri, 7 Nov 2025 01:13:14 +0000
+Message-ID: <c62eb5a727f149fb9d8b4a4c8d77418a@realtek.com>
+References: <cover.1762435376.git.geert+renesas@glider.be>
+ <cfc32f8530d5c0d4a7fb33c482a4bf549f26ec24.1762435376.git.geert+renesas@glider.be>
+ <aQy0T2vUINze_6_q@smile.fi.intel.com>
+ <CAMuHMdXVUJq36GvNUQE8FnHsX+=1jG4GOJ_034r=fgr_Rw4Djg@mail.gmail.com>
+ <aQzIIqNnTY41giH_@smile.fi.intel.com>
+ <CAMuHMdW8ndAdGnSHopYFMWvw7wk7wKz_7+N91M1jRHoqK1KBrg@mail.gmail.com>
+In-Reply-To: <CAMuHMdW8ndAdGnSHopYFMWvw7wk7wKz_7+N91M1jRHoqK1KBrg@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <e10958bc500acbf514ef664387d1df61a065a70d.camel@sipsolutions.net>
-X-ClientProxiedBy: MUCSE815.infineon.com (172.23.29.41) To
- MUCSE827.infineon.com (172.23.29.20)
 
-On 11/05, Johannes Berg wrote:
-> On Wed, 2025-11-05 at 12:28 +0530, Gokul Sivakumar wrote:
-> >
-> > In V1 INFFMAC patchset, we already skipped including few other Infineon changes,
-> > to avoid overwhelming the reviewers. Even still V1 turned out to be bigger
-> > than the expected size for code review.
-> 
-> Well, the patchset isn't even self-contained, with random cfg80211
-> changes thrown in. You cannot bury such changes in "this is my new
-> driver" patchsets, I'm not sure why you even considered this acceptable
-> before posting it. If this was the first time you're showing up to the
-> list I'd simply ignore it _completely_ (like the weird new Android
-> driver that showed up recently.)
-
-We understand. Perhaps, if the first version patchset was submitted
-with an RFC label, it would have been more appropriate. As you suggested,
-we are now skipping those cfg80211 changes in the upcoming V2 patchset.
-Later, when needed, we will submit them for review as a separate series.
-
-> > Not including those other Infineon
-> > changes in V1, would have given a misleading impression that both brcmfmac and
-> > inffmac are similar.
-> 
-> I'm not sure I'd call it "misleading" when it's >50% identical code?
-
-We agree that there are some identical code, we will refine the patchset
-further and also remove the less important changes among them with more
-cleanups.
-
-> > But they are quite different and it is not feasible to
-> > add all the Infineon new generation chipset specific changes to the existing
-> > brcmfmac driver without severly impacting the existing users.
-> 
-> Sorry, but no. You don't get to give us the spiel about users. _That_
-> problem is entirely of your own making, because you decided to go out-
-> of-tree for a significant amount of time and not discuss with the
-> community about how to approach this. Then you gave that non-upstream
-> version to the users and now you think somehow that entitles you to dump
-> it on the community as well. No. I have no sympathy for that all, you
-> don't get to make that upstream's problem, own it like the problem of
-> your own making that it is.
-> 
-> But look, I get it, you don't want to be tied to the "Broadcom legacy"
-> forever. And that even makes sense. But from what I can tell you've
-> basically taken brcmfmac and bolted on random changes. And you worry
-> doing that to brcmfmac would break others, that's not too far-fetched -
-> welcome to working with the community I guess?
-
-We acknowledge that, in the past, Infineon did maintain some patches in
-the downstream. We are now committed to address this issue. Going forward,
-Infineon's intent is to closely work with the community and make a proper
-upstream support available for its chipsets.
-
-> And while I'm sympathetic to that, just like NXP with mwifiex/nxpwifi
-> you don't get to pretend that an ancient brcmfmac driver with bolted on
-> Infineon changes is "state of the art" in any way. You'd need to show
-> that you've actually done some homework on this new driver.
-
-Understood your concerns. We are working to improve the quality of the
-new inffmac driver in the upcoming versions. Bringup of native XDP support
-for PCIe in inffmac was an initiative to provide more programmability to
-the users. But ofcourse as you commented earlier, this needs to be properly
-reviewed by the folks in BPF list too. So we are skipping this as well in V2.
-But will incorporate other changes that are helpful in the new driver like,
-allocating memory from the Page Pool instead of allocating an SKB before
-doing PCIe DMA from Device, etc. In addition, we will try to cleanup the
-legacy designs wherever feasible.
-
-> We know from the long discussion about the p2p device crash for example
-> that the way brcmfmac grew did definitely _not_ end up with a well-
-> designed system. With a new driver you should be able to re-architect
-> things to fix these issues more cleanly, such as improving the dynamic
-> vif handling etc., but ... it doesn't even look like you ported *your
-> own* bugfix for that to inffmac!
-
-Well, the fix for the AP mode crash during Action Frame TX is infact already
-available in V1 inffmac patchset. The changes might not look exactly similar
-due to the order of the function arguments in p2p.c. But the logic of the fix
-is the same, ie, for sending "actframe" cmd to the firmware, driver utilizes
-the vif corresponding to the wdev on which Action frame TX was initiated by
-userspace. Whereas crash happens only if there is a driver dependency on the
-uninitialized P2P Device vif for Action frame TX in AP mode. Further cleanup
-is definitely needed here to separate out P2P from the Action frame TX logic.
-We will cleanup this in V2.
-
-> And as we discussed with NXP, things have changed since all of these old
-> drivers like mwifiex or brcmfmac were integrated - their current state
-> is definitely not something reasonable today any more, just nobody has
-> really maintained them and we keep them (vaguely) alive. Your code feels
-> to me like you think copying brcmfmac makes a good driver, but in case
-> it wasn't clear yet: it doesn't. There's a lot of new infrastructure
-> like wiphy locking and wiphy work in particular that I think a new
-> driver should be using or have very good, documented, reasons for not
-> doing so. Copying an old driver doesn't really cut it in that respect.
-> 
-> > We are currently working on V2 INFFMAC patchset to remove some more features
-> > to reduce the codebase size for easier review, as you suggested earlier.
-> 
-> And then the next step is to take a close look at the architecture, I'm
-> especially interested in the locking architecture, as I mentioned above.
-
-Noted, we will try to utilize the newly available infrastructure as much as
-possible for the new driver to improve its quality in the upcoming versions.
-Kindly let us know if you have any other suggestions.
-
-Gokul
+R2VlcnQgVXl0dGVyaG9ldmVuIDxnZWVydEBsaW51eC1tNjhrLm9yZz4gd3JvdGU6DQo+IEhpIEFu
+ZHksDQo+IA0KPiBPbiBUaHUsIDYgTm92IDIwMjUgYXQgMTc6MDksIEFuZHkgU2hldmNoZW5rbw0K
+PiA8YW5kcml5LnNoZXZjaGVua29AaW50ZWwuY29tPiB3cm90ZToNCj4gPiBPbiBUaHUsIE5vdiAw
+NiwgMjAyNSBhdCAwMzo0OTowM1BNICswMTAwLCBHZWVydCBVeXR0ZXJob2V2ZW4gd3JvdGU6DQo+
+ID4gPiBPbiBUaHUsIDYgTm92IDIwMjUgYXQgMTU6NDQsIEFuZHkgU2hldmNoZW5rbw0KPiA+ID4g
+PGFuZHJpeS5zaGV2Y2hlbmtvQGludGVsLmNvbT4gd3JvdGU6DQo+ID4gPiA+IE9uIFRodSwgTm92
+IDA2LCAyMDI1IGF0IDAyOjM0OjAwUE0gKzAxMDAsIEdlZXJ0IFV5dHRlcmhvZXZlbiB3cm90ZToN
+Cj4gPiA+ID4gPiBUaGUgQlVJTERfQlVHX09OX01TRygpIGNoZWNrIGFnYWluc3QgIn4wdWxsIiB3
+b3JrcyBvbmx5IHdpdGggInVuc2lnbmVkDQo+ID4gPiA+ID4gKGxvbmcpIGxvbmciIF9tYXNrIHR5
+cGVzLiAgRm9yIGNvbnN0YW50IG1hc2tzLCB0aGF0IGNvbmRpdGlvbiBpcyB1c3VhbGx5DQo+ID4g
+PiA+ID4gbWV0LCBhcyBHRU5NQVNLKCkgeWllbGRzIGFuIFVMIHZhbHVlLiAgVGhlIGZldyBwbGFj
+ZXMgd2hlcmUgdGhlDQo+ID4gPiA+ID4gY29uc3RhbnQgbWFzayBpcyBzdG9yZWQgaW4gYW4gaW50
+ZXJtZWRpYXRlIHZhcmlhYmxlIHdlcmUgZml4ZWQgYnkNCj4gPiA+ID4gPiBjaGFuZ2luZyB0aGUg
+dmFyaWFibGUgdHlwZSB0byB1NjQgKHNlZSBlLmcuIFsxXSBhbmQgWzJdKS4NCj4gPiA+ID4gPg0K
+PiA+ID4gPiA+IEhvd2V2ZXIsIGZvciBub24tY29uc3RhbnQgbWFza3MsIHNtYWxsZXIgdW5zaWdu
+ZWQgdHlwZXMgc2hvdWxkIGJlIHZhbGlkLA0KPiA+ID4gPiA+IHRvbywgYnV0IGN1cnJlbnRseSBs
+ZWFkIHRvICJyZXN1bHQgb2YgY29tcGFyaXNvbiBvZiBjb25zdGFudA0KPiA+ID4gPiA+IDE4NDQ2
+NzQ0MDczNzA5NTUxNjE1IHdpdGggZXhwcmVzc2lvbiBvZiB0eXBlIC4uLiBpcyBhbHdheXMNCj4g
+PiA+ID4gPiBmYWxzZSItd2FybmluZ3Mgd2l0aCBjbGFuZyBhbmQgVz0xLg0KPiA+ID4gPiA+DQo+
+ID4gPiA+ID4gSGVuY2UgcmVmYWN0b3IgdGhlIF9fQkZfRklFTERfQ0hFQ0soKSBoZWxwZXIsIGFu
+ZCBmYWN0b3Igb3V0DQo+ID4gPiA+ID4gX19GSUVMRF97R0VULFBSRVB9KCkuICBUaGUgbGF0ZXIg
+bGFjayB0aGUgc2luZ2xlIHByb2JsZW1hdGljIGNoZWNrLCBidXQNCj4gPiA+ID4gPiBhcmUgb3Ro
+ZXJ3aXNlIGlkZW50aWNhbCB0byBGSUVMRF97R0VULFBSRVB9KCksIGFuZCBhcmUgaW50ZW5kZWQg
+dG8gYmUNCj4gPiA+ID4gPiB1c2VkIGluIHRoZSBmdWxseSBub24tY29uc3QgdmFyaWFudHMgbGF0
+ZXIuDQo+IA0KPiA+ID4gPiA+ICsgICAgIEJVSUxEX0JVR19PTl9NU0coX19iZl9jYXN0X3Vuc2ln
+bmVkKG1hc2ssIG1hc2spID4gICAgICAgICAgICAgICBcDQo+ID4gPiA+ID4gKyAgICAgICAgICAg
+ICAgICAgICAgICBfX2JmX2Nhc3RfdW5zaWduZWQocmVnLCB+MHVsbCksICAgICAgICAgICAgICAg
+IFwNCj4gPiA+ID4gPiArICAgICAgICAgICAgICAgICAgICAgIHBmeCAidHlwZSBvZiByZWcgdG9v
+IHNtYWxsIGZvciBtYXNrIikNCj4gPiA+ID4NCj4gPiA+ID4gUGVyaGFwcyB3ZSBtYXkgY29udmVy
+dCB0aGlzIChhbmQgb3RoZXJzPykgdG8gc3RhdGljX2Fzc2VydCgpOnMgYXQgc29tZSBwb2ludD8N
+Cj4gPiA+DQo+ID4gPiBOaWNrIHRyaWVkIHRoYXQgYmVmb3JlLCB3aXRob3V0IHN1Y2Nlc3M6DQo+
+ID4gPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvQ0FLd3ZPZG1fcHJ0azFVUU5KUUdpZFpt
+NDRMazU4MlMzcD1vZjB5NDYrclZqblNnWEpnQG1haWwuZ21haWwuY29tDQo+ID4NCj4gPiBBaCwg
+dGhpcyBpcyB1bmZvcnR1bmF0ZS4NCj4gDQo+IE9mIGNvdXJzZSwgaXQgbWlnaHQgYmUgYW4gYWN0
+dWFsIGJ1ZyBpbiB0aGUgaTkxNSBkcml2ZXIuLi4NCj4gDQo+IFRoZSBleHRyYSBjaGVja2luZyBp
+biBmaWVsZF9wcmVwKCkgaW4gY2FzZSB0aGUgY29tcGlsZXIgY2FuDQo+IGRldGVybWluZSB0aGF0
+IHRoZSBtYXNrIGlzIGEgY29uc3RhbnQgYWxyZWFkeSBmb3VuZCBhIHBvc3NpYmxlIGJ1Zw0KPiBp
+biBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2NvcmUuYzpydHc4OV9yb2NfZW5k
+KCk6DQo+IA0KPiAgICAgcnR3ODlfd3JpdGUzMl9tYXNrKHJ0d2RldiwgcmVnLCBCX0FYX1JYX0ZM
+VFJfQ0ZHX01BU0ssIHJ0d2Rldi0+aGFsLnJ4X2ZsdHIpOw0KPiANCj4gZHJpdmVycy9uZXQvd2ly
+ZWxlc3MvcmVhbHRlay9ydHc4OS9yZWcuaDoNCj4gDQo+ICAgICAjZGVmaW5lIEJfQVhfUlhfTVBE
+VV9NQVhfTEVOX01BU0sgR0VOTUFTSygyMSwgMTYpDQo+ICAgICAjZGVmaW5lIEJfQVhfUlhfRkxU
+Ul9DRkdfTUFTSyAoKHUzMil+Ql9BWF9SWF9NUERVX01BWF9MRU5fTUFTSykNCj4gDQo+IHNvIGl0
+IGxvb2tzIGxpa2UgQl9BWF9SWF9GTFRSX0NGR19NQVNLIGlzIG5vdCB0aGUgcHJvcGVyIG1hc2sg
+Zm9yDQo+IHRoaXMgb3BlcmF0aW9uLi4uDQoNClRoZSBwdXJwb3NlIG9mIHRoZSBzdGF0ZW1lbnRz
+IGlzIHRvIHVwZGF0ZSB2YWx1ZXMgZXhjbHVkaW5nIGJpdHMgb2YNCkJfQVhfUlhfTVBEVV9NQVhf
+TEVOX01BU0suIFRoZSB1c2Ugb2YgQl9BWF9SWF9GTFRSX0NGR19NQVNLIGlzIHRyaWNreSwgYnV0
+DQp0aGUgb3BlcmF0aW9uIGlzIGNvcnJlY3QgYmVjYXVzZSBiaXQgMCBpcyBzZXQsIHNvIF9fZmZz
+KG1hc2spIHJldHVybnMgMCBpbg0KcnR3ODlfd3JpdGUzMl9tYXNrKCkuIFRoZW4sIG9wZXJhdGlv
+biBsb29rcyBsaWtlDQoNCiAgIG9yaWcgPSByZWFkKHJlZyk7DQogICBuZXcgPSAob3JpZyAmIH5t
+YXNrKSB8IChkYXRhICYgbWFzayk7DQogICB3cml0ZShuZXcpOw0KDQpTaW5jZSB3ZSBkb24ndCB1
+c2UgRklFTERfe0dFVCxQUkVQfSBtYWNyb3Mgd2l0aCBCX0FYX1JYX0ZMVFJfQ0ZHX01BU0ssIGhv
+dw0KY2FuIHlvdSBmaW5kIHRoZSBwcm9ibGVtPyBQbGVhc2UgZ3VpZGUgdXMuIFRoYW5rcy4gDQoN
+ClBpbmctS2UNCg0K
 
