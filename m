@@ -1,365 +1,159 @@
-Return-Path: <linux-wireless+bounces-28706-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28707-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABBDC43FA1
-	for <lists+linux-wireless@lfdr.de>; Sun, 09 Nov 2025 15:05:26 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F790C444DF
+	for <lists+linux-wireless@lfdr.de>; Sun, 09 Nov 2025 19:08:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA07D3AD591
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Nov 2025 14:05:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 724684E1159
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Nov 2025 18:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353992F7ADF;
-	Sun,  9 Nov 2025 14:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04CF1F4180;
+	Sun,  9 Nov 2025 18:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b="FI3i71fP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="alt1N6b6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575852FC865
-	for <linux-wireless@vger.kernel.org>; Sun,  9 Nov 2025 14:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762697113; cv=pass; b=ZOzDfqYiig+hC6M8xCnvKCH7kB4KlcxAPXJh9vkKQAw4Muq/4TvDxlTzsw6kjpxHftX0S4+leZ0lwqzdP+SZrToY0AZFfsHtsu+Dk47dSg7Vg/f5pya4XeWh6tUXDa+jW2kFZn5dSK2oMy8rBxQpPO11FNqhz1o9vR68wW0ZKz8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762697113; c=relaxed/simple;
-	bh=lKRHFDsWeXJ4vjCqISmf3bG5qDyT4YRUW3Hm4JDesSk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gRJNNZ+kphytFqlLV8ed1h+JX6RhMgdaiafqQgn7ujlRQKfJk3SEYr7VBkhBXSMepROS4TPfO6ctYrLBnewn12eKkYaNIcTCNJ8M3eB9YqgG0D6RdJj5w5bWnAeOoXgfnMoQzZWk4ZL4Y1TndMhKaOQCPs4oUPLyTMZW2N1CSQI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com; spf=pass smtp.mailfrom=xv97.com; dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b=FI3i71fP; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xv97.com
-ARC-Seal: i=1; a=rsa-sha256; t=1762697108; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=T+vpcNdlIwc/0ofww9wpjyNabPkD7Ija4QDutYLhxcJxoZwp3laIzc2wn96P9sy7/uS4lVdmS/tRSCPLGAPwO39TRPa5ukfwcQ1ghoN60A7eBAo2XlNV49Dbtrh21oNu7lAAG3UfwAcySq20x40masDa5pKjtiqHlW6QJ61Ahd8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1762697108; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=oTf0oy9zPAi7CyP+270ZpoElz7HLT709wnCLXa1A45E=; 
-	b=dFNwmigkvWCw3MJQIrQGpFkl3HyoYqKgdO5IVHdWC5kCDsl1kVMJ6+DN/ZzphIWGEQ0madwOc9gRujk1WXao/Mcw0KzXUcdd73Ym0nS8s2iBWP0xKJ8CxZWX99POuCSmfl6bX1WNkXCsz4bsTznrlSNOpluy2Hn6LjqCi/iUrig=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=xv97.com;
-	spf=pass  smtp.mailfrom=m@xv97.com;
-	dmarc=pass header.from=<m@xv97.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1762697108;
-	s=zmail; d=xv97.com; i=m@xv97.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=oTf0oy9zPAi7CyP+270ZpoElz7HLT709wnCLXa1A45E=;
-	b=FI3i71fP1E4WjJUU3FjgZu5Gsi8Bk3IwLzTikibwxSER1i6mU9RhW6O+Q/Z5VUwD
-	x1BW5RBxF1HxGkJ8khsDIANo9X9edCeK5b16uwnK4Bbj/gIjD/Sjp+kpGoU6XsqMnfd
-	cviCdzGGoyWuWY9RhbDI22Q7ltVDzI6XMkmyxUMM=
-Received: by mx.zohomail.com with SMTPS id 1762697107566600.0854256761882;
-	Sun, 9 Nov 2025 06:05:07 -0800 (PST)
-From: Chien Wong <m@xv97.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 6/6] wifi: mac80211: refactor CMAC packet handlers
-Date: Sun,  9 Nov 2025 22:04:50 +0800
-Message-ID: <20251109140450.118106-7-m@xv97.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251109140450.118106-1-m@xv97.com>
-References: <20251109140450.118106-1-m@xv97.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E9B1F4174
+	for <linux-wireless@vger.kernel.org>; Sun,  9 Nov 2025 18:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762711711; cv=none; b=W6i+6ShIZ72FYlgz5fWszzLxvO7UC3CoqmruS34PGjTooLWS26ewlX7o9+xTCWKS5paep6jk2gOKUiOlqYnxQXRqGwcqGDnmB2/Jg6viPuAJE5d+Ts1ei8VCkaTtSnybKpQnAoUAjYtIRyMDW1yFBM2dMMaIx9egR4riXi931u8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762711711; c=relaxed/simple;
+	bh=CyerTHMjEJ8+owBnpxcJ1soUt0S6OXRutGOfwbOBt4g=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=lEInjXG36F5YnWdLxU5J0MWMevD02syJbTqsnbwTj+1VyK98YJKeeYU6p0m78GnmR7yq6xSPGR+jUC6WLcKba9TQ+S1eO96kOVPJdr08WSTLmaT+U5DAbjLsS3RlmUlIsVfGYRZBtJ5h+57Sx3a09cYQrEXo0J6ylKPY9thwc0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=alt1N6b6; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ed917b5b18so22696741cf.1
+        for <linux-wireless@vger.kernel.org>; Sun, 09 Nov 2025 10:08:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762711709; x=1763316509; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=17uy7/r8DFyNelm2MX1mDDCEQ4FT1zUkD8brnWvpR7U=;
+        b=alt1N6b6KpQ3QUDWHGy3zbl4U5H+Ca8uYhtMeCZv5m25u51kabhomXPebV+4iEbStO
+         YL6MDLwpD0IqN0tO9JMHjmVj4sSHntBqI48/+xWqTU3dgytXBIbgMch6fbbgsd22CJ9f
+         bMnR8uCBSf7ylAFwAxFSIQRNpV6DZRkKrqjz9aa9VUPXXmN6codjixxOSIcZAKG9tEaY
+         b25f1OeoJutPze6nEZ7arTf0dxmnZKmf0v9p6Ee9wIMoibfmbrwDyWkh5kQ7VPgeIv60
+         f0Py/SA/jLKjVNr4tKiGbRCsuQl2X7BKxcIjPE5dxJOCtstnLjuCJibpA93bgA4VrDf3
+         TxFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762711709; x=1763316509;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=17uy7/r8DFyNelm2MX1mDDCEQ4FT1zUkD8brnWvpR7U=;
+        b=uKM5Z+FnoH7YNPugXSiqeusuhy7NtcIzTFgifju+wZYRpIZAgMVOZYK+GhYuambzZh
+         /WaGoUIUqtGoi4iYNQLqm+H2x2xn6I8uYc0v5Z4QdmKl5h2Uu1RsaG7ilNGTeCtIcQCi
+         QVwIjHiJ3R/t/7VXwHc+3agXymJzVqpIKG4T5ankJ60C/WaC/k11ylhwLq9iYvWsPxT1
+         21Vkd2TsU93RgyD+raHw0AgrQdkvzAfUHQOlVabI9SXNU3oBA15Sop+NfSEdCNgmzAHl
+         CH5oNIJtLCUSiCxbI47k2a5C55i2QkVOlQAmafas1Dxx1JhsmK9hcjJxFbmcDPnrzCVp
+         mzbQ==
+X-Gm-Message-State: AOJu0YxbILgBoe+jSv+F7JQskh5j60ueYIIdye05+ie1y5ctkRDuLPoy
+	QdcGPb30v7VGH6cJ3UKsJchy2DgldYpxX0XFr5WbhrZcOhweE5+2S1b64O+Qr5QOyNl/15uSump
+	z8K4k1erFSco+8iFLX6cJjFXjKZM6M8YPOsMIl/M=
+X-Gm-Gg: ASbGncuAjWU616eXrqnSEYme6o5t/3ZQMyASz14FiWFQLZEmNx49dhlTU+qBM8oqbQh
+	O1ZeddDrxhRPLpuGLdolPGLA1fk9U8EZGqDV/OH3ERkJPltG4Dq3+I9fih6p4+8nSQpp2X12OSs
+	Ox8IVq+AjZzQFjJuVFaCy0IzWlspM67gXzN5z+/1O2G8PTzvO9JnlMLqs47dsUk3mT11gUjvbei
+	5Lg4OH+fyOHYjyynMgG6HH1fvdrQH2rwmPsEZK9SeR7bZP6miT2s2p6Mpe0qliekgCvh67I5Vnm
+	H8IbLWNKG9SJyx8RzTUbjimuPew=
+X-Google-Smtp-Source: AGHT+IFnrm8u5EMWfRVBrWwKuYqW7hKNgIF6wC/k2hh2eY1SWNCeunqTOP/xleUA55px5GxnEEJym3NVs0cohUDLNIA=
+X-Received: by 2002:a05:622a:11d5:b0:4ed:bbca:fe00 with SMTP id
+ d75a77b69052e-4edbbcb08f3mr12782981cf.4.1762711708720; Sun, 09 Nov 2025
+ 10:08:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+From: Jory Pratt <geekypenguin@gmail.com>
+Date: Sun, 9 Nov 2025 12:08:17 -0600
+X-Gm-Features: AWmQ_bk1rm8LcOjmUFnQE0NnHmr0i3AhpeWGSB52rLNJe39bAVi2lbz3Is1TtJc
+Message-ID: <CAOufY68pkXkQo2OVPDMtMrRd5H5xx9MHqMBkT8Swzzd3cXBOSw@mail.gmail.com>
+Subject: [PATCH] wifi: mt7601u: ignore invalid per-rate power entries
+To: linux-wireless@vger.kernel.org
+Cc: sgruszka@redhat.com, lorenzo@kernel.org
+Content-Type: multipart/mixed; boundary="0000000000003d92ea06432d4de1"
 
-Merge CMAC-128 and CMAC-256 handlers since they are almost the same.
-This removes duplication.
-All references to the refactored functions in the tree are adapted.
+--0000000000003d92ea06432d4de1
+Content-Type: multipart/alternative; boundary="0000000000003d92e906432d4ddf"
 
-The comment 'MIC = AES-128-CMAC(IGTK, AAD ...' is out-dated since CMAC
-is also used with BIGTK, as is the comment for CMAC-256. Simply remove
-the comments.
+--0000000000003d92e906432d4ddf
+Content-Type: text/plain; charset="UTF-8"
 
-Tested-on: mac80211_hwsim
+Some MT7601U adapters ship with placeholder values (0xf4) in the per-rate
+power table. Feeding those bytes through s6_validate() triggers its
+WARN_ON()
+because bits outside the 6-bit range are set, splattering a stack trace on
+every probe and needlessly tainting the kernel.
 
-Signed-off-by: Chien Wong <m@xv97.com>
----
- net/mac80211/rx.c  |   6 +-
- net/mac80211/tx.c  |   6 +-
- net/mac80211/wpa.c | 144 ++++++++-------------------------------------
- net/mac80211/wpa.h |  10 ++--
- 4 files changed, 35 insertions(+), 131 deletions(-)
+The driver already falls back to safe defaults when an EEPROM entry is
+invalid, so we can simply skip per-rate values whose upper bits are set.
+Mask the value locally and pass the sanitized result to s6_to_int(), keeping
+later fixups working while keeping the probe path silent.
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 80067ed1da2f..4c1b649b844a 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -2215,10 +2215,12 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
- 			rx, IEEE80211_CCMP_256_MIC_LEN);
- 		break;
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		result = ieee80211_crypto_aes_cmac_decrypt(rx);
-+		result = ieee80211_crypto_aes_cmac_decrypt(
-+			rx, IEEE80211_CMAC_128_MIC_LEN);
- 		break;
- 	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
--		result = ieee80211_crypto_aes_cmac_256_decrypt(rx);
-+		result = ieee80211_crypto_aes_cmac_decrypt(
-+			rx, IEEE80211_CMAC_256_MIC_LEN);
- 		break;
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index e7b141c55f7a..9d8b0a25f73c 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1062,9 +1062,11 @@ ieee80211_tx_h_encrypt(struct ieee80211_tx_data *tx)
- 		return ieee80211_crypto_ccmp_encrypt(
- 			tx, IEEE80211_CCMP_256_MIC_LEN);
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		return ieee80211_crypto_aes_cmac_encrypt(tx);
-+		return ieee80211_crypto_aes_cmac_encrypt(
-+			tx, IEEE80211_CMAC_128_MIC_LEN);
- 	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
--		return ieee80211_crypto_aes_cmac_256_encrypt(tx);
-+		return ieee80211_crypto_aes_cmac_encrypt(
-+			tx, IEEE80211_CMAC_256_MIC_LEN);
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
- 		return ieee80211_crypto_aes_gmac_encrypt(tx);
-diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
-index 2c1ee4b8e205..2f8bd5216542 100644
---- a/net/mac80211/wpa.c
-+++ b/net/mac80211/wpa.c
-@@ -828,12 +828,14 @@ static inline void bip_ipn_swap(u8 *d, const u8 *s)
- 
- 
- ieee80211_tx_result
--ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
-+ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx,
-+				  unsigned int mic_len)
- {
- 	struct sk_buff *skb;
- 	struct ieee80211_tx_info *info;
- 	struct ieee80211_key *key = tx->key;
--	struct ieee80211_mmie *mmie;
-+	struct ieee80211_mmie_var *mmie;
-+	size_t mmie_len;
- 	u8 aad[20];
- 	u64 pn64;
- 
-@@ -848,62 +850,14 @@ ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx)
- 	    !(key->conf.flags & IEEE80211_KEY_FLAG_GENERATE_MMIE))
- 		return TX_CONTINUE;
- 
--	if (WARN_ON(skb_tailroom(skb) < sizeof(*mmie)))
--		return TX_DROP;
--
--	mmie = skb_put(skb, sizeof(*mmie));
--	mmie->element_id = WLAN_EID_MMIE;
--	mmie->length = sizeof(*mmie) - 2;
--	mmie->key_id = cpu_to_le16(key->conf.keyidx);
-+	mmie_len = sizeof(*mmie) + mic_len;
- 
--	/* PN = PN + 1 */
--	pn64 = atomic64_inc_return(&key->conf.tx_pn);
--
--	bip_ipn_set64(mmie->sequence_number, pn64);
--
--	if (info->control.hw_key)
--		return TX_CONTINUE;
--
--	bip_aad(skb, aad);
--
--	/*
--	 * MIC = AES-128-CMAC(IGTK, AAD || Management Frame Body || MMIE, 64)
--	 */
--	if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--			       skb->data + 24, skb->len - 24, mmie->mic,
--			       IEEE80211_CMAC_128_MIC_LEN))
-+	if (WARN_ON(skb_tailroom(skb) < mmie_len))
- 		return TX_DROP;
- 
--	return TX_CONTINUE;
--}
--
--ieee80211_tx_result
--ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx)
--{
--	struct sk_buff *skb;
--	struct ieee80211_tx_info *info;
--	struct ieee80211_key *key = tx->key;
--	struct ieee80211_mmie_16 *mmie;
--	u8 aad[20];
--	u64 pn64;
--
--	if (WARN_ON(skb_queue_len(&tx->skbs) != 1))
--		return TX_DROP;
--
--	skb = skb_peek(&tx->skbs);
--
--	info = IEEE80211_SKB_CB(skb);
--
--	if (info->control.hw_key &&
--	    !(key->conf.flags & IEEE80211_KEY_FLAG_GENERATE_MMIE))
--		return TX_CONTINUE;
--
--	if (WARN_ON(skb_tailroom(skb) < sizeof(*mmie)))
--		return TX_DROP;
--
--	mmie = skb_put(skb, sizeof(*mmie));
-+	mmie = skb_put(skb, mmie_len);
- 	mmie->element_id = WLAN_EID_MMIE;
--	mmie->length = sizeof(*mmie) - 2;
-+	mmie->length = mmie_len - 2;
- 	mmie->key_id = cpu_to_le16(key->conf.keyidx);
- 
- 	/* PN = PN + 1 */
-@@ -916,90 +870,39 @@ ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx)
- 
- 	bip_aad(skb, aad);
- 
--	/* MIC = AES-256-CMAC(IGTK, AAD || Management Frame Body || MMIE, 128)
--	 */
- 	if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--			       skb->data + 24, skb->len - 24, mmie->mic,
--			       IEEE80211_CMAC_256_MIC_LEN))
-+			       skb->data + 24, skb->len - 24, mmie->mic, mic_len))
- 		return TX_DROP;
- 
- 	return TX_CONTINUE;
- }
- 
- ieee80211_rx_result
--ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx)
-+ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx,
-+				  unsigned int mic_len)
- {
- 	struct sk_buff *skb = rx->skb;
- 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
- 	struct ieee80211_key *key = rx->key;
--	struct ieee80211_mmie *mmie;
--	u8 aad[20], mic[8], ipn[6];
-+	struct ieee80211_mmie_var *mmie;
-+	size_t mmie_len;
-+	u8 aad[20], mic[IEEE80211_CMAC_256_MIC_LEN], ipn[6];
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
- 
- 	if (!ieee80211_is_mgmt(hdr->frame_control))
- 		return RX_CONTINUE;
- 
--	/* management frames are already linear */
--
--	if (skb->len < 24 + sizeof(*mmie))
--		return RX_DROP_U_SHORT_CMAC;
--
--	mmie = (struct ieee80211_mmie *)
--		(skb->data + skb->len - sizeof(*mmie));
--	if (mmie->element_id != WLAN_EID_MMIE ||
--	    mmie->length != sizeof(*mmie) - 2)
--		return RX_DROP_U_BAD_MMIE; /* Invalid MMIE */
--
--	bip_ipn_swap(ipn, mmie->sequence_number);
--
--	if (memcmp(ipn, key->u.aes_cmac.rx_pn, 6) <= 0) {
--		key->u.aes_cmac.replays++;
--		return RX_DROP_U_REPLAY;
--	}
--
--	if (!(status->flag & RX_FLAG_DECRYPTED)) {
--		/* hardware didn't decrypt/verify MIC */
--		bip_aad(skb, aad);
--		if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--				       skb->data + 24, skb->len - 24, mic,
--				       IEEE80211_CMAC_128_MIC_LEN))
--			return RX_DROP_U_DECRYPT_FAIL;
--		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
--			key->u.aes_cmac.icverrors++;
--			return RX_DROP_U_MIC_FAIL;
--		}
--	}
--
--	memcpy(key->u.aes_cmac.rx_pn, ipn, 6);
--
--	/* Remove MMIE */
--	skb_trim(skb, skb->len - sizeof(*mmie));
--
--	return RX_CONTINUE;
--}
--
--ieee80211_rx_result
--ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx)
--{
--	struct sk_buff *skb = rx->skb;
--	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
--	struct ieee80211_key *key = rx->key;
--	struct ieee80211_mmie_16 *mmie;
--	u8 aad[20], mic[16], ipn[6];
--	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
--
--	if (!ieee80211_is_mgmt(hdr->frame_control))
--		return RX_CONTINUE;
-+	mmie_len = sizeof(*mmie) + mic_len;
- 
- 	/* management frames are already linear */
- 
--	if (skb->len < 24 + sizeof(*mmie))
--		return RX_DROP_U_SHORT_CMAC256;
-+	if (skb->len < 24 + mmie_len)
-+		return mic_len == IEEE80211_CMAC_128_MIC_LEN ?
-+				  RX_DROP_U_SHORT_CMAC : RX_DROP_U_SHORT_CMAC256;
- 
--	mmie = (struct ieee80211_mmie_16 *)
--		(skb->data + skb->len - sizeof(*mmie));
-+	mmie = (struct ieee80211_mmie_var *)(skb->data + skb->len - mmie_len);
- 	if (mmie->element_id != WLAN_EID_MMIE ||
--	    mmie->length != sizeof(*mmie) - 2)
-+	    mmie->length != mmie_len - 2)
- 		return RX_DROP_U_BAD_MMIE; /* Invalid MMIE */
- 
- 	bip_ipn_swap(ipn, mmie->sequence_number);
-@@ -1013,10 +916,9 @@ ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx)
- 		/* hardware didn't decrypt/verify MIC */
- 		bip_aad(skb, aad);
- 		if (ieee80211_aes_cmac(key->u.aes_cmac.tfm, aad,
--				       skb->data + 24, skb->len - 24, mic,
--				       IEEE80211_CMAC_256_MIC_LEN))
-+				       skb->data + 24, skb->len - 24, mic, mic_len))
- 			return RX_DROP_U_DECRYPT_FAIL;
--		if (crypto_memneq(mic, mmie->mic, sizeof(mmie->mic))) {
-+		if (crypto_memneq(mic, mmie->mic, mic_len)) {
- 			key->u.aes_cmac.icverrors++;
- 			return RX_DROP_U_MIC_FAIL;
- 		}
-@@ -1025,7 +927,7 @@ ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx)
- 	memcpy(key->u.aes_cmac.rx_pn, ipn, 6);
- 
- 	/* Remove MMIE */
--	skb_trim(skb, skb->len - sizeof(*mmie));
-+	skb_trim(skb, skb->len - mmie_len);
- 
- 	return RX_CONTINUE;
- }
-diff --git a/net/mac80211/wpa.h b/net/mac80211/wpa.h
-index a9a81abb5479..6e8846dfe710 100644
---- a/net/mac80211/wpa.h
-+++ b/net/mac80211/wpa.h
-@@ -29,13 +29,11 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
- 			      unsigned int mic_len);
- 
- ieee80211_tx_result
--ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx);
--ieee80211_tx_result
--ieee80211_crypto_aes_cmac_256_encrypt(struct ieee80211_tx_data *tx);
--ieee80211_rx_result
--ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx);
-+ieee80211_crypto_aes_cmac_encrypt(struct ieee80211_tx_data *tx,
-+				  unsigned int mic_len);
- ieee80211_rx_result
--ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx);
-+ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx,
-+				  unsigned int mic_len);
- ieee80211_tx_result
- ieee80211_crypto_aes_gmac_encrypt(struct ieee80211_tx_data *tx);
- ieee80211_rx_result
--- 
-2.51.2
+Thanks for taking a look!
 
+Jory
+
+--0000000000003d92e906432d4ddf
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Some MT7601U adapters ship with placeholder values (0xf4) =
+in the per-rate<br>power table. Feeding those bytes through s6_validate() t=
+riggers its WARN_ON()<br>because bits outside the 6-bit range are set, spla=
+ttering a stack trace on<br>every probe and needlessly tainting the kernel.=
+<br><br>The driver already falls back to safe defaults when an EEPROM entry=
+ is<br>invalid, so we can simply skip per-rate values whose upper bits are =
+set.<br>Mask the value locally and pass the sanitized result to s6_to_int()=
+, keeping<br>later fixups working while keeping the probe path silent.<br><=
+br>Thanks for taking a look!<br><br>Jory</div>
+
+--0000000000003d92e906432d4ddf--
+--0000000000003d92ea06432d4de1
+Content-Type: text/x-patch; charset="US-ASCII"; name="mt7601u-silence-invalid-power.patch"
+Content-Disposition: attachment; 
+	filename="mt7601u-silence-invalid-power.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mhs114140>
+X-Attachment-Id: f_mhs114140
+
+RnJvbSA4ZjlhMGI5ZTBkOGMyYTg3YWQ0ZWVjMWM1YzU0ZDkzOTY2NDFiMmYxIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBKb3J5IEEuIFByYXR0IDxnZWVreXBlbmd1aW5AZ21haWwuY29t
+PgpEYXRlOiBTdW4sIDkgTm92IDIwMjUgMDE6NDA6MDAgLTA2MDAKU3ViamVjdDogW1BBVENIXSB3
+aWZpOiBtdDc2MDF1OiBpZ25vcmUgaW52YWxpZCBwZXItcmF0ZSBwb3dlciBlbnRyaWVzCgpTb21l
+IE1UNzYwMVUgYWRhcHRlcnMgc2hpcCB3aXRoIHBsYWNlaG9sZGVyIHZhbHVlcyAoMHhmNCkgaW4g
+dGhlCnBlci1yYXRlIHBvd2VyIHRhYmxlLiAgRmVlZGluZyB0aG9zZSBieXRlcyB0aHJvdWdoIHM2
+X3ZhbGlkYXRlKCkgdHJpZ2dlcnMKaXRzIFdBUk5fT04oKSBiZWNhdXNlIGJpdHMgb3V0c2lkZSB0
+aGUgNi1iaXQgcmFuZ2UgYXJlIHNldCwgc3BsYXR0ZXJpbmcgYQpzdGFjayB0cmFjZSBvbiBldmVy
+eSBwcm9iZSBhbmQgbmVlZGxlc3NseSB0YWludGluZyB0aGUga2VybmVsLgoKVGhlIGRyaXZlciBh
+bHJlYWR5IGZhbGxzIGJhY2sgdG8gc2FmZSBkZWZhdWx0cyB3aGVuIGFuIEVFUFJPTSBlbnRyeSBp
+cwppbnZhbGlkLCBzbyB3ZSBjYW4gc2ltcGx5IHNraXAgcGVyLXJhdGUgdmFsdWVzIHdob3NlIHVw
+cGVyIGJpdHMgYXJlIHNldC4KTWFzayB0aGUgdmFsdWUgbG9jYWxseSBhbmQgcGFzcyB0aGUgc2Fu
+aXRpemVkIHJlc3VsdCB0byBzNl90b19pbnQoKSwKa2VlcGluZyBsYXRlciBmaXh1cHMgd29ya2lu
+ZyB3aGlsZSBrZWVwaW5nIHRoZSBwcm9iZSBwYXRoIHNpbGVudC4KClNpZ25lZC1vZmYtYnk6IEpv
+cnkgQS4gUHJhdHQgPGdlZWt5cGVuZ3VpbkBnbWFpbC5jb20+Ci0tLQogZHJpdmVycy9uZXQvd2ly
+ZWxlc3MvbWVkaWF0ZWsvbXQ3NjAxdS9lZXByb20uYyB8IDcgKysrKystLQogMSBmaWxlIGNoYW5n
+ZWQsIDUgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2MDF1L2VlcHJvbS5jIGIvZHJpdmVycy9uZXQvd2ly
+ZWxlc3MvbWVkaWF0ZWsvbXQ3NjAxdS9lZXByb20uYwppbmRleCA0YTEyMGU4MzAyYzMuLjdmZmQ4
+YmExYzdmMiAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3NjAx
+dS9lZXByb20uYworKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2MDF1L2Vl
+cHJvbS5jCkBAIC0yNTMsOCArMjUzLDExIEBAIG10NzYwMXVfc2V0X3Bvd2VyX3JhdGUoc3RydWN0
+IHBvd2VyX3Blcl9yYXRlICpyYXRlLCBzOCBkZWx0YSwgdTggdmFsdWUpCiAJLyogSW52YWxpZD8g
+Tm90ZTogdmVuZG9yIGRyaXZlciBkb2VzIG5vdCBoYW5kbGUgdGhpcyAqLwogCWlmICh2YWx1ZSA9
+PSAweGZmKQogCQlyZXR1cm47CiAKLQlyYXRlLT5yYXcgPSBzNl92YWxpZGF0ZSh2YWx1ZSk7Ci0J
+cmF0ZS0+YncyMCA9IHM2X3RvX2ludCh2YWx1ZSk7CisJaWYgKHZhbHVlICYgfkdFTk1BU0soNSwg
+MCkpCisJCXJldHVybjsKKworCXJhdGUtPnJhdyA9IHZhbHVlICYgR0VOTUFTSyg1LCAwKTsKKwly
+YXRlLT5idzIwID0gczZfdG9faW50KHJhdGUtPnJhdyk7CiAJLyogTm90ZTogdmVuZG9yIGRyaXZl
+ciBkb2VzIGNhcCB0aGUgdmFsdWUgdG8gczYgcmlnaHQgYXdheSAqLwogCXJhdGUtPmJ3NDAgPSBy
+YXRlLT5idzIwICsgZGVsdGE7CiB9Ci0tIAoyLjQzLjAK
+--0000000000003d92ea06432d4de1--
 
