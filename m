@@ -1,159 +1,135 @@
-Return-Path: <linux-wireless+bounces-28707-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-28708-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F790C444DF
-	for <lists+linux-wireless@lfdr.de>; Sun, 09 Nov 2025 19:08:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFD9DC444E3
+	for <lists+linux-wireless@lfdr.de>; Sun, 09 Nov 2025 19:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 724684E1159
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Nov 2025 18:08:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7910B3A9DAC
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Nov 2025 18:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04CF1F4180;
-	Sun,  9 Nov 2025 18:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C501DF270;
+	Sun,  9 Nov 2025 18:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="alt1N6b6"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="HT7qskbX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E9B1F4174
-	for <linux-wireless@vger.kernel.org>; Sun,  9 Nov 2025 18:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A7E1CEAA3
+	for <linux-wireless@vger.kernel.org>; Sun,  9 Nov 2025 18:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762711711; cv=none; b=W6i+6ShIZ72FYlgz5fWszzLxvO7UC3CoqmruS34PGjTooLWS26ewlX7o9+xTCWKS5paep6jk2gOKUiOlqYnxQXRqGwcqGDnmB2/Jg6viPuAJE5d+Ts1ei8VCkaTtSnybKpQnAoUAjYtIRyMDW1yFBM2dMMaIx9egR4riXi931u8=
+	t=1762712665; cv=none; b=La0hkptPiSOgBDbLhzEEmepQ/ad8CzR0VAVhAhfDQ4vOOzStdE2e4x0IfeHIacq7pppxRcse0x1PmHV2eXf96R/v1/UPFCxHXZUqKzOpwNCNZrl+2QJT0QA7VjMEZ6lWDDQS/Fg5apiQHnQL/7+p1wYjTYcfxdCHkcpK1boqwew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762711711; c=relaxed/simple;
-	bh=CyerTHMjEJ8+owBnpxcJ1soUt0S6OXRutGOfwbOBt4g=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=lEInjXG36F5YnWdLxU5J0MWMevD02syJbTqsnbwTj+1VyK98YJKeeYU6p0m78GnmR7yq6xSPGR+jUC6WLcKba9TQ+S1eO96kOVPJdr08WSTLmaT+U5DAbjLsS3RlmUlIsVfGYRZBtJ5h+57Sx3a09cYQrEXo0J6ylKPY9thwc0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=alt1N6b6; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4ed917b5b18so22696741cf.1
-        for <linux-wireless@vger.kernel.org>; Sun, 09 Nov 2025 10:08:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762711709; x=1763316509; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=17uy7/r8DFyNelm2MX1mDDCEQ4FT1zUkD8brnWvpR7U=;
-        b=alt1N6b6KpQ3QUDWHGy3zbl4U5H+Ca8uYhtMeCZv5m25u51kabhomXPebV+4iEbStO
-         YL6MDLwpD0IqN0tO9JMHjmVj4sSHntBqI48/+xWqTU3dgytXBIbgMch6fbbgsd22CJ9f
-         bMnR8uCBSf7ylAFwAxFSIQRNpV6DZRkKrqjz9aa9VUPXXmN6codjixxOSIcZAKG9tEaY
-         b25f1OeoJutPze6nEZ7arTf0dxmnZKmf0v9p6Ee9wIMoibfmbrwDyWkh5kQ7VPgeIv60
-         f0Py/SA/jLKjVNr4tKiGbRCsuQl2X7BKxcIjPE5dxJOCtstnLjuCJibpA93bgA4VrDf3
-         TxFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762711709; x=1763316509;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=17uy7/r8DFyNelm2MX1mDDCEQ4FT1zUkD8brnWvpR7U=;
-        b=uKM5Z+FnoH7YNPugXSiqeusuhy7NtcIzTFgifju+wZYRpIZAgMVOZYK+GhYuambzZh
-         /WaGoUIUqtGoi4iYNQLqm+H2x2xn6I8uYc0v5Z4QdmKl5h2Uu1RsaG7ilNGTeCtIcQCi
-         QVwIjHiJ3R/t/7VXwHc+3agXymJzVqpIKG4T5ankJ60C/WaC/k11ylhwLq9iYvWsPxT1
-         21Vkd2TsU93RgyD+raHw0AgrQdkvzAfUHQOlVabI9SXNU3oBA15Sop+NfSEdCNgmzAHl
-         CH5oNIJtLCUSiCxbI47k2a5C55i2QkVOlQAmafas1Dxx1JhsmK9hcjJxFbmcDPnrzCVp
-         mzbQ==
-X-Gm-Message-State: AOJu0YxbILgBoe+jSv+F7JQskh5j60ueYIIdye05+ie1y5ctkRDuLPoy
-	QdcGPb30v7VGH6cJ3UKsJchy2DgldYpxX0XFr5WbhrZcOhweE5+2S1b64O+Qr5QOyNl/15uSump
-	z8K4k1erFSco+8iFLX6cJjFXjKZM6M8YPOsMIl/M=
-X-Gm-Gg: ASbGncuAjWU616eXrqnSEYme6o5t/3ZQMyASz14FiWFQLZEmNx49dhlTU+qBM8oqbQh
-	O1ZeddDrxhRPLpuGLdolPGLA1fk9U8EZGqDV/OH3ERkJPltG4Dq3+I9fih6p4+8nSQpp2X12OSs
-	Ox8IVq+AjZzQFjJuVFaCy0IzWlspM67gXzN5z+/1O2G8PTzvO9JnlMLqs47dsUk3mT11gUjvbei
-	5Lg4OH+fyOHYjyynMgG6HH1fvdrQH2rwmPsEZK9SeR7bZP6miT2s2p6Mpe0qliekgCvh67I5Vnm
-	H8IbLWNKG9SJyx8RzTUbjimuPew=
-X-Google-Smtp-Source: AGHT+IFnrm8u5EMWfRVBrWwKuYqW7hKNgIF6wC/k2hh2eY1SWNCeunqTOP/xleUA55px5GxnEEJym3NVs0cohUDLNIA=
-X-Received: by 2002:a05:622a:11d5:b0:4ed:bbca:fe00 with SMTP id
- d75a77b69052e-4edbbcb08f3mr12782981cf.4.1762711708720; Sun, 09 Nov 2025
- 10:08:28 -0800 (PST)
+	s=arc-20240116; t=1762712665; c=relaxed/simple;
+	bh=wlj07ZXL9YSbIF+CP12XdhGrBJ75DGchH8cfIjGAxtw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZcUcPUS9BLLRMPOH4ZcWjke2WrQ83tOJ9dIKuYA159rZIt5bvD8wgC+cNlwptMDg0nXBQibqjJ+uaXfyZqakwlpSni9ZIQafrXWVRIXcq+pbwOh9HRNIrGwxj2/xll8tlxNlS3g0GjTLr7ZQVKDCmxpSHzksYUQli/AuxAishXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=HT7qskbX; arc=none smtp.client-ip=148.163.129.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id D15B710005E;
+	Sun,  9 Nov 2025 18:24:15 +0000 (UTC)
+Received: from [192.168.1.23] (unknown [98.97.36.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 8F2A513C2B0;
+	Sun,  9 Nov 2025 10:24:10 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8F2A513C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1762712652;
+	bh=wlj07ZXL9YSbIF+CP12XdhGrBJ75DGchH8cfIjGAxtw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HT7qskbXI74SvKyvi/lG92vS3pEBaPyfY+jsKNrllt9wuN6cERJC5McTjnN1OB0ni
+	 q06eyW7N9CnxBQS7qFhe0oE2srMMnUvHq/uE/7zvt6n3mly9EXWsOR5SFYtK9JkKvR
+	 rFmhhh903fvrHe2KC9hbWjRUI3vbTD9WHLW5UXso=
+Message-ID: <c434d289-0b5b-4611-92ad-b6af7e93c0d6@candelatech.com>
+Date: Sun, 9 Nov 2025 10:24:07 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Jory Pratt <geekypenguin@gmail.com>
-Date: Sun, 9 Nov 2025 12:08:17 -0600
-X-Gm-Features: AWmQ_bk1rm8LcOjmUFnQE0NnHmr0i3AhpeWGSB52rLNJe39bAVi2lbz3Is1TtJc
-Message-ID: <CAOufY68pkXkQo2OVPDMtMrRd5H5xx9MHqMBkT8Swzzd3cXBOSw@mail.gmail.com>
-Subject: [PATCH] wifi: mt7601u: ignore invalid per-rate power entries
-To: linux-wireless@vger.kernel.org
-Cc: sgruszka@redhat.com, lorenzo@kernel.org
-Content-Type: multipart/mixed; boundary="0000000000003d92ea06432d4de1"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwlwifi-next 08/15] wifi: iwlwifi: mld: support for
+ COMPRESSED_BA_RES_API_S_VER_7
+To: "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20250430125729.1122751-1-miriam.rachel.korenblit@intel.com>
+ <20250430155443.c4be90e242ff.Ie8a0f0d6320613bd8c5cb6c82a063069fffa3b67@changeid>
+ <11cca5db-28c5-a57c-78c5-7084afd92509@candelatech.com>
+ <ebff7d3d89c87b2646da17bd10b8f075a4be4d98.camel@intel.com>
+Content-Language: en-MW
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <ebff7d3d89c87b2646da17bd10b8f075a4be4d98.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MDID: 1762712656-bT5zyLgX16eP
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;ut7;1762712656;bT5zyLgX16eP;<greearb@candelatech.com>;164575d057495991bbcad51b50c00bde
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
---0000000000003d92ea06432d4de1
-Content-Type: multipart/alternative; boundary="0000000000003d92e906432d4ddf"
+On 11/9/25 00:10, Grumbach, Emmanuel wrote:
+> Hi Ben,
+> 
+> On Fri, 2025-11-07 at 15:16 -0800, Ben Greear wrote:
+>> On 4/30/25 05:57, Miri Korenblit wrote:
+>>> From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+>>>
+>>> The rate format changed but since we don't use the rate, just claim
+>>> support for this new API.
+>>
+>> Hello Emmanuel,
+>>
+>> I'm interested in using the tx_rate to provide tx histogram stats for
+>> mcs, nss, etc.
+>>
+>> Could you please share the rate format?  I'm specifically interested
+>> in
+>> Intel be200 on kernel 6.18 and higher.
+>>
+>> Thanks,
+>> Ben
+>>
+> 
+> It's ... a bit complex.
+> The firmware is changing the APIs to add support for UHR.
+> You can look at iwl_mld_fill_phy_data, it translates the rate using
+> iwl_v3_rate_from_v2_v3 which allows to use only v3.
+> 
+> v3 supports UHR and v3 is supported on firmwares that support the
+> TX_CMD version 11:
+> mld->fw_rates_ver_3 = iwl_fw_lookup_cmd_ver(mld->fw, TX_CMD, 0) >= 11;
+> 
+> This version of the TX_CMD is supported only starting c101 firmware
+> which is not supported by kernel 6.18.
+> 
+> So... bottom line... you still have the old format of the rates (v2).
+> I suggest you checkout dabc88cb3b78c^ to see how things were done
+> before Johannes added support in the driver for UHR rates.
+> 
+> Then you can look at iwl_mld_rx_fill_status to see how we translate
+> rate_n_flags (v2 of course) into struct ieee80211_rx_status.
+> 
+> HTH
 
---0000000000003d92e906432d4ddf
-Content-Type: text/plain; charset="UTF-8"
+Thank you, I will take a look at that.  I was able to guess a lot of
+it by staring at hex printout in different wifi modes,
+but it will be good to verify and fill in the missing bits.
 
-Some MT7601U adapters ship with placeholder values (0xf4) in the per-rate
-power table. Feeding those bytes through s6_validate() triggers its
-WARN_ON()
-because bits outside the 6-bit range are set, splattering a stack trace on
-every probe and needlessly tainting the kernel.
+Thanks,
+Ben
 
-The driver already falls back to safe defaults when an EEPROM entry is
-invalid, so we can simply skip per-rate values whose upper bits are set.
-Mask the value locally and pass the sanitized result to s6_to_int(), keeping
-later fixups working while keeping the probe path silent.
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
-Thanks for taking a look!
-
-Jory
-
---0000000000003d92e906432d4ddf
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Some MT7601U adapters ship with placeholder values (0xf4) =
-in the per-rate<br>power table. Feeding those bytes through s6_validate() t=
-riggers its WARN_ON()<br>because bits outside the 6-bit range are set, spla=
-ttering a stack trace on<br>every probe and needlessly tainting the kernel.=
-<br><br>The driver already falls back to safe defaults when an EEPROM entry=
- is<br>invalid, so we can simply skip per-rate values whose upper bits are =
-set.<br>Mask the value locally and pass the sanitized result to s6_to_int()=
-, keeping<br>later fixups working while keeping the probe path silent.<br><=
-br>Thanks for taking a look!<br><br>Jory</div>
-
---0000000000003d92e906432d4ddf--
---0000000000003d92ea06432d4de1
-Content-Type: text/x-patch; charset="US-ASCII"; name="mt7601u-silence-invalid-power.patch"
-Content-Disposition: attachment; 
-	filename="mt7601u-silence-invalid-power.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_mhs114140>
-X-Attachment-Id: f_mhs114140
-
-RnJvbSA4ZjlhMGI5ZTBkOGMyYTg3YWQ0ZWVjMWM1YzU0ZDkzOTY2NDFiMmYxIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBKb3J5IEEuIFByYXR0IDxnZWVreXBlbmd1aW5AZ21haWwuY29t
-PgpEYXRlOiBTdW4sIDkgTm92IDIwMjUgMDE6NDA6MDAgLTA2MDAKU3ViamVjdDogW1BBVENIXSB3
-aWZpOiBtdDc2MDF1OiBpZ25vcmUgaW52YWxpZCBwZXItcmF0ZSBwb3dlciBlbnRyaWVzCgpTb21l
-IE1UNzYwMVUgYWRhcHRlcnMgc2hpcCB3aXRoIHBsYWNlaG9sZGVyIHZhbHVlcyAoMHhmNCkgaW4g
-dGhlCnBlci1yYXRlIHBvd2VyIHRhYmxlLiAgRmVlZGluZyB0aG9zZSBieXRlcyB0aHJvdWdoIHM2
-X3ZhbGlkYXRlKCkgdHJpZ2dlcnMKaXRzIFdBUk5fT04oKSBiZWNhdXNlIGJpdHMgb3V0c2lkZSB0
-aGUgNi1iaXQgcmFuZ2UgYXJlIHNldCwgc3BsYXR0ZXJpbmcgYQpzdGFjayB0cmFjZSBvbiBldmVy
-eSBwcm9iZSBhbmQgbmVlZGxlc3NseSB0YWludGluZyB0aGUga2VybmVsLgoKVGhlIGRyaXZlciBh
-bHJlYWR5IGZhbGxzIGJhY2sgdG8gc2FmZSBkZWZhdWx0cyB3aGVuIGFuIEVFUFJPTSBlbnRyeSBp
-cwppbnZhbGlkLCBzbyB3ZSBjYW4gc2ltcGx5IHNraXAgcGVyLXJhdGUgdmFsdWVzIHdob3NlIHVw
-cGVyIGJpdHMgYXJlIHNldC4KTWFzayB0aGUgdmFsdWUgbG9jYWxseSBhbmQgcGFzcyB0aGUgc2Fu
-aXRpemVkIHJlc3VsdCB0byBzNl90b19pbnQoKSwKa2VlcGluZyBsYXRlciBmaXh1cHMgd29ya2lu
-ZyB3aGlsZSBrZWVwaW5nIHRoZSBwcm9iZSBwYXRoIHNpbGVudC4KClNpZ25lZC1vZmYtYnk6IEpv
-cnkgQS4gUHJhdHQgPGdlZWt5cGVuZ3VpbkBnbWFpbC5jb20+Ci0tLQogZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvbWVkaWF0ZWsvbXQ3NjAxdS9lZXByb20uYyB8IDcgKysrKystLQogMSBmaWxlIGNoYW5n
-ZWQsIDUgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJz
-L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2MDF1L2VlcHJvbS5jIGIvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvbWVkaWF0ZWsvbXQ3NjAxdS9lZXByb20uYwppbmRleCA0YTEyMGU4MzAyYzMuLjdmZmQ4
-YmExYzdmMiAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3NjAx
-dS9lZXByb20uYworKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2MDF1L2Vl
-cHJvbS5jCkBAIC0yNTMsOCArMjUzLDExIEBAIG10NzYwMXVfc2V0X3Bvd2VyX3JhdGUoc3RydWN0
-IHBvd2VyX3Blcl9yYXRlICpyYXRlLCBzOCBkZWx0YSwgdTggdmFsdWUpCiAJLyogSW52YWxpZD8g
-Tm90ZTogdmVuZG9yIGRyaXZlciBkb2VzIG5vdCBoYW5kbGUgdGhpcyAqLwogCWlmICh2YWx1ZSA9
-PSAweGZmKQogCQlyZXR1cm47CiAKLQlyYXRlLT5yYXcgPSBzNl92YWxpZGF0ZSh2YWx1ZSk7Ci0J
-cmF0ZS0+YncyMCA9IHM2X3RvX2ludCh2YWx1ZSk7CisJaWYgKHZhbHVlICYgfkdFTk1BU0soNSwg
-MCkpCisJCXJldHVybjsKKworCXJhdGUtPnJhdyA9IHZhbHVlICYgR0VOTUFTSyg1LCAwKTsKKwly
-YXRlLT5idzIwID0gczZfdG9faW50KHJhdGUtPnJhdyk7CiAJLyogTm90ZTogdmVuZG9yIGRyaXZl
-ciBkb2VzIGNhcCB0aGUgdmFsdWUgdG8gczYgcmlnaHQgYXdheSAqLwogCXJhdGUtPmJ3NDAgPSBy
-YXRlLT5idzIwICsgZGVsdGE7CiB9Ci0tIAoyLjQzLjAK
---0000000000003d92ea06432d4de1--
 
